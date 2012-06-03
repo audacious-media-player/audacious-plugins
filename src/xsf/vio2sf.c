@@ -10,7 +10,6 @@
 #include "desmume/cp15.h"
 
 #include <zlib.h>
-#include <glib.h>
 #include "tagget.h"
 #include "vio2sf.h"
 

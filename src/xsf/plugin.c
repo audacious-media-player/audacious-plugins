@@ -24,11 +24,12 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <glib.h>
 #include <libgen.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -39,35 +40,19 @@
 #include "corlett.h"
 #include "vio2sf.h"
 
-static GMutex *seek_mutex;
-static GCond *seek_cond;
-static gint seek_value = -1;
-static gboolean stop_flag = FALSE;
-
-static gboolean xsf_init(void)
-{
-	seek_mutex = g_mutex_new();
-	seek_cond = g_cond_new();
-
-	return TRUE;
-}
-
-static void xsf_cleanup(void)
-{
-	g_mutex_free(seek_mutex);
-	g_cond_free(seek_cond);
-}
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static int seek_value = -1;
+static bool_t stop_flag = FALSE;
 
 /* xsf_get_lib: called to load secondary files */
-static gchar *path;
+static char *path;
 int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 {
 	void *filebuf;
-	gint64 size;
+	int64_t size;
 
-	gchar * path2 = g_strdup_printf ("%s/%s", dirname (path), filename);
+	SPRINTF (path2, "%s/%s", dirname (path), filename);
 	vfs_file_get_contents (path2, & filebuf, & size);
-	g_free (path2);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
@@ -75,12 +60,12 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 	return AO_SUCCESS;
 }
 
-Tuple *xsf_tuple(const gchar *filename, VFSFile *fd)
+Tuple *xsf_tuple(const char *filename, VFSFile *fd)
 {
 	Tuple *t;
 	corlett_t *c;
 	void *buf;
-	gint64 sz;
+	int64_t sz;
 
 	vfs_file_get_contents (filename, & buf, & sz);
 
@@ -103,16 +88,16 @@ Tuple *xsf_tuple(const gchar *filename, VFSFile *fd)
 	tuple_set_str(t, -1, "console", "GBA/Nintendo DS");
 
 	free(c);
-	g_free(buf);
+	free(buf);
 
 	return t;
 }
 
-static gint xsf_get_length(const gchar *filename)
+static int xsf_get_length(const char *filename)
 {
 	corlett_t *c;
 	void *buf;
-	gint64 size;
+	int64_t size;
 
 	vfs_file_get_contents(filename, &buf, &size);
 
@@ -121,27 +106,27 @@ static gint xsf_get_length(const gchar *filename)
 
 	if (corlett_decode(buf, size, NULL, NULL, &c) != AO_SUCCESS)
 	{
-		g_free(buf);
+		free(buf);
 		return -1;
 	}
 
 	free(c);
-	g_free(buf);
+	free(buf);
 
 	return c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 }
 
-static gboolean xsf_play(InputPlayback * playback, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
 	void *buffer;
-	gint64 size;
-	gint length = xsf_get_length(filename);
-	gint16 samples[44100*2];
-	gint seglen = 44100 / 60;
-	gfloat pos;
-	gboolean error = FALSE;
+	int64_t size;
+	int length = xsf_get_length(filename);
+	int16_t samples[44100*2];
+	int seglen = 44100 / 60;
+	float pos;
+	bool_t error = FALSE;
 
-	path = g_strdup(filename);
+	path = strdup(filename);
 	vfs_file_get_contents (filename, & buffer, & size);
 
 	if (xsf_start(buffer, size) != AO_SUCCESS)
@@ -166,7 +151,7 @@ static gboolean xsf_play(InputPlayback * playback, const gchar * filename, VFSFi
 
 	while (!stop_flag)
 	{
-		g_mutex_lock(seek_mutex);
+		pthread_mutex_lock (& mutex);
 
 		if (seek_value >= 0)
 		{
@@ -182,15 +167,13 @@ static gboolean xsf_play(InputPlayback * playback, const gchar * filename, VFSFi
 
 				playback->output->flush(seek_value);
 				seek_value = -1;
-
-				g_cond_signal(seek_cond);
 			}
 			else if (seek_value < playback->output->written_time ())
 			{
 				xsf_term();
 
-				g_free(path);
-				path = g_strdup(filename);
+				free(path);
+				path = strdup(filename);
 
 				if (xsf_start(buffer, size) == AO_SUCCESS)
 				{
@@ -203,8 +186,6 @@ static gboolean xsf_play(InputPlayback * playback, const gchar * filename, VFSFi
 
 					playback->output->flush(seek_value);
 					seek_value = -1;
-
-					g_cond_signal(seek_cond);
 				}
 			   	else
 				{
@@ -214,15 +195,15 @@ static gboolean xsf_play(InputPlayback * playback, const gchar * filename, VFSFi
 			}
 		}
 
-		g_mutex_unlock(seek_mutex);
+		pthread_mutex_unlock (& mutex);
 
 		xsf_gen(samples, seglen);
-		playback->output->write_audio((guint8 *)samples, seglen * 4);
+		playback->output->write_audio((uint8_t *)samples, seglen * 4);
 
 		if (playback->output->written_time() >= length)
 		{
 			while (!stop_flag && playback->output->buffer_playing())
-				g_usleep(10000);
+				usleep(10000);
 
 			goto CLEANUP;
 		}
@@ -231,47 +212,45 @@ static gboolean xsf_play(InputPlayback * playback, const gchar * filename, VFSFi
 CLEANUP:
 	xsf_term();
 
-	g_mutex_lock(seek_mutex);
+	pthread_mutex_lock (& mutex);
 	stop_flag = TRUE;
-	g_cond_signal(seek_cond); /* wake up any waiting request */
-	g_mutex_unlock(seek_mutex);
+	pthread_mutex_unlock (& mutex);
 
 	playback->output->close_audio();
 
 ERR_NO_CLOSE:
-	g_free(buffer);
-	g_free(path);
+	free(buffer);
+	free(path);
 
 	return !error;
 }
 
 void xsf_stop(InputPlayback *playback)
 {
-	g_mutex_lock(seek_mutex);
+	pthread_mutex_lock (& mutex);
 
 	if (!stop_flag)
 	{
 		stop_flag = TRUE;
 		playback->output->abort_write();
-		g_cond_signal(seek_cond);
 	}
 
-	g_mutex_unlock (seek_mutex);
+	pthread_mutex_unlock (& mutex);
 }
 
-void xsf_pause(InputPlayback *playback, gboolean pause)
+void xsf_pause(InputPlayback *playback, bool_t pause)
 {
-	g_mutex_lock(seek_mutex);
+	pthread_mutex_lock (& mutex);
 
 	if (!stop_flag)
 		playback->output->pause(pause);
 
-	g_mutex_unlock(seek_mutex);
+	pthread_mutex_unlock (& mutex);
 }
 
-gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
+int xsf_is_our_fd(const char *filename, VFSFile *file)
 {
-	gchar magic[4];
+	char magic[4];
 	if (vfs_fread(magic, 1, 4, file) < 4)
 		return FALSE;
 
@@ -281,29 +260,25 @@ gint xsf_is_our_fd(const gchar *filename, VFSFile *file)
 	return 0;
 }
 
-void xsf_seek(InputPlayback *playback, gint time)
+void xsf_seek(InputPlayback *playback, int time)
 {
-	g_mutex_lock(seek_mutex);
+	pthread_mutex_lock (& mutex);
 
 	if (!stop_flag)
 	{
 		seek_value = time;
 		playback->output->abort_write();
-		g_cond_signal(seek_cond);
-		g_cond_wait(seek_cond, seek_mutex);
 	}
 
-	g_mutex_unlock(seek_mutex);
+	pthread_mutex_unlock (& mutex);
 }
 
-static const gchar *xsf_fmts[] = { "2sf", "mini2sf", NULL };
+static const char *xsf_fmts[] = { "2sf", "mini2sf", NULL };
 
 AUD_INPUT_PLUGIN
 (
 	.name = N_("2SF Decoder"),
 	.domain = PACKAGE,
-	.init = xsf_init,
-	.cleanup = xsf_cleanup,
 	.play = xsf_play,
 	.stop = xsf_stop,
 	.pause = xsf_pause,
