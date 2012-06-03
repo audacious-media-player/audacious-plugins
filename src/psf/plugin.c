@@ -24,11 +24,12 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <glib.h>
 #include <libgen.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -79,18 +80,15 @@ static PSFEngine psf_probe(uint8 *buffer)
 }
 
 /* ao_get_lib: called to load secondary files */
-static gchar *path;
+static char *path;
 
 int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 {
 	void *filebuf;
-	gint64 size;
+	int64_t size;
 
-	gchar * path2 = g_strdup (path);
-	gchar * path3 = g_strdup_printf ("%s/%s", dirname (path2), filename);
-	vfs_file_get_contents (path3, & filebuf, & size);
-	g_free (path3);
-	g_free (path2);
+	SPRINTF (path2, "%s/%s", dirname (path), filename);
+	vfs_file_get_contents (path2, & filebuf, & size);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
@@ -98,16 +96,16 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 	return AO_SUCCESS;
 }
 
-static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-static gint seek = 0;
-gboolean stop_flag = FALSE;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static int seek = 0;
+bool_t stop_flag = FALSE;
 
-Tuple *psf2_tuple(const gchar *filename, VFSFile *file)
+Tuple *psf2_tuple(const char *filename, VFSFile *file)
 {
 	Tuple *t;
 	corlett_t *c;
 	void *buf;
-	gint64 sz;
+	int64_t sz;
 
 	vfs_file_get_contents (filename, & buf, & sz);
 
@@ -130,33 +128,33 @@ Tuple *psf2_tuple(const gchar *filename, VFSFile *file)
 	tuple_set_str(t, -1, "console", "PlayStation 1/2");
 
 	free(c);
-	g_free(buf);
+	free(buf);
 
 	return t;
 }
 
-static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
 	void *buffer;
-	gint64 size;
+	int64_t size;
 	PSFEngine eng;
 	PSFEngineFunctors *f;
-	gboolean error = FALSE;
+	bool_t error = FALSE;
 
-	path = g_strdup(filename);
+	path = strdup(filename);
 	vfs_file_get_contents (filename, & buffer, & size);
 
 	eng = psf_probe(buffer);
 	if (eng == ENG_NONE || eng == ENG_COUNT)
 	{
-		g_free(buffer);
+		free(buffer);
 		return FALSE;
 	}
 
 	f = &psf_functor_map[eng];
 	if (f->start(buffer, size) != AO_SUCCESS)
 	{
-		g_free(buffer);
+		free(buffer);
 		return FALSE;
 	}
 
@@ -190,18 +188,18 @@ static gboolean psf2_play(InputPlayback * data, const gchar * filename, VFSFile 
 		f->stop();
 
 		while (!stop_flag && data->output->buffer_playing())
-			g_usleep(10000);
+			usleep(10000);
 
 		break;
 	}
 
-	g_static_mutex_lock (& mutex);
+	pthread_mutex_lock (& mutex);
 	stop_flag = TRUE;
 	data->output->close_audio ();
-	g_static_mutex_unlock (& mutex);
+	pthread_mutex_unlock (& mutex);
 
-	g_free(buffer);
-	g_free(path);
+	free(buffer);
+	free(path);
 
 	return ! error;
 }
@@ -234,22 +232,22 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 
 void psf2_Stop(InputPlayback *playback)
 {
-	g_static_mutex_lock (& mutex);
+	pthread_mutex_lock (& mutex);
 	if (! stop_flag)
 	{
 		stop_flag = TRUE;
 		playback->output->abort_write ();
 	}
-	g_static_mutex_unlock (& mutex);
+	pthread_mutex_unlock (& mutex);
 }
 
-void psf2_pause(InputPlayback *playback, gboolean pause)
+void psf2_pause(InputPlayback *playback, bool_t pause)
 {
 	if (!stop_flag)
 		playback->output->pause(pause);
 }
 
-int psf2_is_our_fd(const gchar *filename, VFSFile *file)
+int psf2_is_our_fd(const char *filename, VFSFile *file)
 {
 	uint8 magic[4];
 	if (vfs_fread(magic, 1, 4, file) < 4)
@@ -258,12 +256,12 @@ int psf2_is_our_fd(const gchar *filename, VFSFile *file)
 	return (psf_probe(magic) != ENG_NONE);
 }
 
-static void psf2_Seek(InputPlayback *playback, gint time)
+static void psf2_Seek(InputPlayback *playback, int time)
 {
 	seek = time;
 }
 
-static const gchar *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
+static const char *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
 
 AUD_INPUT_PLUGIN
 (

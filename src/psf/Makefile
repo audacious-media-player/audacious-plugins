@@ -18,5 +18,5 @@ include ../../extra.mk
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS} -O0
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  -I../.. -Ispu/ -I.
-LIBS += ${GTK_LIBS} ${GLIB_LIBS}  -lz
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. -Ispu/ -I.
+LIBS += -lz
