@@ -25,7 +25,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#include <glib.h>
 #include <SDL.h>
 #include <SDL_audio.h>
 
@@ -36,6 +35,11 @@
 #include "sdlout.h"
 
 #define VOLUME_RANGE 40 /* decibels */
+
+#define sdlout_error(...) do { \
+    SPRINTF (sdlout_error_buf, "SDL error: " __VA_ARGS__); \
+    aud_interface_show_error (sdlout_error_buf); \
+} while (0)
 
 static pthread_mutex_t sdlout_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t sdlout_cond = PTHREAD_COND_INITIALIZER;

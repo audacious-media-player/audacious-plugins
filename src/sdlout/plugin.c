@@ -17,14 +17,8 @@
  * the use of this software.
  */
 
-#include <stdarg.h>
-
-#include <gtk/gtk.h>
-
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
 #include "sdlout.h"
@@ -66,25 +60,3 @@ AUD_OUTPUT_PLUGIN
     .flush = sdlout_flush,
     .set_written_time = sdlout_set_written_time,
 )
-
-static int show_error (void * message)
-{
-    static GtkWidget * window = NULL;
-
-    audgui_simple_message (& window, GTK_MESSAGE_ERROR, _("SDL error"),
-     message);
-    g_free (message);
-    return 0;
-}
-
-void sdlout_error (const gchar * format, ...)
-{
-    va_list args;
-    char * message;
-
-    va_start (args, format);
-    message = g_strdup_vprintf (format, args);
-    va_end (args);
-
-    g_timeout_add (0, show_error, message);
-}
