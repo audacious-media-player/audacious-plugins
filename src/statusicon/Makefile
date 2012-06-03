@@ -1,7 +1,6 @@
 PLUGIN = statusicon${PLUGIN_SUFFIX}
 
 SRCS = statusicon.c \
-       config.c \
        util.c
 
 include ../../buildsys.mk

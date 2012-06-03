@@ -20,6 +20,8 @@
 *
 */
 
+#include <glib.h>
+
 #include <audacious/drct.h>
 #include <libaudgui/libaudgui.h>
 

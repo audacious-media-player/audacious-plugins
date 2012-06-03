@@ -25,6 +25,8 @@
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
+#include <audacious/plugin.h>
+#include <audacious/preferences.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -32,6 +34,8 @@
 #include <glib.h>
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
+
+#include "config.h"
 
 #define POPUP_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active"))
 #define TIMER_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "timer_active"))
@@ -41,6 +45,14 @@ static void si_popup_timer_stop(GtkStatusIcon *);
 static void si_smallmenu_show(gint x, gint y, guint button, guint32 time, gpointer);
 static void si_smallmenu_recreate(GtkStatusIcon *);
 static void si_popup_hide(gpointer icon);
+
+static const char * const si_defaults[] = {
+ "scroll_action", "0", /* SI_CFG_SCROLL_ACTION_VOLUME */
+ "volume_delta", "5",
+ "disable_popup", "FALSE",
+ "close_to_tray", "FALSE",
+ "reverse_scroll", "FALSE",
+ NULL};
 
 static gboolean plugin_active = FALSE;
 static gboolean recreate_smallmenu = FALSE;
@@ -111,10 +123,10 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
     {
       case GDK_SCROLL_UP:
       {
-          switch (si_cfg.scroll_action)
+          switch (aud_get_int ("statusicon", "scroll_action"))
           {
             case SI_CFG_SCROLL_ACTION_VOLUME:
-                si_volume_change(si_cfg.volume_delta);
+                si_volume_change (aud_get_int ("statusicon", "volume_delta"));
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
                 si_playback_skip (aud_get_bool ("statusicon", "reverse_scroll") ? 1 : -1);
@@ -125,10 +137,10 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
 
       case GDK_SCROLL_DOWN:
       {
-          switch (si_cfg.scroll_action)
+          switch (aud_get_int ("statusicon", "scroll_action"))
           {
             case SI_CFG_SCROLL_ACTION_VOLUME:
-                si_volume_change(-si_cfg.volume_delta);
+                si_volume_change (-aud_get_int ("statusicon", "volume_delta"));
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
                 si_playback_skip (aud_get_bool ("statusicon", "reverse_scroll") ? -1 : 1);
@@ -214,7 +226,7 @@ static void si_popup_timer_stop(GtkStatusIcon * icon)
 
 static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean keyboard_mode, GtkTooltip * tooltip, gpointer user_data)
 {
-    if (si_cfg.disable_popup)
+    if (aud_get_bool ("statusicon", "disable_popup"))
         return FALSE;
 
     if (!POPUP_IS_ACTIVE && !TIMER_IS_ACTIVE)
@@ -264,8 +276,6 @@ static GtkWidget *si_smallmenu_create(void)
     gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_next_item);
     gtk_widget_show(si_smenu_next_item);
 
-    if (si_cfg.rclick_menu == SI_CFG_RCLICK_MENU_SMALL2)
-    {
         si_smenu_sep_item = gtk_separator_menu_item_new();
         gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_sep_item);
         gtk_widget_show(si_smenu_sep_item);
@@ -277,7 +287,6 @@ static GtkWidget *si_smallmenu_create(void)
         g_signal_connect_swapped(si_smenu_quit_item, "activate", G_CALLBACK(aud_drct_quit), NULL);
         gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_quit_item);
         gtk_widget_show(si_smenu_quit_item);
-    }
 
     return si_smenu;
 }
@@ -295,7 +304,7 @@ static void si_window_close(gpointer data, gpointer user_data)
 {
     gboolean *handle = (gboolean*) data;
 
-    if (si_cfg.close_to_tray)
+    if (aud_get_bool ("statusicon", "close_to_tray"))
     {
         *handle = TRUE;
         aud_interface_show (FALSE);
@@ -352,8 +361,8 @@ static void si_enable(gboolean enable)
 
 static gboolean si_init (void)
 {
+    aud_config_set_defaults ("statusicon", si_defaults);
     plugin_active = TRUE;
-    si_cfg_load();
     si_enable(TRUE);
     return TRUE;
 }
@@ -365,166 +374,6 @@ void si_cleanup(void)
 
     plugin_active = FALSE;
     si_enable(FALSE);
-    si_cfg_save();
-}
-
-static GtkWidget *prefs_disable_popup_chkbtn;
-static GtkWidget *prefs_close_to_tray_chkbtn;
-static GtkWidget * reverse_scroll_toggle;
-
-void si_prefs_cb_commit(gpointer prefs_win)
-{
-    GSList *list = g_object_get_data(G_OBJECT(prefs_win), "rcm_grp");
-    while (list != NULL)
-    {
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(list->data)) == TRUE)
-        {
-            si_cfg.rclick_menu = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(list->data), "val"));
-            break;
-        }
-        list = g_slist_next(list);
-    }
-
-    list = g_object_get_data(G_OBJECT(prefs_win), "msa_grp");
-    while (list != NULL)
-    {
-        if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(list->data)) == TRUE)
-        {
-            si_cfg.scroll_action = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(list->data), "val"));
-            break;
-        }
-        list = g_slist_next(list);
-    }
-
-    si_cfg.disable_popup = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn));
-    si_cfg.close_to_tray = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn));
-    aud_set_bool ("statusicon", "reverse_scroll", gtk_toggle_button_get_active
-     ((GtkToggleButton *) reverse_scroll_toggle));
-
-    si_cfg_save();
-
-    /* request the recreation of status icon small-menu if necessary */
-    recreate_smallmenu = TRUE;
-
-    gtk_widget_destroy(GTK_WIDGET(prefs_win));
-}
-
-
-void si_config(void)
-{
-    static GtkWidget *prefs_win = NULL;
-    GtkWidget *prefs_vbox;
-    GtkWidget *prefs_rclick_frame, *prefs_rclick_vbox;
-    GtkWidget *prefs_rclick_smallmenu1_rbt, *prefs_rclick_smallmenu2_rbt;
-    GtkWidget *prefs_scroll_frame, *prefs_scroll_vbox;
-    GtkWidget *prefs_other_frame, *prefs_other_vbox;
-    GtkWidget *prefs_scroll_vol_rbt, *prefs_scroll_skip_rbt;
-    GtkWidget *prefs_bbar_bbox;
-    GtkWidget *prefs_bbar_bt_ok, *prefs_bbar_bt_cancel;
-    GdkGeometry prefs_win_hints;
-
-    if (prefs_win != NULL)
-    {
-        gtk_window_present(GTK_WINDOW(prefs_win));
-        return;
-    }
-
-    prefs_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint(GTK_WINDOW(prefs_win), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_position(GTK_WINDOW(prefs_win), GTK_WIN_POS_CENTER);
-    gtk_window_set_title(GTK_WINDOW(prefs_win), _("Status Icon Plugin - Preferences"));
-    gtk_container_set_border_width(GTK_CONTAINER(prefs_win), 10);
-    prefs_win_hints.min_width = 320;
-    prefs_win_hints.min_height = -1;
-    gtk_window_set_geometry_hints(GTK_WINDOW(prefs_win), GTK_WIDGET(prefs_win), &prefs_win_hints, GDK_HINT_MIN_SIZE);
-    g_signal_connect(G_OBJECT(prefs_win), "destroy", G_CALLBACK(gtk_widget_destroyed), &prefs_win);
-
-    prefs_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_add(GTK_CONTAINER(prefs_win), prefs_vbox);
-
-    prefs_rclick_frame = gtk_frame_new(_("Right-Click Menu"));
-    prefs_rclick_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_set_border_width(GTK_CONTAINER(prefs_rclick_vbox), 6);
-    gtk_container_add(GTK_CONTAINER(prefs_rclick_frame), prefs_rclick_vbox);
-    prefs_rclick_smallmenu1_rbt = gtk_radio_button_new_with_label (NULL,
-     _("Small playback menu #1"));
-    g_object_set_data(G_OBJECT(prefs_rclick_smallmenu1_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL1));
-    prefs_rclick_smallmenu2_rbt = gtk_radio_button_new_with_label_from_widget
-     ((GtkRadioButton *) prefs_rclick_smallmenu1_rbt, _("Small playback menu #2"));
-    g_object_set_data(G_OBJECT(prefs_rclick_smallmenu2_rbt), "val", GINT_TO_POINTER(SI_CFG_RCLICK_MENU_SMALL2));
-    g_object_set_data(G_OBJECT(prefs_win), "rcm_grp", gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_rclick_smallmenu1_rbt)));
-    switch (si_cfg.rclick_menu)
-    {
-      case SI_CFG_RCLICK_MENU_SMALL1:
-          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_rclick_smallmenu1_rbt), TRUE);
-          break;
-      case SI_CFG_RCLICK_MENU_SMALL2:
-          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_rclick_smallmenu2_rbt), TRUE);
-          break;
-    }
-    gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_smallmenu1_rbt, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(prefs_rclick_vbox), prefs_rclick_smallmenu2_rbt, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_rclick_frame, TRUE, TRUE, 0);
-
-    prefs_scroll_frame = gtk_frame_new(_("Mouse Scroll Action"));
-    prefs_scroll_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_set_border_width(GTK_CONTAINER(prefs_scroll_vbox), 6);
-    gtk_container_add(GTK_CONTAINER(prefs_scroll_frame), prefs_scroll_vbox);
-    prefs_scroll_vol_rbt = gtk_radio_button_new_with_label(NULL, _("Change volume"));
-    g_object_set_data(G_OBJECT(prefs_scroll_vol_rbt), "val", GINT_TO_POINTER(SI_CFG_SCROLL_ACTION_VOLUME));
-    prefs_scroll_skip_rbt = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(prefs_scroll_vol_rbt), _("Change playing song"));
-    g_object_set_data(G_OBJECT(prefs_scroll_skip_rbt), "val", GINT_TO_POINTER(SI_CFG_SCROLL_ACTION_SKIP));
-    g_object_set_data(G_OBJECT(prefs_win), "msa_grp", gtk_radio_button_get_group(GTK_RADIO_BUTTON(prefs_scroll_skip_rbt)));
-
-    if (si_cfg.scroll_action == SI_CFG_SCROLL_ACTION_VOLUME)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_scroll_vol_rbt), TRUE);
-    else
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_scroll_skip_rbt), TRUE);
-
-    gtk_box_pack_start(GTK_BOX(prefs_scroll_vbox), prefs_scroll_vol_rbt, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(prefs_scroll_vbox), prefs_scroll_skip_rbt, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_scroll_frame, TRUE, TRUE, 0);
-
-    prefs_other_frame = gtk_frame_new(_("Other settings"));
-    prefs_other_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    gtk_container_set_border_width(GTK_CONTAINER(prefs_other_vbox), 6);
-    gtk_container_add(GTK_CONTAINER(prefs_other_frame), prefs_other_vbox);
-
-    prefs_disable_popup_chkbtn = gtk_check_button_new_with_label(_("Disable the popup window"));
-
-    if (si_cfg.disable_popup)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_disable_popup_chkbtn), TRUE);
-
-    gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_disable_popup_chkbtn, TRUE, TRUE, 0);
-
-    prefs_close_to_tray_chkbtn = gtk_check_button_new_with_label(_("Close to the notification area (system tray)"));
-
-    if (si_cfg.close_to_tray)
-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefs_close_to_tray_chkbtn), TRUE);
-
-    gtk_box_pack_start(GTK_BOX(prefs_other_vbox), prefs_close_to_tray_chkbtn, TRUE, TRUE, 0);
-
-    reverse_scroll_toggle = gtk_check_button_new_with_label
-     (_("Advance in playlist when scrolling upward"));
-    gtk_toggle_button_set_active ((GtkToggleButton *) reverse_scroll_toggle,
-     aud_get_bool ("statusicon", "reverse_scroll"));
-    gtk_box_pack_start ((GtkBox *) prefs_other_vbox, reverse_scroll_toggle, TRUE, TRUE, 0);
-
-    gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_other_frame, TRUE, TRUE, 0);
-
-    /* horizontal separator and buttons */
-    gtk_box_pack_start(GTK_BOX(prefs_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 4);
-    prefs_bbar_bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_button_box_set_layout(GTK_BUTTON_BOX(prefs_bbar_bbox), GTK_BUTTONBOX_END);
-    prefs_bbar_bt_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
-    g_signal_connect_swapped(G_OBJECT(prefs_bbar_bt_cancel), "clicked", G_CALLBACK(gtk_widget_destroy), prefs_win);
-    gtk_container_add(GTK_CONTAINER(prefs_bbar_bbox), prefs_bbar_bt_cancel);
-    prefs_bbar_bt_ok = gtk_button_new_from_stock(GTK_STOCK_OK);
-    gtk_container_add(GTK_CONTAINER(prefs_bbar_bbox), prefs_bbar_bt_ok);
-    g_signal_connect_swapped(G_OBJECT(prefs_bbar_bt_ok), "clicked", G_CALLBACK(si_prefs_cb_commit), prefs_win);
-    gtk_box_pack_start(GTK_BOX(prefs_vbox), prefs_bbar_bbox, FALSE, FALSE, 0);
-
-    gtk_widget_show_all(prefs_win);
 }
 
 static const char si_about[] =
@@ -534,12 +383,32 @@ static const char si_about[] =
  "This plugin provides a status icon, placed in\n"
  "the system tray area of the window manager.";
 
+static const PreferencesWidget si_widgets[] = {
+ {WIDGET_LABEL, N_("<b>Mouse Scroll Action</b>")},
+ {WIDGET_RADIO_BTN, N_("Change volume"),
+  .cfg_type = VALUE_INT, .csect = "statusicon", .cname = "scroll_action",
+  .data = {.radio_btn = {SI_CFG_SCROLL_ACTION_VOLUME}}},
+ {WIDGET_RADIO_BTN, N_("Change playing song"),
+  .cfg_type = VALUE_INT, .csect = "statusicon", .cname = "scroll_action",
+  .data = {.radio_btn = {SI_CFG_SCROLL_ACTION_SKIP}}},
+ {WIDGET_LABEL, "<b>Other Settings</b>"},
+ {WIDGET_CHK_BTN, N_("Disable the popup window"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "statusicon", .cname = "disable_popup"},
+ {WIDGET_CHK_BTN, N_("Close to the system tray"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "statusicon", .cname = "close_to_tray"},
+ {WIDGET_CHK_BTN, N_("Advance in playlist when scrolling upward"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "statusicon", .cname = "reverse_scroll"}};
+
+static const PluginPreferences si_prefs = {
+ .widgets = si_widgets,
+ .n_widgets = G_N_ELEMENTS (si_widgets)};
+
 AUD_GENERAL_PLUGIN
 (
     .name = N_("Status Icon"),
     .domain = PACKAGE,
     .about_text = si_about,
+    .prefs = & si_prefs,
     .init = si_init,
     .cleanup = si_cleanup,
-    .configure = si_config
 )

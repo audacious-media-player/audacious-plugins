@@ -23,15 +23,6 @@
 #ifndef STATUS_ICON_H
 #define STATUS_ICON_H
 
-#include "config.h"
-#include <glib.h>
-#include <audacious/plugin.h>
-
-enum {
-    SI_CFG_RCLICK_MENU_SMALL1,
-    SI_CFG_RCLICK_MENU_SMALL2
-};
-
 enum {
     SI_CFG_SCROLL_ACTION_VOLUME,
     SI_CFG_SCROLL_ACTION_SKIP
@@ -46,24 +37,9 @@ enum {
     SI_PLAYBACK_CTRL_EJECT
 };
 
-typedef struct
-{
-    gint rclick_menu;
-    gint scroll_action;
-    gint volume_delta;
-    gboolean disable_popup;
-    gboolean close_to_tray;
-} si_cfg_t;
-
-extern si_cfg_t si_cfg;
-
 /* util.c */
-void si_volume_change(gint);
-void si_playback_skip(gint);
-void si_playback_ctrl(gpointer);
-
-/* config.c */
-void si_cfg_load(void);
-void si_cfg_save(void);
+void si_volume_change (int value);
+void si_playback_skip (int count);
+void si_playback_ctrl (void * ctrl);
 
 #endif
