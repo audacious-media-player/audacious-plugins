@@ -20,18 +20,14 @@
 #ifndef _AUDMP4_TAGGING_H
 #define _AUDMP4_TAGGING_H
 
-#include <glib.h>
-#include <string.h>
-#include <unistd.h>
-
 #include "mp4ff.h"
 
 /* XXX: We will need the same for AAC eventually */
-extern gchar *audmp4_get_artist (mp4ff_t *);
-extern gchar *audmp4_get_title (mp4ff_t *);
-extern gchar *audmp4_get_album (mp4ff_t *);
-extern gchar *audmp4_get_genre (mp4ff_t *);
-extern gint audmp4_get_year (mp4ff_t *);
+extern char *audmp4_get_artist (mp4ff_t *);
+extern char *audmp4_get_title (mp4ff_t *);
+extern char *audmp4_get_album (mp4ff_t *);
+extern char *audmp4_get_genre (mp4ff_t *);
+extern int audmp4_get_year (mp4ff_t *);
 
 #define GENRE_MAX 0x94
 extern const char *audmp4_id3_genres[GENRE_MAX];

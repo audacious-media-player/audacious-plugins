@@ -2,10 +2,10 @@
  *
  * utils for AAC informations
 */
-#include <glib.h>
+
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 #define ADTS_HEADER_SIZE        8
 #define SEEK_TABLE_CHUNK        60
@@ -69,7 +69,7 @@ void checkADTSForSeeking (FILE * fd,
             break;
         }
 
-        if (! g_ascii_strncasecmp (header, "ID3", 3))
+        if (! strncmp (header, "ID3", 3))
             break;
 
         if (!frameCount)

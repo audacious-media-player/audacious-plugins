@@ -17,52 +17,49 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <glib.h>
-#include <string.h>
-#include <unistd.h>
 #include <stdlib.h>
 
 #include "tagging.h"
 
-gchar *audmp4_get_artist (mp4ff_t * file)
+char *audmp4_get_artist (mp4ff_t * file)
 {
-    gchar *value;
+    char *value;
 
     mp4ff_meta_get_artist (file, &value);
 
     return value;
 }
 
-gchar *audmp4_get_title (mp4ff_t * file)
+char *audmp4_get_title (mp4ff_t * file)
 {
-    gchar *value;
+    char *value;
 
     mp4ff_meta_get_title (file, &value);
 
     return value;
 }
 
-gchar *audmp4_get_album (mp4ff_t * file)
+char *audmp4_get_album (mp4ff_t * file)
 {
-    gchar *value;
+    char *value;
 
     mp4ff_meta_get_album (file, &value);
 
     return value;
 }
 
-gchar *audmp4_get_genre (mp4ff_t * file)
+char *audmp4_get_genre (mp4ff_t * file)
 {
-    gchar *value;
+    char *value;
 
     mp4ff_meta_get_genre (file, &value);
 
     return value;
 }
 
-gint audmp4_get_year (mp4ff_t * file)
+int audmp4_get_year (mp4ff_t * file)
 {
-    gchar *value;
+    char *value;
 
     mp4ff_meta_get_date (file, &value);
 

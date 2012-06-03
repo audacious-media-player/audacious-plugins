@@ -2,14 +2,12 @@
  * some functions for MP4 files
 */
 
-#include <glib.h>
 #include <stdlib.h>
 
 #include "mp4ff.h"
 #include "neaacdec.h"
-#include <audacious/plugin.h>
 
-const gchar *mp4AudioNames[] = {
+const char *mp4AudioNames[] = {
     "MPEG-1 Audio Layers 1,2 or 3",
     "MPEG-2 low biterate (MPEG-1 extension) - MP3",
     "MPEG-2 AAC Main Profile",
@@ -20,7 +18,7 @@ const gchar *mp4AudioNames[] = {
 };
 
 /* MPEG-4 Audio types from 14496-3 Table 1.5.1 (from mp4.h)*/
-const gchar *mpeg4AudioNames[] = {
+const char *mpeg4AudioNames[] = {
     "!!!!MPEG-4 Audio track Invalid !!!!!!!",
     "MPEG-4 AAC Main profile",
     "MPEG-4 AAC Low Complexity profile",
@@ -37,13 +35,13 @@ const gchar *mpeg4AudioNames[] = {
 };
 
 
-gint getAACTrack (mp4ff_t * infile)
+int getAACTrack (mp4ff_t * infile)
 {
-    gint i, rc, numTracks = mp4ff_total_tracks (infile);
+    int i, rc, numTracks = mp4ff_total_tracks (infile);
     for (i = 0; i < numTracks; i++)
     {
-        guint8 *buff = NULL;
-        guint32 buff_size = 0;
+        unsigned char *buff = NULL;
+        unsigned buff_size = 0;
         mp4AudioSpecificConfig mp4ASC;
 
         mp4ff_get_decoder_config (infile, i, &buff, &buff_size);
