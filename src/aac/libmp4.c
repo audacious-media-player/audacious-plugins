@@ -28,8 +28,7 @@ static int mp4_is_our_fd (const char *, VFSFile *);
 
 static const char *fmts[] = { "m4a", "mp4", "aac", NULL };
 
-static pthread_mutex_t seek_mutex;
-static pthread_cond_t seek_cond;
+static pthread_mutex_t mutex;
 static int seek_value;
 static bool_t stop_flag;
 
@@ -70,42 +69,38 @@ static bool_t mp4_init (void)
 
 static void mp4_stop (InputPlayback * p)
 {
-    pthread_mutex_lock (& seek_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
     {
         stop_flag = TRUE;
         p->output->abort_write ();
-        pthread_cond_broadcast (& seek_cond);
-        pthread_cond_wait (& seek_cond, & seek_mutex);
     }
 
-    pthread_mutex_unlock (& seek_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 static void mp4_pause (InputPlayback * p, bool_t pause)
 {
-    pthread_mutex_lock (& seek_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
         p->output->pause (pause);
 
-    pthread_mutex_unlock (& seek_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 static void mp4_seek (InputPlayback * p, int time)
 {
-    pthread_mutex_lock (& seek_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
     {
         seek_value = time;
         p->output->abort_write();
-        pthread_cond_broadcast (& seek_cond);
-        pthread_cond_wait (& seek_cond, & seek_mutex);
     }
 
-    pthread_mutex_unlock (& seek_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 /*
@@ -640,32 +635,29 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
 
         /* Respond to seek/stop requests.  This needs to be done after we
          * calculate frame size but of course before we write any audio. */
-        pthread_mutex_lock (& seek_mutex);
+        pthread_mutex_lock (& mutex);
 
         if (stop_flag)
         {
-            pthread_mutex_unlock (& seek_mutex);
+            pthread_mutex_unlock (& mutex);
             break;
         }
 
         if (seek_value >= 0)
         {
-            sampleID = (int64_t) seek_value *samplerate / 1000 / framesize;
+            sampleID = (int64_t) seek_value * samplerate / 1000 / framesize;
             playback->output->flush (seek_value);
             seek_value = -1;
-            pthread_cond_broadcast (& seek_cond);
         }
 
-        pthread_mutex_unlock (& seek_mutex);
+        pthread_mutex_unlock (& mutex);
 
-        playback->output->write_audio (sampleBuffer,
-         sizeof (float) * frameInfo.samples);
+        playback->output->write_audio (sampleBuffer, sizeof (float) * frameInfo.samples);
     }
 
-    pthread_mutex_lock (& seek_mutex);
+    pthread_mutex_lock (& mutex);
     stop_flag = TRUE;
-    pthread_cond_broadcast (& seek_cond);
-    pthread_mutex_unlock (& seek_mutex);
+    pthread_mutex_unlock (& mutex);
 
     playback->output->close_audio ();
     NeAACDecClose (decoder);
@@ -819,13 +811,13 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
 
     while (1)
     {
-        pthread_mutex_lock (& seek_mutex);
+        pthread_mutex_lock (& mutex);
 
         /* == HANDLE STOP REQUESTS == */
 
         if (stop_flag)
         {
-            pthread_mutex_unlock (& seek_mutex);
+            pthread_mutex_unlock (& mutex);
             break;
         }
 
@@ -833,21 +825,18 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
 
         if (seek_value >= 0)
         {
-            int length = (tuple != NULL) ? tuple_get_int (tuple, FIELD_LENGTH,
-             NULL) : 0;
+            int length = tuple ? tuple_get_int (tuple, FIELD_LENGTH, NULL) : 0;
 
             if (length > 0)
             {
-                aac_seek (file, decoder, seek_value, length, buf, sizeof buf,
-                 & buflen);
+                aac_seek (file, decoder, seek_value, length, buf, sizeof buf, & buflen);
                 playback->output->flush (seek_value);
             }
 
             seek_value = -1;
-            pthread_cond_broadcast (& seek_cond);
         }
 
-        pthread_mutex_unlock (& seek_mutex);
+        pthread_mutex_unlock (& mutex);
 
         /* == CHECK FOR END OF FILE == */
 
@@ -900,10 +889,9 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
             playback->output->write_audio (audio, sizeof (float) * info.samples);
     }
 
-    pthread_mutex_lock (& seek_mutex);
+    pthread_mutex_lock (& mutex);
     stop_flag = TRUE;
-    pthread_cond_broadcast (& seek_cond);
-    pthread_mutex_unlock (& seek_mutex);
+    pthread_mutex_unlock (& mutex);
 
     playback->output->close_audio ();
     NeAACDecClose (decoder);
