@@ -76,9 +76,10 @@ int32_t mp4ff_write_int32(mp4ff_t *f,const uint32_t data)
 
 int32_t mp4ff_set_position(mp4ff_t *f, const int64_t position)
 {
-    f->stream->seek(f->stream->user_data, position);
-    f->current_position = position;
+    if (f->stream->seek(f->stream->user_data, position) != 0)
+        return -1;
 
+    f->current_position = position;
     return 0;
 }
 
