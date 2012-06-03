@@ -4,7 +4,7 @@
 #include "adplug-xmms.h"
 #include "config.h"
 
-static const gchar *fmts[] =
+static const char * fmts[] =
     { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
       "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
       "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",

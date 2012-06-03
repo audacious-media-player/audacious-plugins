@@ -10,7 +10,6 @@
 #include <stdio.h>
 
 extern "C" {
-#include <glib.h>
 #include <libaudcore/vfs.h>
 };
 
@@ -22,7 +21,6 @@ public:
 	vfsistream(VFSFile *fd = 0) { this->fd = fd; this->own = false; };
 
 	void open(const char *file) {
-		g_return_if_fail(!this->fd);
 		if ((this->fd = vfs_fopen(file, "r")))
 			this->own = true;
 		else
@@ -41,7 +39,6 @@ public:
 	};
 
 	Byte getByte(void) {
-		g_return_val_if_fail(this->fd, EOF);
 		int c = vfs_getc(this->fd);
 		if (c < 0)
 			err |= Eof;
@@ -49,14 +46,12 @@ public:
 	};
 
 	void seek(long pos, Offset offs = Set) {
-		g_return_if_fail(this->fd);
 		int wh = (offs == Add) ? SEEK_CUR : (offs == End) ? SEEK_END : SEEK_SET;
 		if (vfs_fseek(this->fd, pos, wh))
 			err |= Eof;
 	}
 
 	long pos(void) {
-		g_return_val_if_fail(this->fd, -1);
 		return vfs_ftell(this->fd);
 	}
 };
@@ -69,7 +64,6 @@ public:
 	vfsostream(VFSFile *fd = 0) { this->fd = fd; this->own = false; };
 
 	void open(const char *file) {
-		g_return_if_fail(!this->fd);
 		if ((this->fd = vfs_fopen(file, "w")))
 			this->own = true;
 		else
@@ -88,20 +82,17 @@ public:
 	};
 
 	void putByte(Byte b) {
-		g_return_if_fail(this->fd);
 		if (vfs_fwrite(&b, 1, 1, this->fd) != 1)
 			err |= Fatal;
 	};
 
 	void seek(long pos, Offset offs = Set) {
-		g_return_if_fail(this->fd);
 		int wh = (offs == Add) ? SEEK_CUR : (offs == End) ? SEEK_END : SEEK_SET;
 		if (vfs_fseek(this->fd, pos, wh))
 			err |= Fatal;
 	}
 
 	long pos(void) {
-		g_return_val_if_fail(this->fd, -1);
 		return vfs_ftell(this->fd);
 	}
 };

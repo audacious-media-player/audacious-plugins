@@ -24,23 +24,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
-#include <gtk/gtk.h>
+#include <unistd.h>
+
 #include "adplug.h"
 #include "emuopl.h"
 #include "silentopl.h"
 #include "players.h"
 
 extern "C" {
-#include <audacious/i18n.h>
 #include <audacious/misc.h>
-#include <audacious/plugin.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <libaudcore/audstrings.h>
 
 #include "adplug-xmms.h"
 }
-
 
 /***** Defines *****/
 
@@ -62,17 +58,15 @@ extern "C" {
 
 /***** Global variables *****/
 
-static gboolean audio_error = FALSE;
-GtkWidget *about_win = NULL;
-static GMutex * control_mutex;
-static GCond * control_cond;
-static gboolean stop_flag;
+static bool_t audio_error = FALSE;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static bool_t stop_flag;
 
 // Configuration (and defaults)
 static struct
 {
-  gint freq;
-  gboolean bit16, stereo, endless;
+  int freq;
+  bool_t bit16, stereo, endless;
   CPlayers players;
 } conf =
 {
@@ -86,9 +80,7 @@ static struct
   unsigned int subsong, songlength;
   int seek;
   char * filename;
-  GtkLabel *infobox;
-  GtkDialog *infodlg;
-} plr = {0, 0, 0, 0, -1, NULL, NULL, NULL};
+} plr = {0, 0, 0, 0, -1, NULL};
 
 static InputPlayback *playback;
 
@@ -125,12 +117,12 @@ factory (VFSFile * fd, Copl * newopl)
 
 extern "C" {
 void adplug_stop(InputPlayback * data);
-gboolean adplug_play(InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
+bool_t adplug_play(InputPlayback * data, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause);
 }
 
 /***** Main player (!! threaded !!) *****/
 
-extern "C" Tuple * adplug_get_tuple (const gchar * filename, VFSFile * fd)
+extern "C" Tuple * adplug_get_tuple (const char * filename, VFSFile * fd)
 {
   Tuple * ti = NULL;
   CSilentopl tmpopl;
@@ -146,12 +138,12 @@ extern "C" Tuple * adplug_get_tuple (const gchar * filename, VFSFile * fd)
 
     if (! p->getauthor().empty())
       tuple_set_str(ti, FIELD_ARTIST, NULL, p->getauthor().c_str());
+
     if (! p->gettitle().empty())
       tuple_set_str(ti, FIELD_TITLE, NULL, p->gettitle().c_str());
     else if (! p->getdesc().empty())
       tuple_set_str(ti, FIELD_TITLE, NULL, p->getdesc().c_str());
-    else
-      tuple_set_str(ti, FIELD_TITLE, NULL, g_path_get_basename(filename));
+
     tuple_set_str(ti, FIELD_CODEC, NULL, p->gettype().c_str());
     tuple_set_str(ti, FIELD_QUALITY, NULL, "sequenced");
     tuple_set_int(ti, FIELD_LENGTH, NULL, p->songlength (plr.subsong));
@@ -164,7 +156,7 @@ extern "C" Tuple * adplug_get_tuple (const gchar * filename, VFSFile * fd)
 // Define sampsize macro (only usable inside play_loop()!)
 #define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
 
-static gboolean play_loop (InputPlayback * playback, const gchar * filename,
+static bool_t play_loop (InputPlayback * playback, const char * filename,
  VFSFile * fd)
 /* Main playback thread. Takes the filename to play as argument. */
 {
@@ -193,8 +185,8 @@ static gboolean play_loop (InputPlayback * playback, const gchar * filename,
   dbg_printf ("subsong, ");
   if (! plr.filename || strcmp (filename, plr.filename))
   {
-    g_free (plr.filename);
-    plr.filename = g_strdup (filename);
+    free (plr.filename);
+    plr.filename = strdup (filename);
     plr.subsong = 0;
   }
 
@@ -210,28 +202,28 @@ static gboolean play_loop (InputPlayback * playback, const gchar * filename,
   dbg_printf ("rewind, ");
   plr.p->rewind (plr.subsong);
 
-  g_mutex_lock (control_mutex);
+  pthread_mutex_lock (& mutex);
   plr.seek = -1;
   stop_flag = FALSE;
   playback->set_pb_ready (playback);
-  g_mutex_unlock (control_mutex);
+  pthread_mutex_unlock (& mutex);
 
   // main playback loop
   dbg_printf ("loop.\n");
   while ((playing || conf.endless))
   {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (stop_flag)
     {
-        g_mutex_unlock (control_mutex);
+        pthread_mutex_unlock (& mutex);
         break;
     }
 
     // seek requested ?
     if (plr.seek != -1)
     {
-      gint time = playback->output->written_time ();
+      int time = playback->output->written_time ();
 
       // backward seek ?
       if (plr.seek < time)
@@ -242,15 +234,14 @@ static gboolean play_loop (InputPlayback * playback, const gchar * filename,
 
       // seek to requested position
       while (time < plr.seek && plr.p->update ())
-        time += (gint) (1000 / plr.p->getrefresh ());
+        time += (int) (1000 / plr.p->getrefresh ());
 
       // Reset output plugin and some values
       playback->output->flush (time);
       plr.seek = -1;
-      g_cond_signal (control_cond);
     }
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 
     // fill sound buffer
     towrite = SNDBUFSIZE;
@@ -273,12 +264,11 @@ static gboolean play_loop (InputPlayback * playback, const gchar * filename,
   }
 
   while (playback->output->buffer_playing ())
-      g_usleep (10000);
+      usleep (10000);
 
-  g_mutex_lock (control_mutex);
+  pthread_mutex_lock (& mutex);
   stop_flag = FALSE;
-  g_cond_signal (control_cond); /* wake up any waiting request */
-  g_mutex_unlock (control_mutex);
+  pthread_mutex_unlock (& mutex);
 
   // free everything and exit
   dbg_printf ("free");
@@ -295,7 +285,7 @@ static gboolean play_loop (InputPlayback * playback, const gchar * filename,
 /***** Informational *****/
 
 extern "C" int
-adplug_is_our_fd (const gchar * filename, VFSFile * fd)
+adplug_is_our_fd (const char * filename, VFSFile * fd)
 {
   CSilentopl tmpopl;
 
@@ -316,17 +306,12 @@ adplug_is_our_fd (const gchar * filename, VFSFile * fd)
 
 /***** Player control *****/
 
-extern "C" gboolean
-adplug_play (InputPlayback * data, const gchar * filename, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+extern "C" bool_t
+adplug_play (InputPlayback * data, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
   playback = data;
   dbg_printf ("adplug_play(\"%s\"): ", filename);
   audio_error = FALSE;
-
-  // On new song, re-open "Song info" dialog, if open
-  dbg_printf ("dialog, ");
-  if (plr.infobox && (! plr.filename || strcmp (filename, plr.filename)))
-    gtk_widget_destroy (GTK_WIDGET (plr.infodlg));
 
   // open output plugin
   dbg_printf ("open, ");
@@ -345,56 +330,52 @@ adplug_play (InputPlayback * data, const gchar * filename, VFSFile * file, gint 
 
 extern "C" void adplug_stop (InputPlayback * p)
 {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
     {
         stop_flag = TRUE;
         p->output->abort_write ();
-        g_cond_signal (control_cond);
-        g_cond_wait (control_cond, control_mutex);
     }
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-extern "C" void adplug_pause (InputPlayback * p, gboolean pause)
+extern "C" void adplug_pause (InputPlayback * p, bool_t pause)
 {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
         p->output->pause (pause);
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
-extern "C" void adplug_mseek (InputPlayback * p, gint time)
+extern "C" void adplug_mseek (InputPlayback * p, int time)
 {
-    g_mutex_lock (control_mutex);
+    pthread_mutex_lock (& mutex);
 
     if (! stop_flag)
     {
         plr.seek = time;
         p->output->abort_write();
-        g_cond_signal (control_cond);
-        g_cond_wait (control_cond, control_mutex);
     }
 
-    g_mutex_unlock (control_mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 /***** Configuration file handling *****/
 
 #define CFG_VERSION "AdPlug"
 
-static const gchar * const adplug_defaults[] = {
+static const char * const adplug_defaults[] = {
  "16bit", "TRUE",
  "Stereo", "FALSE",
  "Frequency", "44100",
  "Endless", "FALSE",
  NULL};
 
-extern "C" gboolean adplug_init (void)
+extern "C" bool_t adplug_init (void)
 {
   aud_config_set_defaults (CFG_VERSION, adplug_defaults);
 
@@ -406,20 +387,20 @@ extern "C" gboolean adplug_init (void)
   // Read file type exclusion list
   dbg_printf ("exclusion, ");
   {
-    gchar * cfgstr = aud_get_string (CFG_VERSION, "Exclude");
+    char * cfgstr = aud_get_string (CFG_VERSION, "Exclude");
 
     if (cfgstr[0])
     {
-        gchar * exclude = (gchar *) malloc (strlen (cfgstr) + 2);
-        strcpy (exclude, cfgstr);
-        exclude[strlen (exclude) + 1] = '\0';
-        g_strdelimit (exclude, ":", '\0');
-        for (gchar * p = exclude; *p; p += strlen (p) + 1)
+        char exclude[strlen (cfgstr) + 2];
+        memcpy (exclude, cfgstr, sizeof exclude - 1);
+        exclude[sizeof exclude - 1] = 0;
+        string_replace_char (exclude, ':', 0);
+
+        for (char * p = exclude; * p; p += strlen (p) + 1)
             conf.players.remove (conf.players.lookup_filetype (p));
-        free (exclude);
     }
 
-    g_free (cfgstr);
+    free (cfgstr);
   }
 
   // Load database from disk and hand it to AdPlug
@@ -432,18 +413,18 @@ extern "C" gboolean adplug_init (void)
     if (homedir)
     {
       std::string userdb;
-      userdb = "file://" + std::string(g_get_home_dir()) + "/" ADPLUG_CONFDIR "/" + ADPLUGDB_FILE;
-      if (vfs_file_test(userdb.c_str(),G_FILE_TEST_EXISTS)) {
-      plr.db->load (userdb);    // load user's database
-      dbg_printf (" (userdb=\"%s\")", userdb.c_str());
+      userdb = std::string ("file://") + homedir + "/" ADPLUG_CONFDIR "/" + ADPLUGDB_FILE;
+
+      if (vfs_file_test (userdb.c_str (), VFS_EXISTS))
+      {
+        plr.db->load (userdb);    // load user's database
+        dbg_printf (" (userdb=\"%s\")", userdb.c_str());
       }
     }
   }
   CAdPlug::set_database (plr.db);
   dbg_printf (".\n");
 
-  control_mutex = g_mutex_new ();
-  control_cond = g_cond_new ();
   return TRUE;
 }
 
@@ -455,7 +436,7 @@ adplug_quit (void)
   if (plr.db)
     delete plr.db;
 
-  g_free (plr.filename);
+  free (plr.filename);
   plr.filename = NULL;
 
   aud_set_bool (CFG_VERSION, "16bit", conf.bit16);
@@ -476,7 +457,4 @@ adplug_quit (void)
     }
 
   aud_set_string (CFG_VERSION, "Exclude", exclude.c_str ());
-
-  g_mutex_free (control_mutex);
-  g_cond_free (control_cond);
 }

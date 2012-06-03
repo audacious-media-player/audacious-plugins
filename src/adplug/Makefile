@@ -63,5 +63,5 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
 CXXFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS}  ${BINIO_CFLAGS} -I../.. -I./core -Dstricmp=strcasecmp
-LIBS += ${BINIO_LIBS} ${GTK_LIBS} ${GLIB_LIBS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${BINIO_CFLAGS} -I../.. -I./core -Dstricmp=strcasecmp
+LIBS += ${BINIO_LIBS}
