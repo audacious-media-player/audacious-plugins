@@ -22,7 +22,7 @@
 
 #include "oss.h"
 
-static const gchar * const oss_defaults[] = {
+static const char * const oss_defaults[] = {
  "device", DEFAULT_DSP,
  "use_alt_device", "FALSE",
  "alt_device", DEFAULT_DSP,
@@ -33,18 +33,18 @@ static const gchar * const oss_defaults[] = {
  NULL};
 
 oss_data_t *oss_data;
-static gint64 oss_time; /* microseconds */
-static gboolean oss_paused;
-static gint oss_paused_time;
-static gint oss_delay; /* miliseconds */
-static gboolean oss_ioctl_vol = FALSE;
+static int64_t oss_time; /* microseconds */
+static bool_t oss_paused;
+static int oss_paused_time;
+static int oss_delay; /* miliseconds */
+static bool_t oss_ioctl_vol = FALSE;
 
-gboolean oss_init(void)
+bool_t oss_init(void)
 {
     AUDDBG("Init.\n");
 
     aud_config_set_defaults("oss4", oss_defaults);
-    oss_data = g_new0(oss_data_t, 1);
+    oss_data = (oss_data_t *) malloc(sizeof(oss_data_t));
     oss_data->fd = -1;
 
     return oss_hardware_present();
@@ -54,12 +54,12 @@ void oss_cleanup(void)
 {
     AUDDBG("Cleanup.\n");
 
-    g_free(oss_data);
+    free(oss_data);
 }
 
-static gboolean set_format(gint format, gint rate, gint channels)
+static bool_t set_format(int format, int rate, int channels)
 {
-    gint param;
+    int param;
 
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
 
@@ -93,12 +93,12 @@ FAILED:
     return FALSE;
 }
 
-static gint open_device(void)
+static int open_device(void)
 {
-    gint res = -1;
-    gint flags = O_WRONLY;
-    gchar *device = aud_get_string("oss4", "device");
-    gchar *alt_device = aud_get_string("oss4", "alt_device");
+    int res = -1;
+    int flags = O_WRONLY;
+    char *device = aud_get_string("oss4", "device");
+    char *alt_device = aud_get_string("oss4", "alt_device");
 
     if (aud_get_bool("oss4", "exclusive"))
     {
@@ -113,8 +113,8 @@ static gint open_device(void)
     else
         res = open(DEFAULT_DSP, flags);
 
-    g_free(device);
-    g_free(alt_device);
+    free(device);
+    free(alt_device);
 
     return res;
 }
@@ -125,12 +125,12 @@ static void close_device(void)
     oss_data->fd = -1;
 }
 
-gint oss_open_audio(gint aud_format, gint rate, gint channels)
+int oss_open_audio(int aud_format, int rate, int channels)
 {
     AUDDBG("Opening audio.\n");
 
-    gint format;
-    gint vol_left, vol_right;
+    int format;
+    int vol_left, vol_right;
     audio_buf_info buf_info;
 
     CHECK_NOISY(oss_data->fd = open_device);
@@ -176,9 +176,9 @@ void oss_close_audio(void)
     close_device();
 }
 
-void oss_write_audio(void *data, gint length)
+void oss_write_audio(void *data, int length)
 {
-    gint written = 0, start = 0;
+    int written = 0, start = 0;
 
     while (length > 0)
     {
@@ -192,7 +192,7 @@ void oss_write_audio(void *data, gint length)
 
         length -= written;
         start += written;
-        oss_time += (gint64) oss_bytes_to_frames(written) * 1000000 / oss_data->rate;
+        oss_time += (int64_t) oss_bytes_to_frames(written) * 1000000 / oss_data->rate;
     }
 }
 
@@ -204,7 +204,7 @@ void oss_drain(void)
         DESCRIBE_ERROR;
 }
 
-gint oss_buffer_free(void)
+int oss_buffer_free(void)
 {
     audio_buf_info buf_info;
 
@@ -219,30 +219,30 @@ FAILED:
     return 0;
 }
 
-void oss_set_written_time(gint time)
+void oss_set_written_time(int time)
 {
-    oss_time = 1000 * (gint64) time;
+    oss_time = 1000 * (int64_t) time;
 }
 
-gint oss_written_time(void)
+int oss_written_time(void)
 {
-    gint time;
+    int time;
 
     time = oss_time / 1000;
     return time;
 }
 
-static gint real_output_time()
+static int real_output_time()
 {
-    gint  time = 0;
+    int  time = 0;
 
-    time = (oss_time - (gint64) (oss_delay * 1000)) / 1000;
+    time = (oss_time - (int64_t) (oss_delay * 1000)) / 1000;
     return time;
 }
 
-gint oss_output_time(void)
+int oss_output_time(void)
 {
-    gint time = 0;
+    int time = 0;
 
     if (oss_paused)
         time = oss_paused_time;
@@ -251,18 +251,18 @@ gint oss_output_time(void)
     return time;
 }
 
-void oss_flush(gint time)
+void oss_flush(int time)
 {
     AUDDBG("Flush.\n");
 
     CHECK(ioctl, oss_data->fd, SNDCTL_DSP_RESET, NULL);
 
 FAILED:
-    oss_time = (gint64) time * 1000;
+    oss_time = (int64_t) time * 1000;
     oss_paused_time = time;
 }
 
-void oss_pause(gboolean pause)
+void oss_pause(bool_t pause)
 {
     AUDDBG("%sause.\n", pause ? "P" : "Unp");
 
@@ -278,11 +278,11 @@ FAILED:
     oss_paused = pause;
 }
 
-void oss_get_volume(gint *left, gint *right)
+void oss_get_volume(int *left, int *right)
 {
     *left = *right = 0;
 
-    gint vol;
+    int vol;
 
     if (oss_data->fd == -1 || !oss_ioctl_vol)
     {
@@ -307,9 +307,9 @@ FAILED:
         oss_ioctl_vol = FALSE;
 }
 
-void oss_set_volume(gint left, gint right)
+void oss_set_volume(int left, int right)
 {
-    gint vol = (right << 8) | left;
+    int vol = (right << 8) | left;
 
     if (aud_get_int("oss4", "save_volume"))
         aud_set_int("oss4", "volume", vol);
