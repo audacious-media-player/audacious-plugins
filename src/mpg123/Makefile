@@ -8,5 +8,5 @@ include ../../extra.mk
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${MPG123_CFLAGS} -I../..
-LIBS += ${GLIB_LIBS} ${MPG123_LIBS} -laudtag -lm
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${MPG123_CFLAGS} -I../..
+LIBS += ${MPG123_LIBS} -laudtag -lm
