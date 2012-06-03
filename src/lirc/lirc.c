@@ -36,22 +36,23 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-
 #include <glib.h>
-#include <gtk/gtk.h>
 #include <lirc/lirc_client.h>
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
-#include <audacious/plugin.h>
-#include <libaudcore/hook.h>
 #include <audacious/misc.h>
-#include <libaudgui/libaudgui-gtk.h>
 #include <audacious/playlist.h>
+#include <audacious/plugin.h>
+#include <audacious/preferences.h>
+#include <libaudcore/hook.h>
 
+static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition, void * data);
 
-#include "lirc.h"
-#include "configure.h"
+static const char * const lirc_defaults[] = {
+ "enable_reconnect", "TRUE",
+ "reconnect_timeout", "5",
+ NULL};
 
 const char *plugin_name = "LIRC Plugin";
 
@@ -66,7 +67,6 @@ guint input_tag;
 char track_no[64];
 int track_no_pos;
 gint tid;
-
 
 void init_lirc (void)
 {
@@ -103,7 +103,7 @@ void init_lirc (void)
 
 gboolean init (void)
 {
-    load_cfg ();
+    aud_config_set_defaults ("lirc", lirc_defaults);
     init_lirc ();
     track_no_pos = 0;
     tid = 0;
@@ -131,7 +131,6 @@ void cleanup ()
         lirc_deinit ();
         lirc_fd = -1;
     }
-    g_free (aosd_font);
 }
 
 gboolean jump_to (gpointer data)
@@ -143,10 +142,7 @@ gboolean jump_to (gpointer data)
     return FALSE;
 }
 
-
-
-gboolean lirc_input_callback (GIOChannel * source,
-                              GIOCondition condition, gpointer data)
+static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition, void * data)
 {
     char *code;
     char *c;
@@ -368,10 +364,7 @@ gboolean lirc_input_callback (GIOChannel * source,
                     track_no[track_no_pos++] = *c;
                     track_no[track_no_pos] = 0;
                     tid = g_timeout_add (1500, jump_to, NULL);
-                    utf8_title_markup =
-                        g_markup_printf_escaped
-                        ("<span font_desc='%s'>%s</span>", aosd_font,
-                         track_no);
+                    utf8_title_markup = g_markup_printf_escaped ("%s", track_no);
                     hook_call ("aosd toggle", utf8_title_markup);
                 }
             }
@@ -390,8 +383,9 @@ gboolean lirc_input_callback (GIOChannel * source,
         /* something went badly wrong */
         fprintf (stderr, _("%s: disconnected from LIRC\n"), plugin_name);
         cleanup ();
-        if (b_enable_reconnect)
+        if (aud_get_bool ("lirc", "enable_reconnect"))
         {
+            int reconnect_timeout = aud_get_int ("lirc", "reconnect_timeout");
             fprintf (stderr,
                      _("%s: will try reconnect every %d seconds...\n"),
                      plugin_name, reconnect_timeout);
@@ -413,12 +407,24 @@ static const char about[] =
  "Andrew O. Shadoura <bugzilla@tut.by>\n\n"
  "For more information about LIRC, see http://lirc.org.";
 
+static const PreferencesWidget widgets[] = {
+ {WIDGET_LABEL, N_("<b>Connection</b>")},
+ {WIDGET_CHK_BTN, N_("Reconnect to LIRC server"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "lirc", .cname = "enable_reconnect"},
+ {WIDGET_SPIN_BTN, N_("Wait before reconnecting:"), .child = TRUE,
+  .cfg_type = VALUE_INT, .csect = "lirc", .cname = "reconnect_timeout",
+  .data = {.spin_btn = {1, 120, 1, N_("seconds")}}}};
+
+static const PluginPreferences prefs = {
+ .widgets = widgets,
+ .n_widgets = sizeof widgets / sizeof widgets[0]};
+
 AUD_GENERAL_PLUGIN
 (
     .name = N_("LIRC Plugin"),
     .domain = PACKAGE,
     .about_text = about,
+    .prefs = & prefs,
     .init = init,
-    .configure = configure,
     .cleanup = cleanup
 )
