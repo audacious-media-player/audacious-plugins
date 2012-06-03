@@ -72,8 +72,7 @@ static void combo_cleanup(ComboBoxElements * elements, int n_elements)
 
 static PreferencesWidget oss_widgets[] = {
  {WIDGET_COMBO_BOX, N_("Audio device:"),
-  .cfg_type = VALUE_STRING, .csect = "oss4", .cname = "device",
-  .data = {.combo = {.enabled = TRUE}}},
+  .cfg_type = VALUE_STRING, .csect = "oss4", .cname = "device"},
  {WIDGET_CHK_BTN, N_("Use alternate device:"),
   .cfg_type = VALUE_BOOLEAN, .csect = "oss4", .cname = "use_alt_device"},
  {WIDGET_ENTRY,
