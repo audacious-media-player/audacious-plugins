@@ -50,6 +50,11 @@ static void sndstretch_finish (gfloat * * data, gint * samples);
 static gint sndstretch_decoder_to_output_time (gint time);
 static gint sndstretch_output_to_decoder_time (gint time);
 
+/* Note: Technically this plugin does not change the format of the audio stream,
+ * so it would seem right to set (.preserves_format = TRUE).  However, disabling
+ * the plugin without a reset leaves the time counter messed up.  So, in order
+ * to force a reset, we set (.preserves_format = FALSE). */
+
 AUD_EFFECT_PLUGIN
 (
 	.name = N_("SndStretch"),
@@ -61,8 +66,7 @@ AUD_EFFECT_PLUGIN
     .process = sndstretch_process,
     .finish = sndstretch_finish,
     .decoder_to_output_time = sndstretch_decoder_to_output_time,
-    .output_to_decoder_time = sndstretch_output_to_decoder_time,
-    .preserves_format = TRUE,
+    .output_to_decoder_time = sndstretch_output_to_decoder_time
 )
 
 struct sndstretch_settings
