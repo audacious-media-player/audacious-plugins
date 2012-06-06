@@ -267,13 +267,29 @@ static gboolean time_counter_cb (void)
     return TRUE;
 }
 
+static void do_seek (gint time)
+{
+    set_slider (time);
+    set_time_label (time, aud_drct_get_length ());
+    aud_drct_seek (time);
+
+    // Trick: Unschedule and then schedule the update function.  This gives the
+    // player 1/4 second to perform the seek before we update the display again,
+    // in an attempt to reduce flickering.
+    if (update_song_timeout_source)
+    {
+        g_source_remove (update_song_timeout_source);
+        update_song_timeout_source = g_timeout_add (250, (GSourceFunc) time_counter_cb, NULL);
+    }
+}
+
 static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
 {
     gint value = gtk_range_get_value (range);
     set_time_label (value, aud_drct_get_length ());
 
     if (!slider_is_moving)
-        aud_drct_seek (gtk_range_get_value (range));
+        do_seek (gtk_range_get_value (range));
 
     return FALSE;
 }
@@ -511,11 +527,11 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
             return TRUE;
         case GDK_Left:
             if (aud_drct_get_playing ())
-                aud_drct_seek (aud_drct_get_time () - 5000);
+                do_seek (aud_drct_get_time () - 5000);
             return TRUE;
         case GDK_Right:
             if (aud_drct_get_playing ())
-                aud_drct_seek (aud_drct_get_time () + 5000);
+                do_seek (aud_drct_get_time () + 5000);
             return TRUE;
         }
 
@@ -551,11 +567,11 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
         {
           case GDK_Left:
             if (aud_drct_get_playing ())
-                aud_drct_seek (aud_drct_get_time () - 5000);
+                do_seek (aud_drct_get_time () - 5000);
             break;
           case GDK_Right:
             if (aud_drct_get_playing ())
-                aud_drct_seek (aud_drct_get_time () + 5000);
+                do_seek (aud_drct_get_time () + 5000);
             break;
           default:
             return FALSE;
@@ -647,7 +663,6 @@ static void config_save (void)
 static void ui_hooks_associate(void)
 {
     hook_associate ("title change", (HookFunction) title_change_cb, NULL);
-    hook_associate ("playback seek", (HookFunction) time_counter_cb, NULL);
     hook_associate ("playback begin", (HookFunction) ui_playback_begin, NULL);
     hook_associate ("playback ready", (HookFunction) ui_playback_ready, NULL);
     hook_associate ("playback pause", (HookFunction) pause_cb, NULL);
@@ -665,7 +680,6 @@ static void ui_hooks_associate(void)
 static void ui_hooks_disassociate(void)
 {
     hook_dissociate ("title change", (HookFunction) title_change_cb);
-    hook_dissociate ("playback seek", (HookFunction) time_counter_cb);
     hook_dissociate ("playback begin", (HookFunction) ui_playback_begin);
     hook_dissociate ("playback ready", (HookFunction) ui_playback_ready);
     hook_dissociate ("playback pause", (HookFunction) pause_cb);
