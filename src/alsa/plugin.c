@@ -54,8 +54,6 @@ AUD_OUTPUT_PLUGIN
     .write_audio = alsa_write_audio,
     .period_wait = alsa_period_wait,
     .drain = alsa_drain,
-    .set_written_time = alsa_set_written_time,
-    .written_time = alsa_written_time,
     .output_time = alsa_output_time,
     .flush = alsa_flush,
     .pause = alsa_pause,
