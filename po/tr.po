@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-01 20:01-0400\n"
+"POT-Creation-Date: 2012-06-09 17:59-0400\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -25,35 +25,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/aac/libmp4.c:256
-#, fuzzy, c-format
-msgid ""
-"Using libfaad2-%s for decoding.\n"
-"FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-"Copyright (c) 2005-2006 Audacious team"
-msgstr ""
-" kullanılıyor.\n"
-"FAAD2 AAC/HE-AAC/HE-AACv2/DRM çözücüsü (c) Nero AG, www.nero.com\n"
-"Telif Hakkı (c) 2005-2006 Audacious ekibi"
-
-#: src/aac/libmp4.c:261
+#: src/aac/libmp4.c:930
 #, fuzzy
-msgid "About MP4 AAC decoder plugin"
-msgstr "MP4 AAC oynatıcı eklentisi hakkında"
+msgid "AAC Decoder"
+msgstr "TTA Dekoder Hatası"
 
-#: src/alarm/alarm.c:312
-#, fuzzy
-msgid "About Alarm"
-msgstr "XMMS Alarm Hakkında"
-
-#: src/alarm/alarm.c:313
-msgid ""
-"A plugin that can be used to start playing at a certain time.\n"
-"\n"
-"Originally written by Adam Feakin and Daniel Stodden."
+#: src/adplug/plugin.c:16
+msgid "AdPlug (AdLib Player)"
 msgstr ""
 
-#: src/alarm/interface.c:32
+#: src/alarm/alarm.c:833 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "Alarm"
 
@@ -147,7 +128,7 @@ msgstr "Günler"
 msgid "Fading"
 msgstr "Yavaş geçiş"
 
-#: src/alarm/interface.c:911
+#: src/alarm/interface.c:911 src/crossfade/crossfade.c:274 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "saniye"
 
@@ -195,7 +176,7 @@ msgstr "Hatırlatıcı"
 msgid "Use reminder"
 msgstr "Hatırlatıcıyı kullan"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:355
+#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
 msgid "Options"
 msgstr "Seçenekler"
 
@@ -313,7 +294,7 @@ msgstr ""
 msgid "Help"
 msgstr "Yardım"
 
-#: src/alarm/interface.c:1221 src/jack/configure.c:148 src/null/null.c:107
+#: src/alarm/interface.c:1221
 msgid "Cancel"
 msgstr "İptal"
 
@@ -325,6 +306,11 @@ msgstr "Bugün için hatırlatıcınız.."
 msgid "Thankyou"
 msgstr "Teşekkürler"
 
+#: src/albumart/albumart.c:101
+#, fuzzy
+msgid "Album Art"
+msgstr "Albüm:"
+
 #: src/alsa/config.c:210
 #, fuzzy
 msgid "Default PCM device"
@@ -335,40 +321,40 @@ msgstr "Varsayılan PCM aygıtı (%s)"
 msgid "Default mixer device"
 msgstr "Varsayılan PCM aygıtı (%s)"
 
-#: src/alsa/config.c:438
+#: src/alsa/config.c:433
 #, fuzzy
 msgid "ALSA Output Plugin Preferences"
 msgstr "Durum Simgesi Eklentisi - Tercihler"
 
-#: src/alsa/config.c:445
+#: src/alsa/config.c:439
 #, fuzzy
 msgid "PCM device:"
 msgstr "Karıştırıcı aygıt:"
 
-#: src/alsa/config.c:447
+#: src/alsa/config.c:441
 msgid "Mixer device:"
 msgstr "Karıştırıcı aygıt:"
 
-#: src/alsa/config.c:449
+#: src/alsa/config.c:443
 #, fuzzy
 msgid "Mixer element:"
 msgstr "Karıştırıcı aygıt:"
 
-#: src/alsa/config.c:452
+#: src/alsa/config.c:446
 msgid "Work around drain hangup"
 msgstr ""
 
-#: src/alsa/plugin.c:59
+#: src/alsa/plugin.c:45
 #, fuzzy
-msgid "About ALSA Output Plugin"
-msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
+msgid "ALSA Output"
+msgstr "ALSA çıkış portları"
 
-#: src/alsa/plugin.c:81
+#: src/amidi-plug/amidi-plug.c:39
 #, fuzzy
-msgid "ALSA error"
-msgstr "Terör"
+msgid "AMIDI-Plug (MIDI Player)"
+msgstr "AMIDI-Plug - hakkında"
 
-#: src/amidi-plug/amidi-plug.c:326
+#: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -666,6 +652,10 @@ msgstr ""
 "\n"
 "AMIDI-Plug "
 
+#: src/aosd/aosd.c:37
+msgid "AOSD (On-Screen Display)"
+msgstr ""
+
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
 msgstr "Dikdörtgen"
@@ -902,48 +892,25 @@ msgstr "Başlat"
 msgid "Misc"
 msgstr "Çeşitli"
 
-#: src/aosd/aosd_ui.c:1110
-msgid "Audacious OSD - about"
-msgstr "Audacius OSD - hakkında"
+#: src/asx/asx.c:97
+#, fuzzy
+msgid "ASXv1/ASXv2 Playlists"
+msgstr "Parça Listesini Seç"
 
-#: src/aosd/aosd_ui.c:1140
-msgid ""
-"\n"
-"Audacious OSD "
-msgstr ""
-"\n"
-"Audacious OSD "
+#: src/audpl/audpl.c:224
+#, fuzzy
+msgid "Audacious Playlists (audpl)"
+msgstr "Hızlı Parça Listesi Bilgisi"
 
-#: src/aosd/aosd_ui.c:1141
-msgid ""
-"\n"
-"http://www.develia.org/projects.php?p=audacious#aosd\n"
-"written by Giacomo Lozito\n"
-"< james@develia.org >\n"
-"\n"
-"On-Screen-Display is based on Ghosd library\n"
-"written by Evan Martin\n"
-"http://neugierig.org/software/ghosd/\n"
-"\n"
-msgstr ""
-"\n"
-"http://www.develia.org/projects.php?p=audacious#aosd\n"
-"Programı Hazırlayan Giacomo Lozito\n"
-"< james@develia.org >\n"
-"\n"
-"Gösterge ekranı (OSD) Ghosd kütüphanesi kullanılarak yapılmıştır\n"
-"http://neugierig.org/software/ghosd/\n"
-"\n"
-"Ghosd kütüphanesini hazırlayan Evan Martin\n"
-"\n"
+#: src/blur_scope/blur_scope.c:49
+#, fuzzy
+msgid "<b>Color</b>"
+msgstr "<b>Dosya ismi: </b>"
 
-#: src/blur_scope/config.c:72
-msgid "Blur Scope: Color selection"
-msgstr "Bulanık alan: Renk seçimi"
-
-#: src/blur_scope/config.c:82 src/jack/configure.c:106
-msgid "Options:"
-msgstr "Seçenekler:"
+#: src/blur_scope/blur_scope.c:58
+#, fuzzy
+msgid "Blur Scope"
+msgstr "Bulanık Alan"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -964,72 +931,75 @@ msgstr "Sıklık"
 msgid "Presets:"
 msgstr "Port"
 
-#: src/cdaudio-ng/cdaudio-ng.c:108
+#: src/bs2b/plugin.c:199
+msgid "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr ""
+
+#: src/cairo-spectrum/cairo-spectrum.c:293
+msgid "Spectrum Analyzer"
+msgstr "Spektrum Analizi"
+
+#: src/cdaudio-ng/cdaudio-ng.c:115
 #, fuzzy
 msgid "<b>Device</b>"
 msgstr "<b>Hizmetler</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:109
+#: src/cdaudio-ng/cdaudio-ng.c:116
 #, fuzzy
 msgid "Read speed:"
 msgstr "Saat hızı:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:112
+#: src/cdaudio-ng/cdaudio-ng.c:119
 #, fuzzy
 msgid "Override device:"
 msgstr "Öntanımlı aygıtın üstüne yaz: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:114
+#: src/cdaudio-ng/cdaudio-ng.c:121
 #, fuzzy
 msgid "<b>Metadata</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:122
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:117
+#: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Use HTTP instead of CDDBP"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:128
 #, fuzzy
 msgid "Server:"
 msgstr "Sunucu: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:123
+#: src/cdaudio-ng/cdaudio-ng.c:130
 #, fuzzy
 msgid "Path:"
 msgstr "Örnek: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:131
+#: src/cdaudio-ng/cdaudio-ng.c:142
 #, fuzzy
-msgid "Audio CD Settings"
-msgstr "Alarm Ayarları"
-
-#: src/cdaudio-ng/cdaudio-ng.c:247
-#, fuzzy
-msgid "About Audio CD Plugin"
+msgid "Audio CD Plugin"
 msgstr "FLAC Ses Eklentisi Hakkında"
 
-#: src/cdaudio-ng/cdaudio-ng.c:535
+#: src/cdaudio-ng/cdaudio-ng.c:523
 #, fuzzy
 msgid "Audio CD"
 msgstr "Ses"
 
-#: src/cdaudio-ng/cdaudio-ng.c:911
+#: src/cdaudio-ng/cdaudio-ng.c:899
 msgid "Drive is empty."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:913
+#: src/cdaudio-ng/cdaudio-ng.c:901
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -1042,31 +1012,31 @@ msgstr "Oynatma süresi:"
 msgid "Add CD"
 msgstr "CD Ekle"
 
-#: src/compressor/plugin.c:41
+#: src/cd-menu-items/cd-menu-items.c:61
+#, fuzzy
+msgid "Audio CD Menu Items"
+msgstr "Alarm Ayarları"
+
+#: src/compressor/plugin.c:37
 #, fuzzy
 msgid "<b>Compression</b>"
 msgstr "<b>Dosya ismi: </b>"
 
-#: src/compressor/plugin.c:42
+#: src/compressor/plugin.c:38
 #, fuzzy
 msgid "Center volume:"
 msgstr "Ses seviyesini değiştir"
 
-#: src/compressor/plugin.c:45
+#: src/compressor/plugin.c:41
 msgid "Dynamic range:"
 msgstr ""
 
-#: src/compressor/plugin.c:51
+#: src/compressor/plugin.c:71
 #, fuzzy
-msgid "Dynamic Range Compressor Settings"
+msgid "Dynamic Range Compressor"
 msgstr "AudioCompress seçenekleri"
 
-#: src/compressor/plugin.c:70
-#, fuzzy
-msgid "About Dynamic Range Compression Plugin"
-msgstr "Ekstra Stereo Eklentisi Hakkında"
-
-#: src/console/configure.c:135
+#: src/console/configure.c:135 src/console/plugin.c:44
 #, fuzzy
 msgid "Game Console Music Decoder"
 msgstr "Konsol Müzik Çözücüsü"
@@ -1108,7 +1078,11 @@ msgstr "Ses örneklemesini etkinleştir"
 msgid "Resampling rate:"
 msgstr "Örnekleme oranı:"
 
-#: src/console/configure.c:232
+#: src/console/configure.c:232 src/resample/resample.c:191
+#: src/resample/resample.c:197 src/resample/resample.c:200
+#: src/resample/resample.c:203 src/resample/resample.c:206
+#: src/resample/resample.c:209 src/resample/resample.c:212
+#: src/resample/resample.c:215
 msgid "Hz"
 msgstr "Hz"
 
@@ -1132,55 +1106,33 @@ msgstr ""
 "Saniyelerle belirtilen varsayılan şarkı uzunluğu, uzunluk bilgisi bulunmayan "
 "parçalar için kullanılır (örneğin özyinelenen izler)."
 
-#: src/console/plugin.c:33
-#, fuzzy
-msgid "About the Game Console Music Decoder"
-msgstr "Konsol Müzik Çözücüsü Hakkında"
-
-#: src/console/plugin.c:34
-#, fuzzy
+#: src/crossfade/crossfade.c:83
 msgid ""
-"Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
-"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
-"        Shay Green <gblargg@gmail.com>\n"
-msgstr ""
-"Game_Music_Emu 0.5.2 tabanlı konsol müzik çözücüsü.\n"
-"Desteklenen biçimler: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Audacious için uyarlayan: William Pitcock <nenolod@nenolod.net>, \n"
-"        Shay Green <gblargg@gmail.com>"
-
-#: src/crossfade/plugin.c:59
-#, fuzzy
-msgid "About Crossfade"
-msgstr "Scrobbler Eklentisi Hakkında"
-
-#: src/crossfade/plugin.c:91
-#, fuzzy
-msgid "Crossfade Preferences"
-msgstr "AudioCompress seçenekleri"
-
-#: src/crossfade/plugin.c:103
-msgid "Overlap (in seconds):"
+"Crossfading failed because the songs had a different number of channels.  "
+"You can use the Channel Mixer to convert the songs to the same number of "
+"channels."
 msgstr ""
 
-#: src/crossfade/plugin.c:134 src/crossfade/plugin.c:141
+#: src/crossfade/crossfade.c:90
+msgid ""
+"Crossfading failed because the songs had different sample rates.  You can "
+"use the Sample Rate Converter to convert the songs to the same sample rate."
+msgstr ""
+
+#: src/crossfade/crossfade.c:271
 #, fuzzy
-msgid "Crossfade Error"
+msgid "<b>Crossfade</b>"
 msgstr "Crossover"
 
-#: src/crossfade/plugin.c:134
-msgid ""
-"Crossfading failed because the songs had a different number of channels."
-msgstr ""
+#: src/crossfade/crossfade.c:272
+#, fuzzy
+msgid "Overlap:"
+msgstr "Yeniden örnekleme:"
 
-#: src/crossfade/plugin.c:143
-msgid ""
-"Crossfading failed because the songs had different sample rates.\n"
-"\n"
-"You can use the Sample Rate Converter effect to resample the songs to the "
-"same rate."
-msgstr ""
+#: src/crossfade/crossfade.c:282
+#, fuzzy
+msgid "Crossfade"
+msgstr "Crossover"
 
 #: src/crystalizer/crystalizer.c:42
 #, fuzzy
@@ -1192,10 +1144,15 @@ msgstr "<b>Oynatıcı:</b>"
 msgid "Intensity:"
 msgstr "Efekt yoğunluğu:"
 
-#: src/crystalizer/crystalizer.c:49
+#: src/crystalizer/crystalizer.c:53
 #, fuzzy
-msgid "Crystalizer Settings"
-msgstr "Sentezleyici ayarları"
+msgid "Crystalizer"
+msgstr "<b>Oynatıcı:</b>"
+
+#: src/cue/cue.c:161
+#, fuzzy
+msgid "Cue Sheet Plugin"
+msgstr "Yankı (Eko) Eklentisi Hakkında"
 
 #: src/echo_plugin/echo.c:26
 #, fuzzy
@@ -1221,101 +1178,70 @@ msgstr "Geribesleme: (%)"
 msgid "Volume:"
 msgstr "Ses"
 
-#: src/echo_plugin/echo.c:39
-#, fuzzy
-msgid "Echo Settings"
-msgstr "Alarm Ayarları"
-
-#: src/echo_plugin/gui.c:8
-msgid ""
-"Echo Plugin\n"
-"By Johan Levin 1999.\n"
-"\n"
-"Surround echo by Carl van Schaik 1999"
-msgstr ""
-"Yankı (Eko) Eklentisi\n"
-"Johan Levin 1999.\n"
-"\n"
-"Surround Eko - Carl van Schaik 1999"
-
-#: src/echo_plugin/gui.c:17
-msgid "About Echo Plugin"
-msgstr "Yankı (Eko) Eklentisi Hakkında"
-
-#: src/ffaudio/ffaudio-core.c:718
-#, c-format
-msgid ""
-"Multi-format audio decoding plugin for Audacious based on\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-"Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
-"\n"
-"Audacious plugin by:\n"
-"            William Pitcock <nenolod@nenolod.net>,\n"
-"            Matti Hämäläinen <ccr@tnsp.org>\n"
-"\n"
-"libavcodec %s (%s)\n"
-"libavformat %s (%s)\n"
-"libavutil %s (%s)\n"
+#: src/echo_plugin/echo.c:122
+msgid "Echo"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:732
+#: src/ffaudio/ffaudio-core.c:683
 #, fuzzy
-msgid "About FFaudio Plugin"
-msgstr "FLAC Ses Eklentisi Hakkında"
+msgid "FFmpeg Plugin"
+msgstr "Eklenti"
 
-#: src/filewriter/filewriter.c:165
-msgid "About FileWriter-Plugin"
-msgstr "FileWriter Eklentisi Hakkında"
-
-#: src/filewriter/filewriter.c:460
-msgid "File Writer Configuration"
+#: src/filewriter/filewriter.c:409
+#, fuzzy
+msgid "FileWriter Configuration"
 msgstr "File Writer Ayarları"
 
-#: src/filewriter/filewriter.c:472
+#: src/filewriter/filewriter.c:421
 msgid "Output file format:"
 msgstr "Çıktı dosya biçimi:"
 
-#: src/filewriter/filewriter.c:490
+#: src/filewriter/filewriter.c:439
 msgid "Configure"
 msgstr "Yapılandır"
 
-#: src/filewriter/filewriter.c:505
+#: src/filewriter/filewriter.c:449
 msgid "Save into original directory"
 msgstr "Orjinal dizine kaydet"
 
-#: src/filewriter/filewriter.c:510
+#: src/filewriter/filewriter.c:454
 msgid "Save into custom directory"
 msgstr "Özel dizine kaydet"
 
-#: src/filewriter/filewriter.c:520
+#: src/filewriter/filewriter.c:464
 msgid "Output file folder:"
 msgstr "Çıktı dosya klasörü:"
 
-#: src/filewriter/filewriter.c:524
+#: src/filewriter/filewriter.c:468
 msgid "Pick a folder"
 msgstr "Dizin seçimi"
 
-#: src/filewriter/filewriter.c:543
+#: src/filewriter/filewriter.c:481
 msgid "Get filename from:"
 msgstr "Dosya adı kaynağı:"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:484
 msgid "original file tags"
 msgstr "orijinal dosya işaretleri"
 
-#: src/filewriter/filewriter.c:552
+#: src/filewriter/filewriter.c:490
 msgid "original filename"
 msgstr "özgün dosya adı"
 
-#: src/filewriter/filewriter.c:562
+#: src/filewriter/filewriter.c:497
 msgid "Don't strip file name extension"
 msgstr "Dosya ismi uzantılarını daraltma"
 
-#: src/filewriter/filewriter.c:577
+#: src/filewriter/filewriter.c:506
 msgid "Prepend track number to filename"
 msgstr "Parça numarısını dosya adına ekle"
 
-#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:749
+#: src/filewriter/filewriter.c:532
+#, fuzzy
+msgid "FileWriter Plugin"
+msgstr "FileWriter Eklentisi Hakkında"
+
+#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
 msgstr "Otomatik"
 
@@ -1324,190 +1250,161 @@ msgstr "Otomatik"
 msgid "Joint Stereo"
 msgstr "Birleşik Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:206
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:206
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
 msgid "Mono"
 msgstr "Mono"
 
-#: src/filewriter/mp3.c:690
+#: src/filewriter/mp3.c:688
 msgid "MP3 Configuration"
 msgstr "MP3 Yapılandırması"
 
-#: src/filewriter/mp3.c:713
+#: src/filewriter/mp3.c:712
 msgid "Algorithm Quality:"
 msgstr "Algoritma Kalitesi:"
 
-#: src/filewriter/mp3.c:738
+#: src/filewriter/mp3.c:737
 msgid "Output Samplerate:"
 msgstr "Çıktı Örnekleme Oranı:"
 
-#: src/filewriter/mp3.c:766
+#: src/filewriter/mp3.c:765
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:773
+#: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
 msgstr "Bit oranı / Sıkıştırma oranı:"
 
-#: src/filewriter/mp3.c:797
+#: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
 msgstr "Bit oranı (kbps):"
 
-#: src/filewriter/mp3.c:830
+#: src/filewriter/mp3.c:829
 msgid "Compression ratio:"
 msgstr "Sıkıştırma oranı:"
 
-#: src/filewriter/mp3.c:854
+#: src/filewriter/mp3.c:853
 msgid "Audio Mode:"
 msgstr "Ses Kipi:"
 
-#: src/filewriter/mp3.c:879
+#: src/filewriter/mp3.c:878
 msgid "Misc:"
 msgstr "Çeşitli"
 
-#: src/filewriter/mp3.c:890
+#: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
 msgstr "ISO standartlarına mutlak uyum gözetmeye zorla"
 
-#: src/filewriter/mp3.c:901
+#: src/filewriter/mp3.c:900
 msgid "Error protection"
 msgstr "Hata koruması"
 
-#: src/filewriter/mp3.c:913 src/filewriter/vorbis.c:231
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
 msgid "Quality"
 msgstr "Kalite"
 
-#: src/filewriter/mp3.c:923
+#: src/filewriter/mp3.c:921
 msgid "Enable VBR/ABR"
 msgstr "VBR/ABR etkinleştir"
 
-#: src/filewriter/mp3.c:933
+#: src/filewriter/mp3.c:931
 msgid "Type:"
 msgstr "Tür:"
 
-#: src/filewriter/mp3.c:966
+#: src/filewriter/mp3.c:964
 msgid "VBR Options:"
 msgstr "VBR Seçenekleri:"
 
-#: src/filewriter/mp3.c:982
+#: src/filewriter/mp3.c:980
 msgid "Minimum bitrate (kbps):"
 msgstr "En düşük bit oranı (kbps):"
 
-#: src/filewriter/mp3.c:1009
+#: src/filewriter/mp3.c:1007
 msgid "Maximum bitrate (kbps):"
 msgstr "En yüksek bit oranı (kbps):"
 
-#: src/filewriter/mp3.c:1032
+#: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
 msgstr "En düşük bit oranını tam olarak zorla"
 
-#: src/filewriter/mp3.c:1044
+#: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
 msgstr "ABR Seçenekleri:"
 
-#: src/filewriter/mp3.c:1054
+#: src/filewriter/mp3.c:1052
 msgid "Average bitrate (kbps):"
 msgstr "Ortalama bit oranı (kbps):"
 
-#: src/filewriter/mp3.c:1082
+#: src/filewriter/mp3.c:1080
 msgid "VBR quality level:"
 msgstr "VBR kalite seviyesi:"
 
-#: src/filewriter/mp3.c:1101
+#: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
 msgstr "Xing VBR başlığını yazma"
 
-#: src/filewriter/mp3.c:1115
+#: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1125
+#: src/filewriter/mp3.c:1121
 #, fuzzy
 msgid "Frame parameters:"
 msgstr "Çerçeve parametreleri:"
 
-#: src/filewriter/mp3.c:1137
+#: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
 msgstr "Telif hakkı olarak işaretle"
 
-#: src/filewriter/mp3.c:1148
+#: src/filewriter/mp3.c:1144
 msgid "Mark as original"
 msgstr "Orijinal olarak işaretle"
 
-#: src/filewriter/mp3.c:1160
+#: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
 msgstr "ID3 parametreleri:"
 
-#: src/filewriter/mp3.c:1171
+#: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
 msgstr "sürüm 2 etkiketin eklenmesini zorla"
 
-#: src/filewriter/mp3.c:1181
+#: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
 msgstr "Sadece v1 etiketini ekle"
 
-#: src/filewriter/mp3.c:1188
+#: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
 msgstr "Sadece v2 etiketini ekle"
 
-#: src/filewriter/mp3.c:1209
+#: src/filewriter/mp3.c:1205
 msgid "Tags"
 msgstr "Etiketler:"
 
-#: src/filewriter/vorbis.c:224
+#: src/filewriter/vorbis.c:212
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis Kodlayıcı Ayarları"
 
-#: src/filewriter/vorbis.c:244
+#: src/filewriter/vorbis.c:235
 msgid "Quality level (0 - 10):"
 msgstr "Kalite seviyesi (0 - 10):"
 
-#: src/flacng/plugin.c:380
-msgid "About FLAC Audio Plugin"
-msgstr "FLAC Ses Eklentisi Hakkında"
-
-#: src/flacng/plugin.c:381
-msgid ""
-"\n"
-"\n"
-"Original code by\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
-"\n"
-"\n"
-"Orijinal kod\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
-
-#: src/gio/gtk.c:34
+#: src/flacng/plugin.c:368
 #, fuzzy
-msgid "About GIO Plugin"
+msgid "FLAC Decoder"
+msgstr "TTA Dekoder Hatası"
+
+#: src/gio/gio.c:335
+#, fuzzy
+msgid "GIO Plugin"
 msgstr "ESounD Eklentisi Hakkında"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:303
-msgid "About Gnome Shortcut Plugin"
-msgstr "Gnome Kısayol Eklentisi Hakkında"
-
-#: src/gnomeshortcuts/gnomeshortcuts.c:304
+#: src/gnomeshortcuts/gnomeshortcuts.c:50
 #, fuzzy
-msgid ""
-"Gnome Shortcut Plugin\n"
-"Let's you control the player with Gnome's shortcuts.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-msgstr ""
-"Gnome Kısayol Eklentisi\n"
-"Gnome kısayolları ile çalıcıyı kontrol etmenizi sağlar.\n"
-"\n"
-"Telif Hakkı (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
+msgid "Gnome Shortcuts"
+msgstr "Gnome Kısayol Eklentisi Hakkında"
 
 #: src/gtkui/columns.c:35
 #, fuzzy
@@ -1606,7 +1503,7 @@ msgstr ""
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:643
+#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
 #, fuzzy
 msgid "Disable"
 msgstr "değişken"
@@ -1909,22 +1806,22 @@ msgstr "Dosya adı"
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:167 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:173
+#: src/gtkui/ui_gtk.c:174
 #, fuzzy
 msgid "Buffering ..."
 msgstr "Tamponlanıyor"
 
-#: src/gtkui/ui_gtk.c:176 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 #, fuzzy
 msgid "Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:227 src/skins/plugin.c:188
+#: src/gtkui/ui_gtk.c:228 src/skins/plugin.c:178
 msgid "Error"
 msgstr "Hata"
 
@@ -2064,148 +1961,61 @@ msgstr "<b>Dosya ismi: </b>"
 msgid "<b>Key Binding:</b>"
 msgstr ""
 
-#: src/hotkey/gui.c:664
-msgid "About Global Hotkey Plugin"
+#: src/hotkey/plugin.c:80
+#, fuzzy
+msgid "Global Hotkeys"
 msgstr "Genel Kısayol Eklentisi Hakkında"
 
-#: src/hotkey/gui.c:665
+#: src/jack/jack.c:417
 #, fuzzy
-msgid ""
-"Global Hotkey Plugin\n"
-"Control the player with global key combinations or multimedia keys.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Contributers include:\n"
-"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-"\t\t\tBryn Davies <curious@ihug.com.au>\n"
-"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
-"\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
-"\n"
-msgstr ""
-"Global Hotkey Eklentisi\n"
-"Oynatıcıyı global tuş kombinasyonları ya da multimedya tuşları ile yönetmeye "
-"yarar.\n"
-"\n"
-"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Katkı verenler:\n"
-"Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-"\t\t\tBryn Davies <curious@ihug.com.au>\n"
-"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
-"\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
-"\n"
+msgid "JACK Output"
+msgstr "Çıktı eklentisi hatası\n"
 
-#: src/jack/configure.c:66
-msgid "Connect to all available jack ports"
-msgstr "Uygun bütün jack portlarına bağlan"
-
-#: src/jack/configure.c:73
-msgid "Connect only the output ports"
-msgstr "Sadece çıkış portlarını bağla"
-
-#: src/jack/configure.c:80
-msgid "Connect to no ports"
-msgstr "Hiç bir porta bağlanma"
-
-#: src/jack/configure.c:98
-msgid "jack Plugin configuration"
-msgstr "Jack Eklentisi Eklentisi yapılandırması"
-
-#: src/jack/configure.c:116
-msgid "Connection mode:"
-msgstr "Bağlantı modu:"
-
-#: src/jack/configure.c:128
-msgid "Enable debug printing"
-msgstr "Hata ayıklama yazdırmasını etkinleştir"
-
-#: src/jack/configure.c:141 src/null/null.c:106
-msgid "Ok"
-msgstr "Tamam"
-
-#: src/jack/jack.c:435
-#, fuzzy
-msgid "About JACK Output Plugin"
-msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
-
-#: src/jack/jack.c:436
-msgid ""
-"Based on xmms-jack, by Chris Morgan:\n"
-"http://xmms-jack.sourceforge.net/\n"
-"\n"
-"Ported to Audacious by Giacomo Lozito."
-msgstr ""
-
-#: src/ladspa/plugin.c:414
-msgid "About LADSPA Host"
-msgstr ""
-
-#: src/ladspa/plugin.c:515
+#: src/ladspa/plugin.c:494
 #, fuzzy, c-format
 msgid "%s Settings"
 msgstr "Alarm Ayarları"
 
-#: src/ladspa/plugin.c:583
+#: src/ladspa/plugin.c:562
 #, fuzzy
 msgid "LADSPA Host Settings"
 msgstr "Alarm Ayarları"
 
-#: src/ladspa/plugin.c:592
+#: src/ladspa/plugin.c:571
 #, fuzzy
 msgid "Module paths:"
 msgstr "Dosya adı"
 
-#: src/ladspa/plugin.c:597
+#: src/ladspa/plugin.c:576
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
 
-#: src/ladspa/plugin.c:613
+#: src/ladspa/plugin.c:592
 #, fuzzy
 msgid "Available plugins:"
 msgstr "değişken"
 
-#: src/ladspa/plugin.c:625
+#: src/ladspa/plugin.c:605
 msgid "Enable"
 msgstr "Etkinleştir"
 
-#: src/ladspa/plugin.c:631
+#: src/ladspa/plugin.c:611
 #, fuzzy
 msgid "Enabled plugins:"
 msgstr "Yüklü eklentiler"
 
-#: src/ladspa/plugin.c:646
+#: src/ladspa/plugin.c:627
 #, fuzzy
 msgid "Settings"
 msgstr "Alarm Ayarları"
 
-#: src/lirc/configure.c:141
+#: src/ladspa/plugin.c:662
 #, fuzzy
-msgid "LIRC plugin settings"
-msgstr "LIRC Eklentisi"
-
-#: src/lirc/configure.c:169
-msgid "Reconnect to LIRC server"
-msgstr ""
-
-#: src/lirc/configure.c:177
-msgid "Timeout before reconnecting (seconds): "
-msgstr ""
-
-#: src/lirc/configure.c:186
-#, fuzzy
-msgid "Reconnect"
-msgstr "Bağlantı modu:"
-
-#: src/lirc/configure.c:190
-#, fuzzy
-msgid "Connection"
-msgstr "Bağlantı modu:"
+msgid "LADSPA Host"
+msgstr "Alarm Ayarları"
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2228,24 +2038,38 @@ msgstr ""
 msgid "%s: trying to reconnect...\n"
 msgstr ""
 
-#: src/lirc/lirc.c:125
-msgid "About LIRC Audacious Plugin"
-msgstr "LIRC Audacious Eklentisi Hakkında"
-
-#: src/lirc/lirc.c:398
+#: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: bilinmeyen komut \"%s\"\n"
 
-#: src/lirc/lirc.c:409
+#: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: LIRC bağlantısı kesildi\n"
 
-#: src/lirc/lirc.c:414
+#: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
+
+#: src/lirc/lirc.c:411
+#, fuzzy
+msgid "<b>Connection</b>"
+msgstr "<b>Dosya ismi: </b>"
+
+#: src/lirc/lirc.c:412
+msgid "Reconnect to LIRC server"
+msgstr ""
+
+#: src/lirc/lirc.c:414
+msgid "Wait before reconnecting:"
+msgstr ""
+
+#: src/lirc/lirc.c:424
+#, fuzzy
+msgid "LIRC Plugin"
+msgstr "LIRC Eklentisi"
 
 #: src/lyricwiki/lyricwiki.c:267
 msgid ""
@@ -2265,168 +2089,215 @@ msgid ""
 "No lyrics were found."
 msgstr ""
 
-#: src/metronom/metronom.c:86
-msgid "About Metronom"
-msgstr "Metronom Hakkında"
-
-#: src/metronom/metronom.c:87
-msgid ""
-"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
-"\n"
-"To use it, add a URL: tact://beats*num/den\n"
-"e.g. tact://77 to play 77 beats per minute\n"
-"or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
+#: src/lyricwiki/lyricwiki.c:435
+msgid "LyricWiki Plugin"
 msgstr ""
-"Tact Üretici, Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
-"\n"
-"Kullanmak için URL ekleyin: tact://beats*num/den\n"
-"örneğin tact://77 ile dakikada 77 vurgu ya da\n"
-"tact://60*3/4 ile 60 bpm yi 3/4 tact ile"
 
-#: src/metronom/metronom.c:144
+#: src/m3u/m3u.c:123
+#, fuzzy
+msgid "M3U Playlists"
+msgstr "Parça Listesini Seç"
+
+#: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Takt oluşturucu: %d bpm"
 
-#: src/metronom/metronom.c:146
+#: src/metronom/metronom.c:131
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takt oluşturucu: %d bpm %d/%d"
 
-#: src/mixer/plugin.c:63
+#: src/metronom/metronom.c:257
 #, fuzzy
-msgid "About Channel Mixer"
+msgid "Tact Generator"
+msgstr "Ton Oluşturucu: "
+
+#: src/mixer/mixer.c:186
+#, fuzzy
+msgid "<b>Channel Mixer</b>"
 msgstr "Sun Sürücüsü Hakkında"
 
-#: src/mixer/plugin.c:92
-#, fuzzy
-msgid "Channel Mixer Settings"
-msgstr "Karıştırıcı Ayarları:"
-
-#: src/mixer/plugin.c:101
+#: src/mixer/mixer.c:187
 #, fuzzy
 msgid "Output channels:"
 msgstr "kanallar: %d"
 
-#: src/mixer/plugin.c:111
-msgid "Changes take effect at the next song change."
+#: src/mixer/mixer.c:197
+#, fuzzy
+msgid "Channel Mixer"
+msgstr "Sun Sürücüsü Hakkında"
+
+#: src/mms/mms.c:226
+#, fuzzy
+msgid "MMS Plugin"
+msgstr "Eklenti"
+
+#: src/modplug/plugin_main.c:13
+msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:206
+#: src/mpg123/mpg123.c:196
 msgid "Surround"
 msgstr "Surround"
 
-#: src/mtp_up/mtp.c:340
-msgid "Upload in progress..."
+#: src/mpg123/mpg123.c:553
+#, fuzzy
+msgid "MPG123 Plugin"
+msgstr "Eklenti"
+
+#: src/mpris2/plugin.c:403
+#, fuzzy
+msgid "MPRIS 2 Server"
+msgstr "Sunucu"
+
+#: src/neon/neon.c:1241
+msgid "Neon HTTP/HTTPS Plugin"
 msgstr ""
 
-#: src/mtp_up/mtp.c:352
-msgid "Upload to MTP Device"
-msgstr ""
-
-#: src/mtp_up/mtp.c:353
-msgid "Disconnect MTP Device"
-msgstr ""
-
-#: src/notify/libnotify-aosd_event.c:48
+#: src/notify/event.c:49
 #, fuzzy
 msgid "Stopped"
 msgstr "Durdur:"
 
-#: src/notify/libnotify-aosd_event.c:48
+#: src/notify/event.c:49
 #, fuzzy
 msgid "Audacious is not playing."
 msgstr "Parça listesine alttınılar ekle"
 
-#: src/null/null.c:63
-msgid "Null output plugin "
-msgstr "Null Çıkış eklentisi"
-
-#: src/null/null.c:64
-msgid ""
-" by Christian Birchinger <joker@netswarm.net>\n"
-"based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+#: src/notify/notify.c:52
+msgid "Desktop Notifications"
 msgstr ""
-"Christian Birchinger <joker@netswarm.net>\n"
-"Esinlenilen XMMS eklentisi - Håvard Kvål <havardk@xmms.org>"
 
-#: src/null/null.c:67
-msgid "About Null Output"
-msgstr "Null Çıkışı Hakkında"
-
-#: src/null/null.c:88
-msgid "Null output preferences"
-msgstr "Boşl çıktı eklentisi"
-
-#: src/null/null.c:99
-msgid "Run in real time"
-msgstr "Gerçekzamanlı çalış"
-
-#: src/oss4/configure.c:81
+#: src/oss4/plugin.c:36
 #, fuzzy
 msgid "1. Default device"
 msgstr "Varsayılan PCM aygıtı (%s)"
 
-#: src/oss4/configure.c:138
-#, fuzzy
-msgid "OSS4 Output Plugin Preferences"
-msgstr "Durum Simgesi Eklentisi - Tercihler"
-
-#: src/oss4/configure.c:150
+#: src/oss4/plugin.c:75
 msgid "Audio device:"
 msgstr "Ses aygıtı:"
 
-#: src/oss4/configure.c:178
+#: src/oss4/plugin.c:77
 msgid "Use alternate device:"
 msgstr "Farklı aygıt kullan:"
 
-#: src/oss4/configure.c:193
+#: src/oss4/plugin.c:81
 #, fuzzy
-msgid "Save volume between sessions"
+msgid "Save volume between sessions."
 msgstr "Oturumlar arası VMIX ses seviyesini kaydet"
 
-#: src/oss4/configure.c:197
+#: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
 msgstr ""
 
-#: src/oss4/configure.c:201
+#: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
 
-#: src/oss4/plugin.c:51
+#: src/oss4/plugin.c:125
 #, fuzzy
-msgid "About OSS4 Plugin"
-msgstr "ESounD Eklentisi Hakkında"
+msgid "OSS4 Output"
+msgstr "Çıktı eklentisi hatası\n"
 
-#: src/oss4/utils.c:211
+#: src/pls/pls.c:114
 #, fuzzy
-msgid "OSS4 error"
-msgstr "Terör"
+msgid "PLS Playlists"
+msgstr "Hızlı Parça Listesi Bilgisi"
 
-#: src/pulse_audio/pulse_audio.c:677
-msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Audacious PulseAudio Çıktı Eklentisi Hakkında"
-
-#: src/resample/plugin.c:88
-#, fuzzy
-msgid "About Sample Rate Converter Plugin"
-msgstr "Durum Simgesi Eklentisi Hakkında"
-
-#: src/resample/plugin.c:143
-msgid "Sample Rate Converter Preferences"
+#: src/psf/plugin.c:262
+msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
-#: src/resample/plugin.c:155
-msgid "Rate mappings:"
+#: src/pulse_audio/pulse_audio.c:664
+msgid "PulseAudio Output"
 msgstr ""
 
-#: src/resample/plugin.c:178
-msgid "All others:"
+#: src/resample/resample.c:178
+msgid "Skip/repeat samples"
 msgstr ""
 
-#: src/resample/plugin.c:190
+#: src/resample/resample.c:179
+msgid "Linear interpolation"
+msgstr "Doğrusal ortalama"
+
+#: src/resample/resample.c:180
+#, fuzzy
+msgid "Fast sinc interpolation"
+msgstr "Doğrusal ortalama"
+
+#: src/resample/resample.c:181
+#, fuzzy
+msgid "Medium sinc interpolation"
+msgstr "Doğrusal ortalama"
+
+#: src/resample/resample.c:182
+#, fuzzy
+msgid "Best sinc interpolation"
+msgstr "Doğrusal ortalama"
+
+#: src/resample/resample.c:185
+#, fuzzy
+msgid "<b>Conversion</b>"
+msgstr "<b>Dosya ismi: </b>"
+
+#: src/resample/resample.c:186
 msgid "Method:"
 msgstr ""
+
+#: src/resample/resample.c:189
+msgid "Rate:"
+msgstr ""
+
+#: src/resample/resample.c:192
+#, fuzzy
+msgid "<b>Rate Mappings</b>"
+msgstr "<b>İsim: </b>"
+
+#: src/resample/resample.c:193
+#, fuzzy
+msgid "Use rate mappings"
+msgstr "Yeniden örnekleme kullan"
+
+#: src/resample/resample.c:195
+#, fuzzy
+msgid "8 kHz:"
+msgstr "44 kHz"
+
+#: src/resample/resample.c:198
+#, fuzzy
+msgid "16 kHz:"
+msgstr "44 kHz"
+
+#: src/resample/resample.c:201
+#, fuzzy
+msgid "22.05 kHz:"
+msgstr "22 kHz"
+
+#: src/resample/resample.c:204
+#, fuzzy
+msgid "44.1 kHz:"
+msgstr "44 kHz"
+
+#: src/resample/resample.c:207
+#, fuzzy
+msgid "48 kHz:"
+msgstr "44 kHz"
+
+#: src/resample/resample.c:210
+#, fuzzy
+msgid "96 kHz:"
+msgstr "44 kHz"
+
+#: src/resample/resample.c:213
+#, fuzzy
+msgid "192 kHz:"
+msgstr "22 kHz"
+
+#: src/resample/resample.c:223
+#, fuzzy
+msgid "Sample Rate Converter"
+msgstr "Durum Simgesi Eklentisi Hakkında"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
 #, fuzzy
@@ -2454,35 +2325,15 @@ msgstr "Scrobbler Hatası"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:230
+#: src/scrobbler/plugin.c:194
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Scrobbler Hatası"
 
-#: src/scrobbler/plugin.c:194
-msgid ""
-"Audacious AudioScrobbler Plugin\n"
-"\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>\n"
-msgstr ""
-"Audacious AudioScrobbler Eklentisi\n"
-"\n"
-"İlk geliştiricileri Audun Hove <audun@nlc.no> ve Pipian <pipian@pipian.com>\n"
-
-#: src/scrobbler/plugin.c:196
-msgid "About Scrobbler Plugin"
-msgstr "Scrobbler Eklentisi Hakkında"
-
-#: src/sdlout/plugin.c:58
+#: src/sdlout/plugin.c:43
 #, fuzzy
-msgid "About SDL Output Plugin"
-msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
-
-#: src/sdlout/plugin.c:78
-#, fuzzy
-msgid "SDL error"
-msgstr "Terör"
+msgid "SDL Output"
+msgstr "Çıktı eklentisi hatası\n"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2498,21 +2349,21 @@ msgstr "Bilinmeyen"
 msgid "Unknown Album"
 msgstr "Bilinmeyen"
 
-#: src/search-tool/search-tool.c:624
+#: src/search-tool/search-tool.c:627
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
 
-#: src/search-tool/search-tool.c:630
+#: src/search-tool/search-tool.c:633
 #, fuzzy, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "Albüm:"
 msgstr[1] "Albüm:"
 
-#: src/search-tool/search-tool.c:632
+#: src/search-tool/search-tool.c:635
 #, c-format
 msgid ""
 "%s\n"
@@ -2523,7 +2374,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/search-tool/search-tool.c:638
+#: src/search-tool/search-tool.c:641
 #, c-format
 msgid ""
 "%s\n"
@@ -2534,42 +2385,41 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/search-tool/search-tool.c:679
+#: src/search-tool/search-tool.c:682
 #, fuzzy
 msgid "_Create Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/search-tool/search-tool.c:686
+#: src/search-tool/search-tool.c:689
 #, fuzzy
 msgid "_Add to Playlist"
 msgstr "Çalma Listesi"
 
-#: src/search-tool/search-tool.c:727
+#: src/search-tool/search-tool.c:730
 msgid "Search library"
 msgstr ""
 
-#: src/search-tool/search-tool.c:732
+#: src/search-tool/search-tool.c:735
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:740
+#: src/search-tool/search-tool.c:743
 msgid "Please wait ..."
 msgstr ""
 
-#: src/search-tool/search-tool.c:762
+#: src/search-tool/search-tool.c:765
 msgid "Choose Folder"
 msgstr ""
 
-#: src/skins/plugin.c:165
-msgid "About Skinned GUI"
-msgstr ""
+#: src/search-tool/search-tool.c:804
+#, fuzzy
+msgid "Search Tool"
+msgstr "Yıl:"
 
-#: src/skins/plugin.c:166
-msgid ""
-"Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
-"\n"
+#: src/skins/plugin.c:49
+msgid "Winamp Classic Interface"
 msgstr ""
 
 #: src/skins/skins_cfg.c:207
@@ -3533,66 +3383,76 @@ msgstr ""
 msgid "Could not create directory (%s): %s\n"
 msgstr "sidFilename ('%s') ayrılamadı\n"
 
-#: src/sndfile/plugin.c:456
+#: src/sndfile/plugin.c:437
 #, fuzzy
-msgid "About sndfile plugin"
+msgid "Sndfile Plugin"
 msgstr "sndfile WAV eklentisi"
 
-#: src/sndstretch/sndstretch_xmms.c:152
+#: src/sndstretch/sndstretch_xmms.c:54
+#, fuzzy
+msgid "SndStretch"
+msgstr "SndStretch Hakkında"
+
+#: src/sndstretch/sndstretch_xmms.c:147
 msgid "About SndStretch"
 msgstr "SndStretch Hakkında"
 
-#: src/sndstretch/sndstretch_xmms.c:305
+#: src/sndstretch/sndstretch_xmms.c:287
 #, fuzzy
 msgid "Volume correction"
 msgstr "Ses düzeltme"
 
-#: src/sndstretch/sndstretch_xmms.c:306
+#: src/sndstretch/sndstretch_xmms.c:288
 #, fuzzy
 msgid "Short overlap"
 msgstr "Kısa Bindirme"
 
-#: src/sndstretch/sndstretch_xmms.c:352
+#: src/sndstretch/sndstretch_xmms.c:334
 msgid "Speed"
 msgstr "Hız"
 
-#: src/sndstretch/sndstretch_xmms.c:353
+#: src/sndstretch/sndstretch_xmms.c:335
 msgid "Pitch"
 msgstr "Tizlik"
 
-#: src/sndstretch/sndstretch_xmms.c:354
+#: src/sndstretch/sndstretch_xmms.c:336
 msgid "Scale"
 msgstr "Yayılma"
 
-#: src/sndstretch/sndstretch_xmms.c:374
+#: src/sndstretch/sndstretch_xmms.c:356
 msgid "SndStretch - Configuration"
 msgstr "SndStretch Ayarları"
 
-#: src/song_change/song_change.c:437
+#: src/song_change/song_change.c:56
+#, fuzzy
+msgid "Song Change"
+msgstr "Şarkı mesajı"
+
+#: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
 msgstr "Audacious yeni bir şarkı başlattığında çalışacak komut."
 
-#: src/song_change/song_change.c:439 src/song_change/song_change.c:445
-#: src/song_change/song_change.c:451 src/song_change/song_change.c:457
+#: src/song_change/song_change.c:440 src/song_change/song_change.c:446
+#: src/song_change/song_change.c:452 src/song_change/song_change.c:458
 msgid "Command:"
 msgstr "Komut:"
 
-#: src/song_change/song_change.c:443
+#: src/song_change/song_change.c:444
 msgid "Command to run toward the end of a song."
 msgstr "Bir şarkının sonuna doğru çalışacak komut."
 
-#: src/song_change/song_change.c:449
+#: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Audacious parça listesinin sonuna ulaştığında çalıştırılacak komut."
 
-#: src/song_change/song_change.c:455
+#: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Bir şarkı için başlık değiştiğinde çalıştırılacak komut (örneğin ağ yayını "
 "başlıkları)."
 
-#: src/song_change/song_change.c:461
+#: src/song_change/song_change.c:462
 #, fuzzy
 msgid ""
 "You can use the following format strings which\n"
@@ -3624,7 +3484,7 @@ msgstr ""
 "%%t: Çalma listesi durumu (%%02d)\n"
 "%%p: Şu an oynatılan (1 or 0)"
 
-#: src/song_change/song_change.c:488
+#: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3632,213 +3492,529 @@ msgstr ""
 "<span size='small'>Kabuğa yollanan parametreler tırnak içinde belirtilmeli. "
 "Aksi takdirde güvenlik sorunu yaratır. </span>"
 
-#: src/song_change/song_change.c:499
+#: src/song_change/song_change.c:500
 msgid "Commands"
 msgstr "Komutlar"
 
-#: src/song_change/song_change.c:529
+#: src/statusicon/statusicon.c:387
 #, fuzzy
-msgid "Song Change"
-msgstr "Şarkı mesajı"
-
-#: src/statusicon/statusicon.c:381
-msgid "About Status Icon Plugin"
-msgstr "Durum Simgesi Eklentisi Hakkında"
-
-#: src/statusicon/statusicon.c:382
-#, fuzzy
-msgid ""
-"Status Icon Plugin\n"
-"\n"
-"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-"\n"
-"This plugin provides a status icon, placed in\n"
-"the system tray area of the window manager.\n"
-msgstr ""
-"\n"
-"Yazan Giacomo Lozito < james@develia.org >\n"
-"\n"
-"Bu eklenti durum simgesinin sistem araç cubuğunda görüntülenmesini sağlar.\n"
-
-#: src/statusicon/statusicon.c:453
-msgid "Status Icon Plugin - Preferences"
-msgstr "Durum Simgesi Eklentisi - Tercihler"
-
-#: src/statusicon/statusicon.c:463
-msgid "Right-Click Menu"
-msgstr "Sağ-Tık Menüsü"
-
-#: src/statusicon/statusicon.c:468
-msgid "Small playback menu #1"
-msgstr "Küçük oynatma menüsü #1"
-
-#: src/statusicon/statusicon.c:471
-msgid "Small playback menu #2"
-msgstr "Küçük oynatma menüsü #2"
-
-#: src/statusicon/statusicon.c:487
-msgid "Mouse Scroll Action"
+msgid "<b>Mouse Scroll Action</b>"
 msgstr "Fare Tekerleği Eylemi"
 
-#: src/statusicon/statusicon.c:491
+#: src/statusicon/statusicon.c:388
 msgid "Change volume"
 msgstr "Ses seviyesini değiştir"
 
-#: src/statusicon/statusicon.c:493
+#: src/statusicon/statusicon.c:391
 msgid "Change playing song"
 msgstr "Çalan şarkıyı değiştir"
 
-#: src/statusicon/statusicon.c:506
-#, fuzzy
-msgid "Other settings"
-msgstr "Karıştırıcı ayarları"
-
-#: src/statusicon/statusicon.c:511
+#: src/statusicon/statusicon.c:395
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:518
-msgid "Close to the notification area (system tray)"
+#: src/statusicon/statusicon.c:397
+msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:526
+#: src/statusicon/statusicon.c:399
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
+
+#: src/statusicon/statusicon.c:408
+#, fuzzy
+msgid "Status Icon"
+msgstr "Durum"
 
 #: src/stereo_plugin/stereo.c:27
 #, fuzzy
 msgid "<b>Extra Stereo</b>"
 msgstr "<b>Hizmetler</b>"
 
-#: src/stereo_plugin/stereo.c:34
+#: src/stereo_plugin/stereo.c:38
 #, fuzzy
-msgid "Extra Stereo Settings"
-msgstr "Karıştırıcı Ayarları:"
+msgid "Extra Stereo"
+msgstr "<b>Hizmetler</b>"
 
-#: src/stereo_plugin/stereo.c:50
-msgid ""
-"Extra Stereo Plugin\n"
-"\n"
-"By Johan Levin 1999."
-msgstr ""
-"Ekstra Stereo Eklentisi\n"
-"\n"
-"Johan Levin 1999."
-
-#: src/stereo_plugin/stereo.c:64
-msgid "About Extra Stereo Plugin"
-msgstr "Ekstra Stereo Eklentisi Hakkında"
-
-#: src/tonegen/tonegen.c:49
-msgid "About Tone Generator"
-msgstr "Ton Oluşturucusu Hakkında"
-
-#: src/tonegen/tonegen.c:51
-msgid ""
-"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
-"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
-"\n"
-"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
-msgstr ""
-"Sinus tonu oluşturucusu - Haavard Kvaalen <havardk@xmms.org>\n"
-"Düzenleyen - Daniel J. Peng <danielpeng@bigfoot.com>\n"
-"\n"
-"Kullanmak için bir URL ekleyin: tone://frequency1;frequency2;frequency3;...\n"
-"ör: 2000Hz ton ve 2005Hz ton çalmak için tone://2000;2005"
-
-#: src/tonegen/tonegen.c:101
+#: src/tonegen/tonegen.c:86
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:101
+#: src/tonegen/tonegen.c:86
 msgid "Tone Generator: "
 msgstr "Ton Oluşturucu: "
 
-#: src/unix-io/gtk.c:34
+#: src/tonegen/tonegen.c:208
 #, fuzzy
-msgid "About File I/O Plugin"
+msgid "Tone Generator"
+msgstr "Ton Oluşturucu: "
+
+#: src/unix-io/unix-io.c:290
+#, fuzzy
+msgid "File I/O Plugin"
 msgstr "ESounD Eklentisi Hakkında"
 
-#: src/vorbis/vorbis.c:573
-msgid "About Ogg Vorbis Audio Plugin"
-msgstr "OGG Vorbis Ses Eklentisi Hakkında"
-
-#: src/vorbis/vorbis.c:578
-#, fuzzy
-msgid ""
-"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
-"\n"
-"Original code by\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Contributions from\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Haavard Kvaalen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"Eugene Zagidullin <e.asphyx@gmail.com>\n"
-"\n"
-"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+#: src/voice_removal/voice_removal.c:60
+msgid "Voice Removal"
 msgstr ""
-"Xiph.org Kurumu tarafından hazırlanan Ogg Vorbis Eklentisi\n"
-"\n"
-"Orjinal Kod\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Dağıtıma Hazırlayanlar\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Haavard Kvaalen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"\n"
-"Xiph.org Vakfını buradan ziyaret edebilirsiniz http://www.xiph.org/\n"
 
-#: src/vtx/about.c:14
-msgid "About Vortex Player"
-msgstr "Vortex Player Hakkında"
-
-#: src/vtx/about.c:15
+#: src/vorbis/vorbis.c:584
 #, fuzzy
-msgid ""
-"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
-"ru>\n"
-"\n"
-"Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
-msgstr ""
-"Vortex dosya formatı oynatıcısı geliştiricisi Sashnov Alexander <sashnov@ngs."
-"ru>\n"
-"Roman Sherbakov <v_soft@microfor.ru> tarafından geliştirilen in_vtx.dll "
-"kaynak kodundan esinlenilmiştir\n"
-"\n"
-"VTX biçiminde müzik dosyalarına http://vtx.microfor.ru/music.htm\n"
-"ve diğer AY/YM müzik sitelerinden erişebilirsiniz.\n"
-"\n"
-"Audacious desteği Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgid "Ogg Vorbis Decoder"
+msgstr " Ogg Vorbis Bilgisi "
 
-#: src/wavpack/wavpack.c:353
-#, c-format
-msgid "Wavpack Decoder Plugin %s"
+#: src/vtx/vtx.c:259
+#, fuzzy
+msgid "VTX Decoder"
+msgstr "TTA Dekoder Hatası"
+
+#: src/wavpack/wavpack.c:345
+#, fuzzy
+msgid "WavPack Decoder"
 msgstr "Wavpack Dekoder Eklentisi %s"
 
-#: src/wavpack/wavpack.c:354
-msgid ""
-"Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
-"\n"
-"Some of the plugin code was by Miles Egan\n"
-"Visit the Wavpack site at http://www.wavpack.com/\n"
+#: src/xsf/plugin.c:272
+msgid "2SF Decoder"
 msgstr ""
-"Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
-"\n"
-"Eklenti kodunun bir kısmı Miles Egan tarafından hazırlanmıştır\n"
-"Wavpack sitesine http://www.wavpack.com/ adresinden ulaşabilirsiniz\n"
+
+#: src/xspf/xspf.c:442
+msgid "XML Shareable Playlists (XSPF)"
+msgstr ""
+
+#, fuzzy
+#~ msgid ""
+#~ "Using libfaad2-%s for decoding.\n"
+#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+#~ "Copyright (c) 2005-2006 Audacious team"
+#~ msgstr ""
+#~ " kullanılıyor.\n"
+#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM çözücüsü (c) Nero AG, www.nero.com\n"
+#~ "Telif Hakkı (c) 2005-2006 Audacious ekibi"
+
+#, fuzzy
+#~ msgid "About MP4 AAC decoder plugin"
+#~ msgstr "MP4 AAC oynatıcı eklentisi hakkında"
+
+#, fuzzy
+#~ msgid "About Alarm"
+#~ msgstr "XMMS Alarm Hakkında"
+
+#, fuzzy
+#~ msgid "About ALSA Output Plugin"
+#~ msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
+
+#, fuzzy
+#~ msgid "ALSA error"
+#~ msgstr "Terör"
+
+#~ msgid "Audacious OSD - about"
+#~ msgstr "Audacius OSD - hakkında"
+
+#~ msgid ""
+#~ "\n"
+#~ "Audacious OSD "
+#~ msgstr ""
+#~ "\n"
+#~ "Audacious OSD "
+
+#~ msgid ""
+#~ "\n"
+#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
+#~ "written by Giacomo Lozito\n"
+#~ "< james@develia.org >\n"
+#~ "\n"
+#~ "On-Screen-Display is based on Ghosd library\n"
+#~ "written by Evan Martin\n"
+#~ "http://neugierig.org/software/ghosd/\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
+#~ "Programı Hazırlayan Giacomo Lozito\n"
+#~ "< james@develia.org >\n"
+#~ "\n"
+#~ "Gösterge ekranı (OSD) Ghosd kütüphanesi kullanılarak yapılmıştır\n"
+#~ "http://neugierig.org/software/ghosd/\n"
+#~ "\n"
+#~ "Ghosd kütüphanesini hazırlayan Evan Martin\n"
+#~ "\n"
+
+#~ msgid "Blur Scope: Color selection"
+#~ msgstr "Bulanık alan: Renk seçimi"
+
+#~ msgid "Options:"
+#~ msgstr "Seçenekler:"
+
+#, fuzzy
+#~ msgid "About Dynamic Range Compression Plugin"
+#~ msgstr "Ekstra Stereo Eklentisi Hakkında"
+
+#, fuzzy
+#~ msgid "About the Game Console Music Decoder"
+#~ msgstr "Konsol Müzik Çözücüsü Hakkında"
+
+#, fuzzy
+#~ msgid ""
+#~ "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+#~ "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+#~ "Audacious implementation by: William Pitcock <nenolod@dereferenced."
+#~ "org>, \n"
+#~ "        Shay Green <gblargg@gmail.com>\n"
+#~ msgstr ""
+#~ "Game_Music_Emu 0.5.2 tabanlı konsol müzik çözücüsü.\n"
+#~ "Desteklenen biçimler: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
+#~ "VGZ\n"
+#~ "Audacious için uyarlayan: William Pitcock <nenolod@nenolod.net>, \n"
+#~ "        Shay Green <gblargg@gmail.com>"
+
+#, fuzzy
+#~ msgid "About Crossfade"
+#~ msgstr "Scrobbler Eklentisi Hakkında"
+
+#, fuzzy
+#~ msgid "Crossfade Preferences"
+#~ msgstr "AudioCompress seçenekleri"
+
+#, fuzzy
+#~ msgid "Crossfade Error"
+#~ msgstr "Crossover"
+
+#, fuzzy
+#~ msgid "Crystalizer Settings"
+#~ msgstr "Sentezleyici ayarları"
+
+#, fuzzy
+#~ msgid "Echo Settings"
+#~ msgstr "Alarm Ayarları"
+
+#~ msgid ""
+#~ "Echo Plugin\n"
+#~ "By Johan Levin 1999.\n"
+#~ "\n"
+#~ "Surround echo by Carl van Schaik 1999"
+#~ msgstr ""
+#~ "Yankı (Eko) Eklentisi\n"
+#~ "Johan Levin 1999.\n"
+#~ "\n"
+#~ "Surround Eko - Carl van Schaik 1999"
+
+#, fuzzy
+#~ msgid "About FFaudio Plugin"
+#~ msgstr "FLAC Ses Eklentisi Hakkında"
+
+#~ msgid "About FLAC Audio Plugin"
+#~ msgstr "FLAC Ses Eklentisi Hakkında"
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "Original code by\n"
+#~ "Ralf Ertzinger <ralf@skytale.net>\n"
+#~ "\n"
+#~ "http://www.skytale.net/projects/bmp-flac2/"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "Orijinal kod\n"
+#~ "Ralf Ertzinger <ralf@skytale.net>\n"
+#~ "\n"
+#~ "http://www.skytale.net/projects/bmp-flac2/"
+
+#, fuzzy
+#~ msgid ""
+#~ "Gnome Shortcut Plugin\n"
+#~ "Let's you control the player with Gnome's shortcuts.\n"
+#~ "\n"
+#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Gnome Kısayol Eklentisi\n"
+#~ "Gnome kısayolları ile çalıcıyı kontrol etmenizi sağlar.\n"
+#~ "\n"
+#~ "Telif Hakkı (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "Global Hotkey Plugin\n"
+#~ "Control the player with global key combinations or multimedia keys.\n"
+#~ "\n"
+#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+#~ "Contributers include:\n"
+#~ "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+#~ "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+#~ "\t\t\tBryn Davies <curious@ihug.com.au>\n"
+#~ "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+#~ "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Global Hotkey Eklentisi\n"
+#~ "Oynatıcıyı global tuş kombinasyonları ya da multimedya tuşları ile "
+#~ "yönetmeye yarar.\n"
+#~ "\n"
+#~ "Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+#~ "Katkı verenler:\n"
+#~ "Copyright (C) 2006 - 2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+#~ "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+#~ "\t\t\tBryn Davies <curious@ihug.com.au>\n"
+#~ "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+#~ "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
+#~ "\n"
+
+#~ msgid "Connect to all available jack ports"
+#~ msgstr "Uygun bütün jack portlarına bağlan"
+
+#~ msgid "Connect only the output ports"
+#~ msgstr "Sadece çıkış portlarını bağla"
+
+#~ msgid "Connect to no ports"
+#~ msgstr "Hiç bir porta bağlanma"
+
+#~ msgid "jack Plugin configuration"
+#~ msgstr "Jack Eklentisi Eklentisi yapılandırması"
+
+#~ msgid "Connection mode:"
+#~ msgstr "Bağlantı modu:"
+
+#~ msgid "Enable debug printing"
+#~ msgstr "Hata ayıklama yazdırmasını etkinleştir"
+
+#~ msgid "Ok"
+#~ msgstr "Tamam"
+
+#, fuzzy
+#~ msgid "About JACK Output Plugin"
+#~ msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
+
+#, fuzzy
+#~ msgid "LIRC plugin settings"
+#~ msgstr "LIRC Eklentisi"
+
+#, fuzzy
+#~ msgid "Reconnect"
+#~ msgstr "Bağlantı modu:"
+
+#, fuzzy
+#~ msgid "Connection"
+#~ msgstr "Bağlantı modu:"
+
+#~ msgid "About LIRC Audacious Plugin"
+#~ msgstr "LIRC Audacious Eklentisi Hakkında"
+
+#~ msgid "About Metronom"
+#~ msgstr "Metronom Hakkında"
+
+#~ msgid ""
+#~ "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+#~ "\n"
+#~ "To use it, add a URL: tact://beats*num/den\n"
+#~ "e.g. tact://77 to play 77 beats per minute\n"
+#~ "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
+#~ msgstr ""
+#~ "Tact Üretici, Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+#~ "\n"
+#~ "Kullanmak için URL ekleyin: tact://beats*num/den\n"
+#~ "örneğin tact://77 ile dakikada 77 vurgu ya da\n"
+#~ "tact://60*3/4 ile 60 bpm yi 3/4 tact ile"
+
+#, fuzzy
+#~ msgid "Channel Mixer Settings"
+#~ msgstr "Karıştırıcı Ayarları:"
+
+#~ msgid "Null output plugin "
+#~ msgstr "Null Çıkış eklentisi"
+
+#~ msgid ""
+#~ " by Christian Birchinger <joker@netswarm.net>\n"
+#~ "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+#~ msgstr ""
+#~ "Christian Birchinger <joker@netswarm.net>\n"
+#~ "Esinlenilen XMMS eklentisi - Håvard Kvål <havardk@xmms.org>"
+
+#~ msgid "About Null Output"
+#~ msgstr "Null Çıkışı Hakkında"
+
+#~ msgid "Null output preferences"
+#~ msgstr "Boşl çıktı eklentisi"
+
+#~ msgid "Run in real time"
+#~ msgstr "Gerçekzamanlı çalış"
+
+#, fuzzy
+#~ msgid "OSS4 Output Plugin Preferences"
+#~ msgstr "Durum Simgesi Eklentisi - Tercihler"
+
+#, fuzzy
+#~ msgid "About OSS4 Plugin"
+#~ msgstr "ESounD Eklentisi Hakkında"
+
+#, fuzzy
+#~ msgid "OSS4 error"
+#~ msgstr "Terör"
+
+#~ msgid "About Audacious PulseAudio Output Plugin"
+#~ msgstr "Audacious PulseAudio Çıktı Eklentisi Hakkında"
+
+#~ msgid ""
+#~ "Audacious AudioScrobbler Plugin\n"
+#~ "\n"
+#~ "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
+#~ "com>\n"
+#~ msgstr ""
+#~ "Audacious AudioScrobbler Eklentisi\n"
+#~ "\n"
+#~ "İlk geliştiricileri Audun Hove <audun@nlc.no> ve Pipian <pipian@pipian."
+#~ "com>\n"
+
+#~ msgid "About Scrobbler Plugin"
+#~ msgstr "Scrobbler Eklentisi Hakkında"
+
+#, fuzzy
+#~ msgid "About SDL Output Plugin"
+#~ msgstr "JACK Çıkış Eklentisi 0.17 Hakkında"
+
+#, fuzzy
+#~ msgid "SDL error"
+#~ msgstr "Terör"
+
+#~ msgid "About Status Icon Plugin"
+#~ msgstr "Durum Simgesi Eklentisi Hakkında"
+
+#, fuzzy
+#~ msgid ""
+#~ "Status Icon Plugin\n"
+#~ "\n"
+#~ "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+#~ "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+#~ "\n"
+#~ "This plugin provides a status icon, placed in\n"
+#~ "the system tray area of the window manager.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Yazan Giacomo Lozito < james@develia.org >\n"
+#~ "\n"
+#~ "Bu eklenti durum simgesinin sistem araç cubuğunda görüntülenmesini "
+#~ "sağlar.\n"
+
+#~ msgid "Status Icon Plugin - Preferences"
+#~ msgstr "Durum Simgesi Eklentisi - Tercihler"
+
+#~ msgid "Right-Click Menu"
+#~ msgstr "Sağ-Tık Menüsü"
+
+#~ msgid "Small playback menu #1"
+#~ msgstr "Küçük oynatma menüsü #1"
+
+#~ msgid "Small playback menu #2"
+#~ msgstr "Küçük oynatma menüsü #2"
+
+#, fuzzy
+#~ msgid "Other settings"
+#~ msgstr "Karıştırıcı ayarları"
+
+#, fuzzy
+#~ msgid "Extra Stereo Settings"
+#~ msgstr "Karıştırıcı Ayarları:"
+
+#~ msgid ""
+#~ "Extra Stereo Plugin\n"
+#~ "\n"
+#~ "By Johan Levin 1999."
+#~ msgstr ""
+#~ "Ekstra Stereo Eklentisi\n"
+#~ "\n"
+#~ "Johan Levin 1999."
+
+#~ msgid "About Extra Stereo Plugin"
+#~ msgstr "Ekstra Stereo Eklentisi Hakkında"
+
+#~ msgid "About Tone Generator"
+#~ msgstr "Ton Oluşturucusu Hakkında"
+
+#~ msgid ""
+#~ "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
+#~ "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+#~ "\n"
+#~ "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+#~ "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+#~ msgstr ""
+#~ "Sinus tonu oluşturucusu - Haavard Kvaalen <havardk@xmms.org>\n"
+#~ "Düzenleyen - Daniel J. Peng <danielpeng@bigfoot.com>\n"
+#~ "\n"
+#~ "Kullanmak için bir URL ekleyin: tone://frequency1;frequency2;"
+#~ "frequency3;...\n"
+#~ "ör: 2000Hz ton ve 2005Hz ton çalmak için tone://2000;2005"
+
+#~ msgid "About Ogg Vorbis Audio Plugin"
+#~ msgstr "OGG Vorbis Ses Eklentisi Hakkında"
+
+#, fuzzy
+#~ msgid ""
+#~ "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
+#~ "\n"
+#~ "Original code by\n"
+#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+#~ "Contributions from\n"
+#~ "Chris Montgomery <monty@xiph.org>\n"
+#~ "Peter Alm <peter@xmms.org>\n"
+#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
+#~ "Jack Moffitt <jack@icecast.org>\n"
+#~ "Jorn Baayen <jorn@nl.linux.org>\n"
+#~ "Haavard Kvaalen <havardk@xmms.org>\n"
+#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+#~ "Eugene Zagidullin <e.asphyx@gmail.com>\n"
+#~ "\n"
+#~ "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+#~ msgstr ""
+#~ "Xiph.org Kurumu tarafından hazırlanan Ogg Vorbis Eklentisi\n"
+#~ "\n"
+#~ "Orjinal Kod\n"
+#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+#~ "Dağıtıma Hazırlayanlar\n"
+#~ "Chris Montgomery <monty@xiph.org>\n"
+#~ "Peter Alm <peter@xmms.org>\n"
+#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
+#~ "Jack Moffitt <jack@icecast.org>\n"
+#~ "Jorn Baayen <jorn@nl.linux.org>\n"
+#~ "Haavard Kvaalen <havardk@xmms.org>\n"
+#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+#~ "\n"
+#~ "Xiph.org Vakfını buradan ziyaret edebilirsiniz http://www.xiph.org/\n"
+
+#~ msgid "About Vortex Player"
+#~ msgstr "Vortex Player Hakkında"
+
+#, fuzzy
+#~ msgid ""
+#~ "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+#~ "Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
+#~ "ru>\n"
+#~ "\n"
+#~ "Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
+#~ msgstr ""
+#~ "Vortex dosya formatı oynatıcısı geliştiricisi Sashnov Alexander "
+#~ "<sashnov@ngs.ru>\n"
+#~ "Roman Sherbakov <v_soft@microfor.ru> tarafından geliştirilen in_vtx.dll "
+#~ "kaynak kodundan esinlenilmiştir\n"
+#~ "\n"
+#~ "VTX biçiminde müzik dosyalarına http://vtx.microfor.ru/music.htm\n"
+#~ "ve diğer AY/YM müzik sitelerinden erişebilirsiniz.\n"
+#~ "\n"
+#~ "Audacious desteği Pavel Vymetalek <pvymetalek@seznam.cz>"
+
+#~ msgid ""
+#~ "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+#~ "\n"
+#~ "Some of the plugin code was by Miles Egan\n"
+#~ "Visit the Wavpack site at http://www.wavpack.com/\n"
+#~ msgstr ""
+#~ "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+#~ "\n"
+#~ "Eklenti kodunun bir kısmı Miles Egan tarafından hazırlanmıştır\n"
+#~ "Wavpack sitesine http://www.wavpack.com/ adresinden ulaşabilirsiniz\n"
 
 #~ msgid "ALSA BACKEND CONFIGURATION"
 #~ msgstr "ALSA BACKEND AYARLARI"
@@ -3873,9 +4049,6 @@ msgstr ""
 #~ msgstr ""
 #~ "<span size=\"smaller\">TiMidity\n"
 #~ "arkayüzü</span>"
-
-#~ msgid "AMIDI-Plug - about"
-#~ msgstr "AMIDI-Plug - hakkında"
 
 #~ msgid ""
 #~ "\n"
@@ -4240,17 +4413,11 @@ msgstr ""
 #~ msgid "Samplerate:"
 #~ msgstr "Örnekleme oranı:"
 
-#~ msgid "Use oversampling"
-#~ msgstr "Yeniden örnekleme kullan"
-
 #~ msgid "Factor:"
 #~ msgstr "Oran:"
 
 #~ msgid "Large factors require more CPU-power"
 #~ msgstr "yüksek oran değerleri daha çok işlemci gücü gerektirir"
-
-#~ msgid "Oversampling:"
-#~ msgstr "Yeniden örnekleme:"
 
 #~ msgid "Audio"
 #~ msgstr "Ses"
@@ -4419,9 +4586,6 @@ msgstr ""
 #~ msgstr ""
 #~ "En hızlı ama en kötü ses örnekleme metodu, basitce en yakın örneği "
 #~ "seçerek çalışır."
-
-#~ msgid "Linear interpolation"
-#~ msgstr "Doğrusal ortalama"
 
 #~ msgid ""
 #~ "Uses linear interpolation between samples, yielding higher audio quality "
@@ -4681,10 +4845,6 @@ msgstr ""
 
 #~ msgid "No"
 #~ msgstr "Hayır"
-
-#, fuzzy
-#~ msgid "Save All Playlists"
-#~ msgstr "Parça Listesini Seç"
 
 #~ msgid ""
 #~ "Adapted for Audacious usage by Tony Vroon <chainsaw@gentoo.org>\n"
@@ -5190,9 +5350,6 @@ msgstr ""
 #~ msgid "Active"
 #~ msgstr "Etkin"
 
-#~ msgid "Status"
-#~ msgstr "Durum"
-
 #~ msgid "Device Name"
 #~ msgstr "Aygıt İsmi"
 
@@ -5227,9 +5384,6 @@ msgstr ""
 
 #~ msgid "EvDev-Plug - Bindings Configuration"
 #~ msgstr "EvDev-Plug - Bağlayıcı Yapılandırması"
-
-#~ msgid "<b>Name: </b>"
-#~ msgstr "<b>İsim: </b>"
 
 #~ msgid "<b>Filename: </b>"
 #~ msgstr "<b>Dosya ismi: </b>"
@@ -5273,9 +5427,6 @@ msgstr ""
 
 #~ msgid "LADSPA Plugin Catalog"
 #~ msgstr "LADSPA Eklenti Kataloğu"
-
-#~ msgid "LIRC Plugin "
-#~ msgstr "LIRC Eklentisi"
 
 #, fuzzy
 #~ msgid ""
@@ -5325,20 +5476,6 @@ msgstr ""
 
 #~ msgid "8-tap Fir (extremely high quality)"
 #~ msgstr "8-tap FIR (fazla iyi kalite)"
-
-#, fuzzy
-#~ msgid "96 kHz"
-#~ msgstr "44 kHz"
-
-#, fuzzy
-#~ msgid "48 kHz"
-#~ msgstr "44 kHz"
-
-#~ msgid "44 kHz"
-#~ msgstr "44 kHz"
-
-#~ msgid "22 kHz"
-#~ msgstr "22 kHz"
 
 #~ msgid "Sampling Rate"
 #~ msgstr "Örnekleme Oranı"
@@ -5485,13 +5622,6 @@ msgstr ""
 #~ msgid "Enable 'GUI Scaling'"
 #~ msgstr "Ses örneklemesini etkinleştir"
 
-#~ msgid "Spectrum Analyzer"
-#~ msgstr "Spektrum Analizi"
-
-#, fuzzy
-#~ msgid "Search:"
-#~ msgstr "Yıl:"
-
 #, fuzzy
 #~ msgid "Stream name"
 #~ msgstr "Enstruman adı"
@@ -5574,10 +5704,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Save as Static Playlist"
 #~ msgstr "Parça Listesini Seç"
-
-#, fuzzy
-#~ msgid "Load Playlist"
-#~ msgstr "Hızlı Parça Listesi Bilgisi"
 
 #, fuzzy
 #~ msgid "Save Playlist"
@@ -5988,9 +6114,6 @@ msgstr ""
 #~ msgid "Volume controls OSS mixer"
 #~ msgstr "Ses OSS karıştırıcısını kontrol ediyor"
 
-#~ msgid "Server"
-#~ msgstr "Sunucu"
-
 #, fuzzy
 #~ msgid "About RoarAudio Plugin"
 #~ msgstr "FLAC Ses Eklentisi Hakkında"
@@ -6368,10 +6491,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Fade in"
 #~ msgstr "Gecikme:"
-
-#, fuzzy
-#~ msgid "Crossfade"
-#~ msgstr "Crossover"
 
 #, fuzzy
 #~ msgid "Simple XF"
@@ -6763,9 +6882,6 @@ msgstr ""
 #~ msgid "ReplayGain Settings"
 #~ msgstr "ReplayGain Ayarları"
 
-#~ msgid "Plugin"
-#~ msgstr "Eklenti"
-
 #~ msgid "ReplayGain"
 #~ msgstr "ReplayGain"
 
@@ -6806,9 +6922,6 @@ msgstr ""
 #~ msgid "Unknown error\n"
 #~ msgstr "Bilinmeyen hata\n"
 
-#~ msgid "TTA Decoder Error"
-#~ msgstr "TTA Dekoder Hatası"
-
 #~ msgid "TTA input plugin "
 #~ msgstr "TTA girdi eklentisi"
 
@@ -6847,9 +6960,6 @@ msgstr ""
 
 #~ msgid "/Close"
 #~ msgstr "/Kapat"
-
-#~ msgid "Blur scope"
-#~ msgstr "Bulanık Alan"
 
 #~ msgid "ReplayGain Settings:"
 #~ msgstr "ReplayGain Ayarları:"
@@ -7788,9 +7898,6 @@ msgstr ""
 
 #~ msgid "Album peak:"
 #~ msgstr "Albüm doruğu:"
-
-#~ msgid " Ogg Vorbis Info "
-#~ msgstr " Ogg Vorbis Bilgisi "
 
 #~ msgid "File size:"
 #~ msgstr "Dosya boyutu:"

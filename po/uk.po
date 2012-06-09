@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-01 20:51-0400\n"
+"POT-Creation-Date: 2012-06-09 17:59-0400\n"
 "PO-Revision-Date: 2012-06-02 00:48+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Ukrainian\n"
@@ -24,37 +24,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: src/aac/libmp4.c:256
-#, c-format
-msgid ""
-"Using libfaad2-%s for decoding.\n"
-"FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-"Copyright (c) 2005-2006 Audacious team"
+#: src/aac/libmp4.c:930
+msgid "AAC Decoder"
 msgstr ""
-"(c) 2005-2006, Команда Audacious.\n"
-"\n"
-"Для декодування використовується libfaad2-%s.\n"
-"Декодер FAAD2 AAC/HE-AAC/HE-AACv2/DRM: (c) Nero AG, www.nero.com"
 
-#: src/aac/libmp4.c:261
-msgid "About MP4 AAC decoder plugin"
-msgstr "Про плаґін декодування MP4 AAC"
-
-#: src/alarm/alarm.c:312
-msgid "About Alarm"
-msgstr "Про Будильник"
-
-#: src/alarm/alarm.c:313
-msgid ""
-"A plugin that can be used to start playing at a certain time.\n"
-"\n"
-"Originally written by Adam Feakin and Daniel Stodden."
+#: src/adplug/plugin.c:16
+msgid "AdPlug (AdLib Player)"
 msgstr ""
-"Модуль, що починає й закінчує відтворення за розкладом.\n"
-"\n"
-"Авторами є Adam Feakin та Daniel Stodden."
 
-#: src/alarm/interface.c:32
+#: src/alarm/alarm.c:833 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "Будильник"
 
@@ -148,7 +126,7 @@ msgstr "Дні"
 msgid "Fading"
 msgstr "Наростання"
 
-#: src/alarm/interface.c:911
+#: src/alarm/interface.c:911 src/crossfade/crossfade.c:274 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "сек"
 
@@ -196,7 +174,7 @@ msgstr "Повідомлення"
 msgid "Use reminder"
 msgstr "Використовувати:"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:355
+#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
 msgid "Options"
 msgstr "Опції"
 
@@ -315,7 +293,7 @@ msgstr ""
 msgid "Help"
 msgstr "Як налаштувати?"
 
-#: src/alarm/interface.c:1221 src/jack/configure.c:148 src/null/null.c:107
+#: src/alarm/interface.c:1221
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -327,6 +305,11 @@ msgstr "Нагадую:"
 msgid "Thankyou"
 msgstr "Дякую"
 
+#: src/albumart/albumart.c:101
+#, fuzzy
+msgid "Album Art"
+msgstr "Альбом: "
+
 #: src/alsa/config.c:210
 msgid "Default PCM device"
 msgstr "Типовий PCM-прилад"
@@ -335,35 +318,36 @@ msgstr "Типовий PCM-прилад"
 msgid "Default mixer device"
 msgstr "Типовий мікшер"
 
-#: src/alsa/config.c:438
+#: src/alsa/config.c:433
 msgid "ALSA Output Plugin Preferences"
 msgstr "Налаштування виводу ALSA"
 
-#: src/alsa/config.c:445
+#: src/alsa/config.c:439
 msgid "PCM device:"
 msgstr "PCM-пристрій:"
 
-#: src/alsa/config.c:447
+#: src/alsa/config.c:441
 msgid "Mixer device:"
 msgstr "Мікшер:"
 
-#: src/alsa/config.c:449
+#: src/alsa/config.c:443
 msgid "Mixer element:"
 msgstr "Елемент мікшера:"
 
-#: src/alsa/config.c:452
+#: src/alsa/config.c:446
 msgid "Work around drain hangup"
 msgstr "Не зависати через \"drain\"-ваду ALSA"
 
-#: src/alsa/plugin.c:59
-msgid "About ALSA Output Plugin"
-msgstr "Про плаґін виводу ALSA"
+#: src/alsa/plugin.c:45
+#, fuzzy
+msgid "ALSA Output"
+msgstr "Порти виводу ALSA"
 
-#: src/alsa/plugin.c:81
-msgid "ALSA error"
-msgstr "Збій ALSA"
+#: src/amidi-plug/amidi-plug.c:39
+msgid "AMIDI-Plug (MIDI Player)"
+msgstr ""
 
-#: src/amidi-plug/amidi-plug.c:326
+#: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -657,6 +641,11 @@ msgstr "  (недійсний UTF-8)"
 msgid "About AMIDI-Plug"
 msgstr ""
 
+#: src/aosd/aosd.c:37
+#, fuzzy
+msgid "AOSD (On-Screen Display)"
+msgstr "Показати OSD-повідомлення"
+
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
 msgstr "Прямокутник"
@@ -892,47 +881,24 @@ msgstr "Спусковий гачок"
 msgid "Misc"
 msgstr "Різне"
 
-#: src/aosd/aosd_ui.c:1110
-msgid "Audacious OSD - about"
-msgstr "Про плаґін повідомлень на екрані"
-
-#: src/aosd/aosd_ui.c:1140
-msgid ""
-"\n"
-"Audacious OSD "
+#: src/asx/asx.c:97
+msgid "ASXv1/ASXv2 Playlists"
 msgstr ""
-"\n"
-"Audacious OSD "
 
-#: src/aosd/aosd_ui.c:1141
-msgid ""
-"\n"
-"http://www.develia.org/projects.php?p=audacious#aosd\n"
-"written by Giacomo Lozito\n"
-"< james@develia.org >\n"
-"\n"
-"On-Screen-Display is based on Ghosd library\n"
-"written by Evan Martin\n"
-"http://neugierig.org/software/ghosd/\n"
-"\n"
-msgstr ""
-"\n"
-"http://www.develia.org/projects.php?p=audacious#aosd\n"
-"Автором є Giacomo Lozito\n"
-"<james@develia.org>\n"
-"\n"
-"Базується на бібліотеці Ghosd,\n"
-"автором якої є Evan Martin,\n"
-"http://neugierig.org/software/ghosd/\n"
-"\n"
+#: src/audpl/audpl.c:224
+#, fuzzy
+msgid "Audacious Playlists (audpl)"
+msgstr "Редактор списків відтворення Audacious"
 
-#: src/blur_scope/config.c:72
-msgid "Blur Scope: Color selection"
-msgstr "Розпливчастий осцилограф: вибір кольору"
+#: src/blur_scope/blur_scope.c:49
+#, fuzzy
+msgid "<b>Color</b>"
+msgstr "<b>Шрифти</b>"
 
-#: src/blur_scope/config.c:82 src/jack/configure.c:106
-msgid "Options:"
-msgstr "Опції:"
+#: src/blur_scope/blur_scope.c:58
+#, fuzzy
+msgid "Blur Scope"
+msgstr "Суцільний"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -950,63 +916,69 @@ msgstr "Частота зрізу:"
 msgid "Presets:"
 msgstr "Пресети:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:108
+#: src/bs2b/plugin.c:199
+msgid "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr ""
+
+#: src/cairo-spectrum/cairo-spectrum.c:293
+#, fuzzy
+msgid "Spectrum Analyzer"
+msgstr "Аналізатор"
+
+#: src/cdaudio-ng/cdaudio-ng.c:115
 msgid "<b>Device</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:109
+#: src/cdaudio-ng/cdaudio-ng.c:116
 msgid "Read speed:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:112
+#: src/cdaudio-ng/cdaudio-ng.c:119
 msgid "Override device:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:114
+#: src/cdaudio-ng/cdaudio-ng.c:121
 msgid "<b>Metadata</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:122
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:117
+#: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Use HTTP instead of CDDBP"
 msgstr "Використовувати HTTP замість CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Server:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:123
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Path:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Port:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:131
-msgid "Audio CD Settings"
-msgstr ""
-
-#: src/cdaudio-ng/cdaudio-ng.c:247
-msgid "About Audio CD Plugin"
+#: src/cdaudio-ng/cdaudio-ng.c:142
+#, fuzzy
+msgid "Audio CD Plugin"
 msgstr "Про плаґін аудіо-компакт-дисків"
 
-#: src/cdaudio-ng/cdaudio-ng.c:535
+#: src/cdaudio-ng/cdaudio-ng.c:523
 msgid "Audio CD"
 msgstr "Аудіо-CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:911
+#: src/cdaudio-ng/cdaudio-ng.c:899
 msgid "Drive is empty."
 msgstr "Привід порожній."
 
-#: src/cdaudio-ng/cdaudio-ng.c:913
+#: src/cdaudio-ng/cdaudio-ng.c:901
 msgid "Unsupported disk type."
 msgstr "Непідтримуваний тип диску."
 
@@ -1018,27 +990,28 @@ msgstr "Відтворити CD"
 msgid "Add CD"
 msgstr "Додати CD"
 
-#: src/compressor/plugin.c:41
+#: src/cd-menu-items/cd-menu-items.c:61
+msgid "Audio CD Menu Items"
+msgstr ""
+
+#: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
 msgstr ""
 
-#: src/compressor/plugin.c:42
+#: src/compressor/plugin.c:38
 msgid "Center volume:"
 msgstr "Гучність центру:"
 
-#: src/compressor/plugin.c:45
+#: src/compressor/plugin.c:41
 msgid "Dynamic range:"
 msgstr "Динамічний діапазон:"
 
-#: src/compressor/plugin.c:51
-msgid "Dynamic Range Compressor Settings"
-msgstr ""
-
-#: src/compressor/plugin.c:70
-msgid "About Dynamic Range Compression Plugin"
+#: src/compressor/plugin.c:71
+#, fuzzy
+msgid "Dynamic Range Compressor"
 msgstr "Про плаґін-компресор звукового діапазону"
 
-#: src/console/configure.c:135
+#: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
 msgstr "Декодер ігроконсольної музики"
 
@@ -1079,7 +1052,11 @@ msgstr "Примусова передискретизація"
 msgid "Resampling rate:"
 msgstr "Частота дискретизації:"
 
-#: src/console/configure.c:232
+#: src/console/configure.c:232 src/resample/resample.c:191
+#: src/resample/resample.c:197 src/resample/resample.c:200
+#: src/resample/resample.c:203 src/resample/resample.c:206
+#: src/resample/resample.c:209 src/resample/resample.c:212
+#: src/resample/resample.c:215
 msgid "Hz"
 msgstr "Гц"
 
@@ -1103,57 +1080,44 @@ msgstr ""
 "Типова тривалість пісні, вказана в секундах, використовується для доріжок, "
 "що не мають інформації про тривалість (наприклад, повторювані доріжки)."
 
-#: src/console/plugin.c:33
-msgid "About the Game Console Music Decoder"
-msgstr "Про декодер ігроконсольної музики"
-
-#: src/console/plugin.c:34
+#: src/crossfade/crossfade.c:83
+#, fuzzy
 msgid ""
-"Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
-"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Audacious implementation by: William Pitcock <nenolod@dereferenced.org>, \n"
-"        Shay Green <gblargg@gmail.com>\n"
-msgstr ""
-"Двигунець декодування ігроконсольної музики базується на Game_Music_Emu "
-"0.5.2.\n"
-"Підтримувані формати: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-"Для Audacious імплементували William Pitcock <nenolod@dereferenced.org> та "
-"Shay Green <gblargg@gmail.com>\n"
-
-#: src/crossfade/plugin.c:59
-msgid "About Crossfade"
-msgstr "Про плаґін перехресного затихання-наростання"
-
-#: src/crossfade/plugin.c:91
-msgid "Crossfade Preferences"
-msgstr "Перехресне затихання"
-
-#: src/crossfade/plugin.c:103
-msgid "Overlap (in seconds):"
-msgstr "Охоплювати (секунд):"
-
-#: src/crossfade/plugin.c:134 src/crossfade/plugin.c:141
-msgid "Crossfade Error"
-msgstr "Збій при перехресному затиханні"
-
-#: src/crossfade/plugin.c:134
-msgid ""
-"Crossfading failed because the songs had a different number of channels."
-msgstr ""
-"Перехресне затихання тут неможливе, бо доріжки мають різну кількість каналів."
-
-#: src/crossfade/plugin.c:143
-msgid ""
-"Crossfading failed because the songs had different sample rates.\n"
-"\n"
-"You can use the Sample Rate Converter effect to resample the songs to the "
-"same rate."
+"Crossfading failed because the songs had a different number of channels.  "
+"You can use the Channel Mixer to convert the songs to the same number of "
+"channels."
 msgstr ""
 "Перехресне затихання тут неможливе, бо доріжки мають різну частоту "
 "дискретизації.\n"
 "\n"
 "Можна використовувати ефект \"Sample Rate Converter\" для примусового "
 "встановлення частоти дискретизації."
+
+#: src/crossfade/crossfade.c:90
+#, fuzzy
+msgid ""
+"Crossfading failed because the songs had different sample rates.  You can "
+"use the Sample Rate Converter to convert the songs to the same sample rate."
+msgstr ""
+"Перехресне затихання тут неможливе, бо доріжки мають різну частоту "
+"дискретизації.\n"
+"\n"
+"Можна використовувати ефект \"Sample Rate Converter\" для примусового "
+"встановлення частоти дискретизації."
+
+#: src/crossfade/crossfade.c:271
+#, fuzzy
+msgid "<b>Crossfade</b>"
+msgstr "Про плаґін перехресного затихання-наростання"
+
+#: src/crossfade/crossfade.c:272
+msgid "Overlap:"
+msgstr ""
+
+#: src/crossfade/crossfade.c:282
+#, fuzzy
+msgid "Crossfade"
+msgstr "Про плаґін перехресного затихання-наростання"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
@@ -1163,9 +1127,14 @@ msgstr ""
 msgid "Intensity:"
 msgstr ""
 
-#: src/crystalizer/crystalizer.c:49
-msgid "Crystalizer Settings"
+#: src/crystalizer/crystalizer.c:53
+msgid "Crystalizer"
 msgstr ""
+
+#: src/cue/cue.c:161
+#, fuzzy
+msgid "Cue Sheet Plugin"
+msgstr "Про плаґін відлуння"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
@@ -1187,110 +1156,69 @@ msgstr ""
 msgid "Volume:"
 msgstr ""
 
-#: src/echo_plugin/echo.c:39
-msgid "Echo Settings"
+#: src/echo_plugin/echo.c:122
+msgid "Echo"
 msgstr ""
 
-#: src/echo_plugin/gui.c:8
-msgid ""
-"Echo Plugin\n"
-"By Johan Levin 1999.\n"
-"\n"
-"Surround echo by Carl van Schaik 1999"
+#: src/ffaudio/ffaudio-core.c:683
+msgid "FFmpeg Plugin"
 msgstr ""
-"Плаґін відлуння\n"
-"Johan Levin створив 1999 року.\n"
-"\n"
-"Відлуння об’ємного звуку написав 1999 року Carl van Schaik."
 
-#: src/echo_plugin/gui.c:17
-msgid "About Echo Plugin"
-msgstr "Про плаґін відлуння"
-
-#: src/ffaudio/ffaudio-core.c:718
-#, c-format
-msgid ""
-"Multi-format audio decoding plugin for Audacious based on\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-"Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
-"\n"
-"Audacious plugin by:\n"
-"            William Pitcock <nenolod@nenolod.net>,\n"
-"            Matti Hämäläinen <ccr@tnsp.org>\n"
-"\n"
-"libavcodec %s (%s)\n"
-"libavformat %s (%s)\n"
-"libavutil %s (%s)\n"
-msgstr ""
-"Плаґін декодування звуку багатьох форматів для Audacious, базується\n"
-"на інтегрованому мультимедіа-середовищі FFmpeg (http://www.ffmpeg.org/).\n"
-"(c) 2000-2009 Fabrice Bellard та інші.\n"
-"\n"
-"Автори плаґіна для Audacious:\n"
-"            William Pitcock <nenolod@nenolod.net>,\n"
-"            Matti Hämäläinen <ccr@tnsp.org>.\n"
-"\n"
-"libavcodec %s (%s)\n"
-"libavformat %s (%s)\n"
-"libavutil %s (%s)\n"
-
-#: src/ffaudio/ffaudio-core.c:732
-msgid "About FFaudio Plugin"
-msgstr "Про плаґін FFaudio"
-
-#: src/filewriter/filewriter.c:165
-msgid "About FileWriter-Plugin"
-msgstr "Про плаґін FileWriter"
-
-#: src/filewriter/filewriter.c:460
-msgid "File Writer Configuration"
+#: src/filewriter/filewriter.c:409
+#, fuzzy
+msgid "FileWriter Configuration"
 msgstr "Налаштування виводу в файл"
 
-#: src/filewriter/filewriter.c:472
+#: src/filewriter/filewriter.c:421
 msgid "Output file format:"
 msgstr "Тип файлу виводу:"
 
-#: src/filewriter/filewriter.c:490
+#: src/filewriter/filewriter.c:439
 msgid "Configure"
 msgstr "Налаштування..."
 
-#: src/filewriter/filewriter.c:505
+#: src/filewriter/filewriter.c:449
 msgid "Save into original directory"
 msgstr "Зберігати в теку оригіналу"
 
-#: src/filewriter/filewriter.c:510
+#: src/filewriter/filewriter.c:454
 msgid "Save into custom directory"
 msgstr "Обрати теку самостійно"
 
-#: src/filewriter/filewriter.c:520
+#: src/filewriter/filewriter.c:464
 msgid "Output file folder:"
 msgstr "Зберігати вивід до:"
 
-#: src/filewriter/filewriter.c:524
+#: src/filewriter/filewriter.c:468
 msgid "Pick a folder"
 msgstr "Вибір теки виводу"
 
-#: src/filewriter/filewriter.c:543
+#: src/filewriter/filewriter.c:481
 msgid "Get filename from:"
 msgstr "Назва файла:"
 
-#: src/filewriter/filewriter.c:546
+#: src/filewriter/filewriter.c:484
 msgid "original file tags"
 msgstr "за тегами доріжки"
 
-#: src/filewriter/filewriter.c:552
+#: src/filewriter/filewriter.c:490
 msgid "original filename"
 msgstr "за назвою файлу оригіналу"
 
-#: src/filewriter/filewriter.c:562
+#: src/filewriter/filewriter.c:497
 msgid "Don't strip file name extension"
 msgstr "Не вирізати розширення оригіналу"
 
-#: src/filewriter/filewriter.c:577
+#: src/filewriter/filewriter.c:506
 msgid "Prepend track number to filename"
 msgstr "Номер доріжки на початку назви файлу"
 
-#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:749
+#: src/filewriter/filewriter.c:532
+#, fuzzy
+msgid "FileWriter Plugin"
+msgstr "Про плаґін FileWriter"
+
+#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
 msgstr "Авто"
 
@@ -1298,187 +1226,159 @@ msgstr "Авто"
 msgid "Joint Stereo"
 msgstr "Об’єднане стерео"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:206
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
 msgid "Stereo"
 msgstr "Стерео"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:206
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
 msgid "Mono"
 msgstr "Моно"
 
-#: src/filewriter/mp3.c:690
+#: src/filewriter/mp3.c:688
 msgid "MP3 Configuration"
 msgstr "Налаштування MP3"
 
-#: src/filewriter/mp3.c:713
+#: src/filewriter/mp3.c:712
 msgid "Algorithm Quality:"
 msgstr "Швидкість стиснення:"
 
-#: src/filewriter/mp3.c:738
+#: src/filewriter/mp3.c:737
 msgid "Output Samplerate:"
 msgstr "Частота дискретизації виводу:"
 
-#: src/filewriter/mp3.c:766
+#: src/filewriter/mp3.c:765
 msgid "(Hz)"
 msgstr "Гц"
 
-#: src/filewriter/mp3.c:773
+#: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
 msgstr "Сила стискання"
 
-#: src/filewriter/mp3.c:797
+#: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
 msgstr "Бітрейт (Кбіт/с)"
 
-#: src/filewriter/mp3.c:830
+#: src/filewriter/mp3.c:829
 msgid "Compression ratio:"
 msgstr "Коефіцієнт стиснення:"
 
-#: src/filewriter/mp3.c:854
+#: src/filewriter/mp3.c:853
 msgid "Audio Mode:"
 msgstr "Тип звуку:"
 
-#: src/filewriter/mp3.c:879
+#: src/filewriter/mp3.c:878
 msgid "Misc:"
 msgstr "Різне:"
 
-#: src/filewriter/mp3.c:890
+#: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
 msgstr ""
 "Примусова відповідність до ISO (для апаратних програвачів, більший розмір)"
 
-#: src/filewriter/mp3.c:901
+#: src/filewriter/mp3.c:900
 msgid "Error protection"
 msgstr "CRC-захист від збоїв (дещо менша якість)"
 
-#: src/filewriter/mp3.c:913 src/filewriter/vorbis.c:231
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
 msgid "Quality"
 msgstr "Якість"
 
-#: src/filewriter/mp3.c:923
+#: src/filewriter/mp3.c:921
 msgid "Enable VBR/ABR"
 msgstr "Увімкнути змінний чи усереднений бітрейт"
 
-#: src/filewriter/mp3.c:933
+#: src/filewriter/mp3.c:931
 msgid "Type:"
 msgstr "Тип бітрейту:"
 
-#: src/filewriter/mp3.c:966
+#: src/filewriter/mp3.c:964
 msgid "VBR Options:"
 msgstr "Опції VBR (змінний бітрейт):"
 
-#: src/filewriter/mp3.c:982
+#: src/filewriter/mp3.c:980
 msgid "Minimum bitrate (kbps):"
 msgstr "Мінімальний бітрейт (Кбіт/c):"
 
-#: src/filewriter/mp3.c:1009
+#: src/filewriter/mp3.c:1007
 msgid "Maximum bitrate (kbps):"
 msgstr "Максимальний бітрейт (Кбіт/c):"
 
-#: src/filewriter/mp3.c:1032
+#: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
 msgstr "Примусово встановити мінімальний бітрейт"
 
-#: src/filewriter/mp3.c:1044
+#: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
 msgstr "Опції ABR (усереднений бітрейт):"
 
-#: src/filewriter/mp3.c:1054
+#: src/filewriter/mp3.c:1052
 msgid "Average bitrate (kbps):"
 msgstr "Середній бітрейт (Кбіт/с):"
 
-#: src/filewriter/mp3.c:1082
+#: src/filewriter/mp3.c:1080
 msgid "VBR quality level:"
 msgstr "Рівень якості VBR (менше - краще):"
 
-#: src/filewriter/mp3.c:1101
+#: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
 msgstr "Не писати VBR-заголовок (\"Xing\")"
 
-#: src/filewriter/mp3.c:1115
+#: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1125
+#: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
 msgstr ""
 
-#: src/filewriter/mp3.c:1137
+#: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
 msgstr "\"Під авторськими правами\""
 
-#: src/filewriter/mp3.c:1148
+#: src/filewriter/mp3.c:1144
 msgid "Mark as original"
 msgstr "\"Є оригіналом\""
 
-#: src/filewriter/mp3.c:1160
+#: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
 msgstr "Параметри ID3:"
 
-#: src/filewriter/mp3.c:1171
+#: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
 msgstr "Примусово додавати теґ другої версії"
 
-#: src/filewriter/mp3.c:1181
+#: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
 msgstr "Додавати лише v1-теґ"
 
-#: src/filewriter/mp3.c:1188
+#: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
 msgstr "Додавати лише v2-теґ"
 
-#: src/filewriter/mp3.c:1209
+#: src/filewriter/mp3.c:1205
 msgid "Tags"
 msgstr "Теґи"
 
-#: src/filewriter/vorbis.c:224
+#: src/filewriter/vorbis.c:212
 msgid "Vorbis Encoder Configuration"
 msgstr "Налаштування кодувальника Vorbis"
 
-#: src/filewriter/vorbis.c:244
+#: src/filewriter/vorbis.c:235
 msgid "Quality level (0 - 10):"
 msgstr "Рівень якості (0-10, менше - краще):"
 
-#: src/flacng/plugin.c:380
-msgid "About FLAC Audio Plugin"
-msgstr "Про плаґін вводу з FLAC"
-
-#: src/flacng/plugin.c:381
-msgid ""
-"\n"
-"\n"
-"Original code by\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
-"\n"
-"Автором оригіналу є\n"
-"Ralf Ertzinger <ralf@skytale.net>.\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
-
-#: src/gio/gtk.c:34
-msgid "About GIO Plugin"
+#: src/flacng/plugin.c:368
+msgid "FLAC Decoder"
 msgstr ""
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:303
-msgid "About Gnome Shortcut Plugin"
+#: src/gio/gio.c:335
+msgid "GIO Plugin"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:50
+#, fuzzy
+msgid "Gnome Shortcuts"
 msgstr "Про плаґін скорочень GNOME"
-
-#: src/gnomeshortcuts/gnomeshortcuts.c:304
-msgid ""
-"Gnome Shortcut Plugin\n"
-"Let's you control the player with Gnome's shortcuts.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-msgstr ""
-"Плаґін скорочень GNOME\n"
-"дозволяє керувати Audacious за допомогою скорочень GNOME.\n"
-"\n"
-"(c) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
 
 #: src/gtkui/columns.c:35
 msgid "Entry number"
@@ -1564,7 +1464,7 @@ msgstr "Прикріпити внизу"
 msgid "Undock"
 msgstr "Відкріпити"
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:643
+#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "Вимкнути"
 
@@ -1824,20 +1724,20 @@ msgstr "Перей_менувати"
 msgid "GTK Interface"
 msgstr "Інтерфейс GTK"
 
-#: src/gtkui/ui_gtk.c:167 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:173
+#: src/gtkui/ui_gtk.c:174
 msgid "Buffering ..."
 msgstr "Буферую..."
 
-#: src/gtkui/ui_gtk.c:176 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:227 src/skins/plugin.c:188
+#: src/gtkui/ui_gtk.c:228 src/skins/plugin.c:178
 msgid "Error"
 msgstr "Помилка"
 
@@ -1966,96 +1866,30 @@ msgstr "<b>Дія:</b>"
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Прив’язка до клавіш:</b>"
 
-#: src/hotkey/gui.c:664
-msgid "About Global Hotkey Plugin"
+#: src/hotkey/plugin.c:80
+#, fuzzy
+msgid "Global Hotkeys"
 msgstr "Про плаґін гарячих клавіш"
 
-#: src/hotkey/gui.c:665
-msgid ""
-"Global Hotkey Plugin\n"
-"Control the player with global key combinations or multimedia keys.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Contributers include:\n"
-"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-"\t\t\tBryn Davies <curious@ihug.com.au>\n"
-"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
-"\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
-"\n"
-msgstr ""
-"Плаґін гарячих клавіш\n"
-"дозволяє керувати Audacious за допомогою клавіш чи їх комбінацій.\n"
-"\n"
-"(c) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Також брали участь:\n"
-"(c) 2006-2007, Vladimir Paskov <vlado.paskov@gmail.com>,\n"
-"(c) 2000-2002, Ville Syrjälä <syrjala@sci.fi>,\n"
-"\t\tBryn Davies <curious@ihug.com.au>,\n"
-"\t\tJonathan A. Davis <davis@jdhouse.org>,\n"
-"\t\tJeremy Tan <nsx@nsx.homeip.net>,\n"
-"\n"
+#: src/jack/jack.c:417
+#, fuzzy
+msgid "JACK Output"
+msgstr "В_ивід"
 
-#: src/jack/configure.c:66
-msgid "Connect to all available jack ports"
-msgstr "Встановити зв’язок із усіма доступними JACK-портами"
-
-#: src/jack/configure.c:73
-msgid "Connect only the output ports"
-msgstr "Встановити зв’язок лише з портами виводу"
-
-#: src/jack/configure.c:80
-msgid "Connect to no ports"
-msgstr "Не встановлювати зв’язка з портами"
-
-#: src/jack/configure.c:98
-msgid "jack Plugin configuration"
-msgstr "Налаштування плаґіна JACK"
-
-#: src/jack/configure.c:116
-msgid "Connection mode:"
-msgstr "Режим з’єднання:"
-
-#: src/jack/configure.c:128
-msgid "Enable debug printing"
-msgstr "Виводити налагоджувальну інформацію"
-
-#: src/jack/configure.c:141 src/null/null.c:106
-msgid "Ok"
-msgstr "Гаразд"
-
-#: src/jack/jack.c:435
-msgid "About JACK Output Plugin"
-msgstr ""
-
-#: src/jack/jack.c:436
-msgid ""
-"Based on xmms-jack, by Chris Morgan:\n"
-"http://xmms-jack.sourceforge.net/\n"
-"\n"
-"Ported to Audacious by Giacomo Lozito."
-msgstr ""
-
-#: src/ladspa/plugin.c:414
-msgid "About LADSPA Host"
-msgstr "Про хост LADSPA"
-
-#: src/ladspa/plugin.c:515
+#: src/ladspa/plugin.c:494
 #, c-format
 msgid "%s Settings"
 msgstr "Налаштування %s"
 
-#: src/ladspa/plugin.c:583
+#: src/ladspa/plugin.c:562
 msgid "LADSPA Host Settings"
 msgstr "Налаштування хосту LADSPA"
 
-#: src/ladspa/plugin.c:592
+#: src/ladspa/plugin.c:571
 msgid "Module paths:"
 msgstr "Шляхи до модулів:"
 
-#: src/ladspa/plugin.c:597
+#: src/ladspa/plugin.c:576
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
@@ -2065,41 +1899,26 @@ msgstr ""
 "Пошук відбувається за вказаними шляхами та змінною LADSPA_PATH.\n"
 "Вказавши шляхи, натисніть Enter для пошуку плаґінів.</small>"
 
-#: src/ladspa/plugin.c:613
+#: src/ladspa/plugin.c:592
 msgid "Available plugins:"
 msgstr "Наявні плаґіни:"
 
-#: src/ladspa/plugin.c:625
+#: src/ladspa/plugin.c:605
 msgid "Enable"
 msgstr "Увімкнути"
 
-#: src/ladspa/plugin.c:631
+#: src/ladspa/plugin.c:611
 msgid "Enabled plugins:"
 msgstr "Увімкнені плаґіни:"
 
-#: src/ladspa/plugin.c:646
+#: src/ladspa/plugin.c:627
 msgid "Settings"
 msgstr "Налаштування"
 
-#: src/lirc/configure.c:141
-msgid "LIRC plugin settings"
-msgstr ""
-
-#: src/lirc/configure.c:169
-msgid "Reconnect to LIRC server"
-msgstr ""
-
-#: src/lirc/configure.c:177
-msgid "Timeout before reconnecting (seconds): "
-msgstr ""
-
-#: src/lirc/configure.c:186
-msgid "Reconnect"
-msgstr ""
-
-#: src/lirc/configure.c:190
-msgid "Connection"
-msgstr ""
+#: src/ladspa/plugin.c:662
+#, fuzzy
+msgid "LADSPA Host"
+msgstr "Про хост LADSPA"
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2119,23 +1938,36 @@ msgstr ""
 msgid "%s: trying to reconnect...\n"
 msgstr ""
 
-#: src/lirc/lirc.c:125
-msgid "About LIRC Audacious Plugin"
-msgstr ""
-
-#: src/lirc/lirc.c:398
+#: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr ""
 
-#: src/lirc/lirc.c:409
+#: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr ""
 
-#: src/lirc/lirc.c:414
+#: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
+msgstr ""
+
+#: src/lirc/lirc.c:411
+#, fuzzy
+msgid "<b>Connection</b>"
+msgstr "<b>Дія:</b>"
+
+#: src/lirc/lirc.c:412
+msgid "Reconnect to LIRC server"
+msgstr ""
+
+#: src/lirc/lirc.c:414
+msgid "Wait before reconnecting:"
+msgstr ""
+
+#: src/lirc/lirc.c:424
+msgid "LIRC Plugin"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:267
@@ -2162,157 +1994,206 @@ msgstr ""
 "\n"
 "Не знайдено слів пісні."
 
-#: src/metronom/metronom.c:86
-msgid "About Metronom"
-msgstr "Про плаґін-метроном"
-
-#: src/metronom/metronom.c:87
-msgid ""
-"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
-"\n"
-"To use it, add a URL: tact://beats*num/den\n"
-"e.g. tact://77 to play 77 beats per minute\n"
-"or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
+#: src/lyricwiki/lyricwiki.c:435
+msgid "LyricWiki Plugin"
 msgstr ""
-"Генератор такту, написаний Martin Strauss <mys@faveve.uni-stuttgart.de>,\n"
-"\n"
-"можна використовувати за URL: tact://beats*num/den\n"
-"(наприклад, tact://77 генерує такт із темпом 77 BPM,\n"
-"tact://60*3/4 - такт із темпом 60 BPM і розміром 3/4)"
 
-#: src/metronom/metronom.c:144
+#: src/m3u/m3u.c:123
+#, fuzzy
+msgid "M3U Playlists"
+msgstr "Список відтворення"
+
+#: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "Генератор такту: %d BPM"
 
-#: src/metronom/metronom.c:146
+#: src/metronom/metronom.c:131
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Генератор такту: %d BPM, %d/%d"
 
-#: src/mixer/plugin.c:63
-msgid "About Channel Mixer"
+#: src/metronom/metronom.c:257
+#, fuzzy
+msgid "Tact Generator"
+msgstr "Генератор тону: "
+
+#: src/mixer/mixer.c:186
+#, fuzzy
+msgid "<b>Channel Mixer</b>"
 msgstr "Про змішувач каналів"
 
-#: src/mixer/plugin.c:92
-msgid "Channel Mixer Settings"
-msgstr "Налаштування змішувача каналів"
-
-#: src/mixer/plugin.c:101
+#: src/mixer/mixer.c:187
 msgid "Output channels:"
 msgstr "Каналів на виході:"
 
-#: src/mixer/plugin.c:111
-msgid "Changes take effect at the next song change."
-msgstr "Зміни здійснюються при зміні відтворюваної доріжки."
+#: src/mixer/mixer.c:197
+#, fuzzy
+msgid "Channel Mixer"
+msgstr "Про змішувач каналів"
 
-#: src/mpg123/mpg123.c:206
+#: src/mms/mms.c:226
+msgid "MMS Plugin"
+msgstr ""
+
+#: src/modplug/plugin_main.c:13
+msgid "ModPlug (Module Player)"
+msgstr ""
+
+#: src/mpg123/mpg123.c:196
 msgid "Surround"
 msgstr "Об’ємний звук"
 
-#: src/mtp_up/mtp.c:340
-msgid "Upload in progress..."
-msgstr "Завантажую..."
+#: src/mpg123/mpg123.c:553
+msgid "MPG123 Plugin"
+msgstr ""
 
-#: src/mtp_up/mtp.c:352
-msgid "Upload to MTP Device"
-msgstr "Завантажити на MTP-прилад"
+#: src/mpris2/plugin.c:403
+msgid "MPRIS 2 Server"
+msgstr ""
 
-#: src/mtp_up/mtp.c:353
-msgid "Disconnect MTP Device"
-msgstr "Від’єднати MTP-прилад"
+#: src/neon/neon.c:1241
+msgid "Neon HTTP/HTTPS Plugin"
+msgstr ""
 
-#: src/notify/libnotify-aosd_event.c:48
+#: src/notify/event.c:49
 msgid "Stopped"
 msgstr "Зупинено"
 
-#: src/notify/libnotify-aosd_event.c:48
+#: src/notify/event.c:49
 msgid "Audacious is not playing."
 msgstr "Audacious нічого не відтворює."
 
-#: src/null/null.c:63
-msgid "Null output plugin "
-msgstr "Плаґін виводу в null"
-
-#: src/null/null.c:64
-msgid ""
-" by Christian Birchinger <joker@netswarm.net>\n"
-"based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+#: src/notify/notify.c:52
+msgid "Desktop Notifications"
 msgstr ""
-" написаний Christian Birchinger <joker@netswarm.net>\n"
-"на основі плаґіну XMMS, написаного Håvard Kvål <havardk@xmms.org>"
 
-#: src/null/null.c:67
-msgid "About Null Output"
-msgstr "Про вивід у нікуди"
-
-#: src/null/null.c:88
-msgid "Null output preferences"
-msgstr "Налаштування виводу в нікуди"
-
-#: src/null/null.c:99
-msgid "Run in real time"
-msgstr "В реальному часі"
-
-#: src/oss4/configure.c:81
+#: src/oss4/plugin.c:36
 msgid "1. Default device"
 msgstr "1. Типовий прилад"
 
-#: src/oss4/configure.c:138
-msgid "OSS4 Output Plugin Preferences"
-msgstr "Налаштування плаґіну виводу в OSS4"
-
-#: src/oss4/configure.c:150
+#: src/oss4/plugin.c:75
 msgid "Audio device:"
 msgstr "Аудіоприлад:"
 
-#: src/oss4/configure.c:178
+#: src/oss4/plugin.c:77
 msgid "Use alternate device:"
 msgstr "Використати інший прилад:"
 
-#: src/oss4/configure.c:193
-msgid "Save volume between sessions"
+#: src/oss4/plugin.c:81
+#, fuzzy
+msgid "Save volume between sessions."
 msgstr "Зберігати гучність між сесіями"
 
-#: src/oss4/configure.c:197
+#: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
 msgstr "Задіяти зміни формату, здійснені програмами OSS."
 
-#: src/oss4/configure.c:201
+#: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Діяти в ексклюзивному режимі, уникаючи віртуального мікшування."
 
-#: src/oss4/plugin.c:51
-msgid "About OSS4 Plugin"
-msgstr "Про плаґін виводу в OSS4"
+#: src/oss4/plugin.c:125
+#, fuzzy
+msgid "OSS4 Output"
+msgstr "В_ивід"
 
-#: src/oss4/utils.c:211
-msgid "OSS4 error"
-msgstr "Збій OSS4"
+#: src/pls/pls.c:114
+#, fuzzy
+msgid "PLS Playlists"
+msgstr "Список відтворення"
 
-#: src/pulse_audio/pulse_audio.c:677
-msgid "About Audacious PulseAudio Output Plugin"
-msgstr "Про плаґін виводу в PulseAudio"
+#: src/psf/plugin.c:262
+msgid "OpenPSF PSF1/PSF2 Decoder"
+msgstr ""
 
-#: src/resample/plugin.c:88
-msgid "About Sample Rate Converter Plugin"
-msgstr "Про плаґін-перетворювач частоти дискретизації"
+#: src/pulse_audio/pulse_audio.c:664
+msgid "PulseAudio Output"
+msgstr ""
 
-#: src/resample/plugin.c:143
-msgid "Sample Rate Converter Preferences"
-msgstr "Налаштування перетворення частоти дискретизації"
+#: src/resample/resample.c:178
+msgid "Skip/repeat samples"
+msgstr ""
 
-#: src/resample/plugin.c:155
-msgid "Rate mappings:"
-msgstr "Відповідність частот:"
+#: src/resample/resample.c:179
+#, fuzzy
+msgid "Linear interpolation"
+msgstr "Інтернаціоналізація"
 
-#: src/resample/plugin.c:178
-msgid "All others:"
-msgstr "Усі інші:"
+#: src/resample/resample.c:180
+msgid "Fast sinc interpolation"
+msgstr ""
 
-#: src/resample/plugin.c:190
+#: src/resample/resample.c:181
+msgid "Medium sinc interpolation"
+msgstr ""
+
+#: src/resample/resample.c:182
+msgid "Best sinc interpolation"
+msgstr ""
+
+#: src/resample/resample.c:185
+#, fuzzy
+msgid "<b>Conversion</b>"
+msgstr "<b>Шрифти</b>"
+
+#: src/resample/resample.c:186
 msgid "Method:"
 msgstr "Метод:"
+
+#: src/resample/resample.c:189
+msgid "Rate:"
+msgstr ""
+
+#: src/resample/resample.c:192
+#, fuzzy
+msgid "<b>Rate Mappings</b>"
+msgstr "Відповідність частот:"
+
+#: src/resample/resample.c:193
+#, fuzzy
+msgid "Use rate mappings"
+msgstr "Відповідність частот:"
+
+#: src/resample/resample.c:195
+#, fuzzy
+msgid "8 kHz:"
+msgstr "8 кГц"
+
+#: src/resample/resample.c:198
+#, fuzzy
+msgid "16 kHz:"
+msgstr "16 кГц"
+
+#: src/resample/resample.c:201
+#, fuzzy
+msgid "22.05 kHz:"
+msgstr "2 кГц"
+
+#: src/resample/resample.c:204
+#, fuzzy
+msgid "44.1 kHz:"
+msgstr "1 кГц"
+
+#: src/resample/resample.c:207
+#, fuzzy
+msgid "48 kHz:"
+msgstr "8 кГц"
+
+#: src/resample/resample.c:210
+#, fuzzy
+msgid "96 kHz:"
+msgstr "16 кГц"
+
+#: src/resample/resample.c:213
+#, fuzzy
+msgid "192 kHz:"
+msgstr "2 кГц"
+
+#: src/resample/resample.c:223
+#, fuzzy
+msgid "Sample Rate Converter"
+msgstr "Налаштування перетворення частоти дискретизації"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
 msgid "Change password"
@@ -2338,32 +2219,14 @@ msgstr "URL Scrobbler:"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/configure.c:230
+#: src/scrobbler/plugin.c:194
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
-#: src/scrobbler/plugin.c:194
-msgid ""
-"Audacious AudioScrobbler Plugin\n"
-"\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>\n"
-msgstr ""
-"Плаґін AudioScrobbler для Audacious\n"
-"\n"
-"Оригінал створили Audun Hove <audun@nlc.no> та Pipian <pipian@pipian.com>\n"
-
-#: src/scrobbler/plugin.c:196
-msgid "About Scrobbler Plugin"
-msgstr "Про плаґін Scrobbler"
-
-#: src/sdlout/plugin.c:58
-msgid "About SDL Output Plugin"
-msgstr "Про плаґін виводу SDL"
-
-#: src/sdlout/plugin.c:78
-msgid "SDL error"
-msgstr "Збій SDL"
+#: src/sdlout/plugin.c:43
+#, fuzzy
+msgid "SDL Output"
+msgstr "В_ивід"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2377,14 +2240,14 @@ msgstr ""
 msgid "Unknown Album"
 msgstr ""
 
-#: src/search-tool/search-tool.c:624
+#: src/search-tool/search-tool.c:627
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
 
-#: src/search-tool/search-tool.c:630
+#: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
@@ -2392,7 +2255,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/search-tool/search-tool.c:632
+#: src/search-tool/search-tool.c:635
 #, c-format
 msgid ""
 "%s\n"
@@ -2404,7 +2267,7 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/search-tool/search-tool.c:638
+#: src/search-tool/search-tool.c:641
 #, c-format
 msgid ""
 "%s\n"
@@ -2416,19 +2279,19 @@ msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
 
-#: src/search-tool/search-tool.c:679
+#: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
 msgstr "_Створити список відтворення"
 
-#: src/search-tool/search-tool.c:686
+#: src/search-tool/search-tool.c:689
 msgid "_Add to Playlist"
 msgstr "_Додати до списку відтворення"
 
-#: src/search-tool/search-tool.c:727
+#: src/search-tool/search-tool.c:730
 msgid "Search library"
 msgstr "Шукати в бібліотеці"
 
-#: src/search-tool/search-tool.c:732
+#: src/search-tool/search-tool.c:735
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2436,25 +2299,22 @@ msgstr ""
 "Щоб імпортувати свою музичну бібліотеку до Audacious, виберіть теку й "
 "натисніть на значок оновлення."
 
-#: src/search-tool/search-tool.c:740
+#: src/search-tool/search-tool.c:743
 msgid "Please wait ..."
 msgstr "Зачекайте..."
 
-#: src/search-tool/search-tool.c:762
+#: src/search-tool/search-tool.c:765
 msgid "Choose Folder"
 msgstr "Вибрати теку"
 
-#: src/skins/plugin.c:165
-msgid "About Skinned GUI"
-msgstr "Про GUI \"Skinned\""
+#: src/search-tool/search-tool.c:804
+#, fuzzy
+msgid "Search Tool"
+msgstr "Шукати в бібліотеці"
 
-#: src/skins/plugin.c:166
-msgid ""
-"Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
-"\n"
+#: src/skins/plugin.c:49
+msgid "Winamp Classic Interface"
 msgstr ""
-"(c) 2008, Tomasz Moń <desowin@gmail.com>\n"
-"\n"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Player:"
@@ -3330,61 +3190,71 @@ msgstr "Неархівований жупан Winamp 2.x"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Неможливо створити теку (%s): %s\n"
 
-#: src/sndfile/plugin.c:456
-msgid "About sndfile plugin"
+#: src/sndfile/plugin.c:437
+#, fuzzy
+msgid "Sndfile Plugin"
 msgstr "Про плаґін sndfile"
 
-#: src/sndstretch/sndstretch_xmms.c:152
+#: src/sndstretch/sndstretch_xmms.c:54
+#, fuzzy
+msgid "SndStretch"
+msgstr "Про SndStretch"
+
+#: src/sndstretch/sndstretch_xmms.c:147
 msgid "About SndStretch"
 msgstr "Про SndStretch"
 
-#: src/sndstretch/sndstretch_xmms.c:305
+#: src/sndstretch/sndstretch_xmms.c:287
 msgid "Volume correction"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:306
+#: src/sndstretch/sndstretch_xmms.c:288
 msgid "Short overlap"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:352
+#: src/sndstretch/sndstretch_xmms.c:334
 msgid "Speed"
 msgstr "Темп"
 
-#: src/sndstretch/sndstretch_xmms.c:353
+#: src/sndstretch/sndstretch_xmms.c:335
 msgid "Pitch"
 msgstr "Висота"
 
-#: src/sndstretch/sndstretch_xmms.c:354
+#: src/sndstretch/sndstretch_xmms.c:336
 msgid "Scale"
 msgstr "Масштаб"
 
-#: src/sndstretch/sndstretch_xmms.c:374
+#: src/sndstretch/sndstretch_xmms.c:356
 msgid "SndStretch - Configuration"
 msgstr "Налаштування SndStretch"
 
-#: src/song_change/song_change.c:437
+#: src/song_change/song_change.c:56
+msgid "Song Change"
+msgstr "Зміна доріжки"
+
+#: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
 msgstr "Виконувати на початку відтворення доріжки:"
 
-#: src/song_change/song_change.c:439 src/song_change/song_change.c:445
-#: src/song_change/song_change.c:451 src/song_change/song_change.c:457
+#: src/song_change/song_change.c:440 src/song_change/song_change.c:446
+#: src/song_change/song_change.c:452 src/song_change/song_change.c:458
 msgid "Command:"
 msgstr " "
 
-#: src/song_change/song_change.c:443
+#: src/song_change/song_change.c:444
 msgid "Command to run toward the end of a song."
 msgstr "Виконувати наприкінці відтворення доріжки:"
 
-#: src/song_change/song_change.c:449
+#: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Виконувати при досягненні кінця списка відтворення."
 
-#: src/song_change/song_change.c:455
+#: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr "Виконувати при зміні назви доріжки (онлайн-потоки тощо)."
 
-#: src/song_change/song_change.c:461
+#: src/song_change/song_change.c:462
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3403,7 +3273,7 @@ msgid ""
 "%T: Track title"
 msgstr ""
 
-#: src/song_change/song_change.c:488
+#: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3411,198 +3281,518 @@ msgstr ""
 "<span size='small'>Параметри подавати слід у лапках. Робити інакше "
 "небезпечно для системи.</span>"
 
-#: src/song_change/song_change.c:499
+#: src/song_change/song_change.c:500
 msgid "Commands"
 msgstr "Команди"
 
-#: src/song_change/song_change.c:529
-msgid "Song Change"
-msgstr "Зміна доріжки"
-
-#: src/statusicon/statusicon.c:381
-msgid "About Status Icon Plugin"
-msgstr "Про плаґін значка стану"
-
-#: src/statusicon/statusicon.c:382
-msgid ""
-"Status Icon Plugin\n"
-"\n"
-"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-"\n"
-"This plugin provides a status icon, placed in\n"
-"the system tray area of the window manager.\n"
-msgstr ""
-"Плаґін значка в лотку,\n"
-"\n"
-"2005-2007, Giacomo Lozito <james@develia.org>,\n"
-"2010, Michał Lipski <tallica@o2.pl,>\n"
-"\n"
-"розміщує значок Audacious у системному\n"
-"лотку, наданому віконним менеджером.\n"
-
-#: src/statusicon/statusicon.c:453
-msgid "Status Icon Plugin - Preferences"
-msgstr "Налаштування значка в лотку"
-
-#: src/statusicon/statusicon.c:463
-msgid "Right-Click Menu"
-msgstr "Меню за правою кнопкою миші"
-
-#: src/statusicon/statusicon.c:468
-msgid "Small playback menu #1"
-msgstr "Мале меню відтворення #1"
-
-#: src/statusicon/statusicon.c:471
-msgid "Small playback menu #2"
-msgstr "Мале меню відтворення #2 (+ \"Вийти\")"
-
-#: src/statusicon/statusicon.c:487
-msgid "Mouse Scroll Action"
+#: src/statusicon/statusicon.c:387
+#, fuzzy
+msgid "<b>Mouse Scroll Action</b>"
 msgstr "Дія коліщатка миші"
 
-#: src/statusicon/statusicon.c:491
+#: src/statusicon/statusicon.c:388
 msgid "Change volume"
 msgstr "Зміна гучності"
 
-#: src/statusicon/statusicon.c:493
+#: src/statusicon/statusicon.c:391
 msgid "Change playing song"
 msgstr "Зміна поточної доріжки"
 
-#: src/statusicon/statusicon.c:506
-msgid "Other settings"
-msgstr "Інші налаштування"
-
-#: src/statusicon/statusicon.c:511
+#: src/statusicon/statusicon.c:395
 msgid "Disable the popup window"
 msgstr "Вимкнути спливне вікно"
 
-#: src/statusicon/statusicon.c:518
-msgid "Close to the notification area (system tray)"
+#: src/statusicon/statusicon.c:397
+#, fuzzy
+msgid "Close to the system tray"
 msgstr "Замість закриття згортати до лотка"
 
-#: src/statusicon/statusicon.c:526
+#: src/statusicon/statusicon.c:399
 msgid "Advance in playlist when scrolling upward"
 msgstr "Просуватися списком відтворення при прокручуванні догори"
+
+#: src/statusicon/statusicon.c:408
+#, fuzzy
+msgid "Status Icon"
+msgstr "Про плаґін значка стану"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
 msgstr ""
 
-#: src/stereo_plugin/stereo.c:34
-msgid "Extra Stereo Settings"
-msgstr ""
+#: src/stereo_plugin/stereo.c:38
+#, fuzzy
+msgid "Extra Stereo"
+msgstr "Об’єднане стерео"
 
-#: src/stereo_plugin/stereo.c:50
-msgid ""
-"Extra Stereo Plugin\n"
-"\n"
-"By Johan Levin 1999."
-msgstr ""
-"Плаґін розширеного стерео\n"
-"\n"
-"створив 1999 року Johan Levin."
-
-#: src/stereo_plugin/stereo.c:64
-msgid "About Extra Stereo Plugin"
-msgstr "Про плаґін розширеного стерео"
-
-#: src/tonegen/tonegen.c:49
-msgid "About Tone Generator"
-msgstr "Про генератор тону"
-
-#: src/tonegen/tonegen.c:51
-msgid ""
-"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
-"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
-"\n"
-"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
-msgstr ""
-"Генератор синусоїдного тону, створений Haavard Kvaalen <havardk@xmms.org>\n"
-"і модифікований Daniel J. Peng <danielpeng@bigfoot.com>,\n"
-"\n"
-"можна використовувати за URL: tone://frequency1;frequency2;frequency3;...\n"
-"(наприклад, tone://2000;2005 для відтворення тону 2000 Гц й тону 2005 Гц."
-
-#: src/tonegen/tonegen.c:101
+#: src/tonegen/tonegen.c:86
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Гц"
 
-#: src/tonegen/tonegen.c:101
+#: src/tonegen/tonegen.c:86
 msgid "Tone Generator: "
 msgstr "Генератор тону: "
 
-#: src/unix-io/gtk.c:34
-msgid "About File I/O Plugin"
+#: src/tonegen/tonegen.c:208
+#, fuzzy
+msgid "Tone Generator"
+msgstr "Генератор тону: "
+
+#: src/unix-io/unix-io.c:290
+#, fuzzy
+msgid "File I/O Plugin"
 msgstr "Про плаґін файлового вводу-виводу"
 
-#: src/vorbis/vorbis.c:573
-msgid "About Ogg Vorbis Audio Plugin"
-msgstr "Про плаґін вводу з Ogg Vorbis"
-
-#: src/vorbis/vorbis.c:578
-msgid ""
-"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
-"\n"
-"Original code by\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Contributions from\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Haavard Kvaalen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"Eugene Zagidullin <e.asphyx@gmail.com>\n"
-"\n"
-"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
-msgstr ""
-"Плаґін вводу з Ogg Vorbis створений Xiph.org Foundation\n"
-"\n"
-"Автор оригіналу:\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"\n"
-"Дописувачі:\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Haavard Kvaalen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"Eugene Zagidullin <e.asphyx@gmail.com>\n"
-"\n"
-"Відвідайте Фонд Xiph.org: http://www.xiph.org/\n"
-
-#: src/vtx/about.c:14
-msgid "About Vortex Player"
-msgstr "Про плаґін вводу з Vortex"
-
-#: src/vtx/about.c:15
-msgid ""
-"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Founded on original source in_vtx.dll by Roman Sherbakov <v_soft@microfor."
-"ru>\n"
-"\n"
-"Audacious implementation by Pavel Vymetalek <pvymetalek@seznam.cz>"
+#: src/voice_removal/voice_removal.c:60
+msgid "Voice Removal"
 msgstr ""
 
-#: src/wavpack/wavpack.c:353
-#, c-format
-msgid "Wavpack Decoder Plugin %s"
+#: src/vorbis/vorbis.c:584
+msgid "Ogg Vorbis Decoder"
+msgstr ""
+
+#: src/vtx/vtx.c:259
+msgid "VTX Decoder"
+msgstr ""
+
+#: src/wavpack/wavpack.c:345
+#, fuzzy
+msgid "WavPack Decoder"
 msgstr "Декодер Wavpack %s"
 
-#: src/wavpack/wavpack.c:354
-msgid ""
-"Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
-"\n"
-"Some of the plugin code was by Miles Egan\n"
-"Visit the Wavpack site at http://www.wavpack.com/\n"
+#: src/xsf/plugin.c:272
+msgid "2SF Decoder"
 msgstr ""
-"(c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
-"\n"
-"Деякий код написав Miles Egan.\n"
-"Відвідайте сайт Wavpack: http://www.wavpack.com/\n"
+
+#: src/xspf/xspf.c:442
+msgid "XML Shareable Playlists (XSPF)"
+msgstr ""
+
+#~ msgid ""
+#~ "Using libfaad2-%s for decoding.\n"
+#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
+#~ "Copyright (c) 2005-2006 Audacious team"
+#~ msgstr ""
+#~ "(c) 2005-2006, Команда Audacious.\n"
+#~ "\n"
+#~ "Для декодування використовується libfaad2-%s.\n"
+#~ "Декодер FAAD2 AAC/HE-AAC/HE-AACv2/DRM: (c) Nero AG, www.nero.com"
+
+#~ msgid "About MP4 AAC decoder plugin"
+#~ msgstr "Про плаґін декодування MP4 AAC"
+
+#~ msgid "About Alarm"
+#~ msgstr "Про Будильник"
+
+#~ msgid ""
+#~ "A plugin that can be used to start playing at a certain time.\n"
+#~ "\n"
+#~ "Originally written by Adam Feakin and Daniel Stodden."
+#~ msgstr ""
+#~ "Модуль, що починає й закінчує відтворення за розкладом.\n"
+#~ "\n"
+#~ "Авторами є Adam Feakin та Daniel Stodden."
+
+#~ msgid "About ALSA Output Plugin"
+#~ msgstr "Про плаґін виводу ALSA"
+
+#~ msgid "ALSA error"
+#~ msgstr "Збій ALSA"
+
+#~ msgid "Audacious OSD - about"
+#~ msgstr "Про плаґін повідомлень на екрані"
+
+#~ msgid ""
+#~ "\n"
+#~ "Audacious OSD "
+#~ msgstr ""
+#~ "\n"
+#~ "Audacious OSD "
+
+#~ msgid ""
+#~ "\n"
+#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
+#~ "written by Giacomo Lozito\n"
+#~ "< james@develia.org >\n"
+#~ "\n"
+#~ "On-Screen-Display is based on Ghosd library\n"
+#~ "written by Evan Martin\n"
+#~ "http://neugierig.org/software/ghosd/\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
+#~ "Автором є Giacomo Lozito\n"
+#~ "<james@develia.org>\n"
+#~ "\n"
+#~ "Базується на бібліотеці Ghosd,\n"
+#~ "автором якої є Evan Martin,\n"
+#~ "http://neugierig.org/software/ghosd/\n"
+#~ "\n"
+
+#~ msgid "Blur Scope: Color selection"
+#~ msgstr "Розпливчастий осцилограф: вибір кольору"
+
+#~ msgid "Options:"
+#~ msgstr "Опції:"
+
+#~ msgid "About the Game Console Music Decoder"
+#~ msgstr "Про декодер ігроконсольної музики"
+
+#~ msgid ""
+#~ "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
+#~ "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+#~ "Audacious implementation by: William Pitcock <nenolod@dereferenced."
+#~ "org>, \n"
+#~ "        Shay Green <gblargg@gmail.com>\n"
+#~ msgstr ""
+#~ "Двигунець декодування ігроконсольної музики базується на Game_Music_Emu "
+#~ "0.5.2.\n"
+#~ "Підтримувані формати: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
+#~ "VGZ\n"
+#~ "Для Audacious імплементували William Pitcock <nenolod@dereferenced.org> "
+#~ "та Shay Green <gblargg@gmail.com>\n"
+
+#~ msgid "Crossfade Preferences"
+#~ msgstr "Перехресне затихання"
+
+#~ msgid "Overlap (in seconds):"
+#~ msgstr "Охоплювати (секунд):"
+
+#~ msgid "Crossfade Error"
+#~ msgstr "Збій при перехресному затиханні"
+
+#~ msgid ""
+#~ "Crossfading failed because the songs had a different number of channels."
+#~ msgstr ""
+#~ "Перехресне затихання тут неможливе, бо доріжки мають різну кількість "
+#~ "каналів."
+
+#~ msgid ""
+#~ "Echo Plugin\n"
+#~ "By Johan Levin 1999.\n"
+#~ "\n"
+#~ "Surround echo by Carl van Schaik 1999"
+#~ msgstr ""
+#~ "Плаґін відлуння\n"
+#~ "Johan Levin створив 1999 року.\n"
+#~ "\n"
+#~ "Відлуння об’ємного звуку написав 1999 року Carl van Schaik."
+
+#~ msgid ""
+#~ "Multi-format audio decoding plugin for Audacious based on\n"
+#~ "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+#~ "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
+#~ "\n"
+#~ "Audacious plugin by:\n"
+#~ "            William Pitcock <nenolod@nenolod.net>,\n"
+#~ "            Matti Hämäläinen <ccr@tnsp.org>\n"
+#~ "\n"
+#~ "libavcodec %s (%s)\n"
+#~ "libavformat %s (%s)\n"
+#~ "libavutil %s (%s)\n"
+#~ msgstr ""
+#~ "Плаґін декодування звуку багатьох форматів для Audacious, базується\n"
+#~ "на інтегрованому мультимедіа-середовищі FFmpeg (http://www.ffmpeg.org/).\n"
+#~ "(c) 2000-2009 Fabrice Bellard та інші.\n"
+#~ "\n"
+#~ "Автори плаґіна для Audacious:\n"
+#~ "            William Pitcock <nenolod@nenolod.net>,\n"
+#~ "            Matti Hämäläinen <ccr@tnsp.org>.\n"
+#~ "\n"
+#~ "libavcodec %s (%s)\n"
+#~ "libavformat %s (%s)\n"
+#~ "libavutil %s (%s)\n"
+
+#~ msgid "About FFaudio Plugin"
+#~ msgstr "Про плаґін FFaudio"
+
+#~ msgid "About FLAC Audio Plugin"
+#~ msgstr "Про плаґін вводу з FLAC"
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "Original code by\n"
+#~ "Ralf Ertzinger <ralf@skytale.net>\n"
+#~ "\n"
+#~ "http://www.skytale.net/projects/bmp-flac2/"
+#~ msgstr ""
+#~ "\n"
+#~ "Автором оригіналу є\n"
+#~ "Ralf Ertzinger <ralf@skytale.net>.\n"
+#~ "\n"
+#~ "http://www.skytale.net/projects/bmp-flac2/"
+
+#~ msgid ""
+#~ "Gnome Shortcut Plugin\n"
+#~ "Let's you control the player with Gnome's shortcuts.\n"
+#~ "\n"
+#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Плаґін скорочень GNOME\n"
+#~ "дозволяє керувати Audacious за допомогою скорочень GNOME.\n"
+#~ "\n"
+#~ "(c) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Global Hotkey Plugin\n"
+#~ "Control the player with global key combinations or multimedia keys.\n"
+#~ "\n"
+#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+#~ "Contributers include:\n"
+#~ "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+#~ "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+#~ "\t\t\tBryn Davies <curious@ihug.com.au>\n"
+#~ "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+#~ "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Плаґін гарячих клавіш\n"
+#~ "дозволяє керувати Audacious за допомогою клавіш чи їх комбінацій.\n"
+#~ "\n"
+#~ "(c) 2007-2008, Sascha Hlusiak <contact@saschahlusiak.de>\n"
+#~ "\n"
+#~ "Також брали участь:\n"
+#~ "(c) 2006-2007, Vladimir Paskov <vlado.paskov@gmail.com>,\n"
+#~ "(c) 2000-2002, Ville Syrjälä <syrjala@sci.fi>,\n"
+#~ "\t\tBryn Davies <curious@ihug.com.au>,\n"
+#~ "\t\tJonathan A. Davis <davis@jdhouse.org>,\n"
+#~ "\t\tJeremy Tan <nsx@nsx.homeip.net>,\n"
+#~ "\n"
+
+#~ msgid "Connect to all available jack ports"
+#~ msgstr "Встановити зв’язок із усіма доступними JACK-портами"
+
+#~ msgid "Connect only the output ports"
+#~ msgstr "Встановити зв’язок лише з портами виводу"
+
+#~ msgid "Connect to no ports"
+#~ msgstr "Не встановлювати зв’язка з портами"
+
+#~ msgid "jack Plugin configuration"
+#~ msgstr "Налаштування плаґіна JACK"
+
+#~ msgid "Connection mode:"
+#~ msgstr "Режим з’єднання:"
+
+#~ msgid "Enable debug printing"
+#~ msgstr "Виводити налагоджувальну інформацію"
+
+#~ msgid "Ok"
+#~ msgstr "Гаразд"
+
+#~ msgid "About Metronom"
+#~ msgstr "Про плаґін-метроном"
+
+#~ msgid ""
+#~ "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+#~ "\n"
+#~ "To use it, add a URL: tact://beats*num/den\n"
+#~ "e.g. tact://77 to play 77 beats per minute\n"
+#~ "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
+#~ msgstr ""
+#~ "Генератор такту, написаний Martin Strauss <mys@faveve.uni-stuttgart.de>,\n"
+#~ "\n"
+#~ "можна використовувати за URL: tact://beats*num/den\n"
+#~ "(наприклад, tact://77 генерує такт із темпом 77 BPM,\n"
+#~ "tact://60*3/4 - такт із темпом 60 BPM і розміром 3/4)"
+
+#~ msgid "Channel Mixer Settings"
+#~ msgstr "Налаштування змішувача каналів"
+
+#~ msgid "Changes take effect at the next song change."
+#~ msgstr "Зміни здійснюються при зміні відтворюваної доріжки."
+
+#~ msgid "Upload in progress..."
+#~ msgstr "Завантажую..."
+
+#~ msgid "Upload to MTP Device"
+#~ msgstr "Завантажити на MTP-прилад"
+
+#~ msgid "Disconnect MTP Device"
+#~ msgstr "Від’єднати MTP-прилад"
+
+#~ msgid "Null output plugin "
+#~ msgstr "Плаґін виводу в null"
+
+#~ msgid ""
+#~ " by Christian Birchinger <joker@netswarm.net>\n"
+#~ "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
+#~ msgstr ""
+#~ " написаний Christian Birchinger <joker@netswarm.net>\n"
+#~ "на основі плаґіну XMMS, написаного Håvard Kvål <havardk@xmms.org>"
+
+#~ msgid "About Null Output"
+#~ msgstr "Про вивід у нікуди"
+
+#~ msgid "Null output preferences"
+#~ msgstr "Налаштування виводу в нікуди"
+
+#~ msgid "Run in real time"
+#~ msgstr "В реальному часі"
+
+#~ msgid "OSS4 Output Plugin Preferences"
+#~ msgstr "Налаштування плаґіну виводу в OSS4"
+
+#~ msgid "About OSS4 Plugin"
+#~ msgstr "Про плаґін виводу в OSS4"
+
+#~ msgid "OSS4 error"
+#~ msgstr "Збій OSS4"
+
+#~ msgid "About Audacious PulseAudio Output Plugin"
+#~ msgstr "Про плаґін виводу в PulseAudio"
+
+#~ msgid "About Sample Rate Converter Plugin"
+#~ msgstr "Про плаґін-перетворювач частоти дискретизації"
+
+#~ msgid "All others:"
+#~ msgstr "Усі інші:"
+
+#~ msgid ""
+#~ "Audacious AudioScrobbler Plugin\n"
+#~ "\n"
+#~ "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
+#~ "com>\n"
+#~ msgstr ""
+#~ "Плаґін AudioScrobbler для Audacious\n"
+#~ "\n"
+#~ "Оригінал створили Audun Hove <audun@nlc.no> та Pipian <pipian@pipian."
+#~ "com>\n"
+
+#~ msgid "About Scrobbler Plugin"
+#~ msgstr "Про плаґін Scrobbler"
+
+#~ msgid "About SDL Output Plugin"
+#~ msgstr "Про плаґін виводу SDL"
+
+#~ msgid "SDL error"
+#~ msgstr "Збій SDL"
+
+#~ msgid "About Skinned GUI"
+#~ msgstr "Про GUI \"Skinned\""
+
+#~ msgid ""
+#~ "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "(c) 2008, Tomasz Moń <desowin@gmail.com>\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "Status Icon Plugin\n"
+#~ "\n"
+#~ "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+#~ "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+#~ "\n"
+#~ "This plugin provides a status icon, placed in\n"
+#~ "the system tray area of the window manager.\n"
+#~ msgstr ""
+#~ "Плаґін значка в лотку,\n"
+#~ "\n"
+#~ "2005-2007, Giacomo Lozito <james@develia.org>,\n"
+#~ "2010, Michał Lipski <tallica@o2.pl,>\n"
+#~ "\n"
+#~ "розміщує значок Audacious у системному\n"
+#~ "лотку, наданому віконним менеджером.\n"
+
+#~ msgid "Status Icon Plugin - Preferences"
+#~ msgstr "Налаштування значка в лотку"
+
+#~ msgid "Right-Click Menu"
+#~ msgstr "Меню за правою кнопкою миші"
+
+#~ msgid "Small playback menu #1"
+#~ msgstr "Мале меню відтворення #1"
+
+#~ msgid "Small playback menu #2"
+#~ msgstr "Мале меню відтворення #2 (+ \"Вийти\")"
+
+#~ msgid "Other settings"
+#~ msgstr "Інші налаштування"
+
+#~ msgid ""
+#~ "Extra Stereo Plugin\n"
+#~ "\n"
+#~ "By Johan Levin 1999."
+#~ msgstr ""
+#~ "Плаґін розширеного стерео\n"
+#~ "\n"
+#~ "створив 1999 року Johan Levin."
+
+#~ msgid "About Extra Stereo Plugin"
+#~ msgstr "Про плаґін розширеного стерео"
+
+#~ msgid "About Tone Generator"
+#~ msgstr "Про генератор тону"
+
+#~ msgid ""
+#~ "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
+#~ "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+#~ "\n"
+#~ "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+#~ "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+#~ msgstr ""
+#~ "Генератор синусоїдного тону, створений Haavard Kvaalen <havardk@xmms."
+#~ "org>\n"
+#~ "і модифікований Daniel J. Peng <danielpeng@bigfoot.com>,\n"
+#~ "\n"
+#~ "можна використовувати за URL: tone://frequency1;frequency2;"
+#~ "frequency3;...\n"
+#~ "(наприклад, tone://2000;2005 для відтворення тону 2000 Гц й тону 2005 Гц."
+
+#~ msgid "About Ogg Vorbis Audio Plugin"
+#~ msgstr "Про плаґін вводу з Ogg Vorbis"
+
+#~ msgid ""
+#~ "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
+#~ "\n"
+#~ "Original code by\n"
+#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+#~ "Contributions from\n"
+#~ "Chris Montgomery <monty@xiph.org>\n"
+#~ "Peter Alm <peter@xmms.org>\n"
+#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
+#~ "Jack Moffitt <jack@icecast.org>\n"
+#~ "Jorn Baayen <jorn@nl.linux.org>\n"
+#~ "Haavard Kvaalen <havardk@xmms.org>\n"
+#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+#~ "Eugene Zagidullin <e.asphyx@gmail.com>\n"
+#~ "\n"
+#~ "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
+#~ msgstr ""
+#~ "Плаґін вводу з Ogg Vorbis створений Xiph.org Foundation\n"
+#~ "\n"
+#~ "Автор оригіналу:\n"
+#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+#~ "\n"
+#~ "Дописувачі:\n"
+#~ "Chris Montgomery <monty@xiph.org>\n"
+#~ "Peter Alm <peter@xmms.org>\n"
+#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
+#~ "Jack Moffitt <jack@icecast.org>\n"
+#~ "Jorn Baayen <jorn@nl.linux.org>\n"
+#~ "Haavard Kvaalen <havardk@xmms.org>\n"
+#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+#~ "Eugene Zagidullin <e.asphyx@gmail.com>\n"
+#~ "\n"
+#~ "Відвідайте Фонд Xiph.org: http://www.xiph.org/\n"
+
+#~ msgid "About Vortex Player"
+#~ msgstr "Про плаґін вводу з Vortex"
+
+#~ msgid ""
+#~ "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+#~ "\n"
+#~ "Some of the plugin code was by Miles Egan\n"
+#~ "Visit the Wavpack site at http://www.wavpack.com/\n"
+#~ msgstr ""
+#~ "(c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
+#~ "\n"
+#~ "Деякий код написав Miles Egan.\n"
+#~ "Відвідайте сайт Wavpack: http://www.wavpack.com/\n"
