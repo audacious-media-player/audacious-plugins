@@ -461,6 +461,8 @@ static void pcm_changed (GtkComboBox * combo, void * unused)
 
     free (alsa_config_pcm);
     alsa_config_pcm = strdup (combo_selected_text (pcm_combo, pcm_list));
+
+    aud_output_reset (OUTPUT_RESET_SOFT);
 }
 
 static void mixer_changed (GtkComboBox * combo, void * unused)

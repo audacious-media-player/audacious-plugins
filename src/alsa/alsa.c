@@ -543,22 +543,6 @@ FAILED:
     return;
 }
 
-void alsa_set_written_time (int time)
-{
-    AUDDBG ("Setting time counter to %d.\n", time);
-    pthread_mutex_lock (& alsa_mutex);
-    alsa_written = (int64_t) time * alsa_rate / 1000;
-    pthread_mutex_unlock (& alsa_mutex);
-}
-
-int alsa_written_time (void)
-{
-    pthread_mutex_lock (& alsa_mutex);
-    int time = (int64_t) alsa_written * 1000 / alsa_rate;
-    pthread_mutex_unlock (& alsa_mutex);
-    return time;
-}
-
 int alsa_output_time (void)
 {
     pthread_mutex_lock (& alsa_mutex);

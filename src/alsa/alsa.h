@@ -64,8 +64,6 @@ int alsa_buffer_free (void);
 void alsa_write_audio (void * data, int length);
 void alsa_period_wait (void);
 void alsa_drain (void);
-void alsa_set_written_time (int time);
-int alsa_written_time (void);
 int alsa_output_time (void);
 void alsa_flush (int time);
 void alsa_pause (int pause);
