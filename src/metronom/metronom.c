@@ -214,7 +214,6 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
 error_exit:
 
     stop_flag = TRUE;
-    playback->output->close_audio();
 
     return !error;
 }

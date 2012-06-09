@@ -107,8 +107,6 @@ void oss_close_audio(void);
 void oss_write_audio(void *data, int length);
 void oss_drain(void);
 int oss_buffer_free(void);
-void oss_set_written_time(int time);
-int oss_written_time(void);
 int oss_output_time(void);
 void oss_flush(int time);
 void oss_pause(bool_t pause);

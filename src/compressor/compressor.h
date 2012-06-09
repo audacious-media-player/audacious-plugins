@@ -25,3 +25,4 @@ void compressor_start (int * channels, int * rate);
 void compressor_process (float * * data, int * samples);
 void compressor_flush (void);
 void compressor_finish (float * * data, int * samples);
+int compressor_adjust_delay (int delay);

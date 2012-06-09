@@ -175,7 +175,6 @@ void xs_close(void)
 gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, gint start_time, gint stop_time, gboolean pause)
 {
     xs_tuneinfo_t *tmpTune;
-    gboolean audioOpen = FALSE;
     gint audioBufSize, bufRemaining, tmpLength, subTune = -1;
     gchar *audioBuffer = NULL, *oversampleBuffer = NULL;
     Tuple *tmpTuple;
@@ -271,8 +270,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
         goto xs_err_exit;
     }
 
-    audioOpen = TRUE;
-
     /* Set song information for current subtune */
     XSDEBUG("foobar #1\n");
     xs_status.sidPlayer->plrUpdateSIDInfo(&xs_status);
@@ -343,13 +340,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
 
 DONE:
     XSDEBUG("out of playing loop\n");
-
-    /* Close audio output plugin */
-    if (audioOpen) {
-        XSDEBUG("close audio #2\n");
-        pb->output->close_audio();
-        XSDEBUG("closed\n");
-    }
 
     g_free(audioBuffer);
     g_free(oversampleBuffer);

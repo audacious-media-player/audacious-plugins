@@ -307,32 +307,6 @@ fail:
     return (int) l;
 }
 
-static int pulse_get_written_time(void) {
-    int r = 0;
-
-    CHECK_CONNECTED(0);
-
-    pa_threaded_mainloop_lock(mainloop);
-    CHECK_DEAD_GOTO(fail, 1);
-
-    r = written * (int64_t) 1000 / bytes_per_second;
-
-fail:
-    pa_threaded_mainloop_unlock(mainloop);
-
-    return r;
-}
-
-static void pulse_set_written_time (int time)
-{
-    pa_threaded_mainloop_lock (mainloop);
-
-    written = time * (int64_t) bytes_per_second / 1000;
-    flush_time = time;
-
-    pa_threaded_mainloop_unlock (mainloop);
-}
-
 static int pulse_get_output_time (void)
 {
     int time = 0;
@@ -701,7 +675,5 @@ AUD_OUTPUT_PLUGIN
         .pause = pulse_pause,
         .buffer_free = pulse_free,
         .drain = pulse_drain,
-        .output_time = pulse_get_output_time,
-        .written_time = pulse_get_written_time,
-        .set_written_time = pulse_set_written_time,
+        .output_time = pulse_get_output_time
 )

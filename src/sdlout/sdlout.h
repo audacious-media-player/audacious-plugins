@@ -31,10 +31,8 @@ int sdlout_buffer_free (void);
 void sdlout_period_wait (void);
 void sdlout_write_audio (void * data, int len);
 void sdlout_drain (void);
-int sdlout_written_time (void);
 int sdlout_output_time (void);
 void sdlout_pause (int pause);
 void sdlout_flush (int time);
-void sdlout_set_written_time (int time);
 
 #endif

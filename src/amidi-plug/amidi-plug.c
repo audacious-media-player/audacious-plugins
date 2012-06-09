@@ -408,9 +408,6 @@ static gboolean amidiplug_play (InputPlayback * playback, const gchar *
     }
   }
 
-  if (! backend.autonomous_audio)
-      playback->output->close_audio ();
-
   return TRUE;
 }
 
@@ -698,15 +695,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
    midifile.skip_offset);
 
   if (! backend.autonomous_audio)
-  {
       audio_stop ();
-
-      if (! stopped)
-      {
-          while (playback->output->buffer_playing ())
-              g_usleep (20000);
-      }
-  }
 
   backend.seq_off ();
   backend.seq_stop ();

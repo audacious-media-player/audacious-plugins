@@ -308,21 +308,6 @@ static void file_flush(gint time)
     samples_written = time * (gint64) input.channels * input.frequency / 1000;
 }
 
-static void file_set_written_time (gint time)
-{
-    /* Guesswork:
-     * If time = 0, we are starting a new song and need to open a new file.  If
-     * time > 0, we have already done this, and we are just setting the time
-     * counter. */
-    if (! time)
-    {
-        file_close ();
-        file_open (input.format, input.frequency, input.channels);
-    }
-
-    samples_written = time * (gint64) input.channels * input.frequency / 1000;
-}
-
 static void file_pause (gboolean p)
 {
 }
@@ -555,9 +540,7 @@ AUD_OUTPUT_PLUGIN
  .close_audio = file_close,
  .write_audio = file_write,
  .drain = file_drain,
- .written_time = file_get_time,
  .output_time = file_get_time,
  .pause = file_pause,
- .flush = file_flush,
- .set_written_time = file_set_written_time,
+ .flush = file_flush
 )

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <neaacdec.h>
 
@@ -578,16 +577,7 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
 
         /* If we've run to the end of the file, we're done. */
         if (sampleID >= numSamples)
-        {
-            /* Finish playing before we close the
-               output. */
-            while (playback->output->buffer_playing ())
-            {
-                usleep (10000);
-            }
-
             break;
-        }
 
         rc = mp4ff_read_sample (mp4file, mp4track,
          sampleID++, &buffer, &bufferSize);
@@ -598,7 +588,6 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
         {
             fprintf (stderr, "MP4: read error\n");
             sampleBuffer = NULL;
-            playback->output->close_audio ();
 
             NeAACDecClose (decoder);
 
@@ -611,7 +600,6 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
         if (frameInfo.error > 0)
         {
             fprintf (stderr, "MP4: %s\n", NeAACDecGetErrorMessage (frameInfo.error));
-            playback->output->close_audio ();
             NeAACDecClose (decoder);
 
             return FALSE;
@@ -659,7 +647,6 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
     stop_flag = TRUE;
     pthread_mutex_unlock (& mutex);
 
-    playback->output->close_audio ();
     NeAACDecClose (decoder);
 
     return TRUE;
@@ -841,12 +828,7 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
         /* == CHECK FOR END OF FILE == */
 
         if (! buflen)
-        {
-            while (playback->output->buffer_playing ())
-                usleep (20000);
-
             break;
-        }
 
         /* == CHECK FOR METADATA == */
 
@@ -893,7 +875,6 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
     stop_flag = TRUE;
     pthread_mutex_unlock (& mutex);
 
-    playback->output->close_audio ();
     NeAACDecClose (decoder);
 
     if (tuple)

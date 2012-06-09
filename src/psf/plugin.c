@@ -29,7 +29,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -186,16 +185,11 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 		}
 
 		f->stop();
-
-		while (!stop_flag && data->output->buffer_playing())
-			usleep(10000);
-
 		break;
 	}
 
 	pthread_mutex_lock (& mutex);
 	stop_flag = TRUE;
-	data->output->close_audio ();
 	pthread_mutex_unlock (& mutex);
 
 	free(buffer);

@@ -83,7 +83,6 @@ ov_callbacks vorbis_callbacks_stream = {
 static gint seek_value;
 static gboolean stop_flag = FALSE;
 static GMutex * seek_mutex = NULL;
-static GCond * seek_cond = NULL;
 
 static gint
 vorbis_check_fd(const gchar *filename, VFSFile *stream)
@@ -364,7 +363,6 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
             ov_time_seek (& vf, (double) seek_value / 1000);
             playback->output->flush (seek_value);
             seek_value = -1;
-            g_cond_signal (seek_cond);
         }
 
         g_mutex_unlock (seek_mutex);
@@ -377,9 +375,6 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
         if (bytes <= 0)
         {
 DRAIN:
-            while (playback->output->buffer_playing ())
-                g_usleep (10000);
-
             break;
         }
 
@@ -414,10 +409,6 @@ DRAIN:
             if (vi->rate != samplerate || vi->channels != channels) {
                 samplerate = vi->rate;
                 channels = vi->channels;
-                while (playback->output->buffer_playing())
-                    g_usleep(1000);
-
-                playback->output->close_audio();
 
                 if (!playback->output->open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
                     error = TRUE;
@@ -443,10 +434,7 @@ stop_processing:
 
     g_mutex_lock (seek_mutex);
     stop_flag = TRUE;
-    g_cond_signal (seek_cond); /* wake up any waiting request */
     g_mutex_unlock (seek_mutex);
-
-    playback->output->close_audio ();
 
 play_cleanup:
 
@@ -463,7 +451,6 @@ static void vorbis_stop (InputPlayback * playback)
     {
         stop_flag = TRUE;
         playback->output->abort_write ();
-        g_cond_signal (seek_cond);
     }
 
     g_mutex_unlock (seek_mutex);
@@ -487,8 +474,6 @@ static void vorbis_mseek (InputPlayback * playback, gint time)
     {
         seek_value = time;
         playback->output->abort_write ();
-        g_cond_signal (seek_cond);
-        g_cond_wait (seek_cond, seek_mutex);
     }
 
     g_mutex_unlock (seek_mutex);
@@ -566,7 +551,6 @@ ERR:
 static gboolean vorbis_init (void)
 {
     seek_mutex = g_mutex_new();
-    seek_cond = g_cond_new();
     return TRUE;
 }
 
@@ -574,7 +558,6 @@ static void
 vorbis_cleanup(void)
 {
     g_mutex_free(seek_mutex);
-    g_cond_free(seek_cond);
 }
 
 static const char vorbis_about[] =

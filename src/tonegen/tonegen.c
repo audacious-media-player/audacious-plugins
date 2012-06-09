@@ -161,7 +161,6 @@ error_exit:
     g_array_free(frequencies, TRUE);
     g_free(tone);
 
-    playback->output->close_audio();
     stop_flag = TRUE;
 
     return !error;

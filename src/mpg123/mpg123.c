@@ -21,7 +21,6 @@
 
 #include <pthread.h>
 #include <string.h>
-#include <unistd.h>
 
 /* must come before <mpg123.h> to get _FILE_OFFSET_BITS */
 #include "config.h"
@@ -478,15 +477,10 @@ GET_FORMAT:
 	}
 
 decode_cleanup:
-	while (data->output->buffer_playing ())
-		usleep(10000);
-
 	AUDDBG("decode complete\n");
 	pthread_mutex_lock (& mutex);
 	data->set_data (data, NULL);
 	pthread_mutex_unlock (& mutex);
-
-	data->output->close_audio();
 
 cleanup:
 	mpg123_delete(ctx.decoder);

@@ -194,14 +194,7 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
             playback->output->write_audio(sndbuf, SNDBUFSIZE);
 
         if (eof)
-        {
-            AUDDBG("EOF.\n");
-
-            while (!stop_flag && playback->output->buffer_playing())
-                g_usleep(10000);
-
             goto CLEANUP;
-        }
     }
 
 CLEANUP:
@@ -211,8 +204,6 @@ CLEANUP:
     stop_flag = TRUE;
     g_cond_signal(seek_cond); /* wake up any waiting request */
     g_mutex_unlock(seek_mutex);
-
-    playback->output->close_audio();
 
 ERR_NO_CLOSE:
 

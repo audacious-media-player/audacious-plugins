@@ -20,7 +20,6 @@
 
 #include <pthread.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
@@ -307,16 +306,9 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
     }
 
 CLEANUP:
-    while (playback->output->buffer_playing())
-        usleep (20000);
-
     pthread_mutex_lock (& mutex);
     stop_flag = TRUE;
     pthread_mutex_unlock (& mutex);
-
-    AUDDBG("Closing audio device.\n");
-    playback->output->close_audio();
-    AUDDBG("Audio device closed.\n");
 
 ERR_NO_CLOSE:
     free (play_buffer);

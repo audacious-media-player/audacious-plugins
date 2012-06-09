@@ -6,7 +6,6 @@
 
 #include <fstream>
 #include <stdint.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <math.h>
 
@@ -266,10 +265,6 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
     }
 
     pthread_mutex_lock (& mutex);
-
-    while (!stop_flag && playback->output->buffer_playing ())
-        usleep (10000);
-
     stop_flag = TRUE;
     pthread_mutex_unlock (& mutex);
 
@@ -381,7 +376,6 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
         return true;
 
     this->PlayLoop(ipb);
-    ipb->output->close_audio ();
 
     return false;
 }

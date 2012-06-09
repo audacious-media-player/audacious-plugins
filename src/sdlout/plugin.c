@@ -54,9 +54,7 @@ AUD_OUTPUT_PLUGIN
     .period_wait = sdlout_period_wait,
     .write_audio = sdlout_write_audio,
     .drain = sdlout_drain,
-    .written_time = sdlout_written_time,
     .output_time = sdlout_output_time,
     .pause = sdlout_pause,
-    .flush = sdlout_flush,
-    .set_written_time = sdlout_set_written_time,
+    .flush = sdlout_flush
 )

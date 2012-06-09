@@ -39,6 +39,7 @@ static int chunk_size, buffer_size;
 static int ring_at, buffer_filled, peaks_filled;
 static float current_peak;
 static int output_filled;
+static int current_channels, current_rate;
 
 static void buffer_append (float * * data, int * length)
 {
@@ -211,6 +212,9 @@ void compressor_start (int * channels, int * rate)
     buffer = realloc (buffer, sizeof (float) * buffer_size);
     peaks = realloc (peaks, sizeof (float) * CHUNKS);
 
+    current_channels = * channels;
+    current_rate = * rate;
+
     reset ();
 }
 
@@ -227,4 +231,9 @@ void compressor_flush (void)
 void compressor_finish (float * * data, int * samples)
 {
     do_compress (data, samples, 1);
+}
+
+int compressor_adjust_delay (int delay)
+{
+    return delay + (int64_t) (buffer_filled / current_channels) * 1000 / current_rate;
 }

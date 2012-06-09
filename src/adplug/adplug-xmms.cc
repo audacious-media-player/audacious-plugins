@@ -24,7 +24,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "adplug.h"
 #include "emuopl.h"
@@ -263,9 +262,6 @@ static bool_t play_loop (InputPlayback * playback, const char * filename,
     playback->output->write_audio (sndbuf, SNDBUFSIZE * sampsize);
   }
 
-  while (playback->output->buffer_playing ())
-      usleep (10000);
-
   pthread_mutex_lock (& mutex);
   stop_flag = FALSE;
   pthread_mutex_unlock (& mutex);
@@ -324,7 +320,6 @@ adplug_play (InputPlayback * data, const char * filename, VFSFile * file, int st
   }
 
   play_loop (playback, filename, file);
-  playback->output->close_audio ();
   return FALSE;
 }
 

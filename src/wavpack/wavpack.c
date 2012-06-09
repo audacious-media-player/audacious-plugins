@@ -1,7 +1,6 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <wavpack/wavpack.h>
 
@@ -227,14 +226,6 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
         }
     }
 
-    /* Flush buffer */
-    pthread_mutex_lock (& mutex);
-
-    while (!stop_flag && playback->output->buffer_playing())
-        usleep(20000);
-
-    pthread_mutex_unlock (& mutex);
-
 error_exit:
 
     free(input);
@@ -242,7 +233,6 @@ error_exit:
     wv_deattach (wvc_input, ctx);
 
     stop_flag = TRUE;
-    playback->output->close_audio();
     return ! error;
 }
 

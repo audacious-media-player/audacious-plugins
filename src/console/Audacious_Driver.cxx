@@ -334,7 +334,6 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
     }
 
     // stop playing
-    playback->output->close_audio();
     stop_flag = TRUE;
 
     return !error;

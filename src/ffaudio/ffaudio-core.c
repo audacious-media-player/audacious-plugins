@@ -38,7 +38,6 @@
 #include <libaudcore/audstrings.h>
 
 static GMutex *ctrl_mutex = NULL;
-static GCond *ctrl_cond = NULL;
 static gint64 seek_value = -1;
 static gboolean stop_flag = FALSE;
 
@@ -78,7 +77,6 @@ static gboolean ffaudio_init (void)
     av_lockmgr_register (lockmgr);
 
     ctrl_mutex = g_mutex_new();
-    ctrl_cond = g_cond_new();
 
     return TRUE;
 }
@@ -88,7 +86,6 @@ ffaudio_cleanup(void)
 {
     AUDDBG("cleaning up\n");
     g_mutex_free(ctrl_mutex);
-    g_cond_free(ctrl_cond);
 
     if (extension_dict)
         g_hash_table_destroy (extension_dict);
@@ -510,9 +507,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
                 errcount = 0;
         }
         seek_value = -1;
-        g_cond_signal(ctrl_cond);
-
-
         g_mutex_unlock(ctrl_mutex);
 
         /* Read next frame (or more) of data */
@@ -551,10 +545,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
             if (seek_value != -1)
             {
                 if (!seekable)
-                {
                     seek_value = -1;
-                    g_cond_signal(ctrl_cond);
-                }
                 else
                 {
                     g_mutex_unlock(ctrl_mutex);
@@ -588,16 +579,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
             av_free_packet(&pkt);
     }
 
-    g_mutex_lock(ctrl_mutex);
-
-    while (!stop_flag && playback->output->buffer_playing())
-        g_usleep(20000);
-
-    playback->output->close_audio();
-
-    g_cond_signal(ctrl_cond); /* wake up any waiting request */
-    g_mutex_unlock(ctrl_mutex);
-
 error_exit:
 
     AUDDBG("decode loop finished, shutting down\n");
@@ -623,7 +604,6 @@ static void ffaudio_stop(InputPlayback * playback)
     {
         stop_flag = TRUE;
         playback->output->abort_write();
-        g_cond_signal(ctrl_cond);
     }
 
     g_mutex_unlock (ctrl_mutex);
@@ -647,8 +627,6 @@ static void ffaudio_seek (InputPlayback * playback, gint time)
     {
         seek_value = time;
         playback->output->abort_write();
-        g_cond_signal(ctrl_cond);
-        g_cond_wait(ctrl_cond, ctrl_mutex);
     }
 
     g_mutex_unlock(ctrl_mutex);

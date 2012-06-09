@@ -29,7 +29,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -201,12 +200,7 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 		playback->output->write_audio((uint8_t *)samples, seglen * 4);
 
 		if (playback->output->written_time() >= length)
-		{
-			while (!stop_flag && playback->output->buffer_playing())
-				usleep(10000);
-
 			goto CLEANUP;
-		}
 	}
 
 CLEANUP:
@@ -215,8 +209,6 @@ CLEANUP:
 	pthread_mutex_lock (& mutex);
 	stop_flag = TRUE;
 	pthread_mutex_unlock (& mutex);
-
-	playback->output->close_audio();
 
 ERR_NO_CLOSE:
 	free(buffer);

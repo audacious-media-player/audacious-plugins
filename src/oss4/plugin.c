@@ -132,8 +132,6 @@ AUD_OUTPUT_PLUGIN
     .write_audio = oss_write_audio,
     .drain = oss_drain,
     .buffer_free = oss_buffer_free,
-    .set_written_time = oss_set_written_time,
-    .written_time = oss_written_time,
     .output_time = oss_output_time,
     .flush = oss_flush,
     .pause = oss_pause,

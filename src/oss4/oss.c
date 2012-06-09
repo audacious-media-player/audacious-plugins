@@ -219,19 +219,6 @@ FAILED:
     return 0;
 }
 
-void oss_set_written_time(int time)
-{
-    oss_time = 1000 * (int64_t) time;
-}
-
-int oss_written_time(void)
-{
-    int time;
-
-    time = oss_time / 1000;
-    return time;
-}
-
 static int real_output_time()
 {
     int  time = 0;

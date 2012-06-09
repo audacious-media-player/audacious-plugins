@@ -278,22 +278,6 @@ void sdlout_drain (void)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void sdlout_set_written_time (int time)
-{
-    AUDDBG ("Setting time counter to %d.\n", time);
-    pthread_mutex_lock (& sdlout_mutex);
-    frames_written = (int64_t) time * sdlout_rate / 1000;
-    pthread_mutex_unlock (& sdlout_mutex);
-}
-
-int sdlout_written_time (void)
-{
-    pthread_mutex_lock (& sdlout_mutex);
-    int time = (int64_t) frames_written * 1000 / sdlout_rate;
-    pthread_mutex_unlock (& sdlout_mutex);
-    return time;
-}
-
 int sdlout_output_time (void)
 {
     pthread_mutex_lock (& sdlout_mutex);

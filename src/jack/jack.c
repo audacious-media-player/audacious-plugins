@@ -121,23 +121,6 @@ static void jack_get_volume(int *l, int *r)
 }
 
 
-/* Return the number of milliseconds of audio data that has been */
-/* written out to the device */
-static int jack_get_written_time(void)
-{
-  long return_val;
-  return_val = JACK_GetPosition(driver, MILLISECONDS, WRITTEN);
-
-  TRACE("returning %ld milliseconds\n", return_val);
-  return return_val;
-}
-
-static void jack_set_written_time(int time)
-{
-  JACK_SetPosition(driver, MILLISECONDS, time);
-}
-
-
 /* Return the current number of milliseconds of audio data that has */
 /* been played out of the audio device, not including the buffer */
 static int jack_get_output_time(void)
@@ -447,7 +430,5 @@ AUD_OUTPUT_PLUGIN
     .flush = jack_flush,
     .pause = jack_pause,
     .buffer_free = audacious_jack_free,
-    .output_time = jack_get_output_time,
-    .written_time = jack_get_written_time,
-    .set_written_time = jack_set_written_time
+    .output_time = jack_get_output_time
 )

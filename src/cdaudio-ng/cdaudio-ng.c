@@ -20,7 +20,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 
 #include <cdio/cdio.h>
@@ -400,15 +399,11 @@ ERR:
         currlsn += sectors;
     }
 
-    while (p->output->buffer_playing ())
-        g_usleep (20000);
-
     g_mutex_lock (mutex);
     stop_flag = FALSE;
     g_mutex_unlock (mutex);
 
 CLOSE:
-    p->output->close_audio ();
     return TRUE;
 }
 

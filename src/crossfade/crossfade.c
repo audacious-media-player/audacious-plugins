@@ -247,6 +247,11 @@ static void crossfade_finish (float * * data, int * samples)
     }
 }
 
+static int crossfade_adjust_delay (int delay)
+{
+    return delay + (int64_t) (buffer_filled / current_channels) * 1000 / current_rate;
+}
+
 static const char crossfade_about[] =
  "Crossfade Plugin for Audacious\n"
  "Copyright 2010-2012 John Lindgren\n\n"
@@ -284,5 +289,7 @@ AUD_EFFECT_PLUGIN
     .process = crossfade_process,
     .flush = crossfade_flush,
     .finish = crossfade_finish,
-    .order = 5 /* must be after resample and mixer */
+    .adjust_delay = crossfade_adjust_delay,
+    .order = 5, /* must be after resample and mixer */
+    .preserves_format = TRUE
 )

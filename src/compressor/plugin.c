@@ -78,5 +78,6 @@ AUD_EFFECT_PLUGIN
     .process = compressor_process,
     .flush = compressor_flush,
     .finish = compressor_finish,
+    .adjust_delay = compressor_adjust_delay,
     .preserves_format = TRUE
 )

@@ -41,7 +41,6 @@
 #include <math.h>
 #include <pthread.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include <sndfile.h>
 
@@ -352,14 +351,6 @@ static bool_t play_start (InputPlayback * playback, const char * filename,
 
     sf_close (sndfile);
     free (buffer);
-
-    if (! stop_flag)
-    {
-        while (playback->output->buffer_playing ())
-            usleep (20000);
-    }
-
-    playback->output->close_audio();
 
     pthread_mutex_lock (& mutex);
     stop_flag = TRUE;
