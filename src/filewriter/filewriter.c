@@ -542,5 +542,6 @@ AUD_OUTPUT_PLUGIN
  .drain = file_drain,
  .output_time = file_get_time,
  .pause = file_pause,
- .flush = file_flush
+ .flush = file_flush,
+ .force_reopen = TRUE
 )
