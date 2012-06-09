@@ -47,13 +47,7 @@ void sndstretch_config         (void);
 static void sndstretch_start (gint * channels, gint * rate);
 static void sndstretch_process (gfloat * * data, gint * samples);
 static void sndstretch_finish (gfloat * * data, gint * samples);
-static gint sndstretch_decoder_to_output_time (gint time);
-static gint sndstretch_output_to_decoder_time (gint time);
-
-/* Note: Technically this plugin does not change the format of the audio stream,
- * so it would seem right to set (.preserves_format = TRUE).  However, disabling
- * the plugin without a reset leaves the time counter messed up.  So, in order
- * to force a reset, we set (.preserves_format = FALSE). */
+static gint sndstretch_adjust_delay (gint delay);
 
 AUD_EFFECT_PLUGIN
 (
@@ -65,8 +59,8 @@ AUD_EFFECT_PLUGIN
     .start = sndstretch_start,
     .process = sndstretch_process,
     .finish = sndstretch_finish,
-    .decoder_to_output_time = sndstretch_decoder_to_output_time,
-    .output_to_decoder_time = sndstretch_output_to_decoder_time
+    .adjust_delay = sndstretch_adjust_delay,
+    .preserves_format = TRUE
 )
 
 struct sndstretch_settings
@@ -401,7 +395,6 @@ gboolean sndstretch_init (void)
 static gboolean initted = FALSE;
 static PitchSpeedJob job;
 static gint current_channels, current_rate;
-static struct sndstretch_settings current_settings;
 
 static void sndstretch_start (gint * channels, gint * rate)
 {
@@ -413,14 +406,13 @@ static void sndstretch_start (gint * channels, gint * rate)
 
     current_channels = * channels;
     current_rate = * rate;
-    memcpy (& current_settings, & SS, sizeof (struct sndstretch_settings));
 }
 
 /* FIXME: Find a stretch algorithm that uses floating point. */
 /* FIXME: The output buffer should be freed on plugin cleanup. */
 static void sndstretch_process (gfloat * * data, gint * samples)
 {
-    gint new_samples = (* samples) / current_settings.speed + 100;
+    gint new_samples = (* samples) / SS.speed + 100;
     gint16 * converted, * stretched;
     static gfloat * reconverted = NULL;
 
@@ -432,9 +424,8 @@ static void sndstretch_process (gfloat * * data, gint * samples)
 
     stretched = g_malloc (2 * new_samples);
     snd_pitch_speed_job (converted, current_channels, * samples, FALSE,
-     current_settings.pitch, current_settings.speed,
-     current_settings.short_overlap ? 882 : 1764, stretched, & new_samples,
-     & job, current_settings.volume_corr);
+     SS.pitch, SS.speed, SS.short_overlap ? 882 : 1764, stretched,
+     & new_samples, & job, SS.volume_corr);
     g_free (converted);
 
     reconverted = g_realloc (reconverted, sizeof (gfloat) * new_samples);
@@ -450,12 +441,7 @@ static void sndstretch_finish (gfloat * * data, gint * samples)
     sndstretch_process (data, samples);
 }
 
-static gint sndstretch_decoder_to_output_time (gint time)
+static gint sndstretch_adjust_delay (gint delay)
 {
-    return time / current_settings.speed;
-}
-
-static gint sndstretch_output_to_decoder_time (gint time)
-{
-    return time * current_settings.speed;
+    return delay * SS.speed;
 }
