@@ -722,7 +722,6 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 static void * search_get_widget (void)
 {
     GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-    gtk_container_set_border_width ((GtkContainer *) vbox, 2);
 
     entry = gtk_entry_new ();
     gtk_entry_set_icon_from_stock ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, GTK_STOCK_FIND);

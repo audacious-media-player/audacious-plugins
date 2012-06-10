@@ -567,5 +567,8 @@ GtkWidget * ui_infoarea_new (void)
         }
     }
 
-    return area->box;
+    GtkWidget * frame = gtk_frame_new (NULL);
+    gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
+    gtk_container_add ((GtkContainer *) frame, area->box);
+    return frame;
 }

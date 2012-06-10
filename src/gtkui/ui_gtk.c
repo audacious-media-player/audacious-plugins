@@ -778,7 +778,7 @@ static gboolean init (void)
     GtkWidget * layout = layout_new ();
     gtk_box_pack_start ((GtkBox *) vbox_outer, layout, TRUE, TRUE, 0);
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     layout_add_center (vbox);
 
     ui_playlist_notebook_new ();

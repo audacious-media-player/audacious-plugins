@@ -210,10 +210,10 @@ check_current_track(Tuple *tu)
 		if (string1 == NULL || string2 == NULL ||
 			strcmp(string1, string2) != 0)
 		{
-		    ret = FALSE;
+			ret = FALSE;
 			str_unref (string1);
 			str_unref (string2);
-		    break;
+			break;
 		}
 
 		str_unref (string1);
@@ -323,6 +323,7 @@ build_widget(void)
 	textbuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
 
 	scrollview = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollview), GTK_SHADOW_IN);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
 
