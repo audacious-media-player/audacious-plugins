@@ -536,7 +536,6 @@ static void destroy_cb (void)
 GtkWidget * ui_playlist_notebook_new (void)
 {
     notebook = gtk_notebook_new ();
-    gtk_container_set_border_width ((GtkContainer *) notebook, 2);
     gtk_notebook_set_scrollable ((GtkNotebook *) notebook, TRUE);
 
 #ifdef HAVE_ADD_BUTTON

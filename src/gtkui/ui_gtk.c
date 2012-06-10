@@ -814,7 +814,7 @@ static gboolean init (void)
     GtkWidget * layout = layout_new ();
     gtk_box_pack_start ((GtkBox *) vbox_outer, layout, TRUE, TRUE, 0);
 
-    vbox = gtk_vbox_new (FALSE, 0);
+    vbox = gtk_vbox_new (FALSE, 6);
     layout_add_center (vbox);
 
     /* Create playlist notebook */

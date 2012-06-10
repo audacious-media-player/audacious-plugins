@@ -283,7 +283,10 @@ static /* GtkWidget * */ gpointer get_widget(void)
 
 	aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) render_cb);
 
-	return area;
+	GtkWidget * frame = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
+	gtk_container_add ((GtkContainer *) frame, area);
+	return frame;
 }
 
 AUD_VIS_PLUGIN

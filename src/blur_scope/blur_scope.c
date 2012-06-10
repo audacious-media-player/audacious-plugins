@@ -142,7 +142,10 @@ static void /* GtkWidget */ * bscope_get_widget (void)
     g_signal_connect (area, "configure-event", (GCallback) configure_event, NULL);
     g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 
-    return area;
+    GtkWidget * frame = gtk_frame_new (NULL);
+    gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
+    gtk_container_add ((GtkContainer *) frame, area);
+    return frame;
 }
 
 static void bscope_clear (void)

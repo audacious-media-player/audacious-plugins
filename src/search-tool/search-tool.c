@@ -631,7 +631,6 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 static void * search_get_widget (void)
 {
     GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
-    gtk_container_set_border_width ((GtkContainer *) vbox, 2);
 
     GtkWidget * entry = gtk_entry_new ();
 #if GTK_CHECK_VERSION (2, 16, 0)

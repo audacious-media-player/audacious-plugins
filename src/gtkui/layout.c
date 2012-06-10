@@ -60,6 +60,7 @@ GtkWidget * layout_new (void)
 {
     g_return_val_if_fail (! layout, NULL);
     layout = gtk_alignment_new (0, 0, 1, 1);
+    gtk_alignment_set_padding ((GtkAlignment *) layout, 3, 3, 3, 3);
     NULL_ON_DESTROY (layout);
     return layout;
 }
@@ -142,7 +143,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
 {
     g_return_val_if_fail (widget && name, NULL);
 
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 0);
+    GtkWidget * vbox = gtk_vbox_new (FALSE, 2);
 
     GtkWidget * ebox = gtk_event_box_new ();
     gtk_box_pack_start ((GtkBox *) vbox, ebox, FALSE, FALSE, 0);
@@ -150,7 +151,6 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
      widget);
 
     GtkWidget * label = gtk_label_new (NULL);
-    gtk_misc_set_padding ((GtkMisc *) label, 3, 0);
     gchar * markup = g_markup_printf_escaped ("<small><b>%s</b></small>", name);
     gtk_label_set_markup ((GtkLabel *) label, markup);
     g_free (markup);
@@ -324,6 +324,8 @@ static void item_add (Item * item)
         NULL_ON_DESTROY (item->window);
 
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
+        gtk_container_set_border_width ((GtkContainer *) item->window, 2);
+
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
          delete_cb, item->widget);
         g_signal_connect_swapped (item->window, "key-press-event", (GCallback)
