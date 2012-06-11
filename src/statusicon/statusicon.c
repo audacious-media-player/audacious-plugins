@@ -275,18 +275,17 @@ static GtkWidget *si_smallmenu_create(void)
     g_signal_connect_swapped(si_smenu_next_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_NEXT));
     gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_next_item);
     gtk_widget_show(si_smenu_next_item);
-
-        si_smenu_sep_item = gtk_separator_menu_item_new();
-        gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_sep_item);
-        gtk_widget_show(si_smenu_sep_item);
-        si_smenu_pref_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
-        g_signal_connect_swapped(si_smenu_pref_item, "activate", G_CALLBACK(aud_show_prefs_window), NULL);
-        gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_pref_item);
-        gtk_widget_show(si_smenu_pref_item);
-        si_smenu_quit_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
-        g_signal_connect_swapped(si_smenu_quit_item, "activate", G_CALLBACK(aud_drct_quit), NULL);
-        gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_quit_item);
-        gtk_widget_show(si_smenu_quit_item);
+    si_smenu_sep_item = gtk_separator_menu_item_new();
+    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_sep_item);
+    gtk_widget_show(si_smenu_sep_item);
+    si_smenu_pref_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_PREFERENCES, NULL);
+    g_signal_connect_swapped(si_smenu_pref_item, "activate", G_CALLBACK(aud_show_prefs_window), NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_pref_item);
+    gtk_widget_show(si_smenu_pref_item);
+    si_smenu_quit_item = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
+    g_signal_connect_swapped(si_smenu_quit_item, "activate", G_CALLBACK(aud_drct_quit), NULL);
+    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_quit_item);
+    gtk_widget_show(si_smenu_quit_item);
 
     return si_smenu;
 }
