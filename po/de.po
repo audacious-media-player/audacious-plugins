@@ -1072,7 +1072,7 @@ msgid ""
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
 "Crossfading fehlgeschlagen, weil die Lieder unterschiedliche Sample-Rates "
-"hatten.  Sie könnenden Sample-Rate-Converter benutzen, um die Lieder auf die "
+"hatten.  Sie können den Sample-Rate-Converter benutzen, um die Lieder auf die "
 "selbe Bitrate zu resamplen."
 
 #: src/crossfade/crossfade.c:271
