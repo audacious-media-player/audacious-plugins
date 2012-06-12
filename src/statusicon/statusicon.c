@@ -390,7 +390,7 @@ static const PreferencesWidget si_widgets[] = {
  {WIDGET_RADIO_BTN, N_("Change playing song"),
   .cfg_type = VALUE_INT, .csect = "statusicon", .cname = "scroll_action",
   .data = {.radio_btn = {SI_CFG_SCROLL_ACTION_SKIP}}},
- {WIDGET_LABEL, "<b>Other Settings</b>"},
+ {WIDGET_LABEL, N_("<b>Other Settings</b>")},
  {WIDGET_CHK_BTN, N_("Disable the popup window"),
   .cfg_type = VALUE_BOOLEAN, .csect = "statusicon", .cname = "disable_popup"},
  {WIDGET_CHK_BTN, N_("Close to the system tray"),
