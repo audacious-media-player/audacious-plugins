@@ -742,8 +742,8 @@ static gboolean init (void)
     gtk_widget_set_can_focus(slider, FALSE);
 
     /* Put the slider in an alignment so clicking under/above the slider
-     * does not emmit a button-press-event. Fixes bugreport #103 */
-    GtkWidget * alignment = gtk_alignment_new (0.5, 0.5, 1, 0);
+     * does not emit a button-press-event. Fixes bug report #103 */
+    GtkWidget * alignment = gtk_alignment_new (0.5, 0.5, 1.0, 0.0);
     gtk_container_add ((GtkContainer *) alignment, slider);
     gtk_box_pack_start ((GtkBox *) box1, alignment, TRUE, TRUE, 6);
 
