@@ -802,11 +802,8 @@ static gboolean init (void)
     ui_playlist_notebook_populate ();
 
     g_signal_connect (slider, "change-value", (GCallback) ui_slider_change_value_cb, NULL);
-    if (gtk_check_version (3, 5, 1))
-    {
-        g_signal_connect (slider, "button-press-event", (GCallback) ui_slider_button_press_cb, NULL);
-        g_signal_connect (slider, "button-release-event", (GCallback) ui_slider_button_release_cb, NULL);
-    }
+    g_signal_connect (slider, "button-press-event", (GCallback) ui_slider_button_press_cb, NULL);
+    g_signal_connect (slider, "button-release-event", (GCallback) ui_slider_button_release_cb, NULL);
 
     volume_change_handler_id = g_signal_connect (volume, "value-changed", (GCallback) ui_volume_value_changed_cb, NULL);
     g_signal_connect (volume, "pressed", (GCallback) ui_volume_pressed_cb, NULL);
