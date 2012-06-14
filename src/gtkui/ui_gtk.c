@@ -739,6 +739,7 @@ static gboolean init (void)
     slider = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, NULL);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
     gtk_widget_set_size_request(slider, 120, -1);
+    gtk_widget_set_valign (slider, GTK_ALIGN_CENTER);
     gtk_widget_set_can_focus(slider, FALSE);
     gtk_box_pack_start ((GtkBox *) box1, slider, TRUE, TRUE, 6);
 
