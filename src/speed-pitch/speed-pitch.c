@@ -211,6 +211,13 @@ static void speed_finish (float * * data, int * samples)
     }
 }
 
+static int speed_adjust_delay (int delay)
+{
+    /* Not sample-accurate, but should be a decent estimate. */
+    double speed = aud_get_double (CFGSECT, "speed");
+    return delay * speed + width * 1000 / currate;
+}
+
 static const char * const speed_defaults[] = {
  "speed", "1",
  "pitch", "1",
@@ -265,5 +272,6 @@ AUD_EFFECT_PLUGIN
     .process = speed_process,
     .flush = speed_flush,
     .finish = speed_finish,
+    .adjust_delay = speed_adjust_delay,
     .preserves_format = TRUE
 )
