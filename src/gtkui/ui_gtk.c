@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2012  Audacious development team
+ *  Copyright (C) 2005-2011  Audacious development team
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -121,11 +121,11 @@ static void save_window_size (void)
     aud_set_int ("gtkui", "player_height", h);
 }
 
-static gboolean window_delete ()
+static gboolean window_delete()
 {
     gboolean handle = FALSE;
 
-    hook_call ("window close", &handle);
+    hook_call("window close", &handle);
 
     if (handle)
         return TRUE;
@@ -285,9 +285,9 @@ static void do_seek (gint time)
     set_time_label (time, aud_drct_get_length ());
     aud_drct_seek (time);
 
-    /* Trick: Unschedule and then schedule the update function.  This gives the
-     * player 1/4 second to perform the seek before we update the display again,
-     * in an attempt to reduce flickering. */
+    // Trick: Unschedule and then schedule the update function.  This gives the
+    // player 1/4 second to perform the seek before we update the display again,
+    // in an attempt to reduce flickering.
     if (update_song_timeout_source)
     {
         g_source_remove (update_song_timeout_source);
@@ -295,7 +295,7 @@ static void do_seek (gint time)
     }
 }
 
-static gboolean ui_slider_change_value_cb (GtkRange * range, GtkScrollType scroll)
+static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
 {
     gint value = gtk_range_get_value (range);
     set_time_label (value, aud_drct_get_length ());
@@ -306,7 +306,7 @@ static gboolean ui_slider_change_value_cb (GtkRange * range, GtkScrollType scrol
     return FALSE;
 }
 
-static gboolean ui_slider_button_press_cb (GtkWidget * widget, GdkEventButton * event, gpointer user_data)
+static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
     slider_is_moving = TRUE;
 
@@ -318,7 +318,7 @@ static gboolean ui_slider_button_press_cb (GtkWidget * widget, GdkEventButton * 
     return FALSE;
 }
 
-static gboolean ui_slider_button_release_cb (GtkWidget * widget, GdkEventButton * event, gpointer user_data)
+static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
     /* HACK: see ui_slider_button_press_cb */
     if (event->button == 1)
@@ -329,38 +329,38 @@ static gboolean ui_slider_button_release_cb (GtkWidget * widget, GdkEventButton 
     return FALSE;
 }
 
-static gboolean ui_volume_value_changed_cb (GtkButton * button, gdouble volume, gpointer user_data)
+static gboolean ui_volume_value_changed_cb(GtkButton * button, gdouble volume, gpointer user_data)
 {
-    aud_drct_set_volume ((gint) volume, (gint) volume);
+    aud_drct_set_volume((gint) volume, (gint) volume);
 
     return TRUE;
 }
 
-static void ui_volume_pressed_cb (GtkButton *button, gpointer user_data)
+static void ui_volume_pressed_cb(GtkButton *button, gpointer user_data)
 {
     volume_slider_is_moving = TRUE;
 }
 
-static void ui_volume_released_cb (GtkButton *button, gpointer user_data)
+static void ui_volume_released_cb(GtkButton *button, gpointer user_data)
 {
     volume_slider_is_moving = FALSE;
 }
 
-static gboolean ui_volume_slider_update (gpointer data)
+static gboolean ui_volume_slider_update(gpointer data)
 {
     gint volume;
 
     if (volume_slider_is_moving || data == NULL)
         return TRUE;
 
-    aud_drct_get_volume_main (&volume);
+    aud_drct_get_volume_main(&volume);
 
-    if (volume == (gint) gtk_scale_button_get_value ((GtkScaleButton *) data))
+    if (volume == (gint) gtk_scale_button_get_value(GTK_SCALE_BUTTON(data)))
         return TRUE;
 
-    g_signal_handler_block (data, volume_change_handler_id);
-    gtk_scale_button_set_value ((GtkScaleButton *) data, volume);
-    g_signal_handler_unblock (data, volume_change_handler_id);
+    g_signal_handler_block(data, volume_change_handler_id);
+    gtk_scale_button_set_value(GTK_SCALE_BUTTON(data), volume);
+    g_signal_handler_unblock(data, volume_change_handler_id);
 
     return TRUE;
 }
@@ -414,7 +414,7 @@ static void ui_playback_stop (void)
 {
     if (update_song_timeout_source)
     {
-        g_source_remove (update_song_timeout_source);
+        g_source_remove(update_song_timeout_source);
         update_song_timeout_source = 0;
     }
 
@@ -458,10 +458,10 @@ static GtkToolItem * toggle_button_new (const gchar * icon, const gchar * alt,
     return item;
 }
 
-static GtkWidget *markup_label_new (const gchar * str)
+static GtkWidget *markup_label_new(const gchar * str)
 {
-    GtkWidget *label = gtk_label_new (str);
-    g_object_set ((GObject *) label, "use-markup", TRUE, NULL);
+    GtkWidget *label = gtk_label_new(str);
+    g_object_set(G_OBJECT(label), "use-markup", TRUE, NULL);
     return label;
 }
 
@@ -652,7 +652,7 @@ static void ui_hooks_associate(void)
     hook_associate ("config save", (HookFunction) config_save, NULL);
 }
 
-static void ui_hooks_disassociate (void)
+static void ui_hooks_disassociate(void)
 {
     hook_dissociate ("title change", (HookFunction) title_change_cb);
     hook_dissociate ("playback begin", (HookFunction) ui_playback_begin);
@@ -675,8 +675,8 @@ static gboolean init (void)
 
     aud_config_set_defaults ("gtkui", gtkui_defaults);
 
-    audgui_set_default_icon ();
-    audgui_register_stock_icons ();
+    audgui_set_default_icon();
+    audgui_register_stock_icons();
 
     pw_col_init ();
 
@@ -693,7 +693,7 @@ static gboolean init (void)
     if (aud_get_bool ("gtkui", "save_window_position") && (x != -1 || y != -1))
         gtk_window_move ((GtkWindow *) window, x, y);
 
-    g_signal_connect (window, "delete-event", (GCallback) window_delete, NULL);
+    g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
     accel = gtk_accel_group_new ();
     gtk_window_add_accel_group ((GtkWindow *) window, accel);
@@ -737,13 +737,17 @@ static gboolean init (void)
     gtk_container_add ((GtkContainer *) boxitem1, box1);
 
     slider = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, NULL);
-    gtk_scale_set_draw_value ((GtkScale *) slider, FALSE);
-    gtk_widget_set_valign (slider, GTK_ALIGN_CENTER);
-    gtk_widget_set_size_request (slider, 120, -1);
-    gtk_widget_set_can_focus (slider, FALSE);
-    gtk_box_pack_start ((GtkBox *) box1, slider, TRUE, TRUE, 6);
+    gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
+    gtk_widget_set_size_request(slider, 120, -1);
+    gtk_widget_set_can_focus(slider, FALSE);
 
-    label_time = markup_label_new (NULL);
+    /* Put the slider in an alignment so clicking under/above the slider
+     * does not emit a button-press-event. Fixes bug report #103 */
+    GtkWidget * alignment = gtk_alignment_new (0.5, 0.5, 1.0, 0.0);
+    gtk_container_add ((GtkContainer *) alignment, slider);
+    gtk_box_pack_start ((GtkBox *) box1, alignment, TRUE, TRUE, 6);
+
+    label_time = markup_label_new(NULL);
     gtk_box_pack_end ((GtkBox *) box1, label_time, FALSE, FALSE, 6);
 
     gtk_widget_set_no_show_all (slider, TRUE);
@@ -762,14 +766,14 @@ static gboolean init (void)
     GtkWidget * box2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_container_add ((GtkContainer *) boxitem2, box2);
 
-    volume = gtk_volume_button_new ();
-    gtk_button_set_relief ((GtkButton *) volume, GTK_RELIEF_NONE);
-    gtk_scale_button_set_adjustment ((GtkScaleButton *) volume, (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, 1, 5, 0));
-    gtk_widget_set_can_focus (volume, FALSE);
+    volume = gtk_volume_button_new();
+    gtk_button_set_relief(GTK_BUTTON(volume), GTK_RELIEF_NONE);
+    gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
+    gtk_widget_set_can_focus(volume, FALSE);
 
     gint lvol = 0, rvol = 0;
-    aud_drct_get_volume (&lvol, &rvol);
-    gtk_scale_button_set_value ((GtkScaleButton *) volume, (lvol + rvol) / 2);
+    aud_drct_get_volume(&lvol, &rvol);
+    gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
 
     gtk_box_pack_start ((GtkBox *) box2, volume, FALSE, FALSE, 0);
 
@@ -795,20 +799,20 @@ static gboolean init (void)
         gtk_box_pack_end ((GtkBox *) vbox_outer, statusbar, FALSE, FALSE, 0);
     }
 
-    AUDDBG ("hooks associate\n");
-    ui_hooks_associate ();
+    AUDDBG("hooks associate\n");
+    ui_hooks_associate();
 
-    AUDDBG ("playlist associate\n");
-    ui_playlist_notebook_populate ();
+    AUDDBG("playlist associate\n");
+    ui_playlist_notebook_populate();
 
-    g_signal_connect (slider, "change-value", (GCallback) ui_slider_change_value_cb, NULL);
-    g_signal_connect (slider, "button-press-event", (GCallback) ui_slider_button_press_cb, NULL);
-    g_signal_connect (slider, "button-release-event", (GCallback) ui_slider_button_release_cb, NULL);
+    g_signal_connect(slider, "change-value", G_CALLBACK(ui_slider_change_value_cb), NULL);
+    g_signal_connect(slider, "button-press-event", G_CALLBACK(ui_slider_button_press_cb), NULL);
+    g_signal_connect(slider, "button-release-event", G_CALLBACK(ui_slider_button_release_cb), NULL);
 
-    volume_change_handler_id = g_signal_connect (volume, "value-changed", (GCallback) ui_volume_value_changed_cb, NULL);
-    g_signal_connect (volume, "pressed", (GCallback) ui_volume_pressed_cb, NULL);
-    g_signal_connect (volume, "released", (GCallback) ui_volume_released_cb, NULL);
-    update_volume_timeout_source = g_timeout_add (250, (GSourceFunc) ui_volume_slider_update, volume);
+    volume_change_handler_id = g_signal_connect(volume, "value-changed", G_CALLBACK(ui_volume_value_changed_cb), NULL);
+    g_signal_connect(volume, "pressed", G_CALLBACK(ui_volume_pressed_cb), NULL);
+    g_signal_connect(volume, "released", G_CALLBACK(ui_volume_released_cb), NULL);
+    update_volume_timeout_source = g_timeout_add(250, (GSourceFunc) ui_volume_slider_update, volume);
 
     g_signal_connect (window, "map-event", (GCallback) window_mapped_cb, NULL);
     g_signal_connect (window, "key-press-event", (GCallback) window_keypress_cb, NULL);
@@ -867,7 +871,7 @@ static void cleanup (void)
         delayed_title_change_source = 0;
     }
 
-    ui_hooks_disassociate ();
+    ui_hooks_disassociate();
 
     if (search_tool)
         aud_plugin_remove_watch (search_tool, search_tool_toggled, NULL);
