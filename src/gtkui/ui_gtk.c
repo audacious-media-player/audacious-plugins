@@ -740,12 +740,7 @@ static gboolean init (void)
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
     gtk_widget_set_size_request(slider, 120, -1);
     gtk_widget_set_can_focus(slider, FALSE);
-
-    /* Put the slider in an alignment so clicking under/above the slider
-     * does not emit a button-press-event. Fixes bug report #103 */
-    GtkWidget * alignment = gtk_alignment_new (0.5, 0.5, 1.0, 0.0);
-    gtk_container_add ((GtkContainer *) alignment, slider);
-    gtk_box_pack_start ((GtkBox *) box1, alignment, TRUE, TRUE, 6);
+    gtk_box_pack_start ((GtkBox *) box1, slider, TRUE, TRUE, 6);
 
     label_time = markup_label_new(NULL);
     gtk_box_pack_end ((GtkBox *) box1, label_time, FALSE, FALSE, 6);
