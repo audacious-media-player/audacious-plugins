@@ -936,6 +936,22 @@ if test "x$enable_resample" = "xyes"; then
 	EFFECT_PLUGINS="$EFFECT_PLUGINS resample"
 fi
 
+dnl Speed and Pitch effect plugin
+dnl =============================
+
+AC_ARG_ENABLE(speedpitch,
+ AS_HELP_STRING([--disable-speedpitch],[disable Speed and Pitch effect plugin]),
+ [enable_speedpitch="$enableval"], [enable_speedpitch="yes"])
+
+if test "x$enable_speedpitch" = "xyes"; then
+    PKG_CHECK_MODULES([SAMPLERATE], [samplerate],
+     [enable_speedpitch=yes], [enable_speedpitch=no])
+fi
+
+if test "x$enable_speedpitch" = "xyes"; then
+	EFFECT_PLUGINS="$EFFECT_PLUGINS speed-pitch"
+fi
+
 dnl GTK Interface
 dnl =============
 
@@ -1098,6 +1114,7 @@ echo "  SndStretch:                             yes"
 echo "  Voice Removal:                          yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $enable_resample"
+echo "  Speed and Pitch:                        $enable_speedpitch"
 echo
 echo "  Visualization"
 echo "  -------------"
