@@ -269,10 +269,24 @@ gboolean handle_keyevent (EVENT event)
         hook_call("aosd toggle", NULL);
         return TRUE;
     }
-    else if (event == EVENT_TOGGLE_REPEAT)
+
+    if (event == EVENT_TOGGLE_REPEAT)
+    {
         aud_set_bool (NULL, "repeat", ! aud_get_bool (NULL, "repeat"));
-    else if (event == EVENT_TOGGLE_SHUFFLE)
+        return TRUE;
+    }
+
+    if (event == EVENT_TOGGLE_SHUFFLE)
+    {
         aud_set_bool (NULL, "shuffle", ! aud_get_bool (NULL, "shuffle"));
+        return TRUE;
+    }
+
+    if (event == EVENT_RAISE)
+    {
+        aud_interface_show (TRUE);
+        return TRUE;
+    }
 
     return FALSE;
 }
