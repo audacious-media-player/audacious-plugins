@@ -22,6 +22,10 @@ AUD_COMMON_PROGS
 BUILDSYS_INIT
 BUILDSYS_SHARED_LIB
 
+dnl This is a legacy branch; disable deprecation warnings
+dnl =====================================================
+CFLAGS="$CFLAGS -Wno-deprecated-declarations"
+
 dnl Headers and functions
 dnl =====================
 AC_CHECK_FUNCS([fcntl fsync mkdtemp])
