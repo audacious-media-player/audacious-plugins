@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious 3.3\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-12 14:26+0200\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2012-06-12 14:27+0200\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German\n"
@@ -162,7 +162,7 @@ msgstr "Erinnern"
 msgid "Use reminder"
 msgstr "Erinnerung benutzen"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "Optionen"
 
@@ -1072,8 +1072,8 @@ msgid ""
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
 "Crossfading fehlgeschlagen, weil die Lieder unterschiedliche Sample-Rates "
-"hatten.  Sie können den Sample-Rate-Converter benutzen, um die Lieder auf die "
-"selbe Bitrate zu resamplen."
+"hatten.  Sie können den Sample-Rate-Converter benutzen, um die Lieder auf "
+"die selbe Bitrate zu resamplen."
 
 #: src/crossfade/crossfade.c:271
 msgid "<b>Crossfade</b>"
@@ -3143,38 +3143,6 @@ msgstr "Konnte Ordner nicht erstellen (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Sndfile Plugin"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-msgid "SndStretch"
-msgstr "SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr "Über SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-msgid "Volume correction"
-msgstr "Lautstärkekorrektur"
-
-#: src/sndstretch/sndstretch_xmms.c:288
-msgid "Short overlap"
-msgstr "Kurzes Überlappen"
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "Geschwindigkeit"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr "Tonhöhe"
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr "Skalierung"
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr "SndStretch - Konfiguration"
-
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Songwechsel"
@@ -3249,6 +3217,24 @@ msgstr ""
 #: src/song_change/song_change.c:500
 msgid "Commands"
 msgstr "Befehle"
+
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Geschwindigkeit"
+
+#: src/speed-pitch/speed-pitch.c:231
+#, fuzzy
+msgid "Pitch:"
+msgstr "Tonhöhe"
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
 
 #: src/statusicon/statusicon.c:386
 msgid "<b>Mouse Scroll Action</b>"
@@ -3330,3 +3316,21 @@ msgstr "2SF Decoder"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists (XSPF)"
+
+#~ msgid "SndStretch"
+#~ msgstr "SndStretch"
+
+#~ msgid "About SndStretch"
+#~ msgstr "Über SndStretch"
+
+#~ msgid "Volume correction"
+#~ msgstr "Lautstärkekorrektur"
+
+#~ msgid "Short overlap"
+#~ msgstr "Kurzes Überlappen"
+
+#~ msgid "Scale"
+#~ msgstr "Skalierung"
+
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "SndStretch - Konfiguration"

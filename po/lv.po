@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2011-10-30 16:53+0200\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -169,7 +169,7 @@ msgstr "Atgādinājums"
 msgid "Use reminder"
 msgstr "Izmantot atgādinājumu"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "Opcijas"
 
@@ -928,70 +928,70 @@ msgstr "Gatavie regulējumi"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Spektra analizators"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
 msgstr "<b>Servisi</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 #, fuzzy
 msgid "Read speed:"
 msgstr "Diska ātrums:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 #, fuzzy
 msgid "Override device:"
 msgstr "Aizstāt noklusēto ierīci: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 #, fuzzy
 msgid "<b>Metadata</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "Lietot HTTP nevis CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 #, fuzzy
 msgid "Server:"
 msgstr "Serveris: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 #, fuzzy
 msgid "Path:"
 msgstr "Ceļš: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
 msgstr "Ports:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "Par audio CD spraudni"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr "Dzinis ir tukšs."
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Neatbalstīts diska tips."
 
@@ -1247,11 +1247,11 @@ msgstr "Automātiski"
 msgid "Joint Stereo"
 msgstr "Joint Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "Mono"
 
@@ -1468,27 +1468,27 @@ msgstr "Pieejams:"
 msgid "Chosen:"
 msgstr "Izvēlēts:"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr "Pietauvot pa kreisi"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr "Pietauvot pa labi"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr "Pietauvot augšā"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr "Pietauvot apakšā"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr "Attauvot"
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "Atslēgt"
 
@@ -2022,7 +2022,7 @@ msgstr ""
 "\n"
 "Pieslēdzas lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2030,7 +2030,7 @@ msgstr ""
 "\n"
 "Dziesmas vārdi netika atrasti."
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -2078,11 +2078,11 @@ msgstr "Spraudnis"
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr "Ieskaušana"
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 #, fuzzy
 msgid "MPG123 Plugin"
 msgstr "Spraudnis"
@@ -2333,26 +2333,26 @@ msgstr "Dzēst repertuāru"
 msgid "_Add to Playlist"
 msgstr "Repertuāra beigas"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr ""
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr ""
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 #, fuzzy
 msgid "Choose Folder"
 msgstr "Izvēlēties kolonnas"
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "Meklēt:"
@@ -3249,41 +3249,6 @@ msgstr "Neizdevās izveidot mapi (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Par sndfile spraudni"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-#, fuzzy
-msgid "SndStretch"
-msgstr "Par SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr "Par SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-#, fuzzy
-msgid "Volume correction"
-msgstr "Skaļuma kor."
-
-#: src/sndstretch/sndstretch_xmms.c:288
-#, fuzzy
-msgid "Short overlap"
-msgstr "Īsa pārklāšanās"
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "Ātrums"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr "Augstums"
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr "Mērogot"
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr "SndStretch - konfigurācija"
-
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Dziesmas maiņa"
@@ -3358,33 +3323,56 @@ msgstr ""
 msgid "Commands"
 msgstr "Komandas"
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Ātrums: "
+
+#: src/speed-pitch/speed-pitch.c:231
+#, fuzzy
+msgid "Pitch:"
+msgstr "Augstums"
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Peles rullīša darbība"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 msgid "Change volume"
 msgstr "Mainīt skaļumu"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 msgid "Change playing song"
 msgstr "Mainīt atskaņojamo dziesmu"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "Citi iestatījumi"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr "Atslēgt izlecošo logu"
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Aizvērt uz paziņojumu apgabalu (sistēmas ikonu joslu)"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 #, fuzzy
 msgid "Status Icon"
 msgstr "Statuss"
@@ -3444,6 +3432,30 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "SndStretch"
+#~ msgstr "Par SndStretch"
+
+#~ msgid "About SndStretch"
+#~ msgstr "Par SndStretch"
+
+#, fuzzy
+#~ msgid "Volume correction"
+#~ msgstr "Skaļuma kor."
+
+#, fuzzy
+#~ msgid "Short overlap"
+#~ msgstr "Īsa pārklāšanās"
+
+#~ msgid "Speed"
+#~ msgstr "Ātrums"
+
+#~ msgid "Scale"
+#~ msgstr "Mērogot"
+
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "SndStretch - konfigurācija"
 
 #~ msgid ""
 #~ "Using libfaad2-%s for decoding.\n"
@@ -3811,9 +3823,6 @@ msgstr ""
 
 #~ msgid "Small playback menu #2"
 #~ msgstr "Neliela atskaņošanas izvēlne #2"
-
-#~ msgid "Other settings"
-#~ msgstr "Citi iestatījumi"
 
 #, fuzzy
 #~ msgid "Extra Stereo Settings"
@@ -4965,9 +4974,6 @@ msgstr ""
 
 #~ msgid "Row: "
 #~ msgstr "Rinda: "
-
-#~ msgid "Speed: "
-#~ msgstr "Ātrums: "
 
 #~ msgid "Timer: "
 #~ msgstr "Taimeris: "

@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins audacious-plugins-3.2-beta1-103-"
 "g4c001e9\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2012-02-19 11:14+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -188,7 +188,7 @@ msgstr "Upomínání"
 msgid "Use reminder"
 msgstr "Upomínat"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "Nastavení"
 
@@ -947,70 +947,70 @@ msgstr "Předvolby:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Nastavení Bauerovy stereofonní-dvojušní transformace"
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Analyzátor spektra"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
 msgstr "<b>Služby</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 #, fuzzy
 msgid "Read speed:"
 msgstr "Rychlost disku:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 #, fuzzy
 msgid "Override device:"
 msgstr "Přebít výchozí zařízení: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadata</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 #, fuzzy
 msgid "Use CD-Text"
 msgstr "Použít server s databází CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr "Používat CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "Použít HTTP místo CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 #, fuzzy
 msgid "Server:"
 msgstr "Server: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 #, fuzzy
 msgid "Path:"
 msgstr "Cesta: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "O zásuvném modulu zvukových CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
 msgstr "Zvukové CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr "Mechanika je prázdná"
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Nepodporovaný druh disku."
 
@@ -1268,11 +1268,11 @@ msgstr "Auto"
 msgid "Joint Stereo"
 msgstr "Joint-stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "Mono"
 
@@ -1488,27 +1488,27 @@ msgstr "Dostupné:"
 msgid "Chosen:"
 msgstr "Vybráno:"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr "Umístit vlevo"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr "Umístit vpravo"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr "Umístit nahoru"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr "Umístit dolů"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr "Neumisťovat"
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "Zakázat"
 
@@ -2036,7 +2036,7 @@ msgstr ""
 "\n"
 "Připoje se k lyrics.wikia.com…"
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
@@ -2044,7 +2044,7 @@ msgstr ""
 "\n"
 "Žádné texty nebyly nalezeny."
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 #, fuzzy
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki"
@@ -2093,11 +2093,11 @@ msgstr "Modul"
 msgid "ModPlug (Module Player)"
 msgstr "AMIDI-Plug %s (Přehrávač MIDI)"
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr "Prostorový zvuk"
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 #, fuzzy
 msgid "MPG123 Plugin"
 msgstr "Modul"
@@ -2346,11 +2346,11 @@ msgstr "_Vytvořit seznam skladeb"
 msgid "_Add to Playlist"
 msgstr "Přid_at do seznamu skladeb"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr "Hledat knihovnu"
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2358,15 +2358,15 @@ msgstr ""
 "Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak "
 "kliknete na ikonu „obnovit“."
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr "Prosím, počkejte…"
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
 msgstr "Vybrat složku"
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "Hledat:"
@@ -3258,41 +3258,6 @@ msgstr "Adresář („%s“) nebylo možné vytvořit: %s\n"
 msgid "Sndfile Plugin"
 msgstr "O modulu sndfile"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-#, fuzzy
-msgid "SndStretch"
-msgstr "O modulu SndStrech"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr "O modulu SndStrech"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-#, fuzzy
-msgid "Volume correction"
-msgstr "Oprava hlasitosti"
-
-#: src/sndstretch/sndstretch_xmms.c:288
-#, fuzzy
-msgid "Short overlap"
-msgstr "Krátké přesahy"
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "Rychlost"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr "Výška"
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr "Natažení"
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr "SndStrech – Nastavení"
-
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Změna skladby"
@@ -3369,33 +3334,56 @@ msgstr ""
 msgid "Commands"
 msgstr "Příkazy"
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Rychlost: "
+
+#: src/speed-pitch/speed-pitch.c:231
+#, fuzzy
+msgid "Pitch:"
+msgstr "Výška"
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Reakce na rolování myší"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 msgid "Change volume"
 msgstr "Změnit hlasitost"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 msgid "Change playing song"
 msgstr "Změnit hranou skladbu"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "Ostatní nastavení"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr "Zakázat vyskakovací okno"
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Zavřít do oznamovací oblasti (systémové oblasti)"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr "Přecházet v seznamu skladeb, když se roluje nahoru"
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 #, fuzzy
 msgid "Status Icon"
 msgstr "Stav"
@@ -3456,6 +3444,30 @@ msgstr "Dekodér"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "SndStretch"
+#~ msgstr "O modulu SndStrech"
+
+#~ msgid "About SndStretch"
+#~ msgstr "O modulu SndStrech"
+
+#, fuzzy
+#~ msgid "Volume correction"
+#~ msgstr "Oprava hlasitosti"
+
+#, fuzzy
+#~ msgid "Short overlap"
+#~ msgstr "Krátké přesahy"
+
+#~ msgid "Speed"
+#~ msgstr "Rychlost"
+
+#~ msgid "Scale"
+#~ msgstr "Natažení"
+
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "SndStrech – Nastavení"
 
 #~ msgid ""
 #~ "Using libfaad2-%s for decoding.\n"
@@ -3834,9 +3846,6 @@ msgstr ""
 
 #~ msgid "Small playback menu #2"
 #~ msgstr "Drobná nabídka pro přehrávání č. 2"
-
-#~ msgid "Other settings"
-#~ msgstr "Ostatní nastavení"
 
 #, fuzzy
 #~ msgid "Extra Stereo Settings"
@@ -5065,9 +5074,6 @@ msgstr ""
 
 #~ msgid "Row: "
 #~ msgstr "Řada: "
-
-#~ msgid "Speed: "
-#~ msgstr "Rychlost: "
 
 #~ msgid "Timer: "
 #~ msgstr "Časovač: "

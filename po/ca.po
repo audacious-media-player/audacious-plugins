@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -166,7 +166,7 @@ msgstr "Recordatori"
 msgid "Use reminder"
 msgstr "Activa els recordatoris"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "Opcions"
 
@@ -930,72 +930,72 @@ msgstr "Perfils"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Analitzador d'espectre"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
 msgstr "<b>Serveis</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 #, fuzzy
 msgid "Read speed:"
 msgstr "Velocitat del rellotge:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 #, fuzzy
 msgid "Override device:"
 msgstr "Ignora el dispositiu per defecte:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 #, fuzzy
 msgid "<b>Metadata</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 #, fuzzy
 msgid "Use CD-Text"
 msgstr "Usa CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr "Usa CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "Usa HTTP en lloc de CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 #, fuzzy
 msgid "Server:"
 msgstr "Servidor: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 #, fuzzy
 msgid "Path:"
 msgstr "Camí: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "Quant al connector d'àudio FLAC"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 #, fuzzy
 msgid "Audio CD"
 msgstr "Àudio"
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -1246,11 +1246,11 @@ msgstr "Auto"
 msgid "Joint Stereo"
 msgstr "Estèreo conjunt"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "Estèreo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "Mono"
 
@@ -1480,27 +1480,27 @@ msgstr "variable"
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 #, fuzzy
 msgid "Disable"
 msgstr "variable"
@@ -2080,13 +2080,13 @@ msgid ""
 "Connecting to lyrics.wikia.com..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -2134,11 +2134,11 @@ msgstr "Connector"
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr "So envolvent"
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 #, fuzzy
 msgid "MPG123 Plugin"
 msgstr "Quant al connector per a àudio MPEG"
@@ -2392,26 +2392,26 @@ msgstr "Esborra la llista"
 msgid "_Add to Playlist"
 msgstr "Finestra->Llista de reproducció"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr ""
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr ""
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 #, fuzzy
 msgid "Choose Folder"
 msgstr "Mostra el reproductor"
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "Any:"
@@ -3332,41 +3332,6 @@ msgstr "No s'ha pogut crear el directori (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Quant al connector sndfile"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-#, fuzzy
-msgid "SndStretch"
-msgstr "Quant a SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr "Quant a SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-#, fuzzy
-msgid "Volume correction"
-msgstr "Correcció de volum"
-
-#: src/sndstretch/sndstretch_xmms.c:288
-#, fuzzy
-msgid "Short overlap"
-msgstr "Encavalcament curt"
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "Velocitat"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr "To"
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr "Escala"
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr "SndStretch - Configuració"
-
 #: src/song_change/song_change.c:56
 #, fuzzy
 msgid "Song Change"
@@ -3442,32 +3407,55 @@ msgstr ""
 msgid "Commands"
 msgstr "Ordres"
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Velocitat: "
+
+#: src/speed-pitch/speed-pitch.c:231
+#, fuzzy
+msgid "Pitch:"
+msgstr "To"
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Roda del ratolí"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 msgid "Change volume"
 msgstr "Canvia el volum"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 msgid "Change playing song"
 msgstr "Canvia la cançó"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "Paràmetres del mesclador"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 #, fuzzy
 msgid "Status Icon"
 msgstr "Estat"
@@ -3528,6 +3516,30 @@ msgstr "Descodificador"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "SndStretch"
+#~ msgstr "Quant a SndStretch"
+
+#~ msgid "About SndStretch"
+#~ msgstr "Quant a SndStretch"
+
+#, fuzzy
+#~ msgid "Volume correction"
+#~ msgstr "Correcció de volum"
+
+#, fuzzy
+#~ msgid "Short overlap"
+#~ msgstr "Encavalcament curt"
+
+#~ msgid "Speed"
+#~ msgstr "Velocitat"
+
+#~ msgid "Scale"
+#~ msgstr "Escala"
+
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "SndStretch - Configuració"
 
 #, fuzzy
 #~ msgid ""
@@ -3868,10 +3880,6 @@ msgstr ""
 
 #~ msgid "Small playback menu #2"
 #~ msgstr "Menú de reproducció #2"
-
-#, fuzzy
-#~ msgid "Other settings"
-#~ msgstr "Paràmetres del mesclador"
 
 #, fuzzy
 #~ msgid "Extra Stereo Settings"
@@ -5018,9 +5026,6 @@ msgstr ""
 
 #~ msgid "Row: "
 #~ msgstr "Fila: "
-
-#~ msgid "Speed: "
-#~ msgstr "Velocitat: "
 
 #~ msgid "Timer: "
 #~ msgstr "Temporitzador: "

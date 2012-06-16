@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2012-06-02 00:48+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Spanish (Argentinian)\n"
@@ -171,7 +171,7 @@ msgstr "Recordatorio"
 msgid "Use reminder"
 msgstr "Utilizar recordatorio"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "Opciones"
 
@@ -911,65 +911,65 @@ msgstr "Predefinidos:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 #, fuzzy
 msgid "Spectrum Analyzer"
 msgstr "Analizador"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "Usar HTTP en lugar de CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Server:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Path:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "Acerca del complemento de CD de música"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
 msgstr "CD de audio"
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr "La unidad está vacía."
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Tipo de disco no soportado."
 
@@ -1217,11 +1217,11 @@ msgstr "Auto"
 msgid "Joint Stereo"
 msgstr "Estéreo conjunto"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "Estereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "Mono"
 
@@ -1434,27 +1434,27 @@ msgstr "Disponible:"
 msgid "Chosen:"
 msgstr "Seleccionado:"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr "Acoplar a la izquierda"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr "Acoplar a la derecha"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr "Acoplar arriba"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr "Acoplar abajo"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr "Desacoplar"
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "Deshabilitar"
 
@@ -1975,7 +1975,7 @@ msgstr ""
 "\n"
 "Conectando a lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
@@ -1983,7 +1983,7 @@ msgstr ""
 "\n"
 "No se encontraron letras."
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -2029,11 +2029,11 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr "Envolvente"
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
 msgstr ""
 
@@ -2273,11 +2273,11 @@ msgstr "_Crear lista de reproducción"
 msgid "_Add to Playlist"
 msgstr "_Añadir a la lista de reproducción"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr "Buscar biblioteca"
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2285,15 +2285,15 @@ msgstr ""
 "Para importar su colección musical en Audacious, elija una carpeta y pulse "
 "el botón «actualizar»."
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr "Espere por favor..."
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
 msgstr "Elija una carpeta"
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "Buscar biblioteca"
@@ -3190,39 +3190,6 @@ msgstr "No se pudo crear el directorio (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Acerca del complemento de archivos de sonido"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-#, fuzzy
-msgid "SndStretch"
-msgstr "Acerca del extensor de sonido"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr "Acerca del extensor de sonido"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-msgid "Volume correction"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:288
-msgid "Short overlap"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "Velocidad"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr "Tono"
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr "Escala"
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr "Extensor de sonido - Configuración"
-
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Cambio de canción"
@@ -3284,33 +3251,56 @@ msgstr ""
 msgid "Commands"
 msgstr "Comandos"
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Velocidad"
+
+#: src/speed-pitch/speed-pitch.c:231
+#, fuzzy
+msgid "Pitch:"
+msgstr "Tono"
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Acción de la rueda del ratón"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 msgid "Change volume"
 msgstr "Cambiar el volumen"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 msgid "Change playing song"
 msgstr "Cambiar la canción en reproducción"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "Otros ajustes"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr "Desactivar la ventana emergente"
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Cerrar al área de notificación (bandeja de sistema)"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr "Avanzar en la lista de reproducción al desplazar arriba"
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 #, fuzzy
 msgid "Status Icon"
 msgstr "Acerca del complemento de icono de estado"
@@ -3367,6 +3357,19 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "SndStretch"
+#~ msgstr "Acerca del extensor de sonido"
+
+#~ msgid "About SndStretch"
+#~ msgstr "Acerca del extensor de sonido"
+
+#~ msgid "Scale"
+#~ msgstr "Escala"
+
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "Extensor de sonido - Configuración"
 
 #~ msgid ""
 #~ "Using libfaad2-%s for decoding.\n"
@@ -3710,9 +3713,6 @@ msgstr ""
 
 #~ msgid "Small playback menu #2"
 #~ msgstr "Menú pequeño de reproducción #2"
-
-#~ msgid "Other settings"
-#~ msgstr "Otros ajustes"
 
 #~ msgid ""
 #~ "Extra Stereo Plugin\n"

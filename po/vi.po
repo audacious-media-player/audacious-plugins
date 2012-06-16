@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2011-11-04 08:14+0000\n"
 "Last-Translator: anix <truongan@linuxmail.org>\n"
 "Language-Team: Vietnamese\n"
@@ -167,7 +167,7 @@ msgstr ""
 msgid "Use reminder"
 msgstr ""
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "Tùy chọn"
 
@@ -831,70 +831,70 @@ msgstr ""
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
 msgstr "<b>Dịch vụ</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 #, fuzzy
 msgid "Override device:"
 msgstr "Thiết bị âm thanh:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 #, fuzzy
 msgid "<b>Metadata</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "Dùng HTTP thay cho CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 #, fuzzy
 msgid "Server:"
 msgstr "Dịch _vụ"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 #, fuzzy
 msgid "Path:"
 msgstr "Đường dẫn: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 #, fuzzy
 msgid "Port:"
 msgstr "Cổng: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "Thông tin trình cắm phím tắt chung"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -1130,11 +1130,11 @@ msgstr ""
 msgid "Joint Stereo"
 msgstr ""
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr ""
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr ""
 
@@ -1348,27 +1348,27 @@ msgstr "Có thể dùng:"
 msgid "Chosen:"
 msgstr "Đang hiện:"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr ""
 
@@ -1879,7 +1879,7 @@ msgstr ""
 "\n"
 "Đang kết nối đến lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
@@ -1887,7 +1887,7 @@ msgstr ""
 "\n"
 "Không tìm thấy lời bài hát."
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -1931,11 +1931,11 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr ""
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
 msgstr ""
 
@@ -2171,26 +2171,26 @@ msgstr "Xóa danh sách"
 msgid "_Add to Playlist"
 msgstr "Danh sách"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr ""
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr ""
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 #, fuzzy
 msgid "Choose Folder"
 msgstr "Chọn cột"
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "Tìm:"
@@ -3079,39 +3079,6 @@ msgstr ""
 msgid "Sndfile Plugin"
 msgstr ""
 
-#: src/sndstretch/sndstretch_xmms.c:54
-msgid "SndStretch"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:287
-#, fuzzy
-msgid "Volume correction"
-msgstr "Giảm âm lượng"
-
-#: src/sndstretch/sndstretch_xmms.c:288
-msgid "Short overlap"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "Tốc độ"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr ""
-
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Song Change"
@@ -3167,32 +3134,54 @@ msgstr ""
 msgid "Commands"
 msgstr "Lệnh"
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Tốc độ"
+
+#: src/speed-pitch/speed-pitch.c:231
+msgid "Pitch:"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Hành động:</b>"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 msgid "Change volume"
 msgstr "Thay đổi âm lượng"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 msgid "Change playing song"
 msgstr ""
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "Thiết lập khác"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 msgid "Status Icon"
 msgstr ""
 
@@ -3248,6 +3237,10 @@ msgstr ""
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
 
+#, fuzzy
+#~ msgid "Volume correction"
+#~ msgstr "Giảm âm lượng"
+
 #~ msgid ""
 #~ "Using libfaad2-%s for decoding.\n"
 #~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
@@ -3297,9 +3290,6 @@ msgstr ""
 
 #~ msgid "Right-Click Menu"
 #~ msgstr "Trình đơn chuột phải"
-
-#~ msgid "Other settings"
-#~ msgstr "Thiết lập khác"
 
 #, fuzzy
 #~ msgid "Extra Stereo Settings"

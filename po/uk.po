@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2012-06-02 00:48+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Ukrainian\n"
@@ -174,7 +174,7 @@ msgstr "Повідомлення"
 msgid "Use reminder"
 msgstr "Використовувати:"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "Опції"
 
@@ -920,65 +920,65 @@ msgstr "Пресети:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 #, fuzzy
 msgid "Spectrum Analyzer"
 msgstr "Аналізатор"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "Використовувати HTTP замість CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Server:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Path:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "Про плаґін аудіо-компакт-дисків"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
 msgstr "Аудіо-CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr "Привід порожній."
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Непідтримуваний тип диску."
 
@@ -1226,11 +1226,11 @@ msgstr "Авто"
 msgid "Joint Stereo"
 msgstr "Об’єднане стерео"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "Стерео"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "Моно"
 
@@ -1444,27 +1444,27 @@ msgstr "Доступні:"
 msgid "Chosen:"
 msgstr "Вибрані:"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr "Прикріпити зліва"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr "Прикріпити справа"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr "Прикріпити вгорі"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr "Прикріпити внизу"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr "Відкріпити"
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "Вимкнути"
 
@@ -1986,7 +1986,7 @@ msgstr ""
 "\n"
 "З’єднуюся з lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
@@ -1994,7 +1994,7 @@ msgstr ""
 "\n"
 "Не знайдено слів пісні."
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -2040,11 +2040,11 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr "Об’ємний звук"
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
 msgstr ""
 
@@ -2287,11 +2287,11 @@ msgstr "_Створити список відтворення"
 msgid "_Add to Playlist"
 msgstr "_Додати до списку відтворення"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr "Шукати в бібліотеці"
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2299,15 +2299,15 @@ msgstr ""
 "Щоб імпортувати свою музичну бібліотеку до Audacious, виберіть теку й "
 "натисніть на значок оновлення."
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr "Зачекайте..."
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
 msgstr "Вибрати теку"
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "Шукати в бібліотеці"
@@ -3195,39 +3195,6 @@ msgstr "Неможливо створити теку (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Про плаґін sndfile"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-#, fuzzy
-msgid "SndStretch"
-msgstr "Про SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr "Про SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-msgid "Volume correction"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:288
-msgid "Short overlap"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "Темп"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr "Висота"
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr "Масштаб"
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr "Налаштування SndStretch"
-
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Зміна доріжки"
@@ -3285,33 +3252,56 @@ msgstr ""
 msgid "Commands"
 msgstr "Команди"
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Темп"
+
+#: src/speed-pitch/speed-pitch.c:231
+#, fuzzy
+msgid "Pitch:"
+msgstr "Висота"
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Дія коліщатка миші"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 msgid "Change volume"
 msgstr "Зміна гучності"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 msgid "Change playing song"
 msgstr "Зміна поточної доріжки"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "Інші налаштування"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr "Вимкнути спливне вікно"
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Замість закриття згортати до лотка"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr "Просуватися списком відтворення при прокручуванні догори"
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 #, fuzzy
 msgid "Status Icon"
 msgstr "Про плаґін значка стану"
@@ -3368,6 +3358,19 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "SndStretch"
+#~ msgstr "Про SndStretch"
+
+#~ msgid "About SndStretch"
+#~ msgstr "Про SndStretch"
+
+#~ msgid "Scale"
+#~ msgstr "Масштаб"
+
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "Налаштування SndStretch"
 
 #~ msgid ""
 #~ "Using libfaad2-%s for decoding.\n"
@@ -3712,9 +3715,6 @@ msgstr ""
 
 #~ msgid "Small playback menu #2"
 #~ msgstr "Мале меню відтворення #2 (+ \"Вийти\")"
-
-#~ msgid "Other settings"
-#~ msgstr "Інші налаштування"
 
 #~ msgid ""
 #~ "Extra Stereo Plugin\n"

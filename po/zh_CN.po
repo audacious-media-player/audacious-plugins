@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2012-04-05 00:51+0000\n"
 "Last-Translator: Luke <runningwaterpro@gmail.com>\n"
 "Language-Team: Simplified Chinese\n"
@@ -170,7 +170,7 @@ msgstr "提醒器"
 msgid "Use reminder"
 msgstr "使用提醒器"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 msgid "Options"
 msgstr "选项"
 
@@ -903,71 +903,71 @@ msgstr "预置:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 #, fuzzy
 msgid "Spectrum Analyzer"
 msgstr "分析器"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
 msgstr "<b>服务</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 #, fuzzy
 msgid "Read speed:"
 msgstr "光盘速度："
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 #, fuzzy
 msgid "Override device:"
 msgstr "覆蓋默设备："
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "使用HTTP代替CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 #, fuzzy
 msgid "Server:"
 msgstr "服务器："
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 #, fuzzy
 msgid "Path:"
 msgstr "路径："
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 #, fuzzy
 msgid "Port:"
 msgstr "端口："
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "关于音频CD插件"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
 msgstr "音频CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr "设备为空"
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "未支持光盘类型"
 
@@ -1218,11 +1218,11 @@ msgstr "自动"
 msgid "Joint Stereo"
 msgstr "联合立体声"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "立体声"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "单声道"
 
@@ -1437,27 +1437,27 @@ msgstr "可用："
 msgid "Chosen:"
 msgstr "选项："
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr "面板在左"
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr "面板在右"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr "面板在上"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr "面板在下"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr "无面板"
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "禁用"
 
@@ -1970,7 +1970,7 @@ msgstr ""
 "\n"
 "正在连接到lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
@@ -1978,7 +1978,7 @@ msgstr ""
 "\n"
 "未找到相关歌词。"
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -2024,11 +2024,11 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr "环绕音"
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
 msgstr ""
 
@@ -2266,25 +2266,25 @@ msgstr "创建播放列表"
 msgid "_Add to Playlist"
 msgstr "添加到播放列表"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr "搜索库"
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr "请稍等...."
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
 msgstr "选择文件夹"
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "搜索库"
@@ -3172,40 +3172,6 @@ msgstr "无法创建目录(%s)：%s\n"
 msgid "Sndfile Plugin"
 msgstr "关于sndfile插件"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-#, fuzzy
-msgid "SndStretch"
-msgstr "关于SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-msgid "About SndStretch"
-msgstr "关于SndStretch"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-#, fuzzy
-msgid "Volume correction"
-msgstr "调低音量"
-
-#: src/sndstretch/sndstretch_xmms.c:288
-msgid "Short overlap"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:334
-msgid "Speed"
-msgstr "速度"
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr "音调"
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr "缩放"
-
-#: src/sndstretch/sndstretch_xmms.c:356
-msgid "SndStretch - Configuration"
-msgstr "SndStretch - 设置"
-
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "歌曲改变"
@@ -3279,33 +3245,56 @@ msgstr ""
 msgid "Commands"
 msgstr "指令"
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "速度"
+
+#: src/speed-pitch/speed-pitch.c:231
+#, fuzzy
+msgid "Pitch:"
+msgstr "音调"
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "鼠标滚轮动作"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 msgid "Change volume"
 msgstr "调整音量"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 msgid "Change playing song"
 msgstr "改变歌曲"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "其它设置"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr "禁用弹出窗口"
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "关闭提示区域（系统托盘）"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 #, fuzzy
 msgid "Status Icon"
 msgstr "关于状态图标插件"
@@ -3363,6 +3352,23 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "SndStretch"
+#~ msgstr "关于SndStretch"
+
+#~ msgid "About SndStretch"
+#~ msgstr "关于SndStretch"
+
+#, fuzzy
+#~ msgid "Volume correction"
+#~ msgstr "调低音量"
+
+#~ msgid "Scale"
+#~ msgstr "缩放"
+
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "SndStretch - 设置"
 
 #~ msgid ""
 #~ "Using libfaad2-%s for decoding.\n"
@@ -3710,9 +3716,6 @@ msgstr ""
 
 #~ msgid "Small playback menu #2"
 #~ msgstr "迷你播放菜单#2"
-
-#~ msgid "Other settings"
-#~ msgstr "其它设置"
 
 #, fuzzy
 #~ msgid "Extra Stereo Settings"

@@ -109,8 +109,8 @@ src/skins/ui_playlist.c
 src/skins/ui_skinselector.c
 src/skins/util.c
 src/sndfile/plugin.c
-src/sndstretch/sndstretch_xmms.c
 src/song_change/song_change.c
+src/speed-pitch/speed-pitch.c
 src/statusicon/statusicon.c
 src/stereo_plugin/stereo.c
 src/tonegen/tonegen.c

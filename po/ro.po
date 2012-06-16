@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.4.0\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-09 17:59-0400\n"
+"POT-Creation-Date: 2012-06-15 21:12-0400\n"
 "PO-Revision-Date: 2007-08-28 20:44+0200\n"
 "Last-Translator: Daniel Patriche <m4st3rth0r@gmail.com>\n"
 "Language-Team: Romanian <audacious@atheme.org>\n"
@@ -180,7 +180,7 @@ msgstr "Reminder"
 msgid "Use reminder"
 msgstr "Folosește cursoare de mouse personalizate (oferite de skin)"
 
-#: src/alarm/interface.c:1151 src/sndstretch/sndstretch_xmms.c:337
+#: src/alarm/interface.c:1151
 #, fuzzy
 msgid "Options"
 msgstr "Meniu de Opțiuni"
@@ -969,73 +969,73 @@ msgstr "Port-ul:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:293
+#: src/cairo-spectrum/cairo-spectrum.c:296
 #, fuzzy
 msgid "Spectrum Analyzer"
 msgstr "Modul Analizatorului"
 
-#: src/cdaudio-ng/cdaudio-ng.c:115
+#: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
 msgstr "Numele Fișierului:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:116
+#: src/cdaudio-ng/cdaudio-ng.c:124
 #, fuzzy
 msgid "Read speed:"
 msgstr "Limitează viteza de citire la:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.c:127
 #, fuzzy
 msgid "Override device:"
 msgstr "Salvează Lista Implicită"
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:129
 #, fuzzy
 msgid "<b>Metadata</b>"
 msgstr "Radio Last.fm"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:136
 #, fuzzy
 msgid "Server:"
 msgstr "Server:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:138
 #, fuzzy
 msgid "Path:"
 msgstr "Șablon: "
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:140
 #, fuzzy
 msgid "Port:"
 msgstr "Port-ul:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:142
+#: src/cdaudio-ng/cdaudio-ng.c:150
 #, fuzzy
 msgid "Audio CD Plugin"
 msgstr "Despre plugin-ul·Apple·Lossless·Audio"
 
-#: src/cdaudio-ng/cdaudio-ng.c:523
+#: src/cdaudio-ng/cdaudio-ng.c:531
 #, fuzzy
 msgid "Audio CD"
 msgstr "Audio"
 
-#: src/cdaudio-ng/cdaudio-ng.c:899
+#: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:901
+#: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -1291,11 +1291,11 @@ msgstr "Auto-Încarcă Preset-ul"
 msgid "Joint Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:196
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "Mono"
 
@@ -1537,27 +1537,27 @@ msgstr "variabil"
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:121
+#: src/gtkui/layout.c:122
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:123
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:122 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 #, fuzzy
 msgid "Disable"
 msgstr "variabil"
@@ -2133,13 +2133,13 @@ msgid ""
 "Connecting to lyrics.wikia.com..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:377
+#: src/lyricwiki/lyricwiki.c:378
 msgid ""
 "\n"
 "No lyrics were found."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:435
+#: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -2187,11 +2187,11 @@ msgstr "Plugin de intrare: %s"
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:196
+#: src/mpg123/mpg123.c:197
 msgid "Surround"
 msgstr ""
 
-#: src/mpg123/mpg123.c:553
+#: src/mpg123/mpg123.c:554
 #, fuzzy
 msgid "MPG123 Plugin"
 msgstr "Plugin de intrare: %s"
@@ -2446,25 +2446,25 @@ msgstr "Selectați Playlist-ul"
 msgid "_Add to Playlist"
 msgstr "Selectați Playlist-ul"
 
-#: src/search-tool/search-tool.c:730
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr ""
 
-#: src/search-tool/search-tool.c:735
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:743
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr ""
 
-#: src/search-tool/search-tool.c:765
+#: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
 msgstr ""
 
-#: src/search-tool/search-tool.c:804
+#: src/search-tool/search-tool.c:803
 #, fuzzy
 msgid "Search Tool"
 msgstr "Anul"
@@ -3441,43 +3441,6 @@ msgstr "Nu s-a putut crea directorul (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Lista plugin-urilor _Generale"
 
-#: src/sndstretch/sndstretch_xmms.c:54
-#, fuzzy
-msgid "SndStretch"
-msgstr "Despre Audacious"
-
-#: src/sndstretch/sndstretch_xmms.c:147
-#, fuzzy
-msgid "About SndStretch"
-msgstr "Despre Audacious"
-
-#: src/sndstretch/sndstretch_xmms.c:287
-#, fuzzy
-msgid "Volume correction"
-msgstr "Schimbă volumul cu"
-
-#: src/sndstretch/sndstretch_xmms.c:288
-msgid "Short overlap"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:334
-#, fuzzy
-msgid "Speed"
-msgstr "Viteză: "
-
-#: src/sndstretch/sndstretch_xmms.c:335
-msgid "Pitch"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:336
-msgid "Scale"
-msgstr ""
-
-#: src/sndstretch/sndstretch_xmms.c:356
-#, fuzzy
-msgid "SndStretch - Configuration"
-msgstr "AdPlug·::·Configurare"
-
 #: src/song_change/song_change.c:56
 #, fuzzy
 msgid "Song Change"
@@ -3534,34 +3497,56 @@ msgstr ""
 msgid "Commands"
 msgstr ""
 
-#: src/statusicon/statusicon.c:387
+#: src/speed-pitch/speed-pitch.c:227
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:228
+#, fuzzy
+msgid "Speed:"
+msgstr "Viteză: "
+
+#: src/speed-pitch/speed-pitch.c:231
+msgid "Pitch:"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:266
+msgid "Speed and Pitch"
+msgstr ""
+
+#: src/statusicon/statusicon.c:386
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Numele Fișierului:"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:387
 #, fuzzy
 msgid "Change volume"
 msgstr "Schimbă volumul cu"
 
-#: src/statusicon/statusicon.c:391
+#: src/statusicon/statusicon.c:390
 #, fuzzy
 msgid "Change playing song"
 msgstr "Pauză"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:393
+#, fuzzy
+msgid "<b>Other Settings</b>"
+msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
+
+#: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:396
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:408
+#: src/statusicon/statusicon.c:407
 #, fuzzy
 msgid "Status Icon"
 msgstr "Statut"
@@ -3621,6 +3606,26 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#, fuzzy
+#~ msgid "SndStretch"
+#~ msgstr "Despre Audacious"
+
+#, fuzzy
+#~ msgid "About SndStretch"
+#~ msgstr "Despre Audacious"
+
+#, fuzzy
+#~ msgid "Volume correction"
+#~ msgstr "Schimbă volumul cu"
+
+#, fuzzy
+#~ msgid "Speed"
+#~ msgstr "Viteză: "
+
+#, fuzzy
+#~ msgid "SndStretch - Configuration"
+#~ msgstr "AdPlug·::·Configurare"
 
 #, fuzzy
 #~ msgid ""
@@ -3789,10 +3794,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Small playback menu #2"
 #~ msgstr "Continuă redarea la pornire"
-
-#, fuzzy
-#~ msgid "Other settings"
-#~ msgstr "Opțiuni pentru Popup-ul cu informații suplimentare"
 
 #, fuzzy
 #~ msgid "Extra Stereo Settings"
@@ -4263,9 +4264,6 @@ msgstr ""
 
 #~ msgid "Row: "
 #~ msgstr "Linie: "
-
-#~ msgid "Speed: "
-#~ msgstr "Viteză: "
 
 #~ msgid "Timer: "
 #~ msgstr "Cronometru: "
