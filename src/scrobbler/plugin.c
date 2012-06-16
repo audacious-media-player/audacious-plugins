@@ -31,7 +31,7 @@
 
 typedef struct submit_t
 {
-	int dosubmit, pos_c, len;
+    int dosubmit, pos_c, len;
 } submit_t;
 
 static int sc_going, ge_going;
@@ -44,104 +44,104 @@ Tuple *submit_tuple = NULL;
 
 static gboolean ishttp(const char *a)
 {
-	g_return_val_if_fail(a != NULL, FALSE);
-	return str_has_prefix_nocase(a, "http://") || str_has_prefix_nocase(a, "https://");
+    g_return_val_if_fail(a != NULL, FALSE);
+    return str_has_prefix_nocase(a, "http://") || str_has_prefix_nocase(a, "https://");
 }
 
 static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
 {
-	gint playlist = aud_playlist_get_playing();
-	gint pos = aud_playlist_get_position(playlist);
+    gint playlist = aud_playlist_get_playing();
+    gint pos = aud_playlist_get_position(playlist);
 
-	if (aud_playlist_entry_get_length (playlist, pos, FALSE) < 30)
-	{
-		AUDDBG(" *** not submitting due to entry->length < 30");
-		return;
-	}
+    if (aud_playlist_entry_get_length (playlist, pos, FALSE) < 30)
+    {
+        AUDDBG(" *** not submitting due to entry->length < 30");
+        return;
+    }
 
-	gchar * filename = aud_playlist_entry_get_filename (playlist, pos);
-	if (ishttp (filename))
-	{
-		AUDDBG(" *** not submitting due to HTTP source");
-		str_unref (filename);
-		return;
-	}
-	str_unref (filename);
+    gchar * filename = aud_playlist_entry_get_filename (playlist, pos);
+    if (ishttp (filename))
+    {
+        AUDDBG(" *** not submitting due to HTTP source");
+        str_unref (filename);
+        return;
+    }
+    str_unref (filename);
 
-	sc_idle(m_scrobbler);
+    sc_idle(m_scrobbler);
 
-	if (submit_tuple)
-		tuple_unref (submit_tuple);
-	submit_tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
-	if (! submit_tuple)
-		return;
+    if (submit_tuple)
+        tuple_unref (submit_tuple);
+    submit_tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
+    if (! submit_tuple)
+        return;
 
-	sc_addentry(m_scrobbler, submit_tuple, tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
+    sc_addentry(m_scrobbler, submit_tuple, tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
 
-	if (!track_timeout)
-		track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
+    if (!track_timeout)
+        track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
 }
 
 static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 {
-	sc_idle(m_scrobbler);
+    sc_idle(m_scrobbler);
 
-	if (track_timeout)
-	{
-		g_source_remove(track_timeout);
-		track_timeout = 0;
-	}
+    if (track_timeout)
+    {
+        g_source_remove(track_timeout);
+        track_timeout = 0;
+    }
 
-	if (submit_tuple != NULL)
-	{
-		tuple_unref (submit_tuple);
-		submit_tuple = NULL;
-	}
+    if (submit_tuple != NULL)
+    {
+        tuple_unref (submit_tuple);
+        submit_tuple = NULL;
+    }
 }
 
 void start(void) {
-	sc_going = 1;
+    sc_going = 1;
 
-	gchar * username = aud_get_string ("audioscrobbler", "username");
-	gchar * password = aud_get_string ("audioscrobbler", "password");
-	gchar * sc_url = aud_get_string ("audioscrobbler", "sc_url");
+    gchar * username = aud_get_string ("audioscrobbler", "username");
+    gchar * password = aud_get_string ("audioscrobbler", "password");
+    gchar * sc_url = aud_get_string ("audioscrobbler", "sc_url");
 
-	if ((!username || !password) || (!*username || !*password))
-	{
-		AUDDBG("username/password not found - not starting last.fm support");
-		sc_going = 0;
-	}
-	else
-		sc_init(username, password, sc_url);
+    if ((!username || !password) || (!*username || !*password))
+    {
+        AUDDBG("username/password not found - not starting last.fm support");
+        sc_going = 0;
+    }
+    else
+        sc_init(username, password, sc_url);
 
-	g_free (username);
-	g_free (password);
-	g_free (sc_url);
+    g_free (username);
+    g_free (password);
+    g_free (sc_url);
 
-	m_scrobbler = g_mutex_new();
+    m_scrobbler = g_mutex_new();
 
-	hook_associate("playback begin", aud_hook_playback_begin, NULL);
-	hook_associate("playback stop", aud_hook_playback_end, NULL);
+    hook_associate("playback begin", aud_hook_playback_begin, NULL);
+    hook_associate("playback stop", aud_hook_playback_end, NULL);
 
-	AUDDBG("plugin started");
-	sc_idle(m_scrobbler);
+    AUDDBG("plugin started");
+    sc_idle(m_scrobbler);
 }
 
 void stop(void) {
-	if (!sc_going && !ge_going)
-		return;
-	g_mutex_lock(m_scrobbler);
+    if (!sc_going && !ge_going)
+        return;
+    g_mutex_lock(m_scrobbler);
 
-	if (sc_going)
-		sc_cleaner();
-	sc_going = 0;
-	ge_going = 0;
-	g_mutex_unlock(m_scrobbler);
+    if (sc_going)
+        sc_cleaner();
+    sc_going = 0;
+    ge_going = 0;
+    g_mutex_unlock(m_scrobbler);
 
-	g_mutex_free(m_scrobbler);
+    g_mutex_free(m_scrobbler);
 
-	hook_dissociate("playback begin", aud_hook_playback_begin);
-	hook_dissociate("playback stop", aud_hook_playback_end);
+    hook_dissociate("playback begin", aud_hook_playback_begin);
+    hook_dissociate("playback stop", aud_hook_playback_end);
 }
 
 static gboolean init(void)
@@ -175,8 +175,8 @@ void setup_proxy(CURL *curl)
 
             curl_easy_setopt(curl, CURLOPT_PROXYUSERPWD, userpwd);
 
-			g_free (user);
-			g_free (pass);
+            g_free (user);
+            g_free (pass);
             g_free (userpwd);
         }
 
