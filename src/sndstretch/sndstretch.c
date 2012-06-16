@@ -83,7 +83,7 @@ void CleanupPitchSpeedJob( PitchSpeedJob * job )
 
 
 
-inline int ringpos( int pos, int size )
+static inline int ringpos( int pos, int size )
 {
     while ( pos >= size ) pos-=size;
     while ( pos <  0    ) pos+=size;
