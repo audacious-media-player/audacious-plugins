@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
-"PO-Revision-Date: 2012-06-02 00:48+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-06-15 21:16-0400\n"
+"PO-Revision-Date: 2012-06-11 13:27+0000\n"
+"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
@@ -21,11 +21,11 @@ msgstr ""
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr ""
+msgstr "Descodificador AAC"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (Reprodutor AdLib)"
 
 #: src/alarm/alarm.c:833 src/alarm/interface.c:32
 msgid "Alarm"
@@ -300,9 +300,8 @@ msgid "Thankyou"
 msgstr "Obrigado"
 
 #: src/albumart/albumart.c:101
-#, fuzzy
 msgid "Album Art"
-msgstr "Álbum: "
+msgstr "Imagem do álbum"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -333,13 +332,12 @@ msgid "Work around drain hangup"
 msgstr "Solução para impedir a suspensão"
 
 #: src/alsa/plugin.c:45
-#, fuzzy
 msgid "ALSA Output"
-msgstr "Portas Alsa"
+msgstr "Sistema ALSA"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (Reprodutor MIDI)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -390,8 +388,8 @@ msgstr ""
 "Esta infraestrutura produz os sons, enviando os eventos Midi para o "
 "FluidSynth, um sintetizador baseado nas especificações SoundFont2 (www."
 "fluidsynth.org)\n"
-"Os sons produzidos podem ser manipulados através dos \"plugins\" e são "
-"processados pelo suplemento de som escolhido pelo utilizador\n"
+"Os sons produzidos podem ser manipulados através dos suplementos e são "
+"processados pelo sistema de som escolhido pelo utilizador\n"
 "Infraestrutura desenvolvida por Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
@@ -480,7 +478,7 @@ msgstr "Amidi - selecione o ficheiro"
 
 #: src/amidi-plug/i_configure.c:110
 msgid "AMIDI-Plug Settings"
-msgstr ""
+msgstr "Definições Amidi"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -504,7 +502,7 @@ msgstr "Carregar SF ao iniciar o reprodutor"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
 msgid "Load SF on first MIDI file play"
-msgstr ""
+msgstr "Carregar SF ao reproduzir o ficheiro midi"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -528,7 +526,7 @@ msgstr "valor:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr ""
+msgstr "polifonia"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -598,7 +596,7 @@ msgstr "Duração (mseg):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr ""
+msgstr "N.º de faixas:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -634,12 +632,11 @@ msgstr "  (UTF-8 inválido)"
 
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
-msgstr ""
+msgstr "Sobre o Amidi"
 
 #: src/aosd/aosd.c:37
-#, fuzzy
 msgid "AOSD (On-Screen Display)"
-msgstr "Mostrar OSD"
+msgstr "AOSD (Notificação no ecrã)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -676,7 +673,7 @@ msgid ""
 "streams."
 msgstr ""
 "Ativar OSD se, durante a reprodução, o título da faixa for alterado mas o "
-"nome do ficheiro permanece igual. Útil nas reproduções de emissões web"
+"nome do ficheiro permanecer igual. Útil nas reproduções de emissões web"
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -716,16 +713,16 @@ msgstr "Opções de monitores múltiplos"
 
 #: src/aosd/aosd_ui.c:237
 msgid "Display OSD using:"
-msgstr "Mostrar OSD em:"
+msgstr "Mostrar OSD:"
 
 #: src/aosd/aosd_ui.c:239
 msgid "all monitors"
-msgstr "todos os monitores"
+msgstr "em todos os monitores"
 
 #: src/aosd/aosd_ui.c:242
 #, c-format
 msgid "monitor %i"
-msgstr "monitor %i"
+msgstr "no monitor %i"
 
 #: src/aosd/aosd_ui.c:295
 msgid "Timing (ms)"
@@ -762,7 +759,7 @@ msgstr "Internacionalização"
 
 #: src/aosd/aosd_ui.c:457
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr "Desativar conversão UTF-8 do texto (osd)"
+msgstr "Desativar conversão UTF-8 do texto (no OSD)"
 
 #: src/aosd/aosd_ui.c:475
 msgid "Select Skin File"
@@ -878,26 +875,23 @@ msgstr "Diversos"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "Listas de reprodução ASXv1/ASXv2"
 
 #: src/audpl/audpl.c:224
-#, fuzzy
 msgid "Audacious Playlists (audpl)"
-msgstr "Editor de listas de reprodução"
+msgstr "Listas de reprodução Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
-#, fuzzy
 msgid "<b>Color</b>"
-msgstr "<b>_Tipo de letra</b>"
+msgstr "<b>Cor</b>"
 
 #: src/blur_scope/blur_scope.c:58
-#, fuzzy
 msgid "Blur Scope"
-msgstr "Solid Scope"
+msgstr "Blur Scope"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr ""
+msgstr "Preferências de Bauer stereophonic-to-binaural"
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -913,36 +907,35 @@ msgstr "Pré-ajuste:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
-#, fuzzy
 msgid "Spectrum Analyzer"
-msgstr "Analyzer"
+msgstr "Spectrum Analyzer"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
-msgstr ""
+msgstr "<b>Dispositivo</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
-msgstr ""
+msgstr "Velocidade de leitura:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
-msgstr ""
+msgstr "Sobrepor dispositivo:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "<b>Detalhes</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
-msgstr ""
+msgstr "Utilizar CD-Text"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
-msgstr ""
+msgstr "Utilizar CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
@@ -950,20 +943,19 @@ msgstr "Utilizar HTTP em vez de CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Server:"
-msgstr ""
+msgstr "Servidor:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Path:"
-msgstr ""
+msgstr "Caminho:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
-msgstr ""
+msgstr "Porta:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
-#, fuzzy
 msgid "Audio CD Plugin"
-msgstr "Sobre o Audio CD"
+msgstr "Suplemento Áudio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
@@ -987,11 +979,11 @@ msgstr "Adicionar CD"
 
 #: src/cd-menu-items/cd-menu-items.c:61
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Itens de menu do Áudio CD"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
-msgstr ""
+msgstr "<b>Compressão</b>"
 
 #: src/compressor/plugin.c:38
 msgid "Center volume:"
@@ -1002,9 +994,8 @@ msgid "Dynamic range:"
 msgstr "Intervalo dinâmico:"
 
 #: src/compressor/plugin.c:71
-#, fuzzy
 msgid "Dynamic Range Compressor"
-msgstr "Sobre o Dynamic Range Compression"
+msgstr "Compressor de intervalo dinâmico"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1076,89 +1067,80 @@ msgstr ""
 "faixas que não possuem as informações de duração (exemplo: faixas cíclicas)"
 
 #: src/crossfade/crossfade.c:83
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"A sobreposição falhou porque as faixas possuem frequências diferentes\n"
-"\n"
-"Pode utilizar o Sample Rate Converter para as converter para a mesmo "
-"frequência"
+"A sobreposição falhou porque existem faixas com um número de canais "
+"diferente. Pode utilizar o gestor de canais para converter o número de "
+"canais das faixas."
 
 #: src/crossfade/crossfade.c:90
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"A sobreposição falhou porque as faixas possuem frequências diferentes\n"
-"\n"
-"Pode utilizar o Sample Rate Converter para as converter para a mesmo "
-"frequência"
+"A sobreposição falhou porque existem faixas com frequências diferentes. Pode "
+"utilizar o Conversor de frequências para converter a frequência das faixas."
 
 #: src/crossfade/crossfade.c:271
-#, fuzzy
 msgid "<b>Crossfade</b>"
-msgstr "Sobre o Crossfade"
+msgstr "<b>Crossfade</b>"
 
 #: src/crossfade/crossfade.c:272
 msgid "Overlap:"
-msgstr ""
+msgstr "Sobreposição:"
 
 #: src/crossfade/crossfade.c:282
-#, fuzzy
 msgid "Crossfade"
-msgstr "Sobre o Crossfade"
+msgstr "Crossfade"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
-msgstr ""
+msgstr "<b>Crystalizer</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
-msgstr ""
+msgstr "Intensidade:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
-msgstr ""
+msgstr "Crystalizer"
 
 #: src/cue/cue.c:161
-#, fuzzy
 msgid "Cue Sheet Plugin"
-msgstr "Sobre o Echo"
+msgstr "Suplemento Cue Sheet"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr ""
+msgstr "<b>Eco</b>"
 
 #: src/echo_plugin/echo.c:27
 msgid "Delay:"
-msgstr ""
+msgstr "Atraso:"
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr ""
+msgstr "Comentários:"
 
 #: src/echo_plugin/echo.c:33
 msgid "Volume:"
-msgstr ""
+msgstr "Volume:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Eco"
 
 #: src/ffaudio/ffaudio-core.c:683
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "Suplemento FFmpeg"
 
 #: src/filewriter/filewriter.c:409
-#, fuzzy
 msgid "FileWriter Configuration"
 msgstr "Configurações do FileWriter"
 
@@ -1207,9 +1189,8 @@ msgid "Prepend track number to filename"
 msgstr "Prefixar n.º da faixa ao nome do ficheiro"
 
 #: src/filewriter/filewriter.c:532
-#, fuzzy
 msgid "FileWriter Plugin"
-msgstr "Sobre o FileWriter"
+msgstr "Suplemento FileWriter"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1321,7 +1302,7 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr ""
+msgstr "Parâmetros:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
@@ -1361,16 +1342,15 @@ msgstr "Qualidade (0 - 10):"
 
 #: src/flacng/plugin.c:368
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "Descodificador FLAC"
 
 #: src/gio/gio.c:335
 msgid "GIO Plugin"
-msgstr ""
+msgstr "Suplemento GIO"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
-#, fuzzy
 msgid "Gnome Shortcuts"
-msgstr "Sobre o Gnome Shortcuts"
+msgstr "Atalhos Gnome"
 
 #: src/gtkui/columns.c:35
 msgid "Entry number"
@@ -1478,7 +1458,7 @@ msgstr "Adicionar U_RL..."
 
 #: src/gtkui/menus.c:136
 msgid "_Search Library"
-msgstr ""
+msgstr "Proc_urar na coleção"
 
 #: src/gtkui/menus.c:138
 msgid "A_bout ..."
@@ -1490,7 +1470,7 @@ msgstr "_Preferências..."
 
 #: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
 msgid "_Quit"
-msgstr "_Sair"
+msgstr "Div:"
 
 #: src/gtkui/menus.c:143
 msgid "_Play"
@@ -1606,11 +1586,11 @@ msgstr "_Exportar..."
 
 #: src/gtkui/menus.c:182
 msgid "_Playlist Manager ..."
-msgstr "Gestão de lista de re_produção..."
+msgstr "Gestão da lista de re_produção..."
 
 #: src/gtkui/menus.c:183
 msgid "_Queue Manager ..."
-msgstr "Gestão de _fila de reprodução"
+msgstr "_Gestão da fila de reprodução"
 
 #: src/gtkui/menus.c:186
 msgid "Volume _Up"
@@ -1646,7 +1626,7 @@ msgstr "Mostrar barra de i_nformações"
 
 #: src/gtkui/menus.c:199
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "Mostrar visualização da barra de informações"
 
 #: src/gtkui/menus.c:200
 msgid "Show _Status Bar"
@@ -1834,7 +1814,7 @@ msgstr "Associação de botões do rato"
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Configuração do Global Hotkey"
+msgstr "Configuração das Teclas globais"
 
 #: src/hotkey/gui.c:401
 msgid ""
@@ -1857,14 +1837,12 @@ msgid "<b>Key Binding:</b>"
 msgstr "<b>Associação de teclas:</b>"
 
 #: src/hotkey/plugin.c:80
-#, fuzzy
 msgid "Global Hotkeys"
-msgstr "Sobre o Global Hotkey"
+msgstr "Atalhos globais"
 
 #: src/jack/jack.c:417
-#, fuzzy
 msgid "JACK Output"
-msgstr "S_aída"
+msgstr "Sistema Jack"
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1873,7 +1851,7 @@ msgstr "Definições de %s"
 
 #: src/ladspa/plugin.c:562
 msgid "LADSPA Host Settings"
-msgstr "Definições de LADSPA Host"
+msgstr "Definições de LADSPA "
 
 #: src/ladspa/plugin.c:571
 msgid "Module paths:"
@@ -1907,14 +1885,13 @@ msgid "Settings"
 msgstr "Definições"
 
 #: src/ladspa/plugin.c:662
-#, fuzzy
 msgid "LADSPA Host"
-msgstr "Sobre o LADSPA Host"
+msgstr "LADSPA"
 
 #: src/lirc/lirc.c:77
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr ""
+msgstr "%s: suporte LIRC não iniciado\n"
 
 #: src/lirc/lirc.c:84
 #, c-format
@@ -1923,43 +1900,45 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
+"%s: não foi possível ler o ficheiro de configuração LIRC\n"
+"%s: consulte a documentação do LIRC\n"
+"%s: como criar um ficheiro de configuração válido\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: a tentar nova ligação...\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: comando desconhecido \"%s\"\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr ""
+msgstr "%s: desligado do servidor LIRC\n"
 
 #: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: nova tentativa de ligação a cada %d segundos...\n"
 
 #: src/lirc/lirc.c:411
-#, fuzzy
 msgid "<b>Connection</b>"
-msgstr "<b>Ação:</b>"
+msgstr "<b>Ligação</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Nova ligação ao servidor LIRC"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Tempo de espera entre ligações:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "Suplemento LIRC"
 
 #: src/lyricwiki/lyricwiki.c:267
 msgid ""
@@ -1987,12 +1966,11 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "Suplemento LyricWiki"
 
 #: src/m3u/m3u.c:123
-#, fuzzy
 msgid "M3U Playlists"
-msgstr "Lista de reprodução"
+msgstr "Listas de reprodução M3U"
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2005,31 +1983,28 @@ msgid "Tact generator: %d bpm %d/%d"
 msgstr "Gerador Tact: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:257
-#, fuzzy
 msgid "Tact Generator"
-msgstr "Gerador de tons:"
+msgstr "Gerador Tact"
 
 #: src/mixer/mixer.c:186
-#, fuzzy
 msgid "<b>Channel Mixer</b>"
-msgstr "Sobre o Channel Mixer"
+msgstr "<b>Gestor de canais</b>"
 
 #: src/mixer/mixer.c:187
 msgid "Output channels:"
 msgstr "Canais de saída:"
 
 #: src/mixer/mixer.c:197
-#, fuzzy
 msgid "Channel Mixer"
-msgstr "Sobre o Channel Mixer"
+msgstr "Gestor de canais"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "Suplemento MMS"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (Reprodutor Module)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -2037,15 +2012,15 @@ msgstr "Surround"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "Suplemento MPG123"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "Servidor MPRIS 2"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Suplemento Neon HTTP/HTTPS"
 
 #: src/notify/event.c:49
 msgid "Stopped"
@@ -2057,7 +2032,7 @@ msgstr "O Audacious não está a reproduzir"
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Notificações do ambiente de trabalho"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
@@ -2072,9 +2047,8 @@ msgid "Use alternate device:"
 msgstr "Utilizar dispositivo alternativo:"
 
 #: src/oss4/plugin.c:81
-#, fuzzy
 msgid "Save volume between sessions."
-msgstr "Gravar volume entre as sessões"
+msgstr "Gravar volume entre sessões"
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -2085,48 +2059,44 @@ msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Ativar modo exclusivo para prevenir mistura virtual"
 
 #: src/oss4/plugin.c:125
-#, fuzzy
 msgid "OSS4 Output"
-msgstr "S_aída"
+msgstr "Sistema OSS4"
 
 #: src/pls/pls.c:114
-#, fuzzy
 msgid "PLS Playlists"
-msgstr "Lista de reprodução"
+msgstr "Listas de reprodução PLS"
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "Descodificador OpenPSF PSF1/PSF2"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "Sistema PulseAudio"
 
 #: src/resample/resample.c:178
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Ignorar/repetir frequências"
 
 #: src/resample/resample.c:179
-#, fuzzy
 msgid "Linear interpolation"
-msgstr "Internacionalização"
+msgstr "Interpolação linear"
 
 #: src/resample/resample.c:180
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Interpolação rápida"
 
 #: src/resample/resample.c:181
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Interpolação normal"
 
 #: src/resample/resample.c:182
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Interpolação máxima"
 
 #: src/resample/resample.c:185
-#, fuzzy
 msgid "<b>Conversion</b>"
-msgstr "<b>_Tipo de letra</b>"
+msgstr "<b>Conversão</b>"
 
 #: src/resample/resample.c:186
 msgid "Method:"
@@ -2134,57 +2104,47 @@ msgstr "Método:"
 
 #: src/resample/resample.c:189
 msgid "Rate:"
-msgstr ""
+msgstr "Taxa:"
 
 #: src/resample/resample.c:192
-#, fuzzy
 msgid "<b>Rate Mappings</b>"
-msgstr "Mapeamento:"
+msgstr "<b>Mapeamentos de taxa</b>"
 
 #: src/resample/resample.c:193
-#, fuzzy
 msgid "Use rate mappings"
-msgstr "Mapeamento:"
+msgstr "Utilizar mapeamento de taxa"
 
 #: src/resample/resample.c:195
-#, fuzzy
 msgid "8 kHz:"
-msgstr "8 kHz"
+msgstr "8 kHz:"
 
 #: src/resample/resample.c:198
-#, fuzzy
 msgid "16 kHz:"
-msgstr "16 kHz"
+msgstr "16 kHz:"
 
 #: src/resample/resample.c:201
-#, fuzzy
 msgid "22.05 kHz:"
-msgstr "2 kHz"
+msgstr "22.05 kHz:"
 
 #: src/resample/resample.c:204
-#, fuzzy
 msgid "44.1 kHz:"
-msgstr "1 kHz"
+msgstr "44.1 kHz:"
 
 #: src/resample/resample.c:207
-#, fuzzy
 msgid "48 kHz:"
-msgstr "8 kHz"
+msgstr "48 kHz:"
 
 #: src/resample/resample.c:210
-#, fuzzy
 msgid "96 kHz:"
-msgstr "16 kHz"
+msgstr "96 kHz:"
 
 #: src/resample/resample.c:213
-#, fuzzy
 msgid "192 kHz:"
-msgstr "2 kHz"
+msgstr "192 kHz:"
 
 #: src/resample/resample.c:223
-#, fuzzy
 msgid "Sample Rate Converter"
-msgstr "Preferências do Sample Rate Converter"
+msgstr "Conversor de frequências"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
 msgid "Change password"
@@ -2204,7 +2164,7 @@ msgstr "Senha:"
 
 #: src/scrobbler/configure.c:176
 msgid "Scrobbler URL:"
-msgstr "URL do scrobbler:"
+msgstr "URL do \"scrobbler\":"
 
 #: src/scrobbler/configure.c:203
 msgid "<b>Last.FM</b>"
@@ -2215,9 +2175,8 @@ msgid "Scrobbler"
 msgstr "Scrobbler"
 
 #: src/sdlout/plugin.c:43
-#, fuzzy
 msgid "SDL Output"
-msgstr "S_aída"
+msgstr "Sistema SDL"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2225,11 +2184,11 @@ msgstr "Coleção"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Artista desconhecido"
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
-msgstr ""
+msgstr "Álbum desconhecido"
 
 #: src/search-tool/search-tool.c:627
 #, c-format
@@ -2237,13 +2196,15 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+"em %s de %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d álbum"
+msgstr[1] "%d álbuns"
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2254,7 +2215,11 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s\n"
+" %s, %d faixa"
 msgstr[1] ""
+"%s\n"
+" %s, %d faixas"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2265,7 +2230,11 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
+"%s\n"
+" %d faixa de %s"
 msgstr[1] ""
+"%s\n"
+" %d faixas de %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2296,13 +2265,12 @@ msgid "Choose Folder"
 msgstr "Escolha a pasta"
 
 #: src/search-tool/search-tool.c:803
-#, fuzzy
 msgid "Search Tool"
-msgstr "Procurar coleção"
+msgstr "Ferramenta de procura"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr ""
+msgstr "Interface clássica do Winamp"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Player:"
@@ -2386,7 +2354,7 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:380
 msgid "Audacious Equalizer"
-msgstr "Equalizador Audacious"
+msgstr "Equalizador do Audacious"
 
 #: src/skins/ui_equalizer.c:898
 msgid "Presets"
@@ -2499,7 +2467,7 @@ msgstr "Não para após a faixa"
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Song Name"
-msgstr ""
+msgstr "Deslocar nome automaticamente"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -2515,7 +2483,7 @@ msgstr "Repetir"
 
 #: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
-msgstr "Baralhar"
+msgstr "Desordenar"
 
 #: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
@@ -2628,7 +2596,7 @@ msgstr "Rápido"
 
 #: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
 msgid "Fastest"
-msgstr "Mais rápido"
+msgstr "Equalizador do Audacious"
 
 #: src/skins/ui_manager.c:166
 msgid "Time Elapsed"
@@ -2756,7 +2724,7 @@ msgstr "Adiciona uma faixa remota à lista de reprodução"
 
 #: src/skins/ui_manager.c:247
 msgid "Add Files..."
-msgstr "Adicionar ficheiros..."
+msgstr "Analyzer"
 
 #: src/skins/ui_manager.c:248
 msgid "Adds files to the playlist."
@@ -3128,7 +3096,7 @@ msgid ""
 msgstr ""
 "Seleciona as entradas da lista de reprodução, preenchendo um ou mais campos. "
 "Os campos utilizam expressões regulares, sem distinção entre maiúsculas e "
-"minúsculas. Se não souber o que são expressões regulares, basta inserir uma "
+"minúsculas. Se não sabe o que são expressões regulares, basta inserir uma "
 "parte do que pretende procurar."
 
 #: src/skins/ui_playlist.c:262
@@ -3182,9 +3150,8 @@ msgid "Could not create directory (%s): %s\n"
 msgstr "Não foi possível criar o diretório (%s): %s\n"
 
 #: src/sndfile/plugin.c:437
-#, fuzzy
 msgid "Sndfile Plugin"
-msgstr "Sobre o Sndfile"
+msgstr "Suplemento Sndfile"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3231,6 +3198,21 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
+"Pode utilizar os formatos descritos em baixo, que\n"
+"serão substituídos antes da invocação do comando\n"
+"(nem todos podem ser utilizados para o comando fim da lista de reprodução)\n"
+"\n"
+"%F: frequência (em hertz)\n"
+"%c: número de canais\n"
+"%f: nome do ficheiro (caminho integral)\n"
+"%l: duração (em ms)\n"
+"%n ou %s: nome da faixa\n"
+"%r: taxa (em bits por segundo)\n"
+"%t: posição na lista de reprodução (%02d)\n"
+"%p: a reproduzir atualmente (1 ou 0)\n"
+"%a: artista\n"
+"%b: álbum\n"
+"%T: título da faixa"
 
 #: src/song_change/song_change.c:489
 msgid ""
@@ -3263,9 +3245,8 @@ msgid "Speed and Pitch"
 msgstr ""
 
 #: src/statusicon/statusicon.c:386
-#, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "Ação da roda do rato"
+msgstr "<b>Ação com a roda do rato</b>"
 
 #: src/statusicon/statusicon.c:387
 msgid "Change volume"
@@ -3278,14 +3259,13 @@ msgstr "Alterar faixa reproduzida"
 #: src/statusicon/statusicon.c:393
 #, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "Outras definições"
+msgstr "<b>Mapeamentos de taxa</b>"
 
 #: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr "Desativar janela emergente"
 
 #: src/statusicon/statusicon.c:396
-#, fuzzy
 msgid "Close to the system tray"
 msgstr "Fechar para a área de notificação"
 
@@ -3294,18 +3274,16 @@ msgid "Advance in playlist when scrolling upward"
 msgstr "Avançar na lista de reprodução ao rolar para cima"
 
 #: src/statusicon/statusicon.c:407
-#, fuzzy
 msgid "Status Icon"
-msgstr "Sobre o Status Icon"
+msgstr "Ícone de estado"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
-msgstr ""
+msgstr "<b>Extra estéreo</b>"
 
 #: src/stereo_plugin/stereo.c:38
-#, fuzzy
 msgid "Extra Stereo"
-msgstr "Joint Stereo"
+msgstr "Extra estéreo"
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3317,475 +3295,51 @@ msgid "Tone Generator: "
 msgstr "Gerador de tons:"
 
 #: src/tonegen/tonegen.c:208
-#, fuzzy
 msgid "Tone Generator"
-msgstr "Gerador de tons:"
+msgstr "Gerador de tons"
 
 #: src/unix-io/unix-io.c:290
-#, fuzzy
 msgid "File I/O Plugin"
-msgstr "Sobre o File I/O"
+msgstr "Suplemento File I/O"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr ""
+msgstr "Remoção de voz"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr ""
+msgstr "Descodificador Ogg Vorbis"
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr ""
+msgstr "LADSPA"
 
 #: src/wavpack/wavpack.c:345
-#, fuzzy
 msgid "WavPack Decoder"
-msgstr "Suplemento de descodificação Wavpack %s"
+msgstr "Descodificador WavPack"
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr ""
+msgstr "Descodificador 2SF"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "Listas de reprodução XML Shareable (XSPF)"
 
-#, fuzzy
 #~ msgid "SndStretch"
-#~ msgstr "Sobre o SndStretch"
+#~ msgstr "SndStretch"
 
 #~ msgid "About SndStretch"
 #~ msgstr "Sobre o SndStretch"
+
+#~ msgid "Volume correction"
+#~ msgstr "Correção de volume"
+
+#~ msgid "Short overlap"
+#~ msgstr "Sobreposição curta"
 
 #~ msgid "Scale"
 #~ msgstr "Escala"
 
 #~ msgid "SndStretch - Configuration"
 #~ msgstr "Configuração do SndStretch"
-
-#~ msgid ""
-#~ "Using libfaad2-%s for decoding.\n"
-#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-#~ "Copyright (c) 2005-2006 Audacious team"
-#~ msgstr ""
-#~ "A utilizar libfaad2 %s para a descodificação.\n"
-#~ "Descodificador FAAD2 AAC/HE-AAC/HE-AACv2/DRM (c) Nero AG, www.nero.com\n"
-#~ "Direitos de autor (c) 2005-2006, a equipa Audacious"
-
-#~ msgid "About MP4 AAC decoder plugin"
-#~ msgstr "Sobre o descodificador MP4 AAC"
-
-#~ msgid "About Alarm"
-#~ msgstr "Sobre o Alarme"
-
-#~ msgid ""
-#~ "A plugin that can be used to start playing at a certain time.\n"
-#~ "\n"
-#~ "Originally written by Adam Feakin and Daniel Stodden."
-#~ msgstr ""
-#~ "Um suplemento para iniciar a reprodução a uma determinada hora\n"
-#~ "\n"
-#~ "Desenvolvido por Adam Feakin e Daniel Stodden"
-
-#~ msgid "About ALSA Output Plugin"
-#~ msgstr "Sobre o suplemento Alsa"
-
-#~ msgid "ALSA error"
-#~ msgstr "Erro Alsa"
-
-#~ msgid "Audacious OSD - about"
-#~ msgstr "Sobre o OSD Audacious"
-
-#~ msgid ""
-#~ "\n"
-#~ "Audacious OSD "
-#~ msgstr ""
-#~ "\n"
-#~ "Audacious OSD "
-
-#~ msgid ""
-#~ "\n"
-#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
-#~ "written by Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "On-Screen-Display is based on Ghosd library\n"
-#~ "written by Evan Martin\n"
-#~ "http://neugierig.org/software/ghosd/\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
-#~ "desenvolvido por Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "OSD baseado na biblioteca Ghosd\n"
-#~ "desenvolvida por Evan Martin\n"
-#~ "http://neugierig.org/software/ghosd/\n"
-#~ "\n"
-
-#~ msgid "Blur Scope: Color selection"
-#~ msgstr "Blur Scope: selecção de cores"
-
-#~ msgid "Options:"
-#~ msgstr "Opções:"
-
-#~ msgid "About the Game Console Music Decoder"
-#~ msgstr "Sobre o Game Console Music Decoder"
-
-#~ msgid ""
-#~ "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
-#~ "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-#~ "Audacious implementation by: William Pitcock <nenolod@dereferenced."
-#~ "org>, \n"
-#~ "        Shay Green <gblargg@gmail.com>\n"
-#~ msgstr ""
-#~ "O Console Music Decoder é baseado no Game_Music_Emu 0.5.2.\n"
-#~ "Os formatos suportados são: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, "
-#~ "VGM, VGZ\n"
-#~ "Implementação no Audacious por: William Pitcock <nenolod@dereferenced."
-#~ "org>, \n"
-#~ "        Shay Green <gblargg@gmail.com>\n"
-
-#~ msgid "Crossfade Preferences"
-#~ msgstr "Preferências Crossfade"
-
-#~ msgid "Overlap (in seconds):"
-#~ msgstr "Sobreposição (em segundos):"
-
-#~ msgid "Crossfade Error"
-#~ msgstr "Erro Crossfade"
-
-#~ msgid ""
-#~ "Crossfading failed because the songs had a different number of channels."
-#~ msgstr ""
-#~ "A sobreposição falhou porque as faixas não possuem o mesmo número de "
-#~ "canais"
-
-#~ msgid ""
-#~ "Echo Plugin\n"
-#~ "By Johan Levin 1999.\n"
-#~ "\n"
-#~ "Surround echo by Carl van Schaik 1999"
-#~ msgstr ""
-#~ "Suplemento Echo\n"
-#~ "por Johan Levin 1999.\n"
-#~ "\n"
-#~ "Surround echo por Carl van Schaik 1999"
-
-#~ msgid ""
-#~ "Multi-format audio decoding plugin for Audacious based on\n"
-#~ "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-#~ "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
-#~ "\n"
-#~ "Audacious plugin by:\n"
-#~ "            William Pitcock <nenolod@nenolod.net>,\n"
-#~ "            Matti Hämäläinen <ccr@tnsp.org>\n"
-#~ "\n"
-#~ "libavcodec %s (%s)\n"
-#~ "libavformat %s (%s)\n"
-#~ "libavutil %s (%s)\n"
-#~ msgstr ""
-#~ "Um suplemento de descodificação áudio para o Audacious, baseado\n"
-#~ "no programa FFmpeg (http://www.ffmpeg.org/)\n"
-#~ "Direitos de autor (c) 2000-2009, Fabrice Bellard e outros\n"
-#~ "\n"
-#~ "Implementação no Audacious por:\n"
-#~ "            William Pitcock <nenolod@nenolod.net>,\n"
-#~ "            Matti Hämäläinen <ccr@tnsp.org>\n"
-#~ "\n"
-#~ "libavcodec %s (%s)\n"
-#~ "libavformat %s (%s)\n"
-#~ "libavutil %s (%s)\n"
-
-#~ msgid "About FFaudio Plugin"
-#~ msgstr "Sobre o FFaudio"
-
-#~ msgid "About FLAC Audio Plugin"
-#~ msgstr "Sobre o Flac Audio"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Original code by\n"
-#~ "Ralf Ertzinger <ralf@skytale.net>\n"
-#~ "\n"
-#~ "http://www.skytale.net/projects/bmp-flac2/"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Código original:\n"
-#~ "Ralf Ertzinger <ralf@skytale.net>\n"
-#~ "\n"
-#~ "http://www.skytale.net/projects/bmp-flac2/"
-
-#~ msgid ""
-#~ "Gnome Shortcut Plugin\n"
-#~ "Let's you control the player with Gnome's shortcuts.\n"
-#~ "\n"
-#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Suplemento Gnome Shortcuts\n"
-#~ "Permite controlar o reprodutor com as teclas de atalho Gnome\n"
-#~ "\n"
-#~ "Direitos de autor (C) 2007-2008, Sascha Hlusiak <contact@saschahlusiak."
-#~ "de>\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Global Hotkey Plugin\n"
-#~ "Control the player with global key combinations or multimedia keys.\n"
-#~ "\n"
-#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-#~ "\n"
-#~ "Contributers include:\n"
-#~ "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-#~ "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-#~ "\t\t\tBryn Davies <curious@ihug.com.au>\n"
-#~ "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
-#~ "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Suplemento Global Hotkey\n"
-#~ "Permite controlar o reprodutor com as teclas multimédia ou com as teclas "
-#~ "globais\n"
-#~ "\n"
-#~ "Direitos de autor (C) 2007-2008, Sascha Hlusiak <contact@saschahlusiak."
-#~ "de>\n"
-#~ "\n"
-#~ "Contributos:\n"
-#~ "Direitos de autor (C) 2006-2007, Vladimir Paskov <vlado.paskov@gmail."
-#~ "com>\n"
-#~ "Direitos de autor (C) 2000-2002, Ville Syrjälä <syrjala@sci.fi>\n"
-#~ "\t\t\tBryn Davies <curious@ihug.com.au>\n"
-#~ "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
-#~ "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
-#~ "\n"
-
-#~ msgid "Connect to all available jack ports"
-#~ msgstr "Ligar a todas as portas \"jack\" disponíveis"
-
-#~ msgid "Connect only the output ports"
-#~ msgstr "Ligar às portas de saída"
-
-#~ msgid "Connect to no ports"
-#~ msgstr "Não ligar às portas"
-
-#~ msgid "jack Plugin configuration"
-#~ msgstr "Configuração do Jack"
-
-#~ msgid "Connection mode:"
-#~ msgstr "Modo de ligação:"
-
-#~ msgid "Enable debug printing"
-#~ msgstr "Ativar depuração"
-
-#~ msgid "Ok"
-#~ msgstr "Aceitar"
-
-#~ msgid "About Metronom"
-#~ msgstr "Sobre o Metronom"
-
-#~ msgid ""
-#~ "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
-#~ "\n"
-#~ "To use it, add a URL: tact://beats*num/den\n"
-#~ "e.g. tact://77 to play 77 beats per minute\n"
-#~ "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
-#~ msgstr ""
-#~ "Um gerador Tact por Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
-#~ "\n"
-#~ "Para o utilizar, adicione o URL: tact://beats*num/den\n"
-#~ "exemplo: tact://77 para reproduzir 77 batidas por minuto\n"
-#~ "ou tact://60*3/4 para reproduzir 60 batidas por minuto em 3/4 tacts"
-
-#~ msgid "Channel Mixer Settings"
-#~ msgstr "Definições do Channel Mixer"
-
-#~ msgid "Changes take effect at the next song change."
-#~ msgstr "As alterações serão aplicadas ao alterar a faixa"
-
-#~ msgid "Upload in progress..."
-#~ msgstr "A enviar..."
-
-#~ msgid "Upload to MTP Device"
-#~ msgstr "Enviar para dispositivo MTP"
-
-#~ msgid "Disconnect MTP Device"
-#~ msgstr "Desligar dispositivo MTP"
-
-#~ msgid "Null output plugin "
-#~ msgstr "Suplemento Null output"
-
-#~ msgid ""
-#~ " by Christian Birchinger <joker@netswarm.net>\n"
-#~ "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
-#~ msgstr ""
-#~ "por Christian Birchinger <joker@netswarm.net>\n"
-#~ "baseado no suplemento XMMS de Håvard Kvål <havardk@xmms.org>"
-
-#~ msgid "About Null Output"
-#~ msgstr "Sobre o Null Output"
-
-#~ msgid "Null output preferences"
-#~ msgstr "Preferências do Null output"
-
-#~ msgid "Run in real time"
-#~ msgstr "Em tempo real"
-
-#~ msgid "OSS4 Output Plugin Preferences"
-#~ msgstr "Preferências do suplemento OSS4"
-
-#~ msgid "About OSS4 Plugin"
-#~ msgstr "Sobre o OSS4"
-
-#~ msgid "OSS4 error"
-#~ msgstr "Erro OSS4"
-
-#~ msgid "About Audacious PulseAudio Output Plugin"
-#~ msgstr "Sobre o Audacious PulseAudio"
-
-#~ msgid "About Sample Rate Converter Plugin"
-#~ msgstr "Sobre o Sample Rate Converter"
-
-#~ msgid "All others:"
-#~ msgstr "Todas as outras:"
-
-#~ msgid ""
-#~ "Audacious AudioScrobbler Plugin\n"
-#~ "\n"
-#~ "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-#~ "com>\n"
-#~ msgstr ""
-#~ "Suplemento Audacious AudioScrobbler\n"
-#~ "\n"
-#~ "Desenvolvido por Audun Hove <audun@nlc.no> e Pipian <pipian@pipian.com>\n"
-
-#~ msgid "About Scrobbler Plugin"
-#~ msgstr "Sobre o AudioScrobbler"
-
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "Sobre o SDL"
-
-#~ msgid "SDL error"
-#~ msgstr "Erro SDL"
-
-#~ msgid "About Skinned GUI"
-#~ msgstr "Sobre o Skinned GUI"
-
-#~ msgid ""
-#~ "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Direitos de autor (c) 2008, por Tomasz Moń <desowin@gmail.com>\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Status Icon Plugin\n"
-#~ "\n"
-#~ "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-#~ "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-#~ "\n"
-#~ "This plugin provides a status icon, placed in\n"
-#~ "the system tray area of the window manager.\n"
-#~ msgstr ""
-#~ "Suplemento Status Icon\n"
-#~ "\n"
-#~ "Direitos de autor 2005-2007, Giacomo Lozito <james@develia.org>\n"
-#~ "Direitos de autor 2010, Michał Lipski <tallica@o2.pl>\n"
-#~ "\n"
-#~ "Este suplemento disponibiliza um ícone na barra de estado\n"
-#~ "da área de notificação do gestor de janelas.\n"
-
-#~ msgid "Status Icon Plugin - Preferences"
-#~ msgstr "Preferências do Status Icon"
-
-#~ msgid "Right-Click Menu"
-#~ msgstr "Menu no botão direito do rato"
-
-#~ msgid "Small playback menu #1"
-#~ msgstr "Menu de reprodução #1"
-
-#~ msgid "Small playback menu #2"
-#~ msgstr "Menu de reprodução #2"
-
-#~ msgid ""
-#~ "Extra Stereo Plugin\n"
-#~ "\n"
-#~ "By Johan Levin 1999."
-#~ msgstr ""
-#~ "Suplemento Extra Stereo\n"
-#~ "\n"
-#~ "Por Johan Levin 1999."
-
-#~ msgid "About Extra Stereo Plugin"
-#~ msgstr "Sobre o Extra Stereo"
-
-#~ msgid "About Tone Generator"
-#~ msgstr "Sobre o Gerador de tons"
-
-#~ msgid ""
-#~ "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
-#~ "\n"
-#~ "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-#~ "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
-#~ msgstr ""
-#~ "Gerador de tons por Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Modificado por Daniel J. Peng <danielpeng@bigfoot.com>\n"
-#~ "\n"
-#~ "Para o utilizar, adicione o URL: tone://frequência1;frequência2;"
-#~ "frequência3;...\n"
-#~ "exemplo: tone://2000;2005 para reproduzir um tom a 2000Hz e outro a 2005Hz"
-
-#~ msgid "About Ogg Vorbis Audio Plugin"
-#~ msgstr "Sobre o Ogg Vorbis"
-
-#~ msgid ""
-#~ "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
-#~ "\n"
-#~ "Original code by\n"
-#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-#~ "Contributions from\n"
-#~ "Chris Montgomery <monty@xiph.org>\n"
-#~ "Peter Alm <peter@xmms.org>\n"
-#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
-#~ "Jack Moffitt <jack@icecast.org>\n"
-#~ "Jorn Baayen <jorn@nl.linux.org>\n"
-#~ "Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-#~ "Eugene Zagidullin <e.asphyx@gmail.com>\n"
-#~ "\n"
-#~ "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
-#~ msgstr ""
-#~ "Suplemento Ogg Vorbis pela Xiph.org Foundation\n"
-#~ "\n"
-#~ "Código original:\n"
-#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-#~ "Contributos:\n"
-#~ "Chris Montgomery <monty@xiph.org>\n"
-#~ "Peter Alm <peter@xmms.org>\n"
-#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
-#~ "Jack Moffitt <jack@icecast.org>\n"
-#~ "Jorn Baayen <jorn@nl.linux.org>\n"
-#~ "Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-#~ "Eugene Zagidullin <e.asphyx@gmail.com>\n"
-#~ "\n"
-#~ "Consulte a página Xiph.org Foundation em http://www.xiph.org/\n"
-
-#~ msgid "About Vortex Player"
-#~ msgstr "Sobre o Vortex Player"
-
-#~ msgid ""
-#~ "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
-#~ "\n"
-#~ "Some of the plugin code was by Miles Egan\n"
-#~ "Visit the Wavpack site at http://www.wavpack.com/\n"
-#~ msgstr ""
-#~ "Direitos de autor (c) 2006, William Pitcock <nenolod -at- nenolod.net>\n"
-#~ "\n"
-#~ "Parte do código foi escrito por Miles Egan\n"
-#~ "Consulte a página Wavpack em http://www.wavpack.com/\n"

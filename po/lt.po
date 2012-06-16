@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
-"PO-Revision-Date: 2012-06-02 00:48+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-06-15 21:16-0400\n"
+"PO-Revision-Date: 2012-06-10 10:37+0000\n"
+"Last-Translator: Algimantas Margevičius <gymka@archlinux.lt>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -23,11 +23,11 @@ msgstr ""
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr ""
+msgstr "AAC dekoderis"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (AdLib grotuvas)"
 
 #: src/alarm/alarm.c:833 src/alarm/interface.c:32
 msgid "Alarm"
@@ -302,9 +302,8 @@ msgid "Thankyou"
 msgstr "Dėkui"
 
 #: src/albumart/albumart.c:101
-#, fuzzy
 msgid "Album Art"
-msgstr "Albumas:"
+msgstr "Albumo apipavadalinimas"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -335,13 +334,12 @@ msgid "Work around drain hangup"
 msgstr "Apeiti sausą pakibimą"
 
 #: src/alsa/plugin.c:45
-#, fuzzy
 msgid "ALSA Output"
-msgstr "ALSA išvesties prievadai"
+msgstr "ALSA išvestis"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (MIDI grotuvas)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -481,7 +479,7 @@ msgstr "AMIDI-Plug - pasirinkti failą"
 
 #: src/amidi-plug/i_configure.c:110
 msgid "AMIDI-Plug Settings"
-msgstr ""
+msgstr "AMIDI-Plug nustatymai"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -505,7 +503,7 @@ msgstr "Įkrauti SF paleidžiant grotuvą"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
 msgid "Load SF on first MIDI file play"
-msgstr ""
+msgstr "Paleidus MIDI failą įkrauti SF"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -529,7 +527,7 @@ msgstr "vertė:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr ""
+msgstr "polifonija"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -599,7 +597,7 @@ msgstr "Trukmė (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr ""
+msgstr "Takelių:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -635,12 +633,11 @@ msgstr "  (neteisingas UTF-8)"
 
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
-msgstr ""
+msgstr "Apie AMIDI-Plug"
 
 #: src/aosd/aosd.c:37
-#, fuzzy
 msgid "AOSD (On-Screen Display)"
-msgstr "Rodyti On-Screen-Display"
+msgstr "AOSD (Rodymas ekrane)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -879,26 +876,23 @@ msgstr "Kita"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "ASXv1/ASXv2 grojaraščiai"
 
 #: src/audpl/audpl.c:224
-#, fuzzy
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious grojaraščio redaktorius"
+msgstr "Audacious grojaraščiai (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
-#, fuzzy
 msgid "<b>Color</b>"
-msgstr "<b>_Šriftai</b>"
+msgstr "<b>Spalva</b>"
 
 #: src/blur_scope/blur_scope.c:58
-#, fuzzy
 msgid "Blur Scope"
-msgstr "Vientisa sritis"
+msgstr "Išsiliejimo sritis"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr ""
+msgstr "Bauer Stereophonic-to-Binaural Preferences"
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -914,36 +908,35 @@ msgstr "Profiliai:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
-#, fuzzy
 msgid "Spectrum Analyzer"
-msgstr "Analizatorius"
+msgstr "Spektro analizatorius"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
-msgstr ""
+msgstr "<b>Įrenginys</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
-msgstr ""
+msgstr "Skaitymo greitis:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
-msgstr ""
+msgstr "Perrašyti įrenginį:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "<b>Meta duomenys</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
-msgstr ""
+msgstr "Naudoti CD-Text"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
-msgstr ""
+msgstr "Naudoti CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
@@ -951,20 +944,19 @@ msgstr "Naudoti HTTP vietoj CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Server:"
-msgstr ""
+msgstr "Serveris:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Path:"
-msgstr ""
+msgstr "Kelias:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
-msgstr ""
+msgstr "Prievadas:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
-#, fuzzy
 msgid "Audio CD Plugin"
-msgstr "Apie Audio CD Plugin"
+msgstr "Audio CD įskiepis"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
@@ -988,11 +980,11 @@ msgstr "Pridėti CD"
 
 #: src/cd-menu-items/cd-menu-items.c:61
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Audio CD Meniu elementai"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
-msgstr ""
+msgstr "<b>Glaudinimas</b>"
 
 #: src/compressor/plugin.c:38
 msgid "Center volume:"
@@ -1003,9 +995,8 @@ msgid "Dynamic range:"
 msgstr "Dinaminė sritis:"
 
 #: src/compressor/plugin.c:71
-#, fuzzy
 msgid "Dynamic Range Compressor"
-msgstr "Apie Dynamic Range Compression Plugin"
+msgstr "Dynamic Range Compressor"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1077,93 +1068,82 @@ msgstr ""
 "nesuteikia trukmės informacijos (pvz. besikartojantiems takeliams)"
 
 #: src/crossfade/crossfade.c:83
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Garso perėjimo efektas nepavyko, nes dainos turi skirtingus diskretizavimo "
-"dažnius.\n"
-"\n"
-"Galite panaudoti Sample Rate Converter efektą padaryti diskretizavimo "
-"dažnius tokius pat."
+"Garso perėjimo efektas nepavyko, nes dainos turi skirtingą skaičių kanalų. "
+"Galite panaudoti kanalų mikšerio įrankį ir suvienodinti kanalų skaičių."
 
 #: src/crossfade/crossfade.c:90
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
 "Garso perėjimo efektas nepavyko, nes dainos turi skirtingus diskretizavimo "
-"dažnius.\n"
-"\n"
-"Galite panaudoti Sample Rate Converter efektą padaryti diskretizavimo "
-"dažnius tokius pat."
+"dažnius.  Galite panaudoti diskretizacijos konvertavimo įrankį ir paversti "
+"dainas į tą patį dažnį."
 
 #: src/crossfade/crossfade.c:271
-#, fuzzy
 msgid "<b>Crossfade</b>"
-msgstr "Apie Crossfade"
+msgstr "<b>Persidengimas</b>"
 
 #: src/crossfade/crossfade.c:272
 msgid "Overlap:"
-msgstr ""
+msgstr "Perdengti:"
 
 #: src/crossfade/crossfade.c:282
-#, fuzzy
 msgid "Crossfade"
-msgstr "Apie Crossfade"
+msgstr "Perdengimas"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
-msgstr ""
+msgstr "<b>Crystalizer</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
-msgstr ""
+msgstr "Intensyvumas:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
-msgstr ""
+msgstr "Crystalizer"
 
 #: src/cue/cue.c:161
-#, fuzzy
 msgid "Cue Sheet Plugin"
-msgstr "Apie Echo įskiepį"
+msgstr "Cue Sheet įskiepis"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr ""
+msgstr "<b>Aidas</b>"
 
 #: src/echo_plugin/echo.c:27
 msgid "Delay:"
-msgstr ""
+msgstr "Delsa:"
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr ""
+msgstr "Garsinis atsakas:"
 
 #: src/echo_plugin/echo.c:33
 msgid "Volume:"
-msgstr ""
+msgstr "Garsumas:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Aidas"
 
 #: src/ffaudio/ffaudio-core.c:683
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "FFmpeg įskiepis"
 
 #: src/filewriter/filewriter.c:409
-#, fuzzy
 msgid "FileWriter Configuration"
-msgstr "File Writer konfigūravimas"
+msgstr "FileWriter konfigūracija"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1210,9 +1190,8 @@ msgid "Prepend track number to filename"
 msgstr "Įdėti takelio numerį į failo vardą"
 
 #: src/filewriter/filewriter.c:532
-#, fuzzy
 msgid "FileWriter Plugin"
-msgstr "Apie FileWriter įskiepį"
+msgstr "FileWriter įskiepis"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1324,7 +1303,7 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr ""
+msgstr "Kadro nustatymai:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
@@ -1364,16 +1343,15 @@ msgstr "Kokybės lygis (0 - 10):"
 
 #: src/flacng/plugin.c:368
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "FLAC dekoderis"
 
 #: src/gio/gio.c:335
 msgid "GIO Plugin"
-msgstr ""
+msgstr "GIO įskiepis"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
-#, fuzzy
 msgid "Gnome Shortcuts"
-msgstr "Apie Gnome Shortcut įskiepį"
+msgstr "Gnome spartieji klavišai"
 
 #: src/gtkui/columns.c:35
 msgid "Entry number"
@@ -1481,7 +1459,7 @@ msgstr "Pridėti U_RL ..."
 
 #: src/gtkui/menus.c:136
 msgid "_Search Library"
-msgstr ""
+msgstr "_Ieškoti fonotekoje"
 
 #: src/gtkui/menus.c:138
 msgid "A_bout ..."
@@ -1649,7 +1627,7 @@ msgstr "Rodyti i_nfo juostą"
 
 #: src/gtkui/menus.c:199
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "Rodyti informacijos juostos _vizualizaciją"
 
 #: src/gtkui/menus.c:200
 msgid "Show _Status Bar"
@@ -1861,14 +1839,12 @@ msgid "<b>Key Binding:</b>"
 msgstr "<b>Klavišo susiejimas:</b>"
 
 #: src/hotkey/plugin.c:80
-#, fuzzy
 msgid "Global Hotkeys"
-msgstr "Apie Global Hotkey įskiepį"
+msgstr "Bendri karštieji klavišai"
 
 #: src/jack/jack.c:417
-#, fuzzy
 msgid "JACK Output"
-msgstr "_Išvestis"
+msgstr "JACK išvestis"
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1911,14 +1887,13 @@ msgid "Settings"
 msgstr "Nustatymai"
 
 #: src/ladspa/plugin.c:662
-#, fuzzy
 msgid "LADSPA Host"
-msgstr "Apie LADSPA Hot"
+msgstr "LADSPA Host"
 
 #: src/lirc/lirc.c:77
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr ""
+msgstr "%s: inicijuoti LIRC palaikymo nepavyko\n"
 
 #: src/lirc/lirc.c:84
 #, c-format
@@ -1927,43 +1902,45 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
+"%s: nepavyko perskaityti LIRC konfigūracijos failo\n"
+"%s: paskaitykite LIRC dokumentaciją\n"
+"%s: kaip sukurti tinkamą konfigūracijos failą\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: bandoma prisijungti iš naujo...\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: nežinoma komanda „%s“\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr ""
+msgstr "%s: atsijungta nuo LIRC\n"
 
 #: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: bus bandoma prisijungti iš naujo kas %d sekundes...\n"
 
 #: src/lirc/lirc.c:411
-#, fuzzy
 msgid "<b>Connection</b>"
-msgstr "<b>Veiksmas:</b>"
+msgstr "<b>Prisijungimas</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Iš naujo prisijungti prie LIRC serverio"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Prieš jungiantis iš naujo palaukti:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "LIRC įskiepis"
 
 #: src/lyricwiki/lyricwiki.c:267
 msgid ""
@@ -1991,12 +1968,11 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "LyricWiki įskiepis"
 
 #: src/m3u/m3u.c:123
-#, fuzzy
 msgid "M3U Playlists"
-msgstr "Grojaraštis"
+msgstr "M3U grojaraščiai"
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2009,31 +1985,28 @@ msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takto generatorius: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:257
-#, fuzzy
 msgid "Tact Generator"
-msgstr "Tono generatorius: "
+msgstr "Takto generatorius"
 
 #: src/mixer/mixer.c:186
-#, fuzzy
 msgid "<b>Channel Mixer</b>"
-msgstr "Apie kanalų mikšerį"
+msgstr "<b>Kanalų mikšeris</b>"
 
 #: src/mixer/mixer.c:187
 msgid "Output channels:"
 msgstr "Išvesties kanalai:"
 
 #: src/mixer/mixer.c:197
-#, fuzzy
 msgid "Channel Mixer"
-msgstr "Apie kanalų mikšerį"
+msgstr "Kanalų mikšeris"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "MMS įskiepis"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (Module grotuvas)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -2041,15 +2014,15 @@ msgstr "Erdvinis garsas"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "MPG123 įskiepis"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "MPRIS 2 Serveris"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Neon HTTP/HTTPS įskiepis"
 
 #: src/notify/event.c:49
 msgid "Stopped"
@@ -2061,7 +2034,7 @@ msgstr "Audacious negroja."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Darbastalio pranešimai"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
@@ -2076,7 +2049,6 @@ msgid "Use alternate device:"
 msgstr "Naudoti alternatyvų įrenginį:"
 
 #: src/oss4/plugin.c:81
-#, fuzzy
 msgid "Save volume between sessions."
 msgstr "Išsaugoti garsą tarp sesijų"
 
@@ -2089,48 +2061,44 @@ msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Įgalinti išskirtinį režimą, siekiant išvengti virtualaus maišymosi."
 
 #: src/oss4/plugin.c:125
-#, fuzzy
 msgid "OSS4 Output"
-msgstr "_Išvestis"
+msgstr "OSS4 išvestis"
 
 #: src/pls/pls.c:114
-#, fuzzy
 msgid "PLS Playlists"
-msgstr "Grojaraštis"
+msgstr "PLS grojaraščiai"
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "OpenPSF PSF1/PSF2 dekoderis"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "PulseAudio išvestis"
 
 #: src/resample/resample.c:178
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Praleisti/kartoti pavyzdžius"
 
 #: src/resample/resample.c:179
-#, fuzzy
 msgid "Linear interpolation"
-msgstr "Lokalizavimas"
+msgstr "Linijinė interpoliacija"
 
 #: src/resample/resample.c:180
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Greita interpoliacija"
 
 #: src/resample/resample.c:181
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Vidutinė interpoliacija"
 
 #: src/resample/resample.c:182
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Geriausia interpoliacija"
 
 #: src/resample/resample.c:185
-#, fuzzy
 msgid "<b>Conversion</b>"
-msgstr "<b>_Šriftai</b>"
+msgstr "<b>Konvertavimas</b>"
 
 #: src/resample/resample.c:186
 msgid "Method:"
@@ -2138,57 +2106,47 @@ msgstr "Metodas:"
 
 #: src/resample/resample.c:189
 msgid "Rate:"
-msgstr ""
+msgstr "Dažnis:"
 
 #: src/resample/resample.c:192
-#, fuzzy
 msgid "<b>Rate Mappings</b>"
-msgstr "Dažnio parodymai:"
+msgstr "<b>Dažnio nustatymai</b>"
 
 #: src/resample/resample.c:193
-#, fuzzy
 msgid "Use rate mappings"
-msgstr "Dažnio parodymai:"
+msgstr "Naudoti dažnio nustatymus"
 
 #: src/resample/resample.c:195
-#, fuzzy
 msgid "8 kHz:"
-msgstr "8 kHz"
+msgstr "8 kHz:"
 
 #: src/resample/resample.c:198
-#, fuzzy
 msgid "16 kHz:"
-msgstr "16 kHz"
+msgstr "16 kHz:"
 
 #: src/resample/resample.c:201
-#, fuzzy
 msgid "22.05 kHz:"
-msgstr "2 kHz"
+msgstr "22.05 kHz:"
 
 #: src/resample/resample.c:204
-#, fuzzy
 msgid "44.1 kHz:"
-msgstr "1 kHz"
+msgstr "44.1 kHz:"
 
 #: src/resample/resample.c:207
-#, fuzzy
 msgid "48 kHz:"
-msgstr "8 kHz"
+msgstr "48 kHz:"
 
 #: src/resample/resample.c:210
-#, fuzzy
 msgid "96 kHz:"
-msgstr "16 kHz"
+msgstr "96 kHz:"
 
 #: src/resample/resample.c:213
-#, fuzzy
 msgid "192 kHz:"
-msgstr "2 kHz"
+msgstr "192 kHz:"
 
 #: src/resample/resample.c:223
-#, fuzzy
 msgid "Sample Rate Converter"
-msgstr "Diskretizavimo dažnio keitėjo nustatymai"
+msgstr "Diskretizavimo dažnio keitėjas"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
 msgid "Change password"
@@ -2219,9 +2177,8 @@ msgid "Scrobbler"
 msgstr "Scrobbler"
 
 #: src/sdlout/plugin.c:43
-#, fuzzy
 msgid "SDL Output"
-msgstr "_Išvestis"
+msgstr "SDL išvestis"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2229,11 +2186,11 @@ msgstr "Fonoteka"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Nežinomas atlikėjas"
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
-msgstr ""
+msgstr "Nežinomas albumas"
 
 #: src/search-tool/search-tool.c:627
 #, c-format
@@ -2241,14 +2198,16 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+" ant %s su %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "%d albumas"
+msgstr[1] "%d albumai"
+msgstr[2] "%d albumų"
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2259,8 +2218,14 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s\n"
+" %s, %d daina"
 msgstr[1] ""
+"%s\n"
+" %s, %d dainos"
 msgstr[2] ""
+"%s\n"
+" %s, %d dainų"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2271,8 +2236,14 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
+"%s\n"
+" %d daina kurią sukūrė %s"
 msgstr[1] ""
+"%s\n"
+" %d dainos kurias sukūrė %s"
 msgstr[2] ""
+"%s\n"
+" %d dainų kurias sukūrė %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2303,13 +2274,12 @@ msgid "Choose Folder"
 msgstr "Pasirinkite aplanką"
 
 #: src/search-tool/search-tool.c:803
-#, fuzzy
 msgid "Search Tool"
-msgstr "Ieškoti fonotekoje"
+msgstr "Paieškos įrankis"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr ""
+msgstr "Klasikinė Winamp sąsaja"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Player:"
@@ -2506,7 +2476,7 @@ msgstr "Nesustabdyti po dainos."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Song Name"
-msgstr ""
+msgstr "Automatiškai slinkti dainos pavadinimą"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -3187,9 +3157,8 @@ msgid "Could not create directory (%s): %s\n"
 msgstr "Negaliu sukurti aplanko (%s): %s\n"
 
 #: src/sndfile/plugin.c:437
-#, fuzzy
 msgid "Sndfile Plugin"
-msgstr "Apie sndfile įsiepį"
+msgstr "Sndfile įskiepis"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3237,6 +3206,21 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
+"Galite naudoti tokio formato eilutes, kurios\n"
+"prieš kviečiant komandą bus pakeistos (ne visos\n"
+"tinka end-of-playlist komandai):\n"
+"\n"
+"%F: Dažnis (hercais)\n"
+"%c: Kanalų skaičius\n"
+"%f: Failo vardas (pilnas kelias)\n"
+"%l: Trukmė (millisekundėmis)\n"
+"%n ar %s: Dainos vardas\n"
+"%r: Dažnis (bitais per sekundę)\n"
+"%t: Grojaraščio vieta (%02d)\n"
+"%p: Šiuo metu grojama (1 arba 0)\n"
+"%a: Atlikėjas\n"
+"%b: Albumas\n"
+"%T: Takelio pavadinimas"
 
 #: src/song_change/song_change.c:489
 msgid ""
@@ -3269,9 +3253,8 @@ msgid "Speed and Pitch"
 msgstr ""
 
 #: src/statusicon/statusicon.c:386
-#, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "Pelės ratuko veiksmas"
+msgstr "<b>Pelės slinkimo veiksmas</b>"
 
 #: src/statusicon/statusicon.c:387
 msgid "Change volume"
@@ -3284,34 +3267,31 @@ msgstr "Keisti grojančią dainą"
 #: src/statusicon/statusicon.c:393
 #, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "Kiti nustatymai"
+msgstr "<b>Dažnio nustatymai</b>"
 
 #: src/statusicon/statusicon.c:394
 msgid "Disable the popup window"
 msgstr "Išjungti iššokantį langą"
 
 #: src/statusicon/statusicon.c:396
-#, fuzzy
 msgid "Close to the system tray"
-msgstr "Uždaryti į pranešimų srity (sistemos dėklą)"
+msgstr "Užverti į sistemos dėklą"
 
 #: src/statusicon/statusicon.c:398
 msgid "Advance in playlist when scrolling upward"
 msgstr "Slenkant aukštyn, žengti grojaraščiu"
 
 #: src/statusicon/statusicon.c:407
-#, fuzzy
 msgid "Status Icon"
-msgstr "Apie Status Icon įskiepį"
+msgstr "Būsenos piktograma"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
-msgstr ""
+msgstr "<b>Extra Stereo</b>"
 
 #: src/stereo_plugin/stereo.c:38
-#, fuzzy
 msgid "Extra Stereo"
-msgstr "Sujungtas stereo"
+msgstr "Extra Stereo"
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3323,469 +3303,51 @@ msgid "Tone Generator: "
 msgstr "Tono generatorius: "
 
 #: src/tonegen/tonegen.c:208
-#, fuzzy
 msgid "Tone Generator"
-msgstr "Tono generatorius: "
+msgstr "Tono generatorius"
 
 #: src/unix-io/unix-io.c:290
-#, fuzzy
 msgid "File I/O Plugin"
-msgstr "Apie File I/O įskiepį"
+msgstr "Failo įvesties/išvesties įskiepis"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr ""
+msgstr "Balso pašalinimas"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr ""
+msgstr "Ogg Vorbis dekoderis"
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr ""
+msgstr "VTX Decoder"
 
 #: src/wavpack/wavpack.c:345
-#, fuzzy
 msgid "WavPack Decoder"
-msgstr "Wavpack Decoder įskiepis %s"
+msgstr "WavPack dekoderis"
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr ""
+msgstr "2SF dekoderis"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "XML viešinami grojaraščiai (XSPF)"
 
-#, fuzzy
 #~ msgid "SndStretch"
-#~ msgstr "Apie SndStretch"
+#~ msgstr "SndStretch"
 
 #~ msgid "About SndStretch"
 #~ msgstr "Apie SndStretch"
+
+#~ msgid "Volume correction"
+#~ msgstr "Garso pataisymas"
+
+#~ msgid "Short overlap"
+#~ msgstr "Trumpas perdengimas"
 
 #~ msgid "Scale"
 #~ msgstr "Mastas"
 
 #~ msgid "SndStretch - Configuration"
 #~ msgstr "SndStretch - Konfigūravimas"
-
-#~ msgid ""
-#~ "Using libfaad2-%s for decoding.\n"
-#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Nero AG, www.nero.com\n"
-#~ "Copyright (c) 2005-2006 Audacious team"
-#~ msgstr ""
-#~ "Dekodavimui naudojamas libfaad2-%s.\n"
-#~ "FAAD2 AAC/HE-AAC/HE-AACv2/DRM dekoderis (c) Nero AG, www.nero.com\n"
-#~ "Copyright (c) 2005-2006 Audacious team"
-
-#~ msgid "About MP4 AAC decoder plugin"
-#~ msgstr "Apie MP4 AAC dekodavimo įskiepį"
-
-#~ msgid "About Alarm"
-#~ msgstr "Apie „Alarm“"
-
-#~ msgid ""
-#~ "A plugin that can be used to start playing at a certain time.\n"
-#~ "\n"
-#~ "Originally written by Adam Feakin and Daniel Stodden."
-#~ msgstr ""
-#~ "Įskiepis  kuris suteikia galimybę pradėti groti, nuo tam tikros vietos.\n"
-#~ "\n"
-#~ "Originaliai sukūrė Adam Feakin ir Daniel Stodden."
-
-#~ msgid "About ALSA Output Plugin"
-#~ msgstr "Apie ALSA išvesties įskiepį"
-
-#~ msgid "ALSA error"
-#~ msgstr "ALSA klaida"
-
-#~ msgid "Audacious OSD - about"
-#~ msgstr "Audacious OSD - apie"
-
-#~ msgid ""
-#~ "\n"
-#~ "Audacious OSD "
-#~ msgstr ""
-#~ "\n"
-#~ "Audacious OSD "
-
-#~ msgid ""
-#~ "\n"
-#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
-#~ "written by Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "On-Screen-Display is based on Ghosd library\n"
-#~ "written by Evan Martin\n"
-#~ "http://neugierig.org/software/ghosd/\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "http://www.develia.org/projects.php?p=audacious#aosd\n"
-#~ "sukūrė Giacomo Lozito\n"
-#~ "< james@develia.org >\n"
-#~ "\n"
-#~ "On-Screen-Display paremta Ghosd library\n"
-#~ "kurią sukūrė Evan Martin\n"
-#~ "http://neugierig.org/software/ghosd/\n"
-#~ "\n"
-
-#~ msgid "Blur Scope: Color selection"
-#~ msgstr "Išsiliejimo sritis: Pagal spalvas"
-
-#~ msgid "Options:"
-#~ msgstr "Pasirinktys:"
-
-#~ msgid "About the Game Console Music Decoder"
-#~ msgstr "Apie Game Console Music Decoder"
-
-#~ msgid ""
-#~ "Console music decoder engine based on Game_Music_Emu 0.5.2.\n"
-#~ "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
-#~ "Audacious implementation by: William Pitcock <nenolod@dereferenced."
-#~ "org>, \n"
-#~ "        Shay Green <gblargg@gmail.com>\n"
-#~ msgstr ""
-#~ "Console music decoder engine paremtas Game_Music_Emu 0.5.2.\n"
-#~ "Palaikomi formatai: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
-#~ "VGZ\n"
-#~ "Integravo į Audacious : William Pitcock <nenolod@dereferenced.org>, \n"
-#~ "        Shay Green <gblargg@gmail.com>\n"
-
-#~ msgid "Crossfade Preferences"
-#~ msgstr "Crossfade Nustatymai"
-
-#~ msgid "Overlap (in seconds):"
-#~ msgstr "Perdengimas (sekundėmis):"
-
-#~ msgid "Crossfade Error"
-#~ msgstr "Crossfade klaida"
-
-#~ msgid ""
-#~ "Crossfading failed because the songs had a different number of channels."
-#~ msgstr ""
-#~ "Garso perėjimo efektas nepavyko, nes dainos turi skirtingą kanalų skaičių."
-
-#~ msgid ""
-#~ "Echo Plugin\n"
-#~ "By Johan Levin 1999.\n"
-#~ "\n"
-#~ "Surround echo by Carl van Schaik 1999"
-#~ msgstr ""
-#~ "Echo įskiepis\n"
-#~ "Sukūrė Johan Levin 1999.\n"
-#~ "\n"
-#~ "Surround echo sukūrė Carl van Schaik 1999"
-
-#~ msgid ""
-#~ "Multi-format audio decoding plugin for Audacious based on\n"
-#~ "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-#~ "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
-#~ "\n"
-#~ "Audacious plugin by:\n"
-#~ "            William Pitcock <nenolod@nenolod.net>,\n"
-#~ "            Matti Hämäläinen <ccr@tnsp.org>\n"
-#~ "\n"
-#~ "libavcodec %s (%s)\n"
-#~ "libavformat %s (%s)\n"
-#~ "libavutil %s (%s)\n"
-#~ msgstr ""
-#~ "Daugiaformatis audio dekodavimo įskiepis skirtas Audacious paremtas\n"
-#~ "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-#~ "Copyright (c) 2000-2009 Fabrice Bellard, et al.\n"
-#~ "\n"
-#~ "Audacious įskiepį kūrė:\n"
-#~ "            William Pitcock <nenolod@nenolod.net>,\n"
-#~ "            Matti Hämäläinen <ccr@tnsp.org>\n"
-#~ "\n"
-#~ "libavcodec %s (%s)\n"
-#~ "libavformat %s (%s)\n"
-#~ "libavutil %s (%s)\n"
-
-#~ msgid "About FFaudio Plugin"
-#~ msgstr "Apie FFaudio įskiepį"
-
-#~ msgid "About FLAC Audio Plugin"
-#~ msgstr "Apie FLAC Audio įskiepį"
-
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "Original code by\n"
-#~ "Ralf Ertzinger <ralf@skytale.net>\n"
-#~ "\n"
-#~ "http://www.skytale.net/projects/bmp-flac2/"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Originalų kodą parašė\n"
-#~ "Ralf Ertzinger <ralf@skytale.net>\n"
-#~ "\n"
-#~ "http://www.skytale.net/projects/bmp-flac2/"
-
-#~ msgid ""
-#~ "Gnome Shortcut Plugin\n"
-#~ "Let's you control the player with Gnome's shortcuts.\n"
-#~ "\n"
-#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Gnome Shortcut įskiepis\n"
-#~ "Suteikia galimybę valdyti grotuvą su gnome sparčiaisiais klavišais.\n"
-#~ "\n"
-#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Global Hotkey Plugin\n"
-#~ "Control the player with global key combinations or multimedia keys.\n"
-#~ "\n"
-#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-#~ "\n"
-#~ "Contributers include:\n"
-#~ "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-#~ "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-#~ "\t\t\tBryn Davies <curious@ihug.com.au>\n"
-#~ "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
-#~ "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Globalus karštųjų klavišų įskiepis\n"
-#~ "Valdykite grotuvą su globalių klavišų kombinacijomis arba multimedia "
-#~ "klavišais.\n"
-#~ "\n"
-#~ "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-#~ "\n"
-#~ "Kūrėjai:\n"
-#~ "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-#~ "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
-#~ "\t\t\tBryn Davies <curious@ihug.com.au>\n"
-#~ "\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
-#~ "\t\t\tJeremy Tan <nsx@nsx.homeip.net>\n"
-#~ "\n"
-
-#~ msgid "Connect to all available jack ports"
-#~ msgstr "Prisijungti prie visų prieinamų jack prievadų"
-
-#~ msgid "Connect only the output ports"
-#~ msgstr "Prisijungti tik prie išvesties prievadų"
-
-#~ msgid "Connect to no ports"
-#~ msgstr "Nesijungti prie jokių prievadų"
-
-#~ msgid "jack Plugin configuration"
-#~ msgstr "jack įskiepio konfigūracija"
-
-#~ msgid "Connection mode:"
-#~ msgstr "Prisijungimo režimas:"
-
-#~ msgid "Enable debug printing"
-#~ msgstr "Įjungti derinimo pranešimus"
-
-#~ msgid "Ok"
-#~ msgstr "Gerai"
-
-#~ msgid "About Metronom"
-#~ msgstr "Apie Metronom"
-
-#~ msgid ""
-#~ "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
-#~ "\n"
-#~ "To use it, add a URL: tact://beats*num/den\n"
-#~ "e.g. tact://77 to play 77 beats per minute\n"
-#~ "or   tact://60*3/4 to play 60 bpm in 3/4 tacts"
-#~ msgstr ""
-#~ "Takto generatorius, sukūrė Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
-#~ "\n"
-#~ "Norint naudoti, pridėkite URL: tact://beats*num/den\n"
-#~ "pvz. tact://77 groti 77 dūžiai per minutę\n"
-#~ "arba   tact://60*3/4 groti 60 bpm 3/4 taktu"
-
-#~ msgid "Channel Mixer Settings"
-#~ msgstr "Kanalų Mikšerio nustatymai"
-
-#~ msgid "Changes take effect at the next song change."
-#~ msgstr "Pakeitimai įsigalios nuo sekančios dainos."
-
-#~ msgid "Upload in progress..."
-#~ msgstr "Išsiunčiama..."
-
-#~ msgid "Upload to MTP Device"
-#~ msgstr "Išsiųsti į MTP įrenginį"
-
-#~ msgid "Disconnect MTP Device"
-#~ msgstr "Atjungti MTP įrenginį"
-
-#~ msgid "Null output plugin "
-#~ msgstr "Null išvesties įskiepis"
-
-#~ msgid ""
-#~ " by Christian Birchinger <joker@netswarm.net>\n"
-#~ "based on the XMMS plugin by Håvard Kvål <havardk@xmms.org>"
-#~ msgstr ""
-#~ " kūrė Christian Birchinger <joker@netswarm.net>\n"
-#~ "paremta XMMS įskiepiu kurį sukūrė Håvard Kvål <havardk@xmms.org>"
-
-#~ msgid "About Null Output"
-#~ msgstr "Apie Null išvestį"
-
-#~ msgid "Null output preferences"
-#~ msgstr "Null išvesties nustatymai"
-
-#~ msgid "Run in real time"
-#~ msgstr "Vykdyti realiu laiku"
-
-#~ msgid "OSS4 Output Plugin Preferences"
-#~ msgstr "OSS4 išvesties įskiepio nustatymai"
-
-#~ msgid "About OSS4 Plugin"
-#~ msgstr "Apie OSS4 įskiepį"
-
-#~ msgid "OSS4 error"
-#~ msgstr "OSS4 klaida"
-
-#~ msgid "About Audacious PulseAudio Output Plugin"
-#~ msgstr "Apie Audacious PulseAudio išvesties įskiepį"
-
-#~ msgid "About Sample Rate Converter Plugin"
-#~ msgstr "Apie diskretizavimo dažnio keitėjo įskiepį"
-
-#~ msgid "All others:"
-#~ msgstr "Visi kiti:"
-
-#~ msgid ""
-#~ "Audacious AudioScrobbler Plugin\n"
-#~ "\n"
-#~ "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-#~ "com>\n"
-#~ msgstr ""
-#~ "Audacious AudioScrobbler įskiepis\n"
-#~ "\n"
-#~ "Originaliai sukūrė Audun Hove <audun@nlc.no> ir Pipian <pipian@pipian."
-#~ "com>\n"
-
-#~ msgid "About Scrobbler Plugin"
-#~ msgstr "Apie Scrobbler įskiepį"
-
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "Apie SDL išvesties įskiepį"
-
-#~ msgid "SDL error"
-#~ msgstr "SDL klaida"
-
-#~ msgid "About Skinned GUI"
-#~ msgstr "Apie Skinned GUI"
-
-#~ msgid ""
-#~ "Copyright (c) 2008, by Tomasz Moń <desowin@gmail.com>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Copyright (c) 2008, sukūrė Tomasz Moń <desowin@gmail.com>\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Status Icon Plugin\n"
-#~ "\n"
-#~ "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-#~ "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-#~ "\n"
-#~ "This plugin provides a status icon, placed in\n"
-#~ "the system tray area of the window manager.\n"
-#~ msgstr ""
-#~ "Status Icon įskiepis\n"
-#~ "\n"
-#~ "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
-#~ "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
-#~ "\n"
-#~ "Šis įskiepis sistemos dėkle sukuria piktogramą.\n"
-
-#~ msgid "Status Icon Plugin - Preferences"
-#~ msgstr "Status icon įskiepis - Nustatymai"
-
-#~ msgid "Right-Click Menu"
-#~ msgstr "Dešinio pelės klavišo meniu"
-
-#~ msgid "Small playback menu #1"
-#~ msgstr "Mažas atkūrimo meniu #1"
-
-#~ msgid "Small playback menu #2"
-#~ msgstr "Mažas atkūrimo meniu #2"
-
-#~ msgid ""
-#~ "Extra Stereo Plugin\n"
-#~ "\n"
-#~ "By Johan Levin 1999."
-#~ msgstr ""
-#~ "Extra Stereo Plugin\n"
-#~ "\n"
-#~ "Kūrė Johan Levin 1999."
-
-#~ msgid "About Extra Stereo Plugin"
-#~ msgstr "Apie Extra Stereo įskiepį"
-
-#~ msgid "About Tone Generator"
-#~ msgstr "Apie Tonų Generatorių"
-
-#~ msgid ""
-#~ "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
-#~ "\n"
-#~ "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-#~ "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
-#~ msgstr ""
-#~ "Sinus tono generatorius, sukūrė Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Patobulino Daniel J. Peng <danielpeng@bigfoot.com>\n"
-#~ "\n"
-#~ "Norint naudot pridėk URL: tone://frequency1;frequency2;frequency3;...\n"
-#~ "pvz. tone://2000;2005 norint grot 2000Hz toną ir 2005Hz toną"
-
-#~ msgid "About Ogg Vorbis Audio Plugin"
-#~ msgstr "Apie Ogg Vorbis Audio įskiepį"
-
-#~ msgid ""
-#~ "Ogg Vorbis Plugin by the Xiph.org Foundation\n"
-#~ "\n"
-#~ "Original code by\n"
-#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-#~ "Contributions from\n"
-#~ "Chris Montgomery <monty@xiph.org>\n"
-#~ "Peter Alm <peter@xmms.org>\n"
-#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
-#~ "Jack Moffitt <jack@icecast.org>\n"
-#~ "Jorn Baayen <jorn@nl.linux.org>\n"
-#~ "Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-#~ "Eugene Zagidullin <e.asphyx@gmail.com>\n"
-#~ "\n"
-#~ "Visit the Xiph.org Foundation at http://www.xiph.org/\n"
-#~ msgstr ""
-#~ "Ogg Vorbis sukūrė Xiph.org Foundation\n"
-#~ "\n"
-#~ "Orginalų kodą rašė\n"
-#~ "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-#~ "Contributions from\n"
-#~ "Chris Montgomery <monty@xiph.org>\n"
-#~ "Peter Alm <peter@xmms.org>\n"
-#~ "Michael Smith <msmith@labyrinth.edu.au>\n"
-#~ "Jack Moffitt <jack@icecast.org>\n"
-#~ "Jorn Baayen <jorn@nl.linux.org>\n"
-#~ "Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-#~ "Eugene Zagidullin <e.asphyx@gmail.com>\n"
-#~ "\n"
-#~ "Aplankykite Xiph.org Foundation http://www.xiph.org/\n"
-
-#~ msgid "About Vortex Player"
-#~ msgstr "Apie Vortex Player"
-
-#~ msgid ""
-#~ "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
-#~ "\n"
-#~ "Some of the plugin code was by Miles Egan\n"
-#~ "Visit the Wavpack site at http://www.wavpack.com/\n"
-#~ msgstr ""
-#~ "Copyright (c) 2006 William Pitcock <nenolod -at- nenolod.net>\n"
-#~ "\n"
-#~ "Dalį įskiepio sukūrė Miles Egan\n"
-#~ "Aplankykite Wavpack puslapį http://www.wavpack.com/\n"
