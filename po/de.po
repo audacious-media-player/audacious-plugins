@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Audacious 3.3\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-06-15 21:12-0400\n"
-"PO-Revision-Date: 2012-06-12 14:27+0200\n"
+"PO-Revision-Date: 2012-06-16 16:31+0200\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -14,11 +14,11 @@ msgstr ""
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr "AAC Decoder"
+msgstr "AAC Dekodierer"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib Player)"
+msgstr "AdPlug (AdLib-Spieler)"
 
 #: src/alarm/alarm.c:833 src/alarm/interface.c:32
 msgid "Alarm"
@@ -291,7 +291,7 @@ msgstr "Danke"
 
 #: src/albumart/albumart.c:101
 msgid "Album Art"
-msgstr "Album Art"
+msgstr "Album Cover"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -327,7 +327,7 @@ msgstr "ALSA Ausgabe"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (MIDI Player)"
+msgstr "AMIDI-Plug (MIDI-Spieler)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -865,11 +865,11 @@ msgstr "Verschiedenes"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "ASXv1/ASXv2 Playlists"
+msgstr "ASXv1/ASXv2 Wiedergabelisten"
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious Playlists (audpl)"
+msgstr "Audacious Wiedergabelisten (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
@@ -901,7 +901,7 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
-msgstr "Spectrum Analyzer"
+msgstr "Spektrumanalysator"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
@@ -969,7 +969,7 @@ msgstr "CD hinzufügen"
 
 #: src/cd-menu-items/cd-menu-items.c:61
 msgid "Audio CD Menu Items"
-msgstr "Audio CD Menu Items"
+msgstr "Audio CD Menu-Einträge"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -989,7 +989,7 @@ msgstr "Dynamic Range Compressor"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
-msgstr "Game Console Music Decoder"
+msgstr "Spielekonsolen-Musik Dekodierer"
 
 #: src/console/configure.c:152
 msgid "General"
@@ -1063,7 +1063,7 @@ msgid ""
 "channels."
 msgstr ""
 "Crossfading fehlgeschlagen, weil die Lieder eine andere Anzahl an Kanälen "
-"hatten.  Sie können den Channel Mixer benutzen, um die Lieder auf die selbe "
+"hatten. Sie können den Channel Mixer benutzen, um die Lieder auf die selbe "
 "Anzahl an Kanälen zu konvertieren."
 
 #: src/crossfade/crossfade.c:90
@@ -1071,9 +1071,9 @@ msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Crossfading fehlgeschlagen, weil die Lieder unterschiedliche Sample-Rates "
-"hatten.  Sie können den Sample-Rate-Converter benutzen, um die Lieder auf "
-"die selbe Bitrate zu resamplen."
+"Crossfading fehlgeschlagen, weil die Lieder unterschiedliche Abtastraten "
+"hatten. Sie können den Abtastraten-Konverter benutzen, um die Lieder auf "
+"die selbe Abtastrate zu resamplen."
 
 #: src/crossfade/crossfade.c:271
 msgid "<b>Crossfade</b>"
@@ -1333,7 +1333,7 @@ msgstr "Qualitätsstufe (0 - 10):"
 
 #: src/flacng/plugin.c:368
 msgid "FLAC Decoder"
-msgstr "FLAC Decoder"
+msgstr "FLAC Dekodierer"
 
 #: src/gio/gio.c:335
 msgid "GIO Plugin"
@@ -1341,7 +1341,7 @@ msgstr "GIO Plugin"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
-msgstr "Gnome Shortcuts"
+msgstr "Gnome Tastenkürzel"
 
 #: src/gtkui/columns.c:35
 msgid "Entry number"
@@ -1805,7 +1805,7 @@ msgstr "Maustastenkombinationen"
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Global-Hotkey-Konfiguration"
+msgstr "Globale Tastenkürzel - Konfiguration"
 
 #: src/hotkey/gui.c:401
 msgid ""
@@ -1817,7 +1817,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:406
 msgid "Hotkeys:"
-msgstr "Tastaturkürzel:"
+msgstr "Tastenkürzel:"
 
 #: src/hotkey/gui.c:425
 msgid "<b>Action:</b>"
@@ -1829,7 +1829,7 @@ msgstr "<b>Taste festlegen:</b>"
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
-msgstr "Global Hotkeys"
+msgstr "Globale Tastenkürzel"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
@@ -1961,7 +1961,7 @@ msgstr "LyricWiki Plugin"
 
 #: src/m3u/m3u.c:123
 msgid "M3U Playlists"
-msgstr "M3U Playlists"
+msgstr "M3U Wiedergabelisten"
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -1975,7 +1975,7 @@ msgstr "Takt-Generator: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
-msgstr "Tact Generator"
+msgstr "Takt-Generator"
 
 #: src/mixer/mixer.c:186
 msgid "<b>Channel Mixer</b>"
@@ -1995,7 +1995,7 @@ msgstr "MMS Plugin"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (Module Player)"
+msgstr "ModPlug (Modul-Spieler)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -2023,7 +2023,7 @@ msgstr "Audacious spielt gerade nichts ab."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr "Desktop Notifications"
+msgstr "Desktop-Benachrichtigungen"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
@@ -2055,11 +2055,11 @@ msgstr "OSS4 Ausgabe"
 
 #: src/pls/pls.c:114
 msgid "PLS Playlists"
-msgstr "PLS Playlists"
+msgstr "PLS Wiedergabelisten"
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 Decoder"
+msgstr "OpenPSF PSF1/PSF2 Dekodierer"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
@@ -2095,7 +2095,7 @@ msgstr "Methode:"
 
 #: src/resample/resample.c:189
 msgid "Rate:"
-msgstr "Rate:"
+msgstr "Abtastrate:"
 
 #: src/resample/resample.c:192
 msgid "<b>Rate Mappings</b>"
@@ -2135,7 +2135,7 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:223
 msgid "Sample Rate Converter"
-msgstr "Sample Rate Konverter"
+msgstr "Abtastraten-Konverter"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
 msgid "Change password"
@@ -2257,7 +2257,7 @@ msgstr "Ordner auswählen"
 
 #: src/search-tool/search-tool.c:803
 msgid "Search Tool"
-msgstr "Search Tool"
+msgstr "Suchwerkzeug"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -2964,7 +2964,7 @@ msgstr "In/Aus Warteschlange"
 
 #: src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr "Eintrag in der Wiedergabewarteschleife aktivieren/deaktivieren."
+msgstr "Eintrag in der Warteschlange aktivieren/deaktivieren."
 
 #: src/skins/ui_manager.c:425
 msgid "Copy"
@@ -3074,7 +3074,7 @@ msgstr "Lösche Voreinstellungen"
 
 #: src/skins/ui_playlist.c:246
 msgid "Search entries in active playlist"
-msgstr "Suche Einträge in aktiver Playliste"
+msgstr "Suche Einträge in aktiver Wiedergabeliste"
 
 #: src/skins/ui_playlist.c:254
 msgid ""
@@ -3145,11 +3145,11 @@ msgstr "Sndfile Plugin"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
-msgstr "Songwechsel"
+msgstr "Titelwechsel"
 
 #: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
-msgstr "Auszuführender Befehl, wenn Audacious ein neues Lied startet."
+msgstr "Auszuführender Befehl, wenn Audacious einen neuen Titel startet."
 
 #: src/song_change/song_change.c:440 src/song_change/song_change.c:446
 #: src/song_change/song_change.c:452 src/song_change/song_change.c:458
@@ -3158,7 +3158,7 @@ msgstr "Befehl:"
 
 #: src/song_change/song_change.c:444
 msgid "Command to run toward the end of a song."
-msgstr "Auszuführender Befehl am Ende eines Lieds."
+msgstr "Auszuführender Befehl am Ende eines Titels."
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
@@ -3220,21 +3220,19 @@ msgstr "Befehle"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Geschwindigkeit und Tonhöhe</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
-#, fuzzy
 msgid "Speed:"
-msgstr "Geschwindigkeit"
+msgstr "Geschwindigkeit:"
 
 #: src/speed-pitch/speed-pitch.c:231
-#, fuzzy
 msgid "Pitch:"
-msgstr "Tonhöhe"
+msgstr "Tonhöhe:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Geschwindigkeit und Tonhöhe"
 
 #: src/statusicon/statusicon.c:386
 msgid "<b>Mouse Scroll Action</b>"
@@ -3283,54 +3281,36 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:86
 msgid "Tone Generator: "
-msgstr "Tone Generator: "
+msgstr "Ton-Generator: "
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
-msgstr "Tone Generator"
+msgstr "Ton-Generator"
 
 #: src/unix-io/unix-io.c:290
 msgid "File I/O Plugin"
-msgstr "File I/O Plugin"
+msgstr "Datei E/A Plugin"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr "Voice Removal"
+msgstr "Stimmenaufhebung"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis Decoder"
+msgstr "Ogg Vorbis Dekodierer"
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr "VTX Decoder"
+msgstr "VTX Dekodierer"
 
 #: src/wavpack/wavpack.c:345
 msgid "WavPack Decoder"
-msgstr "WavPack Decoder"
+msgstr "WavPack Dekodierer"
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr "2SF Decoder"
+msgstr "2SF Dekodierer"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "XML Shareable Playlists (XSPF)"
-
-#~ msgid "SndStretch"
-#~ msgstr "SndStretch"
-
-#~ msgid "About SndStretch"
-#~ msgstr "Über SndStretch"
-
-#~ msgid "Volume correction"
-#~ msgstr "Lautstärkekorrektur"
-
-#~ msgid "Short overlap"
-#~ msgstr "Kurzes Überlappen"
-
-#~ msgid "Scale"
-#~ msgstr "Skalierung"
-
-#~ msgid "SndStretch - Configuration"
-#~ msgstr "SndStretch - Konfiguration"
+msgstr "XML Wiedergabelisten (XSPF)"
