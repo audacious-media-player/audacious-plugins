@@ -170,7 +170,7 @@ GtkWidget * eq_slider_new (const gchar * name)
     GtkWidget * slider = gtk_drawing_area_new ();
     gtk_widget_set_size_request (slider, 14, 63);
     gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
-     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
+     GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
     DRAW_CONNECT (slider, eq_slider_draw);
 
