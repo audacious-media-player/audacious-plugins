@@ -65,6 +65,8 @@ struct MenuItem {
     gboolean sep;
 };
 
+int menu_tab_playlist_id = -1; /* should really be stored in the menu somehow */
+
 static void open_files (void) {audgui_run_filebrowser (TRUE); }
 static void open_url (void) {audgui_show_add_url_window (TRUE); }
 static void add_files (void) {audgui_run_filebrowser (FALSE); }
@@ -89,6 +91,13 @@ static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get
 static void pl_reverse (void) {aud_playlist_reverse (aud_playlist_get_active ()); }
 static void pl_random (void) {aud_playlist_randomize (aud_playlist_get_active ()); }
 
+static void pl_play (void)
+{
+    aud_playlist_set_playing (aud_playlist_get_active ());
+    if (! aud_drct_get_playing ())
+        aud_drct_play ();
+}
+
 static void pl_new (void)
 {
     aud_playlist_insert (-1);
@@ -97,10 +106,35 @@ static void pl_new (void)
 
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
+static void pl_rename (void) {ui_playlist_notebook_edit_tab_title (aud_playlist_get_active ()); }
 static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
 static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }
 static void pl_select_all (void) {aud_playlist_select_all (aud_playlist_get_active (), TRUE); }
-static void pl_rename (void) {ui_playlist_notebook_edit_tab_title (NULL); }
+
+static void pl_tab_play (void)
+{
+    int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
+    if (playlist >= 0)
+    {
+        aud_playlist_set_playing (playlist);
+        if (! aud_drct_get_playing ())
+            aud_drct_play ();
+    }
+}
+
+static void pl_tab_rename (void)
+{
+    int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
+    if (playlist >= 0)
+        ui_playlist_notebook_edit_tab_title (playlist);
+}
+
+static void pl_tab_close (void)
+{
+    int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
+    if (playlist >= 0)
+        audgui_confirm_playlist_delete (playlist);
+}
 
 static GtkWidget * get_services_main (void) {return aud_get_plugin_menu (AUD_MENU_MAIN); }
 static GtkWidget * get_services_pl (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST_RCLICK); }
@@ -168,18 +202,20 @@ static const struct MenuItem sort_items[] = {
  {N_("_Random Order"), .func = pl_random}};
 
 static const struct MenuItem playlist_items[] = {
+ {N_("_Play This Playlist"), GTK_STOCK_MEDIA_PLAY, GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
  {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F5, .func = pl_refresh},
  {N_("Remove _Unavailable Files"), GTK_STOCK_REMOVE, .func = pl_remove_failed},
  {.sep = TRUE},
  {N_("_Sort"), GTK_STOCK_SORT_ASCENDING, .items = sort_items, G_N_ELEMENTS (sort_items)},
  {.sep = TRUE},
  {N_("_New"), GTK_STOCK_NEW, 't', CTRL, .func = pl_new},
+ {N_("Ren_ame ..."), GTK_STOCK_EDIT, GDK_KEY_F2, .func = pl_rename},
  {N_("_Close"), GTK_STOCK_CLOSE, 'w', CTRL, .func = pl_close},
  {.sep = TRUE},
  {N_("_Import ..."), GTK_STOCK_OPEN, .func = audgui_import_playlist},
  {N_("_Export ..."), GTK_STOCK_SAVE, .func = audgui_export_playlist},
  {.sep = TRUE},
- {N_("_Playlist Manager ..."), AUD_STOCK_PLAYLIST, 'p', CTRL, .func = audgui_playlist_manager},
+ {N_("Playlist _Manager ..."), AUD_STOCK_PLAYLIST, 'p', CTRL, .func = audgui_playlist_manager},
  {N_("_Queue Manager ..."), AUD_STOCK_QUEUETOGGLE, 'u', CTRL, .func = audgui_queue_manager_show}};
 
 static const struct MenuItem output_items[] = {
@@ -224,8 +260,9 @@ static const struct MenuItem rclick_items[] = {
  {N_("_Services"), .get_sub = get_services_pl}};
 
 static const struct MenuItem tab_items[] = {
- {N_("_Rename"), GTK_STOCK_EDIT, GDK_KEY_F2, .func = pl_rename},
- {N_("_Close"), GTK_STOCK_CLOSE, .func = pl_close}};
+ {N_("_Play"), GTK_STOCK_MEDIA_PLAY, .func = pl_tab_play},
+ {N_("_Rename ..."), GTK_STOCK_EDIT, .func = pl_tab_rename},
+ {N_("_Close"), GTK_STOCK_CLOSE, .func = pl_tab_close}};
 
 static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
 {

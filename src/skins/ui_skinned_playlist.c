@@ -570,8 +570,8 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
             break;
           case GDK_KEY_Return:
             select_single (data, TRUE, 0);
-            aud_playlist_set_playing (active_playlist);
             aud_playlist_set_position (active_playlist, data->focused);
+            aud_playlist_set_playing (active_playlist);
             aud_drct_play ();
             break;
           case GDK_KEY_Escape:

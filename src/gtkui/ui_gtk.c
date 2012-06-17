@@ -1000,8 +1000,9 @@ void popup_menu_rclick (guint button, guint32 time)
      time);
 }
 
-void popup_menu_tab (guint button, guint32 time)
+void popup_menu_tab (guint button, guint32 time, int playlist)
 {
+    menu_tab_playlist_id = aud_playlist_get_unique_id (playlist);
     gtk_menu_popup ((GtkMenu *) menu_tab, NULL, NULL, NULL, NULL, button, time);
 }
 

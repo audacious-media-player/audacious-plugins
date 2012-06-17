@@ -29,6 +29,7 @@ GtkWidget * make_menu_bar (GtkAccelGroup * accel);
 GtkWidget * make_menu_main (GtkAccelGroup * accel);
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel);
 GtkWidget * make_menu_tab (GtkAccelGroup * accel);
+extern int menu_tab_playlist_id;
 
 /* ui_gtk.c */
 void show_menu (gboolean show);
@@ -36,7 +37,7 @@ void show_infoarea (gboolean show);
 void show_infoarea_vis (gboolean show);
 void show_statusbar (gboolean show);
 void popup_menu_rclick (guint button, guint32 time);
-void popup_menu_tab (guint button, guint32 time);
+void popup_menu_tab (guint button, guint32 time, int playlist);
 void activate_search_tool (void);
 
 #endif
