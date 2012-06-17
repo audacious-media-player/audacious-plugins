@@ -91,19 +91,13 @@ static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get
 static void pl_reverse (void) {aud_playlist_reverse (aud_playlist_get_active ()); }
 static void pl_random (void) {aud_playlist_randomize (aud_playlist_get_active ()); }
 
-static void pl_play (void)
-{
-    aud_playlist_set_playing (aud_playlist_get_active ());
-    if (! aud_drct_get_playing ())
-        aud_drct_play ();
-}
-
 static void pl_new (void)
 {
     aud_playlist_insert (-1);
     aud_playlist_set_active (aud_playlist_count () - 1);
 }
 
+static void pl_play (void) {aud_drct_play_playlist (aud_playlist_get_active ()); }
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
 static void pl_rename (void) {ui_playlist_notebook_edit_tab_title (aud_playlist_get_active ()); }
@@ -115,11 +109,7 @@ static void pl_tab_play (void)
 {
     int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
     if (playlist >= 0)
-    {
-        aud_playlist_set_playing (playlist);
-        if (! aud_drct_get_playing ())
-            aud_drct_play ();
-    }
+        aud_drct_play_playlist (playlist);
 }
 
 static void pl_tab_rename (void)

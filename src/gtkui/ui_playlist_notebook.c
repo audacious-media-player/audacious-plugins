@@ -142,11 +142,7 @@ static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, gpoi
     int playlist = aud_playlist_by_unique_id (id);
 
     if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
-    {
-        aud_playlist_set_playing (playlist);
-        if (! aud_drct_get_playing ())
-            aud_drct_play ();
-    }
+        aud_drct_play_playlist (playlist);
 
     if (event->type == GDK_BUTTON_PRESS && event->button == 2)
         audgui_confirm_playlist_delete (playlist);
