@@ -40,7 +40,6 @@
 bool_t	sndio_init(void);
 void	sndio_cleanup(void);
 void	sndio_about(void);
-int	sndio_take_message(const char *, const void *, int);
 void	sndio_configure(void);
 void	sndio_get_volume(int *, int *);
 void	sndio_set_volume(int, int);
@@ -52,9 +51,7 @@ void	sndio_write(void *, int);
 void	sndio_pause(bool_t);
 void	sndio_flush(int);
 int	sndio_output_time(void);
-int	sndio_written_time(void);
 void	sndio_drain(void);
-void	sndio_set_written_time(int);
 
 void	onmove_cb(void *, int);
 void	onvol_cb(void *, unsigned);
@@ -92,8 +89,6 @@ AUD_OUTPUT_PLUGIN
 	.flush = sndio_flush,
 	.pause = sndio_pause,
 	.output_time = sndio_output_time,
-	.written_time = sndio_written_time,
-	.set_written_time = sndio_set_written_time,
 	.drain = sndio_drain
 )
 
@@ -342,7 +337,7 @@ sndio_flush(int time)
 
 void
 sndio_pause(bool_t flag)
-{	
+{
 	pthread_mutex_lock(&mtx);
 	paused = flag;
 	pause_pending = 1;
@@ -364,30 +359,6 @@ sndio_output_time(void)
 	time = rdpos * 1000 / bytes_per_sec;
 	pthread_mutex_unlock(&mtx);
 	return time;
-}
-
-int
-sndio_written_time(void)
-{
-	int time;
-
-	pthread_mutex_lock(&mtx);
-	time = wrpos * 1000 / bytes_per_sec;
-	pthread_mutex_unlock(&mtx);
-	return time;
-}
-
-void
-sndio_set_written_time(int time)
-{
-	int used;
-
-	pthread_mutex_lock(&mtx);
-	wrpos = time * bytes_per_sec / 1000;
-	used = wrpos - rdpos;
-	rdpos = time * bytes_per_sec / 1000;
-	wrpos = rdpos + used;
-	pthread_mutex_unlock(&mtx);
 }
 
 void
