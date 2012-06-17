@@ -621,6 +621,26 @@ if test $enable_sdlout = yes ; then
 	OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"
 fi
 
+dnl *** sndio output
+
+AC_ARG_ENABLE(sndio,
+    [  --disable-sndio         disable sndio output plugin (default=enabled) ],
+    [have_sndio=$enableval],
+    [have_sndio=yes]
+)
+
+if test "x$have_sndio" = "xyes"; then
+    AC_CHECK_HEADER(sndio.h,, have_sndio=no)
+    if test x$have_sndio = xyes; then
+        AC_CHECK_LIB(sndio, sio_open, haves_sndio=yes, have_sndio=no)
+    fi
+fi
+
+if test "x$have_sndio" = "xyes"; then
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS sndio"
+    SNDIO_LIBS="-lsndio"
+    AC_SUBST(SNDIO_LIBS)
+fi
 
 dnl *** amidi-plug (note: to avoid checking twice ALSA, this should appear somewhere after the alsa output plugin check)
 
@@ -1052,6 +1072,7 @@ echo "  Output Plugins"
 echo "  --------------"
 echo "  Open Sound System (oss4):               $enable_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
+echo "  Sndio (sndio):                          $have_sndio"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  Jack Audio Connection Kit (jack):       $enable_jack"
 echo "  Simple DirectMedia Layer (sdlout):      $enable_sdlout"
