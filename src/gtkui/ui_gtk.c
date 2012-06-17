@@ -475,15 +475,18 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
       case 0:;
+        GtkWidget * focused = gtk_window_get_focus ((GtkWindow *) window);
+
         /* escape key returns focus to playlist */
         if (event->keyval == GDK_KEY_Escape)
         {
-            gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
+            if (! focused || ! gtk_widget_is_ancestor (focused, (GtkWidget *) UI_PLAYLIST_NOTEBOOK))
+                gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
+
             return FALSE;
         }
 
         /* single-key shortcuts; must not interfere with text entry */
-        GtkWidget * focused = gtk_window_get_focus ((GtkWindow *) window);
         if (focused && GTK_IS_ENTRY (focused))
             return FALSE;
 
