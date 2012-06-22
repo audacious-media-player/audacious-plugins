@@ -13,6 +13,7 @@
 #include <audacious/drct.h>
 #include <audacious/debug.h>
 #include <audacious/misc.h>
+#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 
 #define SCROBBLER_CLI_ID "aud"
@@ -48,6 +49,7 @@ static char     *sc_submit_url, /* queue */
         sc_curl_errbuf[CURL_ERROR_SIZE],
         *sc_major_error;
 
+static int sc_submit_np(Tuple *tuple, int len);
 static void dump_queue();
 
 /**** Queue stuff ****/
@@ -63,6 +65,7 @@ typedef struct {
     int utctime, track, len;
     int timeplayed;
     int numtries;
+    bool_t is_http_source;
     void *next;
 } item_t;
 
@@ -137,7 +140,7 @@ static item_t *q_additem(item_t *newitem)
     return newitem;
 }
 
-static item_t *create_item(Tuple *tuple, int len)
+static item_t *create_item(Tuple *tuple, int len, bool_t is_http_source)
 {
     item_t *item;
     gchar *album, *artist, *title;
@@ -172,6 +175,8 @@ static item_t *create_item(Tuple *tuple, int len)
     else
         item->album = fmt_escape("");
 
+    item->is_http_source = is_http_source;
+
     item->next = NULL;
 
     return item;
@@ -181,7 +186,7 @@ static item_t *q_put(Tuple *tuple, int t, int len)
 {
     item_t *item;
 
-    if ((item = create_item (tuple, len)) == NULL)
+    if (!(item = create_item(tuple, len, FALSE)))
         return NULL;
 
     item->timeplayed = len;
@@ -190,12 +195,12 @@ static item_t *q_put(Tuple *tuple, int t, int len)
     return q_additem(item);
 }
 
-static item_t *set_np(Tuple *tuple, int len)
+static item_t *set_np(Tuple *tuple, int len, bool_t is_http_source)
 {
     if (np_item != NULL)
         q_item_free (np_item);
 
-    if ((np_item = create_item (tuple, len)) != NULL)
+    if ((np_item = create_item(tuple, len, is_http_source)))
         AUDDBG ("Tracking now-playing track: %s - %s\n", np_item->artist,
          np_item->title);
 
@@ -266,11 +271,73 @@ static void q_free(void)
 /* isn't there better way for that? --desowin */
 gboolean sc_timeout(gpointer data)
 {
-    if (np_item)
-    {
-        if (aud_drct_get_playing() && !aud_drct_get_paused())
-            np_item->timeplayed+=1;
+    if (!np_item)
+        return TRUE;
 
+    if (aud_drct_get_playing() && !aud_drct_get_paused())
+        np_item->timeplayed++;
+
+    if (np_item->is_http_source)
+    {
+        /* This might be a stream, so check if the track info has changed. */
+        int playlist = aud_playlist_get_playing();
+        int pos = aud_playlist_get_position(playlist);
+        Tuple *tuple = aud_playlist_entry_get_tuple(playlist, pos, FALSE);
+
+        if (!tuple)
+            return TRUE;
+
+        int len = tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000;
+
+        /* Make up a length when we submit streaming to now playing.
+         * We will change it before we actually scrobble the track. */
+        if (len < 1)
+            len = 240;
+
+        item_t *current_item = create_item(tuple, len, TRUE);
+
+        if (!current_item)
+        {
+            tuple_unref(tuple);
+            return TRUE;
+        }
+
+        if (strcmp(np_item->artist, current_item->artist)
+         || strcmp(np_item->title, current_item->title)
+         || strcmp (np_item->album, current_item->album)
+         || np_item->track != current_item->track)
+        {
+            /* Now set the real length of the track. */
+            np_item->len = np_item->timeplayed;
+
+            AUDDBG("Submitting\n");
+
+            q_additem(np_item);
+            np_item = current_item;
+            dump_queue();
+
+            /* Make sure the queue is submitted. */
+            sc_idle((GMutex*)data);
+
+            sc_submit_np(tuple, len);
+        }
+        else
+        {
+            q_item_free(current_item);
+
+            if (np_item->timeplayed > np_item->len)
+            {
+                /* Submit the track again to make sure it stays on now playing.
+                 * This doubles the total length we have submitted. */
+                sc_submit_np(tuple, np_item->len);
+                np_item->len *= 2;
+            }
+        }
+
+        tuple_unref(tuple);
+    }
+    else
+    {
         /*
          * Check our now-playing track to see if it should go into the queue
          */
@@ -286,6 +353,21 @@ gboolean sc_timeout(gpointer data)
     }
 
     return TRUE;
+}
+
+void sc_playback_end(void)
+{
+    if (np_item && np_item->is_http_source)
+    {
+        /* Now set the real length of the track. */
+        np_item->len = np_item->timeplayed;
+
+        AUDDBG("Submitting\n");
+
+        q_additem(np_item);
+        np_item = NULL;
+        dump_queue();
+    }
 }
 
 /* Error functions */
@@ -778,7 +860,7 @@ static int sc_generateentry(GString *submission)
     return i;
 }
 
-static int sc_submit_np(Tuple *tuple)
+static int sc_submit_np(Tuple *tuple, int len)
 {
     CURL *curl;
     /* struct HttpPost *post = NULL , *last = NULL; */
@@ -810,7 +892,7 @@ static int sc_submit_np(Tuple *tuple)
         field_artist,
         field_title,
         field_album,
-        tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000,
+        len,
         tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
         curl_free(field_artist);
         curl_free(field_title);
@@ -1126,12 +1208,12 @@ void sc_init(char *uname, char *pwd, char *url)
     AUDDBG("scrobbler starting up\n");
 }
 
-void sc_addentry(GMutex *mutex, Tuple *tuple, int len)
+void sc_addentry(GMutex *mutex, Tuple *tuple, int len, bool_t is_http_source)
 {
     g_mutex_lock(mutex);
 
-    sc_submit_np(tuple);
-    set_np(tuple, len);
+    sc_submit_np(tuple, len);
+    set_np(tuple, len, is_http_source);
 
     /*
      * This will help make sure the queue will be saved on a nasty

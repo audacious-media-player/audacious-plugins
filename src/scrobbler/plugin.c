@@ -40,8 +40,6 @@ static GMutex *m_scrobbler;
 
 guint track_timeout = 0;
 
-Tuple *submit_tuple = NULL;
-
 static gboolean ishttp(const char *a)
 {
     g_return_val_if_fail(a != NULL, FALSE);
@@ -53,49 +51,46 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
     gint playlist = aud_playlist_get_playing();
     gint pos = aud_playlist_get_position(playlist);
 
-    if (aud_playlist_entry_get_length (playlist, pos, FALSE) < 30)
-    {
-        AUDDBG(" *** not submitting due to entry->length < 30");
-        return;
-    }
+    char *filename = aud_playlist_entry_get_filename(playlist, pos);
+    bool_t is_http_source = ishttp(filename);
+    str_unref(filename);
 
-    gchar * filename = aud_playlist_entry_get_filename (playlist, pos);
-    if (ishttp (filename))
+    Tuple *tuple = aud_playlist_entry_get_tuple(playlist, pos, FALSE);
+    if (!tuple)
+        return;
+
+    int len = tuple_get_int(tuple, FIELD_LENGTH, NULL) / 1000;
+
+    /* Make up a length when we submit streaming to now playing.
+     * We will change it before we actually scrobble the track. */
+    if (len < 1 && is_http_source)
+        len = 240;
+
+    if (len < 30)
     {
-        AUDDBG(" *** not submitting due to HTTP source");
-        str_unref (filename);
+        AUDDBG("Length less than 30 seconds; not submitting\n");
+        tuple_unref(tuple);
         return;
     }
-    str_unref (filename);
 
     sc_idle(m_scrobbler);
 
-    if (submit_tuple)
-        tuple_unref (submit_tuple);
-    submit_tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
-    if (! submit_tuple)
-        return;
-
-    sc_addentry(m_scrobbler, submit_tuple, tuple_get_int(submit_tuple, FIELD_LENGTH, NULL) / 1000);
+    sc_addentry(m_scrobbler, tuple, len, is_http_source);
+    tuple_unref(tuple);
 
     if (!track_timeout)
-        track_timeout = g_timeout_add_seconds(1, sc_timeout, NULL);
+        track_timeout = g_timeout_add_seconds(1, sc_timeout, (gpointer)m_scrobbler);
 }
 
 static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 {
+    sc_playback_end();
     sc_idle(m_scrobbler);
 
     if (track_timeout)
     {
         g_source_remove(track_timeout);
         track_timeout = 0;
-    }
-
-    if (submit_tuple != NULL)
-    {
-        tuple_unref (submit_tuple);
-        submit_tuple = NULL;
     }
 }
 
