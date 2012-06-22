@@ -44,7 +44,7 @@ static gint highlighted = -1;
 static gint switch_handler = 0;
 static gint reorder_handler = 0;
 
-static gboolean save_title = TRUE;
+static gboolean edit_aborted = FALSE;
 
 static void add_button_cb (GtkButton * button, void * unused)
 {
@@ -116,7 +116,6 @@ static void tab_title_reset(GtkWidget *ebox)
 {
     GtkWidget *label = g_object_get_data(G_OBJECT(ebox), "label");
     GtkWidget *entry = g_object_get_data(G_OBJECT(ebox), "entry");
-    save_title = FALSE;
     gtk_widget_hide(entry);
     gtk_widget_show(label);
 }
@@ -131,29 +130,21 @@ static void tab_title_save(GtkEntry *entry, gpointer ebox)
     gtk_widget_show(label);
 }
 
-static gboolean tab_title_focus_in_cb(GtkWidget *widget, GdkEventKey *event, gpointer ebox)
+static gboolean tab_focus_out_cb(GtkWidget *widget, GdkEventKey *event, gpointer ebox)
 {
-    save_title = TRUE;
-    return FALSE;
-}
-
-static gboolean tab_title_focus_out_cb(GtkWidget *widget, GdkEventKey *event, gpointer ebox)
-{
-    if (save_title)
+    if (!edit_aborted)
         tab_title_save(GTK_ENTRY(widget), ebox);
 
     return FALSE;
 }
 
-static void tab_title_popup_cb(GtkEntry *entry, GtkMenu  *menu, gpointer user_data)
-{
-    save_title = FALSE;
-}
-
 static gboolean tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
     if (event->keyval == GDK_KEY_Escape)
+    {
+        edit_aborted = TRUE;
         tab_title_reset(widget);
+    }
 
     return FALSE;
 }
@@ -229,6 +220,8 @@ void ui_playlist_notebook_edit_tab_title (int playlist)
     gtk_widget_grab_focus(entry);
     gtk_editable_select_region(GTK_EDITABLE(entry), 0, -1);
     gtk_widget_show(entry);
+
+    edit_aborted = FALSE;
 }
 
 void ui_playlist_notebook_create_tab(gint playlist)
@@ -287,9 +280,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), NULL);
     g_signal_connect(ebox, "key-press-event", G_CALLBACK(tab_key_press_cb), NULL);
     g_signal_connect(entry, "activate", G_CALLBACK(tab_title_save), ebox);
-    g_signal_connect(entry, "focus-in-event", G_CALLBACK(tab_title_focus_in_cb), ebox);
-    g_signal_connect(entry, "focus-out-event", G_CALLBACK(tab_title_focus_out_cb), ebox);
-    g_signal_connect(entry, "populate-popup", G_CALLBACK(tab_title_popup_cb), NULL);
+    g_signal_connect(entry, "focus-out-event", G_CALLBACK(tab_focus_out_cb), ebox);
     g_signal_connect_swapped (vscroll, "value-changed",
      G_CALLBACK(ui_playlist_widget_scroll), treeview);
 }
