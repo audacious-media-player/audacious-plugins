@@ -3376,21 +3376,3 @@ msgstr "Descodificador 2SF"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Listas de reprodução XML Shareable (XSPF)"
-
-#~ msgid "SndStretch"
-#~ msgstr "SndStretch"
-
-#~ msgid "About SndStretch"
-#~ msgstr "Sobre o SndStretch"
-
-#~ msgid "Volume correction"
-#~ msgstr "Correção de volume"
-
-#~ msgid "Short overlap"
-#~ msgstr "Sobreposição curta"
-
-#~ msgid "Scale"
-#~ msgstr "Escala"
-
-#~ msgid "SndStretch - Configuration"
-#~ msgstr "Configuração do SndStretch"

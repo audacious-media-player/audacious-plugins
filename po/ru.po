@@ -3390,21 +3390,3 @@ msgstr "2SF Декодер"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Разделяемые плейлисты (XSPF)"
-
-#~ msgid "SndStretch"
-#~ msgstr "SndСкретч"
-
-#~ msgid "About SndStretch"
-#~ msgstr "О модуле SndStretch"
-
-#~ msgid "Volume correction"
-#~ msgstr "Корректировака громкости"
-
-#~ msgid "Short overlap"
-#~ msgstr "Настройка преобразования стереозвука в бинауральный по Бауэру"
-
-#~ msgid "Scale"
-#~ msgstr "Масштабирование"
-
-#~ msgid "SndStretch - Configuration"
-#~ msgstr "Параметры модуля SndStretch"

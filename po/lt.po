@@ -3384,21 +3384,3 @@ msgstr "2SF dekoderis"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML viešinami grojaraščiai (XSPF)"
-
-#~ msgid "SndStretch"
-#~ msgstr "SndStretch"
-
-#~ msgid "About SndStretch"
-#~ msgstr "Apie SndStretch"
-
-#~ msgid "Volume correction"
-#~ msgstr "Garso pataisymas"
-
-#~ msgid "Short overlap"
-#~ msgstr "Trumpas perdengimas"
-
-#~ msgid "Scale"
-#~ msgstr "Mastas"
-
-#~ msgid "SndStretch - Configuration"
-#~ msgstr "SndStretch - Konfigūravimas"

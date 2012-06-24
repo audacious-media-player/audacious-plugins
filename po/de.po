@@ -2256,8 +2256,8 @@ msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Wähle einen Ordner und klicke auf \"Aktualisieren\", "
-"um deine Musiksammlung in Audacious zu importieren."
+"Wähle einen Ordner und klicke auf \"Aktualisieren\", um deine Musiksammlung "
+"in Audacious zu importieren."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
