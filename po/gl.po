@@ -1,10 +1,9 @@
-# Japanese translation for Audacious Plugins
+# Galician translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Shuuji Takahashi <shuuji3@gmail.com>, 2012.
-# Warui-chan  <>, 2012.
+# Miguel Anxo Bouzada <mbouzada@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
@@ -12,65 +11,65 @@ msgstr ""
 "POT-Creation-Date: 2012-06-24 14:21-0400\n"
 "PO-Revision-Date: 2012-06-24 18:08+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
-"Language-Team: Japanese\n"
-"Language: ja\n"
+"Language-Team: Galician\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr "AAC デコーダ"
+msgstr "Descodificador AAC"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (reprodutor AdLib)"
 
 #: src/alarm/alarm.c:833 src/alarm/interface.c:32
 msgid "Alarm"
-msgstr "アラーム"
+msgstr "Alarma"
 
 #: src/alarm/interface.c:39
 msgid "This is your wakeup call."
-msgstr "目覚ましです。"
+msgstr "Esta é a súa chamada de atención."
 
 #: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
-msgstr "OK"
+msgstr "Aceptar"
 
 #: src/alarm/interface.c:213
 msgid "Alarm Settings"
-msgstr "アラームの設定"
+msgstr "Configuración da alarma"
 
 #: src/alarm/interface.c:228 src/alarm/interface.c:400
 #: src/alarm/interface.c:772
 msgid "Time"
-msgstr "時刻"
+msgstr "Hora"
 
 #: src/alarm/interface.c:269
 msgid "hours"
-msgstr "時間"
+msgstr "horas"
 
 #: src/alarm/interface.c:330
 msgid "h"
-msgstr " "
+msgstr "h"
 
 #: src/alarm/interface.c:360
 msgid "minutes"
-msgstr "分"
+msgstr "minutos"
 
 #: src/alarm/interface.c:378
 msgid "Quiet after:"
-msgstr "静かになるまでの時間:"
+msgstr "Silencio despois de:"
 
 #: src/alarm/interface.c:388
 msgid "Alarm at (default):"
-msgstr "アラーム時刻 (デフォルト)"
+msgstr "Alarma as (predeterminado):"
 
 #: src/alarm/interface.c:408
 msgid "Choose the days for the alarm to come on"
-msgstr "アラームが鳴る曜日を選んでください"
+msgstr "Seleccione os días para que salte a alarma"
 
 #: src/alarm/interface.c:436 src/alarm/interface.c:484
 #: src/alarm/interface.c:532 src/alarm/interface.c:580
@@ -79,63 +78,63 @@ msgstr "アラームが鳴る曜日を選んでください"
 #: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:447
 #: src/skins/ui_manager.c:468
 msgid "Default"
-msgstr "デフォルト"
+msgstr "Predeterminado"
 
 #: src/alarm/interface.c:762
 msgid "Day"
-msgstr "日"
+msgstr "Día"
 
 #: src/alarm/interface.c:782
 msgid "Tuesday"
-msgstr "火曜日"
+msgstr "martes"
 
 #: src/alarm/interface.c:793
 msgid "Wednesday"
-msgstr "水曜日"
+msgstr "mércores"
 
 #: src/alarm/interface.c:804
 msgid "Thursday"
-msgstr "木曜日"
+msgstr "xoves"
 
 #: src/alarm/interface.c:815
 msgid "Friday"
-msgstr "金曜日"
+msgstr "venres"
 
 #: src/alarm/interface.c:826
 msgid "Saturday"
-msgstr "土曜日"
+msgstr "sábado"
 
 #: src/alarm/interface.c:837
 msgid "Sunday"
-msgstr "日曜日"
+msgstr "domingo"
 
 #: src/alarm/interface.c:847
 msgid "Monday"
-msgstr "月曜日"
+msgstr "luns"
 
 #: src/alarm/interface.c:858
 msgid "Days"
-msgstr "日"
+msgstr "Dias"
 
 #: src/alarm/interface.c:874
 msgid "Fading"
-msgstr "フェード"
+msgstr "Esvaecemento"
 
 #: src/alarm/interface.c:911 src/crossfade/crossfade.c:274 src/lirc/lirc.c:416
 msgid "seconds"
-msgstr "秒"
+msgstr "segundos"
 
 #: src/alarm/interface.c:919 src/alarm/interface.c:1034
 msgid "Volume"
-msgstr "音量"
+msgstr "Volume"
 
 #: src/alarm/interface.c:945
 msgid "Current"
-msgstr "現在の音量"
+msgstr "Actual"
 
 #: src/alarm/interface.c:953
 msgid "Start at"
-msgstr "開始"
+msgstr "Comezar en"
 
 #: src/alarm/interface.c:981 src/alarm/interface.c:1025
 msgid "%"
@@ -143,39 +142,39 @@ msgstr "%"
 
 #: src/alarm/interface.c:997
 msgid "Final"
-msgstr "終了"
+msgstr "Final"
 
 #: src/alarm/interface.c:1050
 msgid "Additional Command"
-msgstr "追加コマンド"
+msgstr "Orde adicional"
 
 #: src/alarm/interface.c:1076
 msgid "enable"
-msgstr "有効"
+msgstr "activar"
 
 #: src/alarm/interface.c:1084
 msgid "Playlist (optional)"
-msgstr "プレイリスト (オプション)"
+msgstr "Lista de reprodución (opcional)"
 
 #: src/alarm/interface.c:1110
 msgid "Browse..."
-msgstr "開く"
+msgstr "Examinar..."
 
 #: src/alarm/interface.c:1118 src/alarm/interface.c:1282
 msgid "Reminder"
-msgstr "リマインダ"
+msgstr "Lembranza"
 
 #: src/alarm/interface.c:1135
 msgid "Use reminder"
-msgstr "使用するリマインダ"
+msgstr "Usar lembranza"
 
 #: src/alarm/interface.c:1151
 msgid "Options"
-msgstr "オプション"
+msgstr "Opcións"
 
 #: src/alarm/interface.c:1159
 msgid "What do these options mean?"
-msgstr "オプションの説明"
+msgstr "Que significan estas opcións?"
 
 #: src/alarm/interface.c:1187
 msgid ""
@@ -232,121 +231,124 @@ msgid ""
 "    toggle button if you want it to be shown.\n"
 msgstr ""
 "\n"
-"時刻\n"
-"  アラーム時刻:\n"
-"    アラームが鳴る時刻です。\n"
+"Hora\n"
+"  Alarma as: \n"
+"    A hora na que saltará a alarma.\n"
 "\n"
-"  静かになるまでの時間\n"
-"    アラームが鳴り止むまでの時間です。\n"
-"      (めざましダイアログを閉じなかった場合)\n"
-"\n"
-"\n"
-"曜日\n"
-"  曜日:\n"
-"    アラームが鳴る曜日を選択します。\n"
-"\n"
-"  時刻:\n"
-"    それぞれの曜日のアラーム時刻を選択するか、トグ\n"
-"    ルボタンを選択し、デフォルト時刻に設定します。\n"
+"  Silencio tras: \n"
+"    Deter a alarma transcorrido este tempo.\n"
+"       (se non se pecha o diálogo de atención)\n"
 "\n"
 "\n"
-"音量:\n"
-"  フェード:\n"
-"    この時間をかけて、選択した音量まで音量をフェー\n"
-"    ドアップします。\n"
+"Días\n"
+"  Día:\n"
+"    Seleccione os días para que se active a alarma.\n"
 "\n"
-"  開始:\n"
-"    この音量からフェードを始めます。\n"
-"\n"
-"  終了:\n"
-"    この音量でフェードを終わります。\n"
+"  Hora:\n"
+"    Escolla a hora para a alarma en cada día,\n"
+"    ou seleccione o botón para utilizar a hora\n"
+"    predeterminada.\n"
 "\n"
 "\n"
-"オプション:\n"
-"  追加コマンド:\n"
-"    アラーム時刻になると、このコマンドを実行します。\n"
+"Volume\n"
+"  Esvaecemento: \n"
+"    Baixar o volume ata o nivel escollido durante \n"
+"    este período de tempo.\n"
 "\n"
-"  プレイリスト:\n"
-"    曲を再生する時に、このプレイリストをロードしま\n"
-"    す。ただし、プレイリストは .m3u 拡張子でなけれ\n"
-"    ばなりません。プレイリストを指定しなかった場合、\n"
-"    リストの再生中の曲が使われます。\n"
-"    mp3 または ogg ストリームの URL を指定すること\n"
-"    もできます。ただし、URL からのプレイリストのロー\n"
-"    ドでは、現在は xmms をサポートしていません。\n"
+"  Comezar en: \n"
+"    Comezar a esvaecer desde este volume.\n"
 "\n"
-"  リマインダ:\n"
-"    アラームが止まった時にリマインダを表示します。\n"
-"    表示するには、テキストボックスにリマインダを入\n"
-"    力し、トグルボタンをオンにしてください。\n"
+"  Final: \n"
+"    O volume final do esvaecemento.  Se o tempo de\n"
+"    esvaecemento é 0 estabelecese este volume e \n"
+"    comeza a reprodución.\n"
+"\n"
+"\n"
+"Opcións:\n"
+"  Orde adicional:\n"
+"    Executar esta orde á hora da alarma.\n"
+"\n"
+"  Lista de reprodución: \n"
+"    Cargar esta lista de reprodución para reproducir\n"
+"    (ten que ter una extensión .m3u).  Se non se introduce\n"
+"    ningunha lista utilizaranse as cancións na lista\n"
+"    actual.\n"
+"    Tamén pode introducir o URL dun fluxo mp3/ogg,\n"
+"    mais actualmente xmms non pode cargar listas de\n"
+"    reprodución desde URL.\n"
+"\n"
+"  Lembranza:\n"
+"    Amosar unha lembranza cando se apaga a alarma,\n"
+"    escriba a lembranza na caixa e active o botón\n"
+"    se quere que se amose.\n"
 
 #: src/alarm/interface.c:1189 src/skins/ui_manager.c:382
 msgid "Help"
-msgstr "ヘルプ"
+msgstr "Axuda"
 
 #: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
-msgstr "キャンセル"
+msgstr "Cancelar"
 
 #: src/alarm/interface.c:1289
 msgid "Your reminder for today is.."
-msgstr "今日のリマインダ:"
+msgstr "A súa lembranza para hoxe é..."
 
 #: src/alarm/interface.c:1314
 msgid "Thankyou"
-msgstr "ありがとうございます"
+msgstr "Grazas"
 
 #: src/albumart/albumart.c:101
 msgid "Album Art"
-msgstr "アルバムアート"
+msgstr "Portada"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "デフォルト PCM デバイス"
+msgstr "Dispositivo PCM predeterminado"
 
 #: src/alsa/config.c:235
 msgid "Default mixer device"
-msgstr "デフォルトミキサデバイス"
+msgstr "Dispositivo mesturador predeterminado"
 
 #: src/alsa/config.c:433
 msgid "ALSA Output Plugin Preferences"
-msgstr "ALSA 出力プラグインの設定"
+msgstr "Preferencias do engadido de saída ALSA"
 
 #: src/alsa/config.c:439
 msgid "PCM device:"
-msgstr "PCM デバイス:"
+msgstr "Dispositivo PCM:"
 
 #: src/alsa/config.c:441
 msgid "Mixer device:"
-msgstr "ミキサデバイス:"
+msgstr "Dispositivo mesturador:"
 
 #: src/alsa/config.c:443
 msgid "Mixer element:"
-msgstr "ミキサエレメント"
+msgstr "Elemento mesturador:"
 
 #: src/alsa/config.c:446
 msgid "Work around drain hangup"
-msgstr ""
+msgstr "Evitar as crebas por falta de recursos"
 
 #: src/alsa/plugin.c:45
 msgid "ALSA Output"
-msgstr "ALSA 出力"
+msgstr "Saída ALSA"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "Engadido AMIDI (Reprodutor MIDI)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
-"MIDI を再生するためのシーケンサ・ポートが選択されていません。MIDI プラグイン"
-"の設定で選択することができます。"
+"Non ten seleccionado ningún porto secuenciador para a reprodución MIDI.  "
+"Pode facelo nas preferencias do engadido MIDI."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
-msgstr "ALSA バックエンド"
+msgstr "Infraestrutura ALSA"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -359,18 +361,19 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"このバックエンドは、MIDI イベントを、ユーザが選択した ALSA シーケンサ・ポート"
-"のグループに送ります。ALSA シーケンサインターフェイスは非常に用途が広く、"
-"emu10k1 のようなハードウェアシンセサイザだけでなく、ソフトウェアシンセサイザ"
-"や外部デバイスなどへのポートもサポートします。\n"
-"このバックエンドはオーディオを生成せず、MIDI イベントは ALSA ポートの背後のデ"
-"バイスやプログラムから直接取り扱われます。たとえば、ハードウェアシンセサイザ"
-"に送られた MIDI イベントは直接演奏されます。\n"
-"バックエンドは Giacomo Lozito によって書かれました。"
+"Esta infraestrutura envía accións MIDI a un grupo de portos secuenciadores "
+"ALSA definidos polo usuario. A interface do secuenciador ALSA é moi "
+"versátil, pode fornecer portos para sintetizadores hardware (p. ex. emu10k1) "
+"mais tamén sintetizadores software, dispositivos externos, etc.\n"
+"Esta infraestrutura non produce son, as accións MIDI son manexadas "
+"directamente polos dispositivos/programas tras os portos ALSA; por exemplo, "
+"as accións MIDI enviadas a un sintetizador hardware serán reproducidas "
+"directamente.\n"
+"Infraestrutura escrita por Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
-msgstr "FluidSynth バックエンド "
+msgstr "Infraestrutura FluidSynth"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
@@ -381,174 +384,174 @@ msgid ""
 "by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"このバックエンドは音声を生成し、MIDI イベントを FluidSynth に送信します。"
-"FluidSynth は、SoundFont2 規格に基づいた、リアルタイムソフトウェアシンセサイ"
-"ザです。詳しくは、次のページをご覧ください。www.fluidsynth.org\n"
-"生成した音声は、プレイヤーのエフェクトプラグインや出力プラグインで処理するこ"
-"とができます。\n"
-"バックエンドは、Giacomo Lozito によって書かれました。"
+"Esta infraestrutura produce son ao enviar accións MIDI a FluidSynth, un "
+"sintetizador software en tempo real baseado na especificación SoundFont2 "
+"(www.fluidsynth.org).\n"
+"O son producido podese manipular mediante os módulos de efectos e é "
+"procesado polo módulo de saída seleccionado.\n"
+"Infraestrutura escrita por Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
-msgstr "ポート"
+msgstr "Porto"
 
 #: src/amidi-plug/i_configure-alsa.c:324
 msgid "Client name"
-msgstr "クライアント名"
+msgstr "Nome do cliente"
 
 #: src/amidi-plug/i_configure-alsa.c:326
 msgid "Port name"
-msgstr "ポート名"
+msgstr "Nome do porto"
 
 #: src/amidi-plug/i_configure-alsa.c:340
 msgid "ALSA output ports"
-msgstr "ALSA 出力ポート"
+msgstr "Portos de saída ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:393
 msgid "Soundcard: "
-msgstr "サウンドカード: "
+msgstr "Tarxeta de son: "
 
 #: src/amidi-plug/i_configure-alsa.c:395
 msgid "Mixer control: "
-msgstr "ミキサコントロール:"
+msgstr "Control de mesturas:"
 
 #: src/amidi-plug/i_configure-alsa.c:407
 msgid "Mixer settings"
-msgstr "ミキサ設定"
+msgstr "Axustes do mesturador"
 
 #: src/amidi-plug/i_configure-alsa.c:434
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">ALSA\n"
-"バックエンド</span>"
+"<span size=\"smaller\">Infraestrutura\n"
+"ALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
-msgstr "AMIDI-Plug - バックエンド情報"
+msgstr "Engadido AMIDI - Información da infraestrutura"
 
 #: src/amidi-plug/i_configure-ap.c:207
 msgid "Backend selection"
-msgstr "バックエンド選択"
+msgstr "Selección da infraestrutura"
 
 #: src/amidi-plug/i_configure-ap.c:247
 msgid "Playback settings"
-msgstr "演奏設定"
+msgstr "Configuración da reprodución"
 
 #: src/amidi-plug/i_configure-ap.c:252
 msgid "Transpose: "
-msgstr "トランスポーズ: "
+msgstr "Transposición: "
 
 #: src/amidi-plug/i_configure-ap.c:261
 msgid "Drum shift: "
-msgstr "ドラムシフト: "
+msgstr "Cambio de batería: "
 
 #: src/amidi-plug/i_configure-ap.c:279
 msgid "Advanced settings"
-msgstr "高度な設定"
+msgstr "Configuración avanzada"
 
 #: src/amidi-plug/i_configure-ap.c:283
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr "プレイリストの MIDI ファイルの長さを前もって計算する"
+msgstr "calcular a lonxitude dos ficheiros MIDI na lista de reprodución"
 
 #: src/amidi-plug/i_configure-ap.c:288
 msgid "extract comments from MIDI file (if available)"
-msgstr "MIDI ファイルからコメントを抽出する (可能ならば)"
+msgstr "extraer comentarios desde o ficheiro MIDI (de estar dispoñíbel)"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "extract lyrics from MIDI file (if available)"
-msgstr "MIDI ファイルから歌詞を抽出する (可能ならば)"
+msgstr "extraer letras desde o ficheiro MIDI (de estar dispoñíbel)"
 
 #: src/amidi-plug/i_configure-ap.c:323
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
+"<span size=\"smaller\">Engadido\n"
+"AMIDI</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - ファイル選択"
+msgstr "Engadido AMIDI - seleccione un ficheiro"
 
 #: src/amidi-plug/i_configure.c:110
 msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Plus の設定"
+msgstr "Configuración do engadido AMIDI "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - サウンドフォント ファイルの選択"
+msgstr "Engadido AMIDI - seleccione un ficheiro SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:290
 msgid "SoundFont settings"
-msgstr "サウンドフォント設定"
+msgstr "Configuración de SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:322
 msgid "Filename"
-msgstr "ファイル名"
+msgstr "Nome de ficheiro"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:326
 msgid "Size (bytes)"
-msgstr "サイズ (バイト)"
+msgstr "Tamaño (bytes)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:375
 msgid "Load SF on player start"
-msgstr "プレイヤ起動時に SF を読み込む"
+msgstr "Cargar SF cando se inicie o reprodutor"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
 msgid "Load SF on first MIDI file play"
-msgstr "MIDI ファイルの最初の演奏時に SF を読み込む"
+msgstr "na primeira reprodución de ficheiros MIDI"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
-msgstr "シンセサイザ設定"
+msgstr "Configuración do sintetizador"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:401
 msgid "gain"
-msgstr "ゲイン"
+msgstr "ganancia"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:407
 #: src/amidi-plug/i_configure-fluidsynth.c:435
 #: src/amidi-plug/i_configure-fluidsynth.c:463
 #: src/amidi-plug/i_configure-fluidsynth.c:494
 msgid "use default"
-msgstr "デフォルトを使用"
+msgstr "usar predeterminado"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:410
 #: src/amidi-plug/i_configure-fluidsynth.c:438
 msgid "value:"
-msgstr "値:"
+msgstr "valor:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr "ポリフォニ"
+msgstr "polifonía"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
-msgstr "リバーブ"
+msgstr "reverberación"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:466
 #: src/amidi-plug/i_configure-fluidsynth.c:497
 msgid "yes"
-msgstr "はい"
+msgstr "si"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:468
 #: src/amidi-plug/i_configure-fluidsynth.c:499
 msgid "no"
-msgstr "いいえ"
+msgstr "non"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:488
 msgid "chorus"
-msgstr "コーラス"
+msgstr "coros"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:519
 msgid "sample rate"
-msgstr "サンプリングレート"
+msgstr "taxa de mostraxe"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:525
 msgid "22050 Hz "
-msgstr "22000 Hz "
+msgstr "22050 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:528
 msgid "44100 Hz "
@@ -560,7 +563,7 @@ msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:534
 msgid "custom "
-msgstr "カスタム "
+msgstr "personalizado"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:543
 msgid "Hz "
@@ -571,32 +574,32 @@ msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">FluidSynth\n"
-"バックエンド</span>"
+"<span size=\"smaller\">Infraestrutura\n"
+"FluidSynth</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
-msgstr "名前:"
+msgstr "Nome:"
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"smaller\"> MIDI 情報 </span>"
+msgstr "<span size=\"smaller\"> Información MIDI </span>"
 
 #: src/amidi-plug/i_fileinfo.c:205
 msgid "Format:"
-msgstr "形式:"
+msgstr "Formato:"
 
 #: src/amidi-plug/i_fileinfo.c:208
 msgid "Length (msec):"
-msgstr "長さ (ミリ秒):"
+msgstr "Duración (mseg.):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr "トラック数:"
+msgstr "Num. de pistas"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr "可変"
+msgstr "variábel"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
@@ -608,59 +611,61 @@ msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr "時間軸:"
+msgstr "Div. tempo:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\"> MIDI コメントと歌詞 </span>"
+msgstr "<span size=\\\"smaller\\\"> Comentarios e letras MIDI </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
-msgstr "* MIDI ファイル中に有効なコメントがありません *"
+msgstr "* non hai comentarios dispoñíbeis neste ficheiro MIDI *"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* MIDI ファイル中に有効な歌詞がありません *"
+msgstr "* non hai letras dispoñíbeis neste ficheiro MIDI *"
 
 #: src/amidi-plug/i_fileinfo.c:349
 msgid "  (invalid UTF-8)"
-msgstr "  (不正な UTF-8)"
+msgstr "  (UTF-8 incorrecto)"
 
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
-msgstr "AMIDI-Plug について"
+msgstr "Sobre o engadido AMIDI"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (Información en pantalla)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "矩形"
+msgstr "Rectángulo"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "角丸矩形"
+msgstr "Rectángulo arredondado"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "凹矩形"
+msgstr "Rectángulo cóncavo"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "なし"
+msgstr "Ningún"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "再生開始"
+msgstr "Reprodución iniciada"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "プレイリストの曲が再生されたときに OSD を表示します。"
+msgstr ""
+"Activa as notificacións OSD cando se reproduce un elemento da lista de "
+"reprodución."
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "タイトル変更"
+msgstr "Cambio de título"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -668,136 +673,138 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"再生中に、ファイル名が同じでも、曲のタイトルが変更されたときに OSD を表示しま"
-"す。これは、インターネットストリームのタイトル変更を表示するのにとても役に立"
-"ちます。"
+"Activa as notificacións OSD cando, durante a reprodución, o título da "
+"canción cambia mais o nome do ficheiro é o mesmo. Isto es útil, "
+"principalmente, para amosar os cambios de título nos fluxos da Internet"
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "一時停止"
+msgstr "Inicio da pausa"
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "再生が停止したときに OSD が表示せれます。"
+msgstr "Activa as notificacións OSD cando a reprodución e posta en pausa"
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "再生の再開"
+msgstr "Fin da pausa"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "再生が再開したときに OSD が表示されます。"
+msgstr ""
+"Activa as notificacións OSD cando a reinicia a reprodución despois dunha "
+"pausa"
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr "位置"
+msgstr "Colocación"
 
 #: src/aosd/aosd_ui.c:202
 msgid "Relative X offset:"
-msgstr "相対 X オフセット:"
+msgstr "Desprazamento X relativo:"
 
 #: src/aosd/aosd_ui.c:211
 msgid "Relative Y offset:"
-msgstr "相対 Y オフセット:"
+msgstr "Desprazamento Y relativo:"
 
 #: src/aosd/aosd_ui.c:220
 msgid "Max OSD width:"
-msgstr "最大 OSD 幅:"
+msgstr "Largura máx. do OSD"
 
 #: src/aosd/aosd_ui.c:233
 msgid "Multi-Monitor options"
-msgstr "マルチモニタ オプション"
+msgstr "Opcións de múltiple monitor"
 
 #: src/aosd/aosd_ui.c:237
 msgid "Display OSD using:"
-msgstr "OSD を表示するモニタ:"
+msgstr "Amosar as notificacións OSD utilizando:"
 
 #: src/aosd/aosd_ui.c:239
 msgid "all monitors"
-msgstr "全てのモニタ"
+msgstr "todos os monitores"
 
 #: src/aosd/aosd_ui.c:242
 #, c-format
 msgid "monitor %i"
-msgstr "モニタ %i"
+msgstr "monitor %i"
 
 #: src/aosd/aosd_ui.c:295
 msgid "Timing (ms)"
-msgstr "タイミング (ミリ秒)"
+msgstr "Temporización (ms)"
 
 #: src/aosd/aosd_ui.c:300
 msgid "Display:"
-msgstr "表示:"
+msgstr "Mostrar:"
 
 #: src/aosd/aosd_ui.c:305
 msgid "Fade in:"
-msgstr "フェードイン:"
+msgstr "Esvaecemento de entrada:"
 
 #: src/aosd/aosd_ui.c:310
 msgid "Fade out:"
-msgstr "フェードアウト:"
+msgstr "Esvaecemento de saída:"
 
 #: src/aosd/aosd_ui.c:391
 msgid "Fonts"
-msgstr "フォント"
+msgstr "Tipos de letra"
 
 #: src/aosd/aosd_ui.c:399
 #, c-format
 msgid "Font %i:"
-msgstr "フォント %i:"
+msgstr "Tipo de letra %i:"
 
 #: src/aosd/aosd_ui.c:416
 msgid "Shadow"
-msgstr "影"
+msgstr "Sombra"
 
 #: src/aosd/aosd_ui.c:451
 msgid "Internationalization"
-msgstr "国際化"
+msgstr "Internacionalización"
 
 #: src/aosd/aosd_ui.c:457
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr "aosd ではテキストの UTF-8 変換を無効にする"
+msgstr "Desactivar a conversión do texto UTF-8 (nas notificacións OSD)"
 
 #: src/aosd/aosd_ui.c:475
 msgid "Select Skin File"
-msgstr "スキンファイル選択"
+msgstr "Seleccione un ficheiro de temas"
 
 #: src/aosd/aosd_ui.c:586
 msgid "Render Style"
-msgstr "描画形式"
+msgstr "Estilo de debuxado"
 
 #: src/aosd/aosd_ui.c:602
 msgid "Colors"
-msgstr "色"
+msgstr "Cores"
 
 #: src/aosd/aosd_ui.c:615
 #, c-format
 msgid "Color %i:"
-msgstr "色 %i:"
+msgstr "Cor %i:"
 
 #: src/aosd/aosd_ui.c:635
 msgid "Custom Skin"
-msgstr "カスタムスキン"
+msgstr "Tema personalizado"
 
 #: src/aosd/aosd_ui.c:641
 msgid "Skin file:"
-msgstr "スキンファイル:"
+msgstr "Ficheiro de tema:"
 
 #: src/aosd/aosd_ui.c:644
 msgid "Browse"
-msgstr "参照"
+msgstr "Examinar"
 
 #: src/aosd/aosd_ui.c:746
 msgid "Enable trigger"
-msgstr "トリガー有効"
+msgstr "Activar disparador"
 
 #: src/aosd/aosd_ui.c:773
 msgid "Event"
-msgstr "イベント"
+msgstr "Actividade"
 
 #: src/aosd/aosd_ui.c:801
 msgid "Composite manager detected"
-msgstr "Composite マネージャが検出されました"
+msgstr "Detectouse un administrador de composición"
 
 #: src/aosd/aosd_ui.c:808
 msgid ""
@@ -805,235 +812,236 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Composite マネージャが検出されませんでした;\n"
-"動作させているかわからなければ, Composite マネージャを有効にしてください. そ"
-"うしなければ OSD は正常に動作しないでしょう."
+"Non se detectou un administrador de composición;\n"
+"a non ser que saiba que ten un en execución, active un administrador de "
+"composición ou as notificacións OSD non funcionarán correctamente"
 
 #: src/aosd/aosd_ui.c:816
 msgid "Composite manager not required for fake transparency"
-msgstr "Composite マネージャは偽の透明化には必要ではありません"
+msgstr ""
+"Para a falsa transparencia non fai falta un administrador de compòsición"
 
 #: src/aosd/aosd_ui.c:854
 msgid "Transparency"
-msgstr "透明化"
+msgstr "Transparencia"
 
 #: src/aosd/aosd_ui.c:860
 msgid "Fake transparency"
-msgstr "偽の透明化"
+msgstr "Transparencia falsa"
 
 #: src/aosd/aosd_ui.c:862
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "真の透明化 (X Composite 拡張が必要)"
+msgstr "Transparencia real (require composición 3D)"
 
 #: src/aosd/aosd_ui.c:904
 msgid "Composite extension not loaded"
-msgstr "Composite 拡張が読み込まれていません"
+msgstr "A extensión de composición non está cargada"
 
 #: src/aosd/aosd_ui.c:912
 msgid "Composite extension not available"
-msgstr "Composite 拡張が有効ではありません"
+msgstr "A extensión de composición non está dispoñíbel"
 
 #: src/aosd/aosd_ui.c:931
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>Audacious OSD</span>"
+msgstr "<span font_desc='%s'>Notificacións OSD de Audacious</span>"
 
 #: src/aosd/aosd_ui.c:1012
 msgid "Audacious OSD - configuration"
-msgstr "Audacious OSD - 設定"
+msgstr "Notificacións OSD de Audacious - configuración"
 
 #: src/aosd/aosd_ui.c:1033
 msgid "Test"
-msgstr "テスト"
+msgstr "Proba"
 
 #: src/aosd/aosd_ui.c:1048
 msgid "Position"
-msgstr "位置"
+msgstr "Posición"
 
 #: src/aosd/aosd_ui.c:1053
 msgid "Animation"
-msgstr "アニメーション"
+msgstr "Animación"
 
 #: src/aosd/aosd_ui.c:1058
 msgid "Text"
-msgstr "文字"
+msgstr "Texto"
 
 #: src/aosd/aosd_ui.c:1063
 msgid "Decoration"
-msgstr "装飾"
+msgstr "Decoración"
 
 #: src/aosd/aosd_ui.c:1068
 msgid "Trigger"
-msgstr "トリガー"
+msgstr "Disparador"
 
 #: src/aosd/aosd_ui.c:1073
 msgid "Misc"
-msgstr "その他"
+msgstr "Miscelánea"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "ASXv1/ASXv2 プレイリスト"
+msgstr "Listas de reprodución ASXv1/ASXv2"
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious プレイリスト (audpl)"
+msgstr "Listas de reprodución do Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
-msgstr "<b>色</b>"
+msgstr "<b>Cor</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr ""
+msgstr "Alcance do desenfoque"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Bauer Stereophonic-to-Binaural Preferences の設定"
+msgstr "Preferencias de Bauer estereofónico a Binaural"
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
-msgstr "フェードレベル:"
+msgstr "Nivel de alimentación:"
 
 #: src/bs2b/plugin.c:163
 msgid "Cut frequency:"
-msgstr "Cut 周波数"
+msgstr "Cortar frecuencia:"
 
 #: src/bs2b/plugin.c:177
 msgid "Presets:"
-msgstr "プリセット:"
+msgstr "Predefinicións:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Bauer estereofónico a Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
-msgstr "スペクトラムアナライザ"
+msgstr "Analizador de espectro"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
-msgstr "<b>デバイス</b>"
+msgstr "<b>Dispositivo</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
-msgstr "読み込み速度:"
+msgstr "Velocidade de lectura:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
-msgstr "上書きデバイス"
+msgstr "Anular o dispositivo:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr "<b>メタデータ</b>"
+msgstr "<b>Metadatos</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
-msgstr "CD-Text を使用する"
+msgstr "Empregar o CD-Text"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
-msgstr "CDDB を使用する"
+msgstr "Empregar a CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
-msgstr "CDDBP の代わりに HTTP を使う"
+msgstr "Empregar HTTP no canto de CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Server:"
-msgstr "サーバー:"
+msgstr "Servidor:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Path:"
-msgstr "パス:"
+msgstr "Ruta:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
-msgstr "ポート:"
+msgstr "Porto:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
 msgid "Audio CD Plugin"
-msgstr "オーディオ CD プラグイン"
+msgstr "Engadido de CD de son"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
-msgstr "オーディオ CD"
+msgstr "CD de son"
 
 #: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
-msgstr "ドライブにディスクがありません。"
+msgstr "A unidade está baleira."
 
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
-msgstr "非対応のディスクです。"
+msgstr "Tipo de disco non admitido."
 
 #: src/cd-menu-items/cd-menu-items.c:34
 msgid "Play CD"
-msgstr "CD を再生"
+msgstr "Reproducir o CD"
 
 #: src/cd-menu-items/cd-menu-items.c:34
 msgid "Add CD"
-msgstr "プレイリストに CD を追加"
+msgstr "Engadir un CD"
 
 #: src/cd-menu-items/cd-menu-items.c:61
 msgid "Audio CD Menu Items"
-msgstr "オーディオ CD メニュー項目"
+msgstr "Elementos do menú do CD de son"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
-msgstr "<b>コンプレッション</b>"
+msgstr "<b>Compresión</b>"
 
 #: src/compressor/plugin.c:38
 msgid "Center volume:"
-msgstr "センター音量:"
+msgstr "Centrar o volume:"
 
 #: src/compressor/plugin.c:41
 msgid "Dynamic range:"
-msgstr "ダイナミックレンジ:"
+msgstr "Intervalo dinámico:"
 
 #: src/compressor/plugin.c:71
 msgid "Dynamic Range Compressor"
-msgstr "ダイナミックレンジコンプレッサ"
+msgstr "Compresor de intervalo dinámico"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
-msgstr "ゲームコンソール音楽デコーダ"
+msgstr "Descodificador de música dunha consola de xogos"
 
 #: src/console/configure.c:152
 msgid "General"
-msgstr "一般"
+msgstr "Xeral"
 
 #: src/console/configure.c:154 src/skins/ui_manager.c:176
 msgid "Playback"
-msgstr "演奏"
+msgstr "Reprodución"
 
 #: src/console/configure.c:169
 msgid "Bass:"
-msgstr "ベース:"
+msgstr "Graves:"
 
 #: src/console/configure.c:173 src/console/configure.c:184
 #: src/console/configure.c:205
 msgid "secs"
-msgstr "秒"
+msgstr "segs."
 
 #: src/console/configure.c:180
 msgid "Treble:"
-msgstr "トリバル:"
+msgstr "Agudos:"
 
 #: src/console/configure.c:201
 msgid "Default song length:"
-msgstr "デフォルトの曲の長さ:"
+msgstr "Duración predeterminada da canción:"
 
 #: src/console/configure.c:207
 msgid "Resampling"
-msgstr "リサンプリング"
+msgstr "Múltiple mostraxe"
 
 #: src/console/configure.c:213
 msgid "Enable audio resampling"
-msgstr "オーディオリサンプリングを有効にする"
+msgstr "Activar a múltiple mostraxe de son"
 
 #: src/console/configure.c:228
 msgid "Resampling rate:"
-msgstr "リサンプリングレート:"
+msgstr "Taxa de múltiple mostraxe:"
 
 #: src/console/configure.c:232 src/resample/resample.c:191
 #: src/resample/resample.c:197 src/resample/resample.c:200
@@ -1049,19 +1057,19 @@ msgstr "SPC"
 
 #: src/console/configure.c:244
 msgid "Ignore length from SPC tags"
-msgstr "SPC タグからの長さを無視する"
+msgstr "Ignorar a lonxitude das etiquetas SPC"
 
 #: src/console/configure.c:245
 msgid "Increase reverb"
-msgstr "リバーブを増やす"
+msgstr "Aumentar a reverberación"
 
 #: src/console/configure.c:270
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
-"秒数で表現されるデフォルトの曲の長さは, 長さ情報を提供しない曲 (例えばループ"
-"するトラック) に用いられます."
+"A duración predeterminada canción, expresada en segundos, empregase para as "
+"cancións que non fornecen información da duración (é dicir pistas cíclicas)."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -1069,53 +1077,54 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"曲のチャンネル数が異なるため、クロスフェードが失敗しました。\n"
-"曲を同じチャンネル数にするために、チャンネルミキサが利用できます。"
+"Produciuse un fallo na atenuación cruzada xa que existen cancións cun número "
+"diferente de canles. Pode empregar o «Mesturador de canles» para converter "
+"as cancións ao mesmo número de canle."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"曲のサンプリング周波数が異なるため、クロスフェードが失敗しました。\n"
-"曲を同じサンプリング周波数にするために、サンプリング周波数ミキサが利用できま"
-"す。"
+"Produciuse un fallo na atenuación cruzada xa que existen cancións con "
+"diferente taxa de mostraxe. Pode empregar o «Convertedor de taxa de "
+"mostraxe» para converter as cancións á mesma taxa de mostraxe."
 
 #: src/crossfade/crossfade.c:271
 msgid "<b>Crossfade</b>"
-msgstr "<b>クロスフェード</b>"
+msgstr "<b>Atenuación cruzada</b>"
 
 #: src/crossfade/crossfade.c:272
 msgid "Overlap:"
-msgstr "オーバーラップ:"
+msgstr "Sobreposición:"
 
 #: src/crossfade/crossfade.c:282
 msgid "Crossfade"
-msgstr "クロスフェード"
+msgstr "Atenuación cruzada"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
-msgstr "<b>クリスタライザ</b>"
+msgstr "<b>Cristalizador</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
-msgstr ""
+msgstr "Intensidade:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
-msgstr "クリスタライザ"
+msgstr "Cristalizador"
 
 #: src/cue/cue.c:161
 msgid "Cue Sheet Plugin"
-msgstr "Cue シートプラグイン"
+msgstr "Engadido de plano de referencia"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr "<b>エコー</b>"
+msgstr "<b>Eco</b>"
 
 #: src/echo_plugin/echo.c:27
 msgid "Delay:"
-msgstr "遅延:"
+msgstr "Atraso:"
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
@@ -1123,99 +1132,99 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr "フィードバック:"
+msgstr "Realimentación"
 
 #: src/echo_plugin/echo.c:33
 msgid "Volume:"
-msgstr "音量:"
+msgstr "Volume:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr "エコー"
+msgstr "Eco"
 
 #: src/ffaudio/ffaudio-core.c:683
 msgid "FFmpeg Plugin"
-msgstr "FFmpeg プラグイン"
+msgstr "Engadido FFmpeg"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr "ファイル出力の設定"
+msgstr "Configuración do FileWriter"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
-msgstr "出力ファイルフォーマット:"
+msgstr "Formato do ficheiro de saída:"
 
 #: src/filewriter/filewriter.c:439
 msgid "Configure"
-msgstr "設定"
+msgstr "Configurar"
 
 #: src/filewriter/filewriter.c:449
 msgid "Save into original directory"
-msgstr "元のディレクトリに保存する"
+msgstr "Gardar no directorio orixinal"
 
 #: src/filewriter/filewriter.c:454
 msgid "Save into custom directory"
-msgstr "指定のディレクトリに保存する"
+msgstr "Gardar nun directorio personalizado"
 
 #: src/filewriter/filewriter.c:464
 msgid "Output file folder:"
-msgstr "ファイル出力先ディレクトリ:"
+msgstr "Cartafol do ficheiro de saída:"
 
 #: src/filewriter/filewriter.c:468
 msgid "Pick a folder"
-msgstr "ディレクトリの選択"
+msgstr "Escolla un cartafol"
 
 #: src/filewriter/filewriter.c:481
 msgid "Get filename from:"
-msgstr "ファイル名の取得元:"
+msgstr "Obter o nome de ficheiro desde:"
 
 #: src/filewriter/filewriter.c:484
 msgid "original file tags"
-msgstr "元のファイルのタグ"
+msgstr "etiquetas do ficheiro orixinal"
 
 #: src/filewriter/filewriter.c:490
 msgid "original filename"
-msgstr "元のファイル名"
+msgstr "Nome do ficheiro orixinal"
 
 #: src/filewriter/filewriter.c:497
 msgid "Don't strip file name extension"
-msgstr "ファイル名から拡張子を取り除かない"
+msgstr "Non quitar a extensión do ficheiro"
 
 #: src/filewriter/filewriter.c:506
 msgid "Prepend track number to filename"
-msgstr "ファイル名の先頭にトラック番号を付加する"
+msgstr "Antepor o número de pista ao nome de ficheiro"
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr "ファイル出力プラグイン"
+msgstr "Engadido FileWrite"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
-msgstr "自動"
+msgstr "Auto"
 
 #: src/filewriter/mp3.c:37
 msgid "Joint Stereo"
-msgstr "ジョイントステレオ"
+msgstr "Estéreo solapado"
 
 #: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
-msgstr "ステレオ"
+msgstr "Estéreo"
 
 #: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
-msgstr "モノラル"
+msgstr "Mono"
 
 #: src/filewriter/mp3.c:688
 msgid "MP3 Configuration"
-msgstr "MP3 設定"
+msgstr "Configuración de MP3"
 
 #: src/filewriter/mp3.c:712
 msgid "Algorithm Quality:"
-msgstr "アルゴリズム品質:"
+msgstr "Calidade do algoritmo:"
 
 #: src/filewriter/mp3.c:737
 msgid "Output Samplerate:"
-msgstr "出力サンプリングレート:"
+msgstr "Frecuencia de mostraxe de saída:"
 
 #: src/filewriter/mp3.c:765
 msgid "(Hz)"
@@ -1223,75 +1232,75 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr "ビットレート / 圧縮率:"
+msgstr "Taxa de bits / Relación de compresión:"
 
 #: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
-msgstr "ビットレート (kbps):"
+msgstr "Taxa de bits (kbps):"
 
 #: src/filewriter/mp3.c:829
 msgid "Compression ratio:"
-msgstr "圧縮率:"
+msgstr "Relación de compresión:"
 
 #: src/filewriter/mp3.c:853
 msgid "Audio Mode:"
-msgstr "オーディオ モード:"
+msgstr "Modo do son:"
 
 #: src/filewriter/mp3.c:878
 msgid "Misc:"
-msgstr "その他:"
+msgstr "Miscelánea:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr "厳格な ISO 遵守を強制する"
+msgstr "Forzar a compatibilidade estrita con ISO"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
-msgstr "エラー保護"
+msgstr "Protección contra erros"
 
 #: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
 msgid "Quality"
-msgstr "音質"
+msgstr "Calidade"
 
 #: src/filewriter/mp3.c:921
 msgid "Enable VBR/ABR"
-msgstr "VBR/ABR を有効にする"
+msgstr "Activar VBR/ABR"
 
 #: src/filewriter/mp3.c:931
 msgid "Type:"
-msgstr "タイプ:"
+msgstr "Tipo:"
 
 #: src/filewriter/mp3.c:964
 msgid "VBR Options:"
-msgstr "VBR オプション:"
+msgstr "Opcións VBR:"
 
 #: src/filewriter/mp3.c:980
 msgid "Minimum bitrate (kbps):"
-msgstr "最小ビットレート (kbps):"
+msgstr "Taxa de bits mínima (kbps)"
 
 #: src/filewriter/mp3.c:1007
 msgid "Maximum bitrate (kbps):"
-msgstr "最大ビットレート (kbps):"
+msgstr "Taxa de bits máxima (kbps)"
 
 #: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
-msgstr "最小ビットレートを厳格に強制する"
+msgstr "Aplicar estritamente a taxa de bits mínima"
 
 #: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
-msgstr "ABR オプション:"
+msgstr "Opcións ABR:"
 
 #: src/filewriter/mp3.c:1052
 msgid "Average bitrate (kbps):"
-msgstr "平均ビットレート (kbps):"
+msgstr "Taxa media de bits (kbps)"
 
 #: src/filewriter/mp3.c:1080
 msgid "VBR quality level:"
-msgstr "VBR 品質レベル:"
+msgstr "Nivel de calidade VBR:"
 
 #: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
-msgstr "Xing VBR ヘッダを書き込まない"
+msgstr "Non escribir a cabeceira VBR Xing"
 
 #: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
@@ -1299,259 +1308,259 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr "フレームパラメータ"
+msgstr "Parámetros do cadro:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
-msgstr "著作権物としてマーク"
+msgstr "Marcar con Dereitos de autoría"
 
 #: src/filewriter/mp3.c:1144
 msgid "Mark as original"
-msgstr "オリジナルとしてマーク"
+msgstr "Marcar como orixinal"
 
 #: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
-msgstr "ID3 パラメータ:"
+msgstr "Parámetros ID3:"
 
 #: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
-msgstr "バージョン 2 タグを強制的に付加する"
+msgstr "Forzar o engadido da etiqueta da versión 2"
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr "v1 タグのみ付加する"
+msgstr "Engadir só a etiqueta v1"
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr "v2 タグのみ付加する"
+msgstr "Engadir só a etiqueta v2"
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
-msgstr "タグ"
+msgstr "Etiquetas"
 
 #: src/filewriter/vorbis.c:212
 msgid "Vorbis Encoder Configuration"
-msgstr "Vorbis エンコーダ設定"
+msgstr "Configuración do codificador Vorbis"
 
 #: src/filewriter/vorbis.c:235
 msgid "Quality level (0 - 10):"
-msgstr "品質レベル (0 - 10):"
+msgstr "Nivel de calidade (0 - 10):"
 
 #: src/flacng/plugin.c:368
 msgid "FLAC Decoder"
-msgstr "FLAC デコーダ"
+msgstr "Descodificador FLAC"
 
 #: src/gio/gio.c:335
 msgid "GIO Plugin"
-msgstr "GIO プラグイン"
+msgstr "Engadido GIO"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
-msgstr "Gnome ショートカット"
+msgstr "Atallos do Gnome"
 
 #: src/gtkui/columns.c:35
 msgid "Entry number"
-msgstr "リスト番号"
+msgstr "Número de entrada"
 
 #: src/gtkui/columns.c:35
 msgid "Title"
-msgstr "タイトル"
+msgstr "Título"
 
 #: src/gtkui/columns.c:36
 msgid "Artist"
-msgstr "アーティスト"
+msgstr "Interprete"
 
 #: src/gtkui/columns.c:36
 msgid "Year"
-msgstr "年"
+msgstr "Ano"
 
 #: src/gtkui/columns.c:36
 msgid "Album"
-msgstr "アルバム"
+msgstr "Álbum"
 
 #: src/gtkui/columns.c:36
 msgid "Track"
-msgstr "トラック"
+msgstr "Pista"
 
 #: src/gtkui/columns.c:36
 msgid "Genre"
-msgstr "ジャンル"
+msgstr "Xénero"
 
 #: src/gtkui/columns.c:37
 msgid "Queue position"
-msgstr "キュー番号"
+msgstr "Posición na cola"
 
 #: src/gtkui/columns.c:37
 msgid "Length"
-msgstr "長さ"
+msgstr "Duración"
 
 #: src/gtkui/columns.c:37
 msgid "File path"
-msgstr "ファイルパス"
+msgstr "Ruta ao ficheiro"
 
 #: src/gtkui/columns.c:37
 msgid "File name"
-msgstr "ファイル名"
+msgstr "Nome de ficheiro"
 
 #: src/gtkui/columns.c:38
 msgid "Custom title"
-msgstr "カスタムタイトル"
+msgstr "Título personalizado"
 
 #: src/gtkui/columns.c:38
 msgid "Bitrate"
-msgstr "ビットレート"
+msgstr "Taxa de bits"
 
 #: src/gtkui/columns.c:277
 msgid "Choose Columns"
-msgstr "列の選択"
+msgstr "Escoller columnas"
 
 #: src/gtkui/columns.c:293
 msgid "Available:"
-msgstr "利用可能なもの"
+msgstr "Dispoñíbel:"
 
 #: src/gtkui/columns.c:327
 msgid "Chosen:"
-msgstr "選択したもの:"
+msgstr "Escollido:"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Left"
-msgstr "左側にドッキング"
+msgstr "Ancorar á esquerda"
 
 #: src/gtkui/layout.c:122
 msgid "Dock at Right"
-msgstr "右側にドッキング"
+msgstr "Ancorar á dereita"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Top"
-msgstr "上部にドッキング"
+msgstr "Ancorar enriba"
 
 #: src/gtkui/layout.c:123
 msgid "Dock at Bottom"
-msgstr "下部にドッキング"
+msgstr "Ancorar abaixo"
 
 #: src/gtkui/layout.c:123
 msgid "Undock"
-msgstr "ドッキングを解く"
+msgstr "Desancorar"
 
 #: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
 msgid "Disable"
-msgstr "無効"
+msgstr "Desactivar"
 
 #: src/gtkui/menus.c:155
 msgid "_Open Files ..."
-msgstr "ファイルを開く(_O)"
+msgstr "_Abrir ficheiros..."
 
 #: src/gtkui/menus.c:156
 msgid "Open _URL ..."
-msgstr "URL を開く(_U)"
+msgstr "Abrir un _URL..."
 
 #: src/gtkui/menus.c:157
 msgid "_Add Files ..."
-msgstr "ファイルを追加(_A)"
+msgstr "_Engadir ficheiros..."
 
 #: src/gtkui/menus.c:158
 msgid "Add U_RL ..."
-msgstr "URL を追加(_R)"
+msgstr "Engadir un U_RL..."
 
 #: src/gtkui/menus.c:160
 msgid "_Search Library"
-msgstr "ライブラリを検索(_S)"
+msgstr "_Buscar unha biblioteca"
 
 #: src/gtkui/menus.c:162
 msgid "A_bout ..."
-msgstr "プログラムの情報(_B)"
+msgstr "So_bre..."
 
 #: src/gtkui/menus.c:163
 msgid "_Preferences ..."
-msgstr "設定(_P)"
+msgstr "_Preferencias ..."
 
 #: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
-msgstr "終了(_Q)"
+msgstr "_Saír"
 
 #: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 msgid "_Play"
-msgstr "再生(_P)"
+msgstr "_Reproducir"
 
 #: src/gtkui/menus.c:168
 msgid "Paus_e"
-msgstr "一時停止(_E)"
+msgstr "_Pausa"
 
 #: src/gtkui/menus.c:169
 msgid "_Stop"
-msgstr "停止(_S)"
+msgstr "_Deter"
 
 #: src/gtkui/menus.c:170
 msgid "Pre_vious"
-msgstr "前の曲へ(_V)"
+msgstr "A_nterior"
 
 #: src/gtkui/menus.c:171
 msgid "_Next"
-msgstr "次の曲へ(_N)"
+msgstr "Se_guinte"
 
 #: src/gtkui/menus.c:173
 msgid "_Repeat"
-msgstr "リピート(_R)"
+msgstr "Repe_tir"
 
 #: src/gtkui/menus.c:174
 msgid "S_huffle"
-msgstr "シャッフル(_H)"
+msgstr "Ao c_hou"
 
 #: src/gtkui/menus.c:175
 msgid "N_o Playlist Advance"
-msgstr "プレイリストの再生を続けない(_O)"
+msgstr "N_on avanzar na lista de reprodución"
 
 #: src/gtkui/menus.c:176
 msgid "Stop _After This Song"
-msgstr "曲の再生後に停止(_A)"
+msgstr "_Deter despois desta canción"
 
 #: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
-msgstr "曲の情報(_I)"
+msgstr "_Información da canción"
 
 #: src/gtkui/menus.c:179
 msgid "Jump to _Time ..."
-msgstr "指定した時間にジャンプ(_T)"
+msgstr "Saltar no _tempo"
 
 #: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
-msgstr "指定した曲にジャンプ(_J)"
+msgstr "Saltar á _canción"
 
 #: src/gtkui/menus.c:183
 msgid "By Track _Number"
-msgstr "トラックナンバー(_N)"
+msgstr "Polo _número de pista"
 
 #: src/gtkui/menus.c:184
 msgid "By _Title"
-msgstr "タイトル(_T)"
+msgstr "Polo _título"
 
 #: src/gtkui/menus.c:185
 msgid "By _Artist"
-msgstr "アーティスト(_A)"
+msgstr "Polo _interprete"
 
 #: src/gtkui/menus.c:186
 msgid "By A_lbum"
-msgstr "アルバム(_L)"
+msgstr "Polo á_lbum"
 
 #: src/gtkui/menus.c:187
 msgid "By Release _Date"
-msgstr "リリース日(_D)"
+msgstr "Pola _data de publicación"
 
 #: src/gtkui/menus.c:188
 msgid "By _File Path"
-msgstr "ファイルパス(_F)"
+msgstr "Pola _ruta do ficheiro"
 
 #: src/gtkui/menus.c:189
 msgid "By _Custom Title"
-msgstr "カスタムタイトル(_C)"
+msgstr "Polo título _personalizado"
 
 #: src/gtkui/menus.c:191
 msgid "R_everse Order"
-msgstr "逆順にする(_E)"
+msgstr "Orden _inversa"
 
 #: src/gtkui/menus.c:192
 msgid "_Random Order"
-msgstr "ランダムに並べる(_R)"
+msgstr "Ao c_hou"
 
 #: src/gtkui/menus.c:195
 msgid "_Play This Playlist"
@@ -1559,19 +1568,19 @@ msgstr ""
 
 #: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
-msgstr "再読み込み(_R)"
+msgstr "_Actualizar"
 
 #: src/gtkui/menus.c:197
 msgid "Remove _Unavailable Files"
-msgstr "再生できないファイルを削除する(_U)"
+msgstr "Eliminar os ficheiros _non dispoñíbeis"
 
 #: src/gtkui/menus.c:199
 msgid "_Sort"
-msgstr "ソート(_S)"
+msgstr "_Ordenar"
 
 #: src/gtkui/menus.c:201
 msgid "_New"
-msgstr "新しいプレイリスト(_N)"
+msgstr "_Novo"
 
 #: src/gtkui/menus.c:202
 msgid "Ren_ame ..."
@@ -1579,15 +1588,15 @@ msgstr ""
 
 #: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
-msgstr "プレイリストを閉じる(_C)"
+msgstr "_Pechar"
 
 #: src/gtkui/menus.c:205
 msgid "_Import ..."
-msgstr "インポート(_I)"
+msgstr "_Importar..."
 
 #: src/gtkui/menus.c:206
 msgid "_Export ..."
-msgstr "エクスポート(_E)"
+msgstr "_Exportar..."
 
 #: src/gtkui/menus.c:208
 msgid "Playlist _Manager ..."
@@ -1595,103 +1604,103 @@ msgstr ""
 
 #: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
-msgstr "キューマネージャ(_Q)"
+msgstr "Xestor da _cola"
 
 #: src/gtkui/menus.c:212
 msgid "Volume _Up"
-msgstr "音量を上げる(_U)"
+msgstr "_Subir o volume"
 
 #: src/gtkui/menus.c:213
 msgid "Volume _Down"
-msgstr "音量を下げる(_D)"
+msgstr "_Baixar o volume"
 
 #: src/gtkui/menus.c:215
 msgid "_Equalizer"
-msgstr "イコライザ(_E)"
+msgstr "_Ecualizador"
 
 #: src/gtkui/menus.c:217
 msgid "E_ffects"
-msgstr "エフェクト(_E)"
+msgstr "E_fectos"
 
 #: src/gtkui/menus.c:220
 msgid "_Interface"
-msgstr "インターフェイス(_I)"
+msgstr "_Interface"
 
 #: src/gtkui/menus.c:221
 msgid "_Visualizations"
-msgstr "視覚化(_V)"
+msgstr "_Visualizacións"
 
 #: src/gtkui/menus.c:223
 msgid "Show _Menu Bar"
-msgstr "メニューバーを表示する(_M)"
+msgstr "Amosar a barra de _menú"
 
 #: src/gtkui/menus.c:224
 msgid "Show I_nfo Bar"
-msgstr "情報バーを表示する(_N)"
+msgstr "Amosar a barra de i_nformación"
 
 #: src/gtkui/menus.c:225
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "Amosar a barra de vis_ualización"
 
 #: src/gtkui/menus.c:226
 msgid "Show _Status Bar"
-msgstr "ステータスバーを表示する(_S)"
+msgstr "Amosar a barra de e_stado"
 
 #: src/gtkui/menus.c:228
 msgid "Show Column _Headers"
-msgstr "列のヘッダーを表示する(_H)"
+msgstr "Amosar as ca_beceiras de columna"
 
 #: src/gtkui/menus.c:229
 msgid "Choose _Columns ..."
-msgstr "列を選択する(_C)"
+msgstr "Escoller _columnas..."
 
 #: src/gtkui/menus.c:230
 msgid "Scrol_l on Song Change"
-msgstr "曲が変わったらスクロールする(_L)"
+msgstr "A_vanzar ao cambiar de canción"
 
 #: src/gtkui/menus.c:233
 msgid "_File"
-msgstr "ファイル(_F)"
+msgstr "_Ficheiro"
 
 #: src/gtkui/menus.c:234
 msgid "_Playback"
-msgstr "再生(_P)"
+msgstr "_Reproducir"
 
 #: src/gtkui/menus.c:235
 msgid "P_laylist"
-msgstr "プレイリスト(_L)"
+msgstr "_Lista de reprodución"
 
 #: src/gtkui/menus.c:236 src/gtkui/menus.c:250
 msgid "_Services"
-msgstr "サービス(_S)"
+msgstr "_Servicios"
 
 #: src/gtkui/menus.c:237
 msgid "_Output"
-msgstr "出力(_O)"
+msgstr "Saí_da"
 
 #: src/gtkui/menus.c:238
 msgid "_View"
-msgstr "表示(_V)"
+msgstr "_Ver"
 
 #: src/gtkui/menus.c:242
 msgid "_Queue/Unqueue"
-msgstr "キュー / アンキュー(_Q)"
+msgstr "_Por na cola/retirar da cola"
 
 #: src/gtkui/menus.c:245
 msgid "Cu_t"
-msgstr "切り取り(_T)"
+msgstr "C_ortar"
 
 #: src/gtkui/menus.c:246
 msgid "_Copy"
-msgstr "コピー(_C)"
+msgstr "_Copiar"
 
 #: src/gtkui/menus.c:247
 msgid "_Paste"
-msgstr "貼り付け(_P)"
+msgstr "_Pegar"
 
 #: src/gtkui/menus.c:248
 msgid "Select _All"
-msgstr "すべて選択(_A)"
+msgstr "Seleccionar _todo"
 
 #: src/gtkui/menus.c:254
 msgid "_Rename ..."
@@ -1699,7 +1708,7 @@ msgstr ""
 
 #: src/gtkui/ui_gtk.c:98
 msgid "GTK Interface"
-msgstr "GTK インターフェイス"
+msgstr "Interface GTK"
 
 #: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
 #, c-format
@@ -1708,7 +1717,7 @@ msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.c:174
 msgid "Buffering ..."
-msgstr "バッファ中 ..."
+msgstr "Almacenando no búfer..."
 
 #: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
@@ -1716,21 +1725,22 @@ msgstr "Audacious"
 
 #: src/gtkui/ui_gtk.c:228 src/skins/plugin.c:178
 msgid "Error"
-msgstr "エラー"
+msgstr "Erro"
 
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
 msgid "mono"
-msgstr "モノラル"
+msgstr "mono"
 
 #: src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
 msgid "stereo"
-msgstr "ステレオ"
+msgstr "estéreo"
 
 #: src/gtkui/ui_statusbar.c:109
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d チャンネル"
+msgstr[0] "%d canle"
+msgstr[1] "%d canles"
 
 #: src/gtkui/ui_statusbar.c:124
 #, c-format
@@ -1739,47 +1749,47 @@ msgstr "%d kbps"
 
 #: src/hotkey/gui.c:72
 msgid "Previous Track"
-msgstr "前のトラック"
+msgstr "Pista anterior"
 
 #: src/hotkey/gui.c:73 src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Play"
-msgstr "再生"
+msgstr "Reproducir"
 
 #: src/hotkey/gui.c:74
 msgid "Pause/Resume"
-msgstr "一時停止/再開"
+msgstr "Pausar/Reiniciar"
 
 #: src/hotkey/gui.c:75 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
 msgid "Stop"
-msgstr "停止"
+msgstr "Parar"
 
 #: src/hotkey/gui.c:76
 msgid "Next Track"
-msgstr "次のトラック"
+msgstr "Pista seguinte"
 
 #: src/hotkey/gui.c:77
 msgid "Forward 5 Seconds"
-msgstr "5秒進める"
+msgstr "Avanzar 5 segundos"
 
 #: src/hotkey/gui.c:78
 msgid "Rewind 5 Seconds"
-msgstr "5秒戻す"
+msgstr "Retroceder 5 segundos"
 
 #: src/hotkey/gui.c:79
 msgid "Mute"
-msgstr "ミュート"
+msgstr "Silenciar"
 
 #: src/hotkey/gui.c:80
 msgid "Volume Up"
-msgstr "音量を上げる"
+msgstr "Subir o volume"
 
 #: src/hotkey/gui.c:81
 msgid "Volume Down"
-msgstr "音量を下げる"
+msgstr "Baixar o volume"
 
 #: src/hotkey/gui.c:82 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
 msgid "Jump to File"
-msgstr "指定したファイルへ移動"
+msgstr "Saltar ao ficheiro"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
@@ -1787,15 +1797,15 @@ msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
-msgstr "On-Screen-Display を表示する"
+msgstr "Mostrar as notificacións OSD"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle Repeat"
-msgstr "リピートをトグル"
+msgstr "Conmutar o modo repetir"
 
 #: src/hotkey/gui.c:86
 msgid "Toggle Shuffle"
-msgstr "シャッフルをトグル"
+msgstr "Conmutar a orden ao chou"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
@@ -1803,7 +1813,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
-msgstr "(なし)"
+msgstr "(ningún)"
 
 #: src/hotkey/gui.c:234
 msgid ""
@@ -1812,58 +1822,58 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"修飾キーなしでプライマリ・マウスのボタンに割り当てるのはお勧めしません。\n"
+"Non se recomenda asociar os botóns principais do rato sen modificadores.\n"
 "\n"
-"本当によろしいですか？"
+"Quere continuar?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
-msgstr "マウスボタンの割り当て"
+msgstr "Asociar botóns do rato"
 
 #: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
-msgstr "グローバルホットキープラグインの設定"
+msgstr "Configuración global de atallos de teclado do engadido"
 
 #: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"テキストフィールド内でキーコンビネーションを押してください。\n"
-"マウスボタンを組み合わせることもできます。"
+"Prema unha combinación de teclas dentro do campo de texto.\n"
+"Tamén pode asociar botóns do rato."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
-msgstr "ホットキー:"
+msgstr "Teclas rápidas:"
 
 #: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
-msgstr "<b>動作:</b>"
+msgstr "<b>Acción</b>"
 
 #: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
-msgstr "<b>キーバインド:</b>"
+msgstr "<b>Teclas asociadas:</b>"
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
-msgstr "グローバルホットキー"
+msgstr "Teclas rápidas globais"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
-msgstr "JACK 出力"
+msgstr "Saída JACK"
 
 #: src/ladspa/plugin.c:494
 #, c-format
 msgid "%s Settings"
-msgstr "%s の設定"
+msgstr "Configuración de %s"
 
 #: src/ladspa/plugin.c:562
 msgid "LADSPA Host Settings"
-msgstr "LADSPA Host の設定"
+msgstr "Configuración do servidor LADSPA"
 
 #: src/ladspa/plugin.c:571
 msgid "Module paths:"
-msgstr "モジュールのパス:"
+msgstr "Rutas dos módulos:"
 
 #: src/ladspa/plugin.c:576
 msgid ""
@@ -1871,35 +1881,34 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>複数のパスはコロンで区切ってください。これらのパス\n"
-"が、LADSPA_PATH の他に検索されます。新しいパスを追\n"
-"加した後は、新しいプラグインをスキャンするために、\n"
-"Enter キーを押してください。</small>"
+"<small>Separe as múltiples rutas con dous puntos.\n"
+"Estas rutas empréganse ademais de LADSPA_PATH.\n"
+"Tras engadir as novas rutas, prema Intro para buscar novos engadidos.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
-msgstr "利用可能なプラグイン:"
+msgstr "Engadidos dispoñíbeis:"
 
 #: src/ladspa/plugin.c:605
 msgid "Enable"
-msgstr "有効"
+msgstr "Activar"
 
 #: src/ladspa/plugin.c:611
 msgid "Enabled plugins:"
-msgstr "有効なプラグイン:"
+msgstr "Engadidos activados:"
 
 #: src/ladspa/plugin.c:627
 msgid "Settings"
-msgstr "設定:"
+msgstr "Configuración"
 
 #: src/ladspa/plugin.c:662
 msgid "LADSPA Host"
-msgstr "LADSPA ホスト"
+msgstr "Servidor LADSPA"
 
 #: src/lirc/lirc.c:77
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: LIRC 機能を初期化できません\n"
+msgstr "%s: a compatibilidade de LIRC non foi iniciada\n"
 
 #: src/lirc/lirc.c:84
 #, c-format
@@ -1908,46 +1917,45 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: LIRC の設定ファイルを読み込めません\n"
-"%s: LIRC のドキュメントをお読みください\n"
-"%s: 正しい設定ファイルの書き方\n"
-"\n"
+"%s: non foi posíbel ler o ficheiro de configuración LIRC\n"
+"%s: consulte a documentación do LIRC\n"
+"%s: como crear un ficheiro de configuración válido\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: 再接続を試みています...\n"
+msgstr "%s: tentando volver a conectar...\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: 不明なコマンド \"%s\"\n"
+msgstr "%s: orde descoñecida «%s»\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: LIRC から切断されました\n"
+msgstr "%s: desconectado de  LIRC\n"
 
 #: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: %d 秒毎に再接続を試みます...\n"
+msgstr "%s: tentará volver a conectar cada %d segundos...\n"
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
-msgstr "<b>接続</b>"
+msgstr "<b>Conexión</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr "LIRC サーバーへ再接続する"
+msgstr "Volver conectar co servidor LIRC"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr "再接続の待機時間:"
+msgstr "Agardar antes de volver conectar:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr "LIRC プラグイン"
+msgstr "Engadido LIRC"
 
 #: src/lyricwiki/lyricwiki.c:267
 msgid ""
@@ -1955,7 +1963,7 @@ msgid ""
 "Looking for lyrics..."
 msgstr ""
 "\n"
-"歌詞を探しています..."
+"Buscando letras..."
 
 #: src/lyricwiki/lyricwiki.c:304
 msgid ""
@@ -1963,7 +1971,7 @@ msgid ""
 "Connecting to lyrics.wikia.com..."
 msgstr ""
 "\n"
-"lyrics.wikia.com に接続しています..."
+"Conectando a lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:378
 msgid ""
@@ -1971,158 +1979,157 @@ msgid ""
 "No lyrics were found."
 msgstr ""
 "\n"
-"歌詞が見つかりませんでした。"
+"Non se atoparon letras."
 
 #: src/lyricwiki/lyricwiki.c:436
 msgid "LyricWiki Plugin"
-msgstr "LyricWiki プラグイン"
+msgstr "Engadido LyricWiki"
 
 #: src/m3u/m3u.c:123
 msgid "M3U Playlists"
-msgstr "M3U プラグイン"
+msgstr "Listas de reprodución M3U"
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "タクトジェネレータ: %d bpm"
+msgstr "Xerador de tacto: %d ppm"
 
 #: src/metronom/metronom.c:131
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "タクトジェネレータ: %d bpm %d/%d"
+msgstr "Xerador de tacto: %d ppm %d/%d"
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
-msgstr "タクトジェネレータ"
+msgstr "Xerador de tacto"
 
 #: src/mixer/mixer.c:186
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>チャンネルミキサ</b>"
+msgstr "<b>Mesturador de canles</b>"
 
 #: src/mixer/mixer.c:187
 msgid "Output channels:"
-msgstr "出力チャンネル:"
+msgstr "Canles de saída:"
 
 #: src/mixer/mixer.c:197
 msgid "Channel Mixer"
-msgstr "チャンネルミキサ"
+msgstr "Mesturador de canles"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "Engadido MMS"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (Module Player)"
+msgstr "ModPlug (modulo reprodutor)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
-msgstr "サラウンド"
+msgstr "Son envolvente"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr "MPG123 プラグイン"
+msgstr "Engadido MPG123"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 サーバ"
+msgstr "Servidor MPRIS 2"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Neon HTTP/HTTPS プラグイン"
+msgstr "Engadido Neon HTTP/HTTPS"
 
 #: src/notify/event.c:49
 msgid "Stopped"
-msgstr "停止しました"
+msgstr "Parado"
 
 #: src/notify/event.c:49
 msgid "Audacious is not playing."
-msgstr "Audacious は曲を再生していません。"
+msgstr "Audacious non está a reproducir nada."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr "デスクトップ通知"
+msgstr "Notificacións de escritorio"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
-msgstr "1. デフォルトデバイス"
+msgstr "1. Dispositivo predeterminado"
 
 #: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
-msgstr "オーディオデバイス:"
+msgstr "Dispositivo de son:"
 
 #: src/oss4/plugin.c:77
 msgid "Use alternate device:"
-msgstr "代替デバイスを使用する:"
+msgstr "Empregar un dispositivo alternativo:"
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr "セッション間で音量を保存する"
+msgstr "Gardar o volume entre sesións."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
-msgstr "OSS ソフトウェアのフォーマット変換を有効にする"
+msgstr "Activar as conversións de formato realizadas plo software OSS."
 
 #: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr ""
-"バーチャルミキシングを防ぐために排他的モード (exclusive mode) を有効にする"
+msgstr "Activar o modo exclusivo para impedir a mestura virtual."
 
 #: src/oss4/plugin.c:125
 msgid "OSS4 Output"
-msgstr "OSS4 出力"
+msgstr "Saída OSS4"
 
 #: src/pls/pls.c:114
 msgid "PLS Playlists"
-msgstr "PLS プレイリスト"
+msgstr "Listas de reprodución PLS"
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 デコーダ"
+msgstr "Descodificador OpenPSF PSF1/PSF2"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr "PulseAudio 出力"
+msgstr "Saída PulseAudio"
 
 #: src/resample/resample.c:178
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Omitir/repetir as mostraxes"
 
 #: src/resample/resample.c:179
 msgid "Linear interpolation"
-msgstr "線形補間"
+msgstr "Interpolación lineal "
 
 #: src/resample/resample.c:180
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Interpolación de sincronía rápida"
 
 #: src/resample/resample.c:181
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Interpolación de sincronía media"
 
 #: src/resample/resample.c:182
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Mellor interpolación de sincronía"
 
 #: src/resample/resample.c:185
 msgid "<b>Conversion</b>"
-msgstr "<b>変換</b>"
+msgstr "<b>Conversión</b>"
 
 #: src/resample/resample.c:186
 msgid "Method:"
-msgstr "方法"
+msgstr "Método:"
 
 #: src/resample/resample.c:189
 msgid "Rate:"
-msgstr ""
+msgstr "Taxa:"
 
 #: src/resample/resample.c:192
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>Taxa de asignacións</b>"
 
 #: src/resample/resample.c:193
 msgid "Use rate mappings"
-msgstr ""
+msgstr "Empregar a taxa de asignacións"
 
 #: src/resample/resample.c:195
 msgid "8 kHz:"
@@ -2154,27 +2161,27 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:223
 msgid "Sample Rate Converter"
-msgstr "サンプリング周波数コンバータ"
+msgstr "Convertedor de taxa de mostraxe"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
 msgid "Change password"
-msgstr "パスワードの変更"
+msgstr "Cambiar contrasinal"
 
 #: src/scrobbler/configure.c:140
 msgid "<b>Services</b>"
-msgstr "<b>サービス</b>"
+msgstr "<b>Servizos</b>"
 
 #: src/scrobbler/configure.c:162
 msgid "Username:"
-msgstr "ユーザ名:"
+msgstr "Usuario:"
 
 #: src/scrobbler/configure.c:168
 msgid "Password:"
-msgstr "パスワード:"
+msgstr "Contrasinal:"
 
 #: src/scrobbler/configure.c:176
 msgid "Scrobbler URL:"
-msgstr "Scrobbler URL:"
+msgstr "URL de Scrobbler:"
 
 #: src/scrobbler/configure.c:203
 msgid "<b>Last.FM</b>"
@@ -2186,19 +2193,19 @@ msgstr "Scrobbler"
 
 #: src/sdlout/plugin.c:43
 msgid "SDL Output"
-msgstr "SDL 出力"
+msgstr "Saída SDL"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
-msgstr "ライブラリ"
+msgstr "Biblioteca"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Artist"
-msgstr "不明なアーティスト"
+msgstr "Interprete descoñecido"
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
-msgstr "不明なアルバム"
+msgstr "Álbum descoñecido"
 
 #: src/search-tool/search-tool.c:627
 #, c-format
@@ -2206,12 +2213,15 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+" en %s por %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
+msgstr[0] "%d álbum"
+msgstr[1] "%d álbumes"
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2222,6 +2232,11 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s\n"
+" %s, %d canción"
+msgstr[1] ""
+"%s\n"
+" %s, %d cancións"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2232,82 +2247,87 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
+"%s\n"
+" %d canción por %s"
+msgstr[1] ""
+"%s\n"
+" %d cancións por %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
-msgstr "プレイリストを作成(_C)"
+msgstr "_Crear unha lista de reprodución"
 
 #: src/search-tool/search-tool.c:689
 msgid "_Add to Playlist"
-msgstr "プレイリストに追加(_A)"
+msgstr "_Engadir á lista de reprodución"
 
 #: src/search-tool/search-tool.c:729
 msgid "Search library"
-msgstr "ライブラリを検索"
+msgstr "Buscar unha fonoteca"
 
 #: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"音楽ライブラリを Audacious へインポートするには、フォルダを選択し、\"再読み込"
-"み\" アイコンをクリックしてください。"
+"Para importar a súa fonoteca en Audacious, escolla un cartafol e prema no "
+"«Actualizar»."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
-msgstr "お待ちください..."
+msgstr "Agarde..."
 
 #: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
-msgstr "フォルダを選択"
+msgstr "Escolla un cartafol"
 
 #: src/search-tool/search-tool.c:803
 msgid "Search Tool"
-msgstr "検索ツール"
+msgstr "Ferramenta de buscas"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr "Winamp クラシックインターフェイス"
+msgstr "Interface clásica do Winamp"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Player:"
-msgstr "プレイヤ(_P):"
+msgstr "_Reprodutor:"
 
 #: src/skins/skins_cfg.c:208
 msgid "Select main player window font:"
-msgstr "メインウィンドウで使用するフォントの選択"
+msgstr "Seleccione o tipo de letra da xanela principal do reprodutor:"
 
 #: src/skins/skins_cfg.c:210
 msgid "_Playlist:"
-msgstr "プレイリスト(_P):"
+msgstr "_lista de reprodución:"
 
 #: src/skins/skins_cfg.c:211
 msgid "Select playlist font:"
-msgstr "プレイリストで使用するフォントの選択"
+msgstr "Seleccione o tipo de letra da lista de reprodución:"
 
 #: src/skins/skins_cfg.c:215
 msgid "<b>_Fonts</b>"
-msgstr "<b>フォント(_F)</b>"
+msgstr "<b>Tipo de _letra:</b>"
 
 #: src/skins/skins_cfg.c:218
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "ビットマップフォントを使用する (ASCII のみ対応)"
+msgstr "Empregar tipos de letra de mapa de bits (só admiten ASCII)"
 
 #: src/skins/skins_cfg.c:220
 msgid "Scroll song title in both directions"
-msgstr "曲のタイトルを両方向にスクロールする"
+msgstr "Desprazar o título da canción en ambas direccións"
 
 #: src/skins/skins_cfg.c:298
 msgid "<b>_Skin</b>"
-msgstr "<b>スキン(_S)</b>"
+msgstr "<b>_Tema</b>"
 
 #: src/skins/skins_cfg.c:345
 msgid "Interface Preferences"
-msgstr "インターフェイスの設定"
+msgstr "Preferencias da interface"
 
 #: src/skins/ui_equalizer.c:333
 msgid "Preamp"
-msgstr "プリアンプ"
+msgstr "Preamplificador"
 
 #: src/skins/ui_equalizer.c:337
 msgid "31 Hz"
@@ -2351,44 +2371,44 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:380
 msgid "Audacious Equalizer"
-msgstr "Audacious イコライザ"
+msgstr "Ecualizador do Audacious"
 
 #: src/skins/ui_equalizer.c:898
 msgid "Presets"
-msgstr "プリセット"
+msgstr "Axustes"
 
 #: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:442
 msgid "Load preset"
-msgstr "プリセットの読み込み"
+msgstr "Cargar o axustes"
 
 #: src/skins/ui_equalizer.c:996
 msgid "Load auto-preset"
-msgstr "自動プリセットの読み込み"
+msgstr "Cargar o axuste automático"
 
 #: src/skins/ui_equalizer.c:1026 src/skins/ui_equalizer.c:1044
 #: src/skins/ui_equalizer.c:1060
 msgid "Load equalizer preset"
-msgstr "イコライザのプリセットの読み込み"
+msgstr "Cargar o axuste do ecualizador"
 
 #: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:463
 msgid "Save preset"
-msgstr "プリセットの保存"
+msgstr "Gardar o axustes"
 
 #: src/skins/ui_equalizer.c:1095
 msgid "Save auto-preset"
-msgstr "自動プリセットの保存"
+msgstr "Gardar o axuste automático"
 
 #: src/skins/ui_equalizer.c:1126 src/skins/ui_equalizer.c:1162
 msgid "Save equalizer preset"
-msgstr "イコライザプリセットの保存"
+msgstr "Gardar o axuste do ecualizador"
 
 #: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:478
 msgid "Delete preset"
-msgstr "プリセットの削除"
+msgstr "Eliminar o axuste"
 
 #: src/skins/ui_equalizer.c:1198
 msgid "Delete auto-preset"
-msgstr "自動プリセットの削除"
+msgstr "Eliminar o axuste automático"
 
 #: src/skins/ui_main.c:439
 msgid "kbps"
@@ -2400,687 +2420,692 @@ msgstr "kHz"
 
 #: src/skins/ui_main.c:454
 msgid "surround"
-msgstr "サラウンド"
+msgstr "son envolvente"
 
 #: src/skins/ui_main.c:804
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "%d:%-2.2d / %d:%-2.2d へシークする"
+msgstr "Ir a %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:825
 #, c-format
 msgid "Volume: %d%%"
-msgstr "音量: %d%%"
+msgstr "Volume: %d%%"
 
 #: src/skins/ui_main.c:848
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "バランス: %d%% 左"
+msgstr "Balance: %d%% esquerda"
 
 #: src/skins/ui_main.c:850
 msgid "Balance: center"
-msgstr "バランス: 中央"
+msgstr "Balance: centro"
 
 #: src/skins/ui_main.c:852
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "バランス: %d%% 右"
+msgstr "Balance: %d%% dereita"
 
 #: src/skins/ui_main.c:978
 msgid "Options Menu"
-msgstr "オプションメニュー"
+msgstr "Menú de opcións"
 
 #: src/skins/ui_main.c:982
 msgid "Disable 'Always On Top'"
-msgstr "「常に最前面に配置」無効"
+msgstr "Desactivar «Sempre enriba»"
 
 #: src/skins/ui_main.c:984
 msgid "Enable 'Always On Top'"
-msgstr "「常に最前面に配置」有効"
+msgstr "Activar «Sempre enriba»"
 
 #: src/skins/ui_main.c:987
 msgid "File Info Box"
-msgstr "ファイル情報ボックス"
+msgstr "Caixa de información do ficheiro"
 
 #: src/skins/ui_main.c:992
 msgid "Visualization Menu"
-msgstr "視覚化メニュー"
+msgstr "Menú de visualización"
 
 #: src/skins/ui_main.c:1650
 msgid "Single mode."
-msgstr "シングルモード"
+msgstr "Modo único."
 
 #: src/skins/ui_main.c:1652
 msgid "Playlist mode."
-msgstr "プレイリストモード"
+msgstr "Modo da lista de reprodución"
 
 #: src/skins/ui_main.c:1674
 msgid "Stopping after song."
-msgstr "曲の再生後に停止する"
+msgstr "Parar despois da canción."
 
 #: src/skins/ui_main.c:1676
 msgid "Not stopping after song."
-msgstr "曲の再生後に停止しない"
+msgstr "Non parar despois da canción."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Song Name"
-msgstr "曲名を自動でスクロールする"
+msgstr "Desprazamento automático do nome da canción"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
-msgstr "現在の曲の後に停止する"
+msgstr "Parar ao rematar a canción actual"
 
 #: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 msgid "Peaks"
-msgstr "ピーク"
+msgstr "Picos"
 
 #: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 msgid "Repeat"
-msgstr "リピート"
+msgstr "Repetir"
 
 #: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
-msgstr "シャッフル"
+msgstr "Ao chou"
 
 #: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
-msgstr "次の曲に進まない"
+msgstr "Non avanzar na lista de reprodución"
 
 #: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Show Player"
-msgstr "プレイヤを表示する"
+msgstr "Amosar o reprodutor"
 
 #: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Show Playlist Editor"
-msgstr "プレイリストエディタを表示する"
+msgstr "Amosar o editor de listas de reprodución"
 
 #: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 msgid "Show Equalizer"
-msgstr "イコライザを表示する"
+msgstr "Amosar o ecualizador"
 
 #: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
 msgid "Always on Top"
-msgstr "常に最前面に配置する"
+msgstr "Sempre enriba"
 
 #: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
 msgid "Put on All Workspaces"
-msgstr "全ワークスペースに配置する"
+msgstr "Poñer en todos os espazos de traballo"
 
 #: src/skins/ui_manager.c:100 src/skins/ui_manager.c:101
 msgid "Roll up Player"
-msgstr "プレイヤを巻き上げる"
+msgstr "Enrolar o reprodutor"
 
 #: src/skins/ui_manager.c:103 src/skins/ui_manager.c:104
 msgid "Roll up Playlist Editor"
-msgstr "プレイリストエディタを巻き上げる"
+msgstr "Enrolar o editor de listas de reprodución"
 
 #: src/skins/ui_manager.c:106 src/skins/ui_manager.c:107
 msgid "Roll up Equalizer"
-msgstr "イコライザを巻き上げる"
+msgstr "Enrolar o ecualizador"
 
 #: src/skins/ui_manager.c:115
 msgid "Analyzer"
-msgstr "アナライザ"
+msgstr "Analizador"
 
 #: src/skins/ui_manager.c:116
 msgid "Scope"
-msgstr "スコープ"
+msgstr "Campo"
 
 #: src/skins/ui_manager.c:117
 msgid "Voiceprint"
-msgstr "声紋"
+msgstr "Marca de voz"
 
 #: src/skins/ui_manager.c:118
 msgid "Off"
-msgstr "オフ"
+msgstr "Apagado"
 
 #: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
 #: src/skins/ui_manager.c:145
 msgid "Normal"
-msgstr "標準"
+msgstr "Normal"
 
 #: src/skins/ui_manager.c:123 src/skins/ui_manager.c:140
 msgid "Fire"
-msgstr "ファイア"
+msgstr "Lume"
 
 #: src/skins/ui_manager.c:124
 msgid "Vertical Lines"
-msgstr "垂直ライン"
+msgstr "Liñas verticais"
 
 #: src/skins/ui_manager.c:128
 msgid "Lines"
-msgstr "ライン"
+msgstr "Liñas"
 
 #: src/skins/ui_manager.c:129
 msgid "Bars"
-msgstr "バー"
+msgstr "Barras"
 
 #: src/skins/ui_manager.c:133
 msgid "Dot Scope"
-msgstr "ドット"
+msgstr "Campo de puntos"
 
 #: src/skins/ui_manager.c:134
 msgid "Line Scope"
-msgstr "ライン"
+msgstr "Campo de liñas"
 
 #: src/skins/ui_manager.c:135
 msgid "Solid Scope"
-msgstr "ソリッド"
+msgstr "Campo sólido"
 
 #: src/skins/ui_manager.c:141
 msgid "Ice"
-msgstr "アイス"
+msgstr "Xeo"
 
 #: src/skins/ui_manager.c:146
 msgid "Smooth"
-msgstr "スムーズ"
+msgstr "Suave"
 
 #: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 msgid "Slowest"
-msgstr "最も遅い"
+msgstr "Máis lento"
 
 #: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
 msgid "Slow"
-msgstr "遅い"
+msgstr "Lento"
 
 #: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Medium"
-msgstr "中"
+msgstr "Medio"
 
 #: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 msgid "Fast"
-msgstr "早い"
+msgstr "Rápido"
 
 #: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
 msgid "Fastest"
-msgstr "最も早い"
+msgstr "Máis rápido"
 
 #: src/skins/ui_manager.c:166
 msgid "Time Elapsed"
-msgstr "経過時間を表示する"
+msgstr "Tempo transcorrido"
 
 #: src/skins/ui_manager.c:167
 msgid "Time Remaining"
-msgstr "残り時間を表示する"
+msgstr "Tempo restante"
 
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Pause"
-msgstr "一時停止"
+msgstr "Pausa"
 
 #: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
 msgid "Previous"
-msgstr "前の曲"
+msgstr "Anterior"
 
 #: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
 msgid "Next"
-msgstr "次の曲"
+msgstr "Seguinte"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization"
-msgstr "視覚化"
+msgstr "Visualización"
 
 #: src/skins/ui_manager.c:197
 msgid "Visualization Mode"
-msgstr "視覚化モード"
+msgstr "Modo de visualización"
 
 #: src/skins/ui_manager.c:198
 msgid "Analyzer Mode"
-msgstr "アナライザモード"
+msgstr "Modo analizador"
 
 #: src/skins/ui_manager.c:199
 msgid "Scope Mode"
-msgstr "スコープモード"
+msgstr "Modo de campo"
 
 #: src/skins/ui_manager.c:200
 msgid "Voiceprint Mode"
-msgstr "声紋モード"
+msgstr "Modo marca de voz"
 
 #: src/skins/ui_manager.c:201
 msgid "WindowShade VU Mode"
-msgstr "WindowShade VU モード"
+msgstr "Modo WindowShade VU"
 
 #: src/skins/ui_manager.c:202
 msgid "Analyzer Falloff"
-msgstr "アナライザ フォールオフ"
+msgstr "Caída do analizador"
 
 #: src/skins/ui_manager.c:203
 msgid "Peaks Falloff"
-msgstr "ピーク フォールオフ"
+msgstr "Caída dos picos"
 
 #: src/skins/ui_manager.c:208
 msgid "Playlist"
-msgstr "プレイリスト"
+msgstr "Lista de reprodución"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "New Playlist"
-msgstr "新しいプレイリスト"
+msgstr "Nova lista de reprodución"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "Select Next Playlist"
-msgstr "次のプレイリストを選択"
+msgstr "Seguinte lista de reprodución"
 
 #: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Previous Playlist"
-msgstr "前のプレイリストを選択"
+msgstr "Lista de reprodución anterior "
 
 #: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Delete Playlist"
-msgstr "プレイリストの削除"
+msgstr "Eliminar a lista de reprodución"
 
 #: src/skins/ui_manager.c:222
 msgid "Import Playlist"
-msgstr "プレイリストのインポート"
+msgstr "Importar lista de reprodución"
 
 #: src/skins/ui_manager.c:223
 msgid "Loads a playlist file into the selected playlist."
-msgstr "選択したプレイリストにプレイリストファイルを読み込みます。"
+msgstr "Carga un ficheiro de listas na lista de reprodución seleccionada."
 
 #: src/skins/ui_manager.c:226
 msgid "Export Playlist"
-msgstr "プレイリストのエクスポート"
+msgstr "Exportar lista de reprodución"
 
 #: src/skins/ui_manager.c:227
 msgid "Saves the selected playlist."
-msgstr "選択したプレイリストを保存します。"
+msgstr "Garda a lista de reprodución seleccionada."
 
 #: src/skins/ui_manager.c:229
 msgid "Refresh List"
-msgstr "プレイリストの更新"
+msgstr "Actualizar a lista"
 
 #: src/skins/ui_manager.c:230
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr "プレイリストのエントリに関連付けられたメタデータを更新します。"
+msgstr ""
+"Actualiza os metadatos asociados cunha entrada da lista de reprodución."
 
 #: src/skins/ui_manager.c:233
 msgid "Playlist Manager"
-msgstr "プレイリストマネージャ"
+msgstr "Xestor da lista de reprodución"
 
 #: src/skins/ui_manager.c:234
 msgid "Queue Manager"
-msgstr "キューマネージャ"
+msgstr "Xestor da cola"
 
 #: src/skins/ui_manager.c:237
 msgid "View"
-msgstr "表示"
+msgstr "Ver"
 
 #: src/skins/ui_manager.c:238
 msgid "Interface"
-msgstr "インターフェイス"
+msgstr "Interface"
 
 #: src/skins/ui_manager.c:239
 msgid "Interface Preferences ..."
-msgstr "インターフェイスの設定"
+msgstr "Preferencias da interface..."
 
 #: src/skins/ui_manager.c:243
 msgid "Add Internet Address..."
-msgstr "インターネットアドレスの追加"
+msgstr "Engadir un enderezo da Internet..."
 
 #: src/skins/ui_manager.c:244
 msgid "Adds a remote track to the playlist."
-msgstr "リモートトラックをプレイリストに追加します。"
+msgstr "Engadir unha pista remota á lista reprodución."
 
 #: src/skins/ui_manager.c:247
 msgid "Add Files..."
-msgstr "ファイルの追加"
+msgstr "Engadir ficheiros..."
 
 #: src/skins/ui_manager.c:248
 msgid "Adds files to the playlist."
-msgstr "ファイルをプレイリストに追加します."
+msgstr "Engade ficheiros á lista de reprodución."
 
 #: src/skins/ui_manager.c:253
 msgid "Search and Select"
-msgstr "検索と選択"
+msgstr "Buscar e seleccionar"
 
 #: src/skins/ui_manager.c:254
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr "プレイリストを検索し、検索条件に合うものを選択します。"
+msgstr ""
+"Busca na lista de reprodución e selecciona as entradas que cumpren un "
+"criterio específico."
 
 #: src/skins/ui_manager.c:257
 msgid "Invert Selection"
-msgstr "選択範囲の反転"
+msgstr "Inverter a selección"
 
 #: src/skins/ui_manager.c:258
 msgid "Inverts the selected and unselected entries."
-msgstr "エントリの選択と未選択を反転します。"
+msgstr "Inverte as entradas seleccionadas e as non seleccionadas."
 
 #: src/skins/ui_manager.c:261
 msgid "Select All"
-msgstr "全て選択"
+msgstr "Seleccionar todo"
 
 #: src/skins/ui_manager.c:262
 msgid "Selects all of the playlist entries."
-msgstr "プレイリストの全てのエントリを選択します。"
+msgstr "Selecciona todos os elementos da lista de reprodución."
 
 #: src/skins/ui_manager.c:265
 msgid "Select None"
-msgstr "未選択にする"
+msgstr "Non seleccionar nada"
 
 #: src/skins/ui_manager.c:266
 msgid "Deselects all of the playlist entries."
-msgstr "プレイリストの全てのエントリを未選択にします。"
+msgstr "Desmarca todos os elementos da lista de reprodución."
 
 #: src/skins/ui_manager.c:271
 msgid "Remove All"
-msgstr "全て削除"
+msgstr "Retirar todo"
 
 #: src/skins/ui_manager.c:272
 msgid "Removes all entries from the playlist."
-msgstr "全てのエントリをプレイリストから削除します."
+msgstr "Retirar todas as entradas da lista de reprodución."
 
 #: src/skins/ui_manager.c:275
 msgid "Clear Queue"
-msgstr "キューのクリア"
+msgstr "Limpar a cola"
 
 #: src/skins/ui_manager.c:276
 msgid "Clears the queue associated with this playlist."
-msgstr "プレイリストに関連付けられたキューをクリアします."
+msgstr "Limpa a cola asociada con esta lista de reprodución."
 
 #: src/skins/ui_manager.c:279
 msgid "Remove Unavailable Files"
-msgstr "利用できないファイルの削除"
+msgstr "Retirar os ficheiros non dispoñíbeis"
 
 #: src/skins/ui_manager.c:280
 msgid "Removes unavailable files from the playlist."
-msgstr "利用できないファイルをプレイリストから削除します。"
+msgstr "Retirar os ficheiros non dispoñíbeis da lista de reprodución."
 
 #: src/skins/ui_manager.c:283
 msgid "Remove Duplicates"
-msgstr "重複エントリの削除"
+msgstr "Retirar os duplicados"
 
 #: src/skins/ui_manager.c:285 src/skins/ui_manager.c:317
 #: src/skins/ui_manager.c:347
 msgid "By Title"
-msgstr "タイトル"
+msgstr "Polo título"
 
 #: src/skins/ui_manager.c:286
 msgid "Removes duplicate entries from the playlist by title."
-msgstr "重複するタイトルのエントリをプレイリストから削除します。"
+msgstr "Retira as entradas duplicadas da lista de reprodución polo título."
 
 #: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
 #: src/skins/ui_manager.c:359
 msgid "By Filename"
-msgstr "ファイル名"
+msgstr "Polo nome de ficheiro"
 
 #: src/skins/ui_manager.c:290
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr "重複するファイル名のエントリをプレイリストから削除します."
+msgstr ""
+"Retira as entradas duplicadas da lista de reprodución polo nome do ficheiro."
 
 #: src/skins/ui_manager.c:293 src/skins/ui_manager.c:333
 #: src/skins/ui_manager.c:363
 msgid "By Path + Filename"
-msgstr "パス名とファイル名"
+msgstr "Pola ruta e o nome de ficheiro"
 
 #: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "重複するパス名とファイル名のエントリをプレイリストから削除します。"
+msgstr ""
+"Retira as entradas duplicadas da lista de reprodución pola ruta competa."
 
 #: src/skins/ui_manager.c:297
 msgid "Remove Unselected"
-msgstr "選択していないエントリの削除"
+msgstr "Retirar os NON seleccionados"
 
 #: src/skins/ui_manager.c:298
 msgid "Remove unselected entries from the playlist."
-msgstr "選択していないエントリをプレイリストから削除します。"
+msgstr "Retirar as entradas NON seleccionadas da lista de reprodución."
 
 #: src/skins/ui_manager.c:301
 msgid "Remove Selected"
-msgstr "選択したエントリの削除"
+msgstr "Retirar os seleccionados"
 
 #: src/skins/ui_manager.c:302
 msgid "Remove selected entries from the playlist."
-msgstr "選択したエントリをプレイリストから削除します。"
+msgstr "Retirar as entradas seleccionadas da lista de reprodución."
 
 #: src/skins/ui_manager.c:307
 msgid "Randomize List"
-msgstr "プレイリストをランダムにする"
+msgstr "Lista ao chou"
 
 #: src/skins/ui_manager.c:308
 msgid "Randomizes the playlist."
-msgstr "プレイリストの順序をランダムにします。"
+msgstr "Ordenar ao chou a lista de reprodución"
 
 #: src/skins/ui_manager.c:311
 msgid "Reverse List"
-msgstr "プレイリストを逆順にする"
+msgstr "Lista inversa"
 
 #: src/skins/ui_manager.c:312
 msgid "Reverses the playlist."
-msgstr "プレイリストの順序を逆順にします。"
+msgstr "Inverte a orde da lista de reprodución"
 
 #: src/skins/ui_manager.c:315
 msgid "Sort List"
-msgstr "プレイリストのソート"
+msgstr "Ordenar a lista"
 
 #: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
 msgid "Sorts the list by title."
-msgstr "タイトル順でプレイリストをソートします."
+msgstr "Ordenar a lista polo título"
 
 #: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
 msgid "By Album"
-msgstr "アルバム"
+msgstr "Polo álbum"
 
 #: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
 msgid "Sorts the list by album."
-msgstr "アルバム順でプレイリストをソートします。"
+msgstr "Ordenar a lista polo álbum"
 
 #: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "By Artist"
-msgstr "アーティスト"
+msgstr "Polo interprete"
 
 #: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by artist."
-msgstr "アーティスト順でプレイリストをソートします。"
+msgstr "Ordenar a lista polo interprete"
 
 #: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by filename."
-msgstr "ファイル名順でプレイリストをソートします。"
+msgstr "Ordenar a lista polo nome de ficheiro"
 
 #: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by full pathname."
-msgstr "ファイルのパス名でプレイリストをソートします。"
+msgstr "Ordenar a lista pola ruta completa do ficheiro"
 
 #: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "By Date"
-msgstr "日付"
+msgstr "Pola data"
 
 #: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by modification time."
-msgstr "変更時間でプレイリストをソートします。"
+msgstr "Ordenar a lista pola data de modificación."
 
 #: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
 msgid "By Track Number"
-msgstr "トラック番号"
+msgstr "Polo número de pista"
 
 #: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by track number."
-msgstr "トラック番号順でプレイリストをソートします。"
+msgstr "Ordenar a lista polo número de pista."
 
 #: src/skins/ui_manager.c:345
 msgid "Sort Selected"
-msgstr "選択範囲のソート"
+msgstr "Ordenar os seleccionados"
 
 #: src/skins/ui_manager.c:381
 msgid "File"
-msgstr "ファイル"
+msgstr "Ficheiro"
 
 #: src/skins/ui_manager.c:384
 msgid "Plugin Services"
-msgstr "プラグインサービス"
+msgstr "Servizos de engadidos"
 
 #: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
 msgid "View Track Details"
-msgstr "トラックの詳細を表示"
+msgstr "Ver detalles da pista"
 
 #: src/skins/ui_manager.c:387 src/skins/ui_manager.c:390
 msgid "View track details"
-msgstr "トラックの詳細を表示"
+msgstr "Ver detalles da pista"
 
 #: src/skins/ui_manager.c:392 src/skins/ui_manager.c:393
 msgid "About Audacious"
-msgstr "Audacious について"
+msgstr "Sobre Audacious"
 
 #: src/skins/ui_manager.c:395
 msgid "Play File"
-msgstr "ファイルを再生"
+msgstr "Reproducir un ficheiro"
 
 #: src/skins/ui_manager.c:396
 msgid "Load and play a file"
-msgstr "ファイルを読み込んで再生"
+msgstr "Cargar e reproducir un ficheiro"
 
 #: src/skins/ui_manager.c:398
 msgid "Play Location"
-msgstr "場所を再生"
+msgstr "Reproducir unha localización"
 
 #: src/skins/ui_manager.c:399
 msgid "Play media from the selected location"
-msgstr "選択した場所からメディアを再生"
+msgstr "Reproducir o medio da localización seleccionada"
 
 #: src/skins/ui_manager.c:401
 msgid "Plugin services"
-msgstr "プラグインサービス"
+msgstr "Servizos de engadidos"
 
 #: src/skins/ui_manager.c:403
 msgid "Preferences"
-msgstr "設定"
+msgstr "Preferencias"
 
 #: src/skins/ui_manager.c:404
 msgid "Open preferences window"
-msgstr "設定ウィンドウを開く"
+msgstr "Abrir a xanela de preferencias"
 
 #: src/skins/ui_manager.c:407
 msgid "Quit Audacious"
-msgstr "Audacious を終了する"
+msgstr "Saír do Audacious"
 
 #: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
 msgid "Set A-B"
-msgstr "A-B をセット"
+msgstr "Estabelecer A-B"
 
 #: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
 msgid "Clear A-B"
-msgstr "A-B をクリア"
+msgstr "Limpar A-B"
 
 #: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
 msgid "Jump to Time"
-msgstr "指定した時間へ移動"
+msgstr "Saltar no tempo"
 
 #: src/skins/ui_manager.c:421
 msgid "Queue Toggle"
-msgstr "キューをトグルする"
+msgstr "Conmutar a cola"
 
 #: src/skins/ui_manager.c:422
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr "プレイリストのキューに入っているエントリの有効/無効を切り替えます。"
+msgstr "Activa/desactiva as entradas na cola da lista de reprodución."
 
 #: src/skins/ui_manager.c:425
 msgid "Copy"
-msgstr "コピー"
+msgstr "Copiar"
 
 #: src/skins/ui_manager.c:427
 msgid "Cut"
-msgstr "切り取り"
+msgstr "Cortar"
 
 #: src/skins/ui_manager.c:429
 msgid "Paste"
-msgstr "貼り付け"
+msgstr "Pegar"
 
 #: src/skins/ui_manager.c:436
 msgid "Load"
-msgstr "読み込み"
+msgstr "Cargar"
 
 #: src/skins/ui_manager.c:437
 msgid "Import"
-msgstr "インポート"
+msgstr "Importar"
 
 #: src/skins/ui_manager.c:438
 msgid "Save"
-msgstr "保存"
+msgstr "Gardar"
 
 #: src/skins/ui_manager.c:439
 msgid "Delete"
-msgstr "削除"
+msgstr "Eliminar"
 
 #: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
 #: src/skins/ui_manager.c:477
 msgid "Preset"
-msgstr "プリセット"
+msgstr "Axuste"
 
 #: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
 #: src/skins/ui_manager.c:480
 msgid "Auto-load preset"
-msgstr "自動読み込みのプリセット"
+msgstr "Carga automática dun axuste"
 
 #: src/skins/ui_manager.c:445
 msgid "Load auto-load preset"
-msgstr "自動読み込みのプリセット"
+msgstr "Carga automática dun axuste"
 
 #: src/skins/ui_manager.c:448
 msgid "Load default preset into equalizer"
-msgstr "イコライザにデフォルトプリセットを読み込む"
+msgstr "Cargar o axuste predeterminado no ecualizador"
 
 #: src/skins/ui_manager.c:450
 msgid "Zero"
-msgstr "ゼロ"
+msgstr "Cero"
 
 #: src/skins/ui_manager.c:451
 msgid "Set equalizer preset levels to zero"
-msgstr "イコライザプリセットレベルをゼロにセット"
+msgstr "Estabelecer o axuste de niveis do ecualizador a cero"
 
 #: src/skins/ui_manager.c:453
 msgid "From file"
-msgstr "ファイル"
+msgstr "Desde un ficheiro"
 
 #: src/skins/ui_manager.c:454
 msgid "Load preset from file"
-msgstr "ファイルからプリセットを読み込み"
+msgstr "Cargar o axuste desde un ficheiro"
 
 #: src/skins/ui_manager.c:456
 msgid "From WinAMP EQF file"
-msgstr "WinAMP EQF ファイル"
+msgstr "Desde o ficheiro EQF do Winamp"
 
 #: src/skins/ui_manager.c:457
 msgid "Load preset from WinAMP EQF file"
-msgstr "WinAMP EQF ファイルからプリセットを読み込み"
+msgstr "Cargar o axuste desde o ficheiro EQF do Winamp"
 
 #: src/skins/ui_manager.c:459
 msgid "WinAMP Presets"
-msgstr "WinAMP プリセット"
+msgstr "Axustes do WinAMP"
 
 #: src/skins/ui_manager.c:460
 msgid "Import WinAMP presets"
-msgstr "WinAMP プリセット"
+msgstr "Importar os axustes do WinAMP"
 
 #: src/skins/ui_manager.c:466
 msgid "Save auto-load preset"
-msgstr "自動読み込みのプリセットの保存"
+msgstr "Gardar a carga automática dun axuste"
 
 #: src/skins/ui_manager.c:469
 msgid "Save default preset"
-msgstr "デフォルトプリセットの保存"
+msgstr "Gardar o axuste predeterminado"
 
 #: src/skins/ui_manager.c:471
 msgid "To file"
-msgstr "ファイル"
+msgstr "A un ficheiro"
 
 #: src/skins/ui_manager.c:472
 msgid "Save preset to file"
-msgstr "プリセットをファイルへ保存"
+msgstr "Gardar os axustes nun ficheiro"
 
 #: src/skins/ui_manager.c:474
 msgid "To WinAMP EQF file"
-msgstr "WinAMP EQF ファイル"
+msgstr "Nun ficheiro EQF do Winamp"
 
 #: src/skins/ui_manager.c:475
 msgid "Save preset to WinAMP EQF file"
-msgstr "プリセットを WinAMP EQF ファイルへ保存"
+msgstr "Gardar o axuste nun ficheiro EQF do Winamp"
 
 #: src/skins/ui_manager.c:481
 msgid "Delete auto-load preset"
-msgstr "自動読み込みのプリセットの削除"
+msgstr "Eliminar a carga automática dun axuste"
 
 #: src/skins/ui_playlist.c:246
 msgid "Search entries in active playlist"
-msgstr "有効になっているプレイリストのエントリを検索"
+msgstr "Buscar entradas na lista de reprodución activa"
 
 #: src/skins/ui_playlist.c:254
 msgid ""
@@ -3089,63 +3114,64 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"1つ以上の項目を入力すると、プレイリストのエントリが選択できます。項目には正規"
-"表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合は、"
-"検索したい文字をそのまま入力してください。"
+"Seleccione entradas na lista de reprodución indicando un ou máis campos. Os "
+"campos empregan sintaxe de expresións regulares, sen distinguir maiúsculas "
+"de minúsculas. Se non sabe como funcionan as expresións regulares, escriba "
+"só a parte del literal que quere buscar."
 
 #: src/skins/ui_playlist.c:262
 msgid "Title: "
-msgstr "タイトル: "
+msgstr "Título: "
 
 #: src/skins/ui_playlist.c:269
 msgid "Album: "
-msgstr "アルバム名: "
+msgstr "Álbum: "
 
 #: src/skins/ui_playlist.c:276
 msgid "Artist: "
-msgstr "アーティスト: "
+msgstr "Interprete: "
 
 #: src/skins/ui_playlist.c:283
 msgid "Filename: "
-msgstr "ファイル名: "
+msgstr "Nome do ficheiro: "
 
 #: src/skins/ui_playlist.c:291
 msgid "Clear previous selection before searching"
-msgstr "検索前に前回の選択をクリアする"
+msgstr "Limpar a selección previa antes de buscar"
 
 #: src/skins/ui_playlist.c:294
 msgid "Automatically toggle queue for matching entries"
-msgstr "マッチしたエントリのキューを自動的にトグルする"
+msgstr "Conmutar automaticamente a cola para as entradas coincidentes"
 
 #: src/skins/ui_playlist.c:297
 msgid "Create a new playlist with matching entries"
-msgstr "マッチしたエントリで新しいプレイリストを作成する"
+msgstr "Crear unha nova lista de reprodución coas entradas coincidentes"
 
 #: src/skins/ui_playlist.c:761
 msgid "Audacious Playlist Editor"
-msgstr "Audacious プレイリストエディタ"
+msgstr "Editor de listas de reprodución do Audacious"
 
 #: src/skins/ui_playlist.c:804
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d / %d)"
+msgstr "%s (%d de %d)"
 
 #: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
-msgstr "Archived Winamp 2.x スキン"
+msgstr "Tema para Winamp 2.x arquivado"
 
 #: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Unarchived Winamp 2.x スキン"
+msgstr "Tema para Winamp 2.x sen arquivar"
 
 #: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "ディレクトリ (%s) を作成できませんでした: %s\n"
+msgstr "Non foi posíbel crear o directorio (%s): %s\n"
 
 #: src/sndfile/plugin.c:437
 msgid "Sndfile Plugin"
-msgstr "Sndfile プラグイン"
+msgstr "Engadido Sndfile"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
@@ -3179,31 +3205,32 @@ msgstr ""
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
-msgstr ""
+msgstr "Cambio de canción"
 
 #: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
-msgstr "新しい曲を再生したときに実行するコマンド"
+msgstr "Orde que executar cando Audacious reproduce unha canción nova."
 
 #: src/song_change/song_change.c:440 src/song_change/song_change.c:446
 #: src/song_change/song_change.c:452 src/song_change/song_change.c:458
 msgid "Command:"
-msgstr "コマンド:"
+msgstr "Orde:"
 
 #: src/song_change/song_change.c:444
 msgid "Command to run toward the end of a song."
-msgstr "曲の再生が終わったときに実行するコマンド"
+msgstr "Orde que executar na fin dunha canción."
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "プレイリストの最後に到達したときに実行するコマンド"
+msgstr ""
+"Orde que executar cando Audacious chega á fin dunha lista de reprodución."
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
-"曲のタイトルが変わったときに実行するコマンド (ネットワークストリームのタイト"
-"ルなど)"
+"Orde que executar cando o título cambia para una canción (é dicir, títulos "
+"de fluxos da rede)"
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3223,89 +3250,90 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"次のフォーマット文字列を使用できます。\n"
-"これらは、コマンドが呼ばれる前に置換されます。\n"
-"ただし、プレイリストの最後の曲の場合、無意味なものもあります\n"
+"Pode empregar os formatos descritos embaixo, que\n"
+"serán substituídos antes da invocación da orde\n"
+"(non todos poden ser empregados para a orde fin\n"
+"da lista de reprodución):\n"
 "\n"
-"%F: サンプリング周波数 (Hz)\n"
-"%c: チャンネル数\n"
-"%f: ファイル名 (フルパス)\n"
-"%l: 長さ (ms)\n"
-"%n または %s: 曲名\n"
-"%r: ビットレート (bps)\n"
-"%t: プレイリストの位置 (%02d)\n"
-"%p: 再生中か？ (1 or 0)\n"
-"%a: アーティスト\n"
-"%b: アルバム\n"
-"%T: トラック名"
+"%F: frecuencia (en hertzios)\n"
+"%c: número de canles\n"
+"%f: nome do ficheiro (ruta completa)\n"
+"%l: duración (em ms)\n"
+"%n ou %s: nome da canción\n"
+"%r: taxa (en bits por segundo)\n"
+"%t: posición na lista de reprodución (%02d)\n"
+"%p: reproducíndose actualmente (1 ou 0)\n"
+"%a: interprete\n"
+"%b: álbum\n"
+"%T: título da pista"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>シェルに渡されるパラメータはクォートでくくってください。そ"
-"うしない場合、セキュリティ上の危険があります。</span>"
+"<span size='small'>Os parámetros enviados á consola deberíanse delimitar con "
+"comiñas. Doutro xeito existe un risco de seguranza.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
-msgstr "コマンド"
+msgstr "Ordes"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr "<b>テンポとピッチ</b>"
+msgstr "<b>Velocidade e ton</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr "テンポ:"
+msgstr "Velocidade:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr "ピッチ:"
+msgstr "Ton:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr "テンポとピッチ"
+msgstr "Velocidade e ton"
 
 #: src/statusicon/statusicon.c:394
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>マウススクロールアクション</b>"
+msgstr "<b>Acción coa roda do rato</b>"
 
 #: src/statusicon/statusicon.c:395
 msgid "Change volume"
-msgstr "音量の変更"
+msgstr "Cambiar o volume"
 
 #: src/statusicon/statusicon.c:398
 msgid "Change playing song"
-msgstr "再生曲の変更"
+msgstr "Cambiar a cancion que se está a reproducir"
 
 #: src/statusicon/statusicon.c:401
 msgid "<b>Other Settings</b>"
-msgstr "<b>その他の設定</b>"
+msgstr "<b>Outras configuracións</b>"
 
 #: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
-msgstr "ポップアップウィンドウを無効にする"
+msgstr "Desactivar a xanela emerxente"
 
 #: src/statusicon/statusicon.c:404
 msgid "Close to the system tray"
-msgstr "システムトレイに収納する"
+msgstr "Pechar na área de notificación"
 
 #: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
-msgstr "上にスクロールしたらプレイリストを進める"
+msgstr "Avanzar na lista de reprodución ao desprazar cara arriba"
 
 #: src/statusicon/statusicon.c:415
 msgid "Status Icon"
-msgstr "ステータスアイコン"
+msgstr "Icona de estado"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>エクストラステレオ</b>"
+msgstr "<b>Extra estéreo</b>"
 
 #: src/stereo_plugin/stereo.c:38
 msgid "Extra Stereo"
-msgstr "エクストラステレオ"
+msgstr "Extra estéreo"
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3314,36 +3342,36 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:86
 msgid "Tone Generator: "
-msgstr "トーンジェネレータ: "
+msgstr "Xerador de tons: "
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
-msgstr "トーンジェネレータ"
+msgstr "Xerador de tons"
 
 #: src/unix-io/unix-io.c:290
 msgid "File I/O Plugin"
-msgstr "ファイル I/O プラグイン"
+msgstr "Engadido File I/O"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr ""
+msgstr "Supresión de voz"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis デコーダ"
+msgstr "Descodificador de Ogg Vorbis"
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr "VTX デコーダ"
+msgstr "Descodificador VTX"
 
 #: src/wavpack/wavpack.c:345
 msgid "WavPack Decoder"
-msgstr "WavPack デコーダ"
+msgstr "Descodificador WavPack"
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr "2SF デコーダ"
+msgstr "Descodificador 2SF"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "Lista de reprodución XML compartíbel (XSPF)"

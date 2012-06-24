@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# Algimantas Margevičius <gymka@archlinux.lt>, 2012.
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
 # Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2011, 2012.
 # gymka <gymka@mail.ru>, 2011.
@@ -10,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-24 14:06-0400\n"
-"PO-Revision-Date: 2012-06-10 10:37+0000\n"
-"Last-Translator: Algimantas Margevičius <gymka@archlinux.lt>\n"
+"POT-Creation-Date: 2012-06-24 14:21-0400\n"
+"PO-Revision-Date: 2012-06-24 18:08+0000\n"
+"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -1558,9 +1559,8 @@ msgid "_Random Order"
 msgstr "_Atsitiktine tvarka"
 
 #: src/gtkui/menus.c:195
-#, fuzzy
 msgid "_Play This Playlist"
-msgstr "_Sukurti grojaraštį"
+msgstr ""
 
 #: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
@@ -1595,9 +1595,8 @@ msgid "_Export ..."
 msgstr "_Eksportuoti ..."
 
 #: src/gtkui/menus.c:208
-#, fuzzy
 msgid "Playlist _Manager ..."
-msgstr "_Grojaraščio redaktorius ..."
+msgstr ""
 
 #: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
@@ -1700,9 +1699,8 @@ msgid "Select _All"
 msgstr "Pasirinkti _viską"
 
 #: src/gtkui/menus.c:254
-#, fuzzy
 msgid "_Rename ..."
-msgstr "_Pervadinti"
+msgstr ""
 
 #: src/gtkui/ui_gtk.c:98
 msgid "GTK Interface"
@@ -1791,9 +1789,8 @@ msgid "Jump to File"
 msgstr "Šokti į failą"
 
 #: src/hotkey/gui.c:83
-#, fuzzy
 msgid "Toggle Player Window(s)"
-msgstr "Perjungti grotuvo langus"
+msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1808,9 +1805,8 @@ msgid "Toggle Shuffle"
 msgstr "Perjungti maišymą"
 
 #: src/hotkey/gui.c:87
-#, fuzzy
 msgid "Raise Player Window(s)"
-msgstr "Perjungti grotuvo langus"
+msgstr ""
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -3178,9 +3174,8 @@ msgid "Sndfile Plugin"
 msgstr "Sndfile įskiepis"
 
 #: src/sndio/sndio.c:189
-#, fuzzy
 msgid "About Sndio Output Plugin"
-msgstr "Audio CD įskiepis"
+msgstr ""
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3190,9 +3185,8 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:259
-#, fuzzy
 msgid "Unsupported format"
-msgstr "Nepalaikomas disko tipas."
+msgstr ""
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3202,14 +3196,12 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:403
-#, fuzzy
 msgid "sndio device"
-msgstr "Audio įrenginys:"
+msgstr ""
 
 #: src/sndio/sndio.c:419
-#, fuzzy
 msgid "(empty means default)"
-msgstr "Žadinti (numatyta):"
+msgstr ""
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3287,21 +3279,19 @@ msgstr "Komandos"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Greitis ir žingsnis</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
-#, fuzzy
 msgid "Speed:"
-msgstr "Greitis"
+msgstr "Greitis:"
 
 #: src/speed-pitch/speed-pitch.c:231
-#, fuzzy
 msgid "Pitch:"
-msgstr "Pikai"
+msgstr "Žingsnis:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Greitis ir žingsnis"
 
 #: src/statusicon/statusicon.c:394
 msgid "<b>Mouse Scroll Action</b>"
@@ -3316,9 +3306,8 @@ msgid "Change playing song"
 msgstr "Keisti grojančią dainą"
 
 #: src/statusicon/statusicon.c:401
-#, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "<b>Dažnio nustatymai</b>"
+msgstr "<b>Kiti nustatymai</b>"
 
 #: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"

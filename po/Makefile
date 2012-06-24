@@ -17,6 +17,7 @@ LOCALES = ca.po \
 	  et.po \
 	  eu.po \
 	  fr.po \
+	  gl.po \
 	  hu.po \
 	  it.po \
 	  ja.po \

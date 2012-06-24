@@ -28,6 +28,9 @@ fi.po)
 fr.po)
     LANGUAGE="French"
     ;;
+gl.po)
+    LANGUAGE="Galician"
+    ;;
 hu.po)
     LANGUAGE="Hungarian"
     ;;
