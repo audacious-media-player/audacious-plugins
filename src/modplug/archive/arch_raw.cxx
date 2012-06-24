@@ -4,13 +4,6 @@
  * This source code is public domain.
  */
 
-//open()
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-//mmap()
-#include <unistd.h>
-#include <sys/mman.h>
 #include <cstdlib>
 
 #include "arch_raw.h"
