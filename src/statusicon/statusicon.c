@@ -25,6 +25,7 @@
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
+#include <audacious/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -337,6 +338,13 @@ static void si_enable(gboolean enable)
 
     if (! enable && si_applet)
     {
+        /* Prevent accidentally hiding of the interface
+         * by disabling the plugin while Audacious is closed to the tray. */
+        extern GeneralPlugin _aud_plugin_self;
+        PluginHandle *si = aud_plugin_by_header(&_aud_plugin_self);
+        if (! aud_plugin_get_enabled(si) && ! aud_interface_is_shown())
+            aud_interface_show(TRUE);
+
         GtkWidget *si_smenu = g_object_get_data(G_OBJECT(si_applet), "smenu");
         si_popup_timer_stop(si_applet);   /* just in case the timer is active */
         gtk_widget_destroy(si_smenu);
