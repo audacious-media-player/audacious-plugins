@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 3.1\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2012-04-24 09:03+0800\n"
 "Last-Translator: Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>\n"
 "Language-Team: Chinese (traditional)\n"
@@ -33,7 +33,7 @@ msgstr "鬧鐘"
 msgid "This is your wakeup call."
 msgstr ""
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "確認"
 
@@ -279,7 +279,7 @@ msgstr ""
 msgid "Help"
 msgstr "說明"
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "取消"
 
@@ -1466,258 +1466,269 @@ msgstr "解除嵌入"
 msgid "Disable"
 msgstr "關閉"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 msgid "_Open Files ..."
 msgstr "開啟檔案(_O) ..."
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 msgid "Open _URL ..."
 msgstr "開啟 _URL ..."
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 msgid "_Add Files ..."
 msgstr "加入檔案(_A) ... "
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 msgid "Add U_RL ..."
 msgstr "加入 U_RL ..."
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 #, fuzzy
 msgid "_Search Library"
 msgstr "搜尋媒體櫃"
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 msgid "A_bout ..."
 msgstr "關於(_B) ..."
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 msgid "_Preferences ..."
 msgstr "偏好設定(_P) ..."
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "離開(_Q)"
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 msgid "_Play"
 msgstr "播放(_P)"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 msgid "Paus_e"
 msgstr "暫停(_E)"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 msgid "_Stop"
 msgstr "停止(_S)"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 msgid "Pre_vious"
 msgstr "上一個(_V)"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 msgid "_Next"
 msgstr "下一個(_N)"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 msgid "_Repeat"
 msgstr "重複"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 msgid "S_huffle"
 msgstr "隨機"
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 msgid "N_o Playlist Advance"
 msgstr "不要切換播放清單"
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 msgid "Stop _After This Song"
 msgstr "播放完目前歌曲後停止"
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr "歌曲資訊(_I) ..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 msgid "Jump to _Time ..."
 msgstr "跳至時間(_T) ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr "跳至歌曲(_J) ..."
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 msgid "By Track _Number"
 msgstr "音軌編號(_N)"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 msgid "By _Title"
 msgstr "標題(_T)"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 msgid "By _Artist"
 msgstr "藝人(_A)"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 msgid "By A_lbum"
 msgstr "專輯(_L)"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 msgid "By Release _Date"
 msgstr "發行日期(_D)"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 msgid "By _File Path"
 msgstr "檔案路徑(_F)"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 msgid "By _Custom Title"
 msgstr "自訂標題(_C)"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 msgid "R_everse Order"
 msgstr "反向順序(_E)"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 msgid "_Random Order"
 msgstr "隨機順序(_R)"
 
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "_Play This Playlist"
+msgstr "建立播放清單(_C)"
+
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
 msgstr "重新整理(_R)"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:197
 msgid "Remove _Unavailable Files"
 msgstr "移除不存在的檔案(_U)"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:199
 msgid "_Sort"
 msgstr "排序(_S)"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:201
 msgid "_New"
 msgstr "新增(_N)"
 
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
 msgstr "關閉(_C)"
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:205
 msgid "_Import ..."
 msgstr "匯入(_I) ..."
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:206
 msgid "_Export ..."
 msgstr "匯出 (_E) ..."
 
-#: src/gtkui/menus.c:182
-msgid "_Playlist Manager ..."
+#: src/gtkui/menus.c:208
+#, fuzzy
+msgid "Playlist _Manager ..."
 msgstr "播放清單管理(_P) ..."
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
 msgstr "佇列管理(_Q) ..."
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:212
 msgid "Volume _Up"
 msgstr "提高音量(_U)"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:213
 msgid "Volume _Down"
 msgstr "降低音量(_D)"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:215
 msgid "_Equalizer"
 msgstr "等化器(_E)"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:217
 msgid "E_ffects"
 msgstr "特效(_F)"
 
-#: src/gtkui/menus.c:194
+#: src/gtkui/menus.c:220
 msgid "_Interface"
 msgstr "介面(_I)"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:221
 msgid "_Visualizations"
 msgstr "視覺特效(_V)"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:223
 msgid "Show _Menu Bar"
 msgstr "顯示選單列(_M)"
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.c:224
 msgid "Show I_nfo Bar"
 msgstr "顯示資訊列(_N)"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:225
 #, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "視覺特效"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:226
 msgid "Show _Status Bar"
 msgstr "顯示狀態列(_S)"
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:228
 msgid "Show Column _Headers"
 msgstr "顯示欄位標頭(_H)"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:229
 msgid "Choose _Columns ..."
 msgstr "選擇欄位 (_C) ..."
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:230
 msgid "Scrol_l on Song Change"
 msgstr "切換歌曲時捲動(_L)"
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:233
 msgid "_File"
 msgstr "檔案(_F)"
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:234
 msgid "_Playback"
 msgstr "播放(_P)"
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:235
 msgid "P_laylist"
 msgstr "播放清單(_L)"
 
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
 msgid "_Services"
 msgstr "服務(_S)"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:237
 msgid "_Output"
 msgstr "輸出(_O)"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:238
 msgid "_View"
 msgstr "檢視(_V)"
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.c:242
 msgid "_Queue/Unqueue"
 msgstr "排入/移出佇列(_Q)"
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:245
 msgid "Cu_t"
 msgstr "剪下(_T)"
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:246
 msgid "_Copy"
 msgstr "複製(_C)"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:247
 msgid "_Paste"
 msgstr "貼上(_P)"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 msgid "Select _All"
 msgstr "選擇全部(_A)"
 
-#: src/gtkui/menus.c:227
-msgid "_Rename"
+#: src/gtkui/menus.c:254
+#, fuzzy
+msgid "_Rename ..."
 msgstr "重新命名(_R)"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1805,7 +1816,8 @@ msgid "Jump to File"
 msgstr "跳至檔案"
 
 #: src/hotkey/gui.c:83
-msgid "Toggle Player Windows"
+#, fuzzy
+msgid "Toggle Player Window(s)"
 msgstr "切換顯示播放器視窗"
 
 #: src/hotkey/gui.c:84
@@ -1820,11 +1832,16 @@ msgstr "切換重複播放"
 msgid "Toggle Shuffle"
 msgstr "切換隨機播放"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "切換顯示播放器視窗"
+
+#: src/hotkey/gui.c:97
 msgid "(none)"
 msgstr "(無)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1832,15 +1849,15 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr "綁定滑鼠按鈕"
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
 msgstr "全域熱鍵外掛設定"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -1848,15 +1865,15 @@ msgstr ""
 "請在輸入欄位中按下想要的按鍵組合。\n"
 "你也可以綁定滑鼠按鈕。"
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 msgid "Hotkeys:"
 msgstr "熱鍵:"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
 msgstr "<b>動作:</b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr "<b>按鍵綁定:</b>"
 
@@ -2065,7 +2082,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. 預設裝置"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "音訊裝置:"
 
@@ -2211,7 +2228,7 @@ msgstr ""
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr ""
 
@@ -3179,6 +3196,40 @@ msgstr "無法建立資料夾 (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "關於 sndfile 外掛"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "關於 SDL 輸出外掛"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+#, fuzzy
+msgid "Unsupported format"
+msgstr "未支援的光碟類型"
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "音訊裝置:"
+
+#: src/sndio/sndio.c:419
+#, fuzzy
+msgid "(empty means default)"
+msgstr "鈴響於 (預設)"
+
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "歌曲切換"
@@ -3270,38 +3321,38 @@ msgstr "音高"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "滑鼠滾輪動作"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr "調整音量"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr "切換播放歌曲"
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "其他設定"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr "關閉彈出式視窗"
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "關閉視窗時縮到通知區域 (系統列)"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr "以與滑鼠滾輪的反方向切換歌曲"
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "關於狀態圖示外掛"
@@ -3511,9 +3562,6 @@ msgstr ""
 
 #~ msgid "All others:"
 #~ msgstr "其他:"
-
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "關於 SDL 輸出外掛"
 
 #~ msgid "SDL error"
 #~ msgstr "SDL 錯誤"

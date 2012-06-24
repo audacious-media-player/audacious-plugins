@@ -109,6 +109,7 @@ src/skins/ui_playlist.c
 src/skins/ui_skinselector.c
 src/skins/util.c
 src/sndfile/plugin.c
+src/sndio/sndio.c
 src/song_change/song_change.c
 src/speed-pitch/speed-pitch.c
 src/statusicon/statusicon.c

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.3\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2007-02-12 03:37-0600\n"
 "Last-Translator: William Pitcock <nenolod@sacredspiral.co.uk>\n"
 "Language-Team: Welsh <i18n+cy@sacredspiral.co.uk>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "This is your wakeup call."
 msgstr ""
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Iawn"
 
@@ -253,7 +253,7 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Dileu"
 
@@ -1463,293 +1463,302 @@ msgstr ""
 msgid "Disable"
 msgstr "Cyffredinol"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 #, fuzzy
 msgid "_Open Files ..."
 msgstr "Ychwaneg gyrrwr"
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 msgid "Open _URL ..."
 msgstr ""
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 #, fuzzy
 msgid "_Add Files ..."
 msgstr "Ychwaneg gyrrwr"
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 #, fuzzy
 msgid "Add U_RL ..."
 msgstr "Ychwaneg gyrrwr"
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 #, fuzzy
 msgid "A_bout ..."
 msgstr "Ynghylch"
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 #, fuzzy
 msgid "_Preferences ..."
 msgstr "AudioCompress "
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr ""
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 #, fuzzy
 msgid "_Play"
 msgstr "Modd chwarae:"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 #, fuzzy
 msgid "Paus_e"
 msgstr "Chwarae"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 #, fuzzy
 msgid "_Stop"
 msgstr "Synthpop"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 #, fuzzy
 msgid "Pre_vious"
 msgstr "Primus"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 #, fuzzy
 msgid "_Next"
 msgstr "Testun"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 #, fuzzy
 msgid "_Repeat"
 msgstr "Beat"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 msgid "S_huffle"
 msgstr ""
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 #, fuzzy
 msgid "N_o Playlist Advance"
 msgstr "Modd chwarae:"
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 msgid "Stop _After This Song"
 msgstr ""
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr ""
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 msgid "Jump to _Time ..."
 msgstr ""
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr ""
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 #, fuzzy
 msgid "By Track _Number"
 msgstr "Rhif y Trac:"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 #, fuzzy
 msgid "By _Title"
 msgstr "Teitl"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 #, fuzzy
 msgid "By _Artist"
 msgstr "Artist:"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 #, fuzzy
 msgid "By A_lbum"
 msgstr "Albwm:"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 #, fuzzy
 msgid "By Release _Date"
 msgstr "Dyddiad!"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 #, fuzzy
 msgid "By _File Path"
 msgstr "Enw ffeil"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 #, fuzzy
 msgid "By _Custom Title"
 msgstr "Ynghylch"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 msgid "R_everse Order"
 msgstr ""
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 msgid "_Random Order"
-msgstr ""
-
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
-msgid "_Refresh"
-msgstr ""
-
-#: src/gtkui/menus.c:172
-msgid "Remove _Unavailable Files"
-msgstr ""
-
-#: src/gtkui/menus.c:174
-#, fuzzy
-msgid "_Sort"
-msgstr "Porth"
-
-#: src/gtkui/menus.c:176
-msgid "_New"
-msgstr ""
-
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
-#, fuzzy
-msgid "_Close"
-msgstr "Cau"
-
-#: src/gtkui/menus.c:179
-#, fuzzy
-msgid "_Import ..."
-msgstr "Porth"
-
-#: src/gtkui/menus.c:180
-#, fuzzy
-msgid "_Export ..."
-msgstr "Porth"
-
-#: src/gtkui/menus.c:182
-#, fuzzy
-msgid "_Playlist Manager ..."
-msgstr "Modd chwarae:"
-
-#: src/gtkui/menus.c:183
-#, fuzzy
-msgid "_Queue Manager ..."
-msgstr "Modd chwarae:"
-
-#: src/gtkui/menus.c:186
-#, fuzzy
-msgid "Volume _Up"
-msgstr "Sain:(%)"
-
-#: src/gtkui/menus.c:187
-#, fuzzy
-msgid "Volume _Down"
-msgstr "Sain:(%)"
-
-#: src/gtkui/menus.c:189
-msgid "_Equalizer"
-msgstr ""
-
-#: src/gtkui/menus.c:191
-msgid "E_ffects"
-msgstr ""
-
-#: src/gtkui/menus.c:194
-msgid "_Interface"
 msgstr ""
 
 #: src/gtkui/menus.c:195
 #, fuzzy
-msgid "_Visualizations"
-msgstr "Corff:"
+msgid "_Play This Playlist"
+msgstr "Modd chwarae:"
 
-#: src/gtkui/menus.c:197
-msgid "Show _Menu Bar"
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
+msgid "_Refresh"
 msgstr ""
 
-#: src/gtkui/menus.c:198
-msgid "Show I_nfo Bar"
+#: src/gtkui/menus.c:197
+msgid "Remove _Unavailable Files"
 msgstr ""
 
 #: src/gtkui/menus.c:199
 #, fuzzy
+msgid "_Sort"
+msgstr "Porth"
+
+#: src/gtkui/menus.c:201
+msgid "_New"
+msgstr ""
+
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
+#, fuzzy
+msgid "_Close"
+msgstr "Cau"
+
+#: src/gtkui/menus.c:205
+#, fuzzy
+msgid "_Import ..."
+msgstr "Porth"
+
+#: src/gtkui/menus.c:206
+#, fuzzy
+msgid "_Export ..."
+msgstr "Porth"
+
+#: src/gtkui/menus.c:208
+#, fuzzy
+msgid "Playlist _Manager ..."
+msgstr "Modd chwarae:"
+
+#: src/gtkui/menus.c:209
+#, fuzzy
+msgid "_Queue Manager ..."
+msgstr "Modd chwarae:"
+
+#: src/gtkui/menus.c:212
+#, fuzzy
+msgid "Volume _Up"
+msgstr "Sain:(%)"
+
+#: src/gtkui/menus.c:213
+#, fuzzy
+msgid "Volume _Down"
+msgstr "Sain:(%)"
+
+#: src/gtkui/menus.c:215
+msgid "_Equalizer"
+msgstr ""
+
+#: src/gtkui/menus.c:217
+msgid "E_ffects"
+msgstr ""
+
+#: src/gtkui/menus.c:220
+msgid "_Interface"
+msgstr ""
+
+#: src/gtkui/menus.c:221
+#, fuzzy
+msgid "_Visualizations"
+msgstr "Corff:"
+
+#: src/gtkui/menus.c:223
+msgid "Show _Menu Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:224
+msgid "Show I_nfo Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:225
+#, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "Corff:"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:226
 #, fuzzy
 msgid "Show _Status Bar"
 msgstr "Statws"
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:228
 msgid "Show Column _Headers"
 msgstr ""
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:229
 msgid "Choose _Columns ..."
 msgstr ""
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:230
 #, fuzzy
 msgid "Scrol_l on Song Change"
 msgstr "Newid Cân %s"
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:233
 #, fuzzy
 msgid "_File"
 msgstr "Enw ffeil"
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:234
 #, fuzzy
 msgid "_Playback"
 msgstr "Chwarae"
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:235
 #, fuzzy
 msgid "P_laylist"
 msgstr "Modd chwarae:"
 
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
 #, fuzzy
 msgid "_Services"
 msgstr "Dyfeisiau"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:237
 #, fuzzy
 msgid "_Output"
 msgstr "Ategyn Allbwn OSS"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:238
 msgid "_View"
 msgstr ""
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.c:242
 msgid "_Queue/Unqueue"
 msgstr ""
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:245
 msgid "Cu_t"
 msgstr ""
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:246
 msgid "_Copy"
 msgstr ""
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:247
 msgid "_Paste"
 msgstr ""
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 msgid "Select _All"
 msgstr ""
 
-#: src/gtkui/menus.c:227
+#: src/gtkui/menus.c:254
 #, fuzzy
-msgid "_Rename"
+msgid "_Rename ..."
 msgstr "Enw ffeil"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1849,7 +1858,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:83
 #, fuzzy
-msgid "Toggle Player Windows"
+msgid "Toggle Player Window(s)"
 msgstr "/Toggle Decorations"
 
 #: src/hotkey/gui.c:84
@@ -1865,12 +1874,17 @@ msgstr "Beat"
 msgid "Toggle Shuffle"
 msgstr ""
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "/Toggle Decorations"
+
+#: src/hotkey/gui.c:97
 #, fuzzy
 msgid "(none)"
 msgstr "Dim"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1878,32 +1892,32 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr ""
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 #, fuzzy
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Ffurfweddu Ategyn ESD"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 #, fuzzy
 msgid "Hotkeys:"
 msgstr "Gwesteiwr:"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 #, fuzzy
 msgid "<b>Action:</b>"
 msgstr "<b>Hatena</b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr ""
 
@@ -2121,7 +2135,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "Dyfais PCM rhagosodedig (%s)"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "Dyfais sain:"
 
@@ -2268,7 +2282,7 @@ msgstr "Ategyn Scrobbler"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Ategyn Scrobbler"
@@ -3316,6 +3330,38 @@ msgstr ""
 msgid "Sndfile Plugin"
 msgstr "Ategyn Sain WAV (sndfile)"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "Ynghylch Ategyn Allbwn JACK 0.17"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+msgid "Unsupported format"
+msgstr ""
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "Dyfais sain:"
+
+#: src/sndio/sndio.c:419
+msgid "(empty means default)"
+msgstr ""
+
 #: src/song_change/song_change.c:56
 #, fuzzy
 msgid "Song Change"
@@ -3395,37 +3441,37 @@ msgstr "Llwybr:"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Hatena</b>"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr ""
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr ""
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Gosodiadau cymysgu"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "Statws"
@@ -3699,10 +3745,6 @@ msgstr ""
 
 #~ msgid "About Scrobbler Plugin"
 #~ msgstr "Ynghylch Ategyn Scrobbler"
-
-#, fuzzy
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "Ynghylch Ategyn Allbwn JACK 0.17"
 
 #, fuzzy
 #~ msgid "SDL error"

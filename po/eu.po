@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -35,7 +35,7 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Hau zu esnatzeko deia da."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Ados"
 
@@ -288,7 +288,7 @@ msgstr ""
 msgid "Help"
 msgstr "Laguntza"
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Utzi"
 
@@ -1508,307 +1508,316 @@ msgstr ""
 msgid "Disable"
 msgstr "aldagaia"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 #, fuzzy
 msgid "_Open Files ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 #, fuzzy
 msgid "Open _URL ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 #, fuzzy
 msgid "_Add Files ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 #, fuzzy
 msgid "Add U_RL ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 #, fuzzy
 msgid "A_bout ..."
 msgstr "Honi buruz: "
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 #, fuzzy
 msgid "_Preferences ..."
 msgstr "Hobespenak"
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "I_rten"
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 #, fuzzy
 msgid "_Play"
 msgstr "Erreproduzitu"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 #, fuzzy
 msgid "Paus_e"
 msgstr "Pausatu"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 #, fuzzy
 msgid "_Stop"
 msgstr "Gelditu"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 #, fuzzy
 msgid "Pre_vious"
 msgstr "Aurrekoa"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 #, fuzzy
 msgid "_Next"
 msgstr "Hurrengoa"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 #, fuzzy
 msgid "_Repeat"
 msgstr "Errepikatu"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 #, fuzzy
 msgid "S_huffle"
 msgstr "Ausazkoa"
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 #, fuzzy
 msgid "N_o Playlist Advance"
 msgstr "Erreprodukzio-zerrenda aurreraturik ez"
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 #, fuzzy
 msgid "Stop _After This Song"
 msgstr "Gelditu uneko abestiaren ondoren"
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr ""
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 #, fuzzy
 msgid "Jump to _Time ..."
 msgstr "Jauzi denborara"
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr ""
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 #, fuzzy
 msgid "By Track _Number"
 msgstr "Pista zenbakiaren arabera"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 #, fuzzy
 msgid "By _Title"
 msgstr "Tituluaren arabera"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 #, fuzzy
 msgid "By _Artist"
 msgstr "Artistaren arabera"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 #, fuzzy
 msgid "By A_lbum"
 msgstr "Albuma:"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 #, fuzzy
 msgid "By Release _Date"
 msgstr "Dataren arabera"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 #, fuzzy
 msgid "By _File Path"
 msgstr "Fitxategi-izenaren arabera"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 #, fuzzy
 msgid "By _Custom Title"
 msgstr "Azal pertsonalizatua"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 #, fuzzy
 msgid "R_everse Order"
 msgstr "Alderantzikatu zerrenda"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 #, fuzzy
 msgid "_Random Order"
 msgstr "_Ausazkoa"
 
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "_Play This Playlist"
+msgstr "Ezabatu erreprodukzio-zerrenda"
+
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 #, fuzzy
 msgid "_Refresh"
 msgstr "Freskatu tasa"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:197
 #, fuzzy
 msgid "Remove _Unavailable Files"
 msgstr "Kendu fitxategi erabilkaitzak"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:199
 #, fuzzy
 msgid "_Sort"
 msgstr "Ataka"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:201
 msgid "_New"
 msgstr ""
 
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 #, fuzzy
 msgid "_Close"
 msgstr "Itxi"
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:205
 #, fuzzy
 msgid "_Import ..."
 msgstr "Inportatu"
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:206
 #, fuzzy
 msgid "_Export ..."
 msgstr "Esportatu"
 
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.c:208
 #, fuzzy
-msgid "_Playlist Manager ..."
+msgid "Playlist _Manager ..."
 msgstr "Zerrenda-kudeatzailea"
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:209
 #, fuzzy
 msgid "_Queue Manager ..."
 msgstr "Zerrenda-kudeatzailea"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:212
 #, fuzzy
 msgid "Volume _Up"
 msgstr "Igo bolumena"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:213
 #, fuzzy
 msgid "Volume _Down"
 msgstr "Jeitsi bolumena"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:215
 #, fuzzy
 msgid "_Equalizer"
 msgstr "Erakutsi ekualizadorea"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:217
 #, fuzzy
 msgid "E_ffects"
 msgstr "Efektuak"
 
-#: src/gtkui/menus.c:194
-msgid "_Interface"
-msgstr ""
-
-#: src/gtkui/menus.c:195
-#, fuzzy
-msgid "_Visualizations"
-msgstr "Bisualizazioa"
-
-#: src/gtkui/menus.c:197
-msgid "Show _Menu Bar"
-msgstr ""
-
-#: src/gtkui/menus.c:198
-msgid "Show I_nfo Bar"
-msgstr ""
-
-#: src/gtkui/menus.c:199
-#, fuzzy
-msgid "Show Info Bar Vis_ualization"
-msgstr "Bisualizazioa"
-
-#: src/gtkui/menus.c:200
-#, fuzzy
-msgid "Show _Status Bar"
-msgstr "Egoera"
-
-#: src/gtkui/menus.c:202
-#, fuzzy
-msgid "Show Column _Headers"
-msgstr "Erakutsi erreproduzitzailea"
-
-#: src/gtkui/menus.c:203
-#, fuzzy
-msgid "Choose _Columns ..."
-msgstr "Erakutsi erreproduzitzailea"
-
-#: src/gtkui/menus.c:204
-#, fuzzy
-msgid "Scrol_l on Song Change"
-msgstr "Abestiaren mezua"
-
-#: src/gtkui/menus.c:207
-#, fuzzy
-msgid "_File"
-msgstr "Fitxategia"
-
-#: src/gtkui/menus.c:208
-#, fuzzy
-msgid "_Playback"
-msgstr "Erreprodukzioa"
-
-#: src/gtkui/menus.c:209
-#, fuzzy
-msgid "P_laylist"
-msgstr "Erreprodukzio-zerrenda"
-
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
-#, fuzzy
-msgid "_Services"
-msgstr "Gailuak"
-
-#: src/gtkui/menus.c:211
-msgid "_Output"
-msgstr ""
-
-#: src/gtkui/menus.c:212
-#, fuzzy
-msgid "_View"
-msgstr "Ikusi"
-
-#: src/gtkui/menus.c:216
-msgid "_Queue/Unqueue"
-msgstr ""
-
-#: src/gtkui/menus.c:219
-msgid "Cu_t"
-msgstr ""
-
 #: src/gtkui/menus.c:220
-msgid "_Copy"
+msgid "_Interface"
 msgstr ""
 
 #: src/gtkui/menus.c:221
 #, fuzzy
+msgid "_Visualizations"
+msgstr "Bisualizazioa"
+
+#: src/gtkui/menus.c:223
+msgid "Show _Menu Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:224
+msgid "Show I_nfo Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:225
+#, fuzzy
+msgid "Show Info Bar Vis_ualization"
+msgstr "Bisualizazioa"
+
+#: src/gtkui/menus.c:226
+#, fuzzy
+msgid "Show _Status Bar"
+msgstr "Egoera"
+
+#: src/gtkui/menus.c:228
+#, fuzzy
+msgid "Show Column _Headers"
+msgstr "Erakutsi erreproduzitzailea"
+
+#: src/gtkui/menus.c:229
+#, fuzzy
+msgid "Choose _Columns ..."
+msgstr "Erakutsi erreproduzitzailea"
+
+#: src/gtkui/menus.c:230
+#, fuzzy
+msgid "Scrol_l on Song Change"
+msgstr "Abestiaren mezua"
+
+#: src/gtkui/menus.c:233
+#, fuzzy
+msgid "_File"
+msgstr "Fitxategia"
+
+#: src/gtkui/menus.c:234
+#, fuzzy
+msgid "_Playback"
+msgstr "Erreprodukzioa"
+
+#: src/gtkui/menus.c:235
+#, fuzzy
+msgid "P_laylist"
+msgstr "Erreprodukzio-zerrenda"
+
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
+#, fuzzy
+msgid "_Services"
+msgstr "Gailuak"
+
+#: src/gtkui/menus.c:237
+msgid "_Output"
+msgstr ""
+
+#: src/gtkui/menus.c:238
+#, fuzzy
+msgid "_View"
+msgstr "Ikusi"
+
+#: src/gtkui/menus.c:242
+msgid "_Queue/Unqueue"
+msgstr ""
+
+#: src/gtkui/menus.c:245
+msgid "Cu_t"
+msgstr ""
+
+#: src/gtkui/menus.c:246
+msgid "_Copy"
+msgstr ""
+
+#: src/gtkui/menus.c:247
+#, fuzzy
 msgid "_Paste"
 msgstr "Azkarrena"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 #, fuzzy
 msgid "Select _All"
 msgstr "Hautatu denak"
 
-#: src/gtkui/menus.c:227
+#: src/gtkui/menus.c:254
 #, fuzzy
-msgid "_Rename"
+msgid "_Rename ..."
 msgstr "Fitxategi-Izena"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1898,7 +1907,8 @@ msgid "Jump to File"
 msgstr "Joan fitxategira"
 
 #: src/hotkey/gui.c:83
-msgid "Toggle Player Windows"
+#, fuzzy
+msgid "Toggle Player Window(s)"
 msgstr "Txandakatu erreproduzitzailearen leihoak"
 
 #: src/hotkey/gui.c:84
@@ -1915,11 +1925,16 @@ msgstr "Errepikatu"
 msgid "Toggle Shuffle"
 msgstr "Ausazkoa"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "Txandakatu erreproduzitzailearen leihoak"
+
+#: src/hotkey/gui.c:97
 msgid "(none)"
 msgstr "(bat ere ez)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1930,15 +1945,15 @@ msgstr ""
 "\n"
 "Jarraitzea nahi duzu?"
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr "Saguaren botoiak lotzea"
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Laster-tekla globalen pluginaren konfigurazioa"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -1946,15 +1961,15 @@ msgstr ""
 "Sakatu tekla konbinazioa testu-eremuaren barruan.\n"
 "Saguaren botoiak ere lotu ditzakezu."
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 msgid "Hotkeys:"
 msgstr "Laster-teklak"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
 msgstr "<b>Ekintza:</b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Tekla-konbinazioa:</b>"
 
@@ -2172,7 +2187,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "PCM gailu lehenetsia (%s)"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "Soinu-gailua:"
 
@@ -2322,7 +2337,7 @@ msgstr "Scrobbler errorea"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Scrobbler errorea"
@@ -3339,6 +3354,40 @@ msgstr "Ezin izan da direktorioa (%s) sortu: %s\n"
 msgid "Sndfile Plugin"
 msgstr "sndfile pluginari buruz"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "JACK irteerako plugina 0.17 buruz"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+#, fuzzy
+msgid "Unsupported format"
+msgstr "Fitxategi-formatua ez dago onartuta\n"
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "Soinu-gailua:"
+
+#: src/sndio/sndio.c:419
+#, fuzzy
+msgid "(empty means default)"
+msgstr "Alarma (lehenetsia):"
+
 #: src/song_change/song_change.c:56
 #, fuzzy
 msgid "Song Change"
@@ -3433,37 +3482,37 @@ msgstr "Tonua"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Saguaren korritze-ekintza"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr "Aldatu bolumena"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr "Aldatu erreprodukzioaren abestia"
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Nahastailearen ezarpenak"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "Egoera"
@@ -3565,10 +3614,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "About Alarm"
 #~ msgstr "XMMS alarmari buruz"
-
-#, fuzzy
-#~ msgid "About ALSA Output Plugin"
-#~ msgstr "JACK irteerako plugina 0.17 buruz"
 
 #~ msgid "Audacious OSD - about"
 #~ msgstr "Audacious OSDa - honi buruz"
@@ -7053,9 +7098,6 @@ msgstr ""
 
 #~ msgid "Can't open file\n"
 #~ msgstr "Ezin da fitxategia ireki\n"
-
-#~ msgid "Not supported file format\n"
-#~ msgstr "Fitxategi-formatua ez dago onartuta\n"
 
 #~ msgid "File is corrupted\n"
 #~ msgstr "Fitxategia hondatuta dago\n"

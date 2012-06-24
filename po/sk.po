@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2012-06-02 00:48+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Slovak\n"
@@ -35,7 +35,7 @@ msgstr "Alarm"
 msgid "This is your wakeup call."
 msgstr "Toto je budiaci signál."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "OK"
 
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Help"
 msgstr "Pomocník"
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -1453,256 +1453,267 @@ msgstr "Uvolniť"
 msgid "Disable"
 msgstr "Zakázať"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 msgid "_Open Files ..."
 msgstr "_Otvoriť súbory ..."
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 msgid "Open _URL ..."
 msgstr "Otvoriť _URL ..."
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 msgid "_Add Files ..."
 msgstr "Prid_ať súbory ..."
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 msgid "Add U_RL ..."
 msgstr "Pridať U_RL ..."
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 msgid "A_bout ..."
 msgstr "_O programe ..."
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 msgid "_Preferences ..."
 msgstr "_Predvoľby"
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "_Koniec"
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 msgid "_Play"
 msgstr "_Hrať"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 msgid "Paus_e"
 msgstr "P_ozastaviť"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 msgid "_Stop"
 msgstr "Za_staviť"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 msgid "Pre_vious"
 msgstr "Pred_chádzajúca"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 msgid "_Next"
 msgstr "_Nasledujúca"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 msgid "_Repeat"
 msgstr "O_pakovať"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 msgid "S_huffle"
 msgstr "Ná_hodné prehrávanie"
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 msgid "N_o Playlist Advance"
 msgstr "Nep_okračovať podľa zoznamu skladieb"
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 msgid "Stop _After This Song"
 msgstr "Zastaviť po tejto skl_adbe"
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr "_Informácie o skladbe ..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 msgid "Jump to _Time ..."
 msgstr "S_kočiť na čas ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr "Skočiť na sk_ladbu ..."
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 msgid "By Track _Number"
 msgstr "Podľa čí_sla stopy"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 msgid "By _Title"
 msgstr "Podľa _názvu"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 msgid "By _Artist"
 msgstr "Podľa _umelca"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 msgid "By A_lbum"
 msgstr "Podľa a_lbumu"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 msgid "By Release _Date"
 msgstr "Podľa dátumu vy_dania"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 msgid "By _File Path"
 msgstr "Podľa _cesty k súboru"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 msgid "By _Custom Title"
 msgstr "Podľa vlastného ná_zvu"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 msgid "R_everse Order"
 msgstr "Obrátené poradie"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 msgid "_Random Order"
 msgstr "Náhodné po_radie"
 
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "_Play This Playlist"
+msgstr "_Vytvoriť zoznam skladieb"
+
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
 msgstr "_Obnoviť"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:197
 msgid "Remove _Unavailable Files"
 msgstr "Odstrániť nedost_upné súbory"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:199
 msgid "_Sort"
 msgstr "_Zoradiť"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:201
 msgid "_New"
 msgstr "_Nový"
 
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
 msgstr "_Zatvoriť"
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:205
 msgid "_Import ..."
 msgstr "_Importovať ..."
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:206
 msgid "_Export ..."
 msgstr "_Exportovať ..."
 
-#: src/gtkui/menus.c:182
-msgid "_Playlist Manager ..."
+#: src/gtkui/menus.c:208
+#, fuzzy
+msgid "Playlist _Manager ..."
 msgstr "S_právca zoznamu skladieb ..."
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
 msgstr "Správca _fronty .."
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:212
 msgid "Volume _Up"
 msgstr "Zo_silniť"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:213
 msgid "Volume _Down"
 msgstr "S_tíšiť"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:215
 msgid "_Equalizer"
 msgstr "_Ekvalizér"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:217
 msgid "E_ffects"
 msgstr "E_fekty"
 
-#: src/gtkui/menus.c:194
+#: src/gtkui/menus.c:220
 msgid "_Interface"
 msgstr "_Rozhranie"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:221
 msgid "_Visualizations"
 msgstr "_Vizualizácie"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:223
 msgid "Show _Menu Bar"
 msgstr "Zobraziť _panel s ponukou"
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.c:224
 msgid "Show I_nfo Bar"
 msgstr "Zobraziť panel s i_nformáciami"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:225
 msgid "Show Info Bar Vis_ualization"
 msgstr ""
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:226
 msgid "Show _Status Bar"
 msgstr "Zobraziť panel so _stavom"
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:228
 msgid "Show Column _Headers"
 msgstr "Zobraziť _hlavičky stĺpcov"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:229
 msgid "Choose _Columns ..."
 msgstr "Vybrať stĺp_ce ..."
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:230
 msgid "Scrol_l on Song Change"
 msgstr "Ro_lovať na zmenenú skladbu"
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:233
 msgid "_File"
 msgstr "_Súbor"
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:234
 msgid "_Playback"
 msgstr "_Prehrávanie"
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:235
 msgid "P_laylist"
 msgstr "Zoznam sk_ladieb"
 
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
 msgid "_Services"
 msgstr "_Služby"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:237
 msgid "_Output"
 msgstr "_Výstup"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:238
 msgid "_View"
 msgstr "_Zobrazenie"
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.c:242
 msgid "_Queue/Unqueue"
 msgstr "Pridať alebo odobrať z _fronty"
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:245
 msgid "Cu_t"
 msgstr "Vys_trihnúť"
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:246
 msgid "_Copy"
 msgstr "_Kopírovať"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:247
 msgid "_Paste"
 msgstr "V_ložiť"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 msgid "Select _All"
 msgstr "Ozn_ačiť všetko"
 
-#: src/gtkui/menus.c:227
-msgid "_Rename"
+#: src/gtkui/menus.c:254
+#, fuzzy
+msgid "_Rename ..."
 msgstr "_Premenovať"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1792,7 +1803,8 @@ msgid "Jump to File"
 msgstr "Prejsť na súbor"
 
 #: src/hotkey/gui.c:83
-msgid "Toggle Player Windows"
+#, fuzzy
+msgid "Toggle Player Window(s)"
 msgstr "Prepnúť okná prehrávača"
 
 #: src/hotkey/gui.c:84
@@ -1807,11 +1819,16 @@ msgstr "Prepnúť opakovanie"
 msgid "Toggle Shuffle"
 msgstr "Prepnúť náhodné prehrávanie"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "Prepnúť okná prehrávača"
+
+#: src/hotkey/gui.c:97
 msgid "(none)"
 msgstr "(žiadne)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1822,15 +1839,15 @@ msgstr ""
 "\n"
 "Chcete pokračovať?"
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr "Priradenie tlačidiel myši"
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Nastavenie modulu Globálne klávesové skratky"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -1838,15 +1855,15 @@ msgstr ""
 "V textovom poli stlačte kombináciu klávesov.\n"
 "Môžete priradiť aj tlačítka na myši."
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 msgid "Hotkeys:"
 msgstr "Klávesové skratky:"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
 msgstr "<b>Činnosť:</b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Priradenie klávesu:</b>"
 
@@ -2057,7 +2074,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Štandardné zariadenie"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "Zvukové zariadenie:"
 
@@ -2204,7 +2221,7 @@ msgstr "URL Scrobblera:"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
@@ -3182,6 +3199,40 @@ msgstr "Nepodarilo sa vytvoriť adresár (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Modul sndfile (WAV)"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "O výstupnom module SDL"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+#, fuzzy
+msgid "Unsupported format"
+msgstr "Nepodporovaný typ disku."
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "Zvukové zariadenie:"
+
+#: src/sndio/sndio.c:419
+#, fuzzy
+msgid "(empty means default)"
+msgstr "Budiť o (predvolené):"
+
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Zmena skladby"
@@ -3261,38 +3312,38 @@ msgstr "Výška"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Reakcia na otáčanie kolieska na myši"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr "Zmeniť hlasitosť"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr "Zmeniť prehrávanú skladbu"
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Ďalšie nastavenia"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr "Zakázať vyskakovacie okno"
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Zatvoriť do oznamovacej oblasti (systémovej časti panelu)"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr "Pokračovať v zozname skladieb ak sa posúva smerom hore"
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "O module Stavová ikona"
@@ -3659,9 +3710,6 @@ msgstr ""
 
 #~ msgid "About Scrobbler Plugin"
 #~ msgstr "O module Scrobbler"
-
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "O výstupnom module SDL"
 
 #~ msgid "SDL error"
 #~ msgstr "Chyba SDL"

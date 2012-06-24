@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2011-10-30 16:53+0200\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -35,7 +35,7 @@ msgstr "Modinātājs"
 msgid "This is your wakeup call."
 msgstr "Šis ir jūsu mošanās zvans."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Labi"
 
@@ -287,7 +287,7 @@ msgstr ""
 msgid "Help"
 msgstr "Palīdzība"
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -1492,261 +1492,272 @@ msgstr "Attauvot"
 msgid "Disable"
 msgstr "Atslēgt"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 msgid "_Open Files ..."
 msgstr "Atvērt _failus ..."
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 msgid "Open _URL ..."
 msgstr "Atvērt _URL ..."
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 #, fuzzy
 msgid "_Add Files ..."
 msgstr "_Pievienot failus ..."
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 msgid "Add U_RL ..."
 msgstr "Pievienot U_RL ..."
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 msgid "A_bout ..."
 msgstr "_Par ..."
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 msgid "_Preferences ..."
 msgstr "_Iestatījumi ..."
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "I_ziet"
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 msgid "_Play"
 msgstr "A_tskaņot"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 msgid "Paus_e"
 msgstr "Pauz_e"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 msgid "_Stop"
 msgstr "_Stop"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 msgid "Pre_vious"
 msgstr "_Iepriekšējais"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 msgid "_Next"
 msgstr "_Nākamais"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 msgid "_Repeat"
 msgstr "_Atkārtot"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 msgid "S_huffle"
 msgstr "_Jaukt"
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 msgid "N_o Playlist Advance"
 msgstr "Ne_virzīties uz priekšu repertuārā"
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 msgid "Stop _After This Song"
 msgstr "Apt_urēt pēc pašreizējās dziesmas"
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr "Dziesmas _info ..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 msgid "Jump to _Time ..."
 msgstr "Pāriet uz _laiku ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr "Pāriet uz _dziesmu ..."
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 msgid "By Track _Number"
 msgstr "Pēc celiņa _numura"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 msgid "By _Title"
 msgstr "Pēc n_osaukuma"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 msgid "By _Artist"
 msgstr "Pēc _izpildītāja"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 msgid "By A_lbum"
 msgstr "Pēc a_lbuma"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 msgid "By Release _Date"
 msgstr "Pēc izlaišanas _datuma"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 msgid "By _File Path"
 msgstr "Pēc _faila ceļa"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 msgid "By _Custom Title"
 msgstr "Pēc _pielāgota nosaukuma"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 msgid "R_everse Order"
 msgstr "Apgri_eztā kārtībā"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 msgid "_Random Order"
 msgstr "Nejaušā _kārtībā"
 
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "_Play This Playlist"
+msgstr "Dzēst repertuāru"
+
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
 msgstr "A_tsvaidzināt"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:197
 #, fuzzy
 msgid "Remove _Unavailable Files"
 msgstr "Izņemt nepieejamos failus"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:199
 msgid "_Sort"
 msgstr "_Kārtot"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:201
 msgid "_New"
 msgstr "_Jauns"
 
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
 msgstr "Ai_zvērt"
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:205
 msgid "_Import ..."
 msgstr "_Importēt ..."
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:206
 msgid "_Export ..."
 msgstr "_Eksportēt ..."
 
-#: src/gtkui/menus.c:182
-msgid "_Playlist Manager ..."
+#: src/gtkui/menus.c:208
+#, fuzzy
+msgid "Playlist _Manager ..."
 msgstr "_Repertuāru pārvaldnieks ..."
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:209
 #, fuzzy
 msgid "_Queue Manager ..."
 msgstr "_Repertuāru pārvaldnieks ..."
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:212
 msgid "Volume _Up"
 msgstr "_Palielināt skaļumu"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:213
 msgid "Volume _Down"
 msgstr "_Samazināt skaļumu"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:215
 msgid "_Equalizer"
 msgstr "_Balansieris"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:217
 msgid "E_ffects"
 msgstr "E_fekti"
 
-#: src/gtkui/menus.c:194
+#: src/gtkui/menus.c:220
 msgid "_Interface"
 msgstr "S_askarne"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:221
 #, fuzzy
 msgid "_Visualizations"
 msgstr "Vizualizēšana"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:223
 msgid "Show _Menu Bar"
 msgstr "Rādīt _izvēlnes joslu"
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.c:224
 msgid "Show I_nfo Bar"
 msgstr "Rādīt i_nfoapgabalu"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:225
 #, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "Vizualizēšana"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:226
 msgid "Show _Status Bar"
 msgstr "Rādīt _stāvokļjoslu"
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:228
 msgid "Show Column _Headers"
 msgstr "Rādīt kolonnu _galvenes"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:229
 msgid "Choose _Columns ..."
 msgstr "Izvēlēties _kolonnas ..."
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:230
 msgid "Scrol_l on Song Change"
 msgstr "Ritināt, _dziesmām mainoties"
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:233
 msgid "_File"
 msgstr "_Fails"
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:234
 msgid "_Playback"
 msgstr "_Atskaņošana"
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:235
 msgid "P_laylist"
 msgstr "_Repertuārs"
 
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
 msgid "_Services"
 msgstr "_Servisi"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:237
 msgid "_Output"
 msgstr "I_zvade"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:238
 msgid "_View"
 msgstr "S_kats"
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.c:242
 msgid "_Queue/Unqueue"
 msgstr "Ie_rindot/Izņ. no rindas"
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:245
 msgid "Cu_t"
 msgstr "_Izgriezt"
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:246
 msgid "_Copy"
 msgstr "_Kopēt"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:247
 msgid "_Paste"
 msgstr "I_elīmēt"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 msgid "Select _All"
 msgstr "Iezīmēt _visu"
 
-#: src/gtkui/menus.c:227
-msgid "_Rename"
+#: src/gtkui/menus.c:254
+#, fuzzy
+msgid "_Rename ..."
 msgstr "Pā_rdēvēt"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1837,7 +1848,8 @@ msgid "Jump to File"
 msgstr "Pāriet uz failu"
 
 #: src/hotkey/gui.c:83
-msgid "Toggle Player Windows"
+#, fuzzy
+msgid "Toggle Player Window(s)"
 msgstr "Pārslēgt atskaņotāja logus"
 
 #: src/hotkey/gui.c:84
@@ -1852,11 +1864,16 @@ msgstr "Pārslēgt atkārtošanu"
 msgid "Toggle Shuffle"
 msgstr "Pārslēgt jaukšanu"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "Pārslēgt atskaņotāja logus"
+
+#: src/hotkey/gui.c:97
 msgid "(none)"
 msgstr "(nekas)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1867,15 +1884,15 @@ msgstr ""
 "\n"
 "Vai vēlaties turpināt?"
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr "Piesaista peles pogas"
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Globālo īsinājumtaustiņu spraudņa konfigurācija"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -1883,15 +1900,15 @@ msgstr ""
 "Nospiediet taustiņu kombināciju teksta laukā.\n"
 "Jūs varat piesaistīt arī peles pogas."
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 msgid "Hotkeys:"
 msgstr "Īsinājumtaustiņi:"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
 msgstr "<b>Darbība:</b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Taustiņa piesaiste:</b>"
 
@@ -2112,7 +2129,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. noklusētā ierīce"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "Audio ierīce:"
 
@@ -2261,7 +2278,7 @@ msgstr "Scrobbler URL:"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
@@ -3249,6 +3266,40 @@ msgstr "Neizdevās izveidot mapi (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Par sndfile spraudni"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "Par SDL izvades spraudni"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+#, fuzzy
+msgid "Unsupported format"
+msgstr "Neatbalstīts faila formāts\n"
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "Audio ierīce:"
+
+#: src/sndio/sndio.c:419
+#, fuzzy
+msgid "(empty means default)"
+msgstr "Modināt (noklusējums):"
+
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Dziesmas maiņa"
@@ -3341,38 +3392,38 @@ msgstr "Augstums"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Peles rullīša darbība"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr "Mainīt skaļumu"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr "Mainīt atskaņojamo dziesmu"
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Citi iestatījumi"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr "Atslēgt izlecošo logu"
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Aizvērt uz paziņojumu apgabalu (sistēmas ikonu joslu)"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "Statuss"
@@ -3775,9 +3826,6 @@ msgstr ""
 
 #~ msgid "About Scrobbler Plugin"
 #~ msgstr "Par Scrobbler spraudni"
-
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "Par SDL izvades spraudni"
 
 #~ msgid "SDL error"
 #~ msgstr "SDL kļūda"
@@ -7644,9 +7692,6 @@ msgstr ""
 
 #~ msgid "Can't open file\n"
 #~ msgstr "Nevar atvērt failu\n"
-
-#~ msgid "Not supported file format\n"
-#~ msgstr "Neatbalstīts faila formāts\n"
 
 #~ msgid "File is corrupted\n"
 #~ msgstr "Fails ir bojāts\n"

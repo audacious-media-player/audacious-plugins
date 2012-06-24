@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2012-06-02 00:48+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: French\n"
@@ -36,7 +36,7 @@ msgstr "Alarme"
 msgid "This is your wakeup call."
 msgstr "Ceci est votre réveil."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "OK"
 
@@ -287,7 +287,7 @@ msgstr ""
 msgid "Help"
 msgstr "Aide"
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -1472,256 +1472,267 @@ msgstr "Séparer"
 msgid "Disable"
 msgstr "Désactiver"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 msgid "_Open Files ..."
 msgstr "Ouvrir des fichiers"
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 msgid "Open _URL ..."
 msgstr "Ouvrir un adresse _URL..."
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 msgid "_Add Files ..."
 msgstr "_Ajouter des fichiers..."
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 msgid "Add U_RL ..."
 msgstr "Ajouter une adresse U_RL..."
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 msgid "A_bout ..."
 msgstr "À_propos de..."
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 msgid "_Preferences ..."
 msgstr "_Préférences..."
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "_Quitter"
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 msgid "_Play"
 msgstr "_Lecture"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 msgid "Paus_e"
 msgstr "Paus_e"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 msgid "_Stop"
 msgstr "_Stop"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 msgid "Pre_vious"
 msgstr "Pré_cédent"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 msgid "_Next"
 msgstr "_Suivant"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 msgid "_Repeat"
 msgstr "_Répéter"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 msgid "S_huffle"
 msgstr "L_ecture aléatoire"
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 msgid "N_o Playlist Advance"
 msgstr "N_e pas avancer dans la liste de lecture"
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 msgid "Stop _After This Song"
 msgstr "Arrêter _après le titre en cours"
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr "Information sur le morceau..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 msgid "Jump to _Time ..."
 msgstr "Sauter au _temps…"
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr "_Sauter au morceau..."
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 msgid "By Track _Number"
 msgstr "Par _numéro de piste"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 msgid "By _Title"
 msgstr "Par _titre"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 msgid "By _Artist"
 msgstr "Par _artiste"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 msgid "By A_lbum"
 msgstr "Par a_lbum"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 msgid "By Release _Date"
 msgstr "Par _date de parution"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 msgid "By _File Path"
 msgstr "Par chemin d'accès de _fichier"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 msgid "By _Custom Title"
 msgstr "Par _titre personnalisé"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 msgid "R_everse Order"
 msgstr "I_nverser l'ordre"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 msgid "_Random Order"
 msgstr "Ordre _aléatoire"
 
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "_Play This Playlist"
+msgstr "_Créer une liste de lecture"
+
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
 msgstr "_Réactualiser"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:197
 msgid "Remove _Unavailable Files"
 msgstr "Retirer les fichiers non disponibles"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:199
 msgid "_Sort"
 msgstr "_Trier"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:201
 msgid "_New"
 msgstr "_Nouvelle liste de lecture"
 
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
 msgstr "_Fermer"
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:205
 msgid "_Import ..."
 msgstr "_Importer"
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:206
 msgid "_Export ..."
 msgstr "_Exporter"
 
-#: src/gtkui/menus.c:182
-msgid "_Playlist Manager ..."
+#: src/gtkui/menus.c:208
+#, fuzzy
+msgid "Playlist _Manager ..."
 msgstr "_Gestionnaire de liste de lecture..."
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
 msgstr "_Gestionnaire de file d'attente..."
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:212
 msgid "Volume _Up"
 msgstr "Augmenter le _volume"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:213
 msgid "Volume _Down"
 msgstr "Réduire le _volume"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:215
 msgid "_Equalizer"
 msgstr "_Égaliseur"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:217
 msgid "E_ffects"
 msgstr "E_ffets audio"
 
-#: src/gtkui/menus.c:194
+#: src/gtkui/menus.c:220
 msgid "_Interface"
 msgstr "_Interface"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:221
 msgid "_Visualizations"
 msgstr "_Visualisations"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:223
 msgid "Show _Menu Bar"
 msgstr "Afficher la barre de _menu"
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.c:224
 msgid "Show I_nfo Bar"
 msgstr "Afficher la barre d'i_nformation"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:225
 msgid "Show Info Bar Vis_ualization"
 msgstr ""
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:226
 msgid "Show _Status Bar"
 msgstr "Afficher la barre d'_état"
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:228
 msgid "Show Column _Headers"
 msgstr "Afficher les _titres des colonnes"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:229
 msgid "Choose _Columns ..."
 msgstr "Choisir les _colonnes..."
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:230
 msgid "Scrol_l on Song Change"
 msgstr "Afficher le morceau courant au changement de pistes"
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:233
 msgid "_File"
 msgstr "_Fichier"
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:234
 msgid "_Playback"
 msgstr "Lecture"
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:235
 msgid "P_laylist"
 msgstr "L_iste de lecture"
 
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
 msgid "_Services"
 msgstr "_Services"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:237
 msgid "_Output"
 msgstr "_Sortie"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:238
 msgid "_View"
 msgstr "_Affichage"
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.c:242
 msgid "_Queue/Unqueue"
 msgstr "_Mettre/enlever dans la file"
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:245
 msgid "Cu_t"
 msgstr "Cou_per"
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:246
 msgid "_Copy"
 msgstr "_Copier"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:247
 msgid "_Paste"
 msgstr "_Coller"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 msgid "Select _All"
 msgstr "Sélectionner _tout"
 
-#: src/gtkui/menus.c:227
-msgid "_Rename"
+#: src/gtkui/menus.c:254
+#, fuzzy
+msgid "_Rename ..."
 msgstr "_Renommer"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1810,7 +1821,8 @@ msgid "Jump to File"
 msgstr "Aller au fichier"
 
 #: src/hotkey/gui.c:83
-msgid "Toggle Player Windows"
+#, fuzzy
+msgid "Toggle Player Window(s)"
 msgstr "Afficher / Cacher les fenêtres du lecteur"
 
 #: src/hotkey/gui.c:84
@@ -1825,11 +1837,16 @@ msgstr "Bascule le mode de répétition"
 msgid "Toggle Shuffle"
 msgstr "Bascule le mode de lecture aléatoire"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "Afficher / Cacher les fenêtres du lecteur"
+
+#: src/hotkey/gui.c:97
 msgid "(none)"
 msgstr "(aucun)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1842,15 +1859,15 @@ msgstr ""
 "\n"
 "Souhaitez-vous poursuivre ?"
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr "Association des boutons de la souris"
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Configuration du module « Global Hotkey »"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -1859,15 +1876,15 @@ msgstr ""
 "Vous pouvez aussi créer des associations avec les boutons de la souris.\n"
 " "
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 msgid "Hotkeys:"
 msgstr "Raccourcis clavier :"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
 msgstr "<b>Action : </b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Touche associée :</b>"
 
@@ -2079,7 +2096,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Périphérique par défaut"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "Périphérique audio :"
 
@@ -2226,7 +2243,7 @@ msgstr "Adresse URL Scrobbler :"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
@@ -3210,6 +3227,40 @@ msgstr "Impossible de créer le répertoire (%s) : %s\n"
 msgid "Sndfile Plugin"
 msgstr "À propos du module sndfile"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "À propos du module de sortie SDL"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+#, fuzzy
+msgid "Unsupported format"
+msgstr "Type de disque non pris en charge"
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "Périphérique audio :"
+
+#: src/sndio/sndio.c:419
+#, fuzzy
+msgid "(empty means default)"
+msgstr "Se déclencher (par défaut) à :"
+
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Changement de morceau"
@@ -3289,38 +3340,38 @@ msgstr "Hauteur"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Effet de la molette de la souris"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr "Changement du volume"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr "Changement du morceau en cours"
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Autres paramètres"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr "Désactiver l'affichage d'information au survol"
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Réduire vers la zone de notification à la fermeture"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr "Avancer dans la liste de lecture en roulant la molette vers le haut"
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "À propos du module « Status Icon » (icône d'état)"
@@ -3697,9 +3748,6 @@ msgstr ""
 
 #~ msgid "About Scrobbler Plugin"
 #~ msgstr "À propos du module « Scrobbler »"
-
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "À propos du module de sortie SDL"
 
 #~ msgid "SDL error"
 #~ msgstr "Erreur SDL"

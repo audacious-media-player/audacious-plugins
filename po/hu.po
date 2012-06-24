@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2012-01-12 06:38+0000\n"
 "Last-Translator: Péter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Hungarian\n"
@@ -35,7 +35,7 @@ msgstr "Riasztás"
 msgid "This is your wakeup call."
 msgstr "Ez egy ébresztési hívás."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "OK"
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Help"
 msgstr "Súgó"
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Mégsem"
 
@@ -1404,258 +1404,269 @@ msgstr "Rögzítés feloldása"
 msgid "Disable"
 msgstr "Letiltás"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 msgid "_Open Files ..."
 msgstr "Fájl_ok megnyitása ..."
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 msgid "Open _URL ..."
 msgstr "_URL megnyitása ..."
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 msgid "_Add Files ..."
 msgstr "Fájlok hozzá_adása ..."
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 msgid "Add U_RL ..."
 msgstr "U_RL hozzáadása ..."
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 #, fuzzy
 msgid "_Search Library"
 msgstr "Keresés a gyűjteményben"
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 msgid "A_bout ..."
 msgstr "_Névjegy ..."
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 msgid "_Preferences ..."
 msgstr "_Beállítások ..."
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "_Kilépés"
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 msgid "_Play"
 msgstr "_Lejátszás"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 msgid "Paus_e"
 msgstr "_Szünet"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 msgid "_Stop"
 msgstr "_Megállítás"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 msgid "Pre_vious"
 msgstr "Elő_ző"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 msgid "_Next"
 msgstr "_Következő"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 msgid "_Repeat"
 msgstr "_Ismétlés"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 msgid "S_huffle"
 msgstr "_Véletlenszerű"
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 msgid "N_o Playlist Advance"
 msgstr ""
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 msgid "Stop _After This Song"
 msgstr "Megállítás _az aktuális szám után"
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr "Dal _információ ..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 msgid "Jump to _Time ..."
 msgstr "Ugrás _időre ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr "Ugrás _dalra ..."
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 msgid "By Track _Number"
 msgstr "Sáv szeri_nt"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 msgid "By _Title"
 msgstr "Cím szerin_t"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 msgid "By _Artist"
 msgstr "Elő_adó szerint"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 msgid "By A_lbum"
 msgstr "A_lbum szerint"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 msgid "By Release _Date"
 msgstr "_Dátum szerint"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 msgid "By _File Path"
 msgstr "_Fájl útvonal szerint"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 msgid "By _Custom Title"
 msgstr "_Egyedi cím szerint"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 msgid "R_everse Order"
 msgstr "Fo_rdított sorrend"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 msgid "_Random Order"
 msgstr "Véletlensze_rű sorrend"
 
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "_Play This Playlist"
+msgstr "_Lejátszólista létrehozása"
+
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
 msgstr "_Frissítés"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:197
 msgid "Remove _Unavailable Files"
 msgstr "_Nem elérhető fájlok törlése"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:199
 msgid "_Sort"
 msgstr "Rendezé_s"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:201
 msgid "_New"
 msgstr "_Új"
 
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
 msgstr "_Bezár"
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:205
 msgid "_Import ..."
 msgstr "_Importálás ..."
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:206
 msgid "_Export ..."
 msgstr "_Exportálás ..."
 
-#: src/gtkui/menus.c:182
-msgid "_Playlist Manager ..."
+#: src/gtkui/menus.c:208
+#, fuzzy
+msgid "Playlist _Manager ..."
 msgstr "_Lejátszólista kezelő ..."
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
 msgstr "_Várakozási sor kezelő ..."
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:212
 msgid "Volume _Up"
 msgstr "Hangerő _fel"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:213
 msgid "Volume _Down"
 msgstr "Hangerő _le"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:215
 msgid "_Equalizer"
 msgstr "_Hangszínszabályzó"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:217
 msgid "E_ffects"
 msgstr "E_ffektusok"
 
-#: src/gtkui/menus.c:194
+#: src/gtkui/menus.c:220
 msgid "_Interface"
 msgstr "_Felület"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:221
 msgid "_Visualizations"
 msgstr "_Megjelenítés"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:223
 msgid "Show _Menu Bar"
 msgstr "_Menü sor mutatása"
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.c:224
 msgid "Show I_nfo Bar"
 msgstr "I_nfo sor mutatása"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:225
 #, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "Megjelenítés"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:226
 msgid "Show _Status Bar"
 msgstr "_Státusz sor mutatása"
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:228
 msgid "Show Column _Headers"
 msgstr "O_szlop fejlécek mutatása"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:229
 msgid "Choose _Columns ..."
 msgstr "_Válasszon oszlopokat ..."
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:230
 msgid "Scrol_l on Song Change"
 msgstr ""
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:233
 msgid "_File"
 msgstr "_Fájl"
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:234
 msgid "_Playback"
 msgstr "L_ejátszás"
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:235
 msgid "P_laylist"
 msgstr "_Lejátszólista"
 
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
 msgid "_Services"
 msgstr "_Szervizek"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:237
 msgid "_Output"
 msgstr "_Kimenet"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:238
 msgid "_View"
 msgstr "_Nézet"
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.c:242
 msgid "_Queue/Unqueue"
 msgstr ""
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:245
 msgid "Cu_t"
 msgstr "_Kivágás"
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:246
 msgid "_Copy"
 msgstr "_Másolás"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:247
 msgid "_Paste"
 msgstr "_Beillesztés"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 msgid "Select _All"
 msgstr "Mind kivál_aszt"
 
-#: src/gtkui/menus.c:227
-msgid "_Rename"
+#: src/gtkui/menus.c:254
+#, fuzzy
+msgid "_Rename ..."
 msgstr "_Átnevezés"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1744,7 +1755,8 @@ msgid "Jump to File"
 msgstr "Ugrás fájlhoz"
 
 #: src/hotkey/gui.c:83
-msgid "Toggle Player Windows"
+#, fuzzy
+msgid "Toggle Player Window(s)"
 msgstr "Lejátszó ablakok váltása"
 
 #: src/hotkey/gui.c:84
@@ -1759,11 +1771,16 @@ msgstr "Ismétlés váltása"
 msgid "Toggle Shuffle"
 msgstr "Véletlenszerű lejátszás váltása"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "Lejátszó ablakok váltása"
+
+#: src/hotkey/gui.c:97
 msgid "(none)"
 msgstr "(nincs)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1771,29 +1788,29 @@ msgid ""
 "Do you want to continue?"
 msgstr ""
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr "Egér gombok hozzárendelése"
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
 msgstr ""
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 msgid "Hotkeys:"
 msgstr "Gyorsbillentyűk:"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
 msgstr "<b>Művelet:</b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Billentyű kötések:</b>"
 
@@ -1999,7 +2016,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Alapértelmezett eszköz"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "Audio eszköz:"
 
@@ -2146,7 +2163,7 @@ msgstr "Scrobbler URL:"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr ""
 
@@ -3121,6 +3138,40 @@ msgstr "Nem lehet létrehozni a könyvtárat (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "sndfile bővítmény névjegye"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "SDL Kimeneti modul névjegye"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+#, fuzzy
+msgid "Unsupported format"
+msgstr "Nem támogatott lemez típus."
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "Audio eszköz:"
+
+#: src/sndio/sndio.c:419
+#, fuzzy
+msgid "(empty means default)"
+msgstr "Riasztás (alapértelmezett):"
+
 #: src/song_change/song_change.c:56
 msgid "Song Change"
 msgstr "Szám váltás"
@@ -3194,38 +3245,38 @@ msgstr "Hangmagasság"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Egérgörgő működés"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr "Hangerő váltás"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr "Váltja a lejátszott dalt"
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Egyéb beállítások"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr "Felugró ablakok tiltása"
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Bezáráskor az értesítési területen marad (a tálcán)"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "Státusz ikon bővítmény névjegye"
@@ -3493,9 +3544,6 @@ msgstr ""
 
 #~ msgid "About Scrobbler Plugin"
 #~ msgstr "Scrobbler bővítmény névjegye"
-
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "SDL Kimeneti modul névjegye"
 
 #~ msgid "SDL error"
 #~ msgstr "SDL hiba"

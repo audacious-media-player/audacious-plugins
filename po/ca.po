@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-15 21:12-0400\n"
+"POT-Creation-Date: 2012-06-24 14:06-0400\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -32,7 +32,7 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Això és l'avís per despertar-se."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212
+#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "D'acord"
 
@@ -283,7 +283,7 @@ msgstr ""
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/alarm/interface.c:1221
+#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -1505,308 +1505,317 @@ msgstr ""
 msgid "Disable"
 msgstr "variable"
 
-#: src/gtkui/menus.c:131
+#: src/gtkui/menus.c:155
 #, fuzzy
 msgid "_Open Files ..."
 msgstr "Afegeix fitxers..."
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.c:156
 #, fuzzy
 msgid "Open _URL ..."
 msgstr "Afegeix fitxers..."
 
-#: src/gtkui/menus.c:133
+#: src/gtkui/menus.c:157
 #, fuzzy
 msgid "_Add Files ..."
 msgstr "Afegeix fitxers..."
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.c:158
 #, fuzzy
 msgid "Add U_RL ..."
 msgstr "Afegeix fitxers..."
 
-#: src/gtkui/menus.c:136
+#: src/gtkui/menus.c:160
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:138
+#: src/gtkui/menus.c:162
 #, fuzzy
 msgid "A_bout ..."
 msgstr "Quant al connector "
 
-#: src/gtkui/menus.c:139
+#: src/gtkui/menus.c:163
 #, fuzzy
 msgid "_Preferences ..."
 msgstr "Preferències"
 
-#: src/gtkui/menus.c:140 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "_Surt"
 
-#: src/gtkui/menus.c:143
+#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
 #, fuzzy
 msgid "_Play"
 msgstr "Reprodueix"
 
-#: src/gtkui/menus.c:144
+#: src/gtkui/menus.c:168
 #, fuzzy
 msgid "Paus_e"
 msgstr "Pausa"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.c:169
 #, fuzzy
 msgid "_Stop"
 msgstr "Para"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.c:170
 #, fuzzy
 msgid "Pre_vious"
 msgstr "Anterior"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.c:171
 #, fuzzy
 msgid "_Next"
 msgstr "Següent"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.c:173
 #, fuzzy
 msgid "_Repeat"
 msgstr "Repeteix"
 
-#: src/gtkui/menus.c:150
+#: src/gtkui/menus.c:174
 #, fuzzy
 msgid "S_huffle"
 msgstr "Barreja"
 
-#: src/gtkui/menus.c:151
+#: src/gtkui/menus.c:175
 #, fuzzy
 msgid "N_o Playlist Advance"
 msgstr "Discontinua la reproducció programada"
 
-#: src/gtkui/menus.c:152
+#: src/gtkui/menus.c:176
 #, fuzzy
 msgid "Stop _After This Song"
 msgstr "Para quan s'acabi la cançó"
 
-#: src/gtkui/menus.c:154 src/gtkui/menus.c:215
+#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
 msgid "Song _Info ..."
 msgstr ""
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:179
 #, fuzzy
 msgid "Jump to _Time ..."
 msgstr "Salta al temps"
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:180
 msgid "_Jump to Song ..."
 msgstr ""
 
-#: src/gtkui/menus.c:159
+#: src/gtkui/menus.c:183
 #, fuzzy
 msgid "By Track _Number"
 msgstr "Pel número de pista"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:184
 #, fuzzy
 msgid "By _Title"
 msgstr "Per títol"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:185
 #, fuzzy
 msgid "By _Artist"
 msgstr "Per l'artista"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:186
 #, fuzzy
 msgid "By A_lbum"
 msgstr "Àlbum:"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:187
 #, fuzzy
 msgid "By Release _Date"
 msgstr "Per la data"
 
-#: src/gtkui/menus.c:164
+#: src/gtkui/menus.c:188
 #, fuzzy
 msgid "By _File Path"
 msgstr "Per nom de fitxer"
 
-#: src/gtkui/menus.c:165
+#: src/gtkui/menus.c:189
 #, fuzzy
 msgid "By _Custom Title"
 msgstr "Decoració personalitzada"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:191
 #, fuzzy
 msgid "R_everse Order"
 msgstr "Inverteix la llista"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:192
 #, fuzzy
 msgid "_Random Order"
 msgstr "_Aleatori"
 
-#: src/gtkui/menus.c:171 src/gtkui/menus.c:217
+#: src/gtkui/menus.c:195
+#, fuzzy
+msgid "_Play This Playlist"
+msgstr "Esborra la llista"
+
+#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 #, fuzzy
 msgid "_Refresh"
 msgstr "Velocitat de refresc"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:197
 #, fuzzy
 msgid "Remove _Unavailable Files"
 msgstr "Treu els fitxers no disponibles"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:199
 #, fuzzy
 msgid "_Sort"
 msgstr "Port"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:201
 msgid "_New"
 msgstr ""
 
-#: src/gtkui/menus.c:177 src/gtkui/menus.c:228
+#: src/gtkui/menus.c:202
+msgid "Ren_ame ..."
+msgstr ""
+
+#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 #, fuzzy
 msgid "_Close"
 msgstr "Tanca"
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:205
 #, fuzzy
 msgid "_Import ..."
 msgstr "Importa"
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:206
 #, fuzzy
 msgid "_Export ..."
 msgstr "Exporta"
 
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.c:208
 #, fuzzy
-msgid "_Playlist Manager ..."
+msgid "Playlist _Manager ..."
 msgstr "Gestor de llistes"
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:209
 #, fuzzy
 msgid "_Queue Manager ..."
 msgstr "Gestor de llistes"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:212
 #, fuzzy
 msgid "Volume _Up"
 msgstr "Puja el volum"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:213
 #, fuzzy
 msgid "Volume _Down"
 msgstr "Baixa el volum"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:215
 #, fuzzy
 msgid "_Equalizer"
 msgstr "Mostra l'equalitzador"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:217
 #, fuzzy
 msgid "E_ffects"
 msgstr "Efectes"
 
-#: src/gtkui/menus.c:194
-msgid "_Interface"
-msgstr ""
-
-#: src/gtkui/menus.c:195
-#, fuzzy
-msgid "_Visualizations"
-msgstr "Visualització"
-
-#: src/gtkui/menus.c:197
-msgid "Show _Menu Bar"
-msgstr ""
-
-#: src/gtkui/menus.c:198
-msgid "Show I_nfo Bar"
-msgstr ""
-
-#: src/gtkui/menus.c:199
-#, fuzzy
-msgid "Show Info Bar Vis_ualization"
-msgstr "Visualització"
-
-#: src/gtkui/menus.c:200
-#, fuzzy
-msgid "Show _Status Bar"
-msgstr "Estat"
-
-#: src/gtkui/menus.c:202
-#, fuzzy
-msgid "Show Column _Headers"
-msgstr "Mostra el reproductor"
-
-#: src/gtkui/menus.c:203
-#, fuzzy
-msgid "Choose _Columns ..."
-msgstr "Mostra el reproductor"
-
-#: src/gtkui/menus.c:204
-#, fuzzy
-msgid "Scrol_l on Song Change"
-msgstr "Missatge de la cançó"
-
-#: src/gtkui/menus.c:207
-#, fuzzy
-msgid "_File"
-msgstr "Fitxer"
-
-#: src/gtkui/menus.c:208
-#, fuzzy
-msgid "_Playback"
-msgstr "Reproducció"
-
-#: src/gtkui/menus.c:209
-#, fuzzy
-msgid "P_laylist"
-msgstr "Llistes"
-
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:224
-#, fuzzy
-msgid "_Services"
-msgstr "Dispositius"
-
-#: src/gtkui/menus.c:211
-#, fuzzy
-msgid "_Output"
-msgstr "Connector de sortida nul"
-
-#: src/gtkui/menus.c:212
-#, fuzzy
-msgid "_View"
-msgstr "Finestres"
-
-#: src/gtkui/menus.c:216
-msgid "_Queue/Unqueue"
-msgstr ""
-
-#: src/gtkui/menus.c:219
-msgid "Cu_t"
-msgstr ""
-
 #: src/gtkui/menus.c:220
-msgid "_Copy"
+msgid "_Interface"
 msgstr ""
 
 #: src/gtkui/menus.c:221
 #, fuzzy
+msgid "_Visualizations"
+msgstr "Visualització"
+
+#: src/gtkui/menus.c:223
+msgid "Show _Menu Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:224
+msgid "Show I_nfo Bar"
+msgstr ""
+
+#: src/gtkui/menus.c:225
+#, fuzzy
+msgid "Show Info Bar Vis_ualization"
+msgstr "Visualització"
+
+#: src/gtkui/menus.c:226
+#, fuzzy
+msgid "Show _Status Bar"
+msgstr "Estat"
+
+#: src/gtkui/menus.c:228
+#, fuzzy
+msgid "Show Column _Headers"
+msgstr "Mostra el reproductor"
+
+#: src/gtkui/menus.c:229
+#, fuzzy
+msgid "Choose _Columns ..."
+msgstr "Mostra el reproductor"
+
+#: src/gtkui/menus.c:230
+#, fuzzy
+msgid "Scrol_l on Song Change"
+msgstr "Missatge de la cançó"
+
+#: src/gtkui/menus.c:233
+#, fuzzy
+msgid "_File"
+msgstr "Fitxer"
+
+#: src/gtkui/menus.c:234
+#, fuzzy
+msgid "_Playback"
+msgstr "Reproducció"
+
+#: src/gtkui/menus.c:235
+#, fuzzy
+msgid "P_laylist"
+msgstr "Llistes"
+
+#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
+#, fuzzy
+msgid "_Services"
+msgstr "Dispositius"
+
+#: src/gtkui/menus.c:237
+#, fuzzy
+msgid "_Output"
+msgstr "Connector de sortida nul"
+
+#: src/gtkui/menus.c:238
+#, fuzzy
+msgid "_View"
+msgstr "Finestres"
+
+#: src/gtkui/menus.c:242
+msgid "_Queue/Unqueue"
+msgstr ""
+
+#: src/gtkui/menus.c:245
+msgid "Cu_t"
+msgstr ""
+
+#: src/gtkui/menus.c:246
+msgid "_Copy"
+msgstr ""
+
+#: src/gtkui/menus.c:247
+#, fuzzy
 msgid "_Paste"
 msgstr "Al màxim"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:248
 #, fuzzy
 msgid "Select _All"
 msgstr "Selecciona tots els elements"
 
-#: src/gtkui/menus.c:227
+#: src/gtkui/menus.c:254
 #, fuzzy
-msgid "_Rename"
+msgid "_Rename ..."
 msgstr "Nom del fitxer"
 
 #: src/gtkui/ui_gtk.c:98
@@ -1896,7 +1905,8 @@ msgid "Jump to File"
 msgstr "Salta al fitxer"
 
 #: src/hotkey/gui.c:83
-msgid "Toggle Player Windows"
+#, fuzzy
+msgid "Toggle Player Window(s)"
 msgstr "Commuta les finestres"
 
 #: src/hotkey/gui.c:84
@@ -1913,11 +1923,16 @@ msgstr "Repeteix"
 msgid "Toggle Shuffle"
 msgstr "Barreja"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.c:87
+#, fuzzy
+msgid "Raise Player Window(s)"
+msgstr "Commuta les finestres"
+
+#: src/hotkey/gui.c:97
 msgid "(none)"
 msgstr "(cap)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.c:234
 msgid ""
 "It is not recommended to bind the primary mouse buttons without "
 "modificators.\n"
@@ -1929,15 +1944,15 @@ msgstr ""
 "\n"
 "Voleu continuar?"
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
 msgstr "Vinculació dels botons del ratolí"
 
-#: src/hotkey/gui.c:385
+#: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Configuració del connector de tecles ràpides globals"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -1945,15 +1960,15 @@ msgstr ""
 "Premeu una combinació de tecles dins del camp de text.\n"
 "També podeu vincular botons del ratolí."
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:407
 msgid "Hotkeys:"
 msgstr "Tecles ràpides:"
 
-#: src/hotkey/gui.c:425
+#: src/hotkey/gui.c:426
 msgid "<b>Action:</b>"
 msgstr "<b>Acció:</b>"
 
-#: src/hotkey/gui.c:433
+#: src/hotkey/gui.c:434
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Vinculació de tecles:</b>"
 
@@ -2171,7 +2186,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "Dispositiu PCM per defecte (%s)"
 
-#: src/oss4/plugin.c:75
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "Dispositiu d'àudio:"
 
@@ -2322,7 +2337,7 @@ msgstr "Error de Scrobbler"
 msgid "<b>Last.FM</b>"
 msgstr "<b>Last.FM</b>"
 
-#: src/scrobbler/plugin.c:194
+#: src/scrobbler/plugin.c:189
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Error de Scrobbler"
@@ -3332,6 +3347,40 @@ msgstr "No s'ha pogut crear el directori (%s): %s\n"
 msgid "Sndfile Plugin"
 msgstr "Quant al connector sndfile"
 
+#: src/sndio/sndio.c:189
+#, fuzzy
+msgid "About Sndio Output Plugin"
+msgstr "Quant al connector de sortida JACK 0.17"
+
+#: src/sndio/sndio.c:190
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+
+#: src/sndio/sndio.c:259
+#, fuzzy
+msgid "Unsupported format"
+msgstr "Format de fitxer no suportat\n"
+
+#: src/sndio/sndio.c:260
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+
+#: src/sndio/sndio.c:403
+#, fuzzy
+msgid "sndio device"
+msgstr "Dispositiu d'àudio:"
+
+#: src/sndio/sndio.c:419
+#, fuzzy
+msgid "(empty means default)"
+msgstr "Alarma (per defecte) a les:"
+
 #: src/song_change/song_change.c:56
 #, fuzzy
 msgid "Song Change"
@@ -3425,37 +3474,37 @@ msgstr "To"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:394
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Roda del ratolí"
 
-#: src/statusicon/statusicon.c:387
+#: src/statusicon/statusicon.c:395
 msgid "Change volume"
 msgstr "Canvia el volum"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:398
 msgid "Change playing song"
 msgstr "Canvia la cançó"
 
-#: src/statusicon/statusicon.c:393
+#: src/statusicon/statusicon.c:401
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Paràmetres del mesclador"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:402
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:396
+#: src/statusicon/statusicon.c:404
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:406
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:415
 #, fuzzy
 msgid "Status Icon"
 msgstr "Estat"
@@ -3832,10 +3881,6 @@ msgstr ""
 
 #~ msgid "About Scrobbler Plugin"
 #~ msgstr "Quant al connector Scrobbler"
-
-#, fuzzy
-#~ msgid "About SDL Output Plugin"
-#~ msgstr "Quant al connector de sortida JACK 0.17"
 
 #, fuzzy
 #~ msgid "SDL error"
@@ -7120,9 +7165,6 @@ msgstr ""
 
 #~ msgid "Can't open file\n"
 #~ msgstr "No s'ha pogut obrir el fitxer\n"
-
-#~ msgid "Not supported file format\n"
-#~ msgstr "Format de fitxer no suportat\n"
 
 #~ msgid "File is corrupted\n"
 #~ msgstr "El fitxer està corromput\n"
