@@ -18,8 +18,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include "config.h"
-
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -56,6 +54,7 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "cdaudio-ng.h"
+#include "config.h"
 #include "configure.h"
 
 #define MAX_RETRIES 10
