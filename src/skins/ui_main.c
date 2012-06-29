@@ -522,6 +522,8 @@ static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
         case GDK_SCROLL_RIGHT:
             aud_drct_seek (aud_drct_get_time () + 5000);
             break;
+        default:
+            break;
     }
 }
 
