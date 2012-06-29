@@ -32,6 +32,16 @@
 #include <cdio/audio.h>
 #include <cdio/sector.h>
 #include <cdio/cd_types.h>
+
+/* libcdio's header files #define these */
+#undef PACKAGE
+#undef PACKAGE_BUGREPORT
+#undef PACKAGE_NAME
+#undef PACKAGE_STRING
+#undef PACKAGE_TARNAME
+#undef PACKAGE_VERSION
+#undef VERSION
+
 #include <cddb/cddb.h>
 
 #include <glib.h>
