@@ -2,7 +2,7 @@
  *  A FLAC decoder plugin for the Audacious Media Player
  *  Copyright (C) 2005 Ralf Ertzinger
  *  Copyright (C) 2010 John Lindgren
- *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
+ *  Copyright (C) 2010-2012 Michał Lipski
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -57,15 +57,8 @@ void clean_callback_info(callback_info *info)
 
 void reset_info(callback_info *info)
 {
-    info->buffer_free = BUFFER_SIZE_SAMP;
     info->buffer_used = 0;
     info->write_pointer = info->output_buffer;
-
-    /* Clear the stream and frame information */
-    memset(&(info->stream), 0, sizeof(info->stream));
-    memset(&(info->frame), 0, sizeof(info->frame));
-
-    info->metadata_changed = FALSE;
 }
 
 bool_t read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)

@@ -30,46 +30,21 @@
     printf("flacng: " __VA_ARGS__); \
 } while (0)
 
-#define OUTPUT_BLOCK_SIZE (1024u)
-#define MAX_SUPPORTED_CHANNELS (2u)
 #define BUFFER_SIZE_SAMP (FLAC__MAX_BLOCK_SIZE * FLAC__MAX_CHANNELS)
 #define BUFFER_SIZE_BYTE (BUFFER_SIZE_SAMP * (FLAC__MAX_BITS_PER_SAMPLE/8))
 
 #define SAMPLE_SIZE(a) (a == 8 ? 1 : (a == 16 ? 2 : 4))
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
-/*
- * Audio information about the stream as a whole, gathered from
- * the metadata header
- */
-struct stream_info {
-    unsigned bits_per_sample;
-    unsigned samplerate;
-    unsigned channels;
-    unsigned long samples;
-    bool_t has_seektable;
-};
-
-/*
- * Information about the last decoded audio frame.
- * Also describes the format of the audio currently contained
- * in the stream buffer.
- */
-struct frame_info {
-    unsigned bits_per_sample;
-    unsigned samplerate;
-    unsigned channels;
-};
-
 typedef struct callback_info {
+    unsigned bits_per_sample;
+    unsigned sample_rate;
+    unsigned channels;
+    unsigned long total_samples;
     int32_t* output_buffer;
     int32_t* write_pointer;
-    unsigned buffer_free;
     unsigned buffer_used;
     VFSFile* fd;
-    struct stream_info stream;
-    bool_t metadata_changed;
-    struct frame_info frame;
     int bitrate;
 } callback_info;
 

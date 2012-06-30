@@ -1,7 +1,7 @@
 /*
  *  A FLAC decoder plugin for the Audacious Media Player
  *  Copyright (C) 2005 Ralf Ertzinger
- *  Copyright (C) 2010 Michał Lipski <tallica@o2.pl>
+ *  Copyright (C) 2010-2012 Michał Lipski
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -114,45 +114,19 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
 
 FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 *const buffer[], void *client_data)
 {
-    long sample;
-    short channel;
     callback_info *info = (callback_info*) client_data;
 
-    /*
-     * Check if there is more data decoded than we have space
-     * for. This _should_ not happen given how our buffer is sized,
-     * but you never know.
-     */
-    if (info->buffer_free < (frame->header.blocksize * frame->header.channels))
+    if (info->channels != frame->header.channels ||
+        info->sample_rate != frame->header.sample_rate)
     {
-        FLACNG_ERROR("BUG! Too much data decoded from stream!\n");
         return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
     }
 
-    if (frame->header.bits_per_sample != 8  &&
-        frame->header.bits_per_sample != 16 &&
-        frame->header.bits_per_sample != 24 &&
-        frame->header.bits_per_sample != 32)
+    for (long sample = 0; sample < frame->header.blocksize; sample++)
     {
-        FLACNG_ERROR("Unsupported bitrate found in stream: %d!\n", frame->header.bits_per_sample);
-        return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
-    }
-
-    /*
-     * Copy the frame metadata, will be compared to stream
-     * metadata later
-     * This also describes the format of the current buffer content.
-     */
-    info->frame.channels = frame->header.channels;
-    info->frame.samplerate = frame->header.sample_rate;
-    info->frame.bits_per_sample = frame->header.bits_per_sample;
-
-    for (sample = 0; sample < frame->header.blocksize; sample++)
-    {
-        for (channel = 0; channel < frame->header.channels; channel++)
+        for (short channel = 0; channel < frame->header.channels; channel++)
         {
             *(info->write_pointer++) = buffer[channel][sample];
-            info->buffer_free -= 1;
             info->buffer_used += 1;
         }
     }
@@ -172,27 +146,25 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
 
     if (metadata->type == FLAC__METADATA_TYPE_STREAMINFO)
     {
-        info->stream.samples = metadata->data.stream_info.total_samples;
-        AUDDBG("total_samples=%ld\n", (long) metadata->data.stream_info.total_samples);
+        info->total_samples = metadata->data.stream_info.total_samples;
+        AUDDBG("total_total_samples=%ld\n", (long) metadata->data.stream_info.total_samples);
 
-        info->stream.bits_per_sample = metadata->data.stream_info.bits_per_sample;
+        info->bits_per_sample = metadata->data.stream_info.bits_per_sample;
         AUDDBG("bits_per_sample=%d\n", metadata->data.stream_info.bits_per_sample);
 
-        info->stream.channels = metadata->data.stream_info.channels;
+        info->channels = metadata->data.stream_info.channels;
         AUDDBG("channels=%d\n", metadata->data.stream_info.channels);
 
-        info->stream.samplerate = metadata->data.stream_info.sample_rate;
+        info->sample_rate = metadata->data.stream_info.sample_rate;
         AUDDBG("sample_rate=%d\n", metadata->data.stream_info.sample_rate);
 
         size = vfs_fsize(info->fd);
 
-        if (size == -1 || info->stream.samples == 0)
+        if (size == -1 || info->total_samples == 0)
             info->bitrate = 0;
         else
-            info->bitrate = 8 * size * (int64_t) info->stream.samplerate / info->stream.samples;
+            info->bitrate = 8 * size * (int64_t) info->sample_rate / info->total_samples;
 
         AUDDBG("bitrate=%d\n", info->bitrate);
-
-        info->metadata_changed = TRUE;
     }
 }
