@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-24 14:06-0400\n"
+"POT-Creation-Date: 2012-07-01 15:10-0400\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -1390,7 +1390,7 @@ msgstr "Vorbis kodetzailearen konfigurazioa"
 msgid "Quality level (0 - 10):"
 msgstr "Kalitate maila (0 - 10):"
 
-#: src/flacng/plugin.c:368
+#: src/flacng/plugin.c:271
 #, fuzzy
 msgid "FLAC Decoder"
 msgstr "TTA deskodetzailearen errorea"

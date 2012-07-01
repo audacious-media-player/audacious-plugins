@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-24 14:06-0400\n"
+"POT-Creation-Date: 2012-07-01 15:10-0400\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -1391,7 +1391,7 @@ msgstr "Vorbis Kodlayıcı Ayarları"
 msgid "Quality level (0 - 10):"
 msgstr "Kalite seviyesi (0 - 10):"
 
-#: src/flacng/plugin.c:368
+#: src/flacng/plugin.c:271
 #, fuzzy
 msgid "FLAC Decoder"
 msgstr "TTA Dekoder Hatası"

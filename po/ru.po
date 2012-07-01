@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-06-24 14:21-0400\n"
+"POT-Creation-Date: 2012-07-01 15:10-0400\n"
 "PO-Revision-Date: 2012-06-24 18:08+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: Russian\n"
@@ -1347,7 +1347,7 @@ msgstr "Настройка кодека Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Уровень качества (0 - 10):"
 
-#: src/flacng/plugin.c:368
+#: src/flacng/plugin.c:271
 msgid "FLAC Decoder"
 msgstr "FLAC Декодер"
 
