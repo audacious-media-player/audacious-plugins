@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-01 15:10-0400\n"
-"PO-Revision-Date: 2012-06-24 18:08+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-07-01 15:11-0400\n"
+"PO-Revision-Date: 2012-06-26 09:47+0000\n"
+"Last-Translator: Shuuji Takahashi <shuuji3@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -1555,7 +1555,7 @@ msgstr "ランダムに並べる(_R)"
 
 #: src/gtkui/menus.c:195
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "このプレイリストを再生する(_P)"
 
 #: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
@@ -1575,7 +1575,7 @@ msgstr "新しいプレイリスト(_N)"
 
 #: src/gtkui/menus.c:202
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "名前の変更(_A)"
 
 #: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
@@ -1591,7 +1591,7 @@ msgstr "エクスポート(_E)"
 
 #: src/gtkui/menus.c:208
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "プレイリストマネージャ(_M)"
 
 #: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
@@ -1695,7 +1695,7 @@ msgstr "すべて選択(_A)"
 
 #: src/gtkui/menus.c:254
 msgid "_Rename ..."
-msgstr ""
+msgstr "名前の変更(_R)"
 
 #: src/gtkui/ui_gtk.c:98
 msgid "GTK Interface"
@@ -1783,7 +1783,7 @@ msgstr "指定したファイルへ移動"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr ""
+msgstr "プレイヤウィンドウのトグル"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1799,7 +1799,7 @@ msgstr "シャッフルをトグル"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
-msgstr ""
+msgstr "プレイヤウィンドウを表示する"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -2009,7 +2009,7 @@ msgstr "チャンネルミキサ"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "MMS プラグイン"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
@@ -3149,7 +3149,7 @@ msgstr "Sndfile プラグイン"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "Sndio 出力プラグインについて"
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3160,7 +3160,7 @@ msgstr ""
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
-msgstr ""
+msgstr "対応していない形式"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3168,14 +3168,17 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"オーディオデバイスで対応していない形式が要求されました。\n"
+"\n"
+"sndiod(1) サーバが起動してから、もう一度実行してください。"
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
-msgstr ""
+msgstr "sndio デバイス"
 
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
-msgstr ""
+msgstr "(空の場合、デフォルトに設定します)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3326,7 +3329,7 @@ msgstr "ファイル I/O プラグイン"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr ""
+msgstr "ボーカルの除去"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"

@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-01 15:10-0400\n"
-"PO-Revision-Date: 2012-06-24 18:08+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-07-01 15:11-0400\n"
+"PO-Revision-Date: 2012-06-25 12:21+0000\n"
+"Last-Translator: Algimantas Margevičius <gymka@archlinux.lt>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -1560,7 +1560,7 @@ msgstr "_Atsitiktine tvarka"
 
 #: src/gtkui/menus.c:195
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "_Groti šį grojaraštį"
 
 #: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
@@ -1580,7 +1580,7 @@ msgstr "_Naujas"
 
 #: src/gtkui/menus.c:202
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "_Pervadinti"
 
 #: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
@@ -1596,7 +1596,7 @@ msgstr "_Eksportuoti ..."
 
 #: src/gtkui/menus.c:208
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "Grojaraščio _redaktorius"
 
 #: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
@@ -1700,7 +1700,7 @@ msgstr "Pasirinkti _viską"
 
 #: src/gtkui/menus.c:254
 msgid "_Rename ..."
-msgstr ""
+msgstr "_Pervadinti..."
 
 #: src/gtkui/ui_gtk.c:98
 msgid "GTK Interface"
@@ -1790,7 +1790,7 @@ msgstr "Šokti į failą"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr ""
+msgstr "Perjungti grotuvo langą(-us)"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1806,7 +1806,7 @@ msgstr "Perjungti maišymą"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
-msgstr ""
+msgstr "Iškelti grotuvo langą(-us)"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -3175,7 +3175,7 @@ msgstr "Sndfile įskiepis"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "Apie Sndio Output įskiepį"
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3183,10 +3183,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
+"Sndio Output Plugin\n"
+"\n"
+"Sukūrė Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
-msgstr ""
+msgstr "Nepalaikomas formatas"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3194,14 +3197,17 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"Garso įrenginys šio formato nepalaiko.\n"
+"\n"
+"Pabandykite dar kartą su paleistu sndiod(1) serveriu."
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
-msgstr ""
+msgstr "sndio įrenginys"
 
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
-msgstr ""
+msgstr "(tuščia reiškia numatytą)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"

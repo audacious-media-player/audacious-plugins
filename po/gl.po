@@ -3,14 +3,16 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# <mbouzada@gmail.com>, 2012.
+#   <mbouzada@gmail.com>, 2012.
 # Miguel Anxo Bouzada <mbouzada@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-01 15:10-0400\n"
-"PO-Revision-Date: 2012-06-24 18:08+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-07-01 15:11-0400\n"
+"PO-Revision-Date: 2012-06-24 20:05+0000\n"
+"Last-Translator: mbouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
@@ -1078,7 +1080,7 @@ msgid ""
 "channels."
 msgstr ""
 "Produciuse un fallo na atenuación cruzada xa que existen cancións cun número "
-"diferente de canles. Pode empregar o «Mesturador de canles» para converter "
+"diferente de canles.  Pode empregar o «Mesturador de canles» para converter "
 "as cancións ao mesmo número de canle."
 
 #: src/crossfade/crossfade.c:90
@@ -1087,7 +1089,7 @@ msgid ""
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
 "Produciuse un fallo na atenuación cruzada xa que existen cancións con "
-"diferente taxa de mostraxe. Pode empregar o «Convertedor de taxa de "
+"diferente taxa de mostraxe.  Pode empregar o «Convertedor de taxa de "
 "mostraxe» para converter as cancións á mesma taxa de mostraxe."
 
 #: src/crossfade/crossfade.c:271
@@ -1564,7 +1566,7 @@ msgstr "Ao c_hou"
 
 #: src/gtkui/menus.c:195
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "_Reproducir esta lista"
 
 #: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
@@ -1584,7 +1586,7 @@ msgstr "_Novo"
 
 #: src/gtkui/menus.c:202
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "Cambiar o _nome..."
 
 #: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
@@ -1600,7 +1602,7 @@ msgstr "_Exportar..."
 
 #: src/gtkui/menus.c:208
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "Xestor da _lista de reprodución:"
 
 #: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
@@ -1704,7 +1706,7 @@ msgstr "Seleccionar _todo"
 
 #: src/gtkui/menus.c:254
 msgid "_Rename ..."
-msgstr ""
+msgstr "Cambiar o _nome..."
 
 #: src/gtkui/ui_gtk.c:98
 msgid "GTK Interface"
@@ -1793,7 +1795,7 @@ msgstr "Saltar ao ficheiro"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr ""
+msgstr "Cambiar as xanelas do reprodutor"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1809,7 +1811,7 @@ msgstr "Conmutar a orden ao chou"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
-msgstr ""
+msgstr "Elevar as xanelas do reprodutor"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -3175,7 +3177,7 @@ msgstr "Engadido Sndfile"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "Sobre o engadido de saída Sndio"
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3183,10 +3185,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
+"Engadido de saída Sndio Output\n"
+"\n"
+"Escrito por Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
-msgstr ""
+msgstr "Formato non admitido"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3194,14 +3199,17 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"Foi solicitado un formato non admitido polo dispositivo de son.\n"
+"\n"
+"Tenteo de novo co servidor sndiod(1) en execución."
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
-msgstr ""
+msgstr "Dispositivo «sndio»"
 
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
-msgstr ""
+msgstr "(como predeterminado medio baleiro)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"

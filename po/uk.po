@@ -7,6 +7,7 @@
 # Kostyantyn Fedenko <fedenko@ukr.net>, 2011.
 #   <kvantarium@gmail.com>, 2012.
 # NaiLi Rootaerc <theism@mail.ru>, 2012.
+# Rax Garfield <admin@dvizho.ks.ua>, 2012.
 # Rax Garfield (http://biokillaz.com/), 2012.
 # Rax Garfield (http://biokillaz.com)/, 2012.
 # Yuri Chornoivan <yurchor@ukr.net>, 2012.
@@ -14,9 +15,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-01 15:10-0400\n"
-"PO-Revision-Date: 2012-06-24 18:08+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-07-01 15:11-0400\n"
+"PO-Revision-Date: 2012-06-29 13:31+0000\n"
+"Last-Translator: Rax Garfield <admin@dvizho.ks.ua>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -1567,7 +1568,7 @@ msgstr "У випадковому по_рядку"
 
 #: src/gtkui/menus.c:195
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "Відтворити _цей список"
 
 #: src/gtkui/menus.c:196 src/gtkui/menus.c:243
 msgid "_Refresh"
@@ -1587,7 +1588,7 @@ msgstr "_Новий"
 
 #: src/gtkui/menus.c:202
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "Пере_йменувати..."
 
 #: src/gtkui/menus.c:203 src/gtkui/menus.c:255
 msgid "_Close"
@@ -1603,7 +1604,7 @@ msgstr "_Експортувати..."
 
 #: src/gtkui/menus.c:208
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "Керування списками _відтворення..."
 
 #: src/gtkui/menus.c:209
 msgid "_Queue Manager ..."
@@ -1707,7 +1708,7 @@ msgstr "Виді_лити все"
 
 #: src/gtkui/menus.c:254
 msgid "_Rename ..."
-msgstr ""
+msgstr "Пере_йменувати..."
 
 #: src/gtkui/ui_gtk.c:98
 msgid "GTK Interface"
@@ -1797,7 +1798,7 @@ msgstr "Перейти до файлу"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr ""
+msgstr "Перемкнути стан вікон програвача"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1813,7 +1814,7 @@ msgstr "Перемкнути тасування"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
-msgstr ""
+msgstr "Підняти вікна програвача"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -3181,18 +3182,18 @@ msgstr "Sndfile Плагін"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "Про плаґін виводу Sndio"
 
 #: src/sndio/sndio.c:190
 msgid ""
 "Sndio Output Plugin\n"
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
-msgstr ""
+msgstr "Плаґін виводу Sndio, за авторством Thomas Pfaff <tpfaff@tp76.info>.\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
-msgstr ""
+msgstr "Непідтримуваний формат"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3200,14 +3201,17 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"Формат не підтримується аудіопристроєм.\n"
+"\n"
+"Спробуйте ще раз, запустивши сервер sndiod(1)."
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
-msgstr ""
+msgstr "Пристрій Sndio"
 
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
-msgstr ""
+msgstr "(порожнє — типове)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
