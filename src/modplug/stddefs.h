@@ -18,6 +18,7 @@
 
 // Standard types
 typedef guchar                 uchar;
+typedef guint                  uint;
 
 typedef gint8                  int8;
 typedef gint16                 int16;
