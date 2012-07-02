@@ -52,7 +52,7 @@
 
 typedef struct _KeyControls {
     GtkWidget *keytext;
-    GtkWidget *table;
+    GtkWidget *grid;
     GtkWidget *button;
     GtkWidget *combobox;
 
@@ -294,7 +294,7 @@ on_entry_scroll_event(GtkWidget * widget,
 }
 
 KeyControls* add_event_controls(KeyControls* list,
-                GtkWidget *table,
+                GtkWidget *grid,
                 int row,
                 HotkeyConfiguration *hotkey)
 {
@@ -305,7 +305,7 @@ KeyControls* add_event_controls(KeyControls* list,
     controls->next = NULL;
     controls->prev = list;
     controls->first = list->first;
-    controls->table = table;
+    controls->grid = grid;
     list->next = controls;
 
     if (hotkey)
@@ -324,18 +324,18 @@ KeyControls* add_event_controls(KeyControls* list,
     }
 
     controls->combobox = gtk_combo_box_text_new();
+    gtk_widget_set_hexpand(controls->combobox, TRUE);
     for (i=0;i<EVENT_MAX;i++)
     {
         gtk_combo_box_text_append_text((GtkComboBoxText *) controls->combobox, _(event_desc[i]));
     }
     gtk_combo_box_set_active(GTK_COMBO_BOX(controls->combobox), controls->hotkey.event);
-    gtk_table_attach (GTK_TABLE (table), controls->combobox, 0, 1, row, row+1,
-            (GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
+    gtk_grid_attach (GTK_GRID (grid), controls->combobox, 0, row, 1, 1);
 
 
     controls->keytext = gtk_entry_new ();
-    gtk_table_attach (GTK_TABLE (table), controls->keytext, 1, 2, row, row+1,
-            (GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
+    gtk_widget_set_hexpand (controls->keytext, TRUE);
+    gtk_grid_attach (GTK_GRID (grid), controls->keytext, 1, row, 1, 1);
     gtk_editable_set_editable(GTK_EDITABLE(controls->keytext), FALSE);
 
 
@@ -353,7 +353,7 @@ KeyControls* add_event_controls(KeyControls* list,
     controls->button = gtk_button_new();
     gtk_button_set_image( GTK_BUTTON(controls->button),
                         gtk_image_new_from_stock( GTK_STOCK_DELETE , GTK_ICON_SIZE_BUTTON));
-    gtk_table_attach (GTK_TABLE (table), controls->button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
+    gtk_grid_attach (GTK_GRID (grid), controls->button, 2, row, 1, 1);
     g_signal_connect (G_OBJECT (controls->button), "clicked",
             G_CALLBACK (clear_keyboard), controls);
 
@@ -370,7 +370,7 @@ void show_configure ()
     GtkWidget *frame;
     GtkWidget *label;
     GtkWidget *image;
-    GtkWidget *table;
+    GtkWidget *grid;
     GtkWidget *button_box, *button;
     PluginConfig* plugin_cfg;
     HotkeyConfiguration *hotkey, temphotkey;
@@ -413,27 +413,23 @@ void show_configure ()
     gtk_container_add (GTK_CONTAINER (frame), alignment);
     gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 3, 3, 3, 3);
 
-    table = gtk_table_new (1, 3, FALSE);
-    gtk_container_add (GTK_CONTAINER (alignment), table);
-
-    gtk_table_set_col_spacings (GTK_TABLE (table), 2);
-    gtk_table_set_row_spacings (GTK_TABLE (table), 0);
+    grid = gtk_grid_new ();
+    gtk_grid_set_column_spacing (GTK_GRID (grid), 2);
+    gtk_container_add (GTK_CONTAINER (alignment), grid);
 
     label = gtk_label_new (NULL);
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
     gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
             _("<b>Action:</b>"));
-    gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
-            (GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
+    gtk_grid_attach (GTK_GRID (grid), label, 0, 0, 1, 1);
 
     label = gtk_label_new (NULL);
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
     gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
             _("<b>Key Binding:</b>"));
-    gtk_table_attach (GTK_TABLE (table), label, 1, 2, 0, 1,
-            (GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
+    gtk_grid_attach (GTK_GRID (grid), label, 1, 0, 1, 1);
 
 
     hotkey = &(plugin_cfg->first);
@@ -441,7 +437,7 @@ void show_configure ()
     first_controls = (KeyControls*) g_malloc(sizeof(KeyControls));
     first_controls->next = NULL;
     first_controls->prev = NULL;
-    first_controls->table = table;
+    first_controls->grid = grid;
     first_controls->button = NULL;
     first_controls->combobox = NULL;
     first_controls->keytext = NULL;
@@ -455,7 +451,7 @@ void show_configure ()
     {
         while (hotkey)
         {
-            current_controls = add_event_controls(current_controls, table, i, hotkey);
+            current_controls = add_event_controls(current_controls, grid, i, hotkey);
             hotkey = hotkey->next;
             i++;
         }
@@ -467,7 +463,7 @@ void show_configure ()
         temphotkey.event = current_controls->hotkey.event+1;
     else temphotkey.event = 0;
     if (temphotkey.event >= EVENT_MAX) temphotkey.event = 0;
-    add_event_controls(current_controls, table, i, &temphotkey);
+    add_event_controls(current_controls, grid, i, &temphotkey);
 
 
 
@@ -508,6 +504,7 @@ void show_configure ()
 static void clear_keyboard (GtkWidget *widget, gpointer data)
 {
     KeyControls *controls= (KeyControls*)data;
+
     if ((controls->next == NULL) && (controls->prev->keytext == NULL))
     {
         controls->hotkey.key = 0;
@@ -521,7 +518,7 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
     if (controls->prev)
     {
         KeyControls* c;
-        GtkWidget* table;
+        GtkWidget* grid;
         int row;
 
         gtk_widget_destroy(GTK_WIDGET(controls->button));
@@ -540,22 +537,20 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
         if (controls->next)
             controls->next->prev = controls->prev;
         g_free(controls);
-        if (c) table = c->table; else table = NULL;
+        if (c) grid = c->grid; else grid = NULL;
         while (c)
         {
             g_object_ref(c->combobox);
             g_object_ref(c->keytext);
             g_object_ref(c->button);
 
-            gtk_container_remove( GTK_CONTAINER(c->table) , c->combobox);
-            gtk_container_remove( GTK_CONTAINER(c->table) , c->keytext);
-            gtk_container_remove( GTK_CONTAINER(c->table) , c->button);
+            gtk_container_remove( GTK_CONTAINER(c->grid) , c->combobox);
+            gtk_container_remove( GTK_CONTAINER(c->grid) , c->keytext);
+            gtk_container_remove( GTK_CONTAINER(c->grid) , c->button);
 
-            gtk_table_attach (GTK_TABLE (c->table), c->combobox, 0, 1, row, row+1,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
-            gtk_table_attach (GTK_TABLE (c->table), c->keytext, 1, 2, row, row+1,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND), (GtkAttachOptions) (GTK_EXPAND), 0, 0);
-            gtk_table_attach (GTK_TABLE (c->table), c->button, 2, 3, row, row+1, (GtkAttachOptions) (GTK_FILL), (GtkAttachOptions) (0), 0, 0);
+            gtk_grid_attach (GTK_GRID (c->grid), c->combobox, 0, row, 1, 1);
+            gtk_grid_attach (GTK_GRID (c->grid), c->keytext, 1, row, 1, 1);
+            gtk_grid_attach (GTK_GRID (c->grid), c->button, 2, row, 1, 1);
 
             g_object_unref(c->combobox);
             g_object_unref(c->keytext);
@@ -564,8 +559,8 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
             c = c->next;
             row++;
         }
-        if (table)
-            gtk_widget_show_all (GTK_WIDGET (table));
+        if (grid)
+            gtk_widget_show_all (GTK_WIDGET (grid));
 
         return;
     }
@@ -590,9 +585,8 @@ void add_callback (GtkWidget *widget, gpointer data)
     temphotkey.type = TYPE_KEY;
     temphotkey.event = controls->hotkey.event+1;
     if (temphotkey.event >= EVENT_MAX) temphotkey.event = 0;
-    gtk_table_resize(GTK_TABLE(controls->table), count, 3);
-    add_event_controls(controls, controls->table, count, &temphotkey);
-    gtk_widget_show_all (GTK_WIDGET (controls->table));
+    add_event_controls(controls, controls->grid, count, &temphotkey);
+    gtk_widget_show_all (GTK_WIDGET (controls->grid));
 }
 
 void destroy_callback (GtkWidget *widget, gpointer data)
