@@ -97,9 +97,9 @@ aosd_cb_configure_position_expose ( GtkWidget * darea ,
 
 
 static void
-aosd_cb_configure_position_placement_commit ( GtkWidget * table , aosd_cfg_t * cfg )
+aosd_cb_configure_position_placement_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
 {
-  GList *placbt_list = gtk_container_get_children( GTK_CONTAINER(table) );
+  GList *placbt_list = gtk_container_get_children( GTK_CONTAINER(grid) );
   GList *list_iter = placbt_list;
 
   while ( list_iter != NULL )
@@ -119,21 +119,21 @@ aosd_cb_configure_position_placement_commit ( GtkWidget * table , aosd_cfg_t * c
 
 
 static void
-aosd_cb_configure_position_offset_commit ( GtkWidget * table , aosd_cfg_t * cfg )
+aosd_cb_configure_position_offset_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
 {
   cfg->osd->position.offset_x = gtk_spin_button_get_value_as_int(
-    GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(table),"offx")) );
+    GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"offx")) );
   cfg->osd->position.offset_y = gtk_spin_button_get_value_as_int(
-    GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(table),"offy")) );
+    GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"offy")) );
   return;
 }
 
 
 static void
-aosd_cb_configure_position_maxsize_commit ( GtkWidget * table , aosd_cfg_t * cfg )
+aosd_cb_configure_position_maxsize_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
 {
   cfg->osd->position.maxsize_width = gtk_spin_button_get_value_as_int(
-    GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(table),"maxsize_width")) );
+    GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"maxsize_width")) );
   return;
 }
 
@@ -151,9 +151,9 @@ static GtkWidget *
 aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
 {
   GtkWidget *pos_vbox;
-  GtkWidget *pos_placement_frame, *pos_placement_hbox, *pos_placement_table;
+  GtkWidget *pos_placement_frame, *pos_placement_hbox, *pos_placement_grid;
   GtkWidget *pos_placement_bt[9], *pos_placement_bt_darea[9];
-  GtkWidget *pos_offset_table, *pos_offset_x_label, *pos_offset_x_spinbt;
+  GtkWidget *pos_offset_grid, *pos_offset_x_label, *pos_offset_x_spinbt;
   GtkWidget *pos_offset_y_label, *pos_offset_y_spinbt;
   GtkWidget *pos_maxsize_width_label, *pos_maxsize_width_spinbt;
   GtkWidget *pos_multimon_frame, *pos_multimon_hbox;
@@ -171,7 +171,7 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_container_add( GTK_CONTAINER(pos_placement_frame) , pos_placement_hbox );
   gtk_box_pack_start( GTK_BOX(pos_vbox) , pos_placement_frame , FALSE , FALSE , 0 );
 
-  pos_placement_table = gtk_table_new( 3 , 3 , TRUE );
+  pos_placement_grid = gtk_grid_new();
   for ( i = 0 ; i < 9 ; i++ )
   {
     if ( i == 0 )
@@ -184,51 +184,43 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_container_add( GTK_CONTAINER(pos_placement_bt[i]) , pos_placement_bt_darea[i] );
     g_signal_connect( G_OBJECT(pos_placement_bt_darea[i]) , "draw" ,
                       G_CALLBACK(aosd_cb_configure_position_expose) , GINT_TO_POINTER(i) );
-    gtk_table_attach( GTK_TABLE(pos_placement_table) , pos_placement_bt[i] ,
-                      (i % 3) , (i % 3) + 1 , (i / 3) , (i / 3) + 1 ,
-                      GTK_FILL , GTK_FILL , 0 , 0 );
+    gtk_grid_attach( GTK_GRID(pos_placement_grid) , pos_placement_bt[i] , (i % 3) , (i / 3) , 1 , 1 );
     g_object_set_data( G_OBJECT(pos_placement_bt[i]) , "value" , GINT_TO_POINTER(i+1) );
     if ( cfg->osd->position.placement == (i+1) )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(pos_placement_bt[i]) , TRUE );
   }
-  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_placement_table , FALSE , FALSE , 0 );
-  aosd_callback_list_add( cb_list , pos_placement_table , aosd_cb_configure_position_placement_commit );
+  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_placement_grid , FALSE , FALSE , 0 );
+  aosd_callback_list_add( cb_list , pos_placement_grid , aosd_cb_configure_position_placement_commit );
 
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , gtk_separator_new(GTK_ORIENTATION_VERTICAL) , FALSE , FALSE , 6 );
 
-  pos_offset_table = gtk_table_new( 3 , 2 , FALSE );
-  gtk_table_set_row_spacings( GTK_TABLE(pos_offset_table) , 4 );
-  gtk_table_set_col_spacings( GTK_TABLE(pos_offset_table) , 4 );
+  pos_offset_grid = gtk_grid_new();
+  gtk_grid_set_row_spacing( GTK_GRID(pos_offset_grid) , 4 );
+  gtk_grid_set_column_spacing( GTK_GRID(pos_offset_grid) , 4 );
   pos_offset_x_label = gtk_label_new( _( "Relative X offset:" ) );
   gtk_misc_set_alignment( GTK_MISC(pos_offset_x_label) , 0 , 0.5 );
-  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_offset_x_label ,
-                    0 , 1 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
+  gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_x_label , 0 , 0 , 1 , 1 );
   pos_offset_x_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_x_spinbt) , cfg->osd->position.offset_x );
-  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_offset_x_spinbt ,
-                    1 , 2 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
-  g_object_set_data( G_OBJECT(pos_offset_table) , "offx" , pos_offset_x_spinbt );
+  gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_x_spinbt , 1 , 0 , 1 , 1 );
+  g_object_set_data( G_OBJECT(pos_offset_grid) , "offx" , pos_offset_x_spinbt );
   pos_offset_y_label = gtk_label_new( _( "Relative Y offset:" ) );
   gtk_misc_set_alignment( GTK_MISC(pos_offset_y_label) , 0 , 0.5 );
-  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_offset_y_label ,
-                    0 , 1 , 1 , 2 , GTK_FILL , GTK_FILL , 0 , 0 );
+  gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_y_label , 0 , 1 , 1 , 1 );
   pos_offset_y_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_y_spinbt) , cfg->osd->position.offset_y );
-  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_offset_y_spinbt ,
-                    1 , 2 , 1 , 2 , GTK_FILL , GTK_FILL , 0 , 0 );
-  g_object_set_data( G_OBJECT(pos_offset_table) , "offy" , pos_offset_y_spinbt );
+  gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_y_spinbt , 1 , 1 , 1 , 1 );
+  g_object_set_data( G_OBJECT(pos_offset_grid) , "offy" , pos_offset_y_spinbt );
   pos_maxsize_width_label = gtk_label_new( _("Max OSD width:") );
   gtk_misc_set_alignment( GTK_MISC(pos_maxsize_width_label) , 0 , 0.5 );
-  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_maxsize_width_label ,
-                    0 , 1 , 2 , 3 , GTK_FILL , GTK_FILL , 0 , 0 );
+  gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_maxsize_width_label , 0 , 2 , 1 , 1 );
   pos_maxsize_width_spinbt = gtk_spin_button_new_with_range( 0 , 99999 , 1 );
-  g_object_set_data( G_OBJECT(pos_offset_table) , "maxsize_width" , pos_maxsize_width_spinbt );
+  g_object_set_data( G_OBJECT(pos_offset_grid) , "maxsize_width" , pos_maxsize_width_spinbt );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_maxsize_width_spinbt) , cfg->osd->position.maxsize_width );
-  gtk_table_attach( GTK_TABLE(pos_offset_table) , pos_maxsize_width_spinbt ,
-                    1 , 2 , 2 , 3 , GTK_FILL , GTK_FILL , 0 , 0 );
-  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_offset_table , FALSE , FALSE , 0 );
-  aosd_callback_list_add( cb_list , pos_offset_table , aosd_cb_configure_position_offset_commit );
-  aosd_callback_list_add( cb_list , pos_offset_table , aosd_cb_configure_position_maxsize_commit );
+  gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_maxsize_width_spinbt , 1 , 2 , 1 , 1 );
+  gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_offset_grid , FALSE , FALSE , 0 );
+  aosd_callback_list_add( cb_list , pos_offset_grid , aosd_cb_configure_position_offset_commit );
+  aosd_callback_list_add( cb_list , pos_offset_grid , aosd_cb_configure_position_maxsize_commit );
 
   pos_multimon_frame = gtk_frame_new( _("Multi-Monitor options") );
   pos_multimon_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
@@ -378,21 +370,21 @@ static GtkWidget *
 aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
 {
   GtkWidget *tex_vbox;
-  GtkWidget *tex_font_table, *tex_font_frame;
+  GtkWidget *tex_font_grid, *tex_font_frame;
   GtkWidget *tex_font_label[3], *tex_font_fontbt[3];
   GtkWidget *tex_font_colorbt[3], *tex_font_shadow_togglebt[3];
   GtkWidget *tex_font_shadow_colorbt[3];
-  GtkWidget *tex_inte_frame, *tex_inte_table, *tex_inte_utf8conv_togglebt;
+  GtkWidget *tex_inte_frame, *tex_inte_grid, *tex_inte_utf8conv_togglebt;
   gint i = 0;
 
   tex_vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , 4 );
   gtk_container_set_border_width( GTK_CONTAINER(tex_vbox) , 6 );
 
   tex_font_frame = gtk_frame_new( _("Fonts") );
-  tex_font_table = gtk_table_new( 3 , 5 , FALSE );
-  gtk_container_set_border_width( GTK_CONTAINER(tex_font_table) , 6 );
-  gtk_table_set_row_spacings( GTK_TABLE(tex_font_table) , 4 );
-  gtk_table_set_col_spacings( GTK_TABLE(tex_font_table) , 4 );
+  tex_font_grid = gtk_grid_new();
+  gtk_container_set_border_width( GTK_CONTAINER(tex_font_grid) , 6 );
+  gtk_grid_set_row_spacing ( GTK_GRID(tex_font_grid) , 4 );
+  gtk_grid_set_column_spacing ( GTK_GRID(tex_font_grid) , 4 );
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
     GdkColor gcolor = { 0 , 0 , 0 , 0 };
@@ -405,6 +397,7 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_font_button_set_use_font( GTK_FONT_BUTTON(tex_font_fontbt[i]) , FALSE );
     gtk_font_button_set_use_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , FALSE );
     gtk_font_button_set_font_name( GTK_FONT_BUTTON(tex_font_fontbt[i]) , cfg->osd->text.fonts_name[i] );
+    gtk_widget_set_hexpand( tex_font_fontbt[i] , TRUE );
     tex_font_colorbt[i] = gtk_color_button_new();
     gcolor.red = cfg->osd->text.fonts_color[i].red;
     gcolor.green = cfg->osd->text.fonts_color[i].green;
@@ -429,38 +422,32 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
                       tex_font_shadow_colorbt[i] );
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(tex_font_shadow_togglebt[i]) ,
       cfg->osd->text.fonts_draw_shadow[i] );
-    gtk_table_attach( GTK_TABLE(tex_font_table) , tex_font_label[i] ,
-      0 , 1 , i , i + 1 , GTK_FILL , GTK_FILL , 0 , 0 );
-    gtk_table_attach( GTK_TABLE(tex_font_table) , tex_font_fontbt[i] ,
-      1 , 2 , i , i + 1 , GTK_FILL | GTK_EXPAND , GTK_FILL , 0 , 0 );
-    gtk_table_attach( GTK_TABLE(tex_font_table) , tex_font_colorbt[i] ,
-      2 , 3 , i , i + 1 , GTK_FILL , GTK_FILL , 0 , 0 );
-    gtk_table_attach( GTK_TABLE(tex_font_table) , tex_font_shadow_togglebt[i] ,
-      3 , 4 , i , i + 1 , GTK_FILL , GTK_FILL , 0 , 0 );
-    gtk_table_attach( GTK_TABLE(tex_font_table) , tex_font_shadow_colorbt[i] ,
-      4 , 5 , i , i + 1 , GTK_FILL , GTK_FILL , 0 , 0 );
+    gtk_grid_attach( GTK_GRID(tex_font_grid) , tex_font_label[i] , 0 , 0 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(tex_font_grid) , tex_font_fontbt[i] , 1 , 0 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(tex_font_grid) , tex_font_colorbt[i] , 2 , 0 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(tex_font_grid) , tex_font_shadow_togglebt[i] , 3 , 0 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(tex_font_grid) , tex_font_shadow_colorbt[i] , 4 , 0 , 1 , 1 );
     g_object_set_data( G_OBJECT(tex_font_fontbt[i]) , "fontnum" , GINT_TO_POINTER(i) );
     g_object_set_data( G_OBJECT(tex_font_fontbt[i]) , "color" , tex_font_colorbt[i] );
     g_object_set_data( G_OBJECT(tex_font_fontbt[i]) , "use_shadow" , tex_font_shadow_togglebt[i] );
     g_object_set_data( G_OBJECT(tex_font_fontbt[i]) , "shadow_color" , tex_font_shadow_colorbt[i] );
     aosd_callback_list_add( cb_list , tex_font_fontbt[i] , aosd_cb_configure_text_font_commit );
   }
-  gtk_container_add( GTK_CONTAINER(tex_font_frame) , tex_font_table );
+  gtk_container_add( GTK_CONTAINER(tex_font_frame) , tex_font_grid );
   gtk_box_pack_start( GTK_BOX(tex_vbox) , tex_font_frame , FALSE , FALSE , 0 );
 
   tex_inte_frame = gtk_frame_new( _("Internationalization") );
-  tex_inte_table = gtk_table_new( 1 , 1 , FALSE );
-  gtk_container_set_border_width( GTK_CONTAINER(tex_inte_table) , 6 );
-  gtk_table_set_row_spacings( GTK_TABLE(tex_inte_table) , 4 );
-  gtk_table_set_col_spacings( GTK_TABLE(tex_inte_table) , 4 );
+  tex_inte_grid = gtk_grid_new();
+  gtk_container_set_border_width( GTK_CONTAINER(tex_inte_grid) , 6 );
+  gtk_grid_set_row_spacing ( GTK_GRID(tex_inte_grid) , 4 );
+  gtk_grid_set_column_spacing ( GTK_GRID(tex_inte_grid) , 4 );
   tex_inte_utf8conv_togglebt = gtk_check_button_new_with_label(
     _("Disable UTF-8 conversion of text (in aosd)") );
   gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(tex_inte_utf8conv_togglebt) ,
     cfg->osd->text.utf8conv_disable );
-  gtk_table_attach( GTK_TABLE(tex_inte_table) , tex_inte_utf8conv_togglebt ,
-    0 , 1 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
+  gtk_grid_attach( GTK_GRID(tex_inte_grid) , tex_inte_utf8conv_togglebt , 0 , 0 , 1 , 1 );
   aosd_callback_list_add( cb_list , tex_inte_utf8conv_togglebt , aosd_cb_configure_text_inte_commit );
-  gtk_container_add( GTK_CONTAINER(tex_inte_frame) , tex_inte_table );
+  gtk_container_add( GTK_CONTAINER(tex_inte_frame) , tex_inte_grid );
   gtk_box_pack_start( GTK_BOX(tex_vbox) , tex_inte_frame , FALSE , FALSE , 0 );
 
   return tex_vbox;
@@ -542,9 +529,9 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkTreeSelection *dec_rstyle_lv_sel;
   GtkTreeIter iter, iter_sel;
   GtkWidget *dec_rstyle_hbox;
-  GtkWidget *dec_rstyleopts_frame, *dec_rstyleopts_table;
+  GtkWidget *dec_rstyleopts_frame, *dec_rstyleopts_grid;
 #if 0
-  GtkWidget *dec_rstylecustom_frame, *dec_rstylecustom_table;
+  GtkWidget *dec_rstylecustom_frame, *dec_rstylecustom_grid;
   GtkWidget *dec_rstylecustom_label, *dec_rstylecustom_entry, *dec_rstylecustom_browse_bt;
 #endif
   gint *deco_code_array, deco_code_array_size;
@@ -600,11 +587,11 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
 
   /* in colors_max_num now there's the maximum number of colors used by decoration styles */
   dec_rstyleopts_frame = gtk_frame_new( _("Colors") );
-  dec_rstyleopts_table = gtk_table_new( (colors_max_num / 3) + 1 , 3 , TRUE );
-  gtk_container_set_border_width( GTK_CONTAINER(dec_rstyleopts_table) , 6 );
-  gtk_table_set_row_spacings( GTK_TABLE(dec_rstyleopts_table) , 4 );
-  gtk_table_set_col_spacings( GTK_TABLE(dec_rstyleopts_table) , 8 );
-  gtk_container_add( GTK_CONTAINER(dec_rstyleopts_frame) , dec_rstyleopts_table );
+  dec_rstyleopts_grid = gtk_grid_new();
+  gtk_container_set_border_width( GTK_CONTAINER(dec_rstyleopts_grid) , 6 );
+  gtk_grid_set_row_spacing( GTK_GRID(dec_rstyleopts_grid) , 4 );
+  gtk_grid_set_column_spacing( GTK_GRID(dec_rstyleopts_grid) , 8 );
+  gtk_container_add( GTK_CONTAINER(dec_rstyleopts_frame) , dec_rstyleopts_grid );
   for ( i = 0 ; i < colors_max_num ; i++ )
   {
     GtkWidget *colorbt, *hbox, *label;
@@ -622,9 +609,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_color_button_set_alpha( GTK_COLOR_BUTTON(colorbt) , color.alpha );
     gtk_box_pack_start( GTK_BOX(hbox) , label , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(hbox) , colorbt , FALSE , FALSE , 0 );
-    gtk_table_attach( GTK_TABLE(dec_rstyleopts_table) , hbox ,
-      (i % 3) , (i % 3) + 1 , (i / 3) , (i / 3) + 1 ,
-      GTK_FILL , GTK_FILL , 0 , 0 );
+    gtk_grid_attach( GTK_GRID(dec_rstyleopts_grid) , hbox , (i % 3) , (i / 3) , 1 , 1 );
     g_object_set_data( G_OBJECT(colorbt) , "colnum" , GINT_TO_POINTER(i) );
     aosd_callback_list_add( cb_list , colorbt , aosd_cb_configure_decoration_color_commit );
   }
@@ -633,23 +618,21 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
 #if 0
   /* custom skin entry TODO still working on this */
   dec_rstylecustom_frame = gtk_frame_new( _("Custom Skin") );
-  dec_rstylecustom_table = gtk_table_new( 1 , 3 , FALSE );
-  gtk_container_set_border_width( GTK_CONTAINER(dec_rstylecustom_table) , 6 );
-  gtk_table_set_row_spacings( GTK_TABLE(dec_rstylecustom_table) , 4 );
-  gtk_table_set_col_spacings( GTK_TABLE(dec_rstylecustom_table) , 4 );
-  gtk_container_add( GTK_CONTAINER(dec_rstylecustom_frame) , dec_rstylecustom_table );
+  dec_rstylecustom_grid = gtk_grid_new();
+  gtk_container_set_border_width( GTK_CONTAINER(dec_rstylecustom_grid) , 6 );
+  gtk_grid_set_row_spacing( GTK_GRID(dec_rstylecustom_grid) , 4 );
+  gtk_grid_set_column_spacing( GTK_GRID(dec_rstylecustom_grid) , 4 );
+  gtk_container_add( GTK_CONTAINER(dec_rstylecustom_frame) , dec_rstylecustom_grid );
   dec_rstylecustom_label = gtk_label_new( _("Skin file:") );
   dec_rstylecustom_entry = gtk_entry_new();
+  gtk_widget_set_hexpand( dec_rstylecustom_entry , TRUE );
   gtk_entry_set_text( GTK_ENTRY(dec_rstylecustom_entry) , cfg->osd->decoration.skin_file );
   dec_rstylecustom_browse_bt = gtk_button_new_with_label( _("Browse") );
   g_signal_connect( G_OBJECT(dec_rstylecustom_browse_bt) , "clicked" ,
                     G_CALLBACK(aosd_ui_configure_decoration_browse) , dec_rstylecustom_entry );
-  gtk_table_attach( GTK_TABLE(dec_rstylecustom_table) , dec_rstylecustom_label ,
-    0 , 1 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
-  gtk_table_attach( GTK_TABLE(dec_rstylecustom_table) , dec_rstylecustom_entry ,
-    1 , 2 , 0 , 1 , GTK_FILL | GTK_EXPAND , GTK_FILL , 0 , 0 );
-  gtk_table_attach( GTK_TABLE(dec_rstylecustom_table) , dec_rstylecustom_browse_bt ,
-    2 , 3 , 0 , 1 , GTK_FILL , GTK_FILL , 0 , 0 );
+  gtk_grid_attach( GTK_GRID(dec_rstylecustom_grid) , dec_rstylecustom_label , 0 , 0 , 1 , 1 );
+  gtk_grid_attach( GTK_GRID(dec_rstylecustom_grid) , dec_rstylecustom_entry , 0 , 0 , 1 , 1 );
+  gtk_grid_attach( GTK_GRID(dec_rstylecustom_grid) , dec_rstylecustom_browse_bt , 0 , 0 , 1 , 1 );
   aosd_callback_list_add( cb_list , dec_rstylecustom_entry , aosd_cb_configure_decoration_skinfile_commit );
 
   gtk_box_pack_start( GTK_BOX(dec_rstyle_hbox) , dec_rstylecustom_frame , FALSE , FALSE , 0 );
