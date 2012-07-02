@@ -230,7 +230,7 @@ static void copy_selected_to_new (gint playlist)
 static void
 playlistwin_select_search(void)
 {
-    GtkWidget *searchdlg_win, *searchdlg_table;
+    GtkWidget *searchdlg_win, *searchdlg_grid;
     GtkWidget *searchdlg_hbox, *searchdlg_logo, *searchdlg_helptext;
     GtkWidget *searchdlg_entry_title, *searchdlg_label_title;
     GtkWidget *searchdlg_entry_album, *searchdlg_label_album;
@@ -246,7 +246,6 @@ playlistwin_select_search(void)
       _("Search entries in active playlist") , GTK_WINDOW(mainwin) ,
       GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT ,
       GTK_STOCK_CANCEL , GTK_RESPONSE_REJECT , GTK_STOCK_OK , GTK_RESPONSE_ACCEPT , NULL );
-    gtk_window_set_position(GTK_WINDOW(searchdlg_win), GTK_WIN_POS_CENTER);
 
     /* help text and logo */
     searchdlg_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
@@ -261,29 +260,33 @@ playlistwin_select_search(void)
     /* title */
     searchdlg_label_title = gtk_label_new( _("Title: ") );
     searchdlg_entry_title = gtk_entry_new();
-    gtk_misc_set_alignment( GTK_MISC(searchdlg_label_title) , 0 , 0.5 );
-    g_signal_connect( G_OBJECT(searchdlg_entry_title) , "key-press-event" ,
+    gtk_widget_set_hexpand( searchdlg_entry_title , TRUE );
+    gtk_widget_set_halign( searchdlg_label_title , GTK_ALIGN_START );
+    g_signal_connect( searchdlg_entry_title , "key-press-event" ,
       G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
 
     /* album */
     searchdlg_label_album= gtk_label_new( _("Album: ") );
     searchdlg_entry_album= gtk_entry_new();
-    gtk_misc_set_alignment( GTK_MISC(searchdlg_label_album) , 0 , 0.5 );
-    g_signal_connect( G_OBJECT(searchdlg_entry_album) , "key-press-event" ,
+    gtk_widget_set_hexpand( searchdlg_entry_album , TRUE );
+    gtk_widget_set_halign( searchdlg_label_album , GTK_ALIGN_START );
+    g_signal_connect( searchdlg_entry_album , "key-press-event" ,
       G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
 
     /* artist */
     searchdlg_label_performer = gtk_label_new( _("Artist: ") );
     searchdlg_entry_performer = gtk_entry_new();
-    gtk_misc_set_alignment( GTK_MISC(searchdlg_label_performer) , 0 , 0.5 );
-    g_signal_connect( G_OBJECT(searchdlg_entry_performer) , "key-press-event" ,
+    gtk_widget_set_hexpand( searchdlg_entry_performer , TRUE );
+    gtk_widget_set_halign( searchdlg_label_performer , GTK_ALIGN_START );
+    g_signal_connect( searchdlg_entry_performer , "key-press-event" ,
       G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
 
     /* file name */
     searchdlg_label_file_name = gtk_label_new( _("Filename: ") );
     searchdlg_entry_file_name = gtk_entry_new();
-    gtk_misc_set_alignment( GTK_MISC(searchdlg_label_file_name) , 0 , 0.5 );
-    g_signal_connect( G_OBJECT(searchdlg_entry_file_name) , "key-press-event" ,
+    gtk_widget_set_hexpand( searchdlg_entry_file_name , TRUE );
+    gtk_widget_set_halign( searchdlg_label_file_name , GTK_ALIGN_START );
+    g_signal_connect( searchdlg_entry_file_name , "key-press-event" ,
       G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
 
     /* some options that control behaviour */
@@ -296,43 +299,32 @@ playlistwin_select_search(void)
     searchdlg_checkbt_newplaylist = gtk_check_button_new_with_label(
       _("Create a new playlist with matching entries") );
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(searchdlg_checkbt_newplaylist) , FALSE );
-    g_signal_connect( G_OBJECT(searchdlg_checkbt_autoenqueue) , "clicked" ,
+    g_signal_connect( searchdlg_checkbt_autoenqueue , "clicked" ,
       G_CALLBACK(playlistwin_select_search_cbt_cb) , searchdlg_checkbt_newplaylist );
-    g_signal_connect( G_OBJECT(searchdlg_checkbt_newplaylist) , "clicked" ,
+    g_signal_connect( searchdlg_checkbt_newplaylist , "clicked" ,
       G_CALLBACK(playlistwin_select_search_cbt_cb) , searchdlg_checkbt_autoenqueue );
 
-    /* place fields in searchdlg_table */
-    searchdlg_table = gtk_table_new( 8 , 2 , FALSE );
-    gtk_table_set_row_spacing( GTK_TABLE(searchdlg_table) , 0 , 8 );
-    gtk_table_set_row_spacing( GTK_TABLE(searchdlg_table) , 4 , 8 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_hbox ,
-      0 , 2 , 0 , 1 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_label_title ,
-      0 , 1 , 1 , 2 , GTK_FILL , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_entry_title ,
-      1 , 2 , 1 , 2 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_label_album,
-      0 , 1 , 2 , 3 , GTK_FILL , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_entry_album,
-      1 , 2 , 2 , 3 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_label_performer ,
-      0 , 1 , 3 , 4 , GTK_FILL , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_entry_performer ,
-      1 , 2 , 3 , 4 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_label_file_name ,
-      0 , 1 , 4 , 5 , GTK_FILL , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_entry_file_name ,
-      1 , 2 , 4 , 5 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 2 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_checkbt_clearprevsel ,
-      0 , 2 , 5 , 6 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 1 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_checkbt_autoenqueue ,
-      0 , 2 , 6 , 7 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 1 );
-    gtk_table_attach( GTK_TABLE(searchdlg_table) , searchdlg_checkbt_newplaylist ,
-      0 , 2 , 7 , 8 , GTK_FILL | GTK_EXPAND , GTK_FILL | GTK_EXPAND , 0 , 1 );
+    /* place fields in searchdlg_grid */
+    searchdlg_grid = gtk_grid_new();
+    gtk_grid_set_row_spacing( GTK_GRID(searchdlg_grid) , 2 );
+    gtk_widget_set_margin_bottom( searchdlg_hbox , 8 );
+    gtk_widget_set_margin_bottom( searchdlg_entry_file_name , 8 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_hbox , 0 , 0 , 2 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_title , 0 , 1 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_title , 1 , 1 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_album , 0 , 2 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_album , 1 , 2 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_performer , 0 , 3 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_performer , 1 , 3 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_file_name , 0 , 4 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_file_name , 1 , 4 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_checkbt_clearprevsel , 0 , 5 , 2 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_checkbt_autoenqueue , 0 , 6 , 2 , 1 );
+    gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_checkbt_newplaylist , 0 , 7 , 2 , 1 );
 
-    gtk_container_set_border_width( GTK_CONTAINER(searchdlg_table) , 5 );
-    gtk_container_add ((GtkContainer *) gtk_dialog_get_content_area
-     ((GtkDialog *) searchdlg_win), searchdlg_table);
+    gtk_container_set_border_width( GTK_CONTAINER(searchdlg_grid) , 5 );
+    gtk_container_add ( GTK_CONTAINER(gtk_dialog_get_content_area
+     (GTK_DIALOG(searchdlg_win))) , searchdlg_grid );
     gtk_widget_show_all( searchdlg_win );
     result = gtk_dialog_run( GTK_DIALOG(searchdlg_win) );
 
