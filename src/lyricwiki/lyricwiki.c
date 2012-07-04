@@ -18,14 +18,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- * TODO:
- *   - do the VFS operations in another thread
- *   - why don't we have a url encoding function?
- *     ... or do we and I'm just smoking crack?
- *   - no idea what this code does if lyricwiki is down - probably crashes!
- */
-
 #include <stdio.h>
 #include <glib.h>
 #include <string.h>
@@ -46,21 +38,26 @@
 #include <libaudcore/vfs_async.h>
 
 #include "config.h"
-#include "urlencode.h"
+
+/* all strings in this struct are pooled */
+typedef struct {
+	char *filename; /* of song file */
+	char *title, *artist;
+	char *uri; /* URI we are trying to retrieve */
+} LyricsState;
+
+static LyricsState state;
 
 /*
  * Suppress libxml warnings, because lyricwiki does not generate anything near
  * valid HTML.
  */
-void
-libxml_error_handler(void *ctx, const char *msg, ...)
+static void libxml_error_handler(void *ctx, const char *msg, ...)
 {
-
 }
 
-/* Oh, this is going to be fun... */
-gchar *
-scrape_lyrics_from_lyricwiki_edit_page(const gchar *buf, gsize len)
+/* free() returned text */
+static char *scrape_lyrics_from_lyricwiki_edit_page(const char *buf, int64_t len)
 {
 	xmlDocPtr doc;
 	gchar *ret = NULL;
@@ -118,8 +115,8 @@ give_up:
 				ret = g_match_info_fetch(match_info, 2);
 				if (!g_utf8_collate(ret, "\n<!-- PUT LYRICS HERE (and delete this entire line) -->\n"))
 				{
-					g_free(ret);
-					ret = NULL;
+					free(ret);
+					ret = strdup(_("No lyrics available"));
 				}
 
 				g_regex_unref(reg);
@@ -134,8 +131,8 @@ give_up:
 	return ret;
 }
 
-gchar *
-scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
+/* str_unref() returned string */
+static char *scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t len)
 {
 	xmlDocPtr doc;
 	gchar *uri = NULL;
@@ -169,7 +166,9 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 				lyric = xmlNodeGetContent(cur);
 				basename = g_path_get_basename((gchar *) lyric);
 
-				uri = g_strdup_printf("http://lyrics.wikia.com/index.php?action=edit&title=%s", basename);
+				uri = str_printf("http://lyrics.wikia.com/index.php?action=edit"
+				 "&title=%s", basename);
+
 				g_free(basename);
 				xmlFree(lyric);
 			}
@@ -181,138 +180,90 @@ scrape_uri_from_lyricwiki_search_result(const gchar *buf, gsize len)
 	return uri;
 }
 
-gboolean
-check_current_track(Tuple *tu)
-{
-	gboolean ret = TRUE;
-	gint playlist, pos, i;
-	gint fields[] = {FIELD_ARTIST, FIELD_TITLE};
-	Tuple *cu = NULL;
+static void update_lyrics_window(const char *title, const char *artist, const char *lyrics);
 
-	if (tu == NULL)
+static bool_t get_lyrics_step_3(void *buf, int64_t len, void *unused)
+{
+	if(!len)
+	{
+		SPRINTF(error, _("Unable to fetch %s"), state.uri);
+		update_lyrics_window(_("Error"), NULL, error);
+		free(buf);
 		return FALSE;
+	}
 
-	playlist = aud_playlist_get_playing();
-	pos = aud_playlist_get_position(playlist);
-	cu = aud_playlist_entry_get_tuple(playlist, pos, FALSE);
+	char *lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
 
-	if (cu == NULL)
+	if(!lyrics)
+	{
+		SPRINTF(error, _("Unable to parse %s"), state.uri);
+		update_lyrics_window(_("Error"), NULL, error);
+		free(buf);
 		return FALSE;
-
-	for (i = 0; i < sizeof(fields)/sizeof(gint); i++)
-	{
-		gchar * string1 = tuple_get_str (tu, fields[i], NULL);
-		gchar * string2 = tuple_get_str (cu, fields[i], NULL);
-
-		if (string1 == NULL && string2 == NULL)
-			continue;
-
-		if (string1 == NULL || string2 == NULL ||
-			strcmp(string1, string2) != 0)
-		{
-			ret = FALSE;
-			str_unref (string1);
-			str_unref (string2);
-			break;
-		}
-
-		str_unref (string1);
-		str_unref (string2);
 	}
 
-	tuple_unref(cu);
-	return ret;
-}
+	update_lyrics_window(state.title, state.artist, lyrics);
 
-void update_lyrics_window(const Tuple *tu, const gchar *lyrics);
-
-gboolean
-get_lyrics_step_3(gchar *buf, gint64 len, Tuple *tu)
-{
-	gchar *lyrics = NULL;
-
-	if (buf != NULL)
-	{
-		lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
-		g_free(buf);
-	}
-
-	if (check_current_track(tu))
-		update_lyrics_window(tu, lyrics);
-
-	tuple_unref (tu);
-
-	if (lyrics != NULL)
-		g_free(lyrics);
-
-	return buf == NULL ? FALSE : TRUE;
-}
-
-gboolean
-get_lyrics_step_2(gchar *buf, gint64 len, Tuple *tu)
-{
-	gchar *uri;
-
-	uri = scrape_uri_from_lyricwiki_search_result(buf, len);
-	if (uri == NULL)
-	{
-		if (check_current_track(tu))
-			update_lyrics_window(tu, NULL);
-
-		goto CLEANUP;
-	}
-
-	if (check_current_track(tu))
-	{
-		update_lyrics_window(tu, _("\nLooking for lyrics..."));
-		vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_3, tu);
-	}
-	else
-	{
-		g_free(uri);
-		goto CLEANUP;
-	}
-
-	g_free(buf);
-
+	free(lyrics);
 	return TRUE;
-
-CLEANUP:
-	g_free(buf);
-	tuple_unref (tu);
-	return FALSE;
 }
 
-void
-get_lyrics_step_1(const Tuple *tu)
+static bool_t get_lyrics_step_2(void *buf, int64_t len, void *unused)
 {
-	gchar *uri;
-	gchar *artist, *title;
+	if(!len)
+	{
+		SPRINTF(error, _("Unable to fetch %s"), state.uri);
+		update_lyrics_window(_("Error"), NULL, error);
+		free(buf);
+		return FALSE;
+	}
 
-	gchar * artist0 = tuple_get_str (tu, FIELD_ARTIST, NULL);
-	gchar * title0 = tuple_get_str (tu, FIELD_TITLE, NULL);
-	artist = lyricwiki_url_encode (artist0);
-	title = lyricwiki_url_encode (title0);
-	str_unref (artist0);
-	str_unref (title0);
+	char *uri = scrape_uri_from_lyricwiki_search_result(buf, len);
 
-	uri = g_strdup_printf("http://lyrics.wikia.com/api.php?action=lyrics&artist=%s&song=%s&fmt=xml", artist, title);
+	if(!uri)
+	{
+		SPRINTF(error, _("Unable to parse %s"), state.uri);
+		update_lyrics_window(_("Error"), NULL, error);
+		free(buf);
+		return FALSE;
+	}
 
-	g_free(artist);
-	g_free(title);
+	str_unref(state.uri);
+	state.uri = uri;
 
-	update_lyrics_window(tu, _("\nConnecting to lyrics.wikia.com..."));
-	vfs_async_file_get_contents(uri, (VFSConsumer) get_lyrics_step_2, (Tuple *) tu);
+	update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
+	vfs_async_file_get_contents(uri, get_lyrics_step_3, NULL);
 
-	g_free(uri);
+	free(buf);
+	return TRUE;
 }
 
-GtkWidget *scrollview, *vbox;
-GtkWidget *textview;
-GtkTextBuffer *textbuffer;
+static void get_lyrics_step_1(void)
+{
+	if(!state.artist || !state.title)
+	{
+		update_lyrics_window(_("Error"), NULL, _("Missing song metadata"));
+		return;
+	}
 
-GtkWidget *
-build_widget(void)
+	char title_buf[strlen(state.title) * 3 + 1];
+	char artist_buf[strlen(state.artist) * 3 + 1];
+	str_encode_percent(state.title, -1, title_buf);
+	str_encode_percent(state.artist, -1, artist_buf);
+
+	str_unref(state.uri);
+	state.uri = str_printf("http://lyrics.wikia.com/api.php?action=lyrics&"
+	 "artist=%s&song=%s&fmt=xml", artist_buf, title_buf);
+
+	update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
+	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, NULL);
+}
+
+static GtkWidget *scrollview, *vbox;
+static GtkWidget *textview;
+static GtkTextBuffer *textbuffer;
+
+static GtkWidget *build_widget(void)
 {
 	textview = gtk_text_view_new();
 	gtk_text_view_set_editable(GTK_TEXT_VIEW(textview), FALSE);
@@ -343,11 +294,9 @@ build_widget(void)
 	return vbox;
 }
 
-void
-update_lyrics_window(const Tuple *tu, const gchar *lyrics)
+static void update_lyrics_window(const char *title, const char *artist, const char *lyrics)
 {
 	GtkTextIter iter;
-	const gchar *real_lyrics;
 
 	if (textbuffer == NULL)
 		return;
@@ -355,12 +304,6 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), "", -1);
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
-
-	gchar * title = tuple_get_str (tu, FIELD_TITLE, NULL);
-	gchar * artist = tuple_get_str (tu, FIELD_ARTIST, NULL);
-
-	if (! title)
-		title = tuple_get_str (tu, FIELD_FILE_NAME, NULL);
 
 	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
 			title, strlen(title), "weight_bold", "size_x_large", NULL);
@@ -375,30 +318,31 @@ update_lyrics_window(const Tuple *tu, const gchar *lyrics)
 		gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
 	}
 
-	real_lyrics = lyrics != NULL ? lyrics : _("\nNo lyrics were found.");
-
-	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, real_lyrics, strlen(real_lyrics));
+	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, lyrics, strlen(lyrics));
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 	gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
-
-	str_unref (title);
-	str_unref (artist);
 }
 
-void
-lyricwiki_playback_began(void)
+static void lyricwiki_playback_began(void)
 {
-	gint playlist, pos;
-
 	if (!aud_drct_get_playing())
 		return;
 
-	playlist = aud_playlist_get_playing();
-	pos = aud_playlist_get_position(playlist);
-	Tuple * tu = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
+	/* FIXME: cancel previous VFS requests (not possible with current API) */
+	str_unref(state.filename);
+	str_unref(state.title);
+	str_unref(state.artist);
+	str_unref(state.uri);
 
-	get_lyrics_step_1(tu);
+	int playlist = aud_playlist_get_playing();
+	int pos = aud_playlist_get_position(playlist);
+
+	state.filename = aud_playlist_entry_get_filename(playlist, pos);
+	aud_playlist_entry_describe(playlist, pos, &state.title, &state.artist, NULL, FALSE);
+	state.uri = NULL;
+
+	get_lyrics_step_1();
 }
 
 static gboolean init (void)
@@ -412,9 +356,17 @@ static gboolean init (void)
 	return TRUE;
 }
 
-static void
-cleanup(void)
+static void cleanup(void)
 {
+	str_unref(state.filename);
+	str_unref(state.title);
+	str_unref(state.artist);
+	str_unref(state.uri);
+	state.filename = NULL;
+	state.title = NULL;
+	state.artist = NULL;
+	state.uri = NULL;
+
 	hook_dissociate("title change", (HookFunction) lyricwiki_playback_began);
 	hook_dissociate("playback ready", (HookFunction) lyricwiki_playback_began);
 
@@ -423,8 +375,7 @@ cleanup(void)
 	textbuffer = NULL;
 }
 
-static gpointer
-get_widget(void)
+static void *get_widget(void)
 {
 	if (! vbox)
 		build_widget ();
