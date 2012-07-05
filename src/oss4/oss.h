@@ -1,6 +1,6 @@
 /*
  * oss.h
- * Copyright 2010-2012 Michał Lipski <tallica@o2.pl>
+ * Copyright 2010-2012 Michał Lipski
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
