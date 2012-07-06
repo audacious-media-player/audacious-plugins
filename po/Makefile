@@ -9,7 +9,6 @@
 #
 LOCALES = ca.po \
 	  cs.po \
-	  cy.po \
 	  de.po \
 	  es.po \
 	  es_AR.po \
@@ -25,15 +24,11 @@ LOCALES = ca.po \
 	  lt.po \
 	  pl.po \
 	  pt_PT.po \
-	  ro.po \
 	  ru.po \
 	  sk.po \
 	  sr.po \
-	  tr.po \
 	  uk.po \
-	  vi.po \
-	  zh_CN.po \
-	  zh_TW.po
+	  zh_CN.po
 
 include ../extra.mk
 include ../buildsys.mk
