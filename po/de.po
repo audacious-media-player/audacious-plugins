@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious 3.3\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-02 14:19+0200\n"
+"POT-Creation-Date: 2012-07-06 18:56-0400\n"
 "PO-Revision-Date: 2012-07-02 14:46+0200\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German\n"
@@ -334,8 +334,8 @@ msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
-"Du hast keinen einzigen Sequenz-Port für die MIDI-Wiedergabe angegeben. "
-"Dies kann in den MIDI-Plugin-Einstellungen getan werden."
+"Du hast keinen einzigen Sequenz-Port für die MIDI-Wiedergabe angegeben. Dies "
+"kann in den MIDI-Plugin-Einstellungen getan werden."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -1708,7 +1708,10 @@ msgstr "Puffern ..."
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:228 src/skins/plugin.c:178
+#: src/gtkui/ui_gtk.c:228 src/lyricwiki/lyricwiki.c:190
+#: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
+#: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
+#: src/skins/plugin.c:178
 msgid "Error"
 msgstr "Fehler"
 
@@ -1943,31 +1946,40 @@ msgstr "Zeitspanne bis zum Wiederverbinden:"
 msgid "LIRC Plugin"
 msgstr "LIRC Plugin"
 
-#: src/lyricwiki/lyricwiki.c:267
-msgid ""
-"\n"
-"Looking for lyrics..."
+#: src/lyricwiki/lyricwiki.c:119
+#, fuzzy
+msgid "No lyrics available"
+msgstr "* keine Liedtexte in dieser MIDI-Datei verfügbar *"
+
+#: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
+#, c-format
+msgid "Unable to fetch %s"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
+#, c-format
+msgid "Unable to parse %s"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:234
+#, fuzzy
+msgid "Looking for lyrics ..."
 msgstr ""
 "\n"
 "Suche nach Liedtexten..."
 
-#: src/lyricwiki/lyricwiki.c:304
-msgid ""
-"\n"
-"Connecting to lyrics.wikia.com..."
+#: src/lyricwiki/lyricwiki.c:245
+msgid "Missing song metadata"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:258
+#, fuzzy
+msgid "Connecting to lyrics.wikia.com ..."
 msgstr ""
 "\n"
 "Verbinde zu lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:378
-msgid ""
-"\n"
-"No lyrics were found."
-msgstr ""
-"\n"
-"Keine Liedtexte gefunden."
-
-#: src/lyricwiki/lyricwiki.c:436
+#: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki Plugin"
 
@@ -3095,11 +3107,10 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Wähle Einträge in der Wiedergabeliste durch Ausfüllen eines oder "
-"mehrerer Eingabefelder aus. Diese nutzen reguläre Ausdrücke, unterscheiden "
-"Groß- und Kleinschreibung aber nicht. Falls du nicht weißt, wie reguläre "
-"Ausdrücke funktionieren, gebe einfach nur einen Teilbegriff für deine "
-"Suche ein."
+"Wähle Einträge in der Wiedergabeliste durch Ausfüllen eines oder mehrerer "
+"Eingabefelder aus. Diese nutzen reguläre Ausdrücke, unterscheiden Groß- und "
+"Kleinschreibung aber nicht. Falls du nicht weißt, wie reguläre Ausdrücke "
+"funktionieren, gebe einfach nur einen Teilbegriff für deine Suche ein."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3362,3 +3373,10 @@ msgstr "2SF Dekodierer"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Wiedergabelisten (XSPF)"
+
+#~ msgid ""
+#~ "\n"
+#~ "No lyrics were found."
+#~ msgstr ""
+#~ "\n"
+#~ "Keine Liedtexte gefunden."

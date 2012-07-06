@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-01 15:10-0400\n"
+"POT-Creation-Date: 2012-07-06 18:56-0400\n"
 "PO-Revision-Date: 2007-12-22 23:09+0200\n"
 "Last-Translator: Onur Küçük <onur@pardus.org.tr>\n"
 "Language-Team: Turkish\n"
@@ -128,7 +128,7 @@ msgstr "Günler"
 msgid "Fading"
 msgstr "Yavaş geçiş"
 
-#: src/alarm/interface.c:911 src/crossfade/crossfade.c:274 src/lirc/lirc.c:416
+#: src/alarm/interface.c:911 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "saniye"
 
@@ -344,7 +344,7 @@ msgstr "Karıştırıcı aygıt:"
 msgid "Work around drain hangup"
 msgstr ""
 
-#: src/alsa/plugin.c:45
+#: src/alsa/plugin.c:34
 #, fuzzy
 msgid "ALSA Output"
 msgstr "ALSA çıkış portları"
@@ -714,114 +714,114 @@ msgstr "Çalmaya yeniden başladığında OSD'yi başlatır."
 msgid "Placement"
 msgstr "Yerleştirme"
 
-#: src/aosd/aosd_ui.c:202
+#: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
 msgstr "Değişken X değeri:"
 
-#: src/aosd/aosd_ui.c:211
+#: src/aosd/aosd_ui.c:207
 msgid "Relative Y offset:"
 msgstr "Değişken Y değeri:"
 
-#: src/aosd/aosd_ui.c:220
+#: src/aosd/aosd_ui.c:214
 msgid "Max OSD width:"
 msgstr "Maksimum OSD genişliği:"
 
-#: src/aosd/aosd_ui.c:233
+#: src/aosd/aosd_ui.c:225
 msgid "Multi-Monitor options"
 msgstr "Çoklu Ekran seçenekleri"
 
-#: src/aosd/aosd_ui.c:237
+#: src/aosd/aosd_ui.c:229
 msgid "Display OSD using:"
 msgstr "OSD kullanımını göster:"
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:231
 msgid "all monitors"
 msgstr "tüm ekranlar"
 
-#: src/aosd/aosd_ui.c:242
+#: src/aosd/aosd_ui.c:234
 #, c-format
 msgid "monitor %i"
 msgstr "ekran %i"
 
-#: src/aosd/aosd_ui.c:295
+#: src/aosd/aosd_ui.c:287
 msgid "Timing (ms)"
 msgstr "Zamanlama (ms)"
 
-#: src/aosd/aosd_ui.c:300
+#: src/aosd/aosd_ui.c:292
 msgid "Display:"
 msgstr "Görüntü:"
 
-#: src/aosd/aosd_ui.c:305
+#: src/aosd/aosd_ui.c:297
 msgid "Fade in:"
 msgstr "Gecikme:"
 
-#: src/aosd/aosd_ui.c:310
+#: src/aosd/aosd_ui.c:302
 msgid "Fade out:"
 msgstr "Kaybolma:"
 
-#: src/aosd/aosd_ui.c:391
+#: src/aosd/aosd_ui.c:383
 msgid "Fonts"
 msgstr "Yazı Tipleri"
 
-#: src/aosd/aosd_ui.c:399
+#: src/aosd/aosd_ui.c:391
 #, c-format
 msgid "Font %i:"
 msgstr "Yazı tipi %i:"
 
-#: src/aosd/aosd_ui.c:416
+#: src/aosd/aosd_ui.c:409
 msgid "Shadow"
 msgstr "Gölge"
 
-#: src/aosd/aosd_ui.c:451
+#: src/aosd/aosd_ui.c:439
 msgid "Internationalization"
 msgstr "Uluslararasılaştırma"
 
-#: src/aosd/aosd_ui.c:457
+#: src/aosd/aosd_ui.c:445
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr "Metnin UTF-8 dönüşümünü iptal et (aosd)"
 
-#: src/aosd/aosd_ui.c:475
+#: src/aosd/aosd_ui.c:462
 msgid "Select Skin File"
 msgstr "Deri Dosyasını Seçin"
 
-#: src/aosd/aosd_ui.c:586
+#: src/aosd/aosd_ui.c:573
 msgid "Render Style"
 msgstr "Tarama Biçemi"
 
-#: src/aosd/aosd_ui.c:602
+#: src/aosd/aosd_ui.c:589
 msgid "Colors"
 msgstr "Renkler"
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:602
 #, c-format
 msgid "Color %i:"
 msgstr "Renkler %i:"
 
-#: src/aosd/aosd_ui.c:635
+#: src/aosd/aosd_ui.c:620
 msgid "Custom Skin"
 msgstr "Özel Deri"
 
-#: src/aosd/aosd_ui.c:641
+#: src/aosd/aosd_ui.c:626
 msgid "Skin file:"
 msgstr "Deri dosyası:"
 
-#: src/aosd/aosd_ui.c:644
+#: src/aosd/aosd_ui.c:630
 msgid "Browse"
 msgstr "Gözat"
 
-#: src/aosd/aosd_ui.c:746
+#: src/aosd/aosd_ui.c:729
 msgid "Enable trigger"
 msgstr "Tetikleyiciyi etkinleştir"
 
-#: src/aosd/aosd_ui.c:773
+#: src/aosd/aosd_ui.c:756
 msgid "Event"
 msgstr "Olay"
 
-#: src/aosd/aosd_ui.c:801
+#: src/aosd/aosd_ui.c:784
 msgid "Composite manager detected"
 msgstr "Composite yöneticisi tespit edildi"
 
-#: src/aosd/aosd_ui.c:808
+#: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -831,64 +831,64 @@ msgstr ""
 "Çalışan bir Composite yöneticisinin olduğundan emin değilseniz lütfen "
 "OSD'nin düzgün çalışması için bir Composite yöneticisi çalıştırınız"
 
-#: src/aosd/aosd_ui.c:816
+#: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
 msgstr "Sahte şeffaflık için composite yöneticisi gerekli değil"
 
-#: src/aosd/aosd_ui.c:854
+#: src/aosd/aosd_ui.c:837
 msgid "Transparency"
 msgstr "Şeffaflık"
 
-#: src/aosd/aosd_ui.c:860
+#: src/aosd/aosd_ui.c:843
 msgid "Fake transparency"
 msgstr "Sahte şeffaflık"
 
-#: src/aosd/aosd_ui.c:862
+#: src/aosd/aosd_ui.c:845
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Gerçek Şeffaflık (X Composite Eklentisi gerekli)"
 
-#: src/aosd/aosd_ui.c:904
+#: src/aosd/aosd_ui.c:887
 msgid "Composite extension not loaded"
 msgstr "Composite eklentisi yüklü değil"
 
-#: src/aosd/aosd_ui.c:912
+#: src/aosd/aosd_ui.c:895
 msgid "Composite extension not available"
 msgstr "Composite eklentisi erişilebilir değil"
 
-#: src/aosd/aosd_ui.c:931
+#: src/aosd/aosd_ui.c:914
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.c:1012
+#: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - yapılandırması"
 
-#: src/aosd/aosd_ui.c:1033
+#: src/aosd/aosd_ui.c:1016
 msgid "Test"
 msgstr "Test"
 
-#: src/aosd/aosd_ui.c:1048
+#: src/aosd/aosd_ui.c:1031
 msgid "Position"
 msgstr "Konum"
 
-#: src/aosd/aosd_ui.c:1053
+#: src/aosd/aosd_ui.c:1036
 msgid "Animation"
 msgstr "Canlandırma"
 
-#: src/aosd/aosd_ui.c:1058
+#: src/aosd/aosd_ui.c:1041
 msgid "Text"
 msgstr "Metin"
 
-#: src/aosd/aosd_ui.c:1063
+#: src/aosd/aosd_ui.c:1046
 msgid "Decoration"
 msgstr "Dekorasyon"
 
-#: src/aosd/aosd_ui.c:1068
+#: src/aosd/aosd_ui.c:1051
 msgid "Trigger"
 msgstr "Başlat"
 
-#: src/aosd/aosd_ui.c:1073
+#: src/aosd/aosd_ui.c:1056
 msgid "Misc"
 msgstr "Çeşitli"
 
@@ -1003,16 +1003,16 @@ msgstr ""
 msgid "Unsupported disk type."
 msgstr ""
 
-#: src/cd-menu-items/cd-menu-items.c:34
+#: src/cd-menu-items/cd-menu-items.c:32
 #, fuzzy
 msgid "Play CD"
 msgstr "Oynatma süresi:"
 
-#: src/cd-menu-items/cd-menu-items.c:34
+#: src/cd-menu-items/cd-menu-items.c:32
 msgid "Add CD"
 msgstr "CD Ekle"
 
-#: src/cd-menu-items/cd-menu-items.c:61
+#: src/cd-menu-items/cd-menu-items.c:59
 #, fuzzy
 msgid "Audio CD Menu Items"
 msgstr "Alarm Ayarları"
@@ -1031,7 +1031,7 @@ msgstr "Ses seviyesini değiştir"
 msgid "Dynamic range:"
 msgstr ""
 
-#: src/compressor/plugin.c:71
+#: src/compressor/plugin.c:60
 #, fuzzy
 msgid "Dynamic Range Compressor"
 msgstr "AudioCompress seçenekleri"
@@ -1078,11 +1078,11 @@ msgstr "Ses örneklemesini etkinleştir"
 msgid "Resampling rate:"
 msgstr "Örnekleme oranı:"
 
-#: src/console/configure.c:232 src/resample/resample.c:191
-#: src/resample/resample.c:197 src/resample/resample.c:200
-#: src/resample/resample.c:203 src/resample/resample.c:206
-#: src/resample/resample.c:209 src/resample/resample.c:212
-#: src/resample/resample.c:215
+#: src/console/configure.c:232 src/resample/resample.c:180
+#: src/resample/resample.c:186 src/resample/resample.c:189
+#: src/resample/resample.c:192 src/resample/resample.c:195
+#: src/resample/resample.c:198 src/resample/resample.c:201
+#: src/resample/resample.c:204
 msgid "Hz"
 msgstr "Hz"
 
@@ -1119,17 +1119,17 @@ msgid ""
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
 
-#: src/crossfade/crossfade.c:271
+#: src/crossfade/crossfade.c:260
 #, fuzzy
 msgid "<b>Crossfade</b>"
 msgstr "Crossover"
 
-#: src/crossfade/crossfade.c:272
+#: src/crossfade/crossfade.c:261
 #, fuzzy
 msgid "Overlap:"
 msgstr "Yeniden örnekleme:"
 
-#: src/crossfade/crossfade.c:282
+#: src/crossfade/crossfade.c:271
 #, fuzzy
 msgid "Crossfade"
 msgstr "Crossover"
@@ -1149,7 +1149,7 @@ msgstr "Efekt yoğunluğu:"
 msgid "Crystalizer"
 msgstr "<b>Oynatıcı:</b>"
 
-#: src/cue/cue.c:161
+#: src/cue/cue.c:160
 #, fuzzy
 msgid "Cue Sheet Plugin"
 msgstr "Yankı (Eko) Eklentisi Hakkında"
@@ -1182,7 +1182,7 @@ msgstr "Ses"
 msgid "Echo"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:683
+#: src/ffaudio/ffaudio-core.c:682
 #, fuzzy
 msgid "FFmpeg Plugin"
 msgstr "Eklenti"
@@ -1396,7 +1396,7 @@ msgstr "Kalite seviyesi (0 - 10):"
 msgid "FLAC Decoder"
 msgstr "TTA Dekoder Hatası"
 
-#: src/gio/gio.c:335
+#: src/gio/gio.c:324
 #, fuzzy
 msgid "GIO Plugin"
 msgstr "ESounD Eklentisi Hakkında"
@@ -1406,407 +1406,407 @@ msgstr "ESounD Eklentisi Hakkında"
 msgid "Gnome Shortcuts"
 msgstr "Gnome Kısayol Eklentisi Hakkında"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.c:33
 #, fuzzy
 msgid "Entry number"
 msgstr "Parça numarası:"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.c:33
 msgid "Title"
 msgstr "Başlık"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 #, fuzzy
 msgid "Artist"
 msgstr "Sanatçı:"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 #, fuzzy
 msgid "Year"
 msgstr "Yıl:"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 #, fuzzy
 msgid "Album"
 msgstr "Albüm:"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 #, fuzzy
 msgid "Track"
 msgstr "Parça:"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 #, fuzzy
 msgid "Genre"
 msgstr "Tür:"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 #, fuzzy
 msgid "Queue position"
 msgstr "Konum"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 #, fuzzy
 msgid "Length"
 msgstr "Uzunluk:"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 #, fuzzy
 msgid "File path"
 msgstr "Dosya adı"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 #, fuzzy
 msgid "File name"
 msgstr "Dosya adı"
 
-#: src/gtkui/columns.c:38
+#: src/gtkui/columns.c:36
 #, fuzzy
 msgid "Custom title"
 msgstr "Özel Deri"
 
-#: src/gtkui/columns.c:38
+#: src/gtkui/columns.c:36
 #, fuzzy
 msgid "Bitrate"
 msgstr "Bit oranı:"
 
-#: src/gtkui/columns.c:277
+#: src/gtkui/columns.c:275
 msgid "Choose Columns"
 msgstr ""
 
-#: src/gtkui/columns.c:293
+#: src/gtkui/columns.c:291
 #, fuzzy
 msgid "Available:"
 msgstr "değişken"
 
-#: src/gtkui/columns.c:327
+#: src/gtkui/columns.c:325
 msgid "Chosen:"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:120
 msgid "Dock at Left"
 msgstr ""
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:120
 msgid "Dock at Right"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:121
 msgid "Dock at Top"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:121
 msgid "Dock at Bottom"
 msgstr ""
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:121
 msgid "Undock"
 msgstr ""
 
-#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:121 src/ladspa/plugin.c:624
 #, fuzzy
 msgid "Disable"
 msgstr "değişken"
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:153
 #, fuzzy
 msgid "_Open Files ..."
 msgstr "Filtreler"
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:154
 msgid "Open _URL ..."
 msgstr ""
 
-#: src/gtkui/menus.c:157
+#: src/gtkui/menus.c:155
 #, fuzzy
 msgid "_Add Files ..."
 msgstr "Filtreler"
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.c:156
 #, fuzzy
 msgid "Add U_RL ..."
 msgstr "Filtreler"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:158
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:160
 #, fuzzy
 msgid "A_bout ..."
 msgstr "Hakkında"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:161
 #, fuzzy
 msgid "_Preferences ..."
 msgstr "AudioCompress seçenekleri"
 
-#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:162 src/skins/ui_manager.c:406
 #, fuzzy
 msgid "_Quit"
 msgstr "Kalite"
 
-#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
+#: src/gtkui/menus.c:165 src/gtkui/menus.c:251
 #, fuzzy
 msgid "_Play"
 msgstr "Oynatma süresi:"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:166
 #, fuzzy
 msgid "Paus_e"
 msgstr "Bekletme Açık"
 
-#: src/gtkui/menus.c:169
+#: src/gtkui/menus.c:167
 #, fuzzy
 msgid "_Stop"
 msgstr "Durdur:"
 
-#: src/gtkui/menus.c:170
+#: src/gtkui/menus.c:168
 #, fuzzy
 msgid "Pre_vious"
 msgstr "Önceki Parça:"
 
-#: src/gtkui/menus.c:171
+#: src/gtkui/menus.c:169
 #, fuzzy
 msgid "_Next"
 msgstr "Metin"
 
-#: src/gtkui/menus.c:173
+#: src/gtkui/menus.c:171
 #, fuzzy
 msgid "_Repeat"
 msgstr "Beat"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:172
 msgid "S_huffle"
 msgstr ""
 
-#: src/gtkui/menus.c:175
+#: src/gtkui/menus.c:173
 #, fuzzy
 msgid "N_o Playlist Advance"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:174
 msgid "Stop _After This Song"
 msgstr ""
 
-#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
+#: src/gtkui/menus.c:176 src/gtkui/menus.c:239
 msgid "Song _Info ..."
 msgstr ""
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:177
 #, fuzzy
 msgid "Jump to _Time ..."
 msgstr "Dosyaya Atla:"
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:178
 msgid "_Jump to Song ..."
 msgstr ""
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:181
 #, fuzzy
 msgid "By Track _Number"
 msgstr "Parça numarası:"
 
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.c:182
 #, fuzzy
 msgid "By _Title"
 msgstr "Başlık"
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:183
 #, fuzzy
 msgid "By _Artist"
 msgstr "Sanatçı:"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:184
 #, fuzzy
 msgid "By A_lbum"
 msgstr "Albüm:"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:185
 #, fuzzy
 msgid "By Release _Date"
 msgstr "Tarih:"
 
-#: src/gtkui/menus.c:188
+#: src/gtkui/menus.c:186
 #, fuzzy
 msgid "By _File Path"
 msgstr "Dosya adı"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:187
 #, fuzzy
 msgid "By _Custom Title"
 msgstr "Özel Deri"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:189
 msgid "R_everse Order"
 msgstr ""
 
-#: src/gtkui/menus.c:192
+#: src/gtkui/menus.c:190
 msgid "_Random Order"
 msgstr ""
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:193
 #, fuzzy
 msgid "_Play This Playlist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
+#: src/gtkui/menus.c:194 src/gtkui/menus.c:241
 msgid "_Refresh"
 msgstr ""
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:195
 msgid "Remove _Unavailable Files"
 msgstr ""
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:197
 #, fuzzy
 msgid "_Sort"
 msgstr "Port"
 
-#: src/gtkui/menus.c:201
+#: src/gtkui/menus.c:199
 msgid "_New"
 msgstr ""
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:200
 msgid "Ren_ame ..."
 msgstr ""
 
-#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
+#: src/gtkui/menus.c:201 src/gtkui/menus.c:253
 #, fuzzy
 msgid "_Close"
 msgstr "Kapat"
 
-#: src/gtkui/menus.c:205
+#: src/gtkui/menus.c:203
 #, fuzzy
 msgid "_Import ..."
 msgstr "İçe aktar"
 
-#: src/gtkui/menus.c:206
+#: src/gtkui/menus.c:204
 #, fuzzy
 msgid "_Export ..."
 msgstr "Dışa aktar"
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:206
 #, fuzzy
 msgid "Playlist _Manager ..."
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:207
 #, fuzzy
 msgid "_Queue Manager ..."
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:210
 #, fuzzy
 msgid "Volume _Up"
 msgstr "Sesi yükselt:"
 
-#: src/gtkui/menus.c:213
+#: src/gtkui/menus.c:211
 #, fuzzy
 msgid "Volume _Down"
 msgstr "Sesi alçalt:"
 
-#: src/gtkui/menus.c:215
+#: src/gtkui/menus.c:213
 #, fuzzy
 msgid "_Equalizer"
 msgstr "Ekolayzır"
 
-#: src/gtkui/menus.c:217
+#: src/gtkui/menus.c:215
 #, fuzzy
 msgid "E_ffects"
 msgstr "Efektler"
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:218
 msgid "_Interface"
 msgstr ""
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:219
 #, fuzzy
 msgid "_Visualizations"
 msgstr "Kurum:"
 
-#: src/gtkui/menus.c:223
+#: src/gtkui/menus.c:221
 msgid "Show _Menu Bar"
 msgstr ""
 
-#: src/gtkui/menus.c:224
+#: src/gtkui/menus.c:222
 msgid "Show I_nfo Bar"
 msgstr ""
 
-#: src/gtkui/menus.c:225
+#: src/gtkui/menus.c:223
 #, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "Kurum:"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:224
 #, fuzzy
 msgid "Show _Status Bar"
 msgstr "Durum"
 
-#: src/gtkui/menus.c:228
+#: src/gtkui/menus.c:226
 msgid "Show Column _Headers"
 msgstr ""
 
-#: src/gtkui/menus.c:229
+#: src/gtkui/menus.c:227
 msgid "Choose _Columns ..."
 msgstr ""
 
-#: src/gtkui/menus.c:230
+#: src/gtkui/menus.c:228
 #, fuzzy
 msgid "Scrol_l on Song Change"
 msgstr "Şarkı mesajı"
 
-#: src/gtkui/menus.c:233
+#: src/gtkui/menus.c:231
 #, fuzzy
 msgid "_File"
 msgstr "Filtreler"
 
-#: src/gtkui/menus.c:234
+#: src/gtkui/menus.c:232
 #, fuzzy
 msgid "_Playback"
 msgstr "Çal"
 
-#: src/gtkui/menus.c:235
+#: src/gtkui/menus.c:233
 #, fuzzy
 msgid "P_laylist"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
+#: src/gtkui/menus.c:234 src/gtkui/menus.c:248
 #, fuzzy
 msgid "_Services"
 msgstr "Aygıtlar"
 
-#: src/gtkui/menus.c:237
+#: src/gtkui/menus.c:235
 #, fuzzy
 msgid "_Output"
 msgstr "Çıktı eklentisi hatası\n"
 
-#: src/gtkui/menus.c:238
+#: src/gtkui/menus.c:236
 msgid "_View"
 msgstr ""
 
-#: src/gtkui/menus.c:242
+#: src/gtkui/menus.c:240
 msgid "_Queue/Unqueue"
 msgstr ""
 
-#: src/gtkui/menus.c:245
+#: src/gtkui/menus.c:243
 msgid "Cu_t"
 msgstr ""
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:244
 msgid "_Copy"
 msgstr ""
 
-#: src/gtkui/menus.c:247
+#: src/gtkui/menus.c:245
 msgid "_Paste"
 msgstr ""
 
-#: src/gtkui/menus.c:248
+#: src/gtkui/menus.c:246
 #, fuzzy
 msgid "Select _All"
 msgstr "Parça Listesini Seç"
 
-#: src/gtkui/menus.c:254
+#: src/gtkui/menus.c:252
 #, fuzzy
 msgid "_Rename ..."
 msgstr "Dosya adı"
@@ -1830,7 +1830,10 @@ msgstr "Tamponlanıyor"
 msgid "Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:228 src/skins/plugin.c:178
+#: src/gtkui/ui_gtk.c:228 src/lyricwiki/lyricwiki.c:190
+#: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
+#: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
+#: src/skins/plugin.c:178
 msgid "Error"
 msgstr "Hata"
 
@@ -1966,12 +1969,12 @@ msgstr "Metin alanı içinde bir tuş kombinasyonu girin"
 msgid "Hotkeys:"
 msgstr "Makine:"
 
-#: src/hotkey/gui.c:426
+#: src/hotkey/gui.c:424
 #, fuzzy
 msgid "<b>Action:</b>"
 msgstr "<b>Dosya ismi: </b>"
 
-#: src/hotkey/gui.c:434
+#: src/hotkey/gui.c:431
 msgid "<b>Key Binding:</b>"
 msgstr ""
 
@@ -2026,7 +2029,7 @@ msgstr "Yüklü eklentiler"
 msgid "Settings"
 msgstr "Alarm Ayarları"
 
-#: src/ladspa/plugin.c:662
+#: src/ladspa/plugin.c:651
 #, fuzzy
 msgid "LADSPA Host"
 msgstr "Alarm Ayarları"
@@ -2085,25 +2088,34 @@ msgstr ""
 msgid "LIRC Plugin"
 msgstr "LIRC Eklentisi"
 
-#: src/lyricwiki/lyricwiki.c:267
-msgid ""
-"\n"
-"Looking for lyrics..."
+#: src/lyricwiki/lyricwiki.c:119
+#, fuzzy
+msgid "No lyrics available"
+msgstr "* bu midi dosyasında şarkı sözü bulunamadı *"
+
+#: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
+#, c-format
+msgid "Unable to fetch %s"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:304
-msgid ""
-"\n"
-"Connecting to lyrics.wikia.com..."
+#: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
+#, c-format
+msgid "Unable to parse %s"
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:378
-msgid ""
-"\n"
-"No lyrics were found."
+#: src/lyricwiki/lyricwiki.c:234
+msgid "Looking for lyrics ..."
 msgstr ""
 
-#: src/lyricwiki/lyricwiki.c:436
+#: src/lyricwiki/lyricwiki.c:245
+msgid "Missing song metadata"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:258
+msgid "Connecting to lyrics.wikia.com ..."
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
 msgstr ""
 
@@ -2127,17 +2139,17 @@ msgstr "Takt oluşturucu: %d bpm %d/%d"
 msgid "Tact Generator"
 msgstr "Ton Oluşturucu: "
 
-#: src/mixer/mixer.c:186
+#: src/mixer/mixer.c:175
 #, fuzzy
 msgid "<b>Channel Mixer</b>"
 msgstr "Sun Sürücüsü Hakkında"
 
-#: src/mixer/mixer.c:187
+#: src/mixer/mixer.c:176
 #, fuzzy
 msgid "Output channels:"
 msgstr "kanallar: %d"
 
-#: src/mixer/mixer.c:197
+#: src/mixer/mixer.c:186
 #, fuzzy
 msgid "Channel Mixer"
 msgstr "Sun Sürücüsü Hakkında"
@@ -2227,124 +2239,125 @@ msgstr ""
 msgid "PulseAudio Output"
 msgstr ""
 
-#: src/resample/resample.c:178
+#: src/resample/resample.c:167
 msgid "Skip/repeat samples"
 msgstr ""
 
-#: src/resample/resample.c:179
+#: src/resample/resample.c:168
 msgid "Linear interpolation"
 msgstr "Doğrusal ortalama"
 
-#: src/resample/resample.c:180
+#: src/resample/resample.c:169
 #, fuzzy
 msgid "Fast sinc interpolation"
 msgstr "Doğrusal ortalama"
 
-#: src/resample/resample.c:181
+#: src/resample/resample.c:170
 #, fuzzy
 msgid "Medium sinc interpolation"
 msgstr "Doğrusal ortalama"
 
-#: src/resample/resample.c:182
+#: src/resample/resample.c:171
 #, fuzzy
 msgid "Best sinc interpolation"
 msgstr "Doğrusal ortalama"
 
-#: src/resample/resample.c:185
+#: src/resample/resample.c:174
 #, fuzzy
 msgid "<b>Conversion</b>"
 msgstr "<b>Dosya ismi: </b>"
 
-#: src/resample/resample.c:186
+#: src/resample/resample.c:175
 msgid "Method:"
 msgstr ""
 
-#: src/resample/resample.c:189
+#: src/resample/resample.c:178
 msgid "Rate:"
 msgstr ""
 
-#: src/resample/resample.c:192
+#: src/resample/resample.c:181
 #, fuzzy
 msgid "<b>Rate Mappings</b>"
 msgstr "<b>İsim: </b>"
 
-#: src/resample/resample.c:193
+#: src/resample/resample.c:182
 #, fuzzy
 msgid "Use rate mappings"
 msgstr "Yeniden örnekleme kullan"
 
-#: src/resample/resample.c:195
+#: src/resample/resample.c:184
 #, fuzzy
 msgid "8 kHz:"
 msgstr "44 kHz"
 
-#: src/resample/resample.c:198
+#: src/resample/resample.c:187
 #, fuzzy
 msgid "16 kHz:"
 msgstr "44 kHz"
 
-#: src/resample/resample.c:201
+#: src/resample/resample.c:190
 #, fuzzy
 msgid "22.05 kHz:"
 msgstr "22 kHz"
 
-#: src/resample/resample.c:204
+#: src/resample/resample.c:193
 #, fuzzy
 msgid "44.1 kHz:"
 msgstr "44 kHz"
 
-#: src/resample/resample.c:207
+#: src/resample/resample.c:196
 #, fuzzy
 msgid "48 kHz:"
 msgstr "44 kHz"
 
-#: src/resample/resample.c:210
+#: src/resample/resample.c:199
 #, fuzzy
 msgid "96 kHz:"
 msgstr "44 kHz"
 
-#: src/resample/resample.c:213
+#: src/resample/resample.c:202
 #, fuzzy
 msgid "192 kHz:"
 msgstr "22 kHz"
 
-#: src/resample/resample.c:223
+#: src/resample/resample.c:212
 #, fuzzy
 msgid "Sample Rate Converter"
 msgstr "Durum Simgesi Eklentisi Hakkında"
 
-#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
+#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 #, fuzzy
 msgid "Change password"
 msgstr "Çalan şarkıyı değiştir"
 
-#: src/scrobbler/configure.c:140
+#: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
 msgstr "<b>Hizmetler</b>"
 
-#: src/scrobbler/configure.c:162
+#: src/scrobbler/configure.c:143
+#, fuzzy
+msgid "<b>Last.fm</b>"
+msgstr "<b>Last.FM</b>"
+
+#: src/scrobbler/configure.c:147
 msgid "Username:"
 msgstr "Kullanıcı adı:"
 
-#: src/scrobbler/configure.c:168
+#: src/scrobbler/configure.c:151
 msgid "Password:"
 msgstr "Şifre:"
 
-#: src/scrobbler/configure.c:176
+#: src/scrobbler/configure.c:155
 #, fuzzy
 msgid "Scrobbler URL:"
 msgstr "Scrobbler Hatası"
-
-#: src/scrobbler/configure.c:203
-msgid "<b>Last.FM</b>"
-msgstr "<b>Last.FM</b>"
 
 #: src/scrobbler/plugin.c:189
 #, fuzzy
 msgid "Scrobbler"
 msgstr "Scrobbler Hatası"
 
-#: src/sdlout/plugin.c:43
+#: src/sdlout/plugin.c:32
 #, fuzzy
 msgid "SDL Output"
 msgstr "Çıktı eklentisi hatası\n"
@@ -3335,7 +3348,7 @@ msgstr ""
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:254
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3343,7 +3356,7 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:262
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "Başlık: "
 
@@ -3352,34 +3365,34 @@ msgstr "Başlık: "
 msgid "Album: "
 msgstr "Albüm:"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 #, fuzzy
 msgid "Artist: "
 msgstr "Sanatçı:"
 
-#: src/skins/ui_playlist.c:283
+#: src/skins/ui_playlist.c:285
 #, fuzzy
 msgid "Filename: "
 msgstr "Dosya adı:"
 
-#: src/skins/ui_playlist.c:291
+#: src/skins/ui_playlist.c:294
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:294
+#: src/skins/ui_playlist.c:297
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:297
+#: src/skins/ui_playlist.c:300
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:761
+#: src/skins/ui_playlist.c:753
 #, fuzzy
 msgid "Audacious Playlist Editor"
 msgstr "Hızlı Parça Listesi Bilgisi"
 
-#: src/skins/ui_playlist.c:804
+#: src/skins/ui_playlist.c:796
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
@@ -3586,7 +3599,7 @@ msgstr "Ton Oluşturucu: "
 msgid "Tone Generator"
 msgstr "Ton Oluşturucu: "
 
-#: src/unix-io/unix-io.c:290
+#: src/unix-io/unix-io.c:279
 #, fuzzy
 msgid "File I/O Plugin"
 msgstr "ESounD Eklentisi Hakkında"

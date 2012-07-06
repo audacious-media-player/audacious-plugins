@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-01 15:11-0400\n"
+"POT-Creation-Date: 2012-07-06 18:56-0400\n"
 "PO-Revision-Date: 2012-07-05 16:03+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Simplified Chinese\n"
@@ -123,7 +123,7 @@ msgstr "日期"
 msgid "Fading"
 msgstr "渐退"
 
-#: src/alarm/interface.c:911 src/crossfade/crossfade.c:274 src/lirc/lirc.c:416
+#: src/alarm/interface.c:911 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "秒"
 
@@ -326,7 +326,7 @@ msgstr "混音单元："
 msgid "Work around drain hangup"
 msgstr ""
 
-#: src/alsa/plugin.c:45
+#: src/alsa/plugin.c:34
 msgid "ALSA Output"
 msgstr "ALSA输出"
 
@@ -673,114 +673,114 @@ msgstr "恢复播放时触发OSD"
 msgid "Placement"
 msgstr "位置"
 
-#: src/aosd/aosd_ui.c:202
+#: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
 msgstr "X相对位移："
 
-#: src/aosd/aosd_ui.c:211
+#: src/aosd/aosd_ui.c:207
 msgid "Relative Y offset:"
 msgstr "Y相对位移："
 
-#: src/aosd/aosd_ui.c:220
+#: src/aosd/aosd_ui.c:214
 msgid "Max OSD width:"
 msgstr "最大OSD宽度："
 
-#: src/aosd/aosd_ui.c:233
+#: src/aosd/aosd_ui.c:225
 msgid "Multi-Monitor options"
 msgstr "多屏选项"
 
-#: src/aosd/aosd_ui.c:237
+#: src/aosd/aosd_ui.c:229
 msgid "Display OSD using:"
 msgstr "OSD显示于："
 
-#: src/aosd/aosd_ui.c:239
+#: src/aosd/aosd_ui.c:231
 msgid "all monitors"
 msgstr "所有显示器"
 
-#: src/aosd/aosd_ui.c:242
+#: src/aosd/aosd_ui.c:234
 #, c-format
 msgid "monitor %i"
 msgstr "显示器%i"
 
-#: src/aosd/aosd_ui.c:295
+#: src/aosd/aosd_ui.c:287
 msgid "Timing (ms)"
 msgstr "延时(ms)"
 
-#: src/aosd/aosd_ui.c:300
+#: src/aosd/aosd_ui.c:292
 msgid "Display:"
 msgstr "显示："
 
-#: src/aosd/aosd_ui.c:305
+#: src/aosd/aosd_ui.c:297
 msgid "Fade in:"
 msgstr "淡入："
 
-#: src/aosd/aosd_ui.c:310
+#: src/aosd/aosd_ui.c:302
 msgid "Fade out:"
 msgstr "淡出："
 
-#: src/aosd/aosd_ui.c:391
+#: src/aosd/aosd_ui.c:383
 msgid "Fonts"
 msgstr "字体"
 
-#: src/aosd/aosd_ui.c:399
+#: src/aosd/aosd_ui.c:391
 #, c-format
 msgid "Font %i:"
 msgstr "字体 %i："
 
-#: src/aosd/aosd_ui.c:416
+#: src/aosd/aosd_ui.c:409
 msgid "Shadow"
 msgstr "阴影"
 
-#: src/aosd/aosd_ui.c:451
+#: src/aosd/aosd_ui.c:439
 msgid "Internationalization"
 msgstr "国际化"
 
-#: src/aosd/aosd_ui.c:457
+#: src/aosd/aosd_ui.c:445
 msgid "Disable UTF-8 conversion of text (in aosd)"
 msgstr "禁用UTF-8转换(在aosd中)"
 
-#: src/aosd/aosd_ui.c:475
+#: src/aosd/aosd_ui.c:462
 msgid "Select Skin File"
 msgstr "选择主题文件"
 
-#: src/aosd/aosd_ui.c:586
+#: src/aosd/aosd_ui.c:573
 msgid "Render Style"
 msgstr "渲染风格"
 
-#: src/aosd/aosd_ui.c:602
+#: src/aosd/aosd_ui.c:589
 msgid "Colors"
 msgstr "颜色"
 
-#: src/aosd/aosd_ui.c:615
+#: src/aosd/aosd_ui.c:602
 #, c-format
 msgid "Color %i:"
 msgstr "颜色  %i："
 
-#: src/aosd/aosd_ui.c:635
+#: src/aosd/aosd_ui.c:620
 msgid "Custom Skin"
 msgstr "自定义主题"
 
-#: src/aosd/aosd_ui.c:641
+#: src/aosd/aosd_ui.c:626
 msgid "Skin file:"
 msgstr "主题文件："
 
-#: src/aosd/aosd_ui.c:644
+#: src/aosd/aosd_ui.c:630
 msgid "Browse"
 msgstr "浏览"
 
-#: src/aosd/aosd_ui.c:746
+#: src/aosd/aosd_ui.c:729
 msgid "Enable trigger"
 msgstr "启用触发器"
 
-#: src/aosd/aosd_ui.c:773
+#: src/aosd/aosd_ui.c:756
 msgid "Event"
 msgstr "事件"
 
-#: src/aosd/aosd_ui.c:801
+#: src/aosd/aosd_ui.c:784
 msgid "Composite manager detected"
 msgstr "检测到混合管理器"
 
-#: src/aosd/aosd_ui.c:808
+#: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -789,64 +789,64 @@ msgstr ""
 "未检测到混合管理器；\n"
 "OSD无法正常工作，除非你激活混合管理器。"
 
-#: src/aosd/aosd_ui.c:816
+#: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
 msgstr "假透明无需混合管理支持"
 
-#: src/aosd/aosd_ui.c:854
+#: src/aosd/aosd_ui.c:837
 msgid "Transparency"
 msgstr "透明"
 
-#: src/aosd/aosd_ui.c:860
+#: src/aosd/aosd_ui.c:843
 msgid "Fake transparency"
 msgstr "假透明"
 
-#: src/aosd/aosd_ui.c:862
+#: src/aosd/aosd_ui.c:845
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "真透明(需要X Composite扩展)"
 
-#: src/aosd/aosd_ui.c:904
+#: src/aosd/aosd_ui.c:887
 msgid "Composite extension not loaded"
 msgstr "X Composite扩展未加载"
 
-#: src/aosd/aosd_ui.c:912
+#: src/aosd/aosd_ui.c:895
 msgid "Composite extension not available"
 msgstr "X Composite扩展不可用"
 
-#: src/aosd/aosd_ui.c:931
+#: src/aosd/aosd_ui.c:914
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:1012
+#: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - 设置"
 
-#: src/aosd/aosd_ui.c:1033
+#: src/aosd/aosd_ui.c:1016
 msgid "Test"
 msgstr "测试"
 
-#: src/aosd/aosd_ui.c:1048
+#: src/aosd/aosd_ui.c:1031
 msgid "Position"
 msgstr "位置"
 
-#: src/aosd/aosd_ui.c:1053
+#: src/aosd/aosd_ui.c:1036
 msgid "Animation"
 msgstr "动画"
 
-#: src/aosd/aosd_ui.c:1058
+#: src/aosd/aosd_ui.c:1041
 msgid "Text"
 msgstr "字体"
 
-#: src/aosd/aosd_ui.c:1063
+#: src/aosd/aosd_ui.c:1046
 msgid "Decoration"
 msgstr "装饰器"
 
-#: src/aosd/aosd_ui.c:1068
+#: src/aosd/aosd_ui.c:1051
 msgid "Trigger"
 msgstr "触发器"
 
-#: src/aosd/aosd_ui.c:1073
+#: src/aosd/aosd_ui.c:1056
 msgid "Misc"
 msgstr "其它"
 
@@ -946,15 +946,15 @@ msgstr "设备为空。"
 msgid "Unsupported disk type."
 msgstr "未支持光盘类型。"
 
-#: src/cd-menu-items/cd-menu-items.c:34
+#: src/cd-menu-items/cd-menu-items.c:32
 msgid "Play CD"
 msgstr "播放CD"
 
-#: src/cd-menu-items/cd-menu-items.c:34
+#: src/cd-menu-items/cd-menu-items.c:32
 msgid "Add CD"
 msgstr "添加CD"
 
-#: src/cd-menu-items/cd-menu-items.c:61
+#: src/cd-menu-items/cd-menu-items.c:59
 msgid "Audio CD Menu Items"
 msgstr "音频CD菜单选项"
 
@@ -970,7 +970,7 @@ msgstr "中间音量："
 msgid "Dynamic range:"
 msgstr "动态范围："
 
-#: src/compressor/plugin.c:71
+#: src/compressor/plugin.c:60
 msgid "Dynamic Range Compressor"
 msgstr "动态范围压缩器"
 
@@ -1015,11 +1015,11 @@ msgstr "启用音频重采样"
 msgid "Resampling rate:"
 msgstr "采样率："
 
-#: src/console/configure.c:232 src/resample/resample.c:191
-#: src/resample/resample.c:197 src/resample/resample.c:200
-#: src/resample/resample.c:203 src/resample/resample.c:206
-#: src/resample/resample.c:209 src/resample/resample.c:212
-#: src/resample/resample.c:215
+#: src/console/configure.c:232 src/resample/resample.c:180
+#: src/resample/resample.c:186 src/resample/resample.c:189
+#: src/resample/resample.c:192 src/resample/resample.c:195
+#: src/resample/resample.c:198 src/resample/resample.c:201
+#: src/resample/resample.c:204
 msgid "Hz"
 msgstr ""
 
@@ -1060,15 +1060,15 @@ msgstr ""
 "\n"
 "你可以尝试使用”采样率转换器“使歌曲的采样一致。"
 
-#: src/crossfade/crossfade.c:271
+#: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
 msgstr "<b>淡出</b>"
 
-#: src/crossfade/crossfade.c:272
+#: src/crossfade/crossfade.c:261
 msgid "Overlap:"
 msgstr "重叠："
 
-#: src/crossfade/crossfade.c:282
+#: src/crossfade/crossfade.c:271
 msgid "Crossfade"
 msgstr "淡出"
 
@@ -1084,7 +1084,7 @@ msgstr "强度："
 msgid "Crystalizer"
 msgstr ""
 
-#: src/cue/cue.c:161
+#: src/cue/cue.c:160
 msgid "Cue Sheet Plugin"
 msgstr "Cue表单插件"
 
@@ -1112,7 +1112,7 @@ msgstr "音量："
 msgid "Echo"
 msgstr "回音"
 
-#: src/ffaudio/ffaudio-core.c:683
+#: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg插件"
 
@@ -1320,7 +1320,7 @@ msgstr "质量等级(0-10)："
 msgid "FLAC Decoder"
 msgstr "FLAC解码器"
 
-#: src/gio/gio.c:335
+#: src/gio/gio.c:324
 msgid "GIO Plugin"
 msgstr "GIO插件"
 
@@ -1328,351 +1328,351 @@ msgstr "GIO插件"
 msgid "Gnome Shortcuts"
 msgstr "Gnome快捷键插件"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.c:33
 msgid "Entry number"
 msgstr "序号"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.c:33
 msgid "Title"
 msgstr "标题"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 msgid "Artist"
 msgstr "艺术家"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 msgid "Year"
 msgstr "年份"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 msgid "Album"
 msgstr "专辑"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 msgid "Track"
 msgstr "音轨"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.c:34
 msgid "Genre"
 msgstr "流派"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 msgid "Queue position"
 msgstr "队列位置"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 msgid "Length"
 msgstr "长度"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 msgid "File path"
 msgstr "文件路径"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.c:35
 msgid "File name"
 msgstr "文件名"
 
-#: src/gtkui/columns.c:38
+#: src/gtkui/columns.c:36
 msgid "Custom title"
 msgstr "自定标题"
 
-#: src/gtkui/columns.c:38
+#: src/gtkui/columns.c:36
 msgid "Bitrate"
 msgstr "比率"
 
-#: src/gtkui/columns.c:277
+#: src/gtkui/columns.c:275
 msgid "Choose Columns"
 msgstr "揀选列"
 
-#: src/gtkui/columns.c:293
+#: src/gtkui/columns.c:291
 msgid "Available:"
 msgstr "可用："
 
-#: src/gtkui/columns.c:327
+#: src/gtkui/columns.c:325
 msgid "Chosen:"
 msgstr "选项："
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:120
 msgid "Dock at Left"
 msgstr "面板在左"
 
-#: src/gtkui/layout.c:122
+#: src/gtkui/layout.c:120
 msgid "Dock at Right"
 msgstr "面板在右"
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:121
 msgid "Dock at Top"
 msgstr "面板在上"
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:121
 msgid "Dock at Bottom"
 msgstr "面板在下"
 
-#: src/gtkui/layout.c:123
+#: src/gtkui/layout.c:121
 msgid "Undock"
 msgstr "无面板"
 
-#: src/gtkui/layout.c:123 src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:121 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "禁用"
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:153
 msgid "_Open Files ..."
 msgstr "打开文件(_O) ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:154
 msgid "Open _URL ..."
 msgstr "打开URL(_U)..."
 
-#: src/gtkui/menus.c:157
+#: src/gtkui/menus.c:155
 msgid "_Add Files ..."
 msgstr "添加文件(_A)..."
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.c:156
 msgid "Add U_RL ..."
 msgstr "添加URL(_R)..."
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:158
 msgid "_Search Library"
 msgstr "搜索库(_S)"
 
-#: src/gtkui/menus.c:162
+#: src/gtkui/menus.c:160
 msgid "A_bout ..."
 msgstr "关于(_b)"
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.c:161
 msgid "_Preferences ..."
 msgstr "首选项(_P)..."
 
-#: src/gtkui/menus.c:164 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:162 src/skins/ui_manager.c:406
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: src/gtkui/menus.c:167 src/gtkui/menus.c:253
+#: src/gtkui/menus.c:165 src/gtkui/menus.c:251
 msgid "_Play"
 msgstr "播放(_P)"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:166
 msgid "Paus_e"
 msgstr "暂停(_e)"
 
-#: src/gtkui/menus.c:169
+#: src/gtkui/menus.c:167
 msgid "_Stop"
 msgstr "停止(_S)"
 
-#: src/gtkui/menus.c:170
+#: src/gtkui/menus.c:168
 msgid "Pre_vious"
 msgstr "上一首(_v)"
 
-#: src/gtkui/menus.c:171
+#: src/gtkui/menus.c:169
 msgid "_Next"
 msgstr "下一首(_N)"
 
-#: src/gtkui/menus.c:173
+#: src/gtkui/menus.c:171
 msgid "_Repeat"
 msgstr "重复(_R)"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:172
 msgid "S_huffle"
 msgstr "随机(_h)"
 
-#: src/gtkui/menus.c:175
+#: src/gtkui/menus.c:173
 msgid "N_o Playlist Advance"
 msgstr "禁止自动播放下一首(_o)"
 
-#: src/gtkui/menus.c:176
+#: src/gtkui/menus.c:174
 msgid "Stop _After This Song"
 msgstr "完成后停止(_A)"
 
-#: src/gtkui/menus.c:178 src/gtkui/menus.c:241
+#: src/gtkui/menus.c:176 src/gtkui/menus.c:239
 msgid "Song _Info ..."
 msgstr "歌曲信息(_I)..."
 
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.c:177
 msgid "Jump to _Time ..."
 msgstr "跳到时间(_T)..."
 
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.c:178
 msgid "_Jump to Song ..."
 msgstr "跳到歌曲(_J)..."
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:181
 msgid "By Track _Number"
 msgstr "按音轨序号(_N)"
 
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.c:182
 msgid "By _Title"
 msgstr "按标题(_T)"
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:183
 msgid "By _Artist"
 msgstr "按艺术家(_A)"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:184
 msgid "By A_lbum"
 msgstr "按专辑(_l)"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:185
 msgid "By Release _Date"
 msgstr "按发表日期(_D)"
 
-#: src/gtkui/menus.c:188
+#: src/gtkui/menus.c:186
 msgid "By _File Path"
 msgstr "按文件路径(_F)"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:187
 msgid "By _Custom Title"
 msgstr "按自定义标题(_C)"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:189
 msgid "R_everse Order"
 msgstr "反转(_e)"
 
-#: src/gtkui/menus.c:192
+#: src/gtkui/menus.c:190
 msgid "_Random Order"
 msgstr "随机(_R)"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:193
 msgid "_Play This Playlist"
 msgstr "播放此列表(_P)"
 
-#: src/gtkui/menus.c:196 src/gtkui/menus.c:243
+#: src/gtkui/menus.c:194 src/gtkui/menus.c:241
 msgid "_Refresh"
 msgstr "刷新(_R)"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:195
 msgid "Remove _Unavailable Files"
 msgstr "移除无效文件(_U)"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:197
 msgid "_Sort"
 msgstr "排序(_S)"
 
-#: src/gtkui/menus.c:201
+#: src/gtkui/menus.c:199
 msgid "_New"
 msgstr "新建(_N)"
 
-#: src/gtkui/menus.c:202
+#: src/gtkui/menus.c:200
 msgid "Ren_ame ..."
 msgstr "重命名(_a)..."
 
-#: src/gtkui/menus.c:203 src/gtkui/menus.c:255
+#: src/gtkui/menus.c:201 src/gtkui/menus.c:253
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: src/gtkui/menus.c:205
+#: src/gtkui/menus.c:203
 msgid "_Import ..."
 msgstr "导入(_I)..."
 
-#: src/gtkui/menus.c:206
+#: src/gtkui/menus.c:204
 msgid "_Export ..."
 msgstr "导出(_E)..."
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.c:206
 msgid "Playlist _Manager ..."
 msgstr "播放列表管理器(_M)..."
 
-#: src/gtkui/menus.c:209
+#: src/gtkui/menus.c:207
 msgid "_Queue Manager ..."
 msgstr "队列管理器(_Q)..."
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.c:210
 msgid "Volume _Up"
 msgstr "调高音量(_U)"
 
-#: src/gtkui/menus.c:213
+#: src/gtkui/menus.c:211
 msgid "Volume _Down"
 msgstr "调低音量(_D)"
 
-#: src/gtkui/menus.c:215
+#: src/gtkui/menus.c:213
 msgid "_Equalizer"
 msgstr "均衡器(_E)"
 
-#: src/gtkui/menus.c:217
+#: src/gtkui/menus.c:215
 msgid "E_ffects"
 msgstr "音效(_f)"
 
-#: src/gtkui/menus.c:220
+#: src/gtkui/menus.c:218
 msgid "_Interface"
 msgstr "界面(_I)"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:219
 msgid "_Visualizations"
 msgstr "视觉效果"
 
-#: src/gtkui/menus.c:223
+#: src/gtkui/menus.c:221
 msgid "Show _Menu Bar"
 msgstr "显示菜单(_M)"
 
-#: src/gtkui/menus.c:224
+#: src/gtkui/menus.c:222
 msgid "Show I_nfo Bar"
 msgstr "显示信息区域(_n)"
 
-#: src/gtkui/menus.c:225
+#: src/gtkui/menus.c:223
 msgid "Show Info Bar Vis_ualization"
 msgstr "在信息栏显示视觉效果(_u)"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:224
 msgid "Show _Status Bar"
 msgstr "显示状态栏(_S)"
 
-#: src/gtkui/menus.c:228
+#: src/gtkui/menus.c:226
 msgid "Show Column _Headers"
 msgstr "显示表头(_H)"
 
-#: src/gtkui/menus.c:229
+#: src/gtkui/menus.c:227
 msgid "Choose _Columns ..."
 msgstr "揀选列(_C)..."
 
-#: src/gtkui/menus.c:230
+#: src/gtkui/menus.c:228
 msgid "Scrol_l on Song Change"
 msgstr "歌曲改变时滚动(_l)"
 
-#: src/gtkui/menus.c:233
+#: src/gtkui/menus.c:231
 msgid "_File"
 msgstr "文件(_F)"
 
-#: src/gtkui/menus.c:234
+#: src/gtkui/menus.c:232
 msgid "_Playback"
 msgstr "回放(_P)"
 
-#: src/gtkui/menus.c:235
+#: src/gtkui/menus.c:233
 msgid "P_laylist"
 msgstr "播放列表(_l)"
 
-#: src/gtkui/menus.c:236 src/gtkui/menus.c:250
+#: src/gtkui/menus.c:234 src/gtkui/menus.c:248
 msgid "_Services"
 msgstr "服务(_S)"
 
-#: src/gtkui/menus.c:237
+#: src/gtkui/menus.c:235
 msgid "_Output"
 msgstr "输出(_O)"
 
-#: src/gtkui/menus.c:238
+#: src/gtkui/menus.c:236
 msgid "_View"
 msgstr "外观(_V)"
 
-#: src/gtkui/menus.c:242
+#: src/gtkui/menus.c:240
 msgid "_Queue/Unqueue"
 msgstr "入队／出列(_Q)"
 
-#: src/gtkui/menus.c:245
+#: src/gtkui/menus.c:243
 msgid "Cu_t"
 msgstr "剪切(_t)"
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:244
 msgid "_Copy"
 msgstr "复制(_C)"
 
-#: src/gtkui/menus.c:247
+#: src/gtkui/menus.c:245
 msgid "_Paste"
 msgstr "粘贴(_P)"
 
-#: src/gtkui/menus.c:248
+#: src/gtkui/menus.c:246
 msgid "Select _All"
 msgstr "选中全部(_A)"
 
-#: src/gtkui/menus.c:254
+#: src/gtkui/menus.c:252
 msgid "_Rename ..."
 msgstr "重命名(_R)..."
 
@@ -1693,7 +1693,10 @@ msgstr "缓冲中..."
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:228 src/skins/plugin.c:178
+#: src/gtkui/ui_gtk.c:228 src/lyricwiki/lyricwiki.c:190
+#: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
+#: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
+#: src/skins/plugin.c:178
 msgid "Error"
 msgstr "错误"
 
@@ -1810,11 +1813,11 @@ msgstr "请在文本区按下要绑定的组合键，你亦可以绑定鼠标键
 msgid "Hotkeys:"
 msgstr "热键："
 
-#: src/hotkey/gui.c:426
+#: src/hotkey/gui.c:424
 msgid "<b>Action:</b>"
 msgstr "<b>动作：</b>"
 
-#: src/hotkey/gui.c:434
+#: src/hotkey/gui.c:431
 msgid "<b>Key Binding:</b>"
 msgstr "<b>键位绑定：</b>"
 
@@ -1862,7 +1865,7 @@ msgstr "已启用插件："
 msgid "Settings"
 msgstr "设置"
 
-#: src/ladspa/plugin.c:662
+#: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
 msgstr "LADSPA主机"
 
@@ -1918,31 +1921,40 @@ msgstr "重试时间："
 msgid "LIRC Plugin"
 msgstr "LIRC插件"
 
-#: src/lyricwiki/lyricwiki.c:267
-msgid ""
-"\n"
-"Looking for lyrics..."
+#: src/lyricwiki/lyricwiki.c:119
+#, fuzzy
+msgid "No lyrics available"
+msgstr "* MIDI文件不包含歌词 *"
+
+#: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
+#, c-format
+msgid "Unable to fetch %s"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
+#, c-format
+msgid "Unable to parse %s"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:234
+#, fuzzy
+msgid "Looking for lyrics ..."
 msgstr ""
 "\n"
 "正在搜索歌词..."
 
-#: src/lyricwiki/lyricwiki.c:304
-msgid ""
-"\n"
-"Connecting to lyrics.wikia.com..."
+#: src/lyricwiki/lyricwiki.c:245
+msgid "Missing song metadata"
+msgstr ""
+
+#: src/lyricwiki/lyricwiki.c:258
+#, fuzzy
+msgid "Connecting to lyrics.wikia.com ..."
 msgstr ""
 "\n"
 "正在连接到lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:378
-msgid ""
-"\n"
-"No lyrics were found."
-msgstr ""
-"\n"
-"未找到相关歌词。"
-
-#: src/lyricwiki/lyricwiki.c:436
+#: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki插件"
 
@@ -1964,15 +1976,15 @@ msgstr ""
 msgid "Tact Generator"
 msgstr ""
 
-#: src/mixer/mixer.c:186
+#: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>声道混合器</b>"
 
-#: src/mixer/mixer.c:187
+#: src/mixer/mixer.c:176
 msgid "Output channels:"
 msgstr "输出声道："
 
-#: src/mixer/mixer.c:197
+#: src/mixer/mixer.c:186
 msgid "Channel Mixer"
 msgstr "声道混合器"
 
@@ -2052,107 +2064,108 @@ msgstr "OpenPSF PSF1/PSF2解码器"
 msgid "PulseAudio Output"
 msgstr "PulseAudio输出"
 
-#: src/resample/resample.c:178
+#: src/resample/resample.c:167
 msgid "Skip/repeat samples"
 msgstr "跳过/重复取样"
 
-#: src/resample/resample.c:179
+#: src/resample/resample.c:168
 msgid "Linear interpolation"
 msgstr "线性插值"
 
-#: src/resample/resample.c:180
+#: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
 msgstr "快速sinc插值"
 
-#: src/resample/resample.c:181
+#: src/resample/resample.c:170
 msgid "Medium sinc interpolation"
 msgstr "中等sinc插值"
 
-#: src/resample/resample.c:182
+#: src/resample/resample.c:171
 msgid "Best sinc interpolation"
 msgstr "最好sinc插值"
 
-#: src/resample/resample.c:185
+#: src/resample/resample.c:174
 msgid "<b>Conversion</b>"
 msgstr "<b>转换</b>"
 
-#: src/resample/resample.c:186
+#: src/resample/resample.c:175
 msgid "Method:"
 msgstr "方法："
 
-#: src/resample/resample.c:189
+#: src/resample/resample.c:178
 msgid "Rate:"
 msgstr "码率"
 
-#: src/resample/resample.c:192
+#: src/resample/resample.c:181
 msgid "<b>Rate Mappings</b>"
 msgstr "<b>比率映射</b>"
 
-#: src/resample/resample.c:193
+#: src/resample/resample.c:182
 msgid "Use rate mappings"
 msgstr "使用比率映射"
 
-#: src/resample/resample.c:195
+#: src/resample/resample.c:184
 msgid "8 kHz:"
 msgstr ""
 
-#: src/resample/resample.c:198
+#: src/resample/resample.c:187
 msgid "16 kHz:"
 msgstr ""
 
-#: src/resample/resample.c:201
+#: src/resample/resample.c:190
 msgid "22.05 kHz:"
 msgstr ""
 
-#: src/resample/resample.c:204
+#: src/resample/resample.c:193
 msgid "44.1 kHz:"
 msgstr ""
 
-#: src/resample/resample.c:207
+#: src/resample/resample.c:196
 msgid "48 kHz:"
 msgstr ""
 
-#: src/resample/resample.c:210
+#: src/resample/resample.c:199
 msgid "96 kHz:"
 msgstr ""
 
-#: src/resample/resample.c:213
+#: src/resample/resample.c:202
 msgid "192 kHz:"
 msgstr ""
 
-#: src/resample/resample.c:223
+#: src/resample/resample.c:212
 msgid "Sample Rate Converter"
 msgstr "取样率转换器"
 
-#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:189
+#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
 msgstr "修改密码"
 
-#: src/scrobbler/configure.c:140
+#: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
 msgstr "<b>服务</b>"
 
-#: src/scrobbler/configure.c:162
+#: src/scrobbler/configure.c:143
+#, fuzzy
+msgid "<b>Last.fm</b>"
+msgstr "<b>原数据</b>"
+
+#: src/scrobbler/configure.c:147
 msgid "Username:"
 msgstr "用户名："
 
-#: src/scrobbler/configure.c:168
+#: src/scrobbler/configure.c:151
 msgid "Password:"
 msgstr "密码："
 
-#: src/scrobbler/configure.c:176
+#: src/scrobbler/configure.c:155
 msgid "Scrobbler URL:"
-msgstr ""
-
-#: src/scrobbler/configure.c:203
-msgid "<b>Last.FM</b>"
 msgstr ""
 
 #: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr ""
 
-#: src/sdlout/plugin.c:43
+#: src/sdlout/plugin.c:32
 msgid "SDL Output"
 msgstr "SDL输出(_O)"
 
@@ -3054,7 +3067,7 @@ msgstr "删除自动加载预设"
 msgid "Search entries in active playlist"
 msgstr "从当前播放列表中搜索条目"
 
-#: src/skins/ui_playlist.c:254
+#: src/skins/ui_playlist.c:253
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3064,7 +3077,7 @@ msgstr ""
 "按部分字段搜索播放列表中的条目。各个字段都可以使用正则表达式，而且是不分大小"
 "字的。如果你不知道何为正则表达式，简单的输入部分你想搜索的文字亦可。"
 
-#: src/skins/ui_playlist.c:262
+#: src/skins/ui_playlist.c:261
 msgid "Title: "
 msgstr "标题："
 
@@ -3072,31 +3085,31 @@ msgstr "标题："
 msgid "Album: "
 msgstr "专辑："
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Artist: "
 msgstr "艺术家："
 
-#: src/skins/ui_playlist.c:283
+#: src/skins/ui_playlist.c:285
 msgid "Filename: "
 msgstr "文件名"
 
-#: src/skins/ui_playlist.c:291
+#: src/skins/ui_playlist.c:294
 msgid "Clear previous selection before searching"
 msgstr "搜索前清空之前的结果"
 
-#: src/skins/ui_playlist.c:294
+#: src/skins/ui_playlist.c:297
 msgid "Automatically toggle queue for matching entries"
 msgstr "自动为区配条目切换队列"
 
-#: src/skins/ui_playlist.c:297
+#: src/skins/ui_playlist.c:300
 msgid "Create a new playlist with matching entries"
 msgstr "用匹配的条目创建新的播放列表"
 
-#: src/skins/ui_playlist.c:761
+#: src/skins/ui_playlist.c:753
 msgid "Audacious Playlist Editor"
 msgstr "Audacious播放列表编辑器"
 
-#: src/skins/ui_playlist.c:804
+#: src/skins/ui_playlist.c:796
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d / %d)"
@@ -3289,7 +3302,7 @@ msgstr ""
 msgid "Tone Generator"
 msgstr ""
 
-#: src/unix-io/unix-io.c:290
+#: src/unix-io/unix-io.c:279
 msgid "File I/O Plugin"
 msgstr "文件I/O插件"
 
@@ -3316,6 +3329,13 @@ msgstr "2SF解码器"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XSPF播放列表"
+
+#~ msgid ""
+#~ "\n"
+#~ "No lyrics were found."
+#~ msgstr ""
+#~ "\n"
+#~ "未找到相关歌词。"
 
 #, fuzzy
 #~ msgid "SndStretch"
