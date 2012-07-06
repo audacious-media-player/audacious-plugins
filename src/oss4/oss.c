@@ -1,6 +1,6 @@
 /*
  * oss.c
- * Copyright 2010-2011 Michał Lipski <tallica@o2.pl>
+ * Copyright 2010-2012 Michał Lipski
  *
  * I would like to thank people on #audacious, especially Tony Vroon and
  * John Lindgren and of course the authors of the previous OSS plugin.

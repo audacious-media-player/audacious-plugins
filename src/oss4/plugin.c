@@ -1,6 +1,6 @@
 /*
  * plugin.c
- * Copyright 2010-2012 Michał Lipski <tallica@o2.pl>
+ * Copyright 2010-2012 Michał Lipski
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -106,19 +106,9 @@ static const PluginPreferences oss_prefs = {
 
 static const char oss_about[] =
  "OSS4 Output Plugin for Audacious\n"
- "Copyright 2010-2012 Michał Lipski <tallica@o2.pl>\n\n"
+ "Copyright 2010-2012 Michał Lipski\n\n"
  "I would like to thank people on #audacious, especially Tony Vroon and "
- "John Lindgren and of course the authors of the previous OSS plugin.\n\n"
- "Redistribution and use in source and binary forms, with or without "
- "modification, are permitted provided that the following conditions are met:\n\n"
- "1. Redistributions of source code must retain the above copyright notice, "
- "this list of conditions, and the following disclaimer.\n\n"
- "2. Redistributions in binary form must reproduce the above copyright notice, "
- "this list of conditions, and the following disclaimer in the documentation "
- "provided with the distribution.\n\n"
- "This software is provided \"as is\" and without any warranty, express or "
- "implied. In no event shall the authors be liable for any damages arising from "
- "the use of this software.";
+ "John Lindgren and of course the authors of the previous OSS plugin.";
 
 AUD_OUTPUT_PLUGIN
 (

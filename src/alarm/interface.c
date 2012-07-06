@@ -79,7 +79,7 @@ create_config_dialog (void)
   GtkWidget *dialog_vbox5;
   GtkWidget *notebook1;
   GtkWidget *frame10;
-  GtkWidget *table3;
+  GtkWidget *grid3;
   GtkWidget *hbox21;
   GtkAdjustment *stop_h_spin_adj;
   GtkWidget *stop_h_spin;
@@ -101,7 +101,7 @@ create_config_dialog (void)
   GtkWidget *label80;
   GtkWidget *label71;
   GtkWidget *frame15;
-  GtkWidget *table4;
+  GtkWidget *grid4;
   GtkWidget *hbox31;
   GtkWidget *mon_def;
   GtkAdjustment *mon_h_adj;
@@ -234,16 +234,17 @@ create_config_dialog (void)
   gtk_container_add (GTK_CONTAINER (notebook1), frame10);
   gtk_container_set_border_width (GTK_CONTAINER (frame10), 10);
 
-  table3 = gtk_table_new (2, 3, FALSE);
-  gtk_widget_set_name (table3, "table3");
-  g_object_ref (table3);
-  g_object_set_data_full (G_OBJECT (config_dialog), "table3", table3,
+  grid3 = gtk_grid_new ();
+  gtk_widget_set_name (grid3, "grid3");
+  g_object_ref (grid3);
+  g_object_set_data_full (G_OBJECT (config_dialog), "grid3", grid3,
                             (GDestroyNotify) g_object_unref);
-  gtk_widget_show (table3);
-  gtk_container_add (GTK_CONTAINER (frame10), table3);
-  gtk_container_set_border_width (GTK_CONTAINER (table3), 8);
-  gtk_table_set_row_spacings (GTK_TABLE (table3), 5);
-  gtk_table_set_col_spacings (GTK_TABLE (table3), 15);
+  gtk_widget_show (grid3);
+  gtk_container_add (GTK_CONTAINER (frame10), grid3);
+  gtk_container_set_border_width (GTK_CONTAINER (grid3), 8);
+  gtk_grid_set_row_spacing (GTK_GRID (grid3), 5);
+  gtk_grid_set_column_spacing (GTK_GRID (grid3), 15);
+  gtk_grid_set_row_homogeneous (GTK_GRID (grid3), TRUE);
 
   hbox21 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox21, "hbox21");
@@ -251,9 +252,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox21", hbox21,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox21);
-  gtk_table_attach (GTK_TABLE (table3), hbox21, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid3), hbox21, 1, 1, 1, 1);
 
   stop_h_spin_adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 100, 1, 10, 0);
   stop_h_spin = gtk_spin_button_new (GTK_ADJUSTMENT (stop_h_spin_adj), 1, 0);
@@ -280,9 +279,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox22", hbox22,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox22);
-  gtk_table_attach (GTK_TABLE (table3), hbox22, 1, 2, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid3), hbox22, 1, 0, 1, 1);
 
   alarm_h_spin_adj = (GtkAdjustment *) gtk_adjustment_new (6, 0, 23, 1, 10, 0);
   alarm_h_spin = gtk_spin_button_new (GTK_ADJUSTMENT (alarm_h_spin_adj), 1, 0);
@@ -311,9 +308,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox23", hbox23,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox23);
-  gtk_table_attach (GTK_TABLE (table3), hbox23, 2, 3, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid3), hbox23, 2, 0, 1, 1);
 
   alarm_m_spin_adj = (GtkAdjustment *) gtk_adjustment_new (30, 0, 59, 1, 10, 0);
   alarm_m_spin = gtk_spin_button_new (GTK_ADJUSTMENT (alarm_m_spin_adj), 1, 0);
@@ -341,9 +336,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox24", hbox24,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox24);
-  gtk_table_attach (GTK_TABLE (table3), hbox24, 2, 3, 1, 2,
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid3), hbox24, 2, 1, 1, 1);
 
   stop_m_spin_adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 59, 1, 10, 0);
   stop_m_spin = gtk_spin_button_new (GTK_ADJUSTMENT (stop_m_spin_adj), 1, 0);
@@ -371,9 +364,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "stop_checkb", stop_checkb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (stop_checkb);
-  gtk_table_attach (GTK_TABLE (table3), stop_checkb, 0, 1, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid3), stop_checkb, 0, 1, 1, 1);
 
   label79 = gtk_label_new (_("Quiet after:"));
   gtk_widget_set_name (label79, "label79");
@@ -391,9 +382,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "label80", label80,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (label80);
-  gtk_table_attach (GTK_TABLE (table3), label80, 0, 1, 0, 1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid3), label80, 0, 0, 1, 1);
   gtk_label_set_justify (GTK_LABEL (label80), GTK_JUSTIFY_LEFT);
   gtk_misc_set_alignment (GTK_MISC (label80), 0, 0.5);
 
@@ -414,14 +403,15 @@ create_config_dialog (void)
   gtk_container_add (GTK_CONTAINER (notebook1), frame15);
   gtk_container_set_border_width (GTK_CONTAINER (frame15), 10);
 
-  table4 = gtk_table_new (8, 2, FALSE);
-  gtk_widget_set_name (table4, "table4");
-  g_object_ref (table4);
-  g_object_set_data_full (G_OBJECT (config_dialog), "table4", table4,
+  grid4 = gtk_grid_new ();
+  gtk_grid_set_row_homogeneous (GTK_GRID (grid4), TRUE);
+  gtk_widget_set_name (grid4, "grid4");
+  g_object_ref (grid4);
+  g_object_set_data_full (G_OBJECT (config_dialog), "grid4", grid4,
                             (GDestroyNotify) g_object_unref);
-  gtk_widget_show (table4);
-  gtk_container_add (GTK_CONTAINER (frame15), table4);
-  gtk_container_set_border_width (GTK_CONTAINER (table4), 5);
+  gtk_widget_show (grid4);
+  gtk_container_add (GTK_CONTAINER (frame15), grid4);
+  gtk_container_set_border_width (GTK_CONTAINER (grid4), 5);
 
   hbox31 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_widget_set_name (hbox31, "hbox31");
@@ -429,9 +419,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox31", hbox31,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox31);
-  gtk_table_attach (GTK_TABLE (table4), hbox31, 1, 2, 1, 2,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), hbox31, 1, 1, 1, 1);
 
   mon_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (mon_def, "mon_def");
@@ -477,9 +465,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox32", hbox32,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox32);
-  gtk_table_attach (GTK_TABLE (table4), hbox32, 1, 2, 2, 3,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), hbox32, 1, 2, 1, 1);
 
   tue_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (tue_def, "tue_def");
@@ -525,9 +511,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox33", hbox33,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox33);
-  gtk_table_attach (GTK_TABLE (table4), hbox33, 1, 2, 3, 4,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), hbox33, 1, 3, 1, 1);
 
   wed_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (wed_def, "wed_def");
@@ -573,9 +557,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox34", hbox34,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox34);
-  gtk_table_attach (GTK_TABLE (table4), hbox34, 1, 2, 4, 5,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), hbox34, 1, 4, 1, 1);
 
   thu_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (thu_def, "thu_def");
@@ -621,9 +603,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox35", hbox35,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox35);
-  gtk_table_attach (GTK_TABLE (table4), hbox35, 1, 2, 5, 6,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), hbox35, 1, 5, 1, 1);
 
   fri_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (fri_def, "fri_def");
@@ -669,9 +649,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox36", hbox36,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox36);
-  gtk_table_attach (GTK_TABLE (table4), hbox36, 1, 2, 6, 7,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), hbox36, 1, 6, 1, 1);
 
   sat_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (sat_def, "sat_def");
@@ -717,9 +695,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "hbox37", hbox37,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (hbox37);
-  gtk_table_attach (GTK_TABLE (table4), hbox37, 1, 2, 7, 8,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_EXPAND | GTK_FILL), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), hbox37, 1, 7, 1, 1);
 
   sun_def = gtk_check_button_new_with_label (_("Default"));
   gtk_widget_set_name (sun_def, "sun_def");
@@ -765,9 +741,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "label87", label87,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (label87);
-  gtk_table_attach (GTK_TABLE (table4), label87, 0, 1, 0, 1,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), label87, 0, 0, 1, 1);
 
   label88 = gtk_label_new (_("Time"));
   gtk_widget_set_name (label88, "label88");
@@ -775,9 +749,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "label88", label88,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (label88);
-  gtk_table_attach (GTK_TABLE (table4), label88, 1, 2, 0, 1,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), label88, 1, 0, 1, 1);
 
   tue_cb = gtk_check_button_new_with_label (_("Tuesday"));
   gtk_widget_set_name (tue_cb, "tue_cb");
@@ -785,9 +757,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "tue_cb", tue_cb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (tue_cb);
-  gtk_table_attach (GTK_TABLE (table4), tue_cb, 0, 1, 2, 3,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), tue_cb, 0, 2, 1, 1);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (tue_cb), TRUE);
 
   wed_cb = gtk_check_button_new_with_label (_("Wednesday"));
@@ -796,9 +766,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "wed_cb", wed_cb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (wed_cb);
-  gtk_table_attach (GTK_TABLE (table4), wed_cb, 0, 1, 3, 4,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), wed_cb, 0, 3, 1, 1);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wed_cb), TRUE);
 
   thu_cb = gtk_check_button_new_with_label (_("Thursday"));
@@ -807,9 +775,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "thu_cb", thu_cb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (thu_cb);
-  gtk_table_attach (GTK_TABLE (table4), thu_cb, 0, 1, 4, 5,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), thu_cb, 0, 4, 1, 1);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (thu_cb), TRUE);
 
   fri_cb = gtk_check_button_new_with_label (_("Friday"));
@@ -818,9 +784,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "fri_cb", fri_cb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (fri_cb);
-  gtk_table_attach (GTK_TABLE (table4), fri_cb, 0, 1, 5, 6,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), fri_cb, 0, 5, 1, 1);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (fri_cb), TRUE);
 
   sat_cb = gtk_check_button_new_with_label (_("Saturday"));
@@ -829,9 +793,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "sat_cb", sat_cb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (sat_cb);
-  gtk_table_attach (GTK_TABLE (table4), sat_cb, 0, 1, 6, 7,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), sat_cb, 0, 6, 1, 1);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sat_cb), TRUE);
 
   sun_cb = gtk_check_button_new_with_label (_("Sunday"));
@@ -840,9 +802,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "sun_cb", sun_cb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (sun_cb);
-  gtk_table_attach (GTK_TABLE (table4), sun_cb, 0, 1, 7, 8,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), sun_cb, 0, 7, 1, 1);
 
   mon_cb = gtk_check_button_new_with_label (_("Monday"));
   gtk_widget_set_name (mon_cb, "mon_cb");
@@ -850,9 +810,7 @@ create_config_dialog (void)
   g_object_set_data_full (G_OBJECT (config_dialog), "mon_cb", mon_cb,
                             (GDestroyNotify) g_object_unref);
   gtk_widget_show (mon_cb);
-  gtk_table_attach (GTK_TABLE (table4), mon_cb, 0, 1, 1, 2,
-                    (GtkAttachOptions) (0),
-                    (GtkAttachOptions) (0), 0, 0);
+  gtk_grid_attach (GTK_GRID (grid4), mon_cb, 0, 1, 1, 1);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mon_cb), TRUE);
 
   label72 = gtk_label_new (_("Days"));
