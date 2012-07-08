@@ -237,8 +237,8 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
             //apply preamp
             if(mModProps.mBits == 16)
             {
-                uint n = mBufSize >> 1;
-                for(uint i = 0; i < n; i++) {
+                unsigned n = mBufSize >> 1;
+                for(unsigned i = 0; i < n; i++) {
                     short old = ((short*)mBuffer)[i];
                     ((short*)mBuffer)[i] *= (short int)mPreampFactor;
                     // detect overflow and clip!
@@ -250,7 +250,7 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
             }
             else
             {
-                for(uint i = 0; i < mBufSize; i++) {
+                for(unsigned i = 0; i < mBufSize; i++) {
                     unsigned char old = ((unsigned char*)mBuffer)[i];
                     ((unsigned char*)mBuffer)[i] *= (short int)mPreampFactor;
                     // detect overflow and clip!
