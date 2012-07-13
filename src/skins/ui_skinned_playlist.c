@@ -811,13 +811,18 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
 
         break;
       case GDK_2BUTTON_PRESS:
-        if (event->button != 1 || state || position == -1 || position ==
-         active_length)
+        if (event->button != 1 || state || position == active_length)
             return TRUE;
 
-        aud_playlist_set_playing (active_playlist);
-        aud_playlist_set_position (active_playlist, position);
-        aud_drct_play ();
+        if (position == -1)
+            aud_drct_play_playlist (active_playlist);
+        else
+        {
+            aud_playlist_set_position (active_playlist, position);
+            aud_playlist_set_playing (active_playlist);
+            aud_drct_play ();
+        }
+
         break;
       default:
         return TRUE;
