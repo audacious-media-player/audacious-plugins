@@ -48,7 +48,7 @@ static const gchar * const skins_defaults[] = {
  "mainwin_use_bitmapfont", "TRUE",
  "playlist_font", "Sans Bold 8",
  "timer_mode", "0", /* TIMER_ELAPSED */
- "twoway_scroll", "TRUE",
+ "twoway_scroll", "FALSE",
 
  /* visualizer */
  "analyzer_falloff", "3", /* FALLOFF_FAST */
