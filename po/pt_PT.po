@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-14 10:23-0400\n"
-"PO-Revision-Date: 2012-07-01 10:40+0000\n"
+"POT-Creation-Date: 2012-07-14 10:27-0400\n"
+"PO-Revision-Date: 2012-07-08 00:07+0000\n"
 "Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
@@ -33,7 +33,7 @@ msgstr "Alarme"
 
 #: src/alarm/interface.c:39
 msgid "This is your wakeup call."
-msgstr "Esta é a sua chamada de atenção"
+msgstr "Este é o seu alerta"
 
 #: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
 msgid "OK"
