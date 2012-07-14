@@ -1111,12 +1111,22 @@ void action_playlist_prev (void)
 {
     if (active_playlist > 0)
         aud_playlist_set_active (active_playlist - 1);
+    else
+    {
+        gint count = aud_playlist_count ();
+        if (count > 1)
+            aud_playlist_set_active (count - 1);
+    }
 }
 
 void action_playlist_next (void)
 {
-    if (active_playlist + 1 < aud_playlist_count ())
+    gint count = aud_playlist_count ();
+
+    if (active_playlist + 1 < count)
         aud_playlist_set_active (active_playlist + 1);
+    else if (count > 1)
+        aud_playlist_set_active (0);
 }
 
 void action_playlist_delete (void)
