@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-06 18:56-0400\n"
+"POT-Creation-Date: 2012-07-14 10:23-0400\n"
 "PO-Revision-Date: 2012-05-20 02:25+0000\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian\n"
@@ -35,7 +35,7 @@ msgstr "Äratus"
 msgid "This is your wakeup call."
 msgstr "See on sinu äratus."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Olgu"
 
@@ -43,141 +43,141 @@ msgstr "Olgu"
 msgid "Alarm Settings"
 msgstr "Äratuste sätted"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:400
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:228 src/alarm/interface.c:389
+#: src/alarm/interface.c:746
 msgid "Time"
 msgstr "Aeg"
 
-#: src/alarm/interface.c:269
+#: src/alarm/interface.c:268
 msgid "hours"
 msgstr "tundi"
 
-#: src/alarm/interface.c:330
+#: src/alarm/interface.c:325
 msgid "h"
 msgstr " "
 
-#: src/alarm/interface.c:360
+#: src/alarm/interface.c:353
 msgid "minutes"
 msgstr "minutit"
 
-#: src/alarm/interface.c:378
+#: src/alarm/interface.c:369
 msgid "Quiet after:"
 msgstr "Vaigistamine pärast:"
 
-#: src/alarm/interface.c:388
+#: src/alarm/interface.c:379
 msgid "Alarm at (default):"
 msgstr "Vaikimisi äratuskell (vaikimisi):"
 
-#: src/alarm/interface.c:408
+#: src/alarm/interface.c:397
 msgid "Choose the days for the alarm to come on"
 msgstr "Vali päevad, mil äratus tööle hakkab"
 
-#: src/alarm/interface.c:436 src/alarm/interface.c:484
-#: src/alarm/interface.c:532 src/alarm/interface.c:580
-#: src/alarm/interface.c:628 src/alarm/interface.c:676
-#: src/alarm/interface.c:724 src/bs2b/plugin.c:179
-#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:447
-#: src/skins/ui_manager.c:468
+#: src/alarm/interface.c:424 src/alarm/interface.c:470
+#: src/alarm/interface.c:516 src/alarm/interface.c:562
+#: src/alarm/interface.c:608 src/alarm/interface.c:654
+#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Vaikimisi"
 
-#: src/alarm/interface.c:762
+#: src/alarm/interface.c:738
 msgid "Day"
 msgstr "Päev"
 
-#: src/alarm/interface.c:782
+#: src/alarm/interface.c:754
 msgid "Tuesday"
 msgstr "Teisipäev"
 
-#: src/alarm/interface.c:793
+#: src/alarm/interface.c:763
 msgid "Wednesday"
 msgstr "Kolmapäev"
 
-#: src/alarm/interface.c:804
+#: src/alarm/interface.c:772
 msgid "Thursday"
 msgstr "Neljapäev"
 
-#: src/alarm/interface.c:815
+#: src/alarm/interface.c:781
 msgid "Friday"
 msgstr "Reede"
 
-#: src/alarm/interface.c:826
+#: src/alarm/interface.c:790
 msgid "Saturday"
 msgstr "Laupäev"
 
-#: src/alarm/interface.c:837
+#: src/alarm/interface.c:799
 msgid "Sunday"
 msgstr "Pühapäev"
 
-#: src/alarm/interface.c:847
+#: src/alarm/interface.c:807
 msgid "Monday"
 msgstr "Esmaspäev"
 
-#: src/alarm/interface.c:858
+#: src/alarm/interface.c:816
 msgid "Days"
 msgstr "Päevad"
 
-#: src/alarm/interface.c:874
+#: src/alarm/interface.c:832
 msgid "Fading"
 msgstr "Sumbumine"
 
-#: src/alarm/interface.c:911 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "sekundit"
 
-#: src/alarm/interface.c:919 src/alarm/interface.c:1034
+#: src/alarm/interface.c:877 src/alarm/interface.c:992
 msgid "Volume"
 msgstr "Valjus"
 
-#: src/alarm/interface.c:945
+#: src/alarm/interface.c:903
 msgid "Current"
 msgstr "Praegune"
 
-#: src/alarm/interface.c:953
+#: src/alarm/interface.c:911
 msgid "Start at"
 msgstr "Alguses"
 
-#: src/alarm/interface.c:981 src/alarm/interface.c:1025
+#: src/alarm/interface.c:939 src/alarm/interface.c:983
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:997
+#: src/alarm/interface.c:955
 msgid "Final"
 msgstr "Lõpuks"
 
-#: src/alarm/interface.c:1050
+#: src/alarm/interface.c:1008
 msgid "Additional Command"
 msgstr "Täiendav käsk"
 
-#: src/alarm/interface.c:1076
+#: src/alarm/interface.c:1034
 msgid "enable"
 msgstr "lubatud"
 
-#: src/alarm/interface.c:1084
+#: src/alarm/interface.c:1042
 msgid "Playlist (optional)"
 msgstr "Esitusnimekiri (valikuline)"
 
-#: src/alarm/interface.c:1110
+#: src/alarm/interface.c:1068
 msgid "Browse..."
 msgstr "Sirvi..."
 
-#: src/alarm/interface.c:1118 src/alarm/interface.c:1282
+#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
 msgid "Reminder"
 msgstr "Meeldetuletaja"
 
-#: src/alarm/interface.c:1135
+#: src/alarm/interface.c:1093
 msgid "Use reminder"
 msgstr "Kasutan meeldetuletajat"
 
-#: src/alarm/interface.c:1151
+#: src/alarm/interface.c:1109
 msgid "Options"
 msgstr "Valikud"
 
-#: src/alarm/interface.c:1159
+#: src/alarm/interface.c:1117
 msgid "What do these options mean?"
 msgstr "Mida need valikud tähendavad?"
 
-#: src/alarm/interface.c:1187
+#: src/alarm/interface.c:1145
 msgid ""
 "\n"
 "Time\n"
@@ -232,19 +232,19 @@ msgid ""
 "    toggle button if you want it to be shown.\n"
 msgstr ""
 
-#: src/alarm/interface.c:1189 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Abi"
 
-#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Loobu"
 
-#: src/alarm/interface.c:1289
+#: src/alarm/interface.c:1247
 msgid "Your reminder for today is.."
 msgstr "Sinu tänane meeldetuletaja on ..."
 
-#: src/alarm/interface.c:1314
+#: src/alarm/interface.c:1272
 msgid "Thankyou"
 msgstr "Aitäh"
 
@@ -1406,289 +1406,293 @@ msgstr ""
 msgid "Disable"
 msgstr "Keela"
 
-#: src/gtkui/menus.c:153
+#: src/gtkui/menus.c:159
 msgid "_Open Files ..."
 msgstr "_Ava failid ..."
 
-#: src/gtkui/menus.c:154
+#: src/gtkui/menus.c:160
 msgid "Open _URL ..."
 msgstr "Ava _URL ..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:161
 msgid "_Add Files ..."
 msgstr "_Lisa faile ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:162
 msgid "Add U_RL ..."
 msgstr "Lisa U_RL ..."
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.c:164
 #, fuzzy
 msgid "_Search Library"
 msgstr "Otsing audiokogust"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:166
 msgid "A_bout ..."
 msgstr "_Programmist lähemalt"
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:167
 msgid "_Preferences ..."
 msgstr "_Eelistused ..."
 
-#: src/gtkui/menus.c:162 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:168 src/skins/ui_manager.c:414
 msgid "_Quit"
 msgstr "_Välju"
 
-#: src/gtkui/menus.c:165 src/gtkui/menus.c:251
+#: src/gtkui/menus.c:171 src/gtkui/menus.c:258
 msgid "_Play"
 msgstr "_Esita"
 
-#: src/gtkui/menus.c:166
+#: src/gtkui/menus.c:172
 msgid "Paus_e"
 msgstr "_Peata"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:173
 msgid "_Stop"
 msgstr "_Seiska"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:174
 msgid "Pre_vious"
 msgstr "Ee_lmine"
 
-#: src/gtkui/menus.c:169
+#: src/gtkui/menus.c:175
 msgid "_Next"
 msgstr "_Järgmine"
 
-#: src/gtkui/menus.c:171
+#: src/gtkui/menus.c:177
 msgid "_Repeat"
 msgstr "Ko_rduv"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:178
 msgid "S_huffle"
 msgstr "Se_gatud"
 
-#: src/gtkui/menus.c:173
+#: src/gtkui/menus.c:179
 msgid "N_o Playlist Advance"
 msgstr "Esitusnimekirja ei _kasutata"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:180
 msgid "Stop _After This Song"
 msgstr "Seisk_a pärast praegust lugu"
 
-#: src/gtkui/menus.c:176 src/gtkui/menus.c:239
+#: src/gtkui/menus.c:182 src/gtkui/menus.c:246
 msgid "Song _Info ..."
 msgstr "L_oo andmed ..."
 
-#: src/gtkui/menus.c:177
+#: src/gtkui/menus.c:183
 msgid "Jump to _Time ..."
 msgstr ""
 
-#: src/gtkui/menus.c:178
+#: src/gtkui/menus.c:184
 msgid "_Jump to Song ..."
 msgstr "_Vaheta lugu ..."
 
-#: src/gtkui/menus.c:181
+#: src/gtkui/menus.c:187
 msgid "By Track _Number"
 msgstr "Loo _numbri järgi"
 
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.c:188
 msgid "By _Title"
 msgstr "Peal_kirja järgi"
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:189
 msgid "By _Artist"
 msgstr "_Esitaja järgi"
 
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.c:190
 msgid "By A_lbum"
 msgstr "_Albumi järgi"
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:191
 msgid "By Release _Date"
 msgstr "_Väljalaske kuupäeva järgi"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:192
 msgid "By _File Path"
 msgstr "_Faili raja järgi"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:193
 msgid "By _Custom Title"
 msgstr "Ko_handatud pealkirja järgi"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:195
 msgid "R_everse Order"
 msgstr "_Pööra järjestus tagurpidi"
 
-#: src/gtkui/menus.c:190
+#: src/gtkui/menus.c:196
 msgid "_Random Order"
 msgstr "_Järjestus juhuslikuks"
 
-#: src/gtkui/menus.c:193
+#: src/gtkui/menus.c:199
 #, fuzzy
 msgid "_Play This Playlist"
 msgstr "Loo _esitusnimekiri"
 
-#: src/gtkui/menus.c:194 src/gtkui/menus.c:241
+#: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
 msgstr "_Värskenda"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:201
 msgid "Remove _Unavailable Files"
 msgstr "Ee_malda kättesaamatud failid"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:203
 msgid "_Sort"
 msgstr "_Sordi"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:205
 msgid "_New"
 msgstr "_Uus"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
 msgstr ""
 
-#: src/gtkui/menus.c:201 src/gtkui/menus.c:253
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
 msgstr "Sul_ge"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:209
 msgid "_Import ..."
 msgstr "_Impordi ..."
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:210
 msgid "_Export ..."
 msgstr "_Ekspordi ..."
 
-#: src/gtkui/menus.c:206
+#: src/gtkui/menus.c:212
 #, fuzzy
 msgid "Playlist _Manager ..."
 msgstr "_Halda esitusnimekirju..."
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
 msgstr "Halda _järjekorda ..."
 
-#: src/gtkui/menus.c:210
+#: src/gtkui/menus.c:216
 msgid "Volume _Up"
 msgstr "_Valjemaks"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:217
 msgid "Volume _Down"
 msgstr "Va_iksemaks"
 
-#: src/gtkui/menus.c:213
+#: src/gtkui/menus.c:219
 msgid "_Equalizer"
 msgstr "_Ekvalaiser"
 
-#: src/gtkui/menus.c:215
+#: src/gtkui/menus.c:221
 msgid "E_ffects"
 msgstr "E_fektid"
 
-#: src/gtkui/menus.c:218
+#: src/gtkui/menus.c:224
 msgid "_Interface"
 msgstr "_Liides"
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:225
 msgid "_Visualizations"
 msgstr "_Visualiseerimine"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:227
 msgid "Show _Menu Bar"
 msgstr "_Menüüriba on nähtaval"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:228
 msgid "Show I_nfo Bar"
 msgstr "_Teaberiba on nähtaval"
 
-#: src/gtkui/menus.c:223
+#: src/gtkui/menus.c:229
 #, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "Visualiseerimine"
 
-#: src/gtkui/menus.c:224
+#: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
 msgstr "_Olekuriba on nähtaval"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:232
+msgid "Show Close _Buttons"
+msgstr ""
+
+#: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
 msgstr "Veergude _päised on nähtaval"
 
-#: src/gtkui/menus.c:227
+#: src/gtkui/menus.c:234
 msgid "Choose _Columns ..."
 msgstr "Vee_rgude valimine ..."
 
-#: src/gtkui/menus.c:228
+#: src/gtkui/menus.c:235
 msgid "Scrol_l on Song Change"
 msgstr "_Kerimine loo vahetumisel"
 
-#: src/gtkui/menus.c:231
+#: src/gtkui/menus.c:238
 msgid "_File"
 msgstr "_Fail"
 
-#: src/gtkui/menus.c:232
+#: src/gtkui/menus.c:239
 msgid "_Playback"
 msgstr "_Esitamine"
 
-#: src/gtkui/menus.c:233
+#: src/gtkui/menus.c:240
 msgid "P_laylist"
 msgstr "E_situsnimekiri"
 
-#: src/gtkui/menus.c:234 src/gtkui/menus.c:248
+#: src/gtkui/menus.c:241 src/gtkui/menus.c:255
 msgid "_Services"
 msgstr "_Teenused"
 
-#: src/gtkui/menus.c:235
+#: src/gtkui/menus.c:242
 msgid "_Output"
 msgstr "Väl_jund"
 
-#: src/gtkui/menus.c:236
+#: src/gtkui/menus.c:243
 msgid "_View"
 msgstr "_Vaade"
 
-#: src/gtkui/menus.c:240
+#: src/gtkui/menus.c:247
 msgid "_Queue/Unqueue"
 msgstr "_Järjekorda/järjekorrast maha"
 
-#: src/gtkui/menus.c:243
+#: src/gtkui/menus.c:250
 msgid "Cu_t"
 msgstr "_Lõika"
 
-#: src/gtkui/menus.c:244
+#: src/gtkui/menus.c:251
 msgid "_Copy"
 msgstr "_Kopeeri"
 
-#: src/gtkui/menus.c:245
+#: src/gtkui/menus.c:252
 msgid "_Paste"
 msgstr "_Aseta"
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:253
 msgid "Select _All"
 msgstr "Val_i kõik"
 
-#: src/gtkui/menus.c:252
+#: src/gtkui/menus.c:259
 #, fuzzy
 msgid "_Rename ..."
 msgstr "_Muuda nime"
 
-#: src/gtkui/ui_gtk.c:98
+#: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
 msgstr "GTK liides"
 
-#: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:174
+#: src/gtkui/ui_gtk.c:175
 msgid "Buffering ..."
 msgstr "Puhverdamine ..."
 
-#: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:228 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:178
@@ -1755,7 +1759,7 @@ msgstr "Valjemaks"
 msgid "Volume Down"
 msgstr "Vaiksemaks"
 
-#: src/hotkey/gui.c:82 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
+#: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
 msgstr "Hüppa failile"
 
@@ -2051,7 +2055,7 @@ msgstr ""
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
 
-#: src/oss4/plugin.c:125
+#: src/oss4/plugin.c:115
 #, fuzzy
 msgid "OSS4 Output"
 msgstr "Väl_jund"
@@ -2361,7 +2365,7 @@ msgstr "Audaciouse ekvalaiser"
 msgid "Presets"
 msgstr "Valmisseadistused"
 
-#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:442
+#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:452
 msgid "Load preset"
 msgstr "Valmisseadistuste laadimine"
 
@@ -2374,7 +2378,7 @@ msgstr ""
 msgid "Load equalizer preset"
 msgstr ""
 
-#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:463
+#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
 msgid "Save preset"
 msgstr "Valmisseadistuste salvestamine"
 
@@ -2386,7 +2390,7 @@ msgstr ""
 msgid "Save equalizer preset"
 msgstr "Ekvalaiseri valmisseadistuse salvestamine"
 
-#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:478
+#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
 msgid "Delete preset"
 msgstr "Valmisseadistuse kustutamine"
 
@@ -2657,429 +2661,434 @@ msgid "Playlist"
 msgstr "Esitusnimekiri"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
+#, fuzzy
+msgid "Play Playlist"
+msgstr "Loo _esitusnimekiri"
+
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
 msgstr "Uus esitusnimekiri"
 
-#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Next Playlist"
 msgstr "Vali järgmine esitusnimekiri"
 
-#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Select Previous Playlist"
 msgstr "Vali eelmine esitusnimekiri"
 
-#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
+#: src/skins/ui_manager.c:222 src/skins/ui_manager.c:223
 msgid "Delete Playlist"
 msgstr "Kustuta esitusnimekiri"
 
-#: src/skins/ui_manager.c:222
+#: src/skins/ui_manager.c:225
 msgid "Import Playlist"
 msgstr "Impordi esitusnimekiri"
 
-#: src/skins/ui_manager.c:223
+#: src/skins/ui_manager.c:226
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Esitusnimekirja faili laadimine valitud esitusnimekirja."
 
-#: src/skins/ui_manager.c:226
+#: src/skins/ui_manager.c:229
 msgid "Export Playlist"
 msgstr "Ekspordi esitusnimekiri"
 
-#: src/skins/ui_manager.c:227
+#: src/skins/ui_manager.c:230
 msgid "Saves the selected playlist."
 msgstr "Valitud esitusnimekirja salvestamine."
 
-#: src/skins/ui_manager.c:229
+#: src/skins/ui_manager.c:232
 msgid "Refresh List"
 msgstr "Värskenda nimekirja"
 
-#: src/skins/ui_manager.c:230
+#: src/skins/ui_manager.c:233
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Esitusnimekirjas valitud kirjega seotud metaandmete värskendamine."
 
-#: src/skins/ui_manager.c:233
+#: src/skins/ui_manager.c:236
 msgid "Playlist Manager"
 msgstr "Esitusnimekirjade haldus"
 
-#: src/skins/ui_manager.c:234
+#: src/skins/ui_manager.c:239
 msgid "Queue Manager"
 msgstr "Järjekorra haldus"
 
-#: src/skins/ui_manager.c:237
+#: src/skins/ui_manager.c:244
 msgid "View"
 msgstr "Vaade"
 
-#: src/skins/ui_manager.c:238
+#: src/skins/ui_manager.c:245
 msgid "Interface"
 msgstr "Liides"
 
-#: src/skins/ui_manager.c:239
+#: src/skins/ui_manager.c:246
 msgid "Interface Preferences ..."
 msgstr "Liidese eelistused..."
 
-#: src/skins/ui_manager.c:243
+#: src/skins/ui_manager.c:251
 msgid "Add Internet Address..."
 msgstr "Lisa internetiaadress..."
 
-#: src/skins/ui_manager.c:244
+#: src/skins/ui_manager.c:252
 msgid "Adds a remote track to the playlist."
 msgstr "Võrgus asuva loo lisamine esitusnimekirja."
 
-#: src/skins/ui_manager.c:247
+#: src/skins/ui_manager.c:255
 msgid "Add Files..."
 msgstr "Lisa faile..."
 
-#: src/skins/ui_manager.c:248
+#: src/skins/ui_manager.c:256
 msgid "Adds files to the playlist."
 msgstr "Failide lisamine esitusnimekirja"
 
-#: src/skins/ui_manager.c:253
+#: src/skins/ui_manager.c:261
 msgid "Search and Select"
 msgstr ""
 
-#: src/skins/ui_manager.c:254
+#: src/skins/ui_manager.c:262
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
 
-#: src/skins/ui_manager.c:257
+#: src/skins/ui_manager.c:265
 msgid "Invert Selection"
 msgstr ""
 
-#: src/skins/ui_manager.c:258
+#: src/skins/ui_manager.c:266
 msgid "Inverts the selected and unselected entries."
 msgstr ""
 
-#: src/skins/ui_manager.c:261
+#: src/skins/ui_manager.c:269
 msgid "Select All"
 msgstr "Vali kõik"
 
-#: src/skins/ui_manager.c:262
+#: src/skins/ui_manager.c:270
 msgid "Selects all of the playlist entries."
 msgstr "Kõigi esitusnimekirja kirjete valimine."
 
-#: src/skins/ui_manager.c:265
+#: src/skins/ui_manager.c:273
 msgid "Select None"
 msgstr ""
 
-#: src/skins/ui_manager.c:266
+#: src/skins/ui_manager.c:274
 msgid "Deselects all of the playlist entries."
 msgstr "Kõigi esitusnimekirja kirjete kustutamine."
 
-#: src/skins/ui_manager.c:271
+#: src/skins/ui_manager.c:279
 msgid "Remove All"
 msgstr "Eemalda kõik"
 
-#: src/skins/ui_manager.c:272
+#: src/skins/ui_manager.c:280
 msgid "Removes all entries from the playlist."
 msgstr "Esitusnimekirjast kõikide kirjete eemaldamine"
 
-#: src/skins/ui_manager.c:275
+#: src/skins/ui_manager.c:283
 msgid "Clear Queue"
 msgstr ""
 
-#: src/skins/ui_manager.c:276
+#: src/skins/ui_manager.c:284
 msgid "Clears the queue associated with this playlist."
 msgstr ""
 
-#: src/skins/ui_manager.c:279
+#: src/skins/ui_manager.c:287
 msgid "Remove Unavailable Files"
 msgstr "Eemalda kättesaamatud failid"
 
-#: src/skins/ui_manager.c:280
+#: src/skins/ui_manager.c:288
 msgid "Removes unavailable files from the playlist."
 msgstr "Kättesaamatute failide eemaldamine esitusnimekirjast."
 
-#: src/skins/ui_manager.c:283
+#: src/skins/ui_manager.c:291
 msgid "Remove Duplicates"
 msgstr "Eemalda korduvad kirjed"
 
-#: src/skins/ui_manager.c:285 src/skins/ui_manager.c:317
-#: src/skins/ui_manager.c:347
+#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:325
+#: src/skins/ui_manager.c:355
 msgid "By Title"
 msgstr "Pealkirja järgi"
 
-#: src/skins/ui_manager.c:286
+#: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Esitusnimekirjast korduvate kirjete eemaldamine pealkirja järgi."
 
-#: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
-#: src/skins/ui_manager.c:359
+#: src/skins/ui_manager.c:297 src/skins/ui_manager.c:337
+#: src/skins/ui_manager.c:367
 msgid "By Filename"
 msgstr "Failinime järgi"
 
-#: src/skins/ui_manager.c:290
+#: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr "Esitusnimekirjast korduvate kirjete eemaldamine failinime järgi."
 
-#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:333
-#: src/skins/ui_manager.c:363
+#: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
+#: src/skins/ui_manager.c:371
 msgid "By Path + Filename"
 msgstr "Raja ja failinime järgi"
 
-#: src/skins/ui_manager.c:294
+#: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr "Esitusnimekirjast korduvate kirjete eemaldamine faili täisraja järgi."
 
-#: src/skins/ui_manager.c:297
+#: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
 msgstr "Eemalda valimata kirjed"
 
-#: src/skins/ui_manager.c:298
+#: src/skins/ui_manager.c:306
 msgid "Remove unselected entries from the playlist."
 msgstr "Valimata kirjete eemaldamine esitusnimekirjast."
 
-#: src/skins/ui_manager.c:301
+#: src/skins/ui_manager.c:309
 msgid "Remove Selected"
 msgstr "Eemalda valik"
 
-#: src/skins/ui_manager.c:302
+#: src/skins/ui_manager.c:310
 msgid "Remove selected entries from the playlist."
 msgstr "Valitud kirjete eemaldamine esitusnimekirjast"
 
-#: src/skins/ui_manager.c:307
+#: src/skins/ui_manager.c:315
 msgid "Randomize List"
 msgstr "Sega nimekiri"
 
-#: src/skins/ui_manager.c:308
+#: src/skins/ui_manager.c:316
 msgid "Randomizes the playlist."
 msgstr "Nimekirja segiajamine"
 
-#: src/skins/ui_manager.c:311
+#: src/skins/ui_manager.c:319
 msgid "Reverse List"
 msgstr "Pööra järjestus ümber"
 
-#: src/skins/ui_manager.c:312
+#: src/skins/ui_manager.c:320
 msgid "Reverses the playlist."
 msgstr "Esitusnimekirja järjekorra ümberpööramine"
 
-#: src/skins/ui_manager.c:315
+#: src/skins/ui_manager.c:323
 msgid "Sort List"
 msgstr "Nimekirja sortimine"
 
-#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
+#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by title."
 msgstr "Nimekirja sortimine pealkirja järgi."
 
-#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "By Album"
 msgstr "Albumi järgi"
 
-#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
+#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by album."
 msgstr "Nimekirja sortimine albumi järgi."
 
-#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "By Artist"
 msgstr "Esitaja järgi"
 
-#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by artist."
 msgstr "Nimekirja sortimine esitaja järgi."
 
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by filename."
 msgstr "Nimekirja sortimine failinime järgi."
 
-#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
+#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by full pathname."
 msgstr "Nimekirja sortimine täisraja järgi."
 
-#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "By Date"
 msgstr "Kuupäeva järgi"
 
-#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
+#: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
 msgid "Sorts the list by modification time."
 msgstr "Nimekirja sortimine muutmise aja järgi."
 
-#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
+#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "By Track Number"
 msgstr "Loo numbri järgi"
 
-#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
+#: src/skins/ui_manager.c:350 src/skins/ui_manager.c:380
 msgid "Sorts the list by track number."
 msgstr "Nimekirja sortimine loo numbri järgi."
 
-#: src/skins/ui_manager.c:345
+#: src/skins/ui_manager.c:353
 msgid "Sort Selected"
 msgstr "Valiku sortimine"
 
-#: src/skins/ui_manager.c:381
+#: src/skins/ui_manager.c:389
 msgid "File"
 msgstr "Fail"
 
-#: src/skins/ui_manager.c:384
+#: src/skins/ui_manager.c:392
 msgid "Plugin Services"
 msgstr "Pluginate teenused"
 
-#: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
+#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View Track Details"
 msgstr "Vaata loo andmeid"
 
-#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:390
+#: src/skins/ui_manager.c:395 src/skins/ui_manager.c:398
 msgid "View track details"
 msgstr ""
 
-#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:393
+#: src/skins/ui_manager.c:400 src/skins/ui_manager.c:401
 msgid "About Audacious"
 msgstr "Audaciousest lähemalt"
 
-#: src/skins/ui_manager.c:395
+#: src/skins/ui_manager.c:403
 msgid "Play File"
 msgstr "Esita faili"
 
-#: src/skins/ui_manager.c:396
+#: src/skins/ui_manager.c:404
 msgid "Load and play a file"
 msgstr "Faili laadimine ja esitamine"
 
-#: src/skins/ui_manager.c:398
+#: src/skins/ui_manager.c:406
 msgid "Play Location"
 msgstr "Esita asukohalt"
 
-#: src/skins/ui_manager.c:399
+#: src/skins/ui_manager.c:407
 msgid "Play media from the selected location"
 msgstr "Meedia esitamine määratud asukohast"
 
-#: src/skins/ui_manager.c:401
+#: src/skins/ui_manager.c:409
 msgid "Plugin services"
 msgstr "Pluginate teenused"
 
-#: src/skins/ui_manager.c:403
+#: src/skins/ui_manager.c:411
 msgid "Preferences"
 msgstr "Eelistused"
 
-#: src/skins/ui_manager.c:404
+#: src/skins/ui_manager.c:412
 msgid "Open preferences window"
 msgstr ""
 
-#: src/skins/ui_manager.c:407
+#: src/skins/ui_manager.c:415
 msgid "Quit Audacious"
 msgstr "Audaciouse töö lõpetamine"
 
-#: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
+#: src/skins/ui_manager.c:417 src/skins/ui_manager.c:418
 msgid "Set A-B"
 msgstr ""
 
-#: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
+#: src/skins/ui_manager.c:420 src/skins/ui_manager.c:421
 msgid "Clear A-B"
 msgstr ""
 
-#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+#: src/skins/ui_manager.c:426 src/skins/ui_manager.c:427
 msgid "Jump to Time"
 msgstr "Hüppa ajahetkele"
 
-#: src/skins/ui_manager.c:421
+#: src/skins/ui_manager.c:429
 msgid "Queue Toggle"
 msgstr ""
 
-#: src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:430
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr ""
 
-#: src/skins/ui_manager.c:425
+#: src/skins/ui_manager.c:433
 msgid "Copy"
 msgstr "Kopeeri"
 
-#: src/skins/ui_manager.c:427
+#: src/skins/ui_manager.c:436
 msgid "Cut"
 msgstr "Lõika"
 
-#: src/skins/ui_manager.c:429
+#: src/skins/ui_manager.c:439
 msgid "Paste"
 msgstr "Aseta"
 
-#: src/skins/ui_manager.c:436
+#: src/skins/ui_manager.c:446
 msgid "Load"
 msgstr "Laadi"
 
-#: src/skins/ui_manager.c:437
+#: src/skins/ui_manager.c:447
 msgid "Import"
 msgstr ""
 
-#: src/skins/ui_manager.c:438
+#: src/skins/ui_manager.c:448
 msgid "Save"
 msgstr "Salvesta"
 
-#: src/skins/ui_manager.c:439
+#: src/skins/ui_manager.c:449
 msgid "Delete"
 msgstr "Kustuta"
 
-#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
-#: src/skins/ui_manager.c:477
+#: src/skins/ui_manager.c:451 src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:487
 msgid "Preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
-#: src/skins/ui_manager.c:480
+#: src/skins/ui_manager.c:454 src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:490
 msgid "Auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:445
+#: src/skins/ui_manager.c:455
 msgid "Load auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:458
 msgid "Load default preset into equalizer"
 msgstr ""
 
-#: src/skins/ui_manager.c:450
+#: src/skins/ui_manager.c:460
 msgid "Zero"
 msgstr ""
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:461
 msgid "Set equalizer preset levels to zero"
 msgstr ""
 
-#: src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:463
 msgid "From file"
 msgstr "Failist"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:464
 msgid "Load preset from file"
 msgstr "Valmisseadistuste laadimine failist"
 
-#: src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:466
 msgid "From WinAMP EQF file"
 msgstr "WinAMPi EQF-failist"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:467
 msgid "Load preset from WinAMP EQF file"
 msgstr "Valmisseadistuste laadimine WinAMPi EQF-failist"
 
-#: src/skins/ui_manager.c:459
+#: src/skins/ui_manager.c:469
 msgid "WinAMP Presets"
 msgstr "WinAMPi valmisseadistused"
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:470
 msgid "Import WinAMP presets"
 msgstr "WinAMPi valmisseadistuste importimine"
 
-#: src/skins/ui_manager.c:466
+#: src/skins/ui_manager.c:476
 msgid "Save auto-load preset"
 msgstr ""
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:479
 msgid "Save default preset"
 msgstr "Vaikimisi valmisseadistuste salvestamine"
 
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:481
 msgid "To file"
 msgstr "Faili"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:482
 msgid "Save preset to file"
 msgstr "Valmisseadistuste salvestamine faili"
 
-#: src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:484
 msgid "To WinAMP EQF file"
 msgstr "WinAMPi EQF-faili"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:485
 msgid "Save preset to WinAMP EQF file"
 msgstr "Valmisseadistuste salvestamine WinAMPi EQF-faili"
 
-#: src/skins/ui_manager.c:481
+#: src/skins/ui_manager.c:491
 msgid "Delete auto-load preset"
 msgstr ""
 

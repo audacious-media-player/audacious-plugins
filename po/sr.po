@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-06 18:56-0400\n"
+"POT-Creation-Date: 2012-07-14 10:23-0400\n"
 "PO-Revision-Date: 2012-04-30 05:25+0000\n"
 "Last-Translator: MirosNik <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian\n"
@@ -35,7 +35,7 @@ msgstr "Аларм"
 msgid "This is your wakeup call."
 msgstr "Ово је ваш позив за буђење."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "У реду"
 
@@ -43,141 +43,141 @@ msgstr "У реду"
 msgid "Alarm Settings"
 msgstr "Подешавања аларма"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:400
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:228 src/alarm/interface.c:389
+#: src/alarm/interface.c:746
 msgid "Time"
 msgstr "Време"
 
-#: src/alarm/interface.c:269
+#: src/alarm/interface.c:268
 msgid "hours"
 msgstr "сат(а)"
 
-#: src/alarm/interface.c:330
+#: src/alarm/interface.c:325
 msgid "h"
 msgstr "часова"
 
-#: src/alarm/interface.c:360
+#: src/alarm/interface.c:353
 msgid "minutes"
 msgstr "минута"
 
-#: src/alarm/interface.c:378
+#: src/alarm/interface.c:369
 msgid "Quiet after:"
 msgstr "Утишај након:"
 
-#: src/alarm/interface.c:388
+#: src/alarm/interface.c:379
 msgid "Alarm at (default):"
 msgstr "Активирај аларм у (основно):"
 
-#: src/alarm/interface.c:408
+#: src/alarm/interface.c:397
 msgid "Choose the days for the alarm to come on"
 msgstr "Изаберите којим данима ће се активирати аларм"
 
-#: src/alarm/interface.c:436 src/alarm/interface.c:484
-#: src/alarm/interface.c:532 src/alarm/interface.c:580
-#: src/alarm/interface.c:628 src/alarm/interface.c:676
-#: src/alarm/interface.c:724 src/bs2b/plugin.c:179
-#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:447
-#: src/skins/ui_manager.c:468
+#: src/alarm/interface.c:424 src/alarm/interface.c:470
+#: src/alarm/interface.c:516 src/alarm/interface.c:562
+#: src/alarm/interface.c:608 src/alarm/interface.c:654
+#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Основно"
 
-#: src/alarm/interface.c:762
+#: src/alarm/interface.c:738
 msgid "Day"
 msgstr "Дан"
 
-#: src/alarm/interface.c:782
+#: src/alarm/interface.c:754
 msgid "Tuesday"
 msgstr "Уторак"
 
-#: src/alarm/interface.c:793
+#: src/alarm/interface.c:763
 msgid "Wednesday"
 msgstr "Среда"
 
-#: src/alarm/interface.c:804
+#: src/alarm/interface.c:772
 msgid "Thursday"
 msgstr "Четвртак"
 
-#: src/alarm/interface.c:815
+#: src/alarm/interface.c:781
 msgid "Friday"
 msgstr "Петак"
 
-#: src/alarm/interface.c:826
+#: src/alarm/interface.c:790
 msgid "Saturday"
 msgstr "Субота"
 
-#: src/alarm/interface.c:837
+#: src/alarm/interface.c:799
 msgid "Sunday"
 msgstr "Недеља"
 
-#: src/alarm/interface.c:847
+#: src/alarm/interface.c:807
 msgid "Monday"
 msgstr "Понедељак"
 
-#: src/alarm/interface.c:858
+#: src/alarm/interface.c:816
 msgid "Days"
 msgstr "Дани"
 
-#: src/alarm/interface.c:874
+#: src/alarm/interface.c:832
 msgid "Fading"
 msgstr "Ишчезавање"
 
-#: src/alarm/interface.c:911 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "секунде"
 
-#: src/alarm/interface.c:919 src/alarm/interface.c:1034
+#: src/alarm/interface.c:877 src/alarm/interface.c:992
 msgid "Volume"
 msgstr "Јачина"
 
-#: src/alarm/interface.c:945
+#: src/alarm/interface.c:903
 msgid "Current"
 msgstr "Тренутно"
 
-#: src/alarm/interface.c:953
+#: src/alarm/interface.c:911
 msgid "Start at"
 msgstr "Започни при"
 
-#: src/alarm/interface.c:981 src/alarm/interface.c:1025
+#: src/alarm/interface.c:939 src/alarm/interface.c:983
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:997
+#: src/alarm/interface.c:955
 msgid "Final"
 msgstr "Заврши при"
 
-#: src/alarm/interface.c:1050
+#: src/alarm/interface.c:1008
 msgid "Additional Command"
 msgstr "Додатна наредба"
 
-#: src/alarm/interface.c:1076
+#: src/alarm/interface.c:1034
 msgid "enable"
 msgstr "укључи"
 
-#: src/alarm/interface.c:1084
+#: src/alarm/interface.c:1042
 msgid "Playlist (optional)"
 msgstr "Списак нумера (необавезно)"
 
-#: src/alarm/interface.c:1110
+#: src/alarm/interface.c:1068
 msgid "Browse..."
 msgstr "Претражи..."
 
-#: src/alarm/interface.c:1118 src/alarm/interface.c:1282
+#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
 msgid "Reminder"
 msgstr "Подсетник"
 
-#: src/alarm/interface.c:1135
+#: src/alarm/interface.c:1093
 msgid "Use reminder"
 msgstr "Користи подсетник"
 
-#: src/alarm/interface.c:1151
+#: src/alarm/interface.c:1109
 msgid "Options"
 msgstr "Опције"
 
-#: src/alarm/interface.c:1159
+#: src/alarm/interface.c:1117
 msgid "What do these options mean?"
 msgstr "Шта значе ове опције?"
 
-#: src/alarm/interface.c:1187
+#: src/alarm/interface.c:1145
 msgid ""
 "\n"
 "Time\n"
@@ -282,19 +282,19 @@ msgstr ""
 "    упишите подсетник у поље и штиклирајте\n"
 "    квадратић ако желите да буде приказиван.\n"
 
-#: src/alarm/interface.c:1189 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Помоћ"
 
-#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Откажи"
 
-#: src/alarm/interface.c:1289
+#: src/alarm/interface.c:1247
 msgid "Your reminder for today is.."
 msgstr "Ваш подсетник за данас је.."
 
-#: src/alarm/interface.c:1314
+#: src/alarm/interface.c:1272
 msgid "Thankyou"
 msgstr "Хвала вам"
 
@@ -1489,289 +1489,293 @@ msgstr "Откачи"
 msgid "Disable"
 msgstr "Искључи"
 
-#: src/gtkui/menus.c:153
+#: src/gtkui/menus.c:159
 msgid "_Open Files ..."
 msgstr "Отвори _датотеке ..."
 
-#: src/gtkui/menus.c:154
+#: src/gtkui/menus.c:160
 msgid "Open _URL ..."
 msgstr "Отвори _адресу ..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:161
 msgid "_Add Files ..."
 msgstr "Додај да_тотеке ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:162
 msgid "Add U_RL ..."
 msgstr "Додај ад_ресу ..."
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.c:164
 #, fuzzy
 msgid "_Search Library"
 msgstr "Претражите библиотеку"
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:166
 msgid "A_bout ..."
 msgstr "О _програму ..."
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:167
 msgid "_Preferences ..."
 msgstr "_Поставке ..."
 
-#: src/gtkui/menus.c:162 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:168 src/skins/ui_manager.c:414
 msgid "_Quit"
 msgstr "_Изађи"
 
-#: src/gtkui/menus.c:165 src/gtkui/menus.c:251
+#: src/gtkui/menus.c:171 src/gtkui/menus.c:258
 msgid "_Play"
 msgstr "Пу_сти"
 
-#: src/gtkui/menus.c:166
+#: src/gtkui/menus.c:172
 msgid "Paus_e"
 msgstr "Па_узирај"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:173
 msgid "_Stop"
 msgstr "_Заустави"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:174
 msgid "Pre_vious"
 msgstr "_Претходно"
 
-#: src/gtkui/menus.c:169
+#: src/gtkui/menus.c:175
 msgid "_Next"
 msgstr "С_ледеће"
 
-#: src/gtkui/menus.c:171
+#: src/gtkui/menus.c:177
 msgid "_Repeat"
 msgstr "_Понови"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:178
 msgid "S_huffle"
 msgstr "_Насумично"
 
-#: src/gtkui/menus.c:173
+#: src/gtkui/menus.c:179
 msgid "N_o Playlist Advance"
 msgstr "Н_е напредуј у списку нумера"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:180
 msgid "Stop _After This Song"
 msgstr "Заустави _након ове песме"
 
-#: src/gtkui/menus.c:176 src/gtkui/menus.c:239
+#: src/gtkui/menus.c:182 src/gtkui/menus.c:246
 msgid "Song _Info ..."
 msgstr "Подаци о _песми ..."
 
-#: src/gtkui/menus.c:177
+#: src/gtkui/menus.c:183
 msgid "Jump to _Time ..."
 msgstr "Пређи на _време ..."
 
-#: src/gtkui/menus.c:178
+#: src/gtkui/menus.c:184
 msgid "_Jump to Song ..."
 msgstr "Пређи на _песму ..."
 
-#: src/gtkui/menus.c:181
+#: src/gtkui/menus.c:187
 msgid "By Track _Number"
 msgstr "Према броју _нумере"
 
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.c:188
 msgid "By _Title"
 msgstr "Према _наслову"
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:189
 msgid "By _Artist"
 msgstr "Према _извођачу"
 
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.c:190
 msgid "By A_lbum"
 msgstr "Према _албуму"
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:191
 msgid "By Release _Date"
 msgstr "Према _датуму издавања"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:192
 msgid "By _File Path"
 msgstr "Према _путањи датотеке"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:193
 msgid "By _Custom Title"
 msgstr "Према п_роизвољном наслову"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:195
 msgid "R_everse Order"
 msgstr "Преокрени п_оредак"
 
-#: src/gtkui/menus.c:190
+#: src/gtkui/menus.c:196
 msgid "_Random Order"
 msgstr "_Случајан поредак"
 
-#: src/gtkui/menus.c:193
+#: src/gtkui/menus.c:199
 #, fuzzy
 msgid "_Play This Playlist"
 msgstr "_Направи списак нумера"
 
-#: src/gtkui/menus.c:194 src/gtkui/menus.c:241
+#: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
 msgstr "_Освежи"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:201
 msgid "Remove _Unavailable Files"
 msgstr "Уклони _недоступне датотеке"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:203
 msgid "_Sort"
 msgstr "Пор_еђај"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:205
 msgid "_New"
 msgstr "_Ново"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
 msgstr ""
 
-#: src/gtkui/menus.c:201 src/gtkui/menus.c:253
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
 msgstr "_Затвори"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:209
 msgid "_Import ..."
 msgstr "Ув_ези ..."
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:210
 msgid "_Export ..."
 msgstr "Из_вези ..."
 
-#: src/gtkui/menus.c:206
+#: src/gtkui/menus.c:212
 #, fuzzy
 msgid "Playlist _Manager ..."
 msgstr "_Управник списка нумера ..."
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
 msgstr "Управник _редоследа ..."
 
-#: src/gtkui/menus.c:210
+#: src/gtkui/menus.c:216
 msgid "Volume _Up"
 msgstr "По_јачај"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:217
 msgid "Volume _Down"
 msgstr "У_тишај"
 
-#: src/gtkui/menus.c:213
+#: src/gtkui/menus.c:219
 msgid "_Equalizer"
 msgstr "Ује_дначавач"
 
-#: src/gtkui/menus.c:215
+#: src/gtkui/menus.c:221
 msgid "E_ffects"
 msgstr "Е_фекти"
 
-#: src/gtkui/menus.c:218
+#: src/gtkui/menus.c:224
 msgid "_Interface"
 msgstr "Су_чеље"
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:225
 msgid "_Visualizations"
 msgstr "_Визуализације"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:227
 msgid "Show _Menu Bar"
 msgstr "Прикажи линију _изборника"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:228
 msgid "Show I_nfo Bar"
 msgstr "Прикажи линију _података"
 
-#: src/gtkui/menus.c:223
+#: src/gtkui/menus.c:229
 #, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "Приказивање"
 
-#: src/gtkui/menus.c:224
+#: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
 msgstr "Прикажи линију _стања"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:232
+msgid "Show Close _Buttons"
+msgstr ""
+
+#: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
 msgstr "Прикажи _наслове колона"
 
-#: src/gtkui/menus.c:227
+#: src/gtkui/menus.c:234
 msgid "Choose _Columns ..."
 msgstr "Изабери _колоне ..."
 
-#: src/gtkui/menus.c:228
+#: src/gtkui/menus.c:235
 msgid "Scrol_l on Song Change"
 msgstr "_Клизај при промени песме"
 
-#: src/gtkui/menus.c:231
+#: src/gtkui/menus.c:238
 msgid "_File"
 msgstr "_Датотека"
 
-#: src/gtkui/menus.c:232
+#: src/gtkui/menus.c:239
 msgid "_Playback"
 msgstr "_Извођење"
 
-#: src/gtkui/menus.c:233
+#: src/gtkui/menus.c:240
 msgid "P_laylist"
 msgstr "_Списак нумера"
 
-#: src/gtkui/menus.c:234 src/gtkui/menus.c:248
+#: src/gtkui/menus.c:241 src/gtkui/menus.c:255
 msgid "_Services"
 msgstr "_Услуге"
 
-#: src/gtkui/menus.c:235
+#: src/gtkui/menus.c:242
 msgid "_Output"
 msgstr "_Излаз"
 
-#: src/gtkui/menus.c:236
+#: src/gtkui/menus.c:243
 msgid "_View"
 msgstr "_Преглед"
 
-#: src/gtkui/menus.c:240
+#: src/gtkui/menus.c:247
 msgid "_Queue/Unqueue"
 msgstr "_Стави у ред/Избаци из реда"
 
-#: src/gtkui/menus.c:243
+#: src/gtkui/menus.c:250
 msgid "Cu_t"
 msgstr "_Исеци"
 
-#: src/gtkui/menus.c:244
+#: src/gtkui/menus.c:251
 msgid "_Copy"
 msgstr "У_множи"
 
-#: src/gtkui/menus.c:245
+#: src/gtkui/menus.c:252
 msgid "_Paste"
 msgstr "У_баци"
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:253
 msgid "Select _All"
 msgstr "_Изабери све"
 
-#: src/gtkui/menus.c:252
+#: src/gtkui/menus.c:259
 #, fuzzy
 msgid "_Rename ..."
 msgstr "_Преименуј"
 
-#: src/gtkui/ui_gtk.c:98
+#: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
 msgstr "ГТК сучеље"
 
-#: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s — Безочник"
 
-#: src/gtkui/ui_gtk.c:174
+#: src/gtkui/ui_gtk.c:175
 msgid "Buffering ..."
 msgstr "Баферујем ..."
 
-#: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr "Безочник"
 
-#: src/gtkui/ui_gtk.c:228 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:178
@@ -1839,7 +1843,7 @@ msgstr "Појачај"
 msgid "Volume Down"
 msgstr "Утишај"
 
-#: src/hotkey/gui.c:82 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
+#: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
 msgstr "Скочи до датотеке"
 
@@ -2145,7 +2149,7 @@ msgstr "Укључује претварање формата направљен�
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Укључује искључиви режим да спречи виртуално мешање."
 
-#: src/oss4/plugin.c:125
+#: src/oss4/plugin.c:115
 #, fuzzy
 msgid "OSS4 Output"
 msgstr "_Излаз"
@@ -2458,7 +2462,7 @@ msgstr "Уједначавач Безочника"
 msgid "Presets"
 msgstr "Претподешавања"
 
-#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:442
+#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:452
 msgid "Load preset"
 msgstr "Учитава претподешавање"
 
@@ -2471,7 +2475,7 @@ msgstr "Учитава самостално претподешавање"
 msgid "Load equalizer preset"
 msgstr "Учитава претподешавање уједначавача"
 
-#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:463
+#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
 msgid "Save preset"
 msgstr "Чува претподешавање"
 
@@ -2483,7 +2487,7 @@ msgstr "Чува самостално претподешавање"
 msgid "Save equalizer preset"
 msgstr "Чува претподешавање уједначавача"
 
-#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:478
+#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
 msgid "Delete preset"
 msgstr "Избриши претподешавање"
 
@@ -2754,86 +2758,91 @@ msgid "Playlist"
 msgstr "Списак нумера"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
+#, fuzzy
+msgid "Play Playlist"
+msgstr "_Направи списак нумера"
+
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
 msgstr "Нови списак нумера"
 
-#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Next Playlist"
 msgstr "Изабери следећи списак нумера"
 
-#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Select Previous Playlist"
 msgstr "Изабери претходни списак нумера"
 
-#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
+#: src/skins/ui_manager.c:222 src/skins/ui_manager.c:223
 msgid "Delete Playlist"
 msgstr "Избриши списак нумера"
 
-#: src/skins/ui_manager.c:222
+#: src/skins/ui_manager.c:225
 msgid "Import Playlist"
 msgstr "Увези списак нумера"
 
-#: src/skins/ui_manager.c:223
+#: src/skins/ui_manager.c:226
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Учитава датотеку списка нумера у изабрани списак нумера."
 
-#: src/skins/ui_manager.c:226
+#: src/skins/ui_manager.c:229
 msgid "Export Playlist"
 msgstr "Извези списак нумера"
 
-#: src/skins/ui_manager.c:227
+#: src/skins/ui_manager.c:230
 msgid "Saves the selected playlist."
 msgstr "Чува изабрани списак нумера."
 
-#: src/skins/ui_manager.c:229
+#: src/skins/ui_manager.c:232
 msgid "Refresh List"
 msgstr "Освежи списак"
 
-#: src/skins/ui_manager.c:230
+#: src/skins/ui_manager.c:233
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Освежава метаподатке придружене ставци списка нумера."
 
-#: src/skins/ui_manager.c:233
+#: src/skins/ui_manager.c:236
 msgid "Playlist Manager"
 msgstr "Управник списка нумера"
 
-#: src/skins/ui_manager.c:234
+#: src/skins/ui_manager.c:239
 msgid "Queue Manager"
 msgstr "Управник редоследа"
 
-#: src/skins/ui_manager.c:237
+#: src/skins/ui_manager.c:244
 msgid "View"
 msgstr "Поглед"
 
-#: src/skins/ui_manager.c:238
+#: src/skins/ui_manager.c:245
 msgid "Interface"
 msgstr "Сучеље"
 
-#: src/skins/ui_manager.c:239
+#: src/skins/ui_manager.c:246
 msgid "Interface Preferences ..."
 msgstr "Поставке сучеља ..."
 
-#: src/skins/ui_manager.c:243
+#: src/skins/ui_manager.c:251
 msgid "Add Internet Address..."
 msgstr "Додај интернет адресу..."
 
-#: src/skins/ui_manager.c:244
+#: src/skins/ui_manager.c:252
 msgid "Adds a remote track to the playlist."
 msgstr "Додаје удаљену нумеру на списак нумера."
 
-#: src/skins/ui_manager.c:247
+#: src/skins/ui_manager.c:255
 msgid "Add Files..."
 msgstr "Додај датотеке..."
 
-#: src/skins/ui_manager.c:248
+#: src/skins/ui_manager.c:256
 msgid "Adds files to the playlist."
 msgstr "Додаје датотеке на списак нумера."
 
-#: src/skins/ui_manager.c:253
+#: src/skins/ui_manager.c:261
 msgid "Search and Select"
 msgstr "Претражи и означи"
 
-#: src/skins/ui_manager.c:254
+#: src/skins/ui_manager.c:262
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
@@ -2841,344 +2850,344 @@ msgstr ""
 "Претржује списак нумера и означава ставке са списка нумера према одређеном "
 "услову."
 
-#: src/skins/ui_manager.c:257
+#: src/skins/ui_manager.c:265
 msgid "Invert Selection"
 msgstr "Обрни избор"
 
-#: src/skins/ui_manager.c:258
+#: src/skins/ui_manager.c:266
 msgid "Inverts the selected and unselected entries."
 msgstr "Преокреће означене и неозначене ставке."
 
-#: src/skins/ui_manager.c:261
+#: src/skins/ui_manager.c:269
 msgid "Select All"
 msgstr "Означи све"
 
-#: src/skins/ui_manager.c:262
+#: src/skins/ui_manager.c:270
 msgid "Selects all of the playlist entries."
 msgstr "Означава све ставке са списка нумера."
 
-#: src/skins/ui_manager.c:265
+#: src/skins/ui_manager.c:273
 msgid "Select None"
 msgstr "Означи ништа"
 
-#: src/skins/ui_manager.c:266
+#: src/skins/ui_manager.c:274
 msgid "Deselects all of the playlist entries."
 msgstr "Одзначава све ставке са списка нумера."
 
-#: src/skins/ui_manager.c:271
+#: src/skins/ui_manager.c:279
 msgid "Remove All"
 msgstr "Уклони све"
 
-#: src/skins/ui_manager.c:272
+#: src/skins/ui_manager.c:280
 msgid "Removes all entries from the playlist."
 msgstr "Уклања све ставке са списка нумера."
 
-#: src/skins/ui_manager.c:275
+#: src/skins/ui_manager.c:283
 msgid "Clear Queue"
 msgstr "Обриши заказано"
 
-#: src/skins/ui_manager.c:276
+#: src/skins/ui_manager.c:284
 msgid "Clears the queue associated with this playlist."
 msgstr "Брише заказано придружено овом списку нумера."
 
-#: src/skins/ui_manager.c:279
+#: src/skins/ui_manager.c:287
 msgid "Remove Unavailable Files"
 msgstr "Уклони недоступне датотеке"
 
-#: src/skins/ui_manager.c:280
+#: src/skins/ui_manager.c:288
 msgid "Removes unavailable files from the playlist."
 msgstr "Уклања недоступне датотеке са списка нумера."
 
-#: src/skins/ui_manager.c:283
+#: src/skins/ui_manager.c:291
 msgid "Remove Duplicates"
 msgstr "Уклони дупликате"
 
-#: src/skins/ui_manager.c:285 src/skins/ui_manager.c:317
-#: src/skins/ui_manager.c:347
+#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:325
+#: src/skins/ui_manager.c:355
 msgid "By Title"
 msgstr "Према наслову"
 
-#: src/skins/ui_manager.c:286
+#: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Уклања дупликате са списка нумера према наслову."
 
-#: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
-#: src/skins/ui_manager.c:359
+#: src/skins/ui_manager.c:297 src/skins/ui_manager.c:337
+#: src/skins/ui_manager.c:367
 msgid "By Filename"
 msgstr "Према називу датотеке"
 
-#: src/skins/ui_manager.c:290
+#: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr "Уклања дупликате са списка нумера према називу датотеке."
 
-#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:333
-#: src/skins/ui_manager.c:363
+#: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
+#: src/skins/ui_manager.c:371
 msgid "By Path + Filename"
 msgstr "Према путањи и називу датотеке"
 
-#: src/skins/ui_manager.c:294
+#: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr "Уклања дупликате са списка нумера према њиховој пуној путањи."
 
-#: src/skins/ui_manager.c:297
+#: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
 msgstr "Уклони неозначене"
 
-#: src/skins/ui_manager.c:298
+#: src/skins/ui_manager.c:306
 msgid "Remove unselected entries from the playlist."
 msgstr "Уклања неозначене ставке са списка нумера."
 
-#: src/skins/ui_manager.c:301
+#: src/skins/ui_manager.c:309
 msgid "Remove Selected"
 msgstr "Уклони означене"
 
-#: src/skins/ui_manager.c:302
+#: src/skins/ui_manager.c:310
 msgid "Remove selected entries from the playlist."
 msgstr "Уклања означене ставке са списка нумера."
 
-#: src/skins/ui_manager.c:307
+#: src/skins/ui_manager.c:315
 msgid "Randomize List"
 msgstr "Насумице испремештај списак"
 
-#: src/skins/ui_manager.c:308
+#: src/skins/ui_manager.c:316
 msgid "Randomizes the playlist."
 msgstr "Насумице испремешта списак нумера."
 
-#: src/skins/ui_manager.c:311
+#: src/skins/ui_manager.c:319
 msgid "Reverse List"
 msgstr "Преокрени списак"
 
-#: src/skins/ui_manager.c:312
+#: src/skins/ui_manager.c:320
 msgid "Reverses the playlist."
 msgstr "Преокреће списак нумера."
 
-#: src/skins/ui_manager.c:315
+#: src/skins/ui_manager.c:323
 msgid "Sort List"
 msgstr "Поређај списак"
 
-#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
+#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by title."
 msgstr "Ређа списак према наслову."
 
-#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "By Album"
 msgstr "Према албуму"
 
-#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
+#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by album."
 msgstr "Ређа списак према извођачу."
 
-#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "By Artist"
 msgstr "Према извођачу"
 
-#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by artist."
 msgstr "Ређа списак према извођачу."
 
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by filename."
 msgstr "Ређа списак према имену датотеке."
 
-#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
+#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by full pathname."
 msgstr "Ређа списак према пуном имену путање."
 
-#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "By Date"
 msgstr "Према датуму"
 
-#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
+#: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
 msgid "Sorts the list by modification time."
 msgstr "Ређа списак према датуму измене."
 
-#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
+#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "By Track Number"
 msgstr "Према броју нумере"
 
-#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
+#: src/skins/ui_manager.c:350 src/skins/ui_manager.c:380
 msgid "Sorts the list by track number."
 msgstr "Ређа списак према броју нумере."
 
-#: src/skins/ui_manager.c:345
+#: src/skins/ui_manager.c:353
 msgid "Sort Selected"
 msgstr "Поређај означене"
 
-#: src/skins/ui_manager.c:381
+#: src/skins/ui_manager.c:389
 msgid "File"
 msgstr "Датотека"
 
-#: src/skins/ui_manager.c:384
+#: src/skins/ui_manager.c:392
 msgid "Plugin Services"
 msgstr "Услуге прикључка"
 
-#: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
+#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View Track Details"
 msgstr "Прикажи детаље нумере"
 
-#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:390
+#: src/skins/ui_manager.c:395 src/skins/ui_manager.c:398
 msgid "View track details"
 msgstr "Приказује детаље нумере"
 
-#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:393
+#: src/skins/ui_manager.c:400 src/skins/ui_manager.c:401
 msgid "About Audacious"
 msgstr "О Безочнику"
 
-#: src/skins/ui_manager.c:395
+#: src/skins/ui_manager.c:403
 msgid "Play File"
 msgstr "Пусти датотеку"
 
-#: src/skins/ui_manager.c:396
+#: src/skins/ui_manager.c:404
 msgid "Load and play a file"
 msgstr "Учитава и пушта датотеку"
 
-#: src/skins/ui_manager.c:398
+#: src/skins/ui_manager.c:406
 msgid "Play Location"
 msgstr "Пусти локацију"
 
-#: src/skins/ui_manager.c:399
+#: src/skins/ui_manager.c:407
 msgid "Play media from the selected location"
 msgstr "Пушта медиј са изабране локације"
 
-#: src/skins/ui_manager.c:401
+#: src/skins/ui_manager.c:409
 msgid "Plugin services"
 msgstr "Услуге додатака"
 
-#: src/skins/ui_manager.c:403
+#: src/skins/ui_manager.c:411
 msgid "Preferences"
 msgstr "Поставке"
 
-#: src/skins/ui_manager.c:404
+#: src/skins/ui_manager.c:412
 msgid "Open preferences window"
 msgstr "Отвара прозор поставки"
 
-#: src/skins/ui_manager.c:407
+#: src/skins/ui_manager.c:415
 msgid "Quit Audacious"
 msgstr "Гаси Безочника"
 
-#: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
+#: src/skins/ui_manager.c:417 src/skins/ui_manager.c:418
 msgid "Set A-B"
 msgstr "Постави А—Б"
 
-#: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
+#: src/skins/ui_manager.c:420 src/skins/ui_manager.c:421
 msgid "Clear A-B"
 msgstr "Обриши А—Б"
 
-#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+#: src/skins/ui_manager.c:426 src/skins/ui_manager.c:427
 msgid "Jump to Time"
 msgstr "Пређи на време"
 
-#: src/skins/ui_manager.c:421
+#: src/skins/ui_manager.c:429
 msgid "Queue Toggle"
 msgstr "У ред/из реда"
 
-#: src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:430
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Укључује/искључује ставке у/из ред(а) списак(а) нумера."
 
-#: src/skins/ui_manager.c:425
+#: src/skins/ui_manager.c:433
 msgid "Copy"
 msgstr "Умножи"
 
-#: src/skins/ui_manager.c:427
+#: src/skins/ui_manager.c:436
 msgid "Cut"
 msgstr "Исеци"
 
-#: src/skins/ui_manager.c:429
+#: src/skins/ui_manager.c:439
 msgid "Paste"
 msgstr "Убаци"
 
-#: src/skins/ui_manager.c:436
+#: src/skins/ui_manager.c:446
 msgid "Load"
 msgstr "Учитај"
 
-#: src/skins/ui_manager.c:437
+#: src/skins/ui_manager.c:447
 msgid "Import"
 msgstr "Увези"
 
-#: src/skins/ui_manager.c:438
+#: src/skins/ui_manager.c:448
 msgid "Save"
 msgstr "Сачувај"
 
-#: src/skins/ui_manager.c:439
+#: src/skins/ui_manager.c:449
 msgid "Delete"
 msgstr "Обриши"
 
-#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
-#: src/skins/ui_manager.c:477
+#: src/skins/ui_manager.c:451 src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:487
 msgid "Preset"
 msgstr "Претподешавање"
 
-#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
-#: src/skins/ui_manager.c:480
+#: src/skins/ui_manager.c:454 src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:490
 msgid "Auto-load preset"
 msgstr "Самостално учитај претподешавања"
 
-#: src/skins/ui_manager.c:445
+#: src/skins/ui_manager.c:455
 msgid "Load auto-load preset"
 msgstr "Учитава самостално учитана претподешавања"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:458
 msgid "Load default preset into equalizer"
 msgstr "Учитава основно претподешавање у уједначавачу"
 
-#: src/skins/ui_manager.c:450
+#: src/skins/ui_manager.c:460
 msgid "Zero"
 msgstr "Нула"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:461
 msgid "Set equalizer preset levels to zero"
 msgstr "Поставља нивое претподешавања уједначавача на нулу"
 
-#: src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:463
 msgid "From file"
 msgstr "Из датотеке"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:464
 msgid "Load preset from file"
 msgstr "Учитава претподешавање из датотеке"
 
-#: src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:466
 msgid "From WinAMP EQF file"
 msgstr "Из ВинАМП ЕКуФ датотеке"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:467
 msgid "Load preset from WinAMP EQF file"
 msgstr "Учитава претподешавање из ВинАМП ЕКуФ датотеке"
 
-#: src/skins/ui_manager.c:459
+#: src/skins/ui_manager.c:469
 msgid "WinAMP Presets"
 msgstr "ВинАМП претподешавања"
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:470
 msgid "Import WinAMP presets"
 msgstr "Увези ВинАМП претподешавања"
 
-#: src/skins/ui_manager.c:466
+#: src/skins/ui_manager.c:476
 msgid "Save auto-load preset"
 msgstr "Чува самостално учитано претподешавање"
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:479
 msgid "Save default preset"
 msgstr "Чува основно претподешавање"
 
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:481
 msgid "To file"
 msgstr "У датотеку"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:482
 msgid "Save preset to file"
 msgstr "Чува претподешавање у датотеку"
 
-#: src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:484
 msgid "To WinAMP EQF file"
 msgstr "У ВинАМП ЕКуФ датотеку"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:485
 msgid "Save preset to WinAMP EQF file"
 msgstr "Чува претподешавање у ВинАМП ЕКуФ датотеку"
 
-#: src/skins/ui_manager.c:481
+#: src/skins/ui_manager.c:491
 msgid "Delete auto-load preset"
 msgstr "Брише самостално учитано претподешавање"
 

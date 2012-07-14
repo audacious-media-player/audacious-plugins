@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-06 18:56-0400\n"
+"POT-Creation-Date: 2012-07-14 10:23-0400\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -35,7 +35,7 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Hau zu esnatzeko deia da."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Ados"
 
@@ -43,141 +43,141 @@ msgstr "Ados"
 msgid "Alarm Settings"
 msgstr "Alarmaren ezarpenak"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:400
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:228 src/alarm/interface.c:389
+#: src/alarm/interface.c:746
 msgid "Time"
 msgstr "Ordua"
 
-#: src/alarm/interface.c:269
+#: src/alarm/interface.c:268
 msgid "hours"
 msgstr "ordu"
 
-#: src/alarm/interface.c:330
+#: src/alarm/interface.c:325
 msgid "h"
 msgstr "o"
 
-#: src/alarm/interface.c:360
+#: src/alarm/interface.c:353
 msgid "minutes"
 msgstr "minutu"
 
-#: src/alarm/interface.c:378
+#: src/alarm/interface.c:369
 msgid "Quiet after:"
 msgstr "Isildu honen ondoren:"
 
-#: src/alarm/interface.c:388
+#: src/alarm/interface.c:379
 msgid "Alarm at (default):"
 msgstr "Alarma (lehenetsia):"
 
-#: src/alarm/interface.c:408
+#: src/alarm/interface.c:397
 msgid "Choose the days for the alarm to come on"
 msgstr "Aukeratu zein egunetan alarma aktibatuko den"
 
-#: src/alarm/interface.c:436 src/alarm/interface.c:484
-#: src/alarm/interface.c:532 src/alarm/interface.c:580
-#: src/alarm/interface.c:628 src/alarm/interface.c:676
-#: src/alarm/interface.c:724 src/bs2b/plugin.c:179
-#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:447
-#: src/skins/ui_manager.c:468
+#: src/alarm/interface.c:424 src/alarm/interface.c:470
+#: src/alarm/interface.c:516 src/alarm/interface.c:562
+#: src/alarm/interface.c:608 src/alarm/interface.c:654
+#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Lehenetsia"
 
-#: src/alarm/interface.c:762
+#: src/alarm/interface.c:738
 msgid "Day"
 msgstr "Eguna"
 
-#: src/alarm/interface.c:782
+#: src/alarm/interface.c:754
 msgid "Tuesday"
 msgstr "Asteartea"
 
-#: src/alarm/interface.c:793
+#: src/alarm/interface.c:763
 msgid "Wednesday"
 msgstr "Asteazkena"
 
-#: src/alarm/interface.c:804
+#: src/alarm/interface.c:772
 msgid "Thursday"
 msgstr "Osteguna"
 
-#: src/alarm/interface.c:815
+#: src/alarm/interface.c:781
 msgid "Friday"
 msgstr "Ostirala"
 
-#: src/alarm/interface.c:826
+#: src/alarm/interface.c:790
 msgid "Saturday"
 msgstr "Larunbata"
 
-#: src/alarm/interface.c:837
+#: src/alarm/interface.c:799
 msgid "Sunday"
 msgstr "Igandea"
 
-#: src/alarm/interface.c:847
+#: src/alarm/interface.c:807
 msgid "Monday"
 msgstr "Astelehena"
 
-#: src/alarm/interface.c:858
+#: src/alarm/interface.c:816
 msgid "Days"
 msgstr "Egunak"
 
-#: src/alarm/interface.c:874
+#: src/alarm/interface.c:832
 msgid "Fading"
 msgstr "Iraungitzea"
 
-#: src/alarm/interface.c:911 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "segundo"
 
-#: src/alarm/interface.c:919 src/alarm/interface.c:1034
+#: src/alarm/interface.c:877 src/alarm/interface.c:992
 msgid "Volume"
 msgstr "Bolumena"
 
-#: src/alarm/interface.c:945
+#: src/alarm/interface.c:903
 msgid "Current"
 msgstr "Unekoa"
 
-#: src/alarm/interface.c:953
+#: src/alarm/interface.c:911
 msgid "Start at"
 msgstr "Hasiera:"
 
-#: src/alarm/interface.c:981 src/alarm/interface.c:1025
+#: src/alarm/interface.c:939 src/alarm/interface.c:983
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:997
+#: src/alarm/interface.c:955
 msgid "Final"
 msgstr "Amaiera"
 
-#: src/alarm/interface.c:1050
+#: src/alarm/interface.c:1008
 msgid "Additional Command"
 msgstr "Komando gehigarria"
 
-#: src/alarm/interface.c:1076
+#: src/alarm/interface.c:1034
 msgid "enable"
 msgstr "gaitu"
 
-#: src/alarm/interface.c:1084
+#: src/alarm/interface.c:1042
 msgid "Playlist (optional)"
 msgstr "Erreprodukzio-zerrenda (aukerakoa)"
 
-#: src/alarm/interface.c:1110
+#: src/alarm/interface.c:1068
 msgid "Browse..."
 msgstr "Arakatu..."
 
-#: src/alarm/interface.c:1118 src/alarm/interface.c:1282
+#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
 msgid "Reminder"
 msgstr "Oroigarria"
 
-#: src/alarm/interface.c:1135
+#: src/alarm/interface.c:1093
 msgid "Use reminder"
 msgstr "Erabili oroigarria"
 
-#: src/alarm/interface.c:1151
+#: src/alarm/interface.c:1109
 msgid "Options"
 msgstr "Aukerak"
 
-#: src/alarm/interface.c:1159
+#: src/alarm/interface.c:1117
 msgid "What do these options mean?"
 msgstr "Zer esanahi dute aukera hauek?"
 
-#: src/alarm/interface.c:1187
+#: src/alarm/interface.c:1145
 msgid ""
 "\n"
 "Time\n"
@@ -284,19 +284,19 @@ msgstr ""
 "    idatzi oroigarria kutxan eta piztu txandakatzeko\n"
 "    botoia oroigarri hori bistaratzea nahi baduzu.\n"
 
-#: src/alarm/interface.c:1189 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Laguntza"
 
-#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/alarm/interface.c:1289
+#: src/alarm/interface.c:1247
 msgid "Your reminder for today is.."
 msgstr "Gaurko zure oroigarria: "
 
-#: src/alarm/interface.c:1314
+#: src/alarm/interface.c:1272
 msgid "Thankyou"
 msgstr "Eskerrik asko"
 
@@ -1508,337 +1508,341 @@ msgstr ""
 msgid "Disable"
 msgstr "aldagaia"
 
-#: src/gtkui/menus.c:153
+#: src/gtkui/menus.c:159
 #, fuzzy
 msgid "_Open Files ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:154
+#: src/gtkui/menus.c:160
 #, fuzzy
 msgid "Open _URL ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:161
 #, fuzzy
 msgid "_Add Files ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:162
 #, fuzzy
 msgid "Add U_RL ..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.c:164
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:166
 #, fuzzy
 msgid "A_bout ..."
 msgstr "Honi buruz: "
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:167
 #, fuzzy
 msgid "_Preferences ..."
 msgstr "Hobespenak"
 
-#: src/gtkui/menus.c:162 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:168 src/skins/ui_manager.c:414
 msgid "_Quit"
 msgstr "I_rten"
 
-#: src/gtkui/menus.c:165 src/gtkui/menus.c:251
+#: src/gtkui/menus.c:171 src/gtkui/menus.c:258
 #, fuzzy
 msgid "_Play"
 msgstr "Erreproduzitu"
 
-#: src/gtkui/menus.c:166
+#: src/gtkui/menus.c:172
 #, fuzzy
 msgid "Paus_e"
 msgstr "Pausatu"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:173
 #, fuzzy
 msgid "_Stop"
 msgstr "Gelditu"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:174
 #, fuzzy
 msgid "Pre_vious"
 msgstr "Aurrekoa"
 
-#: src/gtkui/menus.c:169
+#: src/gtkui/menus.c:175
 #, fuzzy
 msgid "_Next"
 msgstr "Hurrengoa"
 
-#: src/gtkui/menus.c:171
+#: src/gtkui/menus.c:177
 #, fuzzy
 msgid "_Repeat"
 msgstr "Errepikatu"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:178
 #, fuzzy
 msgid "S_huffle"
 msgstr "Ausazkoa"
 
-#: src/gtkui/menus.c:173
+#: src/gtkui/menus.c:179
 #, fuzzy
 msgid "N_o Playlist Advance"
 msgstr "Erreprodukzio-zerrenda aurreraturik ez"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:180
 #, fuzzy
 msgid "Stop _After This Song"
 msgstr "Gelditu uneko abestiaren ondoren"
 
-#: src/gtkui/menus.c:176 src/gtkui/menus.c:239
+#: src/gtkui/menus.c:182 src/gtkui/menus.c:246
 msgid "Song _Info ..."
 msgstr ""
 
-#: src/gtkui/menus.c:177
+#: src/gtkui/menus.c:183
 #, fuzzy
 msgid "Jump to _Time ..."
 msgstr "Jauzi denborara"
 
-#: src/gtkui/menus.c:178
+#: src/gtkui/menus.c:184
 msgid "_Jump to Song ..."
 msgstr ""
 
-#: src/gtkui/menus.c:181
+#: src/gtkui/menus.c:187
 #, fuzzy
 msgid "By Track _Number"
 msgstr "Pista zenbakiaren arabera"
 
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.c:188
 #, fuzzy
 msgid "By _Title"
 msgstr "Tituluaren arabera"
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:189
 #, fuzzy
 msgid "By _Artist"
 msgstr "Artistaren arabera"
 
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.c:190
 #, fuzzy
 msgid "By A_lbum"
 msgstr "Albuma:"
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:191
 #, fuzzy
 msgid "By Release _Date"
 msgstr "Dataren arabera"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:192
 #, fuzzy
 msgid "By _File Path"
 msgstr "Fitxategi-izenaren arabera"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:193
 #, fuzzy
 msgid "By _Custom Title"
 msgstr "Azal pertsonalizatua"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:195
 #, fuzzy
 msgid "R_everse Order"
 msgstr "Alderantzikatu zerrenda"
 
-#: src/gtkui/menus.c:190
+#: src/gtkui/menus.c:196
 #, fuzzy
 msgid "_Random Order"
 msgstr "_Ausazkoa"
 
-#: src/gtkui/menus.c:193
+#: src/gtkui/menus.c:199
 #, fuzzy
 msgid "_Play This Playlist"
 msgstr "Ezabatu erreprodukzio-zerrenda"
 
-#: src/gtkui/menus.c:194 src/gtkui/menus.c:241
+#: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 #, fuzzy
 msgid "_Refresh"
 msgstr "Freskatu tasa"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:201
 #, fuzzy
 msgid "Remove _Unavailable Files"
 msgstr "Kendu fitxategi erabilkaitzak"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:203
 #, fuzzy
 msgid "_Sort"
 msgstr "Ataka"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:205
 msgid "_New"
 msgstr ""
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
 msgstr ""
 
-#: src/gtkui/menus.c:201 src/gtkui/menus.c:253
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 #, fuzzy
 msgid "_Close"
 msgstr "Itxi"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:209
 #, fuzzy
 msgid "_Import ..."
 msgstr "Inportatu"
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:210
 #, fuzzy
 msgid "_Export ..."
 msgstr "Esportatu"
 
-#: src/gtkui/menus.c:206
+#: src/gtkui/menus.c:212
 #, fuzzy
 msgid "Playlist _Manager ..."
 msgstr "Zerrenda-kudeatzailea"
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:213
 #, fuzzy
 msgid "_Queue Manager ..."
 msgstr "Zerrenda-kudeatzailea"
 
-#: src/gtkui/menus.c:210
+#: src/gtkui/menus.c:216
 #, fuzzy
 msgid "Volume _Up"
 msgstr "Igo bolumena"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:217
 #, fuzzy
 msgid "Volume _Down"
 msgstr "Jeitsi bolumena"
 
-#: src/gtkui/menus.c:213
+#: src/gtkui/menus.c:219
 #, fuzzy
 msgid "_Equalizer"
 msgstr "Erakutsi ekualizadorea"
 
-#: src/gtkui/menus.c:215
+#: src/gtkui/menus.c:221
 #, fuzzy
 msgid "E_ffects"
 msgstr "Efektuak"
 
-#: src/gtkui/menus.c:218
+#: src/gtkui/menus.c:224
 msgid "_Interface"
 msgstr ""
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:225
 #, fuzzy
 msgid "_Visualizations"
 msgstr "Bisualizazioa"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:227
 msgid "Show _Menu Bar"
 msgstr ""
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:228
 msgid "Show I_nfo Bar"
 msgstr ""
 
-#: src/gtkui/menus.c:223
+#: src/gtkui/menus.c:229
 #, fuzzy
 msgid "Show Info Bar Vis_ualization"
 msgstr "Bisualizazioa"
 
-#: src/gtkui/menus.c:224
+#: src/gtkui/menus.c:230
 #, fuzzy
 msgid "Show _Status Bar"
 msgstr "Egoera"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:232
+msgid "Show Close _Buttons"
+msgstr ""
+
+#: src/gtkui/menus.c:233
 #, fuzzy
 msgid "Show Column _Headers"
 msgstr "Erakutsi erreproduzitzailea"
 
-#: src/gtkui/menus.c:227
+#: src/gtkui/menus.c:234
 #, fuzzy
 msgid "Choose _Columns ..."
 msgstr "Erakutsi erreproduzitzailea"
 
-#: src/gtkui/menus.c:228
+#: src/gtkui/menus.c:235
 #, fuzzy
 msgid "Scrol_l on Song Change"
 msgstr "Abestiaren mezua"
 
-#: src/gtkui/menus.c:231
+#: src/gtkui/menus.c:238
 #, fuzzy
 msgid "_File"
 msgstr "Fitxategia"
 
-#: src/gtkui/menus.c:232
+#: src/gtkui/menus.c:239
 #, fuzzy
 msgid "_Playback"
 msgstr "Erreprodukzioa"
 
-#: src/gtkui/menus.c:233
+#: src/gtkui/menus.c:240
 #, fuzzy
 msgid "P_laylist"
 msgstr "Erreprodukzio-zerrenda"
 
-#: src/gtkui/menus.c:234 src/gtkui/menus.c:248
+#: src/gtkui/menus.c:241 src/gtkui/menus.c:255
 #, fuzzy
 msgid "_Services"
 msgstr "Gailuak"
 
-#: src/gtkui/menus.c:235
+#: src/gtkui/menus.c:242
 msgid "_Output"
 msgstr ""
 
-#: src/gtkui/menus.c:236
+#: src/gtkui/menus.c:243
 #, fuzzy
 msgid "_View"
 msgstr "Ikusi"
 
-#: src/gtkui/menus.c:240
+#: src/gtkui/menus.c:247
 msgid "_Queue/Unqueue"
 msgstr ""
 
-#: src/gtkui/menus.c:243
+#: src/gtkui/menus.c:250
 msgid "Cu_t"
 msgstr ""
 
-#: src/gtkui/menus.c:244
+#: src/gtkui/menus.c:251
 msgid "_Copy"
 msgstr ""
 
-#: src/gtkui/menus.c:245
+#: src/gtkui/menus.c:252
 #, fuzzy
 msgid "_Paste"
 msgstr "Azkarrena"
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:253
 #, fuzzy
 msgid "Select _All"
 msgstr "Hautatu denak"
 
-#: src/gtkui/menus.c:252
+#: src/gtkui/menus.c:259
 #, fuzzy
 msgid "_Rename ..."
 msgstr "Fitxategi-Izena"
 
-#: src/gtkui/ui_gtk.c:98
+#: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:174
+#: src/gtkui/ui_gtk.c:175
 #, fuzzy
 msgid "Buffering ..."
 msgstr "Bufferreratzen"
 
-#: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:228 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:178
@@ -1905,7 +1909,7 @@ msgstr "Igo bolumena"
 msgid "Volume Down"
 msgstr "Jeitsi bolumena"
 
-#: src/hotkey/gui.c:82 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
+#: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
 msgstr "Joan fitxategira"
 
@@ -2220,7 +2224,7 @@ msgstr ""
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
 
-#: src/oss4/plugin.c:125
+#: src/oss4/plugin.c:115
 msgid "OSS4 Output"
 msgstr ""
 
@@ -2543,7 +2547,7 @@ msgstr "Audacious-en ekualizadorea"
 msgid "Presets"
 msgstr "Aurrezarpenak"
 
-#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:442
+#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:452
 msgid "Load preset"
 msgstr "Kargatu aurrezarpena"
 
@@ -2558,7 +2562,7 @@ msgstr "Kargatu autokargaren aurrezarpenak"
 msgid "Load equalizer preset"
 msgstr "Kargatu aurrezarpena"
 
-#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:463
+#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
 msgid "Save preset"
 msgstr "Gorde aurrezarpenak"
 
@@ -2572,7 +2576,7 @@ msgstr "Gorde autokargaren aurrezarpenak"
 msgid "Save equalizer preset"
 msgstr "Gorde aurrezarpen lehenetsia"
 
-#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:478
+#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
 msgid "Delete preset"
 msgstr "Ezabatu aurrezarpena"
 
@@ -2848,95 +2852,100 @@ msgid "Playlist"
 msgstr "Erreprodukzio-zerrenda"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
+#, fuzzy
+msgid "Play Playlist"
+msgstr "Ezabatu erreprodukzio-zerrenda"
+
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
 msgstr "Erreprodukzio-zerrenda berria"
 
-#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Next Playlist"
 msgstr "Hautatu hurrengo erreprodukzio-zerrenda"
 
-#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Select Previous Playlist"
 msgstr "Hautatu aurreko erreprodukzio-zerrenda"
 
-#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
+#: src/skins/ui_manager.c:222 src/skins/ui_manager.c:223
 msgid "Delete Playlist"
 msgstr "Ezabatu erreprodukzio-zerrenda"
 
-#: src/skins/ui_manager.c:222
+#: src/skins/ui_manager.c:225
 #, fuzzy
 msgid "Import Playlist"
 msgstr "Kargatu erreprodukzio-zerrenda"
 
-#: src/skins/ui_manager.c:223
+#: src/skins/ui_manager.c:226
 msgid "Loads a playlist file into the selected playlist."
 msgstr ""
 "Erreprodukzio-zerrendaren fitxategia kargatzen du hautatutako erreprodukzio-"
 "zerrendan."
 
-#: src/skins/ui_manager.c:226
+#: src/skins/ui_manager.c:229
 #, fuzzy
 msgid "Export Playlist"
 msgstr "Kargatu erreprodukzio-zerrenda"
 
-#: src/skins/ui_manager.c:227
+#: src/skins/ui_manager.c:230
 msgid "Saves the selected playlist."
 msgstr "Hautatutako erreprodukzio-zerrenda gordetzen du"
 
-#: src/skins/ui_manager.c:229
+#: src/skins/ui_manager.c:232
 msgid "Refresh List"
 msgstr "Freskatu zerrenda"
 
-#: src/skins/ui_manager.c:230
+#: src/skins/ui_manager.c:233
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr ""
 "Erreprodukzio-zerrendako sarrera bati esleituta dagoen metadatuak freskatzen "
 "ditu."
 
-#: src/skins/ui_manager.c:233
+#: src/skins/ui_manager.c:236
 #, fuzzy
 msgid "Playlist Manager"
 msgstr "Zerrenda-kudeatzailea"
 
-#: src/skins/ui_manager.c:234
+#: src/skins/ui_manager.c:239
 #, fuzzy
 msgid "Queue Manager"
 msgstr "Zerrenda-kudeatzailea"
 
-#: src/skins/ui_manager.c:237
+#: src/skins/ui_manager.c:244
 msgid "View"
 msgstr "Ikusi"
 
-#: src/skins/ui_manager.c:238
+#: src/skins/ui_manager.c:245
 msgid "Interface"
 msgstr ""
 
-#: src/skins/ui_manager.c:239
+#: src/skins/ui_manager.c:246
 #, fuzzy
 msgid "Interface Preferences ..."
 msgstr "Hobespenak"
 
-#: src/skins/ui_manager.c:243
+#: src/skins/ui_manager.c:251
 msgid "Add Internet Address..."
 msgstr "Gehitu interneteko helbidea..."
 
-#: src/skins/ui_manager.c:244
+#: src/skins/ui_manager.c:252
 msgid "Adds a remote track to the playlist."
 msgstr "Gehitu urruneko pista erreprodukzio-zerrendari."
 
-#: src/skins/ui_manager.c:247
+#: src/skins/ui_manager.c:255
 msgid "Add Files..."
 msgstr "Gehitu fitxategiak..."
 
-#: src/skins/ui_manager.c:248
+#: src/skins/ui_manager.c:256
 msgid "Adds files to the playlist."
 msgstr "Gehitu fitxategiak erreprodukzio-zerrendari."
 
-#: src/skins/ui_manager.c:253
+#: src/skins/ui_manager.c:261
 msgid "Search and Select"
 msgstr "Bilatu eta hautatu"
 
-#: src/skins/ui_manager.c:254
+#: src/skins/ui_manager.c:262
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
@@ -2944,355 +2953,355 @@ msgstr ""
 "Erreprodukzio-zerrendan bilatzen du eta irizpide zehatz batzuetan "
 "oinarritutako erreprodukzio-zerrendako sarrerak hautatzen ditu."
 
-#: src/skins/ui_manager.c:257
+#: src/skins/ui_manager.c:265
 msgid "Invert Selection"
 msgstr "Alderantzikatu hautapena"
 
-#: src/skins/ui_manager.c:258
+#: src/skins/ui_manager.c:266
 msgid "Inverts the selected and unselected entries."
 msgstr "Hautatutako edo hautatu gabeko sarrerak alderantzikatzen ditu."
 
-#: src/skins/ui_manager.c:261
+#: src/skins/ui_manager.c:269
 msgid "Select All"
 msgstr "Hautatu denak"
 
-#: src/skins/ui_manager.c:262
+#: src/skins/ui_manager.c:270
 msgid "Selects all of the playlist entries."
 msgstr "Hautatu erreprodukzio-zerrendako sarrera guztiak."
 
-#: src/skins/ui_manager.c:265
+#: src/skins/ui_manager.c:273
 msgid "Select None"
 msgstr "Ez hautatu ezer"
 
-#: src/skins/ui_manager.c:266
+#: src/skins/ui_manager.c:274
 msgid "Deselects all of the playlist entries."
 msgstr "Erreprodukzio-zerrendako sarrera guztiak desautatzen ditu."
 
-#: src/skins/ui_manager.c:271
+#: src/skins/ui_manager.c:279
 msgid "Remove All"
 msgstr "Kendu guztiak"
 
-#: src/skins/ui_manager.c:272
+#: src/skins/ui_manager.c:280
 msgid "Removes all entries from the playlist."
 msgstr "Sarrera guztiak kentzen ditu erreprodukzio-zerrendatik"
 
-#: src/skins/ui_manager.c:275
+#: src/skins/ui_manager.c:283
 msgid "Clear Queue"
 msgstr "Garbitu ilara"
 
-#: src/skins/ui_manager.c:276
+#: src/skins/ui_manager.c:284
 msgid "Clears the queue associated with this playlist."
 msgstr "Erreprodukzio-zerrendarekin esleitutako ilara garbitzen du."
 
-#: src/skins/ui_manager.c:279
+#: src/skins/ui_manager.c:287
 msgid "Remove Unavailable Files"
 msgstr "Kendu fitxategi erabilkaitzak"
 
-#: src/skins/ui_manager.c:280
+#: src/skins/ui_manager.c:288
 msgid "Removes unavailable files from the playlist."
 msgstr ""
 "Erabilgarri ez dauden fitxategiak kentzen ditu erreprodukzio-zerrendatik."
 
-#: src/skins/ui_manager.c:283
+#: src/skins/ui_manager.c:291
 msgid "Remove Duplicates"
 msgstr "Kendu bikoiztuak"
 
-#: src/skins/ui_manager.c:285 src/skins/ui_manager.c:317
-#: src/skins/ui_manager.c:347
+#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:325
+#: src/skins/ui_manager.c:355
 msgid "By Title"
 msgstr "Tituluaren arabera"
 
-#: src/skins/ui_manager.c:286
+#: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by title."
 msgstr ""
 "Tituluaren arabera bikoiztutako sarrerak kentzen ditu erreprodukzio-"
 "zerrendatik."
 
-#: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
-#: src/skins/ui_manager.c:359
+#: src/skins/ui_manager.c:297 src/skins/ui_manager.c:337
+#: src/skins/ui_manager.c:367
 msgid "By Filename"
 msgstr "Fitxategi-izenaren arabera"
 
-#: src/skins/ui_manager.c:290
+#: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr ""
 "Fitxategi-izenaren arabera bikoiztutako sarrerak kenten ditu erreprodukzio-"
 "zerrendatik."
 
-#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:333
-#: src/skins/ui_manager.c:363
+#: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
+#: src/skins/ui_manager.c:371
 msgid "By Path + Filename"
 msgstr "Bide-izenaren arabera"
 
-#: src/skins/ui_manager.c:294
+#: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr ""
 "Bide-izen osoaren arabera bikoiztutako sarrerak kentzen ditu erreprodukzio-"
 "zerrendatik."
 
-#: src/skins/ui_manager.c:297
+#: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
 msgstr "Kendu desautatutakoak"
 
-#: src/skins/ui_manager.c:298
+#: src/skins/ui_manager.c:306
 msgid "Remove unselected entries from the playlist."
 msgstr "Desautatutako sarrerak kentzen ditu erreprodukzio-zerrendatik."
 
-#: src/skins/ui_manager.c:301
+#: src/skins/ui_manager.c:309
 msgid "Remove Selected"
 msgstr "Kendu hautatutakoak"
 
-#: src/skins/ui_manager.c:302
+#: src/skins/ui_manager.c:310
 msgid "Remove selected entries from the playlist."
 msgstr "Hautatutako sarrerak kentzen ditu erreprodukzio-zerrendatik."
 
-#: src/skins/ui_manager.c:307
+#: src/skins/ui_manager.c:315
 msgid "Randomize List"
 msgstr "Nahastu ausaz zerrenda"
 
-#: src/skins/ui_manager.c:308
+#: src/skins/ui_manager.c:316
 msgid "Randomizes the playlist."
 msgstr "Nahastu ausaz erreprodukzio-zerrenda"
 
-#: src/skins/ui_manager.c:311
+#: src/skins/ui_manager.c:319
 msgid "Reverse List"
 msgstr "Alderantzikatu zerrenda"
 
-#: src/skins/ui_manager.c:312
+#: src/skins/ui_manager.c:320
 msgid "Reverses the playlist."
 msgstr "Alderantzikatu erreprodukzio-zerrenda."
 
-#: src/skins/ui_manager.c:315
+#: src/skins/ui_manager.c:323
 msgid "Sort List"
 msgstr "Ordenatu zerrenda"
 
-#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
+#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by title."
 msgstr "Tituluaren arabera ordenatzen du zerrenda."
 
-#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 #, fuzzy
 msgid "By Album"
 msgstr "Albuma:"
 
-#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
+#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 #, fuzzy
 msgid "Sorts the list by album."
 msgstr "Tituluaren arabera ordenatzen du zerrenda."
 
-#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "By Artist"
 msgstr "Artistaren arabera"
 
-#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by artist."
 msgstr "Artistaren arabera ordenatzen du zerrenda."
 
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by filename."
 msgstr "Fitxategi-izenaren arabera ordenatzen du zerrenda."
 
-#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
+#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by full pathname."
 msgstr "Bide-izen osoaren arabera ordenatzen du zerrenda."
 
-#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "By Date"
 msgstr "Dataren arabera"
 
-#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
+#: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
 msgid "Sorts the list by modification time."
 msgstr "Eraldatze-dataren arabera ordenatzen du zerrenda."
 
-#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
+#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "By Track Number"
 msgstr "Pista zenbakiaren arabera"
 
-#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
+#: src/skins/ui_manager.c:350 src/skins/ui_manager.c:380
 msgid "Sorts the list by track number."
 msgstr "Pista zenbakiaren arabera ordenatzen du zerrenda."
 
-#: src/skins/ui_manager.c:345
+#: src/skins/ui_manager.c:353
 msgid "Sort Selected"
 msgstr "Ordenatu hautatutakoak"
 
-#: src/skins/ui_manager.c:381
+#: src/skins/ui_manager.c:389
 msgid "File"
 msgstr "Fitxategia"
 
-#: src/skins/ui_manager.c:384
+#: src/skins/ui_manager.c:392
 msgid "Plugin Services"
 msgstr "Pluginen zerbitzuak"
 
-#: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
+#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View Track Details"
 msgstr "Ikusi pistaren xehetasunak"
 
-#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:390
+#: src/skins/ui_manager.c:395 src/skins/ui_manager.c:398
 msgid "View track details"
 msgstr "Ikusi pistaren xehetasunak"
 
-#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:393
+#: src/skins/ui_manager.c:400 src/skins/ui_manager.c:401
 msgid "About Audacious"
 msgstr "Audacious-i buruz"
 
-#: src/skins/ui_manager.c:395
+#: src/skins/ui_manager.c:403
 msgid "Play File"
 msgstr "Erreproduzitu fitxategia"
 
-#: src/skins/ui_manager.c:396
+#: src/skins/ui_manager.c:404
 msgid "Load and play a file"
 msgstr "Kargatu eta erreproduzitu fitxategi bat"
 
-#: src/skins/ui_manager.c:398
+#: src/skins/ui_manager.c:406
 msgid "Play Location"
 msgstr "Erreproduzitu kokalekua"
 
-#: src/skins/ui_manager.c:399
+#: src/skins/ui_manager.c:407
 msgid "Play media from the selected location"
 msgstr "Erreproduzitu multimedia hautatutako kokalekutik"
 
-#: src/skins/ui_manager.c:401
+#: src/skins/ui_manager.c:409
 msgid "Plugin services"
 msgstr "Pluginen zerbitzuak"
 
-#: src/skins/ui_manager.c:403
+#: src/skins/ui_manager.c:411
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: src/skins/ui_manager.c:404
+#: src/skins/ui_manager.c:412
 msgid "Open preferences window"
 msgstr "Ireki hobespenen leihoa"
 
-#: src/skins/ui_manager.c:407
+#: src/skins/ui_manager.c:415
 msgid "Quit Audacious"
 msgstr "Irten Audacious-etik"
 
-#: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
+#: src/skins/ui_manager.c:417 src/skins/ui_manager.c:418
 msgid "Set A-B"
 msgstr "Ezarri A-B"
 
-#: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
+#: src/skins/ui_manager.c:420 src/skins/ui_manager.c:421
 msgid "Clear A-B"
 msgstr "Garbitu A-B"
 
-#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+#: src/skins/ui_manager.c:426 src/skins/ui_manager.c:427
 msgid "Jump to Time"
 msgstr "Jauzi denborara"
 
-#: src/skins/ui_manager.c:421
+#: src/skins/ui_manager.c:429
 msgid "Queue Toggle"
 msgstr "Txandakatu ilara"
 
-#: src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:430
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr "Erreprodukzio-zerrendako ilarako sarrerak gaitzen/desgaitzen ditu."
 
-#: src/skins/ui_manager.c:425
+#: src/skins/ui_manager.c:433
 msgid "Copy"
 msgstr ""
 
-#: src/skins/ui_manager.c:427
+#: src/skins/ui_manager.c:436
 #, fuzzy
 msgid "Cut"
 msgstr "Unekoa"
 
-#: src/skins/ui_manager.c:429
+#: src/skins/ui_manager.c:439
 #, fuzzy
 msgid "Paste"
 msgstr "Azkarrena"
 
-#: src/skins/ui_manager.c:436
+#: src/skins/ui_manager.c:446
 msgid "Load"
 msgstr "Kargatu"
 
-#: src/skins/ui_manager.c:437
+#: src/skins/ui_manager.c:447
 msgid "Import"
 msgstr "Inportatu"
 
-#: src/skins/ui_manager.c:438
+#: src/skins/ui_manager.c:448
 msgid "Save"
 msgstr "Gorde"
 
-#: src/skins/ui_manager.c:439
+#: src/skins/ui_manager.c:449
 msgid "Delete"
 msgstr "Ezabatu"
 
-#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
-#: src/skins/ui_manager.c:477
+#: src/skins/ui_manager.c:451 src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:487
 msgid "Preset"
 msgstr "Aurrezarpena"
 
-#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
-#: src/skins/ui_manager.c:480
+#: src/skins/ui_manager.c:454 src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:490
 msgid "Auto-load preset"
 msgstr "Autokargaren aurrezarpena"
 
-#: src/skins/ui_manager.c:445
+#: src/skins/ui_manager.c:455
 msgid "Load auto-load preset"
 msgstr "Kargatu autokargaren aurrezarpenak"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:458
 msgid "Load default preset into equalizer"
 msgstr "Kargatu aurrezarpen lehenetsia ekualizadorean"
 
-#: src/skins/ui_manager.c:450
+#: src/skins/ui_manager.c:460
 msgid "Zero"
 msgstr "Zero"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:461
 msgid "Set equalizer preset levels to zero"
 msgstr "Ezarri ekualizadorearen aurrezarpenen maila zerorekin"
 
-#: src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:463
 msgid "From file"
 msgstr "Fitxategitik"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:464
 msgid "Load preset from file"
 msgstr "Kargatu aurrezarpenak fitxategitik"
 
-#: src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:466
 msgid "From WinAMP EQF file"
 msgstr "WinAMP EQF fitxategitik"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:467
 msgid "Load preset from WinAMP EQF file"
 msgstr "Kargatu aurrezarpenak WinAMP EQF fitxategitik"
 
-#: src/skins/ui_manager.c:459
+#: src/skins/ui_manager.c:469
 msgid "WinAMP Presets"
 msgstr "WinAMP aurrezarpenak"
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:470
 msgid "Import WinAMP presets"
 msgstr "Inportatu WinAMP aurrezarpenak"
 
-#: src/skins/ui_manager.c:466
+#: src/skins/ui_manager.c:476
 msgid "Save auto-load preset"
 msgstr "Gorde autokargaren aurrezarpenak"
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:479
 msgid "Save default preset"
 msgstr "Gorde aurrezarpen lehenetsia"
 
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:481
 msgid "To file"
 msgstr "Fitxategian"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:482
 msgid "Save preset to file"
 msgstr "Gorde aurrezarpena fitxategian"
 
-#: src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:484
 msgid "To WinAMP EQF file"
 msgstr "WinAMP EQF fitxategian"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:485
 msgid "Save preset to WinAMP EQF file"
 msgstr "Gorde aurrezarpena WinAMP EQF fitxategian"
 
-#: src/skins/ui_manager.c:481
+#: src/skins/ui_manager.c:491
 msgid "Delete auto-load preset"
 msgstr "Ezabatu autokargaren aurrezarpenak"
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-06 18:56-0400\n"
+"POT-Creation-Date: 2012-07-14 10:23-0400\n"
 "PO-Revision-Date: 2012-06-02 00:48+0000\n"
 "Last-Translator: jlindgren <john.lindgren@aol.com>\n"
 "Language-Team: French\n"
@@ -36,7 +36,7 @@ msgstr "Alarme"
 msgid "This is your wakeup call."
 msgstr "Ceci est votre réveil."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1212 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "OK"
 
@@ -44,141 +44,141 @@ msgstr "OK"
 msgid "Alarm Settings"
 msgstr "Paramètres de l'alarme"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:400
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:228 src/alarm/interface.c:389
+#: src/alarm/interface.c:746
 msgid "Time"
 msgstr "Heure"
 
-#: src/alarm/interface.c:269
+#: src/alarm/interface.c:268
 msgid "hours"
 msgstr "heures"
 
-#: src/alarm/interface.c:330
+#: src/alarm/interface.c:325
 msgid "h"
 msgstr "h"
 
-#: src/alarm/interface.c:360
+#: src/alarm/interface.c:353
 msgid "minutes"
 msgstr "minutes"
 
-#: src/alarm/interface.c:378
+#: src/alarm/interface.c:369
 msgid "Quiet after:"
 msgstr "Arrêt après :"
 
-#: src/alarm/interface.c:388
+#: src/alarm/interface.c:379
 msgid "Alarm at (default):"
 msgstr "Se déclencher (par défaut) à :"
 
-#: src/alarm/interface.c:408
+#: src/alarm/interface.c:397
 msgid "Choose the days for the alarm to come on"
 msgstr "Choisissez les jours où l'alarme se déclenche"
 
-#: src/alarm/interface.c:436 src/alarm/interface.c:484
-#: src/alarm/interface.c:532 src/alarm/interface.c:580
-#: src/alarm/interface.c:628 src/alarm/interface.c:676
-#: src/alarm/interface.c:724 src/bs2b/plugin.c:179
-#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:447
-#: src/skins/ui_manager.c:468
+#: src/alarm/interface.c:424 src/alarm/interface.c:470
+#: src/alarm/interface.c:516 src/alarm/interface.c:562
+#: src/alarm/interface.c:608 src/alarm/interface.c:654
+#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Défaut"
 
-#: src/alarm/interface.c:762
+#: src/alarm/interface.c:738
 msgid "Day"
 msgstr "Jour"
 
-#: src/alarm/interface.c:782
+#: src/alarm/interface.c:754
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: src/alarm/interface.c:793
+#: src/alarm/interface.c:763
 msgid "Wednesday"
 msgstr "Mercredi"
 
-#: src/alarm/interface.c:804
+#: src/alarm/interface.c:772
 msgid "Thursday"
 msgstr "Jeudi"
 
-#: src/alarm/interface.c:815
+#: src/alarm/interface.c:781
 msgid "Friday"
 msgstr "Vendredi"
 
-#: src/alarm/interface.c:826
+#: src/alarm/interface.c:790
 msgid "Saturday"
 msgstr "Samedi"
 
-#: src/alarm/interface.c:837
+#: src/alarm/interface.c:799
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: src/alarm/interface.c:847
+#: src/alarm/interface.c:807
 msgid "Monday"
 msgstr "Lundi"
 
-#: src/alarm/interface.c:858
+#: src/alarm/interface.c:816
 msgid "Days"
 msgstr "Jours"
 
-#: src/alarm/interface.c:874
+#: src/alarm/interface.c:832
 msgid "Fading"
 msgstr "Fondu"
 
-#: src/alarm/interface.c:911 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "secondes"
 
-#: src/alarm/interface.c:919 src/alarm/interface.c:1034
+#: src/alarm/interface.c:877 src/alarm/interface.c:992
 msgid "Volume"
 msgstr "Volume"
 
-#: src/alarm/interface.c:945
+#: src/alarm/interface.c:903
 msgid "Current"
 msgstr "Volume actuel"
 
-#: src/alarm/interface.c:953
+#: src/alarm/interface.c:911
 msgid "Start at"
 msgstr "Commencer à"
 
-#: src/alarm/interface.c:981 src/alarm/interface.c:1025
+#: src/alarm/interface.c:939 src/alarm/interface.c:983
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:997
+#: src/alarm/interface.c:955
 msgid "Final"
 msgstr "Finir à"
 
-#: src/alarm/interface.c:1050
+#: src/alarm/interface.c:1008
 msgid "Additional Command"
 msgstr "Commande additionnelle"
 
-#: src/alarm/interface.c:1076
+#: src/alarm/interface.c:1034
 msgid "enable"
 msgstr "activer"
 
-#: src/alarm/interface.c:1084
+#: src/alarm/interface.c:1042
 msgid "Playlist (optional)"
 msgstr "Liste de lecture (optionnel)"
 
-#: src/alarm/interface.c:1110
+#: src/alarm/interface.c:1068
 msgid "Browse..."
 msgstr "Parcourir"
 
-#: src/alarm/interface.c:1118 src/alarm/interface.c:1282
+#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
 msgid "Reminder"
 msgstr "Pense-bête"
 
-#: src/alarm/interface.c:1135
+#: src/alarm/interface.c:1093
 msgid "Use reminder"
 msgstr "Afficher le pense-bête suivant"
 
-#: src/alarm/interface.c:1151
+#: src/alarm/interface.c:1109
 msgid "Options"
 msgstr "Options"
 
-#: src/alarm/interface.c:1159
+#: src/alarm/interface.c:1117
 msgid "What do these options mean?"
 msgstr "Que signifient ces options ?"
 
-#: src/alarm/interface.c:1187
+#: src/alarm/interface.c:1145
 msgid ""
 "\n"
 "Time\n"
@@ -283,19 +283,19 @@ msgstr ""
 "    dans la boîte et cochez la case si vous voulez le\n"
 "    voir s'afficher.\n"
 
-#: src/alarm/interface.c:1189 src/skins/ui_manager.c:382
+#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Aide"
 
-#: src/alarm/interface.c:1221 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/alarm/interface.c:1289
+#: src/alarm/interface.c:1247
 msgid "Your reminder for today is.."
 msgstr "Votre pense-bête pour aujourd'hui est…"
 
-#: src/alarm/interface.c:1314
+#: src/alarm/interface.c:1272
 msgid "Thankyou"
 msgstr "Merci"
 
@@ -1472,287 +1472,291 @@ msgstr "Séparer"
 msgid "Disable"
 msgstr "Désactiver"
 
-#: src/gtkui/menus.c:153
+#: src/gtkui/menus.c:159
 msgid "_Open Files ..."
 msgstr "Ouvrir des fichiers"
 
-#: src/gtkui/menus.c:154
+#: src/gtkui/menus.c:160
 msgid "Open _URL ..."
 msgstr "Ouvrir un adresse _URL..."
 
-#: src/gtkui/menus.c:155
+#: src/gtkui/menus.c:161
 msgid "_Add Files ..."
 msgstr "_Ajouter des fichiers..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.c:162
 msgid "Add U_RL ..."
 msgstr "Ajouter une adresse U_RL..."
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.c:164
 msgid "_Search Library"
 msgstr ""
 
-#: src/gtkui/menus.c:160
+#: src/gtkui/menus.c:166
 msgid "A_bout ..."
 msgstr "À_propos de..."
 
-#: src/gtkui/menus.c:161
+#: src/gtkui/menus.c:167
 msgid "_Preferences ..."
 msgstr "_Préférences..."
 
-#: src/gtkui/menus.c:162 src/skins/ui_manager.c:406
+#: src/gtkui/menus.c:168 src/skins/ui_manager.c:414
 msgid "_Quit"
 msgstr "_Quitter"
 
-#: src/gtkui/menus.c:165 src/gtkui/menus.c:251
+#: src/gtkui/menus.c:171 src/gtkui/menus.c:258
 msgid "_Play"
 msgstr "_Lecture"
 
-#: src/gtkui/menus.c:166
+#: src/gtkui/menus.c:172
 msgid "Paus_e"
 msgstr "Paus_e"
 
-#: src/gtkui/menus.c:167
+#: src/gtkui/menus.c:173
 msgid "_Stop"
 msgstr "_Stop"
 
-#: src/gtkui/menus.c:168
+#: src/gtkui/menus.c:174
 msgid "Pre_vious"
 msgstr "Pré_cédent"
 
-#: src/gtkui/menus.c:169
+#: src/gtkui/menus.c:175
 msgid "_Next"
 msgstr "_Suivant"
 
-#: src/gtkui/menus.c:171
+#: src/gtkui/menus.c:177
 msgid "_Repeat"
 msgstr "_Répéter"
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:178
 msgid "S_huffle"
 msgstr "L_ecture aléatoire"
 
-#: src/gtkui/menus.c:173
+#: src/gtkui/menus.c:179
 msgid "N_o Playlist Advance"
 msgstr "N_e pas avancer dans la liste de lecture"
 
-#: src/gtkui/menus.c:174
+#: src/gtkui/menus.c:180
 msgid "Stop _After This Song"
 msgstr "Arrêter _après le titre en cours"
 
-#: src/gtkui/menus.c:176 src/gtkui/menus.c:239
+#: src/gtkui/menus.c:182 src/gtkui/menus.c:246
 msgid "Song _Info ..."
 msgstr "Information sur le morceau..."
 
-#: src/gtkui/menus.c:177
+#: src/gtkui/menus.c:183
 msgid "Jump to _Time ..."
 msgstr "Sauter au _temps…"
 
-#: src/gtkui/menus.c:178
+#: src/gtkui/menus.c:184
 msgid "_Jump to Song ..."
 msgstr "_Sauter au morceau..."
 
-#: src/gtkui/menus.c:181
+#: src/gtkui/menus.c:187
 msgid "By Track _Number"
 msgstr "Par _numéro de piste"
 
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.c:188
 msgid "By _Title"
 msgstr "Par _titre"
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:189
 msgid "By _Artist"
 msgstr "Par _artiste"
 
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.c:190
 msgid "By A_lbum"
 msgstr "Par a_lbum"
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:191
 msgid "By Release _Date"
 msgstr "Par _date de parution"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:192
 msgid "By _File Path"
 msgstr "Par chemin d'accès de _fichier"
 
-#: src/gtkui/menus.c:187
+#: src/gtkui/menus.c:193
 msgid "By _Custom Title"
 msgstr "Par _titre personnalisé"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:195
 msgid "R_everse Order"
 msgstr "I_nverser l'ordre"
 
-#: src/gtkui/menus.c:190
+#: src/gtkui/menus.c:196
 msgid "_Random Order"
 msgstr "Ordre _aléatoire"
 
-#: src/gtkui/menus.c:193
+#: src/gtkui/menus.c:199
 #, fuzzy
 msgid "_Play This Playlist"
 msgstr "_Créer une liste de lecture"
 
-#: src/gtkui/menus.c:194 src/gtkui/menus.c:241
+#: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
 msgstr "_Réactualiser"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:201
 msgid "Remove _Unavailable Files"
 msgstr "Retirer les fichiers non disponibles"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:203
 msgid "_Sort"
 msgstr "_Trier"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:205
 msgid "_New"
 msgstr "_Nouvelle liste de lecture"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
 msgstr ""
 
-#: src/gtkui/menus.c:201 src/gtkui/menus.c:253
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
 msgstr "_Fermer"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:209
 msgid "_Import ..."
 msgstr "_Importer"
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:210
 msgid "_Export ..."
 msgstr "_Exporter"
 
-#: src/gtkui/menus.c:206
+#: src/gtkui/menus.c:212
 #, fuzzy
 msgid "Playlist _Manager ..."
 msgstr "_Gestionnaire de liste de lecture..."
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
 msgstr "_Gestionnaire de file d'attente..."
 
-#: src/gtkui/menus.c:210
+#: src/gtkui/menus.c:216
 msgid "Volume _Up"
 msgstr "Augmenter le _volume"
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.c:217
 msgid "Volume _Down"
 msgstr "Réduire le _volume"
 
-#: src/gtkui/menus.c:213
+#: src/gtkui/menus.c:219
 msgid "_Equalizer"
 msgstr "_Égaliseur"
 
-#: src/gtkui/menus.c:215
+#: src/gtkui/menus.c:221
 msgid "E_ffects"
 msgstr "E_ffets audio"
 
-#: src/gtkui/menus.c:218
+#: src/gtkui/menus.c:224
 msgid "_Interface"
 msgstr "_Interface"
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.c:225
 msgid "_Visualizations"
 msgstr "_Visualisations"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.c:227
 msgid "Show _Menu Bar"
 msgstr "Afficher la barre de _menu"
 
-#: src/gtkui/menus.c:222
+#: src/gtkui/menus.c:228
 msgid "Show I_nfo Bar"
 msgstr "Afficher la barre d'i_nformation"
 
-#: src/gtkui/menus.c:223
+#: src/gtkui/menus.c:229
 msgid "Show Info Bar Vis_ualization"
 msgstr ""
 
-#: src/gtkui/menus.c:224
+#: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
 msgstr "Afficher la barre d'_état"
 
-#: src/gtkui/menus.c:226
+#: src/gtkui/menus.c:232
+msgid "Show Close _Buttons"
+msgstr ""
+
+#: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
 msgstr "Afficher les _titres des colonnes"
 
-#: src/gtkui/menus.c:227
+#: src/gtkui/menus.c:234
 msgid "Choose _Columns ..."
 msgstr "Choisir les _colonnes..."
 
-#: src/gtkui/menus.c:228
+#: src/gtkui/menus.c:235
 msgid "Scrol_l on Song Change"
 msgstr "Afficher le morceau courant au changement de pistes"
 
-#: src/gtkui/menus.c:231
+#: src/gtkui/menus.c:238
 msgid "_File"
 msgstr "_Fichier"
 
-#: src/gtkui/menus.c:232
+#: src/gtkui/menus.c:239
 msgid "_Playback"
 msgstr "Lecture"
 
-#: src/gtkui/menus.c:233
+#: src/gtkui/menus.c:240
 msgid "P_laylist"
 msgstr "L_iste de lecture"
 
-#: src/gtkui/menus.c:234 src/gtkui/menus.c:248
+#: src/gtkui/menus.c:241 src/gtkui/menus.c:255
 msgid "_Services"
 msgstr "_Services"
 
-#: src/gtkui/menus.c:235
+#: src/gtkui/menus.c:242
 msgid "_Output"
 msgstr "_Sortie"
 
-#: src/gtkui/menus.c:236
+#: src/gtkui/menus.c:243
 msgid "_View"
 msgstr "_Affichage"
 
-#: src/gtkui/menus.c:240
+#: src/gtkui/menus.c:247
 msgid "_Queue/Unqueue"
 msgstr "_Mettre/enlever dans la file"
 
-#: src/gtkui/menus.c:243
+#: src/gtkui/menus.c:250
 msgid "Cu_t"
 msgstr "Cou_per"
 
-#: src/gtkui/menus.c:244
+#: src/gtkui/menus.c:251
 msgid "_Copy"
 msgstr "_Copier"
 
-#: src/gtkui/menus.c:245
+#: src/gtkui/menus.c:252
 msgid "_Paste"
 msgstr "_Coller"
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:253
 msgid "Select _All"
 msgstr "Sélectionner _tout"
 
-#: src/gtkui/menus.c:252
+#: src/gtkui/menus.c:259
 #, fuzzy
 msgid "_Rename ..."
 msgstr "_Renommer"
 
-#: src/gtkui/ui_gtk.c:98
+#: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
 msgstr "Interface GTK"
 
-#: src/gtkui/ui_gtk.c:168 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:174
+#: src/gtkui/ui_gtk.c:175
 msgid "Buffering ..."
 msgstr "Mise en mémoire tampon..."
 
-#: src/gtkui/ui_gtk.c:177 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:228 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:178
@@ -1819,7 +1823,7 @@ msgstr "Augmenter le volume"
 msgid "Volume Down"
 msgstr "Réduire le volume"
 
-#: src/hotkey/gui.c:82 src/skins/ui_manager.c:415 src/skins/ui_manager.c:416
+#: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
 msgstr "Aller au fichier"
 
@@ -2129,7 +2133,7 @@ msgstr "Activer les conversions de format du logiciel OSS."
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Active le mode exclusif pour empêcher le mixage virtuel."
 
-#: src/oss4/plugin.c:125
+#: src/oss4/plugin.c:115
 #, fuzzy
 msgid "OSS4 Output"
 msgstr "_Sortie"
@@ -2439,7 +2443,7 @@ msgstr "Égaliseur d'Audacious"
 msgid "Presets"
 msgstr "Préréglages"
 
-#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:442
+#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:452
 msgid "Load preset"
 msgstr "Charger un préréglage"
 
@@ -2452,7 +2456,7 @@ msgstr "Charger le réglage automatique"
 msgid "Load equalizer preset"
 msgstr "Charger le réglage de l'égaliseur"
 
-#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:463
+#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
 msgid "Save preset"
 msgstr "Enregistrer le préréglage"
 
@@ -2464,7 +2468,7 @@ msgstr "Enregistrement du réglage automatique"
 msgid "Save equalizer preset"
 msgstr "Enregistrement du réglage de l'égaliseur"
 
-#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:478
+#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
 msgid "Delete preset"
 msgstr "Effacer un préréglage."
 
@@ -2734,87 +2738,92 @@ msgid "Playlist"
 msgstr "Liste de lecture"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
+#, fuzzy
+msgid "Play Playlist"
+msgstr "_Créer une liste de lecture"
+
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
 msgstr "Nouvelle liste"
 
-#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Next Playlist"
 msgstr "Sélectionner la prochaine liste de lecture"
 
-#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Select Previous Playlist"
 msgstr "Sélectionner la liste de de lecture"
 
-#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
+#: src/skins/ui_manager.c:222 src/skins/ui_manager.c:223
 msgid "Delete Playlist"
 msgstr "Supprimer la liste de lecture"
 
-#: src/skins/ui_manager.c:222
+#: src/skins/ui_manager.c:225
 msgid "Import Playlist"
 msgstr "Importer la liste de lecture"
 
-#: src/skins/ui_manager.c:223
+#: src/skins/ui_manager.c:226
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Importe un fichier de liste de lecture dans la liste active."
 
-#: src/skins/ui_manager.c:226
+#: src/skins/ui_manager.c:229
 msgid "Export Playlist"
 msgstr "Exporter la liste de lecture"
 
-#: src/skins/ui_manager.c:227
+#: src/skins/ui_manager.c:230
 msgid "Saves the selected playlist."
 msgstr "Enregistre la liste de lecture active."
 
-#: src/skins/ui_manager.c:229
+#: src/skins/ui_manager.c:232
 msgid "Refresh List"
 msgstr "Actualiser la liste"
 
-#: src/skins/ui_manager.c:230
+#: src/skins/ui_manager.c:233
 msgid "Refreshes metadata associated with a playlist entry."
 msgstr ""
 "Actualise les métadonnées associées à une entrée de la liste de lecture."
 
-#: src/skins/ui_manager.c:233
+#: src/skins/ui_manager.c:236
 msgid "Playlist Manager"
 msgstr "Gestionnaire de listes de lecture"
 
-#: src/skins/ui_manager.c:234
+#: src/skins/ui_manager.c:239
 msgid "Queue Manager"
 msgstr "Gestionnaire de files d'attente"
 
-#: src/skins/ui_manager.c:237
+#: src/skins/ui_manager.c:244
 msgid "View"
 msgstr "Affichage"
 
-#: src/skins/ui_manager.c:238
+#: src/skins/ui_manager.c:245
 msgid "Interface"
 msgstr "Interface"
 
-#: src/skins/ui_manager.c:239
+#: src/skins/ui_manager.c:246
 msgid "Interface Preferences ..."
 msgstr "Préférences de l'interface"
 
-#: src/skins/ui_manager.c:243
+#: src/skins/ui_manager.c:251
 msgid "Add Internet Address..."
 msgstr "Ajouter une adresse Internet..."
 
-#: src/skins/ui_manager.c:244
+#: src/skins/ui_manager.c:252
 msgid "Adds a remote track to the playlist."
 msgstr "Ajoute une piste distante à la liste de lecture."
 
-#: src/skins/ui_manager.c:247
+#: src/skins/ui_manager.c:255
 msgid "Add Files..."
 msgstr "Ajouter des fichiers..."
 
-#: src/skins/ui_manager.c:248
+#: src/skins/ui_manager.c:256
 msgid "Adds files to the playlist."
 msgstr "Ajoute des fichiers à la liste de lecture."
 
-#: src/skins/ui_manager.c:253
+#: src/skins/ui_manager.c:261
 msgid "Search and Select"
 msgstr "Chercher et sélectionner"
 
-#: src/skins/ui_manager.c:254
+#: src/skins/ui_manager.c:262
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
@@ -2822,349 +2831,349 @@ msgstr ""
 "Recherche dans la liste de lecture et sélectionne des entrées en fonction de "
 "critères définis."
 
-#: src/skins/ui_manager.c:257
+#: src/skins/ui_manager.c:265
 msgid "Invert Selection"
 msgstr "Inverser la sélection"
 
-#: src/skins/ui_manager.c:258
+#: src/skins/ui_manager.c:266
 msgid "Inverts the selected and unselected entries."
 msgstr "Inverse les entrées sélectionnées et les non sélectionnées."
 
-#: src/skins/ui_manager.c:261
+#: src/skins/ui_manager.c:269
 msgid "Select All"
 msgstr "Tout sélectionner"
 
-#: src/skins/ui_manager.c:262
+#: src/skins/ui_manager.c:270
 msgid "Selects all of the playlist entries."
 msgstr "Sélectionne toutes les entrées de la liste de lecture."
 
-#: src/skins/ui_manager.c:265
+#: src/skins/ui_manager.c:273
 msgid "Select None"
 msgstr "Ne rien sélectionner"
 
-#: src/skins/ui_manager.c:266
+#: src/skins/ui_manager.c:274
 msgid "Deselects all of the playlist entries."
 msgstr "Annule la sélection de toutes les entrées de la liste."
 
-#: src/skins/ui_manager.c:271
+#: src/skins/ui_manager.c:279
 msgid "Remove All"
 msgstr "Effacer toutes les entrées"
 
-#: src/skins/ui_manager.c:272
+#: src/skins/ui_manager.c:280
 msgid "Removes all entries from the playlist."
 msgstr "Efface toutes les entrées de la liste de lecture."
 
-#: src/skins/ui_manager.c:275
+#: src/skins/ui_manager.c:283
 msgid "Clear Queue"
 msgstr "Vider la file d'attente"
 
-#: src/skins/ui_manager.c:276
+#: src/skins/ui_manager.c:284
 msgid "Clears the queue associated with this playlist."
 msgstr "Vide la file d'attente associée à cette liste de lecture."
 
-#: src/skins/ui_manager.c:279
+#: src/skins/ui_manager.c:287
 msgid "Remove Unavailable Files"
 msgstr "Effacer les fichiers non disponibles"
 
-#: src/skins/ui_manager.c:280
+#: src/skins/ui_manager.c:288
 msgid "Removes unavailable files from the playlist."
 msgstr "Efface de la liste de lecture les fichiers non disponibles."
 
-#: src/skins/ui_manager.c:283
+#: src/skins/ui_manager.c:291
 msgid "Remove Duplicates"
 msgstr "Effacer les doublons"
 
-#: src/skins/ui_manager.c:285 src/skins/ui_manager.c:317
-#: src/skins/ui_manager.c:347
+#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:325
+#: src/skins/ui_manager.c:355
 msgid "By Title"
 msgstr "Par titre"
 
-#: src/skins/ui_manager.c:286
+#: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "Efface les doublons de la liste de lecture en fonction de leur titre."
 
-#: src/skins/ui_manager.c:289 src/skins/ui_manager.c:329
-#: src/skins/ui_manager.c:359
+#: src/skins/ui_manager.c:297 src/skins/ui_manager.c:337
+#: src/skins/ui_manager.c:367
 msgid "By Filename"
 msgstr "Par nom de fichier"
 
-#: src/skins/ui_manager.c:290
+#: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr ""
 "Efface les doublons de la liste de lecture en fonction de leur nom de "
 "fichier."
 
-#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:333
-#: src/skins/ui_manager.c:363
+#: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
+#: src/skins/ui_manager.c:371
 msgid "By Path + Filename"
 msgstr "Par chemin d'accès + nom de fichier"
 
-#: src/skins/ui_manager.c:294
+#: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr ""
 "Efface les doublons de la liste de lecture en fonction de leur  chemin "
 "d'accès complet."
 
-#: src/skins/ui_manager.c:297
+#: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
 msgstr "Ne garder que la sélection"
 
-#: src/skins/ui_manager.c:298
+#: src/skins/ui_manager.c:306
 msgid "Remove unselected entries from the playlist."
 msgstr "Efface les entrées non sélectionnées de la liste de lecture."
 
-#: src/skins/ui_manager.c:301
+#: src/skins/ui_manager.c:309
 msgid "Remove Selected"
 msgstr "Effacer la sélection"
 
-#: src/skins/ui_manager.c:302
+#: src/skins/ui_manager.c:310
 msgid "Remove selected entries from the playlist."
 msgstr "Efface les entrées sélectionnées de la liste de lecture."
 
-#: src/skins/ui_manager.c:307
+#: src/skins/ui_manager.c:315
 msgid "Randomize List"
 msgstr "Mélanger aléatoirement la liste"
 
-#: src/skins/ui_manager.c:308
+#: src/skins/ui_manager.c:316
 msgid "Randomizes the playlist."
 msgstr "Mélange aléatoirement la liste de lecture."
 
-#: src/skins/ui_manager.c:311
+#: src/skins/ui_manager.c:319
 msgid "Reverse List"
 msgstr "Inverser la liste"
 
-#: src/skins/ui_manager.c:312
+#: src/skins/ui_manager.c:320
 msgid "Reverses the playlist."
 msgstr "Inverse l'ordre de la liste de lecture."
 
-#: src/skins/ui_manager.c:315
+#: src/skins/ui_manager.c:323
 msgid "Sort List"
 msgstr "Trier la liste"
 
-#: src/skins/ui_manager.c:318 src/skins/ui_manager.c:348
+#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by title."
 msgstr "Trie la liste par titre."
 
-#: src/skins/ui_manager.c:321 src/skins/ui_manager.c:351
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "By Album"
 msgstr "Par album"
 
-#: src/skins/ui_manager.c:322 src/skins/ui_manager.c:352
+#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by album."
 msgstr "Trie la liste, en fonction du nom de l'album."
 
-#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "By Artist"
 msgstr "Par artiste"
 
-#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by artist."
 msgstr "Trie la liste par artiste."
 
-#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by filename."
 msgstr "Trie la liste par nom de fichier."
 
-#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
+#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by full pathname."
 msgstr "Trie la liste par chemin d'accès complet."
 
-#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "By Date"
 msgstr "Par date"
 
-#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
+#: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
 msgid "Sorts the list by modification time."
 msgstr "Trie la liste par date de modification."
 
-#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
+#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "By Track Number"
 msgstr "Par numéro de piste"
 
-#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
+#: src/skins/ui_manager.c:350 src/skins/ui_manager.c:380
 msgid "Sorts the list by track number."
 msgstr "Trie la liste par numéro de piste."
 
-#: src/skins/ui_manager.c:345
+#: src/skins/ui_manager.c:353
 msgid "Sort Selected"
 msgstr "Trier la sélection"
 
-#: src/skins/ui_manager.c:381
+#: src/skins/ui_manager.c:389
 msgid "File"
 msgstr "Fichier"
 
-#: src/skins/ui_manager.c:384
+#: src/skins/ui_manager.c:392
 msgid "Plugin Services"
 msgstr "Services des modules"
 
-#: src/skins/ui_manager.c:386 src/skins/ui_manager.c:389
+#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View Track Details"
 msgstr "Afficher les détails de la piste"
 
-#: src/skins/ui_manager.c:387 src/skins/ui_manager.c:390
+#: src/skins/ui_manager.c:395 src/skins/ui_manager.c:398
 msgid "View track details"
 msgstr "Affiche les informations relatives au morceau."
 
-#: src/skins/ui_manager.c:392 src/skins/ui_manager.c:393
+#: src/skins/ui_manager.c:400 src/skins/ui_manager.c:401
 msgid "About Audacious"
 msgstr "À propos d'Audacious"
 
-#: src/skins/ui_manager.c:395
+#: src/skins/ui_manager.c:403
 msgid "Play File"
 msgstr "Lire le fichier"
 
-#: src/skins/ui_manager.c:396
+#: src/skins/ui_manager.c:404
 msgid "Load and play a file"
 msgstr "Charger et lire un fichier."
 
-#: src/skins/ui_manager.c:398
+#: src/skins/ui_manager.c:406
 msgid "Play Location"
 msgstr "Lire un emplacement"
 
-#: src/skins/ui_manager.c:399
+#: src/skins/ui_manager.c:407
 msgid "Play media from the selected location"
 msgstr "Lire les média depuis l'emplacement sélectionné."
 
-#: src/skins/ui_manager.c:401
+#: src/skins/ui_manager.c:409
 msgid "Plugin services"
 msgstr "Services des modules"
 
-#: src/skins/ui_manager.c:403
+#: src/skins/ui_manager.c:411
 msgid "Preferences"
 msgstr "Préférences"
 
-#: src/skins/ui_manager.c:404
+#: src/skins/ui_manager.c:412
 msgid "Open preferences window"
 msgstr "Ouvrir la fenêtre des préférences."
 
-#: src/skins/ui_manager.c:407
+#: src/skins/ui_manager.c:415
 msgid "Quit Audacious"
 msgstr "Ferme Audacious."
 
-#: src/skins/ui_manager.c:409 src/skins/ui_manager.c:410
+#: src/skins/ui_manager.c:417 src/skins/ui_manager.c:418
 msgid "Set A-B"
 msgstr "Marquer une boucle A-B"
 
-#: src/skins/ui_manager.c:412 src/skins/ui_manager.c:413
+#: src/skins/ui_manager.c:420 src/skins/ui_manager.c:421
 msgid "Clear A-B"
 msgstr "Effacer la boucle A-B"
 
-#: src/skins/ui_manager.c:418 src/skins/ui_manager.c:419
+#: src/skins/ui_manager.c:426 src/skins/ui_manager.c:427
 msgid "Jump to Time"
 msgstr "Aller au temps"
 
-#: src/skins/ui_manager.c:421
+#: src/skins/ui_manager.c:429
 msgid "Queue Toggle"
 msgstr "Mise en file d'attente"
 
-#: src/skins/ui_manager.c:422
+#: src/skins/ui_manager.c:430
 msgid "Enables/disables the entry in the playlist's queue."
 msgstr ""
 "Active/désactive l'entrée dans la file d'attente de la liste de lecture."
 
-#: src/skins/ui_manager.c:425
+#: src/skins/ui_manager.c:433
 msgid "Copy"
 msgstr "Copier"
 
-#: src/skins/ui_manager.c:427
+#: src/skins/ui_manager.c:436
 msgid "Cut"
 msgstr "Couper"
 
-#: src/skins/ui_manager.c:429
+#: src/skins/ui_manager.c:439
 msgid "Paste"
 msgstr "Coller"
 
-#: src/skins/ui_manager.c:436
+#: src/skins/ui_manager.c:446
 msgid "Load"
 msgstr "Charger"
 
-#: src/skins/ui_manager.c:437
+#: src/skins/ui_manager.c:447
 msgid "Import"
 msgstr "Importer"
 
-#: src/skins/ui_manager.c:438
+#: src/skins/ui_manager.c:448
 msgid "Save"
 msgstr "Enregistrer"
 
-#: src/skins/ui_manager.c:439
+#: src/skins/ui_manager.c:449
 msgid "Delete"
 msgstr "Supprimer"
 
-#: src/skins/ui_manager.c:441 src/skins/ui_manager.c:462
-#: src/skins/ui_manager.c:477
+#: src/skins/ui_manager.c:451 src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:487
 msgid "Preset"
 msgstr "Préréglage"
 
-#: src/skins/ui_manager.c:444 src/skins/ui_manager.c:465
-#: src/skins/ui_manager.c:480
+#: src/skins/ui_manager.c:454 src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:490
 msgid "Auto-load preset"
 msgstr "Chargement automatique d'un préréglage"
 
-#: src/skins/ui_manager.c:445
+#: src/skins/ui_manager.c:455
 msgid "Load auto-load preset"
 msgstr "Charge automatiquement un préréglage"
 
-#: src/skins/ui_manager.c:448
+#: src/skins/ui_manager.c:458
 msgid "Load default preset into equalizer"
 msgstr "Charger le préréglage par défaut dans l'égaliseur."
 
-#: src/skins/ui_manager.c:450
+#: src/skins/ui_manager.c:460
 msgid "Zero"
 msgstr "Remise à zéro"
 
-#: src/skins/ui_manager.c:451
+#: src/skins/ui_manager.c:461
 msgid "Set equalizer preset levels to zero"
 msgstr "Mise à zéro des niveaux de l'égaliseur."
 
-#: src/skins/ui_manager.c:453
+#: src/skins/ui_manager.c:463
 msgid "From file"
 msgstr "À partir d'un fichier"
 
-#: src/skins/ui_manager.c:454
+#: src/skins/ui_manager.c:464
 msgid "Load preset from file"
 msgstr "Charger un préréglage à partir d'un fichier."
 
-#: src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:466
 msgid "From WinAMP EQF file"
 msgstr "À partir d'un fichier EQF de WinAMP"
 
-#: src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:467
 msgid "Load preset from WinAMP EQF file"
 msgstr "Charger un préréglage à partir d'un fichier EQF de WinAMP"
 
-#: src/skins/ui_manager.c:459
+#: src/skins/ui_manager.c:469
 msgid "WinAMP Presets"
 msgstr "Préréglages de WinAMP"
 
-#: src/skins/ui_manager.c:460
+#: src/skins/ui_manager.c:470
 msgid "Import WinAMP presets"
 msgstr "Importer les préréglages de WinAMP"
 
-#: src/skins/ui_manager.c:466
+#: src/skins/ui_manager.c:476
 msgid "Save auto-load preset"
 msgstr "Enregistrer le préréglage automatique."
 
-#: src/skins/ui_manager.c:469
+#: src/skins/ui_manager.c:479
 msgid "Save default preset"
 msgstr "Enregistrer le préréglage par défaut."
 
-#: src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:481
 msgid "To file"
 msgstr "Dans un fichier"
 
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:482
 msgid "Save preset to file"
 msgstr "Enregistrer le préréglage dans un fichier."
 
-#: src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:484
 msgid "To WinAMP EQF file"
 msgstr "Dans un fichier EQF pour WinAMP"
 
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:485
 msgid "Save preset to WinAMP EQF file"
 msgstr "Enregistrer le préréglage dans un fichier EQF pour WinAMP"
 
-#: src/skins/ui_manager.c:481
+#: src/skins/ui_manager.c:491
 msgid "Delete auto-load preset"
 msgstr "Effacer un préréglage automatique."
 
