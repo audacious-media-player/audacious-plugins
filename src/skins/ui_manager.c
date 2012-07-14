@@ -104,7 +104,7 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
       N_("Roll up Playlist Editor"), G_CALLBACK(action_roll_up_playlist_editor) , FALSE },
 
     { "roll up equalizer", NULL , N_("Roll up Equalizer"), "<Ctrl><Alt>W",
-      N_("Roll up Equalizer"), G_CALLBACK(action_roll_up_equalizer) , FALSE },
+      N_("Roll up Equalizer"), G_CALLBACK(action_roll_up_equalizer) , FALSE }
 };
 
 
@@ -222,52 +222,57 @@ static GtkActionEntry action_entries_playlist[] = {
     { "playlist delete", GTK_STOCK_DELETE , N_("Delete Playlist"), "<Shift>D",
       N_("Delete Playlist"), G_CALLBACK(action_playlist_delete) },
 
-        {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist"), "O",
-          N_("Loads a playlist file into the selected playlist."), (GCallback)
-          audgui_import_playlist},
+    {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist"), "O",
+     N_("Loads a playlist file into the selected playlist."),
+     (GCallback) audgui_import_playlist },
 
-        {"playlist save", GTK_STOCK_SAVE, N_("Export Playlist"), "<Shift>S",
-          N_("Saves the selected playlist."), (GCallback) audgui_export_playlist},
+    {"playlist save", GTK_STOCK_SAVE, N_("Export Playlist"), "<Shift>S",
+     N_("Saves the selected playlist."), (GCallback) audgui_export_playlist },
 
-        { "playlist refresh", GTK_STOCK_REFRESH, N_("Refresh List"), "F5",
-          N_("Refreshes metadata associated with a playlist entry."),
-          G_CALLBACK(action_playlist_refresh_list) },
+    { "playlist refresh", GTK_STOCK_REFRESH, N_("Refresh List"), "F5",
+     N_("Refreshes metadata associated with a playlist entry."),
+     G_CALLBACK(action_playlist_refresh_list) },
 
- {"playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P", NULL, (GCallback) audgui_playlist_manager},
- {"queue manager", AUD_STOCK_QUEUETOGGLE, N_("Queue Manager"), "<Ctrl>U", NULL, (GCallback) audgui_queue_manager_show}};
+    {"playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P", NULL,
+     (GCallback) audgui_playlist_manager },
+
+    {"queue manager", AUD_STOCK_QUEUETOGGLE, N_("Queue Manager"), "<Ctrl>U", NULL,
+     (GCallback) audgui_queue_manager_show}
+};
 
 static GtkActionEntry action_entries_view[] = {
- {"view", NULL, N_("View")},
- {"iface menu", NULL, N_("Interface")},
- {"iface prefs", GTK_STOCK_PREFERENCES, N_("Interface Preferences ..."), NULL,
-  NULL, (GCallback) skins_configure}};
+    { "view", NULL, N_("View") },
+    { "iface menu", NULL, N_("Interface") },
+    { "iface prefs", GTK_STOCK_PREFERENCES, N_("Interface Preferences ..."), NULL,
+      NULL, (GCallback) skins_configure }
+};
 
 static GtkActionEntry action_entries_playlist_add[] = {
-        { "playlist add url", GTK_STOCK_NETWORK, N_("Add Internet Address..."), "<Ctrl>H",
-          N_("Adds a remote track to the playlist."),
-          G_CALLBACK(action_playlist_add_url) },
+    { "playlist add url", GTK_STOCK_NETWORK, N_("Add Internet Address..."), "<Ctrl>H",
+      N_("Adds a remote track to the playlist."),
+      G_CALLBACK(action_playlist_add_url) },
 
-        { "playlist add files", GTK_STOCK_ADD, N_("Add Files..."), "F",
-          N_("Adds files to the playlist."),
-          G_CALLBACK(action_playlist_add_files) },
+    { "playlist add files", GTK_STOCK_ADD, N_("Add Files..."), "F",
+      N_("Adds files to the playlist."),
+      G_CALLBACK(action_playlist_add_files) }
 };
 
 static GtkActionEntry action_entries_playlist_select[] = {
-        { "playlist search and select", GTK_STOCK_FIND, N_("Search and Select"), "<Ctrl>F",
-          N_("Searches the playlist and selects playlist entries based on specific criteria."),
-          G_CALLBACK(action_playlist_search_and_select) },
+    { "playlist search and select", GTK_STOCK_FIND, N_("Search and Select"), "<Ctrl>F",
+      N_("Searches the playlist and selects playlist entries based on specific criteria."),
+      G_CALLBACK(action_playlist_search_and_select) },
 
-        { "playlist invert selection", NULL , N_("Invert Selection"), NULL,
-          N_("Inverts the selected and unselected entries."),
-          G_CALLBACK(action_playlist_invert_selection) },
+    { "playlist invert selection", NULL , N_("Invert Selection"), NULL,
+      N_("Inverts the selected and unselected entries."),
+      G_CALLBACK(action_playlist_invert_selection) },
 
-        { "playlist select all", NULL , N_("Select All"), "<Ctrl>A",
-          N_("Selects all of the playlist entries."),
-          G_CALLBACK(action_playlist_select_all) },
+    { "playlist select all", NULL , N_("Select All"), "<Ctrl>A",
+      N_("Selects all of the playlist entries."),
+      G_CALLBACK(action_playlist_select_all) },
 
-        { "playlist select none", NULL , N_("Select None"), "<Shift><Ctrl>A",
-          N_("Deselects all of the playlist entries."),
-          G_CALLBACK(action_playlist_select_none) },
+    { "playlist select none", NULL , N_("Select None"), "<Shift><Ctrl>A",
+      N_("Deselects all of the playlist entries."),
+      G_CALLBACK(action_playlist_select_none) }
 };
 
 static GtkActionEntry action_entries_playlist_delete[] = {
@@ -303,7 +308,7 @@ static GtkActionEntry action_entries_playlist_delete[] = {
 
     { "playlist remove selected", GTK_STOCK_REMOVE, N_("Remove Selected"), "Delete",
       N_("Remove selected entries from the playlist."),
-      G_CALLBACK(action_playlist_remove_selected) },
+      G_CALLBACK(action_playlist_remove_selected) }
 };
 
 static GtkActionEntry action_entries_playlist_sort[] = {
@@ -321,9 +326,9 @@ static GtkActionEntry action_entries_playlist_sort[] = {
       N_("Sorts the list by title."),
       G_CALLBACK(action_playlist_sort_by_title) },
 
-        { "playlist sort by album", NULL, N_("By Album"), NULL,
-          N_("Sorts the list by album."),
-          G_CALLBACK(action_playlist_sort_by_album) },
+    { "playlist sort by album", NULL, N_("By Album"), NULL,
+      N_("Sorts the list by album."),
+      G_CALLBACK(action_playlist_sort_by_album) },
 
     { "playlist sort by artist", NULL , N_("By Artist"), NULL,
       N_("Sorts the list by artist."),
@@ -351,9 +356,9 @@ static GtkActionEntry action_entries_playlist_sort[] = {
       N_("Sorts the list by title."),
       G_CALLBACK(action_playlist_sort_selected_by_title) },
 
-        { "playlist sort selected by album", NULL, N_("By Album"), NULL,
-          N_("Sorts the list by album."),
-          G_CALLBACK(action_playlist_sort_selected_by_album) },
+    { "playlist sort selected by album", NULL, N_("By Album"), NULL,
+      N_("Sorts the list by album."),
+      G_CALLBACK(action_playlist_sort_selected_by_album) },
 
     { "playlist sort selected by artist", NULL, N_("By Artist"), NULL,
       N_("Sorts the list by artist."),
@@ -373,16 +378,16 @@ static GtkActionEntry action_entries_playlist_sort[] = {
 
     { "playlist sort selected by track number", NULL , N_("By Track Number"), NULL,
       N_("Sorts the list by track number."),
-      G_CALLBACK(action_playlist_sort_selected_by_track_number) },
+      G_CALLBACK(action_playlist_sort_selected_by_track_number) }
 };
 
 static GtkActionEntry action_entries_others[] = {
 
     { "dummy", NULL, "dummy" },
 
-        /* XXX Carbon support */
-        { "file", NULL, N_("File") },
-        { "help", NULL, N_("Help") },
+    /* XXX Carbon support */
+    { "file", NULL, N_("File") },
+    { "help", NULL, N_("Help") },
 
     { "plugins-menu", AUD_STOCK_PLUGIN, N_("Plugin Services") },
 
@@ -419,18 +424,20 @@ static GtkActionEntry action_entries_others[] = {
       N_("Jump to File"), G_CALLBACK(audgui_jump_to_track) },
 
     { "jump to time", GTK_STOCK_JUMP_TO , N_("Jump to Time"), "<Ctrl>J",
-      N_("Jump to Time"), (GCallback) audgui_jump_to_time},
+      N_("Jump to Time"), (GCallback) audgui_jump_to_time },
 
     { "queue toggle", AUD_STOCK_QUEUETOGGLE , N_("Queue Toggle"), "Q",
       N_("Enables/disables the entry in the playlist's queue."),
       G_CALLBACK(action_queue_toggle) },
 
-    {"playlist copy", GTK_STOCK_COPY, N_("Copy"), "<Ctrl>C", NULL, (GCallback)
-     action_playlist_copy},
-    {"playlist cut", GTK_STOCK_CUT, N_("Cut"), "<Ctrl>X", NULL, (GCallback)
-     action_playlist_cut},
-    {"playlist paste", GTK_STOCK_PASTE, N_("Paste"), "<Ctrl>V", NULL,
-     (GCallback) action_playlist_paste},
+    { "playlist copy", GTK_STOCK_COPY, N_("Copy"), "<Ctrl>C", NULL,
+      (GCallback) action_playlist_copy },
+
+    { "playlist cut", GTK_STOCK_CUT, N_("Cut"), "<Ctrl>X", NULL,
+      (GCallback) action_playlist_cut },
+
+    { "playlist paste", GTK_STOCK_PASTE, N_("Paste"), "<Ctrl>V", NULL,
+      (GCallback) action_playlist_paste }
 };
 
 
