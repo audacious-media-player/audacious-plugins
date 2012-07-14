@@ -82,6 +82,9 @@ static GtkStatusIcon *si_create(void)
 
 static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpointer user_data)
 {
+    if (event->type != GDK_BUTTON_PRESS)
+        return FALSE;
+
     si_popup_timer_stop(icon);
     si_popup_hide(icon);
 
@@ -115,7 +118,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
           break;
     }
 
-    return FALSE;
+    return TRUE;
 }
 
 static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpointer user_data)
