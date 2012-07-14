@@ -230,7 +230,9 @@ static void si_popup_timer_stop(GtkStatusIcon * icon)
 
 static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean keyboard_mode, GtkTooltip * tooltip, gpointer user_data)
 {
-    if (aud_get_bool ("statusicon", "disable_popup"))
+    GtkWidget *menu = g_object_get_data(G_OBJECT(icon), "smenu");
+
+    if (aud_get_bool("statusicon", "disable_popup") || gtk_widget_get_visible(menu))
         return FALSE;
 
     if (!POPUP_IS_ACTIVE && !TIMER_IS_ACTIVE)
