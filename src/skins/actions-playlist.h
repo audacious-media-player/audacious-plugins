@@ -22,8 +22,9 @@
 
 void action_playlist_refresh_list(void);
 
-void action_playlist_prev(void);
+void action_playlist_play(void);
 void action_playlist_new(void);
+void action_playlist_prev(void);
 void action_playlist_next(void);
 void action_playlist_delete(void);
 

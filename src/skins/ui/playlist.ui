@@ -82,6 +82,7 @@
         <menu action="dummy" name="playlist-menu">
             <menuitem action="plugins-menu" />
             <separator />
+            <menuitem action="playlist play" />
             <menuitem action="playlist new" />
             <menuitem action="playlist delete" />
             <separator />

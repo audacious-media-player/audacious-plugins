@@ -82,6 +82,7 @@
 				<menuitem action="current track info" />
 			</menu>
 			<menu action="playlist">
+				<menuitem action="playlist play" />
 				<menuitem action="playlist new" />
 				<menuitem action="playlist delete" />
 				<separator />

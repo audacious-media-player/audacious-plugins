@@ -207,6 +207,9 @@ static GtkActionEntry action_entries_playlist[] = {
 
     { "playlist", NULL, N_("Playlist") },
 
+    { "playlist play", GTK_STOCK_MEDIA_PLAY , N_("Play Playlist"), "<Ctrl><Shift>Return",
+      N_("Play Playlist"), G_CALLBACK(action_playlist_play) },
+
     { "playlist new", GTK_STOCK_NEW , N_("New Playlist"), "<Shift>N",
       N_("New Playlist"), G_CALLBACK(action_playlist_new) },
 

@@ -1094,6 +1094,11 @@ action_playlist_add_url(void)
     audgui_show_add_url_window (FALSE);
 }
 
+void action_playlist_play (void)
+{
+    aud_drct_play_playlist (aud_playlist_get_active ());
+}
+
 void action_playlist_new (void)
 {
     gint playlist = aud_playlist_count ();
