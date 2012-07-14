@@ -48,6 +48,7 @@ static const gchar * const gtkui_defaults[] = {
  "menu_visible", "TRUE",
  "player_visible", "TRUE",
  "statusbar_visible", "TRUE",
+ "close_button_visible", "TRUE",
 
  "autoscroll", "TRUE",
  "playlist_columns", "title artist album queued length",

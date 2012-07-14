@@ -69,12 +69,15 @@ static void close_button_cb (GtkWidget * button, void * id)
     audgui_confirm_playlist_delete (aud_playlist_by_unique_id (GPOINTER_TO_INT (id)));
 }
 
-static GtkWidget * make_close_button (gint list)
+static GtkWidget * make_close_button (GtkWidget * ebox, gint list)
 {
     GtkWidget * button = gtk_button_new ();
+    GtkWidget * image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+    gtk_button_set_image ((GtkButton *) button, image);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_button_set_focus_on_click ((GtkButton *) button, FALSE);
     gtk_widget_set_name (button, "gtkui-tab-close-button");
+    g_object_set_data ((GObject *) ebox, "close_button", button);
     g_signal_connect (button, "clicked", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
 
@@ -95,14 +98,27 @@ static GtkWidget * make_close_button (gint list)
      GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     g_object_unref (provider);
 
-    GtkWidget * icon = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
-    gtk_container_add ((GtkContainer *) button, icon);
+    if (aud_get_bool ("gtkui", "close_button_visible"))
+        gtk_widget_show (button);
 
-    GtkWidget * align = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
-    gtk_container_add ((GtkContainer *) align, button);
+    return button;
+}
 
-    gtk_widget_show_all (align);
-    return align;
+void show_close_buttons (gboolean show)
+{
+    gint pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
+
+    for (gint i = 0; i < pages; i ++)
+    {
+        GtkWidget * page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, i);
+        GtkWidget * ebox = gtk_notebook_get_tab_label ((GtkNotebook *) notebook, page);
+        GtkWidget * button = g_object_get_data ((GObject *) ebox, "close_button");
+
+        if (show)
+            gtk_widget_show (button);
+        else
+            gtk_widget_hide (button);
+    }
 }
 
 GtkNotebook *ui_playlist_get_notebook(void)
@@ -241,7 +257,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_widget_show_all(ebox);
     gtk_widget_hide(entry);
 
-    gtk_box_pack_end ((GtkBox *) hbox, make_close_button (playlist), FALSE, FALSE, 0);
+    gtk_box_pack_end ((GtkBox *) hbox, make_close_button (ebox, playlist), FALSE, FALSE, 0);
 
     g_object_set_data(G_OBJECT(ebox), "label", label);
     g_object_set_data(G_OBJECT(ebox), "entry", entry);
