@@ -22,19 +22,19 @@ gboolean running = TRUE; /* if plugin threads are running */
 
 static char *hexify(char *pass, int len)
 {
-        static char buf[33];
-        char *bp = buf;
-        char hexchars[] = "0123456789abcdef";
-        int i;
+    static char buf[33];
+    char *bp = buf;
+    char hexchars[] = "0123456789abcdef";
+    int i;
 
-        memset(buf, 0, sizeof(buf));
+    memset(buf, 0, sizeof(buf));
 
-        for(i = 0; i < len; i++) {
-                *(bp++) = hexchars[(pass[i] >> 4) & 0x0f];
-                *(bp++) = hexchars[pass[i] & 0x0f];
-        }
-        *bp = 0;
-        return buf;
+    for(i = 0; i < len; i++) {
+        *(bp++) = hexchars[(pass[i] >> 4) & 0x0f];
+        *(bp++) = hexchars[pass[i] & 0x0f];
+    }
+    *bp = 0;
+    return buf;
 }
 
 static char *pwd = NULL;
