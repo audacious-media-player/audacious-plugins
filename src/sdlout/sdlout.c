@@ -41,10 +41,15 @@
     aud_interface_show_error (sdlout_error_buf); \
 } while (0)
 
+static const char * const sdl_defaults[] = {
+ "vol_left", "100",
+ "vol_right", "100",
+ NULL};
+
 static pthread_mutex_t sdlout_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t sdlout_cond = PTHREAD_COND_INITIALIZER;
 
-static volatile int vol_left = 100, vol_right = 100;
+static volatile int vol_left, vol_right;
 
 static int sdlout_chan, sdlout_rate;
 
@@ -59,6 +64,11 @@ static struct timeval block_time;
 
 int sdlout_init (void)
 {
+    aud_config_set_defaults ("sdlout", sdl_defaults);
+
+    vol_left = aud_get_int ("sdlout", "vol_left");
+    vol_right = aud_get_int ("sdlout", "vol_right");
+
     if (SDL_Init (SDL_INIT_AUDIO) < 0)
     {
         fprintf (stderr, "Failed to init SDL: %s.\n", SDL_GetError ());
@@ -83,6 +93,9 @@ void sdlout_set_volume (int left, int right)
 {
     vol_left = left;
     vol_right = right;
+
+    aud_set_int ("sdlout", "vol_left", left);
+    aud_set_int ("sdlout", "vol_right", right);
 }
 
 static void apply_mono_volume (unsigned char * data, int len)
