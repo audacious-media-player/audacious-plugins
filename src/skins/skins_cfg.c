@@ -303,7 +303,7 @@ void skins_configure (void)
     alignment95 = gtk_alignment_new (0.5, 0.5, 1, 1);
     gtk_box_pack_start (GTK_BOX (vbox38), alignment95, TRUE, TRUE, 0);
     gtk_widget_set_size_request (alignment95, -1, 172);
-    gtk_alignment_set_padding (GTK_ALIGNMENT (alignment95), 0, 0, 12, 0);
+    gtk_alignment_set_padding (GTK_ALIGNMENT (alignment95), 0, 12, 12, 0);
 
     skin_view_scrolled_window = gtk_scrolled_window_new (NULL, NULL);
     gtk_container_add (GTK_CONTAINER (alignment95), skin_view_scrolled_window);
