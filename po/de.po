@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious 3.3\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-14 15:28+0200\n"
-"PO-Revision-Date: 2012-07-14 15:30+0200\n"
+"POT-Creation-Date: 2012-07-22 22:36+0200\n"
+"PO-Revision-Date: 2012-07-22 22:38+0200\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -877,7 +877,7 @@ msgstr "<b>Farbe</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr "Blur Scope"
+msgstr "Oszilloskop"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -1062,7 +1062,7 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Crossfading fehlgeschlagen, weil die Lieder eine andere Anzahl an Kanälen "
+"Crossfading fehlgeschlagen, weil die Titel eine andere Anzahl an Kanälen "
 "hatten. Du kannst den Kanal-Mixer benutzen, um die Lieder auf die selbe "
 "Anzahl an Kanälen zu konvertieren."
 
@@ -1071,7 +1071,7 @@ msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Crossfading fehlgeschlagen, weil die Lieder unterschiedliche Abtastraten "
+"Crossfading fehlgeschlagen, weil die Titel unterschiedliche Abtastraten "
 "hatten. Du kannst den Abtastraten-Konverter benutzen, um die Lieder auf die "
 "selbe Abtastrate zu resamplen."
 
@@ -3294,35 +3294,35 @@ msgstr "Tonhöhe:"
 msgid "Speed and Pitch"
 msgstr "Geschwindigkeit und Tonhöhe"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Maus-Scroll-Aktion</b>"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:400
 msgid "Change volume"
 msgstr "Lautstärke ändern"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:403
 msgid "Change playing song"
 msgstr "Aktiven Titel ändern"
 
-#: src/statusicon/statusicon.c:401
+#: src/statusicon/statusicon.c:406
 msgid "<b>Other Settings</b>"
 msgstr "<b>Andere Einstellungen</b>"
 
-#: src/statusicon/statusicon.c:402
+#: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "PopUp-Fenster deaktivieren"
 
-#: src/statusicon/statusicon.c:404
+#: src/statusicon/statusicon.c:409
 msgid "Close to the system tray"
 msgstr "In die Taskleiste beenden"
 
-#: src/statusicon/statusicon.c:406
+#: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr "Durch Hochscrollen in Wiedergabeliste fortschreiten"
 
-#: src/statusicon/statusicon.c:415
+#: src/statusicon/statusicon.c:420
 msgid "Status Icon"
 msgstr "Status Icon"
 
