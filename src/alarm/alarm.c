@@ -311,7 +311,10 @@ static void alarm_configure(void)
    GtkWidget *w;
 
    if (config_dialog)
+   {
+     gtk_window_present(GTK_WINDOW(config_dialog));
      return;
+   }
 
    alarm_read_config();
 

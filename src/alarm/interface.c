@@ -72,6 +72,13 @@ create_alarm_dialog (void)
   return alarm_dialog;
 }
 
+static void file_set_cb (GtkFileChooserButton *button, gpointer entry)
+{
+    gchar *uri = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (button));
+    gtk_entry_set_text (GTK_ENTRY (entry), uri);
+    g_free (uri);
+}
+
 GtkWidget*
 create_config_dialog (void)
 {
@@ -1065,11 +1072,13 @@ create_config_dialog (void)
   gtk_widget_show (playlist);
   gtk_box_pack_start (GTK_BOX (hbox29), playlist, TRUE, TRUE, 0);
 
-  playlist_browse_button = gtk_button_new_with_label (_("Browse..."));
+  playlist_browse_button = gtk_file_chooser_button_new (_("Select a playlist"), GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_widget_set_name (playlist_browse_button, "playlist_browse_button");
+  gtk_widget_set_valign (playlist_browse_button, GTK_ALIGN_CENTER);
   g_object_ref (playlist_browse_button);
   g_object_set_data_full (G_OBJECT (config_dialog), "playlist_browse_button", playlist_browse_button,
                             (GDestroyNotify) g_object_unref);
+  g_signal_connect (playlist_browse_button, "file-set", G_CALLBACK (file_set_cb), playlist);
   gtk_widget_show (playlist_browse_button);
   gtk_box_pack_start (GTK_BOX (hbox29), playlist_browse_button, FALSE, FALSE, 0);
 
@@ -1133,6 +1142,7 @@ create_config_dialog (void)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
 
   text1 = gtk_text_view_new();
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (text1), FALSE);
   text1buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW (text1));
   gtk_text_buffer_get_iter_at_offset (text1buffer, &iter, 0);
   gtk_widget_set_name (text1, "text1");
@@ -1142,7 +1152,7 @@ create_config_dialog (void)
   gtk_widget_show (text1);
   gtk_container_add (GTK_CONTAINER (scrolledwindow1), text1);
   gtk_text_buffer_insert (text1buffer, &iter,
-                   _("\nTime\n  Alarm at: \n    The time for the alarm to come on.\n\n  Quiet After: \n    Stop alarm after this amount of time.\n       (if the wakeup dialog is not closed)\n\n\nDays\n  Day:\n    Select the days for the alarm to activate.\n\n  Time:\n    Choose the time for the alarm on each day,\n    or select the toggle button to use the default\n    time.\n\n\nVolume\n  Fading: \n    Fade the volume up to the chosen volume \n    for this amount of time.\n\n  Start at: \n    Start fading from this volume.\n\n  Final: \n    The volume to stop fading at.  If the fading\n    time is 0 then set volume to this and start\n    playing.\n\n\nOptions:\n  Additional Command:\n    Run this command at the alarm time.\n\n  Playlist: \n    Load this playlist for playing songs from \n    (must have .m3u extension).  If no playlist\n    is given then the songs which are currently\n    in the list will be used.\n    The URL of an mp3/ogg stream can also be\n    entered here, but loading of playlists from\n    URLs is not currently supported by xmms.\n\n  Reminder:\n    Display a reminder when the alarm goes off,\n    type the reminder in the box and turn on the\n    toggle button if you want it to be shown.\n"), -1);
+                   _("\nTime\n  Alarm at: \n    The time for the alarm to come on.\n\n  Quiet After: \n    Stop alarm after this amount of time.\n       (if the wakeup dialog is not closed)\n\n\nDays\n  Day:\n    Select the days for the alarm to activate.\n\n  Time:\n    Choose the time for the alarm on each day,\n    or select the toggle button to use the default\n    time.\n\n\nVolume\n  Fading: \n    Fade the volume up to the chosen volume \n    for this amount of time.\n\n  Start at: \n    Start fading from this volume.\n\n  Final: \n    The volume to stop fading at.  If the fading\n    time is 0 then set volume to this and start\n    playing.\n\n\nOptions:\n  Additional Command:\n    Run this command at the alarm time.\n\n  Playlist: \n    Load this playlist for playing songs from.\n    If no playlist is given, the songs which are\n    currently in the list will be used.\n    The URL of an mp3/ogg stream can also be\n    entered here.\n\n  Reminder:\n    Display a reminder when the alarm goes off,\n    type the reminder in the box and turn on the\n    toggle button if you want it to be shown.\n"), -1);
 
   label86 = gtk_label_new (_("Help"));
   gtk_widget_set_name (label86, "label86");
