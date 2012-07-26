@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
-"PO-Revision-Date: 2012-06-25 12:21+0000\n"
-"Last-Translator: Algimantas Margevičius <gymka@archlinux.lt>\n"
+"POT-Creation-Date: 2012-07-25 20:41-0400\n"
+"PO-Revision-Date: 2012-07-26 00:36+0000\n"
+"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
@@ -161,9 +161,8 @@ msgid "Playlist (optional)"
 msgstr "Grojaraštis (nebūtina)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Pasirinkti sekantį grojaraštį"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -182,7 +181,6 @@ msgid "What do these options mean?"
 msgstr "Ką šios pasirinktys reiškia?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -234,57 +232,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"Laikas\n"
-"  Žadinti laiku: \n"
-"    Laikas kada įjungti žadintuvą.\n"
-"\n"
-"  Nutilti po: \n"
-"    Po šio laiko tarpo išjungti žadintuvą.\n"
-"       (jei prikėlimo žadintuvas neuždarytas)\n"
-"\n"
-"\n"
-"Dienos\n"
-"  Diena:\n"
-"    Pasirink dienas kuriomis įjungti žadintuvą.\n"
-"\n"
-"  Laikas:\n"
-"    Pasirinkti kiekvienos dienos žadintuvo laiką,\n"
-"    arba pasirinkti numatytąjį laiką.\n"
-"\n"
-"\n"
-"\n"
-"Garsas\n"
-"  Garsėjimas: \n"
-"    Garsinti iki nurodyto garso, \n"
-"    šį laiko tarpą.\n"
-"\n"
-"  Pradėti nuo: \n"
-"    Pradėti garsinti nuo.\n"
-"\n"
-"  Baigti: \n"
-"    Garsas ties kuriuo baigti garsinti.  Jei garsinimo\n"
-"    laikas yra 0 tada nustatykit garsą šitą ir\n"
-"    pradėkit groti.\n"
-"\n"
-"\n"
-"Pasirinktys:\n"
-"  Papildoma komanda:\n"
-"    Vykdyti šią komandą žadintuvo laiku.\n"
-"\n"
-"  Grojaraštis: \n"
-"    Įkelti šį grojaraštį ir groti dainas iš ji \n"
-"    (turi turėti .m3u plėtinį).  Jei nenurodytas \n"
-"    grojaraštis bus naudojamos dainos kurios\n"
-"    dabar yra sąraše.\n"
-"    mp3/ogg URL taipogi gali būt čia įvestas,\n"
-"    bet grojaraščio įkrovimas iš URL šiuo metu\n"
-"    nepalaikomas xmms.\n"
-"\n"
-"  Priminimas:\n"
-"    Parodyti priminimą žadintuvui išsijungus,\n"
-"    įveskit priminimą langelyje ir paspauskite patvirtinimo mygtuką\n"
-"    jei norit jog būtų rodomas.\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -1644,7 +1591,7 @@ msgstr "Rodyti _būsenos juostą"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "Rodyti _užvėrimo mygtukus"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
@@ -1963,37 +1910,30 @@ msgid "LIRC Plugin"
 msgstr "LIRC įskiepis"
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* Šiame MIDI faile nėra žodžių *"
+msgstr "Nėra prieinamų dainų žodžių"
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "Gauti %s nepavyko"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "Apdoroti %s nepavyko"
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
-msgstr ""
-"\n"
-"Ieškoma dainos žodžių..."
+msgstr "Ieškoma dainų žodžių"
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Trūksta dainos metaduomenų"
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
-"\n"
-"Jungiamasi prie lyrics.wikia.com..."
+msgstr "Jungiamasi prie lyrics.wikia.com ..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
@@ -2186,9 +2126,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Tarnybos</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2694,9 +2633,8 @@ msgid "Playlist"
 msgstr "Grojaraštis"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "_Groti šį grojaraštį"
+msgstr "Groti grojaraštį"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3401,13 +3339,3 @@ msgstr "2SF dekoderis"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML viešinami grojaraščiai (XSPF)"
-
-#~ msgid "Browse..."
-#~ msgstr "Naršyti..."
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "Dainų žodžiai nerasti."

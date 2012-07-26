@@ -5,13 +5,14 @@
 # Translators:
 # Andrej Herceg <herceg.andrej@zoznam.sk>, 2007, 2008, 2010, 2011.
 # Tomáš Vadina <kyberdev@gmail.com>, 2012.
+#   <vdcorduroy@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
-"PO-Revision-Date: 2012-06-02 00:48+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-07-25 20:41-0400\n"
+"PO-Revision-Date: 2012-07-26 00:36+0000\n"
+"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Slovak\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -158,9 +159,8 @@ msgid "Playlist (optional)"
 msgstr "Zoznam skladieb (voliteľné)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Vybrať nasledujúci zoznam skladieb"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -179,7 +179,6 @@ msgid "What do these options mean?"
 msgstr "Čo tieto možnosti znamenajú?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -231,56 +230,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"Čas\n"
-"  Budiť o: \n"
-"    Čas budíka.\n"
-"\n"
-"  Ticho po: \n"
-"    Zastaviť budík po uplynutí tejto doby.\n"
-"       (pokiaľ nebude budiaci dialóg zatvorený)\n"
-"\n"
-"\n"
-"Dni\n"
-"  Deň:\n"
-"    Vyberte dni, kedy má budík fungovať.\n"
-"\n"
-"  Čas:\n"
-"    Vyberte čas budíka pre každý deň,\n"
-"    alebo použite štandardný čas.\n"
-"\n"
-"\n"
-"Hlasitosť\n"
-"  Zosilovanie: \n"
-"    Zosiluje až na vybranú hodnotu \n"
-"    po vybranú dobu.\n"
-"\n"
-"  Začať na: \n"
-"    Zosilovanie začne z tejto hlasitosti.\n"
-"\n"
-"  Skončiť na: \n"
-"    Hlasitosť na konci zosilnenia.  Ak je doba\n"
-"    zosilovania na hodnote 0, potom bude \n"
-"    hlasitosť táto.\n"
-"\n"
-"\n"
-"Možnosti:\n"
-"  Dodatočný príkaz:\n"
-"    Tento príkaz bude spustený v dobe budíka.\n"
-"\n"
-"  Zoznam skladieb: \n"
-"    Načíta tento zoznam skladieb, z ktorého bude hrať \n"
-"    (musí mať príponu .m3u).  Ak zoznam nie je zadaný, \n"
-"    budú použité skladby, ktoré budú v aktuálnom\n"
-"    zozname skladieb.\n"
-"    URL MP3/OGG prúdu môže byť taktiež\n"
-"    zadaná, ale načítanie zoznamu skladieb\n"
-"    z URL nie je momentálne podporované.\n"
-"\n"
-"  Upozornenie:\n"
-"    Pri vypnutí budíka zobrazí odkaz.\n"
-"    Text odkazu vpíšte do vstupného poľa a ak \n"
-"    si želáte zobrazovať odkaz, stlačte tlačidlo.\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -299,9 +248,8 @@ msgid "Thankyou"
 msgstr "Ďakujem"
 
 #: src/albumart/albumart.c:101
-#, fuzzy
 msgid "Album Art"
-msgstr "Album: "
+msgstr ""
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -332,9 +280,8 @@ msgid "Work around drain hangup"
 msgstr "Obísť problém so zasekávaním pri vyprázdňovaní"
 
 #: src/alsa/plugin.c:34
-#, fuzzy
 msgid "ALSA Output"
-msgstr "Výstupné porty ALSA"
+msgstr ""
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
@@ -629,9 +576,8 @@ msgid "About AMIDI-Plug"
 msgstr ""
 
 #: src/aosd/aosd.c:37
-#, fuzzy
 msgid "AOSD (On-Screen Display)"
-msgstr "Zobraziť OSD"
+msgstr ""
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -874,19 +820,16 @@ msgid "ASXv1/ASXv2 Playlists"
 msgstr ""
 
 #: src/audpl/audpl.c:224
-#, fuzzy
 msgid "Audacious Playlists (audpl)"
-msgstr "Editor zoznamu skladieb"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:49
-#, fuzzy
 msgid "<b>Color</b>"
-msgstr "<b>_Písma</b>"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:58
-#, fuzzy
 msgid "Blur Scope"
-msgstr "Vyplnený osciloskop"
+msgstr ""
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -909,17 +852,16 @@ msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
-#, fuzzy
 msgid "Spectrum Analyzer"
-msgstr "Analyzátor"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
-msgstr ""
+msgstr "Zariadenia"
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
-msgstr ""
+msgstr "Rýchlosť disku:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
@@ -927,7 +869,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "&lt;b&gt;Metadáta&lt;/b&gt;"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
@@ -954,9 +896,8 @@ msgid "Port:"
 msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
-#, fuzzy
 msgid "Audio CD Plugin"
-msgstr "O module zvukových CD"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
@@ -995,9 +936,8 @@ msgid "Dynamic range:"
 msgstr "Dynamický rozsah:"
 
 #: src/compressor/plugin.c:60
-#, fuzzy
 msgid "Dynamic Range Compressor"
-msgstr "O module Kompresia dynamického rozsahu"
+msgstr ""
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1069,41 +1009,29 @@ msgstr ""
 "ktoré neposkytujú informáciu o dĺžke (napr. skladby s opakovaním)."
 
 #: src/crossfade/crossfade.c:83
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Prelínanie zlyhalo, pretože skladby majú rozdielnu vzorkovaciu frekvenciu:\n"
-"\n"
-"Na prevzorkovanie skladieb na rovnakú frekvenciu môžete použiť efektový "
-"modul „Konvertor vzorkovacej frekvencie“."
 
 #: src/crossfade/crossfade.c:90
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Prelínanie zlyhalo, pretože skladby majú rozdielnu vzorkovaciu frekvenciu:\n"
-"\n"
-"Na prevzorkovanie skladieb na rovnakú frekvenciu môžete použiť efektový "
-"modul „Konvertor vzorkovacej frekvencie“."
 
 #: src/crossfade/crossfade.c:260
-#, fuzzy
 msgid "<b>Crossfade</b>"
-msgstr "O module Prelínanie (crossfade)"
+msgstr ""
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
 msgstr ""
 
 #: src/crossfade/crossfade.c:271
-#, fuzzy
 msgid "Crossfade"
-msgstr "O module Prelínanie (crossfade)"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
@@ -1118,9 +1046,8 @@ msgid "Crystalizer"
 msgstr ""
 
 #: src/cue/cue.c:160
-#, fuzzy
 msgid "Cue Sheet Plugin"
-msgstr "O module ozveny"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
@@ -1151,9 +1078,8 @@ msgid "FFmpeg Plugin"
 msgstr ""
 
 #: src/filewriter/filewriter.c:409
-#, fuzzy
 msgid "FileWriter Configuration"
-msgstr "Nastavenie zápisu do súboru"
+msgstr ""
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1200,9 +1126,8 @@ msgid "Prepend track number to filename"
 msgstr "Na začiatok názvu súboru pridať číslo stopy"
 
 #: src/filewriter/filewriter.c:532
-#, fuzzy
 msgid "FileWriter Plugin"
-msgstr "O module FileWriter"
+msgstr ""
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1361,9 +1286,8 @@ msgid "GIO Plugin"
 msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
-#, fuzzy
 msgid "Gnome Shortcuts"
-msgstr "O module Klávesové skratky Gnome"
+msgstr ""
 
 #: src/gtkui/columns.c:33
 msgid "Entry number"
@@ -1570,9 +1494,8 @@ msgid "_Random Order"
 msgstr "Náhodné po_radie"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "_Play This Playlist"
-msgstr "_Vytvoriť zoznam skladieb"
+msgstr ""
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
@@ -1607,9 +1530,8 @@ msgid "_Export ..."
 msgstr "_Exportovať ..."
 
 #: src/gtkui/menus.c:212
-#, fuzzy
 msgid "Playlist _Manager ..."
-msgstr "S_právca zoznamu skladieb ..."
+msgstr ""
 
 #: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
@@ -1716,9 +1638,8 @@ msgid "Select _All"
 msgstr "Ozn_ačiť všetko"
 
 #: src/gtkui/menus.c:259
-#, fuzzy
 msgid "_Rename ..."
-msgstr "_Premenovať"
+msgstr ""
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
@@ -1810,9 +1731,8 @@ msgid "Jump to File"
 msgstr "Prejsť na súbor"
 
 #: src/hotkey/gui.c:83
-#, fuzzy
 msgid "Toggle Player Window(s)"
-msgstr "Prepnúť okná prehrávača"
+msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1827,9 +1747,8 @@ msgid "Toggle Shuffle"
 msgstr "Prepnúť náhodné prehrávanie"
 
 #: src/hotkey/gui.c:87
-#, fuzzy
 msgid "Raise Player Window(s)"
-msgstr "Prepnúť okná prehrávača"
+msgstr ""
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -1875,14 +1794,12 @@ msgid "<b>Key Binding:</b>"
 msgstr "<b>Priradenie klávesu:</b>"
 
 #: src/hotkey/plugin.c:80
-#, fuzzy
 msgid "Global Hotkeys"
-msgstr "O module Globálne klávesové skratky"
+msgstr ""
 
 #: src/jack/jack.c:417
-#, fuzzy
 msgid "JACK Output"
-msgstr "_Výstup"
+msgstr ""
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1925,9 +1842,8 @@ msgid "Settings"
 msgstr "Nastavenie"
 
 #: src/ladspa/plugin.c:651
-#, fuzzy
 msgid "LADSPA Host"
-msgstr "O hostiteľovi LADSPA"
+msgstr ""
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -1963,9 +1879,8 @@ msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
 #: src/lirc/lirc.c:411
-#, fuzzy
 msgid "<b>Connection</b>"
-msgstr "<b>Činnosť:</b>"
+msgstr ""
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
@@ -1980,9 +1895,8 @@ msgid "LIRC Plugin"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* v MIDI súbore sa nenachádzajú žiadne texty skladby *"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
@@ -1995,31 +1909,24 @@ msgid "Unable to parse %s"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
 msgstr ""
-"\n"
-"Vyhľadáva sa text skladby..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr ""
-"\n"
-"Pripájanie na lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
 msgstr ""
 
 #: src/m3u/m3u.c:123
-#, fuzzy
 msgid "M3U Playlists"
-msgstr "Zoznam skladieb"
+msgstr ""
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2032,23 +1939,20 @@ msgid "Tact generator: %d bpm %d/%d"
 msgstr "Generátor taktu: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:257
-#, fuzzy
 msgid "Tact Generator"
-msgstr "Generátor tónov: "
+msgstr ""
 
 #: src/mixer/mixer.c:175
-#, fuzzy
 msgid "<b>Channel Mixer</b>"
-msgstr "O zmiešavači kanálov"
+msgstr ""
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
 msgstr "Výstupné kanály:"
 
 #: src/mixer/mixer.c:186
-#, fuzzy
 msgid "Channel Mixer"
-msgstr "O zmiešavači kanálov"
+msgstr ""
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
@@ -2099,9 +2003,8 @@ msgid "Use alternate device:"
 msgstr "Použiť iné zariadenie:"
 
 #: src/oss4/plugin.c:81
-#, fuzzy
 msgid "Save volume between sessions."
-msgstr "Medi reláciami uložiť hlasitosť"
+msgstr ""
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -2112,14 +2015,12 @@ msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Povoliť exkluzívny režim pre predchádzanie virtuálnemu zmiešavaniu."
 
 #: src/oss4/plugin.c:115
-#, fuzzy
 msgid "OSS4 Output"
-msgstr "_Výstup"
+msgstr ""
 
 #: src/pls/pls.c:114
-#, fuzzy
 msgid "PLS Playlists"
-msgstr "Zoznam skladieb"
+msgstr ""
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
@@ -2134,9 +2035,8 @@ msgid "Skip/repeat samples"
 msgstr ""
 
 #: src/resample/resample.c:168
-#, fuzzy
 msgid "Linear interpolation"
-msgstr "Internacionalizácia"
+msgstr ""
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
@@ -2151,9 +2051,8 @@ msgid "Best sinc interpolation"
 msgstr ""
 
 #: src/resample/resample.c:174
-#, fuzzy
 msgid "<b>Conversion</b>"
-msgstr "<b>_Písma</b>"
+msgstr ""
 
 #: src/resample/resample.c:175
 msgid "Method:"
@@ -2164,54 +2063,44 @@ msgid "Rate:"
 msgstr ""
 
 #: src/resample/resample.c:181
-#, fuzzy
 msgid "<b>Rate Mappings</b>"
-msgstr "Priradenie frekvencií:"
+msgstr ""
 
 #: src/resample/resample.c:182
-#, fuzzy
 msgid "Use rate mappings"
-msgstr "Priradenie frekvencií:"
+msgstr ""
 
 #: src/resample/resample.c:184
-#, fuzzy
 msgid "8 kHz:"
-msgstr "8 kHz"
+msgstr ""
 
 #: src/resample/resample.c:187
-#, fuzzy
 msgid "16 kHz:"
-msgstr "16 kHz"
+msgstr ""
 
 #: src/resample/resample.c:190
-#, fuzzy
 msgid "22.05 kHz:"
-msgstr "2 kHz"
+msgstr ""
 
 #: src/resample/resample.c:193
-#, fuzzy
 msgid "44.1 kHz:"
-msgstr "1 kHz"
+msgstr ""
 
 #: src/resample/resample.c:196
-#, fuzzy
 msgid "48 kHz:"
-msgstr "8 kHz"
+msgstr ""
 
 #: src/resample/resample.c:199
-#, fuzzy
 msgid "96 kHz:"
-msgstr "16 kHz"
+msgstr ""
 
 #: src/resample/resample.c:202
-#, fuzzy
 msgid "192 kHz:"
-msgstr "2 kHz"
+msgstr ""
 
 #: src/resample/resample.c:212
-#, fuzzy
 msgid "Sample Rate Converter"
-msgstr "Nastavenia konverzie vzorkovacej frekvencie"
+msgstr ""
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
@@ -2222,9 +2111,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Služby</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2243,9 +2131,8 @@ msgid "Scrobbler"
 msgstr "Scrobbler"
 
 #: src/sdlout/plugin.c:32
-#, fuzzy
 msgid "SDL Output"
-msgstr "_Výstup"
+msgstr ""
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2327,9 +2214,8 @@ msgid "Choose Folder"
 msgstr "Vybrať priečinok"
 
 #: src/search-tool/search-tool.c:803
-#, fuzzy
 msgid "Search Tool"
-msgstr "Vyhľadať knižnicu"
+msgstr ""
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -2718,9 +2604,8 @@ msgid "Playlist"
 msgstr "Zoznam skladieb"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "_Vytvoriť zoznam skladieb"
+msgstr ""
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3217,14 +3102,12 @@ msgid "Could not create directory (%s): %s\n"
 msgstr "Nepodarilo sa vytvoriť adresár (%s): %s\n"
 
 #: src/sndfile/plugin.c:437
-#, fuzzy
 msgid "Sndfile Plugin"
-msgstr "Modul sndfile (WAV)"
+msgstr ""
 
 #: src/sndio/sndio.c:189
-#, fuzzy
 msgid "About Sndio Output Plugin"
-msgstr "O výstupnom module SDL"
+msgstr ""
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3234,9 +3117,8 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:259
-#, fuzzy
 msgid "Unsupported format"
-msgstr "Nepodporovaný typ disku."
+msgstr ""
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3246,14 +3128,12 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:403
-#, fuzzy
 msgid "sndio device"
-msgstr "Zvukové zariadenie:"
+msgstr ""
 
 #: src/sndio/sndio.c:419
-#, fuzzy
 msgid "(empty means default)"
-msgstr "Budiť o (predvolené):"
+msgstr ""
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3321,23 +3201,20 @@ msgid "<b>Speed and Pitch</b>"
 msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:228
-#, fuzzy
 msgid "Speed:"
-msgstr "Rýchlosť"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:231
-#, fuzzy
 msgid "Pitch:"
-msgstr "Výška"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
 msgstr ""
 
 #: src/statusicon/statusicon.c:399
-#, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "Reakcia na otáčanie kolieska na myši"
+msgstr ""
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
@@ -3348,36 +3225,32 @@ msgid "Change playing song"
 msgstr "Zmeniť prehrávanú skladbu"
 
 #: src/statusicon/statusicon.c:406
-#, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "Ďalšie nastavenia"
+msgstr ""
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Zakázať vyskakovacie okno"
 
 #: src/statusicon/statusicon.c:409
-#, fuzzy
 msgid "Close to the system tray"
-msgstr "Zatvoriť do oznamovacej oblasti (systémovej časti panelu)"
+msgstr ""
 
 #: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr "Pokračovať v zozname skladieb ak sa posúva smerom hore"
 
 #: src/statusicon/statusicon.c:420
-#, fuzzy
 msgid "Status Icon"
-msgstr "O module Stavová ikona"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
 msgstr ""
 
 #: src/stereo_plugin/stereo.c:38
-#, fuzzy
 msgid "Extra Stereo"
-msgstr "Joint Stereo"
+msgstr ""
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3389,14 +3262,12 @@ msgid "Tone Generator: "
 msgstr "Generátor tónov: "
 
 #: src/tonegen/tonegen.c:208
-#, fuzzy
 msgid "Tone Generator"
-msgstr "Generátor tónov: "
+msgstr ""
 
 #: src/unix-io/unix-io.c:279
-#, fuzzy
 msgid "File I/O Plugin"
-msgstr "O module File I/O"
+msgstr ""
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
@@ -3411,9 +3282,8 @@ msgid "VTX Decoder"
 msgstr ""
 
 #: src/wavpack/wavpack.c:345
-#, fuzzy
 msgid "WavPack Decoder"
-msgstr "Modul dekodéra Wavpack %s"
+msgstr ""
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
@@ -3422,13 +3292,3 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
-
-#~ msgid "Browse..."
-#~ msgstr "Prechádzať..."
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "Žiadne texty neboli nájdené."

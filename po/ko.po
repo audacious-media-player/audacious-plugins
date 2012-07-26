@@ -1,9 +1,13 @@
-# Spanish (Mexican) translation for Audacious Plugins
+# Korean translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Jorge A. García Sosa <jagsmd@gmail.com>, 2012.
+# 		ChoSeongWoo <syn333@gmail.com>, 2008.
+#       Jaegeum Choe <baedaron@hananet.net>, 2001.
+#       Man-Yong Lee <yong@linuxkorea.co.kr>, 2000.
+#       Sang-Jin Hwang <accel@accellinux.org>, 1999.
+# 		Seong-ho Cho <darkcircle.0426@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
@@ -11,65 +15,65 @@ msgstr ""
 "POT-Creation-Date: 2012-07-25 20:41-0400\n"
 "PO-Revision-Date: 2012-07-26 00:36+0000\n"
 "Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
-"Language-Team: Spanish (Mexican)\n"
-"Language: es_MX\n"
+"Language-Team: Korean\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr "Descodificador AAC"
+msgstr "AAC 디코더"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (Reproductor AdLib)"
+msgstr "AdPlug (AdLib 재생기)"
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
-msgstr "Alarma"
+msgstr "알림"
 
 #: src/alarm/interface.c:39
 msgid "This is your wakeup call."
-msgstr "Esta es tu llamada despertador."
+msgstr "기상 알림입니다."
 
 #: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
 msgid "OK"
-msgstr "OK"
+msgstr "확인"
 
 #: src/alarm/interface.c:220
 msgid "Alarm Settings"
-msgstr "Ajustes de Alarma"
+msgstr "알림 설정"
 
 #: src/alarm/interface.c:235 src/alarm/interface.c:396
 #: src/alarm/interface.c:753
 msgid "Time"
-msgstr "Tiempo"
+msgstr "시계"
 
 #: src/alarm/interface.c:275
 msgid "hours"
-msgstr "horas"
+msgstr "시간"
 
 #: src/alarm/interface.c:332
 msgid "h"
-msgstr "h"
+msgstr "시"
 
 #: src/alarm/interface.c:360
 msgid "minutes"
-msgstr "minutos"
+msgstr "분"
 
 #: src/alarm/interface.c:376
 msgid "Quiet after:"
-msgstr "Silencio después de:"
+msgstr "다음 시간후 조용히:"
 
 #: src/alarm/interface.c:386
 msgid "Alarm at (default):"
-msgstr "Alarma a las (predeterminado):"
+msgstr "다음 시간에 알림(기본):"
 
 #: src/alarm/interface.c:404
 msgid "Choose the days for the alarm to come on"
-msgstr "Escoge los días para suene la alarma"
+msgstr "알림을 울릴 날짜를 선택합니다"
 
 #: src/alarm/interface.c:431 src/alarm/interface.c:477
 #: src/alarm/interface.c:523 src/alarm/interface.c:569
@@ -78,63 +82,63 @@ msgstr "Escoge los días para suene la alarma"
 #: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
-msgstr "Predeterminado"
+msgstr "기본값"
 
 #: src/alarm/interface.c:745
 msgid "Day"
-msgstr "Día"
+msgstr "요일"
 
 #: src/alarm/interface.c:761
 msgid "Tuesday"
-msgstr "Martes"
+msgstr "화요일"
 
 #: src/alarm/interface.c:770
 msgid "Wednesday"
-msgstr "Miércoles"
+msgstr "수요일"
 
 #: src/alarm/interface.c:779
 msgid "Thursday"
-msgstr "Jueves"
+msgstr "목요일"
 
 #: src/alarm/interface.c:788
 msgid "Friday"
-msgstr "Viernes"
+msgstr "금요일"
 
 #: src/alarm/interface.c:797
 msgid "Saturday"
-msgstr "Sábado"
+msgstr "토요일"
 
 #: src/alarm/interface.c:806
 msgid "Sunday"
-msgstr "Domingo"
+msgstr "일요일"
 
 #: src/alarm/interface.c:814
 msgid "Monday"
-msgstr "Lunes"
+msgstr "월요일"
 
 #: src/alarm/interface.c:823
 msgid "Days"
-msgstr "Días"
+msgstr "일"
 
 #: src/alarm/interface.c:839
 msgid "Fading"
-msgstr "Disminución"
+msgstr "점진적 음량변화"
 
 #: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
-msgstr "segundos"
+msgstr "초"
 
 #: src/alarm/interface.c:884 src/alarm/interface.c:999
 msgid "Volume"
-msgstr "Volumen"
+msgstr "음량"
 
 #: src/alarm/interface.c:910
 msgid "Current"
-msgstr "Actual"
+msgstr "현재"
 
 #: src/alarm/interface.c:918
 msgid "Start at"
-msgstr "Comenzar a"
+msgstr "시작"
 
 #: src/alarm/interface.c:946 src/alarm/interface.c:990
 msgid "%"
@@ -142,19 +146,19 @@ msgstr "%"
 
 #: src/alarm/interface.c:962
 msgid "Final"
-msgstr "Finalizar a"
+msgstr "마지막"
 
 #: src/alarm/interface.c:1015
 msgid "Additional Command"
-msgstr "Comando Adicional"
+msgstr "추가 명령"
 
 #: src/alarm/interface.c:1041
 msgid "enable"
-msgstr "Habilitar"
+msgstr "활성화"
 
 #: src/alarm/interface.c:1049
 msgid "Playlist (optional)"
-msgstr "Lista de Reproducción (opcional)"
+msgstr "재생 목록(선택)"
 
 #: src/alarm/interface.c:1075
 msgid "Select a playlist"
@@ -162,19 +166,19 @@ msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
-msgstr "Recodatorio"
+msgstr "약속 알리미"
 
 #: src/alarm/interface.c:1102
 msgid "Use reminder"
-msgstr "Usar recordatorio"
+msgstr "약속 알리미 사용"
 
 #: src/alarm/interface.c:1118
 msgid "Options"
-msgstr "Opciones"
+msgstr "옵션"
 
 #: src/alarm/interface.c:1126
 msgid "What do these options mean?"
-msgstr "¿Qué significan estás opciones?"
+msgstr "이 옵션은 무엇을 의미하나요?"
 
 #: src/alarm/interface.c:1155
 msgid ""
@@ -231,71 +235,71 @@ msgstr ""
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
-msgstr "Ayuda"
+msgstr "도움말"
 
 #: src/alarm/interface.c:1189 src/sndio/sndio.c:439
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "취소"
 
 #: src/alarm/interface.c:1257
 msgid "Your reminder for today is.."
-msgstr "Tu recordatorio para hoy es.."
+msgstr "오늘의 약속 내용은.."
 
 #: src/alarm/interface.c:1282
 msgid "Thankyou"
-msgstr "Gracias"
+msgstr "감사합니다"
 
 #: src/albumart/albumart.c:101
 msgid "Album Art"
-msgstr "Portada de Álbum"
+msgstr "음반 표지"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "Dispositivo PCM determinado"
+msgstr "기본 PCM 장치"
 
 #: src/alsa/config.c:235
 msgid "Default mixer device"
-msgstr "Dispositivo mezclador predeterminado"
+msgstr "기본 음량 조절기 장치"
 
 #: src/alsa/config.c:433
 msgid "ALSA Output Plugin Preferences"
-msgstr "Preferencias del plugin de salida ALSA"
+msgstr "ALSA 출력 플러그인 기본 설정"
 
 #: src/alsa/config.c:439
 msgid "PCM device:"
-msgstr "Dispositivo PCM:"
+msgstr "PCM 장치:"
 
 #: src/alsa/config.c:441
 msgid "Mixer device:"
-msgstr "Dispositivo mezclador:"
+msgstr "음량 조절기 장치:"
 
 #: src/alsa/config.c:443
 msgid "Mixer element:"
-msgstr "Elemento mezclador:"
+msgstr "음량 조절기 요소:"
 
 #: src/alsa/config.c:446
 msgid "Work around drain hangup"
-msgstr "Evitar colapsos por falta de recursos"
+msgstr "드레인 행업을 피하며 작업"
 
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
-msgstr "Salida ALSA"
+msgstr "ALSA 출력"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (Reproductor MIDI)"
+msgstr "AMIDI-Plug (MIDI 재생기)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
-"No has seleccionado ningún puerto secuenciador para reproducción MIDI. "
-"Puedes hacerlo en las preferencias del plugin MIDI."
+"미디 재생을 위한 시퀀서 포트를 선택하지 않았습니다. 미디 플러그인 기본 설정에"
+"서 설정할 수 있습니다."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
-msgstr "Motor ALSA"
+msgstr "ALSA 백엔드"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
@@ -308,20 +312,18 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Este motor envía eventos MIDI a un grupo de puertos secuenciadores ALSA "
-"escogidos por el usuario. La interfaz del secuenciador ALSA es muy versátil, "
-"puede proveer puertos para sintetizadores por hardware de tarjetas de audio "
-"(por ejemplo, emu10k1) pero tambien para sintetizadores por software, "
-"dispositivos externos, etc.\n"
-"Este motor no produce audio, los eventos MIDI son manejados durectamente "
-"desde los dispositivos o programas detrás de los puertos ALSA; por ejemplo, "
-"los eventos MIDI enviados al sintetizador por hardware serán reproducidos "
-"directamente.\n"
-"Motor escrito por Giacomo Lozito."
+"이 백엔드는 사용자가 선택한 ALSA 시퀀서 포트의 그룹에 미디 이벤트를 전송합니"
+"다. ALSA 시퀀서 인터페이스는 매우 다양한 기능을 갖추고 있는데 오디오 카드 하"
+"드웨어 신디자이저(예: emu10k1)뿐만 아니라 소프트웨어 신디사이저, 외부 장치 등"
+"에 대한 포트를 제공할 수 있습니다.\n"
+"이 백엔드는 소리를 만들어내는게 아니라, ALSA 포트 뒤에 있는 장치/프로그램에"
+"서 직접적으로 미디 이벤트를 다룹니다. 예를 들자면 오디오를 직접 재생할 하드웨"
+"어 신디사이저로 미디 이벤트를 보냅니다.이 벡엔드는 Giacomo Lozito가 작성했습"
+"니다."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
-msgstr "Motor FluidSynth "
+msgstr "FluidSynth 백엔드"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
@@ -332,84 +334,83 @@ msgid ""
 "by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Este motor produce audio enviando eventos MIDI a FluidSynth, un sintetizador "
-"de software en tiempo real basado en la especificación SoundFont2 (www."
-"fluidsynth.org).\n"
-"El audio producido puede ser manipulado a trevés de los plugins de efecto y "
-"es procesado por el plugin de salida elegido.\n"
-"Motor escrito por Giacomo Lozito."
+"이 백엔드는 SoundFont2 명세(www.fluidsynth.org)를 따르는 실시한 소프트웨어 신"
+"디사이저인 FluidSynth에 미디 이벤트를 보내어 소리를 만들어냅니다.\n"
+"만들어낸 소리는 플레이어 효과 플러그인을 통해 조작할 수 있으며, 선택한 출력 "
+"플러그인으로 처리합니다.\n"
+"이 백엔드는 Giacomo Lozito가 작성했습니다."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
-msgstr "Puerto"
+msgstr "포트"
 
 #: src/amidi-plug/i_configure-alsa.c:324
 msgid "Client name"
-msgstr "Nombre del Cliente"
+msgstr "클라이언트 이름"
 
 #: src/amidi-plug/i_configure-alsa.c:326
 msgid "Port name"
-msgstr "Nombre del Puerto"
+msgstr "포트 이름"
 
 #: src/amidi-plug/i_configure-alsa.c:340
 msgid "ALSA output ports"
-msgstr "Puertos de salida ALSA"
+msgstr "ALSA 출력 포트"
 
 #: src/amidi-plug/i_configure-alsa.c:393
 msgid "Soundcard: "
-msgstr "Tarjeta de sonido:"
+msgstr "사운드 카드:"
 
 #: src/amidi-plug/i_configure-alsa.c:395
 msgid "Mixer control: "
-msgstr "Control del mezclador:"
+msgstr "음량 조절기 컨트롤:"
 
 #: src/amidi-plug/i_configure-alsa.c:407
 msgid "Mixer settings"
-msgstr "Ajustes del mezclador"
+msgstr "음량 조절기 설정"
 
 #: src/amidi-plug/i_configure-alsa.c:434
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">Motor\n"
-"ALSA</span>"
+"<span size=\"smaller\">ALSA\n"
+"백엔드</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
-msgstr "AMIDI-Plug - información del motor"
+msgstr "AMIDI-Plug - 백엔드 정보"
 
 #: src/amidi-plug/i_configure-ap.c:207
 msgid "Backend selection"
-msgstr "Selección del backend"
+msgstr "백엔드 선택"
 
 #: src/amidi-plug/i_configure-ap.c:247
 msgid "Playback settings"
-msgstr "Ajustes de reproducción"
+msgstr "재생 목록 설정"
 
 #: src/amidi-plug/i_configure-ap.c:252
 msgid "Transpose: "
-msgstr "Transponer: "
+msgstr "조옮김:"
 
 #: src/amidi-plug/i_configure-ap.c:261
 msgid "Drum shift: "
-msgstr "Cambio de bateria: "
+msgstr "박자 이동:"
 
 #: src/amidi-plug/i_configure-ap.c:279
 msgid "Advanced settings"
-msgstr "Ajustes avanzados"
+msgstr "고급 설정"
 
 #: src/amidi-plug/i_configure-ap.c:283
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr "pre-calcular duración de archivos MIDI en la lista de reproducción"
+msgstr "재생 목록의 미디 파일 길이 미리 계산"
 
 #: src/amidi-plug/i_configure-ap.c:288
 msgid "extract comments from MIDI file (if available)"
-msgstr "extraer comentarios del archivo MIDI (si están disponibles)"
+msgstr "(가능한 경우) 미디 파일에서 주석 가져오기"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "extract lyrics from MIDI file (if available)"
-msgstr "extraer letras de canciones del archivo MIDI (si están disponibles)"
+msgstr "(가능한 경우) 미디 파일에서 가사 가져오기"
 
 #: src/amidi-plug/i_configure-ap.c:323
 msgid ""
@@ -421,85 +422,85 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - seleccionar archivo"
+msgstr "AMIDI-Plug - 파일 선택"
 
 #: src/amidi-plug/i_configure.c:110
 msgid "AMIDI-Plug Settings"
-msgstr "Configuración AMIDI-Plug"
+msgstr "AMIDI-Plug 설정"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - seleccionar archivo SoundFont"
+msgstr "AMIDI-Plug - 사운드폰트 파일 선택"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:290
 msgid "SoundFont settings"
-msgstr "Ajustes de SoundFont"
+msgstr "사운드폰트 설정"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:322
 msgid "Filename"
-msgstr "Nombre del archivo"
+msgstr "파일 이름"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:326
 msgid "Size (bytes)"
-msgstr "Tamaño (bytes)"
+msgstr "크기(바이트)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:375
 msgid "Load SF on player start"
-msgstr "Cargar SF al iniciar el reproductor"
+msgstr "재생기 시작할 때 사운드 폰트 불러오기"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
 msgid "Load SF on first MIDI file play"
-msgstr "Cargar SF en la primera reproducción de archivos MIDI"
+msgstr "처음 미디 파일 재생할 때 사운드 폰트 불러오기"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
-msgstr "Ajustes del sintetizador"
+msgstr "신디사이저 설정"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:401
 msgid "gain"
-msgstr "ganancia"
+msgstr "게인"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:407
 #: src/amidi-plug/i_configure-fluidsynth.c:435
 #: src/amidi-plug/i_configure-fluidsynth.c:463
 #: src/amidi-plug/i_configure-fluidsynth.c:494
 msgid "use default"
-msgstr "Utilizar predeterminado"
+msgstr "기본값 사용"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:410
 #: src/amidi-plug/i_configure-fluidsynth.c:438
 msgid "value:"
-msgstr "valor:"
+msgstr "값:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr "polifonía"
+msgstr "화성"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
-msgstr "reverberación"
+msgstr "리버브"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:466
 #: src/amidi-plug/i_configure-fluidsynth.c:497
 msgid "yes"
-msgstr "sí"
+msgstr "예"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:468
 #: src/amidi-plug/i_configure-fluidsynth.c:499
 msgid "no"
-msgstr "no"
+msgstr "아니요"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:488
 msgid "chorus"
-msgstr "coro"
+msgstr "합"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:519
 msgid "sample rate"
-msgstr "frecuencia de muestreo"
+msgstr "샘플 주파수"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:525
 msgid "22050 Hz "
-msgstr "22050 hz "
+msgstr "22050 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:528
 msgid "44100 Hz "
@@ -511,109 +512,107 @@ msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:534
 msgid "custom "
-msgstr "personalizada"
+msgstr "사용자 정의"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:543
 msgid "Hz "
-msgstr "Hz"
+msgstr "Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:607
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">Backend\n"
-"FluidSynth</span>"
+"<span size=\"smaller\">FluidSynth\n"
+"백엔드</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
-msgstr "Nombre:"
+msgstr "이름:"
 
 #: src/amidi-plug/i_fileinfo.c:193
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"smaller\"> Información MIDI </span>"
+msgstr "<span size=\"smaller\"> 미디 정보 </span>"
 
 #: src/amidi-plug/i_fileinfo.c:205
 msgid "Format:"
-msgstr "Formato:"
+msgstr "형식:"
 
 #: src/amidi-plug/i_fileinfo.c:208
 msgid "Length (msec):"
-msgstr "Duración (ms):"
+msgstr "길이(밀리초):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr "Núm. de Pistas:"
+msgstr "트랙 번호:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr "variable"
+msgstr "가변"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
-msgstr "BPM:"
+msgstr "빠르기(BPM):"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "BPM (wavg):"
-msgstr "BPM (wavg):"
+msgstr "빠르기(BPM, wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr "Div. tiempo:"
+msgstr "박자:"
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\"> Comentarios y Letras de canción MIDI </span>"
+msgstr "<span size=\"smaller\"> 미디 주석과 가사 </span>"
 
 #: src/amidi-plug/i_fileinfo.c:288
 msgid "* no comments available in this MIDI file *"
-msgstr "* no hay comentarios disponibles en este archivo MIDI *"
+msgstr "* 이 미디 파일에는 주석이 없습니다 *"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* no hay letras de canción disponibles en este archivo MIDI *"
+msgstr "* 이 미디 파일에는 가사가 없습니다 *"
 
 #: src/amidi-plug/i_fileinfo.c:349
 msgid "  (invalid UTF-8)"
-msgstr "  (UTF-8 inválido)"
+msgstr " (잘못된 UTF-8)"
 
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
-msgstr "Acerca de AMIDI-Plug"
+msgstr "AMIDI-Plug 정보"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
-msgstr "AOSD (Mensaje en Pantalla)"
+msgstr "AOSD (화면에 표시)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "Rectángulo"
+msgstr "사각형"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "Rectágulo Redondeado"
+msgstr "모서리가 둥근 사각형"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "Rectángulo Cóncavo"
+msgstr "오목한 사각형"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "Ninguno"
+msgstr "없음"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "Iniciar Reproducción"
+msgstr "재생 시작"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
-"Muestra Notificación en Pantalla cuando se reproduce un elemento de la lista "
-"de reproducción"
+msgstr "재생 목록의 항목을 재생할 때 OSD를 시작합니다."
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "Cambio de Título"
+msgstr "제목 바꾸기"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -621,136 +620,135 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Muestra el Notificación en Pantalla cuando, en la reproducción, el título de "
-"la pista cambia pero el nombre del archivo es el mismo. Esto es muy útil "
-"para mostrar cambios de título en streams de internet."
+"재생할 때 OSD를 시작하면 곡 제목은 바뀌지만 파일 이름은 그대로 입니다. 인터"
+"넷 스트림의 제목을 바꾸어서 보여줄 대부분의 경우에 유용합니다."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "Pausa Encendida"
+msgstr "일시 정지 활성화"
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "Muestra Notificación en Pantalla cuando la reproducción está pausada."
+msgstr "재생을 멈추었을 때 OSD를 시작합니다."
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "Pausa Apagada"
+msgstr "일시 정지 활성화"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Muestra Notificación en Pantalla cuando la pausa termina."
+msgstr "멈춰진 재생 상태에서 복귀할 때 OSD를 시작합니다."
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr "Colocación"
+msgstr "위치"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
-msgstr "Compensación relativa en X:"
+msgstr "상대 X 오프셋:"
 
 #: src/aosd/aosd_ui.c:207
 msgid "Relative Y offset:"
-msgstr "Compensación relativa en Y:"
+msgstr "상대 Y 오프셋:"
 
 #: src/aosd/aosd_ui.c:214
 msgid "Max OSD width:"
-msgstr "Ancho máximo de OSD:"
+msgstr "최대 OSD 폭:"
 
 #: src/aosd/aosd_ui.c:225
 msgid "Multi-Monitor options"
-msgstr "Opciones de varios monitores"
+msgstr "다중 모니터 옵션"
 
 #: src/aosd/aosd_ui.c:229
 msgid "Display OSD using:"
-msgstr "Mostrar OSD utilizando:"
+msgstr "OSD 사용중 표시:"
 
 #: src/aosd/aosd_ui.c:231
 msgid "all monitors"
-msgstr "Todos los monitores"
+msgstr "모든 모니터"
 
 #: src/aosd/aosd_ui.c:234
 #, c-format
 msgid "monitor %i"
-msgstr "monitor %i"
+msgstr "%i번 모니터 "
 
 #: src/aosd/aosd_ui.c:287
 msgid "Timing (ms)"
-msgstr "Tiempo (ms)"
+msgstr "타이밍(밀리초)"
 
 #: src/aosd/aosd_ui.c:292
 msgid "Display:"
-msgstr "Mostrar:"
+msgstr "디스플레이:"
 
 #: src/aosd/aosd_ui.c:297
 msgid "Fade in:"
-msgstr "Desvanecimiento al aparecer:"
+msgstr "나타내기 시간:"
 
 #: src/aosd/aosd_ui.c:302
 msgid "Fade out:"
-msgstr "Desvanecimiento al desaparecer:"
+msgstr "사라지기 시간:"
 
 #: src/aosd/aosd_ui.c:383
 msgid "Fonts"
-msgstr "Fuentes"
+msgstr "글꼴"
 
 #: src/aosd/aosd_ui.c:391
 #, c-format
 msgid "Font %i:"
-msgstr "Fuente %i:"
+msgstr "%i번 글꼴:"
 
 #: src/aosd/aosd_ui.c:409
 msgid "Shadow"
-msgstr "Sombra"
+msgstr "섀도우"
 
 #: src/aosd/aosd_ui.c:439
 msgid "Internationalization"
-msgstr "Internacionalización"
+msgstr "국제화"
 
 #: src/aosd/aosd_ui.c:445
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr "Deshabilitar conversión de texto UTF-8 (en Avisos en Pantalla)"
+msgstr "(AOSD에서) 텍스트의 UTF-8 비활성화"
 
 #: src/aosd/aosd_ui.c:462
 msgid "Select Skin File"
-msgstr "Seleccionar archivo de Skin"
+msgstr "스킨 파일 선택"
 
 #: src/aosd/aosd_ui.c:573
 msgid "Render Style"
-msgstr "Estilo de Renderización"
+msgstr "표현 방식"
 
 #: src/aosd/aosd_ui.c:589
 msgid "Colors"
-msgstr "Colores"
+msgstr "색"
 
 #: src/aosd/aosd_ui.c:602
 #, c-format
 msgid "Color %i:"
-msgstr "Color %i:"
+msgstr "%i번 색:"
 
 #: src/aosd/aosd_ui.c:620
 msgid "Custom Skin"
-msgstr "Skin personalizada"
+msgstr "사용자 정의 스킨"
 
 #: src/aosd/aosd_ui.c:626
 msgid "Skin file:"
-msgstr "Archivo de Skin:"
+msgstr "스킨 파일:"
 
 #: src/aosd/aosd_ui.c:630
 msgid "Browse"
-msgstr "Examinar"
+msgstr "찾아보기"
 
 #: src/aosd/aosd_ui.c:729
 msgid "Enable trigger"
-msgstr "Activar Aviso"
+msgstr "트리거 활성화"
 
 #: src/aosd/aosd_ui.c:756
 msgid "Event"
-msgstr "Evento"
+msgstr "이벤드"
 
 #: src/aosd/aosd_ui.c:784
 msgid "Composite manager detected"
-msgstr "Administrador de composición detectado"
+msgstr "합성 관리자를 삭제했습니다"
 
 #: src/aosd/aosd_ui.c:791
 msgid ""
@@ -758,34 +756,33 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Administrador de composición no detectado;\n"
-"a menos que sepas que tienes uno ejecutándose, por favor activa un "
-"administrador de composición, de otra forma las  Notificaciones en Pantalla "
-"no funcionarán apropiadamente"
+"합성 관리자를 삭제하지 못했습니다.\n"
+"적어도 하나가 실행중인지 알지 못한다면, 합성 관리자를 활성화 해 주시기 바랍니"
+"다. 그렇지 않으면 OSD가 제대로 동작하지 않을 것입니다"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
-msgstr "Administrador de composición no requerido para transparencia falsa"
+msgstr "투명도 속이기에 합성 관리자가 필요하지 않습니다"
 
 #: src/aosd/aosd_ui.c:837
 msgid "Transparency"
-msgstr "Transparencia"
+msgstr "투명도"
 
 #: src/aosd/aosd_ui.c:843
 msgid "Fake transparency"
-msgstr "Transparencia falsa"
+msgstr "투명도 속이기"
 
 #: src/aosd/aosd_ui.c:845
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Transparencia real (requiere X Composite Ext.)"
+msgstr "실제 투명도 ( X 합성 확장이 필요합니다 )"
 
 #: src/aosd/aosd_ui.c:887
 msgid "Composite extension not loaded"
-msgstr "Extensión de composición no cargada"
+msgstr "합성 확장을 불러오지 않았습니다"
 
 #: src/aosd/aosd_ui.c:895
 msgid "Composite extension not available"
-msgstr "Extensión de composición no disponible"
+msgstr "합성 확장을 사용할 수 없습니다"
 
 #: src/aosd/aosd_ui.c:914
 #, c-format
@@ -794,67 +791,67 @@ msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
 #: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
-msgstr "Audacious OSD - configuración"
+msgstr "Audacious OSD - 설정"
 
 #: src/aosd/aosd_ui.c:1016
 msgid "Test"
-msgstr "Probar"
+msgstr "시험"
 
 #: src/aosd/aosd_ui.c:1031
 msgid "Position"
-msgstr "Posición"
+msgstr "위치"
 
 #: src/aosd/aosd_ui.c:1036
 msgid "Animation"
-msgstr "Animación"
+msgstr "애니메이션"
 
 #: src/aosd/aosd_ui.c:1041
 msgid "Text"
-msgstr "Texto"
+msgstr "글자"
 
 #: src/aosd/aosd_ui.c:1046
 msgid "Decoration"
-msgstr "Decoración"
+msgstr "장식"
 
 #: src/aosd/aosd_ui.c:1051
 msgid "Trigger"
-msgstr "Avisos"
+msgstr "트리거"
 
 #: src/aosd/aosd_ui.c:1056
 msgid "Misc"
-msgstr "Misc."
+msgstr "기타"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "Listas de reproducción ASXv1/ASXv2"
+msgstr "ASXv1/ASXv2 재생 목록"
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr "Lista de reproducción Audacious (audpl)"
+msgstr "Audacious 재생 목록(audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
-msgstr "<b>Color</b>"
+msgstr "<b>색</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr "Blur Scope"
+msgstr "흐림처리 범위"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Preferencias de Bauer Stereophonic-to-Binaural"
+msgstr "Bauer Stereophonic-to-Binaural 기본 설정"
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
-msgstr "Nivel de alimentación:"
+msgstr "피드 수준:"
 
 #: src/bs2b/plugin.c:163
 msgid "Cut frequency:"
-msgstr "Frecuencia de corte:"
+msgstr "주파수 잘라내기:"
 
 #: src/bs2b/plugin.c:177
 msgid "Presets:"
-msgstr "Predefinidos:"
+msgstr "프리셋:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -862,132 +859,132 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
-msgstr "Analizador de Espectro"
+msgstr "스펙트럼 분석기"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
-msgstr "<b>Dispositivo</b>"
+msgstr "<b>장치</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
-msgstr "Velocidad de lectura:"
+msgstr "읽기 속도:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
-msgstr "Reemplazar dispositivo:"
+msgstr "장치 대체:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr "<b>Metadatos</b>"
+msgstr "<b>메타데이터</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
-msgstr "Usar CD-Text"
+msgstr "CD-Text 사용하기"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
-msgstr "Usar CDDB"
+msgstr "CDDB 사용하기"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
-msgstr "Utilizar HTTP en vez de CDDBP"
+msgstr "CDDBP 대신 HTTP 사용하기"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Server:"
-msgstr "Servidor:"
+msgstr "서버:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Path:"
-msgstr "Ruta de Acceso:"
+msgstr "경로:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
-msgstr "Puerto:"
+msgstr "포트:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
 msgid "Audio CD Plugin"
-msgstr "Plugin CD de Audio  "
+msgstr "오디오 CD 플러그인"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
-msgstr "CD de Audio"
+msgstr "오디오 CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
-msgstr "La unidad de disco está vacía."
+msgstr "드라이브가 비어 있습니다."
 
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
-msgstr "Tipo de disco no soportado."
+msgstr "지원하지 않는 디스크 형식입니다."
 
 #: src/cd-menu-items/cd-menu-items.c:32
 msgid "Play CD"
-msgstr "Reproducir CD"
+msgstr "CD 재생"
 
 #: src/cd-menu-items/cd-menu-items.c:32
 msgid "Add CD"
-msgstr "Agregar CD"
+msgstr "CD 추가"
 
 #: src/cd-menu-items/cd-menu-items.c:59
 msgid "Audio CD Menu Items"
-msgstr "Entradas del Menú del CD de Audio"
+msgstr "오디오 CD 메뉴 항목"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
-msgstr "<b>Compresión</b>"
+msgstr "<b>압축</b>"
 
 #: src/compressor/plugin.c:38
 msgid "Center volume:"
-msgstr "Centrar volumen:"
+msgstr "중앙 음량:"
 
 #: src/compressor/plugin.c:41
 msgid "Dynamic range:"
-msgstr "Rango dinámico:"
+msgstr "동적 범위:"
 
 #: src/compressor/plugin.c:60
 msgid "Dynamic Range Compressor"
-msgstr "Compresor de Rango Dinámico"
+msgstr "동적 범위 압축"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
-msgstr "Descodificador de Música de Consolas de Juego"
+msgstr "게임 콘솔 음악 디코더"
 
 #: src/console/configure.c:152
 msgid "General"
-msgstr "General"
+msgstr "일반"
 
 #: src/console/configure.c:154 src/skins/ui_manager.c:176
 msgid "Playback"
-msgstr "Reproducción"
+msgstr "재생"
 
 #: src/console/configure.c:169
 msgid "Bass:"
-msgstr "Bajos: "
+msgstr "저음:"
 
 #: src/console/configure.c:173 src/console/configure.c:184
 #: src/console/configure.c:205
 msgid "secs"
-msgstr "segundos"
+msgstr "초"
 
 #: src/console/configure.c:180
 msgid "Treble:"
-msgstr "Agudos"
+msgstr "고음:"
 
 #: src/console/configure.c:201
 msgid "Default song length:"
-msgstr "Duración de pista predeterminada:"
+msgstr "기본 곡 길이:"
 
 #: src/console/configure.c:207
 msgid "Resampling"
-msgstr "Resampling"
+msgstr "리샘플링"
 
 #: src/console/configure.c:213
 msgid "Enable audio resampling"
-msgstr "Habilitar resampling de audio"
+msgstr "오디오 리샘플링 활성화"
 
 #: src/console/configure.c:228
 msgid "Resampling rate:"
-msgstr "Frecuencia de resampling:"
+msgstr "리샘플링 주파수:"
 
 #: src/console/configure.c:232 src/resample/resample.c:180
 #: src/resample/resample.c:186 src/resample/resample.c:189
@@ -1003,20 +1000,19 @@ msgstr "SPC"
 
 #: src/console/configure.c:244
 msgid "Ignore length from SPC tags"
-msgstr "Ignorar duración proveniente de las etiquetas SPC"
+msgstr "SPC 태그의 길이 무시"
 
 #: src/console/configure.c:245
 msgid "Increase reverb"
-msgstr "Aumentar reverberación"
+msgstr "리버브 증가"
 
 #: src/console/configure.c:270
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
-"La duración predeterminada de la pista, expresada en segundos, es usada para "
-"pistas que no proveen información de su duración (por ejemplo: pistas de "
-"repetición)."
+"초 단위로 표현하는 곡의 기본 길이는 길이 정보를 제공하지 않는 곡(반복 트랙)"
+"에 사용합니다."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -1024,54 +1020,52 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Los fundidos fallaron porque las pistas tienen un número diferente de "
-"canales.  Puedes usar el Mezclador de Canales para convertir las pistas al "
-"mismo número de canales."
+"곡이 다른 채널 수를 가지고 있어 크로스페이딩에 실패했습니다. 곡이 동일한 채"
+"널 수를 가지도록 변환하기 위해 채널 믹서를 사용할 수 있습니다."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Los fundidos fallaron porque las pistas tienen diferentes tasas de bitis.  "
-"Puedes usar el Convertidos de Tasas de Bits para convertir las pistas a la "
-"misma tasa."
+"곡이 다른 샘플주파수를 가지고 있어 크로스페이딩에 실패했습니다. 곡이 동일한 "
+"샘플주파수를 가지도록 변환하기 위해 샘플 주파수 변환기를 사용할 수 있습니다."
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
-msgstr "<b>Fundido</b>"
+msgstr "<b>크로스페이드</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
-msgstr "Encimar:"
+msgstr "오버랩:"
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
-msgstr "Fundir"
+msgstr "크로스페이드"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Cristalizador</b>"
+msgstr "<b>크리스털라이저</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
-msgstr "Intensidad:"
+msgstr "강도:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
-msgstr "Cristalizador"
+msgstr "크리스털라이저"
 
 #: src/cue/cue.c:160
 msgid "Cue Sheet Plugin"
-msgstr "Plugin Cue Sheet"
+msgstr "큐 시트 플러그인"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr "<b>Eco</b>"
+msgstr "<b>울림</b>"
 
 #: src/echo_plugin/echo.c:27
 msgid "Delay:"
-msgstr "Retraso:"
+msgstr "지연:"
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
@@ -1079,99 +1073,99 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr "Retroalimentación:"
+msgstr "반향:"
 
 #: src/echo_plugin/echo.c:33
 msgid "Volume:"
-msgstr "Volumen:"
+msgstr "음량:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr "Eco"
+msgstr "울림"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
-msgstr "Plugin FFmpeg"
+msgstr "FFmpeg 플러그인"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr "Configuración de FileWriter"
+msgstr "FileWriter 설정"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
-msgstr "Formato del archivo de salida:"
+msgstr "출력 파일 형식:"
 
 #: src/filewriter/filewriter.c:439
 msgid "Configure"
-msgstr "Configurar"
+msgstr "설정하기"
 
 #: src/filewriter/filewriter.c:449
 msgid "Save into original directory"
-msgstr "Guardar en el directorio original"
+msgstr "원본 디렉터리에 저장하기"
 
 #: src/filewriter/filewriter.c:454
 msgid "Save into custom directory"
-msgstr "Guardar en un directorio personalizado"
+msgstr "사용자 정의 디렉터리에 저장하기"
 
 #: src/filewriter/filewriter.c:464
 msgid "Output file folder:"
-msgstr "Carpeta del archivo de salida:"
+msgstr "출력 파일 폴더:"
 
 #: src/filewriter/filewriter.c:468
 msgid "Pick a folder"
-msgstr "Escoge una carpeta"
+msgstr "폴더 선택하기"
 
 #: src/filewriter/filewriter.c:481
 msgid "Get filename from:"
-msgstr "Obtener el nombre del archivo desde:"
+msgstr "다음으로부터 파일 이름 가져오기:"
 
 #: src/filewriter/filewriter.c:484
 msgid "original file tags"
-msgstr "etiquetas del archivo original"
+msgstr "원본 파일 태그"
 
 #: src/filewriter/filewriter.c:490
 msgid "original filename"
-msgstr "nombre del archivo original"
+msgstr "원본 파일 이름"
 
 #: src/filewriter/filewriter.c:497
 msgid "Don't strip file name extension"
-msgstr "No quitar la extensión del archivo"
+msgstr "파일 이름 확장자를 빼지 않기"
 
 #: src/filewriter/filewriter.c:506
 msgid "Prepend track number to filename"
-msgstr "Colocar primero el número de pista en el nombre del archivo"
+msgstr "트랙 번호를 파일 이름으로 간주하기"
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr "Plugin FileWriter"
+msgstr "FileWriter 플러그인"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
-msgstr "Auto"
+msgstr "자동"
 
 #: src/filewriter/mp3.c:37
 msgid "Joint Stereo"
-msgstr "Estéreo Unido"
+msgstr "통합 스테레오"
 
 #: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
-msgstr "Estéreo"
+msgstr "스테레오"
 
 #: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
-msgstr "Monoaural"
+msgstr "모도"
 
 #: src/filewriter/mp3.c:688
 msgid "MP3 Configuration"
-msgstr "Configuración MP3"
+msgstr "MP3 설정"
 
 #: src/filewriter/mp3.c:712
 msgid "Algorithm Quality:"
-msgstr "Calidad del algoritmo:"
+msgstr "알고리즘 품질:"
 
 #: src/filewriter/mp3.c:737
 msgid "Output Samplerate:"
-msgstr "Frecuencia de muestrei de salida:"
+msgstr "출력 샘플주파수:"
 
 #: src/filewriter/mp3.c:765
 msgid "(Hz)"
@@ -1179,75 +1173,75 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr "Relación de Tasa de bits / Compresión:"
+msgstr "비트전송율 / 압축율:"
 
 #: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
-msgstr "Tasa de bits (kbps):"
+msgstr "비트전송율(kbps):"
 
 #: src/filewriter/mp3.c:829
 msgid "Compression ratio:"
-msgstr "Tasa de Compresión"
+msgstr "압축율:"
 
 #: src/filewriter/mp3.c:853
 msgid "Audio Mode:"
-msgstr "Modo de audio:"
+msgstr "오디오 모드:"
 
 #: src/filewriter/mp3.c:878
 msgid "Misc:"
-msgstr "Misc.:"
+msgstr "기타:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr "Forzar conformidad ISO estricta"
+msgstr "엄격한 ISO 규격 강제"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
-msgstr "Error de protección"
+msgstr "오류 방지"
 
 #: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
 msgid "Quality"
-msgstr "Calidad"
+msgstr "음질"
 
 #: src/filewriter/mp3.c:921
 msgid "Enable VBR/ABR"
-msgstr "Habilitar VBR/ABR"
+msgstr "VBR/ABR 활성화"
 
 #: src/filewriter/mp3.c:931
 msgid "Type:"
-msgstr "Tipo:"
+msgstr "형식:"
 
 #: src/filewriter/mp3.c:964
 msgid "VBR Options:"
-msgstr "Opciones VBR:"
+msgstr "VBR 옵션:"
 
 #: src/filewriter/mp3.c:980
 msgid "Minimum bitrate (kbps):"
-msgstr "Tasa de bits mínima (kbps):"
+msgstr "최소 비트레이트(kbps):"
 
 #: src/filewriter/mp3.c:1007
 msgid "Maximum bitrate (kbps):"
-msgstr "Tasa de bits máxima (kbps):"
+msgstr "최대 비트레이트(kbps):"
 
 #: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
-msgstr "Forzar estríctamente tasa de bits mínima"
+msgstr "최소 비트전송율을 철저하게 강제"
 
 #: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
-msgstr "Opciones ABR:"
+msgstr "ABR 옵션:"
 
 #: src/filewriter/mp3.c:1052
 msgid "Average bitrate (kbps):"
-msgstr "Promedio de tasa de bits (kbps):"
+msgstr "평균 비트전송율(kbps):"
 
 #: src/filewriter/mp3.c:1080
 msgid "VBR quality level:"
-msgstr "Nivel de calidad VBR:"
+msgstr "VBR 음질 수준:"
 
 #: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
-msgstr "No escribir encabezado VBR Xing"
+msgstr "Xing VBR 헤더 기록하지 않기"
 
 #: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
@@ -1255,411 +1249,411 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr "Parametros de Marco:"
+msgstr "프레임 인자:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
-msgstr "Marcar como copyright"
+msgstr "Copyright로 표시"
 
 #: src/filewriter/mp3.c:1144
 msgid "Mark as original"
-msgstr "Marcar como original"
+msgstr "원본으로 표시"
 
 #: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
-msgstr "Parámetros ID3:"
+msgstr "ID3 인자:"
 
 #: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
-msgstr "Forzar adición de etiquetas versión 2"
+msgstr "버전 2 태그 추가사항 강제"
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr "Sólo agrega etiqueta v1"
+msgstr "v1 태그만 추가"
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr "Sólo agrega etiqueta v2"
+msgstr "v2 태그만 추가"
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
-msgstr "Etiquetas"
+msgstr "태그"
 
 #: src/filewriter/vorbis.c:212
 msgid "Vorbis Encoder Configuration"
-msgstr "Configuración del codificador Vorbis"
+msgstr "Vorbis 인코더 설정"
 
 #: src/filewriter/vorbis.c:235
 msgid "Quality level (0 - 10):"
-msgstr "Nivel de calidad (0-10):"
+msgstr "음질 수준(0-10):"
 
 #: src/flacng/plugin.c:271
 msgid "FLAC Decoder"
-msgstr "Descodificador FLAC"
+msgstr "FLAC 디코더"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
-msgstr "Plugin GIO"
+msgstr "GIO 플러그인"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
-msgstr "Atajos Gnome"
+msgstr "그놈 바로 가기"
 
 #: src/gtkui/columns.c:33
 msgid "Entry number"
-msgstr "Número de entrada"
+msgstr "항목 번호"
 
 #: src/gtkui/columns.c:33
 msgid "Title"
-msgstr "Título"
+msgstr "제목"
 
 #: src/gtkui/columns.c:34
 msgid "Artist"
-msgstr "Artista"
+msgstr "음악가"
 
 #: src/gtkui/columns.c:34
 msgid "Year"
-msgstr "Año"
+msgstr "연도"
 
 #: src/gtkui/columns.c:34
 msgid "Album"
-msgstr "Álbum"
+msgstr "음반"
 
 #: src/gtkui/columns.c:34
 msgid "Track"
-msgstr "Pista"
+msgstr "트랙"
 
 #: src/gtkui/columns.c:34
 msgid "Genre"
-msgstr "Género"
+msgstr "장르"
 
 #: src/gtkui/columns.c:35
 msgid "Queue position"
-msgstr "Posición en cola"
+msgstr "대기 목록 위치"
 
 #: src/gtkui/columns.c:35
 msgid "Length"
-msgstr "Duración"
+msgstr "길이"
 
 #: src/gtkui/columns.c:35
 msgid "File path"
-msgstr "Ruta del archivo"
+msgstr "파일 경로"
 
 #: src/gtkui/columns.c:35
 msgid "File name"
-msgstr "Nombre del archivo"
+msgstr "파일 이름"
 
 #: src/gtkui/columns.c:36
 msgid "Custom title"
-msgstr "Título personalizado"
+msgstr "사용자 정의 제목"
 
 #: src/gtkui/columns.c:36
 msgid "Bitrate"
-msgstr "Tasa de bits"
+msgstr "비트 전송율"
 
 #: src/gtkui/columns.c:275
 msgid "Choose Columns"
-msgstr "Seleccionar Columnas"
+msgstr "컬럼 선택"
 
 #: src/gtkui/columns.c:291
 msgid "Available:"
-msgstr "Disponibles:"
+msgstr "사용 가능 여부:"
 
 #: src/gtkui/columns.c:325
 msgid "Chosen:"
-msgstr "Seleccionadas:"
+msgstr "선택한 요소:"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Left"
-msgstr "Acoplar a la izquierda"
+msgstr "왼편에 붙이기"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Right"
-msgstr "Acoplar a la derecha"
+msgstr "오른편에 붙이기"
 
 #: src/gtkui/layout.c:121
 msgid "Dock at Top"
-msgstr "Acoplar arriba"
+msgstr "상단에 붙이기"
 
 #: src/gtkui/layout.c:121
 msgid "Dock at Bottom"
-msgstr "Acoplar abajo"
+msgstr "하단에 붙이기"
 
 #: src/gtkui/layout.c:121
 msgid "Undock"
-msgstr "Desacoplar"
+msgstr "떼어내기"
 
 #: src/gtkui/layout.c:121 src/ladspa/plugin.c:624
 msgid "Disable"
-msgstr "Dehabilitar"
+msgstr "비활성화"
 
 #: src/gtkui/menus.c:159
 msgid "_Open Files ..."
-msgstr "_Abrir archivos..."
+msgstr "파일 열기(_O) ..."
 
 #: src/gtkui/menus.c:160
 msgid "Open _URL ..."
-msgstr "Abrir _URL..."
+msgstr "URL 열기(_U) ..."
 
 #: src/gtkui/menus.c:161
 msgid "_Add Files ..."
-msgstr "A_gregar archivos..."
+msgstr "파일 추가(_A) ..."
 
 #: src/gtkui/menus.c:162
 msgid "Add U_RL ..."
-msgstr "Agregar U_RL..."
+msgstr "URL 추가(_R) ..."
 
 #: src/gtkui/menus.c:164
 msgid "_Search Library"
-msgstr "_Buscar Librería"
+msgstr "라이브러리 검색(_S)"
 
 #: src/gtkui/menus.c:166
 msgid "A_bout ..."
-msgstr "A_cerca..."
+msgstr "정보(_B) ..."
 
 #: src/gtkui/menus.c:167
 msgid "_Preferences ..."
-msgstr "_Preferencias"
+msgstr "기본 설정(_P) ..."
 
 #: src/gtkui/menus.c:168 src/skins/ui_manager.c:414
 msgid "_Quit"
-msgstr "_Salir"
+msgstr "나가기(_Q)"
 
 #: src/gtkui/menus.c:171 src/gtkui/menus.c:258
 msgid "_Play"
-msgstr "_Reproducir"
+msgstr "재생(_P)"
 
 #: src/gtkui/menus.c:172
 msgid "Paus_e"
-msgstr "Pa_usa"
+msgstr "일시정지(_E)"
 
 #: src/gtkui/menus.c:173
 msgid "_Stop"
-msgstr "_Detener"
+msgstr "정지(_S)"
 
 #: src/gtkui/menus.c:174
 msgid "Pre_vious"
-msgstr "_Anterior"
+msgstr "이전(_V)"
 
 #: src/gtkui/menus.c:175
 msgid "_Next"
-msgstr "Siguie_nte"
+msgstr "다음(_N)"
 
 #: src/gtkui/menus.c:177
 msgid "_Repeat"
-msgstr "Repe_tir"
+msgstr "반복(_R)"
 
 #: src/gtkui/menus.c:178
 msgid "S_huffle"
-msgstr "A_leatorio"
+msgstr "뒤섞기(_H)"
 
 #: src/gtkui/menus.c:179
 msgid "N_o Playlist Advance"
-msgstr "_No avanzar Lista de Reprod."
+msgstr "재생 목록 미리 알리지 않음(_O)"
 
 #: src/gtkui/menus.c:180
 msgid "Stop _After This Song"
-msgstr "Detener de_spués de esta pista"
+msgstr "이 곡 이후 정지(_A)"
 
 #: src/gtkui/menus.c:182 src/gtkui/menus.c:246
 msgid "Song _Info ..."
-msgstr "_Información de pista..."
+msgstr "곡 정보(_I) ..."
 
 #: src/gtkui/menus.c:183
 msgid "Jump to _Time ..."
-msgstr "Saltar al _tiempo"
+msgstr "시간 건너뛰기(_T) ..."
 
 #: src/gtkui/menus.c:184
 msgid "_Jump to Song ..."
-msgstr "Saltar a la _pista"
+msgstr "곡 건너뛰기(_J) ..."
 
 #: src/gtkui/menus.c:187
 msgid "By Track _Number"
-msgstr "Por _Núm de pista"
+msgstr "트랙 번호순(_N)"
 
 #: src/gtkui/menus.c:188
 msgid "By _Title"
-msgstr "Por _Título"
+msgstr "제목순(_T)"
 
 #: src/gtkui/menus.c:189
 msgid "By _Artist"
-msgstr "Por_Artista"
+msgstr "음악가 이름순(_A)"
 
 #: src/gtkui/menus.c:190
 msgid "By A_lbum"
-msgstr "Por Á_lbum"
+msgstr "음반 제목순(_L)"
 
 #: src/gtkui/menus.c:191
 msgid "By Release _Date"
-msgstr "Por _Fecha de Lanzamiento"
+msgstr "출시 일자순(_D)"
 
 #: src/gtkui/menus.c:192
 msgid "By _File Path"
-msgstr "Por _Ruta del Archivo"
+msgstr "파일 경로순(_F)"
 
 #: src/gtkui/menus.c:193
 msgid "By _Custom Title"
-msgstr "Por Título _Personalizado"
+msgstr "사용자 정의 제목순(_C)"
 
 #: src/gtkui/menus.c:195
 msgid "R_everse Order"
-msgstr "_Invertir Orden"
+msgstr "순서 뒤집기(_E)"
 
 #: src/gtkui/menus.c:196
 msgid "_Random Order"
-msgstr "O_rden Aleatorio"
+msgstr "임의 순서(_R)"
 
 #: src/gtkui/menus.c:199
 msgid "_Play This Playlist"
-msgstr "_Reproducir esta Lista de Reproducción"
+msgstr "이 재생 목록 재생(_P)"
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
-msgstr "A_ctualizar"
+msgstr "새로 고침(_R)"
 
 #: src/gtkui/menus.c:201
 msgid "Remove _Unavailable Files"
-msgstr "Remover Archivos No _Disponibles"
+msgstr "사용할 수 없는 파일 제거(_U)"
 
 #: src/gtkui/menus.c:203
 msgid "_Sort"
-msgstr "_Ordenar"
+msgstr "정렬(_S)"
 
 #: src/gtkui/menus.c:205
 msgid "_New"
-msgstr "_Nuevo"
+msgstr "새 파일(_N)"
 
 #: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
-msgstr "Ren_ombrar ..."
+msgstr "이름 바꾸기(_A)..."
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
-msgstr "_Cerrar"
+msgstr "닫기(_C)"
 
 #: src/gtkui/menus.c:209
 msgid "_Import ..."
-msgstr "_Importar..."
+msgstr "가져오기(_I) ..."
 
 #: src/gtkui/menus.c:210
 msgid "_Export ..."
-msgstr "_Exportar..."
+msgstr "내보내기(_E) ..."
 
 #: src/gtkui/menus.c:212
 msgid "Playlist _Manager ..."
-msgstr "Ad_ministrador de Listas de Reproducción ..."
+msgstr "재생 목록 관리자(_M) ..."
 
 #: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
-msgstr "Administrador de _Colas ..."
+msgstr "대기 목록 관리자(_Q) ..."
 
 #: src/gtkui/menus.c:216
 msgid "Volume _Up"
-msgstr "_Aumentar Volumen"
+msgstr "음량 크게(_U)"
 
 #: src/gtkui/menus.c:217
 msgid "Volume _Down"
-msgstr "_Disminuir Volumen"
+msgstr "음량 작게(_D)"
 
 #: src/gtkui/menus.c:219
 msgid "_Equalizer"
-msgstr "_Ecualizador"
+msgstr "이퀄라이저(_E)"
 
 #: src/gtkui/menus.c:221
 msgid "E_ffects"
-msgstr "E_fectos"
+msgstr "효과(_F)"
 
 #: src/gtkui/menus.c:224
 msgid "_Interface"
-msgstr "_Interfaz"
+msgstr "인터페이스(_I)"
 
 #: src/gtkui/menus.c:225
 msgid "_Visualizations"
-msgstr "_Visualizaciones"
+msgstr "시각화(_V)"
 
 #: src/gtkui/menus.c:227
 msgid "Show _Menu Bar"
-msgstr "Mostrar Barra de _Menú"
+msgstr "메뉴 표시줄 보이기(_M)"
 
 #: src/gtkui/menus.c:228
 msgid "Show I_nfo Bar"
-msgstr "Mostrar Barra de I_nformación"
+msgstr "정보 표시줄 보이기(_N)"
 
 #: src/gtkui/menus.c:229
 msgid "Show Info Bar Vis_ualization"
-msgstr "Mostrar Barra de Información de Vis_ualización"
+msgstr "정보 표시줄 시각화 보이기(_U)"
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
-msgstr "Mostrar Barra de E_stado"
+msgstr "상태 표시줄 보이기(_S)"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr "Mostrar Cerrar _Botones"
+msgstr "닫기 단추 보이기(_B)"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
-msgstr "Mostrar Encabezados de _Columna"
+msgstr "컬럼 헤더 보이기(_H)"
 
 #: src/gtkui/menus.c:234
 msgid "Choose _Columns ..."
-msgstr "Seleccionar _Columnas ..."
+msgstr "컬럼 선택(_C) ..."
 
 #: src/gtkui/menus.c:235
 msgid "Scrol_l on Song Change"
-msgstr "Avanzar a_l Cambiar Pista"
+msgstr "곡 바뀔때 스크롤(_L)"
 
 #: src/gtkui/menus.c:238
 msgid "_File"
-msgstr "_Archivo"
+msgstr "파일(_F)"
 
 #: src/gtkui/menus.c:239
 msgid "_Playback"
-msgstr "_Reproducción"
+msgstr "재생(_P)"
 
 #: src/gtkui/menus.c:240
 msgid "P_laylist"
-msgstr "_Lista de Reproducción"
+msgstr "재생 목록(_L)"
 
 #: src/gtkui/menus.c:241 src/gtkui/menus.c:255
 msgid "_Services"
-msgstr "_Servicios"
+msgstr "서비스(_S)"
 
 #: src/gtkui/menus.c:242
 msgid "_Output"
-msgstr "_Salida"
+msgstr "출력(_O)"
 
 #: src/gtkui/menus.c:243
 msgid "_View"
-msgstr "_Ver"
+msgstr "보기(_V)"
 
 #: src/gtkui/menus.c:247
 msgid "_Queue/Unqueue"
-msgstr "_Formar/Desformar"
+msgstr "대기 목록에 넣기/빼기(_Q)"
 
 #: src/gtkui/menus.c:250
 msgid "Cu_t"
-msgstr "Cor_tar"
+msgstr "잘라내기(_T)"
 
 #: src/gtkui/menus.c:251
 msgid "_Copy"
-msgstr "_Copiar"
+msgstr "복사(_C)"
 
 #: src/gtkui/menus.c:252
 msgid "_Paste"
-msgstr "_Pegar"
+msgstr "붙여넣기(_P)"
 
 #: src/gtkui/menus.c:253
 msgid "Select _All"
-msgstr "Seleccion_ar todo"
+msgstr "모두 선택(_A)"
 
 #: src/gtkui/menus.c:259
 msgid "_Rename ..."
-msgstr "_Renombrar ..."
+msgstr "이름 바꾸기(_R) ..."
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
-msgstr "Interfaz GTK"
+msgstr "GTK 인터페이스"
 
 #: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:298
 #, c-format
@@ -1668,7 +1662,7 @@ msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.c:175
 msgid "Buffering ..."
-msgstr "Almacenando en buffer..."
+msgstr "버퍼링 ..."
 
 #: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
@@ -1679,22 +1673,21 @@ msgstr "Audacious"
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:178
 msgid "Error"
-msgstr "Error"
+msgstr "오류"
 
 #: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
 msgid "mono"
-msgstr "monoaural"
+msgstr "모노"
 
 #: src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
 msgid "stereo"
-msgstr "estéreo"
+msgstr "스테레오"
 
 #: src/gtkui/ui_statusbar.c:109
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d canal"
-msgstr[1] "%d canales"
+msgstr[0] "%d개의 채널"
 
 #: src/gtkui/ui_statusbar.c:124
 #, c-format
@@ -1703,71 +1696,71 @@ msgstr "%d kbps"
 
 #: src/hotkey/gui.c:72
 msgid "Previous Track"
-msgstr "Pista Anterior"
+msgstr "이전 트랙"
 
 #: src/hotkey/gui.c:73 src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Play"
-msgstr "Reproducir"
+msgstr "재생"
 
 #: src/hotkey/gui.c:74
 msgid "Pause/Resume"
-msgstr "Pausa/Continuar"
+msgstr "일시 정지/재개"
 
 #: src/hotkey/gui.c:75 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
 msgid "Stop"
-msgstr "Detener"
+msgstr "정지"
 
 #: src/hotkey/gui.c:76
 msgid "Next Track"
-msgstr "Siguiente Pista"
+msgstr "다음 트랙"
 
 #: src/hotkey/gui.c:77
 msgid "Forward 5 Seconds"
-msgstr "Avanzar 5 Segundos"
+msgstr "5초 빨리감기"
 
 #: src/hotkey/gui.c:78
 msgid "Rewind 5 Seconds"
-msgstr "Regresar 5 Segundos"
+msgstr "5초 되감기"
 
 #: src/hotkey/gui.c:79
 msgid "Mute"
-msgstr "Silenciar"
+msgstr "묵음"
 
 #: src/hotkey/gui.c:80
 msgid "Volume Up"
-msgstr "Aumentar Volumen"
+msgstr "음량 크게"
 
 #: src/hotkey/gui.c:81
 msgid "Volume Down"
-msgstr "Disminuir Volumen"
+msgstr "음량 작게"
 
 #: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
-msgstr "Saltar al Archivo"
+msgstr "파일 건너뛰기"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr "Cambiar Ventana(s) del Reproductor"
+msgstr "재생기 창 전환"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
-msgstr "Mostrar Notificaciones en Pantalla"
+msgstr "화면에 표시 보이기"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle Repeat"
-msgstr "Cambiar Repetir"
+msgstr "반복 여부 전환"
 
 #: src/hotkey/gui.c:86
 msgid "Toggle Shuffle"
-msgstr "Cambiar Aleatorio"
+msgstr "뒤섞기 여부 전환"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
-msgstr "Extender Ventana(s) del Reproductor"
+msgstr "재생기 창 복원"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
-msgstr "(ninguno)"
+msgstr "(없음)"
 
 #: src/hotkey/gui.c:234
 msgid ""
@@ -1776,58 +1769,58 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"No se recomienda asociar los botones primarios del ratón sin modificadores.\n"
+"수정자 없이 주 마우스 단추를 할당 하는것은 추천하지 않습니다.\n"
 "\n"
-"¿Quieres continuar?"
+"계속 진행하시겠습니까?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
-msgstr "Asociar botones del ratón"
+msgstr "마우스 단추 바인딩하기"
 
 #: src/hotkey/gui.c:386
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Configuración del Plugin Global Hotkey"
+msgstr "전역 단축키 플러그인 설정"
 
 #: src/hotkey/gui.c:402
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Presiona una combinación de teclas dentro de un campo de texto.\n"
-"También puedes asociar butones del ratón."
+"텍스트 필드에서 키 조합을 누르십시오.\n"
+"마우스 단추도 넣을 수 있습니다."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
-msgstr "Atajos del teclado:"
+msgstr "단축키:"
 
 #: src/hotkey/gui.c:424
 msgid "<b>Action:</b>"
-msgstr "<b>Acción:</b>"
+msgstr "<b>동작:</b>"
 
 #: src/hotkey/gui.c:431
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Asociación de Teclas:</b>"
+msgstr "<b>키 바인딩:</b>"
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
-msgstr "Hotkeys Globales"
+msgstr "전역 단축키"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
-msgstr "Salida JACK"
+msgstr "JACK 출력"
 
 #: src/ladspa/plugin.c:494
 #, c-format
 msgid "%s Settings"
-msgstr "Ajustes %s"
+msgstr "%s 설정"
 
 #: src/ladspa/plugin.c:562
 msgid "LADSPA Host Settings"
-msgstr "Ajustes del Host LADSPA"
+msgstr "LADSPA 호스트 설정"
 
 #: src/ladspa/plugin.c:571
 msgid "Module paths:"
-msgstr "Rutas de Módulos:"
+msgstr "모듈 경로:"
 
 #: src/ladspa/plugin.c:576
 msgid ""
@@ -1835,35 +1828,34 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Separar rutas múltiples con dos puntos (:).\n"
-"Esas rutas se utilizan además del LADSPA_PATH.\n"
-"Después de agregar nuevas rutas, presiona Intro para buscar plugins nuevos.</"
-"small>"
+"<small>여러 경로를 콜론으로 구분합니다.\n"
+"이 경로들은 LADSPA_PATH에서도 찾았습니다.\n"
+"새 경로를 추가한 다음 새 플러그인 검색을 위해 Enter 키를 누르세요.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
-msgstr "Plugins disponibles:"
+msgstr "사용할 수 있는 플러그인:"
 
 #: src/ladspa/plugin.c:605
 msgid "Enable"
-msgstr "Habilitar"
+msgstr "활성화"
 
 #: src/ladspa/plugin.c:611
 msgid "Enabled plugins:"
-msgstr "Habilitar plugins:"
+msgstr "활성화한 플러그인:"
 
 #: src/ladspa/plugin.c:627
 msgid "Settings"
-msgstr "Ajustes"
+msgstr "설정"
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
-msgstr "Huesped LADSPA"
+msgstr "LADSPA 호스트"
 
 #: src/lirc/lirc.c:77
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: No se puede iniciar soporte LIRC\n"
+msgstr "%s: LIRC 지원을 초기화 할 수 없습니다\n"
 
 #: src/lirc/lirc.c:84
 #, c-format
@@ -1872,221 +1864,221 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: no se pudo leer archivo de configuración LIRC\n"
-"%s: Por favor, lee la documentación de LIRC\n"
-"%s: cómo crear un archivo de configuración LIRC adecuado\n"
+"%s: LIRC 설정 파일을 읽을 수 없습니다\n"
+"%s: 적당한 설정 파일을 어떻게 만드는지\n"
+"%s: LIRC 문서를 읽어주시기 바랍니다\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: intentando reconectar...\n"
+msgstr "%s: 다시 연결 시도 중...\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: comando desconocido \"%s\"\n"
+msgstr "%s: 알 수 없는 명령 \"%s\"\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: desconectado de LIRC\n"
+msgstr "%s: LIRC로부터 끊어졌습니다\n"
 
 #: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: se intentará reconectar cada %d segundos...\n"
+msgstr "%s: 매 %d 초 후 다시 연결을 시도할 것입니다...\n"
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
-msgstr "<b>Conexión</b>"
+msgstr "<b>연결</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr "Reconectar a servidor LIRC"
+msgstr "LIRC 서버에 다시 연결"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr "Espera entes de reconectar:"
+msgstr "다시 연결하기 전에 대기중:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr "Plugin LIRC"
+msgstr "LIRC 플러그인"
 
 #: src/lyricwiki/lyricwiki.c:119
 msgid "No lyrics available"
-msgstr "Letras de canción no disponibles"
+msgstr "가사가 없습니다."
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr "Incapaz de traer %s"
+msgstr "%s을(를) 가져올 수 없습니다"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr "Incapaz de analizar %s"
+msgstr "%s을(를) 해석할 수 없습니다"
 
 #: src/lyricwiki/lyricwiki.c:234
 msgid "Looking for lyrics ..."
-msgstr "Buscando letras de canción ..."
+msgstr "가사 검색중..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr "Sin metadatos de pista"
+msgstr "곡 메타데이터가 빠졌습니다"
 
 #: src/lyricwiki/lyricwiki.c:258
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr "Conectando a lyrics.wikia.com ..."
+msgstr "lyrics.wikia.com에 연결 중..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
-msgstr "Plugin LyricWiki"
+msgstr "LyricWiki 플러그인"
 
 #: src/m3u/m3u.c:123
 msgid "M3U Playlists"
-msgstr "Listas de Reproducción M3U"
+msgstr "M3U 재생 목록"
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Generador de tact: %d bpm"
+msgstr "Tact 생성기: %d bpm"
 
 #: src/metronom/metronom.c:131
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Generador de tact: %d bpm %d/%d"
+msgstr "Tact 생성기: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
-msgstr "Generador Tact"
+msgstr "Tact 생성기"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>Mezclador de Canales</b>"
+msgstr "<b>채널 믹서</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
-msgstr "Canales de salida:"
+msgstr "출력 채널:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr "Mezclador de Canales"
+msgstr "채널 믹서"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr "Plugin MMS"
+msgstr "MMS 플러그인"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (reproducor Module)"
+msgstr "ModPlug (모듈 재생기)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
-msgstr "Envolvente"
+msgstr "서라운드"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr "Plugin MPG123"
+msgstr "MPG123 플러그인"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr "Servidor MPRIS 2"
+msgstr "MPRIS 2 서버"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Plugin Neon HTTP/HTTPS"
+msgstr "Neon HTTP/HTTPS 플러그인"
 
 #: src/notify/event.c:49
 msgid "Stopped"
-msgstr "Detenido"
+msgstr "정지함"
 
 #: src/notify/event.c:49
 msgid "Audacious is not playing."
-msgstr "Audacious no está reproduciendo."
+msgstr "Audacious가 재생중이 아닙니다."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr "Notificaciones en Escritorio"
+msgstr "데스크톱 알림"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
-msgstr "1. Dispositivo predeterminado"
+msgstr "1. 기본 장치"
 
 #: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
-msgstr "Dispositivo de audio:"
+msgstr "오디오 장치:"
 
 #: src/oss4/plugin.c:77
 msgid "Use alternate device:"
-msgstr "Usar dispositivo alterno:"
+msgstr "대체 장치 사용:"
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr "Guardar volumen entre sesiones."
+msgstr "각 세션의 볼륨을 저장합니다."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
-msgstr "Habilitar las conversiones de formato hechas por el software OSS."
+msgstr "OSS 소프트웨어가 만드는 형 변환을 활성화 합니다."
 
 #: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "Habilitar modo exclusivo para prevenir mezclado virtual."
+msgstr "가상 믹싱을 막는 베타적 모드를 활성화 합니다."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
-msgstr "Salida OSS4"
+msgstr "OSS4 출력"
 
 #: src/pls/pls.c:114
 msgid "PLS Playlists"
-msgstr "Listas de reproducción PLS"
+msgstr "PLS 재생 목록"
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "Descodificador OpenPSF PSF1/PSF2"
+msgstr "OpenPSF PSF1/PSF2 디코더"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr "Salida PulseAudio"
+msgstr "PulseAudio 출력"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
-msgstr "Saltar/repetir muestras"
+msgstr "샘플 건너뛰기/반복하기"
 
 #: src/resample/resample.c:168
 msgid "Linear interpolation"
-msgstr "Interpolación linear"
+msgstr "선형 보간"
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
-msgstr "Interpolación de sincronización rápida"
+msgstr "빠른 sinc함수 보간"
 
 #: src/resample/resample.c:170
 msgid "Medium sinc interpolation"
-msgstr "Interpolación de sincronización media"
+msgstr "중간 sinc함수 보간"
 
 #: src/resample/resample.c:171
 msgid "Best sinc interpolation"
-msgstr "Mejor Interpolación de sincronización"
+msgstr "최상의 sinc함수 보간"
 
 #: src/resample/resample.c:174
 msgid "<b>Conversion</b>"
-msgstr "<b>Conversión</b>"
+msgstr "<b>변환</b>"
 
 #: src/resample/resample.c:175
 msgid "Method:"
-msgstr "Método:"
+msgstr "방식:"
 
 #: src/resample/resample.c:178
 msgid "Rate:"
-msgstr "Tasa:"
+msgstr "주파수:"
 
 #: src/resample/resample.c:181
 msgid "<b>Rate Mappings</b>"
-msgstr "<b>Mapeos de Tasas</b>"
+msgstr "<b>주파수 매핑</b>"
 
 #: src/resample/resample.c:182
 msgid "Use rate mappings"
-msgstr "Usar mapeos de tasas"
+msgstr "주파수 매핑 사용하기"
 
 #: src/resample/resample.c:184
 msgid "8 kHz:"
@@ -2118,15 +2110,15 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:212
 msgid "Sample Rate Converter"
-msgstr "Convertidor de tasa de muestra"
+msgstr "샘플주파수 변환기"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
-msgstr "Cambiar contraseña"
+msgstr "암호 바꾸기"
 
 #: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
-msgstr "<b>Services</b>"
+msgstr "<b>서비스</b>"
 
 #: src/scrobbler/configure.c:143
 msgid "<b>Last.fm</b>"
@@ -2134,35 +2126,35 @@ msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
-msgstr "Nombre de usuario:"
+msgstr "사용자 이름:"
 
 #: src/scrobbler/configure.c:151
 msgid "Password:"
-msgstr "Contraseña:"
+msgstr "암호:"
 
 #: src/scrobbler/configure.c:155
 msgid "Scrobbler URL:"
-msgstr "URL de Scrobbler:"
+msgstr "스크로블러 URL:"
 
 #: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
-msgstr "Scrobbler"
+msgstr "스크로블러"
 
 #: src/sdlout/plugin.c:32
 msgid "SDL Output"
-msgstr "Salida SDL"
+msgstr "SDL 출력"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
-msgstr "Librería"
+msgstr "라이브러리"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Artist"
-msgstr "Artista Desconocido"
+msgstr "알 수 없는 음악가"
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
-msgstr "Álbum Desconocido"
+msgstr "알 수 없는 음반"
 
 #: src/search-tool/search-tool.c:627
 #, c-format
@@ -2170,15 +2162,14 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
-"%s\n"
-"en %s de %s"
+"%3$s의\n"
+"%2$s에 있는 %1$s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "%d álbum"
-msgstr[1] "%d álbumes"
+msgstr[0] "%d개의 음반"
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2190,10 +2181,7 @@ msgid_plural ""
 " %s, %d songs"
 msgstr[0] ""
 "%s\n"
-"%s, %d pista"
-msgstr[1] ""
-"%s\n"
-"%s, %d pistas"
+" %s, %d개의 곡"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2204,87 +2192,84 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
-"%s\n"
-"%d canción de %s"
-msgstr[1] ""
-"%s\n"
-"%d canciones de %s"
+"%1$s\n"
+"%3$s의 곡 %2$d개\t"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
-msgstr "_Crear Lista de Reproducción"
+msgstr "재생 목록 만들기(_C)"
 
 #: src/search-tool/search-tool.c:689
 msgid "_Add to Playlist"
-msgstr "_Agregar a la Lista de Reproducción"
+msgstr "재생 목록 추가하기(_A)"
 
 #: src/search-tool/search-tool.c:729
 msgid "Search library"
-msgstr "Buscar librería"
+msgstr "라이브러리 검색"
 
 #: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Para importar tu librería de música en Audacious, selecciona una carpeta y "
-"luego haz clic en el ícono \"actualizar\"."
+"음악 라이브러리를 Audacious로 가져오려면 폴더를 선택하고 \"새로고침\"아이콘"
+"을 누르십시오."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
-msgstr "Por favor espere..."
+msgstr "기다려 주십시오 ..."
 
 #: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
-msgstr "Seleccione Carpeta"
+msgstr "폴더 선택"
 
 #: src/search-tool/search-tool.c:803
 msgid "Search Tool"
-msgstr "Herramienta de Búsqueda"
+msgstr "검색 도구"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr "Interface Clásica de Winamp"
+msgstr "Winamp 클래식 인터페이스"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Player:"
-msgstr "Re_productor"
+msgstr "재생기(_P):"
 
 #: src/skins/skins_cfg.c:208
 msgid "Select main player window font:"
-msgstr "Selecciona la fuente de la ventana principal del reproductor:"
+msgstr "주 재생기 창 글꼴 선택:"
 
 #: src/skins/skins_cfg.c:210
 msgid "_Playlist:"
-msgstr "_Lista de Reproducción:"
+msgstr "재생 목록(_P):"
 
 #: src/skins/skins_cfg.c:211
 msgid "Select playlist font:"
-msgstr "Selecciona la fuenta de la lista de reproducción:"
+msgstr "재생 목록 글꼴 선택:"
 
 #: src/skins/skins_cfg.c:215
 msgid "<b>_Fonts</b>"
-msgstr "<b>_Fuentes</b>"
+msgstr "<b>글꼴(_F)</b>"
 
 #: src/skins/skins_cfg.c:218
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Usar fuentes de mapa de bits (únicamente soporta ASCII)"
+msgstr "비트맵 글꼴 사용(아스키 전용 지원)"
 
 #: src/skins/skins_cfg.c:220
 msgid "Scroll song title in both directions"
-msgstr "Desplaza el título de la pista en ambas direcciones"
+msgstr "양방향으로 곡 제목 스크롤"
 
 #: src/skins/skins_cfg.c:298
 msgid "<b>_Skin</b>"
-msgstr "<b>_Skin</b>"
+msgstr "<b>스킨(_S)</b>"
 
 #: src/skins/skins_cfg.c:345
 msgid "Interface Preferences"
-msgstr "Preferencias de Interfaz"
+msgstr "인터페이스 기본 설정"
 
 #: src/skins/ui_equalizer.c:333
 msgid "Preamp"
-msgstr "Preamplificación"
+msgstr "프리앰프"
 
 #: src/skins/ui_equalizer.c:337
 msgid "31 Hz"
@@ -2328,44 +2313,44 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:380
 msgid "Audacious Equalizer"
-msgstr "Ecualizador de Audacious"
+msgstr "Audacious 이퀄라이저"
 
 #: src/skins/ui_equalizer.c:898
 msgid "Presets"
-msgstr "Presets"
+msgstr "프리셋"
 
 #: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:452
 msgid "Load preset"
-msgstr "Cargar preset"
+msgstr "프리셋 불러오기"
 
 #: src/skins/ui_equalizer.c:996
 msgid "Load auto-preset"
-msgstr "Cargar auto-preset"
+msgstr "자동 프리셋 불러오기"
 
 #: src/skins/ui_equalizer.c:1026 src/skins/ui_equalizer.c:1044
 #: src/skins/ui_equalizer.c:1060
 msgid "Load equalizer preset"
-msgstr "Cargar preset del ecualizador"
+msgstr "이퀄라이저 프리셋 불러오기"
 
 #: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
 msgid "Save preset"
-msgstr "Guardar preset"
+msgstr "프리셋 저장하기"
 
 #: src/skins/ui_equalizer.c:1095
 msgid "Save auto-preset"
-msgstr "Guardar auto-preset"
+msgstr "자동 프리셋 저장하기"
 
 #: src/skins/ui_equalizer.c:1126 src/skins/ui_equalizer.c:1162
 msgid "Save equalizer preset"
-msgstr "Guardar preset del ecualizador"
+msgstr "이퀄라이저 프리셋 저장하기"
 
 #: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
 msgid "Delete preset"
-msgstr "Borrar preset"
+msgstr "프리셋 삭제하기"
 
 #: src/skins/ui_equalizer.c:1198
 msgid "Delete auto-preset"
-msgstr "Borrar auto-preset"
+msgstr "자동 프리셋 삭제하기"
 
 #: src/skins/ui_main.c:439
 msgid "kbps"
@@ -2377,701 +2362,692 @@ msgstr "kHz"
 
 #: src/skins/ui_main.c:454
 msgid "surround"
-msgstr "envolvente"
+msgstr "서라운드"
 
 #: src/skins/ui_main.c:804
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Saltar a %d:%-2.2d / %d:%-2.2d"
+msgstr "%d 탐색:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:825
 #, c-format
 msgid "Volume: %d%%"
-msgstr "Volumen: %d%%"
+msgstr "음량: %d%%"
 
 #: src/skins/ui_main.c:848
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Balance: %d%% izquierda"
+msgstr "균형: %d%% 왼쪽"
 
 #: src/skins/ui_main.c:850
 msgid "Balance: center"
-msgstr "Balance: central"
+msgstr "균형: 가운데"
 
 #: src/skins/ui_main.c:852
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Balance: %d%% derecha"
+msgstr "균형: %d%% 오른쪽"
 
 #: src/skins/ui_main.c:978
 msgid "Options Menu"
-msgstr "Menú de Opciones"
+msgstr "옵션 메뉴"
 
 #: src/skins/ui_main.c:982
 msgid "Disable 'Always On Top'"
-msgstr "Deshabilitar 'Siempre Encima'"
+msgstr "'항상 위' 비활성화"
 
 #: src/skins/ui_main.c:984
 msgid "Enable 'Always On Top'"
-msgstr "Habilitar 'Siempre Encima'"
+msgstr "'항상 위' 활성화"
 
 #: src/skins/ui_main.c:987
 msgid "File Info Box"
-msgstr "Caja de Información del Archivo"
+msgstr "파일 정보 상자"
 
 #: src/skins/ui_main.c:992
 msgid "Visualization Menu"
-msgstr "Menú de Visualización"
+msgstr "시각화 메뉴"
 
 #: src/skins/ui_main.c:1650
 msgid "Single mode."
-msgstr "Modo sencillo."
+msgstr "싱글 모드입니다."
 
 #: src/skins/ui_main.c:1652
 msgid "Playlist mode."
-msgstr "Modo Lista de Reproducción."
+msgstr "재생 목록 모드입니다."
 
 #: src/skins/ui_main.c:1674
 msgid "Stopping after song."
-msgstr "Detener después de la pista."
+msgstr "곡 재생 후 멈추는 중입니다."
 
 #: src/skins/ui_main.c:1676
 msgid "Not stopping after song."
-msgstr "No detener después de la pista"
+msgstr "곡 재생 후 멈추는 중이 아닙니다."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Song Name"
-msgstr "Auto-desplazar Nombre de Pista"
+msgstr "자동 스크롤 곡 이름"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
-msgstr "Detener después de la pista actual"
+msgstr "현재 곡 다음 정지"
 
 #: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 msgid "Peaks"
-msgstr "Picos"
+msgstr "피크"
 
 #: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 msgid "Repeat"
-msgstr "Repetir"
+msgstr "반복"
 
 #: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
-msgstr "Aleatorio"
+msgstr "뒤섞기"
 
 #: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
-msgstr "No avanzar Lista de Reproducción"
+msgstr "이전 재생목록이 없습니다"
 
 #: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Show Player"
-msgstr "Mostrar Reproductor"
+msgstr "재생기 보이기"
 
 #: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Show Playlist Editor"
-msgstr "Mostrar Editor de Listas de Reproducción"
+msgstr "재생 목록 편집기 보이기"
 
 #: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 msgid "Show Equalizer"
-msgstr "Mostrar Ecualizador"
+msgstr "이퀄라이저 보이기"
 
 #: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
 msgid "Always on Top"
-msgstr "Siempre Encima"
+msgstr "항상 위"
 
 #: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
 msgid "Put on All Workspaces"
-msgstr "Colocar en TODOS los Espacios de Trabajo"
+msgstr "모든 작업 공간에 놓기"
 
 #: src/skins/ui_manager.c:100 src/skins/ui_manager.c:101
 msgid "Roll up Player"
-msgstr "Enrollar Reproductor"
+msgstr "롤업 재생기"
 
 #: src/skins/ui_manager.c:103 src/skins/ui_manager.c:104
 msgid "Roll up Playlist Editor"
-msgstr "Enrollar Editor de Listas de Resproducción"
+msgstr "롤업 재생 목록 편집기"
 
 #: src/skins/ui_manager.c:106 src/skins/ui_manager.c:107
 msgid "Roll up Equalizer"
-msgstr "Enrollar Ecualizador"
+msgstr "롤업 이퀄라이저"
 
 #: src/skins/ui_manager.c:115
 msgid "Analyzer"
-msgstr "Analizador de Espectro"
+msgstr "분석기"
 
 #: src/skins/ui_manager.c:116
 msgid "Scope"
-msgstr "Osciloscopio"
+msgstr "표시기"
 
 #: src/skins/ui_manager.c:117
 msgid "Voiceprint"
-msgstr "Espectrograma"
+msgstr "음성 출력"
 
 #: src/skins/ui_manager.c:118
 msgid "Off"
-msgstr "Apagado"
+msgstr "끄기"
 
 #: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
 #: src/skins/ui_manager.c:145
 msgid "Normal"
-msgstr "Normal"
+msgstr "보통"
 
 #: src/skins/ui_manager.c:123 src/skins/ui_manager.c:140
 msgid "Fire"
-msgstr "Fuego"
+msgstr "불"
 
 #: src/skins/ui_manager.c:124
 msgid "Vertical Lines"
-msgstr "Líneas verticales"
+msgstr "수직선"
 
 #: src/skins/ui_manager.c:128
 msgid "Lines"
-msgstr "Líneas"
+msgstr "선"
 
 #: src/skins/ui_manager.c:129
 msgid "Bars"
-msgstr "Barras"
+msgstr "막대"
 
 #: src/skins/ui_manager.c:133
 msgid "Dot Scope"
-msgstr "Osciloscopio de Puntos"
+msgstr "점 표시기"
 
 #: src/skins/ui_manager.c:134
 msgid "Line Scope"
-msgstr "Osciloscopio de Líneas"
+msgstr "선 표시기"
 
 #: src/skins/ui_manager.c:135
 msgid "Solid Scope"
-msgstr "Osciloscopio Sólido"
+msgstr "면 표시기"
 
 #: src/skins/ui_manager.c:141
 msgid "Ice"
-msgstr "Hielo"
+msgstr "얼음"
 
 #: src/skins/ui_manager.c:146
 msgid "Smooth"
-msgstr "Suave"
+msgstr "부드럽게"
 
 #: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 msgid "Slowest"
-msgstr "Muy lento"
+msgstr "가장 느리게"
 
 #: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
 msgid "Slow"
-msgstr "Lento"
+msgstr "느리게"
 
 #: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Medium"
-msgstr "Medio"
+msgstr "중간"
 
 #: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 msgid "Fast"
-msgstr "Rápido"
+msgstr "빠르게"
 
 #: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
 msgid "Fastest"
-msgstr "Muy rápido"
+msgstr "가장 빠르게"
 
 #: src/skins/ui_manager.c:166
 msgid "Time Elapsed"
-msgstr "Tiempo Transcurrido"
+msgstr "걸린 시간"
 
 #: src/skins/ui_manager.c:167
 msgid "Time Remaining"
-msgstr "Tiempo Faltante"
+msgstr "남은 시간"
 
 #: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Pause"
-msgstr "Pausa"
+msgstr "일시 정지"
 
 #: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
 msgid "Previous"
-msgstr "Anterior"
+msgstr "이전"
 
 #: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
 msgid "Next"
-msgstr "Siguiente"
+msgstr "다음"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization"
-msgstr "Visualización"
+msgstr "시각화"
 
 #: src/skins/ui_manager.c:197
 msgid "Visualization Mode"
-msgstr "Modo de Visualización"
+msgstr "시각화 모드"
 
 #: src/skins/ui_manager.c:198
 msgid "Analyzer Mode"
-msgstr "Analizador de Espectro"
+msgstr "분석기 모드"
 
 #: src/skins/ui_manager.c:199
 msgid "Scope Mode"
-msgstr "Osciloscopio "
+msgstr "표시기 모드"
 
 #: src/skins/ui_manager.c:200
 msgid "Voiceprint Mode"
-msgstr "Espectrograma"
+msgstr "음성출력 모드"
 
 #: src/skins/ui_manager.c:201
 msgid "WindowShade VU Mode"
-msgstr "VU WindowShade"
+msgstr "WindowShade VU 모드"
 
 #: src/skins/ui_manager.c:202
 msgid "Analyzer Falloff"
-msgstr "Caída del analizador"
+msgstr "분석기 감소"
 
 #: src/skins/ui_manager.c:203
 msgid "Peaks Falloff"
-msgstr "Caida del pico"
+msgstr "피크 감소"
 
 #: src/skins/ui_manager.c:208
 msgid "Playlist"
-msgstr "Lista de Reproducción"
+msgstr "재생 목록"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Play Playlist"
-msgstr "Reproducir Lista de Reproducción"
+msgstr "재생 목록 재생하기"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
-msgstr "Nueva Lista de Reproducción"
+msgstr "새 재생 목록"
 
 #: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Next Playlist"
-msgstr "Siguiente Lista de Reproducción"
+msgstr "다음 재생 목록 선택"
 
 #: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Select Previous Playlist"
-msgstr "Anterior Lista de Reproducción"
+msgstr "이전 재생 목록 선택"
 
 #: src/skins/ui_manager.c:222 src/skins/ui_manager.c:223
 msgid "Delete Playlist"
-msgstr "Borrar Lista de Reproducción"
+msgstr "재생 목록 삭제"
 
 #: src/skins/ui_manager.c:225
 msgid "Import Playlist"
-msgstr "Importar Lista de Reproducción"
+msgstr "재생 목록 가져오기"
 
 #: src/skins/ui_manager.c:226
 msgid "Loads a playlist file into the selected playlist."
-msgstr ""
-"Carga una lista de reproducción dentro de la lista de reproducción "
-"seleccionada"
+msgstr "선택한 재생 목록에 재생 목록 파일을 불러옵니다."
 
 #: src/skins/ui_manager.c:229
 msgid "Export Playlist"
-msgstr "Exportar Lista de Reproducción"
+msgstr "재생 목록 내보내기"
 
 #: src/skins/ui_manager.c:230
 msgid "Saves the selected playlist."
-msgstr "Guardar la Lista de Reproducción seleccionada"
+msgstr "선택한 재생 목록을 저장합니다."
 
 #: src/skins/ui_manager.c:232
 msgid "Refresh List"
-msgstr "Actualizar Lista"
+msgstr "목록 새로 고침"
 
 #: src/skins/ui_manager.c:233
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr "Actualiza metadatos asociados con una entrada de Lista de Reproducción"
+msgstr "재생 목록 항목과 관련된 메타데이터를 새로 고칩니다."
 
 #: src/skins/ui_manager.c:236
 msgid "Playlist Manager"
-msgstr "Administrador de Listas de Reproducción"
+msgstr "재생 목록 관리자"
 
 #: src/skins/ui_manager.c:239
 msgid "Queue Manager"
-msgstr "Aministrador de Colas"
+msgstr "대기 목록 관리자"
 
 #: src/skins/ui_manager.c:244
 msgid "View"
-msgstr "Ver"
+msgstr "보기"
 
 #: src/skins/ui_manager.c:245
 msgid "Interface"
-msgstr "Interfaz"
+msgstr "인터페이스"
 
 #: src/skins/ui_manager.c:246
 msgid "Interface Preferences ..."
-msgstr "Preferencias de Interfaz..."
+msgstr "인터페이스 기본 설정 ..."
 
 #: src/skins/ui_manager.c:251
 msgid "Add Internet Address..."
-msgstr "Agregar Dirección de Internet..."
+msgstr "인터넷 주소 추가..."
 
 #: src/skins/ui_manager.c:252
 msgid "Adds a remote track to the playlist."
-msgstr "Agrega una pista remota a la Lista de Reproducción"
+msgstr "원격 트랙을 재생 목록에 추가합니다."
 
 #: src/skins/ui_manager.c:255
 msgid "Add Files..."
-msgstr "Agregar Archivos..."
+msgstr "파일 추가..."
 
 #: src/skins/ui_manager.c:256
 msgid "Adds files to the playlist."
-msgstr "Agregar archivos a la Lista de Reproducción."
+msgstr "파일을 재생 목록에 추가합니다."
 
 #: src/skins/ui_manager.c:261
 msgid "Search and Select"
-msgstr "Buscar y Seleccionar"
+msgstr "검색하고 선택"
 
 #: src/skins/ui_manager.c:262
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
-"Busca la lista de reproducción y selecciona las entradas basado en criterios "
-"específicos."
+"재생 목록을 검색하고 지정한 검색어를 기반으로 재생 목록 항목을 선택합니다."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
-msgstr "Invertir Selección"
+msgstr "선택 반전"
 
 #: src/skins/ui_manager.c:266
 msgid "Inverts the selected and unselected entries."
-msgstr "Invierte las entradas seleccionadas y no seleccionadas."
+msgstr "선택한, 선택하지 않은 항목을 반전합니다."
 
 #: src/skins/ui_manager.c:269
 msgid "Select All"
-msgstr "Selecciona Todo"
+msgstr "모두 선택"
 
 #: src/skins/ui_manager.c:270
 msgid "Selects all of the playlist entries."
-msgstr "Selecciona todas las entradas de la Lista de Reproducción."
+msgstr "모든 재생 목록의 항목을 선택합니다."
 
 #: src/skins/ui_manager.c:273
 msgid "Select None"
-msgstr "Selecciona ninguno"
+msgstr "선택하지 않음"
 
 #: src/skins/ui_manager.c:274
 msgid "Deselects all of the playlist entries."
-msgstr "Quita la selección de todas las entradas de la lista de reproducción."
+msgstr "모든 재생 목록의 항목의 선택을 취소합니다."
 
 #: src/skins/ui_manager.c:279
 msgid "Remove All"
-msgstr "Quitar Todo"
+msgstr "모두 제거"
 
 #: src/skins/ui_manager.c:280
 msgid "Removes all entries from the playlist."
-msgstr "Quita todas las entradas de la lista de reproducción."
+msgstr "모든 재생 목록의 항목을  제거합니다."
 
 #: src/skins/ui_manager.c:283
 msgid "Clear Queue"
-msgstr "Limpiar Cola de reproducción"
+msgstr "대기 목록 지우기"
 
 #: src/skins/ui_manager.c:284
 msgid "Clears the queue associated with this playlist."
-msgstr "Limpia la cola asociada con esta lista de reproducción."
+msgstr "이 재생 목록과 관련된 대기 목록을 지웁니다."
 
 #: src/skins/ui_manager.c:287
 msgid "Remove Unavailable Files"
-msgstr "Remueve los Archivos No Disponibles"
+msgstr "사용할 수 없는 파일 제거"
 
 #: src/skins/ui_manager.c:288
 msgid "Removes unavailable files from the playlist."
-msgstr "Remueve los archivos no disponibles de la lista de reproducción."
+msgstr "재생 목록에서 사용할 수 없는 파일을 제거합니다."
 
 #: src/skins/ui_manager.c:291
 msgid "Remove Duplicates"
-msgstr "Remover Duplicados"
+msgstr "복제본 제거"
 
 #: src/skins/ui_manager.c:293 src/skins/ui_manager.c:325
 #: src/skins/ui_manager.c:355
 msgid "By Title"
-msgstr "Por Título"
+msgstr "제목별"
 
 #: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by title."
-msgstr ""
-"Remueve las entradas duplicadas de la lista de reproducción por título."
+msgstr "제목에 따라 재생 목록에서 복제한 항목을 제거합니다."
 
 #: src/skins/ui_manager.c:297 src/skins/ui_manager.c:337
 #: src/skins/ui_manager.c:367
 msgid "By Filename"
-msgstr "Por Nombre de Archivo"
+msgstr "파일 이름별"
 
 #: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
-"Remueve las entradas duplicadas de la lista de reproducción por nombre de "
-"archivo."
+msgstr "파일 이름에 따라 재생 목록에서 복제한 항목을 제거합니다."
 
 #: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
 #: src/skins/ui_manager.c:371
 msgid "By Path + Filename"
-msgstr "Por Ruta + Nombre de archivo"
+msgstr "경로 + 파일 이름별"
 
 #: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
-"Remueve las entradas duplicadas de la lista de reproducción por su ruta "
-"completa."
+msgstr "전체 경로에 따라 재생 목록에서 복제한 항목을 제거합니다."
 
 #: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
-msgstr "Remover No Seleccionados"
+msgstr "선택하지 않은 항목 제거"
 
 #: src/skins/ui_manager.c:306
 msgid "Remove unselected entries from the playlist."
-msgstr "Remueve las entradas no seleccionadas de la lista de reproducción."
+msgstr "재생 목록에서 선택하지 않은 항목을 제거합니다."
 
 #: src/skins/ui_manager.c:309
 msgid "Remove Selected"
-msgstr "Remover Seleccionados"
+msgstr "선택한 항목 제거"
 
 #: src/skins/ui_manager.c:310
 msgid "Remove selected entries from the playlist."
-msgstr "Remueve las entradas seleccionadas de la lista de reproducción."
+msgstr "재생 목록에서 선택한 항목을 제거합니다."
 
 #: src/skins/ui_manager.c:315
 msgid "Randomize List"
-msgstr "Aleatorizar Lista"
+msgstr "목록 순서 뒤섞기"
 
 #: src/skins/ui_manager.c:316
 msgid "Randomizes the playlist."
-msgstr "Aleatoriza la lista de reproducción."
+msgstr "재생 목록을 뒤섞습니다."
 
 #: src/skins/ui_manager.c:319
 msgid "Reverse List"
-msgstr "Invertir Lista"
+msgstr "목록 순서 뒤집기"
 
 #: src/skins/ui_manager.c:320
 msgid "Reverses the playlist."
-msgstr "Invierte el orden de la lista de reproducción."
+msgstr "재생 목록의 순서를 뒤집습니다."
 
 #: src/skins/ui_manager.c:323
 msgid "Sort List"
-msgstr "Ordenar Lista"
+msgstr "목록 정렬"
 
 #: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by title."
-msgstr "Ordena la lista de reproducción por título."
+msgstr "제목순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "By Album"
-msgstr "Por Álbum"
+msgstr "음반 제목순"
 
 #: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by album."
-msgstr "Ordena la lista de reproducción por álbum."
+msgstr "음반 제목 순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "By Artist"
-msgstr "Por Artista"
+msgstr "음악가순"
 
 #: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by artist."
-msgstr "Ordena la lista de reproducción por Artista."
+msgstr "음악가 이름 순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by filename."
-msgstr "Ordena la lista de reproducción por nombre de archivo."
+msgstr "파일 이름순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by full pathname."
-msgstr "Ordena la lista de reproducción por ruta completa."
+msgstr "전체 파일 경로이름 순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "By Date"
-msgstr "Por Fecha"
+msgstr "날짜순"
 
 #: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
 msgid "Sorts the list by modification time."
-msgstr "Ordena la lista de reproducción por hora de modificación."
+msgstr "수정 시각순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "By Track Number"
-msgstr "Por Número de Pista"
+msgstr "트랙 번호순"
 
 #: src/skins/ui_manager.c:350 src/skins/ui_manager.c:380
 msgid "Sorts the list by track number."
-msgstr "Ordena la lista de reproducción por número de pista."
+msgstr "트랙 번호순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:353
 msgid "Sort Selected"
-msgstr "Ordenar Seleccionado"
+msgstr "선택한 항목 정렬"
 
 #: src/skins/ui_manager.c:389
 msgid "File"
-msgstr "Archivo"
+msgstr "파일"
 
 #: src/skins/ui_manager.c:392
 msgid "Plugin Services"
-msgstr "Servicios de Plugin"
+msgstr "플러그인 서비스"
 
 #: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View Track Details"
-msgstr "Ver Detaller de la Pista"
+msgstr "트랙 세부정보 보기"
 
 #: src/skins/ui_manager.c:395 src/skins/ui_manager.c:398
 msgid "View track details"
-msgstr "Ver detalles de la pista"
+msgstr "트랙 세부정보 보기"
 
 #: src/skins/ui_manager.c:400 src/skins/ui_manager.c:401
 msgid "About Audacious"
-msgstr "Acerca de Audacious"
+msgstr "Audacious 정보"
 
 #: src/skins/ui_manager.c:403
 msgid "Play File"
-msgstr "Reproducir Archivo"
+msgstr "파일 재생하기"
 
 #: src/skins/ui_manager.c:404
 msgid "Load and play a file"
-msgstr "Cargar y reproducir un archivo"
+msgstr "파일 불러오고 재생하기"
 
 #: src/skins/ui_manager.c:406
 msgid "Play Location"
-msgstr "Reproducir Dirección"
+msgstr "위치 재생하기"
 
 #: src/skins/ui_manager.c:407
 msgid "Play media from the selected location"
-msgstr "Reproducir medios desde la dirección seleccionada"
+msgstr "선택한 위치에서 미디어를 재생하기"
 
 #: src/skins/ui_manager.c:409
 msgid "Plugin services"
-msgstr "Servicios de plugin"
+msgstr "플러그인 서비스"
 
 #: src/skins/ui_manager.c:411
 msgid "Preferences"
-msgstr "Preferencias"
+msgstr "기본 설정"
 
 #: src/skins/ui_manager.c:412
 msgid "Open preferences window"
-msgstr "Abrir ventana de preferencias"
+msgstr "기본 설정 창 열기"
 
 #: src/skins/ui_manager.c:415
 msgid "Quit Audacious"
-msgstr "Salir de Audacious"
+msgstr "Audacious 나가기"
 
 #: src/skins/ui_manager.c:417 src/skins/ui_manager.c:418
 msgid "Set A-B"
-msgstr "Ajusta A-B"
+msgstr "A-B 설정"
 
 #: src/skins/ui_manager.c:420 src/skins/ui_manager.c:421
 msgid "Clear A-B"
-msgstr "Limpiar A-B"
+msgstr "A-B 지우기"
 
 #: src/skins/ui_manager.c:426 src/skins/ui_manager.c:427
 msgid "Jump to Time"
-msgstr "Saltar al tiempo"
+msgstr "시간 건너뛰기"
 
 #: src/skins/ui_manager.c:429
 msgid "Queue Toggle"
-msgstr "Cambiar Cola"
+msgstr "대기 목록 전환"
 
 #: src/skins/ui_manager.c:430
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr ""
-"Habilita/deshabilita la entrada en la cola de la lista de reproducción."
+msgstr "재생 목록의 대기 목록에 있는 항목을 활성화/비활성화 합니다."
 
 #: src/skins/ui_manager.c:433
 msgid "Copy"
-msgstr "Copiar"
+msgstr "복사"
 
 #: src/skins/ui_manager.c:436
 msgid "Cut"
-msgstr "Cortar"
+msgstr "잘라내기"
 
 #: src/skins/ui_manager.c:439
 msgid "Paste"
-msgstr "Pegar"
+msgstr "붙여넣기"
 
 #: src/skins/ui_manager.c:446
 msgid "Load"
-msgstr "Cargar"
+msgstr "불러오기"
 
 #: src/skins/ui_manager.c:447
 msgid "Import"
-msgstr "Importar"
+msgstr "가져오기"
 
 #: src/skins/ui_manager.c:448
 msgid "Save"
-msgstr "Guardar"
+msgstr "저장"
 
 #: src/skins/ui_manager.c:449
 msgid "Delete"
-msgstr "Borrar"
+msgstr "삭제"
 
 #: src/skins/ui_manager.c:451 src/skins/ui_manager.c:472
 #: src/skins/ui_manager.c:487
 msgid "Preset"
-msgstr "Preset"
+msgstr "프리셋"
 
 #: src/skins/ui_manager.c:454 src/skins/ui_manager.c:475
 #: src/skins/ui_manager.c:490
 msgid "Auto-load preset"
-msgstr "Auto cargar preset"
+msgstr "오토로드 프리셋"
 
 #: src/skins/ui_manager.c:455
 msgid "Load auto-load preset"
-msgstr "Cargar preset auto-load"
+msgstr "오토로드 프리셋 불러오기"
 
 #: src/skins/ui_manager.c:458
 msgid "Load default preset into equalizer"
-msgstr "Cargar preset determinado en el ecualizador"
+msgstr "이퀄라이저에 기본 프리셋 불러오기"
 
 #: src/skins/ui_manager.c:460
 msgid "Zero"
-msgstr "Cero"
+msgstr "영"
 
 #: src/skins/ui_manager.c:461
 msgid "Set equalizer preset levels to zero"
-msgstr "Ajustar niveles preset del ecualizador a cero"
+msgstr "이퀄라이저 프리셋 레벨을 영값으로 설정"
 
 #: src/skins/ui_manager.c:463
 msgid "From file"
-msgstr "Desde archivo"
+msgstr "파일에서"
 
 #: src/skins/ui_manager.c:464
 msgid "Load preset from file"
-msgstr "Cargar preset desde un archivo"
+msgstr "파일에서 프리셋 불러오기"
 
 #: src/skins/ui_manager.c:466
 msgid "From WinAMP EQF file"
-msgstr "Desde archivo WinAMP EQF"
+msgstr "WinAMP EQF 파일에서"
 
 #: src/skins/ui_manager.c:467
 msgid "Load preset from WinAMP EQF file"
-msgstr "Cargar preset desde archivo WinAMP EQF"
+msgstr "WinAMP EQF 파일에서 프리셋 불러오기"
 
 #: src/skins/ui_manager.c:469
 msgid "WinAMP Presets"
-msgstr "Presets WinAMP"
+msgstr "WinAMP 프리셋"
 
 #: src/skins/ui_manager.c:470
 msgid "Import WinAMP presets"
-msgstr "Importar presets WinAMP"
+msgstr "WinAMP 프리셋 가져오기"
 
 #: src/skins/ui_manager.c:476
 msgid "Save auto-load preset"
-msgstr "Guardar preset auto-load"
+msgstr "오토로드 프리셋 저장하기"
 
 #: src/skins/ui_manager.c:479
 msgid "Save default preset"
-msgstr "Guardar preset predeterminado"
+msgstr "기본 프리셋 저장하기"
 
 #: src/skins/ui_manager.c:481
 msgid "To file"
-msgstr "En archivo"
+msgstr "파일로"
 
 #: src/skins/ui_manager.c:482
 msgid "Save preset to file"
-msgstr "Guardar preset en archivo"
+msgstr "프리셋을 파일로 저장하기"
 
 #: src/skins/ui_manager.c:484
 msgid "To WinAMP EQF file"
-msgstr "En archivo WinAMP EQF"
+msgstr "WinAMP EQF 파일로"
 
 #: src/skins/ui_manager.c:485
 msgid "Save preset to WinAMP EQF file"
-msgstr "Guardar present en archivo WinAMP EQF"
+msgstr "프리셋을 WInAMP EQF 파일로 저장하기"
 
 #: src/skins/ui_manager.c:491
 msgid "Delete auto-load preset"
-msgstr "Borrar preset auto-load"
+msgstr "오토로드 프리셋 삭제하기"
 
 #: src/skins/ui_playlist.c:246
 msgid "Search entries in active playlist"
-msgstr "Buscar entradas en la lista de reproducción activa"
+msgstr "활성 재생 목록에서 항목 검색"
 
 #: src/skins/ui_playlist.c:253
 msgid ""
@@ -3080,68 +3056,67 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Selecciona entradas en la lista de reproducción llenando uno o más campos. "
-"Los campos usan la sintaxis de expresiones regulares, mayúsculas o "
-"minísculas indiscriminadas. Si no sabes como trabajan las expresiones "
-"regulares, simplemente inserta una porción literal de lo que buscas."
+"하나 이상의 칸을 채워 재생 목록의 항목을 검색합니다. 대소문자에 관계 없이 정"
+"규표현식 문법을 사용합니다. 정규표현식이 어떻게 동작하는지 모르신다면 검색할 "
+"문장 일부를 넣으시면 됩니다."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
-msgstr "Título: "
+msgstr "제목:"
 
 #: src/skins/ui_playlist.c:269
 msgid "Album: "
-msgstr "Álbum: "
+msgstr "음반:"
 
 #: src/skins/ui_playlist.c:277
 msgid "Artist: "
-msgstr "Artista: "
+msgstr "음악가:"
 
 #: src/skins/ui_playlist.c:285
 msgid "Filename: "
-msgstr "Nombre de Archivo: "
+msgstr "파일 이름:"
 
 #: src/skins/ui_playlist.c:294
 msgid "Clear previous selection before searching"
-msgstr "Limpiar selección previa antes de buscar"
+msgstr "검색하기 전에 이전 선택항목 지우기"
 
 #: src/skins/ui_playlist.c:297
 msgid "Automatically toggle queue for matching entries"
-msgstr "Cambiar automáticamente la cola para las entradas coincidentes"
+msgstr "일치하는 항목에 대해 자동으로 대기 목록을 전환하기"
 
 #: src/skins/ui_playlist.c:300
 msgid "Create a new playlist with matching entries"
-msgstr "Crear una nueva lista de reproducción con las entradas coincidentes"
+msgstr "일치하는 항목에 대해 새 재생 목록 만들기"
 
 #: src/skins/ui_playlist.c:753
 msgid "Audacious Playlist Editor"
-msgstr "Editor de Listas de Reproducción de Audacious"
+msgstr "Audacious 재생 목록 편집기"
 
 #: src/skins/ui_playlist.c:796
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d de %d)"
+msgstr "%1$s (%3$d중 %2$d)"
 
 #: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
-msgstr "Skin de Winamp 2.x comprimida"
+msgstr "압축한 Winamp 2.x 스킨"
 
 #: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Skin de winamp 2.x sin comprimir"
+msgstr "압축하지 않은 Winamp 2.x 스킨"
 
 #: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "No se puede crear el directorio (%s): %s\n"
+msgstr "(%s) 디렉터리를 만들 수 없습니다: %s\n"
 
 #: src/sndfile/plugin.c:437
 msgid "Sndfile Plugin"
-msgstr "Plugin Sndfile"
+msgstr "Sndfile 플러그인"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
-msgstr "Acerca del Plugin de Salida Sndio"
+msgstr "Sndio 출력 플러그인 정보"
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3149,13 +3124,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
-"Plugin de Salida Sndio\n"
+"Sndio 출력 플러그인\n"
 "\n"
-"Escrito por Thomas Pfaff <tpfaff@tp76.info>\n"
+"Thomas Pfaff <tpfaff@tp76.info>가 작성하였습니다\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
-msgstr "Formato no soportado"
+msgstr "지원하지 않는 형식"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3163,47 +3138,43 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
-"Fue solicitado un formato no soportado por el dispositivo de audio.\n"
+"오디오 장치가 지원하지 않는 형식을 요청했습니다.\n"
 "\n"
-"Por favor, intenta nuevamente con el servidor sndio(1) ejecutándose."
+"sndiod(1) 서버를 실행하고 다시 시도해주시기 바랍니다."
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
-msgstr "dispositivo sndio"
+msgstr "sndio 장치"
 
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
-msgstr "(vacío significa predeterminado)"
+msgstr "(빈 값은 기본 값을 의미)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
-msgstr "Cambiar Pista"
+msgstr "곡 바꾸기"
 
 #: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
-msgstr "Comando para ejecutar cuando Audacious comience una nueva pista."
+msgstr "Audacious가 새 곡 재생을 시작할 때 실행할 명령입니다."
 
 #: src/song_change/song_change.c:440 src/song_change/song_change.c:446
 #: src/song_change/song_change.c:452 src/song_change/song_change.c:458
 msgid "Command:"
-msgstr "Comando:"
+msgstr "명령:"
 
 #: src/song_change/song_change.c:444
 msgid "Command to run toward the end of a song."
-msgstr "Comando para ejecutar al final de una pista."
+msgstr "곡의 끝 부분에 다다랐을때 실행할 명령입니다."
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-"Comando para ejecutar cuando Audacious alcance el final de una lista de "
-"reproducción."
+msgstr "재생 목록의 끝에 도달했을 때 실행할 명령입니다."
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"Comando para ejecutar cuando el título de una pista cambie (por ejemplo, "
-"títulos de flujos de red)."
+msgstr "곡의 제목(예: 네트워크 스트림 제목)을 바꿀 때 실행할 명령입니다."
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3223,88 +3194,89 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Puedes usar las siguiente cadenas de formato las\n"
-"cuales serán sustituidas antes de llamar al comando\n"
-"(no todas son útiles para el comando end-of-playlist):\n"
-"%F: Frecuancia (en hertz)\n"
-"%c: Número de canales\n"
-"%f: Nombre de archivo (ruta completa)\n"
-"%l: Duración (en milisegundos)\n"
-"%n o %s: Nombre de pista\n"
-"%r: Tasa (en bits por segundo)\n"
-"%t Posición en la lista de reproducción (%02d)\n"
-"%p Actualmente reproduciendo (1 ó 0)\n"
-"%a Artista\n"
-"%b Álbum\n"
-"%T: Título de pista"
+"명령을 호출하기 전에 대체할 다음의 형식 문자열을\n"
+"사용할 수 있습니다\n"
+"(재생 목록 마지막 시점의 명령으로 다 쓸모 있는것은 아닙니다):\n"
+"\n"
+"%F: 주파수(Hz 단위)\n"
+"%c: 채널 번호\n"
+"%f: 파일 이름(전체 경로)\n"
+"%l: 곡 길이(밀리초 단위)\n"
+"%n or %s: 곡 이름\n"
+"%r: 비트전송율(bps 단위)\n"
+"%t: 재생 목록 위치(%02d)\n"
+"%p: 현재 재생중 여부(1 or 0)\n"
+"%a: 음악가\n"
+"%b: 음반\n"
+"%T: 트랙 제목"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>Parámetros enviados al shell deberán ser encapsulados en "
-"apóstrofes. Hacer otra cosa es un riesgo de seguridad.</span>"
+"<span size='small'>쉘에 전달하는 인자는 따옴표로 감싸야 합니다. 그렇게 하지 "
+"않으면 보안 문제가 생깁니다.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
-msgstr "Comandos"
+msgstr "명령"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr "<b>Velocidad y Tono</b>"
+msgstr "<b>속도와 피치</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr "Velocidad:"
+msgstr "속도:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr "Tono:"
+msgstr "피치:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr "Velocidad y Tono"
+msgstr "속도와 피치"
 
 #: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Acción de rueda central del mouse</b>"
+msgstr "<b>마우스 스크롤 동작</b>"
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
-msgstr "Cambiar volumen"
+msgstr "음량 조절하기"
 
 #: src/statusicon/statusicon.c:403
 msgid "Change playing song"
-msgstr "Cambiar pista en reproducción"
+msgstr "재생중인 곡 바꾸기"
 
 #: src/statusicon/statusicon.c:406
 msgid "<b>Other Settings</b>"
-msgstr "<b>Otras Configuraciones</b>"
+msgstr "<b>기타 설정</b>"
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
-msgstr "Deshabilitar la ventana emergente"
+msgstr "풍선 도움말 창 비활성화"
 
 #: src/statusicon/statusicon.c:409
 msgid "Close to the system tray"
-msgstr "Cerrar a la bandeja del sistema"
+msgstr "시스템 트레이로 전환"
 
 #: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
-msgstr "Avanzar en la lista de reproducción cuando se desplace hacía arriba"
+msgstr "재생목록을 위로 스크롤 할 때 미리 알림"
 
 #: src/statusicon/statusicon.c:420
 msgid "Status Icon"
-msgstr "Ícono de Estado"
+msgstr "상태 아이콘"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Extra Estéreo</b>"
+msgstr "<b>엑스트라 스테레오</b>"
 
 #: src/stereo_plugin/stereo.c:38
 msgid "Extra Stereo"
-msgstr "Extra Estéreo"
+msgstr "엑스트라 스테레오"
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3313,36 +3285,36 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:86
 msgid "Tone Generator: "
-msgstr "Generador de tonos: "
+msgstr "톤 생성기:"
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
-msgstr "Generador de Tonos"
+msgstr "톤 생성기"
 
 #: src/unix-io/unix-io.c:279
 msgid "File I/O Plugin"
-msgstr "Plugin de E/S de Archivos"
+msgstr "파일 입출력 플러그인"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr "Removedor de Voz"
+msgstr "육성 제거"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr "Descodificador Ogg Vorbis"
+msgstr "Ogg Vorbis "
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr "Descodificador VTX"
+msgstr "VTX 디코더"
 
 #: src/wavpack/wavpack.c:345
 msgid "WavPack Decoder"
-msgstr "Descodificador WavPack"
+msgstr "WavPack 디코더"
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr "Descodificador 2SF"
+msgstr "2SF 디코더"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "Listas de Reprod. XML Compartibles (XSPF)"
+msgstr "XML 공유 가능 재생 목록(XSPF)"

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
-"PO-Revision-Date: 2012-06-26 09:47+0000\n"
-"Last-Translator: Shuuji Takahashi <shuuji3@gmail.com>\n"
+"POT-Creation-Date: 2012-07-25 20:41-0400\n"
+"PO-Revision-Date: 2012-07-26 00:36+0000\n"
+"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -158,9 +158,8 @@ msgid "Playlist (optional)"
 msgstr "プレイリスト (オプション)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "次のプレイリストを選択"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -179,7 +178,6 @@ msgid "What do these options mean?"
 msgstr "オプションの説明"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -231,54 +229,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"時刻\n"
-"  アラーム時刻:\n"
-"    アラームが鳴る時刻です。\n"
-"\n"
-"  静かになるまでの時間\n"
-"    アラームが鳴り止むまでの時間です。\n"
-"      (めざましダイアログを閉じなかった場合)\n"
-"\n"
-"\n"
-"曜日\n"
-"  曜日:\n"
-"    アラームが鳴る曜日を選択します。\n"
-"\n"
-"  時刻:\n"
-"    それぞれの曜日のアラーム時刻を選択するか、トグ\n"
-"    ルボタンを選択し、デフォルト時刻に設定します。\n"
-"\n"
-"\n"
-"音量:\n"
-"  フェード:\n"
-"    この時間をかけて、選択した音量まで音量をフェー\n"
-"    ドアップします。\n"
-"\n"
-"  開始:\n"
-"    この音量からフェードを始めます。\n"
-"\n"
-"  終了:\n"
-"    この音量でフェードを終わります。\n"
-"\n"
-"\n"
-"オプション:\n"
-"  追加コマンド:\n"
-"    アラーム時刻になると、このコマンドを実行します。\n"
-"\n"
-"  プレイリスト:\n"
-"    曲を再生する時に、このプレイリストをロードしま\n"
-"    す。ただし、プレイリストは .m3u 拡張子でなけれ\n"
-"    ばなりません。プレイリストを指定しなかった場合、\n"
-"    リストの再生中の曲が使われます。\n"
-"    mp3 または ogg ストリームの URL を指定すること\n"
-"    もできます。ただし、URL からのプレイリストのロー\n"
-"    ドでは、現在は xmms をサポートしていません。\n"
-"\n"
-"  リマインダ:\n"
-"    アラームが止まった時にリマインダを表示します。\n"
-"    表示するには、テキストボックスにリマインダを入\n"
-"    力し、トグルボタンをオンにしてください。\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -1639,7 +1589,7 @@ msgstr "ステータスバーを表示する(_S)"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "閉じるボタンを表示する(_B)"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
@@ -1957,37 +1907,30 @@ msgid "LIRC Plugin"
 msgstr "LIRC プラグイン"
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* MIDI ファイル中に有効な歌詞がありません *"
+msgstr "歌詞が見つかりません"
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "%s が取得できません"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "%s が解析できません"
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
-msgstr ""
-"\n"
-"歌詞を探しています..."
+msgstr "歌詞を検索しています ..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr ""
+msgstr "曲のメタデータが見つかりません"
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
-"\n"
-"lyrics.wikia.com に接続しています..."
+msgstr "lyrics.wikia.com に接続しています ..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
@@ -2181,9 +2124,8 @@ msgid "<b>Services</b>"
 msgstr "<b>サービス</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2669,9 +2611,8 @@ msgid "Playlist"
 msgstr "プレイリスト"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "このプレイリストを再生する(_P)"
+msgstr "プレイリストの再生"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3179,6 +3120,9 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
+"Sndio 出力プラグイン\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
@@ -3372,13 +3316,3 @@ msgstr "2SF デコーダ"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
-
-#~ msgid "Browse..."
-#~ msgstr "開く"
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "歌詞が見つかりませんでした。"

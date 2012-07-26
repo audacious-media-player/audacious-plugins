@@ -6,14 +6,15 @@
 # Alexander Orlov <alxorlov@pochta.ru>, 2007.
 #   <kvantarium@gmail.com>, 2012.
 # NaiLi Rootaerc <theism@mail.ru>, 2012.
+# Rax Garfield <admin@dvizho.ks.ua>, 2012.
 # Sergey V. Mironov <serg0@ulx.ru>, 2009.
 # Sergey V. Mironov <sergo@bk.ru>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
-"PO-Revision-Date: 2012-06-24 18:08+0000\n"
+"POT-Creation-Date: 2012-07-25 20:41-0400\n"
+"PO-Revision-Date: 2012-07-26 00:36+0000\n"
 "Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
@@ -162,9 +163,8 @@ msgid "Playlist (optional)"
 msgstr "Список (выборочно)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Выбрать следующий список"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -183,7 +183,6 @@ msgid "What do these options mean?"
 msgstr "Что же эта опция значит?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -235,55 +234,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"Время\n"
-"  Будильник в:\n"
-"    Время для будильника пришло.\n"
-"\n"
-"  Тишина после:\n"
-"    Остановить будильник по истечении времени.\n"
-"       (если диалог пробуждения не закрыт)\n"
-"\n"
-"\n"
-"Дни\n"
-"  День:\n"
-"    Выберите дни для активации будильника.\n"
-"\n"
-"Время:\n"
-"    Выберите время для будильника на каждый день,\n"
-"    или выберите переключатель чтобы использовать время по-умолчанию.\n"
-"\n"
-"\n"
-"Громкость\n"
-"  Затухание:\n"
-"    Повышать громкость до выбранного уровня громкости\n"
-"    для этого периода времени.\n"
-"\n"
-"  Начать в:\n"
-"    Начать затухание с этого уровня громкости.\n"
-"\n"
-"  Завершить:\n"
-"    Громкость перестанет затухать в.  Если время\n"
-"    затухания равно 0 тогда установить громкость и начать\n"
-"    воспроизводить.\n"
-"\n"
-"\n"
-"Настройки:\n"
-"  Дополнительные команды:\n"
-"    Запустить эту команду во время будильника.\n"
-"\n"
-"  Список:\n"
-"    Загрузить список для воспроизведения из\n"
-"    (с расширением .m3u).  Если список отсутствует,\n"
-"    брать текущую песню.\n"
-"    Ссылка на mp3/ogg поток может быть\n"
-"    введена здесь, но загрузка списка из\n"
-"    ссылок неполностью поддерживается xmms.\n"
-"\n"
-"  Напоминатель:\n"
-"    Отображать напоминание когда будильник отключён,\n"
-"    тип напоминания в окне, если хотите этого\n"
-"    включите переключатель.\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -1393,7 +1343,7 @@ msgstr "Очередь размещения"
 
 #: src/gtkui/columns.c:35
 msgid "Length"
-msgstr "Длинна"
+msgstr "Длительность"
 
 #: src/gtkui/columns.c:35
 msgid "File path"
@@ -1565,7 +1515,7 @@ msgstr "В _случайном порядке"
 
 #: src/gtkui/menus.c:199
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "_Воспроизвести этот список"
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
@@ -1585,7 +1535,7 @@ msgstr "_Новый"
 
 #: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "Пере_именовать"
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
@@ -1601,7 +1551,7 @@ msgstr "_Экспортировать ..."
 
 #: src/gtkui/menus.c:212
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "_Управление списками..."
 
 #: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
@@ -1649,7 +1599,7 @@ msgstr "Показывать _строку состояния"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "Показывать _кнопки закрытия"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
@@ -1709,7 +1659,7 @@ msgstr "Выбрать _всё"
 
 #: src/gtkui/menus.c:259
 msgid "_Rename ..."
-msgstr ""
+msgstr "Пере_именовать..."
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
@@ -1802,7 +1752,7 @@ msgstr "Перейти к файлу"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr ""
+msgstr "Переключить состояние окон проигрывателя"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1818,7 +1768,7 @@ msgstr "Переключить на расброс"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
-msgstr ""
+msgstr "Поднять окна проигрывателя"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -1968,37 +1918,30 @@ msgid "LIRC Plugin"
 msgstr "LIRC Плагин"
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* в этом MIDI-файле нет текстов *"
+msgstr "Текст песни недоступен"
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "Не удалось получить %s"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "Не удалось проанализировать %s"
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
-msgstr ""
-"\n"
-"Ищу слова..."
+msgstr "Ищу текст песни..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Метаданные песни отсутствуют"
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
-"\n"
-"Подключение к lyrics.wikia.com..."
+msgstr "Устанавливаю соединение с lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
@@ -2191,9 +2134,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Службы</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2699,9 +2641,8 @@ msgid "Playlist"
 msgstr "Список воспроизведения"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "PLS Плейлист"
+msgstr "Воспроизвести список"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3210,7 +3151,7 @@ msgstr "Sndfile Плагин"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "О плагине вывода Sndio"
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3218,10 +3159,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
+"Плагин вывода Sndio,\n"
+"\n"
+"автор — Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
-msgstr ""
+msgstr "Неподдерживаемый формат"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3229,14 +3173,17 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"Формат не поддерживается запрошенным звуковым устройством.\n"
+"\n"
+"Попробуйте ещё раз, запустив сервер sndiod(1)."
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
-msgstr ""
+msgstr "Устройство sndio"
 
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
-msgstr ""
+msgstr "(пусто означает «по умолчанию»)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3400,13 +3347,3 @@ msgstr "2SF Декодер"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Разделяемые плейлисты (XSPF)"
-
-#~ msgid "Browse..."
-#~ msgstr "Обзор..."
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "Тексты не обнаружены."

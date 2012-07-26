@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
-"PO-Revision-Date: 2012-07-08 00:07+0000\n"
-"Last-Translator: Sérgio Marques <smarquespt@gmail.com>\n"
+"POT-Creation-Date: 2012-07-25 20:41-0400\n"
+"PO-Revision-Date: 2012-07-26 00:36+0000\n"
+"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Portuguese\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
@@ -158,9 +158,8 @@ msgid "Playlist (optional)"
 msgstr "Lista de reprodução (opcional)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Selecionar lista de reprodução seguinte"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -179,7 +178,6 @@ msgid "What do these options mean?"
 msgstr "O que significam estas opções?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -231,57 +229,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"Horário\n"
-"  Alarme às:\n"
-"    A hora em que o alarme inicia\n"
-"\n"
-"  Silenciar após:\n"
-"    A duração do alarme\n"
-"       (se a caixa de diálogo não for fechada)\n"
-"\n"
-"\n"
-"Dias\n"
-"  Dia:\n"
-"    Selecione os dias para o alarme\n"
-"\n"
-"  Hora:\n"
-"    Escolha a hora do alarme em cada dia,\n"
-"    ou o botão alternar para utilizar\n"
-"    a hora pré-definida\n"
-"\n"
-"\n"
-"Volume\n"
-"  Desvanecimento:\n"
-"    Aumentar o volume até\n"
-"    este valor\n"
-"\n"
-"  Iniciar em: \n"
-"    Iniciar o desvanecimento neste valor\n"
-"\n"
-"  Finalizar: \n"
-"    O volume em que o desvanecimento para.\n"
-"    Se o valor for 0, definir este valor como\n"
-"    volume e iniciar reprodução\n"
-"\n"
-"\n"
-"Opções:\n"
-"  Comando adicional:\n"
-"    Executar este comando com o alarme\n"
-"\n"
-"  Lista de reprodução:\n"
-"    Carregar esta lista de reprodução e reproduzir\n"
-"    (com a extensão .m3u). Se não indicar a lista de\n"
-"    reprodução, as faixas que existirem na lista\n"
-"    serão as utilizadas\n"
-"    Também pode indicar um URL de uma emissão mp3/ogg\n"
-"    mas o carregamento de listas de reprodução em URLs\n"
-"    ainda não é suportado pelo xmms\n"
-"\n"
-"  Lembrete:\n"
-"    Mostra um lembrete se o alarme for desligado\n"
-"    Escreva-o na caixa e ative o botão alternar\n"
-"    se quiser mostrar o lembrete\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -1642,7 +1589,7 @@ msgstr "Mo_strar barra de estado"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "Mostrar _botão para fechar"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
@@ -1960,37 +1907,30 @@ msgid "LIRC Plugin"
 msgstr "Suplemento LIRC"
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* sem letra da música para este ficheiro midi *"
+msgstr "A letra da faixa não está disponível"
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "Não foi possível obter %s"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "Não foi possível processar %s"
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
-msgstr ""
-"\n"
-"A procurar a letra das músicas..."
+msgstr "A procurar letra da faixa..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Detalhes em falta"
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
-"\n"
-"A procurar em lyrics.wikia.com..."
+msgstr "Ligação a lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
@@ -2183,9 +2123,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Serviços</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2684,9 +2623,8 @@ msgid "Playlist"
 msgstr "Lista de reprodução"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "Re_produzir esta lista de reprodução"
+msgstr "Reproduzir lista de reprodução"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3392,13 +3330,3 @@ msgstr "Descodificador 2SF"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Listas de reprodução XML Shareable (XSPF)"
-
-#~ msgid "Browse..."
-#~ msgstr "Procurar..."
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "Não foram encontradas letras"

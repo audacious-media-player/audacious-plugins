@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
-"PO-Revision-Date: 2012-01-12 06:38+0000\n"
-"Last-Translator: Péter Polonkai <polesz@nedudu.hu>\n"
+"POT-Creation-Date: 2012-07-25 20:41-0400\n"
+"PO-Revision-Date: 2012-07-26 00:36+0000\n"
+"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Hungarian\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
@@ -21,11 +21,11 @@ msgstr ""
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr ""
+msgstr "AAC Dekóder"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (AdLib Lejátszó)"
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -158,9 +158,8 @@ msgid "Playlist (optional)"
 msgstr "Lejátszólista (opcionális)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "A következő lejátszólista kijelölése"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -248,9 +247,8 @@ msgid "Thankyou"
 msgstr "Köszönöm"
 
 #: src/albumart/albumart.c:101
-#, fuzzy
 msgid "Album Art"
-msgstr "Album:"
+msgstr "Album borító"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -281,14 +279,12 @@ msgid "Work around drain hangup"
 msgstr ""
 
 #: src/alsa/plugin.c:34
-#, fuzzy
 msgid "ALSA Output"
-msgstr "ALSA kimeneti portok"
+msgstr "ALSA kimenet"
 
 #: src/amidi-plug/amidi-plug.c:39
-#, fuzzy
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug - névjegy"
+msgstr "AMIDI-Plug (MIDI Lejátszó)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -411,11 +407,8 @@ msgid "AMIDI-Plug - select file"
 msgstr "AMIDI-Plug - fájl választás"
 
 #: src/amidi-plug/i_configure.c:110
-#, fuzzy
 msgid "AMIDI-Plug Settings"
 msgstr ""
-"\n"
-"AMIDI-Plug"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -438,9 +431,8 @@ msgid "Load SF on player start"
 msgstr "SF betöltése a lejátszó indításakor"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
-#, fuzzy
 msgid "Load SF on first MIDI file play"
-msgstr "SF betöltése az első midi fájl betöltésekor"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -463,9 +455,8 @@ msgid "value:"
 msgstr "érték:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
-#, fuzzy
 msgid "polyphony"
-msgstr "polifónikus"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -532,9 +523,8 @@ msgid "Length (msec):"
 msgstr "Hossz (msec):"
 
 #: src/amidi-plug/i_fileinfo.c:211
-#, fuzzy
 msgid "No. of Tracks:"
-msgstr "Sáv száma:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -569,16 +559,12 @@ msgid "  (invalid UTF-8)"
 msgstr "  (érvénytelen UTF-8)"
 
 #: src/amidi-plug/i_utils.c:36
-#, fuzzy
 msgid "About AMIDI-Plug"
 msgstr ""
-"\n"
-"AMIDI-Plug"
 
 #: src/aosd/aosd.c:37
-#, fuzzy
 msgid "AOSD (On-Screen Display)"
-msgstr "On-Screen-Display mutatása"
+msgstr ""
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -818,19 +804,16 @@ msgid "ASXv1/ASXv2 Playlists"
 msgstr ""
 
 #: src/audpl/audpl.c:224
-#, fuzzy
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious lejátszólista szerkesztő"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:49
-#, fuzzy
 msgid "<b>Color</b>"
-msgstr "<b>Művelet:</b>"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:58
-#, fuzzy
 msgid "Blur Scope"
-msgstr "Szolid szkóp"
+msgstr ""
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -853,61 +836,52 @@ msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
-#, fuzzy
 msgid "Spectrum Analyzer"
-msgstr "Analizátor"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
-#, fuzzy
 msgid "<b>Device</b>"
-msgstr "<b>Szolgáltatások</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
-#, fuzzy
 msgid "Read speed:"
-msgstr "Lemez sebesség:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
-#, fuzzy
 msgid "Override device:"
-msgstr "Alapértelmezett  eszköz felülírása:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
-#, fuzzy
 msgid "<b>Metadata</b>"
-msgstr "<b>Last FM</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
-msgstr ""
+msgstr "CD-Text használata"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
-msgstr ""
+msgstr "CDDB használata"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
 msgstr "Hasznájon HTTP helyett CDDBP protokollt"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
-#, fuzzy
 msgid "Server:"
 msgstr "Szerver:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
-#, fuzzy
 msgid "Path:"
-msgstr "Útvonal:"
+msgstr "Elérési út:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
-#, fuzzy
 msgid "Port:"
 msgstr "Port:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
-#, fuzzy
 msgid "Audio CD Plugin"
-msgstr "Audio CD bővítmény néjvegye"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
@@ -930,14 +904,12 @@ msgid "Add CD"
 msgstr "CD Hozzáadása"
 
 #: src/cd-menu-items/cd-menu-items.c:59
-#, fuzzy
 msgid "Audio CD Menu Items"
-msgstr "Riasztási beállítások"
+msgstr ""
 
 #: src/compressor/plugin.c:37
-#, fuzzy
 msgid "<b>Compression</b>"
-msgstr "<b>Művelet:</b>"
+msgstr "<b>Tömörítés</b>"
 
 #: src/compressor/plugin.c:38
 msgid "Center volume:"
@@ -948,9 +920,8 @@ msgid "Dynamic range:"
 msgstr "Dinamikus tartomány:"
 
 #: src/compressor/plugin.c:60
-#, fuzzy
 msgid "Dynamic Range Compressor"
-msgstr "Dinamika tartomány kompresszió beállítások"
+msgstr ""
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1033,62 +1004,52 @@ msgid ""
 msgstr ""
 
 #: src/crossfade/crossfade.c:260
-#, fuzzy
 msgid "<b>Crossfade</b>"
-msgstr "<b>Szolgáltatások</b>"
+msgstr ""
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
 msgstr ""
 
 #: src/crossfade/crossfade.c:271
-#, fuzzy
 msgid "Crossfade"
-msgstr "Átfedés névjegye"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:42
-#, fuzzy
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Szolgáltatások</b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
-#, fuzzy
 msgid "Intensity:"
-msgstr "Effektus intenzitása:"
+msgstr "Intenzitás:"
 
 #: src/crystalizer/crystalizer.c:53
-#, fuzzy
 msgid "Crystalizer"
-msgstr "<b>Szolgáltatások</b>"
+msgstr ""
 
 #: src/cue/cue.c:160
-#, fuzzy
 msgid "Cue Sheet Plugin"
-msgstr "Visszhang bővítmény névjegye"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
-#, fuzzy
 msgid "<b>Echo</b>"
-msgstr "<b>Művelet:</b>"
+msgstr "<b>Visszhang</b>"
 
 #: src/echo_plugin/echo.c:27
-#, fuzzy
 msgid "Delay:"
-msgstr "Képernyő:"
+msgstr "Késleltetés:"
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
-#, fuzzy
 msgid "Feedback:"
-msgstr "Visszacsatolás: (%)"
+msgstr ""
 
 #: src/echo_plugin/echo.c:33
-#, fuzzy
 msgid "Volume:"
-msgstr "Hangerő"
+msgstr "Hangerő:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
@@ -1099,9 +1060,8 @@ msgid "FFmpeg Plugin"
 msgstr ""
 
 #: src/filewriter/filewriter.c:409
-#, fuzzy
 msgid "FileWriter Configuration"
-msgstr "Fájl Író beállítások"
+msgstr ""
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1148,9 +1108,8 @@ msgid "Prepend track number to filename"
 msgstr ""
 
 #: src/filewriter/filewriter.c:532
-#, fuzzy
 msgid "FileWriter Plugin"
-msgstr "Fájlíró bővítmény névjegye"
+msgstr ""
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1261,9 +1220,8 @@ msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
-#, fuzzy
 msgid "Frame parameters:"
-msgstr "Keret paraméterek:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
@@ -1306,14 +1264,12 @@ msgid "FLAC Decoder"
 msgstr ""
 
 #: src/gio/gio.c:324
-#, fuzzy
 msgid "GIO Plugin"
-msgstr "OSS4 bővítmény névjegye"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
-#, fuzzy
 msgid "Gnome Shortcuts"
-msgstr "Gnome Parancsikon bővítmény névjegye"
+msgstr ""
 
 #: src/gtkui/columns.c:33
 msgid "Entry number"
@@ -1420,9 +1376,8 @@ msgid "Add U_RL ..."
 msgstr "U_RL hozzáadása ..."
 
 #: src/gtkui/menus.c:164
-#, fuzzy
 msgid "_Search Library"
-msgstr "Keresés a gyűjteményben"
+msgstr "Kere_sés a gyűjteményben"
 
 #: src/gtkui/menus.c:166
 msgid "A_bout ..."
@@ -1521,9 +1476,8 @@ msgid "_Random Order"
 msgstr "Véletlensze_rű sorrend"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "_Play This Playlist"
-msgstr "_Lejátszólista létrehozása"
+msgstr ""
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
@@ -1558,9 +1512,8 @@ msgid "_Export ..."
 msgstr "_Exportálás ..."
 
 #: src/gtkui/menus.c:212
-#, fuzzy
 msgid "Playlist _Manager ..."
-msgstr "_Lejátszólista kezelő ..."
+msgstr ""
 
 #: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
@@ -1599,9 +1552,8 @@ msgid "Show I_nfo Bar"
 msgstr "I_nfo sor mutatása"
 
 #: src/gtkui/menus.c:229
-#, fuzzy
 msgid "Show Info Bar Vis_ualization"
-msgstr "Megjelenítés"
+msgstr "Inf_ormációs sáv mutatása"
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
@@ -1668,9 +1620,8 @@ msgid "Select _All"
 msgstr "Mind kivál_aszt"
 
 #: src/gtkui/menus.c:259
-#, fuzzy
 msgid "_Rename ..."
-msgstr "_Átnevezés"
+msgstr ""
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
@@ -1761,9 +1712,8 @@ msgid "Jump to File"
 msgstr "Ugrás fájlhoz"
 
 #: src/hotkey/gui.c:83
-#, fuzzy
 msgid "Toggle Player Window(s)"
-msgstr "Lejátszó ablakok váltása"
+msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1778,9 +1728,8 @@ msgid "Toggle Shuffle"
 msgstr "Véletlenszerű lejátszás váltása"
 
 #: src/hotkey/gui.c:87
-#, fuzzy
 msgid "Raise Player Window(s)"
-msgstr "Lejátszó ablakok váltása"
+msgstr ""
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -1821,14 +1770,12 @@ msgid "<b>Key Binding:</b>"
 msgstr "<b>Billentyű kötések:</b>"
 
 #: src/hotkey/plugin.c:80
-#, fuzzy
 msgid "Global Hotkeys"
-msgstr "Gyorsbillentyűk:"
+msgstr ""
 
 #: src/jack/jack.c:417
-#, fuzzy
 msgid "JACK Output"
-msgstr "_Kimenet"
+msgstr ""
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1873,7 +1820,7 @@ msgstr ""
 #: src/lirc/lirc.c:77
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr ""
+msgstr "%s: nem sikerült a LIRC támogatás inicializálni\n"
 
 #: src/lirc/lirc.c:84
 #, c-format
@@ -1886,12 +1833,12 @@ msgstr ""
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: újracsatlakozás...\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: ismeretlen parancs \"%s\"\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
@@ -1904,13 +1851,12 @@ msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
 #: src/lirc/lirc.c:411
-#, fuzzy
 msgid "<b>Connection</b>"
-msgstr "<b>Művelet:</b>"
+msgstr ""
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Újracsatlakozás a LIRC szerverhez"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
@@ -1921,9 +1867,8 @@ msgid "LIRC Plugin"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* nem található dalszöveg ehhez a MIDI fájlhoz *"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
@@ -1936,31 +1881,24 @@ msgid "Unable to parse %s"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
 msgstr ""
-"\n"
-"Dalszöveg keresése ..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr ""
-"\n"
-"Csatlakozás a lyrics.wikia.com-hoz ..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
 msgstr ""
 
 #: src/m3u/m3u.c:123
-#, fuzzy
 msgid "M3U Playlists"
-msgstr "Lejátszólista"
+msgstr ""
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -1973,23 +1911,20 @@ msgid "Tact generator: %d bpm %d/%d"
 msgstr "Tact generátor: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:257
-#, fuzzy
 msgid "Tact Generator"
-msgstr "Hang generátor:"
+msgstr ""
 
 #: src/mixer/mixer.c:175
-#, fuzzy
 msgid "<b>Channel Mixer</b>"
-msgstr "Csatorna keverő névjegye"
+msgstr ""
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
 msgstr "Kimeneti csatornák:"
 
 #: src/mixer/mixer.c:186
-#, fuzzy
 msgid "Channel Mixer"
-msgstr "Csatorna keverő névjegye"
+msgstr ""
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
@@ -2040,9 +1975,8 @@ msgid "Use alternate device:"
 msgstr "Alternatív eszköz használata:"
 
 #: src/oss4/plugin.c:81
-#, fuzzy
 msgid "Save volume between sessions."
-msgstr "Hangerő mentése munkamentek között"
+msgstr ""
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -2053,14 +1987,12 @@ msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
 
 #: src/oss4/plugin.c:115
-#, fuzzy
 msgid "OSS4 Output"
-msgstr "_Kimenet"
+msgstr ""
 
 #: src/pls/pls.c:114
-#, fuzzy
 msgid "PLS Playlists"
-msgstr "Lejátszólista"
+msgstr ""
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
@@ -2075,9 +2007,8 @@ msgid "Skip/repeat samples"
 msgstr ""
 
 #: src/resample/resample.c:168
-#, fuzzy
 msgid "Linear interpolation"
-msgstr "Nemzetközi"
+msgstr ""
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
@@ -2092,9 +2023,8 @@ msgid "Best sinc interpolation"
 msgstr ""
 
 #: src/resample/resample.c:174
-#, fuzzy
 msgid "<b>Conversion</b>"
-msgstr "<b>Művelet:</b>"
+msgstr ""
 
 #: src/resample/resample.c:175
 msgid "Method:"
@@ -2105,54 +2035,44 @@ msgid "Rate:"
 msgstr ""
 
 #: src/resample/resample.c:181
-#, fuzzy
 msgid "<b>Rate Mappings</b>"
-msgstr "Ráta leképezések:"
+msgstr ""
 
 #: src/resample/resample.c:182
-#, fuzzy
 msgid "Use rate mappings"
-msgstr "Ráta leképezések:"
+msgstr ""
 
 #: src/resample/resample.c:184
-#, fuzzy
 msgid "8 kHz:"
-msgstr "8 kHz"
+msgstr ""
 
 #: src/resample/resample.c:187
-#, fuzzy
 msgid "16 kHz:"
-msgstr "16 kHz"
+msgstr ""
 
 #: src/resample/resample.c:190
-#, fuzzy
 msgid "22.05 kHz:"
-msgstr "2 kHz"
+msgstr ""
 
 #: src/resample/resample.c:193
-#, fuzzy
 msgid "44.1 kHz:"
-msgstr "1 kHz"
+msgstr ""
 
 #: src/resample/resample.c:196
-#, fuzzy
 msgid "48 kHz:"
-msgstr "8 kHz"
+msgstr ""
 
 #: src/resample/resample.c:199
-#, fuzzy
 msgid "96 kHz:"
-msgstr "16 kHz"
+msgstr ""
 
 #: src/resample/resample.c:202
-#, fuzzy
 msgid "192 kHz:"
-msgstr "2 kHz"
+msgstr ""
 
 #: src/resample/resample.c:212
-#, fuzzy
 msgid "Sample Rate Converter"
-msgstr "Mintavételi konverter beállítások"
+msgstr ""
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
@@ -2163,9 +2083,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Szolgáltatások</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last FM</b>"
+msgstr ""
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2184,22 +2103,20 @@ msgid "Scrobbler"
 msgstr ""
 
 #: src/sdlout/plugin.c:32
-#, fuzzy
 msgid "SDL Output"
-msgstr "_Kimenet"
+msgstr ""
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
 msgstr "Gyűjtemény"
 
 #: src/search-tool/search-tool.c:221
-#, fuzzy
 msgid "Unknown Artist"
-msgstr "Előadó szerint"
+msgstr "Ismeretlen Előadó"
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
-msgstr ""
+msgstr "Ismeretlen Album"
 
 #: src/search-tool/search-tool.c:627
 #, c-format
@@ -2209,11 +2126,11 @@ msgid ""
 msgstr ""
 
 #: src/search-tool/search-tool.c:633
-#, fuzzy, c-format
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "Album szerint"
-msgstr[1] "Album szerint"
+msgstr[0] "%d album"
+msgstr[1] "%d album"
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2224,7 +2141,11 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s\n"
+"%s, %d dal"
 msgstr[1] ""
+"%s\n"
+"%s, %d dal"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2264,9 +2185,8 @@ msgid "Choose Folder"
 msgstr "Mappa választás"
 
 #: src/search-tool/search-tool.c:803
-#, fuzzy
 msgid "Search Tool"
-msgstr "Keresés a gyűjteményben"
+msgstr ""
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -2466,9 +2386,8 @@ msgid "Not stopping after song."
 msgstr "Nincs leállítás az aktuális dal után."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
-#, fuzzy
 msgid "Autoscroll Song Name"
-msgstr "Szám nevének automatikus görgetése"
+msgstr "Dal címének scrollozása"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -2656,9 +2575,8 @@ msgid "Playlist"
 msgstr "Lejátszólista"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "_Lejátszólista létrehozása"
+msgstr ""
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3155,14 +3073,12 @@ msgid "Could not create directory (%s): %s\n"
 msgstr "Nem lehet létrehozni a könyvtárat (%s): %s\n"
 
 #: src/sndfile/plugin.c:437
-#, fuzzy
 msgid "Sndfile Plugin"
-msgstr "sndfile bővítmény névjegye"
+msgstr ""
 
 #: src/sndio/sndio.c:189
-#, fuzzy
 msgid "About Sndio Output Plugin"
-msgstr "SDL Kimeneti modul névjegye"
+msgstr ""
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3172,9 +3088,8 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:259
-#, fuzzy
 msgid "Unsupported format"
-msgstr "Nem támogatott lemez típus."
+msgstr ""
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3184,14 +3099,12 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:403
-#, fuzzy
 msgid "sndio device"
-msgstr "Audio eszköz:"
+msgstr ""
 
 #: src/sndio/sndio.c:419
-#, fuzzy
 msgid "(empty means default)"
-msgstr "Riasztás (alapértelmezett):"
+msgstr ""
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3253,23 +3166,20 @@ msgid "<b>Speed and Pitch</b>"
 msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:228
-#, fuzzy
 msgid "Speed:"
-msgstr "Sebesség"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:231
-#, fuzzy
 msgid "Pitch:"
-msgstr "Hangmagasság"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
 msgstr ""
 
 #: src/statusicon/statusicon.c:399
-#, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "Egérgörgő működés"
+msgstr ""
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
@@ -3280,37 +3190,32 @@ msgid "Change playing song"
 msgstr "Váltja a lejátszott dalt"
 
 #: src/statusicon/statusicon.c:406
-#, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "Egyéb beállítások"
+msgstr ""
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Felugró ablakok tiltása"
 
 #: src/statusicon/statusicon.c:409
-#, fuzzy
 msgid "Close to the system tray"
-msgstr "Bezáráskor az értesítési területen marad (a tálcán)"
+msgstr ""
 
 #: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
 #: src/statusicon/statusicon.c:420
-#, fuzzy
 msgid "Status Icon"
-msgstr "Státusz ikon bővítmény névjegye"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:27
-#, fuzzy
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Szolgáltatások</b>"
+msgstr "<b>Extra Sztereó</b>"
 
 #: src/stereo_plugin/stereo.c:38
-#, fuzzy
 msgid "Extra Stereo"
-msgstr "<b>Szolgáltatások</b>"
+msgstr ""
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3322,14 +3227,12 @@ msgid "Tone Generator: "
 msgstr "Hang generátor:"
 
 #: src/tonegen/tonegen.c:208
-#, fuzzy
 msgid "Tone Generator"
-msgstr "Hang generátor:"
+msgstr ""
 
 #: src/unix-io/unix-io.c:279
-#, fuzzy
 msgid "File I/O Plugin"
-msgstr "OSS4 bővítmény névjegye"
+msgstr ""
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
@@ -3344,9 +3247,8 @@ msgid "VTX Decoder"
 msgstr ""
 
 #: src/wavpack/wavpack.c:345
-#, fuzzy
 msgid "WavPack Decoder"
-msgstr "Wavpack dekóder bővítmény %s"
+msgstr ""
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
@@ -3355,13 +3257,3 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
-
-#~ msgid "Browse..."
-#~ msgstr "Tallózás…"
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "Dalszöveg nem található."

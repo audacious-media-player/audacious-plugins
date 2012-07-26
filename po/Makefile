@@ -20,15 +20,17 @@ LOCALES = ca.po \
 	  hu.po \
 	  it.po \
 	  ja.po \
+	  ko.po \
 	  lv.po \
 	  lt.po \
 	  pl.po \
 	  pt_PT.po \
 	  ru.po \
 	  sk.po \
-	  sr.po \
+	  sr_RS.po \
 	  uk.po \
-	  zh_CN.po
+	  zh_CN.po \
+	  zh_TW.po
 
 include ../extra.mk
 include ../buildsys.mk
