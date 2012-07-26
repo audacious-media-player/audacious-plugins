@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins audacious-plugins-3.2-beta1-103-"
 "g4c001e9\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-14 10:23-0400\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
 "PO-Revision-Date: 2012-02-19 11:14+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -43,7 +43,7 @@ msgstr "Dekodér"
 msgid "AdPlug (AdLib Player)"
 msgstr "AMIDI-Plug %s (Přehrávač MIDI)"
 
-#: src/alarm/alarm.c:833 src/alarm/interface.c:32
+#: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "Budík"
 
@@ -51,152 +51,154 @@ msgstr "Budík"
 msgid "This is your wakeup call."
 msgstr "Toto je váš budící signál."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Budiž"
 
-#: src/alarm/interface.c:213
+#: src/alarm/interface.c:220
 msgid "Alarm Settings"
 msgstr "Nastavení budíku"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:389
-#: src/alarm/interface.c:746
+#: src/alarm/interface.c:235 src/alarm/interface.c:396
+#: src/alarm/interface.c:753
 msgid "Time"
 msgstr "Čas"
 
 # TODO: Pluralize
-#: src/alarm/interface.c:268
+#: src/alarm/interface.c:275
 msgid "hours"
 msgstr "h"
 
-#: src/alarm/interface.c:325
+#: src/alarm/interface.c:332
 msgid "h"
 msgstr "h"
 
 # TODO: Pluralize
-#: src/alarm/interface.c:353
+#: src/alarm/interface.c:360
 msgid "minutes"
 msgstr "min"
 
-#: src/alarm/interface.c:369
+#: src/alarm/interface.c:376
 msgid "Quiet after:"
 msgstr "Ticho po:"
 
-#: src/alarm/interface.c:379
+#: src/alarm/interface.c:386
 msgid "Alarm at (default):"
 msgstr "Budit v (standardní):"
 
-#: src/alarm/interface.c:397
+#: src/alarm/interface.c:404
 msgid "Choose the days for the alarm to come on"
 msgstr "Vyberte dny, kdy má budík budit"
 
-#: src/alarm/interface.c:424 src/alarm/interface.c:470
-#: src/alarm/interface.c:516 src/alarm/interface.c:562
-#: src/alarm/interface.c:608 src/alarm/interface.c:654
-#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/alarm/interface.c:431 src/alarm/interface.c:477
+#: src/alarm/interface.c:523 src/alarm/interface.c:569
+#: src/alarm/interface.c:615 src/alarm/interface.c:661
+#: src/alarm/interface.c:707 src/bs2b/plugin.c:179
 #: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Standardní"
 
-#: src/alarm/interface.c:738
+#: src/alarm/interface.c:745
 msgid "Day"
 msgstr "Den"
 
-#: src/alarm/interface.c:754
+#: src/alarm/interface.c:761
 msgid "Tuesday"
 msgstr "Úterý"
 
-#: src/alarm/interface.c:763
+#: src/alarm/interface.c:770
 msgid "Wednesday"
 msgstr "Středa"
 
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:779
 msgid "Thursday"
 msgstr "Čtvrtek"
 
-#: src/alarm/interface.c:781
+#: src/alarm/interface.c:788
 msgid "Friday"
 msgstr "Pátek"
 
-#: src/alarm/interface.c:790
+#: src/alarm/interface.c:797
 msgid "Saturday"
 msgstr "Sobota"
 
-#: src/alarm/interface.c:799
+#: src/alarm/interface.c:806
 msgid "Sunday"
 msgstr "Neděle"
 
-#: src/alarm/interface.c:807
+#: src/alarm/interface.c:814
 msgid "Monday"
 msgstr "Pondělí"
 
-#: src/alarm/interface.c:816
+#: src/alarm/interface.c:823
 msgid "Days"
 msgstr "Dny"
 
-#: src/alarm/interface.c:832
+#: src/alarm/interface.c:839
 msgid "Fading"
 msgstr "Zesilování"
 
 # TODO: Pluralize
-#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "sekund"
 
-#: src/alarm/interface.c:877 src/alarm/interface.c:992
+#: src/alarm/interface.c:884 src/alarm/interface.c:999
 msgid "Volume"
 msgstr "Hlasitost"
 
-#: src/alarm/interface.c:903
+#: src/alarm/interface.c:910
 msgid "Current"
 msgstr "Současná"
 
-#: src/alarm/interface.c:911
+#: src/alarm/interface.c:918
 msgid "Start at"
 msgstr "Začít na"
 
-#: src/alarm/interface.c:939 src/alarm/interface.c:983
+#: src/alarm/interface.c:946 src/alarm/interface.c:990
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:955
+#: src/alarm/interface.c:962
 msgid "Final"
 msgstr "Skončit na"
 
-#: src/alarm/interface.c:1008
+#: src/alarm/interface.c:1015
 msgid "Additional Command"
 msgstr "Dodatečný příkaz"
 
-#: src/alarm/interface.c:1034
+#: src/alarm/interface.c:1041
 msgid "enable"
 msgstr "zapnout"
 
-#: src/alarm/interface.c:1042
+#: src/alarm/interface.c:1049
 msgid "Playlist (optional)"
 msgstr "Seznam skladeb (volitelné)"
 
-#: src/alarm/interface.c:1068
-msgid "Browse..."
-msgstr "Procházet…"
+#: src/alarm/interface.c:1075
+#, fuzzy
+msgid "Select a playlist"
+msgstr "Vybrat následující seznam skladeb"
 
-#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
+#: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
 msgstr "Upomínání"
 
-#: src/alarm/interface.c:1093
+#: src/alarm/interface.c:1102
 msgid "Use reminder"
 msgstr "Upomínat"
 
-#: src/alarm/interface.c:1109
+#: src/alarm/interface.c:1118
 msgid "Options"
 msgstr "Nastavení"
 
-#: src/alarm/interface.c:1117
+#: src/alarm/interface.c:1126
 msgid "What do these options mean?"
 msgstr "Co tyto volby znamenají?"
 
-#: src/alarm/interface.c:1145
+#: src/alarm/interface.c:1155
+#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -237,13 +239,11 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 "  Playlist: \n"
-"    Load this playlist for playing songs from \n"
-"    (must have .m3u extension).  If no playlist\n"
-"    is given then the songs which are currently\n"
-"    in the list will be used.\n"
+"    Load this playlist for playing songs from.\n"
+"    If no playlist is given, the songs which are\n"
+"    currently in the list will be used.\n"
 "    The URL of an mp3/ogg stream can also be\n"
-"    entered here, but loading of playlists from\n"
-"    URLs is not currently supported by xmms.\n"
+"    entered here.\n"
 "\n"
 "  Reminder:\n"
 "    Display a reminder when the alarm goes off,\n"
@@ -300,19 +300,19 @@ msgstr ""
 "    Text vzkazu vepište do vstupního pole a zapněte přepínač,\n"
 "    přejete-li si zobrazovat vzkaz.\n"
 
-#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
+#: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Nápověda"
 
-#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: src/alarm/interface.c:1247
+#: src/alarm/interface.c:1257
 msgid "Your reminder for today is.."
 msgstr "Váš vzkaz pro dnešek je…"
 
-#: src/alarm/interface.c:1272
+#: src/alarm/interface.c:1282
 msgid "Thankyou"
 msgstr "Děkuji"
 
@@ -3425,38 +3425,38 @@ msgstr "Výška"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:399
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Reakce na rolování myší"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:400
 msgid "Change volume"
 msgstr "Změnit hlasitost"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:403
 msgid "Change playing song"
 msgstr "Změnit hranou skladbu"
 
-#: src/statusicon/statusicon.c:401
+#: src/statusicon/statusicon.c:406
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Ostatní nastavení"
 
-#: src/statusicon/statusicon.c:402
+#: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Zakázat vyskakovací okno"
 
-#: src/statusicon/statusicon.c:404
+#: src/statusicon/statusicon.c:409
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Zavřít do oznamovací oblasti (systémové oblasti)"
 
-#: src/statusicon/statusicon.c:406
+#: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr "Přecházet v seznamu skladeb, když se roluje nahoru"
 
-#: src/statusicon/statusicon.c:415
+#: src/statusicon/statusicon.c:420
 #, fuzzy
 msgid "Status Icon"
 msgstr "Stav"
@@ -3517,6 +3517,9 @@ msgstr "Dekodér"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#~ msgid "Browse..."
+#~ msgstr "Procházet…"
 
 #~ msgid ""
 #~ "\n"

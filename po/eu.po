@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins_eu\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-14 10:23-0400\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
 "PO-Revision-Date: 2009-04-23 18:56+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -27,7 +27,7 @@ msgstr "TTA deskodetzailearen errorea"
 msgid "AdPlug (AdLib Player)"
 msgstr ""
 
-#: src/alarm/alarm.c:833 src/alarm/interface.c:32
+#: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "Alarma"
 
@@ -35,149 +35,151 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Hau zu esnatzeko deia da."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Ados"
 
-#: src/alarm/interface.c:213
+#: src/alarm/interface.c:220
 msgid "Alarm Settings"
 msgstr "Alarmaren ezarpenak"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:389
-#: src/alarm/interface.c:746
+#: src/alarm/interface.c:235 src/alarm/interface.c:396
+#: src/alarm/interface.c:753
 msgid "Time"
 msgstr "Ordua"
 
-#: src/alarm/interface.c:268
+#: src/alarm/interface.c:275
 msgid "hours"
 msgstr "ordu"
 
-#: src/alarm/interface.c:325
+#: src/alarm/interface.c:332
 msgid "h"
 msgstr "o"
 
-#: src/alarm/interface.c:353
+#: src/alarm/interface.c:360
 msgid "minutes"
 msgstr "minutu"
 
-#: src/alarm/interface.c:369
+#: src/alarm/interface.c:376
 msgid "Quiet after:"
 msgstr "Isildu honen ondoren:"
 
-#: src/alarm/interface.c:379
+#: src/alarm/interface.c:386
 msgid "Alarm at (default):"
 msgstr "Alarma (lehenetsia):"
 
-#: src/alarm/interface.c:397
+#: src/alarm/interface.c:404
 msgid "Choose the days for the alarm to come on"
 msgstr "Aukeratu zein egunetan alarma aktibatuko den"
 
-#: src/alarm/interface.c:424 src/alarm/interface.c:470
-#: src/alarm/interface.c:516 src/alarm/interface.c:562
-#: src/alarm/interface.c:608 src/alarm/interface.c:654
-#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/alarm/interface.c:431 src/alarm/interface.c:477
+#: src/alarm/interface.c:523 src/alarm/interface.c:569
+#: src/alarm/interface.c:615 src/alarm/interface.c:661
+#: src/alarm/interface.c:707 src/bs2b/plugin.c:179
 #: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Lehenetsia"
 
-#: src/alarm/interface.c:738
+#: src/alarm/interface.c:745
 msgid "Day"
 msgstr "Eguna"
 
-#: src/alarm/interface.c:754
+#: src/alarm/interface.c:761
 msgid "Tuesday"
 msgstr "Asteartea"
 
-#: src/alarm/interface.c:763
+#: src/alarm/interface.c:770
 msgid "Wednesday"
 msgstr "Asteazkena"
 
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:779
 msgid "Thursday"
 msgstr "Osteguna"
 
-#: src/alarm/interface.c:781
+#: src/alarm/interface.c:788
 msgid "Friday"
 msgstr "Ostirala"
 
-#: src/alarm/interface.c:790
+#: src/alarm/interface.c:797
 msgid "Saturday"
 msgstr "Larunbata"
 
-#: src/alarm/interface.c:799
+#: src/alarm/interface.c:806
 msgid "Sunday"
 msgstr "Igandea"
 
-#: src/alarm/interface.c:807
+#: src/alarm/interface.c:814
 msgid "Monday"
 msgstr "Astelehena"
 
-#: src/alarm/interface.c:816
+#: src/alarm/interface.c:823
 msgid "Days"
 msgstr "Egunak"
 
-#: src/alarm/interface.c:832
+#: src/alarm/interface.c:839
 msgid "Fading"
 msgstr "Iraungitzea"
 
-#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "segundo"
 
-#: src/alarm/interface.c:877 src/alarm/interface.c:992
+#: src/alarm/interface.c:884 src/alarm/interface.c:999
 msgid "Volume"
 msgstr "Bolumena"
 
-#: src/alarm/interface.c:903
+#: src/alarm/interface.c:910
 msgid "Current"
 msgstr "Unekoa"
 
-#: src/alarm/interface.c:911
+#: src/alarm/interface.c:918
 msgid "Start at"
 msgstr "Hasiera:"
 
-#: src/alarm/interface.c:939 src/alarm/interface.c:983
+#: src/alarm/interface.c:946 src/alarm/interface.c:990
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:955
+#: src/alarm/interface.c:962
 msgid "Final"
 msgstr "Amaiera"
 
-#: src/alarm/interface.c:1008
+#: src/alarm/interface.c:1015
 msgid "Additional Command"
 msgstr "Komando gehigarria"
 
-#: src/alarm/interface.c:1034
+#: src/alarm/interface.c:1041
 msgid "enable"
 msgstr "gaitu"
 
-#: src/alarm/interface.c:1042
+#: src/alarm/interface.c:1049
 msgid "Playlist (optional)"
 msgstr "Erreprodukzio-zerrenda (aukerakoa)"
 
-#: src/alarm/interface.c:1068
-msgid "Browse..."
-msgstr "Arakatu..."
+#: src/alarm/interface.c:1075
+#, fuzzy
+msgid "Select a playlist"
+msgstr "Hautatu hurrengo erreprodukzio-zerrenda"
 
-#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
+#: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
 msgstr "Oroigarria"
 
-#: src/alarm/interface.c:1093
+#: src/alarm/interface.c:1102
 msgid "Use reminder"
 msgstr "Erabili oroigarria"
 
-#: src/alarm/interface.c:1109
+#: src/alarm/interface.c:1118
 msgid "Options"
 msgstr "Aukerak"
 
-#: src/alarm/interface.c:1117
+#: src/alarm/interface.c:1126
 msgid "What do these options mean?"
 msgstr "Zer esanahi dute aukera hauek?"
 
-#: src/alarm/interface.c:1145
+#: src/alarm/interface.c:1155
+#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -218,13 +220,11 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 "  Playlist: \n"
-"    Load this playlist for playing songs from \n"
-"    (must have .m3u extension).  If no playlist\n"
-"    is given then the songs which are currently\n"
-"    in the list will be used.\n"
+"    Load this playlist for playing songs from.\n"
+"    If no playlist is given, the songs which are\n"
+"    currently in the list will be used.\n"
 "    The URL of an mp3/ogg stream can also be\n"
-"    entered here, but loading of playlists from\n"
-"    URLs is not currently supported by xmms.\n"
+"    entered here.\n"
 "\n"
 "  Reminder:\n"
 "    Display a reminder when the alarm goes off,\n"
@@ -284,19 +284,19 @@ msgstr ""
 "    idatzi oroigarria kutxan eta piztu txandakatzeko\n"
 "    botoia oroigarri hori bistaratzea nahi baduzu.\n"
 
-#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
+#: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Laguntza"
 
-#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/alarm/interface.c:1247
+#: src/alarm/interface.c:1257
 msgid "Your reminder for today is.."
 msgstr "Gaurko zure oroigarria: "
 
-#: src/alarm/interface.c:1272
+#: src/alarm/interface.c:1282
 msgid "Thankyou"
 msgstr "Eskerrik asko"
 
@@ -3504,37 +3504,37 @@ msgstr "Tonua"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:399
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Saguaren korritze-ekintza"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:400
 msgid "Change volume"
 msgstr "Aldatu bolumena"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:403
 msgid "Change playing song"
 msgstr "Aldatu erreprodukzioaren abestia"
 
-#: src/statusicon/statusicon.c:401
+#: src/statusicon/statusicon.c:406
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Nahastailearen ezarpenak"
 
-#: src/statusicon/statusicon.c:402
+#: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:404
+#: src/statusicon/statusicon.c:409
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:406
+#: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:415
+#: src/statusicon/statusicon.c:420
 #, fuzzy
 msgid "Status Icon"
 msgstr "Egoera"
@@ -3594,3 +3594,6 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#~ msgid "Browse..."
+#~ msgstr "Arakatu..."

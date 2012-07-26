@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-14 10:23-0400\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
 "PO-Revision-Date: 2012-06-24 18:08+0000\n"
 "Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Russian\n"
@@ -31,7 +31,7 @@ msgstr "AAC Декодер"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib Плеер)"
 
-#: src/alarm/alarm.c:833 src/alarm/interface.c:32
+#: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "Будильник"
 
@@ -39,149 +39,151 @@ msgstr "Будильник"
 msgid "This is your wakeup call."
 msgstr "Это ваш звонок будильника."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "ОК"
 
-#: src/alarm/interface.c:213
+#: src/alarm/interface.c:220
 msgid "Alarm Settings"
 msgstr "Настройки будильника"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:389
-#: src/alarm/interface.c:746
+#: src/alarm/interface.c:235 src/alarm/interface.c:396
+#: src/alarm/interface.c:753
 msgid "Time"
 msgstr "Время"
 
-#: src/alarm/interface.c:268
+#: src/alarm/interface.c:275
 msgid "hours"
 msgstr "часы"
 
-#: src/alarm/interface.c:325
+#: src/alarm/interface.c:332
 msgid "h"
 msgstr "ч"
 
-#: src/alarm/interface.c:353
+#: src/alarm/interface.c:360
 msgid "minutes"
 msgstr "минуты"
 
-#: src/alarm/interface.c:369
+#: src/alarm/interface.c:376
 msgid "Quiet after:"
 msgstr "Тихо после:"
 
-#: src/alarm/interface.c:379
+#: src/alarm/interface.c:386
 msgid "Alarm at (default):"
 msgstr "Будильник в (по-умолчанию):"
 
-#: src/alarm/interface.c:397
+#: src/alarm/interface.c:404
 msgid "Choose the days for the alarm to come on"
 msgstr "Выберите дни для запуска будильника"
 
-#: src/alarm/interface.c:424 src/alarm/interface.c:470
-#: src/alarm/interface.c:516 src/alarm/interface.c:562
-#: src/alarm/interface.c:608 src/alarm/interface.c:654
-#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/alarm/interface.c:431 src/alarm/interface.c:477
+#: src/alarm/interface.c:523 src/alarm/interface.c:569
+#: src/alarm/interface.c:615 src/alarm/interface.c:661
+#: src/alarm/interface.c:707 src/bs2b/plugin.c:179
 #: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "По умолчанию"
 
-#: src/alarm/interface.c:738
+#: src/alarm/interface.c:745
 msgid "Day"
 msgstr "День"
 
-#: src/alarm/interface.c:754
+#: src/alarm/interface.c:761
 msgid "Tuesday"
 msgstr "Вторник"
 
-#: src/alarm/interface.c:763
+#: src/alarm/interface.c:770
 msgid "Wednesday"
 msgstr "Среда"
 
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:779
 msgid "Thursday"
 msgstr "Четверг"
 
-#: src/alarm/interface.c:781
+#: src/alarm/interface.c:788
 msgid "Friday"
 msgstr "Пятница"
 
-#: src/alarm/interface.c:790
+#: src/alarm/interface.c:797
 msgid "Saturday"
 msgstr "Суббота"
 
-#: src/alarm/interface.c:799
+#: src/alarm/interface.c:806
 msgid "Sunday"
 msgstr "Воскресенье"
 
-#: src/alarm/interface.c:807
+#: src/alarm/interface.c:814
 msgid "Monday"
 msgstr "Понедельник"
 
-#: src/alarm/interface.c:816
+#: src/alarm/interface.c:823
 msgid "Days"
 msgstr "Дни"
 
-#: src/alarm/interface.c:832
+#: src/alarm/interface.c:839
 msgid "Fading"
 msgstr "Затухание"
 
-#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "секунд"
 
-#: src/alarm/interface.c:877 src/alarm/interface.c:992
+#: src/alarm/interface.c:884 src/alarm/interface.c:999
 msgid "Volume"
 msgstr "Громкость"
 
-#: src/alarm/interface.c:903
+#: src/alarm/interface.c:910
 msgid "Current"
 msgstr "Текущее"
 
-#: src/alarm/interface.c:911
+#: src/alarm/interface.c:918
 msgid "Start at"
 msgstr "Начать в"
 
-#: src/alarm/interface.c:939 src/alarm/interface.c:983
+#: src/alarm/interface.c:946 src/alarm/interface.c:990
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:955
+#: src/alarm/interface.c:962
 msgid "Final"
 msgstr "Завершить"
 
-#: src/alarm/interface.c:1008
+#: src/alarm/interface.c:1015
 msgid "Additional Command"
 msgstr "Дополнительные команды"
 
-#: src/alarm/interface.c:1034
+#: src/alarm/interface.c:1041
 msgid "enable"
 msgstr "включить"
 
-#: src/alarm/interface.c:1042
+#: src/alarm/interface.c:1049
 msgid "Playlist (optional)"
 msgstr "Список (выборочно)"
 
-#: src/alarm/interface.c:1068
-msgid "Browse..."
-msgstr "Обзор..."
+#: src/alarm/interface.c:1075
+#, fuzzy
+msgid "Select a playlist"
+msgstr "Выбрать следующий список"
 
-#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
+#: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
 msgstr "Напоминатель"
 
-#: src/alarm/interface.c:1093
+#: src/alarm/interface.c:1102
 msgid "Use reminder"
 msgstr "Применить напоминатель"
 
-#: src/alarm/interface.c:1109
+#: src/alarm/interface.c:1118
 msgid "Options"
 msgstr "Параметры"
 
-#: src/alarm/interface.c:1117
+#: src/alarm/interface.c:1126
 msgid "What do these options mean?"
 msgstr "Что же эта опция значит?"
 
-#: src/alarm/interface.c:1145
+#: src/alarm/interface.c:1155
+#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -222,13 +224,11 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 "  Playlist: \n"
-"    Load this playlist for playing songs from \n"
-"    (must have .m3u extension).  If no playlist\n"
-"    is given then the songs which are currently\n"
-"    in the list will be used.\n"
+"    Load this playlist for playing songs from.\n"
+"    If no playlist is given, the songs which are\n"
+"    currently in the list will be used.\n"
 "    The URL of an mp3/ogg stream can also be\n"
-"    entered here, but loading of playlists from\n"
-"    URLs is not currently supported by xmms.\n"
+"    entered here.\n"
 "\n"
 "  Reminder:\n"
 "    Display a reminder when the alarm goes off,\n"
@@ -285,19 +285,19 @@ msgstr ""
 "    тип напоминания в окне, если хотите этого\n"
 "    включите переключатель.\n"
 
-#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
+#: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Справка"
 
-#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Отмена"
 
-#: src/alarm/interface.c:1247
+#: src/alarm/interface.c:1257
 msgid "Your reminder for today is.."
 msgstr "Ваше напоминание на сегодня это..."
 
-#: src/alarm/interface.c:1272
+#: src/alarm/interface.c:1282
 msgid "Thankyou"
 msgstr "Спасибо"
 
@@ -3320,35 +3320,35 @@ msgstr "Высота"
 msgid "Speed and Pitch"
 msgstr "Скорость и Высота"
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Действие прокрутки мыши</b>"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:400
 msgid "Change volume"
 msgstr "Изменить громкость"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:403
 msgid "Change playing song"
 msgstr "Сменить текущую дорожку"
 
-#: src/statusicon/statusicon.c:401
+#: src/statusicon/statusicon.c:406
 msgid "<b>Other Settings</b>"
 msgstr "<b>Другие Настройки</b>"
 
-#: src/statusicon/statusicon.c:402
+#: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Отключить всплывающее окно"
 
-#: src/statusicon/statusicon.c:404
+#: src/statusicon/statusicon.c:409
 msgid "Close to the system tray"
 msgstr "Закрыть в системный трей"
 
-#: src/statusicon/statusicon.c:406
+#: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr "Продвигаться по списку воспроизведения при прокрутке колёсика"
 
-#: src/statusicon/statusicon.c:415
+#: src/statusicon/statusicon.c:420
 msgid "Status Icon"
 msgstr "Иконка статуса"
 
@@ -3400,6 +3400,9 @@ msgstr "2SF Декодер"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Разделяемые плейлисты (XSPF)"
+
+#~ msgid "Browse..."
+#~ msgstr "Обзор..."
 
 #~ msgid ""
 #~ "\n"

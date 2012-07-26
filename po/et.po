@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-14 10:23-0400\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
 "PO-Revision-Date: 2012-05-20 02:25+0000\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian\n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "AdPlug (AdLib Player)"
 msgstr ""
 
-#: src/alarm/alarm.c:833 src/alarm/interface.c:32
+#: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "Äratus"
 
@@ -35,149 +35,150 @@ msgstr "Äratus"
 msgid "This is your wakeup call."
 msgstr "See on sinu äratus."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Olgu"
 
-#: src/alarm/interface.c:213
+#: src/alarm/interface.c:220
 msgid "Alarm Settings"
 msgstr "Äratuste sätted"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:389
-#: src/alarm/interface.c:746
+#: src/alarm/interface.c:235 src/alarm/interface.c:396
+#: src/alarm/interface.c:753
 msgid "Time"
 msgstr "Aeg"
 
-#: src/alarm/interface.c:268
+#: src/alarm/interface.c:275
 msgid "hours"
 msgstr "tundi"
 
-#: src/alarm/interface.c:325
+#: src/alarm/interface.c:332
 msgid "h"
 msgstr " "
 
-#: src/alarm/interface.c:353
+#: src/alarm/interface.c:360
 msgid "minutes"
 msgstr "minutit"
 
-#: src/alarm/interface.c:369
+#: src/alarm/interface.c:376
 msgid "Quiet after:"
 msgstr "Vaigistamine pärast:"
 
-#: src/alarm/interface.c:379
+#: src/alarm/interface.c:386
 msgid "Alarm at (default):"
 msgstr "Vaikimisi äratuskell (vaikimisi):"
 
-#: src/alarm/interface.c:397
+#: src/alarm/interface.c:404
 msgid "Choose the days for the alarm to come on"
 msgstr "Vali päevad, mil äratus tööle hakkab"
 
-#: src/alarm/interface.c:424 src/alarm/interface.c:470
-#: src/alarm/interface.c:516 src/alarm/interface.c:562
-#: src/alarm/interface.c:608 src/alarm/interface.c:654
-#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/alarm/interface.c:431 src/alarm/interface.c:477
+#: src/alarm/interface.c:523 src/alarm/interface.c:569
+#: src/alarm/interface.c:615 src/alarm/interface.c:661
+#: src/alarm/interface.c:707 src/bs2b/plugin.c:179
 #: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Vaikimisi"
 
-#: src/alarm/interface.c:738
+#: src/alarm/interface.c:745
 msgid "Day"
 msgstr "Päev"
 
-#: src/alarm/interface.c:754
+#: src/alarm/interface.c:761
 msgid "Tuesday"
 msgstr "Teisipäev"
 
-#: src/alarm/interface.c:763
+#: src/alarm/interface.c:770
 msgid "Wednesday"
 msgstr "Kolmapäev"
 
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:779
 msgid "Thursday"
 msgstr "Neljapäev"
 
-#: src/alarm/interface.c:781
+#: src/alarm/interface.c:788
 msgid "Friday"
 msgstr "Reede"
 
-#: src/alarm/interface.c:790
+#: src/alarm/interface.c:797
 msgid "Saturday"
 msgstr "Laupäev"
 
-#: src/alarm/interface.c:799
+#: src/alarm/interface.c:806
 msgid "Sunday"
 msgstr "Pühapäev"
 
-#: src/alarm/interface.c:807
+#: src/alarm/interface.c:814
 msgid "Monday"
 msgstr "Esmaspäev"
 
-#: src/alarm/interface.c:816
+#: src/alarm/interface.c:823
 msgid "Days"
 msgstr "Päevad"
 
-#: src/alarm/interface.c:832
+#: src/alarm/interface.c:839
 msgid "Fading"
 msgstr "Sumbumine"
 
-#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "sekundit"
 
-#: src/alarm/interface.c:877 src/alarm/interface.c:992
+#: src/alarm/interface.c:884 src/alarm/interface.c:999
 msgid "Volume"
 msgstr "Valjus"
 
-#: src/alarm/interface.c:903
+#: src/alarm/interface.c:910
 msgid "Current"
 msgstr "Praegune"
 
-#: src/alarm/interface.c:911
+#: src/alarm/interface.c:918
 msgid "Start at"
 msgstr "Alguses"
 
-#: src/alarm/interface.c:939 src/alarm/interface.c:983
+#: src/alarm/interface.c:946 src/alarm/interface.c:990
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:955
+#: src/alarm/interface.c:962
 msgid "Final"
 msgstr "Lõpuks"
 
-#: src/alarm/interface.c:1008
+#: src/alarm/interface.c:1015
 msgid "Additional Command"
 msgstr "Täiendav käsk"
 
-#: src/alarm/interface.c:1034
+#: src/alarm/interface.c:1041
 msgid "enable"
 msgstr "lubatud"
 
-#: src/alarm/interface.c:1042
+#: src/alarm/interface.c:1049
 msgid "Playlist (optional)"
 msgstr "Esitusnimekiri (valikuline)"
 
-#: src/alarm/interface.c:1068
-msgid "Browse..."
-msgstr "Sirvi..."
+#: src/alarm/interface.c:1075
+#, fuzzy
+msgid "Select a playlist"
+msgstr "Vali järgmine esitusnimekiri"
 
-#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
+#: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
 msgstr "Meeldetuletaja"
 
-#: src/alarm/interface.c:1093
+#: src/alarm/interface.c:1102
 msgid "Use reminder"
 msgstr "Kasutan meeldetuletajat"
 
-#: src/alarm/interface.c:1109
+#: src/alarm/interface.c:1118
 msgid "Options"
 msgstr "Valikud"
 
-#: src/alarm/interface.c:1117
+#: src/alarm/interface.c:1126
 msgid "What do these options mean?"
 msgstr "Mida need valikud tähendavad?"
 
-#: src/alarm/interface.c:1145
+#: src/alarm/interface.c:1155
 msgid ""
 "\n"
 "Time\n"
@@ -218,13 +219,11 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 "  Playlist: \n"
-"    Load this playlist for playing songs from \n"
-"    (must have .m3u extension).  If no playlist\n"
-"    is given then the songs which are currently\n"
-"    in the list will be used.\n"
+"    Load this playlist for playing songs from.\n"
+"    If no playlist is given, the songs which are\n"
+"    currently in the list will be used.\n"
 "    The URL of an mp3/ogg stream can also be\n"
-"    entered here, but loading of playlists from\n"
-"    URLs is not currently supported by xmms.\n"
+"    entered here.\n"
 "\n"
 "  Reminder:\n"
 "    Display a reminder when the alarm goes off,\n"
@@ -232,19 +231,19 @@ msgid ""
 "    toggle button if you want it to be shown.\n"
 msgstr ""
 
-#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
+#: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Abi"
 
-#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Loobu"
 
-#: src/alarm/interface.c:1247
+#: src/alarm/interface.c:1257
 msgid "Your reminder for today is.."
 msgstr "Sinu tänane meeldetuletaja on ..."
 
-#: src/alarm/interface.c:1272
+#: src/alarm/interface.c:1282
 msgid "Thankyou"
 msgstr "Aitäh"
 
@@ -3270,38 +3269,38 @@ msgstr "Kõrgus"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:399
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Hiire kerimisel"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:400
 msgid "Change volume"
 msgstr "Muudetakse valjust"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:403
 msgid "Change playing song"
 msgstr "Vahetatakse esitatavat lugu"
 
-#: src/statusicon/statusicon.c:401
+#: src/statusicon/statusicon.c:406
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Muud sätted"
 
-#: src/statusicon/statusicon.c:402
+#: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Hüpikaken on keelatud"
 
-#: src/statusicon/statusicon.c:404
+#: src/statusicon/statusicon.c:409
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Sulgemisel jäetakse teavitusalale (süsteemisalve)"
 
-#: src/statusicon/statusicon.c:406
+#: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:415
+#: src/statusicon/statusicon.c:420
 #, fuzzy
 msgid "Status Icon"
 msgstr "Olekuikooni pluginast lähemalt"
@@ -3358,6 +3357,9 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#~ msgid "Browse..."
+#~ msgstr "Sirvi..."
 
 #~ msgid ""
 #~ "\n"

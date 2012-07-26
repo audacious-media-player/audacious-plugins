@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins2_22062009\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-14 10:23-0400\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
 "PO-Revision-Date: 2011-10-30 16:53+0200\n"
 "Last-Translator: Einars Sprugis <einars8@gmail.com>\n"
 "Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
@@ -27,7 +27,7 @@ msgstr "TTA dekodētāja kļūda"
 msgid "AdPlug (AdLib Player)"
 msgstr ""
 
-#: src/alarm/alarm.c:833 src/alarm/interface.c:32
+#: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "Modinātājs"
 
@@ -35,149 +35,151 @@ msgstr "Modinātājs"
 msgid "This is your wakeup call."
 msgstr "Šis ir jūsu mošanās zvans."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1170 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "Labi"
 
-#: src/alarm/interface.c:213
+#: src/alarm/interface.c:220
 msgid "Alarm Settings"
 msgstr "Modinātājs iestatījumi"
 
-#: src/alarm/interface.c:228 src/alarm/interface.c:389
-#: src/alarm/interface.c:746
+#: src/alarm/interface.c:235 src/alarm/interface.c:396
+#: src/alarm/interface.c:753
 msgid "Time"
 msgstr "Laiks"
 
-#: src/alarm/interface.c:268
+#: src/alarm/interface.c:275
 msgid "hours"
 msgstr "stundas"
 
-#: src/alarm/interface.c:325
+#: src/alarm/interface.c:332
 msgid "h"
 msgstr "h"
 
-#: src/alarm/interface.c:353
+#: src/alarm/interface.c:360
 msgid "minutes"
 msgstr "minūtes"
 
-#: src/alarm/interface.c:369
+#: src/alarm/interface.c:376
 msgid "Quiet after:"
 msgstr "Kluss pēc:"
 
-#: src/alarm/interface.c:379
+#: src/alarm/interface.c:386
 msgid "Alarm at (default):"
 msgstr "Modināt (noklusējums):"
 
-#: src/alarm/interface.c:397
+#: src/alarm/interface.c:404
 msgid "Choose the days for the alarm to come on"
 msgstr "Izvēlieties dienas, kurās ieslēgsies modinātājs"
 
-#: src/alarm/interface.c:424 src/alarm/interface.c:470
-#: src/alarm/interface.c:516 src/alarm/interface.c:562
-#: src/alarm/interface.c:608 src/alarm/interface.c:654
-#: src/alarm/interface.c:700 src/bs2b/plugin.c:179
+#: src/alarm/interface.c:431 src/alarm/interface.c:477
+#: src/alarm/interface.c:523 src/alarm/interface.c:569
+#: src/alarm/interface.c:615 src/alarm/interface.c:661
+#: src/alarm/interface.c:707 src/bs2b/plugin.c:179
 #: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Noklusētais"
 
-#: src/alarm/interface.c:738
+#: src/alarm/interface.c:745
 msgid "Day"
 msgstr "Diena"
 
-#: src/alarm/interface.c:754
+#: src/alarm/interface.c:761
 msgid "Tuesday"
 msgstr "Otrdiena"
 
-#: src/alarm/interface.c:763
+#: src/alarm/interface.c:770
 msgid "Wednesday"
 msgstr "Trešdiena"
 
-#: src/alarm/interface.c:772
+#: src/alarm/interface.c:779
 msgid "Thursday"
 msgstr "Ceturtdiena"
 
-#: src/alarm/interface.c:781
+#: src/alarm/interface.c:788
 msgid "Friday"
 msgstr "Piektdiena"
 
-#: src/alarm/interface.c:790
+#: src/alarm/interface.c:797
 msgid "Saturday"
 msgstr "Sestdiena"
 
-#: src/alarm/interface.c:799
+#: src/alarm/interface.c:806
 msgid "Sunday"
 msgstr "Svētdiena"
 
-#: src/alarm/interface.c:807
+#: src/alarm/interface.c:814
 msgid "Monday"
 msgstr "Pirmdiena"
 
-#: src/alarm/interface.c:816
+#: src/alarm/interface.c:823
 msgid "Days"
 msgstr "Dienas"
 
-#: src/alarm/interface.c:832
+#: src/alarm/interface.c:839
 msgid "Fading"
 msgstr "Izdzišana"
 
-#: src/alarm/interface.c:869 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+#: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "sekundes"
 
-#: src/alarm/interface.c:877 src/alarm/interface.c:992
+#: src/alarm/interface.c:884 src/alarm/interface.c:999
 msgid "Volume"
 msgstr "Skaļums"
 
-#: src/alarm/interface.c:903
+#: src/alarm/interface.c:910
 msgid "Current"
 msgstr "Pašreizējais"
 
-#: src/alarm/interface.c:911
+#: src/alarm/interface.c:918
 msgid "Start at"
 msgstr "Sākumā"
 
-#: src/alarm/interface.c:939 src/alarm/interface.c:983
+#: src/alarm/interface.c:946 src/alarm/interface.c:990
 msgid "%"
 msgstr "%"
 
-#: src/alarm/interface.c:955
+#: src/alarm/interface.c:962
 msgid "Final"
 msgstr "Beigās"
 
-#: src/alarm/interface.c:1008
+#: src/alarm/interface.c:1015
 msgid "Additional Command"
 msgstr "Papildu komanda"
 
-#: src/alarm/interface.c:1034
+#: src/alarm/interface.c:1041
 msgid "enable"
 msgstr "ieslēgt"
 
-#: src/alarm/interface.c:1042
+#: src/alarm/interface.c:1049
 msgid "Playlist (optional)"
 msgstr "Repertuārs (neobligāts)"
 
-#: src/alarm/interface.c:1068
-msgid "Browse..."
-msgstr "Pārlūkot..."
+#: src/alarm/interface.c:1075
+#, fuzzy
+msgid "Select a playlist"
+msgstr "Iezīmēt nākamo repertuāru"
 
-#: src/alarm/interface.c:1076 src/alarm/interface.c:1240
+#: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
 msgstr "Atgādinājums"
 
-#: src/alarm/interface.c:1093
+#: src/alarm/interface.c:1102
 msgid "Use reminder"
 msgstr "Izmantot atgādinājumu"
 
-#: src/alarm/interface.c:1109
+#: src/alarm/interface.c:1118
 msgid "Options"
 msgstr "Opcijas"
 
-#: src/alarm/interface.c:1117
+#: src/alarm/interface.c:1126
 msgid "What do these options mean?"
 msgstr "Ko šīs opcijas nozīmē?"
 
-#: src/alarm/interface.c:1145
+#: src/alarm/interface.c:1155
+#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -218,13 +220,11 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 "  Playlist: \n"
-"    Load this playlist for playing songs from \n"
-"    (must have .m3u extension).  If no playlist\n"
-"    is given then the songs which are currently\n"
-"    in the list will be used.\n"
+"    Load this playlist for playing songs from.\n"
+"    If no playlist is given, the songs which are\n"
+"    currently in the list will be used.\n"
 "    The URL of an mp3/ogg stream can also be\n"
-"    entered here, but loading of playlists from\n"
-"    URLs is not currently supported by xmms.\n"
+"    entered here.\n"
 "\n"
 "  Reminder:\n"
 "    Display a reminder when the alarm goes off,\n"
@@ -283,19 +283,19 @@ msgstr ""
 "    ķeksīti blakus esošajā rūtī, ja vēlieties, lai tas tiktu\n"
 "    parādīts.\n"
 
-#: src/alarm/interface.c:1147 src/skins/ui_manager.c:390
+#: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Palīdzība"
 
-#: src/alarm/interface.c:1179 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: src/alarm/interface.c:1247
+#: src/alarm/interface.c:1257
 msgid "Your reminder for today is.."
 msgstr "Jūsu atgādinājums šodienai ir.."
 
-#: src/alarm/interface.c:1272
+#: src/alarm/interface.c:1282
 msgid "Thankyou"
 msgstr "Paldies"
 
@@ -3414,38 +3414,38 @@ msgstr "Augstums"
 msgid "Speed and Pitch"
 msgstr ""
 
-#: src/statusicon/statusicon.c:394
+#: src/statusicon/statusicon.c:399
 #, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "Peles rullīša darbība"
 
-#: src/statusicon/statusicon.c:395
+#: src/statusicon/statusicon.c:400
 msgid "Change volume"
 msgstr "Mainīt skaļumu"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:403
 msgid "Change playing song"
 msgstr "Mainīt atskaņojamo dziesmu"
 
-#: src/statusicon/statusicon.c:401
+#: src/statusicon/statusicon.c:406
 #, fuzzy
 msgid "<b>Other Settings</b>"
 msgstr "Citi iestatījumi"
 
-#: src/statusicon/statusicon.c:402
+#: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Atslēgt izlecošo logu"
 
-#: src/statusicon/statusicon.c:404
+#: src/statusicon/statusicon.c:409
 #, fuzzy
 msgid "Close to the system tray"
 msgstr "Aizvērt uz paziņojumu apgabalu (sistēmas ikonu joslu)"
 
-#: src/statusicon/statusicon.c:406
+#: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:415
+#: src/statusicon/statusicon.c:420
 #, fuzzy
 msgid "Status Icon"
 msgstr "Statuss"
@@ -3505,6 +3505,9 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#~ msgid "Browse..."
+#~ msgstr "Pārlūkot..."
 
 #~ msgid ""
 #~ "\n"
