@@ -504,7 +504,7 @@ static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
 }
 
 static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
- mp4ff_t * mp4file)
+ mp4ff_t * mp4file, bool_t pause)
 {
     // We are reading an MP4 file
     int mp4track = getAACTrack (mp4file);
@@ -560,8 +560,8 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
         return FALSE;
     }
 
-    playback->set_tuple (playback, generate_tuple (filename, mp4file,
-     mp4track));
+    playback->output->pause (pause);
+    playback->set_tuple (playback, generate_tuple (filename, mp4file, mp4track));
     playback->set_params (playback, mp4ff_get_avg_bitrate (mp4file, mp4track),
      samplerate, channels);
     playback->set_pb_ready (playback);
@@ -703,7 +703,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
 }
 
 static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
- VFSFile * file)
+ VFSFile * file, bool_t pause)
 {
     NeAACDecHandle decoder = 0;
     NeAACDecConfigurationPtr decoder_config;
@@ -791,6 +791,7 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
     if (! playback->output->open_audio (FMT_FLOAT, samplerate, channels))
         goto ERR_CLOSE_DECODER;
 
+    playback->output->pause (pause);
     playback->set_params (playback, bitrate, samplerate, channels);
     playback->set_pb_ready (playback);
 
@@ -916,10 +917,10 @@ static bool_t mp4_play (InputPlayback * playback, const char * filename,
 
     if (ret == TRUE)
     {
-        return my_decode_aac (playback, filename, file);
+        return my_decode_aac (playback, filename, file, pause);
     }
 
-    return my_decode_mp4 (playback, filename, mp4file);
+    return my_decode_mp4 (playback, filename, mp4file, pause);
 }
 
 bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
