@@ -455,9 +455,14 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    gint x, y;
-    audgui_get_mouse_coords (widget, & x, & y);
-    gint row = audgui_list_row_at_point (widget, x, y);
+    gint row = -1;
+
+    if (gtk_widget_get_realized (widget))
+    {
+        gint x, y;
+        audgui_get_mouse_coords (widget, & x, & y);
+        row = audgui_list_row_at_point (widget, x, y);
+    }
 
     /* Only update the info popup if it is already shown or about to be shown;
      * this makes sure that it doesn't pop up when the Audacious window isn't
