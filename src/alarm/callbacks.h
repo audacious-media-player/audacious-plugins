@@ -6,11 +6,10 @@ alarm_current_volume                   (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-alarm_save                             (GtkButton       *button,
-                                        gpointer         user_data);
+alarm_save                             (void);
 
 void
-alarm_stop_cancel                      (GtkButton       *button,
+alarm_stop_cancel                      (GtkWidget       *widget,
                                         gpointer         user_data);
 
 void
@@ -40,6 +39,3 @@ on_sat_def_toggled                     (GtkToggleButton *togglebutton,
 void
 on_sun_def_toggled                     (GtkToggleButton *togglebutton,
                                         gpointer         user_data);
-/*
- * vi:ai:expandtab:ts=2 sts=2 shiftwidth=2:nowrap:
- */

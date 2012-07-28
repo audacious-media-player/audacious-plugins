@@ -180,7 +180,7 @@ static GtkWidget *lookup_widget(GtkWidget *w, const gchar *name)
  * the callback function that is called when the save button is
  * pressed saves configuration to ~/.bmp/alarmconfig
  */
-void alarm_save(GtkButton *w, gpointer data)
+void alarm_save(void)
 {
    int daynum = 0;  // used to identify day number
 
@@ -441,8 +441,6 @@ static void alarm_configure(void)
    g_signal_connect (config_dialog, "destroy", (GCallback) gtk_widget_destroyed,
     & config_dialog);
 
-   gtk_widget_show_all(config_dialog);
-
    AUDDBG("END alarm_configure\n");
 }
 
@@ -652,7 +650,7 @@ static void *alarm_stop_thread( void *args )
    return(NULL);
 }
 
-void alarm_stop_cancel(GtkButton *w, gpointer data)
+void alarm_stop_cancel(GtkWidget *w, gpointer data)
 {
    AUDDBG("alarm_stop_cancel\n");
    if (pthread_cancel(stop.tid) == 0) {
@@ -756,8 +754,6 @@ static gboolean alarm_timeout (void * unused)
        AUDDBG("Showing reminder '%s'\n", alarm_conf.reminder_msg);
 
        reminder_dialog = (GtkWidget*) create_reminder_dialog(alarm_conf.reminder_msg);
-       g_signal_connect (reminder_dialog, "destroy", (GCallback)
-        gtk_widget_destroyed, & reminder_dialog);
        gtk_widget_show_all(reminder_dialog);
      }
 
@@ -771,10 +767,6 @@ static gboolean alarm_timeout (void * unused)
       if(stop_on == TRUE)
       {
             alarm_dialog = create_alarm_dialog();
-            g_signal_connect (alarm_dialog, "destroy", (GCallback)
-             gtk_widget_destroyed, & alarm_dialog);
-
-            gtk_widget_show_all(alarm_dialog);
 
             AUDDBG("now starting stop thread\n");
             stop = alarm_thread_create(alarm_stop_thread, NULL, 0);
