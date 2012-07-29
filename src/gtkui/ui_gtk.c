@@ -1,6 +1,6 @@
 /*
  * ui_gtk.c
- * Copyright 2009 William Pitcock, Tomasz Moń, Michał Lipski, and John Lindgren
+ * Copyright 2009-2012 William Pitcock, Tomasz Moń, Michał Lipski, and John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -194,6 +194,9 @@ static void ui_show (gboolean show)
         }
 
         gtk_window_present ((GtkWindow *) window);
+
+        /* turn visualization back on if necessary */
+        ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
     }
     else if (gtk_widget_get_visible (window))
     {
@@ -206,6 +209,9 @@ static void ui_show (gboolean show)
         }
 
         gtk_widget_hide (window);
+
+        /* turn visualization off to reduce CPU usage */
+        ui_infoarea_show_vis (FALSE);
     }
 }
 
@@ -958,9 +964,12 @@ void show_infoarea (gboolean show)
     {
         infoarea = ui_infoarea_new ();
         g_signal_connect (infoarea, "destroy", (GCallback) gtk_widget_destroyed, & infoarea);
-        ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
         gtk_widget_show_all (infoarea);
+
+        /* only turn on visualization if interface is shown */
+        if (ui_is_shown ())
+            ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
     }
 
     if (! show && infoarea)
