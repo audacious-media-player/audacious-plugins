@@ -3,7 +3,8 @@ PLUGIN = scrobbler${PLUGIN_SUFFIX}
 SRCS = fmt.c			\
        configure.c		\
        scrobbler.c		\
-       plugin.c
+       plugin.c			\
+       regex.c
 
 include ../../buildsys.mk
 include ../../extra.mk

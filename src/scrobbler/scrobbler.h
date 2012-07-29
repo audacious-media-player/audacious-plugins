@@ -13,7 +13,7 @@ extern const PluginPreferences preferences;
 gboolean sc_timeout(gpointer data);
 
 int sc_idle(GMutex *);
-void sc_init(char *, char *, char *);
+void sc_init(char *, char *, char *, char *);
 void sc_addentry(GMutex *mutex, Tuple *tuple, int len, bool_t is_http_source);
 void sc_cleaner(void);
 int sc_catch_error(void);

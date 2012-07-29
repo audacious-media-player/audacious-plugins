@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
@@ -15,8 +16,11 @@
 #include <audacious/preferences.h>
 
 #include "plugin.h"
+#include "fmt.h"
+#include "regex.h"
 
-GtkWidget *entry1, *entry2, *entry3, *cfgdlg;
+GtkWidget *entry1, *entry2, *entry3, *cfgdlg, *test_entry, *test_label;
+GtkTextBuffer *textbuffer;
 guint apply_timeout = 0; /* ID of timeout to save new config */
 gboolean running = TRUE; /* if plugin threads are running */
 
@@ -44,6 +48,14 @@ static void saveconfig(void)
     const char *uid = gtk_entry_get_text(GTK_ENTRY(entry1));
     const char *url = gtk_entry_get_text(GTK_ENTRY(entry3));
 
+    GtkTextIter iter_start, iter_end;
+    gtk_text_buffer_get_end_iter(GTK_TEXT_BUFFER(textbuffer), &iter_end);
+    gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter_start);
+
+    char *regexps = gtk_text_buffer_get_text(GTK_TEXT_BUFFER(textbuffer), &iter_start, &iter_end, TRUE);
+    char *eregexps = regex_escape(regexps);
+    g_free(regexps);
+
     unsigned char md5pword[16];
     gsize md5len = 16;
 
@@ -67,6 +79,14 @@ static void saveconfig(void)
         aud_set_string ("audioscrobbler", "sc_url", url);
     else
         aud_set_string ("audioscrobbler", "sc_url", LASTFM_HS_URL);
+
+    if(regexps != NULL && regexps[0] != '\0'){
+        aud_set_string ("audioscrobbler", "regexps", eregexps);
+        g_free(eregexps);
+    } else {
+        aud_set_string ("audioscrobbler", "regexps", "");
+    }
+
 }
 
 static gboolean apply_config_changes(gpointer data) {
@@ -122,6 +142,73 @@ static void entry_focus_out(GtkWidget *widget, gpointer data)
     gtk_entry_set_visibility(GTK_ENTRY(widget), TRUE);
 }
 
+static void regex_test_changed(GtkWidget* widget, gpointer data){
+    const gchar* test_data = gtk_entry_get_text(GTK_ENTRY(test_entry));
+
+    GtkTextIter iter_start, iter_end;
+
+    gtk_text_buffer_get_end_iter(GTK_TEXT_BUFFER(textbuffer), &iter_end);
+    gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter_start);
+    gchar *regexps = gtk_text_buffer_get_text(GTK_TEXT_BUFFER(textbuffer), &iter_start, &iter_end, TRUE);
+
+    GSList* rx = regex_str_to_items(regexps);
+    g_free(regexps);
+
+    regex_item_t* match = regex_match(test_data, rx);
+
+    if(match == NULL){
+        gtk_label_set_text(GTK_LABEL(test_label), "applicable pattern was not found");
+    } else {
+        char buff[(match->album?strlen(match->album):0)+(match->artist?strlen(match->artist):0)+(match->title?strlen(match->title):0)+25];
+        g_sprintf(buff, "artist: %s\ntitle: %s\nalbum: %s", match->artist, match->title, match->album);
+        gtk_label_set_text(GTK_LABEL(test_label), buff);
+        regex_match_free(match);
+    }
+
+    regex_free_list(rx);
+}
+
+static void create_cfgdlg_regex(GtkWidget* notebook){
+    GtkWidget *label, *textarea, *vbox;
+    gchar *regexps, *uregexps;
+
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_container_set_border_width(GTK_CONTAINER(vbox), 6);
+
+    regexps = aud_get_string("audioscrobbler", "regexps");
+    uregexps = regex_unescape(regexps);
+    g_free(regexps);
+
+    textbuffer = gtk_text_buffer_new(NULL);
+    if(uregexps) gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), uregexps, -1);
+    g_signal_connect(textbuffer, "changed", G_CALLBACK(entry_changed), NULL);
+
+    label = gtk_label_new(_(
+"You can define regexp's to parse data send in http streams.\n\
+Data feed to parsing is: <artist>—<title>—<album>. Be aware that '—' is not a '-'.\n\
+You can define one regexp per line.\n\nExample:"));
+    gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 6);
+
+    label = gtk_label_new("^AnimeNfo Radio[^—]+—(?P<artist>.*) - (?P<title>.*) \\((?P<album>.*)\\)—.*$");
+    gtk_label_set_selectable(GTK_LABEL(label), TRUE);
+    gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 6);
+
+    textarea = gtk_text_view_new_with_buffer(GTK_TEXT_BUFFER(textbuffer));
+    gtk_box_pack_start(GTK_BOX(vbox), textarea, TRUE, TRUE, 6);
+    gtk_container_set_border_width(GTK_CONTAINER(textarea), 6);
+
+    test_entry = gtk_entry_new();
+    g_signal_connect(test_entry, "changed", G_CALLBACK(regex_test_changed), NULL);
+    gtk_box_pack_start(GTK_BOX(vbox), test_entry, FALSE, FALSE, 6);
+
+    test_label = gtk_label_new(_("Write something in above field to test your regexps!"));
+    gtk_box_pack_start(GTK_BOX(vbox), test_label, FALSE, FALSE, 6);
+
+    label = gtk_label_new(_("<b>Regex</b>"));
+    gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
+    gtk_notebook_append_page(GTK_NOTEBOOK(notebook), vbox, label);
+}
+
 static void *create_cfgdlg(void)
 {
     GtkWidget *vbox, *notebook, *grid, *label;
@@ -143,6 +230,8 @@ static void *create_cfgdlg(void)
     label = gtk_label_new(_("<b>Last.fm</b>"));
     gtk_label_set_use_markup(GTK_LABEL(label), TRUE);
     gtk_notebook_append_page(GTK_NOTEBOOK(notebook), grid, label);
+
+    create_cfgdlg_regex(notebook);
 
     label = gtk_label_new(_("Username:"));
     gtk_widget_set_halign(label, GTK_ALIGN_END);

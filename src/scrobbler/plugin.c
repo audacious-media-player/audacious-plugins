@@ -28,6 +28,7 @@
 #include "plugin.h"
 #include "scrobbler.h"
 #include "fmt.h"
+#include "regex.h"
 
 typedef struct submit_t
 {
@@ -100,6 +101,9 @@ void start(void) {
     gchar * username = aud_get_string ("audioscrobbler", "username");
     gchar * password = aud_get_string ("audioscrobbler", "password");
     gchar * sc_url = aud_get_string ("audioscrobbler", "sc_url");
+    gchar * regexps = aud_get_string ("audioscrobbler", "regexps");
+    gchar * uregexps = regex_unescape(regexps);
+    g_free(regexps);
 
     if ((!username || !password) || (!*username || !*password))
     {
@@ -107,11 +111,12 @@ void start(void) {
         sc_going = 0;
     }
     else
-        sc_init(username, password, sc_url);
+        sc_init(username, password, sc_url, uregexps);
 
     g_free (username);
     g_free (password);
     g_free (sc_url);
+    g_free (uregexps);
 
     m_scrobbler = g_mutex_new();
 

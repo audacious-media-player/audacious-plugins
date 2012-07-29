@@ -8,6 +8,7 @@
 #include "plugin.h"
 #include "scrobbler.h"
 #include "settings.h"
+#include "regex.h"
 #include <glib.h>
 
 #include <audacious/drct.h>
@@ -49,8 +50,7 @@ static char     *sc_submit_url, /* queue */
         sc_curl_errbuf[CURL_ERROR_SIZE],
         *sc_major_error;
 
-static int sc_submit_np(Tuple *tuple, int len);
-static void dump_queue();
+static GSList* sc_rx_list;
 
 /**** Queue stuff ****/
 
@@ -68,6 +68,9 @@ typedef struct {
     bool_t is_http_source;
     void *next;
 } item_t;
+
+static int sc_submit_np(item_t *item);
+static void dump_queue();
 
 static item_t *q_queue = NULL;
 static item_t *q_queue_last = NULL;
@@ -144,29 +147,35 @@ static item_t *create_item(Tuple *tuple, int len, bool_t is_http_source)
 {
     item_t *item;
     gchar *album, *artist, *title;
+    regex_item_t* match;
 
     item = malloc(sizeof(item_t));
 
     artist = tuple_get_str(tuple, FIELD_ARTIST, NULL);
+    title = tuple_get_str(tuple, FIELD_TITLE, NULL);
+    album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
+
+    if(is_http_source){
+        match = regex_match_parts(artist, title, album, sc_rx_list);
+        if(match){
+            str_unref(artist);
+            str_unref(title);
+            str_unref(album);
+
+            artist = str_get(match->artist);
+            title = str_get(match->title);
+            album = str_get(match->album);
+
+            g_free(match); // free struct, not values
+        }
+    }
+
     item->artist = fmt_escape(artist);
     str_unref(artist);
 
-    title = tuple_get_str(tuple, FIELD_TITLE, NULL);
     item->title = fmt_escape(title);
     str_unref(title);
 
-    if (item->artist == NULL || item->title == NULL)
-    {
-        free (item);
-        return NULL;
-    }
-
-    item->len = len;
-    item->track = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
-    item->timeplayed = 0;
-    item->utctime = time(NULL);
-
-    album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
     if (album)
     {
         item->album = fmt_escape(album);
@@ -174,6 +183,21 @@ static item_t *create_item(Tuple *tuple, int len, bool_t is_http_source)
     }
     else
         item->album = fmt_escape("");
+
+    if (item->artist == NULL || item->title == NULL)
+    {
+        g_free(item->artist);
+        g_free(item->title);
+        g_free(item->album);
+
+        free (item);
+        return NULL;
+    }
+    
+    item->len = len;
+    item->track = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+    item->timeplayed = 0;
+    item->utctime = time(NULL);
 
     item->is_http_source = is_http_source;
 
@@ -319,7 +343,7 @@ gboolean sc_timeout(gpointer data)
             /* Make sure the queue is submitted. */
             sc_idle((GMutex*)data);
 
-            sc_submit_np(tuple, len);
+            sc_submit_np(current_item);
         }
         else
         {
@@ -329,7 +353,7 @@ gboolean sc_timeout(gpointer data)
             {
                 /* Submit the track again to make sure it stays on now playing.
                  * This doubles the total length we have submitted. */
-                sc_submit_np(tuple, np_item->len);
+                sc_submit_np(np_item);
                 np_item->len *= 2;
             }
         }
@@ -860,7 +884,7 @@ static int sc_generateentry(GString *submission)
     return i;
 }
 
-static int sc_submit_np(Tuple *tuple, int len)
+static int sc_submit_np(item_t *item)
 {
     CURL *curl;
     /* struct HttpPost *post = NULL , *last = NULL; */
@@ -876,27 +900,12 @@ static int sc_submit_np(Tuple *tuple, int len)
     curl_easy_setopt(curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
     /*cfa(&post, &last, "debug", "failed");*/
 
-    char *artist = tuple_get_str(tuple, FIELD_ARTIST, NULL);
-    char *field_artist = fmt_escape(artist);
-    str_unref(artist);
-
-    char *title = tuple_get_str(tuple, FIELD_TITLE, NULL);
-    char *field_title = fmt_escape(title);
-    str_unref(title);
-
-    char *album = tuple_get_str(tuple, FIELD_ALBUM, NULL);
-    char *field_album = album ? fmt_escape(album) : fmt_escape("");
-    str_unref(album);
-
     snprintf(entry, 16384, "s=%s&a=%s&t=%s&b=%s&l=%d&n=%d&m=", sc_session_id,
-        field_artist,
-        field_title,
-        field_album,
-        len,
-        tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL));
-        curl_free(field_artist);
-        curl_free(field_title);
-        curl_free(field_album);
+        item->artist,
+        item->title,
+        item->album,
+        item->len,
+        item->track);
 
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (char *) entry);
     memset(sc_curl_errbuf, 0, sizeof(sc_curl_errbuf));
@@ -1150,6 +1159,9 @@ void sc_cleaner(void)
         free(sc_srv_res);
     if(sc_major_error != NULL)
         free(sc_major_error);
+    if(sc_rx_list != NULL)
+        regex_free_list(sc_rx_list);
+
     dump_queue();
     q_free();
     AUDDBG("scrobbler shutting down\n");
@@ -1189,7 +1201,7 @@ static void sc_checkhandshake(void)
 
 /* Called at session startup*/
 
-void sc_init(char *uname, char *pwd, char *url)
+void sc_init(char *uname, char *pwd, char *url, char* regexps)
 {
     sc_hs_status = sc_hs_timeout = sc_hs_errors = sc_submit_timeout =
         sc_srv_res_size = sc_giveup = sc_major_error_present =
@@ -1204,6 +1216,8 @@ void sc_init(char *uname, char *pwd, char *url)
         sc_hs_url = strdup(url);
     else
         sc_hs_url = strdup(LASTFM_HS_URL);
+    sc_rx_list = regex_str_to_items(regexps);
+
     read_cache();
     AUDDBG("scrobbler starting up\n");
 }
@@ -1211,9 +1225,12 @@ void sc_init(char *uname, char *pwd, char *url)
 void sc_addentry(GMutex *mutex, Tuple *tuple, int len, bool_t is_http_source)
 {
     g_mutex_lock(mutex);
-
-    sc_submit_np(tuple, len);
     set_np(tuple, len, is_http_source);
+    if(np_item) {
+        sc_submit_np(np_item);
+    } else {
+        AUDDBG("added entry with empty np_item\n");
+    }
 
     /*
      * This will help make sure the queue will be saved on a nasty
