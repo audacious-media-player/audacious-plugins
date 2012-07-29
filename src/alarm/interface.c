@@ -99,7 +99,7 @@ GtkWidget *create_reminder_dialog (const gchar *reminder_msg)
 
     reminder_dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
      GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, _("Your reminder for today is..."));
-    gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (reminder_dialog), reminder_msg);
+    gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (reminder_dialog), "%s", reminder_msg);
     gtk_window_set_title (GTK_WINDOW (reminder_dialog), _("Reminder"));
 
     g_signal_connect_swapped (reminder_dialog, "response",
