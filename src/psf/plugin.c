@@ -86,8 +86,9 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 	void *filebuf;
 	int64_t size;
 
-	SPRINTF (path2, "%s/%s", dirname (path), filename);
-	vfs_file_get_contents (path2, & filebuf, & size);
+	char *dirpath = dirname(path);
+	SPRINTF(path2, "%s/%s", dirpath, filename);
+	vfs_file_get_contents(path2, &filebuf, &size);
 
 	*buffer = filebuf;
 	*length = (uint64)size;
