@@ -33,6 +33,8 @@ if test "$MSGFMT" = ":" ; then
     AC_MSG_ERROR([msgfmt was not found; have you installed gettext?])
 fi
 
+LIBS="$LIBS $LIBINTL"
+
 dnl Check for Audacious
 dnl ===================
 
