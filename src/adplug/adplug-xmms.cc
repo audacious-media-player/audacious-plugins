@@ -20,6 +20,7 @@
 #include "config.h"
 
 #include <algorithm>
+#include <pthread.h>
 #include <sstream>
 #include <stdlib.h>
 #include <stdio.h>
