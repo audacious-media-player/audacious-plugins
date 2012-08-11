@@ -323,6 +323,7 @@ static void item_add (Item * item)
 
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
         gtk_container_set_border_width ((GtkContainer *) item->window, 2);
+        gtk_window_set_has_resize_grip ((GtkWindow *) item->window, FALSE);
 
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
          delete_cb, item->widget);
