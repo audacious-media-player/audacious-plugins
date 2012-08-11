@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-06-02 00:48+0000\n"
-"Last-Translator: jlindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"PO-Revision-Date: 2012-08-07 17:20+0000\n"
+"Last-Translator: Alain-Olivier  Breysse <yahoe.001@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,11 @@ msgstr ""
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
-msgstr ""
+msgstr "Décodeur AAC"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (Lecteur AdLib)"
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -159,9 +159,8 @@ msgid "Playlist (optional)"
 msgstr "Liste de lecture (optionnel)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Sélectionner la prochaine liste de lecture"
+msgstr "Choisir une liste de lecture"
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -180,7 +179,6 @@ msgid "What do these options mean?"
 msgstr "Que signifient ces options ?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -239,8 +237,7 @@ msgstr ""
 "\n"
 "  Silencieux après : \n"
 "    Arrêt de l'alarme après cette durée.\n"
-"       (si le dialogue de réveil n'est pas fermé)\n"
-"\n"
+"       (si la fenêtre de dialogue de réveil n'est pas fermé)\n"
 "\n"
 "Jours\n"
 "  Jours :\n"
@@ -254,29 +251,23 @@ msgstr ""
 "Volume\n"
 "  Fondu : \n"
 "    Augmente le volume progressivement\n"
-"     au niveau choisi pour cette durée.\n"
+"    pour atteindre le niveau choisi au bout de la durée choisie\n"
 "\n"
 "  Commence à : \n"
 "    Commence le fondu à partir de ce volume.\n"
 "\n"
 "  Fini à : \n"
-"    Volume maximal. Si la durée du fondu est \n"
-"    0 alors réglez le volume ainsi et commencez\n"
-"    la lecture.\n"
-"\n"
+"    Volume final.\n"
 "\n"
 "Options :\n"
 "  Commandes additionnelles :\n"
-"    Éxécutez cette commande à l'heure de l'alarme.\n"
+"    Exécute cette commande à l'heure de l'alarme.\n"
 "\n"
 "  Liste de lecture : \n"
 "    Charger cette liste de lecture (extension .m3u\n"
-"    requise).  Si il n'y a pas de liste de lecture, alors\n"
-"    les morceaux actuellement dans la liste seront\n"
-"    utilisés.\n"
-"    L'adresse URL d'un flux MP3/OGG peut aussi être saisie\n"
-"    ici, mais le chargement de listes de lecture XMMS\n"
-"    n'est pas présentement pris en charge.\n"
+"    requise).  Si aucune liste de lecture n'est précisée, alors\n"
+"    la liste actuelle  sera utilisée.\n"
+"    L'adresse URL d'un flux MP3/OGG peut aussi être saisie.\n"
 "\n"
 "  Pense-bête :\n"
 "    Affiche un pense-bête durant l'alarme. Tapez le \n"
@@ -300,9 +291,8 @@ msgid "Thankyou"
 msgstr "Merci"
 
 #: src/albumart/albumart.c:101
-#, fuzzy
 msgid "Album Art"
-msgstr "Album : "
+msgstr "Pochette"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -333,13 +323,12 @@ msgid "Work around drain hangup"
 msgstr "Contourner le problème d'interruption du flux \"drain hang-up\""
 
 #: src/alsa/plugin.c:34
-#, fuzzy
 msgid "ALSA Output"
-msgstr "Ports de sortie ALSA"
+msgstr "Sortie ALSA"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (Lecteur MIDI)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -418,7 +407,7 @@ msgstr "Carte son : "
 
 #: src/amidi-plug/i_configure-alsa.c:395
 msgid "Mixer control: "
-msgstr "Contrôl du mélangeur : "
+msgstr "Contrôle du mélangeur : "
 
 #: src/amidi-plug/i_configure-alsa.c:407
 msgid "Mixer settings"
@@ -482,7 +471,7 @@ msgstr "AMIDI-Plug - choix du fichier"
 
 #: src/amidi-plug/i_configure.c:110
 msgid "AMIDI-Plug Settings"
-msgstr ""
+msgstr "Paramètres d'AMIDI-Plug"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -506,7 +495,7 @@ msgstr "Charger la banque de sons au démarrage du lecteur"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
 msgid "Load SF on first MIDI file play"
-msgstr ""
+msgstr "Charger la banque de sons à la lecture du premier fichier MIDI"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -530,7 +519,7 @@ msgstr "valeur :"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr ""
+msgstr "polyphonie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -600,7 +589,7 @@ msgstr "Durée (msec.) :"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr ""
+msgstr "Nombre de pistes :"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -637,12 +626,11 @@ msgstr "  (format UTF-8 invalide)"
 
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
-msgstr ""
+msgstr "À propos d'AMIDI-Plug"
 
 #: src/aosd/aosd.c:37
-#, fuzzy
 msgid "AOSD (On-Screen Display)"
-msgstr "Activer l'affichage à l'écran"
+msgstr "Afficheur d'information"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -887,26 +875,23 @@ msgstr "Options diverses"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "Listes de lecture ASXv1 et ASXv2"
 
 #: src/audpl/audpl.c:224
-#, fuzzy
 msgid "Audacious Playlists (audpl)"
-msgstr "Éditeur de liste de lecture d'Audacious"
+msgstr "Listes de lecture au format d'Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
-#, fuzzy
 msgid "<b>Color</b>"
-msgstr "<b>_Polices de caractères</b>"
+msgstr "<b>Couleur</b>"
 
 #: src/blur_scope/blur_scope.c:58
-#, fuzzy
 msgid "Blur Scope"
-msgstr "Oscilloscope en vagues"
+msgstr "Oscilloscope flou"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr ""
+msgstr "Préférences du module Bauer stéréophonique-vers-binaural "
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -922,36 +907,35 @@ msgstr "Préréglages :"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "module Bauer stéréophonique-vers-binaural "
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
-#, fuzzy
 msgid "Spectrum Analyzer"
-msgstr "Analyseur"
+msgstr "Analyseur de spectre"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
-msgstr ""
+msgstr "<b>Lecteur</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "Read speed:"
-msgstr ""
+msgstr "Vitesse de lecture : "
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "Override device:"
-msgstr ""
+msgstr "Forcer le lecteur : "
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "<b>Metadonnées</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
-msgstr ""
+msgstr "Utiliser CD-Text"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
-msgstr ""
+msgstr "Utiliser CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Use HTTP instead of CDDBP"
@@ -959,20 +943,19 @@ msgstr "Utiliser « HTTP » à la place de « CDDBP »"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Server:"
-msgstr ""
+msgstr "Serveur : "
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Path:"
-msgstr ""
+msgstr "Chemin : "
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
-msgstr ""
+msgstr "Port :"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
-#, fuzzy
 msgid "Audio CD Plugin"
-msgstr "À propos du module CD Audio"
+msgstr "Module de gestion des CD audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
@@ -996,11 +979,11 @@ msgstr "Lire le CD"
 
 #: src/cd-menu-items/cd-menu-items.c:59
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Éléments du menu CD Audio"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
-msgstr ""
+msgstr "<b>Compression</b>"
 
 #: src/compressor/plugin.c:38
 msgid "Center volume:"
@@ -1011,9 +994,8 @@ msgid "Dynamic range:"
 msgstr "Plage dynamique :"
 
 #: src/compressor/plugin.c:60
-#, fuzzy
 msgid "Dynamic Range Compressor"
-msgstr "À propos du module « Dynamic Range Compression »"
+msgstr "Compresseur de gamme dynamique"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1086,93 +1068,83 @@ msgstr ""
 "par exemple)."
 
 #: src/crossfade/crossfade.c:83
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Le fondu enchaîné a échoué car les morceaux ont des fréquences "
-"d'échantillonnage différentes.\n"
-"\n"
-"Vous pouvez utiliser l'effet « Sample Rate Converter » pour rééchantillonner "
-"les titres à la même fréquence."
+"Le fondu enchaîné a échoué car les morceaux avaient un nombre différents de "
+"canaux.  Vous pouvez utiliser le \"Mélangeur de canaux\" pour les "
+"uniformiser."
 
 #: src/crossfade/crossfade.c:90
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Le fondu enchaîné a échoué car les morceaux ont des fréquences "
-"d'échantillonnage différentes.\n"
-"\n"
-"Vous pouvez utiliser l'effet « Sample Rate Converter » pour rééchantillonner "
-"les titres à la même fréquence."
+"Le fondu enchaîné a échoué car les morceaux avaient des taux "
+"d’échantillonnage différents.  Vous pouvez utiliser le \"Convertisseur de "
+"taux d’échantillonnage\" pour les uniformiser."
 
 #: src/crossfade/crossfade.c:260
-#, fuzzy
 msgid "<b>Crossfade</b>"
-msgstr "À propos du module « Crossfade »"
+msgstr "<b>Fondu enchaîné</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
-msgstr ""
+msgstr "Recouvrement:"
 
 #: src/crossfade/crossfade.c:271
-#, fuzzy
 msgid "Crossfade"
-msgstr "À propos du module « Crossfade »"
+msgstr "Fondu enchaîné"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
-msgstr ""
+msgstr "<b>Crystaliseur</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
-msgstr ""
+msgstr "Intensité :"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
-msgstr ""
+msgstr "Cristalliseur "
 
 #: src/cue/cue.c:160
-#, fuzzy
 msgid "Cue Sheet Plugin"
-msgstr "À propos du module « Écho »"
+msgstr "Module de gestion des fichiers .cue"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr ""
+msgstr "<b>Écho</b>"
 
 #: src/echo_plugin/echo.c:27
 msgid "Delay:"
-msgstr ""
+msgstr "Délai : "
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr ""
+msgstr "Retour : "
 
 #: src/echo_plugin/echo.c:33
 msgid "Volume:"
-msgstr ""
+msgstr "Volume : "
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Écho"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "Module FFmpeg"
 
 #: src/filewriter/filewriter.c:409
-#, fuzzy
 msgid "FileWriter Configuration"
-msgstr "Configuration du module « File Writer »"
+msgstr "Configuration du module d'écriture dans un fichier"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1219,9 +1191,8 @@ msgid "Prepend track number to filename"
 msgstr "Ajouter le numéro de la piste au début du nom du fichier"
 
 #: src/filewriter/filewriter.c:532
-#, fuzzy
 msgid "FileWriter Plugin"
-msgstr "À propos du module « FileWriter »"
+msgstr "Module d'écriture dans un fichier"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1333,7 +1304,7 @@ msgstr "DBV/DBM (Débit Binaire Variable/Débit Binaire Moyen)"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr ""
+msgstr "Paramètres de trame:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
@@ -1373,16 +1344,15 @@ msgstr "Niveau de qualité (0 - 10) :"
 
 #: src/flacng/plugin.c:271
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "Décodeur FLAC"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
-msgstr ""
+msgstr "Module de support de GIO"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
-#, fuzzy
 msgid "Gnome Shortcuts"
-msgstr "À propos du module « Gnome Shortcut »"
+msgstr "Raccourcis de Gnome"
 
 #: src/gtkui/columns.c:33
 msgid "Entry number"
@@ -1490,11 +1460,11 @@ msgstr "Ajouter une adresse U_RL..."
 
 #: src/gtkui/menus.c:164
 msgid "_Search Library"
-msgstr ""
+msgstr "Rechercher dans la bibliothèque"
 
 #: src/gtkui/menus.c:166
 msgid "A_bout ..."
-msgstr "À_propos de..."
+msgstr "À _propos de..."
 
 #: src/gtkui/menus.c:167
 msgid "_Preferences ..."
@@ -1589,9 +1559,8 @@ msgid "_Random Order"
 msgstr "Ordre _aléatoire"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "_Play This Playlist"
-msgstr "_Créer une liste de lecture"
+msgstr "Lire cette liste de lecture"
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
@@ -1611,7 +1580,7 @@ msgstr "_Nouvelle liste de lecture"
 
 #: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "Renommer ..."
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
@@ -1626,9 +1595,8 @@ msgid "_Export ..."
 msgstr "_Exporter"
 
 #: src/gtkui/menus.c:212
-#, fuzzy
 msgid "Playlist _Manager ..."
-msgstr "_Gestionnaire de liste de lecture..."
+msgstr "Gestionnaire de liste de lecture..."
 
 #: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
@@ -1640,7 +1608,7 @@ msgstr "Augmenter le _volume"
 
 #: src/gtkui/menus.c:217
 msgid "Volume _Down"
-msgstr "Réduire le _volume"
+msgstr "_Réduire le volume"
 
 #: src/gtkui/menus.c:219
 msgid "_Equalizer"
@@ -1668,7 +1636,7 @@ msgstr "Afficher la barre d'i_nformation"
 
 #: src/gtkui/menus.c:229
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "Affiche la Vis_ualisation \"Barre d'infos\""
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
@@ -1676,7 +1644,7 @@ msgstr "Afficher la barre d'_état"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "Afficher les boutons de fermeture dans les onglets"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
@@ -1735,9 +1703,8 @@ msgid "Select _All"
 msgstr "Sélectionner _tout"
 
 #: src/gtkui/menus.c:259
-#, fuzzy
 msgid "_Rename ..."
-msgstr "_Renommer"
+msgstr "_Renommer la piste de lecture …"
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
@@ -1828,9 +1795,8 @@ msgid "Jump to File"
 msgstr "Aller au fichier"
 
 #: src/hotkey/gui.c:83
-#, fuzzy
 msgid "Toggle Player Window(s)"
-msgstr "Afficher / Cacher les fenêtres du lecteur"
+msgstr "Montre/cache le lecteur"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1845,9 +1811,8 @@ msgid "Toggle Shuffle"
 msgstr "Bascule le mode de lecture aléatoire"
 
 #: src/hotkey/gui.c:87
-#, fuzzy
 msgid "Raise Player Window(s)"
-msgstr "Afficher / Cacher les fenêtres du lecteur"
+msgstr "Montre/Active la fenêtre du lecteur"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -1896,14 +1861,12 @@ msgid "<b>Key Binding:</b>"
 msgstr "<b>Touche associée :</b>"
 
 #: src/hotkey/plugin.c:80
-#, fuzzy
 msgid "Global Hotkeys"
-msgstr "À propos du module « Global Hotkey »"
+msgstr "Raccourcis universels"
 
 #: src/jack/jack.c:417
-#, fuzzy
 msgid "JACK Output"
-msgstr "_Sortie"
+msgstr "Sortie JACK"
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1947,14 +1910,13 @@ msgid "Settings"
 msgstr "Paramètres"
 
 #: src/ladspa/plugin.c:651
-#, fuzzy
 msgid "LADSPA Host"
-msgstr "À propos de l'hôte LADSPA"
+msgstr "Hôte LADSPA"
 
 #: src/lirc/lirc.c:77
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr ""
+msgstr "%s: n'a pas pu initialiser le support de LIRC\n"
 
 #: src/lirc/lirc.c:84
 #, c-format
@@ -1963,85 +1925,79 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
+"%s: N'a pas pu lire le fichier de configuration de LIRC\n"
+"%s: Veuillez s'il vous plait lire la documentation de LIRC\n"
+"%s: sur comment créer un fichier de configuration valide\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: essaie de se reconnecter…\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: commande inconnue \"%s\"\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr ""
+msgstr "%s: déconnecté de LIRC\n"
 
 #: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: essaiera de se reconnecter toutes les %d secondes…\n"
 
 #: src/lirc/lirc.c:411
-#, fuzzy
 msgid "<b>Connection</b>"
-msgstr "<b>Action : </b>"
+msgstr "<b>Connexion</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Se reconnecter automatiquement au serveur LIRC"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Se reconnecter au bout de"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "Module LIRC"
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* aucune parole n'est disponible dans ce fichier MIDI"
+msgstr "Paroles non disponibles"
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "Impossible de récupérer %s"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "Impossible de traiter %s"
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
-msgstr ""
-"\n"
-"Recherche des paroles..."
+msgstr "Recherche les paroles …"
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Métadonnées de morceau manquantes"
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
-"\n"
-"Connexion à lyrics.wikia.com en cours..."
+msgstr "Connexion à lyrics.wikia.com …"
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "Module LyricWiki"
 
 #: src/m3u/m3u.c:123
-#, fuzzy
 msgid "M3U Playlists"
-msgstr "Liste de lecture"
+msgstr "Listes de lecture M3U"
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2054,31 +2010,28 @@ msgid "Tact generator: %d bpm %d/%d"
 msgstr "Métronome : %d bpm %d/%d"
 
 #: src/metronom/metronom.c:257
-#, fuzzy
 msgid "Tact Generator"
-msgstr "Générateur de tonalités : "
+msgstr "Métronome"
 
 #: src/mixer/mixer.c:175
-#, fuzzy
 msgid "<b>Channel Mixer</b>"
-msgstr "À propos du module de mélange des canaux"
+msgstr "<b>Mélangeur de canaux</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
 msgstr "Canaux de sortie :"
 
 #: src/mixer/mixer.c:186
-#, fuzzy
 msgid "Channel Mixer"
-msgstr "À propos du module de mélange des canaux"
+msgstr "Mélangeur de canaux"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "Module MMS"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (Lecteur de module)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -2086,15 +2039,15 @@ msgstr "Son ambiophonique"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "Module MPG123"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "Serveur MPRIS 2"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Module de support du http/https néon"
 
 #: src/notify/event.c:49
 msgid "Stopped"
@@ -2106,7 +2059,7 @@ msgstr "Audacious n'est pas en train de lire de musique."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Notifications natives"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
@@ -2121,7 +2074,6 @@ msgid "Use alternate device:"
 msgstr "Utiliser un autre périphérique :"
 
 #: src/oss4/plugin.c:81
-#, fuzzy
 msgid "Save volume between sessions."
 msgstr "Conserver le volume d'une session à l'autre"
 
@@ -2134,48 +2086,44 @@ msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Active le mode exclusif pour empêcher le mixage virtuel."
 
 #: src/oss4/plugin.c:115
-#, fuzzy
 msgid "OSS4 Output"
-msgstr "_Sortie"
+msgstr "Sortie OSS4"
 
 #: src/pls/pls.c:114
-#, fuzzy
 msgid "PLS Playlists"
-msgstr "Liste de lecture"
+msgstr "Listes de lecture PLS"
 
 #: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "Décodeur OpenPSF PSF1/PSF2"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "Sortie PulseAudio"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Sauter/répéter les échantillons"
 
 #: src/resample/resample.c:168
-#, fuzzy
 msgid "Linear interpolation"
-msgstr "Internationalisation"
+msgstr "Interpolation linéaire"
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Interpolation sinus cardinal rapide"
 
 #: src/resample/resample.c:170
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Interpolation sinus cardinal moyenne"
 
 #: src/resample/resample.c:171
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Interpolation sinus cardinal la meilleure"
 
 #: src/resample/resample.c:174
-#, fuzzy
 msgid "<b>Conversion</b>"
-msgstr "<b>_Polices de caractères</b>"
+msgstr "<b>Conversion</b>"
 
 #: src/resample/resample.c:175
 msgid "Method:"
@@ -2183,57 +2131,47 @@ msgstr "Méthode :"
 
 #: src/resample/resample.c:178
 msgid "Rate:"
-msgstr ""
+msgstr "Taux:"
 
 #: src/resample/resample.c:181
-#, fuzzy
 msgid "<b>Rate Mappings</b>"
-msgstr "Correspondances des fréquences :"
+msgstr "<b>Mappage de taux</b>"
 
 #: src/resample/resample.c:182
-#, fuzzy
 msgid "Use rate mappings"
-msgstr "Correspondances des fréquences :"
+msgstr "Utiliser les mappages de taux"
 
 #: src/resample/resample.c:184
-#, fuzzy
 msgid "8 kHz:"
-msgstr "8 kHz"
+msgstr "8 kHz :"
 
 #: src/resample/resample.c:187
-#, fuzzy
 msgid "16 kHz:"
-msgstr "16 kHz"
+msgstr "16 kHz :"
 
 #: src/resample/resample.c:190
-#, fuzzy
 msgid "22.05 kHz:"
-msgstr "2 kHz"
+msgstr "22.05 kHz :"
 
 #: src/resample/resample.c:193
-#, fuzzy
 msgid "44.1 kHz:"
-msgstr "1 kHz"
+msgstr "44.1 kHz :"
 
 #: src/resample/resample.c:196
-#, fuzzy
 msgid "48 kHz:"
-msgstr "8 kHz"
+msgstr "48 kHz :"
 
 #: src/resample/resample.c:199
-#, fuzzy
 msgid "96 kHz:"
-msgstr "16 kHz"
+msgstr "96 kHz :"
 
 #: src/resample/resample.c:202
-#, fuzzy
 msgid "192 kHz:"
-msgstr "2 kHz"
+msgstr "192 kHz :"
 
 #: src/resample/resample.c:212
-#, fuzzy
 msgid "Sample Rate Converter"
-msgstr "Préférence du module « Sample Rate Converter »"
+msgstr "Convertisseur de taux d’échantillonnage"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
@@ -2244,9 +2182,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Services</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2265,9 +2202,8 @@ msgid "Scrobbler"
 msgstr "Scrobbler"
 
 #: src/sdlout/plugin.c:32
-#, fuzzy
 msgid "SDL Output"
-msgstr "_Sortie"
+msgstr "Sortie SDL"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2275,11 +2211,11 @@ msgstr "Bibliothèque"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Artiste inconnu"
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
-msgstr ""
+msgstr "Album inconnu"
 
 #: src/search-tool/search-tool.c:627
 #, c-format
@@ -2287,13 +2223,15 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+" dans %s par %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d album"
+msgstr[1] "%d albums"
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2304,7 +2242,11 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s\n"
+" %s, %d morceau"
 msgstr[1] ""
+"%s\n"
+" %s, %d morceaux"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2315,7 +2257,11 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
+"%s\n"
+" %d morceau par %s"
 msgstr[1] ""
+"%s\n"
+" %d morceaux par %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2346,13 +2292,12 @@ msgid "Choose Folder"
 msgstr "Choisissez un dossier"
 
 #: src/search-tool/search-tool.c:803
-#, fuzzy
 msgid "Search Tool"
-msgstr "Rechercher dans la médiathèque"
+msgstr "Outil de recherche"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr ""
+msgstr "Interface Winamp Classic"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Player:"
@@ -2550,7 +2495,7 @@ msgstr "N'arrête pas après le morceau en cours.."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Song Name"
-msgstr ""
+msgstr "Défilement automatique du titre"
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -2738,9 +2683,8 @@ msgid "Playlist"
 msgstr "Liste de lecture"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "_Créer une liste de lecture"
+msgstr "Amorcer la liste de lecture"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3245,14 +3189,12 @@ msgid "Could not create directory (%s): %s\n"
 msgstr "Impossible de créer le répertoire (%s) : %s\n"
 
 #: src/sndfile/plugin.c:437
-#, fuzzy
 msgid "Sndfile Plugin"
-msgstr "À propos du module sndfile"
+msgstr "Module Sndfile"
 
 #: src/sndio/sndio.c:189
-#, fuzzy
 msgid "About Sndio Output Plugin"
-msgstr "À propos du module de sortie SDL"
+msgstr "À propos du module de sortie Sndio"
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3260,11 +3202,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
+"Module de sortie Sndio\n"
+"\n"
+"Écrit par Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:259
-#, fuzzy
 msgid "Unsupported format"
-msgstr "Type de disque non pris en charge"
+msgstr "Format non pris en charge"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3272,16 +3216,17 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"Un format non pris en charge par le périphérique audio a été demandé.\n"
+"\n"
+"Veuillez essayer à nouveau avec le serveur sndiod(1) en fonction."
 
 #: src/sndio/sndio.c:403
-#, fuzzy
 msgid "sndio device"
-msgstr "Périphérique audio :"
+msgstr "Périphérique sndio"
 
 #: src/sndio/sndio.c:419
-#, fuzzy
 msgid "(empty means default)"
-msgstr "Se déclencher (par défaut) à :"
+msgstr "(vide implique par défaut)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3330,6 +3275,21 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
+"Vous pouvez utiliser les variables suivantes qui seront\n"
+"remplacées avant l'appel de la commande à exécuter (toutes ne sont pas "
+"utiles pour la fonction « fin de liste de lecture ») :\n"
+"\n"
+"%F : Fréquence (en Hertz)\n"
+"%c : Nombre de canaux\n"
+"%f : Nom du fichier (chemin complet)\n"
+"%l : Durée (en millisecondes)\n"
+"%n ou %s : Nom du morceau\n"
+"%r : Taux d'encodage (en bit par seconde)\n"
+"%t : Position dans la liste de lecture (%02d)\n"
+"%p : 1 si la lecture est en cours, 0 si elle est arrêtée\n"
+"%a : Artiste\n"
+"%b : Album\n"
+"%T : Titre de la piste"
 
 #: src/song_change/song_change.c:489
 msgid ""
@@ -3346,26 +3306,23 @@ msgstr "Commandes"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Vitesse et hauteur</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
-#, fuzzy
 msgid "Speed:"
-msgstr "Vitesse"
+msgstr "Vitesse : "
 
 #: src/speed-pitch/speed-pitch.c:231
-#, fuzzy
 msgid "Pitch:"
-msgstr "Hauteur"
+msgstr "Hauteur : "
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Vitesse et hauteur"
 
 #: src/statusicon/statusicon.c:399
-#, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "Effet de la molette de la souris"
+msgstr "<b>Action lors du défilement à la molette</b>"
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
@@ -3376,36 +3333,32 @@ msgid "Change playing song"
 msgstr "Changement du morceau en cours"
 
 #: src/statusicon/statusicon.c:406
-#, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "Autres paramètres"
+msgstr "<b>Autres options</b>"
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Désactiver l'affichage d'information au survol"
 
 #: src/statusicon/statusicon.c:409
-#, fuzzy
 msgid "Close to the system tray"
-msgstr "Réduire vers la zone de notification à la fermeture"
+msgstr "Réduire dans la zone de notification"
 
 #: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr "Avancer dans la liste de lecture en roulant la molette vers le haut"
 
 #: src/statusicon/statusicon.c:420
-#, fuzzy
 msgid "Status Icon"
-msgstr "À propos du module « Status Icon » (icône d'état)"
+msgstr "Icône de notification"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
-msgstr ""
+msgstr "<b>Stéréo additionnelle</b>"
 
 #: src/stereo_plugin/stereo.c:38
-#, fuzzy
 msgid "Extra Stereo"
-msgstr "Stéréo combiné"
+msgstr "Stéréo additionnelle"
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3417,46 +3370,33 @@ msgid "Tone Generator: "
 msgstr "Générateur de tonalités : "
 
 #: src/tonegen/tonegen.c:208
-#, fuzzy
 msgid "Tone Generator"
-msgstr "Générateur de tonalités : "
+msgstr "Accordeur"
 
 #: src/unix-io/unix-io.c:279
-#, fuzzy
 msgid "File I/O Plugin"
-msgstr "À propos du module de gestion des entrées/sorties"
+msgstr "Module des entrées/sorties de fichier"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr ""
+msgstr "Karaoké"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr ""
+msgstr "Décodeur Ogg Vorbis"
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr ""
+msgstr "Décodeur VTX"
 
 #: src/wavpack/wavpack.c:345
-#, fuzzy
 msgid "WavPack Decoder"
-msgstr "Module de décodage Wavpack %s"
+msgstr "Décodeur WavPack"
 
 #: src/xsf/plugin.c:273
 msgid "2SF Decoder"
-msgstr ""
+msgstr "Décodeur 2SF"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
-
-#~ msgid "Browse..."
-#~ msgstr "Parcourir"
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "Les paroles n'ont pas été trouvées."
+msgstr "Listes de lecture XSPF"
