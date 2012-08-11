@@ -1871,12 +1871,12 @@ msgstr ""
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: intentando conectar de nuevo... \\n"
+msgstr "%s: intentando conectar de nuevo... \n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: comando desconocido \"%s\"\\n"
+msgstr "%s: comando desconocido \"%s\"\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
