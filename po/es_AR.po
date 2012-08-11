@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-07-04 20:24+0000\n"
+"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"PO-Revision-Date: 2012-08-11 00:44+0000\n"
 "Last-Translator: Adrián Ramirez Escalante <buried.prophet@gmail.com>\n"
 "Language-Team: Spanish (Argentinian)\n"
 "Language: es_AR\n"
@@ -160,9 +160,8 @@ msgid "Playlist (optional)"
 msgstr "Lista de reproducción (opcional)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Lista de reproducción siguiente"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -181,7 +180,6 @@ msgid "What do these options mean?"
 msgstr "¿Qué significan estas opciones?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -233,57 +231,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"Hora\n"
-"  Alarma a: \n"
-"    La hora a la que saltará la alarma.\n"
-"\n"
-"  Silencio tras: \n"
-"    Detener la alarma tras esta cantidad de tiempo.\n"
-"       (si el diálogo de despertar no se cierra)\n"
-"\n"
-"\n"
-"Días\n"
-"  Día:\n"
-"    Seleccione los días para que se active la alarma.\n"
-"\n"
-"  Hora:\n"
-"    Elija la hora para la alarma en cada día,\n"
-"    o seleccione el botón para utilizar la hora\n"
-"    predeterminada.\n"
-"\n"
-"\n"
-"Volumen\n"
-"  Desvanecimiento: \n"
-"    Bajar el volumen hasta el nivel elegido \n"
-"    durante este periodo de tiempo.\n"
-"\n"
-"  Iniciar a: \n"
-"    Empezar a desvanecer desde este volumen.\n"
-"\n"
-"  Final: \n"
-"    El volumen final del desvanecimiento.  Si el tiempo\n"
-"    de desvanecimiento es 0 se establece este volumen\n"
-"    y empieza la reproducción.\n"
-"\n"
-"\n"
-"Opciones:\n"
-"  Comando adicional:\n"
-"    Ejecutar este comando a la hora de la alarma.\n"
-"\n"
-"  Lista de reproducción: \n"
-"    Cargar esta lista de producción para reproducir\n"
-"    (debe tener una extensión .m3u).  Si no se introduce\n"
-"    introduce ninguna lista se utilizarán las canciones\n"
-"    en la lista actual.\n"
-"    También se puede introducir la URL de un flujo\n"
-"    mp3/ogg, pero actualmente xmms no puede cargar\n"
-"    listas de reproducción desde URLs.\n"
-"\n"
-"  Recordatorio:\n"
-"    Mostrar un recordatorio cuando se apaga la alarma,\n"
-"    escriba el recordatorio en la caja y seleccione el\n"
-"    botón si quiere que se muestre.\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -910,7 +857,7 @@ msgstr "Predefinidos:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Estereofónico-a-Binaural Bauer (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
@@ -1093,7 +1040,7 @@ msgstr "<b>Fundido de pistas</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
-msgstr ""
+msgstr "Superposición:"
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
@@ -1109,11 +1056,11 @@ msgstr "Intensidad:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
-msgstr ""
+msgstr "Cristalizador"
 
 #: src/cue/cue.c:160
 msgid "Cue Sheet Plugin"
-msgstr ""
+msgstr "Plugin para hoja cue"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
@@ -1137,15 +1084,15 @@ msgstr "Volumen:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Eco"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "Plugin FFmpeg"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr ""
+msgstr "Configuración de FileWriter"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1193,7 +1140,7 @@ msgstr "Anteponer el número de pista al nombre de archivo"
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "Plugin FileWriter"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1345,15 +1292,15 @@ msgstr "Nivel de calidad (0 - 10):"
 
 #: src/flacng/plugin.c:271
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "Decodificador FLAC"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
-msgstr ""
+msgstr "Plugin GIO"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
-msgstr ""
+msgstr "Accesos directos para GNOME"
 
 #: src/gtkui/columns.c:33
 msgid "Entry number"
@@ -1860,11 +1807,11 @@ msgstr "<b>Teclas asociadas:</b>"
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
-msgstr ""
+msgstr "Teclas abreviadas globales"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
-msgstr ""
+msgstr "Salida JACK"
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1908,7 +1855,7 @@ msgstr "Ajustes"
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
-msgstr ""
+msgstr "Servidor LADSPA"
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -1948,7 +1895,7 @@ msgstr "%s: se intentará reconectar cada %d segundos...\n"
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
-msgstr ""
+msgstr "<b>Conexión</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
@@ -1956,16 +1903,15 @@ msgstr "Reconectar a servidor LIRC"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Espera antes de reconectar:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "Plugin LIRC"
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* no hay letras disponibles en este archivo MIDI *"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
@@ -1978,30 +1924,24 @@ msgid "Unable to parse %s"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
 msgstr ""
-"\n"
-"Buscando letras ..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr ""
-"\n"
-"Conectando a lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "Plugin LyricWiki"
 
 #: src/m3u/m3u.c:123
 msgid "M3U Playlists"
-msgstr ""
+msgstr "Listas de reproducción M3U"
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2015,11 +1955,11 @@ msgstr "Generador de tacto: %d ppm %d/%d"
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
-msgstr ""
+msgstr "Generador de tacto"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr ""
+msgstr "<b>Mezclador de canales</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
@@ -2027,15 +1967,15 @@ msgstr "Canales de salida:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr ""
+msgstr "Mezclador de canales"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "Plugin MMS"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (Módulo de reproducción)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -2186,9 +2126,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Servicios</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2687,9 +2626,8 @@ msgid "Playlist"
 msgstr "Lista de reproducción"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "_Reproducir esta lista de reproducción"
+msgstr ""
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3404,13 +3342,3 @@ msgstr "Decodificador 2SF"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Listas de reproducción compartidas XML (XSPF)"
-
-#~ msgid "Browse..."
-#~ msgstr "Examinar..."
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "No se encontraron letras."

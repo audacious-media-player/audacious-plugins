@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-07-26 00:36+0000\n"
-"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"PO-Revision-Date: 2012-07-30 04:08+0000\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
@@ -66,7 +66,7 @@ msgstr "Vaigistamine pärast:"
 
 #: src/alarm/interface.c:386
 msgid "Alarm at (default):"
-msgstr "Vaikimisi äratuskell (vaikimisi):"
+msgstr "Vaikimisi äratuskell:"
 
 #: src/alarm/interface.c:404
 msgid "Choose the days for the alarm to come on"
@@ -248,7 +248,7 @@ msgstr "Aitäh"
 
 #: src/albumart/albumart.c:101
 msgid "Album Art"
-msgstr ""
+msgstr "Albumi graafika"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -629,7 +629,7 @@ msgstr "OSD käivitamine pausitud loo jätkamisel."
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr "Paigutamine"
+msgstr "Paigutus"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
@@ -772,7 +772,7 @@ msgstr ""
 #: src/aosd/aosd_ui.c:914
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr ""
+msgstr "<span font_desc='%s'>Audaciouse OSD</span>"
 
 #: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
@@ -900,7 +900,7 @@ msgstr "Seade on tühi."
 
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
-msgstr ""
+msgstr "Plaadi liik pole toetatud."
 
 #: src/cd-menu-items/cd-menu-items.c:32
 msgid "Play CD"
@@ -912,7 +912,7 @@ msgstr "Lisa CD"
 
 #: src/cd-menu-items/cd-menu-items.c:59
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Audioplaadi menüüvalikud"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1060,7 +1060,7 @@ msgstr ""
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Kaja"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
@@ -1684,7 +1684,7 @@ msgstr "Esita"
 
 #: src/hotkey/gui.c:74
 msgid "Pause/Resume"
-msgstr ""
+msgstr "Pausimine/pausi lõpetamine"
 
 #: src/hotkey/gui.c:75 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
 msgid "Stop"
@@ -1704,7 +1704,7 @@ msgstr "Tagasikerimine 5 sekundit"
 
 #: src/hotkey/gui.c:79
 msgid "Mute"
-msgstr ""
+msgstr "Heli tummaks"
 
 #: src/hotkey/gui.c:80
 msgid "Volume Up"
@@ -1724,15 +1724,15 @@ msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
-msgstr ""
+msgstr "OSD sisse-/väljalülitamine"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle Repeat"
-msgstr ""
+msgstr "Korduse sisse-/väljalülitamine"
 
 #: src/hotkey/gui.c:86
 msgid "Toggle Shuffle"
-msgstr ""
+msgstr "Järjekorra segamise sisse-/väljalülitamine"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
@@ -1766,6 +1766,8 @@ msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
+"Vajuta tekstiväljal soovitud klahvikombinatsiooni.\n"
+"Samamoodi saab siduda ka hiirenuppe."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1977,7 +1979,7 @@ msgstr ""
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Töölauateavitused"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
@@ -2017,7 +2019,7 @@ msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "PulseAudio väljund"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
@@ -2061,31 +2063,31 @@ msgstr ""
 
 #: src/resample/resample.c:184
 msgid "8 kHz:"
-msgstr ""
+msgstr "8 kHz:"
 
 #: src/resample/resample.c:187
 msgid "16 kHz:"
-msgstr ""
+msgstr "16 kHz:"
 
 #: src/resample/resample.c:190
 msgid "22.05 kHz:"
-msgstr ""
+msgstr "22,05 kHz:"
 
 #: src/resample/resample.c:193
 msgid "44.1 kHz:"
-msgstr ""
+msgstr "44,1 kHz:"
 
 #: src/resample/resample.c:196
 msgid "48 kHz:"
-msgstr ""
+msgstr "48 kHz:"
 
 #: src/resample/resample.c:199
 msgid "96 kHz:"
-msgstr ""
+msgstr "96 kHz:"
 
 #: src/resample/resample.c:202
 msgid "192 kHz:"
-msgstr ""
+msgstr "192 kHz:"
 
 #: src/resample/resample.c:212
 msgid "Sample Rate Converter"
@@ -2121,7 +2123,7 @@ msgstr ""
 
 #: src/sdlout/plugin.c:32
 msgid "SDL Output"
-msgstr ""
+msgstr "SDL-väljund"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -3247,7 +3249,7 @@ msgstr "Toonigeneraator: "
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
-msgstr ""
+msgstr "Toonigeneraator"
 
 #: src/unix-io/unix-io.c:279
 msgid "File I/O Plugin"
@@ -3259,19 +3261,19 @@ msgstr "Hääle eemaldamine"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr ""
+msgstr "Ogg Vorbis dekooder"
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr ""
+msgstr "VTX-dekooder"
 
 #: src/wavpack/wavpack.c:345
 msgid "WavPack Decoder"
-msgstr ""
+msgstr "WavPack dekooder"
 
 #: src/xsf/plugin.c:273
 msgid "2SF Decoder"
-msgstr ""
+msgstr "2SF-dekooder"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"

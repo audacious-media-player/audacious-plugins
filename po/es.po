@@ -6,6 +6,7 @@
 # Adrián Ramirez Escalante <buried.prophet@gmail.com>, 2012.
 # Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>, 2010.
 # Jorge Andrés <winninglero@gmail.com>, 2011.
+# Lucía Balsa <lucia.balsa.prados@gmail.com>, 2012.
 # Marco Antonio Frias Butrón <marcoantoniofrias@gmail.com>, 2012.
 # Matias Menich <und34d@gmail.com>, 2012.
 #   <xukosky@yahoo.es>, 2011, 2012.
@@ -13,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-07-26 00:36+0000\n"
-"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"PO-Revision-Date: 2012-08-04 09:14+0000\n"
+"Last-Translator: Lucía Balsa <lucia.balsa.prados@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -163,7 +164,7 @@ msgstr "Lista de reproducción (opcional)"
 
 #: src/alarm/interface.c:1075
 msgid "Select a playlist"
-msgstr ""
+msgstr "Seleccione una lista de reproducción"
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -427,7 +428,7 @@ msgstr "Complemento AMIDI - seleccione un archivo"
 
 #: src/amidi-plug/i_configure.c:110
 msgid "AMIDI-Plug Settings"
-msgstr ""
+msgstr "Ajustes de AMIDI-Plug"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -581,7 +582,7 @@ msgstr "  (UTF-8 no válido)"
 
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
-msgstr ""
+msgstr "Acerca del AMIDI-Plug"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
@@ -830,7 +831,7 @@ msgstr ""
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr ""
+msgstr "Listas de reproducción de Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
@@ -862,7 +863,7 @@ msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
-msgstr ""
+msgstr "Analizador de espectro"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
@@ -878,7 +879,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "<b>Metadatos</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
@@ -906,7 +907,7 @@ msgstr "Puerto:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
 msgid "Audio CD Plugin"
-msgstr ""
+msgstr "Plugin de Audio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
@@ -930,7 +931,7 @@ msgstr "Añadir CD"
 
 #: src/cd-menu-items/cd-menu-items.c:59
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Elementos del Menú de audio CD"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1080,7 +1081,7 @@ msgstr "Volumen:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Eco"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
@@ -1870,12 +1871,12 @@ msgstr ""
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: intentando conectar de nuevo... \\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: comando desconocido \"%s\"\\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
@@ -1893,7 +1894,7 @@ msgstr ""
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Volver a conectar con el servidor LIRC"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
@@ -1905,7 +1906,7 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:119
 msgid "No lyrics available"
-msgstr ""
+msgstr "No hay letras disponibles."
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
@@ -1961,11 +1962,11 @@ msgstr "Canales de salida:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr ""
+msgstr "Mezclador de canales"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "Plugin para MMS"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
@@ -2013,7 +2014,7 @@ msgstr "Utilizar dispositivo alternativo:"
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr ""
+msgstr "Guadar la configuración de volumen de una sesión a otra."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -3215,7 +3216,7 @@ msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr ""
+msgstr "Velocidad:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
