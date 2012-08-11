@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: audacious-plugins audacious-plugins-3.2-beta1-103-"
 "g4c001e9\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-08-11 13:52-0400\n"
 "PO-Revision-Date: 2012-02-19 11:14+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -33,7 +33,7 @@ msgstr ""
 "g41e8449\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 #, fuzzy
 msgid "AAC Decoder"
 msgstr "Dekodér"
@@ -2191,7 +2191,7 @@ msgstr "_Výstup"
 msgid "PLS Playlists"
 msgstr "Načíst seznam skladeb"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
@@ -3509,7 +3509,7 @@ msgstr "Dekodér"
 msgid "WavPack Decoder"
 msgstr "Dekódovací modul Wavpack %s"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 #, fuzzy
 msgid "2SF Decoder"
 msgstr "Dekodér"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-08-11 13:52-0400\n"
 "PO-Revision-Date: 2012-07-05 16:03+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Simplified Chinese\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr "AAC解码器"
 
@@ -2060,7 +2060,7 @@ msgstr "输出(_O)"
 msgid "PLS Playlists"
 msgstr "PLS播放列表"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2解码器"
 
@@ -3331,7 +3331,7 @@ msgstr "VTX解码器"
 msgid "WavPack Decoder"
 msgstr "Wavpack解码器"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 msgid "2SF Decoder"
 msgstr "2SF解码器"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:41-0400\n"
+"POT-Creation-Date: 2012-08-11 13:52-0400\n"
 "PO-Revision-Date: 2012-08-07 22:44+0800\n"
 "Last-Translator: Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>\n"
 "Language-Team: Chinese (traditional)\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr "AAC 解碼器"
 
@@ -25,8 +25,7 @@ msgstr "AAC 解碼器"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib 播放器)"
 
-#: src/alarm/alarm.c:836
-#: src/alarm/interface.c:32
+#: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
 msgstr "鬧鐘"
 
@@ -34,9 +33,7 @@ msgstr "鬧鐘"
 msgid "This is your wakeup call."
 msgstr "這是您的喚醒。"
 
-#: src/alarm/interface.c:54
-#: src/alarm/interface.c:1180
-#: src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
 msgid "OK"
 msgstr "確認"
 
@@ -44,8 +41,7 @@ msgstr "確認"
 msgid "Alarm Settings"
 msgstr "鬧鐘設定"
 
-#: src/alarm/interface.c:235
-#: src/alarm/interface.c:396
+#: src/alarm/interface.c:235 src/alarm/interface.c:396
 #: src/alarm/interface.c:753
 msgid "Time"
 msgstr "時間"
@@ -74,16 +70,11 @@ msgstr "鈴響於 (預設)"
 msgid "Choose the days for the alarm to come on"
 msgstr "選擇想要在哪幾天啟用鬧鐘"
 
-#: src/alarm/interface.c:431
-#: src/alarm/interface.c:477
-#: src/alarm/interface.c:523
-#: src/alarm/interface.c:569
-#: src/alarm/interface.c:615
-#: src/alarm/interface.c:661
-#: src/alarm/interface.c:707
-#: src/bs2b/plugin.c:179
-#: src/skins/ui_equalizer.c:1116
-#: src/skins/ui_manager.c:457
+#: src/alarm/interface.c:431 src/alarm/interface.c:477
+#: src/alarm/interface.c:523 src/alarm/interface.c:569
+#: src/alarm/interface.c:615 src/alarm/interface.c:661
+#: src/alarm/interface.c:707 src/bs2b/plugin.c:179
+#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "預設"
@@ -128,14 +119,11 @@ msgstr "週排程"
 msgid "Fading"
 msgstr "淡出"
 
-#: src/alarm/interface.c:876
-#: src/crossfade/crossfade.c:263
-#: src/lirc/lirc.c:416
+#: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
 msgid "seconds"
 msgstr "秒"
 
-#: src/alarm/interface.c:884
-#: src/alarm/interface.c:999
+#: src/alarm/interface.c:884 src/alarm/interface.c:999
 msgid "Volume"
 msgstr "音量"
 
@@ -147,8 +135,7 @@ msgstr "目前音量"
 msgid "Start at"
 msgstr "初始音量"
 
-#: src/alarm/interface.c:946
-#: src/alarm/interface.c:990
+#: src/alarm/interface.c:946 src/alarm/interface.c:990
 msgid "%"
 msgstr "％"
 
@@ -172,8 +159,7 @@ msgstr "播放清單 (選用)"
 msgid "Select a playlist"
 msgstr "請選擇播放清單"
 
-#: src/alarm/interface.c:1085
-#: src/alarm/interface.c:1250
+#: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
 msgstr "提醒"
 
@@ -286,13 +272,11 @@ msgstr ""
 "    在鈴響過後顯示提醒，\n"
 "    在文字輸入欄位中輸入你想要的提醒訊息。\n"
 
-#: src/alarm/interface.c:1157
-#: src/skins/ui_manager.c:390
+#: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "說明"
 
-#: src/alarm/interface.c:1189
-#: src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
 msgid "Cancel"
 msgstr "取消"
 
@@ -345,8 +329,11 @@ msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI 播放器)"
 
 #: src/amidi-plug/amidi-plug.c:327
-msgid "You have not selected any sequencer ports for MIDI playback.  You can do so in the MIDI plugin preferences."
-msgstr "您尚未選擇任何用於播放 MIDI 的編曲機連接埠。請到 MIDI 外掛偏好設定中設定。"
+msgid ""
+"You have not selected any sequencer ports for MIDI playback.  You can do so "
+"in the MIDI plugin preferences."
+msgstr ""
+"您尚未選擇任何用於播放 MIDI 的編曲機連接埠。請到 MIDI 外掛偏好設定中設定。"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -354,13 +341,21 @@ msgstr "ALSA 後端"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"這個後端會傳送 MIDI 事件到一組由使用者指定的 ALSA 編曲機連接埠。ALSA 編曲機介面有很多功能，它不但可以提供連接埠給音效卡上的硬體編曲機 (如 emu10k1) 還可以給軟體合成器與外接裝置等。\n"
+"這個後端會傳送 MIDI 事件到一組由使用者指定的 ALSA 編曲機連接埠。ALSA 編曲機介"
+"面有很多功能，它不但可以提供連接埠給音效卡上的硬體編曲機 (如 emu10k1) 還可以"
+"給軟體合成器與外接裝置等。\n"
 "\n"
-"這個後端本身並不產生音效，MIDI 事件直接由 ALSA 連接埠後的裝置或程式來處理；舉例來說，MIDI 事件被送到硬體合成器以後將會被直接播放。\n"
+"這個後端本身並不產生音效，MIDI 事件直接由 ALSA 連接埠後的裝置或程式來處理；舉"
+"例來說，MIDI 事件被送到硬體合成器以後將會被直接播放。\n"
 "\n"
 "作者：Giacomo Lozito"
 
@@ -370,11 +365,15 @@ msgstr "FluidSynth 後端"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"這個後端會將 MIDI 事件傳送給 FluidSynth 並產生音效，FluidSynth 是一個基於 SoundFont2 規格 (www.fluidsynth.org) 的即時軟體合成器。\n"
+"這個後端會將 MIDI 事件傳送給 FluidSynth 並產生音效，FluidSynth 是一個基於 "
+"SoundFont2 規格 (www.fluidsynth.org) 的即時軟體合成器。\n"
 "\n"
 "產生的音效會被播放器的特效外掛與輸出外掛影響。\n"
 "\n"
@@ -655,8 +654,12 @@ msgid "Title Change"
 msgstr "標題變更"
 
 #: src/aosd/aosd_trigger.c:80
-msgid "Triggers OSD when, during playback, the song title changes but the filename is the same. This is mostly useful to display title changes in internet streams."
-msgstr "當播放中歌曲標題改變但檔名不變時觸發 OSD。這對顯示網路串流的標題很有用。"
+msgid ""
+"Triggers OSD when, during playback, the song title changes but the filename "
+"is the same. This is mostly useful to display title changes in internet "
+"streams."
+msgstr ""
+"當播放中歌曲標題改變但檔名不變時觸發 OSD。這對顯示網路串流的標題很有用。"
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -788,7 +791,8 @@ msgstr "已偵測到合成特效管理程式"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
 msgstr ""
 "未偵測到合成特效管理程式；\n"
 "除非您確定已經執行，否則 OSD 將無法正確啟用。"
@@ -978,8 +982,7 @@ msgstr "動態範圍："
 msgid "Dynamic Range Compressor"
 msgstr "動態範圍壓縮"
 
-#: src/console/configure.c:135
-#: src/console/plugin.c:44
+#: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
 msgstr "遊戲主機音樂解碼器"
 
@@ -987,8 +990,7 @@ msgstr "遊戲主機音樂解碼器"
 msgid "General"
 msgstr "一般"
 
-#: src/console/configure.c:154
-#: src/skins/ui_manager.c:176
+#: src/console/configure.c:154 src/skins/ui_manager.c:176
 msgid "Playback"
 msgstr "播放"
 
@@ -996,8 +998,7 @@ msgstr "播放"
 msgid "Bass:"
 msgstr "低音"
 
-#: src/console/configure.c:173
-#: src/console/configure.c:184
+#: src/console/configure.c:173 src/console/configure.c:184
 #: src/console/configure.c:205
 msgid "secs"
 msgstr "秒"
@@ -1022,14 +1023,10 @@ msgstr "啟用聲音重取樣"
 msgid "Resampling rate:"
 msgstr "重取樣率"
 
-#: src/console/configure.c:232
-#: src/resample/resample.c:180
-#: src/resample/resample.c:186
-#: src/resample/resample.c:189
-#: src/resample/resample.c:192
-#: src/resample/resample.c:195
-#: src/resample/resample.c:198
-#: src/resample/resample.c:201
+#: src/console/configure.c:232 src/resample/resample.c:180
+#: src/resample/resample.c:186 src/resample/resample.c:189
+#: src/resample/resample.c:192 src/resample/resample.c:195
+#: src/resample/resample.c:198 src/resample/resample.c:201
 #: src/resample/resample.c:204
 msgid "Hz"
 msgstr "Hz"
@@ -1047,16 +1044,28 @@ msgid "Increase reverb"
 msgstr "增加回音"
 
 #: src/console/configure.c:270
-msgid "The default song length, expressed in seconds, is used for songs that do not provide length information (i.e. looping tracks)."
-msgstr "預設的歌曲長度，以秒表示。用於沒有提供長度資訊的歌曲 (像會無限播放的音軌)"
+msgid ""
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+"預設的歌曲長度，以秒表示。用於沒有提供長度資訊的歌曲 (像會無限播放的音軌)"
 
 #: src/crossfade/crossfade.c:83
-msgid "Crossfading failed because the songs had a different number of channels.  You can use the Channel Mixer to convert the songs to the same number of channels."
-msgstr "因為歌曲間的聲道數不同，無法使用 Crossfade。您可以使用聲道混合將歌曲轉換至相同的聲道數量。"
+msgid ""
+"Crossfading failed because the songs had a different number of channels.  "
+"You can use the Channel Mixer to convert the songs to the same number of "
+"channels."
+msgstr ""
+"因為歌曲間的聲道數不同，無法使用 Crossfade。您可以使用聲道混合將歌曲轉換至相"
+"同的聲道數量。"
 
 #: src/crossfade/crossfade.c:90
-msgid "Crossfading failed because the songs had different sample rates.  You can use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr "淡入淡出失敗，因為歌曲間的取樣率不同。您可以使用取樣率轉換功能來取得相同的取樣率。"
+msgid ""
+"Crossfading failed because the songs had different sample rates.  You can "
+"use the Sample Rate Converter to convert the songs to the same sample rate."
+msgstr ""
+"淡入淡出失敗，因為歌曲間的取樣率不同。您可以使用取樣率轉換功能來取得相同的取"
+"樣率。"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1074,8 +1083,7 @@ msgstr "淡入淡出"
 msgid "<b>Crystalizer</b>"
 msgstr "<b>Crystalizer</b>"
 
-#: src/crystalizer/crystalizer.c:43
-#: src/stereo_plugin/stereo.c:28
+#: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
 msgstr "效果強度："
 
@@ -1167,8 +1175,7 @@ msgstr "在檔名前面加上音軌號碼"
 msgid "FileWriter Plugin"
 msgstr "檔案輸出外掛"
 
-#: src/filewriter/mp3.c:37
-#: src/filewriter/mp3.c:748
+#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
 msgstr "自動"
 
@@ -1176,13 +1183,11 @@ msgstr "自動"
 msgid "Joint Stereo"
 msgstr "聯合立體聲"
 
-#: src/filewriter/mp3.c:38
-#: src/mpg123/mpg123.c:197
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
 msgstr "立體聲"
 
-#: src/filewriter/mp3.c:38
-#: src/mpg123/mpg123.c:197
+#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Mono"
 msgstr "單聲道"
 
@@ -1230,8 +1235,7 @@ msgstr "強制嚴格相容於 ISO"
 msgid "Error protection"
 msgstr "錯誤保護"
 
-#: src/filewriter/mp3.c:912
-#: src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
 msgid "Quality"
 msgstr "品質"
 
@@ -1415,8 +1419,7 @@ msgstr "嵌入底端"
 msgid "Undock"
 msgstr "解除嵌入"
 
-#: src/gtkui/layout.c:121
-#: src/ladspa/plugin.c:624
+#: src/gtkui/layout.c:121 src/ladspa/plugin.c:624
 msgid "Disable"
 msgstr "關閉"
 
@@ -1448,13 +1451,11 @@ msgstr "關於(_B) ..."
 msgid "_Preferences ..."
 msgstr "偏好設定(_P) ..."
 
-#: src/gtkui/menus.c:168
-#: src/skins/ui_manager.c:414
+#: src/gtkui/menus.c:168 src/skins/ui_manager.c:414
 msgid "_Quit"
 msgstr "離開(_Q)"
 
-#: src/gtkui/menus.c:171
-#: src/gtkui/menus.c:258
+#: src/gtkui/menus.c:171 src/gtkui/menus.c:258
 msgid "_Play"
 msgstr "播放(_P)"
 
@@ -1490,8 +1491,7 @@ msgstr "不要切換播放清單"
 msgid "Stop _After This Song"
 msgstr "播放完目前歌曲後停止"
 
-#: src/gtkui/menus.c:182
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:182 src/gtkui/menus.c:246
 msgid "Song _Info ..."
 msgstr "歌曲資訊(_I) ..."
 
@@ -1543,8 +1543,7 @@ msgstr "隨機順序(_R)"
 msgid "_Play This Playlist"
 msgstr "播放此清單(_P)"
 
-#: src/gtkui/menus.c:200
-#: src/gtkui/menus.c:248
+#: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
 msgstr "重新整理(_R)"
 
@@ -1564,8 +1563,7 @@ msgstr "新增(_N)"
 msgid "Ren_ame ..."
 msgstr "重新命名(_A) ..."
 
-#: src/gtkui/menus.c:207
-#: src/gtkui/menus.c:260
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
 msgstr "關閉(_C)"
 
@@ -1653,8 +1651,7 @@ msgstr "播放(_P)"
 msgid "P_laylist"
 msgstr "播放清單(_L)"
 
-#: src/gtkui/menus.c:241
-#: src/gtkui/menus.c:255
+#: src/gtkui/menus.c:241 src/gtkui/menus.c:255
 msgid "_Services"
 msgstr "服務(_S)"
 
@@ -1694,8 +1691,7 @@ msgstr "重新命名(_R) ..."
 msgid "GTK Interface"
 msgstr "GTK 介面"
 
-#: src/gtkui/ui_gtk.c:169
-#: src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:298
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
@@ -1704,29 +1700,22 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "緩衝中 ..."
 
-#: src/gtkui/ui_gtk.c:178
-#: src/skins/ui_main.c:300
-#: src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:229
-#: src/lyricwiki/lyricwiki.c:190
-#: src/lyricwiki/lyricwiki.c:200
-#: src/lyricwiki/lyricwiki.c:216
-#: src/lyricwiki/lyricwiki.c:226
-#: src/lyricwiki/lyricwiki.c:245
+#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
+#: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
+#: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:178
 msgid "Error"
 msgstr "錯誤"
 
-#: src/gtkui/ui_statusbar.c:105
-#: src/skins/ui_main.c:455
+#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
 msgid "mono"
 msgstr "單聲道"
 
-#: src/gtkui/ui_statusbar.c:107
-#: src/skins/ui_main.c:454
+#: src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
 msgid "stereo"
 msgstr "立體聲"
 
@@ -1745,9 +1734,7 @@ msgstr "%d kbps"
 msgid "Previous Track"
 msgstr "上一個音軌"
 
-#: src/hotkey/gui.c:73
-#: src/skins/ui_manager.c:178
-#: src/skins/ui_manager.c:179
+#: src/hotkey/gui.c:73 src/skins/ui_manager.c:178 src/skins/ui_manager.c:179
 msgid "Play"
 msgstr "播放"
 
@@ -1755,9 +1742,7 @@ msgstr "播放"
 msgid "Pause/Resume"
 msgstr "暫停／回復"
 
-#: src/hotkey/gui.c:75
-#: src/skins/ui_manager.c:184
-#: src/skins/ui_manager.c:185
+#: src/hotkey/gui.c:75 src/skins/ui_manager.c:184 src/skins/ui_manager.c:185
 msgid "Stop"
 msgstr "停止"
 
@@ -1785,9 +1770,7 @@ msgstr "提高音量"
 msgid "Volume Down"
 msgstr "降低音量"
 
-#: src/hotkey/gui.c:82
-#: src/skins/ui_manager.c:423
-#: src/skins/ui_manager.c:424
+#: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
 msgstr "跳至檔案"
 
@@ -1817,7 +1800,8 @@ msgstr "(無)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without modificators.\n"
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -1960,14 +1944,12 @@ msgstr "LIRC 外掛"
 msgid "No lyrics available"
 msgstr "無可用的歌詞"
 
-#: src/lyricwiki/lyricwiki.c:189
-#: src/lyricwiki/lyricwiki.c:215
+#: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "無法取得 %s"
 
-#: src/lyricwiki/lyricwiki.c:199
-#: src/lyricwiki/lyricwiki.c:225
+#: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
 msgstr "無法分析 %s"
@@ -2058,8 +2040,7 @@ msgstr "桌面通知"
 msgid "1. Default device"
 msgstr "1. 預設裝置"
 
-#: src/oss4/plugin.c:75
-#: src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
 msgstr "音訊裝置："
 
@@ -2087,7 +2068,7 @@ msgstr "OSS4 輸出"
 msgid "PLS Playlists"
 msgstr "PLS 播放清單"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1／PSF2 解碼器"
 
@@ -2167,8 +2148,7 @@ msgstr "192 kHz："
 msgid "Sample Rate Converter"
 msgstr "取樣率轉換"
 
-#: src/scrobbler/configure.c:121
-#: src/scrobbler/configure.c:169
+#: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
 msgstr "變更密碼"
 
@@ -2200,8 +2180,7 @@ msgstr "Scrobbler"
 msgid "SDL Output"
 msgstr "SDL 輸出"
 
-#: src/search-tool/search-tool.c:113
-#: src/search-tool/search-tool.c:123
+#: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
 msgstr "媒體櫃"
 
@@ -2265,8 +2244,11 @@ msgid "Search library"
 msgstr "搜尋媒體櫃"
 
 #: src/search-tool/search-tool.c:734
-msgid "To import your music library into Audacious, choose a folder and then click the \"refresh\" icon."
-msgstr "要將您的媒體櫃匯入至 Audacious，請選擇目標資料夾並且按下 \"重新整理\" 圖示。"
+msgid ""
+"To import your music library into Audacious, choose a folder and then click "
+"the \"refresh\" icon."
+msgstr ""
+"要將您的媒體櫃匯入至 Audacious，請選擇目標資料夾並且按下 \"重新整理\" 圖示。"
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -2372,8 +2354,7 @@ msgstr "Audacious 等化器"
 msgid "Presets"
 msgstr "樣式"
 
-#: src/skins/ui_equalizer.c:979
-#: src/skins/ui_manager.c:452
+#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:452
 msgid "Load preset"
 msgstr "載入樣式"
 
@@ -2381,14 +2362,12 @@ msgstr "載入樣式"
 msgid "Load auto-preset"
 msgstr "讀取自動載入樣式"
 
-#: src/skins/ui_equalizer.c:1026
-#: src/skins/ui_equalizer.c:1044
+#: src/skins/ui_equalizer.c:1026 src/skins/ui_equalizer.c:1044
 #: src/skins/ui_equalizer.c:1060
 msgid "Load equalizer preset"
 msgstr "載入等化器樣式"
 
-#: src/skins/ui_equalizer.c:1079
-#: src/skins/ui_manager.c:473
+#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
 msgid "Save preset"
 msgstr "儲存樣式"
 
@@ -2396,13 +2375,11 @@ msgstr "儲存樣式"
 msgid "Save auto-preset"
 msgstr "儲存自動載入樣式"
 
-#: src/skins/ui_equalizer.c:1126
-#: src/skins/ui_equalizer.c:1162
+#: src/skins/ui_equalizer.c:1126 src/skins/ui_equalizer.c:1162
 msgid "Save equalizer preset"
 msgstr "儲存等化器樣式"
 
-#: src/skins/ui_equalizer.c:1181
-#: src/skins/ui_manager.c:488
+#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
 msgid "Delete preset"
 msgstr "刪除樣式"
 
@@ -2482,73 +2459,59 @@ msgstr "播放完成後停止。"
 msgid "Not stopping after song."
 msgstr "播放完成後不停止。"
 
-#: src/skins/ui_manager.c:67
-#: src/skins/ui_manager.c:68
+#: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
 msgid "Autoscroll Song Name"
 msgstr "自動捲動歌名"
 
-#: src/skins/ui_manager.c:70
-#: src/skins/ui_manager.c:71
+#: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
 msgstr "播放完目前歌曲後停止"
 
-#: src/skins/ui_manager.c:73
-#: src/skins/ui_manager.c:74
+#: src/skins/ui_manager.c:73 src/skins/ui_manager.c:74
 msgid "Peaks"
 msgstr "峰值"
 
-#: src/skins/ui_manager.c:76
-#: src/skins/ui_manager.c:77
+#: src/skins/ui_manager.c:76 src/skins/ui_manager.c:77
 msgid "Repeat"
 msgstr "重複"
 
-#: src/skins/ui_manager.c:79
-#: src/skins/ui_manager.c:80
+#: src/skins/ui_manager.c:79 src/skins/ui_manager.c:80
 msgid "Shuffle"
 msgstr "隨機"
 
-#: src/skins/ui_manager.c:82
-#: src/skins/ui_manager.c:83
+#: src/skins/ui_manager.c:82 src/skins/ui_manager.c:83
 msgid "No Playlist Advance"
 msgstr "不要切換播放清單"
 
-#: src/skins/ui_manager.c:85
-#: src/skins/ui_manager.c:86
+#: src/skins/ui_manager.c:85 src/skins/ui_manager.c:86
 msgid "Show Player"
 msgstr "顯示播放器"
 
-#: src/skins/ui_manager.c:88
-#: src/skins/ui_manager.c:89
+#: src/skins/ui_manager.c:88 src/skins/ui_manager.c:89
 msgid "Show Playlist Editor"
 msgstr "顯示播放清單編輯器"
 
-#: src/skins/ui_manager.c:91
-#: src/skins/ui_manager.c:92
+#: src/skins/ui_manager.c:91 src/skins/ui_manager.c:92
 msgid "Show Equalizer"
 msgstr "顯示等化器"
 
-#: src/skins/ui_manager.c:94
-#: src/skins/ui_manager.c:95
+#: src/skins/ui_manager.c:94 src/skins/ui_manager.c:95
 msgid "Always on Top"
 msgstr "永遠在最上層"
 
-#: src/skins/ui_manager.c:97
-#: src/skins/ui_manager.c:98
+#: src/skins/ui_manager.c:97 src/skins/ui_manager.c:98
 msgid "Put on All Workspaces"
 msgstr "在所有工作區顯示"
 
-#: src/skins/ui_manager.c:100
-#: src/skins/ui_manager.c:101
+#: src/skins/ui_manager.c:100 src/skins/ui_manager.c:101
 msgid "Roll up Player"
 msgstr "捲起播放器"
 
-#: src/skins/ui_manager.c:103
-#: src/skins/ui_manager.c:104
+#: src/skins/ui_manager.c:103 src/skins/ui_manager.c:104
 msgid "Roll up Playlist Editor"
 msgstr "捲起播放清單編輯器"
 
-#: src/skins/ui_manager.c:106
-#: src/skins/ui_manager.c:107
+#: src/skins/ui_manager.c:106 src/skins/ui_manager.c:107
 msgid "Roll up Equalizer"
 msgstr "捲起等化器"
 
@@ -2568,14 +2531,12 @@ msgstr "聲紋"
 msgid "Off"
 msgstr "關閉"
 
-#: src/skins/ui_manager.c:122
-#: src/skins/ui_manager.c:139
+#: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
 #: src/skins/ui_manager.c:145
 msgid "Normal"
 msgstr "標準"
 
-#: src/skins/ui_manager.c:123
-#: src/skins/ui_manager.c:140
+#: src/skins/ui_manager.c:123 src/skins/ui_manager.c:140
 msgid "Fire"
 msgstr "火焰"
 
@@ -2611,28 +2572,23 @@ msgstr "冰霜"
 msgid "Smooth"
 msgstr "平滑"
 
-#: src/skins/ui_manager.c:150
-#: src/skins/ui_manager.c:158
+#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 msgid "Slowest"
 msgstr "最慢"
 
-#: src/skins/ui_manager.c:151
-#: src/skins/ui_manager.c:159
+#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
 msgid "Slow"
 msgstr "慢"
 
-#: src/skins/ui_manager.c:152
-#: src/skins/ui_manager.c:160
+#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Medium"
 msgstr "中等"
 
-#: src/skins/ui_manager.c:153
-#: src/skins/ui_manager.c:161
+#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 msgid "Fast"
 msgstr "快"
 
-#: src/skins/ui_manager.c:154
-#: src/skins/ui_manager.c:162
+#: src/skins/ui_manager.c:154 src/skins/ui_manager.c:162
 msgid "Fastest"
 msgstr "最快"
 
@@ -2644,18 +2600,15 @@ msgstr "經過時間"
 msgid "Time Remaining"
 msgstr "剩餘時間"
 
-#: src/skins/ui_manager.c:181
-#: src/skins/ui_manager.c:182
+#: src/skins/ui_manager.c:181 src/skins/ui_manager.c:182
 msgid "Pause"
 msgstr "暫停"
 
-#: src/skins/ui_manager.c:187
-#: src/skins/ui_manager.c:188
+#: src/skins/ui_manager.c:187 src/skins/ui_manager.c:188
 msgid "Previous"
 msgstr "上一個"
 
-#: src/skins/ui_manager.c:190
-#: src/skins/ui_manager.c:191
+#: src/skins/ui_manager.c:190 src/skins/ui_manager.c:191
 msgid "Next"
 msgstr "下一個"
 
@@ -2695,28 +2648,23 @@ msgstr "峰值陷落"
 msgid "Playlist"
 msgstr "播放清單"
 
-#: src/skins/ui_manager.c:210
-#: src/skins/ui_manager.c:211
+#: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Play Playlist"
 msgstr "播放播放清單"
 
-#: src/skins/ui_manager.c:213
-#: src/skins/ui_manager.c:214
+#: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
 msgstr "新增播放清單"
 
-#: src/skins/ui_manager.c:216
-#: src/skins/ui_manager.c:217
+#: src/skins/ui_manager.c:216 src/skins/ui_manager.c:217
 msgid "Select Next Playlist"
 msgstr "選擇下一個播放清單"
 
-#: src/skins/ui_manager.c:219
-#: src/skins/ui_manager.c:220
+#: src/skins/ui_manager.c:219 src/skins/ui_manager.c:220
 msgid "Select Previous Playlist"
 msgstr "選擇上一個播放清單"
 
-#: src/skins/ui_manager.c:222
-#: src/skins/ui_manager.c:223
+#: src/skins/ui_manager.c:222 src/skins/ui_manager.c:223
 msgid "Delete Playlist"
 msgstr "刪除播放清單"
 
@@ -2785,7 +2733,9 @@ msgid "Search and Select"
 msgstr "搜尋並選擇"
 
 #: src/skins/ui_manager.c:262
-msgid "Searches the playlist and selects playlist entries based on specific criteria."
+msgid ""
+"Searches the playlist and selects playlist entries based on specific "
+"criteria."
 msgstr "搜尋播放清單，並基於指定的條件選擇播放清單中的項目。"
 
 #: src/skins/ui_manager.c:265
@@ -2840,8 +2790,7 @@ msgstr "從播放清單中移除無法使用的檔案。"
 msgid "Remove Duplicates"
 msgstr "移除重複的項目"
 
-#: src/skins/ui_manager.c:293
-#: src/skins/ui_manager.c:325
+#: src/skins/ui_manager.c:293 src/skins/ui_manager.c:325
 #: src/skins/ui_manager.c:355
 msgid "By Title"
 msgstr "標題"
@@ -2850,8 +2799,7 @@ msgstr "標題"
 msgid "Removes duplicate entries from the playlist by title."
 msgstr "移除播放清單中標題重複的項目"
 
-#: src/skins/ui_manager.c:297
-#: src/skins/ui_manager.c:337
+#: src/skins/ui_manager.c:297 src/skins/ui_manager.c:337
 #: src/skins/ui_manager.c:367
 msgid "By Filename"
 msgstr "檔案名稱"
@@ -2860,8 +2808,7 @@ msgstr "檔案名稱"
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr "移除播放清單中檔案名稱重複的項目"
 
-#: src/skins/ui_manager.c:301
-#: src/skins/ui_manager.c:341
+#: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
 #: src/skins/ui_manager.c:371
 msgid "By Path + Filename"
 msgstr "路徑 + 檔案名稱"
@@ -2906,58 +2853,47 @@ msgstr "反向排序播放清單。"
 msgid "Sort List"
 msgstr "排序清單"
 
-#: src/skins/ui_manager.c:326
-#: src/skins/ui_manager.c:356
+#: src/skins/ui_manager.c:326 src/skins/ui_manager.c:356
 msgid "Sorts the list by title."
 msgstr "以標題排序清單。"
 
-#: src/skins/ui_manager.c:329
-#: src/skins/ui_manager.c:359
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "By Album"
 msgstr "專輯"
 
-#: src/skins/ui_manager.c:330
-#: src/skins/ui_manager.c:360
+#: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
 msgid "Sorts the list by album."
 msgstr "以專輯排序清單。"
 
-#: src/skins/ui_manager.c:333
-#: src/skins/ui_manager.c:363
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "By Artist"
 msgstr "藝人"
 
-#: src/skins/ui_manager.c:334
-#: src/skins/ui_manager.c:364
+#: src/skins/ui_manager.c:334 src/skins/ui_manager.c:364
 msgid "Sorts the list by artist."
 msgstr "以藝人排序清單"
 
-#: src/skins/ui_manager.c:338
-#: src/skins/ui_manager.c:368
+#: src/skins/ui_manager.c:338 src/skins/ui_manager.c:368
 msgid "Sorts the list by filename."
 msgstr "以檔名排序清單。"
 
-#: src/skins/ui_manager.c:342
-#: src/skins/ui_manager.c:372
+#: src/skins/ui_manager.c:342 src/skins/ui_manager.c:372
 msgid "Sorts the list by full pathname."
 msgstr "以完整路徑排序清單。"
 
-#: src/skins/ui_manager.c:345
-#: src/skins/ui_manager.c:375
+#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "By Date"
 msgstr "日期"
 
-#: src/skins/ui_manager.c:346
-#: src/skins/ui_manager.c:376
+#: src/skins/ui_manager.c:346 src/skins/ui_manager.c:376
 msgid "Sorts the list by modification time."
 msgstr "以修改時間排序清單"
 
-#: src/skins/ui_manager.c:349
-#: src/skins/ui_manager.c:379
+#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "By Track Number"
 msgstr "音軌編號"
 
-#: src/skins/ui_manager.c:350
-#: src/skins/ui_manager.c:380
+#: src/skins/ui_manager.c:350 src/skins/ui_manager.c:380
 msgid "Sorts the list by track number."
 msgstr "以音軌編號排序清單"
 
@@ -2973,18 +2909,15 @@ msgstr "檔案"
 msgid "Plugin Services"
 msgstr "外掛服務"
 
-#: src/skins/ui_manager.c:394
-#: src/skins/ui_manager.c:397
+#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View Track Details"
 msgstr "檢視音軌詳細資料"
 
-#: src/skins/ui_manager.c:395
-#: src/skins/ui_manager.c:398
+#: src/skins/ui_manager.c:395 src/skins/ui_manager.c:398
 msgid "View track details"
 msgstr "檢視音軌詳細資料"
 
-#: src/skins/ui_manager.c:400
-#: src/skins/ui_manager.c:401
+#: src/skins/ui_manager.c:400 src/skins/ui_manager.c:401
 msgid "About Audacious"
 msgstr "關於 Audacious"
 
@@ -3020,18 +2953,15 @@ msgstr "開啟偏好設定視窗"
 msgid "Quit Audacious"
 msgstr "離開 Audacious"
 
-#: src/skins/ui_manager.c:417
-#: src/skins/ui_manager.c:418
+#: src/skins/ui_manager.c:417 src/skins/ui_manager.c:418
 msgid "Set A-B"
 msgstr "設定 A-B"
 
-#: src/skins/ui_manager.c:420
-#: src/skins/ui_manager.c:421
+#: src/skins/ui_manager.c:420 src/skins/ui_manager.c:421
 msgid "Clear A-B"
 msgstr "清除 A-B"
 
-#: src/skins/ui_manager.c:426
-#: src/skins/ui_manager.c:427
+#: src/skins/ui_manager.c:426 src/skins/ui_manager.c:427
 msgid "Jump to Time"
 msgstr "跳至時間"
 
@@ -3071,14 +3001,12 @@ msgstr "儲存"
 msgid "Delete"
 msgstr "刪除"
 
-#: src/skins/ui_manager.c:451
-#: src/skins/ui_manager.c:472
+#: src/skins/ui_manager.c:451 src/skins/ui_manager.c:472
 #: src/skins/ui_manager.c:487
 msgid "Preset"
 msgstr "樣式"
 
-#: src/skins/ui_manager.c:454
-#: src/skins/ui_manager.c:475
+#: src/skins/ui_manager.c:454 src/skins/ui_manager.c:475
 #: src/skins/ui_manager.c:490
 msgid "Auto-load preset"
 msgstr "自動載入樣式"
@@ -3156,8 +3084,14 @@ msgid "Search entries in active playlist"
 msgstr "在使用中的播放清單裡搜尋播放項目"
 
 #: src/skins/ui_playlist.c:253
-msgid "Select entries in playlist by filling one or more fields. Fields use regular expressions syntax, case-insensitive. If you don't know how regular expressions work, simply insert a literal portion of what you're searching for."
-msgstr "填入一個或多個欄位以選擇播放清單中的項目。欄位使用正規表示法，大小寫視為不同字元。若您不知道如何使用正規表示法，請輸入您想搜尋的部分文字。"
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+"填入一個或多個欄位以選擇播放清單中的項目。欄位使用正規表示法，大小寫視為不同"
+"字元。若您不知道如何使用正規表示法，請輸入您想搜尋的部分文字。"
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3257,10 +3191,8 @@ msgstr "歌曲切換"
 msgid "Command to run when Audacious starts a new song."
 msgstr "當 Audacious 開始播放新的歌曲時執行的指令。"
 
-#: src/song_change/song_change.c:440
-#: src/song_change/song_change.c:446
-#: src/song_change/song_change.c:452
-#: src/song_change/song_change.c:458
+#: src/song_change/song_change.c:440 src/song_change/song_change.c:446
+#: src/song_change/song_change.c:452 src/song_change/song_change.c:458
 msgid "Command:"
 msgstr "命令："
 
@@ -3273,7 +3205,8 @@ msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "每當 Audacious 播放達到清單尾端時執行命令"
 
 #: src/song_change/song_change.c:456
-msgid "Command to run when title changes for a song (i.e. network streams titles)."
+msgid ""
+"Command to run when title changes for a song (i.e. network streams titles)."
 msgstr "當一首歌的標題改變時執行命令。(網路串流的標題)"
 
 #: src/song_change/song_change.c:462
@@ -3311,8 +3244,12 @@ msgstr ""
 "%T：音軌標題"
 
 #: src/song_change/song_change.c:489
-msgid "<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"
-msgstr "<span size='small'>傳給 shell 的參數應該用雙引號包起來，否則會有安全風險。</span>"
+msgid ""
+"<span size='small'>Parameters passed to the shell should be encapsulated in "
+"quotes. Doing otherwise is a security risk.</span>"
+msgstr ""
+"<span size='small'>傳給 shell 的參數應該用雙引號包起來，否則會有安全風險。</"
+"span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3407,11 +3344,10 @@ msgstr "VTX 解碼器"
 msgid "WavPack Decoder"
 msgstr "WavPack 解碼器"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 msgid "2SF Decoder"
 msgstr "2SF 解碼器"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML 可分享式播放清單 (XSPF)"
-
