@@ -5,7 +5,7 @@ dnl ***
 dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
-AC_INIT([audacious-plugins], [3.3])
+AC_INIT([audacious-plugins], [3.4-devel])
 AC_COPYRIGHT([(C) 2005-2012 Audacious Team])
 
 AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])
@@ -38,9 +38,9 @@ LIBS="$LIBS $LIBINTL"
 dnl Check for Audacious
 dnl ===================
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.3],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.4],
     [],
-    [AC_MSG_ERROR([Cannot find Audacious 3.3; have you installed Audacious yet?])]
+    [AC_MSG_ERROR([Cannot find Audacious 3.4; have you installed Audacious yet?])]
 )
 
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
