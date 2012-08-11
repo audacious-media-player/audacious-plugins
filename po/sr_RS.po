@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-08-11 13:52-0400\n"
 "PO-Revision-Date: 2012-04-30 05:25+0000\n"
 "Last-Translator: MirosNik <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr ""
 
@@ -2159,7 +2159,7 @@ msgstr "_Излаз"
 msgid "PLS Playlists"
 msgstr "Списак нумера"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
@@ -3471,7 +3471,7 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "Прикључак декодера Вејвпака %s"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 msgid "2SF Decoder"
 msgstr ""
 

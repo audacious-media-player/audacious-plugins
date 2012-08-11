@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-08-11 13:52-0400\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 #, fuzzy
 msgid "AAC Decoder"
 msgstr "Descodificador"
@@ -2233,7 +2233,7 @@ msgstr "Connector de sortida nul"
 msgid "PLS Playlists"
 msgstr "Carrega una llista de reproducció"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
@@ -3579,7 +3579,7 @@ msgstr "Descodificador"
 msgid "WavPack Decoder"
 msgstr "Connector descodificador Wavpack %s"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 #, fuzzy
 msgid "2SF Decoder"
 msgstr "Descodificador"
