@@ -30,37 +30,7 @@
 #  define END_C_DECLS
 #endif /* __cplusplus */
 
-/* Make sure the correct platform symbols are defined */
-#if !defined(WIN32) && defined(_WIN32)
-#define WIN32
-#endif /* Windows */
-
-/* Some compilers use a special export keyword */
-#ifndef DECLSPEC
-# ifdef __BEOS__
-#  if defined(__GNUC__)
-#   define DECLSPEC	__declspec(dllexport)
-#  else
-#   define DECLSPEC	__declspec(export)
-#  endif
-# else
-# ifdef WIN32
-#  ifdef __BORLANDC__
-#   ifdef BUILD_SDL
-#    define DECLSPEC 
-#   else
-#    define DECLSPEC __declspec(dllimport)
-#   endif
-#  else
-#   define DECLSPEC	__declspec(dllexport)
-#  endif
-# else
-#  define DECLSPEC
-# endif
-# endif
-#endif
-
-#define EXTERN extern DECLSPEC
+#define EXTERN extern
 
 /* typedefs for 32-bit architecture */
 typedef unsigned char	Uint8;
