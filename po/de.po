@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious 3.3\n"
+"Project-Id-Version: Audacious 3.4\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-07-25 14:40+0200\n"
+"POT-Creation-Date: 2012-08-15 15:56+0200\n"
+"PO-Revision-Date: 2012-08-15 16:04+0200\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -20,164 +20,17 @@ msgstr "AAC Dekodierer"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib-Spieler)"
 
-#: src/alarm/alarm.c:836 src/alarm/interface.c:32
+#: src/alarm/alarm.c:815 src/alarm/interface.c:84
 msgid "Alarm"
 msgstr "Alarm"
 
-#: src/alarm/interface.c:39
-msgid "This is your wakeup call."
-msgstr "Dies ist dein Aufwach-Signal."
-
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
-msgid "OK"
-msgstr "OK"
-
-#: src/alarm/interface.c:220
-msgid "Alarm Settings"
-msgstr "Alarm Einstellungen"
-
-#: src/alarm/interface.c:235 src/alarm/interface.c:396
-#: src/alarm/interface.c:753
-msgid "Time"
-msgstr "Uhrzeit"
-
-#: src/alarm/interface.c:275
-msgid "hours"
-msgstr "Stunden"
-
-#: src/alarm/interface.c:332
-msgid "h"
-msgstr "Uhr"
-
-#: src/alarm/interface.c:360
-msgid "minutes"
-msgstr "Minuten"
-
-#: src/alarm/interface.c:376
-msgid "Quiet after:"
-msgstr "Still nach:"
-
-#: src/alarm/interface.c:386
-msgid "Alarm at (default):"
-msgstr "Alarm um (Standard):"
-
-#: src/alarm/interface.c:404
-msgid "Choose the days for the alarm to come on"
-msgstr "Tage wählen, an denen der Alarm ausgelöst werden soll"
-
-#: src/alarm/interface.c:431 src/alarm/interface.c:477
-#: src/alarm/interface.c:523 src/alarm/interface.c:569
-#: src/alarm/interface.c:615 src/alarm/interface.c:661
-#: src/alarm/interface.c:707 src/bs2b/plugin.c:179
-#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
-#: src/skins/ui_manager.c:478
-msgid "Default"
-msgstr "Standard"
-
-#: src/alarm/interface.c:745
-msgid "Day"
-msgstr "Tag"
-
-#: src/alarm/interface.c:761
-msgid "Tuesday"
-msgstr "Dienstag"
-
-#: src/alarm/interface.c:770
-msgid "Wednesday"
-msgstr "Mittwoch"
-
-#: src/alarm/interface.c:779
-msgid "Thursday"
-msgstr "Donnerstag"
-
-#: src/alarm/interface.c:788
-msgid "Friday"
-msgstr "Freitag"
-
-#: src/alarm/interface.c:797
-msgid "Saturday"
-msgstr "Samstag"
-
-#: src/alarm/interface.c:806
-msgid "Sunday"
-msgstr "Sonntag"
-
-#: src/alarm/interface.c:814
-msgid "Monday"
-msgstr "Montag"
-
-#: src/alarm/interface.c:823
-msgid "Days"
-msgstr "Tage"
-
-#: src/alarm/interface.c:839
-msgid "Fading"
-msgstr "Übergang"
-
-#: src/alarm/interface.c:876 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
-msgid "seconds"
-msgstr "Sekunden"
-
-#: src/alarm/interface.c:884 src/alarm/interface.c:999
-msgid "Volume"
-msgstr "Lautstärke"
-
-#: src/alarm/interface.c:910
-msgid "Current"
-msgstr "Momentan"
-
-#: src/alarm/interface.c:918
-msgid "Start at"
-msgstr "Beginnen bei"
-
-#: src/alarm/interface.c:946 src/alarm/interface.c:990
-msgid "%"
-msgstr "%"
-
-#: src/alarm/interface.c:962
-msgid "Final"
-msgstr "Schluss"
-
-#: src/alarm/interface.c:1015
-msgid "Additional Command"
-msgstr "Zusätzlicher Befehl"
-
-#: src/alarm/interface.c:1041
-msgid "enable"
-msgstr "aktivieren"
-
-#: src/alarm/interface.c:1049
-msgid "Playlist (optional)"
-msgstr "Wiedergabeliste (optional)"
-
-#: src/alarm/interface.c:1075
-msgid "Select a playlist"
-msgstr "Wiedergabeliste wählen"
-
-#: src/alarm/interface.c:1085 src/alarm/interface.c:1250
-msgid "Reminder"
-msgstr "Erinnerung"
-
-#: src/alarm/interface.c:1102
-msgid "Use reminder"
-msgstr "Erinnerung benutzen"
-
-#: src/alarm/interface.c:1118
-msgid "Options"
-msgstr "Optionen"
-
-#: src/alarm/interface.c:1126
-msgid "What do these options mean?"
-msgstr "Was bedeuten diese Einstellungen?"
-
-#: src/alarm/interface.c:1155
+#: src/alarm/interface.c:29
 msgid ""
-"\n"
 "Time\n"
-"  Alarm at: \n"
+"  Alarm at:\n"
 "    The time for the alarm to come on.\n"
 "\n"
-"  Quiet After: \n"
+"  Quiet After:\n"
 "    Stop alarm after this amount of time.\n"
 "       (if the wakeup dialog is not closed)\n"
 "\n"
@@ -192,37 +45,7 @@ msgid ""
 "    time.\n"
 "\n"
 "\n"
-"Volume\n"
-"  Fading: \n"
-"    Fade the volume up to the chosen volume \n"
-"    for this amount of time.\n"
-"\n"
-"  Start at: \n"
-"    Start fading from this volume.\n"
-"\n"
-"  Final: \n"
-"    The volume to stop fading at.  If the fading\n"
-"    time is 0 then set volume to this and start\n"
-"    playing.\n"
-"\n"
-"\n"
-"Options:\n"
-"  Additional Command:\n"
-"    Run this command at the alarm time.\n"
-"\n"
-"  Playlist: \n"
-"    Load this playlist for playing songs from.\n"
-"    If no playlist is given, the songs which are\n"
-"    currently in the list will be used.\n"
-"    The URL of an mp3/ogg stream can also be\n"
-"    entered here.\n"
-"\n"
-"  Reminder:\n"
-"    Display a reminder when the alarm goes off,\n"
-"    type the reminder in the box and turn on the\n"
-"    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
 "Zeit\n"
 "  Alarm um: \n"
 "    Die Zeit, um die der Alarm ausgelöst wird.\n"
@@ -241,6 +64,28 @@ msgstr ""
 "    oder den Alarm zur Standard-Zeit aktivieren.\n"
 "\n"
 "\n"
+
+#: src/alarm/interface.c:46
+msgid ""
+"Volume\n"
+"  Fading:\n"
+"    Fade the volume up to the chosen volume\n"
+"    for this amount of time.\n"
+"\n"
+"  Start at:\n"
+"    Start fading from this volume.\n"
+"\n"
+"  Final:\n"
+"    The volume to stop fading at.  If the fading\n"
+"    time is 0 then set volume to this and start\n"
+"    playing.\n"
+"\n"
+"\n"
+"Options:\n"
+"  Additional Command:\n"
+"    Run this command at the alarm time.\n"
+"\n"
+msgstr ""
 "Lautstärke\n"
 "  Übergang: \n"
 "    Passt die Lautstärke an die gewählte Lautstärke\n"
@@ -259,6 +104,21 @@ msgstr ""
 "  Zusätzlicher Befehl:\n"
 "    Führe diesen Befehl bei Auslösung des Alarms aus.\n"
 "\n"
+
+#: src/alarm/interface.c:63
+msgid ""
+"  Playlist:\n"
+"    Load this playlist for playing songs from.\n"
+"    If no playlist is given, the songs which are\n"
+"    currently in the list will be used.\n"
+"    The URL of an mp3/ogg stream\n"
+"    can also be entered here.\n"
+"\n"
+"  Reminder:\n"
+"    Display a reminder when the alarm goes off,\n"
+"    type the reminder in the box and turn on the\n"
+"    toggle button if you want it to be shown."
+msgstr ""
 "  Wiedergabeliste: \n"
 "    Lade diese Wiedergabeliste zur Wiedergabe.\n"
 "    Wenn keine Wiedergabeliste gegeben ist,\n"
@@ -269,22 +129,151 @@ msgstr ""
 "\n"
 "  Erinnerung:\n"
 "    Zeige eine Erinnerung an, wenn der Alarm ausgelöst wird.\n"
+"    Aktiviere dazu den Checkbutton und schreibe\n"
+"    die Erinnerungsnachricht in die Textbox."
 
-#: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
+#: src/alarm/interface.c:83
+msgid "This is your wakeup call."
+msgstr "Dies ist dein Aufwach-Signal."
+
+#: src/alarm/interface.c:101
+msgid "Your reminder for today is..."
+msgstr "Die Erinnerung für heute lautet..."
+
+#: src/alarm/interface.c:103 src/alarm/interface.c:417
+msgid "Reminder"
+msgstr "Erinnerung"
+
+#: src/alarm/interface.c:142
+msgid "Monday"
+msgstr "Montag"
+
+#: src/alarm/interface.c:142
+msgid "Tuesday"
+msgstr "Dienstag"
+
+#: src/alarm/interface.c:142
+msgid "Wednesday"
+msgstr "Mittwoch"
+
+#: src/alarm/interface.c:143
+msgid "Thursday"
+msgstr "Donnerstag"
+
+#: src/alarm/interface.c:143
+msgid "Friday"
+msgstr "Freitag"
+
+#: src/alarm/interface.c:143
+msgid "Saturday"
+msgstr "Samstag"
+
+#: src/alarm/interface.c:143
+msgid "Sunday"
+msgstr "Sonntag"
+
+#: src/alarm/interface.c:177
+msgid "Alarm Settings"
+msgstr "Alarm Einstellungen"
+
+#: src/alarm/interface.c:188 src/alarm/interface.c:252
+#: src/alarm/interface.c:267
+msgid "Time"
+msgstr "Uhrzeit"
+
+#: src/alarm/interface.c:195
+msgid "Alarm at (default):"
+msgstr "Alarm um (Standard):"
+
+#: src/alarm/interface.c:218
+msgid "h"
+msgstr "Uhr"
+
+#: src/alarm/interface.c:222
+msgid "Quiet after:"
+msgstr "Still nach:"
+
+#: src/alarm/interface.c:236
+msgid "hours"
+msgstr "Stunden"
+
+#: src/alarm/interface.c:248
+msgid "minutes"
+msgstr "Minuten"
+
+#: src/alarm/interface.c:257
+msgid "Choose the days for the alarm to come on"
+msgstr "Tage wählen, an denen der Alarm ausgelöst werden soll"
+
+#: src/alarm/interface.c:264
+msgid "Day"
+msgstr "Tag"
+
+#: src/alarm/interface.c:282 src/bs2b/plugin.c:179
+#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
+#: src/skins/ui_manager.c:478
+msgid "Default"
+msgstr "Standard"
+
+#: src/alarm/interface.c:312
+msgid "Days"
+msgstr "Tage"
+
+#: src/alarm/interface.c:321
+msgid "Fading"
+msgstr "Übergang"
+
+#: src/alarm/interface.c:329 src/crossfade/crossfade.c:263 src/lirc/lirc.c:416
+msgid "seconds"
+msgstr "Sekunden"
+
+#: src/alarm/interface.c:336 src/alarm/interface.c:383
+msgid "Volume"
+msgstr "Lautstärke"
+
+#: src/alarm/interface.c:341
+msgid "Start at"
+msgstr "Beginnen bei"
+
+#: src/alarm/interface.c:359
+msgid "Final"
+msgstr "Schluss"
+
+#: src/alarm/interface.c:374
+msgid "Current"
+msgstr "Momentan"
+
+#: src/alarm/interface.c:389
+msgid "Additional Command"
+msgstr "Zusätzlicher Befehl"
+
+#: src/alarm/interface.c:395
+msgid "enable"
+msgstr "aktivieren"
+
+#: src/alarm/interface.c:402
+msgid "Playlist (optional)"
+msgstr "Wiedergabeliste (optional)"
+
+#: src/alarm/interface.c:409
+msgid "Select a playlist"
+msgstr "Wiedergabeliste wählen"
+
+#: src/alarm/interface.c:421
+msgid "Use reminder"
+msgstr "Erinnerung benutzen"
+
+#: src/alarm/interface.c:430
+msgid "Options"
+msgstr "Optionen"
+
+#: src/alarm/interface.c:435
+msgid "What do these options mean?"
+msgstr "Was bedeuten diese Einstellungen?"
+
+#: src/alarm/interface.c:448 src/skins/ui_manager.c:390
 msgid "Help"
 msgstr "Hilfe"
-
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: src/alarm/interface.c:1257
-msgid "Your reminder for today is.."
-msgstr "Die Erinnerung für heute lautet.."
-
-#: src/alarm/interface.c:1282
-msgid "Thankyou"
-msgstr "Danke"
 
 #: src/albumart/albumart.c:101
 msgid "Album Art"
@@ -292,11 +281,11 @@ msgstr "Album Cover"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "Standard-PCM-Device (%s)"
+msgstr "Standard-PCM-Gerät"
 
 #: src/alsa/config.c:235
 msgid "Default mixer device"
-msgstr "Standard-Mixer-Device (%s)"
+msgstr "Standard-Mixer-Gerät"
 
 #: src/alsa/config.c:433
 msgid "ALSA Output Plugin Preferences"
@@ -394,11 +383,11 @@ msgstr "Portname"
 msgid "ALSA output ports"
 msgstr "ALSA-Ausgabe-Ports"
 
-#: src/amidi-plug/i_configure-alsa.c:393
+#: src/amidi-plug/i_configure-alsa.c:395
 msgid "Soundcard: "
 msgstr "Soundkarte: "
 
-#: src/amidi-plug/i_configure-alsa.c:395
+#: src/amidi-plug/i_configure-alsa.c:397
 msgid "Mixer control: "
 msgstr "Mixersteuerung: "
 
@@ -512,7 +501,7 @@ msgstr "Wert:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr "Polyphonie"
+msgstr "Polyfonie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -564,11 +553,11 @@ msgstr ""
 "<span size=\"smaller\">FluidSynth-\n"
 "Backend</span>"
 
-#: src/amidi-plug/i_fileinfo.c:169
+#: src/amidi-plug/i_fileinfo.c:167
 msgid "Name:"
 msgstr "Name:"
 
-#: src/amidi-plug/i_fileinfo.c:193
+#: src/amidi-plug/i_fileinfo.c:191
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI Info </span>"
 
@@ -582,7 +571,7 @@ msgstr "Länge (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr "Anzahl von Titeln:"
+msgstr "Anzahl an Titeln:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -878,7 +867,7 @@ msgstr "Oszilloskop"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Bauer Stereophonic-to-Binaural Einstellungen"
+msgstr "Bauer Stereofonisch-zu-Binaural Einstellungen"
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -894,7 +883,7 @@ msgstr "Voreinstellungen:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr "Bauer Stereofonisch-zu-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
@@ -1709,7 +1698,7 @@ msgstr "Puffern ..."
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:235 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:178
@@ -1778,7 +1767,7 @@ msgstr "Lautstärke verringern"
 
 #: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
-msgstr "Zu Datei springen"
+msgstr "Zu Titel springen"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
@@ -2751,7 +2740,7 @@ msgstr "Suchen und Auswählen"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr "Wiedergabeliste nach bestimmte Suchkriterien durchsuchen lassen"
+msgstr "Wiedergabeliste nach bestimmte Suchkriterien durchsuchen lassen."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -3199,6 +3188,14 @@ msgstr "sndio Gerät"
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
 msgstr "(Leer bedeutet Standard)"
+
+#: src/sndio/sndio.c:431
+msgid "OK"
+msgstr "OK"
+
+#: src/sndio/sndio.c:439
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
