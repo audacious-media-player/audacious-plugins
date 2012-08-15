@@ -308,7 +308,7 @@ playlistwin_select_search(void)
     searchdlg_grid = gtk_grid_new();
     gtk_grid_set_row_spacing( GTK_GRID(searchdlg_grid) , 2 );
     gtk_widget_set_margin_bottom( searchdlg_hbox , 8 );
-    gtk_widget_set_margin_bottom( searchdlg_entry_file_name , 8 );
+    gtk_widget_set_margin_top( searchdlg_checkbt_clearprevsel , 8 );
     gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_hbox , 0 , 0 , 2 , 1 );
     gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_label_title , 0 , 1 , 1 , 1 );
     gtk_grid_attach( GTK_GRID(searchdlg_grid) , searchdlg_entry_title , 1 , 1 , 1 , 1 );
