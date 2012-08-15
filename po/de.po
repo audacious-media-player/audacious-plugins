@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Audacious 3.3\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-07-25 14:40+0200\n"
+"PO-Revision-Date: 2012-08-15 15:39+0200\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -292,11 +292,11 @@ msgstr "Album Cover"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "Standard-PCM-Device (%s)"
+msgstr "Standard-PCM-Gerät"
 
 #: src/alsa/config.c:235
 msgid "Default mixer device"
-msgstr "Standard-Mixer-Device (%s)"
+msgstr "Standard-Mixer-Gerät"
 
 #: src/alsa/config.c:433
 msgid "ALSA Output Plugin Preferences"
@@ -512,7 +512,7 @@ msgstr "Wert:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr "Polyphonie"
+msgstr "Polyfonie"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -582,7 +582,7 @@ msgstr "Länge (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr "Anzahl von Titeln:"
+msgstr "Anzahl an Titeln:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -878,7 +878,7 @@ msgstr "Oszilloskop"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Bauer Stereophonic-to-Binaural Einstellungen"
+msgstr "Bauer Stereofonisch-zu-Binaural Einstellungen"
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -894,7 +894,7 @@ msgstr "Voreinstellungen:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr "Bauer Stereofonisch-zu-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
@@ -1778,7 +1778,7 @@ msgstr "Lautstärke verringern"
 
 #: src/hotkey/gui.c:82 src/skins/ui_manager.c:423 src/skins/ui_manager.c:424
 msgid "Jump to File"
-msgstr "Zu Datei springen"
+msgstr "Zu Titel springen"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
@@ -2751,7 +2751,7 @@ msgstr "Suchen und Auswählen"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr "Wiedergabeliste nach bestimmte Suchkriterien durchsuchen lassen"
+msgstr "Wiedergabeliste nach bestimmte Suchkriterien durchsuchen lassen."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
