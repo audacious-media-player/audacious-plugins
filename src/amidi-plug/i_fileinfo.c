@@ -41,21 +41,19 @@ void i_fileinfo_ev_close( GtkWidget * button , gpointer fileinfowin )
 }
 
 
-void i_fileinfo_table_add_entry( gchar * field_text , gchar * value_text ,
-                                 GtkWidget * table , guint line , PangoAttrList * attrlist )
+void i_fileinfo_grid_add_entry( gchar * field_text , gchar * value_text ,
+                                GtkWidget * grid , guint line , PangoAttrList * attrlist )
 {
   GtkWidget *field, *value;
   field = gtk_label_new( field_text );
   gtk_label_set_attributes( GTK_LABEL(field) , attrlist );
   gtk_misc_set_alignment( GTK_MISC(field) , 0 , 0 );
   gtk_label_set_justify( GTK_LABEL(field) , GTK_JUSTIFY_LEFT );
-  gtk_table_attach( GTK_TABLE(table) , field , 0 , 1 , line , (line + 1) ,
-                    GTK_FILL , GTK_FILL , 5 , 2 );
+  gtk_grid_attach( GTK_GRID(grid) , field , 0 , line , 1 , 1 );
   value = gtk_label_new( value_text );
   gtk_misc_set_alignment( GTK_MISC(value) , 0 , 0 );
   gtk_label_set_justify( GTK_LABEL(value) , GTK_JUSTIFY_LEFT );
-  gtk_table_attach( GTK_TABLE(table) , value , 1 , 2 , line , (line + 1) ,
-                    GTK_FILL , GTK_FILL , 5 , 2 );
+  gtk_grid_attach( GTK_GRID(grid) , value , 1 , line , 1 , 1 );
   return;
 }
 
@@ -112,7 +110,7 @@ void i_fileinfo_gui( const gchar * filename_uri )
   GtkWidget *fileinfowin_vbox, *fileinfowin_columns_hbox;
   GtkWidget *midiinfoboxes_vbox, *miditextboxes_vbox, *miditextboxes_paned;
   GtkWidget *title_hbox, *title_icon_image, *title_name_f_label, *title_name_v_entry;
-  GtkWidget *info_frame, *info_frame_tl, *info_table;
+  GtkWidget *info_frame, *info_frame_tl, *info_grid;
   GtkWidget *text_frame, *text_frame_tl, *text_tv, *text_tv_sw;
   GtkWidget *lyrics_frame, *lyrics_tv, *lyrics_tv_sw;
   GtkTextBuffer *text_tb, *lyrics_tb;
@@ -195,35 +193,37 @@ void i_fileinfo_gui( const gchar * filename_uri )
 
   info_frame = gtk_frame_new( NULL );
   gtk_box_pack_start( GTK_BOX(midiinfoboxes_vbox) , info_frame , TRUE , TRUE , 0 );
-  info_table = gtk_table_new( 6 , 2 , FALSE );
-  gtk_container_set_border_width( GTK_CONTAINER(info_table) , 5 );
-  gtk_container_add( GTK_CONTAINER(info_frame) , info_table );
+  info_grid = gtk_grid_new();
+  gtk_grid_set_row_spacing( GTK_GRID(info_grid) , 4 );
+  gtk_grid_set_column_spacing( GTK_GRID(info_grid) , 10 );
+  gtk_container_set_border_width( GTK_CONTAINER(info_grid) , 3 );
+  gtk_container_add( GTK_CONTAINER(info_frame) , info_grid );
   value_gstring = g_string_new( "" );
 
   /* midi format */
   G_STRING_PRINTF( value_gstring , "type %i" , mf->format );
-  i_fileinfo_table_add_entry( _("Format:") , value_gstring->str , info_table , 0 , pangoattrlist );
+  i_fileinfo_grid_add_entry( _("Format:") , value_gstring->str , info_grid , 0 , pangoattrlist );
   /* midi length */
   G_STRING_PRINTF( value_gstring , "%i" , (gint)(mf->length / 1000) );
-  i_fileinfo_table_add_entry( _("Length (msec):") , value_gstring->str , info_table , 1 , pangoattrlist );
+  i_fileinfo_grid_add_entry( _("Length (msec):") , value_gstring->str , info_grid , 1 , pangoattrlist );
   /* midi num of tracks */
   G_STRING_PRINTF( value_gstring , "%i" , mf->num_tracks );
-  i_fileinfo_table_add_entry( _("No. of Tracks:") , value_gstring->str , info_table , 2 , pangoattrlist );
+  i_fileinfo_grid_add_entry( _("No. of Tracks:") , value_gstring->str , info_grid , 2 , pangoattrlist );
   /* midi bpm */
   if ( bpm > 0 )
     G_STRING_PRINTF( value_gstring , "%i" , bpm ); /* fixed bpm */
   else
     G_STRING_PRINTF( value_gstring , _("variable") ); /* variable bpm */
-  i_fileinfo_table_add_entry( _("BPM:") , value_gstring->str , info_table , 3 , pangoattrlist );
+  i_fileinfo_grid_add_entry( _("BPM:") , value_gstring->str , info_grid , 3 , pangoattrlist );
   /* midi weighted average bpm */
   if ( bpm > 0 )
     G_STRING_PRINTF( value_gstring , "/" ); /* fixed bpm, don't care about wavg_bpm */
   else
     G_STRING_PRINTF( value_gstring , "%i" , wavg_bpm ); /* variable bpm, display wavg_bpm */
-  i_fileinfo_table_add_entry( _("BPM (wavg):") , value_gstring->str , info_table , 4 , pangoattrlist );
+  i_fileinfo_grid_add_entry( _("BPM (wavg):") , value_gstring->str , info_grid , 4 , pangoattrlist );
   /* midi time division */
   G_STRING_PRINTF( value_gstring , "%i" , mf->time_division );
-  i_fileinfo_table_add_entry( _("Time Div:") , value_gstring->str , info_table , 5 , pangoattrlist );
+  i_fileinfo_grid_add_entry( _("Time Div:") , value_gstring->str , info_grid , 5 , pangoattrlist );
 
   g_string_free( value_gstring , TRUE );
 

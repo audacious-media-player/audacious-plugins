@@ -243,7 +243,7 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
     GtkTreeViewColumn *port_lv_clientname_col, *port_lv_portname_col;
     GtkTreeSelection *port_lv_sel;
     GtkTreeIter iter;
-    GtkWidget *mixer_table, *mixer_frame;
+    GtkWidget *mixer_grid, *mixer_frame;
     GtkCellRenderer *mixer_card_cmb_text_rndr, *mixer_ctl_cmb_text_rndr;
     GtkWidget *mixer_card_cmb_evbox, *mixer_card_cmb, *mixer_card_label;
     GtkWidget *mixer_ctl_cmb_evbox, *mixer_ctl_cmb, *mixer_ctl_label;
@@ -387,25 +387,25 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
                                         i_configure_gui_ctlcmb_datafunc , NULL , NULL );
     /* the event box is needed to display a tooltip for the mixer combo box */
     mixer_card_cmb_evbox = gtk_event_box_new();
+    gtk_widget_set_hexpand( mixer_card_cmb_evbox , TRUE );
     gtk_container_add( GTK_CONTAINER(mixer_card_cmb_evbox) , mixer_card_cmb );
     mixer_ctl_cmb_evbox = gtk_event_box_new();
+    gtk_widget_set_hexpand( mixer_ctl_cmb_evbox , TRUE );
     gtk_container_add( GTK_CONTAINER(mixer_ctl_cmb_evbox) , mixer_ctl_cmb );
     mixer_card_label = gtk_label_new( _("Soundcard: ") );
     gtk_misc_set_alignment( GTK_MISC(mixer_card_label) , 0 , 0.5 );
     mixer_ctl_label = gtk_label_new( _("Mixer control: ") );
     gtk_misc_set_alignment( GTK_MISC(mixer_ctl_label) , 0 , 0.5 );
-    mixer_table = gtk_table_new( 3 , 2 , FALSE );
-    gtk_container_set_border_width( GTK_CONTAINER(mixer_table), 4 );
-    gtk_table_attach( GTK_TABLE(mixer_table) , mixer_card_label , 0 , 1 , 0 , 1 ,
-                      GTK_FILL , 0 , 1 , 2 );
-    gtk_table_attach( GTK_TABLE(mixer_table) , mixer_card_cmb_evbox , 1 , 2 , 0 , 1 ,
-                      GTK_EXPAND | GTK_FILL , 0 , 1 , 2 );
-    gtk_table_attach( GTK_TABLE(mixer_table) , mixer_ctl_label , 0 , 1 , 1 , 2 ,
-                      GTK_FILL , 0 , 1 , 2 );
-    gtk_table_attach( GTK_TABLE(mixer_table) , mixer_ctl_cmb_evbox , 1 , 2 , 1 , 2 ,
-                      GTK_EXPAND | GTK_FILL , 0 , 1 , 2 );
+    mixer_grid = gtk_grid_new();
+    gtk_grid_set_row_spacing( GTK_GRID(mixer_grid) , 4 );
+    gtk_grid_set_column_spacing( GTK_GRID(mixer_grid) , 2 );
+    gtk_container_set_border_width( GTK_CONTAINER(mixer_grid) , 5 );
+    gtk_grid_attach( GTK_GRID(mixer_grid) , mixer_card_label , 0 , 0 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(mixer_grid) , mixer_card_cmb_evbox , 1 , 0 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(mixer_grid) , mixer_ctl_label , 0 , 1 , 1 , 1 );
+    gtk_grid_attach( GTK_GRID(mixer_grid) , mixer_ctl_cmb_evbox , 1 , 1 , 1 , 1 );
     mixer_frame = gtk_frame_new( _("Mixer settings") );
-    gtk_container_add( GTK_CONTAINER(mixer_frame) , mixer_table );
+    gtk_container_add( GTK_CONTAINER(mixer_frame) , mixer_grid );
     gtk_box_pack_start( GTK_BOX(content_vbox) , mixer_frame , TRUE , TRUE , 0 );
     g_signal_connect_swapped( G_OBJECT(commit_button) , "ap-commit" ,
                               G_CALLBACK(i_configure_ev_cardcmb_commit) , mixer_card_cmb );
