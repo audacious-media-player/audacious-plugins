@@ -1148,7 +1148,7 @@ msgstr "Вписать до названия файла номер дорожк�
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr "Плагин запси в файл"
+msgstr "Плагин записи в файл"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
