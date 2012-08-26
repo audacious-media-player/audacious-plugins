@@ -1159,8 +1159,6 @@ void sc_cleaner(void)
         free(sc_srv_res);
     if(sc_major_error != NULL)
         free(sc_major_error);
-    if(sc_rx_list != NULL)
-        regex_free_list(sc_rx_list);
 
     dump_queue();
     q_free();
@@ -1216,6 +1214,10 @@ void sc_init(char *uname, char *pwd, char *url, char* regexps)
         sc_hs_url = strdup(url);
     else
         sc_hs_url = strdup(LASTFM_HS_URL);
+
+    if(sc_rx_list!=NULL){
+    	regex_free_list(sc_rx_list);
+    }
     sc_rx_list = regex_str_to_items(regexps);
 
     read_cache();

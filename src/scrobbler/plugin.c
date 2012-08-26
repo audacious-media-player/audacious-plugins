@@ -118,7 +118,8 @@ void start(void) {
     g_free (sc_url);
     g_free (uregexps);
 
-    m_scrobbler = g_mutex_new();
+    if(m_scrobbler == NULL)
+    	m_scrobbler = g_mutex_new();
 
     hook_associate("playback begin", aud_hook_playback_begin, NULL);
     hook_associate("playback stop", aud_hook_playback_end, NULL);
@@ -137,8 +138,6 @@ void stop(void) {
     sc_going = 0;
     ge_going = 0;
     g_mutex_unlock(m_scrobbler);
-
-    g_mutex_free(m_scrobbler);
 
     hook_dissociate("playback begin", aud_hook_playback_begin);
     hook_dissociate("playback stop", aud_hook_playback_end);
