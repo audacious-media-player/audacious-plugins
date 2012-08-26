@@ -45,21 +45,21 @@ GSList * regex_str_to_items(gchar* regexps){
     return g_slist_reverse(rx_list);
 }
 
-__inline__  void regex_free_list(GSList *list){
+void regex_free_list(GSList *list){
     g_slist_free_full(list, (GDestroyNotify) g_regex_unref);
 }
 
 /**
  * Returns newly allocated escaped string.
  */
-__inline__  gchar * regex_escape(const gchar* data){
+gchar * regex_escape(const gchar* data){
     return fmt_escape(data);
 }
 
 /**
  * Returns newly allocated unescaped string.
  */
-__inline__  gchar * regex_unescape(const gchar* data){
+gchar * regex_unescape(const gchar* data){
     return fmt_unescape((char*) data);
 }
 
