@@ -80,7 +80,7 @@ static void saveconfig(void)
     else
         aud_set_string ("audioscrobbler", "sc_url", LASTFM_HS_URL);
 
-    if(regexps != NULL && regexps[0] != '\0'){
+    if(eregexps != NULL && eregexps[0] != '\0'){
         aud_set_string ("audioscrobbler", "regexps", eregexps);
         g_free(eregexps);
     } else {
@@ -182,6 +182,7 @@ static void create_cfgdlg_regex(GtkWidget* notebook){
     textbuffer = gtk_text_buffer_new(NULL);
     if(uregexps) gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), uregexps, -1);
     g_signal_connect(textbuffer, "changed", G_CALLBACK(entry_changed), NULL);
+    g_signal_connect(textbuffer, "changed", G_CALLBACK(regex_test_changed), NULL);
 
     label = gtk_label_new(_(
 "You can define regexp's to parse data send in http streams.\n\
