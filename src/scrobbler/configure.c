@@ -82,11 +82,11 @@ static void saveconfig(void)
 
     if(eregexps != NULL && eregexps[0] != '\0'){
         aud_set_string ("audioscrobbler", "regexps", eregexps);
-        g_free(eregexps);
     } else {
         aud_set_string ("audioscrobbler", "regexps", "");
     }
 
+    g_free(eregexps);
 }
 
 static gboolean apply_config_changes(gpointer data) {
