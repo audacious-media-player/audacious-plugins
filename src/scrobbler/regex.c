@@ -65,26 +65,25 @@ gchar * regex_unescape(const gchar* data){
 
 regex_item_t* regex_match(const gchar* subject, GSList* rx_list){
     GSList *l = rx_list;
-    GRegex *rx;
-    GMatchInfo *info;
-
     regex_item_t* ret = NULL;
 
     while(l != NULL){
-        rx = l->data;
+		GMatchInfo *info;
+		GRegex *rx = l->data;
+
         if(g_regex_match(rx, subject, 0 ,&info)){
             ret = g_malloc(sizeof(regex_item_t));
 
             ret->artist = g_match_info_fetch_named(info, "artist");
             ret->title = g_match_info_fetch_named(info, "title");
             ret->album = g_match_info_fetch_named(info, "album");
-
-            break;
         }
+
+        g_match_info_free(info);
+        if (ret!=NULL) break;
+
         l = g_slist_next(l);
     }
-
-    g_match_info_free(info);
 
     return ret;
 }
