@@ -11,6 +11,7 @@
 
 #include "regex.h"
 #include "fmt.h"
+#include <libaudcore/core.h>
 
 /**
  * Converts string to GSList of GRegex.
@@ -103,8 +104,7 @@ regex_item_t* regex_match_parts(const gchar* artist, const gchar* title, const g
     if(!title) title="";
     if(!album) album="";
 
-    gchar buff[strlen(artist)+strlen(title)+strlen(album)+1];
-    g_sprintf(buff, "%s—%s—%s", artist, title, album);
+    SPRINTF(buff, "%s—%s—%s", artist, title, album);
 
     return regex_match(buff, rx_list);
 }

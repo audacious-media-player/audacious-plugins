@@ -159,8 +159,7 @@ static void regex_test_changed(GtkWidget* widget, gpointer data){
     if(match == NULL){
         gtk_label_set_text(GTK_LABEL(test_label), "applicable pattern was not found");
     } else {
-        char buff[(match->album?strlen(match->album):0)+(match->artist?strlen(match->artist):0)+(match->title?strlen(match->title):0)+25];
-        g_sprintf(buff, "artist: %s\ntitle: %s\nalbum: %s", match->artist, match->title, match->album);
+    	SPRINTF(buff, "artist: %s\ntitle: %s\nalbum: %s", match->artist, match->title, match->album);
         gtk_label_set_text(GTK_LABEL(test_label), buff);
         regex_match_free(match);
     }
