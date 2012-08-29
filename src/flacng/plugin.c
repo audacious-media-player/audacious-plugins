@@ -166,7 +166,13 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
     playback->set_pb_ready(playback);
     playback->set_gain_from_playlist(playback);
 
-    while (1)
+    int64_t samples_remaining = INT64_MAX;
+    if (start_time >= 0 && stop_time >= 0)
+        samples_remaining = (int64_t) (stop_time - start_time) *
+         info->sample_rate / 1000 * info->channels;
+
+    while (samples_remaining && FLAC__stream_decoder_get_state(decoder) !=
+     FLAC__STREAM_DECODER_END_OF_STREAM)
     {
         pthread_mutex_lock (& mutex);
 
@@ -181,6 +187,11 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
             playback->output->flush (seek_value);
             FLAC__stream_decoder_seek_absolute (decoder, (int64_t)
              seek_value * info->sample_rate / 1000);
+
+            if (stop_time >= 0)
+                samples_remaining = (int64_t) (stop_time - seek_value) *
+                 info->sample_rate / 1000 * info->channels;
+
             seek_value = -1;
         }
 
@@ -191,24 +202,20 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
         {
             FLACNG_ERROR("Error while decoding!\n");
             error = TRUE;
-            goto CLEANUP;
+            break;
         }
+
+        if (info->buffer_used >= samples_remaining)
+            info->buffer_used = samples_remaining;
 
         squeeze_audio(info->output_buffer, play_buffer, info->buffer_used, info->bits_per_sample);
         playback->output->write_audio(play_buffer, info->buffer_used * SAMPLE_SIZE(info->bits_per_sample));
 
-        reset_info(info);
+        samples_remaining -= info->buffer_used;
 
-        /* Have we reached the end of the stream? */
-        if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_END_OF_STREAM)
-        {
-            /* Yes. Drain the output buffer and stop playing. */
-            AUDDBG("End of stream reached, draining output buffer\n");
-            goto CLEANUP;
-        }
+        reset_info(info);
     }
 
-CLEANUP:
     pthread_mutex_lock (& mutex);
     stop_flag = TRUE;
     pthread_mutex_unlock (& mutex);
