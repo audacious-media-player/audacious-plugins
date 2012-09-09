@@ -83,22 +83,28 @@ static void dictionary_to_vorbis_comment (vorbis_comment * vc, GHashTable * dict
 static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
  fieldn, GHashTable * dict, const char * key)
 {
-    gchar *tmp = (gchar*)tuple_get_str(tuple, fieldn, NULL);
-    if (tmp && tmp[0])
-        g_hash_table_insert (dict, str_get (key), str_get (tmp));
-    str_unref(tmp);
+    char * val = tuple_get_str (tuple, fieldn, NULL);
+
+    if (val && val[0])
+        g_hash_table_insert (dict, str_get (key), str_ref (val));
+    else
+        g_hash_table_remove (dict, key);
+
+    str_unref(val);
 }
 
 static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
  fieldn, GHashTable * dict, const char * key)
 {
-    int val;
+    int val = tuple_get_int (tuple, fieldn, NULL);
 
-    if(tuple_get_value_type(tuple, fieldn, NULL) == TUPLE_INT && (val = tuple_get_int(tuple, fieldn, NULL)) >= 0) {
-        char tmp[16];
-        snprintf (tmp, sizeof tmp, "%d", val);
-        g_hash_table_insert (dict, str_get (key), str_get (tmp));
+    if (val > 0)
+    {
+        SPRINTF (buf, "%d", val);
+        g_hash_table_insert (dict, str_get (key), str_get (buf));
     }
+    else
+        g_hash_table_remove (dict, key);
 }
 
 gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
