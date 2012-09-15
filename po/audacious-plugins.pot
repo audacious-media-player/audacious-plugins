@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "This is your wakeup call."
 msgstr ""
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr ""
 
@@ -397,14 +397,6 @@ msgid ""
 "Plug</span>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr ""
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr ""
@@ -499,6 +491,14 @@ msgstr ""
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
 msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:169
@@ -831,6 +831,18 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr ""
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr ""
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr ""
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr ""
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr ""
@@ -885,18 +897,6 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
-msgstr ""
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr ""
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr ""
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
 msgstr ""
 
 #: src/compressor/plugin.c:37
@@ -1251,7 +1251,7 @@ msgstr ""
 msgid "Quality level (0 - 10):"
 msgstr ""
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr ""
 
@@ -1958,7 +1958,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr ""
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr ""
 
@@ -3070,22 +3070,22 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr ""
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr ""
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr ""
 

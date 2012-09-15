@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: audacious-plugins 1.5.1\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2009-04-11 16:07+0200\n"
 "Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -32,7 +32,7 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Això és l'avís per despertar-se."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "D'acord"
 
@@ -283,7 +283,7 @@ msgstr ""
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Cancel·la"
 
@@ -476,15 +476,6 @@ msgstr ""
 "<span size=\"smaller\">Connector\n"
 "AMIDI</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "Connector AMIDI-Plug - Seleccioneu un fitxer"
-
-#: src/amidi-plug/i_configure.c:110
-#, fuzzy
-msgid "AMIDI-Plug Settings"
-msgstr "Paràmetres del registre d'esdeveniments MIDI"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "Connector AMIDI-Plug - Seleccioneu un fitxer SoundFont"
@@ -584,6 +575,15 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Fons\n"
 "FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "Connector AMIDI-Plug - Seleccioneu un fitxer"
+
+#: src/amidi-plug/i_configure.c:110
+#, fuzzy
+msgid "AMIDI-Plug Settings"
+msgstr "Paràmetres del registre d'esdeveniments MIDI"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -934,6 +934,20 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr "Analitzador d'espectre"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+#, fuzzy
+msgid "Play CD"
+msgstr "Reprodueix"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Afegeix CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+#, fuzzy
+msgid "Audio CD Menu Items"
+msgstr "Paràmetres de l'àudio"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
@@ -998,20 +1012,6 @@ msgstr ""
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr ""
-
-#: src/cd-menu-items/cd-menu-items.c:32
-#, fuzzy
-msgid "Play CD"
-msgstr "Reprodueix"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Afegeix CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-#, fuzzy
-msgid "Audio CD Menu Items"
-msgstr "Paràmetres de l'àudio"
 
 #: src/compressor/plugin.c:37
 #, fuzzy
@@ -1387,7 +1387,7 @@ msgstr "Configuració del codificador Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Nivell de qualitat (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 #, fuzzy
 msgid "FLAC Decoder"
 msgstr "Descodificador"
@@ -2202,7 +2202,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "Dispositiu PCM per defecte (%s)"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Dispositiu d'àudio:"
 
@@ -3381,24 +3381,24 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 #, fuzzy
 msgid "Unsupported format"
 msgstr "Format de fitxer no suportat\n"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 #, fuzzy
 msgid "sndio device"
 msgstr "Dispositiu d'àudio:"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 #, fuzzy
 msgid "(empty means default)"
 msgstr "Alarma (per defecte) a les:"

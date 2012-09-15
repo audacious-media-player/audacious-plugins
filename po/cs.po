@@ -1,7 +1,7 @@
 # Czech translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-# 
+#
 # Translators:
 #   <appukonrad@gmail.com>, 2012.
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
@@ -11,17 +11,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-09-04 06:55+0000\n"
 "Last-Translator: jui <appukonrad@gmail.com>\n"
 "Language-Team: Czech\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr "AAC Dekodér"
 
@@ -37,7 +37,7 @@ msgstr "Budík"
 msgid "This is your wakeup call."
 msgstr "Toto je váš budící signál."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "Budiž"
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Help"
 msgstr "Nápověda"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -292,7 +292,9 @@ msgstr "AMIDI-Plug (MIDI přehrávač)"
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr "Nevybrali jste žádné porty sekvenceru určené pro přehrávání MIDI. Můžete tak učinit v nastavení modulu MIDI."
+msgstr ""
+"Nevybrali jste žádné porty sekvenceru určené pro přehrávání MIDI. Můžete tak "
+"učinit v nastavení modulu MIDI."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -300,10 +302,23 @@ msgstr "ALSA backend"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Tento backend posílá MIDI události skupině uživatelem vybraných portů ALSA sekvenceru. Rozhraní ALSA sekvenceru je velmi přizpůsobivé, může poskytovat porty hardwarovým syntetizátorům na zvukové kartě (př. emu10k1) nebo syntetizátorům softwarovým, vnějším zařízením atd.\nTento backend žádný zvuk nevytváří, MIDI události jsou zpracovány přímo zařízením/programem, který se ukrývá za ALSA portem. Na příklad MIDI události zaslané hardwarovému syntetizátoru budou hrány přímo jím.\nBackend napsal Giacomo Lozito."
+msgstr ""
+"Tento backend posílá MIDI události skupině uživatelem vybraných portů ALSA "
+"sekvenceru. Rozhraní ALSA sekvenceru je velmi přizpůsobivé, může poskytovat "
+"porty hardwarovým syntetizátorům na zvukové kartě (př. emu10k1) nebo "
+"syntetizátorům softwarovým, vnějším zařízením atd.\n"
+"Tento backend žádný zvuk nevytváří, MIDI události jsou zpracovány přímo "
+"zařízením/programem, který se ukrývá za ALSA portem. Na příklad MIDI "
+"události zaslané hardwarovému syntetizátoru budou hrány přímo jím.\n"
+"Backend napsal Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -311,10 +326,19 @@ msgstr "Becken FluidSynth"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Tento backend vytváří zvuky zasíláním MIDI událostí do FluidSynth, což je softwarový syntetizátor pracující v reálném čase založený na specifikaci SoundFont2 (www.fluidsynth.org).\nVzniklý zvuk může být upraven efektovými moduly přehrávače a následně je zpracován vybraným výstupním modulem.\nBackend napsal Giacomo Lozito."
+msgstr ""
+"Tento backend vytváří zvuky zasíláním MIDI událostí do FluidSynth, což je "
+"softwarový syntetizátor pracující v reálném čase založený na specifikaci "
+"SoundFont2 (www.fluidsynth.org).\n"
+"Vzniklý zvuk může být upraven efektovými moduly přehrávače a následně je "
+"zpracován vybraným výstupním modulem.\n"
+"Backend napsal Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -348,7 +372,9 @@ msgstr "Nastavení směšovače"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">Backend\nALSA</span>"
+msgstr ""
+"<span size=\"smaller\">Backend\n"
+"ALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -390,15 +416,9 @@ msgstr "vytáhnout text z MIDI souboru (pokud existuje)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr "<span size=\"smaller\">AMIDI\nPlug</span>"
-
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug – vyberte soubor"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Nastavení AMIDI-Pluginu"
+msgstr ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -494,7 +514,17 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">Backend\nFluidSynth</span>"
+msgstr ""
+"<span size=\"smaller\">Backend\n"
+"FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug – vyberte soubor"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Nastavení AMIDI-Pluginu"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -589,7 +619,10 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr "Spustí OSD, když se během přehrávaní změní název skladby, ale jméno souboru je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se střídají skladby."
+msgstr ""
+"Spustí OSD, když se během přehrávaní změní název skladby, ale jméno souboru "
+"je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se "
+"střídají skladby."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -721,8 +754,12 @@ msgstr "Nalezen kompozitní správce"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
-msgstr "Kompozitní správce nebyl nalezen.\nPokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte kompozitního správce, jinak OSD nebude správně fungovat."
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+"Kompozitní správce nebyl nalezen.\n"
+"Pokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte "
+"kompozitního správce, jinak OSD nebude správně fungovat."
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -825,6 +862,18 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Analyzátor spektra"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Přehrát CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Přidat CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Položky Audio CD menu"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Zařízení</b>"
@@ -880,18 +929,6 @@ msgstr "Mechanika je prázdná"
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Nepodporovaný druh disku."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Přehrát CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Přidat CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Položky Audio CD menu"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -972,22 +1009,29 @@ msgstr "Prodloužit dozvuk"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not"
-" provide length information (i.e. looping tracks)."
-msgstr "Implicitní délka, vyjádřená v sekundách, se použije na skladby, které neposkytují informace o délce (např. nekonečné smyčky)."
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+"Implicitní délka, vyjádřená v sekundách, se použije na skladby, které "
+"neposkytují informace o délce (např. nekonečné smyčky)."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
-msgstr "Prolínání se nezdařilo, protože písně měly různý počet kanálů.  Můžete použít Míchání kanálů a převést písně na stejný počet kanálů."
+msgstr ""
+"Prolínání se nezdařilo, protože písně měly různý počet kanálů.  Můžete "
+"použít Míchání kanálů a převést písně na stejný počet kanálů."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr "Prolínání se nezdařilo, protože písničky měly různé vzorkovací frekvence. Můžete použít Převádění vzorkovací frekvence pro převod skladeb na stejnou vzorkovací frekvenci."
+msgstr ""
+"Prolínání se nezdařilo, protože písničky měly různé vzorkovací frekvence. "
+"Můžete použít Převádění vzorkovací frekvence pro převod skladeb na stejnou "
+"vzorkovací frekvenci."
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1245,7 +1289,7 @@ msgstr "Nastavení vorbis kodéru"
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0–10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "FLAC Dekodér"
 
@@ -1724,10 +1768,14 @@ msgstr "(žádné)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without modificators.\n"
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr "Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n\nChcete pokračovat?"
+msgstr ""
+"Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n"
+"\n"
+"Chcete pokračovat?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1741,7 +1789,9 @@ msgstr "Hlavní nastavení modulu pro horké klávesy"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "Uvnitř textového pole stiskněte kombinaci kláves.\nNavázat lze také tlačítka myši."
+msgstr ""
+"Uvnitř textového pole stiskněte kombinaci kláves.\n"
+"Navázat lze také tlačítka myši."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1781,7 +1831,11 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr "<small>Cesty se od sebe oddělují dvojtečkou.\nTyto cesty se prohledávají spolu s LADSPA_PATH.\nPo té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly nové moduly.</small>"
+msgstr ""
+"<small>Cesty se od sebe oddělují dvojtečkou.\n"
+"Tyto cesty se prohledávají spolu s LADSPA_PATH.\n"
+"Po té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly "
+"nové moduly.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -1814,7 +1868,10 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr "%s: nelze číst z konfiguračního souboru LIRC\n%s: prosím, přečtěte si dokumentaci k LIRC,\n%s: jak správně vytvořit konfigurační soubor\n"
+msgstr ""
+"%s: nelze číst z konfiguračního souboru LIRC\n"
+"%s: prosím, přečtěte si dokumentaci k LIRC,\n"
+"%s: jak správně vytvořit konfigurační soubor\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -1952,7 +2009,7 @@ msgstr "Oznámení na plochu"
 msgid "1. Default device"
 msgstr "1. Implicitní zařízení"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Zvukové zařízení:"
 
@@ -1980,7 +2037,7 @@ msgstr "OSS4 výstup"
 msgid "PLS Playlists"
 msgstr "PLS seznamy skladeb"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 Dekodér"
 
@@ -2159,7 +2216,9 @@ msgstr "Hledat knihovnu"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr "Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak kliknete na ikonu „obnovit“."
+msgstr ""
+"Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak "
+"kliknete na ikonu „obnovit“."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -2647,7 +2706,8 @@ msgstr "Hledání a výběr"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr "Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
+msgstr ""
+"Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -2996,11 +3056,15 @@ msgstr "Vyhledat skladby v současném seznamu skladeb"
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular"
-" expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr "Položky seznamu skladeb vyberete vyplněním jednoho, nebo více polí. Pole používají regulární výrazy a neberou ohled na velikost písmen. Pokud regulárním výrazům nerozumíte, jednoduše vložte části textu, které chcete vyhledat."
+msgstr ""
+"Položky seznamu skladeb vyberete vyplněním jednoho, nebo více polí. Pole "
+"používají regulární výrazy a neberou ohled na velikost písmen. Pokud "
+"regulárním výrazům nerozumíte, jednoduše vložte části textu, které chcete "
+"vyhledat."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3065,24 +3129,27 @@ msgid ""
 "Sndio Output Plugin\n"
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
-msgstr "Sndio výstupní plugin\n\nnapsal Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+"Sndio výstupní plugin\n"
+"\n"
+"napsal Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Nepodporovaný formát"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "sndio zařízení"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(prázdné znamená výchozí)"
 
@@ -3105,12 +3172,15 @@ msgstr "Příkaz, který se provede na konci skladby."
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Příkaz, který se provede, když Audacious dosáhne konce seznamu skladeb."
+msgstr ""
+"Příkaz, který se provede, když Audacious dosáhne konce seznamu skladeb."
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr "Příkaz, který se provede při změně názvu skladbu (tj. názvy v síťových proudech)."
+msgstr ""
+"Příkaz, který se provede při změně názvu skladbu (tj. názvy v síťových "
+"proudech)."
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3135,7 +3205,9 @@ msgstr ""
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr "<span size='small'>Parametry předávané shellu by měly být uzavřeny do uvozovek. Nerespektování této rady představuje bezpečnostní riziko.</span>"
+msgstr ""
+"<span size='small'>Parametry předávané shellu by měly být uzavřeny do "
+"uvozovek. Nerespektování této rady představuje bezpečnostní riziko.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3230,7 +3302,7 @@ msgstr "VTX Dekodér"
 msgid "WavPack Decoder"
 msgstr "WavPack Dekodér"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 msgid "2SF Decoder"
 msgstr "2SF Dekodér"
 

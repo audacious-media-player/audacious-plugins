@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-07-26 00:36+0000\n"
 "Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Latvian\n"
@@ -35,7 +35,7 @@ msgstr "Modinātājs"
 msgid "This is your wakeup call."
 msgstr "Šis ir jūsu mošanās zvans."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "Labi"
 
@@ -234,7 +234,7 @@ msgstr ""
 msgid "Help"
 msgstr "Palīdzība"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -418,14 +418,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - izvēlieties failu"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Plug iestatījumi"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug — izvēlieties SoundFont failu"
@@ -523,6 +515,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">FluidSynth\n"
 "aizmugure</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - izvēlieties failu"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "AMIDI-Plug iestatījumi"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -860,6 +860,18 @@ msgstr "Bauer stereofoniski-uz-binaurāli (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Spektra analizators"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Atskaņot CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Pievienot CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Audio CD izvēlnes elementi"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Ierīce</b>"
@@ -915,18 +927,6 @@ msgstr "Dzinis ir tukšs."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Neatbalstīts diska tips."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Atskaņot CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Pievienot CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Audio CD izvēlnes elementi"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1289,7 +1289,7 @@ msgstr "Vorbis kodētāja konfigurācija"
 msgid "Quality level (0 - 10):"
 msgstr "Kvalitātes līmenis (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "FLAC dekodētājs"
 
@@ -2009,7 +2009,7 @@ msgstr "Darbvirsmas paziņojumi"
 msgid "1. Default device"
 msgstr "1. noklusētā ierīce"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Audio ierīce:"
 
@@ -3147,11 +3147,11 @@ msgstr ""
 "\n"
 "Autors Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Neatbalstīts formāts"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3161,11 +3161,11 @@ msgstr ""
 "\n"
 "Lūdzu, mēģiniet vēlreiz ar palaistu sndiod(1) serveri."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "sndio ierīce"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(tukšs nozīmē noklusētais)"
 

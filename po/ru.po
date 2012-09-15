@@ -1,7 +1,7 @@
 # Russian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-# 
+#
 # Translators:
 # Alexander Orlov <alxorlov@pochta.ru>, 2007.
 #   <kvantarium@gmail.com>, 2012.
@@ -16,17 +16,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-09-11 00:01+0000\n"
 "Last-Translator: chingis <q9mwvwxx@lavabit.com>\n"
 "Language-Team: Russian\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr "Декодер AAC"
 
@@ -42,7 +43,7 @@ msgstr "Будильник"
 msgid "This is your wakeup call."
 msgstr "Это ваш звонок будильника."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "ОК"
 
@@ -241,7 +242,7 @@ msgstr ""
 msgid "Help"
 msgstr "Справка"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -297,7 +298,9 @@ msgstr "AMIDI-Плагин (проигрыватель MIDI)"
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr "Порт секвенсера для воспроизведения MIDI не выбран. Это можно сделать в параметрах модуля MIDI."
+msgstr ""
+"Порт секвенсера для воспроизведения MIDI не выбран. Это можно сделать в "
+"параметрах модуля MIDI."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -305,10 +308,23 @@ msgstr "Модуль ALSA "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Этот модуль отправляет события MIDI на группу выбранных пользователем портов синтезатора ALSA. Интерфейс синтезатора ALSA очень разносторонний, он может предоставлять порты для аппаратных синтезаторов (например, emu10k1), для программных синтезаторов, для внешних устройств, и др.\nЭтот модуль не производит звук, события MIDI от устройств/программ обрабатываются напрямую после портов ALSA; например, отправленные на аппаратный синтезатор события MIDI будут сразу воспроизведены.\nЭтот внутренний модуль написан Giacomo Lozito."
+msgstr ""
+"Этот модуль отправляет события MIDI на группу выбранных пользователем портов "
+"синтезатора ALSA. Интерфейс синтезатора ALSA очень разносторонний, он может "
+"предоставлять порты для аппаратных синтезаторов (например, emu10k1), для "
+"программных синтезаторов, для внешних устройств, и др.\n"
+"Этот модуль не производит звук, события MIDI от устройств/программ "
+"обрабатываются напрямую после портов ALSA; например, отправленные на "
+"аппаратный синтезатор события MIDI будут сразу воспроизведены.\n"
+"Этот внутренний модуль написан Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -316,10 +332,21 @@ msgstr "Модуль FluidSynth "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Этот модуль производит аудио отправляя MIDI события к FluidSynth, программному синтезатору реального времени который основан на спецификации SoundFont2 (www.fluidsynth.org).\n\nПолученные аудио-данные можно корректировать при помощи плагинов-эффектов проигрывателя и обработать выбранным плагином вывода.\n\nМодуль написан Джакомо Лозито (Giacomo Lozito)."
+msgstr ""
+"Этот модуль производит аудио отправляя MIDI события к FluidSynth, "
+"программному синтезатору реального времени который основан на спецификации "
+"SoundFont2 (www.fluidsynth.org).\n"
+"\n"
+"Полученные аудио-данные можно корректировать при помощи плагинов-эффектов "
+"проигрывателя и обработать выбранным плагином вывода.\n"
+"\n"
+"Модуль написан Джакомо Лозито (Giacomo Lozito)."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -353,7 +380,9 @@ msgstr "Параметры микшера"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">Модуль\nALSA</span>"
+msgstr ""
+"<span size=\"smaller\">Модуль\n"
+"ALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -395,15 +424,9 @@ msgstr "Считывать тексты из MIDI-файлов (если дос�
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr "<span size=\"smaller\">AMIDI\nPlug</span>"
-
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - выбор файла"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Настройки AMIDI-Plugin"
+msgstr ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -499,7 +522,17 @@ msgstr "Гц "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">Модуль\nFluidSynth</span>"
+msgstr ""
+"<span size=\"smaller\">Модуль\n"
+"FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - выбор файла"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Настройки AMIDI-Plugin"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -594,7 +627,10 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr "Показать OSD, если в процессе воспроизведения меняется название, но имя файла остаётся прежним. Полезно для отображения названий при воспроизведении из сети."
+msgstr ""
+"Показать OSD, если в процессе воспроизведения меняется название, но имя "
+"файла остаётся прежним. Полезно для отображения названий при воспроизведении "
+"из сети."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -726,12 +762,17 @@ msgstr "Найден композитный менеджер"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
-msgstr "Композитный менеджер не найден;\nПожалуйста, запустите композитный менеджер; в противном случае\nOSD не будет работать корректно."
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+"Композитный менеджер не найден;\n"
+"Пожалуйста, запустите композитный менеджер; в противном случае\n"
+"OSD не будет работать корректно."
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
-msgstr "Для режима \"Имитированная прозрачность\" композитный менеджер не требуется."
+msgstr ""
+"Для режима \"Имитированная прозрачность\" композитный менеджер не требуется."
 
 #: src/aosd/aosd_ui.c:837
 msgid "Transparency"
@@ -830,6 +871,18 @@ msgstr "Бауэр Стереофоник в Бинэрал (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Спектрум анализатор"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Воспроизвести CD-диск"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Добавить CD-диск"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Пункты меню Аудио CD"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Устройство</b>"
@@ -885,18 +938,6 @@ msgstr "Привод пуст."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Неподдерживаемый тип диска."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Воспроизвести CD-диск"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Добавить CD-диск"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Пункты меню Аудио CD"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -977,22 +1018,31 @@ msgstr "Увеличить реверберацию"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not"
-" provide length information (i.e. looping tracks)."
-msgstr "Длительность дорожки по умолчанию, заданная в секундах, используется для записей, у которых отсутствуют данные о длительности (например, бесконечные дорожки)."
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+"Длительность дорожки по умолчанию, заданная в секундах, используется для "
+"записей, у которых отсутствуют данные о длительности (например, бесконечные "
+"дорожки)."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
-msgstr "Кроссфэйдер столкнулся с ошибкой потому, что песня имеет различное количество каналов.  Ты можешь использовать Микшер Каналов для того, что бы конвертировать песню в то же количество каналов."
+msgstr ""
+"Кроссфэйдер столкнулся с ошибкой потому, что песня имеет различное "
+"количество каналов.  Ты можешь использовать Микшер Каналов для того, что бы "
+"конвертировать песню в то же количество каналов."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr "Кроссфэйдер столкнулся с проблемой потому, что песня имеет разную частоту дискретизации. Ты можешь использовать Конвертер частоты дискретизации для конвертирования песни в туже частоту."
+msgstr ""
+"Кроссфэйдер столкнулся с проблемой потому, что песня имеет разную частоту "
+"дискретизации. Ты можешь использовать Конвертер частоты дискретизации для "
+"конвертирования песни в туже частоту."
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1250,7 +1300,7 @@ msgstr "Настройка кодека Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Уровень качества (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "Декодер FLAC"
 
@@ -1729,10 +1779,15 @@ msgstr "(нет)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without modificators.\n"
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr "Не рекомендуется делать привязки к основным кнопкам мыши без клавиш-модификаторов.\n\nПродолжить?"
+msgstr ""
+"Не рекомендуется делать привязки к основным кнопкам мыши без клавиш-"
+"модификаторов.\n"
+"\n"
+"Продолжить?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1746,7 +1801,9 @@ msgstr "Параметры модуля Глобальные \"горячие к
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "Нажмите комбинацию клавиш в текстовом поле.\nМожно также сделать привязки к кнопкам мыши."
+msgstr ""
+"Нажмите комбинацию клавиш в текстовом поле.\n"
+"Можно также сделать привязки к кнопкам мыши."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1786,7 +1843,10 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr "<small>Если путей несколько, разделяйте их двоеточием.\nПоиск осуществляется по указанным путям и переменной LADSPA_PATH.\nУказав пути, нажмите Enter для поиска новых плагинов.</small>"
+msgstr ""
+"<small>Если путей несколько, разделяйте их двоеточием.\n"
+"Поиск осуществляется по указанным путям и переменной LADSPA_PATH.\n"
+"Указав пути, нажмите Enter для поиска новых плагинов.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -1819,7 +1879,10 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr "%s: не могу прочесть конфигурационный файл LIRC\n%s: пожалуйста прочтите документацию к LIRC\n%s: как создать правильный конфигурационный файл\n"
+msgstr ""
+"%s: не могу прочесть конфигурационный файл LIRC\n"
+"%s: пожалуйста прочтите документацию к LIRC\n"
+"%s: как создать правильный конфигурационный файл\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -1957,7 +2020,7 @@ msgstr "Уведомления на рабочем столе"
 msgid "1. Default device"
 msgstr "1. Устройство по умолчанию"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Звуковое устройство:"
 
@@ -1985,7 +2048,7 @@ msgstr "Вывод OSS4"
 msgid "PLS Playlists"
 msgstr "Списки воспроизведения PLS"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "Декодер OpenPSF PSF1/PSF2"
 
@@ -2114,7 +2177,9 @@ msgstr "Неизвестный альбом"
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr "%s\nот %s до %s"
+msgstr ""
+"%s\n"
+"от %s до %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
@@ -2132,9 +2197,15 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %s, %d songs"
-msgstr[0] "%s\n %s, %d песня"
-msgstr[1] "%s\n %s, %d песни"
-msgstr[2] "%s\n %s, %d песни"
+msgstr[0] ""
+"%s\n"
+" %s, %d песня"
+msgstr[1] ""
+"%s\n"
+" %s, %d песни"
+msgstr[2] ""
+"%s\n"
+" %s, %d песни"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2144,9 +2215,15 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %d songs by %s"
-msgstr[0] "%s\n %d песня до %s"
-msgstr[1] "%s\n %d песни до %s"
-msgstr[2] "%s\n %d песни до %s"
+msgstr[0] ""
+"%s\n"
+" %d песня до %s"
+msgstr[1] ""
+"%s\n"
+" %d песни до %s"
+msgstr[2] ""
+"%s\n"
+" %d песни до %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2164,7 +2241,9 @@ msgstr "Поиск в библиотеке"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr "Для импорта музыки в библиотеку Audacious, выберите каталог, затем нажмите иконку \"обновить\"."
+msgstr ""
+"Для импорта музыки в библиотеку Audacious, выберите каталог, затем нажмите "
+"иконку \"обновить\"."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -2652,7 +2731,9 @@ msgstr "Найти и выбрать"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr "Найти в списке воспроизведения и отметить записи, соответствующие заданному критерию."
+msgstr ""
+"Найти в списке воспроизведения и отметить записи, соответствующие заданному "
+"критерию."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -2713,7 +2794,9 @@ msgstr "По названию"
 
 #: src/skins/ui_manager.c:294
 msgid "Removes duplicate entries from the playlist by title."
-msgstr "Удалить из списка воспроизведения дублирующиеся записи с одинаковым названием."
+msgstr ""
+"Удалить из списка воспроизведения дублирующиеся записи с одинаковым "
+"названием."
 
 #: src/skins/ui_manager.c:297 src/skins/ui_manager.c:337
 #: src/skins/ui_manager.c:367
@@ -2722,7 +2805,9 @@ msgstr "По имени файла"
 
 #: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr "Удалить из списка воспроизведения дублирующиеся записи с одинаковыми именами файлов."
+msgstr ""
+"Удалить из списка воспроизведения дублирующиеся записи с одинаковыми именами "
+"файлов."
 
 #: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
 #: src/skins/ui_manager.c:371
@@ -2731,7 +2816,9 @@ msgstr "По пути и имени файла"
 
 #: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "Удалить из списка воспроизведения дублирующиеся записи, имеющие одинаковый абсолютный путь."
+msgstr ""
+"Удалить из списка воспроизведения дублирующиеся записи, имеющие одинаковый "
+"абсолютный путь."
 
 #: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
@@ -3001,11 +3088,15 @@ msgstr "Поиск записей в активном списке воспро�
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular"
-" expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr "Выберите записи в списке воспроизведения путём заполнения одного или нескольких полей. В полях используется написание регулярных выражений, не чувствительное к регистру. Если вы не знаете, как работают регулярные выражения, просто вставьте часть букв из слова, которые хотите найти."
+msgstr ""
+"Выберите записи в списке воспроизведения путём заполнения одного или "
+"нескольких полей. В полях используется написание регулярных выражений, не "
+"чувствительное к регистру. Если вы не знаете, как работают регулярные "
+"выражения, просто вставьте часть букв из слова, которые хотите найти."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3070,24 +3161,30 @@ msgid ""
 "Sndio Output Plugin\n"
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
-msgstr "Плагин вывода Sndio,\n\nавтор — Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+"Плагин вывода Sndio,\n"
+"\n"
+"автор — Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Неподдерживаемый формат"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
-msgstr "Формат не поддерживается запрошенным звуковым устройством.\n\nПопробуйте ещё раз, запустив сервер sndiod(1)."
+msgstr ""
+"Формат не поддерживается запрошенным звуковым устройством.\n"
+"\n"
+"Попробуйте ещё раз, запустив сервер sndiod(1)."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "Устройство sndio"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(пусто означает «по умолчанию»)"
 
@@ -3110,12 +3207,15 @@ msgstr "Команда, запускаемая после окончания д�
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Команда, запускаемая Audacious при достижении конца списка воспроизведения."
+msgstr ""
+"Команда, запускаемая Audacious при достижении конца списка воспроизведения."
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr "Команда, запускаемая при изменении названия дорожки (например, при воспроизведении из сети)."
+msgstr ""
+"Команда, запускаемая при изменении названия дорожки (например, при "
+"воспроизведении из сети)."
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3134,13 +3234,21 @@ msgid ""
 "%a: Artist\n"
 "%b: Album\n"
 "%T: Track title"
-msgstr "Вы можете использовать следующие форматы строк, которые будут заменены перед вызовом команды (не все они полезны для команды окончания списка ). %F: Frequency (in hertz) %c: Number of channels %f: filename (full path) %l: length (in milliseconds) %n or %s: Song name %r: Rate (in bits per second) %t: Playlist position (%02d) %p: Currently playing (1 or 0) %a: Artist %b: Album %T: Track title"
+msgstr ""
+"Вы можете использовать следующие форматы строк, которые будут заменены перед "
+"вызовом команды (не все они полезны для команды окончания списка ). %F: "
+"Frequency (in hertz) %c: Number of channels %f: filename (full path) %l: "
+"length (in milliseconds) %n or %s: Song name %r: Rate (in bits per second) "
+"%t: Playlist position (%02d) %p: Currently playing (1 or 0) %a: Artist %b: "
+"Album %T: Track title"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr "<span size='small'>Параметры, передаваемые оболочке, должны быть заключены в кавычки. В противном случае возможны проблемы с безопасностью.</span>"
+msgstr ""
+"<span size='small'>Параметры, передаваемые оболочке, должны быть заключены в "
+"кавычки. В противном случае возможны проблемы с безопасностью.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3235,7 +3343,7 @@ msgstr "Декодер VTX"
 msgid "WavPack Decoder"
 msgstr "Декодер WavPack"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 msgid "2SF Decoder"
 msgstr "Декодер 2SF"
 
