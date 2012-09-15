@@ -1,7 +1,7 @@
 # Estonian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
 # Ivar Smolin <okul at linux ee>, 2007.
 # Ivar Smolin <okul@linux.ee>, 2012.
@@ -9,17 +9,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
 "PO-Revision-Date: 2012-07-30 04:08+0000\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: et\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:931
+#: src/aac/libmp4.c:930
 msgid "AAC Decoder"
 msgstr ""
 
@@ -290,9 +290,7 @@ msgstr ""
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
-"Sa pole MIDI esitamiseks valinud ühtegi sekventseriporti.  Seda saab teha "
-"MIDI-plugina eelistustest."
+msgstr "Sa pole MIDI esitamiseks valinud ühtegi sekventseriporti.  Seda saab teha MIDI-plugina eelistustest."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -300,13 +298,8 @@ msgstr "ALSA taustaprogramm "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
 
@@ -316,19 +309,10 @@ msgstr "FluidSynth taustaprogramm "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"See taustaprogramm saadab MIDI-sündmused SoundFont2 spetsifikatsioonil "
-"põhinevale tarkvaralisele süntesaatorprogrammile FluidSynth (www.fluidsynth."
-"org).\n"
-"Sünteesitud heli esitatakse valitud väljundplugina abil ning seda on "
-"võimalik efektipluginate abil järeltöödelda.\n"
-"Taustaprogrammi autor on Giacomo Lozito."
+msgstr "See taustaprogramm saadab MIDI-sündmused SoundFont2 spetsifikatsioonil põhinevale tarkvaralisele süntesaatorprogrammile FluidSynth (www.fluidsynth.org).\nSünteesitud heli esitatakse valitud väljundplugina abil ning seda on võimalik efektipluginate abil järeltöödelda.\nTaustaprogrammi autor on Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -404,9 +388,7 @@ msgstr "MIDI-failidest eraldatakse laulusõnad (kui need on saadaval)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
+msgstr "<span size=\"smaller\">AMIDI\nPlug</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
@@ -510,9 +492,7 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">FluidSynth \n"
-"taustaprogramm</span>"
+msgstr "<span size=\"smaller\">FluidSynth \ntaustaprogramm</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -607,9 +587,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"OSD käivitamine kui esitamise ajal loo pealkiri muutub, kuid esitatav fail "
-"või andmevoog jääb samaks. See on kasulik internetiraadiote puhul."
+msgstr "OSD käivitamine kui esitamise ajal loo pealkiri muutub, kuid esitatav fail või andmevoog jääb samaks. See on kasulik internetiraadiote puhul."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -741,8 +719,7 @@ msgstr ""
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:799
@@ -993,8 +970,8 @@ msgstr ""
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
 msgstr ""
 
 #: src/crossfade/crossfade.c:83
@@ -1744,14 +1721,10 @@ msgstr ""
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"Peamisi hiirenuppe pole soovitatav ilma muuteklahvideta siduda.\n"
-"\n"
-"Kas soovid jätkata?"
+msgstr "Peamisi hiirenuppe pole soovitatav ilma muuteklahvideta siduda.\n\nKas soovid jätkata?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1765,9 +1738,7 @@ msgstr "Globaalsete kiirklahvide plugina sätted"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Vajuta tekstiväljal soovitud klahvikombinatsiooni.\n"
-"Samamoodi saab siduda ka hiirenuppe."
+msgstr "Vajuta tekstiväljal soovitud klahvikombinatsiooni.\nSamamoodi saab siduda ka hiirenuppe."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1807,11 +1778,7 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>Eralda rajad kooloniga.\n"
-"Mooduleid otsitakse LADSPA_PATH keskkonnamuutujas ning siin määratud "
-"radadelt.\n"
-"Pärast uute radade lisamist vajuta uute pluginate otsimiseks Enterit.</small>"
+msgstr "<small>Eralda rajad kooloniga.\nMooduleid otsitakse LADSPA_PATH keskkonnamuutujas ning siin määratud radadelt.\nPärast uute radade lisamist vajuta uute pluginate otsimiseks Enterit.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -1844,10 +1811,7 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr ""
-"%s: LIRC-seadistusfaili pole võimalik lugeda\n"
-"%s: korrektse seadistusfaili loomiseks\n"
-"%s: loe palun LIRC-dokumentatsiooni\n"
+msgstr "%s: LIRC-seadistusfaili pole võimalik lugeda\n%s: korrektse seadistusfaili loomiseks\n%s: loe palun LIRC-dokumentatsiooni\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -2013,7 +1977,7 @@ msgstr ""
 msgid "PLS Playlists"
 msgstr "PLS-esitusnimekirjad"
 
-#: src/psf/plugin.c:263
+#: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
@@ -2189,9 +2153,7 @@ msgstr "Otsing audiokogust"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"Oma audiokogu importimiseks Audaciousesse vali kataloog ja vajuta "
-"värskendamise ikoonile."
+msgstr "Oma audiokogu importimiseks Audaciousesse vali kataloog ja vajuta värskendamise ikoonile."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -2914,8 +2876,7 @@ msgstr "Järjekorda / järjekorrast maha"
 
 #: src/skins/ui_manager.c:430
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr ""
-"Esitusnimekirja kirje määramine esitusjärjekorda või sealt eemaldamine."
+msgstr "Esitusnimekirja kirje määramine esitusjärjekorda või sealt eemaldamine."
 
 #: src/skins/ui_manager.c:433
 msgid "Copy"
@@ -3029,14 +2990,11 @@ msgstr "Otsimine aktiivsest esitusnimekirjast"
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Esitusnimekirjast ühe või enama välja järgi otsimine. Otsinguväljadel "
-"kasutatakse tõstutundetut regulaaravaldise süntaksit. Kui sa pole "
-"regulaaravaldistega tuttav, siis sisesta lihtsalt otsitav sõnaosa."
+msgstr "Esitusnimekirjast ühe või enama välja järgi otsimine. Otsinguväljadel kasutatakse tõstutundetut regulaaravaldise süntaksit. Kui sa pole regulaaravaldistega tuttav, siis sisesta lihtsalt otsitav sõnaosa."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3146,9 +3104,7 @@ msgstr "Esitusnimekirja lõppu jõudmisel käivitatav käsk:"
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"Loo pealkirja muutumisel käivitatav käsk (näiteks võrguraadio pealkirja "
-"muutumisel)."
+msgstr "Loo pealkirja muutumisel käivitatav käsk (näiteks võrguraadio pealkirja muutumisel)."
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3173,10 +3129,7 @@ msgstr ""
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>Käsureaprogrammile edastatavad parameetrid tuleks "
-"paigutada jutumärkide vahele. Selle tegematajätmine võib olla turvarisk.</"
-"span>"
+msgstr "<span size='small'>Käsureaprogrammile edastatavad parameetrid tuleks paigutada jutumärkide vahele. Selle tegematajätmine võib olla turvarisk.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3271,7 +3224,7 @@ msgstr "VTX-dekooder"
 msgid "WavPack Decoder"
 msgstr "WavPack dekooder"
 
-#: src/xsf/plugin.c:273
+#: src/xsf/plugin.c:272
 msgid "2SF Decoder"
 msgstr "2SF-dekooder"
 

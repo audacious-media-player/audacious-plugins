@@ -1,31 +1,33 @@
 # Japanese translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
+#   <hallconnen2+transifex@gmail.com>, 2012.
 # Shuuji Takahashi <shuuji3@gmail.com>, 2012.
 # Warui-chan  <>, 2012.
+# キュア読み専™  <hallconnen2+transifex@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
-"PO-Revision-Date: 2012-07-26 09:33+0000\n"
-"Last-Translator: Shuuji Takahashi <shuuji3@gmail.com>\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"PO-Revision-Date: 2012-09-09 03:47+0000\n"
+"Last-Translator: キュア読み専™ <hallconnen2+transifex@gmail.com>\n"
 "Language-Team: Japanese\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/aac/libmp4.c:931
+#: src/aac/libmp4.c:930
 msgid "AAC Decoder"
 msgstr "AAC デコーダ"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (AdLib プレイヤー)"
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -228,53 +230,7 @@ msgid ""
 "    Display a reminder when the alarm goes off,\n"
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
-msgstr ""
-"\n"
-"時刻\n"
-"  アラーム時刻:\n"
-"    アラームが鳴る時刻です。\n"
-"\n"
-"  静かになるまでの時間\n"
-"    アラームが鳴り止むまでの時間です。\n"
-"      (めざましダイアログを閉じなかった場合)\n"
-"\n"
-"\n"
-"曜日\n"
-"  曜日:\n"
-"    アラームが鳴る曜日を選択します。\n"
-"\n"
-"  時刻:\n"
-"    それぞれの曜日のアラーム時刻を選択するか、トグ\n"
-"    ルボタンを選択し、デフォルト時刻に設定します。\n"
-"\n"
-"\n"
-"音量:\n"
-"  フェード:\n"
-"    この時間をかけて、選択した音量まで音量をフェー\n"
-"    ドアップします。\n"
-"\n"
-"  開始:\n"
-"    この音量からフェードを始めます。\n"
-"\n"
-"  終了:\n"
-"    この音量でフェードを終わります。\n"
-"\n"
-"\n"
-"オプション:\n"
-"  追加コマンド:\n"
-"    アラーム時刻になると、このコマンドを実行します。\n"
-"\n"
-"  プレイリスト:\n"
-"    曲を再生する時に、このプレイリストをロードしま\n"
-"    す。プレイリストを指定しなかった場合、\n"
-"    リストの再生中の曲が使われます。\n"
-"    mp3 または ogg ストリームの URL を指定すること\n"
-"    もできます。\n"
-"\n"
-"  リマインダ:\n"
-"    アラームが止まった時にリマインダを表示します。\n"
-"    表示するには、テキストボックスにリマインダを入\n"
-"    力し、トグルボタンをオンにしてください。\n"
+msgstr "\n時刻\n  アラーム時刻:\n    アラームが鳴る時刻です。\n\n  静かになるまでの時間\n    アラームが鳴り止むまでの時間です。\n      (めざましダイアログを閉じなかった場合)\n\n\n曜日\n  曜日:\n    アラームが鳴る曜日を選択します。\n\n  時刻:\n    それぞれの曜日のアラーム時刻を選択するか、トグ\n    ルボタンを選択し、デフォルト時刻に設定します。\n\n\n音量:\n  フェード:\n    この時間をかけて、選択した音量まで音量をフェー\n    ドアップします。\n\n  開始:\n    この音量からフェードを始めます。\n\n  終了:\n    この音量でフェードを終わります。\n\n\nオプション:\n  追加コマンド:\n    アラーム時刻になると、このコマンドを実行します。\n\n  プレイリスト:\n    曲を再生する時に、このプレイリストをロードしま\n    す。プレイリストを指定しなかった場合、\n    リストの再生中の曲が使われます。\n    mp3 または ogg ストリームの URL を指定すること\n    もできます。\n\n  リマインダ:\n    アラームが止まった時にリマインダを表示します。\n    表示するには、テキストボックスにリマインダを入\n    力し、トグルボタンをオンにしてください。\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -330,15 +286,13 @@ msgstr "ALSA 出力"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (MIDI プレイヤー)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
-"MIDI を再生するためのシーケンサ・ポートが選択されていません。MIDI プラグイン"
-"の設定で選択することができます。"
+msgstr "MIDI を再生するためのシーケンサ・ポートが選択されていません。MIDI プラグインの設定で選択することができます。"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -346,23 +300,10 @@ msgstr "ALSA バックエンド"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"このバックエンドは、MIDI イベントを、ユーザが選択した ALSA シーケンサ・ポート"
-"のグループに送ります。ALSA シーケンサインターフェイスは非常に用途が広く、"
-"emu10k1 のようなハードウェアシンセサイザだけでなく、ソフトウェアシンセサイザ"
-"や外部デバイスなどへのポートもサポートします。\n"
-"このバックエンドはオーディオを生成せず、MIDI イベントは ALSA ポートの背後のデ"
-"バイスやプログラムから直接取り扱われます。たとえば、ハードウェアシンセサイザ"
-"に送られた MIDI イベントは直接演奏されます。\n"
-"バックエンドは Giacomo Lozito によって書かれました。"
+msgstr "このバックエンドは、MIDI イベントを、ユーザが選択した ALSA シーケンサ・ポートのグループに送ります。ALSA シーケンサインターフェイスは非常に用途が広く、emu10k1 のようなハードウェアシンセサイザだけでなく、ソフトウェアシンセサイザや外部デバイスなどへのポートもサポートします。\nこのバックエンドはオーディオを生成せず、MIDI イベントは ALSA ポートの背後のデバイスやプログラムから直接取り扱われます。たとえば、ハードウェアシンセサイザに送られた MIDI イベントは直接演奏されます。\nバックエンドは Giacomo Lozito によって書かれました。"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -370,19 +311,10 @@ msgstr "FluidSynth バックエンド "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"このバックエンドは音声を生成し、MIDI イベントを FluidSynth に送信します。"
-"FluidSynth は、SoundFont2 規格に基づいた、リアルタイムソフトウェアシンセサイ"
-"ザです。詳しくは、次のページをご覧ください。www.fluidsynth.org\n"
-"生成した音声は、プレイヤーのエフェクトプラグインや出力プラグインで処理するこ"
-"とができます。\n"
-"バックエンドは、Giacomo Lozito によって書かれました。"
+msgstr "このバックエンドは音声を生成し、MIDI イベントを FluidSynth に送信します。FluidSynth は、SoundFont2 規格に基づいた、リアルタイムソフトウェアシンセサイザです。詳しくは、次のページをご覧ください。www.fluidsynth.org\n生成した音声は、プレイヤーのエフェクトプラグインや出力プラグインで処理することができます。\nバックエンドは、Giacomo Lozito によって書かれました。"
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -416,9 +348,7 @@ msgstr "ミキサ設定"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">ALSA\n"
-"バックエンド</span>"
+msgstr "<span size=\"smaller\">ALSA\nバックエンド</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -460,9 +390,7 @@ msgstr "MIDI ファイルから歌詞を抽出する (可能ならば)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
+msgstr "<span size=\"smaller\">AMIDI\nPlug</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
@@ -566,9 +494,7 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">FluidSynth\n"
-"バックエンド</span>"
+msgstr "<span size=\"smaller\">FluidSynth\nバックエンド</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -628,7 +554,7 @@ msgstr "AMIDI-Plug について"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (On-Screen Display)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -663,10 +589,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"再生中に、ファイル名が同じでも、曲のタイトルが変更されたときに OSD を表示しま"
-"す。これは、インターネットストリームのタイトル変更を表示するのにとても役に立"
-"ちます。"
+msgstr "再生中に、ファイル名が同じでも、曲のタイトルが変更されたときに OSD を表示します。これは、インターネットストリームのタイトル変更を表示するのにとても役に立ちます。"
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -798,12 +721,8 @@ msgstr "Composite マネージャが検出されました"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Composite マネージャが検出されませんでした;\n"
-"動作させているかわからなければ, Composite マネージャを有効にしてください. そ"
-"うしなければ OSD は正常に動作しないでしょう."
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Composite マネージャが検出されませんでした;\n動作させているかわからなければ, Composite マネージャを有効にしてください. そうしなければ OSD は正常に動作しないでしょう."
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -880,7 +799,7 @@ msgstr "<b>色</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr ""
+msgstr "ブラー・スコープ"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -900,7 +819,7 @@ msgstr "プリセット:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "バウアー ステレオ-バイノーラル変換 (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
@@ -1053,29 +972,22 @@ msgstr "リバーブを増やす"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
-msgstr ""
-"秒数で表現されるデフォルトの曲の長さは, 長さ情報を提供しない曲 (例えばループ"
-"するトラック) に用いられます."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr "秒数で表現されるデフォルトの曲の長さは, 長さ情報を提供しない曲 (例えばループするトラック) に用いられます."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
-msgstr ""
-"曲のチャンネル数が異なるため、クロスフェードが失敗しました。\n"
-"曲を同じチャンネル数にするために、チャンネルミキサが利用できます。"
+msgstr "曲のチャンネル数が異なるため、クロスフェードが失敗しました。\n曲を同じチャンネル数にするために、チャンネルミキサが利用できます。"
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr ""
-"曲のサンプリング周波数が異なるため、クロスフェードが失敗しました。\n"
-"曲を同じサンプリング周波数にするために、サンプリング周波数ミキサが利用できま"
-"す。"
+msgstr "曲のサンプリング周波数が異なるため、クロスフェードが失敗しました。\n曲を同じサンプリング周波数にするために、サンプリング周波数ミキサが利用できます。"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1095,7 +1007,7 @@ msgstr "<b>クリスタライザ</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
-msgstr ""
+msgstr "明るさ:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
@@ -1495,7 +1407,7 @@ msgstr "シャッフル(_H)"
 
 #: src/gtkui/menus.c:179
 msgid "N_o Playlist Advance"
-msgstr "プレイリストの再生を続けない(_O)"
+msgstr "同じ曲を再生する(_O)"
 
 #: src/gtkui/menus.c:180
 msgid "Stop _After This Song"
@@ -1627,7 +1539,7 @@ msgstr "情報バーを表示する(_N)"
 
 #: src/gtkui/menus.c:229
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "情報バーに視覚効果を表示"
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
@@ -1810,14 +1722,10 @@ msgstr "(なし)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"修飾キーなしでプライマリ・マウスのボタンに割り当てるのはお勧めしません。\n"
-"\n"
-"本当によろしいですか？"
+msgstr "修飾キーなしでプライマリ・マウスのボタンに割り当てるのはお勧めしません。\n\n本当によろしいですか？"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1831,9 +1739,7 @@ msgstr "グローバルホットキープラグインの設定"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"テキストフィールド内でキーコンビネーションを押してください。\n"
-"マウスボタンを組み合わせることもできます。"
+msgstr "テキストフィールド内でキーコンビネーションを押してください。\nマウスボタンを組み合わせることもできます。"
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1873,11 +1779,7 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>複数のパスはコロンで区切ってください。これらのパス\n"
-"が、LADSPA_PATH の他に検索されます。新しいパスを追\n"
-"加した後は、新しいプラグインをスキャンするために、\n"
-"Enter キーを押してください。</small>"
+msgstr "<small>複数のパスはコロンで区切ってください。これらのパス\nが、LADSPA_PATH の他に検索されます。新しいパスを追\n加した後は、新しいプラグインをスキャンするために、\nEnter キーを押してください。</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -1910,11 +1812,7 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr ""
-"%s: LIRC の設定ファイルを読み込めません\n"
-"%s: LIRC のドキュメントをお読みください\n"
-"%s: 正しい設定ファイルの書き方\n"
-"\n"
+msgstr "%s: LIRC の設定ファイルを読み込めません\n%s: LIRC のドキュメントをお読みください\n%s: 正しい設定ファイルの書き方\n\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -2070,8 +1968,7 @@ msgstr "OSS ソフトウェアのフォーマット変換を有効にする"
 
 #: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr ""
-"バーチャルミキシングを防ぐために排他的モード (exclusive mode) を有効にする"
+msgstr "バーチャルミキシングを防ぐために排他的モード (exclusive mode) を有効にする"
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
@@ -2081,7 +1978,7 @@ msgstr "OSS4 出力"
 msgid "PLS Playlists"
 msgstr "PLS プレイリスト"
 
-#: src/psf/plugin.c:263
+#: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 デコーダ"
 
@@ -2091,7 +1988,7 @@ msgstr "PulseAudio 出力"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "サンプルのスキップ/繰り返し"
 
 #: src/resample/resample.c:168
 msgid "Linear interpolation"
@@ -2099,15 +1996,15 @@ msgstr "線形補間"
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "高速 sinc 補間"
 
 #: src/resample/resample.c:170
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "sinc 補間"
 
 #: src/resample/resample.c:171
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "高品質 sinc 補間"
 
 #: src/resample/resample.c:174
 msgid "<b>Conversion</b>"
@@ -2119,15 +2016,15 @@ msgstr "方法"
 
 #: src/resample/resample.c:178
 msgid "Rate:"
-msgstr ""
+msgstr "レート:"
 
 #: src/resample/resample.c:181
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>レートマッピング</b>"
 
 #: src/resample/resample.c:182
 msgid "Use rate mappings"
-msgstr ""
+msgstr "レートマッピングを使用する"
 
 #: src/resample/resample.c:184
 msgid "8 kHz:"
@@ -2210,7 +2107,7 @@ msgstr "不明なアルバム"
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr ""
+msgstr "%s\nアルバム: %s アーティスト: %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
@@ -2254,9 +2151,7 @@ msgstr "ライブラリを検索"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"音楽ライブラリを Audacious へインポートするには、フォルダを選択し、\"再読み込"
-"み\" アイコンをクリックしてください。"
+msgstr "音楽ライブラリを Audacious へインポートするには、フォルダを選択し、\"再読み込み\" アイコンをクリックしてください。"
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -3093,14 +2988,11 @@ msgstr "有効になっているプレイリストのエントリを検索"
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"1つ以上の項目を入力すると、プレイリストのエントリが選択できます。項目には正規"
-"表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合は、"
-"検索したい文字をそのまま入力してください。"
+msgstr "1つ以上の項目を入力すると、プレイリストのエントリが選択できます。項目には正規表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合は、検索したい文字をそのまま入力してください。"
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3165,10 +3057,7 @@ msgid ""
 "Sndio Output Plugin\n"
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
-msgstr ""
-"Sndio 出力プラグイン\n"
-"\n"
-"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr "Sndio 出力プラグイン\n\nWritten by Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
@@ -3179,10 +3068,7 @@ msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
-msgstr ""
-"オーディオデバイスで対応していない形式が要求されました。\n"
-"\n"
-"sndiod(1) サーバが起動してから、もう一度実行してください。"
+msgstr "オーディオデバイスで対応していない形式が要求されました。\n\nsndiod(1) サーバが起動してから、もう一度実行してください。"
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
@@ -3194,7 +3080,7 @@ msgstr "(空の場合、デフォルトに設定します)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
-msgstr ""
+msgstr "楽曲の変更通知"
 
 #: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
@@ -3216,9 +3102,7 @@ msgstr "プレイリストの最後に到達したときに実行するコマン
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"曲のタイトルが変わったときに実行するコマンド (ネットワークストリームのタイト"
-"ルなど)"
+msgstr "曲のタイトルが変わったときに実行するコマンド (ネットワークストリームのタイトルなど)"
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3237,30 +3121,13 @@ msgid ""
 "%a: Artist\n"
 "%b: Album\n"
 "%T: Track title"
-msgstr ""
-"次のフォーマット文字列を使用できます。\n"
-"これらは、コマンドが呼ばれる前に置換されます。\n"
-"ただし、プレイリストの最後の曲の場合、無意味なものもあります\n"
-"\n"
-"%F: サンプリング周波数 (Hz)\n"
-"%c: チャンネル数\n"
-"%f: ファイル名 (フルパス)\n"
-"%l: 長さ (ms)\n"
-"%n または %s: 曲名\n"
-"%r: ビットレート (bps)\n"
-"%t: プレイリストの位置 (%02d)\n"
-"%p: 再生中か？ (1 or 0)\n"
-"%a: アーティスト\n"
-"%b: アルバム\n"
-"%T: トラック名"
+msgstr "次のフォーマット文字列を使用できます。\nこれらは、コマンドが呼ばれる前に置換されます。\nただし、プレイリストの最後の曲の場合、無意味なものもあります\n\n%F: サンプリング周波数 (Hz)\n%c: チャンネル数\n%f: ファイル名 (フルパス)\n%l: 長さ (ms)\n%n または %s: 曲名\n%r: ビットレート (bps)\n%t: プレイリストの位置 (%02d)\n%p: 再生中か？ (1 or 0)\n%a: アーティスト\n%b: アルバム\n%T: トラック名"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>シェルに渡されるパラメータはクォートでくくってください。そ"
-"うしない場合、セキュリティ上の危険があります。</span>"
+msgstr "<span size='small'>シェルに渡されるパラメータはクォートでくくってください。そうしない場合、セキュリティ上の危険があります。</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3355,10 +3222,10 @@ msgstr "VTX デコーダ"
 msgid "WavPack Decoder"
 msgstr "WavPack デコーダ"
 
-#: src/xsf/plugin.c:273
+#: src/xsf/plugin.c:272
 msgid "2SF Decoder"
 msgstr "2SF デコーダ"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "共有可能な XML プレイリスト (XSPF)"
