@@ -1,7 +1,7 @@
 # Ukrainian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
 # fedenko <fedenko@ukr.net>, 2011.
 # Kostyantyn Fedenko <fedenko@ukr.net>, 2011.
@@ -15,24 +15,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-07-26 00:36+0000\n"
-"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"PO-Revision-Date: 2012-08-17 21:18+0000\n"
+"Last-Translator: Rax Garfield <admin@dvizho.ks.ua>\n"
 "Language-Team: Ukrainian\n"
-"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: uk\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/aac/libmp4.c:931
+#: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr "AAC Декодер"
+msgstr "Декодер AAC"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib Плеер)"
+msgstr "AdPlug (програвач AdLib)"
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -166,7 +165,7 @@ msgstr "Список відтворення (необов’язково)"
 
 #: src/alarm/interface.c:1075
 msgid "Select a playlist"
-msgstr ""
+msgstr "Обрати список відтворення"
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -235,7 +234,7 @@ msgid ""
 "    Display a reminder when the alarm goes off,\n"
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
-msgstr ""
+msgstr "\nЧас\n  Починати о: \n    Час початку відтворення.\n\n  Закінчити через: \n    Тривалість відтворення.\n       (якщо діалогове вікно пробудження\n       не закрито примусово)\n\n\nДні\n  День:\n    День тижня, в який працюватиме будильник.\n\n  Час:\n    Час спрацювання в обраний день.\n    Якщо вибрано «Як типово», будильник спрацює\n    в типовий час (вкладка «Час»).\n\n\nГучність\n  Наростання: \n    Період наростання гучності.\n\n  На початку: \n    Гучність на початку наростання.\n\n  По закінченню: \n    Гучність наприкінці наростання. Якщо часом\n    наростання є «0», то все відтворення йтиме\n    з цією гучністю.\n\n\nОпції:\n  Виконувати команду:\n    Команда запускатиметься при спрацьовуванні.\n\n  Список відтворення (необов’язково): \n    Відтворювати список відтворення (лише\n    з суфіксом .m3u). Якщо не вказано, то\n    відтворюватимуться останні відкриті\n    доріжки.\n    Можна ввести сюди URL mp3- чи ogg-потоку.\n    Поки що звантаження списків відтворення\n    за URL не підтримується.\n\n  Повідомлення:\n    Повідомлення буде показано при спрацьовуванні.\n    Введіть повідомлення в поле\n    й увімкніть «Використовувати».\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -255,7 +254,7 @@ msgstr "Дякую"
 
 #: src/albumart/albumart.c:101
 msgid "Album Art"
-msgstr "Обкладинка Диска"
+msgstr "Обкладинка альбому"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -283,23 +282,21 @@ msgstr "Елемент мікшера:"
 
 #: src/alsa/config.c:446
 msgid "Work around drain hangup"
-msgstr "Не зависати через \"drain\"-ваду ALSA"
+msgstr "Не зависати через «drain»-ваду ALSA"
 
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
-msgstr "ALSA Вихід"
+msgstr "ALSA-вивід"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (MIDI Плеер)"
+msgstr "AMIDI-Plug (MIDI-програвач)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
-"Ви не вибрали портів секвенсера для відтворення MIDI. Виберіть їх у "
-"налаштуваннях AMIDI-Plug. "
+msgstr "Ви не вибрали портів секвенсера для відтворення MIDI. Виберіть їх у налаштуваннях AMIDI-Plug. "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -307,23 +304,10 @@ msgstr "Постпроцесор ALSA"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Цей постпроцесор посилає MIDI-повідомлення групі портів секвенсера ALSA, "
-"обраних користувачем. Інтерфейс секвенсера ALSA дуже гнучкий, він може "
-"надавати порти для апаратних синтезаторів аудіокарт (наприклад, emu10k1), "
-"програмних синтезаторів, зовнішніх приладів тощо.\n"
-"Цей постпроцесор не генерує звук. MIDI-повідомлення керуються напряму "
-"приладами та програмами за портами ALSA. Наприклад, MIDI-повідомлення, "
-"надіслані апаратному синтезатору, будуть відтворені напряму.\n"
-"Автором постпроцесора є Giacomo Lozito."
+msgstr "Цей постпроцесор посилає MIDI-повідомлення групі портів секвенсера ALSA, обраних користувачем. Інтерфейс секвенсера ALSA дуже гнучкий, він може надавати порти для апаратних синтезаторів аудіокарт (наприклад, emu10k1), програмних синтезаторів, зовнішніх приладів тощо.\nЦей постпроцесор не генерує звук. MIDI-повідомлення керуються напряму приладами та програмами за портами ALSA. Наприклад, MIDI-повідомлення, надіслані апаратному синтезатору, будуть відтворені напряму.\nАвтор постпроцесора — Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -331,19 +315,10 @@ msgstr "Постпроцесор FluidSynth"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Цей модуль відтворює звукові дані, надсилаючи ноти MIDI до FluidSynth, "
-"програмного синтезатора, що працює у режимі реального часу на основі "
-"специфікацій SoundFont2 (www.fluidsynth.org).\n"
-"Отримані звукові дані може бути оброблено за допомогою додатків ефектів "
-"програвача і вибраного додатка виведення даних.\n"
-"Модуль створено Джакомо Лоціто (Giacomo Lozito)."
+msgstr "Цей модуль відтворює звукові дані, надсилаючи MIDI-події до програмного синтезатора FluidSynth, що працює в режимі реального часу й базується на специфікаціях SoundFont2 (www.fluidsynth.org).\nОтримані звукові дані обробляються плаґінами ефектів програвача й виводяться плаґіном виводу.\nАвтор модуля — Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -377,9 +352,7 @@ msgstr "Налаштування мікшера"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Постпроцесор\n"
-"ALSA</span>"
+msgstr "<span size=\"smaller\">Постпроцесор\nALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -421,9 +394,7 @@ msgstr "Витягувати текст пісні (якщо є) з MIDI-фай�
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI-\n"
-"Plug</span>"
+msgstr "<span size=\"smaller\">AMIDI-\nPlug</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
@@ -431,7 +402,7 @@ msgstr "AMIDI-Plug - вибір файлу"
 
 #: src/amidi-plug/i_configure.c:110
 msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Плагін налаштування"
+msgstr "Налаштування плаґіну AMIDI"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -455,7 +426,7 @@ msgstr "Завантажувати з програвачем"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
 msgid "Load SF on first MIDI file play"
-msgstr "Завантажувати при відтворенні MIDI"
+msgstr "Завантажувати при першому відтворенні MIDI"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -527,9 +498,7 @@ msgstr "Гц"
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Постпроцесор\n"
-"FluidSynth</span>"
+msgstr "<span size=\"smaller\">Постпроцесор\nFluidSynth</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -585,11 +554,11 @@ msgstr "  (недійсний UTF-8)"
 
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
-msgstr "Про AMIDI-Плагін"
+msgstr "Про плаґін AMIDI"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
-msgstr "AOSD (Одновіконне Відображення)"
+msgstr "AOSD-сповіщення"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -624,9 +593,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"Показує повідомлення, коли під час відтворення змінюється назва доріжки, а "
-"ім’я файлу залишається старим. Це корисно при відтворенні потоків."
+msgstr "Показує повідомлення, коли під час відтворення змінюється назва доріжки, а ім’я файлу залишається старим. Це корисно при відтворенні потоків."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -758,12 +725,8 @@ msgstr "Композитний "
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Композитного менеджера не знайдено.\n"
-"Якщо він не запущений, увімкніть його, інакше екранне меню працюватиме "
-"неправильно."
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Композитного менеджера не знайдено.\nЯкщо він не запущений, увімкніть його, інакше екранне меню працюватиме неправильно."
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -828,19 +791,19 @@ msgstr "Різне"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "ASXv1/ASXv2 Плейлісти"
+msgstr "ASXv1/ASXv2-списки відтворення"
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious Плейлісти (audpl)"
+msgstr "Списки відтворення Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
-msgstr "<b>Кольор</b>"
+msgstr "<b>Колір</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr "Обсяг Розмиття"
+msgstr "Осцилоскоп"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -860,11 +823,11 @@ msgstr "Пресети:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Бауер стереофонічні до бінауральні (BS2B)"
+msgstr "Перетворення стереозвуку в бінауральний за Бауером (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
-msgstr "Спектрум Аналізер"
+msgstr "Стовпці (аналізатор спектру)"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
@@ -884,7 +847,7 @@ msgstr "<b>Метадані</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
-msgstr "Використовувати CD-Текст"
+msgstr "Використовувати CD-Text"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
@@ -908,11 +871,11 @@ msgstr "Порт:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
 msgid "Audio CD Plugin"
-msgstr "Аудіо CD Плагін"
+msgstr "Плаґін аудіодисків"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
-msgstr "Аудіо-CD"
+msgstr "Аудіодиск"
 
 #: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
@@ -924,15 +887,15 @@ msgstr "Непідтримуваний тип диску."
 
 #: src/cd-menu-items/cd-menu-items.c:32
 msgid "Play CD"
-msgstr "Відтворити CD"
+msgstr "Відтворити диск"
 
 #: src/cd-menu-items/cd-menu-items.c:32
 msgid "Add CD"
-msgstr "Додати CD"
+msgstr "Додати диск"
 
 #: src/cd-menu-items/cd-menu-items.c:59
 msgid "Audio CD Menu Items"
-msgstr "Пункти Меню Аудіо CD"
+msgstr "Пункти меню для аудіодисків"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -948,7 +911,7 @@ msgstr "Динамічний діапазон:"
 
 #: src/compressor/plugin.c:60
 msgid "Dynamic Range Compressor"
-msgstr "Компресор Дінамичного стисненя"
+msgstr "Компресор звукового діапазону"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1013,35 +976,26 @@ msgstr "Посилити реверберацію"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
-msgstr ""
-"Типова тривалість пісні, вказана в секундах, використовується для доріжок, "
-"що не мають інформації про тривалість (наприклад, повторювані доріжки)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr "Типова тривалість пісні, вказана в секундах, використовується для доріжок, що не мають інформації про тривалість (наприклад, повторювані доріжки)."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
-msgstr ""
-"Кросвейдер стовкнувся з проблемою бо композиція має іншу кількість каналів.\n"
-"Ви можете скористатися Микшером Каналов для того що би конвертировати "
-"композиіию в ту ж саме кількість каналів."
+msgstr "Збій при перехресному затиханні: композиції мають різну кількість каналів.\nВиправте це плаґіном-мікшером каналів."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr ""
-"Кросвейдер стовкнувся з проблемою бо композиція має іншу частоту "
-"дискретизації.\n"
-"Ви можете скористатися Конвертер Частоти Дискретизації для того що би "
-"конвертировати композиіию в ту ж саме частоту дискретизації."
+msgstr "Збій при перехресному затиханні: композиції мають різну частоту дискретизації.\nВиправте це плаґіном-конвертором частоти дискретизації."
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
-msgstr "<b>Кросфейдер</b>"
+msgstr "<b>Перехресне затихання</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
@@ -1049,11 +1003,11 @@ msgstr "Перекриття:"
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
-msgstr "Кросфейдер"
+msgstr "Перехресне затихання"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Crystalizer</b>"
+msgstr "<b>Кристалізатор</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
@@ -1061,15 +1015,15 @@ msgstr "Інтенсивність:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
-msgstr "Кристалізер"
+msgstr "Кристалізатор"
 
 #: src/cue/cue.c:160
 msgid "Cue Sheet Plugin"
-msgstr "Плагін Cue листов"
+msgstr "Плаґін cue-листів"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr "<b>Ехо</b>"
+msgstr "<b>Відлуння</b>"
 
 #: src/echo_plugin/echo.c:27
 msgid "Delay:"
@@ -1081,7 +1035,7 @@ msgstr "мс"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr "Зворотній зв'язок:"
+msgstr "Сила:"
 
 #: src/echo_plugin/echo.c:33
 msgid "Volume:"
@@ -1089,15 +1043,15 @@ msgstr "Гучність:"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr "Ехо"
+msgstr "Відлуння"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
-msgstr "FFmpeg Плагін"
+msgstr "Плаґін FFmpeg"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr "Налаштування запису у файл"
+msgstr "Налаштування запису до файлу"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1145,7 +1099,7 @@ msgstr "Номер доріжки на початку назви файлу"
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr "Плагін запису у файл"
+msgstr "Плаґін запису у файл"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1201,8 +1155,7 @@ msgstr "Різне:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr ""
-"Примусова відповідність до ISO (для апаратних програвачів, більший розмір)"
+msgstr "Примусова відповідність до ISO (для апаратних програвачів, більший розмір)"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
@@ -1250,7 +1203,7 @@ msgstr "Рівень якості VBR (менше - краще):"
 
 #: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
-msgstr "Не писати VBR-заголовок (\"Xing\")"
+msgstr "Не писати VBR-заголовок («Xing»)"
 
 #: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
@@ -1258,15 +1211,15 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr "Параметри кадра:"
+msgstr "Копірастія:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
-msgstr "\"Під авторськими правами\""
+msgstr "«Під авторськими правами»"
 
 #: src/filewriter/mp3.c:1144
 msgid "Mark as original"
-msgstr "\"Є оригіналом\""
+msgstr "«Є оригіналом»"
 
 #: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
@@ -1298,11 +1251,11 @@ msgstr "Рівень якості (0-10, менше - краще):"
 
 #: src/flacng/plugin.c:271
 msgid "FLAC Decoder"
-msgstr "FLAC Декодер"
+msgstr "Декодер FLAC"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
-msgstr "GIO Плагін"
+msgstr "Плаґін GIO"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
@@ -1414,7 +1367,7 @@ msgstr "Додати файли _за посиланням..."
 
 #: src/gtkui/menus.c:164
 msgid "_Search Library"
-msgstr "_Пошукова Бібліотека"
+msgstr "Пошук у _бібліотеці"
 
 #: src/gtkui/menus.c:166
 msgid "A_bout ..."
@@ -1590,7 +1543,7 @@ msgstr "Показувати панель і_нформації"
 
 #: src/gtkui/menus.c:229
 msgid "Show Info Bar Vis_ualization"
-msgstr "Відображати інформаційну панель Vis_ualization"
+msgstr "П_оказувати візуалізацію"
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
@@ -1775,14 +1728,10 @@ msgstr "(немає)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"Не раджу пов’язувати головні кнопки миші без модифікаторів.\n"
-"\n"
-"Продовжувати попри це?"
+msgstr "Не раджу пов’язувати головні кнопки миші без модифікаторів.\n\nПродовжувати попри це?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1796,10 +1745,7 @@ msgstr "Налаштування гарячих клавіш"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Маючи курсор на полі, натисніть необхідну клавішу чи комбінацію всередині "
-"поля.\n"
-"Можна також прив’язувати кнопки миші."
+msgstr "Маючи курсор на полі, натисніть необхідну клавішу чи комбінацію всередині поля.\nМожна також прив’язувати кнопки миші."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1815,11 +1761,11 @@ msgstr "<b>Прив’язка до клавіш:</b>"
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
-msgstr "Гарячі Клавіші"
+msgstr "Гарячі клавіші"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
-msgstr "JACK Вихід"
+msgstr "JACK-вивід"
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1839,10 +1785,7 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>Якщо шляхів кілька, розділяйте їх двокрапками.\n"
-"Пошук відбувається за вказаними шляхами та змінною LADSPA_PATH.\n"
-"Вказавши шляхи, натисніть Enter для пошуку плаґінів.</small>"
+msgstr "<small>Якщо шляхів кілька, розділяйте їх двокрапками.\nПошук відбувається за вказаними шляхами та змінною LADSPA_PATH.\nВказавши шляхи, натисніть Enter для пошуку плаґінів.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -1862,7 +1805,7 @@ msgstr "Налаштування"
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
-msgstr "LADSPA Хост"
+msgstr "Хост LADSPA"
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -1875,46 +1818,43 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr ""
-"%s: не можу прочести конфігураційний файл LIRC\n"
-"%s: будьласка прочитайте документацію до LIRC\n"
-"%s: як створити правильний конфигураційний файл\n"
+msgstr "%s: не можу прочитати конфігураційний файл LIRC\n%s: прочитайте документацію до LIRC\n%s: як створити правильний конфигураційний файл\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: повторне зьеднання...\n"
+msgstr "%s: намагаюсь перез’єднатися...\n"
 
 #: src/lirc/lirc.c:373
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: невідома команда \"%s\"\n"
+msgstr "%s: невідома команда «%s»\n"
 
 #: src/lirc/lirc.c:384
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: відключитись від LIRC\n"
+msgstr "%s: з’єднання з LIRC розірвано\n"
 
 #: src/lirc/lirc.c:390
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: повотрне зьеднання кондні %d секунд...\n"
+msgstr "%s: намагаюся перез’єднатися кожні %d секунд...\n"
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
-msgstr "<b>Зьеднання</b>"
+msgstr "<b>З’еднання</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
-msgstr "Повторне підключення до LIRC серверу"
+msgstr "Переприєднатись до LIRC серверу"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr "Очикувати перед зьеднанням"
+msgstr "Чекати перед перез’єднанням:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr "LIRC Плагін"
+msgstr "Плаґін LIRC"
 
 #: src/lyricwiki/lyricwiki.c:119
 msgid "No lyrics available"
@@ -1944,11 +1884,11 @@ msgstr "З’єднуюся з lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
-msgstr "LyricWiki Плагін"
+msgstr "Плаґін LyricWiki"
 
 #: src/m3u/m3u.c:123
 msgid "M3U Playlists"
-msgstr "M3U Плейлисти"
+msgstr "M3U-списки відтворення"
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -1962,11 +1902,11 @@ msgstr "Генератор такту: %d BPM, %d/%d"
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
-msgstr "Генератор Тактов"
+msgstr "Генератор такту"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>Мікшер Каналів</b>"
+msgstr "<b>Мікшер каналів</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
@@ -1974,15 +1914,15 @@ msgstr "Каналів на виході:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr "Мікшер Каналів"
+msgstr "Мікшер каналів"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr "MMS Плагін"
+msgstr "Плаґін MMS"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (Модульний Плеер)"
+msgstr "ModPlug (програвач модулів)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -1990,15 +1930,15 @@ msgstr "Об’ємний звук"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr "MPG123 Плагін"
+msgstr "Плаґін MPG123"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 Сервер"
+msgstr "Сервер MPRIS 2"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Neon HTTP/HTTPS Плагін"
+msgstr "Плаґін Neon HTTP/HTTPS"
 
 #: src/notify/event.c:49
 msgid "Stopped"
@@ -2010,7 +1950,7 @@ msgstr "Audacious нічого не відтворює."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr "Повідомлень робочого столу"
+msgstr "Сповіщення"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
@@ -2026,7 +1966,7 @@ msgstr "Використати інший прилад:"
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr "Зберегти гучність між сесіями"
+msgstr "Зберігати гучність між сеансами."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -2038,43 +1978,43 @@ msgstr "Діяти в ексклюзивному режимі, уникаючи 
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
-msgstr "OSS4 Вихід"
+msgstr "OSS4-вивід"
 
 #: src/pls/pls.c:114
 msgid "PLS Playlists"
-msgstr "PLS Плейлісти"
+msgstr "PLS-списки відтворення"
 
-#: src/psf/plugin.c:263
+#: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 Декодер"
+msgstr "Декодер OpenPSF PSF1/PSF2"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr "PulseAudio Віхід"
+msgstr "PulseAudio-вивід"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
-msgstr "Пропустити/повторити раз"
+msgstr "Пропуск/повтор фрагментів"
 
 #: src/resample/resample.c:168
 msgid "Linear interpolation"
-msgstr "Линейниа интерполяція"
+msgstr "Лінійна інтерполяція"
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
-msgstr "Бистра sinc інтерполяція"
+msgstr "Швидка sinc-інтерполяція"
 
 #: src/resample/resample.c:170
 msgid "Medium sinc interpolation"
-msgstr "Середне sinc инерполяція"
+msgstr "Звичайна sinc-інтерполяція"
 
 #: src/resample/resample.c:171
 msgid "Best sinc interpolation"
-msgstr "Найліпша sinc инерполяція"
+msgstr "Найкраща sinc-інтерполяція"
 
 #: src/resample/resample.c:174
 msgid "<b>Conversion</b>"
-msgstr "<b>Перетворення</b>"
+msgstr "<b>Конвертування</b>"
 
 #: src/resample/resample.c:175
 msgid "Method:"
@@ -2082,15 +2022,15 @@ msgstr "Метод:"
 
 #: src/resample/resample.c:178
 msgid "Rate:"
-msgstr "Рейтинг:"
+msgstr "Частота:"
 
 #: src/resample/resample.c:181
 msgid "<b>Rate Mappings</b>"
-msgstr "<b>Швидкість Відображення</b>"
+msgstr "<b>Схема конвертування</b>"
 
 #: src/resample/resample.c:182
 msgid "Use rate mappings"
-msgstr "Використовувати швидкість відображення"
+msgstr "Конвертувати за схемою:"
 
 #: src/resample/resample.c:184
 msgid "8 kHz:"
@@ -2154,7 +2094,7 @@ msgstr "Scrobbler"
 
 #: src/sdlout/plugin.c:32
 msgid "SDL Output"
-msgstr "SDL Вихід"
+msgstr "SDL-вивід"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2162,28 +2102,26 @@ msgstr "Бібліотека"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Artist"
-msgstr "Невідомий Артист"
+msgstr "Невідомий виконавець"
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
-msgstr "Невідомий Диск"
+msgstr "Невідомий альбом"
 
 #: src/search-tool/search-tool.c:627
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr ""
-"%s\n"
-"від %s по %s"
+msgstr "%s\nвід %s по %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "%d Диск"
-msgstr[1] "%d Диски"
-msgstr[2] "%d Диски"
+msgstr[0] "%d альбом"
+msgstr[1] "%d альбоми"
+msgstr[2] "%d альбомів"
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2193,15 +2131,9 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %s, %d songs"
-msgstr[0] ""
-"%s\n"
-" %s, %d пісня"
-msgstr[1] ""
-"%s\n"
-" %s, %d пісні"
-msgstr[2] ""
-"%s\n"
-" %s, %d пісні"
+msgstr[0] "%s\n %s, %d пісня"
+msgstr[1] "%s\n %s, %d пісні"
+msgstr[2] "%s\n %s, %d пісень"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2211,15 +2143,9 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %d songs by %s"
-msgstr[0] ""
-"%s\n"
-" %d пісня по %s"
-msgstr[1] ""
-"%s\n"
-" %d пісні по %s"
-msgstr[2] ""
-"%s\n"
-" %d пісні по %s"
+msgstr[0] "%s\n %d пісня по %s"
+msgstr[1] "%s\n %d пісні по %s"
+msgstr[2] "%s\n %d пісень по %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2237,9 +2163,7 @@ msgstr "Шукати в бібліотеці"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"Щоб імпортувати свою музичну бібліотеку до Audacious, виберіть теку й "
-"натисніть на значок оновлення."
+msgstr "Щоб імпортувати свою музичну бібліотеку до Audacious, виберіть теку й натисніть на значок оновлення."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -3076,14 +3000,11 @@ msgstr "Пошук в активному списку відтворення"
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Щоб шукати доріжки в списку відтворення, заповніть одне чи більше полів. "
-"Можна використовувати літери, цифри, інші знаки, регулярні вирази. Поля "
-"нечутливі до регістру."
+msgstr "Щоб шукати доріжки в списку відтворення, заповніть одне чи більше полів. Можна використовувати літери, цифри, інші знаки, регулярні вирази. Поля нечутливі до регістру."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3137,7 +3058,7 @@ msgstr "Неможливо створити теку (%s): %s\n"
 
 #: src/sndfile/plugin.c:437
 msgid "Sndfile Plugin"
-msgstr "Sndfile Плагін"
+msgstr "Плаґін Sndfile"
 
 #: src/sndio/sndio.c:189
 msgid "About Sndio Output Plugin"
@@ -3159,10 +3080,7 @@ msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
-msgstr ""
-"Формат не підтримується аудіопристроєм.\n"
-"\n"
-"Спробуйте ще раз, запустивши сервер sndiod(1)."
+msgstr "Формат не підтримується аудіопристроєм.\n\nСпробуйте ще раз, запустивши сервер sndiod(1)."
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
@@ -3191,12 +3109,12 @@ msgstr "Виконувати наприкінці відтворення дор�
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Виконувати при досягненні кінця списка відтворення."
+msgstr "Виконувати при досягненні кінця списка відтворення:"
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr "Виконувати при зміні назви доріжки (онлайн-потоки тощо)."
+msgstr "Виконувати при зміні назви доріжки (онлайн-потоки тощо):"
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3215,30 +3133,13 @@ msgid ""
 "%a: Artist\n"
 "%b: Album\n"
 "%T: Track title"
-msgstr ""
-"Ви можете використовувати слідуючі формати\n"
-"які будуть замінени перед визовом команди\n"
-"(не усі команди будуть корисні для кінця плейлиста)\n"
-"\n"
-"%F: Частота (в герцах)\n"
-"%c: Количество каналов\n"
-"%f: Назва файла (повний шлях)\n"
-"%l: довжина (в мілісекундах)\n"
-"%n чи %s: Назва композиції\n"
-"%r: Швидкість (в бітах на секунду)\n"
-"%t: Позиція Плейліста (%02d)\n"
-"%p: Зараз грає (1 or 0)\n"
-"%a: Артист\n"
-"%b: Диск\n"
-"%T: Заголовок"
+msgstr "Ви можете використовувати наступні шаблони\n(для команди на кінець списку підходять не всі)\n\n%F: Частота (Гц)\n%c: Кількість каналів\n%f: Ім’я файла (повний шлях)\n%l: Довжина (мс)\n%n чи %s: Назва композиції\n%r: Швидкість (біт/с)\n%t: Позиція в списку відтворення (%02d)\n%p: Зараз грає (1 or 0)\n%a: Виконавець\n%b: Альбом\n%T: Назва доріжки"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>Параметри подавати слід у лапках. Робити інакше "
-"небезпечно для системи.</span>"
+msgstr "<span size='small'>Параметри подавати слід у лапках. Робити інакше небезпечно для системи.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3246,11 +3147,11 @@ msgstr "Команди"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr "<b>Швидкість та Висота</b>"
+msgstr "<b>Швидкість та висота</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr "Швидкість"
+msgstr "Швидкість:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
@@ -3258,11 +3159,11 @@ msgstr "Висота:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr "Швидкість та Висота"
+msgstr "Швидкість та висота"
 
 #: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Дія прокрутки миши</b>"
+msgstr "<b>Дія коліщатка миші</b>"
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
@@ -3274,7 +3175,7 @@ msgstr "Зміна поточної доріжки"
 
 #: src/statusicon/statusicon.c:406
 msgid "<b>Other Settings</b>"
-msgstr "<b>Інщї Налоштування</b>"
+msgstr "<b>Інші налаштування</b>"
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
@@ -3282,7 +3183,7 @@ msgstr "Вимкнути спливне вікно"
 
 #: src/statusicon/statusicon.c:409
 msgid "Close to the system tray"
-msgstr "Закрити в системний трей"
+msgstr "Замість закриття згортати до лотка"
 
 #: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
@@ -3290,15 +3191,15 @@ msgstr "Просуватися списком відтворення при пр
 
 #: src/statusicon/statusicon.c:420
 msgid "Status Icon"
-msgstr "Статусна іконка"
+msgstr "Значок у лотку"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Екстра Стерео</b>"
+msgstr "<b>Розширене стерео</b>"
 
 #: src/stereo_plugin/stereo.c:38
 msgid "Extra Stereo"
-msgstr "Екстра Стерео"
+msgstr "Розширене стерео"
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3311,32 +3212,32 @@ msgstr "Генератор тону: "
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
-msgstr "Генеретор Тона"
+msgstr "Генератор тону"
 
 #: src/unix-io/unix-io.c:279
 msgid "File I/O Plugin"
-msgstr "Файл I/O Плагін"
+msgstr "Плаґін файлового вводу-виводу"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr "Видилення Вокалу"
+msgstr "Видалення голосу"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis Декодер"
+msgstr "Декодер Ogg Vorbis"
 
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
-msgstr "VTX Декодер"
+msgstr "Декодер VTX"
 
 #: src/wavpack/wavpack.c:345
 msgid "WavPack Decoder"
-msgstr "WavPack Декодер"
+msgstr "Декодер WavPack"
 
-#: src/xsf/plugin.c:273
+#: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr "2SF Декодер"
+msgstr "Декодер 2SF"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "XML Роздільні Плейлисти (XSPF)"
+msgstr "XML-списки відтворення (XSPF)"
