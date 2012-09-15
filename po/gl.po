@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-07-26 07:19+0000\n"
 "Last-Translator: mbouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician\n"
@@ -36,7 +36,7 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Esta é a súa chamada de atención."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "Aceptar"
 
@@ -283,7 +283,7 @@ msgstr ""
 msgid "Help"
 msgstr "Axuda"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -468,14 +468,6 @@ msgstr ""
 "<span size=\"smaller\">Engadido\n"
 "AMIDI</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "Engadido AMIDI - seleccione un ficheiro"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Configuración do engadido AMIDI "
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "Engadido AMIDI - seleccione un ficheiro SoundFont"
@@ -573,6 +565,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Infraestrutura\n"
 "FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "Engadido AMIDI - seleccione un ficheiro"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Configuración do engadido AMIDI "
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -915,6 +915,18 @@ msgstr "Bauer estereofónico a Binaural (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Analizador de espectro"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Reproducir o CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Engadir un CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Elementos do menú do CD de son"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Dispositivo</b>"
@@ -970,18 +982,6 @@ msgstr "A unidade está baleira."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Tipo de disco non admitido."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Reproducir o CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Engadir un CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Elementos do menú do CD de son"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1343,7 +1343,7 @@ msgstr "Configuración do codificador Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Nivel de calidade (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "Descodificador FLAC"
 
@@ -2061,7 +2061,7 @@ msgstr "Notificacións de escritorio"
 msgid "1. Default device"
 msgstr "1. Dispositivo predeterminado"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Dispositivo de son:"
 
@@ -3197,11 +3197,11 @@ msgstr ""
 "\n"
 "Escrito por Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Formato non admitido"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3211,11 +3211,11 @@ msgstr ""
 "\n"
 "Tenteo de novo co servidor sndiod(1) en execución."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "Dispositivo «sndio»"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(como predeterminado medio baleiro)"
 

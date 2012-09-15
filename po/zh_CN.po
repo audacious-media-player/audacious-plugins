@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-07-05 16:03+0800\n"
 "Last-Translator: Chasye <chasye@gmail.com>\n"
 "Language-Team: Simplified Chinese\n"
@@ -37,7 +37,7 @@ msgstr "闹钟"
 msgid "This is your wakeup call."
 msgstr "此为起床闹钟"
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "确定"
 
@@ -282,7 +282,7 @@ msgstr ""
 msgid "Help"
 msgstr "帮助"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "取消"
 
@@ -452,14 +452,6 @@ msgid ""
 "Plug</span>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - 选择文件"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Plug设置"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - 选择音色文件"
@@ -555,6 +547,14 @@ msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr "<span size=\"smaller\">FluidSynth后端</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - 选择文件"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "AMIDI-Plug设置"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -890,6 +890,18 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr "波谱分析器"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "播放CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "添加CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "音频CD菜单选项"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>设备</b>"
@@ -945,18 +957,6 @@ msgstr "设备为空。"
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "未支持光盘类型。"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "播放CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "添加CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "音频CD菜单选项"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1316,7 +1316,7 @@ msgstr "Vorbis编码器设置"
 msgid "Quality level (0 - 10):"
 msgstr "质量等级(0-10)："
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "FLAC解码器"
 
@@ -2032,7 +2032,7 @@ msgstr "桌面提示"
 msgid "1. Default device"
 msgstr "1. 默认设备"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "音频设备："
 
@@ -3151,22 +3151,22 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "未支持格式"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "sndio设备"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr ""
 

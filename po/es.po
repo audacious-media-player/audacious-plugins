@@ -1,7 +1,7 @@
 # Spanish translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-# 
+#
 # Translators:
 # Adrián Ramirez Escalante <buried.prophet@gmail.com>, 2012.
 # Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>, 2010.
@@ -14,17 +14,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-08-11 18:35+0000\n"
 "Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Spanish\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr ""
 
@@ -40,7 +40,7 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Esta es su llamada para despertar."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "Aceptar"
 
@@ -239,7 +239,7 @@ msgstr ""
 msgid "Help"
 msgstr "Ayuda"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -295,7 +295,9 @@ msgstr ""
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr "No tiene seleccionado ningún puerto secuenciador para la reproducción MIDI.  Puede hacerlo en la preferencias del complemento MIDI."
+msgstr ""
+"No tiene seleccionado ningún puerto secuenciador para la reproducción MIDI.  "
+"Puede hacerlo en la preferencias del complemento MIDI."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -303,10 +305,24 @@ msgstr "Motor ALSA "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Este motor envía eventos MIDI a un grupo de puertos secuenciadores ALSA definidos. El interfaz secuenciador ALSA es muy versátil, puede proporcionar puertos para sintetizadores hardware (p. ej. emu10k1) pero también sintetizadores software, dispositivos externos, etc.\nEste motor no produce sonido, los eventos MIDI son manejados directamente por los dispositivos/programas tras los puertos ALSA; por ejemplo, los eventos MIDI enviados a un sintetizador hardware serán reproducidos directamente.\nMotor escrito por Giacomo Lozito."
+msgstr ""
+"Este motor envía eventos MIDI a un grupo de puertos secuenciadores ALSA "
+"definidos. El interfaz secuenciador ALSA es muy versátil, puede proporcionar "
+"puertos para sintetizadores hardware (p. ej. emu10k1) pero también "
+"sintetizadores software, dispositivos externos, etc.\n"
+"Este motor no produce sonido, los eventos MIDI son manejados directamente "
+"por los dispositivos/programas tras los puertos ALSA; por ejemplo, los "
+"eventos MIDI enviados a un sintetizador hardware serán reproducidos "
+"directamente.\n"
+"Motor escrito por Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -314,10 +330,19 @@ msgstr "Motor FluidSynth "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr "Este motor produce sonido al enviar eventos MIDI a FluidSynth, un sintetizador software en tiempo real basado en la especificación SoundFont2 (www.fluidsynth.org).\nEl sonido producido se puede manipular mediante los módulos de efectos y es procesado por el módulo de salida seleccionado.\nMotor escrito por Giacomo Lozito."
+msgstr ""
+"Este motor produce sonido al enviar eventos MIDI a FluidSynth, un "
+"sintetizador software en tiempo real basado en la especificación SoundFont2 "
+"(www.fluidsynth.org).\n"
+"El sonido producido se puede manipular mediante los módulos de efectos y es "
+"procesado por el módulo de salida seleccionado.\n"
+"Motor escrito por Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -351,7 +376,9 @@ msgstr "Ajustes del mezclador"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">motor\nALSA</span>"
+msgstr ""
+"<span size=\"smaller\">motor\n"
+"ALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -394,14 +421,6 @@ msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 msgstr "<span size=\"smaller\">Complemento AMIDI</span>"
-
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "Complemento AMIDI - seleccione un archivo"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Ajustes de AMIDI-Plug"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -497,7 +516,17 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr "<span size=\"smaller\">Motor\nFluidSynth</span>"
+msgstr ""
+"<span size=\"smaller\">Motor\n"
+"FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "Complemento AMIDI - seleccione un archivo"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Ajustes de AMIDI-Plug"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -592,7 +621,10 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr "Avisa cuando, durante la reproducción, el título de la canción cambia pero el nombre de archivo es el mismo. Esto es principalmente útil para mostrar cambios de título en los flujos de Internet."
+msgstr ""
+"Avisa cuando, durante la reproducción, el título de la canción cambia pero "
+"el nombre de archivo es el mismo. Esto es principalmente útil para mostrar "
+"cambios de título en los flujos de Internet."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -724,8 +756,13 @@ msgstr "Administrador de composición detectado"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
-msgstr "Administrador de composición no detectado;\na menos que sepa que tiene uno ejecutándose, por favor active un administrador de composición o las notificaciones no funcionarán correctamente"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+"Administrador de composición no detectado;\n"
+"a menos que sepa que tiene uno ejecutándose, por favor active un "
+"administrador de composición o las notificaciones no funcionarán "
+"correctamente"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -828,6 +865,18 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr "Analizador de espectro"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Reproducir CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Añadir CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Elementos del Menú de audio CD"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Dispositivo</b>"
@@ -883,18 +932,6 @@ msgstr "La unidad está vacía."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Tipo de disco no soportado."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Reproducir CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Añadir CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Elementos del Menú de audio CD"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -975,9 +1012,11 @@ msgstr "Aumentar la reverberación"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not"
-" provide length information (i.e. looping tracks)."
-msgstr "La longitud de canción predeterminada, expresada en segundos, es usada para canciones que no preveén información de longitud (es decir pistas cíclicas)."
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+"La longitud de canción predeterminada, expresada en segundos, es usada para "
+"canciones que no preveén información de longitud (es decir pistas cíclicas)."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -1248,7 +1287,7 @@ msgstr "Configuración de codificador Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Nivel de calidad (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr ""
 
@@ -1726,10 +1765,15 @@ msgstr "(ninguno)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without modificators.\n"
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr "No se recomienda asociar los botones principales del ratón sin modificadores.\n\n¿Quiere continuar?"
+msgstr ""
+"No se recomienda asociar los botones principales del ratón sin "
+"modificadores.\n"
+"\n"
+"¿Quiere continuar?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1743,7 +1787,9 @@ msgstr "Configuración de atajos de teclado"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr "Pulse una combinación de teclas dentro del campo de texto.\nTambién puede asociar botones del ratón."
+msgstr ""
+"Pulse una combinación de teclas dentro del campo de texto.\n"
+"También puede asociar botones del ratón."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1783,7 +1829,11 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr "<small>Separe múltiples rutas por dos puntos.\nEstas rutas se utilizan además de LADSPA_PATH.\nTras añadir nuevas rutas, pulse Intro para buscar complementos nuevos.</small>"
+msgstr ""
+"<small>Separe múltiples rutas por dos puntos.\n"
+"Estas rutas se utilizan además de LADSPA_PATH.\n"
+"Tras añadir nuevas rutas, pulse Intro para buscar complementos nuevos.</"
+"small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -1954,7 +2004,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Dispositivo predeterminado"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Dispositivo de sonido:"
 
@@ -1982,7 +2032,7 @@ msgstr ""
 msgid "PLS Playlists"
 msgstr ""
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
@@ -2158,7 +2208,9 @@ msgstr "Buscar biblioteca"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr "Para importar su biblioteca musical en Audacious, seleccione una carpeta y pulse el botón «actualizar»."
+msgstr ""
+"Para importar su biblioteca musical en Audacious, seleccione una carpeta y "
+"pulse el botón «actualizar»."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -2600,7 +2652,9 @@ msgstr "Actualizar lista"
 
 #: src/skins/ui_manager.c:233
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr "Actualiza los metadatos asociados con una entrada de la lista de reproducción."
+msgstr ""
+"Actualiza los metadatos asociados con una entrada de la lista de "
+"reproducción."
 
 #: src/skins/ui_manager.c:236
 msgid "Playlist Manager"
@@ -2646,7 +2700,9 @@ msgstr "Buscar y seleccionar"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr "Busca en la lista de reproducción y selecciona las entradas que cumplen un criterio específico."
+msgstr ""
+"Busca en la lista de reproducción y selecciona las entradas que cumplen un "
+"criterio específico."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -2716,7 +2772,9 @@ msgstr "Por nombre de archivo"
 
 #: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr "Elimina las entradas duplicadas de la lista de reproducción por nombre de archivo."
+msgstr ""
+"Elimina las entradas duplicadas de la lista de reproducción por nombre de "
+"archivo."
 
 #: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
 #: src/skins/ui_manager.c:371
@@ -2725,7 +2783,9 @@ msgstr "Por ruta y nombre de archivo"
 
 #: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "Elimina las entradas duplicadas de la lista de reproducción por su ruta completa."
+msgstr ""
+"Elimina las entradas duplicadas de la lista de reproducción por su ruta "
+"completa."
 
 #: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
@@ -2995,11 +3055,15 @@ msgstr "Buscar entradas en la lista de reproducción activa"
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular"
-" expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr "Seleccione entradas en la lista de reproducción indicando uno o más campos. Los campos utilizan sintaxis de expresiones regulares, sin distinguir mayúsculas de minúsculas. Si no sabe como funcionan las expresiones regulares, tan solo escriba la parte del literal que quiere buscar."
+msgstr ""
+"Seleccione entradas en la lista de reproducción indicando uno o más campos. "
+"Los campos utilizan sintaxis de expresiones regulares, sin distinguir "
+"mayúsculas de minúsculas. Si no sabe como funcionan las expresiones "
+"regulares, tan solo escriba la parte del literal que quiere buscar."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3066,22 +3130,22 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Formato no soportado"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr ""
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(Vacio significa por defecto)"
 
@@ -3104,12 +3168,16 @@ msgstr "Comando para ejecutar al final de una canción."
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Comando para ejecutar cuando Audacious llega al final de una lista de reproducción."
+msgstr ""
+"Comando para ejecutar cuando Audacious llega al final de una lista de "
+"reproducción."
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr "Comando para ejecutar cuando el título cambia para una canción (es decir, títulos de flujos en red)"
+msgstr ""
+"Comando para ejecutar cuando el título cambia para una canción (es decir, "
+"títulos de flujos en red)"
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3134,7 +3202,9 @@ msgstr ""
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr "<span size='small'>Los parámetros enviados a la consola se deberían encapsular con comillas. De otra forma existe un riesgo de seguridad.</span>"
+msgstr ""
+"<span size='small'>Los parámetros enviados a la consola se deberían "
+"encapsular con comillas. De otra forma existe un riesgo de seguridad.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3229,7 +3299,7 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr ""
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 msgid "2SF Decoder"
 msgstr ""
 

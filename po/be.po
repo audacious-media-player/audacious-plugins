@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-07-25 20:34-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-08-16 19:15+0300\n"
 "Last-Translator: Mikalai Udodau <crom-a@tut.by>\n"
 "Language-Team: Belarusian\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/aac/libmp4.c:930
+#: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr "Дэкодар AAC"
 
@@ -35,7 +35,7 @@ msgstr ""
 msgid "This is your wakeup call."
 msgstr ""
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "Так"
 
@@ -234,7 +234,7 @@ msgstr ""
 msgid "Help"
 msgstr "Даведка"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Скасаваць"
 
@@ -400,14 +400,6 @@ msgid ""
 "Plug</span>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr ""
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr ""
@@ -505,6 +497,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">рухавік\n"
 "FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr ""
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -836,6 +836,18 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr "Спектральны аналізатар"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Прайграць КД"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Дадаць КД"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr ""
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Прылада</b>"
@@ -891,18 +903,6 @@ msgstr "Прывад пусты."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Тып не падтрымліваецца."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Прайграць КД"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Дадаць КД"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr ""
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1256,7 +1256,7 @@ msgstr ""
 msgid "Quality level (0 - 10):"
 msgstr ""
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "Дэкодар FLAC"
 
@@ -1964,7 +1964,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Тыповая прылада"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Аўдыё-прылада:"
 
@@ -1992,7 +1992,7 @@ msgstr "Вывад OSS4"
 msgid "PLS Playlists"
 msgstr "Плэйлісты PLS"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "Дэкодар OpenPSF PSF1/PSF2"
 
@@ -3091,22 +3091,22 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Фармат не падтрымліваецца"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "прылада sndio"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr ""
 
@@ -3254,7 +3254,7 @@ msgstr "Дэкодар VTX"
 msgid "WavPack Decoder"
 msgstr "Дэкодар WavPack"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:273
 msgid "2SF Decoder"
 msgstr "Дэкодар 2SF"
 
