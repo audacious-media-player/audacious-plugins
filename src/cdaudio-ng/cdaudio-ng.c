@@ -243,7 +243,7 @@ static bool_t cdaudio_init (void)
 
     if (!cdio_init ())
     {
-        cdaudio_error ("Failed to initialize cdio subsystem.");
+        cdaudio_error (_("Failed to initialize cdio subsystem."));
         return FALSE;
     }
 
@@ -301,20 +301,20 @@ ERR:
 
     if (trackno < 0)
     {
-        cdaudio_error ("Invalid URI %s.", name);
+        cdaudio_error (_("Invalid URI %s."), name);
         goto ERR;
     }
 
     if (trackno < firsttrackno || trackno > lasttrackno)
     {
-        cdaudio_error ("Track %d not found.", trackno);
+        cdaudio_error (_("Track %d not found."), trackno);
         goto ERR;
     }
 
     /* don't play any data tracks */
     if (!cdda_track_audiop (pcdrom_drive, trackno))
     {
-        cdaudio_error ("Track %d is a data track.\n", trackno);
+        cdaudio_error (_("Track %d is a data track.\n"), trackno);
         goto ERR;
     }
 
@@ -323,7 +323,7 @@ ERR:
 
     if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
     {
-        cdaudio_error ("Failed to open audio output.");
+        cdaudio_error (_("Failed to open audio output."));
         goto ERR;
     }
 
@@ -399,7 +399,7 @@ ERR:
         }
         else
         {
-            cdaudio_error ("Too many read errors; giving up.");
+            cdaudio_error (_("Too many read errors; giving up."));
             break;
         }
 
@@ -576,7 +576,7 @@ static void open_cd (void)
     if (device[0])
     {
         if (! (pcdrom_drive = cdda_identify (device, 1, NULL)))
-            cdaudio_error ("Failed to open CD device %s.", device);
+            cdaudio_error (_("Failed to open CD device %s."), device);
     }
     else
     {
@@ -585,10 +585,10 @@ static void open_cd (void)
         if (ppcd_drives && ppcd_drives[0])
         {
             if (! (pcdrom_drive = cdda_identify (ppcd_drives[0], 1, NULL)))
-                cdaudio_error ("Failed to open CD device %s.", ppcd_drives[0]);
+                cdaudio_error (_("Failed to open CD device %s."), ppcd_drives[0]);
         }
         else
-            cdaudio_error ("No audio capable CD drive found.");
+            cdaudio_error (_("No audio capable CD drive found."));
 
         if (ppcd_drives)
             cdio_free_device_list (ppcd_drives);
@@ -615,7 +615,7 @@ static void scan_cd (void)
     /* finish initialization of drive/disc (performs disc TOC sanitization) */
     if (cdda_open (pcdrom_drive) != 0)
     {
-        cdaudio_error ("Failed to finish initializing opened CD drive.");
+        cdaudio_error (_("Failed to finish initializing opened CD drive."));
         goto ERR;
     }
 
@@ -628,7 +628,7 @@ static void scan_cd (void)
     lasttrackno = cdio_get_last_track_num (pcdrom_drive->p_cdio);
     if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK)
     {
-        cdaudio_error ("Failed to retrieve first/last track number.");
+        cdaudio_error (_("Failed to retrieve first/last track number."));
         goto ERR;
     }
     AUDDBG ("first track is %d and last track is %d\n", firsttrackno,
@@ -653,7 +653,7 @@ static void scan_cd (void)
         if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN
             || trackinfo[trackno].endlsn == CDIO_INVALID_LSN)
         {
-            cdaudio_error ("Cannot read start/end LSN for track %d.", trackno);
+            cdaudio_error (_("Cannot read start/end LSN for track %d."), trackno);
             goto ERR;
         }
 
@@ -730,7 +730,7 @@ static void scan_cd (void)
         {
             pcddb_conn = cddb_new ();
             if (pcddb_conn == NULL)
-                cdaudio_error ("Failed to create the cddb connection.");
+                cdaudio_error (_("Failed to create the cddb connection."));
             else
             {
                 AUDDBG ("getting CDDB info\n");
@@ -805,9 +805,9 @@ static void scan_cd (void)
                 if ((matches = cddb_query (pcddb_conn, pcddb_disc)) == -1)
                 {
                     if (cddb_errno (pcddb_conn) == CDDB_ERR_OK)
-                        cdaudio_error ("Failed to query the CDDB server");
+                        cdaudio_error (_("Failed to query the CDDB server"));
                     else
-                        cdaudio_error ("Failed to query the CDDB server: %s",
+                        cdaudio_error (_("Failed to query the CDDB server: %s"),
                                        cddb_error_str (cddb_errno
                                                        (pcddb_conn)));
 
@@ -831,7 +831,7 @@ static void scan_cd (void)
                         cddb_read (pcddb_conn, pcddb_disc);
                         if (cddb_errno (pcddb_conn) != CDDB_ERR_OK)
                         {
-                            cdaudio_error ("failed to read the cddb info: %s",
+                            cdaudio_error (_("Failed to read the cddb info: %s"),
                                            cddb_error_str (cddb_errno
                                                            (pcddb_conn)));
                             cddb_disc_destroy (pcddb_disc);
