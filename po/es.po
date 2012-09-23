@@ -14,15 +14,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
-"PO-Revision-Date: 2012-08-04 09:14+0000\n"
-"Last-Translator: Lucía Balsa <lucia.balsa.prados@gmail.com>\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
+"PO-Revision-Date: 2012-08-11 18:35+0000\n"
+"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
@@ -40,7 +40,7 @@ msgstr "Alarma"
 msgid "This is your wakeup call."
 msgstr "Esta es su llamada para despertar."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "Aceptar"
 
@@ -239,7 +239,7 @@ msgstr ""
 msgid "Help"
 msgstr "Ayuda"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -422,14 +422,6 @@ msgid ""
 "Plug</span>"
 msgstr "<span size=\"smaller\">Complemento AMIDI</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "Complemento AMIDI - seleccione un archivo"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Ajustes de AMIDI-Plug"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "Complemento AMIDI - seleccione un archivo SoundFont"
@@ -527,6 +519,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Motor\n"
 "FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "Complemento AMIDI - seleccione un archivo"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Ajustes de AMIDI-Plug"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -865,6 +865,18 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr "Analizador de espectro"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Reproducir CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Añadir CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Elementos del Menú de audio CD"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Dispositivo</b>"
@@ -920,18 +932,6 @@ msgstr "La unidad está vacía."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Tipo de disco no soportado."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Reproducir CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Añadir CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Elementos del Menú de audio CD"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1287,7 +1287,7 @@ msgstr "Configuración de codificador Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Nivel de calidad (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr ""
 
@@ -2004,7 +2004,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Dispositivo predeterminado"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Dispositivo de sonido:"
 
@@ -3130,22 +3130,22 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Formato no soportado"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr ""
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(Vacio significa por defecto)"
 

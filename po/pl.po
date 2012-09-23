@@ -11,16 +11,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-06-28 07:58+0000\n"
-"Last-Translator: felikstayson <felikstayson@o2.pl>\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
+"PO-Revision-Date: 2012-08-28 07:04+0000\n"
+"Last-Translator: Szymon Weihs <sz.weihs@gmail.com>\n"
 "Language-Team: Polish\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2)\n"
+"|| n%100>=20) ? 1 : 2);\n"
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
@@ -38,7 +38,7 @@ msgstr "Alarm"
 msgid "This is your wakeup call."
 msgstr "To jest twój sygnał budzenia."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "OK"
 
@@ -161,9 +161,8 @@ msgid "Playlist (optional)"
 msgstr "Lista odtwarzania (opcjonalnie)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Następna"
+msgstr "Wybierz listę odtwarzania"
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -182,7 +181,6 @@ msgid "What do these options mean?"
 msgstr "Co oznaczają te opcje?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -254,15 +252,15 @@ msgstr ""
 "\n"
 "\n"
 "Głośność\n"
-"  Czas przejścia: \n"
-"    Ustaw czas, przez który nastąpi zwiększenie głośności \n"
+"  Wyciszanie: \n"
+"    Ustaw czas, przez który nastąpi wyciszenie głośności \n"
 "    do wybranej wartości.\n"
 "\n"
 "  Rozpocznij od: \n"
-"    Rozpocznij zwiększanie od tej głośności.\n"
+"    Rozpocznij wyciszanie od tej głośności.\n"
 "\n"
 "  Końcowa głośność: \n"
-"    Maksymalna głośność dla budzika. Jeśli czas przejścia\n"
+"    Końcowa głośność dla budzika. Jeśli czas wyciszenia\n"
 "    ustawiony jest na 0, to wtedy następuje natychmiastowe\n"
 "    ustawienie tej głośności i rozpoczęcie odtwarzania.\n"
 "\n"
@@ -289,7 +287,7 @@ msgstr ""
 msgid "Help"
 msgstr "Pomoc"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -335,11 +333,11 @@ msgstr "Obejście rozłączania"
 
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
-msgstr ""
+msgstr "Wyjście ALSA"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (Odtwarzacz MIDI)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -473,14 +471,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - wybierz plik"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Ustawienia Plugina AMIDI"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - wybierz plik SoundFont"
@@ -579,6 +569,14 @@ msgstr ""
 "<span size=\"smaller\">Backend\n"
 "FluidSynth</span>"
 
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - wybierz plik"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Ustawienia Plugina AMIDI"
+
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr "Nazwa:"
@@ -637,7 +635,7 @@ msgstr "O Pluginie AMIDI"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (wyświetlanie na ekranie)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -878,11 +876,11 @@ msgstr "Różne"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "Listy odtwarzania ASXv1/ASXv2"
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr ""
+msgstr "Listy odtwarzania Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
@@ -890,7 +888,7 @@ msgstr "<b>Kolor</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr ""
+msgstr "Rozmazana fala"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -910,11 +908,23 @@ msgstr "Profile ustawień:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Analizer Spektrum"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Odtwórz płytę CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Dodaj płytę CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Pozycje Audio CD w menu"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
@@ -958,7 +968,7 @@ msgstr "Port:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
 msgid "Audio CD Plugin"
-msgstr ""
+msgstr "Wtyczka Audio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
@@ -971,18 +981,6 @@ msgstr "Brak płyty w napędzie."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Nieobsługiwany rodzaj płyty."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Odtwórz płytę CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Dodaj płytę CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr ""
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -998,7 +996,7 @@ msgstr "Zakres dynamiki:"
 
 #: src/compressor/plugin.c:60
 msgid "Dynamic Range Compressor"
-msgstr ""
+msgstr "Kompresor zakresu dynamicznego"
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1085,6 +1083,9 @@ msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
+"Wtyczka Crossfade zawiodła, gdyż utwory posiadają różną częstotliwość "
+"próbkowania. Możesz użyć konwertera częstotliwości próbkowania, aby "
+"sprowadzić utwory do tej samej częstotliwości."
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1096,7 +1097,7 @@ msgstr "Nakładanie się:"
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
-msgstr ""
+msgstr "Crossfade"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
@@ -1112,7 +1113,7 @@ msgstr "Płynne przechodzenie"
 
 #: src/cue/cue.c:160
 msgid "Cue Sheet Plugin"
-msgstr ""
+msgstr "Wtyczka Cue Sheet"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
@@ -1140,11 +1141,11 @@ msgstr "Echo"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "Wtyczka FFmpeg"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr ""
+msgstr "Konfiguracja FileWriter"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1192,7 +1193,7 @@ msgstr "Dodanie do nazwy pliku numer ścieżki"
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "Wtyczka FileWriter"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1342,9 +1343,9 @@ msgstr "Konfiguracja kodera Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Poziom (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "Dekoder FLAC"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
@@ -1560,7 +1561,7 @@ msgstr "Wy_losuj kolejność"
 
 #: src/gtkui/menus.c:199
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "_Odtwórz tą listę odtwarzania"
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
@@ -1644,7 +1645,7 @@ msgstr "Pasek _stanu"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "Pokaż przyciski _zamknięcia"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
@@ -1797,7 +1798,7 @@ msgstr "Przejście do nagrania"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr ""
+msgstr "Przełącz okno/a odtwarzacza"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1813,7 +1814,7 @@ msgstr "Przełączenie losowania"
 
 #: src/hotkey/gui.c:87
 msgid "Raise Player Window(s)"
-msgstr ""
+msgstr "Przesuń na wierzch okno/a odtwarzacza"
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -1865,7 +1866,7 @@ msgstr "Globalne Skróty Klawiszowe"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
-msgstr ""
+msgstr "Wyjście JACK"
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1909,7 +1910,7 @@ msgstr "Ustawienia"
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
-msgstr ""
+msgstr "Host LADSPA"
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -1962,48 +1963,41 @@ msgstr "Ponownie podłącz od serwera LIRC"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Odczekaj przed ponownym łączeniem:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "Wtyczka LIRC"
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* brak dostępnych tekstów utworów w tym pliku MIDI"
+msgstr "Nie znaleziono tekstu piosenki"
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "Nie można pobrać %s"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "Nie można odczytać %s"
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
-msgstr ""
-"\n"
-"Wyszukiwanie tekstu..."
+msgstr "Szukanie tekstu piosenki..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Brakujące metadane utworu"
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
-"\n"
-"Łączenie z lyrics.wikia.com..."
+msgstr "Łączenie z lyrics.wikia.com ..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "Wtyczka LyricWiki"
 
 #: src/m3u/m3u.c:123
 msgid "M3U Playlists"
@@ -2037,11 +2031,11 @@ msgstr "Mikser Kanałów"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "Wtyczka MMS"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (odtwarzacz modułowy)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -2049,15 +2043,15 @@ msgstr "Surround"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "Wtyczka MPG123"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "Serwer MPRIS 2"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Wtyczka Neon HTTP/HTTPS"
 
 #: src/notify/event.c:49
 msgid "Stopped"
@@ -2075,7 +2069,7 @@ msgstr "Powiadomienia Pulpitu"
 msgid "1. Default device"
 msgstr "1. Domyślne urządzenie"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Urządzenie dźwiękowe:"
 
@@ -2085,7 +2079,7 @@ msgstr "Użyj alternatywnego urządzenia:"
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr ""
+msgstr "Zapisz poziom głośności pomiędzy sesjami."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -2097,39 +2091,39 @@ msgstr "Włącz tryb ekskluzywny, aby wyłączyć programowe miksowanie."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
-msgstr ""
+msgstr "Wyjście OSS4"
 
 #: src/pls/pls.c:114
 msgid "PLS Playlists"
-msgstr ""
+msgstr "Listy odtwarzania PLS"
 
 #: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "Dekoder OpenPSF PSF1/PSF2"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "Wyjście PulseAudio"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Pomiń/powtórz próbki"
 
 #: src/resample/resample.c:168
 msgid "Linear interpolation"
-msgstr ""
+msgstr "Liniowa interpolacja"
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Szybka interpolacja funkcji sinc"
 
 #: src/resample/resample.c:170
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Pośrednia interpolacja funkcji sinc"
 
 #: src/resample/resample.c:171
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Najlepsza interpolacja funkcji sinc"
 
 #: src/resample/resample.c:174
 msgid "<b>Conversion</b>"
@@ -2141,15 +2135,15 @@ msgstr "Metoda:"
 
 #: src/resample/resample.c:178
 msgid "Rate:"
-msgstr ""
+msgstr "Klasa:"
 
 #: src/resample/resample.c:181
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>Klasyfikacja mapowania</b>"
 
 #: src/resample/resample.c:182
 msgid "Use rate mappings"
-msgstr ""
+msgstr "Użyj klasyfikacji mapowania"
 
 #: src/resample/resample.c:184
 msgid "8 kHz:"
@@ -2181,7 +2175,7 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:212
 msgid "Sample Rate Converter"
-msgstr ""
+msgstr "Konwerter częstotliwości próbkowania"
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
@@ -2192,9 +2186,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Usługi</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2214,7 +2207,7 @@ msgstr "Preferencje wtyczki Scrobbler"
 
 #: src/sdlout/plugin.c:32
 msgid "SDL Output"
-msgstr ""
+msgstr "Wyjście SDL"
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
@@ -2700,9 +2693,8 @@ msgid "Playlist"
 msgstr "Lista odtwarzania"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "Lista odtwarzania"
+msgstr "Odtwórz listę odtwarzania"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -3219,22 +3211,25 @@ msgstr ""
 "\n"
 "Napisany przez Thomasa Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Nieobsługiwany format"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"Zażądany został format niewspierany przez urządzenie.\n"
+"\n"
+"Spróbuj ponownie z uruchomionym serwerem sndiod(1)."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "Urządzenie sndio"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(pusty oznacza domyślne)"
 
@@ -3312,23 +3307,23 @@ msgstr "Polecenia"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Szybkość i wysokość tonu</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr ""
+msgstr "Szybkość:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr ""
+msgstr "Wysokość tonu:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Szybkość i wysokość tonu"
 
 #: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
-msgstr ""
+msgstr "<b>Akcja dla przewijania kółkiem myszy</b>"
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
@@ -3366,7 +3361,7 @@ msgstr "<b>Dodatkowe Stereo</b>"
 
 #: src/stereo_plugin/stereo.c:38
 msgid "Extra Stereo"
-msgstr ""
+msgstr "Extra Stereo"
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3379,15 +3374,15 @@ msgstr "Generator sygnałów: "
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
-msgstr ""
+msgstr "Generator sygnałów"
 
 #: src/unix-io/unix-io.c:279
 msgid "File I/O Plugin"
-msgstr ""
+msgstr "Wtyczka wejścia/wyjścia pliku"
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
-msgstr ""
+msgstr "Usuwanie głosu (karaoke)"
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
@@ -3407,14 +3402,4 @@ msgstr "Dekoder 2SF"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
-
-#~ msgid "Browse..."
-#~ msgstr "Przeglądaj..."
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ "Nie odnaleziono tekstów utworu."
+msgstr "Współdzielone playlisty XML (XSPF)"

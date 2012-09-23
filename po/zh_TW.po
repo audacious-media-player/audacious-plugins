@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-08-07 22:44+0800\n"
 "Last-Translator: Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>\n"
 "Language-Team: Chinese (traditional)\n"
@@ -33,7 +33,7 @@ msgstr "鬧鐘"
 msgid "This is your wakeup call."
 msgstr "這是您的喚醒。"
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "確認"
 
@@ -276,7 +276,7 @@ msgstr ""
 msgid "Help"
 msgstr "說明"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "取消"
 
@@ -459,14 +459,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - 選擇檔案"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Plug 設定"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - 選擇 SoundFont 檔案"
@@ -564,6 +556,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">FluidSynth\n"
 " 後端</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - 選擇檔案"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "AMIDI-Plug 設定"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -898,6 +898,18 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "頻譜分析儀"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "播放 CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "加入 CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "音樂 CD 選單項目"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>裝置</b>"
@@ -953,18 +965,6 @@ msgstr "光碟機是空的。"
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "未支援的光碟類型"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "播放 CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "加入 CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "音樂 CD 選單項目"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1323,7 +1323,7 @@ msgstr "Vorbis 編碼器設定"
 msgid "Quality level (0 - 10):"
 msgstr "品質等級 (0 - 10)："
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "FLAC 解碼器"
 
@@ -2040,7 +2040,7 @@ msgstr "桌面通知"
 msgid "1. Default device"
 msgstr "1. 預設裝置"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "音訊裝置："
 
@@ -3161,11 +3161,11 @@ msgstr ""
 "\n"
 "作者：Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "未支援的格式"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3175,11 +3175,11 @@ msgstr ""
 "\n"
 "請確認 sndiod(1) 伺服器已執行後重試。"
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "sndio 裝置"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(空白表示使用預設值)"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-07-30 04:08+0000\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
@@ -35,7 +35,7 @@ msgstr "Äratus"
 msgid "This is your wakeup call."
 msgstr "See on sinu äratus."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "Olgu"
 
@@ -234,7 +234,7 @@ msgstr ""
 msgid "Help"
 msgstr "Abi"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Loobu"
 
@@ -408,14 +408,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - faili valimine"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr ""
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - SoundFont faili valimine"
@@ -513,6 +505,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">FluidSynth \n"
 "taustaprogramm</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - faili valimine"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -846,6 +846,18 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr ""
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Esita CD-lt"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Lisa CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Audioplaadi menüüvalikud"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr ""
@@ -901,18 +913,6 @@ msgstr "Seade on tühi."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Plaadi liik pole toetatud."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Esita CD-lt"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Lisa CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Audioplaadi menüüvalikud"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1266,7 +1266,7 @@ msgstr "Vorbis-kodeerija sätted"
 msgid "Quality level (0 - 10):"
 msgstr "Kvaliteedi tase (0-10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr ""
 
@@ -1985,7 +1985,7 @@ msgstr "Töölauateavitused"
 msgid "1. Default device"
 msgstr "1. Vaikimisi seade"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Audioseade:"
 
@@ -3103,22 +3103,22 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr ""
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr ""
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr ""
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-04-30 05:25+0000\n"
 "Last-Translator: MirosNik <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian\n"
@@ -35,7 +35,7 @@ msgstr "Аларм"
 msgid "This is your wakeup call."
 msgstr "Ово је ваш позив за буђење."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "У реду"
 
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Help"
 msgstr "Помоћ"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Откажи"
 
@@ -473,17 +473,6 @@ msgstr ""
 "<span size=\"smaller\">АМИДИ\n"
 "прикључак</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "АМИДИ прикључак — изаберите датотеку"
-
-#: src/amidi-plug/i_configure.c:110
-#, fuzzy
-msgid "AMIDI-Plug Settings"
-msgstr ""
-"\n"
-"АМИДИ прикључак "
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "АМИДИ прикључак — изаберите СаундФонт датотеку"
@@ -583,6 +572,17 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">ФлуидСинт\n"
 "позадинац</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "АМИДИ прикључак — изаберите датотеку"
+
+#: src/amidi-plug/i_configure.c:110
+#, fuzzy
+msgid "AMIDI-Plug Settings"
+msgstr ""
+"\n"
+"АМИДИ прикључак "
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -931,6 +931,19 @@ msgstr "Поставке Бојер стереофонског-у-бинаура
 msgid "Spectrum Analyzer"
 msgstr "Анализатор"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Пусти ЦД"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Додај ЦД"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+#, fuzzy
+msgid "Audio CD Menu Items"
+msgstr "Подешавања аларма"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 #, fuzzy
 msgid "<b>Device</b>"
@@ -994,19 +1007,6 @@ msgstr "Уређај је празан."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Неподржана врста диска."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Пусти ЦД"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Додај ЦД"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-#, fuzzy
-msgid "Audio CD Menu Items"
-msgstr "Подешавања аларма"
 
 #: src/compressor/plugin.c:37
 #, fuzzy
@@ -1387,7 +1387,7 @@ msgstr "Подешавање Ворбис шифрера"
 msgid "Quality level (0 - 10):"
 msgstr "Ниво квалитета (0 — 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr ""
 
@@ -2128,7 +2128,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Основни уређај"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Звучни уређај:"
 
@@ -3274,24 +3274,24 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 #, fuzzy
 msgid "Unsupported format"
 msgstr "Неподржана врста диска."
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 #, fuzzy
 msgid "sndio device"
 msgstr "Звучни уређај:"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 #, fuzzy
 msgid "(empty means default)"
 msgstr "Активирај аларм у (основно):"

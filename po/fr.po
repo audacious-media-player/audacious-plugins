@@ -10,15 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
-"PO-Revision-Date: 2012-08-07 17:20+0000\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
+"PO-Revision-Date: 2012-08-15 23:48+0000\n"
 "Last-Translator: Alain-Olivier  Breysse <yahoe.001@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
@@ -36,7 +36,7 @@ msgstr "Alarme"
 msgid "This is your wakeup call."
 msgstr "Ceci est votre réveil."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "OK"
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "Help"
 msgstr "Aide"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -465,14 +465,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - choix du fichier"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Paramètres d'AMIDI-Plug"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - choix du fichier « SoundFont »"
@@ -570,6 +562,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Sortie\n"
 "'FluidSynth'</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - choix du fichier"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Paramètres d'AMIDI-Plug"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -879,7 +879,7 @@ msgstr "Listes de lecture ASXv1 et ASXv2"
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr "Listes de lecture au format d'Audacious (audpl)"
+msgstr "Listes de lecture au format Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
@@ -907,11 +907,23 @@ msgstr "Préréglages :"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "module Bauer stéréophonique-vers-binaural "
+msgstr "Module Bauer stéréophonique-vers-binaural  (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Analyseur de spectre"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Lire les pistes du CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Lire le CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Éléments du menu CD Audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
@@ -927,7 +939,7 @@ msgstr "Forcer le lecteur : "
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Metadata</b>"
-msgstr "<b>Metadonnées</b>"
+msgstr "<b>Métadonnées</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
@@ -968,18 +980,6 @@ msgstr "Le lecteur est vide"
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Type de disque non pris en charge"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Lire les pistes du CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Lire le CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Éléments du menu CD Audio"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1342,13 +1342,13 @@ msgstr "Configuration de l'encodeur Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Niveau de qualité (0 - 10) :"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "Décodeur FLAC"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
-msgstr "Module de support de GIO"
+msgstr "Module GIO"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
@@ -1636,7 +1636,7 @@ msgstr "Afficher la barre d'i_nformation"
 
 #: src/gtkui/menus.c:229
 msgid "Show Info Bar Vis_ualization"
-msgstr "Affiche la Vis_ualisation \"Barre d'infos\""
+msgstr "Affiche la vis_ualisation \"Barre d'infos\""
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
@@ -1888,8 +1888,8 @@ msgid ""
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
 "<small>Séparez les différents chemins par : (deux points).\n"
-" Les greffons sont recherchés dans ces chemins ainsi que ceux de de la "
-"variable LADSPA_PATH.\n"
+" Les greffons sont recherchés dans ces chemins ainsi que ceux de la variable "
+"LADSPA_PATH.\n"
 "Après avoir ajouté de nouveaux chemins, pressez Entrée pour mettre à jour "
 "les greffons disponibles.</small>"
 
@@ -2047,7 +2047,7 @@ msgstr "Serveur MPRIS 2"
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Module de support du http/https néon"
+msgstr "Module  HTTP/HTTPS neon"
 
 #: src/notify/event.c:49
 msgid "Stopped"
@@ -2065,7 +2065,7 @@ msgstr "Notifications natives"
 msgid "1. Default device"
 msgstr "1. Périphérique par défaut"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Périphérique audio :"
 
@@ -3206,11 +3206,11 @@ msgstr ""
 "\n"
 "Écrit par Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Format non pris en charge"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3220,11 +3220,11 @@ msgstr ""
 "\n"
 "Veuillez essayer à nouveau avec le serveur sndiod(1) en fonction."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "Périphérique sndio"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(vide implique par défaut)"
 
@@ -3371,7 +3371,7 @@ msgstr "Générateur de tonalités : "
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
-msgstr "Accordeur"
+msgstr "Générateur de fréquences musicales "
 
 #: src/unix-io/unix-io.c:279
 msgid "File I/O Plugin"

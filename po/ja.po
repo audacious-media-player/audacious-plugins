@@ -3,21 +3,23 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+#   <hallconnen2+transifex@gmail.com>, 2012.
 # Shuuji Takahashi <shuuji3@gmail.com>, 2012.
 # Warui-chan  <>, 2012.
+# キュア読み専™  <hallconnen2+transifex@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:57-0400\n"
-"PO-Revision-Date: 2012-07-26 09:33+0000\n"
-"Last-Translator: Shuuji Takahashi <shuuji3@gmail.com>\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
+"PO-Revision-Date: 2012-09-09 03:47+0000\n"
+"Last-Translator: キュア読み専™ <hallconnen2+transifex@gmail.com>\n"
 "Language-Team: Japanese\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
@@ -25,7 +27,7 @@ msgstr "AAC デコーダ"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (AdLib プレイヤー)"
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -35,7 +37,7 @@ msgstr "アラーム"
 msgid "This is your wakeup call."
 msgstr "目覚ましです。"
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "OK"
 
@@ -280,7 +282,7 @@ msgstr ""
 msgid "Help"
 msgstr "ヘルプ"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -330,7 +332,7 @@ msgstr "ALSA 出力"
 
 #: src/amidi-plug/amidi-plug.c:39
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (MIDI プレイヤー)"
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -464,14 +466,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - ファイル選択"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Plus の設定"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - サウンドフォント ファイルの選択"
@@ -570,6 +564,14 @@ msgstr ""
 "<span size=\"smaller\">FluidSynth\n"
 "バックエンド</span>"
 
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - ファイル選択"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "AMIDI-Plus の設定"
+
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr "名前:"
@@ -628,7 +630,7 @@ msgstr "AMIDI-Plug について"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (On-Screen Display)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -880,7 +882,7 @@ msgstr "<b>色</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr ""
+msgstr "ブラー・スコープ"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -900,11 +902,23 @@ msgstr "プリセット:"
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "バウアー ステレオ-バイノーラル変換 (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "スペクトラムアナライザ"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "CD を再生"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "プレイリストに CD を追加"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "オーディオ CD メニュー項目"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
@@ -961,18 +975,6 @@ msgstr "ドライブにディスクがありません。"
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "非対応のディスクです。"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "CD を再生"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "プレイリストに CD を追加"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "オーディオ CD メニュー項目"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1095,7 +1097,7 @@ msgstr "<b>クリスタライザ</b>"
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
 msgid "Intensity:"
-msgstr ""
+msgstr "明るさ:"
 
 #: src/crystalizer/crystalizer.c:53
 msgid "Crystalizer"
@@ -1333,7 +1335,7 @@ msgstr "Vorbis エンコーダ設定"
 msgid "Quality level (0 - 10):"
 msgstr "品質レベル (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "FLAC デコーダ"
 
@@ -1495,7 +1497,7 @@ msgstr "シャッフル(_H)"
 
 #: src/gtkui/menus.c:179
 msgid "N_o Playlist Advance"
-msgstr "プレイリストの再生を続けない(_O)"
+msgstr "同じ曲を再生する(_O)"
 
 #: src/gtkui/menus.c:180
 msgid "Stop _After This Song"
@@ -1627,7 +1629,7 @@ msgstr "情報バーを表示する(_N)"
 
 #: src/gtkui/menus.c:229
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "情報バーに視覚効果を表示"
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
@@ -2052,7 +2054,7 @@ msgstr "デスクトップ通知"
 msgid "1. Default device"
 msgstr "1. デフォルトデバイス"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "オーディオデバイス:"
 
@@ -2091,7 +2093,7 @@ msgstr "PulseAudio 出力"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "サンプルのスキップ/繰り返し"
 
 #: src/resample/resample.c:168
 msgid "Linear interpolation"
@@ -2099,15 +2101,15 @@ msgstr "線形補間"
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "高速 sinc 補間"
 
 #: src/resample/resample.c:170
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "sinc 補間"
 
 #: src/resample/resample.c:171
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "高品質 sinc 補間"
 
 #: src/resample/resample.c:174
 msgid "<b>Conversion</b>"
@@ -2119,15 +2121,15 @@ msgstr "方法"
 
 #: src/resample/resample.c:178
 msgid "Rate:"
-msgstr ""
+msgstr "レート:"
 
 #: src/resample/resample.c:181
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>レートマッピング</b>"
 
 #: src/resample/resample.c:182
 msgid "Use rate mappings"
-msgstr ""
+msgstr "レートマッピングを使用する"
 
 #: src/resample/resample.c:184
 msgid "8 kHz:"
@@ -2211,6 +2213,8 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+"アルバム: %s アーティスト: %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
@@ -3170,11 +3174,11 @@ msgstr ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "対応していない形式"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3184,17 +3188,17 @@ msgstr ""
 "\n"
 "sndiod(1) サーバが起動してから、もう一度実行してください。"
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "sndio デバイス"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(空の場合、デフォルトに設定します)"
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
-msgstr ""
+msgstr "楽曲の変更通知"
 
 #: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
@@ -3361,4 +3365,4 @@ msgstr "2SF デコーダ"
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "共有可能な XML プレイリスト (XSPF)"

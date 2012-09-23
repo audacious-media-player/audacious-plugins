@@ -5,25 +5,27 @@
 # Translators:
 # Alexander Orlov <alxorlov@pochta.ru>, 2007.
 #   <kvantarium@gmail.com>, 2012.
+# Musatov M. <m1kc@yandex.ru>, 2012.
+# NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012.
 # NaiLi Rootaerc <theism@mail.ru>, 2012.
 # Rax Garfield <admin@dvizho.ks.ua>, 2012.
+#   <sejava@mail.ru>, 2012.
 # Sergey V. Mironov <serg0@ulx.ru>, 2009.
 # Sergey V. Mironov <sergo@bk.ru>, 2010.
-# Musatov M. <m1kc@yandex.ru>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
-"PO-Revision-Date: 2012-07-26 00:36+0000\n"
-"Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
+"PO-Revision-Date: 2012-09-11 00:01+0000\n"
+"Last-Translator: chingis <q9mwvwxx@lavabit.com>\n"
 "Language-Team: Russian\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
@@ -41,7 +43,7 @@ msgstr "Будильник"
 msgid "This is your wakeup call."
 msgstr "Это ваш звонок будильника."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "ОК"
 
@@ -240,7 +242,7 @@ msgstr ""
 msgid "Help"
 msgstr "Справка"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -426,14 +428,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - выбор файла"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "Настройки AMIDI-Plugin"
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - выбор SoundFont файла"
@@ -531,6 +525,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Модуль\n"
 "FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - выбор файла"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "Настройки AMIDI-Plugin"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -869,6 +871,18 @@ msgstr "Бауэр Стереофоник в Бинэрал (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Спектрум анализатор"
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Воспроизвести CD-диск"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Добавить CD-диск"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Пункты меню Аудио CD"
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "<b>Устройство</b>"
@@ -924,18 +938,6 @@ msgstr "Привод пуст."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Неподдерживаемый тип диска."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Воспроизвести CD-диск"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Добавить CD-диск"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Пункты меню Аудио CD"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1298,7 +1300,7 @@ msgstr "Настройка кодека Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Уровень качества (0 - 10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "Декодер FLAC"
 
@@ -2018,7 +2020,7 @@ msgstr "Уведомления на рабочем столе"
 msgid "1. Default device"
 msgstr "1. Устройство по умолчанию"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Звуковое устройство:"
 
@@ -3164,11 +3166,11 @@ msgstr ""
 "\n"
 "автор — Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr "Неподдерживаемый формат"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3178,11 +3180,11 @@ msgstr ""
 "\n"
 "Попробуйте ещё раз, запустив сервер sndiod(1)."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr "Устройство sndio"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr "(пусто означает «по умолчанию»)"
 

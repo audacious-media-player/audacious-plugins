@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-08-11 13:52-0400\n"
+"POT-Creation-Date: 2012-09-15 12:42+0200\n"
 "PO-Revision-Date: 2012-07-26 00:36+0000\n"
 "Last-Translator: John Lindgren <john.lindgren@aol.com>\n"
 "Language-Team: Slovak\n"
@@ -36,7 +36,7 @@ msgstr "Alarm"
 msgid "This is your wakeup call."
 msgstr "Toto je budiaci signál."
 
-#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:431
+#: src/alarm/interface.c:54 src/alarm/interface.c:1180 src/sndio/sndio.c:433
 msgid "OK"
 msgstr "OK"
 
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Help"
 msgstr "Pomocník"
 
-#: src/alarm/interface.c:1189 src/sndio/sndio.c:439
+#: src/alarm/interface.c:1189 src/sndio/sndio.c:441
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -413,14 +413,6 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - vyberte súbor"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr ""
-
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - vyberte SoundFont súbor"
@@ -518,6 +510,14 @@ msgid ""
 msgstr ""
 "<span size=\"smaller\">Koncové zariadenie\n"
 "FluidSynth</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - vyberte súbor"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -855,6 +855,18 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr ""
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Prehrať CD"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Pridať CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr ""
+
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
 msgstr "Zariadenia"
@@ -910,18 +922,6 @@ msgstr "Mechanika je prázdna."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Nepodporovaný typ disku."
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Prehrať CD"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Pridať CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr ""
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1277,7 +1277,7 @@ msgstr "Nastavenie kodéra Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0-10):"
 
-#: src/flacng/plugin.c:271
+#: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr ""
 
@@ -1994,7 +1994,7 @@ msgstr ""
 msgid "1. Default device"
 msgstr "1. Štandardné zariadenie"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
 msgstr "Zvukové zariadenie:"
 
@@ -3116,22 +3116,22 @@ msgid ""
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:261
 msgid "Unsupported format"
 msgstr ""
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:262
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:405
 msgid "sndio device"
 msgstr ""
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:421
 msgid "(empty means default)"
 msgstr ""
 
