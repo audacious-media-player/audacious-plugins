@@ -230,6 +230,9 @@ static void scrobbler_set_ok_to_scrobble (bool_t is_ok) {
 }
 
 
+//returns:
+// FALSE if there was a network problem
+// TRUE otherwise (request_token must be checked)
 static bool_t scrobbler_request_token() {
     gchar *tokenmsg = create_message_to_lastfm("auth.getToken",
                                               1,
@@ -241,14 +244,23 @@ static bool_t scrobbler_request_token() {
         return FALSE;
     }
 
-    if (read_token() == FALSE) {
-        printf("Could not read received token.\n");
+    gchar *error_code = NULL;
+    gchar *error_detail = NULL;
+    if (read_token(&error_code, &error_detail) == FALSE) {
+        if (error_code != NULL && g_strcmp0(error_code, "8")) {
+            //error code 8: There was an error granting the request token. Please try again later
+            request_token = NULL;
+            return FALSE;
+        }
         return FALSE;
     }
 
     return TRUE;
 }
 
+//returns:
+// FALSE if there was a network problem
+// TRUE otherwise (session_key must be checked)
 static bool_t scrobbler_request_session() {
     gchar *sessionmsg = create_message_to_lastfm("auth.getSession",
                                                  2,
@@ -271,7 +283,7 @@ static bool_t scrobbler_request_session() {
         if (error_code != NULL && (
                 g_strcmp0(error_code,  "4") == 0 || //invalid token
                 g_strcmp0(error_code, "14") == 0 || //token not authorized
-                g_strcmp0(error_code, "15") == 0   //token expired
+                g_strcmp0(error_code, "15") == 0    //token expired
             )) {
             printf("error code CAUGHT: %s\n", error_code);
             session_key = NULL;
@@ -353,7 +365,7 @@ gpointer checking_thread (gpointer permission_result) {
             scrobbling_enabled = FALSE;
             return NULL;
         }
-        else if (read_connection_test_result() == TRUE) {
+        else if (read_authentication_test_result() == TRUE) {
             gtk_label_set_label(permission_result_in, "OK");
             scrobbling_enabled = TRUE;
             return NULL;
@@ -372,17 +384,12 @@ gpointer checking_thread (gpointer permission_result) {
 
 
 //returns:
-// TRUE if the server answered
 // FALSE if there was a network problem.
-//sets:
-// scrobbling_enabled to TRUE if the session is OK
-//requires:
-// A non-null session_key must be available
+// TRUE otherwise (scrobbling_enabled must be checked)
+//sets scrobbling_enabled to TRUE if the session is OK
 static bool_t scrobbler_test_connection() {
 
-    g_assert(session_key != NULL && strlen(session_key) > 0);
-/*    if (session_key == NULL || strlen(session_key) == 0) {
-        AUDDBG("BUG: This should never happen.\n");
+    if (session_key == NULL || strlen(session_key) == 0) {
         scrobbling_enabled = FALSE;
         return TRUE;
 /*        if (permission_check_requested) {
@@ -402,8 +409,8 @@ static bool_t scrobbler_test_connection() {
                     return;
                 }
             }
-        }*
-    }*/
+        }*/
+    }
 
     gchar *testmsg = create_message_to_lastfm("user.getRecommendedArtists",
                                               3,
@@ -423,7 +430,7 @@ static bool_t scrobbler_test_connection() {
     }
 
 
-    if (read_connection_test_result() == TRUE) {
+    if (read_authentication_test_result() == TRUE) {
         //THIS IS THE ONLY PLACE WHERE SCROBBLING IS SET TO ENABLED
         scrobbling_enabled = TRUE;
         printf("Connection OK. Scrobbling enabled.\n");
@@ -570,6 +577,9 @@ static void scrobble_cached_queue() {
                     error_code = NULL;
                     error_detail = NULL;
                     if (read_scrobble_result(&error_code, &error_detail) == TRUE) {
+                        //TODO: a track might not be scrobbled due to "daily scrobble limit exeeded".
+                        //This message comes on the ignoredMessage attribute, inside the XML of the response.
+                        //We are not dealing with this case currently and are losing that scrobble.
                         AUDDBG("SCROBBLE OK.\n");
                         save_line_to_remove(&lines_to_remove, i);
                     } else {
@@ -580,6 +590,8 @@ static void scrobble_cached_queue() {
                         }
                         else if (g_strcmp0(error_code, "11") == 0 ||
                                  g_strcmp0(error_code, "16") == 0){
+                            //error code 11: Service Offline - This service is temporarily offline. Try again later.
+                            //error code 16: The service is temporarily unavailable, please try again.
                             //scrobble to be retried
                         }
                         else if (g_strcmp0(error_code,  "9") == 0) {
@@ -606,7 +618,7 @@ static void scrobble_cached_queue() {
                 g_free(scrobblemsg);
             } else {
                 AUDDBG("Unscrobbable line.\n");
-                //leave entry to the cache file
+                //leave entry on the cache file
             }
             g_strfreev(line);
         }//for
@@ -626,13 +638,13 @@ static void scrobble_cached_queue() {
 //Scrobbling will only be enabled after the first connection test passed
 gpointer scrobbling_thread (gpointer input_data) {
 
-    while (TRUE) {
+    while (TRUE) { //TODO: change this to a var so we can cleanup the plugin when it is unloaded.
         if (permission_check_requested) {
             if (session_key == NULL || strlen(session_key) == 0) {
                 perm_result = PERMISSION_DENIED;
 
                 if (request_token == NULL || strlen(request_token) == 0) {
-                    if (scrobbler_request_token() == FALSE) {
+                    if (scrobbler_request_token() == FALSE || request_token == NULL) {
                         perm_result = PERMISSION_NONET;
                     } //else PERMISSION_DENIED
 
@@ -643,7 +655,7 @@ gpointer scrobbling_thread (gpointer input_data) {
                     //This means we had a token, a session was requested now,
                     //but the token was not accepted or expired.
                     //Ask for a new token now.
-                    if (scrobbler_request_token() == FALSE) {
+                    if (scrobbler_request_token() == FALSE || request_token == NULL) {
                         perm_result = PERMISSION_NONET;
                     } //else PERMISSION_DENIED
 
@@ -657,7 +669,17 @@ gpointer scrobbling_thread (gpointer input_data) {
                     if (scrobbling_enabled) {
                         perm_result = PERMISSION_ALLOWED;
                     } else {
-                        perm_result = PERMISSION_DENIED;
+                        /* Reaching this code is very unlikely.
+                        This means that we just received a session key but
+                        couldn't make an authenticated call with it. Something
+                        might be wrong on last.fm's side (?) or the session
+                        key might have expired, which they say never happens
+                        without user intervention. */
+                        if (scrobbler_request_token() == FALSE || request_token == NULL) {
+                            perm_result = PERMISSION_NONET;
+                        } else {
+                            perm_result = PERMISSION_DENIED;
+                        }
                     }
                 }
             } else {
@@ -668,23 +690,28 @@ gpointer scrobbling_thread (gpointer input_data) {
             permission_check_requested = FALSE;
             g_cond_signal(permission_check_signal);
             g_mutex_unlock(permission_check_mutex);
+        } else if (FALSE) { //now_playing_requested
+
         } else {
             scrobble_cached_queue();
-            //scrobbling may disabled if communication errors occurred
+            //scrobbling may be disabled if communication errors occurr
 
-            //We don't want to wait until receiving a signal to retry submitting
-            //the remaining cache if it stopped due to network problems
-            if (!scrobbling_enabled) {
-                g_usleep(7*G_USEC_PER_SEC);
-            } else {
-                g_mutex_lock(communication_mutex);
-                if (scrobbling_enabled) {
-                    g_cond_wait(communication_signal, communication_mutex);
-                }
+            g_mutex_lock(communication_mutex);
+            if (scrobbling_enabled) {
+                g_cond_wait(communication_signal, communication_mutex);
+                g_mutex_unlock(communication_mutex);
+            }
+            else {
                 g_mutex_unlock(communication_mutex);
 
+                printf("Checking if we can scrobble already.\n");
+                //We don't want to wait until receiving a signal to retry
+                //if submitting the cache failed due to network problems
+                if (scrobbler_test_connection() == FALSE || !scrobbling_enabled) {
+                    printf("nope. Sleeping.\n");
+                    g_usleep(7*G_USEC_PER_SEC);
+                }
             }
-
         }
     }
     return NULL;

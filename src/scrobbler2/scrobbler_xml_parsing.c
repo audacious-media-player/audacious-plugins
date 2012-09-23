@@ -185,7 +185,7 @@ bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
 
 //returns
 //FALSE if there was an error with the connection
-bool_t read_connection_test_result () {
+bool_t read_authentication_test_result () {
     xmlChar *status;
     xmlChar *error_code = NULL;
     xmlChar *error_detail = NULL;
@@ -232,7 +232,7 @@ bool_t read_connection_test_result () {
 
 
 
-bool_t read_token () {
+bool_t read_token (char **error_code_out, char **error_detail_out) {
     xmlChar *status;
     xmlChar *error_code = NULL;
     xmlChar *error_detail = NULL;
@@ -245,6 +245,9 @@ bool_t read_token () {
     }
 
     status = check_status(&error_code, &error_detail);
+    (*error_code_out) = g_strdup((gchar *) error_code);
+    (*error_detail_out) = g_strdup((gchar *) error_detail);
+
     if (status == NULL) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
         clean_data();
@@ -253,7 +256,6 @@ bool_t read_token () {
 
     if (xmlStrEqual(status, (xmlChar *) "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
-        //TODO: react accordingly
         result = FALSE;
     }
     else {
@@ -306,7 +308,6 @@ bool_t read_session_key(char **error_code_out, char **error_detail_out) {
 
     if (xmlStrEqual(status, (xmlChar *) "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
-        //TODO: react accordingly
         result = FALSE;
     }
     else {

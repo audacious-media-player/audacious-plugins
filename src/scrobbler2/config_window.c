@@ -54,20 +54,23 @@ gpointer permission_checker_thread (gpointer data) {
     gtk_label_set_label(GTK_LABEL(additional_details_label), "");
 
 
-    g_mutex_lock(permission_check_mutex);
-
     //This will make the communication thread check the permission
     //and set the current status on the perm_result enum
     g_mutex_lock(communication_mutex);
     permission_check_requested = TRUE;
+
+    //This is only to accelerate the check.
+    //If scrobbles are being made, they are stopped for the request to be done sooner.
     scrobbling_enabled = FALSE;
 
-    //wake the communication thread up in case it's waiting for track plays
+
+    //Wake the communication thread up in case it's waiting for track plays
     g_cond_signal(communication_signal);
     g_mutex_unlock(communication_mutex);
 
 
-    //wait for the permission check to be done
+    //Wait for the permission check to be done.
+    g_mutex_lock(permission_check_mutex);
     while (permission_check_requested == TRUE) {
         g_cond_wait(permission_check_signal, permission_check_mutex);
     }
@@ -89,7 +92,7 @@ gpointer permission_checker_thread (gpointer data) {
 
         gchar *markup = g_markup_printf_escaped("Access the following link to allow Audacious to scrobble your plays:\n"
                 "<a href=\"http://www.last.fm/api/auth/?api_key=%s&amp;token=%s\">http://www.last.fm/api/auth/?api_key=%s&amp;token=%s</a>\n"
-                "And then click 'Check Permissions' again.", SCROBBLER_API_KEY, request_token, SCROBBLER_API_KEY, request_token);
+                "Keep this window open and click 'Check Permissions' again.", SCROBBLER_API_KEY, request_token, SCROBBLER_API_KEY, request_token);
         gtk_label_set_markup(GTK_LABEL(details_label), markup);
         g_free(markup);
 
@@ -169,7 +172,7 @@ static const PreferencesWidget config_box_contents[] = {
 static const PreferencesWidget config_contents[] = {
     {
         .type  = WIDGET_LABEL,
-        .label = N_("You need to allow Audacious to scrobble tracks to your Last.fm account."),
+        .label = N_("You need to allow Audacious to scrobble tracks to your Last.fm account.\n"),
         .data  = { .label = {.single_line = TRUE} }
     },
     {

@@ -73,8 +73,8 @@ extern gchar *request_token;
 extern gchar *session_key;
 
 //scrobbler_xml_parsing.c
-extern bool_t read_connection_test_result();
-extern bool_t read_token();
+extern bool_t read_authentication_test_result();
+extern bool_t read_token(char **error_code, char **error_detail);
 extern bool_t read_session_key(char **error_code, char **error_detail);
 extern bool_t read_scrobble_result(char **error_code, char **error_detail);
 

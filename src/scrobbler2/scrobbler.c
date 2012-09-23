@@ -115,6 +115,7 @@ static void ready (void *hook_data, void *user_data) {
 
     int duration_seconds = tuple_get_int(current_track, FIELD_LENGTH, NULL) / 1000;
     if (duration_seconds <= 30) {
+        tuple_unref(current_track);
         return;
     }
 
