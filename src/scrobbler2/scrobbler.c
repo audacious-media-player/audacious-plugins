@@ -3,13 +3,21 @@
 #include "scrobbler.h"//needed
 
 //audacious includes
-#include <config.h>             //needed
-#include <audacious/i18n.h>     //needed
-#include <audacious/plugin.h>   //needed
-#include <audacious/playlist.h> //needed
-#include <libaudcore/hook.h>    //needed
+#include <config.h>                //needed
+#include <audacious/plugin.h>      //needed
+#include <audacious/playlist.h>    //needed
+#include <libaudcore/hook.h>       //needed
 
 //external includes
+
+
+//shared variables
+GMutex *communication_mutex;
+GCond  *communication_signal;
+GMutex *log_access_mutex;
+gchar *session_key;
+gchar *request_token;
+
 
 //static (private) variables
 static Tuple * playing_track       = NULL;
@@ -19,9 +27,6 @@ static  gint64 pause_started_at    = 0;
 static  gint64 time_until_scrobble = 0;
 static   guint queue_function_ID   = 0;
 
-//shared variables
-GMutex *queue_mutex;
-GCond *queue_signaler;
 
 static void cleanup_current_track(void) {
 
@@ -47,7 +52,7 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
 
-    g_mutex_lock(queue_mutex);
+    g_mutex_lock(log_access_mutex);
     FILE *f = fopen(queuepath, "a");
     g_free(queuepath);
 
@@ -64,13 +69,16 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
         //artist, title and timestamp are required for a successful scrobble
         if (artist != NULL && title != NULL) {
-            //This isn't exactly the scrobbler.log format, as the header part
-            //is missing, but we're sticking to the format anyway...
+            //This isn't exactly the scrobbler.log format because the header
+            //is missing, but we're sticking to it anyway...
             if (fprintf(f, "%s\t%s\t%s\t%i\t%i\t%s\t%li\n",
-                        artist, (album == NULL ? "" : album), title, number, length, "L", timestamp) < 0) {
+                        artist, (album == NULL ? "" : album), title, number, length, "L", timestamp
+                        ) < 0) {
                 perror("fprintf");
             } else {
-                g_cond_signal(queue_signaler);
+                g_mutex_lock(communication_mutex);
+                g_cond_signal(communication_signal);
+                g_mutex_unlock(communication_mutex);
             }
         }
 
@@ -79,7 +87,7 @@ gboolean queue_track_to_scrobble (gpointer data) {
         str_unref(album);
         fclose(f);
     }
-    g_mutex_unlock(queue_mutex);
+    g_mutex_unlock(log_access_mutex);
 
     cleanup_current_track();
     return FALSE;
@@ -161,49 +169,51 @@ static bool_t scrobbler_init (void) {
         return FALSE;
     }
 
-    //TODO: replace with g_mutex_init(queue_mutex) from glib 2.32
-    queue_mutex = g_mutex_new();
+    session_key = aud_get_string("scrobbler", "session_key");
+    request_token = NULL;
+
+    //TODO: replace with g_mutex_init(communication_mutex) from glib 2.32
+    log_access_mutex = g_mutex_new();
+    communication_mutex = g_mutex_new();
+    permission_check_mutex = g_mutex_new();
 
     //TODO: replace with g_cond_init
-    queue_signaler = g_cond_new();
+    communication_signal = g_cond_new();
+    permission_check_signal = g_cond_new();
 
 
     //TODO: g_thread_create should be updated to g_thread_new() from glib 2.32
     g_thread_create(scrobbling_thread, NULL, FALSE, NULL);
 
-//    hook_associate("playback begin", (HookFunction) playing, NULL);
     hook_associate("playback stop", (HookFunction) stopped, NULL);
     hook_associate("playback end", (HookFunction) ended, NULL);
     hook_associate("playback ready", (HookFunction) ready, NULL);
     hook_associate("playback pause", (HookFunction) paused, NULL);
     hook_associate("playback unpause", (HookFunction) unpaused, NULL);
-//    hook_associate("playlist end reached", (HookFunction) end_reached, NULL);
-//    hook_associate("playlist set playing", (HookFunction) set_playing, NULL);
     return TRUE;
 }
 
 static void scrobbler_cleanup (void) {
-    //TODO: Find out what this function is supposed to do
+    //TODO: Do we want anything else here?
 
-//    hook_dissociate("playback begin", (HookFunction) playing);
     hook_dissociate("playback stop", (HookFunction) stopped);
     hook_dissociate("playback end", (HookFunction) ended);
     hook_dissociate("playback ready", (HookFunction) ready);
     hook_dissociate("playback pause", (HookFunction) paused);
     hook_dissociate("playback unpause", (HookFunction) unpaused);
-//    hook_dissociate("playlist end reached", (HookFunction) end_reached);
-//    hook_dissociate("playlist set playing", (HookFunction) set_playing);
 }
 
 static const char scrobbler_about[] =
  "Audacious Scrobbling Plugin 2.0 by Pitxyoki,\n\n"
- "Copyright (C) 2012 Luís Picciochi <Pitxyoki@Gmail.com>.\n\n"
+ "Copyright © 2012 Luís Picciochi <Pitxyoki@Gmail.com>.\n\n"
  "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n";
+
 
 AUD_GENERAL_PLUGIN (
     .name = N_("Scrobbler 2.0"),
     .domain = PACKAGE,
     .about_text = scrobbler_about,
     .init = scrobbler_init,
-    .cleanup = scrobbler_cleanup
+    .cleanup = scrobbler_cleanup,
+    .prefs = &configuration //see config_window.c
 )

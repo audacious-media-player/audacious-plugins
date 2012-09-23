@@ -22,6 +22,8 @@ static bool_t prepare_data () {
     context = xmlXPathNewContext(doc);
     if (context == NULL) {
         AUDDBG("Error in xmlXPathNewContext\n");
+        xmlFreeDoc(doc);
+        doc = NULL;
         return FALSE;
     }
     return TRUE;
@@ -156,8 +158,10 @@ bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
     (*error_code_out) = g_strdup((gchar *) error_code);
     (*error_detail_out) = g_strdup((gchar *) error_detail);
 
+
     if (status == NULL) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
+        clean_data();
         return FALSE;
     }
 
@@ -187,6 +191,7 @@ bool_t read_connection_test_result () {
     xmlChar *error_detail = NULL;
     bool_t result = TRUE;
 
+
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
         return FALSE;
@@ -195,16 +200,21 @@ bool_t read_connection_test_result () {
     status = check_status(&error_code, &error_detail);
     if (status == NULL) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
+        clean_data();
         return FALSE;
     }
+
     if (xmlStrEqual(status, (xmlChar *) "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
-        if (xmlStrEqual(error_code, (xmlChar *) "6")) {
-            //This is error code 6: No user with that name was found.
-            //We only get this error if we have a valid API key.
-            result = TRUE;
-        } else {
+        if (xmlStrEqual(error_code, (xmlChar *) "4")) {
+            //error code 4: Authentication Failed - You do not have permissions to access the service
             result = FALSE;
+        } else if (xmlStrEqual(error_code, (xmlChar *) "9")) {
+            //error code 9: Invalid session key - Please re-authenticate
+            result = FALSE;
+        } else {
+            //all other errors are irrelevant for authentication detection
+            result = TRUE;
         }
     }
 
@@ -228,6 +238,7 @@ bool_t read_token () {
     xmlChar *error_detail = NULL;
     bool_t result = TRUE;
 
+
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
         return FALSE;
@@ -236,6 +247,7 @@ bool_t read_token () {
     status = check_status(&error_code, &error_detail);
     if (status == NULL) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
+        clean_data();
         return FALSE;
     }
 
@@ -270,12 +282,12 @@ bool_t read_token () {
 
 
 
-bool_t read_session_key() {
-
+bool_t read_session_key(char **error_code_out, char **error_detail_out) {
     xmlChar *status;
     xmlChar *error_code = NULL;
     xmlChar *error_detail = NULL;
     bool_t result = TRUE;
+
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
@@ -283,8 +295,12 @@ bool_t read_session_key() {
     }
 
     status = check_status(&error_code, &error_detail);
+    (*error_code_out) = g_strdup((gchar *) error_code);
+    (*error_detail_out) = g_strdup((gchar *) error_detail);
+
     if (status == NULL) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
+        clean_data();
         return FALSE;
     }
 
@@ -304,8 +320,6 @@ bool_t read_session_key() {
             AUDDBG("This is the session key: %s.\n", session_key);
         }
     }
-
-
 
     xmlFree(status);
     if (error_code != NULL) {

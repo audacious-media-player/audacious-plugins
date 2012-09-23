@@ -2,7 +2,8 @@ PLUGIN = scrobbler2${PLUGIN_SUFFIX}
 
 SRCS = scrobbler.c \
 	   scrobbler_communication.c \
-	   scrobbler_xml_parsing.c
+	   scrobbler_xml_parsing.c \
+	   config_window.c
 			
 
 include ../../buildsys.mk
