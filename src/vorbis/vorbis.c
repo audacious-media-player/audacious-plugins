@@ -395,7 +395,8 @@ DRAIN:
             }
         }
 
-        if (current_section <= last_section) {
+        if (current_section != last_section)
+        {
             /*
              * The info struct is different in each section.  vf
              * holds them all for the given bitstream.  This
@@ -406,7 +407,8 @@ DRAIN:
             if (vi->channels > 2)
                 goto stop_processing;
 
-            if (vi->rate != samplerate || vi->channels != channels) {
+            if (vi->rate != samplerate || vi->channels != channels)
+            {
                 samplerate = vi->rate;
                 channels = vi->channels;
 
@@ -425,7 +427,7 @@ DRAIN:
 
 stop_processing:
 
-        if (current_section <= last_section)
+        if (current_section != last_section)
         {
             playback->set_params (playback, br, samplerate, channels);
             last_section = current_section;
