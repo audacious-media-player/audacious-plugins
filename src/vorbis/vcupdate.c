@@ -61,7 +61,11 @@ static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
         frags = g_strsplit(vc->user_comments[i], "=", 2);
 
         if (frags[0] && frags[1])
-            g_hash_table_insert (dict, str_get (frags[0]), str_get (frags[1]));
+        {
+            gchar * key = g_ascii_strdown (frags[0], -1);
+            g_hash_table_insert (dict, str_get (key), str_get (frags[1]));
+            g_free (key);
+        }
 
         g_strfreev(frags); /* Don't use g_free() for string lists! --eugene */
     }
