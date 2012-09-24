@@ -5,6 +5,7 @@
 //audacious includes
 #include <config.h>                //needed
 #include <audacious/plugin.h>      //needed
+#include <audacious/drct.h> //needed
 #include <audacious/playlist.h>    //needed
 #include <libaudcore/hook.h>       //needed
 
@@ -52,42 +53,39 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
 
-    g_mutex_lock(log_access_mutex);
-    FILE *f = fopen(queuepath, "a");
-    g_free(queuepath);
+    char *artist = tuple_get_str(playing_track, FIELD_ARTIST, NULL);
+    char *title  = tuple_get_str(playing_track, FIELD_TITLE, NULL);
+    char *album  = tuple_get_str(playing_track, FIELD_ALBUM, NULL);
+    int number = tuple_get_int(playing_track, FIELD_TRACK_NUMBER, NULL);
+    int length = tuple_get_int(playing_track, FIELD_LENGTH, NULL) / 1000;
 
-    if (f == NULL) {
-        perror("fopen");
-    } else {
-        char *artist = tuple_get_str(playing_track, FIELD_ARTIST, NULL);
-        char *title  = tuple_get_str(playing_track, FIELD_TITLE, NULL);
+    //artist, title and timestamp are required for a successful scrobble
+    if (artist != NULL && title != NULL) {
+        g_mutex_lock(log_access_mutex);
+        FILE *f = fopen(queuepath, "a");
 
-        char *album  = tuple_get_str(playing_track, FIELD_ALBUM, NULL);
-
-        int number = tuple_get_int(playing_track, FIELD_TRACK_NUMBER, NULL);
-        int length = tuple_get_int(playing_track, FIELD_LENGTH, NULL) / 1000;
-
-        //artist, title and timestamp are required for a successful scrobble
-        if (artist != NULL && title != NULL) {
+        if (f == NULL) {
+            perror("fopen");
+        } else {
             //This isn't exactly the scrobbler.log format because the header
             //is missing, but we're sticking to it anyway...
             if (fprintf(f, "%s\t%s\t%s\t%i\t%i\t%s\t%li\n",
                         artist, (album == NULL ? "" : album), title, number, length, "L", timestamp
-                        ) < 0) {
+                       ) < 0) {
                 perror("fprintf");
             } else {
                 g_mutex_lock(communication_mutex);
                 g_cond_signal(communication_signal);
                 g_mutex_unlock(communication_mutex);
             }
+            fclose(f);
         }
-
-        str_unref(artist);
-        str_unref(title);
-        str_unref(album);
-        fclose(f);
+        g_mutex_unlock(log_access_mutex);
     }
-    g_mutex_unlock(log_access_mutex);
+    g_free(queuepath);
+    str_unref(artist);
+    str_unref(title);
+    str_unref(album);
 
     cleanup_current_track();
     return FALSE;
@@ -95,12 +93,14 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
 
 static void stopped (void *hook_data, void *user_data) {
+    printf("Playback stopped!\n");
     // Called when pressing STOP and when the playlist ends.
 
     cleanup_current_track();
 }
 
 static void ended (void *hook_data, void *user_data) {
+    printf("Playback ended!\n");
     //Called when when a track finishes playing.
 
     //TODO: probably we can also enqueue here to workaround tracks with wrong lengths
@@ -108,8 +108,7 @@ static void ended (void *hook_data, void *user_data) {
 }
 
 static void ready (void *hook_data, void *user_data) {
-    AUDDBG("Playback ready!\n");
-
+    printf("Playback ready!\n");
 
     Tuple *current_track = aud_playlist_entry_get_tuple(aud_playlist_get_playing(), aud_playlist_get_position(aud_playlist_get_playing()), FALSE);
 
@@ -132,6 +131,7 @@ static void ready (void *hook_data, void *user_data) {
 }
 
 static void paused (void *hook_data, void *user_data) {
+    printf("Playback paused!\n");
     if (playing_track == NULL) {
         return;
     }
@@ -147,8 +147,10 @@ static void paused (void *hook_data, void *user_data) {
 }
 
 static void unpaused (void *hook_data, void *user_data) {
+    printf("playback unpaused! %li, %li, %li\n", time_until_scrobble, pause_started_at, play_started_at);
 
-    if (playing_track == NULL) {
+    if (playing_track == NULL
+        || pause_started_at == 0) { //TODO: audacious was started with a paused track.
         return;
     }
     time_until_scrobble = time_until_scrobble - (pause_started_at - play_started_at);
