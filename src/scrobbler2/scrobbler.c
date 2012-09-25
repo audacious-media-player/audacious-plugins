@@ -69,6 +69,7 @@ gboolean queue_track_to_scrobble (gpointer data) {
         } else {
             //This isn't exactly the scrobbler.log format because the header
             //is missing, but we're sticking to it anyway...
+            //See http://www.audioscrobbler.net/wiki/Portable_Player_Logging
             if (fprintf(f, "%s\t%s\t%s\t%i\t%i\t%s\t%"G_GINT64_FORMAT"\n",
                         artist, (album == NULL ? "" : album), title, number, length, "L", timestamp
                        ) < 0) {

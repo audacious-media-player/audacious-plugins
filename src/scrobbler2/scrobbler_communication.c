@@ -87,8 +87,9 @@ static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
  * At most 2: api_key, session_key.
  * api_sig (checksum) is always included, be it necessary or not
  * Example usage:
- *   send_message_to_lastfm("track.scrobble", 3
- *        "artist", "Artist Name", "track", "Track Name", "timestamp", time(NULL));
+ *   send_message_to_lastfm("track.scrobble", 5
+ *        "artist", "Artist Name", "track", "Track Name", "timestamp", time(NULL),
+ *        "api_key", SCROBBLER_API_KEY, "sk", session_key);
  *
  * Returns NULL if an error occurrs
  */
@@ -123,34 +124,24 @@ static gchar *create_message_to_lastfm (char *method_name, int n_args, ...) {
         return NULL;
     }
 
-    int curr_index = g_snprintf(result, msg_size, "%s=%s", "method", method_name);
-    if (curr_index < 0) {
-        perror("g_snprintf");
-        return NULL;
-    }
+    gchar *aux;
+    result = g_strconcat("method=", method_name, NULL);
+    char *escaped_argument;
 
-    int last_index = curr_index;
-    int msg_size_available = msg_size - (curr_index*sizeof(gchar));
+    for (int i = 0; i < n_args; i++) {
+        escaped_argument = curl_easy_escape(curlHandle, signable_params[i+1].argument, 0);
 
-    for (int i = 0 ; i < n_args; i++) {
-        curr_index = g_snprintf(result+last_index, msg_size_available,
-                          "&%s=%s", signable_params[i+1].paramName, signable_params[i+1].argument);
-        if (curr_index < 0) {
-            perror("g_snprintf");
-            return NULL;
-        }
-
-        last_index = last_index + curr_index;
-        msg_size_available = msg_size - (last_index*sizeof(gchar));
+        aux = g_strdup_printf("%s&%s=%s", result, signable_params[i+1].paramName, escaped_argument);
+        g_free(result);
+        curl_free(escaped_argument);
+        result = aux;
     }
 
     gchar *api_sig = scrobbler_get_signature(n_args+1, signable_params);
-    msg_size = (msg_size + strlen("&api_sig=")+ strlen(api_sig) + 1) * sizeof(gchar) ;
 
-    result = realloc(result, msg_size);
+    aux = g_strdup_printf("%s&api_sig=%s", result, api_sig);
+    result = aux;
 
-    strcat(result, "&api_sig=");
-    strcat(result, api_sig);
     AUDDBG("FINAL message: %s.\n", result);
     g_free(api_sig);
     for (int i = 0; i < n_args+1; i++) {
