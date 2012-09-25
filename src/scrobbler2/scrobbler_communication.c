@@ -15,7 +15,6 @@
 //external includes
 #include <stdarg.h>
 #include <stdlib.h>
-#include <string.h>
 #include <curl/curl.h>
 
 
@@ -28,8 +27,6 @@ typedef struct {
 
 static CURL *curlHandle = NULL;     //global handle holding cURL options
 
-GCond  *scrobbling_enabled_sinagler;
-GMutex *scrobbling_enabled_mutex;
 bool_t scrobbling_enabled = TRUE;
 
 //shared variables
@@ -262,12 +259,17 @@ static bool_t scrobbler_request_token() {
 // FALSE if there was a network problem
 // TRUE otherwise (session_key must be checked)
 static bool_t scrobbler_request_session() {
+    bool_t result = FALSE;
+    gchar *error_code = NULL;
+    gchar *error_detail = NULL;
+
     gchar *sessionmsg = create_message_to_lastfm("auth.getSession",
                                                  2,
                                                  "token", request_token,
                                                  "api_key", SCROBBLER_API_KEY);
 
     if (send_message_to_lastfm(sessionmsg) == FALSE) {
+        g_free(sessionmsg);
         return FALSE;
     }
 
@@ -277,8 +279,6 @@ static bool_t scrobbler_request_session() {
     }
     request_token = NULL;
 
-    gchar *error_code = NULL;
-    gchar *error_detail = NULL;
     if (read_session_key(&error_code, &error_detail) == FALSE) {
         if (error_code != NULL && (
                 g_strcmp0(error_code,  "4") == 0 || //invalid token
@@ -286,14 +286,20 @@ static bool_t scrobbler_request_session() {
                 g_strcmp0(error_code, "15") == 0    //token expired
             )) {
             printf("error code CAUGHT: %s\n", error_code);
+            g_free(session_key);
             session_key = NULL;
-            return TRUE;
+            result = TRUE;
+        } else {
+            result= FALSE;
         }
-        return FALSE;
     }
 
-    aud_set_string("scrobbler", "session_key", session_key);
-    return TRUE;
+    if (session_key == NULL) {
+        aud_set_string("scrobbler", "session_key", "");
+    } else {
+        aud_set_string("scrobbler", "session_key", session_key);
+    }
+    return result;
 }
 
 // Returns TRUE if authorization was granted by the user
@@ -387,6 +393,7 @@ gpointer checking_thread (gpointer permission_result) {
 // FALSE if there was a network problem.
 // TRUE otherwise (scrobbling_enabled must be checked)
 //sets scrobbling_enabled to TRUE if the session is OK
+//sets session_key to NULL if it is invalid
 static bool_t scrobbler_test_connection() {
 
     if (session_key == NULL || strlen(session_key) == 0) {
@@ -412,6 +419,7 @@ static bool_t scrobbler_test_connection() {
         }*/
     }
 
+
     gchar *testmsg = create_message_to_lastfm("user.getRecommendedArtists",
                                               3,
                                               "limit", "1",
@@ -429,20 +437,33 @@ static bool_t scrobbler_test_connection() {
         return FALSE;
     }
 
-
-    if (read_authentication_test_result() == TRUE) {
+    gchar *error_code = NULL;
+    gchar *error_detail = NULL;
+    if (read_authentication_test_result(&error_code, &error_detail) == FALSE) {
+        AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
+        if (error_code != NULL && (
+                g_strcmp0(error_code, "4") == 0 || //error code 4: Authentication Failed - You do not have permissions to access the service
+                g_strcmp0(error_code, "9") == 0    //error code 9: Invalid session key - Please re-authenticate
+            )) {
+            g_free(error_code);
+            g_free(error_detail);
+            g_free(session_key);
+            session_key = NULL;
+            aud_set_string("scrobbler", "session_key", "");
+            scrobbling_enabled = FALSE;
+            return TRUE;
+        } else {
+            //network problem.
+            scrobbling_enabled = FALSE;
+            printf("Connection NOT OK. Scrobbling disabled\n");
+            return FALSE;
+        }
+    } else {
         //THIS IS THE ONLY PLACE WHERE SCROBBLING IS SET TO ENABLED
         scrobbling_enabled = TRUE;
         printf("Connection OK. Scrobbling enabled.\n");
         return TRUE;
-
-    } else {
-        scrobbling_enabled = FALSE;
-        printf("Connection NOT OK. Scrobbling disabled\n");
-        return TRUE;
     }
-
-
 }
 
 //called from scrobbler_init() @ scrobbler.c
@@ -488,7 +509,7 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, gchar 
     lines_to_remove = g_slist_reverse(lines_to_remove);
 
 
-    g_mutex_lock(log_access_mutex);
+    g_mutex_lock(&log_access_mutex);
 
     gboolean success = g_file_get_contents(queuepath, &contents, NULL, NULL);
     if (!success) {
@@ -521,7 +542,7 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, gchar 
 
     }
 
-    g_mutex_unlock(log_access_mutex);
+    g_mutex_unlock(&log_access_mutex);
 
 
     g_strfreev(finallines);
@@ -546,10 +567,9 @@ static void scrobble_cached_queue() {
     GSList *lines_to_remove = NULL;
     gchar *error_code = NULL;
     gchar *error_detail = NULL;
-
-    g_mutex_lock(log_access_mutex);
+    g_mutex_lock(&log_access_mutex);
     success = g_file_get_contents(queuepath, &contents, NULL, NULL);
-    g_mutex_unlock(log_access_mutex);
+    g_mutex_unlock(&log_access_mutex);
     if (!success) {
         AUDDBG("Couldn't access the queue file.\n");
     } else {
@@ -639,10 +659,12 @@ static void scrobble_cached_queue() {
 gpointer scrobbling_thread (gpointer input_data) {
 
     while (TRUE) { //TODO: change this to a var so we can cleanup the plugin when it is unloaded.
+
         if (permission_check_requested) {
             if (session_key == NULL || strlen(session_key) == 0) {
                 perm_result = PERMISSION_DENIED;
 
+printf("this is the request token: %s.\n", request_token);
                 if (request_token == NULL || strlen(request_token) == 0) {
                     if (scrobbler_request_token() == FALSE || request_token == NULL) {
                         perm_result = PERMISSION_NONET;
@@ -664,17 +686,26 @@ gpointer scrobbling_thread (gpointer input_data) {
             if (session_key != NULL && strlen(session_key) != 0 ){
                 if (scrobbler_test_connection() == FALSE) {
                     perm_result = PERMISSION_NONET;
+                    if (session_key == NULL || strlen(session_key) == 0) {
+                        if (scrobbler_request_token() == FALSE || request_token == NULL || strlen(request_token) == 0) {
+                            perm_result = PERMISSION_NONET;
+                        } else {
+                            perm_result = PERMISSION_DENIED;
+                        }
+                    }
 
                 } else {
                     if (scrobbling_enabled) {
                         perm_result = PERMISSION_ALLOWED;
                     } else {
-                        /* Reaching this code is very unlikely.
-                        This means that we just received a session key but
-                        couldn't make an authenticated call with it. Something
-                        might be wrong on last.fm's side (?) or the session
-                        key might have expired, which they say never happens
-                        without user intervention. */
+                     /* This means that we have a session key but couldn't make
+                      * an authenticated call with it. This happens when:
+                      * a) the user revoked the permission to Audacious on his
+                      * last.fm account OR
+                      * b) something might be wrong on last.fm's side (?) OR
+                      * c) the user fiddled with the audacious config file and
+                      * the key is now invalid
+                      */
                         if (scrobbler_request_token() == FALSE || request_token == NULL) {
                             perm_result = PERMISSION_NONET;
                         } else {
@@ -686,23 +717,21 @@ gpointer scrobbling_thread (gpointer input_data) {
                 AUDDBG("A session key should be available but it isn't. Unexpected behaviour might occur.\n");
             }
 
-            g_mutex_lock(permission_check_mutex);
             permission_check_requested = FALSE;
-            g_cond_signal(permission_check_signal);
-            g_mutex_unlock(permission_check_mutex);
         } else if (FALSE) { //now_playing_requested
 
         } else {
+
             scrobble_cached_queue();
             //scrobbling may be disabled if communication errors occurr
 
-            g_mutex_lock(communication_mutex);
+            g_mutex_lock(&communication_mutex);
             if (scrobbling_enabled) {
-                g_cond_wait(communication_signal, communication_mutex);
-                g_mutex_unlock(communication_mutex);
+                g_cond_wait(&communication_signal, &communication_mutex);
+                g_mutex_unlock(&communication_mutex);
             }
             else {
-                g_mutex_unlock(communication_mutex);
+                g_mutex_unlock(&communication_mutex);
 
                 printf("Checking if we can scrobble already.\n");
                 //We don't want to wait until receiving a signal to retry

@@ -7,10 +7,9 @@
 
 #include "scrobbler.h"
 
-//shared variables
-GMutex    *permission_check_mutex;
-GCond     *permission_check_signal;
+#include <gdk/gdk.h>
 
+//shared variables
 bool_t    permission_check_requested = FALSE;
 enum permission perm_result = PERMISSION_UNKNOWN;
 
@@ -42,7 +41,57 @@ static GtkWidget *additional_details_label;
  */
 
 
-gpointer permission_checker_thread (gpointer data) {
+static gboolean permission_checker_thread (gpointer data) {
+        if (permission_check_requested == TRUE) {
+            //the answer hasn't arrived yet
+            return TRUE;
+
+        } else {
+            //the answer has arrived
+            g_assert(perm_result != PERMISSION_UNKNOWN);
+
+            if (perm_result == PERMISSION_ALLOWED) {
+                gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_YES, GTK_ICON_SIZE_SMALL_TOOLBAR);
+                gtk_label_set_label(GTK_LABEL(permission_status_label), "OK");
+
+            } else if (perm_result == PERMISSION_DENIED) {
+
+                gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_NO,   GTK_ICON_SIZE_SMALL_TOOLBAR);
+                gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
+
+
+                gtk_label_set_label(GTK_LABEL(permission_status_label), "Permission Denied");
+
+                gchar *markup = g_markup_printf_escaped("Access the following link to allow Audacious to scrobble your plays:\n"
+                        "<a href=\"http://www.last.fm/api/auth/?api_key=%s&amp;token=%s\">http://www.last.fm/api/auth/?api_key=%s&amp;token=%s</a>\n"
+                        "Keep this window open and click 'Check Permissions' again.", SCROBBLER_API_KEY, request_token, SCROBBLER_API_KEY, request_token);
+                gtk_label_set_markup(GTK_LABEL(details_label), markup);
+                g_free(markup);
+
+                gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
+                        "They will be submitted as soon as Audacious is allowed to do so.");
+
+            } else if (perm_result == PERMISSION_NONET) {
+                gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_SMALL_TOOLBAR);
+                gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
+
+
+                gtk_label_set_label(GTK_LABEL(permission_status_label), "Network Problem.");
+                gtk_label_set_label(GTK_LABEL(details_label), "There was a problem contacting Last.fm. Please try again later.");
+                gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
+                        "They will be submitted as soon as Audacious is allowed to do so.");
+            }
+
+            perm_result = PERMISSION_UNKNOWN;
+            gtk_widget_set_sensitive(button, TRUE);
+
+            return FALSE;
+        }
+}
+
+
+static void permission_checker (GtkButton *button12, gpointer data) {
+//    g_thread_create(permission_checker_thread, data, FALSE, NULL);
     gtk_widget_set_sensitive(button, FALSE);
 
     gtk_image_clear(GTK_IMAGE(permission_status_icon));
@@ -53,10 +102,9 @@ gpointer permission_checker_thread (gpointer data) {
     gtk_label_set_label(GTK_LABEL(details_label), "");
     gtk_label_set_label(GTK_LABEL(additional_details_label), "");
 
-
     //This will make the communication thread check the permission
     //and set the current status on the perm_result enum
-    g_mutex_lock(communication_mutex);
+    g_mutex_lock(&communication_mutex);
     permission_check_requested = TRUE;
 
     //This is only to accelerate the check.
@@ -65,59 +113,11 @@ gpointer permission_checker_thread (gpointer data) {
 
 
     //Wake the communication thread up in case it's waiting for track plays
-    g_cond_signal(communication_signal);
-    g_mutex_unlock(communication_mutex);
+    g_cond_signal(&communication_signal);
+    g_mutex_unlock(&communication_mutex);
 
-
-    //Wait for the permission check to be done.
-    g_mutex_lock(permission_check_mutex);
-    while (permission_check_requested == TRUE) {
-        g_cond_wait(permission_check_signal, permission_check_mutex);
-    }
-    g_mutex_unlock(permission_check_mutex);
-
-    g_assert(perm_result != PERMISSION_UNKNOWN);
-
-    if (perm_result == PERMISSION_ALLOWED) {
-        gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_YES, GTK_ICON_SIZE_SMALL_TOOLBAR);
-        gtk_label_set_label(GTK_LABEL(permission_status_label), "OK");
-
-    } else if (perm_result == PERMISSION_DENIED) {
-
-        gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_NO,   GTK_ICON_SIZE_SMALL_TOOLBAR);
-        gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
-
-
-        gtk_label_set_label(GTK_LABEL(permission_status_label), "Permission Denied");
-
-        gchar *markup = g_markup_printf_escaped("Access the following link to allow Audacious to scrobble your plays:\n"
-                "<a href=\"http://www.last.fm/api/auth/?api_key=%s&amp;token=%s\">http://www.last.fm/api/auth/?api_key=%s&amp;token=%s</a>\n"
-                "Keep this window open and click 'Check Permissions' again.", SCROBBLER_API_KEY, request_token, SCROBBLER_API_KEY, request_token);
-        gtk_label_set_markup(GTK_LABEL(details_label), markup);
-        g_free(markup);
-
-        gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
-                "They will be submitted as soon as Audacious is allowed to do so.");
-
-    } else if (perm_result == PERMISSION_NONET) {
-        gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_SMALL_TOOLBAR);
-        gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
-
-
-        gtk_label_set_label(GTK_LABEL(permission_status_label), "Network Problem.");
-        gtk_label_set_label(GTK_LABEL(details_label), "There was a problem contacting Last.fm. Please try again later.");
-        gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
-                "They will be submitted as soon as Audacious is allowed to do so.");
-    }
-
-    perm_result = PERMISSION_UNKNOWN;
-    gtk_widget_set_sensitive(button, TRUE);
-
-    return NULL;
-}
-
-static void permission_checker (GtkButton *button, gpointer data) {
-    g_thread_create(permission_checker_thread, data, FALSE, NULL);
+    //The button is clicked. Wait for the permission check to be done.
+    gdk_threads_add_timeout_seconds(1, permission_checker_thread, data);
 }
 
 
@@ -125,7 +125,6 @@ static void *config_status_checker () {
     GtkWidget *config_box;
     GtkWidget *button_box;
     GtkWidget *additional_details_box;
-
 
     config_box              = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
 

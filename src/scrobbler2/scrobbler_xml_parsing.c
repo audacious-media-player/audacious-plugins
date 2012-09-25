@@ -119,7 +119,7 @@ static xmlChar *check_status (xmlChar **error_code, xmlChar **error_detail) {
     (*error_detail) = NULL;
 
     xmlChar *status = get_attribute_value((xmlChar *) "/lfm[@status]", (xmlChar *) "status");
-    if (status == NULL) {
+    if (status == NULL || xmlStrlen(status) == 0) {
         AUDDBG("last.fm not answering according to the API.\n");
         return NULL;
     }
@@ -128,7 +128,7 @@ static xmlChar *check_status (xmlChar **error_code, xmlChar **error_detail) {
     if (!xmlStrEqual(status, (xmlChar *) "ok")) {
 
         (*error_code) = get_attribute_value((xmlChar *) "/lfm/error[@code]", (xmlChar *) "code");
-        if ((*error_code) == NULL) {
+        if ((*error_code) == NULL || xmlStrlen(*error_code) == 0) {
             AUDDBG("Weird API answer. Last.fm says status is %s but there is no error code?\n", status);
             xmlFree(status);
             status = NULL;
@@ -159,7 +159,7 @@ bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
     (*error_detail_out) = g_strdup((gchar *) error_detail);
 
 
-    if (status == NULL) {
+    if (status == NULL || xmlStrlen(status) == 0) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
         clean_data();
         return FALSE;
@@ -185,7 +185,7 @@ bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
 
 //returns
 //FALSE if there was an error with the connection
-bool_t read_authentication_test_result () {
+bool_t read_authentication_test_result (char **error_code_out, char **error_detail_out) {
     xmlChar *status;
     xmlChar *error_code = NULL;
     xmlChar *error_detail = NULL;
@@ -198,24 +198,17 @@ bool_t read_authentication_test_result () {
     }
 
     status = check_status(&error_code, &error_detail);
-    if (status == NULL) {
+    (*error_code_out) = g_strdup((gchar *) error_code);
+    (*error_detail_out) = g_strdup((gchar *) error_detail);
+
+    if (status == NULL || xmlStrlen(status) == 0) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
         clean_data();
         return FALSE;
     }
 
     if (xmlStrEqual(status, (xmlChar *) "failed")) {
-        AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
-        if (xmlStrEqual(error_code, (xmlChar *) "4")) {
-            //error code 4: Authentication Failed - You do not have permissions to access the service
-            result = FALSE;
-        } else if (xmlStrEqual(error_code, (xmlChar *) "9")) {
-            //error code 9: Invalid session key - Please re-authenticate
-            result = FALSE;
-        } else {
-            //all other errors are irrelevant for authentication detection
-            result = TRUE;
-        }
+        result = FALSE;
     }
 
     xmlFree(status);
@@ -248,7 +241,7 @@ bool_t read_token (char **error_code_out, char **error_detail_out) {
     (*error_code_out) = g_strdup((gchar *) error_code);
     (*error_detail_out) = g_strdup((gchar *) error_detail);
 
-    if (status == NULL) {
+    if (status == NULL || xmlStrlen(status) == 0) {
         AUDDBG("Status was NULL. Invalid API answer.\n");
         clean_data();
         return FALSE;
@@ -261,7 +254,7 @@ bool_t read_token (char **error_code_out, char **error_detail_out) {
     else {
         request_token = (gchar *) get_node_string("/lfm/token");
 
-        if (request_token == NULL) {
+        if (request_token == NULL || strlen(request_token) == 0) {
             AUDDBG("Could not read the received token. Something's wrong with the API?\n");
             result = FALSE;
         }
@@ -300,8 +293,8 @@ bool_t read_session_key(char **error_code_out, char **error_detail_out) {
     (*error_code_out) = g_strdup((gchar *) error_code);
     (*error_detail_out) = g_strdup((gchar *) error_detail);
 
-    if (status == NULL) {
-        AUDDBG("Status was NULL. Invalid API answer.\n");
+    if (status == NULL || xmlStrlen(status) == 0) {
+        AUDDBG("Status was NULL or empty. Invalid API answer.\n");
         clean_data();
         return FALSE;
     }
@@ -309,15 +302,15 @@ bool_t read_session_key(char **error_code_out, char **error_detail_out) {
     if (xmlStrEqual(status, (xmlChar *) "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
         result = FALSE;
-    }
-    else {
+
+    } else {
+        g_free(session_key);
         session_key = (gchar *) get_node_string("/lfm/session/key");
 
-        if (session_key == NULL) {
+        if (session_key == NULL || strlen(session_key) == 0) {
             AUDDBG("Could not read the received session key. Something's wrong with the API?\n");
             result = FALSE;
-        }
-        else {
+        } else {
             AUDDBG("This is the session key: %s.\n", session_key);
         }
     }

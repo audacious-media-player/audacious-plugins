@@ -13,9 +13,9 @@
 
 
 //shared variables
-GMutex *communication_mutex;
-GCond  *communication_signal;
-GMutex *log_access_mutex;
+GMutex communication_mutex;
+GCond  communication_signal;
+GMutex log_access_mutex;
 gchar *session_key;
 gchar *request_token;
 
@@ -61,7 +61,7 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
     //artist, title and timestamp are required for a successful scrobble
     if (artist != NULL && title != NULL) {
-        g_mutex_lock(log_access_mutex);
+        g_mutex_lock(&log_access_mutex);
         FILE *f = fopen(queuepath, "a");
 
         if (f == NULL) {
@@ -69,18 +69,18 @@ gboolean queue_track_to_scrobble (gpointer data) {
         } else {
             //This isn't exactly the scrobbler.log format because the header
             //is missing, but we're sticking to it anyway...
-            if (fprintf(f, "%s\t%s\t%s\t%i\t%i\t%s\t%li\n",
+            if (fprintf(f, "%s\t%s\t%s\t%i\t%i\t%s\t%"G_GINT64_FORMAT"\n",
                         artist, (album == NULL ? "" : album), title, number, length, "L", timestamp
                        ) < 0) {
                 perror("fprintf");
             } else {
-                g_mutex_lock(communication_mutex);
-                g_cond_signal(communication_signal);
-                g_mutex_unlock(communication_mutex);
+                g_mutex_lock(&communication_mutex);
+                g_cond_signal(&communication_signal);
+                g_mutex_unlock(&communication_mutex);
             }
             fclose(f);
         }
-        g_mutex_unlock(log_access_mutex);
+        g_mutex_unlock(&log_access_mutex);
     }
     g_free(queuepath);
     str_unref(artist);
@@ -147,7 +147,7 @@ static void paused (void *hook_data, void *user_data) {
 }
 
 static void unpaused (void *hook_data, void *user_data) {
-    printf("playback unpaused! %li, %li, %li\n", time_until_scrobble, pause_started_at, play_started_at);
+    printf("playback unpaused! %"G_GINT64_FORMAT", %"G_GINT64_FORMAT", %"G_GINT64_FORMAT"\n", time_until_scrobble, pause_started_at, play_started_at);
 
     if (playing_track == NULL
         || pause_started_at == 0) { //TODO: audacious was started with a paused track.
@@ -173,20 +173,12 @@ static bool_t scrobbler_init (void) {
     }
 
     session_key = aud_get_string("scrobbler", "session_key");
+    if (session_key != NULL && strlen(session_key) == 0) {
+        session_key = NULL;
+    }
     request_token = NULL;
 
-    //TODO: replace with g_mutex_init(communication_mutex) from glib 2.32
-    log_access_mutex = g_mutex_new();
-    communication_mutex = g_mutex_new();
-    permission_check_mutex = g_mutex_new();
-
-    //TODO: replace with g_cond_init
-    communication_signal = g_cond_new();
-    permission_check_signal = g_cond_new();
-
-
-    //TODO: g_thread_create should be updated to g_thread_new() from glib 2.32
-    g_thread_create(scrobbling_thread, NULL, FALSE, NULL);
+    g_thread_new("scrobbling_thread", scrobbling_thread, NULL);
 
     hook_associate("playback stop", (HookFunction) stopped, NULL);
     hook_associate("playback end", (HookFunction) ended, NULL);
