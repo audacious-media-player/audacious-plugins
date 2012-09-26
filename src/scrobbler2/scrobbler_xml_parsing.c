@@ -2,9 +2,7 @@
 //plugin includes
 #include "scrobbler.h"
 
-
-//audacious includes
-
+//static (private) variables
 static xmlDocPtr doc = NULL;
 static xmlXPathContextPtr context = NULL;
 
@@ -61,12 +59,6 @@ static xmlChar *get_attribute_value (xmlChar *node_expression, xmlChar *attribut
         return NULL;
     }
 
-    //TODO: DELETE THIS FOR. THIS IS JUST FOR DEBUGGING
-    for (int i = 0 ; i < statusObj->nodesetval->nodeNr ; i++) {
-        AUDDBG("Children found for expression (ATTRIBUTE [%s] text find):\n%s\n", node_expression,
-                xmlGetProp(statusObj->nodesetval->nodeTab[i], (xmlChar *) attribute));
-    }
-
     result = xmlGetProp(statusObj->nodesetval->nodeTab[0], (xmlChar *) attribute);
 
     xmlXPathFreeObject(statusObj);
@@ -95,12 +87,6 @@ static xmlChar *get_node_string (const char * node_expression) {
         AUDDBG("No result.\n");
         xmlXPathFreeObject(statusObj);
         return NULL;
-    }
-
-    //TODO: DELETE THIS FOR. THIS IS JUST FOR DEBUGGING
-    for (int i = 0 ; i < statusObj->nodesetval->nodeNr ; i++) {
-        AUDDBG("Children found for expression (NODE [%s] text find):\n%s\n", node_expression,
-                xmlNodeListGetString(doc, statusObj->nodesetval->nodeTab[i]->children, 1));
     }
 
     result = xmlNodeListGetString(doc, statusObj->nodesetval->nodeTab[0]->children, 1);

@@ -8,19 +8,17 @@
 #ifndef SCROBBLER_H_
 #define SCROBBLER_H_
 
-
-//audacious includes
-#include <audacious/i18n.h>        //needed
-#include <audacious/misc.h>
-#include <audacious/debug.h>
-#include <audacious/preferences.h> //needed
-
 //external includes
 #include <string.h>
 #include <glib.h>
 #include <libxml/xpath.h>
 #include <gtk/gtk.h>
 
+//audacious includes
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
+#include <audacious/debug.h>
+#include <audacious/preferences.h>
 
 #define SCROBBLER_API_KEY "4b4f73bda181868353f9b438604adf52"
 #define SCROBBLER_SHARED_SECRET "716cc0a784bb62835de5bd674e65eb57"

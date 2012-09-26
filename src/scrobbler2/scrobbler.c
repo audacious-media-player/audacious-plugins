@@ -1,15 +1,13 @@
 
-//plugin includes
-#include "scrobbler.h"//needed
-
 //audacious includes
-#include <config.h>                //needed
-#include <audacious/plugin.h>      //needed
-#include <audacious/drct.h> //needed
-#include <audacious/playlist.h>    //needed
-#include <libaudcore/hook.h>       //needed
+#include <config.h>
+#include <audacious/plugin.h>
+#include <audacious/drct.h>
+#include <audacious/playlist.h>
+#include <libaudcore/hook.h>
 
-//external includes
+//plugin includes
+#include "scrobbler.h"
 
 
 //shared variables
