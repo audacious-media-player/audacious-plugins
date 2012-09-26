@@ -451,6 +451,7 @@ static void scrobble_cached_queue() {
                             scrobbling_enabled = FALSE;
                             g_free(session_key);
                             session_key = NULL;
+                            aud_set_string("scrobbler", "session_key", "");
                         }
                         else {
                             save_line_to_remove(&lines_to_remove, i);
@@ -489,7 +490,7 @@ static void scrobble_cached_queue() {
 //Scrobbling will only be enabled after the first connection test passed
 gpointer scrobbling_thread (gpointer input_data) {
 
-    while (TRUE) { //TODO: change this to a var so we can cleanup the plugin when it is unloaded.
+    while (scrobbler_running) {
 
         if (permission_check_requested) {
             if (session_key == NULL || strlen(session_key) == 0) {
@@ -561,14 +562,24 @@ gpointer scrobbling_thread (gpointer input_data) {
                 //if submitting the cache failed due to network problems
                 g_mutex_unlock(&communication_mutex);
 
-                printf("Checking if we can scrobble already.\n");
                 if (scrobbler_test_connection() == FALSE || !scrobbling_enabled) {
-                    printf("nope. Sleeping.\n");
                     g_usleep(7*G_USEC_PER_SEC);
                 }
             }
         }
+    }//while(scrobbler_running)
+
+    //reset all vars to their initial values
+    if (received_data != NULL) {
+        free(received_data);
+        received_data = NULL;
     }
+    received_data_size = 0;
+
+    curl_easy_cleanup(curlHandle);
+    curlHandle = NULL;
+
+    scrobbling_enabled = TRUE;
     return NULL;
 }
 

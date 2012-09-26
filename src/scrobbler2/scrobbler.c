@@ -11,11 +11,12 @@
 
 
 //shared variables
+bool_t scrobbler_running = TRUE;
 GMutex communication_mutex;
 GCond  communication_signal;
 GMutex log_access_mutex;
-gchar *session_key;
-gchar *request_token;
+gchar *session_key = NULL;
+gchar *request_token = NULL;
 
 
 //static (private) variables
@@ -26,6 +27,7 @@ static  gint64 pause_started_at    = 0;
 static  gint64 time_until_scrobble = 0;
 static   guint queue_function_ID   = 0;
 
+static GThread *communicator = NULL;
 
 static void cleanup_current_track(void) {
 
@@ -119,14 +121,12 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
 
 static void stopped (void *hook_data, void *user_data) {
-    printf("Playback stopped!\n");
     // Called when pressing STOP and when the playlist ends.
 
     cleanup_current_track();
 }
 
 static void ended (void *hook_data, void *user_data) {
-    printf("Playback ended!\n");
     //Called when when a track finishes playing.
 
     //TODO: probably we can also enqueue here to workaround tracks with wrong lengths
@@ -134,7 +134,6 @@ static void ended (void *hook_data, void *user_data) {
 }
 
 static void ready (void *hook_data, void *user_data) {
-    printf("Playback ready!\n");
 
     Tuple *current_track = aud_playlist_entry_get_tuple(aud_playlist_get_playing(), aud_playlist_get_position(aud_playlist_get_playing()), FALSE);
 
@@ -157,8 +156,8 @@ static void ready (void *hook_data, void *user_data) {
 }
 
 static void paused (void *hook_data, void *user_data) {
-    printf("Playback paused!\n");
     if (playing_track == NULL) {
+        //This happens when audacious is started in paused mode
         return;
     }
 
@@ -173,7 +172,6 @@ static void paused (void *hook_data, void *user_data) {
 }
 
 static void unpaused (void *hook_data, void *user_data) {
-    printf("playback unpaused! %"G_GINT64_FORMAT", %"G_GINT64_FORMAT", %"G_GINT64_FORMAT"\n", time_until_scrobble, pause_started_at, play_started_at);
 
     if (playing_track == NULL
         || pause_started_at == 0) { //TODO: audacious was started with a paused track.
@@ -204,7 +202,7 @@ static bool_t scrobbler_init (void) {
     }
     request_token = NULL;
 
-    g_thread_new(NULL, scrobbling_thread, NULL);
+    communicator = g_thread_new(NULL, scrobbling_thread, NULL);
 
     hook_associate("playback stop", (HookFunction) stopped, NULL);
     hook_associate("playback end", (HookFunction) ended, NULL);
@@ -215,13 +213,29 @@ static bool_t scrobbler_init (void) {
 }
 
 static void scrobbler_cleanup (void) {
-    //TODO: Do we want anything else here?
 
     hook_dissociate("playback stop", (HookFunction) stopped);
     hook_dissociate("playback end", (HookFunction) ended);
     hook_dissociate("playback ready", (HookFunction) ready);
     hook_dissociate("playback pause", (HookFunction) paused);
     hook_dissociate("playback unpause", (HookFunction) unpaused);
+
+    cleanup_current_track();
+
+    scrobbling_enabled = FALSE;
+    scrobbler_running  = FALSE;
+    g_mutex_lock(&communication_mutex);
+    g_cond_signal(&communication_signal);
+    g_mutex_unlock(&communication_mutex);
+
+    g_thread_join(communicator);
+    communicator = NULL;
+
+    g_free(request_token);
+    g_free(session_key);
+    request_token = NULL;
+    session_key   = NULL;
+    scrobbler_running = TRUE;
 }
 
 static const char scrobbler_about[] =

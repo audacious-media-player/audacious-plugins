@@ -34,6 +34,7 @@ extern enum permission {
     PERMISSION_NONET
 } perm_result;
 
+extern bool_t scrobbler_running;
 extern bool_t scrobbling_enabled;
 
 
