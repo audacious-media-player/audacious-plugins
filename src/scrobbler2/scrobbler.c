@@ -46,19 +46,46 @@ static void cleanup_current_track(void) {
     }
 }
 
+static gchar *remove_tabs(const char *string) {
+    gchar *result;
+    gchar **tmp = g_strsplit(string, "\t", -1);
+
+    result = g_strjoinv(" ", tmp);
+    g_strfreev(tmp);
+
+    return result;
+}
+
 gboolean queue_track_to_scrobble (gpointer data) {
     AUDDBG("The playing track is going to be ENQUEUED!\n.");
+    gchar *tab_remover;
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
 
     char *artist = tuple_get_str(playing_track, FIELD_ARTIST, NULL);
     char *title  = tuple_get_str(playing_track, FIELD_TITLE, NULL);
     char *album  = tuple_get_str(playing_track, FIELD_ALBUM, NULL);
+
+    tab_remover = remove_tabs(artist);
+    str_unref(artist);
+    artist = tab_remover;
+
+    tab_remover = remove_tabs(title);
+    str_unref(title);
+    title = tab_remover;
+
+    tab_remover = remove_tabs(album);
+    str_unref(album);
+    album = tab_remover;
+    tab_remover = NULL;
+
     int number = tuple_get_int(playing_track, FIELD_TRACK_NUMBER, NULL);
     int length = tuple_get_int(playing_track, FIELD_LENGTH, NULL) / 1000;
 
     //artist, title and timestamp are required for a successful scrobble
-    if (artist != NULL && title != NULL) {
+    if (  artist != NULL && strlen(artist) > 0
+        && title != NULL && strlen(title)  > 0) {
+
         g_mutex_lock(&log_access_mutex);
         FILE *f = fopen(queuepath, "a");
 
@@ -82,9 +109,9 @@ gboolean queue_track_to_scrobble (gpointer data) {
         g_mutex_unlock(&log_access_mutex);
     }
     g_free(queuepath);
-    str_unref(artist);
-    str_unref(title);
-    str_unref(album);
+    g_free(artist);
+    g_free(title);
+    g_free(album);
 
     cleanup_current_track();
     return FALSE;
@@ -177,7 +204,7 @@ static bool_t scrobbler_init (void) {
     }
     request_token = NULL;
 
-    g_thread_new("scrobbling_thread", scrobbling_thread, NULL);
+    g_thread_new(NULL, scrobbling_thread, NULL);
 
     hook_associate("playback stop", (HookFunction) stopped, NULL);
     hook_associate("playback end", (HookFunction) ended, NULL);
