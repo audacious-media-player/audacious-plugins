@@ -345,7 +345,7 @@ ERR:
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
-    guchar buffer[2352 * sectors];
+    unsigned char buffer[2352 * sectors];
     int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
 
@@ -356,7 +356,7 @@ ERR:
         if (stop_flag)
         {
             g_mutex_unlock (mutex);
-            goto CLOSE;
+            break;
         }
 
         if (seek_time >= 0)
@@ -407,11 +407,6 @@ ERR:
         currlsn += sectors;
     }
 
-    g_mutex_lock (mutex);
-    stop_flag = FALSE;
-    g_mutex_unlock (mutex);
-
-CLOSE:
     return TRUE;
 }
 
@@ -419,13 +414,8 @@ CLOSE:
 static void cdaudio_stop (InputPlayback * p)
 {
     g_mutex_lock (mutex);
-
-    if (! stop_flag)
-    {
-        stop_flag = TRUE;
-        p->output->abort_write();
-    }
-
+    stop_flag = TRUE;
+    p->output->abort_write();
     g_mutex_unlock (mutex);
 }
 
@@ -433,10 +423,7 @@ static void cdaudio_stop (InputPlayback * p)
 static void cdaudio_pause (InputPlayback * p, bool_t pause)
 {
     g_mutex_lock (mutex);
-
-    if (! stop_flag)
-        p->output->pause (pause);
-
+    p->output->pause (pause);
     g_mutex_unlock (mutex);
 }
 
@@ -444,13 +431,8 @@ static void cdaudio_pause (InputPlayback * p, bool_t pause)
 static void cdaudio_mseek (InputPlayback * p, int time)
 {
     g_mutex_lock (mutex);
-
-    if (! stop_flag)
-    {
-        seek_time = time;
-        p->output->abort_write();
-    }
-
+    seek_time = time;
+    p->output->abort_write();
     g_mutex_unlock (mutex);
 }
 
@@ -529,36 +511,18 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
 
     tuple = tuple_new_from_filename (filename);
     tuple_set_format (tuple, _("Audio CD"), 2, 44100, 1411);
-
-    if (strlen (trackinfo[trackno].performer))
-    {
-        tuple_set_str (tuple, FIELD_ARTIST, NULL,
-                                    trackinfo[trackno].performer);
-    }
-    if (strlen (trackinfo[0].name))
-    {
-        tuple_set_str (tuple, FIELD_ALBUM, NULL,
-                                    trackinfo[0].name);
-    }
-    if (strlen (trackinfo[trackno].name))
-    {
-        tuple_set_str (tuple, FIELD_TITLE, NULL,
-                                    trackinfo[trackno].name);
-    }
-
     tuple_set_int (tuple, FIELD_TRACK_NUMBER, NULL, trackno);
+    tuple_set_int (tuple, FIELD_LENGTH, NULL, calculate_track_length
+     (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 
-    tuple_set_int (tuple, FIELD_LENGTH, NULL,
-                             calculate_track_length (trackinfo[trackno].
-                                                     startlsn,
-                                                     trackinfo[trackno].
-                                                     endlsn));
-
-    if (strlen (trackinfo[trackno].genre))
-    {
-        tuple_set_str (tuple, FIELD_GENRE, NULL,
-                                    trackinfo[trackno].genre);
-    }
+    if (trackinfo[trackno].performer[0])
+        tuple_set_str (tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
+    if (trackinfo[0].name[0])
+        tuple_set_str (tuple, FIELD_ALBUM, NULL, trackinfo[0].name);
+    if (trackinfo[trackno].name[0])
+        tuple_set_str (tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
+    if (trackinfo[trackno].genre[0])
+        tuple_set_str (tuple, FIELD_GENRE, NULL, trackinfo[trackno].genre);
 
   DONE:
     g_mutex_unlock (mutex);
