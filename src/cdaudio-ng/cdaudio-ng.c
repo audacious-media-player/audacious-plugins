@@ -77,7 +77,7 @@ trackinfo_t;
 
 static GMutex *mutex;
 static int seek_time;
-static bool_t stop_flag;
+static bool_t playing;
 
 /* lock mutex to read / set these variables */
 static int firsttrackno = -1;
@@ -211,6 +211,13 @@ static bool_t monitor (gpointer unused)
 {
     g_mutex_lock (mutex);
 
+    /* make sure not to close drive handle while playing */
+    if (playing)
+    {
+        g_mutex_unlock (mutex);
+        return true;
+    }
+
     if (trackinfo != NULL)
         refresh_trackinfo (FALSE);
 
@@ -291,44 +298,36 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
         if (trackinfo == NULL)
         {
-ERR:
             g_mutex_unlock (mutex);
             return FALSE;
         }
     }
 
+    bool_t okay = FALSE;
     int trackno = find_trackno_from_filename (name);
 
     if (trackno < 0)
-    {
         cdaudio_error (_("Invalid URI %s."), name);
-        goto ERR;
-    }
-
-    if (trackno < firsttrackno || trackno > lasttrackno)
-    {
+    else if (trackno < firsttrackno || trackno > lasttrackno)
         cdaudio_error (_("Track %d not found."), trackno);
-        goto ERR;
-    }
+    else if (! cdda_track_audiop (pcdrom_drive, trackno))
+        cdaudio_error (_("Track %d is a data track."), trackno);
+    else if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
+        cdaudio_error (_("Failed to open audio output."));
+    else
+        okay = TRUE;
 
-    /* don't play any data tracks */
-    if (!cdda_track_audiop (pcdrom_drive, trackno))
+    if (! okay)
     {
-        cdaudio_error (_("Track %d is a data track.\n"), trackno);
-        goto ERR;
+        g_mutex_unlock (mutex);
+        return FALSE;
     }
 
     int startlsn = trackinfo[trackno].startlsn;
     int endlsn = trackinfo[trackno].endlsn;
 
-    if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
-    {
-        cdaudio_error (_("Failed to open audio output."));
-        goto ERR;
-    }
-
     seek_time = (start > 0) ? start : -1;
-    stop_flag = FALSE;
+    playing = TRUE;
 
     if (stop >= 0)
         endlsn = MIN (endlsn, startlsn + stop * 75 / 1000);
@@ -339,8 +338,6 @@ ERR:
     p->set_params (p, 1411200, 44100, 2);
     p->set_pb_ready (p);
 
-    g_mutex_unlock (mutex);
-
     int buffer_size = aud_get_int (NULL, "output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
@@ -349,16 +346,8 @@ ERR:
     int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
 
-    while (1)
+    while (playing)
     {
-        g_mutex_lock (mutex);
-
-        if (stop_flag)
-        {
-            g_mutex_unlock (mutex);
-            break;
-        }
-
         if (seek_time >= 0)
         {
             p->output->flush (seek_time);
@@ -366,47 +355,55 @@ ERR:
             seek_time = -1;
         }
 
-        g_mutex_unlock (mutex);
-
         sectors = MIN (sectors, endlsn + 1 - currlsn);
         if (sectors < 1)
             break;
 
-        if (cdio_read_audio_sectors (pcdrom_drive->p_cdio, buffer, currlsn, sectors) ==
-         DRIVER_OP_SUCCESS)
+        /* unlock mutex here to avoid blocking
+         * other threads must be careful not to close drive handle */
+        g_mutex_unlock (mutex);
+
+        int ret = cdio_read_audio_sectors (pcdrom_drive->p_cdio, buffer,
+         currlsn, sectors);
+
+        if (ret == DRIVER_OP_SUCCESS)
+            p->output->write_audio (buffer, 2352 * sectors);
+
+        g_mutex_lock (mutex);
+
+        if (ret == DRIVER_OP_SUCCESS)
         {
+            currlsn += sectors;
             retry_count = 0;
             skip_count = 0;
         }
         else if (sectors > 16)
         {
-            warn ("Read failed; reducing read size.\n");
+            /* maybe a smaller read size will help */
             sectors /= 2;
-            continue;
         }
         else if (retry_count < MAX_RETRIES)
         {
-            warn ("Read failed; retrying.\n");
+            /* still failed; retry a few times */
             retry_count ++;
-            continue;
         }
         else if (skip_count < MAX_SKIPS)
         {
-            warn ("Read failed; skipping.\n");
+            /* maybe the disk is scratched; try skipping ahead */
             currlsn = MIN (currlsn + 75, endlsn + 1);
             skip_count ++;
-            continue;
         }
         else
         {
-            cdaudio_error (_("Too many read errors; giving up."));
+            /* still failed; give it up */
+            cdaudio_error (_("Error reading audio CD."));
             break;
         }
-
-        p->output->write_audio (buffer, 2352 * sectors);
-        currlsn += sectors;
     }
 
+    playing = FALSE;
+
+    g_mutex_unlock (mutex);
     return TRUE;
 }
 
@@ -414,7 +411,7 @@ ERR:
 static void cdaudio_stop (InputPlayback * p)
 {
     g_mutex_lock (mutex);
-    stop_flag = TRUE;
+    playing = FALSE;
     p->output->abort_write();
     g_mutex_unlock (mutex);
 }
