@@ -35,6 +35,7 @@
 
 #include "actions-equalizer.h"
 #include "config.h"
+#include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -202,12 +203,6 @@ static void
 equalizerwin_close_cb(void)
 {
     equalizerwin_show(FALSE);
-}
-
-static gboolean equalizerwin_delete(GtkWidget *widget, void *data)
-{
-    aud_drct_quit ();
-    return TRUE;
 }
 
 static void eqwin_volume_set_knob (void)
@@ -386,12 +381,9 @@ equalizerwin_create_window(void)
 
     gtk_widget_set_app_paintable(equalizerwin, TRUE);
 
-    g_signal_connect(equalizerwin, "delete_event",
-                     G_CALLBACK(equalizerwin_delete), NULL);
-    g_signal_connect(equalizerwin, "button_press_event",
-                     G_CALLBACK(equalizerwin_press), NULL);
-    g_signal_connect ((GObject *) equalizerwin, "key-press-event", (GCallback)
-     mainwin_keypress, 0);
+    g_signal_connect (equalizerwin, "delete-event", (GCallback) handle_window_close, NULL);
+    g_signal_connect (equalizerwin, "button-press-event", (GCallback) equalizerwin_press, NULL);
+    g_signal_connect (equalizerwin, "key-press-event", (GCallback) mainwin_keypress, NULL);
 }
 
 static void equalizerwin_destroyed (void)

@@ -41,6 +41,7 @@
 #include "config.h"
 #include "dnd.h"
 #include "drag-handle.h"
+#include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_manager.h"
@@ -510,12 +511,6 @@ playlistwin_press(GtkWidget * widget,
     return TRUE;
 }
 
-static gboolean playlistwin_delete(GtkWidget *widget, void *data)
-{
-    aud_drct_quit ();
-    return TRUE;
-}
-
 void
 playlistwin_hide_timer(void)
 {
@@ -761,27 +756,18 @@ playlistwin_create_window(void)
                           GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
                           GDK_SCROLL_MASK | GDK_VISIBILITY_NOTIFY_MASK);
 
-    g_signal_connect(playlistwin, "delete_event",
-                     G_CALLBACK(playlistwin_delete), NULL);
-    g_signal_connect(playlistwin, "button_press_event",
-                     G_CALLBACK(playlistwin_press), NULL);
-    g_signal_connect(playlistwin, "scroll_event",
-                     G_CALLBACK(playlistwin_scrolled), NULL);
+    g_signal_connect (playlistwin, "delete-event", (GCallback) handle_window_close, NULL);
+    g_signal_connect (playlistwin, "button-press-event", (GCallback) playlistwin_press, NULL);
+    g_signal_connect (playlistwin, "scroll-event", (GCallback) playlistwin_scrolled, NULL);
+    g_signal_connect (playlistwin, "key-press-event", (GCallback) mainwin_keypress, NULL);
 
-    drag_dest_set(playlistwin);
-
+    drag_dest_set (playlistwin);
     drop_position = -1;
-    g_signal_connect ((GObject *) playlistwin, "drag-motion", (GCallback)
-     drag_motion, 0);
-    g_signal_connect ((GObject *) playlistwin, "drag-leave", (GCallback)
-     drag_leave, 0);
-    g_signal_connect ((GObject *) playlistwin, "drag-drop", (GCallback)
-     drag_drop, 0);
-    g_signal_connect ((GObject *) playlistwin, "drag-data-received", (GCallback)
-     drag_data_received, 0);
 
-    g_signal_connect ((GObject *) playlistwin, "key-press-event", (GCallback)
-     mainwin_keypress, 0);
+    g_signal_connect (playlistwin, "drag-motion", (GCallback) drag_motion, NULL);
+    g_signal_connect (playlistwin, "drag-leave", (GCallback) drag_leave, NULL);
+    g_signal_connect (playlistwin, "drag-drop", (GCallback) drag_drop, NULL);
+    g_signal_connect (playlistwin, "drag-data-received", (GCallback) drag_data_received, NULL);
 }
 
 static void get_title (void)

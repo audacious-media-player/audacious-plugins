@@ -23,6 +23,7 @@
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -176,4 +177,15 @@ static gboolean ui_is_focused (void)
 static void show_error_message (const gchar * text)
 {
     audgui_simple_message (& error_win, GTK_MESSAGE_ERROR, _("Error"), _(text));
+}
+
+bool_t handle_window_close (void)
+{
+    bool_t handled = FALSE;
+    hook_call ("window close", & handled);
+
+    if (! handled)
+        aud_drct_quit ();
+
+    return TRUE;
 }
