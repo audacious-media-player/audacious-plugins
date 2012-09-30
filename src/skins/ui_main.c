@@ -42,6 +42,7 @@
 #include "actions-playlist.h"
 #include "config.h"
 #include "dnd.h"
+#include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_hints.h"
@@ -1245,7 +1246,7 @@ mainwin_create_widgets(void)
 
     mainwin_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     window_put_widget (mainwin, FALSE, mainwin_close, 264, 3);
-    button_on_release (mainwin_close, (ButtonCB) aud_drct_quit);
+    button_on_release (mainwin_close, (ButtonCB) handle_window_close);
 
     mainwin_rew = button_new (23, 18, 0, 0, 0, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     window_put_widget (mainwin, FALSE, mainwin_rew, 16, 88);
@@ -1377,7 +1378,7 @@ mainwin_create_widgets(void)
 
     mainwin_shaded_close = button_new (9, 9, 18, 0, 18, 9, SKIN_TITLEBAR, SKIN_TITLEBAR);
     window_put_widget (mainwin, TRUE, mainwin_shaded_close, 264, 3);
-    button_on_release (mainwin_shaded_close, (ButtonCB) aud_drct_quit);
+    button_on_release (mainwin_shaded_close, (ButtonCB) handle_window_close);
 
     mainwin_srew = button_new_small (8, 7);
     window_put_widget (mainwin, TRUE, mainwin_srew, 169, 4);
@@ -1474,12 +1475,6 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
     return TRUE;
 }
 
-static gboolean delete_cb (GtkWidget * widget, GdkEvent * event, void * unused)
-{
-    aud_drct_quit ();
-    return TRUE;
-}
-
 static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 {
     gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
@@ -1514,10 +1509,8 @@ mainwin_create_window(void)
 
     ui_main_evlistener_init();
 
-    g_signal_connect ((GObject *) mainwin, "window-state-event", (GCallback)
-     state_cb, NULL);
-    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback)
-     delete_cb, NULL);
+    g_signal_connect ((GObject *) mainwin, "window-state-event", (GCallback) state_cb, NULL);
+    g_signal_connect ((GObject *) mainwin, "delete-event", (GCallback) handle_window_close, NULL);
 }
 
 void mainwin_unhook (void)
