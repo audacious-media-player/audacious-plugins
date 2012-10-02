@@ -181,8 +181,8 @@ void setup_proxy(CURL *curl)
 }
 
 static const char about[] =
- "Audacious AudioScrobbler Plugin\n\n"
- "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>";
+ N_("Audacious AudioScrobbler Plugin\n\n"
+    "Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>");
 
 AUD_GENERAL_PLUGIN
 (

@@ -26,11 +26,11 @@
 #include <audacious/i18n.h>
 
 static const char aosd_about[] =
- "Audacious OSD " AOSD_VERSION_PLUGIN "\n"
- "http://www.develia.org/projects.php?p=audacious#aosd\n\n"
- "Written by Giacomo Lozito <james@develia.org>\n\n"
- "Based in part on Evan Martin's Ghosd library:\n"
- "http://neugierig.org/software/ghosd/";
+ N_("Audacious OSD " AOSD_VERSION_PLUGIN "\n"
+    "http://www.develia.org/projects.php?p=audacious#aosd\n\n"
+    "Written by Giacomo Lozito <james@develia.org>\n\n"
+    "Based in part on Evan Martin's Ghosd library:\n"
+    "http://neugierig.org/software/ghosd/");
 
 AUD_GENERAL_PLUGIN
 (

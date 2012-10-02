@@ -253,8 +253,8 @@ static int crossfade_adjust_delay (int delay)
 }
 
 static const char crossfade_about[] =
- "Crossfade Plugin for Audacious\n"
- "Copyright 2010-2012 John Lindgren";
+ N_("Crossfade Plugin for Audacious\n"
+    "Copyright 2010-2012 John Lindgren");
 
 static const PreferencesWidget crossfade_widgets[] = {
  {WIDGET_LABEL, N_("<b>Crossfade</b>")},

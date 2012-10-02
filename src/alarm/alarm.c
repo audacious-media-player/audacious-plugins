@@ -807,8 +807,8 @@ static void alarm_cleanup(void)
 }
 
 static const char alarm_about[] =
- "A plugin that can be used to start playing at a certain time.\n\n"
- "Originally written by Adam Feakin and Daniel Stodden.";
+ N_("A plugin that can be used to start playing at a certain time.\n\n"
+    "Originally written by Adam Feakin and Daniel Stodden.");
 
 AUD_GENERAL_PLUGIN
 (

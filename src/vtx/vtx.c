@@ -250,9 +250,9 @@ void vtx_pause(InputPlayback * playback, gboolean pause)
 }
 
 static const char vtx_about[] =
- "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
- "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
- "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>";
+ N_("Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+    "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+    "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>");
 
 AUD_INPUT_PLUGIN
 (

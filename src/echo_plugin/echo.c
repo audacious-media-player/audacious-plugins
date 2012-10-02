@@ -113,9 +113,9 @@ static void echo_finish(float **d, int *samples)
 }
 
 static const char echo_about[] =
- "Echo Plugin\n"
- "By Johan Levin, 1999\n\n"
- "Surround echo by Carl van Schaik, 1999";
+ N_("Echo Plugin\n"
+	"By Johan Levin, 1999\n\n"
+	"Surround echo by Carl van Schaik, 1999");
 
 AUD_EFFECT_PLUGIN
 (

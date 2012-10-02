@@ -335,8 +335,8 @@ static bool_t wv_write_tag (const Tuple * tuple, VFSFile * handle)
 }
 
 static const char wv_about[] =
- "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
- "Some of the plugin code was by Miles Egan.";
+ N_("Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
+    "Some of the plugin code was by Miles Egan.");
 
 static const char *wv_fmts[] = { "wv", NULL };
 

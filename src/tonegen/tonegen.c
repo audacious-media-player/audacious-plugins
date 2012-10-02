@@ -196,10 +196,10 @@ static Tuple *tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
 }
 
 static const char tone_about[] =
- "Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
- "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n\n"
- "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
- "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone";
+ N_("Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+    "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n\n"
+    "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+    "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone");
 
 static const gchar * const schemes[] = {"tone", NULL};
 
