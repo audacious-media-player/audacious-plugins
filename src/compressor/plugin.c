@@ -52,8 +52,8 @@ void compressor_config_load (void)
 }
 
 static const char compressor_about[] =
- "Dynamic Range Compression Plugin for Audacious\n"
- "Copyright 2010-2012 John Lindgren";
+ N_("Dynamic Range Compression Plugin for Audacious\n"
+    "Copyright 2010-2012 John Lindgren");
 
 AUD_EFFECT_PLUGIN
 (

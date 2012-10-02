@@ -563,20 +563,20 @@ vorbis_cleanup(void)
 }
 
 static const char vorbis_about[] =
- "Audacious Ogg Vorbis Decoder\n\n"
- "Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
- "http://www.xiph.org/\n\n"
- "Original code by:\n"
- "Tony Arcieri <bascule@inferno.tusculum.edu>\n\n"
- "Contributions from:\n"
- "Chris Montgomery <monty@xiph.org>\n"
- "Peter Alm <peter@xmms.org>\n"
- "Michael Smith <msmith@labyrinth.edu.au>\n"
- "Jack Moffitt <jack@icecast.org>\n"
- "Jorn Baayen <jorn@nl.linux.org>\n"
- "Håvard Kvålen <havardk@xmms.org>\n"
- "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
- "Eugene Zagidullin <e.asphyx@gmail.com>";
+ N_("Audacious Ogg Vorbis Decoder\n\n"
+    "Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+    "http://www.xiph.org/\n\n"
+    "Original code by:\n"
+    "Tony Arcieri <bascule@inferno.tusculum.edu>\n\n"
+    "Contributions from:\n"
+    "Chris Montgomery <monty@xiph.org>\n"
+    "Peter Alm <peter@xmms.org>\n"
+    "Michael Smith <msmith@labyrinth.edu.au>\n"
+    "Jack Moffitt <jack@icecast.org>\n"
+    "Jorn Baayen <jorn@nl.linux.org>\n"
+    "Håvard Kvålen <havardk@xmms.org>\n"
+    "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+    "Eugene Zagidullin <e.asphyx@gmail.com>");
 
 static const gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
 static const gchar * const mimes[] = {"application/ogg", NULL};

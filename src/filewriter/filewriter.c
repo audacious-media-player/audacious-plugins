@@ -512,36 +512,36 @@ static void file_configure(void)
 }
 
 static const char file_about[] =
- "This program is free software; you can redistribute it and/or modify\n"
- "it under the terms of the GNU General Public License as published by\n"
- "the Free Software Foundation; either version 2 of the License, or\n"
- "(at your option) any later version.\n"
- "\n"
- "This program is distributed in the hope that it will be useful,\n"
- "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
- "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
- "GNU General Public License for more details.\n"
- "\n"
- "You should have received a copy of the GNU General Public License\n"
- "along with this program; if not, write to the Free Software\n"
- "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
- "USA.";
+ N_("This program is free software; you can redistribute it and/or modify\n"
+    "it under the terms of the GNU General Public License as published by\n"
+    "the Free Software Foundation; either version 2 of the License, or\n"
+    "(at your option) any later version.\n"
+    "\n"
+    "This program is distributed in the hope that it will be useful,\n"
+    "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+    "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+    "GNU General Public License for more details.\n"
+    "\n"
+    "You should have received a copy of the GNU General Public License\n"
+    "along with this program; if not, write to the Free Software\n"
+    "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+    "USA.");
 
 AUD_OUTPUT_PLUGIN
 (
- .name = N_("FileWriter Plugin"),
- .domain = PACKAGE,
- .about_text = file_about,
- .init = file_init,
- .cleanup = file_cleanup,
- .configure = file_configure,
- .probe_priority = 0,
- .open_audio = file_open,
- .close_audio = file_close,
- .write_audio = file_write,
- .drain = file_drain,
- .output_time = file_get_time,
- .pause = file_pause,
- .flush = file_flush,
- .force_reopen = TRUE
+    .name = N_("FileWriter Plugin"),
+    .domain = PACKAGE,
+    .about_text = file_about,
+    .init = file_init,
+    .cleanup = file_cleanup,
+    .configure = file_configure,
+    .probe_priority = 0,
+    .open_audio = file_open,
+    .close_audio = file_close,
+    .write_audio = file_write,
+    .drain = file_drain,
+    .output_time = file_get_time,
+    .pause = file_pause,
+    .flush = file_flush,
+    .force_reopen = TRUE
 )

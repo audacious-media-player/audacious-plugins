@@ -307,15 +307,15 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
     if (ctx == NULL)
         return NULL;
 
-	AUDDBG("starting probe of %p\n", (void *) fd);
+    AUDDBG("starting probe of %p\n", (void *) fd);
 
-	vfs_rewind(fd);
-	tu = tuple_new_from_filename(filename);
+    vfs_rewind(fd);
+    tu = tuple_new_from_filename(filename);
 
-	vfs_rewind(fd);
-	tag_tuple_read(tu, fd);
+    vfs_rewind(fd);
+    tag_tuple_read(tu, fd);
 
-	tuple_set_int(tu, FIELD_LENGTH, NULL,
+    tuple_set_int(tu, FIELD_LENGTH, NULL,
         ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
     tuple_set_str(tu, FIELD_CODEC, NULL, "WavPack");
 
@@ -325,8 +325,8 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
 
     WavpackCloseFile(ctx);
 
-	AUDDBG("returning tuple %p for file %p\n", (void *) tu, (void *) fd);
-	return tu;
+    AUDDBG("returning tuple %p for file %p\n", (void *) tu, (void *) fd);
+    return tu;
 }
 
 static bool_t wv_write_tag (const Tuple * tuple, VFSFile * handle)
@@ -335,8 +335,8 @@ static bool_t wv_write_tag (const Tuple * tuple, VFSFile * handle)
 }
 
 static const char wv_about[] =
- "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
- "Some of the plugin code was by Miles Egan.";
+ N_("Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
+    "Some of the plugin code was by Miles Egan.");
 
 static const char *wv_fmts[] = { "wv", NULL };
 

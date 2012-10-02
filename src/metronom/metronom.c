@@ -245,10 +245,10 @@ static Tuple *metronom_probe_for_tuple(const char * filename, VFSFile *fd)
 }
 
 static const char metronom_about[] =
- "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
- "To use it, add a URL: tact://beats*num/den\n"
- "e.g. tact://77 to play 77 beats per minute\n"
- "or tact://60*3/4 to play 60 bpm in 3/4 tacts";
+ N_("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
+    "To use it, add a URL: tact://beats*num/den\n"
+    "e.g. tact://77 to play 77 beats per minute\n"
+    "or tact://60*3/4 to play 60 bpm in 3/4 tacts");
 
 static const char * const schemes[] = {"tact", NULL};
 

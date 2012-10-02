@@ -77,7 +77,7 @@ trackinfo_t;
 
 static GMutex *mutex;
 static int seek_time;
-static bool_t stop_flag;
+static bool_t playing;
 
 /* lock mutex to read / set these variables */
 static int firsttrackno = -1;
@@ -102,11 +102,11 @@ static int calculate_track_length (int startlsn, int endlsn);
 static int find_trackno_from_filename (const char * filename);
 
 static const char cdaudio_about[] =
- "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
- "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
- "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
- "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
- "This was a Google Summer of Code 2007 project.";
+ N_("Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
+    "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+    "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+    "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
+    "This was a Google Summer of Code 2007 project.");
 
 static const char * const schemes[] = {"cdda", NULL};
 
@@ -211,6 +211,13 @@ static bool_t monitor (gpointer unused)
 {
     g_mutex_lock (mutex);
 
+    /* make sure not to close drive handle while playing */
+    if (playing)
+    {
+        g_mutex_unlock (mutex);
+        return true;
+    }
+
     if (trackinfo != NULL)
         refresh_trackinfo (FALSE);
 
@@ -291,44 +298,36 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
         if (trackinfo == NULL)
         {
-ERR:
             g_mutex_unlock (mutex);
             return FALSE;
         }
     }
 
+    bool_t okay = FALSE;
     int trackno = find_trackno_from_filename (name);
 
     if (trackno < 0)
-    {
         cdaudio_error (_("Invalid URI %s."), name);
-        goto ERR;
-    }
-
-    if (trackno < firsttrackno || trackno > lasttrackno)
-    {
+    else if (trackno < firsttrackno || trackno > lasttrackno)
         cdaudio_error (_("Track %d not found."), trackno);
-        goto ERR;
-    }
+    else if (! cdda_track_audiop (pcdrom_drive, trackno))
+        cdaudio_error (_("Track %d is a data track."), trackno);
+    else if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
+        cdaudio_error (_("Failed to open audio output."));
+    else
+        okay = TRUE;
 
-    /* don't play any data tracks */
-    if (!cdda_track_audiop (pcdrom_drive, trackno))
+    if (! okay)
     {
-        cdaudio_error (_("Track %d is a data track.\n"), trackno);
-        goto ERR;
+        g_mutex_unlock (mutex);
+        return FALSE;
     }
 
     int startlsn = trackinfo[trackno].startlsn;
     int endlsn = trackinfo[trackno].endlsn;
 
-    if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
-    {
-        cdaudio_error (_("Failed to open audio output."));
-        goto ERR;
-    }
-
     seek_time = (start > 0) ? start : -1;
-    stop_flag = FALSE;
+    playing = TRUE;
 
     if (stop >= 0)
         endlsn = MIN (endlsn, startlsn + stop * 75 / 1000);
@@ -339,26 +338,16 @@ ERR:
     p->set_params (p, 1411200, 44100, 2);
     p->set_pb_ready (p);
 
-    g_mutex_unlock (mutex);
-
     int buffer_size = aud_get_int (NULL, "output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
-    guchar buffer[2352 * sectors];
+    unsigned char buffer[2352 * sectors];
     int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
 
-    while (1)
+    while (playing)
     {
-        g_mutex_lock (mutex);
-
-        if (stop_flag)
-        {
-            g_mutex_unlock (mutex);
-            goto CLOSE;
-        }
-
         if (seek_time >= 0)
         {
             p->output->flush (seek_time);
@@ -366,52 +355,55 @@ ERR:
             seek_time = -1;
         }
 
-        g_mutex_unlock (mutex);
-
         sectors = MIN (sectors, endlsn + 1 - currlsn);
         if (sectors < 1)
             break;
 
-        if (cdio_read_audio_sectors (pcdrom_drive->p_cdio, buffer, currlsn, sectors) ==
-         DRIVER_OP_SUCCESS)
+        /* unlock mutex here to avoid blocking
+         * other threads must be careful not to close drive handle */
+        g_mutex_unlock (mutex);
+
+        int ret = cdio_read_audio_sectors (pcdrom_drive->p_cdio, buffer,
+         currlsn, sectors);
+
+        if (ret == DRIVER_OP_SUCCESS)
+            p->output->write_audio (buffer, 2352 * sectors);
+
+        g_mutex_lock (mutex);
+
+        if (ret == DRIVER_OP_SUCCESS)
         {
+            currlsn += sectors;
             retry_count = 0;
             skip_count = 0;
         }
         else if (sectors > 16)
         {
-            warn ("Read failed; reducing read size.\n");
+            /* maybe a smaller read size will help */
             sectors /= 2;
-            continue;
         }
         else if (retry_count < MAX_RETRIES)
         {
-            warn ("Read failed; retrying.\n");
+            /* still failed; retry a few times */
             retry_count ++;
-            continue;
         }
         else if (skip_count < MAX_SKIPS)
         {
-            warn ("Read failed; skipping.\n");
+            /* maybe the disk is scratched; try skipping ahead */
             currlsn = MIN (currlsn + 75, endlsn + 1);
             skip_count ++;
-            continue;
         }
         else
         {
-            cdaudio_error (_("Too many read errors; giving up."));
+            /* still failed; give it up */
+            cdaudio_error (_("Error reading audio CD."));
             break;
         }
-
-        p->output->write_audio (buffer, 2352 * sectors);
-        currlsn += sectors;
     }
 
-    g_mutex_lock (mutex);
-    stop_flag = FALSE;
-    g_mutex_unlock (mutex);
+    playing = FALSE;
 
-CLOSE:
+    g_mutex_unlock (mutex);
     return TRUE;
 }
 
@@ -419,13 +411,8 @@ CLOSE:
 static void cdaudio_stop (InputPlayback * p)
 {
     g_mutex_lock (mutex);
-
-    if (! stop_flag)
-    {
-        stop_flag = TRUE;
-        p->output->abort_write();
-    }
-
+    playing = FALSE;
+    p->output->abort_write();
     g_mutex_unlock (mutex);
 }
 
@@ -433,10 +420,7 @@ static void cdaudio_stop (InputPlayback * p)
 static void cdaudio_pause (InputPlayback * p, bool_t pause)
 {
     g_mutex_lock (mutex);
-
-    if (! stop_flag)
-        p->output->pause (pause);
-
+    p->output->pause (pause);
     g_mutex_unlock (mutex);
 }
 
@@ -444,13 +428,8 @@ static void cdaudio_pause (InputPlayback * p, bool_t pause)
 static void cdaudio_mseek (InputPlayback * p, int time)
 {
     g_mutex_lock (mutex);
-
-    if (! stop_flag)
-    {
-        seek_time = time;
-        p->output->abort_write();
-    }
-
+    seek_time = time;
+    p->output->abort_write();
     g_mutex_unlock (mutex);
 }
 
@@ -529,36 +508,18 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
 
     tuple = tuple_new_from_filename (filename);
     tuple_set_format (tuple, _("Audio CD"), 2, 44100, 1411);
-
-    if (strlen (trackinfo[trackno].performer))
-    {
-        tuple_set_str (tuple, FIELD_ARTIST, NULL,
-                                    trackinfo[trackno].performer);
-    }
-    if (strlen (trackinfo[0].name))
-    {
-        tuple_set_str (tuple, FIELD_ALBUM, NULL,
-                                    trackinfo[0].name);
-    }
-    if (strlen (trackinfo[trackno].name))
-    {
-        tuple_set_str (tuple, FIELD_TITLE, NULL,
-                                    trackinfo[trackno].name);
-    }
-
     tuple_set_int (tuple, FIELD_TRACK_NUMBER, NULL, trackno);
+    tuple_set_int (tuple, FIELD_LENGTH, NULL, calculate_track_length
+     (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 
-    tuple_set_int (tuple, FIELD_LENGTH, NULL,
-                             calculate_track_length (trackinfo[trackno].
-                                                     startlsn,
-                                                     trackinfo[trackno].
-                                                     endlsn));
-
-    if (strlen (trackinfo[trackno].genre))
-    {
-        tuple_set_str (tuple, FIELD_GENRE, NULL,
-                                    trackinfo[trackno].genre);
-    }
+    if (trackinfo[trackno].performer[0])
+        tuple_set_str (tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
+    if (trackinfo[0].name[0])
+        tuple_set_str (tuple, FIELD_ALBUM, NULL, trackinfo[0].name);
+    if (trackinfo[trackno].name[0])
+        tuple_set_str (tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
+    if (trackinfo[trackno].genre[0])
+        tuple_set_str (tuple, FIELD_GENRE, NULL, trackinfo[trackno].genre);
 
   DONE:
     g_mutex_unlock (mutex);

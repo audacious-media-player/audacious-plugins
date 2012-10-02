@@ -643,8 +643,8 @@ static void configure (void)
 }
 
 static const char about[] =
- "LADSPA Host for Audacious\n"
- "Copyright 2011 John Lindgren";
+ N_("LADSPA Host for Audacious\n"
+    "Copyright 2011 John Lindgren");
 
 AUD_EFFECT_PLUGIN
 (

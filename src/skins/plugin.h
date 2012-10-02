@@ -21,7 +21,7 @@
 #ifndef PLUGIN_SKINS_H
 #define PLUGIN_SKINS_H
 
-#include <glib.h>
+#include <libaudcore/core.h>
 
 enum {
     SKINS_PATH_USER_SKIN_DIR,
@@ -29,6 +29,8 @@ enum {
     SKINS_PATH_COUNT
 };
 
-extern gchar *skins_paths[];
+extern char * skins_paths[];
+
+bool_t handle_window_close (void);
 
 #endif

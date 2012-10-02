@@ -253,32 +253,32 @@ static int64_t unix_fsize (VFSFile * file)
 }
 
 static const char unix_about[] =
- "File I/O Plugin for Audacious\n"
- "Copyright 2009-2012 John Lindgren\n\n"
- "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT.";
+ N_("File I/O Plugin for Audacious\n"
+    "Copyright 2009-2012 John Lindgren\n\n"
+    "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT.");
 
 static const char * const unix_schemes[] = {"file", NULL};
 
 static VFSConstructor constructor = {
- .vfs_fopen_impl = unix_fopen,
- .vfs_fclose_impl = unix_fclose,
- .vfs_fread_impl = unix_fread,
- .vfs_fwrite_impl = unix_fwrite,
- .vfs_getc_impl = unix_getc,
- .vfs_ungetc_impl = unix_ungetc,
- .vfs_fseek_impl = unix_fseek,
- .vfs_rewind_impl = unix_rewind,
- .vfs_ftell_impl = unix_ftell,
- .vfs_feof_impl = unix_feof,
- .vfs_ftruncate_impl = unix_ftruncate,
- .vfs_fsize_impl = unix_fsize
+    .vfs_fopen_impl = unix_fopen,
+    .vfs_fclose_impl = unix_fclose,
+    .vfs_fread_impl = unix_fread,
+    .vfs_fwrite_impl = unix_fwrite,
+    .vfs_getc_impl = unix_getc,
+    .vfs_ungetc_impl = unix_ungetc,
+    .vfs_fseek_impl = unix_fseek,
+    .vfs_rewind_impl = unix_rewind,
+    .vfs_ftell_impl = unix_ftell,
+    .vfs_feof_impl = unix_feof,
+    .vfs_ftruncate_impl = unix_ftruncate,
+    .vfs_fsize_impl = unix_fsize
 };
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = N_("File I/O Plugin"),
- .domain = PACKAGE,
- .about_text = unix_about,
- .schemes = unix_schemes,
- .vtable = & constructor
+    .name = N_("File I/O Plugin"),
+    .domain = PACKAGE,
+    .about_text = unix_about,
+    .schemes = unix_schemes,
+    .vtable = & constructor
 )

@@ -160,8 +160,8 @@ void resample_finish (float * * data, int * samples)
 }
 
 static const char resample_about[] =
- "Sample Rate Converter Plugin for Audacious\n"
- "Copyright 2010-2012 John Lindgren";
+ N_("Sample Rate Converter Plugin for Audacious\n"
+    "Copyright 2010-2012 John Lindgren");
 
 static const ComboBoxElements method_list[] = {
  {"3", N_("Skip/repeat samples")}, /* SRC_ZERO_ORDER_HOLD */
