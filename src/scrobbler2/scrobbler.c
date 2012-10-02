@@ -1,3 +1,11 @@
+/*
+ * Scrobbler Plugin v2.0 for Audacious by Pitxyoki
+ *
+ * Copyright 2012 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
+ *
+ * This plugin is part of the Audacious Media Player.
+ * It is licensed under the GNU Public License, version 3.
+ */
 
 //audacious includes
 #include <config.h>

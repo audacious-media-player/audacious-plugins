@@ -1,8 +1,10 @@
 /*
- * scrobbler2.h
+ * Scrobbler Plugin v2.0 for Audacious by Pitxyoki
  *
- *  Created on: 10 Jun 2012
- *      Author: luis
+ * Copyright 2012 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
+ *
+ * This plugin is part of the Audacious Media Player.
+ * It is licensed under the GNU Public License, version 3.
  */
 
 #ifndef SCROBBLER_H_

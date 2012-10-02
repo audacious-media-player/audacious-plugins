@@ -1,9 +1,3 @@
-/*
- * config_window.c
- *
- *  Created on: 21 Sep 2012
- *      Author: luis
- */
 
 //external includes
 #include <gdk/gdk.h>

@@ -1,11 +1,3 @@
-/*
- * TODO: headers
- * scrobbler_communication.c
- *
- *  Created on: 10 Jun 2012
- *      Author: luis
- */
-
 
 //external includes
 #include <stdarg.h>
