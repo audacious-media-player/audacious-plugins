@@ -299,31 +299,31 @@ FAILED:
 }
 
 static const char gio_about[] =
- "GIO Plugin for Audacious\n"
- "Copyright 2009-2012 John Lindgren";
+ N_("GIO Plugin for Audacious\n"
+    "Copyright 2009-2012 John Lindgren");
 
 static const char * const gio_schemes[] = {"ftp", "sftp", "smb", 0};
 
 static VFSConstructor constructor = {
- .vfs_fopen_impl = gio_fopen,
- .vfs_fclose_impl = gio_fclose,
- .vfs_fread_impl = gio_fread,
- .vfs_fwrite_impl = gio_fwrite,
- .vfs_getc_impl = gio_getc,
- .vfs_ungetc_impl = gio_ungetc,
- .vfs_fseek_impl = gio_fseek,
- .vfs_rewind_impl = gio_rewind,
- .vfs_ftell_impl = gio_ftell,
- .vfs_feof_impl = gio_feof,
- .vfs_ftruncate_impl = gio_ftruncate,
- .vfs_fsize_impl = gio_fsize
+    .vfs_fopen_impl = gio_fopen,
+    .vfs_fclose_impl = gio_fclose,
+    .vfs_fread_impl = gio_fread,
+    .vfs_fwrite_impl = gio_fwrite,
+    .vfs_getc_impl = gio_getc,
+    .vfs_ungetc_impl = gio_ungetc,
+    .vfs_fseek_impl = gio_fseek,
+    .vfs_rewind_impl = gio_rewind,
+    .vfs_ftell_impl = gio_ftell,
+    .vfs_feof_impl = gio_feof,
+    .vfs_ftruncate_impl = gio_ftruncate,
+    .vfs_fsize_impl = gio_fsize
 };
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = N_("GIO Plugin"),
- .domain = PACKAGE,
- .about_text = gio_about,
- .schemes = gio_schemes,
- .vtable = & constructor
+    .name = N_("GIO Plugin"),
+    .domain = PACKAGE,
+    .about_text = gio_about,
+    .schemes = gio_schemes,
+    .vtable = & constructor
 )

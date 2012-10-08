@@ -389,11 +389,11 @@ void si_cleanup(void)
 }
 
 static const char si_about[] =
- "Status Icon Plugin\n\n"
- "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
- "Copyright 2010 Michał Lipski <tallica@o2.pl>\n\n"
- "This plugin provides a status icon, placed in\n"
- "the system tray area of the window manager.";
+ N_("Status Icon Plugin\n\n"
+    "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+    "Copyright 2010 Michał Lipski <tallica@o2.pl>\n\n"
+    "This plugin provides a status icon, placed in\n"
+    "the system tray area of the window manager.");
 
 static const PreferencesWidget si_widgets[] = {
  {WIDGET_LABEL, N_("<b>Mouse Scroll Action</b>")},

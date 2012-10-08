@@ -105,10 +105,10 @@ static const PluginPreferences oss_prefs = {
  .cleanup = prefs_cleanup};
 
 static const char oss_about[] =
- "OSS4 Output Plugin for Audacious\n"
- "Copyright 2010-2012 Michał Lipski\n\n"
- "I would like to thank people on #audacious, especially Tony Vroon and "
- "John Lindgren and of course the authors of the previous OSS plugin.";
+ N_("OSS4 Output Plugin for Audacious\n"
+    "Copyright 2010-2012 Michał Lipski\n\n"
+    "I would like to thank people on #audacious, especially Tony Vroon and "
+    "John Lindgren and of course the authors of the previous OSS plugin.");
 
 AUD_OUTPUT_PLUGIN
 (

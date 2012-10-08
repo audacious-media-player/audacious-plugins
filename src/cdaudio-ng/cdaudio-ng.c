@@ -102,11 +102,11 @@ static int calculate_track_length (int startlsn, int endlsn);
 static int find_trackno_from_filename (const char * filename);
 
 static const char cdaudio_about[] =
- "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
- "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
- "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
- "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
- "This was a Google Summer of Code 2007 project.";
+ N_("Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
+    "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+    "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
+    "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
+    "This was a Google Summer of Code 2007 project.");
 
 static const char * const schemes[] = {"cdda", NULL};
 

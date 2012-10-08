@@ -267,9 +267,9 @@ static void flac_seek (InputPlayback * playback, int time)
 }
 
 static const char flac_about[] =
- "Original code by\n"
- "Ralf Ertzinger <ralf@skytale.net>\n\n"
- "http://www.skytale.net/projects/bmp-flac2/";
+ N_("Original code by\n"
+    "Ralf Ertzinger <ralf@skytale.net>\n\n"
+    "http://www.skytale.net/projects/bmp-flac2/");
 
 static const char *flac_fmts[] = { "flac", "fla", NULL };
 
