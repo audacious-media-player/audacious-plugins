@@ -71,6 +71,7 @@ static void update_metadata (void * data, GObject * object)
         length = aud_playlist_entry_get_length (playlist, entry, TRUE);
     }
 
+    /* pointer comparison works for pooled strings */
     if (title == last_title && artist == last_artist && album == last_album &&
      file == last_file && length == last_length)
     {
@@ -98,7 +99,7 @@ static void update_metadata (void * data, GObject * object)
     last_file = file;
     last_length = length;
 
-    GVariant * elems[6];
+    GVariant * elems[7];
     int nelems = 0;
 
     if (title)
@@ -122,6 +123,14 @@ static void update_metadata (void * data, GObject * object)
     {
         GVariant * key = g_variant_new_string ("xesam:album");
         GVariant * str = g_variant_new_string (album);
+        GVariant * var = g_variant_new_variant (str);
+        elems[nelems ++] = g_variant_new_dict_entry (key, var);
+    }
+
+    if (file)
+    {
+        GVariant * key = g_variant_new_string ("xesam:url");
+        GVariant * str = g_variant_new_string (file);
         GVariant * var = g_variant_new_variant (str);
         elems[nelems ++] = g_variant_new_dict_entry (key, var);
     }
