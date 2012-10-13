@@ -24,7 +24,7 @@ BUILDSYS_SHARED_LIB
 
 dnl Headers and functions
 dnl =====================
-AC_CHECK_FUNCS([fcntl fsync mkdtemp])
+AC_CHECK_FUNCS([mkdtemp])
 
 dnl gettext
 dnl =======
