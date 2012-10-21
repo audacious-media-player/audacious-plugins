@@ -632,12 +632,12 @@ static void ffaudio_seek (InputPlayback * playback, gint time)
 }
 
 static const char ffaudio_about[] =
- "Multi-format audio decoding plugin for Audacious using\n"
- "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
- "\n"
- "Audacious plugin by:\n"
- "William Pitcock <nenolod@nenolod.net>\n"
- "Matti Hämäläinen <ccr@tnsp.org>";
+ N_("Multi-format audio decoding plugin for Audacious using\n"
+    "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+    "\n"
+    "Audacious plugin by:\n"
+    "William Pitcock <nenolod@nenolod.net>\n"
+    "Matti Hämäläinen <ccr@tnsp.org>");
 
 static const gchar *ffaudio_fmts[] = {
     /* musepack, SV7/SV8 */

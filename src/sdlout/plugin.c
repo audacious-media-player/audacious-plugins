@@ -24,8 +24,8 @@
 #include "sdlout.h"
 
 static const char sdlout_about[] =
- "SDL Output Plugin for Audacious\n"
- "Copyright 2010 John Lindgren";
+ N_("SDL Output Plugin for Audacious\n"
+    "Copyright 2010 John Lindgren");
 
 AUD_OUTPUT_PLUGIN
 (

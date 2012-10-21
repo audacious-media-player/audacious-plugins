@@ -168,8 +168,8 @@ static void mixer_cleanup (void)
 }
 
 static const char mixer_about[] =
- "Channel Mixer Plugin for Audacious\n"
- "Copyright 2011-2012 John Lindgren and Michał Lipski";
+ N_("Channel Mixer Plugin for Audacious\n"
+    "Copyright 2011-2012 John Lindgren and Michał Lipski");
 
 static const PreferencesWidget mixer_widgets[] = {
  {WIDGET_LABEL, N_("<b>Channel Mixer</b>")},

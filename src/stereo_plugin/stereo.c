@@ -16,8 +16,8 @@ static void stereo_process (float * * data, int * samples);
 static void stereo_finish (float * * data, int * samples);
 
 static const char stereo_about[] =
- "Extra Stereo Plugin\n\n"
- "By Johan Levin, 1999";
+ N_("Extra Stereo Plugin\n\n"
+    "By Johan Levin, 1999");
 
 static const char * const stereo_defaults[] = {
  "intensity", "2.5",

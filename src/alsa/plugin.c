@@ -24,10 +24,10 @@
 #include "config.h"
 
 static const char alsa_about[] =
- "ALSA Output Plugin for Audacious\n"
- "Copyright 2009-2012 John Lindgren\n\n"
- "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
- "code served as a reference when the ALSA manual was not enough.";
+ N_("ALSA Output Plugin for Audacious\n"
+    "Copyright 2009-2012 John Lindgren\n\n"
+    "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+    "code served as a reference when the ALSA manual was not enough.");
 
 AUD_OUTPUT_PLUGIN
 (

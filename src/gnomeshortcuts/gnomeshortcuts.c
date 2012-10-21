@@ -41,9 +41,9 @@ static gboolean loaded = FALSE;
 static DBusGProxy *media_player_keys_proxy = NULL;
 
 static const char about[] =
- "Gnome Shortcut Plugin\n"
- "Lets you control the player with Gnome's shortcuts.\n\n"
- "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>";
+ N_("Gnome Shortcut Plugin\n"
+	"Lets you control the player with Gnome's shortcuts.\n\n"
+	"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>");
 
 AUD_GENERAL_PLUGIN
 (

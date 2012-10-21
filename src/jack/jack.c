@@ -408,9 +408,9 @@ static void jack_pause (bool_t p)
 }
 
 static const char jack_about[] =
- "Based on xmms-jack, by Chris Morgan:\n"
- "http://xmms-jack.sourceforge.net/\n\n"
- "Ported to Audacious by Giacomo Lozito";
+ N_("Based on xmms-jack, by Chris Morgan:\n"
+    "http://xmms-jack.sourceforge.net/\n\n"
+    "Ported to Audacious by Giacomo Lozito");
 
 AUD_OUTPUT_PLUGIN
 (

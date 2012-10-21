@@ -397,15 +397,15 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
 }
 
 static const char about[] =
- "A simple plugin to control Audacious using the LIRC remote control daemon\n\n"
- "Adapted for Audacious by:\n"
- "Tony Vroon <chainsaw@gentoo.org>\n"
- "Joonas Harjumäki <jharjuma@gmail.com>\n\n"
- "Based on the XMMS LIRC plugin by:\n"
- "Carl van Schaik <carl@leg.uct.ac.za>\n"
- "Christoph Bartelmus <xmms@bartelmus.de>\n"
- "Andrew O. Shadoura <bugzilla@tut.by>\n\n"
- "For more information about LIRC, see http://lirc.org.";
+ N_("A simple plugin to control Audacious using the LIRC remote control daemon\n\n"
+    "Adapted for Audacious by:\n"
+    "Tony Vroon <chainsaw@gentoo.org>\n"
+    "Joonas Harjumäki <jharjuma@gmail.com>\n\n"
+    "Based on the XMMS LIRC plugin by:\n"
+    "Carl van Schaik <carl@leg.uct.ac.za>\n"
+    "Christoph Bartelmus <xmms@bartelmus.de>\n"
+    "Andrew O. Shadoura <bugzilla@tut.by>\n\n"
+    "For more information about LIRC, see http://lirc.org.");
 
 static const PreferencesWidget widgets[] = {
  {WIDGET_LABEL, N_("<b>Connection</b>")},
