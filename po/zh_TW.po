@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2012-09-15 12:42+0200\n"
-"PO-Revision-Date: 2012-08-07 22:44+0800\n"
+"PO-Revision-Date: 2012-10-25 12:10+0800\n"
 "Last-Translator: Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>\n"
 "Language-Team: Chinese (traditional)\n"
 "Language: zh_TW\n"
@@ -587,7 +587,7 @@ msgstr "音軌編號："
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
-msgstr ""
+msgstr "變動的"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "BPM:"
@@ -599,7 +599,7 @@ msgstr "BPM (wavg)："
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "Time Div:"
-msgstr ""
+msgstr "時間分割："
 
 #: src/amidi-plug/i_fileinfo.c:237
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
@@ -880,11 +880,11 @@ msgstr "Bauer Stereophonic-to-Binaural 偏好設定"
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
-msgstr ""
+msgstr "饋送等級："
 
 #: src/bs2b/plugin.c:163
 msgid "Cut frequency:"
-msgstr ""
+msgstr "截斷頻率："
 
 #: src/bs2b/plugin.c:177
 msgid "Presets:"
