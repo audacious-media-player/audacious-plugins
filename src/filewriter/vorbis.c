@@ -201,7 +201,7 @@ static GtkAdjustment * quality_adj;
 static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
 {
     v_base_quality = gtk_spin_button_get_value ((GtkSpinButton *) quality_spin) / 10;
-    aud_set_double ("filewrite_vorbis", "base_quality", v_base_quality);
+    aud_set_double ("filewriter_vorbis", "base_quality", v_base_quality);
 }
 
 static void vorbis_configure(void)
