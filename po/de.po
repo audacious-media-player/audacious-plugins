@@ -1011,7 +1011,7 @@ msgstr "Titel %d nicht gefunden."
 #: src/cdaudio-ng/cdaudio-ng.c:317
 #, c-format
 msgid "Track %d is a data track.\n"
-msgstr "Titel %d ist eine Datenspur."
+msgstr "Titel %d ist eine Datenspur.\n"
 
 #: src/cdaudio-ng/cdaudio-ng.c:326
 msgid "Failed to open audio output."
