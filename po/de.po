@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious 3.3\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-09-15 12:42+0200\n"
-"PO-Revision-Date: 2012-08-15 15:39+0200\n"
+"POT-Creation-Date: 2012-10-27 16:32+0200\n"
+"PO-Revision-Date: 2012-10-27 20:28+0200\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,6 +19,17 @@ msgstr "AAC Dekodierer"
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib-Spieler)"
+
+#: src/alarm/alarm.c:831
+msgid ""
+"A plugin that can be used to start playing at a certain time.\n"
+"\n"
+"Originally written by Adam Feakin and Daniel Stodden."
+msgstr ""
+"Ein Plugin, das genutzt werden kann, um zu\n"
+"einer bestimmten Zeit die Wiedergabe zu starten.\n"
+"\n"
+"Ursprünglich geschrieben von Adam Feakin und Daniel Stodden."
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -318,6 +329,21 @@ msgstr "Mixer-Element:"
 msgid "Work around drain hangup"
 msgstr "Workaround Drain-Hangup"
 
+#: src/alsa/plugin.c:27
+msgid ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
+msgstr ""
+"ALSA Ausgabeplugin für Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"Mein Dank geht an William Pitcock, Autor des ALSA Ausgabeplugins NG, "
+"dessen Code als Referenz gedient hat, "
+"wenn die ALSA Dokumentation nicht ausreichend war."
+
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
 msgstr "ALSA Ausgabe"
@@ -458,13 +484,21 @@ msgstr ""
 "<span size=\"smaller\">AMIDI-\n"
 "Plug</span>"
 
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - Datei auswählen"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
+msgstr "AMIDI-Plug Einstellungen"
+
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - SoundFont-Datei wählen"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:290
 msgid "SoundFont settings"
-msgstr "SoundFont-Einstellungen"
+msgstr "SoundFont Einstellungen"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:322
 msgid "Filename"
@@ -556,14 +590,6 @@ msgstr ""
 "<span size=\"smaller\">FluidSynth-\n"
 "Backend</span>"
 
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - Datei auswählen"
-
-#: src/amidi-plug/i_configure.c:110
-msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Plug Einstellungen"
-
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
 msgstr "Name:"
@@ -619,6 +645,10 @@ msgstr "  (ungültiges UTF-8)"
 #: src/amidi-plug/i_utils.c:36
 msgid "About AMIDI-Plug"
 msgstr "Über AMIDI-Plug"
+
+#: src/aosd/aosd.c:29
+msgid "Audacious OSD "
+msgstr "Audacious OSD"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
@@ -900,17 +930,25 @@ msgstr "Bauer Stereofonisch-zu-Binaural (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Spektrumanalysator"
 
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "CD wiedergeben"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "CD hinzufügen"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-msgid "Audio CD Menu Items"
-msgstr "Audio CD Menu-Einträge"
+#: src/cdaudio-ng/cdaudio-ng.c:105
+msgid ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"and to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you to Tony Vroon for mentoring and guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project."
+msgstr ""
+"Copyright (C) 2007-2012, Calin Crisan <ccrisan@gmail.com> und andere.\n"
+"\n"
+"Vielen Dank an die libcdio-Entwickler <http://www.gnu.org/software/libcdio/>\n"
+"und die libcddb-Entwickler <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Danke auch an Tony Vroon für die Betreuung und die Hilfestellung.\n"
+"\n"
+"Das war ein Google Summer of Code 2007 Projekt."
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "<b>Device</b>"
@@ -954,11 +992,78 @@ msgstr "Port:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
 msgid "Audio CD Plugin"
-msgstr "Audio CD Plugin"
+msgstr "Audio-CD Plugin"
+
+#: src/cdaudio-ng/cdaudio-ng.c:246
+msgid "Failed to initialize cdio subsystem."
+msgstr "Initialisieren des cdio Subsystems fehlgeschlagen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:304
+#, c-format
+msgid "Invalid URI %s."
+msgstr "Ungültige URI %s."
+
+#: src/cdaudio-ng/cdaudio-ng.c:310
+#, c-format
+msgid "Track %d not found."
+msgstr "Titel %d nicht gefunden."
+
+#: src/cdaudio-ng/cdaudio-ng.c:317
+#, c-format
+msgid "Track %d is a data track.\n"
+msgstr "Titel %d ist eine Datenspur."
+
+#: src/cdaudio-ng/cdaudio-ng.c:326
+msgid "Failed to open audio output."
+msgstr "Öffnen der Audioausgabe fehlgeschlagen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:402
+msgid "Too many read errors; giving up."
+msgstr "Zu viele Lesefehler; breche ab."
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
-msgstr "Audio CD"
+msgstr "Audio-CD"
+
+#: src/cdaudio-ng/cdaudio-ng.c:579 src/cdaudio-ng/cdaudio-ng.c:588
+#, c-format
+msgid "Failed to open CD device %s."
+msgstr "Öffnen des CD-Laufwerks %s fehlgeschlagen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:591
+msgid "No audio capable CD drive found."
+msgstr "Kein geeignetes CD-Laufwerk gefunden."
+
+#: src/cdaudio-ng/cdaudio-ng.c:618
+msgid "Failed to finish initializing opened CD drive."
+msgstr "Abschließen der Initialisierung des CD-Laufwerks fehlgeschlagen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:631
+msgid "Failed to retrieve first/last track number."
+msgstr "Abfragen der ersten/letzten Titelnummer fehlgeschlagen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:656
+#, c-format
+msgid "Cannot read start/end LSN for track %d."
+msgstr "Kann Start/Ende LSN für Titel %d nicht lesen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:733
+msgid "Failed to create the cddb connection."
+msgstr "Herstellen der CDDB Verbindung fehlgeschlagen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:808
+msgid "Failed to query the CDDB server"
+msgstr "Abfragen des CDDB Servers fehlgeschlagen"
+
+#: src/cdaudio-ng/cdaudio-ng.c:810
+#, c-format
+msgid "Failed to query the CDDB server: %s"
+msgstr "Abfragen des CDDB Servers fehlgeschlagen: %s"
+
+#: src/cdaudio-ng/cdaudio-ng.c:834
+#, c-format
+msgid "Failed to read the cddb info: %s"
+msgstr "Lesen der CDDB Information fehlgeschlagen: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
@@ -967,6 +1072,18 @@ msgstr "Laufwerk ist leer."
 #: src/cdaudio-ng/cdaudio-ng.c:909
 msgid "Unsupported disk type."
 msgstr "Nicht unterstützter Disk-Typ."
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "CD wiedergeben"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "CD hinzufügen"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr "Audio-CD Menu-Einträge"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -979,6 +1096,14 @@ msgstr "Center Lautstärke:"
 #: src/compressor/plugin.c:41
 msgid "Dynamic range:"
 msgstr "Dynamischer Bereich:"
+
+#: src/compressor/plugin.c:55
+msgid ""
+"Dynamic Range Compression Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"Kompressor Plugin für Audacious\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/compressor/plugin.c:60
 msgid "Dynamic Range Compressor"
@@ -1053,6 +1178,22 @@ msgstr ""
 "Die standardmäßige Liedlänge (in Sekunden) wird für Lieder benutzt, die "
 "keine Längeninformation beinhalten (z.B. Lieder in einer Endlosschleife)."
 
+#: src/console/plugin.c:29
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+msgstr ""
+"Dekodierer-Engine basierend auf Game_Music_Emu 0.5.2\n"
+"Unterstützte Formate: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious Plugin von:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+
 #: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
@@ -1071,6 +1212,14 @@ msgstr ""
 "Crossfading fehlgeschlagen, weil die Titel unterschiedliche Abtastraten "
 "hatten. Du kannst den Abtastraten-Konverter benutzen, um die Lieder auf die "
 "selbe Abtastrate zu resamplen."
+
+#: src/crossfade/crossfade.c:256
+msgid ""
+"Crossfade Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"Crossfade Plugin für Audacious\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1120,9 +1269,37 @@ msgstr "Rückkopplung:"
 msgid "Volume:"
 msgstr "Lautstärke:"
 
+#: src/echo_plugin/echo.c:116
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin, 1999\n"
+"\n"
+"Surround echo by Carl van Schaik, 1999"
+msgstr ""
+"Echo Plugin\n"
+"Von Johan Levin, 1999\n"
+"\n"
+"Surround Echo von Carl van Schaik, 1999"
+
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
 msgstr "Echo"
+
+#: src/ffaudio/ffaudio-core.c:635
+msgid ""
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
+msgstr ""
+"Multi-Format Audio-Decoding-Plugin für Audacious basierend\n"
+"auf dem FFmpeg Multimedia Framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious Plugin von:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:682
 msgid "FFmpeg Plugin"
@@ -1175,6 +1352,35 @@ msgstr "Dateiendung nicht entfernen"
 #: src/filewriter/filewriter.c:506
 msgid "Prepend track number to filename"
 msgstr "Titelnummer vor Dateinamen anhängen"
+
+#: src/filewriter/filewriter.c:515
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, "
+"wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, "
+"entweder gemäß Version 2 der Lizenz oder (nach Ihrer Option) jeder späteren Version."
+"\n\n"
+"Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber "
+"OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR "
+"EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License."
+"\n\n"
+"Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. "
+"Falls nicht, schreiben Sie an die Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, "
+"MA 02110, USA."
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
@@ -1328,13 +1534,45 @@ msgstr "Vorbis-Encoder-Konfiguration"
 msgid "Quality level (0 - 10):"
 msgstr "Qualitätsstufe (0 - 10):"
 
+#: src/flacng/plugin.c:270
+msgid ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+"Originaler Code von\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+
 #: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr "FLAC Dekodierer"
 
+#: src/gio/gio.c:302
+msgid ""
+"GIO Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren"
+msgstr ""
+"GIO Plugin für Audacious\n"
+"Copyright 2009-2012 John Lindgren"
+
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
 msgstr "GIO Plugin"
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:44
+msgid ""
+"Gnome Shortcut Plugin\n"
+"Lets you control the player with Gnome's shortcuts.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+msgstr ""
+"Gnome Tastenkürzel Plugin\n"
+"Ermöglicht die Kontrolle von Audacious mit GNOME-Tastaturkürzeln.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
@@ -1843,9 +2081,47 @@ msgstr "<b>Aktion:</b>"
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Tastenkombination:</b>"
 
+#: src/hotkey/plugin.c:68
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+"Globale Tastenkürzel Plugin\n"
+"Audacious mit globalen Tastenkürzeln oder Multimediatasten bedienen.\n"
+"\n"
+"Copyright (C) 2007 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Mitwirkende:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
 msgstr "Globale Tastenkürzel"
+
+#: src/jack/jack.c:411
+msgid ""
+"Based on xmms-jack, by Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Ported to Audacious by Giacomo Lozito"
+msgstr ""
+"Basierend auf xmms-jack, von Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Portiert für Audacious von Giacomo Lozito"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
@@ -1891,6 +2167,14 @@ msgstr "Aktive Plugins:"
 msgid "Settings"
 msgstr "Einstellungen"
 
+#: src/ladspa/plugin.c:646
+msgid ""
+"LADSPA Host for Audacious\n"
+"Copyright 2011 John Lindgren"
+msgstr ""
+"LADSPA Host für Audacious\n"
+"Copyright 2011 John Lindgren"
+
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
 msgstr "LADSPA Host"
@@ -1930,6 +2214,34 @@ msgstr "%s: von LIRC getrennt\n"
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: versuche jede %d Sekunden neu zu verbinden...\n"
+
+#: src/lirc/lirc.c:400
+msgid ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+msgstr ""
+"Ein einfaches Plugin, um Audacious über den LIRC Daemon zu steuern\n"
+"\n"
+"Portiert für Audacious von:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Basierend auf dem XMMS LIRC Plugin von:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"Für weitere Informationen über LIRC, besuche http://lirc.org."
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
@@ -1991,9 +2303,31 @@ msgstr "Takt-Generator: %d bpm"
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takt-Generator: %d bpm %d/%d"
 
+#: src/metronom/metronom.c:248
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+"Ein Takt-Generator von Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"Um ihn zu benutzen, füge eine URL hinzu: tact://Schläge*Zähler/Nenner\n"
+"z.B. tact://77 zum Spielen von 77 Schlägen pro Minute\n"
+"oder tact://60*3/4 zum Spielen von 60 bpm im 3/4-Takt"
+
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
 msgstr "Takt-Generator"
+
+#: src/mixer/mixer.c:171
+msgid ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
+"Kanal-Mixer Plugin für Audacious\n"
+"Copyright 2011-2012 John Lindgren und Michał Lipski"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
@@ -2039,6 +2373,45 @@ msgstr "Gestoppt"
 msgid "Audacious is not playing."
 msgstr "Audacious spielt gerade nichts ab."
 
+#: src/notify/notify.c:35
+msgid ""
+"Based on libnotify-aosd by Maximilian Bogner:\n"
+"http://www.mbogner.de/projects/libnotify-aosd/\n"
+"\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011 John Lindgren\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Basierend auf libnotify-aosd von Maximilian Bogner:\n"
+"http://www.mbogner.de/projects/libnotify-aosd/\n"
+"\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011 John Lindgren\n"
+"\n"
+"Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, "
+"wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, "
+"entweder gemäß Version 2 der Lizenz oder (nach Ihrer Option) jeder späteren Version."
+"\n\n"
+"Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber "
+"OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR "
+"EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License."
+"\n\n"
+"Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. "
+"Falls nicht, schreiben Sie an die Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, "
+"MA 02110, USA."
+
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
 msgstr "Desktop-Benachrichtigungen"
@@ -2067,6 +2440,20 @@ msgstr "Formatkonvertierung durch OSS aktivieren."
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Exklusiv-Modus aktivieren, um virtuelles Mischen zu verhindern."
 
+#: src/oss4/plugin.c:108
+msgid ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+"OSS4 Ausgabeplugin für Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"Ich möchte den Personen auf #audacious danken, vor allem Tony Vroon und "
+"John Lindgren sowie natürlich den Autoren des bisherigen OSS Plugins."
+
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
 msgstr "OSS4 Ausgabe"
@@ -2079,9 +2466,50 @@ msgstr "PLS Wiedergabelisten"
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 Dekodierer"
 
+#: src/pulse_audio/pulse_audio.c:646
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious PulseAudio Ausgabeplugin\n"
+"\n"
+"Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, "
+"wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, "
+"entweder gemäß Version 2 der Lizenz oder (nach Ihrer Option) jeder späteren Version."
+"\n\n"
+"Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber "
+"OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR "
+"EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License."
+"\n\n"
+"Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. "
+"Falls nicht, schreiben Sie an die Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, "
+"MA 02110, USA."
+
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
 msgstr "PulseAudio Ausgabe"
+
+#: src/resample/resample.c:163
+msgid ""
+"Sample Rate Converter Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"Abtastraten-Konverter Plugin für Audacious\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
@@ -2179,9 +2607,30 @@ msgstr "Passwort:"
 msgid "Scrobbler URL:"
 msgstr "Scrobbler-URL:"
 
+#: src/scrobbler/plugin.c:184
+msgid ""
+"Audacious AudioScrobbler Plugin\n"
+"\n"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
+"com>"
+msgstr ""
+"Audacious AudioScrobbler Plugin\n"
+"\n"
+"Ursprünglich geschrieben von:\n"
+"Audun Hove <audun@nlc.no>\n"
+"Pipian <pipian@pipian.com>"
+
 #: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr "Scrobbler"
+
+#: src/sdlout/plugin.c:27
+msgid ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+"SDL Ausgabeplugin für Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/sdlout/plugin.c:32
 msgid "SDL Output"
@@ -3160,6 +3609,44 @@ msgstr "Nicht archivierter Winamp 2.x-Skin"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Konnte Ordner nicht erstellen (%s): %s\n"
 
+#: src/sndfile/plugin.c:418
+msgid ""
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Basierend auf dem xmms_sndfile Plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Portiert für Audacious von Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, "
+"wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, "
+"entweder gemäß Version 2 der Lizenz oder (nach Ihrer Option) jeder späteren Version."
+"\n\n"
+"Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber "
+"OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR "
+"EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License."
+"\n\n"
+"Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. "
+"Falls nicht, schreiben Sie an die Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, "
+"MA 02110, USA."
+
 #: src/sndfile/plugin.c:437
 msgid "Sndfile Plugin"
 msgstr "Sndfile Plugin"
@@ -3291,6 +3778,24 @@ msgstr "Tonhöhe:"
 msgid "Speed and Pitch"
 msgstr "Geschwindigkeit und Tonhöhe"
 
+#: src/statusicon/statusicon.c:392
+msgid ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Dieses Plugin stellt ein Status-Icon bereit, welches\n"
+"in der Taskleiste des Fenstermanagers angezeigt wird."
+
 #: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Maus-Scroll-Aktion</b>"
@@ -3313,7 +3818,7 @@ msgstr "PopUp-Fenster deaktivieren"
 
 #: src/statusicon/statusicon.c:409
 msgid "Close to the system tray"
-msgstr "In die Taskleiste beenden"
+msgstr "In die Taskleiste minimieren"
 
 #: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
@@ -3322,6 +3827,16 @@ msgstr "Durch Hochscrollen in Wiedergabeliste fortschreiten"
 #: src/statusicon/statusicon.c:420
 msgid "Status Icon"
 msgstr "Status Icon"
+
+#: src/stereo_plugin/stereo.c:19
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin, 1999"
+msgstr ""
+"Extra Stereo Plugin\n"
+"\n"
+"Von Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
@@ -3340,9 +3855,36 @@ msgstr "%s %.1f Hz"
 msgid "Tone Generator: "
 msgstr "Ton-Generator: "
 
+#: src/tonegen/tonegen.c:199
+msgid ""
+"Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+msgstr ""
+"Sinuston-Generator von Håvard Kvålen <havardk@xmms.org>\n"
+"Modifiziert von Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"Um ihn zu benutzen, füge eine URL hinzu:\n"
+"tone://frequenz1;frequenz2;frequenz3;...\n"
+"z.B. tone://2000;2005 für einen Ton mit 2000 Hz und einen mit 2005 Hz"
+
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
 msgstr "Ton-Generator"
+
+#: src/unix-io/unix-io.c:256
+msgid ""
+"File I/O Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
+msgstr ""
+"Datei E/A Plugin für Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"DIESES PLUGIN WIRD BENÖTIGT. NICHT DEAKTIVIEREN."
 
 #: src/unix-io/unix-io.c:279
 msgid "File I/O Plugin"
@@ -3352,13 +3894,71 @@ msgstr "Datei E/A Plugin"
 msgid "Voice Removal"
 msgstr "Stimmenaufhebung"
 
+#: src/vorbis/vorbis.c:564
+msgid ""
+"Audacious Ogg Vorbis Decoder\n"
+"\n"
+"Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Original code by:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Contributions from:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+msgstr ""
+"Audacious Ogg Vorbis Dekodierer\n"
+"\n"
+"Basierend auf dem Ogg Vorbis Plugin der Xiph.org Foundation:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Original-Code von:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Beiträge von:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis Dekodierer"
 
+#: src/vtx/vtx.c:253
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+"Vortex-Dateiformat-Spieler von Sashnov Alexander <sashnov@ngs.ru>\n"
+"Basierend auf in_vtx.dll von Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious Plugin von Pavel Vymetalek <pvymetalek@seznam.cz>"
+
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
 msgstr "VTX Dekodierer"
+
+#: src/wavpack/wavpack.c:338
+msgid ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan."
+msgstr ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Ein Teil des Plugin-Codes ist von Miles Egan."
 
 #: src/wavpack/wavpack.c:345
 msgid "WavPack Decoder"
