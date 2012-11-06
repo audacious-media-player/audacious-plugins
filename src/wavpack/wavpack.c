@@ -281,11 +281,11 @@ wv_get_quality(WavpackContext *ctx)
     const char *quality;
 
     if (mode & MODE_LOSSLESS)
-        quality = "lossless";
+        quality = _("lossless");
     else if (mode & MODE_HYBRID)
-        quality = "lossy (hybrid)";
+        quality = _("lossy (hybrid)");
     else
-        quality = "lossy";
+        quality = _("lossy");
 
     return str_printf ("%s%s%s", quality,
         (mode & MODE_WVC) ? " (wvc corrected)" : "",

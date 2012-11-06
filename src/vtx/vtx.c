@@ -77,7 +77,7 @@ Tuple *vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
     tuple_set_str(out, FIELD_ALBUM, NULL, in->hdr.from);
     tuple_set_str(out, -1, "game", in->hdr.from);
 
-    tuple_set_str(out, FIELD_QUALITY, NULL, "sequenced");
+    tuple_set_str(out, FIELD_QUALITY, NULL, _("sequenced"));
     tuple_set_str(out, FIELD_CODEC, NULL, in->hdr.tracker);
     tuple_set_str(out, -1, "tracker", in->hdr.tracker);
 

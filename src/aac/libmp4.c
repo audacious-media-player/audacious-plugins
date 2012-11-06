@@ -437,7 +437,7 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     if (rate > 0 && channels > 0)
     {
         snprintf (scratch, sizeof scratch, "%d kHz, %s", rate / 1000, channels
-         == 1 ? "mono" : channels == 2 ? "stereo" : "surround");
+         == 1 ? _("mono") : channels == 2 ? _("stereo") : _("surround"));
         tuple_set_str (tuple, FIELD_QUALITY, NULL, scratch);
     }
 
