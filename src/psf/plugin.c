@@ -123,7 +123,7 @@ Tuple *psf2_tuple(const char *filename, VFSFile *file)
 	tuple_set_str(t, -1, "game", c->inf_game);
 	tuple_set_str(t, FIELD_TITLE, NULL, c->inf_title);
 	tuple_set_str(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
-	tuple_set_str(t, FIELD_QUALITY, NULL, "sequenced");
+	tuple_set_str(t, FIELD_QUALITY, NULL, _("sequenced"));
 	tuple_set_str(t, FIELD_CODEC, NULL, "PlayStation 1/2 Audio");
 	tuple_set_str(t, -1, "console", "PlayStation 1/2");
 

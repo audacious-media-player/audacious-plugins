@@ -14,6 +14,9 @@
 
 extern "C" {
 #include <audacious/misc.h>
+#include <audacious/i18n.h>
+
+#include "config.h"
 }
 
 #include "modplugbmp.h"
@@ -460,7 +463,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
     default:        tmps = "ModPlug unknown"; break;
     }
     tuple_set_str(ti, FIELD_CODEC, NULL, tmps);
-    tuple_set_str(ti, FIELD_QUALITY, NULL, "sequenced");
+    tuple_set_str(ti, FIELD_QUALITY, NULL, _("sequenced"));
     tuple_set_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
 
     char *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());

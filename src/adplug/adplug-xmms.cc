@@ -33,9 +33,12 @@
 
 extern "C" {
 #include <audacious/misc.h>
+#include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
 
 #include "adplug-xmms.h"
+
+#include "config.h"
 }
 
 /***** Defines *****/
@@ -145,7 +148,7 @@ extern "C" Tuple * adplug_get_tuple (const char * filename, VFSFile * fd)
       tuple_set_str(ti, FIELD_TITLE, NULL, p->getdesc().c_str());
 
     tuple_set_str(ti, FIELD_CODEC, NULL, p->gettype().c_str());
-    tuple_set_str(ti, FIELD_QUALITY, NULL, "sequenced");
+    tuple_set_str(ti, FIELD_QUALITY, NULL, _("sequenced"));
     tuple_set_int(ti, FIELD_LENGTH, NULL, p->songlength (plr.subsong));
     delete p;
   }
