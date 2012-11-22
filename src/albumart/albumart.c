@@ -1,105 +1,148 @@
 /*
- * Copyright (c) 2011 William Pitcock <nenolod@dereferenced.org>.
+ * albumart.c
+ * Copyright 2012 John Lindgren
  *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the documentation
+ *    provided with the distribution.
+ *
+ * This software is provided "as is" and without any warranty, express or
+ * implied. In no event shall the authors be liable for any damages arising from
+ * the use of this software.
  */
 
-#include <gtk/gtk.h>
-
-#include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
-#include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "config.h"
 
-static gint width;
-static gint height;
-
-static gboolean draw_event (GtkWidget * widget, cairo_t * cr, void * unused)
+static void album_set_unscaled (GtkWidget * widget, GdkPixbuf * unscaled)
 {
-    GdkPixbuf *album = NULL;
+    GdkPixbuf * old;
 
-    if (aud_drct_get_playing() && album == NULL)
+    if ((old = g_object_get_data ((GObject *) widget, "pixbux-unscaled")))
+        g_object_unref (old);
+    if ((old = g_object_get_data ((GObject *) widget, "pixbux-scaled")))
+        g_object_unref (old);
+
+    g_object_set_data ((GObject *) widget, "pixbuf-unscaled", unscaled);
+    g_object_set_data ((GObject *) widget, "pixbuf-scaled", NULL);
+
+    gtk_widget_queue_draw (widget);
+}
+
+static GdkPixbuf * album_get_scaled (GtkWidget * widget, int maxwidth, int maxheight)
+{
+    GdkPixbuf * unscaled = g_object_get_data ((GObject *) widget, "pixbuf-unscaled");
+    if (! unscaled)
+        return NULL;
+
+    int width = gdk_pixbuf_get_width (unscaled);
+    int height = gdk_pixbuf_get_height (unscaled);
+
+    if (width > maxwidth || height > maxheight)
     {
-        album = audgui_pixbuf_for_current ();
-        g_return_val_if_fail (album != NULL, TRUE);
-        if (gdk_pixbuf_get_width(album) > width ||
-            gdk_pixbuf_get_height(album) > height)
-            audgui_pixbuf_scale_within(&album, width < height ? width : height);
+        if (width * maxheight > height * maxwidth)
+        {
+            height = height * maxwidth / width;
+            width = maxwidth;
+        }
+        else
+        {
+            width = width * maxheight / height;
+            height = maxheight;
+        }
     }
 
-    if (album != NULL)
+    GdkPixbuf * scaled = g_object_get_data ((GObject *) widget, "pixbuf-scaled");
+    if (scaled)
     {
-        double x = (width - gdk_pixbuf_get_width(album)) / 2;
-        double y = (height - gdk_pixbuf_get_height(album)) / 2;
+        if (gdk_pixbuf_get_width (scaled) == width &&
+         gdk_pixbuf_get_height (scaled) == height)
+            return scaled;
 
-        gdk_cairo_set_source_pixbuf(cr, album, x, y);
-        cairo_paint_with_alpha(cr, 1.0);
+        g_object_unref (scaled);
     }
 
-    if (album != NULL)
-        g_object_unref(album);
+    scaled = gdk_pixbuf_scale_simple (unscaled, width, height, GDK_INTERP_BILINEAR);
+    g_object_set_data ((GObject *) widget, "pixbuf-scaled", scaled);
+    return scaled;
+}
 
+static bool_t album_draw (GtkWidget * widget, cairo_t * cr)
+{
+    GdkRectangle rect;
+    gtk_widget_get_allocation (widget, & rect);
+
+    GdkPixbuf * scaled = album_get_scaled (widget, rect.width, rect.height);
+    if (! scaled)
+        return TRUE;
+
+    int x = (rect.width - gdk_pixbuf_get_width (scaled)) / 2;
+    int y = (rect.height - gdk_pixbuf_get_height (scaled)) / 2;
+
+    gdk_cairo_set_source_pixbuf (cr, scaled, x, y);
+    cairo_paint (cr);
     return TRUE;
 }
 
-static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
+static bool_t album_configure (GtkWidget * widget, GdkEventConfigure * event)
 {
-    width = event->width;
-    height = event->height;
-    gtk_widget_queue_draw(widget);
-
+    gtk_widget_queue_draw (widget);
     return TRUE;
 }
 
-static void playback_start (gpointer data, GtkWidget *area)
+static void album_update (void * unused, GtkWidget * widget)
 {
-    gtk_widget_queue_draw(area);
+    if (! aud_drct_get_playing ())
+        return;
+
+    GdkPixbuf * unscaled = audgui_pixbuf_request_current ();
+    album_set_unscaled (widget, unscaled ? unscaled : audgui_pixbuf_fallback ());
+    gtk_widget_queue_draw (widget);
 }
 
-static /* GtkWidget * */ gpointer get_widget (void)
+static void album_clear (void * unused, GtkWidget * widget)
 {
-    GtkWidget *area = gtk_drawing_area_new();
-
-    g_signal_connect(area, "draw", (GCallback) draw_event, NULL);
-    g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
-
-    hook_associate("playback begin", (HookFunction) playback_start, area);
-
-    gtk_widget_set_size_request(area, 128, 128);
-
-    return area;
+    album_set_unscaled (widget, NULL);
+    gtk_widget_queue_draw (widget);
 }
 
-static void cleanup(void)
+static void album_cleanup (GtkWidget * widget)
 {
-    hook_dissociate("playback begin", (HookFunction) playback_start);
+    hook_dissociate_full ("playback begin", (HookFunction) album_update, widget);
+    hook_dissociate_full ("current art ready", (HookFunction) album_update, widget);
+    hook_dissociate_full ("playback stop", (HookFunction) album_clear, widget);
+}
+
+static void * album_get_widget (void)
+{
+    GtkWidget * widget = gtk_drawing_area_new ();
+    gtk_widget_set_size_request (widget, 96, 96);
+
+    g_signal_connect (widget, "draw", (GCallback) album_draw, NULL);
+    g_signal_connect (widget, "configure-event", (GCallback) album_configure, NULL);
+    g_signal_connect (widget, "destroy", (GCallback) album_cleanup, NULL);
+
+    hook_associate ("playback begin", (HookFunction) album_update, widget);
+    hook_associate ("current art ready", (HookFunction) album_update, widget);
+    hook_associate ("playback stop", (HookFunction) album_clear, widget);
+
+    return widget;
 }
 
 AUD_GENERAL_PLUGIN
 (
     .name = N_("Album Art"),
     .domain = PACKAGE,
-    .cleanup = cleanup,
-    .get_widget = get_widget
+    .get_widget = album_get_widget
 )
