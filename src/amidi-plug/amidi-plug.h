@@ -37,9 +37,6 @@
 #include "i_fileinfo.h"
 #include "i_utils.h"
 
-static GMutex * amidiplug_gettime_mutex = NULL;
-static GMutex * amidiplug_playing_mutex = NULL;
-
 gint amidiplug_playing_status = AMIDIPLUG_STOP;
 
 midifile_t midifile;

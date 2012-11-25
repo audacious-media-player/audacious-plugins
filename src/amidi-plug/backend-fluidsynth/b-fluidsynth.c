@@ -26,8 +26,8 @@ static sequencer_client_t sc;
 /* options */
 static amidiplug_cfg_fsyn_t amidiplug_cfg_fsyn;
 
-static GMutex * timer_mutex;
-static GCond * timer_cond;
+static pthread_mutex_t timer_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t timer_cond = PTHREAD_COND_INITIALIZER;
 static gint64 timer; /* microseconds */
 
 gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint * ppos )
@@ -51,9 +51,6 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
 
 gint backend_init( i_cfg_get_file_cb callback )
 {
-  timer_mutex = g_mutex_new ();
-  timer_cond = g_cond_new ();
-
   /* read configuration options */
   i_cfg_read( callback );
 
@@ -99,9 +96,6 @@ gint backend_cleanup( void )
   delete_fluid_settings( sc.settings );
 
   i_cfg_free(); /* free configuration options */
-
-  g_mutex_free (timer_mutex);
-  g_cond_free (timer_cond);
 
   return 1;
 }
@@ -158,9 +152,9 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 
 gint sequencer_queue_start (void)
 {
-    g_mutex_lock (timer_mutex);
+    pthread_mutex_lock (& timer_mutex);
     timer = 0;
-    g_mutex_unlock (timer_mutex);
+    pthread_mutex_unlock (& timer_mutex);
 
     return 1;
 }
@@ -265,9 +259,9 @@ gint sequencer_event_tempo( midievent_t * event )
   sc.cur_microsec_per_tick = (gdouble)event->data.tempo / (gdouble)sc.ppq;
   sc.tick_offset = event->tick_real;
 
-  g_mutex_lock (timer_mutex);
+  pthread_mutex_lock (& timer_mutex);
   timer = 0;
-  g_mutex_unlock (timer_mutex);
+  pthread_mutex_unlock (& timer_mutex);
 
   return 1;
 }
@@ -300,10 +294,10 @@ gint sequencer_output (void * * buffer, gint * length)
     * length = 4 * frames;
     fluid_synth_write_s16 (sc.synth, frames, * buffer, 0, 2, * buffer, 1, 2);
 
-    g_mutex_lock (timer_mutex);
+    pthread_mutex_lock (& timer_mutex);
     timer += 10000;
-    g_cond_signal (timer_cond);
-    g_mutex_unlock (timer_mutex);
+    pthread_cond_signal (& timer_cond);
+    pthread_mutex_unlock (& timer_mutex);
 
     return 1;
 }
@@ -354,12 +348,12 @@ void i_sleep( guint tick )
 {
   gdouble elapsed_tick_usecs = (gdouble)(tick - sc.tick_offset) * sc.cur_microsec_per_tick;
 
-  g_mutex_lock (timer_mutex);
+  pthread_mutex_lock (& timer_mutex);
 
   while (timer < elapsed_tick_usecs)
-      g_cond_wait (timer_cond, timer_mutex);
+      pthread_cond_wait (& timer_cond, & timer_mutex);
 
-  g_mutex_unlock (timer_mutex);
+  pthread_mutex_unlock (& timer_mutex);
 }
 
 

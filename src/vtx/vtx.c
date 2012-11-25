@@ -32,8 +32,8 @@ static gint freq = 44100;
 static gint chans = 2;
 static gint bits = 16;
 
-static GMutex *seek_mutex;
-static GCond *seek_cond;
+static pthread_mutex_t seek_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t seek_cond = PTHREAD_COND_INITIALIZER;
 static gint seek_value;
 static gboolean stop_flag = FALSE;
 
@@ -41,20 +41,6 @@ ayemu_ay_t ay;
 ayemu_vtx_t vtx;
 
 static const gchar *vtx_fmts[] = { "vtx", NULL };
-
-static gboolean vtx_init(void)
-{
-    seek_mutex = g_mutex_new();
-    seek_cond = g_cond_new();
-
-    return TRUE;
-}
-
-static void vtx_cleanup(void)
-{
-    g_mutex_free(seek_mutex);
-    g_cond_free(seek_cond);
-}
 
 gint vtx_is_our_fd(const gchar * filename, VFSFile * fp)
 {
@@ -152,17 +138,17 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
 
     while (!stop_flag)
     {
-        g_mutex_lock(seek_mutex);
+        pthread_mutex_lock(&seek_mutex);
 
         if (seek_value >= 0)
         {
             vtx.pos = seek_value * 50 / 1000;     /* (time in sec) * 50 = offset in AY register data frames */
             playback->output->flush(seek_value);
             seek_value = -1;
-            g_cond_signal(seek_cond);
+            pthread_cond_broadcast(&seek_cond);
         }
 
-        g_mutex_unlock(seek_mutex);
+        pthread_mutex_unlock(&seek_mutex);
 
         /* fill sound buffer */
         stream = sndbuf;
@@ -200,10 +186,10 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
 CLEANUP:
     ayemu_vtx_free(&vtx);
 
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock(&seek_mutex);
     stop_flag = TRUE;
-    g_cond_signal(seek_cond); /* wake up any waiting request */
-    g_mutex_unlock(seek_mutex);
+    pthread_cond_broadcast(&seek_cond); /* wake up any waiting request */
+    pthread_mutex_unlock(&seek_mutex);
 
 ERR_NO_CLOSE:
 
@@ -212,41 +198,41 @@ ERR_NO_CLOSE:
 
 void vtx_stop(InputPlayback * playback)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock(&seek_mutex);
 
     if (!stop_flag)
     {
         stop_flag = TRUE;
         playback->output->abort_write();
-        g_cond_signal(seek_cond);
+        pthread_cond_broadcast(&seek_cond);
     }
 
-    g_mutex_unlock (seek_mutex);
+    pthread_mutex_unlock(&seek_mutex);
 }
 
 void vtx_seek(InputPlayback * playback, gint time)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock(&seek_mutex);
 
     if (!stop_flag)
     {
         seek_value = time;
         playback->output->abort_write();
-        g_cond_signal(seek_cond);
-        g_cond_wait(seek_cond, seek_mutex);
+        pthread_cond_broadcast(&seek_cond);
+        pthread_cond_wait(&seek_cond, &seek_mutex);
     }
 
-    g_mutex_unlock(seek_mutex);
+    pthread_mutex_unlock(&seek_mutex);
 }
 
 void vtx_pause(InputPlayback * playback, gboolean pause)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock(&seek_mutex);
 
     if (!stop_flag)
         playback->output->pause(pause);
 
-    g_mutex_unlock(seek_mutex);
+    pthread_mutex_unlock(&seek_mutex);
 }
 
 static const char vtx_about[] =
@@ -259,8 +245,6 @@ AUD_INPUT_PLUGIN
     .name = N_("VTX Decoder"),
     .domain = PACKAGE,
     .about_text = vtx_about,
-    .init = vtx_init,
-    .cleanup = vtx_cleanup,
     .play = vtx_play,
     .stop = vtx_stop,
     .pause = vtx_pause,
