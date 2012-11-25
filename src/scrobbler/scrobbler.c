@@ -317,7 +317,7 @@ gboolean sc_timeout(gpointer data)
             dump_queue();
 
             /* Make sure the queue is submitted. */
-            sc_idle((GMutex*)data);
+            sc_idle(data);
 
             sc_submit_np(tuple, len);
         }
@@ -575,13 +575,13 @@ static void hexify(char *pass, int len)
 }
 
 static int sc_parse_sb_res(void);
-static GStaticMutex submit_mutex = G_STATIC_MUTEX_INIT;
+static pthread_mutex_t submit_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 gpointer sc_curl_perform_thread(gpointer data)
 {
     CURL *curl = (CURL *) data;
 
-    g_static_mutex_lock(&submit_mutex);
+    pthread_mutex_lock(&submit_mutex);
 
     curl_easy_perform(curl);
     curl_easy_cleanup(curl);
@@ -592,13 +592,12 @@ gpointer sc_curl_perform_thread(gpointer data)
         AUDDBG("Retrying in %d secs, %d elements in queue\n",
                     sc_submit_interval, q_nitems);
 
-        g_static_mutex_unlock(&submit_mutex);
+        pthread_mutex_unlock(&submit_mutex);
 
-        g_thread_exit(NULL);
         return NULL;
     }
 
-    g_static_mutex_unlock(&submit_mutex);
+    pthread_mutex_unlock(&submit_mutex);
 
     sc_free_res();
     g_thread_exit(NULL);
@@ -607,9 +606,9 @@ gpointer sc_curl_perform_thread(gpointer data)
 
 void sc_curl_perform(CURL *curl)
 {
-    GError **error = NULL;
-
-    g_thread_create(sc_curl_perform_thread, curl, FALSE, error);
+    pthread_t thread;
+    pthread_create(&thread, NULL, sc_curl_perform_thread, curl);
+    pthread_detach(thread);
 }
 
 static int sc_handshake(void)
@@ -939,7 +938,7 @@ static int sc_submitentry(gchar *entry)
     return 0;
 }
 
-static void sc_handlequeue(GMutex *mutex)
+static void sc_handlequeue(pthread_mutex_t *mutex)
 {
     GString *submitentry;
     int nsubmit;
@@ -954,11 +953,11 @@ static void sc_handlequeue(GMutex *mutex)
 
         AUDDBG("ok to handle queue!\n");
 
-        g_mutex_lock(mutex);
+        pthread_mutex_lock(mutex);
 
         nsubmit = sc_generateentry(submitentry);
 
-        g_mutex_unlock(mutex);
+        pthread_mutex_unlock(mutex);
 
         if (nsubmit > 0)
         {
@@ -967,7 +966,7 @@ static void sc_handlequeue(GMutex *mutex)
 
             if(!sc_submitentry(submitentry->str))
             {
-                g_mutex_lock(mutex);
+                pthread_mutex_lock(mutex);
 
                 AUDDBG("Clearing out %d item(s) from the queue\n", nsubmit);
                 for (i=0; i<nsubmit; i++)
@@ -982,16 +981,16 @@ static void sc_handlequeue(GMutex *mutex)
                  */
                 dump_queue();
 
-                g_mutex_unlock(mutex);
+                pthread_mutex_unlock(mutex);
 
                 sc_sb_errors = 0;
             }
             if(sc_sb_errors)
             {
                 /* Dump queue */
-                g_mutex_lock(mutex);
+                pthread_mutex_lock(mutex);
                 dump_queue();
-                g_mutex_unlock(mutex);
+                pthread_mutex_unlock(mutex);
 
                 if(sc_sb_errors < 5)
                     /* Retry after 1 min */
@@ -1208,9 +1207,9 @@ void sc_init(char *uname, char *pwd, char *url)
     AUDDBG("scrobbler starting up\n");
 }
 
-void sc_addentry(GMutex *mutex, Tuple *tuple, int len, bool_t is_http_source)
+void sc_addentry(pthread_mutex_t *mutex, Tuple *tuple, int len, bool_t is_http_source)
 {
-    g_mutex_lock(mutex);
+    pthread_mutex_lock(mutex);
 
     sc_submit_np(tuple, len);
     set_np(tuple, len, is_http_source);
@@ -1221,11 +1220,11 @@ void sc_addentry(GMutex *mutex, Tuple *tuple, int len, bool_t is_http_source)
      */
     dump_queue();
 
-    g_mutex_unlock(mutex);
+    pthread_mutex_unlock(mutex);
 }
 
 /* Call periodically from the plugin */
-int sc_idle(GMutex *mutex)
+int sc_idle(pthread_mutex_t *mutex)
 {
     sc_checkhandshake();
     if (sc_hs_status)

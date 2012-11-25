@@ -76,12 +76,13 @@ static struct neon_handle* handle_init(void) {
         return NULL;
     }
 
-    h->reader_status.mutex = g_mutex_new();
-    h->reader_status.cond = g_cond_new();
+    pthread_mutex_init(&h->reader_status.mutex, NULL);
+    pthread_cond_init(&h->reader_status.cond, NULL);
     h->reader_status.reading = FALSE;
     h->reader_status.status = NEON_READER_INIT;
 
-    if (0 != init_rb_with_lock(&(h->rb), NEON_BUFSIZE, h->reader_status.mutex)) {
+    if (init_rb_with_lock(&(h->rb), NEON_BUFSIZE, &h->reader_status.mutex) != 0)
+    {
         _ERROR("Could not initialize buffer");
         g_free(h);
         return NULL;
@@ -104,10 +105,8 @@ static void handle_free(struct neon_handle* h) {
     g_free(h->purl);
     destroy_rb(&h->rb);
 
-    if (h->reader_status.mutex != NULL)
-        g_mutex_free(h->reader_status.mutex);
-    if (h->reader_status.cond != NULL)
-        g_cond_free(h->reader_status.cond);
+    pthread_mutex_destroy(&h->reader_status.mutex);
+    pthread_cond_destroy(&h->reader_status.cond);
 
     g_free(h->icy_metadata.stream_name);
     g_free(h->icy_metadata.stream_title);
@@ -239,15 +238,14 @@ static void kill_reader(struct neon_handle* h) {
     }
 
     _DEBUG("Signaling reader thread to terminate");
-    g_mutex_lock(h->reader_status.mutex);
+    pthread_mutex_lock(&h->reader_status.mutex);
     h->reader_status.reading = FALSE;
-    g_cond_signal(h->reader_status.cond);
-    g_mutex_unlock(h->reader_status.mutex);
+    pthread_cond_broadcast(&h->reader_status.cond);
+    pthread_mutex_unlock(&h->reader_status.mutex);
 
     _DEBUG("Waiting for reader thread to die...");
-    g_thread_join(h->reader);
+    pthread_join(h->reader, NULL);
     _DEBUG("Reader thread has died");
-    h->reader = NULL;
 }
 
 /*
@@ -657,7 +655,7 @@ static gpointer reader_thread(void* data) {
     struct neon_handle* h = (struct neon_handle*)data;
     gint ret;
 
-    g_mutex_lock(h->reader_status.mutex);
+    pthread_mutex_lock(&h->reader_status.mutex);
 
     while(h->reader_status.reading) {
 
@@ -665,14 +663,14 @@ static gpointer reader_thread(void* data) {
          * Hit the network only if we have more than NEON_NETBLKSIZE of free buffer
          */
         if (NEON_NETBLKSIZE < free_rb_locked(&h->rb)) {
-            g_mutex_unlock(h->reader_status.mutex);
+            pthread_mutex_unlock(&h->reader_status.mutex);
 
             ret = fill_buffer(h);
 
-            g_mutex_lock(h->reader_status.mutex);
+            pthread_mutex_lock(&h->reader_status.mutex);
 
             /* Wake up main thread if it is waiting. */
-            g_cond_signal (h->reader_status.cond);
+            pthread_cond_broadcast(&h->reader_status.cond);
 
             if (-1 == ret) {
                 /*
@@ -683,7 +681,7 @@ static gpointer reader_thread(void* data) {
                 _ERROR ("<%p> Error while reading from the network. "
                  "Terminating reader thread", (void *) h);
                 h->reader_status.status = NEON_READER_ERROR;
-                g_mutex_unlock(h->reader_status.mutex);
+                pthread_mutex_unlock(&h->reader_status.mutex);
                 return NULL;
             } else if (1 == ret) {
                 /*
@@ -692,7 +690,7 @@ static gpointer reader_thread(void* data) {
                  */
                 _DEBUG("<%p> EOF encountered while reading from the network. Terminating reader thread", h);
                 h->reader_status.status = NEON_READER_EOF;
-                g_mutex_unlock(h->reader_status.mutex);
+                pthread_mutex_unlock(&h->reader_status.mutex);
                 return NULL;
             }
         } else {
@@ -700,13 +698,13 @@ static gpointer reader_thread(void* data) {
              * Not enough free space in the buffer.
              * Sleep until the main thread wakes us up.
              */
-            g_cond_wait(h->reader_status.cond, h->reader_status.mutex);
+            pthread_cond_wait(&h->reader_status.cond, &h->reader_status.mutex);
         }
     }
 
     _DEBUG("<%p> Reader thread terminating gracefully", h);
     h->reader_status.status = NEON_READER_TERM;
-    g_mutex_unlock(h->reader_status.mutex);
+    pthread_mutex_unlock(&h->reader_status.mutex);
 
     return NULL;
 }
@@ -748,9 +746,8 @@ gint neon_vfs_fclose_impl(VFSFile* file) {
 
     struct neon_handle* h = (struct neon_handle *)vfs_get_handle (file);
 
-    if (NULL != h->reader) {
+    if (h->reader_status.reading)
         kill_reader(h);
-    }
 
     _DEBUG("<%p> Destroying request", h);
     if (NULL != h->request) {
@@ -791,21 +788,22 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
         return 0;
 
     /* If the buffer is empty, wait for the reader thread to fill it. */
-    g_mutex_lock (h->reader_status.mutex);
+    pthread_mutex_lock(&h->reader_status.mutex);
 
     for (retries = 0; retries < NEON_RETRY_COUNT; retries ++)
     {
-        if (used_rb_locked (& h->rb) / size > 0 || h->reader == NULL ||
+        if (used_rb_locked(&h->rb) / size > 0 || !h->reader_status.reading ||
          h->reader_status.status != NEON_READER_RUN)
             break;
 
-        g_cond_signal (h->reader_status.cond);
-        g_cond_wait (h->reader_status.cond, h->reader_status.mutex);
+        pthread_cond_broadcast(&h->reader_status.cond);
+        pthread_cond_wait(&h->reader_status.cond, &h->reader_status.mutex);
     }
 
-    g_mutex_unlock (h->reader_status.mutex);
+    pthread_mutex_unlock(&h->reader_status.mutex);
 
-    if (NULL == h->reader) {
+    if (!h->reader_status.reading)
+    {
         if ((NEON_READER_EOF != h->reader_status.status) ||
             ((NEON_READER_EOF == h->reader_status.status) && (h->content_length != -1))) {
             /*
@@ -828,30 +826,25 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
              * Start the reader thread if we did not reach EOF during
              * the initial fill
              */
-            g_mutex_lock(h->reader_status.mutex);
+            pthread_mutex_lock(&h->reader_status.mutex);
             if (0 == ret) {
                 h->reader_status.reading = TRUE;
                 _DEBUG("<%p> Starting reader thread", h);
-                if (NULL == (h->reader = g_thread_create(reader_thread, h, TRUE, NULL))) {
-                    h->reader_status.reading = FALSE;
-                    g_mutex_unlock(h->reader_status.mutex);
-                    _ERROR ("<%p> Error creating reader thread!", (void *) h);
-                    return 0;
-                }
+                pthread_create(&h->reader, NULL, reader_thread, h);
                 h->reader_status.status = NEON_READER_RUN;
             } else {
                 _DEBUG("<%p> No reader thread needed (stream has reached EOF during fill)", h);
                 h->reader_status.reading = FALSE;
                 h->reader_status.status = NEON_READER_EOF;
             }
-            g_mutex_unlock(h->reader_status.mutex);
+            pthread_mutex_unlock(&h->reader_status.mutex);
         }
     } else {
         /*
          * There already is a reader thread. Look if it is in good
          * shape.
          */
-        g_mutex_lock(h->reader_status.mutex);
+        pthread_mutex_lock(&h->reader_status.mutex);
 
         switch (h->reader_status.status) {
             case NEON_READER_INIT:
@@ -867,12 +860,12 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
                  */
                 _DEBUG("<%p> NEON_READER_ERROR happened. Terminating reader thread and marking EOF.", h);
                 h->reader_status.status = NEON_READER_EOF;
-                g_mutex_unlock(h->reader_status.mutex);
+                pthread_mutex_unlock(&h->reader_status.mutex);
 
-                if (NULL != h->reader)
+                if (h->reader_status.reading)
                     kill_reader(h);
 
-                g_mutex_lock(h->reader_status.mutex);
+                pthread_mutex_lock(&h->reader_status.mutex);
 
             case NEON_READER_EOF:
                 /*
@@ -881,9 +874,9 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
                  */
                 if (0 == used_rb_locked(&h->rb)) {
                     _DEBUG("<%p> Reached end of stream", h);
-                    g_mutex_unlock(h->reader_status.mutex);
+                    pthread_mutex_unlock(&h->reader_status.mutex);
 
-                    if (NULL != h->reader)
+                    if (h->reader_status.reading)
                         kill_reader(h);
 
                     h->eof = TRUE;
@@ -898,11 +891,11 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
                  */
                 _ERROR ("<%p> Reader thread terminated and fread() called. How "
                  "did we get here?", (void *) h);
-                g_mutex_unlock(h->reader_status.mutex);
+                pthread_mutex_unlock(&h->reader_status.mutex);
                 kill_reader(h);
                 return 0;
         }
-        g_mutex_unlock(h->reader_status.mutex);
+        pthread_mutex_unlock(&h->reader_status.mutex);
     }
 
     /*
@@ -964,7 +957,7 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
     /*
      * Signal the network thread to continue reading
      */
-    g_mutex_lock(h->reader_status.mutex);
+    pthread_mutex_lock(&h->reader_status.mutex);
     if (NEON_READER_EOF == h->reader_status.status) {
         if (0 == free_rb_locked(&h->rb)) {
             _DEBUG("<%p> stream EOF reached and buffer empty", h);
@@ -972,9 +965,9 @@ static gint64 neon_fread_real (void * ptr_, gint64 size, gint64 nmemb,
         }
     }
     else
-        g_cond_signal(h->reader_status.cond);
+        pthread_cond_broadcast(&h->reader_status.cond);
 
-    g_mutex_unlock(h->reader_status.mutex);
+    pthread_mutex_unlock(&h->reader_status.mutex);
 
     h->pos += (relem*size);
     h->icy_metaleft -= (relem*size);
@@ -1139,12 +1132,8 @@ gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
      * - dump all data currently in the ringbuffer
      * - create a new request starting at newpos
      */
-    if (NULL != h->reader) {
-        /*
-         * There may be a thread still running.
-         */
+    if (h->reader_status.reading)
         kill_reader(h);
-    }
 
     if (NULL != h->request) {
         ne_request_destroy(h->request);

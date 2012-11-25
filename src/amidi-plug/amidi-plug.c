@@ -55,62 +55,43 @@ AUD_INPUT_PLUGIN
     .extensions = amidiplug_vfs_extensions,
 )
 
-static GMutex * init_mutex;
-static gboolean initted;
+static pthread_mutex_t control_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t control_cond = PTHREAD_COND_INITIALIZER;
+static pthread_mutex_t audio_control_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t audio_control_cond = PTHREAD_COND_INITIALIZER;
 
-static GCond * control_cond;
+static gboolean initted;
 static gint seek_time;
 
-static GThread * audio_thread;
-static GMutex * audio_control_mutex;
-static GCond * audio_control_cond;
+static pthread_t audio_thread;
 static gboolean audio_stop_flag, audio_pause_flag;
 static gint audio_seek_time;
 
 static gboolean amidiplug_init (void)
 {
-    init_mutex = g_mutex_new ();
     initted = FALSE;
     return TRUE;
 }
 
 static void soft_init (void)
 {
-    g_mutex_lock (init_mutex);
+    pthread_mutex_lock (& control_mutex);
 
     if (! initted)
     {
-        amidiplug_gettime_mutex = g_mutex_new ();
-        amidiplug_playing_mutex = g_mutex_new ();
-        control_cond = g_cond_new ();
-
-        audio_control_mutex = g_mutex_new ();
-        audio_control_cond = g_cond_new ();
-
         i_configure_cfg_ap_read ();
         i_backend_load (amidiplug_cfg_ap.ap_seq_backend);
 
         initted = TRUE;
     }
 
-    g_mutex_unlock (init_mutex);
+    pthread_mutex_unlock (& control_mutex);
 }
 
 static void amidiplug_cleanup (void)
 {
     if (initted)
-    {
         i_backend_unload ();
-
-        g_mutex_free (amidiplug_gettime_mutex);
-        g_mutex_free (amidiplug_playing_mutex);
-        g_cond_free (control_cond);
-
-        g_mutex_free (audio_control_mutex);
-        g_cond_free (audio_control_cond);
-    }
-
-    g_mutex_free (init_mutex);
 }
 
 static gint amidiplug_is_our_file_from_vfs( const gchar *filename_uri , VFSFile *fp )
@@ -175,29 +156,29 @@ static void amidiplug_stop( InputPlayback * playback )
 {
   DEBUGMSG( "STOP request at tick: %i\n" , midifile.playing_tick );
 
-  g_mutex_lock( amidiplug_playing_mutex );
+  pthread_mutex_lock (& control_mutex);
   amidiplug_playing_status = AMIDIPLUG_STOP;
-  g_cond_signal (control_cond);
-  g_mutex_unlock( amidiplug_playing_mutex );
+  pthread_cond_broadcast (& control_cond);
+  pthread_mutex_unlock (& control_mutex);
 }
 
 static void amidiplug_pause (InputPlayback * playback, gboolean paused)
 {
-    g_mutex_lock (amidiplug_playing_mutex);
+    pthread_mutex_lock (& control_mutex);
     amidiplug_playing_status = paused ? AMIDIPLUG_PAUSE : AMIDIPLUG_PLAY;
-    g_cond_signal (control_cond);
-    g_cond_wait (control_cond, amidiplug_playing_mutex);
-    g_mutex_unlock (amidiplug_playing_mutex);
+    pthread_cond_broadcast (& control_cond);
+    pthread_cond_wait (& control_cond, & control_mutex);
+    pthread_mutex_unlock (& control_mutex);
 }
 
 static void amidiplug_mseek (InputPlayback * playback, gint time)
 {
-    g_mutex_lock (amidiplug_playing_mutex);
+    pthread_mutex_lock (& control_mutex);
     amidiplug_playing_status = AMIDIPLUG_SEEK;
     seek_time = time;
-    g_cond_signal (control_cond);
-    g_cond_wait (control_cond, amidiplug_playing_mutex);
-    g_mutex_unlock (amidiplug_playing_mutex);
+    pthread_cond_broadcast (& control_cond);
+    pthread_cond_wait (& control_cond, & control_mutex);
+    pthread_mutex_unlock (& control_mutex);
 }
 
 static gint amidiplug_get_time( InputPlayback * playback )
@@ -207,13 +188,13 @@ static gint amidiplug_get_time( InputPlayback * playback )
     if (! backend.autonomous_audio)
         return -1;
 
-    g_mutex_lock (amidiplug_playing_mutex);
+    pthread_mutex_lock (& control_mutex);
 
     if (seek_time != -1)
     {
         gint time = seek_time;
 
-        g_mutex_unlock (amidiplug_playing_mutex);
+        pthread_mutex_unlock (& control_mutex);
         return time;
     }
 
@@ -221,21 +202,19 @@ static gint amidiplug_get_time( InputPlayback * playback )
         ( amidiplug_playing_status == AMIDIPLUG_PAUSE ) ||
         ( amidiplug_playing_status == AMIDIPLUG_SEEK ))
     {
-      g_mutex_unlock( amidiplug_playing_mutex );
-      g_mutex_lock( amidiplug_gettime_mutex );
       pt = midifile.playing_tick;
-      g_mutex_unlock( amidiplug_gettime_mutex );
+      pthread_mutex_unlock (& control_mutex);
       return (gint)((pt * midifile.avg_microsec_per_tick) / 1000);
     }
     else if ( amidiplug_playing_status == AMIDIPLUG_STOP )
     {
-      g_mutex_unlock( amidiplug_playing_mutex );
+      pthread_mutex_unlock (& control_mutex);
       DEBUGMSG( "GETTIME on stopped song, returning -1\n" );
       return -1;
     }
     else /* AMIDIPLUG_ERR */
     {
-      g_mutex_unlock( amidiplug_playing_mutex );
+      pthread_mutex_unlock (& control_mutex);
       DEBUGMSG( "GETTIME on halted song (an error occurred?), returning -1 and stopping the player\n" );
       aud_drct_stop();
       return -1;
@@ -390,9 +369,9 @@ static gboolean amidiplug_play (InputPlayback * playback, const gchar *
 
       /* play play play! */
       DEBUGMSG( "PLAY requested, starting play thread\n" );
-      g_mutex_lock( amidiplug_playing_mutex );
+      pthread_mutex_lock (& control_mutex);
       amidiplug_playing_status = AMIDIPLUG_PLAY;
-      g_mutex_unlock( amidiplug_playing_mutex );
+      pthread_mutex_unlock (& control_mutex);
 
       seek_time = -1;
       playback->set_pb_ready(playback);
@@ -420,12 +399,12 @@ static void * audio_loop (void * arg)
 
     while (1)
     {
-        g_mutex_lock (audio_control_mutex);
+        pthread_mutex_lock (& audio_control_mutex);
 
         if (audio_stop_flag)
         {
-            g_cond_signal (audio_control_cond);
-            g_mutex_unlock (audio_control_mutex);
+            pthread_cond_broadcast (& audio_control_cond);
+            pthread_mutex_unlock (& audio_control_mutex);
             break;
         }
 
@@ -433,7 +412,7 @@ static void * audio_loop (void * arg)
         {
             playback->output->flush (audio_seek_time);
             audio_seek_time = -1;
-            g_cond_signal (audio_control_cond);
+            pthread_cond_broadcast (& audio_control_cond);
         }
 
         if (audio_pause_flag)
@@ -444,9 +423,9 @@ static void * audio_loop (void * arg)
                 paused = TRUE;
             }
 
-            g_cond_signal (audio_control_cond);
-            g_cond_wait (audio_control_cond, audio_control_mutex);
-            g_mutex_unlock (audio_control_mutex);
+            pthread_cond_broadcast (& audio_control_cond);
+            pthread_cond_wait (& audio_control_cond, & audio_control_mutex);
+            pthread_mutex_unlock (& audio_control_mutex);
             continue;
         }
 
@@ -454,10 +433,10 @@ static void * audio_loop (void * arg)
         {
             playback->output->pause (FALSE);
             paused = FALSE;
-            g_cond_signal (audio_control_cond);
+            pthread_cond_broadcast (& audio_control_cond);
         }
 
-        g_mutex_unlock (audio_control_mutex);
+        pthread_mutex_unlock (& audio_control_mutex);
 
         if (backend.seq_output (& buffer, & buffer_size))
             playback->output->write_audio (buffer, buffer_size);
@@ -472,34 +451,34 @@ static void audio_start (InputPlayback * playback)
     audio_stop_flag = FALSE;
     audio_pause_flag = FALSE;
     audio_seek_time = -1;
-    audio_thread = g_thread_create (audio_loop, (void *) playback, TRUE, NULL);
+    pthread_create (& audio_thread, NULL, audio_loop, (void *) playback);
 }
 
 static void audio_seek (gint time)
 {
-    g_mutex_lock (audio_control_mutex);
+    pthread_mutex_lock (& audio_control_mutex);
     audio_seek_time = time;
-    g_cond_signal (audio_control_cond);
-    g_cond_wait (audio_control_cond, audio_control_mutex);
-    g_mutex_unlock (audio_control_mutex);
+    pthread_cond_broadcast (& audio_control_cond);
+    pthread_cond_wait (& audio_control_cond, & audio_control_mutex);
+    pthread_mutex_unlock (& audio_control_mutex);
 }
 
 static void audio_pause (gboolean pause)
 {
-    g_mutex_lock (audio_control_mutex);
+    pthread_mutex_lock (& audio_control_mutex);
     audio_pause_flag = pause;
-    g_cond_signal (audio_control_cond);
-    g_cond_wait (audio_control_cond, audio_control_mutex);
-    g_mutex_unlock (audio_control_mutex);
+    pthread_cond_broadcast (& audio_control_cond);
+    pthread_cond_wait (& audio_control_cond, & audio_control_mutex);
+    pthread_mutex_unlock (& audio_control_mutex);
 }
 
 static void audio_stop (void)
 {
-    g_mutex_lock (audio_control_mutex);
+    pthread_mutex_lock (& audio_control_mutex);
     audio_stop_flag = TRUE;
-    g_cond_signal (audio_control_cond);
-    g_mutex_unlock (audio_control_mutex);
-    g_thread_join (audio_thread);
+    pthread_cond_broadcast (& audio_control_cond);
+    pthread_mutex_unlock (& audio_control_mutex);
+    pthread_join (audio_thread, NULL);
 }
 
 static void do_seek (gint time)
@@ -550,11 +529,11 @@ static void amidiplug_play_loop (InputPlayback * playback)
     midifile_track_t * event_track = NULL;
     gint i, min_tick = midifile.max_tick + 1;
 
-    g_mutex_lock (amidiplug_playing_mutex);
+    pthread_mutex_lock (& control_mutex);
 
     if (amidiplug_playing_status == AMIDIPLUG_STOP)
     {
-        g_mutex_unlock (amidiplug_playing_mutex);
+        pthread_mutex_unlock (& control_mutex);
         stopped = TRUE;
         break;
     }
@@ -572,7 +551,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
         }
 
         amidiplug_playing_status = paused ? AMIDIPLUG_PAUSE : AMIDIPLUG_PLAY;
-        g_cond_signal (control_cond);
+        pthread_cond_broadcast (& control_cond);
     }
 
     if (amidiplug_playing_status == AMIDIPLUG_PAUSE)
@@ -585,11 +564,11 @@ static void amidiplug_play_loop (InputPlayback * playback)
                 audio_pause (TRUE);
 
             paused = TRUE;
-            g_cond_signal (control_cond);
+            pthread_cond_broadcast (& control_cond);
         }
 
-        g_cond_wait (control_cond, amidiplug_playing_mutex);
-        g_mutex_unlock (amidiplug_playing_mutex);
+        pthread_cond_wait (& control_cond, & control_mutex);
+        pthread_mutex_unlock (& control_mutex);
         continue;
     }
 
@@ -608,10 +587,10 @@ static void amidiplug_play_loop (InputPlayback * playback)
         }
 
         paused = FALSE;
-        g_cond_signal (control_cond);
+        pthread_cond_broadcast (& control_cond);
     }
 
-    g_mutex_unlock (amidiplug_playing_mutex);
+    pthread_mutex_unlock (& control_mutex);
 
     /* search next event */
     for (i = 0; i < midifile.num_tracks; ++i)
@@ -665,9 +644,9 @@ static void amidiplug_play_loop (InputPlayback * playback)
         backend.seq_event_tempo( event );
         DEBUGMSG( "PLAY thread, processing tempo event with value %i on tick %i\n" ,
                   event->data.tempo , event->tick );
-        g_mutex_lock( amidiplug_gettime_mutex );
+        pthread_mutex_lock (& control_mutex);
         midifile.current_tempo = event->data.tempo;
-        g_mutex_unlock( amidiplug_gettime_mutex );
+        pthread_mutex_unlock (& control_mutex);
         break;
       case SND_SEQ_EVENT_META_TEXT:
         /* do nothing */
@@ -680,9 +659,9 @@ static void amidiplug_play_loop (InputPlayback * playback)
         break;
     }
 
-    g_mutex_lock( amidiplug_gettime_mutex );
+    pthread_mutex_lock (& control_mutex);
     midifile.playing_tick = event->tick;
-    g_mutex_unlock( amidiplug_gettime_mutex );
+    pthread_mutex_unlock (& control_mutex);
 
     if ( backend.autonomous_audio == TRUE )
     {
@@ -788,9 +767,9 @@ void amidiplug_skipto( gint playing_tick )
         break;
       case SND_SEQ_EVENT_TEMPO:
         backend.seq_event_tempo( event );
-        g_mutex_lock( amidiplug_gettime_mutex );
+        pthread_mutex_lock (& control_mutex);
         midifile.current_tempo = event->data.tempo;
-        g_mutex_unlock( amidiplug_gettime_mutex );
+        pthread_mutex_unlock (& control_mutex);
         break;
     }
 
