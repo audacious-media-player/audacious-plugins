@@ -199,7 +199,7 @@ static const struct MenuItem playback_items[] = {
 static const struct MenuItem dupe_items[] = {
  {N_("By _Title"), .func = pl_remove_dupes_by_title},
  {N_("By _Filename"), .func = pl_remove_dupes_by_filename},
- {N_("By _Path + Filename"), .func = pl_remove_dupes_by_path}};
+ {N_("By File _Path"), .func = pl_remove_dupes_by_path}};
 
 static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_track},
