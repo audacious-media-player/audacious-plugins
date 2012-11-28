@@ -98,6 +98,9 @@ static void pl_new (void)
 static void pl_play (void) {aud_drct_play_playlist (aud_playlist_get_active ()); }
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
+static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
+static void pl_remove_dupes_by_filename (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FILENAME); }
+static void pl_remove_dupes_by_path (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
 static void pl_rename (void) {ui_playlist_notebook_edit_tab_title (aud_playlist_get_active ()); }
 static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
 static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }
@@ -183,6 +186,11 @@ static const struct MenuItem playback_items[] = {
  {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, 'k', CTRL, .func = audgui_jump_to_time},
  {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track}};
 
+static const struct MenuItem dupe_items[] = {
+ {N_("By _Title"), .func = pl_remove_dupes_by_title},
+ {N_("By _Filename"), .func = pl_remove_dupes_by_filename},
+ {N_("By _Path + Filename"), .func = pl_remove_dupes_by_path}};
+
 static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_track},
  {N_("By _Title"), .func = pl_sort_title},
@@ -199,6 +207,7 @@ static const struct MenuItem playlist_items[] = {
  {N_("_Play This Playlist"), GTK_STOCK_MEDIA_PLAY, GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
  {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F5, .func = pl_refresh},
  {N_("Remove _Unavailable Files"), GTK_STOCK_REMOVE, .func = pl_remove_failed},
+ {N_("Remove _Duplicates"), GTK_STOCK_REMOVE, .items = dupe_items, G_N_ELEMENTS (dupe_items)},
  {.sep = TRUE},
  {N_("_Sort"), GTK_STOCK_SORT_ASCENDING, .items = sort_items, G_N_ELEMENTS (sort_items)},
  {.sep = TRUE},
