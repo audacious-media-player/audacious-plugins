@@ -37,6 +37,7 @@ static GObject * object_core, * object_player;
 static char * last_title, * last_artist, * last_album, * last_file;
 static int last_length;
 static const char * image_file;
+static bool_t recheck_image;
 static GVariantType * metadata_type;
 static int update_timer;
 
@@ -73,7 +74,7 @@ static void update_metadata (void * data, GObject * object)
 
     /* pointer comparison works for pooled strings */
     if (title == last_title && artist == last_artist && album == last_album &&
-     file == last_file && length == last_length)
+     file == last_file && length == last_length && ! recheck_image)
     {
         str_unref (title);
         str_unref (artist);
@@ -82,11 +83,12 @@ static void update_metadata (void * data, GObject * object)
         return;
     }
 
-    if (file != last_file)
+    if (file != last_file || recheck_image)
     {
         if (image_file)
             aud_art_unref (last_file);
-        image_file = file ? aud_art_get_file (file) : NULL;
+        image_file = file ? aud_art_request_file (file) : NULL;
+        recheck_image = FALSE;
     }
 
     str_unref (last_title);
@@ -161,6 +163,12 @@ static void update_metadata (void * data, GObject * object)
 
     GVariant * array = g_variant_new_array (metadata_type, elems, nelems);
     g_object_set (object, "metadata", array, NULL);
+}
+
+static void update_image (void * data, GObject * object)
+{
+    recheck_image = TRUE;
+    update_metadata (data, object);
 }
 
 static void volume_changed (GObject * object)
@@ -293,6 +301,8 @@ void mpris2_cleanup (void)
     hook_dissociate ("playlist position", (HookFunction) update_metadata);
     hook_dissociate ("playlist update", (HookFunction) update_metadata);
 
+    hook_dissociate ("current art ready", (HookFunction) update_image);
+
     hook_dissociate ("playback ready", (HookFunction) emit_seek);
     hook_dissociate ("playback seek", (HookFunction) emit_seek);
 
@@ -378,6 +388,8 @@ bool_t mpris2_init (void)
     hook_associate ("playlist set playing", (HookFunction) update_metadata, object_player);
     hook_associate ("playlist position", (HookFunction) update_metadata, object_player);
     hook_associate ("playlist update", (HookFunction) update_metadata, object_player);
+
+    hook_associate ("current art ready", (HookFunction) update_image, object_player);
 
     hook_associate ("playback ready", (HookFunction) emit_seek, object_player);
     hook_associate ("playback seek", (HookFunction) emit_seek, object_player);
