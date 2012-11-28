@@ -600,7 +600,6 @@ gpointer sc_curl_perform_thread(gpointer data)
     pthread_mutex_unlock(&submit_mutex);
 
     sc_free_res();
-    g_thread_exit(NULL);
     return NULL;
 }
 
