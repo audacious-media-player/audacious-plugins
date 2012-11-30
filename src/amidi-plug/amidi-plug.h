@@ -24,7 +24,6 @@
 #define AMIDIPLUG_STOP	0
 #define AMIDIPLUG_PLAY	1
 #define AMIDIPLUG_PAUSE	2
-#define AMIDIPLUG_SEEK  3
 #define AMIDIPLUG_ERR	4
 
 #include "i_common.h"
