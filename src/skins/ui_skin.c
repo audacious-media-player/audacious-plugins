@@ -295,6 +295,10 @@ skin_pixmap_locate_basenames(const Skin * skin,
 
     skin_pixmap_free_basenames(basenames);
 
+    if (! filename)
+        fprintf (stderr, "Skin does not contain a \"%s\" pixmap.\n",
+         pixmap_id_mapping->name);
+
     return filename;
 }
 
