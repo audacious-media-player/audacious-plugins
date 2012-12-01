@@ -107,9 +107,6 @@ static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
 static gboolean mainwin_info_text_locked = FALSE;
 static guint mainwin_volume_release_timeout = 0;
 
-static int ab_position_a = -1;
-static int ab_position_b = -1;
-
 static void change_timer_mode(void);
 static void mainwin_position_motion_cb (void);
 static void mainwin_position_release_cb (void);
@@ -264,6 +261,17 @@ static void mainwin_release_info_text (void)
     }
 }
 
+static void mainwin_set_info_text (const gchar * text)
+{
+    if (mainwin_info_text_locked)
+    {
+        g_free (mainwin_tb_old_text);
+        mainwin_tb_old_text = g_strdup (text);
+    }
+    else
+        textbox_set_text (mainwin_info, text);
+}
+
 static gboolean status_message_enabled;
 
 void mainwin_enable_status_message (gboolean enable)
@@ -308,8 +316,7 @@ mainwin_set_song_title(const gchar * title)
     gtk_window_set_title(GTK_WINDOW(mainwin), mainwin_title_text);
     g_free(mainwin_title_text);
 
-    mainwin_release_info_text ();
-    textbox_set_text (mainwin_info, title != NULL ? title : "");
+    mainwin_set_info_text (title ? title : "");
 }
 
 static void show_hide_widget (GtkWidget * widget, char show)
@@ -743,9 +750,6 @@ static void mainwin_fwd_release (GtkWidget * button, GdkEventButton * event)
 void
 mainwin_play_pushed(void)
 {
-    if (ab_position_a != -1)
-        aud_drct_seek(ab_position_a / 1000);
-
     aud_drct_play ();
 }
 
@@ -1610,13 +1614,6 @@ void mainwin_update_song_info (void)
 
     mainwin_update_time_display (time, length);
     mainwin_update_time_slider (time, length);
-
-    /* Ugh, this does NOT belong here. -jlindgren */
-    if (ab_position_a > -1 && ab_position_b > -1 && time >= ab_position_b)
-    {
-        aud_drct_seek (ab_position_a);
-        return;
-    }
 }
 
 /* toggleactionentries actions */
@@ -1794,33 +1791,27 @@ void action_ab_set (void)
 {
     if (aud_drct_get_length () > 0)
     {
-        if (ab_position_a == -1)
+        int a, b;
+        aud_drct_get_ab_repeat (& a, & b);
+
+        if (a < 0 || b >= 0)
         {
-            ab_position_a = aud_drct_get_time();
-            ab_position_b = -1;
-            mainwin_lock_info_text("LOOP-POINT A POSITION SET.");
-        }
-        else if (ab_position_b == -1)
-        {
-            int time = aud_drct_get_time();
-            if (time > ab_position_a)
-                ab_position_b = time;
-            mainwin_release_info_text();
+            a = aud_drct_get_time ();
+            b = -1;
+            mainwin_show_status_message (_("Repeat point A set."));
         }
         else
         {
-            ab_position_a = aud_drct_get_time();
-            ab_position_b = -1;
-            mainwin_lock_info_text("LOOP-POINT A POSITION RESET.");
+            b = aud_drct_get_time ();
+            mainwin_show_status_message (_("Repeat point B set."));
         }
+
+        aud_drct_set_ab_repeat (a, b);
     }
 }
 
 void action_ab_clear (void)
 {
-    if (aud_drct_get_length () > 0)
-    {
-        ab_position_a = ab_position_b = -1;
-        mainwin_release_info_text();
-    }
+    mainwin_show_status_message (_("Repeat points cleared."));
+    aud_drct_set_ab_repeat (-1, -1);
 }
