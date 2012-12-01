@@ -30,6 +30,9 @@ GtkWidget * make_menu_tab (GtkAccelGroup * accel);
 extern int menu_tab_playlist_id;
 
 /* ui_gtk.c */
+void set_ab_repeat_a (void);
+void set_ab_repeat_b (void);
+void clear_ab_repeat (void);
 void show_menu (gboolean show);
 void show_infoarea (gboolean show);
 void show_infoarea_vis (gboolean show);

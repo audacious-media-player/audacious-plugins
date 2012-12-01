@@ -153,6 +153,33 @@ static void button_play_pressed (void)
         aud_drct_play ();
 }
 
+void set_ab_repeat_a (void)
+{
+    if (! aud_drct_get_playing ())
+        return;
+
+    int a, b;
+    aud_drct_get_ab_repeat (& a, & b);
+    a = aud_drct_get_time ();
+    aud_drct_set_ab_repeat (a, b);
+}
+
+void set_ab_repeat_b (void)
+{
+    if (! aud_drct_get_playing ())
+        return;
+
+    int a, b;
+    aud_drct_get_ab_repeat (& a, & b);
+    b = aud_drct_get_time ();
+    aud_drct_set_ab_repeat (a, b);
+}
+
+void clear_ab_repeat (void)
+{
+    aud_drct_set_ab_repeat (-1, -1);
+}
+
 static gboolean title_change_cb (void)
 {
     if (delayed_title_change_source)
@@ -235,33 +262,52 @@ static void ui_show_error (const gchar * text)
     audgui_simple_message (& error_win, GTK_MESSAGE_ERROR, _("Error"), _(text));
 }
 
-static void set_time_label (gint time, gint len)
+static void append_str (char * buf, int bufsize, const char * str)
 {
-    gchar s[128];
-    snprintf (s, sizeof s, "<b>");
+    snprintf (buf + strlen (buf), bufsize - strlen (buf), "%s", str);
+}
 
+static void append_time_str (char * buf, int bufsize, int time)
+{
     time /= 1000;
 
     if (time < 3600)
-        snprintf (s + strlen (s), sizeof s - strlen (s), aud_get_bool (NULL,
-         "leading_zero") ? "%02d:%02d" : "%d:%02d", time / 60, time % 60);
+        snprintf (buf + strlen (buf), bufsize - strlen (buf),
+         aud_get_bool (NULL, "leading_zero") ? "%02d:%02d" : "%d:%02d",
+         time / 60, time % 60);
     else
-        snprintf (s + strlen (s), sizeof s - strlen (s), "%d:%02d:%02d", time /
-         3600, (time / 60) % 60, time % 60);
+        snprintf (buf + strlen (buf), bufsize - strlen (buf), "%d:%02d:%02d",
+         time / 3600, (time / 60) % 60, time % 60);
+}
+
+static void set_time_label (gint time, gint len)
+{
+    gchar s[128] = "<b>";
+
+    append_time_str (s, sizeof s, time);
 
     if (len)
     {
-        len /= 1000;
+        append_str (s, sizeof s, " / ");
+        append_time_str (s, sizeof s, len);
 
-        if (len < 3600)
-            snprintf (s + strlen (s), sizeof s - strlen (s), aud_get_bool (NULL,
-             "leading_zero") ? " / %02d:%02d" : " / %d:%02d", len / 60, len % 60);
-        else
-            snprintf (s + strlen (s), sizeof s - strlen (s), " / %d:%02d:%02d",
-             len / 3600, (len / 60) % 60, len % 60);
+        int a, b;
+        aud_drct_get_ab_repeat (& a, & b);
+
+        if (a >= 0)
+        {
+            append_str (s, sizeof s, " A=");
+            append_time_str (s, sizeof s, a);
+        }
+
+        if (b >= 0)
+        {
+            append_str (s, sizeof s, " B=");
+            append_time_str (s, sizeof s, b);
+        }
     }
 
-    snprintf (s + strlen (s), sizeof s - strlen (s), "</b>");
+    append_str (s, sizeof s, "</b>");
     gtk_label_set_markup ((GtkLabel *) label_time, s);
 }
 

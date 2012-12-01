@@ -190,11 +190,15 @@ static const struct MenuItem playback_items[] = {
  {N_("_Repeat"), NULL, 'r', CTRL, .get = repeat_get, repeat_set, "set repeat"},
  {N_("S_huffle"), NULL, 's', CTRL, .get = shuffle_get, shuffle_set, "set shuffle"},
  {N_("N_o Playlist Advance"), NULL, 'n', CTRL, .get = no_advance_get, no_advance_set, "set no_playlist_advance"},
- {N_("Stop _After This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
+ {N_("Stop A_fter This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
  {.sep = TRUE},
  {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', CTRL, .func = audgui_infowin_show_current},
  {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, 'k', CTRL, .func = audgui_jump_to_time},
- {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track}};
+ {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track},
+ {.sep = TRUE},
+ {N_("Set Repeat Point _A"), NULL, '1', CTRL, .func = set_ab_repeat_a},
+ {N_("Set Repeat Point _B"), NULL, '2', CTRL, .func = set_ab_repeat_b},
+ {N_("_Clear Repeat Points"), NULL, '3', CTRL, .func = clear_ab_repeat}};
 
 static const struct MenuItem dupe_items[] = {
  {N_("By _Title"), .func = pl_remove_dupes_by_title},
