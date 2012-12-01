@@ -330,6 +330,8 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
         goto play_cleanup;
     }
 
+    playback->output->flush (start_time);
+
     if (pause)
         playback->output->pause (TRUE);
 
