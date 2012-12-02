@@ -348,13 +348,13 @@ static void do_seek (gint time)
     }
 }
 
-static gboolean ui_slider_value_changed_cb (GtkRange * range)
+static gboolean ui_slider_change_value_cb (GtkRange * range,
+ GtkScrollType scroll, gdouble value)
 {
-    gint value = gtk_range_get_value (range);
     set_time_label (value, aud_drct_get_length ());
 
-    if (!slider_is_moving)
-        do_seek (gtk_range_get_value (range));
+    if (! slider_is_moving)
+        do_seek (value);
 
     return FALSE;
 }
@@ -854,7 +854,7 @@ static gboolean init (void)
     AUDDBG("playlist associate\n");
     ui_playlist_notebook_populate();
 
-    g_signal_connect(slider, "value-changed", G_CALLBACK(ui_slider_value_changed_cb), NULL);
+    g_signal_connect(slider, "change-value", G_CALLBACK(ui_slider_change_value_cb), NULL);
     g_signal_connect(slider, "button-press-event", G_CALLBACK(ui_slider_button_press_cb), NULL);
     g_signal_connect(slider, "button-release-event", G_CALLBACK(ui_slider_button_release_cb), NULL);
 
