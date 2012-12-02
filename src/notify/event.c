@@ -31,13 +31,13 @@
 #include "event.h"
 #include "osd.h"
 
-static gchar * last_title = NULL, * last_message = NULL;
+static gchar * last_title = NULL, * last_message = NULL; /* pooled */
 
 static void clear (void)
 {
-    g_free (last_title);
+    str_unref (last_title);
     last_title = NULL;
-    g_free (last_message);
+    str_unref (last_message);
     last_message = NULL;
 }
 
@@ -76,32 +76,32 @@ static void update (void * unused, void * explicit)
     if (artist)
     {
         if (album)
-            message = g_strdup_printf ("%s\n%s", artist, album);
+            message = str_printf ("%s\n%s", artist, album);
         else
-            message = g_strdup (artist);
+            message = str_ref (artist);
     }
     else if (album)
-        message = g_strdup (album);
+        message = str_ref (album);
     else
-        message = g_strdup ("");
+        message = str_get ("");
 
-    if (! GPOINTER_TO_INT (explicit) && last_title && last_message && ! strcmp
-     (title, last_title) && ! strcmp (message, last_message))
+    str_unref (artist);
+    str_unref (album);
+
+    /* pointer comparison works for pooled strings */
+    if (! GPOINTER_TO_INT (explicit) && title == last_title && message == last_message)
     {
-        g_free (message);
-        goto FREE;
+        str_unref (title);
+        str_unref (message);
+        return;
     }
 
-    clear ();
-    last_title = g_strdup (title);
+    str_unref (last_title);
+    last_title = title;
+    str_unref (last_message);
     last_message = message;
 
     reshow ();
-
-FREE:
-    str_unref (title);
-    str_unref (artist);
-    str_unref (album);
 }
 
 void event_init (void)
