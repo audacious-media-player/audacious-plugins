@@ -36,8 +36,8 @@ static gint pl_slider_height;
 static gboolean pl_slider_pressed;
 
 DRAW_FUNC_BEGIN (pl_slider_draw)
-    gint rows, first, focused;
-    ui_skinned_playlist_row_info (pl_slider_list, & rows, & first, & focused);
+    gint rows, first;
+    ui_skinned_playlist_row_info (pl_slider_list, & rows, & first);
 
     gint range = active_length - rows;
 
@@ -58,8 +58,8 @@ static void pl_slider_set_pos (gint y)
 {
     y = CLAMP (y, 0, pl_slider_height - 19);
 
-    gint rows, first, focused;
-    ui_skinned_playlist_row_info (pl_slider_list, & rows, & first, & focused);
+    gint rows, first;
+    ui_skinned_playlist_row_info (pl_slider_list, & rows, & first);
 
     gint range = pl_slider_height - 19;
 

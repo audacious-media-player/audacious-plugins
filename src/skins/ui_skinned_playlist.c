@@ -47,8 +47,8 @@ enum {DRAG_SELECT = 1, DRAG_MOVE};
 typedef struct {
     GtkWidget * slider;
     PangoFontDescription * font;
-    gint width, height, row_height, offset, rows, first, focused, scroll,
-     scroll_source, hover, drag;
+    gint width, height, row_height, offset, rows, first, scroll, scroll_source,
+     hover, drag;
     gint popup_pos, popup_source;
     gboolean popup_shown;
 } PlaylistData;
@@ -101,10 +101,11 @@ static gint adjust_position (PlaylistData * data, gboolean relative, gint
 
     if (relative)
     {
-        if (data->focused == -1)
+        gint focus = aud_playlist_get_focus (active_playlist);
+        if (focus == -1)
             return 0;
 
-        position += data->focused;
+        position += focus;
     }
 
     if (position < 0)
@@ -300,14 +301,13 @@ DRAW_FUNC_BEGIN (playlist_draw)
 
     /* focus rectangle */
 
-    if (data->focused >= data->first && data->focused <= data->first +
-     data->rows - 1)
+    gint focus = aud_playlist_get_focus (active_playlist);
+    if (focus >= data->first && focus <= data->first + data->rows - 1)
     {
         cairo_new_path (cr);
         cairo_set_line_width (cr, 1);
-        cairo_rectangle (cr, 0.5, data->offset + data->row_height *
-         (data->focused - data->first) + 0.5, data->width - 1, data->row_height
-         - 1);
+        cairo_rectangle (cr, 0.5, data->offset + data->row_height * (focus -
+         data->first) + 0.5, data->width - 1, data->row_height - 1);
         set_cairo_color (cr, active_skin->colors[SKIN_PLEDIT_NORMAL]);
         cairo_stroke (cr);
     }
@@ -358,7 +358,6 @@ GtkWidget * ui_skinned_playlist_new (gint width, gint height, const gchar * font
     PlaylistData * data = g_malloc0 (sizeof (PlaylistData));
     data->width = width;
     data->height = height;
-    data->focused = -1;
     data->hover = -1;
     data->popup_pos = -1;
     g_object_set_data ((GObject *) list, "playlistdata", data);
@@ -426,9 +425,6 @@ void ui_skinned_playlist_update (GtkWidget * list)
 
     calc_layout (data);
 
-    if (data->focused != -1)
-        data->focused = adjust_position (data, TRUE, 0);
-
     gtk_widget_queue_draw (list);
 
     if (data->slider != NULL)
@@ -450,15 +446,9 @@ static void select_single (PlaylistData * data, gboolean relative, gint position
     if (position == -1)
         return;
 
-    if (data->focused != -1)
-        aud_playlist_entry_set_selected (active_playlist, data->focused, FALSE);
-
-    if (aud_playlist_selected_count (active_playlist) > 0)
-        aud_playlist_select_all (active_playlist, FALSE);
-
+    aud_playlist_select_all (active_playlist, FALSE);
     aud_playlist_entry_set_selected (active_playlist, position, TRUE);
-
-    data->focused = position;
+    aud_playlist_set_focus (active_playlist, position);
     scroll_to (data, position);
 }
 
@@ -466,7 +456,7 @@ static void select_extend (PlaylistData * data, gboolean relative, gint position
 {
     position = adjust_position (data, relative, position);
 
-    if (position == -1 || position == data->focused)
+    if (position == -1)
         return;
 
     gint count = adjust_position (data, TRUE, 0);
@@ -477,8 +467,7 @@ static void select_extend (PlaylistData * data, gboolean relative, gint position
          ! aud_playlist_entry_get_selected (active_playlist, count + sign));
 
     aud_playlist_entry_set_selected (active_playlist, position, TRUE);
-
-    data->focused = position;
+    aud_playlist_set_focus (active_playlist, position);
     scroll_to (data, position);
 }
 
@@ -489,7 +478,7 @@ static void select_slide (PlaylistData * data, gboolean relative, gint position)
     if (position == -1)
         return;
 
-    data->focused = position;
+    aud_playlist_set_focus (active_playlist, position);
     scroll_to (data, position);
 }
 
@@ -502,40 +491,34 @@ static void select_toggle (PlaylistData * data, gboolean relative, gint position
 
     aud_playlist_entry_set_selected (active_playlist, position,
      ! aud_playlist_entry_get_selected (active_playlist, position));
-
-    data->focused = position;
+    aud_playlist_set_focus (active_playlist, position);
     scroll_to (data, position);
 }
 
 static void select_move (PlaylistData * data, gboolean relative, gint position)
 {
+    gint focus = aud_playlist_get_focus (active_playlist);
     position = adjust_position (data, relative, position);
 
-    if (data->focused == -1 || position == -1 || position == data->focused)
+    if (focus == -1 || position == -1 || position == focus)
         return;
 
-    data->focused += aud_playlist_shift (active_playlist, data->focused,
-     position - data->focused);
-
-    scroll_to (data, data->focused);
+    focus += aud_playlist_shift (active_playlist, focus, position - focus);
+    scroll_to (data, focus);
 }
 
 static void delete_selected (PlaylistData * data)
 {
-    gint shift = 0, count;
-
-    for (count = 0; count < data->focused; count ++)
-    {
-        if (aud_playlist_entry_get_selected (active_playlist, count))
-            shift --;
-    }
-
     aud_playlist_delete_selected (active_playlist);
-    active_length = aud_playlist_entry_count (active_playlist);
-    calc_layout (data);
 
-    data->focused = adjust_position (data, TRUE, shift);
-    select_single (data, TRUE, 0);
+    active_length = aud_playlist_entry_count (active_playlist);
+    gint focus = aud_playlist_get_focus (active_playlist);
+
+    if (focus != -1)
+    {
+        aud_playlist_entry_set_selected (active_playlist, focus, TRUE);
+        scroll_to (data, focus);
+    }
 }
 
 gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
@@ -570,7 +553,8 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
             break;
           case GDK_KEY_Return:
             select_single (data, TRUE, 0);
-            aud_playlist_set_position (active_playlist, data->focused);
+            aud_playlist_set_position (active_playlist,
+             aud_playlist_get_focus (active_playlist));
             aud_playlist_set_playing (active_playlist);
             aud_drct_play ();
             break;
@@ -671,15 +655,13 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
     return TRUE;
 }
 
-void ui_skinned_playlist_row_info (GtkWidget * list, gint * rows, gint * first,
- gint * focused)
+void ui_skinned_playlist_row_info (GtkWidget * list, gint * rows, gint * first)
 {
     PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     * rows = data->rows;
     * first = data->first;
-    * focused = data->focused;
 }
 
 void ui_skinned_playlist_scroll_to (GtkWidget * list, gint row)
@@ -703,7 +685,7 @@ void ui_skinned_playlist_set_focused (GtkWidget * list, gint row)
     g_return_if_fail (data);
 
     cancel_all (list, data);
-    data->focused = row;
+    aud_playlist_set_focus (active_playlist, row);
     scroll_to (data, row);
 
     gtk_widget_queue_draw (list);
