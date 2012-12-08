@@ -51,18 +51,10 @@ gint playlist_count_selected_in_range (gint list, gint top, gint length)
     return selected;
 }
 
-gint playlist_get_focus (gint list)
-{
-    GtkWidget * tree = playlist_get_treeview (list);
-    g_return_val_if_fail (tree, -1);
-
-    return audgui_list_get_focus (tree);
-}
-
 void playlist_song_info (void)
 {
     gint list = aud_playlist_get_active ();
-    gint focus = playlist_get_focus (list);
+    gint focus = aud_playlist_get_focus (list);
 
     if (focus < 0)
         return;
@@ -73,7 +65,7 @@ void playlist_song_info (void)
 void playlist_queue_toggle (void)
 {
     gint list = aud_playlist_get_active ();
-    gint focus = playlist_get_focus (list);
+    gint focus = aud_playlist_get_focus (list);
 
     if (focus < 0)
         return;
@@ -89,21 +81,8 @@ void playlist_queue_toggle (void)
 void playlist_delete_selected (void)
 {
     gint list = aud_playlist_get_active ();
-    gint focus = playlist_get_focus (list);
-    focus -= playlist_count_selected_in_range (list, 0, focus);
-
     aud_drct_pl_delete_selected (list);
-
-    if (aud_playlist_selected_count (list)) /* song changed? */
-        return;
-
-    if (focus == aud_playlist_entry_count (list))
-        focus --;
-    if (focus >= 0)
-    {
-        aud_playlist_entry_set_selected (list, focus, TRUE);
-        playlist_set_focus (list, focus);
-    }
+    aud_playlist_entry_set_selected (list, aud_playlist_get_focus (list), TRUE);
 }
 
 void playlist_copy (void)
@@ -130,18 +109,17 @@ void playlist_paste (void)
         return;
 
     gint list = aud_playlist_get_active ();
-    audgui_urilist_insert (list, playlist_get_focus (list), text);
+    audgui_urilist_insert (list, aud_playlist_get_focus (list), text);
     g_free (text);
 }
 
 void playlist_shift (gint offset)
 {
     gint list = aud_playlist_get_active ();
-    gint focus = playlist_get_focus (list);
+    gint focus = aud_playlist_get_focus (list);
 
     if (focus < 0 || ! aud_playlist_entry_get_selected (list, focus))
         return;
 
-    focus += aud_playlist_shift (list, focus, offset);
-    playlist_set_focus (list, focus);
+    aud_playlist_shift (list, focus, offset);
 }
