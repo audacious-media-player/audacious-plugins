@@ -25,6 +25,7 @@
  */
 
 #include <glib.h>
+#include <pthread.h>
 
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */

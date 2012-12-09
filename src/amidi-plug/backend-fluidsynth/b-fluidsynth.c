@@ -18,6 +18,8 @@
 *
 */
 
+#include <pthread.h>
+
 #include "b-fluidsynth.h"
 #include "b-fluidsynth-config.h"
 

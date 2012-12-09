@@ -23,6 +23,8 @@
 #include "config.h"
 
 #include <glib.h>
+#include <pthread.h>
+
 #include <libaudcore/vfs.h>
 #include <ne_session.h>
 #include <ne_request.h>

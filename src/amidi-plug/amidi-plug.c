@@ -18,6 +18,8 @@
 *
 */
 
+#include <pthread.h>
+
 #include <audacious/drct.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>

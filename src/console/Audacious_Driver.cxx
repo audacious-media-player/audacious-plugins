@@ -8,6 +8,7 @@
 
 #include "config.h"
 #include <math.h>
+#include <pthread.h>
 #include <string.h>
 
 extern "C" {
