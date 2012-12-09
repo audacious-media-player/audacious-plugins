@@ -1,30 +1,53 @@
 # Serbian translation for Audacious Plugins
-# Copyright (C) Audacious Translators
+# Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
 # Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-09-15 12:42+0200\n"
-"PO-Revision-Date: 2012-04-30 05:25+0000\n"
-"Last-Translator: MirosNik <miroslavnikolic@rocketmail.com>\n"
+"POT-Creation-Date: 2012-11-06 20:40+0100\n"
+"PO-Revision-Date: 2012-11-06 19:43+0000\n"
+"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Serbian\n"
-"Language: sr_RS\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language: sr_RS\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
+msgid "mono"
+msgstr "моно"
+
+#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
+msgid "stereo"
+msgstr "стерео"
+
+#: src/aac/libmp4.c:440 src/skins/ui_main.c:454
+msgid "surround"
+msgstr "окружење"
 
 #: src/aac/libmp4.c:931
 msgid "AAC Decoder"
 msgstr ""
 
+#: src/adplug/adplug-xmms.cc:151 src/modplug/modplugbmp.cxx:466
+#: src/psf/plugin.c:126 src/vtx/vtx.c:80 src/xsf/plugin.c:86
+msgid "sequenced"
+msgstr ""
+
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
+msgstr ""
+
+#: src/alarm/alarm.c:831
+msgid ""
+"A plugin that can be used to start playing at a certain time.\n"
+"\n"
+"Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
@@ -158,9 +181,8 @@ msgid "Playlist (optional)"
 msgstr "Списак нумера (необавезно)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Изабери следећи списак нумера"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -179,7 +201,6 @@ msgid "What do these options mean?"
 msgstr "Шта значе ове опције?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -231,56 +252,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"Време\n"
-"  Активирај аларм у: \n"
-"    Време када ће се активирати аларм.\n"
-"\n"
-"  Утишај након: \n"
-"    Зауставља аларм након истека овог времена.\n"
-"       (ако није затворено прозорче буђења)\n"
-"\n"
-"\n"
-"Дани\n"
-"  Дан:\n"
-"    Изаберите којим данима ће бити активиран аларм.\n"
-"\n"
-"  Време:\n"
-"    Изаберите време аларма за сваки дан, или\n"
-"    штиклирајте квадратић да користите основно време.\n"
-"\n"
-"\n"
-"Јачина\n"
-"  Ишчезавање: \n"
-"    Повећава јачину звука до изабране јачине\n"
-"    у овом временском периоду.\n"
-"\n"
-"  Започни при: \n"
-"    Започиње појачавање од ове јачине.\n"
-"\n"
-"  Заврши при: \n"
-"    Јачина при којој ће бити заустављено појачање.\n"
-"    Ако је време појачања 0 онда подешава јачину\n"
-"    на ову и започиње пуштање.\n"
-"\n"
-"\n"
-"Опције:\n"
-"  Додатна наредба:\n"
-"    Покреће ову наредбу за време аларма.\n"
-"\n"
-"  Списак нумера: \n"
-"    Учитава овај списак нумера да би пуштао песме \n"
-"    (мора да садржи .m3u проширење). Ако није дат\n"
-"    списак нумера онда ће бити коришћене песме\n"
-"    које се тренутно налазе на списку.\n"
-"    Адреса мп3/огг тока може такође бити унешена\n"
-"    овде, али хммс тренутно не подржава\n"
-"    учитавање списка нумера са адреса.\n"
-"\n"
-"  Подсетник:\n"
-"    Приказује подсетник након искључења аларма,\n"
-"    упишите подсетник у поље и штиклирајте\n"
-"    квадратић ако желите да буде приказиван.\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -299,9 +270,8 @@ msgid "Thankyou"
 msgstr "Хвала вам"
 
 #: src/albumart/albumart.c:101
-#, fuzzy
 msgid "Album Art"
-msgstr "Албум: "
+msgstr ""
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
@@ -331,23 +301,27 @@ msgstr "Елемент мешача:"
 msgid "Work around drain hangup"
 msgstr "Решите суви прекид"
 
+#: src/alsa/plugin.c:27
+msgid ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+msgstr ""
+
 #: src/alsa/plugin.c:34
-#, fuzzy
 msgid "ALSA Output"
-msgstr "АЛСА, излазни портови"
+msgstr ""
 
 #: src/amidi-plug/amidi-plug.c:39
-#, fuzzy
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "О АМИДИ прикључку"
+msgstr ""
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
-"Нисте изабрали ниједан порт секвенцера за МИДИ пуштање. То можете урадити у "
-"поставкама МИДИ прикључка."
+msgstr "Нисте изабрали ниједан порт секвенцера за МИДИ пуштање. То можете урадити у поставкама МИДИ прикључка."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -355,23 +329,10 @@ msgstr "АЛСА позадинац "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Овај позадинац шаље МИДИ догађаје у групу портова АЛСА секвенцера коју је "
-"изабрао корисник. Сучеље АЛСА секвенцера је врло разноврсно, може да "
-"обезбеди портове за хардверске синтисајзере звучних картица (тј. ему10к1), "
-"али такође и за софтверске синтисајзере, спољне уређаје, итд.\n"
-"Овај позадинац не производи звук, МИДИ догађајима се управља непосредно са "
-"уређаја/програма иза АЛСА портова; на пример, МИДИ догађаји послати "
-"хардверском синтисајзеру ће бити директно репродуковани.\n"
-"Овај програм је написао Ђакомо Лоцито."
+msgstr "Овај позадинац шаље МИДИ догађаје у групу портова АЛСА секвенцера коју је изабрао корисник. Сучеље АЛСА секвенцера је врло разноврсно, може да обезбеди портове за хардверске синтисајзере звучних картица (тј. ему10к1), али такође и за софтверске синтисајзере, спољне уређаје, итд.\nОвај позадинац не производи звук, МИДИ догађајима се управља непосредно са уређаја/програма иза АЛСА портова; на пример, МИДИ догађаји послати хардверском синтисајзеру ће бити директно репродуковани.\nОвај програм је написао Ђакомо Лоцито."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
@@ -379,19 +340,10 @@ msgstr "Флуид синт позадинац "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Овај позадинац производи звук тако што шаље МИДИ догађаје Флуид синту, "
-"реално временском софтверском синтисајзеру заснованом на СаундФонт2 "
-"спецификацији (www.fluidsynth.org).\n"
-"Произведени звук може бити манипулисан помоћу програмских прикључака за "
-"ефекте а обрађен изабраним прикључком излаза.\n"
-"Овај програм је написао Ђакомо Лоцито."
+msgstr "Овај позадинац производи звук тако што шаље МИДИ догађаје Флуид синту, реално временском софтверском синтисајзеру заснованом на СаундФонт2 спецификацији (www.fluidsynth.org).\nПроизведени звук може бити манипулисан помоћу програмских прикључака за ефекте а обрађен изабраним прикључком излаза.\nОвај програм је написао Ђакомо Лоцито."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -425,9 +377,7 @@ msgstr "Подешавања миксера"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">АЛСА\n"
-"позадинац</span>"
+msgstr "<span size=\"smaller\">АЛСА\nпозадинац</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -469,9 +419,15 @@ msgstr "извуци текст песме из МИДИ датотеке (ак�
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
+msgstr "<span size=\"smaller\">АМИДИ\nприкључак</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "АМИДИ прикључак — изаберите датотеку"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
 msgstr ""
-"<span size=\"smaller\">АМИДИ\n"
-"прикључак</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -494,9 +450,8 @@ msgid "Load SF on player start"
 msgstr "Учитај СФ при покретању програма"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
-#, fuzzy
 msgid "Load SF on first MIDI file play"
-msgstr "Учитај СФ при првом пуштању миди датотеке"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -519,9 +474,8 @@ msgid "value:"
 msgstr "вредност:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
-#, fuzzy
 msgid "polyphony"
-msgstr "полифонија"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -569,20 +523,7 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">ФлуидСинт\n"
-"позадинац</span>"
-
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "АМИДИ прикључак — изаберите датотеку"
-
-#: src/amidi-plug/i_configure.c:110
-#, fuzzy
-msgid "AMIDI-Plug Settings"
-msgstr ""
-"\n"
-"АМИДИ прикључак "
+msgstr "<span size=\"smaller\">ФлуидСинт\nпозадинац</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -601,9 +542,8 @@ msgid "Length (msec):"
 msgstr "Трајање (msec):"
 
 #: src/amidi-plug/i_fileinfo.c:211
-#, fuzzy
 msgid "No. of Tracks:"
-msgstr "Број нумера:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -638,16 +578,16 @@ msgid "  (invalid UTF-8)"
 msgstr "  (неисправан УТФ-8)"
 
 #: src/amidi-plug/i_utils.c:36
-#, fuzzy
 msgid "About AMIDI-Plug"
 msgstr ""
-"\n"
-"АМИДИ прикључак "
+
+#: src/aosd/aosd.c:29
+msgid "Audacious OSD "
+msgstr ""
 
 #: src/aosd/aosd.c:37
-#, fuzzy
 msgid "AOSD (On-Screen Display)"
-msgstr "Прикажи приказ на екрану"
+msgstr ""
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -682,10 +622,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"Приказује ОСД када се, у току репродукције, измени наслов песме али назив "
-"датотеке остане исти. Ово је углавном корисно за приказивање измена у "
-"насловима у интернет токовима."
+msgstr "Приказује ОСД када се, у току репродукције, измени наслов песме али назив датотеке остане исти. Ово је углавном корисно за приказивање измена у насловима у интернет токовима."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -817,12 +754,8 @@ msgstr "Откривен је композитни управник"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Није откривен композитни управник;\n"
-"осим ако знате да је један већ покренут, молим покрените композитног "
-"управника јер у супротном ОСД неће радити исправно"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Није откривен композитни управник;\nосим ако знате да је један већ покренут, молим покрените композитног управника јер у супротном ОСД неће радити исправно"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -890,24 +823,20 @@ msgid "ASXv1/ASXv2 Playlists"
 msgstr ""
 
 #: src/audpl/audpl.c:224
-#, fuzzy
 msgid "Audacious Playlists (audpl)"
-msgstr "Уређивач списка нумера"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:49
-#, fuzzy
 msgid "<b>Color</b>"
-msgstr "<b>Радња:</b>"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:58
-#, fuzzy
 msgid "Blur Scope"
-msgstr "Испуњен досег"
+msgstr ""
 
 #: src/bs2b/plugin.c:138
-#, fuzzy
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Поставке Бојер стереофонског-у-бинаурални"
+msgstr ""
 
 #: src/bs2b/plugin.c:149
 msgid "Feed level:"
@@ -922,47 +851,40 @@ msgid "Presets:"
 msgstr "Претподешавања:"
 
 #: src/bs2b/plugin.c:199
-#, fuzzy
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Поставке Бојер стереофонског-у-бинаурални"
+msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
-#, fuzzy
 msgid "Spectrum Analyzer"
-msgstr "Анализатор"
+msgstr ""
 
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Play CD"
-msgstr "Пусти ЦД"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Додај ЦД"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-#, fuzzy
-msgid "Audio CD Menu Items"
-msgstr "Подешавања аларма"
+#: src/cdaudio-ng/cdaudio-ng.c:105
+msgid ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"and to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you to Tony Vroon for mentoring and guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
-#, fuzzy
 msgid "<b>Device</b>"
-msgstr "<b>Услуге</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
-#, fuzzy
 msgid "Read speed:"
-msgstr "Брзина диска:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
-#, fuzzy
 msgid "Override device:"
-msgstr "Замени основни уређај: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
-#, fuzzy
 msgid "<b>Metadata</b>"
-msgstr "<b>Ласт.ФМ</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CD-Text"
@@ -977,28 +899,91 @@ msgid "Use HTTP instead of CDDBP"
 msgstr "Користи ХТТП уместо ЦДДБП-а"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
-#, fuzzy
 msgid "Server:"
-msgstr "Сервер: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
-#, fuzzy
 msgid "Path:"
-msgstr "Путања: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
-#, fuzzy
 msgid "Port:"
-msgstr "Порт: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
-#, fuzzy
 msgid "Audio CD Plugin"
-msgstr "О прикључку звучног ЦД-а"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:246
+msgid "Failed to initialize cdio subsystem."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:304
+#, c-format
+msgid "Invalid URI %s."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:310
+#, c-format
+msgid "Track %d not found."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:317
+#, c-format
+msgid "Track %d is a data track.\n"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:326
+msgid "Failed to open audio output."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:402
+msgid "Too many read errors; giving up."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
 msgid "Audio CD"
 msgstr "Аудио ЦД"
+
+#: src/cdaudio-ng/cdaudio-ng.c:579 src/cdaudio-ng/cdaudio-ng.c:588
+#, c-format
+msgid "Failed to open CD device %s."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:591
+msgid "No audio capable CD drive found."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:618
+msgid "Failed to finish initializing opened CD drive."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:631
+msgid "Failed to retrieve first/last track number."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:656
+#, c-format
+msgid "Cannot read start/end LSN for track %d."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:733
+msgid "Failed to create the cddb connection."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:808
+msgid "Failed to query the CDDB server"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:810
+#, c-format
+msgid "Failed to query the CDDB server: %s"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:834
+#, c-format
+msgid "Failed to read the cddb info: %s"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
@@ -1008,10 +993,21 @@ msgstr "Уређај је празан."
 msgid "Unsupported disk type."
 msgstr "Неподржана врста диска."
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr "Пусти ЦД"
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Додај ЦД"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr ""
+
 #: src/compressor/plugin.c:37
-#, fuzzy
 msgid "<b>Compression</b>"
-msgstr "<b>Радња:</b>"
+msgstr ""
 
 #: src/compressor/plugin.c:38
 msgid "Center volume:"
@@ -1021,10 +1017,15 @@ msgstr "Главна јачина:"
 msgid "Dynamic range:"
 msgstr "Динамички опсег:"
 
+#: src/compressor/plugin.c:55
+msgid ""
+"Dynamic Range Compression Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+
 #: src/compressor/plugin.c:60
-#, fuzzy
 msgid "Dynamic Range Compressor"
-msgstr "Поставке сажиматеља динамичког опсега"
+msgstr ""
 
 #: src/console/configure.c:135 src/console/plugin.c:44
 msgid "Game Console Music Decoder"
@@ -1089,95 +1090,107 @@ msgstr "Повећај одјек"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr "Основно трајање песме, изражено у секундама, се користи за песме које не пружају информације о трајању (тј. упетљане нумере)."
+
+#: src/console/plugin.c:29
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 msgstr ""
-"Основно трајање песме, изражено у секундама, се користи за песме које не "
-"пружају информације о трајању (тј. упетљане нумере)."
 
 #: src/crossfade/crossfade.c:83
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Постепени прелаз није успео јер је песма имала различит проток узорка.\n"
-"\n"
-"Можете да користите ефекат претварача протока узорка да поново узоркујете "
-"песме на исти проток узорка."
 
 #: src/crossfade/crossfade.c:90
-#, fuzzy
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Постепени прелаз није успео јер је песма имала различит проток узорка.\n"
-"\n"
-"Можете да користите ефекат претварача протока узорка да поново узоркујете "
-"песме на исти проток узорка."
+
+#: src/crossfade/crossfade.c:256
+msgid ""
+"Crossfade Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
 
 #: src/crossfade/crossfade.c:260
-#, fuzzy
 msgid "<b>Crossfade</b>"
-msgstr "<b>Услуге</b>"
+msgstr ""
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
 msgstr ""
 
 #: src/crossfade/crossfade.c:271
-#, fuzzy
 msgid "Crossfade"
-msgstr "О постепеном прелазу"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:42
-#, fuzzy
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Услуге</b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
-#, fuzzy
 msgid "Intensity:"
-msgstr "Јачина дејства:"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:53
-#, fuzzy
 msgid "Crystalizer"
-msgstr "<b>Услуге</b>"
+msgstr ""
 
 #: src/cue/cue.c:160
-#, fuzzy
 msgid "Cue Sheet Plugin"
-msgstr "О Ехо прикључку"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
-#, fuzzy
 msgid "<b>Echo</b>"
-msgstr "<b>Радња:</b>"
+msgstr ""
 
 #: src/echo_plugin/echo.c:27
-#, fuzzy
 msgid "Delay:"
-msgstr "Приказ:"
+msgstr ""
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
 msgstr ""
 
 #: src/echo_plugin/echo.c:30
-#, fuzzy
 msgid "Feedback:"
-msgstr "Повратни ток: (%)"
+msgstr ""
 
 #: src/echo_plugin/echo.c:33
-#, fuzzy
 msgid "Volume:"
-msgstr "Јачина"
+msgstr ""
+
+#: src/echo_plugin/echo.c:116
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin, 1999\n"
+"\n"
+"Surround echo by Carl van Schaik, 1999"
+msgstr ""
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
+msgstr ""
+
+#: src/ffaudio/ffaudio-core.c:635
+msgid ""
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
 #: src/ffaudio/ffaudio-core.c:682
@@ -1185,9 +1198,8 @@ msgid "FFmpeg Plugin"
 msgstr ""
 
 #: src/filewriter/filewriter.c:409
-#, fuzzy
 msgid "FileWriter Configuration"
-msgstr "Подешавања Писца датотека"
+msgstr ""
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1233,10 +1245,27 @@ msgstr "Не одузимај проширење назива датотеке"
 msgid "Prepend track number to filename"
 msgstr "Придодај број нумере називу датотеке"
 
+#: src/filewriter/filewriter.c:515
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
 #: src/filewriter/filewriter.c:532
-#, fuzzy
 msgid "FileWriter Plugin"
-msgstr "О прикључку Писац датотека"
+msgstr ""
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1347,9 +1376,8 @@ msgid "VBR/ABR"
 msgstr "ВБР/АБР"
 
 #: src/filewriter/mp3.c:1121
-#, fuzzy
 msgid "Frame parameters:"
-msgstr "Параметри кадра:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
@@ -1387,19 +1415,43 @@ msgstr "Подешавање Ворбис шифрера"
 msgid "Quality level (0 - 10):"
 msgstr "Ниво квалитета (0 — 10):"
 
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:284
+msgid "lossless"
+msgstr ""
+
+#: src/flacng/plugin.c:270
+msgid ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+
 #: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
 msgstr ""
 
+#: src/gio/gio.c:302
+msgid ""
+"GIO Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren"
+msgstr ""
+
 #: src/gio/gio.c:324
-#, fuzzy
 msgid "GIO Plugin"
-msgstr "О ОСС4 прикључку"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:44
+msgid ""
+"Gnome Shortcut Plugin\n"
+"Lets you control the player with Gnome's shortcuts.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
-#, fuzzy
 msgid "Gnome Shortcuts"
-msgstr "О прикључку Гномове пречице"
+msgstr ""
 
 #: src/gtkui/columns.c:33
 msgid "Entry number"
@@ -1506,9 +1558,8 @@ msgid "Add U_RL ..."
 msgstr "Додај ад_ресу ..."
 
 #: src/gtkui/menus.c:164
-#, fuzzy
 msgid "_Search Library"
-msgstr "Претражите библиотеку"
+msgstr ""
 
 #: src/gtkui/menus.c:166
 msgid "A_bout ..."
@@ -1607,9 +1658,8 @@ msgid "_Random Order"
 msgstr "_Случајан поредак"
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "_Play This Playlist"
-msgstr "_Направи списак нумера"
+msgstr ""
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
 msgid "_Refresh"
@@ -1644,9 +1694,8 @@ msgid "_Export ..."
 msgstr "Из_вези ..."
 
 #: src/gtkui/menus.c:212
-#, fuzzy
 msgid "Playlist _Manager ..."
-msgstr "_Управник списка нумера ..."
+msgstr ""
 
 #: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
@@ -1685,9 +1734,8 @@ msgid "Show I_nfo Bar"
 msgstr "Прикажи линију _података"
 
 #: src/gtkui/menus.c:229
-#, fuzzy
 msgid "Show Info Bar Vis_ualization"
-msgstr "Приказивање"
+msgstr ""
 
 #: src/gtkui/menus.c:230
 msgid "Show _Status Bar"
@@ -1754,9 +1802,8 @@ msgid "Select _All"
 msgstr "_Изабери све"
 
 #: src/gtkui/menus.c:259
-#, fuzzy
 msgid "_Rename ..."
-msgstr "_Преименуј"
+msgstr ""
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
@@ -1782,14 +1829,6 @@ msgstr "Безочник"
 msgid "Error"
 msgstr "Грешка"
 
-#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
-msgid "mono"
-msgstr "моно"
-
-#: src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
-msgid "stereo"
-msgstr "стерео"
-
 #: src/gtkui/ui_statusbar.c:109
 #, c-format
 msgid "%d channel"
@@ -1797,6 +1836,7 @@ msgid_plural "%d channels"
 msgstr[0] "%d канал"
 msgstr[1] "%d канала"
 msgstr[2] "%d канала"
+msgstr[3] "један канал"
 
 #: src/gtkui/ui_statusbar.c:124
 #, c-format
@@ -1848,9 +1888,8 @@ msgid "Jump to File"
 msgstr "Скочи до датотеке"
 
 #: src/hotkey/gui.c:83
-#, fuzzy
 msgid "Toggle Player Window(s)"
-msgstr "Укључи/искључи главни прозор"
+msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1865,9 +1904,8 @@ msgid "Toggle Shuffle"
 msgstr "Укључи/искључи премештање"
 
 #: src/hotkey/gui.c:87
-#, fuzzy
 msgid "Raise Player Window(s)"
-msgstr "Укључи/искључи главни прозор"
+msgstr ""
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -1875,14 +1913,10 @@ msgstr "(ништа)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"Није препоручљиво повезати главну дугмад миша без измењивача.\n"
-"\n"
-"Да ли желите да наставите?"
+msgstr "Није препоручљиво повезати главну дугмад миша без измењивача.\n\nДа ли желите да наставите?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1896,9 +1930,7 @@ msgstr "Подешавања прикључка општих пречица"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Притисните комбинацију тастера унутар поља за текст.\n"
-"Можете такође да повежете дугмад миша."
+msgstr "Притисните комбинацију тастера унутар поља за текст.\nМожете такође да повежете дугмад миша."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1912,15 +1944,36 @@ msgstr "<b>Радња:</b>"
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Свезе тастера:</b>"
 
+#: src/hotkey/plugin.c:68
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+
 #: src/hotkey/plugin.c:80
-#, fuzzy
 msgid "Global Hotkeys"
-msgstr "О прикључку општих пречица"
+msgstr ""
+
+#: src/jack/jack.c:411
+msgid ""
+"Based on xmms-jack, by Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Ported to Audacious by Giacomo Lozito"
+msgstr ""
 
 #: src/jack/jack.c:417
-#, fuzzy
 msgid "JACK Output"
-msgstr "_Излаз"
+msgstr ""
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -1940,11 +1993,7 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>Раздвојте више путања са две тачке.\n"
-"Те путање су тражене као додатне уз „ЛАДСПА ПУТАЊА“.\n"
-"Након додавања нових путања, притисните Унеси да потражите нове прикључке.</"
-"small>"
+msgstr "<small>Раздвојте више путања са две тачке.\nТе путање су тражене као додатне уз „ЛАДСПА ПУТАЊА“.\nНакон додавања нових путања, притисните Унеси да потражите нове прикључке.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -1962,10 +2011,15 @@ msgstr "Укључени прикључци:"
 msgid "Settings"
 msgstr "Подешавања"
 
+#: src/ladspa/plugin.c:646
+msgid ""
+"LADSPA Host for Audacious\n"
+"Copyright 2011 John Lindgren"
+msgstr ""
+
 #: src/ladspa/plugin.c:651
-#, fuzzy
 msgid "LADSPA Host"
-msgstr "О ЛАДСПА домаћину"
+msgstr ""
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2000,10 +2054,25 @@ msgstr ""
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr ""
 
+#: src/lirc/lirc.c:400
+msgid ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+msgstr ""
+
 #: src/lirc/lirc.c:411
-#, fuzzy
 msgid "<b>Connection</b>"
-msgstr "<b>Радња:</b>"
+msgstr ""
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
@@ -2018,9 +2087,8 @@ msgid "LIRC Plugin"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* нема доступних текстова песама у овој МИДИ датотеци *"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
@@ -2033,31 +2101,24 @@ msgid "Unable to parse %s"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:234
-#, fuzzy
 msgid "Looking for lyrics ..."
 msgstr ""
-"\n"
-"Тражим текст песме..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
 msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:258
-#, fuzzy
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr ""
-"\n"
-"Повезујем се на lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
 msgstr ""
 
 #: src/m3u/m3u.c:123
-#, fuzzy
 msgid "M3U Playlists"
-msgstr "Списак нумера"
+msgstr ""
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2069,24 +2130,36 @@ msgstr "Генератор такта: %d отк/мин"
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Генератор такта: %d отк/мин %d/%d"
 
+#: src/metronom/metronom.c:248
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+
 #: src/metronom/metronom.c:257
-#, fuzzy
 msgid "Tact Generator"
-msgstr "Тонски генератор: "
+msgstr ""
+
+#: src/mixer/mixer.c:171
+msgid ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
 
 #: src/mixer/mixer.c:175
-#, fuzzy
 msgid "<b>Channel Mixer</b>"
-msgstr "О мешачу канала"
+msgstr ""
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
 msgstr "Излазни канали:"
 
 #: src/mixer/mixer.c:186
-#, fuzzy
 msgid "Channel Mixer"
-msgstr "О мешачу канала"
+msgstr ""
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
@@ -2120,6 +2193,21 @@ msgstr "Заустављено"
 msgid "Audacious is not playing."
 msgstr "Безочник не пушта песме."
 
+#: src/notify/notify.c:35
+msgid ""
+"Based on libnotify-aosd by Maximilian Bogner:\n"
+"http://www.mbogner.de/projects/libnotify-aosd/\n"
+"\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011 John Lindgren\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
 msgstr ""
@@ -2137,9 +2225,8 @@ msgid "Use alternate device:"
 msgstr "Користи алтернативни уређај:"
 
 #: src/oss4/plugin.c:81
-#, fuzzy
 msgid "Save volume between sessions."
-msgstr "Сачувај јачину звука између сесија"
+msgstr ""
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -2149,22 +2236,54 @@ msgstr "Укључује претварање формата направљен�
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Укључује искључиви режим да спречи виртуално мешање."
 
+#: src/oss4/plugin.c:108
+msgid ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+
 #: src/oss4/plugin.c:115
-#, fuzzy
 msgid "OSS4 Output"
-msgstr "_Излаз"
+msgstr ""
 
 #: src/pls/pls.c:114
-#, fuzzy
 msgid "PLS Playlists"
-msgstr "Списак нумера"
+msgstr ""
 
 #: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
+#: src/pulse_audio/pulse_audio.c:646
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
+msgstr ""
+
+#: src/resample/resample.c:163
+msgid ""
+"Sample Rate Converter Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
 msgstr ""
 
 #: src/resample/resample.c:167
@@ -2172,9 +2291,8 @@ msgid "Skip/repeat samples"
 msgstr ""
 
 #: src/resample/resample.c:168
-#, fuzzy
 msgid "Linear interpolation"
-msgstr "Интернационализација"
+msgstr ""
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
@@ -2189,9 +2307,8 @@ msgid "Best sinc interpolation"
 msgstr ""
 
 #: src/resample/resample.c:174
-#, fuzzy
 msgid "<b>Conversion</b>"
-msgstr "<b>Радња:</b>"
+msgstr ""
 
 #: src/resample/resample.c:175
 msgid "Method:"
@@ -2202,54 +2319,44 @@ msgid "Rate:"
 msgstr ""
 
 #: src/resample/resample.c:181
-#, fuzzy
 msgid "<b>Rate Mappings</b>"
-msgstr "Мапирања протока:"
+msgstr ""
 
 #: src/resample/resample.c:182
-#, fuzzy
 msgid "Use rate mappings"
-msgstr "Мапирања протока:"
+msgstr ""
 
 #: src/resample/resample.c:184
-#, fuzzy
 msgid "8 kHz:"
-msgstr "8 kHz"
+msgstr ""
 
 #: src/resample/resample.c:187
-#, fuzzy
 msgid "16 kHz:"
-msgstr "16 kHz"
+msgstr ""
 
 #: src/resample/resample.c:190
-#, fuzzy
 msgid "22.05 kHz:"
-msgstr "2 kHz"
+msgstr ""
 
 #: src/resample/resample.c:193
-#, fuzzy
 msgid "44.1 kHz:"
-msgstr "1 kHz"
+msgstr ""
 
 #: src/resample/resample.c:196
-#, fuzzy
 msgid "48 kHz:"
-msgstr "8 kHz"
+msgstr ""
 
 #: src/resample/resample.c:199
-#, fuzzy
 msgid "96 kHz:"
-msgstr "16 kHz"
+msgstr ""
 
 #: src/resample/resample.c:202
-#, fuzzy
 msgid "192 kHz:"
-msgstr "2 kHz"
+msgstr ""
 
 #: src/resample/resample.c:212
-#, fuzzy
 msgid "Sample Rate Converter"
-msgstr "Поставке претварача протока узорка"
+msgstr ""
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
 msgid "Change password"
@@ -2260,9 +2367,8 @@ msgid "<b>Services</b>"
 msgstr "<b>Услуге</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Ласт.ФМ</b>"
+msgstr ""
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2276,23 +2382,34 @@ msgstr "Лозинка:"
 msgid "Scrobbler URL:"
 msgstr "Адреса Скроблера:"
 
+#: src/scrobbler/plugin.c:184
+msgid ""
+"Audacious AudioScrobbler Plugin\n"
+"\n"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>"
+msgstr ""
+
 #: src/scrobbler/plugin.c:189
 msgid "Scrobbler"
 msgstr "Скроблер"
 
+#: src/sdlout/plugin.c:27
+msgid ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+
 #: src/sdlout/plugin.c:32
-#, fuzzy
 msgid "SDL Output"
-msgstr "_Излаз"
+msgstr ""
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
 msgstr "Библиотека"
 
 #: src/search-tool/search-tool.c:221
-#, fuzzy
 msgid "Unknown Artist"
-msgstr "Према извођачу"
+msgstr ""
 
 #: src/search-tool/search-tool.c:223
 msgid "Unknown Album"
@@ -2306,12 +2423,13 @@ msgid ""
 msgstr ""
 
 #: src/search-tool/search-tool.c:633
-#, fuzzy, c-format
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "Према албуму"
-msgstr[1] "Према албуму"
-msgstr[2] "Према албуму"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2324,6 +2442,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2336,6 +2455,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
+msgstr[3] ""
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2353,9 +2473,7 @@ msgstr "Претражите библиотеку"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"Да увезете вашу музичку библиотеку у Безочнику, изаберите фасциклу и затим "
-"кликните на иконицу „освежи“."
+msgstr "Да увезете вашу музичку библиотеку у Безочнику, изаберите фасциклу и затим кликните на иконицу „освежи“."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -2366,9 +2484,8 @@ msgid "Choose Folder"
 msgstr "Изаберите фасциклу"
 
 #: src/search-tool/search-tool.c:803
-#, fuzzy
 msgid "Search Tool"
-msgstr "Претражите библиотеку"
+msgstr ""
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -2503,10 +2620,6 @@ msgstr "kb/s"
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:454
-msgid "surround"
-msgstr "окружење"
-
 #: src/skins/ui_main.c:804
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
@@ -2568,9 +2681,8 @@ msgid "Not stopping after song."
 msgstr "Не зауставља након песме."
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
-#, fuzzy
 msgid "Autoscroll Song Name"
-msgstr "Самостално померај назив песме"
+msgstr ""
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -2758,9 +2870,8 @@ msgid "Playlist"
 msgstr "Списак нумера"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "_Направи списак нумера"
+msgstr ""
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -2846,9 +2957,7 @@ msgstr "Претражи и означи"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr ""
-"Претржује списак нумера и означава ставке са списка нумера према одређеном "
-"услову."
+msgstr "Претржује списак нумера и означава ставке са списка нумера према одређеном услову."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -3197,15 +3306,11 @@ msgstr "Претражи ставке у активном списку нуме�
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Обележите ставке у списку нумера попуњавајући једно или више поља. Поља "
-"користе синтаксу обичних израза, не разликују величину слова. Ако не знате "
-"како обични изрази функционишу, једноставно дословно унесите део онога што "
-"тражите."
+msgstr "Обележите ставке у списку нумера попуњавајући једно или више поља. Поља користе синтаксу обичних израза, не разликују величину слова. Ако не знате како обични изрази функционишу, једноставно дословно унесите део онога што тражите."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3257,15 +3362,27 @@ msgstr "Неархивирана Винамп 2.x маска"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Не могу да направим фасциклу (%s): %s\n"
 
+#: src/sndfile/plugin.c:418
+msgid ""
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+
 #: src/sndfile/plugin.c:437
-#, fuzzy
 msgid "Sndfile Plugin"
-msgstr "О прикључку датотеке звука"
+msgstr ""
 
 #: src/sndio/sndio.c:189
-#, fuzzy
 msgid "About Sndio Output Plugin"
-msgstr "О прикључку СДЛ излаза"
+msgstr ""
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3275,9 +3392,8 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:261
-#, fuzzy
 msgid "Unsupported format"
-msgstr "Неподржана врста диска."
+msgstr ""
 
 #: src/sndio/sndio.c:262
 msgid ""
@@ -3287,14 +3403,12 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:405
-#, fuzzy
 msgid "sndio device"
-msgstr "Звучни уређај:"
+msgstr ""
 
 #: src/sndio/sndio.c:421
-#, fuzzy
 msgid "(empty means default)"
-msgstr "Активирај аларм у (основно):"
+msgstr ""
 
 #: src/song_change/song_change.c:56
 msgid "Song Change"
@@ -3320,12 +3434,9 @@ msgstr "Наредба за покретање када Безочник сти�
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"Наредба за покретање када се промени наслов песме (тј. наслови мрежних "
-"токова)."
+msgstr "Наредба за покретање када се промени наслов песме (тј. наслови мрежних токова)."
 
 #: src/song_change/song_change.c:462
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3343,29 +3454,12 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Можете да користите следеће ниске формата које\n"
-"ће бити замењене пре позивања наредбе\n"
-"(нису све корисне за наредбу крај-списка-нумера).\n"
-"\n"
-"%F:         Учесталост (у херцима)\n"
-"%c:         Број канала\n"
-"%f:         Назив датотеке (пуна путања)\n"
-"%l:         Трајање (у милисекундама)\n"
-"%n или %s:  Назив песме\n"
-"%r:         Проток (у битима у секунди)\n"
-"%t:         Позиција списка нумера (%%02d)\n"
-"%p:         Тренутно пуштена (1 или 0)\n"
-"%a:         Уметник\n"
-"%b:         Албум\n"
-"%T:         Наслов нумере"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>Параметри прослеђени љусци би требало да буду у "
-"наводницима. Све другачије је безбедносни ризик.</span>"
+msgstr "<span size='small'>Параметри прослеђени љусци би требало да буду у наводницима. Све другачије је безбедносни ризик.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3376,23 +3470,31 @@ msgid "<b>Speed and Pitch</b>"
 msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:228
-#, fuzzy
 msgid "Speed:"
-msgstr "Брзина"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:231
-#, fuzzy
 msgid "Pitch:"
-msgstr "Корак"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
 msgstr ""
 
+#: src/statusicon/statusicon.c:392
+msgid ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+
 #: src/statusicon/statusicon.c:399
-#, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "Радња клизања мишем"
+msgstr ""
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
@@ -3403,37 +3505,39 @@ msgid "Change playing song"
 msgstr "Промени песму"
 
 #: src/statusicon/statusicon.c:406
-#, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "Остала подешавања"
+msgstr ""
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
 msgstr "Искључи прозор облачића"
 
 #: src/statusicon/statusicon.c:409
-#, fuzzy
 msgid "Close to the system tray"
-msgstr "Затвори у обавештајној зони (системска фиока)"
+msgstr ""
 
 #: src/statusicon/statusicon.c:411
 msgid "Advance in playlist when scrolling upward"
 msgstr "Напредује у списку нумера када клиза унапред"
 
 #: src/statusicon/statusicon.c:420
-#, fuzzy
 msgid "Status Icon"
-msgstr "О прикључку иконице стања"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:19
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin, 1999"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:27
-#, fuzzy
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Услуге</b>"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:38
-#, fuzzy
 msgid "Extra Stereo"
-msgstr "<b>Услуге</b>"
+msgstr ""
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3444,32 +3548,89 @@ msgstr "%s %.1f Hz"
 msgid "Tone Generator: "
 msgstr "Тонски генератор: "
 
+#: src/tonegen/tonegen.c:199
+msgid ""
+"Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+msgstr ""
+
 #: src/tonegen/tonegen.c:208
-#, fuzzy
 msgid "Tone Generator"
-msgstr "Тонски генератор: "
+msgstr ""
+
+#: src/unix-io/unix-io.c:256
+msgid ""
+"File I/O Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
+msgstr ""
 
 #: src/unix-io/unix-io.c:279
-#, fuzzy
 msgid "File I/O Plugin"
-msgstr "О прикључку У/И датотеке"
+msgstr ""
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
+msgstr ""
+
+#: src/vorbis/vorbis.c:564
+msgid ""
+"Audacious Ogg Vorbis Decoder\n"
+"\n"
+"Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Original code by:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Contributions from:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
 
 #: src/vorbis/vorbis.c:584
 msgid "Ogg Vorbis Decoder"
 msgstr ""
 
+#: src/vtx/vtx.c:253
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+
 #: src/vtx/vtx.c:259
 msgid "VTX Decoder"
 msgstr ""
 
+#: src/wavpack/wavpack.c:286
+msgid "lossy (hybrid)"
+msgstr ""
+
+#: src/wavpack/wavpack.c:288
+msgid "lossy"
+msgstr ""
+
+#: src/wavpack/wavpack.c:338
+msgid ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan."
+msgstr ""
+
 #: src/wavpack/wavpack.c:345
-#, fuzzy
 msgid "WavPack Decoder"
-msgstr "Прикључак декодера Вејвпака %s"
+msgstr ""
 
 #: src/xsf/plugin.c:273
 msgid "2SF Decoder"
@@ -3478,13 +3639,3 @@ msgstr ""
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
-
-#~ msgid "Browse..."
-#~ msgstr "Претражи..."
-
-#~ msgid ""
-#~ "\n"
-#~ "No lyrics were found."
-#~ msgstr ""
-#~ "\n"
-#~ " Нисам пронашао текстове песама."

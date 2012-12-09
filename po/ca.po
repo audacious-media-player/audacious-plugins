@@ -1,27 +1,53 @@
-# Catalan messages for audacious plugins.
-# Copyright (C) 2007, 2008 Ernest Adrogué <eadrogue@gmx.net>
-# This file is distributed under the same license as the audacious-plugins package.
-#
+# Catalan translation for Audacious Plugins
+# Copyright (C) Audacious translators
+# This file is distributed under the same license as the Audacious Plugins package.
+# 
+# Translators:
+#   <catalanoic@gmail.com>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: audacious-plugins 1.5.1\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-09-15 12:42+0200\n"
-"PO-Revision-Date: 2009-04-11 16:07+0200\n"
-"Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
-"Language-Team: Catalan <ca@dodds.net>\n"
-"Language: ca\n"
+"POT-Creation-Date: 2012-11-06 20:40+0100\n"
+"PO-Revision-Date: 2012-11-06 19:43+0000\n"
+"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"Language-Team: Catalan\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
+msgid "mono"
+msgstr "mono"
+
+#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
+msgid "stereo"
+msgstr "estèreo"
+
+#: src/aac/libmp4.c:440 src/skins/ui_main.c:454
+msgid "surround"
+msgstr ""
 
 #: src/aac/libmp4.c:931
-#, fuzzy
 msgid "AAC Decoder"
-msgstr "Descodificador"
+msgstr ""
+
+#: src/adplug/adplug-xmms.cc:151 src/modplug/modplugbmp.cxx:466
+#: src/psf/plugin.c:126 src/vtx/vtx.c:80 src/xsf/plugin.c:86
+msgid "sequenced"
+msgstr ""
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
+msgstr ""
+
+#: src/alarm/alarm.c:831
+msgid ""
+"A plugin that can be used to start playing at a certain time.\n"
+"\n"
+"Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
@@ -155,9 +181,8 @@ msgid "Playlist (optional)"
 msgstr "Llista de reproducció (opcional)"
 
 #: src/alarm/interface.c:1075
-#, fuzzy
 msgid "Select a playlist"
-msgstr "Selecciona la llista següent"
+msgstr ""
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -176,7 +201,6 @@ msgid "What do these options mean?"
 msgstr "Què signifiquen aquestes opcions?"
 
 #: src/alarm/interface.c:1155
-#, fuzzy
 msgid ""
 "\n"
 "Time\n"
@@ -228,56 +252,6 @@ msgid ""
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
 msgstr ""
-"\n"
-"Temps\n"
-"  Alarma a les: \n"
-"    Hora en que salta l'alarma.\n"
-"\n"
-"  Para al cap de: \n"
-"    Para l'alarma quan hagi passat aquesta estona.\n"
-"       (si no heu tancat el diàleg de despertada)\n"
-"\n"
-"\n"
-"Dies\n"
-"  Dia:\n"
-"    Els dies de la setmana en que s'activa l'alarma.\n"
-"\n"
-"  Hora:\n"
-"    L'hora en que salta l'alarma cada dia, o bé marqueu\n"
-"    la casella per a fer servir l'hora per defecte.\n"
-"\n"
-"\n"
-"Volum\n"
-"  Fosa: \n"
-"    Augmenta el volum fins el nivell especificat durant el \n"
-"    temps indicat.\n"
-"\n"
-"  Comença a: \n"
-"    Comença amb aquest volum.\n"
-"\n"
-"  Final: \n"
-"    El nivell de volum final. Si el temps de fosa\n"
-"    és 0, es començarà a reproduir a aquest nivell\n"
-"    des del principi.\n"
-"\n"
-"\n"
-"Opcions:\n"
-"  Ordre addicional:\n"
-"    Executa aquesta ordre quan salta l'alarma.\n"
-"\n"
-"  Llista de reproducció: \n"
-"    Carrega aquesta llista de reproducció (ha\n"
-"    de tenir extensió .m3u). Si no introduïu cap\n"
-"    llista, es faran servir les cançons que hi\n"
-"    hagin a la llista en aquest moment.\n"
-"    També és possible introduir un URL d'un flux\n"
-"    mp3/ogg, però carregar llistes de reproducció\n"
-"    des d'URLS de moment no està suportat.\n"
-"\n"
-"  Recordatori:\n"
-"    Mostra un recordatori quan salta l'alarma,\n"
-"    escriviu el recordatori en el camp de text i\n"
-"    marqueu la casella si voleu que es mostri.\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -296,52 +270,52 @@ msgid "Thankyou"
 msgstr "Gràcies"
 
 #: src/albumart/albumart.c:101
-#, fuzzy
 msgid "Album Art"
-msgstr "Àlbum:"
+msgstr ""
 
 #: src/alsa/config.c:210
-#, fuzzy
 msgid "Default PCM device"
-msgstr "Dispositiu PCM per defecte (%s)"
+msgstr ""
 
 #: src/alsa/config.c:235
-#, fuzzy
 msgid "Default mixer device"
-msgstr "Dispositiu PCM per defecte (%s)"
+msgstr ""
 
 #: src/alsa/config.c:433
-#, fuzzy
 msgid "ALSA Output Plugin Preferences"
-msgstr "Connector d'Icona d'Estat - Preferències"
+msgstr ""
 
 #: src/alsa/config.c:439
-#, fuzzy
 msgid "PCM device:"
-msgstr "Dispositiu de mescla:"
+msgstr ""
 
 #: src/alsa/config.c:441
 msgid "Mixer device:"
 msgstr "Dispositiu de mescla:"
 
 #: src/alsa/config.c:443
-#, fuzzy
 msgid "Mixer element:"
-msgstr "Dispositiu de mescla:"
+msgstr ""
 
 #: src/alsa/config.c:446
 msgid "Work around drain hangup"
 msgstr ""
 
+#: src/alsa/plugin.c:27
+msgid ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+msgstr ""
+
 #: src/alsa/plugin.c:34
-#, fuzzy
 msgid "ALSA Output"
-msgstr "Ports ALSA de sortida"
+msgstr ""
 
 #: src/amidi-plug/amidi-plug.c:39
-#, fuzzy
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "Quant al connector AMIDI-Plug"
+msgstr ""
 
 #: src/amidi-plug/amidi-plug.c:327
 msgid ""
@@ -355,46 +329,21 @@ msgstr "Fons ALSA"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Aquest fons envia esdeveniments MIDI a un grup de ports del seqüenciador "
-"ALSA especificats per l'usuari. La interfície del seqüenciador ALSA és molt "
-"versàtil, pot proporcionar ports per a sintetitzadors integrats a la targeta "
-"de so (p.e., l'emu10k1), però també per a sintetitzadors per programari, "
-"dispositius externs, etc.\n"
-"Aquest fons no produeix àudio, els esdeveniments MIDI són gestionats "
-"directament per programes o dispositius darrere els ports ALSA; per exemple, "
-"esdeveniments MIDI enviats a un maquinari sintetitzador seran reproduïts pel "
-"maquinari en qüestió.\n"
-"Fons escrit per Giacomo Lozito."
+msgstr "Aquest fons envia esdeveniments MIDI a un grup de ports del seqüenciador ALSA especificats per l'usuari. La interfície del seqüenciador ALSA és molt versàtil, pot proporcionar ports per a sintetitzadors integrats a la targeta de so (p.e., l'emu10k1), però també per a sintetitzadors per programari, dispositius externs, etc.\nAquest fons no produeix àudio, els esdeveniments MIDI són gestionats directament per programes o dispositius darrere els ports ALSA; per exemple, esdeveniments MIDI enviats a un maquinari sintetitzador seran reproduïts pel maquinari en qüestió.\nFons escrit per Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
 msgid "FluidSynth Backend "
 msgstr "Fons FluidSynth"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
-#, fuzzy
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Aquest fons produeix so, tot enviant esdeveniments MIDI al programa "
-"FluidSynth, un programari sintetitzador en temps real, basat el "
-"l'especificació SoundFont2 (www.fluidsynth.org).\n"
-"L'àudio produït pot ser manipulat mitjançant els connectors d'efectes del "
-"reproductor i és processat pel connector de sortida que trieu.\n"
-"Fons escrit per Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -428,9 +377,7 @@ msgstr "Paràmetres del mesclador"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Fons\n"
-"ALSA</span>"
+msgstr "<span size=\"smaller\">Fons\nALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -472,9 +419,15 @@ msgstr "extreu la lletra del fitxer MIDI (si n'hi ha)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
+msgstr "<span size=\"smaller\">Connector\nAMIDI</span>"
+
+#: src/amidi-plug/i_configure.c:64
+msgid "AMIDI-Plug - select file"
+msgstr "Connector AMIDI-Plug - Seleccioneu un fitxer"
+
+#: src/amidi-plug/i_configure.c:110
+msgid "AMIDI-Plug Settings"
 msgstr ""
-"<span size=\"smaller\">Connector\n"
-"AMIDI</span>"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:55
 msgid "AMIDI-Plug - select SoundFont file"
@@ -497,9 +450,8 @@ msgid "Load SF on player start"
 msgstr "Carrega les SF en arrencar el reproductor"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:379
-#, fuzzy
 msgid "Load SF on first MIDI file play"
-msgstr "Carrega les SF abans de reproduir fitxers MIDI"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:392
 msgid "Synthesizer settings"
@@ -522,9 +474,8 @@ msgid "value:"
 msgstr "valor:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
-#, fuzzy
 msgid "polyphony"
-msgstr "polifonia"
+msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -572,18 +523,7 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Fons\n"
-"FluidSynth</span>"
-
-#: src/amidi-plug/i_configure.c:64
-msgid "AMIDI-Plug - select file"
-msgstr "Connector AMIDI-Plug - Seleccioneu un fitxer"
-
-#: src/amidi-plug/i_configure.c:110
-#, fuzzy
-msgid "AMIDI-Plug Settings"
-msgstr "Paràmetres del registre d'esdeveniments MIDI"
+msgstr "<span size=\"smaller\">Fons\nFluidSynth</span>"
 
 #: src/amidi-plug/i_fileinfo.c:169
 msgid "Name:"
@@ -602,9 +542,8 @@ msgid "Length (msec):"
 msgstr "Durada (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:211
-#, fuzzy
 msgid "No. of Tracks:"
-msgstr "Nombre de pistes:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -639,16 +578,16 @@ msgid "  (invalid UTF-8)"
 msgstr "  (UTF-8 no vàlid)"
 
 #: src/amidi-plug/i_utils.c:36
-#, fuzzy
 msgid "About AMIDI-Plug"
 msgstr ""
-"\n"
-"AMIDI-Plug "
+
+#: src/aosd/aosd.c:29
+msgid "Audacious OSD "
+msgstr ""
 
 #: src/aosd/aosd.c:37
-#, fuzzy
 msgid "AOSD (On-Screen Display)"
-msgstr "Activa l'OSD (sobre-impressió)"
+msgstr ""
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -672,8 +611,7 @@ msgstr "Inici de la reproducció"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
-"Activa l'OSD quan es reprodueix una entrada de la llista de reproducció"
+msgstr "Activa l'OSD quan es reprodueix una entrada de la llista de reproducció"
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
@@ -684,10 +622,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"Activa l'OSD quan, mentre s'està reproduint, el títol de la cançó canvia "
-"però el nom del fitxer no. Això és útil per a mostrar canvis de títol en "
-"fluxos d'Internet."
+msgstr "Activa l'OSD quan, mentre s'està reproduint, el títol de la cançó canvia però el nom del fitxer no. Això és útil per a mostrar canvis de títol en fluxos d'Internet."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -819,12 +754,8 @@ msgstr "S'ha detectat un gestor Composite"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"No s'ha detectat cap gestor Composite;\n"
-"tret que sapigueu que ja n'està funcionant un, activeu un gestor Composite o "
-"l'OSD no funcionarà correctament"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "No s'ha detectat cap gestor Composite;\ntret que sapigueu que ja n'està funcionant un, activeu un gestor Composite o l'OSD no funcionarà correctament"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -888,43 +819,36 @@ msgid "Misc"
 msgstr "Misc"
 
 #: src/asx/asx.c:97
-#, fuzzy
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "Desa una llista de reproducció"
+msgstr ""
 
 #: src/audpl/audpl.c:224
-#, fuzzy
 msgid "Audacious Playlists (audpl)"
-msgstr "Editor de llistes de l'Audacious"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:49
-#, fuzzy
 msgid "<b>Color</b>"
-msgstr "<b>Acció:</b>"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:58
-#, fuzzy
 msgid "Blur Scope"
-msgstr "Oscil·loscopi difús"
+msgstr ""
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
 msgstr ""
 
 #: src/bs2b/plugin.c:149
-#, fuzzy
 msgid "Feed level:"
-msgstr "Nivell d'àudio objectiu:"
+msgstr ""
 
 #: src/bs2b/plugin.c:163
-#, fuzzy
 msgid "Cut frequency:"
-msgstr "Freqüència"
+msgstr ""
 
 #: src/bs2b/plugin.c:177
-#, fuzzy
 msgid "Presets:"
-msgstr "Perfils"
+msgstr ""
 
 #: src/bs2b/plugin.c:199
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -934,44 +858,37 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr "Analitzador d'espectre"
 
-#: src/cd-menu-items/cd-menu-items.c:32
-#, fuzzy
-msgid "Play CD"
-msgstr "Reprodueix"
-
-#: src/cd-menu-items/cd-menu-items.c:32
-msgid "Add CD"
-msgstr "Afegeix CD"
-
-#: src/cd-menu-items/cd-menu-items.c:59
-#, fuzzy
-msgid "Audio CD Menu Items"
-msgstr "Paràmetres de l'àudio"
+#: src/cdaudio-ng/cdaudio-ng.c:105
+msgid ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"and to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you to Tony Vroon for mentoring and guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
-#, fuzzy
 msgid "<b>Device</b>"
-msgstr "<b>Serveis</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:124
-#, fuzzy
 msgid "Read speed:"
-msgstr "Velocitat del rellotge:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
-#, fuzzy
 msgid "Override device:"
-msgstr "Ignora el dispositiu per defecte:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:129
-#, fuzzy
 msgid "<b>Metadata</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
-#, fuzzy
 msgid "Use CD-Text"
-msgstr "Usa CDDB"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use CDDB"
@@ -982,28 +899,91 @@ msgid "Use HTTP instead of CDDBP"
 msgstr "Usa HTTP en lloc de CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
-#, fuzzy
 msgid "Server:"
-msgstr "Servidor: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
-#, fuzzy
 msgid "Path:"
-msgstr "Camí: "
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Port:"
 msgstr "Port:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:150
-#, fuzzy
 msgid "Audio CD Plugin"
-msgstr "Quant al connector d'àudio FLAC"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:246
+msgid "Failed to initialize cdio subsystem."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:304
+#, c-format
+msgid "Invalid URI %s."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:310
+#, c-format
+msgid "Track %d not found."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:317
+#, c-format
+msgid "Track %d is a data track.\n"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:326
+msgid "Failed to open audio output."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:402
+msgid "Too many read errors; giving up."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:531
-#, fuzzy
 msgid "Audio CD"
-msgstr "Àudio"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:579 src/cdaudio-ng/cdaudio-ng.c:588
+#, c-format
+msgid "Failed to open CD device %s."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:591
+msgid "No audio capable CD drive found."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:618
+msgid "Failed to finish initializing opened CD drive."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:631
+msgid "Failed to retrieve first/last track number."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:656
+#, c-format
+msgid "Cannot read start/end LSN for track %d."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:733
+msgid "Failed to create the cddb connection."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:808
+msgid "Failed to query the CDDB server"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:810
+#, c-format
+msgid "Failed to query the CDDB server: %s"
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:834
+#, c-format
+msgid "Failed to read the cddb info: %s"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:907
 msgid "Drive is empty."
@@ -1013,29 +993,43 @@ msgstr ""
 msgid "Unsupported disk type."
 msgstr ""
 
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Play CD"
+msgstr ""
+
+#: src/cd-menu-items/cd-menu-items.c:32
+msgid "Add CD"
+msgstr "Afegeix CD"
+
+#: src/cd-menu-items/cd-menu-items.c:59
+msgid "Audio CD Menu Items"
+msgstr ""
+
 #: src/compressor/plugin.c:37
-#, fuzzy
 msgid "<b>Compression</b>"
-msgstr "<b>Acció:</b>"
+msgstr ""
 
 #: src/compressor/plugin.c:38
-#, fuzzy
 msgid "Center volume:"
-msgstr "Canvia el volum"
+msgstr ""
 
 #: src/compressor/plugin.c:41
 msgid "Dynamic range:"
 msgstr ""
 
+#: src/compressor/plugin.c:55
+msgid ""
+"Dynamic Range Compression Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+
 #: src/compressor/plugin.c:60
-#, fuzzy
 msgid "Dynamic Range Compressor"
-msgstr "Preferències per a l'AudioCompress"
+msgstr ""
 
 #: src/console/configure.c:135 src/console/plugin.c:44
-#, fuzzy
 msgid "Game Console Music Decoder"
-msgstr "Descodificador de música de consoles"
+msgstr ""
 
 #: src/console/configure.c:152
 msgid "General"
@@ -1096,11 +1090,19 @@ msgstr "Incrementa la reverberació"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr "La durada per defecte d'una cançó, expressada en segons, s'utilitza per a cançons que no proporcionen informació sobre la seva durada (pistes bucle)."
+
+#: src/console/plugin.c:29
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 msgstr ""
-"La durada per defecte d'una cançó, expressada en segons, s'utilitza per a "
-"cançons que no proporcionen informació sobre la seva durada (pistes bucle)."
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -1115,78 +1117,89 @@ msgid ""
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
 
+#: src/crossfade/crossfade.c:256
+msgid ""
+"Crossfade Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+
 #: src/crossfade/crossfade.c:260
-#, fuzzy
 msgid "<b>Crossfade</b>"
-msgstr "Crossover"
+msgstr ""
 
 #: src/crossfade/crossfade.c:261
-#, fuzzy
 msgid "Overlap:"
-msgstr "Sobre-mostratge:"
+msgstr ""
 
 #: src/crossfade/crossfade.c:271
-#, fuzzy
 msgid "Crossfade"
-msgstr "Crossover"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:42
-#, fuzzy
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Nom: </b>"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:43 src/stereo_plugin/stereo.c:28
-#, fuzzy
 msgid "Intensity:"
-msgstr "Intensitat de l'efecte:"
+msgstr ""
 
 #: src/crystalizer/crystalizer.c:53
-#, fuzzy
 msgid "Crystalizer"
-msgstr "<b>Nom: </b>"
+msgstr ""
 
 #: src/cue/cue.c:160
-#, fuzzy
 msgid "Cue Sheet Plugin"
-msgstr "Quant al connector d'eco"
+msgstr ""
 
 #: src/echo_plugin/echo.c:26
-#, fuzzy
 msgid "<b>Echo</b>"
-msgstr "<b>Acció:</b>"
+msgstr ""
 
 #: src/echo_plugin/echo.c:27
-#, fuzzy
 msgid "Delay:"
-msgstr "Retard"
+msgstr ""
 
 #: src/echo_plugin/echo.c:29
 msgid "ms"
 msgstr ""
 
 #: src/echo_plugin/echo.c:30
-#, fuzzy
 msgid "Feedback:"
-msgstr "Retorn: (%)"
+msgstr ""
 
 #: src/echo_plugin/echo.c:33
-#, fuzzy
 msgid "Volume:"
-msgstr "Volum"
+msgstr ""
+
+#: src/echo_plugin/echo.c:116
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin, 1999\n"
+"\n"
+"Surround echo by Carl van Schaik, 1999"
+msgstr ""
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
 msgstr ""
 
+#: src/ffaudio/ffaudio-core.c:635
+msgid ""
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
+msgstr ""
+
 #: src/ffaudio/ffaudio-core.c:682
-#, fuzzy
 msgid "FFmpeg Plugin"
-msgstr "Connector"
+msgstr ""
 
 #: src/filewriter/filewriter.c:409
-#, fuzzy
 msgid "FileWriter Configuration"
-msgstr "Configuració de l'escriptura al disc"
+msgstr ""
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1232,19 +1245,35 @@ msgstr "Deixa l'extensió del fitxer"
 msgid "Prepend track number to filename"
 msgstr "Precedeix el nom del fitxer pel nombre de pista"
 
+#: src/filewriter/filewriter.c:515
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
 #: src/filewriter/filewriter.c:532
-#, fuzzy
 msgid "FileWriter Plugin"
-msgstr "Quant al connector FileWriter"
+msgstr ""
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
 msgstr "Auto"
 
 #: src/filewriter/mp3.c:37
-#, fuzzy
 msgid "Joint Stereo"
-msgstr "Estèreo conjunt"
+msgstr ""
 
 #: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:197
 msgid "Stereo"
@@ -1347,9 +1376,8 @@ msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
-#, fuzzy
 msgid "Frame parameters:"
-msgstr "Paràmetres dels marcs:"
+msgstr ""
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
@@ -1387,94 +1415,103 @@ msgstr "Configuració del codificador Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Nivell de qualitat (0 - 10):"
 
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:284
+msgid "lossless"
+msgstr ""
+
+#: src/flacng/plugin.c:270
+msgid ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+
 #: src/flacng/plugin.c:278
-#, fuzzy
 msgid "FLAC Decoder"
-msgstr "Descodificador"
+msgstr ""
+
+#: src/gio/gio.c:302
+msgid ""
+"GIO Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren"
+msgstr ""
 
 #: src/gio/gio.c:324
-#, fuzzy
 msgid "GIO Plugin"
-msgstr "Quant al connector ESounD"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:44
+msgid ""
+"Gnome Shortcut Plugin\n"
+"Lets you control the player with Gnome's shortcuts.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
-#, fuzzy
 msgid "Gnome Shortcuts"
-msgstr "Quant al connector de tecles ràpides de Gnome"
+msgstr ""
 
 #: src/gtkui/columns.c:33
-#, fuzzy
 msgid "Entry number"
-msgstr "Número de pista:"
+msgstr ""
 
 #: src/gtkui/columns.c:33
 msgid "Title"
 msgstr "Títol"
 
 #: src/gtkui/columns.c:34
-#, fuzzy
 msgid "Artist"
-msgstr "Artista:"
+msgstr ""
 
 #: src/gtkui/columns.c:34
-#, fuzzy
 msgid "Year"
-msgstr "Any:"
+msgstr ""
 
 #: src/gtkui/columns.c:34
-#, fuzzy
 msgid "Album"
-msgstr "Àlbum:"
+msgstr ""
 
 #: src/gtkui/columns.c:34
-#, fuzzy
 msgid "Track"
-msgstr "Pista:"
+msgstr ""
 
 #: src/gtkui/columns.c:34
-#, fuzzy
 msgid "Genre"
-msgstr "Gènere:"
+msgstr ""
 
 #: src/gtkui/columns.c:35
-#, fuzzy
 msgid "Queue position"
-msgstr "Posició"
+msgstr ""
 
 #: src/gtkui/columns.c:35
-#, fuzzy
 msgid "Length"
-msgstr "Durada (ms):"
+msgstr ""
 
 #: src/gtkui/columns.c:35
-#, fuzzy
 msgid "File path"
-msgstr "Per nom de fitxer"
+msgstr ""
 
 #: src/gtkui/columns.c:35
-#, fuzzy
 msgid "File name"
-msgstr "Nom del fitxer"
+msgstr ""
 
 #: src/gtkui/columns.c:36
-#, fuzzy
 msgid "Custom title"
-msgstr "Decoració personalitzada"
+msgstr ""
 
 #: src/gtkui/columns.c:36
-#, fuzzy
 msgid "Bitrate"
-msgstr "Para al cap de:"
+msgstr ""
 
 #: src/gtkui/columns.c:275
-#, fuzzy
 msgid "Choose Columns"
-msgstr "Mostra el reproductor"
+msgstr ""
 
 #: src/gtkui/columns.c:291
-#, fuzzy
 msgid "Available:"
-msgstr "variable"
+msgstr ""
 
 #: src/gtkui/columns.c:325
 msgid "Chosen:"
@@ -1501,170 +1538,140 @@ msgid "Undock"
 msgstr ""
 
 #: src/gtkui/layout.c:121 src/ladspa/plugin.c:624
-#, fuzzy
 msgid "Disable"
-msgstr "variable"
+msgstr ""
 
 #: src/gtkui/menus.c:159
-#, fuzzy
 msgid "_Open Files ..."
-msgstr "Afegeix fitxers..."
+msgstr ""
 
 #: src/gtkui/menus.c:160
-#, fuzzy
 msgid "Open _URL ..."
-msgstr "Afegeix fitxers..."
+msgstr ""
 
 #: src/gtkui/menus.c:161
-#, fuzzy
 msgid "_Add Files ..."
-msgstr "Afegeix fitxers..."
+msgstr ""
 
 #: src/gtkui/menus.c:162
-#, fuzzy
 msgid "Add U_RL ..."
-msgstr "Afegeix fitxers..."
+msgstr ""
 
 #: src/gtkui/menus.c:164
 msgid "_Search Library"
 msgstr ""
 
 #: src/gtkui/menus.c:166
-#, fuzzy
 msgid "A_bout ..."
-msgstr "Quant al connector "
+msgstr ""
 
 #: src/gtkui/menus.c:167
-#, fuzzy
 msgid "_Preferences ..."
-msgstr "Preferències"
+msgstr ""
 
 #: src/gtkui/menus.c:168 src/skins/ui_manager.c:414
 msgid "_Quit"
 msgstr "_Surt"
 
 #: src/gtkui/menus.c:171 src/gtkui/menus.c:258
-#, fuzzy
 msgid "_Play"
-msgstr "Reprodueix"
+msgstr ""
 
 #: src/gtkui/menus.c:172
-#, fuzzy
 msgid "Paus_e"
-msgstr "Pausa"
+msgstr ""
 
 #: src/gtkui/menus.c:173
-#, fuzzy
 msgid "_Stop"
-msgstr "Para"
+msgstr ""
 
 #: src/gtkui/menus.c:174
-#, fuzzy
 msgid "Pre_vious"
-msgstr "Anterior"
+msgstr ""
 
 #: src/gtkui/menus.c:175
-#, fuzzy
 msgid "_Next"
-msgstr "Següent"
+msgstr ""
 
 #: src/gtkui/menus.c:177
-#, fuzzy
 msgid "_Repeat"
-msgstr "Repeteix"
+msgstr ""
 
 #: src/gtkui/menus.c:178
-#, fuzzy
 msgid "S_huffle"
-msgstr "Barreja"
+msgstr ""
 
 #: src/gtkui/menus.c:179
-#, fuzzy
 msgid "N_o Playlist Advance"
-msgstr "Discontinua la reproducció programada"
+msgstr ""
 
 #: src/gtkui/menus.c:180
-#, fuzzy
 msgid "Stop _After This Song"
-msgstr "Para quan s'acabi la cançó"
+msgstr ""
 
 #: src/gtkui/menus.c:182 src/gtkui/menus.c:246
 msgid "Song _Info ..."
 msgstr ""
 
 #: src/gtkui/menus.c:183
-#, fuzzy
 msgid "Jump to _Time ..."
-msgstr "Salta al temps"
+msgstr ""
 
 #: src/gtkui/menus.c:184
 msgid "_Jump to Song ..."
 msgstr ""
 
 #: src/gtkui/menus.c:187
-#, fuzzy
 msgid "By Track _Number"
-msgstr "Pel número de pista"
+msgstr ""
 
 #: src/gtkui/menus.c:188
-#, fuzzy
 msgid "By _Title"
-msgstr "Per títol"
+msgstr ""
 
 #: src/gtkui/menus.c:189
-#, fuzzy
 msgid "By _Artist"
-msgstr "Per l'artista"
+msgstr ""
 
 #: src/gtkui/menus.c:190
-#, fuzzy
 msgid "By A_lbum"
-msgstr "Àlbum:"
+msgstr ""
 
 #: src/gtkui/menus.c:191
-#, fuzzy
 msgid "By Release _Date"
-msgstr "Per la data"
+msgstr ""
 
 #: src/gtkui/menus.c:192
-#, fuzzy
 msgid "By _File Path"
-msgstr "Per nom de fitxer"
+msgstr ""
 
 #: src/gtkui/menus.c:193
-#, fuzzy
 msgid "By _Custom Title"
-msgstr "Decoració personalitzada"
+msgstr ""
 
 #: src/gtkui/menus.c:195
-#, fuzzy
 msgid "R_everse Order"
-msgstr "Inverteix la llista"
+msgstr ""
 
 #: src/gtkui/menus.c:196
-#, fuzzy
 msgid "_Random Order"
-msgstr "_Aleatori"
+msgstr ""
 
 #: src/gtkui/menus.c:199
-#, fuzzy
 msgid "_Play This Playlist"
-msgstr "Esborra la llista"
+msgstr ""
 
 #: src/gtkui/menus.c:200 src/gtkui/menus.c:248
-#, fuzzy
 msgid "_Refresh"
-msgstr "Velocitat de refresc"
+msgstr ""
 
 #: src/gtkui/menus.c:201
-#, fuzzy
 msgid "Remove _Unavailable Files"
-msgstr "Treu els fitxers no disponibles"
+msgstr ""
 
 #: src/gtkui/menus.c:203
-#, fuzzy
 msgid "_Sort"
-msgstr "Port"
+msgstr ""
 
 #: src/gtkui/menus.c:205
 msgid "_New"
@@ -1675,58 +1682,48 @@ msgid "Ren_ame ..."
 msgstr ""
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:260
-#, fuzzy
 msgid "_Close"
-msgstr "Tanca"
+msgstr ""
 
 #: src/gtkui/menus.c:209
-#, fuzzy
 msgid "_Import ..."
-msgstr "Importa"
+msgstr ""
 
 #: src/gtkui/menus.c:210
-#, fuzzy
 msgid "_Export ..."
-msgstr "Exporta"
+msgstr ""
 
 #: src/gtkui/menus.c:212
-#, fuzzy
 msgid "Playlist _Manager ..."
-msgstr "Gestor de llistes"
+msgstr ""
 
 #: src/gtkui/menus.c:213
-#, fuzzy
 msgid "_Queue Manager ..."
-msgstr "Gestor de llistes"
+msgstr ""
 
 #: src/gtkui/menus.c:216
-#, fuzzy
 msgid "Volume _Up"
-msgstr "Puja el volum"
+msgstr ""
 
 #: src/gtkui/menus.c:217
-#, fuzzy
 msgid "Volume _Down"
-msgstr "Baixa el volum"
+msgstr ""
 
 #: src/gtkui/menus.c:219
-#, fuzzy
 msgid "_Equalizer"
-msgstr "Mostra l'equalitzador"
+msgstr ""
 
 #: src/gtkui/menus.c:221
-#, fuzzy
 msgid "E_ffects"
-msgstr "Efectes"
+msgstr ""
 
 #: src/gtkui/menus.c:224
 msgid "_Interface"
 msgstr ""
 
 #: src/gtkui/menus.c:225
-#, fuzzy
 msgid "_Visualizations"
-msgstr "Visualització"
+msgstr ""
 
 #: src/gtkui/menus.c:227
 msgid "Show _Menu Bar"
@@ -1737,63 +1734,52 @@ msgid "Show I_nfo Bar"
 msgstr ""
 
 #: src/gtkui/menus.c:229
-#, fuzzy
 msgid "Show Info Bar Vis_ualization"
-msgstr "Visualització"
+msgstr ""
 
 #: src/gtkui/menus.c:230
-#, fuzzy
 msgid "Show _Status Bar"
-msgstr "Estat"
+msgstr ""
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
 msgstr ""
 
 #: src/gtkui/menus.c:233
-#, fuzzy
 msgid "Show Column _Headers"
-msgstr "Mostra el reproductor"
+msgstr ""
 
 #: src/gtkui/menus.c:234
-#, fuzzy
 msgid "Choose _Columns ..."
-msgstr "Mostra el reproductor"
+msgstr ""
 
 #: src/gtkui/menus.c:235
-#, fuzzy
 msgid "Scrol_l on Song Change"
-msgstr "Missatge de la cançó"
+msgstr ""
 
 #: src/gtkui/menus.c:238
-#, fuzzy
 msgid "_File"
-msgstr "Fitxer"
+msgstr ""
 
 #: src/gtkui/menus.c:239
-#, fuzzy
 msgid "_Playback"
-msgstr "Reproducció"
+msgstr ""
 
 #: src/gtkui/menus.c:240
-#, fuzzy
 msgid "P_laylist"
-msgstr "Llistes"
+msgstr ""
 
 #: src/gtkui/menus.c:241 src/gtkui/menus.c:255
-#, fuzzy
 msgid "_Services"
-msgstr "Dispositius"
+msgstr ""
 
 #: src/gtkui/menus.c:242
-#, fuzzy
 msgid "_Output"
-msgstr "Connector de sortida nul"
+msgstr ""
 
 #: src/gtkui/menus.c:243
-#, fuzzy
 msgid "_View"
-msgstr "Finestres"
+msgstr ""
 
 #: src/gtkui/menus.c:247
 msgid "_Queue/Unqueue"
@@ -1808,19 +1794,16 @@ msgid "_Copy"
 msgstr ""
 
 #: src/gtkui/menus.c:252
-#, fuzzy
 msgid "_Paste"
-msgstr "Al màxim"
+msgstr ""
 
 #: src/gtkui/menus.c:253
-#, fuzzy
 msgid "Select _All"
-msgstr "Selecciona tots els elements"
+msgstr ""
 
 #: src/gtkui/menus.c:259
-#, fuzzy
 msgid "_Rename ..."
-msgstr "Nom del fitxer"
+msgstr ""
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
@@ -1832,9 +1815,8 @@ msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.c:175
-#, fuzzy
 msgid "Buffering ..."
-msgstr "Buffers"
+msgstr ""
 
 #: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
 msgid "Audacious"
@@ -1847,20 +1829,12 @@ msgstr "Audacious"
 msgid "Error"
 msgstr "Error"
 
-#: src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
-msgid "mono"
-msgstr "mono"
-
-#: src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
-msgid "stereo"
-msgstr "estèreo"
-
 #: src/gtkui/ui_statusbar.c:109
-#, fuzzy, c-format
+#, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "Canals"
-msgstr[1] "Canals"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gtkui/ui_statusbar.c:124
 #, c-format
@@ -1912,28 +1886,24 @@ msgid "Jump to File"
 msgstr "Salta al fitxer"
 
 #: src/hotkey/gui.c:83
-#, fuzzy
 msgid "Toggle Player Window(s)"
-msgstr "Commuta les finestres"
+msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
 msgstr "Activa l'OSD (sobre-impressió)"
 
 #: src/hotkey/gui.c:85
-#, fuzzy
 msgid "Toggle Repeat"
-msgstr "Repeteix"
+msgstr ""
 
 #: src/hotkey/gui.c:86
-#, fuzzy
 msgid "Toggle Shuffle"
-msgstr "Barreja"
+msgstr ""
 
 #: src/hotkey/gui.c:87
-#, fuzzy
 msgid "Raise Player Window(s)"
-msgstr "Commuta les finestres"
+msgstr ""
 
 #: src/hotkey/gui.c:97
 msgid "(none)"
@@ -1941,15 +1911,10 @@ msgstr "(cap)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"No és recomanable vincular els botons primaris del ratolí sense tecles "
-"modificadores.\n"
-"\n"
-"Voleu continuar?"
+msgstr "No és recomanable vincular els botons primaris del ratolí sense tecles modificadores.\n\nVoleu continuar?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1963,9 +1928,7 @@ msgstr "Configuració del connector de tecles ràpides globals"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Premeu una combinació de tecles dins del camp de text.\n"
-"També podeu vincular botons del ratolí."
+msgstr "Premeu una combinació de tecles dins del camp de text.\nTambé podeu vincular botons del ratolí."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -1979,30 +1942,49 @@ msgstr "<b>Acció:</b>"
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Vinculació de tecles:</b>"
 
+#: src/hotkey/plugin.c:68
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+
 #: src/hotkey/plugin.c:80
-#, fuzzy
 msgid "Global Hotkeys"
-msgstr "Quant al connector de tecles ràpides globals"
+msgstr ""
+
+#: src/jack/jack.c:411
+msgid ""
+"Based on xmms-jack, by Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Ported to Audacious by Giacomo Lozito"
+msgstr ""
 
 #: src/jack/jack.c:417
-#, fuzzy
 msgid "JACK Output"
-msgstr "Connector de sortida nul"
+msgstr ""
 
 #: src/ladspa/plugin.c:494
-#, fuzzy, c-format
+#, c-format
 msgid "%s Settings"
-msgstr "Paràmetres de l'alarma"
+msgstr ""
 
 #: src/ladspa/plugin.c:562
-#, fuzzy
 msgid "LADSPA Host Settings"
-msgstr "Paràmetres de l'àudio"
+msgstr ""
 
 #: src/ladspa/plugin.c:571
-#, fuzzy
 msgid "Module paths:"
-msgstr "Per nom de fitxer"
+msgstr ""
 
 #: src/ladspa/plugin.c:576
 msgid ""
@@ -2012,28 +1994,30 @@ msgid ""
 msgstr ""
 
 #: src/ladspa/plugin.c:592
-#, fuzzy
 msgid "Available plugins:"
-msgstr "variable"
+msgstr ""
 
 #: src/ladspa/plugin.c:605
 msgid "Enable"
 msgstr "Activa"
 
 #: src/ladspa/plugin.c:611
-#, fuzzy
 msgid "Enabled plugins:"
-msgstr "Connectors instal·lats"
+msgstr ""
 
 #: src/ladspa/plugin.c:627
-#, fuzzy
 msgid "Settings"
-msgstr "Paràmetres de l'alarma"
+msgstr ""
+
+#: src/ladspa/plugin.c:646
+msgid ""
+"LADSPA Host for Audacious\n"
+"Copyright 2011 John Lindgren"
+msgstr ""
 
 #: src/ladspa/plugin.c:651
-#, fuzzy
 msgid "LADSPA Host"
-msgstr "Paràmetres de l'àudio"
+msgstr ""
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2046,10 +2030,7 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr ""
-"%s: no s'ha pogut llegir el firxer de configuració de LIRC\n"
-"%s: si us plau, llegiu la documentació de LIRC, per a saber\n"
-"%s: com crear un fitxer de configuració adequat\n"
+msgstr "%s: no s'ha pogut llegir el firxer de configuració de LIRC\n%s: si us plau, llegiu la documentació de LIRC, per a saber\n%s: com crear un fitxer de configuració adequat\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -2071,29 +2052,41 @@ msgstr "%s: desconnectat del LIRC\n"
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: s'intentarà reconnectar cada %d segons...\n"
 
+#: src/lirc/lirc.c:400
+msgid ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+msgstr ""
+
 #: src/lirc/lirc.c:411
-#, fuzzy
 msgid "<b>Connection</b>"
-msgstr "<b>Acció:</b>"
+msgstr ""
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
 msgstr "Reconnecta amb el servidor LIRC"
 
 #: src/lirc/lirc.c:414
-#, fuzzy
 msgid "Wait before reconnecting:"
-msgstr "Temps d'espera abans d'intentar reconnectar (segons): "
+msgstr ""
 
 #: src/lirc/lirc.c:424
-#, fuzzy
 msgid "LIRC Plugin"
-msgstr "Connector per a LIRC"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:119
-#, fuzzy
 msgid "No lyrics available"
-msgstr "* aquest fitxer MIDI no té lletra *"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
@@ -2122,9 +2115,8 @@ msgid "LyricWiki Plugin"
 msgstr ""
 
 #: src/m3u/m3u.c:123
-#, fuzzy
 msgid "M3U Playlists"
-msgstr "Llistes"
+msgstr ""
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2136,30 +2128,40 @@ msgstr "Generador de compassos: %d bpm"
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Generador de compassos: %d bpm %d/%d"
 
+#: src/metronom/metronom.c:248
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+
 #: src/metronom/metronom.c:257
-#, fuzzy
 msgid "Tact Generator"
-msgstr "Generador de tons:"
+msgstr ""
+
+#: src/mixer/mixer.c:171
+msgid ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
 
 #: src/mixer/mixer.c:175
-#, fuzzy
 msgid "<b>Channel Mixer</b>"
-msgstr "Quant al driver Sun"
+msgstr ""
 
 #: src/mixer/mixer.c:176
-#, fuzzy
 msgid "Output channels:"
-msgstr "canals: %d"
+msgstr ""
 
 #: src/mixer/mixer.c:186
-#, fuzzy
 msgid "Channel Mixer"
-msgstr "Quant al driver Sun"
+msgstr ""
 
 #: src/mms/mms.c:226
-#, fuzzy
 msgid "MMS Plugin"
-msgstr "Connector"
+msgstr ""
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
@@ -2170,37 +2172,47 @@ msgid "Surround"
 msgstr "So envolvent"
 
 #: src/mpg123/mpg123.c:554
-#, fuzzy
 msgid "MPG123 Plugin"
-msgstr "Quant al connector per a àudio MPEG"
+msgstr ""
 
 #: src/mpris2/plugin.c:403
-#, fuzzy
 msgid "MPRIS 2 Server"
-msgstr "Servidor"
+msgstr ""
 
 #: src/neon/neon.c:1241
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr ""
 
 #: src/notify/event.c:49
-#, fuzzy
 msgid "Stopped"
-msgstr "Para"
+msgstr ""
 
 #: src/notify/event.c:49
-#, fuzzy
 msgid "Audacious is not playing."
-msgstr "Audacious - avís de visibilitat"
+msgstr ""
+
+#: src/notify/notify.c:35
+msgid ""
+"Based on libnotify-aosd by Maximilian Bogner:\n"
+"http://www.mbogner.de/projects/libnotify-aosd/\n"
+"\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011 John Lindgren\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
 msgstr ""
 
 #: src/oss4/plugin.c:36
-#, fuzzy
 msgid "1. Default device"
-msgstr "Dispositiu PCM per defecte (%s)"
+msgstr ""
 
 #: src/oss4/plugin.c:75 src/sndio/sndio.c:414
 msgid "Audio device:"
@@ -2211,9 +2223,8 @@ msgid "Use alternate device:"
 msgstr "Usa un dispositiu alternatiu:"
 
 #: src/oss4/plugin.c:81
-#, fuzzy
 msgid "Save volume between sessions."
-msgstr "Recorda el volum VMIX entre sessions"
+msgstr ""
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
@@ -2223,22 +2234,54 @@ msgstr ""
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr ""
 
+#: src/oss4/plugin.c:108
+msgid ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+
 #: src/oss4/plugin.c:115
-#, fuzzy
 msgid "OSS4 Output"
-msgstr "Connector de sortida nul"
+msgstr ""
 
 #: src/pls/pls.c:114
-#, fuzzy
 msgid "PLS Playlists"
-msgstr "Carrega una llista de reproducció"
+msgstr ""
 
 #: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
+#: src/pulse_audio/pulse_audio.c:646
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
+msgstr ""
+
+#: src/resample/resample.c:163
+msgid ""
+"Sample Rate Converter Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
 msgstr ""
 
 #: src/resample/resample.c:167
@@ -2250,24 +2293,20 @@ msgid "Linear interpolation"
 msgstr "Interpolació lineal"
 
 #: src/resample/resample.c:169
-#, fuzzy
 msgid "Fast sinc interpolation"
-msgstr "Interpolació lineal"
+msgstr ""
 
 #: src/resample/resample.c:170
-#, fuzzy
 msgid "Medium sinc interpolation"
-msgstr "Interpolació lineal"
+msgstr ""
 
 #: src/resample/resample.c:171
-#, fuzzy
 msgid "Best sinc interpolation"
-msgstr "Interpolació lineal"
+msgstr ""
 
 #: src/resample/resample.c:174
-#, fuzzy
 msgid "<b>Conversion</b>"
-msgstr "<b>Acció:</b>"
+msgstr ""
 
 #: src/resample/resample.c:175
 msgid "Method:"
@@ -2278,68 +2317,56 @@ msgid "Rate:"
 msgstr ""
 
 #: src/resample/resample.c:181
-#, fuzzy
 msgid "<b>Rate Mappings</b>"
-msgstr "<b>Vinculació de tecles:</b>"
+msgstr ""
 
 #: src/resample/resample.c:182
-#, fuzzy
 msgid "Use rate mappings"
-msgstr "Usa sobre-mostratge"
+msgstr ""
 
 #: src/resample/resample.c:184
-#, fuzzy
 msgid "8 kHz:"
-msgstr "48 kHz"
+msgstr ""
 
 #: src/resample/resample.c:187
-#, fuzzy
 msgid "16 kHz:"
-msgstr "48 kHz"
+msgstr ""
 
 #: src/resample/resample.c:190
-#, fuzzy
 msgid "22.05 kHz:"
-msgstr "22 kHz"
+msgstr ""
 
 #: src/resample/resample.c:193
-#, fuzzy
 msgid "44.1 kHz:"
-msgstr "44 kHz"
+msgstr ""
 
 #: src/resample/resample.c:196
-#, fuzzy
 msgid "48 kHz:"
-msgstr "48 kHz"
+msgstr ""
 
 #: src/resample/resample.c:199
-#, fuzzy
 msgid "96 kHz:"
-msgstr "48 kHz"
+msgstr ""
 
 #: src/resample/resample.c:202
-#, fuzzy
 msgid "192 kHz:"
-msgstr "22 kHz"
+msgstr ""
 
 #: src/resample/resample.c:212
-#, fuzzy
 msgid "Sample Rate Converter"
-msgstr "Quant al connector d'icona d'estat"
+msgstr ""
 
 #: src/scrobbler/configure.c:121 src/scrobbler/configure.c:169
-#, fuzzy
 msgid "Change password"
-msgstr "Canvia la cançó"
+msgstr ""
 
 #: src/scrobbler/configure.c:138
 msgid "<b>Services</b>"
 msgstr "<b>Serveis</b>"
 
 #: src/scrobbler/configure.c:143
-#, fuzzy
 msgid "<b>Last.fm</b>"
-msgstr "<b>Last.FM</b>"
+msgstr ""
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2350,33 +2377,41 @@ msgid "Password:"
 msgstr "Contrasenya:"
 
 #: src/scrobbler/configure.c:155
-#, fuzzy
 msgid "Scrobbler URL:"
-msgstr "Error de Scrobbler"
+msgstr ""
+
+#: src/scrobbler/plugin.c:184
+msgid ""
+"Audacious AudioScrobbler Plugin\n"
+"\n"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>"
+msgstr ""
 
 #: src/scrobbler/plugin.c:189
-#, fuzzy
 msgid "Scrobbler"
-msgstr "Error de Scrobbler"
+msgstr ""
+
+#: src/sdlout/plugin.c:27
+msgid ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
 
 #: src/sdlout/plugin.c:32
-#, fuzzy
 msgid "SDL Output"
-msgstr "Connector de sortida nul"
+msgstr ""
 
 #: src/search-tool/search-tool.c:113 src/search-tool/search-tool.c:123
 msgid "Library"
 msgstr ""
 
 #: src/search-tool/search-tool.c:221
-#, fuzzy
 msgid "Unknown Artist"
-msgstr "Error no identificat\n"
+msgstr ""
 
 #: src/search-tool/search-tool.c:223
-#, fuzzy
 msgid "Unknown Album"
-msgstr "Error no identificat\n"
+msgstr ""
 
 #: src/search-tool/search-tool.c:627
 #, c-format
@@ -2386,11 +2421,11 @@ msgid ""
 msgstr ""
 
 #: src/search-tool/search-tool.c:633
-#, fuzzy, c-format
+#, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "Àlbum:"
-msgstr[1] "Àlbum:"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/search-tool/search-tool.c:635
 #, c-format
@@ -2415,14 +2450,12 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/search-tool/search-tool.c:682
-#, fuzzy
 msgid "_Create Playlist"
-msgstr "Esborra la llista"
+msgstr ""
 
 #: src/search-tool/search-tool.c:689
-#, fuzzy
 msgid "_Add to Playlist"
-msgstr "Finestra->Llista de reproducció"
+msgstr ""
 
 #: src/search-tool/search-tool.c:729
 msgid "Search library"
@@ -2439,14 +2472,12 @@ msgid "Please wait ..."
 msgstr ""
 
 #: src/search-tool/search-tool.c:764
-#, fuzzy
 msgid "Choose Folder"
-msgstr "Mostra el reproductor"
+msgstr ""
 
 #: src/search-tool/search-tool.c:803
-#, fuzzy
 msgid "Search Tool"
-msgstr "Any:"
+msgstr ""
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -2485,9 +2516,8 @@ msgid "<b>_Skin</b>"
 msgstr "<b>_Decoració</b>"
 
 #: src/skins/skins_cfg.c:345
-#, fuzzy
 msgid "Interface Preferences"
-msgstr "Preferències"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:333
 msgid "Preamp"
@@ -2506,39 +2536,32 @@ msgid "125 Hz"
 msgstr ""
 
 #: src/skins/ui_equalizer.c:338
-#, fuzzy
 msgid "250 Hz"
-msgstr "22050 Hz "
+msgstr ""
 
 #: src/skins/ui_equalizer.c:338
-#, fuzzy
 msgid "500 Hz"
-msgstr "11000 Hz"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:338
-#, fuzzy
 msgid "1 kHz"
-msgstr "11 kHz"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:339
-#, fuzzy
 msgid "2 kHz"
-msgstr "22 kHz"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:339
-#, fuzzy
 msgid "4 kHz"
-msgstr "44 kHz"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:339
-#, fuzzy
 msgid "8 kHz"
-msgstr "48 kHz"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:339
-#, fuzzy
 msgid "16 kHz"
-msgstr "48 kHz"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:380
 msgid "Audacious Equalizer"
@@ -2553,57 +2576,46 @@ msgid "Load preset"
 msgstr "Carrega un perfil"
 
 #: src/skins/ui_equalizer.c:996
-#, fuzzy
 msgid "Load auto-preset"
-msgstr "Carrega un perfil automàtic"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:1026 src/skins/ui_equalizer.c:1044
 #: src/skins/ui_equalizer.c:1060
-#, fuzzy
 msgid "Load equalizer preset"
-msgstr "Carrega un perfil"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
 msgid "Save preset"
 msgstr "Desa el perfil"
 
 #: src/skins/ui_equalizer.c:1095
-#, fuzzy
 msgid "Save auto-preset"
-msgstr "Desa com a perfil automàtic"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:1126 src/skins/ui_equalizer.c:1162
-#, fuzzy
 msgid "Save equalizer preset"
-msgstr "Desa com a perfil per defecte"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
 msgid "Delete preset"
 msgstr "Esborra el perfil"
 
 #: src/skins/ui_equalizer.c:1198
-#, fuzzy
 msgid "Delete auto-preset"
-msgstr "Esborra el perfil automàtic"
+msgstr ""
 
 #: src/skins/ui_main.c:439
 msgid "kbps"
 msgstr ""
 
 #: src/skins/ui_main.c:447
-#, fuzzy
 msgid "kHz"
-msgstr "Hz"
-
-#: src/skins/ui_main.c:454
-#, fuzzy
-msgid "surround"
-msgstr "So envolvent"
+msgstr ""
 
 #: src/skins/ui_main.c:804
-#, fuzzy, c-format
+#, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Anar a: %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgstr ""
 
 #: src/skins/ui_main.c:825
 #, c-format
@@ -2649,23 +2661,20 @@ msgid "Single mode."
 msgstr ""
 
 #: src/skins/ui_main.c:1652
-#, fuzzy
 msgid "Playlist mode."
-msgstr "Llistes"
+msgstr ""
 
 #: src/skins/ui_main.c:1674
-#, fuzzy
 msgid "Stopping after song."
-msgstr "Para quan s'acabi la cançó"
+msgstr ""
 
 #: src/skins/ui_main.c:1676
 msgid "Not stopping after song."
 msgstr ""
 
 #: src/skins/ui_manager.c:67 src/skins/ui_manager.c:68
-#, fuzzy
 msgid "Autoscroll Song Name"
-msgstr "Belluga el títol"
+msgstr ""
 
 #: src/skins/ui_manager.c:70 src/skins/ui_manager.c:71
 msgid "Stop after Current Song"
@@ -2853,9 +2862,8 @@ msgid "Playlist"
 msgstr "Llistes"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
-#, fuzzy
 msgid "Play Playlist"
-msgstr "Esborra la llista"
+msgstr ""
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -2874,18 +2882,16 @@ msgid "Delete Playlist"
 msgstr "Esborra la llista"
 
 #: src/skins/ui_manager.c:225
-#, fuzzy
 msgid "Import Playlist"
-msgstr "Carrega una llista de reproducció"
+msgstr ""
 
 #: src/skins/ui_manager.c:226
 msgid "Loads a playlist file into the selected playlist."
 msgstr "Afegeix una llista de reproducció a la llista seleccionada"
 
 #: src/skins/ui_manager.c:229
-#, fuzzy
 msgid "Export Playlist"
-msgstr "Carrega una llista de reproducció"
+msgstr ""
 
 #: src/skins/ui_manager.c:230
 msgid "Saves the selected playlist."
@@ -2900,14 +2906,12 @@ msgid "Refreshes metadata associated with a playlist entry."
 msgstr "Refresca les meta-dades associades a cada element de la llista."
 
 #: src/skins/ui_manager.c:236
-#, fuzzy
 msgid "Playlist Manager"
-msgstr "Gestor de llistes"
+msgstr ""
 
 #: src/skins/ui_manager.c:239
-#, fuzzy
 msgid "Queue Manager"
-msgstr "Gestor de llistes"
+msgstr ""
 
 #: src/skins/ui_manager.c:244
 msgid "View"
@@ -2918,9 +2922,8 @@ msgid "Interface"
 msgstr ""
 
 #: src/skins/ui_manager.c:246
-#, fuzzy
 msgid "Interface Preferences ..."
-msgstr "Preferències"
+msgstr ""
 
 #: src/skins/ui_manager.c:251
 msgid "Add Internet Address..."
@@ -2946,9 +2949,7 @@ msgstr "Cerca i selecciona"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr ""
-"Cerca a la llista de reproducció i selecciona elements basant-se en criteris "
-"específics."
+msgstr "Cerca a la llista de reproducció i selecciona elements basant-se en criteris específics."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -3018,8 +3019,7 @@ msgstr "Per nom de fitxer"
 
 #: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
-"Treu els elements duplicats de la llista de reproducció per nom de fitxer."
+msgstr "Treu els elements duplicats de la llista de reproducció per nom de fitxer."
 
 #: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
 #: src/skins/ui_manager.c:371
@@ -3028,9 +3028,7 @@ msgstr "Per ubicació i nom de fitxer"
 
 #: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
-"Treu els elements duplicats de la llista de reproducció per l'ubicació "
-"completa."
+msgstr "Treu els elements duplicats de la llista de reproducció per l'ubicació completa."
 
 #: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
@@ -3073,14 +3071,12 @@ msgid "Sorts the list by title."
 msgstr "Ordena la llista pel títol."
 
 #: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
-#, fuzzy
 msgid "By Album"
-msgstr "Àlbum:"
+msgstr ""
 
 #: src/skins/ui_manager.c:330 src/skins/ui_manager.c:360
-#, fuzzy
 msgid "Sorts the list by album."
-msgstr "Ordena la llista pel títol."
+msgstr ""
 
 #: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "By Artist"
@@ -3195,14 +3191,12 @@ msgid "Copy"
 msgstr ""
 
 #: src/skins/ui_manager.c:436
-#, fuzzy
 msgid "Cut"
-msgstr "De culte"
+msgstr ""
 
 #: src/skins/ui_manager.c:439
-#, fuzzy
 msgid "Paste"
-msgstr "Al màxim"
+msgstr ""
 
 #: src/skins/ui_manager.c:446
 msgid "Load"
@@ -3304,15 +3298,11 @@ msgstr "Cerca elements en la llista de reproducció activa"
 
 #: src/skins/ui_playlist.c:253
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Seleccioneu elements de la llista de reproducció omplint un o diversos "
-"camps. Aquests camps admeten la sintaxi d'expressions regulars i són "
-"insensibles a la capitalització. Si no sabeu com funcionen les expressions "
-"regulars, podeu escriure literalment el text que busqueu."
+msgstr "Seleccioneu elements de la llista de reproducció omplint un o diversos camps. Aquests camps admeten la sintaxi d'expressions regulars i són insensibles a la capitalització. Si no sabeu com funcionen les expressions regulars, podeu escriure literalment el text que busqueu."
 
 #: src/skins/ui_playlist.c:261
 msgid "Title: "
@@ -3364,15 +3354,27 @@ msgstr "Decoració del Winamp 2.x no arxivada"
 msgid "Could not create directory (%s): %s\n"
 msgstr "No s'ha pogut crear el directori (%s): %s\n"
 
+#: src/sndfile/plugin.c:418
+msgid ""
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+
 #: src/sndfile/plugin.c:437
-#, fuzzy
 msgid "Sndfile Plugin"
-msgstr "Quant al connector sndfile"
+msgstr ""
 
 #: src/sndio/sndio.c:189
-#, fuzzy
 msgid "About Sndio Output Plugin"
-msgstr "Quant al connector de sortida JACK 0.17"
+msgstr ""
 
 #: src/sndio/sndio.c:190
 msgid ""
@@ -3382,9 +3384,8 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:261
-#, fuzzy
 msgid "Unsupported format"
-msgstr "Format de fitxer no suportat\n"
+msgstr ""
 
 #: src/sndio/sndio.c:262
 msgid ""
@@ -3394,19 +3395,16 @@ msgid ""
 msgstr ""
 
 #: src/sndio/sndio.c:405
-#, fuzzy
 msgid "sndio device"
-msgstr "Dispositiu d'àudio:"
+msgstr ""
 
 #: src/sndio/sndio.c:421
-#, fuzzy
 msgid "(empty means default)"
-msgstr "Alarma (per defecte) a les:"
+msgstr ""
 
 #: src/song_change/song_change.c:56
-#, fuzzy
 msgid "Song Change"
-msgstr "Missatge de la cançó"
+msgstr ""
 
 #: src/song_change/song_change.c:438
 msgid "Command to run when Audacious starts a new song."
@@ -3423,18 +3421,14 @@ msgstr "Ordre a executar cap al final de la cançó."
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-"Ordre a executar quan l'Audacious arriba al final de la llista de "
-"reproducció."
+msgstr "Ordre a executar quan l'Audacious arriba al final de la llista de reproducció."
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"Ordre a executar quan canvia el títol d'una cançó (en fluxos de xarxa)."
+msgstr "Ordre a executar quan canvia el títol d'una cançó (en fluxos de xarxa)."
 
 #: src/song_change/song_change.c:462
-#, fuzzy
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3452,27 +3446,12 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Podeu utilitzar les següents cadenes de format\n"
-"que se substituiran abans de cridar l'ordre (no\n"
-"són totes útils per a l'ordre de final-de-llista).\n"
-"\n"
-"%%F: Freqüència (en hertzs)\n"
-"%%c: Nombre de canals\n"
-"%%f: Nom del fitxer (camí complet)\n"
-"%%l: Durada (en mil·lisegons)\n"
-"%%n o %%s: Nom de la cançó\n"
-"%%r: Flux de bits (en bits per segon)\n"
-"%%t: Posició a la llista de reproducció (%%02d)\n"
-"%%p: Reproducció en curs (1 o 0)"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>Els paràmetres passats a la shell s'han d'encapsular "
-"entre\n"
-"cometes. Altrament seria un risc per a la seguretat.</span>"
+msgstr "<span size='small'>Els paràmetres passats a la shell s'han d'encapsular entre\ncometes. Altrament seria un risc per a la seguretat.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3483,23 +3462,31 @@ msgid "<b>Speed and Pitch</b>"
 msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:228
-#, fuzzy
 msgid "Speed:"
-msgstr "Velocitat: "
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:231
-#, fuzzy
 msgid "Pitch:"
-msgstr "To"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
 msgstr ""
 
+#: src/statusicon/statusicon.c:392
+msgid ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+
 #: src/statusicon/statusicon.c:399
-#, fuzzy
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "Roda del ratolí"
+msgstr ""
 
 #: src/statusicon/statusicon.c:400
 msgid "Change volume"
@@ -3510,9 +3497,8 @@ msgid "Change playing song"
 msgstr "Canvia la cançó"
 
 #: src/statusicon/statusicon.c:406
-#, fuzzy
 msgid "<b>Other Settings</b>"
-msgstr "Paràmetres del mesclador"
+msgstr ""
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
@@ -3527,19 +3513,23 @@ msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
 #: src/statusicon/statusicon.c:420
-#, fuzzy
 msgid "Status Icon"
-msgstr "Estat"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:19
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin, 1999"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:27
-#, fuzzy
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Serveis</b>"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:38
-#, fuzzy
 msgid "Extra Stereo"
-msgstr "<b>Serveis</b>"
+msgstr ""
 
 #: src/tonegen/tonegen.c:86
 #, c-format
@@ -3550,43 +3540,94 @@ msgstr "%s %.1f Hz"
 msgid "Tone Generator: "
 msgstr "Generador de tons:"
 
+#: src/tonegen/tonegen.c:199
+msgid ""
+"Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+msgstr ""
+
 #: src/tonegen/tonegen.c:208
-#, fuzzy
 msgid "Tone Generator"
-msgstr "Generador de tons:"
+msgstr ""
+
+#: src/unix-io/unix-io.c:256
+msgid ""
+"File I/O Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
+msgstr ""
 
 #: src/unix-io/unix-io.c:279
-#, fuzzy
 msgid "File I/O Plugin"
-msgstr "Quant al connector ESounD"
+msgstr ""
 
 #: src/voice_removal/voice_removal.c:60
 msgid "Voice Removal"
 msgstr ""
 
+#: src/vorbis/vorbis.c:564
+msgid ""
+"Audacious Ogg Vorbis Decoder\n"
+"\n"
+"Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Original code by:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Contributions from:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+msgstr ""
+
 #: src/vorbis/vorbis.c:584
-#, fuzzy
 msgid "Ogg Vorbis Decoder"
-msgstr "Etiquetes Ogg Vorbis:"
+msgstr ""
+
+#: src/vtx/vtx.c:253
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
 
 #: src/vtx/vtx.c:259
-#, fuzzy
 msgid "VTX Decoder"
-msgstr "Descodificador"
+msgstr ""
+
+#: src/wavpack/wavpack.c:286
+msgid "lossy (hybrid)"
+msgstr ""
+
+#: src/wavpack/wavpack.c:288
+msgid "lossy"
+msgstr ""
+
+#: src/wavpack/wavpack.c:338
+msgid ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan."
+msgstr ""
 
 #: src/wavpack/wavpack.c:345
-#, fuzzy
 msgid "WavPack Decoder"
-msgstr "Connector descodificador Wavpack %s"
+msgstr ""
 
 #: src/xsf/plugin.c:273
-#, fuzzy
 msgid "2SF Decoder"
-msgstr "Descodificador"
+msgstr ""
 
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
-
-#~ msgid "Browse..."
-#~ msgstr "Vés a..."
