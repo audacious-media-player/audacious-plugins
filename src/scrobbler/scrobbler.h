@@ -2,6 +2,7 @@
 #define NET_H 1
 
 #include <glib.h>
+#include <pthread.h>
 
 #include <libaudcore/tuple.h>
 #include <audacious/preferences.h>
