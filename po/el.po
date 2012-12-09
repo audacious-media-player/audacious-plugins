@@ -1,32 +1,32 @@
 # Greek translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-# 
+#
 # Translators:
 # Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-11-06 20:40+0100\n"
+"POT-Creation-Date: 2012-12-09 23:25+0100\n"
 "PO-Revision-Date: 2012-11-06 19:44+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Greek\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:455
+#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:456
 msgid "mono"
 msgstr "μονοφωνικό"
 
-#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:454
+#: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:107 src/skins/ui_main.c:455
 msgid "stereo"
 msgstr "στερεοφωνικό"
 
-#: src/aac/libmp4.c:440 src/skins/ui_main.c:454
+#: src/aac/libmp4.c:440 src/skins/ui_main.c:455
 msgid "surround"
 msgstr "περιβάλλων"
 
@@ -34,8 +34,8 @@ msgstr "περιβάλλων"
 msgid "AAC Decoder"
 msgstr "Αποκωδικοποιητής AAC"
 
-#: src/adplug/adplug-xmms.cc:151 src/modplug/modplugbmp.cxx:466
-#: src/psf/plugin.c:126 src/vtx/vtx.c:80 src/xsf/plugin.c:86
+#: src/adplug/adplug-xmms.cc:151 src/modplug/modplugbmp.cxx:467
+#: src/psf/plugin.c:126 src/vtx/vtx.c:68 src/xsf/plugin.c:86
 msgid "sequenced"
 msgstr ""
 
@@ -99,7 +99,7 @@ msgstr "Διαλέξτε τις ημέρες που θα χτυπήσει το �
 #: src/alarm/interface.c:523 src/alarm/interface.c:569
 #: src/alarm/interface.c:615 src/alarm/interface.c:661
 #: src/alarm/interface.c:707 src/bs2b/plugin.c:179
-#: src/skins/ui_equalizer.c:1116 src/skins/ui_manager.c:457
+#: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:457
 #: src/skins/ui_manager.c:478
 msgid "Default"
 msgstr "Προεπιλογή"
@@ -306,18 +306,19 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
 msgstr ""
 
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
 msgstr ""
 
-#: src/amidi-plug/amidi-plug.c:39
+#: src/amidi-plug/amidi-plug.c:41
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr ""
 
-#: src/amidi-plug/amidi-plug.c:327
+#: src/amidi-plug/amidi-plug.c:270
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
@@ -329,19 +330,27 @@ msgstr ""
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
 
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:38
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid "FluidSynth Backend "
 msgstr ""
 
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:42
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
 
@@ -361,11 +370,11 @@ msgstr "Όνομα θύρας"
 msgid "ALSA output ports"
 msgstr ""
 
-#: src/amidi-plug/i_configure-alsa.c:393
+#: src/amidi-plug/i_configure-alsa.c:395
 msgid "Soundcard: "
 msgstr "Κάρτα ήχου: "
 
-#: src/amidi-plug/i_configure-alsa.c:395
+#: src/amidi-plug/i_configure-alsa.c:397
 msgid "Mixer control: "
 msgstr "Έλεγχος Μείκτη:"
 
@@ -525,11 +534,11 @@ msgid ""
 "backend</span>"
 msgstr ""
 
-#: src/amidi-plug/i_fileinfo.c:169
+#: src/amidi-plug/i_fileinfo.c:167
 msgid "Name:"
 msgstr "Όνομα:"
 
-#: src/amidi-plug/i_fileinfo.c:193
+#: src/amidi-plug/i_fileinfo.c:191
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr ""
 
@@ -754,7 +763,8 @@ msgstr ""
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
 msgstr ""
 
 #: src/aosd/aosd_ui.c:799
@@ -858,7 +868,7 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:105
+#: src/cdaudio-ng/cdaudio-ng.c:106
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -870,126 +880,126 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:123
+#: src/cdaudio-ng/cdaudio-ng.c:124
 msgid "<b>Device</b>"
 msgstr "<b>Συσκευή</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "Read speed:"
 msgstr "Ταχύτητα ανάγνωσης:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:127
+#: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Override device:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:129
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "<b>Metadata</b>"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:131
 msgid "Use CD-Text"
 msgstr "Χρήση CD-Text"
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:133
 msgid "Use CDDB"
 msgstr "Χρήση CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:134
+#: src/cdaudio-ng/cdaudio-ng.c:135
 msgid "Use HTTP instead of CDDBP"
 msgstr "Χρήση HTTP αντί CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:136
+#: src/cdaudio-ng/cdaudio-ng.c:137
 msgid "Server:"
 msgstr "Εξυπηρετητής:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:138
+#: src/cdaudio-ng/cdaudio-ng.c:139
 msgid "Path:"
 msgstr "Διαδρομή:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:140
+#: src/cdaudio-ng/cdaudio-ng.c:141
 msgid "Port:"
 msgstr "Θύρα:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:150
+#: src/cdaudio-ng/cdaudio-ng.c:151
 msgid "Audio CD Plugin"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:246
+#: src/cdaudio-ng/cdaudio-ng.c:252
 msgid "Failed to initialize cdio subsystem."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:304
+#: src/cdaudio-ng/cdaudio-ng.c:309
 #, c-format
 msgid "Invalid URI %s."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:310
+#: src/cdaudio-ng/cdaudio-ng.c:311
 #, c-format
 msgid "Track %d not found."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:317
+#: src/cdaudio-ng/cdaudio-ng.c:313
 #, c-format
-msgid "Track %d is a data track.\n"
+msgid "Track %d is a data track."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:326
+#: src/cdaudio-ng/cdaudio-ng.c:315
 msgid "Failed to open audio output."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:402
-msgid "Too many read errors; giving up."
+#: src/cdaudio-ng/cdaudio-ng.c:398
+msgid "Error reading audio CD."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:531
+#: src/cdaudio-ng/cdaudio-ng.c:508
 msgid "Audio CD"
 msgstr "Μουσικό CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:579 src/cdaudio-ng/cdaudio-ng.c:588
+#: src/cdaudio-ng/cdaudio-ng.c:538 src/cdaudio-ng/cdaudio-ng.c:547
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:591
+#: src/cdaudio-ng/cdaudio-ng.c:550
 msgid "No audio capable CD drive found."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:618
+#: src/cdaudio-ng/cdaudio-ng.c:577
 msgid "Failed to finish initializing opened CD drive."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:631
+#: src/cdaudio-ng/cdaudio-ng.c:590
 msgid "Failed to retrieve first/last track number."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:656
+#: src/cdaudio-ng/cdaudio-ng.c:615
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:733
+#: src/cdaudio-ng/cdaudio-ng.c:692
 msgid "Failed to create the cddb connection."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:808
+#: src/cdaudio-ng/cdaudio-ng.c:767
 msgid "Failed to query the CDDB server"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:810
+#: src/cdaudio-ng/cdaudio-ng.c:769
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:834
+#: src/cdaudio-ng/cdaudio-ng.c:793
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:907
+#: src/cdaudio-ng/cdaudio-ng.c:866
 msgid "Drive is empty."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:909
+#: src/cdaudio-ng/cdaudio-ng.c:868
 msgid "Unsupported disk type."
 msgstr ""
 
@@ -1027,7 +1037,7 @@ msgstr ""
 msgid "Dynamic Range Compressor"
 msgstr ""
 
-#: src/console/configure.c:135 src/console/plugin.c:44
+#: src/console/configure.c:135 src/console/plugin.c:43
 msgid "Game Console Music Decoder"
 msgstr "Αποκωδικοποιητής Μουσικής Κονσόλας Παιχνιδιών"
 
@@ -1090,11 +1100,11 @@ msgstr ""
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not"
-" provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
 msgstr ""
 
-#: src/console/plugin.c:29
+#: src/console/plugin.c:28
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
@@ -1183,7 +1193,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Ηχώ"
 
-#: src/ffaudio/ffaudio-core.c:635
+#: src/ffaudio/ffaudio-core.c:633
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1193,7 +1203,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:682
+#: src/ffaudio/ffaudio-core.c:680
 msgid "FFmpeg Plugin"
 msgstr "Πρόσθετο FFmpeg"
 
@@ -1809,7 +1819,7 @@ msgstr "_Μετονομασία..."
 msgid "GTK Interface"
 msgstr "Διεπαφή GTK"
 
-#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:298
+#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:299
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
@@ -1818,14 +1828,14 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "Γέμισμα ενδιάμεσης μνήμης..."
 
-#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:300 src/skins/ui_main.c:1501
+#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
 msgid "Audacious"
 msgstr "Audacious"
 
 #: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
-#: src/skins/plugin.c:178
+#: src/skins/plugin.c:179
 msgid "Error"
 msgstr "Σφάλμα"
 
@@ -1911,7 +1921,8 @@ msgstr "(κανένα)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without modificators.\n"
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -2175,11 +2186,11 @@ msgstr "Περιβάλλων (Surround)"
 msgid "MPG123 Plugin"
 msgstr "Πρόσθετο MPG123"
 
-#: src/mpris2/plugin.c:403
+#: src/mpris2/plugin.c:412
 msgid "MPRIS 2 Server"
 msgstr "Εξυπηρετητής MPRIS 2"
 
-#: src/neon/neon.c:1241
+#: src/neon/neon.c:1230
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Πρόσθετο Neon HTTP/HTTPS"
 
@@ -2199,11 +2210,18 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011 John Lindgren\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
 #: src/notify/notify.c:52
@@ -2239,7 +2257,8 @@ msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
 
 #: src/oss4/plugin.c:115
@@ -2380,14 +2399,15 @@ msgstr "Κωδικός:"
 msgid "Scrobbler URL:"
 msgstr "URL του Scrobbler"
 
-#: src/scrobbler/plugin.c:184
+#: src/scrobbler/plugin.c:180
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
+"com>"
 msgstr ""
 
-#: src/scrobbler/plugin.c:189
+#: src/scrobbler/plugin.c:185
 msgid "Scrobbler"
 msgstr "Scrobbler"
 
@@ -2435,8 +2455,12 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %s, %d songs"
-msgstr[0] "%s\n %s, %d τραγούδι"
-msgstr[1] "%s\n %s, %d τραγούδια"
+msgstr[0] ""
+"%s\n"
+" %s, %d τραγούδι"
+msgstr[1] ""
+"%s\n"
+" %s, %d τραγούδια"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2446,8 +2470,12 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %d songs by %s"
-msgstr[0] "%s\n %d τραγούδι από %s"
-msgstr[1] "%s\n %d τραγούδια από %s"
+msgstr[0] ""
+"%s\n"
+" %d τραγούδι από %s"
+msgstr[1] ""
+"%s\n"
+" %d τραγούδια από %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2465,7 +2493,9 @@ msgstr "Αναζήτηση βιοθήκης"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr "Για να εισάγεται τη συλλογή μουσικής σας στο Audacious, διαλέξτε έναν φάκελο και κάνετε κλικ στο εικονίδιο «ανανέωση»."
+msgstr ""
+"Για να εισάγεται τη συλλογή μουσικής σας στο Audacious, διαλέξτε έναν φάκελο "
+"και κάνετε κλικ στο εικονίδιο «ανανέωση»."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -2479,7 +2509,7 @@ msgstr "Επιλογή Φακέλου"
 msgid "Search Tool"
 msgstr "Εργαλέιο Αναζήτησης"
 
-#: src/skins/plugin.c:49
+#: src/skins/plugin.c:50
 msgid "Winamp Classic Interface"
 msgstr "Κλασσική Διεπαφή Winamp"
 
@@ -2519,156 +2549,156 @@ msgstr ""
 msgid "Interface Preferences"
 msgstr "Προτιμήσεις Διεπαφής"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:328
 msgid "Preamp"
 msgstr "Προενίσχυση"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:332
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:338
+#: src/skins/ui_equalizer.c:333
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:338
+#: src/skins/ui_equalizer.c:333
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:338
+#: src/skins/ui_equalizer.c:333
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:338
+#: src/skins/ui_equalizer.c:333
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:338
+#: src/skins/ui_equalizer.c:333
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:339
+#: src/skins/ui_equalizer.c:334
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:339
+#: src/skins/ui_equalizer.c:334
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:339
+#: src/skins/ui_equalizer.c:334
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:339
+#: src/skins/ui_equalizer.c:334
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:380
+#: src/skins/ui_equalizer.c:375
 msgid "Audacious Equalizer"
 msgstr "Ισοσταθμιτής Audacious"
 
-#: src/skins/ui_equalizer.c:898
+#: src/skins/ui_equalizer.c:890
 msgid "Presets"
 msgstr "Προρυθμίσεις"
 
-#: src/skins/ui_equalizer.c:979 src/skins/ui_manager.c:452
+#: src/skins/ui_equalizer.c:971 src/skins/ui_manager.c:452
 msgid "Load preset"
 msgstr "Φόρτωση προρύθμισης"
 
-#: src/skins/ui_equalizer.c:996
+#: src/skins/ui_equalizer.c:988
 msgid "Load auto-preset"
 msgstr "Φόρτωση αυτόματης προρύθμισης"
 
-#: src/skins/ui_equalizer.c:1026 src/skins/ui_equalizer.c:1044
-#: src/skins/ui_equalizer.c:1060
+#: src/skins/ui_equalizer.c:1018 src/skins/ui_equalizer.c:1036
+#: src/skins/ui_equalizer.c:1052
 msgid "Load equalizer preset"
 msgstr "Φόρτωση προρύθμιση ισοσταθμιτή"
 
-#: src/skins/ui_equalizer.c:1079 src/skins/ui_manager.c:473
+#: src/skins/ui_equalizer.c:1071 src/skins/ui_manager.c:473
 msgid "Save preset"
 msgstr "Αποθήκευση προρύθμισης"
 
-#: src/skins/ui_equalizer.c:1095
+#: src/skins/ui_equalizer.c:1087
 msgid "Save auto-preset"
 msgstr "Αποθήκευση αυτόματης προρύθμισης"
 
-#: src/skins/ui_equalizer.c:1126 src/skins/ui_equalizer.c:1162
+#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
 msgid "Save equalizer preset"
 msgstr "Αποθήκευση προρύθμισης ισοσταθμιτή"
 
-#: src/skins/ui_equalizer.c:1181 src/skins/ui_manager.c:488
+#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:488
 msgid "Delete preset"
 msgstr "Διαγραφή προρύθμισης"
 
-#: src/skins/ui_equalizer.c:1198
+#: src/skins/ui_equalizer.c:1190
 msgid "Delete auto-preset"
 msgstr "Διαγραφή αυτόματης προρύθμισης"
 
-#: src/skins/ui_main.c:439
+#: src/skins/ui_main.c:440
 msgid "kbps"
 msgstr "kb/s"
 
-#: src/skins/ui_main.c:447
+#: src/skins/ui_main.c:448
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:804
+#: src/skins/ui_main.c:805
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr ""
 
-#: src/skins/ui_main.c:825
+#: src/skins/ui_main.c:826
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Ένταση: %d%%"
 
-#: src/skins/ui_main.c:848
+#: src/skins/ui_main.c:849
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:851
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:852
+#: src/skins/ui_main.c:853
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:978
+#: src/skins/ui_main.c:979
 msgid "Options Menu"
 msgstr "Μενού Επιλογών"
 
-#: src/skins/ui_main.c:982
+#: src/skins/ui_main.c:983
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:984
+#: src/skins/ui_main.c:985
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:987
+#: src/skins/ui_main.c:988
 msgid "File Info Box"
 msgstr ""
 
-#: src/skins/ui_main.c:992
+#: src/skins/ui_main.c:993
 msgid "Visualization Menu"
 msgstr "Μενού Οπτικοποίησης"
 
-#: src/skins/ui_main.c:1650
+#: src/skins/ui_main.c:1643
 msgid "Single mode."
 msgstr ""
 
-#: src/skins/ui_main.c:1652
+#: src/skins/ui_main.c:1645
 msgid "Playlist mode."
 msgstr "Λειτουργία λίστας αναπαραγωγής."
 
-#: src/skins/ui_main.c:1674
+#: src/skins/ui_main.c:1667
 msgid "Stopping after song."
 msgstr "Διακοπή στο τέλους του κομματιού."
 
-#: src/skins/ui_main.c:1676
+#: src/skins/ui_main.c:1669
 msgid "Not stopping after song."
 msgstr "Δεν διακόπτει στο τέλος του κομματιού."
 
@@ -2887,7 +2917,8 @@ msgstr "Εισαγωγή Λίστας Αναπαραγωγής"
 
 #: src/skins/ui_manager.c:226
 msgid "Loads a playlist file into the selected playlist."
-msgstr "Φορτώνει ένα αρχείο λίστας Αναπαραγωγής στην επιλεγμένη λίστα αναπαραγωγής."
+msgstr ""
+"Φορτώνει ένα αρχείο λίστας Αναπαραγωγής στην επιλεγμένη λίστα αναπαραγωγής."
 
 #: src/skins/ui_manager.c:229
 msgid "Export Playlist"
@@ -2989,7 +3020,8 @@ msgstr "Εκκαθάριση Ουράς"
 
 #: src/skins/ui_manager.c:284
 msgid "Clears the queue associated with this playlist."
-msgstr "Καθαρίζει την ουρά αναμονής συσχετισμένη με αυτήν την λίστα αναπαραγωγής."
+msgstr ""
+"Καθαρίζει την ουρά αναμονής συσχετισμένη με αυτήν την λίστα αναπαραγωγής."
 
 #: src/skins/ui_manager.c:287
 msgid "Remove Unavailable Files"
@@ -3019,7 +3051,9 @@ msgstr "Κατά Όνομα Αρχείου"
 
 #: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr "Αφαιρεί τις διπλές καταχωρήσεις από την λίστα αναπαραγωγής κατά όνομα αρχείου."
+msgstr ""
+"Αφαιρεί τις διπλές καταχωρήσεις από την λίστα αναπαραγωγής κατά όνομα "
+"αρχείου."
 
 #: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
 #: src/skins/ui_manager.c:371
@@ -3028,7 +3062,9 @@ msgstr "Κατά Διαδρομή + Όνομα Αρχείου"
 
 #: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "Αφαιρεί τις διπλές καταχωρήσεις από την λίστα αναπαραγωγής κατά την διαδρομή τους."
+msgstr ""
+"Αφαιρεί τις διπλές καταχωρήσεις από την λίστα αναπαραγωγής κατά την διαδρομή "
+"τους."
 
 #: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
@@ -3184,7 +3220,8 @@ msgstr ""
 
 #: src/skins/ui_manager.c:430
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr "Ενεργοποιεί/απενεργοποιεί την καταχωρήση στην ουρα της λίστας αναπαραγωγής."
+msgstr ""
+"Ενεργοποιεί/απενεργοποιεί την καταχωρήση στην ουρα της λίστας αναπαραγωγής."
 
 #: src/skins/ui_manager.c:433
 msgid "Copy"
@@ -3292,51 +3329,51 @@ msgstr "Αποθήκευση προρύθμισης σε αρχείο EQF του
 msgid "Delete auto-load preset"
 msgstr ""
 
-#: src/skins/ui_playlist.c:246
+#: src/skins/ui_playlist.c:245
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:252
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular"
-" expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:260
 msgid "Title: "
 msgstr "Τίτλος: "
 
-#: src/skins/ui_playlist.c:269
+#: src/skins/ui_playlist.c:268
 msgid "Album: "
 msgstr "Δίσκος: "
 
-#: src/skins/ui_playlist.c:277
+#: src/skins/ui_playlist.c:276
 msgid "Artist: "
 msgstr "Καλλιτέχνης: "
 
-#: src/skins/ui_playlist.c:285
+#: src/skins/ui_playlist.c:284
 msgid "Filename: "
 msgstr "Όνομα αρχείου: "
 
-#: src/skins/ui_playlist.c:294
+#: src/skins/ui_playlist.c:293
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:297
+#: src/skins/ui_playlist.c:296
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:300
+#: src/skins/ui_playlist.c:299
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:753
+#: src/skins/ui_playlist.c:742
 msgid "Audacious Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_playlist.c:796
+#: src/skins/ui_playlist.c:776
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d από %d)"
@@ -3361,11 +3398,19 @@ msgid ""
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/sndfile/plugin.c:437
@@ -3421,7 +3466,9 @@ msgstr "Εντολή για εκτέλεση πλησιάζωντας το τέ�
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "Εντολή για εκτέλεση όταν το Audacious φτάνει το τέλος της λίστας αναπαραγωγής."
+msgstr ""
+"Εντολή για εκτέλεση όταν το Audacious φτάνει το τέλος της λίστας "
+"αναπαραγωγής."
 
 #: src/song_change/song_change.c:456
 msgid ""
@@ -3553,7 +3600,7 @@ msgstr ""
 msgid "Tone Generator"
 msgstr ""
 
-#: src/unix-io/unix-io.c:256
+#: src/unix-io/unix-io.c:246
 msgid ""
 "File I/O Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
@@ -3561,7 +3608,7 @@ msgid ""
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
 
-#: src/unix-io/unix-io.c:279
+#: src/unix-io/unix-io.c:269
 msgid "File I/O Plugin"
 msgstr ""
 
@@ -3569,7 +3616,7 @@ msgstr ""
 msgid "Voice Removal"
 msgstr "Αφαίρεση Φωνής"
 
-#: src/vorbis/vorbis.c:564
+#: src/vorbis/vorbis.c:554
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -3590,18 +3637,18 @@ msgid ""
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
 
-#: src/vorbis/vorbis.c:584
+#: src/vorbis/vorbis.c:574
 msgid "Ogg Vorbis Decoder"
 msgstr "Αποκωδικοποιητής Ogg Vorbis"
 
-#: src/vtx/vtx.c:253
+#: src/vtx/vtx.c:241
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
-#: src/vtx/vtx.c:259
+#: src/vtx/vtx.c:247
 msgid "VTX Decoder"
 msgstr "Αποκωδικοποιητής VTX"
 
