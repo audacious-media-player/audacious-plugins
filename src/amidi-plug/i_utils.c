@@ -47,8 +47,8 @@ void i_about_gui( void )
   gtk_box_pack_start ((GtkBox *) vbox, logo_image, FALSE, FALSE, 0);
   g_object_unref( logo_pixbuf );
 
-  gchar * text = g_strjoin (NULL, "AMIDI-Plug ", AMIDIPLUG_VERSION,
-                                         "\nmodular MIDI music player\n"
+  gchar * text = g_strjoin (NULL, _("AMIDI-Plug "), AMIDIPLUG_VERSION,
+                                       _("\nmodular MIDI music player\n"
                                          "http://www.develia.org/projects.php?p=amidiplug\n\n"
                                          "written by Giacomo Lozito\n"
                                          "<james@develia.org>\n\n"
@@ -60,7 +60,7 @@ void i_about_gui( void )
                                          "Alfredo Spadafina\n"
                                          "for the nice midi keyboard logo\n\n"
                                          "Tony Vroon\n"
-                                         "for the good help with alpha testing", NULL);
+                                         "for the good help with alpha testing"), NULL);
 
   GtkWidget * label = gtk_label_new (text);
   gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
