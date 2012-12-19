@@ -84,6 +84,7 @@ static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 static GtkWidget * error_win = NULL;
 
 static gboolean slider_is_moving = FALSE;
+static gint slider_seek_time = -1;
 static guint delayed_title_change_source = 0;
 static guint update_song_timeout_source = 0;
 
@@ -321,6 +322,8 @@ static gboolean time_counter_cb (void)
     if (slider_is_moving)
         return TRUE;
 
+    slider_seek_time = -1;  // delayed reset to avoid seeking twice
+
     gint time = aud_drct_get_time ();
     gint length = aud_drct_get_length ();
 
@@ -353,7 +356,9 @@ static gboolean ui_slider_change_value_cb (GtkRange * range,
 {
     set_time_label (value, aud_drct_get_length ());
 
-    if (! slider_is_moving)
+    if (slider_is_moving)
+        slider_seek_time = value;
+    else if ((gint) value != slider_seek_time)  // avoid seeking twice
         do_seek (value);
 
     return FALSE;
@@ -367,6 +372,9 @@ static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * e
 
 static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
+    if (slider_seek_time != -1)
+        do_seek (slider_seek_time);
+
     slider_is_moving = FALSE;
     return FALSE;
 }
