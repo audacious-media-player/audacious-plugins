@@ -151,7 +151,7 @@ static void ready (void *hook_data, void *user_data) {
         return;
     }
 
-    time_until_scrobble = (duration_seconds*G_USEC_PER_SEC) / 2;
+    time_until_scrobble = (((gint64)duration_seconds)*G_USEC_PER_SEC) / 2;
     if (time_until_scrobble > 4*60*G_USEC_PER_SEC) {
         time_until_scrobble = 4*60*G_USEC_PER_SEC;
     }
