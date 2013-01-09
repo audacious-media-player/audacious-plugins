@@ -4,7 +4,7 @@
  * Copyright 2012 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
  *
  * This plugin is part of the Audacious Media Player.
- * It is licensed under the GNU Public License, version 3.
+ * It is licensed under the GNU General Public License, version 3.
  */
 
 //audacious includes
@@ -199,8 +199,8 @@ static bool_t scrobbler_init (void) {
     LIBXML_TEST_VERSION
 
     if (scrobbler_communication_init() == FALSE) {
-        aud_interface_show_error("The Scrobbler plugin could not be started.\n"
-                "There might be a problem with your installation.");
+        aud_interface_show_error(N_("The Scrobbler plugin could not be started.\n"
+                                    "There might be a problem with your installation."));
         return FALSE;
     }
 
@@ -247,9 +247,9 @@ static void scrobbler_cleanup (void) {
 }
 
 static const char scrobbler_about[] =
- "Audacious Scrobbling Plugin 2.0 by Pitxyoki,\n\n"
- "Copyright © 2012 Luís Picciochi <Pitxyoki@Gmail.com>.\n\n"
- "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n";
+ N_("Audacious Scrobbling Plugin 2.0 by Pitxyoki,\n\n"
+    "Copyright © 2012 Luís Picciochi <Pitxyoki@Gmail.com>.\n\n"
+    "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
 
 
 AUD_GENERAL_PLUGIN (

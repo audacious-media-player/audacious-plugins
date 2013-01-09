@@ -4,7 +4,7 @@
  * Copyright 2012 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
  *
  * This plugin is part of the Audacious Media Player.
- * It is licensed under the GNU Public License, version 3.
+ * It is licensed under the GNU General Public License, version 3.
  */
 
 #ifndef SCROBBLER_H_

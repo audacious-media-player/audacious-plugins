@@ -43,24 +43,27 @@ static gboolean permission_checker_thread (gpointer data) {
 
             gtk_label_set_label(GTK_LABEL(permission_status_label), "Permission Denied");
 
-            gchar *markup = g_markup_printf_escaped("Access the following link to allow Audacious to scrobble your plays:\n"
+            gchar *markup = g_markup_printf_escaped(
+                 N_("Access the following link to allow Audacious to scrobble your plays:\n"
                     "<a href=\"http://www.last.fm/api/auth/?api_key=%s&amp;token=%s\">http://www.last.fm/api/auth/?api_key=%s&amp;token=%s</a>\n"
-                    "Keep this window open and click 'Check Permissions' again.", SCROBBLER_API_KEY, request_token, SCROBBLER_API_KEY, request_token);
+                    "Keep this window open and click 'Check Permissions' again."), SCROBBLER_API_KEY, request_token, SCROBBLER_API_KEY, request_token);
             gtk_label_set_markup(GTK_LABEL(details_label), markup);
             g_free(markup);
 
-            gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
-                    "They will be submitted as soon as Audacious is allowed to do so.");
+            gtk_label_set_label(GTK_LABEL(additional_details_label),
+                                N_("Don't worry. Your scrobbles are saved on your computer.\n"
+                                   "They will be submitted as soon as Audacious is allowed to do so."));
 
         } else if (perm_result == PERMISSION_NONET) {
             gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_SMALL_TOOLBAR);
             gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 
-            gtk_label_set_label(GTK_LABEL(permission_status_label), "Network Problem.");
-            gtk_label_set_label(GTK_LABEL(details_label), "There was a problem contacting Last.fm. Please try again later.");
-            gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
-                    "They will be submitted as soon as Audacious is allowed to do so.");
+            gtk_label_set_label(GTK_LABEL(permission_status_label), N_("Network Problem."));
+            gtk_label_set_label(GTK_LABEL(details_label),           N_("There was a problem contacting Last.fm. Please try again later."));
+            gtk_label_set_label(GTK_LABEL(additional_details_label),
+                  N_("Don't worry. Your scrobbles are saved on your computer.\n"
+                    "They will be submitted as soon as Audacious is allowed to do so."));
         }
 
         perm_result = PERMISSION_UNKNOWN;
@@ -78,7 +81,7 @@ static void permission_checker (GtkButton *button12, gpointer data) {
     gtk_image_clear(GTK_IMAGE(additional_details_icon));
 
     gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_EXECUTE, GTK_ICON_SIZE_SMALL_TOOLBAR);
-    gtk_label_set_label(GTK_LABEL(permission_status_label), "Checking...");
+    gtk_label_set_label(GTK_LABEL(permission_status_label), N_("Checking..."));
     gtk_label_set_label(GTK_LABEL(details_label), "");
     gtk_label_set_label(GTK_LABEL(additional_details_label), "");
 
@@ -109,7 +112,7 @@ static void *config_status_checker () {
     config_box              = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
 
     button_box              = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    button                  = gtk_button_new_with_mnemonic("C_heck Permission");
+    button                  = gtk_button_new_with_mnemonic(N_("C_heck Permission"));
     permission_status_icon  = gtk_image_new();
     permission_status_label = gtk_label_new("");
 
