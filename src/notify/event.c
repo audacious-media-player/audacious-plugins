@@ -31,14 +31,29 @@
 #include "event.h"
 #include "osd.h"
 
-static gchar * last_title = NULL, * last_message = NULL;
+static gchar * last_title = NULL, * last_message = NULL; /* pooled */
 
 static void clear (void)
 {
-    g_free (last_title);
+    str_unref (last_title);
     last_title = NULL;
-    g_free (last_message);
+    str_unref (last_message);
     last_message = NULL;
+}
+
+static void reshow (void)
+{
+    if (! last_title || ! last_message)
+        return;
+
+    GdkPixbuf * pb = audgui_pixbuf_request_current ();
+    if (pb)
+        audgui_pixbuf_scale_within (& pb, 96);
+
+    osd_show (last_title, last_message, "audio-x-generic", pb);
+
+    if (pb)
+        g_object_unref (pb);
 }
 
 static void update (void * unused, void * explicit)
@@ -61,39 +76,32 @@ static void update (void * unused, void * explicit)
     if (artist)
     {
         if (album)
-            message = g_strdup_printf ("%s\n%s", artist, album);
+            message = str_printf ("%s\n%s", artist, album);
         else
-            message = g_strdup (artist);
+            message = str_ref (artist);
     }
     else if (album)
-        message = g_strdup (album);
+        message = str_ref (album);
     else
-        message = g_strdup ("");
+        message = str_get ("");
 
-    if (! GPOINTER_TO_INT (explicit) && last_title && last_message && ! strcmp
-     (title, last_title) && ! strcmp (message, last_message))
-    {
-        g_free (message);
-        goto FREE;
-    }
-
-    GdkPixbuf * pb = audgui_pixbuf_for_current ();
-    if (pb)
-        audgui_pixbuf_scale_within (& pb, 96);
-
-    osd_show (title, message, "audio-x-generic", pb);
-
-    if (pb)
-        g_object_unref (pb);
-
-    clear ();
-    last_title = g_strdup (title);
-    last_message = message;
-
-FREE:
-    str_unref (title);
     str_unref (artist);
     str_unref (album);
+
+    /* pointer comparison works for pooled strings */
+    if (! GPOINTER_TO_INT (explicit) && title == last_title && message == last_message)
+    {
+        str_unref (title);
+        str_unref (message);
+        return;
+    }
+
+    str_unref (last_title);
+    last_title = title;
+    str_unref (last_message);
+    last_message = message;
+
+    reshow ();
 }
 
 void event_init (void)
@@ -102,6 +110,7 @@ void event_init (void)
     hook_associate ("aosd toggle", (HookFunction) update, GINT_TO_POINTER (TRUE));
     hook_associate ("playback ready", (HookFunction) update, GINT_TO_POINTER (FALSE));
     hook_associate ("playlist update", (HookFunction) update, GINT_TO_POINTER (FALSE));
+    hook_associate ("current art ready", (HookFunction) reshow, NULL);
     hook_associate ("playback stop", (HookFunction) clear, NULL);
 }
 
@@ -110,6 +119,7 @@ void event_uninit (void)
     hook_dissociate ("aosd toggle", (HookFunction) update);
     hook_dissociate ("playback ready", (HookFunction) update);
     hook_dissociate ("playlist update", (HookFunction) update);
+    hook_dissociate ("current art ready", (HookFunction) reshow);
     hook_dissociate ("playback stop", (HookFunction) clear);
     clear ();
 }

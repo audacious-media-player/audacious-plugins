@@ -35,10 +35,7 @@
 #include "ui_playlist_widget.h"
 #include "playlist_util.h"
 
-#define CURRENT_POS (-2)
-
 static GtkWidget * notebook = NULL;
-static GQueue follow_queue = G_QUEUE_INIT;
 static gint highlighted = -1;
 
 static gint switch_handler = 0;
@@ -274,6 +271,7 @@ void ui_playlist_notebook_create_tab(gint playlist)
     {
         aud_playlist_select_all (playlist, FALSE);
         aud_playlist_entry_set_selected (playlist, position, TRUE);
+        aud_playlist_set_focus (playlist, position);
         audgui_list_set_highlight (treeview, position);
         audgui_list_set_focus (treeview, position);
     }
@@ -318,32 +316,6 @@ void ui_playlist_notebook_empty (void)
     gint n_pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
     while (n_pages)
         gtk_notebook_remove_page ((GtkNotebook *) notebook, -- n_pages);
-}
-
-static void do_follow (void)
-{
-    while (! g_queue_is_empty (& follow_queue))
-    {
-        gint list = aud_playlist_by_unique_id (GPOINTER_TO_INT (g_queue_pop_head
-         (& follow_queue)));
-        gint row = GPOINTER_TO_INT (g_queue_pop_head (& follow_queue));
-
-        if (list < 0)
-            continue;
-
-        GtkWidget * widget = playlist_get_treeview (list);
-
-        if (row == CURRENT_POS)
-        {
-            row = aud_playlist_get_position (list);
-            audgui_list_set_highlight (widget, row);
-
-            if (! aud_get_bool ("gtkui", "autoscroll"))
-                continue;
-        }
-
-        audgui_list_set_focus (widget, row);
-    }
 }
 
 static void add_remove_pages (void)
@@ -429,41 +401,34 @@ void ui_playlist_notebook_update (void * data, void * user)
         if (global_level >= PLAYLIST_UPDATE_METADATA)
             set_tab_label (list, get_tab_label (list));
 
+        GtkWidget * treeview = playlist_get_treeview (list);
+
         gint at, count;
         gint level = aud_playlist_updated_range (list, & at, & count);
 
         if (level)
-            ui_playlist_widget_update (playlist_get_treeview (list), level, at, count);
+            ui_playlist_widget_update (treeview, level, at, count);
+
+        audgui_list_set_highlight (treeview, aud_playlist_get_position (list));
     }
 
     gtk_notebook_set_current_page ((GtkNotebook *) notebook, aud_playlist_get_active ());
-
-    do_follow ();
-}
-
-void playlist_set_focus (gint list, gint row)
-{
-    g_queue_push_tail (& follow_queue, GINT_TO_POINTER
-     (aud_playlist_get_unique_id (list)));
-    g_queue_push_tail (& follow_queue, GINT_TO_POINTER (row));
-
-    if (! aud_playlist_update_pending ())
-        do_follow ();
 }
 
 void ui_playlist_notebook_position (void * data, void * user)
 {
     gint list = GPOINTER_TO_INT (data);
+    gint row = aud_playlist_get_position (list);
 
     if (aud_get_bool ("gtkui", "autoscroll"))
     {
         aud_playlist_select_all (list, FALSE);
-
-        if (aud_playlist_get_position (list) >= 0)
-            aud_playlist_entry_set_selected (list, aud_playlist_get_position (list), TRUE);
+        aud_playlist_entry_set_selected (list, row, TRUE);
+        aud_playlist_set_focus (list, row);
     }
 
-    playlist_set_focus (list, CURRENT_POS);
+    if (! aud_playlist_update_pending ())
+        audgui_list_set_highlight (playlist_get_treeview (list), row);
 }
 
 void ui_playlist_notebook_activate (void * data, void * user)
@@ -497,7 +462,6 @@ void ui_playlist_notebook_set_playing (void * data, void * user)
 static void destroy_cb (void)
 {
     notebook = NULL;
-    g_queue_clear (& follow_queue);
     switch_handler = 0;
     reorder_handler = 0;
 }

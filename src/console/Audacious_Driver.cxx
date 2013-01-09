@@ -8,6 +8,7 @@
 
 #include "config.h"
 #include <math.h>
+#include <pthread.h>
 #include <string.h>
 
 extern "C" {
@@ -19,8 +20,8 @@ extern "C" {
 #include "Music_Emu.h"
 #include "Gzip_Reader.h"
 
-static GMutex *seek_mutex = NULL;
-static GCond *seek_cond = NULL;
+static pthread_mutex_t seek_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t seek_cond = PTHREAD_COND_INITIALIZER;
 static gint seek_value = -1;
 static gboolean stop_flag = FALSE;
 
@@ -301,15 +302,15 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
     while (!stop_flag)
     {
         /* Perform seek, if requested */
-        g_mutex_lock(seek_mutex);
+        pthread_mutex_lock(&seek_mutex);
         if (seek_value >= 0)
         {
             playback->output->flush(seek_value);
             fh.m_emu->seek(seek_value);
             seek_value = -1;
-            g_cond_signal(seek_cond);
+            pthread_cond_signal(&seek_cond);
         }
-        g_mutex_unlock(seek_mutex);
+        pthread_mutex_unlock(&seek_mutex);
 
         /* Fill and play buffer of audio */
         gint const buf_size = 1024;
@@ -341,53 +342,45 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
 
 extern "C" void console_seek(InputPlayback *playback, gint time)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock(&seek_mutex);
 
     if (!stop_flag)
     {
         seek_value = time;
         playback->output->abort_write();
-        g_cond_signal(seek_cond);
-        g_cond_wait(seek_cond, seek_mutex);
+        pthread_cond_signal(&seek_cond);
+        pthread_cond_wait(&seek_cond, &seek_mutex);
     }
 
-    g_mutex_unlock(seek_mutex);
+    pthread_mutex_unlock(&seek_mutex);
 }
 
 extern "C" void console_stop(InputPlayback *playback)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock(&seek_mutex);
 
     if (!stop_flag)
     {
         stop_flag = TRUE;
         playback->output->abort_write();
-        g_cond_signal(seek_cond);
+        pthread_cond_signal(&seek_cond);
     }
 
-    g_mutex_unlock (seek_mutex);
+    pthread_mutex_unlock (&seek_mutex);
 }
 
 extern "C" void console_pause(InputPlayback * playback, gboolean pause)
 {
-    g_mutex_lock(seek_mutex);
+    pthread_mutex_lock(&seek_mutex);
 
     if (!stop_flag)
         playback->output->pause(pause);
 
-    g_mutex_unlock(seek_mutex);
+    pthread_mutex_unlock(&seek_mutex);
 }
 
 extern "C" gboolean console_init (void)
 {
     console_cfg_load();
-    seek_mutex = g_mutex_new();
-    seek_cond = g_cond_new();
     return TRUE;
-}
-
-extern "C" void console_cleanup(void)
-{
-    g_mutex_free(seek_mutex);
-    g_cond_free(seek_cond);
 }

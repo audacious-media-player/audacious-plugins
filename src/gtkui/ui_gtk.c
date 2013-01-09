@@ -84,6 +84,7 @@ static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 static GtkWidget * error_win = NULL;
 
 static gboolean slider_is_moving = FALSE;
+static gint slider_seek_time = -1;
 static guint delayed_title_change_source = 0;
 static guint update_song_timeout_source = 0;
 
@@ -151,6 +152,33 @@ static void button_play_pressed (void)
         aud_drct_pause ();
     else
         aud_drct_play ();
+}
+
+void set_ab_repeat_a (void)
+{
+    if (! aud_drct_get_playing ())
+        return;
+
+    int a, b;
+    aud_drct_get_ab_repeat (& a, & b);
+    a = aud_drct_get_time ();
+    aud_drct_set_ab_repeat (a, b);
+}
+
+void set_ab_repeat_b (void)
+{
+    if (! aud_drct_get_playing ())
+        return;
+
+    int a, b;
+    aud_drct_get_ab_repeat (& a, & b);
+    b = aud_drct_get_time ();
+    aud_drct_set_ab_repeat (a, b);
+}
+
+void clear_ab_repeat (void)
+{
+    aud_drct_set_ab_repeat (-1, -1);
 }
 
 static gboolean title_change_cb (void)
@@ -235,33 +263,52 @@ static void ui_show_error (const gchar * text)
     audgui_simple_message (& error_win, GTK_MESSAGE_ERROR, _("Error"), _(text));
 }
 
-static void set_time_label (gint time, gint len)
+static void append_str (char * buf, int bufsize, const char * str)
 {
-    gchar s[128];
-    snprintf (s, sizeof s, "<b>");
+    snprintf (buf + strlen (buf), bufsize - strlen (buf), "%s", str);
+}
 
+static void append_time_str (char * buf, int bufsize, int time)
+{
     time /= 1000;
 
     if (time < 3600)
-        snprintf (s + strlen (s), sizeof s - strlen (s), aud_get_bool (NULL,
-         "leading_zero") ? "%02d:%02d" : "%d:%02d", time / 60, time % 60);
+        snprintf (buf + strlen (buf), bufsize - strlen (buf),
+         aud_get_bool (NULL, "leading_zero") ? "%02d:%02d" : "%d:%02d",
+         time / 60, time % 60);
     else
-        snprintf (s + strlen (s), sizeof s - strlen (s), "%d:%02d:%02d", time /
-         3600, (time / 60) % 60, time % 60);
+        snprintf (buf + strlen (buf), bufsize - strlen (buf), "%d:%02d:%02d",
+         time / 3600, (time / 60) % 60, time % 60);
+}
+
+static void set_time_label (gint time, gint len)
+{
+    gchar s[128] = "<b>";
+
+    append_time_str (s, sizeof s, time);
 
     if (len)
     {
-        len /= 1000;
+        append_str (s, sizeof s, " / ");
+        append_time_str (s, sizeof s, len);
 
-        if (len < 3600)
-            snprintf (s + strlen (s), sizeof s - strlen (s), aud_get_bool (NULL,
-             "leading_zero") ? " / %02d:%02d" : " / %d:%02d", len / 60, len % 60);
-        else
-            snprintf (s + strlen (s), sizeof s - strlen (s), " / %d:%02d:%02d",
-             len / 3600, (len / 60) % 60, len % 60);
+        int a, b;
+        aud_drct_get_ab_repeat (& a, & b);
+
+        if (a >= 0)
+        {
+            append_str (s, sizeof s, " A=");
+            append_time_str (s, sizeof s, a);
+        }
+
+        if (b >= 0)
+        {
+            append_str (s, sizeof s, " B=");
+            append_time_str (s, sizeof s, b);
+        }
     }
 
-    snprintf (s + strlen (s), sizeof s - strlen (s), "</b>");
+    append_str (s, sizeof s, "</b>");
     gtk_label_set_markup ((GtkLabel *) label_time, s);
 }
 
@@ -274,6 +321,8 @@ static gboolean time_counter_cb (void)
 {
     if (slider_is_moving)
         return TRUE;
+
+    slider_seek_time = -1;  // delayed reset to avoid seeking twice
 
     gint time = aud_drct_get_time ();
     gint length = aud_drct_get_length ();
@@ -302,13 +351,15 @@ static void do_seek (gint time)
     }
 }
 
-static gboolean ui_slider_change_value_cb(GtkRange * range, GtkScrollType scroll)
+static gboolean ui_slider_change_value_cb (GtkRange * range,
+ GtkScrollType scroll, gdouble value)
 {
-    gint value = gtk_range_get_value (range);
     set_time_label (value, aud_drct_get_length ());
 
-    if (!slider_is_moving)
-        do_seek (gtk_range_get_value (range));
+    if (slider_is_moving)
+        slider_seek_time = value;
+    else if ((gint) value != slider_seek_time)  // avoid seeking twice
+        do_seek (value);
 
     return FALSE;
 }
@@ -321,6 +372,9 @@ static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * e
 
 static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
 {
+    if (slider_seek_time != -1)
+        do_seek (slider_seek_time);
+
     slider_is_moving = FALSE;
     return FALSE;
 }
@@ -743,6 +797,7 @@ static gboolean init (void)
     gtk_container_add ((GtkContainer *) boxitem1, box1);
 
     slider = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, NULL);
+    gtk_range_set_increments ((GtkRange *) slider, 5000, 5000);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
     gtk_widget_set_size_request(slider, 120, -1);
     gtk_widget_set_valign (slider, GTK_ALIGN_CENTER);

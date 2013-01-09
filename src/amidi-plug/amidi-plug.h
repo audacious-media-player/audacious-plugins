@@ -24,7 +24,6 @@
 #define AMIDIPLUG_STOP	0
 #define AMIDIPLUG_PLAY	1
 #define AMIDIPLUG_PAUSE	2
-#define AMIDIPLUG_SEEK  3
 #define AMIDIPLUG_ERR	4
 
 #include "i_common.h"
@@ -36,9 +35,6 @@
 #include "i_midi.h"
 #include "i_fileinfo.h"
 #include "i_utils.h"
-
-static GMutex * amidiplug_gettime_mutex = NULL;
-static GMutex * amidiplug_playing_mutex = NULL;
 
 gint amidiplug_playing_status = AMIDIPLUG_STOP;
 

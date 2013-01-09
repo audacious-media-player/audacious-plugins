@@ -23,6 +23,8 @@
 #include "config.h"
 
 #include <glib.h>
+#include <pthread.h>
+
 #include <libaudcore/vfs.h>
 #include <ne_session.h>
 #include <ne_request.h>
@@ -38,8 +40,8 @@ typedef enum {
 } neon_reader_t;
 
 struct reader_status {
-    GMutex* mutex;
-    GCond* cond;
+    pthread_mutex_t mutex;
+    pthread_cond_t cond;
     gboolean reading;
     neon_reader_t status;
 };
@@ -66,7 +68,7 @@ struct neon_handle {
     struct icy_metadata icy_metadata;   /* Current ICY metadata */
     ne_session* session;
     ne_request* request;
-    GThread* reader;
+    pthread_t reader;
     struct reader_status reader_status;
     gboolean eof;
 };

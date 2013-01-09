@@ -58,12 +58,10 @@
 #define PLAYLISTWIN_HEIGHT_SNAP         29
 #define PLAYLISTWIN_SHADED_HEIGHT       MAINWIN_SHADED_HEIGHT
 
-gint active_playlist;
-gchar * active_title;
-glong active_length;
-GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
+gint active_playlist = -1, active_length = 0;
+gchar * active_title = NULL;
 
-static GMutex *resize_mutex = NULL;
+GtkWidget * playlistwin, * playlistwin_list, * playlistwin_sinfo;
 
 static GtkWidget *playlistwin_shade, *playlistwin_close;
 static GtkWidget *playlistwin_shaded_shade, *playlistwin_shaded_close;
@@ -176,9 +174,9 @@ playlistwin_shade_toggle(void)
 
 static void playlistwin_scroll (gboolean up)
 {
-    gint rows, first, focused;
+    gint rows, first;
 
-    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
+    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first);
     ui_skinned_playlist_scroll_to (playlistwin_list, first + (up ? -1 : 1) *
      rows / 3);
 }
@@ -432,8 +430,6 @@ static void playlistwin_resize (gint w, gint h)
     config.playlist_width = w = tx;
     config.playlist_height = h = ty;
 
-    g_mutex_lock(resize_mutex);
-
     ui_skinned_playlist_resize (playlistwin_list, w - 31, h - 58);
     window_move_widget (playlistwin, FALSE, playlistwin_slider, w - 15, 20);
     ui_skinned_playlist_slider_resize (playlistwin_slider, h - 58);
@@ -466,17 +462,12 @@ static void playlistwin_resize (gint w, gint h)
     window_move_widget (playlistwin, FALSE, button_sel, 68, h - 29);
     window_move_widget (playlistwin, FALSE, button_misc, 100, h - 29);
     window_move_widget (playlistwin, FALSE, button_list, w - 46, h - 29);
-
-    g_mutex_unlock(resize_mutex);
 }
 
 static void
 playlistwin_fileinfo(void)
 {
-    gint rows, first, focused;
-
-    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
-    audgui_infowin_show (active_playlist, focused);
+    audgui_infowin_show (active_playlist, aud_playlist_get_focus (active_playlist));
 }
 
 static void
@@ -832,7 +823,6 @@ playlistwin_create(void)
     active_title = NULL;
     get_title ();
 
-    resize_mutex = g_mutex_new();
     playlistwin_create_window();
 
     playlistwin_create_widgets();
@@ -862,8 +852,6 @@ void playlistwin_unhook (void)
     hook_dissociate ("playlist update", update_cb);
     g_free (active_title);
     active_title = NULL;
-    g_mutex_free (resize_mutex);
-    resize_mutex = NULL;
 }
 
 static void playlistwin_real_show (gboolean show)
@@ -897,11 +885,11 @@ void action_playlist_track_info(void)
 
 void action_queue_toggle (void)
 {
-    gint rows, first, focused, at;
+    gint focus = aud_playlist_get_focus (active_playlist);
+    if (focus == -1)
+        return;
 
-    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
-    at = (focused == -1) ? -1 : aud_playlist_queue_find_entry (active_playlist,
-     focused);
+    gint at = aud_playlist_queue_find_entry (active_playlist, focus);
 
     if (at == -1)
         aud_playlist_queue_insert_selected (active_playlist, -1);
@@ -1058,13 +1046,12 @@ void action_playlist_paste (void)
 {
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
     gchar * list = gtk_clipboard_wait_for_text (clip);
-    gint rows, first, focused;
 
     if (list == NULL)
         return;
 
-    ui_skinned_playlist_row_info (playlistwin_list, & rows, & first, & focused);
-    audgui_urilist_insert (active_playlist, focused, list);
+    audgui_urilist_insert (active_playlist,
+     aud_playlist_get_focus (active_playlist), list);
     g_free (list);
 }
 

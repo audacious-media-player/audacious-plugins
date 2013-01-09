@@ -372,6 +372,8 @@ GET_FORMAT:
 		goto cleanup;
 	}
 
+	data->output->flush (start_time);
+
 	if (pause)
 		data->output->pause (TRUE);
 

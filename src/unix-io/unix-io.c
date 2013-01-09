@@ -65,6 +65,9 @@ static void * unix_fopen (const char * uri, const char * mode)
         return NULL;
     }
 
+#ifdef O_CLOEXEC
+    mode_flag |= O_CLOEXEC;
+#endif
 #ifdef _WIN32
     mode_flag |= O_BINARY;
 #endif
@@ -75,8 +78,7 @@ static void * unix_fopen (const char * uri, const char * mode)
 
     if (mode_flag & O_CREAT)
 #ifdef S_IRGRP
-        handle = open (filename, mode_flag, S_IRUSR | S_IWUSR | S_IRGRP |
-         S_IROTH);
+        handle = open (filename, mode_flag, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 #else
         handle = open (filename, mode_flag, S_IRUSR | S_IWUSR);
 #endif
@@ -90,10 +92,6 @@ static void * unix_fopen (const char * uri, const char * mode)
         return NULL;
     }
 
-#ifdef HAVE_FCNTL
-    fcntl (handle, F_SETFD, FD_CLOEXEC);
-#endif
-
     free (filename);
     return INT_TO_POINTER (handle);
 }
@@ -102,14 +100,6 @@ static int unix_fclose (VFSFile * file)
 {
     int handle = POINTER_TO_INT (vfs_get_handle (file));
     int result = 0;
-
-#ifdef HAVE_FSYNC
-    if (fsync (handle) < 0)
-    {
-        unix_error ("fsync failed: %s.", strerror (errno));
-        result = -1;
-    }
-#endif
 
     if (close (handle) < 0)
     {

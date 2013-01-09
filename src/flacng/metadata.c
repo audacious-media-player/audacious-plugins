@@ -24,7 +24,9 @@
 #include <string.h>
 
 #include <audacious/debug.h>
+#include <audacious/i18n.h>
 
+#include "config.h"
 #include "flacng.h"
 
 static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handle)
@@ -352,7 +354,7 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
     tuple = tuple_new_from_filename(filename);
 
     tuple_set_str(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
-    tuple_set_str(tuple, FIELD_QUALITY, NULL, "lossless");
+    tuple_set_str(tuple, FIELD_QUALITY, NULL, _("lossless"));
 
     chain = FLAC__metadata_chain_new();
 

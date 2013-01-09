@@ -282,6 +282,12 @@ gboolean handle_keyevent (EVENT event)
         return TRUE;
     }
 
+    if (event == EVENT_TOGGLE_STOP)
+    {
+        aud_set_bool (NULL, "stop_after_current_song", ! aud_get_bool (NULL, "stop_after_current_song"));
+        return TRUE;
+    }
+
     if (event == EVENT_RAISE)
     {
         aud_interface_show (TRUE);

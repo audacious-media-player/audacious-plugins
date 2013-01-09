@@ -89,6 +89,16 @@ static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get
 static void pl_reverse (void) {aud_playlist_reverse (aud_playlist_get_active ()); }
 static void pl_random (void) {aud_playlist_randomize (aud_playlist_get_active ()); }
 
+static void pl_sort_selected_track (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK); }
+static void pl_sort_selected_title (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
+static void pl_sort_selected_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); }
+static void pl_sort_selected_album (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); }
+static void pl_sort_selected_date (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); }
+static void pl_sort_selected_path (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
+static void pl_sort_selected_custom (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FORMATTED_TITLE); }
+static void pl_reverse_selected (void) {aud_playlist_reverse_selected (aud_playlist_get_active ()); }
+static void pl_random_selected (void) {aud_playlist_randomize_selected (aud_playlist_get_active ()); }
+
 static void pl_new (void)
 {
     aud_playlist_insert (-1);
@@ -98,6 +108,9 @@ static void pl_new (void)
 static void pl_play (void) {aud_drct_play_playlist (aud_playlist_get_active ()); }
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
+static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
+static void pl_remove_dupes_by_filename (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FILENAME); }
+static void pl_remove_dupes_by_path (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
 static void pl_rename (void) {ui_playlist_notebook_edit_tab_title (aud_playlist_get_active ()); }
 static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
 static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }
@@ -177,11 +190,20 @@ static const struct MenuItem playback_items[] = {
  {N_("_Repeat"), NULL, 'r', CTRL, .get = repeat_get, repeat_set, "set repeat"},
  {N_("S_huffle"), NULL, 's', CTRL, .get = shuffle_get, shuffle_set, "set shuffle"},
  {N_("N_o Playlist Advance"), NULL, 'n', CTRL, .get = no_advance_get, no_advance_set, "set no_playlist_advance"},
- {N_("Stop _After This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
+ {N_("Stop A_fter This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
  {.sep = TRUE},
  {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', CTRL, .func = audgui_infowin_show_current},
  {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, 'k', CTRL, .func = audgui_jump_to_time},
- {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track}};
+ {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track},
+ {.sep = TRUE},
+ {N_("Set Repeat Point _A"), NULL, '1', CTRL, .func = set_ab_repeat_a},
+ {N_("Set Repeat Point _B"), NULL, '2', CTRL, .func = set_ab_repeat_b},
+ {N_("_Clear Repeat Points"), NULL, '3', CTRL, .func = clear_ab_repeat}};
+
+static const struct MenuItem dupe_items[] = {
+ {N_("By _Title"), .func = pl_remove_dupes_by_title},
+ {N_("By _Filename"), .func = pl_remove_dupes_by_filename},
+ {N_("By File _Path"), .func = pl_remove_dupes_by_path}};
 
 static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_track},
@@ -195,12 +217,26 @@ static const struct MenuItem sort_items[] = {
  {N_("R_everse Order"), GTK_STOCK_SORT_DESCENDING, .func = pl_reverse},
  {N_("_Random Order"), .func = pl_random}};
 
+ static const struct MenuItem sort_selected_items[] = {
+ {N_("By Track _Number"), .func = pl_sort_selected_track},
+ {N_("By _Title"), .func = pl_sort_selected_title},
+ {N_("By _Artist"), .func = pl_sort_selected_artist},
+ {N_("By A_lbum"), .func = pl_sort_selected_album},
+ {N_("By Release _Date"), .func = pl_sort_selected_date},
+ {N_("By _File Path"), .func = pl_sort_selected_path},
+ {N_("By _Custom Title"), .func = pl_sort_selected_custom},
+ {.sep = TRUE},
+ {N_("R_everse Order"), GTK_STOCK_SORT_DESCENDING, .func = pl_reverse_selected},
+ {N_("_Random Order"), .func = pl_random_selected}};
+
 static const struct MenuItem playlist_items[] = {
  {N_("_Play This Playlist"), GTK_STOCK_MEDIA_PLAY, GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
  {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F5, .func = pl_refresh},
- {N_("Remove _Unavailable Files"), GTK_STOCK_REMOVE, .func = pl_remove_failed},
  {.sep = TRUE},
  {N_("_Sort"), GTK_STOCK_SORT_ASCENDING, .items = sort_items, G_N_ELEMENTS (sort_items)},
+ {N_("Sort S_elected"), GTK_STOCK_SORT_ASCENDING, .items = sort_selected_items, G_N_ELEMENTS (sort_selected_items)},
+ {N_("Remove _Duplicates"), GTK_STOCK_REMOVE, .items = dupe_items, G_N_ELEMENTS (dupe_items)},
+ {N_("Remove _Unavailable Files"), GTK_STOCK_REMOVE, .func = pl_remove_failed},
  {.sep = TRUE},
  {N_("_New"), GTK_STOCK_NEW, 't', CTRL, .func = pl_new},
  {N_("Ren_ame ..."), GTK_STOCK_EDIT, GDK_KEY_F2, .func = pl_rename},

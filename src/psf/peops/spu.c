@@ -85,6 +85,11 @@
 #include "../peops/registers.h"
 #include "../peops/spu.h"
 
+// Enable experimental silence skipping
+// Currently it is too aggressive, destroying the rhythm of some songs
+// See http://redmine.audacious-media-player.org/issues/201
+// #define ENABLE_SILENCE_SKIPPING
+
 void SPUirq(void) ;
 
 //#include "PsxMem.h"
@@ -503,6 +508,7 @@ int SPUasync(u32 cycles, void *data)
  }
  else if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
  {
+#ifdef ENABLE_SILENCE_SKIPPING
    short *pSilenceIter = (short *)pSpuBuffer;
    int iSilenceCount = 0;
 
@@ -516,6 +522,7 @@ int SPUasync(u32 cycles, void *data)
    }
 
    if (iSilenceCount < 20)
+#endif
      psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
 
    pS=(short *)pSpuBuffer;

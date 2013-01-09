@@ -36,7 +36,7 @@ typedef struct submit_t
 
 static int sc_going, ge_going;
 
-static GMutex *m_scrobbler;
+static pthread_mutex_t m_scrobbler = PTHREAD_MUTEX_INITIALIZER;
 
 guint track_timeout = 0;
 
@@ -73,19 +73,19 @@ static void aud_hook_playback_begin(gpointer hook_data, gpointer user_data)
         return;
     }
 
-    sc_idle(m_scrobbler);
+    sc_idle(&m_scrobbler);
 
-    sc_addentry(m_scrobbler, tuple, len, is_http_source);
+    sc_addentry(&m_scrobbler, tuple, len, is_http_source);
     tuple_unref(tuple);
 
     if (!track_timeout)
-        track_timeout = g_timeout_add_seconds(1, sc_timeout, (gpointer)m_scrobbler);
+        track_timeout = g_timeout_add_seconds(1, sc_timeout, &m_scrobbler);
 }
 
 static void aud_hook_playback_end(gpointer aud_hook_data, gpointer user_data)
 {
     sc_playback_end();
-    sc_idle(m_scrobbler);
+    sc_idle(&m_scrobbler);
 
     if (track_timeout)
     {
@@ -113,27 +113,23 @@ void start(void) {
     g_free (password);
     g_free (sc_url);
 
-    m_scrobbler = g_mutex_new();
-
     hook_associate("playback begin", aud_hook_playback_begin, NULL);
     hook_associate("playback stop", aud_hook_playback_end, NULL);
 
     AUDDBG("plugin started");
-    sc_idle(m_scrobbler);
+    sc_idle(&m_scrobbler);
 }
 
 void stop(void) {
     if (!sc_going && !ge_going)
         return;
-    g_mutex_lock(m_scrobbler);
+    pthread_mutex_lock(&m_scrobbler);
 
     if (sc_going)
         sc_cleaner();
     sc_going = 0;
     ge_going = 0;
-    g_mutex_unlock(m_scrobbler);
-
-    g_mutex_free(m_scrobbler);
+    pthread_mutex_unlock(&m_scrobbler);
 
     hook_dissociate("playback begin", aud_hook_playback_begin);
     hook_dissociate("playback stop", aud_hook_playback_end);

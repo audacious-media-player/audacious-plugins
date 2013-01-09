@@ -405,9 +405,22 @@ static void set_album_art (void)
     if (area->pb)
         g_object_unref (area->pb);
 
-    area->pb = audgui_pixbuf_for_current ();
+    area->pb = audgui_pixbuf_request_current ();
+    if (! area->pb)
+        area->pb = audgui_pixbuf_fallback ();
     if (area->pb)
         audgui_pixbuf_scale_within (& area->pb, ICON_SIZE);
+}
+
+static void album_art_ready (void)
+{
+    g_return_if_fail (area);
+
+    if (! aud_drct_get_playing ())
+        return;
+
+    set_album_art ();
+    gtk_widget_queue_draw (area->main);
 }
 
 static void infoarea_next (void)
@@ -506,10 +519,9 @@ static void destroy_cb (GtkWidget * widget)
     ui_infoarea_show_vis (FALSE);
 
     hook_dissociate ("playlist update", (HookFunction) ui_infoarea_set_title);
-    hook_dissociate ("playback begin", (HookFunction)
-     ui_infoarea_playback_start);
-    hook_dissociate ("playback stop", (HookFunction)
-     ui_infoarea_playback_stop);
+    hook_dissociate ("playback begin", (HookFunction) ui_infoarea_playback_start);
+    hook_dissociate ("playback stop", (HookFunction) ui_infoarea_playback_stop);
+    hook_dissociate ("current art ready", (HookFunction) album_art_ready);
 
     if (area->fade_timeout)
     {
@@ -549,6 +561,7 @@ GtkWidget * ui_infoarea_new (void)
     hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, NULL);
     hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, NULL);
     hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, NULL);
+    hook_associate ("current art ready", (HookFunction) album_art_ready, NULL);
 
     g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, NULL);
 

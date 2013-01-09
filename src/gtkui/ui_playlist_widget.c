@@ -186,6 +186,11 @@ static void select_all (void * user, gboolean selected)
     aud_playlist_select_all (((PlaylistWidgetData *) user)->list, selected);
 }
 
+static void focus_change (void * user, gint row)
+{
+    aud_playlist_set_focus (((PlaylistWidgetData *) user)->list, row);
+}
+
 static void activate_row (void * user, gint row)
 {
     gint list = ((PlaylistWidgetData *) user)->list;
@@ -291,6 +296,7 @@ static const AudguiListCallbacks callbacks = {
  .get_selected = get_selected,
  .set_selected = set_selected,
  .select_all = select_all,
+ .focus_change = focus_change,
  .activate_row = activate_row,
  .right_click = right_click,
  .shift_rows = shift_rows,
@@ -438,8 +444,6 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
         else if (diff < 0)
             audgui_list_delete_rows (widget, at, -diff);
 
-        audgui_list_set_highlight (widget, aud_playlist_get_position (data->list));
-
         ui_playlist_widget_scroll (widget);
     }
 
@@ -447,6 +451,7 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
         audgui_list_update_rows (widget, at, count);
 
     audgui_list_update_selection (widget, at, count);
+    audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
     update_queue (widget, data);
 }
 

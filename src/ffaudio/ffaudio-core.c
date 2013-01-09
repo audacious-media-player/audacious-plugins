@@ -25,6 +25,7 @@
  */
 
 #include <glib.h>
+#include <pthread.h>
 
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
@@ -36,11 +37,11 @@
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
 
-static GMutex *ctrl_mutex = NULL;
+static pthread_mutex_t ctrl_mutex = PTHREAD_MUTEX_INITIALIZER;
 static gint64 seek_value = -1;
 static gboolean stop_flag = FALSE;
 
-static GStaticMutex data_mutex = G_STATIC_MUTEX_INIT;
+static pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 static GHashTable * extension_dict = NULL;
 
 /* str_unref() may be a macro */
@@ -54,16 +55,18 @@ static gint lockmgr (void * * mutexp, enum AVLockOp op)
     switch (op)
     {
     case AV_LOCK_CREATE:
-        * mutexp = g_mutex_new ();
+        * mutexp = g_slice_new (pthread_t);
+        pthread_mutex_init (* mutexp, NULL);
         break;
     case AV_LOCK_OBTAIN:
-        g_mutex_lock (* mutexp);
+        pthread_mutex_lock (* mutexp);
         break;
     case AV_LOCK_RELEASE:
-        g_mutex_unlock (* mutexp);
+        pthread_mutex_unlock (* mutexp);
         break;
     case AV_LOCK_DESTROY:
-        g_mutex_free (* mutexp);
+        pthread_mutex_destroy (* mutexp);
+        g_slice_free (pthread_t, * mutexp);
         break;
     }
 
@@ -75,17 +78,12 @@ static gboolean ffaudio_init (void)
     av_register_all();
     av_lockmgr_register (lockmgr);
 
-    ctrl_mutex = g_mutex_new();
-
     return TRUE;
 }
 
 static void
 ffaudio_cleanup(void)
 {
-    AUDDBG("cleaning up\n");
-    g_mutex_free(ctrl_mutex);
-
     if (extension_dict)
         g_hash_table_destroy (extension_dict);
 
@@ -141,13 +139,13 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
     gchar * ext = g_ascii_strdown (ext0 + 1, sub - ext0 - 1);
 
     AUDDBG ("Get format by extension: %s\n", name);
-    g_static_mutex_lock (& data_mutex);
+    pthread_mutex_lock (& data_mutex);
 
     if (! extension_dict)
         extension_dict = create_extension_dict ();
 
     AVInputFormat * f = g_hash_table_lookup (extension_dict, ext);
-    g_static_mutex_unlock (& data_mutex);
+    pthread_mutex_unlock (& data_mutex);
 
     if (f)
         AUDDBG ("Format %s.\n", f->name);
@@ -477,7 +475,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     playback->set_params(playback, ic->bit_rate, c->sample_rate, c->channels);
 
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& ctrl_mutex);
 
     stop_flag = FALSE;
     seek_value = (start_time > 0) ? start_time : -1;
@@ -485,7 +483,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     errcount = 0;
     seekable = ffaudio_codec_is_seekable(codec);
 
-    g_mutex_unlock(ctrl_mutex);
+    pthread_mutex_unlock (& ctrl_mutex);
 
     while (!stop_flag && (stop_time < 0 ||
      playback->output->written_time () < stop_time))
@@ -493,7 +491,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
         AVPacket tmp;
         gint ret;
 
-        g_mutex_lock(ctrl_mutex);
+        pthread_mutex_lock (& ctrl_mutex);
 
         if (seek_value >= 0 && seekable)
         {
@@ -506,7 +504,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
                 errcount = 0;
         }
         seek_value = -1;
-        g_mutex_unlock(ctrl_mutex);
+        pthread_mutex_unlock (& ctrl_mutex);
 
         /* Read next frame (or more) of data */
         if ((ret = av_read_frame(ic, &pkt)) < 0)
@@ -540,18 +538,18 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
         while (tmp.size > 0 && !stop_flag)
         {
             /* Check for seek request and bail out if we have one */
-            g_mutex_lock(ctrl_mutex);
+            pthread_mutex_lock (& ctrl_mutex);
             if (seek_value != -1)
             {
                 if (!seekable)
                     seek_value = -1;
                 else
                 {
-                    g_mutex_unlock(ctrl_mutex);
+                    pthread_mutex_unlock (& ctrl_mutex);
                     break;
                 }
             }
-            g_mutex_unlock(ctrl_mutex);
+            pthread_mutex_unlock (& ctrl_mutex);
 
             AVFrame * frame = avcodec_alloc_frame ();
             int decoded = 0;
@@ -597,7 +595,7 @@ error_exit:
 
 static void ffaudio_stop(InputPlayback * playback)
 {
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& ctrl_mutex);
 
     if (!stop_flag)
     {
@@ -605,22 +603,22 @@ static void ffaudio_stop(InputPlayback * playback)
         playback->output->abort_write();
     }
 
-    g_mutex_unlock (ctrl_mutex);
+    pthread_mutex_unlock (& ctrl_mutex);
 }
 
 static void ffaudio_pause(InputPlayback * playback, gboolean pause)
 {
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& ctrl_mutex);
 
     if (!stop_flag)
         playback->output->pause(pause);
 
-    g_mutex_unlock(ctrl_mutex);
+    pthread_mutex_unlock (& ctrl_mutex);
 }
 
 static void ffaudio_seek (InputPlayback * playback, gint time)
 {
-    g_mutex_lock(ctrl_mutex);
+    pthread_mutex_lock (& ctrl_mutex);
 
     if (!stop_flag)
     {
@@ -628,7 +626,7 @@ static void ffaudio_seek (InputPlayback * playback, gint time)
         playback->output->abort_write();
     }
 
-    g_mutex_unlock(ctrl_mutex);
+    pthread_mutex_unlock (& ctrl_mutex);
 }
 
 static const char ffaudio_about[] =

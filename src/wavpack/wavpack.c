@@ -93,16 +93,14 @@ static bool_t wv_attach (const char * filename, VFSFile * wv_input,
     if (flags & OPEN_WVC)
     {
         SPRINTF (corrFilename, "%sc", filename);
-        *wvc_input = vfs_fopen(corrFilename, "rb");
+        if (vfs_file_test (corrFilename, VFS_IS_REGULAR))
+            * wvc_input = vfs_fopen (corrFilename, "r");
+        else
+            * wvc_input = NULL;
     }
 
-    * ctx = WavpackOpenFileInputEx (& wv_readers, wv_input, * wvc_input, error,
-     flags, 0);
-
-    if (ctx == NULL)
-        return FALSE;
-    else
-        return TRUE;
+    * ctx = WavpackOpenFileInputEx (& wv_readers, wv_input, * wvc_input, error, flags, 0);
+    return (* ctx != NULL);
 }
 
 static void wv_deattach (VFSFile * wvc_input, WavpackContext * ctx)
@@ -281,11 +279,11 @@ wv_get_quality(WavpackContext *ctx)
     const char *quality;
 
     if (mode & MODE_LOSSLESS)
-        quality = "lossless";
+        quality = _("lossless");
     else if (mode & MODE_HYBRID)
-        quality = "lossy (hybrid)";
+        quality = _("lossy (hybrid)");
     else
-        quality = "lossy";
+        quality = _("lossy");
 
     return str_printf ("%s%s%s", quality,
         (mode & MODE_WVC) ? " (wvc corrected)" : "",

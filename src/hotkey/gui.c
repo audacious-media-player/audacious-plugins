@@ -84,6 +84,7 @@ static gchar* event_desc[EVENT_MAX] = {
     [EVENT_SHOW_AOSD] = N_("Show On-Screen-Display"),
     [EVENT_TOGGLE_REPEAT] = N_("Toggle Repeat"),
     [EVENT_TOGGLE_SHUFFLE] = N_("Toggle Shuffle"),
+    [EVENT_TOGGLE_STOP] = N_("Toggle Stop After Current"),
     [EVENT_RAISE] = N_("Raise Player Window(s)")
 };
 

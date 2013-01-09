@@ -24,6 +24,7 @@ typedef enum {
 
     EVENT_TOGGLE_REPEAT,
     EVENT_TOGGLE_SHUFFLE,
+    EVENT_TOGGLE_STOP,
 
     EVENT_RAISE,
 

@@ -23,7 +23,6 @@ void console_seek(InputPlayback *data, gint time);
 void console_stop(InputPlayback *playback);
 void console_pause(InputPlayback * playback, gboolean pause);
 gboolean console_init (void);
-void console_cleanup(void);
 
 static const char console_about[] =
  N_("Console music decoder engine based on Game_Music_Emu 0.5.2\n"
@@ -45,7 +44,6 @@ AUD_INPUT_PLUGIN
     .domain = PACKAGE,
     .about_text = console_about,
     .init = console_init,
-    .cleanup = console_cleanup,
     .configure = console_cfg_ui,
     .play = console_play,
     .stop = console_stop,

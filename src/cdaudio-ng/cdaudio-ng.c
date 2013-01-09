@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
+#include <pthread.h>
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -75,7 +76,7 @@ typedef struct
 }
 trackinfo_t;
 
-static GMutex *mutex;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static int seek_time;
 static bool_t playing;
 
@@ -209,12 +210,12 @@ static void purge_all_playlists (void)
 /* main thread only */
 static bool_t monitor (gpointer unused)
 {
-    g_mutex_lock (mutex);
+    pthread_mutex_lock (& mutex);
 
     /* make sure not to close drive handle while playing */
     if (playing)
     {
-        g_mutex_unlock (mutex);
+        pthread_mutex_unlock (& mutex);
         return true;
     }
 
@@ -223,12 +224,12 @@ static bool_t monitor (gpointer unused)
 
     if (trackinfo != NULL)
     {
-        g_mutex_unlock (mutex);
+        pthread_mutex_unlock (& mutex);
         return TRUE;
     }
 
     monitor_source = 0;
-    g_mutex_unlock (mutex);
+    pthread_mutex_unlock (& mutex);
 
     purge_all_playlists ();
     return FALSE;
@@ -244,8 +245,6 @@ static void trigger_monitor (void)
 /* main thread only */
 static bool_t cdaudio_init (void)
 {
-    mutex = g_mutex_new ();
-
     aud_config_set_defaults ("CDDA", cdaudio_defaults);
 
     if (!cdio_init ())
@@ -290,7 +289,7 @@ static void cdaudio_set_fullinfo (trackinfo_t * t,
 static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
  file, int start, int stop, bool_t pause)
 {
-    g_mutex_lock (mutex);
+    pthread_mutex_lock (& mutex);
 
     if (trackinfo == NULL)
     {
@@ -298,7 +297,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
         if (trackinfo == NULL)
         {
-            g_mutex_unlock (mutex);
+            pthread_mutex_unlock (& mutex);
             return FALSE;
         }
     }
@@ -319,7 +318,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
     if (! okay)
     {
-        g_mutex_unlock (mutex);
+        pthread_mutex_unlock (& mutex);
         return FALSE;
     }
 
@@ -361,7 +360,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
         /* unlock mutex here to avoid blocking
          * other threads must be careful not to close drive handle */
-        g_mutex_unlock (mutex);
+        pthread_mutex_unlock (& mutex);
 
         int ret = cdio_read_audio_sectors (pcdrom_drive->p_cdio, buffer,
          currlsn, sectors);
@@ -369,7 +368,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
         if (ret == DRIVER_OP_SUCCESS)
             p->output->write_audio (buffer, 2352 * sectors);
 
-        g_mutex_lock (mutex);
+        pthread_mutex_lock (& mutex);
 
         if (ret == DRIVER_OP_SUCCESS)
         {
@@ -403,40 +402,40 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
     playing = FALSE;
 
-    g_mutex_unlock (mutex);
+    pthread_mutex_unlock (& mutex);
     return TRUE;
 }
 
 /* main thread only */
 static void cdaudio_stop (InputPlayback * p)
 {
-    g_mutex_lock (mutex);
+    pthread_mutex_lock (& mutex);
     playing = FALSE;
     p->output->abort_write();
-    g_mutex_unlock (mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 /* main thread only */
 static void cdaudio_pause (InputPlayback * p, bool_t pause)
 {
-    g_mutex_lock (mutex);
+    pthread_mutex_lock (& mutex);
     p->output->pause (pause);
-    g_mutex_unlock (mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 /* main thread only */
 static void cdaudio_mseek (InputPlayback * p, int time)
 {
-    g_mutex_lock (mutex);
+    pthread_mutex_lock (& mutex);
     seek_time = time;
     p->output->abort_write();
-    g_mutex_unlock (mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 /* main thread only */
 static void cdaudio_cleanup (void)
 {
-    g_mutex_lock (mutex);
+    pthread_mutex_lock (& mutex);
 
     if (monitor_source)
     {
@@ -458,8 +457,7 @@ static void cdaudio_cleanup (void)
 
     libcddb_shutdown ();
 
-    g_mutex_unlock (mutex);
-    g_mutex_free (mutex);
+    pthread_mutex_unlock (& mutex);
 }
 
 /* thread safe */
@@ -468,7 +466,7 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
     Tuple *tuple = NULL;
     int trackno;
 
-    g_mutex_lock (mutex);
+    pthread_mutex_lock (& mutex);
 
     if (trackinfo == NULL)
         refresh_trackinfo (TRUE);
@@ -522,7 +520,7 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
         tuple_set_str (tuple, FIELD_GENRE, NULL, trackinfo[trackno].genre);
 
   DONE:
-    g_mutex_unlock (mutex);
+    pthread_mutex_unlock (& mutex);
     return tuple;
 }
 
