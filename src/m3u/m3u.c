@@ -86,7 +86,7 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
             parse ++;
 
         if (! * parse)
-            break;
+            goto NEXT;
 
         if (* parse == '#')
             goto NEXT;
