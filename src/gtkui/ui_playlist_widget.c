@@ -25,6 +25,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
+#include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
@@ -476,4 +477,37 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
         popup_trigger (data, row);
     else
         popup_hide (data);
+}
+
+void ui_playlist_widget_get_column_widths (GtkWidget * widget, char * * widths,
+ char * * expand)
+{
+    int w[pw_num_cols], ex[pw_num_cols];
+
+    for (int i = 0; i < pw_num_cols; i ++)
+    {
+        GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) widget, i);
+        w[i] = gtk_tree_view_column_get_fixed_width (col);
+        ex[i] = gtk_tree_view_column_get_expand (col);
+    }
+
+    * widths = int_array_to_string (w, pw_num_cols);
+    * expand = int_array_to_string (ex, pw_num_cols);
+}
+
+void ui_playlist_widget_set_column_widths (GtkWidget * widget,
+ const char * widths, const char * expand)
+{
+    int w[pw_num_cols], ex[pw_num_cols];
+
+    if (! string_to_int_array (widths, w, pw_num_cols) ||
+     ! string_to_int_array (expand, ex, pw_num_cols))
+        return;
+
+    for (int i = 0; i < pw_num_cols; i ++)
+    {
+        GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) widget, i);
+        gtk_tree_view_column_set_fixed_width (col, w[i]);
+        gtk_tree_view_column_set_expand (col, ex[i]);
+     }
 }

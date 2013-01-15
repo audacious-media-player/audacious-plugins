@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-#include "config.h"
+#include <stdlib.h>
 
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
@@ -27,9 +27,11 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/hook.h>
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>
 
+#include "config.h"
 #include "gtkui.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
@@ -123,6 +125,33 @@ GtkNotebook *ui_playlist_get_notebook(void)
     return GTK_NOTEBOOK(notebook);
 }
 
+static void save_column_widths ()
+{
+    int current = gtk_notebook_get_current_page ((GtkNotebook *) notebook);
+    GtkWidget * treeview = playlist_get_treeview (current);
+
+    char * widths, * expand;
+    ui_playlist_widget_get_column_widths (treeview, & widths, & expand);
+
+    aud_set_string ("gtkui", "column_widths", widths);
+    aud_set_string ("gtkui", "column_expand", expand);
+
+    free (widths);
+    free (expand);
+}
+
+static void apply_column_widths (GtkWidget * treeview)
+{
+    char * widths = aud_get_string ("gtkui", "column_widths");
+    char * expand = aud_get_string ("gtkui", "column_expand");
+
+    if (widths && widths[0] && expand && expand[0])
+        ui_playlist_widget_set_column_widths (treeview, widths, expand);
+
+    free (widths);
+    free (expand);
+}
+
 static void tab_title_reset(GtkWidget *ebox)
 {
     GtkWidget *label = g_object_get_data(G_OBJECT(ebox), "label");
@@ -169,10 +198,10 @@ static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, gpoi
 static void tab_changed (GtkNotebook * notebook, GtkWidget * page, gint
  page_num, void * unused)
 {
-    GtkWidget * treeview = playlist_get_treeview (page_num);
+    save_column_widths ();
+    apply_column_widths (playlist_get_treeview (page_num));
 
-    if (treeview != NULL)
-        aud_playlist_set_active (page_num);
+    aud_playlist_set_active (page_num);
 }
 
 static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, guint page_num, gpointer user_data)
@@ -233,6 +262,8 @@ void ui_playlist_notebook_create_tab(gint playlist)
     vscroll = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrollwin));
 
     treeview = ui_playlist_widget_new(playlist);
+    apply_column_widths (treeview);
+
     g_object_set_data(G_OBJECT(scrollwin), "treeview", treeview);
 
     gtk_container_add(GTK_CONTAINER(scrollwin), treeview);
@@ -320,6 +351,11 @@ void ui_playlist_notebook_empty (void)
 
 static void add_remove_pages (void)
 {
+    g_signal_handlers_block_by_func (notebook, (void *) tab_changed, NULL);
+    g_signal_handlers_block_by_func (notebook, (void *) tab_reordered, NULL);
+
+    save_column_widths ();
+
     gint lists = aud_playlist_count ();
     gint pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
 
@@ -333,9 +369,7 @@ static void add_remove_pages (void)
         /* do we have an orphaned treeview? */
         if (aud_playlist_by_unique_id (tree_id) < 0)
         {
-            g_signal_handlers_block_by_func (notebook, (void *) tab_changed, NULL);
             gtk_notebook_remove_page ((GtkNotebook *) notebook, i);
-            g_signal_handlers_unblock_by_func (notebook, (void *) tab_changed, NULL);
             pages --;
             continue;
         }
@@ -362,9 +396,7 @@ static void add_remove_pages (void)
             /* found it? move it to the right place */
             if (tree_id == list_id)
             {
-                g_signal_handlers_block_by_func (notebook, (void *) tab_reordered, NULL);
                 gtk_notebook_reorder_child ((GtkNotebook *) notebook, page, i);
-                g_signal_handlers_unblock_by_func (notebook, (void *) tab_reordered, NULL);
                 found = TRUE;
                 break;
             }
@@ -385,6 +417,13 @@ static void add_remove_pages (void)
         ui_playlist_notebook_create_tab (pages);
         pages ++;
     }
+
+    int active = aud_playlist_get_active ();
+    apply_column_widths (playlist_get_treeview (active));
+    gtk_notebook_set_current_page ((GtkNotebook *) notebook, active);
+
+    g_signal_handlers_unblock_by_func (notebook, (void *) tab_changed, NULL);
+    g_signal_handlers_unblock_by_func (notebook, (void *) tab_reordered, NULL);
 }
 
 void ui_playlist_notebook_update (void * data, void * user)
@@ -461,6 +500,8 @@ void ui_playlist_notebook_set_playing (void * data, void * user)
 
 static void destroy_cb (void)
 {
+    hook_dissociate ("config save", (HookFunction) save_column_widths);
+
     notebook = NULL;
     switch_handler = 0;
     reorder_handler = 0;
@@ -471,6 +512,8 @@ GtkWidget * ui_playlist_notebook_new (void)
     notebook = gtk_notebook_new ();
     gtk_notebook_set_scrollable ((GtkNotebook *) notebook, TRUE);
     make_add_button (notebook);
+
+    hook_associate ("config save", (HookFunction) save_column_widths, NULL);
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
