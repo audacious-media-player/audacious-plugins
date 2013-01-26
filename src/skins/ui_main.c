@@ -951,8 +951,6 @@ static void mainwin_set_volume_diff (gint diff)
 
 static void mainwin_real_show (gboolean show)
 {
-    start_stop_visual (FALSE);
-
     if (show)
         gtk_window_present ((GtkWindow *) mainwin);
     else
@@ -969,11 +967,11 @@ void mainwin_show (gboolean show)
         gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
     else
     {
-        config.player_visible = show;
-        playlistwin_show (config.playlist_visible);
-        equalizerwin_show (config.equalizer_visible);
         mainwin_real_show (show);
-   }
+        equalizerwin_show (config.equalizer_visible);
+        playlistwin_show (config.playlist_visible);
+        start_stop_visual (FALSE);
+    }
 }
 
 void mainwin_mr_change (MenuRowItem i)
