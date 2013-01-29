@@ -84,6 +84,7 @@ static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_
 static void pl_sort_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); }
 static void pl_sort_album (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); }
 static void pl_sort_date (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); }
+static void pl_sort_length (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); }
 static void pl_sort_path (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
 static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FORMATTED_TITLE); }
 static void pl_reverse (void) {aud_playlist_reverse (aud_playlist_get_active ()); }
@@ -94,6 +95,7 @@ static void pl_sort_selected_title (void) {aud_playlist_sort_selected_by_scheme 
 static void pl_sort_selected_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); }
 static void pl_sort_selected_album (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); }
 static void pl_sort_selected_date (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); }
+static void pl_sort_selected_length (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); }
 static void pl_sort_selected_path (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
 static void pl_sort_selected_custom (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FORMATTED_TITLE); }
 static void pl_reverse_selected (void) {aud_playlist_reverse_selected (aud_playlist_get_active ()); }
@@ -209,8 +211,9 @@ static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_track},
  {N_("By _Title"), .func = pl_sort_title},
  {N_("By _Artist"), .func = pl_sort_artist},
- {N_("By A_lbum"), .func = pl_sort_album},
+ {N_("By Al_bum"), .func = pl_sort_album},
  {N_("By Release _Date"), .func = pl_sort_date},
+ {N_("By _Length"), .func = pl_sort_length},
  {N_("By _File Path"), .func = pl_sort_path},
  {N_("By _Custom Title"), .func = pl_sort_custom},
  {.sep = TRUE},
@@ -221,8 +224,9 @@ static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_selected_track},
  {N_("By _Title"), .func = pl_sort_selected_title},
  {N_("By _Artist"), .func = pl_sort_selected_artist},
- {N_("By A_lbum"), .func = pl_sort_selected_album},
+ {N_("By Al_bum"), .func = pl_sort_selected_album},
  {N_("By Release _Date"), .func = pl_sort_selected_date},
+ {N_("By _Length"), .func = pl_sort_selected_length},
  {N_("By _File Path"), .func = pl_sort_selected_path},
  {N_("By _Custom Title"), .func = pl_sort_selected_custom},
  {.sep = TRUE},
