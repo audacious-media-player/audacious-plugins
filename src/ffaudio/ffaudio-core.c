@@ -55,7 +55,7 @@ static gint lockmgr (void * * mutexp, enum AVLockOp op)
     switch (op)
     {
     case AV_LOCK_CREATE:
-        * mutexp = g_slice_new (pthread_t);
+        * mutexp = g_slice_new (pthread_mutex_t);
         pthread_mutex_init (* mutexp, NULL);
         break;
     case AV_LOCK_OBTAIN:
@@ -66,7 +66,7 @@ static gint lockmgr (void * * mutexp, enum AVLockOp op)
         break;
     case AV_LOCK_DESTROY:
         pthread_mutex_destroy (* mutexp);
-        g_slice_free (pthread_t, * mutexp);
+        g_slice_free (pthread_mutex_t, * mutexp);
         break;
     }
 
