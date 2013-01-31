@@ -1045,7 +1045,7 @@ if test -z "$datadir"; then
 	datadir="${prefix}/share"
 fi
 
-localedir="$datadir/locale"
+localedir="$datarootdir/locale"
 AC_SUBST(localedir)
 
 AC_SUBST(EFFECT_PLUGINS)
