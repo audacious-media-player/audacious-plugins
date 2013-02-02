@@ -46,10 +46,10 @@ static void osd_closed_handler (void)
     }
 }
 
-void osd_show (const gchar * title, const gchar * _message, const gchar * icon,
+void osd_show (const char * title, const char * _message, const char * icon,
  GdkPixbuf * pixbuf)
 {
-    gchar * message = g_markup_escape_text (_message, -1);
+    char * message = g_markup_escape_text (_message, -1);
 
     if (pixbuf)
         icon = NULL;
