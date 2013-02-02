@@ -17,16 +17,12 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glib.h>
-#include <audacious/debug.h>
-#include <libnotify/notify.h>
-
 #include "osd.h"
 
-NotifyNotification *notification = NULL;
+static NotifyNotification * notification = NULL;
 
-gboolean osd_init() {
-    notification = NULL;
+bool_t osd_init()
+{
     return notify_init ("Audacious");
 }
 
@@ -41,37 +37,35 @@ void osd_uninit (void)
     notify_uninit();
 }
 
-void osd_closed_handler(NotifyNotification *notification2, gpointer data) {
-    if(notification != NULL) {
-        g_object_unref(notification);
+static void osd_closed_handler (void)
+{
+    if (notification)
+    {
+        g_object_unref (notification);
         notification = NULL;
-        AUDDBG("notification unrefed!\n");
     }
 }
 
 void osd_show (const gchar * title, const gchar * _message, const gchar * icon,
- GdkPixbuf * pb)
+ GdkPixbuf * pixbuf)
 {
     gchar * message = g_markup_escape_text (_message, -1);
-    GError *error = NULL;
 
-    if(notification == NULL) {
-        notification = notify_notification_new(title, message, pb == NULL ? icon : NULL);
-        g_signal_connect(notification, "closed", G_CALLBACK(osd_closed_handler), NULL);
-        AUDDBG("new osd created! (notification=%p)\n", (void *) notification);
-    } else {
-        if(notify_notification_update(notification, title, message, pb == NULL ? icon : NULL)) {
-            AUDDBG("old osd updated! (notification=%p)\n", (void *) notification);
-        } else {
-            AUDDBG("could not update old osd! (notification=%p)\n", (void *) notification);
-        }
+    if (pixbuf)
+        icon = NULL;
+
+    if (notification)
+        notify_notification_update (notification, title, message, icon);
+    else
+    {
+        notification = notify_notification_new (title, message, icon);
+        g_signal_connect (notification, "closed", (GCallback) osd_closed_handler, NULL);
     }
 
-    if(pb != NULL)
-        notify_notification_set_icon_from_pixbuf(notification, pb);
+    if (pixbuf)
+        notify_notification_set_icon_from_pixbuf (notification, pixbuf);
 
-    if(!notify_notification_show(notification, &error))
-        AUDDBG("%s!\n", error->message);
+    notify_notification_show (notification, NULL);
 
     g_free (message);
 }
