@@ -52,6 +52,7 @@ static const gchar * const gtkui_defaults[] = {
  "autoscroll", "TRUE",
  "playlist_columns", "title artist album queued length",
  "playlist_headers", "TRUE",
+ "show_remaining_time", "FALSE",
 
  "player_x", "-1",
  "player_y", "-1",
@@ -282,7 +283,10 @@ static void set_time_label (gint time, gint len)
 {
     gchar s[128] = "<b>";
 
-    append_time_str (s, sizeof s, time);
+    if (len && aud_get_bool ("gtkui", "show_remaining_time"))
+        append_time_str (s, sizeof s, len - time);
+    else
+        append_time_str (s, sizeof s, time);
 
     if (len)
     {
