@@ -161,11 +161,6 @@ static gboolean infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_vis
 static gboolean infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
 static gboolean status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
 static gboolean close_button_get (void) {return aud_get_bool ("gtkui", "close_button_visible"); }
-static void close_button_set (gboolean show)
-{
-    aud_set_bool ("gtkui", "close_button_visible", show);
-    show_close_buttons (show);
-}
 static gboolean column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
 static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
 static void autoscroll_set (gboolean on) {aud_set_bool ("gtkui", "autoscroll", on); }
@@ -269,7 +264,7 @@ static const struct MenuItem view_items[] = {
  {N_("Show Info Bar Vis_ualization"), .get = infoarea_vis_get, show_infoarea_vis},
  {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL, .get = status_bar_get, show_statusbar},
  {.sep = TRUE},
- {N_("Show Close _Buttons"), NULL, .get = close_button_get, close_button_set},
+ {N_("Show Close _Buttons"), NULL, .get = close_button_get, show_close_buttons},
  {N_("Show Column _Headers"), .get = column_headers_get, playlist_show_headers},
  {N_("Choose _Columns ..."), .func = pw_col_choose},
  {N_("Scrol_l on Song Change"), .get = autoscroll_get, autoscroll_set}};

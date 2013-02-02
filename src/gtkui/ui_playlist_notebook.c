@@ -105,6 +105,8 @@ static GtkWidget * make_close_button (GtkWidget * ebox, gint list)
 
 void show_close_buttons (gboolean show)
 {
+    aud_set_bool ("gtkui", "close_button_visible", show);
+
     gint pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
 
     for (gint i = 0; i < pages; i ++)
