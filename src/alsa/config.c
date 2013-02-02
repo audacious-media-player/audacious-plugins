@@ -207,6 +207,10 @@ static void pcm_card_found (int card, const char * description)
 
 static void pcm_list_fill (void)
 {
+    if (pcm_list)
+        return;
+
+    pcm_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
     pcm_found ("default", _("Default PCM device"));
     get_defined_devices ("pcm", 0, pcm_found);
     get_cards (pcm_card_found);
@@ -232,6 +236,10 @@ static void mixer_card_found (int card, const char * description)
 
 static void mixer_list_fill (void)
 {
+    if (mixer_list)
+        return;
+
+    mixer_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
     mixer_found ("default", _("Default mixer device"));
     get_defined_devices ("ctl", 0, mixer_found);
     get_cards (mixer_card_found);
@@ -273,33 +281,16 @@ static void mixer_element_found (const char * name)
 
 static void mixer_element_list_fill (void)
 {
+    if (mixer_element_list)
+        return;
+
+    mixer_element_list = gtk_list_store_new (1, G_TYPE_STRING);
     get_mixer_elements (alsa_config_mixer, mixer_element_found);
-}
-
-static void fill_lists (void)
-{
-    if (! pcm_list)
-    {
-        pcm_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
-        pcm_list_fill ();
-    }
-
-    if (! mixer_list)
-    {
-        mixer_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
-        mixer_list_fill ();
-    }
-
-    if (! mixer_element_list)
-    {
-        mixer_element_list = gtk_list_store_new (1, G_TYPE_STRING);
-        mixer_element_list_fill ();
-    }
 }
 
 static void guess_mixer_element (void)
 {
-    fill_lists ();
+    mixer_element_list_fill ();
 
     static const char * guesses[] = {"Master", "PCM", "Wave"};
     for (int count = 0; count < G_N_ELEMENTS (guesses); count ++)
@@ -534,11 +525,16 @@ void alsa_configure (void)
         return;
     }
 
-    fill_lists ();
+    pcm_list_fill ();
+    mixer_list_fill ();
+    mixer_element_list_fill ();
+
     create_window ();
+
     combo_select_by_text (pcm_combo, pcm_list, alsa_config_pcm);
     combo_select_by_text (mixer_combo, mixer_list, alsa_config_mixer);
     combo_select_by_text (mixer_element_combo, mixer_element_list,
      alsa_config_mixer_element);
+
     connect_callbacks ();
 }
