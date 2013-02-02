@@ -28,7 +28,6 @@
 #include <unistd.h>
 
 #include <audacious/i18n.h>
-#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
@@ -38,8 +37,8 @@
 #define POINTER_TO_INT(x) ((int) (ptrdiff_t) (x))
 
 #define unix_error(...) do { \
-    SPRINTF (unix_error_buf, __VA_ARGS__); \
-    aud_interface_show_error (unix_error_buf); \
+    fprintf (stderr, __VA_ARGS__); \
+    fputc ('\n', stderr); \
 } while (0)
 
 static void * unix_fopen (const char * uri, const char * mode)
