@@ -517,8 +517,6 @@ static void connect_callbacks (void)
 
 void alsa_configure (void)
 {
-    alsa_soft_init ();
-
     if (window != NULL)
     {
         gtk_window_present ((GtkWindow *) window);
