@@ -802,6 +802,25 @@ if test "x$have_scrobbler" = "xyes"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
 fi
 
+
+dnl *** scrobbler2 ***
+
+AC_ARG_ENABLE(scrobbler2,
+ [  --disable-scrobbler2    disable Scrobbler 2 plugin (default=enabled)],
+ [have_scrobbler2=$enableval], [have_scrobbler2="yes"])
+
+if test "x$have_scrobbler2" = "xyes"; then
+    PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
+     [have_scrobbler2="$have_scrobbler2"], [have_scrobbler2="no"])
+    AC_SUBST(CURL_CFLAGS)
+    AC_SUBST(CURL_LIBS)
+fi
+
+if test "x$have_scrobbler2" = "xyes"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler2"
+fi
+
+
 dnl *** neon http plugin ***
 
 AC_ARG_ENABLE(neon,
@@ -1122,7 +1141,8 @@ echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
-echo "  AudioScrobbler Client:                  $have_scrobbler"
+echo "  Scrobbler:                              $have_scrobbler"
+echo "  Scrobbler 2 (experimental):             $have_scrobbler2"
 echo "  LyricWiki viewer:                       $enable_lyricwiki"
 echo
 echo "  Effect"
