@@ -7,12 +7,16 @@
  * It is licensed under the GNU General Public License, version 3.
  */
 
+//TODO: this is to be removed when the old scrobbler is deprecated
+#include <audacious/plugins.h>
+
 //audacious includes
 #include <config.h>
 #include <audacious/plugin.h>
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
+
 
 //plugin includes
 #include "scrobbler.h"
@@ -209,7 +213,14 @@ static void unpaused (void *hook_data, void *user_data) {
     play_started_at = g_get_monotonic_time();
 }
 
+
+
 static bool_t scrobbler_init (void) {
+    PluginHandle *old_scrobbler = aud_plugin_lookup_basename("scrobbler");
+    if (old_scrobbler != NULL && aud_plugin_get_enabled(old_scrobbler)) {
+        aud_plugin_enable(old_scrobbler, FALSE);
+    }
+
     // Initialize libXML and check potential ABI mismatches between
     // the version it was compiled for and the actual libXML in use
     LIBXML_TEST_VERSION

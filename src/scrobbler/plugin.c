@@ -10,6 +10,7 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <audacious/plugins.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
@@ -137,6 +138,14 @@ void stop(void) {
 
 static gboolean init(void)
 {
+    PluginHandle *new_scrobbler = aud_plugin_lookup_basename("scrobbler2");
+    if (new_scrobbler != NULL && aud_plugin_get_enabled(new_scrobbler)) {
+        aud_interface_show_error(N_("This is an old, legacy version of the Scrobbler plugin.\n"
+                                    "To use it, disable the Scrobbler 2.0 plugin."));
+        return FALSE;
+    }
+
+
     start();
     return TRUE;
 }
