@@ -1,7 +1,7 @@
 /*
  * Scrobbler Plugin v2.0 for Audacious by Pitxyoki
  *
- * Copyright 2012 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
+ * Copyright 2012-2013 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
  *
  * This plugin is part of the Audacious Media Player.
  * It is licensed under the GNU General Public License, version 3.
@@ -275,7 +275,7 @@ static void scrobbler_cleanup (void) {
 
 static const char scrobbler_about[] =
  N_("Audacious Scrobbling Plugin 2.0 by Pitxyoki,\n\n"
-    "Copyright © 2012 Luís Picciochi <Pitxyoki@Gmail.com>.\n\n"
+    "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>.\n\n"
     "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
 
 

@@ -196,7 +196,7 @@ static void *config_status_checker () {
 static const PreferencesWidget config_contents[] = {
     {
         .type  = WIDGET_LABEL,
-        .label = N_("You need to allow Audacious to scrobble tracks to your Last.fm account. \n"),
+        .label = N_("You need to allow Audacious to scrobble tracks to your Last.fm account.\n"),
         .data  = { .label = {.single_line = TRUE} }
     },
     {
