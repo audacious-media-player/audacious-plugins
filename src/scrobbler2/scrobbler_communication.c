@@ -333,7 +333,7 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, gchar 
     lines_to_remove = g_slist_reverse(lines_to_remove);
 
 
-    g_mutex_lock(&log_access_mutex);
+    pthread_mutex_lock(&log_access_mutex);
 
     gboolean success = g_file_get_contents(queuepath, &contents, NULL, NULL);
     if (!success) {
@@ -366,7 +366,7 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, gchar 
 
     }
 
-    g_mutex_unlock(&log_access_mutex);
+    pthread_mutex_unlock(&log_access_mutex);
 
 
     g_strfreev(finallines);
@@ -391,9 +391,9 @@ static void scrobble_cached_queue() {
     GSList *lines_to_remove = NULL;
     gchar *error_code = NULL;
     gchar *error_detail = NULL;
-    g_mutex_lock(&log_access_mutex);
+    pthread_mutex_lock(&log_access_mutex);
     success = g_file_get_contents(queuepath, &contents, NULL, NULL);
-    g_mutex_unlock(&log_access_mutex);
+    pthread_mutex_unlock(&log_access_mutex);
     if (!success) {
         AUDDBG("Couldn't access the queue file.\n");
     } else {
@@ -551,15 +551,15 @@ gpointer scrobbling_thread (gpointer input_data) {
             }
             //scrobbling may be disabled if communication errors occur
 
-            g_mutex_lock(&communication_mutex);
+            pthread_mutex_lock(&communication_mutex);
             if (scrobbling_enabled) {
-                g_cond_wait(&communication_signal, &communication_mutex);
-                g_mutex_unlock(&communication_mutex);
+                pthread_cond_wait(&communication_signal, &communication_mutex);
+                pthread_mutex_unlock(&communication_mutex);
             }
             else {
                 //We don't want to wait until receiving a signal to retry
                 //if submitting the cache failed due to network problems
-                g_mutex_unlock(&communication_mutex);
+                pthread_mutex_unlock(&communication_mutex);
 
                 if (scrobbler_test_connection() == FALSE || !scrobbling_enabled) {
                     g_usleep(7*G_USEC_PER_SEC);

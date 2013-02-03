@@ -11,6 +11,7 @@
 #define SCROBBLER_H_
 
 //external includes
+#include <pthread.h>
 #include <string.h>
 #include <glib.h>
 #include <libxml/xpath.h>
@@ -42,11 +43,11 @@ extern bool_t scrobbling_enabled;
 
 //used to tell the scrobbling thread that there's something to do:
 //A new track is to be scrobbled or a permission check was requested
-extern GMutex communication_mutex;
-extern GCond  communication_signal;
+extern pthread_mutex_t communication_mutex;
+extern pthread_cond_t communication_signal;
 
 //to avoid reading/writing the log file while other thread is accessing it
-extern GMutex log_access_mutex;
+extern pthread_mutex_t log_access_mutex;
 
 //TRUE when a permission check is being requested
 extern bool_t permission_check_requested;
