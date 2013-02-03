@@ -6,7 +6,7 @@ dnl Initialize
 dnl ==========
 AC_PREREQ([2.59])
 AC_INIT([audacious-plugins], [3.4-devel])
-AC_COPYRIGHT([(C) 2005-2012 Audacious Team])
+AC_COPYRIGHT([(C) 2005-2013 Audacious Team])
 
 AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])
 AC_SUBST([VERSION], [AC_PACKAGE_VERSION])
@@ -77,8 +77,8 @@ fi
 dnl IPv6 support
 dnl ========================
 AC_ARG_ENABLE(ipv6,
-	[  --enable-ipv6		  enable IPv6 support (default=no)],
-			enable_ipv6=$enableval, enable_ipv6=no)
+    [  --enable-ipv6          enable IPv6 support (default=no)],
+            enable_ipv6=$enableval, enable_ipv6=no)
 if test "x$enable_ipv6" = "xyes"; then
     AC_DEFINE(USE_IPV6,, [Define if building with IPv6 support] )
 fi
@@ -217,7 +217,7 @@ if test $enable_lirc = yes ; then
 fi
 
 if test $enable_lirc = yes ; then
-	GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS lirc"
 fi
 
 dnl Song Change
@@ -331,9 +331,9 @@ if test $enable_mpris2 = yes ; then
 fi
 
 if test $enable_mpris2 = yes ; then
-	GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
-	AC_SUBST(GIO_UNIX_CFLAGS)
-	AC_SUBST(GIO_UNIX_LIBS)
+    GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
+    AC_SUBST(GIO_UNIX_CFLAGS)
+    AC_SUBST(GIO_UNIX_LIBS)
 fi
 
 dnl *** AdPlug requirement (libbinio)
@@ -353,8 +353,8 @@ else
 fi
 
 if test "x$have_adplug" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS adplug"
-	AC_SUBST(BINIO_CFLAGS)
+    INPUT_PLUGINS="$INPUT_PLUGINS adplug"
+    AC_SUBST(BINIO_CFLAGS)
 fi
 
 dnl Ogg Vorbis
@@ -396,7 +396,7 @@ else
 fi
 
 if test "x$have_flacng" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS flacng"
+    INPUT_PLUGINS="$INPUT_PLUGINS flacng"
 fi
 
 dnl *** WavPack 4.31 support
@@ -419,7 +419,7 @@ else
 fi
 
 if test "x$have_wavpack" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS wavpack"
+    INPUT_PLUGINS="$INPUT_PLUGINS wavpack"
 fi
 
 dnl *** AAC
@@ -431,19 +431,19 @@ AC_ARG_ENABLE(aac,
 )
 
 if test x$enable_aac = xyes; then
-	FAAD_LIBS="-lfaad"
-	FAAD_CFLAGS=
+    FAAD_LIBS="-lfaad"
+    FAAD_CFLAGS=
 
-	AC_CHECK_HEADER(faad.h,,enable_aac=no)
-	if test x$enable_aac = xyes; then
-		AC_CHECK_DECL(FAAD2_VERSION,,enable_aac=no,[#include <neaacdec.h>])
-	fi
-	if test x$enable_aac = xyes; then
-		AC_CHECK_DECL(NeAACDecInit2,,enable_aac=no,[#include <neaacdec.h>])
-	fi
-	if test x$enable_aac = xyes; then
-		AC_CHECK_LIB(faad,NeAACDecInit2,enable_aac=yes,enable_aac=no)
-	fi
+    AC_CHECK_HEADER(faad.h,,enable_aac=no)
+    if test x$enable_aac = xyes; then
+        AC_CHECK_DECL(FAAD2_VERSION,,enable_aac=no,[#include <neaacdec.h>])
+    fi
+    if test x$enable_aac = xyes; then
+        AC_CHECK_DECL(NeAACDecInit2,,enable_aac=no,[#include <neaacdec.h>])
+    fi
+    if test x$enable_aac = xyes; then
+        AC_CHECK_LIB(faad,NeAACDecInit2,enable_aac=yes,enable_aac=no)
+    fi
 fi
 
 if test x$enable_aac = xyes; then
@@ -471,7 +471,7 @@ else
 fi
 
 if test "x$enable_sndfile" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS sndfile"
+    INPUT_PLUGINS="$INPUT_PLUGINS sndfile"
 fi
 
 dnl *** modplug
@@ -545,7 +545,7 @@ else
 fi
 
 if test "x$have_sidplay" = "xyes"; then
-	INPUT_PLUGINS="$INPUT_PLUGINS sid"
+    INPUT_PLUGINS="$INPUT_PLUGINS sid"
 fi
 
 dnl OSS output
@@ -605,7 +605,7 @@ else
 fi
 
 if test "x$have_alsa" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa"
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS alsa"
 fi
 
 dnl SDL Output
@@ -620,7 +620,7 @@ if test $enable_sdlout = yes ; then
 fi
 
 if test $enable_sdlout = yes ; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"
 fi
 
 dnl *** sndio output
@@ -799,7 +799,7 @@ if test "x$have_scrobbler" = "xyes"; then
 fi
 
 if test "x$have_scrobbler" = "xyes"; then
-	GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
 fi
 
 dnl *** neon http plugin ***
@@ -872,7 +872,7 @@ AC_ARG_ENABLE(filewriter,
 )
 
 if test "x$enable_filewriter" = "xyes"; then
-	OUTPUT_PLUGINS="$OUTPUT_PLUGINS filewriter"
+    OUTPUT_PLUGINS="$OUTPUT_PLUGINS filewriter"
 fi
 
 
@@ -885,7 +885,7 @@ if test "x$enable_filewriter_mp3" = "xyes"; then
    AC_CHECK_LIB(mp3lame, lame_get_id3v2_tag, [have_lame=yes], [have_lame=no], [-lm])
    if test "x$have_lame" = "xyes"; then
       AC_DEFINE(FILEWRITER_MP3, 1, [Define if MP3 output part should be built])
-	  FILEWRITER_LIBS="$FILEWRITER_LIBS -lmp3lame"
+      FILEWRITER_LIBS="$FILEWRITER_LIBS -lmp3lame"
    fi
 fi
 
@@ -908,8 +908,8 @@ if test "x$enable_filewriter_flac" = "xyes"; then
    )
    if test "x$have_writer_flac" = "xyes"; then
       AC_DEFINE(FILEWRITER_FLAC, 1, [Define if FLAC output part should be built])
-	  FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags flac`"
-	  FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs flac`"
+      FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS  `pkg-config --cflags flac`"
+      FILEWRITER_LIBS="$FILEWRITER_LIBS  `pkg-config --libs flac`"
    fi
 fi
 
@@ -938,7 +938,7 @@ else
 fi
 
 if test "x$have_bs2b" = "xyes"; then
-	EFFECT_PLUGINS="$EFFECT_PLUGINS bs2b"
+    EFFECT_PLUGINS="$EFFECT_PLUGINS bs2b"
 fi
 
 
@@ -955,7 +955,7 @@ if test "x$enable_resample" = "xyes"; then
 fi
 
 if test "x$enable_resample" = "xyes"; then
-	EFFECT_PLUGINS="$EFFECT_PLUGINS resample"
+    EFFECT_PLUGINS="$EFFECT_PLUGINS resample"
 fi
 
 dnl Speed and Pitch effect plugin
@@ -971,7 +971,7 @@ if test "x$enable_speedpitch" = "xyes"; then
 fi
 
 if test "x$enable_speedpitch" = "xyes"; then
-	EFFECT_PLUGINS="$EFFECT_PLUGINS speed-pitch"
+    EFFECT_PLUGINS="$EFFECT_PLUGINS speed-pitch"
 fi
 
 dnl GTK Interface
@@ -1042,7 +1042,7 @@ if test "x$prefix" = "xNONE"; then
 fi
 
 if test -z "$datadir"; then
-	datadir="${prefix}/share"
+    datadir="${prefix}/share"
 fi
 
 localedir="$datadir/locale"
@@ -1058,8 +1058,8 @@ AC_SUBST(TRANSPORT_PLUGINS)
 AC_SUBST(GCC42_CFLAGS)
 
 AC_CONFIG_FILES([
-	buildsys.mk
-	extra.mk
+    buildsys.mk
+    extra.mk
 ])
 
 BUILDSYS_TOUCH_DEPS
