@@ -20,9 +20,9 @@
 
 //shared variables
 bool_t scrobbler_running = TRUE;
-GMutex communication_mutex;
-GCond  communication_signal;
-GMutex log_access_mutex;
+pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t communication_signal = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t log_access_mutex = PTHREAD_MUTEX_INITIALIZER;
 gchar *session_key = NULL;
 gchar *request_token = NULL;
 
@@ -35,7 +35,7 @@ static  gint64 pause_started_at    = 0;
 static  gint64 time_until_scrobble = 0;
 static   guint queue_function_ID   = 0;
 
-static GThread *communicator = NULL;
+static pthread_t communicator;
 
 static void cleanup_current_track(void) {
 
@@ -96,7 +96,7 @@ gboolean queue_track_to_scrobble (gpointer data) {
     if (  artist != NULL && strlen(artist) > 0
         && title != NULL && strlen(title)  > 0) {
 
-        g_mutex_lock(&log_access_mutex);
+        pthread_mutex_lock(&log_access_mutex);
         FILE *f = fopen(queuepath, "a");
 
         if (f == NULL) {
@@ -110,13 +110,13 @@ gboolean queue_track_to_scrobble (gpointer data) {
                        ) < 0) {
                 perror("fprintf");
             } else {
-                g_mutex_lock(&communication_mutex);
-                g_cond_signal(&communication_signal);
-                g_mutex_unlock(&communication_mutex);
+                pthread_mutex_lock(&communication_mutex);
+                pthread_cond_signal(&communication_signal);
+                pthread_mutex_unlock(&communication_mutex);
             }
             fclose(f);
         }
-        g_mutex_unlock(&log_access_mutex);
+        pthread_mutex_unlock(&log_access_mutex);
     }
     g_free(queuepath);
     g_free(artist);
@@ -210,7 +210,7 @@ static bool_t scrobbler_init (void) {
     }
     request_token = NULL;
 
-    communicator = g_thread_new(NULL, scrobbling_thread, NULL);
+    pthread_create(&communicator, NULL, scrobbling_thread, NULL);
 
     hook_associate("playback stop", (HookFunction) stopped, NULL);
     hook_associate("playback end", (HookFunction) ended, NULL);
@@ -232,12 +232,11 @@ static void scrobbler_cleanup (void) {
 
     scrobbling_enabled = FALSE;
     scrobbler_running  = FALSE;
-    g_mutex_lock(&communication_mutex);
-    g_cond_signal(&communication_signal);
-    g_mutex_unlock(&communication_mutex);
+    pthread_mutex_lock(&communication_mutex);
+    pthread_cond_signal(&communication_signal);
+    pthread_mutex_unlock(&communication_mutex);
 
-    g_thread_join(communicator);
-    communicator = NULL;
+    pthread_join(communicator, NULL);
 
     g_free(request_token);
     g_free(session_key);
