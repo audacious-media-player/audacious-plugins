@@ -1,23 +1,22 @@
 # Latvian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
-# Einars Sprugis <einars8@gmail.com>, 2009, 2011, 2012.
+# Einars Sprugis <einars8@gmail.com>, 2009,2011-2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-12-09 23:25+0100\n"
-"PO-Revision-Date: 2012-11-06 19:43+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-02-03 18:55+0100\n"
+"PO-Revision-Date: 2013-01-01 21:02+0000\n"
+"Last-Translator: hairy_latvian <einars8@gmail.com>\n"
 "Language-Team: Latvian\n"
-"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
-"2);\n"
+"Language: lv\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
 #: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:456
 msgid "mono"
@@ -38,7 +37,7 @@ msgstr "AAC dekodētājs"
 #: src/adplug/adplug-xmms.cc:151 src/modplug/modplugbmp.cxx:467
 #: src/psf/plugin.c:126 src/vtx/vtx.c:68 src/xsf/plugin.c:86
 msgid "sequenced"
-msgstr ""
+msgstr "sekvencēts"
 
 #: src/adplug/plugin.c:16
 msgid "AdPlug (AdLib Player)"
@@ -49,7 +48,7 @@ msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
-msgstr ""
+msgstr "Spraudnis, kas var tikt izmantots, lai sāktu atskaņošanu noteiktā laikā.\n\nSākotnējie autori: Adam Feakin un Daniel Stodden."
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -183,7 +182,7 @@ msgstr "Repertuārs (neobligāts)"
 
 #: src/alarm/interface.c:1075
 msgid "Select a playlist"
-msgstr ""
+msgstr "Izvēlieties repertuāru"
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -252,7 +251,7 @@ msgid ""
 "    Display a reminder when the alarm goes off,\n"
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
-msgstr ""
+msgstr "\nLaiks\n  Modinātājs: \n    Laiks, kad zvanīs modinātājs.\n\n  Kluss pēc: \n    Apturēt modinātāju pēc šāda laika perioda.\n      (ja pamošanās dialoglogs netiek aizvērts)\n\n\nDienas\n  Diena:\n    Izvēlieties, kādās dienās modinātāju aktivizēt.\n\n  Laiks:\n    Izvēlieties modinātāja laiku katrā dienā, \n    vai izvēlieties pārslēgšanas pogu, lai izmantotu\n    noklusēto laiku.\n\n\nSkaļums\n  Izdzišana:\n    Samazināt skaļumu līdz izvēlētajam līmenim\n    šādu laika periodu.\n\n  Sākt:\n    Sākt izdzišanu no šāda skaļuma līmeņa.\n\n  Beigt: \n    Skaļums, pie kāda apstādināt izdzišanu. Ja\n    izdzišanas laiks ir 0, tad iestatiet skaļumu uz\n    šo un sāciet atskaņošanu.\n\n\nOpcijas:\n  Papildu komanda:\n    Palaist šo komandu modināšanas laikā.\n\n  Repertuārs: \n    Ielādēt šo repertuāru, lai no tā atskaņotu\n    dziesmas. Ja repertuārs nav dots, tiks izmantotas\n    dziesmas, kuras pašreiz ir sarakstā.\n    Šeit var tikt ievadīts arī mp3/ogg straumes URL.\n\n  Atgādinātājs:\n    Parādīt atgādinājumu, kad palaižas modinātājs;\n    ierakstiet atgādinājumu rāmītī un ieslēdziet pārslēgšanas\n    pogu, ja vēlaties, lai atgādinājumu parāda.\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -307,9 +306,8 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
-"code served as a reference when the ALSA manual was not enough."
-msgstr ""
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+msgstr "ALSA izvades spraudnis atskaņotājam Audacious\nAutortiesības 2009-2012 John Lindgren\n\nPaldies William Pitcock, ALSA NG izvades spraudņa autoram, kura kods kalpoja kā paraugs, kad ar ALSA rokasgrāmatu vien nepietika."
 
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
@@ -323,9 +321,7 @@ msgstr "AMIDI-Plug (MIDI atskaņotājs)"
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
-"Jūs neesat izvēlējies nevienu sekvencera portu MIDI atskaņošanai. To varat "
-"izdarīt MIDI spraudņa iestatījumos."
+msgstr "Jūs neesat izvēlējies nevienu sekvencera portu MIDI atskaņošanai. To varat izdarīt MIDI spraudņa iestatījumos."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -333,23 +329,10 @@ msgstr "ALSA aizmugure "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Šī aizmugure sūta MIDI notikumus uz lietotāja izvēlētu ALSA sekvencera portu "
-"grupu. ALSA sekvencera saskarne ir ļoti daudzpusīga, tā var nodrošināt "
-"portus gan skaņas karšu aparatūras sintezatoriem (piem., emu10k1), gan arī "
-"programmatūras sintezatoriem, ārējām ierīcēm, u.c.\n"
-"Šī aizmugure neveido skaņu, MIDI notikumi tiek apstrādāti tieši no ierīcēm/ "
-"programmām aiz ALSA portiem; piemēram, MIDI notikumi, kas sūtīti uz "
-"aparatūras sintezatoru, tiks atskaņoti tieši.\n"
-"Aizmuguri uzrakstījis Giacomo Lozito."
+msgstr "Šī aizmugure sūta MIDI notikumus uz lietotāja izvēlētu ALSA sekvencera portu grupu. ALSA sekvencera saskarne ir ļoti daudzpusīga, tā var nodrošināt portus gan skaņas karšu aparatūras sintezatoriem (piem., emu10k1), gan arī programmatūras sintezatoriem, ārējām ierīcēm, u.c.\nŠī aizmugure neveido skaņu, MIDI notikumi tiek apstrādāti tieši no ierīcēm/ programmām aiz ALSA portiem; piemēram, MIDI notikumi, kas sūtīti uz aparatūras sintezatoru, tiks atskaņoti tieši.\nAizmuguri uzrakstījis Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid "FluidSynth Backend "
@@ -357,19 +340,10 @@ msgstr "FluidSynth aizmugure "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:42
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Šī aizmugure izveido skaņu, sūtot MIDI notikumus uz FluidSynth, reāllaika "
-"programmatūras sintezatoru, kas balstīts uz SoundFont2 specifikāciju (www."
-"fluidsynth.org).\n"
-"Izveidotā skaņa var mainīta ar atskaņotāja efektu spraudņu palīdzību, un tā "
-"tiek apstrādāta ar izvēlēto izvades spraudni.\n"
-"Aizmuguri uzrakstījis Giacomo Lozito."
+msgstr "Šī aizmugure izveido skaņu, sūtot MIDI notikumus uz FluidSynth, reāllaika programmatūras sintezatoru, kas balstīts uz SoundFont2 specifikāciju (www.fluidsynth.org).\nIzveidotā skaņa var mainīta ar atskaņotāja efektu spraudņu palīdzību, un tā tiek apstrādāta ar izvēlēto izvades spraudni.\nAizmuguri uzrakstījis Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -403,9 +377,7 @@ msgstr "Miksera iestatījumi"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">ALSA\n"
-"aizmugure</span>"
+msgstr "<span size=\"smaller\">ALSA\naizmugure</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -447,9 +419,7 @@ msgstr "izvilkt dziesmu vārdu tekstus no MIDI failiem (ja pieejami)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
+msgstr "<span size=\"smaller\">AMIDI\nPlug</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
@@ -553,9 +523,7 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">FluidSynth\n"
-"aizmugure</span>"
+msgstr "<span size=\"smaller\">FluidSynth\naizmugure</span>"
 
 #: src/amidi-plug/i_fileinfo.c:167
 msgid "Name:"
@@ -613,9 +581,36 @@ msgstr "  (nederīgs UTF-8)"
 msgid "About AMIDI-Plug"
 msgstr "About AMIDI-Plug"
 
+#: src/amidi-plug/i_utils.c:50
+msgid "AMIDI-Plug "
+msgstr "AMIDI-Plug "
+
+#: src/amidi-plug/i_utils.c:51
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr "\nmodulārs MIDI mūzikas atskaņotājs\nhttp://www.develia.org/projects.php?p=amidiplug\n\nautors Giacomo Lozito\n<james@develia.org>\n\nīpašs paldies...\n\nClemens Ladisch un Jaroslav Kysela\npar viņu jaukajām programmām aplaymidi un amixer;\nšīs programmas, līdz ar alsa-lib dokumentāciju, bija ļoti\nnoderīgas, lai uzzinātu vairāk par ALSA API\n\nAlfredo Spadafina\npar jauku midi klaviatūras logo\n\nTony Vroon\npar palīdzību alfa-testēšanā"
+
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
-msgstr ""
+msgstr "Audacious OSD "
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
@@ -654,10 +649,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"Palaiž OSD, kad, atskaņošanas laikā, dziesmas nosaukums mainās, bet faila "
-"nosaukums paliek nemainīgs. Tas galvenokārt ir noderīgi, lai attēlotu "
-"interneta straumju nosaukumu maiņu."
+msgstr "Palaiž OSD, kad, atskaņošanas laikā, dziesmas nosaukums mainās, bet faila nosaukums paliek nemainīgs. Tas galvenokārt ir noderīgi, lai attēlotu interneta straumju nosaukumu maiņu."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -789,12 +781,8 @@ msgstr "Kompozitēšanas pārvaldnieks atrasts"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Kompozitēšanas pārvaldnieks nav atrasts;\n"
-"ja vien esat pārliecināts, ka jums tas ir palaists, lūdzu, aktivizējiet "
-"kompozitēšanas pārvaldnieku, citādi OSD nefunkcionēs pareizi"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Kompozitēšanas pārvaldnieks nav atrasts;\nja vien esat pārliecināts, ka jums tas ir palaists, lūdzu, aktivizējiet kompozitēšanas pārvaldnieku, citādi OSD nefunkcionēs pareizi"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -897,7 +885,7 @@ msgstr "Bauer stereofoniski-uz-binaurāli (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Spektra analizators"
 
-#: src/cdaudio-ng/cdaudio-ng.c:106
+#: src/cdaudio-ng/cdaudio-ng.c:111
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -907,128 +895,128 @@ msgid ""
 "Also thank you to Tony Vroon for mentoring and guiding me.\n"
 "\n"
 "This was a Google Summer of Code 2007 project."
-msgstr ""
+msgstr "Autortiesības (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> un citi.\n\nLiels paldies libcdio izstrādātājiem <http://www.gnu.org/software/libcdio/>\nun libcddb izstrādātājiem <http://libcddb.sourceforge.net/>.\n\nPaldies arī Tony Vroon par padomiem.\n\nŠis bija Google Summer of Code 2007 projekts."
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Device</b>"
 msgstr "<b>Ierīce</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Read speed:"
 msgstr "Lasīšanas ātrums:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:133
 msgid "Override device:"
 msgstr "Aizstāt ierīci:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:135
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadati</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:131
+#: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Use CD-Text"
 msgstr "Lietot CD-text"
 
-#: src/cdaudio-ng/cdaudio-ng.c:133
+#: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Use CDDB"
 msgstr "Lietot CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:135
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Use HTTP instead of CDDBP"
 msgstr "Lietot HTTP nevis CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:137
+#: src/cdaudio-ng/cdaudio-ng.c:142
 msgid "Server:"
 msgstr "Serveris:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:139
+#: src/cdaudio-ng/cdaudio-ng.c:144
 msgid "Path:"
 msgstr "Ceļš:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:141
+#: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Port:"
 msgstr "Ports:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:151
+#: src/cdaudio-ng/cdaudio-ng.c:156
 msgid "Audio CD Plugin"
 msgstr "Audio CD spraudnis"
 
-#: src/cdaudio-ng/cdaudio-ng.c:252
+#: src/cdaudio-ng/cdaudio-ng.c:257
 msgid "Failed to initialize cdio subsystem."
-msgstr ""
+msgstr "Neizdevās inicializēt cdio apakšsistēmu."
 
-#: src/cdaudio-ng/cdaudio-ng.c:309
+#: src/cdaudio-ng/cdaudio-ng.c:314
 #, c-format
 msgid "Invalid URI %s."
-msgstr ""
+msgstr "Nederīgs URI %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:311
+#: src/cdaudio-ng/cdaudio-ng.c:316
 #, c-format
 msgid "Track %d not found."
-msgstr ""
+msgstr "Celiņš %d netika atrasts."
 
-#: src/cdaudio-ng/cdaudio-ng.c:313
+#: src/cdaudio-ng/cdaudio-ng.c:318
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "Celiņš %d ir datu celiņš."
 
-#: src/cdaudio-ng/cdaudio-ng.c:315
+#: src/cdaudio-ng/cdaudio-ng.c:320
 msgid "Failed to open audio output."
-msgstr ""
+msgstr "Neizdevās atvērt audio izvadi."
 
-#: src/cdaudio-ng/cdaudio-ng.c:398
+#: src/cdaudio-ng/cdaudio-ng.c:403
 msgid "Error reading audio CD."
-msgstr ""
+msgstr "Kļūda nolasot audio CD."
 
-#: src/cdaudio-ng/cdaudio-ng.c:508
+#: src/cdaudio-ng/cdaudio-ng.c:513
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:538 src/cdaudio-ng/cdaudio-ng.c:547
+#: src/cdaudio-ng/cdaudio-ng.c:543 src/cdaudio-ng/cdaudio-ng.c:552
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr ""
+msgstr "Neizdevās atvērt CD ierīci %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:550
+#: src/cdaudio-ng/cdaudio-ng.c:555
 msgid "No audio capable CD drive found."
-msgstr ""
+msgstr "Netika atrasts CD dzinis ar audio atskaņošanas iespēju."
 
-#: src/cdaudio-ng/cdaudio-ng.c:577
+#: src/cdaudio-ng/cdaudio-ng.c:582
 msgid "Failed to finish initializing opened CD drive."
-msgstr ""
+msgstr "Neizdevās pabeigt inicializēt atvērtu CD dzini."
 
-#: src/cdaudio-ng/cdaudio-ng.c:590
+#: src/cdaudio-ng/cdaudio-ng.c:595
 msgid "Failed to retrieve first/last track number."
-msgstr ""
+msgstr "Neizdevās saņemt pirmā/pēdējā celiņa numuru."
 
-#: src/cdaudio-ng/cdaudio-ng.c:615
+#: src/cdaudio-ng/cdaudio-ng.c:620
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr ""
+msgstr "Neizdevās nolasīt LSN sākumu/beigas celiņam %d."
 
-#: src/cdaudio-ng/cdaudio-ng.c:692
+#: src/cdaudio-ng/cdaudio-ng.c:710
 msgid "Failed to create the cddb connection."
-msgstr ""
+msgstr "Neizdevās izveidot cddb savienojumu."
 
-#: src/cdaudio-ng/cdaudio-ng.c:767
+#: src/cdaudio-ng/cdaudio-ng.c:785
 msgid "Failed to query the CDDB server"
-msgstr ""
+msgstr "Neizdevās aptaujāt CDDB serveri."
 
-#: src/cdaudio-ng/cdaudio-ng.c:769
+#: src/cdaudio-ng/cdaudio-ng.c:787
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr ""
+msgstr "Neizdevās aptaujāt CDDB serveri: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:793
+#: src/cdaudio-ng/cdaudio-ng.c:811
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr ""
+msgstr "Neizdevās nolasīt cddb informāciju: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:866
+#: src/cdaudio-ng/cdaudio-ng.c:884
 msgid "Drive is empty."
 msgstr "Dzinis ir tukšs."
 
-#: src/cdaudio-ng/cdaudio-ng.c:868
+#: src/cdaudio-ng/cdaudio-ng.c:886
 msgid "Unsupported disk type."
 msgstr "Neatbalstīts diska tips."
 
@@ -1060,7 +1048,7 @@ msgstr "Dinamiskais diapazons:"
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
+msgstr "Dinamiskā diapozona kompresijas spraudnis atskaņotājam\nAudacious\nAutortiesības 2010-2012 John Lindgren"
 
 #: src/compressor/plugin.c:60
 msgid "Dynamic Range Compressor"
@@ -1129,11 +1117,9 @@ msgstr "Palielināt atbalsi"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
-msgstr ""
-"noklusētais dziesmas garums, izteikts sekundēs, tiks izmantots dziesmām, "
-"kuras nenodrošina ar garuma informāciju (piem., celiņi, kas atkārtojas)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr "noklusētais dziesmas garums, izteikts sekundēs, tiks izmantots dziesmām, kuras nenodrošina ar garuma informāciju (piem., celiņi, kas atkārtojas)."
 
 #: src/console/plugin.c:28
 msgid ""
@@ -1143,33 +1129,26 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
-msgstr ""
+msgstr "Konsoļu mūzikas dekodētāja dzinējs, balstīts uz Game Music Emu 0.5.2\nAtbalstītie formāti: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n\nAudacious spraudņa autori:\nWilliam Pitcock <nenolod@dereferenced.org>\nShay Green <gblargg@gmail.com>"
 
 #: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
-msgstr ""
-"Sapludināšana neizdevās, jo dziesmām ir dažāds kanālu skaits. Varat izmantot "
-"kanāli mikseri, lai pārveidotu abas dziesmas uz vienu un to pašu vienādu "
-"kanālu skaitu."
+msgstr "Sapludināšana neizdevās, jo dziesmām ir dažāds kanālu skaits. Varat izmantot kanālu mikseri, lai pārveidotu abas dziesmas uz vienādu kanālu skaitu."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr ""
-"Sapludināšana neizdevās, jo dziesmām ir dažādas iztveršanas frekvences.\n"
-"\n"
-"Varat izmantot iztveršanas frekvenču pārveidotāju, lai pārveidotu dziesmas "
-"uz vienu un to pašu iztveršanas frekvenci."
+msgstr "Sapludināšana neizdevās, jo dziesmām ir dažādas iztveršanas frekvences. Varat izmantot iztveršanas frekvenču pārveidotāju, lai pārveidotu dziesmas uz vienu iztveršanas frekvenci."
 
 #: src/crossfade/crossfade.c:256
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
+msgstr "Sapludināšanas spraudnis atskaņotājam Audacious\nAutortiesības 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1225,7 +1204,7 @@ msgid ""
 "By Johan Levin, 1999\n"
 "\n"
 "Surround echo by Carl van Schaik, 1999"
-msgstr ""
+msgstr "Atbalss spraudnis\nAutors Johan Levin, 1999\n\nIeskaujošās atbalss autors Carl van Schaik, 1999"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
@@ -1239,7 +1218,7 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
-msgstr ""
+msgstr "Daudzformātu audio dekodēšanas spraudnis atskaņotājam Audacious,\nizmantojot FFMpeg multitvides karkasu (http://www.ffmpeg.org/)\n\nAudacious spraudņa autori:\nWilliam Pitcock <nenolod@nenolod.net>\nMatti Hämäläinen <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:680
 msgid "FFmpeg Plugin"
@@ -1309,7 +1288,7 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
-msgstr ""
+msgstr "Šī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt saskaņā\nar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\nFoundation; lietojiet licenses 2. versiju, vai arī (pēc jūsu izvēles)\njebkuru vēlāku versiju.\n\nŠī programma tiek izplatīta cerot, ka tā būs noderīga, bet BEZ JEBKĀDAS\nGARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\nSīkākai informācijai skatiet GNU General Public License.\n\nGNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\nJa tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\nFifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
@@ -1463,9 +1442,9 @@ msgstr "Vorbis kodētāja konfigurācija"
 msgid "Quality level (0 - 10):"
 msgstr "Kvalitātes līmenis (0 - 10):"
 
-#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:284
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:282
 msgid "lossless"
-msgstr ""
+msgstr "bezzudumu"
 
 #: src/flacng/plugin.c:270
 msgid ""
@@ -1473,7 +1452,7 @@ msgid ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
+msgstr "Oriģinālā koda autors\nRalf Ertzinger <ralf@skytale.net>\n\nhttp://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
@@ -1483,7 +1462,7 @@ msgstr "FLAC dekodētājs"
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
-msgstr ""
+msgstr "GIO spraudnis atskaņotājam Audacious\nAutortiesības 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
@@ -1495,7 +1474,7 @@ msgid ""
 "Lets you control the player with Gnome's shortcuts.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
-msgstr ""
+msgstr "Gnome īsceļu spraudnis\nĻauj kontrolēt atskaņotāju ar Gnome īsceļiem.\n\nAutortiesības (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
@@ -1853,24 +1832,24 @@ msgstr "Iezīmēt _visu"
 msgid "_Rename ..."
 msgstr "Pā_rdēvēt ..."
 
-#: src/gtkui/ui_gtk.c:99
+#: src/gtkui/ui_gtk.c:100
 msgid "GTK Interface"
 msgstr "GTK saskarne"
 
-#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:299
+#: src/gtkui/ui_gtk.c:170 src/skins/ui_main.c:299
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:175
+#: src/gtkui/ui_gtk.c:176
 msgid "Buffering ..."
 msgstr "Buferizācija ..."
 
-#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
+#: src/gtkui/ui_gtk.c:179 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:230 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:179
@@ -1960,14 +1939,10 @@ msgstr "(nekas)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"Nav ieteicams piesaistīt primārās peles pogas bez modificētājtaustiņiem.\n"
-"\n"
-"Vai vēlaties turpināt?"
+msgstr "Nav ieteicams piesaistīt primārās peles pogas bez modificētājtaustiņiem.\n\nVai vēlaties turpināt?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1981,9 +1956,7 @@ msgstr "Globālo īsinājumtaustiņu spraudņa konfigurācija"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Nospiediet taustiņu kombināciju teksta laukā.\n"
-"Jūs varat piesaistīt arī peles pogas."
+msgstr "Nospiediet taustiņu kombināciju teksta laukā.\nJūs varat piesaistīt arī peles pogas."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -2010,7 +1983,7 @@ msgid ""
 " Bryn Davies <curious@ihug.com.au>,\n"
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
-msgstr ""
+msgstr "Globālo īsinājumtaustiņu spraudnis\nKontrolējiet atskaņotāju ar globālām taustiņu kombinācijām vai multitvides\ntaustiņiem.\n\nAutortiesības (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\nPienesums arī no:\nAutortiesības (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\nAutortiesības (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n Bryn Davies <curious@ihug.com.au>,\n Jonathan A. Davis <davis@jdhouse.org>,\n Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
@@ -2022,7 +1995,7 @@ msgid ""
 "http://xmms-jack.sourceforge.net/\n"
 "\n"
 "Ported to Audacious by Giacomo Lozito"
-msgstr ""
+msgstr "Balstīts uz xmms-jack, autors Chris Morgan:\nhttp://xmms-jack.sourceforge.net/\n\nAudacious ports — Giacomo Lozito"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
@@ -2046,11 +2019,7 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>Vairākus ceļus atdaliet ar kolu.\n"
-"Šie ir papildu ceļi mainīgajā LADSPA_PATH esošajiem.\n"
-"Pēc jauno ceļu pievienošanas nospiediet 'Enter', lai skenētu jaunos "
-"spraudņus.</small>"
+msgstr "<small>Vairākus ceļus atdaliet ar kolu.\nŠie ir papildu ceļi mainīgajā LADSPA_PATH esošajiem.\nPēc jauno ceļu pievienošanas nospiediet 'Enter', lai skenētu jaunos spraudņus.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -2072,7 +2041,7 @@ msgstr "Iestatījumi"
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
-msgstr ""
+msgstr "LADSPA saimnieks atskaņotājam Audacious\nAutortiesības 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
@@ -2089,10 +2058,7 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr ""
-"%s: neizdevās nolasīt LIRC konf. failu\n"
-"%s: lūdzu, lasiet LIRC dokumentācijā\n"
-"%s: kā izveidot pareizu konf. failu\n"
+msgstr "%s: neizdevās nolasīt LIRC konf. failu\n%s: lūdzu, lasiet LIRC dokumentācijā\n%s: kā izveidot pareizu konf. failu\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -2128,7 +2094,7 @@ msgid ""
 "Andrew O. Shadoura <bugzilla@tut.by>\n"
 "\n"
 "For more information about LIRC, see http://lirc.org."
-msgstr ""
+msgstr "Vienkāršs spraudnis Audacious vadīšanai izmantojot LIRC attālinātās vadības\ndēmonu\n\nAudacious adaptācijas autori:\nTony Vroon <chainsaw@gentoo.org>\nJoonas Harjumäki <jharjuma@gmail.com>\n\nBalstīts uz XMMS LIRC spraudņa, kura autori ir:\nCarl van Schaik <carl@leg.uct.ac.za>\nChristoph Bartelmus <xmms@bartelmus.de>\nAndrew O. Shadoura <bugzilla@tut.by>\n\nPapildu informācijai par LIRC skatiet http://lirc.org."
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
@@ -2197,7 +2163,7 @@ msgid ""
 "To use it, add a URL: tact://beats*num/den\n"
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
-msgstr ""
+msgstr "Takts ģenerators, autors Martin Strauss <mys@faveve.uni-stuttgart.de>\n\nLai to izmantotu, pievienojiet URL: tact://sitienu*skaitītājs/saucējs\npiem., tact://77, lai atskaņotu 77 sitienus minūtē\nvai tact://60*3/4, lai atskaņotu 60 s/min 3/4 taktsmērā"
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
@@ -2207,7 +2173,7 @@ msgstr "Takts ģenerators"
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
-msgstr ""
+msgstr "Kanālu miksera spraudnis atskaņotājam Audacious\nAutortiesības 2011-2012 John Lindgren un Michał Lipski"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
@@ -2261,19 +2227,12 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011 John Lindgren\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under "
-"the terms of the GNU General Public License as published by the Free "
-"Software Foundation, either version 3 of the License, or (at your option) "
-"any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr "Balstīts uz libnotify-aosd, autors Maximilian Bogner:\nhttp://www.mbogner.de/projects/libnotify-aosd/\n\nAutors (C) 2010 Maximilian Bogner\nAutors (C) 2011 John Lindgren\n\nŠī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt saskaņā\nar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\nFoundation; lietojiet licenses 3. versiju, vai arī (pēc jūsu izvēles)\njebkuru vēlāku versiju.\n\nŠis spraudnis tiek izplatīts cerot, ka tas būs noderīgs, bet BEZ JEBKĀDAS\nGARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\nSīkākai informācijai skatiet GNU General Public License.\n\nGNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\nJa tā nav, skatiet: <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
@@ -2308,9 +2267,8 @@ msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin."
-msgstr ""
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
+msgstr "OSS4 izvades spraudnis atskaņotājam Audacious\nAutortiesības 2010-2012 Michał Lipski\n\nAutors vēlas pateikties cilvēkiem kanālā #audacious, īpaši Tony Vroon un John Lindgren, un, protams, iepriekšējā OSS spraudņa autoriem."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
@@ -2342,7 +2300,7 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
-msgstr ""
+msgstr "Audacious PulseAudio izvades spraudnis\n\nŠī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt saskaņā\nar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\nFoundation; lietojiet licenses 2. versiju, vai arī (pēc jūsu izvēles)\njebkuru vēlāku versiju.\n\nŠī programma tiek izplatīta cerot, ka tā būs noderīga, bet BEZ JEBKĀDAS\nGARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\nSīkākai informācijai skatiet GNU General Public License.\n\nGNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\nJa tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\nFifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
@@ -2352,7 +2310,7 @@ msgstr "PulseAudio izvade"
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
+msgstr "Iztveršanas frekvences pārveidotāja spraudnis atskaņotājam\nAudacious\nAutortiesības 2010-2012 John Lindgren"
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
@@ -2454,9 +2412,8 @@ msgstr "Scrobbler URL:"
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>"
-msgstr ""
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>"
+msgstr "Audacious AudioScrobbler spraudnis\n\nOriģinālais autors Audun Hove <audun@nlc.no> un Pipian <pipian@pipian.com>"
 
 #: src/scrobbler/plugin.c:185
 msgid "Scrobbler"
@@ -2466,7 +2423,7 @@ msgstr "Scrobbler"
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr ""
+msgstr "SDL izvades spraudnis atskaņotājam Audacious\nAutortiesības 2010 John Lindgren"
 
 #: src/sdlout/plugin.c:32
 msgid "SDL Output"
@@ -2489,9 +2446,7 @@ msgstr "Nezināms albums"
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr ""
-"%s\n"
-" albumā %s, izpilda %s"
+msgstr "%s\n albumā %s, izpilda %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
@@ -2509,15 +2464,9 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %s, %d songs"
-msgstr[0] ""
-"%s\n"
-" %s, %d dziesma"
-msgstr[1] ""
-"%s\n"
-" %s, %d dziesmas"
-msgstr[2] ""
-"%s\n"
-" %s, %d dziesmu"
+msgstr[0] "%s\n %s, %d dziesma"
+msgstr[1] "%s\n %s, %d dziesmas"
+msgstr[2] "%s\n %s, %d dziesmu"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2527,15 +2476,9 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %d songs by %s"
-msgstr[0] ""
-"%s\n"
-" %d dziesma ar izpildītāju %s"
-msgstr[1] ""
-"%s\n"
-" %d dziesmas ar izpildītāju %s"
-msgstr[2] ""
-"%s\n"
-" %d dziesmu ar izpildītāju %s"
+msgstr[0] "%s\n %d dziesma ar izpildītāju %s"
+msgstr[1] "%s\n %d dziesmas ar izpildītāju %s"
+msgstr[2] "%s\n %d dziesmu ar izpildītāju %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2553,9 +2496,7 @@ msgstr "Meklēt bibliotēkā"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"Lai importētu jūsu mūzikas bibleotēku atskaņotājā Audacious, izvēlieties "
-"mapi un nospiediet uz ikonas \"atsvaidzināt\"."
+msgstr "Lai importētu jūsu mūzikas bibleotēku atskaņotājā Audacious, izvēlieties mapi un nospiediet uz ikonas \"atsvaidzināt\"."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -3039,8 +2980,7 @@ msgstr "Meklēt un iezīmēt"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr ""
-"Meklē un atlasa repertuāra ierakstus, balstoties uz norādītajiem kritērijiem."
+msgstr "Meklē un atlasa repertuāra ierakstus, balstoties uz norādītajiem kritērijiem."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -3389,14 +3329,11 @@ msgstr "Meklēt ierakstus aktīvajā repertuārā"
 
 #: src/skins/ui_playlist.c:252
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Iezīmējiet ierakstus repertuārā, aizpildot vienu vai vairākus laukus. Laukos "
-"jāizmanto regulāro izteiksmju sintakse, reģistrnejutīga. Ja neziniet, kā "
-"regulārās izteiksmes darbojas, vienkārši nosaukuma daļu tam, ko meklējat."
+msgstr "Iezīmējiet ierakstus repertuārā, aizpildot vienu vai vairākus laukus. Laukos jāizmanto regulāro izteiksmju sintakse, reģistrnejutīga. Ja neziniet, kā regulārās izteiksmes darbojas, vienkārši nosaukuma daļu tam, ko meklējat."
 
 #: src/skins/ui_playlist.c:260
 msgid "Title: "
@@ -3455,20 +3392,12 @@ msgid ""
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Balstīts uz xmms sndfile spraudņa:\nAutortiesības (C) 2000, 2002 Erik de Castro Lopo\n\nAudacious adaptācija — Tony Vroon <chainsaw@gentoo.org>\n\nŠī ir brīvā programmatūra. Jūs varat to izplatīt un/vai modificēt saskaņā\nar GNU GPL licenses nosacījumiem, kurus publicējis Free Software\nFoundation; lietojiet licenses 2. versiju, vai arī (pēc jūsu izvēles)\njebkuru vēlāku versiju.\n\nŠī programma tiek izplatīta cerot, ka tā būs noderīga, bet BEZ JEBKĀDAS\nGARANTIJAS; pat PIEPRASĪJUMA vai NODERĪBAS ĪPAŠAM MĒRĶIM garantijas.\nSīkākai informācijai skatiet GNU General Public License.\n\nGNU GPL licenses kopijai vajadzētu būt saņemtai kopā ar šo programmu.\nJa tā nav, rakstiet uz Free Software Foundation, Inc., 51 Franklin Street,\nFifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndfile/plugin.c:437
 msgid "Sndfile Plugin"
@@ -3483,10 +3412,7 @@ msgid ""
 "Sndio Output Plugin\n"
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
-msgstr ""
-"Sndio izvades spraudnis\n"
-"\n"
-"Autors Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr "Sndio izvades spraudnis\n\nAutors Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:261
 msgid "Unsupported format"
@@ -3497,10 +3423,7 @@ msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
-msgstr ""
-"Tika pieprasīts formāts, ko neatbalsta audio ierīce.\n"
-"\n"
-"Lūdzu, mēģiniet vēlreiz ar palaistu sndiod(1) serveri."
+msgstr "Tika pieprasīts formāts, ko neatbalsta audio ierīce.\n\nLūdzu, mēģiniet vēlreiz ar palaistu sndiod(1) serveri."
 
 #: src/sndio/sndio.c:405
 msgid "sndio device"
@@ -3534,8 +3457,7 @@ msgstr "Komanda, ko palaist, kad Audacious sasniedz repertuāra beigas."
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"Komanda, ko palaist, kad nomainās dziesmas nosaukums (piem., tīkla plūsmas)."
+msgstr "Komanda, ko palaist, kad nomainās dziesmas nosaukums (piem., tīkla plūsmas)."
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3554,30 +3476,13 @@ msgid ""
 "%a: Artist\n"
 "%b: Album\n"
 "%T: Track title"
-msgstr ""
-"Varat izmantot sekojoša formāta virknes, kuras\n"
-"pirms komandas izsaukšanas tiks aizvietotas\n"
-"(ne visas ir derīgas repertuāra-beigas komandai)\n"
-"\n"
-"%F: Frekvence (hercos)\n"
-"%c: Kanālu skaits\n"
-"%f: faila nosaukums (pilns ceļš)\n"
-"%l: ilgums (milisekundēs)\n"
-"%n vai %s: Dziesmas nosaukums\n"
-"%r: Ātrums (bitos sekundē)\n"
-"%t: Repertuāra pozīcija (%02d)\n"
-"%p: Pašreiz atskaņo (1 vai 0)\n"
-"%a: Izpildītājs\n"
-"%b: Albums\n"
-"%T: Celiņa nosaukums"
+msgstr "Varat izmantot sekojoša formāta virknes, kuras\npirms komandas izsaukšanas tiks aizvietotas\n(ne visas ir derīgas repertuāra-beigas komandai)\n\n%F: Frekvence (hercos)\n%c: Kanālu skaits\n%f: faila nosaukums (pilns ceļš)\n%l: ilgums (milisekundēs)\n%n vai %s: Dziesmas nosaukums\n%r: Ātrums (bitos sekundē)\n%t: Repertuāra pozīcija (%02d)\n%p: Pašreiz atskaņo (1 vai 0)\n%a: Izpildītājs\n%b: Albums\n%T: Celiņa nosaukums"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>Parametrus, kuri tiek padoti čaulai, vajadzētu ietvert "
-"pēdiņās. Pretējā gadījumā rodas risks drošībai.</span>"
+msgstr "<span size='small'>Parametrus, kuri tiek padoti čaulai, vajadzētu ietvert pēdiņās. Pretējā gadījumā rodas risks drošībai.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3608,7 +3513,7 @@ msgid ""
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
-msgstr ""
+msgstr "Statusa ikonas spraudnis\n\nAutortiesības 2005-2007 Giacomo Lozito <james@develia.org>\nAutortiesības 2010 Michał Lipski <tallica@o2.pl>\n\nŠis spraudnis nodrošina ar statusa ikonu, kas novietota\nsistēmas ikonu joslas apgabalā."
 
 #: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
@@ -3647,7 +3552,7 @@ msgid ""
 "Extra Stereo Plugin\n"
 "\n"
 "By Johan Levin, 1999"
-msgstr ""
+msgstr "Papildu stereo spraudnis\n\nAutors Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
@@ -3673,21 +3578,21 @@ msgid ""
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
-msgstr ""
+msgstr "Sinusa toņu ģenerators, autors Håvard Kvålen <havardk@xmms.org>\nModificējis Daniel J. Peng <danielpeng@bigfoot.com>\n\nLai to izmantotu, pievienojiet URL:  tone://frekvence1;frekvence2;frekvence3;...\npiem., tone://2000;2005, lai atskaņotu 2000 Hz tonu un 2005 Hz toni"
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
 msgstr "Toņa ģenerators"
 
-#: src/unix-io/unix-io.c:246
+#: src/unix-io/unix-io.c:245
 msgid ""
 "File I/O Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
-msgstr ""
+msgstr "Failu ievadizvades spraudnis atskaņotājam Audacious\nAutortiesības 2009-2012 John Lindgren\n\nŠIS SPRAUDNIS IR OBLIGĀTS. NEATSLĒDZIET TO."
 
-#: src/unix-io/unix-io.c:269
+#: src/unix-io/unix-io.c:268
 msgid "File I/O Plugin"
 msgstr "Failu ievadizvades spraudnis"
 
@@ -3714,7 +3619,7 @@ msgid ""
 "Håvard Kvålen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
-msgstr ""
+msgstr "Audacious Ogg Vorbis dekodētājs\n\nBalstīts uz Xiph.org fonda Ogg Vorbis spraudņa: http://www.xiph.org/\n\nOriģinālā koda autors:\nTony Arcieri <bascule@inferno.tusculum.edu>\n\nPienesumi no:\nChris Montgomery <monty@xiph.org>\nPeter Alm <peter@xmms.org>\nMichael Smith <msmith@labyrinth.edu.au>\nJack Moffitt <jack@icecast.org>\nJorn Baayen <jorn@nl.linux.org>\nHåvard Kvålen <havardk@xmms.org>\nGian-Carlo Pascutto <gcp@sjeng.org>\nEugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.c:574
 msgid "Ogg Vorbis Decoder"
@@ -3725,28 +3630,28 @@ msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
-msgstr ""
+msgstr "Vortex failu formāta atskaņotājs, autors Sashnov Alexander <sashnov@ngs.ru>\nBalstīts uz in_vtx.dll, autors Roman Sherbakov <v_soft@microfor.ru>\nAudacious spraudņa autors Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/vtx/vtx.c:247
 msgid "VTX Decoder"
 msgstr "VTX dekodētājs"
 
-#: src/wavpack/wavpack.c:286
+#: src/wavpack/wavpack.c:284
 msgid "lossy (hybrid)"
-msgstr ""
+msgstr "zudumradošs (hibrīdais)"
 
-#: src/wavpack/wavpack.c:288
+#: src/wavpack/wavpack.c:286
 msgid "lossy"
-msgstr ""
+msgstr "zudumradošs"
 
-#: src/wavpack/wavpack.c:338
+#: src/wavpack/wavpack.c:336
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Some of the plugin code was by Miles Egan."
-msgstr ""
+msgstr "Autortiesības 2006 William Pitcock <nenolod@nenolod.net>\n\nDaļai koda autors ir Miles Egan."
 
-#: src/wavpack/wavpack.c:345
+#: src/wavpack/wavpack.c:343
 msgid "WavPack Decoder"
 msgstr "WavPack dekodētājs"
 

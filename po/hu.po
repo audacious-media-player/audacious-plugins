@@ -1,22 +1,22 @@
 # Hungarian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
 # Peter Polonkai <polesz@nedudu.hu>, 2010.
-# Péter Polonkai <polesz@nedudu.hu>, 2011, 2012.
+# Péter Polonkai <polesz@nedudu.hu>, 2011-2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-12-09 23:25+0100\n"
-"PO-Revision-Date: 2012-11-06 19:43+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-02-03 18:55+0100\n"
+"PO-Revision-Date: 2012-12-29 19:25+0000\n"
+"Last-Translator: Péter Polonkai <polesz@nedudu.hu>\n"
 "Language-Team: Hungarian\n"
-"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:456
@@ -183,7 +183,7 @@ msgstr "Lejátszólista (opcionális)"
 
 #: src/alarm/interface.c:1075
 msgid "Select a playlist"
-msgstr ""
+msgstr "Lejátszólista választása"
 
 #: src/alarm/interface.c:1085 src/alarm/interface.c:1250
 msgid "Reminder"
@@ -307,8 +307,7 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
-"code served as a reference when the ALSA manual was not enough."
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
 msgstr ""
 
 #: src/alsa/plugin.c:34
@@ -331,13 +330,8 @@ msgstr "ALSA háttér-szolgáltatás"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
 
@@ -347,11 +341,8 @@ msgstr "FludSynth háttér-szolgáltatás"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:42
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
 
@@ -387,9 +378,7 @@ msgstr "Keverő beállítások"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">ALSA\n"
-"háttér-szolgáltatás</span>"
+msgstr "<span size=\"smaller\">ALSA\nháttér-szolgáltatás</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -431,9 +420,7 @@ msgstr "dalszöveg kibontása a MIDI fájból (ha elérhető)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"bővítmény</span>"
+msgstr "<span size=\"smaller\">AMIDI\nbővítmény</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
@@ -489,7 +476,7 @@ msgstr "érték:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:429
 msgid "polyphony"
-msgstr ""
+msgstr "polifonikus"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:457
 msgid "reverb"
@@ -557,7 +544,7 @@ msgstr "Hossz (msec):"
 
 #: src/amidi-plug/i_fileinfo.c:211
 msgid "No. of Tracks:"
-msgstr ""
+msgstr "Sáv sorszáma:"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "variable"
@@ -595,9 +582,36 @@ msgstr "  (érvénytelen UTF-8)"
 msgid "About AMIDI-Plug"
 msgstr ""
 
+#: src/amidi-plug/i_utils.c:50
+msgid "AMIDI-Plug "
+msgstr ""
+
+#: src/amidi-plug/i_utils.c:51
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr ""
+
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
-msgstr ""
+msgstr "Audacious OSD "
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
@@ -768,12 +782,8 @@ msgstr "Kompozit kezelő detektálva"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Kompozít kezelő nem érzékelhető;\n"
-"ha tudja, hogy van egy futó kompozít kezelő, kérjük aktiválja, egyébként az "
-"OSD nem fog megfelelően működni"
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Kompozít kezelő nem érzékelhető;\nha tudja, hogy van egy futó kompozít kezelő, kérjük aktiválja, egyébként az OSD nem fog megfelelően működni"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -838,19 +848,19 @@ msgstr "Egyéb"
 
 #: src/asx/asx.c:97
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "ASXv1/ASXv2 lejátszólisták"
 
 #: src/audpl/audpl.c:224
 msgid "Audacious Playlists (audpl)"
-msgstr ""
+msgstr "Audacious lejátszólisták (audpl)"
 
 #: src/blur_scope/blur_scope.c:49
 msgid "<b>Color</b>"
-msgstr ""
+msgstr "<b>Szín</b>"
 
 #: src/blur_scope/blur_scope.c:58
 msgid "Blur Scope"
-msgstr ""
+msgstr "Szolid szkóp"
 
 #: src/bs2b/plugin.c:138
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -874,9 +884,9 @@ msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
-msgstr ""
+msgstr "Spektrum analizátor"
 
-#: src/cdaudio-ng/cdaudio-ng.c:106
+#: src/cdaudio-ng/cdaudio-ng.c:111
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -888,126 +898,126 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Device</b>"
-msgstr ""
-
-#: src/cdaudio-ng/cdaudio-ng.c:125
-msgid "Read speed:"
-msgstr ""
-
-#: src/cdaudio-ng/cdaudio-ng.c:128
-msgid "Override device:"
-msgstr ""
+msgstr "<b>Eszköz</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
-msgid "<b>Metadata</b>"
-msgstr ""
+msgid "Read speed:"
+msgstr "Olvasási sebesség:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:131
+#: src/cdaudio-ng/cdaudio-ng.c:133
+msgid "Override device:"
+msgstr "Eszköz felülírása:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:135
+msgid "<b>Metadata</b>"
+msgstr "<b>Metaadat</b>"
+
+#: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Use CD-Text"
 msgstr "CD-Text használata"
 
-#: src/cdaudio-ng/cdaudio-ng.c:133
+#: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Use CDDB"
 msgstr "CDDB használata"
 
-#: src/cdaudio-ng/cdaudio-ng.c:135
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Use HTTP instead of CDDBP"
 msgstr "Hasznájon HTTP helyett CDDBP protokollt"
 
-#: src/cdaudio-ng/cdaudio-ng.c:137
+#: src/cdaudio-ng/cdaudio-ng.c:142
 msgid "Server:"
 msgstr "Szerver:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:139
+#: src/cdaudio-ng/cdaudio-ng.c:144
 msgid "Path:"
 msgstr "Elérési út:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:141
+#: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:151
+#: src/cdaudio-ng/cdaudio-ng.c:156
 msgid "Audio CD Plugin"
-msgstr ""
+msgstr "Audio CD bővítmény"
 
-#: src/cdaudio-ng/cdaudio-ng.c:252
+#: src/cdaudio-ng/cdaudio-ng.c:257
 msgid "Failed to initialize cdio subsystem."
-msgstr ""
+msgstr "A cdio alrendszer inicializálása sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.c:309
+#: src/cdaudio-ng/cdaudio-ng.c:314
 #, c-format
 msgid "Invalid URI %s."
-msgstr ""
+msgstr "Érvénytelen URI: %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:311
+#: src/cdaudio-ng/cdaudio-ng.c:316
 #, c-format
 msgid "Track %d not found."
-msgstr ""
+msgstr "%d sáv nem található."
 
-#: src/cdaudio-ng/cdaudio-ng.c:313
+#: src/cdaudio-ng/cdaudio-ng.c:318
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "Ez adatsáv: %d."
 
-#: src/cdaudio-ng/cdaudio-ng.c:315
+#: src/cdaudio-ng/cdaudio-ng.c:320
 msgid "Failed to open audio output."
-msgstr ""
+msgstr "Az audio kimenet megnyitása sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.c:398
+#: src/cdaudio-ng/cdaudio-ng.c:403
 msgid "Error reading audio CD."
-msgstr ""
+msgstr "Hiba az audio CD olvasásakor."
 
-#: src/cdaudio-ng/cdaudio-ng.c:508
+#: src/cdaudio-ng/cdaudio-ng.c:513
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:538 src/cdaudio-ng/cdaudio-ng.c:547
+#: src/cdaudio-ng/cdaudio-ng.c:543 src/cdaudio-ng/cdaudio-ng.c:552
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr ""
+msgstr "A CD eszköz %s megnyitása sikertelen."
 
-#: src/cdaudio-ng/cdaudio-ng.c:550
+#: src/cdaudio-ng/cdaudio-ng.c:555
 msgid "No audio capable CD drive found."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:577
+#: src/cdaudio-ng/cdaudio-ng.c:582
 msgid "Failed to finish initializing opened CD drive."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:590
+#: src/cdaudio-ng/cdaudio-ng.c:595
 msgid "Failed to retrieve first/last track number."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:615
+#: src/cdaudio-ng/cdaudio-ng.c:620
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:692
+#: src/cdaudio-ng/cdaudio-ng.c:710
 msgid "Failed to create the cddb connection."
-msgstr ""
+msgstr "Sikertelen a cddb kapcsolat létrehozása."
 
-#: src/cdaudio-ng/cdaudio-ng.c:767
+#: src/cdaudio-ng/cdaudio-ng.c:785
 msgid "Failed to query the CDDB server"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:769
+#: src/cdaudio-ng/cdaudio-ng.c:787
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:793
+#: src/cdaudio-ng/cdaudio-ng.c:811
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:866
+#: src/cdaudio-ng/cdaudio-ng.c:884
 msgid "Drive is empty."
 msgstr "A meghajtó üres."
 
-#: src/cdaudio-ng/cdaudio-ng.c:868
+#: src/cdaudio-ng/cdaudio-ng.c:886
 msgid "Unsupported disk type."
 msgstr "Nem támogatott lemez típus."
 
@@ -1021,7 +1031,7 @@ msgstr "CD Hozzáadása"
 
 #: src/cd-menu-items/cd-menu-items.c:59
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Audio CD menüelemek"
 
 #: src/compressor/plugin.c:37
 msgid "<b>Compression</b>"
@@ -1108,8 +1118,8 @@ msgstr "Visszhang növelése"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
 msgstr ""
 
 #: src/console/plugin.c:28
@@ -1143,7 +1153,7 @@ msgstr ""
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
-msgstr ""
+msgstr "<b>Átfedés</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
@@ -1151,7 +1161,7 @@ msgstr ""
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
-msgstr ""
+msgstr "Átfedés"
 
 #: src/crystalizer/crystalizer.c:42
 msgid "<b>Crystalizer</b>"
@@ -1183,7 +1193,7 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr ""
+msgstr "Visszajelzés:"
 
 #: src/echo_plugin/echo.c:33
 msgid "Volume:"
@@ -1195,11 +1205,11 @@ msgid ""
 "By Johan Levin, 1999\n"
 "\n"
 "Surround echo by Carl van Schaik, 1999"
-msgstr ""
+msgstr "Visszhang bővítmény\nÍrta Johan Levin, 1999\n\nSurround visszhang írta Carl van Schaik, 1999"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Visszhang"
 
 #: src/ffaudio/ffaudio-core.c:633
 msgid ""
@@ -1213,11 +1223,11 @@ msgstr ""
 
 #: src/ffaudio/ffaudio-core.c:680
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "FFmpeg bővítméyn"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr ""
+msgstr "Fájlíró konfiguráció"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1283,7 +1293,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "Fájlíró bővítmény"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1433,7 +1443,7 @@ msgstr "Vorbis kódoló beállítások"
 msgid "Quality level (0 - 10):"
 msgstr "Minőségi szint (0-10):"
 
-#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:284
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:282
 msgid "lossless"
 msgstr ""
 
@@ -1443,21 +1453,21 @@ msgid ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
+msgstr "Eredeti kód szerzője\nRalf Ertzinger <ralf@skytale.net>\n\nhttp://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "FLAC dekódoló"
 
 #: src/gio/gio.c:302
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
-msgstr ""
+msgstr "GIO bővítmény az Audacious-hoz\nCopyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
-msgstr ""
+msgstr "GIO bővítmény"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:44
 msgid ""
@@ -1469,7 +1479,7 @@ msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
-msgstr ""
+msgstr "Gnome rövidítések"
 
 #: src/gtkui/columns.c:33
 msgid "Entry number"
@@ -1621,7 +1631,7 @@ msgstr "_Véletlenszerű"
 
 #: src/gtkui/menus.c:179
 msgid "N_o Playlist Advance"
-msgstr ""
+msgstr "_Ne legyen léptetés a lejátszólistában"
 
 #: src/gtkui/menus.c:180
 msgid "Stop _After This Song"
@@ -1697,7 +1707,7 @@ msgstr "_Új"
 
 #: src/gtkui/menus.c:206
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "Át_nevezés ..."
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:260
 msgid "_Close"
@@ -1713,7 +1723,7 @@ msgstr "_Exportálás ..."
 
 #: src/gtkui/menus.c:212
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "_Lejátszólista kezelő ..."
 
 #: src/gtkui/menus.c:213
 msgid "_Queue Manager ..."
@@ -1761,7 +1771,7 @@ msgstr "_Státusz sor mutatása"
 
 #: src/gtkui/menus.c:232
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "_Bezárás gomb mutatása"
 
 #: src/gtkui/menus.c:233
 msgid "Show Column _Headers"
@@ -1773,7 +1783,7 @@ msgstr "_Válasszon oszlopokat ..."
 
 #: src/gtkui/menus.c:235
 msgid "Scrol_l on Song Change"
-msgstr ""
+msgstr "Számváltáskor scro_llozik"
 
 #: src/gtkui/menus.c:238
 msgid "_File"
@@ -1821,26 +1831,26 @@ msgstr "Mind kivál_aszt"
 
 #: src/gtkui/menus.c:259
 msgid "_Rename ..."
-msgstr ""
+msgstr "Átneve_zés ..."
 
-#: src/gtkui/ui_gtk.c:99
+#: src/gtkui/ui_gtk.c:100
 msgid "GTK Interface"
 msgstr "GTK+ felület"
 
-#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:299
+#: src/gtkui/ui_gtk.c:170 src/skins/ui_main.c:299
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:175
+#: src/gtkui/ui_gtk.c:176
 msgid "Buffering ..."
 msgstr "Pufferelés ..."
 
-#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
+#: src/gtkui/ui_gtk.c:179 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:230 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:179
@@ -1905,7 +1915,7 @@ msgstr "Ugrás fájlhoz"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle Player Window(s)"
-msgstr ""
+msgstr "Lejátszó ablak(ok) váltása"
 
 #: src/hotkey/gui.c:84
 msgid "Show On-Screen-Display"
@@ -1929,8 +1939,7 @@ msgstr "(nincs)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -1978,7 +1987,7 @@ msgstr ""
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
-msgstr ""
+msgstr "Általános gyorsbillentyűk"
 
 #: src/jack/jack.c:411
 msgid ""
@@ -1990,7 +1999,7 @@ msgstr ""
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
-msgstr ""
+msgstr "JACK kimenet"
 
 #: src/ladspa/plugin.c:494
 #, c-format
@@ -2003,7 +2012,7 @@ msgstr ""
 
 #: src/ladspa/plugin.c:571
 msgid "Module paths:"
-msgstr ""
+msgstr "Modul útvonalak:"
 
 #: src/ladspa/plugin.c:576
 msgid ""
@@ -2036,7 +2045,7 @@ msgstr ""
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
-msgstr ""
+msgstr "LADSPA gép"
 
 #: src/lirc/lirc.c:77
 #, c-format
@@ -2089,7 +2098,7 @@ msgstr ""
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
-msgstr ""
+msgstr "<b>Kapcsolat</b>"
 
 #: src/lirc/lirc.c:412
 msgid "Reconnect to LIRC server"
@@ -2097,45 +2106,45 @@ msgstr "Újracsatlakozás a LIRC szerverhez"
 
 #: src/lirc/lirc.c:414
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Várjon az újracsatlakozás előtt:"
 
 #: src/lirc/lirc.c:424
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "LIRC bővítmény"
 
 #: src/lyricwiki/lyricwiki.c:119
 msgid "No lyrics available"
-msgstr ""
+msgstr "Nincs elérhető zeneszöveg"
 
 #: src/lyricwiki/lyricwiki.c:189 src/lyricwiki/lyricwiki.c:215
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "Nem sikerült letölteni: %s"
 
 #: src/lyricwiki/lyricwiki.c:199 src/lyricwiki/lyricwiki.c:225
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "Nem sikerült értelmezni: %s"
 
 #: src/lyricwiki/lyricwiki.c:234
 msgid "Looking for lyrics ..."
-msgstr ""
+msgstr "Zeneszöveg keresése ..."
 
 #: src/lyricwiki/lyricwiki.c:245
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Érvénytelen a dal metaadata"
 
 #: src/lyricwiki/lyricwiki.c:258
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
+msgstr "Kapcsolódás a lyrics.wikia.com helyhez ..."
 
 #: src/lyricwiki/lyricwiki.c:387
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "LyricWiki bővítmény"
 
 #: src/m3u/m3u.c:123
 msgid "M3U Playlists"
-msgstr ""
+msgstr "M3U lejátszólisták"
 
 #: src/metronom/metronom.c:129
 #, c-format
@@ -2168,7 +2177,7 @@ msgstr ""
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr ""
+msgstr "<b>Csatorna keverő</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
@@ -2176,15 +2185,15 @@ msgstr "Kimeneti csatornák:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr ""
+msgstr "Csatorna keverő"
 
 #: src/mms/mms.c:226
 msgid "MMS Plugin"
-msgstr ""
+msgstr "MMS bővítmény"
 
 #: src/modplug/plugin_main.c:13
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (Modul lejátszó)"
 
 #: src/mpg123/mpg123.c:197
 msgid "Surround"
@@ -2192,15 +2201,15 @@ msgstr "Térhatású"
 
 #: src/mpg123/mpg123.c:554
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "MPG123 bővítmény"
 
 #: src/mpris2/plugin.c:412
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "MPRIS 2 szerver"
 
 #: src/neon/neon.c:1230
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Neon HTTP/HTTPS bővítmény"
 
 #: src/notify/event.c:49
 msgid "Stopped"
@@ -2218,23 +2227,16 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011 John Lindgren\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under "
-"the terms of the GNU General Public License as published by the Free "
-"Software Foundation, either version 3 of the License, or (at your option) "
-"any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Asztali értesítések"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
@@ -2265,8 +2267,7 @@ msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin."
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
 
 #: src/oss4/plugin.c:115
@@ -2275,7 +2276,7 @@ msgstr ""
 
 #: src/pls/pls.c:114
 msgid "PLS Playlists"
-msgstr ""
+msgstr "PLS lejásztólisták"
 
 #: src/psf/plugin.c:263
 msgid "OpenPSF PSF1/PSF2 Decoder"
@@ -2303,7 +2304,7 @@ msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "PulseAudio kimenet"
 
 #: src/resample/resample.c:163
 msgid ""
@@ -2317,7 +2318,7 @@ msgstr ""
 
 #: src/resample/resample.c:168
 msgid "Linear interpolation"
-msgstr ""
+msgstr "Lineáris interpoláció"
 
 #: src/resample/resample.c:169
 msgid "Fast sinc interpolation"
@@ -2333,7 +2334,7 @@ msgstr ""
 
 #: src/resample/resample.c:174
 msgid "<b>Conversion</b>"
-msgstr ""
+msgstr "<b>Átalakítás</b>"
 
 #: src/resample/resample.c:175
 msgid "Method:"
@@ -2353,27 +2354,27 @@ msgstr ""
 
 #: src/resample/resample.c:184
 msgid "8 kHz:"
-msgstr ""
+msgstr "8 kHz:"
 
 #: src/resample/resample.c:187
 msgid "16 kHz:"
-msgstr ""
+msgstr "16 kHz:"
 
 #: src/resample/resample.c:190
 msgid "22.05 kHz:"
-msgstr ""
+msgstr "22.05 kHz:"
 
 #: src/resample/resample.c:193
 msgid "44.1 kHz:"
-msgstr ""
+msgstr "44.1 kHz:"
 
 #: src/resample/resample.c:196
 msgid "48 kHz:"
-msgstr ""
+msgstr "48 kHz:"
 
 #: src/resample/resample.c:199
 msgid "96 kHz:"
-msgstr ""
+msgstr "96 kHz:"
 
 #: src/resample/resample.c:202
 msgid "192 kHz:"
@@ -2393,7 +2394,7 @@ msgstr "<b>Szolgáltatások</b>"
 
 #: src/scrobbler/configure.c:143
 msgid "<b>Last.fm</b>"
-msgstr ""
+msgstr "<b>Last.fm</b>"
 
 #: src/scrobbler/configure.c:147
 msgid "Username:"
@@ -2411,8 +2412,7 @@ msgstr "Scrobbler URL:"
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>"
 msgstr ""
 
 #: src/scrobbler/plugin.c:185
@@ -2463,12 +2463,8 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %s, %d songs"
-msgstr[0] ""
-"%s\n"
-"%s, %d dal"
-msgstr[1] ""
-"%s\n"
-"%s, %d dal"
+msgstr[0] "%s\n%s, %d dal"
+msgstr[1] "%s\n%s, %d dal"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2895,7 +2891,7 @@ msgstr "Lejátszólista"
 
 #: src/skins/ui_manager.c:210 src/skins/ui_manager.c:211
 msgid "Play Playlist"
-msgstr ""
+msgstr "Lejátszólista lejátszása"
 
 #: src/skins/ui_manager.c:213 src/skins/ui_manager.c:214
 msgid "New Playlist"
@@ -2981,9 +2977,7 @@ msgstr "Keresés és választ"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr ""
-"Keres a lejátszási listán és kiválasztja azokat a lista bejegyzéseket amik "
-"megfelelnek a meghatározott kritériumoknak."
+msgstr "Keres a lejátszási listán és kiválasztja azokat a lista bejegyzéseket amik megfelelnek a meghatározott kritériumoknak."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -3053,8 +3047,7 @@ msgstr "Fájlnév szerint"
 
 #: src/skins/ui_manager.c:298
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
-"A többszörösen felvett elemekt törlése a lejátszólistáról fájlnév alapján."
+msgstr "A többszörösen felvett elemekt törlése a lejátszólistáról fájlnév alapján."
 
 #: src/skins/ui_manager.c:301 src/skins/ui_manager.c:341
 #: src/skins/ui_manager.c:371
@@ -3063,9 +3056,7 @@ msgstr "Útvonal + fájlnév szerint"
 
 #: src/skins/ui_manager.c:302
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
-"A többszörösen felvett elemekt törlése a lejátszólistáról teljes elérési út "
-"alapján."
+msgstr "A többszörösen felvett elemekt törlése a lejátszólistáról teljes elérési út alapján."
 
 #: src/skins/ui_manager.c:305
 msgid "Remove Unselected"
@@ -3335,8 +3326,8 @@ msgstr "Elemek keresése az aktív lejátszólistában"
 
 #: src/skins/ui_playlist.c:252
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
@@ -3398,19 +3389,11 @@ msgid ""
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/sndfile/plugin.c:437
@@ -3430,7 +3413,7 @@ msgstr ""
 
 #: src/sndio/sndio.c:261
 msgid "Unsupported format"
-msgstr ""
+msgstr "Nem támogatott formátum"
 
 #: src/sndio/sndio.c:262
 msgid ""
@@ -3441,7 +3424,7 @@ msgstr ""
 
 #: src/sndio/sndio.c:405
 msgid "sndio device"
-msgstr ""
+msgstr "sndio eszköz"
 
 #: src/sndio/sndio.c:421
 msgid "(empty means default)"
@@ -3543,7 +3526,7 @@ msgstr "Váltja a lejátszott dalt"
 
 #: src/statusicon/statusicon.c:406
 msgid "<b>Other Settings</b>"
-msgstr ""
+msgstr "<b>Egyéb beállítások</b>"
 
 #: src/statusicon/statusicon.c:407
 msgid "Disable the popup window"
@@ -3598,7 +3581,7 @@ msgstr ""
 msgid "Tone Generator"
 msgstr ""
 
-#: src/unix-io/unix-io.c:246
+#: src/unix-io/unix-io.c:245
 msgid ""
 "File I/O Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
@@ -3606,7 +3589,7 @@ msgid ""
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
 
-#: src/unix-io/unix-io.c:269
+#: src/unix-io/unix-io.c:268
 msgid "File I/O Plugin"
 msgstr ""
 
@@ -3650,22 +3633,22 @@ msgstr ""
 msgid "VTX Decoder"
 msgstr ""
 
-#: src/wavpack/wavpack.c:286
+#: src/wavpack/wavpack.c:284
 msgid "lossy (hybrid)"
 msgstr ""
 
-#: src/wavpack/wavpack.c:288
+#: src/wavpack/wavpack.c:286
 msgid "lossy"
 msgstr ""
 
-#: src/wavpack/wavpack.c:338
+#: src/wavpack/wavpack.c:336
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
 
-#: src/wavpack/wavpack.c:345
+#: src/wavpack/wavpack.c:343
 msgid "WavPack Decoder"
 msgstr ""
 

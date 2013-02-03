@@ -1,7 +1,7 @@
 # Ukrainian translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
 # fedenko <fedenko@ukr.net>, 2011.
 # Kostyantyn Fedenko <fedenko@ukr.net>, 2011.
@@ -14,18 +14,17 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-12-09 23:25+0100\n"
-"PO-Revision-Date: 2012-12-03 14:36+0000\n"
+"POT-Creation-Date: 2013-02-03 18:55+0100\n"
+"PO-Revision-Date: 2012-12-28 18:44+0000\n"
 "Last-Translator: Rax Garfield <rax@rax.pp.ua>\n"
 "Language-Team: Ukrainian\n"
-"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: uk\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:456
 msgid "mono"
@@ -57,10 +56,7 @@ msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
-msgstr ""
-"Відтворення в заданий час.\n"
-"\n"
-"Автори плаґіну-оригіналу: Adam Feakin, Daniel Stodden."
+msgstr "Відтворення в заданий час.\n\nАвтори плаґіну-оригіналу: Adam Feakin, Daniel Stodden."
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -263,58 +259,7 @@ msgid ""
 "    Display a reminder when the alarm goes off,\n"
 "    type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown.\n"
-msgstr ""
-"\n"
-"Час\n"
-"  Починати о: \n"
-"    Час початку відтворення.\n"
-"\n"
-"  Закінчити через: \n"
-"    Тривалість відтворення.\n"
-"       (якщо діалогове вікно пробудження\n"
-"       не закрито примусово)\n"
-"\n"
-"\n"
-"Дні\n"
-"  День:\n"
-"    День тижня, в який працюватиме будильник.\n"
-"\n"
-"  Час:\n"
-"    Час спрацювання в обраний день.\n"
-"    Якщо вибрано «Як типово», будильник спрацює\n"
-"    в типовий час (вкладка «Час»).\n"
-"\n"
-"\n"
-"Гучність\n"
-"  Наростання: \n"
-"    Період наростання гучності.\n"
-"\n"
-"  На початку: \n"
-"    Гучність на початку наростання.\n"
-"\n"
-"  По закінченню: \n"
-"    Гучність наприкінці наростання. Якщо часом\n"
-"    наростання є «0», то все відтворення йтиме\n"
-"    з цією гучністю.\n"
-"\n"
-"\n"
-"Опції:\n"
-"  Виконувати команду:\n"
-"    Команда запускатиметься при спрацьовуванні.\n"
-"\n"
-"  Список відтворення (необов’язково): \n"
-"    Відтворювати список відтворення (лише\n"
-"    з суфіксом .m3u). Якщо не вказано, то\n"
-"    відтворюватимуться останні відкриті\n"
-"    доріжки.\n"
-"    Можна ввести сюди URL mp3- чи ogg-потоку.\n"
-"    Поки що звантаження списків відтворення\n"
-"    за URL не підтримується.\n"
-"\n"
-"  Повідомлення:\n"
-"    Повідомлення буде показано при спрацьовуванні.\n"
-"    Введіть повідомлення в поле\n"
-"    й увімкніть «Використовувати».\n"
+msgstr "\nЧас\n  Починати о: \n    Час початку відтворення.\n\n  Закінчити через: \n    Тривалість відтворення.\n       (якщо діалогове вікно пробудження\n       не закрито примусово)\n\n\nДні\n  День:\n    День тижня, в який працюватиме будильник.\n\n  Час:\n    Час спрацювання в обраний день.\n    Якщо вибрано «Як типово», будильник спрацює\n    в типовий час (вкладка «Час»).\n\n\nГучність\n  Наростання: \n    Період наростання гучності.\n\n  На початку: \n    Гучність на початку наростання.\n\n  По закінченню: \n    Гучність наприкінці наростання. Якщо часом\n    наростання є «0», то все відтворення йтиме\n    з цією гучністю.\n\n\nОпції:\n  Виконувати команду:\n    Команда запускатиметься при спрацьовуванні.\n\n  Список відтворення (необов’язково): \n    Відтворювати список відтворення (лише\n    з суфіксом .m3u). Якщо не вказано, то\n    відтворюватимуться останні відкриті\n    доріжки.\n    Можна ввести сюди URL mp3- чи ogg-потоку.\n    Поки що звантаження списків відтворення\n    за URL не підтримується.\n\n  Повідомлення:\n    Повідомлення буде показано при спрацьовуванні.\n    Введіть повідомлення в поле\n    й увімкніть «Використовувати».\n"
 
 #: src/alarm/interface.c:1157 src/skins/ui_manager.c:390
 msgid "Help"
@@ -369,14 +314,8 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
-"code served as a reference when the ALSA manual was not enough."
-msgstr ""
-"Плаґін виводу ALSA,\n"
-"написаний Джоном Ліндґреном у 2010–2012 роках.\n"
-"\n"
-"Дякую авторові ALSA Output Plugin NG (William Pitcock), чий код допомагав, "
-"коли документації до ALSA було недостатньо."
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+msgstr "Плаґін виводу ALSA,\nнаписаний Джоном Ліндґреном у 2010–2012 роках.\n\nДякую авторові ALSA Output Plugin NG (William Pitcock), чий код допомагав, коли документації до ALSA було недостатньо."
 
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
@@ -390,9 +329,7 @@ msgstr "AMIDI-Plug (MIDI-програвач)"
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
-"Ви не вибрали портів секвенсера для відтворення MIDI. Виберіть їх у "
-"налаштуваннях AMIDI-Plug. "
+msgstr "Ви не вибрали портів секвенсера для відтворення MIDI. Виберіть їх у налаштуваннях AMIDI-Plug. "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -400,23 +337,10 @@ msgstr "Постпроцесор ALSA"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Цей постпроцесор посилає MIDI-повідомлення групі портів секвенсера ALSA, "
-"обраних користувачем. Інтерфейс секвенсера ALSA дуже гнучкий, він може "
-"надавати порти для апаратних синтезаторів аудіокарт (наприклад, emu10k1), "
-"програмних синтезаторів, зовнішніх приладів тощо.\n"
-"Цей постпроцесор не генерує звук. MIDI-повідомлення керуються напряму "
-"приладами та програмами за портами ALSA. Наприклад, MIDI-повідомлення, "
-"надіслані апаратному синтезатору, будуть відтворені напряму.\n"
-"Автор постпроцесора — Giacomo Lozito."
+msgstr "Цей постпроцесор посилає MIDI-повідомлення групі портів секвенсера ALSA, обраних користувачем. Інтерфейс секвенсера ALSA дуже гнучкий, він може надавати порти для апаратних синтезаторів аудіокарт (наприклад, emu10k1), програмних синтезаторів, зовнішніх приладів тощо.\nЦей постпроцесор не генерує звук. MIDI-повідомлення керуються напряму приладами та програмами за портами ALSA. Наприклад, MIDI-повідомлення, надіслані апаратному синтезатору, будуть відтворені напряму.\nАвтор постпроцесора — Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid "FluidSynth Backend "
@@ -424,19 +348,10 @@ msgstr "Постпроцесор FluidSynth"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:42
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Цей модуль відтворює звукові дані, надсилаючи MIDI-події до програмного "
-"синтезатора FluidSynth, що працює в режимі реального часу й базується на "
-"специфікаціях SoundFont2 (www.fluidsynth.org).\n"
-"Отримані звукові дані обробляються плаґінами ефектів програвача й виводяться "
-"плаґіном виводу.\n"
-"Автор модуля — Giacomo Lozito."
+msgstr "Цей модуль відтворює звукові дані, надсилаючи MIDI-події до програмного синтезатора FluidSynth, що працює в режимі реального часу й базується на специфікаціях SoundFont2 (www.fluidsynth.org).\nОтримані звукові дані обробляються плаґінами ефектів програвача й виводяться плаґіном виводу.\nАвтор модуля — Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -470,9 +385,7 @@ msgstr "Налаштування мікшера"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Постпроцесор\n"
-"ALSA</span>"
+msgstr "<span size=\"smaller\">Постпроцесор\nALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -514,9 +427,7 @@ msgstr "Витягувати текст пісні (якщо є) з MIDI-фай�
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI-\n"
-"Plug</span>"
+msgstr "<span size=\"smaller\">AMIDI-\nPlug</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
@@ -620,9 +531,7 @@ msgstr "Гц"
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Постпроцесор\n"
-"FluidSynth</span>"
+msgstr "<span size=\"smaller\">Постпроцесор\nFluidSynth</span>"
 
 #: src/amidi-plug/i_fileinfo.c:167
 msgid "Name:"
@@ -680,6 +589,33 @@ msgstr "  (недійсний UTF-8)"
 msgid "About AMIDI-Plug"
 msgstr "Про плаґін AMIDI"
 
+#: src/amidi-plug/i_utils.c:50
+msgid "AMIDI-Plug "
+msgstr "Плаґін AMIDI"
+
+#: src/amidi-plug/i_utils.c:51
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr "\nПрогравач музики в форматі MIDI\nнаписаний Джакомо Лоціто.\n\n<james@develia.org>\nhttp://www.develia.org/projects.php?p=amidiplug\n\nКлеменс Ладіш та Ярослав Кисела\nнаписали класні програми «aplaymidi» та «amixer»,\nщо виявилися надзвичайно корисними\nпри вивченні ALSA API,\nяк і документація до alsa-lib.\n\nАльфредо Спадафіна\nстворив гарненький логотип MIDI-клавіатури.\n\nТоні Врун\nнадав вагому допомогу з альфа-тестуванням."
+
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
 msgstr "OSD-сповіщення"
@@ -721,9 +657,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"Показує повідомлення, коли під час відтворення змінюється назва доріжки, а "
-"ім’я файлу залишається старим. Це корисно при відтворенні потоків."
+msgstr "Показує повідомлення, коли під час відтворення змінюється назва доріжки, а ім’я файлу залишається старим. Це корисно при відтворенні потоків."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -855,12 +789,8 @@ msgstr "Композитний "
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Композитного менеджера не знайдено.\n"
-"Якщо він не запущений, увімкніть його, інакше екранне меню працюватиме "
-"неправильно."
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Композитного менеджера не знайдено.\nЯкщо він не запущений, увімкніть його, інакше екранне меню працюватиме неправильно."
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -963,7 +893,7 @@ msgstr "Перетворення стереозвуку в бінауральн�
 msgid "Spectrum Analyzer"
 msgstr "Стовпці (аналізатор спектру)"
 
-#: src/cdaudio-ng/cdaudio-ng.c:106
+#: src/cdaudio-ng/cdaudio-ng.c:111
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -973,136 +903,128 @@ msgid ""
 "Also thank you to Tony Vroon for mentoring and guiding me.\n"
 "\n"
 "This was a Google Summer of Code 2007 project."
-msgstr ""
-"Основний автор у 2007–2012 роках — Calin Crisan <ccrisan@gmail.com>.\n"
-"\n"
-"Дякую розробникам libcdio <http://www.gnu.org/software/libcdio/>\n"
-"та libcddb <http://libcddb.sourceforge.net/>.\n"
-"\n"
-"Також дякую Tony Vroon за наставництво та допомогу.\n"
-"\n"
-"Цей проект брав участь у Google Summer of Code 2007."
+msgstr "Основний автор у 2007–2012 роках — Calin Crisan <ccrisan@gmail.com>.\n\nДякую розробникам libcdio <http://www.gnu.org/software/libcdio/>\nта libcddb <http://libcddb.sourceforge.net/>.\n\nТакож дякую Tony Vroon за наставництво та допомогу.\n\nЦей проект брав участь у Google Summer of Code 2007."
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Device</b>"
 msgstr "<b>Пристрій</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Read speed:"
 msgstr "Швидкість читання:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:133
 msgid "Override device:"
 msgstr "Перевизначення пристроїв:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:135
 msgid "<b>Metadata</b>"
 msgstr "<b>Метадані</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:131
+#: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Use CD-Text"
 msgstr "Використовувати CD-Text"
 
-#: src/cdaudio-ng/cdaudio-ng.c:133
+#: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Use CDDB"
 msgstr "Використовувати CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:135
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Use HTTP instead of CDDBP"
 msgstr "Використовувати HTTP замість CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:137
+#: src/cdaudio-ng/cdaudio-ng.c:142
 msgid "Server:"
 msgstr "Сервер:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:139
+#: src/cdaudio-ng/cdaudio-ng.c:144
 msgid "Path:"
 msgstr "Шлях:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:141
+#: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:151
+#: src/cdaudio-ng/cdaudio-ng.c:156
 msgid "Audio CD Plugin"
 msgstr "Плаґін аудіодисків"
 
-#: src/cdaudio-ng/cdaudio-ng.c:252
+#: src/cdaudio-ng/cdaudio-ng.c:257
 msgid "Failed to initialize cdio subsystem."
 msgstr "Не вдалося задіяти підсистему cdio."
 
-#: src/cdaudio-ng/cdaudio-ng.c:309
+#: src/cdaudio-ng/cdaudio-ng.c:314
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Хибне посилання: %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:311
+#: src/cdaudio-ng/cdaudio-ng.c:316
 #, c-format
 msgid "Track %d not found."
 msgstr "Доріжки %d не знайдено."
 
-#: src/cdaudio-ng/cdaudio-ng.c:313
-#, fuzzy, c-format
+#: src/cdaudio-ng/cdaudio-ng.c:318
+#, c-format
 msgid "Track %d is a data track."
-msgstr "Доріжка %d — звичайні дані.\n"
+msgstr "Доріжка %d — не музичні дані."
 
-#: src/cdaudio-ng/cdaudio-ng.c:315
+#: src/cdaudio-ng/cdaudio-ng.c:320
 msgid "Failed to open audio output."
 msgstr "Не вдалося відкрити аудіовивід."
 
-#: src/cdaudio-ng/cdaudio-ng.c:398
+#: src/cdaudio-ng/cdaudio-ng.c:403
 msgid "Error reading audio CD."
-msgstr ""
+msgstr "Стався збій при читанні аудіодиску."
 
-#: src/cdaudio-ng/cdaudio-ng.c:508
+#: src/cdaudio-ng/cdaudio-ng.c:513
 msgid "Audio CD"
 msgstr "Аудіодиск"
 
-#: src/cdaudio-ng/cdaudio-ng.c:538 src/cdaudio-ng/cdaudio-ng.c:547
+#: src/cdaudio-ng/cdaudio-ng.c:543 src/cdaudio-ng/cdaudio-ng.c:552
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Не вдалося відкрити CD-пристрій %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:550
+#: src/cdaudio-ng/cdaudio-ng.c:555
 msgid "No audio capable CD drive found."
 msgstr "Не знайдено CD-пристрою з підтримкою аудіо."
 
-#: src/cdaudio-ng/cdaudio-ng.c:577
+#: src/cdaudio-ng/cdaudio-ng.c:582
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Не вдалося задіяти відкритий CD-привід."
 
-#: src/cdaudio-ng/cdaudio-ng.c:590
+#: src/cdaudio-ng/cdaudio-ng.c:595
 msgid "Failed to retrieve first/last track number."
 msgstr "Не вдалося отримати номер першої/останньої доріжки."
 
-#: src/cdaudio-ng/cdaudio-ng.c:615
+#: src/cdaudio-ng/cdaudio-ng.c:620
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Не вдалося прочитати LSN початку/кінця доріжки %d."
 
-#: src/cdaudio-ng/cdaudio-ng.c:692
+#: src/cdaudio-ng/cdaudio-ng.c:710
 msgid "Failed to create the cddb connection."
 msgstr "Не вдалося з’єднатися з cddb."
 
-#: src/cdaudio-ng/cdaudio-ng.c:767
+#: src/cdaudio-ng/cdaudio-ng.c:785
 msgid "Failed to query the CDDB server"
 msgstr "Не вдалося запитати сервер CDDB."
 
-#: src/cdaudio-ng/cdaudio-ng.c:769
+#: src/cdaudio-ng/cdaudio-ng.c:787
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Не вдалося запитати сервер CDDB: %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:793
+#: src/cdaudio-ng/cdaudio-ng.c:811
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Не вдалося прочитати інформацію CDDB: %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:866
+#: src/cdaudio-ng/cdaudio-ng.c:884
 msgid "Drive is empty."
 msgstr "Привід порожній."
 
-#: src/cdaudio-ng/cdaudio-ng.c:868
+#: src/cdaudio-ng/cdaudio-ng.c:886
 msgid "Unsupported disk type."
 msgstr "Непідтримуваний тип диску."
 
@@ -1134,9 +1056,7 @@ msgstr "Динамічний діапазон:"
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
-"Компресор звукового діапазону,\n"
-"написаний Джоном Ліндґреном у 2010–2012 роках."
+msgstr "Компресор звукового діапазону,\nнаписаний Джоном Ліндґреном у 2010–2012 роках."
 
 #: src/compressor/plugin.c:60
 msgid "Dynamic Range Compressor"
@@ -1205,11 +1125,9 @@ msgstr "Посилити реверберацію"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
-msgstr ""
-"Типова тривалість пісні, вказана в секундах, використовується для доріжок, "
-"що не мають інформації про тривалість (наприклад, повторювані доріжки)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr "Типова тривалість пісні, вказана в секундах, використовується для доріжок, що не мають інформації про тривалість (наприклад, повторювані доріжки)."
 
 #: src/console/plugin.c:28
 msgid ""
@@ -1219,39 +1137,26 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
-msgstr ""
-"Двигун відтворення консольної музики в наступних форматах:\n"
-"AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ.\n"
-"\n"
-"Заснований на Game_Music_Emu 0.5.2.\n"
-"Автори — William Pitcock <nenolod@dereferenced.org>,\n"
-"Shay Green <gblargg@gmail.com>"
+msgstr "Двигун відтворення консольної музики в наступних форматах:\nAY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ.\n\nЗаснований на Game_Music_Emu 0.5.2.\nАвтори — William Pitcock <nenolod@dereferenced.org>,\nShay Green <gblargg@gmail.com>"
 
 #: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
-msgstr ""
-"Збій при перехресному затиханні: композиції мають різну кількість каналів.\n"
-"Виправте це плаґіном-мікшером каналів."
+msgstr "Збій при перехресному затиханні: композиції мають різну кількість каналів.\nВиправте це плаґіном-мікшером каналів."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr ""
-"Збій при перехресному затиханні: композиції мають різну частоту "
-"дискретизації.\n"
-"Виправте це плаґіном-конвертором частоти дискретизації."
+msgstr "Збій при перехресному затиханні: композиції мають різну частоту дискретизації.\nВиправте це плаґіном-конвертором частоти дискретизації."
 
 #: src/crossfade/crossfade.c:256
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
-"Перехресне затихання,\n"
-"написаний Джоном Ліндґреном у 2010–2012 роках."
+msgstr "Перехресне затихання,\nнаписаний Джоном Ліндґреном у 2010–2012 роках."
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1307,9 +1212,7 @@ msgid ""
 "By Johan Levin, 1999\n"
 "\n"
 "Surround echo by Carl van Schaik, 1999"
-msgstr ""
-"Луна,\n"
-"плаґін написаний у 1999 році (автор — Johan Levin)."
+msgstr "Луна,\nплаґін написаний у 1999 році (автор — Johan Levin)."
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
@@ -1323,15 +1226,7 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
-msgstr ""
-"Відтворення звуку в різних форматах\n"
-"за допомогою фреймворку FFmpeg\n"
-"\n"
-"http://www.ffmpeg.org/\n"
-"\n"
-"Автори плаґіну:\n"
-"William Pitcock <nenolod@nenolod.net>\n"
-"Matti Hämäläinen <ccr@tnsp.org>"
+msgstr "Відтворення звуку в різних форматах\nза допомогою фреймворку FFmpeg\n\nhttp://www.ffmpeg.org/\n\nАвтори плаґіну:\nWilliam Pitcock <nenolod@nenolod.net>\nMatti Hämäläinen <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:680
 msgid "FFmpeg Plugin"
@@ -1401,23 +1296,7 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
-msgstr ""
-"Ця програма є вільним програмним забезпеченням — ви можете розповсюджувати\n"
-"та/чи модифікувати її відповідно до умов Загальної публічної ліцензії GNU\n"
-"другої або будь-якої новішої версії у тому вигляді, в якому її опублікував\n"
-"Фонд вільного програмного забезпечення.\n"
-"\n"
-"Програма розповсюджується зі сподіванням, що вона виявиться корисною,\n"
-"але БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ "
-"ПРИДАТНОСТІ\n"
-"чи ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ. \n"
-"Зверніться до Загальної публічної ліцензії GNU за подробицями.\n"
-"\n"
-"Ви мали отримати копію Загальної публічної ліцензії GNU разом із цією "
-"програмою.\n"
-"Якщо ви не отримали копії, зверніться за наступною адресою:\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-"02110-1301, USA"
+msgstr "Ця програма є вільним програмним забезпеченням — ви можете розповсюджувати\nта/чи модифікувати її відповідно до умов Загальної публічної ліцензії GNU\nдругої або будь-якої новішої версії у тому вигляді, в якому її опублікував\nФонд вільного програмного забезпечення.\n\nПрограма розповсюджується зі сподіванням, що вона виявиться корисною,\nале БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ ПРИДАТНОСТІ\nчи ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ. \nЗверніться до Загальної публічної ліцензії GNU за подробицями.\n\nВи мали отримати копію Загальної публічної ліцензії GNU разом із цією програмою.\nЯкщо ви не отримали копії, зверніться за наступною адресою:\nFree Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA"
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
@@ -1477,8 +1356,7 @@ msgstr "Різне:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr ""
-"Примусова відповідність до ISO (для апаратних програвачів, більший розмір)"
+msgstr "Примусова відповідність до ISO (для апаратних програвачів, більший розмір)"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
@@ -1572,7 +1450,7 @@ msgstr "Налаштування кодувальника Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Рівень якості (0-10, менше - краще):"
 
-#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:284
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:282
 msgid "lossless"
 msgstr "без втрат"
 
@@ -1582,11 +1460,7 @@ msgid ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
-"Автор початкового коду —\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
+msgstr "Автор початкового коду —\nRalf Ertzinger <ralf@skytale.net>\n\nhttp://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
@@ -1596,9 +1470,7 @@ msgstr "Декодер FLAC"
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
-msgstr ""
-"Плаґін GIO,\n"
-"написаний Джоном Ліндґреном у 2010–2012 роках."
+msgstr "Плаґін GIO,\nнаписаний Джоном Ліндґреном у 2010–2012 роках."
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
@@ -1610,10 +1482,7 @@ msgid ""
 "Lets you control the player with Gnome's shortcuts.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
-msgstr ""
-"Плаґін надає можливість керувати відтворенням\n"
-"за допомогою клавіатурних скорочень GNOME.\n"
-"Автор у 2007–2008 роках — Sascha Hlusiak <contact@saschahlusiak.de>."
+msgstr "Плаґін надає можливість керувати відтворенням\nза допомогою клавіатурних скорочень GNOME.\nАвтор у 2007–2008 роках — Sascha Hlusiak <contact@saschahlusiak.de>."
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
@@ -1971,24 +1840,24 @@ msgstr "Виді_лити все"
 msgid "_Rename ..."
 msgstr "Пере_йменувати..."
 
-#: src/gtkui/ui_gtk.c:99
+#: src/gtkui/ui_gtk.c:100
 msgid "GTK Interface"
 msgstr "Інтерфейс GTK"
 
-#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:299
+#: src/gtkui/ui_gtk.c:170 src/skins/ui_main.c:299
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:175
+#: src/gtkui/ui_gtk.c:176
 msgid "Buffering ..."
 msgstr "Буферую..."
 
-#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
+#: src/gtkui/ui_gtk.c:179 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:230 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:179
@@ -2078,14 +1947,10 @@ msgstr "(немає)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"Не раджу пов’язувати головні кнопки миші без модифікаторів.\n"
-"\n"
-"Продовжувати попри це?"
+msgstr "Не раджу пов’язувати головні кнопки миші без модифікаторів.\n\nПродовжувати попри це?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -2099,10 +1964,7 @@ msgstr "Налаштування гарячих клавіш"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Маючи курсор на полі, натисніть необхідну клавішу чи комбінацію всередині "
-"поля.\n"
-"Можна також прив’язувати кнопки миші."
+msgstr "Маючи курсор на полі, натисніть необхідну клавішу чи комбінацію всередині поля.\nМожна також прив’язувати кнопки миші."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -2129,19 +1991,7 @@ msgid ""
 " Bryn Davies <curious@ihug.com.au>,\n"
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
-msgstr ""
-"Плаґін надає можливість керувати відтворенням\n"
-"за допомогою глобальних клавіатурних скорочень,\n"
-"що також називаються «гарячими клавішами».\n"
-"\n"
-"Автор у 2007–2008 роках — Sascha Hlusiak <contact@saschahlusiak.de>.\n"
-"\n"
-"Vladimir Paskov <vlado.paskov@gmail.com> (у 2006–2007),\n"
-"Ville Syrjälä <syrjala@sci.fi> (у 2000–2002),\n"
-"Bryn Davies <curious@ihug.com.au>,\n"
-"Jonathan A. Davis <davis@jdhouse.org>,\n"
-"Jeremy Tan <nsx@nsx.homeip.net>\n"
-"також брали участь у розробці."
+msgstr "Плаґін надає можливість керувати відтворенням\nза допомогою глобальних клавіатурних скорочень,\nщо також називаються «гарячими клавішами».\n\nАвтор у 2007–2008 роках — Sascha Hlusiak <contact@saschahlusiak.de>.\n\nVladimir Paskov <vlado.paskov@gmail.com> (у 2006–2007),\nVille Syrjälä <syrjala@sci.fi> (у 2000–2002),\nBryn Davies <curious@ihug.com.au>,\nJonathan A. Davis <davis@jdhouse.org>,\nJeremy Tan <nsx@nsx.homeip.net>\nтакож брали участь у розробці."
 
 #: src/hotkey/plugin.c:80
 msgid "Global Hotkeys"
@@ -2153,11 +2003,7 @@ msgid ""
 "http://xmms-jack.sourceforge.net/\n"
 "\n"
 "Ported to Audacious by Giacomo Lozito"
-msgstr ""
-"На основі xmms-jack від Chris Morgan:\n"
-"http://xmms-jack.sourceforge.net/\n"
-"\n"
-"Автор портування до Audacious — Giacomo Lozito."
+msgstr "На основі xmms-jack від Chris Morgan:\nhttp://xmms-jack.sourceforge.net/\n\nАвтор портування до Audacious — Giacomo Lozito."
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
@@ -2181,10 +2027,7 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>Якщо шляхів кілька, розділяйте їх двокрапками.\n"
-"Пошук відбувається за вказаними шляхами та змінною LADSPA_PATH.\n"
-"Вказавши шляхи, натисніть Enter для пошуку плаґінів.</small>"
+msgstr "<small>Якщо шляхів кілька, розділяйте їх двокрапками.\nПошук відбувається за вказаними шляхами та змінною LADSPA_PATH.\nВказавши шляхи, натисніть Enter для пошуку плаґінів.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -2206,9 +2049,7 @@ msgstr "Налаштування"
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
-msgstr ""
-"Хост LADSPA,\n"
-"написаний Джоном Ліндґреном у 2011 році."
+msgstr "Хост LADSPA,\nнаписаний Джоном Ліндґреном у 2011 році."
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
@@ -2225,10 +2066,7 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr ""
-"%s: не можу прочитати конфігураційний файл LIRC\n"
-"%s: прочитайте документацію до LIRC\n"
-"%s: як створити правильний конфигураційний файл\n"
+msgstr "%s: не можу прочитати конфігураційний файл LIRC\n%s: прочитайте документацію до LIRC\n%s: як створити правильний конфигураційний файл\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -2264,20 +2102,7 @@ msgid ""
 "Andrew O. Shadoura <bugzilla@tut.by>\n"
 "\n"
 "For more information about LIRC, see http://lirc.org."
-msgstr ""
-"Плаґін надає можливість керувати відтворенням\n"
-"дистанційно (за допомогою LIRC).\n"
-"\n"
-"Автори портування до Audacious:\n"
-"Tony Vroon <chainsaw@gentoo.org>,\n"
-"Joonas Harjumäki <jharjuma@gmail.com>.\n"
-"\n"
-"Автори основи — плаґіну LIRC для XMMS:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>,\n"
-"Christoph Bartelmus <xmms@bartelmus.de>,\n"
-"Andrew O. Shadoura <bugzilla@tut.by>.\n"
-"\n"
-"http://lirc.org/"
+msgstr "Плаґін надає можливість керувати відтворенням\nдистанційно (за допомогою LIRC).\n\nАвтори портування до Audacious:\nTony Vroon <chainsaw@gentoo.org>,\nJoonas Harjumäki <jharjuma@gmail.com>.\n\nАвтори основи — плаґіну LIRC для XMMS:\nCarl van Schaik <carl@leg.uct.ac.za>,\nChristoph Bartelmus <xmms@bartelmus.de>,\nAndrew O. Shadoura <bugzilla@tut.by>.\n\nhttp://lirc.org/"
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
@@ -2346,15 +2171,7 @@ msgid ""
 "To use it, add a URL: tact://beats*num/den\n"
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
-msgstr ""
-"Генератор такту,\n"
-"написаний Мартіном Штраусом <mys@faveve.uni-stuttgart.de>.\n"
-"\n"
-"Використовується при відкритті посилання в форматі:\n"
-"tact://bpm*чисельник/знаменник\n"
-"\n"
-"Наприклад, tact://77 — 77 ударів за хвилину,\n"
-"tact://60*3/4 — 60 ударів за хвилину з тактом 3/4."
+msgstr "Генератор такту,\nнаписаний Мартіном Штраусом <mys@faveve.uni-stuttgart.de>.\n\nВикористовується при відкритті посилання в форматі:\ntact://bpm*чисельник/знаменник\n\nНаприклад, tact://77 — 77 ударів за хвилину,\ntact://60*3/4 — 60 ударів за хвилину з тактом 3/4."
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
@@ -2364,9 +2181,7 @@ msgstr "Генератор такту"
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
-msgstr ""
-"Мікшер каналів,\n"
-"написаний у 2011–2012 роках Джоном Ліндґреном та Michał Lipski."
+msgstr "Мікшер каналів,\nнаписаний у 2011–2012 роках Джоном Ліндґреном та Michał Lipski."
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
@@ -2420,37 +2235,12 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011 John Lindgren\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under "
-"the terms of the GNU General Public License as published by the Free "
-"Software Foundation, either version 3 of the License, or (at your option) "
-"any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Плаґін написаний 2011 року Джоном Ліндґреном.\n"
-"\n"
-"За основу було взято lifnotify-aosd, написаний 2010 року Максиміліаном "
-"Боґнером: http://www.mbogner.de/projects/libnotify-aosd/\n"
-"\n"
-"Цей плаґін є вільним програмним забезпеченням — ви можете  розповсюджувати "
-"та/чи модифікувати його відповідно до Загальної публічної ліцензії GNU "
-"третьої або будь-якої новішої версії у тому вигляді, в якому її опублікував "
-"Фонд вільного програмного забезпечення.\n"
-"\n"
-"Плаґін розповсюджується зі сподіванням, що він виявиться корисним, але БЕЗ "
-"ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ ПРИДАТНОСТІ чи "
-"ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ.  Зверніться до Загальної публічної "
-"ліцензії GNU за подробицями.\n"
-"\n"
-"Ви мали отримати копію Загальної публічної ліцензії GNU разом із цією "
-"програмою. Якщо ви не отримали копії, відвідайте <http://www.gnu.org/"
-"licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr "Плаґін написаний 2011 року Джоном Ліндґреном.\n\nЗа основу було взято lifnotify-aosd, написаний 2010 року Максиміліаном Боґнером: http://www.mbogner.de/projects/libnotify-aosd/\n\nЦей плаґін є вільним програмним забезпеченням — ви можете  розповсюджувати та/чи модифікувати його відповідно до Загальної публічної ліцензії GNU третьої або будь-якої новішої версії у тому вигляді, в якому її опублікував Фонд вільного програмного забезпечення.\n\nПлаґін розповсюджується зі сподіванням, що він виявиться корисним, але БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ ПРИДАТНОСТІ чи ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ.  Зверніться до Загальної публічної ліцензії GNU за подробицями.\n\nВи мали отримати копію Загальної публічної ліцензії GNU разом із цією програмою. Якщо ви не отримали копії, відвідайте <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
@@ -2485,15 +2275,8 @@ msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin."
-msgstr ""
-"Плаґін виводу OSS4 для Audacious,\n"
-"за авторством Michał Lipski,\n"
-"написаний у 2010–2012 роках\n"
-"\n"
-"Дякуємо #audacious, особливо Тоні Врунові, Джонові Ліндґрену й, звісно, "
-"авторам попереднього плаґіну OSS."
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
+msgstr "Плаґін виводу OSS4 для Audacious,\nза авторством Michał Lipski,\nнаписаний у 2010–2012 роках\n\nДякуємо #audacious, особливо Тоні Врунові, Джонові Ліндґрену й, звісно, авторам попереднього плаґіну OSS."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
@@ -2525,25 +2308,7 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
-msgstr ""
-"Плаґін виводу PulseAudio\n"
-"\n"
-"Ця програма є вільним програмним забезпеченням — ви можете розповсюджувати\n"
-"та/чи модифікувати її відповідно до умов Загальної публічної ліцензії GNU\n"
-"другої або будь-якої новішої версії у тому вигляді, в якому її опублікував\n"
-"Фонд вільного програмного забезпечення.\n"
-"\n"
-"Програма розповсюджується зі сподіванням, що вона виявиться корисною,\n"
-"але БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ "
-"ПРИДАТНОСТІ\n"
-"чи ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ. \n"
-"Зверніться до Загальної публічної ліцензії GNU за подробицями.\n"
-"\n"
-"Ви мали отримати копію Загальної публічної ліцензії GNU разом із цією "
-"програмою.\n"
-"Якщо ви не отримали копії, зверніться за наступною адресою:\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-"02110-1301, USA"
+msgstr "Плаґін виводу PulseAudio\n\nЦя програма є вільним програмним забезпеченням — ви можете розповсюджувати\nта/чи модифікувати її відповідно до умов Загальної публічної ліцензії GNU\nдругої або будь-якої новішої версії у тому вигляді, в якому її опублікував\nФонд вільного програмного забезпечення.\n\nПрограма розповсюджується зі сподіванням, що вона виявиться корисною,\nале БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ ПРИДАТНОСТІ\nчи ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ. \nЗверніться до Загальної публічної ліцензії GNU за подробицями.\n\nВи мали отримати копію Загальної публічної ліцензії GNU разом із цією програмою.\nЯкщо ви не отримали копії, зверніться за наступною адресою:\nFree Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA"
 
 #: src/pulse_audio/pulse_audio.c:664
 msgid "PulseAudio Output"
@@ -2553,9 +2318,7 @@ msgstr "PulseAudio-вивід"
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
-"Конвертор частоти дискретизації,\n"
-"написаний Джоном Ліндґреном у 2010–2012 роках."
+msgstr "Конвертор частоти дискретизації,\nнаписаний Джоном Ліндґреном у 2010–2012 роках."
 
 #: src/resample/resample.c:167
 msgid "Skip/repeat samples"
@@ -2657,12 +2420,8 @@ msgstr "URL Scrobbler:"
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>"
-msgstr ""
-"Плаґін AudioScrobbler,\n"
-"автори оригіналу: Audun Hove <audun@nlc.no>,\n"
-"Pipian <pipian@pipian.com>."
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>"
+msgstr "Плаґін AudioScrobbler,\nавтори оригіналу: Audun Hove <audun@nlc.no>,\nPipian <pipian@pipian.com>."
 
 #: src/scrobbler/plugin.c:185
 msgid "Scrobbler"
@@ -2672,9 +2431,7 @@ msgstr "Scrobbler"
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
-msgstr ""
-"Плаґін виводу в SDL,\n"
-"написаний Джоном Ліндґреном у 2010 році."
+msgstr "Плаґін виводу в SDL,\nнаписаний Джоном Ліндґреном у 2010 році."
 
 #: src/sdlout/plugin.c:32
 msgid "SDL Output"
@@ -2697,9 +2454,7 @@ msgstr "Невідомий альбом"
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr ""
-"%s\n"
-"від %s по %s"
+msgstr "%s\nвід %s по %s"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
@@ -2717,15 +2472,9 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %s, %d songs"
-msgstr[0] ""
-"%s\n"
-" %s, %d пісня"
-msgstr[1] ""
-"%s\n"
-" %s, %d пісні"
-msgstr[2] ""
-"%s\n"
-" %s, %d пісень"
+msgstr[0] "%s\n %s, %d пісня"
+msgstr[1] "%s\n %s, %d пісні"
+msgstr[2] "%s\n %s, %d пісень"
 
 #: src/search-tool/search-tool.c:641
 #, c-format
@@ -2735,15 +2484,9 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %d songs by %s"
-msgstr[0] ""
-"%s\n"
-" %d пісня по %s"
-msgstr[1] ""
-"%s\n"
-" %d пісні по %s"
-msgstr[2] ""
-"%s\n"
-" %d пісень по %s"
+msgstr[0] "%s\n %d пісня по %s"
+msgstr[1] "%s\n %d пісні по %s"
+msgstr[2] "%s\n %d пісень по %s"
 
 #: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
@@ -2761,9 +2504,7 @@ msgstr "Шукати в бібліотеці"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"Щоб імпортувати свою музичну бібліотеку до Audacious, виберіть теку й "
-"натисніть на значок оновлення."
+msgstr "Щоб імпортувати свою музичну бібліотеку до Audacious, виберіть теку й натисніть на значок оновлення."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -3596,14 +3337,11 @@ msgstr "Пошук в активному списку відтворення"
 
 #: src/skins/ui_playlist.c:252
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Щоб шукати доріжки в списку відтворення, заповніть одне чи більше полів. "
-"Можна використовувати літери, цифри, інші знаки, регулярні вирази. Поля "
-"нечутливі до регістру."
+msgstr "Щоб шукати доріжки в списку відтворення, заповніть одне чи більше полів. Можна використовувати літери, цифри, інші знаки, регулярні вирази. Поля нечутливі до регістру."
 
 #: src/skins/ui_playlist.c:260
 msgid "Title: "
@@ -3662,41 +3400,12 @@ msgid ""
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
-"Автор плаґіну — Тоні Врун <chainsaw@gentoo.org>.\n"
-"\n"
-"За основу взято xmms_sndfile,\n"
-"написаний у 2000–2002 роках Еріком де Кастро Лопо.\n"
-"\n"
-"Ця програма є вільним програмним забезпеченням — ви можете розповсюджувати\n"
-"та/чи модифікувати її відповідно до умов Загальної публічної ліцензії GNU\n"
-"другої або будь-якої новішої версії у тому вигляді, в якому її опублікував\n"
-"Фонд вільного програмного забезпечення.\n"
-"\n"
-"Програма розповсюджується зі сподіванням, що вона виявиться корисною,\n"
-"але БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ "
-"ПРИДАТНОСТІ\n"
-"чи ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ. \n"
-"Зверніться до Загальної публічної ліцензії GNU за подробицями.\n"
-"\n"
-"Ви мали отримати копію Загальної публічної ліцензії GNU разом із цією "
-"програмою.\n"
-"Якщо ви не отримали копії, зверніться за наступною адресою:\n"
-"Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA "
-"02110-1301, USA"
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Автор плаґіну — Тоні Врун <chainsaw@gentoo.org>.\n\nЗа основу взято xmms_sndfile,\nнаписаний у 2000–2002 роках Еріком де Кастро Лопо.\n\nЦя програма є вільним програмним забезпеченням — ви можете розповсюджувати\nта/чи модифікувати її відповідно до умов Загальної публічної ліцензії GNU\nдругої або будь-якої новішої версії у тому вигляді, в якому її опублікував\nФонд вільного програмного забезпечення.\n\nПрограма розповсюджується зі сподіванням, що вона виявиться корисною,\nале БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ ПРИДАТНОСТІ\nчи ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ. \nЗверніться до Загальної публічної ліцензії GNU за подробицями.\n\nВи мали отримати копію Загальної публічної ліцензії GNU разом із цією програмою.\nЯкщо ви не отримали копії, зверніться за наступною адресою:\nFree Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA"
 
 #: src/sndfile/plugin.c:437
 msgid "Sndfile Plugin"
@@ -3722,10 +3431,7 @@ msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
-msgstr ""
-"Формат не підтримується аудіопристроєм.\n"
-"\n"
-"Спробуйте ще раз, запустивши сервер sndiod(1)."
+msgstr "Формат не підтримується аудіопристроєм.\n\nСпробуйте ще раз, запустивши сервер sndiod(1)."
 
 #: src/sndio/sndio.c:405
 msgid "sndio device"
@@ -3778,29 +3484,13 @@ msgid ""
 "%a: Artist\n"
 "%b: Album\n"
 "%T: Track title"
-msgstr ""
-"Ви можете використовувати наступні шаблони\n"
-"(для команди на кінець списку підходять не всі)\n"
-"\n"
-"%F: Частота (Гц)\n"
-"%c: Кількість каналів\n"
-"%f: Ім’я файла (повний шлях)\n"
-"%l: Довжина (мс)\n"
-"%n чи %s: Назва композиції\n"
-"%r: Швидкість (біт/с)\n"
-"%t: Позиція в списку відтворення (%02d)\n"
-"%p: Зараз грає (1 or 0)\n"
-"%a: Виконавець\n"
-"%b: Альбом\n"
-"%T: Назва доріжки"
+msgstr "Ви можете використовувати наступні шаблони\n(для команди на кінець списку підходять не всі)\n\n%F: Частота (Гц)\n%c: Кількість каналів\n%f: Ім’я файла (повний шлях)\n%l: Довжина (мс)\n%n чи %s: Назва композиції\n%r: Швидкість (біт/с)\n%t: Позиція в списку відтворення (%02d)\n%p: Зараз грає (1 or 0)\n%a: Виконавець\n%b: Альбом\n%T: Назва доріжки"
 
 #: src/song_change/song_change.c:489
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>Параметри подавати слід у лапках. Робити інакше "
-"небезпечно для системи.</span>"
+msgstr "<span size='small'>Параметри подавати слід у лапках. Робити інакше небезпечно для системи.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3831,11 +3521,7 @@ msgid ""
 "\n"
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
-msgstr ""
-"Плаґін сповіщення й керування Audacious через системний лоток\n"
-"\n"
-"2005–2007 — Джакомо Лоціто <james@develia.org>\n"
-"2010 — Michał Lipski <tallica@o2.pl>"
+msgstr "Плаґін сповіщення й керування Audacious через системний лоток\n\n2005–2007 — Джакомо Лоціто <james@develia.org>\n2010 — Michał Lipski <tallica@o2.pl>"
 
 #: src/statusicon/statusicon.c:399
 msgid "<b>Mouse Scroll Action</b>"
@@ -3874,9 +3560,7 @@ msgid ""
 "Extra Stereo Plugin\n"
 "\n"
 "By Johan Levin, 1999"
-msgstr ""
-"Розширене стерео,\n"
-"плаґін написаний у 1999 році (автор — Johan Levin)."
+msgstr "Розширене стерео,\nплаґін написаний у 1999 році (автор — Johan Levin)."
 
 #: src/stereo_plugin/stereo.c:27
 msgid "<b>Extra Stereo</b>"
@@ -3902,34 +3586,21 @@ msgid ""
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
-msgstr ""
-"Генератор тону,\n"
-"автори: Håvard Kvålen <mys@faveve.uni-stuttgart.de>,\n"
-"Daniel J. Peng <danielpeng@bigfoot.com>.\n"
-"\n"
-"Використовується при відкритті посилання в форматі:\n"
-"tone://частота1;[частота2;...]\n"
-"\n"
-"Наприклад, tone://2000;2005 — послідовне відтворення тонів з частотою 2000 "
-"Гц і 2005 Гц."
+msgstr "Генератор тону,\nавтори: Håvard Kvålen <mys@faveve.uni-stuttgart.de>,\nDaniel J. Peng <danielpeng@bigfoot.com>.\n\nВикористовується при відкритті посилання в форматі:\ntone://частота1;[частота2;...]\n\nНаприклад, tone://2000;2005 — послідовне відтворення тонів з частотою 2000 Гц і 2005 Гц."
 
 #: src/tonegen/tonegen.c:208
 msgid "Tone Generator"
 msgstr "Генератор тону"
 
-#: src/unix-io/unix-io.c:246
+#: src/unix-io/unix-io.c:245
 msgid ""
 "File I/O Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
-msgstr ""
-"Плаґін файлового вводу-виводу,\n"
-"написаний Джоном Ліндґреном у 2009–2012 роках.\n"
-"\n"
-"НЕ ВИМИКАЙТЕ."
+msgstr "Плаґін файлового вводу-виводу,\nнаписаний Джоном Ліндґреном у 2009–2012 роках.\n\nНЕ ВИМИКАЙТЕ."
 
-#: src/unix-io/unix-io.c:269
+#: src/unix-io/unix-io.c:268
 msgid "File I/O Plugin"
 msgstr "Плаґін файлового вводу-виводу"
 
@@ -3956,24 +3627,7 @@ msgid ""
 "Håvard Kvålen <havardk@xmms.org>\n"
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
-msgstr ""
-"Декодер Ogg Vorbis\n"
-"\n"
-"на основі плаґіну від Xiph.org Foundation:\n"
-"http://www.xiph.org/\n"
-"\n"
-"Автор початкового коду —\n"
-"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"\n"
-"У розробці брали участь:\n"
-"Chris Montgomery <monty@xiph.org>\n"
-"Peter Alm <peter@xmms.org>\n"
-"Michael Smith <msmith@labyrinth.edu.au>\n"
-"Jack Moffitt <jack@icecast.org>\n"
-"Jorn Baayen <jorn@nl.linux.org>\n"
-"Håvard Kvålen <havardk@xmms.org>\n"
-"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
-"Eugene Zagidullin <e.asphyx@gmail.com>"
+msgstr "Декодер Ogg Vorbis\n\nна основі плаґіну від Xiph.org Foundation:\nhttp://www.xiph.org/\n\nАвтор початкового коду —\nTony Arcieri <bascule@inferno.tusculum.edu>\n\nУ розробці брали участь:\nChris Montgomery <monty@xiph.org>\nPeter Alm <peter@xmms.org>\nMichael Smith <msmith@labyrinth.edu.au>\nJack Moffitt <jack@icecast.org>\nJorn Baayen <jorn@nl.linux.org>\nHåvard Kvålen <havardk@xmms.org>\nGian-Carlo Pascutto <gcp@sjeng.org>\nEugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.c:574
 msgid "Ogg Vorbis Decoder"
@@ -3984,35 +3638,28 @@ msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
-msgstr ""
-"Відтворювач файлів Vortex Сашнова Олександра <sashnov@ngs.ru>.\n"
-"За основу взято in_vtx.dll Романа Щербакова <v_soft@microfor.ru>.\n"
-"\n"
-"Плаґін для Audacious створив Павел Виметалек <pvymetalek@seznam.cz>."
+msgstr "Відтворювач файлів Vortex Сашнова Олександра <sashnov@ngs.ru>.\nЗа основу взято in_vtx.dll Романа Щербакова <v_soft@microfor.ru>.\n\nПлаґін для Audacious створив Павел Виметалек <pvymetalek@seznam.cz>."
 
 #: src/vtx/vtx.c:247
 msgid "VTX Decoder"
 msgstr "Декодер VTX"
 
-#: src/wavpack/wavpack.c:286
+#: src/wavpack/wavpack.c:284
 msgid "lossy (hybrid)"
 msgstr "зі втратами (гібрид)"
 
-#: src/wavpack/wavpack.c:288
+#: src/wavpack/wavpack.c:286
 msgid "lossy"
 msgstr "зі втратами"
 
-#: src/wavpack/wavpack.c:338
+#: src/wavpack/wavpack.c:336
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Some of the plugin code was by Miles Egan."
-msgstr ""
-"Автор — Вільям Піткок <nenolod@nenolod.net> (2006 рік).\n"
-"\n"
-"Деякий код написав Майлс Еґан."
+msgstr "Автор — Вільям Піткок <nenolod@nenolod.net> (2006 рік).\n\nДеякий код написав Майлс Еґан."
 
-#: src/wavpack/wavpack.c:345
+#: src/wavpack/wavpack.c:343
 msgid "WavPack Decoder"
 msgstr "Декодер WavPack"
 
@@ -4023,6 +3670,3 @@ msgstr "Декодер 2SF"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML-списки відтворення (XSPF)"
-
-#~ msgid "Too many read errors; giving up."
-#~ msgstr "Припиняю — надто багато збоїв при читанні."

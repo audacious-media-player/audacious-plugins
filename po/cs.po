@@ -1,25 +1,25 @@
 # Czech translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
-#
+# 
 # Translators:
-#   <appukonrad@gmail.com>, 2012.
+#   <appukonrad@gmail.com>, 2012-2013.
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
 #   <pavelfric@seznam.cz>, 2012.
 # Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009, 2010, 2011, 2012.
 #   <petr.simacek@gmail.com>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2012-12-09 23:25+0100\n"
-"PO-Revision-Date: 2012-11-06 19:43+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-02-03 18:55+0100\n"
+"PO-Revision-Date: 2013-01-14 13:27+0000\n"
+"Last-Translator: jui <appukonrad@gmail.com>\n"
 "Language-Team: Czech\n"
-"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: src/aac/libmp4.c:440 src/gtkui/ui_statusbar.c:105 src/skins/ui_main.c:456
@@ -52,7 +52,7 @@ msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
-msgstr ""
+msgstr "Zásuvný modul pro spuštění přehrávání v přesně určený čas.\n\nPůvodně napsal Adam Feakin a Daniel Stodden."
 
 #: src/alarm/alarm.c:836 src/alarm/interface.c:32
 msgid "Alarm"
@@ -310,9 +310,8 @@ msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
-"code served as a reference when the ALSA manual was not enough."
-msgstr ""
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+msgstr "ALSA výstupní modul pro Audacious\nCopyright 2009-2012 John Lindgren\n\nMé díky patří Williamu Pitcockovy, autoru výstupního ALSA Zásuvného modulu NG, jehož kód sloužil jako reference, když použití ALSA mauálu nestačilo."
 
 #: src/alsa/plugin.c:34
 msgid "ALSA Output"
@@ -326,9 +325,7 @@ msgstr "AMIDI-Plug (MIDI přehrávač)"
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
-msgstr ""
-"Nevybrali jste žádné porty sekvenceru určené pro přehrávání MIDI. Můžete tak "
-"učinit v nastavení modulu MIDI."
+msgstr "Nevybrali jste žádné porty sekvenceru určené pro přehrávání MIDI. Můžete tak učinit v nastavení modulu MIDI."
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:35
 msgid "ALSA Backend "
@@ -336,23 +333,10 @@ msgstr "ALSA backend"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:37
 msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer ports. The ALSA sequencer interface is very versatile, it can provide ports for audio cards hardware synthesizers (i.e. emu10k1) but also for software synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from devices/programs behind the ALSA ports; in example, MIDI events sent to the hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Tento backend posílá MIDI události skupině uživatelem vybraných portů ALSA "
-"sekvenceru. Rozhraní ALSA sekvenceru je velmi přizpůsobivé, může poskytovat "
-"porty hardwarovým syntetizátorům na zvukové kartě (př. emu10k1) nebo "
-"syntetizátorům softwarovým, vnějším zařízením atd.\n"
-"Tento backend žádný zvuk nevytváří, MIDI události jsou zpracovány přímo "
-"zařízením/programem, který se ukrývá za ALSA portem. Na příklad MIDI "
-"události zaslané hardwarovému syntetizátoru budou hrány přímo jím.\n"
-"Backend napsal Giacomo Lozito."
+msgstr "Tento backend posílá MIDI události skupině uživatelem vybraných portů ALSA sekvenceru. Rozhraní ALSA sekvenceru je velmi přizpůsobivé, může poskytovat porty hardwarovým syntetizátorům na zvukové kartě (př. emu10k1) nebo syntetizátorům softwarovým, vnějším zařízením atd.\nTento backend žádný zvuk nevytváří, MIDI události jsou zpracovány přímo zařízením/programem, který se ukrývá za ALSA portem. Na příklad MIDI události zaslané hardwarovému syntetizátoru budou hrány přímo jím.\nBackend napsal Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:40
 msgid "FluidSynth Backend "
@@ -360,19 +344,10 @@ msgstr "Becken FluidSynth"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:42
 msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
+"This backend produces audio by sending MIDI events to FluidSynth, a real-time software synthesizer based on the SoundFont2 specification (www.fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
-msgstr ""
-"Tento backend vytváří zvuky zasíláním MIDI událostí do FluidSynth, což je "
-"softwarový syntetizátor pracující v reálném čase založený na specifikaci "
-"SoundFont2 (www.fluidsynth.org).\n"
-"Vzniklý zvuk může být upraven efektovými moduly přehrávače a následně je "
-"zpracován vybraným výstupním modulem.\n"
-"Backend napsal Giacomo Lozito."
+msgstr "Tento backend vytváří zvuky zasíláním MIDI událostí do FluidSynth, což je softwarový syntetizátor pracující v reálném čase založený na specifikaci SoundFont2 (www.fluidsynth.org).\nVzniklý zvuk může být upraven efektovými moduly přehrávače a následně je zpracován vybraným výstupním modulem.\nBackend napsal Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:322
 msgid "Port"
@@ -406,9 +381,7 @@ msgstr "Nastavení směšovače"
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Backend\n"
-"ALSA</span>"
+msgstr "<span size=\"smaller\">Backend\nALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:57
 msgid "AMIDI-Plug - backend information"
@@ -450,9 +423,7 @@ msgstr "vytáhnout text z MIDI souboru (pokud existuje)"
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
+msgstr "<span size=\"smaller\">AMIDI\nPlug</span>"
 
 #: src/amidi-plug/i_configure.c:64
 msgid "AMIDI-Plug - select file"
@@ -556,9 +527,7 @@ msgstr "Hz "
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
-msgstr ""
-"<span size=\"smaller\">Backend\n"
-"FluidSynth</span>"
+msgstr "<span size=\"smaller\">Backend\nFluidSynth</span>"
 
 #: src/amidi-plug/i_fileinfo.c:167
 msgid "Name:"
@@ -616,9 +585,36 @@ msgstr "  (neplatné UTF8)"
 msgid "About AMIDI-Plug"
 msgstr "O AMIDI-Pluginu"
 
+#: src/amidi-plug/i_utils.c:50
+msgid "AMIDI-Plug "
+msgstr ""
+
+#: src/amidi-plug/i_utils.c:51
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr ""
+
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
-msgstr ""
+msgstr "Audacious OSD "
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
@@ -657,10 +653,7 @@ msgid ""
 "Triggers OSD when, during playback, the song title changes but the filename "
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
-msgstr ""
-"Spustí OSD, když se během přehrávaní změní název skladby, ale jméno souboru "
-"je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se "
-"střídají skladby."
+msgstr "Spustí OSD, když se během přehrávaní změní název skladby, ale jméno souboru je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se střídají skladby."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
@@ -792,12 +785,8 @@ msgstr "Nalezen kompozitní správce"
 #: src/aosd/aosd_ui.c:791
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD won't work properly"
-msgstr ""
-"Kompozitní správce nebyl nalezen.\n"
-"Pokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte "
-"kompozitního správce, jinak OSD nebude správně fungovat."
+"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+msgstr "Kompozitní správce nebyl nalezen.\nPokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte kompozitního správce, jinak OSD nebude správně fungovat."
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -900,7 +889,7 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Analyzátor spektra"
 
-#: src/cdaudio-ng/cdaudio-ng.c:106
+#: src/cdaudio-ng/cdaudio-ng.c:111
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -912,126 +901,126 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:124
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "<b>Device</b>"
 msgstr "<b>Zařízení</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Read speed:"
 msgstr "Rychlost čtení:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:133
 msgid "Override device:"
 msgstr "Přepsat zařízení:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:135
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadata</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:131
+#: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Use CD-Text"
 msgstr "Použití CD-Text"
 
-#: src/cdaudio-ng/cdaudio-ng.c:133
+#: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Use CDDB"
 msgstr "Používat CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:135
+#: src/cdaudio-ng/cdaudio-ng.c:140
 msgid "Use HTTP instead of CDDBP"
 msgstr "Použít HTTP místo CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:137
+#: src/cdaudio-ng/cdaudio-ng.c:142
 msgid "Server:"
 msgstr "Server:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:139
+#: src/cdaudio-ng/cdaudio-ng.c:144
 msgid "Path:"
 msgstr "Cesta:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:141
+#: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Port:"
 msgstr "Port:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:151
+#: src/cdaudio-ng/cdaudio-ng.c:156
 msgid "Audio CD Plugin"
 msgstr "Audio CD Plugin"
 
-#: src/cdaudio-ng/cdaudio-ng.c:252
+#: src/cdaudio-ng/cdaudio-ng.c:257
 msgid "Failed to initialize cdio subsystem."
 msgstr "Nepodařilo se inicializovat cdio subsystému."
 
-#: src/cdaudio-ng/cdaudio-ng.c:309
+#: src/cdaudio-ng/cdaudio-ng.c:314
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Neplatná URI %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:311
+#: src/cdaudio-ng/cdaudio-ng.c:316
 #, c-format
 msgid "Track %d not found."
 msgstr "Stopa %d nebyla nalezena."
 
-#: src/cdaudio-ng/cdaudio-ng.c:313
-#, fuzzy, c-format
+#: src/cdaudio-ng/cdaudio-ng.c:318
+#, c-format
 msgid "Track %d is a data track."
-msgstr "Stopa %d je stopa dat.\n"
+msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:315
+#: src/cdaudio-ng/cdaudio-ng.c:320
 msgid "Failed to open audio output."
 msgstr "Nelze otevřít zvukový výstup"
 
-#: src/cdaudio-ng/cdaudio-ng.c:398
+#: src/cdaudio-ng/cdaudio-ng.c:403
 msgid "Error reading audio CD."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:508
+#: src/cdaudio-ng/cdaudio-ng.c:513
 msgid "Audio CD"
 msgstr "Zvukové CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:538 src/cdaudio-ng/cdaudio-ng.c:547
+#: src/cdaudio-ng/cdaudio-ng.c:543 src/cdaudio-ng/cdaudio-ng.c:552
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Nelze otevřít CD zařízení %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:550
+#: src/cdaudio-ng/cdaudio-ng.c:555
 msgid "No audio capable CD drive found."
 msgstr "Nebyly nalezeny funkční CD mechaniky"
 
-#: src/cdaudio-ng/cdaudio-ng.c:577
+#: src/cdaudio-ng/cdaudio-ng.c:582
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Nepodařilo se dokončit inicializaci otevření CD mechaniky."
 
-#: src/cdaudio-ng/cdaudio-ng.c:590
+#: src/cdaudio-ng/cdaudio-ng.c:595
 msgid "Failed to retrieve first/last track number."
 msgstr "Nepodařilo se načíst první/poslední číslo skladby."
 
-#: src/cdaudio-ng/cdaudio-ng.c:615
+#: src/cdaudio-ng/cdaudio-ng.c:620
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr ""
+msgstr "nelze přečíst začátek/konec LSN pro skladbu %d."
 
-#: src/cdaudio-ng/cdaudio-ng.c:692
+#: src/cdaudio-ng/cdaudio-ng.c:710
 msgid "Failed to create the cddb connection."
 msgstr "Nepodařilo se vytvořit připojení k CDDB."
 
-#: src/cdaudio-ng/cdaudio-ng.c:767
+#: src/cdaudio-ng/cdaudio-ng.c:785
 msgid "Failed to query the CDDB server"
 msgstr "Nepodařil se dotaz na server CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:769
+#: src/cdaudio-ng/cdaudio-ng.c:787
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Nepodařil se dotaz na server CDDB: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:793
+#: src/cdaudio-ng/cdaudio-ng.c:811
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Nepodařilo se přečíst cddb info: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:866
+#: src/cdaudio-ng/cdaudio-ng.c:884
 msgid "Drive is empty."
 msgstr "Mechanika je prázdná"
 
-#: src/cdaudio-ng/cdaudio-ng.c:868
+#: src/cdaudio-ng/cdaudio-ng.c:886
 msgid "Unsupported disk type."
 msgstr "Nepodporovaný druh disku."
 
@@ -1132,11 +1121,9 @@ msgstr "Prodloužit dozvuk"
 
 #: src/console/configure.c:270
 msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
-msgstr ""
-"Implicitní délka, vyjádřená v sekundách, se použije na skladby, které "
-"neposkytují informace o délce (např. nekonečné smyčky)."
+"The default song length, expressed in seconds, is used for songs that do not"
+" provide length information (i.e. looping tracks)."
+msgstr "Implicitní délka, vyjádřená v sekundách, se použije na skladby, které neposkytují informace o délce (např. nekonečné smyčky)."
 
 #: src/console/plugin.c:28
 msgid ""
@@ -1153,24 +1140,19 @@ msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
-msgstr ""
-"Prolínání se nezdařilo, protože písně měly různý počet kanálů.  Můžete "
-"použít Míchání kanálů a převést písně na stejný počet kanálů."
+msgstr "Prolínání se nezdařilo, protože písně měly různý počet kanálů.  Můžete použít Míchání kanálů a převést písně na stejný počet kanálů."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr ""
-"Prolínání se nezdařilo, protože písničky měly různé vzorkovací frekvence. "
-"Můžete použít Převádění vzorkovací frekvence pro převod skladeb na stejnou "
-"vzorkovací frekvenci."
+msgstr "Prolínání se nezdařilo, protože písničky měly různé vzorkovací frekvence. Můžete použít Převádění vzorkovací frekvence pro převod skladeb na stejnou vzorkovací frekvenci."
 
 #: src/crossfade/crossfade.c:256
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
-msgstr ""
+msgstr "Prolínání zásuvný modul pro Audacious\nCopyright 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1226,7 +1208,7 @@ msgid ""
 "By Johan Levin, 1999\n"
 "\n"
 "Surround echo by Carl van Schaik, 1999"
-msgstr ""
+msgstr "Ozvěna zásuvný modul \nOd Johna Levina, 1999\n\nProstorová ozvěna od Carla van Schaika, 1999"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
@@ -1240,7 +1222,7 @@ msgid ""
 "Audacious plugin by:\n"
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
-msgstr ""
+msgstr "Multiformátový audio dekodovací zásuný modul pro použití v Audacious\nFFmpeg multimedia framework (http://www.ffmpeg.org/)\n\nAudacious zásuvný modul od:\nWilliama Pitcocka <nenolod@nenolod.net>\nMatti Hämäläinena <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:680
 msgid "FFmpeg Plugin"
@@ -1310,7 +1292,7 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
-msgstr ""
+msgstr "Tento program je svobodným softwarem; můžete jej šířit a/nebo modifikovat\na to podle podmínek GNU General Public Licence, vydávané\nFree Software Foundation; buď verze 2 této licence, nebo\n(podle vašeho uvážení) kterékoli pozdější verze.\n\nTento program je rozšiřován v naději, že bude užitečný,\nale BEZ JAKÉKOLIV ZÁRUKY; dokonce i bez předpokládané záruky\nPRODEJNOSTI anebo VHODNOSTI PRO URČITÝ ÚČEL. viz\nGNU General Public License pro více informací.\n\nMěli byste obdržet kopii GNU General Public License\nspolu s tímto programem; pokud ne, napište na Free Software\nFoundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\nUSA."
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
@@ -1464,7 +1446,7 @@ msgstr "Nastavení vorbis kodéru"
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0–10):"
 
-#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:284
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:282
 msgid "lossless"
 msgstr ""
 
@@ -1474,7 +1456,7 @@ msgid ""
 "Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
+msgstr "Původní kód od\nRalfa Ertzingera <ralf@skytale.net>\n\nhttp://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:278
 msgid "FLAC Decoder"
@@ -1484,7 +1466,7 @@ msgstr "FLAC Dekodér"
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
-msgstr ""
+msgstr "GIO zásuvný modul pro Audacious\nCopyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:324
 msgid "GIO Plugin"
@@ -1496,7 +1478,7 @@ msgid ""
 "Lets you control the player with Gnome's shortcuts.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
-msgstr ""
+msgstr "Zásuvný modul pro klávesové zkratky v Gnome\nUmožňuje ovládat program pomocí klávesových Gnome\n\nCopyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:50
 msgid "Gnome Shortcuts"
@@ -1854,24 +1836,24 @@ msgstr "Vybr_at vše"
 msgid "_Rename ..."
 msgstr "_Přejmenovat ..."
 
-#: src/gtkui/ui_gtk.c:99
+#: src/gtkui/ui_gtk.c:100
 msgid "GTK Interface"
 msgstr "Rozhraní GTK"
 
-#: src/gtkui/ui_gtk.c:169 src/skins/ui_main.c:299
+#: src/gtkui/ui_gtk.c:170 src/skins/ui_main.c:299
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s – Audacious"
 
-#: src/gtkui/ui_gtk.c:175
+#: src/gtkui/ui_gtk.c:176
 msgid "Buffering ..."
 msgstr "Plnění vyrovnávácí paměti…"
 
-#: src/gtkui/ui_gtk.c:178 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
+#: src/gtkui/ui_gtk.c:179 src/skins/ui_main.c:301 src/skins/ui_main.c:1496
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:229 src/lyricwiki/lyricwiki.c:190
+#: src/gtkui/ui_gtk.c:230 src/lyricwiki/lyricwiki.c:190
 #: src/lyricwiki/lyricwiki.c:200 src/lyricwiki/lyricwiki.c:216
 #: src/lyricwiki/lyricwiki.c:226 src/lyricwiki/lyricwiki.c:245
 #: src/skins/plugin.c:179
@@ -1961,14 +1943,10 @@ msgstr "(žádné)"
 
 #: src/hotkey/gui.c:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"It is not recommended to bind the primary mouse buttons without modificators.\n"
 "\n"
 "Do you want to continue?"
-msgstr ""
-"Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n"
-"\n"
-"Chcete pokračovat?"
+msgstr "Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n\nChcete pokračovat?"
 
 #: src/hotkey/gui.c:236
 msgid "Binding mouse buttons"
@@ -1982,9 +1960,7 @@ msgstr "Hlavní nastavení modulu pro horké klávesy"
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
-msgstr ""
-"Uvnitř textového pole stiskněte kombinaci kláves.\n"
-"Navázat lze také tlačítka myši."
+msgstr "Uvnitř textového pole stiskněte kombinaci kláves.\nNavázat lze také tlačítka myši."
 
 #: src/hotkey/gui.c:407
 msgid "Hotkeys:"
@@ -2023,7 +1999,7 @@ msgid ""
 "http://xmms-jack.sourceforge.net/\n"
 "\n"
 "Ported to Audacious by Giacomo Lozito"
-msgstr ""
+msgstr "Na základě xmms-jack, od Chrise Morgana:\nhttp://xmms-jack.sourceforge.net/\n\nPortováno pro Audacious od Giacomo Lozito"
 
 #: src/jack/jack.c:417
 msgid "JACK Output"
@@ -2047,11 +2023,7 @@ msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
-msgstr ""
-"<small>Cesty se od sebe oddělují dvojtečkou.\n"
-"Tyto cesty se prohledávají spolu s LADSPA_PATH.\n"
-"Po té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly "
-"nové moduly.</small>"
+msgstr "<small>Cesty se od sebe oddělují dvojtečkou.\nTyto cesty se prohledávají spolu s LADSPA_PATH.\nPo té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly nové moduly.</small>"
 
 #: src/ladspa/plugin.c:592
 msgid "Available plugins:"
@@ -2073,7 +2045,7 @@ msgstr "Nastavení"
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
-msgstr ""
+msgstr "LADSPA Host pro Audacious\nCopyright 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:651
 msgid "LADSPA Host"
@@ -2090,10 +2062,7 @@ msgid ""
 "%s: could not read LIRC config file\n"
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
-msgstr ""
-"%s: nelze číst z konfiguračního souboru LIRC\n"
-"%s: prosím, přečtěte si dokumentaci k LIRC,\n"
-"%s: jak správně vytvořit konfigurační soubor\n"
+msgstr "%s: nelze číst z konfiguračního souboru LIRC\n%s: prosím, přečtěte si dokumentaci k LIRC,\n%s: jak správně vytvořit konfigurační soubor\n"
 
 #: src/lirc/lirc.c:115
 #, c-format
@@ -2129,7 +2098,7 @@ msgid ""
 "Andrew O. Shadoura <bugzilla@tut.by>\n"
 "\n"
 "For more information about LIRC, see http://lirc.org."
-msgstr ""
+msgstr "Jednoduchý zásuvný modul na ovládání Audacious použitím LIRC démona vzdálené kontroly.\n\nUpraveno pro Audacious od:\nTonyho Vroona <chainsaw@gentoo.org>\nJoonase Harjumäki <jharjuma@gmail.com>\n\nNa základě XMMS pluginu LIRC od:\nCarla van Schaika <carl@leg.uct.ac.za>\nChristophera Bartelmuse <xmms@bartelmus.de>\nAndrewa O. Shadoura <bugzilla@tut.by>\n\nPro více informací o LIRC, navštivte http://lirc.org."
 
 #: src/lirc/lirc.c:411
 msgid "<b>Connection</b>"
@@ -2198,7 +2167,7 @@ msgid ""
 "To use it, add a URL: tact://beats*num/den\n"
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
-msgstr ""
+msgstr "Generátor taktů od Martina Strausse <mys@faveve.uni-stuttgart.de>\n\nChcete-li jej použít, přidejte adrese URL: tact://beats*num/den\nnapř. tact://77 pro přehrání 77 beatů za minutu\nnebo tact://60*3/4 pro přehrání 60 bpm v 3/4 taktu"
 
 #: src/metronom/metronom.c:257
 msgid "Tact Generator"
@@ -2208,7 +2177,7 @@ msgstr "Genetátor taktů"
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
-msgstr ""
+msgstr "Zásuvný modul kanáloveho mixeru pro Audacious\nCopyright 2011-2012 John Lindgren a Michał Lipski"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
@@ -2262,19 +2231,12 @@ msgid ""
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011 John Lindgren\n"
 "\n"
-"This plugin is free software: you can redistribute it and/or modify it under "
-"the terms of the GNU General Public License as published by the Free "
-"Software Foundation, either version 3 of the License, or (at your option) "
-"any later version.\n"
+"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
 "\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr "Založeno na libnotify-aosd od Maximiliana Bognera:\nhttp://www.mbogner.de/projects/libnotify-aosd/\n\nCopyright (C) 2010 Maximilian Bogner\nCopyright (C) 2011 John Lindgren\n\nTento zásuvný modul je svobodným softwarem: můžete jej šířit a/nebo upravovat podle podmínek GNU General Public Licence, vydávané Free Software Foundation, buď ve verzi 3 licence, nebo (podle vašeho uvážení) kterékoli pozdější verze.\n\nTento plugin je distribuován v naději, že bude užitečný, avšak BEZ JAKÉKOLI ZÁRUKY; dokonce i bez předpokládané záruky PRODEJNOSTI, nebo VHODNOSTI PRO URČITÝ ÚČEL. Viz pro více informací - GNU General Public Licence.\n\nMěli byste obdržet kopii GNU General Public Licence spolu s tímto programem. Pokud tomu tak není, viz <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.c:52
 msgid "Desktop Notifications"
@@ -2309,9 +2271,8 @@ msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John "
-"Lindgren and of course the authors of the previous OSS plugin."
-msgstr ""
+"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
+msgstr "OSS4 Výstupní zásuvný modul pro Audacious 2010-2012\nCopyright 2010-2012 Michał Lipski\n\nRád bych poděkoval lidem z #audacious, zejména Tonymu Vroonnovy a Johnu Lindgrennovy a samozřejmě také autorům předešlého OSS zásuvného modulu."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
@@ -2455,8 +2416,7 @@ msgstr "URL Scrobbleru:"
 msgid ""
 "Audacious AudioScrobbler Plugin\n"
 "\n"
-"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian."
-"com>"
+"Originally created by Audun Hove <audun@nlc.no> and Pipian <pipian@pipian.com>"
 msgstr ""
 
 #: src/scrobbler/plugin.c:185
@@ -2508,9 +2468,7 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %s, %d songs"
-msgstr[0] ""
-"%s⏎\n"
-" %s, %d skladba"
+msgstr[0] "%s⏎\n %s, %d skladba"
 msgstr[1] "%s⏎ %s, %d skladby"
 msgstr[2] "%s⏎ %s, %d skladeb"
 
@@ -2522,9 +2480,7 @@ msgid ""
 msgid_plural ""
 "%s\n"
 " %d songs by %s"
-msgstr[0] ""
-" %s⏎\n"
-" %d skladba od %s"
+msgstr[0] " %s⏎\n %d skladba od %s"
 msgstr[1] " %s⏎ %d skladby od %s"
 msgstr[2] " %s⏎ %d skladeb od %s"
 
@@ -2544,9 +2500,7 @@ msgstr "Prohledat knihovnu"
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
-msgstr ""
-"Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak "
-"kliknete na ikonu „obnovit“."
+msgstr "Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak kliknete na ikonu „obnovit“."
 
 #: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
@@ -3030,8 +2984,7 @@ msgstr "Hledání a výběr"
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
-msgstr ""
-"Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
+msgstr "Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
 
 #: src/skins/ui_manager.c:265
 msgid "Invert Selection"
@@ -3380,15 +3333,11 @@ msgstr "Vyhledat skladby v současném seznamu skladeb"
 
 #: src/skins/ui_playlist.c:252
 msgid ""
-"Select entries in playlist by filling one or more fields. Fields use regular "
-"expressions syntax, case-insensitive. If you don't know how regular "
+"Select entries in playlist by filling one or more fields. Fields use regular"
+" expressions syntax, case-insensitive. If you don't know how regular "
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
-msgstr ""
-"Položky seznamu skladeb vyberete vyplněním jednoho, nebo více polí. Pole "
-"používají regulární výrazy a neberou ohled na velikost písmen. Pokud "
-"regulárním výrazům nerozumíte, jednoduše vložte části textu, které chcete "
-"vyhledat."
+msgstr "Položky seznamu skladeb vyberete vyplněním jednoho, nebo více polí. Pole používají regulární výrazy a neberou ohled na velikost písmen. Pokud regulárním výrazům nerozumíte, jednoduše vložte části textu, které chcete vyhledat."
 
 #: src/skins/ui_playlist.c:260
 msgid "Title: "
@@ -3447,19 +3396,11 @@ msgid ""
 "\n"
 "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
 #: src/sndfile/plugin.c:437
@@ -3475,10 +3416,7 @@ msgid ""
 "Sndio Output Plugin\n"
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
-msgstr ""
-"Sndio výstupní plugin\n"
-"\n"
-"napsal Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr "Sndio výstupní plugin\n\nnapsal Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:261
 msgid "Unsupported format"
@@ -3489,9 +3427,7 @@ msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
 "Please try again with the sndiod(1) server running."
-msgstr ""
-"Formát není podporován tímto zvukovým zařízením. ⏎ ⏎ Zkuste to prosím znovu "
-"s běžícím sndiod(1) serverem."
+msgstr "Formát není podporován tímto zvukovým zařízením. ⏎ ⏎ Zkuste to prosím znovu s běžícím sndiod(1) serverem."
 
 #: src/sndio/sndio.c:405
 msgid "sndio device"
@@ -3520,15 +3456,12 @@ msgstr "Příkaz, který se provede na konci skladby."
 
 #: src/song_change/song_change.c:450
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-"Příkaz, který se provede, když Audacious dosáhne konce seznamu skladeb."
+msgstr "Příkaz, který se provede, když Audacious dosáhne konce seznamu skladeb."
 
 #: src/song_change/song_change.c:456
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"Příkaz, který se provede při změně názvu skladbu (tj. názvy v síťových "
-"proudech)."
+msgstr "Příkaz, který se provede při změně názvu skladbu (tj. názvy v síťových proudech)."
 
 #: src/song_change/song_change.c:462
 msgid ""
@@ -3553,9 +3486,7 @@ msgstr ""
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
-msgstr ""
-"<span size='small'>Parametry předávané shellu by měly být uzavřeny do "
-"uvozovek. Nerespektování této rady představuje bezpečnostní riziko.</span>"
+msgstr "<span size='small'>Parametry předávané shellu by měly být uzavřeny do uvozovek. Nerespektování této rady představuje bezpečnostní riziko.</span>"
 
 #: src/song_change/song_change.c:500
 msgid "Commands"
@@ -3657,7 +3588,7 @@ msgstr ""
 msgid "Tone Generator"
 msgstr "Generátor tónu"
 
-#: src/unix-io/unix-io.c:246
+#: src/unix-io/unix-io.c:245
 msgid ""
 "File I/O Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
@@ -3665,7 +3596,7 @@ msgid ""
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
 
-#: src/unix-io/unix-io.c:269
+#: src/unix-io/unix-io.c:268
 msgid "File I/O Plugin"
 msgstr ""
 
@@ -3709,25 +3640,22 @@ msgstr ""
 msgid "VTX Decoder"
 msgstr "VTX Dekodér"
 
-#: src/wavpack/wavpack.c:286
+#: src/wavpack/wavpack.c:284
 msgid "lossy (hybrid)"
 msgstr ""
 
-#: src/wavpack/wavpack.c:288
+#: src/wavpack/wavpack.c:286
 msgid "lossy"
 msgstr ""
 
-#: src/wavpack/wavpack.c:338
+#: src/wavpack/wavpack.c:336
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
 "Some of the plugin code was by Miles Egan."
-msgstr ""
-"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
-"\n"
-"Některý kód pluginů vytvořil Miles Egan."
+msgstr "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\nNěkterý kód pluginů vytvořil Miles Egan."
 
-#: src/wavpack/wavpack.c:345
+#: src/wavpack/wavpack.c:343
 msgid "WavPack Decoder"
 msgstr "WavPack Dekodér"
 
@@ -3738,6 +3666,3 @@ msgstr "2SF Dekodér"
 #: src/xspf/xspf.c:442
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists (XSPF)"
-
-#~ msgid "Too many read errors; giving up."
-#~ msgstr "Příliš chyb při čtení"
