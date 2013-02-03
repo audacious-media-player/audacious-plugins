@@ -814,10 +814,6 @@ if test "x$have_scrobbler2" = "xyes"; then
      [have_scrobbler2="$have_scrobbler2"], [have_scrobbler2="no"])
     AC_SUBST(CURL_CFLAGS)
     AC_SUBST(CURL_LIBS)
-    PKG_CHECK_MODULES(XML, [libxml-2.0],
-     [have_scrobbler2="$have_scrobbler2"], [have_scrobbler2="no"])
-    AC_SUBST(XML_CFLAGS)
-    AC_SUBST(XML_LIBS)
 fi
 
 if test "x$have_scrobbler2" = "xyes"; then
