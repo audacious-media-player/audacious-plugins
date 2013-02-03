@@ -50,6 +50,7 @@ extern GMutex log_access_mutex;
 
 //TRUE when a permission check is being requested
 extern bool_t permission_check_requested;
+extern bool_t invalidate_session_requested;
 
 
 
@@ -69,6 +70,7 @@ extern size_t received_data_size;
 //Data filled by the XML parser
 extern gchar *request_token;
 extern gchar *session_key;
+extern gchar *username;
 
 //scrobbler_xml_parsing.c
 extern bool_t read_authentication_test_result(char **error_code, char **error_detail);

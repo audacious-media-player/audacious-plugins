@@ -537,11 +537,18 @@ gpointer scrobbling_thread (gpointer input_data) {
             } //session_key == NULL || strlen(session_key) == 0
 
             permission_check_requested = FALSE;
+
+        } else if (invalidate_session_requested) {
+          session_key = NULL;
+          aud_set_string("scrobbler", "session_key", "");
+          invalidate_session_requested = FALSE;
+
         } else if (FALSE) { //now_playing_requested
 
         } else {
-
-            scrobble_cached_queue();
+            if (scrobbling_enabled) {
+              scrobble_cached_queue();
+            }
             //scrobbling may be disabled if communication errors occur
 
             g_mutex_lock(&communication_mutex);
