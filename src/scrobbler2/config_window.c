@@ -84,7 +84,7 @@ static void permission_checker (GtkButton *button12, gpointer data) {
 
     //This will make the communication thread check the permission
     //and set the current status on the perm_result enum
-    g_mutex_lock(&communication_mutex);
+    pthread_mutex_lock(&communication_mutex);
     permission_check_requested = TRUE;
 
     //This is only to accelerate the check.
@@ -93,8 +93,8 @@ static void permission_checker (GtkButton *button12, gpointer data) {
 
 
     //Wake the communication thread up in case it's waiting for track plays
-    g_cond_signal(&communication_signal);
-    g_mutex_unlock(&communication_mutex);
+    pthread_cond_signal(&communication_signal);
+    pthread_mutex_unlock(&communication_mutex);
 
     //The button is clicked. Wait for the permission check to be done.
     gdk_threads_add_timeout_seconds(1, permission_checker_thread, data);
