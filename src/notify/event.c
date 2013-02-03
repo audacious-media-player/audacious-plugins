@@ -18,9 +18,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glib.h>
-#include <string.h>
-
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/playlist.h>
@@ -31,7 +28,7 @@
 #include "event.h"
 #include "osd.h"
 
-static gchar * last_title = NULL, * last_message = NULL; /* pooled */
+static char * last_title = NULL, * last_message = NULL; /* pooled */
 
 static void clear (void)
 {
@@ -66,13 +63,13 @@ static void update (void * unused, void * explicit)
         return;
     }
 
-    gint list = aud_playlist_get_playing ();
-    gint entry = aud_playlist_get_position (list);
+    int list = aud_playlist_get_playing ();
+    int entry = aud_playlist_get_position (list);
 
-    gchar * title, * artist, * album;
+    char * title, * artist, * album;
     aud_playlist_entry_describe (list, entry, & title, & artist, & album, FALSE);
 
-    gchar * message;
+    char * message;
     if (artist)
     {
         if (album)
@@ -111,6 +108,7 @@ void event_init (void)
     hook_associate ("playback ready", (HookFunction) update, GINT_TO_POINTER (FALSE));
     hook_associate ("playlist update", (HookFunction) update, GINT_TO_POINTER (FALSE));
     hook_associate ("current art ready", (HookFunction) reshow, NULL);
+    hook_associate ("playback begin", (HookFunction) clear, NULL);
     hook_associate ("playback stop", (HookFunction) clear, NULL);
 }
 
@@ -120,6 +118,7 @@ void event_uninit (void)
     hook_dissociate ("playback ready", (HookFunction) update);
     hook_dissociate ("playlist update", (HookFunction) update);
     hook_dissociate ("current art ready", (HookFunction) reshow);
+    hook_dissociate ("playback begin", (HookFunction) clear);
     hook_dissociate ("playback stop", (HookFunction) clear);
     clear ();
 }

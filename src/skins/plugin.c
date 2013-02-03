@@ -126,8 +126,6 @@ static gboolean skins_init (void)
     else
         mainwin_update_song_info ();
 
-    mainwin_show (config.player_visible);
-
     update_source = g_timeout_add (250, update_cb, NULL);
 
     return TRUE;
@@ -159,7 +157,7 @@ static void skins_cleanup (void)
 
 static gboolean ui_is_shown (void)
 {
-    return config.player_visible;
+    return gtk_widget_get_visible (mainwin);
 }
 
 static gboolean ui_is_focused (void)

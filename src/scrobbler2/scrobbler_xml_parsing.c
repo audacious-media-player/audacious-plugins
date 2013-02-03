@@ -8,7 +8,7 @@ static xmlXPathContextPtr context = NULL;
 
 static bool_t prepare_data () {
     received_data[received_data_size] = '\0';
-    printf("Data received from last.fm:\n%s\n%%%%End of data%%%%\n", received_data);
+    AUDDBG("Data received from last.fm:\n%s\n%%%%End of data%%%%\n", received_data);
 
     doc = xmlParseMemory(received_data, received_data_size+1);
     received_data_size = 0;

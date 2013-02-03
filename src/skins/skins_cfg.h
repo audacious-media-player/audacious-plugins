@@ -31,7 +31,7 @@ typedef struct {
     gboolean autoscroll;
     gboolean always_on_top, sticky;
     gchar *skin;
-    gboolean player_visible, equalizer_visible, playlist_visible;
+    gboolean equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
     gboolean analyzer_peaks;
     gboolean twoway_scroll;

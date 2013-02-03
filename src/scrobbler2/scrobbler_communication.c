@@ -141,7 +141,7 @@ static gchar *create_message_to_lastfm (char *method_name, int n_args, ...) {
 
 
 static bool_t send_message_to_lastfm(gchar *data) {
-    printf("This message will be sent to last.fm:\n%s\n%%%%End of message%%%%\n", data);//Enter?\n", data);
+    AUDDBG("This message will be sent to last.fm:\n%s\n%%%%End of message%%%%\n", data);//Enter?\n", data);
     curl_easy_setopt(curlHandle, CURLOPT_POSTFIELDS, data);
     CURLcode curl_requests_result = curl_easy_perform(curlHandle);
 
@@ -164,7 +164,7 @@ static bool_t scrobbler_request_token() {
                                              );
 
     if (send_message_to_lastfm(tokenmsg) == FALSE) {
-        printf("Could not send token request to last.fm.\n");
+        AUDDBG("Could not send token request to last.fm.\n");
         return FALSE;
     }
 
@@ -212,7 +212,7 @@ static bool_t scrobbler_request_session() {
                 g_strcmp0(error_code, "14") == 0 || //token not authorized
                 g_strcmp0(error_code, "15") == 0    //token expired
             )) {
-            printf("error code CAUGHT: %s\n", error_code);
+            AUDDBG("error code CAUGHT: %s\n", error_code);
             g_free(session_key);
             session_key = NULL;
             result = TRUE;
@@ -253,7 +253,7 @@ static bool_t scrobbler_test_connection() {
     bool_t success = send_message_to_lastfm(testmsg);
     g_free(testmsg);
     if (success == FALSE) {
-        printf("Network problems. Will not scrobble any tracks.\n");
+        AUDDBG("Network problems. Will not scrobble any tracks.\n");
         scrobbling_enabled = FALSE;
         if (permission_check_requested) {
             perm_result = PERMISSION_NONET;
@@ -279,13 +279,13 @@ static bool_t scrobbler_test_connection() {
         } else {
             //network problem.
             scrobbling_enabled = FALSE;
-            printf("Connection NOT OK. Scrobbling disabled\n");
+            AUDDBG("Connection NOT OK. Scrobbling disabled\n");
             return FALSE;
         }
     } else {
         //THIS IS THE ONLY PLACE WHERE SCROBBLING IS SET TO ENABLED
         scrobbling_enabled = TRUE;
-        printf("Connection OK. Scrobbling enabled.\n");
+        AUDDBG("Connection OK. Scrobbling enabled.\n");
         return TRUE;
     }
 }

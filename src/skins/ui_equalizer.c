@@ -454,7 +454,7 @@ void equalizerwin_show (gboolean show)
     {
         config.equalizer_visible = show;
         button_set_active (mainwin_eq, show);
-        equalizerwin_real_show (config.player_visible && show);
+        equalizerwin_real_show (show && gtk_widget_get_visible (mainwin));
     }
 }
 

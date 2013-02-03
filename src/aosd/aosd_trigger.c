@@ -110,14 +110,18 @@ aosd_trigger_get_codes_array ( gint ** array , gint * array_size )
 const gchar *
 aosd_trigger_get_name ( gint trig_code )
 {
-  return aosd_triggers[trig_code].name;
+  if (trig_code >= 0 && trig_code < G_N_ELEMENTS (aosd_triggers))
+    return aosd_triggers[trig_code].name;
+  return NULL;
 }
 
 
 const gchar *
 aosd_trigger_get_desc ( gint trig_code )
 {
-  return aosd_triggers[trig_code].desc;
+  if (trig_code >= 0 && trig_code < G_N_ELEMENTS (aosd_triggers))
+    return aosd_triggers[trig_code].desc;
+  return NULL;
 }
 
 
@@ -128,7 +132,8 @@ aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
   for ( i = 0 ; i < cfg_trigger->active->len ; i++ )
   {
     gint trig_code = g_array_index( cfg_trigger->active , gint , i );
-    aosd_triggers[trig_code].onoff_func( TRUE );
+    if (trig_code >= 0 && trig_code < G_N_ELEMENTS (aosd_triggers))
+      aosd_triggers[trig_code].onoff_func (TRUE);
   }
   /* When called, this hook will display the text of the user pointer
      or the current playing song, if NULL */
@@ -145,7 +150,8 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
   for ( i = 0 ; i < cfg_trigger->active->len ; i++ )
   {
     gint trig_code = g_array_index( cfg_trigger->active , gint , i );
-    aosd_triggers[trig_code].onoff_func( FALSE );
+    if (trig_code >= 0 && trig_code < G_N_ELEMENTS (aosd_triggers))
+      aosd_triggers[trig_code].onoff_func (FALSE);
   }
   return;
 }

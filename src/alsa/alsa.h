@@ -56,7 +56,6 @@ do { \
 
 /* alsa.c */
 int alsa_init (void);
-void alsa_soft_init (void);
 void alsa_cleanup (void);
 int alsa_open_audio (int aud_format, int rate, int channels);
 void alsa_close_audio (void);

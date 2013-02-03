@@ -69,7 +69,6 @@ do { \
 } while (0)
 
 static snd_pcm_t * alsa_handle;
-static char alsa_initted;
 static pthread_mutex_t alsa_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t alsa_cond = PTHREAD_COND_INITIALIZER;
 
@@ -279,34 +278,17 @@ FAILED:
 
 int alsa_init (void)
 {
-    alsa_handle = NULL;
-    alsa_initted = 0;
+    AUDDBG ("Initialize.\n");
+    alsa_config_load ();
+    alsa_open_mixer ();
     return 1;
-}
-
-void alsa_soft_init (void)
-{
-    pthread_mutex_lock (& alsa_mutex);
-
-    if (! alsa_initted)
-    {
-        AUDDBG ("Initialize.\n");
-        alsa_config_load ();
-        alsa_open_mixer ();
-        alsa_initted = 1;
-    }
-
-    pthread_mutex_unlock (& alsa_mutex);
 }
 
 void alsa_cleanup (void)
 {
-    if (alsa_initted)
-    {
-        AUDDBG ("Cleanup.\n");
-        alsa_close_mixer ();
-        alsa_config_save ();
-    }
+    AUDDBG ("Cleanup.\n");
+    alsa_close_mixer ();
+    alsa_config_save ();
 }
 
 static int convert_aud_format (int aud_format)
@@ -345,7 +327,6 @@ static int convert_aud_format (int aud_format)
 
 int alsa_open_audio (int aud_format, int rate, int channels)
 {
-    alsa_soft_init ();
     pthread_mutex_lock (& alsa_mutex);
 
     assert (alsa_handle == NULL);
@@ -661,7 +642,6 @@ void alsa_close_mixer (void)
 
 void alsa_get_volume (int * left, int * right)
 {
-    alsa_soft_init ();
     pthread_mutex_lock (& alsa_mutex);
 
     long left_l = 0, right_l = 0;
@@ -718,7 +698,6 @@ FAILED:
 
 void alsa_set_volume (int left, int right)
 {
-    alsa_soft_init ();
     pthread_mutex_lock (& alsa_mutex);
 
     if (alsa_mixer == NULL)

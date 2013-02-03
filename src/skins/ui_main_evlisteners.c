@@ -319,7 +319,7 @@ void start_stop_visual (gboolean exiting)
 {
     static char started = 0;
 
-    if (config.player_visible && config.vis_type != VIS_OFF && ! exiting)
+    if (config.vis_type != VIS_OFF && ! exiting && gtk_widget_get_visible (mainwin))
     {
         if (! started)
         {

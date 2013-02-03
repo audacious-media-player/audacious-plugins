@@ -874,7 +874,7 @@ void playlistwin_show (char show)
     {
         config.playlist_visible = show;
         button_set_active (mainwin_pl, show);
-        playlistwin_real_show (config.player_visible && show);
+        playlistwin_real_show (show && gtk_widget_get_visible (mainwin));
     }
 }
 

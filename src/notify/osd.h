@@ -17,11 +17,9 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glib.h>
+#include <libaudcore/core.h>
 #include <libnotify/notify.h>
 
-// Prototypes
-gboolean osd_init();
-void osd_uninit();
-void osd_closed_handler(NotifyNotification *notification2, gpointer data);
-void osd_show(const gchar *title, const gchar *message, const gchar *icon, GdkPixbuf *pb);
+bool_t osd_init (void);
+void osd_uninit (void);
+void osd_show (const char * title, const char * message, const char * icon, GdkPixbuf * pixbuf);

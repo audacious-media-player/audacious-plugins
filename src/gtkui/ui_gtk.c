@@ -46,13 +46,13 @@ static const gchar * const gtkui_defaults[] = {
  "infoarea_show_vis", "TRUE",
  "infoarea_visible", "TRUE",
  "menu_visible", "TRUE",
- "player_visible", "TRUE",
  "statusbar_visible", "TRUE",
  "close_button_visible", "TRUE",
 
  "autoscroll", "TRUE",
  "playlist_columns", "title artist album queued length",
  "playlist_headers", "TRUE",
+ "show_remaining_time", "FALSE",
 
  "player_x", "-1",
  "player_y", "-1",
@@ -210,8 +210,6 @@ static gboolean title_change_cb (void)
 
 static void ui_show (gboolean show)
 {
-    aud_set_bool ("gtkui", "player_visible", show);
-
     if (show)
     {
         if (aud_get_bool ("gtkui", "save_window_position") && ! gtk_widget_get_visible (window))
@@ -245,7 +243,7 @@ static void ui_show (gboolean show)
 
 static gboolean ui_is_shown (void)
 {
-    return aud_get_bool ("gtkui", "player_visible");
+    return gtk_widget_get_visible (window);
 }
 
 static gboolean ui_is_focused (void)
@@ -285,7 +283,10 @@ static void set_time_label (gint time, gint len)
 {
     gchar s[128] = "<b>";
 
-    append_time_str (s, sizeof s, time);
+    if (len && aud_get_bool ("gtkui", "show_remaining_time"))
+        append_time_str (s, sizeof s, len - time);
+    else
+        append_time_str (s, sizeof s, time);
 
     if (len)
     {
@@ -887,9 +888,6 @@ static gboolean init (void)
     title_change_cb ();
 
     gtk_widget_show_all (vbox_outer);
-
-    if (aud_get_bool ("gtkui", "player_visible"))
-        ui_show (TRUE);
 
     update_toggles (NULL, NULL);
 

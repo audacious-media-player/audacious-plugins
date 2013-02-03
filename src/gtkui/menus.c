@@ -84,6 +84,7 @@ static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_
 static void pl_sort_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); }
 static void pl_sort_album (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); }
 static void pl_sort_date (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); }
+static void pl_sort_length (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); }
 static void pl_sort_path (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
 static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FORMATTED_TITLE); }
 static void pl_reverse (void) {aud_playlist_reverse (aud_playlist_get_active ()); }
@@ -94,6 +95,7 @@ static void pl_sort_selected_title (void) {aud_playlist_sort_selected_by_scheme 
 static void pl_sort_selected_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); }
 static void pl_sort_selected_album (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); }
 static void pl_sort_selected_date (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); }
+static void pl_sort_selected_length (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); }
 static void pl_sort_selected_path (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
 static void pl_sort_selected_custom (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FORMATTED_TITLE); }
 static void pl_reverse_selected (void) {aud_playlist_reverse_selected (aud_playlist_get_active ()); }
@@ -158,12 +160,9 @@ static gboolean menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible
 static gboolean infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
 static gboolean infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
 static gboolean status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
+static gboolean remaining_time_get (void) {return aud_get_bool ("gtkui", "show_remaining_time"); }
+static void remaining_time_set (gboolean show) {aud_set_bool ("gtkui", "show_remaining_time", show); }
 static gboolean close_button_get (void) {return aud_get_bool ("gtkui", "close_button_visible"); }
-static void close_button_set (gboolean show)
-{
-    aud_set_bool ("gtkui", "close_button_visible", show);
-    show_close_buttons (show);
-}
 static gboolean column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
 static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
 static void autoscroll_set (gboolean on) {aud_set_bool ("gtkui", "autoscroll", on); }
@@ -209,8 +208,9 @@ static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_track},
  {N_("By _Title"), .func = pl_sort_title},
  {N_("By _Artist"), .func = pl_sort_artist},
- {N_("By A_lbum"), .func = pl_sort_album},
+ {N_("By Al_bum"), .func = pl_sort_album},
  {N_("By Release _Date"), .func = pl_sort_date},
+ {N_("By _Length"), .func = pl_sort_length},
  {N_("By _File Path"), .func = pl_sort_path},
  {N_("By _Custom Title"), .func = pl_sort_custom},
  {.sep = TRUE},
@@ -221,8 +221,9 @@ static const struct MenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_selected_track},
  {N_("By _Title"), .func = pl_sort_selected_title},
  {N_("By _Artist"), .func = pl_sort_selected_artist},
- {N_("By A_lbum"), .func = pl_sort_selected_album},
+ {N_("By Al_bum"), .func = pl_sort_selected_album},
  {N_("By Release _Date"), .func = pl_sort_selected_date},
+ {N_("By _Length"), .func = pl_sort_selected_length},
  {N_("By _File Path"), .func = pl_sort_selected_path},
  {N_("By _Custom Title"), .func = pl_sort_selected_custom},
  {.sep = TRUE},
@@ -265,7 +266,9 @@ static const struct MenuItem view_items[] = {
  {N_("Show Info Bar Vis_ualization"), .get = infoarea_vis_get, show_infoarea_vis},
  {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL, .get = status_bar_get, show_statusbar},
  {.sep = TRUE},
- {N_("Show Close _Buttons"), NULL, .get = close_button_get, close_button_set, "close_button_visible"},
+ {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL, .get = remaining_time_get, remaining_time_set},
+ {.sep = TRUE},
+ {N_("Show Close _Buttons"), .get = close_button_get, show_close_buttons},
  {N_("Show Column _Headers"), .get = column_headers_get, playlist_show_headers},
  {N_("Choose _Columns ..."), .func = pw_col_choose},
  {N_("Scrol_l on Song Change"), .get = autoscroll_get, autoscroll_set}};

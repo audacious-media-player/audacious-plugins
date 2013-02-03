@@ -17,10 +17,5 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glib.h>
-#include <libaudcore/hook.h>
-#include <audacious/plugin.h>
-
-// Prototypes
-void event_init();
-void event_uninit();
+void event_init (void);
+void event_uninit (void);
