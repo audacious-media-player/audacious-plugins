@@ -29,6 +29,7 @@ gchar *request_token = NULL;
 
 //static (private) variables
 static Tuple * playing_track       = NULL;
+//all times are in microseconds
 static  gint64 timestamp           = 0;
 static  gint64 play_started_at     = 0;
 static  gint64 pause_started_at    = 0;
@@ -130,14 +131,28 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
 static void stopped (void *hook_data, void *user_data) {
     // Called when pressing STOP and when the playlist ends.
-
     cleanup_current_track();
 }
 
 static void ended (void *hook_data, void *user_data) {
     //Called when when a track finishes playing.
 
-    //TODO: probably we can also enqueue here to workaround tracks with wrong lengths
+    //TODO: hic sunt race conditions
+    if (playing_track != NULL && (g_get_monotonic_time() > (play_started_at + 30*G_USEC_PER_SEC)) ) {
+      //This is an odd situation when the track's real length doesn't correspond to the length reported by the player.
+      //If we are at the end of the track, it is longer than 30 seconds and it wasn't scrobbled, we scrobble it by then.
+
+      if (queue_function_ID != 0) {
+        gboolean success = g_source_remove(queue_function_ID);
+        queue_function_ID = 0;
+        if (!success) {
+          AUDDBG("BUG or race condition: Could not remove source.\n");
+        } else {
+          queue_track_to_scrobble(NULL);
+        }
+      }
+    }
+
     cleanup_current_track();
 }
 
@@ -170,6 +185,7 @@ static void paused (void *hook_data, void *user_data) {
     }
 
     gboolean success = g_source_remove(queue_function_ID);
+    queue_function_ID = 0;
     if (!success) {
         AUDDBG("BUG: Could not remove source.\n");
         return;
