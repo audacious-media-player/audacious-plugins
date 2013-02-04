@@ -234,6 +234,7 @@ static bool_t scrobbler_init (void) {
     session_key = aud_get_string("scrobbler", "session_key");
     if (session_key != NULL && strlen(session_key) == 0) {
         session_key = NULL;
+        scrobbling_enabled = FALSE;
     }
     request_token = NULL;
 
