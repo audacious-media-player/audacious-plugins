@@ -16,15 +16,15 @@ class Gzip_File_Reader : public File_Reader {
 public:
 	Gzip_File_Reader();
 	~Gzip_File_Reader();
-	
+
 	error_t open( const char* );
-	
+
 	long size() const;
 	long read_avail( void*, long );
-	
+
 	long tell() const;
 	error_t seek( long );
-	
+
 	void close();
 };
 
@@ -33,7 +33,7 @@ class Gzip_File_Writer : public Data_Writer {
 public:
 	Gzip_File_Writer();
 	~Gzip_File_Writer();
-	
+
 	error_t open( const char* );
 	error_t write( const void*, long );
 	void close();

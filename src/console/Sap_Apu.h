@@ -13,15 +13,15 @@ class Sap_Apu {
 public:
 	enum { osc_count = 4 };
 	void osc_output( int index, Blip_Buffer* );
-	
+
 	void reset( Sap_Apu_Impl* );
-	
+
 	enum { start_addr = 0xD200 };
 	enum { end_addr   = 0xD209 };
 	void write_data( blip_time_t, unsigned addr, int data );
-	
+
 	void end_frame( blip_time_t );
-	
+
 public:
 	Sap_Apu();
 private:
@@ -42,10 +42,10 @@ private:
 	int poly4_pos;
 	int polym_pos;
 	int control;
-	
+
 	void calc_periods();
 	void run_until( blip_time_t );
-	
+
 	enum { poly4_len  = (1L <<  4) - 1 };
 	enum { poly9_len  = (1L <<  9) - 1 };
 	enum { poly17_len = (1L << 17) - 1 };
@@ -56,10 +56,10 @@ private:
 class Sap_Apu_Impl {
 public:
 	Blip_Synth<blip_good_quality,1> synth;
-	
+
 	Sap_Apu_Impl();
 	void volume( double d ) { synth.volume( 1.0 / Sap_Apu::osc_count / 30 * d ); }
-	
+
 private:
 	typedef unsigned char byte;
 	byte poly4  [Sap_Apu::poly4_len  / 8 + 1];

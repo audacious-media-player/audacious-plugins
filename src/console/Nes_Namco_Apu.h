@@ -19,20 +19,20 @@ public:
 	void osc_output( int index, Blip_Buffer* );
 	void reset();
 	void end_frame( blip_time_t );
-	
+
 	// Read/write data register is at 0x4800
 	enum { data_reg_addr = 0x4800 };
 	void write_data( blip_time_t, int );
 	int read_data();
-	
+
 	// Write-only address register is at 0xF800
 	enum { addr_reg_addr = 0xF800 };
 	void write_addr( int );
-	
+
 	// to do: implement save/restore
 	void save_state( namco_state_t* out ) const;
 	void load_state( namco_state_t const& );
-	
+
 public:
 	Nes_Namco_Apu();
 	BLARGG_DISABLE_NOTHROW
@@ -40,23 +40,23 @@ private:
 	// noncopyable
 	Nes_Namco_Apu( const Nes_Namco_Apu& );
 	Nes_Namco_Apu& operator = ( const Nes_Namco_Apu& );
-	
+
 	struct Namco_Osc {
 		blargg_long delay;
 		Blip_Buffer* output;
 		short last_amp;
 		short wave_pos;
 	};
-	
+
 	Namco_Osc oscs [osc_count];
-	
+
 	blip_time_t last_time;
 	int addr_reg;
-	
+
 	enum { reg_count = 0x80 };
 	BOOST::uint8_t reg [reg_count];
 	Blip_Synth<blip_good_quality,15> synth;
-	
+
 	BOOST::uint8_t& access();
 	void run_until( blip_time_t );
 };

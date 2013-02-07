@@ -11,7 +11,7 @@ class Gzip_Reader : public Data_Reader {
 public:
 	error_t open( File_Reader* );
 	void close();
-	
+
 public:
 	Gzip_Reader();
 	~Gzip_Reader();
@@ -23,7 +23,7 @@ private:
 	long tell_;
 	long size_;
 	Zlib_Inflater inflater;
-	
+
 	error_t calc_size();
 	blargg_err_t read_( void* out, long* count );
 };

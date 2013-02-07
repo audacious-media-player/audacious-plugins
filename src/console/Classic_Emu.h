@@ -20,7 +20,7 @@ protected:
 	blargg_err_t setup_buffer( long clock_rate );
 	long clock_rate() const { return clock_rate_; }
 	void change_clock_rate( long ); // experimental
-	
+
 	// Overridable
 	virtual void set_voice( int index, Blip_Buffer* center,
 			Blip_Buffer* left, Blip_Buffer* right ) = 0;
@@ -60,7 +60,7 @@ protected:
 	blargg_long rom_addr;
 	blargg_long mask;
 	blargg_long size_; // TODO: eliminate
-	
+
 	blargg_err_t load_rom_data_( Data_Reader& in, int header_size, void* header_out,
 			int fill, long pad_size );
 	void set_addr_( long addr, int unit );
@@ -76,25 +76,25 @@ public:
 	{
 		return load_rom_data_( in, header_size, header_out, fill, pad_size );
 	}
-	
+
 	// Size of file data read in (excluding header)
 	long file_size() const { return file_size_; }
-	
+
 	// Pointer to beginning of file data
 	byte* begin() const { return rom.begin() + pad_size; }
-	
+
 	// Set address that file data should start at
 	void set_addr( long addr ) { set_addr_( addr, unit ); }
-	
+
 	// Free data
 	void clear() { rom.clear(); }
-	
+
 	// Size of data + start addr, rounded to a multiple of unit
 	long size() const { return size_; }
-	
+
 	// Pointer to unmapped page filled with same value
 	byte* unmapped() { return rom.begin(); }
-	
+
 	// Mask address to nearest power of two greater than size()
 	blargg_long mask_addr( blargg_long addr ) const
 	{
@@ -103,7 +103,7 @@ public:
 		#endif
 		return addr & mask;
 	}
-	
+
 	// Pointer to page starting at addr. Returns unmapped() if outside data.
 	byte* at_addr( blargg_long addr )
 	{

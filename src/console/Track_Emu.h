@@ -12,16 +12,16 @@ public:
 	// continually checks for end-of-track silence of more than around 6
 	// seconds. Keeps pointer to emulator.
 	void start_track( Music_Emu*, int track, long fade_time_msec, bool detect_silence );
-	
+
 	// Seek to new time in track
 	void seek( long msec );
 
 	long tell() const;
-	
+
 	// Play for 'count' samples and write to output buffer. Returns true when track
 	// has ended.
 	bool play( int count, Music_Emu::sample_t* out );
-	
+
 private:
 	Music_Emu* emu;
 	Music_Emu::sample_t* buffer;
@@ -37,7 +37,7 @@ private:
 	bool track_ended;
 	enum { buf_size = 1024 };
 	Music_Emu::sample_t buf [buf_size];
-	
+
 	void end_track();
 	void restart_track();
 	void sync( long time );
