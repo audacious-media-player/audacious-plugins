@@ -118,7 +118,7 @@ blargg_err_t Gbs_Emu::load_( Data_Reader& in )
 	if ( header_.timer_mode & 0x78 )
 		set_warning( "Invalid timer mode" );
 
-	unsigned load_addr = get_le16( header_.load_addr );
+	unsigned load_addr = GET_LE16( header_.load_addr );
 	if ( (header_.load_addr [1] | header_.init_addr [1] | header_.play_addr [1]) > 0x7F ||
 			load_addr < 0x400 )
 		set_warning( "Invalid load/init/play address" );
@@ -187,7 +187,7 @@ static uint8_t const sound_data [Gb_Apu::register_count] = {
 
 void Gbs_Emu::cpu_jsr( gb_addr_t addr )
 {
-	check( cpu::r.sp == get_le16( header_.stack_ptr ) );
+	check( cpu::r.sp == GET_LE16( header_.stack_ptr ) );
 	cpu::r.pc = addr;
 	cpu_write( --cpu::r.sp, idle_addr >> 8 );
 	cpu_write( --cpu::r.sp, idle_addr&0xFF );
@@ -212,7 +212,7 @@ blargg_err_t Gbs_Emu::start_track_( int track )
 	for ( int i = 0; i < (int) sizeof sound_data; i++ )
 		apu.write_register( 0, i + apu.start_addr, sound_data [i] );
 
-	unsigned load_addr = get_le16( header_.load_addr );
+	unsigned load_addr = GET_LE16( header_.load_addr );
 	rom.set_addr( load_addr );
 	cpu::rst_base = load_addr;
 
@@ -229,9 +229,9 @@ blargg_err_t Gbs_Emu::start_track_( int track )
 
 	cpu::r.a  = track;
 	cpu::r.pc = idle_addr;
-	cpu::r.sp = get_le16( header_.stack_ptr );
+	cpu::r.sp = GET_LE16( header_.stack_ptr );
 	cpu_time  = 0;
-	cpu_jsr( get_le16( header_.init_addr ) );
+	cpu_jsr( GET_LE16( header_.init_addr ) );
 
 	return 0;
 }
@@ -259,7 +259,7 @@ blargg_err_t Gbs_Emu::run_clocks( blip_time_t& duration, int )
 				if ( cpu_time < next_play )
 					cpu_time = next_play;
 				next_play += play_period;
-				cpu_jsr( get_le16( header_.play_addr ) );
+				cpu_jsr( GET_LE16( header_.play_addr ) );
 				GME_FRAME_HOOK( this );
 				// TODO: handle timer rates different than 60 Hz
 			}

@@ -50,7 +50,7 @@ static byte const* get_data( Ay_Emu::file_t const& file, byte const* ptr, int mi
 	long pos = ptr - (byte const*) file.header;
 	long file_size = file.end - (byte const*) file.header;
 	assert( (unsigned long) pos <= (unsigned long) file_size - 2 );
-	int offset = (int16_t) get_be16( ptr );
+	int offset = (int16_t) GET_BE16( ptr );
 	if ( !offset || blargg_ulong (pos + offset) > blargg_ulong (file_size - min_size) )
 		return 0;
 	return ptr + offset;
@@ -81,7 +81,7 @@ static void copy_ay_fields( Ay_Emu::file_t const& file, track_info_t* out, int t
 	Gme_File::copy_field_( out->song, (char const*) get_data( file, file.tracks + track * 4, 1 ) );
 	byte const* track_info = get_data( file, file.tracks + track * 4 + 2, 6 );
 	if ( track_info )
-		out->length = get_be16( track_info + 4 ) * (1000L / 50); // frames to msec
+		out->length = GET_BE16( track_info + 4 ) * (1000L / 50); // frames to msec
 
 	Gme_File::copy_field_( out->author,  (char const*) get_data( file, file.header->author, 1 ) );
 	Gme_File::copy_field_( out->comment, (char const*) get_data( file, file.header->comment, 1 ) );
@@ -179,16 +179,16 @@ blargg_err_t Ay_Emu::start_track_( int track )
 
 	// initial addresses
 	cpu::reset( mem.ram );
-	r.sp = get_be16( more_data );
+	r.sp = GET_BE16( more_data );
 	r.b.a = r.b.b = r.b.d = r.b.h = data [8];
 	r.b.flags = r.b.c = r.b.e = r.b.l = data [9];
 	r.alt.w = r.w;
 	r.ix = r.iy = r.w.hl;
 
-	unsigned addr = get_be16( blocks );
+	unsigned addr = GET_BE16( blocks );
 	if ( !addr ) return "File data missing";
 
-	unsigned init = get_be16( more_data + 2 );
+	unsigned init = GET_BE16( more_data + 2 );
 	if ( !init )
 		init = addr;
 
@@ -196,7 +196,7 @@ blargg_err_t Ay_Emu::start_track_( int track )
 	do
 	{
 		blocks += 2;
-		unsigned len = get_be16( blocks ); blocks += 2;
+		unsigned len = GET_BE16( blocks ); blocks += 2;
 		if ( addr + len > 0x10000 )
 		{
 			set_warning( "Bad data block size" );
@@ -220,7 +220,7 @@ blargg_err_t Ay_Emu::start_track_( int track )
 			break;
 		}
 	}
-	while ( (addr = get_be16( blocks )) != 0 );
+	while ( (addr = GET_BE16( blocks )) != 0 );
 
 	// copy and configure driver
 	static byte const passive [] = {
@@ -241,7 +241,7 @@ blargg_err_t Ay_Emu::start_track_( int track )
 		0x18, 0xF7  // JR LOOP
 	};
 	memcpy( mem.ram, passive, sizeof passive );
-	unsigned play_addr = get_be16( more_data + 4 );
+	unsigned play_addr = GET_BE16( more_data + 4 );
 	//debug_printf( "Play: $%04X\n", play_addr );
 	if ( play_addr )
 	{

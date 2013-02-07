@@ -52,7 +52,7 @@ static void get_spc_xid6( byte const* begin, long size, track_info_t* out )
 		check( false );
 		return;
 	}
-	long info_size = get_le32( begin + 4 );
+	long info_size = GET_LE32( begin + 4 );
 	byte const* in = begin + 8;
 	if ( end - in > info_size )
 	{
@@ -97,7 +97,7 @@ static void get_spc_xid6( byte const* begin, long size, track_info_t* out )
 				check( len == 4 );
 				if ( len >= 4 )
 				{
-					out->intro_length = get_le32( in ) / 64;
+					out->intro_length = GET_LE32( in ) / 64;
 					if ( out->length > 0 )
 					{
 						long loop = out->length - out->intro_length;
@@ -179,7 +179,7 @@ static void get_spc_info( Spc_Emu::header_t const& h, byte const* xid6, long xid
 		len_secs += n;
 	}
 	if ( !len_secs || len_secs > 0x1FFF )
-		len_secs = get_le16( h.len_secs );
+		len_secs = GET_LE16( h.len_secs );
 	if ( len_secs < 0x1FFF )
 		out->length = len_secs * 1000;
 

@@ -47,7 +47,7 @@ static void get_gym_info( Gym_Emu::header_t const& h, long length, track_info_t*
 	if ( !memcmp( h.tag, "GYMX", 4 ) )
 	{
 		length = length * 50 / 3; // 1000 / 60
-		long loop = get_le32( h.loop_start );
+		long loop = GET_LE32( h.loop_start );
 		if ( loop )
 		{
 			out->intro_length = loop * 50 / 3;
@@ -234,7 +234,7 @@ blargg_err_t Gym_Emu::start_track_( int track )
 	RETURN_ERR( Music_Emu::start_track_( track ) );
 
 	pos         = data;
-	loop_remain = get_le32( header_.loop_start );
+	loop_remain = GET_LE32( header_.loop_start );
 
 	prev_dac_count = 0;
 	dac_enabled    = false;

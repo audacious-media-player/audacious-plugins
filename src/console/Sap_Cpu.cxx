@@ -53,8 +53,6 @@ void Sap_Cpu::reset( void* new_mem )
 	state_.base = 0;
 	irq_time_ = future_sap_time;
 	end_time_ = future_sap_time;
-
-	blargg_verify_byte_order();
 }
 
 #define TIME                    (s_time + s.base)

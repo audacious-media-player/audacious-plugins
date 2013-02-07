@@ -41,7 +41,6 @@ Gme_File::Gme_File()
 	user_data_    = 0;
 	user_cleanup_ = 0;
 	unload(); // clears fields
-	blargg_verify_byte_order(); // used by most emulator types, so save them the trouble
 }
 
 Gme_File::~Gme_File()

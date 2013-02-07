@@ -334,8 +334,8 @@ blargg_err_t Sap_Emu::start_track_( int track )
 	byte const* in = info.rom_data;
 	while ( file_end - in >= 5 )
 	{
-		unsigned start = get_le16( in );
-		unsigned end   = get_le16( in + 2 );
+		unsigned start = GET_LE16( in );
+		unsigned end   = GET_LE16( in + 2 );
 		//debug_printf( "Block $%04X-$%04X\n", start, end );
 		in += 4;
 		if ( end < start )

@@ -62,8 +62,6 @@ void Hes_Cpu::reset()
 	r.a      = 0;
 	r.x      = 0;
 	r.y      = 0;
-
-	blargg_verify_byte_order();
 }
 
 void Hes_Cpu::set_mmr( int reg, int bank )

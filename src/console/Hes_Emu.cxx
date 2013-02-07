@@ -158,8 +158,8 @@ blargg_err_t Hes_Emu::load_( Data_Reader& in )
 	// many files have bad sizes in the only block, so it's simpler to
 	// just try to load the damn data as best as possible.
 
-	long addr = get_le32( header_.addr );
-	long size = get_le32( header_.size );
+	long addr = GET_LE32( header_.addr );
+	long size = GET_LE32( header_.size );
 	long const rom_max = 0x100000;
 	if ( addr & ~(rom_max - 1) )
 	{
@@ -243,7 +243,7 @@ blargg_err_t Hes_Emu::start_track_( int track )
 	ram [0x1FF] = (idle_addr - 1) >> 8;
 	ram [0x1FE] = (idle_addr - 1) & 0xFF;
 	r.sp = 0xFD;
-	r.pc = get_le16( header_.init_addr );
+	r.pc = GET_LE16( header_.init_addr );
 	r.a  = track;
 
 	recalc_timer_load();

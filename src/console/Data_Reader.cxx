@@ -257,7 +257,7 @@ static const char* get_gzip_eof( const char* path, long* eof )
 	{
 		fseek( file, -4, SEEK_END );
 		fread( buf, 4, 1, file );
-		*eof = get_le32( buf );
+		*eof = GET_LE32( buf );
 	}
 	else
 	{

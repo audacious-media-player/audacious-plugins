@@ -56,7 +56,7 @@ blargg_err_t Gzip_Reader::calc_size()
 		RETURN_ERR( in->seek( size - sizeof trailer ) );
 		RETURN_ERR( in->read( trailer, sizeof trailer ) );
 		RETURN_ERR( in->seek( pos ) );
-		size = get_le32( trailer );
+		size = GET_LE32( trailer );
 	}
 	size_ = size;
 	return 0;

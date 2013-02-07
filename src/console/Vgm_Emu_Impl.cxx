@@ -190,7 +190,7 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 		case cmd_data_block: {
 			check( *pos == cmd_end );
 			int type = pos [1];
-			long size = get_le32( pos + 2 );
+			long size = GET_LE32( pos + 2 );
 			pos += 6;
 			if ( type == pcm_block_type )
 				pcm_data = pos;
@@ -289,7 +289,7 @@ void Vgm_Emu_Impl::update_fm_rates( long* ym2413_rate, long* ym2612_rate ) const
 			break;
 
 		case cmd_data_block:
-			p += 7 + get_le32( p + 3 );
+			p += 7 + GET_LE32( p + 3 );
 			break;
 
 		case cmd_ym2413:

@@ -132,8 +132,8 @@ blargg_err_t Nsfe_Info::load( Data_Reader& in, Nsf_Emu* nsf_emu )
 		// read size and tag
 		byte block_header [2] [4];
 		RETURN_ERR( in.read( block_header, sizeof block_header ) );
-		blargg_long size = get_le32( block_header [0] );
-		blargg_long tag  = get_le32( block_header [1] );
+		blargg_long size = GET_LE32( block_header [0] );
+		blargg_long tag  = GET_LE32( block_header [1] );
 
 		//debug_printf( "tag: %c%c%c%c\n", char(tag), char(tag>>8), char(tag>>16), char(tag>>24) );
 
@@ -240,7 +240,7 @@ blargg_err_t Nsfe_Info::track_info_( track_info_t* out, int track ) const
 	int remapped = remap_track( track );
 	if ( (unsigned) remapped < track_times.size() )
 	{
-		long length = (int32_t) get_le32( track_times [remapped] );
+		long length = (int32_t) GET_LE32( track_times [remapped] );
 		if ( length > 0 )
 			out->length = length;
 	}

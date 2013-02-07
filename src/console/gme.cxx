@@ -69,7 +69,7 @@ BLARGG_EXPORT gme_type_t const* gme_type_list()
 
 BLARGG_EXPORT const char* gme_identify_header( void const* header )
 {
-	switch ( get_be32( header ) )
+	switch ( GET_BE32( header ) )
 	{
 		case BLARGG_4CHAR('Z','X','A','Y'):  return "AY";
 		case BLARGG_4CHAR('G','B','S',0x01): return "GBS";

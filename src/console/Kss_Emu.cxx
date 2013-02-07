@@ -211,8 +211,8 @@ blargg_err_t Kss_Emu::start_track_( int track )
 	memcpy( ram + 0x93, vectors, sizeof vectors );
 
 	// copy non-banked data into RAM
-	unsigned load_addr = get_le16( header_.load_addr );
-	long orig_load_size = get_le16( header_.load_size );
+	unsigned load_addr = GET_LE16( header_.load_addr );
+	long orig_load_size = GET_LE16( header_.load_size );
 	long load_size = min( orig_load_size, rom.file_size() );
 	load_size = min( load_size, long (mem_size - load_addr) );
 	if ( load_size != orig_load_size )
@@ -246,7 +246,7 @@ blargg_err_t Kss_Emu::start_track_( int track )
 	ram [--r.sp] = idle_addr >> 8;
 	ram [--r.sp] = idle_addr & 0xFF;
 	r.b.a = track;
-	r.pc = get_le16( header_.init_addr );
+	r.pc = GET_LE16( header_.init_addr );
 	next_play = play_period;
 	scc_accessed = false;
 	gain_updated = false;
@@ -397,7 +397,7 @@ blargg_err_t Kss_Emu::run_clocks( blip_time_t& duration, int )
 
 				ram [--r.sp] = idle_addr >> 8;
 				ram [--r.sp] = idle_addr & 0xFF;
-				r.pc = get_le16( header_.play_addr );
+				r.pc = GET_LE16( header_.play_addr );
 				GME_FRAME_HOOK( this );
 			}
 		}

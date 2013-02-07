@@ -91,9 +91,9 @@ static long check_gd3_header( byte const* h, long remain )
 {
 	if ( remain < gd3_header_size ) return 0;
 	if ( memcmp( h, "Gd3 ", 4 ) ) return 0;
-	if ( get_le32( h + 4 ) >= 0x200 ) return 0;
+	if ( GET_LE32( h + 4 ) >= 0x200 ) return 0;
 
-	long gd3_size = get_le32( h + 8 );
+	long gd3_size = GET_LE32( h + 8 );
 	if ( gd3_size > remain - gd3_header_size ) return 0;
 
 	return gd3_size;
@@ -104,7 +104,7 @@ byte const* Vgm_Emu::gd3_data( int* size ) const
 	if ( size )
 		*size = 0;
 
-	long gd3_offset = get_le32( header().gd3_offset ) - 0x2C;
+	long gd3_offset = GET_LE32( header().gd3_offset ) - 0x2C;
 	if ( gd3_offset < 0 )
 		return 0;
 
@@ -121,11 +121,11 @@ byte const* Vgm_Emu::gd3_data( int* size ) const
 
 static void get_vgm_length( Vgm_Emu::header_t const& h, track_info_t* out )
 {
-	long length = get_le32( h.track_duration ) * 10 / 441;
+	long length = GET_LE32( h.track_duration ) * 10 / 441;
 	if ( length > 0 )
 	{
-		long loop = get_le32( h.loop_duration );
-		if ( loop > 0 && get_le32( h.loop_offset ) )
+		long loop = GET_LE32( h.loop_duration );
+		if ( loop > 0 && GET_LE32( h.loop_offset ) )
 		{
 			out->loop_length = loop * 10 / 441;
 			out->intro_length = length - out->loop_length;
@@ -174,7 +174,7 @@ struct Vgm_File : Gme_Info_
 		RETURN_ERR( in.read( &h, Vgm_Emu::header_size ) );
 		RETURN_ERR( check_vgm_header( h ) );
 
-		long gd3_offset = get_le32( h.gd3_offset ) - 0x2C;
+		long gd3_offset = GET_LE32( h.gd3_offset ) - 0x2C;
 		long remain = file_size - Vgm_Emu::header_size - gd3_offset;
 		byte gd3_h [gd3_header_size];
 		if ( gd3_offset > 0 && remain >= gd3_header_size )
@@ -282,10 +282,10 @@ blargg_err_t Vgm_Emu::load_mem_( byte const* new_data, long new_size )
 
 	RETURN_ERR( check_vgm_header( h ) );
 
-	check( get_le32( h.version ) <= 0x150 );
+	check( GET_LE32( h.version ) <= 0x150 );
 
 	// psg rate
-	psg_rate = get_le32( h.psg_rate );
+	psg_rate = GET_LE32( h.psg_rate );
 	if ( !psg_rate )
 		psg_rate = 3579545;
 	blip_buf.clock_rate( psg_rate );
@@ -295,8 +295,8 @@ blargg_err_t Vgm_Emu::load_mem_( byte const* new_data, long new_size )
 
 	// get loop
 	loop_begin = data_end;
-	if ( get_le32( h.loop_offset ) )
-		loop_begin = &data [get_le32( h.loop_offset ) + offsetof (header_t,loop_offset)];
+	if ( GET_LE32( h.loop_offset ) )
+		loop_begin = &data [GET_LE32( h.loop_offset ) + offsetof (header_t,loop_offset)];
 
 	set_voice_count( psg.osc_count );
 
@@ -314,9 +314,9 @@ blargg_err_t Vgm_Emu::load_mem_( byte const* new_data, long new_size )
 
 blargg_err_t Vgm_Emu::setup_fm()
 {
-	long ym2612_rate = get_le32( header().ym2612_rate );
-	long ym2413_rate = get_le32( header().ym2413_rate );
-	if ( ym2413_rate && get_le32( header().version ) < 0x110 )
+	long ym2612_rate = GET_LE32( header().ym2612_rate );
+	long ym2413_rate = GET_LE32( header().ym2413_rate );
+	if ( ym2413_rate && GET_LE32( header().version ) < 0x110 )
 		update_fm_rates( &ym2413_rate, &ym2612_rate );
 
 	uses_fm = false;
@@ -368,7 +368,7 @@ blargg_err_t Vgm_Emu::setup_fm()
 blargg_err_t Vgm_Emu::start_track_( int track )
 {
 	RETURN_ERR( Classic_Emu::start_track_( track ) );
-	psg.reset( get_le16( header().noise_feedback ), header().noise_width );
+	psg.reset( GET_LE16( header().noise_feedback ), header().noise_width );
 
 	dac_disabled = -1;
 	pos          = data + header_size;
@@ -376,9 +376,9 @@ blargg_err_t Vgm_Emu::start_track_( int track )
 	pcm_pos      = pos;
 	dac_amp      = -1;
 	vgm_time     = 0;
-	if ( get_le32( header().version ) >= 0x150 )
+	if ( GET_LE32( header().version ) >= 0x150 )
 	{
-		long data_offset = get_le32( header().data_offset );
+		long data_offset = GET_LE32( header().data_offset );
 		check( data_offset );
 		if ( data_offset )
 			pos += data_offset + offsetof (header_t,data_offset) - 0x40;

@@ -82,8 +82,6 @@ void Nes_Cpu::reset( void const* unmapped_page )
 	set_code_page( page_count, unmapped_page );
 	map_code( 0x2000, 0xE000, unmapped_page, true );
 	map_code( 0x0000, 0x2000, low_mem, true );
-
-	blargg_verify_byte_order();
 }
 
 void Nes_Cpu::map_code( nes_addr_t start, unsigned size, void const* data, bool mirror )

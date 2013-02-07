@@ -135,7 +135,7 @@ gme_type_t const gme_nsf_type = &gme_nsf_type_;
 
 void Nsf_Emu::set_tempo_( double t )
 {
-	unsigned playback_rate = get_le16( header_.ntsc_speed );
+	unsigned playback_rate = GET_LE16( header_.ntsc_speed );
 	unsigned standard_rate = 0x411A;
 	clock_rate_ = 1789772.72727;
 	play_period = 262 * 341L * 4 - 2; // two fewer PPU clocks every four frames
@@ -145,7 +145,7 @@ void Nsf_Emu::set_tempo_( double t )
 		play_period   = 33247 * clock_divisor;
 		clock_rate_   = 1662607.125;
 		standard_rate = 0x4E20;
-		playback_rate = get_le16( header_.pal_speed );
+		playback_rate = GET_LE16( header_.pal_speed );
 	}
 
 	if ( !playback_rate )
@@ -283,9 +283,9 @@ blargg_err_t Nsf_Emu::load_( Data_Reader& in )
 		return err;
 
 	// set up data
-	nes_addr_t load_addr = get_le16( header_.load_addr );
-	init_addr = get_le16( header_.init_addr );
-	play_addr = get_le16( header_.play_addr );
+	nes_addr_t load_addr = GET_LE16( header_.load_addr );
+	init_addr = GET_LE16( header_.init_addr );
+	play_addr = GET_LE16( header_.play_addr );
 	if ( !load_addr ) load_addr = rom_begin;
 	if ( !init_addr ) init_addr = rom_begin;
 	if ( !play_addr ) play_addr = rom_begin;

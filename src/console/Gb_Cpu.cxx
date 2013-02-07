@@ -64,8 +64,6 @@ void Gb_Cpu::reset( void* unmapped )
 
 	memset( &r, 0, sizeof r );
 	//interrupts_enabled = false;
-
-	blargg_verify_byte_order();
 }
 
 void Gb_Cpu::map_code( gb_addr_t start, unsigned size, void* data )
