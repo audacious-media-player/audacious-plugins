@@ -23,7 +23,7 @@ static const char* get_zlib_err( int code )
 	assert( code != Z_OK );
 	if ( code == Z_MEM_ERROR )
 		return "Out of memory";
-	
+
 	const char* str = zError( code );
 	if ( code == Z_DATA_ERROR )
 		str = "Zip data is corrupt";
@@ -41,7 +41,7 @@ void Zlib_Inflater::end()
 			check( false );
 	}
 	buf.clear();
-	
+
 	static z_stream const empty = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	memcpy( &zbuf, &empty, sizeof zbuf );
 }
@@ -61,20 +61,20 @@ blargg_err_t Zlib_Inflater::begin( mode_t mode, callback_t callback, void* user_
 		long buf_size )
 {
 	end();
-	
+
 	if ( buf_size && buf.resize( buf_size ) )
 		buf_size = 0; // not enough memory for requested size, so use default
-	
+
 	if ( !buf_size )
 		RETURN_ERR( buf.resize( 16 * 1024L ) );
-	
+
 	// Fill buffer with some data, less than normal buffer size since caller might
 	// just be examining beginning of file. 4K is a common disk block size.
 	long count = (buf_size ? buf_size : 4096);
 	RETURN_ERR( callback( user_data, buf.begin(), &count ) );
 	zbuf.avail_in = count;
 	zbuf.next_in  = buf.begin();
-	
+
 	if ( mode == mode_auto )
 	{
 		// examine buffer for gzip header
@@ -83,17 +83,17 @@ blargg_err_t Zlib_Inflater::begin( mode_t mode, callback_t callback, void* user_
 		if ( count >= min_gzip_size && buf [0] == 0x1F && buf [1] == 0x8B )
 			mode = mode_ungz;
 	}
-	
+
 	if ( mode != mode_copy )
 	{
 		int wb = MAX_WBITS + 16; // have zlib handle gzip header
 		if ( mode == mode_raw_deflate )
 			wb = -MAX_WBITS;
-		
+
 		int zerr = inflateInit2( &zbuf, wb );
 		if ( zerr )
 			return get_zlib_err( zerr );
-		
+
 		deflated_ = true;
 	}
 	return 0;
@@ -105,7 +105,7 @@ blargg_err_t Zlib_Inflater::read( void* out, long* count_io,
 {
 	if ( !*count_io )
 		return 0;
-	
+
 	if ( !deflated_ )
 	{
 		// copy buffered data
@@ -120,7 +120,7 @@ blargg_err_t Zlib_Inflater::read( void* out, long* count_io,
 			if ( !zbuf.avail_in )
 				buf.clear(); // done with buffer
 		}
-		
+
 		// read remaining directly
 		long second = *count_io - first;
 		if ( second )
@@ -134,7 +134,7 @@ blargg_err_t Zlib_Inflater::read( void* out, long* count_io,
 	{
 		zbuf.next_out  = (Bytef*) out;
 		zbuf.avail_out = *count_io;
-		
+
 		while ( 1 )
 		{
 			uInt old_avail_in = zbuf.avail_in;
@@ -145,23 +145,23 @@ blargg_err_t Zlib_Inflater::read( void* out, long* count_io,
 				end();
 				break; // all data deflated
 			}
-			
+
 			if ( err == Z_BUF_ERROR && !old_avail_in )
 				err = 0; // we just need to provide more input
-			
+
 			if ( err )
 				return get_zlib_err( err );
-			
+
 			if ( !zbuf.avail_out )
 				break; // requested number of bytes deflated
-			
+
 			if ( zbuf.avail_in )
 			{
 				// inflate() should never leave input if there's still space for output
 				assert( false );
 				return "Corrupt zip data";
 			}
-			
+
 			// refill buffer
 			long count = buf.size();
 			RETURN_ERR( callback( user_data, buf.begin(), &count ) );

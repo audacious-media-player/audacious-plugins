@@ -77,12 +77,12 @@ void Nes_Cpu::reset( void const* unmapped_page )
 	irq_time_ = future_nes_time;
 	end_time_ = future_nes_time;
 	error_count_ = 0;
-	
+
 	assert( page_size == 0x800 ); // assumes this
 	set_code_page( page_count, unmapped_page );
 	map_code( 0x2000, 0xE000, unmapped_page, true );
 	map_code( 0x0000, 0x2000, low_mem, true );
-	
+
 	blargg_verify_byte_order();
 }
 
@@ -92,7 +92,7 @@ void Nes_Cpu::map_code( nes_addr_t start, unsigned size, void const* data, bool 
 	require( start % page_size == 0 );
 	require( size % page_size == 0 );
 	require( start + size <= 0x10000 );
-	
+
 	unsigned page = start / page_size;
 	for ( unsigned n = size / page_size; n; --n )
 	{
@@ -126,7 +126,7 @@ bool Nes_Cpu::run( nes_time_t end_time )
 	this->state = &s;
 	// even on x86, using s.time in place of s_time was slower
 	fint16 s_time = s.time;
-	
+
 	// registers
 	fuint16 pc = r.pc;
 	fuint8 a = r.a;
@@ -134,10 +134,10 @@ bool Nes_Cpu::run( nes_time_t end_time )
 	fuint8 y = r.y;
 	fuint16 sp;
 	SET_SP( r.sp );
-	
+
 	// status flags
 	#define IS_NEG (nz & 0x8080)
-	
+
 	#define CALC_STATUS( out ) do {\
 		out = status & (st_v | st_d | st_i);\
 		out |= ((nz >> 8) | nz) & st_n;\
@@ -151,7 +151,7 @@ bool Nes_Cpu::run( nes_time_t end_time )
 		c = nz;\
 		nz |= ~in & st_z;\
 	} while ( 0 )
-	
+
 	fuint8 status;
 	fuint16 c;  // carry set if (c & 0x100) != 0
 	fuint16 nz; // Z set if (nz & 0xFF) == 0, N set if (nz & 0x8080) != 0
@@ -159,22 +159,22 @@ bool Nes_Cpu::run( nes_time_t end_time )
 		fuint8 temp = r.status;
 		SET_STATUS( temp );
 	}
-	
+
 	goto loop;
 dec_clock_loop:
 	s_time--;
 loop:
-	
+
 	check( (unsigned) GET_SP() < 0x100 );
 	check( (unsigned) pc < 0x10000 );
 	check( (unsigned) a < 0x100 );
 	check( (unsigned) x < 0x100 );
 	check( (unsigned) y < 0x100 );
 	check( -32768 <= s_time && s_time < 32767 );
-	
+
 	uint8_t const* instr = s.code_map [pc >> page_bits];
 	fuint8 opcode;
-	
+
 	// TODO: eliminate this special case
 	#if BLARGG_NONPORTABLE
 		opcode = instr [pc];
@@ -185,7 +185,7 @@ loop:
 		opcode = *instr++;
 		pc++;
 	#endif
-	
+
 	static uint8_t const clock_table [256] =
 	{// 0 1 2 3 4 5 6 7 8 9 A B C D E F
 		0,6,2,8,3,3,5,5,3,2,2,2,4,4,6,6,// 0
@@ -205,16 +205,16 @@ loop:
 		2,6,2,8,3,3,5,5,2,2,2,2,4,4,6,6,// E
 		3,5,0,8,4,4,6,6,2,4,2,7,4,4,7,7 // F
 	}; // 0x00 was 7 and 0xF2 was 2
-	
+
 	fuint16 data;
-	
+
 #if !BLARGG_CPU_X86
 	if ( s_time >= 0 )
 		goto out_of_time;
 	s_time += clock_table [opcode];
-	
+
 	data = *instr;
-	
+
 	switch ( opcode )
 	{
 #else
@@ -223,9 +223,9 @@ loop:
 	if ( (s_time += data) >= 0 )
 		goto possibly_out_of_time;
 almost_out_of_time:
-	
+
 	data = *instr;
-	
+
 	switch ( opcode )
 	{
 possibly_out_of_time:
@@ -251,12 +251,12 @@ possibly_out_of_time:
 		out = temp + 0x100 * READ_LOW( uint8_t (data + 1) );\
 		cross( temp );\
 	}
-	
+
 #define IND_X( out ) {\
 		fuint16 temp = data + x;\
 		out = 0x100 * READ_LOW( uint8_t (temp + 1) ) + READ_LOW( uint8_t (temp) );\
 	}
-	
+
 #define ARITH_ADDR_MODES( op )\
 case op - 0x04: /* (ind,x) */\
 	IND_X( data )\
@@ -302,15 +302,15 @@ imm##op:
 		a = nz = READ_LOW( uint8_t (data + x) );
 		pc++;
 		goto loop;
-	
+
 	case 0xA5: // LDA zp
 		a = nz = READ_LOW( data );
 		pc++;
 		goto loop;
-	
+
 	case 0xD0: // BNE
 		BRANCH( (uint8_t) nz );
-	
+
 	case 0x20: { // JSR
 		fuint16 temp = pc + 1;
 		pc = GET_ADDR();
@@ -319,37 +319,37 @@ imm##op:
 		WRITE_LOW( sp, temp );
 		goto loop;
 	}
-	
+
 	case 0x4C: // JMP abs
 		pc = GET_ADDR();
 		goto loop;
-	
+
 	case 0xE8: // INX
 		INC_DEC_XY( x, 1 )
-	
+
 	case 0x10: // BPL
 		BRANCH( !IS_NEG )
-	
+
 	ARITH_ADDR_MODES( 0xC5 ) // CMP
 		nz = a - data;
 		pc++;
 		c = ~nz;
 		nz &= 0xFF;
 		goto loop;
-	
+
 	case 0x30: // BMI
 		BRANCH( IS_NEG )
-	
+
 	case 0xF0: // BEQ
 		BRANCH( !(uint8_t) nz );
-	
+
 	case 0x95: // STA zp,x
 		data = uint8_t (data + x);
 	case 0x85: // STA zp
 		pc++;
 		WRITE_LOW( data, a );
 		goto loop;
-	
+
 	case 0xC8: // INY
 		INC_DEC_XY( y, 1 )
 
@@ -357,12 +357,12 @@ imm##op:
 		y  = a;
 		nz = a;
 		goto loop;
-	
+
 	case 0x98: // TYA
 		a  = y;
 		nz = y;
 		goto loop;
-	
+
 	case 0xAD:{// LDA abs
 		unsigned addr = GET_ADDR();
 		pc += 2;
@@ -370,16 +370,16 @@ imm##op:
 		a = nz;
 		goto loop;
 	}
-	
+
 	case 0x60: // RTS
 		pc = 1 + READ_LOW( sp );
 		pc += 0x100 * READ_LOW( 0x100 | (sp - 0xFF) );
 		sp = (sp - 0xFE) | 0x100;
 		goto loop;
-	
+
 	{
 		fuint16 addr;
-		
+
 	case 0x99: // STA abs,Y
 		addr = y + GET_ADDR();
 		pc += 2;
@@ -389,7 +389,7 @@ imm##op:
 			goto loop;
 		}
 		goto sta_ptr;
-	
+
 	case 0x8D: // STA abs
 		addr = GET_ADDR();
 		pc += 2;
@@ -399,7 +399,7 @@ imm##op:
 			goto loop;
 		}
 		goto sta_ptr;
-	
+
 	case 0x9D: // STA abs,X (slightly more common than STA abs)
 		addr = x + GET_ADDR();
 		pc += 2;
@@ -413,19 +413,19 @@ imm##op:
 		WRITE( addr, a );
 		CACHE_TIME();
 		goto loop;
-		
+
 	case 0x91: // STA (ind),Y
 		IND_Y( NO_PAGE_CROSSING, addr )
 		pc++;
 		goto sta_ptr;
-	
+
 	case 0x81: // STA (ind,X)
 		IND_X( addr )
 		pc++;
 		goto sta_ptr;
-	
+
 	}
-	
+
 	case 0xA9: // LDA #imm
 		pc++;
 		a  = data;
@@ -435,12 +435,12 @@ imm##op:
 	// common read instructions
 	{
 		fuint16 addr;
-		
+
 	case 0xA1: // LDA (ind,X)
 		IND_X( addr )
 		pc++;
 		goto a_nz_read_addr;
-	
+
 	case 0xB1:// LDA (ind),Y
 		addr = READ_LOW( data ) + y;
 		HANDLE_PAGE_CROSSING( addr );
@@ -450,7 +450,7 @@ imm##op:
 		if ( (addr ^ 0x8000) <= 0x9FFF )
 			goto loop;
 		goto a_nz_read_addr;
-	
+
 	case 0xB9: // LDA abs,Y
 		HANDLE_PAGE_CROSSING( data + y );
 		addr = GET_ADDR() + y;
@@ -459,7 +459,7 @@ imm##op:
 		if ( (addr ^ 0x8000) <= 0x9FFF )
 			goto loop;
 		goto a_nz_read_addr;
-	
+
 	case 0xBD: // LDA abs,X
 		HANDLE_PAGE_CROSSING( data + x );
 		addr = GET_ADDR() + x;
@@ -472,39 +472,39 @@ imm##op:
 		a = nz = READ( addr );
 		CACHE_TIME();
 		goto loop;
-	
+
 	}
 
 // Branch
 
 	case 0x50: // BVC
 		BRANCH( !(status & st_v) )
-	
+
 	case 0x70: // BVS
 		BRANCH( status & st_v )
-	
+
 	case 0xB0: // BCS
 		BRANCH( c & 0x100 )
-	
+
 	case 0x90: // BCC
 		BRANCH( !(c & 0x100) )
-	
+
 // Load/store
-	
+
 	case 0x94: // STY zp,x
 		data = uint8_t (data + x);
 	case 0x84: // STY zp
 		pc++;
 		WRITE_LOW( data, y );
 		goto loop;
-	
+
 	case 0x96: // STX zp,y
 		data = uint8_t (data + y);
 	case 0x86: // STX zp
 		pc++;
 		WRITE_LOW( data, x );
 		goto loop;
-	
+
 	case 0xB6: // LDX zp,y
 		data = uint8_t (data + y);
 	case 0xA6: // LDX zp
@@ -514,7 +514,7 @@ imm##op:
 		x = data;
 		nz = data;
 		goto loop;
-	
+
 	case 0xB4: // LDY zp,x
 		data = uint8_t (data + x);
 	case 0xA4: // LDY zp
@@ -524,7 +524,7 @@ imm##op:
 		y = data;
 		nz = data;
 		goto loop;
-	
+
 	case 0xBC: // LDY abs,X
 		data += x;
 		HANDLE_PAGE_CROSSING( data );
@@ -536,7 +536,7 @@ imm##op:
 		CACHE_TIME();
 		goto loop;
 	}
-	
+
 	case 0xBE: // LDX abs,y
 		data += y;
 		HANDLE_PAGE_CROSSING( data );
@@ -548,13 +548,13 @@ imm##op:
 		CACHE_TIME();
 		goto loop;
 	}
-	
+
 	{
 		fuint8 temp;
 	case 0x8C: // STY abs
 		temp = y;
 		goto store_abs;
-	
+
 	case 0x8E: // STX abs
 		temp = x;
 	store_abs:
@@ -581,7 +581,7 @@ imm##op:
 		CACHE_TIME();
 		goto cpx_data;
 	}
-	
+
 	case 0xE4: // CPX zp
 		data = READ_LOW( data );
 	case 0xE0: // CPX #imm
@@ -591,7 +591,7 @@ imm##op:
 		c = ~nz;
 		nz &= 0xFF;
 		goto loop;
-	
+
 	case 0xCC:{// CPY abs
 		unsigned addr = GET_ADDR();
 		pc++;
@@ -600,7 +600,7 @@ imm##op:
 		CACHE_TIME();
 		goto cpy_data;
 	}
-	
+
 	case 0xC4: // CPY zp
 		data = READ_LOW( data );
 	case 0xC0: // CPY #imm
@@ -610,24 +610,24 @@ imm##op:
 		c = ~nz;
 		nz &= 0xFF;
 		goto loop;
-	
+
 // Logical
 
 	ARITH_ADDR_MODES( 0x25 ) // AND
 		nz = (a &= data);
 		pc++;
 		goto loop;
-	
+
 	ARITH_ADDR_MODES( 0x45 ) // EOR
 		nz = (a ^= data);
 		pc++;
 		goto loop;
-	
+
 	ARITH_ADDR_MODES( 0x05 ) // ORA
 		nz = (a |= data);
 		pc++;
 		goto loop;
-	
+
 	case 0x2C:{// BIT abs
 		unsigned addr = GET_ADDR();
 		pc += 2;
@@ -639,7 +639,7 @@ imm##op:
 		nz <<= 8; // result must be zero, even if N bit is set
 		goto loop;
 	}
-	
+
 	case 0x24: // BIT zp
 		nz = READ_LOW( data );
 		pc++;
@@ -649,14 +649,14 @@ imm##op:
 			goto loop;
 		nz <<= 8; // result must be zero, even if N bit is set
 		goto loop;
-		
+
 // Add/subtract
 
 	ARITH_ADDR_MODES( 0xE5 ) // SBC
 	case 0xEB: // unofficial equivalent
 		data ^= 0xFF;
 		goto adc_imm;
-	
+
 	ARITH_ADDR_MODES( 0x65 ) // ADC
 	adc_imm: {
 		fint16 carry = c >> 8 & 1;
@@ -668,7 +668,7 @@ imm##op:
 		a = (uint8_t) nz;
 		goto loop;
 	}
-	
+
 // Shift/rotate
 
 	case 0x4A: // LSR A
@@ -694,7 +694,7 @@ imm##op:
 		a = (uint8_t) nz;
 		goto loop;
 	}
-	
+
 	case 0x5E: // LSR abs,X
 		data += x;
 	case 0x4E: // LSR abs
@@ -708,11 +708,11 @@ imm##op:
 		c = temp << 8;
 		goto rotate_common;
 	}
-	
+
 	case 0x3E: // ROL abs,X
 		data += x;
 		goto rol_abs;
-	
+
 	case 0x1E: // ASL abs,X
 		data += x;
 	case 0x0E: // ASL abs
@@ -728,15 +728,15 @@ imm##op:
 		WRITE( data, (uint8_t) nz );
 		CACHE_TIME();
 		goto loop;
-	
+
 	case 0x7E: // ROR abs,X
 		data += x;
 		goto ror_abs;
-	
+
 	case 0x76: // ROR zp,x
 		data = uint8_t (data + x);
 		goto ror_zp;
-	
+
 	case 0x56: // LSR zp,x
 		data = uint8_t (data + x);
 	case 0x46: // LSR zp
@@ -748,11 +748,11 @@ imm##op:
 		c = temp << 8;
 		goto write_nz_zp;
 	}
-	
+
 	case 0x36: // ROL zp,x
 		data = uint8_t (data + x);
 		goto rol_zp;
-	
+
 	case 0x16: // ASL zp,x
 		data = uint8_t (data + x);
 	case 0x06: // ASL zp
@@ -762,21 +762,21 @@ imm##op:
 		nz = c >> 8 & 1;
 		nz |= (c = READ_LOW( data ) << 1);
 		goto write_nz_zp;
-	
+
 // Increment/decrement
 
 	case 0xCA: // DEX
 		INC_DEC_XY( x, -1 )
-	
+
 	case 0x88: // DEY
 		INC_DEC_XY( y, -1 )
-	
+
 	case 0xF6: // INC zp,x
 		data = uint8_t (data + x);
 	case 0xE6: // INC zp
 		nz = 1;
 		goto add_nz_zp;
-	
+
 	case 0xD6: // DEC zp,x
 		data = uint8_t (data + x);
 	case 0xC6: // DEC zp
@@ -787,21 +787,21 @@ imm##op:
 		pc++;
 		WRITE_LOW( data, nz );
 		goto loop;
-	
+
 	case 0xFE: // INC abs,x
 		data = x + GET_ADDR();
 		goto inc_ptr;
-	
+
 	case 0xEE: // INC abs
 		data = GET_ADDR();
 	inc_ptr:
 		nz = 1;
 		goto inc_common;
-	
+
 	case 0xDE: // DEC abs,x
 		data = x + GET_ADDR();
 		goto dec_ptr;
-	
+
 	case 0xCE: // DEC abs
 		data = GET_ADDR();
 	dec_ptr:
@@ -813,14 +813,14 @@ imm##op:
 		WRITE( data, (uint8_t) nz );
 		CACHE_TIME();
 		goto loop;
-		
+
 // Transfer
 
 	case 0xAA: // TAX
 		x  = a;
 		nz = a;
 		goto loop;
-		
+
 	case 0x8A: // TXA
 		a  = x;
 		nz = x;
@@ -829,22 +829,22 @@ imm##op:
 	case 0x9A: // TXS
 		SET_SP( x ); // verified (no flag change)
 		goto loop;
-	
+
 	case 0xBA: // TSX
 		x = nz = GET_SP();
 		goto loop;
-	
+
 // Stack
-	
+
 	case 0x48: // PHA
 		PUSH( a ); // verified
 		goto loop;
-		
+
 	case 0x68: // PLA
 		a = nz = READ_LOW( sp );
 		sp = (sp - 0xFF) | 0x100;
 		goto loop;
-		
+
 	case 0x40:{// RTI
 		fuint8 temp = READ_LOW( sp );
 		pc  = READ_LOW( 0x100 | (sp - 0xFF) );
@@ -861,7 +861,7 @@ imm##op:
 		s.base = irq_time_;
 		goto loop;
 	}
-	
+
 	case 0x28:{// PLP
 		fuint8 temp = READ_LOW( sp );
 		sp = (sp - 0xFF) | 0x100;
@@ -873,14 +873,14 @@ imm##op:
 			goto handle_sei;
 		goto handle_cli;
 	}
-	
+
 	case 0x08: { // PHP
 		fuint8 temp;
 		CALC_STATUS( temp );
 		PUSH( temp | (st_b | st_r) );
 		goto loop;
 	}
-	
+
 	case 0x6C:{// JMP (ind)
 		data = GET_ADDR();
 		check( unsigned (data - 0x2000) >= 0x4000 ); // ensure it's outside I/O space
@@ -890,32 +890,32 @@ imm##op:
 		pc |= page [PAGE_OFFSET( data )] << 8;
 		goto loop;
 	}
-	
+
 	case 0x00: // BRK
 		goto handle_brk;
-	
+
 // Flags
 
 	case 0x38: // SEC
 		c = (unsigned) ~0;
 		goto loop;
-	
+
 	case 0x18: // CLC
 		c = 0;
 		goto loop;
-		
+
 	case 0xB8: // CLV
 		status &= ~st_v;
 		goto loop;
-	
+
 	case 0xD8: // CLD
 		status &= ~st_d;
 		goto loop;
-	
+
 	case 0xF8: // SED
 		status |= st_d;
 		goto loop;
-	
+
 	case 0x58: // CLI
 		if ( !(status & st_i) )
 			goto loop;
@@ -934,20 +934,20 @@ imm##op:
 		s_time += delta;
 		if ( s_time < 0 )
 			goto loop;
-		
+
 		if ( delta >= s_time + 1 )
 		{
 			s.base += s_time + 1;
 			s_time = -1;
 			goto loop;
 		}
-		
+
 		// TODO: implement
 	delayed_cli:
 		debug_printf( "Delayed CLI not emulated\n" );
 		goto loop;
 	}
-	
+
 	case 0x78: // SEI
 		if ( status & st_i )
 			goto loop;
@@ -959,13 +959,13 @@ imm##op:
 		s_time += delta;
 		if ( s_time < 0 )
 			goto loop;
-		
+
 		debug_printf( "Delayed SEI not emulated\n" );
 		goto loop;
 	}
-	
+
 // Unofficial
-	
+
 	// SKW - Skip word
 	case 0x1C: case 0x3C: case 0x5C: case 0x7C: case 0xDC: case 0xFC:
 		HANDLE_PAGE_CROSSING( data + x );
@@ -976,7 +976,7 @@ imm##op:
 	case 0x80: case 0x82: case 0x89: case 0xC2: case 0xD4: case 0xE2: case 0xF4:
 		pc++;
 		goto loop;
-	
+
 	// NOP
 	case 0xEA: case 0x1A: case 0x3A: case 0x5A: case 0x7A: case 0xDA: case 0xFA:
 		goto loop;
@@ -992,9 +992,9 @@ imm##op:
 	case 0x02: case 0x12: case 0x22: case 0x32: case 0x42: case 0x52:
 	case 0x62: case 0x72: case 0x92: case 0xB2: case 0xD2:
 		goto stop;
-	
+
 // Unimplemented
-	
+
 	case 0xFF: // force 256-entry jump table for optimization purposes
 		c |= 1;
 	default:
@@ -1009,7 +1009,7 @@ imm##op:
 			len = 2;
 		pc += len;
 		error_count_++;
-		
+
 		if ( (opcode >> 4) == 0x0B )
 		{
 			if ( opcode == 0xB3 )
@@ -1020,20 +1020,20 @@ imm##op:
 		goto loop;
 	}
 	assert( false );
-	
+
 	int result_;
 handle_brk:
 	pc++;
 	result_ = 4;
-	
+
 interrupt:
 	{
 		s_time += 7;
-		
+
 		WRITE_LOW( 0x100 | (sp - 1), pc >> 8 );
 		WRITE_LOW( 0x100 | (sp - 2), pc );
 		pc = GET_LE16( &READ_PROG( 0xFFFA ) + result_ );
-		
+
 		sp = (sp - 3) | 0x100;
 		fuint8 temp;
 		CALC_STATUS( temp );
@@ -1041,7 +1041,7 @@ interrupt:
 		if ( result_ )
 			temp |= st_b; // TODO: incorrectly sets B flag for IRQ
 		WRITE_LOW( sp, temp );
-		
+
 		this->r.status = status |= st_i;
 		blargg_long delta = s.base - end_time_;
 		if ( delta >= 0 ) goto loop;
@@ -1049,7 +1049,7 @@ interrupt:
 		s.base = end_time_;
 		goto loop;
 	}
-	
+
 out_of_time:
 	pc--;
 	FLUSH_TIME();
@@ -1059,26 +1059,26 @@ out_of_time:
 		goto interrupt;
 	if ( s_time < 0 )
 		goto loop;
-	
+
 stop:
-	
+
 	s.time = s_time;
-	
+
 	r.pc = pc;
 	r.sp = GET_SP();
 	r.a = a;
 	r.x = x;
 	r.y = y;
-	
+
 	{
 		fuint8 temp;
 		CALC_STATUS( temp );
 		r.status = temp;
 	}
-	
+
 	this->state_ = s;
 	this->state = &this->state_;
-	
+
 	return s_time < 0;
 }
 

@@ -29,10 +29,10 @@ blargg_err_t Data_Reader::read( void* p, long s )
 	{
 		if ( result >= 0 && result < s )
 			return eof_error;
-		
+
 		return "Read error";
 	}
-	
+
 	return 0;
 }
 
@@ -135,7 +135,7 @@ Mem_File_Reader::Mem_File_Reader( const void* p, long s ) :
 {
 	pos = 0;
 }
-	
+
 long Mem_File_Reader::size() const { return size_; }
 
 long Mem_File_Reader::read_avail( void* p, long s )
@@ -253,7 +253,7 @@ static const char* get_gzip_eof( const char* path, long* eof )
 	FILE* file = fopen( path, "rb" );
 	if ( !file )
 		return "Couldn't open file";
-	
+
 	unsigned char buf [4];
 	if ( fread( buf, 2, 1, file ) > 0 && buf [0] == 0x1F && buf [1] == 0x8B )
 	{
@@ -278,13 +278,13 @@ Gzip_File_Reader::~Gzip_File_Reader() { close(); }
 blargg_err_t Gzip_File_Reader::open( const char* path )
 {
 	close();
-	
+
 	RETURN_ERR( get_gzip_eof( path, &size_ ) );
-	
+
 	file_ = gzopen( path, "rb" );
 	if ( !file_ )
 		return "Couldn't open file";
-	
+
 	return 0;
 }
 

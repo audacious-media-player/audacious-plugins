@@ -45,7 +45,7 @@ void Track_Emu::restart_track()
 {
 	emu->start_track( track );
 	sync ( 0 );
-	
+
 	// skip initial silence
 	for ( int n = 40 * stereo * emu->sample_rate() / buf_size; n--; )
 	{
@@ -124,7 +124,7 @@ bool Track_Emu::play( int out_count, Music_Emu::sample_t* out )
 {
 	assert( out_count % 2 == 0 );
 	assert( emu );
-	
+
 	int pos = 0;
 	while ( pos < out_count )
 	{
@@ -144,12 +144,12 @@ bool Track_Emu::play( int out_count, Music_Emu::sample_t* out )
 				memset( &out [pos], 0, (out_count - pos) * sizeof *out );
 				return true;
 			}
-			
+
 			memcpy( &out [pos], &buf [buf_size - buf_count], count * sizeof *out );
 			buf_count -= count;
 		}
 		pos += count;
-		
+
 		// keep internal buffer full and possibly run ahead
 		for ( int n = 6; n--; )
 		{
@@ -160,11 +160,11 @@ bool Track_Emu::play( int out_count, Music_Emu::sample_t* out )
 		}
 	}
 	out_time += out_count;
-	
-	if ( detect_silence && 
+
+	if ( detect_silence &&
 		( emu_time - silence_time > silence_max * stereo * emu->sample_rate() && silence_time ) )
 		end_track();
-	
+
 	// fade if track is ending
 	if ( out_time > fade_time )
 	{
@@ -173,14 +173,14 @@ bool Track_Emu::play( int out_count, Music_Emu::sample_t* out )
 			double gain = pow( fade_factor, (double) (out_time + i - fade_time) );
 			if ( gain < 0.005 )
 				end_track();
-			
+
 			int count = min( fade_block_size, out_count - i );
 			int igain = (unsigned int)((double)gain * (1 << 15));;
 			for ( int j = 0; j < count; j++ )
 				out [i + j] = (out [i + j] * igain) >> 15;
 		}
 	}
-	
+
 	return !silence_count && !buf_count && track_ended;
 }
 

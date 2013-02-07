@@ -35,7 +35,7 @@ enum {
 	cmd_short_delay     = 0x70,
 	cmd_pcm_delay       = 0x80,
 	cmd_pcm_seek        = 0xE0,
-	
+
 	pcm_block_type      = 0x00,
 	ym2612_dac_port     = 0x2A
 };
@@ -47,21 +47,21 @@ inline int command_len( int command )
 		case 0x03:
 		case 0x04:
 			return 2;
-		
+
 		case 0x05:
 		case 0x0A:
 		case 0x0B:
 			return 3;
-		
+
 		case 0x0C:
 		case 0x0D:
 			return 4;
-		
+
 		case 0x0E:
 		case 0x0F:
 			return 5;
 	}
-	
+
 	check( false );
 	return 1;
 }
@@ -89,7 +89,7 @@ inline int Ym_Emu<Emu>::run_until( int time )
 	}
 	return true;
 }
-	
+
 inline Vgm_Emu_Impl::fm_time_t Vgm_Emu_Impl::to_fm_time( vgm_time_t t ) const
 {
 	return (t * fm_time_factor + fm_time_offset) >> fm_time_bits;
@@ -114,7 +114,7 @@ void Vgm_Emu_Impl::write_pcm( vgm_time_t vgm_time, int amp )
 
 blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 {
-	vgm_time_t vgm_time = this->vgm_time; 
+	vgm_time_t vgm_time = this->vgm_time;
 	byte const* pos = this->pos;
 	if ( pos >= data_end )
 	{
@@ -122,7 +122,7 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 		if ( pos > data_end )
 			set_warning( "Stream lacked end event" );
 	}
-	
+
 	while ( vgm_time < end_time && pos < data_end )
 	{
 		// TODO: be sure there are enough bytes left in stream for particular command
@@ -132,38 +132,38 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 		case cmd_end:
 			pos = loop_begin; // if not looped, loop_begin == data_end
 			break;
-		
+
 		case cmd_delay_735:
 			vgm_time += 735;
 			break;
-		
+
 		case cmd_delay_882:
 			vgm_time += 882;
 			break;
-		
+
 		case cmd_gg_stereo:
 			psg.write_ggstereo( to_blip_time( vgm_time ), *pos++ );
 			break;
-		
+
 		case cmd_psg:
 			psg.write_data( to_blip_time( vgm_time ), *pos++ );
 			break;
-		
+
 		case cmd_delay:
 			vgm_time += pos [1] * 0x100L + pos [0];
 			pos += 2;
 			break;
-		
+
 		case cmd_byte_delay:
 			vgm_time += *pos++;
 			break;
-		
+
 		case cmd_ym2413:
 			if ( ym2413.run_until( to_fm_time( vgm_time ) ) )
 				ym2413.write( pos [0], pos [1] );
 			pos += 2;
 			break;
-		
+
 		case cmd_ym2612_port0:
 			if ( pos [0] == ym2612_dac_port )
 			{
@@ -180,13 +180,13 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 			}
 			pos += 2;
 			break;
-		
+
 		case cmd_ym2612_port1:
 			if ( ym2612.run_until( to_fm_time( vgm_time ) ) )
 				ym2612.write1( pos [0], pos [1] );
 			pos += 2;
 			break;
-			
+
 		case cmd_data_block: {
 			check( *pos == cmd_end );
 			int type = pos [1];
@@ -197,13 +197,13 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 			pos += size;
 			break;
 		}
-		
+
 		case cmd_pcm_seek:
 			pcm_pos = pcm_data + pos [3] * 0x1000000L + pos [2] * 0x10000L +
 					pos [1] * 0x100L + pos [0];
 			pos += 4;
 			break;
-		
+
 		default:
 			int cmd = pos [-1];
 			switch ( cmd & 0xF0 )
@@ -212,15 +212,15 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 					write_pcm( vgm_time, *pcm_pos++ );
 					vgm_time += cmd & 0x0F;
 					break;
-				
+
 				case cmd_short_delay:
 					vgm_time += (cmd & 0x0F) + 1;
 					break;
-				
+
 				case 0x50:
 					pos += 2;
 					break;
-				
+
 				default:
 					pos += command_len( cmd ) - 1;
 					set_warning( "Unknown stream event" );
@@ -230,14 +230,14 @@ blip_time_t Vgm_Emu_Impl::run_commands( vgm_time_t end_time )
 	vgm_time -= end_time;
 	this->pos = pos;
 	this->vgm_time = vgm_time;
-	
+
 	return to_blip_time( end_time );
 }
 
 int Vgm_Emu_Impl::play_frame( blip_time_t blip_time, int sample_count, sample_t* buf )
 {
 	// to do: timing is working mostly by luck
-	
+
 	int min_pairs = sample_count >> 1;
 	int vgm_time = ((long) min_pairs << fm_time_bits) / fm_time_factor - 1;
 	assert( to_fm_time( vgm_time ) <= min_pairs );
@@ -245,7 +245,7 @@ int Vgm_Emu_Impl::play_frame( blip_time_t blip_time, int sample_count, sample_t*
 	while ( (pairs = to_fm_time( vgm_time )) < min_pairs )
 		vgm_time++;
 	//debug_printf( "pairs: %d, min_pairs: %d\n", pairs, min_pairs );
-	
+
 	if ( ym2612.enabled() )
 	{
 		ym2612.begin_frame( buf );
@@ -255,16 +255,16 @@ int Vgm_Emu_Impl::play_frame( blip_time_t blip_time, int sample_count, sample_t*
 	{
 		ym2413.begin_frame( buf );
 	}
-	
+
 	run_commands( vgm_time );
 	ym2612.run_until( pairs );
 	ym2413.run_until( pairs );
-	
+
 	fm_time_offset = (vgm_time * fm_time_factor + fm_time_offset) -
 			((long) pairs << fm_time_bits);
-	
+
 	psg.end_frame( blip_time );
-	
+
 	return pairs * stereo;
 }
 
@@ -278,35 +278,35 @@ void Vgm_Emu_Impl::update_fm_rates( long* ym2413_rate, long* ym2612_rate ) const
 		{
 		case cmd_end:
 			return;
-		
+
 		case cmd_psg:
 		case cmd_byte_delay:
 			p += 2;
 			break;
-		
+
 		case cmd_delay:
 			p += 3;
 			break;
-		
+
 		case cmd_data_block:
 			p += 7 + get_le32( p + 3 );
 			break;
-		
+
 		case cmd_ym2413:
 			*ym2612_rate = 0;
 			return;
-		
+
 		case cmd_ym2612_port0:
 		case cmd_ym2612_port1:
 			*ym2612_rate = *ym2413_rate;
 			*ym2413_rate = 0;
 			return;
-		
+
 		case cmd_ym2151:
 			*ym2413_rate = 0;
 			*ym2612_rate = 0;
 			return;
-		
+
 		default:
 			p += command_len( *p );
 		}
