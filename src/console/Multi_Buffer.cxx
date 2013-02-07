@@ -161,11 +161,11 @@ void Stereo_Buffer::mix_stereo( blip_sample_t* out_, blargg_long count )
 		int c = BLIP_READER_READ( center );
 		blargg_long l = c + BLIP_READER_READ( left );
 		blargg_long r = c + BLIP_READER_READ( right );
-		if ( (BOOST::int16_t) l != l )
+		if ( (int16_t) l != l )
 			l = 0x7FFF - (l >> 24);
 
 		BLIP_READER_NEXT( center, bass );
-		if ( (BOOST::int16_t) r != r )
+		if ( (int16_t) r != r )
 			r = 0x7FFF - (r >> 24);
 
 		BLIP_READER_NEXT( left, bass );
@@ -191,11 +191,11 @@ void Stereo_Buffer::mix_stereo_no_center( blip_sample_t* out_, blargg_long count
 	for ( ; count; --count )
 	{
 		blargg_long l = BLIP_READER_READ( left );
-		if ( (BOOST::int16_t) l != l )
+		if ( (int16_t) l != l )
 			l = 0x7FFF - (l >> 24);
 
 		blargg_long r = BLIP_READER_READ( right );
-		if ( (BOOST::int16_t) r != r )
+		if ( (int16_t) r != r )
 			r = 0x7FFF - (r >> 24);
 
 		BLIP_READER_NEXT( left, bass );
@@ -219,7 +219,7 @@ void Stereo_Buffer::mix_mono( blip_sample_t* out_, blargg_long count )
 	for ( ; count; --count )
 	{
 		blargg_long s = BLIP_READER_READ( center );
-		if ( (BOOST::int16_t) s != s )
+		if ( (int16_t) s != s )
 			s = 0x7FFF - (s >> 24);
 
 		BLIP_READER_NEXT( center, bass );

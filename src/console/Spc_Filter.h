@@ -32,9 +32,8 @@ public:
 	enum { bass_max  = 31 };
 	void set_bass( int bass );
 
-public:
 	SPC_Filter();
-	BLARGG_DISABLE_NOTHROW
+
 private:
 	enum { gain_bits = 8 };
 	int gain;

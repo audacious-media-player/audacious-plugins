@@ -232,7 +232,7 @@ imm##op:
 // TODO: more efficient way to handle negative branch that wraps PC around
 #define BRANCH( cond )\
 {\
-	fint16 offset = (BOOST::int8_t) data;\
+	fint16 offset = (int8_t) data;\
 	fuint16 extra_clock = (++pc & 0xFF) + offset;\
 	if ( !(cond) ) goto dec_clock_loop;\
 	pc += offset;\
@@ -605,7 +605,7 @@ imm##op:
 	adc_imm: {
 		check( !(status & st_d) );
 		fint16 carry = c >> 8 & 1;
-		fint16 ov = (a ^ 0x80) + carry + (BOOST::int8_t) data; // sign-extend
+		fint16 ov = (a ^ 0x80) + carry + (int8_t) data; // sign-extend
 		status &= ~st_v;
 		status |= ov >> 2 & 0x40;
 		c = nz = a + data + carry;

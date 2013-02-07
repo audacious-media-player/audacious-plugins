@@ -33,9 +33,8 @@ public:
 	void save_state( namco_state_t* out ) const;
 	void load_state( namco_state_t const& );
 
-public:
 	Nes_Namco_Apu();
-	BLARGG_DISABLE_NOTHROW
+
 private:
 	// noncopyable
 	Nes_Namco_Apu( const Nes_Namco_Apu& );
@@ -54,24 +53,24 @@ private:
 	int addr_reg;
 
 	enum { reg_count = 0x80 };
-	BOOST::uint8_t reg [reg_count];
+	uint8_t reg [reg_count];
 	Blip_Synth<blip_good_quality,15> synth;
 
-	BOOST::uint8_t& access();
+	uint8_t& access();
 	void run_until( blip_time_t );
 };
 /*
 struct namco_state_t
 {
-	BOOST::uint8_t regs [0x80];
-	BOOST::uint8_t addr;
-	BOOST::uint8_t unused;
-	BOOST::uint8_t positions [8];
-	BOOST::uint32_t delays [8];
+	uint8_t regs [0x80];
+	uint8_t addr;
+	uint8_t unused;
+	uint8_t positions [8];
+	uint32_t delays [8];
 };
 */
 
-inline BOOST::uint8_t& Nes_Namco_Apu::access()
+inline uint8_t& Nes_Namco_Apu::access()
 {
 	int addr = addr_reg & 0x7F;
 	if ( addr_reg & 0x80 )

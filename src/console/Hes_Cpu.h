@@ -12,8 +12,6 @@ enum { future_hes_time = INT_MAX / 2 + 1 };
 
 class Hes_Cpu {
 public:
-	typedef BOOST::uint8_t uint8_t;
-
 	void reset();
 
 	enum { page_size = 0x2000 };
@@ -27,7 +25,7 @@ public:
 
 	// not kept updated during a call to run()
 	struct registers_t {
-		BOOST::uint16_t pc;
+		uint16_t pc;
 		uint8_t a;
 		uint8_t x;
 		uint8_t y;
@@ -86,7 +84,7 @@ private:
 	inline int update_end_time( hes_time_t end, hes_time_t irq );
 };
 
-inline BOOST::uint8_t const* Hes_Cpu::get_code( hes_addr_t addr )
+inline uint8_t const* Hes_Cpu::get_code( hes_addr_t addr )
 {
 	return state->code_map [addr >> page_shift] + addr
 	#if !BLARGG_NONPORTABLE

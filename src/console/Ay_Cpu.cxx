@@ -148,8 +148,6 @@ bool Ay_Cpu::run( cpu_time_t end_time )
 	this->state = &s;
 	bool warning = false;
 
-	typedef BOOST::int8_t int8_t;
-
 	union {
 		regs_t rg;
 		pairs_t rp;
@@ -277,7 +275,7 @@ possibly_out_of_time:
 
 // JR
 #define JR( cond ) {\
-	int disp = (BOOST::int8_t) data;\
+	int disp = (int8_t) data;\
 	pc++;\
 	if ( !(cond) )\
 		goto jr_not_taken;\

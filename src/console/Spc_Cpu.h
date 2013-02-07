@@ -183,7 +183,7 @@ SPC_CPU_RUN_FUNC
 	// Main loop
 
 cbranch_taken_loop:
-	pc += *(BOOST::int8_t const*) pc;
+	pc += *(int8_t const*) pc;
 inc_pc_loop:
 	pc++;
 loop:
@@ -227,10 +227,10 @@ loop:
 #define BRANCH( cond )\
 {\
 	pc++;\
-	pc += (BOOST::int8_t) data;\
+	pc += (int8_t) data;\
 	if ( cond )\
 		goto loop;\
-	pc -= (BOOST::int8_t) data;\
+	pc -= (int8_t) data;\
 	rel_time -= 2;\
 	goto loop;\
 }
@@ -877,7 +877,7 @@ loop:
 // 12. BRANCHING COMMANDS
 
 	case 0x2F: // BRA rel
-		pc += (BOOST::int8_t) data;
+		pc += (int8_t) data;
 		goto inc_pc_loop;
 
 	case 0x30: // BMI

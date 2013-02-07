@@ -174,7 +174,7 @@ void Gbs_Emu::update_timer()
 		play_period = blip_time_t (play_period / tempo());
 }
 
-static BOOST::uint8_t const sound_data [Gb_Apu::register_count] = {
+static uint8_t const sound_data [Gb_Apu::register_count] = {
 	0x80, 0xBF, 0x00, 0x00, 0xBF, // square 1
 	0x00, 0x3F, 0x00, 0x00, 0xBF, // square 2
 	0x7F, 0xFF, 0x9F, 0x00, 0xBF, // wave

@@ -51,8 +51,6 @@ public:
 	virtual long read_samples( blip_sample_t*, long ) = 0;
 	virtual long samples_avail() const = 0;
 
-public:
-	BLARGG_DISABLE_NOTHROW
 protected:
 	void channels_changed() { channels_changed_count_++; }
 private:

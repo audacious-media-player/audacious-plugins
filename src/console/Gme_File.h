@@ -104,8 +104,7 @@ public:
 public:
 	Gme_File();
 	virtual ~Gme_File();
-	BLARGG_DISABLE_NOTHROW
-	typedef BOOST::uint8_t byte;
+	typedef uint8_t byte;
 protected:
 	// Services
 	void set_track_count( int n )       { track_count_ = raw_track_count_ = n; }

@@ -240,7 +240,7 @@ blargg_err_t Nsfe_Info::track_info_( track_info_t* out, int track ) const
 	int remapped = remap_track( track );
 	if ( (unsigned) remapped < track_times.size() )
 	{
-		long length = (BOOST::int32_t) get_le32( track_times [remapped] );
+		long length = (int32_t) get_le32( track_times [remapped] );
 		if ( length > 0 )
 			out->length = length;
 	}

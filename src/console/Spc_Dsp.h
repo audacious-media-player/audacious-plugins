@@ -8,8 +8,6 @@
 
 struct Spc_Dsp {
 public:
-	typedef BOOST::uint8_t uint8_t;
-
 // Setup
 
 	// Initializes DSP and has it use the 64K RAM provided
@@ -86,11 +84,6 @@ public:
 	enum { extra_size = 16 };
 	sample_t* extra()               { return m.extra; }
 	sample_t const* out_pos() const { return m.out; }
-public:
-	BLARGG_DISABLE_NOTHROW
-
-	typedef BOOST::int8_t   int8_t;
-	typedef BOOST::int16_t int16_t;
 
 	enum { echo_hist_size = 8 };
 

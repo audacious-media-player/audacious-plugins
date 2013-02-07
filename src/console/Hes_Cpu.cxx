@@ -230,10 +230,10 @@ possibly_out_of_time:
 // TODO: more efficient way to handle negative branch that wraps PC around
 #define BRANCH( cond )\
 {\
-	fint16 offset = (BOOST::int8_t) data;\
+	fint16 offset = (int8_t) data;\
 	pc++;\
 	if ( !(cond) ) goto branch_not_taken;\
-	pc = BOOST::uint16_t (pc + offset);\
+	pc = uint16_t (pc + offset);\
 	goto loop;\
 }
 
@@ -743,7 +743,7 @@ possibly_out_of_time:
 		if ( status & st_d )
 			debug_printf( "Decimal mode not supported\n" );
 		fint16 carry = c >> 8 & 1;
-		fint16 ov = (a ^ 0x80) + carry + (BOOST::int8_t) data; // sign-extend
+		fint16 ov = (a ^ 0x80) + carry + (int8_t) data; // sign-extend
 		status &= ~st_v;
 		status |= ov >> 2 & 0x40;
 		c = nz = a + data + carry;

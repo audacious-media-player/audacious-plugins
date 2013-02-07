@@ -94,9 +94,8 @@ public:
 	// accounted for (i.e. inserting CPU wait states).
 	void run_until( nes_time_t );
 
-public:
 	Nes_Apu();
-	BLARGG_DISABLE_NOTHROW
+
 private:
 	friend class Nes_Nonlinearizer;
 	void enable_nonlinear( double volume );

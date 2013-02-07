@@ -10,10 +10,10 @@
 struct fme7_apu_state_t
 {
 	enum { reg_count = 14 };
-	BOOST::uint8_t regs [reg_count];
-	BOOST::uint8_t phases [3]; // 0 or 1
-	BOOST::uint8_t latch;
-	BOOST::uint16_t delays [3]; // a, b, c
+	uint8_t regs [reg_count];
+	uint8_t phases [3]; // 0 or 1
+	uint8_t latch;
+	uint16_t delays [3]; // a, b, c
 };
 
 class Nes_Fme7_Apu : private fme7_apu_state_t {
@@ -40,9 +40,8 @@ public:
 	// (addr & addr_mask) == data_addr
 	void write_data( blip_time_t, int data );
 
-public:
 	Nes_Fme7_Apu();
-	BLARGG_DISABLE_NOTHROW
+
 private:
 	// noncopyable
 	Nes_Fme7_Apu( const Nes_Fme7_Apu& );

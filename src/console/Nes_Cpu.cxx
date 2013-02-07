@@ -288,10 +288,10 @@ imm##op:
 // TODO: more efficient way to handle negative branch that wraps PC around
 #define BRANCH( cond )\
 {\
-	fint16 offset = (BOOST::int8_t) data;\
+	fint16 offset = (int8_t) data;\
 	fuint16 extra_clock = (++pc & 0xFF) + offset;\
 	if ( !(cond) ) goto dec_clock_loop;\
-	pc = BOOST::uint16_t (pc + offset);\
+	pc = uint16_t (pc + offset);\
 	s_time += extra_clock >> 8 & 1;\
 	goto loop;\
 }
@@ -660,7 +660,7 @@ imm##op:
 	ARITH_ADDR_MODES( 0x65 ) // ADC
 	adc_imm: {
 		fint16 carry = c >> 8 & 1;
-		fint16 ov = (a ^ 0x80) + carry + (BOOST::int8_t) data; // sign-extend
+		fint16 ov = (a ^ 0x80) + carry + (int8_t) data; // sign-extend
 		status &= ~st_v;
 		status |= ov >> 2 & 0x40;
 		c = nz = a + data + carry;

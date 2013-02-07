@@ -50,7 +50,7 @@ static byte const* get_data( Ay_Emu::file_t const& file, byte const* ptr, int mi
 	long pos = ptr - (byte const*) file.header;
 	long file_size = file.end - (byte const*) file.header;
 	assert( (unsigned long) pos <= (unsigned long) file_size - 2 );
-	int offset = (BOOST::int16_t) get_be16( ptr );
+	int offset = (int16_t) get_be16( ptr );
 	if ( !offset || blargg_ulong (pos + offset) > blargg_ulong (file_size - min_size) )
 		return 0;
 	return ptr + offset;

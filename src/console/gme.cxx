@@ -245,8 +245,6 @@ BLARGG_EXPORT int gme_track_count( Music_Emu const* me ) { return me->track_coun
 struct gme_info_t_ : gme_info_t
 {
 	track_info_t info;
-
-	BLARGG_DISABLE_NOTHROW
 };
 
 BLARGG_EXPORT gme_err_t gme_track_info( Music_Emu const* me, gme_info_t** out, int track )

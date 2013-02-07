@@ -112,12 +112,12 @@ void Dual_Resampler::mix_samples( Blip_Buffer& blip_buf, dsample_t* out )
 	{
 		int s = sn.read();
 		blargg_long l = (blargg_long) in [0] * 2 + s;
-		if ( (BOOST::int16_t) l != l )
+		if ( (int16_t) l != l )
 			l = 0x7FFF - (l >> 24);
 
 		sn.next( bass );
 		blargg_long r = (blargg_long) in [1] * 2 + s;
-		if ( (BOOST::int16_t) r != r )
+		if ( (int16_t) r != r )
 			r = 0x7FFF - (r >> 24);
 
 		in += 2;
