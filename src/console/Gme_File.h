@@ -154,11 +154,7 @@ Music_Emu* gme_new_( Music_Emu*, long sample_rate );
 	{ Gme_File::copy_field_( out->name, in.name, sizeof in.name ); }
 
 #ifndef GME_FILE_READER
-	#ifdef HAVE_ZLIB_H
-		#define GME_FILE_READER Gzip_File_Reader
-	#else
-		#define GME_FILE_READER Std_File_Reader
-	#endif
+	#define GME_FILE_READER Gzip_File_Reader
 #elif defined (GME_FILE_READER_INCLUDE)
 	#include GME_FILE_READER_INCLUDE
 #endif

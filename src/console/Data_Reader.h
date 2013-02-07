@@ -128,7 +128,6 @@ private:
 	long remain_;
 };
 
-#ifdef HAVE_ZLIB_H
 // Gzip compressed file reader
 class Gzip_File_Reader : public File_Reader {
 public:
@@ -143,9 +142,8 @@ public:
 	long tell() const;
 	blargg_err_t seek( long );
 private:
-	void* file_;
+	struct gzFile_s* file_;
 	long size_;
 };
-#endif
 
 #endif

@@ -244,8 +244,6 @@ void Std_File_Reader::close()
 
 // Gzip_File_Reader
 
-#ifdef HAVE_ZLIB_H
-
 #include "zlib.h"
 
 static const char* get_gzip_eof( const char* path, long* eof )
@@ -311,5 +309,3 @@ void Gzip_File_Reader::close()
 		file_ = 0;
 	}
 }
-
-#endif
