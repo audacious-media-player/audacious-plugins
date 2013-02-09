@@ -115,10 +115,7 @@ gboolean handle_keyevent (EVENT event)
 {
     gint current_volume, old_volume;
     static gint volume_static = 0;
-    gboolean play, mute;
-
-    /* playing or not */
-    play = aud_drct_get_playing ();
+    gboolean mute;
 
     /* get current volume */
     aud_drct_get_volume_main (&current_volume);

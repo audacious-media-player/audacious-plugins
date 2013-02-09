@@ -92,10 +92,7 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
     if (strcmp ("Audacious", application) == 0) {
         gint current_volume /* , old_volume */ ;
         static gint volume_static = 0;
-        gboolean play, mute;
-
-        /* playing or not */
-        play = aud_drct_get_playing ();
+        gboolean mute;
 
         /* get current volume */
         aud_drct_get_volume_main (&current_volume);
