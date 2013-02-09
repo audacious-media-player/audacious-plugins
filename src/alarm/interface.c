@@ -435,6 +435,7 @@ GtkWidget *create_config_dialog (void)
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     view = gtk_text_view_new ();
     gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
+    gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (view), FALSE);
     text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
     help_text = g_strconcat (_(help[0]), _(help[1]), _(help[2]), NULL);
     gtk_text_buffer_set_text (text_buffer, help_text, -1);
