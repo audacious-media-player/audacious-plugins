@@ -32,7 +32,7 @@
 
 #include "config.h"
 
-#define MAX_RESULTS 12
+#define MAX_RESULTS 100
 #define SEARCH_DELAY 300
 
 enum {ARTIST, ALBUM, TITLE, FIELDS};
