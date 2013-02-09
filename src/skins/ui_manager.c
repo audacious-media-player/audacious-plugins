@@ -312,7 +312,7 @@ static GtkActionEntry action_entries_playlist_delete[] = {
 };
 
 static GtkActionEntry action_entries_playlist_sort[] = {
-    { "playlist randomize list", AUD_STOCK_RANDOMIZEPL , N_("Randomize List"), "<Ctrl><Shift>R",
+    { "playlist randomize list", NULL, N_("Randomize List"), "<Ctrl><Shift>R",
       N_("Randomizes the playlist."),
       G_CALLBACK(action_playlist_randomize_list) },
 
