@@ -4,6 +4,8 @@
 #ifndef DATA_READER_H
 #define DATA_READER_H
 
+#include <zlib.h>
+
 #include "blargg_common.h"
 
 // Supports reading and finding out how many bytes are remaining
@@ -142,7 +144,7 @@ public:
 	long tell() const;
 	blargg_err_t seek( long );
 private:
-	struct gzFile_s* file_;
+	gzFile file_;
 	long size_;
 };
 

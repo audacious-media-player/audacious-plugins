@@ -244,8 +244,6 @@ void Std_File_Reader::close()
 
 // Gzip_File_Reader
 
-#include "zlib.h"
-
 static const char* get_gzip_eof( const char* path, long* eof )
 {
 	FILE* file = fopen( path, "rb" );
