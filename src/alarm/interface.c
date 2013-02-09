@@ -30,7 +30,7 @@ const gchar *help[] =
     "  Alarm at:\n"
     "    The time for the alarm to come on.\n\n"
 
-    "  Quiet After:\n"
+    "  Quiet after:\n"
     "    Stop alarm after this amount of time.\n"
     "       (if the wakeup dialog is not closed)\n\n\n"
 
@@ -61,15 +61,14 @@ const gchar *help[] =
     "    Run this command at the alarm time.\n\n"),
 
    N_("  Playlist:\n"
-    "    Load this playlist for playing songs from.\n"
-    "    If no playlist is given, the songs which are\n"
-    "    currently in the list will be used.\n"
+    "    Load this playlist. If no playlist\n"
+    "    is given, the current one will be used.\n"
     "    The URL of an mp3/ogg stream\n"
     "    can also be entered here.\n\n"
 
     "  Reminder:\n"
-    "    Display a reminder when the alarm goes off,\n"
-    "    type the reminder in the box and turn on the\n"
+    "    Display a reminder when the alarm goes off.\n"
+    "    Type the reminder in the box and turn on the\n"
     "    toggle button if you want it to be shown."),
 
     NULL

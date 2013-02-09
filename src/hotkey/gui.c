@@ -69,23 +69,23 @@ static void ok_callback (GtkWidget *widget, gpointer data);
 
 
 static gchar* event_desc[EVENT_MAX] = {
-    [EVENT_PREV_TRACK] = N_("Previous Track"),
+    [EVENT_PREV_TRACK] = N_("Previous track"),
     [EVENT_PLAY] = N_("Play"),
     [EVENT_PAUSE] = N_("Pause/Resume"),
     [EVENT_STOP] = N_("Stop"),
-    [EVENT_NEXT_TRACK] = N_("Next Track"),
-    [EVENT_FORWARD] = N_("Forward 5 Seconds"),
-    [EVENT_BACKWARD] = N_("Rewind 5 Seconds"),
+    [EVENT_NEXT_TRACK] = N_("Next track"),
+    [EVENT_FORWARD] = N_("Forward 5 seconds"),
+    [EVENT_BACKWARD] = N_("Rewind 5 seconds"),
     [EVENT_MUTE] = N_("Mute"),
-    [EVENT_VOL_UP] = N_("Volume Up"),
-    [EVENT_VOL_DOWN] = N_("Volume Down"),
-    [EVENT_JUMP_TO_FILE] = N_("Jump to File"),
-    [EVENT_TOGGLE_WIN] = N_("Toggle Player Window(s)"),
+    [EVENT_VOL_UP] = N_("Volume up"),
+    [EVENT_VOL_DOWN] = N_("Volume down"),
+    [EVENT_JUMP_TO_FILE] = N_("Jump to file"),
+    [EVENT_TOGGLE_WIN] = N_("Toggle player window(s)"),
     [EVENT_SHOW_AOSD] = N_("Show On-Screen-Display"),
-    [EVENT_TOGGLE_REPEAT] = N_("Toggle Repeat"),
-    [EVENT_TOGGLE_SHUFFLE] = N_("Toggle Shuffle"),
-    [EVENT_TOGGLE_STOP] = N_("Toggle Stop After Current"),
-    [EVENT_RAISE] = N_("Raise Player Window(s)")
+    [EVENT_TOGGLE_REPEAT] = N_("Toggle repeat"),
+    [EVENT_TOGGLE_SHUFFLE] = N_("Toggle shuffle"),
+    [EVENT_TOGGLE_STOP] = N_("Toggle stop after current"),
+    [EVENT_RAISE] = N_("Raise player window(s)")
 };
 
 
