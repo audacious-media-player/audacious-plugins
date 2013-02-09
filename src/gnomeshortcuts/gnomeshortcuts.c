@@ -174,24 +174,10 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
             return TRUE;
         }*/
 
-        /* play */
-        if (strcmp ("Play", key) == 0)
+        /* play or pause */
+        if (strcmp ("Play", key) == 0 || strcmp ("Pause", key) == 0)
         {
-            if (!play)
-            {
-                aud_drct_play ();
-            } else {
-                aud_drct_pause ();
-            }
-            return;
-        }
-
-        /* pause */
-        if (strcmp ("Pause", key) == 0)
-        {
-            if (!play) aud_drct_play ();
-            else aud_drct_pause ();
-
+            aud_drct_play_pause ();
             return;
         }
 

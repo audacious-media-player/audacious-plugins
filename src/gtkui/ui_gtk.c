@@ -146,14 +146,6 @@ static void button_add_pressed (void)
     audgui_run_filebrowser (FALSE);
 }
 
-static void button_play_pressed (void)
-{
-    if (aud_drct_get_playing () && ! aud_drct_get_paused ())
-        aud_drct_pause ();
-    else
-        aud_drct_play ();
-}
-
 void set_ab_repeat_a (void)
 {
     if (! aud_drct_get_playing ())
@@ -784,7 +776,7 @@ static gboolean init (void)
     /* playback buttons */
     toolbar_button_add (toolbar, button_open_pressed, GTK_STOCK_OPEN);
     toolbar_button_add (toolbar, button_add_pressed, GTK_STOCK_ADD);
-    button_play = toolbar_button_add (toolbar, button_play_pressed, GTK_STOCK_MEDIA_PLAY);
+    button_play = toolbar_button_add (toolbar, aud_drct_play_pause, GTK_STOCK_MEDIA_PLAY);
     button_stop = toolbar_button_add (toolbar, aud_drct_stop, GTK_STOCK_MEDIA_STOP);
     toolbar_button_add (toolbar, aud_drct_pl_prev, GTK_STOCK_MEDIA_PREVIOUS);
     toolbar_button_add (toolbar, aud_drct_pl_next, GTK_STOCK_MEDIA_NEXT);

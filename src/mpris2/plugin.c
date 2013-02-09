@@ -233,9 +233,7 @@ static bool_t pause_cb (MprisMediaPlayer2Player * object,
 static bool_t play_cb (MprisMediaPlayer2Player * object, GDBusMethodInvocation *
  call, void * unused)
 {
-    if (! aud_drct_get_playing () || aud_drct_get_paused ())
-        aud_drct_play ();
-
+    aud_drct_play ();
     mpris_media_player2_player_complete_play (object, call);
     return TRUE;
 }
@@ -243,11 +241,7 @@ static bool_t play_cb (MprisMediaPlayer2Player * object, GDBusMethodInvocation *
 static bool_t play_pause_cb (MprisMediaPlayer2Player * object,
  GDBusMethodInvocation * call, void * unused)
 {
-    if (aud_drct_get_playing () && ! aud_drct_get_paused ())
-        aud_drct_pause ();
-    else
-        aud_drct_play ();
-
+    aud_drct_play_pause ();
     mpris_media_player2_player_complete_play_pause (object, call);
     return TRUE;
 }
@@ -263,9 +257,7 @@ static bool_t previous_cb (MprisMediaPlayer2Player * object,
 static bool_t seek_cb (MprisMediaPlayer2Player * object,
  GDBusMethodInvocation * call, int64_t offset, void * unused)
 {
-    if (aud_drct_get_playing ())
-        aud_drct_seek (aud_drct_get_time () + offset / 1000);
-
+    aud_drct_seek (aud_drct_get_time () + offset / 1000);
     mpris_media_player2_player_complete_seek (object, call);
     return TRUE;
 }

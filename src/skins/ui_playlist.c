@@ -663,7 +663,7 @@ playlistwin_create_widgets(void)
 
     playlistwin_splay = button_new_small (10, 7);
     window_put_widget (playlistwin, FALSE, playlistwin_splay, w - 138, h - 16);
-    button_on_release (playlistwin_splay, (ButtonCB) mainwin_play_pushed);
+    button_on_release (playlistwin_splay, (ButtonCB) aud_drct_play);
 
     playlistwin_spause = button_new_small (10, 7);
     window_put_widget (playlistwin, FALSE, playlistwin_spause, w - 128, h - 16);

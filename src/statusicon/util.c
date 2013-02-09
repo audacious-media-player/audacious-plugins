@@ -64,10 +64,7 @@ void si_playback_ctrl(gpointer ctrl_code_gp)
           break;
 
       case SI_PLAYBACK_CTRL_PLAY:
-          if (aud_drct_get_playing())
-              aud_drct_pause();
-          else
-              aud_drct_play();
+          aud_drct_play();
           break;
 
       case SI_PLAYBACK_CTRL_PAUSE:

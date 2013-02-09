@@ -196,8 +196,7 @@ static void activate_row (void * user, gint row)
 {
     gint list = ((PlaylistWidgetData *) user)->list;
     aud_playlist_set_position (list, row);
-    aud_playlist_set_playing (list);
-    aud_drct_play ();
+    aud_drct_play_playlist (list);
 }
 
 static void right_click (void * user, GdkEventButton * event)

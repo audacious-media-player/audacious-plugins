@@ -57,8 +57,6 @@ extern GtkWidget *mainwin_position, *mainwin_sposition;
 void mainwin_create(void);
 void mainwin_unhook (void);
 
-void mainwin_play_pushed(void);
-
 void mainwin_adjust_volume_motion(gint v);
 void mainwin_adjust_volume_release(void);
 void mainwin_adjust_balance_motion(gint b);

@@ -555,8 +555,7 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
             select_single (data, TRUE, 0);
             aud_playlist_set_position (active_playlist,
              aud_playlist_get_focus (active_playlist));
-            aud_playlist_set_playing (active_playlist);
-            aud_drct_play ();
+            aud_drct_play_playlist (active_playlist);
             break;
           case GDK_KEY_Escape:
             select_single (data, FALSE, aud_playlist_get_position
@@ -796,15 +795,10 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
         if (event->button != 1 || state || position == active_length)
             return TRUE;
 
-        if (position == -1)
-            aud_drct_play_playlist (active_playlist);
-        else
-        {
+        if (position != -1)
             aud_playlist_set_position (active_playlist, position);
-            aud_playlist_set_playing (active_playlist);
-            aud_drct_play ();
-        }
 
+        aud_drct_play_playlist (active_playlist);
         break;
       default:
         return TRUE;

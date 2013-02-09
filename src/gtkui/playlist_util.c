@@ -81,7 +81,7 @@ void playlist_queue_toggle (void)
 void playlist_delete_selected (void)
 {
     gint list = aud_playlist_get_active ();
-    aud_drct_pl_delete_selected (list);
+    aud_playlist_delete_selected (list);
     aud_playlist_entry_set_selected (list, aud_playlist_get_focus (list), TRUE);
 }
 

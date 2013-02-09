@@ -747,12 +747,6 @@ static void mainwin_fwd_press (GtkWidget * button, GdkEventButton * event)
 static void mainwin_fwd_release (GtkWidget * button, GdkEventButton * event)
  {seek_release (button, event, FALSE); }
 
-void
-mainwin_play_pushed(void)
-{
-    aud_drct_play ();
-}
-
 static void mainwin_shuffle_cb (GtkWidget * button, GdkEventButton * event)
  {check_set (toggleaction_group_others, "playback shuffle", button_get_active (button)); }
 static void mainwin_repeat_cb (GtkWidget * button, GdkEventButton * event)
@@ -1264,7 +1258,7 @@ mainwin_create_widgets(void)
 
     mainwin_play = button_new (23, 18, 23, 0, 23, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
     window_put_widget (mainwin, FALSE, mainwin_play, 39, 88);
-    button_on_release (mainwin_play, (ButtonCB) mainwin_play_pushed);
+    button_on_release (mainwin_play, (ButtonCB) aud_drct_play);
     button_on_rpress (mainwin_play, mainwin_playback_rpress);
 
     mainwin_pause = button_new (23, 18, 46, 0, 46, 18, SKIN_CBUTTONS, SKIN_CBUTTONS);
@@ -1388,7 +1382,7 @@ mainwin_create_widgets(void)
 
     mainwin_splay = button_new_small (10, 7);
     window_put_widget (mainwin, TRUE, mainwin_splay, 177, 4);
-    button_on_release (mainwin_splay, (ButtonCB) mainwin_play_pushed);
+    button_on_release (mainwin_splay, (ButtonCB) aud_drct_play);
 
     mainwin_spause = button_new_small (10, 7);
     window_put_widget (mainwin, TRUE, mainwin_spause, 187, 4);

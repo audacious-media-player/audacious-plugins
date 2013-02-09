@@ -205,9 +205,7 @@ gboolean handle_keyevent (EVENT event)
     /* pause */
     if (event == EVENT_PAUSE)
     {
-        if (!play) aud_drct_play ();
-        else aud_drct_pause ();
-
+        aud_drct_play_pause ();
         return TRUE;
     }
 
