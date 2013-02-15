@@ -507,7 +507,6 @@ fi
 
 dnl *** FFaudio
 
-have_ffaudio="no"
 AC_ARG_ENABLE(ffaudio,
     [AS_HELP_STRING([--disable-ffaudio], [disable ffaudio plugin (default=enabled)])],
     [enable_ffaudio=$enableval],
@@ -520,7 +519,7 @@ if test "x$enable_ffaudio" != "xno"; then
         [have_ffaudio=yes
          INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"],
         [if test "x$enable_ffaudio" = "xyes"; then
-            AC_MSG_ERROR([Cannot find FFmpeg development files (libavcodec ver >= 2.22, libavformat ver >= 53.5.0, libavutil ver >= 50.42.0), but compilation of ffaudio plugin has been explicitly requested; please install FFmpeg dev files and run configure again])
+            AC_MSG_ERROR([Cannot find FFmpeg development files (libavcodec ver >= 53.40.0, libavformat ver >= 53.5.0, libavutil ver >= 50.42.0), but compilation of ffaudio plugin has been explicitly requested; please install FFmpeg dev files and run configure again])
          fi]
     )
 fi
