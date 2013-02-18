@@ -200,7 +200,7 @@ gint xs_sldb_read(xs_sldb_t *db, const gchar *dbFilename)
     assert(db);
 
     /* Try to open the file */
-    if ((inFile = fopen(dbFilename, "ra")) == NULL) {
+    if ((inFile = fopen(dbFilename, "r")) == NULL) {
         xs_error("Could not open SongLengthDB '%s'\n", dbFilename);
         return -1;
     }

@@ -1,8 +1,8 @@
-/*  
+/*
    XMMS-SID - SIDPlay input plugin for X MultiMedia System (XMMS)
 
    STIL-database handling functions
-   
+
    Programmed and designed by Matti 'ccr' Hamalainen <ccr@tnsp.org>
    (C) Copyright 1999-2009 Tecnic Software productions (TNSP)
 
@@ -37,7 +37,7 @@ static gboolean xs_stildb_node_realloc(stil_node_t *node, gint nsubTunes)
     /* Re-allocate subTune structure if needed */
     if (nsubTunes > node->nsubTunes) {
         gint clearIndex, clearLength;
-        
+
         node->subTunes =
             (stil_subnode_t **) g_realloc(node->subTunes,
             (nsubTunes + 1) * sizeof(stil_subnode_t **));
@@ -46,7 +46,7 @@ static gboolean xs_stildb_node_realloc(stil_node_t *node, gint nsubTunes)
             xs_error("SubTune pointer structure realloc failed.\n");
             return FALSE;
         }
-        
+
         /* Clear the newly allocated memory */
         if (node->nsubTunes == 0) {
             clearIndex = 0;
@@ -56,14 +56,14 @@ static gboolean xs_stildb_node_realloc(stil_node_t *node, gint nsubTunes)
             clearLength = (nsubTunes - clearIndex + 1);
         }
         memset(&(node->subTunes[clearIndex]), 0, clearLength * sizeof(stil_subnode_t **));
-        
+
         node->nsubTunes = nsubTunes;
     }
 
     /* Allocate memory for subTune */
     if (!node->subTunes[nsubTunes]) {
         node->subTunes[nsubTunes] = g_new0(stil_subnode_t, 1);
-        
+
         if (node->subTunes[nsubTunes] == NULL) {
             xs_error("SubTune structure malloc failed!\n");
             return FALSE;
@@ -114,7 +114,7 @@ static stil_node_t *xs_stildb_node_new(gchar *filename)
         xs_stildb_node_free(result);
         return NULL;
     }
-    
+
     return result;
 }
 
@@ -150,11 +150,11 @@ static void xs_stildb_node_insert(xs_stildb_t *db, stil_node_t *node)
 static void XS_STILDB_ERR(gint linenum, gchar *line, const gchar *fmt, ...)
 {
     va_list ap;
-    
+
     va_start(ap, fmt);
     xs_verror(fmt, ap);
     va_end(ap);
-    
+
     xs_error("#%d: '%s'\n", linenum, line);
 }
 
@@ -169,7 +169,7 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
     assert(db != NULL);
 
     /* Try to open the file */
-    if ((f = fopen(filename, "ra")) == NULL) {
+    if ((f = fopen(filename, "r")) == NULL) {
         xs_error("Could not open STILDB '%s'\n", filename);
         return -1;
     }
@@ -187,7 +187,7 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
         xs_findeol(line, &eolPos);
         line[eolPos] = 0;
         lineNum++;
-        
+
         tmpLine = g_convert(line, -1, "UTF-8", XS_STIL_CHARSET, NULL, NULL, NULL);
 
         switch (tmpLine[0]) {
@@ -259,7 +259,7 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
         default:
             /* Check if we are parsing an entry */
             xs_findnext(tmpLine, &linePos);
-            
+
             if (node == NULL) {
                 XS_STILDB_ERR(lineNum, tmpLine,
                     "Entry data encountered outside of entry or syntax error!\n");
@@ -272,7 +272,7 @@ gint xs_stildb_read(xs_stildb_t *db, gchar *filename)
                 error = TRUE;
                 break;
             }
-            
+
             /* Some other type */
             if (strncmp(tmpLine, "   NAME:", 8) == 0) {
                 XS_STILDB_MULTI;
