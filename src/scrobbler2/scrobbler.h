@@ -1,10 +1,10 @@
 /*
  * Scrobbler Plugin v2.0 for Audacious by Pitxyoki
  *
- * Copyright 2012 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
+ * Copyright 2012-2013 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
  *
  * This plugin is part of the Audacious Media Player.
- * It is licensed under the GNU Public License, version 3.
+ * It is licensed under the GNU General Public License, version 3.
  */
 
 #ifndef SCROBBLER_H_
@@ -51,6 +51,7 @@ extern pthread_mutex_t log_access_mutex;
 
 //TRUE when a permission check is being requested
 extern bool_t permission_check_requested;
+extern bool_t invalidate_session_requested;
 
 
 
@@ -70,6 +71,7 @@ extern size_t received_data_size;
 //Data filled by the XML parser
 extern gchar *request_token;
 extern gchar *session_key;
+extern gchar *username;
 
 //scrobbler_xml_parsing.c
 extern bool_t read_authentication_test_result(char **error_code, char **error_detail);
