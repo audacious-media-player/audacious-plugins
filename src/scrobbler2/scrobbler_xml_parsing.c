@@ -195,7 +195,15 @@ bool_t read_authentication_test_result (char **error_code_out, char **error_deta
 
     if (xmlStrEqual(status, (xmlChar *) "failed")) {
         result = FALSE;
+
+    } else {
+      username = (gchar *) get_attribute_value((xmlChar *) "/lfm/recommendations[@user]", (xmlChar *) "user");
+      if (username == NULL || strlen(username) == 0) {
+        AUDDBG("last.fm not answering according to the API.\n");
+        result = FALSE;
+      }
     }
+
 
     xmlFree(status);
     if (error_code != NULL) {

@@ -1,11 +1,14 @@
 /*
  * Scrobbler Plugin v2.0 for Audacious by Pitxyoki
  *
- * Copyright 2012 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
+ * Copyright 2012-2013 Luís Picciochi Oliveira <Pitxyoki@Gmail.com>
  *
  * This plugin is part of the Audacious Media Player.
- * It is licensed under the GNU Public License, version 3.
+ * It is licensed under the GNU General Public License, version 3.
  */
+
+//TODO: this is to be removed when the old scrobbler is deprecated
+#include <audacious/plugins.h>
 
 //audacious includes
 #include <config.h>
@@ -13,6 +16,7 @@
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
+
 
 //plugin includes
 #include "scrobbler.h"
@@ -29,6 +33,7 @@ gchar *request_token = NULL;
 
 //static (private) variables
 static Tuple * playing_track       = NULL;
+//all times are in microseconds
 static  gint64 timestamp           = 0;
 static  gint64 play_started_at     = 0;
 static  gint64 pause_started_at    = 0;
@@ -130,14 +135,28 @@ gboolean queue_track_to_scrobble (gpointer data) {
 
 static void stopped (void *hook_data, void *user_data) {
     // Called when pressing STOP and when the playlist ends.
-
     cleanup_current_track();
 }
 
 static void ended (void *hook_data, void *user_data) {
     //Called when when a track finishes playing.
 
-    //TODO: probably we can also enqueue here to workaround tracks with wrong lengths
+    //TODO: hic sunt race conditions
+    if (playing_track != NULL && (g_get_monotonic_time() > (play_started_at + 30*G_USEC_PER_SEC)) ) {
+      //This is an odd situation when the track's real length doesn't correspond to the length reported by the player.
+      //If we are at the end of the track, it is longer than 30 seconds and it wasn't scrobbled, we scrobble it by then.
+
+      if (queue_function_ID != 0) {
+        gboolean success = g_source_remove(queue_function_ID);
+        queue_function_ID = 0;
+        if (!success) {
+          AUDDBG("BUG or race condition: Could not remove source.\n");
+        } else {
+          queue_track_to_scrobble(NULL);
+        }
+      }
+    }
+
     cleanup_current_track();
 }
 
@@ -151,7 +170,7 @@ static void ready (void *hook_data, void *user_data) {
         return;
     }
 
-    time_until_scrobble = (duration_seconds*G_USEC_PER_SEC) / 2;
+    time_until_scrobble = (((gint64)duration_seconds)*G_USEC_PER_SEC) / 2;
     if (time_until_scrobble > 4*60*G_USEC_PER_SEC) {
         time_until_scrobble = 4*60*G_USEC_PER_SEC;
     }
@@ -170,6 +189,7 @@ static void paused (void *hook_data, void *user_data) {
     }
 
     gboolean success = g_source_remove(queue_function_ID);
+    queue_function_ID = 0;
     if (!success) {
         AUDDBG("BUG: Could not remove source.\n");
         return;
@@ -193,20 +213,28 @@ static void unpaused (void *hook_data, void *user_data) {
     play_started_at = g_get_monotonic_time();
 }
 
+
+
 static bool_t scrobbler_init (void) {
+    PluginHandle *old_scrobbler = aud_plugin_lookup_basename("scrobbler");
+    if (old_scrobbler != NULL && aud_plugin_get_enabled(old_scrobbler)) {
+        aud_plugin_enable(old_scrobbler, FALSE);
+    }
+
     // Initialize libXML and check potential ABI mismatches between
     // the version it was compiled for and the actual libXML in use
     LIBXML_TEST_VERSION
 
     if (scrobbler_communication_init() == FALSE) {
-        aud_interface_show_error("The Scrobbler plugin could not be started.\n"
-                "There might be a problem with your installation.");
+        aud_interface_show_error(N_("The Scrobbler plugin could not be started.\n"
+                                    "There might be a problem with your installation."));
         return FALSE;
     }
 
     session_key = aud_get_string("scrobbler", "session_key");
     if (session_key != NULL && strlen(session_key) == 0) {
         session_key = NULL;
+        scrobbling_enabled = FALSE;
     }
     request_token = NULL;
 
@@ -246,9 +274,9 @@ static void scrobbler_cleanup (void) {
 }
 
 static const char scrobbler_about[] =
- "Audacious Scrobbling Plugin 2.0 by Pitxyoki,\n\n"
- "Copyright © 2012 Luís Picciochi <Pitxyoki@Gmail.com>.\n\n"
- "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n";
+ N_("Audacious Scrobbling Plugin 2.0 by Pitxyoki,\n\n"
+    "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>.\n\n"
+    "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
 
 
 AUD_GENERAL_PLUGIN (

@@ -7,16 +7,21 @@
 
 
 //shared variables
-bool_t    permission_check_requested = FALSE;
-enum permission perm_result = PERMISSION_UNKNOWN;
+bool_t          permission_check_requested   = FALSE;
+bool_t          invalidate_session_requested = FALSE;
+enum permission perm_result                  = PERMISSION_UNKNOWN;
+gchar          *username                     = "";
 
 
 //static (private) variables
 static GtkWidget *button;
+static GtkWidget *revoke_button;
 static GtkWidget *permission_status_icon;
 static GtkWidget *permission_status_label;
 
-static GtkWidget *details_label;
+static GtkWidget *details_label_first;
+static GtkWidget *url_button;
+static GtkWidget *details_label_second;
 
 static GtkWidget *additional_details_icon;
 static GtkWidget *additional_details_label;
@@ -33,7 +38,11 @@ static gboolean permission_checker_thread (gpointer data) {
 
         if (perm_result == PERMISSION_ALLOWED) {
             gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_YES, GTK_ICON_SIZE_SMALL_TOOLBAR);
-            gtk_label_set_label(GTK_LABEL(permission_status_label), "OK");
+
+            gchar *markup = g_markup_printf_escaped(N_("OK. Scrobbling for user: %s"), username);
+
+            gtk_label_set_markup(GTK_LABEL(permission_status_label), markup);
+            gtk_widget_set_sensitive(revoke_button, TRUE);
 
         } else if (perm_result == PERMISSION_DENIED) {
 
@@ -43,24 +52,31 @@ static gboolean permission_checker_thread (gpointer data) {
 
             gtk_label_set_label(GTK_LABEL(permission_status_label), "Permission Denied");
 
-            gchar *markup = g_markup_printf_escaped("Access the following link to allow Audacious to scrobble your plays:\n"
-                    "<a href=\"http://www.last.fm/api/auth/?api_key=%s&amp;token=%s\">http://www.last.fm/api/auth/?api_key=%s&amp;token=%s</a>\n"
-                    "Keep this window open and click 'Check Permissions' again.", SCROBBLER_API_KEY, request_token, SCROBBLER_API_KEY, request_token);
-            gtk_label_set_markup(GTK_LABEL(details_label), markup);
-            g_free(markup);
+            gtk_label_set_markup(GTK_LABEL(details_label_first), N_("Access the following link to allow Audacious to scrobble your plays:"));
 
-            gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
-                    "They will be submitted as soon as Audacious is allowed to do so.");
+            gchar *url = g_markup_printf_escaped("http://www.last.fm/api/auth/?api_key=%s&token=%s", SCROBBLER_API_KEY, request_token);
+
+            gtk_link_button_set_uri(GTK_LINK_BUTTON(url_button), url);
+            gtk_button_set_label(GTK_BUTTON(url_button), url);
+            gtk_widget_show(url_button);
+            g_free(url);
+
+            gtk_label_set_markup(GTK_LABEL(details_label_second), N_("Keep this window open and click 'Check Permission' again.\n"));
+
+            gtk_label_set_label(GTK_LABEL(additional_details_label),
+                                N_("Don't worry. Your scrobbles are saved on your computer.\n"
+                                   "They will be submitted as soon as Audacious is allowed to do so."));
 
         } else if (perm_result == PERMISSION_NONET) {
             gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_SMALL_TOOLBAR);
             gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 
-            gtk_label_set_label(GTK_LABEL(permission_status_label), "Network Problem.");
-            gtk_label_set_label(GTK_LABEL(details_label), "There was a problem contacting Last.fm. Please try again later.");
-            gtk_label_set_label(GTK_LABEL(additional_details_label), "Don't worry. Your scrobbles are saved on your computer.\n"
-                    "They will be submitted as soon as Audacious is allowed to do so.");
+            gtk_label_set_label(GTK_LABEL(permission_status_label), N_("Network Problem."));
+            gtk_label_set_label(GTK_LABEL(details_label_first),     N_("There was a problem contacting Last.fm. Please try again later."));
+            gtk_label_set_label(GTK_LABEL(additional_details_label),
+                  N_("Don't worry. Your scrobbles are saved on your computer.\n"
+                    "They will be submitted as soon as Audacious is allowed to do so."));
         }
 
         perm_result = PERMISSION_UNKNOWN;
@@ -71,16 +87,25 @@ static gboolean permission_checker_thread (gpointer data) {
 }
 
 
-static void permission_checker (GtkButton *button12, gpointer data) {
+static void cleanup_window() {
     gtk_widget_set_sensitive(button, FALSE);
+    gtk_widget_set_sensitive(revoke_button, FALSE);
 
     gtk_image_clear(GTK_IMAGE(permission_status_icon));
     gtk_image_clear(GTK_IMAGE(additional_details_icon));
 
-    gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_EXECUTE, GTK_ICON_SIZE_SMALL_TOOLBAR);
-    gtk_label_set_label(GTK_LABEL(permission_status_label), "Checking...");
-    gtk_label_set_label(GTK_LABEL(details_label), "");
+    gtk_label_set_label(GTK_LABEL(permission_status_label), (""));
+    gtk_label_set_label(GTK_LABEL(details_label_first), "");
+    gtk_widget_hide(url_button);
+    gtk_label_set_label(GTK_LABEL(details_label_second), "");
     gtk_label_set_label(GTK_LABEL(additional_details_label), "");
+}
+
+static void permission_checker (GtkButton *button12, gpointer data) {
+    cleanup_window();
+
+    gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_EXECUTE, GTK_ICON_SIZE_SMALL_TOOLBAR);
+    gtk_label_set_label(GTK_LABEL(permission_status_label), N_("Checking..."));
 
     //This will make the communication thread check the permission
     //and set the current status on the perm_result enum
@@ -100,41 +125,92 @@ static void permission_checker (GtkButton *button12, gpointer data) {
     gdk_threads_add_timeout_seconds(1, permission_checker_thread, data);
 }
 
+static void revoke_permissions (GtkButton *revoke_button2, gpointer data) {
+    cleanup_window();
 
+    pthread_mutex_lock(&communication_mutex);
+    invalidate_session_requested = TRUE;
+
+    scrobbling_enabled = FALSE;
+    pthread_cond_signal(&communication_signal);
+    pthread_mutex_unlock(&communication_mutex);
+
+    gtk_widget_set_sensitive(button, TRUE);
+}
+
+/*
+  ,---config_box---------------------.
+  |                                  |
+  |,-permission_box----------------. |
+  || ,-buttons_box--.              | |
+  || |button        | perm_status  | |
+  || |revoke_button |              | |
+  || `--------------'              | |
+  |`-------------------------------' |
+  |                                  |
+  |,-details_box------------------.  |
+  ||details_label_first           |  |
+  ||url_button                    |  |
+  ||details_label_second          |  |
+  |`------------------------------'  |
+  |                                  |
+  |,-additional_details_box--------. |
+  ||_______________________________| |
+  |__________________________________|
+
+ */
 static void *config_status_checker () {
     GtkWidget *config_box;
-    GtkWidget *button_box;
+    GtkWidget *permission_box;
+    GtkWidget *buttons_box;
+    GtkWidget *details_box;
     GtkWidget *additional_details_box;
 
-    config_box              = gtk_box_new(GTK_ORIENTATION_VERTICAL, 15);
+    config_box              = gtk_box_new(GTK_ORIENTATION_VERTICAL,  15);
+    permission_box          = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    buttons_box             = gtk_button_box_new(GTK_ORIENTATION_VERTICAL);
+    details_box             = gtk_box_new(GTK_ORIENTATION_VERTICAL,   0);
+    additional_details_box  = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 7);
 
-    button_box              = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    button                  = gtk_button_new_with_mnemonic("C_heck Permission");
+    button                  = gtk_button_new_with_mnemonic(N_("C_heck Permission"));
+    revoke_button            = gtk_button_new_with_mnemonic(N_("_Revoke Permission"));
+    gtk_widget_set_sensitive(revoke_button, FALSE);
+
     permission_status_icon  = gtk_image_new();
     permission_status_label = gtk_label_new("");
 
+    details_label_first  = gtk_label_new ("");
+    url_button           = gtk_link_button_new("");
+    details_label_second = gtk_label_new("");
+    gtk_widget_set_halign(details_label_first,  GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(url_button,           GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(details_label_second, GTK_ALIGN_CENTER);
 
-    details_label = gtk_label_new ("");
-    gtk_label_set_use_markup(GTK_LABEL(details_label), TRUE);
+//    gtk_label_set_use_markup(GTK_LABEL(details_label), TRUE);
 
-
-    additional_details_box   = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 7);
     additional_details_icon  = gtk_image_new();
     additional_details_label = gtk_label_new("");
 
 
-    g_signal_connect (button, "clicked", G_CALLBACK (permission_checker), NULL);
+    g_signal_connect (button,        "clicked", G_CALLBACK (permission_checker), NULL);
+    g_signal_connect (revoke_button, "clicked", G_CALLBACK (revoke_permissions), NULL);
 
-    gtk_box_pack_start(GTK_BOX(button_box), button,                  FALSE, FALSE, 20);
-    gtk_box_pack_start(GTK_BOX(button_box), permission_status_icon,  FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(button_box), permission_status_label, FALSE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(permission_box), buttons_box,             FALSE, FALSE, 20);
+    gtk_box_pack_start(GTK_BOX(permission_box), permission_status_icon,  FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(permission_box), permission_status_label, FALSE, FALSE, 5);
+
+    gtk_box_pack_start(GTK_BOX(buttons_box), button,        FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(buttons_box), revoke_button, FALSE, FALSE, 0);
+
+    gtk_box_pack_start(GTK_BOX(details_box), details_label_first,  FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(details_box), url_button,           FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(details_box), details_label_second, FALSE, FALSE, 0);
 
     gtk_box_pack_start(GTK_BOX(additional_details_box), additional_details_icon,  FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(additional_details_box), additional_details_label, FALSE, FALSE, 0);
 
-
-    gtk_box_pack_start(GTK_BOX(config_box), button_box,             FALSE, FALSE, 0);
-    gtk_box_pack_start(GTK_BOX(config_box), details_label,          FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(config_box), permission_box,         FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(config_box), details_box,            FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(config_box), additional_details_box, FALSE, FALSE, 0);
 
     return config_box;
