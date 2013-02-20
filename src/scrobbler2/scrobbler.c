@@ -226,8 +226,8 @@ static bool_t scrobbler_init (void) {
     LIBXML_TEST_VERSION
 
     if (scrobbler_communication_init() == FALSE) {
-        aud_interface_show_error(N_("The Scrobbler plugin could not be started.\n"
-                                    "There might be a problem with your installation."));
+        aud_interface_show_error(_("The Scrobbler plugin could not be started.\n"
+                                   "There might be a problem with your installation."));
         return FALSE;
     }
 

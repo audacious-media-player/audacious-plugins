@@ -1,6 +1,7 @@
 
 //external includes
 #include <gdk/gdk.h>
+#include "config.h"
 
 //plugin includes
 #include "scrobbler.h"
@@ -39,7 +40,7 @@ static gboolean permission_checker_thread (gpointer data) {
         if (perm_result == PERMISSION_ALLOWED) {
             gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_YES, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
-            gchar *markup = g_markup_printf_escaped(N_("OK. Scrobbling for user: %s"), username);
+            gchar *markup = g_markup_printf_escaped(_("OK. Scrobbling for user: %s"), username);
 
             gtk_label_set_markup(GTK_LABEL(permission_status_label), markup);
             gtk_widget_set_sensitive(revoke_button, TRUE);
@@ -50,9 +51,9 @@ static gboolean permission_checker_thread (gpointer data) {
             gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 
-            gtk_label_set_label(GTK_LABEL(permission_status_label), "Permission Denied");
+            gtk_label_set_label(GTK_LABEL(permission_status_label), _("Permission Denied"));
 
-            gtk_label_set_markup(GTK_LABEL(details_label_first), N_("Access the following link to allow Audacious to scrobble your plays:"));
+            gtk_label_set_markup(GTK_LABEL(details_label_first), _("Access the following link to allow Audacious to scrobble your plays:"));
 
             gchar *url = g_markup_printf_escaped("http://www.last.fm/api/auth/?api_key=%s&token=%s", SCROBBLER_API_KEY, request_token);
 
@@ -61,22 +62,22 @@ static gboolean permission_checker_thread (gpointer data) {
             gtk_widget_show(url_button);
             g_free(url);
 
-            gtk_label_set_markup(GTK_LABEL(details_label_second), N_("Keep this window open and click 'Check Permission' again.\n"));
+            gtk_label_set_markup(GTK_LABEL(details_label_second), _("Keep this window open and click 'Check Permission' again.\n"));
 
             gtk_label_set_label(GTK_LABEL(additional_details_label),
-                                N_("Don't worry. Your scrobbles are saved on your computer.\n"
-                                   "They will be submitted as soon as Audacious is allowed to do so."));
+                                _("Don't worry. Your scrobbles are saved on your computer.\n"
+                                  "They will be submitted as soon as Audacious is allowed to do so."));
 
         } else if (perm_result == PERMISSION_NONET) {
             gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_SMALL_TOOLBAR);
             gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 
-            gtk_label_set_label(GTK_LABEL(permission_status_label), N_("Network Problem."));
-            gtk_label_set_label(GTK_LABEL(details_label_first),     N_("There was a problem contacting Last.fm. Please try again later."));
+            gtk_label_set_label(GTK_LABEL(permission_status_label), _("Network Problem."));
+            gtk_label_set_label(GTK_LABEL(details_label_first),     _("There was a problem contacting Last.fm. Please try again later."));
             gtk_label_set_label(GTK_LABEL(additional_details_label),
-                  N_("Don't worry. Your scrobbles are saved on your computer.\n"
-                    "They will be submitted as soon as Audacious is allowed to do so."));
+                    _("Don't worry. Your scrobbles are saved on your computer.\n"
+                      "They will be submitted as soon as Audacious is allowed to do so."));
         }
 
         perm_result = PERMISSION_UNKNOWN;
@@ -105,7 +106,7 @@ static void permission_checker (GtkButton *button12, gpointer data) {
     cleanup_window();
 
     gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_EXECUTE, GTK_ICON_SIZE_SMALL_TOOLBAR);
-    gtk_label_set_label(GTK_LABEL(permission_status_label), N_("Checking..."));
+    gtk_label_set_label(GTK_LABEL(permission_status_label), _("Checking..."));
 
     //This will make the communication thread check the permission
     //and set the current status on the perm_result enum
@@ -172,8 +173,8 @@ static void *config_status_checker () {
     details_box             = gtk_box_new(GTK_ORIENTATION_VERTICAL,   0);
     additional_details_box  = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 7);
 
-    button                  = gtk_button_new_with_mnemonic(N_("C_heck Permission"));
-    revoke_button            = gtk_button_new_with_mnemonic(N_("_Revoke Permission"));
+    button                  = gtk_button_new_with_mnemonic(_("C_heck Permission"));
+    revoke_button           = gtk_button_new_with_mnemonic(_("_Revoke Permission"));
     gtk_widget_set_sensitive(revoke_button, FALSE);
 
     permission_status_icon  = gtk_image_new();
