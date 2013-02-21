@@ -24,6 +24,8 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "config.h"
+
 #include <libgen.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -35,7 +37,6 @@
 #include <audacious/plugin.h>
 
 #include "ao.h"
-#include "config.h"
 #include "corlett.h"
 #include "vio2sf.h"
 
@@ -55,7 +56,7 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 	vfs_file_get_contents(path2, &filebuf, &size);
 
 	*buffer = filebuf;
-	*length = (uint64)size;
+	*length = (uint64_t)size;
 
 	return AO_SUCCESS;
 }
