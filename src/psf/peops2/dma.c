@@ -35,7 +35,7 @@
 #include "../peops2/registers.h"
 //#include "debug.h"
 
-extern uint32 psx_ram[(2*1024*1024)/4];
+extern uint32_t psx_ram[(2*1024*1024)/4];
 
 ////////////////////////////////////////////////////////////////////////
 // READ DMA (many values)
@@ -55,7 +55,7 @@ EXPORT_GCC void CALLBACK SPU2readDMA4Mem(u32 usPSXMem,int iSize)
   }
 
  spuAddr2[0]+=0x20; //?????
- 
+
 
  iSpuAsyncWait=0;
 
@@ -110,7 +110,7 @@ EXPORT_GCC void CALLBACK SPU2writeDMA4Mem(u32 usPSXMem,int iSize)
    spuAddr2[0]++;                                      // inc spu addr
    if(spuAddr2[0]>0xfffff) spuAddr2[0]=0;              // wrap
   }
- 
+
  iSpuAsyncWait=0;
 
  // got from J.F. and Kanodin... is it needed?
@@ -128,7 +128,7 @@ EXPORT_GCC void CALLBACK SPU2writeDMA7Mem(u32 usPSXMem,int iSize)
    spuAddr2[1]++;                                      // inc spu addr
    if(spuAddr2[1]>0xfffff) spuAddr2[1]=0;              // wrap
   }
- 
+
  iSpuAsyncWait=0;
 
  // got from J.F. and Kanodin... is it needed?
@@ -139,7 +139,7 @@ EXPORT_GCC void CALLBACK SPU2writeDMA7Mem(u32 usPSXMem,int iSize)
 // INTERRUPTS
 ////////////////////////////////////////////////////////////////////////
 
-void InterruptDMA4(void) 
+void InterruptDMA4(void)
 {
 // taken from linuzappz NULL spu2
 //	spu2Rs16(CORE0_ATTR)&= ~0x30;
@@ -150,13 +150,13 @@ void InterruptDMA4(void)
  regArea[(PS2_C0_ADMAS)>>1]=0;
  spuStat2[0]|=0x80;
 }
-                       
-EXPORT_GCC void CALLBACK SPU2interruptDMA4(void) 
+
+EXPORT_GCC void CALLBACK SPU2interruptDMA4(void)
 {
  InterruptDMA4();
 }
 
-void InterruptDMA7(void) 
+void InterruptDMA7(void)
 {
 // taken from linuzappz NULL spu2
 //	spu2Rs16(CORE1_ATTR)&= ~0x30;
@@ -168,7 +168,7 @@ void InterruptDMA7(void)
  spuStat2[1]|=0x80;
 }
 
-EXPORT_GCC void CALLBACK SPU2interruptDMA7(void) 
+EXPORT_GCC void CALLBACK SPU2interruptDMA7(void)
 {
  InterruptDMA7();
 }

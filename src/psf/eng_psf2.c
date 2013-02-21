@@ -45,6 +45,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include <glib.h>
 #include <zlib.h>
 
 #include "ao.h"
@@ -67,32 +69,34 @@
 #define ELF32_R_SYM(val)                ((val) >> 8)
 #define ELF32_R_TYPE(val)               ((val) & 0xff)
 
+#define LE32(x) GUINT32_FROM_LE(x)
+
 static corlett_t	*c = NULL;
 
 // main RAM
-extern uint32 psx_ram[(2*1024*1024)/4];
-extern uint32 initial_ram[(2*1024*1024)/4];
-static uint32 initialPC, initialSP;
-static uint32 loadAddr, lengthMS, fadeMS;
+extern uint32_t psx_ram[(2*1024*1024)/4];
+extern uint32_t initial_ram[(2*1024*1024)/4];
+static uint32_t initialPC, initialSP;
+static uint32_t loadAddr, lengthMS, fadeMS;
 
-static uint8 *filesys[MAX_FS];
-static uint8 *lib_raw_file;
-static uint32 fssize[MAX_FS];
+static uint8_t *filesys[MAX_FS];
+static uint8_t *lib_raw_file;
+static uint32_t fssize[MAX_FS];
 static int num_fs;
 
 extern void mips_init( void );
 extern void mips_reset( void *param );
 extern int mips_execute( int cycles );
-extern void mips_set_info(UINT32 state, union cpuinfo *info);
+extern void mips_set_info(uint32_t state, union cpuinfo *info);
 extern void psx_hw_init(void);
 extern void ps2_hw_slice(void);
 extern void ps2_hw_frame(void);
-extern void setlength2(int32 stop, int32 fade);
+extern void setlength2(int32_t stop, int32_t fade);
 
-static void do_iopmod(uint8 *start, uint32 offset)
+static void do_iopmod(uint8_t *start, uint32_t offset)
 {
 	#if DEBUG_LOADER
-	uint32 nameoffs, saddr, heap, tsize, dsize, bsize, vers2;
+	uint32_t nameoffs, saddr, heap, tsize, dsize, bsize, vers2;
 
 	nameoffs = start[offset] | start[offset+1]<<8 | start[offset+2]<<16 | start[offset+3]<<24;
 
@@ -108,12 +112,12 @@ static void do_iopmod(uint8 *start, uint32 offset)
 	#endif
 }
 
-uint32 psf2_load_elf(uint8 *start, uint32 len)
+uint32_t psf2_load_elf(uint8_t *start, uint32_t len)
 {
-	uint32 entry, shoff, shentsize, shnum;
-	uint32 type, addr, offset, size, shent;
-//	uint32 phoff, phentsize, phnum, shstrndx, name, flags;
-	uint32 totallen;
+	uint32_t entry, shoff, shentsize, shnum;
+	uint32_t type, addr, offset, size, shent;
+//	uint32_t phoff, phentsize, phnum, shstrndx, name, flags;
+	uint32_t totallen;
 	int i, rec;
 //	FILE *f;
 
@@ -185,8 +189,8 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 			case 9:			// REL: short relocation data
 		  		for (rec = 0; rec < (size/8); rec++)
 				{
-					uint32 offs, info, target, temp, val, vallo;
-					static uint32 hi16offs = 0, hi16target = 0;
+					uint32_t offs, info, target, temp, val, vallo;
+					static uint32_t hi16offs = 0, hi16target = 0;
 
 					offs = start[offset+(rec*8)] | start[offset+1+(rec*8)]<<8 | start[offset+2+(rec*8)]<<16 | start[offset+3+(rec*8)]<<24;
 					info = start[offset+4+(rec*8)] | start[offset+5+(rec*8)]<<8 | start[offset+6+(rec*8)]<<16 | start[offset+7+(rec*8)]<<24;
@@ -266,12 +270,12 @@ uint32 psf2_load_elf(uint8 *start, uint32 len)
 	return entry;
 }
 
-static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uint8 *buf, uint32 buflen)
+static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, char *file, uint8_t *buf, uint32_t buflen)
 {
-	int32 numfiles, i, j;
-	uint8 *cptr;
-	uint32 offs, uncomp, bsize, cofs, uofs;
-	uint32 X;
+	int32_t numfiles, i, j;
+	uint8_t *cptr;
+	uint32_t offs, uncomp, bsize, cofs, uofs;
+	uint32_t X;
 	uLongf dlength;
 	int uerr;
 	char matchname[512], *remainder;
@@ -316,7 +320,7 @@ static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uin
 			uofs = 0;
 			for (j = 0; j < X; j++)
 			{
-				uint32 usize;
+				uint32_t usize;
 
 				usize = top[offs+(j*4)] | top[offs+1+(j*4)]<<8 | top[offs+2+(j*4)]<<16 | top[offs+3+(j*4)]<<24;
 
@@ -344,22 +348,22 @@ static uint32 load_file_ex(uint8 *top, uint8 *start, uint32 len, char *file, uin
 	return 0xffffffff;
 }
 
-static uint32 load_file(int fs, char *file, uint8 *buf, uint32 buflen)
+static uint32_t load_file(int fs, char *file, uint8_t *buf, uint32_t buflen)
 {
 	return load_file_ex(filesys[fs], filesys[fs], fssize[fs], file, buf, buflen);
 }
 
 #if 0
-static dump_files(int fs, uint8 *buf, uint32 buflen)
+static dump_files(int fs, uint8_t *buf, uint32_t buflen)
 {
-	int32 numfiles, i, j;
-	uint8 *cptr;
-	uint32 offs, uncomp, bsize, cofs, uofs;
-	uint32 X;
+	int32_t numfiles, i, j;
+	uint8_t *cptr;
+	uint32_t offs, uncomp, bsize, cofs, uofs;
+	uint32_t X;
 	uLongf dlength;
 	int uerr;
-	uint8 *start;
-	uint32 len;
+	uint8_t *start;
+	uint32_t len;
 	FILE *f;
 	char tfn[128];
 
@@ -388,7 +392,7 @@ static dump_files(int fs, uint8 *buf, uint32 buflen)
 			uofs = 0;
 			for (j = 0; j < X; j++)
 			{
-				uint32 usize;
+				uint32_t usize;
 
 				usize = start[offs+(j*4)] | start[offs+1+(j*4)]<<8 | start[offs+2+(j*4)]<<16 | start[offs+3+(j*4)]<<24;
 
@@ -423,10 +427,10 @@ static dump_files(int fs, uint8 *buf, uint32 buflen)
 #endif
 
 // find a file on our filesystems
-uint32 psf2_load_file(char *file, uint8 *buf, uint32 buflen)
+uint32_t psf2_load_file(char *file, uint8_t *buf, uint32_t buflen)
 {
 	int i;
-	uint32 flen;
+	uint32_t flen;
 
 	for (i = 0; i < num_fs; i++)
 	{
@@ -440,12 +444,12 @@ uint32 psf2_load_file(char *file, uint8 *buf, uint32 buflen)
 	return 0xffffffff;
 }
 
-int32 psf2_start(uint8 *buffer, uint32 length)
+int32_t psf2_start(uint8_t *buffer, uint32_t length)
 {
-	uint8 *file, *lib_decoded;
-	uint32 irx_len;
-	uint64 file_len, lib_raw_length, lib_len;
-	uint8 *buf;
+	uint8_t *file, *lib_decoded;
+	uint32_t irx_len;
+	uint64_t file_len, lib_raw_length, lib_len;
+	uint8_t *buf;
 	union cpuinfo mipsinfo;
 	corlett_t *lib;
 
@@ -469,13 +473,13 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	#endif
 
 	num_fs = 1;
-	filesys[0] = (uint8 *)c->res_section;
+	filesys[0] = (uint8_t *)c->res_section;
 	fssize[0] = c->res_size;
 
 	// Get the library file, if any
 	if (c->lib[0] != 0)
 	{
-		uint64 tmp_length;
+		uint64_t tmp_length;
 
 		#if DEBUG_LOADER
 		printf("Loading library: %s\n", c->lib);
@@ -500,13 +504,13 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 		#endif
 
 		num_fs++;
-		filesys[1] = (uint8 *)lib->res_section;
+		filesys[1] = (uint8_t *)lib->res_section;
  		fssize[1] = lib->res_size;
 	}
 
 	// dump all files
 	#if 0
-	buf = (uint8 *)malloc(16*1024*1024);
+	buf = (uint8_t *)malloc(16*1024*1024);
 	dump_files(0, buf, 16*1024*1024);
 	if (c->lib[0] != 0)
 		dump_files(1, buf, 16*1024*1024);
@@ -514,7 +518,7 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	#endif
 
 	// load psf2.irx, which kicks everything off
-	buf = (uint8 *)malloc(512*1024);
+	buf = (uint8_t *)malloc(512*1024);
 	irx_len = psf2_load_file("psf2.irx", buf, 512*1024);
 
 	if (irx_len != 0xffffffff)
@@ -559,7 +563,7 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	mips_set_info(CPUINFO_INT_REGISTER + MIPS_R5, &mipsinfo);
 	psx_ram[1] = LE32(0x80000008);
 
-	buf = (uint8 *)&psx_ram[2];
+	buf = (uint8_t *)&psx_ram[2];
 	strcpy((char *)buf, "aofile:/");
 
 	psx_ram[0] = LE32(FUNCT_HLECALL);
@@ -574,7 +578,7 @@ int32 psf2_start(uint8 *buffer, uint32 length)
 	return AO_SUCCESS;
 }
 
-int32 psf2_execute(InputPlayback *playback)
+int32_t psf2_execute(InputPlayback *playback)
 {
 	int i;
 
@@ -592,7 +596,7 @@ int32 psf2_execute(InputPlayback *playback)
 	return AO_SUCCESS;
 }
 
-int32 psf2_stop(void)
+int32_t psf2_stop(void)
 {
 	SPU2close();
 	if (c->lib[0] != 0)
@@ -604,10 +608,10 @@ int32 psf2_stop(void)
 	return AO_SUCCESS;
 }
 
-int32 psf2_command(int32 command, int32 parameter)
+int32_t psf2_command(int32_t command, int32_t parameter)
 {
 	union cpuinfo mipsinfo;
-	uint32 lengthMS, fadeMS;
+	uint32_t lengthMS, fadeMS;
 
 	switch (command)
 	{
@@ -656,12 +660,12 @@ int32 psf2_command(int32 command, int32 parameter)
 	return AO_FAIL;
 }
 
-uint32 psf2_get_loadaddr(void)
+uint32_t psf2_get_loadaddr(void)
 {
 	return loadAddr;
 }
 
-void psf2_set_loadaddr(uint32 new)
+void psf2_set_loadaddr(uint32_t new)
 {
 	loadAddr = new;
 }

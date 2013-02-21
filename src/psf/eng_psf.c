@@ -28,6 +28,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
 #include "ao.h"
 #include "eng_protos.h"
 #include "cpuintrf.h"
@@ -39,10 +41,11 @@
 #include "peops/registers.h"
 #include "peops/spu.h"
 
-
 #include "corlett.h"
 
 #define DEBUG_LOADER	(0)
+
+#define LE32(x) GUINT32_FROM_LE(x)
 
 static corlett_t	*c = NULL;
 static char 		psfby[256];
@@ -50,26 +53,26 @@ int			psf_refresh  = -1;
 
 
 // main RAM
-extern uint32 psx_ram[((2*1024*1024)/4)+4];
-extern uint32 psx_scratch[0x400];
-extern uint32 initial_ram[((2*1024*1024)/4)+4];
-extern uint32 initial_scratch[0x400];
-static uint32 initialPC, initialGP, initialSP;
+extern uint32_t psx_ram[((2*1024*1024)/4)+4];
+extern uint32_t psx_scratch[0x400];
+extern uint32_t initial_ram[((2*1024*1024)/4)+4];
+extern uint32_t initial_scratch[0x400];
+static uint32_t initialPC, initialGP, initialSP;
 
 extern void mips_init( void );
 extern void mips_reset( void *param );
 extern int mips_execute( int cycles );
-extern void mips_set_info(UINT32 state, union cpuinfo *info);
+extern void mips_set_info(uint32_t state, union cpuinfo *info);
 extern void psx_hw_init(void);
 extern void psx_hw_slice(void);
 extern void psx_hw_frame(void);
-extern void setlength(int32 stop, int32 fade);
+extern void setlength(int32_t stop, int32_t fade);
 
-int32 psf_start(uint8 *buffer, uint32 length)
+int32_t psf_start(uint8_t *buffer, uint32_t length)
 {
-	uint8 *file, *lib_decoded, *lib_raw_file, *alib_decoded;
-	uint32 offset, plength, PC, SP, GP, lengthMS, fadeMS;
-	uint64 file_len, lib_len, lib_raw_length, alib_len;
+	uint8_t *file, *lib_decoded, *lib_raw_file, *alib_decoded;
+	uint32_t offset, plength, PC, SP, GP, lengthMS, fadeMS;
+	uint64_t file_len, lib_len, lib_raw_length, alib_len;
 	corlett_t *lib;
 	int i;
 	union cpuinfo mipsinfo;
@@ -122,7 +125,7 @@ int32 psf_start(uint8 *buffer, uint32 length)
 	// Get the library file, if any
 	if (c->lib[0] != 0)
 	{
-		uint64 tmp_length;
+		uint64_t tmp_length;
 
 		#if DEBUG_LOADER
 		printf("Loading library: %s\n", c->lib);
@@ -218,7 +221,7 @@ int32 psf_start(uint8 *buffer, uint32 length)
 	{
 		if (c->libaux[i][0] != 0)
 		{
-			uint64 tmp_length;
+			uint64_t tmp_length;
 
 			#if DEBUG_LOADER
 			printf("Loading aux library: %s\n", c->libaux[i]);
@@ -370,7 +373,7 @@ int32 psf_start(uint8 *buffer, uint32 length)
 	return AO_SUCCESS;
 }
 
-int32 psf_execute(InputPlayback *playback)
+int32_t psf_execute(InputPlayback *playback)
 {
 	int i;
 
@@ -386,7 +389,7 @@ int32 psf_execute(InputPlayback *playback)
 	return AO_SUCCESS;
 }
 
-int32 psf_stop(void)
+int32_t psf_stop(void)
 {
 	SPUclose();
 	free(c);

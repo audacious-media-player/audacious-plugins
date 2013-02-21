@@ -51,7 +51,7 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-static INLINE s64 g_buffer(int iOff)                          // get_buffer content helper: takes care about wraps
+static inline s64 g_buffer(int iOff)                          // get_buffer content helper: takes care about wraps
 {
  s16 * p=(s16 *)spuMem;
  iOff=(iOff*4)+rvb.CurrAddr;
@@ -62,7 +62,7 @@ static INLINE s64 g_buffer(int iOff)                          // get_buffer cont
 
 ////////////////////////////////////////////////////////////////////////
 
-static INLINE void s_buffer(int iOff,int iVal)                // set_buffer content helper: takes care about wraps and clipping
+static inline void s_buffer(int iOff,int iVal)                // set_buffer content helper: takes care about wraps and clipping
 {
  s16 * p=(s16 *)spuMem;
  iOff=(iOff*4)+rvb.CurrAddr;
@@ -75,7 +75,7 @@ static INLINE void s_buffer(int iOff,int iVal)                // set_buffer cont
 
 ////////////////////////////////////////////////////////////////////////
 
-static INLINE void s_buffer1(int iOff,int iVal)                // set_buffer (+1 sample) content helper: takes care about wraps and clipping
+static inline void s_buffer1(int iOff,int iVal)                // set_buffer (+1 sample) content helper: takes care about wraps and clipping
 {
  s16 * p=(s16 *)spuMem;
  iOff=(iOff*4)+rvb.CurrAddr+1;
@@ -85,7 +85,7 @@ static INLINE void s_buffer1(int iOff,int iVal)                // set_buffer (+1
  *(p+iOff)=(s16)BFLIP16((s16)iVal);
 }
 
-static INLINE void MixREVERBLeftRight(s32 *oleft, s32 *oright, s32 inleft, s32 inright)
+static inline void MixREVERBLeftRight(s32 *oleft, s32 *oright, s32 inleft, s32 inright)
 {
    static s32 downbuf[2][8];
    static s32 upbuf[2][8];
@@ -113,7 +113,7 @@ static INLINE void MixREVERBLeftRight(s32 *oleft, s32 *oright, s32 inleft, s32 i
      if(spuCtrl&0x80)                                  // -> reverb on? oki
       {
        int ACC0,ACC1,FB_A0,FB_A1,FB_B0,FB_B1;
-       s32 INPUT_SAMPLE_L=0;                         
+       s32 INPUT_SAMPLE_L=0;
        s32 INPUT_SAMPLE_R=0;
 
        for(x=0;x<8;x++)
@@ -140,7 +140,7 @@ static INLINE void MixREVERBLeftRight(s32 *oleft, s32 *oright, s32 inleft, s32 i
        s_buffer1(rvb.IIR_DEST_A1, IIR_A1);
        s_buffer1(rvb.IIR_DEST_B0, IIR_B0);
        s_buffer1(rvb.IIR_DEST_B1, IIR_B1);
- 
+
        ACC0 = ((g_buffer(rvb.ACC_SRC_A0) * rvb.ACC_COEF_A)>>15) +
               ((g_buffer(rvb.ACC_SRC_B0) * rvb.ACC_COEF_B)>>15) +
               ((g_buffer(rvb.ACC_SRC_C0) * rvb.ACC_COEF_C)>>15) +
@@ -157,10 +157,10 @@ static INLINE void MixREVERBLeftRight(s32 *oleft, s32 *oright, s32 inleft, s32 i
 
        s_buffer(rvb.MIX_DEST_A0, ACC0 - ((FB_A0 * rvb.FB_ALPHA)>>15));
        s_buffer(rvb.MIX_DEST_A1, ACC1 - ((FB_A1 * rvb.FB_ALPHA)>>15));
-       
+
        s_buffer(rvb.MIX_DEST_B0, ((rvb.FB_ALPHA * ACC0)>>15) - ((FB_A0 * (int)(rvb.FB_ALPHA^0xFFFF8000))>>15) - ((FB_B0 * rvb.FB_X)>>15));
        s_buffer(rvb.MIX_DEST_B1, ((rvb.FB_ALPHA * ACC1)>>15) - ((FB_A1 * (int)(rvb.FB_ALPHA^0xFFFF8000))>>15) - ((FB_B1 * rvb.FB_X)>>15));
- 
+
        rvb.iRVBLeft  = (g_buffer(rvb.MIX_DEST_A0)+g_buffer(rvb.MIX_DEST_B0))/3;
        rvb.iRVBRight = (g_buffer(rvb.MIX_DEST_A1)+g_buffer(rvb.MIX_DEST_B1))/3;
 

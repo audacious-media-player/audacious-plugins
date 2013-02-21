@@ -10,7 +10,7 @@
 
 #define CLEAR_LINE		0		/* clear (a fired, held or pulsed) line */
 #define ASSERT_LINE     1       /* assert an interrupt immediately */
-#define HOLD_LINE       2       /* hold interrupt line until enable is true */
+#define HOLD_LINE       2       /* hold interrupt line until enable is TRUE */
 #define PULSE_LINE		3		/* pulse interrupt line for one instruction */
 
 #define MAX_REGS		64		/* maximum number of register of any CPU */
@@ -44,7 +44,7 @@ enum {
  * the names from the enum a CPU core defines for it's registers,
  * to get or set the contents of the memory pointed to by a stack pointer.
  * You can specify the n'th element on the stack by (REG_SP_CONTENTS-n),
- * ie. lower negative values. The actual element size (UINT16 or UINT32)
+ * ie. lower negative values. The actual element size (uint16_t or uint32_t)
  * depends on the CPU core.
  * This is also used to replace the cpu_geturnpc() function.
  */
@@ -542,8 +542,8 @@ typedef struct {
 
 #define Z80_VECTOR(device,state) (((device)<<8)|(state))
 
-#ifndef INLINE
-#define INLINE 		inline
+#ifndef inline
+#define inline 		inline
 #endif
 
 #include <string.h>
@@ -631,7 +631,7 @@ enum
 	/* --- the following bits of info are returned as pointers to data or functions --- */
 	CPUINFO_PTR_FIRST = 0x10000,
 
-	CPUINFO_PTR_SET_INFO = CPUINFO_PTR_FIRST,			/* R/O: void (*set_info)(UINT32 state, INT64 data, void *ptr) */
+	CPUINFO_PTR_SET_INFO = CPUINFO_PTR_FIRST,			/* R/O: void (*set_info)(uint32_t state, int64_t data, void *ptr) */
 	CPUINFO_PTR_GET_CONTEXT,							/* R/O: void (*get_context)(void *buffer) */
 	CPUINFO_PTR_SET_CONTEXT,							/* R/O: void (*set_context)(void *buffer) */
 	CPUINFO_PTR_INIT,									/* R/O: void (*init)(void) */

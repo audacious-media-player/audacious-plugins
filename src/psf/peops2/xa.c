@@ -63,7 +63,7 @@ static int gauss_window[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 // MIX XA
 ////////////////////////////////////////////////////////////////////////
 
-INLINE void MixXA(void)
+inline void MixXA(void)
 {
  int ns;
 
@@ -90,7 +90,7 @@ INLINE void MixXA(void)
 // FEED XA
 ////////////////////////////////////////////////////////////////////////
 
-INLINE void FeedXA(xa_decode_t *xap)
+inline void FeedXA(xa_decode_t *xap)
 {
  int sinc,spos,i,iSize,iPlace,vl,vr;
 

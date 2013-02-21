@@ -1262,7 +1262,7 @@ void SetPitch(int ch,unsigned short val)               // SET PITCH
  else           NP=val;
 
  intr = (double)48000.0f / (double)44100.0f * (double)NP;
- NP = (UINT32)intr;
+ NP = (uint32_t)intr;
 
  s_chan[ch].iRawPitch=NP;
 

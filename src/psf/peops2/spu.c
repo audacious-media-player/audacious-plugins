@@ -676,7 +676,7 @@ GOON: ;
            if(NP<0x1)    NP=0x1;
 
 	   intr = (double)48000.0f / (double)44100.0f * (double)NP;
-           NP = (UINT32)intr;
+           NP = (uint32_t)intr;
 
            NP=(44100L*NP)/(4096L);                     // calc frequency
 

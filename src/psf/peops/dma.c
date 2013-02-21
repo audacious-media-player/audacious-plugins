@@ -28,7 +28,7 @@
 
 #define _IN_DMA
 
-extern uint32 psx_ram[(2*1024*1024)/4];
+extern uint32_t psx_ram[(2*1024*1024)/4];
 
 //#include "externals.h"
 ////////////////////////////////////////////////////////////////////////

@@ -51,17 +51,17 @@ extern int SPUopen(void);
 extern int SPUclose(void);
 extern void SPUinjectRAMImage(unsigned short *source);
 
-extern void setlength(int32 stop, int32 fade);
+extern void setlength(int32_t stop, int32_t fade);
 
-static uint8 *start_of_file, *song_ptr;
-static uint32 cur_tick, cur_event, num_events, next_tick, end_tick;
+static uint8_t *start_of_file, *song_ptr;
+static uint32_t cur_tick, cur_event, num_events, next_tick, end_tick;
 static int old_fmt;
 static char name[128], song[128], company[128];
 
-int32 spx_start(uint8 *buffer, uint32 length)
+int32_t spx_start(uint8_t *buffer, uint32_t length)
 {
 	int i;
-	uint16 reg;
+	uint16_t reg;
 
 	if (strncmp((char *)buffer, "SPU", 3) && strncmp((char *)buffer, "SPX", 3))
 	{
@@ -123,12 +123,12 @@ int32 spx_start(uint8 *buffer, uint32 length)
 	return AO_SUCCESS;
 }
 
-extern int SPUasync(uint32 cycles, void *data);
+extern int SPUasync(uint32_t cycles, void *data);
 static void spx_tick(void)
 {
-	uint32 time, reg, size;
-	uint16 rdata;
-	uint8 opcode;
+	uint32_t time, reg, size;
+	uint16_t rdata;
+	uint8_t opcode;
 
 	if (old_fmt)
 	{
@@ -212,7 +212,7 @@ static void spx_tick(void)
 	cur_tick++;
 }
 
-int32 spx_execute(InputPlayback *playback)
+int32_t spx_execute(InputPlayback *playback)
 {
 	int i, run = 1;
 
@@ -236,7 +236,7 @@ int32 spx_execute(InputPlayback *playback)
 	return AO_SUCCESS;
 }
 
-int32 spx_stop(void)
+int32_t spx_stop(void)
 {
 	SPUclose();
 

@@ -35,23 +35,23 @@
 
 #include "ao.h"
 
-typedef int8 s8;
-typedef int16 s16;
-typedef int32 s32;
-typedef int64 s64;
+typedef int8_t s8;
+typedef int16_t s16;
+typedef int32_t s32;
+typedef int64_t s64;
 
-typedef uint8 u8;
-typedef uint16 u16;
-typedef uint32 u32;
-typedef uint64 u64;
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
 
 #if LSB_FIRST
-static INLINE u16 BFLIP16(u16 x)
+static inline u16 BFLIP16(u16 x)
 {
  return x;
 }
 #else
-static INLINE u16 BFLIP16(u16 x)
+static inline u16 BFLIP16(u16 x)
 {
  return( ((x>>8)&0xFF)| ((x&0xFF)<<8) );
 }

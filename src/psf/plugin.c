@@ -24,6 +24,8 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "config.h"
+
 #include <libgen.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -35,7 +37,6 @@
 #include <audacious/plugin.h>
 
 #include "ao.h"
-#include "config.h"
 #include "corlett.h"
 #include "eng_protos.h"
 
@@ -48,10 +49,10 @@ typedef enum {
 } PSFEngine;
 
 typedef struct {
-    int32 (*start)(uint8 *buffer, uint32 length);
-    int32 (*stop)(void);
-    int32 (*seek)(uint32);
-    int32 (*execute)(InputPlayback *data);
+    int32_t (*start)(uint8_t *buffer, uint32_t length);
+    int32_t (*stop)(void);
+    int32_t (*seek)(uint32_t);
+    int32_t (*execute)(InputPlayback *data);
 } PSFEngineFunctors;
 
 static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
@@ -61,7 +62,7 @@ static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
     {spx_start, spx_stop, psf_seek, spx_execute},
 };
 
-static PSFEngine psf_probe(uint8 *buffer)
+static PSFEngine psf_probe(uint8_t *buffer)
 {
 	if (!memcmp(buffer, "PSF\x01", 4))
 		return ENG_PSF1;
@@ -81,7 +82,7 @@ static PSFEngine psf_probe(uint8 *buffer)
 /* ao_get_lib: called to load secondary files */
 static char *path;
 
-int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
+int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
 {
 	void *filebuf;
 	int64_t size;
@@ -91,7 +92,7 @@ int ao_get_lib(char *filename, uint8 **buffer, uint64 *length)
 	vfs_file_get_contents(path2, &filebuf, &size);
 
 	*buffer = filebuf;
-	*length = (uint64)size;
+	*length = (uint64_t)size;
 
 	return AO_SUCCESS;
 }
@@ -244,7 +245,7 @@ void psf2_pause(InputPlayback *playback, bool_t pause)
 
 int psf2_is_our_fd(const char *filename, VFSFile *file)
 {
-	uint8 magic[4];
+	uint8_t magic[4];
 	if (vfs_fread(magic, 1, 4, file) < 4)
 		return FALSE;
 

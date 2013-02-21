@@ -1,20 +1,20 @@
 #include <audacious/plugin.h>
 
-int32 psf2_start(uint8 *, uint32 length);
-int32 psf2_execute(InputPlayback *playback);
-int32 psf2_stop(void);
-int32 psf2_command(int32, int32);
-int32 psf2_fill_info(Tuple *);
-int   psf2_seek(uint32);
+int32_t psf2_start(uint8_t *, uint32_t length);
+int32_t psf2_execute(InputPlayback *playback);
+int32_t psf2_stop(void);
+int32_t psf2_command(int32_t, int32_t);
+int32_t psf2_fill_info(Tuple *);
+int   psf2_seek(uint32_t);
 
-int32 psf_start(uint8 *buffer, uint32 length);
-int32 psf_execute(InputPlayback *playback);
-int   psf_seek(uint32);
-int32 psf_stop(void);
+int32_t psf_start(uint8_t *buffer, uint32_t length);
+int32_t psf_execute(InputPlayback *playback);
+int   psf_seek(uint32_t);
+int32_t psf_stop(void);
 
-int32 spx_start(uint8 *buffer, uint32 length);
-int32 spx_execute(InputPlayback *playback);
-int   spx_seek(uint32);
-int32 spx_stop(void);
+int32_t spx_start(uint8_t *buffer, uint32_t length);
+int32_t spx_execute(InputPlayback *playback);
+int   spx_seek(uint32_t);
+int32_t spx_stop(void);
 
 extern bool_t stop_flag;

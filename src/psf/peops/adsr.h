@@ -24,5 +24,5 @@
 //
 //*************************************************************************//
 
-static INLINE void StartADSR(int ch);
-static INLINE int  MixADSR(int ch);
+static inline void StartADSR(int ch);
+static inline int  MixADSR(int ch);
