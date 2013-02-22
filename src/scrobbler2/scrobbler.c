@@ -274,8 +274,8 @@ static void scrobbler_cleanup (void) {
 }
 
 static const char scrobbler_about[] =
- N_("Audacious Scrobbling Plugin 2.0 by Pitxyoki,\n\n"
-    "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>.\n\n"
+ N_("Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n\n"
+    "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n\n"
     "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
 
 
