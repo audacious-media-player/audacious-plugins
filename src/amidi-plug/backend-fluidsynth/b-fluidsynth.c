@@ -18,26 +18,32 @@
 *
 */
 
-#include <pthread.h>
+#include "config.h"
 
+#include <pthread.h>
+#include <string.h>
+
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
+
+#include "../i_configure.h"
 #include "b-fluidsynth.h"
-#include "b-fluidsynth-config.h"
 
 /* sequencer instance */
 static sequencer_client_t sc;
 /* options */
-static amidiplug_cfg_fsyn_t amidiplug_cfg_fsyn;
+static amidiplug_cfg_fsyn_t * fsyn_cfg;
 
 static pthread_mutex_t timer_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t timer_cond = PTHREAD_COND_INITIALIZER;
 static gint64 timer; /* microseconds */
 
-gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint * ppos )
+int backend_info_get( char ** name , char ** longname , char ** desc , int * ppos )
 {
   if ( name != NULL )
     *name = g_strdup( "fluidsynth" );
   if ( longname != NULL )
-    *longname = g_strjoin( "", _("FluidSynth Backend "), AMIDIPLUG_VERSION, NULL );
+    *longname = g_strdup (_("FluidSynth Backend "));
   if ( desc != NULL )
     *desc = g_strdup( _("This backend produces audio by sending MIDI events "
                         "to FluidSynth, a real-time software synthesizer based "
@@ -51,83 +57,80 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
 }
 
 
-gint backend_init( i_cfg_get_file_cb callback )
+int backend_init( amidiplug_cfg_backend_t * cfg )
 {
-  /* read configuration options */
-  i_cfg_read( callback );
+  fsyn_cfg = cfg->fsyn;
 
-  sc.soundfont_ids = g_array_new( FALSE , FALSE , sizeof(gint) );
-  sc.sample_rate = amidiplug_cfg_fsyn.fsyn_synth_samplerate;
+  sc.soundfont_ids = g_array_new( FALSE , FALSE , sizeof(int) );
+  sc.sample_rate = fsyn_cfg->fsyn_synth_samplerate;
   sc.settings = new_fluid_settings();
 
-  fluid_settings_setnum( sc.settings , "synth.sample-rate" , amidiplug_cfg_fsyn.fsyn_synth_samplerate );
-  if ( amidiplug_cfg_fsyn.fsyn_synth_gain != -1 )
-    fluid_settings_setnum( sc.settings , "synth.gain" , (gdouble)amidiplug_cfg_fsyn.fsyn_synth_gain / 10 );
-  if ( amidiplug_cfg_fsyn.fsyn_synth_polyphony != -1 )
-    fluid_settings_setint( sc.settings , "synth.polyphony" , amidiplug_cfg_fsyn.fsyn_synth_polyphony );
-  if ( amidiplug_cfg_fsyn.fsyn_synth_reverb == 1 )
+  fluid_settings_setnum( sc.settings , "synth.sample-rate" , fsyn_cfg->fsyn_synth_samplerate );
+  if ( fsyn_cfg->fsyn_synth_gain != -1 )
+    fluid_settings_setnum( sc.settings , "synth.gain" , (gdouble)fsyn_cfg->fsyn_synth_gain / 10 );
+  if ( fsyn_cfg->fsyn_synth_polyphony != -1 )
+    fluid_settings_setint( sc.settings , "synth.polyphony" , fsyn_cfg->fsyn_synth_polyphony );
+  if ( fsyn_cfg->fsyn_synth_reverb == 1 )
     fluid_settings_setstr( sc.settings , "synth.reverb.active" , "yes" );
-  else if ( amidiplug_cfg_fsyn.fsyn_synth_reverb == 0 )
+  else if ( fsyn_cfg->fsyn_synth_reverb == 0 )
     fluid_settings_setstr( sc.settings , "synth.reverb.active" , "no" );
-  if ( amidiplug_cfg_fsyn.fsyn_synth_chorus == 1 )
+  if ( fsyn_cfg->fsyn_synth_chorus == 1 )
     fluid_settings_setstr( sc.settings , "synth.chorus.active" , "yes" );
-  else if ( amidiplug_cfg_fsyn.fsyn_synth_chorus == 0 )
+  else if ( fsyn_cfg->fsyn_synth_chorus == 0 )
     fluid_settings_setstr( sc.settings , "synth.chorus.active" , "no" );
 
   sc.synth = new_fluid_synth( sc.settings );
 
   /* soundfont loader, check if we should load soundfont on backend init */
-  if ( amidiplug_cfg_fsyn.fsyn_soundfont_load == 0 )
+  if ( fsyn_cfg->fsyn_soundfont_load == 0 )
     i_soundfont_load();
 
   return 1;
 }
 
 
-gint backend_cleanup( void )
+int backend_cleanup( void )
 {
   if ( sc.soundfont_ids->len > 0 )
   {
     /* unload soundfonts */
-    gint i = 0;
+    int i = 0;
     for ( i = 0 ; i < sc.soundfont_ids->len ; i++ )
-      fluid_synth_sfunload( sc.synth , g_array_index( sc.soundfont_ids , gint , i ) , 0 );
+      fluid_synth_sfunload( sc.synth , g_array_index( sc.soundfont_ids , int , i ) , 0 );
   }
   g_array_free( sc.soundfont_ids , TRUE );
   delete_fluid_synth( sc.synth );
   delete_fluid_settings( sc.settings );
 
-  i_cfg_free(); /* free configuration options */
-
   return 1;
 }
 
 
-gint sequencer_get_port_count( void )
+int sequencer_get_port_count( void )
 {
   /* always return a single port here */
   return 1;
 }
 
 
-gint sequencer_start( gchar * midi_fname )
+int sequencer_start( char * midi_fname )
 {
   /* soundfont loader, check if we should load soundfont on first midifile play */
-  if (( amidiplug_cfg_fsyn.fsyn_soundfont_load == 1 ) && ( sc.soundfont_ids->len == 0 ))
+  if (( fsyn_cfg->fsyn_soundfont_load == 1 ) && ( sc.soundfont_ids->len == 0 ))
     i_soundfont_load();
 
   return 1; /* success */
 }
 
 
-gint sequencer_stop( void )
+int sequencer_stop( void )
 {
   return 1; /* success */
 }
 
 
 /* activate sequencer client */
-gint sequencer_on( void )
+int sequencer_on( void )
 {
   sc.tick_offset = 0;
 
@@ -136,14 +139,14 @@ gint sequencer_on( void )
 
 
 /* shutdown sequencer client */
-gint sequencer_off( void )
+int sequencer_off( void )
 {
   return 1; /* success */
 }
 
 
 /* queue set tempo */
-gint sequencer_queue_tempo( gint tempo , gint ppq )
+int sequencer_queue_tempo( int tempo , int ppq )
 {
   sc.ppq = ppq;
   /* sc.cur_tick_per_sec = (gdouble)( ppq * 1000000 ) / (gdouble)tempo; */
@@ -152,7 +155,7 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 }
 
 
-gint sequencer_queue_start (void)
+int sequencer_queue_start (void)
 {
     pthread_mutex_lock (& timer_mutex);
     timer = 0;
@@ -162,20 +165,20 @@ gint sequencer_queue_start (void)
 }
 
 
-gint sequencer_queue_stop( void )
+int sequencer_queue_stop( void )
 {
   return 1;
 }
 
 
-gint sequencer_event_init( void )
+int sequencer_event_init( void )
 {
   /* common settings for all our events */
   return 1;
 }
 
 
-gint sequencer_event_noteon( midievent_t * event )
+int sequencer_event_noteon( midievent_t * event )
 {
   i_sleep( event->tick_real );
   fluid_synth_noteon( sc.synth ,
@@ -186,7 +189,7 @@ gint sequencer_event_noteon( midievent_t * event )
 }
 
 
-gint sequencer_event_noteoff( midievent_t * event )
+int sequencer_event_noteoff( midievent_t * event )
 {
   i_sleep( event->tick_real );
   fluid_synth_noteoff( sc.synth ,
@@ -196,7 +199,7 @@ gint sequencer_event_noteoff( midievent_t * event )
 }
 
 
-gint sequencer_event_keypress( midievent_t * event )
+int sequencer_event_keypress( midievent_t * event )
 {
   /* KEY PRESSURE events are not handled by FluidSynth sequencer? */
   DEBUGMSG( "KEYPRESS EVENT with FluidSynth backend (unhandled)\n" );
@@ -205,7 +208,7 @@ gint sequencer_event_keypress( midievent_t * event )
 }
 
 
-gint sequencer_event_controller( midievent_t * event )
+int sequencer_event_controller( midievent_t * event )
 {
   i_sleep( event->tick_real );
   fluid_synth_cc( sc.synth ,
@@ -216,7 +219,7 @@ gint sequencer_event_controller( midievent_t * event )
 }
 
 
-gint sequencer_event_pgmchange( midievent_t * event )
+int sequencer_event_pgmchange( midievent_t * event )
 {
   i_sleep( event->tick_real );
   fluid_synth_program_change( sc.synth ,
@@ -226,7 +229,7 @@ gint sequencer_event_pgmchange( midievent_t * event )
 }
 
 
-gint sequencer_event_chanpress( midievent_t * event )
+int sequencer_event_chanpress( midievent_t * event )
 {
   /* CHANNEL PRESSURE events are not handled by FluidSynth sequencer? */
   DEBUGMSG( "CHANPRESS EVENT with FluidSynth backend (unhandled)\n" );
@@ -235,9 +238,9 @@ gint sequencer_event_chanpress( midievent_t * event )
 }
 
 
-gint sequencer_event_pitchbend( midievent_t * event )
+int sequencer_event_pitchbend( midievent_t * event )
 {
-  gint pb_value = (((event->data.d[2]) & 0x7f) << 7) | ((event->data.d[1]) & 0x7f);
+  int pb_value = (((event->data.d[2]) & 0x7f) << 7) | ((event->data.d[1]) & 0x7f);
   i_sleep( event->tick_real );
   fluid_synth_pitch_bend( sc.synth ,
                           event->data.d[0] ,
@@ -246,7 +249,7 @@ gint sequencer_event_pitchbend( midievent_t * event )
 }
 
 
-gint sequencer_event_sysex( midievent_t * event )
+int sequencer_event_sysex( midievent_t * event )
 {
   DEBUGMSG( "SYSEX EVENT with FluidSynth backend (unhandled)\n" );
   i_sleep( event->tick_real );
@@ -254,7 +257,7 @@ gint sequencer_event_sysex( midievent_t * event )
 }
 
 
-gint sequencer_event_tempo( midievent_t * event )
+int sequencer_event_tempo( midievent_t * event )
 {
   i_sleep( event->tick_real );
   /* sc.cur_tick_per_sec = (gdouble)( sc.ppq * 1000000 ) / (gdouble)event->data.tempo; */
@@ -269,7 +272,7 @@ gint sequencer_event_tempo( midievent_t * event )
 }
 
 
-gint sequencer_event_other( midievent_t * event )
+int sequencer_event_other( midievent_t * event )
 {
   /* unhandled */
   i_sleep( event->tick_real );
@@ -277,9 +280,9 @@ gint sequencer_event_other( midievent_t * event )
 }
 
 
-gint sequencer_event_allnoteoff( gint unused )
+int sequencer_event_allnoteoff( int unused )
 {
-  gint c = 0;
+  int c = 0;
   for ( c = 0 ; c < 16 ; c++ )
   {
     fluid_synth_cc (sc.synth, c, 123 /* all notes off */, 0);
@@ -288,9 +291,9 @@ gint sequencer_event_allnoteoff( gint unused )
 }
 
 
-gint sequencer_output (void * * buffer, gint * length)
+int sequencer_output (void * * buffer, int * length)
 {
-    gint frames = sc.sample_rate / 100;
+    int frames = sc.sample_rate / 100;
 
     * buffer = g_realloc (* buffer, 4 * frames);
     * length = 4 * frames;
@@ -305,7 +308,7 @@ gint sequencer_output (void * * buffer, gint * length)
 }
 
 
-gint sequencer_output_shut( guint max_tick , gint skip_offset )
+int sequencer_output_shut( unsigned max_tick , int skip_offset )
 {
   i_sleep (max_tick - skip_offset);
   fluid_synth_system_reset( sc.synth ); /* all notes off and channels reset */
@@ -315,26 +318,26 @@ gint sequencer_output_shut( guint max_tick , gint skip_offset )
 
 /* unimplemented, for autonomous audio == FALSE volume is set by the
    output plugin mixer controls and is not handled by input plugins */
-gint audio_volume_get( gint * left_volume , gint * right_volume )
+int audio_volume_get( int * left_volume , int * right_volume )
 {
   return 0;
 }
-gint audio_volume_set( gint left_volume , gint right_volume )
+int audio_volume_set( int left_volume , int right_volume )
 {
   return 0;
 }
 
 
-gint audio_info_get( gint * channels , gint * bitdepth , gint * samplerate )
+int audio_info_get( int * channels , int * bitdepth , int * samplerate )
 {
   *channels = 2;
   *bitdepth = 16; /* always 16 bit, we use fluid_synth_write_s16() */
-  *samplerate = amidiplug_cfg_fsyn.fsyn_synth_samplerate;
+  *samplerate = fsyn_cfg->fsyn_synth_samplerate;
   return 1; /* valid information */
 }
 
 
-gboolean audio_check_autonomous( void )
+bool_t audio_check_autonomous( void )
 {
   return FALSE; /* FluidSynth gives produced audio back to player */
 }
@@ -346,7 +349,7 @@ gboolean audio_check_autonomous( void )
    ****************************************************************** */
 
 
-void i_sleep( guint tick )
+void i_sleep( unsigned tick )
 {
   gdouble elapsed_tick_usecs = (gdouble)(tick - sc.tick_offset) * sc.cur_microsec_per_tick;
 
@@ -361,13 +364,13 @@ void i_sleep( guint tick )
 
 void i_soundfont_load( void )
 {
-  if ( strcmp( amidiplug_cfg_fsyn.fsyn_soundfont_file , "" ) )
+  if ( strcmp( fsyn_cfg->fsyn_soundfont_file , "" ) )
   {
-    gchar **sffiles = g_strsplit( amidiplug_cfg_fsyn.fsyn_soundfont_file , ";" , 0 );
-    gint i = 0;
+    char **sffiles = g_strsplit( fsyn_cfg->fsyn_soundfont_file , ";" , 0 );
+    int i = 0;
     while ( sffiles[i] != NULL )
     {
-      gint sf_id = 0;
+      int sf_id = 0;
       DEBUGMSG( "loading soundfont %s\n" , sffiles[i] );
       sf_id = fluid_synth_sfload( sc.synth , sffiles[i] , 0 );
       if ( sf_id == -1 )
@@ -392,71 +395,10 @@ void i_soundfont_load( void )
 }
 
 
-gboolean i_bounds_check( gint value , gint min , gint max )
+bool_t i_bounds_check( int value , int min , int max )
 {
   if (( value >= min ) && ( value <= max ))
     return TRUE;
   else
     return FALSE;
-}
-
-
-void i_cfg_read( i_cfg_get_file_cb callback )
-{
-  pcfg_t *cfgfile;
-  gchar * config_pathfilename = callback();
-  cfgfile = i_pcfg_new_from_file( config_pathfilename );
-
-  if ( !cfgfile )
-  {
-    /* fluidsynth backend defaults */
-    amidiplug_cfg_fsyn.fsyn_soundfont_file = g_strdup( "" );
-    amidiplug_cfg_fsyn.fsyn_soundfont_load = 1;
-    amidiplug_cfg_fsyn.fsyn_synth_samplerate = 44100;
-    amidiplug_cfg_fsyn.fsyn_synth_gain = -1;
-    amidiplug_cfg_fsyn.fsyn_synth_polyphony = -1;
-    amidiplug_cfg_fsyn.fsyn_synth_reverb = -1;
-    amidiplug_cfg_fsyn.fsyn_synth_chorus = -1;
-  }
-  else
-  {
-    i_pcfg_read_string( cfgfile , "fsyn" , "fsyn_soundfont_file" ,
-                        &amidiplug_cfg_fsyn.fsyn_soundfont_file , "" );
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_soundfont_load" ,
-                         &amidiplug_cfg_fsyn.fsyn_soundfont_load , 1 );
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_samplerate" ,
-                         &amidiplug_cfg_fsyn.fsyn_synth_samplerate , 44100 );
-    if ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_synth_samplerate , 22050 , 96000 ) )
-      amidiplug_cfg_fsyn.fsyn_synth_samplerate = 44100;
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_gain" ,
-                         &amidiplug_cfg_fsyn.fsyn_synth_gain , -1 );
-    if (( amidiplug_cfg_fsyn.fsyn_synth_gain != -1 ) &&
-        ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_synth_gain , 0 , 100 ) ))
-      amidiplug_cfg_fsyn.fsyn_synth_gain = -1;
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_polyphony" ,
-                         &amidiplug_cfg_fsyn.fsyn_synth_polyphony , -1 );
-    if (( amidiplug_cfg_fsyn.fsyn_synth_polyphony != -1 ) &&
-        ( !i_bounds_check( amidiplug_cfg_fsyn.fsyn_synth_polyphony , 0 , 100 ) ))
-      amidiplug_cfg_fsyn.fsyn_synth_polyphony = -1;
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_reverb" ,
-                         &amidiplug_cfg_fsyn.fsyn_synth_reverb , -1 );
-
-    i_pcfg_read_integer( cfgfile , "fsyn" , "fsyn_synth_chorus" ,
-                         &amidiplug_cfg_fsyn.fsyn_synth_chorus , -1 );
-
-    i_pcfg_free( cfgfile );
-  }
-
-  g_free( config_pathfilename );
-}
-
-
-void i_cfg_free( void )
-{
-  g_free( amidiplug_cfg_fsyn.fsyn_soundfont_file );
 }

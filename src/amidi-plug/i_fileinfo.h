@@ -21,10 +21,6 @@
 #ifndef _I_FILEINFO_H
 #define _I_FILEINFO_H 1
 
-#include "i_common.h"
-
-
-void i_fileinfo_gui( const gchar * );
-
+void i_fileinfo_gui( const char * );
 
 #endif /* !_I_FILEINFO_H */

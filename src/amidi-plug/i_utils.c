@@ -18,9 +18,13 @@
 *
 */
 
-
+#include "config.h"
 #include "i_utils.h"
+
+#include <stdlib.h>
 #include <gtk/gtk.h>
+#include <audacious/i18n.h>
+
 #include "amidi-plug.logo.xpm"
 
 
@@ -42,12 +46,12 @@ void i_about_gui( void )
 
   GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) aboutwin);
 
-  logo_pixbuf = gdk_pixbuf_new_from_xpm_data( (const gchar **)amidiplug_xpm_logo );
+  logo_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char **)amidiplug_xpm_logo );
   logo_image = gtk_image_new_from_pixbuf( logo_pixbuf );
   gtk_box_pack_start ((GtkBox *) vbox, logo_image, FALSE, FALSE, 0);
   g_object_unref( logo_pixbuf );
 
-  gchar * text = g_strjoin (NULL, _("AMIDI-Plug "), AMIDIPLUG_VERSION,
+  char * text = g_strjoin (NULL, _("AMIDI-Plug"),
                                        _("\nmodular MIDI music player\n"
                                          "http://www.develia.org/projects.php?p=amidiplug\n\n"
                                          "written by Giacomo Lozito\n"
@@ -64,14 +68,14 @@ void i_about_gui( void )
 
   GtkWidget * label = gtk_label_new (text);
   gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
-  g_free (text);
+  free (text);
 
   gtk_widget_show_all( aboutwin );
 }
 
 
-gpointer i_message_gui( gchar * title , gchar * message ,
-                        gint type , gpointer parent_win , gboolean show_win )
+void * i_message_gui( char * title , char * message ,
+                        int type , void * parent_win , bool_t show_win )
 {
   GtkWidget *win;
   GtkMessageType mtype = GTK_MESSAGE_INFO;

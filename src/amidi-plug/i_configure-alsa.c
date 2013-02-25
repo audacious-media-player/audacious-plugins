@@ -18,11 +18,20 @@
 *
 */
 
+#include "config.h"
 #include "i_configure-alsa.h"
+
+#include <stdlib.h>
+#include <string.h>
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
+
+#include "i_backend.h"
+#include "i_common.h"
+#include "i_configure.h"
 
 #ifdef AMIDIPLUG_ALSA
 
-#include "backend-alsa/b-alsa-config.h"
 #include "backend-alsa/backend-alsa-icon.xpm"
 
 enum
@@ -51,7 +60,7 @@ enum
 };
 
 /* GCC does not like casting func * * to void * *. */
-static void * get_symbol (GModule * mod, const gchar * name)
+static void * get_symbol (GModule * mod, const char * name)
 {
     void * sym = NULL;
     g_module_symbol (mod, name, & sym);
@@ -59,12 +68,12 @@ static void * get_symbol (GModule * mod, const gchar * name)
 }
 
 void i_configure_ev_portlv_changetoggle( GtkCellRendererToggle * rdtoggle ,
-                                         gchar * path_str , gpointer data )
+                                         char * path_str , void * data )
 {
   GtkTreeModel *model = (GtkTreeModel*)data;
   GtkTreeIter iter;
   GtkTreePath *path = gtk_tree_path_new_from_string( path_str );
-  gboolean toggled;
+  bool_t toggled;
 
   gtk_tree_model_get_iter( model , &iter , path );
   gtk_tree_model_get( model , &iter , LISTPORT_TOGGLE_COLUMN , &toggled , -1 );
@@ -76,11 +85,11 @@ void i_configure_ev_portlv_changetoggle( GtkCellRendererToggle * rdtoggle ,
 }
 
 
-gboolean i_configure_ev_mixctlcmb_inspect( GtkTreeModel * store , GtkTreePath * path,
-                                           GtkTreeIter * iter , gpointer mixctl_cmb )
+bool_t i_configure_ev_mixctlcmb_inspect( GtkTreeModel * store , GtkTreePath * path,
+                                           GtkTreeIter * iter , void * mixctl_cmb )
 {
-  gint ctl_id;
-  gchar * ctl_name;
+  int ctl_id;
+  char * ctl_name;
   amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
   gtk_tree_model_get( GTK_TREE_MODEL(store) , iter ,
                       LISTMIXER_ID_COLUMN , &ctl_id ,
@@ -92,19 +101,19 @@ gboolean i_configure_ev_mixctlcmb_inspect( GtkTreeModel * store , GtkTreePath * 
     gtk_combo_box_set_active_iter( GTK_COMBO_BOX(mixctl_cmb) , iter );
     return TRUE;
   }
-  g_free( ctl_name );
+  free( ctl_name );
   return FALSE;
 }
 
 
-void i_configure_ev_cardcmb_changed( GtkWidget * card_cmb , gpointer mixctl_cmb )
+void i_configure_ev_cardcmb_changed( GtkWidget * card_cmb , void * mixctl_cmb )
 {
   GtkTreeIter iter;
   if( gtk_combo_box_get_active_iter( GTK_COMBO_BOX(card_cmb) , &iter ) )
   {
     amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
-    gpointer mixctl_store;
-    gint card_id;
+    void * mixctl_store;
+    int card_id;
     GtkTreeModel * store = gtk_combo_box_get_model( GTK_COMBO_BOX(card_cmb) );
     gtk_tree_model_get( GTK_TREE_MODEL(store) , &iter ,
                         LISTCARD_ID_COLUMN , &card_id ,
@@ -122,11 +131,11 @@ void i_configure_ev_cardcmb_changed( GtkWidget * card_cmb , gpointer mixctl_cmb 
 }
 
 
-gboolean i_configure_ev_portlv_inspecttoggle( GtkTreeModel * model , GtkTreePath * path ,
-                                              GtkTreeIter * iter , gpointer wpp )
+bool_t i_configure_ev_portlv_inspecttoggle( GtkTreeModel * model , GtkTreePath * path ,
+                                              GtkTreeIter * iter , void * wpp )
 {
-  gboolean toggled = FALSE;
-  gchar * portstring;
+  bool_t toggled = FALSE;
+  char * portstring;
   GString * wps = wpp;
   gtk_tree_model_get ( model , iter ,
                        LISTPORT_TOGGLE_COLUMN , &toggled ,
@@ -137,12 +146,12 @@ gboolean i_configure_ev_portlv_inspecttoggle( GtkTreeModel * model , GtkTreePath
     if ( wps->str[0] != '\0' ) g_string_append_c( wps , ',' );
     g_string_append( wps , portstring );
   }
-  g_free( portstring );
+  free( portstring );
   return FALSE;
 }
 
 
-void i_configure_ev_portlv_commit( gpointer port_lv )
+void i_configure_ev_portlv_commit( void * port_lv )
 {
   amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
   GtkTreeModel * store;
@@ -151,13 +160,13 @@ void i_configure_ev_portlv_commit( gpointer port_lv )
   store = gtk_tree_view_get_model( GTK_TREE_VIEW(port_lv) );
   /* after going through this foreach, wp contains a comma-separated list of selected ports */
   gtk_tree_model_foreach( store , i_configure_ev_portlv_inspecttoggle , wp );
-  g_free( alsacfg->alsa_seq_wports ); /* free previous */
+  free( alsacfg->alsa_seq_wports ); /* free previous */
   alsacfg->alsa_seq_wports = g_strdup( wp->str ); /* set with new */
   g_string_free( wp , TRUE ); /* not needed anymore */
   return;
 }
 
-void i_configure_ev_cardcmb_commit( gpointer card_cmb )
+void i_configure_ev_cardcmb_commit( void * card_cmb )
 {
   GtkTreeModel * store;
   GtkTreeIter iter;
@@ -174,7 +183,7 @@ void i_configure_ev_cardcmb_commit( gpointer card_cmb )
   return;
 }
 
-void i_configure_ev_mixctlcmb_commit( gpointer mixctl_cmb )
+void i_configure_ev_mixctlcmb_commit( void * mixctl_cmb )
 {
   GtkTreeModel * store;
   GtkTreeIter iter;
@@ -183,7 +192,7 @@ void i_configure_ev_mixctlcmb_commit( gpointer mixctl_cmb )
   if ( gtk_combo_box_get_active_iter( GTK_COMBO_BOX(mixctl_cmb) , &iter ) )
   {
     amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
-    g_free( alsacfg->alsa_mixer_ctl_name ); /* free previous */
+    free( alsacfg->alsa_mixer_ctl_name ); /* free previous */
     /* update amidiplug_cfg.alsa_mixer_card_id */
     gtk_tree_model_get( GTK_TREE_MODEL(store) , &iter ,
                         LISTMIXER_NAME_COLUMN ,
@@ -196,10 +205,10 @@ void i_configure_ev_mixctlcmb_commit( gpointer mixctl_cmb )
 
 
 void i_configure_gui_ctlcmb_datafunc( GtkCellLayout *cell_layout , GtkCellRenderer *cr ,
-                                      GtkTreeModel *store , GtkTreeIter *iter , gpointer p )
+                                      GtkTreeModel *store , GtkTreeIter *iter , void * p )
 {
-  gchar *ctl_display, *ctl_name;
-  gint ctl_id;
+  char *ctl_display, *ctl_name;
+  int ctl_id;
   gtk_tree_model_get( store , iter ,
                       LISTMIXER_NAME_COLUMN , &ctl_name ,
                       LISTMIXER_ID_COLUMN , &ctl_id , -1 );
@@ -208,17 +217,17 @@ void i_configure_gui_ctlcmb_datafunc( GtkCellLayout *cell_layout , GtkCellRender
   else
     ctl_display = g_strdup_printf( "%s (%i)" , ctl_name , ctl_id );
   g_object_set( G_OBJECT(cr) , "text" , ctl_display , NULL );
-  g_free( ctl_display );
-  g_free( ctl_name );
+  free( ctl_display );
+  free( ctl_name );
 }
 
 
 void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
-                               gpointer backend_list_p ,
-                               gpointer commit_button )
+                               void * backend_list_p ,
+                               void * commit_button )
 {
   GSList * backend_list = backend_list_p;
-  gchar * alsa_module_pathfilename = NULL;
+  char * alsa_module_pathfilename = NULL;
 
   GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
@@ -250,7 +259,7 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
 
     amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
 
-    gchar **portstring_from_cfg = NULL;
+    char **portstring_from_cfg = NULL;
 
     GModule * alsa_module;
     GSList *wports = NULL, *wports_h = NULL, *scards = NULL, *scards_h = NULL;
@@ -280,15 +289,15 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
                                      G_TYPE_STRING , G_TYPE_STRING , G_TYPE_POINTER );
     while ( wports != NULL )
     {
-      gboolean toggled = FALSE;
+      bool_t toggled = FALSE;
       data_bucket_t * portinfo = (data_bucket_t *)wports->data;
       GString * portstring = g_string_new("");
-      G_STRING_PRINTF( portstring , "%i:%i" , portinfo->bint[0] , portinfo->bint[1] );
+      g_string_printf( portstring , "%i:%i" , portinfo->bint[0] , portinfo->bint[1] );
       gtk_list_store_append( port_store , &iter );
       /* in the existing configuration there may be previously selected ports */
       if ( portstring_from_cfg != NULL )
       {
-        gint i = 0;
+        int i = 0;
         /* check if current row contains a port selected by user */
         for ( i = 0 ; portstring_from_cfg[i] != NULL ; i++ )
         {
@@ -422,13 +431,13 @@ void i_configure_gui_tab_alsa( GtkWidget * alsa_page_alignment ,
 
 
 void i_configure_gui_tablabel_alsa( GtkWidget * alsa_page_alignment ,
-                                    gpointer backend_list_p ,
-                                    gpointer commit_button )
+                                    void * backend_list_p ,
+                                    void * commit_button )
 {
   GtkWidget *pagelabel_vbox, *pagelabel_image, *pagelabel_label;
   GdkPixbuf *pagelabel_image_pix;
   pagelabel_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1 );
-  pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const gchar **)backend_alsa_icon_xpm );
+  pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const char **)backend_alsa_icon_xpm );
   pagelabel_image = gtk_image_new_from_pixbuf( pagelabel_image_pix ); g_object_unref( pagelabel_image_pix );
   pagelabel_label = gtk_label_new( "" );
   gtk_label_set_markup( GTK_LABEL(pagelabel_label) , _("<span size=\"smaller\">ALSA\nbackend</span>") );
@@ -441,14 +450,14 @@ void i_configure_gui_tablabel_alsa( GtkWidget * alsa_page_alignment ,
 }
 
 
-gchar * i_configure_read_seq_ports_default( void )
+char * i_configure_read_seq_ports_default( void )
 {
   FILE * fp = NULL;
   /* first try, get seq ports from proc on card0 */
   fp = fopen( "/proc/asound/card0/wavetableD1" , "rb" );
   if ( fp )
   {
-    gchar buffer[100];
+    char buffer[100];
     while ( !feof( fp ) )
     {
       if(!fgets( buffer , 100 , fp ))
@@ -476,54 +485,48 @@ gchar * i_configure_read_seq_ports_default( void )
 
 
 
-void i_configure_cfg_alsa_alloc( void )
-{
-  amidiplug_cfg_alsa_t * alsacfg = g_malloc(sizeof(amidiplug_cfg_alsa_t));
-  amidiplug_cfg_backend->alsa = alsacfg;
-}
-
-
 void i_configure_cfg_alsa_free( void )
 {
   amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
-  g_free( alsacfg->alsa_seq_wports );
-  g_free( alsacfg->alsa_mixer_ctl_name );
-  g_free( amidiplug_cfg_backend->alsa );
+  free( alsacfg->alsa_seq_wports );
+  free( alsacfg->alsa_mixer_ctl_name );
+  free( amidiplug_cfg_backend->alsa );
 }
 
 
-void i_configure_cfg_alsa_read( pcfg_t * cfgfile )
+void i_configure_cfg_alsa_read (void)
 {
-  amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
+  static const char * const defaults[] = {
+    "alsa_mixer_card_id", "0",
+    "alsa_mixer_ctl_name", "Synth",
+    "alsa_mixer_ctl_id", "0",
+    NULL};
 
-  if (!cfgfile)
+  aud_config_set_defaults ("amidiplug", defaults);
+
+  amidiplug_cfg_alsa_t * alsacfg = malloc (sizeof (amidiplug_cfg_alsa_t));
+  amidiplug_cfg_backend->alsa = alsacfg;
+
+  alsacfg->alsa_seq_wports = aud_get_string ("amidiplug", "alsa_seq_wports");
+  alsacfg->alsa_mixer_card_id = aud_get_int ("amidiplug", "alsa_mixer_card_id");
+  alsacfg->alsa_mixer_ctl_name = aud_get_string ("amidiplug", "alsa_mixer_ctl_name");
+  alsacfg->alsa_mixer_ctl_id = aud_get_int ("amidiplug", "alsa_mixer_ctl_id");
+
+  if (! alsacfg->alsa_seq_wports[0])
   {
-    /* alsa backend defaults */
-    alsacfg->alsa_seq_wports = i_configure_read_seq_ports_default();
-    alsacfg->alsa_mixer_card_id = 0;
-    alsacfg->alsa_mixer_ctl_name = g_strdup( "Synth" );
-    alsacfg->alsa_mixer_ctl_id = 0;
-  }
-  else
-  {
-    i_pcfg_read_string( cfgfile , "alsa" , "alsa_seq_wports" , &alsacfg->alsa_seq_wports , NULL );
-    if ( alsacfg->alsa_seq_wports == NULL )
-      alsacfg->alsa_seq_wports = i_configure_read_seq_ports_default(); /* pick default values */
-    i_pcfg_read_integer( cfgfile , "alsa" , "alsa_mixer_card_id" , &alsacfg->alsa_mixer_card_id , 0 );
-    i_pcfg_read_string( cfgfile , "alsa" , "alsa_mixer_ctl_name" , &alsacfg->alsa_mixer_ctl_name , "Synth" );
-    i_pcfg_read_integer( cfgfile , "alsa" , "alsa_mixer_ctl_id" , &alsacfg->alsa_mixer_ctl_id , 0 );
+    free (alsacfg->alsa_seq_wports);
+    alsacfg->alsa_seq_wports = i_configure_read_seq_ports_default ();
   }
 }
 
 
-void i_configure_cfg_alsa_save( pcfg_t * cfgfile )
+void i_configure_cfg_alsa_save (void)
 {
   amidiplug_cfg_alsa_t * alsacfg = amidiplug_cfg_backend->alsa;
-
-  i_pcfg_write_string( cfgfile , "alsa" , "alsa_seq_wports" , alsacfg->alsa_seq_wports );
-  i_pcfg_write_integer( cfgfile , "alsa" , "alsa_mixer_card_id" , alsacfg->alsa_mixer_card_id );
-  i_pcfg_write_string( cfgfile , "alsa" , "alsa_mixer_ctl_name" , alsacfg->alsa_mixer_ctl_name );
-  i_pcfg_write_integer( cfgfile , "alsa" , "alsa_mixer_ctl_id" , alsacfg->alsa_mixer_ctl_id );
+  aud_set_string ("amidiplug", "alsa_seq_wports", alsacfg->alsa_seq_wports);
+  aud_set_int ("amidiplug", "alsa_mixer_card_id", alsacfg->alsa_mixer_card_id);
+  aud_set_string ("amidiplug", "alsa_mixer_ctl_name", alsacfg->alsa_mixer_ctl_name);
+  aud_set_int ("amidiplug", "alsa_mixer_ctl_id", alsacfg->alsa_mixer_ctl_id);
 }
 
 #endif /* AMIDIPLUG_ALSA */

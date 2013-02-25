@@ -21,20 +21,15 @@
 #ifndef _I_CONFIGURE_ALSA_H
 #define _I_CONFIGURE_ALSA_H 1
 
-#include "config.h"
+#include <gtk/gtk.h>
 
 #ifdef AMIDIPLUG_ALSA
 
-#include "i_configure_private.h"
-
-extern amidiplug_cfg_backend_t * amidiplug_cfg_backend;
-
-void i_configure_gui_tab_alsa( GtkWidget * , gpointer , gpointer );
-void i_configure_gui_tablabel_alsa( GtkWidget * , gpointer , gpointer );
-void i_configure_cfg_alsa_alloc( void );
-void i_configure_cfg_alsa_free( void );
-void i_configure_cfg_alsa_read( pcfg_t * );
-void i_configure_cfg_alsa_save( pcfg_t * );
+void i_configure_gui_tab_alsa( GtkWidget * , void * , void * );
+void i_configure_gui_tablabel_alsa( GtkWidget * , void * , void * );
+void i_configure_cfg_alsa_free (void);
+void i_configure_cfg_alsa_read (void);
+void i_configure_cfg_alsa_save (void);
 
 #endif /* AMIDIPLUG_ALSA */
 

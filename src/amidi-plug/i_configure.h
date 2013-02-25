@@ -21,27 +21,56 @@
 #ifndef _I_CONFIGURE_H
 #define _I_CONFIGURE_H 1
 
-#include "i_common.h"
-
-
 typedef struct
 {
-  gchar *	ap_seq_backend;
-  gint		ap_opts_transpose_value;
-  gint		ap_opts_drumshift_value;
-  gint		ap_opts_length_precalc;
-  gint		ap_opts_comments_extract;
-  gint		ap_opts_lyrics_extract;
+  char * ap_seq_backend;
+  int ap_opts_transpose_value;
+  int ap_opts_drumshift_value;
+  int ap_opts_length_precalc;
+  int ap_opts_comments_extract;
+  int ap_opts_lyrics_extract;
 }
 amidiplug_cfg_ap_t;
 
+typedef struct
+{
+  char * alsa_seq_wports;
+  int alsa_mixer_card_id;
+  char * alsa_mixer_ctl_name;
+  int alsa_mixer_ctl_id;
+}
+amidiplug_cfg_alsa_t;
 
-extern amidiplug_cfg_ap_t amidiplug_cfg_ap;
+typedef struct
+{
+  char * fsyn_soundfont_file;
+  int fsyn_soundfont_load;
+  int fsyn_synth_samplerate;
+  int fsyn_synth_gain;
+  int fsyn_synth_polyphony;
+  int fsyn_synth_reverb;
+  int fsyn_synth_chorus;
+}
+amidiplug_cfg_fsyn_t;
 
+struct amidiplug_cfg_backend_s
+{
+  amidiplug_cfg_alsa_t * alsa;
+  amidiplug_cfg_fsyn_t * fsyn;
+};
 
-void i_configure_gui( void );
-void i_configure_cfg_ap_read( void );
-void i_configure_cfg_ap_save( void );
+typedef struct amidiplug_cfg_backend_s amidiplug_cfg_backend_t;
 
+extern amidiplug_cfg_ap_t * amidiplug_cfg_ap;
+extern amidiplug_cfg_backend_t * amidiplug_cfg_backend;
+
+void i_configure_gui (void);
+void i_configure_cfg_ap_read (void);
+void i_configure_cfg_ap_save (void);
+void i_configure_cfg_ap_free (void);
+void i_configure_cfg_backend_alloc (void);
+void i_configure_cfg_backend_read (void);
+void i_configure_cfg_backend_save (void);
+void i_configure_cfg_backend_free (void);
 
 #endif /* !_I_CONFIGURE_H */

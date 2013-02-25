@@ -18,12 +18,18 @@
 *
 */
 
-#include <gtk/gtk.h>
-
-
+#include "config.h"
 #include "i_configure-ap.h"
-#include "amidi-plug-icon.xpm"
 
+#include <stdlib.h>
+#include <string.h>
+#include <gtk/gtk.h>
+#include <audacious/i18n.h>
+
+#include "i_backend.h"
+#include "i_configure.h"
+
+#include "amidi-plug-icon.xpm"
 
 enum
 {
@@ -36,7 +42,7 @@ enum
 };
 
 
-void i_configure_ev_backendlv_info( gpointer backend_lv )
+void i_configure_ev_backendlv_info( void * backend_lv )
 {
   GtkTreeModel * store;
   GtkTreeIter iter;
@@ -49,7 +55,7 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
     GtkWidget *filename_label;
     GtkWidget *description_label;
     GtkWidget *parent_window = gtk_widget_get_toplevel( backend_lv );
-    gchar *longname_title, *longname, *filename, *description;
+    char *longname_title, *longname, *filename, *description;
     gtk_tree_model_get( GTK_TREE_MODEL(store) , &iter ,
                         LISTBACKEND_LONGNAME_COLUMN , &longname ,
                         LISTBACKEND_DESC_COLUMN , &description ,
@@ -63,18 +69,18 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
     longname_title = g_markup_printf_escaped( "<span size=\"larger\" weight=\"bold\" >%s</span>" , longname );
     title_label = gtk_label_new( "" );
     gtk_label_set_markup( GTK_LABEL(title_label) , longname_title );
-    g_free( longname_title ); g_free( longname );
+    free( longname_title ); free( longname );
     gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
      bidialog), title_label, FALSE, FALSE, 0);
 
     filename_label = gtk_label_new (filename);
-    g_free( filename );
+    free( filename );
     gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
      bidialog), filename_label, FALSE, FALSE, 0);
 
     description_label = gtk_label_new( description );
     gtk_label_set_line_wrap( GTK_LABEL(description_label) , TRUE );
-    g_free( description );
+    free( description );
     gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
      bidialog), description_label, FALSE, FALSE, 0);
 
@@ -86,7 +92,7 @@ void i_configure_ev_backendlv_info( gpointer backend_lv )
 }
 
 
-void i_configure_ev_backendlv_commit( gpointer backend_lv )
+void i_configure_ev_backendlv_commit( void * backend_lv )
 {
   GtkTreeModel * store;
   GtkTreeIter iter;
@@ -94,30 +100,30 @@ void i_configure_ev_backendlv_commit( gpointer backend_lv )
   /* get the selected item */
   if ( gtk_tree_selection_get_selected( sel , &store , &iter ) )
   {
-    g_free( amidiplug_cfg_ap.ap_seq_backend ); /* free previous */
-    /* update amidiplug_cfg_ap.ap_seq_backend */
+    free( amidiplug_cfg_ap->ap_seq_backend ); /* free previous */
+    /* update amidiplug_cfg_ap->ap_seq_backend */
     gtk_tree_model_get( GTK_TREE_MODEL(store) , &iter ,
-                        LISTBACKEND_NAME_COLUMN , &amidiplug_cfg_ap.ap_seq_backend , -1 );
+                        LISTBACKEND_NAME_COLUMN , &amidiplug_cfg_ap->ap_seq_backend , -1 );
   }
   return;
 }
 
 
-void i_configure_ev_settplay_commit( gpointer settplay_vbox )
+void i_configure_ev_settplay_commit( void * settplay_vbox )
 {
   GtkWidget *settplay_transpose_spinbt = g_object_get_data( G_OBJECT(settplay_vbox) ,
                                                             "ap_opts_transpose_value" );
   GtkWidget *settplay_drumshift_spinbt = g_object_get_data( G_OBJECT(settplay_vbox) ,
                                                             "ap_opts_drumshift_value" );
-  amidiplug_cfg_ap.ap_opts_transpose_value = gtk_spin_button_get_value_as_int(
+  amidiplug_cfg_ap->ap_opts_transpose_value = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(settplay_transpose_spinbt) );
-  amidiplug_cfg_ap.ap_opts_drumshift_value = gtk_spin_button_get_value_as_int(
+  amidiplug_cfg_ap->ap_opts_drumshift_value = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(settplay_drumshift_spinbt) );
   return;
 }
 
 
-void i_configure_ev_settadva_commit( gpointer settadva_vbox )
+void i_configure_ev_settadva_commit( void * settadva_vbox )
 {
   GtkWidget *settadva_precalc_checkbt = g_object_get_data( G_OBJECT(settadva_vbox) ,
                                                            "ap_opts_length_precalc" );
@@ -126,25 +132,25 @@ void i_configure_ev_settadva_commit( gpointer settadva_vbox )
   GtkWidget *settadva_extractcomm_checkbt = g_object_get_data( G_OBJECT(settadva_vbox) ,
                                                                "ap_opts_comments_extract" );
   if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settadva_precalc_checkbt) ) )
-    amidiplug_cfg_ap.ap_opts_length_precalc = 1;
+    amidiplug_cfg_ap->ap_opts_length_precalc = 1;
   else
-    amidiplug_cfg_ap.ap_opts_length_precalc = 0;
+    amidiplug_cfg_ap->ap_opts_length_precalc = 0;
   if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settadva_extractlyr_checkbt) ) )
-    amidiplug_cfg_ap.ap_opts_lyrics_extract = 1;
+    amidiplug_cfg_ap->ap_opts_lyrics_extract = 1;
   else
-    amidiplug_cfg_ap.ap_opts_lyrics_extract = 0;
+    amidiplug_cfg_ap->ap_opts_lyrics_extract = 0;
   if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(settadva_extractcomm_checkbt) ) )
-    amidiplug_cfg_ap.ap_opts_comments_extract = 1;
+    amidiplug_cfg_ap->ap_opts_comments_extract = 1;
   else
-    amidiplug_cfg_ap.ap_opts_comments_extract = 0;
+    amidiplug_cfg_ap->ap_opts_comments_extract = 0;
   return;
 }
 
 
-gint i_configure_backendlist_sortf( GtkTreeModel * model , GtkTreeIter * a ,
-                                    GtkTreeIter * b , gpointer data )
+int i_configure_backendlist_sortf( GtkTreeModel * model , GtkTreeIter * a ,
+                                    GtkTreeIter * b , void * data )
 {
-  gint v_a = 0, v_b = 0;
+  int v_a = 0, v_b = 0;
   gtk_tree_model_get( model , a , LISTBACKEND_PPOS_COLUMN , &v_a , -1 );
   gtk_tree_model_get( model , b , LISTBACKEND_PPOS_COLUMN , &v_b , -1 );
   return (v_a - v_b);
@@ -152,8 +158,8 @@ gint i_configure_backendlist_sortf( GtkTreeModel * model , GtkTreeIter * a ,
 
 
 void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
-                               gpointer backend_list_p ,
-                               gpointer commit_button )
+                               void * backend_list_p ,
+                               void * commit_button )
 {
   GtkWidget *settings_vbox; /* this vbox will contain all settings vbox (playback, advanced) */
   GtkWidget *settplay_frame, *settplay_vbox;
@@ -182,7 +188,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
                                         GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID ,
                                         GTK_SORT_ASCENDING );
 
-  gboolean backend_lv_iter_selected_valid = FALSE;
+  bool_t backend_lv_iter_selected_valid = FALSE;
 
   while ( backend_list != NULL )
   {
@@ -195,7 +201,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
                          LISTBACKEND_FILENAME_COLUMN , mn->filename ,
                          LISTBACKEND_PPOS_COLUMN , mn->ppos , -1 );
 
-    if ( !strcmp( mn->name , amidiplug_cfg_ap.ap_seq_backend ) )
+    if ( !strcmp( mn->name , amidiplug_cfg_ap->ap_seq_backend ) )
     {
       backend_lv_iter_selected = iter;
       backend_lv_iter_selected_valid = TRUE;
@@ -252,7 +258,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   settplay_transpose_label1 = gtk_label_new( _("Transpose: ") );
   settplay_transpose_spinbt = gtk_spin_button_new_with_range( -20 , 20 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(settplay_transpose_spinbt) ,
-                             amidiplug_cfg_ap.ap_opts_transpose_value );
+                             amidiplug_cfg_ap->ap_opts_transpose_value );
   gtk_box_pack_start( GTK_BOX(settplay_transpose_hbox) , settplay_transpose_label1 , FALSE , FALSE , 0 );
   gtk_box_pack_start( GTK_BOX(settplay_transpose_hbox) , settplay_transpose_spinbt , FALSE , FALSE , 2 );
   gtk_box_pack_start( GTK_BOX(settplay_transpose_and_drumshift_hbox) ,
@@ -261,7 +267,7 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   settplay_drumshift_label1 = gtk_label_new( _("Drum shift: ") );
   settplay_drumshift_spinbt = gtk_spin_button_new_with_range( 0 , 127 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(settplay_drumshift_spinbt) ,
-                             amidiplug_cfg_ap.ap_opts_drumshift_value );
+                             amidiplug_cfg_ap->ap_opts_drumshift_value );
   gtk_box_pack_start( GTK_BOX(settplay_drumshift_hbox) , settplay_drumshift_label1 , FALSE , FALSE , 0 );
   gtk_box_pack_start( GTK_BOX(settplay_drumshift_hbox) , settplay_drumshift_spinbt , FALSE , FALSE , 2 );
   gtk_box_pack_start( GTK_BOX(settplay_transpose_and_drumshift_hbox) ,
@@ -281,17 +287,17 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
   gtk_container_set_border_width( GTK_CONTAINER(settadva_vbox), 4 );
   settadva_precalc_checkbt = gtk_check_button_new_with_label(
                                _("pre-calculate length of MIDI files in playlist") );
-  if ( amidiplug_cfg_ap.ap_opts_length_precalc )
+  if ( amidiplug_cfg_ap->ap_opts_length_precalc )
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settadva_precalc_checkbt) , TRUE );
   gtk_box_pack_start( GTK_BOX(settadva_vbox) , settadva_precalc_checkbt , FALSE , FALSE , 2 );
   settadva_extractcomm_checkbt = gtk_check_button_new_with_label(
                                    _("extract comments from MIDI file (if available)") );
-  if ( amidiplug_cfg_ap.ap_opts_comments_extract )
+  if ( amidiplug_cfg_ap->ap_opts_comments_extract )
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settadva_extractcomm_checkbt) , TRUE );
   gtk_box_pack_start( GTK_BOX(settadva_vbox) , settadva_extractcomm_checkbt , FALSE , FALSE , 2 );
   settadva_extractlyr_checkbt = gtk_check_button_new_with_label(
                                   _("extract lyrics from MIDI file (if available)") );
-  if ( amidiplug_cfg_ap.ap_opts_lyrics_extract )
+  if ( amidiplug_cfg_ap->ap_opts_lyrics_extract )
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(settadva_extractlyr_checkbt) , TRUE );
   gtk_box_pack_start( GTK_BOX(settadva_vbox) , settadva_extractlyr_checkbt , FALSE , FALSE , 2 );
   gtk_container_add( GTK_CONTAINER(settadva_frame) , settadva_vbox );
@@ -311,13 +317,13 @@ void i_configure_gui_tab_ap( GtkWidget * ap_page_alignment ,
 
 
 void i_configure_gui_tablabel_ap( GtkWidget * ap_page_alignment ,
-                                  gpointer backend_list_p ,
-                                  gpointer commit_button )
+                                  void * backend_list_p ,
+                                  void * commit_button )
 {
   GtkWidget *pagelabel_vbox, *pagelabel_image, *pagelabel_label;
   GdkPixbuf *pagelabel_image_pix;
   pagelabel_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1 );
-  pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const gchar **)amidi_plug_icon_xpm );
+  pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data( (const char **)amidi_plug_icon_xpm );
   pagelabel_image = gtk_image_new_from_pixbuf( pagelabel_image_pix ); g_object_unref( pagelabel_image_pix );
   pagelabel_label = gtk_label_new( "" );
   gtk_label_set_markup( GTK_LABEL(pagelabel_label) , _("<span size=\"smaller\">AMIDI\nPlug</span>") );

@@ -21,9 +21,10 @@
 #ifndef _I_MIDI_H
 #define _I_MIDI_H 1
 
-#include "i_common.h"
+#include <stdint.h>
+#include <libaudcore/vfs.h>
+
 #include "i_midievent.h"
-#include "i_vfslayer.h"
 
 #define MAKE_ID(c1, c2, c3, c4) ((c1) | ((c2) << 8) | ((c3) << 16) | ((c4) << 24))
 
@@ -228,7 +229,7 @@ enum snd_seq_event_type {
 typedef struct
 {
   midievent_t * first_event;	/* list of all events in this track */
-  gint end_tick;			/* length of this track */
+  int end_tick;			/* length of this track */
   midievent_t * current_event;	/* used while loading and playing */
 }
 midifile_track_t;
@@ -236,46 +237,44 @@ midifile_track_t;
 typedef struct
 {
   VFSFile * file_pointer;
-  gchar * file_name;
-  gint file_offset;
+  char * file_name;
+  int file_offset;
 
-  gint num_tracks;
+  int num_tracks;
   midifile_track_t *tracks;
 
-  gushort format;
-  guint max_tick;
-  gint smpte_timing;
+  unsigned short format;
+  unsigned max_tick;
+  int smpte_timing;
 
-  gint time_division;
-  gint ppq;
-  gint current_tempo;
+  int time_division;
+  int ppq;
+  int current_tempo;
 
-  gint playing_tick;
-  gint avg_microsec_per_tick;
-  gint64 length;
+  int playing_tick;
+  int avg_microsec_per_tick;
+  int64_t length;
 
-  gint skip_offset;
+  int skip_offset;
 }
 midifile_t;
 
-extern midifile_t midifile;
-
-midievent_t * i_midi_file_new_event( midifile_track_t * , gint );
-void i_midi_file_skip_bytes( midifile_t * , gint );
-gint i_midi_file_read_byte( midifile_t * );
-gint i_midi_file_read_32_le( midifile_t * );
-gint i_midi_file_read_id( midifile_t * );
-gint i_midi_file_read_int( midifile_t * , gint );
-gint i_midi_file_read_var( midifile_t * );
-gint i_midi_file_read_track( midifile_t * , midifile_track_t * , gint , gint );
-gint i_midi_file_parse_riff( midifile_t * );
-gint i_midi_file_parse_smf( midifile_t * , gint );
+midievent_t * i_midi_file_new_event( midifile_track_t * , int );
+void i_midi_file_skip_bytes( midifile_t * , int );
+int i_midi_file_read_byte( midifile_t * );
+int i_midi_file_read_32_le( midifile_t * );
+int i_midi_file_read_id( midifile_t * );
+int i_midi_file_read_int( midifile_t * , int );
+int i_midi_file_read_var( midifile_t * );
+int i_midi_file_read_track( midifile_t * , midifile_track_t * , int , int );
+int i_midi_file_parse_riff( midifile_t * );
+int i_midi_file_parse_smf( midifile_t * , int );
 void i_midi_init( midifile_t * );
 void i_midi_free( midifile_t * );
-gint i_midi_setget_tempo( midifile_t * );
+int i_midi_setget_tempo( midifile_t * );
 void i_midi_setget_length( midifile_t * );
-void i_midi_get_bpm( midifile_t * , gint * , gint * );
+void i_midi_get_bpm( midifile_t * , int * , int * );
 /* helper function */
-gint i_midi_parse_from_filename( const gchar * , midifile_t * );
+int i_midi_parse_from_filename( const char * , midifile_t * );
 
 #endif /* !_I_MIDI_H */

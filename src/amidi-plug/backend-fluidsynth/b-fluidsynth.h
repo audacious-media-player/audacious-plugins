@@ -21,11 +21,10 @@
 #ifndef _B_FLUIDSYNTH_H
 #define _B_FLUIDSYNTH_H 1
 
+#include <glib.h>
 #include <fluidsynth.h>
-#include <math.h>
+
 #include "../i_common.h"
-#include "../i_configure_file.h"
-#include "../pcfg/i_pcfg.h"
 #include "../i_midievent.h"
 
 
@@ -36,18 +35,16 @@ typedef struct
 
   GArray *soundfont_ids;
 
-  gint ppq;
+  int ppq;
   gdouble cur_microsec_per_tick;
-  guint tick_offset;
+  unsigned tick_offset;
 
-  guint sample_rate;
+  unsigned sample_rate;
 }
 sequencer_client_t;
 
 
-void i_sleep( guint );
+void i_sleep( unsigned );
 void i_soundfont_load( void );
-void i_cfg_read( i_cfg_get_file_cb );
-void i_cfg_free( void );
 
 #endif /* !_B_FLUIDSYNTH_H */

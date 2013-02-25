@@ -18,9 +18,14 @@
 *
 */
 
-
-#include <gtk/gtk.h>
+#include "config.h"
 #include "i_fileinfo.h"
+
+#include <stdlib.h>
+#include <string.h>
+#include <gtk/gtk.h>
+#include <audacious/i18n.h>
+
 #include "i_configure.h"
 /* this is needed to retrieve information */
 #include "i_midi.h"
@@ -28,21 +33,21 @@
 #include "amidi-plug.midiicon.xpm"
 
 
-void i_fileinfo_ev_destroy( GtkWidget * win , gpointer mf )
+void i_fileinfo_ev_destroy( GtkWidget * win , void * mf )
 {
   i_midi_free( (midifile_t *)mf );
-  g_free( mf );
+  free( mf );
 }
 
 
-void i_fileinfo_ev_close( GtkWidget * button , gpointer fileinfowin )
+void i_fileinfo_ev_close( GtkWidget * button , void * fileinfowin )
 {
   gtk_widget_destroy( GTK_WIDGET(fileinfowin) );
 }
 
 
-void i_fileinfo_grid_add_entry( gchar * field_text , gchar * value_text ,
-                                GtkWidget * grid , guint line , PangoAttrList * attrlist )
+void i_fileinfo_grid_add_entry( char * field_text , char * value_text ,
+                                GtkWidget * grid , unsigned line , PangoAttrList * attrlist )
 {
   GtkWidget *field, *value;
   field = gtk_label_new( field_text );
@@ -61,7 +66,7 @@ void i_fileinfo_grid_add_entry( gchar * field_text , gchar * value_text ,
 /* COMMENT: this will also reset current position in each track! */
 void i_fileinfo_text_fill( midifile_t * mf , GtkTextBuffer * text_tb, GtkTextBuffer * lyrics_tb )
 {
-  gint l = 0;
+  int l = 0;
   /* initialize current position in each track */
   for (l = 0; l < mf->num_tracks; ++l)
     mf->tracks[l].current_event = mf->tracks[l].first_event;
@@ -70,7 +75,7 @@ void i_fileinfo_text_fill( midifile_t * mf , GtkTextBuffer * text_tb, GtkTextBuf
   {
     midievent_t * event = NULL;
     midifile_track_t * event_track = NULL;
-    gint i, min_tick = mf->max_tick + 1;
+    int i, min_tick = mf->max_tick + 1;
 
     /* search next event */
     for ( i = 0 ; i < mf->num_tracks ; ++i )
@@ -104,7 +109,7 @@ void i_fileinfo_text_fill( midifile_t * mf , GtkTextBuffer * text_tb, GtkTextBuf
 }
 
 
-void i_fileinfo_gui( const gchar * filename_uri )
+void i_fileinfo_gui( const char * filename_uri )
 {
   static GtkWidget *fileinfowin = NULL;
   GtkWidget *fileinfowin_vbox, *fileinfowin_columns_hbox;
@@ -119,14 +124,14 @@ void i_fileinfo_gui( const gchar * filename_uri )
   PangoAttrList *pangoattrlist;
   PangoAttribute *pangoattr;
   GString *value_gstring;
-  gchar *title , *filename, *filename_utf8;
-  gint bpm = 0, wavg_bpm = 0;
+  char *title , *filename, *filename_utf8;
+  int bpm = 0, wavg_bpm = 0;
   midifile_t *mf;
 
   if ( fileinfowin )
     return;
 
-  mf = g_malloc(sizeof(midifile_t));
+  mf = malloc(sizeof(midifile_t));
 
   /****************** midifile parser ******************/
   if ( !i_midi_parse_from_filename( filename_uri , mf ) )
@@ -158,7 +163,7 @@ void i_fileinfo_gui( const gchar * filename_uri )
   title_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5 );
   gtk_box_pack_start( GTK_BOX(fileinfowin_vbox) , title_hbox , FALSE , FALSE , 0 );
 
-  title_icon_pixbuf = gdk_pixbuf_new_from_xpm_data( (const gchar **)amidiplug_xpm_midiicon );
+  title_icon_pixbuf = gdk_pixbuf_new_from_xpm_data( (const char **)amidiplug_xpm_midiicon );
   title_icon_image = gtk_image_new_from_pixbuf( title_icon_pixbuf );
   g_object_unref( title_icon_pixbuf );
   gtk_misc_set_alignment( GTK_MISC(title_icon_image) , 0 , 0 );
@@ -181,8 +186,8 @@ void i_fileinfo_gui( const gchar * filename_uri )
   midiinfoboxes_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2 );
   /* pick the entire space if both comments and lyrics boxes are not displayed,
      pick only required space if at least one of them is displayed */
-  if (( amidiplug_cfg_ap.ap_opts_comments_extract == 0 ) &&
-      ( amidiplug_cfg_ap.ap_opts_lyrics_extract == 0 ))
+  if (( amidiplug_cfg_ap->ap_opts_comments_extract == 0 ) &&
+      ( amidiplug_cfg_ap->ap_opts_lyrics_extract == 0 ))
     gtk_box_pack_start( GTK_BOX(fileinfowin_columns_hbox) , midiinfoboxes_vbox , TRUE , TRUE , 0 );
   else
     gtk_box_pack_start( GTK_BOX(fileinfowin_columns_hbox) , midiinfoboxes_vbox , FALSE , FALSE , 0 );
@@ -201,28 +206,28 @@ void i_fileinfo_gui( const gchar * filename_uri )
   value_gstring = g_string_new( "" );
 
   /* midi format */
-  G_STRING_PRINTF( value_gstring , "type %i" , mf->format );
+  g_string_printf( value_gstring , "type %i" , mf->format );
   i_fileinfo_grid_add_entry( _("Format:") , value_gstring->str , info_grid , 0 , pangoattrlist );
   /* midi length */
-  G_STRING_PRINTF( value_gstring , "%i" , (gint)(mf->length / 1000) );
+  g_string_printf( value_gstring , "%i" , (int)(mf->length / 1000) );
   i_fileinfo_grid_add_entry( _("Length (msec):") , value_gstring->str , info_grid , 1 , pangoattrlist );
   /* midi num of tracks */
-  G_STRING_PRINTF( value_gstring , "%i" , mf->num_tracks );
+  g_string_printf( value_gstring , "%i" , mf->num_tracks );
   i_fileinfo_grid_add_entry( _("No. of Tracks:") , value_gstring->str , info_grid , 2 , pangoattrlist );
   /* midi bpm */
   if ( bpm > 0 )
-    G_STRING_PRINTF( value_gstring , "%i" , bpm ); /* fixed bpm */
+    g_string_printf( value_gstring , "%i" , bpm ); /* fixed bpm */
   else
-    G_STRING_PRINTF( value_gstring , _("variable") ); /* variable bpm */
+    g_string_printf( value_gstring , _("variable") ); /* variable bpm */
   i_fileinfo_grid_add_entry( _("BPM:") , value_gstring->str , info_grid , 3 , pangoattrlist );
   /* midi weighted average bpm */
   if ( bpm > 0 )
-    G_STRING_PRINTF( value_gstring , "/" ); /* fixed bpm, don't care about wavg_bpm */
+    g_string_printf( value_gstring , "/" ); /* fixed bpm, don't care about wavg_bpm */
   else
-    G_STRING_PRINTF( value_gstring , "%i" , wavg_bpm ); /* variable bpm, display wavg_bpm */
+    g_string_printf( value_gstring , "%i" , wavg_bpm ); /* variable bpm, display wavg_bpm */
   i_fileinfo_grid_add_entry( _("BPM (wavg):") , value_gstring->str , info_grid , 4 , pangoattrlist );
   /* midi time division */
-  G_STRING_PRINTF( value_gstring , "%i" , mf->time_division );
+  g_string_printf( value_gstring , "%i" , mf->time_division );
   i_fileinfo_grid_add_entry( _("Time Div:") , value_gstring->str , info_grid , 5 , pangoattrlist );
 
   g_string_free( value_gstring , TRUE );
@@ -274,11 +279,11 @@ void i_fileinfo_gui( const gchar * filename_uri )
   lyrics_tb = gtk_text_view_get_buffer( GTK_TEXT_VIEW(lyrics_tv) );
 
   /* call the buffer fill routine if at least one between comments and lyrics is enabled */
-  if (( amidiplug_cfg_ap.ap_opts_comments_extract > 0 ) ||
-      ( amidiplug_cfg_ap.ap_opts_lyrics_extract > 0 ))
+  if (( amidiplug_cfg_ap->ap_opts_comments_extract > 0 ) ||
+      ( amidiplug_cfg_ap->ap_opts_lyrics_extract > 0 ))
     i_fileinfo_text_fill( mf , text_tb , lyrics_tb );
 
-  if (( amidiplug_cfg_ap.ap_opts_comments_extract > 0 ) &&
+  if (( amidiplug_cfg_ap->ap_opts_comments_extract > 0 ) &&
       ( gtk_text_buffer_get_char_count( text_tb ) == 0 ))
   {
     GtkTextIter start, end;
@@ -291,7 +296,7 @@ void i_fileinfo_gui( const gchar * filename_uri )
     gtk_text_buffer_apply_tag( text_tb , tag , &start , &end );
   }
 
-  if (( amidiplug_cfg_ap.ap_opts_lyrics_extract > 0 ) &&
+  if (( amidiplug_cfg_ap->ap_opts_lyrics_extract > 0 ) &&
       ( gtk_text_buffer_get_char_count( lyrics_tb ) == 0 ))
   {
     GtkTextIter start, end;
@@ -305,18 +310,18 @@ void i_fileinfo_gui( const gchar * filename_uri )
   }
 
   /* hide boxes for disabled options (comments and/or lyrics) */
-  if (( amidiplug_cfg_ap.ap_opts_comments_extract == 0 ) &&
-      ( amidiplug_cfg_ap.ap_opts_lyrics_extract == 0 ))
+  if (( amidiplug_cfg_ap->ap_opts_comments_extract == 0 ) &&
+      ( amidiplug_cfg_ap->ap_opts_lyrics_extract == 0 ))
   {
     gtk_widget_set_no_show_all( miditextboxes_vbox , TRUE );
     gtk_widget_hide( miditextboxes_vbox );
   }
-  else if ( amidiplug_cfg_ap.ap_opts_comments_extract == 0 )
+  else if ( amidiplug_cfg_ap->ap_opts_comments_extract == 0 )
   {
     gtk_widget_set_no_show_all( text_frame , TRUE );
     gtk_widget_hide( text_frame );
   }
-  else if ( amidiplug_cfg_ap.ap_opts_lyrics_extract == 0 )
+  else if ( amidiplug_cfg_ap->ap_opts_lyrics_extract == 0 )
   {
     gtk_widget_set_no_show_all( lyrics_frame , TRUE );
     gtk_widget_hide( lyrics_frame );
@@ -340,24 +345,24 @@ void i_fileinfo_gui( const gchar * filename_uri )
   if ( !filename_utf8 )
   {
     /* utf8 fallback */
-    gchar *chr , *convert_str = g_strdup( filename );
+    char *chr , *convert_str = g_strdup( filename );
     for ( chr = convert_str ; *chr ; chr++ )
     {
       if ( *chr & 0x80 )
         *chr = '?';
     }
     filename_utf8 = g_strconcat( convert_str , _("  (invalid UTF-8)") , NULL );
-    g_free(convert_str);
+    free(convert_str);
   }
 
   title = g_path_get_basename (filename_utf8);
   gtk_window_set_title( GTK_WINDOW(fileinfowin) , title);
-  g_free(title);
+  free(title);
   /* set the text for the filename header too */
   gtk_entry_set_text( GTK_ENTRY(title_name_v_entry) , filename_utf8 );
   gtk_editable_set_position( GTK_EDITABLE(title_name_v_entry) , -1 );
-  g_free(filename_utf8);
-  g_free(filename);
+  free(filename_utf8);
+  free(filename);
 
   gtk_widget_grab_focus( GTK_WIDGET(footer_bclose) );
   gtk_widget_show_all( fileinfowin );

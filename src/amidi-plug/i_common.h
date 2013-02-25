@@ -21,45 +21,25 @@
 #ifndef _I_COMMON_H
 #define _I_COMMON_H 1
 
-#include "config.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <strings.h>
-#include <glib.h>
-
-#include <audacious/i18n.h>
 
 /* #define DEBUG */
 
-#define textdomain(Domain)
-#define bindtextdomain(Package, Directory)
-
-#define WARNANDBREAK(...) { g_warning(__VA_ARGS__); break; }
-#define WARNANDBREAKANDPLAYERR(...) { amidiplug_playing_status = AMIDIPLUG_ERR; g_warning(__VA_ARGS__); break; }
+#define WARNANDBREAK(...) { fprintf (stderr, __VA_ARGS__); break; }
+#define WARNANDBREAKANDPLAYERR(...) { amidiplug_playing_status = AMIDIPLUG_ERR; WARNANDBREAK(__VA_ARGS__) }
 
 #ifdef DEBUG
-#define DEBUGMSG(...) { fprintf(stderr, "amidi-plug(%s:%s:%d): ", __FILE__, __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
+#define DEBUGMSG(...) fprintf(stderr, __VA_ARGS__)
 #else
 #define DEBUGMSG(...)
 #endif /* DEBUG */
 
-
-#define AMIDIPLUG_VERSION "0.8b2"
-#define PLAYER_NAME "Audacious"
-#define PLAYER_LOCALRCDIR ".audacious"
-#define G_PATH_GET_BASENAME(x) g_path_get_basename(x)
-#define G_STRING_PRINTF(...) g_string_printf(__VA_ARGS__)
-#define G_USLEEP(x) g_usleep(x)
-#define G_VFPRINTF(x,y,z) g_vfprintf(x,y,z)
-
-
 /* multi-purpose data bucket */
 typedef struct
 {
-  gint bint[2];
-  gchar * bcharp[2];
-  gpointer bpointer[2];
+  int bint[2];
+  char * bcharp[2];
+  void * bpointer[2];
 }
 data_bucket_t;
 

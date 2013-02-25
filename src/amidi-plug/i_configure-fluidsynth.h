@@ -21,20 +21,15 @@
 #ifndef _I_CONFIGURE_FLUIDSYNTH_H
 #define _I_CONFIGURE_FLUIDSYNTH_H 1
 
-#include "config.h"
+#include <gtk/gtk.h>
 
 #ifdef AMIDIPLUG_FLUIDSYNTH
 
-#include "i_configure_private.h"
-
-extern amidiplug_cfg_backend_t * amidiplug_cfg_backend;
-
-void i_configure_gui_tab_fsyn( GtkWidget * , gpointer , gpointer );
-void i_configure_gui_tablabel_fsyn( GtkWidget * , gpointer , gpointer );
-void i_configure_cfg_fsyn_alloc( void );
-void i_configure_cfg_fsyn_free( void );
-void i_configure_cfg_fsyn_read( pcfg_t * );
-void i_configure_cfg_fsyn_save( pcfg_t * );
+void i_configure_gui_tab_fsyn( GtkWidget * , void * , void * );
+void i_configure_gui_tablabel_fsyn( GtkWidget * , void * , void * );
+void i_configure_cfg_fsyn_free (void);
+void i_configure_cfg_fsyn_read (void);
+void i_configure_cfg_fsyn_save (void);
 
 #endif /* AMIDIPLUG_FLUIDSYNTH */
 

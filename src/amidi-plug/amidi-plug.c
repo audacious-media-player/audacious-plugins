@@ -18,95 +18,93 @@
 *
 */
 
-#include <pthread.h>
+#include "config.h"
 
-#include <audacious/drct.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <libaudcore/hook.h>
 
-#include "amidi-plug.h"
+#include "i_backend.h"
+#include "i_common.h"
+#include "i_configure.h"
+#include "i_fileinfo.h"
+#include "i_midi.h"
+#include "i_utils.h"
+
+enum {
+  AMIDIPLUG_STOP,
+  AMIDIPLUG_PLAY,
+  AMIDIPLUG_PAUSE,
+  AMIDIPLUG_ERR
+};
 
 static void amidiplug_play_loop (InputPlayback * playback);
 
-static gboolean amidiplug_play (InputPlayback * playback, const gchar *
- filename_uri, VFSFile * file, gint start_time, gint stop_time, gboolean pause);
-static void amidiplug_pause (InputPlayback * playback, gboolean paused);
-static void amidiplug_mseek (InputPlayback * playback, gint time);
-static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
- file);
+static bool_t amidiplug_play (InputPlayback * playback, const char *
+ filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause);
+static void amidiplug_pause (InputPlayback * playback, bool_t paused);
+static void amidiplug_mseek (InputPlayback * playback, int time);
+static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
+static void amidiplug_skipto (int playing_tick);
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("AMIDI-Plug (MIDI Player)"),
-    .domain = PACKAGE,
-    .init = amidiplug_init,
-    .about = amidiplug_aboutbox,
-    .configure = amidiplug_configure,
-    .play = amidiplug_play,
-    .stop = amidiplug_stop,
-    .pause = amidiplug_pause,
-    .mseek = amidiplug_mseek,
-    .get_time = amidiplug_get_time,
-    .get_volume = amidiplug_get_volume,
-    .set_volume = amidiplug_set_volume,
-    .cleanup = amidiplug_cleanup,
-    .probe_for_tuple = amidiplug_get_song_tuple,
-    .file_info_box = amidiplug_file_info_box,
-    .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,
-    .extensions = amidiplug_vfs_extensions,
-)
+static int amidiplug_playing_status = AMIDIPLUG_STOP;
+
+static midifile_t midifile;
+
+static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi",
+ "rmid", NULL};
 
 static pthread_mutex_t control_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t control_cond = PTHREAD_COND_INITIALIZER;
 static pthread_mutex_t audio_control_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static gboolean initted;
-static gint seek_time;
+/* also used in i_configure.c */
+amidiplug_sequencer_backend_t * backend;
+
+static int seek_time;
 
 static pthread_t audio_thread;
-static gboolean audio_stop_flag;
-static gint audio_seek_time;
+static bool_t audio_stop_flag;
+static int audio_seek_time;
 
-static volatile gint current_time = -1;
-
-static gboolean amidiplug_init (void)
-{
-    initted = FALSE;
-    return TRUE;
-}
-
-static void soft_init (void)
-{
-    pthread_mutex_lock (& control_mutex);
-
-    if (! initted)
-    {
-        i_configure_cfg_ap_read ();
-        i_backend_load (amidiplug_cfg_ap.ap_seq_backend);
-
-        initted = TRUE;
-    }
-
-    pthread_mutex_unlock (& control_mutex);
-}
+static volatile int current_time = -1;
 
 static void amidiplug_cleanup (void)
 {
-    if (initted)
-        i_backend_unload ();
+  if (backend)
+    i_backend_unload (backend);
+
+  i_configure_cfg_ap_free ();
+  i_configure_cfg_backend_free ();
 }
 
-static gint amidiplug_is_our_file_from_vfs( const gchar *filename_uri , VFSFile *fp )
+static bool_t amidiplug_init (void)
 {
-  gchar magic_bytes[4];
+  i_configure_cfg_ap_read ();
+  i_configure_cfg_backend_read ();
 
-  soft_init ();
+  backend = i_backend_load (amidiplug_cfg_ap->ap_seq_backend);
+
+  if (! backend)
+  {
+    amidiplug_cleanup ();
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+static int amidiplug_is_our_file_from_vfs( const char *filename_uri , VFSFile *fp )
+{
+  char magic_bytes[4];
 
   if ( fp == NULL )
     return FALSE;
 
-  if ( VFS_FREAD( magic_bytes , 1 , 4 , fp ) != 4 )
+  if ( vfs_fread( magic_bytes , 1 , 4 , fp ) != 4 )
     return FALSE;
 
   if ( !strncmp( magic_bytes , "MThd" , 4 ) )
@@ -119,10 +117,10 @@ static gint amidiplug_is_our_file_from_vfs( const gchar *filename_uri , VFSFile 
   {
     /* skip the four bytes after RIFF,
        then read the next four */
-    if ( VFS_FSEEK( fp , 4 , SEEK_CUR ) != 0 )
+    if ( vfs_fseek( fp , 4 , SEEK_CUR ) != 0 )
       return FALSE;
 
-    if ( VFS_FREAD( magic_bytes , 1 , 4 , fp ) != 4 )
+    if ( vfs_fread( magic_bytes , 1 , 4 , fp ) != 4 )
       return FALSE;
 
     if ( !strncmp( magic_bytes , "RMID" , 4 ) )
@@ -135,26 +133,6 @@ static gint amidiplug_is_our_file_from_vfs( const gchar *filename_uri , VFSFile 
   return FALSE;
 }
 
-static void amidiplug_configure (void)
-{
-    soft_init ();
-    i_configure_gui ();
-}
-
-
-static void amidiplug_aboutbox( void )
-{
-  i_about_gui();
-}
-
-
-static void amidiplug_file_info_box (const gchar * filename)
-{
-    soft_init ();
-    i_fileinfo_gui (filename);
-}
-
-
 static void amidiplug_stop( InputPlayback * playback )
 {
   DEBUGMSG( "STOP request at tick: %i\n" , midifile.playing_tick );
@@ -165,7 +143,7 @@ static void amidiplug_stop( InputPlayback * playback )
   pthread_mutex_unlock (& control_mutex);
 }
 
-static void amidiplug_pause (InputPlayback * playback, gboolean paused)
+static void amidiplug_pause (InputPlayback * playback, bool_t paused)
 {
     pthread_mutex_lock (& control_mutex);
     amidiplug_playing_status = paused ? AMIDIPLUG_PAUSE : AMIDIPLUG_PLAY;
@@ -173,7 +151,7 @@ static void amidiplug_pause (InputPlayback * playback, gboolean paused)
     pthread_mutex_unlock (& control_mutex);
 }
 
-static void amidiplug_mseek (InputPlayback * playback, gint time)
+static void amidiplug_mseek (InputPlayback * playback, int time)
 {
     pthread_mutex_lock (& control_mutex);
     seek_time = time;
@@ -181,41 +159,39 @@ static void amidiplug_mseek (InputPlayback * playback, gint time)
     pthread_mutex_unlock (& control_mutex);
 }
 
-static gint amidiplug_get_time (InputPlayback * playback)
+static int amidiplug_get_time (InputPlayback * playback)
 {
     return current_time;
 }
 
-static gint amidiplug_get_volume( gint * l_p , gint * r_p )
+static int amidiplug_get_volume( int * l_p , int * r_p )
 {
-  if ( backend.autonomous_audio == TRUE )
+  if ( backend->autonomous_audio == TRUE )
   {
-    backend.audio_volume_get( l_p , r_p );
+    backend->audio_volume_get( l_p , r_p );
     return 1;
   }
   return 0;
 }
 
 
-static gint amidiplug_set_volume( gint  l , gint  r )
+static int amidiplug_set_volume( int  l , int  r )
 {
-  if ( backend.autonomous_audio == TRUE )
+  if ( backend->autonomous_audio == TRUE )
   {
-    backend.audio_volume_set( l , r );
+    backend->audio_volume_set( l , r );
     return 1;
   }
   return 0;
 }
 
 
-static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
+static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile *
  file)
 {
   /* song title, get it from the filename */
   Tuple *tuple = tuple_new_from_filename(filename_uri);
   midifile_t mf;
-
-  soft_init ();
 
   if ( i_midi_parse_from_filename( filename_uri , &mf ) )
     tuple_set_int(tuple, FIELD_LENGTH, NULL, mf.length / 1000);
@@ -226,17 +202,15 @@ static Tuple * amidiplug_get_song_tuple (const gchar * filename_uri, VFSFile *
 }
 
 
-static gboolean amidiplug_play (InputPlayback * playback, const gchar *
- filename_uri, VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+static bool_t amidiplug_play (InputPlayback * playback, const char *
+ filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
   g_return_val_if_fail (file != NULL, FALSE);
 
-  gint port_count = 0;
-  gint au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
+  int port_count = 0;
+  int au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
 
-  soft_init ();
-
-  if ( backend.gmodule == NULL )
+  if ( backend->gmodule == NULL )
   {
     g_warning( "No sequencer backend selected\n" );
     /* not usable, cause now amidiplug_play is in a different thread
@@ -249,11 +223,11 @@ static gboolean amidiplug_play (InputPlayback * playback, const gchar *
   }
 
   /* get information about audio from backend, if available */
-  backend.audio_info_get( &au_channels , &au_bitdepth , &au_samplerate );
+  backend->audio_info_get( &au_channels , &au_bitdepth , &au_samplerate );
   DEBUGMSG( "PLAY requested, audio details: channels -> %i , bitdepth -> %i , samplerate -> %i\n" ,
             au_channels , au_bitdepth , au_samplerate );
 
-  if ( backend.autonomous_audio == FALSE )
+  if ( backend->autonomous_audio == FALSE )
   {
     DEBUGMSG( "PLAY requested, opening audio output plugin\n" );
     playback->output->open_audio( FMT_S16_NE , au_samplerate , au_channels );
@@ -264,7 +238,7 @@ static gboolean amidiplug_play (InputPlayback * playback, const gchar *
   i_midi_init( &midifile );
 
   /* get the number of selected ports */
-  port_count = backend.seq_get_port_count();
+  port_count = backend->seq_get_port_count();
   if ( port_count < 1 )
   {
     aud_interface_show_error (_("You have not selected any sequencer ports for "
@@ -305,25 +279,25 @@ static gboolean amidiplug_play (InputPlayback * playback, const gchar *
 
       DEBUGMSG( "PLAY requested, sequencer start\n" );
       /* sequencer start */
-      if ( !backend.seq_start( filename_uri ) )
+      if ( !backend->seq_start( filename_uri ) )
         WARNANDBREAKANDPLAYERR( "%s: problem with seq_start, play aborted\n" , filename_uri );
 
       DEBUGMSG( "PLAY requested, sequencer on\n" );
       /* sequencer on */
-      if ( !backend.seq_on() )
+      if ( !backend->seq_on() )
         WARNANDBREAKANDPLAYERR( "%s: problem with seq_on, play aborted\n" , filename_uri );
 
       DEBUGMSG( "PLAY requested, setting sequencer queue tempo...\n" );
       /* set sequencer queue tempo using ppq and tempo (call only after i_midi_setget_tempo) */
-      if ( !backend.seq_queue_tempo( midifile.current_tempo , midifile.ppq ) )
+      if ( !backend->seq_queue_tempo( midifile.current_tempo , midifile.ppq ) )
       {
-        backend.seq_off(); /* kill the sequencer */
+        backend->seq_off(); /* kill the sequencer */
         WARNANDBREAKANDPLAYERR( "%s: ALSA queue problem, play aborted\n" , filename_uri );
       }
 
       /* fill midifile.length, keeping in count tempo-changes */
       i_midi_setget_length( &midifile );
-      DEBUGMSG( "PLAY requested, song length calculated: %i msec\n" , (gint)(midifile.length / 1000) );
+      DEBUGMSG( "PLAY requested, song length calculated: %i msec\n" , (int)(midifile.length / 1000) );
 
       playback->set_params (playback, au_bitdepth * au_samplerate * au_channels
        / 8, au_samplerate, au_channels);
@@ -355,7 +329,7 @@ static void * audio_loop (void * arg)
 {
     InputPlayback * playback = arg;
     void * buffer = NULL;
-    gint buffer_size = 0;
+    int buffer_size = 0;
 
     while (1)
     {
@@ -375,11 +349,11 @@ static void * audio_loop (void * arg)
 
         pthread_mutex_unlock (& audio_control_mutex);
 
-        if (backend.seq_output (& buffer, & buffer_size))
+        if (backend->seq_output (& buffer, & buffer_size))
             playback->output->write_audio (buffer, buffer_size);
     }
 
-    g_free (buffer);
+    free (buffer);
     return NULL;
 }
 
@@ -390,7 +364,7 @@ static void audio_start (InputPlayback * playback)
     pthread_create (& audio_thread, NULL, audio_loop, (void *) playback);
 }
 
-static void audio_seek (InputPlayback * playback, gint time)
+static void audio_seek (InputPlayback * playback, int time)
 {
     pthread_mutex_lock (& audio_control_mutex);
     audio_seek_time = time;
@@ -398,7 +372,7 @@ static void audio_seek (InputPlayback * playback, gint time)
     pthread_mutex_unlock (& audio_control_mutex);
 }
 
-static void audio_pause (InputPlayback * playback, gboolean pause)
+static void audio_pause (InputPlayback * playback, bool_t pause)
 {
     playback->output->pause (pause);
 }
@@ -412,31 +386,31 @@ static void audio_stop (InputPlayback * playback)
     pthread_join (audio_thread, NULL);
 }
 
-static void do_seek (gint time)
+static void do_seek (int time)
 {
-    backend.seq_event_allnoteoff (midifile.playing_tick);
-    backend.seq_queue_stop ();
+    backend->seq_event_allnoteoff (midifile.playing_tick);
+    backend->seq_queue_stop ();
     amidiplug_skipto (time * (gint64) 1000 / midifile.avg_microsec_per_tick);
 }
 
-static void do_pause (gboolean pause)
+static void do_pause (bool_t pause)
 {
     if (pause)
     {
-        backend.seq_event_allnoteoff (midifile.playing_tick);
-        backend.seq_queue_stop ();
+        backend->seq_event_allnoteoff (midifile.playing_tick);
+        backend->seq_queue_stop ();
     }
     else
     {
         midifile.skip_offset = midifile.playing_tick;
-        backend.seq_queue_start ();
+        backend->seq_queue_start ();
     }
 }
 
 static void amidiplug_play_loop (InputPlayback * playback)
 {
-  gint j = 0;
-  gboolean rewind = TRUE, paused = FALSE, stopped = FALSE;
+  int j = 0;
+  bool_t rewind = TRUE, paused = FALSE, stopped = FALSE;
 
   if ( rewind )
   {
@@ -445,20 +419,20 @@ static void amidiplug_play_loop (InputPlayback * playback)
       midifile.tracks[j].current_event = midifile.tracks[j].first_event;
   }
 
-  if (! backend.autonomous_audio)
+  if (! backend->autonomous_audio)
       audio_start (playback);
 
   /* queue start */
-  backend.seq_queue_start();
+  backend->seq_queue_start();
   /* common settings for all our events */
-  backend.seq_event_init();
+  backend->seq_event_init();
 
   DEBUGMSG( "PLAY thread, start the play loop\n" );
   for (;;)
   {
     midievent_t * event = NULL;
     midifile_track_t * event_track = NULL;
-    gint i, min_tick = midifile.max_tick + 1;
+    int i, min_tick = midifile.max_tick + 1;
 
     pthread_mutex_lock (& control_mutex);
 
@@ -471,7 +445,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
 
     if (seek_time != -1)
     {
-        if (! backend.autonomous_audio)
+        if (! backend->autonomous_audio)
             audio_seek (playback, seek_time);
 
         do_seek (seek_time);
@@ -484,7 +458,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
         {
             do_pause (TRUE);
 
-            if (! backend.autonomous_audio)
+            if (! backend->autonomous_audio)
                 audio_pause (playback, TRUE);
 
             paused = TRUE;
@@ -499,7 +473,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
     {
         do_pause (FALSE);
 
-        if (! backend.autonomous_audio)
+        if (! backend->autonomous_audio)
             audio_pause (playback, FALSE);
 
         paused = FALSE;
@@ -532,31 +506,31 @@ static void amidiplug_play_loop (InputPlayback * playback)
     switch (event->type)
     {
       case SND_SEQ_EVENT_NOTEON:
-        backend.seq_event_noteon( event );
+        backend->seq_event_noteon( event );
         break;
       case SND_SEQ_EVENT_NOTEOFF:
-        backend.seq_event_noteoff( event );
+        backend->seq_event_noteoff( event );
         break;
       case SND_SEQ_EVENT_KEYPRESS:
-        backend.seq_event_keypress( event );
+        backend->seq_event_keypress( event );
         break;
       case SND_SEQ_EVENT_CONTROLLER:
-        backend.seq_event_controller( event );
+        backend->seq_event_controller( event );
         break;
       case SND_SEQ_EVENT_PGMCHANGE:
-        backend.seq_event_pgmchange( event );
+        backend->seq_event_pgmchange( event );
         break;
       case SND_SEQ_EVENT_CHANPRESS:
-        backend.seq_event_chanpress( event );
+        backend->seq_event_chanpress( event );
         break;
       case SND_SEQ_EVENT_PITCHBEND:
-        backend.seq_event_pitchbend( event );
+        backend->seq_event_pitchbend( event );
         break;
       case SND_SEQ_EVENT_SYSEX:
-        backend.seq_event_sysex( event );
+        backend->seq_event_sysex( event );
         break;
       case SND_SEQ_EVENT_TEMPO:
-        backend.seq_event_tempo( event );
+        backend->seq_event_tempo( event );
         DEBUGMSG( "PLAY thread, processing tempo event with value %i on tick %i\n" ,
                   event->data.tempo , event->tick );
         midifile.current_tempo = event->data.tempo;
@@ -574,24 +548,24 @@ static void amidiplug_play_loop (InputPlayback * playback)
 
     midifile.playing_tick = event->tick;
 
-    if (backend.autonomous_audio)
+    if (backend->autonomous_audio)
     {
       current_time = (gint64) midifile.playing_tick *
        midifile.avg_microsec_per_tick / 1000;
 
       /* these backends deal with audio production themselves (i.e. ALSA) */
-      backend.seq_output( NULL , NULL );
+      backend->seq_output( NULL , NULL );
     }
   }
 
-  backend.seq_output_shut (stopped ? midifile.playing_tick : midifile.max_tick,
+  backend->seq_output_shut (stopped ? midifile.playing_tick : midifile.max_tick,
    midifile.skip_offset);
 
-  if (! backend.autonomous_audio)
+  if (! backend->autonomous_audio)
       audio_stop (playback);
 
-  backend.seq_off ();
-  backend.seq_stop ();
+  backend->seq_off ();
+  backend->seq_stop ();
   i_midi_free (& midifile);
 
   current_time = -1;
@@ -602,9 +576,9 @@ static void amidiplug_play_loop (InputPlayback * playback)
    midi file; re-do them using a time-tick of 0, so they are processed
    istantaneously and proceed this way until the playing_tick is reached;
    also obtain the correct skip_offset from the playing_tick */
-void amidiplug_skipto( gint playing_tick )
+static void amidiplug_skipto (int playing_tick)
 {
-  gint i;
+  int i;
 
   /* this check is always made, for safety*/
   if ( playing_tick >= midifile.max_tick )
@@ -615,15 +589,15 @@ void amidiplug_skipto( gint playing_tick )
     midifile.tracks[i].current_event = midifile.tracks[i].first_event;
 
   /* common settings for all our events */
-  backend.seq_event_init();
-  backend.seq_queue_start();
+  backend->seq_event_init();
+  backend->seq_queue_start();
 
   DEBUGMSG( "SKIPTO request, starting skipto loop\n" );
   for (;;)
   {
     midievent_t * event = NULL;
     midifile_track_t * event_track = NULL;
-    gint i, min_tick = midifile.max_tick + 1;
+    int i, min_tick = midifile.max_tick + 1;
 
     /* search next event */
     for (i = 0; i < midifile.num_tracks; ++i)
@@ -667,33 +641,55 @@ void amidiplug_skipto( gint playing_tick )
         break;
       } */
       case SND_SEQ_EVENT_CONTROLLER:
-        backend.seq_event_controller( event );
+        backend->seq_event_controller( event );
         break;
       case SND_SEQ_EVENT_PGMCHANGE:
-        backend.seq_event_pgmchange( event );
+        backend->seq_event_pgmchange( event );
         break;
       case SND_SEQ_EVENT_CHANPRESS:
-        backend.seq_event_chanpress( event );
+        backend->seq_event_chanpress( event );
         break;
       case SND_SEQ_EVENT_PITCHBEND:
-        backend.seq_event_pitchbend( event );
+        backend->seq_event_pitchbend( event );
         break;
       case SND_SEQ_EVENT_SYSEX:
-        backend.seq_event_sysex( event );
+        backend->seq_event_sysex( event );
         break;
       case SND_SEQ_EVENT_TEMPO:
-        backend.seq_event_tempo( event );
+        backend->seq_event_tempo( event );
         midifile.current_tempo = event->data.tempo;
         break;
     }
 
-    if ( backend.autonomous_audio == TRUE )
+    if ( backend->autonomous_audio == TRUE )
     {
       /* these backends deal with audio production themselves (i.e. ALSA) */
-      backend.seq_output( NULL , NULL );
+      backend->seq_output( NULL , NULL );
     }
   }
 
   midifile.skip_offset = playing_tick;
   midifile.playing_tick = playing_tick;
 }
+
+
+AUD_INPUT_PLUGIN
+(
+    .name = N_("AMIDI-Plug (MIDI Player)"),
+    .domain = PACKAGE,
+    .init = amidiplug_init,
+    .about = i_about_gui,
+    .configure = i_configure_gui,
+    .play = amidiplug_play,
+    .stop = amidiplug_stop,
+    .pause = amidiplug_pause,
+    .mseek = amidiplug_mseek,
+    .get_time = amidiplug_get_time,
+    .get_volume = amidiplug_get_volume,
+    .set_volume = amidiplug_set_volume,
+    .cleanup = amidiplug_cleanup,
+    .probe_for_tuple = amidiplug_get_song_tuple,
+    .file_info_box = i_fileinfo_gui,
+    .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,
+    .extensions = amidiplug_vfs_extensions,
+)

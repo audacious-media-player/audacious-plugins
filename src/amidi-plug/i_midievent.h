@@ -21,21 +21,21 @@
 #ifndef _I_MIDIEVENT_H
 #define _I_MIDIEVENT_H 1
 
-struct midievent_stru {
-  struct midievent_stru * next;		/* linked list */
-  guchar type;				/* SND_SEQ_EVENT_xxx */
-  guchar port;				/* port index */
-  guint tick;
-  guint tick_real;			/* tick with custom offset */
+struct midievent_s {
+  struct midievent_s * next;		/* linked list */
+  unsigned char type;				/* SND_SEQ_EVENT_xxx */
+  unsigned char port;				/* port index */
+  unsigned tick;
+  unsigned tick_real;			/* tick with custom offset */
   union {
-    guchar d[3];			/* channel and data bytes */
-    gint tempo;
-    guint length;			/* length of sysex data */
-    gchar * metat;			/* meta-event text */
+    unsigned char d[3];			/* channel and data bytes */
+    int tempo;
+    unsigned length;			/* length of sysex data */
+    char * metat;			/* meta-event text */
   } data;
-  guchar * sysex;
+  unsigned char * sysex;
 };
 
-typedef struct midievent_stru midievent_t;
+typedef struct midievent_s midievent_t;
 
 #endif /* !_I_MIDIEVENT_H */

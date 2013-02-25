@@ -21,15 +21,13 @@
 #ifndef _I_UTILS_H
 #define _I_UTILS_H 1
 
-#include "i_common.h"
+#include <libaudcore/core.h>
 
 #define AMIDIPLUG_MESSAGE_INFO	0
 #define AMIDIPLUG_MESSAGE_WARN	1
 #define AMIDIPLUG_MESSAGE_ERR	2
 
-
 void i_about_gui( void );
-gpointer i_message_gui( gchar * , gchar * , gint , gpointer , gboolean );
-
+void * i_message_gui( char * , char * , int , void * , bool_t );
 
 #endif /* !_I_UTILS_H */

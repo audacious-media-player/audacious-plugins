@@ -21,13 +21,9 @@
 #ifndef _I_CONFIGURE_AP_H
 #define _I_CONFIGURE_AP_H 1
 
-#include "i_configure.h"
-#include "i_configure_private.h"
+#include <gtk/gtk.h>
 
-
-extern amidiplug_cfg_ap_t amidiplug_cfg_ap;
-
-void i_configure_gui_tab_ap( GtkWidget * , gpointer , gpointer );
-void i_configure_gui_tablabel_ap( GtkWidget * , gpointer , gpointer );
+void i_configure_gui_tab_ap( GtkWidget * , void * , void * );
+void i_configure_gui_tablabel_ap( GtkWidget * , void * , void * );
 
 #endif /* !_I_CONFIGURE_AP_H */

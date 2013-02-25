@@ -18,21 +18,25 @@
 *
 */
 
+#include "config.h"
+
+#include <audacious/i18n.h>
+#include <audacious/misc.h>
+
+#include "../i_configure.h"
 #include "b-alsa.h"
-#include "b-alsa-config.h"
 
 /* sequencer instance */
 static sequencer_client_t sc;
 /* options */
-static amidiplug_cfg_alsa_t amidiplug_cfg_alsa;
+static amidiplug_cfg_alsa_t * alsa_cfg;
 
-
-gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint * ppos )
+int backend_info_get( char ** name , char ** longname , char ** desc , int * ppos )
 {
   if ( name != NULL )
     *name = g_strdup( "alsa" );
   if ( longname != NULL )
-    *longname = g_strjoin( "", _("ALSA Backend "), AMIDIPLUG_VERSION, NULL );
+    *longname = g_strdup (_("ALSA Backend "));
   if ( desc != NULL )
     *desc = g_strdup( _("This backend sends MIDI events to a group of user-chosen "
                         "ALSA sequencer ports. The ALSA sequencer interface is very "
@@ -49,10 +53,9 @@ gint backend_info_get( gchar ** name , gchar ** longname , gchar ** desc , gint 
 }
 
 
-gint backend_init( i_cfg_get_file_cb callback )
+int backend_init( amidiplug_cfg_backend_t * cfg )
 {
-  /* read configuration options */
-  i_cfg_read( callback );
+  alsa_cfg = cfg->alsa;
 
   sc.seq = NULL;
   sc.client_port = 0;
@@ -65,38 +68,36 @@ gint backend_init( i_cfg_get_file_cb callback )
   return 1;
 }
 
-gint backend_cleanup( void )
-{
-  /* free configuration options */
-  i_cfg_free();
 
+int backend_cleanup( void )
+{
   return 1;
 }
 
 
-gint sequencer_get_port_count( void )
+int sequencer_get_port_count( void )
 {
-  return i_util_str_count( amidiplug_cfg_alsa.alsa_seq_wports , ':' );
+  return i_util_str_count( alsa_cfg->alsa_seq_wports , ':' );
 }
 
 
-gint sequencer_start( gchar * midi_fname )
+int sequencer_start( char * midi_fname )
 {
   sc.is_start = TRUE;
   return 1; /* success */
 }
 
 
-gint sequencer_stop( void )
+int sequencer_stop( void )
 {
   return 1; /* success */
 }
 
 
 /* activate sequencer client */
-gint sequencer_on( void )
+int sequencer_on( void )
 {
-  gchar * wports_str = amidiplug_cfg_alsa.alsa_seq_wports;
+  char * wports_str = alsa_cfg->alsa_seq_wports;
 
   if ( !i_seq_open() )
   {
@@ -138,7 +139,7 @@ gint sequencer_on( void )
 
 
 /* shutdown sequencer client */
-gint sequencer_off( void )
+int sequencer_off( void )
 {
   if ( sc.seq )
   {
@@ -155,7 +156,7 @@ gint sequencer_off( void )
 
 
 /* queue set tempo */
-gint sequencer_queue_tempo( gint tempo , gint ppq )
+int sequencer_queue_tempo( int tempo , int ppq )
 {
   /* interpret and set tempo */
   snd_seq_queue_tempo_alloca( &sc.queue_tempo );
@@ -173,19 +174,19 @@ gint sequencer_queue_tempo( gint tempo , gint ppq )
 }
 
 
-gint sequencer_queue_start( void )
+int sequencer_queue_start( void )
 {
   return snd_seq_start_queue( sc.seq , sc.queue , NULL );
 }
 
 
-gint sequencer_queue_stop( void )
+int sequencer_queue_stop( void )
 {
   return snd_seq_stop_queue( sc.seq , sc.queue , NULL );
 }
 
 
-gint sequencer_event_init( void )
+int sequencer_event_init( void )
 {
   /* common settings for all our events */
   snd_seq_ev_clear(&sc.ev);
@@ -196,7 +197,7 @@ gint sequencer_event_init( void )
 }
 
 
-gint sequencer_event_noteon( midievent_t * event )
+int sequencer_event_noteon( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -207,7 +208,7 @@ gint sequencer_event_noteon( midievent_t * event )
 }
 
 
-gint sequencer_event_noteoff( midievent_t * event )
+int sequencer_event_noteoff( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -218,7 +219,7 @@ gint sequencer_event_noteoff( midievent_t * event )
 }
 
 
-gint sequencer_event_keypress( midievent_t * event )
+int sequencer_event_keypress( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -229,7 +230,7 @@ gint sequencer_event_keypress( midievent_t * event )
 }
 
 
-gint sequencer_event_controller( midievent_t * event )
+int sequencer_event_controller( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -240,7 +241,7 @@ gint sequencer_event_controller( midievent_t * event )
 }
 
 
-gint sequencer_event_pgmchange( midievent_t * event )
+int sequencer_event_pgmchange( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -250,7 +251,7 @@ gint sequencer_event_pgmchange( midievent_t * event )
 }
 
 
-gint sequencer_event_chanpress( midievent_t * event )
+int sequencer_event_chanpress( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -260,7 +261,7 @@ gint sequencer_event_chanpress( midievent_t * event )
 }
 
 
-gint sequencer_event_pitchbend( midievent_t * event )
+int sequencer_event_pitchbend( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -270,7 +271,7 @@ gint sequencer_event_pitchbend( midievent_t * event )
 }
 
 
-gint sequencer_event_sysex( midievent_t * event )
+int sequencer_event_sysex( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_variable(&sc.ev, event->data.length, event->sysex);
@@ -278,7 +279,7 @@ gint sequencer_event_sysex( midievent_t * event )
 }
 
 
-gint sequencer_event_tempo( midievent_t * event )
+int sequencer_event_tempo( midievent_t * event )
 {
   i_seq_event_common_init( event );
   snd_seq_ev_set_fixed(&sc.ev);
@@ -290,16 +291,16 @@ gint sequencer_event_tempo( midievent_t * event )
 }
 
 
-gint sequencer_event_other( midievent_t * event )
+int sequencer_event_other( midievent_t * event )
 {
   /* unhandled */
   return 1;
 }
 
 
-gint sequencer_event_allnoteoff( gint unused )
+int sequencer_event_allnoteoff( int unused )
 {
-  gint i = 0 , c = 0;
+  int i = 0 , c = 0;
   /* send "ALL SOUNDS OFF" to all channels on all ports */
   sc.ev.type = SND_SEQ_EVENT_CONTROLLER;
   sc.ev.time.tick = 0;
@@ -322,7 +323,7 @@ gint sequencer_event_allnoteoff( gint unused )
 }
 
 
-gint sequencer_output( gpointer * buffer , gint * len )
+int sequencer_output( void * * buffer , int * len )
 {
   snd_seq_event_output( sc.seq , &sc.ev );
   snd_seq_drain_output( sc.seq );
@@ -331,11 +332,11 @@ gint sequencer_output( gpointer * buffer , gint * len )
 }
 
 
-gint sequencer_output_shut( guint max_tick , gint skip_offset )
+int sequencer_output_shut( unsigned max_tick , int skip_offset )
 {
   g_return_val_if_fail (sc.seq != NULL, 0);
 
-  gint i = 0 , c = 0;
+  int i = 0 , c = 0;
   /* time to shutdown playback! */
   /* send "ALL SOUNDS OFF" to all channels on all ports */
   sc.ev.type = SND_SEQ_EVENT_CONTROLLER;
@@ -376,18 +377,18 @@ gint sequencer_output_shut( guint max_tick , gint skip_offset )
 }
 
 
-gint audio_volume_get( gint * left_volume , gint * right_volume )
+int audio_volume_get( int * left_volume , int * right_volume )
 {
   snd_mixer_t * mixer_h = NULL;
   snd_mixer_elem_t * mixer_elem = NULL;
-  gchar mixer_card[10];
-  snprintf( mixer_card , 8 , "hw:%i" , amidiplug_cfg_alsa.alsa_mixer_card_id );
+  char mixer_card[10];
+  snprintf( mixer_card , 8 , "hw:%i" , alsa_cfg->alsa_mixer_card_id );
   mixer_card[9] = '\0';
 
   if ( snd_mixer_open( &mixer_h , 0 ) > -1 )
     i_seq_mixer_find_selem( mixer_h , mixer_card ,
-                            amidiplug_cfg_alsa.alsa_mixer_ctl_name ,
-                            amidiplug_cfg_alsa.alsa_mixer_ctl_id ,
+                            alsa_cfg->alsa_mixer_ctl_name ,
+                            alsa_cfg->alsa_mixer_ctl_id ,
                             &mixer_elem );
   else
     mixer_h = NULL;
@@ -425,18 +426,18 @@ gint audio_volume_get( gint * left_volume , gint * right_volume )
 }
 
 
-gint audio_volume_set( gint left_volume , gint right_volume )
+int audio_volume_set( int left_volume , int right_volume )
 {
   snd_mixer_t * mixer_h = NULL;
   snd_mixer_elem_t * mixer_elem = NULL;
-  gchar mixer_card[10];
-  snprintf( mixer_card , 8 , "hw:%i" , amidiplug_cfg_alsa.alsa_mixer_card_id );
+  char mixer_card[10];
+  snprintf( mixer_card , 8 , "hw:%i" , alsa_cfg->alsa_mixer_card_id );
   mixer_card[9] = '\0';
 
   if ( snd_mixer_open( &mixer_h , 0 ) > -1 )
     i_seq_mixer_find_selem( mixer_h , mixer_card ,
-                            amidiplug_cfg_alsa.alsa_mixer_ctl_name ,
-                            amidiplug_cfg_alsa.alsa_mixer_ctl_id ,
+                            alsa_cfg->alsa_mixer_ctl_name ,
+                            alsa_cfg->alsa_mixer_ctl_id ,
                             &mixer_elem );
   else
     mixer_h = NULL;
@@ -466,7 +467,7 @@ gint audio_volume_set( gint left_volume , gint right_volume )
 }
 
 
-gint audio_info_get( gint * channels , gint * bitdepth , gint * samplerate )
+int audio_info_get( int * channels , int * bitdepth , int * samplerate )
 {
   /* not applicable for ALSA backend */
   *channels = -1;
@@ -476,7 +477,7 @@ gint audio_info_get( gint * channels , gint * bitdepth , gint * samplerate )
 }
 
 
-gboolean audio_check_autonomous( void )
+bool_t audio_check_autonomous( void )
 {
   return TRUE; /* ALSA deals directly with audio production */
 }
@@ -495,7 +496,7 @@ gboolean audio_check_autonomous( void )
    bpointer[0] = (not used) , bpointer[1] = (not used) */
 GSList * sequencer_port_get_list( void )
 {
-  gint err;
+  int err;
   snd_seq_t * pseq;
   err = snd_seq_open( &pseq , "default" , SND_SEQ_OPEN_DUPLEX , 0 );
   if ( err < 0 )
@@ -511,7 +512,7 @@ GSList * sequencer_port_get_list( void )
   snd_seq_client_info_set_client( cinfo , -1 );
   while ( snd_seq_query_next_client( pseq , cinfo ) >= 0 )
   {
-    gint client = snd_seq_client_info_get_client( cinfo );
+    int client = snd_seq_client_info_get_client( cinfo );
     snd_seq_port_info_set_client( pinfo , client );
     snd_seq_port_info_set_port( pinfo , -1 );
     while (snd_seq_query_next_port( pseq , pinfo ) >= 0 )
@@ -520,7 +521,7 @@ GSList * sequencer_port_get_list( void )
            & (SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE))
           == (SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE))
       {
-        data_bucket_t * portinfo = (data_bucket_t*)g_malloc(sizeof(data_bucket_t));
+        data_bucket_t * portinfo = (data_bucket_t*)malloc(sizeof(data_bucket_t));
         portinfo->bint[0] = snd_seq_port_info_get_client( pinfo );
         portinfo->bint[1] = snd_seq_port_info_get_port( pinfo );
         portinfo->bcharp[0] = g_strdup(snd_seq_client_info_get_name(cinfo));
@@ -542,9 +543,9 @@ void sequencer_port_free_list( GSList * wports )
   while ( wports != NULL )
   {
     data_bucket_t * portinfo = wports->data;
-    g_free( (gpointer)portinfo->bcharp[0] );
-    g_free( (gpointer)portinfo->bcharp[1] );
-    g_free( portinfo );
+    free( (void *)portinfo->bcharp[0] );
+    free( (void *)portinfo->bcharp[1] );
+    free( portinfo );
     wports = wports->next;
   }
   g_slist_free( start );
@@ -559,14 +560,14 @@ void sequencer_port_free_list( GSList * wports )
    bpointer[0] = list (GSList) of mixer controls on the card , bpointer[1] = (not used) */
 GSList * alsa_card_get_list( void )
 {
-  gint soundcard_id = -1;
+  int soundcard_id = -1;
   GSList * scards = NULL;
 
   snd_card_next( &soundcard_id );
   while ( soundcard_id > -1 )
   {
     /* card container */
-    data_bucket_t * cardinfo = (data_bucket_t*)g_malloc(sizeof(data_bucket_t));
+    data_bucket_t * cardinfo = (data_bucket_t*)malloc(sizeof(data_bucket_t));
     cardinfo->bint[0] = soundcard_id;
     /* snd_card_get_name calls strdup on its own */
     snd_card_get_name( soundcard_id , &cardinfo->bcharp[0] );
@@ -588,8 +589,8 @@ void alsa_card_free_list( GSList * scards )
     data_bucket_t * cardinfo = scards->data;
     /* free the list of mixer controls for the sound card */
     i_seq_mixctl_free_list( (GSList*)cardinfo->bpointer[0] );
-    g_free( (gpointer)cardinfo->bcharp[0] );
-    g_free( cardinfo );
+    free( (void *)cardinfo->bcharp[0] );
+    free( cardinfo );
     scards = scards->next;
   }
   g_slist_free( start );
@@ -604,9 +605,9 @@ void alsa_card_free_list( GSList * scards )
 
 
 /* create sequencer client */
-gint i_seq_open( void )
+int i_seq_open( void )
 {
-  gint err;
+  int err;
   err = snd_seq_open( &sc.seq , "default" , SND_SEQ_OPEN_DUPLEX , 0 );
   if (err < 0)
     return 0;
@@ -616,7 +617,7 @@ gint i_seq_open( void )
 
 
 /* free sequencer client */
-gint i_seq_close( void )
+int i_seq_close( void )
 {
   if ( snd_seq_close( sc.seq ) < 0 )
     return 0; /* fail */
@@ -626,7 +627,7 @@ gint i_seq_close( void )
 
 
 /* create queue */
-gint i_seq_queue_create( void )
+int i_seq_queue_create( void )
 {
   sc.queue = snd_seq_alloc_named_queue( sc.seq , "AMIDI-Plug" );
   if ( sc.queue < 0 )
@@ -637,7 +638,7 @@ gint i_seq_queue_create( void )
 
 
 /* free queue */
-gint i_seq_queue_free( void )
+int i_seq_queue_free( void )
 {
   if ( snd_seq_free_queue( sc.seq , sc.queue ) < 0 )
     return 0; /* fail */
@@ -647,7 +648,7 @@ gint i_seq_queue_free( void )
 
 
 /* create sequencer port */
-gint i_seq_port_create( void )
+int i_seq_port_create( void )
 {
   sc.client_port = snd_seq_create_simple_port( sc.seq , "AMIDI-Plug" , 0 ,
                                                SND_SEQ_PORT_TYPE_MIDI_GENERIC |
@@ -660,9 +661,9 @@ gint i_seq_port_create( void )
 
 
 /* port connection */
-gint i_seq_port_connect( void )
+int i_seq_port_connect( void )
 {
-  gint i = 0 , err = 0;
+  int i = 0 , err = 0;
   for ( i = 0 ; i < sc.dest_port_num ; i++ )
   {
     if ( snd_seq_connect_to( sc.seq , sc.client_port ,
@@ -680,9 +681,9 @@ gint i_seq_port_connect( void )
 
 
 /* port disconnection */
-gint i_seq_port_disconnect( void )
+int i_seq_port_disconnect( void )
 {
-  gint i = 0 , err = 0;
+  int i = 0 , err = 0;
   for ( i = 0 ; i < sc.dest_port_num ; i++ )
   {
     if ( snd_seq_disconnect_to( sc.seq , sc.client_port ,
@@ -700,10 +701,10 @@ gint i_seq_port_disconnect( void )
 
 
 /* parse writable ports */
-gint i_seq_port_wparse( gchar * wportlist )
+int i_seq_port_wparse( char * wportlist )
 {
-  gint i = 0 , err = 0;
-  gchar **portstr = g_strsplit( wportlist , "," , 0 );
+  int i = 0 , err = 0;
+  char **portstr = g_strsplit( wportlist , "," , 0 );
 
   sc.dest_port_num = 0;
 
@@ -712,7 +713,7 @@ gint i_seq_port_wparse( gchar * wportlist )
     ++sc.dest_port_num;
 
   /* check if there is already an allocated array and free it */
-  g_free( sc.dest_port );
+  free( sc.dest_port );
   sc.dest_port = NULL;
 
   if ( sc.dest_port_num > 0 )
@@ -736,7 +737,7 @@ gint i_seq_port_wparse( gchar * wportlist )
 }
 
 
-gint i_seq_event_common_init( midievent_t * event )
+int i_seq_event_common_init( midievent_t * event )
 {
   sc.ev.type = event->type;
   sc.ev.time.tick = event->tick_real;
@@ -750,13 +751,13 @@ gint i_seq_event_common_init( midievent_t * event )
    bint[0] = control id , bint[1] = (not used)
    bcharp[0] = control name , bcharp[1] = (not used)
    bpointer[0] = (not used) , bpointer[1] = (not used) */
-GSList * i_seq_mixctl_get_list( gint soundcard_id )
+GSList * i_seq_mixctl_get_list( int soundcard_id )
 {
   GSList * mixctls = NULL;
   snd_mixer_t * mixer_h;
   snd_mixer_selem_id_t * mixer_selem_id;
   snd_mixer_elem_t * mixer_elem;
-  gchar card[10];
+  char card[10];
 
   snprintf( card , 8 , "hw:%i" , soundcard_id );
   card[9] = '\0';
@@ -769,7 +770,7 @@ GSList * i_seq_mixctl_get_list( gint soundcard_id )
   for ( mixer_elem = snd_mixer_first_elem( mixer_h ) ; mixer_elem ;
         mixer_elem = snd_mixer_elem_next( mixer_elem ) )
   {
-    data_bucket_t * mixctlinfo = (data_bucket_t*)g_malloc(sizeof(data_bucket_t));
+    data_bucket_t * mixctlinfo = (data_bucket_t*)malloc(sizeof(data_bucket_t));
     snd_mixer_selem_get_id( mixer_elem , mixer_selem_id );
     mixctlinfo->bint[0] = snd_mixer_selem_id_get_index(mixer_selem_id);
     mixctlinfo->bcharp[0] = g_strdup(snd_mixer_selem_id_get_name(mixer_selem_id));
@@ -786,8 +787,8 @@ void i_seq_mixctl_free_list( GSList * mixctls )
   while ( mixctls != NULL )
   {
     data_bucket_t * mixctlinfo = mixctls->data;
-    g_free( (gpointer)mixctlinfo->bcharp[0] );
-    g_free( mixctlinfo );
+    free( (void *)mixctlinfo->bcharp[0] );
+    free( mixctlinfo );
     mixctls = mixctls->next;
   }
   g_slist_free( start );
@@ -795,8 +796,8 @@ void i_seq_mixctl_free_list( GSList * mixctls )
 }
 
 
-gint i_seq_mixer_find_selem( snd_mixer_t * mixer_h , gchar * mixer_card ,
-                             gchar * mixer_control_name , gint mixer_control_id ,
+int i_seq_mixer_find_selem( snd_mixer_t * mixer_h , char * mixer_card ,
+                             char * mixer_control_name , int mixer_control_id ,
                              snd_mixer_elem_t ** mixer_elem )
 {
   snd_mixer_selem_id_t * mixer_selem_id = NULL;
@@ -813,43 +814,11 @@ gint i_seq_mixer_find_selem( snd_mixer_t * mixer_h , gchar * mixer_card ,
 }
 
 
-gchar * i_configure_read_seq_ports_default( void )
-{
-  FILE * fp = NULL;
-  /* first try, get seq ports from proc on card0 */
-  fp = fopen( "/proc/asound/card0/wavetableD1" , "rb" );
-  if ( fp )
-  {
-    gchar buffer[100];
-    while ( !feof( fp ) )
-    {
-      if (fgets( buffer , 100 , fp ) && ( strlen( buffer ) > 11 ) && ( !strncasecmp( buffer , "addresses: " , 11 ) ))
-      {
-        /* change spaces between ports (65:0 65:1 65:2 ...)
-           into commas (65:0,65:1,65:2,...) */
-        g_strdelimit( &buffer[11] , " " , ',' );
-        /* remove lf and cr from the end of the string */
-        g_strdelimit( &buffer[11] , "\r\n" , '\0' );
-        /* ready to go */
-        DEBUGMSG( "init, default values for seq ports detected: %s\n" , &buffer[11] );
-        fclose( fp );
-        return g_strdup( &buffer[11] );
-      }
-    }
-    fclose( fp );
-  }
-
-  /* second option: do not set ports at all, let the user
-     select the right ones in the nice config window :) */
-  return g_strdup( "" );
-}
-
-
 /* count the number of occurrencies of a specific character 'c'
    in the string 'string' (it must be a null-terminated string) */
-gint i_util_str_count( gchar * string , gchar c )
+int i_util_str_count( char * string , char c )
 {
-  gint i = 0 , count = 0;
+  int i = 0 , count = 0;
   while ( string[i] != '\0' )
   {
     if ( string[i] == c )
@@ -857,48 +826,4 @@ gint i_util_str_count( gchar * string , gchar c )
     ++i;
   }
   return count;
-}
-
-
-void i_cfg_read( i_cfg_get_file_cb callback )
-{
-  pcfg_t *cfgfile;
-  gchar * config_pathfilename = callback();
-  cfgfile = i_pcfg_new_from_file( config_pathfilename );
-
-  if ( !cfgfile )
-  {
-    /* alsa backend defaults */
-    amidiplug_cfg_alsa.alsa_seq_wports = i_configure_read_seq_ports_default();
-    amidiplug_cfg_alsa.alsa_mixer_card_id = 0;
-    amidiplug_cfg_alsa.alsa_mixer_ctl_name = g_strdup( "Synth" );
-    amidiplug_cfg_alsa.alsa_mixer_ctl_id = 0;
-  }
-  else
-  {
-    i_pcfg_read_string( cfgfile , "alsa" , "alsa_seq_wports" ,
-                        &amidiplug_cfg_alsa.alsa_seq_wports , NULL );
-    if ( amidiplug_cfg_alsa.alsa_seq_wports == NULL )
-      amidiplug_cfg_alsa.alsa_seq_wports = i_configure_read_seq_ports_default(); /* pick default values */
-
-    i_pcfg_read_integer( cfgfile , "alsa" , "alsa_mixer_card_id" ,
-                         &amidiplug_cfg_alsa.alsa_mixer_card_id , 0 );
-
-    i_pcfg_read_string( cfgfile , "alsa" , "alsa_mixer_ctl_name" ,
-                        &amidiplug_cfg_alsa.alsa_mixer_ctl_name , "Synth" );
-
-    i_pcfg_read_integer( cfgfile , "alsa" , "alsa_mixer_ctl_id" ,
-                         &amidiplug_cfg_alsa.alsa_mixer_ctl_id , 0 );
-
-    i_pcfg_free( cfgfile );
-  }
-
-  g_free( config_pathfilename );
-}
-
-
-void i_cfg_free( void )
-{
-  g_free( amidiplug_cfg_alsa.alsa_seq_wports );
-  g_free( amidiplug_cfg_alsa.alsa_mixer_ctl_name );
 }
