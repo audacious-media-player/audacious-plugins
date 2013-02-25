@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 
-void i_configure_gui_tab_ap( GtkWidget * , void * , void * );
-void i_configure_gui_tablabel_ap( GtkWidget * , void * , void * );
+void i_configure_gui_tab_ap (GtkWidget *, void *, void *);
+void i_configure_gui_tablabel_ap (GtkWidget *, void *, void *);
 
 #endif /* !_I_CONFIGURE_AP_H */

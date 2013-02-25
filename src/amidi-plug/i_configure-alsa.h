@@ -25,8 +25,8 @@
 
 #ifdef AMIDIPLUG_ALSA
 
-void i_configure_gui_tab_alsa( GtkWidget * , void * , void * );
-void i_configure_gui_tablabel_alsa( GtkWidget * , void * , void * );
+void i_configure_gui_tab_alsa (GtkWidget *, void *, void *);
+void i_configure_gui_tablabel_alsa (GtkWidget *, void *, void *);
 void i_configure_cfg_alsa_free (void);
 void i_configure_cfg_alsa_read (void);
 void i_configure_cfg_alsa_save (void);

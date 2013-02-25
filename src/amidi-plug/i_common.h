@@ -37,9 +37,9 @@
 /* multi-purpose data bucket */
 typedef struct
 {
-  int bint[2];
-  char * bcharp[2];
-  void * bpointer[2];
+    int bint[2];
+    char * bcharp[2];
+    void * bpointer[2];
 }
 data_bucket_t;
 

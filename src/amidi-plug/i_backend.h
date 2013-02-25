@@ -29,50 +29,50 @@ struct midievent_s;
 
 typedef struct
 {
-  char * desc;
-  char * filename;
-  char * longname;
-  char * name;
-  int ppos;
+    char * desc;
+    char * filename;
+    char * longname;
+    char * name;
+    int ppos;
 }
 amidiplug_sequencer_backend_name_t;
 
 typedef struct
 {
-  GModule * gmodule;
-  int (*init)( struct amidiplug_cfg_backend_s * );
-  int (*cleanup)( void );
-  int (*audio_info_get)( int * , int * , int * );
-  int (*audio_volume_get)( int * , int * );
-  int (*audio_volume_set)( int , int );
-  int (* seq_start) (const char * filename);
-  int (*seq_stop)( void );
-  int (*seq_on)( void );
-  int (*seq_off)( void );
-  int (*seq_queue_tempo)( int , int );
-  int (*seq_queue_start)( void );
-  int (*seq_queue_stop)( void );
-  int (*seq_event_init)( void );
-  int (*seq_event_noteon)( struct midievent_s * );
-  int (*seq_event_noteoff)( struct midievent_s * );
-  int (*seq_event_allnoteoff)( int );
-  int (*seq_event_keypress)( struct midievent_s * );
-  int (*seq_event_controller)( struct midievent_s * );
-  int (*seq_event_pgmchange)( struct midievent_s * );
-  int (*seq_event_chanpress)( struct midievent_s * );
-  int (*seq_event_pitchbend)( struct midievent_s * );
-  int (*seq_event_sysex)( struct midievent_s * );
-  int (*seq_event_tempo)( struct midievent_s * );
-  int (*seq_event_other)( struct midievent_s * );
-  int (*seq_output)( void * * , int * );
-  int (*seq_output_shut)( unsigned , int );
-  int (*seq_get_port_count)( void );
-  bool_t autonomous_audio;
+    GModule * gmodule;
+    int (*init) (struct amidiplug_cfg_backend_s *);
+    int (*cleanup) (void);
+    int (*audio_info_get) (int *, int *, int *);
+    int (*audio_volume_get) (int *, int *);
+    int (*audio_volume_set) (int, int);
+    int (* seq_start) (const char * filename);
+    int (*seq_stop) (void);
+    int (*seq_on) (void);
+    int (*seq_off) (void);
+    int (*seq_queue_tempo) (int, int);
+    int (*seq_queue_start) (void);
+    int (*seq_queue_stop) (void);
+    int (*seq_event_init) (void);
+    int (*seq_event_noteon) (struct midievent_s *);
+    int (*seq_event_noteoff) (struct midievent_s *);
+    int (*seq_event_allnoteoff) (int);
+    int (*seq_event_keypress) (struct midievent_s *);
+    int (*seq_event_controller) (struct midievent_s *);
+    int (*seq_event_pgmchange) (struct midievent_s *);
+    int (*seq_event_chanpress) (struct midievent_s *);
+    int (*seq_event_pitchbend) (struct midievent_s *);
+    int (*seq_event_sysex) (struct midievent_s *);
+    int (*seq_event_tempo) (struct midievent_s *);
+    int (*seq_event_other) (struct midievent_s *);
+    int (*seq_output) (void * *, int *);
+    int (*seq_output_shut) (unsigned, int);
+    int (*seq_get_port_count) (void);
+    bool_t autonomous_audio;
 }
 amidiplug_sequencer_backend_t;
 
-GSList * i_backend_list_lookup( void );
-void i_backend_list_free( GSList * );
+GSList * i_backend_list_lookup (void);
+void i_backend_list_free (GSList *);
 amidiplug_sequencer_backend_t * i_backend_load (const char * module_name);
 void i_backend_unload (amidiplug_sequencer_backend_t * backend);
 

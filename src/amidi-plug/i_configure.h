@@ -23,40 +23,40 @@
 
 typedef struct
 {
-  char * ap_seq_backend;
-  int ap_opts_transpose_value;
-  int ap_opts_drumshift_value;
-  int ap_opts_length_precalc;
-  int ap_opts_comments_extract;
-  int ap_opts_lyrics_extract;
+    char * ap_seq_backend;
+    int ap_opts_transpose_value;
+    int ap_opts_drumshift_value;
+    int ap_opts_length_precalc;
+    int ap_opts_comments_extract;
+    int ap_opts_lyrics_extract;
 }
 amidiplug_cfg_ap_t;
 
 typedef struct
 {
-  char * alsa_seq_wports;
-  int alsa_mixer_card_id;
-  char * alsa_mixer_ctl_name;
-  int alsa_mixer_ctl_id;
+    char * alsa_seq_wports;
+    int alsa_mixer_card_id;
+    char * alsa_mixer_ctl_name;
+    int alsa_mixer_ctl_id;
 }
 amidiplug_cfg_alsa_t;
 
 typedef struct
 {
-  char * fsyn_soundfont_file;
-  int fsyn_soundfont_load;
-  int fsyn_synth_samplerate;
-  int fsyn_synth_gain;
-  int fsyn_synth_polyphony;
-  int fsyn_synth_reverb;
-  int fsyn_synth_chorus;
+    char * fsyn_soundfont_file;
+    int fsyn_soundfont_load;
+    int fsyn_synth_samplerate;
+    int fsyn_synth_gain;
+    int fsyn_synth_polyphony;
+    int fsyn_synth_reverb;
+    int fsyn_synth_chorus;
 }
 amidiplug_cfg_fsyn_t;
 
 struct amidiplug_cfg_backend_s
 {
-  amidiplug_cfg_alsa_t * alsa;
-  amidiplug_cfg_fsyn_t * fsyn;
+    amidiplug_cfg_alsa_t * alsa;
+    amidiplug_cfg_fsyn_t * fsyn;
 };
 
 typedef struct amidiplug_cfg_backend_s amidiplug_cfg_backend_t;

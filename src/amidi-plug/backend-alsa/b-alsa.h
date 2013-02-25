@@ -31,33 +31,33 @@
 
 typedef struct
 {
-  snd_seq_t * seq;
-  int client_port;
-  int queue;
+    snd_seq_t * seq;
+    int client_port;
+    int queue;
 
-  snd_seq_addr_t * dest_port;
-  int dest_port_num;
+    snd_seq_addr_t * dest_port;
+    int dest_port_num;
 
-  snd_seq_queue_tempo_t * queue_tempo;
+    snd_seq_queue_tempo_t * queue_tempo;
 
-  snd_seq_event_t ev;
+    snd_seq_event_t ev;
 
-  bool_t is_start;
+    bool_t is_start;
 }
 sequencer_client_t;
 
-int i_seq_open( void );
-int i_seq_close( void );
-int i_seq_queue_create( void );
-int i_seq_queue_free( void );
-int i_seq_port_create( void );
-int i_seq_port_connect( void );
-int i_seq_port_disconnect( void );
-int i_seq_port_wparse( char * );
-int i_seq_event_common_init( midievent_t * );
-GSList * i_seq_mixctl_get_list( int );
-void i_seq_mixctl_free_list( GSList * );
-int i_seq_mixer_find_selem( snd_mixer_t * , char * , char * , int , snd_mixer_elem_t ** );
-int i_util_str_count( char * , char );
+int i_seq_open (void);
+int i_seq_close (void);
+int i_seq_queue_create (void);
+int i_seq_queue_free (void);
+int i_seq_port_create (void);
+int i_seq_port_connect (void);
+int i_seq_port_disconnect (void);
+int i_seq_port_wparse (char *);
+int i_seq_event_common_init (midievent_t *);
+GSList * i_seq_mixctl_get_list (int);
+void i_seq_mixctl_free_list (GSList *);
+int i_seq_mixer_find_selem (snd_mixer_t *, char *, char *, int, snd_mixer_elem_t **);
+int i_util_str_count (char *, char);
 
 #endif /* !_B_ALSA_H */

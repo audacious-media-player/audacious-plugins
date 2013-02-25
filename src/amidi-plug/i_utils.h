@@ -27,7 +27,7 @@
 #define AMIDIPLUG_MESSAGE_WARN	1
 #define AMIDIPLUG_MESSAGE_ERR	2
 
-void i_about_gui( void );
-void * i_message_gui( char * , char * , int , void * , bool_t );
+void i_about_gui (void);
+void * i_message_gui (char *, char *, int, void *, bool_t);
 
 #endif /* !_I_UTILS_H */
