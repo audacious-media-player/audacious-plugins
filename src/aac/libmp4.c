@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -6,7 +8,6 @@
 
 #include <neaacdec.h>
 
-#include "config.h"
 #include "mp4ff.h"
 #include "tagging.h"
 

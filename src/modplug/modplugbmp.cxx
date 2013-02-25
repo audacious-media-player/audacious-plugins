@@ -4,6 +4,8 @@
  * This source code is public domain.
  */
 
+#include "config.h"
+
 #include <fstream>
 #include <pthread.h>
 #include <stdint.h>
@@ -16,8 +18,6 @@
 extern "C" {
 #include <audacious/misc.h>
 #include <audacious/i18n.h>
-
-#include "config.h"
 }
 
 #include "modplugbmp.h"

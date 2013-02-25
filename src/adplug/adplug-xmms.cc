@@ -37,8 +37,6 @@ extern "C" {
 #include <libaudcore/audstrings.h>
 
 #include "adplug-xmms.h"
-
-#include "config.h"
 }
 
 /***** Defines *****/

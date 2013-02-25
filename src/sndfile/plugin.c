@@ -38,6 +38,8 @@
  *   - handle seeking/stopping while paused
  */
 
+#include "config.h"
+
 #include <math.h>
 #include <pthread.h>
 #include <stdlib.h>
@@ -46,8 +48,6 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-
-#include "config.h"
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static int seek_value;
