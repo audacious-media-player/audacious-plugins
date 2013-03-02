@@ -62,6 +62,9 @@ static void cleanup_current_track(void) {
 }
 
 static gchar *remove_tabs(const char *string) {
+    if (string == NULL)
+        return NULL;
+
     gchar *result;
     gchar **tmp = g_strsplit(string, "\t", -1);
 
