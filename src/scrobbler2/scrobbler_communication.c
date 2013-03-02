@@ -562,7 +562,12 @@ gpointer scrobbling_thread (gpointer input_data) {
                 pthread_mutex_unlock(&communication_mutex);
 
                 if (scrobbler_test_connection() == FALSE || !scrobbling_enabled) {
-                    g_usleep(7*G_USEC_PER_SEC);
+                    struct timespec timeout;
+                    pthread_mutex_lock(&communication_mutex);
+                    clock_gettime(CLOCK_REALTIME, &timeout);
+                    timeout.tv_sec += 7;
+                    pthread_cond_timedwait(&communication_signal, &communication_mutex, &timeout);
+                    pthread_mutex_unlock(&communication_mutex);
                 }
             }
         }
