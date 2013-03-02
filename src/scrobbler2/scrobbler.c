@@ -164,6 +164,7 @@ static void ended (void *hook_data, void *user_data) {
 }
 
 static void ready (void *hook_data, void *user_data) {
+    cleanup_current_track();
 
     Tuple *current_track = aud_playlist_entry_get_tuple(aud_playlist_get_playing(), aud_playlist_get_position(aud_playlist_get_playing()), FALSE);
 
