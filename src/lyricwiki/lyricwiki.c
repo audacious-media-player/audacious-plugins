@@ -182,8 +182,16 @@ static char *scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t le
 
 static void update_lyrics_window(const char *title, const char *artist, const char *lyrics);
 
-static bool_t get_lyrics_step_3(void *buf, int64_t len, void *unused)
+static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 {
+	if (strcmp(state.uri, requri))
+	{
+		free(buf);
+		str_unref(requri);
+		return FALSE;
+	}
+	str_unref(requri);
+
 	if(!len)
 	{
 		SPRINTF(error, _("Unable to fetch %s"), state.uri);
@@ -208,8 +216,16 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *unused)
 	return TRUE;
 }
 
-static bool_t get_lyrics_step_2(void *buf, int64_t len, void *unused)
+static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 {
+	if (strcmp(state.uri, requri))
+	{
+		free(buf);
+		str_unref(requri);
+		return FALSE;
+	}
+	str_unref(requri);
+
 	if(!len)
 	{
 		SPRINTF(error, _("Unable to fetch %s"), state.uri);
@@ -232,7 +248,7 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *unused)
 	state.uri = uri;
 
 	update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
-	vfs_async_file_get_contents(uri, get_lyrics_step_3, NULL);
+	vfs_async_file_get_contents(uri, get_lyrics_step_3, str_ref(state.uri));
 
 	free(buf);
 	return TRUE;
@@ -256,7 +272,7 @@ static void get_lyrics_step_1(void)
 	 "artist=%s&song=%s&fmt=xml", artist_buf, title_buf);
 
 	update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
-	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, NULL);
+	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, str_ref(state.uri));
 }
 
 static GtkWidget *scrollview, *vbox;
