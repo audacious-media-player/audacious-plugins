@@ -478,6 +478,58 @@ static void scrobble_cached_queue() {
     g_free(queuepath);
 }
 
+static void treat_permission_check_request() {
+    if (session_key == NULL || strlen(session_key) == 0) {
+        perm_result = PERMISSION_DENIED;
+
+        if (request_token == NULL || strlen(request_token) == 0) {
+            if (scrobbler_request_token() == FALSE || request_token == NULL || strlen(request_token) == 0) {
+                perm_result = PERMISSION_NONET;
+            } //else PERMISSION_DENIED
+
+        } else if (scrobbler_request_session() == FALSE) {
+            perm_result = PERMISSION_NONET;
+
+        } else if (session_key == NULL || strlen(session_key) == 0) {
+            //This means we had a token, a session was requested now,
+            //but the token was not accepted or expired.
+            //Ask for a new token now.
+            if (scrobbler_request_token() == FALSE || request_token == NULL || strlen(request_token) == 0) {
+                perm_result = PERMISSION_NONET;
+            } //else PERMISSION_DENIED
+        }
+    }
+    if (session_key != NULL && strlen(session_key) != 0 ){
+        if (scrobbler_test_connection() == FALSE) {
+            perm_result = PERMISSION_NONET;
+
+            if (session_key == NULL || strlen(session_key) == 0) {
+                if (scrobbler_request_token() != FALSE && request_token != NULL && strlen(request_token) != 0) {
+                    perm_result = PERMISSION_DENIED;
+                } //else PERMISSION_NONET
+            }
+
+        } else {
+            if (scrobbling_enabled) {
+                perm_result = PERMISSION_ALLOWED;
+            } else {
+             /* This means that we have a session key but couldn't make
+              * an authenticated call with it. This happens when:
+              * a) the user revoked the permission to Audacious on his
+              * last.fm account OR
+              * b) something might be wrong on last.fm's side (?) OR
+              * c) the user fiddled with the audacious config file and
+              * the key is now invalid
+              */
+                if (scrobbler_request_token() != FALSE && request_token != NULL && strlen(request_token) != 0) {
+                    perm_result = PERMISSION_DENIED;
+                } else {
+                    perm_result = PERMISSION_NONET;
+                }
+            }
+        }
+    } //session_key == NULL || strlen(session_key) == 0
+}
 
 //Scrobbling will only be enabled after the first connection test passed
 gpointer scrobbling_thread (gpointer input_data) {
@@ -485,71 +537,21 @@ gpointer scrobbling_thread (gpointer input_data) {
     while (scrobbler_running) {
 
         if (permission_check_requested) {
-            if (session_key == NULL || strlen(session_key) == 0) {
-                perm_result = PERMISSION_DENIED;
-
-                if (request_token == NULL || strlen(request_token) == 0) {
-                    if (scrobbler_request_token() == FALSE || request_token == NULL || strlen(request_token) == 0) {
-                        perm_result = PERMISSION_NONET;
-                    } //else PERMISSION_DENIED
-
-                } else if (scrobbler_request_session() == FALSE) {
-                    perm_result = PERMISSION_NONET;
-
-                } else if (session_key == NULL || strlen(session_key) == 0) {
-                    //This means we had a token, a session was requested now,
-                    //but the token was not accepted or expired.
-                    //Ask for a new token now.
-                    if (scrobbler_request_token() == FALSE || request_token == NULL || strlen(request_token) == 0) {
-                        perm_result = PERMISSION_NONET;
-                    } //else PERMISSION_DENIED
-                }
-            }
-            if (session_key != NULL && strlen(session_key) != 0 ){
-                if (scrobbler_test_connection() == FALSE) {
-                    perm_result = PERMISSION_NONET;
-
-                    if (session_key == NULL || strlen(session_key) == 0) {
-                        if (scrobbler_request_token() != FALSE && request_token != NULL && strlen(request_token) != 0) {
-                            perm_result = PERMISSION_DENIED;
-                        } //else PERMISSION_NONET
-                    }
-
-                } else {
-                    if (scrobbling_enabled) {
-                        perm_result = PERMISSION_ALLOWED;
-                    } else {
-                     /* This means that we have a session key but couldn't make
-                      * an authenticated call with it. This happens when:
-                      * a) the user revoked the permission to Audacious on his
-                      * last.fm account OR
-                      * b) something might be wrong on last.fm's side (?) OR
-                      * c) the user fiddled with the audacious config file and
-                      * the key is now invalid
-                      */
-                        if (scrobbler_request_token() != FALSE && request_token != NULL && strlen(request_token) != 0) {
-                            perm_result = PERMISSION_DENIED;
-                        } else {
-                            perm_result = PERMISSION_NONET;
-                        }
-                    }
-                }
-            } //session_key == NULL || strlen(session_key) == 0
-
+            treat_permission_check_request();
             permission_check_requested = FALSE;
 
         } else if (invalidate_session_requested) {
-          session_key = NULL;
-          aud_set_string("scrobbler", "session_key", "");
-          invalidate_session_requested = FALSE;
+            session_key = NULL;
+            aud_set_string("scrobbler", "session_key", "");
+            invalidate_session_requested = FALSE;
 
-        } else if (FALSE) { //now_playing_requested
+        } else if (FALSE) { //TODO: now_playing_requested
 
         } else {
             if (scrobbling_enabled) {
               scrobble_cached_queue();
             }
-            //scrobbling may be disabled if communication errors occur
+            //scrobbling may be disabled at this point if communication errors occur
 
             pthread_mutex_lock(&communication_mutex);
             if (scrobbling_enabled) {
@@ -562,7 +564,12 @@ gpointer scrobbling_thread (gpointer input_data) {
                 pthread_mutex_unlock(&communication_mutex);
 
                 if (scrobbler_test_connection() == FALSE || !scrobbling_enabled) {
-                    g_usleep(7*G_USEC_PER_SEC);
+                    struct timespec timeout;
+                    pthread_mutex_lock(&communication_mutex);
+                    clock_gettime(CLOCK_REALTIME, &timeout);
+                    timeout.tv_sec += 7;
+                    pthread_cond_timedwait(&communication_signal, &communication_mutex, &timeout);
+                    pthread_mutex_unlock(&communication_mutex);
                 }
             }
         }

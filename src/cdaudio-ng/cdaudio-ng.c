@@ -18,6 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
+#include "config.h"
+
 #include <pthread.h>
 #include <string.h>
 #include <stdlib.h>
@@ -36,15 +38,6 @@
 #include <cdio/cdda.h>
 #endif
 
-/* libcdio's header files #define these */
-#undef PACKAGE
-#undef PACKAGE_BUGREPORT
-#undef PACKAGE_NAME
-#undef PACKAGE_STRING
-#undef PACKAGE_TARNAME
-#undef PACKAGE_VERSION
-#undef VERSION
-
 #include <cddb/cddb.h>
 
 #include <glib.h>
@@ -58,8 +51,6 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
-
-#include "config.h"
 
 #define DEF_STRING_LEN 256
 
