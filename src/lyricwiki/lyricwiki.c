@@ -138,6 +138,16 @@ static char *scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t le
 	gchar *uri = NULL;
 
 	/*
+	 * workaround buggy lyricwiki search output where it cuts the lyrics
+	 * halfway through the UTF-8 symbol resulting in invalid XML.
+	 */
+	GRegex *reg;
+
+	reg = g_regex_new("<(lyrics?)>.*</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY), 0, NULL);
+	gchar *newbuf = g_regex_replace_literal(reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, NULL);
+	g_regex_unref(reg);
+
+	/*
 	 * temporarily set our error-handling functor to our suppression function,
 	 * but we have to set it back because other components of Audacious depend
 	 * on libxml and we don't want to step on their code paths.
@@ -147,7 +157,7 @@ static char *scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t le
 	 * parsing and hope for the best.
 	 */
 	xmlSetGenericErrorFunc(NULL, libxml_error_handler);
-	doc = xmlParseMemory(buf, (int) len);
+	doc = xmlParseMemory(newbuf, strlen(newbuf));
 	xmlSetGenericErrorFunc(NULL, NULL);
 
 	if (doc != NULL)
@@ -176,6 +186,8 @@ static char *scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t le
 
 		xmlFreeDoc(doc);
 	}
+
+	g_free(newbuf);
 
 	return uri;
 }
