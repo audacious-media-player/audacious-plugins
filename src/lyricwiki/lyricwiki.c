@@ -109,11 +109,11 @@ give_up:
 				GMatchInfo *match_info;
 				GRegex *reg;
 
-				reg = g_regex_new("<(lyrics?)>(.*)</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY), 0, NULL);
+				reg = g_regex_new("<(lyrics?)>[[:space:]]*(.*?)[[:space:]]*</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL), 0, NULL);
 				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
-				if (!g_utf8_collate(ret, "\n<!-- PUT LYRICS HERE (and delete this entire line) -->\n"))
+				if (!g_utf8_collate(ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
 				{
 					free(ret);
 					ret = strdup(_("No lyrics available"));
@@ -334,19 +334,17 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
 	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
-			title, strlen(title), "weight_bold", "size_x_large", NULL);
-
-	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
+			title, -1, "weight_bold", "size_x_large", NULL);
 
 	if (artist != NULL)
 	{
+		gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", -1);
 		gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer),
-				&iter, artist, strlen(artist), "style_italic", NULL);
-
-		gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", 1);
+				&iter, artist, -1, "style_italic", NULL);
 	}
 
-	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, lyrics, strlen(lyrics));
+	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n\n", -1);
+	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, lyrics, -1);
 
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 	gtk_text_view_scroll_to_iter(GTK_TEXT_VIEW(textview), &iter, 0, TRUE, 0, 0);
