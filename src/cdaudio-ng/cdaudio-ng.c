@@ -23,6 +23,9 @@
 #include <stdlib.h>
 #include <errno.h>
 
+/* prevent libcdio from redefining PACKAGE, VERSION, etc. */
+#define EXTERNAL_LIBCDIO_CONFIG_H
+
 #include <cdio/cdio.h>
 #include <cdio/cdtext.h>
 #include <cdio/track.h>
