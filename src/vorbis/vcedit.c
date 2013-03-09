@@ -7,8 +7,6 @@
  * Comment editing backend, suitable for use by nice frontend interfaces.
  *
  */
-#include "config.h"
-
 #include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -384,7 +382,7 @@ vcedit_write(vcedit_state * state, void *out)
             op.granulepos = granpos;
             ogg_stream_packetin(&streamout, &op);
         }
-        else {                  /* granulepos is set, validly. Use it, and force a flush to 
+        else {                  /* granulepos is set, validly. Use it, and force a flush to
                                    account for shortened blocks (vcut) when appropriate */
             if (granpos > op.granulepos) {
                 granpos = op.granulepos;
@@ -432,7 +430,7 @@ vcedit_write(vcedit_state * state, void *out)
             if (result < 0)
                 state->lasterror = "Corrupt or missing data, continuing...";
             else {
-                /* Don't bother going through the rest, we can just 
+                /* Don't bother going through the rest, we can just
                  * write the page out now */
                 if (state->write(ogout.header, 1, ogout.header_len,
                                  out) != (size_t) ogout.header_len)

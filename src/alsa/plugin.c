@@ -21,8 +21,6 @@
 #include <audacious/plugin.h>
 
 #include "alsa.h"
-#include "config.h"
-
 static const char alsa_about[] =
  N_("ALSA Output Plugin for Audacious\n"
     "Copyright 2009-2012 John Lindgren\n\n"

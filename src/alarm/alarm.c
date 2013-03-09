@@ -42,7 +42,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "alarm.h"
-#include "config.h"
 #include "interface.h"
 #include "callbacks.h"
 

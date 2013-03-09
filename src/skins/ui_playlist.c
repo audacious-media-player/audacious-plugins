@@ -38,7 +38,6 @@
 #include <libaudgui/libaudgui.h>
 
 #include "actions-mainwin.h"
-#include "config.h"
 #include "dnd.h"
 #include "drag-handle.h"
 #include "plugin.h"

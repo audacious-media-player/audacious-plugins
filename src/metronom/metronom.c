@@ -23,8 +23,6 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
-#include "config.h"
-
 #define MIN_BPM         1
 #define MAX_BPM         512
 #define TACT_ID_MAX     12

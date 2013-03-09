@@ -40,7 +40,6 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
-#include "config.h"
 #include "util.h"
 
 static gboolean playlist_load_pls (const gchar * filename, VFSFile * file,

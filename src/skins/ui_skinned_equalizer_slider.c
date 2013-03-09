@@ -25,7 +25,6 @@
 #include <audacious/i18n.h>
 #include <audacious/types.h>
 
-#include "config.h"
 #include "draw-compat.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"

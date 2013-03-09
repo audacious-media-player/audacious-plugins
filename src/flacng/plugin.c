@@ -25,7 +25,6 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
-#include "config.h"
 #include "flacng.h"
 
 static FLAC__StreamDecoder *decoder;

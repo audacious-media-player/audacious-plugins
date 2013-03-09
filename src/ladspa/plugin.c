@@ -33,7 +33,6 @@
 #include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
 #include "plugin.h"
 
 static const gchar * const ladspa_defaults[] = {

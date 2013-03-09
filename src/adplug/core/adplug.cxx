@@ -71,7 +71,7 @@
 
 /***** Defines *****/
 
-#define VERSION		"1.6"       // AdPlug library version string
+#define ADPLUG_VERSION "1.6"
 
 /***** CAdPlug *****/
 
@@ -247,7 +247,7 @@ CAdPlug::set_database (CAdPlugDatabase * db)
 
 std::string CAdPlug::get_version ()
 {
-  return std::string (VERSION);
+  return std::string (ADPLUG_VERSION);
 }
 
 void

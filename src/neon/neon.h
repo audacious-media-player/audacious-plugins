@@ -20,8 +20,6 @@
 #ifndef _NEON_PLUGIN_H
 #define _NEON_PLUGIN_H
 
-#include "config.h"
-
 #include <glib.h>
 #include <pthread.h>
 

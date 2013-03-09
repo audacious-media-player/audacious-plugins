@@ -21,8 +21,6 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
-#include "config.h"
-
 static int voice_channels;
 
 static void voice_start(int *channels, int *rate)

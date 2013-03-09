@@ -4,8 +4,6 @@
  * This source code is public domain.
  */
 
-#include "config.h"
-
 #include <fstream>
 #include <pthread.h>
 #include <stdint.h>

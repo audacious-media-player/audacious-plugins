@@ -10,8 +10,6 @@
 #ifndef __ALARM_H
 #define __ALARM_H
 
-#include "config.h"
-
 #include <gtk/gtk.h>
 
 /* flags */

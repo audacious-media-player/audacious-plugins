@@ -40,7 +40,6 @@
 
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
-#include "config.h"
 #include "dnd.h"
 #include "plugin.h"
 #include "skins_cfg.h"

@@ -25,7 +25,6 @@
  *
  */
 
-#include "config.h"
 /*#define AUD_DEBUG
 #define DEBUG*/
 

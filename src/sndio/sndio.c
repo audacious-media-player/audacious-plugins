@@ -30,8 +30,6 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
-
 /*
  * minimum output buffer size in milliseconds
  */

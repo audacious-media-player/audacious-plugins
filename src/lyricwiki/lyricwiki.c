@@ -37,8 +37,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>
 
-#include "config.h"
-
 /* all strings in this struct are pooled */
 typedef struct {
 	char *filename; /* of song file */

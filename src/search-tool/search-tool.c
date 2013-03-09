@@ -30,8 +30,6 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/list.h>
 
-#include "config.h"
-
 #define MAX_RESULTS 100
 #define SEARCH_DELAY 300
 

@@ -31,8 +31,6 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
-#include "config.h"
-
 #define INT_TO_POINTER(x) ((void *) (ptrdiff_t) (x))
 #define POINTER_TO_INT(x) ((int) (ptrdiff_t) (x))
 

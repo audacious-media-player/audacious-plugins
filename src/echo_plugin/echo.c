@@ -6,8 +6,6 @@
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 
-#include "config.h"
-
 #define MAX_DELAY 1000
 #define MAX_SRATE 50000
 #define MAX_CHANNELS 2

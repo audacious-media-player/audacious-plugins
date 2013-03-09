@@ -23,8 +23,6 @@
 #ifndef FILEWRITER_H
 #define FILEWRITER_H
 
-#include "config.h"
-
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include <string.h>

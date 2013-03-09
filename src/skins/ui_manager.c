@@ -26,7 +26,6 @@
 #include "actions-equalizer.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
-#include "config.h"
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_manager.h"

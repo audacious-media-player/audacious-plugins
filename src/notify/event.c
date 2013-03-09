@@ -24,7 +24,6 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
 #include "event.h"
 #include "osd.h"
 

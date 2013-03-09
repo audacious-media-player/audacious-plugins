@@ -28,7 +28,6 @@
 #include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
 
-#include "config.h"
 #include "dnd.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"

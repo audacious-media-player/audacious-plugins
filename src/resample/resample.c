@@ -27,8 +27,6 @@
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 
-#include "config.h"
-
 #define MIN_RATE 8000
 #define MAX_RATE 192000
 #define RATE_STEP 50

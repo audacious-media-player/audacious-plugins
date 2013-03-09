@@ -27,8 +27,6 @@
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 
-#include "config.h"
-
 #define MAX_CHANNELS 8
 
 typedef void (* Converter) (float * * data, int * samples);

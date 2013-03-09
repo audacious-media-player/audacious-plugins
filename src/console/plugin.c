@@ -7,7 +7,6 @@
  */
 
 
-#include "config.h"
 #include <glib.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>

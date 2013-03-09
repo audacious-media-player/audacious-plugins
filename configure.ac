@@ -1076,6 +1076,15 @@ AC_SUBST(CONTAINER_PLUGINS)
 AC_SUBST(TRANSPORT_PLUGINS)
 AC_SUBST(GCC42_CFLAGS)
 
+
+dnl Reliably #include "config.h" (for large file support)
+dnl =====================================================
+CPPFLAGS="$CPPFLAGS -include config.h"
+
+
+dnl Generate config files
+dnl =====================
+
 AC_CONFIG_FILES([
     buildsys.mk
     extra.mk
@@ -1083,6 +1092,10 @@ AC_CONFIG_FILES([
 
 BUILDSYS_TOUCH_DEPS
 AC_OUTPUT
+
+
+dnl Print results
+dnl =============
 
 echo
 echo "Configuration:"

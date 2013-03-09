@@ -24,7 +24,6 @@
 #include <audacious/plugin.h>
 #include <audacious/debug.h>
 
-#include "config.h"
 #include "event.h"
 #include "osd.h"
 

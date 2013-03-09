@@ -38,8 +38,6 @@
  *   - handle seeking/stopping while paused
  */
 
-#include "config.h"
-
 #include <math.h>
 #include <pthread.h>
 #include <stdlib.h>

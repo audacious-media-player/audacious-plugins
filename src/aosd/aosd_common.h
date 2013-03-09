@@ -28,8 +28,6 @@
 #define DEBUGMSG(...)
 #endif /* DEBUG */
 
-#include "../../config.h"
-
 #define AOSD_VERSION_PLUGIN "0.1beta5"
 
 #endif /* !_I_AOSD_COMMON_H */

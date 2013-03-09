@@ -26,7 +26,6 @@
 #include <libaudcore/index.h>
 #include <libaudgui/list.h>
 
-#include "config.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 

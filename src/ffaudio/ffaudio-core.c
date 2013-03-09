@@ -30,7 +30,6 @@
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
 
-#include "config.h"
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
 #include <audacious/debug.h>

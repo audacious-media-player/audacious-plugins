@@ -29,8 +29,6 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
-#include "config.h"
-
 #define BUFSIZE 65536
 #define BLOCKSIZE 4096
 

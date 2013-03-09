@@ -27,8 +27,6 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
-#include "config.h"
-
 static void strip_char (char * text, char c)
 {
     char * set = text;

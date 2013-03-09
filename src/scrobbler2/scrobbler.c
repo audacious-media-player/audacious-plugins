@@ -11,7 +11,6 @@
 #include <audacious/plugins.h>
 
 //audacious includes
-#include <config.h>
 #include <audacious/plugin.h>
 #include <audacious/drct.h>
 #include <audacious/playlist.h>

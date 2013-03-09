@@ -28,7 +28,6 @@
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 
-#include "config.h"
 #include "object-core.h"
 #include "object-player.h"
 

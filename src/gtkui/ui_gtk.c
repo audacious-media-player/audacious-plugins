@@ -33,7 +33,6 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
 #include "gtkui.h"
 #include "layout.h"
 #include "ui_playlist_notebook.h"

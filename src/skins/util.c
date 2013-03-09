@@ -39,7 +39,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs.h>
 
-#include "config.h"
 #include "ui_main.h"
 #include "util.h"
 

@@ -33,8 +33,6 @@
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 
-#include "config.h"
-
 #define D_WIDTH 64
 #define D_HEIGHT 32
 

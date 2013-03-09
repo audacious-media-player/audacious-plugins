@@ -27,8 +27,6 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 
-#include "config.h"
-
 typedef struct {
     int tuple_type;
     int pti;

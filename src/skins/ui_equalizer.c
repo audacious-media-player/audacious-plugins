@@ -34,7 +34,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "actions-equalizer.h"
-#include "config.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"

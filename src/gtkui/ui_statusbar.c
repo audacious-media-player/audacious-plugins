@@ -31,7 +31,6 @@
 #include <audacious/playlist.h>
 #include <libaudcore/hook.h>
 
-#include "config.h"
 #include "ui_statusbar.h"
 
 #define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), \

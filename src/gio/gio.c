@@ -28,8 +28,6 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
-#include "config.h"
-
 typedef struct {
     GFile * file;
     GIOStream * iostream;

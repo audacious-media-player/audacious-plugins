@@ -8,7 +8,6 @@
  * Preferences GUI by Giacomo Lozito
  */
 
-#include "config.h"
 #include "configure.h"
 #include <glib.h>
 #include <gtk/gtk.h>

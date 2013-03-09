@@ -18,8 +18,6 @@
  *
  */
 
-#include "config.h"
-
 #include <glib.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>

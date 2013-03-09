@@ -28,7 +28,6 @@
 #include <audacious/misc.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
 #include "plugin.h"
 #include "ui_skin.h"
 #include "ui_skinselector.h"

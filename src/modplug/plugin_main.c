@@ -1,6 +1,5 @@
 #include <audacious/i18n.h>
 
-#include "config.h"
 #include "plugin.h"
 
 static const char * fmts[] =

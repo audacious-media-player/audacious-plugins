@@ -18,7 +18,6 @@
 *
 */
 
-#include "config.h"
 #include "i_configure-ap.h"
 
 #include <stdlib.h>

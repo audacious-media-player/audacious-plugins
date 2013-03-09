@@ -31,8 +31,6 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
-
 #define MAX_BANDS   (256)
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */

@@ -15,7 +15,6 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
-#include "config.h"
 #include "bio2jack.h" /* includes for the bio2jack library */
 #include "jack.h"
 

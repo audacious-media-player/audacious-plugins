@@ -20,8 +20,6 @@
 #ifndef AUDACIOUS_OSS4_H
 #define AUDACIOUS_OSS4_H
 
-#include "config.h"
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>

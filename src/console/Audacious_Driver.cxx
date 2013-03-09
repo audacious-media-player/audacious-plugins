@@ -6,7 +6,6 @@
  * http://www.slack.net/~ant/libs/
  */
 
-#include "config.h"
 #include <math.h>
 #include <pthread.h>
 #include <string.h>

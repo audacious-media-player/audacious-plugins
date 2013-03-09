@@ -27,7 +27,6 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"

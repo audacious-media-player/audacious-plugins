@@ -2,8 +2,6 @@
  * Written by Johan Levin, 1999
  * Modified by John Lindgren, 2009-2012 */
 
-#include "config.h"
-
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>

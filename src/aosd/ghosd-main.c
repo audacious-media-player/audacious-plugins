@@ -8,8 +8,6 @@
  * - added/changed some other stuff
  */
 
-#include "config.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -47,7 +45,7 @@ ghosd_main_iteration(Ghosd *ghosd) {
        * we loop. */
       if (ghosd->x != ev.xconfigure.x ||
           ghosd->y != ev.xconfigure.y) {
-        /*width = ev.xconfigure.width; 
+        /*width = ev.xconfigure.width;
         height = ev.xconfigure.height;*/
         XMoveResizeWindow(ghosd->dpy, ghosd->win,
                           ghosd->x, ghosd->y, ghosd->width, ghosd->height);

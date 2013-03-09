@@ -18,7 +18,6 @@
 *
 */
 
-#include "config.h"
 #include "i_configure-fluidsynth.h"
 
 #include <stdlib.h>

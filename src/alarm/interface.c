@@ -21,7 +21,6 @@
 #include <audacious/i18n.h>
 #include <libaudgui/libaudgui.h>
 
-#include "config.h"
 #include "callbacks.h"
 
 const gchar *help[] =

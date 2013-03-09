@@ -30,7 +30,6 @@
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 
-#include "config.h"
 #include "gtkui.h"
 #include "playlist_util.h"
 #include "ui_playlist_widget.h"

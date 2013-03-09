@@ -23,8 +23,6 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "config.h"
-
 static void album_set_unscaled (GtkWidget * widget, GdkPixbuf * unscaled)
 {
     GdkPixbuf * old;

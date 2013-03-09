@@ -18,7 +18,6 @@
 *
 */
 
-#include "config.h"
 #include "i_utils.h"
 
 #include <stdlib.h>

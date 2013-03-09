@@ -31,7 +31,6 @@
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>
 
-#include "config.h"
 #include "gtkui.h"
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"

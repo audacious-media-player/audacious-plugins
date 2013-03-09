@@ -26,7 +26,6 @@
 #include <audacious/misc.h>
 #include <audacious/plugins.h>
 
-#include "config.h"
 #include "layout.h"
 
 #define DEFAULT_WIDTH 300

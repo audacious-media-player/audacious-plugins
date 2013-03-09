@@ -8,7 +8,6 @@
  * - added/changed some other stuff
  */
 
-#include "config.h"
 #include "aosd_common.h"
 
 #include <stdio.h>
@@ -57,11 +56,11 @@ composite_find_manager(Display *dpy, int scr)
   Atom comp_manager_atom;
   char comp_manager_hint[32];
   Window win;
-  
+
   snprintf(comp_manager_hint, 32, "_NET_WM_CM_S%d", scr);
   comp_manager_atom = XInternAtom(dpy, comp_manager_hint, False);
   win = XGetSelectionOwner(dpy, comp_manager_atom);
-  
+
   if (win != None)
   {
     return True;
@@ -84,7 +83,7 @@ composite_find_argb_visual(Display *dpy, int scr)
   template.screen = scr;
   template.depth = 32;
   template.class = TrueColor;
-  xvi = XGetVisualInfo (dpy, 
+  xvi = XGetVisualInfo (dpy,
           VisualScreenMask | VisualDepthMask | VisualClassMask,
           &template, &nvi);
   if (xvi == NULL)
@@ -101,7 +100,7 @@ composite_find_argb_visual(Display *dpy, int scr)
     }
   }
   XFree (xvi);
-  
+
   return visual;
 }
 #endif
@@ -373,14 +372,14 @@ ghosd_new(void) {
     fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
     return NULL;
   }
-  
+
   screen_num = DefaultScreen(dpy);
   root_win = RootWindow(dpy, screen_num);
   visual = NULL; /* unused */
   colormap = None; /* unused */
 
   win = make_window(dpy, root_win, visual, colormap, use_argbvisual);
-  
+
   ghosd = calloc(1, sizeof(Ghosd));
   ghosd->dpy = dpy;
   ghosd->visual = visual;
@@ -412,7 +411,7 @@ ghosd_new_with_argbvisual(void) {
     fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
     return NULL;
   }
-  
+
   screen_num = DefaultScreen(dpy);
   root_win = RootWindow(dpy, screen_num);
   visual = composite_find_argb_visual(dpy, screen_num);
@@ -421,7 +420,7 @@ ghosd_new_with_argbvisual(void) {
   colormap = XCreateColormap(dpy, root_win, visual, AllocNone);
 
   win = make_window(dpy, root_win, visual, colormap, use_argbvisual);
-  
+
   ghosd = calloc(1, sizeof(Ghosd));
   ghosd->dpy = dpy;
   ghosd->visual = visual;
@@ -443,13 +442,13 @@ ghosd_check_composite_ext(void)
   Display *dpy;
   int have_composite_x = 0;
   int composite_event_base = 0, composite_error_base = 0;
-  
+
   dpy = XOpenDisplay(NULL);
   if (dpy == NULL) {
     fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
     return 0;
   }
-  
+
   if (!XCompositeQueryExtension(dpy,
         &composite_event_base, &composite_error_base))
     have_composite_x = 0;
@@ -465,18 +464,18 @@ ghosd_check_composite_mgr(void)
 {
   Display *dpy;
   int have_composite_m = 0;
-  
+
   dpy = XOpenDisplay(NULL);
   if (dpy == NULL) {
     fprintf(stderr, "Couldn't open display: (XXX FIXME)\n");
     return 0;
   }
-  
+
   if (!composite_find_manager(dpy, DefaultScreen(dpy)))
     have_composite_m = 0;
   else
     have_composite_m = 1;
-  
+
   XCloseDisplay(dpy);
   return have_composite_m;
 }

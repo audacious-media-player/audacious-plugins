@@ -37,7 +37,6 @@
 #include <ne_request.h>
 #include <ne_auth.h>
 
-#include "config.h"
 #include "debug.h"
 #include "rb.h"
 #include "cert_verification.h"

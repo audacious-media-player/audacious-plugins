@@ -25,8 +25,6 @@
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 
-#include "config.h"
-
 enum
 {
     STATE_OFF,

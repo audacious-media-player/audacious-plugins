@@ -1,8 +1,6 @@
 
 //external includes
 #include <gdk/gdk.h>
-#include "config.h"
-
 //plugin includes
 #include "scrobbler.h"
 

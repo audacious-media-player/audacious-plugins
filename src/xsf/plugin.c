@@ -24,8 +24,6 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "config.h"
-
 #include <libgen.h>
 #include <pthread.h>
 #include <stdio.h>

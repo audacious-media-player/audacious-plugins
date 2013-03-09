@@ -2,8 +2,6 @@
  * Audacious: A cross-platform multimedia player.
  * Copyright (c) 2005  Audacious Team
  */
-#include "config.h"
-
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <sys/types.h>

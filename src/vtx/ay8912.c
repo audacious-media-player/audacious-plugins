@@ -8,7 +8,7 @@
 
 char *ayemu_err;
 
-static const char VERSION[] = "libayemu 0.9";
+/*static const char VERSION[] = "libayemu 0.9";*/
 
 const int MAGIC1 = 0xcdef;	/* for check ayemu_t structure inited */
 

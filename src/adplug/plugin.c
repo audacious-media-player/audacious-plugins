@@ -2,8 +2,6 @@
 #include <audacious/plugin.h>
 
 #include "adplug-xmms.h"
-#include "config.h"
-
 static const char * fmts[] =
     { "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
       "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
