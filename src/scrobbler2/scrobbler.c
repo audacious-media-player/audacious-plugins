@@ -219,11 +219,6 @@ static void unpaused (void *hook_data, void *user_data) {
 
 
 static bool_t scrobbler_init (void) {
-    PluginHandle *old_scrobbler = aud_plugin_lookup_basename("scrobbler");
-    if (old_scrobbler != NULL && aud_plugin_get_enabled(old_scrobbler)) {
-        aud_plugin_enable(old_scrobbler, FALSE);
-    }
-
     // Initialize libXML and check potential ABI mismatches between
     // the version it was compiled for and the actual libXML in use
     LIBXML_TEST_VERSION

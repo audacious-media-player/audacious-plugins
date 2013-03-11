@@ -785,24 +785,6 @@ if test "$enable_cdaudio_ng" = "yes"; then
 fi
 
 
-dnl *** scrobbler ***
-
-AC_ARG_ENABLE(scrobbler,
- [  --disable-scrobbler     disable Scrobbler plugin (default=enabled)],
- [have_scrobbler=$enableval], [have_scrobbler="yes"])
-
-if test "x$have_scrobbler" = "xyes"; then
-    PKG_CHECK_MODULES(CURL, [libcurl >= 7.9.7],
-     [have_scrobbler="$have_scrobbler"], [have_scrobbler="no"])
-    AC_SUBST(CURL_CFLAGS)
-    AC_SUBST(CURL_LIBS)
-fi
-
-if test "x$have_scrobbler" = "xyes"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS scrobbler"
-fi
-
-
 dnl *** scrobbler2 ***
 
 AC_ARG_ENABLE(scrobbler2,
@@ -1154,8 +1136,7 @@ echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
 echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
-echo "  Scrobbler:                              $have_scrobbler"
-echo "  Scrobbler 2.0 (experimental):           $have_scrobbler2"
+echo "  Scrobbler 2.0:                          $have_scrobbler2"
 echo "  LyricWiki viewer:                       $enable_lyricwiki"
 echo
 echo "  Effect"
