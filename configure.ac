@@ -1129,6 +1129,8 @@ echo "Configuration:"
 echo
 echo "  Install path:                           ${audacious_plugin_root}"
 echo
+echo "  IPv6 support:                           $enable_ipv6"
+echo
 echo "  Output Plugins"
 echo "  --------------"
 echo "  Open Sound System (oss4):               $have_oss4"
