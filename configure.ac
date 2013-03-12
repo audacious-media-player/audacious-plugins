@@ -1060,7 +1060,7 @@ fi
 
 dnl *** End of all plugin checks ***
 
-plugindir=`pkg-config audacious --variable=plugin_dir`
+PKG_CHECK_VAR([plugindir], [audacious], [plugin_dir], [], [AC_MSG_ERROR([Cannot retrieve plugin_dir pkgconfig variable])])
 AC_SUBST(plugindir)
 
 dnl XXX
