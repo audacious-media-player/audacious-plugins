@@ -80,7 +80,8 @@ fi
 dnl IPv6 support
 dnl ========================
 AC_ARG_ENABLE(ipv6,
- [AS_HELP_STRING([--enable-ipv6], [enable IPv6 support (default=no)])])
+ [AS_HELP_STRING([--enable-ipv6], [enable IPv6 support (default=no)])],
+ [enable_ipv6=$enableval], [enable_ipv6=no])
 if test "x$enable_ipv6" = "xyes"; then
     AC_DEFINE(USE_IPV6,, [Define if building with IPv6 support] )
 fi
@@ -109,7 +110,8 @@ dnl XSF
 dnl =======
 
 AC_ARG_ENABLE(xsf,
- [AS_HELP_STRING([--disable-xsf], [disable Nintendo DS audio decoder (xsf)])])
+ [AS_HELP_STRING([--disable-xsf], [disable Nintendo DS audio decoder (xsf)])],
+ [enable_xsf=$enableval], [enable_xsf="yes"])
 
 if test "x$enable_xsf" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS xsf"
@@ -142,7 +144,9 @@ dnl PSF
 dnl ===
 
 AC_ARG_ENABLE(psf,
- [AS_HELP_STRING([--disable-psf], [disable PlayStation (psf/psf2) audio decoder])])
+ [AS_HELP_STRING([--disable-psf], [disable PlayStation (psf/psf2) audio decoder])],
+ [enable_psf=$enableval],
+ [enable_psf=yes])
 
 if test "x$enable_psf" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS psf"
@@ -248,7 +252,8 @@ dnl Status Icon
 dnl ===========
 
 AC_ARG_ENABLE(statusicon,
- [AS_HELP_STRING([--disable-statusicon], [disable X11 Status Icon plugin (default=enabled)])])
+ [AS_HELP_STRING([--disable-statusicon], [disable X11 Status Icon plugin (default=enabled)])],
+ [have_statusicon=$enableval], [have_statusicon="yes"])
 
 if test "x$have_statusicon" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
@@ -667,7 +672,7 @@ if test "x$enable_sndio" != "xno"; then
          )]
     )
 
-    if test "x$enable_sndio" = "xyes"; then
+    if test "x$enable_sndio" = "xyes" -a "x$have_sndio" != "xyes"; then
         AC_MSG_ERROR([Cannot find sndio development files, but compilation of sndio output plugin has been explicitly requested; please install sndio dev files and run configure again])
     fi
 fi
@@ -895,7 +900,10 @@ dnl FileWriter
 dnl ==========
 
 AC_ARG_ENABLE(filewriter,
-    [AS_HELP_STRING([--disable-filewriter], [disable FileWriter output plugin (default=enabled)])])
+    [AS_HELP_STRING([--disable-filewriter], [disable FileWriter output plugin (default=enabled)])],
+    [enable_filewriter=$enableval],
+    [enable_filewriter=yes]
+)
 
 have_filewriter=no
 if test "x$enable_filewriter" != "xno"; then
@@ -1004,7 +1012,7 @@ if test "x$enable_speedpitch" != "xno"; then
     PKG_CHECK_MODULES([SAMPLERATE], [samplerate],
         [have_speedpitch=yes
          EFFECT_PLUGINS="$EFFECT_PLUGINS speed-pitch"],
-        [if test "x$enable_resample" = "xyes"; then
+        [if test "x$enable_speedpitch" = "xyes"; then
             AC_MSG_ERROR([Cannot find libsamplerate development files, but compilation of Speed and Pitch effect plugin has been explicitly requested; please install libsamplerate dev files and run configure again])
          fi]
     )
@@ -1014,7 +1022,8 @@ dnl GTK Interface
 dnl =============
 
 AC_ARG_ENABLE(gtkui,
- [AS_HELP_STRING([--disable-gtkui], [disable GTK interface (gtkui)])])
+ [AS_HELP_STRING([--disable-gtkui], [disable GTK interface (gtkui)])],
+ [enable_gtkui=$enableval], [enable_gtkui="yes"])
 
 if test "x$enable_gtkui" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui"
@@ -1024,7 +1033,8 @@ dnl Winamp Classic Interface
 dnl =============
 
 AC_ARG_ENABLE(skins,
- [AS_HELP_STRING([--disable-skins], [disable Winamp Classic interface (skins)])])
+ [AS_HELP_STRING([--disable-skins], [disable Winamp Classic interface (skins)])],
+ [enable_skins=$enableval], [enable_skins="yes"])
 
 if test "x$enable_skins" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS skins"
