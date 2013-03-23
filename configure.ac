@@ -77,17 +77,6 @@ if test "x$enable_gio" != "xno"; then
     )
 fi
 
-dnl IPv6 support
-dnl ========================
-AC_ARG_ENABLE(ipv6,
- [AS_HELP_STRING([--enable-ipv6], [enable IPv6 support (default=no)])],
- [enable_ipv6=$enableval], [enable_ipv6=no])
-if test "x$enable_ipv6" = "xyes"; then
-    AC_DEFINE(USE_IPV6,, [Define if building with IPv6 support] )
-fi
-AM_CONDITIONAL(USE_IPV6,test "x$enable_ipv6" = "xyes")
-AC_SUBST(USE_IPV6)
-
 dnl Console
 dnl =======
 
@@ -855,7 +844,7 @@ AC_ARG_ENABLE(mms,
 [enable_mms=auto])
 
 have_mms=no
-if test "x$enable_mms" != "xno"; then    
+if test "x$enable_mms" != "xno"; then
     PKG_CHECK_MODULES(MMS, [libmms >= 0.3],
         [have_mms=yes
          TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS mms"],
@@ -884,7 +873,7 @@ AC_ARG_ENABLE(cue,
 [enable_cue=auto])
 
 have_cue=no
-if test "x$enable_cue" != "xno"; then    
+if test "x$enable_cue" != "xno"; then
     PKG_CHECK_MODULES(CUE, [libcue],
         [have_cue=yes
          CONTAINER_PLUGINS="$CONTAINER_PLUGINS cue"],
@@ -1128,8 +1117,6 @@ echo
 echo "Configuration:"
 echo
 echo "  Install path:                           ${audacious_plugin_root}"
-echo
-echo "  IPv6 support:                           $enable_ipv6"
 echo
 echo "  Output Plugins"
 echo "  --------------"
