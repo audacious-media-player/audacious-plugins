@@ -7,9 +7,6 @@
  * It is licensed under the GNU General Public License, version 3.
  */
 
-//TODO: this is to be removed when the old scrobbler is deprecated
-#include <audacious/plugins.h>
-
 //audacious includes
 #include <audacious/plugin.h>
 #include <audacious/drct.h>
