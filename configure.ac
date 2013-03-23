@@ -1116,7 +1116,7 @@ dnl =============
 echo
 echo "Configuration:"
 echo
-echo "  Install path:                           ${audacious_plugin_root}"
+echo "  Install path:                           $plugindir"
 echo
 echo "  Output Plugins"
 echo "  --------------"
