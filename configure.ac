@@ -287,7 +287,7 @@ AC_ARG_ENABLE(aosd_xcomp,
 )
 
 if test "x$have_aosd" != "xyes"; then
-    if test "x$enable_aosd_xcomp" != "xno"; then
+    if test "x$enable_aosd_xcomp" = "xyes"; then
         AC_MSG_ERROR([Cannot enable X Composite support for Audacious OSD plugin which is disabled])
     else
         enable_aosd_xcomp=no
