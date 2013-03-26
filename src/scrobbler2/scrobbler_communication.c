@@ -27,7 +27,13 @@ static size_t result_callback (void *buffer, size_t size, size_t nmemb, void *us
 
     const size_t len = size*nmemb;
 
-    received_data = realloc(received_data, received_data_size + len + 1);
+    gchar *temp_data = realloc(received_data, received_data_size + len + 1);
+
+    if (temp_data == NULL) {
+      return 0;
+    } else {
+      received_data = temp_data;
+    }
 
     memcpy(received_data + received_data_size, buffer, len);
 
@@ -43,6 +49,7 @@ static int scrobbler_compare_API_Parameters(const void *a, const void *b) {
 static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
     qsort(parameters, nparams, sizeof(API_Parameter), scrobbler_compare_API_Parameters);
 
+    char *all_params = NULL;
     gchar *result = NULL;
     gchar *api_sig = NULL;
     size_t api_sig_length = strlen(SCROBBLER_SHARED_SECRET);
@@ -50,15 +57,15 @@ static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
     for (gint i = 0; i < nparams; i++) {
         api_sig_length += strlen(parameters[i].paramName) + strlen(parameters[i].argument);
     }
-    result = calloc(api_sig_length, sizeof(gchar));
+    all_params = calloc(api_sig_length, sizeof(gchar));
 
     for (int i = 0; i < nparams; i++) {
-        strcat(result, parameters[i].paramName);
-        strcat(result, parameters[i].argument);
+        strcat(all_params, parameters[i].paramName);
+        strcat(all_params, parameters[i].argument);
     }
 
-    api_sig = g_strconcat(result, SCROBBLER_SHARED_SECRET, NULL);
-    g_free(result);
+    api_sig = g_strconcat(all_params, SCROBBLER_SHARED_SECRET, NULL);
+    free(all_params);
 
 
     result = g_compute_checksum_for_string(G_CHECKSUM_MD5, api_sig, -1);
@@ -104,12 +111,6 @@ static gchar *create_message_to_lastfm (char *method_name, int n_args, ...) {
         msg_size += 2; //Counting '&' and '='
     }
     va_end(vl);
-
-    result = malloc(msg_size);
-    if (result == NULL) {
-        perror("malloc") ;
-        return NULL;
-    }
 
     gchar *aux;
     result = g_strconcat("method=", method_name, NULL);
