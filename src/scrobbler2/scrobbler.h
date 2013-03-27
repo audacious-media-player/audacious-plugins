@@ -25,7 +25,7 @@
 
 #define SCROBBLER_API_KEY "4b4f73bda181868353f9b438604adf52"
 #define SCROBBLER_SHARED_SECRET "716cc0a784bb62835de5bd674e65eb57"
-#define SCROBBLER_URL "http://ws.audioscrobbler.com/2.0/"
+#define SCROBBLER_URL "https://ws.audioscrobbler.com/2.0/"
 
 
 extern const PluginPreferences configuration;
@@ -52,6 +52,9 @@ extern pthread_mutex_t log_access_mutex;
 //TRUE when a permission check is being requested
 extern bool_t permission_check_requested;
 extern bool_t invalidate_session_requested;
+
+//Migrate the settings from the old scrobbler
+extern bool_t migrate_config_requested;
 
 
 

@@ -19,7 +19,9 @@
 
 
 //shared variables
-bool_t scrobbler_running = TRUE;
+bool_t scrobbler_running        = TRUE;
+bool_t migrate_config_requested = FALSE;
+
 pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t communication_signal = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t log_access_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -232,6 +234,23 @@ static bool_t scrobbler_init (void) {
         scrobbling_enabled = FALSE;
     }
     request_token = NULL;
+
+    //TODO: Remove this after we are "sure" that noone is using the old scrobbler (from audacious < 3.4)
+    //By Debian's standard, this will probably be by 2020 or so
+    //Migration from the old scrobbler config
+    char *oldpass = aud_get_string("audioscrobbler","password");
+    if (oldpass != NULL && strlen(oldpass) != 0) {
+      char *olduser = aud_get_string("audioscrobbler","username");
+      if (olduser != NULL && strlen(olduser) != 0) {
+        session_key = NULL;
+        scrobbling_enabled = FALSE;
+        migrate_config_requested = TRUE;
+      }
+      g_free(olduser);
+    }
+    g_free(oldpass);
+
+
 
     pthread_create(&communicator, NULL, scrobbling_thread, NULL);
 

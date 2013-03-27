@@ -183,29 +183,11 @@ static bool_t scrobbler_request_token() {
     return TRUE;
 }
 
-//returns:
-// FALSE if there was a network problem
-// TRUE otherwise (session_key must be checked)
-static bool_t scrobbler_request_session() {
-    bool_t result = FALSE;
+
+static bool_t update_session_key() {
+    bool_t result = TRUE;
     gchar *error_code = NULL;
     gchar *error_detail = NULL;
-
-    gchar *sessionmsg = create_message_to_lastfm("auth.getSession",
-                                                 2,
-                                                 "token", request_token,
-                                                 "api_key", SCROBBLER_API_KEY);
-
-    if (send_message_to_lastfm(sessionmsg) == FALSE) {
-        g_free(sessionmsg);
-        return FALSE;
-    }
-
-    //the token can only be sent once
-    if (request_token != NULL) {
-        g_free(request_token);
-    }
-    request_token = NULL;
 
     if (read_session_key(&error_code, &error_detail) == FALSE) {
         if (error_code != NULL && (
@@ -228,6 +210,31 @@ static bool_t scrobbler_request_session() {
         aud_set_string("scrobbler", "session_key", session_key);
     }
     return result;
+}
+
+//returns:
+// FALSE if there was a network problem
+// TRUE otherwise (session_key must be checked)
+static bool_t scrobbler_request_session() {
+
+    gchar *sessionmsg = create_message_to_lastfm("auth.getSession",
+                                                 2,
+                                                 "token", request_token,
+                                                 "api_key", SCROBBLER_API_KEY);
+
+    if (send_message_to_lastfm(sessionmsg) == FALSE) {
+        g_free(sessionmsg);
+        return FALSE;
+    }
+
+    g_free(sessionmsg);
+    //the token can only be sent once
+    if (request_token != NULL) {
+        g_free(request_token);
+    }
+    request_token = NULL;
+
+    return update_session_key();
 }
 
 
@@ -532,12 +539,72 @@ static void treat_permission_check_request() {
     } //session_key == NULL || strlen(session_key) == 0
 }
 
+// This is a sister function of scrobbler_request_session, using the getMobileSession
+//API call, for migrating from the old config
+//returns:
+// FALSE if there was a network problem OR a session_key was not obtained
+// TRUE if a new session_key was obtained
+static bool_t treat_migrate_config() {
+
+    char *password = aud_get_string("audioscrobbler","password");
+    if (password == NULL || strlen(password) == 0) {
+        g_free(password);
+        return FALSE;
+    }
+
+    char *username = aud_get_string("audioscrobbler","username");
+    if (username == NULL || strlen(username) == 0) {
+        g_free(password);
+        g_free(username);
+        return FALSE;
+    }
+
+    gchar *checksumThis = g_strdup_printf("%s%s", username, password);
+    gchar *authToken = g_compute_checksum_for_string(G_CHECKSUM_MD5, checksumThis, -1);
+
+    gchar *sessionmsg = create_message_to_lastfm("auth.getMobileSession",
+                                                 3,
+                                                 "authToken", authToken,
+                                                 "username", username,
+                                                 "api_key", SCROBBLER_API_KEY);
+    g_free(username);
+    g_free(password);
+    g_free(checksumThis);
+    g_free(authToken);
+
+    if (send_message_to_lastfm(sessionmsg) == FALSE) {
+        g_free(sessionmsg);
+        return FALSE;
+    }
+
+    g_free(sessionmsg);
+
+    if (update_session_key() == TRUE) {
+        if(session_key != NULL && strlen(session_key) != 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    } else {
+        return FALSE;
+    }
+}
+
+
 //Scrobbling will only be enabled after the first connection test passed
 gpointer scrobbling_thread (gpointer input_data) {
 
     while (scrobbler_running) {
+        if (migrate_config_requested) {
+          if (treat_migrate_config() == FALSE) {
+            aud_interface_show_error("Audacious is now using an improved version of the Last.fm Scrobbler.\nPlease check the Preferences for the Scrobbler plugin.");
+          }
+          aud_set_string("audioscrobbler", "username", "");
+          aud_set_string("audioscrobbler", "password", "");
+          aud_set_string("audioscrobbler", "sc_url", "");
+          migrate_config_requested = FALSE;
 
-        if (permission_check_requested) {
+        } else if (permission_check_requested) {
             treat_permission_check_request();
             permission_check_requested = FALSE;
 
