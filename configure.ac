@@ -1007,6 +1007,24 @@ if test "x$enable_speedpitch" != "xno"; then
     )
 fi
 
+dnl *** SoX Resampler effect plugin
+
+AC_ARG_ENABLE(soxr,
+ [AS_HELP_STRING([--disable-soxr], [disable SoX Resampler effect plugin (default=enabled)])],
+ [enable_soxr=$enableval], [enable_soxr=auto]
+)
+
+have_soxr=no
+if test "x$enable_soxr" != "xno"; then
+    PKG_CHECK_MODULES([SOXR], [soxr],
+        [have_soxr=yes
+         EFFECT_PLUGINS="$EFFECT_PLUGINS sox-resampler"],
+        [if test "x$enable_soxr" = "xyes"; then
+            AC_MSG_ERROR([Cannot find soxr development files, but compilation of SoX Resampler effect plugin has been explicitly requested; please install soxr dev files and run configure again])
+         fi]
+    )
+fi
+
 dnl GTK Interface
 dnl =============
 
@@ -1185,6 +1203,7 @@ echo "  Voice Removal:                          yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $have_resample"
 echo "  Speed and Pitch:                        $have_speedpitch"
+echo "  SoX Resampler:                          $have_soxr"
 echo
 echo "  Visualization"
 echo "  -------------"
