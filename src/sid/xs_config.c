@@ -100,22 +100,12 @@ void xs_init_configuration(void)
     xs_pstrcpy(&xs_cfg.stilDBPath, "~/C64Music/DOCUMENTS/STIL.txt");
     xs_pstrcpy(&xs_cfg.hvscPath, "~/C64Music");
 
-#if defined(HAVE_SONG_POSITION) && !defined(AUDACIOUS_PLUGIN)
-    xs_cfg.subsongControl = XS_SSC_PATCH;
-#else
     xs_cfg.subsongControl = XS_SSC_POPUP;
-#endif
     xs_cfg.detectMagic = FALSE;
 
-#ifndef HAVE_XMMSEXTRA
     xs_cfg.titleOverride = TRUE;
-#endif
 
-#ifdef AUDACIOUS_PLUGIN
     xs_pstrcpy(&xs_cfg.titleFormat, "${artist} - ${title} (${copyright}) <${subsong-id}/${subsong-num}> [${sid-model}/${sid-speed}]");
-#else
-    xs_pstrcpy(&xs_cfg.titleFormat, "%p - %t (%c) <%n/%N> [%m/%C]");
-#endif
 
     xs_cfg.subAutoEnable = TRUE;
     xs_cfg.subAutoMinOnly = TRUE;

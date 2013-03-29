@@ -23,6 +23,8 @@
 #ifndef XMMS_SID_H
 #define XMMS_SID_H
 
+#include <pthread.h>
+
 #include "xs_support.h"
 
 #ifdef __cplusplus
@@ -36,12 +38,6 @@ extern "C" {
  * purposes. Output through g_logv().
  */
 #undef DEBUG
-
-/* Define to enable non-portable thread and mutex debugging code.
- * You need to #define DEBUG also to make this useful.
- * (Works probably with GNU/Linux pthreads implementation only)
- */
-#undef XS_MUTEX_DEBUG
 
 /* HardSID-support is not working and is untested, thus we disable it here.
  */
@@ -89,24 +85,11 @@ extern "C" {
 /* Macros for mutexes and threads. These exist to be able to
  * easily change from pthreads to glib threads, etc, if necessary.
  */
-#define XS_THREAD_T             GThread *
-#define XS_THREAD_EXIT(M)       g_thread_exit(M)
-#define XS_THREAD_JOIN(M)       g_thread_join(M)
 #define XS_MPP(M)               M ## _mutex
-#define XS_MUTEX(M)             GStaticMutex XS_MPP(M) = G_STATIC_MUTEX_INIT
-#define XS_MUTEX_H(M)           extern GStaticMutex XS_MPP(M)
-#ifdef XS_MUTEX_DEBUG
-#  define XS_MUTEX_LOCK(M)    {                             \
-    gboolean tmpRes;                                        \
-    XSDEBUG("XS_MUTEX_TRYLOCK(" #M ")\n");                  \
-    tmpRes = g_static_mutex_trylock(&XS_MPP(M));            \
-    XSDEBUG("[" #M "] = %s\n", tmpRes ? "TRUE" : "FALSE");  \
-    }
-#  define XS_MUTEX_UNLOCK(M)    { XSDEBUG("XS_MUTEX_UNLOCK(" #M ")\n"); g_static_mutex_unlock(&XS_MPP(M)); }
-#else
-#  define XS_MUTEX_LOCK(M)      g_static_mutex_lock(&XS_MPP(M))
-#  define XS_MUTEX_UNLOCK(M)    g_static_mutex_unlock(&XS_MPP(M))
-#endif
+#define XS_MUTEX(M)             pthread_mutex_t XS_MPP(M) = PTHREAD_MUTEX_INITIALIZER
+#define XS_MUTEX_H(M)           extern pthread_mutex_t XS_MPP(M)
+#define XS_MUTEX_LOCK(M)        pthread_mutex_lock(&XS_MPP(M))
+#define XS_MUTEX_UNLOCK(M)      pthread_mutex_unlock(&XS_MPP(M))
 
 /* Character sets used in STIL database and PlaySID file metadata
  */
