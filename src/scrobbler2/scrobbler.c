@@ -242,7 +242,7 @@ static bool_t scrobbler_init (void) {
       //We haven't been configured yet
 
       char *migrated = aud_get_string("scrobbler", "migrated");
-      if (g_strcmp0(migrated, "true") == 0) {
+      if (g_strcmp0(migrated, "true") != 0) {
         //We haven't been migrated yet
 
         char *oldpass = aud_get_string("audioscrobbler","password");
