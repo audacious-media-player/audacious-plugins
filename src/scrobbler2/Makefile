@@ -1,4 +1,4 @@
-PLUGIN = scrobbler2${PLUGIN_SUFFIX}
+PLUGIN = scrobbler${PLUGIN_SUFFIX}
 
 SRCS = scrobbler.c \
 	   scrobbler_communication.c \

@@ -595,13 +595,12 @@ static bool_t treat_migrate_config() {
 gpointer scrobbling_thread (gpointer input_data) {
 
     while (scrobbler_running) {
+
         if (migrate_config_requested) {
           if (treat_migrate_config() == FALSE) {
             aud_interface_show_error("Audacious is now using an improved version of the Last.fm Scrobbler.\nPlease check the Preferences for the Scrobbler plugin.");
           }
-          aud_set_string("audioscrobbler", "username", "");
-          aud_set_string("audioscrobbler", "password", "");
-          aud_set_string("audioscrobbler", "sc_url", "");
+          aud_set_string("scrobbler", "migrated", "true");
           migrate_config_requested = FALSE;
 
         } else if (permission_check_requested) {

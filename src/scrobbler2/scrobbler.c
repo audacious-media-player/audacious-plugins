@@ -238,17 +238,30 @@ static bool_t scrobbler_init (void) {
     //TODO: Remove this after we are "sure" that noone is using the old scrobbler (from audacious < 3.4)
     //By Debian's standard, this will probably be by 2020 or so
     //Migration from the old scrobbler config
-    char *oldpass = aud_get_string("audioscrobbler","password");
-    if (oldpass != NULL && strlen(oldpass) != 0) {
-      char *olduser = aud_get_string("audioscrobbler","username");
-      if (olduser != NULL && strlen(olduser) != 0) {
-        session_key = NULL;
-        scrobbling_enabled = FALSE;
-        migrate_config_requested = TRUE;
+    if (session_key == NULL) {
+      //We haven't been configured yet
+
+      char *migrated = aud_get_string("scrobbler", "migrated");
+      if (g_strcmp0(migrated, "true") == 0) {
+        //We haven't been migrated yet
+
+        char *oldpass = aud_get_string("audioscrobbler","password");
+        if (oldpass != NULL && strlen(oldpass) != 0) {
+
+          char *olduser = aud_get_string("audioscrobbler","username");
+          if (olduser != NULL && strlen(olduser) != 0) {
+            //And the old scrobbler was configured
+
+            session_key = NULL;
+            scrobbling_enabled = FALSE;
+            migrate_config_requested = TRUE;
+          }
+          g_free(olduser);
+        }
+        g_free(oldpass);
       }
-      g_free(olduser);
+      g_free(migrated);
     }
-    g_free(oldpass);
 
 
 
