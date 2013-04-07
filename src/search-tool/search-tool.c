@@ -316,18 +316,25 @@ static void do_search (void)
 
     g_hash_table_foreach (database, search_cb, & state);
 
+    int total = 0;
+
     for (int f = 0; f < FIELDS; f ++)
     {
-        if (index_count (state.items[f]) <= MAX_RESULTS)
+        int count = index_count (state.items[f]);
+        if (count > MAX_RESULTS - total)
+            count = MAX_RESULTS - total;
+
+        if (count)
         {
             index_sort (state.items[f], item_compare);
-            index_merge_append (items, state.items[f]);
+            index_copy_append (state.items[f], 0, items, count);
+            total += count;
         }
 
         index_free (state.items[f]);
     }
 
-    g_array_set_size (selection, index_count (items));
+    g_array_set_size (selection, total);
     memset (selection->data, 0, selection->len);
     if (selection->len > 0)
         selection->data[0] = 1;
