@@ -1,5 +1,6 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/libmp4.c
+src/adplug/adplug-xmms.cc
 src/adplug/plugin.c
 src/alarm/alarm.c
 src/alarm/interface.c
@@ -11,8 +12,8 @@ src/amidi-plug/backend-alsa/b-alsa.c
 src/amidi-plug/backend-fluidsynth/b-fluidsynth.c
 src/amidi-plug/i_configure-alsa.c
 src/amidi-plug/i_configure-ap.c
-src/amidi-plug/i_configure-fluidsynth.c
 src/amidi-plug/i_configure.c
+src/amidi-plug/i_configure-fluidsynth.c
 src/amidi-plug/i_fileinfo.c
 src/amidi-plug/i_utils.c
 src/aosd/aosd.c
@@ -24,20 +25,20 @@ src/audpl/audpl.c
 src/blur_scope/blur_scope.c
 src/bs2b/plugin.c
 src/cairo-spectrum/cairo-spectrum.c
-src/cd-menu-items/cd-menu-items.c
 src/cdaudio-ng/cdaudio-ng.c
+src/cd-menu-items/cd-menu-items.c
 src/compressor/plugin.c
 src/console/Ay_Apu.cxx
 src/console/Ay_Emu.cxx
 src/console/Blip_Buffer.cxx
 src/console/Classic_Emu.cxx
+src/console/configure.c
 src/console/Data_Reader.cxx
 src/console/Dual_Resampler.cxx
 src/console/Fir_Resampler.cxx
 src/console/Gbs_Emu.cxx
 src/console/Gme_File.cxx
 src/console/Gym_Emu.cxx
-src/console/Gzip_File.cxx
 src/console/Gzip_Reader.cxx
 src/console/Hes_Emu.cxx
 src/console/Kss_Emu.cxx
@@ -45,17 +46,15 @@ src/console/M3u_Playlist.cxx
 src/console/Multi_Buffer.cxx
 src/console/Music_Emu.cxx
 src/console/Nes_Apu.cxx
-src/console/Nsf_Emu.cxx
 src/console/Nsfe_Emu.cxx
+src/console/Nsf_Emu.cxx
+src/console/plugin.c
 src/console/Sap_Emu.cxx
 src/console/Spc_Cpu.cxx
 src/console/Spc_Dsp.cxx
 src/console/Spc_Emu.cxx
 src/console/Vgm_Emu.cxx
 src/console/Ym2612_Emu.cxx
-src/console/abstract_file.cxx
-src/console/configure.c
-src/console/plugin.c
 src/crossfade/crossfade.c
 src/crystalizer/crystalizer.c
 src/cue/cue.c
@@ -64,6 +63,7 @@ src/ffaudio/ffaudio-core.c
 src/filewriter/filewriter.c
 src/filewriter/mp3.c
 src/filewriter/vorbis.c
+src/flacng/metadata.c
 src/flacng/plugin.c
 src/gio/gio.c
 src/gnomeshortcuts/gnomeshortcuts.c
@@ -84,6 +84,7 @@ src/m3u/m3u.c
 src/metronom/metronom.c
 src/mixer/mixer.c
 src/mms/mms.c
+src/modplug/modplugbmp.cxx
 src/modplug/plugin_main.c
 src/mpg123/mpg123.c
 src/mpris2/plugin.c
@@ -95,9 +96,8 @@ src/pls/pls.c
 src/psf/plugin.c
 src/pulse_audio/pulse_audio.c
 src/resample/resample.c
-src/scrobbler/configure.c
-src/scrobbler/plugin.c
-src/scrobbler/scrobbler.c
+src/scrobbler2/config_window.c
+src/scrobbler2/scrobbler.c
 src/sdlout/plugin.c
 src/search-tool/search-tool.c
 src/skins/plugin.c
@@ -111,6 +111,7 @@ src/skins/util.c
 src/sndfile/plugin.c
 src/sndio/sndio.c
 src/song_change/song_change.c
+src/sox-resampler/sox-resampler.c
 src/speed-pitch/speed-pitch.c
 src/statusicon/statusicon.c
 src/stereo_plugin/stereo.c

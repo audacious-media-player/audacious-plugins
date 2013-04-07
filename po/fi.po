@@ -1,13 +1,9 @@
-# Czech translation for Audacious Plugins
+# Finnish translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-#   <appukonrad@gmail.com>, 2012-2013.
-# Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004.
-#   <pavelfric@seznam.cz>, 2012.
-# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009, 2010, 2011, 2012.
-#   <petr.simacek@gmail.com>, 2012.
+# Jyri Tuomisto <jstuomisto@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
@@ -15,12 +11,12 @@ msgstr ""
 "POT-Creation-Date: 2013-04-07 20:27+0200\n"
 "PO-Revision-Date: 2013-03-27 18:08+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: Czech\n"
-"Language: cs\n"
+"Language-Team: Finnish\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:462
 msgid "mono"
@@ -32,20 +28,20 @@ msgstr "stereo"
 
 #: src/aac/libmp4.c:439 src/skins/ui_main.c:461
 msgid "surround"
-msgstr "prostorový zvuk"
+msgstr "surround"
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr "AAC Dekodér"
+msgstr "AAC-dekooderi"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:465
 #: src/psf/plugin.c:125 src/vtx/vtx.c:68 src/xsf/plugin.c:85
 msgid "sequenced"
-msgstr ""
+msgstr "sarjoitettu"
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib přehrávač)"
+msgstr "AdPlug (AdLib-soitin)"
 
 #: src/alarm/alarm.c:809
 msgid ""
@@ -53,13 +49,13 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"Zásuvný modul pro spuštění přehrávání v přesně určený čas.\n"
+"Liitännäinen jolla voidaan aloittaa toistaminen tietyllä ajan hetkellä.\n"
 "\n"
-"Původně napsal Adam Feakin a Daniel Stodden."
+"Alkuperäiset kehittäjät Adam Feakin ja Daniel Stodden."
 
 #: src/alarm/alarm.c:814 src/alarm/interface.c:82
 msgid "Alarm"
-msgstr "Budík"
+msgstr "Herätyskello"
 
 #: src/alarm/interface.c:28
 msgid ""
@@ -83,6 +79,24 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"Aika\n"
+"  Kellonaika:\n"
+"    Millon herätyskello soi.\n"
+"\n"
+"  Hiljennä, kun kulunut:\n"
+"    Hiljennä herätyskello tämän ajan kuluttua.\n"
+"       (jos herätys-ikkunaa ei ole suljettu)\n"
+"\n"
+"\n"
+"Päivät\n"
+"  Päivä:\n"
+"    Valitse päivät jolloin herätyskello on aktiivinen.\n"
+"\n"
+"  Aika:\n"
+"    Valitse jokaiselle päivälle herätysaika erikseen,\n"
+"    tai valitse käytettäväksi oletus herätysaikaa.\n"
+"\n"
+"\n"
 
 #: src/alarm/interface.c:45
 msgid ""
@@ -105,6 +119,23 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 msgstr ""
+"Äänenvoimakkuus\n"
+"  Häivytys:\n"
+"    Häivytä sisään tämän ajan kuluessa.\n"
+"\n"
+"  Aloita:\n"
+"    Aloita häivytys tästä äänenvoimakkuudesta\n"
+"\n"
+"  Lopullinen:\n"
+"    Lopullinen äänenvoimakkuus.\n"
+"    Jos aika on asetettu nollaksi, asetetaan tämä \n"
+"   äänenvoimakkuus ja aloitetaan toistaminen.\n"
+"\n"
+"\n"
+"Asetukset:\n"
+"  Lisäkomento:\n"
+"    Suoritetaan tämä komento kun hälytys alkaa.\n"
+"\n"
 
 #: src/alarm/interface.c:62
 msgid ""
@@ -119,59 +150,69 @@ msgid ""
 "    Type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown."
 msgstr ""
+"  Soittolista:\n"
+"    Lataa tämä soittolista. Jos soittolistaa\n"
+"    ei anneta, käytetään nykyistä.\n"
+"    URL mp3- tai ogg-virralle voidaan\n"
+"    myös syöttää tähän.\n"
+"\n"
+"  Muistutus:\n"
+"    Näytä muistutus kun hälytys alkaa.\n"
+"    Kirjoita muistutus laatikkoon ja kytke\n"
+"    se päälle, jos haluat muistutuksen näkyvän."
 
 #: src/alarm/interface.c:81
 msgid "This is your wakeup call."
-msgstr "Toto je váš budící signál."
+msgstr "Herätys!"
 
 #: src/alarm/interface.c:99
 msgid "Your reminder for today is..."
-msgstr ""
+msgstr "Muistutuksesi tälle päivälle on..."
 
 #: src/alarm/interface.c:101 src/alarm/interface.c:415
 msgid "Reminder"
-msgstr "Upomínání"
+msgstr "Muistutus"
 
 #: src/alarm/interface.c:140
 msgid "Monday"
-msgstr "Pondělí"
+msgstr "Maanantai"
 
 #: src/alarm/interface.c:140
 msgid "Tuesday"
-msgstr "Úterý"
+msgstr "Tiistai"
 
 #: src/alarm/interface.c:140
 msgid "Wednesday"
-msgstr "Středa"
+msgstr "Keskiviikko"
 
 #: src/alarm/interface.c:141
 msgid "Thursday"
-msgstr "Čtvrtek"
+msgstr "Torstai"
 
 #: src/alarm/interface.c:141
 msgid "Friday"
-msgstr "Pátek"
+msgstr "Perjantai"
 
 #: src/alarm/interface.c:141
 msgid "Saturday"
-msgstr "Sobota"
+msgstr "Lauantai"
 
 #: src/alarm/interface.c:141
 msgid "Sunday"
-msgstr "Neděle"
+msgstr "Sunnuntai"
 
 #: src/alarm/interface.c:175
 msgid "Alarm Settings"
-msgstr "Nastavení budíku"
+msgstr "Herätyskellon asetukset"
 
 #: src/alarm/interface.c:186 src/alarm/interface.c:250
 #: src/alarm/interface.c:265
 msgid "Time"
-msgstr "Čas"
+msgstr "Aika"
 
 #: src/alarm/interface.c:193
 msgid "Alarm at (default):"
-msgstr "Budit v (standardní):"
+msgstr "Kellonaika (oletus):"
 
 #: src/alarm/interface.c:216
 msgid "h"
@@ -179,121 +220,121 @@ msgstr "h"
 
 #: src/alarm/interface.c:220
 msgid "Quiet after:"
-msgstr "Ticho po:"
+msgstr "Hiljennä, kun aikaa kulunut:"
 
 #: src/alarm/interface.c:234
 msgid "hours"
-msgstr "h"
+msgstr "tunnit"
 
 #: src/alarm/interface.c:246
 msgid "minutes"
-msgstr "min"
+msgstr "minuutit"
 
 #: src/alarm/interface.c:255
 msgid "Choose the days for the alarm to come on"
-msgstr "Vyberte dny, kdy má budík budit"
+msgstr "Valitse päivät jolloin herätyskello on aktiivinen"
 
 #: src/alarm/interface.c:262
 msgid "Day"
-msgstr "Den"
+msgstr "Päivä"
 
 #: src/alarm/interface.c:280 src/bs2b/plugin.c:177
 #: src/skins/ui_equalizer.c:1107 src/skins/ui_manager.c:456
 #: src/skins/ui_manager.c:477
 msgid "Default"
-msgstr "Standardní"
+msgstr "Oletus"
 
 #: src/alarm/interface.c:310
 msgid "Days"
-msgstr "Dny"
+msgstr "Päivät"
 
 #: src/alarm/interface.c:319
 msgid "Fading"
-msgstr "Zesilování"
+msgstr "Häivytys"
 
 #: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:396
 msgid "seconds"
-msgstr "sekund"
+msgstr "sekuntia"
 
 #: src/alarm/interface.c:334 src/alarm/interface.c:381
 msgid "Volume"
-msgstr "Hlasitost"
+msgstr "Äänenvoimakkuus"
 
 #: src/alarm/interface.c:339
 msgid "Start at"
-msgstr "Začít na"
+msgstr "Aloita"
 
 #: src/alarm/interface.c:357
 msgid "Final"
-msgstr "Skončit na"
+msgstr "Lopullinen"
 
 #: src/alarm/interface.c:372
 msgid "Current"
-msgstr "Současná"
+msgstr "Nykyinen"
 
 #: src/alarm/interface.c:387
 msgid "Additional Command"
-msgstr "Dodatečný příkaz"
+msgstr "Lisäkomento"
 
 #: src/alarm/interface.c:393
 msgid "enable"
-msgstr "zapnout"
+msgstr "käytä"
 
 #: src/alarm/interface.c:400
 msgid "Playlist (optional)"
-msgstr "Seznam skladeb (volitelné)"
+msgstr "Soittolista (valinnainen)"
 
 #: src/alarm/interface.c:407
 msgid "Select a playlist"
-msgstr "Vybrat seznam skladeb"
+msgstr "Valitse soittolista"
 
 #: src/alarm/interface.c:419
 msgid "Use reminder"
-msgstr "Upomínat"
+msgstr "Käytä muistutusta"
 
 #: src/alarm/interface.c:428
 msgid "Options"
-msgstr "Nastavení"
+msgstr "Asetukset"
 
 #: src/alarm/interface.c:433
 msgid "What do these options mean?"
-msgstr "Co tyto volby znamenají?"
+msgstr "Mitä nämä asetukset tarkoittavat?"
 
 #: src/alarm/interface.c:447 src/skins/ui_manager.c:389
 msgid "Help"
-msgstr "Nápověda"
+msgstr "Ohje"
 
 #: src/albumart/albumart.c:143
 msgid "Album Art"
-msgstr "Album"
+msgstr "Levynkansitaide"
 
 #: src/alsa/config.c:212
 msgid "Default PCM device"
-msgstr "Implicitní PCM zařízení"
+msgstr "Oletus PCM-laite"
 
 #: src/alsa/config.c:241
 msgid "Default mixer device"
-msgstr "Implicitní směšovací zařízení"
+msgstr "Oletus miksauslaite"
 
 #: src/alsa/config.c:422
 msgid "ALSA Output Plugin Preferences"
-msgstr "Nastavení výstupního modulu ALSY"
+msgstr "ALSA-lähdön asetukset"
 
 #: src/alsa/config.c:428
 msgid "PCM device:"
-msgstr "Zařízení PCM:"
+msgstr "PCM-laite:"
 
 #: src/alsa/config.c:430
 msgid "Mixer device:"
-msgstr "Zařízení směšovače:"
+msgstr "Miksauslaite:"
 
 #: src/alsa/config.c:432
 msgid "Mixer element:"
-msgstr "Prvek směšovače:"
+msgstr "Miksauskanava:"
 
 #: src/alsa/config.c:435
 msgid "Work around drain hangup"
-msgstr "Obejít zaseknutí při vyprazdňovaní"
+msgstr "Korjaa \"drain hangup\""
 
 #: src/alsa/plugin.c:25
 msgid ""
@@ -303,31 +344,31 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"ALSA výstupní modul pro Audacious\n"
+"ALSA-lähdön liitännäinen Audacioukselle.\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
-"Mé díky patří Williamu Pitcockovy, autoru výstupního ALSA Zásuvného modulu "
-"NG, jehož kód sloužil jako reference, když použití ALSA mauálu nestačilo."
+"Kiitokseni William Pitcock:lle (ALSA Output Plugin NG:n kehittäjä), jonka "
+"koodi toimi referenssinä silloin, kun ALSA:n manuaali ei riittänyt."
 
 #: src/alsa/plugin.c:32
 msgid "ALSA Output"
-msgstr "ALSA výstup:"
+msgstr "ALSA-lähtö"
 
 #: src/amidi-plug/amidi-plug.c:248
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
-"Nevybrali jste žádné porty sekvenceru určené pro přehrávání MIDI. Můžete tak "
-"učinit v nastavení modulu MIDI."
+"Et ole valinnut yhtään sekvensseriporttia MIDI-toistolle. Voit tehdä sen "
+"MIDI-liitännäisen asetuksista."
 
 #: src/amidi-plug/amidi-plug.c:708
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (MIDI přehrávač)"
+msgstr "AMIDI-liitännäinen (MIDI-soitin)"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:38
 msgid "ALSA Backend "
-msgstr "ALSA backend"
+msgstr "ALSA-taustajärjestelmä"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:41
 msgid ""
@@ -340,18 +381,18 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Tento backend posílá MIDI události skupině uživatelem vybraných portů ALSA "
-"sekvenceru. Rozhraní ALSA sekvenceru je velmi přizpůsobivé, může poskytovat "
-"porty hardwarovým syntetizátorům na zvukové kartě (př. emu10k1) nebo "
-"syntetizátorům softwarovým, vnějším zařízením atd.\n"
-"Tento backend žádný zvuk nevytváří, MIDI události jsou zpracovány přímo "
-"zařízením/programem, který se ukrývá za ALSA portem. Na příklad MIDI "
-"události zaslané hardwarovému syntetizátoru budou hrány přímo jím.\n"
-"Backend napsal Giacomo Lozito."
+"Tämä taustajärjestelmä lähettää MIDI-tapahtumia käyttäjän valitsemalle "
+"ryhmälle ALSA-sekvensseriportteja. ALSA-sekvensseri tarjoaa portteja "
+"äänikorttien syntetisaattoreille (esim. emu10k1), "
+"ohjelmistosyntetisaattoreille, ulkoisille laitteille, jne. \n"
+"Taustajärjestelmä ei tuota ääntä, vaan MIDI-tapahtumat käsitellään suoraan "
+"laitteistossa tai ohjelmassa. Esimerkiksi laitteistosyntetisaattorille "
+"lähetetyt MIDI-tapahtumat toistetaan suoraan.\n"
+"Luonut Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:45
 msgid "FluidSynth Backend "
-msgstr "Becken FluidSynth"
+msgstr "FluidSynth-taustajärjestelmä"
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:48
 msgid ""
@@ -362,222 +403,222 @@ msgid ""
 "by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Tento backend vytváří zvuky zasíláním MIDI událostí do FluidSynth, což je "
-"softwarový syntetizátor pracující v reálném čase založený na specifikaci "
-"SoundFont2 (www.fluidsynth.org).\n"
-"Vzniklý zvuk může být upraven efektovými moduly přehrávače a následně je "
-"zpracován vybraným výstupním modulem.\n"
-"Backend napsal Giacomo Lozito."
+"Tämä taustajärjestelmä tuottaa ääntä lähettämällä MIDI-tapahtumia "
+"FluidSynthille, reaaliaikaiselle ohjelmistosyntetisaattorille, joka perustuu "
+"SoundFont2 -spesifikaatiolle (www.fluidsynth.org).\n"
+"Tuotettua ääntä voidaan muokata soittimen tehosteliitännäisillä, mikä "
+"lopuksi prosessoidaan valitulla äänilähdön liitännäisellä.\n"
+"Luonut Giacomo Lozito."
 
 #: src/amidi-plug/i_configure-alsa.c:351
 msgid "Port"
-msgstr "Port"
+msgstr "Portti"
 
 #: src/amidi-plug/i_configure-alsa.c:353
 msgid "Client name"
-msgstr "Jméno klientu"
+msgstr "Asiakasohjelman nimi"
 
 #: src/amidi-plug/i_configure-alsa.c:355
 msgid "Port name"
-msgstr "Jméno portu"
+msgstr "Portin nimi"
 
 #: src/amidi-plug/i_configure-alsa.c:369
 msgid "ALSA output ports"
-msgstr "Výstupní port ALSY"
+msgstr "ALSA-lähdön portit"
 
 #: src/amidi-plug/i_configure-alsa.c:430
 msgid "Soundcard: "
-msgstr "Zvuková karta: "
+msgstr "Äänikortti:"
 
 #: src/amidi-plug/i_configure-alsa.c:432
 msgid "Mixer control: "
-msgstr "Ovládání směšovače: "
+msgstr "Miksauskanava:"
 
 #: src/amidi-plug/i_configure-alsa.c:442
 msgid "Mixer settings"
-msgstr "Nastavení směšovače"
+msgstr "Miksausasetukset"
 
 #: src/amidi-plug/i_configure-alsa.c:470
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">Backend\n"
-"ALSA</span>"
+"<span size=\"smaller\">ALSA-\n"
+"taustajärjestelmä</span>"
 
 #: src/amidi-plug/i_configure-ap.c:63
 msgid "AMIDI-Plug - backend information"
-msgstr "AMIDI-Plug – podrobnosti o backendu"
+msgstr "AMIDI-liitännäinen - taustajärjestelmän tiedot"
 
 #: src/amidi-plug/i_configure-ap.c:221
 msgid "Backend selection"
-msgstr "Výběr backendu"
+msgstr "Taustajärjestelmän valinta"
 
 #: src/amidi-plug/i_configure-ap.c:261
 msgid "Playback settings"
-msgstr "Nastavení přehrávání"
+msgstr "Toiston asetukset"
 
 #: src/amidi-plug/i_configure-ap.c:266
 msgid "Transpose: "
-msgstr "Transponovat: "
+msgstr "Transponointi:"
 
 #: src/amidi-plug/i_configure-ap.c:275
 msgid "Drum shift: "
-msgstr "Posun bubnu: "
+msgstr "Rummun siirto:"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "Advanced settings"
-msgstr "Pokročilá nastavení"
+msgstr "Edistyneet asetukset"
 
 #: src/amidi-plug/i_configure-ap.c:297
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr "předpočítat délku MIDI souborů v seznamu skladeb"
+msgstr "laske soittolistan MIDI-tiedostojen kesto"
 
 #: src/amidi-plug/i_configure-ap.c:304
 msgid "extract comments from MIDI file (if available)"
-msgstr "vytáhnout komentáře z MIDI souboru (pokud existují)"
+msgstr "poimi kommentit MIDI-tiedostosta (jos saatavilla)"
 
 #: src/amidi-plug/i_configure-ap.c:311
 msgid "extract lyrics from MIDI file (if available)"
-msgstr "vytáhnout text z MIDI souboru (pokud existuje)"
+msgstr "poimi lyriikat MIDI-tiedostosta (jos saatavilla)"
 
 #: src/amidi-plug/i_configure-ap.c:344
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
+"<span size=\"smaller\">AMIDI-\n"
+"liitännäinen</span>"
 
 #: src/amidi-plug/i_configure.c:59
 msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug – vyberte soubor"
+msgstr "AMIDI-liitännäinen - valitse tiedosto"
 
 #: src/amidi-plug/i_configure.c:104
 msgid "AMIDI-Plug Settings"
-msgstr "Nastavení AMIDI-Pluginu"
+msgstr "AMIDI-liitännäisen asetukset"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:63
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug – vyberte soundfontový soubor"
+msgstr "AMIDI-liitännäinen - valitse SoundFont-tiedosto"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:321
 msgid "SoundFont settings"
-msgstr "Nastavení SoundFontu"
+msgstr "SoundFont-asetukset"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:359
 msgid "Filename"
-msgstr "Jméno souboru"
+msgstr "Tiedostonimi"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:363
 msgid "Size (bytes)"
-msgstr "Velikost (v bajtech):"
+msgstr "Koko (tavuina)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:412
 msgid "Load SF on player start"
-msgstr "SoundFont nahrát při spuštění přehrávače"
+msgstr "Lataa SF kun soitin käynnistetään"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "Load SF on first MIDI file play"
-msgstr "Načíst SF při prvním přehrávání MIDI souboru"
+msgstr "Lataa SF kun ensimmäinen MIDI-tiedosto toistetaan"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:431
 msgid "Synthesizer settings"
-msgstr "Nastavení syntetizátoru"
+msgstr "Syntetisaattorin asetukset"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:440
 msgid "gain"
-msgstr "zesílení"
+msgstr "vahvistus"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:446
 #: src/amidi-plug/i_configure-fluidsynth.c:476
 #: src/amidi-plug/i_configure-fluidsynth.c:506
 #: src/amidi-plug/i_configure-fluidsynth.c:540
 msgid "use default"
-msgstr "použít implicitní"
+msgstr "käytä oletusta"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:449
 #: src/amidi-plug/i_configure-fluidsynth.c:479
 msgid "value:"
-msgstr "hodnota:"
+msgstr "arvo:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:470
 msgid "polyphony"
-msgstr "polyfonie"
+msgstr "polyfonia"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:500
 msgid "reverb"
-msgstr "dozvuk"
+msgstr "kaikuefekti"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:509
 #: src/amidi-plug/i_configure-fluidsynth.c:543
 msgid "yes"
-msgstr "ano"
+msgstr "kyllä"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:511
 #: src/amidi-plug/i_configure-fluidsynth.c:545
 msgid "no"
-msgstr "ne"
+msgstr "ei"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:534
 msgid "chorus"
-msgstr "sbor"
+msgstr "kuoroefekti"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:568
 msgid "sample rate"
-msgstr "vzorkovací kmitočet"
+msgstr "näytteenottotaajuus"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:574
 msgid "22050 Hz "
-msgstr "22050 Hz "
+msgstr "22050 Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:577
 msgid "44100 Hz "
-msgstr "44100 Hz "
+msgstr "44100 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:580
 msgid "96000 Hz "
-msgstr "96000 Hz "
+msgstr "96000 Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:583
 msgid "custom "
-msgstr "vlastní "
+msgstr "mukautettu"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:592
 msgid "Hz "
-msgstr "Hz "
+msgstr "Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:662
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">Backend\n"
-"FluidSynth</span>"
+"<span size=\"smaller\">FluidSynth-\n"
+"taustajärjestelmä</span>"
 
 #: src/amidi-plug/i_fileinfo.c:175
 msgid "Name:"
-msgstr "Jméno:"
+msgstr "Nimi:"
 
 #: src/amidi-plug/i_fileinfo.c:200
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"small\"> Podrobnosti o MIDI </span>"
+msgstr "<span size=\"smaller\"> MIDI-tiedot </span>"
 
 #: src/amidi-plug/i_fileinfo.c:214
 msgid "Format:"
-msgstr "Formát:"
+msgstr "Formaatti:"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "Length (msec):"
-msgstr "Délka (ms):"
+msgstr "Kesto (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:220
 msgid "No. of Tracks:"
-msgstr "č. skladby"
+msgstr "Raitojen lukumäärä:"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "variable"
-msgstr "proměnlivé"
+msgstr "muuttuja"
 
 #: src/amidi-plug/i_fileinfo.c:228
 msgid "BPM:"
@@ -585,31 +626,31 @@ msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:236
 msgid "BPM (wavg):"
-msgstr "BPM (váž.):"
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:239
 msgid "Time Div:"
-msgstr "Čas. pom.:"
+msgstr "Aikajako:"
 
 #: src/amidi-plug/i_fileinfo.c:250
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"small\"> Komentáře a text MIDI skladby </span>"
+msgstr "<span size=\"smaller\"> MIDI-kommentit ja -lyriikat </span>"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no comments available in this MIDI file *"
-msgstr "* v MIDI souboru se nenachází žádné komentáře *"
+msgstr "* MIDI-tiedostossa ei ollut kommentteja *"
 
 #: src/amidi-plug/i_fileinfo.c:314
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* v MIDI souboru se nenachází text skladby *"
+msgstr "* MIDI-tiedostossa ei ollut lyriikoita *"
 
 #: src/amidi-plug/i_fileinfo.c:367
 msgid "  (invalid UTF-8)"
-msgstr "  (neplatné UTF8)"
+msgstr "  (virheellinen UTF-8)"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
-msgstr "O AMIDI-Pluginu"
+msgstr "Tietoja AMIDI-liitännäisestä"
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
@@ -637,10 +678,29 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"\n"
+"modulaarinen MIDI-soitin\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"Luonut Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"Erityiskiitokset...\n"
+"\n"
+"Clemens Ladisch ja Jaroslav Kysela\n"
+"aplaymidi ja amixer olivat erittäin hyödyllisiä, \n"
+"alsa-lib dokumentaation ohella. Ne auttoivat\n"
+"oppimaan lisää ALSA:n ohjelmointirajapinnasta.\n"
+"\n"
+"Alfredo Spadafina\n"
+"hienosta MIDI-näppäimistö logosta\n"
+"\n"
+"Tony Vroon\n"
+"avusta alpha-testauksessa"
 
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
-msgstr "Audacious OSD "
+msgstr "Audacious OSD"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
@@ -648,31 +708,31 @@ msgstr "AOSD (On-Screen Display)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "Obdélník"
+msgstr "Suorakulmio"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "Zaoblený obdélník"
+msgstr "Pyöristetty suorakulmio"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "Konkávní obdélník"
+msgstr "Kovera suorakulmio"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "Žádný"
+msgstr "Ei mitään"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "Zahájení přehrávání"
+msgstr "Toiston aloitus"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Spustí OSD, když se začne přehrávat skladba."
+msgstr "Näyttää OSD:n kun kappaleen toisto alkaa."
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "Změna názvu"
+msgstr "Nimen muutos"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -680,136 +740,135 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Spustí OSD, když se během přehrávaní změní název skladby, ale jméno souboru "
-"je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se "
-"střídají skladby."
+"Näyttää OSD:n kun kappaleen nimi muuttuu toiston aikana, mutta tiedostonimi "
+"pysyy samana. Hyödyllinen lähinnä internet-virroille."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "Pozastavení"
+msgstr "Keskeytys"
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "Spustí OSD, když je přehrávání pozastaveno."
+msgstr "Näyttää OSD:n kun toisto keskeytetään."
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "Obnovení přehrávání"
+msgstr "Toisto jatkuu"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Spustí OSD, když přehrávání obnoveno."
+msgstr "Näyttää OSD:n kun toisto jatkuu."
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr "Umístění"
+msgstr "Sijoitus"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
-msgstr "Relativní odsazení ve směru osy X:"
+msgstr "Suhteellinen X:n poikkeama:"
 
 #: src/aosd/aosd_ui.c:207
 msgid "Relative Y offset:"
-msgstr "Relativní odsazení ve směru osy Y"
+msgstr "Suhteellinen Y:n poikkeama:"
 
 #: src/aosd/aosd_ui.c:214
 msgid "Max OSD width:"
-msgstr "Maximální šířka OSD"
+msgstr "OSD:n maksimileveys:"
 
 #: src/aosd/aosd_ui.c:225
 msgid "Multi-Monitor options"
-msgstr "Nastavení pro více monitorů"
+msgstr "Monen näytön asetukset"
 
 #: src/aosd/aosd_ui.c:229
 msgid "Display OSD using:"
-msgstr "Zobrazit OSD na:"
+msgstr "Näytä OSD käyttäen:"
 
 #: src/aosd/aosd_ui.c:231
 msgid "all monitors"
-msgstr "všech monitorech"
+msgstr "kaikki näytöt"
 
 #: src/aosd/aosd_ui.c:234
 #, c-format
 msgid "monitor %i"
-msgstr "monitoru %i"
+msgstr "näyttö %i"
 
 #: src/aosd/aosd_ui.c:287
 msgid "Timing (ms)"
-msgstr "Časování (ms)"
+msgstr "Ajoitus (ms)"
 
 #: src/aosd/aosd_ui.c:292
 msgid "Display:"
-msgstr "Zobrazení:"
+msgstr "Näytä:"
 
 #: src/aosd/aosd_ui.c:297
 msgid "Fade in:"
-msgstr "Rozsvícení:"
+msgstr "Häivytä sisään:"
 
 #: src/aosd/aosd_ui.c:302
 msgid "Fade out:"
-msgstr "Pohasnutí:"
+msgstr "Häivytä ulos:"
 
 #: src/aosd/aosd_ui.c:383
 msgid "Fonts"
-msgstr "Fonty"
+msgstr "Kirjasimet"
 
 #: src/aosd/aosd_ui.c:391
 #, c-format
 msgid "Font %i:"
-msgstr "Font %i:"
+msgstr "Kirjasin %i:"
 
 #: src/aosd/aosd_ui.c:409
 msgid "Shadow"
-msgstr "Stín"
+msgstr "Varjo"
 
 #: src/aosd/aosd_ui.c:439
 msgid "Internationalization"
-msgstr "Internacionalizace"
+msgstr "Kansainvälistys"
 
 #: src/aosd/aosd_ui.c:445
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr "Zakázat převod textu do UTF-8 (uvnitř aosd)"
+msgstr "Poista käytöstä tekstin muutos UTF-8:ksi (aosd)"
 
 #: src/aosd/aosd_ui.c:462
 msgid "Select Skin File"
-msgstr "Vyberte soubor se skinem"
+msgstr "Valitse skinitiedosto"
 
 #: src/aosd/aosd_ui.c:573
 msgid "Render Style"
-msgstr "Styl vyobrazení"
+msgstr "Esitystyyli"
 
 #: src/aosd/aosd_ui.c:589
 msgid "Colors"
-msgstr "Barvy"
+msgstr "Värit"
 
 #: src/aosd/aosd_ui.c:602
 #, c-format
 msgid "Color %i:"
-msgstr "Barvy %i:"
+msgstr "Väri %i:"
 
 #: src/aosd/aosd_ui.c:620
 msgid "Custom Skin"
-msgstr "Vlastní skin:"
+msgstr "Mukautettu skini"
 
 #: src/aosd/aosd_ui.c:626
 msgid "Skin file:"
-msgstr "Soubor se skinem:"
+msgstr "Skinitiedosto:"
 
 #: src/aosd/aosd_ui.c:630
 msgid "Browse"
-msgstr "Procházet"
+msgstr "Selaa"
 
 #: src/aosd/aosd_ui.c:729
 msgid "Enable trigger"
-msgstr "Povolit spouštěč"
+msgstr "Käytä liipaisinta"
 
 #: src/aosd/aosd_ui.c:756
 msgid "Event"
-msgstr "Událost"
+msgstr "Tapahtuma"
 
 #: src/aosd/aosd_ui.c:784
 msgid "Composite manager detected"
-msgstr "Nalezen kompozitní správce"
+msgstr "Komposointimanageri havaittu"
 
 #: src/aosd/aosd_ui.c:791
 msgid ""
@@ -817,102 +876,102 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Kompozitní správce nebyl nalezen.\n"
-"Pokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte "
-"kompozitního správce, jinak OSD nebude správně fungovat."
+"Komposointimanageria ei havaittu.\n"
+"Jos komposointimanageri ei ole vielä päällä, aktivoi se tai muutoin OSD ei "
+"toimi kunnolla."
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
-msgstr "Při falešné průhlednosti není kompozitní správce potřeba"
+msgstr "Komposointimanageria ei tarvita jäljiteltyyn läpinäkyvyyteen"
 
 #: src/aosd/aosd_ui.c:837
 msgid "Transparency"
-msgstr "Průhlednost"
+msgstr "Läpinäkyvyys"
 
 #: src/aosd/aosd_ui.c:843
 msgid "Fake transparency"
-msgstr "Falešná průhlednost"
+msgstr "Jäljitelty läpinäkyvyys"
 
 #: src/aosd/aosd_ui.c:845
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Skutečná průhlednost (vyžaduje kompozitní rozšíření X)"
+msgstr "Oikea läpinäkyvyys (vaatii X:n komposointilaajennuksen)"
 
 #: src/aosd/aosd_ui.c:887
 msgid "Composite extension not loaded"
-msgstr "Kompozitní rozšíření není nahráno"
+msgstr "Komposointilaajennusta ei ole ladattu"
 
 #: src/aosd/aosd_ui.c:895
 msgid "Composite extension not available"
-msgstr "Kompozitní rozšíření není dostupné"
+msgstr "Komposointilaajennus ei ole saatavilla"
 
 #: src/aosd/aosd_ui.c:914
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>OSD Audacious</span>"
+msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
 #: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
-msgstr "OSD pro Audacious – nastavení"
+msgstr "Audacious OSD - asetukset"
 
 #: src/aosd/aosd_ui.c:1016
 msgid "Test"
-msgstr "Vyzkoušet"
+msgstr "Testaa"
 
 #: src/aosd/aosd_ui.c:1031
 msgid "Position"
-msgstr "Umístění"
+msgstr "Sijainti"
 
 #: src/aosd/aosd_ui.c:1036
 msgid "Animation"
-msgstr "Animace"
+msgstr "Animaatio"
 
 #: src/aosd/aosd_ui.c:1041
 msgid "Text"
-msgstr "Text"
+msgstr "Teksti"
 
 #: src/aosd/aosd_ui.c:1046
 msgid "Decoration"
-msgstr "Výzdoba"
+msgstr "Koristeet"
 
 #: src/aosd/aosd_ui.c:1051
 msgid "Trigger"
-msgstr "Spouštěč"
+msgstr "Liipaisin"
 
 #: src/aosd/aosd_ui.c:1056
 msgid "Misc"
-msgstr "Různé"
+msgstr "Muut"
 
 #: src/asx/asx.c:96
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "ASXv1/ASXv2 seznamy skladeb"
+msgstr "ASXv1/ASXv2 -soittolistat"
 
 #: src/audpl/audpl.c:222
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious seszam skladeb (audpl)"
+msgstr "Audacious -soittolistat (audpl)"
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
-msgstr "<b>Barva</b>"
+msgstr "<b>Väri</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
-msgstr "Rozsah rozostření"
+msgstr "Blur Scope"
 
 #: src/bs2b/plugin.c:136
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Předvolby Bauer Stereophonic-na-Binaural"
+msgstr "Bauer Stereophonic-to-Binaural -asetukset"
 
 #: src/bs2b/plugin.c:147
 msgid "Feed level:"
-msgstr "Úroveň přeslechu:"
+msgstr "Syöttötaso:"
 
 #: src/bs2b/plugin.c:161
 msgid "Cut frequency:"
-msgstr "Ořezová frekvence:"
+msgstr "Leikkaustaajuus:"
 
 #: src/bs2b/plugin.c:175
 msgid "Presets:"
-msgstr "Předvolby:"
+msgstr "Esiasetukset:"
 
 #: src/bs2b/plugin.c:197
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -920,7 +979,7 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:294
 msgid "Spectrum Analyzer"
-msgstr "Analyzátor spektra"
+msgstr "Spektrin analysaattori"
 
 #: src/cdaudio-ng/cdaudio-ng.c:103
 msgid ""
@@ -933,204 +992,214 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> ja muut.\n"
+"\n"
+"Kiitoket libcdio:n kehittäjille <http://www.gnu.org/software/libcdio/>\n"
+"sekä libcddb:n kehittäjille <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Kiitokset myös Tony Vroon:lle opastuksesta ja avusta.\n"
+"\n"
+"Tämä oli Google Summer of Code 2007 -projekti."
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
 msgid "<b>Device</b>"
-msgstr "<b>Zařízení</b>"
+msgstr "<b>Laite</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:122
 msgid "Read speed:"
-msgstr "Rychlost čtení:"
+msgstr "Lukunopeus:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "Override device:"
-msgstr "Přepsat zařízení:"
+msgstr "Laite:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "<b>Metadata</b>"
-msgstr "<b>Metadata</b>"
+msgstr "<b>Metatiedot</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CD-Text"
-msgstr "Použití CD-Text"
+msgstr "Käytä CD-tekstiä"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CDDB"
-msgstr "Používat CDDB"
+msgstr "Käytä CDDB:tä"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use HTTP instead of CDDBP"
-msgstr "Použít HTTP místo CDDBP"
+msgstr "Käytä HTTP:tä CDDBP:n sijasta"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Server:"
-msgstr "Server:"
+msgstr "Palvelin:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Path:"
-msgstr "Cesta:"
+msgstr "Polku:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Port:"
-msgstr "Port:"
+msgstr "Portti:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:148
 msgid "Audio CD Plugin"
-msgstr "Audio CD Plugin"
+msgstr "Ääni CD -liitännäinen"
 
 #: src/cdaudio-ng/cdaudio-ng.c:249
 msgid "Failed to initialize cdio subsystem."
-msgstr "Nepodařilo se inicializovat cdio subsystému."
+msgstr "cdio-alijärjestelmää ei voitu alustaa."
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 #, c-format
 msgid "Invalid URI %s."
-msgstr "Neplatná URI %s."
+msgstr "Viallinen URI %s."
 
 #: src/cdaudio-ng/cdaudio-ng.c:308
 #, c-format
 msgid "Track %d not found."
-msgstr "Stopa %d nebyla nalezena."
+msgstr "Raitaa %d ei löydetty."
 
 #: src/cdaudio-ng/cdaudio-ng.c:310
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "Raita %d on dataraita."
 
 #: src/cdaudio-ng/cdaudio-ng.c:312
 msgid "Failed to open audio output."
-msgstr "Nelze otevřít zvukový výstup"
+msgstr "Äänilähtöä ei voitu avata."
 
 #: src/cdaudio-ng/cdaudio-ng.c:395
 msgid "Error reading audio CD."
-msgstr ""
+msgstr "Virhe luettaessa ääni CD:tä."
 
 #: src/cdaudio-ng/cdaudio-ng.c:505
 msgid "Audio CD"
-msgstr "Zvukové CD"
+msgstr "Ääni CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:535 src/cdaudio-ng/cdaudio-ng.c:544
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "Nelze otevřít CD zařízení %s."
+msgstr "Ei voitu avata CD-asemaa %s."
 
 #: src/cdaudio-ng/cdaudio-ng.c:547
 msgid "No audio capable CD drive found."
-msgstr "Nebyly nalezeny funkční CD mechaniky"
+msgstr "Ääneen kykenevää CD-asemaa ei löydetty."
 
 #: src/cdaudio-ng/cdaudio-ng.c:574
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Nepodařilo se dokončit inicializaci otevření CD mechaniky."
+msgstr "Avatun CD-aseman alustaminen epäonnistui."
 
 #: src/cdaudio-ng/cdaudio-ng.c:587
 msgid "Failed to retrieve first/last track number."
-msgstr "Nepodařilo se načíst první/poslední číslo skladby."
+msgstr "Ei voitu lukea ensimmäistä/viimeistä raitaa."
 
 #: src/cdaudio-ng/cdaudio-ng.c:612
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "nelze přečíst začátek/konec LSN pro skladbu %d."
+msgstr "Ei voida lukea alku/loppu LSN:ää raidalle %d."
 
 #: src/cdaudio-ng/cdaudio-ng.c:702
 msgid "Failed to create the cddb connection."
-msgstr "Nepodařilo se vytvořit připojení k CDDB."
+msgstr "CDDB-yhteyden luonti epäonnistui."
 
 #: src/cdaudio-ng/cdaudio-ng.c:777
 msgid "Failed to query the CDDB server"
-msgstr "Nepodařil se dotaz na server CDDB"
+msgstr "CDDB-palvelimen kysely epäonnistui."
 
 #: src/cdaudio-ng/cdaudio-ng.c:779
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr "Nepodařil se dotaz na server CDDB: %s"
+msgstr "CDDB-palvelimen kysely epäonnistui: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:803
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr "Nepodařilo se přečíst cddb info: %s"
+msgstr "Ei voitu lukea cddb-tietoa: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:876
 msgid "Drive is empty."
-msgstr "Mechanika je prázdná"
+msgstr "Asema on tyhjä."
 
 #: src/cdaudio-ng/cdaudio-ng.c:878
 msgid "Unsupported disk type."
-msgstr "Nepodporovaný druh disku."
+msgstr "Levytyyppiä ei tueta."
 
 #: src/cd-menu-items/cd-menu-items.c:30
 msgid "Play CD"
-msgstr "Přehrát CD"
+msgstr "Toista CD"
 
 #: src/cd-menu-items/cd-menu-items.c:30
 msgid "Add CD"
-msgstr "Přidat CD"
+msgstr "Lisää CD"
 
 #: src/cd-menu-items/cd-menu-items.c:57
 msgid "Audio CD Menu Items"
-msgstr "Položky Audio CD menu"
+msgstr "Ääni CD -valikkonimikkeet"
 
 #: src/compressor/plugin.c:35
 msgid "<b>Compression</b>"
-msgstr "<b>Komprese</b>"
+msgstr "<b>Kompressio</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr "Hlasitost středu:"
+msgstr "Keskikanava:"
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
-msgstr "Rozsah dynamiky:"
+msgstr "Dynaaminen alue:"
 
 #: src/compressor/plugin.c:53
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Dynaamisen alueen kompressori -liitännäinen Audacioukselle\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/compressor/plugin.c:58
 msgid "Dynamic Range Compressor"
-msgstr "Dynamický rozsah kompresoru"
+msgstr "Dynaamisen alueen kompressori"
 
 #: src/console/configure.c:134 src/console/plugin.c:42
 msgid "Game Console Music Decoder"
-msgstr "Dekodér hudby pro herní konzole"
+msgstr "Pelikonsoli-dekooderi"
 
 #: src/console/configure.c:151
 msgid "General"
-msgstr "Obecné"
+msgstr "Yleiset"
 
 #: src/console/configure.c:153 src/skins/ui_manager.c:175
 msgid "Playback"
-msgstr "Přehrát"
+msgstr "Toisto"
 
 #: src/console/configure.c:168
 msgid "Bass:"
-msgstr "Hloubky:"
+msgstr "Basso:"
 
 #: src/console/configure.c:172 src/console/configure.c:183
 #: src/console/configure.c:204
 msgid "secs"
-msgstr "s"
+msgstr "sekunteja"
 
 #: src/console/configure.c:179
 msgid "Treble:"
-msgstr "Výšky:"
+msgstr "Diskantti:"
 
 #: src/console/configure.c:200
 msgid "Default song length:"
-msgstr "Implicitní délka skladby:"
+msgstr "Kappaleen oletuskesto:"
 
 #: src/console/configure.c:206
 msgid "Resampling"
-msgstr "Převzorkování"
+msgstr "Uudelleennäytteistys"
 
 #: src/console/configure.c:212
 msgid "Enable audio resampling"
-msgstr "Povolit převzorkování zvuku"
+msgstr "Käytä äänen uudelleennäytteistystä"
 
 #: src/console/configure.c:227
 msgid "Resampling rate:"
-msgstr "Převzorkovat na:"
+msgstr "Näytteenottotaajuus:"
 
 #: src/console/configure.c:231 src/resample/resample.c:178
 #: src/resample/resample.c:184 src/resample/resample.c:187
@@ -1146,19 +1215,19 @@ msgstr "SPC"
 
 #: src/console/configure.c:243
 msgid "Ignore length from SPC tags"
-msgstr "Ignorovat délku z SPC popisků"
+msgstr "Sivuuta kesto SPC-tietueista"
 
 #: src/console/configure.c:244
 msgid "Increase reverb"
-msgstr "Prodloužit dozvuk"
+msgstr "Lisää kaikuefektiä"
 
 #: src/console/configure.c:269
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
-"Implicitní délka, vyjádřená v sekundách, se použije na skladby, které "
-"neposkytují informace o délce (např. nekonečné smyčky)."
+"Kappaleen oletuskestoa (sekunteina) käytetään kappaleille, joille ei ole "
+"määritelty kestoa (esim. luuppaavat raidat)."
 
 #: src/console/plugin.c:27
 msgid ""
@@ -1169,6 +1238,12 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Pelikonsoli-dekooderi perustuu Game_Music_Emu 0.5.2:lle\n"
+"Tuetut formaatit: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious liitännäisen kehittivät:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/crossfade/crossfade.c:81
 msgid ""
@@ -1176,37 +1251,37 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Prolínání se nezdařilo, protože písně měly různý počet kanálů.  Můžete "
-"použít Míchání kanálů a převést písně na stejný počet kanálů."
+"Ristiinhäivytys epäonnistui koska kappaleilla oli eri määrä kanavia.  Voit "
+"käyttää kanavamikseriä muuntaaksesi kappaleiden sisältämien kanavien määrää."
 
 #: src/crossfade/crossfade.c:88
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Prolínání se nezdařilo, protože písničky měly různé vzorkovací frekvence. "
-"Můžete použít Převádění vzorkovací frekvence pro převod skladeb na stejnou "
-"vzorkovací frekvenci."
+"Ristiinhäivytys epäonnistui koska kappaleilla oli eri "
+"näytteenottotaajuudet.  Voit käyttää uudelleennäytteistäjää muuntaaksesi "
+"kappaleiden näytteenottotaajuutta."
 
 #: src/crossfade/crossfade.c:254
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Prolínání zásuvný modul pro Audacious\n"
+"Ristiinhäivytys-liitännäinen Audacioukselle\n"
 "Copyright 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:258
 msgid "<b>Crossfade</b>"
-msgstr "<b>Prolínání</b>"
+msgstr "<b>Ristiinhäivytys</b>"
 
 #: src/crossfade/crossfade.c:259
 msgid "Overlap:"
-msgstr "Přesah:"
+msgstr "Limittäisyys:"
 
 #: src/crossfade/crossfade.c:269
 msgid "Crossfade"
-msgstr "Prolínání"
+msgstr "Ristiinhäivytys"
 
 #: src/crystalizer/crystalizer.c:40
 msgid "<b>Crystalizer</b>"
@@ -1214,23 +1289,23 @@ msgstr "<b>Crystalizer</b>"
 
 #: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
 msgid "Intensity:"
-msgstr "Intenzita:"
+msgstr "Vahvuus:"
 
 #: src/crystalizer/crystalizer.c:51
 msgid "Crystalizer"
-msgstr ""
+msgstr "Crystalizer"
 
 #: src/cue/cue.c:158
 msgid "Cue Sheet Plugin"
-msgstr ""
+msgstr "Cue Sheet -liitännäinen"
 
 #: src/echo_plugin/echo.c:24
 msgid "<b>Echo</b>"
-msgstr "<b>Ozvěna</ b>"
+msgstr "<b>Kaikuefekti</b>"
 
 #: src/echo_plugin/echo.c:25
 msgid "Delay:"
-msgstr "Zpoždění:"
+msgstr "Viive:"
 
 #: src/echo_plugin/echo.c:27
 msgid "ms"
@@ -1238,11 +1313,11 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.c:28
 msgid "Feedback:"
-msgstr "Zpětná vazba:"
+msgstr "Feedback:"
 
 #: src/echo_plugin/echo.c:31
 msgid "Volume:"
-msgstr "Hlasitost:"
+msgstr "Äänenvoimakkuus:"
 
 #: src/echo_plugin/echo.c:114
 msgid ""
@@ -1251,14 +1326,14 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik, 1999"
 msgstr ""
-"Ozvěna zásuvný modul \n"
-"Od Johna Levina, 1999\n"
+"Kaikuefekti-liitännäinen\n"
+"Luonut Johan Levin, 1999\n"
 "\n"
-"Prostorová ozvěna od Carla van Schaika, 1999"
+"Surround-kaiun luonut Carl van Schaik, 1999"
 
 #: src/echo_plugin/echo.c:120
 msgid "Echo"
-msgstr "Ozvěna"
+msgstr "Kaikuefekti"
 
 #: src/ffaudio/ffaudio-core.c:632
 msgid ""
@@ -1269,64 +1344,64 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
-"Multiformátový audio dekodovací zásuný modul pro použití v Audacious\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"Monen ääniformaatin dekoodaus -liitännäinen Audacioukselle käyttäen FFmpeg "
+"multimedia frameworkia (http://www.ffmpeg.org/).\n"
 "\n"
-"Audacious zásuvný modul od:\n"
-"Williama Pitcocka <nenolod@nenolod.net>\n"
-"Matti Hämäläinena <ccr@tnsp.org>"
+"Audacious liitännäisen kehittivät:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:679
 msgid "FFmpeg Plugin"
-msgstr "FFmpeg Plugin"
+msgstr "FFmpeg-liitännäinen"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr ""
+msgstr "FileWriter-asetukset"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
-msgstr "Formát výstupního souboru:"
+msgstr "Tiedostoformaatti:"
 
 #: src/filewriter/filewriter.c:439
 msgid "Configure"
-msgstr "Nastavit"
+msgstr "Muuta asetuksia"
 
 #: src/filewriter/filewriter.c:449
 msgid "Save into original directory"
-msgstr "Ukládat do původního adresáře"
+msgstr "Tallenna alkuperäiseen kansioon"
 
 #: src/filewriter/filewriter.c:454
 msgid "Save into custom directory"
-msgstr "Ukládat do vlastního adresáře"
+msgstr "Tallenna muuhun kansioon"
 
 #: src/filewriter/filewriter.c:464
 msgid "Output file folder:"
-msgstr "Složka s výstupními soubory:"
+msgstr "Tiedoston kohdekansio:"
 
 #: src/filewriter/filewriter.c:468
 msgid "Pick a folder"
-msgstr "Vybrat složku"
+msgstr "Valitse kansio"
 
 #: src/filewriter/filewriter.c:481
 msgid "Get filename from:"
-msgstr "Získat jméno souboru z:"
+msgstr "Hae tiedostonimi:"
 
 #: src/filewriter/filewriter.c:484
 msgid "original file tags"
-msgstr "původních značek v souboru"
+msgstr "alkuperäiset tiedoston tietueet"
 
 #: src/filewriter/filewriter.c:490
 msgid "original filename"
-msgstr "jména původního souboru"
+msgstr "alkuperäinen tiedostonimi"
 
 #: src/filewriter/filewriter.c:497
 msgid "Don't strip file name extension"
-msgstr "Nezkracovat příponu jména souboru"
+msgstr "Pidä tiedoston pääte"
 
 #: src/filewriter/filewriter.c:506
 msgid "Prepend track number to filename"
-msgstr "Předřadit jménu souboru číslo stopy"
+msgstr "Lisää raidan numero tiedostonimeen"
 
 #: src/filewriter/filewriter.c:515
 msgid ""
@@ -1345,32 +1420,32 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Tento program je svobodným softwarem; můžete jej šířit a/nebo modifikovat\n"
-"a to podle podmínek GNU General Public Licence, vydávané\n"
-"Free Software Foundation; buď verze 2 této licence, nebo\n"
-"(podle vašeho uvážení) kterékoli pozdější verze.\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
 "\n"
-"Tento program je rozšiřován v naději, že bude užitečný,\n"
-"ale BEZ JAKÉKOLIV ZÁRUKY; dokonce i bez předpokládané záruky\n"
-"PRODEJNOSTI anebo VHODNOSTI PRO URČITÝ ÚČEL. viz\n"
-"GNU General Public License pro více informací.\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
 "\n"
-"Měli byste obdržet kopii GNU General Public License\n"
-"spolu s tímto programem; pokud ne, napište na Free Software\n"
-"Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "FileWriter-liitännäinen"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
-msgstr "Auto"
+msgstr "Automaattinen"
 
 #: src/filewriter/mp3.c:37
 msgid "Joint Stereo"
-msgstr "Joint-stereo"
+msgstr "Joint Stereo"
 
 #: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:193
 msgid "Stereo"
@@ -1382,15 +1457,15 @@ msgstr "Mono"
 
 #: src/filewriter/mp3.c:688
 msgid "MP3 Configuration"
-msgstr "Nastavení MP3"
+msgstr "MP3-asetukset"
 
 #: src/filewriter/mp3.c:712
 msgid "Algorithm Quality:"
-msgstr "Kvalita algoritmu:"
+msgstr "Algoritmin laatu:"
 
 #: src/filewriter/mp3.c:737
 msgid "Output Samplerate:"
-msgstr "Výstupní vzorkovací kmitočet"
+msgstr "Näytteenottotaajuus:"
 
 #: src/filewriter/mp3.c:765
 msgid "(Hz)"
@@ -1398,75 +1473,75 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr "Datový tok / Kompresní poměr:"
+msgstr "Bittinopeus / Pakkaussuhde:"
 
 #: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
-msgstr "Datový tok (kb/s):"
+msgstr "Bittinopeus (kbps):"
 
 #: src/filewriter/mp3.c:829
 msgid "Compression ratio:"
-msgstr "Kompresní poměr:"
+msgstr "Pakkaussuhde:"
 
 #: src/filewriter/mp3.c:853
 msgid "Audio Mode:"
-msgstr "Zvukový režim:"
+msgstr "Äänitila:"
 
 #: src/filewriter/mp3.c:878
 msgid "Misc:"
-msgstr "Různé:"
+msgstr "Muut:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr "Vynutit přísnou shodu s ISO"
+msgstr "Pakota tarkka ISO-yhteensopivuus"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
-msgstr "Ochrana před chybami"
+msgstr "Virhesuojaus"
 
 #: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
 msgid "Quality"
-msgstr "Kvalita"
+msgstr "Laatu"
 
 #: src/filewriter/mp3.c:921
 msgid "Enable VBR/ABR"
-msgstr "Povolit VBR/ABR"
+msgstr "Käytä VBR/ABR"
 
 #: src/filewriter/mp3.c:931
 msgid "Type:"
-msgstr "Druh:"
+msgstr "Tyyppi:"
 
 #: src/filewriter/mp3.c:964
 msgid "VBR Options:"
-msgstr "Nastavení VBR:"
+msgstr "VBR-asetukset:"
 
 #: src/filewriter/mp3.c:980
 msgid "Minimum bitrate (kbps):"
-msgstr "Nejmenší datový tok (kb/s):"
+msgstr "Minimi bittinopeus (kbps):"
 
 #: src/filewriter/mp3.c:1007
 msgid "Maximum bitrate (kbps):"
-msgstr "Největší datový tok (kb/s):"
+msgstr "Maksimi bittinopeus (kbps):"
 
 #: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
-msgstr "Přísně vynucovat nejmenší datový tok"
+msgstr "Valvo tiukasti minimi bittinopeutta"
 
 #: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
-msgstr "Nastavení ABR:"
+msgstr "ABR-asetukset:"
 
 #: src/filewriter/mp3.c:1052
 msgid "Average bitrate (kbps):"
-msgstr "Průměrný datový tok (kb/s):"
+msgstr "Bittinopeuden keskiarvo (kbps):"
 
 #: src/filewriter/mp3.c:1080
 msgid "VBR quality level:"
-msgstr "Úroveň kvality VBR:"
+msgstr "VBR:n laatutaso:"
 
 #: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
-msgstr "Nezapisovat VBR hlavičku Xing"
+msgstr "Älä kirjoita Xing VBR -otsaketta"
 
 #: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
@@ -1474,47 +1549,47 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr "Parametry rámců:"
+msgstr "Kehyksen parametrit:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
-msgstr "Označit jako podléhající autorskému právu"
+msgstr "Merkitse tekijänoikeudeksi"
 
 #: src/filewriter/mp3.c:1144
 msgid "Mark as original"
-msgstr "Označit jako původní"
+msgstr "Merkitse alkuperäiseksi"
 
 #: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
-msgstr "Parametry ID3:"
+msgstr "ID3-parametrit:"
 
 #: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
-msgstr "Vynutit přidání popisků verze 2"
+msgstr "Pakota v2-tagin lisäys"
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr "Přidávat jen popisky verze 1"
+msgstr "Lisää vain v1-tagi"
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr "Přidávat jen popisky verze 2"
+msgstr "Lisää vain v2-tagi"
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
-msgstr "Popisky"
+msgstr "Tagit"
 
 #: src/filewriter/vorbis.c:212
 msgid "Vorbis Encoder Configuration"
-msgstr "Nastavení vorbis kodéru"
+msgstr "Vorbis-enkooderin asetukset"
 
 #: src/filewriter/vorbis.c:235
 msgid "Quality level (0 - 10):"
-msgstr "Úroveň kvality (0–10):"
+msgstr "Laatutaso (0 - 10):"
 
 #: src/flacng/metadata.c:356 src/wavpack/wavpack.c:280
 msgid "lossless"
-msgstr ""
+msgstr "häviötön"
 
 #: src/flacng/plugin.c:269
 msgid ""
@@ -1523,26 +1598,26 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
-"Původní kód od\n"
-"Ralfa Ertzingera <ralf@skytale.net>\n"
+"Alkuperäinen koodi\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:277
 msgid "FLAC Decoder"
-msgstr "FLAC Dekodér"
+msgstr "FLAC-dekooderi"
 
 #: src/gio/gio.c:300
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"GIO zásuvný modul pro Audacious\n"
+"GIO-liitännäinen Audacioukselle\n"
 "Copyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:322
 msgid "GIO Plugin"
-msgstr "GIO Plugin"
+msgstr "GIO-liitännäinen"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -1551,415 +1626,415 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
-"Zásuvný modul pro klávesové zkratky v Gnome\n"
-"Umožňuje ovládat program pomocí klávesových Gnome\n"
+"Gnomen oikopolku -liitännäinen\n"
+"Ohjaa soitinta Gnomen oikopoluilla.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:47
 msgid "Gnome Shortcuts"
-msgstr "Klávesové zkratky Gnome"
+msgstr "Gnomen oikopolut"
 
 #: src/gtkui/columns.c:32
 msgid "Entry number"
-msgstr "Číslo položky"
+msgstr "Numero"
 
 #: src/gtkui/columns.c:32
 msgid "Title"
-msgstr "Název"
+msgstr "Nimi"
 
 #: src/gtkui/columns.c:33
 msgid "Artist"
-msgstr "Umělec"
+msgstr "Esittäjä"
 
 #: src/gtkui/columns.c:33
 msgid "Year"
-msgstr "Rok"
+msgstr "Vuosi"
 
 #: src/gtkui/columns.c:33
 msgid "Album"
-msgstr "Album"
+msgstr "Albumi"
 
 #: src/gtkui/columns.c:33
 msgid "Track"
-msgstr "Stopa"
+msgstr "Raita"
 
 #: src/gtkui/columns.c:33
 msgid "Genre"
-msgstr "Žánr"
+msgstr "Tyylilaji"
 
 #: src/gtkui/columns.c:34
 msgid "Queue position"
-msgstr "Umístění ve frontě"
+msgstr "Sijainti jonossa"
 
 #: src/gtkui/columns.c:34
 msgid "Length"
-msgstr "Délka"
+msgstr "Kesto"
 
 #: src/gtkui/columns.c:34
 msgid "File path"
-msgstr "Cesta k souboru"
+msgstr "Tiedostopolku"
 
 #: src/gtkui/columns.c:34
 msgid "File name"
-msgstr "Název souboru"
+msgstr "Tiedostonimi"
 
 #: src/gtkui/columns.c:35
 msgid "Custom title"
-msgstr "Vlastní název"
+msgstr "Mukautettu nimi"
 
 #: src/gtkui/columns.c:35
 msgid "Bitrate"
-msgstr "Datový tok"
+msgstr "Bittinopeus"
 
 #: src/gtkui/columns.c:277
 msgid "Choose Columns"
-msgstr "Vybrat sloupce"
+msgstr "Valitse sarakkeet"
 
 #: src/gtkui/columns.c:293
 msgid "Available:"
-msgstr "Dostupné:"
+msgstr "Saatavilla:"
 
 #: src/gtkui/columns.c:327
 msgid "Chosen:"
-msgstr "Vybráno:"
+msgstr "Valittu:"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
-msgstr "Umístit vlevo"
+msgstr "Telakoi vasemmalle"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Right"
-msgstr "Umístit vpravo"
+msgstr "Telakoi oikealle"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Top"
-msgstr "Umístit nahoru"
+msgstr "Telakoi ylhäälle"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Bottom"
-msgstr "Umístit dolů"
+msgstr "Telakoi alhaalle"
 
 #: src/gtkui/layout.c:120
 msgid "Undock"
-msgstr "Neumisťovat"
+msgstr "Poista telakointi"
 
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:623
 msgid "Disable"
-msgstr "Zakázat"
+msgstr "Poista käytöstä"
 
 #: src/gtkui/menus.c:170
 msgid "_Open Files ..."
-msgstr "_Otevřít soubory…"
+msgstr "Avaa tied_ostot..."
 
 #: src/gtkui/menus.c:171
 msgid "Open _URL ..."
-msgstr "Otevřít _URL…"
+msgstr "Avaa _URL..."
 
 #: src/gtkui/menus.c:172
 msgid "_Add Files ..."
-msgstr "Přid_at soubory…"
+msgstr "_Lisää tiedostoja..."
 
 #: src/gtkui/menus.c:173
 msgid "Add U_RL ..."
-msgstr "Přidat U_RL…"
+msgstr "Lisää U_RL..."
 
 #: src/gtkui/menus.c:175
 msgid "_Search Library"
-msgstr "_Prohledat knihovnu"
+msgstr "_Etsi kirjastosta"
 
 #: src/gtkui/menus.c:177
 msgid "A_bout ..."
-msgstr "_O programu… "
+msgstr "_Tietoja..."
 
 #: src/gtkui/menus.c:178
 msgid "_Preferences ..."
-msgstr "Nasta_vení…"
+msgstr "_Asetukset..."
 
 #: src/gtkui/menus.c:179 src/skins/ui_manager.c:413
 msgid "_Quit"
-msgstr "_Konec"
+msgstr "_Sulje"
 
 #: src/gtkui/menus.c:182 src/gtkui/menus.c:296
 msgid "_Play"
-msgstr "_Hrát"
+msgstr "_Toista"
 
 #: src/gtkui/menus.c:183
 msgid "Paus_e"
-msgstr "P_ozastavit"
+msgstr "_Keskeytä"
 
 #: src/gtkui/menus.c:184
 msgid "_Stop"
-msgstr "Za_stavit"
+msgstr "_Pysäytä"
 
 #: src/gtkui/menus.c:185
 msgid "Pre_vious"
-msgstr "Před_chozí"
+msgstr "_Edellinen"
 
 #: src/gtkui/menus.c:186
 msgid "_Next"
-msgstr "_Další"
+msgstr "_Seuraava"
 
 #: src/gtkui/menus.c:188
 msgid "_Repeat"
-msgstr "_Opakovat"
+msgstr "_Kertaus"
 
 #: src/gtkui/menus.c:189
 msgid "S_huffle"
-msgstr "Ná_hodné přehrávání"
+msgstr "S_ekoitus"
 
 #: src/gtkui/menus.c:190
 msgid "N_o Playlist Advance"
-msgstr "Žádné p_okračování dle seznamu skladeb"
+msgstr "Älä _etene soittolistalla"
 
 #: src/gtkui/menus.c:191
 msgid "Stop A_fter This Song"
-msgstr ""
+msgstr "_Pysäytä tämän kappaleen jälkeen"
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:284
 msgid "Song _Info ..."
-msgstr "_Informace o skladbě…"
+msgstr "K_appaleen tiedot..."
 
 #: src/gtkui/menus.c:194
 msgid "Jump to _Time ..."
-msgstr "Přejí_t na čas…"
+msgstr "Sii_rry aikaan..."
 
 #: src/gtkui/menus.c:195
 msgid "_Jump to Song ..."
-msgstr "Pře_jít na skladbu…"
+msgstr "S_iirry kappaleeseen..."
 
 #: src/gtkui/menus.c:197
 msgid "Set Repeat Point _A"
-msgstr ""
+msgstr "Aseta kertauksen alkupiste A"
 
 #: src/gtkui/menus.c:198
 msgid "Set Repeat Point _B"
-msgstr ""
+msgstr "Aseta kertauksen loppupiste B"
 
 #: src/gtkui/menus.c:199
 msgid "_Clear Repeat Points"
-msgstr ""
+msgstr "_Tyhjennä kertauspisteet"
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:208 src/gtkui/menus.c:221
 msgid "By _Title"
-msgstr "Podle ná_zvu"
+msgstr "_Nimen mukaan"
 
 #: src/gtkui/menus.c:203
 msgid "By _Filename"
-msgstr ""
+msgstr "_Tiedostonimen mukaan"
 
 #: src/gtkui/menus.c:204
 msgid "By File _Path"
-msgstr ""
+msgstr "Tiedosto_polun mukaan"
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:220
 msgid "By Track _Number"
-msgstr "Podle čísla _stopy"
+msgstr "Ka_ppalenumeron mukaan"
 
 #: src/gtkui/menus.c:209 src/gtkui/menus.c:222
 msgid "By _Artist"
-msgstr "Podle _umělce"
+msgstr "_Esittäjän mukaan"
 
 #: src/gtkui/menus.c:210 src/gtkui/menus.c:223
 msgid "By Al_bum"
-msgstr ""
+msgstr "Al_bumin mukaan"
 
 #: src/gtkui/menus.c:211 src/gtkui/menus.c:224
 msgid "By Release _Date"
-msgstr "Podle data vy_dání"
+msgstr "_Julkaisupäivämäärän mukaan"
 
 #: src/gtkui/menus.c:212 src/gtkui/menus.c:225
 msgid "By _Length"
-msgstr ""
+msgstr "_Keston mukaan"
 
 #: src/gtkui/menus.c:213 src/gtkui/menus.c:226
 msgid "By _File Path"
-msgstr "Podle _cesty k souboru"
+msgstr "_Tiedostopolun mukaan"
 
 #: src/gtkui/menus.c:214 src/gtkui/menus.c:227
 msgid "By _Custom Title"
-msgstr "_Vlastní název"
+msgstr "_Mukautetun nimen mukaan"
 
 #: src/gtkui/menus.c:216 src/gtkui/menus.c:229
 msgid "R_everse Order"
-msgstr "_Obrátit pořadí"
+msgstr "_Käänteinen järjestys"
 
 #: src/gtkui/menus.c:217 src/gtkui/menus.c:230
 msgid "_Random Order"
-msgstr "Ná_hodné pořadí"
+msgstr "_Satunnainen järjestys"
 
 #: src/gtkui/menus.c:233
 msgid "_Play This Playlist"
-msgstr "_Přehrát tento seznam skladeb"
+msgstr "_Toista tämä soittolista"
 
 #: src/gtkui/menus.c:234 src/gtkui/menus.c:286
 msgid "_Refresh"
-msgstr "_Obnovit"
+msgstr "_Päivitä"
 
 #: src/gtkui/menus.c:236
 msgid "_Sort"
-msgstr "_Seřadit"
+msgstr "_Lajittele"
 
 #: src/gtkui/menus.c:237
 msgid "Sort S_elected"
-msgstr ""
+msgstr "Järjestä _valitut"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
-msgstr ""
+msgstr "Poista _kopiot"
 
 #: src/gtkui/menus.c:239
 msgid "Remove _Unavailable Files"
-msgstr "Odstranit nedost_upné soubory"
+msgstr "Poista _ei saatavilla olevat tiedostot"
 
 #: src/gtkui/menus.c:241
 msgid "_New"
-msgstr "_Nový"
+msgstr "_Uusi"
 
 #: src/gtkui/menus.c:242
 msgid "Ren_ame ..."
-msgstr "Přej_menovat"
+msgstr "Uudelleen _nimeä..."
 
 #: src/gtkui/menus.c:243 src/gtkui/menus.c:298
 msgid "_Close"
-msgstr "_Zavřít"
+msgstr "_Sulje"
 
 #: src/gtkui/menus.c:245
 msgid "_Import ..."
-msgstr "_Importovat…"
+msgstr "_Tuo..."
 
 #: src/gtkui/menus.c:246
 msgid "_Export ..."
-msgstr "_Exportovat…"
+msgstr "_Vie..."
 
 #: src/gtkui/menus.c:248
 msgid "Playlist _Manager ..."
-msgstr "Organizace seznamů skladeb"
+msgstr "Soittolistojen _hallinta..."
 
 #: src/gtkui/menus.c:249
 msgid "_Queue Manager ..."
-msgstr "Správce _fronty…"
+msgstr "_Jonomanageri..."
 
 #: src/gtkui/menus.c:252
 msgid "Volume _Up"
-msgstr "Ze_sílit"
+msgstr "_Nosta äänenvoimakkuutta"
 
 #: src/gtkui/menus.c:253
 msgid "Volume _Down"
-msgstr "Z_tišit"
+msgstr "_Laske äänenvoimakkuutta"
 
 #: src/gtkui/menus.c:255
 msgid "_Equalizer"
-msgstr "_Ekvalizér"
+msgstr "_Taajuuskorjain"
 
 #: src/gtkui/menus.c:257
 msgid "E_ffects"
-msgstr "E_fekty"
+msgstr "T_ehosteet"
 
 #: src/gtkui/menus.c:260
 msgid "_Interface"
-msgstr "_Rozhraní"
+msgstr "_Käyttöliittymä"
 
 #: src/gtkui/menus.c:261
 msgid "_Visualizations"
-msgstr "_Znázornění"
+msgstr "_Visualisoinnit"
 
 #: src/gtkui/menus.c:263
 msgid "Show _Menu Bar"
-msgstr "Zobrazit h_lavní nabídku"
+msgstr "Näytä _valikkopalkki"
 
 #: src/gtkui/menus.c:264
 msgid "Show I_nfo Bar"
-msgstr "Zobrazit oblast i_nformací"
+msgstr "Näytä _tietopalkki"
 
 #: src/gtkui/menus.c:265
 msgid "Show Info Bar Vis_ualization"
-msgstr "Zobrazit znázornění oblasti informací"
+msgstr "Näytä tietopalkin vis_ualisaatio"
 
 #: src/gtkui/menus.c:266
 msgid "Show _Status Bar"
-msgstr "Zobrazit _stavový panel"
+msgstr "Näytä tila_rivi"
 
 #: src/gtkui/menus.c:268
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "Näytä _jäljellä oleva aika"
 
 #: src/gtkui/menus.c:270
 msgid "Show Close _Buttons"
-msgstr "Zobrazit tlačítka _zavření"
+msgstr "Näytä sulkemis_painikkeet"
 
 #: src/gtkui/menus.c:271
 msgid "Show Column _Headers"
-msgstr "Zobrazit zá_hlaví sloupců"
+msgstr "Näytä sarakkeiden _otsikot"
 
 #: src/gtkui/menus.c:272
 msgid "Choose _Columns ..."
-msgstr "Vybrat sloup_ce…"
+msgstr "Valitse _sarakkeet..."
 
 #: src/gtkui/menus.c:273
 msgid "Scrol_l on Song Change"
-msgstr "Odro_lovat na změněnou skladbu"
+msgstr "_Vieritä kappaleen vaihtuessa"
 
 #: src/gtkui/menus.c:276
 msgid "_File"
-msgstr "_Soubor"
+msgstr "_Tiedosto"
 
 #: src/gtkui/menus.c:277
 msgid "_Playback"
-msgstr "_Přehrát"
+msgstr "T_oisto"
 
 #: src/gtkui/menus.c:278
 msgid "P_laylist"
-msgstr "Seznam sk_ladeb"
+msgstr "_Soittolista"
 
 #: src/gtkui/menus.c:279 src/gtkui/menus.c:293
 msgid "_Services"
-msgstr "_Služby"
+msgstr "_Palvelut"
 
 #: src/gtkui/menus.c:280
 msgid "_Output"
-msgstr "_Výstup"
+msgstr "_Ääni"
 
 #: src/gtkui/menus.c:281
 msgid "_View"
-msgstr "_Zobrazení"
+msgstr "_Näkymä"
 
 #: src/gtkui/menus.c:285
 msgid "_Queue/Unqueue"
-msgstr "Ode_brat/přidat z/do fronty"
+msgstr "_Lisää jonoon/Poista jonosta"
 
 #: src/gtkui/menus.c:288
 msgid "Cu_t"
-msgstr "V_yjmout"
+msgstr "L_eikkaa"
 
 #: src/gtkui/menus.c:289
 msgid "_Copy"
-msgstr "_Kopírovat"
+msgstr "_Kopioi"
 
 #: src/gtkui/menus.c:290
 msgid "_Paste"
-msgstr "V_ložit"
+msgstr "_Liitä"
 
 #: src/gtkui/menus.c:291
 msgid "Select _All"
-msgstr "Vybr_at vše"
+msgstr "Valitse _kaikki"
 
 #: src/gtkui/menus.c:297
 msgid "_Rename ..."
-msgstr "_Přejmenovat ..."
+msgstr "_Uudelleen nimeä..."
 
 #: src/gtkui/ui_gtk.c:99
 msgid "GTK Interface"
-msgstr "Rozhraní GTK"
+msgstr "GTK-käyttöliittymä"
 
 #: src/gtkui/ui_gtk.c:188 src/skins/ui_main.c:306
 #, c-format
 msgid "%s - Audacious"
-msgstr "%s – Audacious"
+msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.c:194
 msgid "Buffering ..."
-msgstr "Plnění vyrovnávácí paměti…"
+msgstr "Puskuroidaan..."
 
 #: src/gtkui/ui_gtk.c:197 src/skins/ui_main.c:308 src/skins/ui_main.c:1491
 msgid "Audacious"
@@ -1970,92 +2045,91 @@ msgstr "Audacious"
 #: src/lyricwiki/lyricwiki.c:252 src/lyricwiki/lyricwiki.c:271
 #: src/skins/plugin.c:176
 msgid "Error"
-msgstr "Chyba"
+msgstr "Virhe"
 
 #: src/gtkui/ui_statusbar.c:108
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d kanál"
-msgstr[1] "%d kanály"
-msgstr[2] "%d kanálů"
+msgstr[0] "%d kanava"
+msgstr[1] "%d kanavaa"
 
 #: src/gtkui/ui_statusbar.c:123
 #, c-format
 msgid "%d kbps"
-msgstr "%d kb/s"
+msgstr "%d kbps"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr ""
+msgstr "Edellinen raita"
 
 #: src/hotkey/gui.c:71 src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
 msgid "Play"
-msgstr "Hrát"
+msgstr "Toista"
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
-msgstr "Pozastavit/Pokračovat"
+msgstr "Keskeytä/Jatka"
 
 #: src/hotkey/gui.c:73 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
 msgid "Stop"
-msgstr "Zastavit"
+msgstr "Pysäytä"
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr ""
+msgstr "Seuraava raita"
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "5 sekuntia eteenpäin"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "5 sekuntia taaksepäin"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "Vypnout zvuk"
+msgstr "Vaimenna"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Nosta äänenvoimakkuutta"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Laske äänenvoimakkuutta"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Siirry tiedostoon"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
-msgstr ""
+msgstr "Näytä/Piilota soittimen ikkunat"
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
-msgstr "Zobrazit OSD (nápis na obrazovce)"
+msgstr "Näytä OSD"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr ""
+msgstr "Kertaus"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr ""
+msgstr "Sekoitus"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
-msgstr ""
+msgstr "Pysäytä nykyisen jälkeen"
 
 #: src/hotkey/gui.c:86
 msgid "Raise player window(s)"
-msgstr ""
+msgstr "Nosta soittimen ikkunat"
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
-msgstr "(žádné)"
+msgstr "(ei mitään)"
 
 #: src/hotkey/gui.c:233
 msgid ""
@@ -2064,37 +2138,37 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n"
+"Ei ole suositeltavaa kytkeä hiiren painalluksia ilman muunnosnäppäimiä.\n"
 "\n"
-"Chcete pokračovat?"
+"Haluatko jatkaa?"
 
 #: src/hotkey/gui.c:235
 msgid "Binding mouse buttons"
-msgstr "Přiřazuji tlačítka myši"
+msgstr "Kytketään hiiren painalluksia"
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Hlavní nastavení modulu pro horké klávesy"
+msgstr "Globaalit pikanäppäimet -liitännäisen asetukset"
 
 #: src/hotkey/gui.c:401
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Uvnitř textového pole stiskněte kombinaci kláves.\n"
-"Navázat lze také tlačítka myši."
+"Paina näppäinyhdistelmää tekstikentän sisällä.\n"
+"Voit käyttää myös hiiren nappeja."
 
 #: src/hotkey/gui.c:406
 msgid "Hotkeys:"
-msgstr "Horké klávesy:"
+msgstr "Pikanäppäimet:"
 
 #: src/hotkey/gui.c:423
 msgid "<b>Action:</b>"
-msgstr "<b>Akce</b>"
+msgstr "<b>Toiminto:</b>"
 
 #: src/hotkey/gui.c:430
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Navázání kláves:</b>"
+msgstr "<b>Näppäinsidos:</b>"
 
 #: src/hotkey/plugin.c:66
 msgid ""
@@ -2110,10 +2184,21 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Globaalit pikanäppäimet -liitännäinen\n"
+"Ohjaa soitinta globaaleilla näppäinyhdistelmillä tai multimedianäppäimillä.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Kontribuutiot:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/hotkey/plugin.c:78
 msgid "Global Hotkeys"
-msgstr "Globální klávesové zkratky"
+msgstr "Globaalit pikanäppäimet"
 
 #: src/jack/jack.c:410
 msgid ""
@@ -2122,27 +2207,27 @@ msgid ""
 "\n"
 "Ported to Audacious by Giacomo Lozito"
 msgstr ""
-"Na základě xmms-jack, od Chrise Morgana:\n"
+"Perustuu xmms-jack:iin, luonut Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
 "\n"
-"Portováno pro Audacious od Giacomo Lozito"
+"Portannut Audacioukselle Giacomo Lozito"
 
 #: src/jack/jack.c:416
 msgid "JACK Output"
-msgstr "JACK výstup"
+msgstr "JACK-lähtö"
 
 #: src/ladspa/plugin.c:493
 #, c-format
 msgid "%s Settings"
-msgstr "Nastavení %s"
+msgstr "%s asetukset"
 
 #: src/ladspa/plugin.c:561
 msgid "LADSPA Host Settings"
-msgstr "Nastavení hostitele LADSPA"
+msgstr "LADSPA-isännän asetukset"
 
 #: src/ladspa/plugin.c:570
 msgid "Module paths:"
-msgstr "Cesta k modulům:"
+msgstr "Moduulipolut:"
 
 #: src/ladspa/plugin.c:575
 msgid ""
@@ -2150,43 +2235,43 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Cesty se od sebe oddělují dvojtečkou.\n"
-"Tyto cesty se prohledávají spolu s LADSPA_PATH.\n"
-"Po té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly "
-"nové moduly.</small>"
+"<small>Erota polut kaksoispisteellä.\n"
+"Näistä poluista etsitään liitännäisiä, LADSPA_PATH:n lisäksi.\n"
+"Uuden polun lisäämisen jälkeen paina entteriä hakeaksesi uusia liitännäisiä."
+"</small>"
 
 #: src/ladspa/plugin.c:591
 msgid "Available plugins:"
-msgstr "Dostupné moduly:"
+msgstr "Saatavilla olevat liitännäiset:"
 
 #: src/ladspa/plugin.c:604
 msgid "Enable"
-msgstr "Povolit"
+msgstr "Käytä"
 
 #: src/ladspa/plugin.c:610
 msgid "Enabled plugins:"
-msgstr "Povolené moduly:"
+msgstr "Aktiiviset liitännäiset:"
 
 #: src/ladspa/plugin.c:626
 msgid "Settings"
-msgstr "Nastavení"
+msgstr "Asetukset"
 
 #: src/ladspa/plugin.c:645
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
-"LADSPA Host pro Audacious\n"
+"LADSPA-isäntä Audacioukselle\n"
 "Copyright 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:650
 msgid "LADSPA Host"
-msgstr "LADSPA Host"
+msgstr "LADSPA-isäntä"
 
 #: src/lirc/lirc.c:75
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: nelze inicializovat podporu LIRC\n"
+msgstr "%s: ei voida alustaa LIRC-tukea\n"
 
 #: src/lirc/lirc.c:82
 #, c-format
@@ -2195,29 +2280,29 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: nelze číst z konfiguračního souboru LIRC\n"
-"%s: prosím, přečtěte si dokumentaci k LIRC,\n"
-"%s: jak správně vytvořit konfigurační soubor\n"
+"%s: ei voitu lukea LIRC:n asetustiedostoa\n"
+"%s: lue LIRC:n dokumentaatiosta\n"
+"%s: kuinka luoda kelvollinen asetustiedosto \n"
 
 #: src/lirc/lirc.c:113
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: pokouším se znovu připojit…\n"
+msgstr "%s: yritetään yhdistää uudelleen...\n"
 
 #: src/lirc/lirc.c:353
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: neznámý příkaz „%s“\n"
+msgstr "%s: tuntematon komento \"%s\"\n"
 
 #: src/lirc/lirc.c:364
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: odpojeno od LIRC\n"
+msgstr "%s: LIRC-yhteys katkaistu\n"
 
 #: src/lirc/lirc.c:370
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: pokus o připojení budu opakovat každých %d sekund…\n"
+msgstr "%s: yritetään yhdistää uudelleen joka %d sekunti...\n"
 
 #: src/lirc/lirc.c:380
 msgid ""
@@ -2234,79 +2319,78 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
-"Jednoduchý zásuvný modul na ovládání Audacious použitím LIRC démona vzdálené "
-"kontroly.\n"
+"Yksinkertainen liitännäinen Audaciouksen ohjaamiseen LIRC:n avulla.\n"
 "\n"
-"Upraveno pro Audacious od:\n"
-"Tonyho Vroona <chainsaw@gentoo.org>\n"
-"Joonase Harjumäki <jharjuma@gmail.com>\n"
+"Muuntanut Audacioukselle:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
 "\n"
-"Na základě XMMS pluginu LIRC od:\n"
-"Carla van Schaika <carl@leg.uct.ac.za>\n"
-"Christophera Bartelmuse <xmms@bartelmus.de>\n"
-"Andrewa O. Shadoura <bugzilla@tut.by>\n"
+"Perustuu XMMS LIRC -liitännäiseen, jonka kehittivät:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
 "\n"
-"Pro více informací o LIRC, navštivte http://lirc.org."
+"Lisää tieto LIRC:stä http://lirc.org."
 
 #: src/lirc/lirc.c:391
 msgid "<b>Connection</b>"
-msgstr "<b>Připojení</ b>"
+msgstr "<b>Yhteys</b>"
 
 #: src/lirc/lirc.c:392
 msgid "Reconnect to LIRC server"
-msgstr "Znovu se připojit k serveru LIRC"
+msgstr "Yhdistä uudelleen LIRC-palvelimelle"
 
 #: src/lirc/lirc.c:394
 msgid "Wait before reconnecting:"
-msgstr "Vyčkat před opětovným připojením:"
+msgstr "Odota ennen uudelleenyhdistämistä:"
 
 #: src/lirc/lirc.c:404
 msgid "LIRC Plugin"
-msgstr "LIRC Plugin"
+msgstr "LIRC-liitännäinen"
 
 #: src/lyricwiki/lyricwiki.c:117
 msgid "No lyrics available"
-msgstr "Žádný text k dispozici"
+msgstr "Lyriikoita ei saatavilla"
 
 #: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
 #, c-format
 msgid "Unable to fetch %s"
-msgstr "Nelze načíst %s"
+msgstr "Ei voitu hakea %s"
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
 msgid "Unable to parse %s"
-msgstr "Nelze analyzovat %s"
+msgstr "Ei voida jäsentää %s"
 
 #: src/lyricwiki/lyricwiki.c:260
 msgid "Looking for lyrics ..."
-msgstr "Hledám texty ..."
+msgstr "Etsitään lyriikoita..."
 
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Missing song metadata"
-msgstr "Chybí metadata skladby"
+msgstr "Kappaleen metatiedot puuttuvat"
 
 #: src/lyricwiki/lyricwiki.c:284
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr "Připojování k lyrics.wikia.com ..."
+msgstr "Yhdistetään lyrics.wikia.com..."
 
 #: src/lyricwiki/lyricwiki.c:411
 msgid "LyricWiki Plugin"
-msgstr "LyricWiki Plugin"
+msgstr "LyricWiki-liitännäinen"
 
 #: src/m3u/m3u.c:121
 msgid "M3U Playlists"
-msgstr "M3U Playlisty"
+msgstr "M3U-soittolistat"
 
 #: src/metronom/metronom.c:127
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Generátor taktu: %d dob/min"
+msgstr "Tahtigeneraattori: %d bpm"
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Generátor taktu: %d dob/min %d⁄%d"
+msgstr "Tahtigeneraattori: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:246
 msgid ""
@@ -2316,39 +2400,39 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
-"Generátor taktů od Martina Strausse <mys@faveve.uni-stuttgart.de>\n"
+"Tahtigeneraattori, luonut Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
-"Chcete-li jej použít, přidejte adrese URL: tact://beats*num/den\n"
-"např. tact://77 pro přehrání 77 beatů za minutu\n"
-"nebo tact://60*3/4 pro přehrání 60 bpm v 3/4 taktu"
+"Käyttääksesi sitä, lisää URL: tact://beats*num/den\n"
+"esim. tact://77 soittaaksesi 77 iskua minuutissa.\n"
+"Tai tact://60*3/4 soittaaksesi 60 iskua minuutissa tahdilla 3/4"
 
 #: src/metronom/metronom.c:255
 msgid "Tact Generator"
-msgstr "Genetátor taktů"
+msgstr "Tahtigeneraattori"
 
 #: src/mixer/mixer.c:169
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"Zásuvný modul kanáloveho mixeru pro Audacious\n"
-"Copyright 2011-2012 John Lindgren a Michał Lipski"
+"Kanavamikseri-liitännäinen Audacioukselle\n"
+"Copyright 2011-2012 John Lindgren ja Michał Lipski"
 
 #: src/mixer/mixer.c:173
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>Míchání kanálů</b>"
+msgstr "<b>Kanavamikseri</b>"
 
 #: src/mixer/mixer.c:174
 msgid "Output channels:"
-msgstr "Výstupní kanály:"
+msgstr "Kanavat:"
 
 #: src/mixer/mixer.c:184
 msgid "Channel Mixer"
-msgstr "Míchání kanálů"
+msgstr "Kanavamikseri"
 
 #: src/mms/mms.c:224
 msgid "MMS Plugin"
-msgstr "MMS Plugin"
+msgstr "MMS-liitännäinen"
 
 #: src/modplug/plugin_main.c:12
 msgid "ModPlug (Module Player)"
@@ -2356,27 +2440,27 @@ msgstr "ModPlug (Module Player)"
 
 #: src/mpg123/mpg123.c:193
 msgid "Surround"
-msgstr "Prostorový zvuk"
+msgstr "Surround"
 
 #: src/mpg123/mpg123.c:552
 msgid "MPG123 Plugin"
-msgstr "MPG123 Plugin"
+msgstr "MPG123-liitännäinen"
 
 #: src/mpris2/plugin.c:415
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 Server"
+msgstr "MPRIS 2 -palvelin"
 
 #: src/neon/neon.c:1229
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Neon HTTP/HTTPS Plugin"
+msgstr "Neon HTTP/HTTPS -liitännäinen"
 
 #: src/notify/event.c:60
 msgid "Stopped"
-msgstr "Zastaveno"
+msgstr "Pysäytetty"
 
 #: src/notify/event.c:60
 msgid "Audacious is not playing."
-msgstr "Audacious nyní nehraje."
+msgstr "Audacious ei tällä hetkellä soita mitään."
 
 #: src/notify/notify.c:34
 msgid ""
@@ -2399,51 +2483,52 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Založeno na libnotify-aosd od Maximiliana Bognera:\n"
+"Perustuu libnotify-aosd:lle, luonut Maximilian Bogner:\n"
 "http://www.mbogner.de/projects/libnotify-aosd/\n"
 "\n"
 "Copyright (C) 2010 Maximilian Bogner\n"
 "Copyright (C) 2011 John Lindgren\n"
 "\n"
-"Tento zásuvný modul je svobodným softwarem: můžete jej šířit a/nebo "
-"upravovat podle podmínek GNU General Public Licence, vydávané Free Software "
-"Foundation, buď ve verzi 3 licence, nebo (podle vašeho uvážení) kterékoli "
-"pozdější verze.\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"Tento plugin je distribuován v naději, že bude užitečný, avšak BEZ JAKÉKOLI "
-"ZÁRUKY; dokonce i bez předpokládané záruky PRODEJNOSTI, nebo VHODNOSTI PRO "
-"URČITÝ ÚČEL. Viz pro více informací - GNU General Public Licence.\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"Měli byste obdržet kopii GNU General Public Licence spolu s tímto programem. "
-"Pokud tomu tak není, viz <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.c:51
 msgid "Desktop Notifications"
-msgstr "Oznámení na plochu"
+msgstr "Työpöydän ilmoitukset"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
-msgstr "1. Implicitní zařízení"
+msgstr "1. Oletuslaite"
 
 #: src/oss4/plugin.c:75 src/sndio/sndio.c:412
 msgid "Audio device:"
-msgstr "Zvukové zařízení:"
+msgstr "Äänilaite:"
 
 #: src/oss4/plugin.c:77
 msgid "Use alternate device:"
-msgstr "Použít jiné zařízení:"
+msgstr "Käytä vaihtoehtoista laitetta:"
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr "Uložit hlasitost mezi relacemi."
+msgstr "Tallenna äänenvoimakkuus eri sessioiden välillä."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
-msgstr "Zapnout převody formátu prostřednictvím OSS."
+msgstr "Käytä OSS:n luomia formaatin muutoksia."
 
 #: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "Zabránit virtuálnímu směšování použitím výlučného režimu."
+msgstr "Kytke eksklusiivinen tila päälle virtuaalisen miksauksen estämiseksi."
 
 #: src/oss4/plugin.c:108
 msgid ""
@@ -2453,23 +2538,23 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
-"OSS4 Výstupní zásuvný modul pro Audacious 2010-2012\n"
+"OSS4-lähdön liitännäinen Audacioukselle\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
-"Rád bych poděkoval lidem z #audacious, zejména Tonymu Vroonnovy a Johnu "
-"Lindgrennovy a samozřejmě také autorům předešlého OSS zásuvného modulu."
+"Haluaisin kiittää ihmisiä kanavalla #audacious, erityisesti Tony Vroonia "
+"sekä John Lindgreniä. Kiitokset myös edellisen OSS-liitännäisen kehittäjille."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
-msgstr "OSS4 výstup"
+msgstr "OSS4-lähtö"
 
 #: src/pls/pls.c:113
 msgid "PLS Playlists"
-msgstr "PLS seznamy skladeb"
+msgstr "PLS-soittolistat"
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 Dekodér"
+msgstr "OpenPSF PSF1/PSF2 -dekooderi"
 
 #: src/pulse_audio/pulse_audio.c:644
 msgid ""
@@ -2490,56 +2575,74 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Audaciouksen PulseAudio-lähdön liitännäinen\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
-msgstr "PulseAudio Výstup"
+msgstr "PulseAudio-lähtö"
 
 #: src/resample/resample.c:161
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Uudelleenäytteistys-liitännäinen Audacioukselle\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/resample/resample.c:165
 msgid "Skip/repeat samples"
-msgstr "Přeskočit/opakovat vzorky"
+msgstr "Sivuuta/kertaa näytteet"
 
 #: src/resample/resample.c:166
 msgid "Linear interpolation"
-msgstr "Lineární interpolace"
+msgstr "Lineaarinen interpolaatio"
 
 #: src/resample/resample.c:167
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Nopea sinc-interpolaatio"
 
 #: src/resample/resample.c:168
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Kohtalainen sinc-interpolaatio"
 
 #: src/resample/resample.c:169
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Paras sinc-interpolaatio"
 
 #: src/resample/resample.c:172
 msgid "<b>Conversion</b>"
-msgstr "<b>Převod</b>"
+msgstr "<b>Muunnos</b>"
 
 #: src/resample/resample.c:173
 msgid "Method:"
-msgstr "Metoda:"
+msgstr "Metodi:"
 
 #: src/resample/resample.c:176 src/sox-resampler/sox-resampler.c:151
 msgid "Rate:"
-msgstr "Hodnocení:"
+msgstr "Näytteenottotaajuus:"
 
 #: src/resample/resample.c:179
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>Kartoitus</b>"
 
 #: src/resample/resample.c:180
 msgid "Use rate mappings"
-msgstr ""
+msgstr "Käytä kartoituksia"
 
 #: src/resample/resample.c:182
 msgid "8 kHz:"
@@ -2571,61 +2674,68 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:210
 msgid "Sample Rate Converter"
-msgstr ""
+msgstr "Uudelleenäytteistäjä"
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "OK. Päivitetään raitoja käyttäjälle: %s"
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
-msgstr ""
+msgstr "Lupa evätty"
 
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
 msgstr ""
+"Avaa seuraava linkki salliaksesi Audaciouksen päivittää soitettuja raitojasi:"
 
 #: src/scrobbler2/config_window.c:63
 msgid "Keep this window open and click 'Check Permission' again.\n"
 msgstr ""
+"Pidä tämä ikkuna auki ja paina \"Tarkista oikeudet\" -painiketta uudelleen.\n"
 
 #: src/scrobbler2/config_window.c:66 src/scrobbler2/config_window.c:77
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
+"Soitettujen kappaleiden tiedot tallennetaan koneellesi.\n"
+"Tiedot lähetetään heti kun mahdollista."
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
-msgstr ""
+msgstr "Verkko-ongelma."
 
 #: src/scrobbler2/config_window.c:75
 msgid "There was a problem contacting Last.fm. Please try again later."
-msgstr ""
+msgstr "Last.fm -palveluun yhdistettäessä ilmeni ongelmia. Yritä uudelleen."
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
-msgstr ""
+msgstr "Tarkistetaan..."
 
 #: src/scrobbler2/config_window.c:174
 msgid "C_heck Permission"
-msgstr ""
+msgstr "_Tarkista oikeudet"
 
 #: src/scrobbler2/config_window.c:175
 msgid "_Revoke Permission"
-msgstr ""
+msgstr "_Kumoa oikeudet"
 
 #: src/scrobbler2/config_window.c:222
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
+"Sinun pitää sallia Audaciouksen päivittää raitoja Last.fm -tilillesi.\n"
 
 #: src/scrobbler2/scrobbler.c:226
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"Scrobbler -liitännäistä ei voitu käynnistää.\n"
+"Asennuksessasi saattaa olla jotain vikaa."
 
 #: src/scrobbler2/scrobbler.c:304
 msgid ""
@@ -2637,47 +2747,56 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Audacious Scrobbler 2.0 -liitännäinen, luonut Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Kiitos John Lindgrenille avusta projektin alussa.\n"
+"\n"
 
 #: src/scrobbler2/scrobbler.c:310
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Scrobbler 2.0"
 
 #: src/sdlout/plugin.c:26
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"SDL-lähdön liitännäinen Audacioukselle\n"
+"Copyright 2010 John Lindgren"
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
-msgstr "SDL Výstup"
+msgstr "SDL-lähtö"
 
 #: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
 msgid "Library"
-msgstr "Knihovna"
+msgstr "Kirjasto"
 
 #: src/search-tool/search-tool.c:219
 msgid "Unknown Artist"
-msgstr "Neznámý interpret"
+msgstr "Tuntematon esittäjä"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Album"
-msgstr "Neznámé Album"
+msgstr "Tuntematon albumi"
 
 #: src/search-tool/search-tool.c:632
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr "%s⏎ na %s od %s"
+msgstr ""
+"%s\n"
+" albumilla %s esittäjältä %s"
 
 #: src/search-tool/search-tool.c:638
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "%d album"
-msgstr[1] "%d alba"
-msgstr[2] "%d alb"
+msgstr[0] "%d albumi"
+msgstr[1] "%d albumia"
 
 #: src/search-tool/search-tool.c:640
 #, c-format
@@ -2688,10 +2807,11 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
-"%s⏎\n"
-" %s, %d skladba"
-msgstr[1] "%s⏎ %s, %d skladby"
-msgstr[2] "%s⏎ %s, %d skladeb"
+"%s\n"
+" %s, %d kappale"
+msgstr[1] ""
+"%s\n"
+" %s, %d kappaletta"
 
 #: src/search-tool/search-tool.c:646
 #, c-format
@@ -2702,171 +2822,172 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
-" %s⏎\n"
-" %d skladba od %s"
-msgstr[1] " %s⏎ %d skladby od %s"
-msgstr[2] " %s⏎ %d skladeb od %s"
+"%s\n"
+" %d kappale esittäjältä %s"
+msgstr[1] ""
+"%s\n"
+" %d kappaletta esittäjältä %s"
 
 #: src/search-tool/search-tool.c:687
 msgid "_Create Playlist"
-msgstr "_Vytvořit seznam skladeb"
+msgstr "_Luo soittolista"
 
 #: src/search-tool/search-tool.c:694
 msgid "_Add to Playlist"
-msgstr "Přid_at do seznamu skladeb"
+msgstr "L_isää soittolistalle"
 
 #: src/search-tool/search-tool.c:734
 msgid "Search library"
-msgstr "Prohledat knihovnu"
+msgstr "Etsi kirjastosta"
 
 #: src/search-tool/search-tool.c:739
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak "
-"kliknete na ikonu „obnovit“."
+"Tuodaksesi musiikkikirjastosi Audacioukseen, valitse kansio ja paina sen "
+"jälkeen päivitys painiketta."
 
 #: src/search-tool/search-tool.c:747
 msgid "Please wait ..."
-msgstr "Prosím, počkejte…"
+msgstr "Odota..."
 
 #: src/search-tool/search-tool.c:769
 msgid "Choose Folder"
-msgstr "Vybrat složku"
+msgstr "Valitse kansio"
 
 #: src/search-tool/search-tool.c:808
 msgid "Search Tool"
-msgstr "Vyhledávací nástroj"
+msgstr "Etsintätyökalu"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr "Rozhraní Winamp Classic "
+msgstr "Winampin klassinen käyttöliittymä"
 
 #: src/skins/skins_cfg.c:204
 msgid "_Player:"
-msgstr "_Přehrávač:"
+msgstr "_Soitin:"
 
 #: src/skins/skins_cfg.c:205
 msgid "Select main player window font:"
-msgstr "Font v hlavním okně přehrávače:"
+msgstr "Valitse pääikkunan kirjasin:"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Playlist:"
-msgstr "_Seznamu skladeb:"
+msgstr "_Soittolista:"
 
 #: src/skins/skins_cfg.c:208
 msgid "Select playlist font:"
-msgstr "Vyberte font pro seznam skladeb:"
+msgstr "Valitse soittolistan kirjasin:"
 
 #: src/skins/skins_cfg.c:212
 msgid "<b>_Fonts</b>"
-msgstr "<b>_Fonty</b>"
+msgstr "<b>_Kirjasimet</b>"
 
 #: src/skins/skins_cfg.c:215
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Použít bitmapové fonty (podporuje pouze ASCII)"
+msgstr "Käytä bittikartta-kirjasimia (vain ASCII)"
 
 #: src/skins/skins_cfg.c:217
 msgid "Scroll song title in both directions"
-msgstr "Převíjet název skladby oběma směry"
+msgstr "Vieritä kappaleen nimeä kumpaankin suuntaan"
 
 #: src/skins/skins_cfg.c:295
 msgid "<b>_Skin</b>"
-msgstr "<b>_Vzhled</b>"
+msgstr "<b>_Tyyli</b>"
 
 #: src/skins/skins_cfg.c:342
 msgid "Interface Preferences"
-msgstr "Nastavení rozhraní"
+msgstr "Käyttöliittymän asetukset"
 
 #: src/skins/ui_equalizer.c:327
 msgid "Preamp"
-msgstr "Předzesílení"
+msgstr "Esivahvistus"
 
 #: src/skins/ui_equalizer.c:331
 msgid "31 Hz"
-msgstr "31 Hz"
+msgstr "31 Hz"
 
 #: src/skins/ui_equalizer.c:332
 msgid "63 Hz"
-msgstr "63 Hz"
+msgstr "63 Hz"
 
 #: src/skins/ui_equalizer.c:332
 msgid "125 Hz"
-msgstr "125 Hz"
+msgstr "125 Hz"
 
 #: src/skins/ui_equalizer.c:332
 msgid "250 Hz"
-msgstr "250 Hz "
+msgstr "250 Hz"
 
 #: src/skins/ui_equalizer.c:332
 msgid "500 Hz"
-msgstr "500 Hz"
+msgstr "500 Hz"
 
 #: src/skins/ui_equalizer.c:332
 msgid "1 kHz"
-msgstr "1 kHz"
+msgstr "1 kHz"
 
 #: src/skins/ui_equalizer.c:333
 msgid "2 kHz"
-msgstr "2 kHz"
+msgstr "2 kHz"
 
 #: src/skins/ui_equalizer.c:333
 msgid "4 kHz"
-msgstr "4 kHz"
+msgstr "4 kHz"
 
 #: src/skins/ui_equalizer.c:333
 msgid "8 kHz"
-msgstr "8 kHz"
+msgstr "8 kHz"
 
 #: src/skins/ui_equalizer.c:333
 msgid "16 kHz"
-msgstr "16 kHz"
+msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:374
 msgid "Audacious Equalizer"
-msgstr "Ekvalizér"
+msgstr "Audaciouksen taajuuskorjain"
 
 #: src/skins/ui_equalizer.c:889
 msgid "Presets"
-msgstr "Předvolby"
+msgstr "Esiasetukset"
 
 #: src/skins/ui_equalizer.c:970 src/skins/ui_manager.c:451
 msgid "Load preset"
-msgstr "Načíst předvolbu"
+msgstr "Lataa esiasetus"
 
 #: src/skins/ui_equalizer.c:987
 msgid "Load auto-preset"
-msgstr "Načíst souborovou předvolbu"
+msgstr "Lataa automaattinen esiasetus"
 
 #: src/skins/ui_equalizer.c:1017 src/skins/ui_equalizer.c:1035
 #: src/skins/ui_equalizer.c:1051
 msgid "Load equalizer preset"
-msgstr "Načíst nastavení ekvalizéru"
+msgstr "Lataa taajuuskorjaimen esiasetus"
 
 #: src/skins/ui_equalizer.c:1070 src/skins/ui_manager.c:472
 msgid "Save preset"
-msgstr "Uložit předvolbu"
+msgstr "Tallenna esiasetukset"
 
 #: src/skins/ui_equalizer.c:1086
 msgid "Save auto-preset"
-msgstr "Uložit automatickou předvolbu"
+msgstr "Tallenna automaattinen esiasetus"
 
 #: src/skins/ui_equalizer.c:1117 src/skins/ui_equalizer.c:1153
 msgid "Save equalizer preset"
-msgstr "Načíst nastavení ekvalizéru"
+msgstr "Tallenna taajuuskorjaimen esiasetus"
 
 #: src/skins/ui_equalizer.c:1172 src/skins/ui_manager.c:487
 msgid "Delete preset"
-msgstr "Smazat předvolbu"
+msgstr "Poista esiasetus"
 
 #: src/skins/ui_equalizer.c:1189
 msgid "Delete auto-preset"
-msgstr "Smazat souborovou předvolbu"
+msgstr "Poista automaattisesti ladattava esiasetus"
 
 #: src/skins/ui_main.c:446
 msgid "kbps"
-msgstr "kb/s"
+msgstr "kbps"
 
 #: src/skins/ui_main.c:454
 msgid "kHz"
@@ -2875,704 +2996,704 @@ msgstr "kHz"
 #: src/skins/ui_main.c:802
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Přejít na %d:%-2.2d / %d:%-2.2d"
+msgstr "Siirry kohtaan %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:823
 #, c-format
 msgid "Volume: %d%%"
-msgstr "Hlasitost: %d %%"
+msgstr "Äänenvoimakkuus: %d%%"
 
 #: src/skins/ui_main.c:846
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Vyvážení: %d %% vlevo"
+msgstr "Tasapaino: %d%% vasen"
 
 #: src/skins/ui_main.c:848
 msgid "Balance: center"
-msgstr "Vyvážení: střed"
+msgstr "Tasapaino: keskellä"
 
 #: src/skins/ui_main.c:850
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Vyvážení: %d %% vpravo"
+msgstr "Tasapaino: %d%% oikea"
 
 #: src/skins/ui_main.c:974
 msgid "Options Menu"
-msgstr "Nabídka nastavení"
+msgstr "Asetusvalikko"
 
 #: src/skins/ui_main.c:978
 msgid "Disable 'Always On Top'"
-msgstr "Vypnout „Vždy na vrchu“"
+msgstr "Poista käytöstä 'Aina päällimmäisenä'"
 
 #: src/skins/ui_main.c:980
 msgid "Enable 'Always On Top'"
-msgstr "Zapnout „Vždy na vrchu“"
+msgstr "Käytä 'Aina päällimmäisenä'"
 
 #: src/skins/ui_main.c:983
 msgid "File Info Box"
-msgstr "Informace o souboru"
+msgstr "Tiedoston tietolaatikko"
 
 #: src/skins/ui_main.c:988
 msgid "Visualization Menu"
-msgstr "Nabídka znázornění"
+msgstr "Visualisointivalikko"
 
 #: src/skins/ui_main.c:1631
 msgid "Single mode."
-msgstr "Režim jedné skladby."
+msgstr "Yksittäinen -tila."
 
 #: src/skins/ui_main.c:1633
 msgid "Playlist mode."
-msgstr "Režim seznamu skladeb."
+msgstr "Soittolista -tila."
 
 #: src/skins/ui_main.c:1655
 msgid "Stopping after song."
-msgstr "Zastavuje po skladbě."
+msgstr "Pysäytä kappaleen jälkeen."
 
 #: src/skins/ui_main.c:1657
 msgid "Not stopping after song."
-msgstr "Po skladbě nezastavuje."
+msgstr "Älä pysäytä kappaleen jälkeen."
 
 #: src/skins/ui_main.c:1792
 msgid "Repeat point A set."
-msgstr ""
+msgstr "Kertauksen alkupiste A asetettu."
 
 #: src/skins/ui_main.c:1797
 msgid "Repeat point B set."
-msgstr ""
+msgstr "Kertauksen loppupiste B asetettu."
 
 #: src/skins/ui_main.c:1806
 msgid "Repeat points cleared."
-msgstr ""
+msgstr "Kertauspisteet tyhjennetty."
 
 #: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
 msgid "Autoscroll Song Name"
-msgstr "Automatický posun názvu skladby"
+msgstr "Vieritä automaattisesti nimeä"
 
 #: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
 msgid "Stop after Current Song"
-msgstr "Zastavit po současné skladbě"
+msgstr "Pysäytä tämänhetkisen kappaleen jälkeen"
 
 #: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
 msgid "Peaks"
-msgstr "Vrcholky"
+msgstr "Huiput"
 
 #: src/skins/ui_manager.c:75 src/skins/ui_manager.c:76
 msgid "Repeat"
-msgstr "Opakovat"
+msgstr "Kertaus"
 
 #: src/skins/ui_manager.c:78 src/skins/ui_manager.c:79
 msgid "Shuffle"
-msgstr "Náhodné přehrávání"
+msgstr "Sekoitus"
 
 #: src/skins/ui_manager.c:81 src/skins/ui_manager.c:82
 msgid "No Playlist Advance"
-msgstr "Žádné pokračování dle seznamu skladeb"
+msgstr "Älä etene soittolistalla"
 
 #: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
 msgid "Show Player"
-msgstr "Zobrazit přehrávač"
+msgstr "Näytä soitin"
 
 #: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
 msgid "Show Playlist Editor"
-msgstr "Zobrazit editor seznamu skladeb"
+msgstr "Näytä soittolistan muokkain"
 
 #: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
 msgid "Show Equalizer"
-msgstr "Ukázat ekvalizér"
+msgstr "Näytä taajuuskorjain"
 
 #: src/skins/ui_manager.c:93 src/skins/ui_manager.c:94
 msgid "Always on Top"
-msgstr "Vždy na vrchu"
+msgstr "Aina päällimmäisenä"
 
 #: src/skins/ui_manager.c:96 src/skins/ui_manager.c:97
 msgid "Put on All Workspaces"
-msgstr "Zobrazovat na všech plochách"
+msgstr "Näytä kaikilla työpöydillä"
 
 #: src/skins/ui_manager.c:99 src/skins/ui_manager.c:100
 msgid "Roll up Player"
-msgstr "Sbalit přehrávač"
+msgstr "Rullaa soitin ylös"
 
 #: src/skins/ui_manager.c:102 src/skins/ui_manager.c:103
 msgid "Roll up Playlist Editor"
-msgstr "Sbalit editor seznamu skladeb"
+msgstr "Rullaa soittolistan muokkain ylös"
 
 #: src/skins/ui_manager.c:105 src/skins/ui_manager.c:106
 msgid "Roll up Equalizer"
-msgstr "Sbalit ekvalizér"
+msgstr "Rullaa taajuuskorjain ylös"
 
 #: src/skins/ui_manager.c:114
 msgid "Analyzer"
-msgstr "Analyzátor"
+msgstr "Analyzer"
 
 #: src/skins/ui_manager.c:115
 msgid "Scope"
-msgstr "Vlnovka"
+msgstr "Scope"
 
 #: src/skins/ui_manager.c:116
 msgid "Voiceprint"
-msgstr "Otisk"
+msgstr "Voiceprint"
 
 #: src/skins/ui_manager.c:117
 msgid "Off"
-msgstr "Žádný"
+msgstr "Pois"
 
 #: src/skins/ui_manager.c:121 src/skins/ui_manager.c:138
 #: src/skins/ui_manager.c:144
 msgid "Normal"
-msgstr "Normální"
+msgstr "Normaali"
 
 #: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
 msgid "Fire"
-msgstr "Oheň"
+msgstr "Tuli"
 
 #: src/skins/ui_manager.c:123
 msgid "Vertical Lines"
-msgstr "Svislé čáry"
+msgstr "Pystysuorat viivat"
 
 #: src/skins/ui_manager.c:127
 msgid "Lines"
-msgstr "Čáry"
+msgstr "Viivat"
 
 #: src/skins/ui_manager.c:128
 msgid "Bars"
-msgstr "Sloupce"
+msgstr "Palkit"
 
 #: src/skins/ui_manager.c:132
 msgid "Dot Scope"
-msgstr "Tečková vlnovka"
+msgstr "Dot Scope"
 
 #: src/skins/ui_manager.c:133
 msgid "Line Scope"
-msgstr "Čárová vlnovka"
+msgstr "Line Scope"
 
 #: src/skins/ui_manager.c:134
 msgid "Solid Scope"
-msgstr "Plná vlnovka"
+msgstr "Solid Scope"
 
 #: src/skins/ui_manager.c:140
 msgid "Ice"
-msgstr "Led"
+msgstr "Jää"
 
 #: src/skins/ui_manager.c:145
 msgid "Smooth"
-msgstr "Plynulý"
+msgstr "Tasainen"
 
 #: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
 msgid "Slowest"
-msgstr "Nejpomalejší"
+msgstr "Hitain"
 
 #: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 msgid "Slow"
-msgstr "Pomalé"
+msgstr "Hidas"
 
 #: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Medium"
-msgstr "Střední"
+msgstr "Keskinkertainen"
 
 #: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Fast"
-msgstr "Rychlé"
+msgstr "Nopea"
 
 #: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 msgid "Fastest"
-msgstr "Nejrychlejší"
+msgstr "Nopein"
 
 #: src/skins/ui_manager.c:165
 msgid "Time Elapsed"
-msgstr "Dosažený čas"
+msgstr "Aikaa kulunut"
 
 #: src/skins/ui_manager.c:166
 msgid "Time Remaining"
-msgstr "Zbývající čas"
+msgstr "Aikaa jäljellä"
 
 #: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
-msgstr "Pozastavit"
+msgstr "Keskeytä"
 
 #: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
 msgid "Previous"
-msgstr "Předchozí"
+msgstr "Edellinen"
 
 #: src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
 msgid "Next"
-msgstr "Další"
+msgstr "Seuraava"
 
 #: src/skins/ui_manager.c:195
 msgid "Visualization"
-msgstr "Znázornění"
+msgstr "Visualisaatio"
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization Mode"
-msgstr "Typ znázornění"
+msgstr "Visualisaatiotila"
 
 #: src/skins/ui_manager.c:197
 msgid "Analyzer Mode"
-msgstr "Režim analyzátoru"
+msgstr "Analyzer-tila"
 
 #: src/skins/ui_manager.c:198
 msgid "Scope Mode"
-msgstr "Typ vlnovky"
+msgstr "Scope-tila"
 
 #: src/skins/ui_manager.c:199
 msgid "Voiceprint Mode"
-msgstr "Typ otisku"
+msgstr "Voiceprint-tila"
 
 #: src/skins/ui_manager.c:200
 msgid "WindowShade VU Mode"
-msgstr "Typ WindowShade VU"
+msgstr "WindowShade VU -tila"
 
 #: src/skins/ui_manager.c:201
 msgid "Analyzer Falloff"
-msgstr "Klesání sloupců"
+msgstr "Analysaattorin tiputus"
 
 #: src/skins/ui_manager.c:202
 msgid "Peaks Falloff"
-msgstr "Klesání vrcholků"
+msgstr "Huippujen tiputus"
 
 #: src/skins/ui_manager.c:207
 msgid "Playlist"
-msgstr "Seznam skladeb"
+msgstr "Soittolista"
 
 #: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
 msgid "Play Playlist"
-msgstr "Přehrát seznam skladeb"
+msgstr "Toista soittolista"
 
 #: src/skins/ui_manager.c:212 src/skins/ui_manager.c:213
 msgid "New Playlist"
-msgstr "Nový seznam skladeb"
+msgstr "Uusi soittolista"
 
 #: src/skins/ui_manager.c:215 src/skins/ui_manager.c:216
 msgid "Select Next Playlist"
-msgstr "Vybrat následující seznam skladeb"
+msgstr "Valitse seuraava soittolista"
 
 #: src/skins/ui_manager.c:218 src/skins/ui_manager.c:219
 msgid "Select Previous Playlist"
-msgstr "Vybrat předchozí seznam skladeb"
+msgstr "Valitse edellinen soittolista"
 
 #: src/skins/ui_manager.c:221 src/skins/ui_manager.c:222
 msgid "Delete Playlist"
-msgstr "Smazat seznam skladeb"
+msgstr "Poista soittolista"
 
 #: src/skins/ui_manager.c:224
 msgid "Import Playlist"
-msgstr "Importovat seznam skladeb"
+msgstr "Tuo soittolista"
 
 #: src/skins/ui_manager.c:225
 msgid "Loads a playlist file into the selected playlist."
-msgstr "Načte soubor se seznamem skladeb do vybraného seznamu."
+msgstr "Lataa soittolista-tiedoston valittuun soittolistaan."
 
 #: src/skins/ui_manager.c:228
 msgid "Export Playlist"
-msgstr "Exportovat seznam skladeb"
+msgstr "Vie soittolista"
 
 #: src/skins/ui_manager.c:229
 msgid "Saves the selected playlist."
-msgstr "Uloží vybraný seznam skladeb."
+msgstr "Tallentaa valitun soittolistan."
 
 #: src/skins/ui_manager.c:231
 msgid "Refresh List"
-msgstr "Obnovit seznam"
+msgstr "Päivitä lista"
 
 #: src/skins/ui_manager.c:232
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr "Obnovuje metadata náležící skladbě ze seznamu."
+msgstr "Päivitä kappaleen metatiedot."
 
 #: src/skins/ui_manager.c:235
 msgid "Playlist Manager"
-msgstr "Správce seznamů skladeb"
+msgstr "Soittolistojen hallinta"
 
 #: src/skins/ui_manager.c:238
 msgid "Queue Manager"
-msgstr "Správce fronty"
+msgstr "Jonomanageri"
 
 #: src/skins/ui_manager.c:243
 msgid "View"
-msgstr "Zobrazení"
+msgstr "Näkymä"
 
 #: src/skins/ui_manager.c:244
 msgid "Interface"
-msgstr "Rozhraní"
+msgstr "Käyttöliittymä"
 
 #: src/skins/ui_manager.c:245
 msgid "Interface Preferences ..."
-msgstr "Nastavení rozhraní…"
+msgstr "Käyttöliittymän asetukset..."
 
 #: src/skins/ui_manager.c:250
 msgid "Add Internet Address..."
-msgstr "Přidat internetovou adresu…"
+msgstr "Lisää internet-osoite..."
 
 #: src/skins/ui_manager.c:251
 msgid "Adds a remote track to the playlist."
-msgstr "Do seznamu přidá vzdálenou stopu."
+msgstr "Lisää ei-lokaali raita soittolistalle."
 
 #: src/skins/ui_manager.c:254
 msgid "Add Files..."
-msgstr "Přidat soubory…"
+msgstr "Lisää tiedostoja..."
 
 #: src/skins/ui_manager.c:255
 msgid "Adds files to the playlist."
-msgstr "Přidá soubory do seznamu skladeb."
+msgstr "Lisää tiedostoja soittolistaan."
 
 #: src/skins/ui_manager.c:260
 msgid "Search and Select"
-msgstr "Hledání a výběr"
+msgstr "Etsi ja valitse"
 
 #: src/skins/ui_manager.c:261
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
-"Prohledá seznam skladeb a vybere skladby ze seznamu podle zadaných omezení."
+"Etsii ja valitsee soittolistalta kappaleita hakukriteerien perusteella."
 
 #: src/skins/ui_manager.c:264
 msgid "Invert Selection"
-msgstr "Invertovat výběr"
+msgstr "Käänteinen valinta"
 
 #: src/skins/ui_manager.c:265
 msgid "Inverts the selected and unselected entries."
-msgstr "Zamění vybrané a nevybrané položky."
+msgstr "Kääntää nykyisen valinnan."
 
 #: src/skins/ui_manager.c:268
 msgid "Select All"
-msgstr "Vybrat vše"
+msgstr "Valitse kaikki"
 
 #: src/skins/ui_manager.c:269
 msgid "Selects all of the playlist entries."
-msgstr "Vybere všechny skladby v seznamu."
+msgstr "Valitsee kaikki soittolistan kappaleet."
 
 #: src/skins/ui_manager.c:272
 msgid "Select None"
-msgstr "Nevybrat žádné"
+msgstr "Ei mitään"
 
 #: src/skins/ui_manager.c:273
 msgid "Deselects all of the playlist entries."
-msgstr "Žádná skladba v seznamu nebude vybraná."
+msgstr "Poista kaikki valinnat."
 
 #: src/skins/ui_manager.c:278
 msgid "Remove All"
-msgstr "Odebrat všechny"
+msgstr "Poista kaikki"
 
 #: src/skins/ui_manager.c:279
 msgid "Removes all entries from the playlist."
-msgstr "Ze seznamu odstraní všechny skladby."
+msgstr "Poistaa kaikki kappaleet soittolistalta."
 
 #: src/skins/ui_manager.c:282
 msgid "Clear Queue"
-msgstr "Vyprázdnit frontu"
+msgstr "Tyhjennä jono"
 
 #: src/skins/ui_manager.c:283
 msgid "Clears the queue associated with this playlist."
-msgstr "Vyprázdní frontu spojenou s tímto seznamem skladeb."
+msgstr "Tyhjentää tämän soittolistan jonon."
 
 #: src/skins/ui_manager.c:286
 msgid "Remove Unavailable Files"
-msgstr "Odstranit nedostupné soubory"
+msgstr "Poista ei saatavilla olevat tiedostot"
 
 #: src/skins/ui_manager.c:287
 msgid "Removes unavailable files from the playlist."
-msgstr "Ze seznamu skladeb odstraní nedostupné soubory."
+msgstr "Poistaa soittolistalta tiedostot, joita ei ole saatavilla."
 
 #: src/skins/ui_manager.c:290
 msgid "Remove Duplicates"
-msgstr "Odebrat duplikáty"
+msgstr "Poista kopiot"
 
 #: src/skins/ui_manager.c:292 src/skins/ui_manager.c:324
 #: src/skins/ui_manager.c:354
 msgid "By Title"
-msgstr "Podle názvu"
+msgstr "Nimen mukaan"
 
 #: src/skins/ui_manager.c:293
 msgid "Removes duplicate entries from the playlist by title."
-msgstr "Ze seznamu odstraní skladby na základě jejich názvu."
+msgstr "Poista soittolistalta kappaleet joilla on sama nimi."
 
 #: src/skins/ui_manager.c:296 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
 msgid "By Filename"
-msgstr "Podle jména souboru"
+msgstr "Tiedostonimen mukaan"
 
 #: src/skins/ui_manager.c:297
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr "Ze seznamu odstraní skladby na základě jména souboru."
+msgstr "Poista soittolistalta kappaleet joilla on sama tiedostonimi."
 
 #: src/skins/ui_manager.c:300 src/skins/ui_manager.c:340
 #: src/skins/ui_manager.c:370
 msgid "By Path + Filename"
-msgstr "Podle cesty a jména souboru"
+msgstr "Polun ja tiedostonimen mukaan"
 
 #: src/skins/ui_manager.c:301
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "Ze seznamu odstraní skladby na základě celé cesty."
+msgstr "Poista soittolistalta kappaleet joilla on sama tiedostopolku."
 
 #: src/skins/ui_manager.c:304
 msgid "Remove Unselected"
-msgstr "Odebrat neoznačené"
+msgstr "Poista ei valitut"
 
 #: src/skins/ui_manager.c:305
 msgid "Remove unselected entries from the playlist."
-msgstr "Odebrat neoznačené skladby se seznamu."
+msgstr "Poista soittolistalta kappaleet jotka eivät ole valittuna."
 
 #: src/skins/ui_manager.c:308
 msgid "Remove Selected"
-msgstr "Odebrat označené"
+msgstr "Poista valitut"
 
 #: src/skins/ui_manager.c:309
 msgid "Remove selected entries from the playlist."
-msgstr "Odebrat označené skladby ze seznamu."
+msgstr "Poista soittolistalta kappaleet jotka ovat valittuna."
 
 #: src/skins/ui_manager.c:314
 msgid "Randomize List"
-msgstr "Zamíchat pořadí"
+msgstr "Sekoita lista"
 
 #: src/skins/ui_manager.c:315
 msgid "Randomizes the playlist."
-msgstr "Sklady v seznamu seřadí náhodně."
+msgstr "Sekoittaa soittolistan satunnaiseen järjestykseen."
 
 #: src/skins/ui_manager.c:318
 msgid "Reverse List"
-msgstr "Otočit seznam"
+msgstr "Käännä lista"
 
 #: src/skins/ui_manager.c:319
 msgid "Reverses the playlist."
-msgstr "Obrátí pořadí skladeb v seznamu."
+msgstr "Lajittelee listan käänteiseen järjestykseen."
 
 #: src/skins/ui_manager.c:322
 msgid "Sort List"
-msgstr "Seřadit seznam"
+msgstr "Lajittele lista"
 
 #: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "Sorts the list by title."
-msgstr "Seřadí seznam podle názvu."
+msgstr "Lajittelee listan nimen perusteella."
 
 #: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 msgid "By Album"
-msgstr "Podle alba"
+msgstr "Albumin mukaan"
 
 #: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "Sorts the list by album."
-msgstr "Seřadí seznam podle alba."
+msgstr "Lajittelee listan albumin perusteella."
 
 #: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "By Artist"
-msgstr "Podle umělce"
+msgstr "Esittäjän mukaan"
 
 #: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "Sorts the list by artist."
-msgstr "Skladby v seznam seřadí podle jména umělce."
+msgstr "Lajittelee listan esittäjän perusteella."
 
 #: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "Sorts the list by filename."
-msgstr "Skladby v seznamu seřadí podle jména souboru"
+msgstr "Lajittelee listan tiedostonimen perusteella."
 
 #: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
 msgid "Sorts the list by full pathname."
-msgstr "Skladby v seznamu seřadí podle celé cesty."
+msgstr "Järjestä lista tiedostopolun mukaan."
 
 #: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
 msgid "By Date"
-msgstr "Podle data"
+msgstr "Päivämäärän mukaan"
 
 #: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "Sorts the list by modification time."
-msgstr "Skladby v seznamu seřadí podle času poslední změny v obsahu souboru."
+msgstr "Järjestä lista muokkausajan mukaan."
 
 #: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
 msgid "By Track Number"
-msgstr "Podle čísla stopy"
+msgstr "Raidan mukaan"
 
 #: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "Sorts the list by track number."
-msgstr "Skladby v seznamu seřadí podle čísla stopy."
+msgstr "Järjestä lista raidan mukaan."
 
 #: src/skins/ui_manager.c:352
 msgid "Sort Selected"
-msgstr "Seřadit vybrané"
+msgstr "Järjestä valitut"
 
 #: src/skins/ui_manager.c:388
 msgid "File"
-msgstr "Soubor"
+msgstr "Tiedosto"
 
 #: src/skins/ui_manager.c:391
 msgid "Plugin Services"
-msgstr "Služby modulů"
+msgstr "Liitännäispalvelut"
 
 #: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
 msgid "View Track Details"
-msgstr "Zobrazit informace o skladbě"
+msgstr "Näytä raidan yksityiskohdat"
 
 #: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View track details"
-msgstr "Zobrazit informace o skladbě"
+msgstr "Näytä raidan yksityiskohdat"
 
 #: src/skins/ui_manager.c:399 src/skins/ui_manager.c:400
 msgid "About Audacious"
-msgstr "O Audacious"
+msgstr "Tietoja Audaciouksesta"
 
 #: src/skins/ui_manager.c:402
 msgid "Play File"
-msgstr "Přehrát soubor"
+msgstr "Toista tiedosto"
 
 #: src/skins/ui_manager.c:403
 msgid "Load and play a file"
-msgstr "Načíst a přehrát soubor"
+msgstr "Lataa ja toista tiedosto"
 
 #: src/skins/ui_manager.c:405
 msgid "Play Location"
-msgstr "Hrát z adresy"
+msgstr "Toista sijainti"
 
 #: src/skins/ui_manager.c:406
 msgid "Play media from the selected location"
-msgstr "Hrát média z vybraného místa"
+msgstr "Toista mediaa valitusta sijainnista"
 
 #: src/skins/ui_manager.c:408
 msgid "Plugin services"
-msgstr "Služby modulů"
+msgstr "Liitännäispalvelut"
 
 #: src/skins/ui_manager.c:410
 msgid "Preferences"
-msgstr "Nastavení"
+msgstr "Asetukset"
 
 #: src/skins/ui_manager.c:411
 msgid "Open preferences window"
-msgstr "Otevřít okno s nastavením"
+msgstr "Avaa asetusikkuna"
 
 #: src/skins/ui_manager.c:414
 msgid "Quit Audacious"
-msgstr "O Audacious"
+msgstr "Sulje Audacious"
 
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Set A-B"
-msgstr "Nastavit A-B"
+msgstr "Aseta A-B"
 
 #: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
 msgid "Clear A-B"
-msgstr "Vyprázdnit A-B"
+msgstr "Tyhjennä A-B"
 
 #: src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
 msgid "Jump to File"
-msgstr "Přejít na soubor"
+msgstr "Siirry tiedostoon"
 
 #: src/skins/ui_manager.c:425 src/skins/ui_manager.c:426
 msgid "Jump to Time"
-msgstr "Přejít na čas"
+msgstr "Siirry aikaan"
 
 #: src/skins/ui_manager.c:428
 msgid "Queue Toggle"
-msgstr "Přepnout frontu"
+msgstr "Lisää/Poista jonosta"
 
 #: src/skins/ui_manager.c:429
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr "Povolí/zakáže položku ve frontě seznamu skladeb."
+msgstr "Lisää tai poistaa kappaleen soittolistan jonosta."
 
 #: src/skins/ui_manager.c:432
 msgid "Copy"
-msgstr "Kopírovat"
+msgstr "Kopioi"
 
 #: src/skins/ui_manager.c:435
 msgid "Cut"
-msgstr "Oříznout"
+msgstr "Leikkaa"
 
 #: src/skins/ui_manager.c:438
 msgid "Paste"
-msgstr "Vložit"
+msgstr "Liitä"
 
 #: src/skins/ui_manager.c:445
 msgid "Load"
-msgstr "Načíst"
+msgstr "Lataa"
 
 #: src/skins/ui_manager.c:446
 msgid "Import"
-msgstr "Importovat"
+msgstr "Tuo"
 
 #: src/skins/ui_manager.c:447
 msgid "Save"
-msgstr "Uložit"
+msgstr "Tallenna"
 
 #: src/skins/ui_manager.c:448
 msgid "Delete"
-msgstr "Smazat"
+msgstr "Poista"
 
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 #: src/skins/ui_manager.c:486
 msgid "Preset"
-msgstr "Předvolby"
+msgstr "Esiasetus"
 
 #: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
 #: src/skins/ui_manager.c:489
 msgid "Auto-load preset"
-msgstr "Souborová předvolba"
+msgstr "Automaattisesti ladattava esiasetus"
 
 #: src/skins/ui_manager.c:454
 msgid "Load auto-load preset"
-msgstr "Načíst souborovou předvolbu"
+msgstr "Lataa automaattisesti ladattava esiasetus"
 
 #: src/skins/ui_manager.c:457
 msgid "Load default preset into equalizer"
-msgstr "Načíst standardní předvolbu do ekvalizéru"
+msgstr "Lataa oletusesiasetus taajuuskorjaimeen"
 
 #: src/skins/ui_manager.c:459
 msgid "Zero"
-msgstr "Vynulovat"
+msgstr "Nolla"
 
 #: src/skins/ui_manager.c:460
 msgid "Set equalizer preset levels to zero"
-msgstr "Vynulovat předvolby ekvalizéru"
+msgstr "Aseta taajuuskorjaimen esiasetuksen tasot nollaan"
 
 #: src/skins/ui_manager.c:462
 msgid "From file"
-msgstr "Ze souboru"
+msgstr "Tiedostosta"
 
 #: src/skins/ui_manager.c:463
 msgid "Load preset from file"
-msgstr "Načíst předvolbu ze souboru"
+msgstr "Lataa esiasetus tiedostosta"
 
 #: src/skins/ui_manager.c:465
 msgid "From WinAMP EQF file"
-msgstr "Ze souboru WinAMP EQF"
+msgstr "Winampin EQF-tiedostosta"
 
 #: src/skins/ui_manager.c:466
 msgid "Load preset from WinAMP EQF file"
-msgstr "Načíst předvolbu ze souboru WinAMP EQF"
+msgstr "Lataa esiasetus Winampin EQF-tiedostosta"
 
 #: src/skins/ui_manager.c:468
 msgid "WinAMP Presets"
-msgstr "Předvolby WinAMPu"
+msgstr "Winampin esiasetukset"
 
 #: src/skins/ui_manager.c:469
 msgid "Import WinAMP presets"
-msgstr "Importovat předvolby WinAMPu"
+msgstr "Tuo Winampin esiasetukset"
 
 #: src/skins/ui_manager.c:475
 msgid "Save auto-load preset"
-msgstr "Uložit souborovou předvolbu"
+msgstr "Tallenna automaattisesti ladattava esiasetus"
 
 #: src/skins/ui_manager.c:478
 msgid "Save default preset"
-msgstr "Uložit standardní předvolbu"
+msgstr "Tallenna oletusesiasetus"
 
 #: src/skins/ui_manager.c:480
 msgid "To file"
-msgstr "Do souboru"
+msgstr "Tiedostoon"
 
 #: src/skins/ui_manager.c:481
 msgid "Save preset to file"
-msgstr "Uložit předvolbu do souboru"
+msgstr "Tallenna esiasetus tiedostoon"
 
 #: src/skins/ui_manager.c:483
 msgid "To WinAMP EQF file"
-msgstr "Do souboru WinAMP EQF"
+msgstr "Winampin EQF-tiedostoon"
 
 #: src/skins/ui_manager.c:484
 msgid "Save preset to WinAMP EQF file"
-msgstr "Uložit předvolbu do souboru WinAMP EQF"
+msgstr "Tallenna esiasetus Winampin EQF-tiedostoon"
 
 #: src/skins/ui_manager.c:490
 msgid "Delete auto-load preset"
-msgstr "Smazat souborovou předvolbu"
+msgstr "Poista automaattisesti ladattava esiasetus"
 
 #: src/skins/ui_playlist.c:244
 msgid "Search entries in active playlist"
-msgstr "Vyhledat skladby v současném seznamu skladeb"
+msgstr "Etsi kappaleita aktiivisesta soittolistasta"
 
 #: src/skins/ui_playlist.c:251
 msgid ""
@@ -3581,60 +3702,60 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Položky seznamu skladeb vyberete vyplněním jednoho, nebo více polí. Pole "
-"používají regulární výrazy a neberou ohled na velikost písmen. Pokud "
-"regulárním výrazům nerozumíte, jednoduše vložte části textu, které chcete "
-"vyhledat."
+"Etsi kappaleita soittolistalta täyttämällä yhden tai useamman kentistä. "
+"Kentät käyttävät säännöllisten lausekkeiden syntaksia, kirjainkoolla ei ole "
+"merkitystä. Jos et tiedä kuinka säännöllisiä lausekkeita käytetään, kirjoita "
+"kenttään suoraan se mitä haluat etsiä."
 
 #: src/skins/ui_playlist.c:259
 msgid "Title: "
-msgstr "Název: "
+msgstr "Nimi:"
 
 #: src/skins/ui_playlist.c:267
 msgid "Album: "
-msgstr "Album: "
+msgstr "Albumi:"
 
 #: src/skins/ui_playlist.c:275
 msgid "Artist: "
-msgstr "Umělec: "
+msgstr "Esittäjä:"
 
 #: src/skins/ui_playlist.c:283
 msgid "Filename: "
-msgstr "Jméno souboru: "
+msgstr "Tiedostonimi:"
 
 #: src/skins/ui_playlist.c:292
 msgid "Clear previous selection before searching"
-msgstr "Před hledáním vymazat předchozí výběr"
+msgstr "Tyhjennä aiempi valinta ennen hakemista"
 
 #: src/skins/ui_playlist.c:295
 msgid "Automatically toggle queue for matching entries"
-msgstr "Shodující se položky automaticky zařadit/vyřadit z fronty"
+msgstr "Lisää tai poista automaattisesti täsmäävät kappaleet jonosta"
 
 #: src/skins/ui_playlist.c:298
 msgid "Create a new playlist with matching entries"
-msgstr "Ze shodujících se položek vytvořit nový seznam skladeb"
+msgstr "Luo uusi soittolista täsmäävistä kappaleista"
 
 #: src/skins/ui_playlist.c:738
 msgid "Audacious Playlist Editor"
-msgstr "Zobrazit editor seznamu skladeb"
+msgstr "Audaciouksen soittolistan muokkain"
 
 #: src/skins/ui_playlist.c:772
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d z %d)"
+msgstr "%s (%d / %d)"
 
 #: src/skins/ui_skinselector.c:161
 msgid "Archived Winamp 2.x skin"
-msgstr "Zabalený skin Winapmu 2.x"
+msgstr "Pakattu Winamp 2.x skini"
 
 #: src/skins/ui_skinselector.c:166
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Nezabalený skin Winampu 2.x"
+msgstr "Pakkaamaton Winamp 2.x skini"
 
 #: src/skins/util.c:772
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "Adresář („%s“) nebylo možné vytvořit: %s\n"
+msgstr "Ei voitu luoda kansiota (%s): %s\n"
 
 #: src/sndfile/plugin.c:416
 msgid ""
@@ -3657,14 +3778,32 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Perustuu xmms_sndfile-liitännäiselle:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Muokannut Audacioukselle Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndfile/plugin.c:435
 msgid "Sndfile Plugin"
-msgstr ""
+msgstr "Sndfile-liitännäinen"
 
 #: src/sndio/sndio.c:187
 msgid "About Sndio Output Plugin"
-msgstr "O výstupním pluginu Sndio"
+msgstr "Tietoja Sndio Output -liitännäisestä"
 
 #: src/sndio/sndio.c:188
 msgid ""
@@ -3672,13 +3811,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
-"Sndio výstupní plugin\n"
+"Sndio Output -liitännäinen\n"
 "\n"
-"napsal Thomas Pfaff <tpfaff@tp76.info>\n"
+"Luonut Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:259
 msgid "Unsupported format"
-msgstr "Nepodporovaný formát"
+msgstr "Formaattia ei tueta"
 
 #: src/sndio/sndio.c:260
 msgid ""
@@ -3686,53 +3825,52 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
-"Formát není podporován tímto zvukovým zařízením. ⏎ ⏎ Zkuste to prosím znovu "
-"s běžícím sndiod(1) serverem."
+"Yritettiin toistaa formaattia jota äänilaite ei tue.\n"
+"\n"
+"Yritä uudelleen kun sndiod(1) palvelin on käynnissä."
 
 #: src/sndio/sndio.c:403
 msgid "sndio device"
-msgstr "sndio zařízení"
+msgstr "sndio-laite"
 
 #: src/sndio/sndio.c:419
 msgid "(empty means default)"
-msgstr "(prázdné znamená výchozí)"
+msgstr "(tyhjä tarkoittaa oletusta)"
 
 #: src/sndio/sndio.c:431
 msgid "OK"
-msgstr "Budiž"
+msgstr "OK"
 
 #: src/sndio/sndio.c:439
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "Peruuta"
 
 #: src/song_change/song_change.c:54
 msgid "Song Change"
-msgstr "Změna skladby"
+msgstr "Kappaleen vaihtuminen"
 
 #: src/song_change/song_change.c:436
 msgid "Command to run when Audacious starts a new song."
-msgstr "Příkaz, který se provede, když Audacious začne novou skladbu."
+msgstr "Komento joka ajetaan kun kappaleen toisto alkaa."
 
 #: src/song_change/song_change.c:438 src/song_change/song_change.c:444
 #: src/song_change/song_change.c:450 src/song_change/song_change.c:456
 msgid "Command:"
-msgstr "Příkaz:"
+msgstr "Komento:"
 
 #: src/song_change/song_change.c:442
 msgid "Command to run toward the end of a song."
-msgstr "Příkaz, který se provede na konci skladby."
+msgstr "Komento joka ajetaan kun kappale lähestyy loppua."
 
 #: src/song_change/song_change.c:448
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-"Příkaz, který se provede, když Audacious dosáhne konce seznamu skladeb."
+msgstr "Komento joka ajetaan kun päästään soittolistan loppuun."
 
 #: src/song_change/song_change.c:454
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
-"Příkaz, který se provede při změně názvu skladbu (tj. názvy v síťových "
-"proudech)."
+"Komento joka ajetaan kun kappaleen nimi vaihtuu (esim. internet-virrat)."
 
 #: src/song_change/song_change.c:460
 msgid ""
@@ -3752,18 +3890,34 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
+"Voit käyttää seuraavia merkkijonoja jotka \n"
+"korvataan komentoa kutsuttaessa.\n"
+"(kaikki eivät välttämättä ole hyödyllisiä):\n"
+"\n"
+"%F: taajuus (hertseinä)\n"
+"%c: kanavien lukumäärä\n"
+"%f: tiedostopolku\n"
+"%l: kesto (millisekunteina)\n"
+"%n tai %s: kappaleen nimi\n"
+"%r: nopeus (bittejä/sekunti)\n"
+"%t: sija soittolistassa (%02d)\n"
+"%p: toistetaanko jotain (1 tai 0)\n"
+"%a: esittäjä\n"
+"%b: albumi\n"
+"%T: kappaleen nimi"
 
 #: src/song_change/song_change.c:487
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>Parametry předávané shellu by měly být uzavřeny do "
-"uvozovek. Nerespektování této rady představuje bezpečnostní riziko.</span>"
+"<span size='small'>Komentoriville syötettävät parametrit tulisi asettaa "
+"lainausmerkkien sisään. Lainausmerkkien käyttämättä jättäminen on "
+"tietoturvariski.</span>"
 
 #: src/song_change/song_change.c:498
 msgid "Commands"
-msgstr "Příkazy"
+msgstr "Komennot"
 
 #: src/sox-resampler/sox-resampler.c:135
 msgid ""
@@ -3800,19 +3954,19 @@ msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:225
 msgid "<b>Speed and Pitch</b>"
-msgstr "<b>Rychlost a výška</b>"
+msgstr "<b>Nopeus ja sävelkorkeus</b>"
 
 #: src/speed-pitch/speed-pitch.c:226
 msgid "Speed:"
-msgstr "Rachlost:"
+msgstr "Nopeus:"
 
 #: src/speed-pitch/speed-pitch.c:229
 msgid "Pitch:"
-msgstr "Výška:"
+msgstr "Sävelkorkeus:"
 
 #: src/speed-pitch/speed-pitch.c:264
 msgid "Speed and Pitch"
-msgstr "Rychlost a výška:"
+msgstr "Nopeus ja sävelkorkeus"
 
 #: src/statusicon/statusicon.c:390
 msgid ""
@@ -3824,38 +3978,44 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Tilaikoni-liitännäinen\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Tämä liitännäinen tarjoaa järjestelmäpalkkiin sijoitettavan ikonin."
 
 #: src/statusicon/statusicon.c:397
 msgid "<b>Mouse Scroll Action</b>"
-msgstr ""
+msgstr "<b>Hiiren rullan vieritystoiminto</b>"
 
 #: src/statusicon/statusicon.c:398
 msgid "Change volume"
-msgstr "Změnit hlasitost"
+msgstr "Muuta äänenvoimakkuutta"
 
 #: src/statusicon/statusicon.c:401
 msgid "Change playing song"
-msgstr "Změnit hranou skladbu"
+msgstr "Vaihda kappaletta"
 
 #: src/statusicon/statusicon.c:404
 msgid "<b>Other Settings</b>"
-msgstr "<b>Ostatní nastavení</b>"
+msgstr "<b>Muut asetukset</b>"
 
 #: src/statusicon/statusicon.c:405
 msgid "Disable the popup window"
-msgstr "Zakázat vyskakovací okno"
+msgstr "Poista ponnahdusikkuna käytöstä"
 
 #: src/statusicon/statusicon.c:407
 msgid "Close to the system tray"
-msgstr ""
+msgstr "Sulje järjestelmäpalkkiin"
 
 #: src/statusicon/statusicon.c:409
 msgid "Advance in playlist when scrolling upward"
-msgstr "Přecházet v seznamu skladeb, když se roluje nahoru"
+msgstr "Etene soittolistassa kun vieritetään ylöspäin"
 
 #: src/statusicon/statusicon.c:418
 msgid "Status Icon"
-msgstr "Stavová ikona"
+msgstr "Tilaikoni"
 
 #: src/stereo_plugin/stereo.c:17
 msgid ""
@@ -3863,6 +4023,9 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
+"Extra Stereo -liitännäinen\n"
+"\n"
+"By Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
@@ -3875,11 +4038,11 @@ msgstr "Extra Stereo"
 #: src/tonegen/tonegen.c:84
 #, c-format
 msgid "%s %.1f Hz"
-msgstr "%s %.1f Hz"
+msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:84
 msgid "Tone Generator: "
-msgstr "Generátor tónů:"
+msgstr "Sointugeneraattori:"
 
 #: src/tonegen/tonegen.c:197
 msgid ""
@@ -3889,10 +4052,15 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
+"Siniaaltogeneraattori, luonut Håvard Kvålen <havardk@xmms.org>\n"
+"Muokannut Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"Käyttääksesi, lisää URL: tone://frequency1;frequency2;frequency3;...\n"
+"esim. tone://2000;2005 toistaaksesi 2000 Hz:n ja 2005 Hz:n soinnun"
 
 #: src/tonegen/tonegen.c:206
 msgid "Tone Generator"
-msgstr "Generátor tónu"
+msgstr "Sointugeneraattori"
 
 #: src/unix-io/unix-io.c:243
 msgid ""
@@ -3901,14 +4069,18 @@ msgid ""
 "\n"
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
+"Tiedosto I/O -liitännäinen Audacioukselle\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"TÄMÄ LIITÄNNÄINEN ON TÄRKEÄ. ÄLÄ POISTA TÄTÄ KÄYTÖSTÄ."
 
 #: src/unix-io/unix-io.c:266
 msgid "File I/O Plugin"
-msgstr ""
+msgstr "Tiedosto I/O -liitännäinen"
 
 #: src/voice_removal/voice_removal.c:58
 msgid "Voice Removal"
-msgstr "Odstranění hlasu"
+msgstr "Äänen poisto"
 
 #: src/vorbis/vorbis.c:555
 msgid ""
@@ -3930,10 +4102,27 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
+"Audaciouksen Ogg Vorbis -dekooderi\n"
+"\n"
+"Perustuu Xiph.org säätiön Ogg Vorbis -liitännäiselle:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Alkuperäinen kehittäjä:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Kontribuutiot:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.c:575
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis Dekodér"
+msgstr "Ogg Vorbis -dekooderi"
 
 #: src/vtx/vtx.c:241
 msgid ""
@@ -3941,18 +4130,21 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
+"Vortex tiedostoformaatin toistin, luonut Sashnov Alexander <sashnov@ngs.ru>\n"
+"Perustuu in_vtx.dll:ään, luonut Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious liitännäisen luonut Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/vtx/vtx.c:247
 msgid "VTX Decoder"
-msgstr "VTX Dekodér"
+msgstr "VTX-dekooderi"
 
 #: src/wavpack/wavpack.c:282
 msgid "lossy (hybrid)"
-msgstr ""
+msgstr "häviöllinen (hybridi)"
 
 #: src/wavpack/wavpack.c:284
 msgid "lossy"
-msgstr ""
+msgstr "häviöllinen"
 
 #: src/wavpack/wavpack.c:334
 msgid ""
@@ -3962,16 +4154,16 @@ msgid ""
 msgstr ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
-"Některý kód pluginů vytvořil Miles Egan."
+"Osan liitännäisen koodista kirjoittanut Miles Egan."
 
 #: src/wavpack/wavpack.c:341
 msgid "WavPack Decoder"
-msgstr "WavPack Dekodér"
+msgstr "WavPack-dekooderi"
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr "2SF Dekodér"
+msgstr "2SF-dekooderi"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "XML Shareable Playlists (XSPF)"
+msgstr "XML jaettavat soittolistat (XSPF)"

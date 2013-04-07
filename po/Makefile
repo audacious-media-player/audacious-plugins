@@ -11,19 +11,23 @@ LOCALES = be.po \
 	  ca.po \
 	  cs.po \
 	  de.po \
+	  el.po \
 	  es.po \
 	  es_AR.po \
 	  es_MX.po \
 	  et.po \
 	  eu.po \
+	  fi.po \
 	  fr.po \
 	  gl.po \
 	  hu.po \
+	  id_ID.po \
 	  it.po \
 	  ja.po \
 	  ko.po \
-	  lv.po \
+	  ky.po \
 	  lt.po \
+	  lv.po \
 	  pl.po \
 	  pt_BR.po \
 	  pt_PT.po \
