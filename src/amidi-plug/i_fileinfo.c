@@ -365,17 +365,17 @@ void i_fileinfo_gui (const char * filename_uri)
         }
 
         filename_utf8 = g_strconcat (convert_str, _("  (invalid UTF-8)"), NULL);
-        free (convert_str);
+        g_free (convert_str);
     }
 
     title = g_path_get_basename (filename_utf8);
     gtk_window_set_title (GTK_WINDOW (fileinfowin), title);
-    free (title);
+    g_free (title);
     /* set the text for the filename header too */
     gtk_entry_set_text (GTK_ENTRY (title_name_v_entry), filename_utf8);
     gtk_editable_set_position (GTK_EDITABLE (title_name_v_entry), -1);
-    free (filename_utf8);
-    free (filename);
+    g_free (filename_utf8);
+    g_free (filename);
 
     gtk_widget_grab_focus (GTK_WIDGET (footer_bclose));
     gtk_widget_show_all (fileinfowin);

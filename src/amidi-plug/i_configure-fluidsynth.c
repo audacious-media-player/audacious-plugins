@@ -613,7 +613,7 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
                 char * samplerate_value = g_strdup_printf ("%i", fsyncfg->fsyn_synth_samplerate);
                 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[3]), TRUE);
                 gtk_entry_set_text (GTK_ENTRY (synth_samplerate_optionentry), samplerate_value);
-                free (samplerate_value);
+                g_free (samplerate_value);
             }
             else
                 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[1]), TRUE);

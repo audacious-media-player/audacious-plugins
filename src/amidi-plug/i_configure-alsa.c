@@ -228,8 +228,8 @@ void i_configure_gui_ctlcmb_datafunc (GtkCellLayout * cell_layout, GtkCellRender
         ctl_display = g_strdup_printf ("%s (%i)", ctl_name, ctl_id);
 
     g_object_set (G_OBJECT (cr), "text", ctl_display, NULL);
-    free (ctl_display);
-    free (ctl_name);
+    g_free (ctl_display);
+    g_free (ctl_name);
 }
 
 
