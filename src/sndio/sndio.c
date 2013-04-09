@@ -35,8 +35,10 @@
  */
 #define BUFFER_SIZE_MIN	250
 
+static int get_volume(void) { return aud_get_int("sndio", "volume"); }
+static void set_volume(int vol) { aud_set_int("sndio", "volume", vol); }
+
 bool_t	sndio_init(void);
-void	sndio_cleanup(void);
 void	sndio_about(void);
 void	sndio_configure(void);
 void	sndio_get_volume(int *, int *);
@@ -49,7 +51,6 @@ void	sndio_write(void *, int);
 void	sndio_pause(bool_t);
 void	sndio_flush(int);
 int	sndio_output_time(void);
-void	sndio_drain(void);
 
 void	onmove_cb(void *, int);
 void	onvol_cb(void *, unsigned);
@@ -60,20 +61,18 @@ static struct sio_par par;
 static struct sio_hdl *hdl;
 static long long rdpos;
 static long long wrpos;
-static int paused, restarted, volume;
+static int paused, restarted;
 static int pause_pending, flush_pending, volume_pending;
 static int bytes_per_sec;
-static pthread_mutex_t mtx;
+static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 
 static GtkWidget *configure_win;
 static GtkWidget *adevice_entry;
-static gchar *audiodev;
 
 AUD_OUTPUT_PLUGIN
 (
 	.name = "sndio",
 	.init = sndio_init,
-	.cleanup = sndio_cleanup,
 	.about = sndio_about,
 	.configure = sndio_configure,
 	.probe_priority = 2,
@@ -86,8 +85,7 @@ AUD_OUTPUT_PLUGIN
 	.period_wait = sndio_period_wait,
 	.flush = sndio_flush,
 	.pause = sndio_pause,
-	.output_time = sndio_output_time,
-	.drain = sndio_drain
+	.output_time = sndio_output_time
 )
 
 static struct fmt_to_par {
@@ -104,7 +102,6 @@ static struct fmt_to_par {
 
 static const gchar * const sndio_defaults[] = {
 	"volume", "100",
-	"audiodev", "",
 	NULL,
 };
 
@@ -126,7 +123,7 @@ wait_ready(void)
 	struct pollfd pfds[16];
 
 	if (volume_pending) {
-		sio_setvol(hdl, volume * SIO_MAXVOL / 100);
+		sio_setvol(hdl, get_volume() * SIO_MAXVOL / 100);
 		volume_pending = 0;
 	}
 	if (flush_pending) {
@@ -161,21 +158,9 @@ wait_ready(void)
 bool_t
 sndio_init(void)
 {
-	pthread_mutex_init(&mtx, NULL);
-
 	aud_config_set_defaults("sndio", sndio_defaults);
-	volume = aud_get_int("sndio", "volume");
-	audiodev = aud_get_string("sndio", "audiodev");
 
 	return (1);
-}
-
-void
-sndio_cleanup(void)
-{
-	aud_set_int("sndio", "volume", volume);
-	aud_set_string("sndio", "audiodev", audiodev);
-	pthread_mutex_destroy(&mtx);
 }
 
 void
@@ -192,9 +177,7 @@ sndio_about(void)
 void
 sndio_get_volume(int *l, int *r)
 {
-	pthread_mutex_lock(&mtx);
-	*l = *r = volume;
-	pthread_mutex_unlock(&mtx);
+	*l = *r = get_volume();
 }
 
 void
@@ -202,7 +185,7 @@ sndio_set_volume(int l, int r)
 {
 	/* Ignore balance control, so use unattenuated channel. */
 	pthread_mutex_lock(&mtx);
-	volume = l > r ? l : r;
+	set_volume(MAX(l, r));
 	volume_pending = 1;
 	pthread_mutex_unlock(&mtx);
 }
@@ -215,11 +198,17 @@ sndio_open(int fmt, int rate, int nch)
 	GtkWidget *dialog = NULL;
 	unsigned buffer_size;
 
+	char *audiodev = aud_get_string("sndio", "audiodev");
+
 	hdl = sio_open(strlen(audiodev) > 0 ? audiodev : NULL, SIO_PLAY, 1);
 	if (!hdl) {
 		g_warning("failed to open audio device %s", audiodev);
+		free(audiodev);
 		return (0);
 	}
+
+	free(audiodev);
+
 	sio_initpar(&askpar);
 	for (i = 0; ; i++) {
 		if (i == sizeof(fmt_to_par) / sizeof(struct fmt_to_par)) {
@@ -267,7 +256,7 @@ sndio_open(int fmt, int rate, int nch)
 	wrpos = 0;
 	sio_onmove(hdl, onmove_cb, NULL);
 	sio_onvol(hdl, onvol_cb, NULL);
-	sio_setvol(hdl, volume * SIO_MAXVOL / 100);
+	sio_setvol(hdl, get_volume() * SIO_MAXVOL / 100);
 	if (!sio_start(hdl)) {
 		g_warning("failed to start audio device");
 		sndio_close();
@@ -344,12 +333,6 @@ sndio_pause(bool_t flag)
 	pthread_mutex_unlock(&mtx);
 }
 
-void
-sndio_drain(void)
-{
-	/* sndio always drains */
-}
-
 int
 sndio_output_time(void)
 {
@@ -371,16 +354,14 @@ void
 onvol_cb(void *addr, unsigned ctl)
 {
 	/* Update volume only if it actually changed */
-	if (ctl != volume * SIO_MAXVOL / 100)
-		volume = ctl * 100 / SIO_MAXVOL;
+	if (ctl != get_volume() * SIO_MAXVOL / 100)
+		set_volume(ctl * 100 / SIO_MAXVOL);
 }
 
 void
 configure_win_ok_cb(GtkWidget *w, gpointer data)
 {
-	strlcpy(audiodev, gtk_entry_get_text(GTK_ENTRY(adevice_entry)),
-	    PATH_MAX);
-	aud_set_string("sndio", "audiodev", audiodev);
+	aud_set_string("sndio", "audiodev", gtk_entry_get_text(GTK_ENTRY(adevice_entry)));
 	gtk_widget_destroy(configure_win);
 }
 
@@ -419,9 +400,13 @@ sndio_configure(void)
 	adevice_text = gtk_label_new(_("(empty means default)"));
 	gtk_box_pack_start(GTK_BOX(adevice_vbox), adevice_text, TRUE, TRUE, 0);
 
+	char *audiodev = aud_get_string("sndio", "audiodev");
+
 	adevice_entry = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(adevice_entry), audiodev);
 	gtk_box_pack_start(GTK_BOX(adevice_vbox), adevice_entry, TRUE, TRUE, 0);
+
+	free(audiodev);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
