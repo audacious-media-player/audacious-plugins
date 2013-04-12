@@ -909,7 +909,7 @@ CmidPlayer::rewind (int subsong)
   adlib_style = MIDI_STYLE | CMF_STYLE;
   adlib_mode = ADLIB_MELODIC;
   for (i = 0; i < 128; i++)
-    for (j = 0; j < 16; j++)
+    for (j = 0; j < 14; j++) // for (j = 0; j < 16; j++)
       myinsbank[i][j] = midi_fm_instruments[i][j];
   for (i = 0; i < 16; i++)
   {
