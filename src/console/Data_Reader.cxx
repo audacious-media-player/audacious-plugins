@@ -250,21 +250,27 @@ static const char* get_gzip_eof( const char* path, long* eof )
 	if ( !file )
 		return "Couldn't open file";
 
-	unsigned char buf [4];
-	if ( fread( buf, 2, 1, file ) > 0 && buf [0] == 0x1F && buf [1] == 0x8B )
+	unsigned char buf[4];
+	if (fread (buf, 2, 1, file) == 1 && buf[0] == 0x1F && buf[1] == 0x8B)
 	{
-		fseek( file, -4, SEEK_END );
-		fread( buf, 4, 1, file );
-		*eof = GET_LE32( buf );
+		if (fseek (file, -4, SEEK_END) != 0 || fread (buf, 4, 1, file) != 1)
+			goto ERR_CLOSE;
+		*eof = GET_LE32 (buf);
 	}
 	else
 	{
-		fseek( file, 0, SEEK_END );
-		*eof = ftell( file );
+		long pos;
+		if (fseek (file, 0, SEEK_END) != 0 || (pos = ftell (file) < 0))
+			goto ERR_CLOSE;
+		*eof = pos;
 	}
-	const char* err = (ferror( file ) || feof( file )) ? "Couldn't get file size" : 0;
-	fclose( file );
-	return err;
+
+	fclose (file);
+	return 0;
+
+ERR_CLOSE:
+	fclose (file);
+	return "Couldn't get file size";
 }
 
 Gzip_File_Reader::Gzip_File_Reader() : file_( 0 ) { }
