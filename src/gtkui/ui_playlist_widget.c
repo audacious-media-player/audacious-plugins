@@ -432,10 +432,11 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
 {
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_if_fail (data);
+    gint diff = 0;
 
     if (type >= PLAYLIST_UPDATE_STRUCTURE)
     {
-        gint diff = aud_playlist_entry_count (data->list) -
+        diff = aud_playlist_entry_count (data->list) -
          audgui_list_row_count (widget);
 
         if (diff > 0)
@@ -452,6 +453,9 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
     audgui_list_update_selection (widget, at, count);
     audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
     update_queue (widget, data);
+
+    if (diff > 0)
+        audgui_list_scroll_to_end(widget);
 }
 
 void ui_playlist_widget_scroll (GtkWidget * widget)
