@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-gboolean    xs_sidplayfp_probe(xs_file_t *);
+gboolean    xs_sidplayfp_probe(VFSFile *);
 void        xs_sidplayfp_close(xs_status_t *);
 gboolean    xs_sidplayfp_init(xs_status_t *);
 gboolean    xs_sidplayfp_initsong(xs_status_t *);

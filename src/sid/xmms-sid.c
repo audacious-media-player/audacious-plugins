@@ -20,10 +20,13 @@
    with this program; if not, write to the Free Software Foundation, Inc.,
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+
 #include "xmms-sid.h"
 
+#include <assert.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include <audacious/debug.h>
 #include <libaudcore/audstrings.h>
@@ -399,7 +402,7 @@ static void xs_fill_subtunes(Tuple *tuple, xs_tuneinfo_t *info)
     tuple_set_subtunes (tuple, found, subtunes);
 }
 
-Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
+Tuple * xs_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     Tuple *tuple;
     xs_tuneinfo_t *info;

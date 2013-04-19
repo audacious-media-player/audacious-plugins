@@ -21,12 +21,14 @@
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "xs_length.h"
-#include "xs_support.h"
+
+#include <assert.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 
+#include "xs_support.h"
 
 /* Free memory allocated for given SLDB node
  */
@@ -377,7 +379,7 @@ typedef struct {
 
 static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
 {
-    xs_file_t *inFile;
+    VFSFile *inFile;
     xs_md5state_t inState;
     psidv1_header_t psidH;
     psidv2_header_t psidH2;
@@ -386,17 +388,17 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
     gint index, result;
 
     /* Try to open the file */
-    if ((inFile = xs_fopen(filename, "rb")) == NULL)
+    if ((inFile = vfs_fopen(filename, "rb")) == NULL)
         return -1;
 
     /* Read PSID header in */
-    if (xs_fread(psidH.magicID, 1, sizeof psidH.magicID, inFile) < sizeof psidH.magicID) {
-        xs_fclose(inFile);
+    if (vfs_fread(psidH.magicID, 1, sizeof psidH.magicID, inFile) < sizeof psidH.magicID) {
+        vfs_fclose(inFile);
         return -1;
     }
 
     if (strncmp(psidH.magicID, "PSID", 4) && strncmp(psidH.magicID, "RSID", 4)) {
-        xs_fclose(inFile);
+        vfs_fclose(inFile);
         xs_error("Not a PSID or RSID file '%s'\n", filename);
         return -2;
     }
@@ -410,10 +412,10 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
     psidH.startSong = xs_fread_be16(inFile);
     psidH.speed = xs_fread_be32(inFile);
 
-    if (xs_fread(psidH.sidName, 1, sizeof psidH.sidName, inFile) < sizeof psidH.sidName
-     || xs_fread(psidH.sidAuthor, 1, sizeof psidH.sidAuthor, inFile) < sizeof psidH.sidAuthor
-     || xs_fread(psidH.sidCopyright, 1, sizeof psidH.sidCopyright, inFile) < sizeof psidH.sidCopyright) {
-        xs_fclose(inFile);
+    if (vfs_fread(psidH.sidName, 1, sizeof psidH.sidName, inFile) < sizeof psidH.sidName
+     || vfs_fread(psidH.sidAuthor, 1, sizeof psidH.sidAuthor, inFile) < sizeof psidH.sidAuthor
+     || vfs_fread(psidH.sidCopyright, 1, sizeof psidH.sidCopyright, inFile) < sizeof psidH.sidCopyright) {
+        vfs_fclose(inFile);
         xs_error("Error reading SID file header from '%s'\n", filename);
         return -4;
     }
@@ -424,22 +426,22 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
     if (psidH.version == 2) {
         /* Yes, we need to */
         psidH2.flags = xs_fread_be16(inFile);
-        psidH2.startPage = xs_fgetc(inFile);
-        psidH2.pageLength = xs_fgetc(inFile);
+        psidH2.startPage = vfs_getc(inFile);
+        psidH2.pageLength = vfs_getc(inFile);
         psidH2.reserved = xs_fread_be16(inFile);
     }
 
     /* Allocate buffer */
     songData = (guint8 *) g_malloc(XS_SIDBUF_SIZE * sizeof(guint8));
     if (!songData) {
-        xs_fclose(inFile);
+        vfs_fclose(inFile);
         xs_error("Error allocating temp data buffer for file '%s'\n", filename);
         return -3;
     }
 
     /* Read data to buffer */
-    result = xs_fread(songData, sizeof(guint8), XS_SIDBUF_SIZE, inFile);
-    xs_fclose(inFile);
+    result = vfs_fread(songData, sizeof(guint8), XS_SIDBUF_SIZE, inFile);
+    vfs_fclose(inFile);
 
     /* Initialize and start MD5-hash calculation */
     xs_md5_init(&inState);

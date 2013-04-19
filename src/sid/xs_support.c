@@ -29,107 +29,18 @@
 
 #define __AUDACIOUS_NEWVFS__
 
-guint16 xs_fread_be16(xs_file_t *f)
+guint16 xs_fread_be16(VFSFile *f)
 {
-    return (((guint16) xs_fgetc(f)) << 8) | ((guint16) xs_fgetc(f));
+    return (((guint16) vfs_getc(f)) << 8) | ((guint16) vfs_getc(f));
 }
 
 
-guint32 xs_fread_be32(xs_file_t *f)
+guint32 xs_fread_be32(VFSFile *f)
 {
-    return (((guint32) xs_fgetc(f)) << 24) |
-        (((guint32) xs_fgetc(f)) << 16) |
-        (((guint32) xs_fgetc(f)) << 8) |
-        ((guint32) xs_fgetc(f));
-}
-
-
-/* Load a file to a buffer, return 0 on success, negative value on error
- */
-gint xs_fload_buffer(const gchar *filename, guint8 **buf, size_t *bufSize)
-{
-    xs_file_t *f;
-    glong seekPos;
-
-    /* Open file, get file size */
-    if ((f = xs_fopen(filename, "rb")) == NULL)
-        return -1;
-
-#ifdef __AUDACIOUS_NEWVFS__
-    seekPos = vfs_fsize(f);
-#else
-    xs_fseek(f, 0L, SEEK_END);
-    seekPos = xs_ftell(f);
-#endif
-
-    if (seekPos > 0) {
-        size_t readSize = seekPos;
-        if (readSize >= *bufSize || *buf == NULL) {
-            /* Only re-allocate if the required size > current */
-            if (*buf != NULL) {
-                g_free(*buf);
-                *buf = NULL;
-            }
-
-            *bufSize = seekPos;
-
-            *buf = (guint8 *) g_malloc(*bufSize * sizeof(guint8));
-            if (*buf == NULL) {
-                xs_fclose(f);
-                return -2;
-            }
-        }
-
-        /* Read data */
-        if (xs_fseek(f, 0, SEEK_SET))
-            readSize = 0;
-        else
-            readSize = xs_fread(*buf, 1, *bufSize, f);
-
-        xs_fclose(f);
-
-        if (readSize != *bufSize)
-            return -3;
-        else
-            return 0;
-    } else {
-        xs_fclose(f);
-        return -4;
-    }
-}
-
-
-/* Copy a string
- */
-gchar *xs_strncpy(gchar *dest, const gchar *src, size_t n)
-{
-    const gchar *s;
-    gchar *d;
-    size_t i;
-
-    /* Check the string pointers */
-    if (!src || !dest)
-        return dest;
-
-    /* Copy to the destination */
-    i = n;
-    s = src;
-    d = dest;
-    while (*s && (i > 0)) {
-        *(d++) = *(s++);
-        i--;
-    }
-
-    /* Fill rest of space with zeros */
-    while (i > 0) {
-        *(d++) = 0;
-        i--;
-    }
-
-    /* Ensure that last is always zero */
-    dest[n - 1] = 0;
-
-    return dest;
+    return (((guint32) vfs_getc(f)) << 24) |
+        (((guint32) vfs_getc(f)) << 16) |
+        (((guint32) vfs_getc(f)) << 8) |
+        ((guint32) vfs_getc(f));
 }
 
 
@@ -176,62 +87,6 @@ gint xs_pstrcat(gchar **result, const gchar *str)
     }
 
     return 0;
-}
-
-
-/* Concatenate a given string up to given dest size or \n.
- * If size max is reached, change the end to "..."
- */
-void xs_pnstrcat(gchar *dest, size_t iSize, const gchar *str)
-{
-    size_t i, n;
-    const gchar *s;
-    gchar *d;
-
-    d = dest;
-    i = 0;
-    while (*d && (i < iSize)) {
-        i++;
-        d++;
-    }
-
-    s = str;
-    while (*s && (*s != '\n') && (i < iSize)) {
-        *d = *s;
-        d++;
-        s++;
-        i++;
-    }
-
-    *d = 0;
-
-    if (i >= iSize) {
-        i--;
-        d--;
-        n = 3;
-        while ((i > 0) && (n > 0)) {
-            *d = '.';
-            d--;
-            i--;
-            n--;
-        }
-    }
-}
-
-
-/* Locate character in string
- */
-gchar *xs_strrchr(gchar *str, const gchar ch)
-{
-    gchar *lastPos = NULL;
-
-    while (*str) {
-        if (*str == ch)
-            lastPos = str;
-        str++;
-    }
-
-    return lastPos;
 }
 
 

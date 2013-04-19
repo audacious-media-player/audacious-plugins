@@ -21,12 +21,15 @@
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "xs_stil.h"
-#include "xs_support.h"
-#include <stdio.h>
-#include <stdlib.h>
+
+#include <assert.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+#include "xs_support.h"
 
 /* Database handling functions
  */

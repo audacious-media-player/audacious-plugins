@@ -23,12 +23,12 @@
    with this program; if not, write to the Free Software Foundation, Inc.,
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "xmms-sid.h"
 
-#include <stdio.h>
 #include "xs_sidplay2.h"
-#include "xs_config.h"
 
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <sidplayfp/sidplayfp.h>
 #include <sidplayfp/SidDatabase.h>
@@ -38,15 +38,14 @@
 #include <sidplayfp/sidbuilder.h>
 #include <sidplayfp/builders/residfp.h>
 
-
 class xs_sidplayfp_t {
 public:
     sidplayfp *currEng;
     sidbuilder *currBuilder;
     SidConfig currConfig;
     SidTune *currTune;
-    guint8 *buf;
-    size_t bufSize;
+    void *buf;
+    int64_t bufSize;
 
     xs_sidplayfp_t(void);
     virtual ~xs_sidplayfp_t(void) { ; }
@@ -68,13 +67,13 @@ extern "C" {
 
 /* Check if we can play the given file
  */
-gboolean xs_sidplayfp_probe(xs_file_t *f)
+gboolean xs_sidplayfp_probe(VFSFile *f)
 {
     gchar tmpBuf[5];
 
     if (f == NULL) return FALSE;
 
-    if (xs_fread(tmpBuf, sizeof(gchar), 4, f) != 4)
+    if (vfs_fread(tmpBuf, sizeof(gchar), 4, f) != 4)
         return FALSE;
 
     if (!strncmp(tmpBuf, "PSID", 4) || !strncmp(tmpBuf, "RSID", 4))
@@ -270,25 +269,28 @@ gboolean xs_sidplayfp_load(xs_status_t * status, const gchar * pcFilename)
     /* In xs_sidplayfp_init aud-vfs is not initialized yet, so try to load
        the optional rom files on the first xs_sidplayfp_load call. */
     if (!loaded_roms) {
-        size_t size = 0;
-        guint8 *kernal = NULL, *basic = NULL, *chargen = NULL;
+        int64_t size = 0;
+        void *kernal = NULL, *basic = NULL, *chargen = NULL;
 
-        if (xs_fload_buffer("file://" DATADIR "sidplayfp/kernal",
-                            &kernal, &size) != 0 || size != 8192) {
+        vfs_file_get_contents("file://" DATADIR "sidplayfp/kernal", &kernal, &size);
+        if (size != 8192) {
             g_free(kernal);
             kernal = NULL;
         }
-        if (xs_fload_buffer("file://" DATADIR "sidplayfp/basic",
-                            &basic, &size) != 0 || size != 8192) {
+
+        vfs_file_get_contents("file://" DATADIR "sidplayfp/basic", &basic, &size);
+        if(size != 8192) {
             g_free(basic);
             basic = NULL;
         }
-        if (xs_fload_buffer("file://" DATADIR "sidplayfp/chargen",
-                            &chargen, &size) != 0 || size != 4096) {
+
+        vfs_file_get_contents("file://" DATADIR "sidplayfp/chargen", &chargen, &size);
+        if(size != 4096) {
             g_free(chargen);
             chargen = NULL;
         }
-        engine->currEng->setRoms(kernal, basic, chargen);
+
+        engine->currEng->setRoms((uint8_t*)kernal, (uint8_t*)basic, (uint8_t*)chargen);
         g_free(kernal);
         g_free(basic);
         g_free(chargen);
@@ -296,12 +298,14 @@ gboolean xs_sidplayfp_load(xs_status_t * status, const gchar * pcFilename)
     }
 
     /* Try to get the tune */
-    if (!pcFilename) return FALSE;
-
-    if (xs_fload_buffer(pcFilename, &(engine->buf), &(engine->bufSize)) != 0)
+    vfs_file_get_contents(pcFilename, &engine->buf, &engine->bufSize);
+    if(!engine->bufSize) {
+        g_free(engine->buf);
+        engine->buf = NULL;
         return FALSE;
+    }
 
-    engine->currTune->read(engine->buf, engine->bufSize);
+    engine->currTune->read((uint8_t*)engine->buf, engine->bufSize);
 
     return engine->currTune->getStatus();
 }
@@ -332,17 +336,14 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const gchar *sidFilename)
     xs_tuneinfo_t *result;
     const SidTuneInfo *myInfo;
     SidTune *myTune;
-    guint8 *buf = NULL;
-    size_t bufSize = 0;
+    void *buf = NULL;
+    int64_t bufSize = 0;
 
     /* Load file */
-    if (!sidFilename) return NULL;
-
-    if (xs_fload_buffer(sidFilename, &buf, &bufSize) != 0)
-        return NULL;
+    vfs_file_get_contents(sidFilename, &buf, &bufSize);
 
     /* Check if the tune exists and is readable */
-    if ((myTune = new SidTune(buf, bufSize)) == NULL) {
+    if (!bufSize || !(myTune = new SidTune((uint8_t*)buf, bufSize))) {
         g_free(buf);
         return NULL;
     }

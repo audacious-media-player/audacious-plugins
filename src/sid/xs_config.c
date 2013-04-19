@@ -23,6 +23,10 @@
 
 #include "xs_config.h"
 
+#include <string.h>
+
+#include "xs_support.h"
+
 /*
  * Configuration specific stuff
  */

@@ -20,7 +20,11 @@
    with this program; if not, write to the Free Software Foundation, Inc.,
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+
 #include "xs_slsup.h"
+
+#include <string.h>
+
 #include "xs_config.h"
 
 
@@ -100,7 +104,7 @@ stil_node_t *xs_stil_get(gchar *filename)
     if (xs_cfg.stilDBEnable && xs_stildb_db) {
         if (xs_cfg.hvscPath) {
             /* Remove postfixed directory separator from HVSC-path */
-            tmpFilename = xs_strrchr(xs_cfg.hvscPath, '/');
+            tmpFilename = strrchr(xs_cfg.hvscPath, '/');
             if (tmpFilename && (tmpFilename[1] == 0))
                 tmpFilename[0] = 0;
 

@@ -24,8 +24,6 @@ typedef struct xs_status_t {
 
 /* Global variables
  */
-extern InputPlugin    xs_plugin_ip;
-
 extern xs_status_t    xs_status;
 XS_MUTEX_H(xs_status);
 
