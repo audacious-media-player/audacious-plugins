@@ -66,21 +66,6 @@ xs_sidplayfp_t::xs_sidplayfp_t(void)
 /* We need to 'export' all this pseudo-C++ crap */
 extern "C" {
 
-
-/* Return song information
- */
-#define TFUNCTION2  xs_sidplayfp_updateinfo
-#define TTUNEINFO   const SidTuneInfo *
-#define TTUNE       SidTune
-#define TENGINE     xs_sidplayfp_t
-#define SIDTUNE_CLOCK_UNKNOWN SidTuneInfo::CLOCK_UNKNOWN
-#define SIDTUNE_CLOCK_PAL SidTuneInfo::CLOCK_PAL
-#define SIDTUNE_CLOCK_NTSC SidTuneInfo::CLOCK_NTSC
-#define SIDTUNE_CLOCK_ANY SidTuneInfo::CLOCK_ANY
-#define SIDTUNE_SPEED_VBI SidTuneInfo::SPEED_VBI
-#define SIDTUNE_SPEED_CIA_1A SidTuneInfo::SPEED_CIA_1A
-#include "xs_sidplay.h"
-
 /* Check if we can play the given file
  */
 gboolean xs_sidplayfp_probe(xs_file_t *f)
@@ -408,6 +393,67 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const gchar *sidFilename)
     delete myTune;
 
     return result;
+}
+
+gboolean xs_sidplayfp_updateinfo(xs_status_t *myStatus)
+{
+    const SidTuneInfo *myInfo;
+    SidTune *myTune;
+    xs_sidplayfp_t *myEngine;
+    xs_tuneinfo_t *i;
+
+    /* Check if we have required structures initialized */
+    if (!myStatus || !myStatus->tuneInfo || !myStatus->sidEngine)
+        return FALSE;
+
+    myEngine = (xs_sidplayfp_t *) myStatus->sidEngine;
+    myTune = myEngine->currTune;
+    if (!myTune)
+        return FALSE;
+
+    /* Get currently playing tune information */
+    myInfo = myTune->getInfo();
+
+    /* NOTICE! Here we assume that libSIDPlay[12] headers define
+     * SIDTUNE_SIDMODEL_* similarly to our enums in xs_config.h ...
+     */
+    i = myStatus->tuneInfo;
+    i->sidModel = myInfo->sidModel1();
+
+    if ((myStatus->currSong > 0) && (myStatus->currSong <= i->nsubTunes)) {
+        gint tmpSpeed = -1;
+
+        switch (myInfo->clockSpeed()) {
+        case SidTuneInfo::CLOCK_PAL:
+            tmpSpeed = XS_CLOCK_PAL;
+            break;
+        case SidTuneInfo::CLOCK_NTSC:
+            tmpSpeed = XS_CLOCK_NTSC;
+            break;
+        case SidTuneInfo::CLOCK_ANY:
+            tmpSpeed = XS_CLOCK_ANY;
+            break;
+        case SidTuneInfo::CLOCK_UNKNOWN:
+            switch (myInfo->songSpeed()) {
+            case SidTuneInfo::SPEED_VBI:
+                tmpSpeed = XS_CLOCK_VBI;
+                break;
+            case SidTuneInfo::SPEED_CIA_1A:
+                tmpSpeed = XS_CLOCK_CIA;
+                break;
+            default:
+                tmpSpeed = myInfo->songSpeed();
+                break;
+            }
+        default:
+            tmpSpeed = myInfo->clockSpeed();
+            break;
+        }
+
+        i->subTunes[myStatus->currSong - 1].tuneSpeed = tmpSpeed;
+    }
+
+    return TRUE;
 }
 
 }    /* extern "C" */
