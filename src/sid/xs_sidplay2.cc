@@ -122,28 +122,19 @@ gboolean xs_sidplayfp_init(xs_status_t * status)
     engine->currConfig = engine->currEng->config();
 
     /* Configure channels and stuff */
-    switch (status->audioChannels) {
-
-    case XS_CHN_AUTOPAN:
-        engine->currConfig.playback = SidConfig::MONO;
-        break;
-
+    switch (status->audioChannels)
+    {
     case XS_CHN_STEREO:
         engine->currConfig.playback = SidConfig::STEREO;
         break;
 
     case XS_CHN_MONO:
-    default:
         engine->currConfig.playback = SidConfig::MONO;
-        status->audioChannels = XS_CHN_MONO;
         break;
     }
-    status->audioFormat = FMT_S16_NE;
 
     /* Audio parameters sanity checking and setup */
     engine->currConfig.frequency = status->audioFrequency;
-    if (status->oversampleEnable)
-        engine->currConfig.frequency *= status->oversampleFactor;
 
     /* Initialize builder object */
     if (xs_cfg.sid2Builder == XS_BLD_RESID) {

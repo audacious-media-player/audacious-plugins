@@ -42,16 +42,6 @@ extern "C" {
 /* Size for some small buffers (always static variables) */
 #define XS_BUF_SIZE             (1024)
 
-/* If defined, some dynamically allocated temp. buffers are used.
- * Static (#undef) might give slight performance gain,
- * but fails on systems with limited stack space. */
-#define XS_BUF_DYNAMIC
-
-/* Configuration section identifier
- */
-#define XS_PACKAGE_STRING       "Audacious-SID"
-#define XS_CONFIG_IDENT         "sid"
-
 /* Default audio rendering frequency in Hz
  */
 #define XS_AUDIO_FREQ           (44100)
@@ -66,13 +56,6 @@ extern "C" {
  * headers, so we have to duplicate them here...
  */
 #define XS_SIDPLAY2_NFPOINTS    (0x800)
-#define XS_SIDPLAY2_FMAX        (24000)
-
-/* Limits for oversampling
- */
-#define XS_MIN_OVERSAMPLE       (2)
-#define XS_MAX_OVERSAMPLE       (8)
-
 
 /* Macros for mutexes and threads. These exist to be able to
  * easily change from pthreads to glib threads, etc, if necessary.

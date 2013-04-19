@@ -31,7 +31,6 @@
 #include "xs_config.h"
 #include "xs_length.h"
 #include "xs_stil.h"
-#include "xs_filter.h"
 #include "xs_player.h"
 #include "xs_slsup.h"
 
@@ -75,29 +74,15 @@ void xs_reinit(void)
     if (xs_cfg.audioFrequency < 8000)
         xs_cfg.audioFrequency = 8000;
 
-    if (xs_cfg.oversampleFactor < XS_MIN_OVERSAMPLE)
-        xs_cfg.oversampleFactor = XS_MIN_OVERSAMPLE;
-    else if (xs_cfg.oversampleFactor > XS_MAX_OVERSAMPLE)
-        xs_cfg.oversampleFactor = XS_MAX_OVERSAMPLE;
-
-    if (xs_cfg.audioChannels != XS_CHN_MONO)
-        xs_cfg.oversampleEnable = FALSE;
-
     xs_status.audioFrequency = xs_cfg.audioFrequency;
-    xs_status.audioBitsPerSample = xs_cfg.audioBitsPerSample;
     xs_status.audioChannels = xs_cfg.audioChannels;
-    xs_status.audioFormat = -1;
-    xs_status.oversampleEnable = xs_cfg.oversampleEnable;
-    xs_status.oversampleFactor = xs_cfg.oversampleFactor;
 
     /* Try to initialize emulator engine */
     xs_init_emu_engine(&xs_cfg.playerEngine, &xs_status);
 
     /* Get settings back, in case the chosen emulator backend changed them */
     xs_cfg.audioFrequency = xs_status.audioFrequency;
-    xs_cfg.audioBitsPerSample = xs_status.audioBitsPerSample;
     xs_cfg.audioChannels = xs_status.audioChannels;
-    xs_cfg.oversampleEnable = xs_status.oversampleEnable;
 
     XS_MUTEX_UNLOCK(xs_status);
     XS_MUTEX_UNLOCK(xs_cfg);
@@ -194,12 +179,10 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     else
         xs_status.currSong = subTune;
 
-    gint channels = (xs_status.audioChannels == XS_CHN_AUTOPAN) ? 2 :
-     xs_status.audioChannels;
+    gint channels = xs_status.audioChannels;
 
     /* Allocate audio buffer */
-    audioBufSize = xs_status.audioFrequency * channels *
-     xs_status.audioBitsPerSample / (8 * 4);
+    audioBufSize = xs_status.audioFrequency * channels * FMT_SIZEOF (FMT_S16_NE);
     if (audioBufSize < 512) audioBufSize = 512;
 
     audioBuffer = (gchar *) g_malloc(audioBufSize);
@@ -208,16 +191,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
         XS_MUTEX_UNLOCK(xs_status);
         goto xs_err_exit;
     }
-
-    if (xs_status.oversampleEnable) {
-        oversampleBuffer = (gchar *) g_malloc(audioBufSize * xs_status.oversampleFactor);
-        if (oversampleBuffer == NULL) {
-            xs_error("Couldn't allocate memory for audio oversampling buffer!\n");
-            XS_MUTEX_UNLOCK(xs_status);
-            goto xs_err_exit;
-        }
-    }
-
 
     /* Check minimum playtime */
     tmpLength = tmpTune->subTunes[xs_status.currSong - 1].tuneLength;
@@ -235,11 +208,11 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     }
 
     /* Open the audio output */
-    if (!pb->output->open_audio(xs_status.audioFormat, xs_status.audioFrequency,
+    if (!pb->output->open_audio(FMT_S16_NE, xs_status.audioFrequency,
      channels))
     {
         xs_error("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
-            xs_status.audioFormat,
+            FMT_S16_NE,
             xs_status.audioFrequency,
             channels);
 
@@ -271,26 +244,8 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
 
         XS_MUTEX_UNLOCK (xs_status);
 
-        /* Render audio data */
-        if (xs_status.oversampleEnable) {
-            /* Perform oversampled rendering */
-            bufRemaining = xs_status.sidPlayer->plrFillBuffer(
-                &xs_status,
-                oversampleBuffer,
-                (audioBufSize * xs_status.oversampleFactor));
-
-            bufRemaining /= xs_status.oversampleFactor;
-
-            /* Execute rate-conversion with filtering */
-            if (xs_filter_rateconv(audioBuffer, oversampleBuffer,
-                xs_status.audioFormat, xs_status.oversampleFactor, bufRemaining) < 0) {
-                xs_error("Oversampling rate-conversion pass failed.\n");
-                goto xs_err_exit;
-            }
-        } else {
-            bufRemaining = xs_status.sidPlayer->plrFillBuffer(
-                &xs_status, audioBuffer, audioBufSize);
-        }
+        bufRemaining = xs_status.sidPlayer->plrFillBuffer(
+            &xs_status, audioBuffer, audioBufSize);
 
         pb->output->write_audio (audioBuffer, bufRemaining);
 

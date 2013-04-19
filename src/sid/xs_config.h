@@ -26,8 +26,7 @@ enum XS_RESOLUTION {
 
 enum XS_CHANNELS {
     XS_CHN_MONO = 1,
-    XS_CHN_STEREO = 2,
-    XS_CHN_AUTOPAN = 3
+    XS_CHN_STEREO = 2
 };
 
 
@@ -95,12 +94,8 @@ typedef struct {
 
 extern struct xs_cfg_t {
     /* General audio settings */
-    gint        audioBitsPerSample;
     gint        audioChannels;
     gint        audioFrequency;
-
-    gboolean    oversampleEnable;
-    gint        oversampleFactor;   /* Factor of oversampling */
 
     /* Emulation settings */
     gboolean    mos8580;            /* TRUE = 8580, FALSE = 6581 */

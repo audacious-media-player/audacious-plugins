@@ -39,8 +39,7 @@ void xs_init_configuration(void)
     memset(&xs_cfg, 0, sizeof(xs_cfg));
 
     /* Initialize values with sensible defaults */
-    xs_cfg.audioBitsPerSample = XS_RES_16BIT;
-    xs_cfg.audioChannels = XS_CHN_MONO;
+    xs_cfg.audioChannels = XS_CHN_STEREO;
     xs_cfg.audioFrequency = XS_AUDIO_FREQ;
 
     xs_cfg.mos8580 = FALSE;
@@ -59,9 +58,6 @@ void xs_init_configuration(void)
     xs_cfg.sid2NFilterPresets = 0;
 
     xs_cfg.sid2Builder = XS_BLD_RESID;
-
-    xs_cfg.oversampleEnable = FALSE;
-    xs_cfg.oversampleFactor = XS_MIN_OVERSAMPLE;
 
     xs_cfg.playMaxTimeEnable = FALSE;
     xs_cfg.playMaxTimeUnknown = FALSE;

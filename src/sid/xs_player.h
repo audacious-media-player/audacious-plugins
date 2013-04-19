@@ -27,14 +27,7 @@ typedef struct {
 
 typedef struct xs_status_t {
     gint        audioFrequency,     /* Audio settings */
-                audioChannels,
-                audioBitsPerSample,
-                oversampleFactor;   /* Factor of oversampling */
-    gint     audioFormat;
-    gboolean    oversampleEnable;   /* TRUE after sidEngine initialization,
-                                    if xs_cfg.oversampleEnable == TRUE and
-                                    emulation backend supports oversampling.
-                                    */
+                audioChannels;
     void        *sidEngine;         /* SID-emulation internal engine data */
     xs_engine_t *sidPlayer;         /* Selected player engine */
     gboolean    isPaused,

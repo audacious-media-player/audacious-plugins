@@ -6,7 +6,6 @@ SRCS = xs_init.c	\
        xs_length.c	\
        xs_md5.c \
        xs_stil.c	\
-       xs_filter.c	\
        xs_sidplay2.cc	\
        xs_slsup.c	\
        xs_player.c	\
