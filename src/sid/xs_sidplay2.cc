@@ -122,15 +122,8 @@ gboolean xs_sidplayfp_init(xs_status_t * status)
     engine->currConfig.frequency = status->audioFrequency;
 
     /* Initialize builder object */
-    if (xs_cfg.sid2Builder == XS_BLD_RESID) {
-        ReSIDfpBuilder *rs = new ReSIDfpBuilder("ReSIDfp builder");
-        engine->currBuilder = (sidbuilder *) rs;
-    }
-
-    if (!engine->currBuilder) {
-        xs_error("[SIDPlayFP] Could not initialize SIDBuilder object.\n");
-        return FALSE;
-    }
+    ReSIDfpBuilder *rs = new ReSIDfpBuilder("ReSIDfp builder");
+    engine->currBuilder = (sidbuilder *) rs;
 
     /* Builder object created, initialize it */
     engine->currBuilder->create(engine->currEng->info().maxsids());
@@ -329,13 +322,6 @@ void xs_sidplayfp_delete(xs_status_t * status)
     engine->bufSize = 0;
 }
 
-
-/* Hardware backend flushing
- */
-void xs_sidplayfp_flush(xs_status_t * status)
-{
-    assert(status != NULL);
-}
 
 xs_tuneinfo_t* xs_sidplayfp_getinfo(const gchar *sidFilename)
 {

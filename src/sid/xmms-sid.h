@@ -104,7 +104,6 @@ extern InputPlugin    xs_plugin_ip;
 /* Plugin function prototypes
  */
 gboolean    xs_init(void);
-void        xs_reinit(void);
 void        xs_close(void);
 gboolean    xs_play_file(InputPlayback *, const gchar *, VFSFile *, gint, gint, gboolean);
 void        xs_stop(InputPlayback *);

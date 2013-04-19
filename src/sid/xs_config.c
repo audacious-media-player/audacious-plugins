@@ -48,16 +48,8 @@ void xs_init_configuration(void)
     /* Filter values */
     xs_cfg.emulateFilters = TRUE;
 
-    xs_cfg.playerEngine = XS_ENG_SIDPLAY2;
-    xs_cfg.memoryMode = XS_MPU_REAL;
-
     xs_cfg.clockSpeed = XS_CLOCK_PAL;
     xs_cfg.forceSpeed = FALSE;
-
-    xs_cfg.sid2OptLevel = 0;
-    xs_cfg.sid2NFilterPresets = 0;
-
-    xs_cfg.sid2Builder = XS_BLD_RESID;
 
     xs_cfg.playMaxTimeEnable = FALSE;
     xs_cfg.playMaxTimeUnknown = FALSE;
@@ -73,17 +65,9 @@ void xs_init_configuration(void)
     xs_pstrcpy(&xs_cfg.stilDBPath, "~/C64Music/DOCUMENTS/STIL.txt");
     xs_pstrcpy(&xs_cfg.hvscPath, "~/C64Music");
 
-    xs_cfg.subsongControl = XS_SSC_POPUP;
-    xs_cfg.detectMagic = FALSE;
-
-    xs_cfg.titleOverride = TRUE;
-
-    xs_pstrcpy(&xs_cfg.titleFormat, "${artist} - ${title} (${copyright}) <${subsong-id}/${subsong-num}> [${sid-model}/${sid-speed}]");
-
     xs_cfg.subAutoEnable = TRUE;
     xs_cfg.subAutoMinOnly = TRUE;
     xs_cfg.subAutoMinTime = 15;
-
 
     /* Unlock the configuration */
     XS_MUTEX_UNLOCK(xs_cfg);

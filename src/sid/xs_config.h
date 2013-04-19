@@ -10,20 +10,6 @@ extern "C" {
 
 /* Configuration structure
  */
-enum XS_EMUENGINE {
-    XS_ENG_SIDPLAY2
-};
-
-
-enum XS_BUILDER {
-    XS_BLD_RESID = 1
-};
-
-enum XS_RESOLUTION {
-    XS_RES_8BIT = 8,
-    XS_RES_16BIT = 16
-};
-
 enum XS_CHANNELS {
     XS_CHN_MONO = 1,
     XS_CHN_STEREO = 2
@@ -39,57 +25,12 @@ enum XS_CLOCK {
 };
 
 
-enum XS_MPU {
-    XS_MPU_BANK_SWITCHING = 1,
-    XS_MPU_TRANSPARENT_ROM,
-    XS_MPU_PLAYSID_ENVIRONMENT,
-    XS_MPU_REAL
-};
-
-
-enum XS_SSC {
-    XS_SSC_NONE = 1,
-    XS_SSC_POPUP,
-    XS_SSC_PATCH,
-    XS_SSC_SEEK
-};
-
-
 enum XS_SIDMODEL {
     XS_SIDMODEL_UNKNOWN = 0,
     XS_SIDMODEL_6581,
     XS_SIDMODEL_8580,
     XS_SIDMODEL_ANY
 };
-
-
-typedef struct {
-    gint x, y;
-} xs_int_point_t;
-
-
-typedef struct {
-    gchar           *name;
-    gint            type;
-
-    /* Filter type 0 for SIDPlay 1 */
-    gfloat          fs, fm, ft;
-
-    /* Filter type 1-2 points */
-    xs_int_point_t  points[XS_SIDPLAY2_NFPOINTS];
-    gint            npoints;
-
-    /* Distortion patch tunables */
-    gfloat          rate, point, voice_nonlinearity,
-                    cf_treshold;
-
-    /* Filter Type 3 tunables */
-    gfloat          baseresistance, offset, steepness,
-                    minimumfetresistance;
-
-    /* Filter Type 4 tunables */
-    gfloat          k, b;
-} xs_sid_filter_t;
 
 
 extern struct xs_cfg_t {
@@ -100,20 +41,10 @@ extern struct xs_cfg_t {
     /* Emulation settings */
     gboolean    mos8580;            /* TRUE = 8580, FALSE = 6581 */
     gboolean    forceModel;
-    gint        memoryMode;         /* See XS_MPU-constants */
     gint        clockSpeed;         /* PAL (50Hz) or NTSC (60Hz) */
     gboolean    forceSpeed;         /* TRUE = force to given clockspeed */
 
-    gint        playerEngine;       /* Selected player engine */
-
     gboolean    emulateFilters;
-
-    gint        sid2OptLevel;       /* SIDPlay2 emulation optimization */
-    gint        sid2Builder;        /* SIDPlay2 "builder" aka SID-emu */
-    xs_sid_filter_t    sid2Filter;  /* Current SIDPlay2 filter */
-    xs_sid_filter_t    **sid2FilterPresets;
-    gint        sid2NFilterPresets;
-
 
     /* Playing settings */
     gboolean    playMaxTimeEnable,
@@ -126,17 +57,10 @@ extern struct xs_cfg_t {
     gboolean    songlenDBEnable;
     gchar       *songlenDBPath;     /* Path to Songlengths.txt */
 
-
     /* Miscellaneous settings */
     gboolean    stilDBEnable;
     gchar       *stilDBPath;        /* Path to STIL.txt */
     gchar       *hvscPath;          /* Path-prefix for HVSC */
-
-    gint        subsongControl;
-    gboolean    detectMagic;
-
-    gboolean    titleOverride;      /* TRUE if XMMS titles are overriden */
-    gchar       *titleFormat;
 
     gboolean    subAutoEnable,
                 subAutoMinOnly;

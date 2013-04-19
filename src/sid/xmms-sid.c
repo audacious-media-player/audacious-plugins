@@ -30,6 +30,7 @@
 
 #include "xs_config.h"
 #include "xs_length.h"
+#include "xs_sidplay2.h"
 #include "xs_stil.h"
 #include "xs_player.h"
 #include "xs_slsup.h"
@@ -63,8 +64,13 @@ void xs_error(const gchar *fmt, ...)
 /*
  * Initialization functions
  */
-void xs_reinit(void)
+gboolean xs_init(void)
 {
+    gboolean success;
+
+    /* Initialize and get configuration */
+    xs_init_configuration();
+
     XS_MUTEX_LOCK(xs_status);
     XS_MUTEX_LOCK(xs_cfg);
 
@@ -78,7 +84,7 @@ void xs_reinit(void)
     xs_status.audioChannels = xs_cfg.audioChannels;
 
     /* Try to initialize emulator engine */
-    xs_init_emu_engine(&xs_cfg.playerEngine, &xs_status);
+    success = xs_sidplayfp_init(&xs_status);
 
     /* Get settings back, in case the chosen emulator backend changed them */
     xs_cfg.audioFrequency = xs_status.audioFrequency;
@@ -86,6 +92,9 @@ void xs_reinit(void)
 
     XS_MUTEX_UNLOCK(xs_status);
     XS_MUTEX_UNLOCK(xs_cfg);
+
+    if (! success)
+        return FALSE;
 
     /* Initialize song-length database */
     xs_songlen_close();
@@ -99,20 +108,6 @@ void xs_reinit(void)
         xs_error("Error initializing STIL database!\n");
     }
 
-}
-
-
-/*
- * Initialize XMMS-SID
- */
-gboolean xs_init (void)
-{
-    /* Initialize and get configuration */
-    xs_init_configuration();
-
-    /* Initialize subsystems */
-    xs_reinit();
-
     return TRUE;
 }
 
@@ -125,11 +120,8 @@ void xs_close(void)
     xs_tuneinfo_free(xs_status.tuneInfo);
     xs_status.tuneInfo = NULL;
 
-    if (xs_status.sidPlayer)
-    {
-        xs_status.sidPlayer->plrDeleteSID (& xs_status);
-        xs_status.sidPlayer->plrClose (& xs_status);
-    }
+    xs_sidplayfp_delete (& xs_status);
+    xs_sidplayfp_close (& xs_status);
 
     xs_songlen_close();
     xs_stil_close();
@@ -147,21 +139,20 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     Tuple *tmpTuple;
 
     assert(pb);
-    assert(xs_status.sidPlayer != NULL);
 
     uri_parse (filename, NULL, NULL, NULL, & subTune);
 
     /* Get tune information */
     XS_MUTEX_LOCK(xs_status);
 
-    if (! (xs_status.tuneInfo = xs_status.sidPlayer->plrGetSIDInfo (filename)))
+    if (! (xs_status.tuneInfo = xs_sidplayfp_getinfo (filename)))
     {
         XS_MUTEX_UNLOCK(xs_status);
         return FALSE;
     }
 
     /* Initialize the tune */
-    if (! xs_status.sidPlayer->plrLoadSID (& xs_status, filename))
+    if (! xs_sidplayfp_load (& xs_status, filename))
     {
         XS_MUTEX_UNLOCK(xs_status);
         xs_tuneinfo_free(xs_status.tuneInfo);
@@ -200,7 +191,7 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     }
 
     /* Initialize song */
-    if (!xs_status.sidPlayer->plrInitSong(&xs_status)) {
+    if (!xs_sidplayfp_initsong(&xs_status)) {
         xs_error("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
             tmpTune->sidFilename, xs_status.currSong);
         XS_MUTEX_UNLOCK(xs_status);
@@ -221,7 +212,7 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     }
 
     /* Set song information for current subtune */
-    xs_status.sidPlayer->plrUpdateSIDInfo(&xs_status);
+    xs_sidplayfp_updateinfo(&xs_status);
     tmpTuple = tuple_new_from_filename(tmpTune->sidFilename);
     xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
 
@@ -244,8 +235,7 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
 
         XS_MUTEX_UNLOCK (xs_status);
 
-        bufRemaining = xs_status.sidPlayer->plrFillBuffer(
-            &xs_status, audioBuffer, audioBufSize);
+        bufRemaining = xs_sidplayfp_fillbuffer(&xs_status, audioBuffer, audioBufSize);
 
         pb->output->write_audio (audioBuffer, bufRemaining);
 
@@ -280,7 +270,7 @@ DONE:
     xs_status.stop_flag = TRUE;
 
     /* Free tune information */
-    xs_status.sidPlayer->plrDeleteSID(&xs_status);
+    xs_sidplayfp_delete(&xs_status);
     xs_tuneinfo_free(xs_status.tuneInfo);
     xs_status.tuneInfo = NULL;
     XS_MUTEX_UNLOCK(xs_status);
@@ -415,11 +405,8 @@ Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
     xs_tuneinfo_t *info;
     gint tune = -1;
 
-    if (xs_status.sidPlayer == NULL || filename == NULL)
-        return NULL;
-
     XS_MUTEX_LOCK(xs_status);
-    if (!xs_status.sidPlayer->plrProbe(fd)) {
+    if (!xs_sidplayfp_probe(fd)) {
         XS_MUTEX_UNLOCK(xs_status);
         return NULL;
     }
@@ -431,7 +418,7 @@ Tuple * xs_probe_for_tuple(const gchar *filename, xs_file_t *fd)
 
     /* Get tune information from emulation engine */
     XS_MUTEX_LOCK(xs_status);
-    info = xs_status.sidPlayer->plrGetSIDInfo (filename);
+    info = xs_sidplayfp_getinfo (filename);
     XS_MUTEX_UNLOCK(xs_status);
 
     if (info == NULL)
