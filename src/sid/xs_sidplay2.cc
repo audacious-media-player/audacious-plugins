@@ -28,20 +28,12 @@
 
 
 #include <sidplay/sidplay2.h>
-#ifdef HAVE_SIDPLAY2_COMI
-#  include <sidplay/sidlazyiptr.h>
-#endif
 
 
 class xs_sidplay2_t {
 public:
-#ifdef HAVE_SIDPLAY2_COMI
-    SidIPtr<ISidplay2> currEng;
-    SidLazyIPtr<ISidUnknown> currBuilder;
-#else
     sidplay2 *currEng;
     sidbuilder *currBuilder;
-#endif
     sid2_config_t currConfig;
     SidTune *currTune;
     guint8 *buf;
@@ -61,11 +53,7 @@ public:
 
 
 xs_sidplay2_t::xs_sidplay2_t(void)
-#ifdef HAVE_SIDPLAY2_COMI
-:currEng(sidplay2::create())
-#else
 :currEng(NULL)
-#endif
 {
     buf = NULL;
     bufSize = 0;
@@ -122,9 +110,7 @@ gboolean xs_sidplay2_init(xs_status_t * status)
     if (!engine) return FALSE;
 
     /* Initialize the engine */
-#ifndef HAVE_SIDPLAY2_COMI
     engine->currEng = new sidplay2;
-#endif
     if (!engine->currEng) {
         xs_error("[SIDPlay2] Could not initialize emulation engine.\n");
         return FALSE;
@@ -221,9 +207,6 @@ gboolean xs_sidplay2_init(xs_status_t * status)
         break;
     }
 
-#ifdef HAVE_SIDPLAY2_DISTORTION
-    XSDEBUG("filter setting NOT supported for distortion patched libSIDPlay2.\n");
-#else
     /* Convert filter */
     f = &(xs_cfg.sid2Filter);
     XSDEBUG("using filter '%s', %d points\n", f->name, f->npoints);
@@ -238,22 +221,14 @@ gboolean xs_sidplay2_init(xs_status_t * status)
         tmpFilter.cutoff[i][0] = f->points[i].x;
         tmpFilter.cutoff[i][1] = f->points[i].y;
     }
-#endif
 
     /* Initialize builder object */
     XSDEBUG("init builder #%i, maxsids=%i\n", xs_cfg.sid2Builder, (engine->currEng->info()).maxsids);
 #ifdef HAVE_RESID_BUILDER
     if (xs_cfg.sid2Builder == XS_BLD_RESID) {
-#ifdef HAVE_SIDPLAY2_COMI
-        engine->currBuilder = ReSIDBuilderCreate("");
-        SidLazyIPtr<IReSIDBuilder> rs(engine->currBuilder);
-        if (rs) {
-            engine->currConfig.sidEmulation = rs->iaggregate();
-#else
         ReSIDBuilder *rs = new ReSIDBuilder("ReSID builder");
         engine->currBuilder = (sidbuilder *) rs;
         if (rs) {
-#endif
             /* Builder object created, initialize it */
             rs->create((engine->currEng->info()).maxsids);
             if (!*rs) {
@@ -267,7 +242,6 @@ gboolean xs_sidplay2_init(xs_status_t * status)
                 return FALSE;
             }
 
-#ifndef HAVE_SIDPLAY2_DISTORTION
             // FIXME FIX ME: support other configurable parameters ...
             // ... WHEN/IF resid-builder+libsidplay2 gets fixed
             rs->sampling(tmpFreq);
@@ -278,7 +252,6 @@ gboolean xs_sidplay2_init(xs_status_t * status)
             if (tmpFilter.points > 0)
                 rs->filter((sid_filter_t *) &tmpFilter);
             else
-#endif
                 rs->filter((sid_filter_t *) NULL);
 
             if (!*rs) {
@@ -290,16 +263,9 @@ gboolean xs_sidplay2_init(xs_status_t * status)
 #endif
 #ifdef HAVE_HARDSID_BUILDER
     if (xs_cfg.sid2Builder == XS_BLD_HARDSID) {
-#ifdef HAVE_SIDPLAY2_COMI
-        engine->currBuilder = HardSIDBuilderCreate("");
-        SidLazyIPtr<IHardSIDBuilder> hs(engine->currBuilder);
-        if (hs) {
-            engine->currConfig.sidEmulation = hs->iaggregate();
-#else
         HardSIDBuilder *hs = new HardSIDBuilder("HardSID builder");
         engine->currBuilder = (sidbuilder *) hs;
         if (hs) {
-#endif
             /* Builder object created, initialize it */
             hs->create((engine->currEng->info()).maxsids);
             if (!*hs) {
@@ -321,10 +287,8 @@ gboolean xs_sidplay2_init(xs_status_t * status)
         return FALSE;
     }
 
-#ifndef HAVE_SIDPLAY2_COMI
     engine->currConfig.sidEmulation = engine->currBuilder;
     XSDEBUG("%s\n", engine->currBuilder->credits());
-#endif
 
     /* Clockspeed settings */
     switch (xs_cfg.clockSpeed) {
@@ -353,7 +317,6 @@ gboolean xs_sidplay2_init(xs_status_t * status)
     }
 
 
-#ifndef HAVE_SIDPLAY2_DISTORTION
     if (xs_cfg.sid2OptLevel >= 0 && xs_cfg.sid2OptLevel <= SID2_MAX_OPTIMISATION) {
         engine->currConfig.optimisation = xs_cfg.sid2OptLevel;
     } else {
@@ -363,7 +326,6 @@ gboolean xs_sidplay2_init(xs_status_t * status)
         xs_cfg.sid2OptLevel =
         engine->currConfig.optimisation = SID2_DEFAULT_OPTIMISATION;
     }
-#endif
 
     if (xs_cfg.mos8580)
         engine->currConfig.sidDefault = SID2_MOS8580;
@@ -408,18 +370,14 @@ void xs_sidplay2_close(xs_status_t * status)
 
     /* Free internals */
     if (engine->currBuilder) {
-#ifndef HAVE_SIDPLAY2_COMI
         delete engine->currBuilder;
-#endif
         engine->currBuilder = NULL;
     }
 
-#ifndef HAVE_SIDPLAY2_COMI
     if (engine->currEng) {
         delete engine->currEng;
         engine->currEng = NULL;
     }
-#endif
 
     if (engine->currTune) {
         delete engine->currTune;
