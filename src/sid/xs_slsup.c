@@ -251,22 +251,22 @@ xs_tuneinfo_t *xs_tuneinfo_new(const gchar * filename,
     result->playAddr = playAddr;
     result->dataFileLen = dataFileLen;
     result->sidFormat = g_convert(sidFormat, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
-    
+
     result->sidModel = sidModel;
 
     /* Get length information (NOTE: Do not free this!) */
     tmpLength = xs_songlen_get(filename);
-    
+
     /* Fill in sub-tune information */
     for (i = 0; i < result->nsubTunes; i++) {
         if (tmpLength && (i < tmpLength->nlengths))
             result->subTunes[i].tuneLength = tmpLength->lengths[i];
         else
             result->subTunes[i].tuneLength = -1;
-        
+
         result->subTunes[i].tuneSpeed = -1;
     }
-    
+
     return result;
 }
 

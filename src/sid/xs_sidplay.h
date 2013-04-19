@@ -39,7 +39,7 @@ xs_tuneinfo_t *TFUNCTION(const gchar *sidFilename)
 
     if (xs_fload_buffer(sidFilename, &buf, &bufSize) != 0)
         return NULL;
-    
+
     /* Check if the tune exists and is readable */
     if ((myTune = new TTUNE(buf, bufSize)) == NULL) {
         g_free(buf);
@@ -66,7 +66,7 @@ xs_tuneinfo_t *TFUNCTION(const gchar *sidFilename)
         myInfo.infoString[0], myInfo.infoString[1], myInfo.infoString[2],
         myInfo.loadAddr, myInfo.initAddr, myInfo.playAddr,
         myInfo.dataFileLen, myInfo.formatString, myInfo.sidModel);
-    
+
     /* NOTICE! libSIDPlay[12] headers specifically state that sidModel,
      * songSpeed and clockSpeed are "undefined" before song initialization,
      * but in practice sidModel is known after getInfo() invocation...
@@ -88,7 +88,7 @@ gboolean TFUNCTION2(xs_status_t *myStatus)
     TTUNE *myTune;
     TENGINE *myEngine;
     xs_tuneinfo_t *i;
-    
+
     /* Check if we have required structures initialized */
     if (!myStatus || !myStatus->tuneInfo || !myStatus->sidEngine)
         return FALSE;
@@ -114,7 +114,7 @@ gboolean TFUNCTION2(xs_status_t *myStatus)
 
     if ((myStatus->currSong > 0) && (myStatus->currSong <= i->nsubTunes)) {
         gint tmpSpeed = -1;
-        
+
         switch (myInfo.clockSpeed) {
         case SIDTUNE_CLOCK_PAL:
             tmpSpeed = XS_CLOCK_PAL;
@@ -141,7 +141,7 @@ gboolean TFUNCTION2(xs_status_t *myStatus)
             tmpSpeed = myInfo.clockSpeed;
             break;
         }
-            
+
         i->subTunes[myStatus->currSong - 1].tuneSpeed = tmpSpeed;
     }
 

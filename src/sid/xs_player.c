@@ -40,7 +40,7 @@ gboolean xs_init_emu_engine(int *configured, xs_status_t *status)
 {
     gint engine;
     gboolean initialized;
-    
+
     XSDEBUG("initializing emulator engine #%i...\n", *configured);
 
     engine = 0;

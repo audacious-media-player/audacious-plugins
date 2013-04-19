@@ -130,7 +130,7 @@ AC_DEFUN([XS_PATH_LIBSIDPLAY1],
     AC_MSG_CHECKING([for working SIDPlay1 library and headers])
 
     AC_LANG_PUSH([C++])
-    
+
     dnl Use include path given by user (if any).
     if test "x$xs_sidplay1_includes" != "x"; then
         xs_sidplay1_cxxflags="-I$xs_sidplay1_includes"
@@ -155,7 +155,7 @@ AC_DEFUN([XS_PATH_LIBSIDPLAY1],
             xs_sidplay1_cxxflags=\"$xs_sidplay1_cxxflags\"  \
             xs_sidplay1_ldflags=\"$xs_sidplay1_ldflags\"  "
         else
-            XS_FIND_LIBSIDPLAY1        
+            XS_FIND_LIBSIDPLAY1
         fi
     ])
     eval "$xs_cv_have_sidplay1"
@@ -207,7 +207,7 @@ AC_DEFUN([XS_PATH_LIBSIDPLAY2],
     AC_MSG_CHECKING([for working SIDPlay2 library and headers])
 
     AC_LANG_PUSH([C++])
-    
+
     AC_REQUIRE([XS_PROG_PKGCONFIG])
     if test "x$PKG_CONFIG" != "x" && $PKG_CONFIG --atleast-version m4_ifval([$1], [$1], [2.1.0]) libsidplay2; then
         xs_pkgcfg_knows="yes"
@@ -338,7 +338,7 @@ AC_DEFUN([XS_BUILDERS_CHECK],
     AC_ARG_WITH([builders-lib],
         [AS_HELP_STRING([--with-builders-lib=DIR], [Where the SIDPlay2 builders libraries are installed])],
         [builders_libdir="$withval"])
-    
+
     if test "x$builders_includedir" != "x"; then
         BUILDERS_CFLAGS="-I$builders_includedir"
     fi
