@@ -21,32 +21,29 @@
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include <ctype.h>
-#include <fcntl.h>
-#include <string.h>
-
 #include "xs_support.h"
 
-#define __AUDACIOUS_NEWVFS__
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 
-guint16 xs_fread_be16(VFSFile *f)
+uint16_t xs_fread_be16(VFSFile *f)
 {
-    return (((guint16) vfs_getc(f)) << 8) | ((guint16) vfs_getc(f));
+    uint16_t val;
+    return vfs_fget_be16(&val, f) ? val : 0;
 }
 
 
-guint32 xs_fread_be32(VFSFile *f)
+uint32_t xs_fread_be32(VFSFile *f)
 {
-    return (((guint32) vfs_getc(f)) << 24) |
-        (((guint32) vfs_getc(f)) << 16) |
-        (((guint32) vfs_getc(f)) << 8) |
-        ((guint32) vfs_getc(f));
+    uint32_t val;
+    return vfs_fget_be32(&val, f) ? val : 0;
 }
 
 
 /* Copy a given string over in *result.
  */
-gint xs_pstrcpy(gchar **result, const gchar *str)
+int xs_pstrcpy(char **result, const char *str)
 {
     /* Check the string pointers */
     if (!result || !str)
@@ -54,8 +51,8 @@ gint xs_pstrcpy(gchar **result, const gchar *str)
 
     /* Allocate memory for destination */
     if (*result)
-        g_free(*result);
-    *result = (gchar *) g_malloc(strlen(str) + 1);
+        free(*result);
+    *result = (char *) malloc(strlen(str) + 1);
     if (!*result)
         return -2;
 
@@ -68,19 +65,19 @@ gint xs_pstrcpy(gchar **result, const gchar *str)
 
 /* Concatenates a given string into string pointed by *result.
  */
-gint xs_pstrcat(gchar **result, const gchar *str)
+int xs_pstrcat(char **result, const char *str)
 {
     /* Check the string pointers */
     if (!result || !str)
         return -1;
 
     if (*result != NULL) {
-        *result = (gchar *) g_realloc(*result, strlen(*result) + strlen(str) + 1);
+        *result = (char *) realloc(*result, strlen(*result) + strlen(str) + 1);
         if (*result == NULL)
             return -1;
         strcat(*result, str);
     } else {
-        *result = (gchar *) g_malloc(strlen(str) + 1);
+        *result = (char *) malloc(strlen(str) + 1);
         if (*result == NULL)
             return -1;
         strcpy(*result, str);
@@ -90,21 +87,21 @@ gint xs_pstrcat(gchar **result, const gchar *str)
 }
 
 
-void xs_findnext(const gchar *str, size_t *pos)
+void xs_findnext(const char *str, size_t *pos)
 {
     while (str[*pos] && isspace(str[*pos]))
         (*pos)++;
 }
 
 
-void xs_findeol(const gchar *str, size_t *pos)
+void xs_findeol(const char *str, size_t *pos)
 {
     while (str[*pos] && (str[*pos] != '\n') && (str[*pos] != '\r'))
         (*pos)++;
 }
 
 
-void xs_findnum(const gchar *str, size_t *pos)
+void xs_findnum(const char *str, size_t *pos)
 {
     while (str[*pos] && isdigit(str[*pos]))
         (*pos)++;

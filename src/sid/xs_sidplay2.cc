@@ -27,7 +27,7 @@
 #include "xs_sidplay2.h"
 
 #include <assert.h>
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <sidplayfp/sidplayfp.h>
@@ -35,7 +35,6 @@
 #include <sidplayfp/SidInfo.h>
 #include <sidplayfp/SidTune.h>
 #include <sidplayfp/SidTuneInfo.h>
-#include <sidplayfp/sidbuilder.h>
 #include <sidplayfp/builders/residfp.h>
 
 class xs_sidplayfp_t {
@@ -67,13 +66,13 @@ extern "C" {
 
 /* Check if we can play the given file
  */
-gboolean xs_sidplayfp_probe(VFSFile *f)
+bool_t xs_sidplayfp_probe(VFSFile *f)
 {
-    gchar tmpBuf[5];
+    char tmpBuf[5];
 
     if (f == NULL) return FALSE;
 
-    if (vfs_fread(tmpBuf, sizeof(gchar), 4, f) != 4)
+    if (vfs_fread(tmpBuf, sizeof(char), 4, f) != 4)
         return FALSE;
 
     if (!strncmp(tmpBuf, "PSID", 4) || !strncmp(tmpBuf, "RSID", 4))
@@ -85,7 +84,7 @@ gboolean xs_sidplayfp_probe(VFSFile *f)
 
 /* Initialize SIDPlayFP
  */
-gboolean xs_sidplayfp_init(xs_status_t * status)
+bool_t xs_sidplayfp_init(xs_status_t * status)
 {
     xs_sidplayfp_t *engine;
     assert(status != NULL);
@@ -214,7 +213,7 @@ void xs_sidplayfp_close(xs_status_t * status)
 
 /* Initialize current song and sub-tune
  */
-gboolean xs_sidplayfp_initsong(xs_status_t * status)
+bool_t xs_sidplayfp_initsong(xs_status_t * status)
 {
     xs_sidplayfp_t *engine;
     assert(status != NULL);
@@ -240,7 +239,7 @@ gboolean xs_sidplayfp_initsong(xs_status_t * status)
 
 /* Emulate and render audio data to given buffer
  */
-guint xs_sidplayfp_fillbuffer(xs_status_t * status, gchar * audioBuffer, guint audioBufSize)
+unsigned xs_sidplayfp_fillbuffer(xs_status_t * status, char * audioBuffer, unsigned audioBufSize)
 {
     xs_sidplayfp_t *engine;
     assert(status != NULL);
@@ -254,7 +253,7 @@ guint xs_sidplayfp_fillbuffer(xs_status_t * status, gchar * audioBuffer, guint a
 
 /* Load a given SID-tune file
  */
-gboolean xs_sidplayfp_load(xs_status_t * status, const gchar * pcFilename)
+bool_t xs_sidplayfp_load(xs_status_t * status, const char * pcFilename)
 {
     /* This is safe, since xmms-sid.c always calls us with xs_status locked */
     static int loaded_roms = 0;
@@ -274,33 +273,33 @@ gboolean xs_sidplayfp_load(xs_status_t * status, const gchar * pcFilename)
 
         vfs_file_get_contents("file://" DATADIR "sidplayfp/kernal", &kernal, &size);
         if (size != 8192) {
-            g_free(kernal);
+            free(kernal);
             kernal = NULL;
         }
 
         vfs_file_get_contents("file://" DATADIR "sidplayfp/basic", &basic, &size);
         if(size != 8192) {
-            g_free(basic);
+            free(basic);
             basic = NULL;
         }
 
         vfs_file_get_contents("file://" DATADIR "sidplayfp/chargen", &chargen, &size);
         if(size != 4096) {
-            g_free(chargen);
+            free(chargen);
             chargen = NULL;
         }
 
         engine->currEng->setRoms((uint8_t*)kernal, (uint8_t*)basic, (uint8_t*)chargen);
-        g_free(kernal);
-        g_free(basic);
-        g_free(chargen);
+        free(kernal);
+        free(basic);
+        free(chargen);
         loaded_roms = 1;
     }
 
     /* Try to get the tune */
     vfs_file_get_contents(pcFilename, &engine->buf, &engine->bufSize);
     if(!engine->bufSize) {
-        g_free(engine->buf);
+        free(engine->buf);
         engine->buf = NULL;
         return FALSE;
     }
@@ -321,13 +320,13 @@ void xs_sidplayfp_delete(xs_status_t * status)
     engine = (xs_sidplayfp_t *) status->sidEngine;
     if (engine == NULL) return;
 
-    g_free(engine->buf);
+    free(engine->buf);
     engine->buf = NULL;
     engine->bufSize = 0;
 }
 
 
-xs_tuneinfo_t* xs_sidplayfp_getinfo(const gchar *sidFilename)
+xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename)
 {
     /* This is safe, since xmms-sid.c always calls us with xs_status locked */
     static int got_db = -1;
@@ -344,10 +343,10 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const gchar *sidFilename)
 
     /* Check if the tune exists and is readable */
     if (!bufSize || !(myTune = new SidTune((uint8_t*)buf, bufSize))) {
-        g_free(buf);
+        free(buf);
         return NULL;
     }
-    g_free(buf);
+    free(buf);
 
     if (!myTune->getStatus()) {
         delete myTune;
@@ -382,7 +381,7 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const gchar *sidFilename)
     return result;
 }
 
-gboolean xs_sidplayfp_updateinfo(xs_status_t *myStatus)
+bool_t xs_sidplayfp_updateinfo(xs_status_t *myStatus)
 {
     const SidTuneInfo *myInfo;
     SidTune *myTune;
@@ -408,7 +407,7 @@ gboolean xs_sidplayfp_updateinfo(xs_status_t *myStatus)
     i->sidModel = myInfo->sidModel1();
 
     if ((myStatus->currSong > 0) && (myStatus->currSong <= i->nsubTunes)) {
-        gint tmpSpeed = -1;
+        int tmpSpeed = -1;
 
         switch (myInfo->clockSpeed()) {
         case SidTuneInfo::CLOCK_PAL:

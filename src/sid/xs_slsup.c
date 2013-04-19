@@ -23,30 +23,32 @@
 
 #include "xs_slsup.h"
 
+#include <glib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "xs_config.h"
 
 
 static xs_sldb_t *xs_sldb_db = NULL;
-XS_MUTEX(xs_sldb_db);
+pthread_mutex_t xs_sldb_db_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static xs_stildb_t *xs_stildb_db = NULL;
-XS_MUTEX(xs_stildb_db);
+pthread_mutex_t xs_stildb_db_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 /* STIL-database handling
  */
-gint xs_stil_init(void)
+int xs_stil_init(void)
 {
-    XS_MUTEX_LOCK(xs_cfg);
+    pthread_mutex_lock(&xs_cfg_mutex);
 
     if (!xs_cfg.stilDBPath) {
-        XS_MUTEX_UNLOCK(xs_cfg);
+        pthread_mutex_unlock(&xs_cfg_mutex);
         return -1;
     }
 
-    XS_MUTEX_LOCK(xs_stildb_db);
+    pthread_mutex_lock(&xs_stildb_db_mutex);
 
     /* Check if already initialized */
     if (xs_stildb_db)
@@ -55,8 +57,8 @@ gint xs_stil_init(void)
     /* Allocate database */
     xs_stildb_db = (xs_stildb_t *) g_malloc0(sizeof(xs_stildb_t));
     if (!xs_stildb_db) {
-        XS_MUTEX_UNLOCK(xs_cfg);
-        XS_MUTEX_UNLOCK(xs_stildb_db);
+        pthread_mutex_unlock(&xs_cfg_mutex);
+        pthread_mutex_unlock(&xs_stildb_db_mutex);
         return -2;
     }
 
@@ -64,8 +66,8 @@ gint xs_stil_init(void)
     if (xs_stildb_read(xs_stildb_db, xs_cfg.stilDBPath) != 0) {
         xs_stildb_free(xs_stildb_db);
         xs_stildb_db = NULL;
-        XS_MUTEX_UNLOCK(xs_cfg);
-        XS_MUTEX_UNLOCK(xs_stildb_db);
+        pthread_mutex_unlock(&xs_cfg_mutex);
+        pthread_mutex_unlock(&xs_stildb_db_mutex);
         return -3;
     }
 
@@ -73,33 +75,33 @@ gint xs_stil_init(void)
     if (xs_stildb_index(xs_stildb_db) != 0) {
         xs_stildb_free(xs_stildb_db);
         xs_stildb_db = NULL;
-        XS_MUTEX_UNLOCK(xs_cfg);
-        XS_MUTEX_UNLOCK(xs_stildb_db);
+        pthread_mutex_unlock(&xs_cfg_mutex);
+        pthread_mutex_unlock(&xs_stildb_db_mutex);
         return -4;
     }
 
-    XS_MUTEX_UNLOCK(xs_cfg);
-    XS_MUTEX_UNLOCK(xs_stildb_db);
+    pthread_mutex_unlock(&xs_cfg_mutex);
+    pthread_mutex_unlock(&xs_stildb_db_mutex);
     return 0;
 }
 
 
 void xs_stil_close(void)
 {
-    XS_MUTEX_LOCK(xs_stildb_db);
+    pthread_mutex_lock(&xs_stildb_db_mutex);
     xs_stildb_free(xs_stildb_db);
     xs_stildb_db = NULL;
-    XS_MUTEX_UNLOCK(xs_stildb_db);
+    pthread_mutex_unlock(&xs_stildb_db_mutex);
 }
 
 
-stil_node_t *xs_stil_get(gchar *filename)
+stil_node_t *xs_stil_get(char *filename)
 {
     stil_node_t *result;
-    gchar *tmpFilename;
+    char *tmpFilename;
 
-    XS_MUTEX_LOCK(xs_stildb_db);
-    XS_MUTEX_LOCK(xs_cfg);
+    pthread_mutex_lock(&xs_stildb_db_mutex);
+    pthread_mutex_lock(&xs_cfg_mutex);
 
     if (xs_cfg.stilDBEnable && xs_stildb_db) {
         if (xs_cfg.hvscPath) {
@@ -121,8 +123,8 @@ stil_node_t *xs_stil_get(gchar *filename)
     } else
         result = NULL;
 
-    XS_MUTEX_UNLOCK(xs_stildb_db);
-    XS_MUTEX_UNLOCK(xs_cfg);
+    pthread_mutex_unlock(&xs_stildb_db_mutex);
+    pthread_mutex_unlock(&xs_cfg_mutex);
 
     return result;
 }
@@ -130,16 +132,16 @@ stil_node_t *xs_stil_get(gchar *filename)
 
 /* Song length database handling glue
  */
-gint xs_songlen_init(void)
+int xs_songlen_init(void)
 {
-    XS_MUTEX_LOCK(xs_cfg);
+    pthread_mutex_lock(&xs_cfg_mutex);
 
     if (!xs_cfg.songlenDBPath) {
-        XS_MUTEX_UNLOCK(xs_cfg);
+        pthread_mutex_unlock(&xs_cfg_mutex);
         return -1;
     }
 
-    XS_MUTEX_LOCK(xs_sldb_db);
+    pthread_mutex_lock(&xs_sldb_db_mutex);
 
     /* Check if already initialized */
     if (xs_sldb_db)
@@ -148,8 +150,8 @@ gint xs_songlen_init(void)
     /* Allocate database */
     xs_sldb_db = (xs_sldb_t *) g_malloc0(sizeof(xs_sldb_t));
     if (!xs_sldb_db) {
-        XS_MUTEX_UNLOCK(xs_cfg);
-        XS_MUTEX_UNLOCK(xs_sldb_db);
+        pthread_mutex_unlock(&xs_cfg_mutex);
+        pthread_mutex_unlock(&xs_sldb_db_mutex);
         return -2;
     }
 
@@ -157,8 +159,8 @@ gint xs_songlen_init(void)
     if (xs_sldb_read(xs_sldb_db, xs_cfg.songlenDBPath) != 0) {
         xs_sldb_free(xs_sldb_db);
         xs_sldb_db = NULL;
-        XS_MUTEX_UNLOCK(xs_cfg);
-        XS_MUTEX_UNLOCK(xs_sldb_db);
+        pthread_mutex_unlock(&xs_cfg_mutex);
+        pthread_mutex_unlock(&xs_sldb_db_mutex);
         return -3;
     }
 
@@ -166,38 +168,38 @@ gint xs_songlen_init(void)
     if (xs_sldb_index(xs_sldb_db) != 0) {
         xs_sldb_free(xs_sldb_db);
         xs_sldb_db = NULL;
-        XS_MUTEX_UNLOCK(xs_cfg);
-        XS_MUTEX_UNLOCK(xs_sldb_db);
+        pthread_mutex_unlock(&xs_cfg_mutex);
+        pthread_mutex_unlock(&xs_sldb_db_mutex);
         return -4;
     }
 
-    XS_MUTEX_UNLOCK(xs_cfg);
-    XS_MUTEX_UNLOCK(xs_sldb_db);
+    pthread_mutex_unlock(&xs_cfg_mutex);
+    pthread_mutex_unlock(&xs_sldb_db_mutex);
     return 0;
 }
 
 
 void xs_songlen_close(void)
 {
-    XS_MUTEX_LOCK(xs_sldb_db);
+    pthread_mutex_lock(&xs_sldb_db_mutex);
     xs_sldb_free(xs_sldb_db);
     xs_sldb_db = NULL;
-    XS_MUTEX_UNLOCK(xs_sldb_db);
+    pthread_mutex_unlock(&xs_sldb_db_mutex);
 }
 
 
-sldb_node_t *xs_songlen_get(const gchar * filename)
+sldb_node_t *xs_songlen_get(const char * filename)
 {
     sldb_node_t *result;
 
-    XS_MUTEX_LOCK(xs_sldb_db);
+    pthread_mutex_lock(&xs_sldb_db_mutex);
 
     if (xs_cfg.songlenDBEnable && xs_sldb_db)
         result = xs_sldb_get(xs_sldb_db, filename);
     else
         result = NULL;
 
-    XS_MUTEX_UNLOCK(xs_sldb_db);
+    pthread_mutex_unlock(&xs_sldb_db_mutex);
 
     return result;
 }
@@ -205,15 +207,15 @@ sldb_node_t *xs_songlen_get(const gchar * filename)
 
 /* Allocate a new tune information structure
  */
-xs_tuneinfo_t *xs_tuneinfo_new(const gchar * filename,
-        gint nsubTunes, gint startTune, const gchar * sidName,
-        const gchar * sidComposer, const gchar * sidCopyright,
-        gint loadAddr, gint initAddr, gint playAddr,
-        gint dataFileLen, const gchar *sidFormat, gint sidModel)
+xs_tuneinfo_t *xs_tuneinfo_new(const char * filename,
+        int nsubTunes, int startTune, const char * sidName,
+        const char * sidComposer, const char * sidCopyright,
+        int loadAddr, int initAddr, int playAddr,
+        int dataFileLen, const char *sidFormat, int sidModel)
 {
     xs_tuneinfo_t *result;
     sldb_node_t *tmpLength;
-    gint i;
+    int i;
 
     /* Allocate structure */
     result = (xs_tuneinfo_t *) g_malloc0(sizeof(xs_tuneinfo_t));

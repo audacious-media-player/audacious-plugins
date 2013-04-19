@@ -27,9 +27,7 @@
 extern "C" {
 #endif
 
-#include <glib.h>
-#include <pthread.h>
-#include <audacious/plugin.h>
+#include <libaudcore/core.h>
 
 /*
  * Some constants and defines
@@ -47,15 +45,6 @@ extern "C" {
  * Largest SID files I've seen are ~70kB. */
 #define XS_SIDBUF_SIZE          (128*1024)
 
-/* Macros for mutexes and threads. These exist to be able to
- * easily change from pthreads to glib threads, etc, if necessary.
- */
-#define XS_MPP(M)               M ## _mutex
-#define XS_MUTEX(M)             pthread_mutex_t XS_MPP(M) = PTHREAD_MUTEX_INITIALIZER
-#define XS_MUTEX_H(M)           extern pthread_mutex_t XS_MPP(M)
-#define XS_MUTEX_LOCK(M)        pthread_mutex_lock(&XS_MPP(M))
-#define XS_MUTEX_UNLOCK(M)      pthread_mutex_unlock(&XS_MPP(M))
-
 /* Character sets used in STIL database and PlaySID file metadata
  */
 #define XS_STIL_CHARSET	        "ISO-8859-1"
@@ -64,40 +53,21 @@ extern "C" {
 /* Plugin-wide typedefs
  */
 typedef struct {
-    gint        tuneSpeed,
-                tuneLength;
-    gboolean    tunePlayed;
+    int tuneSpeed, tuneLength;
+    bool_t tunePlayed;
 } xs_subtuneinfo_t;
 
-
 typedef struct {
-    gchar   *sidFilename,
-            *sidName,
-            *sidComposer,
-            *sidCopyright,
-            *sidFormat;
-    gint    loadAddr,
-            initAddr,
-            playAddr,
-            dataFileLen,
-            sidModel;
-    gint    nsubTunes, startTune;
-    xs_subtuneinfo_t    *subTunes;
+    char *sidFilename, *sidName, *sidComposer, *sidCopyright, *sidFormat;
+    int loadAddr, initAddr, playAddr, dataFileLen, sidModel;
+    int nsubTunes, startTune;
+    xs_subtuneinfo_t *subTunes;
 } xs_tuneinfo_t;
-
 
 /* Plugin function prototypes
  */
-gboolean    xs_init(void);
-void        xs_close(void);
-gboolean    xs_play_file(InputPlayback *, const gchar *, VFSFile *, gint, gint, gboolean);
-void        xs_stop(InputPlayback *);
-void xs_pause (InputPlayback * p, gboolean pause);
-gint        xs_get_time(InputPlayback *);
-Tuple *     xs_probe_for_tuple(const gchar *, VFSFile *);
-
-void        xs_verror(const gchar *, va_list);
-void        xs_error(const gchar *, ...);
+#define xs_verror(fmt, args) vfprintf(stderr, fmt, args)
+#define xs_error(...) fprintf(stderr, __VA_ARGS__)
 
 #ifdef __cplusplus
 }

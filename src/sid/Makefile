@@ -1,7 +1,6 @@
 PLUGIN = sid${PLUGIN_SUFFIX}
 
-SRCS = xs_init.c	\
-       xs_support.c	\
+SRCS = xs_support.c	\
        xs_config.c	\
        xs_length.c	\
        xs_md5.c \

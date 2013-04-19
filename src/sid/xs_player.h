@@ -9,13 +9,13 @@ extern "C" {
 #endif
 
 typedef struct xs_status_t {
-    gint        audioFrequency,     /* Audio settings */
+    int        audioFrequency,     /* Audio settings */
                 audioChannels;
     void        *sidEngine;         /* SID-emulation internal engine data */
-    gboolean    isPaused,
+    bool_t    isPaused,
                 isInitialized;
-    gboolean stop_flag;
-    gint        currSong,           /* Current sub-tune */
+    bool_t stop_flag;
+    int        currSong,           /* Current sub-tune */
                 lastTime;
 
     xs_tuneinfo_t *tuneInfo;
@@ -25,7 +25,7 @@ typedef struct xs_status_t {
 /* Global variables
  */
 extern xs_status_t    xs_status;
-XS_MUTEX_H(xs_status);
+extern pthread_mutex_t xs_status_mutex;
 
 #ifdef __cplusplus
 }

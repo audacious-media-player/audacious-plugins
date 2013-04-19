@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "xmms-sid.h"
 #include "xs_support.h"
 
 /* Free memory allocated for given SLDB node
@@ -36,8 +37,8 @@ static void xs_sldb_node_free(sldb_node_t *node)
 {
     if (node) {
         /* Nothing much to do here ... */
-        g_free(node->lengths);
-        g_free(node);
+        free(node->lengths);
+        free(node);
     }
 }
 
@@ -64,9 +65,9 @@ static void xs_sldb_node_insert(xs_sldb_t *db, sldb_node_t *node)
 
 /* Parse a time-entry in SLDB format
  */
-static gint xs_sldb_gettime(gchar *str, size_t *pos)
+static int xs_sldb_gettime(char *str, size_t *pos)
 {
-    gint result, tmp;
+    int result, tmp;
 
     /* Check if it starts with a digit */
     if (isdigit(str[*pos])) {
@@ -102,24 +103,25 @@ static gint xs_sldb_gettime(gchar *str, size_t *pos)
 
 /* Parse one SLDB definition line, return SLDB node
  */
-sldb_node_t * xs_sldb_read_entry(gchar *inLine)
+sldb_node_t * xs_sldb_read_entry(char *inLine)
 {
     size_t linePos;
-    gint i;
-    gboolean isOK;
+    int i;
+    bool_t isOK;
     sldb_node_t *tmnode;
 
     /* Allocate new node */
-    tmnode = (sldb_node_t *) g_malloc0(sizeof(sldb_node_t));
+    tmnode = (sldb_node_t *) malloc(sizeof(sldb_node_t));
     if (!tmnode) {
         xs_error("Error allocating new node. Fatal error.\n");
         return NULL;
     }
+    memset(tmnode, 0, sizeof(sldb_node_t));
 
     /* Get hash value */
     linePos = 0;
     for (i = 0; i < XS_MD5HASH_LENGTH; i++, linePos += 2) {
-        guint tmpu;
+        unsigned tmpu;
         sscanf(&inLine[linePos], "%2x", &tmpu);
         tmnode->md5Hash[i] = tmpu;
     }
@@ -127,7 +129,7 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
     /* Get playtimes */
     if (inLine[linePos] != 0) {
         if (inLine[linePos] != '=') {
-            xs_error("'=' expected on column #%d.\n", linePos);
+            xs_error("'=' expected on column #%zd.\n", linePos);
             xs_sldb_node_free(tmnode);
             return NULL;
         } else {
@@ -150,12 +152,13 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
 
             /* Allocate memory for lengths */
             if (tmnode->nlengths > 0) {
-                tmnode->lengths = (gint *) g_malloc0(tmnode->nlengths * sizeof(gint));
+                tmnode->lengths = (int *) malloc(tmnode->nlengths * sizeof(int));
                 if (!tmnode->lengths) {
                     xs_error("Could not allocate memory for node.\n");
                     xs_sldb_node_free(tmnode);
                     return NULL;
                 }
+                memset(tmnode->lengths, 0, tmnode->nlengths * sizeof(int));
             } else {
                 xs_sldb_node_free(tmnode);
                 return NULL;
@@ -166,7 +169,7 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
             linePos = savePos;
             isOK = TRUE;
             while ((linePos < tmpLen) && (i < tmnode->nlengths) && isOK) {
-                gint l;
+                int l;
 
                 xs_findnext(inLine, &linePos);
 
@@ -193,10 +196,10 @@ sldb_node_t * xs_sldb_read_entry(gchar *inLine)
 
 /* Read database to memory
  */
-gint xs_sldb_read(xs_sldb_t *db, const gchar *dbFilename)
+int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
 {
     FILE *inFile;
-    gchar inLine[XS_BUF_SIZE];
+    char inLine[XS_BUF_SIZE];
     size_t lineNum;
     sldb_node_t *tmnode;
     assert(db);
@@ -219,23 +222,23 @@ gint xs_sldb_read(xs_sldb_t *db, const gchar *dbFilename)
         /* Check if it is datafield */
         if (isxdigit(inLine[linePos])) {
             /* Check the length of the hash */
-            gint hashLen;
+            int hashLen;
             for (hashLen = 0; inLine[linePos] && isxdigit(inLine[linePos]); hashLen++, linePos++);
 
             if (hashLen != XS_MD5HASH_LENGTH_CH) {
-                xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n",
+                xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%zd!\n",
                     dbFilename, lineNum);
             } else {
                 /* Parse and add node to db */
                 if ((tmnode = xs_sldb_read_entry(inLine)) != NULL) {
                     xs_sldb_node_insert(db, tmnode);
                 } else {
-                    xs_error("Invalid entry in SongLengthDB file '%s' line #%d!\n",
+                    xs_error("Invalid entry in SongLengthDB file '%s' line #%zd!\n",
                         dbFilename, lineNum);
                 }
             }
         } else if ((inLine[linePos] != ';') && (inLine[linePos] != '[') && (inLine[linePos] != 0)) {
-            xs_error("Invalid line in SongLengthDB file '%s' line #%d\n",
+            xs_error("Invalid line in SongLengthDB file '%s' line #%zd\n",
                 dbFilename, lineNum);
         }
 
@@ -253,9 +256,9 @@ gint xs_sldb_read(xs_sldb_t *db, const gchar *dbFilename)
  *         negative if testHash1 < testHash2
  *         positive if testHash1 > testHash2
  */
-static gint xs_sldb_cmphash(xs_md5hash_t testHash1, xs_md5hash_t testHash2)
+static int xs_sldb_cmphash(xs_md5hash_t testHash1, xs_md5hash_t testHash2)
 {
-    gint i, d;
+    int i, d;
 
     /* Compute difference of hashes */
     for (i = 0, d = 0; (i < XS_MD5HASH_LENGTH) && !d; i++)
@@ -267,7 +270,7 @@ static gint xs_sldb_cmphash(xs_md5hash_t testHash1, xs_md5hash_t testHash2)
 
 /* Compare two nodes
  */
-static gint xs_sldb_cmp(const void *node1, const void *node2)
+static int xs_sldb_cmp(const void *node1, const void *node2)
 {
     /* We assume here that we never ever get NULL-pointers or similar */
     return xs_sldb_cmphash(
@@ -278,7 +281,7 @@ static gint xs_sldb_cmp(const void *node1, const void *node2)
 
 /* (Re)create index
  */
-gint xs_sldb_index(xs_sldb_t * db)
+int xs_sldb_index(xs_sldb_t * db)
 {
     sldb_node_t *pCurr;
     size_t i;
@@ -286,7 +289,7 @@ gint xs_sldb_index(xs_sldb_t * db)
 
     /* Free old index */
     if (db->pindex) {
-        g_free(db->pindex);
+        free(db->pindex);
         db->pindex = NULL;
     }
 
@@ -301,7 +304,7 @@ gint xs_sldb_index(xs_sldb_t * db)
     /* Check number of nodes */
     if (db->n > 0) {
         /* Allocate memory for index-table */
-        db->pindex = (sldb_node_t **) g_malloc(sizeof(sldb_node_t *) * db->n);
+        db->pindex = (sldb_node_t **) malloc(sizeof(sldb_node_t *) * db->n);
         if (!db->pindex)
             return -1;
 
@@ -342,50 +345,50 @@ void xs_sldb_free(xs_sldb_t * db)
 
     /* Free memory allocated for index */
     if (db->pindex) {
-        g_free(db->pindex);
+        free(db->pindex);
         db->pindex = NULL;
     }
 
     /* Free structure */
     db->n = 0;
-    g_free(db);
+    free(db);
 }
 
 
 /* Compute md5hash of given SID-file
  */
 typedef struct {
-    gchar magicID[4];    /* "PSID" / "RSID" magic identifier */
-    guint16 version,    /* Version number */
+    char magicID[4];    /* "PSID" / "RSID" magic identifier */
+    uint16_t version,    /* Version number */
         dataOffset,    /* Start of actual c64 data in file */
         loadAddress,    /* Loading address */
         initAddress,    /* Initialization address */
         playAddress,    /* Play one frame */
         nSongs,        /* Number of subsongs */
         startSong;    /* Default starting song */
-    guint32 speed;        /* Speed */
-    gchar sidName[32];    /* Descriptive text-fields, ASCIIZ */
-    gchar sidAuthor[32];
-    gchar sidCopyright[32];
+    uint32_t speed;        /* Speed */
+    char sidName[32];    /* Descriptive text-fields, ASCIIZ */
+    char sidAuthor[32];
+    char sidCopyright[32];
 } psidv1_header_t;
 
 
 typedef struct {
-    guint16 flags;        /* Flags */
-    guint8 startPage, pageLength;
-    guint16 reserved;
+    uint16_t flags;        /* Flags */
+    uint8_t startPage, pageLength;
+    uint16_t reserved;
 } psidv2_header_t;
 
 
-static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
+static int xs_get_sid_hash(const char *filename, xs_md5hash_t hash)
 {
     VFSFile *inFile;
     xs_md5state_t inState;
     psidv1_header_t psidH;
     psidv2_header_t psidH2;
-    guint8 *songData;
-    guint8 ib8[2], i8;
-    gint index, result;
+    uint8_t *songData;
+    uint8_t ib8[2], i8;
+    int index, result;
 
     /* Try to open the file */
     if ((inFile = vfs_fopen(filename, "rb")) == NULL)
@@ -432,7 +435,7 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
     }
 
     /* Allocate buffer */
-    songData = (guint8 *) g_malloc(XS_SIDBUF_SIZE * sizeof(guint8));
+    songData = (uint8_t *) malloc(XS_SIDBUF_SIZE * sizeof(uint8_t));
     if (!songData) {
         vfs_fclose(inFile);
         xs_error("Error allocating temp data buffer for file '%s'\n", filename);
@@ -440,7 +443,7 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
     }
 
     /* Read data to buffer */
-    result = vfs_fread(songData, sizeof(guint8), XS_SIDBUF_SIZE, inFile);
+    result = vfs_fread(songData, sizeof(uint8_t), XS_SIDBUF_SIZE, inFile);
     vfs_fclose(inFile);
 
     /* Initialize and start MD5-hash calculation */
@@ -455,13 +458,13 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
     }
 
     /* Free buffer */
-    g_free(songData);
+    free(songData);
 
     /* Append header data to hash */
 #define XSADDHASH(QDATAB) do {                    \
     ib8[0] = (QDATAB & 0xff);                \
     ib8[1] = (QDATAB >> 8);                    \
-    xs_md5_append(&inState, (guint8 *) &ib8, sizeof(ib8));    \
+    xs_md5_append(&inState, (uint8_t *) &ib8, sizeof(ib8));    \
     } while (0)
 
     XSADDHASH(psidH.initAddress);
@@ -498,7 +501,7 @@ static gint xs_get_sid_hash(const gchar *filename, xs_md5hash_t hash)
 
 /* Get node from db index via binary search
  */
-sldb_node_t *xs_sldb_get(xs_sldb_t *db, const gchar *filename)
+sldb_node_t *xs_sldb_get(xs_sldb_t *db, const char *filename)
 {
     sldb_node_t keyItem, *key, **item;
 

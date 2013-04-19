@@ -25,12 +25,13 @@
 
 #include <string.h>
 
+#include "xmms-sid.h"
 #include "xs_support.h"
 
 /*
  * Configuration specific stuff
  */
-XS_MUTEX(xs_cfg);
+pthread_mutex_t xs_cfg_mutex = PTHREAD_MUTEX_INITIALIZER;
 struct xs_cfg_t xs_cfg;
 
 /* Reset/initialize the configuration
@@ -38,7 +39,7 @@ struct xs_cfg_t xs_cfg;
 void xs_init_configuration(void)
 {
     /* Lock configuration mutex */
-    XS_MUTEX_LOCK(xs_cfg);
+    pthread_mutex_lock(&xs_cfg_mutex);
 
     memset(&xs_cfg, 0, sizeof(xs_cfg));
 
@@ -74,5 +75,5 @@ void xs_init_configuration(void)
     xs_cfg.subAutoMinTime = 15;
 
     /* Unlock the configuration */
-    XS_MUTEX_UNLOCK(xs_cfg);
+    pthread_mutex_unlock(&xs_cfg_mutex);
 }

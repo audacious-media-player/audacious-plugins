@@ -5,23 +5,22 @@
 extern "C" {
 #endif
 
-#include <glib.h>
+#include <sys/types.h>
 #include <libaudcore/vfs.h>
-
 
 /* VFS replacement functions
  */
-guint16 xs_fread_be16(VFSFile *);
-guint32 xs_fread_be32(VFSFile *);
+uint16_t xs_fread_be16(VFSFile *);
+uint32_t xs_fread_be32(VFSFile *);
 
 
 /* Misc functions
  */
-gint    xs_pstrcpy(gchar **, const gchar *);
-gint    xs_pstrcat(gchar **, const gchar *);
-void    xs_findnext(const gchar *, size_t *);
-void    xs_findeol(const gchar *, size_t *);
-void    xs_findnum(const gchar *, size_t *);
+int xs_pstrcpy(char **, const char *);
+int xs_pstrcat(char **, const char *);
+void xs_findnext(const char *, size_t *);
+void xs_findeol(const char *, size_t *);
+void xs_findnum(const char *, size_t *);
 
 #ifdef __cplusplus
 }
