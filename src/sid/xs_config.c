@@ -49,21 +49,9 @@ void xs_init_configuration(void)
 
     /* Filter values */
     xs_cfg.emulateFilters = TRUE;
-    xs_cfg.sid1Filter.fs = XS_SIDPLAY1_FS;
-    xs_cfg.sid1Filter.fm = XS_SIDPLAY1_FM;
-    xs_cfg.sid1Filter.ft = XS_SIDPLAY1_FT;
 
-#ifdef HAVE_SIDPLAY2
     xs_cfg.playerEngine = XS_ENG_SIDPLAY2;
     xs_cfg.memoryMode = XS_MPU_REAL;
-#else
-#ifdef HAVE_SIDPLAY1
-    xs_cfg.playerEngine = XS_ENG_SIDPLAY1;
-    xs_cfg.memoryMode = XS_MPU_BANK_SWITCHING;
-#else
-#error This should not happen! No emulator engines configured in!
-#endif
-#endif
 
     xs_cfg.clockSpeed = XS_CLOCK_PAL;
     xs_cfg.forceSpeed = FALSE;
@@ -77,9 +65,7 @@ void xs_init_configuration(void)
 #ifdef HAVE_HARDSID_BUILDER
     xs_cfg.sid2Builder = XS_BLD_HARDSID;
 #else
-#ifdef HAVE_SIDPLAY2
 #error This should not happen! No supported SIDPlay2 builders configured in!
-#endif
 #endif
 #endif
 

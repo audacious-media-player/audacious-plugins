@@ -22,8 +22,6 @@
 */
 #include "xmms-sid.h"
 
-#ifdef HAVE_SIDPLAY2
-
 #include <stdio.h>
 #include "xs_sidplay2.h"
 #include "xs_config.h"
@@ -535,4 +533,3 @@ void xs_sidplay2_flush(xs_status_t * status)
 
 
 }    /* extern "C" */
-#endif    /* HAVE_SIDPLAY2 */

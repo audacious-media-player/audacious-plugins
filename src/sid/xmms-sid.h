@@ -69,10 +69,6 @@ extern "C" {
  * For some stupid reason these are not available in public
  * headers, so we have to duplicate them here...
  */
-#define XS_SIDPLAY1_FS          (400.0f)
-#define XS_SIDPLAY1_FM          (60.0f)
-#define XS_SIDPLAY1_FT          (0.05f)
-
 #define XS_SIDPLAY2_NFPOINTS    (0x800)
 #define XS_SIDPLAY2_FMAX        (24000)
 

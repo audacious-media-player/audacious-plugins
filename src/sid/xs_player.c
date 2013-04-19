@@ -1,27 +1,10 @@
 #include "xs_player.h"
-
-#ifdef HAVE_SIDPLAY1
-#include "xs_sidplay1.h"
-#endif
-#ifdef HAVE_SIDPLAY2
 #include "xs_sidplay2.h"
-#endif
 
 
 /* List of emulator engines
  */
 static const xs_engine_t xs_enginelist[] = {
-#ifdef HAVE_SIDPLAY1
-    {XS_ENG_SIDPLAY1,
-     xs_sidplay1_probe,
-     xs_sidplay1_init, xs_sidplay1_close,
-     xs_sidplay1_initsong, xs_sidplay1_fillbuffer,
-     xs_sidplay1_load, xs_sidplay1_delete,
-     xs_sidplay1_getinfo, xs_sidplay1_updateinfo,
-     NULL
-    },
-#endif
-#ifdef HAVE_SIDPLAY2
     {XS_ENG_SIDPLAY2,
      xs_sidplay2_probe,
      xs_sidplay2_init, xs_sidplay2_close,
@@ -30,7 +13,6 @@ static const xs_engine_t xs_enginelist[] = {
      xs_sidplay2_getinfo, xs_sidplay2_updateinfo,
      xs_sidplay2_flush
     },
-#endif
 };
 
 static const gint xs_nenginelist = (sizeof(xs_enginelist) / sizeof(xs_enginelist[0]));

@@ -11,7 +11,6 @@ extern "C" {
 /* Configuration structure
  */
 enum XS_EMUENGINE {
-    XS_ENG_SIDPLAY1 = 1,
     XS_ENG_SIDPLAY2
 };
 
@@ -114,7 +113,6 @@ extern struct xs_cfg_t {
     gint        playerEngine;       /* Selected player engine */
 
     gboolean    emulateFilters;
-    xs_sid_filter_t    sid1Filter;  /* Current SIDPlay1 filter */
 
     gint        sid2OptLevel;       /* SIDPlay2 emulation optimization */
     gint        sid2Builder;        /* SIDPlay2 "builder" aka SID-emu */

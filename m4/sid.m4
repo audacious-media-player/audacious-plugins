@@ -1,11 +1,6 @@
 
 AC_DEFUN([AM_PATH_SIDPLAY],
 [
-XS_ARG_WITH([sidplay1], [libSIDPlay1], [XS_PATH_LIBSIDPLAY1])
-if test "x$xs_have_sidplay1" = "xyes"; then
-	AC_DEFINE([HAVE_SIDPLAY1])
-fi
-
 XS_ARG_WITH([sidplay2], [libSIDPlay2], [XS_PATH_LIBSIDPLAY2])
 if test "x$xs_have_sidplay2" = "xyes"; then
 	AC_DEFINE([HAVE_SIDPLAY2])
@@ -64,7 +59,7 @@ if test "x$xs_have_sidplay2" = "xyes"; then
 	CPPFLAGS="$tmp_CPPFLAGS"
 fi
 
-if test "x$xs_have_sidplay1" = "xyes" || test "x$xs_have_sidplay2" = "xyes"; then
+if test "x$xs_have_sidplay2" = "xyes"; then
 	m4_ifvaln([$1], [$1], [:])
 	m4_ifvaln([$2], [else $2])
 fi
