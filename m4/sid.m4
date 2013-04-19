@@ -9,7 +9,6 @@ if test "x$xs_have_sidplay2" = "xyes"; then
 	XS_BUILDERS_CHECK
         xs_builders_available="no"
 	XS_BUILDERS_FIND([reSID], [resid-builder], [resid.h], [ReSIDBuilder])
-	XS_BUILDERS_FIND([HardSID], [hardsid-builder], [hardsid.h], [HardSIDBuilder])
 	if test "x$xs_builders_available" = "xno"; then
 		AC_MSG_WARN([No builder modules were found in the sidbuilders directory!]);
 		xs_have_sidplay2=no

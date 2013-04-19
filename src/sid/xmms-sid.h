@@ -39,10 +39,6 @@ extern "C" {
  */
 #undef DEBUG
 
-/* HardSID-support is not working and is untested, thus we disable it here.
- */
-#undef HAVE_HARDSID_BUILDER
-
 /* Size for some small buffers (always static variables) */
 #define XS_BUF_SIZE             (1024)
 

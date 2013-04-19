@@ -28,6 +28,7 @@
 
 
 #include <sidplay/sidplay2.h>
+#include <sidplay/builders/resid.h>
 
 
 class xs_sidplay2_t {
@@ -42,14 +43,6 @@ public:
     xs_sidplay2_t(void);
     virtual ~xs_sidplay2_t(void) { ; }
 };
-
-
-#ifdef HAVE_RESID_BUILDER
-#  include <sidplay/builders/resid.h>
-#endif
-#ifdef HAVE_HARDSID_BUILDER
-#  include <sidplay/builders/hardsid.h>
-#endif
 
 
 xs_sidplay2_t::xs_sidplay2_t(void)
@@ -224,7 +217,6 @@ gboolean xs_sidplay2_init(xs_status_t * status)
 
     /* Initialize builder object */
     XSDEBUG("init builder #%i, maxsids=%i\n", xs_cfg.sid2Builder, (engine->currEng->info()).maxsids);
-#ifdef HAVE_RESID_BUILDER
     if (xs_cfg.sid2Builder == XS_BLD_RESID) {
         ReSIDBuilder *rs = new ReSIDBuilder("ReSID builder");
         engine->currBuilder = (sidbuilder *) rs;
@@ -260,27 +252,6 @@ gboolean xs_sidplay2_init(xs_status_t * status)
             }
         }
     }
-#endif
-#ifdef HAVE_HARDSID_BUILDER
-    if (xs_cfg.sid2Builder == XS_BLD_HARDSID) {
-        HardSIDBuilder *hs = new HardSIDBuilder("HardSID builder");
-        engine->currBuilder = (sidbuilder *) hs;
-        if (hs) {
-            /* Builder object created, initialize it */
-            hs->create((engine->currEng->info()).maxsids);
-            if (!*hs) {
-                xs_error("hardSID->create() failed.\n");
-                return FALSE;
-            }
-
-            hs->filter(xs_cfg.emulateFilters);
-            if (!*hs) {
-                xs_error("hardSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
-                return FALSE;
-            }
-        }
-    }
-#endif
 
     if (!engine->currBuilder) {
         xs_error("[SIDPlay2] Could not initialize SIDBuilder object.\n");
@@ -476,17 +447,6 @@ void xs_sidplay2_delete(xs_status_t * status)
 void xs_sidplay2_flush(xs_status_t * status)
 {
     assert(status != NULL);
-
-#ifdef HAVE_HARDSID_BUILDER
-#ifdef HSID_SID2_COM
-    IfPtr<HardSIDBuilder> hs(status->currBuilder);
-    if (hs)
-        hs->flush();
-#else
-    if (xs_cfg.sid2Builder == XS_BLD_HARDSID)
-        ((HardSIDBuilder *) status->currBuilder)->flush();
-#endif
-#endif
 }
 
 

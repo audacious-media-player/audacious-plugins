@@ -16,8 +16,7 @@ enum XS_EMUENGINE {
 
 
 enum XS_BUILDER {
-    XS_BLD_RESID = 1,
-    XS_BLD_HARDSID
+    XS_BLD_RESID = 1
 };
 
 enum XS_RESOLUTION {

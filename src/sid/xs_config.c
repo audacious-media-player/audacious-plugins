@@ -59,15 +59,7 @@ void xs_init_configuration(void)
     xs_cfg.sid2OptLevel = 0;
     xs_cfg.sid2NFilterPresets = 0;
 
-#ifdef HAVE_RESID_BUILDER
     xs_cfg.sid2Builder = XS_BLD_RESID;
-#else
-#ifdef HAVE_HARDSID_BUILDER
-    xs_cfg.sid2Builder = XS_BLD_HARDSID;
-#else
-#error This should not happen! No supported SIDPlay2 builders configured in!
-#endif
-#endif
 
     xs_cfg.oversampleEnable = FALSE;
     xs_cfg.oversampleFactor = XS_MIN_OVERSAMPLE;
