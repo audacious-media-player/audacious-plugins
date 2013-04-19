@@ -34,7 +34,6 @@ struct xs_cfg_t xs_cfg;
 void xs_init_configuration(void)
 {
     /* Lock configuration mutex */
-    XSDEBUG("initializing configuration ...\n");
     XS_MUTEX_LOCK(xs_cfg);
 
     memset(&xs_cfg, 0, sizeof(xs_cfg));

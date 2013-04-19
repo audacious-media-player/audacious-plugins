@@ -23,8 +23,6 @@ gboolean xs_init_emu_engine(int *configured, xs_status_t *status)
     gint engine;
     gboolean initialized;
 
-    XSDEBUG("initializing emulator engine #%i...\n", *configured);
-
     engine = 0;
     initialized = FALSE;
     while (engine < xs_nenginelist && !initialized) {
@@ -37,8 +35,6 @@ gboolean xs_init_emu_engine(int *configured, xs_status_t *status)
         engine++;
     }
 
-    XSDEBUG("init#1: %s, %i\n", initialized ? "OK" : "FAILED", engine);
-
     engine = 0;
     while (engine < xs_nenginelist && !initialized) {
         if (xs_enginelist[engine].plrInit(status)) {
@@ -49,7 +45,6 @@ gboolean xs_init_emu_engine(int *configured, xs_status_t *status)
             engine++;
     }
 
-    XSDEBUG("init#2: %s, %i\n", initialized ? "OK" : "FAILED", engine);
     return initialized;
 }
 

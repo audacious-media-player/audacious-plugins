@@ -146,7 +146,6 @@ gboolean xs_sidplayfp_init(xs_status_t * status)
         engine->currConfig.frequency *= status->oversampleFactor;
 
     /* Initialize builder object */
-    XSDEBUG("init builder #%i, maxsids=%i\n", xs_cfg.sid2Builder, engine->currEng->info().maxsids());
     if (xs_cfg.sid2Builder == XS_BLD_RESID) {
         ReSIDfpBuilder *rs = new ReSIDfpBuilder("ReSIDfp builder");
         engine->currBuilder = (sidbuilder *) rs;
@@ -164,8 +163,6 @@ gboolean xs_sidplayfp_init(xs_status_t * status)
         return FALSE;
     }
 
-    XSDEBUG("filter setting NOT supported with libsidplayfp.\n");
-
     engine->currBuilder->filter(xs_cfg.emulateFilters);
     if (!engine->currBuilder->getStatus()) {
         xs_error("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
@@ -173,7 +170,6 @@ gboolean xs_sidplayfp_init(xs_status_t * status)
     }
 
     engine->currConfig.sidEmulation = engine->currBuilder;
-    XSDEBUG("%s\n", engine->currBuilder->credits());
 
     /* Clockspeed settings */
     switch (xs_cfg.clockSpeed) {

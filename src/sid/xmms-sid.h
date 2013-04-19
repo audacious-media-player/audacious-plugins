@@ -134,35 +134,6 @@ void        xs_verror(const gchar *, va_list);
 void        xs_error(const gchar *, ...);
 
 
-/* Debugging
- */
-void    XSDEBUG(const gchar *, ...);
-
-
-/* And even some Gtk+ macro crap here, yay.
- */
-#define XS_DEF_WINDOW_DELETE(ME, MV)                    \
-gboolean xs_ ## ME ## _delete(GtkWidget *w, GdkEvent *e, gpointer d) {    \
-    (void) w; (void) e; (void) d;                    \
-    if (xs_ ## MV ) {                        \
-        gtk_widget_destroy(xs_ ## MV );                \
-        xs_ ## MV = NULL;                    \
-    }                                \
-    return FALSE;                            \
-}
-
-#define XS_DEF_WINDOW_CLOSE(ME, MV)            \
-void xs_ ## ME (GtkButton *b, gpointer d) {        \
-    (void) b; (void) d;                \
-    gtk_widget_destroy(xs_ ## MV );            \
-    xs_ ## MV = NULL;                \
-}
-
-#define XS_SIGNAL_CONNECT(SOBJ, SNAME, SFUNC, SDATA)        \
-    g_signal_connect(G_OBJECT(SOBJ), SNAME, G_CALLBACK(SFUNC), SDATA)
-
-#define XS_WINDOW_PRESENT(XX) gtk_window_present(GTK_WINDOW( XX ))
-
 #ifdef __cplusplus
 }
 #endif

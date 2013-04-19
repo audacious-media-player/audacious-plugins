@@ -60,24 +60,12 @@ void xs_error(const gchar *fmt, ...)
     va_end(ap);
 }
 
-void XSDEBUG(const gchar *fmt, ...)
-{
-    va_list ap;
-    va_start(ap, fmt);
-    char * str = g_strdup_vprintf (fmt, ap);
-    AUDDBG ("%s", str);
-    g_free (str);
-    va_end(ap);
-}
-
 
 /*
  * Initialization functions
  */
 void xs_reinit(void)
 {
-    XSDEBUG("xs_reinit() thread = %p\n", g_thread_self());
-
     XS_MUTEX_LOCK(xs_status);
     XS_MUTEX_LOCK(xs_cfg);
 
@@ -134,8 +122,6 @@ void xs_reinit(void)
  */
 gboolean xs_init (void)
 {
-    XSDEBUG("xs_init()\n");
-
     /* Initialize and get configuration */
     xs_init_configuration();
 
@@ -151,8 +137,6 @@ gboolean xs_init (void)
  */
 void xs_close(void)
 {
-    XSDEBUG("xs_close(): shutting down...\n");
-
     xs_tuneinfo_free(xs_status.tuneInfo);
     xs_status.tuneInfo = NULL;
 
@@ -164,8 +148,6 @@ void xs_close(void)
 
     xs_songlen_close();
     xs_stil_close();
-
-    XSDEBUG("shutdown finished.\n");
 }
 
 
@@ -212,8 +194,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     else
         xs_status.currSong = subTune;
 
-    XSDEBUG("subtune #%i selected (#%d wanted), initializing...\n", xs_status.currSong, subTune);
-
     gint channels = (xs_status.audioChannels == XS_CHN_AUTOPAN) ? 2 :
      xs_status.audioChannels;
 
@@ -255,9 +235,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     }
 
     /* Open the audio output */
-    XSDEBUG("open audio output (%d, %d, %d)\n",
-        xs_status.audioFormat, xs_status.audioFrequency, channels);
-
     if (!pb->output->open_audio(xs_status.audioFormat, xs_status.audioFrequency,
      channels))
     {
@@ -271,7 +248,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     }
 
     /* Set song information for current subtune */
-    XSDEBUG("foobar #1\n");
     xs_status.sidPlayer->plrUpdateSIDInfo(&xs_status);
     tmpTuple = tuple_new_from_filename(tmpTune->sidFilename);
     xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
@@ -282,8 +258,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     pb->set_tuple(pb, tmpTuple);
     pb->set_params (pb, -1, xs_status.audioFrequency, channels);
     pb->set_pb_ready(pb);
-
-    XSDEBUG("playing\n");
 
     while (1)
     {
@@ -339,8 +313,6 @@ gboolean xs_play_file(InputPlayback *pb, const gchar *filename, VFSFile *file, g
     }
 
 DONE:
-    XSDEBUG("out of playing loop\n");
-
     g_free(audioBuffer);
     g_free(oversampleBuffer);
 
@@ -359,8 +331,6 @@ DONE:
     XS_MUTEX_UNLOCK(xs_status);
 
     /* Exit the playing thread */
-    XSDEBUG("exiting thread, bye.\n");
-
     return ! error;
 
 xs_err_exit:
@@ -381,20 +351,16 @@ xs_err_exit:
  */
 void xs_stop(InputPlayback *pb)
 {
-    XSDEBUG("stop requested\n");
-
     /* Lock xs_status and stop playing thread */
     XS_MUTEX_LOCK(xs_status);
 
     if (! xs_status.stop_flag)
     {
-        XSDEBUG("stopping...\n");
         xs_status.stop_flag = TRUE;
         pb->output->abort_write ();
     }
 
     XS_MUTEX_UNLOCK (xs_status);
-    XSDEBUG("ok\n");
 }
 
 
