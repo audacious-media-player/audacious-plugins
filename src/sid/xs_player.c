@@ -6,12 +6,12 @@
  */
 static const xs_engine_t xs_enginelist[] = {
     {XS_ENG_SIDPLAY2,
-     xs_sidplay2_probe,
-     xs_sidplay2_init, xs_sidplay2_close,
-     xs_sidplay2_initsong, xs_sidplay2_fillbuffer,
-     xs_sidplay2_load, xs_sidplay2_delete,
-     xs_sidplay2_getinfo, xs_sidplay2_updateinfo,
-     xs_sidplay2_flush
+     xs_sidplayfp_probe,
+     xs_sidplayfp_init, xs_sidplayfp_close,
+     xs_sidplayfp_initsong, xs_sidplayfp_fillbuffer,
+     xs_sidplayfp_load, xs_sidplayfp_delete,
+     xs_sidplayfp_getinfo, xs_sidplayfp_updateinfo,
+     xs_sidplayfp_flush
     },
 };
 

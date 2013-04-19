@@ -553,11 +553,11 @@ AC_ARG_ENABLE(sid,
 
 have_sidplay=no
 if test "x$enable_sid" != "xno"; then
-    AM_PATH_SIDPLAY(
+    PKG_CHECK_MODULES([SIDPLAYFP], [libsidplayfp >= 1.0],
         [have_sidplay=yes
          INPUT_PLUGINS="$INPUT_PLUGINS sid"],
         [if test "x$enable_sid" = "xyes"; then
-            AC_MSG_ERROR([Cannot find sidplay, but compilation of SID input plugin has been explicitly requested; please install sidplay and run configure again])
+            AC_MSG_ERROR([Cannot find sidplayfp, but compilation of SID input plugin has been explicitly requested; please install sidplayfp and run configure again])
          fi]
     )
 else
