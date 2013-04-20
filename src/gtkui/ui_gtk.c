@@ -53,16 +53,13 @@ static const gchar * const gtkui_defaults[] = {
  "playlist_headers", "TRUE",
  "show_remaining_time", "FALSE",
 
- "player_x", "-1",
- "player_y", "-1",
+ "player_x", "-1000",
+ "player_y", "-1000",
  "player_width", "760",
  "player_height", "460",
 
- /* hidden settings */
- "always_on_top", "FALSE",
- "save_window_position", "TRUE",
- "show_song_titles", "TRUE",
- NULL};
+ NULL
+};
 
 static PluginHandle * search_tool;
 
@@ -120,6 +117,19 @@ static void save_window_size (void)
     aud_set_int ("gtkui", "player_y", y);
     aud_set_int ("gtkui", "player_width", w);
     aud_set_int ("gtkui", "player_height", h);
+}
+
+static void restore_window_size (void)
+{
+    gint x = aud_get_int ("gtkui", "player_x");
+    gint y = aud_get_int ("gtkui", "player_y");
+    gint w = aud_get_int ("gtkui", "player_width");
+    gint h = aud_get_int ("gtkui", "player_height");
+
+    gtk_window_set_default_size ((GtkWindow *) window, w, h);
+
+    if (x > -1000 && y > -1000)
+        gtk_window_move ((GtkWindow *) window, x, y);
 }
 
 static gboolean window_delete()
@@ -180,7 +190,7 @@ static gboolean title_change_cb (void)
         delayed_title_change_source = 0;
     }
 
-    if (aud_drct_get_playing () && aud_get_bool ("gtkui", "show_song_titles"))
+    if (aud_drct_get_playing ())
     {
         if (aud_drct_get_ready ())
         {
@@ -203,27 +213,18 @@ static void ui_show (gboolean show)
 {
     if (show)
     {
-        if (aud_get_bool ("gtkui", "save_window_position") && ! gtk_widget_get_visible (window))
-        {
-            gint x = aud_get_int ("gtkui", "player_x");
-            gint y = aud_get_int ("gtkui", "player_y");
-            gtk_window_move ((GtkWindow *) window, x, y);
-        }
+        if (! ui_is_shown ())
+            restore_window_size ();
 
         gtk_window_present ((GtkWindow *) window);
 
         /* turn visualization back on if necessary */
         ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
     }
-    else if (gtk_widget_get_visible (window))
+    else
     {
-        if (aud_get_bool ("gtkui", "save_window_position"))
-        {
-            gint x, y;
-            gtk_window_get_position ((GtkWindow *) window, & x, & y);
-            aud_set_int ("gtkui", "player_x", x);
-            aud_set_int ("gtkui", "player_y", y);
-        }
+        if (ui_is_shown ())
+            save_window_size ();
 
         gtk_widget_hide (window);
 
@@ -682,7 +683,9 @@ static gboolean search_tool_toggled (PluginHandle * plugin, void * unused)
 
 static void config_save (void)
 {
-    save_window_size ();
+    if (ui_is_shown ())
+        save_window_size ();
+
     layout_save ();
     pw_col_save ();
 }
@@ -732,18 +735,8 @@ static gboolean init (void)
 
     pw_col_init ();
 
-    gint x = aud_get_int ("gtkui", "player_x");
-    gint y = aud_get_int ("gtkui", "player_y");
-    gint w = aud_get_int ("gtkui", "player_width");
-    gint h = aud_get_int ("gtkui", "player_height");
-
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_default_size ((GtkWindow *) window, w, h);
-    gtk_window_set_keep_above ((GtkWindow *) window, aud_get_bool ("gtkui", "always_on_top"));
     gtk_window_set_has_resize_grip ((GtkWindow *) window, FALSE);
-
-    if (aud_get_bool ("gtkui", "save_window_position") && (x != -1 || y != -1))
-        gtk_window_move ((GtkWindow *) window, x, y);
 
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
