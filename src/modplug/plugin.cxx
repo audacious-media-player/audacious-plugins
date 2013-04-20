@@ -4,15 +4,16 @@
  * This source code is public domain.
  */
 
+#include "plugin.h"
 #include "modplugbmp.h"
+
+static ModplugXMMS gModplugXMMS;
 
 extern "C" {
 
-bool_t Init (void)
+void InitSettings (const ModplugSettings * settings)
 {
-    gModplugXMMS.SetInputPlugin (_aud_plugin_self);
-    gModplugXMMS.Init();
-    return TRUE;
+    gModplugXMMS.SetModProps (* settings);
 }
 
 int CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)

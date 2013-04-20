@@ -4,6 +4,8 @@
  * This source code is public domain.
  */
 
+#include "modplugbmp.h"
+
 #include <fstream>
 #include <pthread.h>
 #include <stdint.h>
@@ -14,82 +16,27 @@
 #include <libmodplug/sndfile.h>
 
 extern "C" {
-#include <audacious/misc.h>
+#include <libaudcore/audstrings.h>
 #include <audacious/i18n.h>
 }
 
-#include "modplugbmp.h"
 #include "archive/open.h"
 
 using namespace std;
 
-static bool_t stop_flag = FALSE;
-
 // ModplugXMMS member functions ===============================
 
-// operations ----------------------------------------
 ModplugXMMS::ModplugXMMS()
 {
+    memset (this, 0, sizeof (* this));
     mSoundFile = new CSoundFile;
     pthread_mutex_init (& mutex, 0);
 }
+
 ModplugXMMS::~ModplugXMMS()
 {
     delete mSoundFile;
     pthread_mutex_destroy (& mutex);
-}
-
-static const char * const modplug_defaults[] = {
- "Surround", "TRUE",
- "Oversampling", "TRUE",
- "Megabass", "FALSE",
- "NoiseReduction", "TRUE",
- "VolumeRamp", "TRUE",
- "Reverb", "FALSE",
- "Fastinfo", "TRUE",
- "UseFileName", "FALSE",
- "GrabAmigaMOD", "TRUE",
- "PreAmp", "FALSE",
- "PreAmpLevel", "0",
- "Channels", "2",
- "Bits", "16",
- "Frequency", "44100",
- "ResamplingMode", "3", /* SRCMODE_POLYPHASE */
- "ReverbDepth", "30",
- "ReverbDelay", "100",
- "BassAmount", "40",
- "BassRange", "30",
- "SurroundDepth", "20",
- "SurroundDelay", "20",
- "LoopCount", "0",
- NULL};
-
-void ModplugXMMS::Init(void)
-{
-    aud_config_set_defaults (MODPLUG_CFGID, modplug_defaults);
-
-    mModProps.mSurround = aud_get_bool (MODPLUG_CFGID, "Surround");
-    mModProps.mOversamp = aud_get_bool (MODPLUG_CFGID, "Oversampling");
-    mModProps.mMegabass = aud_get_bool (MODPLUG_CFGID, "Megabass");
-    mModProps.mNoiseReduction = aud_get_bool (MODPLUG_CFGID, "NoiseReduction");
-    mModProps.mVolumeRamp = aud_get_bool (MODPLUG_CFGID, "VolumeRamp");
-    mModProps.mReverb = aud_get_bool (MODPLUG_CFGID, "Reverb");
-    mModProps.mFastinfo = aud_get_bool (MODPLUG_CFGID, "FastInfo");
-    mModProps.mUseFilename = aud_get_bool (MODPLUG_CFGID, "UseFileName");
-    mModProps.mGrabAmigaMOD = aud_get_bool (MODPLUG_CFGID, "GrabAmigaMOD");
-    mModProps.mPreamp = aud_get_bool (MODPLUG_CFGID, "PreAmp");
-    mModProps.mPreampLevel = aud_get_double (MODPLUG_CFGID, "PreAmpLevel");
-    mModProps.mChannels = aud_get_int (MODPLUG_CFGID, "Channels");
-    mModProps.mBits = aud_get_int (MODPLUG_CFGID, "Bits");
-    mModProps.mFrequency = aud_get_int (MODPLUG_CFGID, "Frequency");
-    mModProps.mResamplingMode = aud_get_int (MODPLUG_CFGID, "ResamplineMode");
-    mModProps.mReverbDepth = aud_get_int (MODPLUG_CFGID, "ReverbDepth");
-    mModProps.mReverbDelay = aud_get_int (MODPLUG_CFGID, "ReverbDelay");
-    mModProps.mBassAmount = aud_get_int (MODPLUG_CFGID, "BassAmount");
-    mModProps.mBassRange = aud_get_int (MODPLUG_CFGID, "BassRange");
-    mModProps.mSurroundDepth = aud_get_int (MODPLUG_CFGID, "SurroundDepth");
-    mModProps.mSurroundDelay = aud_get_int (MODPLUG_CFGID, "SurroundDelay");
-    mModProps.mLoopCount = aud_get_int (MODPLUG_CFGID, "LoopCount");
 }
 
 bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
@@ -368,13 +315,8 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
     ipb->set_params(ipb, mSoundFile->GetNumChannels() * 1000, mModProps.mFrequency, mModProps.mChannels);
 
-    if(mModProps.mBits == 16)
-        mFormat = FMT_S16_NE;
-    else
-        mFormat = FMT_U8;
-
-    if (! ipb->output->open_audio (mFormat, mModProps.mFrequency,
-     mModProps.mChannels))
+    int fmt = (mModProps.mBits == 16) ? FMT_S16_NE : FMT_U8;
+    if (! ipb->output->open_audio (fmt, mModProps.mFrequency, mModProps.mChannels))
         return false;
 
     this->PlayLoop(ipb);
@@ -465,7 +407,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
     tuple_set_str(ti, FIELD_QUALITY, NULL, _("sequenced"));
     tuple_set_int(ti, FIELD_LENGTH, NULL, lSoundFile->GetSongTime() * 1000);
 
-    char *tmps2 = MODPLUG_CONVERT(lSoundFile->GetTitle());
+    char *tmps2 = str_to_utf8(lSoundFile->GetTitle());
     // Chop any leading spaces off. They are annoying in the playlist.
     char *tmps3 = tmps2; // Make another pointer so tmps2 can still be free()d
     while ( *tmps3 == ' ' ) tmps3++ ;
@@ -479,25 +421,7 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
     return ti;
 }
 
-void ModplugXMMS::SetInputPlugin(InputPlugin& aInPlugin)
-{
-    mInPlug = &aInPlugin;
-}
-
-const ModplugXMMS::Settings& ModplugXMMS::GetModProps()
-{
-    return mModProps;
-}
-
-const char* ModplugXMMS::Bool2OnOff(bool aValue)
-{
-    if(aValue)
-        return "on";
-    else
-        return "off";
-}
-
-void ModplugXMMS::SetModProps(const Settings& aModProps)
+void ModplugXMMS::SetModProps(const ModplugSettings& aModProps)
 {
     mModProps = aModProps;
 
@@ -548,29 +472,4 @@ void ModplugXMMS::SetModProps(const Settings& aModProps)
     );
     CSoundFile::SetResamplingMode(mModProps.mResamplingMode);
     mPreampFactor = exp(mModProps.mPreampLevel);
-
-    aud_set_bool (MODPLUG_CFGID, "Surround", mModProps.mSurround);
-    aud_set_bool (MODPLUG_CFGID, "Oversampling", mModProps.mOversamp);
-    aud_set_bool (MODPLUG_CFGID, "Megabass", mModProps.mMegabass);
-    aud_set_bool (MODPLUG_CFGID, "NoiseReduction", mModProps.mNoiseReduction);
-    aud_set_bool (MODPLUG_CFGID, "VolumeRamp", mModProps.mVolumeRamp);
-    aud_set_bool (MODPLUG_CFGID, "Reverb", mModProps.mReverb);
-    aud_set_bool (MODPLUG_CFGID, "FastInfo", mModProps.mFastinfo);
-    aud_set_bool (MODPLUG_CFGID, "UseFileName", mModProps.mUseFilename);
-    aud_set_bool (MODPLUG_CFGID, "GrabAmigaMOD", mModProps.mGrabAmigaMOD);
-    aud_set_bool (MODPLUG_CFGID, "PreAmp", mModProps.mPreamp);
-    aud_set_double (MODPLUG_CFGID, "PreAmpLevel", mModProps.mPreampLevel);
-    aud_set_int (MODPLUG_CFGID, "Channels", mModProps.mChannels);
-    aud_set_int (MODPLUG_CFGID, "Bits", mModProps.mBits);
-    aud_set_int (MODPLUG_CFGID, "Frequency", mModProps.mFrequency);
-    aud_set_int (MODPLUG_CFGID, "ResamplineMode", mModProps.mResamplingMode);
-    aud_set_int (MODPLUG_CFGID, "ReverbDepth", mModProps.mReverbDepth);
-    aud_set_int (MODPLUG_CFGID, "ReverbDelay", mModProps.mReverbDelay);
-    aud_set_int (MODPLUG_CFGID, "BassAmount", mModProps.mBassAmount);
-    aud_set_int (MODPLUG_CFGID, "BassRange", mModProps.mBassRange);
-    aud_set_int (MODPLUG_CFGID, "SurroundDepth", mModProps.mSurroundDepth);
-    aud_set_int (MODPLUG_CFGID, "SurroundDelay", mModProps.mSurroundDelay);
-    aud_set_int (MODPLUG_CFGID, "LoopCount", mModProps.mLoopCount);
 }
-
-ModplugXMMS gModplugXMMS;

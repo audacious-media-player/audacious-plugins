@@ -11,9 +11,10 @@
 #include <string>
 
 extern "C" {
-#include <libaudcore/audstrings.h>
-#include "plugin.h"
+#include <audacious/plugin.h>
 }
+
+#include "settings.h"
 
 /* Module files have their magic deep inside the file, at offset 1080; source: http://www.onicos.com/staff/iz/formats/mod.html and information by Michael Doering from UADE */
 #define MOD_MAGIC_PROTRACKER4   "M.K."  // Protracker 4 channel
@@ -39,50 +40,16 @@ extern "C" {
 #define MTM_MAGIC   "\x4D\x54\x4D\x10"
 #define PSM_MAGIC   "PSM "
 
-#define MODPLUG_CFGID    "modplug"
-#define MODPLUG_CONVERT  str_to_utf8
-
 class CSoundFile;
 class Archive;
 
 class ModplugXMMS
 {
 public:
-    struct Settings
-    {
-        bool_t   mSurround;
-        bool_t   mOversamp;
-        bool_t   mMegabass;
-        bool_t   mNoiseReduction;
-        bool_t   mVolumeRamp;
-        bool_t   mReverb;
-        bool_t   mFastinfo;
-        bool_t   mUseFilename;
-        bool_t   mGrabAmigaMOD;
-        bool_t   mPreamp;
-
-        int       mChannels;
-        int       mBits;
-        int       mFrequency;
-        int       mResamplingMode;
-
-        int       mReverbDepth;
-        int       mReverbDelay;
-        int       mBassAmount;
-        int       mBassRange;
-        int       mSurroundDepth;
-        int       mSurroundDelay;
-        float     mPreampLevel;
-        int       mLoopCount;
-    };
-
     ModplugXMMS();
     ~ModplugXMMS();
 
-    void Init();
     bool CanPlayFileFromVFS(const std::string& aFilename, VFSFile *file);
-
-    void CloseConfigureBox();
 
     bool PlayFile(const std::string& aFilename, InputPlayback *data);
     void Stop(InputPlayback *data);
@@ -91,38 +58,26 @@ public:
 
     Tuple* GetSongTuple(const std::string& aFilename);
 
-    void SetInputPlugin(InputPlugin& aInPlugin);
-
-    const Settings& GetModProps();
-    void SetModProps(const Settings& aModProps);
+    void SetModProps(const ModplugSettings& aModProps);
 
 private:
-    InputPlugin*  mInPlug;
-
     unsigned char*  mBuffer;
     uint32_t  mBufSize;
 
     pthread_mutex_t mutex;
     int seek_time;
-    bool          mPaused;
+    bool stop_flag;
 
-    Settings mModProps;
-
-    int mFormat;
+    ModplugSettings mModProps;
 
     uint32_t  mBufTime;     //milliseconds
 
     CSoundFile* mSoundFile;
     Archive*    mArchive;
 
-    char        mModName[100];
-
     float mPreampFactor;
 
     void PlayLoop(InputPlayback *);
-    const char* Bool2OnOff(bool aValue);
 };
-
-extern ModplugXMMS gModplugXMMS;
 
 #endif //included
