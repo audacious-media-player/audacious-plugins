@@ -55,9 +55,9 @@ static ModplugSettings modplug_settings;
 
 static const PreferencesWidget quality_widgets[] = {
     {WIDGET_LABEL, N_("<b>Resolution</b>")},
-    {WIDGET_RADIO_BTN, N_("8 bit"), .cfg_type = VALUE_INT,
+    {WIDGET_RADIO_BTN, N_("8-bit"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mBits, .data = {.radio_btn = {8}}},
-    {WIDGET_RADIO_BTN, N_("16 bit"), .cfg_type = VALUE_INT,
+    {WIDGET_RADIO_BTN, N_("16-bit"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mBits, .data = {.radio_btn = {16}}},
     {WIDGET_LABEL, N_("<b>Channels</b>")},
     {WIDGET_RADIO_BTN, N_("Mono"), .cfg_type = VALUE_INT,
@@ -85,28 +85,28 @@ static const PreferencesWidget quality_widgets[] = {
 };
 
 static PreferencesWidget reverb_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Level"), .cfg_type = VALUE_INT,
+    {WIDGET_SPIN_BTN, N_("Level:"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mReverbDepth, .data = {.spin_btn = {0, 100, 1, "%"}}},
-    {WIDGET_SPIN_BTN, N_("Delay"), .cfg_type = VALUE_INT,
+    {WIDGET_SPIN_BTN, N_("Delay:"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mReverbDelay, .data = {.spin_btn = {40, 200, 1, N_("ms")}}}
 };
 
 static PreferencesWidget bass_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Level"), .cfg_type = VALUE_INT,
+    {WIDGET_SPIN_BTN, N_("Level:"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mBassAmount, .data = {.spin_btn = {0, 100, 1, "%"}}},
-    {WIDGET_SPIN_BTN, N_("Cutoff"), .cfg_type = VALUE_INT,
+    {WIDGET_SPIN_BTN, N_("Cutoff:"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mBassRange, .data = {.spin_btn = {10, 100, 1, N_("Hz")}}}
 };
 
 static PreferencesWidget surround_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Level"), .cfg_type = VALUE_INT,
+    {WIDGET_SPIN_BTN, N_("Level:"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mSurroundDepth, .data = {.spin_btn = {0, 100, 1, "%"}}},
-    {WIDGET_SPIN_BTN, N_("Delay"), .cfg_type = VALUE_INT,
+    {WIDGET_SPIN_BTN, N_("Delay:"), .cfg_type = VALUE_INT,
      .cfg = & modplug_settings.mSurroundDelay, .data = {.spin_btn = {5,  40, 1, N_("ms")}}}
 };
 
 static PreferencesWidget preamp_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Volume"), .cfg_type = VALUE_FLOAT,
+    {WIDGET_SPIN_BTN, N_("Volume:"), .cfg_type = VALUE_FLOAT,
      .cfg = & modplug_settings.mPreampLevel, .data = {.spin_btn = {-3, 3, 0.1}}},
 };
 
@@ -133,7 +133,7 @@ static const PreferencesWidget misc_widgets[] = {
     {WIDGET_LABEL, N_("<b>Miscellaneous</b>")},
     {WIDGET_CHK_BTN, N_("Oversample"), .cfg_type = VALUE_BOOLEAN,
      .cfg = & modplug_settings.mOversamp},
-    {WIDGET_CHK_BTN, N_("Noise Reduction"), .cfg_type = VALUE_BOOLEAN,
+    {WIDGET_CHK_BTN, N_("Noise reduction"), .cfg_type = VALUE_BOOLEAN,
      .cfg = & modplug_settings.mNoiseReduction},
     {WIDGET_CHK_BTN, N_("Play Amiga MODs"), .cfg_type = VALUE_BOOLEAN,
      .cfg = & modplug_settings.mGrabAmigaMOD},
