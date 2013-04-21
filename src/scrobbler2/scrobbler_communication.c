@@ -2,6 +2,7 @@
 //external includes
 #include <stdarg.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <curl/curl.h>
 
 //plugin includes
@@ -631,10 +632,12 @@ gpointer scrobbling_thread (gpointer input_data) {
                 pthread_mutex_unlock(&communication_mutex);
 
                 if (scrobbler_test_connection() == FALSE || !scrobbling_enabled) {
+                    struct timeval curtime;
                     struct timespec timeout;
                     pthread_mutex_lock(&communication_mutex);
-                    clock_gettime(CLOCK_REALTIME, &timeout);
-                    timeout.tv_sec += 7;
+                    gettimeofday(&curtime, NULL);
+                    timeout.tv_sec = curtime.tv_sec + 7;
+                    timeout.tv_nsec = curtime.tv_usec * 1000;
                     pthread_cond_timedwait(&communication_signal, &communication_mutex, &timeout);
                     pthread_mutex_unlock(&communication_mutex);
                 }
