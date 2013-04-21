@@ -271,19 +271,19 @@ bool_t xs_sidplayfp_load(xs_status_t * status, const char * pcFilename)
         int64_t size = 0;
         void *kernal = NULL, *basic = NULL, *chargen = NULL;
 
-        vfs_file_get_contents("file://" DATADIR "sidplayfp/kernal", &kernal, &size);
+        vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/kernal", &kernal, &size);
         if (size != 8192) {
             free(kernal);
             kernal = NULL;
         }
 
-        vfs_file_get_contents("file://" DATADIR "sidplayfp/basic", &basic, &size);
+        vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/basic", &basic, &size);
         if(size != 8192) {
             free(basic);
             basic = NULL;
         }
 
-        vfs_file_get_contents("file://" DATADIR "sidplayfp/chargen", &chargen, &size);
+        vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/chargen", &chargen, &size);
         if(size != 4096) {
             free(chargen);
             chargen = NULL;
@@ -368,7 +368,7 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename)
             continue;
 
         if (got_db == -1)
-            got_db = database.open(DATADIR "sidplayfp/Songlengths.txt");
+            got_db = database.open(SIDDATADIR "sidplayfp/Songlengths.txt");
 
         if (got_db) {
             myTune->selectSong(i + 1);

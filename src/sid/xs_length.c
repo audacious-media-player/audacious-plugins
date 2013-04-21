@@ -129,7 +129,7 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
     /* Get playtimes */
     if (inLine[linePos] != 0) {
         if (inLine[linePos] != '=') {
-            xs_error("'=' expected on column #%zd.\n", linePos);
+            xs_error("'=' expected on column #%d.\n", (int)linePos);
             xs_sldb_node_free(tmnode);
             return NULL;
         } else {
@@ -226,20 +226,20 @@ int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
             for (hashLen = 0; inLine[linePos] && isxdigit(inLine[linePos]); hashLen++, linePos++);
 
             if (hashLen != XS_MD5HASH_LENGTH_CH) {
-                xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%zd!\n",
-                    dbFilename, lineNum);
+                xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n",
+                    dbFilename, (int)lineNum);
             } else {
                 /* Parse and add node to db */
                 if ((tmnode = xs_sldb_read_entry(inLine)) != NULL) {
                     xs_sldb_node_insert(db, tmnode);
                 } else {
-                    xs_error("Invalid entry in SongLengthDB file '%s' line #%zd!\n",
-                        dbFilename, lineNum);
+                    xs_error("Invalid entry in SongLengthDB file '%s' line #%d!\n",
+                        dbFilename, (int)lineNum);
                 }
             }
         } else if ((inLine[linePos] != ';') && (inLine[linePos] != '[') && (inLine[linePos] != 0)) {
-            xs_error("Invalid line in SongLengthDB file '%s' line #%zd\n",
-                dbFilename, lineNum);
+            xs_error("Invalid line in SongLengthDB file '%s' line #%d\n",
+                dbFilename, (int)lineNum);
         }
 
     }
