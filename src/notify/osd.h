@@ -17,9 +17,7 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <libaudcore/core.h>
-#include <libnotify/notify.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
-bool_t osd_init (void);
-void osd_uninit (void);
 void osd_show (const char * title, const char * message, const char * icon, GdkPixbuf * pixbuf);
+void osd_hide (void);

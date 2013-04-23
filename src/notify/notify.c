@@ -2,6 +2,7 @@
  * notify.c
  *
  * Copyright (C) 2010 Maximilian Bogner <max@mbogner.de>
+ * Copyright (C) 2013 John Lindgren and Jean-Alexandre Anglès d'Auriac
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,24 +18,21 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <glib.h>
 #include <gtk/gtk.h>
+
+#include <libnotify/notify.h>
 
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
-#include <audacious/debug.h>
+#include <audacious/preferences.h>
+#include <audacious/misc.h>
 
 #include "event.h"
-#include "osd.h"
-
-gboolean plugin_init (void);
-void plugin_cleanup (void);
 
 static const char plugin_about[] =
- N_("Based on libnotify-aosd by Maximilian Bogner:\n"
-    "http://www.mbogner.de/projects/libnotify-aosd/\n\n"
+ N_("Desktop Notifications Plugin for Audacious\n"
     "Copyright (C) 2010 Maximilian Bogner\n"
-    "Copyright (C) 2011 John Lindgren\n\n"
+    "Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n\n"
     "This plugin is free software: you can redistribute it and/or modify "
     "it under the terms of the GNU General Public License as published by "
     "the Free Software Foundation, either version 3 of the License, or "
@@ -46,37 +44,55 @@ static const char plugin_about[] =
     "You should have received a copy of the GNU General Public License "
     "along with this program.  If not, see <http://www.gnu.org/licenses/>.");
 
+static const char * const notify_defaults[] = {
+ "actions", "TRUE",
+ "resident", "TRUE",
+ NULL
+};
+
+static bool_t plugin_init (void)
+{
+    aud_config_set_defaults ("notify", notify_defaults);
+
+    if (! notify_init ("Audacious"))
+        return FALSE;
+
+    event_init();
+    return TRUE;
+}
+
+static void plugin_cleanup (void)
+{
+    event_uninit ();
+    notify_uninit ();
+}
+
+static void plugin_reinit (void)
+{
+    event_uninit ();
+    event_init ();
+}
+
+static const PreferencesWidget prefs_widgets[] = {
+ {WIDGET_CHK_BTN, N_("Show playback controls"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "notify", .cname = "actions",
+  .callback = plugin_reinit},
+ {WIDGET_CHK_BTN, N_("Always show notification"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "notify", .cname = "resident",
+  .callback = plugin_reinit}
+};
+
+static const PluginPreferences plugin_prefs = {
+ .widgets = prefs_widgets,
+ .n_widgets = G_N_ELEMENTS (prefs_widgets)
+};
+
 AUD_GENERAL_PLUGIN
 (
     .name = N_("Desktop Notifications"),
     .domain = PACKAGE,
     .about_text = plugin_about,
+    .prefs = & plugin_prefs,
     .init = plugin_init,
     .cleanup = plugin_cleanup
 )
-
-short plugin_active = 0;
-
-gboolean plugin_init (void)
-{
-    AUDDBG("started!\n");
-    if(!osd_init()) {
-        AUDDBG("osd_init failed!\n");
-        return FALSE;
-    }
-    event_init();
-
-    plugin_active = 1;
-    return TRUE;
-}
-
-
-void plugin_cleanup() {
-    if(plugin_active) {
-        AUDDBG("started!\n");
-        event_uninit();
-        osd_uninit();
-        plugin_active = 0;
-        AUDDBG("done!\n");
-    }
-}

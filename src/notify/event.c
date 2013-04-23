@@ -2,7 +2,7 @@
  * event.c
  *
  * Copyright (C) 2010 Maximilian Bogner <max@mbogner.de>
- * Copyright (C) 2011 John Lindgren <john.lindgren@tds.net>
+ * Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,49 +18,62 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "event.h"
+
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/playlist.h>
+#include <audacious/misc.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "event.h"
 #include "osd.h"
 
 static char * last_title = NULL, * last_message = NULL; /* pooled */
+static GdkPixbuf * last_pixbuf = NULL;
 
-static void clear (void)
+static void clear_cache (void)
 {
     str_unref (last_title);
     last_title = NULL;
     str_unref (last_message);
     last_message = NULL;
+
+    if (last_pixbuf)
+    {
+        g_object_unref (last_pixbuf);
+        last_pixbuf = NULL;
+    }
 }
 
-static void reshow (void)
+static bool_t get_album_art (void)
 {
-    if (! last_title || ! last_message)
-        return;
+    if (last_pixbuf)
+        return FALSE;
 
-    GdkPixbuf * pb = audgui_pixbuf_request_current ();
-    if (pb)
-        audgui_pixbuf_scale_within (& pb, 96);
+    last_pixbuf = audgui_pixbuf_request_current ();
+    if (! last_pixbuf)
+        return FALSE;
 
-    osd_show (last_title, last_message, "audio-x-generic", pb);
-
-    if (pb)
-        g_object_unref (pb);
+    audgui_pixbuf_scale_within (& last_pixbuf, 96);
+    return TRUE;
 }
 
-static void update (void * unused, void * explicit)
+static void show_stopped (void)
+{
+    osd_show (_("Stopped"), _("Audacious is not playing."), "audacious", NULL);
+}
+
+static void show_playing (void)
+{
+    if (last_title && last_message)
+        osd_show (last_title, last_message, "audio-x-generic", last_pixbuf);
+}
+
+static void playback_update (void)
 {
     if (! aud_drct_get_playing () || ! aud_drct_get_ready ())
-    {
-        if (GPOINTER_TO_INT (explicit))
-            osd_show (_("Stopped"), _("Audacious is not playing."), NULL, NULL);
-
         return;
-    }
 
     int list = aud_playlist_get_playing ();
     int entry = aud_playlist_get_position (list);
@@ -85,7 +98,7 @@ static void update (void * unused, void * explicit)
     str_unref (album);
 
     /* pointer comparison works for pooled strings */
-    if (! GPOINTER_TO_INT (explicit) && title == last_title && message == last_message)
+    if (title == last_title && message == last_message)
     {
         str_unref (title);
         str_unref (message);
@@ -97,27 +110,68 @@ static void update (void * unused, void * explicit)
     str_unref (last_message);
     last_message = message;
 
-    reshow ();
+    get_album_art ();
+    show_playing ();
+}
+
+static void art_ready (void)
+{
+    if (aud_drct_get_playing () && get_album_art ())
+        show_playing ();
+}
+
+static void playback_paused (void)
+{
+    if (aud_get_bool ("notify", "resident"))
+        show_playing ();
+}
+
+static void playback_stopped (void)
+{
+    clear_cache ();
+
+    if (aud_get_bool ("notify", "resident"))
+        show_stopped ();
+}
+
+static void force_show (void)
+{
+    if (aud_drct_get_playing ())
+        show_playing ();
+    else
+        show_stopped ();
 }
 
 void event_init (void)
 {
-    update (NULL, GINT_TO_POINTER (FALSE));
-    hook_associate ("aosd toggle", (HookFunction) update, GINT_TO_POINTER (TRUE));
-    hook_associate ("playback ready", (HookFunction) update, GINT_TO_POINTER (FALSE));
-    hook_associate ("playlist update", (HookFunction) update, GINT_TO_POINTER (FALSE));
-    hook_associate ("current art ready", (HookFunction) reshow, NULL);
-    hook_associate ("playback begin", (HookFunction) clear, NULL);
-    hook_associate ("playback stop", (HookFunction) clear, NULL);
+    if (aud_drct_get_playing ())
+        playback_update ();
+    else
+        playback_stopped ();
+
+    hook_associate ("playback begin", (HookFunction) clear_cache, NULL);
+    hook_associate ("playback ready", (HookFunction) playback_update, NULL);
+    hook_associate ("playlist update", (HookFunction) playback_update, NULL);
+    hook_associate ("current art ready", (HookFunction) art_ready, NULL);
+    hook_associate ("playback pause", (HookFunction) playback_paused, NULL);
+    hook_associate ("playback unpause", (HookFunction) playback_paused, NULL);
+    hook_associate ("playback stop", (HookFunction) playback_stopped, NULL);
+
+    hook_associate ("aosd toggle", (HookFunction) force_show, NULL);
 }
 
 void event_uninit (void)
 {
-    hook_dissociate ("aosd toggle", (HookFunction) update);
-    hook_dissociate ("playback ready", (HookFunction) update);
-    hook_dissociate ("playlist update", (HookFunction) update);
-    hook_dissociate ("current art ready", (HookFunction) reshow);
-    hook_dissociate ("playback begin", (HookFunction) clear);
-    hook_dissociate ("playback stop", (HookFunction) clear);
-    clear ();
+    hook_dissociate ("playback begin", (HookFunction) clear_cache);
+    hook_dissociate ("playback ready", (HookFunction) playback_update);
+    hook_dissociate ("playlist update", (HookFunction) playback_update);
+    hook_dissociate ("current art ready", (HookFunction) art_ready);
+    hook_dissociate ("playback pause", (HookFunction) playback_paused);
+    hook_dissociate ("playback unpause", (HookFunction) playback_paused);
+    hook_dissociate ("playback stop", (HookFunction) playback_stopped);
+
+    hook_dissociate ("aosd toggle", (HookFunction) force_show);
+
+    clear_cache ();
+    osd_hide ();
 }
