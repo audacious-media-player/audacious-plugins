@@ -46,7 +46,7 @@ static const char plugin_about[] =
 
 static const char * const notify_defaults[] = {
  "actions", "TRUE",
- "resident", "TRUE",
+ "resident", "FALSE",
  NULL
 };
 
