@@ -432,11 +432,15 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
 {
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_if_fail (data);
+    gint diff = 0;
+    gboolean last = FALSE;
 
     if (type >= PLAYLIST_UPDATE_STRUCTURE)
     {
-        gint diff = aud_playlist_entry_count (data->list) -
+        diff = aud_playlist_entry_count (data->list) -
          audgui_list_row_count (widget);
+        /* record whether we are updating at the end of playlist */
+        last = at == audgui_list_row_count (widget);
 
         if (diff > 0)
             audgui_list_insert_rows (widget, at, diff);
@@ -452,6 +456,14 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
     audgui_list_update_selection (widget, at, count);
     audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
     update_queue (widget, data);
+
+    /* move playlist scroll bar to bottom only if adding files
+     * through the dialog (inserting at the end of playlist) */
+    if (diff > 0 && last) {
+        GtkTreePath * p = gtk_tree_path_new_from_indices (audgui_list_row_count(widget) - 1, -1);
+        gtk_tree_view_scroll_to_cell((GtkTreeView *) widget, p, NULL, FALSE, 0, 0);
+        gtk_tree_path_free(p);
+    }
 }
 
 void ui_playlist_widget_scroll (GtkWidget * widget)
