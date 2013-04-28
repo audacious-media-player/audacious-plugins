@@ -521,7 +521,7 @@ static void send_now_playing() {
   tab_remover = NULL;
 
   gchar *number = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_TRACK_NUMBER, NULL));
-  gchar *length = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_LENGTH, NULL));
+  gchar *length = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_LENGTH, NULL) / 1000);
   tuple_unref(curr_track);
 
 
