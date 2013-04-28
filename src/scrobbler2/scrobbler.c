@@ -21,6 +21,8 @@
 //shared variables
 bool_t scrobbler_running        = TRUE;
 bool_t migrate_config_requested = FALSE;
+bool_t now_playing_requested    = FALSE;
+Tuple *now_playing_track        = NULL;
 
 pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t communication_signal = PTHREAD_COND_INITIALIZER;
@@ -59,7 +61,7 @@ static void cleanup_current_track(void) {
     }
 }
 
-static gchar *remove_tabs(const char *string) {
+gchar *remove_tabs(const char *string) {
     if (string == NULL)
         return NULL;
 
@@ -72,7 +74,7 @@ static gchar *remove_tabs(const char *string) {
     return result;
 }
 
-gboolean queue_track_to_scrobble (gpointer data) {
+static gboolean queue_track_to_scrobble (gpointer data) {
     AUDDBG("The playing track is going to be ENQUEUED!\n.");
     gchar *tab_remover;
 
@@ -172,6 +174,12 @@ static void ready (void *hook_data, void *user_data) {
         return;
     }
 
+    pthread_mutex_lock(&communication_mutex);
+    now_playing_track = tuple_ref(current_track);
+    now_playing_requested = TRUE;
+    pthread_cond_signal(&communication_signal);
+    pthread_mutex_unlock(&communication_mutex);
+
     time_until_scrobble = (((gint64)duration_seconds)*G_USEC_PER_SEC) / 2;
     if (time_until_scrobble > 4*60*G_USEC_PER_SEC) {
         time_until_scrobble = 4*60*G_USEC_PER_SEC;
@@ -198,7 +206,6 @@ static void paused (void *hook_data, void *user_data) {
     }
 
     pause_started_at = g_get_monotonic_time();
-
 }
 
 static void unpaused (void *hook_data, void *user_data) {

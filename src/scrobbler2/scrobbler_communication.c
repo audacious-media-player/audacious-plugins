@@ -82,7 +82,7 @@ static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
  * At most 2: api_key, session_key.
  * api_sig (checksum) is always included, be it necessary or not
  * Example usage:
- *   send_message_to_lastfm("track.scrobble", 5
+ *   create_message_to_lastfm("track.scrobble", 5
  *        "artist", "Artist Name", "track", "Track Name", "timestamp", time(NULL),
  *        "api_key", SCROBBLER_API_KEY, "sk", session_key);
  *
@@ -167,6 +167,7 @@ static bool_t scrobbler_request_token() {
 
     if (send_message_to_lastfm(tokenmsg) == FALSE) {
         AUDDBG("Could not send token request to last.fm.\n");
+        g_free(tokenmsg);
         return FALSE;
     }
 
@@ -292,7 +293,7 @@ static bool_t scrobbler_test_connection() {
             return FALSE;
         }
     } else {
-        //THIS IS THE ONLY PLACE WHERE SCROBBLING IS SET TO ENABLED
+        //THIS IS THE ONLY PLACE WHERE SCROBBLING IS SET TO ENABLED IN RUN-TIME
         scrobbling_enabled = TRUE;
         AUDDBG("Connection OK. Scrobbling enabled.\n");
         return TRUE;
@@ -487,6 +488,93 @@ static void scrobble_cached_queue() {
     g_free(queuepath);
 }
 
+
+static void send_now_playing() {
+
+  gchar *error_code = NULL;
+  gchar *error_detail = NULL;
+  /*
+   * now_playing_track can be set to something else while we this method is
+   * running. Creating a local variable avoids to get data for different tracks,
+   * while now_playing_track was updated concurrently.
+   */
+  Tuple *curr_track = now_playing_track;
+
+  gchar *tab_remover;
+
+  gchar *artist = tuple_get_str(curr_track, FIELD_ARTIST, NULL);
+  gchar *album = tuple_get_str(curr_track, FIELD_ALBUM, NULL);
+  gchar *title = tuple_get_str(curr_track, FIELD_TITLE, NULL);
+
+  tab_remover = remove_tabs(artist);
+  str_unref(artist);
+  artist = tab_remover;
+
+  tab_remover = remove_tabs(album);
+  str_unref(album);
+  album = tab_remover;
+
+  tab_remover = remove_tabs(title);
+  str_unref(title);
+  title = tab_remover;
+
+  tab_remover = NULL;
+
+  gchar *number = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_TRACK_NUMBER, NULL));
+  gchar *length = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_LENGTH, NULL));
+  tuple_unref(curr_track);
+
+
+  if (artist != NULL && strlen(artist) > 0 &&
+       title != NULL && strlen(title)  > 0) {
+
+    gchar *playingmsg = create_message_to_lastfm("track.updateNowPlaying",
+                                            7,
+                                           "artist", artist,
+                                           "album", (album == NULL ? "" : album),
+                                           "track", title,
+                                           "trackNumber", number,
+                                           "duration", length,
+                                           "api_key", SCROBBLER_API_KEY,
+                                           "sk", session_key);
+    g_free(artist);
+    g_free(album);
+    g_free(title);
+    g_free(number);
+    g_free(length);
+
+    bool_t success = send_message_to_lastfm(playingmsg);
+    g_free(playingmsg);
+    if (success == FALSE) {
+      AUDDBG("Network problems. Could not send \"now playing\" to last.fm\n");
+      scrobbling_enabled = FALSE;
+      return;
+    }
+
+    if (read_scrobble_result(&error_code, &error_detail) == TRUE) {
+      //see scrobble_cached_queue()
+      AUDDBG("NOW PLAYING OK.\n");
+    } else {
+      AUDDBG("NOW PLAYING NOT OK. Error code: %s. Error detail: %s.\n", error_code, error_detail);
+      //From the API: Now Playing requests that fail should not be retried.
+
+      if (g_strcmp0(error_code, "9") == 0) {
+        //Bad Session. Reauth.
+        //We don't really care about any other errors.
+        scrobbling_enabled = FALSE;
+        g_free(session_key);
+        session_key = NULL;
+        aud_set_string("scrobbler", "session_key", "");
+      }
+
+    }
+    g_free(error_code);
+    g_free(error_detail);
+    //We don't care if the now playing was not accepted, no need to read the result from the server.
+
+  }
+}
+
 static void treat_permission_check_request() {
     if (session_key == NULL || strlen(session_key) == 0) {
         perm_result = PERMISSION_DENIED;
@@ -613,7 +701,11 @@ gpointer scrobbling_thread (gpointer input_data) {
             aud_set_string("scrobbler", "session_key", "");
             invalidate_session_requested = FALSE;
 
-        } else if (FALSE) { //TODO: now_playing_requested
+        } else if (now_playing_requested) {
+            if (scrobbling_enabled) {
+              send_now_playing();
+            }
+            now_playing_requested = FALSE;
 
         } else {
             if (scrobbling_enabled) {

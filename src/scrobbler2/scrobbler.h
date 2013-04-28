@@ -56,6 +56,12 @@ extern bool_t invalidate_session_requested;
 //Migrate the settings from the old scrobbler
 extern bool_t migrate_config_requested;
 
+//Send "now playing"
+//set to TRUE on scrobbler.c. Set to FALSE on scrobbler_communication.c
+extern bool_t now_playing_requested;
+//set on scrobbler.c, unset on scrobbler_communication.c
+extern Tuple *now_playing_track;
+
 
 
 
@@ -82,4 +88,6 @@ extern bool_t read_token(char **error_code, char **error_detail);
 extern bool_t read_session_key(char **error_code, char **error_detail);
 extern bool_t read_scrobble_result(char **error_code, char **error_detail);
 
+//scrobbler.c //TODO: refactor this
+extern gchar *remove_tabs(const char *string);
 #endif /* SCROBBLER_H_ */
