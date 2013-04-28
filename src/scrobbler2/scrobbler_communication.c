@@ -687,7 +687,7 @@ gpointer scrobbling_thread (gpointer input_data) {
 
         if (migrate_config_requested) {
           if (treat_migrate_config() == FALSE) {
-            aud_interface_show_error("Audacious is now using an improved version of the Last.fm Scrobbler.\nPlease check the Preferences for the Scrobbler plugin.");
+            aud_interface_show_error(_("Audacious is now using an improved version of the Last.fm Scrobbler.\nPlease check the Preferences for the Scrobbler plugin."));
           }
           aud_set_string("scrobbler", "migrated", "true");
           migrate_config_requested = FALSE;
