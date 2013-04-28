@@ -98,7 +98,7 @@ static gchar *create_message_to_lastfm (char *method_name, int n_args, ...) {
     signable_params[0].argument  = g_strdup(method_name);
 
     size_t msg_size = 2; // First '=' and final '\0'
-    msg_size += strlen("method") + strlen(method_name);
+    msg_size = msg_size + strlen("method") + strlen(method_name);
 
     va_list vl;
     va_start(vl, n_args);
@@ -738,10 +738,8 @@ gpointer scrobbling_thread (gpointer input_data) {
     }//while(scrobbler_running)
 
     //reset all vars to their initial values
-    if (received_data != NULL) {
-        free(received_data);
-        received_data = NULL;
-    }
+    free(received_data);
+    received_data = NULL;
     received_data_size = 0;
 
     curl_easy_cleanup(curlHandle);

@@ -49,6 +49,11 @@ extern pthread_cond_t communication_signal;
 //to avoid reading/writing the log file while other thread is accessing it
 extern pthread_mutex_t log_access_mutex;
 
+/* All "something"_requested variables are set to TRUE by the requester.
+ * The scrobbling thread shall set them to FALSE and invalidate any auxiliary
+ *data (such as now_playing_track).
+ */
+
 //TRUE when a permission check is being requested
 extern bool_t permission_check_requested;
 extern bool_t invalidate_session_requested;
@@ -57,9 +62,7 @@ extern bool_t invalidate_session_requested;
 extern bool_t migrate_config_requested;
 
 //Send "now playing"
-//set to TRUE on scrobbler.c. Set to FALSE on scrobbler_communication.c
 extern bool_t now_playing_requested;
-//set on scrobbler.c, unset on scrobbler_communication.c
 extern Tuple *now_playing_track;
 
 
@@ -68,7 +71,6 @@ extern Tuple *now_playing_track;
 //scrobbler_communication.c
 extern bool_t   scrobbler_communication_init();
 extern gpointer scrobbling_thread(gpointer data);
-extern gpointer checking_thread(gpointer connection_test_result);
 
 
 
