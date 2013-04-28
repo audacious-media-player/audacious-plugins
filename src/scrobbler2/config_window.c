@@ -108,15 +108,14 @@ static void permission_checker (GtkButton *button12, gpointer data) {
 
     //This will make the communication thread check the permission
     //and set the current status on the perm_result enum
-    pthread_mutex_lock(&communication_mutex);
     permission_check_requested = TRUE;
 
     //This is only to accelerate the check.
     //If scrobbles are being made, they are stopped for the request to be done sooner.
     scrobbling_enabled = FALSE;
 
-
-    //Wake the communication thread up in case it's waiting for track plays
+    //Wake up the communication thread in case it's waiting for track plays
+    pthread_mutex_lock(&communication_mutex);
     pthread_cond_signal(&communication_signal);
     pthread_mutex_unlock(&communication_mutex);
 
