@@ -442,4 +442,7 @@ AUD_INPUT_PLUGIN
     .is_our_file_from_vfs = is_our_file_from_vfs,
     .extensions = sndfile_fmts,
     .mseek = file_mseek,
+
+    /* low priority fallback (but before ffaudio) */
+    .priority = 9,
 )

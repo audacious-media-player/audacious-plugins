@@ -690,7 +690,6 @@ AUD_INPUT_PLUGIN
     .extensions = ffaudio_fmts,
     .update_song_tuple = ffaudio_write_tag,
 
-    /* FFMPEG probing takes forever on network files, so try everything else
-     * first. -jlindgren */
+    /* lowest priority fallback */
     .priority = 10,
 )

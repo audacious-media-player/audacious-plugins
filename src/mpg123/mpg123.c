@@ -101,10 +101,28 @@ static bool_t mpg123_probe_for_fd (const char * fname, VFSFile * file)
 	if (! strncmp (fname, "mms://", 6))
 		return FALSE;
 
+	bool_t is_streaming = vfs_is_streaming (file);
+
+	/* Some MP3s begin with enormous ID3 tags, which fill up the whole probe
+	 * buffer and thus hide any MP3 content.  As a workaround, assume that an
+	 * ID3 tag means an MP3 file.  --jlindgren */
+	if (! is_streaming)
+	{
+		char id3buf[3];
+		if (vfs_fread (id3buf, 1, 3, file) != 3)
+			return FALSE;
+
+		if (! memcmp (id3buf, "ID3", 3))
+			return TRUE;
+
+		if (vfs_fseek (file, 0, SEEK_SET) < 0)
+			return FALSE;
+	}
+
 	mpg123_handle * dec = mpg123_new (NULL, NULL);
 	mpg123_param (dec, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 
-	if (vfs_is_streaming (file))
+	if (is_streaming)
 		mpg123_replace_reader_handle (dec, replace_read, replace_lseek_dummy, NULL);
 	else
 		mpg123_replace_reader_handle (dec, replace_read, replace_lseek, NULL);

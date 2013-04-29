@@ -586,6 +586,6 @@ AUD_INPUT_PLUGIN
     .extensions = vorbis_fmts,
     .mimes = mimes,
 
-    /* Vorbis probing is a bit slow; check for MP3 and AAC first. -jlindgren */
+    /* medium-high priority (a little slow) */
     .priority = 2,
 )

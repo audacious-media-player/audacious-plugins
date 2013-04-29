@@ -431,5 +431,8 @@ AUD_INPUT_PLUGIN
     .probe_for_tuple = xs_probe_for_tuple,
 
     .extensions = xs_sid_fmts,          /* File ext assist */
-    .have_subtune = TRUE
+    .have_subtune = TRUE,
+
+    /* medium priority (slow to initialize) */
+    .priority = 5,
 )
