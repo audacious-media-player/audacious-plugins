@@ -203,8 +203,8 @@ static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
     if (bands != last_bands)
     {
         xscale = g_realloc (xscale, sizeof (gfloat) * (bands + 1));
-        for (gint i = 0; i <= bands; i ++)
-            xscale[i] = powf (257, (gfloat) i / bands) - 1;
+        for (int i = 0; i <= bands; i ++)
+            xscale[i] = powf (256, (float) i / bands) - 0.5f;
 
         last_bands = bands;
     }
@@ -231,13 +231,13 @@ static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
 
         /* fudge factor to make the graph have the same overall height as a
            12-band one no matter how many bands there are */
-        sum = sum * bands / 12;
+        sum *= (gfloat) bands / 12;
 
         /* convert to dB */
         gfloat val = 20 * log10f (sum);
 
         /* scale (-db_range, 0.0) to (0.0, int_range) */
-        val = (1.0 + val / db_range) * int_range;
+        val = (1 + val / db_range) * int_range;
 
         graph[i] = CLAMP (val, 0, int_range);
     }

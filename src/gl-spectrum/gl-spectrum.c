@@ -52,7 +52,7 @@ static float s_bars[NUM_BANDS][NUM_BANDS];
 static bool_t init (void)
 {
     for (int i = 0; i <= NUM_BANDS; i ++)
-        logscale[i] = powf (257, (float) i / NUM_BANDS) - 1;
+        logscale[i] = powf (256, (float) i / NUM_BANDS) - 0.5f;
 
     for (int y = 0; y < NUM_BANDS; y ++)
     {

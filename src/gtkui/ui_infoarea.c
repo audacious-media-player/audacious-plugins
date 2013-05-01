@@ -65,13 +65,14 @@ static UIInfoArea * area = NULL;
 
 static void vis_render_cb (const gfloat * freq)
 {
-    const gfloat xscale[VIS_BANDS + 1] = {0.00, 0.59, 1.52, 3.00, 5.36, 9.10,
-     15.0, 24.5, 39.4, 63.2, 101, 161, 256}; /* logarithmic scale - 1 */
+    /* xscale[i] = pow (256, i / VIS_BANDS) - 0.5; */
+    const gfloat xscale[VIS_BANDS + 1] = {0.5, 1.09, 2.02, 3.5, 5.85, 9.58,
+     15.5, 24.9, 39.82, 63.5, 101.09, 160.77, 255.5};
 
     for (gint i = 0; i < VIS_BANDS; i ++)
     {
-        gint a = ceil (xscale[i]);
-        gint b = floor (xscale[i + 1]);
+        gint a = ceilf (xscale[i]);
+        gint b = floorf (xscale[i + 1]);
         gfloat n = 0;
 
         if (b < a)
@@ -87,7 +88,7 @@ static void vis_render_cb (const gfloat * freq)
         }
 
         /* 40 dB range */
-        gint x = 20 * log10 (n * 100);
+        gint x = 40 + 20 * log10f (n);
         x = CLAMP (x, 0, 40);
 
         vis.bars[i] -= MAX (0, VIS_FALLOFF - vis.delay[i]);

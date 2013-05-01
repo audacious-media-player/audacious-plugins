@@ -41,24 +41,23 @@ static gint width, height, bands;
 static gint bars[MAX_BANDS + 1];
 static gint delay[MAX_BANDS + 1];
 
-static void calculate_bands(gint bands_)
+static void calculate_xscale (void)
 {
-    gint i;
-
-    for (i = 0; i < bands_; i++)
-        xscale[i] = powf(257., ((gfloat) i / (gfloat) bands_)) - 1;
+    for (gint i = 0; i <= bands; i ++)
+        xscale[i] = powf (256, (gfloat) i / bands) - 0.5f;
 }
 
 static void render_cb (gfloat * freq)
 {
     g_return_if_fail (spect_widget);
 
-    calculate_bands(bands);
+    if (! bands)
+        return;
 
     for (gint i = 0; i < bands; i ++)
     {
-        gint a = ceil (xscale[i]);
-        gint b = floor (xscale[i + 1]);
+        gint a = ceilf (xscale[i]);
+        gint b = floorf (xscale[i + 1]);
         gfloat n = 0;
 
         if (b < a)
@@ -73,8 +72,12 @@ static void render_cb (gfloat * freq)
                 n += freq[b] * (xscale[i + 1] - b);
         }
 
+        /* fudge factor to make the graph have the same overall height as a
+           12-band one no matter how many bands there are */
+        n *= (gfloat) bands / 12;
+
         /* 40 dB range */
-        gint x = 20 * log10 (n * 100);
+        gint x = 40 + 20 * log10f (n);
         x = CLAMP (x, 0, 40);
 
         bars[i] -= MAX (0, VIS_FALLOFF - delay[i]);
@@ -248,7 +251,7 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 
     bands = width / 10;
     bands = CLAMP(bands, 12, MAX_BANDS);
-    calculate_bands(bands);
+    calculate_xscale ();
 
     return TRUE;
 }
