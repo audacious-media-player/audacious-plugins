@@ -52,7 +52,7 @@ static float s_bars[NUM_BANDS][NUM_BANDS];
 static bool_t init (void)
 {
     for (int i = 0; i <= NUM_BANDS; i ++)
-	logscale[i] = powf (257, (float) i / NUM_BANDS) - 1;
+        logscale[i] = powf (257, (float) i / NUM_BANDS) - 1;
 
     for (int y = 0; y < NUM_BANDS; y ++)
     {
@@ -60,7 +60,7 @@ static bool_t init (void)
 
         for (int x = 0; x < NUM_BANDS; x ++)
         {
-	    float xf = (float) x / (NUM_BANDS - 1);
+            float xf = (float) x / (NUM_BANDS - 1);
 
             colors[x][y][0] = (1 - xf) * (1 - yf);
             colors[x][y][1] = xf;
@@ -119,7 +119,7 @@ static void render_freq (const float * freq)
         s_anglespeed = -s_anglespeed;
 
     if (s_widget)
-	gtk_widget_queue_draw (s_widget);
+        gtk_widget_queue_draw (s_widget);
 }
 
 static void clear (void)
@@ -127,7 +127,7 @@ static void clear (void)
     memset (s_bars, 0, sizeof s_bars);
 
     if (s_widget)
-	gtk_widget_queue_draw (s_widget);
+        gtk_widget_queue_draw (s_widget);
 }
 
 static void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
@@ -190,7 +190,7 @@ static void draw_bars (void)
         {
             draw_bar (1.6f - BAR_SPACING * j, z,
              s_bars[(s_pos + i) % NUM_BANDS][j] * 1.6,
-	     colors[i][j][0], colors[i][j][1], colors[i][j][2]);
+             colors[i][j][0], colors[i][j][1], colors[i][j][2]);
         }
     }
 
@@ -243,7 +243,7 @@ static bool_t draw_cb (GtkWidget * widget, cairo_t * cr)
 static /* GtkWidget * */ void * get_widget (void)
 {
     if (s_widget)
-	return s_widget;
+        return s_widget;
 
     s_widget = gtk_drawing_area_new ();
 
