@@ -221,22 +221,22 @@ static GtkActionEntry action_entries_playlist[] = {
     { "playlist delete", GTK_STOCK_DELETE , N_("Delete Playlist"), "<Shift>D",
       N_("Delete Playlist"), G_CALLBACK(action_playlist_delete) },
 
-    {"playlist load", GTK_STOCK_OPEN, N_("Import Playlist"), "O",
-     N_("Loads a playlist file into the selected playlist."),
-     (GCallback) audgui_import_playlist },
+    { "playlist load", GTK_STOCK_OPEN, N_("Import Playlist"), "O",
+      N_("Loads a playlist file into the selected playlist."),
+      (GCallback) audgui_import_playlist },
 
-    {"playlist save", GTK_STOCK_SAVE, N_("Export Playlist"), "<Shift>S",
-     N_("Saves the selected playlist."), (GCallback) audgui_export_playlist },
+    { "playlist save", GTK_STOCK_SAVE, N_("Export Playlist"), "<Shift>S",
+      N_("Saves the selected playlist."), (GCallback) audgui_export_playlist },
 
     { "playlist refresh", GTK_STOCK_REFRESH, N_("Refresh List"), "F5",
-     N_("Refreshes metadata associated with a playlist entry."),
-     G_CALLBACK(action_playlist_refresh_list) },
+      N_("Refreshes metadata associated with a playlist entry."),
+      G_CALLBACK(action_playlist_refresh_list) },
 
-    {"playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P", NULL,
-     (GCallback) audgui_playlist_manager },
+    { "playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P", NULL,
+      (GCallback) audgui_playlist_manager },
 
-    {"queue manager", AUD_STOCK_QUEUETOGGLE, N_("Queue Manager"), "<Ctrl>U", NULL,
-     (GCallback) audgui_queue_manager_show}
+    { "queue manager", AUD_STOCK_QUEUETOGGLE, N_("Queue Manager"), "<Ctrl>U", NULL,
+      (GCallback) audgui_queue_manager_show }
 };
 
 static GtkActionEntry action_entries_view[] = {
@@ -498,183 +498,183 @@ static GtkActionEntry action_entries_equalizer[] = {
 static GtkActionGroup *
 ui_manager_new_action_group( const gchar * group_name )
 {
-  GtkActionGroup *group = gtk_action_group_new( group_name );
-  gtk_action_group_set_translation_domain (group, PACKAGE);
-  return group;
+    GtkActionGroup *group = gtk_action_group_new( group_name );
+    gtk_action_group_set_translation_domain (group, PACKAGE);
+    return group;
 }
 
 void
 ui_manager_init ( void )
 {
-  /* toggle actions */
-  toggleaction_group_others = ui_manager_new_action_group("toggleaction_others");
-  gtk_action_group_add_toggle_actions(
-    toggleaction_group_others , toggleaction_entries_others ,
-    G_N_ELEMENTS(toggleaction_entries_others) , NULL );
+    /* toggle actions */
+    toggleaction_group_others = ui_manager_new_action_group("toggleaction_others");
+    gtk_action_group_add_toggle_actions(
+      toggleaction_group_others , toggleaction_entries_others ,
+      G_N_ELEMENTS(toggleaction_entries_others) , NULL );
 
-  /* radio actions */
-  radioaction_group_anamode = ui_manager_new_action_group("radioaction_anamode");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_anamode , radioaction_entries_anamode ,
-    G_N_ELEMENTS(radioaction_entries_anamode) , 0 , G_CALLBACK(action_anamode) , NULL );
+    /* radio actions */
+    radioaction_group_anamode = ui_manager_new_action_group("radioaction_anamode");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_anamode , radioaction_entries_anamode ,
+      G_N_ELEMENTS(radioaction_entries_anamode) , 0 , G_CALLBACK(action_anamode) , NULL );
 
-  radioaction_group_anatype = ui_manager_new_action_group("radioaction_anatype");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_anatype , radioaction_entries_anatype ,
-    G_N_ELEMENTS(radioaction_entries_anatype) , 0 , G_CALLBACK(action_anatype) , NULL );
+    radioaction_group_anatype = ui_manager_new_action_group("radioaction_anatype");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_anatype , radioaction_entries_anatype ,
+      G_N_ELEMENTS(radioaction_entries_anatype) , 0 , G_CALLBACK(action_anatype) , NULL );
 
-  radioaction_group_scomode = ui_manager_new_action_group("radioaction_scomode");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_scomode , radioaction_entries_scomode ,
-    G_N_ELEMENTS(radioaction_entries_scomode) , 0 , G_CALLBACK(action_scomode) , NULL );
+    radioaction_group_scomode = ui_manager_new_action_group("radioaction_scomode");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_scomode , radioaction_entries_scomode ,
+      G_N_ELEMENTS(radioaction_entries_scomode) , 0 , G_CALLBACK(action_scomode) , NULL );
 
-  radioaction_group_vprmode = ui_manager_new_action_group("radioaction_vprmode");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_vprmode , radioaction_entries_vprmode ,
-    G_N_ELEMENTS(radioaction_entries_vprmode) , 0 , G_CALLBACK(action_vprmode) , NULL );
+    radioaction_group_vprmode = ui_manager_new_action_group("radioaction_vprmode");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_vprmode , radioaction_entries_vprmode ,
+      G_N_ELEMENTS(radioaction_entries_vprmode) , 0 , G_CALLBACK(action_vprmode) , NULL );
 
-  radioaction_group_wshmode = ui_manager_new_action_group("radioaction_wshmode");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_wshmode , radioaction_entries_wshmode ,
-    G_N_ELEMENTS(radioaction_entries_wshmode) , 0 , G_CALLBACK(action_wshmode) , NULL );
+    radioaction_group_wshmode = ui_manager_new_action_group("radioaction_wshmode");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_wshmode , radioaction_entries_wshmode ,
+      G_N_ELEMENTS(radioaction_entries_wshmode) , 0 , G_CALLBACK(action_wshmode) , NULL );
 
-  radioaction_group_anafoff = ui_manager_new_action_group("radioaction_anafoff");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_anafoff , radioaction_entries_anafoff ,
-    G_N_ELEMENTS(radioaction_entries_anafoff) , 0 , G_CALLBACK(action_anafoff) , NULL );
+    radioaction_group_anafoff = ui_manager_new_action_group("radioaction_anafoff");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_anafoff , radioaction_entries_anafoff ,
+      G_N_ELEMENTS(radioaction_entries_anafoff) , 0 , G_CALLBACK(action_anafoff) , NULL );
 
-  radioaction_group_peafoff = ui_manager_new_action_group("radioaction_peafoff");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_peafoff , radioaction_entries_peafoff ,
-    G_N_ELEMENTS(radioaction_entries_peafoff) , 0 , G_CALLBACK(action_peafoff) , NULL );
+    radioaction_group_peafoff = ui_manager_new_action_group("radioaction_peafoff");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_peafoff , radioaction_entries_peafoff ,
+      G_N_ELEMENTS(radioaction_entries_peafoff) , 0 , G_CALLBACK(action_peafoff) , NULL );
 
-  radioaction_group_vismode = ui_manager_new_action_group("radioaction_vismode");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_vismode , radioaction_entries_vismode ,
-    G_N_ELEMENTS(radioaction_entries_vismode) , 0 , G_CALLBACK(action_vismode) , NULL );
+    radioaction_group_vismode = ui_manager_new_action_group("radioaction_vismode");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_vismode , radioaction_entries_vismode ,
+      G_N_ELEMENTS(radioaction_entries_vismode) , 0 , G_CALLBACK(action_vismode) , NULL );
 
-  radioaction_group_viewtime = ui_manager_new_action_group("radioaction_viewtime");
-  gtk_action_group_add_radio_actions(
-    radioaction_group_viewtime , radioaction_entries_viewtime ,
-    G_N_ELEMENTS(radioaction_entries_viewtime) , 0 , G_CALLBACK(action_viewtime) , NULL );
+    radioaction_group_viewtime = ui_manager_new_action_group("radioaction_viewtime");
+    gtk_action_group_add_radio_actions(
+      radioaction_group_viewtime , radioaction_entries_viewtime ,
+      G_N_ELEMENTS(radioaction_entries_viewtime) , 0 , G_CALLBACK(action_viewtime) , NULL );
 
-  /* normal actions */
-  action_group_playback = ui_manager_new_action_group("action_playback");
+    /* normal actions */
+    action_group_playback = ui_manager_new_action_group("action_playback");
     gtk_action_group_add_actions(
-    action_group_playback , action_entries_playback ,
-    G_N_ELEMENTS(action_entries_playback) , NULL );
+      action_group_playback , action_entries_playback ,
+      G_N_ELEMENTS(action_entries_playback) , NULL );
 
-  action_group_playlist = ui_manager_new_action_group("action_playlist");
+    action_group_playlist = ui_manager_new_action_group("action_playlist");
     gtk_action_group_add_actions(
-    action_group_playlist , action_entries_playlist ,
-    G_N_ELEMENTS(action_entries_playlist) , NULL );
+      action_group_playlist , action_entries_playlist ,
+      G_N_ELEMENTS(action_entries_playlist) , NULL );
 
-  action_group_visualization = ui_manager_new_action_group("action_visualization");
+    action_group_visualization = ui_manager_new_action_group("action_visualization");
     gtk_action_group_add_actions(
-    action_group_visualization , action_entries_visualization ,
-    G_N_ELEMENTS(action_entries_visualization) , NULL );
+      action_group_visualization , action_entries_visualization ,
+      G_N_ELEMENTS(action_entries_visualization) , NULL );
 
-  action_group_view = ui_manager_new_action_group("action_view");
+    action_group_view = ui_manager_new_action_group("action_view");
     gtk_action_group_add_actions(
-    action_group_view , action_entries_view ,
-    G_N_ELEMENTS(action_entries_view) , NULL );
+      action_group_view , action_entries_view ,
+      G_N_ELEMENTS(action_entries_view) , NULL );
 
-  action_group_others = ui_manager_new_action_group("action_others");
+    action_group_others = ui_manager_new_action_group("action_others");
     gtk_action_group_add_actions(
-    action_group_others , action_entries_others ,
-    G_N_ELEMENTS(action_entries_others) , NULL );
+      action_group_others , action_entries_others ,
+      G_N_ELEMENTS(action_entries_others) , NULL );
 
-  action_group_playlist_add = ui_manager_new_action_group("action_playlist_add");
-  gtk_action_group_add_actions(
-    action_group_playlist_add, action_entries_playlist_add,
-    G_N_ELEMENTS(action_entries_playlist_add), NULL );
+    action_group_playlist_add = ui_manager_new_action_group("action_playlist_add");
+    gtk_action_group_add_actions(
+      action_group_playlist_add, action_entries_playlist_add,
+      G_N_ELEMENTS(action_entries_playlist_add), NULL );
 
-  action_group_playlist_select = ui_manager_new_action_group("action_playlist_select");
-  gtk_action_group_add_actions(
-    action_group_playlist_select, action_entries_playlist_select,
-    G_N_ELEMENTS(action_entries_playlist_select), NULL );
+    action_group_playlist_select = ui_manager_new_action_group("action_playlist_select");
+    gtk_action_group_add_actions(
+      action_group_playlist_select, action_entries_playlist_select,
+      G_N_ELEMENTS(action_entries_playlist_select), NULL );
 
-  action_group_playlist_delete = ui_manager_new_action_group("action_playlist_delete");
-  gtk_action_group_add_actions(
-    action_group_playlist_delete, action_entries_playlist_delete,
-    G_N_ELEMENTS(action_entries_playlist_delete), NULL );
+    action_group_playlist_delete = ui_manager_new_action_group("action_playlist_delete");
+    gtk_action_group_add_actions(
+      action_group_playlist_delete, action_entries_playlist_delete,
+      G_N_ELEMENTS(action_entries_playlist_delete), NULL );
 
-  action_group_playlist_sort = ui_manager_new_action_group("action_playlist_sort");
-  gtk_action_group_add_actions(
-    action_group_playlist_sort, action_entries_playlist_sort,
-    G_N_ELEMENTS(action_entries_playlist_sort), NULL );
+    action_group_playlist_sort = ui_manager_new_action_group("action_playlist_sort");
+    gtk_action_group_add_actions(
+      action_group_playlist_sort, action_entries_playlist_sort,
+      G_N_ELEMENTS(action_entries_playlist_sort), NULL );
 
-  action_group_equalizer = ui_manager_new_action_group("action_equalizer");
-  gtk_action_group_add_actions(
-    action_group_equalizer, action_entries_equalizer,
-    G_N_ELEMENTS(action_entries_equalizer), NULL);
+    action_group_equalizer = ui_manager_new_action_group("action_equalizer");
+    gtk_action_group_add_actions(
+      action_group_equalizer, action_entries_equalizer,
+      G_N_ELEMENTS(action_entries_equalizer), NULL);
 
-  /* ui */
-  ui_manager = gtk_ui_manager_new();
-  gtk_ui_manager_insert_action_group( ui_manager , toggleaction_group_others , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anamode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anatype , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_scomode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vprmode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_wshmode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anafoff , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_peafoff , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vismode , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_viewtime , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_playback , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_visualization , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_view , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_others , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_add , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_select , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_delete , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_sort , 0 );
-  gtk_ui_manager_insert_action_group( ui_manager , action_group_equalizer , 0 );
+    /* ui */
+    ui_manager = gtk_ui_manager_new();
+    gtk_ui_manager_insert_action_group( ui_manager , toggleaction_group_others , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anamode , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anatype , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_scomode , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vprmode , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_wshmode , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anafoff , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_peafoff , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vismode , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_viewtime , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_playback , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_visualization , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_view , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_others , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_add , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_select , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_delete , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_sort , 0 );
+    gtk_ui_manager_insert_action_group( ui_manager , action_group_equalizer , 0 );
 
-  return;
+    return;
 }
 
 void
 ui_manager_create_menus ( void )
 {
-  const gchar * data = aud_get_path (AUD_PATH_DATA_DIR);
-  gchar * path;
-  GError *gerr = NULL;
+    const gchar * data = aud_get_path (AUD_PATH_DATA_DIR);
+    gchar * path;
+    GError *gerr = NULL;
 
-  /* attach xml menu definitions */
-  path = g_strdup_printf ("%s/ui/mainwin.ui", data);
-  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
-  g_free (path);
+    /* attach xml menu definitions */
+    path = g_strdup_printf ("%s/ui/mainwin.ui", data);
+    gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
+    g_free (path);
 
-  if ( gerr != NULL )
-  {
-    g_critical( "Error creating UI<ui/mainwin.ui>: %s" , gerr->message );
-    g_error_free( gerr );
-    return;
-  }
+    if ( gerr != NULL )
+    {
+        g_critical( "Error creating UI<ui/mainwin.ui>: %s" , gerr->message );
+        g_error_free( gerr );
+        return;
+    }
 
-  path = g_strdup_printf ("%s/ui/playlist.ui", data);
-  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
-  g_free (path);
+    path = g_strdup_printf ("%s/ui/playlist.ui", data);
+    gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
+    g_free (path);
 
-  if ( gerr != NULL )
-  {
-    g_critical( "Error creating UI<ui/playlist.ui>: %s" , gerr->message );
-    g_error_free( gerr );
-    return;
-  }
+    if ( gerr != NULL )
+    {
+        g_critical( "Error creating UI<ui/playlist.ui>: %s" , gerr->message );
+        g_error_free( gerr );
+        return;
+    }
 
-  path = g_strdup_printf ("%s/ui/equalizer.ui", data);
-  gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
-  g_free (path);
+    path = g_strdup_printf ("%s/ui/equalizer.ui", data);
+    gtk_ui_manager_add_ui_from_file (ui_manager, path, & gerr);
+    g_free (path);
 
-  if ( gerr != NULL )
-  {
-    g_critical( "Error creating UI<ui/equalizer.ui>: %s" , gerr->message );
-    g_error_free( gerr );
-    return;
-  }
+    if ( gerr != NULL )
+    {
+        g_critical( "Error creating UI<ui/equalizer.ui>: %s" , gerr->message );
+        g_error_free( gerr );
+        return;
+    }
 }
 
 static GtkWidget * menus[UI_MENUS] = {NULL, NULL, NULL, NULL, NULL, NULL,
@@ -752,18 +752,18 @@ static void destroy_menus (void)
 GtkAccelGroup *
 ui_manager_get_accel_group ( void )
 {
-  return gtk_ui_manager_get_accel_group( ui_manager );
+    return gtk_ui_manager_get_accel_group( ui_manager );
 }
 
 static GtkWidget * ui_manager_get_popup_menu (GtkUIManager * self, const gchar *
  path)
 {
-  GtkWidget *menu_item = gtk_ui_manager_get_widget( self , path );
+    GtkWidget *menu_item = gtk_ui_manager_get_widget( self , path );
 
-  if (GTK_IS_MENU_ITEM(menu_item))
-    return gtk_menu_item_get_submenu(GTK_MENU_ITEM(menu_item));
-  else
-    return NULL;
+    if (GTK_IS_MENU_ITEM(menu_item))
+        return gtk_menu_item_get_submenu(GTK_MENU_ITEM(menu_item));
+    else
+        return NULL;
 }
 
 static void get_monitor_geometry (GdkScreen * screen, gint x, gint y,
