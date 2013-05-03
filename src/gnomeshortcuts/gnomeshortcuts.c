@@ -226,8 +226,9 @@ void gnome_remote_init ()
     dbus_g_thread_init();
 
     bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-    if ((bus == NULL) || error) {
+    if ((bus == NULL) && error) {
         g_warning ("Error connecting to DBus: %s", error->message);
+        g_error_free (error);
     } else {
         media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
          "org.gnome.SettingsDaemon",
