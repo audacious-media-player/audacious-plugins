@@ -1066,6 +1066,24 @@ if test "x$enable_lyricwiki" != "xno"; then
     )
 fi
 
+dnl OpenGL Spectrum Analyzer
+dnl ========================
+
+AC_ARG_ENABLE(glspectrum,
+ [AS_HELP_STRING([--disable-glspectrum], [disable OpenGL Spectrum Analyzer (default=enabled)])],
+ [enable_glspectrum=$enableval], [enable_glspectrum=auto])
+
+have_glspectrum=no
+if test "x$enable_glspectrum" != "xno"; then
+    AC_CHECK_LIB([GL], [glXChooseVisual],
+        [have_glspectrum=yes
+         VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum"],
+        [if test "x$enable_glspectrum" = "xyes"; then
+            AC_MSG_ERROR([Cannot find GLX development files, but compilation of OpenGL Spectrum Analyzer has been explicitly requested; please install GLX dev files and run configure again])
+         fi]
+    )
+fi
+
 dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
@@ -1207,6 +1225,7 @@ echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             yes"
 echo "  Cairo Spectrum Analyzer:                yes"
+echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
 echo
 echo "  Transport"
 echo "  ---------"
