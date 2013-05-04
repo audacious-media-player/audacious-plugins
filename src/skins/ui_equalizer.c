@@ -24,6 +24,7 @@
  */
 
 #include <string.h>
+#include <strings.h>
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>

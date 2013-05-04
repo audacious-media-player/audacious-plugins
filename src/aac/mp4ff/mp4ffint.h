@@ -125,13 +125,6 @@ extern "C" {
 #define ATOM_SINF 24
 #define ATOM_SCHI 25
 
-#if !(defined(_WIN32) || defined(_WIN32_WCE))
-#define stricmp strcasecmp
-#else
-#define stricmp _stricmp
-#define strdup _strdup
-#endif
-
 /* file callback structure */
 typedef struct
 {

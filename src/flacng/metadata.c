@@ -22,6 +22,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>

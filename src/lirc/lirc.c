@@ -33,6 +33,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <strings.h>
 
 #include <glib.h>
 #include <lirc/lirc_client.h>

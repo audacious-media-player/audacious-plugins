@@ -79,6 +79,7 @@ The following data is optional and may be omitted:
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <strings.h>
 
 #include <glib.h>
 #include <zlib.h>

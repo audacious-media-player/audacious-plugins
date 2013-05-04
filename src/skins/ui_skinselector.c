@@ -23,6 +23,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
