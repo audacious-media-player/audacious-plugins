@@ -433,20 +433,23 @@ void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    if (type >= PLAYLIST_UPDATE_STRUCTURE)
+    if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
-        gint diff = aud_playlist_entry_count (data->list) -
-         audgui_list_row_count (widget);
+        gint old_entries = audgui_list_row_count (widget);
+        gint entries = aud_playlist_entry_count (data->list);
 
-        if (diff > 0)
-            audgui_list_insert_rows (widget, at, diff);
-        else if (diff < 0)
-            audgui_list_delete_rows (widget, at, -diff);
+        audgui_list_delete_rows (widget, at, old_entries - (entries - count));
+        audgui_list_insert_rows (widget, at, count);
+
+        /* scroll to end of playlist if entries were added there
+           (but not if a newly added entry is playing) */
+        if (entries > old_entries && at + count == entries &&
+         aud_playlist_get_focus (data->list) < old_entries)
+            aud_playlist_set_focus (data->list, entries - 1);
 
         ui_playlist_widget_scroll (widget);
     }
-
-    if (type >= PLAYLIST_UPDATE_METADATA)
+    else if (type == PLAYLIST_UPDATE_METADATA)
         audgui_list_update_rows (widget, at, count);
 
     audgui_list_update_selection (widget, at, count);
