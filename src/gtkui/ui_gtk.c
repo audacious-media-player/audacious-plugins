@@ -330,8 +330,11 @@ static gboolean time_counter_cb (void)
 
 static void do_seek (gint time)
 {
+    gint length = aud_drct_get_length ();
+    time = CLAMP (time, 0, length);
+
     set_slider (time);
-    set_time_label (time, aud_drct_get_length ());
+    set_time_label (time, length);
     aud_drct_seek (time);
 
     // Trick: Unschedule and then schedule the update function.  This gives the
