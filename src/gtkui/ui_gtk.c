@@ -350,12 +350,15 @@ static void do_seek (gint time)
 static gboolean ui_slider_change_value_cb (GtkRange * range,
  GtkScrollType scroll, gdouble value)
 {
-    set_time_label (value, aud_drct_get_length ());
+    gint length = aud_drct_get_length ();
+    gint time = CLAMP ((gint) value, 0, length);
+
+    set_time_label (time, length);
 
     if (slider_is_moving)
-        slider_seek_time = value;
-    else if ((gint) value != slider_seek_time)  // avoid seeking twice
-        do_seek (value);
+        slider_seek_time = time;
+    else if (time != slider_seek_time)  // avoid seeking twice
+        do_seek (time);
 
     return FALSE;
 }
