@@ -401,7 +401,7 @@ GET_FORMAT:
 	pthread_mutex_unlock (& mutex);
 
 	int64_t frames_played = 0;
-	int64_t frames_total = (stop_time - start_time) * ctx.rate / 1000;
+	int64_t frames_total = (int64_t) (stop_time - start_time) * ctx.rate / 1000;
 
 	while (1)
 	{
@@ -415,8 +415,7 @@ GET_FORMAT:
 
 		if (ctx.seek >= 0)
 		{
-			if (mpg123_seek (ctx.decoder, (int64_t) ctx.seek * ctx.rate / 1000,
-			 SEEK_SET) < 0)
+			if (mpg123_seek (ctx.decoder, (int64_t) ctx.seek * ctx.rate / 1000, SEEK_SET) < 0)
 			{
 				fprintf (stderr, "mpg123 error in %s: %s\n", filename,
 				 mpg123_strerror (ctx.decoder));
@@ -424,7 +423,7 @@ GET_FORMAT:
 			else
 			{
 				data->output->flush (ctx.seek);
-				frames_played = (ctx.seek - start_time) * ctx.rate / 1000;
+				frames_played = (int64_t) (ctx.seek - start_time) * ctx.rate / 1000;
 				outbuf_size = 0;
 			}
 
