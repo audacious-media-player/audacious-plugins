@@ -412,8 +412,12 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     gint i, stream_id, errcount;
     gboolean codec_opened = FALSE;
     gint out_fmt;
+    gboolean planar;
     gboolean seekable;
     gboolean error = FALSE;
+
+    void *buf = NULL;
+    gint bufsize = 0;
 
     AVFormatContext * ic = open_input_file (filename, file);
     if (! ic)
@@ -446,11 +450,18 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     codec_opened = TRUE;
 
-    switch (c->sample_fmt) {
-        case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; break;
-        case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; break;
-        case AV_SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; break;
-        case AV_SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; break;
+    switch (c->sample_fmt)
+    {
+        case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; planar = FALSE; break;
+        case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; planar = FALSE; break;
+        case AV_SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; planar = FALSE; break;
+        case AV_SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; planar = FALSE; break;
+
+        case AV_SAMPLE_FMT_U8P: out_fmt = FMT_U8; planar = TRUE; break;
+        case AV_SAMPLE_FMT_S16P: out_fmt = FMT_S16_NE; planar = TRUE; break;
+        case AV_SAMPLE_FMT_S32P: out_fmt = FMT_S32_NE; planar = TRUE; break;
+        case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = TRUE; break;
+
     default:
         fprintf (stderr, "ffaudio: Unsupported audio format %d\n", (int) c->sample_fmt);
         goto error_exit;
@@ -566,8 +577,23 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
             if (! decoded)
                 continue;
 
-            playback->output->write_audio (frame->data[0], FMT_SIZEOF (out_fmt)
-             * c->channels * frame->nb_samples);
+            gint size = FMT_SIZEOF (out_fmt) * c->channels * frame->nb_samples;
+
+            if (planar)
+            {
+                if (bufsize < size)
+                {
+                    buf = realloc (buf, size);
+                    bufsize = size;
+                }
+
+                audio_interlace ((const void * *) frame->data, out_fmt,
+                 c->channels, buf, frame->nb_samples);
+                playback->output->write_audio (buf, size);
+            }
+            else
+                playback->output->write_audio (frame->data[0], size);
+
             av_free (frame);
         }
 
@@ -576,9 +602,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     }
 
 error_exit:
-
-    AUDDBG("decode loop finished, shutting down\n");
-
     stop_flag = TRUE;
 
     if (pkt.data)
@@ -588,7 +611,8 @@ error_exit:
     if (ic != NULL)
         close_input_file(ic);
 
-    AUDDBG("exiting thread\n");
+    free (buf);
+
     return ! error;
 }
 
