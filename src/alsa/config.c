@@ -286,6 +286,12 @@ static void mixer_element_list_fill (void)
     get_mixer_elements (alsa_config_mixer, mixer_element_found);
 }
 
+static void mixer_element_list_refill (void)
+{
+    gtk_list_store_clear (mixer_element_list);
+    get_mixer_elements (alsa_config_mixer, mixer_element_found);
+}
+
 static void guess_mixer_element (void)
 {
     mixer_element_list_fill ();
@@ -464,8 +470,7 @@ static void mixer_changed (GtkComboBox * combo, void * unused)
     free (alsa_config_mixer);
     alsa_config_mixer = strdup (new);
 
-    gtk_list_store_clear (mixer_element_list);
-    mixer_element_list_fill ();
+    mixer_element_list_refill ();
     guess_mixer_element ();
     combo_select_by_text (mixer_element_combo, mixer_element_list,
      alsa_config_mixer_element);
