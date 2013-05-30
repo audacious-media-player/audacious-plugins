@@ -236,6 +236,9 @@ static int32_t mp4ff_parse_tag(mp4ff_t *f, const uint8_t parent_atom_type, const
     {
         uint64_t destpos;
         subsize = mp4ff_atom_read_header(f, &atom_type, &header_size);
+        if (!subsize)
+            break;
+
         destpos = mp4ff_position(f)+subsize-header_size;
         if (!done)
         {
