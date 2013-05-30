@@ -77,7 +77,7 @@ extern "C" {
 #define ATOM_USER 155
 #define ATOM_KEY  156
 
-#define ATOM_ALBUM_ARTIST	157
+#define ATOM_ALBUM_ARTIST   157
 #define ATOM_CONTENTGROUP   158
 #define ATOM_LYRICS         159
 #define ATOM_DESCRIPTION    160

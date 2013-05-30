@@ -44,7 +44,7 @@ int32_t mp4ff_read_data(mp4ff_t *f, void *data, uint32_t size)
 
 int32_t mp4ff_truncate(mp4ff_t * f)
 {
-	return f->stream->truncate(f->stream->user_data);
+    return f->stream->truncate(f->stream->user_data);
 }
 
 int32_t mp4ff_write_data(mp4ff_t *f, void *data, uint32_t size)
@@ -151,20 +151,20 @@ uint16_t mp4ff_read_int16(mp4ff_t *f)
 
 char * mp4ff_read_string(mp4ff_t * f,uint32_t length)
 {
-	char * str = (char*)malloc(length + 1);
-	if (str!=0)
-	{
-		if ((uint32_t)mp4ff_read_data(f,str,length)!=length)
-		{
-			free(str);
-			str = 0;
-		}
-		else
-		{
-			str[length] = 0;
-		}
-	}
-	return str;
+    char * str = (char*)malloc(length + 1);
+    if (str!=0)
+    {
+        if ((uint32_t)mp4ff_read_data(f,str,length)!=length)
+        {
+            free(str);
+            str = 0;
+        }
+        else
+        {
+            str[length] = 0;
+        }
+    }
+    return str;
 }
 
 uint8_t mp4ff_read_char(mp4ff_t *f)

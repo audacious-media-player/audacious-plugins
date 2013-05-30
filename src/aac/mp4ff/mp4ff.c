@@ -82,10 +82,10 @@ void mp4ff_close(mp4ff_t *ff)
                 free(ff->track[i]->stco_chunk_offset);
             if (ff->track[i]->decoderConfig)
                 free(ff->track[i]->decoderConfig);
-			if (ff->track[i]->ctts_sample_count)
-				free(ff->track[i]->ctts_sample_count);
-			if (ff->track[i]->ctts_sample_offset)
-				free(ff->track[i]->ctts_sample_offset);
+            if (ff->track[i]->ctts_sample_count)
+                free(ff->track[i]->ctts_sample_count);
+            if (ff->track[i]->ctts_sample_offset)
+                free(ff->track[i]->ctts_sample_offset);
 #ifdef ITUNES_DRM
             if (ff->track[i]->p_drms)
                 drms_free(ff->track[i]->p_drms);
@@ -112,29 +112,29 @@ void mp4ff_track_add(mp4ff_t *f)
 
 static int need_parse_when_meta_only(uint8_t atom_type)
 {
-	switch(atom_type)
-	{
-	case ATOM_EDTS:
-//	case ATOM_MDIA:
-//	case ATOM_MINF:
-	case ATOM_DRMS:
-	case ATOM_SINF:
-	case ATOM_SCHI:
-//	case ATOM_STBL:
-//	case ATOM_STSD:
-	case ATOM_STTS:
-	case ATOM_STSZ:
-	case ATOM_STZ2:
-	case ATOM_STCO:
-	case ATOM_STSC:
-//	case ATOM_CTTS:
-	case ATOM_FRMA:
-	case ATOM_IVIV:
-	case ATOM_PRIV:
-		return 0;
-	default:
-		return 1;
-	}
+    switch(atom_type)
+    {
+    case ATOM_EDTS:
+//  case ATOM_MDIA:
+//  case ATOM_MINF:
+    case ATOM_DRMS:
+    case ATOM_SINF:
+    case ATOM_SCHI:
+//  case ATOM_STBL:
+//  case ATOM_STSD:
+    case ATOM_STTS:
+    case ATOM_STSZ:
+    case ATOM_STZ2:
+    case ATOM_STCO:
+    case ATOM_STSC:
+//  case ATOM_CTTS:
+    case ATOM_FRMA:
+    case ATOM_IVIV:
+    case ATOM_PRIV:
+        return 0;
+    default:
+        return 1;
+    }
 }
 
 /* parse atoms that are sub atoms of other atoms */
@@ -163,10 +163,10 @@ int32_t parse_sub_atoms(mp4ff_t *f, const uint64_t total_size,int meta_only)
         }
 
         /* parse subatoms */
-		if (meta_only && !need_parse_when_meta_only(atom_type))
-		{
-			mp4ff_set_position(f, mp4ff_position(f)+size-header_size);
-		} else if (atom_type < SUBATOMIC)
+        if (meta_only && !need_parse_when_meta_only(atom_type))
+        {
+            mp4ff_set_position(f, mp4ff_position(f)+size-header_size);
+        } else if (atom_type < SUBATOMIC)
         {
             parse_sub_atoms(f, size-header_size,meta_only);
         } else {
@@ -206,21 +206,21 @@ int32_t parse_atoms(mp4ff_t *f,int meta_only)
         }
 
         /* parse subatoms */
-		if (meta_only && !need_parse_when_meta_only(atom_type))
-		{
-			if(mp4ff_set_position(f, mp4ff_position(f) + size - header_size) != 0)
-				break;
-		}
-		else if (atom_type < SUBATOMIC)
-		{
-			parse_sub_atoms(f, size-header_size,meta_only);
-		}
-		else
-		{
-			/* skip this atom */
-			if(mp4ff_set_position(f, mp4ff_position(f) + size - header_size) != 0)
-				break;
-		}
+        if (meta_only && !need_parse_when_meta_only(atom_type))
+        {
+            if(mp4ff_set_position(f, mp4ff_position(f) + size - header_size) != 0)
+                break;
+        }
+        else if (atom_type < SUBATOMIC)
+        {
+            parse_sub_atoms(f, size-header_size,meta_only);
+        }
+        else
+        {
+            /* skip this atom */
+            if(mp4ff_set_position(f, mp4ff_position(f) + size - header_size) != 0)
+                break;
+        }
     }
 
     return 0;
@@ -256,7 +256,7 @@ int32_t mp4ff_get_decoder_config(const mp4ff_t *f, const int32_t track,
 
 int32_t mp4ff_get_track_type(const mp4ff_t *f, const int track)
 {
-	return f->track[track]->type;
+    return f->track[track]->type;
 }
 
 int32_t mp4ff_total_tracks(const mp4ff_t *f)
@@ -271,73 +271,73 @@ int32_t mp4ff_time_scale(const mp4ff_t *f, const int32_t track)
 
 uint32_t mp4ff_get_avg_bitrate(const mp4ff_t *f, const int32_t track)
 {
-	return f->track[track]->avgBitrate;
+    return f->track[track]->avgBitrate;
 }
 
 uint32_t mp4ff_get_max_bitrate(const mp4ff_t *f, const int32_t track)
 {
-	return f->track[track]->maxBitrate;
+    return f->track[track]->maxBitrate;
 }
 
 int64_t mp4ff_get_track_duration(const mp4ff_t *f, const int32_t track)
 {
-	return f->track[track]->duration;
+    return f->track[track]->duration;
 }
 
 int64_t mp4ff_get_track_duration_use_offsets(const mp4ff_t *f, const int32_t track)
 {
-	int64_t duration = mp4ff_get_track_duration(f,track);
-	if (duration!=-1)
-	{
-		int64_t offset = mp4ff_get_sample_offset(f,track,0);
-		if (offset > duration) duration = 0;
-		else duration -= offset;
-	}
-	return duration;
+    int64_t duration = mp4ff_get_track_duration(f,track);
+    if (duration!=-1)
+    {
+        int64_t offset = mp4ff_get_sample_offset(f,track,0);
+        if (offset > duration) duration = 0;
+        else duration -= offset;
+    }
+    return duration;
 }
 
 int32_t mp4ff_num_samples(const mp4ff_t *f, const int32_t track)
 {
-	int32_t i;
-	int32_t total = 0;
+    int32_t i;
+    int32_t total = 0;
 
-	if (track < 0)
-		return -1;
+    if (track < 0)
+        return -1;
 
-	for (i = 0; i < f->track[track]->stts_entry_count; i++)
-	{
-		total += f->track[track]->stts_sample_count[i];
-	}
+    for (i = 0; i < f->track[track]->stts_entry_count; i++)
+    {
+        total += f->track[track]->stts_sample_count[i];
+    }
 
-	return total;
+    return total;
 }
 
 uint32_t mp4ff_get_sample_rate(const mp4ff_t *f, const int32_t track)
 {
-	return f->track[track]->sampleRate;
+    return f->track[track]->sampleRate;
 }
 
 uint32_t mp4ff_get_channel_count(const mp4ff_t * f,const int32_t track)
 {
-	return f->track[track]->channelCount;
+    return f->track[track]->channelCount;
 }
 
 uint32_t mp4ff_get_audio_type(const mp4ff_t * f,const int32_t track)
 {
-	return f->track[track]->audioType;
+    return f->track[track]->audioType;
 }
 
 int32_t mp4ff_get_sample_duration_use_offsets(const mp4ff_t *f, const int32_t track, const int32_t sample)
 {
-	int32_t d,o;
-	d = mp4ff_get_sample_duration(f,track,sample);
-	if (d!=-1)
-	{
-		o = mp4ff_get_sample_offset(f,track,sample);
-		if (o>d) d = 0;
-		else d -= o;
-	}
-	return d;
+    int32_t d,o;
+    d = mp4ff_get_sample_duration(f,track,sample);
+    if (d!=-1)
+    {
+        o = mp4ff_get_sample_offset(f,track,sample);
+        if (o>d) d = 0;
+        else d -= o;
+    }
+    return d;
 }
 
 int32_t mp4ff_get_sample_duration(const mp4ff_t *f, const int32_t track, const int32_t sample)
@@ -346,10 +346,10 @@ int32_t mp4ff_get_sample_duration(const mp4ff_t *f, const int32_t track, const i
 
     for (i = 0; i < f->track[track]->stts_entry_count; i++)
     {
-		int32_t delta = f->track[track]->stts_sample_count[i];
-		if (sample < co + delta)
-			return f->track[track]->stts_sample_delta[i];
-		co += delta;
+        int32_t delta = f->track[track]->stts_sample_count[i];
+        if (sample < co + delta)
+            return f->track[track]->stts_sample_delta[i];
+        co += delta;
     }
     return (int32_t)(-1);
 }
@@ -357,21 +357,21 @@ int32_t mp4ff_get_sample_duration(const mp4ff_t *f, const int32_t track, const i
 int64_t mp4ff_get_sample_position(const mp4ff_t *f, const int32_t track, const int32_t sample)
 {
     int32_t i, co = 0;
-	int64_t acc = 0;
+    int64_t acc = 0;
 
     for (i = 0; i < f->track[track]->stts_entry_count; i++)
     {
-		int32_t delta = f->track[track]->stts_sample_count[i];
-		if (sample < co + delta)
-		{
-			acc += f->track[track]->stts_sample_delta[i] * (sample - co);
-			return acc;
-		}
-		else
-		{
-			acc += f->track[track]->stts_sample_delta[i] * delta;
-		}
-		co += delta;
+        int32_t delta = f->track[track]->stts_sample_count[i];
+        if (sample < co + delta)
+        {
+            acc += f->track[track]->stts_sample_delta[i] * (sample - co);
+            return acc;
+        }
+        else
+        {
+            acc += f->track[track]->stts_sample_delta[i] * delta;
+        }
+        co += delta;
     }
     return (int64_t)(-1);
 }
@@ -382,43 +382,43 @@ int32_t mp4ff_get_sample_offset(const mp4ff_t *f, const int32_t track, const int
 
     for (i = 0; i < f->track[track]->ctts_entry_count; i++)
     {
-		int32_t delta = f->track[track]->ctts_sample_count[i];
-		if (sample < co + delta)
-			return f->track[track]->ctts_sample_offset[i];
-		co += delta;
+        int32_t delta = f->track[track]->ctts_sample_count[i];
+        if (sample < co + delta)
+            return f->track[track]->ctts_sample_offset[i];
+        co += delta;
     }
     return 0;
 }
 
 int32_t mp4ff_find_sample(const mp4ff_t *f, const int32_t track, const int64_t offset,int32_t * toskip)
 {
-	int32_t i, co = 0;
-	int64_t offset_total = 0;
-	mp4ff_track_t * p_track = f->track[track];
+    int32_t i, co = 0;
+    int64_t offset_total = 0;
+    mp4ff_track_t * p_track = f->track[track];
 
-	for (i = 0; i < p_track->stts_entry_count; i++)
-	{
-		int32_t sample_count = p_track->stts_sample_count[i];
-		int32_t sample_delta = p_track->stts_sample_delta[i];
-		int64_t offset_delta = (int64_t)sample_delta * (int64_t)sample_count;
-		if (offset < offset_total + offset_delta)
-		{
-			int64_t offset_fromstts = offset - offset_total;
-			if (toskip) *toskip = (int32_t)(offset_fromstts % sample_delta);
-			return co + (int32_t)(offset_fromstts / sample_delta);
-		}
-		else
-		{
-			offset_total += offset_delta;
-		}
-		co += sample_count;
-	}
-	return (int32_t)(-1);
+    for (i = 0; i < p_track->stts_entry_count; i++)
+    {
+        int32_t sample_count = p_track->stts_sample_count[i];
+        int32_t sample_delta = p_track->stts_sample_delta[i];
+        int64_t offset_delta = (int64_t)sample_delta * (int64_t)sample_count;
+        if (offset < offset_total + offset_delta)
+        {
+            int64_t offset_fromstts = offset - offset_total;
+            if (toskip) *toskip = (int32_t)(offset_fromstts % sample_delta);
+            return co + (int32_t)(offset_fromstts / sample_delta);
+        }
+        else
+        {
+            offset_total += offset_delta;
+        }
+        co += sample_count;
+    }
+    return (int32_t)(-1);
 }
 
 int32_t mp4ff_find_sample_use_offsets(const mp4ff_t *f, const int32_t track, const int64_t offset,int32_t * toskip)
 {
-	return mp4ff_find_sample(f,track,offset + mp4ff_get_sample_offset(f,track,0),toskip);
+    return mp4ff_find_sample(f,track,offset + mp4ff_get_sample_offset(f,track,0),toskip);
 }
 
 int32_t mp4ff_read_sample(mp4ff_t *f, const int32_t track, const int32_t sample,
@@ -428,7 +428,7 @@ int32_t mp4ff_read_sample(mp4ff_t *f, const int32_t track, const int32_t sample,
 
     *bytes = mp4ff_audio_frame_size(f, track, sample);
 
-	if (*bytes==0) return 0;
+    if (*bytes==0) return 0;
 
     *audio_buffer = (uint8_t*)malloc(*bytes);
 
@@ -437,11 +437,11 @@ int32_t mp4ff_read_sample(mp4ff_t *f, const int32_t track, const int32_t sample,
     result = mp4ff_read_data(f, *audio_buffer, *bytes);
 
     if (!result)
-	{
-		free(*audio_buffer);
-		*audio_buffer = 0;
+    {
+        free(*audio_buffer);
+        *audio_buffer = 0;
         return 0;
-	}
+    }
 
 #ifdef ITUNES_DRM
     if (f->track[track]->p_drms != NULL)
@@ -457,10 +457,10 @@ int32_t mp4ff_read_sample(mp4ff_t *f, const int32_t track, const int32_t sample,
 int32_t mp4ff_read_sample_v2(mp4ff_t *f, const int track, const int sample,unsigned char *buffer)
 {
     int32_t result = 0;
-	int32_t size = mp4ff_audio_frame_size(f,track,sample);
-	if (size<=0) return 0;
-	mp4ff_set_sample_position(f, track, sample);
-	result = mp4ff_read_data(f,buffer,size);
+    int32_t size = mp4ff_audio_frame_size(f,track,sample);
+    if (size<=0) return 0;
+    mp4ff_set_sample_position(f, track, sample);
+    result = mp4ff_read_data(f,buffer,size);
 
 #ifdef ITUNES_DRM
     if (f->track[track]->p_drms != NULL)
@@ -474,7 +474,7 @@ int32_t mp4ff_read_sample_v2(mp4ff_t *f, const int track, const int sample,unsig
 
 int32_t mp4ff_read_sample_getsize(mp4ff_t *f, const int track, const int sample)
 {
-	int32_t temp = mp4ff_audio_frame_size(f, track, sample);
-	if (temp<0) temp = 0;
-	return temp;
+    int32_t temp = mp4ff_audio_frame_size(f, track, sample);
+    if (temp<0) temp = 0;
+    return temp;
 }

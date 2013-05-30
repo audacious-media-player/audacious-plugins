@@ -78,8 +78,8 @@ static int32_t mp4ff_tag_set_field(mp4ff_metadata_t *tags, const char *item, con
     {
         if (!strcasecmp(tags->tags[i].item, item))
         {
-			free(tags->tags[i].value);
-			tags->tags[i].value = strdup(value);
+            free(tags->tags[i].value);
+            tags->tags[i].value = strdup(value);
             return 1;
         }
     }
@@ -137,32 +137,32 @@ static const char* ID3v1GenreList[] = {
 
 uint32_t mp4ff_meta_genre_to_index(const char * genrestr)
 {
-	unsigned n;
-	for(n=0;n<sizeof(ID3v1GenreList)/sizeof(ID3v1GenreList[0]);n++)
-	{
-		if (!strcasecmp(genrestr,ID3v1GenreList[n])) return n+1;
-	}
-	return 0;
+    unsigned n;
+    for(n=0;n<sizeof(ID3v1GenreList)/sizeof(ID3v1GenreList[0]);n++)
+    {
+        if (!strcasecmp(genrestr,ID3v1GenreList[n])) return n+1;
+    }
+    return 0;
 }
 
 const char * mp4ff_meta_index_to_genre(uint32_t idx)
 {
-	if (idx>0 && idx<=sizeof(ID3v1GenreList)/sizeof(ID3v1GenreList[0]))
-	{
-		return ID3v1GenreList[idx-1];
-	}
-	else
-	{
-		return 0;
-	}
+    if (idx>0 && idx<=sizeof(ID3v1GenreList)/sizeof(ID3v1GenreList[0]))
+    {
+        return ID3v1GenreList[idx-1];
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 /* GCC4 says: unused!
 static int32_t TrackToString(char** str, const uint16_t track, const uint16_t totalTracks)
 {
-	char temp[32];
+    char temp[32];
     sprintf(temp, "%.5u of %.5u", track, totalTracks);
-	*str = strdup(temp);
+    *str = strdup(temp);
     return 0;
 }
 */
@@ -173,7 +173,7 @@ static int32_t mp4ff_set_metadata_name(mp4ff_t *f, const uint8_t atom_type, char
         "unknown", "title", "artist", "writer", "album",
         "date", "tool", "comment", "genre", "track",
         "disc", "compilation", "genre", "tempo", "cover",
-		"album_artist", "contentgroup", "lyrics", "description",
+        "album_artist", "contentgroup", "lyrics", "description",
         "network", "show", "episodename",
         "sorttitle", "sortalbum", "sortartist", "sortalbumartist",
         "sortwriter", "sortshow",
@@ -198,7 +198,7 @@ static int32_t mp4ff_set_metadata_name(mp4ff_t *f, const uint8_t atom_type, char
     case ATOM_GENRE2: tag_idx = 12; break;
     case ATOM_TEMPO: tag_idx = 13; break;
     case ATOM_COVER: tag_idx = 14; break;
-	case ATOM_ALBUM_ARTIST: tag_idx = 15; break;
+    case ATOM_ALBUM_ARTIST: tag_idx = 15; break;
     case ATOM_CONTENTGROUP: tag_idx = 16; break;
     case ATOM_LYRICS: tag_idx = 17; break;
     case ATOM_DESCRIPTION: tag_idx = 18; break;
@@ -217,7 +217,7 @@ static int32_t mp4ff_set_metadata_name(mp4ff_t *f, const uint8_t atom_type, char
     default: tag_idx = 0; break;
     }
 
-	*name = strdup(tag_names[tag_idx]);
+    *name = strdup(tag_names[tag_idx]);
 
     return 0;
 }
@@ -228,103 +228,103 @@ static int32_t mp4ff_parse_tag(mp4ff_t *f, const uint8_t parent_atom_type, const
     uint8_t header_size = 0;
     uint64_t subsize, sumsize = 0;
     char * name = NULL;
-	char * data = NULL;
-	uint32_t done = 0;
+    char * data = NULL;
+    uint32_t done = 0;
 
 
     while (sumsize < size)
     {
-		uint64_t destpos;
+        uint64_t destpos;
         subsize = mp4ff_atom_read_header(f, &atom_type, &header_size);
-		destpos = mp4ff_position(f)+subsize-header_size;
-		if (!done)
-		{
-			if (atom_type == ATOM_DATA)
-			{
-				mp4ff_read_char(f); /* version */
-				mp4ff_read_int24(f); /* flags */
-				mp4ff_read_int32(f); /* reserved */
+        destpos = mp4ff_position(f)+subsize-header_size;
+        if (!done)
+        {
+            if (atom_type == ATOM_DATA)
+            {
+                mp4ff_read_char(f); /* version */
+                mp4ff_read_int24(f); /* flags */
+                mp4ff_read_int32(f); /* reserved */
 
-				/* some need special attention */
-				if (parent_atom_type == ATOM_GENRE2 || parent_atom_type == ATOM_TEMPO)
-				{
-					if (subsize - header_size >= 8 + 2)
-					{
-						uint16_t val = mp4ff_read_int16(f);
+                /* some need special attention */
+                if (parent_atom_type == ATOM_GENRE2 || parent_atom_type == ATOM_TEMPO)
+                {
+                    if (subsize - header_size >= 8 + 2)
+                    {
+                        uint16_t val = mp4ff_read_int16(f);
 
-						if (parent_atom_type == ATOM_TEMPO)
-						{
-							char temp[16];
-							sprintf(temp, "%.5u BPM", val);
-							mp4ff_tag_add_field(&(f->tags), "tempo", temp);
-						}
-						else
-						{
-							const char * temp = mp4ff_meta_index_to_genre(val);
-							if (temp)
-							{
-								mp4ff_tag_add_field(&(f->tags), "genre", temp);
-							}
-						}
-						done = 1;
-					}
-				} else if (parent_atom_type == ATOM_TRACK || parent_atom_type == ATOM_DISC) {
-					/* if (!done && subsize - header_size >= 8 + 8) */
-					/* modified by AJS */
-					if ( !done && (subsize - header_size) >=
-						(sizeof(char) + sizeof(uint8_t)*3 + sizeof(uint32_t) + /* version + flags + reserved */
-						+ sizeof(uint16_t) /* leading uint16_t */
-						+ sizeof(uint16_t) /* track / disc */
-						+ sizeof(uint16_t)) /* totaltracks / totaldiscs */
-						)
-					{
-						uint16_t index,total;
-						char temp[32];
-						mp4ff_read_int16(f);
-						index = mp4ff_read_int16(f);
-						total = mp4ff_read_int16(f);
-  						/* modified by AJS */
-						/* mp4ff_read_int16(f); */
+                        if (parent_atom_type == ATOM_TEMPO)
+                        {
+                            char temp[16];
+                            sprintf(temp, "%.5u BPM", val);
+                            mp4ff_tag_add_field(&(f->tags), "tempo", temp);
+                        }
+                        else
+                        {
+                            const char * temp = mp4ff_meta_index_to_genre(val);
+                            if (temp)
+                            {
+                                mp4ff_tag_add_field(&(f->tags), "genre", temp);
+                            }
+                        }
+                        done = 1;
+                    }
+                } else if (parent_atom_type == ATOM_TRACK || parent_atom_type == ATOM_DISC) {
+                    /* if (!done && subsize - header_size >= 8 + 8) */
+                    /* modified by AJS */
+                    if ( !done && (subsize - header_size) >=
+                        (sizeof(char) + sizeof(uint8_t)*3 + sizeof(uint32_t) + /* version + flags + reserved */
+                        + sizeof(uint16_t) /* leading uint16_t */
+                        + sizeof(uint16_t) /* track / disc */
+                        + sizeof(uint16_t)) /* totaltracks / totaldiscs */
+                        )
+                    {
+                        uint16_t index,total;
+                        char temp[32];
+                        mp4ff_read_int16(f);
+                        index = mp4ff_read_int16(f);
+                        total = mp4ff_read_int16(f);
+                        /* modified by AJS */
+                        /* mp4ff_read_int16(f); */
 
-						sprintf(temp,"%d",index);
-						mp4ff_tag_add_field(&(f->tags), parent_atom_type == ATOM_TRACK ? "track" : "disc", temp);
-						if (total>0)
-						{
-							sprintf(temp,"%d",total);
-							mp4ff_tag_add_field(&(f->tags), parent_atom_type == ATOM_TRACK ? "totaltracks" : "totaldiscs", temp);
-						}
-						done = 1;
-					}
-				} else
-				{
-					if (data) {free(data);data = NULL;}
-					data = mp4ff_read_string(f,(uint32_t)(subsize-(header_size+8)));
-				}
-			} else if (atom_type == ATOM_NAME) {
-				if (!done)
-				{
-					mp4ff_read_char(f); /* version */
-					mp4ff_read_int24(f); /* flags */
-					if (name) free(name);
-					name = mp4ff_read_string(f,(uint32_t)(subsize-(header_size+4)));
-				}
-			}
-			mp4ff_set_position(f, destpos);
-			sumsize += subsize;
-		}
+                        sprintf(temp,"%d",index);
+                        mp4ff_tag_add_field(&(f->tags), parent_atom_type == ATOM_TRACK ? "track" : "disc", temp);
+                        if (total>0)
+                        {
+                            sprintf(temp,"%d",total);
+                            mp4ff_tag_add_field(&(f->tags), parent_atom_type == ATOM_TRACK ? "totaltracks" : "totaldiscs", temp);
+                        }
+                        done = 1;
+                    }
+                } else
+                {
+                    if (data) {free(data);data = NULL;}
+                    data = mp4ff_read_string(f,(uint32_t)(subsize-(header_size+8)));
+                }
+            } else if (atom_type == ATOM_NAME) {
+                if (!done)
+                {
+                    mp4ff_read_char(f); /* version */
+                    mp4ff_read_int24(f); /* flags */
+                    if (name) free(name);
+                    name = mp4ff_read_string(f,(uint32_t)(subsize-(header_size+4)));
+                }
+            }
+            mp4ff_set_position(f, destpos);
+            sumsize += subsize;
+        }
     }
 
-	if (data)
-	{
-		if (!done)
-		{
-			if (name == NULL) mp4ff_set_metadata_name(f, parent_atom_type, &name);
-			if (name) mp4ff_tag_add_field(&(f->tags), name, data);
-		}
+    if (data)
+    {
+        if (!done)
+        {
+            if (name == NULL) mp4ff_set_metadata_name(f, parent_atom_type, &name);
+            if (name) mp4ff_tag_add_field(&(f->tags), name, data);
+        }
 
-		free(data);
-	}
-	if (name) free(name);
+        free(data);
+    }
+    if (name) free(name);
     return 1;
 }
 
@@ -356,7 +356,7 @@ static int32_t mp4ff_meta_find_by_name(const mp4ff_t *f, const char *item, char 
     {
         if (!strcasecmp(f->tags.tags[i].item, item))
         {
-			*value = strdup(f->tags.tags[i].value);
+            *value = strdup(f->tags.tags[i].value);
             return 1;
         }
     }
@@ -381,9 +381,9 @@ int32_t mp4ff_meta_get_by_index(const mp4ff_t *f, uint32_t index,
         *value = NULL;
         return 0;
     } else {
-		*item = strdup(f->tags.tags[index].item);
-		*value = strdup(f->tags.tags[index].value);
-		return 1;
+        *item = strdup(f->tags.tags[index].item);
+        *value = strdup(f->tags.tags[index].value);
+        return 1;
     }
 }
 

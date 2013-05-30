@@ -47,7 +47,7 @@ typedef struct
     uint32_t (*read)(void *user_data, void *buffer, uint32_t length);
     uint32_t (*write)(void *udata, void *buffer, uint32_t length);
     uint32_t (*seek)(void *user_data, uint64_t position);
-	uint32_t (*truncate)(void *user_data);
+    uint32_t (*truncate)(void *user_data);
     void *user_data;
 } mp4ff_callback_t;
 
