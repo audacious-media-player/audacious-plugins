@@ -3,35 +3,37 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# 		ChoSeongWoo <syn333@gmail.com>, 2008.
-#       Jaegeum Choe <baedaron@hananet.net>, 2001.
-#       Man-Yong Lee <yong@linuxkorea.co.kr>, 2000.
-#       Sang-Jin Hwang <accel@accellinux.org>, 1999.
-# 		Seong-ho Cho <darkcircle.0426@gmail.com>, 2012.
-# 	Seong-ho Cho <darkcircle.0426@gmail.com>, 2012.
+# 		ChoSeongWoo <syn333@gmail.com>, 2008
+# Darkcircle <darkcircle.0426@gmail.com>, 2013
+#       Jaegeum Choe <baedaron@hananet.net>, 2001
+#       Man-Yong Lee <yong@linuxkorea.co.kr>, 2000
+#       Sang-Jin Hwang <accel@accellinux.org>, 1999
+# Darkcircle <darkcircle.0426@gmail.com>, 2012
+# Darkcircle <darkcircle.0426@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-04-07 20:27+0200\n"
-"PO-Revision-Date: 2013-03-27 18:08+0000\n"
+"POT-Creation-Date: 2013-05-31 19:01+0200\n"
+"PO-Revision-Date: 2013-05-04 12:38+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: Korean\n"
+"Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
+"language/ko/)\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:462
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
 msgid "mono"
 msgstr "모노"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:461
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
 msgid "stereo"
 msgstr "스테레오"
 
-#: src/aac/libmp4.c:439 src/skins/ui_main.c:461
+#: src/aac/libmp4.c:439 src/skins/ui_main.c:429
 msgid "surround"
 msgstr "서라운드"
 
@@ -39,8 +41,8 @@ msgstr "서라운드"
 msgid "AAC Decoder"
 msgstr "AAC 디코더"
 
-#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:465
-#: src/psf/plugin.c:125 src/vtx/vtx.c:68 src/xsf/plugin.c:85
+#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
+#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr "순차"
 
@@ -246,7 +248,7 @@ msgid "Day"
 msgstr "요일"
 
 #: src/alarm/interface.c:280 src/bs2b/plugin.c:177
-#: src/skins/ui_equalizer.c:1107 src/skins/ui_manager.c:456
+#: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:456
 #: src/skins/ui_manager.c:477
 msgid "Default"
 msgstr "기본값"
@@ -259,7 +261,7 @@ msgstr "일"
 msgid "Fading"
 msgstr "점진적 음량 변화 시간"
 
-#: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:396
+#: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:397
 msgid "seconds"
 msgstr "초"
 
@@ -323,23 +325,23 @@ msgstr "기본 PCM 장치"
 msgid "Default mixer device"
 msgstr "기본 음량 조절기 장치"
 
-#: src/alsa/config.c:422
+#: src/alsa/config.c:428
 msgid "ALSA Output Plugin Preferences"
 msgstr "ALSA 출력 플러그인 기본 설정"
 
-#: src/alsa/config.c:428
+#: src/alsa/config.c:434
 msgid "PCM device:"
 msgstr "PCM 장치:"
 
-#: src/alsa/config.c:430
+#: src/alsa/config.c:436
 msgid "Mixer device:"
 msgstr "음량 조절기 장치:"
 
-#: src/alsa/config.c:432
+#: src/alsa/config.c:438
 msgid "Mixer element:"
 msgstr "음량 조절기 요소:"
 
-#: src/alsa/config.c:435
+#: src/alsa/config.c:441
 msgid "Work around drain hangup"
 msgstr "드레인 행업을 피하며 작업"
 
@@ -416,35 +418,35 @@ msgstr ""
 "그인으로 처리합니다.\n"
 "이 백엔드는 Giacomo Lozito가 작성했습니다."
 
-#: src/amidi-plug/i_configure-alsa.c:351
+#: src/amidi-plug/i_configure-alsa.c:353
 msgid "Port"
 msgstr "포트"
 
-#: src/amidi-plug/i_configure-alsa.c:353
+#: src/amidi-plug/i_configure-alsa.c:355
 msgid "Client name"
 msgstr "클라이언트 이름"
 
-#: src/amidi-plug/i_configure-alsa.c:355
+#: src/amidi-plug/i_configure-alsa.c:357
 msgid "Port name"
 msgstr "포트 이름"
 
-#: src/amidi-plug/i_configure-alsa.c:369
+#: src/amidi-plug/i_configure-alsa.c:371
 msgid "ALSA output ports"
 msgstr "ALSA 출력 포트"
 
-#: src/amidi-plug/i_configure-alsa.c:430
+#: src/amidi-plug/i_configure-alsa.c:432
 msgid "Soundcard: "
 msgstr "사운드 카드:"
 
-#: src/amidi-plug/i_configure-alsa.c:432
+#: src/amidi-plug/i_configure-alsa.c:434
 msgid "Mixer control: "
 msgstr "음량 조절기 컨트롤:"
 
-#: src/amidi-plug/i_configure-alsa.c:442
+#: src/amidi-plug/i_configure-alsa.c:444
 msgid "Mixer settings"
 msgstr "음량 조절기 설정"
 
-#: src/amidi-plug/i_configure-alsa.c:470
+#: src/amidi-plug/i_configure-alsa.c:472
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
@@ -660,7 +662,7 @@ msgstr "AMIDI-Plug 정보"
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
-msgstr ""
+msgstr "AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:54
 msgid ""
@@ -981,7 +983,7 @@ msgstr "프리셋:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:294
+#: src/cairo-spectrum/cairo-spectrum.c:297
 msgid "Spectrum Analyzer"
 msgstr "스펙트럼 분석기"
 
@@ -1205,11 +1207,12 @@ msgstr "오디오 리샘플링 활성화"
 msgid "Resampling rate:"
 msgstr "리샘플링 주파수:"
 
-#: src/console/configure.c:231 src/resample/resample.c:178
-#: src/resample/resample.c:184 src/resample/resample.c:187
-#: src/resample/resample.c:190 src/resample/resample.c:193
-#: src/resample/resample.c:196 src/resample/resample.c:199
-#: src/resample/resample.c:202 src/sox-resampler/sox-resampler.c:153
+#: src/console/configure.c:231 src/modplug/plugin_main.c:98
+#: src/resample/resample.c:178 src/resample/resample.c:184
+#: src/resample/resample.c:187 src/resample/resample.c:190
+#: src/resample/resample.c:193 src/resample/resample.c:196
+#: src/resample/resample.c:199 src/resample/resample.c:202
+#: src/sox-resampler/sox-resampler.c:153
 msgid "Hz"
 msgstr "Hz"
 
@@ -1306,11 +1309,13 @@ msgstr "큐 시트 플러그인"
 msgid "<b>Echo</b>"
 msgstr "<b>울림</b>"
 
-#: src/echo_plugin/echo.c:25
+#: src/echo_plugin/echo.c:25 src/modplug/plugin_main.c:90
+#: src/modplug/plugin_main.c:104
 msgid "Delay:"
 msgstr "지연:"
 
-#: src/echo_plugin/echo.c:27
+#: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:91
+#: src/modplug/plugin_main.c:105
 msgid "ms"
 msgstr "ms"
 
@@ -1318,7 +1323,7 @@ msgstr "ms"
 msgid "Feedback:"
 msgstr "반향:"
 
-#: src/echo_plugin/echo.c:31
+#: src/echo_plugin/echo.c:31 src/modplug/plugin_main.c:109
 msgid "Volume:"
 msgstr "음량:"
 
@@ -1338,7 +1343,7 @@ msgstr ""
 msgid "Echo"
 msgstr "울림"
 
-#: src/ffaudio/ffaudio-core.c:632
+#: src/ffaudio/ffaudio-core.c:656
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1354,7 +1359,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:679
+#: src/ffaudio/ffaudio-core.c:703
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg 플러그인"
 
@@ -1447,11 +1452,13 @@ msgstr "자동"
 msgid "Joint Stereo"
 msgstr "통합 스테레오"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:193
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
+#: src/mpg123/mpg123.c:211
 msgid "Stereo"
 msgstr "스테레오"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:193
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
+#: src/mpg123/mpg123.c:211
 msgid "Mono"
 msgstr "모도"
 
@@ -1587,7 +1594,7 @@ msgstr "Vorbis 인코더 설정"
 msgid "Quality level (0 - 10):"
 msgstr "음질 수준(0-10):"
 
-#: src/flacng/metadata.c:356 src/wavpack/wavpack.c:280
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
 msgid "lossless"
 msgstr "무손실"
 
@@ -1618,6 +1625,22 @@ msgstr ""
 #: src/gio/gio.c:322
 msgid "GIO Plugin"
 msgstr "GIO 플러그인"
+
+#: src/gl-spectrum/gl-spectrum.c:283
+msgid ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé and John Lindgren\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
+msgstr ""
+
+#: src/gl-spectrum/gl-spectrum.c:292
+msgid "OpenGL Spectrum Analyzer"
+msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -2023,24 +2046,24 @@ msgstr "모두 선택(_A)"
 msgid "_Rename ..."
 msgstr "이름 바꾸기(_R) ..."
 
-#: src/gtkui/ui_gtk.c:99
+#: src/gtkui/ui_gtk.c:96
 msgid "GTK Interface"
 msgstr "GTK 인터페이스"
 
-#: src/gtkui/ui_gtk.c:188 src/skins/ui_main.c:306
+#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - 오다셔스"
 
-#: src/gtkui/ui_gtk.c:194
+#: src/gtkui/ui_gtk.c:204
 msgid "Buffering ..."
 msgstr "버퍼링 ..."
 
-#: src/gtkui/ui_gtk.c:197 src/skins/ui_main.c:308 src/skins/ui_main.c:1491
+#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
 msgid "Audacious"
 msgstr "오다셔스"
 
-#: src/gtkui/ui_gtk.c:252 src/lyricwiki/lyricwiki.c:208
+#: src/gtkui/ui_gtk.c:253 src/lyricwiki/lyricwiki.c:208
 #: src/lyricwiki/lyricwiki.c:218 src/lyricwiki/lyricwiki.c:242
 #: src/lyricwiki/lyricwiki.c:252 src/lyricwiki/lyricwiki.c:271
 #: src/skins/plugin.c:176
@@ -2062,7 +2085,8 @@ msgstr "%d kbps"
 msgid "Previous track"
 msgstr "이전 트랙"
 
-#: src/hotkey/gui.c:71 src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
+#: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
+#: src/skins/ui_manager.c:178
 msgid "Play"
 msgstr "재생"
 
@@ -2242,7 +2266,9 @@ msgstr ""
 msgid "Available plugins:"
 msgstr "사용할 수 있는 플러그인:"
 
-#: src/ladspa/plugin.c:604
+#: src/ladspa/plugin.c:604 src/modplug/plugin_main.c:115
+#: src/modplug/plugin_main.c:119 src/modplug/plugin_main.c:123
+#: src/modplug/plugin_main.c:127
 msgid "Enable"
 msgstr "활성화"
 
@@ -2266,12 +2292,12 @@ msgstr ""
 msgid "LADSPA Host"
 msgstr "LADSPA 호스트"
 
-#: src/lirc/lirc.c:75
+#: src/lirc/lirc.c:76
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: LIRC 지원을 초기화 할 수 없습니다\n"
 
-#: src/lirc/lirc.c:82
+#: src/lirc/lirc.c:83
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -2282,27 +2308,27 @@ msgstr ""
 "%s: 적당한 설정 파일을 어떻게 만드는지\n"
 "%s: LIRC 문서를 읽어주시기 바랍니다\n"
 
-#: src/lirc/lirc.c:113
+#: src/lirc/lirc.c:114
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr "%s: 다시 연결 시도 중...\n"
 
-#: src/lirc/lirc.c:353
+#: src/lirc/lirc.c:354
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: 알 수 없는 명령 \"%s\"\n"
 
-#: src/lirc/lirc.c:364
+#: src/lirc/lirc.c:365
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: LIRC로부터 끊어졌습니다\n"
 
-#: src/lirc/lirc.c:370
+#: src/lirc/lirc.c:371
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: 매 %d 초 후 다시 연결을 시도할 것입니다...\n"
 
-#: src/lirc/lirc.c:380
+#: src/lirc/lirc.c:381
 msgid ""
 "A simple plugin to control Audacious using the LIRC remote control daemon\n"
 "\n"
@@ -2329,19 +2355,19 @@ msgstr ""
 "\n"
 "LIRC에 대한 자세한 내용은, http://lirc.org를 보십시오."
 
-#: src/lirc/lirc.c:391
+#: src/lirc/lirc.c:392
 msgid "<b>Connection</b>"
 msgstr "<b>연결</b>"
 
-#: src/lirc/lirc.c:392
+#: src/lirc/lirc.c:393
 msgid "Reconnect to LIRC server"
 msgstr "LIRC 서버에 다시 연결"
 
-#: src/lirc/lirc.c:394
+#: src/lirc/lirc.c:395
 msgid "Wait before reconnecting:"
 msgstr "다시 연결하기 전에 대기중:"
 
-#: src/lirc/lirc.c:404
+#: src/lirc/lirc.c:405
 msgid "LIRC Plugin"
 msgstr "LIRC 플러그인"
 
@@ -2431,15 +2457,124 @@ msgstr "채널 믹서"
 msgid "MMS Plugin"
 msgstr "MMS 플러그인"
 
-#: src/modplug/plugin_main.c:12
+#: src/modplug/plugin_main.c:57
+msgid "<b>Resolution</b>"
+msgstr "<b>레졸루션</b>"
+
+#: src/modplug/plugin_main.c:58
+msgid "8-bit"
+msgstr "8비트"
+
+#: src/modplug/plugin_main.c:60
+msgid "16-bit"
+msgstr "16비트"
+
+#: src/modplug/plugin_main.c:62
+msgid "<b>Channels</b>"
+msgstr "<b>채널</b>"
+
+#: src/modplug/plugin_main.c:67
+msgid "<b>Resampling</b>"
+msgstr "<b>리샘플링</b>"
+
+#: src/modplug/plugin_main.c:68
+msgid "Nearest (fastest)"
+msgstr "근접 (가장 빠름)"
+
+#: src/modplug/plugin_main.c:70
+msgid "Linear (fast)"
+msgstr "선형 (빠름)"
+
+#: src/modplug/plugin_main.c:72
+msgid "Spline (good)"
+msgstr "스플라인 (좋음)"
+
+#: src/modplug/plugin_main.c:74
+msgid "Polyphase (best)"
+msgstr "다중 페이스 (최상)"
+
+#: src/modplug/plugin_main.c:76
+msgid "<b>Sampling rate</b>"
+msgstr "<b>샘플 주파수</b>"
+
+#: src/modplug/plugin_main.c:77
+msgid "22 kHz"
+msgstr "22 kHz"
+
+#: src/modplug/plugin_main.c:79
+msgid "44 kHz"
+msgstr "44 kHz"
+
+#: src/modplug/plugin_main.c:81
+msgid "48 kHz"
+msgstr "48 kHz"
+
+#: src/modplug/plugin_main.c:83
+msgid "96 kHz"
+msgstr "96 kHz"
+
+#: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
+#: src/modplug/plugin_main.c:102
+msgid "Level:"
+msgstr "레벨:"
+
+#: src/modplug/plugin_main.c:97
+msgid "Cutoff:"
+msgstr "컷-오프:"
+
+#: src/modplug/plugin_main.c:114
+msgid "<b>Reverb</b>"
+msgstr "<b>리버브</b>"
+
+#: src/modplug/plugin_main.c:118
+msgid "<b>Bass Boost</b>"
+msgstr "<b>저음 증폭</b>"
+
+#: src/modplug/plugin_main.c:122
+msgid "<b>Surround</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:126
+msgid "<b>Preamp</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:133
+msgid "<b>Miscellaneous</b>"
+msgstr "<b>기타</b>"
+
+#: src/modplug/plugin_main.c:134
+msgid "Oversample"
+msgstr "오버샘플링"
+
+#: src/modplug/plugin_main.c:136
+msgid "Noise reduction"
+msgstr "노이즈 감소"
+
+#: src/modplug/plugin_main.c:138
+msgid "Play Amiga MODs"
+msgstr "Amiga MOD 재생"
+
+#: src/modplug/plugin_main.c:140
+msgid "<b>Repeat</b>"
+msgstr "<b>반복</b>"
+
+#: src/modplug/plugin_main.c:141
+msgid "Repeat count:"
+msgstr "반복 횟수:"
+
+#: src/modplug/plugin_main.c:143
+msgid "To repeat forever, set the repeat count to -1."
+msgstr "계속 반복하려면 반복 횟수를 -1로 설정하십시오."
+
+#: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (모듈 재생기)"
 
-#: src/mpg123/mpg123.c:193
+#: src/mpg123/mpg123.c:211
 msgid "Surround"
 msgstr "서라운드"
 
-#: src/mpg123/mpg123.c:552
+#: src/mpg123/mpg123.c:569
 msgid "MPG123 Plugin"
 msgstr "MPG123 플러그인"
 
@@ -2451,21 +2586,19 @@ msgstr "MPRIS 2 서버"
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS 플러그인"
 
-#: src/notify/event.c:60
+#: src/notify/event.c:64
 msgid "Stopped"
 msgstr "정지함"
 
-#: src/notify/event.c:60
+#: src/notify/event.c:64
 msgid "Audacious is not playing."
 msgstr "오다셔스가 재생중이 아닙니다."
 
-#: src/notify/notify.c:34
+#: src/notify/notify.c:33
 msgid ""
-"Based on libnotify-aosd by Maximilian Bogner:\n"
-"http://www.mbogner.de/projects/libnotify-aosd/\n"
-"\n"
+"Desktop Notifications Plugin for Audacious\n"
 "Copyright (C) 2010 Maximilian Bogner\n"
-"Copyright (C) 2011 John Lindgren\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
 "\n"
 "This plugin is free software: you can redistribute it and/or modify it under "
 "the terms of the GNU General Public License as published by the Free "
@@ -2480,34 +2613,36 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"libnotify-aosd 기반. by Maximilian Bogner:\n"
-"http://www.mbogner.de/projects/libnotify-aosd/\n"
-"\n"
-"Copyright (C) 2010 Maximilian Bogner\n"
-"Copyright (C) 2011 John Lindgren\n"
-"\n"
-"\n"
-"이 프로그램은 자유 소프트웨어입니다; 자유 소프트웨어 재단이 공표한 GNU 일반 "
-"공중 사용허가서 3판 (또는 여러분의 의사에 따라) 이상의 조항에 따라 재배포 또"
-"는 수정할 수 있습니다.\n"
-"\n"
-"이 프로그램이 유용하게 사용되길 바라지만 그 어떤 보증도 없으며 심지어는 상업"
-"적 보증이나 일부 목적의 적합성에 대한 암시적 보증도 하지 않습니다. 자세한 내"
-"용은 GNU 일반 공중 사용허가서를 보십시오.\n"
-"\n"
-"이 프로그램과 함께 GNU 일반 공중 사용 허가서 사본을 받아야 합니다. 만약 사본"
-"이 없다면 자유 소프트웨어 재단에 요청하십시오. 51 Franklin Street, Fifth "
-"Floor, Boston, MA 02110-1301, USA."
 
-#: src/notify/notify.c:51
+#: src/notify/notify.c:77
+msgid "Show playback controls"
+msgstr ""
+
+#: src/notify/notify.c:80
+msgid "Always show notification"
+msgstr ""
+
+#: src/notify/notify.c:92
 msgid "Desktop Notifications"
 msgstr "데스크톱 알림"
+
+#: src/notify/osd.c:57
+msgid "Show"
+msgstr ""
+
+#: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
+msgid "Pause"
+msgstr "일시 정지"
+
+#: src/notify/osd.c:72 src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
+msgid "Next"
+msgstr "다음"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
 msgstr "1. 기본 장치"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:393
 msgid "Audio device:"
 msgstr "오디오 장치:"
 
@@ -2677,11 +2812,12 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
-msgstr ""
+msgstr "권한이 거부되었습니다"
 
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
 msgstr ""
+"재생 항목을 오다셔스에서 스크롤 하도록 하려면 다음 연결을 방문하십시오:"
 
 #: src/scrobbler2/config_window.c:63
 msgid "Keep this window open and click 'Check Permission' again.\n"
@@ -2692,39 +2828,43 @@ msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
+"걱정하지 마십시오. 스크로블을 컴퓨터에 저장했습니다.\n"
+"오다셔스가 동작할 수 있는대로 바로 제출할 것입니다."
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
-msgstr ""
+msgstr "네트워크에 문제가 있습니다."
 
 #: src/scrobbler2/config_window.c:75
 msgid "There was a problem contacting Last.fm. Please try again later."
-msgstr ""
+msgstr "Last.fm에 연결하는데 문제가 있습니다. 다시 시도해 주십시오."
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
-msgstr ""
+msgstr "확인중..."
+
+#: src/scrobbler2/config_window.c:173
+msgid "C_heck Permission"
+msgstr "권한 확인(_H)"
 
 #: src/scrobbler2/config_window.c:174
-msgid "C_heck Permission"
-msgstr ""
-
-#: src/scrobbler2/config_window.c:175
 msgid "_Revoke Permission"
 msgstr ""
 
-#: src/scrobbler2/config_window.c:222
+#: src/scrobbler2/config_window.c:221
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr "오다셔스가 Last.fm 계정에 트랙을 추출할 수 있게 해야 합니다.\n"
 
-#: src/scrobbler2/scrobbler.c:226
+#: src/scrobbler2/scrobbler.c:233
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"스크로블러 플러그인을 시작할 수 없습니다.\n"
+"설치에 문제가 있는 것 같습니다."
 
-#: src/scrobbler2/scrobbler.c:304
+#: src/scrobbler2/scrobbler.c:311
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2734,10 +2874,22 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"이 프로젝트를 시작하는데 도움을 준 John Lindgren에게 감사드립니다.\n"
+"\n"
 
-#: src/scrobbler2/scrobbler.c:310
+#: src/scrobbler2/scrobbler.c:317
 msgid "Scrobbler 2.0"
 msgstr "스크로블러 2.0"
+
+#: src/scrobbler2/scrobbler_communication.c:690
+msgid ""
+"Audacious is now using an improved version of the Last.fm Scrobbler.\n"
+"Please check the Preferences for the Scrobbler plugin."
+msgstr ""
 
 #: src/sdlout/plugin.c:26
 msgid ""
@@ -2874,168 +3026,168 @@ msgstr "<b>스킨(_S)</b>"
 msgid "Interface Preferences"
 msgstr "인터페이스 기본 설정"
 
-#: src/skins/ui_equalizer.c:327
+#: src/skins/ui_equalizer.c:328
 msgid "Preamp"
 msgstr "프리앰프"
 
-#: src/skins/ui_equalizer.c:331
+#: src/skins/ui_equalizer.c:332
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:374
+#: src/skins/ui_equalizer.c:375
 msgid "Audacious Equalizer"
 msgstr "오다셔스 이퀄라이저"
 
-#: src/skins/ui_equalizer.c:889
+#: src/skins/ui_equalizer.c:890
 msgid "Presets"
 msgstr "프리셋"
 
-#: src/skins/ui_equalizer.c:970 src/skins/ui_manager.c:451
+#: src/skins/ui_equalizer.c:971 src/skins/ui_manager.c:451
 msgid "Load preset"
 msgstr "프리셋 불러오기"
 
-#: src/skins/ui_equalizer.c:987
+#: src/skins/ui_equalizer.c:988
 msgid "Load auto-preset"
 msgstr "자동 프리셋 불러오기"
 
-#: src/skins/ui_equalizer.c:1017 src/skins/ui_equalizer.c:1035
-#: src/skins/ui_equalizer.c:1051
+#: src/skins/ui_equalizer.c:1018 src/skins/ui_equalizer.c:1036
+#: src/skins/ui_equalizer.c:1052
 msgid "Load equalizer preset"
 msgstr "이퀄라이저 프리셋 불러오기"
 
-#: src/skins/ui_equalizer.c:1070 src/skins/ui_manager.c:472
+#: src/skins/ui_equalizer.c:1071 src/skins/ui_manager.c:472
 msgid "Save preset"
 msgstr "프리셋 저장하기"
 
-#: src/skins/ui_equalizer.c:1086
+#: src/skins/ui_equalizer.c:1087
 msgid "Save auto-preset"
 msgstr "자동 프리셋 저장하기"
 
-#: src/skins/ui_equalizer.c:1117 src/skins/ui_equalizer.c:1153
+#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
 msgid "Save equalizer preset"
 msgstr "이퀄라이저 프리셋 저장하기"
 
-#: src/skins/ui_equalizer.c:1172 src/skins/ui_manager.c:487
+#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
 msgid "Delete preset"
 msgstr "프리셋 삭제하기"
 
-#: src/skins/ui_equalizer.c:1189
+#: src/skins/ui_equalizer.c:1190
 msgid "Delete auto-preset"
 msgstr "자동 프리셋 삭제하기"
 
-#: src/skins/ui_main.c:446
+#: src/skins/ui_main.c:414
 msgid "kbps"
 msgstr "kbps"
 
-#: src/skins/ui_main.c:454
+#: src/skins/ui_main.c:422
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:802
+#: src/skins/ui_main.c:770
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "%d 탐색:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.c:823
+#: src/skins/ui_main.c:791
 #, c-format
 msgid "Volume: %d%%"
 msgstr "음량: %d%%"
 
-#: src/skins/ui_main.c:846
+#: src/skins/ui_main.c:814
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "균형: %d%% 왼쪽"
 
-#: src/skins/ui_main.c:848
+#: src/skins/ui_main.c:816
 msgid "Balance: center"
 msgstr "균형: 가운데"
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:818
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "균형: %d%% 오른쪽"
 
-#: src/skins/ui_main.c:974
+#: src/skins/ui_main.c:942
 msgid "Options Menu"
 msgstr "옵션 메뉴"
 
-#: src/skins/ui_main.c:978
+#: src/skins/ui_main.c:946
 msgid "Disable 'Always On Top'"
 msgstr "'항상 위' 비활성화"
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:948
 msgid "Enable 'Always On Top'"
 msgstr "'항상 위' 활성화"
 
-#: src/skins/ui_main.c:983
+#: src/skins/ui_main.c:951
 msgid "File Info Box"
 msgstr "파일 정보 상자"
 
-#: src/skins/ui_main.c:988
+#: src/skins/ui_main.c:956
 msgid "Visualization Menu"
 msgstr "시각화 메뉴"
 
-#: src/skins/ui_main.c:1631
+#: src/skins/ui_main.c:1591
 msgid "Single mode."
 msgstr "싱글 모드입니다."
 
-#: src/skins/ui_main.c:1633
+#: src/skins/ui_main.c:1593
 msgid "Playlist mode."
 msgstr "재생 목록 모드입니다."
 
-#: src/skins/ui_main.c:1655
+#: src/skins/ui_main.c:1615
 msgid "Stopping after song."
 msgstr "곡 재생 후 멈추는 중입니다."
 
-#: src/skins/ui_main.c:1657
+#: src/skins/ui_main.c:1617
 msgid "Not stopping after song."
 msgstr "곡 재생 후 멈추는 중이 아닙니다."
 
-#: src/skins/ui_main.c:1792
+#: src/skins/ui_main.c:1752
 msgid "Repeat point A set."
 msgstr "A 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.c:1797
+#: src/skins/ui_main.c:1757
 msgid "Repeat point B set."
 msgstr "B 반복 시점을 설정했습니다."
 
-#: src/skins/ui_main.c:1806
+#: src/skins/ui_main.c:1766
 msgid "Repeat points cleared."
 msgstr "반복 시점을 지웠습니다."
 
@@ -3181,17 +3333,9 @@ msgstr "걸린 시간"
 msgid "Time Remaining"
 msgstr "남은 시간"
 
-#: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
-msgid "Pause"
-msgstr "일시 정지"
-
 #: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
 msgid "Previous"
 msgstr "이전"
-
-#: src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
-msgid "Next"
-msgstr "다음"
 
 #: src/skins/ui_manager.c:195
 msgid "Visualization"
@@ -3717,15 +3861,15 @@ msgstr "오다셔스 재생 목록 편집기"
 msgid "%s (%d of %d)"
 msgstr "%1$s (%3$d중 %2$d)"
 
-#: src/skins/ui_skinselector.c:161
+#: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
 msgstr "압축한 Winamp 2.x 스킨"
 
-#: src/skins/ui_skinselector.c:166
+#: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
 msgstr "압축하지 않은 Winamp 2.x 스킨"
 
-#: src/skins/util.c:772
+#: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "(%s) 디렉터리를 만들 수 없습니다: %s\n"
@@ -3773,11 +3917,11 @@ msgstr ""
 msgid "Sndfile Plugin"
 msgstr "Sndfile 플러그인"
 
-#: src/sndio/sndio.c:187
+#: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
 msgstr "Sndio 출력 플러그인 정보"
 
-#: src/sndio/sndio.c:188
+#: src/sndio/sndio.c:173
 msgid ""
 "Sndio Output Plugin\n"
 "\n"
@@ -3787,11 +3931,11 @@ msgstr ""
 "\n"
 "Thomas Pfaff <tpfaff@tp76.info>가 작성하였습니다\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:248
 msgid "Unsupported format"
 msgstr "지원하지 않는 형식"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:249
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3801,19 +3945,19 @@ msgstr ""
 "\n"
 "sndiod(1) 서버를 실행하고 다시 시도해주시기 바랍니다."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:384
 msgid "sndio device"
 msgstr "sndio 장치"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:400
 msgid "(empty means default)"
 msgstr "(빈 값은 기본 값을 의미)"
 
-#: src/sndio/sndio.c:431
+#: src/sndio/sndio.c:416
 msgid "OK"
 msgstr "확인"
 
-#: src/sndio/sndio.c:439
+#: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr "취소"
 
@@ -3897,30 +4041,35 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"SoX Resampler Plugin for Audacious⏎\n"
+"Copyright 2013 Michał Lipski⏎\n"
+"⏎\n"
+"샘플 주파수 변환 플러그인을 기반으로 하였습니다:\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/sox-resampler/sox-resampler.c:141
 msgid "Quick"
-msgstr ""
+msgstr "빠름"
 
 #: src/sox-resampler/sox-resampler.c:142
 msgid "Low"
-msgstr ""
+msgstr "낮음"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "High"
-msgstr ""
+msgstr "높음"
 
 #: src/sox-resampler/sox-resampler.c:145
 msgid "Very High"
-msgstr ""
+msgstr "매우 높음"
 
 #: src/sox-resampler/sox-resampler.c:148
 msgid "Quality:"
-msgstr ""
+msgstr "음질:"
 
 #: src/sox-resampler/sox-resampler.c:162
 msgid "SoX Resampler"
-msgstr ""
+msgstr "SoX 리샘플러"
 
 #: src/speed-pitch/speed-pitch.c:225
 msgid "<b>Speed and Pitch</b>"
@@ -4096,7 +4245,7 @@ msgstr ""
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis "
 
-#: src/vtx/vtx.c:241
+#: src/vtx/vtx.c:242
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
@@ -4106,7 +4255,7 @@ msgstr ""
 "Roman Sherbakov <v_soft@microfor.ru>의 in_vtx.dll 을 기반으로 함\n"
 "Pavel Vymetalek <pvymetalek@seznam.cz>이 오다셔스 플러그인 제작."
 
-#: src/vtx/vtx.c:247
+#: src/vtx/vtx.c:248
 msgid "VTX Decoder"
 msgstr "VTX 디코더"
 

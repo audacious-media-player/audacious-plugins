@@ -3,32 +3,33 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-#   <davros74@gmail.com>, 2012.
-# Jacopo Lorenzetti <jacopo.jl@gmail.com>, 2011-2012.
-# Jacopo Lorenzetti <jacopol@cyan.xubiq.com>, 2012.
+# davros74 <davros74@gmail.com>, 2012
+# Jacopo Lorenzetti <jacopo.jl@gmail.com>, 2011-2012
+# Jacopo Lorenzetti <jacopol@cyan.xubiq.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-04-07 20:27+0200\n"
-"PO-Revision-Date: 2013-03-27 18:08+0000\n"
+"POT-Creation-Date: 2013-05-31 19:01+0200\n"
+"PO-Revision-Date: 2013-05-04 12:38+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: Italian\n"
+"Language-Team: Italian (http://www.transifex.com/projects/p/audacious/"
+"language/it/)\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:462
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
 msgid "mono"
 msgstr "mono"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:461
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
 msgid "stereo"
 msgstr "stereo"
 
-#: src/aac/libmp4.c:439 src/skins/ui_main.c:461
+#: src/aac/libmp4.c:439 src/skins/ui_main.c:429
 msgid "surround"
 msgstr "surround"
 
@@ -36,8 +37,8 @@ msgstr "surround"
 msgid "AAC Decoder"
 msgstr "Decodificatore AAC"
 
-#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:465
-#: src/psf/plugin.c:125 src/vtx/vtx.c:68 src/xsf/plugin.c:85
+#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
+#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr ""
 
@@ -193,7 +194,7 @@ msgid "Day"
 msgstr "Giorno"
 
 #: src/alarm/interface.c:280 src/bs2b/plugin.c:177
-#: src/skins/ui_equalizer.c:1107 src/skins/ui_manager.c:456
+#: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:456
 #: src/skins/ui_manager.c:477
 msgid "Default"
 msgstr "Predefinita"
@@ -206,7 +207,7 @@ msgstr "Giorni"
 msgid "Fading"
 msgstr "Dissolvenza"
 
-#: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:396
+#: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:397
 msgid "seconds"
 msgstr "secondi"
 
@@ -270,23 +271,23 @@ msgstr "Dispositivo PCM predefinito"
 msgid "Default mixer device"
 msgstr "Dispositivo mixer predefinito"
 
-#: src/alsa/config.c:422
+#: src/alsa/config.c:428
 msgid "ALSA Output Plugin Preferences"
 msgstr "Preferenze del plugin di uscita ALSA"
 
-#: src/alsa/config.c:428
+#: src/alsa/config.c:434
 msgid "PCM device:"
 msgstr "Dispositivo PCM:"
 
-#: src/alsa/config.c:430
+#: src/alsa/config.c:436
 msgid "Mixer device:"
 msgstr "Dispositivo mixer:"
 
-#: src/alsa/config.c:432
+#: src/alsa/config.c:438
 msgid "Mixer element:"
 msgstr "Elemento mixer:"
 
-#: src/alsa/config.c:435
+#: src/alsa/config.c:441
 msgid "Work around drain hangup"
 msgstr "Aggira interruzione per esaurimento risorse"
 
@@ -359,35 +360,35 @@ msgstr ""
 "lettore e viene elaborato dal plugin di uscita selezionato.\n"
 "Backend scritto da Giacomo Lozito."
 
-#: src/amidi-plug/i_configure-alsa.c:351
+#: src/amidi-plug/i_configure-alsa.c:353
 msgid "Port"
 msgstr "Porta"
 
-#: src/amidi-plug/i_configure-alsa.c:353
+#: src/amidi-plug/i_configure-alsa.c:355
 msgid "Client name"
 msgstr "Nome del client"
 
-#: src/amidi-plug/i_configure-alsa.c:355
+#: src/amidi-plug/i_configure-alsa.c:357
 msgid "Port name"
 msgstr "Nome della porta"
 
-#: src/amidi-plug/i_configure-alsa.c:369
+#: src/amidi-plug/i_configure-alsa.c:371
 msgid "ALSA output ports"
 msgstr "Porte di uscita ALSA"
 
-#: src/amidi-plug/i_configure-alsa.c:430
+#: src/amidi-plug/i_configure-alsa.c:432
 msgid "Soundcard: "
 msgstr "Scheda audio: "
 
-#: src/amidi-plug/i_configure-alsa.c:432
+#: src/amidi-plug/i_configure-alsa.c:434
 msgid "Mixer control: "
 msgstr "Controllo mixer: "
 
-#: src/amidi-plug/i_configure-alsa.c:442
+#: src/amidi-plug/i_configure-alsa.c:444
 msgid "Mixer settings"
 msgstr "Impostazioni mixer"
 
-#: src/amidi-plug/i_configure-alsa.c:470
+#: src/amidi-plug/i_configure-alsa.c:472
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
@@ -904,7 +905,7 @@ msgstr "Preimpostazioni:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer da Stereofinico a Binaurale (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:294
+#: src/cairo-spectrum/cairo-spectrum.c:297
 msgid "Spectrum Analyzer"
 msgstr "Analizzatore di spettro"
 
@@ -962,7 +963,7 @@ msgstr "Porta: "
 
 #: src/cdaudio-ng/cdaudio-ng.c:148
 msgid "Audio CD Plugin"
-msgstr ""
+msgstr "Plugin CD Audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:249
 msgid "Failed to initialize cdio subsystem."
@@ -1053,7 +1054,7 @@ msgstr "Aggiungi CD"
 
 #: src/cd-menu-items/cd-menu-items.c:57
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Voci di menu CD Audio"
 
 #: src/compressor/plugin.c:35
 msgid "<b>Compression</b>"
@@ -1075,7 +1076,7 @@ msgstr ""
 
 #: src/compressor/plugin.c:58
 msgid "Dynamic Range Compressor"
-msgstr ""
+msgstr "Compressione gamma dinamica"
 
 #: src/console/configure.c:134 src/console/plugin.c:42
 msgid "Game Console Music Decoder"
@@ -1118,11 +1119,12 @@ msgstr "Abilita ricampionamento audio"
 msgid "Resampling rate:"
 msgstr "Frequenza di ricampionamento:"
 
-#: src/console/configure.c:231 src/resample/resample.c:178
-#: src/resample/resample.c:184 src/resample/resample.c:187
-#: src/resample/resample.c:190 src/resample/resample.c:193
-#: src/resample/resample.c:196 src/resample/resample.c:199
-#: src/resample/resample.c:202 src/sox-resampler/sox-resampler.c:153
+#: src/console/configure.c:231 src/modplug/plugin_main.c:98
+#: src/resample/resample.c:178 src/resample/resample.c:184
+#: src/resample/resample.c:187 src/resample/resample.c:190
+#: src/resample/resample.c:193 src/resample/resample.c:196
+#: src/resample/resample.c:199 src/resample/resample.c:202
+#: src/sox-resampler/sox-resampler.c:153
 msgid "Hz"
 msgstr "Hz"
 
@@ -1163,12 +1165,18 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
+"La dissolvenza incrociata non è riuscita poiché i brani avevano un numero di "
+"canali differente. Puoi usare il Mixer Canale per convertire i brani allo "
+"stesso numero di canali."
 
 #: src/crossfade/crossfade.c:88
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
+"La dissolvenza incrociata non è riuscita poiché i brani avevano differenti "
+"frequenze di campionamento. Puoi usare il Convertitore frequenza di "
+"campionamento per convertire i brani alla stessa frequenza."
 
 #: src/crossfade/crossfade.c:254
 msgid ""
@@ -1178,15 +1186,15 @@ msgstr ""
 
 #: src/crossfade/crossfade.c:258
 msgid "<b>Crossfade</b>"
-msgstr ""
+msgstr "<b>Dissolvenza incrociata</b>"
 
 #: src/crossfade/crossfade.c:259
 msgid "Overlap:"
-msgstr ""
+msgstr "Sovrapposizione:"
 
 #: src/crossfade/crossfade.c:269
 msgid "Crossfade"
-msgstr ""
+msgstr "Dissolvenza incrociata"
 
 #: src/crystalizer/crystalizer.c:40
 msgid "<b>Crystalizer</b>"
@@ -1208,11 +1216,13 @@ msgstr ""
 msgid "<b>Echo</b>"
 msgstr "<b>Eco</b>"
 
-#: src/echo_plugin/echo.c:25
+#: src/echo_plugin/echo.c:25 src/modplug/plugin_main.c:90
+#: src/modplug/plugin_main.c:104
 msgid "Delay:"
 msgstr "Ritardo: "
 
-#: src/echo_plugin/echo.c:27
+#: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:91
+#: src/modplug/plugin_main.c:105
 msgid "ms"
 msgstr "ms"
 
@@ -1220,7 +1230,7 @@ msgstr "ms"
 msgid "Feedback:"
 msgstr "Feedback: "
 
-#: src/echo_plugin/echo.c:31
+#: src/echo_plugin/echo.c:31 src/modplug/plugin_main.c:109
 msgid "Volume:"
 msgstr "Volume: "
 
@@ -1236,7 +1246,7 @@ msgstr ""
 msgid "Echo"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:632
+#: src/ffaudio/ffaudio-core.c:656
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1246,7 +1256,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:679
+#: src/ffaudio/ffaudio-core.c:703
 msgid "FFmpeg Plugin"
 msgstr ""
 
@@ -1328,11 +1338,13 @@ msgstr "Auto"
 msgid "Joint Stereo"
 msgstr "Joint stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:193
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
+#: src/mpg123/mpg123.c:211
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/mpg123/mpg123.c:193
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
+#: src/mpg123/mpg123.c:211
 msgid "Mono"
 msgstr "Mono"
 
@@ -1468,7 +1480,7 @@ msgstr "Configurazione del codificatore Vorbis"
 msgid "Quality level (0 - 10):"
 msgstr "Livello di qualità (0 - 10):"
 
-#: src/flacng/metadata.c:356 src/wavpack/wavpack.c:280
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
 msgid "lossless"
 msgstr ""
 
@@ -1492,6 +1504,22 @@ msgstr ""
 
 #: src/gio/gio.c:322
 msgid "GIO Plugin"
+msgstr ""
+
+#: src/gl-spectrum/gl-spectrum.c:283
+msgid ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé and John Lindgren\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
+msgstr ""
+
+#: src/gl-spectrum/gl-spectrum.c:292
+msgid "OpenGL Spectrum Analyzer"
 msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
@@ -1894,24 +1922,24 @@ msgstr "Seleziona _tutti"
 msgid "_Rename ..."
 msgstr "_Rinomina ..."
 
-#: src/gtkui/ui_gtk.c:99
+#: src/gtkui/ui_gtk.c:96
 msgid "GTK Interface"
 msgstr "Interfaccia GTK"
 
-#: src/gtkui/ui_gtk.c:188 src/skins/ui_main.c:306
+#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:194
+#: src/gtkui/ui_gtk.c:204
 msgid "Buffering ..."
 msgstr "Buffering…"
 
-#: src/gtkui/ui_gtk.c:197 src/skins/ui_main.c:308 src/skins/ui_main.c:1491
+#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:252 src/lyricwiki/lyricwiki.c:208
+#: src/gtkui/ui_gtk.c:253 src/lyricwiki/lyricwiki.c:208
 #: src/lyricwiki/lyricwiki.c:218 src/lyricwiki/lyricwiki.c:242
 #: src/lyricwiki/lyricwiki.c:252 src/lyricwiki/lyricwiki.c:271
 #: src/skins/plugin.c:176
@@ -1934,7 +1962,8 @@ msgstr "%d kbps"
 msgid "Previous track"
 msgstr ""
 
-#: src/hotkey/gui.c:71 src/skins/ui_manager.c:177 src/skins/ui_manager.c:178
+#: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
+#: src/skins/ui_manager.c:178
 msgid "Play"
 msgstr "Riproduci"
 
@@ -2101,7 +2130,9 @@ msgstr ""
 msgid "Available plugins:"
 msgstr "Plugin disponibili:"
 
-#: src/ladspa/plugin.c:604
+#: src/ladspa/plugin.c:604 src/modplug/plugin_main.c:115
+#: src/modplug/plugin_main.c:119 src/modplug/plugin_main.c:123
+#: src/modplug/plugin_main.c:127
 msgid "Enable"
 msgstr "Abilita"
 
@@ -2123,12 +2154,12 @@ msgstr ""
 msgid "LADSPA Host"
 msgstr ""
 
-#: src/lirc/lirc.c:75
+#: src/lirc/lirc.c:76
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: non posso inizializzare il supporto LIRC\n"
 
-#: src/lirc/lirc.c:82
+#: src/lirc/lirc.c:83
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -2139,27 +2170,27 @@ msgstr ""
 "%s: fare riferimento alla documentazione di LIRC\n"
 "%s: come creare un file di configurazione appropriato\n"
 
-#: src/lirc/lirc.c:113
+#: src/lirc/lirc.c:114
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr "%s: tento la riconnessione...\n"
 
-#: src/lirc/lirc.c:353
+#: src/lirc/lirc.c:354
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: comando sconosciuto \"%s\"\n"
 
-#: src/lirc/lirc.c:364
+#: src/lirc/lirc.c:365
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: disconnesso da LIRC\n"
 
-#: src/lirc/lirc.c:370
+#: src/lirc/lirc.c:371
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: tento la riconnessione ogni %d secondi...\n"
 
-#: src/lirc/lirc.c:380
+#: src/lirc/lirc.c:381
 msgid ""
 "A simple plugin to control Audacious using the LIRC remote control daemon\n"
 "\n"
@@ -2175,19 +2206,19 @@ msgid ""
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
 
-#: src/lirc/lirc.c:391
+#: src/lirc/lirc.c:392
 msgid "<b>Connection</b>"
 msgstr "<b>Connessione</b>"
 
-#: src/lirc/lirc.c:392
+#: src/lirc/lirc.c:393
 msgid "Reconnect to LIRC server"
 msgstr "Riconnetti al server LIRC"
 
-#: src/lirc/lirc.c:394
+#: src/lirc/lirc.c:395
 msgid "Wait before reconnecting:"
 msgstr ""
 
-#: src/lirc/lirc.c:404
+#: src/lirc/lirc.c:405
 msgid "LIRC Plugin"
 msgstr ""
 
@@ -2270,15 +2301,124 @@ msgstr "Mixer Canale"
 msgid "MMS Plugin"
 msgstr ""
 
-#: src/modplug/plugin_main.c:12
+#: src/modplug/plugin_main.c:57
+msgid "<b>Resolution</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:58
+msgid "8-bit"
+msgstr ""
+
+#: src/modplug/plugin_main.c:60
+msgid "16-bit"
+msgstr ""
+
+#: src/modplug/plugin_main.c:62
+msgid "<b>Channels</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:67
+msgid "<b>Resampling</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:68
+msgid "Nearest (fastest)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:70
+msgid "Linear (fast)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:72
+msgid "Spline (good)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:74
+msgid "Polyphase (best)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:76
+msgid "<b>Sampling rate</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:77
+msgid "22 kHz"
+msgstr ""
+
+#: src/modplug/plugin_main.c:79
+msgid "44 kHz"
+msgstr ""
+
+#: src/modplug/plugin_main.c:81
+msgid "48 kHz"
+msgstr ""
+
+#: src/modplug/plugin_main.c:83
+msgid "96 kHz"
+msgstr ""
+
+#: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
+#: src/modplug/plugin_main.c:102
+msgid "Level:"
+msgstr ""
+
+#: src/modplug/plugin_main.c:97
+msgid "Cutoff:"
+msgstr ""
+
+#: src/modplug/plugin_main.c:114
+msgid "<b>Reverb</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:118
+msgid "<b>Bass Boost</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:122
+msgid "<b>Surround</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:126
+msgid "<b>Preamp</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:133
+msgid "<b>Miscellaneous</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:134
+msgid "Oversample"
+msgstr ""
+
+#: src/modplug/plugin_main.c:136
+msgid "Noise reduction"
+msgstr ""
+
+#: src/modplug/plugin_main.c:138
+msgid "Play Amiga MODs"
+msgstr ""
+
+#: src/modplug/plugin_main.c:140
+msgid "<b>Repeat</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:141
+msgid "Repeat count:"
+msgstr ""
+
+#: src/modplug/plugin_main.c:143
+msgid "To repeat forever, set the repeat count to -1."
+msgstr ""
+
+#: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:193
+#: src/mpg123/mpg123.c:211
 msgid "Surround"
 msgstr "Surround"
 
-#: src/mpg123/mpg123.c:552
+#: src/mpg123/mpg123.c:569
 msgid "MPG123 Plugin"
 msgstr ""
 
@@ -2290,21 +2430,19 @@ msgstr ""
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr ""
 
-#: src/notify/event.c:60
+#: src/notify/event.c:64
 msgid "Stopped"
 msgstr "Fermato"
 
-#: src/notify/event.c:60
+#: src/notify/event.c:64
 msgid "Audacious is not playing."
 msgstr "Audacious non sta riproducendo."
 
-#: src/notify/notify.c:34
+#: src/notify/notify.c:33
 msgid ""
-"Based on libnotify-aosd by Maximilian Bogner:\n"
-"http://www.mbogner.de/projects/libnotify-aosd/\n"
-"\n"
+"Desktop Notifications Plugin for Audacious\n"
 "Copyright (C) 2010 Maximilian Bogner\n"
-"Copyright (C) 2011 John Lindgren\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
 "\n"
 "This plugin is free software: you can redistribute it and/or modify it under "
 "the terms of the GNU General Public License as published by the Free "
@@ -2320,15 +2458,35 @@ msgid ""
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
-#: src/notify/notify.c:51
+#: src/notify/notify.c:77
+msgid "Show playback controls"
+msgstr ""
+
+#: src/notify/notify.c:80
+msgid "Always show notification"
+msgstr ""
+
+#: src/notify/notify.c:92
 msgid "Desktop Notifications"
 msgstr "Notifiche Desktop"
+
+#: src/notify/osd.c:57
+msgid "Show"
+msgstr ""
+
+#: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
+msgid "Pause"
+msgstr "Interrompi"
+
+#: src/notify/osd.c:72 src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
+msgid "Next"
+msgstr "Successivo"
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
 msgstr "1. Dispositivo predefinito"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:412
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:393
 msgid "Audio device:"
 msgstr "Dispositivo audio:"
 
@@ -2506,26 +2664,26 @@ msgstr ""
 msgid "Checking..."
 msgstr ""
 
-#: src/scrobbler2/config_window.c:174
+#: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
 msgstr ""
 
-#: src/scrobbler2/config_window.c:175
+#: src/scrobbler2/config_window.c:174
 msgid "_Revoke Permission"
 msgstr ""
 
-#: src/scrobbler2/config_window.c:222
+#: src/scrobbler2/config_window.c:221
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
 
-#: src/scrobbler2/scrobbler.c:226
+#: src/scrobbler2/scrobbler.c:233
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
 
-#: src/scrobbler2/scrobbler.c:304
+#: src/scrobbler2/scrobbler.c:311
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2536,8 +2694,14 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/scrobbler2/scrobbler.c:310
+#: src/scrobbler2/scrobbler.c:317
 msgid "Scrobbler 2.0"
+msgstr ""
+
+#: src/scrobbler2/scrobbler_communication.c:690
+msgid ""
+"Audacious is now using an improved version of the Last.fm Scrobbler.\n"
+"Please check the Preferences for the Scrobbler plugin."
 msgstr ""
 
 #: src/sdlout/plugin.c:26
@@ -2682,168 +2846,168 @@ msgstr "<b>_Skin</b>"
 msgid "Interface Preferences"
 msgstr "Preferenze interfaccia"
 
-#: src/skins/ui_equalizer.c:327
+#: src/skins/ui_equalizer.c:328
 msgid "Preamp"
 msgstr "Preamplificazione"
 
-#: src/skins/ui_equalizer.c:331
+#: src/skins/ui_equalizer.c:332
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:332
+#: src/skins/ui_equalizer.c:333
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:333
+#: src/skins/ui_equalizer.c:334
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:374
+#: src/skins/ui_equalizer.c:375
 msgid "Audacious Equalizer"
 msgstr "Equalizzatore di Audacious"
 
-#: src/skins/ui_equalizer.c:889
+#: src/skins/ui_equalizer.c:890
 msgid "Presets"
 msgstr "Preimpostazioni"
 
-#: src/skins/ui_equalizer.c:970 src/skins/ui_manager.c:451
+#: src/skins/ui_equalizer.c:971 src/skins/ui_manager.c:451
 msgid "Load preset"
 msgstr "Carica preimpostazione"
 
-#: src/skins/ui_equalizer.c:987
+#: src/skins/ui_equalizer.c:988
 msgid "Load auto-preset"
 msgstr "Carica preimpostazione a caricamento automatico"
 
-#: src/skins/ui_equalizer.c:1017 src/skins/ui_equalizer.c:1035
-#: src/skins/ui_equalizer.c:1051
+#: src/skins/ui_equalizer.c:1018 src/skins/ui_equalizer.c:1036
+#: src/skins/ui_equalizer.c:1052
 msgid "Load equalizer preset"
 msgstr "Carica preimpostazione equalizzatore"
 
-#: src/skins/ui_equalizer.c:1070 src/skins/ui_manager.c:472
+#: src/skins/ui_equalizer.c:1071 src/skins/ui_manager.c:472
 msgid "Save preset"
 msgstr "Salva preimpostazione"
 
-#: src/skins/ui_equalizer.c:1086
+#: src/skins/ui_equalizer.c:1087
 msgid "Save auto-preset"
 msgstr "Salva preimpostazione a caricamento automatico"
 
-#: src/skins/ui_equalizer.c:1117 src/skins/ui_equalizer.c:1153
+#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
 msgid "Save equalizer preset"
 msgstr "Salva preimpostazione equalizzatore"
 
-#: src/skins/ui_equalizer.c:1172 src/skins/ui_manager.c:487
+#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
 msgid "Delete preset"
 msgstr "Elimina preimpostazione"
 
-#: src/skins/ui_equalizer.c:1189
+#: src/skins/ui_equalizer.c:1190
 msgid "Delete auto-preset"
 msgstr "Elimina preimpostazione a caricamento automatico"
 
-#: src/skins/ui_main.c:446
+#: src/skins/ui_main.c:414
 msgid "kbps"
 msgstr "kbps"
 
-#: src/skins/ui_main.c:454
+#: src/skins/ui_main.c:422
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:802
+#: src/skins/ui_main.c:770
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Vai a %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.c:823
+#: src/skins/ui_main.c:791
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Volume: %d%%"
 
-#: src/skins/ui_main.c:846
+#: src/skins/ui_main.c:814
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Bilanciamento: sinistra %d%%"
 
-#: src/skins/ui_main.c:848
+#: src/skins/ui_main.c:816
 msgid "Balance: center"
 msgstr "Bilanciamento: centro"
 
-#: src/skins/ui_main.c:850
+#: src/skins/ui_main.c:818
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Bilanciamento: destra %d%%"
 
-#: src/skins/ui_main.c:974
+#: src/skins/ui_main.c:942
 msgid "Options Menu"
 msgstr "Menu opzioni"
 
-#: src/skins/ui_main.c:978
+#: src/skins/ui_main.c:946
 msgid "Disable 'Always On Top'"
 msgstr "Disabilita 'Sempre in primo piano'"
 
-#: src/skins/ui_main.c:980
+#: src/skins/ui_main.c:948
 msgid "Enable 'Always On Top'"
 msgstr "Abilita 'Sempre in primo piano'"
 
-#: src/skins/ui_main.c:983
+#: src/skins/ui_main.c:951
 msgid "File Info Box"
 msgstr "Finestra informazioni file"
 
-#: src/skins/ui_main.c:988
+#: src/skins/ui_main.c:956
 msgid "Visualization Menu"
 msgstr "Menu visualizzazione"
 
-#: src/skins/ui_main.c:1631
+#: src/skins/ui_main.c:1591
 msgid "Single mode."
 msgstr "Modalità singolo."
 
-#: src/skins/ui_main.c:1633
+#: src/skins/ui_main.c:1593
 msgid "Playlist mode."
 msgstr "Modalità playlist."
 
-#: src/skins/ui_main.c:1655
+#: src/skins/ui_main.c:1615
 msgid "Stopping after song."
 msgstr "La riproduzione si fermerà alla fine del brano."
 
-#: src/skins/ui_main.c:1657
+#: src/skins/ui_main.c:1617
 msgid "Not stopping after song."
 msgstr "La riproduzione non si fermerà alla fine del brano."
 
-#: src/skins/ui_main.c:1792
+#: src/skins/ui_main.c:1752
 msgid "Repeat point A set."
 msgstr ""
 
-#: src/skins/ui_main.c:1797
+#: src/skins/ui_main.c:1757
 msgid "Repeat point B set."
 msgstr ""
 
-#: src/skins/ui_main.c:1806
+#: src/skins/ui_main.c:1766
 msgid "Repeat points cleared."
 msgstr ""
 
@@ -2989,17 +3153,9 @@ msgstr "Tempo trascorso"
 msgid "Time Remaining"
 msgstr "Tempo rimanente"
 
-#: src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
-msgid "Pause"
-msgstr "Interrompi"
-
 #: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
 msgid "Previous"
 msgstr "Precedente"
-
-#: src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
-msgid "Next"
-msgstr "Successivo"
 
 #: src/skins/ui_manager.c:195
 msgid "Visualization"
@@ -3528,15 +3684,15 @@ msgstr "Editor della playlist di Audacious"
 msgid "%s (%d of %d)"
 msgstr "%s (%d di %d)"
 
-#: src/skins/ui_skinselector.c:161
+#: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
 msgstr "Skin Winamp 2.x archiviata"
 
-#: src/skins/ui_skinselector.c:166
+#: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Skin Winamp 2.x non archiviata"
 
-#: src/skins/util.c:772
+#: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Impossibile creare la directory (%s): %s\n"
@@ -3567,11 +3723,11 @@ msgstr ""
 msgid "Sndfile Plugin"
 msgstr ""
 
-#: src/sndio/sndio.c:187
+#: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
 msgstr "Informazioni sul plugin Sndio Output"
 
-#: src/sndio/sndio.c:188
+#: src/sndio/sndio.c:173
 msgid ""
 "Sndio Output Plugin\n"
 "\n"
@@ -3581,11 +3737,11 @@ msgstr ""
 "\n"
 "Scritto da Thomas Pfaff <tpfaff@tp76.info>\n"
 
-#: src/sndio/sndio.c:259
+#: src/sndio/sndio.c:248
 msgid "Unsupported format"
 msgstr "Formato non supportato"
 
-#: src/sndio/sndio.c:260
+#: src/sndio/sndio.c:249
 msgid ""
 "A format not supported by the audio device was requested.\n"
 "\n"
@@ -3595,19 +3751,19 @@ msgstr ""
 "\n"
 "Per favore, riprova con il server sndiod(1) attivato."
 
-#: src/sndio/sndio.c:403
+#: src/sndio/sndio.c:384
 msgid "sndio device"
 msgstr "dispositivo sndio"
 
-#: src/sndio/sndio.c:419
+#: src/sndio/sndio.c:400
 msgid "(empty means default)"
 msgstr "(vuoto significa default)"
 
-#: src/sndio/sndio.c:431
+#: src/sndio/sndio.c:416
 msgid "OK"
 msgstr "OK"
 
-#: src/sndio/sndio.c:439
+#: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr "Annulla"
 
@@ -3856,14 +4012,14 @@ msgstr ""
 msgid "Ogg Vorbis Decoder"
 msgstr "Decodificatore Ogg Vorbis"
 
-#: src/vtx/vtx.c:241
+#: src/vtx/vtx.c:242
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 
-#: src/vtx/vtx.c:247
+#: src/vtx/vtx.c:248
 msgid "VTX Decoder"
 msgstr "Decodificatore VTX"
 

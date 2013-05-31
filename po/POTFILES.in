@@ -66,6 +66,7 @@ src/filewriter/vorbis.c
 src/flacng/metadata.c
 src/flacng/plugin.c
 src/gio/gio.c
+src/gl-spectrum/gl-spectrum.c
 src/gnomeshortcuts/gnomeshortcuts.c
 src/gtkui/columns.c
 src/gtkui/layout.c
@@ -91,6 +92,7 @@ src/mpris2/plugin.c
 src/neon/neon.c
 src/notify/event.c
 src/notify/notify.c
+src/notify/osd.c
 src/oss4/plugin.c
 src/pls/pls.c
 src/psf/plugin.c
@@ -98,6 +100,7 @@ src/pulse_audio/pulse_audio.c
 src/resample/resample.c
 src/scrobbler2/config_window.c
 src/scrobbler2/scrobbler.c
+src/scrobbler2/scrobbler_communication.c
 src/sdlout/plugin.c
 src/search-tool/search-tool.c
 src/skins/plugin.c
