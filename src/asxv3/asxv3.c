@@ -56,6 +56,31 @@ static gint close_cb (void * file)
     return 0;
 }
 
+
+void freeAsx(asx_entry_t* asx)
+{
+	if (asx->title)
+		g_string_free(asx->title, FALSE);	
+
+	if (asx->author)
+		g_string_free(asx->author, FALSE);
+
+	if (asx->copyright)
+		g_string_free(asx->copyright, FALSE);
+
+	if (asx->abstract)
+		g_string_free(asx->abstract, FALSE);
+
+	int count;
+    for (count = 0; count < asx->refs->len; count ++)
+	{
+		GString* href = g_ptr_array_index(asx->refs, count);
+		g_string_free(href, FALSE);
+	}
+
+	g_ptr_array_free (asx->refs, TRUE);
+}
+
 GPtrArray*
 parseEntry (xmlNodePtr cur)
 {
@@ -71,6 +96,7 @@ parseEntry (xmlNodePtr cur)
             key = xmlGetProp(cur, (const xmlChar*) "href");
 			if (key != NULL)
 			{
+				/* should we copy key before calling xmlFree() ? */
 				str = g_string_new((const gchar*) key);
 				g_ptr_array_add(result, str);
 	            xmlFree(key);
@@ -117,6 +143,7 @@ contentToString(xmlNode* node)
 	/* assume that xmlChar and gchar are equal */
 	GString *gstr = g_string_new((const gchar*) content);
 	
+	/* should we copy content before calling xmlFree() ? */
 	xmlFree(content);
 
 	return gstr;
@@ -277,6 +304,8 @@ static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
 			g_free (uri);
 		}
 	}
+
+	freeAsx(asx);
 	
     xmlFreeDoc(doc);
 
@@ -324,6 +353,8 @@ static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
 
 	gboolean retCode = writeAsx(file, asx);
 
+	freeAsx(asx);
+
     xmlCleanupParser();
 
 	/*
@@ -338,7 +369,8 @@ static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
 static const gchar * const asx_exts[] = {"asx", NULL};
 
 static const char asx_about[] =
- N_("This container plugin supports the reading\n"
+ N_("ASXv3 Playlists v. 1.0\n\n"
+	"This container plugin supports the reading\n"
     "and writing of asx v3 files.\n\n"
     "Copyright 2013 Martin Steiger");
 
