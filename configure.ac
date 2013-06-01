@@ -865,6 +865,15 @@ PKG_CHECK_MODULES([XML], [libxml-2.0])
 CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
 
 
+dnl ASXv3
+dnl -----
+
+PKG_CHECK_MODULES([XML], [libxml-2.0])
+
+have_asxv3=yes
+CONTAINER_PLUGINS="$CONTAINER_PLUGINS asxv3"
+
+
 dnl CUE
 dnl ---
 
@@ -1236,6 +1245,8 @@ echo
 echo "  Container"
 echo "  ---------"
 echo "  Audacious playlist format (audpl):      yes"
+echo "  Advanced Stream Redirecting v1/2(asx):  yes"
+echo "  Advanced Stream Redirecting v3(asxv3):  $have_asxv3"
 echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
 echo "  XML Sharable Playlist Format (xspf):    yes"

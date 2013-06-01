@@ -132,7 +132,7 @@ parseDoc(xmlDoc* doc)
 	if (!checkRoot(root))
 		return NULL;
 
-	asx_entry_t *result = g_malloc(sizeof(asx_entry_t));
+	asx_entry_t *result = g_malloc0(sizeof(asx_entry_t));
 	
     while (cur != NULL)
 	{
@@ -303,7 +303,7 @@ static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
 	gint entries = index_count (filenames);
 	gint count;
 
-	asx_entry_t* asx = g_malloc(sizeof(asx_entry_t));
+	asx_entry_t* asx = g_malloc0(sizeof(asx_entry_t));
 
 	asx->title = g_string_new(title);
 
@@ -319,7 +319,7 @@ static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
         else
             fn = g_filename_from_uri (filename, NULL, NULL);
 
-		g_ptr_array_add(asx->refs, fn);
+		g_ptr_array_add(asx->refs, g_string_new(fn));
 	}
 
 	gboolean retCode = writeAsx(file, asx);
