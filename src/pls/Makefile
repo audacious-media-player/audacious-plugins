@@ -1,5 +1,5 @@
 PLUGIN = pls${PLUGIN_SUFFIX}
-SRCS = pls.c util.c
+SRCS = pls.c
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -7,5 +7,4 @@ include ../../extra.mk
 plugindir := ${plugindir}/${CONTAINER_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} -I../..
-LIBS += ${GLIB_LIBS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..

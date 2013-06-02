@@ -2,7 +2,7 @@
  * Audacious: A cross-platform multimedia player
  * Copyright (c) 2006 William Pitcock, Tony Vroon, George Averill,
  *                    Giacomo Lozito, Derek Pomery and Yoshiki Yazawa.
- * Copyright (c) 2011 John Lindgren
+ * Copyright (c) 2011-2013 John Lindgren
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,100 +19,85 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/* #define AUD_DEBUG 1 */
-
-#include <glib.h>
-#include <string.h>
-#include <glib.h>
-#include <glib/gprintf.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
-#include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/inifile.h>
 
-#include "util.h"
-
-static gboolean playlist_load_pls (const gchar * filename, VFSFile * file,
- gchar * * title, Index * filenames, Index * tuples)
+static bool_t playlist_load_pls (const char * filename, VFSFile * file,
+ char * * title, Index * filenames, Index * tuples)
 {
-    gint i, count;
-    gchar line_key[16];
-    gchar * line;
-
-    INIFile * inifile = open_ini_file (file);
+    INIFile * inifile = inifile_read (file);
+    if (! inifile)
+        return FALSE;
 
     * title = NULL;
 
-    if (!(line = read_ini_string(inifile, "playlist", "NumberOfEntries")))
+    const char * val = inifile_lookup (inifile, "playlist", "numberofentries");
+    if (! val)
     {
-        close_ini_file(inifile);
+        inifile_destroy (inifile);
         return FALSE;
     }
 
-    count = atoi(line);
-    g_free(line);
+    int count = atoi (val);
 
-    for (i = 1; i <= count; i++) {
-        g_snprintf(line_key, sizeof(line_key), "File%d", i);
-        if ((line = read_ini_string(inifile, "playlist", line_key)))
-        {
-            gchar *uri = aud_construct_uri(line, filename);
-            g_free(line);
+    for (int i = 1; i <= count; i ++)
+    {
+        SPRINTF (key, "file%d", i);
 
-            if (uri != NULL)
-                index_append (filenames, str_get (uri));
+        if (! (val = inifile_lookup (inifile, "playlist", key)))
+            continue;
 
-            g_free (uri);
-        }
+        char * uri = aud_construct_uri (val, filename);
+        if (! uri)
+            continue;
+
+        index_append (filenames, str_get (uri));
+        free (uri);
     }
 
-    close_ini_file(inifile);
+    inifile_destroy (inifile);
     return TRUE;
 }
 
-static gboolean playlist_save_pls (const gchar * filename, VFSFile * file,
- const gchar * title, Index * filenames, Index * tuples)
+static bool_t playlist_save_pls (const char * filename, VFSFile * file,
+                                   const char * title, Index * filenames, Index * tuples)
 {
-    gint entries = index_count (filenames);
-    gint count;
+    int entries = index_count (filenames);
 
-    vfs_fprintf(file, "[playlist]\n");
-    vfs_fprintf(file, "NumberOfEntries=%d\n", entries);
+    vfs_fprintf (file, "[playlist]\n");
+    vfs_fprintf (file, "NumberOfEntries=%d\n", entries);
 
-    for (count = 0; count < entries; count ++)
+    for (int count = 0; count < entries; count ++)
     {
-        const gchar * filename = index_get (filenames, count);
-        gchar *fn;
+        const char * filename = index_get (filenames, count);
+        char * fn;
 
-        if (vfs_is_remote (filename))
-            fn = g_strdup (filename);
+        if (! strncmp (filename, "file://", 7))
+            fn = uri_to_filename (filename);
         else
-            fn = g_filename_from_uri (filename, NULL, NULL);
+            fn = strdup (filename);
 
         vfs_fprintf (file, "File%d=%s\n", 1 + count, fn);
-        g_free(fn);
+        free (fn);
     }
 
     return TRUE;
 }
 
-static const gchar * const pls_exts[] = {"pls", NULL};
+static const char * const pls_exts[] = {"pls", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
- .name = N_("PLS Playlists"),
- .domain = PACKAGE,
- .extensions = pls_exts,
- .load = playlist_load_pls,
- .save = playlist_save_pls
+    .name = N_("PLS Playlists"),
+    .domain = PACKAGE,
+    .extensions = pls_exts,
+    .load = playlist_load_pls,
+    .save = playlist_save_pls
 )
