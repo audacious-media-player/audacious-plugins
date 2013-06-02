@@ -32,6 +32,7 @@
 
 #include <audacious/debug.h>
 #include <audacious/misc.h>
+#include <libaudcore/inifile.h>
 
 #include "plugin.h"
 #include "skins_cfg.h"
@@ -132,6 +133,28 @@ static const guint32 default_vis_colors[24] = {
 static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
  gchar * file, const gchar * section, GdkWindow * window, gint width, gint
  height);
+
+static INIFile * open_ini_file (const char * path, const char * name)
+{
+    gchar * filename = find_file_case_uri (path, name);
+    if (! filename)
+        return NULL;
+
+    VFSFile * file = vfs_fopen (filename, "r");
+    g_free (filename);
+    if (! file)
+        return NULL;
+
+    INIFile * inifile = inifile_read (file);
+    vfs_fclose (file);
+    return inifile;
+}
+
+static GArray * read_ini_array (INIFile * inifile, const char * section, const char * key)
+{
+    const gchar * str = inifile_lookup (inifile, section, key);
+    return str ? string_to_garray (str) : NULL;
+}
 
 gboolean active_skin_load (const gchar * path)
 {
@@ -436,9 +459,6 @@ void cleanup_skins()
  */
 static void skin_parse_hints (Skin * skin, const gchar * path_p)
 {
-    gchar *filename;
-    INIFile *inifile;
-
     path_p = path_p ? path_p : skin->path;
 
     skin->properties.mainwin_vis_x = 24;
@@ -510,100 +530,89 @@ static void skin_parse_hints (Skin * skin, const gchar * path_p)
     if (path_p == NULL)
         return;
 
-    filename = find_file_case_uri (path_p, "skin.hints");
-
-    if (filename == NULL)
-        return;
-
-    inifile = open_ini_file(filename);
-    if (!inifile)
+    INIFile * inifile = open_ini_file (path_p, "skin.hints");
+    if (! inifile)
         return;
 
     struct {
         const gchar * name;
         gint * value;
     } pairs[] = {
-     {"mainwinVisX", & skin->properties.mainwin_vis_x},
-     {"mainwinVisY", & skin->properties.mainwin_vis_y},
-     {"mainwinTextX", & skin->properties.mainwin_text_x},
-     {"mainwinTextY", & skin->properties.mainwin_text_y},
-     {"mainwinTextWidth", & skin->properties.mainwin_text_width},
-     {"mainwinInfoBarX", & skin->properties.mainwin_infobar_x},
-     {"mainwinInfoBarY", & skin->properties.mainwin_infobar_y},
-     {"mainwinNumber0X", & skin->properties.mainwin_number_0_x},
-     {"mainwinNumber0Y", & skin->properties.mainwin_number_0_y},
-     {"mainwinNumber1X", & skin->properties.mainwin_number_1_x},
-     {"mainwinNumber1Y", & skin->properties.mainwin_number_1_y},
-     {"mainwinNumber2X", & skin->properties.mainwin_number_2_x},
-     {"mainwinNumber2Y", & skin->properties.mainwin_number_2_y},
-     {"mainwinNumber3X", & skin->properties.mainwin_number_3_x},
-     {"mainwinNumber3Y", & skin->properties.mainwin_number_3_y},
-     {"mainwinNumber4X", & skin->properties.mainwin_number_4_x},
-     {"mainwinNumber4Y", & skin->properties.mainwin_number_4_y},
-     {"mainwinPlayStatusX", & skin->properties.mainwin_playstatus_x},
-     {"mainwinPlayStatusY", & skin->properties.mainwin_playstatus_y},
-     {"mainwinMenurowVisible", & skin->properties.mainwin_menurow_visible},
-     {"mainwinStreaminfoVisible", & skin->properties.mainwin_streaminfo_visible},
-     {"mainwinVolumeX", & skin->properties.mainwin_volume_x},
-     {"mainwinVolumeY", & skin->properties.mainwin_volume_y},
-     {"mainwinBalanceX", & skin->properties.mainwin_balance_x},
-     {"mainwinBalanceY", & skin->properties.mainwin_balance_y},
-     {"mainwinPositionX", & skin->properties.mainwin_position_x},
-     {"mainwinPositionY", & skin->properties.mainwin_position_y},
-     {"mainwinOthertextIsStatus", & skin->properties.mainwin_othertext_is_status},
-     {"mainwinOthertextVisible", & skin->properties.mainwin_othertext_visible},
-     {"mainwinTextVisible", & skin->properties.mainwin_text_visible},
-     {"mainwinVisVisible", & skin->properties.mainwin_vis_visible},
-     {"mainwinPreviousX", & skin->properties.mainwin_previous_x},
-     {"mainwinPreviousY", & skin->properties.mainwin_previous_y},
-     {"mainwinPlayX", & skin->properties.mainwin_play_x},
-     {"mainwinPlayY", & skin->properties.mainwin_play_y},
-     {"mainwinPauseX", & skin->properties.mainwin_pause_x},
-     {"mainwinPauseY", & skin->properties.mainwin_pause_y},
-     {"mainwinStopX", & skin->properties.mainwin_stop_x},
-     {"mainwinStopY", & skin->properties.mainwin_stop_y},
-     {"mainwinNextX", & skin->properties.mainwin_next_x},
-     {"mainwinNextY", & skin->properties.mainwin_next_y},
-     {"mainwinEjectX", & skin->properties.mainwin_eject_x},
-     {"mainwinEjectY", & skin->properties.mainwin_eject_y},
-     {"mainwinWidth", & skin->properties.mainwin_width},
-     {"mainwinHeight", & skin->properties.mainwin_height},
-     {"mainwinAboutX", & skin->properties.mainwin_about_x},
-     {"mainwinAboutY", & skin->properties.mainwin_about_y},
-     {"mainwinShuffleX", & skin->properties.mainwin_shuffle_x},
-     {"mainwinShuffleY", & skin->properties.mainwin_shuffle_y},
-     {"mainwinRepeatX", & skin->properties.mainwin_repeat_x},
-     {"mainwinRepeatY", & skin->properties.mainwin_repeat_y},
-     {"mainwinEQButtonX", & skin->properties.mainwin_eqbutton_x},
-     {"mainwinEQButtonY", & skin->properties.mainwin_eqbutton_y},
-     {"mainwinPLButtonX", & skin->properties.mainwin_plbutton_x},
-     {"mainwinPLButtonY", & skin->properties.mainwin_plbutton_y},
-     {"textboxBitmapFontWidth", & skin->properties.textbox_bitmap_font_width},
-     {"textboxBitmapFontHeight", & skin->properties.textbox_bitmap_font_height},
-     {"mainwinMinimizeX", & skin->properties.mainwin_minimize_x},
-     {"mainwinMinimizeY", & skin->properties.mainwin_minimize_y},
-     {"mainwinShadeX", & skin->properties.mainwin_shade_x},
-     {"mainwinShadeY", & skin->properties.mainwin_shade_y},
-     {"mainwinCloseX", & skin->properties.mainwin_close_x},
-     {"mainwinCloseY", & skin->properties.mainwin_close_y}};
+     {"mainwinvisx", & skin->properties.mainwin_vis_x},
+     {"mainwinvisy", & skin->properties.mainwin_vis_y},
+     {"mainwintextx", & skin->properties.mainwin_text_x},
+     {"mainwintexty", & skin->properties.mainwin_text_y},
+     {"mainwintextwidth", & skin->properties.mainwin_text_width},
+     {"mainwininfobarx", & skin->properties.mainwin_infobar_x},
+     {"mainwininfobary", & skin->properties.mainwin_infobar_y},
+     {"mainwinnumber0x", & skin->properties.mainwin_number_0_x},
+     {"mainwinnumber0y", & skin->properties.mainwin_number_0_y},
+     {"mainwinnumber1x", & skin->properties.mainwin_number_1_x},
+     {"mainwinnumber1y", & skin->properties.mainwin_number_1_y},
+     {"mainwinnumber2x", & skin->properties.mainwin_number_2_x},
+     {"mainwinnumber2y", & skin->properties.mainwin_number_2_y},
+     {"mainwinnumber3x", & skin->properties.mainwin_number_3_x},
+     {"mainwinnumber3y", & skin->properties.mainwin_number_3_y},
+     {"mainwinnumber4x", & skin->properties.mainwin_number_4_x},
+     {"mainwinnumber4y", & skin->properties.mainwin_number_4_y},
+     {"mainwinplaystatusx", & skin->properties.mainwin_playstatus_x},
+     {"mainwinplaystatusy", & skin->properties.mainwin_playstatus_y},
+     {"mainwinmenurowvisible", & skin->properties.mainwin_menurow_visible},
+     {"mainwinstreaminfovisible", & skin->properties.mainwin_streaminfo_visible},
+     {"mainwinvolumex", & skin->properties.mainwin_volume_x},
+     {"mainwinvolumey", & skin->properties.mainwin_volume_y},
+     {"mainwinbalancex", & skin->properties.mainwin_balance_x},
+     {"mainwinbalancey", & skin->properties.mainwin_balance_y},
+     {"mainwinpositionx", & skin->properties.mainwin_position_x},
+     {"mainwinpositiony", & skin->properties.mainwin_position_y},
+     {"mainwinothertextisstatus", & skin->properties.mainwin_othertext_is_status},
+     {"mainwinothertextvisible", & skin->properties.mainwin_othertext_visible},
+     {"mainwintextvisible", & skin->properties.mainwin_text_visible},
+     {"mainwinvisvisible", & skin->properties.mainwin_vis_visible},
+     {"mainwinpreviousx", & skin->properties.mainwin_previous_x},
+     {"mainwinpreviousy", & skin->properties.mainwin_previous_y},
+     {"mainwinplayx", & skin->properties.mainwin_play_x},
+     {"mainwinplayy", & skin->properties.mainwin_play_y},
+     {"mainwinpausex", & skin->properties.mainwin_pause_x},
+     {"mainwinpausey", & skin->properties.mainwin_pause_y},
+     {"mainwinstopx", & skin->properties.mainwin_stop_x},
+     {"mainwinstopy", & skin->properties.mainwin_stop_y},
+     {"mainwinnextx", & skin->properties.mainwin_next_x},
+     {"mainwinnexty", & skin->properties.mainwin_next_y},
+     {"mainwinejectx", & skin->properties.mainwin_eject_x},
+     {"mainwinejecty", & skin->properties.mainwin_eject_y},
+     {"mainwinwidth", & skin->properties.mainwin_width},
+     {"mainwinheight", & skin->properties.mainwin_height},
+     {"mainwinaboutx", & skin->properties.mainwin_about_x},
+     {"mainwinabouty", & skin->properties.mainwin_about_y},
+     {"mainwinshufflex", & skin->properties.mainwin_shuffle_x},
+     {"mainwinshuffley", & skin->properties.mainwin_shuffle_y},
+     {"mainwinrepeatx", & skin->properties.mainwin_repeat_x},
+     {"mainwinrepeaty", & skin->properties.mainwin_repeat_y},
+     {"mainwineqbuttonx", & skin->properties.mainwin_eqbutton_x},
+     {"mainwineqbuttony", & skin->properties.mainwin_eqbutton_y},
+     {"mainwinplbuttonx", & skin->properties.mainwin_plbutton_x},
+     {"mainwinplbuttony", & skin->properties.mainwin_plbutton_y},
+     {"textboxbitmapfontwidth", & skin->properties.textbox_bitmap_font_width},
+     {"textboxbitmapfontheight", & skin->properties.textbox_bitmap_font_height},
+     {"mainwinminimizex", & skin->properties.mainwin_minimize_x},
+     {"mainwinminimizey", & skin->properties.mainwin_minimize_y},
+     {"mainwinshadex", & skin->properties.mainwin_shade_x},
+     {"mainwinshadey", & skin->properties.mainwin_shade_y},
+     {"mainwinclosex", & skin->properties.mainwin_close_x},
+     {"mainwinclosey", & skin->properties.mainwin_close_y}};
 
     for (gint i = 0; i < G_N_ELEMENTS (pairs); i ++)
     {
-        gchar * s = read_ini_string (inifile, "skin", pairs[i].name);
+        const gchar * s = inifile_lookup (inifile, "skin", pairs[i].name);
         if (s)
-        {
             * pairs[i].value = atoi (s);
-            g_free (s);
-        }
     }
+
+    inifile_destroy (inifile);
 
     skin_mask_info[0].height = skin->properties.mainwin_height;
     skin_mask_info[0].width = skin->properties.mainwin_width;
-
-    if (filename != NULL)
-        g_free(filename);
-
-    close_ini_file(inifile);
 }
 
 static gint hex_chars_to_int (gchar hi, gchar lo)
@@ -619,19 +628,9 @@ static gint hex_chars_to_int (gchar hi, gchar lo)
 static guint32 skin_load_color (INIFile * inifile, const gchar * section,
  const gchar * key, const gchar * default_hex)
 {
-    gchar * value = NULL;
+    const gchar * value = inifile ? inifile_lookup (inifile, section, key) : NULL;
+    const gchar * ptr = value ? value : default_hex;
 
-    if (inifile)
-        value = read_ini_string (inifile, section, key);
-
-    if (! value && default_hex)
-        value = g_strdup (default_hex);
-
-    if (! value)
-        return 0;
-
-    g_strstrip (value);
-    gchar * ptr = value;
     if (* ptr == '#')
         ptr ++;
 
@@ -655,7 +654,6 @@ static guint32 skin_load_color (INIFile * inifile, const gchar * section,
     if (len >= 2)
         blue = hex_chars_to_int (ptr[0], ptr[1]);
 
-    g_free (value);
     return COLOR (red, green, blue);
 }
 
@@ -663,55 +661,42 @@ static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
  gchar * file, const gchar * section, GdkWindow * window, gint width, gint
  height)
 {
-    gchar *filename = NULL;
-    INIFile *inifile = NULL;
-    gboolean created_mask = FALSE;
-    GArray *num, *point;
-    guint i, j;
-    gint k;
+    GArray * num = NULL, * point = NULL;
 
-    if (path != NULL)
-        filename = find_file_case_uri (path, file);
-
-    /* filename will be null if path wasn't set */
-    if (!filename)
-        return create_default_mask(window, width, height);
-
-    inifile = open_ini_file(filename);
-
-    if ((num = read_ini_array(inifile, section, "NumPoints")) == NULL) {
-        g_free(filename);
-        close_ini_file(inifile);
-        return NULL;
+    INIFile * inifile = open_ini_file (path, file);
+    if (inifile)
+    {
+        num = read_ini_array (inifile, section, "numpoints");
+        point = read_ini_array (inifile, section, "pointlist");
+        inifile_destroy (inifile);
     }
 
-    if ((point = read_ini_array(inifile, section, "PointList")) == NULL) {
-        g_array_free(num, TRUE);
-        g_free(filename);
-        close_ini_file(inifile);
-        return NULL;
+    if (! num || ! point)
+    {
+        if (num) g_array_free (num, TRUE);
+        if (point) g_array_free (point, TRUE);
+        return create_default_mask (window, width, height);
     }
-
-    close_ini_file(inifile);
 
     cairo_region_t * mask = cairo_region_create ();
+    gboolean created_mask = FALSE;
 
-    j = 0;
-    for (i = 0; i < num->len; i ++)
+    gint j = 0;
+    for (gint i = 0; i < num->len; i ++)
     {
         gint n_points = g_array_index (num, gint, i);
         if (n_points <= 0 || j + 2 * n_points > point->len)
             break;
 
         GdkPoint gpoints[n_points];
-        for (k = 0; k < n_points; k ++)
+        for (gint k = 0; k < n_points; k ++)
         {
             gpoints[k].x = g_array_index (point, gint, j + k * 2);
             gpoints[k].y = g_array_index (point, gint, j + k * 2 + 1);
         }
 
         gint xmin = width, ymin = height, xmax = 0, ymax = 0;
-        for (k = 0; k < n_points; k ++)
+        for (gint k = 0; k < n_points; k ++)
         {
             xmin = MIN (xmin, gpoints[k].x);
             ymin = MIN (ymin, gpoints[k].y);
@@ -731,7 +716,6 @@ static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
 
     g_array_free(num, TRUE);
     g_array_free(point, TRUE);
-    g_free(filename);
 
     if (!created_mask)
     {
@@ -799,16 +783,9 @@ skin_numbers_generate_dash(Skin * skin)
 static gboolean
 skin_load_pixmaps(Skin * skin, const gchar * path)
 {
-    guint i;
-    gchar *filename;
-    INIFile *inifile;
-
-    if(!skin) return FALSE;
-    if(!path) return FALSE;
-
     AUDDBG("Loading pixmaps in %s\n", path);
 
-    for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
+    for (gint i = 0; i < SKIN_PIXMAP_COUNT; i++)
         if (! skin_load_pixmap_id (skin, i, path))
             return FALSE;
 
@@ -819,23 +796,19 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
      (skin->pixmaps[SKIN_NUMBERS]) < 108)
         skin_numbers_generate_dash (skin);
 
-    filename = find_file_case_uri (path, "pledit.txt");
-    inifile = (filename != NULL) ? open_ini_file (filename) : NULL;
+    INIFile * inifile = open_ini_file (path, "pledit.txt");
 
     skin->colors[SKIN_PLEDIT_NORMAL] =
-        skin_load_color(inifile, "Text", "Normal", "#2499ff");
+        skin_load_color(inifile, "text", "normal", "#2499ff");
     skin->colors[SKIN_PLEDIT_CURRENT] =
-        skin_load_color(inifile, "Text", "Current", "#ffeeff");
+        skin_load_color(inifile, "text", "current", "#ffeeff");
     skin->colors[SKIN_PLEDIT_NORMALBG] =
-        skin_load_color(inifile, "Text", "NormalBG", "#0a120a");
+        skin_load_color(inifile, "text", "normalbg", "#0a120a");
     skin->colors[SKIN_PLEDIT_SELECTEDBG] =
-        skin_load_color(inifile, "Text", "SelectedBG", "#0a124a");
+        skin_load_color(inifile, "text", "selectedbg", "#0a124a");
 
     if (inifile)
-        close_ini_file(inifile);
-
-    if (filename)
-        g_free(filename);
+        inifile_destroy (inifile);
 
     skin_mask_create (skin, path, SKIN_MASK_MAIN, gtk_widget_get_window (mainwin));
     skin_mask_create (skin, path, SKIN_MASK_MAIN_SHADE, gtk_widget_get_window (mainwin));
