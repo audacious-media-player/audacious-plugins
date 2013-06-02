@@ -1,101 +1,98 @@
 /*
- * Audacious: A cross-platform multimedia player
- * Copyright (c) 2006 William Pitcock, Tony Vroon, George Averill,
- *                    Giacomo Lozito, Derek Pomery and Yoshiki Yazawa.
- * Copyright (c) 2011 John Lindgren
+ * asx.c
+ * Copyright 2010-2013 William Pitcock and John Lindgren
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions, and the following disclaimer.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions, and the following disclaimer in the documentation
+ *    provided with the distribution.
+ *
+ * This software is provided "as is" and without any warranty, express or
+ * implied. In no event shall the authors be liable for any damages arising from
+ * the use of this software.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/inifile.h>
 
-#include "util.h"
-
-static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
- gchar * * title, Index * filenames, Index * tuples)
+static bool_t playlist_load_asx (const char * filename, VFSFile * file,
+ char * * title, Index * filenames, Index * tuples)
 {
-    gint i;
-    gchar line_key[16];
-    gchar * line;
-
-    INIFile * inifile = open_ini_file (file);
+    INIFile * inifile = inifile_read (file);
+    if (! inifile)
+        return FALSE;
 
     * title = NULL;
 
-    for (i = 1; ; i++) {
-        g_snprintf(line_key, sizeof(line_key), "Ref%d", i);
-        if ((line = read_ini_string(inifile, "Reference", line_key)))
-        {
-            gchar *uri;
+    for (int i = 1;; i ++)
+    {
+        SPRINTF (key, "ref%d", i);
 
-            uri = aud_construct_uri(line, filename);
-            g_free(line);
-
-            if (!g_ascii_strncasecmp("http://", uri, 7))
-                uri = str_replace_fragment(uri, strlen(uri), "http://", "mms://");
-
-            if (uri != NULL)
-                index_append (filenames, str_get (uri));
-
-            g_free (uri);
-        }
-        else
+        const char * val = inifile_lookup (inifile, "reference", key);
+        if (! val)
             break;
+
+        char * uri = aud_construct_uri (val, filename);
+        if (! uri)
+            continue;
+
+        if (! strncmp ("http://", uri, 7))
+            str_replace_fragment (uri, strlen (uri), "http://", "mms://");
+
+        index_append (filenames, str_get (uri));
+        free (uri);
     }
 
-    close_ini_file(inifile);
+    inifile_destroy (inifile);
     return TRUE;
 }
 
-static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
- const gchar * title, Index * filenames, Index * tuples)
+static bool_t playlist_save_asx (const char * filename, VFSFile * file,
+ const char * title, Index * filenames, Index * tuples)
 {
-    gint entries = index_count (filenames);
-    gint count;
+    int entries = index_count (filenames);
 
-    vfs_fprintf(file, "[Reference]\r\n");
+    vfs_fprintf (file, "[Reference]\r\n");
 
-    for (count = 0; count < entries; count ++)
+    for (int count = 0; count < entries; count ++)
     {
-        const gchar * filename = index_get (filenames, count);
-        gchar *fn;
+        const char * filename = index_get (filenames, count);
+        char * fn;
 
-        if (vfs_is_remote (filename))
-            fn = g_strdup (filename);
+        if (! strncmp (filename, "file://", 7))
+            fn = uri_to_filename (filename);
         else
-            fn = g_filename_from_uri (filename, NULL, NULL);
+            fn = strdup (filename);
+
+        if (! fn)
+            continue;
 
         vfs_fprintf (file, "Ref%d=%s\r\n", 1 + count, fn);
-        g_free(fn);
+        free (fn);
     }
 
     return TRUE;
 }
 
-static const gchar * const asx_exts[] = {"asx", NULL};
+static const char * const asx_exts[] = {"asx", NULL};
 
 AUD_PLAYLIST_PLUGIN
 (
- .name = N_("ASXv1/ASXv2 Playlists"),
- .domain = PACKAGE,
- .extensions = asx_exts,
- .load = playlist_load_asx,
- .save = playlist_save_asx
+    .name = N_("ASXv1/ASXv2 Playlists"),
+    .domain = PACKAGE,
+    .extensions = asx_exts,
+    .load = playlist_load_asx,
+    .save = playlist_save_asx
 )
