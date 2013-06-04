@@ -1,6 +1,6 @@
 /*
  * MMS/MMSH Transport for Audacious
- * Copyright 2007-2011 William Pitcock and John Lindgren
+ * Copyright 2007-2013 William Pitcock and John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
 
 #include <libmms/mms.h>
 #include <libmms/mmsh.h>
@@ -29,104 +28,76 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
-#define BUFSIZE 65536
-#define BLOCKSIZE 4096
-
-typedef struct {
-    mms_t *mms;
-    mmsh_t *mmsh;
-    unsigned char * buf;
-    int64_t offset;
-    int len, used;
-} MMSHandle;
+typedef struct
+{
+    mms_t * mms;
+    mmsh_t * mmsh;
+}
+MMSHandle;
 
 static void * mms_vfs_fopen_impl (const char * path, const char * mode)
 {
-    AUDDBG("Opening %s.\n", path);
+    AUDDBG ("Opening %s.\n", path);
 
-    MMSHandle * handle = malloc (sizeof (MMSHandle));
-    memset (handle, 0, sizeof (MMSHandle));
+    MMSHandle * h = malloc (sizeof (MMSHandle));
+    memset (h, 0, sizeof (MMSHandle));
 
-    handle->mmsh = mmsh_connect(NULL, NULL, path, 128 * 1024);
-
-    if (handle->mmsh == NULL) {
-        AUDDBG("Failed to connect with MMSH protocol; trying MMS.\n");
-        handle->mms = mms_connect(NULL, NULL, path, 128 * 1024);
-    }
-
-    if (handle->mms == NULL && handle->mmsh == NULL)
+    if (! (h->mmsh = mmsh_connect (NULL, NULL, path, 128 * 1024)))
     {
-        fprintf(stderr, "mms: Failed to open %s.\n", path);
-        free(handle);
-        return NULL;
+        AUDDBG ("Failed to connect with MMSH protocol; trying MMS.\n");
+
+        if (! (h->mms = mms_connect (NULL, NULL, path, 128 * 1024)))
+        {
+            fprintf (stderr, "mms: Failed to open %s.\n", path);
+            free (h);
+            return NULL;
+        }
     }
 
-    handle->buf = malloc (BUFSIZE);
-    return handle;
+    return h;
 }
 
 static int mms_vfs_fclose_impl (VFSFile * file)
 {
-    MMSHandle *handle = (MMSHandle *) vfs_get_handle (file);
+    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
-    if (handle->mms != NULL)
-        mms_close(handle->mms);
-    else /* if (handle->mmsh != NULL) */
-        mmsh_close(handle->mmsh);
+    if (h->mms)
+        mms_close (h->mms);
+    else
+        mmsh_close (h->mmsh);
 
-    free (handle->buf);
-    free (handle);
-
+    free (h);
     return 0;
 }
 
-static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count,
- VFSFile * file)
+static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSFile * file)
 {
     MMSHandle * h = vfs_get_handle (file);
-    int64_t goal = size * count;
-    int64_t total = 0;
+    int64_t bytes_total = size * count;
+    int64_t bytes_read = 0;
 
-    while (total < goal)
+    while (bytes_read < bytes_total)
     {
-        if (h->used == h->len)
-        {
-            if (h->len == BUFSIZE)
-            {
-                memmove (h->buf, h->buf + BLOCKSIZE, BUFSIZE - BLOCKSIZE);
-                h->offset += BLOCKSIZE;
-                h->len = BUFSIZE - BLOCKSIZE;
-                h->used = BUFSIZE - BLOCKSIZE;
-            }
+        int64_t readsize;
 
-            int size = MIN (BLOCKSIZE, BUFSIZE - h->len);
+        if (h->mms)
+            readsize = mms_read (NULL, h->mms, (char *) buf + bytes_read, bytes_total - bytes_read);
+        else
+            readsize = mmsh_read (NULL, h->mmsh, (char *) buf + bytes_read, bytes_total - bytes_read);
 
-            if (h->mms)
-                size = mms_read (NULL, h->mms, (char *) h->buf + h->len, size);
-            else /* if (h->mmsh) */
-                size = mmsh_read (NULL, h->mmsh, (char *) h->buf + h->len, size);
+        if (readsize < 0)
+            fprintf (stderr, "mms: Read failed.\n");
 
-            if (size < 0)
-                fprintf (stderr, "mms: Read error: %s.\n", strerror (errno));
-            if (size <= 0)
-                break;
+        if (readsize <= 0)
+            break;
 
-            h->len += size;
-        }
-
-        int copy = MIN (h->len - h->used, goal - total);
-
-        memcpy (buf, h->buf + h->used, copy);
-        h->used += copy;
-        buf = (char *) buf + copy;
-        total += copy;
+        bytes_read += readsize;
     }
 
-    return (size > 0) ? total / size : 0;
+    return size ? bytes_read / size : 0;
 }
 
-static int64_t mms_vfs_fwrite_impl (const void * data, int64_t size, int64_t count,
- VFSFile * file)
+static int64_t mms_vfs_fwrite_impl (const void * data, int64_t size, int64_t count, VFSFile * file)
 {
     fprintf (stderr, "mms: Writing is not supported.\n");
     return 0;
@@ -136,54 +107,55 @@ static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 {
     MMSHandle * h = vfs_get_handle (file);
 
-    if (whence == SEEK_SET)
+    if (whence == SEEK_CUR)
     {
-        whence = SEEK_CUR;
-        offset -= h->offset + h->used;
+        if (h->mms)
+            offset += mms_get_current_pos (h->mms);
+        else
+            offset += mmsh_get_current_pos (h->mmsh);
+    }
+    else if (whence == SEEK_END)
+    {
+        if (h->mms)
+            offset += mms_get_length (h->mms);
+        else
+            offset += mmsh_get_length (h->mmsh);
     }
 
-    if (whence != SEEK_CUR || offset < -h->used || offset > h->len - h->used)
+    int64_t ret;
+
+    if (h->mms)
+        ret = mms_seek (NULL, h->mms, offset, SEEK_SET);
+    else
+        ret = mmsh_seek (NULL, h->mmsh, offset, SEEK_SET);
+
+    if (ret < 0 || ret != offset)
     {
-        fprintf (stderr, "mms: Attempt to seek outside buffered region.\n");
+        fprintf (stderr, "mms: Seek failed.\n");
         return -1;
     }
 
-    h->used += offset;
     return 0;
-}
-
-static void mms_vfs_rewind_impl (VFSFile * file)
-{
-    mms_vfs_fseek_impl (file, 0, SEEK_SET);
 }
 
 static int64_t mms_vfs_ftell_impl (VFSFile * file)
 {
     MMSHandle * h = vfs_get_handle (file);
-    return h->offset + h->used;
-}
 
-static int mms_vfs_getc_impl (VFSFile * file)
-{
-    unsigned char c;
-    return (mms_vfs_fread_impl (& c, 1, 1, file) == 1) ? c : EOF;
-}
-
-static int mms_vfs_ungetc_impl (int c, VFSFile * file)
-{
-    return (! mms_vfs_fseek_impl (file, -1, SEEK_CUR)) ? c : EOF;
+    if (h->mms)
+        return mms_get_current_pos (h->mms);
+    else
+        return mmsh_get_current_pos (h->mmsh);
 }
 
 static bool_t mms_vfs_feof_impl (VFSFile * file)
 {
-    return FALSE;
-
     MMSHandle * h = vfs_get_handle (file);
 
     if (h->mms)
-        return (h->offset + h->used == mms_get_length (h->mms));
-    else /* if (h->mmsh) */
-        return (h->offset + h->used == mmsh_get_length (h->mmsh));
+        return (mms_get_current_pos (h->mms) < mms_get_length (h->mms));
+    else
+        return (mmsh_get_current_pos (h->mmsh) < mmsh_get_length (h->mmsh));
 }
 
 static int mms_vfs_truncate_impl (VFSFile * file, int64_t size)
@@ -198,31 +170,29 @@ static int64_t mms_vfs_fsize_impl (VFSFile * file)
 
     if (h->mms)
         return mms_get_length (h->mms);
-    else /* if (h->mmsh) */
+    else
         return mmsh_get_length (h->mmsh);
 }
 
 static const char * const mms_schemes[] = {"mms", NULL};
 
-static VFSConstructor constructor = {
- .vfs_fopen_impl = mms_vfs_fopen_impl,
- .vfs_fclose_impl = mms_vfs_fclose_impl,
- .vfs_fread_impl = mms_vfs_fread_impl,
- .vfs_fwrite_impl = mms_vfs_fwrite_impl,
- .vfs_getc_impl = mms_vfs_getc_impl,
- .vfs_ungetc_impl = mms_vfs_ungetc_impl,
- .vfs_fseek_impl = mms_vfs_fseek_impl,
- .vfs_rewind_impl = mms_vfs_rewind_impl,
- .vfs_ftell_impl = mms_vfs_ftell_impl,
- .vfs_feof_impl = mms_vfs_feof_impl,
- .vfs_ftruncate_impl = mms_vfs_truncate_impl,
- .vfs_fsize_impl = mms_vfs_fsize_impl
+static VFSConstructor constructor =
+{
+    .vfs_fopen_impl = mms_vfs_fopen_impl,
+    .vfs_fclose_impl = mms_vfs_fclose_impl,
+    .vfs_fread_impl = mms_vfs_fread_impl,
+    .vfs_fwrite_impl = mms_vfs_fwrite_impl,
+    .vfs_fseek_impl = mms_vfs_fseek_impl,
+    .vfs_ftell_impl = mms_vfs_ftell_impl,
+    .vfs_feof_impl = mms_vfs_feof_impl,
+    .vfs_ftruncate_impl = mms_vfs_truncate_impl,
+    .vfs_fsize_impl = mms_vfs_fsize_impl
 };
 
 AUD_TRANSPORT_PLUGIN
 (
- .name = N_("MMS Plugin"),
- .domain = PACKAGE,
- .schemes = mms_schemes,
- .vtable = & constructor
+    .name = N_("MMS Plugin"),
+    .domain = PACKAGE,
+    .schemes = mms_schemes,
+    .vtable = & constructor
 )
