@@ -241,11 +241,6 @@ static int gio_ungetc (int c, VFSFile * file)
     return (! gio_fseek (file, -1, SEEK_CUR)) ? c : -1;
 }
 
-static void gio_rewind (VFSFile * file)
-{
-    gio_fseek (file, 0, SEEK_SET);
-}
-
 static bool_t gio_feof (VFSFile * file)
 {
     int test = gio_getc (file);
@@ -307,10 +302,7 @@ static VFSConstructor constructor = {
     .vfs_fclose_impl = gio_fclose,
     .vfs_fread_impl = gio_fread,
     .vfs_fwrite_impl = gio_fwrite,
-    .vfs_getc_impl = gio_getc,
-    .vfs_ungetc_impl = gio_ungetc,
     .vfs_fseek_impl = gio_fseek,
-    .vfs_rewind_impl = gio_rewind,
     .vfs_ftell_impl = gio_ftell,
     .vfs_feof_impl = gio_feof,
     .vfs_ftruncate_impl = gio_ftruncate,

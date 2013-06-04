@@ -191,11 +191,6 @@ static int unix_ungetc (int c, VFSFile * file)
     return (! unix_fseek (file, -1, SEEK_CUR)) ? c : -1;
 }
 
-static void unix_rewind (VFSFile * file)
-{
-    unix_fseek (file, 0, SEEK_SET);
-}
-
 static bool_t unix_feof (VFSFile * file)
 {
     int test = unix_getc (file);
@@ -251,10 +246,7 @@ static VFSConstructor constructor = {
     .vfs_fclose_impl = unix_fclose,
     .vfs_fread_impl = unix_fread,
     .vfs_fwrite_impl = unix_fwrite,
-    .vfs_getc_impl = unix_getc,
-    .vfs_ungetc_impl = unix_ungetc,
     .vfs_fseek_impl = unix_fseek,
-    .vfs_rewind_impl = unix_rewind,
     .vfs_ftell_impl = unix_ftell,
     .vfs_feof_impl = unix_feof,
     .vfs_ftruncate_impl = unix_ftruncate,

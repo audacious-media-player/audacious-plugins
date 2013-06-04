@@ -1007,31 +1007,6 @@ gint64 neon_vfs_fwrite_impl (const void * ptr, gint64 size, gint64 nmemb,
     return 0;
 }
 
-/*
- * -----
- */
-
-gint neon_vfs_getc_impl(VFSFile* file) {
-  unsigned char c;
-
-    if (1 != neon_vfs_fread_impl(&c, 1, 1, file)) {
-        _ERROR ("<%p> Could not getc()!", (void *) vfs_get_handle (file));
-        return -1;
-    }
-
-    return c;
-}
-
-/*
- * -----
- */
-
-gint neon_vfs_ungetc_impl(gint c, VFSFile* stream) {
-    _ERROR ("<%p> NOT IMPLEMENTED", (void *) vfs_get_handle (stream));
-
-    return 0;
-}
-
 gint64 neon_vfs_ftell_impl (VFSFile * file)
 {
     struct neon_handle* h = (struct neon_handle *)vfs_get_handle (file);
@@ -1164,14 +1139,6 @@ gint neon_vfs_fseek_impl (VFSFile * file, gint64 offset, gint whence)
     return 0;
 }
 
-void neon_vfs_rewind_impl(VFSFile* file) {
-    (void)neon_vfs_fseek_impl(file, 0L, SEEK_SET);
-}
-
-/*
- * -----
- */
-
 gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
 
     struct neon_handle* h = (struct neon_handle*)vfs_get_handle (file);
@@ -1213,10 +1180,7 @@ static VFSConstructor constructor = {
  .vfs_fclose_impl = neon_vfs_fclose_impl,
  .vfs_fread_impl = neon_vfs_fread_impl,
  .vfs_fwrite_impl = neon_vfs_fwrite_impl,
- .vfs_getc_impl = neon_vfs_getc_impl,
- .vfs_ungetc_impl = neon_vfs_ungetc_impl,
  .vfs_fseek_impl = neon_vfs_fseek_impl,
- .vfs_rewind_impl = neon_vfs_rewind_impl,
  .vfs_ftell_impl = neon_vfs_ftell_impl,
  .vfs_feof_impl = neon_vfs_feof_impl,
  .vfs_ftruncate_impl = neon_vfs_truncate_impl,
