@@ -279,8 +279,7 @@ gboolean playlist_load_asx3 (const gchar * filename, VFSFile * file,
      */
     LIBXML_TEST_VERSION
 
-    xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL,
-     XML_PARSE_RECOVER);
+    xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL, 0);
     if (! doc)
 	{
         fprintf(stderr, "Failed to parse %s\n", filename);

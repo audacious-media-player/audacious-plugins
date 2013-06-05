@@ -20,6 +20,7 @@
  */
 
 #include <string.h>
+#include <stdio.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -36,12 +37,13 @@ static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
  gchar * * title, Index * filenames, Index * tuples)
 {
 	if (playlist_load_asx3(filename, file, title, filenames, tuples))
-	{
-		
+	{	
 		return TRUE;
 	}
 
 	/* Loading ver. 3 failed, so try ver. 1/2 */
+
+	vfs_fseek(file, 0, SEEK_SET);
 
     gint i;
     gchar line_key[16];
@@ -111,7 +113,7 @@ static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
 static const gchar * const asx_exts[] = {"asx", NULL};
 
 static const char asx_about[] =
- N_("ASX Playlists v. 1.1\n\n"
+ N_("ASX Playlists v. 1.1.2\n\n"
 	"This container plugin supports the reading\n"
     "and writing of asx v1-v3 files.");
 
