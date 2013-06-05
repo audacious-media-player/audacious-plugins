@@ -27,10 +27,22 @@
 #include <libaudcore/audstrings.h>
 
 #include "util.h"
+#include "asxv3.h"
+
+/* TODO: decide which version to write */
+#define WRITE_OLD_VERSION TRUE
 
 static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
  gchar * * title, Index * filenames, Index * tuples)
 {
+	if (playlist_load_asx3(filename, file, title, filenames, tuples))
+	{
+		
+		return TRUE;
+	}
+
+	/* Loading ver. 3 failed, so try ver. 1/2 */
+
     gint i;
     gchar line_key[16];
     gchar * line;
@@ -67,35 +79,49 @@ static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
 static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
  const gchar * title, Index * filenames, Index * tuples)
 {
-    gint entries = index_count (filenames);
-    gint count;
+	if (WRITE_OLD_VERSION)
+	{
+		gint entries = index_count (filenames);
+		gint count;
 
-    vfs_fprintf(file, "[Reference]\r\n");
+		vfs_fprintf(file, "[Reference]\r\n");
 
-    for (count = 0; count < entries; count ++)
-    {
-        const gchar * filename = index_get (filenames, count);
-        gchar *fn;
+		for (count = 0; count < entries; count ++)
+		{
+		    const gchar * filename = index_get (filenames, count);
+		    gchar *fn;
 
-        if (vfs_is_remote (filename))
-            fn = g_strdup (filename);
-        else
-            fn = g_filename_from_uri (filename, NULL, NULL);
+		    if (vfs_is_remote (filename))
+		        fn = g_strdup (filename);
+		    else
+		        fn = g_filename_from_uri (filename, NULL, NULL);
 
-        vfs_fprintf (file, "Ref%d=%s\r\n", 1 + count, fn);
-        g_free(fn);
-    }
+		    vfs_fprintf (file, "Ref%d=%s\r\n", 1 + count, fn);
+		    g_free(fn);
+		}
 
-    return TRUE;
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 static const gchar * const asx_exts[] = {"asx", NULL};
 
+static const char asx_about[] =
+ N_("ASX Playlists v. 1.1\n\n"
+	"This container plugin supports the reading\n"
+    "and writing of asx v1-v3 files.");
+
 AUD_PLAYLIST_PLUGIN
 (
- .name = N_("ASXv1/ASXv2 Playlists"),
+ .name = N_("ASX Playlists"),
  .domain = PACKAGE,
+ .about_text = asx_about,
  .extensions = asx_exts,
  .load = playlist_load_asx,
  .save = playlist_save_asx
 )
+

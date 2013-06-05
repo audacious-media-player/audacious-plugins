@@ -269,7 +269,7 @@ gboolean writeAsx(VFSFile * file, asx_entry_t* asx)
 	return TRUE;
 }
 
-static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
+gboolean playlist_load_asx3 (const gchar * filename, VFSFile * file,
  gchar * * title, Index * filenames, Index * tuples)
 {
 	/*
@@ -319,7 +319,7 @@ static gboolean playlist_load_asx (const gchar * filename, VFSFile * file,
 	return TRUE;
 }
 
-static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
+gboolean playlist_save_asx3 (const gchar * filename, VFSFile * file,
  const gchar * title, Index * filenames, Index * tuples)
 {
 	/*
@@ -364,25 +364,5 @@ static gboolean playlist_save_asx (const gchar * filename, VFSFile * file,
 
 	return retCode;
 }
-
-
-static const gchar * const asx_exts[] = {"asx", NULL};
-
-static const char asx_about[] =
- N_("ASXv3 Playlists v. 1.0\n\n"
-	"This container plugin supports the reading\n"
-    "and writing of asx v3 files.\n\n"
-    "Copyright 2013 Martin Steiger");
-
-AUD_PLAYLIST_PLUGIN
-(
- .name = N_("ASXv3 Playlists"),
- .domain = PACKAGE,
- .about_text = asx_about,
- .extensions = asx_exts,
- .load = playlist_load_asx,
- .save = playlist_save_asx
-)
-
 
 
