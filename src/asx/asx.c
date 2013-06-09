@@ -56,9 +56,10 @@ static bool_t playlist_load_asx (const char * filename, VFSFile * file,
     }
 
     inifile_destroy (inifile);
-    return TRUE;
+    return (index_count (filenames) != 0);
 }
 
+#if 0 // disabled since we can save to ASXv3 now
 static bool_t playlist_save_asx (const char * filename, VFSFile * file,
  const char * title, Index * filenames, Index * tuples)
 {
@@ -85,6 +86,7 @@ static bool_t playlist_save_asx (const char * filename, VFSFile * file,
 
     return TRUE;
 }
+#endif
 
 static const char * const asx_exts[] = {"asx", NULL};
 
@@ -93,6 +95,5 @@ AUD_PLAYLIST_PLUGIN
     .name = N_("ASXv1/ASXv2 Playlists"),
     .domain = PACKAGE,
     .extensions = asx_exts,
-    .load = playlist_load_asx,
-    .save = playlist_save_asx
+    .load = playlist_load_asx
 )
