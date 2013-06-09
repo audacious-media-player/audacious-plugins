@@ -44,26 +44,26 @@ static int close_cb (void * file)
 
 static const char * get_content (const xmlNode * node)
 {
-	const xmlNode * child = node->xmlChildrenNode;
-	if (child && child->type == XML_TEXT_NODE && child->content)
-		return (const char *) child->content;
+    const xmlNode * child = node->xmlChildrenNode;
+    if (child && child->type == XML_TEXT_NODE && child->content)
+        return (const char *) child->content;
 
-	return NULL;
+    return NULL;
 }
 
 static const char * get_prop_nocase (const xmlNode * node, const char * name)
 {
-	for (const xmlAttr * prop = node->properties; prop; prop = prop->next)
-	{
-		if (! xmlStrcasecmp (prop->name, (const xmlChar *) name))
-		{
-			const xmlNode * child = prop->children;
-			if (child && child->type == XML_TEXT_NODE && child->content)
-				return (const char *) child->content;
-		}
-	}
+    for (const xmlAttr * prop = node->properties; prop; prop = prop->next)
+    {
+        if (! xmlStrcasecmp (prop->name, (const xmlChar *) name))
+        {
+            const xmlNode * child = prop->children;
+            if (child && child->type == XML_TEXT_NODE && child->content)
+                return (const char *) child->content;
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 static bool_t check_root (const xmlNode * root)
@@ -76,11 +76,11 @@ static bool_t check_root (const xmlNode * root)
 
     const char * version = get_prop_nocase (root, "version");
 
-	if (! version)
-	{
+    if (! version)
+    {
         fprintf (stderr, "asx3: Unknown ASX version\n");
         return FALSE;
-	}
+    }
 
     if (strcmp (version, "3.0"))
     {
@@ -93,13 +93,13 @@ static bool_t check_root (const xmlNode * root)
 
 static void parse_entry (const xmlNode * entry, Index * filenames)
 {
-	for (const xmlNode * node = entry->xmlChildrenNode; node; node = node->next)
+    for (const xmlNode * node = entry->xmlChildrenNode; node; node = node->next)
     {
         if (! xmlStrcasecmp (node->name, (const xmlChar *) "ref"))
         {
             const char * uri = get_prop_nocase (node, "href");
-			if (uri)
-				index_append (filenames, str_get (uri));
+            if (uri)
+                index_append (filenames, str_get (uri));
         }
     }
 }
@@ -115,22 +115,22 @@ static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
 
     if (! root || ! check_root (root))
     {
-		xmlFreeDoc(doc);
-		return FALSE;
-	}
+        xmlFreeDoc(doc);
+        return FALSE;
+    }
 
     for (xmlNode * node = root->xmlChildrenNode; node; node = node->next)
     {
         if (! xmlStrcasecmp (node->name, (const xmlChar *) "entry"))
             parse_entry (node, filenames);
-		else if (! xmlStrcasecmp (node->name, (const xmlChar *) "title"))
-		{
-			if (! (* title))
-				* title = str_get (get_content (node));
-		}
+        else if (! xmlStrcasecmp (node->name, (const xmlChar *) "title"))
+        {
+            if (! (* title))
+                * title = str_get (get_content (node));
+        }
     }
 
-	xmlFreeDoc(doc);
+    xmlFreeDoc(doc);
     return TRUE;
 }
 
@@ -145,17 +145,17 @@ static bool_t playlist_save_asx3 (const char * filename, VFSFile * file,
     xmlSetProp (root, (const xmlChar *) "version", (const xmlChar *) "3.0");
     xmlDocSetRootElement (doc, root);
 
-	if (title)
+    if (title)
         xmlNewTextChild (root, NULL, (const xmlChar *) "title", (const xmlChar *) title);
 
     int entries = index_count (filenames);
     for (int i = 0; i < entries; i ++)
     {
-		xmlNode * entry = xmlNewNode (NULL, (const xmlChar *) "entry");
+        xmlNode * entry = xmlNewNode (NULL, (const xmlChar *) "entry");
         xmlNode * ref = xmlNewNode (NULL, (const xmlChar *) "ref");
         xmlSetProp (ref, (const xmlChar *) "href", (const xmlChar *) index_get (filenames, i));
         xmlAddChild (entry, ref);
-		xmlAddChild (root, entry);
+        xmlAddChild (root, entry);
     }
 
     xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, NULL, XML_SAVE_FORMAT);
