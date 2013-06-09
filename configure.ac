@@ -47,6 +47,11 @@ PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.4],
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
 LIBS="$LIBS $AUDACIOUS_LIBS"
 
+dnl Check for libxml2 (required to load XSPF playlists from previous versions)
+dnl ==========================================================================
+
+PKG_CHECK_MODULES([XML], [libxml-2.0])
+
 dnl Default Set of Plugins
 dnl ======================
 
@@ -55,7 +60,7 @@ OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer ladspa mixer stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="alarm albumart search-tool"
 VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
-CONTAINER_PLUGINS="audpl m3u pls asx"
+CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="unix-io"
 
 dnl Check for GIO
@@ -857,14 +862,6 @@ else
     AC_MSG_RESULT([*** mms plugin disabled by request ***])
 fi
 
-dnl XSPF
-dnl ----
-
-PKG_CHECK_MODULES([XML], [libxml-2.0])
-
-CONTAINER_PLUGINS="$CONTAINER_PLUGINS xspf"
-
-
 dnl CUE
 dnl ---
 
@@ -1238,6 +1235,8 @@ echo "  ---------"
 echo "  Audacious playlist format (audpl):      yes"
 echo "  Winamp PLS playlist format (pls):       yes"
 echo "  M3U playlist format (m3u):              yes"
+echo "  Microsoft ASX (legacy):                 yes"
+echo "  Microsoft ASX 3.0:                      yes"
 echo "  XML Sharable Playlist Format (xspf):    yes"
 echo "  CUE playlist format (cue):              $have_cue"
 echo
