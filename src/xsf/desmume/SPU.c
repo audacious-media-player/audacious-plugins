@@ -563,7 +563,7 @@ static void decode_pcm16(SChannel *ch, s32 *out, int length)
 	for(oi = 0; oi < length; oi++)
 	{
 #ifdef WORDS_BIGENDIAN
-		ch->output = (s16)T1ReadWord((u8 *)ch->buf16, pos << 1);
+		ch->output = (s16)T1ReadWord((u8 *)ch->buf16, (int)pos << 1);
 #else
 		ch->output = (s16)ch->buf16[(int)pos];
 #endif
