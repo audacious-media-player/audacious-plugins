@@ -102,7 +102,7 @@ static GtkWidget * make_close_button (GtkWidget * ebox, gint list)
     return button;
 }
 
-void show_close_buttons (gboolean show)
+void playlist_show_close_buttons (gboolean show)
 {
     aud_set_bool ("gtkui", "close_button_visible", show);
 
@@ -242,6 +242,13 @@ static void set_tab_label (gint list, GtkLabel * label)
 {
     gchar * title = aud_playlist_get_title (list);
 
+    if (aud_get_bool ("gtkui", "entry_count_visible"))
+    {
+        gchar * temp = str_printf ("%s (%d)", title, aud_playlist_entry_count (list));
+        str_unref (title);
+        title = temp;
+    }
+
     if (list == aud_playlist_get_playing ())
     {
         gchar * markup = g_markup_printf_escaped ("<b>%s</b>", title);
@@ -252,6 +259,15 @@ static void set_tab_label (gint list, GtkLabel * label)
         gtk_label_set_text (label, title);
 
     str_unref (title);
+}
+
+void playlist_show_entry_counts (gboolean show)
+{
+    aud_set_bool ("gtkui", "entry_count_visible", show);
+
+    int lists = aud_playlist_count ();
+    for (int list = 0; list < lists; list ++)
+        set_tab_label (list, get_tab_label (list));
 }
 
 void ui_playlist_notebook_edit_tab_title (int playlist)

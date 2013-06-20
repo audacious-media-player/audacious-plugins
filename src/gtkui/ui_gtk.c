@@ -46,6 +46,7 @@ static const gchar * const gtkui_defaults[] = {
  "infoarea_visible", "TRUE",
  "menu_visible", "TRUE",
  "statusbar_visible", "TRUE",
+ "entry_count_visible", "FALSE",
  "close_button_visible", "TRUE",
 
  "autoscroll", "TRUE",

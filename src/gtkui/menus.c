@@ -161,6 +161,7 @@ static gboolean infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea
 static gboolean status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
 static gboolean remaining_time_get (void) {return aud_get_bool ("gtkui", "show_remaining_time"); }
 static void remaining_time_set (gboolean show) {aud_set_bool ("gtkui", "show_remaining_time", show); }
+static gboolean entry_count_get (void) {return aud_get_bool ("gtkui", "entry_count_visible"); }
 static gboolean close_button_get (void) {return aud_get_bool ("gtkui", "close_button_visible"); }
 static gboolean column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
 static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
@@ -267,7 +268,6 @@ static const struct MenuItem view_items[] = {
  {.sep = TRUE},
  {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL, .get = remaining_time_get, remaining_time_set},
  {.sep = TRUE},
- {N_("Show Close _Buttons"), .get = close_button_get, show_close_buttons},
  {N_("Show Column _Headers"), .get = column_headers_get, playlist_show_headers},
  {N_("Choose _Columns ..."), .func = pw_col_choose},
  {N_("Scrol_l on Song Change"), .get = autoscroll_get, autoscroll_set}};
@@ -295,7 +295,10 @@ static const struct MenuItem rclick_items[] = {
 static const struct MenuItem tab_items[] = {
  {N_("_Play"), GTK_STOCK_MEDIA_PLAY, .func = pl_tab_play},
  {N_("_Rename ..."), GTK_STOCK_EDIT, .func = pl_tab_rename},
- {N_("_Close"), GTK_STOCK_CLOSE, .func = pl_tab_close}};
+ {N_("_Close"), GTK_STOCK_CLOSE, .func = pl_tab_close},
+ {.sep = TRUE},
+ {N_("Show _Entry Count"), .get = entry_count_get, playlist_show_entry_counts},
+ {N_("Show Close _Buttons"), .get = close_button_get, playlist_show_close_buttons}};
 
 static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
 {
