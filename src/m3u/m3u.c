@@ -41,13 +41,10 @@ static void strip_char (char * text, char c)
 
 static char * read_win_text (VFSFile * file)
 {
-    int64_t size = vfs_fsize (file);
-    if (size < 1)
+    void * raw = NULL;
+    vfs_file_read_all (file, & raw, NULL);
+    if (! raw)
         return NULL;
-
-    char * raw = malloc (size + 1);
-    size = vfs_fread (raw, 1, size, file);
-    raw[size] = 0;
 
     strip_char (raw, '\r');
     char * text = str_to_utf8 (raw);
