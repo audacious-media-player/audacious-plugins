@@ -196,6 +196,25 @@ static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, gpoi
     return FALSE;
 }
 
+static bool_t scroll_cb (GtkWidget * widget, GdkEventScroll * event)
+{
+    switch (event->direction)
+    {
+    case GDK_SCROLL_UP:
+    case GDK_SCROLL_LEFT:
+        aud_playlist_set_active (aud_playlist_get_active () - 1);
+        return TRUE;
+
+    case GDK_SCROLL_DOWN:
+    case GDK_SCROLL_RIGHT:
+        aud_playlist_set_active (aud_playlist_get_active () + 1);
+        return TRUE;
+
+    default:
+        return FALSE;
+    }
+}
+
 static void tab_changed (GtkNotebook * notebook, GtkWidget * page, gint
  page_num, void * unused)
 {
@@ -286,7 +305,8 @@ void ui_playlist_notebook_create_tab(gint playlist)
     gtk_widget_show_all(ebox);
     gtk_widget_hide(entry);
 
-    gtk_box_pack_end ((GtkBox *) hbox, make_close_button (ebox, playlist), FALSE, FALSE, 0);
+    GtkWidget * button = make_close_button (ebox, playlist);
+    gtk_box_pack_end ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
     g_object_set_data(G_OBJECT(ebox), "label", label);
     g_object_set_data(G_OBJECT(ebox), "entry", entry);
@@ -313,6 +333,13 @@ void ui_playlist_notebook_create_tab(gint playlist)
     g_signal_connect(entry, "activate", G_CALLBACK(tab_title_save), ebox);
     g_signal_connect_swapped (vscroll, "value-changed",
      G_CALLBACK(ui_playlist_widget_scroll), treeview);
+
+    /* we have to connect to "scroll-event" on the notebook, the tabs, AND the
+     * close buttons (sigh) */
+    gtk_widget_add_events (ebox, GDK_SCROLL_MASK);
+    gtk_widget_add_events (button, GDK_SCROLL_MASK);
+    g_signal_connect (ebox, "scroll-event", (GCallback) scroll_cb, NULL);
+    g_signal_connect (button, "scroll-event", (GCallback) scroll_cb, NULL);
 }
 
 void ui_playlist_notebook_populate(void)
@@ -515,6 +542,9 @@ GtkWidget * ui_playlist_notebook_new (void)
     make_add_button (notebook);
 
     hook_associate ("config save", (HookFunction) save_column_widths, NULL);
+
+    gtk_widget_add_events (notebook, GDK_SCROLL_MASK);
+    g_signal_connect (notebook, "scroll-event", (GCallback) scroll_cb, NULL);
 
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
     return notebook;
