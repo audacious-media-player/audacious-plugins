@@ -381,8 +381,8 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     if (t == NULL)
         return NULL;
 
-    vfs_rewind(fd);
-    tag_tuple_read(t, fd);
+    if (! vfs_fseek (fd, 0, SEEK_SET))
+        tag_tuple_read (t, fd);
 
     return t;
 }

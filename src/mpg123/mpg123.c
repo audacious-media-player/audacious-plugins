@@ -226,11 +226,8 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 
 	mpg123_delete (decoder);
 
-	if (! stream)
-	{
-		vfs_rewind (file);
+	if (! stream && ! vfs_fseek (file, 0, SEEK_SET))
 		tag_tuple_read (tuple, file);
-	}
 
 	return tuple;
 

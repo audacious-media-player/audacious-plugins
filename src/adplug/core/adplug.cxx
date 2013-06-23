@@ -198,11 +198,13 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
 
   // Try a direct hit by file extension
   for (i = pl.begin (); i != pl.end (); i++)
+  {
     for (j = 0; (*i)->get_extension (j); j++)
+    {
       if (fp.extension (vfs_get_filename (fd), (*i)->get_extension (j)))
       {
         AdPlug_LogWrite ("Trying direct hit: %s\n", (*i)->filetype.c_str ());
-        vfs_rewind (fd);
+
         if ((p = (*i)->factory (opl)))
         {
           if (p->load (fd, fp))
@@ -211,10 +213,15 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
             AdPlug_LogWrite ("--- CAdPlug::factory ---\n");
             return p;
           }
-          else
-            delete p;
+
+          delete p;
+
+          if (vfs_fseek (fd, 0, SEEK_SET) < 0)
+            return 0;
         }
       }
+    }
+  }
 
 #if 0
   // Try all players, one by one

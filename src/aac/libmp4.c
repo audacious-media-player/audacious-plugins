@@ -478,7 +478,8 @@ static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
     if (parse_aac_stream (handle))
         return aac_get_tuple (filename, handle);
 
-    vfs_rewind (handle);
+    if (vfs_fseek (handle, 0, SEEK_SET) < 0)
+        return NULL;
 
     mp4cb.read = mp4_read_callback;
     mp4cb.seek = mp4_seek_callback;
@@ -721,11 +722,13 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
         bitrate = 1000 * MAX (0, bitrate);
     }
 
-    vfs_rewind (file);
+    if (vfs_fseek (file, 0, SEEK_SET) < 0)
+        goto ERR;
+
     if ((decoder = NeAACDecOpen ()) == NULL)
     {
         fprintf (stderr, "AAC: Open Decoder Error\n");
-        return FALSE;
+        goto ERR;
     }
 
     decoder_config = NeAACDecGetCurrentConfiguration (decoder);
@@ -885,6 +888,7 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
 ERR_CLOSE_DECODER:
     NeAACDecClose (decoder);
 
+ERR:
     if (tuple)
         tuple_unref (tuple);
 
@@ -902,7 +906,9 @@ static bool_t mp4_play (InputPlayback * playback, const char * filename,
     bool_t ret;
 
     ret = parse_aac_stream (file);
-    vfs_rewind (file);
+
+    if (vfs_fseek (file, 0, SEEK_SET) < 0)
+        return FALSE;
 
     memset (& mp4cb, 0, sizeof (mp4ff_callback_t));
     mp4cb.read = mp4_read_callback;

@@ -305,11 +305,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
 
     AUDDBG("starting probe of %p\n", (void *) fd);
 
-    vfs_rewind(fd);
     tu = tuple_new_from_filename(filename);
-
-    vfs_rewind(fd);
-    tag_tuple_read(tu, fd);
 
     tuple_set_int(tu, FIELD_LENGTH, NULL,
         ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
@@ -320,6 +316,9 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
     str_unref (quality);
 
     WavpackCloseFile(ctx);
+
+    if (! vfs_fseek (fd, 0, SEEK_SET))
+        tag_tuple_read (tu, fd);
 
     AUDDBG("returning tuple %p for file %p\n", (void *) tu, (void *) fd);
     return tu;
