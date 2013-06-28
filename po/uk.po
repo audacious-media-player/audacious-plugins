@@ -7,18 +7,21 @@
 # Kostyantyn Fedenko <fedenko@ukr.net>, 2011
 # StreamThreaedr <kvantarium@gmail.com>, 2012
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012
+# NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012
 # Rax Garfield <admin@dvizho.ks.ua>, 2012
 # Rax Garfield (http://biokillaz.com/), 2012
 # Rax Garfield (http://biokillaz.com)/, 2012
 # Rax Garfield <admin@dvizho.ks.ua>, 2012
 # rustam <rustam.tsurik@gmail.com>, 2013
+# rustam <rustam.tsurik@gmail.com>, 2013
+# StreamThreaedr <kvantarium@gmail.com>, 2012
 # Yuri Chornoivan <yurchor@ukr.net>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-04 12:38+0000\n"
+"POT-Creation-Date: 2013-06-29 01:19+0200\n"
+"PO-Revision-Date: 2013-05-31 17:05+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/audacious/"
 "language/uk/)\n"
@@ -2856,8 +2859,7 @@ msgstr "_Видалити права доступу"
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
-"Вам потрібно дозволити Audacious скроблити доріжки у ваш акаунт на Last.fm."
-"\n"
+"Вам потрібно дозволити Audacious скроблити доріжки у ваш акаунт на Last.fm.\n"
 
 #: src/scrobbler2/scrobbler.c:233
 msgid ""
@@ -2879,8 +2881,7 @@ msgid ""
 msgstr ""
 "Модуль скроблера для Audacious 2.0 від Pitxyoki,\n"
 "\n"
-"Авторське право © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail."
-"com>\n"
+"Авторське право © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "\n"
 "Велика подяка John Lindgren за простягнуту для допомоги руку на початку "
 "цього проекту.\n"

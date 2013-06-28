@@ -1,22 +1,20 @@
-# Spanish (Argentinian) translation for Audacious Plugins
+# Tamil translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Adrián Ramirez Escalante <buried.prophet@gmail.com>, 2012-2013
-# Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>, 2010
-# Jorge Andrés <winninglero@gmail.com>, 2011
-# xukosky <xukosky@yahoo.es>, 2011
+# Gobi <gobikrishnant@gmail.com>, 2013
+# nar7esh <rajnareshwar@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-04 12:38+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/"
-"audacious/language/es_AR/)\n"
-"Language: es_AR\n"
+"POT-Creation-Date: 2013-06-29 01:19+0200\n"
+"PO-Revision-Date: 2013-06-03 19:30+0000\n"
+"Last-Translator: Gobi <gobikrishnant@gmail.com>\n"
+"Language-Team: Tamil (http://www.transifex.com/projects/p/audacious/language/"
+"ta/)\n"
+"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,19 +22,19 @@ msgstr ""
 
 #: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
 msgid "mono"
-msgstr "mono"
+msgstr "தனித்த "
 
 #: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
 msgid "stereo"
-msgstr "estéreo"
+msgstr "ஒலிப்பிரிப்பு"
 
 #: src/aac/libmp4.c:439 src/skins/ui_main.c:429
 msgid "surround"
-msgstr "envolvente"
+msgstr "சூழ்ந்த"
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr "Decodificador AAC"
+msgstr "AAC குறிவிலக்கி"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
 #: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
@@ -45,7 +43,7 @@ msgstr ""
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (Reproductor AdLib)"
+msgstr "AdPlug (AdLib Player)"
 
 #: src/alarm/alarm.c:809
 msgid ""
@@ -53,14 +51,10 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"Un plugin que puede ser usado para comenzar la reproducción de una lista en "
-"un determinado momento.\n"
-"\n"
-"Escrito originalmente por Adam Feakin y Daniel Stodden."
 
 #: src/alarm/alarm.c:814 src/alarm/interface.c:82
 msgid "Alarm"
-msgstr "Alarma"
+msgstr "அலாரம்"
 
 #: src/alarm/interface.c:28
 msgid ""
@@ -123,7 +117,7 @@ msgstr ""
 
 #: src/alarm/interface.c:81
 msgid "This is your wakeup call."
-msgstr "Esta es su llamada despertador"
+msgstr "இது உங்களை எழுப்புவதற்கான அழைப்பு"
 
 #: src/alarm/interface.c:99
 msgid "Your reminder for today is..."
@@ -131,48 +125,48 @@ msgstr ""
 
 #: src/alarm/interface.c:101 src/alarm/interface.c:415
 msgid "Reminder"
-msgstr "Recordatorio"
+msgstr "நினைவூட்டி"
 
 #: src/alarm/interface.c:140
 msgid "Monday"
-msgstr "Lunes"
+msgstr "திங்கட்கிழமை "
 
 #: src/alarm/interface.c:140
 msgid "Tuesday"
-msgstr "Martes"
+msgstr "செவ்வாய்கிழமை "
 
 #: src/alarm/interface.c:140
 msgid "Wednesday"
-msgstr "Miércoles"
+msgstr "புதன்கிழமை "
 
 #: src/alarm/interface.c:141
 msgid "Thursday"
-msgstr "Jueves"
+msgstr "வியாழக்கிழமை "
 
 #: src/alarm/interface.c:141
 msgid "Friday"
-msgstr "Viernes"
+msgstr "வெள்ளிக்கிழமை "
 
 #: src/alarm/interface.c:141
 msgid "Saturday"
-msgstr "Sábado"
+msgstr "சனிக்கிழமை "
 
 #: src/alarm/interface.c:141
 msgid "Sunday"
-msgstr "Domingo"
+msgstr "ஞாயிற்றுகிழமை "
 
 #: src/alarm/interface.c:175
 msgid "Alarm Settings"
-msgstr "Configuración de la alarma"
+msgstr "அலாரம் அமைப்புகள்"
 
 #: src/alarm/interface.c:186 src/alarm/interface.c:250
 #: src/alarm/interface.c:265
 msgid "Time"
-msgstr "Tiempo"
+msgstr "நேரம் "
 
 #: src/alarm/interface.c:193
 msgid "Alarm at (default):"
-msgstr "Alarma a (predeterminado):"
+msgstr "அலாரம் அடிக்கும் நேரம் (இயல்புநிலை) :"
 
 #: src/alarm/interface.c:216
 msgid "h"
@@ -180,121 +174,121 @@ msgstr "h"
 
 #: src/alarm/interface.c:220
 msgid "Quiet after:"
-msgstr "Silencio tras:"
+msgstr "பின் நிசப்தமாக்குக: "
 
 #: src/alarm/interface.c:234
 msgid "hours"
-msgstr "horas"
+msgstr "மணித்தியாலங்கள் "
 
 #: src/alarm/interface.c:246
 msgid "minutes"
-msgstr "minutos"
+msgstr "நிமிடங்கள் "
 
 #: src/alarm/interface.c:255
 msgid "Choose the days for the alarm to come on"
-msgstr "Seleccione los días para que salte la alarma"
+msgstr "அலாரம் வேண்டிய நாட்களை தெரிவு செய்க "
 
 #: src/alarm/interface.c:262
 msgid "Day"
-msgstr "Día"
+msgstr "நாள் "
 
 #: src/alarm/interface.c:280 src/bs2b/plugin.c:177
 #: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:456
 #: src/skins/ui_manager.c:477
 msgid "Default"
-msgstr "Predeterminado"
+msgstr "இயல்புநிலை"
 
 #: src/alarm/interface.c:310
 msgid "Days"
-msgstr "Días"
+msgstr "நாட்கள் "
 
 #: src/alarm/interface.c:319
 msgid "Fading"
-msgstr "Desvanecimiento"
+msgstr "மங்குதல் "
 
 #: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:397
 msgid "seconds"
-msgstr "segundos"
+msgstr "வினாடிகள் "
 
 #: src/alarm/interface.c:334 src/alarm/interface.c:381
 msgid "Volume"
-msgstr "Volumen"
+msgstr "ஒலி அளவு "
 
 #: src/alarm/interface.c:339
 msgid "Start at"
-msgstr "Iniciar a"
+msgstr "இங்கு ஆரம்பிக்குக "
 
 #: src/alarm/interface.c:357
 msgid "Final"
-msgstr "Final"
+msgstr "இறுதி "
 
 #: src/alarm/interface.c:372
 msgid "Current"
-msgstr "Actual"
+msgstr "தற்போதைய "
 
 #: src/alarm/interface.c:387
 msgid "Additional Command"
-msgstr "Comando adicional"
+msgstr "மேலதிக பின்னூட்டு"
 
 #: src/alarm/interface.c:393
 msgid "enable"
-msgstr "activar"
+msgstr "செயல்படுத்துக "
 
 #: src/alarm/interface.c:400
 msgid "Playlist (optional)"
-msgstr "Lista de reproducción (opcional)"
+msgstr "பாடல் பட்டியல் (விரும்பினால் மட்டும்)"
 
 #: src/alarm/interface.c:407
 msgid "Select a playlist"
-msgstr "Elegir una lista de reproducción"
+msgstr "பாடல் பட்டியலினை தெரிவு செய்க"
 
 #: src/alarm/interface.c:419
 msgid "Use reminder"
-msgstr "Utilizar recordatorio"
+msgstr "நினைவூட்டியினை பயன்படுத்துக "
 
 #: src/alarm/interface.c:428
 msgid "Options"
-msgstr "Opciones"
+msgstr "விருப்பத்தேர்வுகள் "
 
 #: src/alarm/interface.c:433
 msgid "What do these options mean?"
-msgstr "¿Qué significan estas opciones?"
+msgstr "இவ்விருப்ப தேர்வுகள் எதனை உணர்த்துகின்றன?"
 
 #: src/alarm/interface.c:447 src/skins/ui_manager.c:389
 msgid "Help"
-msgstr "Ayuda"
+msgstr "உதவி "
 
 #: src/albumart/albumart.c:143
 msgid "Album Art"
-msgstr "Arte de tapa"
+msgstr "குறுவட்டு வரைவு "
 
 #: src/alsa/config.c:212
 msgid "Default PCM device"
-msgstr "Dispositivo PCM predeterminado"
+msgstr "இயல்புநிலை துடிப்பு குறியீடு பண்பேற்ற சாதனம் "
 
 #: src/alsa/config.c:241
 msgid "Default mixer device"
-msgstr "Dispositivo mezclador predeterminado"
+msgstr "இயல்புநிலை கலவை சாதனம்"
 
 #: src/alsa/config.c:428
 msgid "ALSA Output Plugin Preferences"
-msgstr "Preferencias de complemento de salida ALSA"
+msgstr "வெளியீட்டு நீட்சியை முன்னுரிமைகள்"
 
 #: src/alsa/config.c:434
 msgid "PCM device:"
-msgstr "Dispositivo PCM:"
+msgstr "துடிப்பு குறியீடு பண்பேற்ற சாதனம்:"
 
 #: src/alsa/config.c:436
 msgid "Mixer device:"
-msgstr "Dispositivo mezclador:"
+msgstr "கலவை சாதனம்:"
 
 #: src/alsa/config.c:438
 msgid "Mixer element:"
-msgstr "Elemento mezclador:"
+msgstr "கலவை உறுப்பு:"
 
 #: src/alsa/config.c:441
 msgid "Work around drain hangup"
-msgstr "Evitar los cuelgues por falta de recursos"
+msgstr "தொங்கும் தன்மையை குறைக்குக "
 
 #: src/alsa/plugin.c:25
 msgid ""
@@ -304,32 +298,26 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"Plugin de salida ALSA para Audacious\n"
-"Copyright 2009-2012 John Lindgren\n"
-"\n"
-"Mis agradecimientos a William Pitcock, autor del plugin de salida ALSA NG, "
-"quien se ha asistido con el código y la referencia cuando el manual de ALSA "
-"no era suficiente."
 
 #: src/alsa/plugin.c:32
 msgid "ALSA Output"
-msgstr "Salida ALSA"
+msgstr "ALSA வெளியீடு"
 
 #: src/amidi-plug/amidi-plug.c:248
 msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
-"No tiene seleccionado ningún puerto secuenciador para la reproducción MIDI.  "
-"Puede hacerlo en la preferencias del complemento MIDI."
+"MIDI இயக்கத்திற்காக நீங்கள் எந்த ஒரு தொடர்வரிசை துறைகளினையும் தெரிவு செய்யவில்லை. "
+"தெரிவு செய்ய நீட்சி விருப்பங்களினை நாடுங்கள்."
 
 #: src/amidi-plug/amidi-plug.c:708
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "Plug-AMIDI (Reproductor MIDI)"
+msgstr "AMIDI-சொருகி  (MIDI இயக்கி )"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:38
 msgid "ALSA Backend "
-msgstr "Motor ALSA "
+msgstr "ALSA பின்தளம்"
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:41
 msgid ""
@@ -342,19 +330,20 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Este motor envía eventos MIDI a un grupo de puertos secuenciadores ALSA "
-"definidos. El interfaz secuenciador ALSA es muy versátil, puede proporcionar "
-"puertos para sintetizadores hardware (p. ej. emu10k1) pero también "
-"sintetizadores software, dispositivos externos, etc.\n"
-"Este motor no produce sonido, los eventos MIDI son manejados directamente "
-"por los dispositivos/programas tras los puertos ALSA; por ejemplo, los "
-"eventos MIDI enviados a un sintetizador hardware serán reproducidos "
-"directamente.\n"
-"Motor escrito por Giacomo Lozito."
+"இந்த பின்தளமானது பயனரால் தெரிவுசெய்யப்பட்ட குழுவில் உள்ள ALSA தொடர்நிலை துறைகளினூடாக "
+"MIDI நிகழ்வுகளை அனுப்பும். அவை ஒலி வன்பொருள் கூட்டிணைப்பு அட்டைகளுக்கு துறைகளை "
+"வழங்கும். மேலும் மென்பொருள் கூட்டிணைப்புகளுக்கும் வெளியக சாதனகளுக்கும் துறைகளை வழங்கும். "
+"⏎\n"
+"\n"
+"இந்த பின்தளமானது எந்தவொரு ஒலியையும் உருவாக்காது, MIDI நிகழ்வுகளானது சாதனங்களால் "
+"அல்லது நிகழ்ச்சிகளால் கையாளப்படும். இவை ALSA துறைகளின் உதவியுடனே இயங்கும்; உதாரணமாக "
+"MIDI நிகழ்வுகளானது வன்பொருள் கூட்டிணைப்புக்கு நேரடியாக அனுப்பி இயக்கப்படும்.⏎\n"
+"\n"
+"பின்தளமானது Giacomo Lozito என்பவரால் எழுதப்பட்டது."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:45
 msgid "FluidSynth Backend "
-msgstr "Motor FluidSynth "
+msgstr "திரவ கூட்டிணைப்பு பின்தளம் "
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:48
 msgid ""
@@ -365,253 +354,255 @@ msgid ""
 "by chosen output plugin.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
-"Este backend reproduce el audio enviando eventos MIDI a FluidSynth, un "
-"programa sintetizador en tiempo real, basado en la especificación "
-"SoundFont2.\n"
-"(www.fluidsynth.org)\n"
-"El audio producido puede ser manejado por medio de plugins de efectos en el "
-"reproductor y es procesado por el plugin de salida elegido.\n"
-"Backend escrito por Giacomo Lozito."
+"இந்த பின்தளம் MIDI நிகழ்வுகளில் இருந்து FluidSynth இற்கு ஒலியை உருவாக்கி செலுத்த "
+"பயன்படுகிறது, இது SoundFont2 விவரக்குறிப்பு அடிப்படையில் ஒரு நிஜ நேர மென்பொருள் "
+"தொகுப்பு ஆகும் (www.fluidsynth.org).⏎\n"
+"\n"
+"உருவாக்கப்பட்ட ஒலியானது இயக்கி விளைவு செருகுநிரல்களின் மூலம் கையாளப்பட்டு பின் "
+"தெரியப்பட்ட வெளியீட்டு செருகுநிரல்களின் மூலம் செயலாக்கப்படுகிறது. \n"
+"பின்தளமானது Giacomo Lozito ஆல் எழுதப்பட்டது."
 
 #: src/amidi-plug/i_configure-alsa.c:353
 msgid "Port"
-msgstr "Puerto"
+msgstr "துறை "
 
 #: src/amidi-plug/i_configure-alsa.c:355
 msgid "Client name"
-msgstr "Nombre del cliente"
+msgstr "பயனர் பெயர் "
 
 #: src/amidi-plug/i_configure-alsa.c:357
 msgid "Port name"
-msgstr "Nombre del puerto"
+msgstr "துறை பெயர் "
 
 #: src/amidi-plug/i_configure-alsa.c:371
 msgid "ALSA output ports"
-msgstr "Puertos de salida ALSA"
+msgstr "ALSA வெளியீட்டு துறைகள் "
 
 #: src/amidi-plug/i_configure-alsa.c:432
 msgid "Soundcard: "
-msgstr "Tarjeta de sonido: "
+msgstr "ஒலி அட்டை:"
 
 #: src/amidi-plug/i_configure-alsa.c:434
 msgid "Mixer control: "
-msgstr "Control mezclador: "
+msgstr "கலவை கட்டுப்பாடு:"
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "Mixer settings"
-msgstr "Ajustes del mezclador"
+msgstr "கலவை அமைப்புகள்:"
 
 #: src/amidi-plug/i_configure-alsa.c:472
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">motor\n"
-"ALSA</span>"
+"<span size=\"smaller\">ALSA⏎\n"
+"பின்தளம் </span>"
 
 #: src/amidi-plug/i_configure-ap.c:63
 msgid "AMIDI-Plug - backend information"
-msgstr "Complemento AMIDI - información del motor"
+msgstr "AMIDI-நீட்சி - பின்தள தகவல்கள் "
 
 #: src/amidi-plug/i_configure-ap.c:221
 msgid "Backend selection"
-msgstr "Selección de motor"
+msgstr "பின்தள தேர்வு"
 
 #: src/amidi-plug/i_configure-ap.c:261
 msgid "Playback settings"
-msgstr "Ajustes de reproducción"
+msgstr "மீள் இயக்கு அமைப்புகள் "
 
 #: src/amidi-plug/i_configure-ap.c:266
 msgid "Transpose: "
-msgstr "Transponer: "
+msgstr "இடமாற்றம்:"
 
 #: src/amidi-plug/i_configure-ap.c:275
 msgid "Drum shift: "
-msgstr "Cambio de batería: "
+msgstr " டிரம் மாற்றம்:"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "Advanced settings"
-msgstr "Ajustes avanzados"
+msgstr "கூடுதல் அமைப்புகள்"
 
 #: src/amidi-plug/i_configure-ap.c:297
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr "calcular la longitud de los archivos MIDI en lista de reproducción"
+msgstr "பாடல் பட்டியலில் உள்ள MIDI கோப்புகளின் முன் கணக்கிட்ட நீளத்தை கணிக்க "
 
 #: src/amidi-plug/i_configure-ap.c:304
 msgid "extract comments from MIDI file (if available)"
-msgstr "extraer comentarios desde el archivo MIDI (si está disponible)"
+msgstr "MIDI கோப்பு பின்னூட்டுகளினை (இருப்பின்) பிரித்தெடுக்க"
 
 #: src/amidi-plug/i_configure-ap.c:311
 msgid "extract lyrics from MIDI file (if available)"
-msgstr "extraer letras desde el archivo MIDI (si está disponible)"
+msgstr "MIDI கோப்பு பாடல்வரிகளை (இருப்பின்) பிரித்தெடுக்க"
 
 #: src/amidi-plug/i_configure-ap.c:344
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
-msgstr "<span size=\"smaller\">Complemento AMIDI</span>"
+msgstr ""
+"<span size=\"smaller\">AMIDI⏎\n"
+"சொருகி </span>"
 
 #: src/amidi-plug/i_configure.c:59
 msgid "AMIDI-Plug - select file"
-msgstr "Complemento AMIDI - seleccione un archivo"
+msgstr "AMIDI-சொருகி - கோப்பினை தெரிவு செய்க "
 
 #: src/amidi-plug/i_configure.c:104
 msgid "AMIDI-Plug Settings"
-msgstr "Configuración del Plug-AMIDI"
+msgstr "AMIDI-சொருகி - கோப்பினை அமைப்புகள் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:63
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "Complemento AMIDI - seleccione un archivo SoundFont"
+msgstr "AMIDI-சொருகி - ஒலி எழுத்துரு கோப்பினை தெரிவு செய்க "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:321
 msgid "SoundFont settings"
-msgstr "Ajustes de SoundFont"
+msgstr "ஒலி எழுத்துரு அமைப்புகள் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:359
 msgid "Filename"
-msgstr "Nombre del archivo"
+msgstr "கோப்பின் பெயர் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:363
 msgid "Size (bytes)"
-msgstr "Tamaño (bytes)"
+msgstr "அளவு (பயிட்ஸ்)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:412
 msgid "Load SF on player start"
-msgstr "Cargar SF cuando se inicie el reproductor"
+msgstr "இயக்கி ஆரம்பிக்கையில் SF இனை ஏற்றுக "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "Load SF on first MIDI file play"
-msgstr "Cargar SF en el primer archivo MIDI reproducido"
+msgstr "முதல் MIDI கோப்பு இயக்கத்தின் போது SF இனை ஏற்றுக"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:431
 msgid "Synthesizer settings"
-msgstr "Preferencias del sintetizador"
+msgstr "கூட்டிணைப்பு அமைப்புகள் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:440
 msgid "gain"
-msgstr "ganancia"
+msgstr "பயன் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:446
 #: src/amidi-plug/i_configure-fluidsynth.c:476
 #: src/amidi-plug/i_configure-fluidsynth.c:506
 #: src/amidi-plug/i_configure-fluidsynth.c:540
 msgid "use default"
-msgstr "usar predeterminado"
+msgstr "இயல்புநிலையினை உபயோகிக்குக "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:449
 #: src/amidi-plug/i_configure-fluidsynth.c:479
 msgid "value:"
-msgstr "valor:"
+msgstr "மதிப்பு: "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:470
 msgid "polyphony"
-msgstr "polifónico"
+msgstr "பண்ணிசை"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:500
 msgid "reverb"
-msgstr "reverberación"
+msgstr "எதிர்முழங்குக "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:509
 #: src/amidi-plug/i_configure-fluidsynth.c:543
 msgid "yes"
-msgstr "si"
+msgstr "ஆமாம் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:511
 #: src/amidi-plug/i_configure-fluidsynth.c:545
 msgid "no"
-msgstr "no"
+msgstr "இல்லை "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:534
 msgid "chorus"
-msgstr "coro"
+msgstr "பாடகர் குழு"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:568
 msgid "sample rate"
-msgstr "frecuencia de muestro"
+msgstr "மாதிரி வீதம் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:574
 msgid "22050 Hz "
-msgstr "22050 Hz "
+msgstr "22050 Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:577
 msgid "44100 Hz "
-msgstr "44100 Hz "
+msgstr "44100 Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:580
 msgid "96000 Hz "
-msgstr "96000 Hz "
+msgstr "96000 Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:583
 msgid "custom "
-msgstr "personalizado "
+msgstr "தனிப்பயன் "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:592
 msgid "Hz "
-msgstr "Hz "
+msgstr "Hz"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:662
 msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr ""
-"<span size=\"smaller\">Motor\n"
-"FluidSynth</span>"
+"<span size=\"smaller\">திரவ கூட்டிணைப்பு ⏎\n"
+"பின்தளம் </span>"
 
 #: src/amidi-plug/i_fileinfo.c:175
 msgid "Name:"
-msgstr "Nombre:"
+msgstr "பெயர்: "
 
 #: src/amidi-plug/i_fileinfo.c:200
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"smaller\"> Información MIDI </span>"
+msgstr "<span size=\"smaller\"> MIDI தகவல் </span>"
 
 #: src/amidi-plug/i_fileinfo.c:214
 msgid "Format:"
-msgstr "Formato:"
+msgstr "வடிவமைப்பு: "
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "Length (msec):"
-msgstr "Longitud (mseg):"
+msgstr "நீளம் (மில்லி வினாடிகள்): "
 
 #: src/amidi-plug/i_fileinfo.c:220
 msgid "No. of Tracks:"
-msgstr "Nro. de Pistas:"
+msgstr "பாடல்களின் இலக்கங்கள்:"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "variable"
-msgstr "variable"
+msgstr "மாறி "
 
 #: src/amidi-plug/i_fileinfo.c:228
 msgid "BPM:"
-msgstr "BPM:"
+msgstr "துடிப்புகள் ஒரு நிமிடத்திற்கு: "
 
 #: src/amidi-plug/i_fileinfo.c:236
 msgid "BPM (wavg):"
-msgstr "BPM (wavg):"
+msgstr "துடிப்புகள் ஒரு நிமிடத்திற்கு (wavg): "
 
 #: src/amidi-plug/i_fileinfo.c:239
 msgid "Time Div:"
-msgstr "Div tiempo:"
+msgstr "நேரப் பிரிவு:"
 
 #: src/amidi-plug/i_fileinfo.c:250
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\"> Comentarios y letras MIDI </span>"
+msgstr "<span size=\"smaller\"> MIDI பின்னூட்டுகள் மற்றும் பாடல் வரிகள் </span>"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no comments available in this MIDI file *"
-msgstr "* no hay comentarios disponibles en este archivo MIDI *"
+msgstr "*இந்த MIDI கோப்பிற்கான எந்தவொரு பின்னூட்டும் கிடைக்கப்படவில்லை * "
 
 #: src/amidi-plug/i_fileinfo.c:314
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* no hay letras disponibles en este archivo MIDI *"
+msgstr "*இந்த MIDI கோப்பிற்கான எந்தவொரு பாடல்வரிகளும் கிடைக்கப்படவில்லை * "
 
 #: src/amidi-plug/i_fileinfo.c:367
 msgid "  (invalid UTF-8)"
-msgstr "  (UTF-8 no válido)"
+msgstr "(செல்லுபடியற்ற UTF-8 )"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
-msgstr "Acerca del Plug-MIDI"
+msgstr "AMIDI-சொருகி பற்றி "
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
@@ -642,39 +633,39 @@ msgstr ""
 
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
-msgstr "OSD de Audacius"
+msgstr ""
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
-msgstr "AOSD (Visualización en pantalla)"
+msgstr " AOSD ( திரையில் தோன்றும் காட்சி)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "Rectángulo"
+msgstr "செவ்வகம் "
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "Rectángulo redondeado"
+msgstr "வட்ட வடிவிலான செவ்வகம் "
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "Rectángulo cóncavo"
+msgstr "குழிவான செவ்வகம் "
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "Ninguno"
+msgstr "ஏதுமில்லை "
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "Reproducción iniciada"
+msgstr "மீள் இயக்கினை ஆரம்பிக்குக "
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Avisa cuando se reproduce un elemento de la lista de reproducción."
+msgstr "பாடல் பட்டியல் இடுகை இயக்கப்படுகையில் திரையில் தோன்றும் காட்சி தூண்டப்படுகிறது. "
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "Cambio de título"
+msgstr "தலைப்பு மாற்றம் "
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -682,136 +673,136 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Avisa cuando, durante la reproducción, el título de la canción cambia pero "
-"el nombre de archivo es el mismo. Esto es principalmente útil para mostrar "
-"cambios de título en los flujos de Internet."
+"மீள் இயக்கத்தின் போது திரையில் தோன்றும் காட்சி தூண்டப்படுகிறது, பாடல் தலைப்பு "
+"மாற்றப்படுகிறது, ஆனால் கோப்பின் பெயர் மாற்றமடையாது. இணைய நீரோடைகளின் போது இம்முறை "
+"மிகவும் பிரயோசனமானது. "
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "Inicio de pausa"
+msgstr "இடைநிறுத்தத்தை ஆரம்பிக்க "
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "Avisa cuando la reproducción es pausada."
+msgstr "மீளியக்கம் இடைநிறுத்தப்படும் போது  திரையில் தோன்றும் காட்சி தூண்டப்படுகிறது."
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "Fin de pausa"
+msgstr "இடைநிறுத்தத்தை நிறுத்துக"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Avisa cuando la reproducción se reanuda."
+msgstr "மீளியக்கம் நிறுத்தப்படுகையில் திரையில் தோன்றும் காட்சி தூண்டப்படுகிறது. "
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr "Colocación"
+msgstr "ஒன்றின் நிறுத்தப்பட்ட நிலை "
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
-msgstr "Desplazamiento X relativo:"
+msgstr "ஒப்பீட்டு X விலக்கம்:"
 
 #: src/aosd/aosd_ui.c:207
 msgid "Relative Y offset:"
-msgstr "Desplazamiento Y relativo:"
+msgstr "ஒப்பீட்டு Y விலக்கம்: "
 
 #: src/aosd/aosd_ui.c:214
 msgid "Max OSD width:"
-msgstr "Ancho máximo:"
+msgstr "அதிகூடிய  திரையில் தோன்றும் காட்சியின் அகலம்:"
 
 #: src/aosd/aosd_ui.c:225
 msgid "Multi-Monitor options"
-msgstr "Opciones multi-monitor"
+msgstr "பல்-கணினித்திரை தேர்வுகள் "
 
 #: src/aosd/aosd_ui.c:229
 msgid "Display OSD using:"
-msgstr "Mostrar notificaciones utilizando:"
+msgstr "திரையில் தோன்றும் காட்சியினை காட்டுக இதனை பயன்படுத்தி: "
 
 #: src/aosd/aosd_ui.c:231
 msgid "all monitors"
-msgstr "todos los monitores"
+msgstr "அனைத்து கணினித்திரைகள் "
 
 #: src/aosd/aosd_ui.c:234
 #, c-format
 msgid "monitor %i"
-msgstr "monitor %i"
+msgstr "கணினித்திரை %i"
 
 #: src/aosd/aosd_ui.c:287
 msgid "Timing (ms)"
-msgstr "Temporización (ms)"
+msgstr "நேரம் (மில்லி வினாடிகளில்) "
 
 #: src/aosd/aosd_ui.c:292
 msgid "Display:"
-msgstr "Mostrar:"
+msgstr "காட்சிப்படுத்துக:"
 
 #: src/aosd/aosd_ui.c:297
 msgid "Fade in:"
-msgstr "Desvanecimiento de entrada:"
+msgstr "உண்மங்கியடைதல்:"
 
 #: src/aosd/aosd_ui.c:302
 msgid "Fade out:"
-msgstr "Desvanecimiento de salida:"
+msgstr "வெளிமங்குதல்:"
 
 #: src/aosd/aosd_ui.c:383
 msgid "Fonts"
-msgstr "Tipografías"
+msgstr "எழுத்துருக்கள் "
 
 #: src/aosd/aosd_ui.c:391
 #, c-format
 msgid "Font %i:"
-msgstr "Tipografía %i:"
+msgstr "எழுத்துரு %i:"
 
 #: src/aosd/aosd_ui.c:409
 msgid "Shadow"
-msgstr "Sombra"
+msgstr "நிழல் "
 
 #: src/aosd/aosd_ui.c:439
 msgid "Internationalization"
-msgstr "Internacionalización"
+msgstr "சர்வதேசமயமாக்கல்"
 
 #: src/aosd/aosd_ui.c:445
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr "Deshabilitar la conversión de texto UTF-8 (en notificaciones)"
+msgstr "UTF-8 இன் எழுத்து மாற்றத்தை முடக்கு (aosd இல்)"
 
 #: src/aosd/aosd_ui.c:462
 msgid "Select Skin File"
-msgstr "Seleccione un archivo de temas"
+msgstr "தோல் கோப்pinai தேர்ந்தெடுக்கவும்"
 
 #: src/aosd/aosd_ui.c:573
 msgid "Render Style"
-msgstr "Estilo de renderizado"
+msgstr "வழங்கும் பாங்கு "
 
 #: src/aosd/aosd_ui.c:589
 msgid "Colors"
-msgstr "Colores"
+msgstr "நிறங்கள் "
 
 #: src/aosd/aosd_ui.c:602
 #, c-format
 msgid "Color %i:"
-msgstr "Color %i:"
+msgstr "நிறம் %i "
 
 #: src/aosd/aosd_ui.c:620
 msgid "Custom Skin"
-msgstr "Tema personalizado"
+msgstr "விருப்ப தோல்"
 
 #: src/aosd/aosd_ui.c:626
 msgid "Skin file:"
-msgstr "Archivo de temas:"
+msgstr "தோல் கோப்பு: "
 
 #: src/aosd/aosd_ui.c:630
 msgid "Browse"
-msgstr "Examinar"
+msgstr "உலாவு "
 
 #: src/aosd/aosd_ui.c:729
 msgid "Enable trigger"
-msgstr "Activar disparador"
+msgstr "தூண்டுதலினை செயல்படுத்துக "
 
 #: src/aosd/aosd_ui.c:756
 msgid "Event"
-msgstr "Evento"
+msgstr "நிகழ்வு "
 
 #: src/aosd/aosd_ui.c:784
 msgid "Composite manager detected"
-msgstr "Administrador de composición detectado"
+msgstr "தொகுப்பு நிர்வாகி கண்டறியப்பட்டது"
 
 #: src/aosd/aosd_ui.c:791
 msgid ""
@@ -819,111 +810,111 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Administrador de composición no detectado;\n"
-"a menos que sepa que tiene uno ejecutándose, por favor active un "
-"administrador de composición o las notificaciones no funcionarán "
-"correctamente"
+"தொகுப்பு நிர்வாகி கண்டறியப்படவில்லை;⏎\n"
+"\n"
+"கட்டாயமாக தொகுப்பு நிர்வாகியொன்று செயற்படுத்தப்பட வேண்டும். இல்லையெனில் திரையில் "
+"தோன்றும் காட்சி ஒழுங்காக இயங்காது. "
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
-msgstr "Administrador de composición no necesario para transparencia falsa"
+msgstr "போலி வெளிப்படைத்தன்மையிற்கு தொகுப்பு நிர்வாகியொன்று தேவையில்லை "
 
 #: src/aosd/aosd_ui.c:837
 msgid "Transparency"
-msgstr "Transparencia"
+msgstr "வெளிப்படைத்தன்மை "
 
 #: src/aosd/aosd_ui.c:843
 msgid "Fake transparency"
-msgstr "Transparencia falsa"
+msgstr "போலி வெளிப்படைத்தன்மை "
 
 #: src/aosd/aosd_ui.c:845
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Transparencia real (requiere composición 3D)"
+msgstr "உண்மையான வெளிப்படைத்தன்மை ( X தொகுப்பு நீடிப்பு தேவைப்படுகிறது.)"
 
 #: src/aosd/aosd_ui.c:887
 msgid "Composite extension not loaded"
-msgstr "Extensión de composición no cargada"
+msgstr "தொகுப்பு நீட்டிப்பு ஏற்றப்படவில்லை "
 
 #: src/aosd/aosd_ui.c:895
 msgid "Composite extension not available"
-msgstr "Extensión de composición no disponible"
+msgstr "தொகுப்பு நீட்டிப்பு காணப்படவில்லை "
 
 #: src/aosd/aosd_ui.c:914
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>Notificaciones de Audacious</span>"
+msgstr "<span font_desc='%s'>ஔடகிவஸ் திரையில் தோன்றும் காட்சி </span>"
 
 #: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
-msgstr "Notificaciones de Audacious - configuración"
+msgstr "ஔடகிவஸ் திரையில் தோன்றும் காட்சி - உள்ளமைவு"
 
 #: src/aosd/aosd_ui.c:1016
 msgid "Test"
-msgstr "Probar"
+msgstr "பரீட்சிக்க "
 
 #: src/aosd/aosd_ui.c:1031
 msgid "Position"
-msgstr "Posición"
+msgstr "இடம் "
 
 #: src/aosd/aosd_ui.c:1036
 msgid "Animation"
-msgstr "Animación"
+msgstr "உயிரூட்டுதல் "
 
 #: src/aosd/aosd_ui.c:1041
 msgid "Text"
-msgstr "Texto"
+msgstr "எழுத்து "
 
 #: src/aosd/aosd_ui.c:1046
 msgid "Decoration"
-msgstr "Decoración"
+msgstr "அலங்காரம் "
 
 #: src/aosd/aosd_ui.c:1051
 msgid "Trigger"
-msgstr "Disparador"
+msgstr "தூண்டுதல் "
 
 #: src/aosd/aosd_ui.c:1056
 msgid "Misc"
-msgstr "Varios"
+msgstr "மற்றவை"
 
 #: src/asx/asx.c:96
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "Listas de reproducciónASXv1/ASXv2"
+msgstr "ASXv1/ASXv2 பாடல் பட்டியல் "
 
 #: src/audpl/audpl.c:222
 msgid "Audacious Playlists (audpl)"
-msgstr "Listas de reproducción Audacious (audpl)"
+msgstr "ஔடகிவஸ் பாடல் பட்டியல்கள் "
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
-msgstr "<b>Color</b>"
+msgstr "<b>நிறம்</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
-msgstr "Niebla Borrosa"
+msgstr "மங்கலான குறியிலக்கம்"
 
 #: src/bs2b/plugin.c:136
 msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Preferencias del Estereofónico-a-Binaural Bauer"
+msgstr "பார் இசைப்பிரிப்பு முதல் இருசெவிக்குரிய விருப்பங்கள்"
 
 #: src/bs2b/plugin.c:147
 msgid "Feed level:"
-msgstr "Nivel de alimentación:"
+msgstr "நிலை ஊட்டல்:"
 
 #: src/bs2b/plugin.c:161
 msgid "Cut frequency:"
-msgstr "Cortar frecuencia:"
+msgstr "குறை அதிர்வெண்:"
 
 #: src/bs2b/plugin.c:175
 msgid "Presets:"
-msgstr "Predefinidos:"
+msgstr "முன்னமைப்புகள்:"
 
 #: src/bs2b/plugin.c:197
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Estereofónico-a-Binaural Bauer (BS2B)"
+msgstr "பார் இசைப்பிரிப்பு முதல் இருசெவிக்குரியது (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:297
 msgid "Spectrum Analyzer"
-msgstr "Analizador de Espectro"
+msgstr "நிறமாலை பகுப்பாய்வி "
 
 #: src/cdaudio-ng/cdaudio-ng.c:103
 msgid ""
@@ -939,61 +930,61 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
 msgid "<b>Device</b>"
-msgstr "<b>Dispositivo</b>"
+msgstr "<b>சாதனம்</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:122
 msgid "Read speed:"
-msgstr "Leer velocidad:"
+msgstr "வாசிக்கும் வேகம் :"
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "Override device:"
-msgstr "Anular dispositivo:"
+msgstr "சாதனம் மேலெழுது:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "<b>Metadata</b>"
-msgstr "<b>Metadatos</b>"
+msgstr "<b>மீத்தரவு </b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CD-Text"
-msgstr "Usar CD-Texto"
+msgstr "இறுவட்டு எழுத்துகளை உபயோகிக்க"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use CDDB"
-msgstr "Usar CDDB"
+msgstr "CDDB இனை உபயோகிக்க"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Use HTTP instead of CDDBP"
-msgstr "Usar HTTP en lugar de CDDBP"
+msgstr "CDDBP இற்கு பதிலாக HTTP இனை பயன்படுத்துக "
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Server:"
-msgstr "Servidor:"
+msgstr "சேவையகம்:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Path:"
-msgstr "Ruta:"
+msgstr "வழி :"
 
 #: src/cdaudio-ng/cdaudio-ng.c:138
 msgid "Port:"
-msgstr "Puerto:"
+msgstr "போர்ட் :"
 
 #: src/cdaudio-ng/cdaudio-ng.c:148
 msgid "Audio CD Plugin"
-msgstr "Plugin de CD de audio"
+msgstr "ஒலி இறுவட்டு சொருகி"
 
 #: src/cdaudio-ng/cdaudio-ng.c:249
 msgid "Failed to initialize cdio subsystem."
-msgstr "Error en la inicialización del subsistema cdio."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 #, c-format
 msgid "Invalid URI %s."
-msgstr "URI inválido %s."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:308
 #, c-format
 msgid "Track %d not found."
-msgstr "Pista %d no encontrada."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:310
 #, c-format
@@ -1002,7 +993,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:312
 msgid "Failed to open audio output."
-msgstr "Error al abrir la salida de audio."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:395
 msgid "Error reading audio CD."
@@ -1010,132 +1001,130 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:505
 msgid "Audio CD"
-msgstr "CD de audio"
+msgstr "ஒலி இறுவட்டு"
 
 #: src/cdaudio-ng/cdaudio-ng.c:535 src/cdaudio-ng/cdaudio-ng.c:544
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "Error al abrir la lectora de CD %s."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:547
 msgid "No audio capable CD drive found."
-msgstr "No hay audio que se pueda reproducir en la lectora de CD localizada."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:574
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Error al finalizar la lectora de CD inicializada oportunamente."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:587
 msgid "Failed to retrieve first/last track number."
-msgstr "Error al obtener el primer/último número de pista."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:612
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "No se puede leer el LSN del comienzo/final de la pista %d."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:702
 msgid "Failed to create the cddb connection."
-msgstr "Error al crear la conexión a cddb."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:777
 msgid "Failed to query the CDDB server"
-msgstr "Error al consultar el servidor CDDB"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:779
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr "Error al consultar el servidor CDDB: %s"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:803
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr "Error al leer la información cddb: %s"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:876
 msgid "Drive is empty."
-msgstr "La unidad está vacía."
+msgstr "வட்டு வெறுமையாக உள்ளது."
 
 #: src/cdaudio-ng/cdaudio-ng.c:878
 msgid "Unsupported disk type."
-msgstr "Tipo de disco no soportado."
+msgstr "ஆதரவற்ற வட்டு வகை."
 
 #: src/cd-menu-items/cd-menu-items.c:30
 msgid "Play CD"
-msgstr "Reproducir CD"
+msgstr "இறுவட்டினை இயக்குக "
 
 #: src/cd-menu-items/cd-menu-items.c:30
 msgid "Add CD"
-msgstr "Agregar CD"
+msgstr "இறுவட்டினை சேர்க்குக "
 
 #: src/cd-menu-items/cd-menu-items.c:57
 msgid "Audio CD Menu Items"
-msgstr "Items de menú del CD de audio"
+msgstr "ஒலி இறுவட்டு பட்டியல் உருப்படிகள்"
 
 #: src/compressor/plugin.c:35
 msgid "<b>Compression</b>"
-msgstr "<b>Compresión</b>"
+msgstr "<b>சுருக்கம்</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr "Centrar volumen:"
+msgstr "மைய சத்தம்: "
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
-msgstr "Rango dinámico:"
+msgstr "நிலைமாறும் வரம்பாக: "
 
 #: src/compressor/plugin.c:53
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Plugin de Compresión de Rango Dinámico para Audacious\n"
-"Copyright 2010-2012 John Lindgren"
 
 #: src/compressor/plugin.c:58
 msgid "Dynamic Range Compressor"
-msgstr "Compresor de Rango Dinámico"
+msgstr "நிலைமாறும் வரம்பு சுருக்கி "
 
 #: src/console/configure.c:134 src/console/plugin.c:42
 msgid "Game Console Music Decoder"
-msgstr "Decodificador musical de videoconsola"
+msgstr "விளையாட்டு பணியக இசை குறிவிலக்கி"
 
 #: src/console/configure.c:151
 msgid "General"
-msgstr "General"
+msgstr "பொதுவான"
 
 #: src/console/configure.c:153 src/skins/ui_manager.c:175
 msgid "Playback"
-msgstr "Reproducción"
+msgstr "மீள் இயக்கு"
 
 #: src/console/configure.c:168
 msgid "Bass:"
-msgstr "Graves:"
+msgstr "அடித்தொனி:"
 
 #: src/console/configure.c:172 src/console/configure.c:183
 #: src/console/configure.c:204
 msgid "secs"
-msgstr "segs"
+msgstr "வினாடிகள் "
 
 #: src/console/configure.c:179
 msgid "Treble:"
-msgstr "Agudos:"
+msgstr "உயர் இறுதி அதிர்வெண்:"
 
 #: src/console/configure.c:200
 msgid "Default song length:"
-msgstr "Longitud de canción predeterminada:"
+msgstr "இயல்புநிலை பாடல் நீளம்:"
 
 #: src/console/configure.c:206
 msgid "Resampling"
-msgstr "Remuestreo"
+msgstr "புதுப்பிக்கிறது"
 
 #: src/console/configure.c:212
 msgid "Enable audio resampling"
-msgstr "Activar el remuestreo de sonido"
+msgstr "ஒலி புதுப்பித்தலை செயல்படுத்தக "
 
 #: src/console/configure.c:227
 msgid "Resampling rate:"
-msgstr "Tasa de remuestreo:"
+msgstr "புதுப்பித்தல் வீதம்: "
 
 #: src/console/configure.c:231 src/modplug/plugin_main.c:98
 #: src/resample/resample.c:178 src/resample/resample.c:184
@@ -1152,19 +1141,19 @@ msgstr "SPC"
 
 #: src/console/configure.c:243
 msgid "Ignore length from SPC tags"
-msgstr "Ignorar longitud de etiquetas SPC"
+msgstr "SPC குறிச்சொற்களின் நீளத்தை புறக்கணிக்ககுக "
 
 #: src/console/configure.c:244
 msgid "Increase reverb"
-msgstr "Aumentar la reverberación"
+msgstr "எதிர்முழக்கத்தை அதிகரிக்குக "
 
 #: src/console/configure.c:269
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
-"La longitud de canción predeterminada, expresada en segundos, es usada para "
-"canciones que no preveén información de longitud (es decir pistas cíclicas)."
+"இயல்புநிலை பாடல் நீளம், வினாடிகளில், இவை பாடல் நீள தகவல் கிடைக்கப்பெறாத பாடல்களில் "
+"பயன்படுத்த (அதாவது மீள இயக்கப்படும் பாடல்களுக்காக ) "
 
 #: src/console/plugin.c:27
 msgid ""
@@ -1182,17 +1171,16 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"El fundido de pistas falló porque las canciones tiene distintas cantidades "
-"de canales.  Puede usar el Mezclador de Canales para igualarlos."
+"பாடல்கள் வித்தியாசமான தல இலக்கங்களை கொண்டதால் குறுக்குமங்குதல் செயலிழந்தது. செயல்ப்படுத்த "
+"ஒரு தட கலவையினை உபயோகித்து  ஒre தட இலக்கங்களுக்கு மாற்றவும்."
 
 #: src/crossfade/crossfade.c:88
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"El fundido de pistas falló porque las canciones tiene distintas "
-"velocidades.  Puede usar el Convertidor de Muestreo de Velocidad para "
-"igualarlos."
+"பாடல்கள் வித்தியாசமான மாதிரி வீதங்களை கொண்டதால் குறுக்குமங்குதல் செயலிழந்தது. "
+"செயல்ப்படுத்த ஒரு மாதிரி வீத கலவையினை உபயோகித்து  ஒரே மாதிரி வீதங்களுக்கு மாற்றவும்."
 
 #: src/crossfade/crossfade.c:254
 msgid ""
@@ -1202,40 +1190,40 @@ msgstr ""
 
 #: src/crossfade/crossfade.c:258
 msgid "<b>Crossfade</b>"
-msgstr "<b>Fundido de pistas</b>"
+msgstr "<b>குறுக்கு மங்கல்</b>"
 
 #: src/crossfade/crossfade.c:259
 msgid "Overlap:"
-msgstr "Superposición:"
+msgstr "மேற்பொருந்தல்:"
 
 #: src/crossfade/crossfade.c:269
 msgid "Crossfade"
-msgstr "Fundido de pistas:"
+msgstr "குறுக்கு மங்கல்"
 
 #: src/crystalizer/crystalizer.c:40
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Cristalizador</b>"
+msgstr "<b>பளிங்குருவாக்கl</b>"
 
 #: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
 msgid "Intensity:"
-msgstr "Intensidad:"
+msgstr "அடர்த்தி:"
 
 #: src/crystalizer/crystalizer.c:51
 msgid "Crystalizer"
-msgstr "Cristalizador"
+msgstr "palinguruvaathal"
 
 #: src/cue/cue.c:158
 msgid "Cue Sheet Plugin"
-msgstr "Plugin para hoja cue"
+msgstr "கோல் தாள் செருகுநிரல்"
 
 #: src/echo_plugin/echo.c:24
 msgid "<b>Echo</b>"
-msgstr "<b>Eco</b>"
+msgstr "<b>ethiroli</b>"
 
 #: src/echo_plugin/echo.c:25 src/modplug/plugin_main.c:90
 #: src/modplug/plugin_main.c:104
 msgid "Delay:"
-msgstr "Retardo:"
+msgstr "தாமதம் :"
 
 #: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:91
 #: src/modplug/plugin_main.c:105
@@ -1244,11 +1232,11 @@ msgstr "ms"
 
 #: src/echo_plugin/echo.c:28
 msgid "Feedback:"
-msgstr "Retroalimentación:"
+msgstr "பின்னூட்டு :"
 
 #: src/echo_plugin/echo.c:31 src/modplug/plugin_main.c:109
 msgid "Volume:"
-msgstr "Volumen:"
+msgstr "ஒலி அளவு "
 
 #: src/echo_plugin/echo.c:114
 msgid ""
@@ -1260,7 +1248,7 @@ msgstr ""
 
 #: src/echo_plugin/echo.c:120
 msgid "Echo"
-msgstr "Eco"
+msgstr "எதிரொலி "
 
 #: src/ffaudio/ffaudio-core.c:656
 msgid ""
@@ -1274,55 +1262,55 @@ msgstr ""
 
 #: src/ffaudio/ffaudio-core.c:703
 msgid "FFmpeg Plugin"
-msgstr "Plugin FFmpeg"
+msgstr "FFmpeg நீட்சி"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr "Configuración de FileWriter"
+msgstr "FileWriter கட்டமைப்பு"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
-msgstr "Formato del archivo de salida:"
+msgstr "வெளியீட்டு கோப்பு வடிவம்:"
 
 #: src/filewriter/filewriter.c:439
 msgid "Configure"
-msgstr "Configurar"
+msgstr "கட்டமைக்குக "
 
 #: src/filewriter/filewriter.c:449
 msgid "Save into original directory"
-msgstr "Guardar dentro del directorio original"
+msgstr "அசல் கோப்பகத்தில் சேமிக்கவும்"
 
 #: src/filewriter/filewriter.c:454
 msgid "Save into custom directory"
-msgstr "Guardar dentro de directorio personalizado"
+msgstr "விருப்ப கோப்பகத்தில் சேமிக்கவும்"
 
 #: src/filewriter/filewriter.c:464
 msgid "Output file folder:"
-msgstr "Carpeta de archivo de salida:"
+msgstr "வெளியீட்டு கோப்பு கோப்பகம்: "
 
 #: src/filewriter/filewriter.c:468
 msgid "Pick a folder"
-msgstr "Elija una carpeta"
+msgstr "ஒரு கோப்புறையை தேர்ந்தெடுக்கவும்"
 
 #: src/filewriter/filewriter.c:481
 msgid "Get filename from:"
-msgstr "Obtener nombre de archivo desde:"
+msgstr "இருந்து கோப்பு கிடைக்கும்:"
 
 #: src/filewriter/filewriter.c:484
 msgid "original file tags"
-msgstr "etiquetas del archivo original"
+msgstr "அசல் கோப்பு குறிச்சொற்கl"
 
 #: src/filewriter/filewriter.c:490
 msgid "original filename"
-msgstr "nombre del archivo original"
+msgstr "அசல் கோப்புறை "
 
 #: src/filewriter/filewriter.c:497
 msgid "Don't strip file name extension"
-msgstr "No quitar la extensión del archivo"
+msgstr "கோப்பு நீட்டிப்பினை அகற்ற வேண்டாம்"
 
 #: src/filewriter/filewriter.c:506
 msgid "Prepend track number to filename"
-msgstr "Anteponer el número de pista al nombre de archivo"
+msgstr "கோப்பு பெயரையும் பாடல் எண்ணையும் வரைக"
 
 #: src/filewriter/filewriter.c:515
 msgid ""
@@ -1344,37 +1332,37 @@ msgstr ""
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr "Plugin FileWriter"
+msgstr "FileWriter நீட்சி "
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
-msgstr "Auto"
+msgstr "தானியங்கு"
 
 #: src/filewriter/mp3.c:37
 msgid "Joint Stereo"
-msgstr "Estéreo conjunto"
+msgstr "கூட்டு பேரொலி"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
 #: src/mpg123/mpg123.c:211
 msgid "Stereo"
-msgstr "Estereo"
+msgstr "பேரொலி"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
 #: src/mpg123/mpg123.c:211
 msgid "Mono"
-msgstr "Mono"
+msgstr "ஒற்றை"
 
 #: src/filewriter/mp3.c:688
 msgid "MP3 Configuration"
-msgstr "Configuración MP3"
+msgstr "MP3 கட்டமைப்பு  "
 
 #: src/filewriter/mp3.c:712
 msgid "Algorithm Quality:"
-msgstr "Calidad del algoritmo:"
+msgstr "படிமுறை தரம்:"
 
 #: src/filewriter/mp3.c:737
 msgid "Output Samplerate:"
-msgstr "Frecuencia de muestreo de salida:"
+msgstr "வெளியீtடு மாதிரி வீதம்:"
 
 #: src/filewriter/mp3.c:765
 msgid "(Hz)"
@@ -1382,75 +1370,75 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr "Tasa de bits / Compresión:"
+msgstr "பிட்வீதm / அழுத்த விகிதம்:"
 
 #: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
-msgstr "Tasa de bits (kbps):"
+msgstr "பிட்வீதம் (kbps):"
 
 #: src/filewriter/mp3.c:829
 msgid "Compression ratio:"
-msgstr "Compresión:"
+msgstr "அழுத்த விகிதம்:"
 
 #: src/filewriter/mp3.c:853
 msgid "Audio Mode:"
-msgstr "Modo de sonido:"
+msgstr "ஒலி முறைமை:"
 
 #: src/filewriter/mp3.c:878
 msgid "Misc:"
-msgstr "Varios:"
+msgstr "மற்றவை"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr "Cumplir estrictamente la norma ISO"
+msgstr "கடுமையான ISO இணக்கத்தை செயல்படுத்தக "
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
-msgstr "Error de protección"
+msgstr "தவறு பாதுகாப்பு"
 
 #: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
 msgid "Quality"
-msgstr "Calidad"
+msgstr "தரம் "
 
 #: src/filewriter/mp3.c:921
 msgid "Enable VBR/ABR"
-msgstr "Activar VBR/ABR"
+msgstr "VBR/ABR இனை செயல்படுத்துக "
 
 #: src/filewriter/mp3.c:931
 msgid "Type:"
-msgstr "Tipo:"
+msgstr "வகை:"
 
 #: src/filewriter/mp3.c:964
 msgid "VBR Options:"
-msgstr "Opciones VBR:"
+msgstr "VBR தேர்வுகள்:"
 
 #: src/filewriter/mp3.c:980
 msgid "Minimum bitrate (kbps):"
-msgstr "Tasa de bits mínima (kbps):"
+msgstr "அதிகுறைந்த பிட்வீதம் (kbps):"
 
 #: src/filewriter/mp3.c:1007
 msgid "Maximum bitrate (kbps):"
-msgstr "Tasa de bits máxima (kbps):"
+msgstr "அதிகூடிய பிட்வீதம் (kbps):"
 
 #: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
-msgstr "Aplicar estrictamente la tasa de bits mínima"
+msgstr "கண்டிப்பாக குறைந்த பிட்வீதத்தை செயல்படுத்துக "
 
 #: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
-msgstr "Opciones ABR:"
+msgstr "ABR தேர்வுகள்:"
 
 #: src/filewriter/mp3.c:1052
 msgid "Average bitrate (kbps):"
-msgstr "Tasa de bits promedio (kbps):"
+msgstr "சராசரி பிட்வீதம் (kbps):"
 
 #: src/filewriter/mp3.c:1080
 msgid "VBR quality level:"
-msgstr "Nivel de calidad VBR:"
+msgstr "VBR தர நிலை:"
 
 #: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
-msgstr "No escribir la cabecera VBR Xing"
+msgstr "Xing VBR தலைப்பை எழுத வேண்டாம் "
 
 #: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
@@ -1458,43 +1446,43 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1121
 msgid "Frame parameters:"
-msgstr "Parámetros del marco:"
+msgstr "அளவுருக்களை சட்டப்படுத்துக :"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
-msgstr "Marcar como derechos de autor"
+msgstr "பதிப்புரிமை என குறிக்குக "
 
 #: src/filewriter/mp3.c:1144
 msgid "Mark as original"
-msgstr "Marcar como original"
+msgstr "அசலென குriக்குக"
 
 #: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
-msgstr "Parametros ID3:"
+msgstr "ID3 அளபுரு:"
 
 #: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
-msgstr "Forzar adición de etiqueta de la versión 2"
+msgstr "பதிப்பு 2 குறியை பலமாக உள்ளடக்குக "
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr "Solo agregar etiqueta v1"
+msgstr "பதிப்பு 1 குறியை மாத்திரம் உள்ளடக்குக "
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr "Solo agregar etiqueta v2"
+msgstr "பதிப்பு 2 குறியை மாத்திரம் உள்ளடக்குக "
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
-msgstr "Etiquetas"
+msgstr "குறி "
 
 #: src/filewriter/vorbis.c:212
 msgid "Vorbis Encoder Configuration"
-msgstr "Configuración de codificador Vorbis"
+msgstr "Vorbis குறிமுறையாக்கி கட்டமைப்பு"
 
 #: src/filewriter/vorbis.c:235
 msgid "Quality level (0 - 10):"
-msgstr "Nivel de calidad (0 - 10):"
+msgstr "தரம் (0 - 10):"
 
 #: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
 msgid "lossless"
@@ -1510,7 +1498,7 @@ msgstr ""
 
 #: src/flacng/plugin.c:277
 msgid "FLAC Decoder"
-msgstr "Decodificador FLAC"
+msgstr "FLAC குறிவிலக்கி "
 
 #: src/gio/gio.c:300
 msgid ""
@@ -1520,7 +1508,7 @@ msgstr ""
 
 #: src/gio/gio.c:322
 msgid "GIO Plugin"
-msgstr "Plugin GIO"
+msgstr "GIO நீட்சி"
 
 #: src/gl-spectrum/gl-spectrum.c:283
 msgid ""
@@ -1536,7 +1524,7 @@ msgstr ""
 
 #: src/gl-spectrum/gl-spectrum.c:292
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
+msgstr "OpenGL நிறமாலை பகுப்பாய்வி"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -1548,159 +1536,159 @@ msgstr ""
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:47
 msgid "Gnome Shortcuts"
-msgstr "Accesos directos para GNOME"
+msgstr "Gnome குறுக்குவழிகள் "
 
 #: src/gtkui/columns.c:32
 msgid "Entry number"
-msgstr "Número de entrada"
+msgstr "பதிவு எண்"
 
 #: src/gtkui/columns.c:32
 msgid "Title"
-msgstr "Título"
+msgstr "தலைப்பு"
 
 #: src/gtkui/columns.c:33
 msgid "Artist"
-msgstr "Artista"
+msgstr "பாடகர்"
 
 #: src/gtkui/columns.c:33
 msgid "Year"
-msgstr "Año"
+msgstr "வருடம்"
 
 #: src/gtkui/columns.c:33
 msgid "Album"
-msgstr "Album"
+msgstr "குறுவட்டு"
 
 #: src/gtkui/columns.c:33
 msgid "Track"
-msgstr "Pista"
+msgstr "பாடல் "
 
 #: src/gtkui/columns.c:33
 msgid "Genre"
-msgstr "Género"
+msgstr "இலக்கியநடை"
 
 #: src/gtkui/columns.c:34
 msgid "Queue position"
-msgstr "Posición de la cola"
+msgstr "வரிசையில் இடம் "
 
 #: src/gtkui/columns.c:34
 msgid "Length"
-msgstr "Longitud"
+msgstr "நீளம்"
 
 #: src/gtkui/columns.c:34
 msgid "File path"
-msgstr "Ruta del archivo"
+msgstr "கோப்பு vali"
 
 #: src/gtkui/columns.c:34
 msgid "File name"
-msgstr "Nombre del archivo"
+msgstr "கோப்பின் பெயர் "
 
 #: src/gtkui/columns.c:35
 msgid "Custom title"
-msgstr "Título personalizado"
+msgstr "விருப்ப தலைப்பு "
 
 #: src/gtkui/columns.c:35
 msgid "Bitrate"
-msgstr "Tasa de bits"
+msgstr "பிட்வீதம்"
 
 #: src/gtkui/columns.c:277
 msgid "Choose Columns"
-msgstr "Seleccionar columnas"
+msgstr "நெடுவரிசைகளை தேர்க "
 
 #: src/gtkui/columns.c:293
 msgid "Available:"
-msgstr "Disponible:"
+msgstr "கிடைக்கும்:"
 
 #: src/gtkui/columns.c:327
 msgid "Chosen:"
-msgstr "Seleccionado:"
+msgstr "தேர்ந்தெடுக்கப்பட்டது:"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
-msgstr "Acoplar a la izquierda"
+msgstr "இடது பக்கம் தரையிறக்குக "
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Right"
-msgstr "Acoplar a la derecha"
+msgstr "வலது பக்கம் தரையிறக்குக"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Top"
-msgstr "Acoplar arriba"
+msgstr "மேல் பக்கம் தரையிறக்குக"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Bottom"
-msgstr "Acoplar abajo"
+msgstr "கீழ் பக்கம் தரையிறக்குக"
 
 #: src/gtkui/layout.c:120
 msgid "Undock"
-msgstr "Desacoplar"
+msgstr "தரையிறக்க வேண்டாம் "
 
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:623
 msgid "Disable"
-msgstr "Deshabilitar"
+msgstr "முடக்குக "
 
 #: src/gtkui/menus.c:170
 msgid "_Open Files ..."
-msgstr "_Abrir archivos ..."
+msgstr "_கோப்புக்களைத் திற ..."
 
 #: src/gtkui/menus.c:171
 msgid "Open _URL ..."
-msgstr "Abrir _URL ..."
+msgstr "முகவரியை_திற ..."
 
 #: src/gtkui/menus.c:172
 msgid "_Add Files ..."
-msgstr "_Añadir archivos ..."
+msgstr "கோப்புக்களை _சேர் ..."
 
 #: src/gtkui/menus.c:173
 msgid "Add U_RL ..."
-msgstr "Añadir U_RL ..."
+msgstr "முகவரியை சேர் ..."
 
 #: src/gtkui/menus.c:175
 msgid "_Search Library"
-msgstr "_Buscar Biblioteca"
+msgstr "நூலகத்தில் _தேடுக: "
 
 #: src/gtkui/menus.c:177
 msgid "A_bout ..."
-msgstr "A_cerca de ..."
+msgstr "பற்றி ..."
 
 #: src/gtkui/menus.c:178
 msgid "_Preferences ..."
-msgstr "_Preferencias"
+msgstr "_தேர்வுகள் ..."
 
 #: src/gtkui/menus.c:179 src/skins/ui_manager.c:413
 msgid "_Quit"
-msgstr "_Salir"
+msgstr "_விலகு "
 
 #: src/gtkui/menus.c:182 src/gtkui/menus.c:296
 msgid "_Play"
-msgstr "_Reproducir"
+msgstr "_இயக்குக "
 
 #: src/gtkui/menus.c:183
 msgid "Paus_e"
-msgstr "Pa_usar"
+msgstr "_இடைநிறுத்து"
 
 #: src/gtkui/menus.c:184
 msgid "_Stop"
-msgstr "_Detener"
+msgstr "_நிறுத்துga"
 
 #: src/gtkui/menus.c:185
 msgid "Pre_vious"
-msgstr "An_terior"
+msgstr "_முந்தைய"
 
 #: src/gtkui/menus.c:186
 msgid "_Next"
-msgstr "Si_guiente"
+msgstr "_அடுத்து "
 
 #: src/gtkui/menus.c:188
 msgid "_Repeat"
-msgstr "R_epetir"
+msgstr "_மறுபடியும்"
 
 #: src/gtkui/menus.c:189
 msgid "S_huffle"
-msgstr "_Orden aleatorio"
+msgstr "குலுக்குக "
 
 #: src/gtkui/menus.c:190
 msgid "N_o Playlist Advance"
-msgstr "No avan_zar la lista de reproducción"
+msgstr "முன்னோக்கிய பாடல் பட்டியல் alla"
 
 #: src/gtkui/menus.c:191
 msgid "Stop A_fter This Song"
@@ -1708,15 +1696,15 @@ msgstr ""
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:284
 msgid "Song _Info ..."
-msgstr "_Información de la canción ..."
+msgstr "பாடல் தகவல் "
 
 #: src/gtkui/menus.c:194
 msgid "Jump to _Time ..."
-msgstr "_Saltar en el tiempo ..."
+msgstr "_நேரத்திற்கு தாவவும் "
 
 #: src/gtkui/menus.c:195
 msgid "_Jump to Song ..."
-msgstr "Saltar a la _canción ..."
+msgstr "பாடலுக்கு _தாவவும்"
 
 #: src/gtkui/menus.c:197
 msgid "Set Repeat Point _A"
@@ -1732,7 +1720,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:208 src/gtkui/menus.c:221
 msgid "By _Title"
-msgstr "Por _título"
+msgstr "_தலைப்பு  அடிப்படையில்"
 
 #: src/gtkui/menus.c:203
 msgid "By _Filename"
@@ -1744,11 +1732,11 @@ msgstr ""
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:220
 msgid "By Track _Number"
-msgstr "Por _número de pista"
+msgstr "பாடல் _இலக்க அடிப்படையில்  "
 
 #: src/gtkui/menus.c:209 src/gtkui/menus.c:222
 msgid "By _Artist"
-msgstr "Por _artista"
+msgstr "_பாடகர்  அடிப்படையில்"
 
 #: src/gtkui/menus.c:210 src/gtkui/menus.c:223
 msgid "By Al_bum"
@@ -1756,7 +1744,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:211 src/gtkui/menus.c:224
 msgid "By Release _Date"
-msgstr "Por _fecha de estreno"
+msgstr "வெளியிட்ட திகதி அடிப்படையில்"
 
 #: src/gtkui/menus.c:212 src/gtkui/menus.c:225
 msgid "By _Length"
@@ -1764,31 +1752,31 @@ msgstr ""
 
 #: src/gtkui/menus.c:213 src/gtkui/menus.c:226
 msgid "By _File Path"
-msgstr "Por _ruta de archivo"
+msgstr "_கோப்பு வழி அடிப்படையில்"
 
 #: src/gtkui/menus.c:214 src/gtkui/menus.c:227
 msgid "By _Custom Title"
-msgstr "Por título _personalizado"
+msgstr "_விருப்ப தலைப்பு அடிப்படையில்"
 
 #: src/gtkui/menus.c:216 src/gtkui/menus.c:229
 msgid "R_everse Order"
-msgstr "Orden _inverso"
+msgstr "தலைகீழ் ஒழுங்கு"
 
 #: src/gtkui/menus.c:217 src/gtkui/menus.c:230
 msgid "_Random Order"
-msgstr "Orden alea_torio"
+msgstr "_தற்போக்கு ஒழுங்கு"
 
 #: src/gtkui/menus.c:233
 msgid "_Play This Playlist"
-msgstr "_Reproducir esta lista de reproducción"
+msgstr ""
 
 #: src/gtkui/menus.c:234 src/gtkui/menus.c:286
 msgid "_Refresh"
-msgstr "A_ctualizar"
+msgstr "_புதுப்பிக்குக "
 
 #: src/gtkui/menus.c:236
 msgid "_Sort"
-msgstr "_Ordenar"
+msgstr "_வரிசைப்படுத்துக "
 
 #: src/gtkui/menus.c:237
 msgid "Sort S_elected"
@@ -1800,75 +1788,75 @@ msgstr ""
 
 #: src/gtkui/menus.c:239
 msgid "Remove _Unavailable Files"
-msgstr "Eliminar archivos _no disponibles"
+msgstr "_கிடைக்கப்பெறாத கோப்புகளை அகற்றுக"
 
 #: src/gtkui/menus.c:241
 msgid "_New"
-msgstr "_Nuevo"
+msgstr "_புதிய "
 
 #: src/gtkui/menus.c:242
 msgid "Ren_ame ..."
-msgstr "Ren_ombrar..."
+msgstr ""
 
 #: src/gtkui/menus.c:243 src/gtkui/menus.c:298
 msgid "_Close"
-msgstr "_Cerrar"
+msgstr "_மூடவும்"
 
 #: src/gtkui/menus.c:245
 msgid "_Import ..."
-msgstr "_Importar ..."
+msgstr "_இறக்குமதி ..."
 
 #: src/gtkui/menus.c:246
 msgid "_Export ..."
-msgstr "_Exportar ..."
+msgstr "_ஏற்றுமதி ..."
 
 #: src/gtkui/menus.c:248
 msgid "Playlist _Manager ..."
-msgstr "Administrador_de listas de reproducción ..."
+msgstr ""
 
 #: src/gtkui/menus.c:249
 msgid "_Queue Manager ..."
-msgstr "Gestor de _colas ..."
+msgstr "_வரிசை நிர்வாகி ..."
 
 #: src/gtkui/menus.c:252
 msgid "Volume _Up"
-msgstr "_Subir volumen"
+msgstr "ஒலிஉரப்பான் _அதிகரிக்குக "
 
 #: src/gtkui/menus.c:253
 msgid "Volume _Down"
-msgstr "_Bajar volumen"
+msgstr "ஒலிஉரப்பான் _குறைக்குக "
 
 #: src/gtkui/menus.c:255
 msgid "_Equalizer"
-msgstr "_Ecualizador"
+msgstr "_சமமாக்கி"
 
 #: src/gtkui/menus.c:257
 msgid "E_ffects"
-msgstr "E_fectos"
+msgstr "விளைவுகள்"
 
 #: src/gtkui/menus.c:260
 msgid "_Interface"
-msgstr "_Interfaz"
+msgstr "_இடைமுகம் "
 
 #: src/gtkui/menus.c:261
 msgid "_Visualizations"
-msgstr "_Visualizaciones"
+msgstr "_காட்சிப்படுத்தல்கl"
 
 #: src/gtkui/menus.c:263
 msgid "Show _Menu Bar"
-msgstr "_Mostrar barra de menú"
+msgstr "_பட்டியல் பட்டியை காண்பிக்குக "
 
 #: src/gtkui/menus.c:264
 msgid "Show I_nfo Bar"
-msgstr "Mostrar barra de _información"
+msgstr "தகவல் பட்டியை காண்பிக்குக "
 
 #: src/gtkui/menus.c:265
 msgid "Show Info Bar Vis_ualization"
-msgstr "Mostrar la Barra Informativa de Vis_ualización"
+msgstr "தகவல் பட்டி காட்சியாக்கத்தை காண்பிக்குக "
 
 #: src/gtkui/menus.c:266
 msgid "Show _Status Bar"
-msgstr "Mostrar barra de _estado"
+msgstr "_நிலைமை பட்டியை காண்பிக்குக"
 
 #: src/gtkui/menus.c:268
 msgid "Show _Remaining Time"
@@ -1876,98 +1864,98 @@ msgstr ""
 
 #: src/gtkui/menus.c:270
 msgid "Show Close _Buttons"
-msgstr "Mostrar _botones Cerrar"
+msgstr ""
 
 #: src/gtkui/menus.c:271
 msgid "Show Column _Headers"
-msgstr "Mostrar _cabeceras de columna"
+msgstr "நெடுவரிசை _தலைப்புக்களை காண்பிக்குக"
 
 #: src/gtkui/menus.c:272
 msgid "Choose _Columns ..."
-msgstr "_Seleccionar columnas ..."
+msgstr "_நெடுவரிசைகளை தேர்க "
 
 #: src/gtkui/menus.c:273
 msgid "Scrol_l on Song Change"
-msgstr "A_vanzar al cambiar de canción"
+msgstr "பாடல் மாற்றத்தின் போது உருளவிடுக "
 
 #: src/gtkui/menus.c:276
 msgid "_File"
-msgstr "_Archivo"
+msgstr "கோப்பு "
 
 #: src/gtkui/menus.c:277
 msgid "_Playback"
-msgstr "_Reproducción"
+msgstr "_மீள்இயக்குக "
 
 #: src/gtkui/menus.c:278
 msgid "P_laylist"
-msgstr "_Lista de reproducción"
+msgstr "பாடல் பட்டியல் "
 
 #: src/gtkui/menus.c:279 src/gtkui/menus.c:293
 msgid "_Services"
-msgstr "_Servicios"
+msgstr "_சேவைகள் "
 
 #: src/gtkui/menus.c:280
 msgid "_Output"
-msgstr "Sali_da"
+msgstr "_வெளியீடு"
 
 #: src/gtkui/menus.c:281
 msgid "_View"
-msgstr "_Ver"
+msgstr "_paarvayiduga"
 
 #: src/gtkui/menus.c:285
 msgid "_Queue/Unqueue"
-msgstr "_Encolar/desencolar"
+msgstr "_வரிசைப்படுத்துக/வரிசைப்படுத்தலை அகற்றுக "
 
 #: src/gtkui/menus.c:288
 msgid "Cu_t"
-msgstr "Cor_tar"
+msgstr "வெட்டுக "
 
 #: src/gtkui/menus.c:289
 msgid "_Copy"
-msgstr "_Copiar"
+msgstr "நகலெடுக்க "
 
 #: src/gtkui/menus.c:290
 msgid "_Paste"
-msgstr "_Pegar"
+msgstr "_ஒட்டவும்"
 
 #: src/gtkui/menus.c:291
 msgid "Select _All"
-msgstr "Seleccionar _todo"
+msgstr "_அனைத்தையும் தேர்ந்தெடுக்குக "
 
 #: src/gtkui/menus.c:297
 msgid "_Rename ..."
-msgstr "_Renombrar ..."
+msgstr "மறுபெயர்"
 
 #: src/gtkui/ui_gtk.c:96
 msgid "GTK Interface"
-msgstr "Interfaz GTK"
+msgstr "GTK இடைமுகம் "
 
 #: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
 #, c-format
 msgid "%s - Audacious"
-msgstr "%s - Audacious"
+msgstr "%s - ஔடகிவஸ்"
 
 #: src/gtkui/ui_gtk.c:204
 msgid "Buffering ..."
-msgstr "Gestión de memoria intermedia ..."
+msgstr "இடைநிலைப்படுத்துகிறது ..."
 
 #: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
 msgid "Audacious"
-msgstr "Audacious"
+msgstr "ஔடகிவஸ்"
 
 #: src/gtkui/ui_gtk.c:253 src/lyricwiki/lyricwiki.c:208
 #: src/lyricwiki/lyricwiki.c:218 src/lyricwiki/lyricwiki.c:242
 #: src/lyricwiki/lyricwiki.c:252 src/lyricwiki/lyricwiki.c:271
 #: src/skins/plugin.c:176
 msgid "Error"
-msgstr "Error"
+msgstr "thavaruthal"
 
 #: src/gtkui/ui_statusbar.c:108
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d canal"
-msgstr[1] "%d canales"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/gtkui/ui_statusbar.c:123
 #, c-format
@@ -1981,15 +1969,15 @@ msgstr ""
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
 #: src/skins/ui_manager.c:178
 msgid "Play"
-msgstr "Reproducir"
+msgstr "இயக்குக "
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
-msgstr "Pausa/continuar"
+msgstr "இடைநிறுத்து / மீண்டும் இயக்கு "
 
 #: src/hotkey/gui.c:73 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
 msgid "Stop"
-msgstr "Detener"
+msgstr "நிறுத்துக "
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
@@ -1997,27 +1985,27 @@ msgstr ""
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "5 விநாடிகள் முன்னாள் செல்க "
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "5 விநாடிகள் பின்னால் செல்க "
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "Silenciar"
+msgstr "ஒலியடக்கவும்"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "ஒலிஉரப்பான்  அதிகரிக்குக"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "ஒலிஉரப்பான்  குறைக்குக"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "கோப்பிற்கு தாவவும்."
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -2025,7 +2013,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
-msgstr "Mostrar notificaciones"
+msgstr " திரையில் தோன்றும் காட்சியினை kaattuga"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
@@ -2045,7 +2033,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
-msgstr "(ninguno)"
+msgstr "(எதுவுமல்ல)"
 
 #: src/hotkey/gui.c:233
 msgid ""
@@ -2054,37 +2042,37 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"No se recomienda asociar los botones principales del mouse sin cambios.\n"
-"\n"
-"¿Quiere continuar?"
+"மாற்றங்கள் இல்லாமல் முதன்மை சுட்டி பொத்தான்கள் பிணைக்க பரிந்துரைக்கப்படவில்லை,⏎\n"
+"⏎\n"
+"நீங்கள் தொடர விரும்புகிறீர்களா?"
 
 #: src/hotkey/gui.c:235
 msgid "Binding mouse buttons"
-msgstr "Asociar botones del mouse"
+msgstr "சுட்டி பொத்தான்களை பிணைத்தல்"
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Configuración de atajos de teclado"
+msgstr "உலகளாவிய முக்கியசாவி நீட்சி கட்டமைப்பு"
 
 #: src/hotkey/gui.c:401
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Pulse una combinación de teclas dentro del campo de texto.\n"
-"También puede asociar botones del ratón."
+"எழுத்து புலத்தில் ஒரு விசை சேர்க்கையை அழுத்தவும்.⏎\n"
+"உங்களுக்கு சுட்டி பொத்தான்களை பிணைக்கவும் முடியும்."
 
 #: src/hotkey/gui.c:406
 msgid "Hotkeys:"
-msgstr "Atajos de teclado:"
+msgstr "குறுக்குவிசைகள்:"
 
 #: src/hotkey/gui.c:423
 msgid "<b>Action:</b>"
-msgstr "<b>Acción:</b>"
+msgstr "<b>நடவடிக்கை: </b>"
 
 #: src/hotkey/gui.c:430
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Teclas asociadas:</b>"
+msgstr "<b>சாவி பிணைத்தல்:</b>"
 
 #: src/hotkey/plugin.c:66
 msgid ""
@@ -2103,7 +2091,7 @@ msgstr ""
 
 #: src/hotkey/plugin.c:78
 msgid "Global Hotkeys"
-msgstr "Teclas abreviadas globales"
+msgstr "உலகளாவிய குறுக்குவிசைகள்:"
 
 #: src/jack/jack.c:410
 msgid ""
@@ -2115,20 +2103,20 @@ msgstr ""
 
 #: src/jack/jack.c:416
 msgid "JACK Output"
-msgstr "Salida JACK"
+msgstr "JACK வெளியீடு "
 
 #: src/ladspa/plugin.c:493
 #, c-format
 msgid "%s Settings"
-msgstr "Ajustes %s"
+msgstr "%s அமைப்புகள்"
 
 #: src/ladspa/plugin.c:561
 msgid "LADSPA Host Settings"
-msgstr "Ajustes del servidor LADSPA"
+msgstr "LADSPA புரவலன் அமைப்புகள்"
 
 #: src/ladspa/plugin.c:570
 msgid "Module paths:"
-msgstr "Rutas de complementos:"
+msgstr "தொகுதிக்கூறு பாதைகள்:"
 
 #: src/ladspa/plugin.c:575
 msgid ""
@@ -2136,28 +2124,28 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Separe múltiples rutas por dos puntos.\n"
-"Estas rutas se utilizan además de LADSPA_PATH.\n"
-"Tras añadir nuevas rutas, pulse Intro para buscar complementos nuevos.</"
+"பல பாதைகளினை ஒரு முக்காட்புள்ளி மூலம் வேறுபடுத்துக.⏎\n"
+"இவை LADSPA_PATH இனை விடவும் தேடப்படும், ⏎\n"
+"புதிய பாதைகள் சேர்த்ததன் பின்னர், புதிய செருகுநிரல்கள் வருட உள்ளிடுகவினை அழுத்தக.</"
 "small>"
 
 #: src/ladspa/plugin.c:591
 msgid "Available plugins:"
-msgstr "Complementos disponibles:"
+msgstr "இருப்பிலுள்ள செருகுநிரல்கள்:"
 
 #: src/ladspa/plugin.c:604 src/modplug/plugin_main.c:115
 #: src/modplug/plugin_main.c:119 src/modplug/plugin_main.c:123
 #: src/modplug/plugin_main.c:127
 msgid "Enable"
-msgstr "Activar"
+msgstr "செயல்படுத்துக "
 
 #: src/ladspa/plugin.c:610
 msgid "Enabled plugins:"
-msgstr "Complementos activos:"
+msgstr "செருகுநிரல்களினை செயல்ப்படுத்துக:"
 
 #: src/ladspa/plugin.c:626
 msgid "Settings"
-msgstr "Ajustes"
+msgstr "அமைப்புக்கள்"
 
 #: src/ladspa/plugin.c:645
 msgid ""
@@ -2167,12 +2155,12 @@ msgstr ""
 
 #: src/ladspa/plugin.c:650
 msgid "LADSPA Host"
-msgstr "Servidor LADSPA"
+msgstr "LADSPA "
 
 #: src/lirc/lirc.c:76
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: no se puede iniciar soporte LIRC\n"
+msgstr "%s: LIRC உதவியை ஆரம்பிக்க mudiyavillai⏎\n"
 
 #: src/lirc/lirc.c:83
 #, c-format
@@ -2181,29 +2169,31 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: no se puede leer el archivo de configuración de LIRC\n"
-"%s: por favor lea la documentación de LIRC\n"
-"%s: en el tópico \"Cómo crear un archivo de configuración adecuado\"\n"
+"%s: LIRC இன் கட்டமைப்பு கோப்பினை வாசிக்க முடியவில்லை⏎\n"
+"\n"
+"%s: LIRC இன் ஆவணங்களை படிக்கவும்⏎\n"
+"\n"
+"%s: எப்படி ஒரு சரியான கட்டமைப்பு கோப்பினை உருவாக்குவது⏎\n"
 
 #: src/lirc/lirc.c:114
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: tratando de reconectar...\n"
+msgstr "%s: மீள் இணைப்பிற்கு முனைகிறது ...⏎\n"
 
 #: src/lirc/lirc.c:354
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: comando desconocido \"%s\"\n"
+msgstr "%s: அறியப்படாத கட்டளை \"%s\"⏎\n"
 
 #: src/lirc/lirc.c:365
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: desconectando de LIRC\n"
+msgstr "%s: LIRC இல் இருந்து துண்டிக்கப்பட்டு விட்டது ⏎\n"
 
 #: src/lirc/lirc.c:371
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: se intentará reconectar cada %d segundos...\n"
+msgstr "%s: ஒவ்வொரு %d வினாடிக்கும் மீள் இணைப்பை பெற முயலும் ...⏎\n"
 
 #: src/lirc/lirc.c:381
 msgid ""
@@ -2223,63 +2213,63 @@ msgstr ""
 
 #: src/lirc/lirc.c:392
 msgid "<b>Connection</b>"
-msgstr "<b>Conexión</b>"
+msgstr "<b> இணைப்பு </b>"
 
 #: src/lirc/lirc.c:393
 msgid "Reconnect to LIRC server"
-msgstr "Reconectar a servidor LIRC"
+msgstr "LIRC சேவைகயத்துக்கு மீள் இணைக்குக "
 
 #: src/lirc/lirc.c:395
 msgid "Wait before reconnecting:"
-msgstr "Espera antes de reconectar:"
+msgstr "மீள் இணைக்க முன் பொறுக்க :"
 
 #: src/lirc/lirc.c:405
 msgid "LIRC Plugin"
-msgstr "Plugin LIRC"
+msgstr "LIRC "
 
 #: src/lyricwiki/lyricwiki.c:117
 msgid "No lyrics available"
-msgstr "No se encontraron letras"
+msgstr "எந்தவொரு பாடல்வரிகளும் கிடைக்கப்படவில்லை "
 
 #: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
 #, c-format
 msgid "Unable to fetch %s"
-msgstr "No se puede obtener %s"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
 msgid "Unable to parse %s"
-msgstr "No se puede analizar %s"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:260
 msgid "Looking for lyrics ..."
-msgstr "Buscando letras de la canción...."
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Missing song metadata"
-msgstr "No hay metadatos de la canción"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:284
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr "Conectándose con lyrics.wikia.com ..."
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:411
 msgid "LyricWiki Plugin"
-msgstr "Plugin LyricWiki"
+msgstr "LyricWiki நீட்சி "
 
 #: src/m3u/m3u.c:121
 msgid "M3U Playlists"
-msgstr "Listas de reproducción M3U"
+msgstr "M3U பாடல் பட்டியல்"
 
 #: src/metronom/metronom.c:127
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Generador de tacto: %d ppm"
+msgstr "திறமை பிறப்பாக்கி:% d நிமிடத்திற்கான துடிப்புகள் "
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Generador de tacto: %d ppm %d/%d"
+msgstr "திறமை பிறப்பாக்கி:%d நிமிடத்திற்கான துடிப்புகள் %d %d"
 
 #: src/metronom/metronom.c:246
 msgid ""
@@ -2292,7 +2282,7 @@ msgstr ""
 
 #: src/metronom/metronom.c:255
 msgid "Tact Generator"
-msgstr "Generador de tacto"
+msgstr "திறமை பிறப்பாக்கி"
 
 #: src/mixer/mixer.c:169
 msgid ""
@@ -2302,19 +2292,19 @@ msgstr ""
 
 #: src/mixer/mixer.c:173
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>Mezclador de canales</b>"
+msgstr "<b>தட கலவை</b>"
 
 #: src/mixer/mixer.c:174
 msgid "Output channels:"
-msgstr "Canales de salida:"
+msgstr "வெளியீட்டு thadangal"
 
 #: src/mixer/mixer.c:184
 msgid "Channel Mixer"
-msgstr "Mezclador de canales"
+msgstr "தட கலவைப்பான் "
 
 #: src/mms/mms.c:224
 msgid "MMS Plugin"
-msgstr "Plugin MMS"
+msgstr "MMS நீட்சி"
 
 #: src/modplug/plugin_main.c:57
 msgid "<b>Resolution</b>"
@@ -2427,31 +2417,31 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (Módulo de reproducción)"
+msgstr "ModPlug (தொகுதி இயக்கி )"
 
 #: src/mpg123/mpg123.c:211
 msgid "Surround"
-msgstr "Envolvente"
+msgstr "சூழ்ந்த"
 
 #: src/mpg123/mpg123.c:569
 msgid "MPG123 Plugin"
-msgstr "MPG123 Plugin"
+msgstr "MPG123 நீட்சி"
 
 #: src/mpris2/plugin.c:415
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 Server"
+msgstr "MPRIS 2 சேவையகம் "
 
 #: src/neon/neon.c:1229
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Neon HTTP/HTTPS Plugin"
+msgstr "Neon HTTP/HTTPS நீட்சி "
 
 #: src/notify/event.c:64
 msgid "Stopped"
-msgstr "Detenido"
+msgstr "நிறுத்துப்பட்டது "
 
 #: src/notify/event.c:64
 msgid "Audacious is not playing."
-msgstr "Audacious no está reproduciendo."
+msgstr "ஔடகிவஸ் இயங்கவில்லை "
 
 #: src/notify/notify.c:33
 msgid ""
@@ -2483,43 +2473,43 @@ msgstr ""
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
-msgstr "Notificaciones de escritorio"
+msgstr "பணிமேடை அறிவிப்புகள்"
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "காண்பிக்குக "
 
 #: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
-msgstr "Pausar"
+msgstr "இடைநிறுத்துக "
 
 #: src/notify/osd.c:72 src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
 msgid "Next"
-msgstr "Siguiente"
+msgstr "அடுத்தது "
 
 #: src/oss4/plugin.c:36
 msgid "1. Default device"
-msgstr "1. Dispositivo predeterminado"
+msgstr "1. இயல்புநிலை சாதனம்"
 
 #: src/oss4/plugin.c:75 src/sndio/sndio.c:393
 msgid "Audio device:"
-msgstr "Dispositivo de sonido:"
+msgstr "ஒலி சாதனம்:"
 
 #: src/oss4/plugin.c:77
 msgid "Use alternate device:"
-msgstr "Utilizar dispositivo alternativo:"
+msgstr "மாற்று சாதனம் பயன்படுத்துக:"
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr "Guardar volumen entre sesiones."
+msgstr "அமர்வுகள் இடையே ஒலி அளவை சேமிக்குக."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
-msgstr "Activar conversiones de formato realizadas por el software OSS."
+msgstr "OSS மென்பொருள் மூலம் வடிவமைப்பு மாற்றத்தை செயல்படுத்துக."
 
 #: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "Activa el modo exclusivo para evitar la mezcla virtual."
+msgstr "மெய்நிகர் கலப்பினை தடுக்க பிரத்யேக முறையினை செயல்படுத்துக."
 
 #: src/oss4/plugin.c:108
 msgid ""
@@ -2532,15 +2522,15 @@ msgstr ""
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
-msgstr "Salida OSS4"
+msgstr "OSS4 வெளியீடு "
 
 #: src/pls/pls.c:113
 msgid "PLS Playlists"
-msgstr "Listas PLS"
+msgstr "PLS பாடல் பட்டியல்"
 
 #: src/psf/plugin.c:262
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "Abrir el decodificador PSF PSF1/PSF2"
+msgstr "OpenPSF PSF1/PSF2 குறிவிலக்கி "
 
 #: src/pulse_audio/pulse_audio.c:644
 msgid ""
@@ -2564,7 +2554,7 @@ msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
-msgstr "Salida de PulseAudio"
+msgstr "PulseAudio வெளியீடு "
 
 #: src/resample/resample.c:161
 msgid ""
@@ -2574,75 +2564,75 @@ msgstr ""
 
 #: src/resample/resample.c:165
 msgid "Skip/repeat samples"
-msgstr "Saltear/repetir muestras"
+msgstr "மாதிரிகளை தவிர்க்கவும் / மீlavum"
 
 #: src/resample/resample.c:166
 msgid "Linear interpolation"
-msgstr "Interpolación lineal"
+msgstr "நேர்கோட்டு இடைக்கணிப்பு"
 
 #: src/resample/resample.c:167
 msgid "Fast sinc interpolation"
-msgstr "Interpolación de sincronización rápida "
+msgstr "வேகமாக sinc இடைச்செருகல்"
 
 #: src/resample/resample.c:168
 msgid "Medium sinc interpolation"
-msgstr "Interpolación de sincronización media"
+msgstr "மத்திமமான sinc இடைச்செருகல்"
 
 #: src/resample/resample.c:169
 msgid "Best sinc interpolation"
-msgstr "Mejor interpolación de sincronización "
+msgstr "சிறந்த sinc இடைச்செருகல்"
 
 #: src/resample/resample.c:172
 msgid "<b>Conversion</b>"
-msgstr "<b>Conversión</b>"
+msgstr "<b> பரிமாற்றம் </b>"
 
 #: src/resample/resample.c:173
 msgid "Method:"
-msgstr "Método:"
+msgstr "முறைமை "
 
 #: src/resample/resample.c:176 src/sox-resampler/sox-resampler.c:151
 msgid "Rate:"
-msgstr "Velocidad:"
+msgstr "வீதம்:"
 
 #: src/resample/resample.c:179
 msgid "<b>Rate Mappings</b>"
-msgstr "<b>Mapeos de velocidad</b>"
+msgstr "<b>வீத வரைபடங்கள் </b>"
 
 #: src/resample/resample.c:180
 msgid "Use rate mappings"
-msgstr "Usar mapeos de velocidad"
+msgstr "வீத வரைபடங்களினை உபயோகிக்குக "
 
 #: src/resample/resample.c:182
 msgid "8 kHz:"
-msgstr "8 kHz:"
+msgstr "8 kHz: "
 
 #: src/resample/resample.c:185
 msgid "16 kHz:"
-msgstr "16 kHz:"
+msgstr "16 kHz"
 
 #: src/resample/resample.c:188
 msgid "22.05 kHz:"
-msgstr "22.05 kHz:"
+msgstr "22.05 kHz: "
 
 #: src/resample/resample.c:191
 msgid "44.1 kHz:"
-msgstr "44.1 kHz:"
+msgstr "44.1 kHz: "
 
 #: src/resample/resample.c:194
 msgid "48 kHz:"
-msgstr "48 kHz:"
+msgstr "48 kHz: "
 
 #: src/resample/resample.c:197
 msgid "96 kHz:"
-msgstr "96 kHz:"
+msgstr "96 kHz: "
 
 #: src/resample/resample.c:200
 msgid "192 kHz:"
-msgstr "192 kHz:"
+msgstr "192 kHz: "
 
 #: src/resample/resample.c:210
 msgid "Sample Rate Converter"
-msgstr "Convertidor de Velocidad de Muestra"
+msgstr "மாதிரி விகிதம் பரிமாற்றி "
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
@@ -2669,7 +2659,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
-msgstr ""
+msgstr "வலையமைப்பு சிக்கல் "
 
 #: src/scrobbler2/config_window.c:75
 msgid "There was a problem contacting Last.fm. Please try again later."
@@ -2677,7 +2667,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
-msgstr ""
+msgstr "சரிபார்க்கப்படுகிறது "
 
 #: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
@@ -2727,19 +2717,19 @@ msgstr ""
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
-msgstr "Salida SDL"
+msgstr "SDL வெளியீடு "
 
 #: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
 msgid "Library"
-msgstr "Biblioteca"
+msgstr "நூலகம்"
 
 #: src/search-tool/search-tool.c:219
 msgid "Unknown Artist"
-msgstr "Artista Desconocido"
+msgstr "தெரியாத பாடகர்"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Album"
-msgstr "Album Desconocido"
+msgstr "தெரியாத குறுவட்டு"
 
 #: src/search-tool/search-tool.c:632
 #, c-format
@@ -2747,15 +2737,13 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
-"%s\n"
-" en %s por %s"
 
 #: src/search-tool/search-tool.c:638
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "%d álbum"
-msgstr[1] "%d álbumes"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/search-tool/search-tool.c:640
 #, c-format
@@ -2767,10 +2755,10 @@ msgid_plural ""
 " %s, %d songs"
 msgstr[0] ""
 "%s\n"
-" %s, %d canción"
+"%s, %d பாடல் "
 msgstr[1] ""
 "%s\n"
-" %s, %d canciones"
+" %s, %d songs"
 
 #: src/search-tool/search-tool.c:646
 #, c-format
@@ -2781,87 +2769,83 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
-"%s\n"
-" %d canción por %s"
 msgstr[1] ""
-"%s\n"
-" %d canciones por %s"
 
 #: src/search-tool/search-tool.c:687
 msgid "_Create Playlist"
-msgstr "_Crear lista de reproducción"
+msgstr "பாடல் பட்டியலொன்றை _உருவாக்குக "
 
 #: src/search-tool/search-tool.c:694
 msgid "_Add to Playlist"
-msgstr "_Añadir a la lista de reproducción"
+msgstr "பாடல் பட்டியலிற்கு _சேர்க்க "
 
 #: src/search-tool/search-tool.c:734
 msgid "Search library"
-msgstr "Buscar biblioteca"
+msgstr "நூலகத்தில் தேடுக "
 
 #: src/search-tool/search-tool.c:739
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Para importar su colección musical en Audacious, elija una carpeta y pulse "
-"el botón «actualizar»."
+"ஔடகிவஸ் இல் இசை நூகலமொன்றை இறக்குமதி செய்ய கோப்பகமொன்றை தெரிவு செய்து புதுப்பிப்பு "
+"பொத்தானை அழுத்துக. "
 
 #: src/search-tool/search-tool.c:747
 msgid "Please wait ..."
-msgstr "Espere por favor..."
+msgstr "தயவு செய்து பொருத்திருக்குக ..."
 
 #: src/search-tool/search-tool.c:769
 msgid "Choose Folder"
-msgstr "Elija una carpeta"
+msgstr "கோப்பகமொன்றை தேர்க "
 
 #: src/search-tool/search-tool.c:808
 msgid "Search Tool"
-msgstr "Herramienta de búsqueda"
+msgstr "தேடல் கருவி"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr "Interface del Winamp Clásico"
+msgstr "Winamp பாரம்பரிய இடைமுகம்"
 
 #: src/skins/skins_cfg.c:204
 msgid "_Player:"
-msgstr "_Reproductor:"
+msgstr "_iyakkai"
 
 #: src/skins/skins_cfg.c:205
 msgid "Select main player window font:"
-msgstr "Seleccione la tipografía para la ventana principal:"
+msgstr "பிரதான இயக்கி சாளரத்தின் எழுத்துருவை தெரிவு செய்க :"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Playlist:"
-msgstr "Lista de reproducción:"
+msgstr "_பாடல் பட்டியல்:"
 
 #: src/skins/skins_cfg.c:208
 msgid "Select playlist font:"
-msgstr "Seleccione la tipografía de la lista de reproducción:"
+msgstr "பாடல் பட்டியலின் எழுத்துருவை தெரிவு செய்க :"
 
 #: src/skins/skins_cfg.c:212
 msgid "<b>_Fonts</b>"
-msgstr "<b>_Tipografías</b>"
+msgstr "<b>_எழுத்துரு</b>"
 
 #: src/skins/skins_cfg.c:215
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Usar tipografías de mapa de bits (solo soporta ASCII)"
+msgstr "பிட்மாப் பட எழுத்துருக்களை உபயோகிக்க (ASCII இணை மட்டும் ஆதரிக்கிறது)"
 
 #: src/skins/skins_cfg.c:217
 msgid "Scroll song title in both directions"
-msgstr "Desplazar el título de la canción en ambas direcciones"
+msgstr "இரு திசைகளிலும் பாடல் தலைப்பை ururavaikkuga "
 
 #: src/skins/skins_cfg.c:295
 msgid "<b>_Skin</b>"
-msgstr "<b>_Tema</b>"
+msgstr "<b>_தோல் </b>"
 
 #: src/skins/skins_cfg.c:342
 msgid "Interface Preferences"
-msgstr "Preferencias del interfaz"
+msgstr "இடைமுக விருப்பத்தேர்வுகள் "
 
 #: src/skins/ui_equalizer.c:328
 msgid "Preamp"
-msgstr "Preamplificador"
+msgstr "முன் விரிவாக்கி "
 
 #: src/skins/ui_equalizer.c:332
 msgid "31 Hz"
@@ -2893,7 +2877,7 @@ msgstr "2 kHz"
 
 #: src/skins/ui_equalizer.c:334
 msgid "4 kHz"
-msgstr "4 kHz"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:334
 msgid "8 kHz"
@@ -2905,44 +2889,44 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:375
 msgid "Audacious Equalizer"
-msgstr "Ecualizador de Audacious"
+msgstr "ஔடகிவஸ் சமமாக்கி "
 
 #: src/skins/ui_equalizer.c:890
 msgid "Presets"
-msgstr "Predefinidos"
+msgstr "முன்னமைப்புகள்"
 
 #: src/skins/ui_equalizer.c:971 src/skins/ui_manager.c:451
 msgid "Load preset"
-msgstr "Cargar predefinido"
+msgstr "முன்னமைப்புகளினை ஏற்றுக "
 
 #: src/skins/ui_equalizer.c:988
 msgid "Load auto-preset"
-msgstr "Cargar auto-predefinido"
+msgstr "தானியங்கு முன்னமைப்புகளை ஏற்றுக  "
 
 #: src/skins/ui_equalizer.c:1018 src/skins/ui_equalizer.c:1036
 #: src/skins/ui_equalizer.c:1052
 msgid "Load equalizer preset"
-msgstr "Cargar ecualizador predefinido"
+msgstr "சமமாக்கி முன்னமைப்புகளை ஏற்றுக  "
 
 #: src/skins/ui_equalizer.c:1071 src/skins/ui_manager.c:472
 msgid "Save preset"
-msgstr "Guardar predefinido"
+msgstr "முன்னமைப்புகளை சேமிக்க"
 
 #: src/skins/ui_equalizer.c:1087
 msgid "Save auto-preset"
-msgstr "Guardar auto-predefinido"
+msgstr "தானியங்கு முன்னமைப்புகளை சேமிக்குக"
 
 #: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
 msgid "Save equalizer preset"
-msgstr "Guardar ecualizador predefinido"
+msgstr ""
 
 #: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
 msgid "Delete preset"
-msgstr "Borrar predefinido"
+msgstr "முன்னமைப்பினை அழிக்குக "
 
 #: src/skins/ui_equalizer.c:1190
 msgid "Delete auto-preset"
-msgstr "Borrar auto-predefinido"
+msgstr "தானியங்கு முன்னமைப்புகளை அழிக்குக"
 
 #: src/skins/ui_main.c:414
 msgid "kbps"
@@ -2955,62 +2939,62 @@ msgstr "kHz"
 #: src/skins/ui_main.c:770
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Ir a la posición %d:%-2.2d / %d:%-2.2d"
+msgstr "%d:%-2.2d / %d:%-2.2d இனை நாடுக"
 
 #: src/skins/ui_main.c:791
 #, c-format
 msgid "Volume: %d%%"
-msgstr "Volumen: %d%%"
+msgstr "ஒலி அளவு: %d%%"
 
 #: src/skins/ui_main.c:814
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Balance: %d%% izquierda"
+msgstr "சமநிலை:% d%% இடது"
 
 #: src/skins/ui_main.c:816
 msgid "Balance: center"
-msgstr "Balance: centrado"
+msgstr "சமநிலை:மத்தி "
 
 #: src/skins/ui_main.c:818
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Balance: %d%% derecha"
+msgstr "சமநிலை:% d%% வலது "
 
 #: src/skins/ui_main.c:942
 msgid "Options Menu"
-msgstr "Menú de opciones"
+msgstr "தேர்வு பட்டியல்"
 
 #: src/skins/ui_main.c:946
 msgid "Disable 'Always On Top'"
-msgstr "Desactivar 'Siempre encima'"
+msgstr "'எப்போதும் மேலே' என்பதை முடக்குக "
 
 #: src/skins/ui_main.c:948
 msgid "Enable 'Always On Top'"
-msgstr "Activar 'Siempre encima'"
+msgstr "'எப்போதும் மேலே' என்பதை செயற்படுத்துக "
 
 #: src/skins/ui_main.c:951
 msgid "File Info Box"
-msgstr "Caja de información de archivo"
+msgstr "கோப்பு தகவல் பெட்டி"
 
 #: src/skins/ui_main.c:956
 msgid "Visualization Menu"
-msgstr "Menú de visualización"
+msgstr "காட்சிப்படுத்தல் பட்டியல்"
 
 #: src/skins/ui_main.c:1591
 msgid "Single mode."
-msgstr "Modo único."
+msgstr "ஒற்றை முறை."
 
 #: src/skins/ui_main.c:1593
 msgid "Playlist mode."
-msgstr "Modo de lista de reproducción."
+msgstr "பாடல் பட்டியல் murai"
 
 #: src/skins/ui_main.c:1615
 msgid "Stopping after song."
-msgstr "Parar después de la canción."
+msgstr "பாடலின் பின்னர் நிறுத்துக."
 
 #: src/skins/ui_main.c:1617
 msgid "Not stopping after song."
-msgstr "No parar después de la canción."
+msgstr "பாடலின் பின்னர் நிறுத்த வேண்டாம்."
 
 #: src/skins/ui_main.c:1752
 msgid "Repeat point A set."
@@ -3026,632 +3010,625 @@ msgstr ""
 
 #: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
 msgid "Autoscroll Song Name"
-msgstr "Autodesplazar Nombre de la Canción"
+msgstr "பாடல் பெயரின் போது தானாக உருள செய்யவும்."
 
 #: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
 msgid "Stop after Current Song"
-msgstr "Parar tras la canción actual"
+msgstr "தற்போதைய பாடலின் பின்னர் நிறுத்துக."
 
 #: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
 msgid "Peaks"
-msgstr "Picos"
+msgstr "உச்சங்கள் "
 
 #: src/skins/ui_manager.c:75 src/skins/ui_manager.c:76
 msgid "Repeat"
-msgstr "Repetir"
+msgstr "மறுமுறை"
 
 #: src/skins/ui_manager.c:78 src/skins/ui_manager.c:79
 msgid "Shuffle"
-msgstr "Orden aleatorio"
+msgstr "குலுக்குக "
 
 #: src/skins/ui_manager.c:81 src/skins/ui_manager.c:82
 msgid "No Playlist Advance"
-msgstr "No avanzar la lista de reproducción"
+msgstr "முன்னோக்கிய பாடல் பட்டியலுக்கு செல்ல வேண்டாம்"
 
 #: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
 msgid "Show Player"
-msgstr "Mostrar reproductor"
+msgstr "இயக்கியை காட்டு"
 
 #: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
 msgid "Show Playlist Editor"
-msgstr "Mostrar el editor de listas de reproducción"
+msgstr "பாடல் பட்டியல் திருத்தியை காண்பிக்க "
 
 #: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
 msgid "Show Equalizer"
-msgstr "Mostrar el ecualizador"
+msgstr "சமமாக்கியை காண்பிக்க "
 
 #: src/skins/ui_manager.c:93 src/skins/ui_manager.c:94
 msgid "Always on Top"
-msgstr "Siempre encima"
+msgstr "எப்பொழுதும் மேலே "
 
 #: src/skins/ui_manager.c:96 src/skins/ui_manager.c:97
 msgid "Put on All Workspaces"
-msgstr "Poner en todos los espacios de trabajo"
+msgstr "அனைத்து வேலையிடங்கள் மீதும் இடுக "
 
 #: src/skins/ui_manager.c:99 src/skins/ui_manager.c:100
 msgid "Roll up Player"
-msgstr "Enrollar el reproductor"
+msgstr "சுழrறு முறை இயக்கி "
 
 #: src/skins/ui_manager.c:102 src/skins/ui_manager.c:103
 msgid "Roll up Playlist Editor"
-msgstr "Enrollar el editor de listas de reproducción"
+msgstr "சுழற்று முறை இயக்கி திருத்தி "
 
 #: src/skins/ui_manager.c:105 src/skins/ui_manager.c:106
 msgid "Roll up Equalizer"
-msgstr "Enrollar el ecualizador"
+msgstr "சுழற்று முறை சமமாக்கி"
 
 #: src/skins/ui_manager.c:114
 msgid "Analyzer"
-msgstr "Analizador"
+msgstr "பகுப்பாய்வி "
 
 #: src/skins/ui_manager.c:115
 msgid "Scope"
-msgstr "Campo"
+msgstr "குறியிலக்கம்"
 
 #: src/skins/ui_manager.c:116
 msgid "Voiceprint"
-msgstr "Marca de voz"
+msgstr "குரல் அச்சு"
 
 #: src/skins/ui_manager.c:117
 msgid "Off"
-msgstr "Apagado"
+msgstr "அணைக்குக "
 
 #: src/skins/ui_manager.c:121 src/skins/ui_manager.c:138
 #: src/skins/ui_manager.c:144
 msgid "Normal"
-msgstr "Normal"
+msgstr "இயல்பான"
 
 #: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
 msgid "Fire"
-msgstr "Fuego"
+msgstr "நெருப்பு "
 
 #: src/skins/ui_manager.c:123
 msgid "Vertical Lines"
-msgstr "Líneas verticales"
+msgstr "நிலைக்குத்து கோடுகள் "
 
 #: src/skins/ui_manager.c:127
 msgid "Lines"
-msgstr "Líneas"
+msgstr "கோடுகள் "
 
 #: src/skins/ui_manager.c:128
 msgid "Bars"
-msgstr "Barras"
+msgstr "பட்டைகள்"
 
 #: src/skins/ui_manager.c:132
 msgid "Dot Scope"
-msgstr "Campo de puntos"
+msgstr "புள்ளி குறியிலக்கம்"
 
 #: src/skins/ui_manager.c:133
 msgid "Line Scope"
-msgstr "Campo de líneas"
+msgstr "கோட்டு குறியிலக்கம்"
 
 #: src/skins/ui_manager.c:134
 msgid "Solid Scope"
-msgstr "Campo sólido"
+msgstr "திட குறியிலக்கம்"
 
 #: src/skins/ui_manager.c:140
 msgid "Ice"
-msgstr "Hielo"
+msgstr "பனி "
 
 #: src/skins/ui_manager.c:145
 msgid "Smooth"
-msgstr "Suave"
+msgstr "மிருதுவான "
 
 #: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
 msgid "Slowest"
-msgstr "Muy lento"
+msgstr "மெதுவான "
 
 #: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
 msgid "Slow"
-msgstr "Lento"
+msgstr "மெதுவாய் "
 
 #: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Medium"
-msgstr "Medio"
+msgstr "நடுத்தரம் "
 
 #: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
 msgid "Fast"
-msgstr "Rápido"
+msgstr "விரைவு "
 
 #: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
 msgid "Fastest"
-msgstr "Muy rápido"
+msgstr "மிக விரைவாக "
 
 #: src/skins/ui_manager.c:165
 msgid "Time Elapsed"
-msgstr "Tiempo transcurrido"
+msgstr "கடந்த நேரம் "
 
 #: src/skins/ui_manager.c:166
 msgid "Time Remaining"
-msgstr "Tiempo restante"
+msgstr "மீதமுள்ள நேரம் "
 
 #: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
 msgid "Previous"
-msgstr "Anterior"
+msgstr "முந்தைய"
 
 #: src/skins/ui_manager.c:195
 msgid "Visualization"
-msgstr "Visualización"
+msgstr "உருவக காட்சிப்படுத்தல் "
 
 #: src/skins/ui_manager.c:196
 msgid "Visualization Mode"
-msgstr "Modo de visualización"
+msgstr "காட்சிப்படுத்தல் முறை "
 
 #: src/skins/ui_manager.c:197
 msgid "Analyzer Mode"
-msgstr "Modo analizador"
+msgstr "பகுப்பாய்வி முறை"
 
 #: src/skins/ui_manager.c:198
 msgid "Scope Mode"
-msgstr "Modo de campo"
+msgstr "குறியிலக்க முறை "
 
 #: src/skins/ui_manager.c:199
 msgid "Voiceprint Mode"
-msgstr "Modo marca de voz"
+msgstr "குரலச்சு முறை "
 
 #: src/skins/ui_manager.c:200
 msgid "WindowShade VU Mode"
-msgstr "Modo WindowShade VU"
+msgstr "சாளர நிழல் VU முறை "
 
 #: src/skins/ui_manager.c:201
 msgid "Analyzer Falloff"
-msgstr "Caída del analizador"
+msgstr "பகுப்பாய்வி வீழச்சியுறுதல் "
 
 #: src/skins/ui_manager.c:202
 msgid "Peaks Falloff"
-msgstr "Caída de los picos"
+msgstr "உச்சங்கள் வீழச்சியுறுதல் "
 
 #: src/skins/ui_manager.c:207
 msgid "Playlist"
-msgstr "Lista de reproducción"
+msgstr "பாடல் பட்டியல்"
 
 #: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
 msgid "Play Playlist"
-msgstr "Reproducir lista"
+msgstr "பாடல் பட்டியலினை ஓலி "
 
 #: src/skins/ui_manager.c:212 src/skins/ui_manager.c:213
 msgid "New Playlist"
-msgstr "Nueva lista de reproducción"
+msgstr "புதிய பாடல் பட்டியல்"
 
 #: src/skins/ui_manager.c:215 src/skins/ui_manager.c:216
 msgid "Select Next Playlist"
-msgstr "Lista de reproducción siguiente"
+msgstr "அடுத்த பாடல் பட்டியலினை தெரிவு செய்க"
 
 #: src/skins/ui_manager.c:218 src/skins/ui_manager.c:219
 msgid "Select Previous Playlist"
-msgstr "Lista de reproducción anterior"
+msgstr "முன்னைய பாடல் பட்டியலினை தெரிவு செய்க"
 
 #: src/skins/ui_manager.c:221 src/skins/ui_manager.c:222
 msgid "Delete Playlist"
-msgstr "Eliminar la lista de reproducción"
+msgstr "பாடல் பட்டியலினை அழிக்குக "
 
 #: src/skins/ui_manager.c:224
 msgid "Import Playlist"
-msgstr "Importar lista de reproducción"
+msgstr "பாடல் பட்டியலை இறக்குமதி செய்க "
 
 #: src/skins/ui_manager.c:225
 msgid "Loads a playlist file into the selected playlist."
-msgstr "Carga un archivo de listas en la lista de reproducción seleccionada."
+msgstr "தெரிவு செய்யப்பட பாடல் பட்டியலுக்கு பாடல் பட்டியல் கோப்பினை ஏற்றுக "
 
 #: src/skins/ui_manager.c:228
 msgid "Export Playlist"
-msgstr "Exportar lista de reproducción"
+msgstr "பாடல் பட்டியலை ஏற்றுமதி செய்க "
 
 #: src/skins/ui_manager.c:229
 msgid "Saves the selected playlist."
-msgstr "Guarda la lista de reproducción seleccionada."
+msgstr "தெரிவு செய்த பாடல் பட்டியலினை சேமிக்குக "
 
 #: src/skins/ui_manager.c:231
 msgid "Refresh List"
-msgstr "Actualizar lista"
+msgstr "பட்டியலை புதுப்பிக்குக "
 
 #: src/skins/ui_manager.c:232
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr ""
-"Actualiza los metadatos asociados con una entrada de la lista de "
-"reproducción."
+msgstr "பாடல் பட்டியலுடன் தொடர்புடைய மீத்தரவினை புதுப்பிக்குக. "
 
 #: src/skins/ui_manager.c:235
 msgid "Playlist Manager"
-msgstr "Gestor de listas de reproducción"
+msgstr "பாடல் பட்டிய நிர்வாகி "
 
 #: src/skins/ui_manager.c:238
 msgid "Queue Manager"
-msgstr "Gestor de colas"
+msgstr "வரிசை நிர்வாகி"
 
 #: src/skins/ui_manager.c:243
 msgid "View"
-msgstr "Ver"
+msgstr "பார்வையிடுக "
 
 #: src/skins/ui_manager.c:244
 msgid "Interface"
-msgstr "Interfaz"
+msgstr "இடைமுகம் "
 
 #: src/skins/ui_manager.c:245
 msgid "Interface Preferences ..."
-msgstr "Preferencias del interfaz ..."
+msgstr "இடைமுக விருப்பத்தேர்வுகள் ..."
 
 #: src/skins/ui_manager.c:250
 msgid "Add Internet Address..."
-msgstr "Añadir dirección de Internet..."
+msgstr "இணைய முகவரியிnai சேர்க்குக "
 
 #: src/skins/ui_manager.c:251
 msgid "Adds a remote track to the playlist."
-msgstr "Añade una pista remota a la lista de reproducción."
+msgstr "பாடல் பட்டியலுக்கு தொலைவுப்பாடல்களை சேர்க்குக."
 
 #: src/skins/ui_manager.c:254
 msgid "Add Files..."
-msgstr "Añadir archivos..."
+msgstr "கோப்புக்களை சேர்க்குக "
 
 #: src/skins/ui_manager.c:255
 msgid "Adds files to the playlist."
-msgstr "Añadir archivos a la lista de reproducción."
+msgstr "பாடல் பட்டியலுக்கு கோப்புகளை உட்செலுத்தவும்"
 
 #: src/skins/ui_manager.c:260
 msgid "Search and Select"
-msgstr "Buscar y seleccionar"
+msgstr "தேடி தேர்ந்தெடுக்கவும்"
 
 #: src/skins/ui_manager.c:261
 msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
-"Busca en la lista de reproducción y selecciona las entradas que cumplen un "
-"criterio específico."
+"பாடல் பட்டியலில் தேடி ஒரு குறிப்பிட்ட வரையறையின் அடிப்படையில் பட்டியல் பதிவுகளை தெரிக."
 
 #: src/skins/ui_manager.c:264
 msgid "Invert Selection"
-msgstr "Invertir la selección"
+msgstr "தலைகீழ் தேர்ந்தெடுப்பு"
 
 #: src/skins/ui_manager.c:265
 msgid "Inverts the selected and unselected entries."
-msgstr "Invierte las entradas seleccionadas y no seleccionadas."
+msgstr "தேர்ந்தெடுக்கப்பட்ட மற்றும் தேர்வுசெய்யப்படாத பதிவுகளை தலைகீழாக்குக "
 
 #: src/skins/ui_manager.c:268
 msgid "Select All"
-msgstr "Seleccionar todo"
+msgstr "அனைத்தையும் தேர்ந்தெடுக்குக "
 
 #: src/skins/ui_manager.c:269
 msgid "Selects all of the playlist entries."
-msgstr "Selecciona todos los elementos de la lista de reproducción."
+msgstr "பாடல் பட்டியலிலுள்ள அனைத்து பதிவுகளையும் தெரிக. "
 
 #: src/skins/ui_manager.c:272
 msgid "Select None"
-msgstr "No seleccionar nada"
+msgstr "எதனையும் தேர்ந்தெடுக்க வேண்டாம்."
 
 #: src/skins/ui_manager.c:273
 msgid "Deselects all of the playlist entries."
-msgstr "Quita la selección de todos los elementos de la lista."
+msgstr "பாடல் பட்டியலிலுள்ள அனைத்து பதிவுகளையும் தெரிய வேண்டாம்.  "
 
 #: src/skins/ui_manager.c:278
 msgid "Remove All"
-msgstr "Eliminar todo"
+msgstr "அனைத்தையும் அகற்றுக. "
 
 #: src/skins/ui_manager.c:279
 msgid "Removes all entries from the playlist."
-msgstr "Elimina todas las entradas de la lista de reproducción."
+msgstr "பாடல் பட்டியலிலுள்ள அனைத்து பதிவுகளையும் அகற்றுக. "
 
 #: src/skins/ui_manager.c:282
 msgid "Clear Queue"
-msgstr "Limpiar la cola"
+msgstr "வரிசையினை அழிக்குக. "
 
 #: src/skins/ui_manager.c:283
 msgid "Clears the queue associated with this playlist."
-msgstr "Limpia la cola asociada con esta lista de reproducción."
+msgstr "பாடல் பட்டியலுடன் தொடர்புடைய அனைத்து வரிசைகளையும் அழிக்குக."
 
 #: src/skins/ui_manager.c:286
 msgid "Remove Unavailable Files"
-msgstr "Eliminar los archivos no disponibles"
+msgstr "கிடைக்கப்பெறாத கோப்புகளை அகற்றுக. "
 
 #: src/skins/ui_manager.c:287
 msgid "Removes unavailable files from the playlist."
-msgstr "Elimina los archivos no disponibles de la lista de reproducción."
+msgstr "கிடைக்கப்பெறாத கோப்புகளை பாடல் பட்டியலில் இருந்து அகற்றுக. "
 
 #: src/skins/ui_manager.c:290
 msgid "Remove Duplicates"
-msgstr "Eliminar duplicados"
+msgstr "போலிகளை அகற்றுக "
 
 #: src/skins/ui_manager.c:292 src/skins/ui_manager.c:324
 #: src/skins/ui_manager.c:354
 msgid "By Title"
-msgstr "Por título"
+msgstr "தலைப்பின் படி "
 
 #: src/skins/ui_manager.c:293
 msgid "Removes duplicate entries from the playlist by title."
-msgstr "Elimina las entradas duplicadas de la lista por título."
+msgstr "போலிப்பதிவுகளை பாடல் பட்டியலின் தலைப்பிட்கமைய அகற்றுக. "
 
 #: src/skins/ui_manager.c:296 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
 msgid "By Filename"
-msgstr "Por nombre de archivo"
+msgstr "கோப்பு பெயரின் படி "
 
 #: src/skins/ui_manager.c:297
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
-"Elimina las entradas duplicadas de la lista de reproducción por nombre de "
-"archivo."
+msgstr "போலிப்பதிவுகளை பாடல் பட்டியலின் கோப்பு பெயரிட்கமைய அகற்றுக. "
 
 #: src/skins/ui_manager.c:300 src/skins/ui_manager.c:340
 #: src/skins/ui_manager.c:370
 msgid "By Path + Filename"
-msgstr "Por ruta y nombre de archivo"
+msgstr "கோப்பின் பெயர் மட்டும் பாதையின் படி "
 
 #: src/skins/ui_manager.c:301
 msgid "Removes duplicate entries from the playlist by their full path."
-msgstr ""
-"Elimina las entradas duplicadas de la lista de reproducción por su ruta "
-"completa."
+msgstr "போலிப்பதிவுகளை பாடல் பட்டியலின் முழு பாதைக்கேட்ப அகற்றுக."
 
 #: src/skins/ui_manager.c:304
 msgid "Remove Unselected"
-msgstr "Eliminar los no seleccionados"
+msgstr "தெரிவுசெய்யாதவற்றை அகற்றுக. "
 
 #: src/skins/ui_manager.c:305
 msgid "Remove unselected entries from the playlist."
-msgstr "Elimina las entradas no seleccionadas de la lista de reproducción."
+msgstr "தெரிவுசெய்யாத பதிவுகளை பாடல் பட்டியலில் இருந்து அகற்றுக. "
 
 #: src/skins/ui_manager.c:308
 msgid "Remove Selected"
-msgstr "Eliminar los seleccionados"
+msgstr "தெரிவுசெய்தவற்றை அகற்றுக"
 
 #: src/skins/ui_manager.c:309
 msgid "Remove selected entries from the playlist."
-msgstr "Elimina las entradas seleccionadas de la lista de reproducción."
+msgstr "தெரிவுசெய்த பதிவுகளை பாடல் பட்டியலில் இருந்து அகற்றுக. "
 
 #: src/skins/ui_manager.c:314
 msgid "Randomize List"
-msgstr "Ordenar aleatoriamente"
+msgstr "பட்டியலினை தற்போக்காக தோன்றச்செய்க "
 
 #: src/skins/ui_manager.c:315
 msgid "Randomizes the playlist."
-msgstr "Ordena la lista de reproducción de forma aleatoria."
+msgstr "பாடல் பட்டியலினை தற்போக்காக தோன்றச்செய்க "
 
 #: src/skins/ui_manager.c:318
 msgid "Reverse List"
-msgstr "Invertir la lista"
+msgstr "பட்டியலினை தலைகீழாக்குக"
 
 #: src/skins/ui_manager.c:319
 msgid "Reverses the playlist."
-msgstr "Invierte la lista de reproducción."
+msgstr "பாடல் பட்டியலினை தலைகீழாக்குக."
 
 #: src/skins/ui_manager.c:322
 msgid "Sort List"
-msgstr "Ordenar lista"
+msgstr "பட்டியலை வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "Sorts the list by title."
-msgstr "Ordena la lista por título."
+msgstr "பட்டியலை தலைப்பிட்கமைய வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 msgid "By Album"
-msgstr "Por álbum"
+msgstr "குறுவட்டின் படி "
 
 #: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "Sorts the list by album."
-msgstr "Ordena la lista por álbum."
+msgstr "பட்டியலை குறுவட்டின் அடிப்படையில் வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "By Artist"
-msgstr "Por artista"
+msgstr "பாடகர்களின் படி "
 
 #: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "Sorts the list by artist."
-msgstr "Ordena la lista por artista."
+msgstr "பட்டியலை பாடகர் பெயர் அடிப்படையில் வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "Sorts the list by filename."
-msgstr "Ordena la lista por nombre de archivo."
+msgstr "பட்டியலை கோப்பு பெயர் அடிப்படையில் வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
 msgid "Sorts the list by full pathname."
-msgstr "Ordena la lista por ruta de archivo completa."
+msgstr "பட்டியலை கோப்பு வழிப்பெயர் அடிப்படையில் வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
 msgid "By Date"
-msgstr "Por fecha"
+msgstr "திகதியின் படி "
 
 #: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "Sorts the list by modification time."
-msgstr "Ordena la lista por fecha de modificación."
+msgstr "பட்டியலை மாற்ற நேரத்தின் அடிப்படையில் வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
 msgid "By Track Number"
-msgstr "Por número de pista"
+msgstr "பாடல் இலக்க அடிப்படையில்  "
 
 #: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "Sorts the list by track number."
-msgstr "Ordena la lista por número de pista."
+msgstr "பட்டியலை பாடல் எண் அடிப்படையில் வரிசையாக்குக "
 
 #: src/skins/ui_manager.c:352
 msgid "Sort Selected"
-msgstr "Ordenar los seleccionados"
+msgstr "வரிசையானவற்றை தெரிக."
 
 #: src/skins/ui_manager.c:388
 msgid "File"
-msgstr "Archivo"
+msgstr "கோப்பு"
 
 #: src/skins/ui_manager.c:391
 msgid "Plugin Services"
-msgstr "Servicios de complementos"
+msgstr "நீட்சி சேவைகள் "
 
 #: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
 msgid "View Track Details"
-msgstr "Ver detalles de la pista"
+msgstr "பாடல் தகவல்களை பார்வையிடுக  "
 
 #: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View track details"
-msgstr "Ver detalles de la pista"
+msgstr "பாடல் தகவல்களை பார்வையிடுக "
 
 #: src/skins/ui_manager.c:399 src/skins/ui_manager.c:400
 msgid "About Audacious"
-msgstr "Acerca de Audacious"
+msgstr "ஔடகிவஸ் பற்றி"
 
 #: src/skins/ui_manager.c:402
 msgid "Play File"
-msgstr "Reproducir archivo"
+msgstr "கோப்பினை இயக்குக "
 
 #: src/skins/ui_manager.c:403
 msgid "Load and play a file"
-msgstr "Carga y reproduce un archivo."
+msgstr "ஏற்றி பின் கோப்பினை இயக்குக "
 
 #: src/skins/ui_manager.c:405
 msgid "Play Location"
-msgstr "Reproducir localización"
+msgstr "பாடல் வழியினை இயக்குக "
 
 #: src/skins/ui_manager.c:406
 msgid "Play media from the selected location"
-msgstr "Reproduce los medios desde la localización seleccionada."
+msgstr "தெரிவு செய்யப்பட்ட பிரதேசத்திலுள்ள பல்லூடக கோப்பினை இயக்குக "
 
 #: src/skins/ui_manager.c:408
 msgid "Plugin services"
-msgstr "Servicios de complementos"
+msgstr "நீட்சி சேவைகள் "
 
 #: src/skins/ui_manager.c:410
 msgid "Preferences"
-msgstr "Preferencias"
+msgstr "விருப்பத்தேர்வுகள் "
 
 #: src/skins/ui_manager.c:411
 msgid "Open preferences window"
-msgstr "Abrir la ventana de preferencias"
+msgstr "விருப்பத்தேர்வுகள் சாரளத்தை திறக்குக "
 
 #: src/skins/ui_manager.c:414
 msgid "Quit Audacious"
-msgstr "Salir de Audacious"
+msgstr "ஔடகிவஸ் இனை மூடுக "
 
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Set A-B"
-msgstr "Poner A-B"
+msgstr "A-B இனை அமைக்குக "
 
 #: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
 msgid "Clear A-B"
-msgstr "Quitar A-B"
+msgstr "A-B இனை அழிக்குக"
 
 #: src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
 msgid "Jump to File"
-msgstr "Ir al archivo"
+msgstr "கோப்பிற்கு தாவவும்."
 
 #: src/skins/ui_manager.c:425 src/skins/ui_manager.c:426
 msgid "Jump to Time"
-msgstr "Saltar en el tiempo"
+msgstr "நேரத்திற்கு செல்லவும் "
 
 #: src/skins/ui_manager.c:428
 msgid "Queue Toggle"
-msgstr "Conmutar cola"
+msgstr "வரிசையினை நிலைமாற்றுக"
 
 #: src/skins/ui_manager.c:429
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr "Activa/desactiva las entradas en la lista de reproducción."
+msgstr "பாடல் பட்டியல் வரிசை பதிவினை செயல்படுத்துக / செயலிழக்க செய்க "
 
 #: src/skins/ui_manager.c:432
 msgid "Copy"
-msgstr "Copiar"
+msgstr "நகleடுக்குக"
 
 #: src/skins/ui_manager.c:435
 msgid "Cut"
-msgstr "Cortar"
+msgstr "வெட்டுக "
 
 #: src/skins/ui_manager.c:438
 msgid "Paste"
-msgstr "Pegar"
+msgstr "ஒட்டுக "
 
 #: src/skins/ui_manager.c:445
 msgid "Load"
-msgstr "Cargar"
+msgstr "ஏற்றுக "
 
 #: src/skins/ui_manager.c:446
 msgid "Import"
-msgstr "Importar"
+msgstr "இறக்குமதி செய்க"
 
 #: src/skins/ui_manager.c:447
 msgid "Save"
-msgstr "Guardar"
+msgstr "சேமிக்குக "
 
 #: src/skins/ui_manager.c:448
 msgid "Delete"
-msgstr "Borrar"
+msgstr "அழிக்குக "
 
 #: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
 #: src/skins/ui_manager.c:486
 msgid "Preset"
-msgstr "Predefinido"
+msgstr "முன்னமைப்புகள்"
 
 #: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
 #: src/skins/ui_manager.c:489
 msgid "Auto-load preset"
-msgstr "Auto-cargar predefinido"
+msgstr "முன்னமைப்பினை தானாக ஏற்று"
 
 #: src/skins/ui_manager.c:454
 msgid "Load auto-load preset"
-msgstr "Cargar auto-cargar predefinido"
+msgstr "முன்னமைப்பினை ஏற்றி தானாக ஏற்று"
 
 #: src/skins/ui_manager.c:457
 msgid "Load default preset into equalizer"
-msgstr "Cargar el predefinido predeterminado en el ecualizador"
+msgstr "இயல்புநிலை முன்னமைப்பினை சமமாக்கியினுள் ஏற்றுக "
 
 #: src/skins/ui_manager.c:459
 msgid "Zero"
-msgstr "Cero"
+msgstr "சுழியம் "
 
 #: src/skins/ui_manager.c:460
 msgid "Set equalizer preset levels to zero"
-msgstr "Pone los niveles predefinidos del ecualizador a cero"
+msgstr "சமமாக்கியின் முன்னமைக்கப்பட்ட அளவுகளை சுழியத்திற்கு மாற்றி அமைக்குக."
 
 #: src/skins/ui_manager.c:462
 msgid "From file"
-msgstr "Desde archivo"
+msgstr "கோப்பில் இருந்து "
 
 #: src/skins/ui_manager.c:463
 msgid "Load preset from file"
-msgstr "Cargar el predefinido desde un archivo"
+msgstr "முன்னமைப்புகளை கோப்பிலிருந்து ஏற்றுக "
 
 #: src/skins/ui_manager.c:465
 msgid "From WinAMP EQF file"
-msgstr "Desde archivo"
+msgstr "WinAMP EQF கோப்பில் இருந்து "
 
 #: src/skins/ui_manager.c:466
 msgid "Load preset from WinAMP EQF file"
-msgstr "Carga el predefinido desde un archivo EQF de WinAMP"
+msgstr "WinAMP EQF கோப்பில் இருந்து முன்னமைப்புகளை ஏற்றுக "
 
 #: src/skins/ui_manager.c:468
 msgid "WinAMP Presets"
-msgstr "Predefinidos de WinAMP"
+msgstr "WinAMP முன்னமைப்புகள் "
 
 #: src/skins/ui_manager.c:469
 msgid "Import WinAMP presets"
-msgstr "Importar los predefindos de WinAMP"
+msgstr "WinAMP முன்னமைப்புகளினை இறக்குமதி செய்க"
 
 #: src/skins/ui_manager.c:475
 msgid "Save auto-load preset"
-msgstr "Guardar auto-cargar predefinido"
+msgstr "தானியங்கு முன்னமைப்பினை சேமிக்குக "
 
 #: src/skins/ui_manager.c:478
 msgid "Save default preset"
-msgstr "Guardar predefinido predeterminado"
+msgstr "இயல்புநிலை முன்னமைப்பினை சேமிக்குக "
 
 #: src/skins/ui_manager.c:480
 msgid "To file"
-msgstr "A un archivo"
+msgstr "கோப்பிற்கு "
 
 #: src/skins/ui_manager.c:481
 msgid "Save preset to file"
-msgstr "Guarda el predefinido en un archivo"
+msgstr "முன்னமைப்பினை கோப்பினுள் சேமிக்குக "
 
 #: src/skins/ui_manager.c:483
 msgid "To WinAMP EQF file"
-msgstr "A un archivo EQF de WinAMP"
+msgstr "WinAMP EQF கோப்பிற்கு "
 
 #: src/skins/ui_manager.c:484
 msgid "Save preset to WinAMP EQF file"
-msgstr "Guarda el predefinido en un archivo EQF de WinAMP"
+msgstr "முன்னமைப்பினை WinAMP EQF கோப்பினுள் சேமிக்குக "
 
 #: src/skins/ui_manager.c:490
 msgid "Delete auto-load preset"
-msgstr "Borrar auto-cargar predefinido"
+msgstr "தானியங்கு முன்னமைப்பினை அழிக்குக"
 
 #: src/skins/ui_playlist.c:244
 msgid "Search entries in active playlist"
-msgstr "Buscar entradas en la lista de reproducción activa"
+msgstr "செய்வினை பாடல் பட்டியலிலுள்ள பதிவுகளை தேடுக "
 
 #: src/skins/ui_playlist.c:251
 msgid ""
@@ -3660,60 +3637,59 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Seleccione entradas en la lista de reproducción indicando uno o más campos. "
-"Los campos utilizan sintaxis de expresiones regulares, sin distinguir "
-"mayúsculas de minúsculas. Si no sabe como funcionan las expresiones "
-"regulares, tan solo escriba la parte del literal que quiere buscar."
+"ஒன்று அல்லது மேற்பட்ட வெற்றிடங்களை நிரப்புவதன் மூலம் பட்டியல் பதிவுகளை தெரிக. வெற்றிடங்கள் "
+"வழக்கமான வெளிப்பாடுகள் தொடரியலை கொண்டவை. வழக்கமான வெளிப்பாடுகள் எவ்வாறு இயங்கும் என "
+"தெரியாவிடின் நீங்கள் தேடுவதின் துல்லியமான பகுதியினை உள்ளிடுக. "
 
 #: src/skins/ui_playlist.c:259
 msgid "Title: "
-msgstr "Título: "
+msgstr "தலைப்பு:"
 
 #: src/skins/ui_playlist.c:267
 msgid "Album: "
-msgstr "Álbum: "
+msgstr "குறுவட்டு:"
 
 #: src/skins/ui_playlist.c:275
 msgid "Artist: "
-msgstr "Artista: "
+msgstr "பாடகர்:"
 
 #: src/skins/ui_playlist.c:283
 msgid "Filename: "
-msgstr "Nombre del archivo: "
+msgstr "கோப்பின் பெயர்:"
 
 #: src/skins/ui_playlist.c:292
 msgid "Clear previous selection before searching"
-msgstr "Limpiar la selección previa antes de buscar"
+msgstr "தேட முன் முன்னைய தெரிவுகளை துடைத்தழிக்குக "
 
 #: src/skins/ui_playlist.c:295
 msgid "Automatically toggle queue for matching entries"
-msgstr "Conmutar automáticamente la cola para las entradas coincidentes"
+msgstr "தேர்வடையும் பதிவுகளை தானாக நிலைமாற்று வரிசையாக்குக"
 
 #: src/skins/ui_playlist.c:298
 msgid "Create a new playlist with matching entries"
-msgstr "Crear una nueva lista de reproducción con las entradas coincidentes"
+msgstr "தேர்வடையும் பதிவுகளுக்கு புதிய பாடல் பட்டியலொன்றை உருவாக்குக."
 
 #: src/skins/ui_playlist.c:738
 msgid "Audacious Playlist Editor"
-msgstr "Editor de listas de reproducción de Audacious"
+msgstr "ஔடகிவஸ் பாடல் பட்டியல் திருத்தி"
 
 #: src/skins/ui_playlist.c:772
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d de %d)"
+msgstr "%s (%d இன் %d)"
 
 #: src/skins/ui_skinselector.c:162
 msgid "Archived Winamp 2.x skin"
-msgstr "Tema para Winamp 2.x archivado"
+msgstr "ஆவணப்படுத்தப்பட்ட Winamp 2.x தோல் "
 
 #: src/skins/ui_skinselector.c:167
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Tema para Winamp 2.x no archivado"
+msgstr "ஆவணப்படுத்தப்படாத Winamp 2.x தோல் "
 
 #: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "No se pudo crear el directorio (%s): %s\n"
+msgstr "கோப்பகமொன்றை உருவாக்க முடியவில்லை (%s): %s⏎\n"
 
 #: src/sndfile/plugin.c:416
 msgid ""
@@ -3739,11 +3715,11 @@ msgstr ""
 
 #: src/sndfile/plugin.c:435
 msgid "Sndfile Plugin"
-msgstr "Plugin Sndfile"
+msgstr ""
 
 #: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
-msgstr "Acerca del Plugin de Salida Sndio"
+msgstr "Sndio வெளியீட்டு நீட்சிகள் பற்றி"
 
 #: src/sndio/sndio.c:173
 msgid ""
@@ -3751,13 +3727,10 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
-"Plugin de Salida Sndio\n"
-"\n"
-"Escrito por Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:248
 msgid "Unsupported format"
-msgstr "formato no soportado"
+msgstr "ஆதரிக்கப்படாத வடிவமைப்பு "
 
 #: src/sndio/sndio.c:249
 msgid ""
@@ -3765,55 +3738,49 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
-"Un formato no soportado por el dispositivo de audio fue solicitado.\n"
-"\n"
-"Por favor,intente de nuevo con el servidor sndiod(1) ejecutándose."
 
 #: src/sndio/sndio.c:384
 msgid "sndio device"
-msgstr "dispositivo sndio"
+msgstr ""
 
 #: src/sndio/sndio.c:400
 msgid "(empty means default)"
-msgstr "(el vacío significa algo)"
+msgstr ""
 
 #: src/sndio/sndio.c:416
 msgid "OK"
-msgstr "Aceptar"
+msgstr "சரி "
 
 #: src/sndio/sndio.c:424
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "ரத்து செய்க "
 
 #: src/song_change/song_change.c:54
 msgid "Song Change"
-msgstr "Cambio de canción"
+msgstr "பாடல் மாற்றம் "
 
 #: src/song_change/song_change.c:436
 msgid "Command to run when Audacious starts a new song."
-msgstr "Comando a ejecutar cuando Audacious reproduce una canción nueva."
+msgstr "ஔடகிவஸ் புதிய பாடலொன்றை இயக்க கட்டளையிடுக. "
 
 #: src/song_change/song_change.c:438 src/song_change/song_change.c:444
 #: src/song_change/song_change.c:450 src/song_change/song_change.c:456
 msgid "Command:"
-msgstr "Comando:"
+msgstr "கட்டளை:"
 
 #: src/song_change/song_change.c:442
 msgid "Command to run toward the end of a song."
-msgstr "Comando para ejecutar al final de una canción."
+msgstr "ஔடகிவஸ் பாடலொன்றை நிறுத்த கட்டளையிடுக. "
 
 #: src/song_change/song_change.c:448
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-"Comando para ejecutar cuando Audacious llega al final de una lista de "
-"reproducción."
+msgstr "ஔடகிவஸ் பாடல் பட்டியலொன்று முடிவடையும் போது  இயக்க கட்டளையிடுக. "
 
 #: src/song_change/song_change.c:454
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
-"Comando para ejecutar cuando el título cambia para una canción (es decir, "
-"títulos de flujos en red)"
+"பாடலொன்றின் தலைப்பு மாறும் போது இயக்க கட்டளையிடுக. (அதாவது பிணைய நீரோடைகளின் போது )"
 
 #: src/song_change/song_change.c:460
 msgid ""
@@ -3833,33 +3800,18 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"Puede usar los siguientes cadenas de formatos, las cuales\n"
-"serán reemplazadas antes de invocar al comando\n"
-"(no todos son útiles para el comando finalizar lista de reproducción):\n"
-"\n"
-"%F: Frecuencia (en hertz)\n"
-"%c: Número de canales\n"
-"%f: Nombre de archivo (ruta completa)\n"
-"%l: Duración (en milisegundos)\n"
-"%n o %s: Nombre de la canción\n"
-"%r: Velocidad (en bits por segundo)\n"
-"%t: Posición en la lista de reproducción (%02d)\n"
-"%p: Reproduciendo actualmente (1 or 0)\n"
-"%a: Artista\n"
-"%b: Album\n"
-"%T: Título de la pista"
 
 #: src/song_change/song_change.c:487
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>Los parámetros enviados a la consola se deberían "
-"encapsular con comillas. De otra forma existe un riesgo de seguridad.</span>"
+"<span size='small'>அளவுருக்கள் ஓட்டுக்குள் மேற்கோள் குறிகளால் உட்பொதிந்திருக்க வேண்டும்."
+"இல்லையெனில் பாதுகாப்பு ஆபத்து இருக்கிறது</span>"
 
 #: src/song_change/song_change.c:498
 msgid "Commands"
-msgstr "Comandos"
+msgstr "கட்டளைகள் "
 
 #: src/sox-resampler/sox-resampler.c:135
 msgid ""
@@ -3872,23 +3824,23 @@ msgstr ""
 
 #: src/sox-resampler/sox-resampler.c:141
 msgid "Quick"
-msgstr ""
+msgstr "விரைவு "
 
 #: src/sox-resampler/sox-resampler.c:142
 msgid "Low"
-msgstr ""
+msgstr "குறைவு "
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "High"
-msgstr ""
+msgstr "உயர்"
 
 #: src/sox-resampler/sox-resampler.c:145
 msgid "Very High"
-msgstr ""
+msgstr "மிக உயர் "
 
 #: src/sox-resampler/sox-resampler.c:148
 msgid "Quality:"
-msgstr ""
+msgstr "தரம்:"
 
 #: src/sox-resampler/sox-resampler.c:162
 msgid "SoX Resampler"
@@ -3896,19 +3848,19 @@ msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:225
 msgid "<b>Speed and Pitch</b>"
-msgstr "<b>Velocidad y amplitud</b>"
+msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:226
 msgid "Speed:"
-msgstr "Velocidad:"
+msgstr "வேகம்:"
 
 #: src/speed-pitch/speed-pitch.c:229
 msgid "Pitch:"
-msgstr "Amplitud:"
+msgstr "சுருதி:"
 
 #: src/speed-pitch/speed-pitch.c:264
 msgid "Speed and Pitch"
-msgstr "Velocidad y amplitud"
+msgstr ""
 
 #: src/statusicon/statusicon.c:390
 msgid ""
@@ -3923,35 +3875,35 @@ msgstr ""
 
 #: src/statusicon/statusicon.c:397
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Acción al desplazar rueda del mouse<b>"
+msgstr ""
 
 #: src/statusicon/statusicon.c:398
 msgid "Change volume"
-msgstr "Cambiar el volumen"
+msgstr "சப்த அளவை மாற்றுக "
 
 #: src/statusicon/statusicon.c:401
 msgid "Change playing song"
-msgstr "Cambiar la canción en reproducción"
+msgstr "இயங்கும் பாடலை மாற்றுக "
 
 #: src/statusicon/statusicon.c:404
 msgid "<b>Other Settings</b>"
-msgstr "<b>Otras Opciones<b>"
+msgstr ""
 
 #: src/statusicon/statusicon.c:405
 msgid "Disable the popup window"
-msgstr "Desactivar la ventana emergente"
+msgstr "திடீர் சாளரத்தை செயலிழக்க செய்க."
 
 #: src/statusicon/statusicon.c:407
 msgid "Close to the system tray"
-msgstr "Cerrar a la barra tray"
+msgstr ""
 
 #: src/statusicon/statusicon.c:409
 msgid "Advance in playlist when scrolling upward"
-msgstr "Avanzar en la lista de reproducción al desplazar arriba"
+msgstr "பாடல் பட்டியலினை உருட்டும் போது முன்னோக்கி செல்லவும் "
 
 #: src/statusicon/statusicon.c:418
 msgid "Status Icon"
-msgstr "Icono de estado"
+msgstr ""
 
 #: src/stereo_plugin/stereo.c:17
 msgid ""
@@ -3962,11 +3914,11 @@ msgstr ""
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Extra Estéreo</b>"
+msgstr "<b>கூடுதல் பேரொலி </b>"
 
 #: src/stereo_plugin/stereo.c:36
 msgid "Extra Stereo"
-msgstr "Extra Esteréo"
+msgstr ""
 
 #: src/tonegen/tonegen.c:84
 #, c-format
@@ -3975,7 +3927,7 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:84
 msgid "Tone Generator: "
-msgstr "Generador de tonos: "
+msgstr "தொனி பிறப்பாக்கி:"
 
 #: src/tonegen/tonegen.c:197
 msgid ""
@@ -3988,7 +3940,7 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:206
 msgid "Tone Generator"
-msgstr "Generador de Tono"
+msgstr "ஒலி  உருவாக்கி "
 
 #: src/unix-io/unix-io.c:243
 msgid ""
@@ -4000,11 +3952,11 @@ msgstr ""
 
 #: src/unix-io/unix-io.c:266
 msgid "File I/O Plugin"
-msgstr "Plugin de Archivo E/S"
+msgstr "கோப்பு உள் /வெளி  சொருகி"
 
 #: src/voice_removal/voice_removal.c:58
 msgid "Voice Removal"
-msgstr "Quitar voz"
+msgstr "குரல் நீக்கம்"
 
 #: src/vorbis/vorbis.c:555
 msgid ""
@@ -4029,7 +3981,7 @@ msgstr ""
 
 #: src/vorbis/vorbis.c:575
 msgid "Ogg Vorbis Decoder"
-msgstr "Decodificador Ogg Vorbis"
+msgstr ""
 
 #: src/vtx/vtx.c:242
 msgid ""
@@ -4040,7 +3992,7 @@ msgstr ""
 
 #: src/vtx/vtx.c:248
 msgid "VTX Decoder"
-msgstr "Decodificador VTX"
+msgstr ""
 
 #: src/wavpack/wavpack.c:282
 msgid "lossy (hybrid)"
@@ -4059,12 +4011,12 @@ msgstr ""
 
 #: src/wavpack/wavpack.c:341
 msgid "WavPack Decoder"
-msgstr "Decodificador WavPack"
+msgstr ""
 
 #: src/xsf/plugin.c:272
 msgid "2SF Decoder"
-msgstr "Decodificador 2SF"
+msgstr ""
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "Listas de reproducción compartidas XML (XSPF)"
+msgstr ""

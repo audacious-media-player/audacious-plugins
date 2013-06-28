@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# Adolfo Jayme <fitoschido@gmail.com>, 2013
 # Adrián Ramirez Escalante <buried.prophet@gmail.com>, 2012
 # Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>, 2010
 # frangor <frangor@frangor.info>, 2013
@@ -16,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-08 19:51+0000\n"
-"Last-Translator: frangor <frangor@frangor.info>\n"
+"POT-Creation-Date: 2013-06-29 01:19+0200\n"
+"PO-Revision-Date: 2013-06-17 06:58+0000\n"
+"Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/audacious/"
 "language/es/)\n"
 "Language: es\n"
@@ -881,7 +882,7 @@ msgstr "Varios"
 
 #: src/asx/asx.c:96
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "Listas de reproducción ASXv1/ASXv2"
 
 #: src/audpl/audpl.c:222
 msgid "Audacious Playlists (audpl)"
@@ -1261,7 +1262,7 @@ msgstr ""
 
 #: src/ffaudio/ffaudio-core.c:703
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "Complemento de FFmpeg"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
@@ -1767,7 +1768,7 @@ msgstr "Orden alea_torio"
 
 #: src/gtkui/menus.c:233
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "_Reproducir esta lista"
 
 #: src/gtkui/menus.c:234 src/gtkui/menus.c:286
 msgid "_Refresh"
@@ -1795,7 +1796,7 @@ msgstr "_Nuevo"
 
 #: src/gtkui/menus.c:242
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "Reno_mbrar…"
 
 #: src/gtkui/menus.c:243 src/gtkui/menus.c:298
 msgid "_Close"
@@ -1811,7 +1812,7 @@ msgstr "_Exportar ..."
 
 #: src/gtkui/menus.c:248
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "_Gestor de listas de reproducción…"
 
 #: src/gtkui/menus.c:249
 msgid "_Queue Manager ..."
@@ -2191,7 +2192,7 @@ msgstr "%s: desconectado de LIRC\n"
 #: src/lirc/lirc.c:371
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: se intentará reconectar cada %d segundos…\n"
 
 #: src/lirc/lirc.c:381
 msgid ""
@@ -2249,11 +2250,11 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:284
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
+msgstr "Conectando con lyrics.wikia.com…"
 
 #: src/lyricwiki/lyricwiki.c:411
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "Complemento de LyricWiki"
 
 #: src/m3u/m3u.c:121
 msgid "M3U Playlists"
@@ -2740,8 +2741,8 @@ msgstr ""
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d álbum"
+msgstr[1] "%d álbumes"
 
 #: src/search-tool/search-tool.c:640
 #, c-format

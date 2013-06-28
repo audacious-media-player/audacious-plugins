@@ -1,0 +1,4302 @@
+# Sinhala translation for Audacious Plugins
+# Copyright (C) Audacious translators
+# This file is distributed under the same license as the Audacious Plugins package.
+#
+# Translators:
+# ashintha89 <ashintha@gmail.com>, 2013
+# D.N.Perera <deen.niro@gmail.com>, 2013
+# P.I.Balasinghe <pushpika.indrachapa@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: Audacious Plugins\n"
+"Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
+"POT-Creation-Date: 2013-06-29 01:19+0200\n"
+"PO-Revision-Date: 2013-06-03 17:20+0000\n"
+"Last-Translator: ashintha89 <ashintha@gmail.com>\n"
+"Language-Team: Sinhala (http://www.transifex.com/projects/p/audacious/"
+"language/si/)\n"
+"Language: si\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
+msgid "mono"
+msgstr " තනි "
+
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
+msgid "stereo"
+msgstr "ත්‍රිමාන "
+
+#: src/aac/libmp4.c:439 src/skins/ui_main.c:429
+msgid "surround"
+msgstr "සිසාළ "
+
+#: src/aac/libmp4.c:930
+msgid "AAC Decoder"
+msgstr "AAC විකේතකය"
+
+#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
+#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+msgid "sequenced"
+msgstr "අනුපිළිවෙළ"
+
+#: src/adplug/plugin.c:14
+msgid "AdPlug (AdLib Player)"
+msgstr "Adකෙවෙනිය (AdLib ධාවකය)"
+
+#: src/alarm/alarm.c:809
+msgid ""
+"A plugin that can be used to start playing at a certain time.\n"
+"\n"
+"Originally written by Adam Feakin and Daniel Stodden."
+msgstr ""
+"කිසියම් වෙලාවකදී ධාවනය කිරීමට යොදාගත හැකි පේනු මෘදුකාංගයක්.⏎\n"
+"⏎\n"
+"මුලින් ලියන ලද්දේ ඇඩම් ෆීකින් සහ ඩැනියෙල් ස්ටොඩ්ඩන් විසිනි."
+
+#: src/alarm/alarm.c:814 src/alarm/interface.c:82
+msgid "Alarm"
+msgstr "සිහි කැඳවීම​"
+
+#: src/alarm/interface.c:28
+msgid ""
+"Time\n"
+"  Alarm at:\n"
+"    The time for the alarm to come on.\n"
+"\n"
+"  Quiet after:\n"
+"    Stop alarm after this amount of time.\n"
+"       (if the wakeup dialog is not closed)\n"
+"\n"
+"\n"
+"Days\n"
+"  Day:\n"
+"    Select the days for the alarm to activate.\n"
+"\n"
+"  Time:\n"
+"    Choose the time for the alarm on each day,\n"
+"    or select the toggle button to use the default\n"
+"    time.\n"
+"\n"
+"\n"
+msgstr ""
+"කාලය\n"
+"සංඥාව කරන්න:\n"
+"සංඥා කල යුතු කාලය.\n"
+"\n"
+"ඉවත්වන්න පසුව:\n"
+"මෙම කාලයෙන් පසුව සංඥාව නවත්වන්න.\n"
+"(අවධි සංවාද කොටුව පෙන්වන්න)\n"
+"\n"
+"\n"
+"දින\n"
+"දිනය:\n"
+"සංඥා කිරීම සක්‍රිය කරන දින වරණය කරන්න.\n"
+"\n"
+"කාලය\n"
+"දිනපතා සංඥා කරන කාලය තෝරන්න,\n"
+"හෝ පුරුදු යොදාගැනීමට ටොගල බොත්තම වරණය කරන්න\n"
+"කාලය.\n"
+"\n"
+"\n"
+
+#: src/alarm/interface.c:45
+msgid ""
+"Volume\n"
+"  Fading:\n"
+"    Fade the volume up to the chosen volume\n"
+"    for this amount of time.\n"
+"\n"
+"  Start at:\n"
+"    Start fading from this volume.\n"
+"\n"
+"  Final:\n"
+"    The volume to stop fading at.  If the fading\n"
+"    time is 0 then set volume to this and start\n"
+"    playing.\n"
+"\n"
+"\n"
+"Options:\n"
+"  Additional Command:\n"
+"    Run this command at the alarm time.\n"
+"\n"
+msgstr ""
+"ශබ්දය \n"
+"හායනය:\n"
+"ශබ්දය තොරණ ලද ශබ්දය තෙක් හායනය කරන්න \n"
+"මෙම කාල මට්ටමට.\n"
+"\n"
+"ආරම්භ කල:\n"
+"හායනය මෙම ශබ්ද මට්ටමේ සිට ආරම්භ කරන්න.\n"
+"\n"
+"අවසානය:\n"
+"හායනය අවසන් කල යුතු ශබ්දය. හායන වෙලාව 0 නම් ශබ්දය මෙම මට්ටමේ තබා ධාවනය ආරම්භ කරන්න.\n"
+"\n"
+"\n"
+"විකල්ප:\n"
+"වැඩිපුර විධාන:\n"
+"මෙම විධාන සිහිගන්වීමේ වෙලාවේදී ධාවනය කරන්න.\n"
+
+#: src/alarm/interface.c:62
+msgid ""
+"  Playlist:\n"
+"    Load this playlist. If no playlist\n"
+"    is given, the current one will be used.\n"
+"    The URL of an mp3/ogg stream\n"
+"    can also be entered here.\n"
+"\n"
+"  Reminder:\n"
+"    Display a reminder when the alarm goes off.\n"
+"    Type the reminder in the box and turn on the\n"
+"    toggle button if you want it to be shown."
+msgstr ""
+"ධාවන ලැයිස්තුව\n"
+"මෙම ධාවන ලැයිස්තුව ප්‍රවේශනය කරන්න. ධාවන ලැයිස්තුවක් නොමැතිනම්\n"
+"ලබා දී ඇත, පවත්නා දෙය යොදා ගනු ලැබේ.\n"
+"mp3/ogg දහරක URL\n"
+"මෙහි ඇතුල් කල හැක.\n"
+"\n"
+"සිහි කැදවුම:\n"
+"සංඥා කිරීම අවසන් වූ පසු සිහි කැදවුමක් පෙන්වන්න\n"
+"කොටුව තුල සිහි කැදවුම ටයිප් කරන්න සහ ඔබට එය පෙන්වීමට\n"
+"අවශ්‍ය නම් ටොගල බොත්තම සක්‍රිය කරන්න "
+
+#: src/alarm/interface.c:81
+msgid "This is your wakeup call."
+msgstr "මේ ඔබගේ සිහි කැඳවීමේ ඇමතුමයි."
+
+#: src/alarm/interface.c:99
+msgid "Your reminder for today is..."
+msgstr "ඔබගේ අද දවසේ මතක් කිරීම වන්නේ..."
+
+#: src/alarm/interface.c:101 src/alarm/interface.c:415
+msgid "Reminder"
+msgstr "මතක් කිරීම​"
+
+#: src/alarm/interface.c:140
+msgid "Monday"
+msgstr "සඳුදා"
+
+#: src/alarm/interface.c:140
+msgid "Tuesday"
+msgstr "අඟහරුවාදා"
+
+#: src/alarm/interface.c:140
+msgid "Wednesday"
+msgstr "බදාදා"
+
+#: src/alarm/interface.c:141
+msgid "Thursday"
+msgstr "බ්‍රහස්පතින්දා"
+
+#: src/alarm/interface.c:141
+msgid "Friday"
+msgstr "සිකුරාදා"
+
+#: src/alarm/interface.c:141
+msgid "Saturday"
+msgstr "සෙනසුරාදා"
+
+#: src/alarm/interface.c:141
+msgid "Sunday"
+msgstr "ඉරිදා"
+
+#: src/alarm/interface.c:175
+msgid "Alarm Settings"
+msgstr "සිහි කැඳවීම් සකසනයන්"
+
+#: src/alarm/interface.c:186 src/alarm/interface.c:250
+#: src/alarm/interface.c:265
+msgid "Time"
+msgstr "වෙලාව​"
+
+#: src/alarm/interface.c:193
+msgid "Alarm at (default):"
+msgstr "සිහිකැඳවීම​ (පෙරනිමිය​)"
+
+#: src/alarm/interface.c:216
+msgid "h"
+msgstr "පැ"
+
+#: src/alarm/interface.c:220
+msgid "Quiet after:"
+msgstr "පසු නිහඬවන්න:​"
+
+#: src/alarm/interface.c:234
+msgid "hours"
+msgstr "පැය​"
+
+#: src/alarm/interface.c:246
+msgid "minutes"
+msgstr "මිනිත්තු"
+
+#: src/alarm/interface.c:255
+msgid "Choose the days for the alarm to come on"
+msgstr "සිහි කැඳවීම් ලැබිය යුතු දිනයන් තෝරන්න​"
+
+#: src/alarm/interface.c:262
+msgid "Day"
+msgstr "දවස​"
+
+#: src/alarm/interface.c:280 src/bs2b/plugin.c:177
+#: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:477
+msgid "Default"
+msgstr "පෙරනිමිය​"
+
+#: src/alarm/interface.c:310
+msgid "Days"
+msgstr "දවස්"
+
+#: src/alarm/interface.c:319
+msgid "Fading"
+msgstr "හායනය"
+
+#: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:397
+msgid "seconds"
+msgstr "තප්පර​"
+
+#: src/alarm/interface.c:334 src/alarm/interface.c:381
+msgid "Volume"
+msgstr "ශබ්ද මට්ටම​"
+
+#: src/alarm/interface.c:339
+msgid "Start at"
+msgstr "ආරම්භ කරන්න​"
+
+#: src/alarm/interface.c:357
+msgid "Final"
+msgstr "අවසානය​"
+
+#: src/alarm/interface.c:372
+msgid "Current"
+msgstr "දැන්"
+
+#: src/alarm/interface.c:387
+msgid "Additional Command"
+msgstr "අමතර විධාන​"
+
+#: src/alarm/interface.c:393
+msgid "enable"
+msgstr "සක්‍රීය​"
+
+#: src/alarm/interface.c:400
+msgid "Playlist (optional)"
+msgstr "ධාවනය වන ගොනුව (අමතර​)"
+
+#: src/alarm/interface.c:407
+msgid "Select a playlist"
+msgstr "ධාවන ලැයිස්තුවක්​ තෝරන්න"
+
+#: src/alarm/interface.c:419
+msgid "Use reminder"
+msgstr "මතක් කිරීම භාවිතා කරන්න​"
+
+#: src/alarm/interface.c:428
+msgid "Options"
+msgstr "විකල්ප​"
+
+#: src/alarm/interface.c:433
+msgid "What do these options mean?"
+msgstr "මොනවාද මේ විකල්පයන්ගෙන් අදහස් වන්නේ?"
+
+#: src/alarm/interface.c:447 src/skins/ui_manager.c:389
+msgid "Help"
+msgstr "උදව්"
+
+#: src/albumart/albumart.c:143
+msgid "Album Art"
+msgstr "ඇල්බම් කලාව"
+
+#: src/alsa/config.c:212
+msgid "Default PCM device"
+msgstr "පෙරනිමි PCM ආම්පන්නය "
+
+#: src/alsa/config.c:241
+msgid "Default mixer device"
+msgstr "පෙරනිමි මිශ්‍ර කිරීමේ ආම්පන්නය "
+
+#: src/alsa/config.c:428
+msgid "ALSA Output Plugin Preferences"
+msgstr "ALSA ප්‍රතිදාන පේනු මෘදුකාංගයේ වරණයන්"
+
+#: src/alsa/config.c:434
+msgid "PCM device:"
+msgstr "PCM ආම්පන්නය:"
+
+#: src/alsa/config.c:436
+msgid "Mixer device:"
+msgstr "මිශ්‍ර කිරීමේ ආම්පන්නය:"
+
+#: src/alsa/config.c:438
+msgid "Mixer element:"
+msgstr "මිශ්‍ර කිරීමේ මූලද්‍රව්‍ය:"
+
+#: src/alsa/config.c:441
+msgid "Work around drain hangup"
+msgstr "ක්‍රමයෙන් අඩු වී නැවතීමක් පිළිබඳ ක්‍රියා කිරීම​"
+
+#: src/alsa/plugin.c:25
+msgid ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
+msgstr ""
+"ඔඩෙෂස් සඳහා ALSA ප්‍රතිදාන පේනු  මෘදුකාංගය\n"
+"ප්‍රකාශන හිමිකම ජෝන් ලින්ඩ්ග්රෙන් 2009-2012\n"
+"මගේ ස්තුතිය ALSA  ප්‍රතිදාන පේනු  මෘදුකාංගයේ කර්තෘ විලියම් පිට්කොක් වෙත පුදන අතර ඔහුගේ කේතය "
+"ALSA අත්පොත ප්‍රමාණවත් නොවන විට ආදේශකයක් ලෙස භාවිතා කරන ලදී."
+
+#: src/alsa/plugin.c:32
+msgid "ALSA Output"
+msgstr "ALSA ප්‍රතිදානය "
+
+#: src/amidi-plug/amidi-plug.c:248
+msgid ""
+"You have not selected any sequencer ports for MIDI playback.  You can do so "
+"in the MIDI plugin preferences."
+msgstr ""
+"MIDI ධාවනය කිරීම සඳහා  sequencer ports තෝරා නොමැත​. MIDI පේනු මෘදුකාංග වරණයන්හි ඔබට "
+"එය කළ හැක​."
+
+#: src/amidi-plug/amidi-plug.c:708
+msgid "AMIDI-Plug (MIDI Player)"
+msgstr "AMIDI-කෙවෙනිය (MIDI ධාවකය)"
+
+#: src/amidi-plug/backend-alsa/b-alsa.c:38
+msgid "ALSA Backend "
+msgstr "ALSA පසුපස​ නිමාව​"
+
+#: src/amidi-plug/backend-alsa/b-alsa.c:41
+msgid ""
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+"මෙම​ පසුපස නිමාව MIDI සිදුවීම් පාරිශීලකයන් කණ්ඩායමක් විසින් තෝරාගත් ALSA sequencer ports වෙත​ "
+"යවනු ලබයි.  ALSA sequencerහි අතුරු මුහුණත ඉතා බහු නිපුණයි, එයට ශ්‍රවණ කාඩ්පත් දෘඩාංග (i.e. "
+"emu10k1) මෙන්ම මෘදුකාංග, භාහිර ආම්පන්න සහ තවත් දෑ සංස්ලේෂණය කිරීම සැපයිය හැක​.⏎\n"
+"මෙම පසුපස නිමාව ශ්‍රවණ නිපදවීම නොකරනු ලබයි. MIDI සිදුවීම් සෘජුවම පසුපස ඇති ආම්පන්න/මෘදුකාංග "
+"මගින් පාලනය කරනු ලබයි. උදාහරණයක් ලෙස, දෘඩාංග සංස්ලේෂණය සඳහා යවනු ලබන MIDI සිදුවීම් "
+"ධාවනය වේ.⏎\n"
+"පසුපස නිමාව ලියන ලද්දේ ජියාකොමෝ ලොසීටෝ විසිනි."
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:45
+msgid "FluidSynth Backend "
+msgstr "FluidSynth පසුපස නිමාව"
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:48
+msgid ""
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen output plugin.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+"මෙම පසු අග MIDI සිද්ධි FluidSynth වෙතට යැවීමෙන් ශ්‍රව්‍ය නිපදවයි, SoundFont2 විශේෂණය මත "
+"පදනම් වූ  තථ්‍ය කාල මෘදුකාංග සංශ්ලේෂකය (www.fluidsynth.org).⏎\n"
+"නිපදවූ ශ්‍රව්‍ය ධාවකයේ පේනු මෘදුකාංගයේ බලපෑම මත මෙහයවන අතර එය ක්‍රියාත්මක වන්නේ තෝරාගත් "
+"ප්‍රතිදාන පේනු මෘදුකාංගයක් මගින්ය.⏎\n"
+"පසු අග ලියන ලද්දේ ගිඅකොමෝ ලොසිටෝ විසිනි."
+
+#: src/amidi-plug/i_configure-alsa.c:353
+msgid "Port"
+msgstr "තොට"
+
+#: src/amidi-plug/i_configure-alsa.c:355
+msgid "Client name"
+msgstr "සේවාදායකයේ නම​"
+
+#: src/amidi-plug/i_configure-alsa.c:357
+msgid "Port name"
+msgstr "තොටමුණෙහි නම​"
+
+#: src/amidi-plug/i_configure-alsa.c:371
+msgid "ALSA output ports"
+msgstr "ALSA ප්‍රතිදාන තොටමුණු"
+
+#: src/amidi-plug/i_configure-alsa.c:432
+msgid "Soundcard: "
+msgstr "ශබ්දපත​:"
+
+#: src/amidi-plug/i_configure-alsa.c:434
+msgid "Mixer control: "
+msgstr "මිශ්‍ර කිරීම් පාලනය​:"
+
+#: src/amidi-plug/i_configure-alsa.c:444
+msgid "Mixer settings"
+msgstr "මිශ්‍ර කිරීම්  සිටුවම්"
+
+#: src/amidi-plug/i_configure-alsa.c:472
+msgid ""
+"<span size=\"smaller\">ALSA\n"
+"backend</span>"
+msgstr ""
+"<span size=\"smaller\">ALSA⏎\n"
+"පසුපස නිමාව​</span>"
+
+#: src/amidi-plug/i_configure-ap.c:63
+msgid "AMIDI-Plug - backend information"
+msgstr "AMIDI-පේනු - පසුපස නිමාවෙහි තොරතුරු"
+
+#: src/amidi-plug/i_configure-ap.c:221
+msgid "Backend selection"
+msgstr "පසුපස නිමාව තෝරාගැනීම​"
+
+#: src/amidi-plug/i_configure-ap.c:261
+msgid "Playback settings"
+msgstr "පිළිවැයීම් සිටුවම්"
+
+#: src/amidi-plug/i_configure-ap.c:266
+msgid "Transpose: "
+msgstr "තැන් මාරුව:"
+
+#: src/amidi-plug/i_configure-ap.c:275
+msgid "Drum shift: "
+msgstr "බෙර මාරුව​:"
+
+#: src/amidi-plug/i_configure-ap.c:293
+msgid "Advanced settings"
+msgstr "වැඩිදුර​ සිටුවම්"
+
+#: src/amidi-plug/i_configure-ap.c:297
+msgid "pre-calculate length of MIDI files in playlist"
+msgstr "ධාවන ලැයිස්තුවෙහි MIDI ගොනු වල කලින් ගණනය කළ දිග​"
+
+#: src/amidi-plug/i_configure-ap.c:304
+msgid "extract comments from MIDI file (if available)"
+msgstr "MIDI ගොනු වලින් අදහස් දැක්වීම් උපුටා ගන්න (තිබෙනවා නම්)"
+
+#: src/amidi-plug/i_configure-ap.c:311
+msgid "extract lyrics from MIDI file (if available)"
+msgstr "MIDI ගොනු වලින් පද රචනාවන් උපුටා ගන්න (තිබෙනවා නම්"
+
+#: src/amidi-plug/i_configure-ap.c:344
+msgid ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
+msgstr ""
+"<span size=\"smaller\">AMIDI⏎\n"
+"පේනු</span>"
+
+#: src/amidi-plug/i_configure.c:59
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-පේනු - ගොනුව තෝරන්න​"
+
+#: src/amidi-plug/i_configure.c:104
+msgid "AMIDI-Plug Settings"
+msgstr "AMIDI-පේනු මෘදුකාංග සකසනයන්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:63
+msgid "AMIDI-Plug - select SoundFont file"
+msgstr "AMIDI-පේනු - SoundFont ගොනුව තෝරන්න​"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:321
+msgid "SoundFont settings"
+msgstr "SoundFont සිටුවම්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:359
+msgid "Filename"
+msgstr "ගොනු නම​"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:363
+msgid "Size (bytes)"
+msgstr "ප්‍රමාණය (බයිට්ස්)"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:412
+msgid "Load SF on player start"
+msgstr "ධාවකය ආරම්භයේදී  SF ප්‍රවේශනය කරන්න​"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:416
+msgid "Load SF on first MIDI file play"
+msgstr " පළමු MIDI ගොනු ධාවනයට SF ප්‍රවේශනය කරන්න"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:431
+msgid "Synthesizer settings"
+msgstr "Synthesizer සිටුවම්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:440
+msgid "gain"
+msgstr "ලබා ගන්න​"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:446
+#: src/amidi-plug/i_configure-fluidsynth.c:476
+#: src/amidi-plug/i_configure-fluidsynth.c:506
+#: src/amidi-plug/i_configure-fluidsynth.c:540
+msgid "use default"
+msgstr "පෙරනිමිය​ භාවිතා කරන්න​"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:449
+#: src/amidi-plug/i_configure-fluidsynth.c:479
+msgid "value:"
+msgstr "අගය​:"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:470
+msgid "polyphony"
+msgstr "බහුතාල නාදය"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:500
+msgid "reverb"
+msgstr "reverb"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:509
+#: src/amidi-plug/i_configure-fluidsynth.c:543
+msgid "yes"
+msgstr "ඔව්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:511
+#: src/amidi-plug/i_configure-fluidsynth.c:545
+msgid "no"
+msgstr "නැත​"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:534
+msgid "chorus"
+msgstr "සමූහ ගායනය"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:568
+msgid "sample rate"
+msgstr "නියැදි අනුපාතය​"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:574
+msgid "22050 Hz "
+msgstr "22050 හර්ට්ස්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:577
+msgid "44100 Hz "
+msgstr "44100 හර්ට්ස්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:580
+msgid "96000 Hz "
+msgstr "96000 හර්ට්ස්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:583
+msgid "custom "
+msgstr "අභිරුචිය "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:592
+msgid "Hz "
+msgstr "හර්ට්ස්"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:662
+msgid ""
+"<span size=\"smaller\">FluidSynth\n"
+"backend</span>"
+msgstr ""
+"<span size=\"smaller\">FluidSynth⏎\n"
+"පසුපස නිමාව​</span>"
+
+#: src/amidi-plug/i_fileinfo.c:175
+msgid "Name:"
+msgstr "නම​:"
+
+#: src/amidi-plug/i_fileinfo.c:200
+msgid "<span size=\"smaller\"> MIDI Info </span>"
+msgstr "<span size=\"smaller\"> MIDI තොරතුරු </span>"
+
+#: src/amidi-plug/i_fileinfo.c:214
+msgid "Format:"
+msgstr "හැඩතලය​:"
+
+#: src/amidi-plug/i_fileinfo.c:217
+msgid "Length (msec):"
+msgstr "දිග (මිලි තප්පර​):"
+
+#: src/amidi-plug/i_fileinfo.c:220
+msgid "No. of Tracks:"
+msgstr "ඛණ්ඩ ගණන:"
+
+#: src/amidi-plug/i_fileinfo.c:226
+msgid "variable"
+msgstr "විචල්‍යය"
+
+#: src/amidi-plug/i_fileinfo.c:228
+msgid "BPM:"
+msgstr "BPM:"
+
+#: src/amidi-plug/i_fileinfo.c:236
+msgid "BPM (wavg):"
+msgstr "BPM (wavg):"
+
+#: src/amidi-plug/i_fileinfo.c:239
+msgid "Time Div:"
+msgstr "කාලය​ බෙදීම​:"
+
+#: src/amidi-plug/i_fileinfo.c:250
+msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
+msgstr "<span size=\"smaller\"> MIDI අදහස් දැක්වීම් සහ පද රචනයන් </span>"
+
+#: src/amidi-plug/i_fileinfo.c:301
+msgid "* no comments available in this MIDI file *"
+msgstr "* මෙම MIDI ගොනුවෙහි අදහස් දැක්වීම් නොමැත​ *"
+
+#: src/amidi-plug/i_fileinfo.c:314
+msgid "* no lyrics available in this MIDI file *"
+msgstr "* මෙම MIDI ගොනුවෙහි පද රචනා නොමැත​ *"
+
+#: src/amidi-plug/i_fileinfo.c:367
+msgid "  (invalid UTF-8)"
+msgstr "(අවලංගු UTF-8)"
+
+#: src/amidi-plug/i_utils.c:39
+msgid "About AMIDI-Plug"
+msgstr "AMIDI-කෙවෙනිය ගැන "
+
+#: src/amidi-plug/i_utils.c:53
+msgid "AMIDI-Plug"
+msgstr "AMIDI-පේනුව "
+
+#: src/amidi-plug/i_utils.c:54
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr ""
+"\n"
+"මොඩියුල MIDI ගීත ධාවකය \n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"රචනා කරන ලද්දේ Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"විශේෂ ස්තුතිය...\n"
+"Clemens Ladisch සහ  Jaroslav Kysela\n"
+"ඔවුන්ගේ වැඩසටහන් වන aplaymidi සහ  amixer; ඒවා \n"
+"ඉතා ප්‍රයෝජනවත් විය. එමෙන්ම alsa-lib ලේඛන \n"
+"ALSA API වැඩිදුර ඉගෙන ගැනීමට \n"
+"\n"
+"Alfredo Spadafina\n"
+"හට අලංකාර midi යතුරු පුවරු ලාංඡනය සඳහා \n"
+"\n"
+"Tony Vroon\n"
+"හට ඇල්ෆා පරීක්ෂණ සඳහා සහය දැක්වීම වෙනුවෙන් "
+
+#: src/aosd/aosd.c:29
+msgid "Audacious OSD "
+msgstr "ඔඩෙෂස් OSD"
+
+#: src/aosd/aosd.c:37
+msgid "AOSD (On-Screen Display)"
+msgstr "AOSD (තිරය මත සංදර්ශනය)"
+
+#: src/aosd/aosd_style.c:75
+msgid "Rectangle"
+msgstr "ඍජුකෝණාශ්‍රය"
+
+#: src/aosd/aosd_style.c:79
+msgid "Rounded Rectangle"
+msgstr "වටකුරු කොන් සහිත​ ඍජුකෝණාශ්‍රය"
+
+#: src/aosd/aosd_style.c:83
+msgid "Concave Rectangle"
+msgstr "අවතල ඍජුකෝණාශ්‍රය"
+
+#: src/aosd/aosd_style.c:87
+msgid "None"
+msgstr "කිසිවක් නැත​"
+
+#: src/aosd/aosd_trigger.c:74
+msgid "Playback Start"
+msgstr "පිළිවැයීම ආරම්භ කිරීම​"
+
+#: src/aosd/aosd_trigger.c:75
+msgid "Triggers OSD when a playlist entry is played."
+msgstr "ධාවන ලැයිස්තු අයිතමයක් ක්‍රියාත්මක වනවිට OSD කියාත්මක කිරීම​"
+
+#: src/aosd/aosd_trigger.c:79
+msgid "Title Change"
+msgstr "මාතෘකාව වෙනස්කිරීම"
+
+#: src/aosd/aosd_trigger.c:80
+msgid ""
+"Triggers OSD when, during playback, the song title changes but the filename "
+"is the same. This is mostly useful to display title changes in internet "
+"streams."
+msgstr ""
+"ධාවනය අතරතුර​, ගීත මාතෘකාව වෙනස් වුවද ගොනු නම එයම නම් OSD ක්‍රියාත්මක කිරීම​. අන්තර්ජාල "
+"ගලනයන්හි දී මාතෘකාව වෙනස් වීම් පෙන්වීමට මෙය ඉතා ප්‍රයෝජනවත් වේ."
+
+#: src/aosd/aosd_trigger.c:86
+msgid "Pause On"
+msgstr "විරාමය ක්‍රියාත්මකයි"
+
+#: src/aosd/aosd_trigger.c:87
+msgid "Triggers OSD when playback is paused."
+msgstr "පිළිවැයීම් විරාමයේදී OSD ක්‍රියාත්මක කිරීම​"
+
+#: src/aosd/aosd_trigger.c:91
+msgid "Pause Off"
+msgstr "විරාමය ක්‍රියාවිරහිතයි"
+
+#: src/aosd/aosd_trigger.c:92
+msgid "Triggers OSD when playback is unpaused."
+msgstr "පිළිවැයීම් විරාමය අවසානයේදී OSD ක්‍රියාත්මක කිරීම​"
+
+#: src/aosd/aosd_ui.c:168
+msgid "Placement"
+msgstr "ස්ථාපනය"
+
+#: src/aosd/aosd_ui.c:200
+msgid "Relative X offset:"
+msgstr "සාපේක්ෂ X අනුලම්බය:"
+
+#: src/aosd/aosd_ui.c:207
+msgid "Relative Y offset:"
+msgstr "සාපේක්ෂ Y අනුලම්බය:"
+
+#: src/aosd/aosd_ui.c:214
+msgid "Max OSD width:"
+msgstr "උපරිම OSD පළල:​"
+
+#: src/aosd/aosd_ui.c:225
+msgid "Multi-Monitor options"
+msgstr "බහු මොනිටර විකල්ප​"
+
+#: src/aosd/aosd_ui.c:229
+msgid "Display OSD using:"
+msgstr "OSD දර්ශනයට​ භාවිතා කරන්න​:"
+
+#: src/aosd/aosd_ui.c:231
+msgid "all monitors"
+msgstr "සියලුම මොනිටර​"
+
+#: src/aosd/aosd_ui.c:234
+#, c-format
+msgid "monitor %i"
+msgstr "මොනිටර​ය​ %i"
+
+#: src/aosd/aosd_ui.c:287
+msgid "Timing (ms)"
+msgstr "කාල නියමය (මිලි තප්පර​)"
+
+#: src/aosd/aosd_ui.c:292
+msgid "Display:"
+msgstr "දර්ශනය​:"
+
+#: src/aosd/aosd_ui.c:297
+msgid "Fade in:"
+msgstr "ක්‍රමෝද්දීපනය:"
+
+#: src/aosd/aosd_ui.c:302
+msgid "Fade out:"
+msgstr "ක්‍රමාවදීපනය:"
+
+#: src/aosd/aosd_ui.c:383
+msgid "Fonts"
+msgstr "අකුරු වර්ගය​"
+
+#: src/aosd/aosd_ui.c:391
+#, c-format
+msgid "Font %i:"
+msgstr "අකුරු වර්ගය ​%i:"
+
+#: src/aosd/aosd_ui.c:409
+msgid "Shadow"
+msgstr "සෙවනැල්ල​"
+
+#: src/aosd/aosd_ui.c:439
+msgid "Internationalization"
+msgstr "ජාත්‍යන්තරකරණය​"
+
+#: src/aosd/aosd_ui.c:445
+msgid "Disable UTF-8 conversion of text (in aosd)"
+msgstr "අක්‍ෂර UTF-8 පරිවර්තනය කිරීම ක්‍රියාවිරහිත කිරීම (aosd තුල​)"
+
+#: src/aosd/aosd_ui.c:462
+msgid "Select Skin File"
+msgstr "සිවි ගොනුව​ තෝරන්න"
+
+#: src/aosd/aosd_ui.c:573
+msgid "Render Style"
+msgstr "විදැහුම් අන්දම"
+
+#: src/aosd/aosd_ui.c:589
+msgid "Colors"
+msgstr "පාට​"
+
+#: src/aosd/aosd_ui.c:602
+#, c-format
+msgid "Color %i:"
+msgstr "පාට​ %i:"
+
+#: src/aosd/aosd_ui.c:620
+msgid "Custom Skin"
+msgstr "අභිරුචි සිවිය​"
+
+#: src/aosd/aosd_ui.c:626
+msgid "Skin file:"
+msgstr "සිවි ගොනුව​:"
+
+#: src/aosd/aosd_ui.c:630
+msgid "Browse"
+msgstr "පිරික්සන්න​"
+
+#: src/aosd/aosd_ui.c:729
+msgid "Enable trigger"
+msgstr "ක්‍රියාරම්භකය සක්‍රිය කිරිම"
+
+#: src/aosd/aosd_ui.c:756
+msgid "Event"
+msgstr "සිද්ධිය​"
+
+#: src/aosd/aosd_ui.c:784
+msgid "Composite manager detected"
+msgstr "සංයුක්ත කළමනාකාරකය හඳුනා ගන්නා ලදී"
+
+#: src/aosd/aosd_ui.c:791
+msgid ""
+"Composite manager not detected;\n"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+"සංයුක්ත කළමනාකාරකය හඳුනා ගෙන නොමැත​;\n"
+"දැනටමත් එකක් ධාවනය වෙමින් නොපවතී නම් කරුණාකර සංයුක්ත කළමනාකාරකයක් සක්‍රීය කරන්න​. එසේ නැතිනම් "
+"OSD නිසි ලෙස ක්‍රියා නොකරයි"
+
+#: src/aosd/aosd_ui.c:799
+msgid "Composite manager not required for fake transparency"
+msgstr "ව්‍යාජ විනිවිද පෙනීම සඳහා සංයුක්ත කළමනාකාරකය අවශ්‍ය නැත​"
+
+#: src/aosd/aosd_ui.c:837
+msgid "Transparency"
+msgstr "විනිවිද පෙනීම"
+
+#: src/aosd/aosd_ui.c:843
+msgid "Fake transparency"
+msgstr "ව්‍යාජ විනිවිද පෙනීම​"
+
+#: src/aosd/aosd_ui.c:845
+msgid "Real transparency (requires X Composite Ext.)"
+msgstr "සත්‍ය විනිවිද පෙනීම​ (X සංයුක්ත Ext. අවශ්‍යයයි)"
+
+#: src/aosd/aosd_ui.c:887
+msgid "Composite extension not loaded"
+msgstr "සංයුක්ත දිගුව​ ප්‍රවේශනය වී නොමැත​"
+
+#: src/aosd/aosd_ui.c:895
+msgid "Composite extension not available"
+msgstr "සංයුක්ත දිගුව​ නොමැත​"
+
+#: src/aosd/aosd_ui.c:914
+#, c-format
+msgid "<span font_desc='%s'>Audacious OSD</span>"
+msgstr "<span font_desc='%s'>Audacious OSD</span>"
+
+#: src/aosd/aosd_ui.c:995
+msgid "Audacious OSD - configuration"
+msgstr "Audacious OSD - වින්‍යාසය​"
+
+#: src/aosd/aosd_ui.c:1016
+msgid "Test"
+msgstr "පරික්‍ෂා කිරීම​"
+
+#: src/aosd/aosd_ui.c:1031
+msgid "Position"
+msgstr "පිහිටීම​"
+
+#: src/aosd/aosd_ui.c:1036
+msgid "Animation"
+msgstr "සජීවනය​"
+
+#: src/aosd/aosd_ui.c:1041
+msgid "Text"
+msgstr "පෙළ​"
+
+#: src/aosd/aosd_ui.c:1046
+msgid "Decoration"
+msgstr "අලංකරණය"
+
+#: src/aosd/aosd_ui.c:1051
+msgid "Trigger"
+msgstr "ක්‍රියාරම්භකය"
+
+#: src/aosd/aosd_ui.c:1056
+msgid "Misc"
+msgstr "විවිධ"
+
+#: src/asx/asx.c:96
+msgid "ASXv1/ASXv2 Playlists"
+msgstr "ASXv1/ASXv2 ධාවන ලැයිස්තුව "
+
+#: src/audpl/audpl.c:222
+msgid "Audacious Playlists (audpl)"
+msgstr "ඔඩෙෂස් ධාවන ලැස්තු (audpl)"
+
+#: src/blur_scope/blur_scope.c:47
+msgid "<b>Color</b>"
+msgstr "<b>වර්ණ</b>"
+
+#: src/blur_scope/blur_scope.c:56
+msgid "Blur Scope"
+msgstr "නොපැහැදිලි විෂය පථය"
+
+#: src/bs2b/plugin.c:136
+msgid "Bauer Stereophonic-to-Binaural Preferences"
+msgstr "ත්‍රිමාන ධ්වානික සංචාලන වල සිට ද්විකර්ණික අභිරුචි වෙත "
+
+#: src/bs2b/plugin.c:147
+msgid "Feed level:"
+msgstr "සංග්‍රහ මට්ටම:"
+
+#: src/bs2b/plugin.c:161
+msgid "Cut frequency:"
+msgstr "සංඛ්‍යාතය කපන්න:"
+
+#: src/bs2b/plugin.c:175
+msgid "Presets:"
+msgstr "පෙර සකසන ලද:"
+
+#: src/bs2b/plugin.c:197
+msgid "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr "ත්‍රිමාන ධ්වානික සංචාලන වල සිට ද්විකර්ණික වෙත (BS2B)"
+
+#: src/cairo-spectrum/cairo-spectrum.c:297
+msgid "Spectrum Analyzer"
+msgstr "වර්ණාවලි විශ්ලේශකය"
+
+#: src/cdaudio-ng/cdaudio-ng.c:103
+msgid ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"and to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you to Tony Vroon for mentoring and guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project."
+msgstr ""
+"ප්‍රකාශන හිමිකම් (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> සහ පිරිස.\n"
+"විශේෂ ස්තුතිය libcdio සංවර්ධකයන්ට <http://www.gnu.org/software/libcdio/>\n"
+"සහ libcddb සංවර්ධකයන්ට <http://libcddb.sourceforge.net/>.\n"
+"උපදෙස් දීම සහ මගපෙන්වීම වෙනුවෙන් මගේ ස්තුතිය Tony Vroon වෙත පුද කරමි.\n"
+"මෙය 2007 වසරේ  Google Summer of Code ව්‍යාපෘතියකි."
+
+#: src/cdaudio-ng/cdaudio-ng.c:121
+msgid "<b>Device</b>"
+msgstr "<b>ආම්පන්නය</b>"
+
+#: src/cdaudio-ng/cdaudio-ng.c:122
+msgid "Read speed:"
+msgstr "වේගයෙන් කියවන්න:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:125
+msgid "Override device:"
+msgstr "ප්‍රතික්ෂේපිත ආම්පන්නය:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:127
+msgid "<b>Metadata</b>"
+msgstr "<b>පාරදත්ත</b>"
+
+#: src/cdaudio-ng/cdaudio-ng.c:128
+msgid "Use CD-Text"
+msgstr "භාවිතා කරන්න CD-පෙළ "
+
+#: src/cdaudio-ng/cdaudio-ng.c:130
+msgid "Use CDDB"
+msgstr "භාවිතා කරන්න CDDB"
+
+#: src/cdaudio-ng/cdaudio-ng.c:132
+msgid "Use HTTP instead of CDDBP"
+msgstr "CDDBP වෙනුවට HTTP භාවිතා කරන්න​"
+
+#: src/cdaudio-ng/cdaudio-ng.c:134
+msgid "Server:"
+msgstr "සේවාදායකය:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:136
+msgid "Path:"
+msgstr "පථය:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:138
+msgid "Port:"
+msgstr "තොට:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:148
+msgid "Audio CD Plugin"
+msgstr "ශ්‍රව්‍ය CD පේනු මෘදුකාංගය "
+
+#: src/cdaudio-ng/cdaudio-ng.c:249
+msgid "Failed to initialize cdio subsystem."
+msgstr "cdio උප පද්ධතිය ඇරඹීම අසාර්ථකය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:306
+#, c-format
+msgid "Invalid URI %s."
+msgstr "අවලංගු  URI %s."
+
+#: src/cdaudio-ng/cdaudio-ng.c:308
+#, c-format
+msgid "Track %d not found."
+msgstr "ඛණ්ඩය %d සොයාගත නොහැක."
+
+#: src/cdaudio-ng/cdaudio-ng.c:310
+#, c-format
+msgid "Track %d is a data track."
+msgstr "ඛණ්ඩ %d දත්ත ඛණ්ඩයකි."
+
+#: src/cdaudio-ng/cdaudio-ng.c:312
+msgid "Failed to open audio output."
+msgstr "ශ්‍රව්‍ය ප්‍රතිදානය විවෘත කිරීම අසාර්ථක විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:395
+msgid "Error reading audio CD."
+msgstr "ශ්‍රව්‍ය CD කියවීමේ දෝෂය"
+
+#: src/cdaudio-ng/cdaudio-ng.c:505
+msgid "Audio CD"
+msgstr "ශ්‍රව්‍ය CD"
+
+#: src/cdaudio-ng/cdaudio-ng.c:535 src/cdaudio-ng/cdaudio-ng.c:544
+#, c-format
+msgid "Failed to open CD device %s."
+msgstr "CD අම්පන්නය  %s විවෘත කිරීම අසාර්ථක විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:547
+msgid "No audio capable CD drive found."
+msgstr "ශ්‍රව්‍ය ක්‍රියා කල හැකි CD අම්පන්නය සොයාගත නොහැක."
+
+#: src/cdaudio-ng/cdaudio-ng.c:574
+msgid "Failed to finish initializing opened CD drive."
+msgstr "විවෘත කරන ලද CD අම්පන්නය අවසානය තෙක් ක්‍රියාත්මක කිරීම අසාර්ථක විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:587
+msgid "Failed to retrieve first/last track number."
+msgstr "පළමු/අවසාන ඛණ්ඩ අංකය සොයාගැනීම අසාර්ථක විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:612
+#, c-format
+msgid "Cannot read start/end LSN for track %d."
+msgstr "ඛණ්ඩ  %d හි පළමු/අවසාන LSN කියවීමට නොහැක."
+
+#: src/cdaudio-ng/cdaudio-ng.c:702
+msgid "Failed to create the cddb connection."
+msgstr "cddb සම්බන්ධතාව තැනීම අසාර්ථක විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:777
+msgid "Failed to query the CDDB server"
+msgstr "CDDB සේවාදායකය විමසුමට අපොහොසත් විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:779
+#, c-format
+msgid "Failed to query the CDDB server: %s"
+msgstr "CDDB සේවාදායකය : %s විමසුමට අපොහොසත් විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:803
+#, c-format
+msgid "Failed to read the cddb info: %s"
+msgstr "cddb තොරතුරු:  %s කියවීමට අපොහොසත් විය."
+
+#: src/cdaudio-ng/cdaudio-ng.c:876
+msgid "Drive is empty."
+msgstr "ධාවකය හිස්."
+
+#: src/cdaudio-ng/cdaudio-ng.c:878
+msgid "Unsupported disk type."
+msgstr "සහාය නොමැති තැටි වර්ගයකි."
+
+#: src/cd-menu-items/cd-menu-items.c:30
+msgid "Play CD"
+msgstr "සංයුක්ත තැටිය​ ධාවනය කරන්න "
+
+#: src/cd-menu-items/cd-menu-items.c:30
+msgid "Add CD"
+msgstr "සංයුක්ත තැටිය එකතු කරන්න​"
+
+#: src/cd-menu-items/cd-menu-items.c:57
+msgid "Audio CD Menu Items"
+msgstr "ශ්‍රව්‍ය CD මෙනු අයිතම "
+
+#: src/compressor/plugin.c:35
+msgid "<b>Compression</b>"
+msgstr "<b>හැකිලීම</b>"
+
+#: src/compressor/plugin.c:36
+msgid "Center volume:"
+msgstr "මධ්‍ය ශබ්ද මට්ටම​ :"
+
+#: src/compressor/plugin.c:39
+msgid "Dynamic range:"
+msgstr "ගතික පරාසය:"
+
+#: src/compressor/plugin.c:53
+msgid ""
+"Dynamic Range Compression Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"ඔඩෙෂස් පේනු මෘදුකාංගය සඳහා ගතික පරාස සම්පීඩනය\n"
+"ප්‍රකාශන හිමිකම් 2010-2012 ජෝන් ලින්ඩ්ග්රෙන්"
+
+#: src/compressor/plugin.c:58
+msgid "Dynamic Range Compressor"
+msgstr "ගතික පරාස සම්පීඩකය"
+
+#: src/console/configure.c:134 src/console/plugin.c:42
+msgid "Game Console Music Decoder"
+msgstr "ක්‍රීඩා පාලන පුවරු සංගීත විකේතකය​"
+
+#: src/console/configure.c:151
+msgid "General"
+msgstr "සාමාන්‍ය"
+
+#: src/console/configure.c:153 src/skins/ui_manager.c:175
+msgid "Playback"
+msgstr "පිළිවැයීම"
+
+#: src/console/configure.c:168
+msgid "Bass:"
+msgstr "මන්ද්‍රස්වර:"
+
+#: src/console/configure.c:172 src/console/configure.c:183
+#: src/console/configure.c:204
+msgid "secs"
+msgstr "තප්පර​"
+
+#: src/console/configure.c:179
+msgid "Treble:"
+msgstr "උච්චස්වනය:"
+
+#: src/console/configure.c:200
+msgid "Default song length:"
+msgstr "පෙරනිමි ගීත දිග​:"
+
+#: src/console/configure.c:206
+msgid "Resampling"
+msgstr "නැවත නියැදීම​"
+
+#: src/console/configure.c:212
+msgid "Enable audio resampling"
+msgstr "නැවත නියැදීම​ සක්‍රිය කරන්න​"
+
+#: src/console/configure.c:227
+msgid "Resampling rate:"
+msgstr "නැවත නියැදීම් අනුපාතය​:"
+
+#: src/console/configure.c:231 src/modplug/plugin_main.c:98
+#: src/resample/resample.c:178 src/resample/resample.c:184
+#: src/resample/resample.c:187 src/resample/resample.c:190
+#: src/resample/resample.c:193 src/resample/resample.c:196
+#: src/resample/resample.c:199 src/resample/resample.c:202
+#: src/sox-resampler/sox-resampler.c:153
+msgid "Hz"
+msgstr "හර්ට්ස්"
+
+#: src/console/configure.c:242
+msgid "SPC"
+msgstr "SPC"
+
+#: src/console/configure.c:243
+msgid "Ignore length from SPC tags"
+msgstr "SPC \tසම්බන්ධකයෙන් දිග නොසලකා හරින්න​"
+
+#: src/console/configure.c:244
+msgid "Increase reverb"
+msgstr "ප්‍රතිරාවය වැඩි කරන්න​"
+
+#: src/console/configure.c:269
+msgid ""
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+"කාල ප්‍රමාණ තොරතුරු සපයා නොමැති ගීත සඳහා තප්පර වලින් පෙන්වා ඇති පෙරනිමි ගීත කාල ප්‍රමාණය "
+"භාවිතා කර ඇත​ (i.e. එකම කොටස නැවත නැවත​ ධාවනය වන පථ​)."
+
+#: src/console/plugin.c:27
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+msgstr ""
+"ක්‍රීඩා_ගීත_Emu 0.5.2 මත වූ කොන්සෝල ගීත විකේතක එන්ජිම \n"
+"සහය වන ආකෘති: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"ඔඩෙෂස් පේනු මෘදුකාංගය:\n"
+" William Pitcock<nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+
+#: src/crossfade/crossfade.c:81
+msgid ""
+"Crossfading failed because the songs had a different number of channels.  "
+"You can use the Channel Mixer to convert the songs to the same number of "
+"channels."
+msgstr ""
+"ගීත වලට වෙනස් නාලිකා කිහිපයක් තිබීම නිසා එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීමට අසමත් වී ඇත.  "
+"නාලිකා මිශ්‍රකය භාවිතයෙන් ඔබට ගීත සමාන නාලිකා ගණනකට වෙනස් කල හැක."
+
+#: src/crossfade/crossfade.c:88
+msgid ""
+"Crossfading failed because the songs had different sample rates.  You can "
+"use the Sample Rate Converter to convert the songs to the same sample rate."
+msgstr ""
+"ගීත වලට වෙනස් නියැදි අනුපාත තිබීම නිසා එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීමට අසමත් වී ඇත.  "
+"නාලිකා මිශ්‍රකය භාවිතයෙන් ඔබට ගීත එක් නියැදි අනුපාතයකට වෙනස් කල හැක."
+
+#: src/crossfade/crossfade.c:254
+msgid ""
+"Crossfade Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"Audacious සඳහා වන හරහා පෑහීමේ පේනු මෘදුකාංගය⏎\n"
+"ප්‍රකාශන අයිතිය 2010-2012 ජෝන් ලින්ඩ්ග්‍රෙන්"
+
+#: src/crossfade/crossfade.c:258
+msgid "<b>Crossfade</b>"
+msgstr "<b>එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීම</b>"
+
+#: src/crossfade/crossfade.c:259
+msgid "Overlap:"
+msgstr "අතිච්ඡාදන:"
+
+#: src/crossfade/crossfade.c:269
+msgid "Crossfade"
+msgstr "එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීම"
+
+#: src/crystalizer/crystalizer.c:40
+msgid "<b>Crystalizer</b>"
+msgstr "<b>පළිඟුව</b>"
+
+#: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
+msgid "Intensity:"
+msgstr "තීව්‍රතාව:"
+
+#: src/crystalizer/crystalizer.c:51
+msgid "Crystalizer"
+msgstr "පළිඟුව"
+
+#: src/cue/cue.c:158
+msgid "Cue Sheet Plugin"
+msgstr "සලකුණු පත් පේනු මෘදුකාංගය "
+
+#: src/echo_plugin/echo.c:24
+msgid "<b>Echo</b>"
+msgstr "<b>ප්‍රතිරාව</b>"
+
+#: src/echo_plugin/echo.c:25 src/modplug/plugin_main.c:90
+#: src/modplug/plugin_main.c:104
+msgid "Delay:"
+msgstr "ප්‍රමාදය:"
+
+#: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:91
+#: src/modplug/plugin_main.c:105
+msgid "ms"
+msgstr "මාත සංවේද්‍යතාව"
+
+#: src/echo_plugin/echo.c:28
+msgid "Feedback:"
+msgstr "ප්‍රතිපෝෂණය:"
+
+#: src/echo_plugin/echo.c:31 src/modplug/plugin_main.c:109
+msgid "Volume:"
+msgstr "ශබ්ද මට්ටම​ :"
+
+#: src/echo_plugin/echo.c:114
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin, 1999\n"
+"\n"
+"Surround echo by Carl van Schaik, 1999"
+msgstr ""
+"ප්‍රතිධ්වනි පේනු මෘදුකාංගය⏎\n"
+"ජොහාන් ලෙවින් විසින්, 1999⏎\n"
+"⏎\n"
+"සිසාළ ප්‍රතිධ්වනි කාර්ල් වෑන් ස්චේයික් විසින්, 1999"
+
+#: src/echo_plugin/echo.c:120
+msgid "Echo"
+msgstr "ප්‍රතිරාව"
+
+#: src/ffaudio/ffaudio-core.c:656
+msgid ""
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
+msgstr ""
+"Audacious සඳහා වන බහු ආකෘති ශ්‍රව්‍ය විකේතන​ පේනු මෘදුකාංගය සෑදීමට යොදාගත්තේ⏎\n"
+"FFmpeg බහුමාධ්‍ය සැකිල්ල​ (http://www.ffmpeg.org/)⏎\n"
+"⏎\n"
+"Audacious පේනු මෘදුකාංගය සාදනු ලැබුවේ:⏎\n"
+"විලියම් පිට්කොක් <nenolod@nenolod.net>⏎\n"
+"මැටී හැමලේයිනෙන් <ccr@tnsp.org>"
+
+#: src/ffaudio/ffaudio-core.c:703
+msgid "FFmpeg Plugin"
+msgstr "FFmpeg පේනු මෘදුකාංගය "
+
+#: src/filewriter/filewriter.c:409
+msgid "FileWriter Configuration"
+msgstr "ගොනු රචක  වින්‍යාසය"
+
+#: src/filewriter/filewriter.c:421
+msgid "Output file format:"
+msgstr "ප්‍රතිදාන ගොනු ආකෘතිය:"
+
+#: src/filewriter/filewriter.c:439
+msgid "Configure"
+msgstr "වින්‍යාස කරන්න​"
+
+#: src/filewriter/filewriter.c:449
+msgid "Save into original directory"
+msgstr "මූලික නාමාවලියට සුරකින්න​"
+
+#: src/filewriter/filewriter.c:454
+msgid "Save into custom directory"
+msgstr "අභිරුචි නාමාවලියටකට​ සුරකින්න​"
+
+#: src/filewriter/filewriter.c:464
+msgid "Output file folder:"
+msgstr "ප්‍රතිදාන ගොනු ෆෝල්ඩරය​:"
+
+#: src/filewriter/filewriter.c:468
+msgid "Pick a folder"
+msgstr "ෆෝල්ඩරයක්​ තෝරන්න​"
+
+#: src/filewriter/filewriter.c:481
+msgid "Get filename from:"
+msgstr "වෙතින් ගොනු නාමයක් ලබාගන්න​:"
+
+#: src/filewriter/filewriter.c:484
+msgid "original file tags"
+msgstr "මූලික ගොනු සම්බන්ධකය"
+
+#: src/filewriter/filewriter.c:490
+msgid "original filename"
+msgstr "මූලික ගොනු නම​"
+
+#: src/filewriter/filewriter.c:497
+msgid "Don't strip file name extension"
+msgstr "ගොනු නම් දිගුව ඉවත් නොකරන්න​"
+
+#: src/filewriter/filewriter.c:506
+msgid "Prepend track number to filename"
+msgstr "පථ අංකය ගොනු නමට එකතු කරන්න​"
+
+#: src/filewriter/filewriter.c:515
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"මෙම​ මෘදුකාංගය නිදහස් කි; නිදහස් මෘදුකාංග පදනම විසින් ප්‍රකාශ කරන ලද GNU සාමාන්‍ය පොදු "
+"බලපත්‍රය යටතේ ඔබට මෙය නැවත බෙදා හැරීම හෝ වෙනස් කිරීම කළ හැක​; බලපත්‍රයේ 2වන සංස්කරණය "
+"හෝ(ඔබගේ කැමත්ත අනුව​) පසු සංස්කරණයක් යටතේ.\n"
+"\n"
+"මෙම මෘදුකාංගය බෙදාහැර ඇත්තේ ප්‍රයෝජනවත් වේ යන බලාපොරොත්තුවෙන් වුවත් වගකීමක් නොමැත​; විකිණිය "
+"හැකි හෝ යම් නිශ්චිත අරමුණකට ලෙසවත් ගම්‍යමාන වන වගකීමකින් තොරයි. වැඩි විස්තර සඳහා GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය බලන්න​. මෙම සමග ඔබට හි පිටපතක් ලැබිය යුතුයි; නැතිනම් නිදහස් මෘදුකාංග පදනමට දන්වන්න​"
+". Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
+#: src/filewriter/filewriter.c:532
+msgid "FileWriter Plugin"
+msgstr "ගොනු රචක පේනු මෘදුකාංගය "
+
+#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
+msgid "Auto"
+msgstr "ස්වයංක්‍රීය​"
+
+#: src/filewriter/mp3.c:37
+msgid "Joint Stereo"
+msgstr "එකතු වූ ත්‍රිමාණ​"
+
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
+#: src/mpg123/mpg123.c:211
+msgid "Stereo"
+msgstr "ත‍්‍ර‍්‍රිමාණ "
+
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
+#: src/mpg123/mpg123.c:211
+msgid "Mono"
+msgstr "තනි "
+
+#: src/filewriter/mp3.c:688
+msgid "MP3 Configuration"
+msgstr "MP3 වින්‍යාසය"
+
+#: src/filewriter/mp3.c:712
+msgid "Algorithm Quality:"
+msgstr "ඇල්ගොරිතම තත්ත්වය:"
+
+#: src/filewriter/mp3.c:737
+msgid "Output Samplerate:"
+msgstr "ප්‍රතිදාන නියැදි අනුපාතය​:"
+
+#: src/filewriter/mp3.c:765
+msgid "(Hz)"
+msgstr "(හර්ට්ස්)"
+
+#: src/filewriter/mp3.c:772
+msgid "Bitrate / Compression ratio:"
+msgstr "බිට් රේටය / සම්පීඩක අනුපාතය​:"
+
+#: src/filewriter/mp3.c:796
+msgid "Bitrate (kbps):"
+msgstr "බිට් රේටය (තප්පරයට කි.බ​.)"
+
+#: src/filewriter/mp3.c:829
+msgid "Compression ratio:"
+msgstr "සම්පීඩක අනුපාතය​:"
+
+#: src/filewriter/mp3.c:853
+msgid "Audio Mode:"
+msgstr "ශ්‍රව්‍ය​ ප්‍රකාරය​:"
+
+#: src/filewriter/mp3.c:878
+msgid "Misc:"
+msgstr "ප්‍රකීර්ණ:"
+
+#: src/filewriter/mp3.c:889
+msgid "Enforce strict ISO complience"
+msgstr "විධිමත් ISO අනුකූලවීමකට බල කරන්න​"
+
+#: src/filewriter/mp3.c:900
+msgid "Error protection"
+msgstr "දෝෂ ආරක්‍ෂාව​"
+
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+msgid "Quality"
+msgstr "ප්‍රශස්තතාව"
+
+#: src/filewriter/mp3.c:921
+msgid "Enable VBR/ABR"
+msgstr "VBR/ABR සක්‍රිය කරන්න​"
+
+#: src/filewriter/mp3.c:931
+msgid "Type:"
+msgstr "වර්ගය​:"
+
+#: src/filewriter/mp3.c:964
+msgid "VBR Options:"
+msgstr "VBR විකල්ප​:"
+
+#: src/filewriter/mp3.c:980
+msgid "Minimum bitrate (kbps):"
+msgstr "අවම බිට් රේටය (තප්පරයට කි.බ​.)"
+
+#: src/filewriter/mp3.c:1007
+msgid "Maximum bitrate (kbps):"
+msgstr "උපරිම​ බිට් රේටය (තප්පරයට කි.බ​.)"
+
+#: src/filewriter/mp3.c:1030
+msgid "Strictly enforce minimum bitrate"
+msgstr "අවම බිට් රේටය සඳහා තදින් බලකරන්න​"
+
+#: src/filewriter/mp3.c:1042
+msgid "ABR Options:"
+msgstr "ABR විකල්ප​:"
+
+#: src/filewriter/mp3.c:1052
+msgid "Average bitrate (kbps):"
+msgstr "සාමාන්‍ය බිට් රේටය (තත්පරයට කි.බ​.)"
+
+#: src/filewriter/mp3.c:1080
+msgid "VBR quality level:"
+msgstr "VBR ප්‍රශස්තතා මට්ටම​:"
+
+#: src/filewriter/mp3.c:1099
+msgid "Don't write Xing VBR header"
+msgstr "Xing VBR ශීර්‍ෂකය​ නොලියන්න​"
+
+#: src/filewriter/mp3.c:1112
+msgid "VBR/ABR"
+msgstr "VBR/ABR"
+
+#: src/filewriter/mp3.c:1121
+msgid "Frame parameters:"
+msgstr "රාමු පරාමිතිය :"
+
+#: src/filewriter/mp3.c:1133
+msgid "Mark as copyright"
+msgstr "ප්‍රකාශන අයිතිය සහිත ලෙස සලකුණු කරන්න"
+
+#: src/filewriter/mp3.c:1144
+msgid "Mark as original"
+msgstr "මුල් පිටපතක් ලෙස සලකුණු කරන්න​"
+
+#: src/filewriter/mp3.c:1156
+msgid "ID3 params:"
+msgstr "ID3 params:"
+
+#: src/filewriter/mp3.c:1167
+msgid "Force addition of version 2 tag"
+msgstr "2 වන සංස්කරණයේ සම්බන්ධකයට​ බලෙන් ඇතුලත් කිරීම​"
+
+#: src/filewriter/mp3.c:1177
+msgid "Only add v1 tag"
+msgstr "1 වන සංස්කරණයේ සම්බන්ධකය පමණක් එකතු කරන්න​"
+
+#: src/filewriter/mp3.c:1184
+msgid "Only add v2 tag"
+msgstr "2 වන සංස්කරණයේ සම්බන්ධකය පමණක් එකතු කරන්න​"
+
+#: src/filewriter/mp3.c:1205
+msgid "Tags"
+msgstr "සම්බන්ධක"
+
+#: src/filewriter/vorbis.c:212
+msgid "Vorbis Encoder Configuration"
+msgstr "Vorbis විකේතකයේ වින්‍යාසය"
+
+#: src/filewriter/vorbis.c:235
+msgid "Quality level (0 - 10):"
+msgstr "ප්‍රශස්ථතා මට්ටම​ (0 - 10):"
+
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
+msgid "lossless"
+msgstr "හානි වී නොමැති "
+
+#: src/flacng/plugin.c:269
+msgid ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+"මූලක කේතය සකසනු ලැබුවේ⏎\n"
+"රැල්ෆ් අර්ට්සින්ගර් <ralf@skytale.net>⏎\n"
+"⏎\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+
+#: src/flacng/plugin.c:277
+msgid "FLAC Decoder"
+msgstr "FLAC විකේතකය"
+
+#: src/gio/gio.c:300
+msgid ""
+"GIO Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren"
+msgstr ""
+"Audacious සඳහා වන​ GIO පේනු මෘදුකාංගය⏎\n"
+"ප්‍රකාශන අයිතිය 2009-2012 ජෝන් ලින්ඩ්ග්‍රෙන්"
+
+#: src/gio/gio.c:322
+msgid "GIO Plugin"
+msgstr "GIO පේනු මෘදුකාංගය "
+
+#: src/gl-spectrum/gl-spectrum.c:283
+msgid ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé and John Lindgren\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
+msgstr ""
+"ඔඩෙෂස් සඳහා OpenGL වර්ණාවලි විශ්ලේශකය\n"
+"ප්‍රකාශන හිමිකම Christophe Budé and John Lindgren 2013\n"
+"\n"
+"XMMS පේනු මෘදුකාංගය මත පදනම්ව:\n"
+"ප්‍රකාශන හිමිකම 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson,"
+"සහ  4Front තාක්ෂණ \n"
+"\n"
+"බලපත්‍රය: GPLv2+"
+
+#: src/gl-spectrum/gl-spectrum.c:292
+msgid "OpenGL Spectrum Analyzer"
+msgstr "OpenGL වර්ණාවලි විශ්ලේශකය"
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:41
+msgid ""
+"Gnome Shortcut Plugin\n"
+"Lets you control the player with Gnome's shortcuts.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+msgstr ""
+"ග්නෝම් කෙටි යෙදුම් පේනු මෘදුකාංගය⏎\n"
+"ග්නෝම් කෙටි යෙදුම් මගින් ඔබට ධාවකය පාලනයට ඉඩ සලසයි.⏎\n"
+"⏎\n"
+"ප්‍රකාශන අයිතිය​ (C) 2007-2008 සස්චා හ්ලුසියැක් <contact@saschahlusiak.de>"
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:47
+msgid "Gnome Shortcuts"
+msgstr "Gnome කෙටිමග "
+
+#: src/gtkui/columns.c:32
+msgid "Entry number"
+msgstr "ඇතුලත් කිරීමේ අංකය​"
+
+#: src/gtkui/columns.c:32
+msgid "Title"
+msgstr "මාතෘකාව"
+
+#: src/gtkui/columns.c:33
+msgid "Artist"
+msgstr "ශිල්පියා "
+
+#: src/gtkui/columns.c:33
+msgid "Year"
+msgstr "වර්ෂය "
+
+#: src/gtkui/columns.c:33
+msgid "Album"
+msgstr "ඇල්බමය "
+
+#: src/gtkui/columns.c:33
+msgid "Track"
+msgstr "ඛණ්ඩය "
+
+#: src/gtkui/columns.c:33
+msgid "Genre"
+msgstr "ප්‍රභේදය"
+
+#: src/gtkui/columns.c:34
+msgid "Queue position"
+msgstr "පේලියෙහි පිහිටන ස්ථානය​"
+
+#: src/gtkui/columns.c:34
+msgid "Length"
+msgstr "දිග"
+
+#: src/gtkui/columns.c:34
+msgid "File path"
+msgstr "ගොනු පථය"
+
+#: src/gtkui/columns.c:34
+msgid "File name"
+msgstr "ගොනු නම​"
+
+#: src/gtkui/columns.c:35
+msgid "Custom title"
+msgstr "අභිරුචි මාතෘකාව​"
+
+#: src/gtkui/columns.c:35
+msgid "Bitrate"
+msgstr "බිට් රේටය​"
+
+#: src/gtkui/columns.c:277
+msgid "Choose Columns"
+msgstr "තීරු​ තෝරන්න "
+
+#: src/gtkui/columns.c:293
+msgid "Available:"
+msgstr "ප්‍රයෝජනයට ගත හැක​:"
+
+#: src/gtkui/columns.c:327
+msgid "Chosen:"
+msgstr "තෝරාගත්:"
+
+#: src/gtkui/layout.c:119
+msgid "Dock at Left"
+msgstr "වමට ඈඳන්න​"
+
+#: src/gtkui/layout.c:119
+msgid "Dock at Right"
+msgstr "දකුණට ​ඈඳන්න​"
+
+#: src/gtkui/layout.c:120
+msgid "Dock at Top"
+msgstr "ඉහළට​ ඈඳන්න​"
+
+#: src/gtkui/layout.c:120
+msgid "Dock at Bottom"
+msgstr " පහළට ඈඳන්න​"
+
+#: src/gtkui/layout.c:120
+msgid "Undock"
+msgstr "ඈඳීම​ අවලංගු කරන්න​"
+
+#: src/gtkui/layout.c:120 src/ladspa/plugin.c:623
+msgid "Disable"
+msgstr "අක්‍රීය කරන්න​"
+
+#: src/gtkui/menus.c:170
+msgid "_Open Files ..."
+msgstr "_ගොනු විවෘත කරන්න ..."
+
+#: src/gtkui/menus.c:171
+msgid "Open _URL ..."
+msgstr "_URL විවෘත කරන්න ..."
+
+#: src/gtkui/menus.c:172
+msgid "_Add Files ..."
+msgstr "_ගොනු එකතු කරන්න ..."
+
+#: src/gtkui/menus.c:173
+msgid "Add U_RL ..."
+msgstr "U_RL එකතු කරන්න ..."
+
+#: src/gtkui/menus.c:175
+msgid "_Search Library"
+msgstr "_පුස්තකාලය සොයන්න"
+
+#: src/gtkui/menus.c:177
+msgid "A_bout ..."
+msgstr "පි_ළිබඳ​ ..."
+
+#: src/gtkui/menus.c:178
+msgid "_Preferences ..."
+msgstr "_වරණ​ ..."
+
+#: src/gtkui/menus.c:179 src/skins/ui_manager.c:413
+msgid "_Quit"
+msgstr "_පිටවෙන්න​"
+
+#: src/gtkui/menus.c:182 src/gtkui/menus.c:296
+msgid "_Play"
+msgstr "_ධාවනය කරන්න​"
+
+#: src/gtkui/menus.c:183
+msgid "Paus_e"
+msgstr "විරාම_ය​"
+
+#: src/gtkui/menus.c:184
+msgid "_Stop"
+msgstr "_නවත්වන්න​"
+
+#: src/gtkui/menus.c:185
+msgid "Pre_vious"
+msgstr "ක_ලින්"
+
+#: src/gtkui/menus.c:186
+msgid "_Next"
+msgstr "_ඊළඟ​"
+
+#: src/gtkui/menus.c:188
+msgid "_Repeat"
+msgstr "_නැවත​ ධාවනය​"
+
+#: src/gtkui/menus.c:189
+msgid "S_huffle"
+msgstr "ක_ළවම් කිරීම​"
+
+#: src/gtkui/menus.c:190
+msgid "N_o Playlist Advance"
+msgstr "ධාවන ලැස්තු නැ_ත "
+
+#: src/gtkui/menus.c:191
+msgid "Stop A_fter This Song"
+msgstr "මෙම ගීතයෙන් පසු නවත්තන්න "
+
+#: src/gtkui/menus.c:193 src/gtkui/menus.c:284
+msgid "Song _Info ..."
+msgstr "ගීත_තොරතුරු ..."
+
+#: src/gtkui/menus.c:194
+msgid "Jump to _Time ..."
+msgstr "මගහැර වේලාවට_පිවිසෙන්න ..."
+
+#: src/gtkui/menus.c:195
+msgid "_Jump to Song ..."
+msgstr "_මගහැර ගීතයට පිවිසෙන්න ..."
+
+#: src/gtkui/menus.c:197
+msgid "Set Repeat Point _A"
+msgstr "නැවත සිදුවන ස්ථාන_A පිහිටුවන්න "
+
+#: src/gtkui/menus.c:198
+msgid "Set Repeat Point _B"
+msgstr "නැවත සිදුවන ස්ථාන_B පිහිටුවන්න "
+
+#: src/gtkui/menus.c:199
+msgid "_Clear Repeat Points"
+msgstr "නැවත සිදුවන ස්ථාන හිස්කරන්න "
+
+#: src/gtkui/menus.c:202 src/gtkui/menus.c:208 src/gtkui/menus.c:221
+msgid "By _Title"
+msgstr "මාතෘකා_වෙන්"
+
+#: src/gtkui/menus.c:203
+msgid "By _Filename"
+msgstr "ගොනු නාමයෙන් "
+
+#: src/gtkui/menus.c:204
+msgid "By File _Path"
+msgstr "ගොනු පථයෙන් "
+
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:220
+msgid "By Track _Number"
+msgstr "ඛණ්ඩ_අංකයෙන් "
+
+#: src/gtkui/menus.c:209 src/gtkui/menus.c:222
+msgid "By _Artist"
+msgstr "ශිල්පියා_ගෙන්"
+
+#: src/gtkui/menus.c:210 src/gtkui/menus.c:223
+msgid "By Al_bum"
+msgstr "ඇල්බමයෙන් "
+
+#: src/gtkui/menus.c:211 src/gtkui/menus.c:224
+msgid "By Release _Date"
+msgstr "පිට කල _දිනයෙන්"
+
+#: src/gtkui/menus.c:212 src/gtkui/menus.c:225
+msgid "By _Length"
+msgstr "දුරෙන් "
+
+#: src/gtkui/menus.c:213 src/gtkui/menus.c:226
+msgid "By _File Path"
+msgstr "ගොනු_පථයෙන්"
+
+#: src/gtkui/menus.c:214 src/gtkui/menus.c:227
+msgid "By _Custom Title"
+msgstr "අභිරුචි_මාතෘකාවෙන් "
+
+#: src/gtkui/menus.c:216 src/gtkui/menus.c:229
+msgid "R_everse Order"
+msgstr "අග_සිට මුලට​"
+
+#: src/gtkui/menus.c:217 src/gtkui/menus.c:230
+msgid "_Random Order"
+msgstr "_සසම්භාවී පිළිවෙල​"
+
+#: src/gtkui/menus.c:233
+msgid "_Play This Playlist"
+msgstr "_ධාවන ලැයිස්තුව ධාවනය කරන්න​"
+
+#: src/gtkui/menus.c:234 src/gtkui/menus.c:286
+msgid "_Refresh"
+msgstr "_නැවුම් කරන්න​"
+
+#: src/gtkui/menus.c:236
+msgid "_Sort"
+msgstr "_අනුපිළිවෙලට සකසන්න​"
+
+#: src/gtkui/menus.c:237
+msgid "Sort S_elected"
+msgstr "තෝරාගත් අනුපිළිවලට"
+
+#: src/gtkui/menus.c:238
+msgid "Remove _Duplicates"
+msgstr "අනුපිටපත්_ඉවත් කිරීම "
+
+#: src/gtkui/menus.c:239
+msgid "Remove _Unavailable Files"
+msgstr "අනුපයෝජ්‍ය_ගොනු ඉවත් කරන්න"
+
+#: src/gtkui/menus.c:241
+msgid "_New"
+msgstr "_නව​"
+
+#: src/gtkui/menus.c:242
+msgid "Ren_ame ..."
+msgstr "Ren_ame ..."
+
+#: src/gtkui/menus.c:243 src/gtkui/menus.c:298
+msgid "_Close"
+msgstr "_වසන්න​"
+
+#: src/gtkui/menus.c:245
+msgid "_Import ..."
+msgstr "_ආයාත කරන්න​ ..."
+
+#: src/gtkui/menus.c:246
+msgid "_Export ..."
+msgstr "_නිර්යාත කරන්න ..."
+
+#: src/gtkui/menus.c:248
+msgid "Playlist _Manager ..."
+msgstr "ධාවන ලැයිස්තු_කළමනාකාරකය​ ..."
+
+#: src/gtkui/menus.c:249
+msgid "_Queue Manager ..."
+msgstr "_පෙළගැස්ම කළමනාකරණය ..."
+
+#: src/gtkui/menus.c:252
+msgid "Volume _Up"
+msgstr "ශබ්ද මට්ටම​ _වැඩි කරන්න"
+
+#: src/gtkui/menus.c:253
+msgid "Volume _Down"
+msgstr "ශබ්ද මට්ටම​ _අඩු කරන්න"
+
+#: src/gtkui/menus.c:255
+msgid "_Equalizer"
+msgstr "_ඊක්‍යුවලයිසරය​"
+
+#: src/gtkui/menus.c:257
+msgid "E_ffects"
+msgstr "ප්‍ර_යෝග"
+
+#: src/gtkui/menus.c:260
+msgid "_Interface"
+msgstr "_අතුරු මුනුණත​"
+
+#: src/gtkui/menus.c:261
+msgid "_Visualizations"
+msgstr "_දෘෂ්ටි කල්පනය "
+
+#: src/gtkui/menus.c:263
+msgid "Show _Menu Bar"
+msgstr "_මෙනු තීරුව පෙන්වන්න​"
+
+#: src/gtkui/menus.c:264
+msgid "Show I_nfo Bar"
+msgstr "තොරතුරු තී_රුව පෙන්වන්න​"
+
+#: src/gtkui/menus.c:265
+msgid "Show Info Bar Vis_ualization"
+msgstr "තොරතුරු තීරුවේ දෘෂ්ටි කල්පනය පෙන්වන්න "
+
+#: src/gtkui/menus.c:266
+msgid "Show _Status Bar"
+msgstr "තත්ව _තීරුව පෙන්වන්න​"
+
+#: src/gtkui/menus.c:268
+msgid "Show _Remaining Time"
+msgstr "ඉතුරුවී ඇති කාලය පෙන්වන්න."
+
+#: src/gtkui/menus.c:270
+msgid "Show Close _Buttons"
+msgstr "වසා දැමීමේ _බොත්තම් පෙන්වන්න​"
+
+#: src/gtkui/menus.c:271
+msgid "Show Column _Headers"
+msgstr "තීරු _ශීර්ෂ පෙන්වන්න​"
+
+#: src/gtkui/menus.c:272
+msgid "Choose _Columns ..."
+msgstr "තීරු _තෝරන්න​ ..."
+
+#: src/gtkui/menus.c:273
+msgid "Scrol_l on Song Change"
+msgstr "ගීත වෙනස්වීමේදී අනුචලන_ය කරන්න​ "
+
+#: src/gtkui/menus.c:276
+msgid "_File"
+msgstr "_ගොනුව​"
+
+#: src/gtkui/menus.c:277
+msgid "_Playback"
+msgstr "_පිළිවැයුම​"
+
+#: src/gtkui/menus.c:278
+msgid "P_laylist"
+msgstr "ධා_වන ලැයිස්තුව​"
+
+#: src/gtkui/menus.c:279 src/gtkui/menus.c:293
+msgid "_Services"
+msgstr "_සේවා"
+
+#: src/gtkui/menus.c:280
+msgid "_Output"
+msgstr "_ප්‍රතිදාන​"
+
+#: src/gtkui/menus.c:281
+msgid "_View"
+msgstr "_දසුන​"
+
+#: src/gtkui/menus.c:285
+msgid "_Queue/Unqueue"
+msgstr "_පෙළගස්වන්න​/පෙළගැස්ම අවලංගු කරන්න​"
+
+#: src/gtkui/menus.c:288
+msgid "Cu_t"
+msgstr "කපන්_න​"
+
+#: src/gtkui/menus.c:289
+msgid "_Copy"
+msgstr "_පිටපත් කරන්න​"
+
+#: src/gtkui/menus.c:290
+msgid "_Paste"
+msgstr "_අලවන්න​"
+
+#: src/gtkui/menus.c:291
+msgid "Select _All"
+msgstr "සියල්ල_තෝරන්න"
+
+#: src/gtkui/menus.c:297
+msgid "_Rename ..."
+msgstr "_නැවත නම් කිරීම​ ..."
+
+#: src/gtkui/ui_gtk.c:96
+msgid "GTK Interface"
+msgstr "GTK අතුරු මුහුණත"
+
+#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/gtkui/ui_gtk.c:204
+msgid "Buffering ..."
+msgstr "අන්තරාචයනය..."
+
+#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
+msgid "Audacious"
+msgstr "ඔඩෙෂස් "
+
+#: src/gtkui/ui_gtk.c:253 src/lyricwiki/lyricwiki.c:208
+#: src/lyricwiki/lyricwiki.c:218 src/lyricwiki/lyricwiki.c:242
+#: src/lyricwiki/lyricwiki.c:252 src/lyricwiki/lyricwiki.c:271
+#: src/skins/plugin.c:176
+msgid "Error"
+msgstr "දෝෂය "
+
+#: src/gtkui/ui_statusbar.c:108
+#, c-format
+msgid "%d channel"
+msgid_plural "%d channels"
+msgstr[0] "%d නාලිකාව "
+msgstr[1] "%d නාලිකා "
+
+#: src/gtkui/ui_statusbar.c:123
+#, c-format
+msgid "%d kbps"
+msgstr "%d තත්පරයට කිලෝ බයිට් "
+
+#: src/hotkey/gui.c:70
+msgid "Previous track"
+msgstr "පෙර ඛණ්ඩය"
+
+#: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
+#: src/skins/ui_manager.c:178
+msgid "Play"
+msgstr "ධාවනය කරන්න "
+
+#: src/hotkey/gui.c:72
+msgid "Pause/Resume"
+msgstr "නැවතීම/නැවත ඇරඹීම  "
+
+#: src/hotkey/gui.c:73 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
+msgid "Stop"
+msgstr "නැවතීම "
+
+#: src/hotkey/gui.c:74
+msgid "Next track"
+msgstr "පසු ඛණ්ඩය "
+
+#: src/hotkey/gui.c:75
+msgid "Forward 5 seconds"
+msgstr "තත්.5 ධාවනය කරන්න"
+
+#: src/hotkey/gui.c:76
+msgid "Rewind 5 seconds"
+msgstr "තත්.5 පසු ධාවනය කරන්න"
+
+#: src/hotkey/gui.c:77
+msgid "Mute"
+msgstr "නිහඬ කරන්න "
+
+#: src/hotkey/gui.c:78
+msgid "Volume up"
+msgstr "ශබ්ද මට්ටම​ වැඩි කරන්න"
+
+#: src/hotkey/gui.c:79
+msgid "Volume down"
+msgstr "ශබ්ද මට්ටම​ අඩු කරන්න"
+
+#: src/hotkey/gui.c:80
+msgid "Jump to file"
+msgstr "මගහැර ගොනුවට පිවිසෙන්න "
+
+#: src/hotkey/gui.c:81
+msgid "Toggle player window(s)"
+msgstr "ධාවක කවුළු(ව) පුරුක් කරන්න"
+
+#: src/hotkey/gui.c:82
+msgid "Show On-Screen-Display"
+msgstr "තිරය මත සංදර්ශනය කර පෙන්වන්න "
+
+#: src/hotkey/gui.c:83
+msgid "Toggle repeat"
+msgstr "නැවත කිරීම ටොගල් කරන්න"
+
+#: src/hotkey/gui.c:84
+msgid "Toggle shuffle"
+msgstr "කළවම් කිරිම ටොගල් කරන්න"
+
+#: src/hotkey/gui.c:85
+msgid "Toggle stop after current"
+msgstr "පවතින ගීතයෙන් පසු නැවතීම ටොගල් කරන්න "
+
+#: src/hotkey/gui.c:86
+msgid "Raise player window(s)"
+msgstr "ධාවක කවුළු(ව) පෙන්වන්න"
+
+#: src/hotkey/gui.c:96
+msgid "(none)"
+msgstr "(කිසිවක් නැත)"
+
+#: src/hotkey/gui.c:233
+msgid ""
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"ප්‍රාථමික මූසික බොත්තම් නවීකරණයකින් තොරව බැඳීමට නිර්දේශ නොකෙරේ.\n"
+"ඔබට ඉදිරියටයාම‍ට අවශ්‍යද ?"
+
+#: src/hotkey/gui.c:235
+msgid "Binding mouse buttons"
+msgstr "බැඳෙන මූසික බොත්තම් "
+
+#: src/hotkey/gui.c:385
+msgid "Global Hotkey Plugin Configuration"
+msgstr "ගෝලීය  විශේෂ  බොත්තම්  පේනු මෘදුකංග වින්‍යාසය "
+
+#: src/hotkey/gui.c:401
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
+msgstr ""
+"පෙළ ක්ෂේත්‍රය ඇතුලත යතුරු එකතුව ඔබන්න.\n"
+"ඔබට මූසික බොත්තමද බැඳීය හැක."
+
+#: src/hotkey/gui.c:406
+msgid "Hotkeys:"
+msgstr "විශේෂ බොත්තම්:"
+
+#: src/hotkey/gui.c:423
+msgid "<b>Action:</b>"
+msgstr "<b>ක්‍රියාව:</b>"
+
+#: src/hotkey/gui.c:430
+msgid "<b>Key Binding:</b>"
+msgstr "<b>යතුරු බැඳීම:</b>"
+
+#: src/hotkey/plugin.c:66
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+"Global Hotkey පේනු මෘදුකාංගය\n"
+"Global key සංකලන​ මගින් හෝ බහු මාධ්‍ය යතුරු මගින් ධාවකය පාලනය කරන්න​.\n"
+"\n"
+"ප්‍රකාශන අයිතිය (C) 2007-2008 සස්චා හ්ලුසියැක් <contact@saschahlusiak.de>\n"
+"\n"
+"දායක වූවන්:\n"
+"ප්‍රකාශන අයිතිය (C) 2006-2007 ව්ලැඩිමිර් පැස්කෝව් <vlado.paskov@gmail.com>\n"
+"ප්‍රකාශන අයිතිය (C) 2000-2002 විලී සිර්ජාලා <syrjala@sci.fi>,\n"
+"බ්‍රයන් ඩේවිස් <curious@ihug.com.au>,\n"
+"ජොනතන් ඒ. ඩේවිස් <davis@jdhouse.org>,\n"
+"ජෙරමි ටෑන් <nsx@nsx.homeip.net>"
+
+#: src/hotkey/plugin.c:78
+msgid "Global Hotkeys"
+msgstr "ගෝලීය විශේෂ බොත්තම්:"
+
+#: src/jack/jack.c:410
+msgid ""
+"Based on xmms-jack, by Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Ported to Audacious by Giacomo Lozito"
+msgstr ""
+"ක්‍රිස් මෝර්ගන් ගේ xmms-jack මත පදනම් වී ඇත​:⏎\n"
+"http://xmms-jack.sourceforge.net/⏎\n"
+"⏎\n"
+"Audacious වෙත ඇතුලත් කළේ ජියාකොමෝ ලොසීටෝ විසිනි"
+
+#: src/jack/jack.c:416
+msgid "JACK Output"
+msgstr "JACK ප්‍රතිදානය"
+
+#: src/ladspa/plugin.c:493
+#, c-format
+msgid "%s Settings"
+msgstr "%s සිටුවම "
+
+#: src/ladspa/plugin.c:561
+msgid "LADSPA Host Settings"
+msgstr "LADSPA  සත්කාරක සිටුවම "
+
+#: src/ladspa/plugin.c:570
+msgid "Module paths:"
+msgstr "මොඩියුල පථය:"
+
+#: src/ladspa/plugin.c:575
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr ""
+"<small>බහු පථ දෙතිතෙන් වෙන්කරන්න.\n"
+"මෙම පථ සොයන්නේ LADSPA_PATH එකට අමතරවය.\n"
+"නව පථ ඇතුලත් කිරීමෙන් පසුව, නව පේනු මෘදුකාංග සදහා Enter යතුර ඔබන්න.</small>"
+
+#: src/ladspa/plugin.c:591
+msgid "Available plugins:"
+msgstr "උපයෝජ්‍ය පේනු මෘදුකාංග:"
+
+#: src/ladspa/plugin.c:604 src/modplug/plugin_main.c:115
+#: src/modplug/plugin_main.c:119 src/modplug/plugin_main.c:123
+#: src/modplug/plugin_main.c:127
+msgid "Enable"
+msgstr "සක්‍රිය "
+
+#: src/ladspa/plugin.c:610
+msgid "Enabled plugins:"
+msgstr "සක්‍රිය පේනු මෘදුකාංග:"
+
+#: src/ladspa/plugin.c:626
+msgid "Settings"
+msgstr "සිටුවම් "
+
+#: src/ladspa/plugin.c:645
+msgid ""
+"LADSPA Host for Audacious\n"
+"Copyright 2011 John Lindgren"
+msgstr ""
+"Audacious සඳහා වන LADSPA සත්කාරකය​⏎\n"
+"ප්‍රකාශන අයිතිය​ 2011 ජෝන් ලින්ඩ්ග්‍රෙන්"
+
+#: src/ladspa/plugin.c:650
+msgid "LADSPA Host"
+msgstr "LADSPA සත්කාරක "
+
+#: src/lirc/lirc.c:76
+#, c-format
+msgid "%s: could not init LIRC support\n"
+msgstr "%s: LIRC සඳහා සහයවිය නොහැක\n"
+
+#: src/lirc/lirc.c:83
+#, c-format
+msgid ""
+"%s: could not read LIRC config file\n"
+"%s: please read the documentation of LIRC\n"
+"%s: how to create a proper config file\n"
+msgstr ""
+"%s: LIRC වින්‍යාස ගොනුව කියවිය නොහැක \n"
+"%s: කරුණාකර  LIRC වලට අදාල ලේඛන කියවන්න \n"
+"%s: ක්‍රමානුකූල වින්‍යාස ගොනුවක් සාදන්නේ කෙසේද \n"
+
+#: src/lirc/lirc.c:114
+#, c-format
+msgid "%s: trying to reconnect...\n"
+msgstr " %s: ප්‍රතිසම්බන්ධ වීමට උත්සාහ කිරීම...\n"
+
+#: src/lirc/lirc.c:354
+#, c-format
+msgid "%s: unknown command \"%s\"\n"
+msgstr "%s: නොදන්නා විධානයකි \"%s\"\n"
+
+#: src/lirc/lirc.c:365
+#, c-format
+msgid "%s: disconnected from LIRC\n"
+msgstr "%s: LIRC වලින් ක්‍රියාවිරහිත කර ඇත \n"
+
+#: src/lirc/lirc.c:371
+#, c-format
+msgid "%s: will try reconnect every %d seconds...\n"
+msgstr "%s: සෑම තත්පර %d වරක් නැවත සම්බන්ධ වීමට  උත්සාහ කරයි...\n"
+
+#: src/lirc/lirc.c:381
+msgid ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+msgstr ""
+"LIRC දුරස්ථ පාලක daemon භාවිතයෙන් Audacious පාලනය කිරීමට සරල පේනු මෘදුකාංගයක්⏎\n"
+"⏎\n"
+"වෙත ඇතුලත් කරන ලද්දේ:⏎\n"
+"ටෝන්‍ය් ව්‍රෝන් <chainsaw@gentoo.org>⏎\n"
+"ජෝනෑස් හැජුමැකි <jharjuma@gmail.com>⏎\n"
+"⏎\n"
+"XMMS LIRC පේනු මෘදුකාංගයමත පදනම් විය​:⏎\n"
+"Carl van Schaik <carl@leg.uct.ac.za>⏎\n"
+"Christoph Bartelmus <xmms@bartelmus.de>⏎\n"
+"Andrew O. Shadoura <bugzilla@tut.by>⏎\n"
+"⏎\n"
+"LIRC පිළිබඳ වැඩි විස්තර සඳහා,http://lirc.org බලන්න​."
+
+#: src/lirc/lirc.c:392
+msgid "<b>Connection</b>"
+msgstr "<b>සබැඳුම</b>"
+
+#: src/lirc/lirc.c:393
+msgid "Reconnect to LIRC server"
+msgstr "සේවාදායකයට ප්‍රතිසම්බන්ධ කරන්න "
+
+#: src/lirc/lirc.c:395
+msgid "Wait before reconnecting:"
+msgstr "ප්‍රතිසම්බන්ධ වීමට පෙර මදක් සිටින්න:"
+
+#: src/lirc/lirc.c:405
+msgid "LIRC Plugin"
+msgstr "LIRC පේනු මෘදුකාංගය"
+
+#: src/lyricwiki/lyricwiki.c:117
+msgid "No lyrics available"
+msgstr "පද රචනා නොමැත​"
+
+#: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
+#, c-format
+msgid "Unable to fetch %s"
+msgstr "කැඳවාගෙන යා නොහැක​ %s"
+
+#: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
+#, c-format
+msgid "Unable to parse %s"
+msgstr "parse කළ නොහැක​ %s"
+
+#: src/lyricwiki/lyricwiki.c:260
+msgid "Looking for lyrics ..."
+msgstr "පද රචනා සොයමින් පවතී ..."
+
+#: src/lyricwiki/lyricwiki.c:271
+msgid "Missing song metadata"
+msgstr "ගීතයේ metadata නොමැත​"
+
+#: src/lyricwiki/lyricwiki.c:284
+msgid "Connecting to lyrics.wikia.com ..."
+msgstr "lyrics.wikia.com වෙත​ සම්බන්ද වෙමින් පවතී ..."
+
+#: src/lyricwiki/lyricwiki.c:411
+msgid "LyricWiki Plugin"
+msgstr "ලිරික් විකී  පේනු මෘදුකාංගය"
+
+#: src/m3u/m3u.c:121
+msgid "M3U Playlists"
+msgstr "M3U ධාවන ලැයිස්තුව​"
+
+#: src/metronom/metronom.c:127
+#, c-format
+msgid "Tact generator: %d bpm"
+msgstr "ටැක්ට් ජනකය: %d මිනිත්තුවට බයිට්ස් "
+
+#: src/metronom/metronom.c:129
+#, c-format
+msgid "Tact generator: %d bpm %d/%d"
+msgstr "ටැක්ට් ජනකය: %d මිනිත්තුවට බයිට්ස්  %d/%d"
+
+#: src/metronom/metronom.c:246
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+"මාර්ටින් ස්ට්‍රේස් විසින් චාතුර්යය උත්පාදකක් <mys@faveve.uni-stuttgart.de>⏎\n"
+"⏎\n"
+"භාවිතා කිරීම සඳහා, add a URL: tact://beats*num/den⏎\n"
+"e.g. tact://77 to play 77 beats per minute⏎\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
+
+#: src/metronom/metronom.c:255
+msgid "Tact Generator"
+msgstr "ටැක්ට් ජනකය"
+
+#: src/mixer/mixer.c:169
+msgid ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
+"Audacious සඳහා නාලිකා මිශ්‍රන​ පේනු මෘදුකාංගයක්\n"
+"ප්‍රකාශන අයිතිය​ 2011-2012 John Lindgren and Michał Lipski"
+
+#: src/mixer/mixer.c:173
+msgid "<b>Channel Mixer</b>"
+msgstr "<b>නාලිකා මිශ්‍රකය</b>"
+
+#: src/mixer/mixer.c:174
+msgid "Output channels:"
+msgstr "ප්‍රතිදාන නාලිකා:"
+
+#: src/mixer/mixer.c:184
+msgid "Channel Mixer"
+msgstr "නාලිකා මිශ්‍රකය"
+
+#: src/mms/mms.c:224
+msgid "MMS Plugin"
+msgstr "MMS පේනු මෘදුකාංගය"
+
+#: src/modplug/plugin_main.c:57
+msgid "<b>Resolution</b>"
+msgstr "<b>විභේදනය</b>"
+
+#: src/modplug/plugin_main.c:58
+msgid "8-bit"
+msgstr "බිටු-8"
+
+#: src/modplug/plugin_main.c:60
+msgid "16-bit"
+msgstr "බිටු-16"
+
+#: src/modplug/plugin_main.c:62
+msgid "<b>Channels</b>"
+msgstr "<b>නාලිකා </b>"
+
+#: src/modplug/plugin_main.c:67
+msgid "<b>Resampling</b>"
+msgstr " <b>නැවත සාම්පල කිරීම</b>"
+
+#: src/modplug/plugin_main.c:68
+msgid "Nearest (fastest)"
+msgstr "කිට්ටුතම (වේගවත්ම)"
+
+#: src/modplug/plugin_main.c:70
+msgid "Linear (fast)"
+msgstr "රේඛීය (වේගවත්)"
+
+#: src/modplug/plugin_main.c:72
+msgid "Spline (good)"
+msgstr "හිර ඇලිය (යහපත්)"
+
+#: src/modplug/plugin_main.c:74
+msgid "Polyphase (best)"
+msgstr "බහු අදියර (ප්‍රශස්ත)"
+
+#: src/modplug/plugin_main.c:76
+msgid "<b>Sampling rate</b>"
+msgstr "<b>සාම්පල ශ්‍රීඝ‍්‍රතාව</b>"
+
+#: src/modplug/plugin_main.c:77
+msgid "22 kHz"
+msgstr "22 kHz"
+
+#: src/modplug/plugin_main.c:79
+msgid "44 kHz"
+msgstr "44 kHz"
+
+#: src/modplug/plugin_main.c:81
+msgid "48 kHz"
+msgstr "48 kHz"
+
+#: src/modplug/plugin_main.c:83
+msgid "96 kHz"
+msgstr "96 kHz"
+
+#: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
+#: src/modplug/plugin_main.c:102
+msgid "Level:"
+msgstr "මට්ටම:"
+
+#: src/modplug/plugin_main.c:97
+msgid "Cutoff:"
+msgstr "කපා හැරීම:"
+
+#: src/modplug/plugin_main.c:114
+msgid "<b>Reverb</b>"
+msgstr "<b>ප්‍රතිනාදකය</b>"
+
+#: src/modplug/plugin_main.c:118
+msgid "<b>Bass Boost</b>"
+msgstr "\t<b>මන්ද්‍රස්වරය වැඩිවීම</b>"
+
+#: src/modplug/plugin_main.c:122
+msgid "<b>Surround</b>"
+msgstr "<b>වටපිටාව</b>"
+
+#: src/modplug/plugin_main.c:126
+msgid "<b>Preamp</b>"
+msgstr "<b>ප්‍රාක්වර්ධකය</b>"
+
+#: src/modplug/plugin_main.c:133
+msgid "<b>Miscellaneous</b>"
+msgstr "<b>විවිධ</b>"
+
+#: src/modplug/plugin_main.c:134
+msgid "Oversample"
+msgstr "අධික සාම්පල"
+
+#: src/modplug/plugin_main.c:136
+msgid "Noise reduction"
+msgstr "ශබ්දය අඩු කිරීම"
+
+#: src/modplug/plugin_main.c:138
+msgid "Play Amiga MODs"
+msgstr "Amiga MODs ධාවනය කරන්න "
+
+#: src/modplug/plugin_main.c:140
+msgid "<b>Repeat</b>"
+msgstr "<b>නැවත කිරීම</b>"
+
+#: src/modplug/plugin_main.c:141
+msgid "Repeat count:"
+msgstr "නැවත ගණන් කිරීම"
+
+#: src/modplug/plugin_main.c:143
+msgid "To repeat forever, set the repeat count to -1."
+msgstr "සදහටම නැවත නැවත කිරීමට, නැවත වරක් ගණන් කිරීම -1 හි පිහිටුවන්න."
+
+#: src/modplug/plugin_main.c:238
+msgid "ModPlug (Module Player)"
+msgstr "මොඩ් කෙවෙනිය (මොඩියුල  ධාවකය)"
+
+#: src/mpg123/mpg123.c:211
+msgid "Surround"
+msgstr "සිසාළ "
+
+#: src/mpg123/mpg123.c:569
+msgid "MPG123 Plugin"
+msgstr "MPG123  පේනු මෘදුකාංගය"
+
+#: src/mpris2/plugin.c:415
+msgid "MPRIS 2 Server"
+msgstr "MPRIS 2 සේවාදායකය"
+
+#: src/neon/neon.c:1229
+msgid "Neon HTTP/HTTPS Plugin"
+msgstr "නිඕන් HTTP/HTTPS පේනු මෘදුකාංගය"
+
+#: src/notify/event.c:64
+msgid "Stopped"
+msgstr "නැවතුන "
+
+#: src/notify/event.c:64
+msgid "Audacious is not playing."
+msgstr "ඔඩෙෂස්  ක්‍රියාත්මක නොවේ."
+
+#: src/notify/notify.c:33
+msgid ""
+"Desktop Notifications Plugin for Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Audacious සදහා වැඩතල දැනුම් දීම් පෙනු-මෘදුකාංගය\n"
+"කතු හිමිකම(c) 2010 Maximilian Bogner\n"
+"කතු හිමිකම(c) 2011-2013 Lindgren සහ Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"මෙම පෙනු-මෘදුකාංගය නොමිලේ මෘදුකාංගයකි: ඔබට එය නැවත බෙදාහැරීම සහ/හෝ එයට ෆ්‍රී සොෆ්ට්වෙයා "
+"ෆඋන්ඩේශන් මගින් ප්‍රකාශනය කල GNU පොදු  මහජන වරපත අනුවාද 3 හෝ (ඔබගේ තෝරාගැනීම පරිදී) "
+"ඕනෑම පසු අනුවාදයක් යටතේ වෙනස්කම් සිදු කල හැක. \n"
+"\n"
+"මෙම  පෙනු-මෘදුකාංගය බෙදා හරින්නේ එය ප්‍රයෝජනවත් වේ යැයි අපේක්ෂාවෙනි, නමුත් කිසිදු වගකීමකින් "
+"තොරවය; විකිණිය හැකි ව්‍යංග්‍ය වගකීම හා අවශ්‍යතාවට සරිලන ව්‍යංග වගකීම ද නොමැතිවය. වැඩි විස්තර "
+"සදහා GNU පොදු  මහජන වරපත බලන්න.\n"
+"\n"
+"ඔබට මම මෘදුකාංගය සමග GNU පොදු  මහජන වරපතේ පිටපතක් ලැබී තිබිය යුතුය, එසේ නොමැති නම් "
+"<http://www.gnu.org/licenses/>. බලන්න."
+
+#: src/notify/notify.c:77
+msgid "Show playback controls"
+msgstr "යළි ධාවන පාලන යතුරු පෙන්නන්න  "
+
+#: src/notify/notify.c:80
+msgid "Always show notification"
+msgstr "නිතර නිවේදන පෙන්නන්න"
+
+#: src/notify/notify.c:92
+msgid "Desktop Notifications"
+msgstr "වැඩතලය දැනුම් දීම "
+
+#: src/notify/osd.c:57
+msgid "Show"
+msgstr "පෙන්නන්න "
+
+#: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
+msgid "Pause"
+msgstr "විරාමය "
+
+#: src/notify/osd.c:72 src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
+msgid "Next"
+msgstr "ඊළඟ  "
+
+#: src/oss4/plugin.c:36
+msgid "1. Default device"
+msgstr "1.පෙරනිමි ආම්පන්නය "
+
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:393
+msgid "Audio device:"
+msgstr "ස්වයංක්‍රිය අම්පන්නය:"
+
+#: src/oss4/plugin.c:77
+msgid "Use alternate device:"
+msgstr "විකල්ප අම්පන්නයක් භාවිතා කරන්න:"
+
+#: src/oss4/plugin.c:81
+msgid "Save volume between sessions."
+msgstr "සැසි අතර ශබ්දය සුරකින්න."
+
+#: src/oss4/plugin.c:83
+msgid "Enable format conversions made by the OSS software."
+msgstr "OSS මෘදුකාංගයෙන් සාදන ලද ආකෘති අනුවර්තන සක්‍රීය කරන්න."
+
+#: src/oss4/plugin.c:85
+msgid "Enable exclusive mode to prevent virtual mixing."
+msgstr "අතාත්වික ඝටනාවෙන් මිදීමට කේවල ප්‍රකාරය සක්‍රිය කරන්න."
+
+#: src/oss4/plugin.c:108
+msgid ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+"Audacious සඳහා වන OSS4 ප්‍රතිදාන \n"
+"ප්‍රකාශන අයිතිය​ 2010-2012 Michał Lipski\n"
+"\n"
+"#audacious හි මිනිසුන් වෙත ස්තූති කරමි, විශේෂයෙන් Tony Vroon සහ​ John Lindgren මෙන්ම පෙර "
+"OSS පේනු මෘදුකාංගයයෙහි කතෘන් හට ."
+
+#: src/oss4/plugin.c:115
+msgid "OSS4 Output"
+msgstr "OSS4 ප්‍රතිදානය"
+
+#: src/pls/pls.c:113
+msgid "PLS Playlists"
+msgstr "PLS ධාවන ලැයිස්තුව​"
+
+#: src/psf/plugin.c:262
+msgid "OpenPSF PSF1/PSF2 Decoder"
+msgstr "PSF PSF1/PSF2 විකේතකය විවෘත කරන්න "
+
+#: src/pulse_audio/pulse_audio.c:644
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious PulseAudio ප්‍රතිදාන​ පේනු මෘදුකාංගය\n"
+"\n"
+"මෙම​ මෘදුකාංගය නිදහස් මෘදුකාංගයකි; නිදහස් මෘදුකාංග පදනම විසින් ප්‍රකාශ කරන ලද GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය යටතේ ඔබට මෙය නැවත බෙදා හැරීම හෝ වෙනස් කිරීම කළ හැක​; බලපත්‍රයේ 2වන "
+"සංස්කරණය හෝ(ඔබගේ කැමත්ත අනුව​) පසු සංස්කරණයක් යටතේ.\n"
+"\n"
+"මෙම මෘදුකාංගය බෙදාහැර ඇත්තේ ප්‍රයෝජනවත් වේ යන බලාපොරොත්තුවෙන් වුවත් වගකීමක් නොමැත​; විකිණිය "
+"හැකි හෝ යම් නිශ්චිත අරමුණකට ලෙසවත් ගම්‍යමාන වන වගකීමකින් තොරයි. වැඩි විස්තර සඳහා GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය බලන්න​. \n"
+"\n"
+"මෙම මෘදුකාංගය සමග ඔබට GNU සාමාන්‍ය පොදු බලපත්‍රයහි පිටපතක් ලැබිය යුතුයි; නැතිනම් නිදහස් "
+"මෘදුකාංග පදනමට දන්වන්න​. Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
+#: src/pulse_audio/pulse_audio.c:662
+msgid "PulseAudio Output"
+msgstr "ශ්‍රව්‍ය ස්පන්ද ප්‍රතිදානය "
+
+#: src/resample/resample.c:161
+msgid ""
+"Sample Rate Converter Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"ඔඩෙෂස් සඳහා නියැදි අනුපාත පරිවර්තකය \n"
+"ප්‍රකාශන හිමිකම 2010-2012 ජෝන් ලින්දඩ්ග්රෙන් "
+
+#: src/resample/resample.c:165
+msgid "Skip/repeat samples"
+msgstr "නියැදි මගහැරීම/නැවත කිරීම "
+
+#: src/resample/resample.c:166
+msgid "Linear interpolation"
+msgstr "රේඛිය අන්තර් නිවේෂණය"
+
+#: src/resample/resample.c:167
+msgid "Fast sinc interpolation"
+msgstr "වේගවත් සින්ක්  අන්තර් නිවේෂණය"
+
+#: src/resample/resample.c:168
+msgid "Medium sinc interpolation"
+msgstr "මධ්‍යම සින්ක්  අන්තර් නිවේෂණය"
+
+#: src/resample/resample.c:169
+msgid "Best sinc interpolation"
+msgstr "හොඳම සින්ක්  අන්තර් නිවේෂණය"
+
+#: src/resample/resample.c:172
+msgid "<b>Conversion</b>"
+msgstr "<b>පරිවර්තනය</b>"
+
+#: src/resample/resample.c:173
+msgid "Method:"
+msgstr "ක්‍රමය "
+
+#: src/resample/resample.c:176 src/sox-resampler/sox-resampler.c:151
+msgid "Rate:"
+msgstr "අනුපාතය:"
+
+#: src/resample/resample.c:179
+msgid "<b>Rate Mappings</b>"
+msgstr "<b>අනුපාතය සිතියම්කරණය</b>"
+
+#: src/resample/resample.c:180
+msgid "Use rate mappings"
+msgstr "අනුපාතය සිතියම්කරණය භාවිතා කරන්න​"
+
+#: src/resample/resample.c:182
+msgid "8 kHz:"
+msgstr "8 කිලෝ හරට්ස්:"
+
+#: src/resample/resample.c:185
+msgid "16 kHz:"
+msgstr "16 කිලෝ හරට්ස්:"
+
+#: src/resample/resample.c:188
+msgid "22.05 kHz:"
+msgstr "22.05 කිලෝ හරට්ස්:"
+
+#: src/resample/resample.c:191
+msgid "44.1 kHz:"
+msgstr "44.1 කිලෝ හරට්ස්:"
+
+#: src/resample/resample.c:194
+msgid "48 kHz:"
+msgstr "48 කිලෝ හරට්ස්:"
+
+#: src/resample/resample.c:197
+msgid "96 kHz:"
+msgstr "96 කිලෝ හරට්ස්:"
+
+#: src/resample/resample.c:200
+msgid "192 kHz:"
+msgstr "192 කිලෝ හරට්ස්:"
+
+#: src/resample/resample.c:210
+msgid "Sample Rate Converter"
+msgstr "නියැදි අනුපාත පරිවර්තකය "
+
+#: src/scrobbler2/config_window.c:41
+#, c-format
+msgid "OK. Scrobbling for user: %s"
+msgstr "ඔව්. \tපරිශ්‍රීලක: %s සදහා භාවිත දත්ත සුරකින්න"
+
+#: src/scrobbler2/config_window.c:52
+msgid "Permission Denied"
+msgstr "අනුමැතිය තහනම් කිරීම "
+
+#: src/scrobbler2/config_window.c:54
+msgid "Access the following link to allow Audacious to scrobble your plays:"
+msgstr "Audacious සදහා භාවිත දත්ත සුරකීමට මෙම අමුණට පිවිසෙන්න :"
+
+#: src/scrobbler2/config_window.c:63
+msgid "Keep this window open and click 'Check Permission' again.\n"
+msgstr "මම කවුළුව විවෘත​ව තබා 'අවසර පිරික්සන්න' නැවත ක්ලික් කරන්න\n"
+
+#: src/scrobbler2/config_window.c:66 src/scrobbler2/config_window.c:77
+msgid ""
+"Don't worry. Your scrobbles are saved on your computer.\n"
+"They will be submitted as soon as Audacious is allowed to do so."
+msgstr ""
+"කණගාටු නොවන්න ඔබගේ භාවිත දත්ත ඔබගේ පරිගණකයේ ම සුරක්ෂිත කරයි.\n"
+"ඒවා Audacious සදහා අවසර ලැබුණු වහාම සුරක්ෂිත වේ"
+
+#: src/scrobbler2/config_window.c:74
+msgid "Network Problem."
+msgstr "ජාල ගැටළු."
+
+#: src/scrobbler2/config_window.c:75
+msgid "There was a problem contacting Last.fm. Please try again later."
+msgstr "අවසානයට සම්බන්ධ වීමේ ගැටළුවක් විය.fm.කරුණාකර පසුව නැවත උත්සහ කරන්න "
+
+#: src/scrobbler2/config_window.c:107
+msgid "Checking..."
+msgstr "පිරික්සන..."
+
+#: src/scrobbler2/config_window.c:173
+msgid "C_heck Permission"
+msgstr "C_heck අනුමැතිය "
+
+#: src/scrobbler2/config_window.c:174
+msgid "_Revoke Permission"
+msgstr "_අනුමැතිය අවලංගු කිරීම "
+
+#: src/scrobbler2/config_window.c:221
+msgid ""
+"You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
+msgstr "ඔබ ඔඩෙෂස් හට ඔබගේ අවසාන fm ගිණුමෙන් ගීත ලබා ගැනීමට අවසර දිය යුතුය.\n"
+
+#: src/scrobbler2/scrobbler.c:233
+msgid ""
+"The Scrobbler plugin could not be started.\n"
+"There might be a problem with your installation."
+msgstr ""
+"Scrobbler පේනු මෘදුකාංගය ඇරභිය නොහැකිය.⏎\n"
+"සමහරවිට ඔබගේ පිහිටැවුමෙහි ගැටලුවක් ඇත."
+
+#: src/scrobbler2/scrobbler.c:311
+msgid ""
+"Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this "
+"project.\n"
+"\n"
+msgstr ""
+"Pitxyoki විසින් Audacious Scrobbler පේනු මෘදුකාංගය,\n"
+"\n"
+"ප්‍රකාශන අයිතිය © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+
+#: src/scrobbler2/scrobbler.c:317
+msgid "Scrobbler 2.0"
+msgstr "ස්ක්රෝබ්ලර් 2.0"
+
+#: src/scrobbler2/scrobbler_communication.c:690
+msgid ""
+"Audacious is now using an improved version of the Last.fm Scrobbler.\n"
+"Please check the Preferences for the Scrobbler plugin."
+msgstr ""
+"Audacious අවසානයට වැඩි දියුණුකළ අනුවාදය භාවිත කරයි.fm Scrobbler.⏎ \n"
+"කරුණාකර Scrobbler පේනු මෘදුකාංගයේ අභිරුචිය පරීක්ෂා කර බලන්න."
+
+#: src/sdlout/plugin.c:26
+msgid ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+"Audacious සඳහා වන SDL ප්‍රතිදාන​ පේනු මෘදුකාංගය\n"
+"ප්‍රකාශන අයිතිය 2010 ජෝන් ලින්ඩ්ග්‍රෙන්"
+
+#: src/sdlout/plugin.c:31
+msgid "SDL Output"
+msgstr "SDL ප්‍රතිදානය"
+
+#: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
+msgid "Library"
+msgstr "පුස්තකාලය "
+
+#: src/search-tool/search-tool.c:219
+msgid "Unknown Artist"
+msgstr "නාඳුනන ශිල්පියා"
+
+#: src/search-tool/search-tool.c:221
+msgid "Unknown Album"
+msgstr "නාඳුනන ඇල්බමය "
+
+#: src/search-tool/search-tool.c:632
+#, c-format
+msgid ""
+"%s\n"
+" on %s by %s"
+msgstr ""
+"%s\n"
+"මතුපිට %s විසින්  %s"
+
+#: src/search-tool/search-tool.c:638
+#, c-format
+msgid "%d album"
+msgid_plural "%d albums"
+msgstr[0] "%d ඇල්බමය "
+msgstr[1] "%d ඇල්බම"
+
+#: src/search-tool/search-tool.c:640
+#, c-format
+msgid ""
+"%s\n"
+" %s, %d song"
+msgid_plural ""
+"%s\n"
+" %s, %d songs"
+msgstr[0] ""
+"%s⏎\n"
+"%s, %d ගීතය "
+msgstr[1] ""
+"%s\n"
+"%s, %d ගීත "
+
+#: src/search-tool/search-tool.c:646
+#, c-format
+msgid ""
+"%s\n"
+" %d song by %s"
+msgid_plural ""
+"%s\n"
+" %d songs by %s"
+msgstr[0] ""
+"%s\n"
+"%d ගීතයෙන් %s"
+msgstr[1] ""
+"%s⏎\n"
+"%d ගීත වලින් %s"
+
+#: src/search-tool/search-tool.c:687
+msgid "_Create Playlist"
+msgstr "_ධාවන ලැයිස්තුව​ තනන්න "
+
+#: src/search-tool/search-tool.c:694
+msgid "_Add to Playlist"
+msgstr "_ධාවන ලැයිස්තුව​ට එකතු කරන්න "
+
+#: src/search-tool/search-tool.c:734
+msgid "Search library"
+msgstr "පුස්තකාලය සොයන්න "
+
+#: src/search-tool/search-tool.c:739
+msgid ""
+"To import your music library into Audacious, choose a folder and then click "
+"the \"refresh\" icon."
+msgstr ""
+"ඔඩෙෂස් තුලට ඔබගේ ගීත පුස්තකාලය ආයාත කිරීමට, ෆෝල්ඩරයක් තෝරා \"නැවුම් කරන්න\" නිරූපකය ඔබන්න."
+
+#: src/search-tool/search-tool.c:747
+msgid "Please wait ..."
+msgstr "කරුණාකර රැඳී සිටින්න ..."
+
+#: src/search-tool/search-tool.c:769
+msgid "Choose Folder"
+msgstr "ෆෝල්ඩරය තෝරන්න "
+
+#: src/search-tool/search-tool.c:808
+msgid "Search Tool"
+msgstr "සෙවීමේ මෙවලම "
+
+#: src/skins/plugin.c:49
+msgid "Winamp Classic Interface"
+msgstr "Winamp සම්භාව්‍ය අතුරු මුහුණත"
+
+#: src/skins/skins_cfg.c:204
+msgid "_Player:"
+msgstr "_ධාවකය:"
+
+#: src/skins/skins_cfg.c:205
+msgid "Select main player window font:"
+msgstr "කවුළු ෆොන්ටයේ ප්‍රධාන ධාවකය තෝරන්න:"
+
+#: src/skins/skins_cfg.c:207
+msgid "_Playlist:"
+msgstr "_ධාවන ලැස්තුව:"
+
+#: src/skins/skins_cfg.c:208
+msgid "Select playlist font:"
+msgstr "ධාවන ලැස්තු ෆොන්ටය තෝරන්න:"
+
+#: src/skins/skins_cfg.c:212
+msgid "<b>_Fonts</b>"
+msgstr "<b>_ ෆොන්ටය</b>"
+
+#: src/skins/skins_cfg.c:215
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr "බිට්මැප් ෆොන්ට භාවිතා කරන්න (ASCII පමණක් සහය වන )"
+
+#: src/skins/skins_cfg.c:217
+msgid "Scroll song title in both directions"
+msgstr "ගීත තේමාව දෙපසට චලනය කරන්න "
+
+#: src/skins/skins_cfg.c:295
+msgid "<b>_Skin</b>"
+msgstr "<b>_මතුපිට</b>"
+
+#: src/skins/skins_cfg.c:342
+msgid "Interface Preferences"
+msgstr "අතුරු මුහුණත් අභිරුචි "
+
+#: src/skins/ui_equalizer.c:328
+msgid "Preamp"
+msgstr "පූර්ව වර්ධකය"
+
+#: src/skins/ui_equalizer.c:332
+msgid "31 Hz"
+msgstr "31 හරට්ස් "
+
+#: src/skins/ui_equalizer.c:333
+msgid "63 Hz"
+msgstr "63  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:333
+msgid "125 Hz"
+msgstr "125  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:333
+msgid "250 Hz"
+msgstr "250  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:333
+msgid "500 Hz"
+msgstr "500  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:333
+msgid "1 kHz"
+msgstr "1  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:334
+msgid "2 kHz"
+msgstr "2  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:334
+msgid "4 kHz"
+msgstr "4  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:334
+msgid "8 kHz"
+msgstr "8  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:334
+msgid "16 kHz"
+msgstr "16  හරට්ස් "
+
+#: src/skins/ui_equalizer.c:375
+msgid "Audacious Equalizer"
+msgstr "ඔඩෙෂස් ඉකුවලිසරය "
+
+#: src/skins/ui_equalizer.c:890
+msgid "Presets"
+msgstr "පෙර සකසන ලද "
+
+#: src/skins/ui_equalizer.c:971 src/skins/ui_manager.c:451
+msgid "Load preset"
+msgstr "පෙර සකසනය  ප්‍රවේශනය කරන්න "
+
+#: src/skins/ui_equalizer.c:988
+msgid "Load auto-preset"
+msgstr "පෙර සකසන-ස්වයංක්‍රිය ප්‍රවේශනය"
+
+#: src/skins/ui_equalizer.c:1018 src/skins/ui_equalizer.c:1036
+#: src/skins/ui_equalizer.c:1052
+msgid "Load equalizer preset"
+msgstr "පෙර සකසන ඉකුවලිසරය ප්‍රවේශනය"
+
+#: src/skins/ui_equalizer.c:1071 src/skins/ui_manager.c:472
+msgid "Save preset"
+msgstr "පෙර සකසනය සුරකින්න "
+
+#: src/skins/ui_equalizer.c:1087
+msgid "Save auto-preset"
+msgstr "පෙර සකසනය-ස්වයංක්‍රියව සුරකින්න"
+
+#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
+msgid "Save equalizer preset"
+msgstr "පෙර සකසන ඉකුවලිසරය සුරකින්න"
+
+#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
+msgid "Delete preset"
+msgstr "පෙර සකසනය මකන්න"
+
+#: src/skins/ui_equalizer.c:1190
+msgid "Delete auto-preset"
+msgstr "පෙර සකසනය-ස්වයංක්‍රියව මකන්න"
+
+#: src/skins/ui_main.c:414
+msgid "kbps"
+msgstr "තත්පරයට කිලෝ බයිට්ස් "
+
+#: src/skins/ui_main.c:422
+msgid "kHz"
+msgstr " කිලෝ හරට්ස් "
+
+#: src/skins/ui_main.c:770
+#, c-format
+msgid "Seek to %d:%-2.2d / %d:%-2.2d"
+msgstr "සොයනවා %d:%-2.2d / %d:%-2.2d"
+
+#: src/skins/ui_main.c:791
+#, c-format
+msgid "Volume: %d%%"
+msgstr "ශබ්ද මට්ටම​ : %d%%"
+
+#: src/skins/ui_main.c:814
+#, c-format
+msgid "Balance: %d%% left"
+msgstr "තුලනය : %d%% වමට "
+
+#: src/skins/ui_main.c:816
+msgid "Balance: center"
+msgstr "තුලනය: මැදට "
+
+#: src/skins/ui_main.c:818
+#, c-format
+msgid "Balance: %d%% right"
+msgstr "තුලනය: %d%% දකුණට "
+
+#: src/skins/ui_main.c:942
+msgid "Options Menu"
+msgstr "විකල්ප මෙනුව "
+
+#: src/skins/ui_main.c:946
+msgid "Disable 'Always On Top'"
+msgstr "අක්‍රිය කරන්න 'සැමවිටම  ඉහළ '"
+
+#: src/skins/ui_main.c:948
+msgid "Enable 'Always On Top'"
+msgstr "සක්‍රිය කරන්න 'සැමවිටම  ඉහළ '"
+
+#: src/skins/ui_main.c:951
+msgid "File Info Box"
+msgstr "ගොනු තොරතුරු පෙට්ටිය "
+
+#: src/skins/ui_main.c:956
+msgid "Visualization Menu"
+msgstr "දෘෂ්ටි කල්පන මෙනුව "
+
+#: src/skins/ui_main.c:1591
+msgid "Single mode."
+msgstr "තනි ප්‍රකාරය."
+
+#: src/skins/ui_main.c:1593
+msgid "Playlist mode."
+msgstr "ධාවන ලැස්තු ප්‍රකාරය."
+
+#: src/skins/ui_main.c:1615
+msgid "Stopping after song."
+msgstr "ගීතයකින් පසු නැවතීම."
+
+#: src/skins/ui_main.c:1617
+msgid "Not stopping after song."
+msgstr "ගීතයකින් පසු නොනැවතීම."
+
+#: src/skins/ui_main.c:1752
+msgid "Repeat point A set."
+msgstr "පුනරාවර්ථන ස්ථානය A කුලකය."
+
+#: src/skins/ui_main.c:1757
+msgid "Repeat point B set."
+msgstr "පුනරාවර්ථන ස්ථානය B කුලකය."
+
+#: src/skins/ui_main.c:1766
+msgid "Repeat points cleared."
+msgstr "පුනරාවර්ථන ස්ථාන හිස් කරන ලදී."
+
+#: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
+msgid "Autoscroll Song Name"
+msgstr "ගීතයේ නමෙන් ස්වයංක්‍රියව අනුචලනය කිරීම"
+
+#: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
+msgid "Stop after Current Song"
+msgstr "පවතින ගීතයෙන් පසු නැවතීම "
+
+#: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
+msgid "Peaks"
+msgstr "කාර්යබහුල "
+
+#: src/skins/ui_manager.c:75 src/skins/ui_manager.c:76
+msgid "Repeat"
+msgstr "නැවත  කරන්න "
+
+#: src/skins/ui_manager.c:78 src/skins/ui_manager.c:79
+msgid "Shuffle"
+msgstr "කලවම් කරන්න "
+
+#: src/skins/ui_manager.c:81 src/skins/ui_manager.c:82
+msgid "No Playlist Advance"
+msgstr "ධාවන ලැස්තු නැත "
+
+#: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
+msgid "Show Player"
+msgstr "ධාවකය පෙන්වන්න "
+
+#: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
+msgid "Show Playlist Editor"
+msgstr "ධාවන ලැස්තු සකසනය පෙන්වන්න "
+
+#: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
+msgid "Show Equalizer"
+msgstr " ඉකුවලිසරය  පෙන්වන්න "
+
+#: src/skins/ui_manager.c:93 src/skins/ui_manager.c:94
+msgid "Always on Top"
+msgstr "සැමවිටම  ඉහළ"
+
+#: src/skins/ui_manager.c:96 src/skins/ui_manager.c:97
+msgid "Put on All Workspaces"
+msgstr "කාර්ය ඉඩ තබන්න "
+
+#: src/skins/ui_manager.c:99 src/skins/ui_manager.c:100
+msgid "Roll up Player"
+msgstr "ධාවකය ඉහළට රැගෙනයන්න "
+
+#: src/skins/ui_manager.c:102 src/skins/ui_manager.c:103
+msgid "Roll up Playlist Editor"
+msgstr "ධාවන ලැස්තු සකසනය ඉහළට රැගෙනයන්න "
+
+#: src/skins/ui_manager.c:105 src/skins/ui_manager.c:106
+msgid "Roll up Equalizer"
+msgstr "ඉකුවලිසරය ඉහළට රැගෙනයන්න "
+
+#: src/skins/ui_manager.c:114
+msgid "Analyzer"
+msgstr "විශ්ලේශකය "
+
+#: src/skins/ui_manager.c:115
+msgid "Scope"
+msgstr "විෂය පථය "
+
+#: src/skins/ui_manager.c:116
+msgid "Voiceprint"
+msgstr "හඬ මුද්‍රණ"
+
+#: src/skins/ui_manager.c:117
+msgid "Off"
+msgstr "වහනවා "
+
+#: src/skins/ui_manager.c:121 src/skins/ui_manager.c:138
+#: src/skins/ui_manager.c:144
+msgid "Normal"
+msgstr "සාමාන්‍ය "
+
+#: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
+msgid "Fire"
+msgstr "දල්වනවා "
+
+#: src/skins/ui_manager.c:123
+msgid "Vertical Lines"
+msgstr "සිරස් රේඛා"
+
+#: src/skins/ui_manager.c:127
+msgid "Lines"
+msgstr " රේඛා"
+
+#: src/skins/ui_manager.c:128
+msgid "Bars"
+msgstr "තීරු "
+
+#: src/skins/ui_manager.c:132
+msgid "Dot Scope"
+msgstr "තිත් සහිත විෂය පථය"
+
+#: src/skins/ui_manager.c:133
+msgid "Line Scope"
+msgstr " රේඛා සහිත විෂය පථය"
+
+#: src/skins/ui_manager.c:134
+msgid "Solid Scope"
+msgstr "ඝන විෂය පථය"
+
+#: src/skins/ui_manager.c:140
+msgid "Ice"
+msgstr "හිම "
+
+#: src/skins/ui_manager.c:145
+msgid "Smooth"
+msgstr "මෘදු "
+
+#: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
+msgid "Slowest"
+msgstr "මන්දගාමිම "
+
+#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
+msgid "Slow"
+msgstr "මන්දගාමි"
+
+#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
+#: src/sox-resampler/sox-resampler.c:143
+msgid "Medium"
+msgstr "මධ්‍යම "
+
+#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
+msgid "Fast"
+msgstr "වේගවත් "
+
+#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
+msgid "Fastest"
+msgstr "වේගවත්ම "
+
+#: src/skins/ui_manager.c:165
+msgid "Time Elapsed"
+msgstr "ගතවූ කාළය "
+
+#: src/skins/ui_manager.c:166
+msgid "Time Remaining"
+msgstr "ඉතුරුවී ඇති  කාළය "
+
+#: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
+msgid "Previous"
+msgstr "පෙර "
+
+#: src/skins/ui_manager.c:195
+msgid "Visualization"
+msgstr "දෘෂ්ටි කල්පනය "
+
+#: src/skins/ui_manager.c:196
+msgid "Visualization Mode"
+msgstr "දෘෂ්ටි කල්පන ප්‍රකාරය "
+
+#: src/skins/ui_manager.c:197
+msgid "Analyzer Mode"
+msgstr "විශ්ලේශකය ප්‍රකාරය "
+
+#: src/skins/ui_manager.c:198
+msgid "Scope Mode"
+msgstr "විෂය පථ  ප්‍රකාරය "
+
+#: src/skins/ui_manager.c:199
+msgid "Voiceprint Mode"
+msgstr "හඬ මුද්‍රණ  ප්‍රකාරය "
+
+#: src/skins/ui_manager.c:200
+msgid "WindowShade VU Mode"
+msgstr "කවුළු ඡායා  VU  ප්‍රකාරය "
+
+#: src/skins/ui_manager.c:201
+msgid "Analyzer Falloff"
+msgstr "විශ්ලේශකය අඩුවීම "
+
+#: src/skins/ui_manager.c:202
+msgid "Peaks Falloff"
+msgstr "කාර්යබහුල බව අඩුවීම "
+
+#: src/skins/ui_manager.c:207
+msgid "Playlist"
+msgstr "ධාවන ලැයිස්තුව​"
+
+#: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
+msgid "Play Playlist"
+msgstr "ධාවන ලැයිස්තුව ​ධාවනය කරන්න​"
+
+#: src/skins/ui_manager.c:212 src/skins/ui_manager.c:213
+msgid "New Playlist"
+msgstr "නව ධාවන ලැයිස්තුව​"
+
+#: src/skins/ui_manager.c:215 src/skins/ui_manager.c:216
+msgid "Select Next Playlist"
+msgstr "ඊළඟ ධාවන ලැයිස්තුව​ තෝරන්න"
+
+#: src/skins/ui_manager.c:218 src/skins/ui_manager.c:219
+msgid "Select Previous Playlist"
+msgstr "  පෙර ධාවන ලැයිස්තුව​ තෝරන්න"
+
+#: src/skins/ui_manager.c:221 src/skins/ui_manager.c:222
+msgid "Delete Playlist"
+msgstr "ධාවන ලැයිස්තුව​ මකන්න "
+
+#: src/skins/ui_manager.c:224
+msgid "Import Playlist"
+msgstr "ධාවන ලැයිස්තුව​ ආයාත කරන්න "
+
+#: src/skins/ui_manager.c:225
+msgid "Loads a playlist file into the selected playlist."
+msgstr "ධාවන ලැයිස්තු ගොනුව තෝරන ලද ධාවන ලැයිස්තුවට ප්‍රවේශනය කරන්න."
+
+#: src/skins/ui_manager.c:228
+msgid "Export Playlist"
+msgstr "ධාවන ලැයිස්තුව​ නිර්යාත කරන්න"
+
+#: src/skins/ui_manager.c:229
+msgid "Saves the selected playlist."
+msgstr "තෝරන ලද ධාවන ලැයිස්තුව සුරකින්න."
+
+#: src/skins/ui_manager.c:231
+msgid "Refresh List"
+msgstr "ලැස්තුව නැවුම් කරන්න "
+
+#: src/skins/ui_manager.c:232
+msgid "Refreshes metadata associated with a playlist entry."
+msgstr " ධාවන ලැයිස්තු පිවිසුම  හා සබැදි පාරදත්ත නැවුම් කරන්න."
+
+#: src/skins/ui_manager.c:235
+msgid "Playlist Manager"
+msgstr "ධාවන ලැයිස්තු කළමනාකරණය "
+
+#: src/skins/ui_manager.c:238
+msgid "Queue Manager"
+msgstr "පෙළගැස්ම කළමනාකරණය "
+
+#: src/skins/ui_manager.c:243
+msgid "View"
+msgstr "දක්වන්න "
+
+#: src/skins/ui_manager.c:244
+msgid "Interface"
+msgstr "අතුරු මුහුණත"
+
+#: src/skins/ui_manager.c:245
+msgid "Interface Preferences ..."
+msgstr "අතුරු මුහුණත් අභිරුචි ..."
+
+#: src/skins/ui_manager.c:250
+msgid "Add Internet Address..."
+msgstr "අන්තර්ජාල යොමුව එක්කරන්න ..."
+
+#: src/skins/ui_manager.c:251
+msgid "Adds a remote track to the playlist."
+msgstr " ධාවන  ලැයිස්තුවට දුරස්ථ ඛණ්ඩය එකතු කරන්න "
+
+#: src/skins/ui_manager.c:254
+msgid "Add Files..."
+msgstr "ගොනු එකතු කරන්න..."
+
+#: src/skins/ui_manager.c:255
+msgid "Adds files to the playlist."
+msgstr "ධාවන ලැයිස්තුවට ගොනු එකතු කරන්න"
+
+#: src/skins/ui_manager.c:260
+msgid "Search and Select"
+msgstr "සොයන්න සහ තෝරන්න "
+
+#: src/skins/ui_manager.c:261
+msgid ""
+"Searches the playlist and selects playlist entries based on specific "
+"criteria."
+msgstr "ධාවන ලැයිස්තුව සොයා නිශ්චිත නිර්ණායක මත ධාවන ලැයිස්තු පිවීසුම  තෝරන්න "
+
+#: src/skins/ui_manager.c:264
+msgid "Invert Selection"
+msgstr "වරණය පෙරලන්න "
+
+#: src/skins/ui_manager.c:265
+msgid "Inverts the selected and unselected entries."
+msgstr "තෝරාගත් සහ තෝරානොගත් පිවිසුම් පෙරළන්න."
+
+#: src/skins/ui_manager.c:268
+msgid "Select All"
+msgstr "සියල්ල තෝරන්න"
+
+#: src/skins/ui_manager.c:269
+msgid "Selects all of the playlist entries."
+msgstr "ධාවන ලැස්තු පිවිසුමේ සියල්ල තෝරන්න."
+
+#: src/skins/ui_manager.c:272
+msgid "Select None"
+msgstr "කිසිවක් තෝරානොගන්න "
+
+#: src/skins/ui_manager.c:273
+msgid "Deselects all of the playlist entries."
+msgstr "ධාවන ලැයිස්තු පිවිසුම් සියල්ලෙහි තෝරාගැනීම ඉවත් කරන්න."
+
+#: src/skins/ui_manager.c:278
+msgid "Remove All"
+msgstr "සියල්ල ඉවත් කරන්න "
+
+#: src/skins/ui_manager.c:279
+msgid "Removes all entries from the playlist."
+msgstr "සියලු පිවිසුම් ධාවන ලැයිස්තුවෙන් ඉවත් කරන්න."
+
+#: src/skins/ui_manager.c:282
+msgid "Clear Queue"
+msgstr "පෙළගැස්ම හිස් කරන්න"
+
+#: src/skins/ui_manager.c:283
+msgid "Clears the queue associated with this playlist."
+msgstr "ධාවන ලැයිස්තුව හා සබැදි පෙළගැස්ම හිස් කරන්න."
+
+#: src/skins/ui_manager.c:286
+msgid "Remove Unavailable Files"
+msgstr "අනුපයෝජ්‍ය ගොනු ඉවත් කරන්න "
+
+#: src/skins/ui_manager.c:287
+msgid "Removes unavailable files from the playlist."
+msgstr "අනුපයෝජ්‍ය ගොනු  ධාවන ලැයිස්තුවෙන්  ඉවත් කරන්න."
+
+#: src/skins/ui_manager.c:290
+msgid "Remove Duplicates"
+msgstr "ද්විකරණ ඉවත් කරන්න "
+
+#: src/skins/ui_manager.c:292 src/skins/ui_manager.c:324
+#: src/skins/ui_manager.c:354
+msgid "By Title"
+msgstr "මාතෘකාවෙන් "
+
+#: src/skins/ui_manager.c:293
+msgid "Removes duplicate entries from the playlist by title."
+msgstr "ද්විකරණ පිවිසුම්  ධාවන ලැයිස්තුමාතෘකාවෙන්  ඉවත් කරන්න."
+
+#: src/skins/ui_manager.c:296 src/skins/ui_manager.c:336
+#: src/skins/ui_manager.c:366
+msgid "By Filename"
+msgstr "ගොනු නාමයෙන් "
+
+#: src/skins/ui_manager.c:297
+msgid "Removes duplicate entries from the playlist by filename."
+msgstr "ද්විකරණ පිවිසුම්  ධාවන ලැයිස්තු ගොනු නාමයෙන්  ඉවත් කරන්න."
+
+#: src/skins/ui_manager.c:300 src/skins/ui_manager.c:340
+#: src/skins/ui_manager.c:370
+msgid "By Path + Filename"
+msgstr "පථයෙන් + ගොනු නාමයෙන්"
+
+#: src/skins/ui_manager.c:301
+msgid "Removes duplicate entries from the playlist by their full path."
+msgstr "ද්විකරණ පිවිසුම් ධාවන ලැයිස්තුවේ සම්පුර්ණ පථයෙන් ඉවත් කරන්න."
+
+#: src/skins/ui_manager.c:304
+msgid "Remove Unselected"
+msgstr "තෝරානොගත් ඒවා ඉවත් කරන්න "
+
+#: src/skins/ui_manager.c:305
+msgid "Remove unselected entries from the playlist."
+msgstr "තෝරානොගත් පිවිසුම්  ධාවන ලැයිස්තුවෙන් ඉවත් කරන්න "
+
+#: src/skins/ui_manager.c:308
+msgid "Remove Selected"
+msgstr "තෝරාගත් ඒවා ඉවත් කරන්න "
+
+#: src/skins/ui_manager.c:309
+msgid "Remove selected entries from the playlist."
+msgstr "තෝරාගත් පිවිසුම්  ධාවන ලැයිස්තුවෙන් ඉවත් කරන්න."
+
+#: src/skins/ui_manager.c:314
+msgid "Randomize List"
+msgstr "සසම්භාවී ධාවන ලැයිස්තුව "
+
+#: src/skins/ui_manager.c:315
+msgid "Randomizes the playlist."
+msgstr " ධාවන ලැයිස්තුව සසම්භාවීව තෝරන්න."
+
+#: src/skins/ui_manager.c:318
+msgid "Reverse List"
+msgstr "ලැස්තුවේ  ආපස්සට යන්න "
+
+#: src/skins/ui_manager.c:319
+msgid "Reverses the playlist."
+msgstr " ධාවන ලැස්තුවේ  ආපස්සට යන්න."
+
+#: src/skins/ui_manager.c:322
+msgid "Sort List"
+msgstr "ලැයිස්තුව අනුපිළිවලට සකසන්න "
+
+#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+msgid "Sorts the list by title."
+msgstr "ලැයිස්තුව මාතෘකාවෙන් අනුපිළිවලට සකසන්න."
+
+#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
+msgid "By Album"
+msgstr "ඇල්බමයෙන් "
+
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
+msgid "Sorts the list by album."
+msgstr "ඇල්බමයෙන් ලැයිස්තුව අනුපිළිවලට සකසන්න."
+
+#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
+msgid "By Artist"
+msgstr "ශිල්පියාගෙන් "
+
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
+msgid "Sorts the list by artist."
+msgstr "ශිල්පියාගෙන් ලැයිස්තුව අනුපිළිවලට සකසන්න."
+
+#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+msgid "Sorts the list by filename."
+msgstr "ගොනු නාමයෙන්  ලැයිස්තුව අනුපිළිවලට සකසන්න."
+
+#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
+msgid "Sorts the list by full pathname."
+msgstr "පථ නාමයෙන්  ලැයිස්තුව අනුපිළිවලට සකසන්න."
+
+#: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
+msgid "By Date"
+msgstr "දිනයෙන් "
+
+#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
+msgid "Sorts the list by modification time."
+msgstr "විකරණ වේලාව අනුව ලැයිස්තුව අනුපිළිවලට සකසන්න."
+
+#: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
+msgid "By Track Number"
+msgstr "ඛණ්ඩ අංකයෙන් "
+
+#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
+msgid "Sorts the list by track number."
+msgstr "ඛණ්ඩ අංකයෙන් ලැයිස්තුව අනුපිළිවලට සකසන්න."
+
+#: src/skins/ui_manager.c:352
+msgid "Sort Selected"
+msgstr "තෝරාගත් අනුපිළිවලට "
+
+#: src/skins/ui_manager.c:388
+msgid "File"
+msgstr "ගොනුව "
+
+#: src/skins/ui_manager.c:391
+msgid "Plugin Services"
+msgstr "පේනු මෘදුකාංග සේවාවන් "
+
+#: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
+msgid "View Track Details"
+msgstr "ඛණ්ඩ තොරතුරු දක්වන්න "
+
+#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
+msgid "View track details"
+msgstr "ඛණ්ඩ තොරතුරු දක්වන්න"
+
+#: src/skins/ui_manager.c:399 src/skins/ui_manager.c:400
+msgid "About Audacious"
+msgstr "ඔඩෙෂස් ගැන "
+
+#: src/skins/ui_manager.c:402
+msgid "Play File"
+msgstr "ගොනුව ධාවනය කරන්න"
+
+#: src/skins/ui_manager.c:403
+msgid "Load and play a file"
+msgstr "ප්‍රවේශනය කර ගොනුව ධාවනය කරන්න"
+
+#: src/skins/ui_manager.c:405
+msgid "Play Location"
+msgstr "නිශ්චනය ධාවනය කරන්න"
+
+#: src/skins/ui_manager.c:406
+msgid "Play media from the selected location"
+msgstr "තෝරාගත් නිශ්චනයෙන් මාධ්‍යය  ධාවනය කරන්න"
+
+#: src/skins/ui_manager.c:408
+msgid "Plugin services"
+msgstr "පේනු මෘදුකාංග සේවාවන්"
+
+#: src/skins/ui_manager.c:410
+msgid "Preferences"
+msgstr "අභිරුචි"
+
+#: src/skins/ui_manager.c:411
+msgid "Open preferences window"
+msgstr "අභිරුචි කවුළුව විවර කරන්න "
+
+#: src/skins/ui_manager.c:414
+msgid "Quit Audacious"
+msgstr "ඔඩෙෂස් තුලින් නික්මෙන්න "
+
+#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
+msgid "Set A-B"
+msgstr "A-B කුලකය "
+
+#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
+msgid "Clear A-B"
+msgstr "A-B හිස් කරන්න "
+
+#: src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
+msgid "Jump to File"
+msgstr "මගහැර ගොනුවට පිවිසෙන්න "
+
+#: src/skins/ui_manager.c:425 src/skins/ui_manager.c:426
+msgid "Jump to Time"
+msgstr "මගහැර වේලාවට පිවිසෙන්න"
+
+#: src/skins/ui_manager.c:428
+msgid "Queue Toggle"
+msgstr "ටොගල පෙළගැස්ම "
+
+#: src/skins/ui_manager.c:429
+msgid "Enables/disables the entry in the playlist's queue."
+msgstr " ධාවන ලැස්තුවේ පෙළගැස්මේ පිවිසුම සක්‍රිය/අක්‍රිය කරන්න."
+
+#: src/skins/ui_manager.c:432
+msgid "Copy"
+msgstr "පිටපත් කරන්න "
+
+#: src/skins/ui_manager.c:435
+msgid "Cut"
+msgstr "කපන්න "
+
+#: src/skins/ui_manager.c:438
+msgid "Paste"
+msgstr "අලවන්න "
+
+#: src/skins/ui_manager.c:445
+msgid "Load"
+msgstr "ප්‍රවේශනය "
+
+#: src/skins/ui_manager.c:446
+msgid "Import"
+msgstr "ආයාත කරන්න "
+
+#: src/skins/ui_manager.c:447
+msgid "Save"
+msgstr "සුරකින්න "
+
+#: src/skins/ui_manager.c:448
+msgid "Delete"
+msgstr "මකන්න "
+
+#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:486
+msgid "Preset"
+msgstr "පෙර සකසන"
+
+#: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:489
+msgid "Auto-load preset"
+msgstr "ස්වයංක්‍රිය පෙර සකසනය  ප්‍රවේශනය  කරන්න "
+
+#: src/skins/ui_manager.c:454
+msgid "Load auto-load preset"
+msgstr "ස්වයංක්‍රිය   ප්‍රවේශනය-පෙර සකසනය  ප්‍රවේශනය "
+
+#: src/skins/ui_manager.c:457
+msgid "Load default preset into equalizer"
+msgstr "පෙරනිමි පෙර සකසනය ඉකුවලිසරයට ප්‍රවේශනය කරන්න "
+
+#: src/skins/ui_manager.c:459
+msgid "Zero"
+msgstr "බින්දුව "
+
+#: src/skins/ui_manager.c:460
+msgid "Set equalizer preset levels to zero"
+msgstr "ඉකුවලිසරයේ පෙර සකසන මට්ටම බින්දුව ලෙස තබන්නන "
+
+#: src/skins/ui_manager.c:462
+msgid "From file"
+msgstr "ගොනුවෙන් "
+
+#: src/skins/ui_manager.c:463
+msgid "Load preset from file"
+msgstr "පෙර සකසනය  ගොනුවෙන් ප්‍රවේශනය කරන්න "
+
+#: src/skins/ui_manager.c:465
+msgid "From WinAMP EQF file"
+msgstr "WinAMP EQF ගොනුවෙන්"
+
+#: src/skins/ui_manager.c:466
+msgid "Load preset from WinAMP EQF file"
+msgstr "පෙර සකසනය WinAMP EQF ගොනුවෙන් ප්‍රවේශනය කරන්න "
+
+#: src/skins/ui_manager.c:468
+msgid "WinAMP Presets"
+msgstr "පෙර සකසන ලද WinAMP"
+
+#: src/skins/ui_manager.c:469
+msgid "Import WinAMP presets"
+msgstr "පෙර සකසන ලද WinAMP ආයාත කරන්න "
+
+#: src/skins/ui_manager.c:475
+msgid "Save auto-load preset"
+msgstr "ස්වයංක්‍රියව සුරකින්න-පෙර සකසනය  ප්‍රවේශනය  කරන්න "
+
+#: src/skins/ui_manager.c:478
+msgid "Save default preset"
+msgstr "පෙරනිමි පෙර සකසනය  සුරකින්න "
+
+#: src/skins/ui_manager.c:480
+msgid "To file"
+msgstr "ගොනුවට "
+
+#: src/skins/ui_manager.c:481
+msgid "Save preset to file"
+msgstr "පෙර සකසනය ගොනුවට සුරකින්න"
+
+#: src/skins/ui_manager.c:483
+msgid "To WinAMP EQF file"
+msgstr "WinAMP EQF ගොනුවට "
+
+#: src/skins/ui_manager.c:484
+msgid "Save preset to WinAMP EQF file"
+msgstr "පෙර සකසනය WinAMP EQF ගොනුවට සුරකින්න"
+
+#: src/skins/ui_manager.c:490
+msgid "Delete auto-load preset"
+msgstr "ස්වයංක්‍රියව මකන්න-පෙර සකසන  ප්‍රවේශනය "
+
+#: src/skins/ui_playlist.c:244
+msgid "Search entries in active playlist"
+msgstr "සක්‍රිය ධාවන ලැයිස්තුවේ  පිවිසුම් සොයන්න "
+
+#: src/skins/ui_playlist.c:251
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+"ධාවන ලැයිස්තුවේ  පිවිසුම්, ක්ෂේත්‍ර එකක් හෝ වැඩි ගණනක් ගොනු කිරිමනේ තෝරන්න. ක්ෂේත්‍ර විධිමත් ප්‍රකාශන "
+"වාග් රීති, අකුරු තටු-සංවේදී නැති භාවිතා කරයි. ඔබට  විධිමත් ප්‍රකාශන වාග් රීති ක්‍රියාත්මක වන ආකාරය "
+"පිළිබඳ අවබෝධයක් නැති නම්, ඔබ සොයන වචන කොටස ඇතුල් කරන්න."
+
+#: src/skins/ui_playlist.c:259
+msgid "Title: "
+msgstr "මාතෘකාව:"
+
+#: src/skins/ui_playlist.c:267
+msgid "Album: "
+msgstr "ඇල්බමය:"
+
+#: src/skins/ui_playlist.c:275
+msgid "Artist: "
+msgstr "ශිල්පියා:"
+
+#: src/skins/ui_playlist.c:283
+msgid "Filename: "
+msgstr "ගොනු නාමය:"
+
+#: src/skins/ui_playlist.c:292
+msgid "Clear previous selection before searching"
+msgstr "පෙර තේරීම සෙවීමට පෙර හිස් කරන්න "
+
+#: src/skins/ui_playlist.c:295
+msgid "Automatically toggle queue for matching entries"
+msgstr "ගැලපෙන පිවිසුම් සඳහා ස්වයංක්‍රියව පෙළගැස්ම ටෝගල කරන්න "
+
+#: src/skins/ui_playlist.c:298
+msgid "Create a new playlist with matching entries"
+msgstr "ගැලපෙන පිවිසුම් සමග නව ධාවන ලැයිස්තුව තනන්න "
+
+#: src/skins/ui_playlist.c:738
+msgid "Audacious Playlist Editor"
+msgstr "ඔඩෙෂස් ධාවන ලැස්තු සකසනය "
+
+#: src/skins/ui_playlist.c:772
+#, c-format
+msgid "%s (%d of %d)"
+msgstr "%s (%d ගෙන්  %d)"
+
+#: src/skins/ui_skinselector.c:162
+msgid "Archived Winamp 2.x skin"
+msgstr "සංරක්ෂිත Winamp 2.x මතුපිට "
+
+#: src/skins/ui_skinselector.c:167
+msgid "Unarchived Winamp 2.x skin"
+msgstr "සංරක්ෂණය නොකරන ලද Winamp 2.x මතුපිට"
+
+#: src/skins/util.c:773
+#, c-format
+msgid "Could not create directory (%s): %s\n"
+msgstr "නාමාවලිය නිර්මාණය කීරීමට නොහැකිය (%s): %s\n"
+
+#: src/sndfile/plugin.c:416
+msgid ""
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"xmms_sndfile පේනු මෘදුකාංගය මත පදනම් වී ඇත​:\n"
+"ප්‍රකාශන අයිතිය (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Audacious සඳහා ඇතුලත් කරන ලද්දේ Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"මෙම​ මෘදුකාංගය නිදහස් මෘදුකාංගයකි; නිදහස් මෘදුකාංග පදනම විසින් ප්‍රකාශ කරන ලද GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය යටතේ ඔබට මෙය නැවත බෙදා හැරීම හෝ වෙනස් කිරීම කළ හැක​; බලපත්‍රයේ 2වන "
+"සංස්කරණය හෝ(ඔබගේ කැමත්ත අනුව​) පසු සංස්කරණයක් යටතේ.\n"
+"\n"
+"මෙම මෘදුකාංගය බෙදාහැර ඇත්තේ ප්‍රයෝජනවත් වේ යන බලාපොරොත්තුවෙන් වුවත් වගකීමක් නොමැත​; විකිණිය "
+"හැකි හෝ යම් නිශ්චිත අරමුණකට ලෙසවත් ගම්‍යමාන වන වගකීමකින් තොරයි. වැඩි විස්තර සඳහා GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය බලන්න​. \n"
+"\n"
+"මෙම මෘදුකාංගය සමග ඔබට GNU සාමාන්‍ය පොදු බලපත්‍රයහි පිටපතක් ලැබිය යුතුයි; නැතිනම් නිදහස් "
+"මෘදුකාංග පදනමට දන්වන්න​. Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
+#: src/sndfile/plugin.c:435
+msgid "Sndfile Plugin"
+msgstr "Snd ගොනු පේනු මෘදුකාංගය"
+
+#: src/sndio/sndio.c:172
+msgid "About Sndio Output Plugin"
+msgstr "Sndio ප්‍රතිදාන පේනු මෘදුකාංගය පිළිබඳ​"
+
+#: src/sndio/sndio.c:173
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+"Sndio ප්‍රතිදාන පේනු මෘදුකාංගය⏎\n"
+"⏎\n"
+"ලියනු ලැබුවේ තෝමස් ප්ෆැෆ් විසින් <tpfaff@tp76.info>⏎\n"
+
+#: src/sndio/sndio.c:248
+msgid "Unsupported format"
+msgstr "සහාය නොමැති හැඩතලය​කි"
+
+#: src/sndio/sndio.c:249
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+"ශ්‍රව්‍ය ආම්පන්නයට සහය නොදක්වන හැඩතලයක් අයැදුම් කරන ලදී.⏎\n"
+"⏎\n"
+"sndiod(1) සේවාදායකය​ ධාවනය වන අතරතුර නැවත උත්සාහ කරන්න​."
+
+#: src/sndio/sndio.c:384
+msgid "sndio device"
+msgstr "sndio ආම්පන්නය"
+
+#: src/sndio/sndio.c:400
+msgid "(empty means default)"
+msgstr "(හිස් ව තැබීම යනු පෙරනිමියයි )"
+
+#: src/sndio/sndio.c:416
+msgid "OK"
+msgstr "එකඟයි"
+
+#: src/sndio/sndio.c:424
+msgid "Cancel"
+msgstr "අවලංගු කිරීම​"
+
+#: src/song_change/song_change.c:54
+msgid "Song Change"
+msgstr "ගීත වෙනස්කිරීම "
+
+#: src/song_change/song_change.c:436
+msgid "Command to run when Audacious starts a new song."
+msgstr "ඔඩෙෂස් නව ගීතයක් ආරම්භ කළ විට ධාවනය සඳහා විධානය."
+
+#: src/song_change/song_change.c:438 src/song_change/song_change.c:444
+#: src/song_change/song_change.c:450 src/song_change/song_change.c:456
+msgid "Command:"
+msgstr "විධානය:"
+
+#: src/song_change/song_change.c:442
+msgid "Command to run toward the end of a song."
+msgstr "ගීතයක අවසානය තෙක් ධාවනය සඳහා විධානය."
+
+#: src/song_change/song_change.c:448
+msgid "Command to run when Audacious reaches the end of the playlist."
+msgstr "ඔඩෙෂස් ධාවන ලැස්තුවේ අවසානයට පැමිණිවිට ධාවනය සඳහා විධානය."
+
+#: src/song_change/song_change.c:454
+msgid ""
+"Command to run when title changes for a song (i.e. network streams titles)."
+msgstr "ගීතයක මාතෘකාව වෙනස් වූ විට ධාවනය සඳහා විධානය (ජාල ප්‍රවාහ මාතෘකා )."
+
+#: src/song_change/song_change.c:460
+msgid ""
+"You can use the following format strings which\n"
+"will be substituted before calling the command\n"
+"(not all are useful for the end-of-playlist command):\n"
+"\n"
+"%F: Frequency (in hertz)\n"
+"%c: Number of channels\n"
+"%f: File name (full path)\n"
+"%l: Length (in milliseconds)\n"
+"%n or %s: Song name\n"
+"%r: Rate (in bits per second)\n"
+"%t: Playlist position (%02d)\n"
+"%p: Currently playing (1 or 0)\n"
+"%a: Artist\n"
+"%b: Album\n"
+"%T: Track title"
+msgstr ""
+"ඔබට පහත දැක්වෙන අනුලකුණු වැල්හි ආකෘති විධානය කිරීමට පෙර ආදේශ කළ හැක\n"
+"(ධාවන ලැයිස්තු විධාන අවසානයේදී ඇතැම්විට සියලුම විධාන ප්‍රයෝජනවත් නොවිය හැක):\n"
+"\n"
+"%F: සංඛ්‍යාතය  (හර්ට්ස් වලින්)\n"
+"%c: නාලිකා ගණන \n"
+"%f: ගොනු නාමය  (සම්පුර්ණ පථය)\n"
+"%l: ආයාමය (මිලි තත්පර වලින්)\n"
+"%n හෝ  %s: ගීතයේ නම \n"
+"%r: අනුපාතය  (තත්පරයට බිට්ස් වලින්)\n"
+"%t: ධාවන  ලැයිස්තුවේ ස්ථානය  (%02d)\n"
+"%p: දැන්  ධාවනය වන (1 or 0)\n"
+"%a: ශිල්පියා \n"
+"%b: ඇල්බමය \n"
+"%T: ඛණ්ඩයේ මතෘකාව "
+
+#: src/song_change/song_change.c:487
+msgid ""
+"<span size='small'>Parameters passed to the shell should be encapsulated in "
+"quotes. Doing otherwise is a security risk.</span>"
+msgstr ""
+"<span size='small'>කවචය වෙත හුවමාරු කරන ලද පරාමිතික කොටස් ලෙස ප්‍රාවරිකෘත කර ඇත. එය "
+"එසේ නොකරහොත් ආරක්ෂාව පිළිබඳ අවදානමක් පවතී.</span>"
+
+#: src/song_change/song_change.c:498
+msgid "Commands"
+msgstr "විධාන:"
+
+#: src/sox-resampler/sox-resampler.c:135
+msgid ""
+"SoX Resampler Plugin for Audacious\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"Based on Sample Rate Converter Plugin:\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"Audacious සඳහා වන SoX Resampler ​පේනු මෘදුකාංගය\n"
+"ප්‍රකාශන අයිතිය 2013 Michał Lipski\n"
+"\n"
+"නියැදි අනුපාත පරිවර්තන පේනු මෘදුකාංගය මත පදනම් වී ඇත​:\n"
+"ප්‍රකාශන අයිතිය 2010-2012 John Lindgren"
+
+#: src/sox-resampler/sox-resampler.c:141
+msgid "Quick"
+msgstr "කඩිනම්"
+
+#: src/sox-resampler/sox-resampler.c:142
+msgid "Low"
+msgstr "පහළ"
+
+#: src/sox-resampler/sox-resampler.c:144
+msgid "High"
+msgstr "ඉහළ"
+
+#: src/sox-resampler/sox-resampler.c:145
+msgid "Very High"
+msgstr "අති- උච්ච"
+
+#: src/sox-resampler/sox-resampler.c:148
+msgid "Quality:"
+msgstr "ප්‍රශස්තතාව:"
+
+#: src/sox-resampler/sox-resampler.c:162
+msgid "SoX Resampler"
+msgstr "Sox නැවත සාම්පල කිරීම "
+
+#: src/speed-pitch/speed-pitch.c:225
+msgid "<b>Speed and Pitch</b>"
+msgstr "<b>වේගය සහ ස්වරමානය</b>"
+
+#: src/speed-pitch/speed-pitch.c:226
+msgid "Speed:"
+msgstr "වේගය:"
+
+#: src/speed-pitch/speed-pitch.c:229
+msgid "Pitch:"
+msgstr "ස්වරමානය:"
+
+#: src/speed-pitch/speed-pitch.c:264
+msgid "Speed and Pitch"
+msgstr "වේගය සහ ස්වරමානය"
+
+#: src/statusicon/statusicon.c:390
+msgid ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+"තත්ත්ව සුරුවම් පේනු මෘදුකාංගයක්\n"
+"\n"
+"ප්‍රකාශන අයිතිය 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"ප්‍රකාශන අයිතිය 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"මෙම පේනු මෘදුකාංගය තත්ත්ව සුරුවමක් සපයනු ලබයි,  කවුළු කළමනාකාරකයෙහි පද්ධති ට්‍රේ කොටසේ රඳවා "
+"තැබෙන ලෙස."
+
+#: src/statusicon/statusicon.c:397
+msgid "<b>Mouse Scroll Action</b>"
+msgstr "<b>මුසික අනුචලන ක්‍රියාව</b>"
+
+#: src/statusicon/statusicon.c:398
+msgid "Change volume"
+msgstr "ශබ්දය වෙනස්කිරීම "
+
+#: src/statusicon/statusicon.c:401
+msgid "Change playing song"
+msgstr "වාදනය වන ගීතය වෙනස්කිරීම "
+
+#: src/statusicon/statusicon.c:404
+msgid "<b>Other Settings</b>"
+msgstr "<b>අනෙකුත් සැකසුම්</b>"
+
+#: src/statusicon/statusicon.c:405
+msgid "Disable the popup window"
+msgstr "උත්පතන කවුළුව අක්‍රිය කරන්න "
+
+#: src/statusicon/statusicon.c:407
+msgid "Close to the system tray"
+msgstr "පද්ධති තට්ටුවට ආසන්නව "
+
+#: src/statusicon/statusicon.c:409
+msgid "Advance in playlist when scrolling upward"
+msgstr "අනුචලනය ඉහළට සිදුකරන විට ධාවන ලැයිස්තු ප්‍රගමනය "
+
+#: src/statusicon/statusicon.c:418
+msgid "Status Icon"
+msgstr "තත්ව නිරූපකය"
+
+#: src/stereo_plugin/stereo.c:17
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin, 1999"
+msgstr ""
+"Extra Stereo පේනු මෘදුකාංගය\n"
+"\n"
+"Johan Levin විසින්, 1999"
+
+#: src/stereo_plugin/stereo.c:25
+msgid "<b>Extra Stereo</b>"
+msgstr "<b>අතිරේක ත්‍රිමාන</b>"
+
+#: src/stereo_plugin/stereo.c:36
+msgid "Extra Stereo"
+msgstr "අතිරේක ත‍්‍ර‍්‍රිමාණ"
+
+#: src/tonegen/tonegen.c:84
+#, c-format
+msgid "%s %.1f Hz"
+msgstr "%s %.1f හර්ට්ස් "
+
+#: src/tonegen/tonegen.c:84
+msgid "Tone Generator: "
+msgstr "ස්වර ජනකය:"
+
+#: src/tonegen/tonegen.c:197
+msgid ""
+"Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+msgstr ""
+"Sine tone ජනකය​ Håvard Kvålen විසින් <havardk@xmms.org>\n"
+"වෙනස් කරන ලද්දේ Daniel J. Peng විසින් <danielpeng@bigfoot.com>\n"
+"\n"
+"භාවිතා කිරීම සඳහා, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+
+#: src/tonegen/tonegen.c:206
+msgid "Tone Generator"
+msgstr "ස්වර ජනකය"
+
+#: src/unix-io/unix-io.c:243
+msgid ""
+"File I/O Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
+msgstr ""
+"Audacious සඳහා වන ගොනු ආදාන ප්‍රතිදාන​ පේනු මෘදුකාංගය\n"
+"ප්‍රකාශන අයිතිය 2009-2012 John Lindgren\n"
+"\n"
+"මෙම පේනු මෘදුකාංගය අත්‍යවශ්‍යයයි. ක්‍රියා විරහිත නොකරන්න​."
+
+#: src/unix-io/unix-io.c:266
+msgid "File I/O Plugin"
+msgstr "ගොනු ආදාන ප්‍රතිදාන​ පේනු මෘදුකාංගය"
+
+#: src/voice_removal/voice_removal.c:58
+msgid "Voice Removal"
+msgstr "කටහඬ ඉවත් කිරීම​"
+
+#: src/vorbis/vorbis.c:555
+msgid ""
+"Audacious Ogg Vorbis Decoder\n"
+"\n"
+"Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Original code by:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Contributions from:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+msgstr ""
+"Audacious Ogg Vorbis විකේතකය​\n"
+"\n"
+"Xiph.org Foundation's Ogg Vorbis පේනු මෘදුකාංගය මත පදනම් වී ඇත​:\n"
+"http://www.xiph.org/\n"
+"\n"
+"මූලික කේතය කරනු ලැබුවේ:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"දායකත්වය​:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+
+#: src/vorbis/vorbis.c:575
+msgid "Ogg Vorbis Decoder"
+msgstr "Ogg Vorbis විකේතකය"
+
+#: src/vtx/vtx.c:242
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+"Vortex ගොනු හැඩතල ධාවකය​ Sashnov Alexander විසින්<sashnov@ngs.ru>\n"
+"Based on in_vtx.dll Roman Sherbakov විසින් <v_soft@microfor.ru>\n"
+"Audacious පේනු මෘදුකාංගය Pavel Vymetalek විසින් <pvymetalek@seznam.cz>"
+
+#: src/vtx/vtx.c:248
+msgid "VTX Decoder"
+msgstr "VTX විකේතකය"
+
+#: src/wavpack/wavpack.c:282
+msgid "lossy (hybrid)"
+msgstr "හානිමත් (දෙමුහුන්)"
+
+#: src/wavpack/wavpack.c:284
+msgid "lossy"
+msgstr "හානිමත් "
+
+#: src/wavpack/wavpack.c:334
+msgid ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan."
+msgstr ""
+"ප්‍රකාශන හිමිකම 2006 William Pitcock <nenolod@nenolod.net>\n"
+"ඇතැම් පේනු  මෘදුකාංග කේත Miles Egan විසිනි."
+
+#: src/wavpack/wavpack.c:341
+msgid "WavPack Decoder"
+msgstr "WavPack විකේතකය"
+
+#: src/xsf/plugin.c:272
+msgid "2SF Decoder"
+msgstr " 2SF විකේතකය"
+
+#: src/xspf/xspf.c:440
+msgid "XML Shareable Playlists (XSPF)"
+msgstr "XML හුවමාරු කළ හැකි ධාවන ලැයිස්තුව​ (XSPF)"

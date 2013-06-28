@@ -32,8 +32,10 @@ LOCALES = be.po \
 	  pt_BR.po \
 	  pt_PT.po \
 	  ru.po \
+	  si.po \
 	  sk.po \
 	  sr_RS.po \
+	  ta.po \
 	  uk.po \
 	  zh_CN.po \
 	  zh_TW.po

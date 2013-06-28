@@ -91,6 +91,9 @@ ro.po)
 ru.po)
     LANGUAGE="Russian"
     ;;
+si.po)
+    LANGUAGE="Sinhala"
+    ;;
 sk.po)
     LANGUAGE="Slovak"
     ;;
@@ -99,6 +102,9 @@ sr_RS.po)
     ;;
 sr@latin.po)
     LANGUAGE="Serbian (Latin)"
+    ;;
+ta.po)
+    LANGUAGE="Tamil"
     ;;
 tr.po)
     LANGUAGE="Turkish"

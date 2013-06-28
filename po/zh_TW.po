@@ -6,7 +6,7 @@
 # Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>, 2011
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2013-05-31 19:01+0200\n"
 "PO-Revision-Date: 2013-05-16 12:36+0000\n"
