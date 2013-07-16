@@ -527,10 +527,9 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
     guint proxy_port = 0;
 
     gboolean use_proxy = aud_get_bool (NULL, "use_proxy");
-    gboolean proxy_use_auth = aud_get_bool (NULL, "proxy_use_auth");
+    gboolean use_proxy_auth = aud_get_bool (NULL, "use_proxy_auth");
 
-    if (use_proxy)
-    {
+    if (use_proxy) {
         proxy_host = aud_get_string (NULL, "proxy_host");
         proxy_port = aud_get_int (NULL, "proxy_port");
     }
@@ -567,7 +566,7 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
             _DEBUG("<%p> Using proxy: %s:%d", handle, proxy_host, proxy_port);
             ne_session_proxy(handle->session, proxy_host, proxy_port);
 
-            if (proxy_use_auth) {
+            if (use_proxy_auth) {
                 _DEBUG("<%p> Using proxy authentication", handle);
                 ne_add_proxy_auth(handle->session, NE_AUTH_BASIC, neon_proxy_auth_cb, (void *)handle);
             }
