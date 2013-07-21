@@ -368,8 +368,6 @@ gdk_filter(GdkXEvent *xevent,
 
             break;
         }
-    default:
-        return -1;
     }
 
     return GDK_FILTER_CONTINUE;
