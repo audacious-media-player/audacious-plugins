@@ -29,7 +29,6 @@
 #define DEBUG*/
 
 #include <glib.h>
-#include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -78,10 +77,6 @@ ov_callbacks vorbis_callbacks_stream = {
     ovcb_close,
     NULL
 };
-
-static gint seek_value;
-static gboolean stop_flag = FALSE;
-static pthread_mutex_t seek_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static gint
 vorbis_check_fd(const gchar *filename, VFSFile *stream)
@@ -299,9 +294,6 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
     gint bytes, channels, samplerate, br;
     gchar * title = NULL;
 
-    seek_value = (start_time > 0) ? start_time : -1;
-    stop_flag = FALSE;
-
     memset(&vf, 0, sizeof(vf));
 
     gboolean error = FALSE;
@@ -329,11 +321,6 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
         goto play_cleanup;
     }
 
-    playback->output->flush (start_time);
-
-    if (pause)
-        playback->output->pause (TRUE);
-
     vorbis_update_replaygain(&vf, &rg_info);
     playback->output->set_replaygain_info (& rg_info);
 
@@ -346,27 +333,17 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
      * using the ov_ interface.
      */
 
-    while (1)
+    if (start_time > 0)
+        ov_time_seek (& vf, (double) start_time / 1000);
+
+    while (! playback->check_stop ())
     {
         if (stop_time >= 0 && playback->output->written_time () >= stop_time)
-            goto DRAIN;
-
-        pthread_mutex_lock (& seek_mutex);
-
-        if (stop_flag)
-        {
-            pthread_mutex_unlock (& seek_mutex);
             break;
-        }
 
+        int seek_value = playback->check_seek();
         if (seek_value >= 0)
-        {
             ov_time_seek (& vf, (double) seek_value / 1000);
-            playback->output->flush (seek_value);
-            seek_value = -1;
-        }
-
-        pthread_mutex_unlock (& seek_mutex);
 
         gint current_section = last_section;
         bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
@@ -374,10 +351,7 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
             continue;
 
         if (bytes <= 0)
-        {
-DRAIN:
             break;
-        }
 
         bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
 
@@ -435,51 +409,11 @@ stop_processing:
         }
     } /* main loop */
 
-    pthread_mutex_lock (& seek_mutex);
-    stop_flag = TRUE;
-    pthread_mutex_unlock (& seek_mutex);
-
 play_cleanup:
 
     ov_clear(&vf);
     g_free (title);
     return ! error;
-}
-
-static void vorbis_stop (InputPlayback * playback)
-{
-    pthread_mutex_lock (& seek_mutex);
-
-    if (! stop_flag)
-    {
-        stop_flag = TRUE;
-        playback->output->abort_write ();
-    }
-
-    pthread_mutex_unlock (& seek_mutex);
-}
-
-static void vorbis_pause (InputPlayback * playback, gboolean pause)
-{
-    pthread_mutex_lock (& seek_mutex);
-
-    if (! stop_flag)
-        playback->output->pause (pause);
-
-    pthread_mutex_unlock (& seek_mutex);
-}
-
-static void vorbis_mseek (InputPlayback * playback, gint time)
-{
-    pthread_mutex_lock (& seek_mutex);
-
-    if (! stop_flag)
-    {
-        seek_value = time;
-        playback->output->abort_write ();
-    }
-
-    pthread_mutex_unlock (& seek_mutex);
 }
 
 static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
@@ -576,9 +510,6 @@ AUD_INPUT_PLUGIN
     .domain = PACKAGE,
     .about_text = vorbis_about,
     .play = vorbis_play,
-    .stop = vorbis_stop,
-    .pause = vorbis_pause,
-    .mseek = vorbis_mseek,
     .probe_for_tuple = get_song_tuple,
     .get_song_image = get_song_image,
     .update_song_tuple = vorbis_update_song_tuple,
