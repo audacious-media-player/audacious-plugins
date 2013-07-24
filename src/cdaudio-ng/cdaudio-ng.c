@@ -74,7 +74,6 @@ typedef struct
 trackinfo_t;
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static int seek_time;
 static bool_t playing;
 
 /* lock mutex to read / set these variables */
@@ -89,9 +88,6 @@ static bool_t cdaudio_init (void);
 static int cdaudio_is_our_file (const char * filename, VFSFile * file);
 static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
  file, int start, int stop, bool_t pause);
-static void cdaudio_stop (InputPlayback * pinputplayback);
-static void cdaudio_pause (InputPlayback * p, bool_t paused);
-static void cdaudio_mseek (InputPlayback * p, int time);
 static void cdaudio_cleanup (void);
 static Tuple * make_tuple (const char * filename, VFSFile * file);
 static void scan_cd (void);
@@ -153,9 +149,6 @@ AUD_INPUT_PLUGIN
     .cleanup = cdaudio_cleanup,
     .is_our_file_from_vfs = cdaudio_is_our_file,
     .play = cdaudio_play,
-    .stop = cdaudio_stop,
-    .pause = cdaudio_pause,
-    .mseek = cdaudio_mseek,
     .probe_for_tuple = make_tuple,
     .schemes = schemes,
     .have_subtune = TRUE,
@@ -322,14 +315,10 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
     int startlsn = trackinfo[trackno].startlsn;
     int endlsn = trackinfo[trackno].endlsn;
 
-    seek_time = (start > 0) ? start : -1;
     playing = TRUE;
 
     if (stop >= 0)
         endlsn = MIN (endlsn, startlsn + stop * 75 / 1000);
-
-    if (pause)
-        p->output->pause (TRUE);
 
     p->set_params (p, 1411200, 44100, 2);
     p->set_pb_ready (p);
@@ -339,17 +328,14 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
     speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
     unsigned char buffer[2352 * sectors];
-    int currlsn = startlsn;
+    int currlsn = startlsn + (start * 75 / 1000);
     int retry_count = 0, skip_count = 0;
 
-    while (playing)
+    while (! p->check_stop ())
     {
+        int seek_time = p->check_seek ();
         if (seek_time >= 0)
-        {
-            p->output->flush (seek_time);
             currlsn = startlsn + (seek_time * 75 / 1000);
-            seek_time = -1;
-        }
 
         sectors = MIN (sectors, endlsn + 1 - currlsn);
         if (sectors < 1)
@@ -401,32 +387,6 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
     pthread_mutex_unlock (& mutex);
     return TRUE;
-}
-
-/* main thread only */
-static void cdaudio_stop (InputPlayback * p)
-{
-    pthread_mutex_lock (& mutex);
-    playing = FALSE;
-    p->output->abort_write();
-    pthread_mutex_unlock (& mutex);
-}
-
-/* main thread only */
-static void cdaudio_pause (InputPlayback * p, bool_t pause)
-{
-    pthread_mutex_lock (& mutex);
-    p->output->pause (pause);
-    pthread_mutex_unlock (& mutex);
-}
-
-/* main thread only */
-static void cdaudio_mseek (InputPlayback * p, int time)
-{
-    pthread_mutex_lock (& mutex);
-    seek_time = time;
-    p->output->abort_write();
-    pthread_mutex_unlock (& mutex);
 }
 
 /* main thread only */
