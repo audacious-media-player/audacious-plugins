@@ -188,10 +188,6 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 		break;
 	}
 
-	pthread_mutex_lock (& mutex);
-	stop_flag = TRUE;
-	pthread_mutex_unlock (& mutex);
-
 	free(buffer);
 	free(path);
 
@@ -227,18 +223,16 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 void psf2_Stop(InputPlayback *playback)
 {
 	pthread_mutex_lock (& mutex);
-	if (! stop_flag)
-	{
-		stop_flag = TRUE;
-		playback->output->abort_write ();
-	}
+
+	stop_flag = TRUE;
+	playback->output->abort_write ();
+
 	pthread_mutex_unlock (& mutex);
 }
 
 void psf2_pause(InputPlayback *playback, bool_t pause)
 {
-	if (!stop_flag)
-		playback->output->pause(pause);
+	playback->output->pause (pause);
 }
 
 int psf2_is_our_fd(const char *filename, VFSFile *file)

@@ -28,21 +28,6 @@ bool_t PlayFile(InputPlayback * data, const char * filename, VFSFile * file, int
     return gModplugXMMS.PlayFile(filename, data);
 }
 
-void Stop(InputPlayback *data)
-{
-    gModplugXMMS.Stop(data);
-}
-
-void Pause (InputPlayback * playback, bool_t pause)
-{
-    gModplugXMMS.pause (playback, pause);
-}
-
-void mseek (InputPlayback * playback, int time)
-{
-    gModplugXMMS.mseek (playback, time);
-}
-
 Tuple* GetSongTuple(const char* aFilename, VFSFile *fd)
 {
     return gModplugXMMS.GetSongTuple(aFilename);

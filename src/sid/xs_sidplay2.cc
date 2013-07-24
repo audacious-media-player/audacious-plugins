@@ -231,8 +231,6 @@ bool_t xs_sidplayfp_initsong(xs_status_t * status)
         return FALSE;
     }
 
-    status->isInitialized = TRUE;
-
     return TRUE;
 }
 
@@ -260,7 +258,6 @@ bool_t xs_sidplayfp_load(xs_status_t * status, const char * pcFilename)
 
     xs_sidplayfp_t *engine;
     assert(status != NULL);
-    status->isInitialized = FALSE;
 
     engine = (xs_sidplayfp_t *) status->sidEngine;
     if (!engine) return FALSE;

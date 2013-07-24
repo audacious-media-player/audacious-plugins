@@ -18,7 +18,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <pthread.h>
 #include <string.h>
 
 #include <audacious/debug.h>
@@ -29,9 +28,6 @@
 
 static FLAC__StreamDecoder *decoder;
 static callback_info *info;
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static int seek_value;
-static bool_t stop_flag = FALSE;
 
 static bool_t flac_init (void)
 {
@@ -155,15 +151,11 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
         goto ERR_NO_CLOSE;
     }
 
-    if (pause)
-        playback->output->pause (TRUE);
-
-    seek_value = (start_time > 0) ? start_time : -1;
-    stop_flag = FALSE;
-
     playback->set_params(playback, info->bitrate, info->sample_rate, info->channels);
     playback->set_pb_ready(playback);
     playback->set_gain_from_playlist(playback);
+
+    FLAC__stream_decoder_seek_absolute (decoder, (int64_t) start_time * info->sample_rate / 1000);
 
     int64_t samples_remaining = INT64_MAX;
     if (start_time >= 0 && stop_time >= 0)
@@ -173,28 +165,20 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
     while (samples_remaining && FLAC__stream_decoder_get_state(decoder) !=
      FLAC__STREAM_DECODER_END_OF_STREAM)
     {
-        pthread_mutex_lock (& mutex);
-
-        if (stop_flag)
-        {
-            pthread_mutex_unlock (& mutex);
+        if (playback->check_stop ())
             break;
-        }
+
+        int seek_value = playback->check_seek ();
 
         if (seek_value >= 0)
         {
-            playback->output->flush (seek_value);
             FLAC__stream_decoder_seek_absolute (decoder, (int64_t)
              seek_value * info->sample_rate / 1000);
 
             if (stop_time >= 0)
                 samples_remaining = (int64_t) (stop_time - seek_value) *
                  info->sample_rate / 1000 * info->channels;
-
-            seek_value = -1;
         }
-
-        pthread_mutex_unlock (& mutex);
 
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(decoder) == FALSE)
@@ -215,10 +199,6 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
         reset_info(info);
     }
 
-    pthread_mutex_lock (& mutex);
-    stop_flag = TRUE;
-    pthread_mutex_unlock (& mutex);
-
 ERR_NO_CLOSE:
     free (play_buffer);
     reset_info(info);
@@ -227,42 +207,6 @@ ERR_NO_CLOSE:
         FLACNG_ERROR("Could not flush decoder state!\n");
 
     return ! error;
-}
-
-static void flac_stop(InputPlayback *playback)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-    {
-        stop_flag = TRUE;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void flac_pause(InputPlayback *playback, bool_t pause)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-        playback->output->pause(pause);
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void flac_seek (InputPlayback * playback, int time)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-    {
-        seek_value = time;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
 }
 
 static const char flac_about[] =
@@ -280,9 +224,6 @@ AUD_INPUT_PLUGIN
     .init = flac_init,
     .cleanup = flac_cleanup,
     .play = flac_play,
-    .stop = flac_stop,
-    .pause = flac_pause,
-    .mseek = flac_seek,
     .probe_for_tuple = flac_probe_for_tuple,
     .is_our_file_from_vfs = flac_is_our_fd,
     .extensions = flac_fmts,

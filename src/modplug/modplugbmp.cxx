@@ -7,7 +7,6 @@
 #include "modplugbmp.h"
 
 #include <fstream>
-#include <pthread.h>
 #include <stdint.h>
 #include <sys/types.h>
 #include <math.h>
@@ -30,13 +29,11 @@ ModplugXMMS::ModplugXMMS()
 {
     memset (this, 0, sizeof (* this));
     mSoundFile = new CSoundFile;
-    pthread_mutex_init (& mutex, 0);
 }
 
 ModplugXMMS::~ModplugXMMS()
 {
     delete mSoundFile;
-    pthread_mutex_destroy (& mutex);
 }
 
 bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
@@ -150,31 +147,12 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 {
     uint32_t lLength;
 
-    pthread_mutex_lock (& mutex);
-    seek_time = -1;
-    stop_flag = FALSE;
-    playback->set_pb_ready (playback);
-    pthread_mutex_unlock (& mutex);
-
-    while (1)
+    while (! playback->check_stop ())
     {
-        pthread_mutex_lock (& mutex);
-
-        if (stop_flag)
-        {
-            pthread_mutex_unlock (& mutex);
-            break;
-        }
-
+        int seek_time = playback->check_seek ();
         if (seek_time != -1)
-        {
             mSoundFile->SetCurrentPos (seek_time * (int64_t)
              mSoundFile->GetMaxPosition () / (mSoundFile->GetSongTime () * 1000));
-            playback->output->flush (seek_time);
-            seek_time = -1;
-        }
-
-        pthread_mutex_unlock (& mutex);
 
         lLength = mSoundFile->Read (mBuffer, mBufSize);
 
@@ -212,10 +190,6 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
 
         playback->output->write_audio (mBuffer, mBufSize);
     }
-
-    pthread_mutex_lock (& mutex);
-    stop_flag = TRUE;
-    pthread_mutex_unlock (& mutex);
 
     //Unload the file
     mSoundFile->Destroy();
@@ -322,42 +296,6 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
     this->PlayLoop(ipb);
 
     return true;
-}
-
-void ModplugXMMS::Stop (InputPlayback * playback)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-    {
-        stop_flag = TRUE;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
-}
-
-void ModplugXMMS::pause (InputPlayback * playback, bool_t pause)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-        playback->output->pause(pause);
-
-    pthread_mutex_unlock (& mutex);
-}
-
-void ModplugXMMS::mseek (InputPlayback * playback, int time)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-    {
-        seek_time = time;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
 }
 
 Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)

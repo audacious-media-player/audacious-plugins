@@ -36,10 +36,6 @@
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
 
-static pthread_mutex_t ctrl_mutex = PTHREAD_MUTEX_INITIALIZER;
-static gint64 seek_value = -1;
-static gboolean stop_flag = FALSE;
-
 static pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 static GHashTable * extension_dict = NULL;
 
@@ -480,41 +476,37 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     AUDDBG("setting parameters\n");
 
-    if (pause)
-        playback->output->pause(TRUE);
-
     playback->set_params(playback, ic->bit_rate, c->sample_rate, c->channels);
 
-    pthread_mutex_lock (& ctrl_mutex);
-
-    stop_flag = FALSE;
-    seek_value = (start_time > 0) ? start_time : -1;
     playback->set_pb_ready(playback);
     errcount = 0;
     seekable = ffaudio_codec_is_seekable(codec);
 
-    pthread_mutex_unlock (& ctrl_mutex);
+    int seek_value = -1;
 
-    while (!stop_flag && (stop_time < 0 ||
+    if (start_time > 0)
+        seek_value = start_time;
+
+    while (! playback->check_stop () && (stop_time < 0 ||
      playback->output->written_time () < stop_time))
     {
-        AVPacket tmp;
-        gint ret;
-
-        pthread_mutex_lock (& ctrl_mutex);
+        if (seek_value < 0)
+            seek_value = playback->check_seek ();
 
         if (seek_value >= 0 && seekable)
         {
-            playback->output->flush (seek_value);
             if (av_seek_frame (ic, -1, (gint64) seek_value * AV_TIME_BASE /
              1000, AVSEEK_FLAG_ANY) < 0)
             {
                 _ERROR("error while seeking\n");
             } else
                 errcount = 0;
+
+            seek_value = -1;
         }
-        seek_value = -1;
-        pthread_mutex_unlock (& ctrl_mutex);
+
+        AVPacket tmp;
+        gint ret;
 
         /* Read next frame (or more) of data */
         if ((ret = av_read_frame(ic, &pkt)) < 0)
@@ -545,21 +537,14 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
         /* Decode and play packet/frame */
         memcpy(&tmp, &pkt, sizeof(tmp));
-        while (tmp.size > 0 && !stop_flag)
+        while (tmp.size > 0 && ! playback->check_stop ())
         {
             /* Check for seek request and bail out if we have one */
-            pthread_mutex_lock (& ctrl_mutex);
-            if (seek_value != -1)
-            {
-                if (!seekable)
-                    seek_value = -1;
-                else
-                {
-                    pthread_mutex_unlock (& ctrl_mutex);
-                    break;
-                }
-            }
-            pthread_mutex_unlock (& ctrl_mutex);
+            if (seek_value < 0)
+                seek_value = playback->check_seek ();
+
+            if (seek_value >= 0)
+                break;
 
             AVFrame * frame = avcodec_alloc_frame ();
             int decoded = 0;
@@ -602,8 +587,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     }
 
 error_exit:
-    stop_flag = TRUE;
-
     if (pkt.data)
         av_free_packet(&pkt);
     if (codec_opened)
@@ -614,42 +597,6 @@ error_exit:
     free (buf);
 
     return ! error;
-}
-
-static void ffaudio_stop(InputPlayback * playback)
-{
-    pthread_mutex_lock (& ctrl_mutex);
-
-    if (!stop_flag)
-    {
-        stop_flag = TRUE;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& ctrl_mutex);
-}
-
-static void ffaudio_pause(InputPlayback * playback, gboolean pause)
-{
-    pthread_mutex_lock (& ctrl_mutex);
-
-    if (!stop_flag)
-        playback->output->pause(pause);
-
-    pthread_mutex_unlock (& ctrl_mutex);
-}
-
-static void ffaudio_seek (InputPlayback * playback, gint time)
-{
-    pthread_mutex_lock (& ctrl_mutex);
-
-    if (!stop_flag)
-    {
-        seek_value = time;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& ctrl_mutex);
 }
 
 static const char ffaudio_about[] =
@@ -708,9 +655,6 @@ AUD_INPUT_PLUGIN
     .is_our_file_from_vfs = ffaudio_probe,
     .probe_for_tuple = ffaudio_probe_for_tuple,
     .play = ffaudio_play,
-    .stop = ffaudio_stop,
-    .pause = ffaudio_pause,
-    .mseek = ffaudio_seek,
     .extensions = ffaudio_fmts,
     .update_song_tuple = ffaudio_write_tag,
 

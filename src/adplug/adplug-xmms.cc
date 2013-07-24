@@ -18,7 +18,6 @@
 */
 
 #include <algorithm>
-#include <pthread.h>
 #include <sstream>
 #include <stdlib.h>
 #include <stdio.h>
@@ -58,8 +57,6 @@ extern "C" {
 /***** Global variables *****/
 
 static bool_t audio_error = FALSE;
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static bool_t stop_flag;
 
 // Configuration (and defaults)
 static struct
@@ -77,9 +74,8 @@ static struct
   CPlayer *p;
   CAdPlugDatabase *db;
   unsigned int subsong, songlength;
-  int seek;
   char * filename;
-} plr = {0, 0, 0, 0, -1, NULL};
+} plr = {0, 0, 0, 0, NULL};
 
 static InputPlayback *playback;
 
@@ -112,11 +108,6 @@ static CPlayer *
 factory (VFSFile * fd, Copl * newopl)
 {
   return CAdPlug::factory (fd, newopl, conf.players);
-}
-
-extern "C" {
-void adplug_stop(InputPlayback * data);
-bool_t adplug_play(InputPlayback * data, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause);
 }
 
 /***** Main player (!! threaded !!) *****/
@@ -201,46 +192,31 @@ static bool_t play_loop (InputPlayback * playback, const char * filename,
   dbg_printf ("rewind, ");
   plr.p->rewind (plr.subsong);
 
-  pthread_mutex_lock (& mutex);
-  plr.seek = -1;
-  stop_flag = FALSE;
-  playback->set_pb_ready (playback);
-  pthread_mutex_unlock (& mutex);
-
   // main playback loop
   dbg_printf ("loop.\n");
   while ((playing || conf.endless))
   {
-    pthread_mutex_lock (& mutex);
+    if (playback->check_stop ())
+      break;
 
-    if (stop_flag)
-    {
-        pthread_mutex_unlock (& mutex);
-        break;
-    }
+    int seek = playback->check_seek ();
 
     // seek requested ?
-    if (plr.seek != -1)
+    if (seek != -1)
     {
       int time = playback->output->written_time ();
 
       // backward seek ?
-      if (plr.seek < time)
+      if (seek < time)
       {
         plr.p->rewind (plr.subsong);
         time = 0;
       }
 
       // seek to requested position
-      while (time < plr.seek && plr.p->update ())
+      while (time < seek && plr.p->update ())
         time += (int) (1000 / plr.p->getrefresh ());
-
-      // Reset output plugin and some values
-      playback->output->flush (time);
-      plr.seek = -1;
     }
-
-    pthread_mutex_unlock (& mutex);
 
     // fill sound buffer
     towrite = SNDBUFSIZE;
@@ -261,10 +237,6 @@ static bool_t play_loop (InputPlayback * playback, const char * filename,
 
     playback->output->write_audio (sndbuf, SNDBUFSIZE * sampsize);
   }
-
-  pthread_mutex_lock (& mutex);
-  stop_flag = FALSE;
-  pthread_mutex_unlock (& mutex);
 
   // free everything and exit
   dbg_printf ("free");
@@ -321,42 +293,6 @@ adplug_play (InputPlayback * data, const char * filename, VFSFile * file, int st
 
   play_loop (playback, filename, file);
   return FALSE;
-}
-
-extern "C" void adplug_stop (InputPlayback * p)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-    {
-        stop_flag = TRUE;
-        p->output->abort_write ();
-    }
-
-    pthread_mutex_unlock (& mutex);
-}
-
-extern "C" void adplug_pause (InputPlayback * p, bool_t pause)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-        p->output->pause (pause);
-
-    pthread_mutex_unlock (& mutex);
-}
-
-extern "C" void adplug_mseek (InputPlayback * p, int time)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-    {
-        plr.seek = time;
-        p->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
 }
 
 /***** Configuration file handling *****/

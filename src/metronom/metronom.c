@@ -71,8 +71,6 @@ double tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
     {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0}
 };
 
-static bool_t stop_flag = FALSE;
-
 static bool_t metronom_is_our_fd(const char * filename, VFSFile *fd)
 {
     if (!strncmp(filename, "tact://", 7))
@@ -142,18 +140,14 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
     int datacurrent = datamiddle;
     int datalast = datamiddle;
     int data_form[TACT_FORM_MAX];
-    bool_t error = FALSE;
 
     if (playback->output->open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
-    {
-        error = TRUE;
-        goto error_exit;
-    }
+        return FALSE;
 
     if (!metronom_get_cp(filename, &pmetronom, NULL))
     {
         fprintf (stderr, "Invalid metronom tact parameters in URI %s", filename);
-        goto error_exit;
+        return FALSE;
     }
 
     if (pause)
@@ -169,11 +163,10 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
         data_form[num] = MAX_AMPL * tact_form[pmetronom.id][num];
     }
 
-    stop_flag = FALSE;
     playback->set_pb_ready(playback);
 
     num = 0;
-    while (!stop_flag)
+    while (!playback->check_stop())
     {
         int i;
 
@@ -205,27 +198,10 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
             t++;
         }
 
-        if (!stop_flag)
-            playback->output->write_audio(data, BUF_BYTES);
+        playback->output->write_audio(data, BUF_BYTES);
     }
 
-error_exit:
-
-    stop_flag = TRUE;
-
-    return !error;
-}
-
-static void metronom_stop(InputPlayback * playback)
-{
-    stop_flag = TRUE;
-    playback->output->abort_write();
-}
-
-static void metronom_pause(InputPlayback * playback, bool_t pause)
-{
-    if (!stop_flag)
-        playback->output->pause(pause);
+    return TRUE;
 }
 
 static Tuple *metronom_probe_for_tuple(const char * filename, VFSFile *fd)
@@ -258,7 +234,5 @@ AUD_INPUT_PLUGIN
     .schemes = schemes,
     .is_our_file_from_vfs = metronom_is_our_fd,
     .play = metronom_play,
-    .stop = metronom_stop,
-    .pause = metronom_pause,
     .probe_for_tuple = metronom_probe_for_tuple,
 )

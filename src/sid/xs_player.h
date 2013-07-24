@@ -12,11 +12,7 @@ typedef struct xs_status_t {
     int        audioFrequency,     /* Audio settings */
                 audioChannels;
     void        *sidEngine;         /* SID-emulation internal engine data */
-    bool_t    isPaused,
-                isInitialized;
-    bool_t stop_flag;
-    int        currSong,           /* Current sub-tune */
-                lastTime;
+    int        currSong;           /* Current sub-tune */
 
     xs_tuneinfo_t *tuneInfo;
 } xs_status_t;

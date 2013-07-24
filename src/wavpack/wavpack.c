@@ -1,4 +1,3 @@
-#include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -13,12 +12,6 @@
 #define SAMPLE_SIZE(a) (a == 8 ? sizeof(uint8_t) : (a == 16 ? sizeof(uint16_t) : sizeof(uint32_t)))
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
-
-/* Global mutexes etc.
- */
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static int64_t seek_value = -1;
-static bool_t stop_flag = FALSE;
 
 /* Audacious VFS wrappers for Wavpack stream reading
  */
@@ -142,9 +135,6 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
         goto error_exit;
     }
 
-    if (pause)
-        playback->output->pause(TRUE);
-
     input = malloc(BUFFER_SIZE * num_channels * sizeof(uint32_t));
     output = malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
     if (input == NULL || output == NULL)
@@ -152,43 +142,29 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
 
     playback->set_gain_from_playlist(playback);
 
-    pthread_mutex_lock (& mutex);
-
     playback->set_params(playback, (int) WavpackGetAverageBitrate(ctx, num_channels),
         sample_rate, num_channels);
 
-    seek_value = (start_time > 0) ? start_time : -1;
-    stop_flag = FALSE;
-
     playback->set_pb_ready(playback);
 
-    pthread_mutex_unlock (& mutex);
+    WavpackSeekSample (ctx, (int64_t) start_time * sample_rate / 1000);
 
-    while (!stop_flag && (stop_time < 0 ||
+    while (! playback->check_stop () && (stop_time < 0 ||
      playback->output->written_time () < stop_time))
     {
-        int ret;
-        unsigned samples_left;
-
-        /* Handle seek and pause requests */
-        pthread_mutex_lock (& mutex);
-
+        int seek_value = playback->check_seek ();
         if (seek_value >= 0)
-        {
-            playback->output->flush (seek_value);
             WavpackSeekSample (ctx, (int64_t) seek_value * sample_rate / 1000);
-            seek_value = -1;
-        }
-
-        pthread_mutex_unlock (& mutex);
 
         /* Decode audio data */
-        samples_left = num_samples - WavpackGetSampleIndex(ctx);
+        unsigned samples_left = num_samples - WavpackGetSampleIndex(ctx);
 
-        ret = WavpackUnpackSamples(ctx, input, BUFFER_SIZE);
         if (samples_left == 0)
-            stop_flag = TRUE;
-        else if (ret < 0)
+            break;
+
+        int ret = WavpackUnpackSamples(ctx, input, BUFFER_SIZE);
+
+        if (ret < 0)
         {
             fprintf (stderr, "Error decoding file.\n");
             break;
@@ -228,46 +204,7 @@ error_exit:
     free(output);
     wv_deattach (wvc_input, ctx);
 
-    stop_flag = TRUE;
     return ! error;
-}
-
-static void
-wv_stop(InputPlayback * playback)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-    {
-        stop_flag = TRUE;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void
-wv_pause(InputPlayback * playback, bool_t pause)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-        playback->output->pause(pause);
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void wv_seek (InputPlayback * playback, int time)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (!stop_flag)
-    {
-        seek_value = time;
-        playback->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
 }
 
 static char *
@@ -341,9 +278,6 @@ AUD_INPUT_PLUGIN
     .domain = PACKAGE,
     .about_text = wv_about,
     .play = wv_play,
-    .stop = wv_stop,
-    .pause = wv_pause,
-    .mseek = wv_seek,
     .extensions = wv_fmts,
     .probe_for_tuple = wv_probe_for_tuple,
     .update_song_tuple = wv_write_tag,

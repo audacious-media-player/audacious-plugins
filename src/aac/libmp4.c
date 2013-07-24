@@ -1,4 +1,3 @@
-#include <pthread.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,10 +24,6 @@
 static int mp4_is_our_fd (const char *, VFSFile *);
 
 static const char *fmts[] = { "m4a", "mp4", "aac", NULL };
-
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static int seek_value;
-static bool_t stop_flag;
 
 typedef struct _mp4cfg
 {
@@ -63,42 +58,6 @@ static bool_t mp4_init (void)
 {
     mp4cfg.file_type = FILE_OTHER;
     return TRUE;
-}
-
-static void mp4_stop (InputPlayback * p)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-    {
-        stop_flag = TRUE;
-        p->output->abort_write ();
-    }
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void mp4_pause (InputPlayback * p, bool_t pause)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-        p->output->pause (pause);
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void mp4_seek (InputPlayback * p, int time)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-    {
-        seek_value = time;
-        p->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
 }
 
 /*
@@ -504,7 +463,7 @@ static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
 }
 
 static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
- mp4ff_t * mp4file, bool_t pause)
+ mp4ff_t * mp4file, int start_time)
 {
     // We are reading an MP4 file
     int mp4track = getAACTrack (mp4file);
@@ -560,13 +519,12 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
         return FALSE;
     }
 
-    playback->output->pause (pause);
     playback->set_tuple (playback, generate_tuple (filename, mp4file, mp4track));
     playback->set_params (playback, mp4ff_get_avg_bitrate (mp4file, mp4track),
      samplerate, channels);
     playback->set_pb_ready (playback);
 
-    while (1)
+    while (! playback->check_stop ())
     {
         void *sampleBuffer;
         NeAACDecFrameInfo frameInfo;
@@ -623,29 +581,20 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
 
         /* Respond to seek/stop requests.  This needs to be done after we
          * calculate frame size but of course before we write any audio. */
-        pthread_mutex_lock (& mutex);
+        int seek_value = playback->check_seek ();
+        if (seek_value < 0 && start_time > 0)
+            seek_value = start_time;
 
-        if (stop_flag)
-        {
-            pthread_mutex_unlock (& mutex);
-            break;
-        }
+        start_time = 0;
 
         if (seek_value >= 0)
         {
             sampleID = (int64_t) seek_value * samplerate / 1000 / framesize;
-            playback->output->flush (seek_value);
-            seek_value = -1;
+            continue;
         }
-
-        pthread_mutex_unlock (& mutex);
 
         playback->output->write_audio (sampleBuffer, sizeof (float) * frameInfo.samples);
     }
-
-    pthread_mutex_lock (& mutex);
-    stop_flag = TRUE;
-    pthread_mutex_unlock (& mutex);
 
     NeAACDecClose (decoder);
 
@@ -703,7 +652,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
 }
 
 static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
- VFSFile * file, bool_t pause)
+ VFSFile * file, int start_time)
 {
     NeAACDecHandle decoder = 0;
     NeAACDecConfigurationPtr decoder_config;
@@ -793,40 +742,28 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
     if (! playback->output->open_audio (FMT_FLOAT, samplerate, channels))
         goto ERR_CLOSE_DECODER;
 
-    playback->output->pause (pause);
     playback->set_params (playback, bitrate, samplerate, channels);
     playback->set_pb_ready (playback);
 
     /* == MAIN LOOP == */
 
-    while (1)
+    while (! playback->check_stop ())
     {
-        pthread_mutex_lock (& mutex);
-
-        /* == HANDLE STOP REQUESTS == */
-
-        if (stop_flag)
-        {
-            pthread_mutex_unlock (& mutex);
-            break;
-        }
-
         /* == HANDLE SEEK REQUESTS == */
+
+        int seek_value = playback->check_seek ();
+        if (seek_value < 0 && start_time > 0)
+            seek_value = start_time;
+
+        start_time = 0;
 
         if (seek_value >= 0)
         {
             int length = tuple ? tuple_get_int (tuple, FIELD_LENGTH, NULL) : 0;
 
             if (length > 0)
-            {
                 aac_seek (file, decoder, seek_value, length, buf, sizeof buf, & buflen);
-                playback->output->flush (seek_value);
-            }
-
-            seek_value = -1;
         }
-
-        pthread_mutex_unlock (& mutex);
 
         /* == CHECK FOR END OF FILE == */
 
@@ -874,10 +811,6 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
             playback->output->write_audio (audio, sizeof (float) * info.samples);
     }
 
-    pthread_mutex_lock (& mutex);
-    stop_flag = TRUE;
-    pthread_mutex_unlock (& mutex);
-
     NeAACDecClose (decoder);
 
     if (tuple)
@@ -895,37 +828,36 @@ ERR:
     return FALSE;
 }
 
+/* TODO: ignores stop_time */
 static bool_t mp4_play (InputPlayback * playback, const char * filename,
  VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
     if (! file)
         return FALSE;
 
-    mp4ff_callback_t mp4cb;
-    mp4ff_t *mp4file;
-    bool_t ret;
-
-    ret = parse_aac_stream (file);
+    bool_t is_raw_aac = parse_aac_stream (file);
 
     if (vfs_fseek (file, 0, SEEK_SET) < 0)
         return FALSE;
 
-    memset (& mp4cb, 0, sizeof (mp4ff_callback_t));
-    mp4cb.read = mp4_read_callback;
-    mp4cb.seek = mp4_seek_callback;
-    mp4cb.user_data = file;
+    bool_t result;
 
-    mp4file = mp4ff_open_read (& mp4cb);
-
-    seek_value = (start_time > 0) ? start_time : -1;
-    stop_flag = FALSE;
-
-    if (ret == TRUE)
+    if (is_raw_aac)
+        result = my_decode_aac (playback, filename, file, start_time);
+    else
     {
-        return my_decode_aac (playback, filename, file, pause);
+        mp4ff_callback_t mp4cb = {
+            .read = mp4_read_callback,
+            .seek = mp4_seek_callback,
+            .user_data = file
+        };
+
+        mp4ff_t * mp4file = mp4ff_open_read (& mp4cb);
+        result = my_decode_mp4 (playback, filename, mp4file, start_time);
+        mp4ff_close (mp4file);
     }
 
-    return my_decode_mp4 (playback, filename, mp4file, pause);
+    return result;
 }
 
 bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
@@ -937,9 +869,6 @@ AUD_INPUT_PLUGIN
     .domain = PACKAGE,
     .init = mp4_init,
     .play = mp4_play,
-    .stop = mp4_stop,
-    .pause = mp4_pause,
-    .mseek = mp4_seek,
     .is_our_file_from_vfs = mp4_is_our_fd,
     .probe_for_tuple = mp4_get_tuple,
     .get_song_image = read_itunes_cover,

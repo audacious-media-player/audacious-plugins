@@ -18,7 +18,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <pthread.h>
 #include <strings.h>
 
 #include <audacious/i18n.h>
@@ -34,11 +33,6 @@ static gchar sndbuf[SNDBUFSIZE];
 static gint freq = 44100;
 static gint chans = 2;
 static gint bits = 16;
-
-static pthread_mutex_t seek_mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t seek_cond = PTHREAD_COND_INITIALIZER;
-static gint seek_value;
-static gboolean stop_flag = FALSE;
 
 ayemu_ay_t ay;
 ayemu_vtx_t vtx;
@@ -92,7 +86,6 @@ Tuple *vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
 static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
  VFSFile * file, gint start_time, gint stop_time, gboolean pause)
 {
-    gboolean error = FALSE;
     gboolean eof = FALSE;
     void *stream;               /* pointer to current position in sound buffer */
     guchar regs[14];
@@ -109,14 +102,12 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
     if (!ayemu_vtx_open(&vtx, filename))
     {
         g_print("libvtx: Error read vtx header from %s\n", filename);
-        error = TRUE;
-        goto ERR_NO_CLOSE;
+        return FALSE;
     }
     else if (!ayemu_vtx_load_data(&vtx))
     {
         g_print("libvtx: Error read vtx data from %s\n", filename);
-        error = TRUE;
-        goto ERR_NO_CLOSE;
+        return FALSE;
     }
 
     ayemu_init(&ay);
@@ -127,36 +118,26 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
     if (playback->output->open_audio(FMT_S16_NE, freq, chans) == 0)
     {
         g_print("libvtx: output audio error!\n");
-        error = TRUE;
-        goto ERR_NO_CLOSE;
+        return FALSE;
     }
-
-    if (pause)
-        playback->output->pause (TRUE);
-
-    stop_flag = FALSE;
 
     playback->set_params(playback, 14 * 50 * 8, freq, bits / 8);
     playback->set_pb_ready(playback);
 
-    while (!stop_flag)
+    /* (time in sec) * 50 = offset in AY register data frames */
+    vtx.pos = start_time / 20;
+
+    while (!playback->check_stop() && !eof)
     {
-        pthread_mutex_lock(&seek_mutex);
-
+        int seek_value = playback->check_seek();
         if (seek_value >= 0)
-        {
-            vtx.pos = seek_value * 50 / 1000;     /* (time in sec) * 50 = offset in AY register data frames */
-            playback->output->flush(seek_value);
-            seek_value = -1;
-            pthread_cond_broadcast(&seek_cond);
-        }
-
-        pthread_mutex_unlock(&seek_mutex);
+            vtx.pos = seek_value / 20;
 
         /* fill sound buffer */
         stream = sndbuf;
 
         for (need = SNDBUFSIZE / rate; need > 0; need -= donow)
+        {
             if (left > 0)
             {                   /* use current AY register frame */
                 donow = (need > left) ? left : need;
@@ -178,64 +159,14 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
                     donow = 0;
                 }
             }
+        }
 
-        if (!stop_flag)
-            playback->output->write_audio(sndbuf, SNDBUFSIZE);
-
-        if (eof)
-            goto CLEANUP;
+        playback->output->write_audio(sndbuf, SNDBUFSIZE);
     }
 
-CLEANUP:
     ayemu_vtx_free(&vtx);
 
-    pthread_mutex_lock(&seek_mutex);
-    stop_flag = TRUE;
-    pthread_cond_broadcast(&seek_cond); /* wake up any waiting request */
-    pthread_mutex_unlock(&seek_mutex);
-
-ERR_NO_CLOSE:
-
-    return !error;
-}
-
-void vtx_stop(InputPlayback * playback)
-{
-    pthread_mutex_lock(&seek_mutex);
-
-    if (!stop_flag)
-    {
-        stop_flag = TRUE;
-        playback->output->abort_write();
-        pthread_cond_broadcast(&seek_cond);
-    }
-
-    pthread_mutex_unlock(&seek_mutex);
-}
-
-void vtx_seek(InputPlayback * playback, gint time)
-{
-    pthread_mutex_lock(&seek_mutex);
-
-    if (!stop_flag)
-    {
-        seek_value = time;
-        playback->output->abort_write();
-        pthread_cond_broadcast(&seek_cond);
-        pthread_cond_wait(&seek_cond, &seek_mutex);
-    }
-
-    pthread_mutex_unlock(&seek_mutex);
-}
-
-void vtx_pause(InputPlayback * playback, gboolean pause)
-{
-    pthread_mutex_lock(&seek_mutex);
-
-    if (!stop_flag)
-        playback->output->pause(pause);
-
-    pthread_mutex_unlock(&seek_mutex);
+    return TRUE;
 }
 
 static const char vtx_about[] =
@@ -249,9 +180,6 @@ AUD_INPUT_PLUGIN
     .domain = PACKAGE,
     .about_text = vtx_about,
     .play = vtx_play,
-    .stop = vtx_stop,
-    .pause = vtx_pause,
-    .mseek = vtx_seek,
     .file_info_box = vtx_file_info,
     .probe_for_tuple = vtx_probe_for_tuple,
     .is_our_file_from_vfs = vtx_is_our_fd,

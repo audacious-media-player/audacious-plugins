@@ -196,25 +196,14 @@ bool_t xs_play_file(InputPlayback *pb, const char *filename, VFSFile *file,
     tmpTuple = tuple_new_from_filename(tmpTune->sidFilename);
     xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
 
-    xs_status.stop_flag = FALSE;
     pthread_mutex_unlock(&xs_status_mutex);
 
     pb->set_tuple(pb, tmpTuple);
     pb->set_params (pb, -1, xs_status.audioFrequency, channels);
     pb->set_pb_ready(pb);
 
-    while (1)
+    while (! pb->check_stop ())
     {
-        pthread_mutex_lock(&xs_status_mutex);
-
-        if (xs_status.stop_flag)
-        {
-            pthread_mutex_unlock(&xs_status_mutex);
-            break;
-        }
-
-        pthread_mutex_unlock(&xs_status_mutex);
-
         bufRemaining = xs_sidplayfp_fillbuffer(&xs_status, audioBuffer, audioBufSize);
 
         pb->output->write_audio (audioBuffer, bufRemaining);
@@ -247,7 +236,6 @@ DONE:
      * next entry in the playlist .. or whatever it wishes.
      */
     pthread_mutex_lock(&xs_status_mutex);
-    xs_status.stop_flag = TRUE;
 
     /* Free tune information */
     xs_sidplayfp_delete(&xs_status);
@@ -261,42 +249,6 @@ DONE:
 xs_err_exit:
     error = TRUE;
     goto DONE;
-}
-
-
-/*
- * Stop playing
- * Here we set the playing status to stop and wait for playing
- * thread to shut down. In any "correctly" done plugin, this is
- * also the function where you close the output-plugin, but since
- * XMMS-SID has special behaviour (audio opened/closed in the
- * playing thread), we don't do that here.
- *
- * Finally tune and other memory allocations are free'd.
- */
-void xs_stop(InputPlayback *pb)
-{
-    /* Lock xs_status and stop playing thread */
-    pthread_mutex_lock(&xs_status_mutex);
-
-    if (! xs_status.stop_flag)
-    {
-        xs_status.stop_flag = TRUE;
-        pb->output->abort_write ();
-    }
-
-    pthread_mutex_unlock(&xs_status_mutex);
-}
-
-
-/*
- * Pause/unpause the playing
- */
-void xs_pause (InputPlayback * pb, bool_t pauseState)
-{
-    pthread_mutex_lock(&xs_status_mutex);
-    pb->output->pause(pauseState);
-    pthread_mutex_unlock(&xs_status_mutex);
 }
 
 
@@ -426,8 +378,6 @@ AUD_INPUT_PLUGIN
     .init = xs_init,                    /* Initialization */
     .cleanup = xs_close,                /* Cleanup */
     .play = xs_play_file,               /* Play given file */
-    .stop = xs_stop,                    /* Stop playing */
-    .pause = xs_pause,                  /* Pause playing */
     .probe_for_tuple = xs_probe_for_tuple,
 
     .extensions = xs_sid_fmts,          /* File ext assist */

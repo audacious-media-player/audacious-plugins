@@ -508,23 +508,15 @@ static void mpg123_stop_playback_worker (InputPlayback * data)
 	MPG123PlaybackContext * context = data->get_data (data);
 
 	if (context != NULL)
-	{
 		context->stop = TRUE;
-		data->output->abort_write ();
-	}
 
+	data->output->abort_write ();
 	pthread_mutex_unlock (& mutex);
 }
 
 static void mpg123_pause_playback_worker (InputPlayback * data, bool_t pause)
 {
-	pthread_mutex_lock (& mutex);
-	MPG123PlaybackContext * context = data->get_data (data);
-
-	if (context != NULL)
-		data->output->pause (pause);
-
-	pthread_mutex_unlock (& mutex);
+	data->output->pause (pause);
 }
 
 static void mpg123_seek_time (InputPlayback * data, int time)
@@ -533,11 +525,9 @@ static void mpg123_seek_time (InputPlayback * data, int time)
 	MPG123PlaybackContext * context = data->get_data (data);
 
 	if (context != NULL)
-	{
 		context->seek = time;
-		data->output->abort_write ();
-	}
 
+	data->output->abort_write ();
 	pthread_mutex_unlock (& mutex);
 }
 

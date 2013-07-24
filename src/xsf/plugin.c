@@ -220,24 +220,14 @@ ERR_NO_CLOSE:
 void xsf_stop(InputPlayback *playback)
 {
 	pthread_mutex_lock (& mutex);
-
-	if (!stop_flag)
-	{
-		stop_flag = TRUE;
-		playback->output->abort_write();
-	}
-
+	stop_flag = TRUE;
+	playback->output->abort_write ();
 	pthread_mutex_unlock (& mutex);
 }
 
 void xsf_pause(InputPlayback *playback, bool_t pause)
 {
-	pthread_mutex_lock (& mutex);
-
-	if (!stop_flag)
-		playback->output->pause(pause);
-
-	pthread_mutex_unlock (& mutex);
+	playback->output->pause (pause);
 }
 
 int xsf_is_our_fd(const char *filename, VFSFile *file)
@@ -255,13 +245,8 @@ int xsf_is_our_fd(const char *filename, VFSFile *file)
 void xsf_seek(InputPlayback *playback, int time)
 {
 	pthread_mutex_lock (& mutex);
-
-	if (!stop_flag)
-	{
-		seek_value = time;
-		playback->output->abort_write();
-	}
-
+	seek_value = time;
+	playback->output->abort_write ();
 	pthread_mutex_unlock (& mutex);
 }
 

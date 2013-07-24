@@ -35,8 +35,6 @@
 #define PI              3.14159265358979323846
 #endif
 
-static gboolean stop_flag = FALSE;
-
 static gboolean tone_is_our_fd(const gchar *filename, VFSFile *fd)
 {
     if (!strncmp(filename, "tone://", 7))
@@ -116,9 +114,6 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
         goto error_exit;
     }
 
-    if (pause)
-        playback->output->pause(TRUE);
-
     playback->set_params(playback, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
 
     tone = g_malloc(frequencies->len * sizeof(*tone));
@@ -130,10 +125,9 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
         tone[i].t = 0;
     }
 
-    stop_flag = FALSE;
     playback->set_pb_ready(playback);
 
-    while (!stop_flag)
+    while (!playback->check_stop())
     {
         for (i = 0; i < BUF_SAMPLES; i++)
         {
@@ -151,29 +145,14 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
             data[i] = (sum_sines * 0.999 / (gdouble) frequencies->len);
         }
 
-        if (!stop_flag)
-            playback->output->write_audio(data, BUF_BYTES);
+        playback->output->write_audio(data, BUF_BYTES);
     }
 
 error_exit:
     g_array_free(frequencies, TRUE);
     g_free(tone);
 
-    stop_flag = TRUE;
-
     return !error;
-}
-
-static void tone_stop(InputPlayback * playback)
-{
-    stop_flag = TRUE;
-    playback->output->abort_write();
-}
-
-static void tone_pause(InputPlayback * playback, gboolean pause)
-{
-    if (!stop_flag)
-        playback->output->pause(pause);
 }
 
 static Tuple *tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
@@ -209,7 +188,5 @@ AUD_INPUT_PLUGIN
     .schemes = schemes,
     .is_our_file_from_vfs = tone_is_our_fd,
     .play = tone_play,
-    .stop = tone_stop,
-    .pause = tone_pause,
     .probe_for_tuple = tone_probe_for_tuple
 )

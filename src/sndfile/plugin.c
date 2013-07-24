@@ -39,17 +39,12 @@
  */
 
 #include <math.h>
-#include <pthread.h>
 #include <stdlib.h>
 
 #include <sndfile.h>
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static int seek_value;
-static bool_t stop_flag;
 
 /* Virtual file access wrappers for libsndfile
  */
@@ -311,36 +306,23 @@ static bool_t play_start (InputPlayback * playback, const char * filename,
      * on the decoded data and therefore wrong for anything but floating-point
      * files. */
     playback->set_params (playback, 0, sfinfo.samplerate, sfinfo.channels);
-
-    seek_value = (start_time > 0) ? start_time : -1;
-    stop_flag = FALSE;
     playback->set_pb_ready(playback);
+
+    sf_seek (sndfile, (int64_t) start_time * sfinfo.samplerate / 1000, SEEK_SET);
 
     int size = sfinfo.channels * (sfinfo.samplerate / 50);
     float * buffer = malloc (sizeof (float) * size);
 
     while (stop_time < 0 || playback->output->written_time () < stop_time)
     {
-        pthread_mutex_lock (& mutex);
-
-        if (stop_flag)
-        {
-            pthread_mutex_unlock (& mutex);
+        if (playback->check_stop ())
             break;
-        }
 
+        int seek_value = playback->check_seek ();
         if (seek_value != -1)
-        {
-            sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000,
-             SEEK_SET);
-            playback->output->flush (seek_value);
-            seek_value = -1;
-        }
-
-        pthread_mutex_unlock (& mutex);
+            sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
 
         int samples = sf_read_float (sndfile, buffer, size);
-
         if (! samples)
             break;
 
@@ -350,47 +332,7 @@ static bool_t play_start (InputPlayback * playback, const char * filename,
     sf_close (sndfile);
     free (buffer);
 
-    pthread_mutex_lock (& mutex);
-    stop_flag = TRUE;
-    pthread_mutex_unlock (& mutex);
-
     return TRUE;
-}
-
-static void play_pause (InputPlayback * p, bool_t pause)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-        p->output->pause (pause);
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void play_stop (InputPlayback * p)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-    {
-        stop_flag = TRUE;
-        p->output->abort_write ();
-    }
-
-    pthread_mutex_unlock (& mutex);
-}
-
-static void file_mseek (InputPlayback * p, int time)
-{
-    pthread_mutex_lock (& mutex);
-
-    if (! stop_flag)
-    {
-        seek_value = time;
-        p->output->abort_write();
-    }
-
-    pthread_mutex_unlock (& mutex);
 }
 
 static int
@@ -436,12 +378,9 @@ AUD_INPUT_PLUGIN
     .domain = PACKAGE,
     .about_text = plugin_about,
     .play = play_start,
-    .stop = play_stop,
-    .pause = play_pause,
     .probe_for_tuple = get_song_tuple,
     .is_our_file_from_vfs = is_our_file_from_vfs,
     .extensions = sndfile_fmts,
-    .mseek = file_mseek,
 
     /* low priority fallback (but before ffaudio) */
     .priority = 9,

@@ -18,9 +18,6 @@
 Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd);
 gboolean console_play(InputPlayback *playback, const gchar *filename,
     VFSFile *file, gint start_time, gint stop_time, gboolean pause);
-void console_seek(InputPlayback *data, gint time);
-void console_stop(InputPlayback *playback);
-void console_pause(InputPlayback * playback, gboolean pause);
 gboolean console_init (void);
 
 static const char console_about[] =
@@ -45,9 +42,6 @@ AUD_INPUT_PLUGIN
     .init = console_init,
     .configure = console_cfg_ui,
     .play = console_play,
-    .stop = console_stop,
-    .pause = console_pause,
-    .mseek = console_seek,
     .extensions = gme_fmts,
     .probe_for_tuple = console_probe_for_tuple,
     .have_subtune = TRUE

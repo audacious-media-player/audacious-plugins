@@ -7,7 +7,6 @@
 #ifndef __MODPLUGXMMS_CMODPLUGXMMS_H_INCLUDED__
 #define __MODPLUGXMMS_CMODPLUGXMMS_H_INCLUDED__
 
-#include <pthread.h>
 #include <string>
 
 extern "C" {
@@ -52,9 +51,6 @@ public:
     bool CanPlayFileFromVFS(const std::string& aFilename, VFSFile *file);
 
     bool PlayFile(const std::string& aFilename, InputPlayback *data);
-    void Stop(InputPlayback *data);
-    void mseek (InputPlayback * playback, int time);
-    void pause (InputPlayback * playback, bool_t paused);
 
     Tuple* GetSongTuple(const std::string& aFilename);
 
@@ -63,10 +59,6 @@ public:
 private:
     unsigned char*  mBuffer;
     uint32_t  mBufSize;
-
-    pthread_mutex_t mutex;
-    int seek_time;
-    bool stop_flag;
 
     ModplugSettings mModProps;
 

@@ -7,7 +7,6 @@
  */
 
 #include <math.h>
-#include <pthread.h>
 #include <string.h>
 
 extern "C" {
@@ -18,11 +17,6 @@ extern "C" {
 #include "configure.h"
 #include "Music_Emu.h"
 #include "Gzip_Reader.h"
-
-static pthread_mutex_t seek_mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t seek_cond = PTHREAD_COND_INITIALIZER;
-static gint seek_value = -1;
-static gboolean stop_flag = FALSE;
 
 static const gint fade_threshold = 10 * 1000;
 static const gint fade_length    = 8 * 1000;
@@ -215,9 +209,8 @@ extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
 extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
     VFSFile *file, gint start_time, gint stop_time, gboolean pause)
 {
-    gint length, end_delay, sample_rate;
+    gint length, sample_rate;
     track_info_t info;
-    gboolean error = FALSE;
 
     // identify file
     ConsoleFileHandler fh(filename);
@@ -284,9 +277,6 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
     if (!playback->output->open_audio(FMT_S16_NE, sample_rate, 2))
         return FALSE;
 
-    if (pause)
-        playback->output->pause(TRUE);
-
     // set fade time
     if (length <= 0)
         length = audcfg.loop_length * 1000;
@@ -294,88 +284,28 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
         length -= fade_length / 2;
     fh.m_emu->set_fade(length, fade_length);
 
-    stop_flag = FALSE;
-    end_delay = 0;
     playback->set_pb_ready(playback);
 
-    while (!stop_flag)
+    while (!playback->check_stop())
     {
         /* Perform seek, if requested */
-        pthread_mutex_lock(&seek_mutex);
+        int seek_value = playback->check_seek();
         if (seek_value >= 0)
-        {
-            playback->output->flush(seek_value);
             fh.m_emu->seek(seek_value);
-            seek_value = -1;
-            pthread_cond_signal(&seek_cond);
-        }
-        pthread_mutex_unlock(&seek_mutex);
 
         /* Fill and play buffer of audio */
         gint const buf_size = 1024;
         Music_Emu::sample_t buf[buf_size];
-        if (end_delay)
-        {
-            // TODO: remove delay once host doesn't cut the end of track off
-            if (!--end_delay)
-                stop_flag = TRUE;
-            memset(buf, 0, sizeof(buf));
-        }
-        else
-        {
-            fh.m_emu->play(buf_size, buf);
-            if (fh.m_emu->track_ended())
-            {
-                end_delay = (fh.m_emu->sample_rate() * 3 * 2) / buf_size;
-            }
-        }
+
+        fh.m_emu->play(buf_size, buf);
 
         playback->output->write_audio(buf, sizeof(buf));
+
+        if (fh.m_emu->track_ended())
+            break;
     }
 
-    // stop playing
-    stop_flag = TRUE;
-
-    return !error;
-}
-
-extern "C" void console_seek(InputPlayback *playback, gint time)
-{
-    pthread_mutex_lock(&seek_mutex);
-
-    if (!stop_flag)
-    {
-        seek_value = time;
-        playback->output->abort_write();
-        pthread_cond_signal(&seek_cond);
-        pthread_cond_wait(&seek_cond, &seek_mutex);
-    }
-
-    pthread_mutex_unlock(&seek_mutex);
-}
-
-extern "C" void console_stop(InputPlayback *playback)
-{
-    pthread_mutex_lock(&seek_mutex);
-
-    if (!stop_flag)
-    {
-        stop_flag = TRUE;
-        playback->output->abort_write();
-        pthread_cond_signal(&seek_cond);
-    }
-
-    pthread_mutex_unlock (&seek_mutex);
-}
-
-extern "C" void console_pause(InputPlayback * playback, gboolean pause)
-{
-    pthread_mutex_lock(&seek_mutex);
-
-    if (!stop_flag)
-        playback->output->pause(pause);
-
-    pthread_mutex_unlock(&seek_mutex);
+    return TRUE;
 }
 
 extern "C" gboolean console_init (void)
