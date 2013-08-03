@@ -34,7 +34,7 @@ extern "C" {
  */
 
 /* Size for some small buffers (always static variables) */
-#define XS_BUF_SIZE             (1024)
+#define XS_BUF_SIZE             (2048)
 
 /* Default audio rendering frequency in Hz
  */
