@@ -78,14 +78,13 @@ static PSFEngine psf_probe(uint8_t *buffer)
 }
 
 /* ao_get_lib: called to load secondary files */
-static char *path;
+static const char *dirpath;
 
 int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
 {
 	void *filebuf;
 	int64_t size;
 
-	char *dirpath = dirname(path);
 	SPRINTF(path2, "%s/%s", dirpath, filename);
 	vfs_file_get_contents(path2, &filebuf, &size);
 
@@ -140,7 +139,10 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 	PSFEngineFunctors *f;
 	bool_t error = FALSE;
 
-	path = strdup(filename);
+	char dirbuf[strlen (filename) + 1];
+	strcpy (dirbuf, filename);
+	dirpath = dirname (dirbuf);
+
 	vfs_file_get_contents (filename, & buffer, & size);
 
 	eng = psf_probe(buffer);
@@ -188,8 +190,8 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 		break;
 	}
 
+	dirpath = NULL;
 	free(buffer);
-	free(path);
 
 	return ! error;
 }

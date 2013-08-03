@@ -43,13 +43,13 @@ static int seek_value = -1;
 static bool_t stop_flag = FALSE;
 
 /* xsf_get_lib: called to load secondary files */
-static char *path;
+static const char *dirpath;
+
 int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 {
 	void *filebuf;
 	int64_t size;
 
-	char *dirpath = dirname(path);
 	SPRINTF(path2, "%s/%s", dirpath, filename);
 	vfs_file_get_contents(path2, &filebuf, &size);
 
@@ -125,7 +125,10 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 	float pos;
 	bool_t error = FALSE;
 
-	path = strdup(filename);
+	char dirbuf[strlen (filename) + 1];
+	strcpy (dirbuf, filename);
+	dirpath = dirname (dirbuf);
+
 	vfs_file_get_contents (filename, & buffer, & size);
 
 	if (xsf_start(buffer, size) != AO_SUCCESS)
@@ -171,9 +174,6 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 			{
 				xsf_term();
 
-				free(path);
-				path = strdup(filename);
-
 				if (xsf_start(buffer, size) == AO_SUCCESS)
 				{
 					pos = 0;
@@ -211,8 +211,8 @@ CLEANUP:
 	pthread_mutex_unlock (& mutex);
 
 ERR_NO_CLOSE:
+	dirpath = NULL;
 	free(buffer);
-	free(path);
 
 	return !error;
 }
