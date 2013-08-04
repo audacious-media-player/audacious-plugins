@@ -30,16 +30,9 @@
 #include "i_common.h"
 #include "i_backend.h"
 #include "i_configure-ap.h"
-#include "i_configure-alsa.h"
 #include "i_configure-fluidsynth.h"
 
-#ifdef AMIDIPLUG_ALSA
-#define DEFAULT_BACKEND "alsa"
-#elif defined AMIDIPLUG_FLUIDSYNTH
 #define DEFAULT_BACKEND "fluidsynth"
-#else
-#define DEFAULT_BACKEND ""
-#endif
 
 /* from amidi-plug.c */
 extern amidiplug_sequencer_backend_t * backend;
@@ -130,17 +123,6 @@ void i_configure_gui (void)
     gtk_notebook_append_page (GTK_NOTEBOOK (configwin_notebook),
                               ap_page_alignment, ap_pagelabel_alignment);
 
-#ifdef AMIDIPLUG_ALSA
-    /* ALSA BACKEND CONFIGURATION TAB */
-    GtkWidget * alsa_pagelabel_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
-    GtkWidget * alsa_page_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
-    gtk_alignment_set_padding (GTK_ALIGNMENT (alsa_page_alignment), 3, 3, 8, 3);
-    i_configure_gui_tab_alsa (alsa_page_alignment, backend_list, configwin);
-    i_configure_gui_tablabel_alsa (alsa_pagelabel_alignment, backend_list, configwin);
-    gtk_notebook_append_page (GTK_NOTEBOOK (configwin_notebook),
-                              alsa_page_alignment, alsa_pagelabel_alignment);
-#endif /* AMIDIPLUG_ALSA */
-
 #if AMIDIPLUG_FLUIDSYNTH
     /* FLUIDSYNTH BACKEND CONFIGURATION TAB */
     GtkWidget * fsyn_pagelabel_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
@@ -181,9 +163,6 @@ static void i_configure_commit (void)
 
 void i_configure_cfg_backend_free (void)
 {
-#ifdef AMIDIPLUG_ALSA
-    i_configure_cfg_alsa_free(); /* free alsa backend configuration */
-#endif
 #ifdef AMIDIPLUG_FLUIDSYNTH
     i_configure_cfg_fsyn_free(); /* free fluidsynth backend configuration */
 #endif
@@ -197,9 +176,6 @@ void i_configure_cfg_backend_read (void)
     amidiplug_cfg_backend = malloc (sizeof (amidiplug_cfg_backend_t));
     memset (amidiplug_cfg_backend, 0, sizeof (amidiplug_cfg_backend_t));
 
-#ifdef AMIDIPLUG_ALSA
-    i_configure_cfg_alsa_read ();
-#endif
 #ifdef AMIDIPLUG_FLUIDSYNTH
     i_configure_cfg_fsyn_read ();
 #endif
@@ -208,9 +184,6 @@ void i_configure_cfg_backend_read (void)
 
 void i_configure_cfg_backend_save (void)
 {
-#ifdef AMIDIPLUG_ALSA
-    i_configure_cfg_alsa_save (); /* save alsa backend configuration */
-#endif
 #ifdef AMIDIPLUG_FLUIDSYNTH
     i_configure_cfg_fsyn_save (); /* save fluidsynth backend configuration */
 #endif

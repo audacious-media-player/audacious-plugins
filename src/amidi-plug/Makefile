@@ -5,12 +5,11 @@ SRCS = amidi-plug.c		\
        i_backend.c		\
        i_configure.c		\
        i_configure-ap.c		\
-       i_configure-alsa.c	\
        i_configure-fluidsynth.c	\
        i_utils.c		\
        i_fileinfo.c
 
-SUBDIRS = ${AMIDIPLUG_BACKENDS}
+SUBDIRS = backend-fluidsynth
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -18,6 +17,8 @@ include ../../extra.mk
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GLIB_CFLAGS} ${PANGO_CFLAGS} ${GMODULE_CFLAGS} \
-	-DAMIDIPLUGBACKENDDIR=\"${plugindir}/${AMIDIPLUG_BACKEND_DIR}\" -I../..
-LIBS += ${GTK_LIBS} ${PANGO_LIBS} ${GMODULE_LIBS} ${GLIB_LIBS}
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GTK_CFLAGS} ${GMODULE_CFLAGS} -I../..
+LIBS += ${GTK_LIBS} ${GMODULE_LIBS}
+
+CPPFLAGS += -DAMIDIPLUGBACKENDDIR=\"${plugindir}/amidi-plug\" \
+            -DAMIDIPLUG_FLUIDSYNTH

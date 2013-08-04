@@ -672,103 +672,21 @@ if test "x$enable_sndio" != "xno"; then
     fi
 fi
 
-dnl *** amidi-plug (note: to avoid checking twice ALSA, this should appear somewhere after the alsa output plugin check)
+dnl amidi-plug
+dnl ==========
 
 AC_ARG_ENABLE(amidiplug,
-    [AS_HELP_STRING([--disable-amidiplug], [disable amidi-plug input plugin (default=check)])],
-    [enable_amidiplug=$enableval],
-    [enable_amidiplug=check]
-)
+ [AS_HELP_STRING([--disable-amidiplug], [disable amidi-plug input plugin])],
+ [enable_amidiplug=$enableval], [enable_amidiplug=auto])
 
-AC_ARG_ENABLE(amidiplug-alsa,
-    [AS_HELP_STRING([--disable-amidiplug-alsa], [disable amidi-plug ALSA backend (default=enabled)])],
-    [enable_amidiplug_alsa=$enableval],
-    [enable_amidiplug_alsa=auto]
-)
-
-AC_ARG_ENABLE(amidiplug-flsyn,
-    [AS_HELP_STRING([--disable-amidiplug-flsyn], [disable amidi-plug FluidSynth backend (default=enabled)])],
-    [enable_amidiplug_fluidsynth=$enableval],
-    [enable_amidiplug_fluidsynth=auto]
-)
-
-if test "x$enable_amidiplug" = "xno"; then
-  AC_MSG_RESULT([*** amidi-plug disabled per user request ***])
-  enable_amidiplug=no
-else
-  if test "x$enable_amidiplug_alsa" != "xauto"; then
-    enable_amidiplug=yes
-  elif test "x$enable_amidiplug_fluidsynth" != "xauto"; then
-    enable_amidiplug=yes
-  fi
-fi
-
-if test "x$have_alsa" = "xyes"; then
-  AUD_TRY_COMPILE([ALSA MIDI support], [alsalib_cv_hasmidi],
-[#include <alsa/asoundlib.h>],
-[snd_seq_t *seq = NULL;],
-  [alsalib_midi=yes], [alsalib_midi=no])
-fi
-
-
-if test "x$enable_amidiplug" = "xcheck"; then
-  if test "x$alsalib_midi" = "xyes"; then
-    enable_amidiplug=yes
-  else
+have_amidiplug=no
+if test "x$enable_amidiplug" != "xno"; then
     PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
-      [fluidsynth_available=yes],[fluidsynth_available=no])
-    if test "x$fluidsynth_available" = "xyes"; then
-      enable_amidiplug=yes
-    else
-      enable_amidiplug=no
-      AC_MSG_WARN(["*** Neither ALSA or FluidSynth software synth (>= 1.0.6) have been found, so amidi-plug won't be compiled unless you explicitly request it with --enable-amidiplug ***"])
-    fi
-  fi
-fi
-
-if test "x$enable_amidiplug" = "xyes"; then
-  INPUT_PLUGINS="$INPUT_PLUGINS amidi-plug"
-  AMIDIPLUG_BACKEND_DIR=amidi-plug
-  AC_SUBST(AMIDIPLUG_BACKEND_DIR)
-  if test "x$enable_amidiplug_alsa" = "xauto" -o "x$enable_amidiplug_alsa" = "xyes"; then
-    if test "x$alsalib_midi" = "xyes"; then
-      AMIDIPLUG_BACKENDS="$AMIDIPLUG_BACKENDS backend-alsa"
-      enable_amidiplug_alsa=yes
-    else
-      if test "x$enable_amidiplug_alsa" = "xyes"; then
-        AC_MSG_ERROR([Cannot find ALSA development files (ver >= 1.0), but compilation of AMIDI-Plug ALSA backend has been explicitly requested; please install ALSA dev files and run configure again])
-        enable_amidiplug_alsa=no
-      else
-        enable_amidiplug_alsa=no
-      fi
-    fi
-  fi
-  if test "x$enable_amidiplug_fluidsynth" = "xauto" -o "x$enable_amidiplug_fluidsynth" = "xyes"; then
-    if test "x$fluidsynth_available" != "xyes" -a "x$fluidsynth_available" != "xno"; then
-      PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
-        [fluidsynth_available=yes],[fluidsynth_available=no])
-    fi
-    if test "x$fluidsynth_available" = "xyes"; then
-      AMIDIPLUG_BACKENDS="$AMIDIPLUG_BACKENDS backend-fluidsynth"
-      enable_amidiplug_fluidsynth=yes
-    else
-      if test "x$enable_amidiplug_fluidsynth" = "xyes"; then
-        AC_MSG_ERROR([Cannot find FluidSynth development files (ver >= 1.0.6), but compilation of AMIDI-Plug FluidSynth backend has been explicitly requested; please install FluidSynth dev files and run configure again])
-        enable_amidiplug_fluidsynth=no
-      else
-        enable_amidiplug_fluidsynth=no
-      fi
-    fi
-  fi
-  AC_SUBST(AMIDIPLUG_BACKENDS)
-
-  if test "$enable_amidiplug_alsa" = "yes" ; then
-    AC_DEFINE([AMIDIPLUG_ALSA], [1], [Define if amidi-plug ALSA backend is to be built])
-  fi
-
-  if test "$enable_amidiplug_fluidsynth" = "yes" ; then
-    AC_DEFINE([AMIDIPLUG_FLUIDSYNTH], [1], [Define if amidi-plug FluidSynth backend is to be built])
-  fi
+        [have_amidiplug=yes
+         OUTPUT_PLUGINS="$OUTPUT_PLUGINS amidiplug"],
+        [if test "x$enable_amidiplug" = "xyes"; then
+            AC_MSG_ERROR([Cannot find FluidSynth development files (ver >= 1.0.6), but compilation of amidi-plug input plugin has been explicitly requested; please install FluidSynth dev files and run configure again])
+         fi])
 fi
 
 dnl Audio CD
@@ -1171,9 +1089,7 @@ echo "  MPEG-1 Layer I/II/III (mpg123):         $have_mp3"
 echo "  MPEG-2/4 AAC (aac):                     $have_aac"
 echo "  FFaudio (ffaudio):                      $have_ffaudio"
 echo "  Module decoder (modplug):               $have_modplug"
-echo "  MIDI modular plugin (amidi-plug):       $enable_amidiplug"
-echo "    -> ALSA backend:                      $enable_amidiplug_alsa"
-echo "    -> FluidSynth backend:                $enable_amidiplug_fluidsynth"
+echo "  MIDI synthesizer (amidi-plug):          $have_amidiplug"
 echo "  CD Digital Audio (cdaudio_ng):          $have_cdaudio_ng"
 echo "  sndfile extensions:                     $have_sndfile"
 echo "  Tone Generator:                         yes"
