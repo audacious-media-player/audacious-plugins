@@ -25,7 +25,6 @@
 */
 
 #include <libgen.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -60,6 +59,11 @@ static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
     {spx_start, spx_stop, psf_seek, spx_execute},
 };
 
+static PSFEngineFunctors *f;
+static const char *dirpath;
+
+bool_t stop_flag = FALSE;
+
 static PSFEngine psf_probe(uint8_t *buffer)
 {
 	if (!memcmp(buffer, "PSF\x01", 4))
@@ -78,8 +82,6 @@ static PSFEngine psf_probe(uint8_t *buffer)
 }
 
 /* ao_get_lib: called to load secondary files */
-static const char *dirpath;
-
 int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
 {
 	void *filebuf;
@@ -93,10 +95,6 @@ int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
 
 	return AO_SUCCESS;
 }
-
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static int seek = 0;
-bool_t stop_flag = FALSE;
 
 Tuple *psf2_tuple(const char *filename, VFSFile *file)
 {
@@ -118,12 +116,10 @@ Tuple *psf2_tuple(const char *filename, VFSFile *file)
 	tuple_set_int(t, FIELD_LENGTH, NULL, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
 	tuple_set_str(t, FIELD_ARTIST, NULL, c->inf_artist);
 	tuple_set_str(t, FIELD_ALBUM, NULL, c->inf_game);
-	tuple_set_str(t, -1, "game", c->inf_game);
 	tuple_set_str(t, FIELD_TITLE, NULL, c->inf_title);
 	tuple_set_str(t, FIELD_COPYRIGHT, NULL, c->inf_copy);
 	tuple_set_str(t, FIELD_QUALITY, NULL, _("sequenced"));
 	tuple_set_str(t, FIELD_CODEC, NULL, "PlayStation 1/2 Audio");
-	tuple_set_str(t, -1, "console", "PlayStation 1/2");
 
 	free(c);
 	free(buf);
@@ -136,7 +132,6 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 	void *buffer;
 	int64_t size;
 	PSFEngine eng;
-	PSFEngineFunctors *f;
 	bool_t error = FALSE;
 
 	char dirbuf[strlen (filename) + 1];
@@ -166,30 +161,10 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 	stop_flag = FALSE;
 	data->set_pb_ready(data);
 
-	for (;;)
-	{
-		f->execute(data);
+	f->execute(data);
+	f->stop();
 
-		if (seek)
-		{
-			data->output->flush(seek);
-
-			f->stop();
-
-			if (f->start(buffer, size) == AO_SUCCESS)
-			{
-				f->seek(seek);
-				seek = 0;
-				continue;
-			}
-			else
-				break;
-		}
-
-		f->stop();
-		break;
-	}
-
+	f = NULL;
 	dirpath = NULL;
 	free(buffer);
 
@@ -198,43 +173,21 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 
 void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 {
-	if (buffer == NULL)
+	if (! buffer || playback->check_stop ())
 	{
 		stop_flag = TRUE;
-
 		return;
 	}
 
-	playback->output->write_audio (buffer, count);
+	int seek = playback->check_seek ();
 
-	if (seek)
+	if (seek >= 0)
 	{
-		if (psf2_seek(seek))
-		{
-			playback->output->flush(seek);
-			seek = 0;
-		}
-		else
-		{
-			stop_flag = TRUE;
-			return;
-		}
+		f->seek (seek);
+		playback->output->flush (seek);
 	}
-}
 
-void psf2_Stop(InputPlayback *playback)
-{
-	pthread_mutex_lock (& mutex);
-
-	stop_flag = TRUE;
-	playback->output->abort_write ();
-
-	pthread_mutex_unlock (& mutex);
-}
-
-void psf2_pause(InputPlayback *playback, bool_t pause)
-{
-	playback->output->pause (pause);
+	playback->output->write_audio (buffer, count);
 }
 
 int psf2_is_our_fd(const char *filename, VFSFile *file)
@@ -246,11 +199,6 @@ int psf2_is_our_fd(const char *filename, VFSFile *file)
 	return (psf_probe(magic) != ENG_NONE);
 }
 
-static void psf2_Seek(InputPlayback *playback, int time)
-{
-	seek = time;
-}
-
 static const char *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
 
 AUD_INPUT_PLUGIN
@@ -258,9 +206,6 @@ AUD_INPUT_PLUGIN
 	.name = N_("OpenPSF PSF1/PSF2 Decoder"),
 	.domain = PACKAGE,
 	.play = psf2_play,
-	.stop = psf2_Stop,
-	.pause = psf2_pause,
-	.mseek = psf2_Seek,
 	.probe_for_tuple = psf2_tuple,
 	.is_our_file_from_vfs = psf2_is_our_fd,
 	.extensions = psf2_fmts,
