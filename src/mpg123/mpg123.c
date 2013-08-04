@@ -19,7 +19,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <pthread.h>
 #include <string.h>
 
 #include <mpg123.h>
@@ -38,8 +37,6 @@
 
 /* Define to read all frame headers when calculating file length */
 /* #define FULL_SCAN */
-
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static ssize_t replace_read (void * file, void * buffer, size_t length)
 {
@@ -243,8 +240,6 @@ typedef struct {
 	long rate;
 	int channels;
 	int encoding;
-	int64_t seek;
-	bool_t stop;
 	bool_t stream;
 	Tuple *tu;
 } MPG123PlaybackContext;
@@ -301,12 +296,14 @@ static void update_stream_tuple (InputPlayback * p, VFSFile * file,
 	}
 }
 
+static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
+{
+	fprintf (stderr, "mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
+}
+
 static bool_t mpg123_playback_worker (InputPlayback * data, const char *
  filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
-	if (! file)
-		return FALSE;
-
 	bool_t error = FALSE;
 	MPG123PlaybackContext ctx;
 	int ret;
@@ -325,10 +322,6 @@ static bool_t mpg123_playback_worker (InputPlayback * data, const char *
 	ctx.stream = vfs_is_streaming (file);
 	ctx.tu = ctx.stream ? get_stream_tuple (data, filename, file) : NULL;
 
-	ctx.seek = (start_time > 0) ? start_time : -1;
-	ctx.stop = FALSE;
-	data->set_data (data, & ctx);
-
 	ctx.decoder = mpg123_new (NULL, NULL);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
@@ -344,8 +337,7 @@ static bool_t mpg123_playback_worker (InputPlayback * data, const char *
 	if (mpg123_open_handle (ctx.decoder, file) < 0)
 	{
 OPEN_ERROR:
-		fprintf (stderr, "mpg123: Error opening %s: %s.\n", filename,
-		 mpg123_strerror (ctx.decoder));
+		print_mpg123_error (filename, ctx.decoder);
 		error = TRUE;
 		goto cleanup;
 	}
@@ -383,51 +375,32 @@ GET_FORMAT:
 		goto cleanup;
 	}
 
-	data->output->flush (start_time);
-
-	if (pause)
-		data->output->pause (TRUE);
-
 	data->set_gain_from_playlist (data);
-
-	pthread_mutex_lock (& mutex);
-
-	AUDDBG("starting decode\n");
 	data->set_pb_ready(data);
 
-	pthread_mutex_unlock (& mutex);
+	if (start_time)
+	{
+		if (mpg123_seek (ctx.decoder, (int64_t) start_time * ctx.rate / 1000, SEEK_SET) < 0)
+			print_mpg123_error (filename, ctx.decoder);
+
+		outbuf_size = 0;
+	}
 
 	int64_t frames_played = 0;
 	int64_t frames_total = (int64_t) (stop_time - start_time) * ctx.rate / 1000;
 
-	while (1)
+	while (! data->check_stop ())
 	{
-		pthread_mutex_lock (& mutex);
+		int seek = data->check_seek ();
 
-		if (ctx.stop)
+		if (seek >= 0)
 		{
-			pthread_mutex_unlock (& mutex);
-			break;
+			if (mpg123_seek (ctx.decoder, (int64_t) seek * ctx.rate / 1000, SEEK_SET) < 0)
+				print_mpg123_error (filename, ctx.decoder);
+
+			frames_played = (int64_t) (seek - start_time) * ctx.rate / 1000;
+			outbuf_size = 0;
 		}
-
-		if (ctx.seek >= 0)
-		{
-			if (mpg123_seek (ctx.decoder, (int64_t) ctx.seek * ctx.rate / 1000, SEEK_SET) < 0)
-			{
-				fprintf (stderr, "mpg123 error in %s: %s\n", filename,
-				 mpg123_strerror (ctx.decoder));
-			}
-			else
-			{
-				data->output->flush (ctx.seek);
-				frames_played = (int64_t) (ctx.seek - start_time) * ctx.rate / 1000;
-				outbuf_size = 0;
-			}
-
-            ctx.seek = -1;
-		}
-
-		pthread_mutex_unlock (& mutex);
 
 		mpg123_info(ctx.decoder, &fi);
 		bitrate_sum += fi.bitrate;
@@ -451,15 +424,14 @@ GET_FORMAT:
 		 sizeof outbuf, & outbuf_size)) < 0)
 		{
 			if (ret == MPG123_DONE || ret == MPG123_ERR_READER)
-				goto decode_cleanup;
+				break;
 
-			fprintf (stderr, "mpg123 error in %s: %s\n", filename,
-			 mpg123_strerror (ctx.decoder));
+			print_mpg123_error (filename, ctx.decoder);
 
 			if (++ error_count >= 10)
 			{
 				error = TRUE;
-				goto decode_cleanup;
+				break;
 			}
 		}
 		else
@@ -485,50 +457,15 @@ GET_FORMAT:
 			outbuf_size = 0;
 
 			if (stop)
-				goto decode_cleanup;
+				break;
 		}
 	}
-
-decode_cleanup:
-	AUDDBG("decode complete\n");
-	pthread_mutex_lock (& mutex);
-	data->set_data (data, NULL);
-	pthread_mutex_unlock (& mutex);
 
 cleanup:
 	mpg123_delete(ctx.decoder);
 	if (ctx.tu)
 		tuple_unref (ctx.tu);
 	return ! error;
-}
-
-static void mpg123_stop_playback_worker (InputPlayback * data)
-{
-	pthread_mutex_lock (& mutex);
-	MPG123PlaybackContext * context = data->get_data (data);
-
-	if (context != NULL)
-		context->stop = TRUE;
-
-	data->output->abort_write ();
-	pthread_mutex_unlock (& mutex);
-}
-
-static void mpg123_pause_playback_worker (InputPlayback * data, bool_t pause)
-{
-	data->output->pause (pause);
-}
-
-static void mpg123_seek_time (InputPlayback * data, int time)
-{
-	pthread_mutex_lock (& mutex);
-	MPG123PlaybackContext * context = data->get_data (data);
-
-	if (context != NULL)
-		context->seek = time;
-
-	data->output->abort_write ();
-	pthread_mutex_unlock (& mutex);
 }
 
 static bool_t mpg123_write_tag (const Tuple * tuple, VFSFile * handle)
@@ -561,9 +498,6 @@ AUD_INPUT_PLUGIN
 	.is_our_file_from_vfs = mpg123_probe_for_fd,
 	.probe_for_tuple = mpg123_probe_for_tuple,
 	.play = mpg123_playback_worker,
-	.stop = mpg123_stop_playback_worker,
-	.mseek = mpg123_seek_time,
-	.pause = mpg123_pause_playback_worker,
 	.update_song_tuple = mpg123_write_tag,
 	.get_song_image = mpg123_get_image,
 )
