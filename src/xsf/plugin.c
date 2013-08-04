@@ -25,7 +25,6 @@
 */
 
 #include <libgen.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,10 +36,6 @@
 #include "ao.h"
 #include "corlett.h"
 #include "vio2sf.h"
-
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static int seek_value = -1;
-static bool_t stop_flag = FALSE;
 
 /* xsf_get_lib: called to load secondary files */
 static const char *dirpath;
@@ -144,16 +139,11 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 	}
 
 	playback->set_params(playback, 44100*2*2*8, 44100, 2);
-
-	if (pause)
-		playback->output->pause (TRUE);
-
-	stop_flag = FALSE;
 	playback->set_pb_ready(playback);
 
-	while (!stop_flag)
+	while (! playback->check_stop ())
 	{
-		pthread_mutex_lock (& mutex);
+		int seek_value = playback->check_seek ();
 
 		if (seek_value >= 0)
 		{
@@ -166,9 +156,6 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 					xsf_gen(samples, seglen);
 					pos += 16.666;
 				}
-
-				playback->output->flush(seek_value);
-				seek_value = -1;
 			}
 			else if (seek_value < playback->output->written_time ())
 			{
@@ -182,9 +169,6 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 						xsf_gen(samples, seglen);
 						pos += 16.666; /* each segment is 16.666ms */
 					}
-
-					playback->output->flush(seek_value);
-					seek_value = -1;
 				}
 			   	else
 				{
@@ -193,8 +177,6 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 				}
 			}
 		}
-
-		pthread_mutex_unlock (& mutex);
 
 		xsf_gen(samples, seglen);
 		playback->output->write_audio((uint8_t *)samples, seglen * 4);
@@ -206,28 +188,11 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 CLEANUP:
 	xsf_term();
 
-	pthread_mutex_lock (& mutex);
-	stop_flag = TRUE;
-	pthread_mutex_unlock (& mutex);
-
 ERR_NO_CLOSE:
 	dirpath = NULL;
 	free(buffer);
 
 	return !error;
-}
-
-void xsf_stop(InputPlayback *playback)
-{
-	pthread_mutex_lock (& mutex);
-	stop_flag = TRUE;
-	playback->output->abort_write ();
-	pthread_mutex_unlock (& mutex);
-}
-
-void xsf_pause(InputPlayback *playback, bool_t pause)
-{
-	playback->output->pause (pause);
 }
 
 int xsf_is_our_fd(const char *filename, VFSFile *file)
@@ -242,14 +207,6 @@ int xsf_is_our_fd(const char *filename, VFSFile *file)
 	return 0;
 }
 
-void xsf_seek(InputPlayback *playback, int time)
-{
-	pthread_mutex_lock (& mutex);
-	seek_value = time;
-	playback->output->abort_write ();
-	pthread_mutex_unlock (& mutex);
-}
-
 static const char *xsf_fmts[] = { "2sf", "mini2sf", NULL };
 
 AUD_INPUT_PLUGIN
@@ -257,9 +214,6 @@ AUD_INPUT_PLUGIN
 	.name = N_("2SF Decoder"),
 	.domain = PACKAGE,
 	.play = xsf_play,
-	.stop = xsf_stop,
-	.pause = xsf_pause,
-	.mseek = xsf_seek,
 	.probe_for_tuple = xsf_tuple,
 	.is_our_file_from_vfs = xsf_is_our_fd,
 	.extensions = xsf_fmts,
