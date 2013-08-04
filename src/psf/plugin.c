@@ -185,6 +185,7 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 	{
 		f->seek (seek);
 		playback->output->flush (seek);
+		return;
 	}
 
 	playback->output->write_audio (buffer, count);
