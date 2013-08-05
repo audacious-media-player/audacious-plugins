@@ -287,7 +287,6 @@ void i_configure_ev_sysamplerate_commit (void * samplerate_custom_radiobt)
 
 
 void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
-                               void * backend_list_p,
                                void * commit_button)
 {
     GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
@@ -649,7 +648,6 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
 
 
 void i_configure_gui_tablabel_fsyn (GtkWidget * fsyn_page_alignment,
-                                    void * backend_list_p,
                                     void * commit_button)
 {
     GtkWidget * pagelabel_vbox, *pagelabel_image, *pagelabel_label;

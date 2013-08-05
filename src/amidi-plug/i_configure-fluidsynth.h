@@ -25,8 +25,8 @@
 
 #ifdef AMIDIPLUG_FLUIDSYNTH
 
-void i_configure_gui_tab_fsyn (GtkWidget *, void *, void *);
-void i_configure_gui_tablabel_fsyn (GtkWidget *, void *, void *);
+void i_configure_gui_tab_fsyn (GtkWidget *, void *);
+void i_configure_gui_tablabel_fsyn (GtkWidget *, void *);
 void i_configure_cfg_fsyn_free (void);
 void i_configure_cfg_fsyn_read (void);
 void i_configure_cfg_fsyn_save (void);

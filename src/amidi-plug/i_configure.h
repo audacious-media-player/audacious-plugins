@@ -23,7 +23,6 @@
 
 typedef struct
 {
-    char * ap_seq_backend;
     int ap_opts_transpose_value;
     int ap_opts_drumshift_value;
     int ap_opts_length_precalc;

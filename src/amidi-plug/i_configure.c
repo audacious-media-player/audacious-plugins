@@ -32,8 +32,6 @@
 #include "i_configure-ap.h"
 #include "i_configure-fluidsynth.h"
 
-#define DEFAULT_BACKEND "fluidsynth"
-
 /* from amidi-plug.c */
 extern amidiplug_sequencer_backend_t * backend;
 
@@ -110,16 +108,12 @@ void i_configure_gui (void)
     gtk_notebook_set_tab_pos (GTK_NOTEBOOK (configwin_notebook), GTK_POS_LEFT);
     gtk_box_pack_start (GTK_BOX (configwin_vbox), configwin_notebook, TRUE, TRUE, 2);
 
-    /* GET A LIST OF BACKENDS */
-    GSList * backend_list = i_backend_list_lookup ();
-    GSList * backend_list_h = backend_list;
-
     /* AMIDI-PLUG PREFERENCES TAB */
     GtkWidget * ap_pagelabel_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
     GtkWidget * ap_page_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
     gtk_alignment_set_padding (GTK_ALIGNMENT (ap_page_alignment), 3, 3, 8, 3);
-    i_configure_gui_tab_ap (ap_page_alignment, backend_list, configwin);
-    i_configure_gui_tablabel_ap (ap_pagelabel_alignment, backend_list, configwin);
+    i_configure_gui_tab_ap (ap_page_alignment, configwin);
+    i_configure_gui_tablabel_ap (ap_pagelabel_alignment, configwin);
     gtk_notebook_append_page (GTK_NOTEBOOK (configwin_notebook),
                               ap_page_alignment, ap_pagelabel_alignment);
 
@@ -128,13 +122,11 @@ void i_configure_gui (void)
     GtkWidget * fsyn_pagelabel_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
     GtkWidget * fsyn_page_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
     gtk_alignment_set_padding (GTK_ALIGNMENT (fsyn_page_alignment), 3, 3, 8, 3);
-    i_configure_gui_tab_fsyn (fsyn_page_alignment, backend_list, configwin);
-    i_configure_gui_tablabel_fsyn (fsyn_pagelabel_alignment, backend_list, configwin);
+    i_configure_gui_tab_fsyn (fsyn_page_alignment, configwin);
+    i_configure_gui_tablabel_fsyn (fsyn_pagelabel_alignment, configwin);
     gtk_notebook_append_page (GTK_NOTEBOOK (configwin_notebook),
                               fsyn_page_alignment, fsyn_pagelabel_alignment);
 #endif
-
-    i_backend_list_free (backend_list_h);  /* done, free the list of available backends */
 
     gtk_widget_show_all (configwin);
 }
@@ -152,7 +144,7 @@ static void i_configure_commit (void)
         aud_drct_stop ();
 
     i_backend_unload (backend);
-    backend = i_backend_load (amidiplug_cfg_ap->ap_seq_backend);
+    backend = i_backend_load ();
 
     /* quit if new backend fails to load
      * again, it's better than crashing */
@@ -195,7 +187,6 @@ void i_configure_cfg_ap_read (void)
 {
     static const char * const defaults[] =
     {
-        "ap_seq_backend", DEFAULT_BACKEND,
         "ap_opts_transpose_value", "0",
         "ap_opts_drumshift_value", "0",
         "ap_opts_length_precalc", "0",
@@ -207,7 +198,6 @@ void i_configure_cfg_ap_read (void)
     aud_config_set_defaults ("amidiplug", defaults);
 
     amidiplug_cfg_ap = malloc (sizeof (amidiplug_cfg_ap_t));
-    amidiplug_cfg_ap->ap_seq_backend = aud_get_string ("amidiplug", "ap_seq_backend");
     amidiplug_cfg_ap->ap_opts_transpose_value = aud_get_int ("amidiplug", "ap_opts_transpose_value");
     amidiplug_cfg_ap->ap_opts_drumshift_value = aud_get_int ("amidiplug", "ap_opts_drumshift_value");
     amidiplug_cfg_ap->ap_opts_length_precalc = aud_get_int ("amidiplug", "ap_opts_length_precalc");
@@ -218,7 +208,6 @@ void i_configure_cfg_ap_read (void)
 
 void i_configure_cfg_ap_save (void)
 {
-    aud_set_string ("amidiplug", "ap_seq_backend", amidiplug_cfg_ap->ap_seq_backend);
     aud_set_int ("amidiplug", "ap_opts_transpose_value", amidiplug_cfg_ap->ap_opts_transpose_value);
     aud_set_int ("amidiplug", "ap_opts_drumshift_value", amidiplug_cfg_ap->ap_opts_drumshift_value);
     aud_set_int ("amidiplug", "ap_opts_length_precalc", amidiplug_cfg_ap->ap_opts_length_precalc);
@@ -229,8 +218,6 @@ void i_configure_cfg_ap_save (void)
 
 void i_configure_cfg_ap_free (void)
 {
-    free (amidiplug_cfg_ap->ap_seq_backend);
-    amidiplug_cfg_ap->ap_seq_backend = NULL;
     free (amidiplug_cfg_ap);
     amidiplug_cfg_ap = NULL;
 }

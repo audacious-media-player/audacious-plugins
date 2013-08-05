@@ -21,7 +21,6 @@
 #ifndef _I_BACKEND_H
 #define _I_BACKEND_H 1
 
-#include <gmodule.h>
 #include <libaudcore/core.h>
 
 struct amidiplug_cfg_backend_s;
@@ -29,17 +28,6 @@ struct midievent_s;
 
 typedef struct
 {
-    char * desc;
-    char * filename;
-    char * longname;
-    char * name;
-    int ppos;
-}
-amidiplug_sequencer_backend_name_t;
-
-typedef struct
-{
-    GModule * gmodule;
     int (*init) (struct amidiplug_cfg_backend_s *);
     int (*cleanup) (void);
     int (*audio_info_get) (int *, int *, int *);
@@ -67,13 +55,10 @@ typedef struct
     int (*seq_output) (void * *, int *);
     int (*seq_output_shut) (unsigned, int);
     int (*seq_get_port_count) (void);
-    bool_t autonomous_audio;
 }
 amidiplug_sequencer_backend_t;
 
-GSList * i_backend_list_lookup (void);
-void i_backend_list_free (GSList *);
-amidiplug_sequencer_backend_t * i_backend_load (const char * module_name);
+amidiplug_sequencer_backend_t * i_backend_load (void);
 void i_backend_unload (amidiplug_sequencer_backend_t * backend);
 
 #endif /* !_I_BACKEND_H */

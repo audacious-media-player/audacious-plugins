@@ -71,8 +71,6 @@ static pthread_t audio_thread;
 static bool_t audio_stop_flag;
 static int audio_seek_time;
 
-static volatile int current_time = -1;
-
 static void amidiplug_cleanup (void)
 {
     if (backend)
@@ -87,7 +85,7 @@ static bool_t amidiplug_init (void)
     i_configure_cfg_ap_read ();
     i_configure_cfg_backend_read ();
 
-    backend = i_backend_load (amidiplug_cfg_ap->ap_seq_backend);
+    backend = i_backend_load ();
 
     if (! backend)
     {
@@ -160,35 +158,6 @@ static void amidiplug_mseek (InputPlayback * playback, int time)
     pthread_mutex_unlock (& control_mutex);
 }
 
-static int amidiplug_get_time (InputPlayback * playback)
-{
-    return current_time;
-}
-
-static int amidiplug_get_volume (int * l_p, int * r_p)
-{
-    if (backend->autonomous_audio == TRUE)
-    {
-        backend->audio_volume_get (l_p, r_p);
-        return 1;
-    }
-
-    return 0;
-}
-
-
-static int amidiplug_set_volume (int  l, int  r)
-{
-    if (backend->autonomous_audio == TRUE)
-    {
-        backend->audio_volume_set (l, r);
-        return 1;
-    }
-
-    return 0;
-}
-
-
 static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile *
         file)
 {
@@ -208,33 +177,15 @@ static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile *
 static bool_t amidiplug_play (InputPlayback * playback, const char *
                               filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
-    g_return_val_if_fail (file != NULL, FALSE);
-
     int port_count = 0;
     int au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
-
-    if (backend->gmodule == NULL)
-    {
-        g_warning ("No sequencer backend selected\n");
-        /* not usable, cause now amidiplug_play is in a different thread
-        i_message_gui( _("AMIDI-Plug - warning"),
-                       _("No sequencer backend has been selected!\nPlease configure AMIDI-Plug before playing."),
-                       AMIDIPLUG_MESSAGE_WARN, NULL, TRUE );
-        */
-        amidiplug_playing_status = AMIDIPLUG_ERR;
-        return FALSE;
-    }
 
     /* get information about audio from backend, if available */
     backend->audio_info_get (&au_channels, &au_bitdepth, &au_samplerate);
     DEBUGMSG ("PLAY requested, audio details: channels -> %i, bitdepth -> %i, samplerate -> %i\n",
               au_channels, au_bitdepth, au_samplerate);
 
-    if (backend->autonomous_audio == FALSE)
-    {
-        DEBUGMSG ("PLAY requested, opening audio output plugin\n");
-        playback->output->open_audio (FMT_S16_NE, au_samplerate, au_channels);
-    }
+    playback->output->open_audio (FMT_S16_NE, au_samplerate, au_channels);
 
     DEBUGMSG ("PLAY requested, midifile init\n");
     /* midifile init */
@@ -253,7 +204,7 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
 
     DEBUGMSG ("PLAY requested, opening file: %s\n", filename_uri);
     midifile.file_pointer = file;
-    midifile.file_name = g_strdup (filename_uri);
+    midifile.file_name = strdup (filename_uri);
 
     switch (i_midi_file_read_id (&midifile))
     {
@@ -327,7 +278,7 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
     default:
     {
         amidiplug_playing_status = AMIDIPLUG_ERR;
-        g_warning ("%s is not a Standard MIDI File\n", filename_uri);
+        fprintf (stderr, "%s is not a Standard MIDI File\n", filename_uri);
         break;
     }
     }
@@ -400,7 +351,7 @@ static void do_seek (int time)
 {
     backend->seq_event_allnoteoff (midifile.playing_tick);
     backend->seq_queue_stop ();
-    amidiplug_skipto (time * (gint64) 1000 / midifile.avg_microsec_per_tick);
+    amidiplug_skipto (time * (int64_t) 1000 / midifile.avg_microsec_per_tick);
 }
 
 static void do_pause (bool_t pause)
@@ -429,8 +380,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
             midifile.tracks[j].current_event = midifile.tracks[j].first_event;
     }
 
-    if (! backend->autonomous_audio)
-        audio_start (playback);
+    audio_start (playback);
 
     /* queue start */
     backend->seq_queue_start();
@@ -456,8 +406,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
 
         if (seek_time != -1)
         {
-            if (! backend->autonomous_audio)
-                audio_seek (playback, seek_time);
+            audio_seek (playback, seek_time);
 
             do_seek (seek_time);
             seek_time = -1;
@@ -469,8 +418,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
             {
                 do_pause (TRUE);
 
-                if (! backend->autonomous_audio)
-                    audio_pause (playback, TRUE);
+                audio_pause (playback, TRUE);
 
                 paused = TRUE;
             }
@@ -484,8 +432,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
         {
             do_pause (FALSE);
 
-            if (! backend->autonomous_audio)
-                audio_pause (playback, FALSE);
+            audio_pause (playback, FALSE);
 
             paused = FALSE;
         }
@@ -570,28 +517,16 @@ static void amidiplug_play_loop (InputPlayback * playback)
         }
 
         midifile.playing_tick = event->tick;
-
-        if (backend->autonomous_audio)
-        {
-            current_time = (gint64) midifile.playing_tick *
-                           midifile.avg_microsec_per_tick / 1000;
-
-            /* these backends deal with audio production themselves (i.e. ALSA) */
-            backend->seq_output (NULL, NULL);
-        }
     }
 
     backend->seq_output_shut (stopped ? midifile.playing_tick : midifile.max_tick,
                               midifile.skip_offset);
 
-    if (! backend->autonomous_audio)
-        audio_stop (playback);
+    audio_stop (playback);
 
     backend->seq_off ();
     backend->seq_stop ();
     i_midi_free (& midifile);
-
-    current_time = -1;
 }
 
 
@@ -690,12 +625,6 @@ static void amidiplug_skipto (int playing_tick)
             midifile.current_tempo = event->data.tempo;
             break;
         }
-
-        if (backend->autonomous_audio == TRUE)
-        {
-            /* these backends deal with audio production themselves (i.e. ALSA) */
-            backend->seq_output (NULL, NULL);
-        }
     }
 
     midifile.skip_offset = playing_tick;
@@ -714,9 +643,6 @@ AUD_INPUT_PLUGIN
     .stop = amidiplug_stop,
     .pause = amidiplug_pause,
     .mseek = amidiplug_mseek,
-    .get_time = amidiplug_get_time,
-    .get_volume = amidiplug_get_volume,
-    .set_volume = amidiplug_set_volume,
     .cleanup = amidiplug_cleanup,
     .probe_for_tuple = amidiplug_get_song_tuple,
     .file_info_box = i_fileinfo_gui,

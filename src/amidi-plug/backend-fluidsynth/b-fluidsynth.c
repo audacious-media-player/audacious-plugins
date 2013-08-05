@@ -24,6 +24,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
+#include "../i_backend.h"
 #include "../i_configure.h"
 #include "b-fluidsynth.h"
 
@@ -121,7 +122,7 @@ int sequencer_get_port_count (void)
 }
 
 
-int sequencer_start (char * midi_fname)
+int sequencer_start (const char * midi_fname)
 {
     /* soundfont loader, check if we should load soundfont on first midifile play */
     if ((fsyn_cfg->fsyn_soundfont_load == 1) && (sc.soundfont_ids->len == 0))
@@ -347,13 +348,6 @@ int audio_info_get (int * channels, int * bitdepth, int * samplerate)
 }
 
 
-bool_t audio_check_autonomous (void)
-{
-    return FALSE; /* FluidSynth gives produced audio back to player */
-}
-
-
-
 /* ******************************************************************
    *** INTERNALS ****************************************************
    ****************************************************************** */
@@ -416,3 +410,34 @@ bool_t i_bounds_check (int value, int min, int max)
     else
         return FALSE;
 }
+
+amidiplug_sequencer_backend_t fluidsynth_backend =
+{
+    .init = backend_init,
+    .cleanup = backend_cleanup,
+    .audio_info_get = audio_info_get,
+    .audio_volume_get = audio_volume_get,
+    .audio_volume_set = audio_volume_set,
+    .seq_start = sequencer_start,
+    .seq_stop = sequencer_stop,
+    .seq_on = sequencer_on,
+    .seq_off = sequencer_off,
+    .seq_queue_tempo = sequencer_queue_tempo,
+    .seq_queue_start = sequencer_queue_start,
+    .seq_queue_stop = sequencer_queue_stop,
+    .seq_event_init = sequencer_event_init,
+    .seq_event_noteon = sequencer_event_noteon,
+    .seq_event_noteoff = sequencer_event_noteoff,
+    .seq_event_allnoteoff = sequencer_event_allnoteoff,
+    .seq_event_keypress = sequencer_event_keypress,
+    .seq_event_controller = sequencer_event_controller,
+    .seq_event_pgmchange = sequencer_event_pgmchange,
+    .seq_event_chanpress = sequencer_event_chanpress,
+    .seq_event_pitchbend = sequencer_event_pitchbend,
+    .seq_event_sysex = sequencer_event_sysex,
+    .seq_event_tempo = sequencer_event_tempo,
+    .seq_event_other = sequencer_event_other,
+    .seq_output = sequencer_output,
+    .seq_output_shut = sequencer_output_shut,
+    .seq_get_port_count = sequencer_get_port_count
+};
