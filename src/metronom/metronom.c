@@ -150,9 +150,6 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
         return FALSE;
     }
 
-    if (pause)
-        playback->output->pause(TRUE);
-
     playback->set_params(playback, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
 
     tact = 60 * AUDIO_FREQ / pmetronom.bpm;

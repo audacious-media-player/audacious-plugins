@@ -392,7 +392,8 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
                     goto stop_processing;
                 }
 
-                playback->output->flush(ov_time_tell(&vf) * 1000);
+                // FIXME: Audacious core should handle this automatically
+                // playback->output->flush(ov_time_tell(&vf) * 1000);
                 vorbis_update_replaygain(&vf, &rg_info);
                 playback->output->set_replaygain_info (& rg_info); /* audio reopened */
             }

@@ -184,7 +184,6 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 	if (seek >= 0)
 	{
 		f->seek (seek);
-		playback->output->flush (seek);
 		return;
 	}
 
