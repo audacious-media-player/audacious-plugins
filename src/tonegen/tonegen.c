@@ -125,8 +125,6 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
         tone[i].t = 0;
     }
 
-    playback->set_pb_ready(playback);
-
     while (!playback->check_stop())
     {
         for (i = 0; i < BUF_SAMPLES; i++)

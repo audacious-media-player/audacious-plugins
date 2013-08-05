@@ -376,7 +376,6 @@ GET_FORMAT:
 	}
 
 	data->set_gain_from_playlist (data);
-	data->set_pb_ready(data);
 
 	if (start_time)
 	{

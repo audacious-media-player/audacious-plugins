@@ -478,7 +478,6 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
     playback->set_params(playback, ic->bit_rate, c->sample_rate, c->channels);
 
-    playback->set_pb_ready(playback);
     errcount = 0;
     seekable = ffaudio_codec_is_seekable(codec);
 

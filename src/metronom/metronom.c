@@ -160,8 +160,6 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
         data_form[num] = MAX_AMPL * tact_form[pmetronom.id][num];
     }
 
-    playback->set_pb_ready(playback);
-
     num = 0;
     while (!playback->check_stop())
     {

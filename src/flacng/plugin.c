@@ -152,7 +152,6 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
     }
 
     playback->set_params(playback, info->bitrate, info->sample_rate, info->channels);
-    playback->set_pb_ready(playback);
     playback->set_gain_from_playlist(playback);
 
     FLAC__stream_decoder_seek_absolute (decoder, (int64_t) start_time * info->sample_rate / 1000);

@@ -522,7 +522,6 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
     playback->set_tuple (playback, generate_tuple (filename, mp4file, mp4track));
     playback->set_params (playback, mp4ff_get_avg_bitrate (mp4file, mp4track),
      samplerate, channels);
-    playback->set_pb_ready (playback);
 
     while (! playback->check_stop ())
     {
@@ -743,7 +742,6 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
         goto ERR_CLOSE_DECODER;
 
     playback->set_params (playback, bitrate, samplerate, channels);
-    playback->set_pb_ready (playback);
 
     /* == MAIN LOOP == */
 

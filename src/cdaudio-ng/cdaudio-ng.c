@@ -321,7 +321,6 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
         endlsn = MIN (endlsn, startlsn + stop * 75 / 1000);
 
     p->set_params (p, 1411200, 44100, 2);
-    p->set_pb_ready (p);
 
     int buffer_size = aud_get_int (NULL, "output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");

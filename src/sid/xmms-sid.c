@@ -200,7 +200,6 @@ bool_t xs_play_file(InputPlayback *pb, const char *filename, VFSFile *file,
 
     pb->set_tuple(pb, tmpTuple);
     pb->set_params (pb, -1, xs_status.audioFrequency, channels);
-    pb->set_pb_ready(pb);
 
     while (! pb->check_stop ())
     {

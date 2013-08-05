@@ -324,8 +324,6 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
     vorbis_update_replaygain(&vf, &rg_info);
     playback->output->set_replaygain_info (& rg_info);
 
-    playback->set_pb_ready(playback);
-
     /*
      * Note that chaining changes things here; A vorbis file may
      * be a mix of different channels, bitrates and sample rates.

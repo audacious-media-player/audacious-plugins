@@ -306,7 +306,6 @@ static bool_t play_start (InputPlayback * playback, const char * filename,
      * on the decoded data and therefore wrong for anything but floating-point
      * files. */
     playback->set_params (playback, 0, sfinfo.samplerate, sfinfo.channels);
-    playback->set_pb_ready(playback);
 
     sf_seek (sndfile, (int64_t) start_time * sfinfo.samplerate / 1000, SEEK_SET);
 

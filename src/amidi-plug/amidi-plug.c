@@ -229,7 +229,6 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
         /* play play play! */
         DEBUGMSG ("PLAY requested, starting play thread\n");
         amidiplug_playing_status = AMIDIPLUG_PLAY;
-        playback->set_pb_ready (playback);
         amidiplug_play_loop (playback);
         break;
     }

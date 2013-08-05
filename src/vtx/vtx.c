@@ -122,7 +122,6 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
     }
 
     playback->set_params(playback, 14 * 50 * 8, freq, bits / 8);
-    playback->set_pb_ready(playback);
 
     /* (time in sec) * 50 = offset in AY register data frames */
     vtx.pos = start_time / 20;

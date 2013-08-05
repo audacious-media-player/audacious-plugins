@@ -145,8 +145,6 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
     playback->set_params(playback, (int) WavpackGetAverageBitrate(ctx, num_channels),
         sample_rate, num_channels);
 
-    playback->set_pb_ready(playback);
-
     WavpackSeekSample (ctx, (int64_t) start_time * sample_rate / 1000);
 
     while (! playback->check_stop () && (stop_time < 0 ||

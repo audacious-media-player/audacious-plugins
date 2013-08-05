@@ -139,7 +139,6 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 	}
 
 	playback->set_params(playback, 44100*2*2*8, 44100, 2);
-	playback->set_pb_ready(playback);
 
 	while (! playback->check_stop ())
 	{

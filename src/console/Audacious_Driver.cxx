@@ -284,8 +284,6 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
         length -= fade_length / 2;
     fh.m_emu->set_fade(length, fade_length);
 
-    playback->set_pb_ready(playback);
-
     while (!playback->check_stop())
     {
         /* Perform seek, if requested */

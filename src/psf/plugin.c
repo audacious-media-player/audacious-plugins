@@ -159,7 +159,6 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 	data->set_params(data, 44100*2*2*8, 44100, 2);
 
 	stop_flag = FALSE;
-	data->set_pb_ready(data);
 
 	f->execute(data);
 	f->stop();
