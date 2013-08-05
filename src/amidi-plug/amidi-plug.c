@@ -219,27 +219,6 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
         if (!i_midi_setget_tempo (&midifile))
             WARNANDBREAKANDPLAYERR ("%s: invalid values while setting ppq and tempo\n", filename_uri);
 
-        DEBUGMSG ("PLAY requested, sequencer start\n");
-
-        /* sequencer start */
-        if (!backend->seq_start (filename_uri))
-            WARNANDBREAKANDPLAYERR ("%s: problem with seq_start, play aborted\n", filename_uri);
-
-        DEBUGMSG ("PLAY requested, sequencer on\n");
-
-        /* sequencer on */
-        if (!backend->seq_on())
-            WARNANDBREAKANDPLAYERR ("%s: problem with seq_on, play aborted\n", filename_uri);
-
-        DEBUGMSG ("PLAY requested, setting sequencer queue tempo...\n");
-
-        /* set sequencer queue tempo using ppq and tempo (call only after i_midi_setget_tempo) */
-        if (!backend->seq_queue_tempo (midifile.current_tempo, midifile.ppq))
-        {
-            backend->seq_off(); /* kill the sequencer */
-            WARNANDBREAKANDPLAYERR ("%s: ALSA queue problem, play aborted\n", filename_uri);
-        }
-
         /* fill midifile.length, keeping in count tempo-changes */
         i_midi_setget_length (&midifile);
         DEBUGMSG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
@@ -275,37 +254,21 @@ static void generate_to_tick (InputPlayback * playback, int tick)
     midifile.playing_tick = tick;
 }
 
-static void do_seek (int time)
-{
-    backend->seq_event_allnoteoff (midifile.playing_tick);
-    backend->seq_queue_stop ();
-    amidiplug_skipto (time * (int64_t) 1000 / midifile.avg_microsec_per_tick);
-}
-
 static void amidiplug_play_loop (InputPlayback * playback)
 {
-    int j = 0;
-    bool_t rewind = TRUE, stopped = FALSE;
+    bool_t stopped = FALSE;
 
-    if (rewind)
-    {
-        /* initialize current position in each track */
-        for (j = 0; j < midifile.num_tracks; ++j)
-            midifile.tracks[j].current_event = midifile.tracks[j].first_event;
-    }
+    backend->prepare ();
 
-    /* queue start */
-    backend->seq_queue_start();
-    /* common settings for all our events */
-    backend->seq_event_init();
-
-    DEBUGMSG ("PLAY thread, start the play loop\n");
+    /* initialize current position in each track */
+    for (int j = 0; j < midifile.num_tracks; ++j)
+        midifile.tracks[j].current_event = midifile.tracks[j].first_event;
 
     while (! (stopped = playback->check_stop ()))
     {
         int seektime = playback->check_seek ();
         if (seektime >= 0)
-            do_seek (seektime);
+            amidiplug_skipto ((int64_t) seektime * 1000 / midifile.avg_microsec_per_tick);
 
         midievent_t * event = NULL;
         midifile_track_t * event_track = NULL;
@@ -392,8 +355,8 @@ static void amidiplug_play_loop (InputPlayback * playback)
     if (! stopped)
         generate_to_tick (playback, midifile.max_tick);
 
-    backend->seq_off ();
-    backend->seq_stop ();
+    backend->reset ();
+
     i_midi_free (& midifile);
 }
 
@@ -403,21 +366,15 @@ static void amidiplug_play_loop (InputPlayback * playback)
    istantaneously and proceed this way until the playing_tick is reached */
 static void amidiplug_skipto (int playing_tick)
 {
-    int i;
+    backend->reset ();
 
     /* this check is always made, for safety*/
     if (playing_tick >= midifile.max_tick)
         playing_tick = midifile.max_tick - 1;
 
     /* initialize current position in each track */
-    for (i = 0; i < midifile.num_tracks; ++i)
+    for (int i = 0; i < midifile.num_tracks; ++i)
         midifile.tracks[i].current_event = midifile.tracks[i].first_event;
-
-    /* common settings for all our events */
-    backend->seq_event_init();
-    backend->seq_queue_start();
-
-    DEBUGMSG ("SKIPTO request, starting skipto loop\n");
 
     for (;;)
     {

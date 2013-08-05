@@ -30,15 +30,9 @@ typedef struct
 {
     int (*init) (struct amidiplug_cfg_backend_s *);
     int (*cleanup) (void);
+    void (* prepare) (void);
+    void (* reset) (void);
     int (*audio_info_get) (int *, int *, int *);
-    int (* seq_start) (const char * filename);
-    int (*seq_stop) (void);
-    int (*seq_on) (void);
-    int (*seq_off) (void);
-    int (*seq_queue_tempo) (int, int);
-    int (*seq_queue_start) (void);
-    int (*seq_queue_stop) (void);
-    int (*seq_event_init) (void);
     int (*seq_event_noteon) (struct midievent_s *);
     int (*seq_event_noteoff) (struct midievent_s *);
     int (*seq_event_allnoteoff) (int);

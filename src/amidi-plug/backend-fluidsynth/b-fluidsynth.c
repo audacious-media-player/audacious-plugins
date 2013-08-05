@@ -86,59 +86,16 @@ int backend_cleanup (void)
 }
 
 
-int sequencer_start (const char * midi_fname)
+static void backend_prepare (void)
 {
     /* soundfont loader, check if we should load soundfont on first midifile play */
     if ((fsyn_cfg->fsyn_soundfont_load == 1) && (sc.soundfont_ids->len == 0))
         i_soundfont_load();
-
-    return 1; /* success */
 }
 
-
-int sequencer_stop (void)
+static void backend_reset (void)
 {
-    return 1; /* success */
-}
-
-
-/* activate sequencer client */
-int sequencer_on (void)
-{
-    return 1; /* success */
-}
-
-
-/* shutdown sequencer client */
-int sequencer_off (void)
-{
-    return 1; /* success */
-}
-
-
-/* queue set tempo */
-int sequencer_queue_tempo (int tempo, int ppq)
-{
-    return 1;
-}
-
-
-int sequencer_queue_start (void)
-{
-    return 1;
-}
-
-
-int sequencer_queue_stop (void)
-{
-    return 1;
-}
-
-
-int sequencer_event_init (void)
-{
-    /* common settings for all our events */
-    return 1;
+    fluid_synth_system_reset (sc.synth);  /* all notes off and channels reset */
 }
 
 
@@ -244,12 +201,6 @@ static void generate_audio (void * buf, int bufsize)
     fluid_synth_write_s16 (sc.synth, bufsize / 4, buf, 0, 2, buf, 1, 2);
 }
 
-int sequencer_output_shut (unsigned max_tick, int skip_offset)
-{
-    fluid_synth_system_reset (sc.synth);  /* all notes off and channels reset */
-    return 1;
-}
-
 
 int audio_info_get (int * channels, int * bitdepth, int * samplerate)
 {
@@ -304,15 +255,9 @@ amidiplug_sequencer_backend_t fluidsynth_backend =
 {
     .init = backend_init,
     .cleanup = backend_cleanup,
+    .prepare = backend_prepare,
+    .reset = backend_reset,
     .audio_info_get = audio_info_get,
-    .seq_start = sequencer_start,
-    .seq_stop = sequencer_stop,
-    .seq_on = sequencer_on,
-    .seq_off = sequencer_off,
-    .seq_queue_tempo = sequencer_queue_tempo,
-    .seq_queue_start = sequencer_queue_start,
-    .seq_queue_stop = sequencer_queue_stop,
-    .seq_event_init = sequencer_event_init,
     .seq_event_noteon = sequencer_event_noteon,
     .seq_event_noteoff = sequencer_event_noteoff,
     .seq_event_allnoteoff = sequencer_event_allnoteoff,
