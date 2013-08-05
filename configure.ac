@@ -683,7 +683,7 @@ have_amidiplug=no
 if test "x$enable_amidiplug" != "xno"; then
     PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
         [have_amidiplug=yes
-         OUTPUT_PLUGINS="$OUTPUT_PLUGINS amidiplug"],
+         OUTPUT_PLUGINS="$OUTPUT_PLUGINS amidi-plug"],
         [if test "x$enable_amidiplug" = "xyes"; then
             AC_MSG_ERROR([Cannot find FluidSynth development files (ver >= 1.0.6), but compilation of amidi-plug input plugin has been explicitly requested; please install FluidSynth dev files and run configure again])
          fi])
