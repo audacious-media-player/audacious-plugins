@@ -50,8 +50,7 @@ typedef struct
     int (*seq_event_sysex) (struct midievent_s *);
     int (*seq_event_tempo) (struct midievent_s *);
     int (*seq_event_other) (struct midievent_s *);
-    int (*seq_output) (void * *, int *);
-    int (*seq_output_shut) (unsigned, int);
+    void (* generate_audio) (void * buf, int bufsize);
 }
 amidiplug_sequencer_backend_t;
 

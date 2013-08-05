@@ -18,7 +18,7 @@
 *
 */
 
-#include <pthread.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -44,7 +44,6 @@ static void amidiplug_play_loop (InputPlayback * playback);
 
 static bool_t amidiplug_play (InputPlayback * playback, const char *
                               filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause);
-static void amidiplug_mseek (InputPlayback * playback, int time);
 static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
 static void amidiplug_skipto (int playing_tick);
 
@@ -56,18 +55,8 @@ static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi",
         "rmid", NULL
                                                        };
 
-static pthread_mutex_t control_mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t control_cond = PTHREAD_COND_INITIALIZER;
-static pthread_mutex_t audio_control_mutex = PTHREAD_MUTEX_INITIALIZER;
-
 /* also used in i_configure.c */
 amidiplug_sequencer_backend_t * backend;
-
-static int seek_time;
-
-static pthread_t audio_thread;
-static bool_t audio_stop_flag;
-static int audio_seek_time;
 
 static void amidiplug_cleanup (void)
 {
@@ -130,24 +119,6 @@ static int amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * 
     return FALSE;
 }
 
-static void amidiplug_stop (InputPlayback * playback)
-{
-    DEBUGMSG ("STOP request at tick: %i\n", midifile.playing_tick);
-
-    pthread_mutex_lock (& control_mutex);
-    amidiplug_playing_status = AMIDIPLUG_STOP;
-    pthread_cond_broadcast (& control_cond);
-    pthread_mutex_unlock (& control_mutex);
-}
-
-static void amidiplug_mseek (InputPlayback * playback, int time)
-{
-    pthread_mutex_lock (& control_mutex);
-    seek_time = time;
-    pthread_cond_broadcast (& control_cond);
-    pthread_mutex_unlock (& control_mutex);
-}
-
 static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile *
         file)
 {
@@ -164,18 +135,52 @@ static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile *
 }
 
 
+static int s_samplerate, s_channels;
+static int s_bufsize;
+static void * s_buf;
+
+static bool_t audio_init (InputPlayback * playback)
+{
+    int bitdepth;
+
+    backend->audio_info_get (& s_channels, & bitdepth, & s_samplerate);
+
+    if (bitdepth != 16 || ! playback->output->open_audio (FMT_S16_NE, s_samplerate, s_channels))
+        return FALSE;
+
+    s_bufsize = 2 * s_channels * (s_samplerate / 4);
+    s_buf = malloc (s_bufsize);
+
+    playback->set_params (playback, 0, s_samplerate, s_channels);
+
+    return TRUE;
+}
+
+static void audio_generate (InputPlayback * playback, double seconds)
+{
+    int total = 2 * s_channels * (int) round (seconds * s_samplerate);
+
+    while (total)
+    {
+        int chunk = (total < s_bufsize) ? total : s_bufsize;
+
+        backend->generate_audio (s_buf, chunk);
+        playback->output->write_audio (s_buf, chunk);
+
+        total -= chunk;
+    }
+}
+
+static void audio_cleanup (void)
+{
+    free (s_buf);
+}
+
 static bool_t amidiplug_play (InputPlayback * playback, const char *
                               filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause)
 {
-    int port_count = 0;
-    int au_samplerate = -1, au_bitdepth = -1, au_channels = -1;
-
-    /* get information about audio from backend, if available */
-    backend->audio_info_get (&au_channels, &au_bitdepth, &au_samplerate);
-    DEBUGMSG ("PLAY requested, audio details: channels -> %i, bitdepth -> %i, samplerate -> %i\n",
-              au_channels, au_bitdepth, au_samplerate);
-
-    playback->output->open_audio (FMT_S16_NE, au_samplerate, au_channels);
+    if (! audio_init (playback))
+        return FALSE;
 
     DEBUGMSG ("PLAY requested, midifile init\n");
     /* midifile init */
@@ -202,7 +207,7 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
     {
         DEBUGMSG ("PLAY requested, MThd chunk found, processing...\n");
 
-        if (!i_midi_file_parse_smf (&midifile, port_count))
+        if (!i_midi_file_parse_smf (&midifile, 1))
             WARNANDBREAKANDPLAYERR ("%s: invalid file format (smf parser)\n", filename_uri);
 
         if (midifile.time_division < 1)
@@ -239,16 +244,12 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
         i_midi_setget_length (&midifile);
         DEBUGMSG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
 
-        playback->set_params (playback, au_bitdepth * au_samplerate * au_channels
-                              / 8, au_samplerate, au_channels);
-
         /* done with file */
         midifile.file_pointer = NULL;
 
         /* play play play! */
         DEBUGMSG ("PLAY requested, starting play thread\n");
         amidiplug_playing_status = AMIDIPLUG_PLAY;
-        seek_time = (start_time > 0) ? start_time : -1;
         playback->set_pb_ready (playback);
         amidiplug_play_loop (playback);
         break;
@@ -262,63 +263,16 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
     }
     }
 
+    audio_cleanup ();
+
     return TRUE;
 }
 
-static void * audio_loop (void * arg)
+static void generate_to_tick (InputPlayback * playback, int tick)
 {
-    InputPlayback * playback = arg;
-    void * buffer = NULL;
-    int buffer_size = 0;
-
-    while (1)
-    {
-        pthread_mutex_lock (& audio_control_mutex);
-
-        if (audio_stop_flag)
-        {
-            pthread_mutex_unlock (& audio_control_mutex);
-            break;
-        }
-
-        if (audio_seek_time != -1)
-        {
-            playback->output->flush (audio_seek_time);
-            audio_seek_time = -1;
-        }
-
-        pthread_mutex_unlock (& audio_control_mutex);
-
-        if (backend->seq_output (& buffer, & buffer_size))
-            playback->output->write_audio (buffer, buffer_size);
-    }
-
-    free (buffer);
-    return NULL;
-}
-
-static void audio_start (InputPlayback * playback)
-{
-    audio_stop_flag = FALSE;
-    audio_seek_time = -1;
-    pthread_create (& audio_thread, NULL, audio_loop, (void *) playback);
-}
-
-static void audio_seek (InputPlayback * playback, int time)
-{
-    pthread_mutex_lock (& audio_control_mutex);
-    audio_seek_time = time;
-    playback->output->abort_write ();
-    pthread_mutex_unlock (& audio_control_mutex);
-}
-
-static void audio_stop (InputPlayback * playback)
-{
-    pthread_mutex_lock (& audio_control_mutex);
-    audio_stop_flag = TRUE;
-    playback->output->abort_write ();
-    pthread_mutex_unlock (& audio_control_mutex);
-    pthread_join (audio_thread, NULL);
+    double ticksecs = (double) midifile.current_tempo / midifile.ppq / 1000000;
+    audio_generate (playback, ticksecs * (tick - midifile.playing_tick));
+    midifile.playing_tick = tick;
 }
 
 static void do_seek (int time)
@@ -340,8 +294,6 @@ static void amidiplug_play_loop (InputPlayback * playback)
             midifile.tracks[j].current_event = midifile.tracks[j].first_event;
     }
 
-    audio_start (playback);
-
     /* queue start */
     backend->seq_queue_start();
     /* common settings for all our events */
@@ -349,30 +301,15 @@ static void amidiplug_play_loop (InputPlayback * playback)
 
     DEBUGMSG ("PLAY thread, start the play loop\n");
 
-    for (;;)
+    while (! (stopped = playback->check_stop ()))
     {
+        int seektime = playback->check_seek ();
+        if (seektime >= 0)
+            do_seek (seektime);
+
         midievent_t * event = NULL;
         midifile_track_t * event_track = NULL;
         int i, min_tick = midifile.max_tick + 1;
-
-        pthread_mutex_lock (& control_mutex);
-
-        if (amidiplug_playing_status == AMIDIPLUG_STOP)
-        {
-            pthread_mutex_unlock (& control_mutex);
-            stopped = TRUE;
-            break;
-        }
-
-        if (seek_time != -1)
-        {
-            audio_seek (playback, seek_time);
-
-            do_seek (seek_time);
-            seek_time = -1;
-        }
-
-        pthread_mutex_unlock (& control_mutex);
 
         /* search next event */
         for (i = 0; i < midifile.num_tracks; ++i)
@@ -393,9 +330,9 @@ static void amidiplug_play_loop (InputPlayback * playback)
 
         /* advance pointer to next event */
         event_track->current_event = event->next;
-        /* consider the midifile.skip_offset */
-        event->tick_real = event->tick - midifile.skip_offset;
 
+        if (event->tick > midifile.playing_tick)
+            generate_to_tick (playback, event->tick);
 
         switch (event->type)
         {
@@ -450,14 +387,10 @@ static void amidiplug_play_loop (InputPlayback * playback)
             DEBUGMSG ("PLAY thread, encountered invalid event type %i\n", event->type);
             break;
         }
-
-        midifile.playing_tick = event->tick;
     }
 
-    backend->seq_output_shut (stopped ? midifile.playing_tick : midifile.max_tick,
-                              midifile.skip_offset);
-
-    audio_stop (playback);
+    if (! stopped)
+        generate_to_tick (playback, midifile.max_tick);
 
     backend->seq_off ();
     backend->seq_stop ();
@@ -467,8 +400,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
 
 /* amidigplug_skipto: re-do all events that influence the playing of our
    midi file; re-do them using a time-tick of 0, so they are processed
-   istantaneously and proceed this way until the playing_tick is reached;
-   also obtain the correct skip_offset from the playing_tick */
+   istantaneously and proceed this way until the playing_tick is reached */
 static void amidiplug_skipto (int playing_tick)
 {
     int i;
@@ -523,8 +455,6 @@ static void amidiplug_skipto (int playing_tick)
 
         /* advance pointer to next event */
         event_track->current_event = event->next;
-        /* set the time tick to 0 */
-        event->tick_real = 0;
 
         switch (event->type)
         {
@@ -562,7 +492,6 @@ static void amidiplug_skipto (int playing_tick)
         }
     }
 
-    midifile.skip_offset = playing_tick;
     midifile.playing_tick = playing_tick;
 }
 
@@ -575,8 +504,6 @@ AUD_INPUT_PLUGIN
     .about = i_about_gui,
     .configure = i_configure_gui,
     .play = amidiplug_play,
-    .stop = amidiplug_stop,
-    .mseek = amidiplug_mseek,
     .cleanup = amidiplug_cleanup,
     .probe_for_tuple = amidiplug_get_song_tuple,
     .file_info_box = i_fileinfo_gui,

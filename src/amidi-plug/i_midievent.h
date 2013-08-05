@@ -27,7 +27,6 @@ struct midievent_s
     unsigned char type;				/* SND_SEQ_EVENT_xxx */
     unsigned char port;				/* port index */
     unsigned tick;
-    unsigned tick_real;			/* tick with custom offset */
     union
     {
         unsigned char d[3];			/* channel and data bytes */

@@ -255,8 +255,6 @@ typedef struct
     int playing_tick;
     int avg_microsec_per_tick;
     int64_t length;
-
-    int skip_offset;
 }
 midifile_t;
 

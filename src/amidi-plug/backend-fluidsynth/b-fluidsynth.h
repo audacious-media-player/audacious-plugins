@@ -34,17 +34,9 @@ typedef struct
     fluid_synth_t * synth;
 
     GArray * soundfont_ids;
-
-    int ppq;
-    gdouble cur_microsec_per_tick;
-    unsigned tick_offset;
-
-    unsigned sample_rate;
 }
 sequencer_client_t;
 
-
-void i_sleep (unsigned);
 void i_soundfont_load (void);
 
 #endif /* !_B_FLUIDSYNTH_H */

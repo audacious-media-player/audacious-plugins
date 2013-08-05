@@ -571,7 +571,6 @@ void i_midi_init (midifile_t * mf)
     mf->playing_tick = 0;
     mf->avg_microsec_per_tick = 0;
     mf->length = 0;
-    mf->skip_offset = 0;
     return;
 }
 

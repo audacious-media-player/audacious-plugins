@@ -18,7 +18,6 @@
 *
 */
 
-#include <pthread.h>
 #include <string.h>
 
 #include <audacious/i18n.h>
@@ -33,16 +32,11 @@ static sequencer_client_t sc;
 /* options */
 static amidiplug_cfg_fsyn_t * fsyn_cfg;
 
-static pthread_mutex_t timer_mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t timer_cond = PTHREAD_COND_INITIALIZER;
-static gint64 timer; /* microseconds */
-
 int backend_init (amidiplug_cfg_backend_t * cfg)
 {
     fsyn_cfg = cfg->fsyn;
 
     sc.soundfont_ids = g_array_new (FALSE, FALSE, sizeof (int));
-    sc.sample_rate = fsyn_cfg->fsyn_synth_samplerate;
     sc.settings = new_fluid_settings();
 
     fluid_settings_setnum (sc.settings, "synth.sample-rate", fsyn_cfg->fsyn_synth_samplerate);
@@ -111,8 +105,6 @@ int sequencer_stop (void)
 /* activate sequencer client */
 int sequencer_on (void)
 {
-    sc.tick_offset = 0;
-
     return 1; /* success */
 }
 
@@ -127,19 +119,12 @@ int sequencer_off (void)
 /* queue set tempo */
 int sequencer_queue_tempo (int tempo, int ppq)
 {
-    sc.ppq = ppq;
-    /* sc.cur_tick_per_sec = (gdouble)( ppq * 1000000 ) / (gdouble)tempo; */
-    sc.cur_microsec_per_tick = (gdouble) tempo / (gdouble) ppq;
     return 1;
 }
 
 
 int sequencer_queue_start (void)
 {
-    pthread_mutex_lock (& timer_mutex);
-    timer = 0;
-    pthread_mutex_unlock (& timer_mutex);
-
     return 1;
 }
 
@@ -159,7 +144,6 @@ int sequencer_event_init (void)
 
 int sequencer_event_noteon (midievent_t * event)
 {
-    i_sleep (event->tick_real);
     fluid_synth_noteon (sc.synth,
                         event->data.d[0],
                         event->data.d[1],
@@ -170,7 +154,6 @@ int sequencer_event_noteon (midievent_t * event)
 
 int sequencer_event_noteoff (midievent_t * event)
 {
-    i_sleep (event->tick_real);
     fluid_synth_noteoff (sc.synth,
                          event->data.d[0],
                          event->data.d[1]);
@@ -182,14 +165,12 @@ int sequencer_event_keypress (midievent_t * event)
 {
     /* KEY PRESSURE events are not handled by FluidSynth sequencer? */
     DEBUGMSG ("KEYPRESS EVENT with FluidSynth backend (unhandled)\n");
-    i_sleep (event->tick_real);
     return 1;
 }
 
 
 int sequencer_event_controller (midievent_t * event)
 {
-    i_sleep (event->tick_real);
     fluid_synth_cc (sc.synth,
                     event->data.d[0],
                     event->data.d[1],
@@ -200,7 +181,6 @@ int sequencer_event_controller (midievent_t * event)
 
 int sequencer_event_pgmchange (midievent_t * event)
 {
-    i_sleep (event->tick_real);
     fluid_synth_program_change (sc.synth,
                                 event->data.d[0],
                                 event->data.d[1]);
@@ -212,7 +192,6 @@ int sequencer_event_chanpress (midievent_t * event)
 {
     /* CHANNEL PRESSURE events are not handled by FluidSynth sequencer? */
     DEBUGMSG ("CHANPRESS EVENT with FluidSynth backend (unhandled)\n");
-    i_sleep (event->tick_real);
     return 1;
 }
 
@@ -220,7 +199,6 @@ int sequencer_event_chanpress (midievent_t * event)
 int sequencer_event_pitchbend (midievent_t * event)
 {
     int pb_value = (( (event->data.d[2]) & 0x7f) << 7) | ((event->data.d[1]) & 0x7f);
-    i_sleep (event->tick_real);
     fluid_synth_pitch_bend (sc.synth,
                             event->data.d[0],
                             pb_value);
@@ -231,22 +209,12 @@ int sequencer_event_pitchbend (midievent_t * event)
 int sequencer_event_sysex (midievent_t * event)
 {
     DEBUGMSG ("SYSEX EVENT with FluidSynth backend (unhandled)\n");
-    i_sleep (event->tick_real);
     return 1;
 }
 
 
 int sequencer_event_tempo (midievent_t * event)
 {
-    i_sleep (event->tick_real);
-    /* sc.cur_tick_per_sec = (gdouble)( sc.ppq * 1000000 ) / (gdouble)event->data.tempo; */
-    sc.cur_microsec_per_tick = (gdouble) event->data.tempo / (gdouble) sc.ppq;
-    sc.tick_offset = event->tick_real;
-
-    pthread_mutex_lock (& timer_mutex);
-    timer = 0;
-    pthread_mutex_unlock (& timer_mutex);
-
     return 1;
 }
 
@@ -254,7 +222,6 @@ int sequencer_event_tempo (midievent_t * event)
 int sequencer_event_other (midievent_t * event)
 {
     /* unhandled */
-    i_sleep (event->tick_real);
     return 1;
 }
 
@@ -272,26 +239,13 @@ int sequencer_event_allnoteoff (int unused)
 }
 
 
-int sequencer_output (void * * buffer, int * length)
+static void generate_audio (void * buf, int bufsize)
 {
-    int frames = sc.sample_rate / 100;
-
-    * buffer = g_realloc (* buffer, 4 * frames);
-    * length = 4 * frames;
-    fluid_synth_write_s16 (sc.synth, frames, * buffer, 0, 2, * buffer, 1, 2);
-
-    pthread_mutex_lock (& timer_mutex);
-    timer += 10000;
-    pthread_cond_signal (& timer_cond);
-    pthread_mutex_unlock (& timer_mutex);
-
-    return 1;
+    fluid_synth_write_s16 (sc.synth, bufsize / 4, buf, 0, 2, buf, 1, 2);
 }
-
 
 int sequencer_output_shut (unsigned max_tick, int skip_offset)
 {
-    i_sleep (max_tick - skip_offset);
     fluid_synth_system_reset (sc.synth);  /* all notes off and channels reset */
     return 1;
 }
@@ -309,20 +263,6 @@ int audio_info_get (int * channels, int * bitdepth, int * samplerate)
 /* ******************************************************************
    *** INTERNALS ****************************************************
    ****************************************************************** */
-
-
-void i_sleep (unsigned tick)
-{
-    gdouble elapsed_tick_usecs = (gdouble) (tick - sc.tick_offset) * sc.cur_microsec_per_tick;
-
-    pthread_mutex_lock (& timer_mutex);
-
-    while (timer < elapsed_tick_usecs)
-        pthread_cond_wait (& timer_cond, & timer_mutex);
-
-    pthread_mutex_unlock (& timer_mutex);
-}
-
 
 void i_soundfont_load (void)
 {
@@ -384,6 +324,5 @@ amidiplug_sequencer_backend_t fluidsynth_backend =
     .seq_event_sysex = sequencer_event_sysex,
     .seq_event_tempo = sequencer_event_tempo,
     .seq_event_other = sequencer_event_other,
-    .seq_output = sequencer_output,
-    .seq_output_shut = sequencer_output_shut
+    .generate_audio = generate_audio
 };
