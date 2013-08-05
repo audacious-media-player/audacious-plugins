@@ -31,8 +31,6 @@ typedef struct
     int (*init) (struct amidiplug_cfg_backend_s *);
     int (*cleanup) (void);
     int (*audio_info_get) (int *, int *, int *);
-    int (*audio_volume_get) (int *, int *);
-    int (*audio_volume_set) (int, int);
     int (* seq_start) (const char * filename);
     int (*seq_stop) (void);
     int (*seq_on) (void);
@@ -54,7 +52,6 @@ typedef struct
     int (*seq_event_other) (struct midievent_s *);
     int (*seq_output) (void * *, int *);
     int (*seq_output_shut) (unsigned, int);
-    int (*seq_get_port_count) (void);
 }
 amidiplug_sequencer_backend_t;
 

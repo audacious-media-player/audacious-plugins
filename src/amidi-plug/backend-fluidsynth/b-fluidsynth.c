@@ -37,29 +37,6 @@ static pthread_mutex_t timer_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t timer_cond = PTHREAD_COND_INITIALIZER;
 static gint64 timer; /* microseconds */
 
-int backend_info_get (char ** name, char ** longname, char ** desc, int * ppos)
-{
-    if (name != NULL)
-        *name = g_strdup ("fluidsynth");
-
-    if (longname != NULL)
-        *longname = g_strdup (_("FluidSynth Backend "));
-
-    if (desc != NULL)
-        *desc = g_strdup (_("This backend produces audio by sending MIDI events "
-                             "to FluidSynth, a real-time software synthesizer based "
-                             "on the SoundFont2 specification (www.fluidsynth.org).\n"
-                             "Produced audio can be manipulated via player effect "
-                             "plugins and is processed by chosen output plugin.\n"
-                             "Backend written by Giacomo Lozito."));
-
-    if (ppos != NULL)
-        *ppos = 2; /* preferred position in backend list */
-
-    return 1;
-}
-
-
 int backend_init (amidiplug_cfg_backend_t * cfg)
 {
     fsyn_cfg = cfg->fsyn;
@@ -111,13 +88,6 @@ int backend_cleanup (void)
     delete_fluid_synth (sc.synth);
     delete_fluid_settings (sc.settings);
 
-    return 1;
-}
-
-
-int sequencer_get_port_count (void)
-{
-    /* always return a single port here */
     return 1;
 }
 
@@ -327,18 +297,6 @@ int sequencer_output_shut (unsigned max_tick, int skip_offset)
 }
 
 
-/* unimplemented, for autonomous audio == FALSE volume is set by the
-   output plugin mixer controls and is not handled by input plugins */
-int audio_volume_get (int * left_volume, int * right_volume)
-{
-    return 0;
-}
-int audio_volume_set (int left_volume, int right_volume)
-{
-    return 0;
-}
-
-
 int audio_info_get (int * channels, int * bitdepth, int * samplerate)
 {
     *channels = 2;
@@ -402,22 +360,11 @@ void i_soundfont_load (void)
     }
 }
 
-
-bool_t i_bounds_check (int value, int min, int max)
-{
-    if ((value >= min) && (value <= max))
-        return TRUE;
-    else
-        return FALSE;
-}
-
 amidiplug_sequencer_backend_t fluidsynth_backend =
 {
     .init = backend_init,
     .cleanup = backend_cleanup,
     .audio_info_get = audio_info_get,
-    .audio_volume_get = audio_volume_get,
-    .audio_volume_set = audio_volume_set,
     .seq_start = sequencer_start,
     .seq_stop = sequencer_stop,
     .seq_on = sequencer_on,
@@ -438,6 +385,5 @@ amidiplug_sequencer_backend_t fluidsynth_backend =
     .seq_event_tempo = sequencer_event_tempo,
     .seq_event_other = sequencer_event_other,
     .seq_output = sequencer_output,
-    .seq_output_shut = sequencer_output_shut,
-    .seq_get_port_count = sequencer_get_port_count
+    .seq_output_shut = sequencer_output_shut
 };

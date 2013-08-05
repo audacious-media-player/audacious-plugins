@@ -191,17 +191,6 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
     /* midifile init */
     i_midi_init (&midifile);
 
-    /* get the number of selected ports */
-    port_count = backend->seq_get_port_count();
-
-    if (port_count < 1)
-    {
-        aud_interface_show_error (_("You have not selected any sequencer ports for "
-                                     "MIDI playback.  You can do so in the MIDI plugin preferences."));
-        amidiplug_playing_status = AMIDIPLUG_ERR;
-        return FALSE;
-    }
-
     DEBUGMSG ("PLAY requested, opening file: %s\n", filename_uri);
     midifile.file_pointer = file;
     midifile.file_name = strdup (filename_uri);
