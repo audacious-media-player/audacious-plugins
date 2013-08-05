@@ -37,7 +37,6 @@ enum
 {
     AMIDIPLUG_STOP,
     AMIDIPLUG_PLAY,
-    AMIDIPLUG_PAUSE,
     AMIDIPLUG_ERR
 };
 
@@ -45,7 +44,6 @@ static void amidiplug_play_loop (InputPlayback * playback);
 
 static bool_t amidiplug_play (InputPlayback * playback, const char *
                               filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause);
-static void amidiplug_pause (InputPlayback * playback, bool_t paused);
 static void amidiplug_mseek (InputPlayback * playback, int time);
 static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
 static void amidiplug_skipto (int playing_tick);
@@ -138,14 +136,6 @@ static void amidiplug_stop (InputPlayback * playback)
 
     pthread_mutex_lock (& control_mutex);
     amidiplug_playing_status = AMIDIPLUG_STOP;
-    pthread_cond_broadcast (& control_cond);
-    pthread_mutex_unlock (& control_mutex);
-}
-
-static void amidiplug_pause (InputPlayback * playback, bool_t paused)
-{
-    pthread_mutex_lock (& control_mutex);
-    amidiplug_playing_status = paused ? AMIDIPLUG_PAUSE : AMIDIPLUG_PLAY;
     pthread_cond_broadcast (& control_cond);
     pthread_mutex_unlock (& control_mutex);
 }
@@ -257,7 +247,7 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
 
         /* play play play! */
         DEBUGMSG ("PLAY requested, starting play thread\n");
-        amidiplug_playing_status = pause ? AMIDIPLUG_PAUSE : AMIDIPLUG_PLAY;
+        amidiplug_playing_status = AMIDIPLUG_PLAY;
         seek_time = (start_time > 0) ? start_time : -1;
         playback->set_pb_ready (playback);
         amidiplug_play_loop (playback);
@@ -322,11 +312,6 @@ static void audio_seek (InputPlayback * playback, int time)
     pthread_mutex_unlock (& audio_control_mutex);
 }
 
-static void audio_pause (InputPlayback * playback, bool_t pause)
-{
-    playback->output->pause (pause);
-}
-
 static void audio_stop (InputPlayback * playback)
 {
     pthread_mutex_lock (& audio_control_mutex);
@@ -343,24 +328,10 @@ static void do_seek (int time)
     amidiplug_skipto (time * (int64_t) 1000 / midifile.avg_microsec_per_tick);
 }
 
-static void do_pause (bool_t pause)
-{
-    if (pause)
-    {
-        backend->seq_event_allnoteoff (midifile.playing_tick);
-        backend->seq_queue_stop ();
-    }
-    else
-    {
-        midifile.skip_offset = midifile.playing_tick;
-        backend->seq_queue_start ();
-    }
-}
-
 static void amidiplug_play_loop (InputPlayback * playback)
 {
     int j = 0;
-    bool_t rewind = TRUE, paused = FALSE, stopped = FALSE;
+    bool_t rewind = TRUE, stopped = FALSE;
 
     if (rewind)
     {
@@ -399,31 +370,6 @@ static void amidiplug_play_loop (InputPlayback * playback)
 
             do_seek (seek_time);
             seek_time = -1;
-        }
-
-        if (amidiplug_playing_status == AMIDIPLUG_PAUSE)
-        {
-            if (! paused)
-            {
-                do_pause (TRUE);
-
-                audio_pause (playback, TRUE);
-
-                paused = TRUE;
-            }
-
-            pthread_cond_wait (& control_cond, & control_mutex);
-            pthread_mutex_unlock (& control_mutex);
-            continue;
-        }
-
-        if (paused)
-        {
-            do_pause (FALSE);
-
-            audio_pause (playback, FALSE);
-
-            paused = FALSE;
         }
 
         pthread_mutex_unlock (& control_mutex);
@@ -630,7 +576,6 @@ AUD_INPUT_PLUGIN
     .configure = i_configure_gui,
     .play = amidiplug_play,
     .stop = amidiplug_stop,
-    .pause = amidiplug_pause,
     .mseek = amidiplug_mseek,
     .cleanup = amidiplug_cleanup,
     .probe_for_tuple = amidiplug_get_song_tuple,
