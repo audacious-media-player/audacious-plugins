@@ -383,7 +383,7 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return t;
 }
 
-static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
+static gboolean ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple * tuple)
 {
     if (! file)
         return FALSE;

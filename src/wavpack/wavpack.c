@@ -256,7 +256,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
     return tu;
 }
 
-static bool_t wv_write_tag (const Tuple * tuple, VFSFile * handle)
+static bool_t wv_write_tag (const char * filename, VFSFile * handle, const Tuple * tuple)
 {
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }

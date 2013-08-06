@@ -133,7 +133,7 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
 }
 
-bool_t flac_update_song_tuple(const Tuple *tuple, VFSFile *fd)
+bool_t flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple *tuple)
 {
     AUDDBG("Update song tuple.\n");
 

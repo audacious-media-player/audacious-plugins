@@ -49,7 +49,7 @@ typedef struct callback_info {
 } callback_info;
 
 /* metadata.c */
-bool_t flac_update_song_tuple(const Tuple *tuple, VFSFile *fd);
+bool_t flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple *tuple);
 bool_t flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length);
 Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd);
 

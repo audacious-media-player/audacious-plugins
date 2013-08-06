@@ -109,7 +109,7 @@ static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
         g_hash_table_remove (dict, key);
 }
 
-gboolean vorbis_update_song_tuple (const Tuple * tuple, VFSFile * fd)
+gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple * tuple)
 {
 
     vcedit_state *state;

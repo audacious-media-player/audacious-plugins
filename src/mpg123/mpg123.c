@@ -437,7 +437,7 @@ cleanup:
 	return ! error;
 }
 
-static bool_t mpg123_write_tag (const Tuple * tuple, VFSFile * handle)
+static bool_t mpg123_write_tag (const char * filename, VFSFile * handle, const Tuple * tuple)
 {
 	if (! handle)
 		return FALSE;
