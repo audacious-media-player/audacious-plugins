@@ -110,8 +110,7 @@ void xs_close(void)
 /*
  * Start playing the given file
  */
-bool_t xs_play_file(InputPlayback *pb, const char *filename, VFSFile *file,
- int start_time, int stop_time, bool_t pause)
+bool_t xs_play_file(InputPlayback *pb, const char *filename, VFSFile *file)
 {
     xs_tuneinfo_t *tmpTune;
     int audioBufSize, bufRemaining, tmpLength, subTune = -1;

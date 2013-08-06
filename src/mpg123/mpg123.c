@@ -302,7 +302,7 @@ static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
 }
 
 static bool_t mpg123_playback_worker (InputPlayback * data, const char *
- filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
+ filename, VFSFile * file)
 {
 	bool_t error = FALSE;
 	MPG123PlaybackContext ctx;
@@ -377,17 +377,6 @@ GET_FORMAT:
 
 	data->set_gain_from_playlist (data);
 
-	if (start_time)
-	{
-		if (mpg123_seek (ctx.decoder, (int64_t) start_time * ctx.rate / 1000, SEEK_SET) < 0)
-			print_mpg123_error (filename, ctx.decoder);
-
-		outbuf_size = 0;
-	}
-
-	int64_t frames_played = 0;
-	int64_t frames_total = (int64_t) (stop_time - start_time) * ctx.rate / 1000;
-
 	while (! data->check_stop ())
 	{
 		int seek = data->check_seek ();
@@ -397,7 +386,6 @@ GET_FORMAT:
 			if (mpg123_seek (ctx.decoder, (int64_t) seek * ctx.rate / 1000, SEEK_SET) < 0)
 				print_mpg123_error (filename, ctx.decoder);
 
-			frames_played = (int64_t) (seek - start_time) * ctx.rate / 1000;
 			outbuf_size = 0;
 		}
 
@@ -437,26 +425,8 @@ GET_FORMAT:
 		{
 			error_count = 0;
 
-			bool_t stop = FALSE;
-
-			if (stop_time >= 0)
-			{
-				int64_t remain = sizeof outbuf[0] * ctx.channels * (frames_total - frames_played);
-				remain = MAX (0, remain);
-
-				if (outbuf_size >= remain)
-				{
-					outbuf_size = remain;
-					stop = TRUE;
-				}
-			}
-
 			data->output->write_audio (outbuf, outbuf_size);
-			frames_played += outbuf_size / (sizeof outbuf[0] * ctx.channels);
 			outbuf_size = 0;
-
-			if (stop)
-				break;
 		}
 	}
 

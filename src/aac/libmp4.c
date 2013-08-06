@@ -463,7 +463,7 @@ static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
 }
 
 static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
- mp4ff_t * mp4file, int start_time)
+ mp4ff_t * mp4file)
 {
     // We are reading an MP4 file
     int mp4track = getAACTrack (mp4file);
@@ -581,10 +581,6 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
         /* Respond to seek/stop requests.  This needs to be done after we
          * calculate frame size but of course before we write any audio. */
         int seek_value = playback->check_seek ();
-        if (seek_value < 0 && start_time > 0)
-            seek_value = start_time;
-
-        start_time = 0;
 
         if (seek_value >= 0)
         {
@@ -651,7 +647,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
 }
 
 static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
- VFSFile * file, int start_time)
+ VFSFile * file)
 {
     NeAACDecHandle decoder = 0;
     NeAACDecConfigurationPtr decoder_config;
@@ -750,10 +746,6 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
         /* == HANDLE SEEK REQUESTS == */
 
         int seek_value = playback->check_seek ();
-        if (seek_value < 0 && start_time > 0)
-            seek_value = start_time;
-
-        start_time = 0;
 
         if (seek_value >= 0)
         {
@@ -828,7 +820,7 @@ ERR:
 
 /* TODO: ignores stop_time */
 static bool_t mp4_play (InputPlayback * playback, const char * filename,
- VFSFile * file, int start_time, int stop_time, bool_t pause)
+ VFSFile * file)
 {
     if (! file)
         return FALSE;
@@ -841,7 +833,7 @@ static bool_t mp4_play (InputPlayback * playback, const char * filename,
     bool_t result;
 
     if (is_raw_aac)
-        result = my_decode_aac (playback, filename, file, start_time);
+        result = my_decode_aac (playback, filename, file);
     else
     {
         mp4ff_callback_t mp4cb = {
@@ -851,7 +843,7 @@ static bool_t mp4_play (InputPlayback * playback, const char * filename,
         };
 
         mp4ff_t * mp4file = mp4ff_open_read (& mp4cb);
-        result = my_decode_mp4 (playback, filename, mp4file, start_time);
+        result = my_decode_mp4 (playback, filename, mp4file);
         mp4ff_close (mp4file);
     }
 

@@ -23,7 +23,7 @@ int CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
     return 0;
 }
 
-bool_t PlayFile(InputPlayback * data, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
+bool_t PlayFile(InputPlayback * data, const char * filename, VFSFile * file)
 {
     return gModplugXMMS.PlayFile(filename, data);
 }

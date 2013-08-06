@@ -284,7 +284,7 @@ static Tuple * get_song_tuple (const char * filename, VFSFile * file)
 }
 
 static bool_t play_start (InputPlayback * playback, const char * filename,
- VFSFile * file, int start_time, int stop_time, bool_t pause)
+ VFSFile * file)
 {
     if (file == NULL)
         return FALSE;
@@ -307,16 +307,11 @@ static bool_t play_start (InputPlayback * playback, const char * filename,
      * files. */
     playback->set_params (playback, 0, sfinfo.samplerate, sfinfo.channels);
 
-    sf_seek (sndfile, (int64_t) start_time * sfinfo.samplerate / 1000, SEEK_SET);
-
     int size = sfinfo.channels * (sfinfo.samplerate / 50);
     float * buffer = malloc (sizeof (float) * size);
 
-    while (stop_time < 0 || playback->output->written_time () < stop_time)
+    while (! playback->check_stop ())
     {
-        if (playback->check_stop ())
-            break;
-
         int seek_value = playback->check_seek ();
         if (seek_value != -1)
             sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);

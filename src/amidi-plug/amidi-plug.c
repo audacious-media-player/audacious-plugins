@@ -43,7 +43,7 @@ enum
 static void amidiplug_play_loop (InputPlayback * playback);
 
 static bool_t amidiplug_play (InputPlayback * playback, const char *
-                              filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause);
+                              filename_uri, VFSFile * file);
 static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
 static void amidiplug_skipto (int playing_tick);
 
@@ -177,7 +177,7 @@ static void audio_cleanup (void)
 }
 
 static bool_t amidiplug_play (InputPlayback * playback, const char *
-                              filename_uri, VFSFile * file, int start_time, int stop_time, bool_t pause)
+                              filename_uri, VFSFile * file)
 {
     if (! audio_init (playback))
         return FALSE;

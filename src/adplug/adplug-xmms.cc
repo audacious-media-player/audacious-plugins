@@ -275,7 +275,7 @@ adplug_is_our_fd (const char * filename, VFSFile * fd)
 /***** Player control *****/
 
 extern "C" bool_t
-adplug_play (InputPlayback * data, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
+adplug_play (InputPlayback * data, const char * filename, VFSFile * file)
 {
   playback = data;
   dbg_printf ("adplug_play(\"%s\"): ", filename);

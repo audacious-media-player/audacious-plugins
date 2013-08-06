@@ -127,7 +127,7 @@ Tuple *psf2_tuple(const char *filename, VFSFile *file)
 	return t;
 }
 
-static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * file, int start_time, int stop_time, bool_t pause)
+static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * file)
 {
 	void *buffer;
 	int64_t size;

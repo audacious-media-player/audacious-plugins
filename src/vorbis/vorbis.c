@@ -281,7 +281,7 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 #define PCM_BUFSIZE (PCM_FRAMES * 2)
 
 static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
- VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+ VFSFile * file)
 {
     if (file == NULL)
         return FALSE;
@@ -331,14 +331,8 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
      * using the ov_ interface.
      */
 
-    if (start_time > 0)
-        ov_time_seek (& vf, (double) start_time / 1000);
-
     while (! playback->check_stop ())
     {
-        if (stop_time >= 0 && playback->output->written_time () >= stop_time)
-            break;
-
         int seek_value = playback->check_seek();
         if (seek_value >= 0)
             ov_time_seek (& vf, (double) seek_value / 1000);

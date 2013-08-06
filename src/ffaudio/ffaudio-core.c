@@ -395,7 +395,7 @@ static gboolean ffaudio_write_tag (const Tuple * tuple, VFSFile * file)
 }
 
 static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
- VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+ VFSFile * file)
 {
     AUDDBG ("Playing %s.\n", filename);
     if (! file)
@@ -481,16 +481,9 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     errcount = 0;
     seekable = ffaudio_codec_is_seekable(codec);
 
-    int seek_value = -1;
-
-    if (start_time > 0)
-        seek_value = start_time;
-
-    while (! playback->check_stop () && (stop_time < 0 ||
-     playback->output->written_time () < stop_time))
+    while (! playback->check_stop ())
     {
-        if (seek_value < 0)
-            seek_value = playback->check_seek ();
+        int seek_value = playback->check_seek ();
 
         if (seek_value >= 0 && seekable)
         {

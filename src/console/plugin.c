@@ -17,7 +17,7 @@
 
 Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd);
 gboolean console_play(InputPlayback *playback, const gchar *filename,
-    VFSFile *file, gint start_time, gint stop_time, gboolean pause);
+    VFSFile *file);
 gboolean console_init (void);
 
 static const char console_about[] =

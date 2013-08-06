@@ -102,7 +102,7 @@ static void wv_deattach (VFSFile * wvc_input, WavpackContext * ctx)
 }
 
 static bool_t wv_play (InputPlayback * playback, const char * filename,
- VFSFile * file, int start_time, int stop_time, bool_t pause)
+ VFSFile * file)
 {
     if (file == NULL)
         return FALSE;
@@ -145,10 +145,7 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
     playback->set_params(playback, (int) WavpackGetAverageBitrate(ctx, num_channels),
         sample_rate, num_channels);
 
-    WavpackSeekSample (ctx, (int64_t) start_time * sample_rate / 1000);
-
-    while (! playback->check_stop () && (stop_time < 0 ||
-     playback->output->written_time () < stop_time))
+    while (! playback->check_stop ())
     {
         int seek_value = playback->check_seek ();
         if (seek_value >= 0)

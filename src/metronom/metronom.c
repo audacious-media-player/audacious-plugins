@@ -130,7 +130,7 @@ static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, char 
 }
 
 static bool_t metronom_play(InputPlayback *playback, const char *filename,
-    VFSFile *file, int start_time, int stop_time, bool_t pause)
+    VFSFile *file)
 {
     metronom_t pmetronom;
     int16_t data[BUF_SAMPLES];

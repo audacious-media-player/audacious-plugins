@@ -92,7 +92,7 @@ static gchar *tone_title(const gchar * filename)
 }
 
 static gboolean tone_play(InputPlayback *playback, const gchar *filename,
-    VFSFile *file, gint start_time, gint stop_time, gboolean pause)
+    VFSFile *file)
 {
     GArray *frequencies;
     gfloat data[BUF_SAMPLES];

@@ -120,7 +120,7 @@ static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
 }
 
 static bool_t flac_play (InputPlayback * playback, const char * filename,
- VFSFile * file, int start_time, int stop_time, bool_t pause)
+ VFSFile * file)
 {
     if (!file)
         return FALSE;
@@ -154,30 +154,15 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
     playback->set_params(playback, info->bitrate, info->sample_rate, info->channels);
     playback->set_gain_from_playlist(playback);
 
-    FLAC__stream_decoder_seek_absolute (decoder, (int64_t) start_time * info->sample_rate / 1000);
-
-    int64_t samples_remaining = INT64_MAX;
-    if (start_time >= 0 && stop_time >= 0)
-        samples_remaining = (int64_t) (stop_time - start_time) *
-         info->sample_rate / 1000 * info->channels;
-
-    while (samples_remaining && FLAC__stream_decoder_get_state(decoder) !=
-     FLAC__STREAM_DECODER_END_OF_STREAM)
+    while (FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_END_OF_STREAM)
     {
         if (playback->check_stop ())
             break;
 
         int seek_value = playback->check_seek ();
-
         if (seek_value >= 0)
-        {
             FLAC__stream_decoder_seek_absolute (decoder, (int64_t)
              seek_value * info->sample_rate / 1000);
-
-            if (stop_time >= 0)
-                samples_remaining = (int64_t) (stop_time - seek_value) *
-                 info->sample_rate / 1000 * info->channels;
-        }
 
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(decoder) == FALSE)
@@ -187,13 +172,8 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
             break;
         }
 
-        if (info->buffer_used >= samples_remaining)
-            info->buffer_used = samples_remaining;
-
         squeeze_audio(info->output_buffer, play_buffer, info->buffer_used, info->bits_per_sample);
         playback->output->write_audio(play_buffer, info->buffer_used * SAMPLE_SIZE(info->bits_per_sample));
-
-        samples_remaining -= info->buffer_used;
 
         reset_info(info);
     }

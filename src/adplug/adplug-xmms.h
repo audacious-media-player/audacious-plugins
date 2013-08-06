@@ -26,8 +26,7 @@ bool_t adplug_init (void);
 void adplug_quit (void);
 void adplug_about (void);
 void adplug_config (void);
-bool_t adplug_play (InputPlayback * p, const char * filename, VFSFile * file,
- int start_time, int stop_time, bool_t pause);
+bool_t adplug_play (InputPlayback * p, const char * filename, VFSFile * file);
 void adplug_info_box (const char * filename);
 Tuple * adplug_get_tuple (const char * filename, VFSFile * file);
 bool_t adplug_is_our_fd (const char * filename, VFSFile * file);

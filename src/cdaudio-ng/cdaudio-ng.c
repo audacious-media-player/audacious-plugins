@@ -86,8 +86,7 @@ static int monitor_source = 0;
 
 static bool_t cdaudio_init (void);
 static int cdaudio_is_our_file (const char * filename, VFSFile * file);
-static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
- file, int start, int stop, bool_t pause);
+static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file);
 static void cdaudio_cleanup (void);
 static Tuple * make_tuple (const char * filename, VFSFile * file);
 static void scan_cd (void);
@@ -276,8 +275,7 @@ static void cdaudio_set_fullinfo (trackinfo_t * t,
 }
 
 /* play thread only */
-static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
- file, int start, int stop, bool_t pause)
+static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file)
 {
     pthread_mutex_lock (& mutex);
 
@@ -317,9 +315,6 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
 
     playing = TRUE;
 
-    if (stop >= 0)
-        endlsn = MIN (endlsn, startlsn + stop * 75 / 1000);
-
     p->set_params (p, 1411200, 44100, 2);
 
     int buffer_size = aud_get_int (NULL, "output_buffer_size");
@@ -327,7 +322,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile *
     speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
     unsigned char buffer[2352 * sectors];
-    int currlsn = startlsn + (start * 75 / 1000);
+    int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
 
     while (! p->check_stop ())

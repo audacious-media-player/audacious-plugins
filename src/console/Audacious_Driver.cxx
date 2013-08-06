@@ -207,7 +207,7 @@ extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
 }
 
 extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
-    VFSFile *file, gint start_time, gint stop_time, gboolean pause)
+    VFSFile *file)
 {
     gint length, sample_rate;
     track_info_t info;

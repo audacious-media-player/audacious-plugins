@@ -84,7 +84,7 @@ Tuple *vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
 }
 
 static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
- VFSFile * file, gint start_time, gint stop_time, gboolean pause)
+ VFSFile * file)
 {
     gboolean eof = FALSE;
     void *stream;               /* pointer to current position in sound buffer */
@@ -123,11 +123,9 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
 
     playback->set_params(playback, 14 * 50 * 8, freq, bits / 8);
 
-    /* (time in sec) * 50 = offset in AY register data frames */
-    vtx.pos = start_time / 20;
-
     while (!playback->check_stop() && !eof)
     {
+        /* (time in sec) * 50 = offset in AY register data frames */
         int seek_value = playback->check_seek();
         if (seek_value >= 0)
             vtx.pos = seek_value / 20;
