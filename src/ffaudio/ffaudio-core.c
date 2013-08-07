@@ -43,6 +43,15 @@ static gboolean stop_flag = FALSE;
 static pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 static GHashTable * extension_dict = NULL;
 
+typedef struct
+{
+    int stream_idx;
+    AVStream * stream;
+    AVCodecContext * context;
+    AVCodec * codec;
+}
+CodecInfo;
+
 /* str_unref() may be a macro */
 static void str_unref_cb (void * str)
 {
@@ -246,6 +255,33 @@ static void close_input_file (AVFormatContext * c)
     io_context_free (io);
 }
 
+static bool_t find_codec (AVFormatContext * c, CodecInfo * cinfo)
+{
+    avformat_find_stream_info (c, NULL);
+
+    for (int i = 0; i < c->nb_streams; i++)
+    {
+        AVStream * stream = c->streams[i];
+
+        if (stream && stream->codec && stream->codec->codec_type == AVMEDIA_TYPE_AUDIO)
+        {
+            AVCodec * codec = avcodec_find_decoder (stream->codec->codec_id);
+
+            if (codec)
+            {
+                cinfo->stream_idx = i;
+                cinfo->stream = stream;
+                cinfo->context = stream->codec;
+                cinfo->codec = codec;
+
+                return TRUE;
+            }
+        }
+    }
+
+    return FALSE;
+}
+
 static gboolean
 ffaudio_codec_is_seekable(AVCodec *codec)
 {
@@ -291,82 +327,53 @@ static const ffaudio_meta_t metaentries[] = {
  {TUPLE_INT,    FIELD_TRACK_NUMBER, {"track", "WM/TrackNumber", NULL}},
 };
 
-static const gint n_metaentries = sizeof(metaentries) / sizeof(metaentries[0]);
-
-static void
-ffaudio_get_meta(Tuple *tuple, AVFormatContext *ic, const ffaudio_meta_t *m)
+static void read_metadata_dict (Tuple * tuple, AVDictionary * dict)
 {
-    if (! ic->metadata)
-        return;
-
-    AVDictionaryEntry *tag = NULL;
-
-    for (gint i = 0; ! tag && m->keys[i]; i ++)
-        tag = av_dict_get (ic->metadata, m->keys[i], NULL, 0);
-
-    if (tag != NULL)
+    for (int i = 0; i < G_N_ELEMENTS (metaentries); i ++)
     {
-        switch (m->ttype) {
-        case TUPLE_STRING:
-            tuple_set_str (tuple, m->field, NULL, tag->value);
-            break;
+        const ffaudio_meta_t * m = & metaentries[i];
+        AVDictionaryEntry * entry = NULL;
 
-        case TUPLE_INT:
-            tuple_set_int (tuple, m->field, NULL, atoi(tag->value));
-            break;
+        for (int j = 0; ! entry && m->keys[j]; j ++)
+            entry = av_dict_get (dict, m->keys[j], NULL, 0);
 
-        default:
-            break;
+        if (entry && entry->value)
+        {
+            if (m->ttype == TUPLE_STRING)
+                tuple_set_str (tuple, m->field, NULL, entry->value);
+            else if (m->ttype == TUPLE_INT)
+                tuple_set_int (tuple, m->field, NULL, atoi (entry->value));
         }
-    }
-}
-
-static void
-ffaudio_get_tuple_data(Tuple *tuple, AVFormatContext *ic, AVCodecContext *c, AVCodec *codec)
-{
-    if (ic != NULL)
-    {
-        gint i;
-        for (i = 0; i < n_metaentries; i++)
-            ffaudio_get_meta(tuple, ic, &metaentries[i]);
-
-        tuple_set_int(tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
-        tuple_set_int(tuple, FIELD_BITRATE, NULL, ic->bit_rate / 1000);
-    }
-
-    if (codec != NULL && codec->long_name != NULL)
-    {
-        tuple_set_str(tuple, FIELD_CODEC, NULL, codec->long_name);
     }
 }
 
 static Tuple * read_tuple (const gchar * filename, VFSFile * file)
 {
-    AVCodec *codec = NULL;
-    AVCodecContext *c = NULL;
-    AVStream *s = NULL;
-    gint i;
-
+    Tuple * tuple = NULL;
     AVFormatContext * ic = open_input_file (filename, file);
-    if (! ic)
-        return NULL;
 
-    for (i = 0; i < ic->nb_streams; i++)
+    if (ic)
     {
-        s = ic->streams[i];
-        c = s->codec;
-        if (c->codec_type == AVMEDIA_TYPE_AUDIO)
-        {
-            avformat_find_stream_info (ic, NULL);
-            codec = avcodec_find_decoder(c->codec_id);
-            if (codec != NULL)
-                break;
-        }
-    }
+        CodecInfo cinfo;
 
-    Tuple *tuple = tuple_new_from_filename(filename);
-    ffaudio_get_tuple_data(tuple, ic, c, codec);
-    close_input_file (ic);
+        if (find_codec (ic, & cinfo))
+        {
+            tuple = tuple_new_from_filename (filename);
+
+            tuple_set_int (tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
+            tuple_set_int (tuple, FIELD_BITRATE, NULL, ic->bit_rate / 1000);
+
+            if (cinfo.codec->long_name)
+                tuple_set_str (tuple, FIELD_CODEC, NULL, cinfo.codec->long_name);
+
+            if (ic->metadata)
+                read_metadata_dict (tuple, ic->metadata);
+            if (cinfo.stream->metadata)
+                read_metadata_dict (tuple, cinfo.stream->metadata);
+        }
+
+        close_input_file (ic);
+    }
 
     return tuple;
 }
@@ -405,11 +412,8 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     if (! file)
         return FALSE;
 
-    AVCodec *codec = NULL;
-    AVCodecContext *c = NULL;
-    AVStream *s = NULL;
     AVPacket pkt = {.data = NULL};
-    gint i, stream_id, errcount;
+    gint errcount;
     gboolean codec_opened = FALSE;
     gint out_fmt;
     gboolean planar;
@@ -423,34 +427,22 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     if (! ic)
         return FALSE;
 
-    for (i = 0; i < ic->nb_streams; i++)
-    {
-        s = ic->streams[i];
-        c = s->codec;
-        if (c->codec_type == AVMEDIA_TYPE_AUDIO)
-        {
-            avformat_find_stream_info (ic, NULL);
-            codec = avcodec_find_decoder(c->codec_id);
-            stream_id = i;
-            if (codec != NULL)
-                break;
-        }
-    }
+    CodecInfo cinfo;
 
-    if (codec == NULL)
+    if (! find_codec (ic, & cinfo))
     {
         fprintf (stderr, "ffaudio: No codec found for %s.\n", filename);
         goto error_exit;
     }
 
-    AUDDBG("got codec %s for stream index %d, opening\n", codec->name, stream_id);
+    AUDDBG("got codec %s for stream index %d, opening\n", cinfo.codec->name, cinfo.stream_idx);
 
-    if (avcodec_open2 (c, codec, NULL) < 0)
+    if (avcodec_open2 (cinfo.context, cinfo.codec, NULL) < 0)
         goto error_exit;
 
     codec_opened = TRUE;
 
-    switch (c->sample_fmt)
+    switch (cinfo.context->sample_fmt)
     {
         case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; planar = FALSE; break;
         case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; planar = FALSE; break;
@@ -463,14 +455,14 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
         case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = TRUE; break;
 
     default:
-        fprintf (stderr, "ffaudio: Unsupported audio format %d\n", (int) c->sample_fmt);
+        fprintf (stderr, "ffaudio: Unsupported audio format %d\n", (int) cinfo.context->sample_fmt);
         goto error_exit;
     }
 
     /* Open audio output */
     AUDDBG("opening audio output\n");
 
-    if (playback->output->open_audio(out_fmt, c->sample_rate, c->channels) <= 0)
+    if (playback->output->open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels) <= 0)
     {
         error = TRUE;
         goto error_exit;
@@ -483,7 +475,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     if (pause)
         playback->output->pause(TRUE);
 
-    playback->set_params(playback, ic->bit_rate, c->sample_rate, c->channels);
+    playback->set_params(playback, ic->bit_rate, cinfo.context->sample_rate, cinfo.context->channels);
 
     pthread_mutex_lock (& ctrl_mutex);
 
@@ -491,7 +483,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     seek_value = (start_time > 0) ? start_time : -1;
     playback->set_pb_ready(playback);
     errcount = 0;
-    seekable = ffaudio_codec_is_seekable(codec);
+    seekable = ffaudio_codec_is_seekable(cinfo.codec);
 
     pthread_mutex_unlock (& ctrl_mutex);
 
@@ -537,7 +529,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
             errcount = 0;
 
         /* Ignore any other substreams */
-        if (pkt.stream_index != stream_id)
+        if (pkt.stream_index != cinfo.stream_idx)
         {
             av_free_packet(&pkt);
             continue;
@@ -563,7 +555,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
             AVFrame * frame = avcodec_alloc_frame ();
             int decoded = 0;
-            int len = avcodec_decode_audio4 (c, frame, & decoded, & tmp);
+            int len = avcodec_decode_audio4 (cinfo.context, frame, & decoded, & tmp);
 
             if (len < 0)
             {
@@ -577,7 +569,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
             if (! decoded)
                 continue;
 
-            gint size = FMT_SIZEOF (out_fmt) * c->channels * frame->nb_samples;
+            gint size = FMT_SIZEOF (out_fmt) * cinfo.context->channels * frame->nb_samples;
 
             if (planar)
             {
@@ -588,7 +580,7 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
                 }
 
                 audio_interlace ((const void * *) frame->data, out_fmt,
-                 c->channels, buf, frame->nb_samples);
+                 cinfo.context->channels, buf, frame->nb_samples);
                 playback->output->write_audio (buf, size);
             }
             else
@@ -607,7 +599,7 @@ error_exit:
     if (pkt.data)
         av_free_packet(&pkt);
     if (codec_opened)
-        avcodec_close(c);
+        avcodec_close(cinfo.context);
     if (ic != NULL)
         close_input_file(ic);
 
