@@ -31,13 +31,11 @@
 #include "object-core.h"
 #include "object-player.h"
 
-static GDBusConnection * bus;
 static GObject * object_core, * object_player;
 static char * last_title, * last_artist, * last_album, * last_file;
 static int last_length;
 static const char * image_file;
 static bool_t recheck_image;
-static GVariantType * metadata_type;
 static int update_timer;
 
 static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
@@ -157,10 +155,7 @@ static void update_metadata (void * data, GObject * object)
     GVariant * var = g_variant_new_variant (str);
     elems[nelems ++] = g_variant_new_dict_entry (key, var);
 
-    if (! metadata_type)
-        metadata_type = g_variant_type_new ("{sv}");
-
-    GVariant * array = g_variant_new_array (metadata_type, elems, nelems);
+    GVariant * array = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), elems, nelems);
     g_object_set (object, "metadata", array, NULL);
 }
 
@@ -303,7 +298,6 @@ void mpris2_cleanup (void)
         update_timer = 0;
     }
 
-    g_dbus_connection_close_sync (bus, NULL, NULL);
     g_object_unref (object_core);
     g_object_unref (object_player);
 
@@ -319,18 +313,12 @@ void mpris2_cleanup (void)
     str_unref (last_file);
     last_title = last_artist = last_album = last_file = NULL;
     last_length = 0;
-
-    if (metadata_type)
-    {
-        g_variant_type_free (metadata_type);
-        metadata_type = NULL;
-    }
 }
 
 bool_t mpris2_init (void)
 {
     GError * error = NULL;
-    bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, & error);
+    GDBusConnection * bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, & error);
 
     if (! bus)
     {
