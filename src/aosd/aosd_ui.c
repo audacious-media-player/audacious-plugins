@@ -18,6 +18,8 @@
 *
 */
 
+#include <math.h>
+
 #include <gtk/gtk.h>
 #include <audacious/i18n.h>
 
@@ -30,6 +32,33 @@
 
 extern aosd_cfg_t * global_config;
 extern gboolean plugin_is_active;
+
+
+static void chooser_get_aosd_color (GtkColorChooser * chooser, aosd_color_t * color)
+{
+  GdkRGBA rgba;
+  gtk_color_chooser_get_rgba (chooser, & rgba);
+
+  color->red = rint (rgba.red * 65535.0);
+  color->green = rint (rgba.green * 65535.0);
+  color->blue = rint (rgba.blue * 65535.0);
+  color->alpha = rint (rgba.alpha * 65535.0);
+}
+
+
+static void chooser_set_aosd_color (GtkColorChooser * chooser, const aosd_color_t * color)
+{
+  GdkRGBA rgba =
+  {
+    .red = color->red / 65535.0,
+    .green = color->green / 65535.0,
+    .blue = color->blue / 65535.0,
+    .alpha = color->alpha / 65535.0
+  };
+
+  gtk_color_chooser_set_use_alpha (chooser, TRUE);
+  gtk_color_chooser_set_rgba (chooser, & rgba);
+}
 
 
 /*************************************************************/
@@ -50,7 +79,6 @@ aosd_callback_list_add ( GList ** list , GtkWidget * widget , aosd_ui_cb_func_t 
   cb->widget = widget;
   cb->func = func;
   *list = g_list_append( *list , cb );
-  return;
 }
 
 static void
@@ -62,7 +90,6 @@ aosd_callback_list_run ( GList * list , aosd_cfg_t * cfg )
     cb->func( cb->widget , cfg );
     list = g_list_next( list );
   }
-  return;
 }
 
 static void
@@ -75,7 +102,6 @@ aosd_callback_list_free ( GList * list )
     list = g_list_next( list );
   }
   g_list_free( list_top );
-  return;
 }
 /*************************************************************/
 
@@ -114,7 +140,6 @@ aosd_cb_configure_position_placement_commit ( GtkWidget * grid , aosd_cfg_t * cf
   }
 
   g_list_free( placbt_list );
-  return;
 }
 
 
@@ -125,7 +150,6 @@ aosd_cb_configure_position_offset_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"offx")) );
   cfg->osd->position.offset_y = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"offy")) );
-  return;
 }
 
 
@@ -134,7 +158,6 @@ aosd_cb_configure_position_maxsize_commit ( GtkWidget * grid , aosd_cfg_t * cfg 
 {
   cfg->osd->position.maxsize_width = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"maxsize_width")) );
-  return;
 }
 
 
@@ -143,7 +166,6 @@ aosd_cb_configure_position_multimon_commit ( GtkWidget * combo , aosd_cfg_t * cf
 {
   gint active = gtk_combo_box_get_active( GTK_COMBO_BOX(combo) );
   cfg->osd->position.multimon_id = ( active > -1 ) ? (active - 1) : -1;
-  return;
 }
 
 
@@ -268,7 +290,6 @@ aosd_cb_configure_animation_timing_commit ( GtkWidget * timing_hbox , aosd_cfg_t
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(timing_hbox),"fadein")) );
   cfg->osd->animation.timing_fadeout = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(timing_hbox),"fadeout")) );
-  return;
 }
 
 
@@ -327,7 +348,6 @@ aosd_cb_configure_text_font_shadow_toggle ( GtkToggleButton * shadow_togglebt ,
     gtk_widget_set_sensitive( GTK_WIDGET(shadow_colorbt) , TRUE );
   else
     gtk_widget_set_sensitive( GTK_WIDGET(shadow_colorbt) , FALSE );
-  return;
 }
 
 
@@ -335,25 +355,17 @@ static void
 aosd_cb_configure_text_font_commit ( GtkWidget * fontbt , aosd_cfg_t * cfg )
 {
   gint fontnum = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(fontbt) , "fontnum" ));
-  GdkColor color, shadow_color;
+  GtkColorChooser * chooser;
+
   cfg->osd->text.fonts_name[fontnum] = g_strdup( gtk_font_button_get_font_name(GTK_FONT_BUTTON(fontbt)) );
-  gtk_color_button_get_color(
-    GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(fontbt),"color")) , &color );
-  cfg->osd->text.fonts_color[fontnum].red = color.red;
-  cfg->osd->text.fonts_color[fontnum].green = color.green;
-  cfg->osd->text.fonts_color[fontnum].blue = color.blue;
-  cfg->osd->text.fonts_color[fontnum].alpha = gtk_color_button_get_alpha(
-    GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(fontbt),"color")) );
   cfg->osd->text.fonts_draw_shadow[fontnum] = gtk_toggle_button_get_active(
     GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(fontbt),"use_shadow")) );
-  gtk_color_button_get_color(
-    GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(fontbt),"shadow_color")) , &shadow_color );
-  cfg->osd->text.fonts_shadow_color[fontnum].red = shadow_color.red;
-  cfg->osd->text.fonts_shadow_color[fontnum].green = shadow_color.green;
-  cfg->osd->text.fonts_shadow_color[fontnum].blue = shadow_color.blue;
-  cfg->osd->text.fonts_shadow_color[fontnum].alpha = gtk_color_button_get_alpha(
-    GTK_COLOR_BUTTON(g_object_get_data(G_OBJECT(fontbt),"shadow_color")) );
-  return;
+
+  chooser = g_object_get_data ((GObject *) fontbt, "color");
+  chooser_get_aosd_color (chooser, & cfg->osd->text.fonts_color[fontnum]);
+
+  chooser = g_object_get_data ((GObject *) fontbt, "shadow_color");
+  chooser_get_aosd_color (chooser, & cfg->osd->text.fonts_shadow_color[fontnum]);
 }
 
 
@@ -362,7 +374,6 @@ aosd_cb_configure_text_inte_commit ( GtkWidget *utf8conv_togglebt , aosd_cfg_t *
 {
   cfg->osd->text.utf8conv_disable = gtk_toggle_button_get_active(
     GTK_TOGGLE_BUTTON(utf8conv_togglebt) );
-  return;
 }
 
 
@@ -387,7 +398,6 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_grid_set_column_spacing ( GTK_GRID(tex_font_grid) , 4 );
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
-    GdkColor gcolor = { 0 , 0 , 0 , 0 };
     gchar *label_str = g_strdup_printf( _("Font %i:") , i+1 );
     tex_font_label[i] = gtk_label_new( label_str );
     g_free( label_str );
@@ -398,24 +408,18 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_font_button_set_use_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , FALSE );
     gtk_font_button_set_font_name( GTK_FONT_BUTTON(tex_font_fontbt[i]) , cfg->osd->text.fonts_name[i] );
     gtk_widget_set_hexpand( tex_font_fontbt[i] , TRUE );
-    tex_font_colorbt[i] = gtk_color_button_new();
-    gcolor.red = cfg->osd->text.fonts_color[i].red;
-    gcolor.green = cfg->osd->text.fonts_color[i].green;
-    gcolor.blue = cfg->osd->text.fonts_color[i].blue;
-    gtk_color_button_set_use_alpha( GTK_COLOR_BUTTON(tex_font_colorbt[i]) , TRUE );
-    gtk_color_button_set_color( GTK_COLOR_BUTTON(tex_font_colorbt[i]) , &gcolor );
-    gtk_color_button_set_alpha( GTK_COLOR_BUTTON(tex_font_colorbt[i]) ,
-      cfg->osd->text.fonts_color[i].alpha );
+
+    tex_font_colorbt[i] = gtk_color_button_new ();
+    chooser_set_aosd_color ((GtkColorChooser *) tex_font_colorbt[i],
+     & cfg->osd->text.fonts_color[i]);
+
     tex_font_shadow_togglebt[i] = gtk_toggle_button_new_with_label( _("Shadow") );
     gtk_toggle_button_set_mode( GTK_TOGGLE_BUTTON(tex_font_shadow_togglebt[i]) , FALSE );
-    tex_font_shadow_colorbt[i] = gtk_color_button_new();
-    gtk_color_button_set_use_alpha( GTK_COLOR_BUTTON(tex_font_shadow_colorbt[i]) , TRUE );
-    gcolor.red = cfg->osd->text.fonts_shadow_color[i].red;
-    gcolor.green = cfg->osd->text.fonts_shadow_color[i].green;
-    gcolor.blue = cfg->osd->text.fonts_shadow_color[i].blue;
-    gtk_color_button_set_color( GTK_COLOR_BUTTON(tex_font_shadow_colorbt[i]) , &gcolor );
-    gtk_color_button_set_alpha( GTK_COLOR_BUTTON(tex_font_shadow_colorbt[i]) ,
-      cfg->osd->text.fonts_shadow_color[i].alpha );
+
+    tex_font_shadow_colorbt[i] = gtk_color_button_new ();
+    chooser_set_aosd_color ((GtkColorChooser *) tex_font_shadow_colorbt[i],
+     & cfg->osd->text.fonts_shadow_color[i]);
+
     gtk_widget_set_sensitive( tex_font_shadow_colorbt[i] , FALSE );
     g_signal_connect( G_OBJECT(tex_font_shadow_togglebt[i]) , "toggled" ,
                       G_CALLBACK(aosd_cb_configure_text_font_shadow_toggle) ,
@@ -453,29 +457,6 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
   return tex_vbox;
 }
 
-#if 0
-static void
-aosd_ui_configure_decoration_browse ( GtkButton * button , gpointer entry )
-{
-  GtkWidget *dialog;
-  GtkWidget *parent_win = gtk_widget_get_toplevel( GTK_WIDGET(button) );
-  dialog = gtk_file_chooser_dialog_new ( _("Select Skin File") ,
-                                         ( GTK_WIDGET_TOPLEVEL(parent_win) ? GTK_WINDOW(parent_win) : NULL ) ,
-                                         GTK_FILE_CHOOSER_ACTION_OPEN ,
-                                         GTK_STOCK_CANCEL , GTK_RESPONSE_CANCEL ,
-                                         GTK_STOCK_OPEN , GTK_RESPONSE_ACCEPT , NULL );
-  if ( gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT )
-  {
-    gchar *filename;
-    filename = gtk_file_chooser_get_filename( GTK_FILE_CHOOSER(dialog) );
-    gtk_entry_set_text( GTK_ENTRY(entry) , filename );
-    g_free( filename );
-  }
-  gtk_widget_destroy( dialog );
-  return;
-}
-#endif
-
 
 static void
 aosd_cb_configure_decoration_style_commit ( GtkWidget * lv , aosd_cfg_t * cfg )
@@ -490,33 +471,19 @@ aosd_cb_configure_decoration_style_commit ( GtkWidget * lv , aosd_cfg_t * cfg )
     gtk_tree_model_get( model , &iter , 1 , &deco_code , -1 );
     cfg->osd->decoration.code = deco_code;
   }
-  return;
 }
 
 
 static void
 aosd_cb_configure_decoration_color_commit ( GtkWidget * colorbt , aosd_cfg_t * cfg )
 {
-  GdkColor gcolor;
   aosd_color_t color;
+  chooser_get_aosd_color ((GtkColorChooser *) colorbt, & color);
+
   gint colnum = GPOINTER_TO_INT( g_object_get_data( G_OBJECT(colorbt) , "colnum" ) );
-  gtk_color_button_get_color( GTK_COLOR_BUTTON(colorbt) , &gcolor );
-  color.red = gcolor.red;
-  color.green = gcolor.green;
-  color.blue = gcolor.blue;
-  color.alpha = gtk_color_button_get_alpha( GTK_COLOR_BUTTON(colorbt) );
   g_array_insert_val( cfg->osd->decoration.colors , colnum , color );
-  return;
 }
 
-#if 0
-static void
-aosd_cb_configure_decoration_skinfile_commit ( GtkWidget * entry , aosd_cfg_t * cfg )
-{
-  cfg->osd->decoration.skin_file = g_strdup( gtk_entry_get_text(GTK_ENTRY(entry)) );
-  return;
-}
-#endif
 
 static GtkWidget *
 aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
@@ -530,10 +497,6 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkTreeIter iter, iter_sel;
   GtkWidget *dec_rstyle_hbox;
   GtkWidget *dec_rstyleopts_frame, *dec_rstyleopts_grid;
-#if 0
-  GtkWidget *dec_rstylecustom_frame, *dec_rstylecustom_grid;
-  GtkWidget *dec_rstylecustom_label, *dec_rstylecustom_entry, *dec_rstylecustom_browse_bt;
-#endif
   gint *deco_code_array, deco_code_array_size;
   gint colors_max_num = 0, i = 0;
 
@@ -594,19 +557,17 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_container_add( GTK_CONTAINER(dec_rstyleopts_frame) , dec_rstyleopts_grid );
   for ( i = 0 ; i < colors_max_num ; i++ )
   {
-    GtkWidget *colorbt, *hbox, *label;
-    aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
-    GdkColor gcolor = { 0 , 0 , 0 , 0 };
+    GtkWidget *hbox, *label;
     gchar *label_str = NULL;
     hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
     label_str = g_strdup_printf( _("Color %i:") , i+1 );
     label = gtk_label_new( label_str );
     g_free( label_str );
-    colorbt = gtk_color_button_new();
-    gtk_color_button_set_use_alpha( GTK_COLOR_BUTTON(colorbt) , TRUE );
-    gcolor.red = color.red; gcolor.green = color.green; gcolor.blue = color.blue;
-    gtk_color_button_set_color( GTK_COLOR_BUTTON(colorbt) , &gcolor );
-    gtk_color_button_set_alpha( GTK_COLOR_BUTTON(colorbt) , color.alpha );
+
+    GtkWidget * colorbt = gtk_color_button_new ();
+    chooser_set_aosd_color ((GtkColorChooser *) colorbt,
+     & g_array_index (cfg->osd->decoration.colors, aosd_color_t, i));
+
     gtk_box_pack_start( GTK_BOX(hbox) , label , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(hbox) , colorbt , FALSE , FALSE , 0 );
     gtk_grid_attach( GTK_GRID(dec_rstyleopts_grid) , hbox , (i % 3) , (i / 3) , 1 , 1 );
@@ -614,29 +575,6 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
     aosd_callback_list_add( cb_list , colorbt , aosd_cb_configure_decoration_color_commit );
   }
   gtk_box_pack_start( GTK_BOX(dec_rstyle_hbox) , dec_rstyleopts_frame , FALSE , FALSE , 0 );
-
-#if 0
-  /* custom skin entry TODO still working on this */
-  dec_rstylecustom_frame = gtk_frame_new( _("Custom Skin") );
-  dec_rstylecustom_grid = gtk_grid_new();
-  gtk_container_set_border_width( GTK_CONTAINER(dec_rstylecustom_grid) , 6 );
-  gtk_grid_set_row_spacing( GTK_GRID(dec_rstylecustom_grid) , 4 );
-  gtk_grid_set_column_spacing( GTK_GRID(dec_rstylecustom_grid) , 4 );
-  gtk_container_add( GTK_CONTAINER(dec_rstylecustom_frame) , dec_rstylecustom_grid );
-  dec_rstylecustom_label = gtk_label_new( _("Skin file:") );
-  dec_rstylecustom_entry = gtk_entry_new();
-  gtk_widget_set_hexpand( dec_rstylecustom_entry , TRUE );
-  gtk_entry_set_text( GTK_ENTRY(dec_rstylecustom_entry) , cfg->osd->decoration.skin_file );
-  dec_rstylecustom_browse_bt = gtk_button_new_with_label( _("Browse") );
-  g_signal_connect( G_OBJECT(dec_rstylecustom_browse_bt) , "clicked" ,
-                    G_CALLBACK(aosd_ui_configure_decoration_browse) , dec_rstylecustom_entry );
-  gtk_grid_attach( GTK_GRID(dec_rstylecustom_grid) , dec_rstylecustom_label , 0 , 0 , 1 , 1 );
-  gtk_grid_attach( GTK_GRID(dec_rstylecustom_grid) , dec_rstylecustom_entry , 0 , 0 , 1 , 1 );
-  gtk_grid_attach( GTK_GRID(dec_rstylecustom_grid) , dec_rstylecustom_browse_bt , 0 , 0 , 1 , 1 );
-  aosd_callback_list_add( cb_list , dec_rstylecustom_entry , aosd_cb_configure_decoration_skinfile_commit );
-
-  gtk_box_pack_start( GTK_BOX(dec_rstyle_hbox) , dec_rstylecustom_frame , FALSE , FALSE , 0 );
-#endif
 
   return dec_hbox;
 }
@@ -654,7 +592,6 @@ aosd_cb_configure_trigger_lvchanged ( GtkTreeSelection *sel , gpointer nb )
     gtk_tree_model_get( model , &iter , 2 , &page_num , -1 );
     gtk_notebook_set_current_page( GTK_NOTEBOOK(nb) , page_num );
   }
-  return;
 }
 
 
@@ -679,7 +616,6 @@ aosd_cb_configure_trigger_commit ( GtkWidget * cbt , aosd_cfg_t * cfg )
     gint value = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(cbt),"code"));
     g_array_append_val( cfg->osd->trigger.active , value );
   }
-  return;
 }
 
 
@@ -799,7 +735,6 @@ aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpoint
     gtk_label_set_text( GTK_LABEL(label) , _("Composite manager not required for fake transparency") );
     gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , FALSE );
   }
-  return;
 }
 #endif
 
@@ -817,7 +752,6 @@ aosd_cb_configure_misc_transp_commit ( GtkWidget * mis_transp_vbox , aosd_cfg_t 
     }
     child_list = g_list_next(child_list);
   }
-  return;
 }
 
 
@@ -918,7 +852,6 @@ aosd_cb_configure_test ( gpointer cfg_win )
   aosd_osd_display( markup_message , cfg->osd , TRUE );
   g_free( markup_message );
   aosd_cfg_delete( cfg );
-  return;
 }
 
 
@@ -932,7 +865,6 @@ aosd_cb_configure_cancel ( gpointer cfg_win )
   if ( plugin_is_active == TRUE )
     aosd_osd_init( global_config->osd->misc.transparency_mode );
   gtk_widget_destroy( GTK_WIDGET(cfg_win) );
-  return;
 }
 
 
@@ -964,7 +896,6 @@ aosd_cb_configure_ok ( gpointer cfg_win )
   }
   aosd_callback_list_free( cb_list );
   gtk_widget_destroy( GTK_WIDGET(cfg_win) );
-  return;
 }
 
 
@@ -985,10 +916,7 @@ aosd_ui_configure ( aosd_cfg_t * cfg )
   GList *cb_list = NULL; /* list of custom callbacks */
 
   if ( cfg_win != NULL )
-  {
     gtk_window_present( GTK_WINDOW(cfg_win) );
-    return;
-  }
 
   cfg_win = gtk_window_new( GTK_WINDOW_TOPLEVEL );
   gtk_window_set_type_hint( GTK_WINDOW(cfg_win), GDK_WINDOW_TYPE_HINT_DIALOG );

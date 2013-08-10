@@ -23,32 +23,6 @@
 #include "ghosd.h"
 #include "ghosd-internal.h"
 
-#if 0
-static unsigned long
-get_current_workspace(Ghosd *ghosd) {
-  Atom cur_workspace_atom;
-  Atom type;
-  int format;
-  unsigned long nitems, bytes_after;
-  unsigned char *data;
-
-  cur_workspace_atom = XInternAtom(ghosd->dpy, "_NET_CURRENT_DESKTOP", False);
-  XGetWindowProperty(ghosd->dpy, DefaultRootWindow(ghosd->dpy), cur_workspace_atom,
-    0, ULONG_MAX, False, XA_CARDINAL, &type, &format, &nitems, &bytes_after, &data);
-
-  if ( type == XA_CARDINAL )
-  {
-    unsigned long cur_workspace = (unsigned long)*data;
-    g_print("debug: %i\n", cur_workspace);
-    XFree( data );
-    return cur_workspace;
-  }
-
-  /* fall back to desktop number 0 */
-  return 0;
-}
-#endif
-
 #ifdef HAVE_XCOMPOSITE
 static Bool
 composite_find_manager(Display *dpy, int scr)
@@ -346,16 +320,6 @@ ghosd_set_event_button_cb(Ghosd *ghosd, GhosdEventButtonCb func, void *user_data
   ghosd->eventbutton.func = func;
   ghosd->eventbutton.data = user_data;
 }
-
-#if 0
-static int
-x_error_handler(Display *dpy, XErrorEvent* evt) {
-  /* segfault so we can get a backtrace. */
-  char *x = NULL;
-  *x = 0;
-  return 0;
-}
-#endif
 
 Ghosd*
 ghosd_new(void) {
