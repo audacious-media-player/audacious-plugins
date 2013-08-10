@@ -47,6 +47,7 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
+#include <libaudgui/libaudgui.h>
 
 #include "plugin.h"
 #include "gui.h"
@@ -243,16 +244,16 @@ gboolean handle_keyevent (EVENT event)
     }
 
     /* Open Jump-To-File dialog */
-    if (event == EVENT_JUMP_TO_FILE)
+    if (event == EVENT_JUMP_TO_FILE && ! aud_headless_mode ())
     {
-        aud_interface_show_jump_to_track ();
+        audgui_jump_to_track ();
         return TRUE;
     }
 
     /* Toggle Windows */
-    if (event == EVENT_TOGGLE_WIN)
+    if (event == EVENT_TOGGLE_WIN && ! aud_headless_mode ())
     {
-        aud_interface_show (! (aud_interface_is_shown () && aud_interface_is_focused ()));
+        aud_interface_show (! aud_interface_is_shown ());
         return TRUE;
     }
 

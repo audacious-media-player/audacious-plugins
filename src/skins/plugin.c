@@ -25,7 +25,6 @@
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "plugin.h"
 #include "skins_cfg.h"
@@ -40,9 +39,6 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 
 static gboolean skins_init (void);
 static void skins_cleanup (void);
-static gboolean ui_is_shown (void);
-static gboolean ui_is_focused (void);
-static void show_error_message (const gchar * text);
 
 AUD_IFACE_PLUGIN
 (
@@ -51,18 +47,12 @@ AUD_IFACE_PLUGIN
     .init = skins_init,
     .cleanup = skins_cleanup,
     .configure = skins_configure,
-    .show = mainwin_show,
-    .is_shown = ui_is_shown,
-    .is_focused = ui_is_focused,
-    .show_error = show_error_message,
-    .show_filebrowser = audgui_run_filebrowser,
-    .show_jump_to_track = audgui_jump_to_track,
+    .show = mainwin_show
 )
 
 static gboolean plugin_is_active = FALSE;
 
 static gint update_source;
-static GtkWidget * error_win;
 
 static void skins_free_paths(void) {
     int i;
@@ -147,33 +137,8 @@ static void skins_cleanup (void)
         skins_cfg_free();
         ui_manager_destroy();
 
-        if (error_win)
-            gtk_widget_destroy (error_win);
-
         plugin_is_active = FALSE;
     }
-}
-
-static gboolean ui_is_shown (void)
-{
-    return gtk_widget_get_visible (mainwin);
-}
-
-static gboolean ui_is_focused (void)
-{
-/* gtk_window_is_active() is too unreliable, unfortunately. --jlindgren */
-#if 0
-    return gtk_window_is_active ((GtkWindow *) mainwin) || gtk_window_is_active
-     ((GtkWindow *) equalizerwin) || gtk_window_is_active ((GtkWindow *)
-     playlistwin);
-#else
-    return ui_is_shown ();
-#endif
-}
-
-static void show_error_message (const gchar * text)
-{
-    audgui_simple_message (& error_win, GTK_MESSAGE_ERROR, _("Error"), _(text));
 }
 
 bool_t handle_window_close (void)

@@ -31,7 +31,6 @@
 #include <audacious/misc.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "gtkui.h"
 #include "layout.h"
@@ -78,8 +77,6 @@ static GtkToolItem * menu_button, * search_button, * button_play, * button_stop,
 static GtkWidget * slider, * label_time;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
-static GtkWidget * error_win = NULL;
-
 static gboolean slider_is_moving = FALSE;
 static gint slider_seek_time = -1;
 static guint delayed_title_change_source = 0;
@@ -88,9 +85,6 @@ static guint update_song_timeout_source = 0;
 static gboolean init (void);
 static void cleanup (void);
 static void ui_show (gboolean show);
-static gboolean ui_is_shown (void);
-static gboolean ui_is_focused (void);
-static void ui_show_error (const gchar * text);
 
 AUD_IFACE_PLUGIN
 (
@@ -99,11 +93,6 @@ AUD_IFACE_PLUGIN
     .init = init,
     .cleanup = cleanup,
     .show = ui_show,
-    .is_shown = ui_is_shown,
-    .is_focused = ui_is_focused,
-    .show_error = ui_show_error,
-    .show_filebrowser = audgui_run_filebrowser,
-    .show_jump_to_track = audgui_jump_to_track,
     .run_gtk_plugin = (void (*) (void *, const gchar *)) layout_add,
     .stop_gtk_plugin = (void (*) (void *)) layout_remove,
 )
@@ -214,7 +203,7 @@ static void ui_show (gboolean show)
 {
     if (show)
     {
-        if (! ui_is_shown ())
+        if (! gtk_window_is_active ((GtkWindow *) window))
             restore_window_size ();
 
         gtk_window_present ((GtkWindow *) window);
@@ -224,7 +213,7 @@ static void ui_show (gboolean show)
     }
     else
     {
-        if (ui_is_shown ())
+        if (gtk_window_is_active ((GtkWindow *) window))
             save_window_size ();
 
         gtk_widget_hide (window);
@@ -232,26 +221,6 @@ static void ui_show (gboolean show)
         /* turn visualization off to reduce CPU usage */
         ui_infoarea_show_vis (FALSE);
     }
-}
-
-static gboolean ui_is_shown (void)
-{
-    return gtk_widget_get_visible (window);
-}
-
-static gboolean ui_is_focused (void)
-{
-/* gtk_window_is_active() is too unreliable, unfortunately. --jlindgren */
-#if 0
-    return gtk_window_is_active ((GtkWindow *) window);
-#else
-    return ui_is_shown ();
-#endif
-}
-
-static void ui_show_error (const gchar * text)
-{
-    audgui_simple_message (& error_win, GTK_MESSAGE_ERROR, _("Error"), _(text));
 }
 
 static void append_str (char * buf, int bufsize, const char * str)
@@ -690,7 +659,7 @@ static gboolean search_tool_toggled (PluginHandle * plugin, void * unused)
 
 static void config_save (void)
 {
-    if (ui_is_shown ())
+    if (gtk_window_is_active ((GtkWindow *) window))
         save_window_size ();
 
     layout_save ();
@@ -890,9 +859,6 @@ static gboolean init (void)
 
 static void cleanup (void)
 {
-    if (error_win)
-        gtk_widget_destroy (error_win);
-
     if (menu_main)
         gtk_widget_destroy (menu_main);
 
@@ -1012,7 +978,7 @@ void show_infoarea (gboolean show)
         gtk_widget_show_all (infoarea);
 
         /* only turn on visualization if interface is shown */
-        if (ui_is_shown ())
+        if (gtk_window_is_active ((GtkWindow *) window))
             ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
     }
 
