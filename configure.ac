@@ -264,19 +264,10 @@ AC_ARG_ENABLE(aosd,
 
 have_aosd=no
 if test "x$enable_aosd" != "xno"; then
-    PKG_CHECK_MODULES(PANGO, [pango >= 1.14.7],
-        [PKG_CHECK_MODULES(CAIRO, [cairo >= 1.2.4],
-            [PKG_CHECK_MODULES(PANGOCAIRO,[pangocairo >= 1.14.7],
-                [PKG_CHECK_MODULES(XRENDER, [xrender],
-                    [have_aosd=yes
-                     GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"],
-                    [AC_MSG_RESULT([*** X Render extension is required for Audacious OSD plugin ***])]
-                 )],
-                [AC_MSG_RESULT([*** pangocairo >= 1.14.7 is required for Audacious OSD plugin ***])]
-             )],
-            [AC_MSG_RESULT([*** cairo >= 1.2.4 is required for Audacious OSD plugin ***])]
-         )],
-        [AC_MSG_RESULT([*** pango >= 1.14.7 is required for Audacious OSD plugin ***])]
+    PKG_CHECK_MODULES(XRENDER, [xrender],
+        [have_aosd=yes
+         GENERAL_PLUGINS="$GENERAL_PLUGINS aosd"],
+        [AC_MSG_RESULT([*** X Render extension is required for Audacious OSD plugin ***])]
     )
 
     if test "x$enable_aosd" = "xyes" -a "x$have_aosd" != "xyes"; then
