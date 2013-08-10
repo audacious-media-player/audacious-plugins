@@ -7,6 +7,10 @@ config.log
 config.status
 configure
 extra.mk
+src/mpris2/object-core.c
+src/mpris2/object-core.h
+src/mpris2/object-player.c
+src/mpris2/object-player.h
 .deps
 *.a
 *.mo
