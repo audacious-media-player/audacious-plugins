@@ -208,7 +208,7 @@ static void bscope_render (const gfloat * data)
 static void color_set_cb (GtkWidget * chooser)
 {
     GdkRGBA rgba;
-    gtk_color_button_get_rgba ((GtkColorButton *) chooser, & rgba);
+    gtk_color_chooser_get_rgba ((GtkColorChooser *) chooser, & rgba);
 
     int red = round (rgba.red * 255);
     int green = round (rgba.green * 255);
@@ -224,7 +224,7 @@ static void /* GtkWidget */ * bscope_get_color_chooser (void)
      .blue = (color & 0xff) / 255.0};
 
     GtkWidget * chooser = gtk_color_button_new_with_rgba (& rgba);
-    gtk_color_button_set_use_alpha ((GtkColorButton *) chooser, FALSE);
+    gtk_color_chooser_set_use_alpha ((GtkColorChooser *) chooser, FALSE);
 
     g_signal_connect (chooser, "color-set", (GCallback) color_set_cb, NULL);
 
