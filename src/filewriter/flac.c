@@ -27,6 +27,7 @@
 #include <stdlib.h>
 
 static FLAC__StreamEncoder *flac_encoder;
+static FLAC__StreamMetadata *flac_metadata;
 
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
     const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
@@ -98,25 +99,25 @@ static gint flac_open(void)
 
     FLAC__stream_encoder_set_channels(flac_encoder, input.channels);
     FLAC__stream_encoder_set_sample_rate(flac_encoder, input.frequency);
-    FLAC__stream_encoder_init_stream(flac_encoder, flac_write_cb, flac_seek_cb, flac_tell_cb,
-				     NULL, output_file);
 
     if (tuple)
     {
-        FLAC__StreamMetadata *meta;
-        meta = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+        flac_metadata = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-        insert_vorbis_comment (meta, "title", tuple, FIELD_TITLE);
-        insert_vorbis_comment (meta, "artist", tuple, FIELD_ARTIST);
-        insert_vorbis_comment (meta, "album", tuple, FIELD_ALBUM);
-        insert_vorbis_comment (meta, "genre", tuple, FIELD_GENRE);
-        insert_vorbis_comment (meta, "comment", tuple, FIELD_COMMENT);
-        insert_vorbis_comment (meta, "date", tuple, FIELD_DATE);
-        insert_vorbis_comment (meta, "year", tuple, FIELD_YEAR);
-        insert_vorbis_comment (meta, "tracknumber", tuple, FIELD_TRACK_NUMBER);
+        insert_vorbis_comment (flac_metadata, "TITLE", tuple, FIELD_TITLE);
+        insert_vorbis_comment (flac_metadata, "ARTIST", tuple, FIELD_ARTIST);
+        insert_vorbis_comment (flac_metadata, "ALBUM", tuple, FIELD_ALBUM);
+        insert_vorbis_comment (flac_metadata, "GENRE", tuple, FIELD_GENRE);
+        insert_vorbis_comment (flac_metadata, "COMMENT", tuple, FIELD_COMMENT);
+        insert_vorbis_comment (flac_metadata, "DATE", tuple, FIELD_DATE);
+        insert_vorbis_comment (flac_metadata, "YEAR", tuple, FIELD_YEAR);
+        insert_vorbis_comment (flac_metadata, "TRACKNUMBER", tuple, FIELD_TRACK_NUMBER);
 
-        FLAC__stream_encoder_set_metadata(flac_encoder, &meta, 1);
+        FLAC__stream_encoder_set_metadata(flac_encoder, &flac_metadata, 1);
     }
+
+    FLAC__stream_encoder_init_stream(flac_encoder, flac_write_cb, flac_seek_cb,
+     flac_tell_cb, NULL, output_file);
 
     return 1;
 }
@@ -171,8 +172,18 @@ static void flac_write(gpointer data, gint length)
 
 static void flac_close(void)
 {
-    FLAC__stream_encoder_finish(flac_encoder);
-    FLAC__stream_encoder_delete(flac_encoder);
+    if (flac_encoder)
+    {
+        FLAC__stream_encoder_finish(flac_encoder);
+        FLAC__stream_encoder_delete(flac_encoder);
+        flac_encoder = NULL;
+    }
+
+    if (flac_metadata)
+    {
+        FLAC__metadata_object_delete(flac_metadata);
+        flac_metadata = NULL;
+    }
 }
 
 static int flac_format_required (int fmt)
