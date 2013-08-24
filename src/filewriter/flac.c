@@ -77,6 +77,7 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
         char * sval = tuple_get_str (tuple, field, NULL);
         temp = g_strdup_printf ("%s=%s", name, sval);
         str_unref (sval);
+        break;
     default:
         return;
     }
