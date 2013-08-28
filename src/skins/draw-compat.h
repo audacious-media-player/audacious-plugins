@@ -33,7 +33,7 @@ static void widget_realized (GtkWidget * w)
 #define DRAW_SIGNAL "draw"
 #define DRAW_FUNC_BEGIN(n) static gboolean n (GtkWidget * wid, cairo_t * cr) { \
  g_return_val_if_fail (wid && cr, FALSE);
-#define DRAW_FUNC_END return TRUE; }
+#define DRAW_FUNC_END return FALSE; }
 
 #define DRAW_CONNECT(w,f) do { \
     g_signal_connect (w, "realize", (GCallback) widget_realized, NULL); \
