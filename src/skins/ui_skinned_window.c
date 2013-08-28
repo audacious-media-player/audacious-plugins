@@ -106,6 +106,7 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
     gtk_widget_set_size_request (window, w, h);
     gtk_window_resize ((GtkWindow *) window, w, h);
 
+    gtk_widget_set_app_paintable (window, TRUE);
     gtk_widget_add_events (window, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
