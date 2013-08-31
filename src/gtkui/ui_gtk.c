@@ -272,7 +272,10 @@ static void set_time_label (gint time, gint len)
     }
 
     append_str (s, sizeof s, "</b>");
-    gtk_label_set_markup ((GtkLabel *) label_time, s);
+
+    /* only update label if necessary */
+    if (strcmp (gtk_label_get_label ((GtkLabel *) label_time), s))
+        gtk_label_set_markup ((GtkLabel *) label_time, s);
 }
 
 static void set_slider (gint time)
