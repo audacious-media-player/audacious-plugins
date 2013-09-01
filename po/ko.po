@@ -12,11 +12,11 @@
 # Darkcircle <darkcircle.0426@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-04 12:38+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"PO-Revision-Date: 2013-07-07 08:39+0000\n"
+"Last-Translator: Darkcircle <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
 "language/ko/)\n"
 "Language: ko\n"
@@ -42,7 +42,7 @@ msgid "AAC Decoder"
 msgstr "AAC 디코더"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr "순차"
 
@@ -1343,7 +1343,7 @@ msgstr ""
 msgid "Echo"
 msgstr "울림"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1359,7 +1359,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg 플러그인"
 
@@ -1637,10 +1637,18 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"Audacious용 OpenGL 스펙트럼 분석기⏎\n"
+"Copyright 2013 Christophe Budé and John Lindgren⏎\n"
+"⏎\n"
+"XMMS 플러그인을 기반으로 함:⏎\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies⏎\n"
+"⏎\n"
+"라이선스: GPLv2+"
 
 #: src/gl-spectrum/gl-spectrum.c:292
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
+msgstr "OpenGL 스펙트럼 분석기"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -2532,11 +2540,11 @@ msgstr "<b>저음 증폭</b>"
 
 #: src/modplug/plugin_main.c:122
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>서라운드</b>"
 
 #: src/modplug/plugin_main.c:126
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>프리앰프</b>"
 
 #: src/modplug/plugin_main.c:133
 msgid "<b>Miscellaneous</b>"
@@ -2548,7 +2556,7 @@ msgstr "오버샘플링"
 
 #: src/modplug/plugin_main.c:136
 msgid "Noise reduction"
-msgstr "노이즈 감소"
+msgstr "노이즈 감쇄"
 
 #: src/modplug/plugin_main.c:138
 msgid "Play Amiga MODs"
@@ -2578,11 +2586,11 @@ msgstr "서라운드"
 msgid "MPG123 Plugin"
 msgstr "MPG123 플러그인"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 서버"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS 플러그인"
 
@@ -2613,14 +2621,28 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Audacious용 데스크톱 알림 플러그인⏎\n"
+"Copyright (C) 2010 Maximilian Bogner⏎\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac⏎\n"
+"⏎\n"
+"이 플러그인은 자유 소프트웨어입니다; 자유 소프트웨어 재단이 공표한 GNU 일반 "
+"공중 사용허가서 3판 (또는 여러분의 의사에 따라) 이상의 조항에 따라 재배포 또"
+"는 수정할 수 있습니다.⏎\n"
+"⏎\n"
+"이 프로그램이 유용하게 사용되길 바라지만 그 어떤 보증도 없으며 심지어는 상업"
+"적 보증이나 일부 목적의 적합성에 대한 암시적 보증도 하지 않습니다. 자세한 내"
+"용은 GNU 일반 공중 사용허가서를 보십시오.⏎\n"
+"⏎\n"
+"이 프로그램과 함께 GNU 일반 공중 사용 허가서 사본을 받아야 합니다. 만약 사본"
+"이 없다면 <http://www.gnu.org/licenses/> 링크를 참조하십시오."
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr ""
+msgstr "재생 컨트롤 보이기"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "알림 항상 보이기"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
@@ -2628,7 +2650,7 @@ msgstr "데스크톱 알림"
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "보이기"
 
 #: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
@@ -2684,7 +2706,7 @@ msgstr "OSS4 출력"
 msgid "PLS Playlists"
 msgstr "PLS 재생 목록"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 디코더"
 
@@ -2808,7 +2830,7 @@ msgstr "샘플주파수 변환기"
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "네. %s 사용자의 스크로블링을 진행합니다"
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
@@ -2821,7 +2843,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:63
 msgid "Keep this window open and click 'Check Permission' again.\n"
-msgstr ""
+msgstr "이 창을 연 상태로 다시 '권한 확인'을 누르십시오.\n"
 
 #: src/scrobbler2/config_window.c:66 src/scrobbler2/config_window.c:77
 msgid ""
@@ -2849,7 +2871,7 @@ msgstr "권한 확인(_H)"
 
 #: src/scrobbler2/config_window.c:174
 msgid "_Revoke Permission"
-msgstr ""
+msgstr "권한 취소(_R)"
 
 #: src/scrobbler2/config_window.c:221
 msgid ""
@@ -2890,6 +2912,8 @@ msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"Audacious가 이제부터 Last.fm 스크로블러 개선 버전을 사용중입니다.⏎\n"
+"스크로블러 플러그인의 기본 설정을 확인하십시오."
 
 #: src/sdlout/plugin.c:26
 msgid ""

@@ -16,13 +16,14 @@
 # senyalutyi <senyalutyi@ya.ru>, 2013
 # Sergey V. Mironov <serg0@ulx.ru>, 2009
 # serg0 <sergo@bk.ru>, 2010
+# NEKURIM <kvadrocu7@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-04 12:38+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"PO-Revision-Date: 2013-07-05 10:19+0000\n"
+"Last-Translator: NEKURIM <kvadrocu7@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
@@ -49,9 +50,9 @@ msgid "AAC Decoder"
 msgstr "Декодер AAC"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
-msgstr ""
+msgstr "последовательный"
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
@@ -63,6 +64,9 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
+"Плагин, который используется для проигрывания и завершения проигрывания в "
+"определенное время.\n"
+"Изначально написан Adam Feakin и Daniel Stodden."
 
 #: src/alarm/alarm.c:814 src/alarm/interface.c:82
 msgid "Alarm"
@@ -90,6 +94,23 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"Время\n"
+"Сигнал после:\n"
+"Время сигнала после.\n"
+"\n"
+"Тихий режим после:\n"
+"Сигнал стоп посе истечения этого промежутка времени.\n"
+"(если диалог пробуждения не закрыт)\n"
+"\n"
+"\n"
+"Дни\n"
+"День:\n"
+"Выберите дни для активации сигнала.\n"
+"\n"
+"Время:\n"
+"Выберите время сигнала на каждый день\n"
+"или выберите переключатель для времени по умолчанию.\n"
+"\n"
 
 #: src/alarm/interface.c:45
 msgid ""
@@ -112,6 +133,23 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 msgstr ""
+"Громкость\n"
+"Затухание:\n"
+"Уменьшить громкость до нужного уровня\n"
+"за этот промежуток времени.\n"
+"\n"
+"Начало в:\n"
+"Начало затухания с этой громкости.\n"
+"\n"
+"Завершение:\n"
+"Остановить угасание громкости. Если время\n"
+"угасания 0, то установить эту громкость и начать\n"
+"воспроизведение.\n"
+"\n"
+"\n"
+"Параметры:\n"
+"Дополнительные команды:\n"
+"Выполнить эту команду при срабатывании сигнала.\n"
 
 #: src/alarm/interface.c:62
 msgid ""
@@ -126,6 +164,15 @@ msgid ""
 "    Type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown."
 msgstr ""
+"Список:\n"
+"Загрузить этот список. Если  нет списка\n"
+"учитываю, что он будет использоваться.\n"
+"Адрес mp3/ogg потока может также быть введен здесь.\n"
+"\n"
+"Напоминание:\n"
+"Отображать напоминание, когда звучит сигнал.\n"
+"Введите в поле напоминание и включите\n"
+"- переключатель, если вы хотите, чтобы это было показано."
 
 #: src/alarm/interface.c:81
 msgid "This is your wakeup call."
@@ -133,7 +180,7 @@ msgstr "Это ваш звонок будильника."
 
 #: src/alarm/interface.c:99
 msgid "Your reminder for today is..."
-msgstr ""
+msgstr "Напоминание на сегодняшний день..."
 
 #: src/alarm/interface.c:101 src/alarm/interface.c:415
 msgid "Reminder"
@@ -310,6 +357,11 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
+"ALSA Плагин вывода для Audacious\n"
+"Авторство 2009-2012 John Lindgren\n"
+"\n"
+"Моя благодарность Уильяму Pitcock, автор Вывода ALSA NG, чей код служит "
+"ориентиром когда руководства по ALSA было недостаточно."
 
 #: src/alsa/plugin.c:32
 msgid "ALSA Output"
@@ -617,7 +669,7 @@ msgstr "Об AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
-msgstr ""
+msgstr "Модуль AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:54
 msgid ""
@@ -641,6 +693,26 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"\n"
+"модульный проигрыватель MIDI\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"написан Giacomo Lozito\n"
+"< james@develia.org >\n"
+"\n"
+"\n"
+"отдельные благодарности...\n"
+"\n"
+"Clemens Ladisch и Jaroslav Kysela\n"
+"за их отличные программы aplaymidi и amixer; они\n"
+"действительно полезные, как и документация alsa-lib для того,\n"
+"чтобы узнать больше об интерфейсе библиотеки ALSA\n"
+"\n"
+"Alfredo Spadafina\n"
+"за прекрасный логотип миди-клавиатуры\n"
+"\n"
+"Tony Vroon\n"
+"за большую помощь в альфа-тестировании"
 
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
@@ -938,6 +1010,18 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"Copyright (c) 2007 Calin Crisan <ccrisan@gmail.com> и  команда разработчиков "
+"Audacious.\n"
+"\n"
+"Автор выражает благодарность разработчикам библиотеки libcdio <http://www."
+"gnu.org/software/libcdio/>\n"
+"\tи разработчикам библиотеки libcddb <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Также спасибо тебе, Tony Vroon, за наставления.\n"
+"\n"
+"Этот модуль разработан в рамках проекта Google Summer of Code 2007.\n"
+"\n"
+"Copyright 2009 John Lindgren"
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
 msgid "<b>Device</b>"
@@ -985,7 +1069,7 @@ msgstr "Плагин Audio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:249
 msgid "Failed to initialize cdio subsystem."
-msgstr ""
+msgstr "Ошибка при инициализации CD."
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 #, c-format
@@ -1000,7 +1084,7 @@ msgstr "Трек %d не найден."
 #: src/cdaudio-ng/cdaudio-ng.c:310
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "Дорожка %d это данные дорожки."
 
 #: src/cdaudio-ng/cdaudio-ng.c:312
 msgid "Failed to open audio output."
@@ -1029,7 +1113,7 @@ msgstr "Ошибка при инициализации CD."
 
 #: src/cdaudio-ng/cdaudio-ng.c:587
 msgid "Failed to retrieve first/last track number."
-msgstr ""
+msgstr "Failed to retrieve first/last track number."
 
 #: src/cdaudio-ng/cdaudio-ng.c:612
 #, c-format
@@ -1038,21 +1122,21 @@ msgstr "Невозможно считать начало/конец LSN для �
 
 #: src/cdaudio-ng/cdaudio-ng.c:702
 msgid "Failed to create the cddb connection."
-msgstr ""
+msgstr "Не удалось создать cddb соеденения."
 
 #: src/cdaudio-ng/cdaudio-ng.c:777
 msgid "Failed to query the CDDB server"
-msgstr ""
+msgstr "Не удалось выполнить запрос к базе CDDB сервера"
 
 #: src/cdaudio-ng/cdaudio-ng.c:779
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr ""
+msgstr "Не удалось выполнить запрос к базе CDDB сервера: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:803
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr ""
+msgstr "Не удалось прочитать cddb информацию: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:876
 msgid "Drive is empty."
@@ -1091,6 +1175,8 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Сжатие динамического Диапазона Плагин для Audacious\n"
+"Авторство 2010-2012 Джон Линдгрен"
 
 #: src/compressor/plugin.c:58
 msgid "Dynamic Range Compressor"
@@ -1176,6 +1262,13 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Модуль поддержки звука игровых консолей основан на движке Game_Music_Emu "
+"0.5.2\n"
+"Поддерживаемые форматы: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
+"VGZ\n"
+"Audacious plugin by:⏎\n"
+"William Pitcock <nenolod@dereferenced.org>⏎\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/crossfade/crossfade.c:81
 msgid ""
@@ -1201,6 +1294,8 @@ msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Плагин перекрестного затухания для Audacious⏎\n"
+"Авторство 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:258
 msgid "<b>Crossfade</b>"
@@ -1259,12 +1354,16 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik, 1999"
 msgstr ""
+"Модуль Эхо\n"
+"Автор Johan Levin, 1999.\n"
+"\n"
+"Объёмное эхо добавил Carl van Schaik 1999"
 
 #: src/echo_plugin/echo.c:120
 msgid "Echo"
 msgstr "Эхо"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1273,8 +1372,14 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
+"Мульти-формат плагина аудио-декодера для Audacious\n"
+" основан на FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Авторы плагина для Audacious:\n"
+"            William Pitcock <nenolod@nenolod.net>,\n"
+"            Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "Плагин FFmpeg"
 
@@ -1343,6 +1448,21 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Это свободная программа; вы можете повторно распространять ее и/или "
+"модифицировать\n"
+"его в соответствии с условиями GNU General Public License, опубликованной\n"
+"Free Software Foundation; либо версии 2 Лицензии, либо\n"
+"(по вашему выбору) любой более поздней версии.\n"
+"\n"
+"Эта программа распространяется в надежде, что она будет полезной,\n"
+"но БЕЗ всякой ГАРАНТИИ; даже без подразумеваемых гарантий\n"
+"Коммерческой ценности или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. См.\n"
+"GNU General Public License for more details.\n"
+"\n"
+"Вы должны были получить копию лицензии GNU General Public License\n"
+"вместе с этой программой; если нет, напишите в Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"США."
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
@@ -1509,6 +1629,10 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
+"Оригинальный код написал\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:277
 msgid "FLAC Decoder"
@@ -1519,6 +1643,8 @@ msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
+"GIO Плагин для Audacious⏎\n"
+"Copyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:322
 msgid "GIO Plugin"
@@ -1535,10 +1661,18 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL Спектральный Анализатор для Audacious⏎\n"
+"Copyright 2013 Christophe Budé and John Lindgren⏎\n"
+"⏎\n"
+"Основан на XMMS плагине:⏎\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies⏎\n"
+"⏎\n"
+"License: GPLv2+"
 
 #: src/gl-spectrum/gl-spectrum.c:292
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
+msgstr "OpenGL Спектральный Анализатор"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -1547,6 +1681,11 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
+"Модуль \"Горячие клавиши\" для Gnome\n"
+"Управление проигрывателем при помощи \"горячих\n"
+"клавиш\", указанных в настройках Gnome.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:47
 msgid "Gnome Shortcuts"
@@ -1706,7 +1845,7 @@ msgstr "Н_е передвигаться по списку"
 
 #: src/gtkui/menus.c:191
 msgid "Stop A_fter This Song"
-msgstr ""
+msgstr "Остановка после етой песни"
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:284
 msgid "Song _Info ..."
@@ -1722,15 +1861,15 @@ msgstr "_Перейти к песне ..."
 
 #: src/gtkui/menus.c:197
 msgid "Set Repeat Point _A"
-msgstr ""
+msgstr "Повтор установки _A"
 
 #: src/gtkui/menus.c:198
 msgid "Set Repeat Point _B"
-msgstr ""
+msgstr "Повтор установки _B"
 
 #: src/gtkui/menus.c:199
 msgid "_Clear Repeat Points"
-msgstr ""
+msgstr "_Повтор чистых пунктов"
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:208 src/gtkui/menus.c:221
 msgid "By _Title"
@@ -1738,11 +1877,11 @@ msgstr "По _названию"
 
 #: src/gtkui/menus.c:203
 msgid "By _Filename"
-msgstr ""
+msgstr "По _Имени"
 
 #: src/gtkui/menus.c:204
 msgid "By File _Path"
-msgstr ""
+msgstr "Путь к файлу"
 
 #: src/gtkui/menus.c:207 src/gtkui/menus.c:220
 msgid "By Track _Number"
@@ -1754,7 +1893,7 @@ msgstr "По _исполнителю"
 
 #: src/gtkui/menus.c:210 src/gtkui/menus.c:223
 msgid "By Al_bum"
-msgstr ""
+msgstr "По Альбому"
 
 #: src/gtkui/menus.c:211 src/gtkui/menus.c:224
 msgid "By Release _Date"
@@ -1762,7 +1901,7 @@ msgstr "По _дате выпуска"
 
 #: src/gtkui/menus.c:212 src/gtkui/menus.c:225
 msgid "By _Length"
-msgstr ""
+msgstr "По _Длинне"
 
 #: src/gtkui/menus.c:213 src/gtkui/menus.c:226
 msgid "By _File Path"
@@ -1794,11 +1933,11 @@ msgstr "_Сортировать"
 
 #: src/gtkui/menus.c:237
 msgid "Sort S_elected"
-msgstr ""
+msgstr "Сортировать Выделенное"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
-msgstr ""
+msgstr "Удалить _Дубликаты"
 
 #: src/gtkui/menus.c:239
 msgid "Remove _Unavailable Files"
@@ -1874,7 +2013,7 @@ msgstr "Показывать _строку состояния"
 
 #: src/gtkui/menus.c:268
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "Показать _Оставшееся время"
 
 #: src/gtkui/menus.c:270
 msgid "Show Close _Buttons"
@@ -1979,7 +2118,7 @@ msgstr "%d кбит/с"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr ""
+msgstr "Предыдущая дорожка"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
 #: src/skins/ui_manager.c:178
@@ -1996,7 +2135,7 @@ msgstr "Остановить"
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr ""
+msgstr "Следующая дорожка"
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
@@ -2032,19 +2171,19 @@ msgstr "Отобразить экранное сообщение (OSD)"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr ""
+msgstr "Повтор"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr ""
+msgstr "Перетасовка"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
-msgstr ""
+msgstr "Остановить после текущего"
 
 #: src/hotkey/gui.c:86
 msgid "Raise player window(s)"
-msgstr ""
+msgstr "Поднять окно(а) плеера"
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
@@ -2104,6 +2243,18 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Модуль Глобальные \"горячие клавиши\"\n"
+"Управление проигрывателем при помощи сочетаний клавиш\n"
+"или специальных клавиш мультимедийных клавиатур.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"В разработке принимали участие:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>\n"
+"\t\t\tBryn Davies <curious@ihug.com.au>\n"
+"\t\t\tJonathan A. Davis <davis@jdhouse.org>\n"
+"\t\t\tJeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/hotkey/plugin.c:78
 msgid "Global Hotkeys"
@@ -2116,6 +2267,10 @@ msgid ""
 "\n"
 "Ported to Audacious by Giacomo Lozito"
 msgstr ""
+"Основан на xmms-jack, by Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Портирован в Audacious Giacomo Lozito"
 
 #: src/jack/jack.c:416
 msgid "JACK Output"
@@ -2167,6 +2322,8 @@ msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
+"LADSPA Хост для Audacious\n"
+"Авторство 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:650
 msgid "LADSPA Host"
@@ -2223,6 +2380,19 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
+"Простой плагин для управления Дерзкий, используя LIRC демон дистанционного "
+"управления\n"
+"\n"
+"Адаптирован для Audacious:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Основан на XMMS LIRC плагине:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"Больше инфромации про LIRC, смотрите http://lirc.org."
 
 #: src/lirc/lirc.c:392
 msgid "<b>Connection</b>"
@@ -2292,6 +2462,11 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
+"Тактовый генератор Martin Strauss <mys@faveve.uni-stuttgart.de>⏎\n"
+"\n"
+"Чтобы использовать его, добавить URL: tact://beats*num/den\n"
+"например tact://77 to play 77 beats per minute\n"
+"или tact://60*3/4 to play 60 bpm in 3/4 tacts"
 
 #: src/metronom/metronom.c:255
 msgid "Tact Generator"
@@ -2302,6 +2477,8 @@ msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
+"Плагин смешивания каналов Audacious\n"
+"Авторство 2011-2012 John Lindgren and Michał Lipski"
 
 #: src/mixer/mixer.c:173
 msgid "<b>Channel Mixer</b>"
@@ -2321,112 +2498,112 @@ msgstr "Плагин MMS"
 
 #: src/modplug/plugin_main.c:57
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Разрешение</b>"
 
 #: src/modplug/plugin_main.c:58
 msgid "8-bit"
-msgstr ""
+msgstr "8-бит"
 
 #: src/modplug/plugin_main.c:60
 msgid "16-bit"
-msgstr ""
+msgstr "16-бит"
 
 #: src/modplug/plugin_main.c:62
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Каналы</b>"
 
 #: src/modplug/plugin_main.c:67
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Передискретизация</b>"
 
 #: src/modplug/plugin_main.c:68
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Ближайший (самый быстрый)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Линейный (быстрый)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Spline (good)"
-msgstr ""
+msgstr "Сплайн (хороший)"
 
 #: src/modplug/plugin_main.c:74
 msgid "Polyphase (best)"
-msgstr ""
+msgstr "Многофазный (лучший)"
 
 #: src/modplug/plugin_main.c:76
 msgid "<b>Sampling rate</b>"
-msgstr ""
+msgstr "<b>Частота дискретизации</b>"
 
 #: src/modplug/plugin_main.c:77
 msgid "22 kHz"
-msgstr ""
+msgstr "22 кГц:"
 
 #: src/modplug/plugin_main.c:79
 msgid "44 kHz"
-msgstr ""
+msgstr "44 кГц:"
 
 #: src/modplug/plugin_main.c:81
 msgid "48 kHz"
-msgstr ""
+msgstr "48 кГц:"
 
 #: src/modplug/plugin_main.c:83
 msgid "96 kHz"
-msgstr ""
+msgstr "96 кГц:"
 
 #: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
 #: src/modplug/plugin_main.c:102
 msgid "Level:"
-msgstr ""
+msgstr "Уровень:"
 
 #: src/modplug/plugin_main.c:97
 msgid "Cutoff:"
-msgstr ""
+msgstr "Отключение:"
 
 #: src/modplug/plugin_main.c:114
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Реверберация</b>"
 
 #: src/modplug/plugin_main.c:118
 msgid "<b>Bass Boost</b>"
-msgstr ""
+msgstr "<b>Усиление басов</b>"
 
 #: src/modplug/plugin_main.c:122
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Окружение</b>"
 
 #: src/modplug/plugin_main.c:126
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Предусилитель</b>"
 
 #: src/modplug/plugin_main.c:133
 msgid "<b>Miscellaneous</b>"
-msgstr ""
+msgstr "<b>Разное</b>"
 
 #: src/modplug/plugin_main.c:134
 msgid "Oversample"
-msgstr ""
+msgstr "Перекрытие"
 
 #: src/modplug/plugin_main.c:136
 msgid "Noise reduction"
-msgstr ""
+msgstr "Шумоподавление"
 
 #: src/modplug/plugin_main.c:138
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Воспроизвести модификацию Amiga"
 
 #: src/modplug/plugin_main.c:140
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Повторить</b>"
 
 #: src/modplug/plugin_main.c:141
 msgid "Repeat count:"
-msgstr ""
+msgstr "Счетчик повторений:"
 
 #: src/modplug/plugin_main.c:143
 msgid "To repeat forever, set the repeat count to -1."
-msgstr ""
+msgstr "Повторять всегда, задать число повторов до -1."
 
 #: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
@@ -2440,11 +2617,11 @@ msgstr "Объёмное звучание"
 msgid "MPG123 Plugin"
 msgstr "Плагин MPG123"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "Сервер MPRIS 2"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Плагин Neon HTTP/HTTPS"
 
@@ -2475,14 +2652,25 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Плагин уведомлений рабочего стола для Audacious\n"
+"Авторство (C) 2010 Maximilian Bogner⏎\n"
+"Авторство (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"Этот плагин является свободным программным обеспечением, вы можете "
+"распространять его или модифицировать его в соответствии с Общественной "
+"Лицензии GNU , опубликованной Free Software Foundation; либо 3 версию "
+"Лицензии, либо (по вашему выбору) любой более поздней версии.\n"
+"\n"
+"Вы должны были получить копию стандартной Общественной Лицензии GNU вместе с "
+"этой программой. Если нет,смотрите <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr ""
+msgstr "Показать кнопки управления воспроизведением"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "Всегда показывать уведомления"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
@@ -2490,7 +2678,7 @@ msgstr "Всплывающие сообщения"
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "Показать"
 
 #: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
@@ -2532,6 +2720,11 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
+"OSS4 Плагин вывода для Audacious\n"
+"Авторство 2010-2012 Michał Lipski\n"
+"\n"
+"Я хочу поблагодарить тех людей  #audacious, особенно Тони Vroon и Джон "
+"Линдгрен и, конечно же авторов предыдущих OSS плагин."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
@@ -2541,7 +2734,7 @@ msgstr "Вывод OSS4"
 msgid "PLS Playlists"
 msgstr "Списки воспроизведения PLS"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "Декодер OpenPSF PSF1/PSF2"
 
@@ -2564,6 +2757,24 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Audacious PulseAudio Плагин вывода\n"
+"\n"
+" \n"
+"Это свободная программа; вы можете повторно распространять ее и/или "
+"модифицировать\n"
+"его в соответствии с условиями GNU General Public License, опубликованной\n"
+"Free Software Foundation; либо версии 2 Лицензии, либо\n"
+"(по вашему выбору) любой более поздней версии\n"
+"\n"
+"Эта программа распространяется в надежде, что она будет полезной,\n"
+"но БЕЗ всякой ГАРАНТИИ; даже без подразумеваемых гарантий\n"
+"Коммерческой ценности или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. См.\n"
+"GNU General Public License.\n"
+"\n"
+"Вы должны были получить копию лицензии GNU General Public License\n"
+"вместе с этой программой; если нет, напишите в Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"США."
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
@@ -2574,6 +2785,8 @@ msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Конвертер частоты дискретизации Плагин для Audacious\n"
+"Авторство 2010-2012 Джон Линдгрен"
 
 #: src/resample/resample.c:165
 msgid "Skip/repeat samples"
@@ -2650,7 +2863,7 @@ msgstr "Конвертер частоты"
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "OK.Прослушивание для пользователя: %s"
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
@@ -2659,16 +2872,21 @@ msgstr "Отказано в доступе"
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
 msgstr ""
+"Воспользуйтесь следующей ссылкой чтобы разрешить Audacious прослушивать ваши "
+"композиции:"
 
 #: src/scrobbler2/config_window.c:63
 msgid "Keep this window open and click 'Check Permission' again.\n"
 msgstr ""
+"Оставте это окно открытым, и нажмите кнопку \" Проверить Разрешение' снова.\n"
 
 #: src/scrobbler2/config_window.c:66 src/scrobbler2/config_window.c:77
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
+"Не беспокойтесь. Ваш прослушивания сохраняются на вашем компьютере.\n"
+"Они будут представлены как только Audacious разрешит это сделать."
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
@@ -2684,22 +2902,25 @@ msgstr "Проверка..."
 
 #: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
-msgstr ""
+msgstr "С_черт Разрешено"
 
 #: src/scrobbler2/config_window.c:174
 msgid "_Revoke Permission"
-msgstr ""
+msgstr "_Отменить Разрешение"
 
 #: src/scrobbler2/config_window.c:221
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
+"Вы должны разрешить Audacious прослушивать дорожки вашего аккаунта Last.fm.\n"
 
 #: src/scrobbler2/scrobbler.c:233
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"Плагин scrobbler не может быть запущен.\n"
+"Могут быть проблемы с установкой."
 
 #: src/scrobbler2/scrobbler.c:311
 msgid ""
@@ -2711,22 +2932,32 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
+"\n"
+"Авторство © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Спасибо Джону Линдгрен что подал мне руку в начале этого проекта.\n"
 
 #: src/scrobbler2/scrobbler.c:317
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Скробблер 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:690
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"Audacious теперь использует усовершенствованную версию модуля Last.fm "
+"Scrobbler"
 
 #: src/sdlout/plugin.c:26
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+" \n"
+"SDL модуль Вывода для Audacious\n"
+"Авторство 2010 Джон Линдгрен"
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
@@ -3024,15 +3255,15 @@ msgstr "Не останавливать после дорожки."
 
 #: src/skins/ui_main.c:1752
 msgid "Repeat point A set."
-msgstr ""
+msgstr "Повторить установки A."
 
 #: src/skins/ui_main.c:1757
 msgid "Repeat point B set."
-msgstr ""
+msgstr "Повторить установки B."
 
 #: src/skins/ui_main.c:1766
 msgid "Repeat points cleared."
-msgstr ""
+msgstr "Повторить очищенные пункты."
 
 #: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
 msgid "Autoscroll Song Name"
@@ -3746,6 +3977,24 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Based on the xmms_sndfile plugin:⏎\n"
+"Авторство (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Адаптация для Audacious Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"Это свободная программа; вы можете повторно распространять ее или "
+"модифицировать ее в соответствии с условиями GNU General Public License, "
+"опубликованной Free Software Foundation; либо версии 2 Лицензии, либо (по "
+"вашему выбору) любой более поздней версии.\n"
+"\n"
+"Эта программа распространяется в надежде, что она будет полезной, но БЕЗ "
+"КАКИХ-либо ГАРАНТИЙ; даже без подразумеваемых гарантий коммерческой ценности "
+"или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Смотрите больше деталей GNU General "
+"Public License.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndfile/plugin.c:435
 msgid "Sndfile Plugin"
@@ -3869,10 +4118,15 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"SoX Ресемплер Плагин для Audacious\n"
+"Авторство 2013 Michał Lipski\n"
+"\n"
+"Основан на плагине конвертора частоты дискретизации:\n"
+"Авторство 2010-2012 John Lindgren"
 
 #: src/sox-resampler/sox-resampler.c:141
 msgid "Quick"
-msgstr ""
+msgstr "Быстро"
 
 #: src/sox-resampler/sox-resampler.c:142
 msgid "Low"
@@ -3892,7 +4146,7 @@ msgstr "Качество:"
 
 #: src/sox-resampler/sox-resampler.c:162
 msgid "SoX Resampler"
-msgstr ""
+msgstr "SoX Ресемплер"
 
 #: src/speed-pitch/speed-pitch.c:225
 msgid "<b>Speed and Pitch</b>"
@@ -3920,6 +4174,13 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Модуль Статус\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Этот модуль отображает значок программы\n"
+"в системном лотке."
 
 #: src/statusicon/statusicon.c:397
 msgid "<b>Mouse Scroll Action</b>"
@@ -3959,6 +4220,9 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
+"Модуль Дополнительное стерео\n"
+"\n"
+"Johan Levin 1999."
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
@@ -3985,6 +4249,12 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
+"Генератор синусоидальных сигналов, Haavard Kvaalen <havardk@xmms.org>\n"
+"Изменения, Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"Чтобы использовать его, добавьте в проигрыватель следующий адрес: tone://"
+"частота1;частота2;частота3;...\n"
+"Например, tone://2000;2005 для воспроизведения сигналов 2000 Гц и 2005 Гц"
 
 #: src/tonegen/tonegen.c:206
 msgid "Tone Generator"
@@ -3997,6 +4267,10 @@ msgid ""
 "\n"
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
+"Файл I/O плагин для Audacious\n"
+"Авторство 2009-2012 John Lindgren\n"
+"\n"
+"ЭТОТ ПЛАГИН ЯВЛЯЕТСЯ ОБЯЗАТЕЛЬНЫМ. НЕ ОТКЛЮЧАЙТЕ ЕГО."
 
 #: src/unix-io/unix-io.c:266
 msgid "File I/O Plugin"
@@ -4026,6 +4300,21 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
+"Модуль Ogg Vorbis от Xiph.org Foundation\n"
+"\n"
+"Начальный код был написан\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Вклад внесли\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>\n"
+"\n"
+"Посетите сайт Xiph.org Foundation по адресу http://www.xiph.org/"
 
 #: src/vorbis/vorbis.c:575
 msgid "Ogg Vorbis Decoder"
@@ -4037,6 +4326,9 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
+"Проигрыватель файлов Vortex от Sashnov Alexander <sashnov@ngs.ru>\n"
+"Основан на коде in_vtx.dll от Roman Sherbakov <v_soft@microfor.ru>\n"
+"Реализацию для Audacious выполнил Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/vtx/vtx.c:248
 msgid "VTX Decoder"
@@ -4056,6 +4348,9 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
+"Авторство 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Некоторый код плагина Miles Egan."
 
 #: src/wavpack/wavpack.c:341
 msgid "WavPack Decoder"

@@ -6,9 +6,9 @@
 # MirosNik <miroslavnikolic@rocketmail.com>, 2011-2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-06-29 01:19+0200\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
 "PO-Revision-Date: 2013-05-31 17:04+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Serbian (Serbia) (http://www.transifex.com/projects/p/"
@@ -37,7 +37,7 @@ msgid "AAC Decoder"
 msgstr "ААЦ декодер"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr "низовни"
 
@@ -1276,7 +1276,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Одјек"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1292,7 +1292,7 @@ msgstr ""
 "Вилијам Питкок <nenolod@nenolod.net>\n"
 "Мати Хамалајнен <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "Прикључак ФФмпег-а"
 
@@ -2520,11 +2520,11 @@ msgstr "Окружење"
 msgid "MPG123 Plugin"
 msgstr "МПГ123 прикључак"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "МПРИС 2 сервер"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Неон ХТТП/ХХТПС прикључак"
 
@@ -2626,7 +2626,7 @@ msgstr "ОСС4 излаз"
 msgid "PLS Playlists"
 msgstr "ПЛС спискови нумера"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "ОпенПСФ ПСФ1/ПСФ2 декодер"
 

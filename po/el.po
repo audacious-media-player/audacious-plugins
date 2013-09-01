@@ -4,14 +4,15 @@
 #
 # Translators:
 # noskamaru <jim.thomas.zks@gmail.com>, 2013
-# Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2012
+# noskamaru <jim.thomas.zks@gmail.com>, 2013
+# Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-04 12:38+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"PO-Revision-Date: 2013-08-30 00:36+0000\n"
+"Last-Translator: Γιάννης Ανθυμίδης <yannanth@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/audacious/language/"
 "el/)\n"
 "Language: el\n"
@@ -30,14 +31,14 @@ msgstr "στερεοφωνικό"
 
 #: src/aac/libmp4.c:439 src/skins/ui_main.c:429
 msgid "surround"
-msgstr "περιβάλλων"
+msgstr "περιφερειακό"
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
 msgstr "Αποκωδικοποιητής AAC"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr ""
 
@@ -121,7 +122,7 @@ msgstr "Αυτή είναι η κλήση αφύπνισης."
 
 #: src/alarm/interface.c:99
 msgid "Your reminder for today is..."
-msgstr ""
+msgstr "Η υπενθύμιση σας για σήμερα είναι..."
 
 #: src/alarm/interface.c:101 src/alarm/interface.c:415
 msgid "Reminder"
@@ -166,7 +167,7 @@ msgstr "Χρόνος"
 
 #: src/alarm/interface.c:193
 msgid "Alarm at (default):"
-msgstr "Ξυπνητήρι στις(προεπιλογή):"
+msgstr "Κτύπα στις (προεπιλογή):"
 
 #: src/alarm/interface.c:216
 msgid "h"
@@ -186,7 +187,7 @@ msgstr "λεπτά"
 
 #: src/alarm/interface.c:255
 msgid "Choose the days for the alarm to come on"
-msgstr "Διαλέξτε τις ημέρες που θα χτυπήσει το ξυπνιτήρι"
+msgstr "Διαλέξτε τις ημέρες που θα χτυπήσει το ξυπνητήρι"
 
 #: src/alarm/interface.c:262
 msgid "Day"
@@ -260,23 +261,23 @@ msgstr "Βοήθεια"
 
 #: src/albumart/albumart.c:143
 msgid "Album Art"
-msgstr ""
+msgstr "Εξώφυλλο Άλμπουμ"
 
 #: src/alsa/config.c:212
 msgid "Default PCM device"
-msgstr "Αυτόματη PCM συσκευή"
+msgstr "Προεπιλεγμένη συσκευή PCM "
 
 #: src/alsa/config.c:241
 msgid "Default mixer device"
-msgstr "Αυτόματη συσκευή μείκτη"
+msgstr "Προεπιλεγμένη συσκευή μείκτη"
 
 #: src/alsa/config.c:428
 msgid "ALSA Output Plugin Preferences"
-msgstr "ALSA 'Εξοδος Πρόσθετο Προτιμήσεις"
+msgstr "Προτιμήσεις Εξόδου Πρόσθετου ALSA"
 
 #: src/alsa/config.c:434
 msgid "PCM device:"
-msgstr "PCM συσκευή:"
+msgstr "Συσκευή PCM:"
 
 #: src/alsa/config.c:436
 msgid "Mixer device:"
@@ -301,7 +302,7 @@ msgstr ""
 
 #: src/alsa/plugin.c:32
 msgid "ALSA Output"
-msgstr "ALSA Έξοδος"
+msgstr "Έξοδος ALSA"
 
 #: src/amidi-plug/amidi-plug.c:248
 msgid ""
@@ -317,7 +318,7 @@ msgstr ""
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:38
 msgid "ALSA Backend "
-msgstr "ALSA Παρασκήνιο"
+msgstr "Σύστημα υποστήριξης ALSA "
 
 #: src/amidi-plug/backend-alsa/b-alsa.c:41
 msgid ""
@@ -359,7 +360,7 @@ msgstr "Όνομα θύρας"
 
 #: src/amidi-plug/i_configure-alsa.c:371
 msgid "ALSA output ports"
-msgstr "ALSA θύρες εξόδου"
+msgstr "Θύρες εξόδου ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:432
 msgid "Soundcard: "
@@ -367,25 +368,27 @@ msgstr "Κάρτα ήχου: "
 
 #: src/amidi-plug/i_configure-alsa.c:434
 msgid "Mixer control: "
-msgstr "Έλεγχος Μείκτη:"
+msgstr "Έλεγχος μείκτη:"
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "Mixer settings"
-msgstr "Ρυθμίσεις Μείκτη"
+msgstr "Ρυθμίσεις μείκτη"
 
 #: src/amidi-plug/i_configure-alsa.c:472
 msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">Σύστημα υποστήριξης\n"
+"ALSA</span>"
 
 #: src/amidi-plug/i_configure-ap.c:63
 msgid "AMIDI-Plug - backend information"
-msgstr ""
+msgstr "AMIDI-Plug - πληροφορίες συστήματος υποστήριξης"
 
 #: src/amidi-plug/i_configure-ap.c:221
 msgid "Backend selection"
-msgstr ""
+msgstr "Επιλογή συστήματος υποστήριξης"
 
 #: src/amidi-plug/i_configure-ap.c:261
 msgid "Playback settings"
@@ -393,7 +396,7 @@ msgstr "Ρυθμίσεις αναπαραγωγής"
 
 #: src/amidi-plug/i_configure-ap.c:266
 msgid "Transpose: "
-msgstr ""
+msgstr "Μεταφορά: "
 
 #: src/amidi-plug/i_configure-ap.c:275
 msgid "Drum shift: "
@@ -420,10 +423,12 @@ msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 msgstr ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
 
 #: src/amidi-plug/i_configure.c:59
 msgid "AMIDI-Plug - select file"
-msgstr ""
+msgstr "AMIDI-Plug - επιλέξτε αρχείο"
 
 #: src/amidi-plug/i_configure.c:104
 msgid "AMIDI-Plug Settings"
@@ -431,11 +436,11 @@ msgstr "AMIDI-Plug Ρυθμίσεις"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:63
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr ""
+msgstr "AMIDI-Plug - επιλέξτε αρχείο SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:321
 msgid "SoundFont settings"
-msgstr ""
+msgstr "Ρυθμίσεις SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:359
 msgid "Filename"
@@ -443,19 +448,19 @@ msgstr "Όνομα αρχείου"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:363
 msgid "Size (bytes)"
-msgstr "Μέγεθος (bytes)"
+msgstr "Μέγεθος (byte)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:412
 msgid "Load SF on player start"
-msgstr ""
+msgstr "Φόρτωση SF κατά την έναρξη του αναπαραγωγέα"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "Load SF on first MIDI file play"
-msgstr ""
+msgstr "Φόρτωση SF κατά την πρώτη αναπαραγωγή αρχείου MIDI"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:431
 msgid "Synthesizer settings"
-msgstr "ρυθμίσεις Synthesizer"
+msgstr "Ρυθμίσεις synthesizer"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:440
 msgid "gain"
@@ -466,7 +471,7 @@ msgstr "αποκτά"
 #: src/amidi-plug/i_configure-fluidsynth.c:506
 #: src/amidi-plug/i_configure-fluidsynth.c:540
 msgid "use default"
-msgstr "χρήση προεπιλεγμένου"
+msgstr "χρήση προεπιλογής"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:449
 #: src/amidi-plug/i_configure-fluidsynth.c:479
@@ -479,7 +484,7 @@ msgstr "πολυφωνία"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:500
 msgid "reverb"
-msgstr ""
+msgstr "αντήχηση"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:509
 #: src/amidi-plug/i_configure-fluidsynth.c:543
@@ -513,7 +518,7 @@ msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:583
 msgid "custom "
-msgstr "προσαρμοσμένο"
+msgstr "προσαρμοσμένο "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:592
 msgid "Hz "
@@ -524,6 +529,8 @@ msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">Σύστημα υποστήριξης\n"
+"FluidSynth</span>"
 
 #: src/amidi-plug/i_fileinfo.c:175
 msgid "Name:"
@@ -543,7 +550,7 @@ msgstr "Μήκος (ms):"
 
 #: src/amidi-plug/i_fileinfo.c:220
 msgid "No. of Tracks:"
-msgstr ""
+msgstr "Αρ. Κομματιών"
 
 #: src/amidi-plug/i_fileinfo.c:226
 msgid "variable"
@@ -583,7 +590,7 @@ msgstr "Σχετικά με το AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
-msgstr ""
+msgstr "AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:54
 msgid ""
@@ -669,7 +676,7 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr ""
+msgstr "Τοποθέτηση"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
@@ -685,7 +692,7 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:225
 msgid "Multi-Monitor options"
-msgstr ""
+msgstr "Επιλογές για πολλαπλές οθόνες"
 
 #: src/aosd/aosd_ui.c:229
 msgid "Display OSD using:"
@@ -693,12 +700,12 @@ msgstr "Προβολή OSD με χρήση:"
 
 #: src/aosd/aosd_ui.c:231
 msgid "all monitors"
-msgstr ""
+msgstr "όλες οι οθόνες"
 
 #: src/aosd/aosd_ui.c:234
 #, c-format
 msgid "monitor %i"
-msgstr ""
+msgstr "οθόνη %i"
 
 #: src/aosd/aosd_ui.c:287
 msgid "Timing (ms)"
@@ -876,7 +883,7 @@ msgstr ""
 
 #: src/bs2b/plugin.c:175
 msgid "Presets:"
-msgstr ""
+msgstr "Προεπιλογές:"
 
 #: src/bs2b/plugin.c:197
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -884,7 +891,7 @@ msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.c:297
 msgid "Spectrum Analyzer"
-msgstr ""
+msgstr "Αναλυτής Φάσματος"
 
 #: src/cdaudio-ng/cdaudio-ng.c:103
 msgid ""
@@ -897,6 +904,15 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> και άλλοι.\n"
+"\n"
+"Πολύ ευχαριστώ τους δημιουργούς του libcdio <http://www.gnu.org/software/"
+"libcdio/>\n"
+"και του libcddb <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Επίσης ευχαριστώ τον Tony Vroon για την καθοδήγησή του.\n"
+"\n"
+"Αυτό το πρόσθετο δημιουργήθηκε κατά το Google Summer of Code 2007."
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
 msgid "<b>Device</b>"
@@ -912,7 +928,7 @@ msgstr "Παράκαμψη συσκευής:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:127
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "<b>Μεταδεδομένα</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CD-Text"
@@ -940,21 +956,21 @@ msgstr "Θύρα:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:148
 msgid "Audio CD Plugin"
-msgstr ""
+msgstr "Πρόσθετο Μουσικών CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:249
 msgid "Failed to initialize cdio subsystem."
-msgstr ""
+msgstr "Απέτυχε η αρχικοποίηση του υποσυστήματος cdio."
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 #, c-format
 msgid "Invalid URI %s."
-msgstr ""
+msgstr "Μη έγκυρο URI %s."
 
 #: src/cdaudio-ng/cdaudio-ng.c:308
 #, c-format
 msgid "Track %d not found."
-msgstr ""
+msgstr "Το κομμάτι %d δεν βρέθηκε."
 
 #: src/cdaudio-ng/cdaudio-ng.c:310
 #, c-format
@@ -1090,11 +1106,11 @@ msgstr "Ανασχεδίαση"
 
 #: src/console/configure.c:212
 msgid "Enable audio resampling"
-msgstr ""
+msgstr "Ενεργοποίηση ανασχεδίασης ήχου"
 
 #: src/console/configure.c:227
 msgid "Resampling rate:"
-msgstr "Ρυθμός ανασχεδίασης"
+msgstr "Ρυθμός ανασχεδίασης:"
 
 #: src/console/configure.c:231 src/modplug/plugin_main.c:98
 #: src/resample/resample.c:178 src/resample/resample.c:184
@@ -1107,7 +1123,7 @@ msgstr "Hz"
 
 #: src/console/configure.c:242
 msgid "SPC"
-msgstr ""
+msgstr "SPC"
 
 #: src/console/configure.c:243
 msgid "Ignore length from SPC tags"
@@ -1115,7 +1131,7 @@ msgstr ""
 
 #: src/console/configure.c:244
 msgid "Increase reverb"
-msgstr ""
+msgstr "Αύξηση αντίχησης"
 
 #: src/console/configure.c:269
 msgid ""
@@ -1132,6 +1148,14 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Η μηχανή αποκωδικοποίησης μουσικής κονσολών βασίστηκε στο Game_Music_Emu "
+"0.5.2\n"
+"Υποστηριζόμενοι τύποι αρχείου: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, "
+"VGM, VGZ\n"
+"\n"
+"Πρόσθετο Audacious από τους:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/crossfade/crossfade.c:81
 msgid ""
@@ -1209,12 +1233,16 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik, 1999"
 msgstr ""
+"Πρόσθετο Ηχού\n"
+"Του Johan Levin, 1999\n"
+"\n"
+"Περιφερειακή ηχώ από τον Carl van Schaik, 1999"
 
 #: src/echo_plugin/echo.c:120
 msgid "Echo"
 msgstr "Ηχώ"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1224,7 +1252,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "Πρόσθετο FFmpeg"
 
@@ -1334,7 +1362,7 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr ""
+msgstr "Αναλογία ρυθμού μετάδοσης / συμπίεσης:"
 
 #: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
@@ -1342,11 +1370,11 @@ msgstr "Ρυθμός μετάδοσης δεδομένων (kb/s):"
 
 #: src/filewriter/mp3.c:829
 msgid "Compression ratio:"
-msgstr ""
+msgstr "Λόγος συμπίεσης:"
 
 #: src/filewriter/mp3.c:853
 msgid "Audio Mode:"
-msgstr ""
+msgstr "Λειτουργία Ήχου:"
 
 #: src/filewriter/mp3.c:878
 msgid "Misc:"
@@ -1354,7 +1382,7 @@ msgstr "Διάφορα:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr ""
+msgstr "Εξαναγκασμός αυστηρής συμμόρφωσης με ISO"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
@@ -1378,15 +1406,15 @@ msgstr "Επιλογές VBR:"
 
 #: src/filewriter/mp3.c:980
 msgid "Minimum bitrate (kbps):"
-msgstr "Ελάχιστος ρυθμός bit (kbps):"
+msgstr "Ελάχιστος ρυθμός μετάδοσης (kbps):"
 
 #: src/filewriter/mp3.c:1007
 msgid "Maximum bitrate (kbps):"
-msgstr "Μέγιστος ρυθμός bit (kbps):"
+msgstr "Μέγιστος ρυθμός μετάδοσης (kbps):"
 
 #: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
-msgstr ""
+msgstr "Αυστηρά εφάρμοσε ελάχιστο ρυθμό μετάδοσης"
 
 #: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
@@ -1394,7 +1422,7 @@ msgstr "Επιλογές ABR:"
 
 #: src/filewriter/mp3.c:1052
 msgid "Average bitrate (kbps):"
-msgstr "Μέσος ρυθμός bit (kbps):"
+msgstr "Μέσος ρυθμός μετάδοσης (kbps):"
 
 #: src/filewriter/mp3.c:1080
 msgid "VBR quality level:"
@@ -1430,11 +1458,11 @@ msgstr ""
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr ""
+msgstr "Πρόσθεσε μόνο ετικέτα v1"
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr ""
+msgstr "Πρόσθεσε μόνο ετικέτα v2"
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
@@ -1552,7 +1580,7 @@ msgstr "Προσαρμοσμένος τίτλος"
 
 #: src/gtkui/columns.c:35
 msgid "Bitrate"
-msgstr "Ρυθμός διαμεταγωγής (bitrate)"
+msgstr "Ρυθμός μετάδοσης (bitrate)"
 
 #: src/gtkui/columns.c:277
 msgid "Choose Columns"
@@ -1949,11 +1977,11 @@ msgstr ""
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "Μπροστά 5 δευτερόλεπτα"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "Πίσω 5 δευτερόλεπτα"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
@@ -1961,15 +1989,15 @@ msgstr "Σίγαση"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Αύξηση έντασης"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Μείωση έντασης"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Μεταπήδηση στο αρχείο"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -2262,15 +2290,15 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:58
 msgid "8-bit"
-msgstr ""
+msgstr "8-bit"
 
 #: src/modplug/plugin_main.c:60
 msgid "16-bit"
-msgstr ""
+msgstr "16-bit"
 
 #: src/modplug/plugin_main.c:62
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Κανάλια</b>"
 
 #: src/modplug/plugin_main.c:67
 msgid "<b>Resampling</b>"
@@ -2298,24 +2326,24 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:77
 msgid "22 kHz"
-msgstr ""
+msgstr "22 kHz"
 
 #: src/modplug/plugin_main.c:79
 msgid "44 kHz"
-msgstr ""
+msgstr "44 kHz"
 
 #: src/modplug/plugin_main.c:81
 msgid "48 kHz"
-msgstr ""
+msgstr "48 kHz"
 
 #: src/modplug/plugin_main.c:83
 msgid "96 kHz"
-msgstr ""
+msgstr "96 kHz"
 
 #: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
 #: src/modplug/plugin_main.c:102
 msgid "Level:"
-msgstr ""
+msgstr "Επίπεδο:"
 
 #: src/modplug/plugin_main.c:97
 msgid "Cutoff:"
@@ -2323,7 +2351,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:114
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Αντίχηση</b>"
 
 #: src/modplug/plugin_main.c:118
 msgid "<b>Bass Boost</b>"
@@ -2331,7 +2359,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:122
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Περιφερειακό</b>"
 
 #: src/modplug/plugin_main.c:126
 msgid "<b>Preamp</b>"
@@ -2339,7 +2367,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:133
 msgid "<b>Miscellaneous</b>"
-msgstr ""
+msgstr "<b>Διάφορα</b>"
 
 #: src/modplug/plugin_main.c:134
 msgid "Oversample"
@@ -2347,19 +2375,19 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:136
 msgid "Noise reduction"
-msgstr ""
+msgstr "Μείωση θορύβου"
 
 #: src/modplug/plugin_main.c:138
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Αναπαραγωγή MOD του Amiga"
 
 #: src/modplug/plugin_main.c:140
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Επανάληψη</b>"
 
 #: src/modplug/plugin_main.c:141
 msgid "Repeat count:"
-msgstr ""
+msgstr "Μέτρηση επαναλήψεων:"
 
 #: src/modplug/plugin_main.c:143
 msgid "To repeat forever, set the repeat count to -1."
@@ -2371,17 +2399,17 @@ msgstr ""
 
 #: src/mpg123/mpg123.c:211
 msgid "Surround"
-msgstr "Περιβάλλων (Surround)"
+msgstr "Περιφερειακό"
 
 #: src/mpg123/mpg123.c:569
 msgid "MPG123 Plugin"
 msgstr "Πρόσθετο MPG123"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "Εξυπηρετητής MPRIS 2"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Πρόσθετο Neon HTTP/HTTPS"
 
@@ -2427,7 +2455,7 @@ msgstr ""
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "Εμφάνιση"
 
 #: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
@@ -2478,7 +2506,7 @@ msgstr "Έξοδος OSS4"
 msgid "PLS Playlists"
 msgstr "Λίστες Αναπαραγωγής PLS"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "Αποκωδικοποιητής OpenPSF PSF1/PSF2"
 
@@ -2591,7 +2619,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
-msgstr ""
+msgstr "Άρνηση Πρόσβασης"
 
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
@@ -2617,7 +2645,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
-msgstr ""
+msgstr "Γίνεται έλεγχος..."
 
 #: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
@@ -2651,7 +2679,7 @@ msgstr ""
 
 #: src/scrobbler2/scrobbler.c:317
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Scrobbler 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:690
 msgid ""
@@ -2664,6 +2692,8 @@ msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Πρόσθετο Εξόδου SDL για το Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
@@ -2687,6 +2717,8 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+" στο %s του %s"
 
 #: src/search-tool/search-tool.c:638
 #, c-format
@@ -3045,15 +3077,15 @@ msgstr ""
 
 #: src/skins/ui_manager.c:123
 msgid "Vertical Lines"
-msgstr ""
+msgstr "Κατακόρυφες Γραμμές"
 
 #: src/skins/ui_manager.c:127
 msgid "Lines"
-msgstr ""
+msgstr "Γραμμές"
 
 #: src/skins/ui_manager.c:128
 msgid "Bars"
-msgstr ""
+msgstr "Μπάρες"
 
 #: src/skins/ui_manager.c:132
 msgid "Dot Scope"
@@ -3885,7 +3917,7 @@ msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:84
 msgid "Tone Generator: "
-msgstr ""
+msgstr "Γεννήτρια Τόνων: "
 
 #: src/tonegen/tonegen.c:197
 msgid ""
@@ -3898,7 +3930,7 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:206
 msgid "Tone Generator"
-msgstr ""
+msgstr "Γεννήτρια Τόνων"
 
 #: src/unix-io/unix-io.c:243
 msgid ""
@@ -3907,6 +3939,10 @@ msgid ""
 "\n"
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
+"Πρόσθετο Ε/Ε Αρχείων για το Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"ΑΥΤΟ ΤΟ ΠΡΟΣΘΕΤΟ ΕΙΝΑΙ ΑΠΑΙΡΑΙΤΗΤΟ.  ΜΗΝ ΤΟ ΑΠΕΝΕΡΓΟΠΟΙΗΣΕΤΕ."
 
 #: src/unix-io/unix-io.c:266
 msgid "File I/O Plugin"
@@ -3936,6 +3972,22 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
+"Αποκωδικοποιητής Ogg Vorbis\n"
+"\n"
+"Βασισμένο στο Πρόσθετο Ogg Vorbis του Ιδρύματος Xiph.org\n"
+"\n"
+"Πρωτότυπος κώδικας του:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Συνεισφορές από τους:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.c:575
 msgid "Ogg Vorbis Decoder"
@@ -3947,6 +3999,9 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
+"Αναπαραγωγέας αρχείων τύπου VTX  του Sashnov Alexander <sashnov@ngs.ru>\n"
+"Βασισμένο στο in_vtx.dll του Roman Sherbakov <v_soft@microfor.ru>\n"
+"Πρόσθετο για το Audacious από τον Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/vtx/vtx.c:248
 msgid "VTX Decoder"
@@ -3954,11 +4009,11 @@ msgstr "Αποκωδικοποιητής VTX"
 
 #: src/wavpack/wavpack.c:282
 msgid "lossy (hybrid)"
-msgstr ""
+msgstr "με απώλεια (υβριδικός)"
 
 #: src/wavpack/wavpack.c:284
 msgid "lossy"
-msgstr ""
+msgstr "με απώλεια"
 
 #: src/wavpack/wavpack.c:334
 msgid ""
@@ -3966,6 +4021,9 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Μερικός κώδικας εγγράφει από τον Miles Egan."
 
 #: src/wavpack/wavpack.c:341
 msgid "WavPack Decoder"

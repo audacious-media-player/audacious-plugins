@@ -7,9 +7,9 @@
 # chingis <translatorky@lavabit.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
 "PO-Revision-Date: 2013-05-04 12:38+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Kirgyz (http://www.transifex.com/projects/p/audacious/"
@@ -37,7 +37,7 @@ msgid "AAC Decoder"
 msgstr "AAC декодери"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr ""
 
@@ -1212,7 +1212,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Эхо"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1222,7 +1222,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg плагини"
 
@@ -2374,11 +2374,11 @@ msgstr "Көлөмдүү тыбыш"
 msgid "MPG123 Plugin"
 msgstr "MPG123 плагини"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 сервери"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS плагини"
 
@@ -2475,7 +2475,7 @@ msgstr "OSS4 чыгышы"
 msgid "PLS Playlists"
 msgstr "PLS ойнотуу тизмелери"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 чыгышы"
 

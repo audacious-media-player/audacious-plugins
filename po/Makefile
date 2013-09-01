@@ -10,8 +10,10 @@
 LOCALES = be.po \
 	  ca.po \
 	  cs.po \
+	  da.po \
 	  de.po \
 	  el.po \
+	  en_GB.po \
 	  es.po \
 	  es_AR.po \
 	  es_MX.po \

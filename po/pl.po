@@ -4,20 +4,25 @@
 #
 # Translators:
 # CH <259095+transifex@gmail.com>, 2012
+# CH <259095+transifex@gmail.com>, 2012
 # felikstayson <felikstayson@o2.pl>, 2012
+# felikstayson <felikstayson@o2.pl>, 2012
+# mkkot <marcin2006@gmail.com>, 2013
+# mgrvnwald <marco@mgrvnwald.com>, 2013
 # mgrvnwald <marco@mgrvnwald.com>, 2013
 # mgrvnwald <marco@mgrvnwald.com>, 2013
 # Piotr Sokół <psokol@jabster.pl>, 2012
 # Szymon Weihs <sz.weihs@gmail.com>, 2011
 # Szymon Weihs <sz.weihs@gmail.com>, 2011-2012
 # vojcek <vojcek@tlen.pl>, 2013
+# vojcek <vojcek@tlen.pl>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-25 07:01+0000\n"
-"Last-Translator: vojcek <vojcek@tlen.pl>\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"PO-Revision-Date: 2013-07-07 13:21+0000\n"
+"Last-Translator: mkkot <marcin2006@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/audacious/"
 "language/pl/)\n"
 "Language: pl\n"
@@ -44,7 +49,7 @@ msgid "AAC Decoder"
 msgstr "Dekoder AAC"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr "sekwencjonowane"
 
@@ -362,7 +367,7 @@ msgstr ""
 
 #: src/alsa/plugin.c:32
 msgid "ALSA Output"
-msgstr "Wyjście ALSA"
+msgstr "ALSA"
 
 #: src/amidi-plug/amidi-plug.c:248
 msgid ""
@@ -1348,7 +1353,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Echo"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1364,7 +1369,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "Wtyczka FFmpeg"
 
@@ -1624,7 +1629,7 @@ msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"GIO Plugin for Audacious\n"
+"Wtyczka GIO Audaciousa\n"
 "Copyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:322
@@ -2254,7 +2259,7 @@ msgstr ""
 
 #: src/jack/jack.c:416
 msgid "JACK Output"
-msgstr "Wyjście JACK"
+msgstr "JACK"
 
 #: src/ladspa/plugin.c:493
 #, c-format
@@ -2485,15 +2490,15 @@ msgstr "Wtyczka MMS"
 
 #: src/modplug/plugin_main.c:57
 msgid "<b>Resolution</b>"
-msgstr "<b>Rozdzielczość</b>"
+msgstr "<b>Rozdzielczość bitowa</b>"
 
 #: src/modplug/plugin_main.c:58
 msgid "8-bit"
-msgstr "8-bit"
+msgstr "8 bitów"
 
 #: src/modplug/plugin_main.c:60
 msgid "16-bit"
-msgstr "16-bit"
+msgstr "16 bitów"
 
 #: src/modplug/plugin_main.c:62
 msgid "<b>Channels</b>"
@@ -2501,27 +2506,29 @@ msgstr "<b>Kanały</b>"
 
 #: src/modplug/plugin_main.c:67
 msgid "<b>Resampling</b>"
-msgstr "<b>Resamplowanie</b>"
+msgstr ""
+"<b>Konwersja częstotliwości\n"
+"próbkowania</b>"
 
 #: src/modplug/plugin_main.c:68
 msgid "Nearest (fastest)"
-msgstr "Najbliższy (najszybszy)"
+msgstr "Najbliższa (najszybsza)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Linear (fast)"
-msgstr "Liniowy (szybki)"
+msgstr "Liniowa (szybka)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Spline (good)"
-msgstr "Spline (dobry)"
+msgstr "Krzywa (dobra)"
 
 #: src/modplug/plugin_main.c:74
 msgid "Polyphase (best)"
-msgstr "Polyphase (najlepszy)"
+msgstr "Przesunięcie fazowe (najlepsza)"
 
 #: src/modplug/plugin_main.c:76
 msgid "<b>Sampling rate</b>"
-msgstr "<b>Częstotliwość sampli</b>"
+msgstr "<b>Częstotliwość próbkowania</b>"
 
 #: src/modplug/plugin_main.c:77
 msgid "22 kHz"
@@ -2550,11 +2557,11 @@ msgstr "Odcięcie:"
 
 #: src/modplug/plugin_main.c:114
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Echo</b>"
 
 #: src/modplug/plugin_main.c:118
 msgid "<b>Bass Boost</b>"
-msgstr "<b>Podbicie Basów</b>"
+msgstr "<b>Podbicie basów</b>"
 
 #: src/modplug/plugin_main.c:122
 msgid "<b>Surround</b>"
@@ -2562,7 +2569,7 @@ msgstr "<b>Dźwięk przestrzenny</b>"
 
 #: src/modplug/plugin_main.c:126
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Przedwzmacniacz</b>"
 
 #: src/modplug/plugin_main.c:133
 msgid "<b>Miscellaneous</b>"
@@ -2570,7 +2577,7 @@ msgstr "<b>Różne</b>"
 
 #: src/modplug/plugin_main.c:134
 msgid "Oversample"
-msgstr ""
+msgstr "Próbkowanie nadmiarowe"
 
 #: src/modplug/plugin_main.c:136
 msgid "Noise reduction"
@@ -2578,7 +2585,7 @@ msgstr "Redukcja szumów"
 
 #: src/modplug/plugin_main.c:138
 msgid "Play Amiga MODs"
-msgstr "Odtwórz MODy Amigi"
+msgstr "Odtwórz MOD-y Amigi"
 
 #: src/modplug/plugin_main.c:140
 msgid "<b>Repeat</b>"
@@ -2590,25 +2597,25 @@ msgstr "Ilość powtórzeń:"
 
 #: src/modplug/plugin_main.c:143
 msgid "To repeat forever, set the repeat count to -1."
-msgstr "By powtarzać bez końca ustaw -1 dla powtarzania."
+msgstr "By powtarzać bez końca ustaw -1."
 
 #: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (odtwarzacz modułowy)"
+msgstr "ModPlug (odtwarzacz modułów)"
 
 #: src/mpg123/mpg123.c:211
 msgid "Surround"
-msgstr "Surround"
+msgstr "Dźwięk przestrzenny"
 
 #: src/mpg123/mpg123.c:569
 msgid "MPG123 Plugin"
 msgstr "Wtyczka MPG123"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "Serwer MPRIS 2"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Wtyczka Neon HTTP/HTTPS"
 
@@ -2639,6 +2646,24 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Wtyczka powiadomień pulpitowych Audaciousa\n"
+"Prawa autorskie (C) 2010: Maximilian Bogner\n"
+"Prawa autorskie (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès "
+"d'Auriac\n"
+"\n"
+"Niniejsza wtyczka jest wolnym oprogramowaniem; można ją rozprowadzać dalej i/"
+"lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
+"przez Fundację Wolnego Oprogramowania - według wersji trzeciej tej Licencji "
+"lub którejś z późniejszych wersji.\n"
+"\n"
+"Wtyczka jest rozpowszechniana jest z nadzieją, iż będzie użyteczna, jednak "
+"BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI "
+"HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH ZASTOSOWAŃ. W celu uzyskania "
+"bliższych informacji przeczytaj Powszechną Licencję Publiczną GNU.\n"
+"\n"
+" Z pewnością wraz z wtyczką otrzymałeś też egzemplarz Powszechnej Licencji "
+"Publicznej GNU (GNU General Public License); jeśli nie, odwiedź <http://www."
+"gnu.org/licenses/>."
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
@@ -2704,13 +2729,13 @@ msgstr ""
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
-msgstr "Wyjście OSS4"
+msgstr "OSS4"
 
 #: src/pls/pls.c:113
 msgid "PLS Playlists"
 msgstr "Listy odtwarzania PLS"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "Dekoder OpenPSF PSF1/PSF2"
 
@@ -2748,7 +2773,7 @@ msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
-msgstr "Wyjście PulseAudio"
+msgstr "PulseAudio"
 
 #: src/resample/resample.c:161
 msgid ""
@@ -2931,7 +2956,7 @@ msgstr ""
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
-msgstr "Wyjście SDL"
+msgstr "SDL"
 
 #: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
 msgid "Library"
@@ -4006,7 +4031,7 @@ msgstr "Anuluj"
 
 #: src/song_change/song_change.c:54
 msgid "Song Change"
-msgstr "Ustawienia wtyczki Song Change"
+msgstr "Polecenie przy zmianie ścieżki"
 
 #: src/song_change/song_change.c:436
 msgid "Command to run when Audacious starts a new song."
@@ -4193,7 +4218,7 @@ msgstr "<b>Dodatkowe Stereo</b>"
 
 #: src/stereo_plugin/stereo.c:36
 msgid "Extra Stereo"
-msgstr "Extra stereo"
+msgstr "Dodatkowe stereo"
 
 #: src/tonegen/tonegen.c:84
 #, c-format
@@ -4229,7 +4254,7 @@ msgid ""
 "\n"
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
-"File I/O Plugin for Audacious\n"
+"Operacje wejścia/wyjścia na plikach dla Audaciousa\n"
 "Copyright 2009-2012 John Lindgren\n"
 "TA WTYCZKA JEST NIEZBĘDNA, NIE WYŁĄCZAJ JEJ."
 

@@ -8,9 +8,9 @@
 # P.I.Balasinghe <pushpika.indrachapa@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-06-29 01:19+0200\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
 "PO-Revision-Date: 2013-06-03 17:20+0000\n"
 "Last-Translator: ashintha89 <ashintha@gmail.com>\n"
 "Language-Team: Sinhala (http://www.transifex.com/projects/p/audacious/"
@@ -38,7 +38,7 @@ msgid "AAC Decoder"
 msgstr "AAC විකේතකය"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr "අනුපිළිවෙළ"
 
@@ -1332,7 +1332,7 @@ msgstr ""
 msgid "Echo"
 msgstr "ප්‍රතිරාව"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1348,7 +1348,7 @@ msgstr ""
 "විලියම් පිට්කොක් <nenolod@nenolod.net>⏎\n"
 "මැටී හැමලේයිනෙන් <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg පේනු මෘදුකාංගය "
 
@@ -2575,11 +2575,11 @@ msgstr "සිසාළ "
 msgid "MPG123 Plugin"
 msgstr "MPG123  පේනු මෘදුකාංගය"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 සේවාදායකය"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "නිඕන් HTTP/HTTPS පේනු මෘදුකාංගය"
 
@@ -2695,7 +2695,7 @@ msgstr "OSS4 ප්‍රතිදානය"
 msgid "PLS Playlists"
 msgstr "PLS ධාවන ලැයිස්තුව​"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "PSF PSF1/PSF2 විකේතකය විවෘත කරන්න "
 

@@ -9,9 +9,9 @@
 # mbouzada <mbouzada@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
 "PO-Revision-Date: 2013-05-04 12:40+0000\n"
 "Last-Translator: mbouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/projects/p/audacious/"
@@ -39,7 +39,7 @@ msgid "AAC Decoder"
 msgstr "Descodificador AAC"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr "secuenciado"
 
@@ -1354,7 +1354,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Eco"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1370,7 +1370,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "Engadido FFmpeg"
 
@@ -2604,11 +2604,11 @@ msgstr "Son envolvente"
 msgid "MPG123 Plugin"
 msgstr "Engadido MPG123"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "Servidor MPRIS 2"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Engadido Neon HTTP/HTTPS"
 
@@ -2726,7 +2726,7 @@ msgstr "Saída OSS4"
 msgid "PLS Playlists"
 msgstr "Listas de reprodución PLS"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "Descodificador OpenPSF PSF1/PSF2"
 

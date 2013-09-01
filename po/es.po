@@ -3,10 +3,11 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Adolfo Jayme <fitoschido@gmail.com>, 2013
+# Adolfo Jayme Barrientos <fitoschido@ubuntu.com>, 2013
 # Adrián Ramirez Escalante <buried.prophet@gmail.com>, 2012
 # Cosme Domínguez Díaz <cosme.ddiaz@gmail.com>, 2010
 # frangor <frangor@frangor.info>, 2013
+# Excelente <dny1020@aol.com>, 2013
 # Jorge Andrés <winninglero@gmail.com>, 2011
 # Lucía Balsa <lucia.balsa.prados@gmail.com>, 2012
 # Marco Antonio Frias Butrón <marcoantoniofrias@gmail.com>, 2012
@@ -17,9 +18,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-06-29 01:19+0200\n"
-"PO-Revision-Date: 2013-06-17 06:58+0000\n"
-"Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"PO-Revision-Date: 2013-08-20 12:11+0000\n"
+"Last-Translator: Excelente <dny1020@aol.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/audacious/"
 "language/es/)\n"
 "Language: es\n"
@@ -45,9 +46,9 @@ msgid "AAC Decoder"
 msgstr "Decodificador AAC"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
-msgstr ""
+msgstr "secuenciado"
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
@@ -165,7 +166,7 @@ msgstr "Domingo"
 
 #: src/alarm/interface.c:175
 msgid "Alarm Settings"
-msgstr "Ajustes de alarma"
+msgstr "Ajustes de Alarma"
 
 #: src/alarm/interface.c:186 src/alarm/interface.c:250
 #: src/alarm/interface.c:265
@@ -894,7 +895,7 @@ msgstr "<b>Color</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
-msgstr ""
+msgstr "Borroso"
 
 #: src/bs2b/plugin.c:136
 msgid "Bauer Stereophonic-to-Binaural Preferences"
@@ -988,7 +989,7 @@ msgstr ""
 #: src/cdaudio-ng/cdaudio-ng.c:308
 #, c-format
 msgid "Track %d not found."
-msgstr ""
+msgstr "Pista %d no encontrada."
 
 #: src/cdaudio-ng/cdaudio-ng.c:310
 #, c-format
@@ -1245,12 +1246,16 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik, 1999"
 msgstr ""
+"Complemento de Eco⏎\n"
+"Por Johan Levin, 1999⏎\n"
+"⏎\n"
+"Eco envolvente por Carl van Schaik, 1999"
 
 #: src/echo_plugin/echo.c:120
 msgid "Echo"
 msgstr "Eco"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1260,7 +1265,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "Complemento de FFmpeg"
 
@@ -1329,6 +1334,20 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Este programa es software gratis, puede redistribuirlo y/o modificarlo ⏎\n"
+"bajo los términos de la Licencia Pública General GNU publicada por ⏎\n"
+"the Free Software Foundation; sea versión 2 de la Licencia, o ⏎\n"
+"(a su elección) cualquier versión posterior. ⏎\n"
+"⏎\n"
+"Este programa se distribuye con la esperanza de que sea útil, ⏎\n"
+"pero SIN NINGUNA GARANTÍA; incluso sin la garantía implícita de ⏎\n"
+"COMERCIALIZACIÓN o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Consulte la ⏎\n"
+"GNU General Public License para más detalles. ⏎\n"
+"⏎\n"
+"Debería haber recibido una copia de GNU General Public License ⏎\n"
+"junto con este programa, y si no, escriba a Free Software ⏎\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,⏎\n"
+"USA."
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
@@ -1708,15 +1727,15 @@ msgstr "Saltar a la _canción ..."
 
 #: src/gtkui/menus.c:197
 msgid "Set Repeat Point _A"
-msgstr ""
+msgstr "Establecer Punto de Repetición _A"
 
 #: src/gtkui/menus.c:198
 msgid "Set Repeat Point _B"
-msgstr ""
+msgstr "Establecer Punto de Repetición _B"
 
 #: src/gtkui/menus.c:199
 msgid "_Clear Repeat Points"
-msgstr ""
+msgstr "_Borrar Punto de Repetición"
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:208 src/gtkui/menus.c:221
 msgid "By _Title"
@@ -1748,7 +1767,7 @@ msgstr "Por _fecha de estreno"
 
 #: src/gtkui/menus.c:212 src/gtkui/menus.c:225
 msgid "By _Length"
-msgstr ""
+msgstr "Por_Longitud"
 
 #: src/gtkui/menus.c:213 src/gtkui/menus.c:226
 msgid "By _File Path"
@@ -1784,7 +1803,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
-msgstr ""
+msgstr "Eliminar_Duplicados"
 
 #: src/gtkui/menus.c:239
 msgid "Remove _Unavailable Files"
@@ -1860,11 +1879,11 @@ msgstr "Mostrar barra de _estado"
 
 #: src/gtkui/menus.c:268
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "Mostrar_Tiempo Restante"
 
 #: src/gtkui/menus.c:270
 msgid "Show Close _Buttons"
-msgstr ""
+msgstr "Mostrar "
 
 #: src/gtkui/menus.c:271
 msgid "Show Column _Headers"
@@ -1997,15 +2016,15 @@ msgstr "Silenciar"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Subir volumen"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Bajar volumen"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Ir al archivo"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -2233,7 +2252,7 @@ msgstr "No hay letras disponibles."
 #: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "No es posible obtener %s"
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
@@ -2242,7 +2261,7 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:260
 msgid "Looking for lyrics ..."
-msgstr ""
+msgstr "Buscando letras ..."
 
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Missing song metadata"
@@ -2319,7 +2338,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:62
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Canales</b>"
 
 #: src/modplug/plugin_main.c:67
 msgid "<b>Resampling</b>"
@@ -2327,11 +2346,11 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:68
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Más cercano (más rápido)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Lineal (rápido)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Spline (good)"
@@ -2396,7 +2415,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:136
 msgid "Noise reduction"
-msgstr ""
+msgstr "Reducción de ruido"
 
 #: src/modplug/plugin_main.c:138
 msgid "Play Amiga MODs"
@@ -2404,15 +2423,15 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:140
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Repetir</b>"
 
 #: src/modplug/plugin_main.c:141
 msgid "Repeat count:"
-msgstr ""
+msgstr "Cuenta de repetición:"
 
 #: src/modplug/plugin_main.c:143
 msgid "To repeat forever, set the repeat count to -1."
-msgstr ""
+msgstr "Para repetir siempre, establezca el número de repeticiones en -1."
 
 #: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
@@ -2426,11 +2445,11 @@ msgstr "Envolvente"
 msgid "MPG123 Plugin"
 msgstr ""
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr ""
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr ""
 
@@ -2476,7 +2495,7 @@ msgstr ""
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "Mostrar"
 
 #: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
@@ -2527,7 +2546,7 @@ msgstr ""
 msgid "PLS Playlists"
 msgstr ""
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr ""
 
@@ -2583,7 +2602,7 @@ msgstr ""
 
 #: src/resample/resample.c:172
 msgid "<b>Conversion</b>"
-msgstr ""
+msgstr "<b>Conversión</b>"
 
 #: src/resample/resample.c:173
 msgid "Method:"
@@ -2631,20 +2650,20 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:210
 msgid "Sample Rate Converter"
-msgstr ""
+msgstr "Muestra de convertidor de frecuencia"
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "Aprovado. Scrobbling para usario: %s"
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
-msgstr ""
+msgstr "Permiso Denegado"
 
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
-msgstr ""
+msgstr "Acceda a esta página para permitir scrobbling en Audacious:"
 
 #: src/scrobbler2/config_window.c:63
 msgid "Keep this window open and click 'Check Permission' again.\n"
@@ -2658,34 +2677,39 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
-msgstr ""
+msgstr "Problema de la red"
 
 #: src/scrobbler2/config_window.c:75
 msgid "There was a problem contacting Last.fm. Please try again later."
 msgstr ""
+"Hubo un problema al contactar con Last.fm. Por favor inténtelo de nuevo más "
+"tarde."
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
-msgstr ""
+msgstr "Comprobando..."
 
 #: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
-msgstr ""
+msgstr "C_omprobar el permiso"
 
 #: src/scrobbler2/config_window.c:174
 msgid "_Revoke Permission"
-msgstr ""
+msgstr "Revocar el Permiso"
 
 #: src/scrobbler2/config_window.c:221
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
+"Usted necesidad permitir scrobbling a Audacious a su cuenta de Last.fm. ⏎\n"
 
 #: src/scrobbler2/scrobbler.c:233
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"El plugin Scrobbler no se pudo iniciar. ⏎\n"
+"Puede haber un problema con la instalación."
 
 #: src/scrobbler2/scrobbler.c:311
 msgid ""
@@ -2697,6 +2721,12 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Complemento Audacious Scrobbler  2.0 por Pitxyoki, ⏎\n"
+"⏎\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com> ⏎\n"
+"⏎\n"
+"Gracias a John Lindgren por darme una mano en el inicio de este proyecto. ⏎\n"
+"⏎\n"
 
 #: src/scrobbler2/scrobbler.c:317
 msgid "Scrobbler 2.0"
@@ -2735,7 +2765,7 @@ msgstr "Álbum Desconocido"
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr ""
+msgstr " %s⏎ en %s de %s "
 
 #: src/search-tool/search-tool.c:638
 #, c-format
@@ -2753,7 +2783,11 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s⏎\n"
+"%s, %d cancion"
 msgstr[1] ""
+"%s⏎\n"
+"%s, %d canciones"
 
 #: src/search-tool/search-tool.c:646
 #, c-format
@@ -2764,7 +2798,11 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
+"%s⏎\n"
+"%d cancion de %s"
 msgstr[1] ""
+"%s⏎\n"
+"%d canciones de %s"
 
 #: src/search-tool/search-tool.c:687
 msgid "_Create Playlist"
@@ -2993,15 +3031,15 @@ msgstr "No parar después de la canción."
 
 #: src/skins/ui_main.c:1752
 msgid "Repeat point A set."
-msgstr ""
+msgstr "Repetir punto de establecimiento A."
 
 #: src/skins/ui_main.c:1757
 msgid "Repeat point B set."
-msgstr ""
+msgstr "Repetir punto de establecimiento B."
 
 #: src/skins/ui_main.c:1766
 msgid "Repeat points cleared."
-msgstr ""
+msgstr "Repetir punto de establecimiento borrados."
 
 #: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
 msgid "Autoscroll Song Name"
@@ -3722,7 +3760,7 @@ msgstr ""
 
 #: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "Acerca del complemento de salida Sndio"
 
 #: src/sndio/sndio.c:173
 msgid ""
@@ -3744,7 +3782,7 @@ msgstr ""
 
 #: src/sndio/sndio.c:384
 msgid "sndio device"
-msgstr ""
+msgstr "dispositivo sndio"
 
 #: src/sndio/sndio.c:400
 msgid "(empty means default)"
@@ -3830,23 +3868,23 @@ msgstr ""
 
 #: src/sox-resampler/sox-resampler.c:141
 msgid "Quick"
-msgstr ""
+msgstr "Rapido"
 
 #: src/sox-resampler/sox-resampler.c:142
 msgid "Low"
-msgstr ""
+msgstr "Bajo"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "High"
-msgstr ""
+msgstr "Alto"
 
 #: src/sox-resampler/sox-resampler.c:145
 msgid "Very High"
-msgstr ""
+msgstr "Muy Alto"
 
 #: src/sox-resampler/sox-resampler.c:148
 msgid "Quality:"
-msgstr ""
+msgstr "Calidad"
 
 #: src/sox-resampler/sox-resampler.c:162
 msgid "SoX Resampler"
@@ -3854,7 +3892,7 @@ msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:225
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Velocidad y Tono</b>"
 
 #: src/speed-pitch/speed-pitch.c:226
 msgid "Speed:"

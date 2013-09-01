@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-06-29 01:19+0200\n"
-"PO-Revision-Date: 2013-05-31 17:05+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"PO-Revision-Date: 2013-07-11 13:11+0000\n"
+"Last-Translator: rustam <rustam.tsurik@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/audacious/"
 "language/uk/)\n"
 "Language: uk\n"
@@ -49,7 +49,7 @@ msgid "AAC Decoder"
 msgstr "Декодер AAC"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
 msgid "sequenced"
 msgstr "послідовний"
 
@@ -93,6 +93,25 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"Час⏎\n"
+"Починати о:⏎\n"
+"Час, коли спрацьовує будильник.⏎\n"
+"⏎\n"
+"Закінчити через:⏎\n"
+"Зупинити сигнал через цей проміжок часу.⏎\n"
+"(якщо діалог будильника не було закрито)⏎\n"
+"⏎\n"
+"⏎\n"
+"Дні⏎\n"
+"День:⏎\n"
+"Виберіть дні, у які буде активовано будильник.⏎\n"
+"⏎\n"
+"Час:⏎\n"
+"Виберіть час у який спрацьовуватиме будильник для кожного дня,⏎\n"
+"або виберіть опцію для застосування часу згідно типових⏎\n"
+"налаштувань.⏎\n"
+"⏎\n"
+"⏎\n"
 
 #: src/alarm/interface.c:45
 msgid ""
@@ -147,6 +166,16 @@ msgid ""
 "    Type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown."
 msgstr ""
+"Список відтворення:⏎\n"
+"Завантажувати список відтворення. Якщо не надано⏎\n"
+"список відтворення, то буде застосовано поточний список.⏎\n"
+"Тут також може бути наданий URL⏎\n"
+"для mp3/ogg потоку.⏎\n"
+"⏎\n"
+"Нагадування:⏎\n"
+"Показувати нагадування після того як будильник вимикається.⏎\n"
+"Введіть нагадування у полі та увімкніть⏎\n"
+"кнопку-прапорець, якщо ви хочете, щоб його було показано."
 
 #: src/alarm/interface.c:81
 msgid "This is your wakeup call."
@@ -1322,7 +1351,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Відлуння"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:648
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1340,7 +1369,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:695
 msgid "FFmpeg Plugin"
 msgstr "Плаґін FFmpeg"
 
@@ -1624,10 +1653,18 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL аналізатор спектру для Audacious⏎\n"
+"Авторське право 2013 Christophe Budé та John Lindgren⏎\n"
+"⏎\n"
+"Базується на коді плагіна для XMMS:⏎\n"
+"Авторське право 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
+"Nilsson та 4Front Technologies⏎\n"
+"⏎\n"
+"Ліцензія: GPLv2+"
 
 #: src/gl-spectrum/gl-spectrum.c:292
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
+msgstr "OpenGL аналізатор спектру"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -2454,112 +2491,112 @@ msgstr "Плаґін MMS"
 
 #: src/modplug/plugin_main.c:57
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Роздільна здатність</b>"
 
 #: src/modplug/plugin_main.c:58
 msgid "8-bit"
-msgstr ""
+msgstr "8-біт"
 
 #: src/modplug/plugin_main.c:60
 msgid "16-bit"
-msgstr ""
+msgstr "16-біт"
 
 #: src/modplug/plugin_main.c:62
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Канали</b>"
 
 #: src/modplug/plugin_main.c:67
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Ресемплінг</b>"
 
 #: src/modplug/plugin_main.c:68
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Найближчий (найшвидший)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Лінійний (швидкий)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Spline (good)"
-msgstr ""
+msgstr "Сплайн (якісний)"
 
 #: src/modplug/plugin_main.c:74
 msgid "Polyphase (best)"
-msgstr ""
+msgstr "Поліфазний (найкращий)"
 
 #: src/modplug/plugin_main.c:76
 msgid "<b>Sampling rate</b>"
-msgstr ""
+msgstr "<b>Частота дискретизації</b>"
 
 #: src/modplug/plugin_main.c:77
 msgid "22 kHz"
-msgstr ""
+msgstr "22 кГц"
 
 #: src/modplug/plugin_main.c:79
 msgid "44 kHz"
-msgstr ""
+msgstr "44 кГц"
 
 #: src/modplug/plugin_main.c:81
 msgid "48 kHz"
-msgstr ""
+msgstr "48 кГц"
 
 #: src/modplug/plugin_main.c:83
 msgid "96 kHz"
-msgstr ""
+msgstr "96 кГц"
 
 #: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
 #: src/modplug/plugin_main.c:102
 msgid "Level:"
-msgstr ""
+msgstr "Рівень:"
 
 #: src/modplug/plugin_main.c:97
 msgid "Cutoff:"
-msgstr ""
+msgstr "Границя:"
 
 #: src/modplug/plugin_main.c:114
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Реверберація</b>"
 
 #: src/modplug/plugin_main.c:118
 msgid "<b>Bass Boost</b>"
-msgstr ""
+msgstr "<b>Додатковий бас</b>"
 
 #: src/modplug/plugin_main.c:122
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Об’ємне звучання</b>"
 
 #: src/modplug/plugin_main.c:126
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Попереднє підсилення</b>"
 
 #: src/modplug/plugin_main.c:133
 msgid "<b>Miscellaneous</b>"
-msgstr ""
+msgstr "<b>Різне</b>"
 
 #: src/modplug/plugin_main.c:134
 msgid "Oversample"
-msgstr ""
+msgstr "Передискретизація"
 
 #: src/modplug/plugin_main.c:136
 msgid "Noise reduction"
-msgstr ""
+msgstr "Зменшення шуму"
 
 #: src/modplug/plugin_main.c:138
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Грати Amiga MOD-файли"
 
 #: src/modplug/plugin_main.c:140
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Повторення</b>"
 
 #: src/modplug/plugin_main.c:141
 msgid "Repeat count:"
-msgstr ""
+msgstr "Кількість повторень:"
 
 #: src/modplug/plugin_main.c:143
 msgid "To repeat forever, set the repeat count to -1."
-msgstr ""
+msgstr "Для безкінечного повторення, встановіть кількість повторень в -1."
 
 #: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
@@ -2573,11 +2610,11 @@ msgstr "Об’ємний звук"
 msgid "MPG123 Plugin"
 msgstr "Плаґін MPG123"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "Сервер MPRIS 2"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1228
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Плаґін Neon HTTP/HTTPS"
 
@@ -2608,14 +2645,31 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Плагін сповіщень для Audacious⏎\n"
+"Авторське право (C) 2010 Maximilian Bogner⏎\n"
+"Авторське право (C) 2011-2013 John Lindgren та Jean-Alexandre Anglès "
+"d'Auriac⏎\n"
+"⏎\n"
+"Цей плагін є вільним програмним забезпеченням — ви можете розповсюджувати та/"
+"чи модифікувати його відповідно до умов Загальної публічної ліцензії GNU "
+"третьої або (на ваш розсуд) будь-якої новішої версії у тому вигляді, в якому "
+"її опублікував Фонд вільного програмного забезпечення.⏎\n"
+"⏎\n"
+"Цей плагін розповсюджується зі сподіванням, що він виявиться корисним, але "
+"БЕЗ ЖОДНОЇ ГАРАНТІЇ; навіть без умовної гарантії КОМЕРЦІЙНОЇ ПРИДАТНОСТІ чи "
+"ПРИДАТНОСТІ ДО ПЕВНОГО ЗАСТОСУВАННЯ. Зверніться до Загальної публічної "
+"ліцензії GNU за подробицями.⏎\n"
+"⏎\n"
+"Ви мали отримати копію Загальної публічної ліцензії GNU разом із цією "
+"програмою. В іншому випадку, дивіться <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr ""
+msgstr "Показати елементи керування відтворенням"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "Завжди показувати повідомлення"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
@@ -2623,7 +2677,7 @@ msgstr "Сповіщення"
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "Показати"
 
 #: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
@@ -2680,7 +2734,7 @@ msgstr "OSS4-вивід"
 msgid "PLS Playlists"
 msgstr "PLS-списки відтворення"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "Декодер OpenPSF PSF1/PSF2"
 
@@ -2896,6 +2950,8 @@ msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"На даний час Audacious використовує покращену версію скробблера Last.fm.⏎\n"
+"Будь-ласка перевірте Налаштування для плаґіна Scrobbler."
 
 #: src/sdlout/plugin.c:26
 msgid ""
