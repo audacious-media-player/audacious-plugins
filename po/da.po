@@ -1,0 +1,4070 @@
+# Danish translation for Audacious Plugins
+# Copyright (C) Audacious translators
+# This file is distributed under the same license as the Audacious Plugins package.
+#
+# Translators:
+# Joe Hansen <joedalton2@yahoo.dk>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: Audacious Plugins\n"
+"Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
+"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"PO-Revision-Date: 2013-07-28 17:44+0000\n"
+"Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
+"Language-Team: Danish (http://www.transifex.com/projects/p/audacious/"
+"language/da/)\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
+msgid "mono"
+msgstr "mono"
+
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
+msgid "stereo"
+msgstr "stereo"
+
+#: src/aac/libmp4.c:439 src/skins/ui_main.c:429
+msgid "surround"
+msgstr "surround"
+
+#: src/aac/libmp4.c:930
+msgid "AAC Decoder"
+msgstr "ACC-afkoder"
+
+#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
+#: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+msgid "sequenced"
+msgstr ""
+
+#: src/adplug/plugin.c:14
+msgid "AdPlug (AdLib Player)"
+msgstr "AdPlug (AdLib-afspiller)"
+
+#: src/alarm/alarm.c:809
+msgid ""
+"A plugin that can be used to start playing at a certain time.\n"
+"\n"
+"Originally written by Adam Feakin and Daniel Stodden."
+msgstr ""
+"Et udvidelsesmodul som kan bruges til at påbegynde afspilning på et bestemt "
+"tidspunkt.\n"
+"\n"
+"Oprindelig skrevet af Adam Feakin og Daniel Stodden."
+
+#: src/alarm/alarm.c:814 src/alarm/interface.c:82
+msgid "Alarm"
+msgstr "Alarm"
+
+#: src/alarm/interface.c:28
+msgid ""
+"Time\n"
+"  Alarm at:\n"
+"    The time for the alarm to come on.\n"
+"\n"
+"  Quiet after:\n"
+"    Stop alarm after this amount of time.\n"
+"       (if the wakeup dialog is not closed)\n"
+"\n"
+"\n"
+"Days\n"
+"  Day:\n"
+"    Select the days for the alarm to activate.\n"
+"\n"
+"  Time:\n"
+"    Choose the time for the alarm on each day,\n"
+"    or select the toggle button to use the default\n"
+"    time.\n"
+"\n"
+"\n"
+msgstr ""
+
+#: src/alarm/interface.c:45
+msgid ""
+"Volume\n"
+"  Fading:\n"
+"    Fade the volume up to the chosen volume\n"
+"    for this amount of time.\n"
+"\n"
+"  Start at:\n"
+"    Start fading from this volume.\n"
+"\n"
+"  Final:\n"
+"    The volume to stop fading at.  If the fading\n"
+"    time is 0 then set volume to this and start\n"
+"    playing.\n"
+"\n"
+"\n"
+"Options:\n"
+"  Additional Command:\n"
+"    Run this command at the alarm time.\n"
+"\n"
+msgstr ""
+
+#: src/alarm/interface.c:62
+msgid ""
+"  Playlist:\n"
+"    Load this playlist. If no playlist\n"
+"    is given, the current one will be used.\n"
+"    The URL of an mp3/ogg stream\n"
+"    can also be entered here.\n"
+"\n"
+"  Reminder:\n"
+"    Display a reminder when the alarm goes off.\n"
+"    Type the reminder in the box and turn on the\n"
+"    toggle button if you want it to be shown."
+msgstr ""
+
+#: src/alarm/interface.c:81
+msgid "This is your wakeup call."
+msgstr "Så gik alarmen."
+
+#: src/alarm/interface.c:99
+msgid "Your reminder for today is..."
+msgstr ""
+
+#: src/alarm/interface.c:101 src/alarm/interface.c:415
+msgid "Reminder"
+msgstr "Påmindelse"
+
+#: src/alarm/interface.c:140
+msgid "Monday"
+msgstr "Mondag"
+
+#: src/alarm/interface.c:140
+msgid "Tuesday"
+msgstr "Tirsdag"
+
+#: src/alarm/interface.c:140
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: src/alarm/interface.c:141
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: src/alarm/interface.c:141
+msgid "Friday"
+msgstr "Fredag"
+
+#: src/alarm/interface.c:141
+msgid "Saturday"
+msgstr "Lørdag"
+
+#: src/alarm/interface.c:141
+msgid "Sunday"
+msgstr "Søndag"
+
+#: src/alarm/interface.c:175
+msgid "Alarm Settings"
+msgstr "Alarmindstillinger"
+
+#: src/alarm/interface.c:186 src/alarm/interface.c:250
+#: src/alarm/interface.c:265
+msgid "Time"
+msgstr "Tid"
+
+#: src/alarm/interface.c:193
+msgid "Alarm at (default):"
+msgstr "Alarm (standard):"
+
+#: src/alarm/interface.c:216
+msgid "h"
+msgstr "t"
+
+#: src/alarm/interface.c:220
+msgid "Quiet after:"
+msgstr "Stille efter:"
+
+#: src/alarm/interface.c:234
+msgid "hours"
+msgstr "timer"
+
+#: src/alarm/interface.c:246
+msgid "minutes"
+msgstr "minutter"
+
+#: src/alarm/interface.c:255
+msgid "Choose the days for the alarm to come on"
+msgstr "Vælg dagene hvor alarmen skal udløses"
+
+#: src/alarm/interface.c:262
+msgid "Day"
+msgstr "Dag"
+
+#: src/alarm/interface.c:280 src/bs2b/plugin.c:177
+#: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:456
+#: src/skins/ui_manager.c:477
+msgid "Default"
+msgstr "Standard"
+
+#: src/alarm/interface.c:310
+msgid "Days"
+msgstr "Dage"
+
+#: src/alarm/interface.c:319
+msgid "Fading"
+msgstr "Overgang"
+
+#: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:397
+msgid "seconds"
+msgstr "sekunder"
+
+#: src/alarm/interface.c:334 src/alarm/interface.c:381
+msgid "Volume"
+msgstr "Lydstyrke"
+
+#: src/alarm/interface.c:339
+msgid "Start at"
+msgstr "Start"
+
+#: src/alarm/interface.c:357
+msgid "Final"
+msgstr "Endelig"
+
+#: src/alarm/interface.c:372
+msgid "Current"
+msgstr "Nuværende"
+
+#: src/alarm/interface.c:387
+msgid "Additional Command"
+msgstr "Yderligere kommando"
+
+#: src/alarm/interface.c:393
+msgid "enable"
+msgstr "aktiver"
+
+#: src/alarm/interface.c:400
+msgid "Playlist (optional)"
+msgstr "Afspilningsliste (valgfri)"
+
+#: src/alarm/interface.c:407
+msgid "Select a playlist"
+msgstr "Vælg en afspilningsliste"
+
+#: src/alarm/interface.c:419
+msgid "Use reminder"
+msgstr "Brug påmindelse"
+
+#: src/alarm/interface.c:428
+msgid "Options"
+msgstr "Indstillinger"
+
+#: src/alarm/interface.c:433
+msgid "What do these options mean?"
+msgstr "Hvad betyder disse indstillinger?"
+
+#: src/alarm/interface.c:447 src/skins/ui_manager.c:389
+msgid "Help"
+msgstr "Hjælp"
+
+#: src/albumart/albumart.c:143
+msgid "Album Art"
+msgstr "Omslag"
+
+#: src/alsa/config.c:212
+msgid "Default PCM device"
+msgstr "Standard-PCM-enhed"
+
+#: src/alsa/config.c:241
+msgid "Default mixer device"
+msgstr "Standardenhed for mikser"
+
+#: src/alsa/config.c:428
+msgid "ALSA Output Plugin Preferences"
+msgstr "Præferencer for ALSA Output Plugin"
+
+#: src/alsa/config.c:434
+msgid "PCM device:"
+msgstr "PCM-enhed:"
+
+#: src/alsa/config.c:436
+msgid "Mixer device:"
+msgstr "Mikserenhed:"
+
+#: src/alsa/config.c:438
+msgid "Mixer element:"
+msgstr "Mikserelement:"
+
+#: src/alsa/config.c:441
+msgid "Work around drain hangup"
+msgstr "Arbejd uden om tømningsafbrydelse"
+
+#: src/alsa/plugin.c:25
+msgid ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
+msgstr ""
+
+#: src/alsa/plugin.c:32
+msgid "ALSA Output"
+msgstr "ALSA-lydkanal"
+
+#: src/amidi-plug/amidi-plug.c:248
+msgid ""
+"You have not selected any sequencer ports for MIDI playback.  You can do so "
+"in the MIDI plugin preferences."
+msgstr ""
+"Du har ikke valgt sequncerporte for MIDI-afspilning. Du kan gøre dette under "
+"præferencerne for MIDI-udvidelsesmodulet."
+
+#: src/amidi-plug/amidi-plug.c:708
+msgid "AMIDI-Plug (MIDI Player)"
+msgstr "AMIDI-Plug (MIDI-afspiller)"
+
+#: src/amidi-plug/backend-alsa/b-alsa.c:38
+msgid "ALSA Backend "
+msgstr "ALSA-motor"
+
+#: src/amidi-plug/backend-alsa/b-alsa.c:41
+msgid ""
+"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
+"ports. The ALSA sequencer interface is very versatile, it can provide ports "
+"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
+"synths, external devices, etc.\n"
+"This backend does not produce audio, MIDI events are handled directly from "
+"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
+"hardware synth will be directly played.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+"Denne motor sender MiDI-hændelser til en gruppe af brugervalgte ALSA-"
+"sequencerporte. ALSA-sequencerbrugerfladen er meget alsidig, den kan tilbyde "
+"porte for lydkorts udstyrssynthesizere (dvs. emu10k1) men også for "
+"programsynthesizere, eksterne enheder etc.\n"
+"Denne motor tilbyder ikke lyd, MIDI-hændelser håndteres direkte fra enheder/"
+"programmer bag ALSA-portene; som eksempel vil MIDI-hændelser sendt til "
+"udstyrssynthesizeren blive direkte afspillet.\n"
+"Motor skrevet af Giacomo Lozito."
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:45
+msgid "FluidSynth Backend "
+msgstr "FluidSynth-motor"
+
+#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:48
+msgid ""
+"This backend produces audio by sending MIDI events to FluidSynth, a real-"
+"time software synthesizer based on the SoundFont2 specification (www."
+"fluidsynth.org).\n"
+"Produced audio can be manipulated via player effect plugins and is processed "
+"by chosen output plugin.\n"
+"Backend written by Giacomo Lozito."
+msgstr ""
+"Denne motor laver lyd ved at sende MIDI-hændelser til FluidSynth, en "
+"realtids programsynthesizer baseret på SoundFont2-specifikationen (www."
+"fluidsynth.org).\n"
+"Fremstillet lyd kan manipuleres via effektudvidelsesmoduler for afspilleren "
+"og behandles med det valgte udvidelsesmodul for lydkanalen.\n"
+"Motor skrevet af Giacomo Lozito."
+
+#: src/amidi-plug/i_configure-alsa.c:353
+msgid "Port"
+msgstr "Port"
+
+#: src/amidi-plug/i_configure-alsa.c:355
+msgid "Client name"
+msgstr "Klientnavn"
+
+#: src/amidi-plug/i_configure-alsa.c:357
+msgid "Port name"
+msgstr "Portnavn"
+
+#: src/amidi-plug/i_configure-alsa.c:371
+msgid "ALSA output ports"
+msgstr "ALSA-porte for lydudgang"
+
+#: src/amidi-plug/i_configure-alsa.c:432
+msgid "Soundcard: "
+msgstr "Lydkort:"
+
+#: src/amidi-plug/i_configure-alsa.c:434
+msgid "Mixer control: "
+msgstr "Mikserstyring:"
+
+#: src/amidi-plug/i_configure-alsa.c:444
+msgid "Mixer settings"
+msgstr "Mikserindstillinger"
+
+#: src/amidi-plug/i_configure-alsa.c:472
+msgid ""
+"<span size=\"smaller\">ALSA\n"
+"backend</span>"
+msgstr ""
+"<span size=\"smaller\">ALSA-\n"
+"motor</span>"
+
+#: src/amidi-plug/i_configure-ap.c:63
+msgid "AMIDI-Plug - backend information"
+msgstr "AMIDI-Plug - motorinformation"
+
+#: src/amidi-plug/i_configure-ap.c:221
+msgid "Backend selection"
+msgstr "Motorvalg"
+
+#: src/amidi-plug/i_configure-ap.c:261
+msgid "Playback settings"
+msgstr "Indstillinger for afspilning"
+
+#: src/amidi-plug/i_configure-ap.c:266
+msgid "Transpose: "
+msgstr "Transponer:"
+
+#: src/amidi-plug/i_configure-ap.c:275
+msgid "Drum shift: "
+msgstr "Trommeskift:"
+
+#: src/amidi-plug/i_configure-ap.c:293
+msgid "Advanced settings"
+msgstr "Avancerede indstillinger"
+
+#: src/amidi-plug/i_configure-ap.c:297
+msgid "pre-calculate length of MIDI files in playlist"
+msgstr "forhåndsberegn længde for MIDI-filer i afspilningslisten"
+
+#: src/amidi-plug/i_configure-ap.c:304
+msgid "extract comments from MIDI file (if available)"
+msgstr "udtræk kommentarer fra MIDI-fil (hvis tilgængelig)"
+
+#: src/amidi-plug/i_configure-ap.c:311
+msgid "extract lyrics from MIDI file (if available)"
+msgstr "udtræk sangtekster fra MIDI-fil (hvis tilgængelige)"
+
+#: src/amidi-plug/i_configure-ap.c:344
+msgid ""
+"<span size=\"smaller\">AMIDI\n"
+"Plug</span>"
+msgstr ""
+"<span size=\"smaller\">AMIDI-\n"
+"Plug</span>"
+
+#: src/amidi-plug/i_configure.c:59
+msgid "AMIDI-Plug - select file"
+msgstr "AMIDI-Plug - vælg fil"
+
+#: src/amidi-plug/i_configure.c:104
+msgid "AMIDI-Plug Settings"
+msgstr "AMIDI-Plug-indstillinger"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:63
+msgid "AMIDI-Plug - select SoundFont file"
+msgstr "AMIDI-Plug - vælg SoundFont-fil"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:321
+msgid "SoundFont settings"
+msgstr "SoundFont-indstillinger"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:359
+msgid "Filename"
+msgstr "Filnavn"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:363
+msgid "Size (bytes)"
+msgstr "Størrelse (byte)"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:412
+msgid "Load SF on player start"
+msgstr "Indlæs SF ved opstart"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:416
+msgid "Load SF on first MIDI file play"
+msgstr "Indlæs SF ved første MIDI-filafspilning"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:431
+msgid "Synthesizer settings"
+msgstr "Synthesizerindstillinger"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:440
+msgid "gain"
+msgstr "forstærkning"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:446
+#: src/amidi-plug/i_configure-fluidsynth.c:476
+#: src/amidi-plug/i_configure-fluidsynth.c:506
+#: src/amidi-plug/i_configure-fluidsynth.c:540
+msgid "use default"
+msgstr "brug standard"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:449
+#: src/amidi-plug/i_configure-fluidsynth.c:479
+msgid "value:"
+msgstr "værdi:"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:470
+msgid "polyphony"
+msgstr "Polyfoni"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:500
+msgid "reverb"
+msgstr "efterklang"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:509
+#: src/amidi-plug/i_configure-fluidsynth.c:543
+msgid "yes"
+msgstr "ja"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:511
+#: src/amidi-plug/i_configure-fluidsynth.c:545
+msgid "no"
+msgstr "nej"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:534
+msgid "chorus"
+msgstr "kor"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:568
+msgid "sample rate"
+msgstr "samplingsfrekvens"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:574
+msgid "22050 Hz "
+msgstr "22050 Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:577
+msgid "44100 Hz "
+msgstr "44100 Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:580
+msgid "96000 Hz "
+msgstr "96000 Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:583
+msgid "custom "
+msgstr "tilpasset"
+
+#: src/amidi-plug/i_configure-fluidsynth.c:592
+msgid "Hz "
+msgstr "Hz "
+
+#: src/amidi-plug/i_configure-fluidsynth.c:662
+msgid ""
+"<span size=\"smaller\">FluidSynth\n"
+"backend</span>"
+msgstr ""
+"<span size=\"smaller\">FluidSynth-\n"
+"motor</span>"
+
+#: src/amidi-plug/i_fileinfo.c:175
+msgid "Name:"
+msgstr "Navn:"
+
+#: src/amidi-plug/i_fileinfo.c:200
+msgid "<span size=\"smaller\"> MIDI Info </span>"
+msgstr "<span size=\"smaller\"> MIDI-information </span>"
+
+#: src/amidi-plug/i_fileinfo.c:214
+msgid "Format:"
+msgstr "Format:"
+
+#: src/amidi-plug/i_fileinfo.c:217
+msgid "Length (msec):"
+msgstr "Længde (ms):"
+
+#: src/amidi-plug/i_fileinfo.c:220
+msgid "No. of Tracks:"
+msgstr "Antallet af numre:"
+
+#: src/amidi-plug/i_fileinfo.c:226
+msgid "variable"
+msgstr "variabel"
+
+#: src/amidi-plug/i_fileinfo.c:228
+msgid "BPM:"
+msgstr "BPM:"
+
+#: src/amidi-plug/i_fileinfo.c:236
+msgid "BPM (wavg):"
+msgstr "BPM (wavg):"
+
+#: src/amidi-plug/i_fileinfo.c:239
+msgid "Time Div:"
+msgstr ""
+
+#: src/amidi-plug/i_fileinfo.c:250
+msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
+msgstr "<span size=\"smaller\"> MIDI-kommentarer og sangtekster </span>"
+
+#: src/amidi-plug/i_fileinfo.c:301
+msgid "* no comments available in this MIDI file *"
+msgstr "* ingen kommentarer tilgængelig i denne MIDI-fil *"
+
+#: src/amidi-plug/i_fileinfo.c:314
+msgid "* no lyrics available in this MIDI file *"
+msgstr "* ingen sangtekster tilgængelige i denne MIDI-fil *"
+
+#: src/amidi-plug/i_fileinfo.c:367
+msgid "  (invalid UTF-8)"
+msgstr "(Ugyldig UTF-8)"
+
+#: src/amidi-plug/i_utils.c:39
+msgid "About AMIDI-Plug"
+msgstr "Om AMIDI-Plug"
+
+#: src/amidi-plug/i_utils.c:53
+msgid "AMIDI-Plug"
+msgstr ""
+
+#: src/amidi-plug/i_utils.c:54
+msgid ""
+"\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr ""
+
+#: src/aosd/aosd.c:29
+msgid "Audacious OSD "
+msgstr "Audacious OSD "
+
+#: src/aosd/aosd.c:37
+msgid "AOSD (On-Screen Display)"
+msgstr "AOSD (On-Screen Display)"
+
+#: src/aosd/aosd_style.c:75
+msgid "Rectangle"
+msgstr "Rektangel"
+
+#: src/aosd/aosd_style.c:79
+msgid "Rounded Rectangle"
+msgstr "Afrundet rektangel"
+
+#: src/aosd/aosd_style.c:83
+msgid "Concave Rectangle"
+msgstr "Konkav rektangel"
+
+#: src/aosd/aosd_style.c:87
+msgid "None"
+msgstr "Ingen"
+
+#: src/aosd/aosd_trigger.c:74
+msgid "Playback Start"
+msgstr "Start for afspilning"
+
+#: src/aosd/aosd_trigger.c:75
+msgid "Triggers OSD when a playlist entry is played."
+msgstr "Udløser OSD når et afspilningspunkt spilles."
+
+#: src/aosd/aosd_trigger.c:79
+msgid "Title Change"
+msgstr "Ændring af titel"
+
+#: src/aosd/aosd_trigger.c:80
+msgid ""
+"Triggers OSD when, during playback, the song title changes but the filename "
+"is the same. This is mostly useful to display title changes in internet "
+"streams."
+msgstr ""
+"Udløser OSD når, under afspilning, sangens titel ændres men filnavnet er det "
+"samme. Det er hovedsagelig nyttigt til at vise små ændringer i "
+"internetudsendelser."
+
+#: src/aosd/aosd_trigger.c:86
+msgid "Pause On"
+msgstr "Pause aktiveret"
+
+#: src/aosd/aosd_trigger.c:87
+msgid "Triggers OSD when playback is paused."
+msgstr "Udløser OSD når afspilning sættes på pause."
+
+#: src/aosd/aosd_trigger.c:91
+msgid "Pause Off"
+msgstr "Pause deaktiveret"
+
+#: src/aosd/aosd_trigger.c:92
+msgid "Triggers OSD when playback is unpaused."
+msgstr "Udløser OSD når pause fjernes fra afspilning "
+
+#: src/aosd/aosd_ui.c:168
+msgid "Placement"
+msgstr "Placering"
+
+#: src/aosd/aosd_ui.c:200
+msgid "Relative X offset:"
+msgstr "Relativ X-forskydning:"
+
+#: src/aosd/aosd_ui.c:207
+msgid "Relative Y offset:"
+msgstr "Relativ Y-forskydning:"
+
+#: src/aosd/aosd_ui.c:214
+msgid "Max OSD width:"
+msgstr "Maks OSD-bredde:"
+
+#: src/aosd/aosd_ui.c:225
+msgid "Multi-Monitor options"
+msgstr "Flerskærmsindstillinger"
+
+#: src/aosd/aosd_ui.c:229
+msgid "Display OSD using:"
+msgstr "Vis OSD med:"
+
+#: src/aosd/aosd_ui.c:231
+msgid "all monitors"
+msgstr "alle skærme"
+
+#: src/aosd/aosd_ui.c:234
+#, c-format
+msgid "monitor %i"
+msgstr "skærm %i"
+
+#: src/aosd/aosd_ui.c:287
+msgid "Timing (ms)"
+msgstr "Timing (ms)"
+
+#: src/aosd/aosd_ui.c:292
+msgid "Display:"
+msgstr "Visning:"
+
+#: src/aosd/aosd_ui.c:297
+msgid "Fade in:"
+msgstr "Ton ind:"
+
+#: src/aosd/aosd_ui.c:302
+msgid "Fade out:"
+msgstr "Ton ud:"
+
+#: src/aosd/aosd_ui.c:383
+msgid "Fonts"
+msgstr "Skrifttyper"
+
+#: src/aosd/aosd_ui.c:391
+#, c-format
+msgid "Font %i:"
+msgstr "Skrifttype %i:"
+
+#: src/aosd/aosd_ui.c:409
+msgid "Shadow"
+msgstr "Skygge"
+
+#: src/aosd/aosd_ui.c:439
+msgid "Internationalization"
+msgstr "Internationalisering"
+
+#: src/aosd/aosd_ui.c:445
+msgid "Disable UTF-8 conversion of text (in aosd)"
+msgstr "Deaktiver UTF-8-konvertering af tekst (i aosd)"
+
+#: src/aosd/aosd_ui.c:462
+msgid "Select Skin File"
+msgstr "Vælg temafil"
+
+#: src/aosd/aosd_ui.c:573
+msgid "Render Style"
+msgstr "Optegningsstil"
+
+#: src/aosd/aosd_ui.c:589
+msgid "Colors"
+msgstr "Farver"
+
+#: src/aosd/aosd_ui.c:602
+#, c-format
+msgid "Color %i:"
+msgstr "Farve %i:"
+
+#: src/aosd/aosd_ui.c:620
+msgid "Custom Skin"
+msgstr "Tilpasset tema"
+
+#: src/aosd/aosd_ui.c:626
+msgid "Skin file:"
+msgstr "Temafil:"
+
+#: src/aosd/aosd_ui.c:630
+msgid "Browse"
+msgstr "Gennemse"
+
+#: src/aosd/aosd_ui.c:729
+msgid "Enable trigger"
+msgstr "Aktiver udløser"
+
+#: src/aosd/aosd_ui.c:756
+msgid "Event"
+msgstr "Hændelse"
+
+#: src/aosd/aosd_ui.c:784
+msgid "Composite manager detected"
+msgstr "Composite-håndtering detekteret"
+
+#: src/aosd/aosd_ui.c:791
+msgid ""
+"Composite manager not detected;\n"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
+msgstr ""
+"Composite-håndtering blev ikke detekteret;\n"
+"med mindre du ved at du har en kørende, så aktiver en composite-håndtering "
+"ellers vil OSD'en ikke fungere korrekt"
+
+#: src/aosd/aosd_ui.c:799
+msgid "Composite manager not required for fake transparency"
+msgstr "Composite-håndtering er ikke krævet for falsk gennemsigtighed"
+
+#: src/aosd/aosd_ui.c:837
+msgid "Transparency"
+msgstr "Gennemsigtighed"
+
+#: src/aosd/aosd_ui.c:843
+msgid "Fake transparency"
+msgstr "Falsk gennemsigtighed"
+
+#: src/aosd/aosd_ui.c:845
+msgid "Real transparency (requires X Composite Ext.)"
+msgstr "Reel gennemsigtighed (kræver X Composite Ext.)"
+
+#: src/aosd/aosd_ui.c:887
+msgid "Composite extension not loaded"
+msgstr "Composite-udvidelse er ikke indlæst"
+
+#: src/aosd/aosd_ui.c:895
+msgid "Composite extension not available"
+msgstr "Composite-udvidelse er ikke tilgængelig"
+
+#: src/aosd/aosd_ui.c:914
+#, c-format
+msgid "<span font_desc='%s'>Audacious OSD</span>"
+msgstr "<span font_desc='%s'>Audacious OSD</span>"
+
+#: src/aosd/aosd_ui.c:995
+msgid "Audacious OSD - configuration"
+msgstr "Audacious OSD - konfiguration"
+
+#: src/aosd/aosd_ui.c:1016
+msgid "Test"
+msgstr "Test"
+
+#: src/aosd/aosd_ui.c:1031
+msgid "Position"
+msgstr "Position"
+
+#: src/aosd/aosd_ui.c:1036
+msgid "Animation"
+msgstr "Animation"
+
+#: src/aosd/aosd_ui.c:1041
+msgid "Text"
+msgstr "Tekst"
+
+#: src/aosd/aosd_ui.c:1046
+msgid "Decoration"
+msgstr "Dekoration"
+
+#: src/aosd/aosd_ui.c:1051
+msgid "Trigger"
+msgstr "Udløser"
+
+#: src/aosd/aosd_ui.c:1056
+msgid "Misc"
+msgstr "Diverse"
+
+#: src/asx/asx.c:96
+msgid "ASXv1/ASXv2 Playlists"
+msgstr "ASXv1/ASXv2-afspilningslister"
+
+#: src/audpl/audpl.c:222
+msgid "Audacious Playlists (audpl)"
+msgstr "Audacious-afspilningslister (audpl)"
+
+#: src/blur_scope/blur_scope.c:47
+msgid "<b>Color</b>"
+msgstr "<b>Farve</b>"
+
+#: src/blur_scope/blur_scope.c:56
+msgid "Blur Scope"
+msgstr "Sløret omfang"
+
+#: src/bs2b/plugin.c:136
+msgid "Bauer Stereophonic-to-Binaural Preferences"
+msgstr "Stereophonic-til-Binaural-præferencer for Bauer"
+
+#: src/bs2b/plugin.c:147
+msgid "Feed level:"
+msgstr "Nyhedskildeniveau:"
+
+#: src/bs2b/plugin.c:161
+msgid "Cut frequency:"
+msgstr "Klip frekvens:"
+
+#: src/bs2b/plugin.c:175
+msgid "Presets:"
+msgstr "Forhåndsindstillinger:"
+
+#: src/bs2b/plugin.c:197
+msgid "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr "Bauer Stereophonic-til-Binaural (BS2B)"
+
+#: src/cairo-spectrum/cairo-spectrum.c:297
+msgid "Spectrum Analyzer"
+msgstr "Spektrumanalyseprogram"
+
+#: src/cdaudio-ng/cdaudio-ng.c:103
+msgid ""
+"Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
+"\n"
+"Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
+"and to libcddb developers <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Also thank you to Tony Vroon for mentoring and guiding me.\n"
+"\n"
+"This was a Google Summer of Code 2007 project."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:121
+msgid "<b>Device</b>"
+msgstr "<b>Enhed</b>"
+
+#: src/cdaudio-ng/cdaudio-ng.c:122
+msgid "Read speed:"
+msgstr "Læs hastighed:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:125
+msgid "Override device:"
+msgstr "Tilsidesæt enhed:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:127
+msgid "<b>Metadata</b>"
+msgstr "<b>Metadata</b>"
+
+#: src/cdaudio-ng/cdaudio-ng.c:128
+msgid "Use CD-Text"
+msgstr "Brug CD-Text"
+
+#: src/cdaudio-ng/cdaudio-ng.c:130
+msgid "Use CDDB"
+msgstr "Brug CDDB"
+
+#: src/cdaudio-ng/cdaudio-ng.c:132
+msgid "Use HTTP instead of CDDBP"
+msgstr "Brug HTTP i stedet for CDDBP"
+
+#: src/cdaudio-ng/cdaudio-ng.c:134
+msgid "Server:"
+msgstr "Server:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:136
+msgid "Path:"
+msgstr "Sti:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:138
+msgid "Port:"
+msgstr "Port:"
+
+#: src/cdaudio-ng/cdaudio-ng.c:148
+msgid "Audio CD Plugin"
+msgstr "Lyd-cd-udvidelsesmodul"
+
+#: src/cdaudio-ng/cdaudio-ng.c:249
+msgid "Failed to initialize cdio subsystem."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:306
+#, c-format
+msgid "Invalid URI %s."
+msgstr "Ugyldig URI %s."
+
+#: src/cdaudio-ng/cdaudio-ng.c:308
+#, c-format
+msgid "Track %d not found."
+msgstr "Nummeret %d blev ikke fundet."
+
+#: src/cdaudio-ng/cdaudio-ng.c:310
+#, c-format
+msgid "Track %d is a data track."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:312
+msgid "Failed to open audio output."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:395
+msgid "Error reading audio CD."
+msgstr "Kunne ikke læse lyd-cd."
+
+#: src/cdaudio-ng/cdaudio-ng.c:505
+msgid "Audio CD"
+msgstr "Lyd-cd"
+
+#: src/cdaudio-ng/cdaudio-ng.c:535 src/cdaudio-ng/cdaudio-ng.c:544
+#, c-format
+msgid "Failed to open CD device %s."
+msgstr "Kunne ikke åbne cd-enhed %s."
+
+#: src/cdaudio-ng/cdaudio-ng.c:547
+msgid "No audio capable CD drive found."
+msgstr "Intet cd-drev med lyd blev fundet."
+
+#: src/cdaudio-ng/cdaudio-ng.c:574
+msgid "Failed to finish initializing opened CD drive."
+msgstr "Kunne ikke afslutte initialisering af åbnet cd-drev."
+
+#: src/cdaudio-ng/cdaudio-ng.c:587
+msgid "Failed to retrieve first/last track number."
+msgstr "Kunne ikke indhente første/sidste nummer."
+
+#: src/cdaudio-ng/cdaudio-ng.c:612
+#, c-format
+msgid "Cannot read start/end LSN for track %d."
+msgstr ""
+
+#: src/cdaudio-ng/cdaudio-ng.c:702
+msgid "Failed to create the cddb connection."
+msgstr "Kunne ikke oprette cddb-forbindelsen."
+
+#: src/cdaudio-ng/cdaudio-ng.c:777
+msgid "Failed to query the CDDB server"
+msgstr "Kunne ikke forespørge CDDB-serveren"
+
+#: src/cdaudio-ng/cdaudio-ng.c:779
+#, c-format
+msgid "Failed to query the CDDB server: %s"
+msgstr "Kunne ikke forespørge CDDB-serveren: %s"
+
+#: src/cdaudio-ng/cdaudio-ng.c:803
+#, c-format
+msgid "Failed to read the cddb info: %s"
+msgstr "Kunne ikke læse cddb-informationen: %s"
+
+#: src/cdaudio-ng/cdaudio-ng.c:876
+msgid "Drive is empty."
+msgstr "Drev er tomt."
+
+#: src/cdaudio-ng/cdaudio-ng.c:878
+msgid "Unsupported disk type."
+msgstr "Disktype er ikke understøttet."
+
+#: src/cd-menu-items/cd-menu-items.c:30
+msgid "Play CD"
+msgstr "Afspil cd"
+
+#: src/cd-menu-items/cd-menu-items.c:30
+msgid "Add CD"
+msgstr "Tilføj cd"
+
+#: src/cd-menu-items/cd-menu-items.c:57
+msgid "Audio CD Menu Items"
+msgstr "Menupunkter for lyd-cd"
+
+#: src/compressor/plugin.c:35
+msgid "<b>Compression</b>"
+msgstr "<b>Komprimering</b>"
+
+#: src/compressor/plugin.c:36
+msgid "Center volume:"
+msgstr "Lydstyrke for centrum:"
+
+#: src/compressor/plugin.c:39
+msgid "Dynamic range:"
+msgstr "Dynamisk interval:"
+
+#: src/compressor/plugin.c:53
+msgid ""
+"Dynamic Range Compression Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+"Dynamic Range Compression Plugin for Audacious\n"
+"Ophavsret 2010-2012 John Lindgren"
+
+#: src/compressor/plugin.c:58
+msgid "Dynamic Range Compressor"
+msgstr "Dynamisk intervalkomprimering"
+
+#: src/console/configure.c:134 src/console/plugin.c:42
+msgid "Game Console Music Decoder"
+msgstr "Musikafkoder for spilkonsol"
+
+#: src/console/configure.c:151
+msgid "General"
+msgstr "Generelt"
+
+#: src/console/configure.c:153 src/skins/ui_manager.c:175
+msgid "Playback"
+msgstr "Afspilning"
+
+#: src/console/configure.c:168
+msgid "Bass:"
+msgstr "Bas:"
+
+#: src/console/configure.c:172 src/console/configure.c:183
+#: src/console/configure.c:204
+msgid "secs"
+msgstr "sek."
+
+#: src/console/configure.c:179
+msgid "Treble:"
+msgstr "Diskant:"
+
+#: src/console/configure.c:200
+msgid "Default song length:"
+msgstr "Standardlængde for sang:"
+
+#: src/console/configure.c:206
+msgid "Resampling"
+msgstr "Gensampling"
+
+#: src/console/configure.c:212
+msgid "Enable audio resampling"
+msgstr "Aktiver gensampling af lyd"
+
+#: src/console/configure.c:227
+msgid "Resampling rate:"
+msgstr "Gensamplingsfrekvens"
+
+#: src/console/configure.c:231 src/modplug/plugin_main.c:98
+#: src/resample/resample.c:178 src/resample/resample.c:184
+#: src/resample/resample.c:187 src/resample/resample.c:190
+#: src/resample/resample.c:193 src/resample/resample.c:196
+#: src/resample/resample.c:199 src/resample/resample.c:202
+#: src/sox-resampler/sox-resampler.c:153
+msgid "Hz"
+msgstr "Hz"
+
+#: src/console/configure.c:242
+msgid "SPC"
+msgstr "SPC"
+
+#: src/console/configure.c:243
+msgid "Ignore length from SPC tags"
+msgstr "Ignorer længde fra SPC-mærker"
+
+#: src/console/configure.c:244
+msgid "Increase reverb"
+msgstr "Øg ekko"
+
+#: src/console/configure.c:269
+msgid ""
+"The default song length, expressed in seconds, is used for songs that do not "
+"provide length information (i.e. looping tracks)."
+msgstr ""
+"Standardlængde for sange, udtrykt i sekunder, bruges for sange som ikke "
+"tilbyder længdeinformation (dvs. loopingnumre)."
+
+#: src/console/plugin.c:27
+msgid ""
+"Console music decoder engine based on Game_Music_Emu 0.5.2\n"
+"Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+msgstr ""
+"Afkodningsmotor for konsolmusik baseret på Game_Music_Emu 0.5.2\n"
+"Understøttede formater: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, "
+"VGZ\n"
+"\n"
+"Audaciousudvidelsesmodul lavet af:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
+
+#: src/crossfade/crossfade.c:81
+msgid ""
+"Crossfading failed because the songs had a different number of channels.  "
+"You can use the Channel Mixer to convert the songs to the same number of "
+"channels."
+msgstr ""
+"Glidende overgang mislykkedes da sangene havde forskellige antal kanaler. Du "
+"kan bruge kanalmikseren til at konvertere sangene til det samme antal "
+"kanaler."
+
+#: src/crossfade/crossfade.c:88
+msgid ""
+"Crossfading failed because the songs had different sample rates.  You can "
+"use the Sample Rate Converter to convert the songs to the same sample rate."
+msgstr ""
+"Glidende overgang mislykkedes da sangene havde forskellige "
+"samplingshastigheder. Du kan bruge Konvertering af samplingshastighed til at "
+"konvertere sangene til den samme samplingshastighed."
+
+#: src/crossfade/crossfade.c:254
+msgid ""
+"Crossfade Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+
+#: src/crossfade/crossfade.c:258
+msgid "<b>Crossfade</b>"
+msgstr "<b>Glidende overgang</b>"
+
+#: src/crossfade/crossfade.c:259
+msgid "Overlap:"
+msgstr ""
+
+#: src/crossfade/crossfade.c:269
+msgid "Crossfade"
+msgstr "Glidende overgang"
+
+#: src/crystalizer/crystalizer.c:40
+msgid "<b>Crystalizer</b>"
+msgstr "<b>Crystalizer</b>"
+
+#: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
+msgid "Intensity:"
+msgstr "Intensitet:"
+
+#: src/crystalizer/crystalizer.c:51
+msgid "Crystalizer"
+msgstr "Crystalizer"
+
+#: src/cue/cue.c:158
+msgid "Cue Sheet Plugin"
+msgstr "Cue Sheet-udvidelsesmodul"
+
+#: src/echo_plugin/echo.c:24
+msgid "<b>Echo</b>"
+msgstr "<b>Ekko</b>"
+
+#: src/echo_plugin/echo.c:25 src/modplug/plugin_main.c:90
+#: src/modplug/plugin_main.c:104
+msgid "Delay:"
+msgstr "Forsinkelse:"
+
+#: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:91
+#: src/modplug/plugin_main.c:105
+msgid "ms"
+msgstr "ms"
+
+#: src/echo_plugin/echo.c:28
+msgid "Feedback:"
+msgstr "Tilbagemelding:"
+
+#: src/echo_plugin/echo.c:31 src/modplug/plugin_main.c:109
+msgid "Volume:"
+msgstr "Lydstyrke:"
+
+#: src/echo_plugin/echo.c:114
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin, 1999\n"
+"\n"
+"Surround echo by Carl van Schaik, 1999"
+msgstr ""
+
+#: src/echo_plugin/echo.c:120
+msgid "Echo"
+msgstr "Echo"
+
+#: src/ffaudio/ffaudio-core.c:648
+msgid ""
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
+"\n"
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
+msgstr ""
+
+#: src/ffaudio/ffaudio-core.c:695
+msgid "FFmpeg Plugin"
+msgstr "FFmpeg-udvidelsesmodul"
+
+#: src/filewriter/filewriter.c:409
+msgid "FileWriter Configuration"
+msgstr "FileWriter-konfiguration"
+
+#: src/filewriter/filewriter.c:421
+msgid "Output file format:"
+msgstr "Filformat for lyden:"
+
+#: src/filewriter/filewriter.c:439
+msgid "Configure"
+msgstr "Konfigurer"
+
+#: src/filewriter/filewriter.c:449
+msgid "Save into original directory"
+msgstr "Gem i oprindelig mappe"
+
+#: src/filewriter/filewriter.c:454
+msgid "Save into custom directory"
+msgstr "Gem i mappe efter eget valg"
+
+#: src/filewriter/filewriter.c:464
+msgid "Output file folder:"
+msgstr "Filmappe for lyd:"
+
+#: src/filewriter/filewriter.c:468
+msgid "Pick a folder"
+msgstr "Vælg en mappe"
+
+#: src/filewriter/filewriter.c:481
+msgid "Get filename from:"
+msgstr "Hent filnavn fra"
+
+#: src/filewriter/filewriter.c:484
+msgid "original file tags"
+msgstr "oprindelige filmærker"
+
+#: src/filewriter/filewriter.c:490
+msgid "original filename"
+msgstr "oprindelig filnavn"
+
+#: src/filewriter/filewriter.c:497
+msgid "Don't strip file name extension"
+msgstr "Fjern ikke filnavnsendelsen"
+
+#: src/filewriter/filewriter.c:506
+msgid "Prepend track number to filename"
+msgstr "Foranstil rækkefølge for numrene til filnavnet"
+
+#: src/filewriter/filewriter.c:515
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
+#: src/filewriter/filewriter.c:532
+msgid "FileWriter Plugin"
+msgstr "FileWriter-udvidelsesmodul"
+
+#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
+msgid "Auto"
+msgstr "Auto"
+
+#: src/filewriter/mp3.c:37
+msgid "Joint Stereo"
+msgstr "Fælles stereo"
+
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
+#: src/mpg123/mpg123.c:211
+msgid "Stereo"
+msgstr "Stereo"
+
+#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
+#: src/mpg123/mpg123.c:211
+msgid "Mono"
+msgstr "Mono"
+
+#: src/filewriter/mp3.c:688
+msgid "MP3 Configuration"
+msgstr "MP3-konfiguration"
+
+#: src/filewriter/mp3.c:712
+msgid "Algorithm Quality:"
+msgstr "Algoritmekvalitet"
+
+#: src/filewriter/mp3.c:737
+msgid "Output Samplerate:"
+msgstr "Samplingsfrekvens for lydudgang:"
+
+#: src/filewriter/mp3.c:765
+msgid "(Hz)"
+msgstr "(Hz)"
+
+#: src/filewriter/mp3.c:772
+msgid "Bitrate / Compression ratio:"
+msgstr "Bithastighed/komprimeringsforhold:"
+
+#: src/filewriter/mp3.c:796
+msgid "Bitrate (kbps):"
+msgstr "Bithastighed (kbps):"
+
+#: src/filewriter/mp3.c:829
+msgid "Compression ratio:"
+msgstr "Komprimeringsforhold:"
+
+#: src/filewriter/mp3.c:853
+msgid "Audio Mode:"
+msgstr "Lydtilstand:"
+
+#: src/filewriter/mp3.c:878
+msgid "Misc:"
+msgstr "Diverse:"
+
+#: src/filewriter/mp3.c:889
+msgid "Enforce strict ISO complience"
+msgstr "Fremtving streng ISO-overholdelse"
+
+#: src/filewriter/mp3.c:900
+msgid "Error protection"
+msgstr "Fejlbeskyttelse"
+
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+msgid "Quality"
+msgstr "Kvalitet"
+
+#: src/filewriter/mp3.c:921
+msgid "Enable VBR/ABR"
+msgstr "Aktiver VBH/GBH"
+
+#: src/filewriter/mp3.c:931
+msgid "Type:"
+msgstr "Type:"
+
+#: src/filewriter/mp3.c:964
+msgid "VBR Options:"
+msgstr "VBH-indstillinger:"
+
+#: src/filewriter/mp3.c:980
+msgid "Minimum bitrate (kbps):"
+msgstr "Minimum for bithastighed (kbps):"
+
+#: src/filewriter/mp3.c:1007
+msgid "Maximum bitrate (kbps):"
+msgstr "Maksimum for bithastighed (kbps):"
+
+#: src/filewriter/mp3.c:1030
+msgid "Strictly enforce minimum bitrate"
+msgstr "Fremtving strengt minimum for bithastighed"
+
+#: src/filewriter/mp3.c:1042
+msgid "ABR Options:"
+msgstr "GBH-indstillinger:"
+
+#: src/filewriter/mp3.c:1052
+msgid "Average bitrate (kbps):"
+msgstr "Gennemsnitlig bithastighed (kbps):"
+
+#: src/filewriter/mp3.c:1080
+msgid "VBR quality level:"
+msgstr "VBR-kvalitetsniveau:"
+
+#: src/filewriter/mp3.c:1099
+msgid "Don't write Xing VBR header"
+msgstr "Skriv ikke Xing VBH-hoved"
+
+#: src/filewriter/mp3.c:1112
+msgid "VBR/ABR"
+msgstr "VBH/GBH"
+
+#: src/filewriter/mp3.c:1121
+msgid "Frame parameters:"
+msgstr "Billedparametre:"
+
+#: src/filewriter/mp3.c:1133
+msgid "Mark as copyright"
+msgstr "Marker som ophavsret"
+
+#: src/filewriter/mp3.c:1144
+msgid "Mark as original"
+msgstr "Marker som original"
+
+#: src/filewriter/mp3.c:1156
+msgid "ID3 params:"
+msgstr "ID3-parametre:"
+
+#: src/filewriter/mp3.c:1167
+msgid "Force addition of version 2 tag"
+msgstr "Fremtving tilføjelse af version 2-mærke"
+
+#: src/filewriter/mp3.c:1177
+msgid "Only add v1 tag"
+msgstr "Tilføj kun v1-mærke"
+
+#: src/filewriter/mp3.c:1184
+msgid "Only add v2 tag"
+msgstr "Tilføj kun v2-mærke"
+
+#: src/filewriter/mp3.c:1205
+msgid "Tags"
+msgstr "Mærker"
+
+#: src/filewriter/vorbis.c:212
+msgid "Vorbis Encoder Configuration"
+msgstr "Konfiguration af Vorbiskoder"
+
+#: src/filewriter/vorbis.c:235
+msgid "Quality level (0 - 10):"
+msgstr "Kvalitetsniveau (0-10):"
+
+#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
+msgid "lossless"
+msgstr "uden kvalitetstab"
+
+#: src/flacng/plugin.c:269
+msgid ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+
+#: src/flacng/plugin.c:277
+msgid "FLAC Decoder"
+msgstr "FLAC-afkoder"
+
+#: src/gio/gio.c:300
+msgid ""
+"GIO Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren"
+msgstr ""
+
+#: src/gio/gio.c:322
+msgid "GIO Plugin"
+msgstr "GIO-udvidelsesmodul"
+
+#: src/gl-spectrum/gl-spectrum.c:283
+msgid ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé and John Lindgren\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
+msgstr ""
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Ophavsret 2013 Christophe Budé og John Lindgren\n"
+"\n"
+"Baseret på XMMS-udvidelsesmodulet:\n"
+"Ophavsret 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson og "
+"4Front Technologies\n"
+"\n"
+"Licens: GPLv2+"
+
+#: src/gl-spectrum/gl-spectrum.c:292
+msgid "OpenGL Spectrum Analyzer"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:41
+msgid ""
+"Gnome Shortcut Plugin\n"
+"Lets you control the player with Gnome's shortcuts.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.c:47
+msgid "Gnome Shortcuts"
+msgstr "Genvejstaster for GNOME"
+
+#: src/gtkui/columns.c:32
+msgid "Entry number"
+msgstr "Postnummer"
+
+#: src/gtkui/columns.c:32
+msgid "Title"
+msgstr "Titel"
+
+#: src/gtkui/columns.c:33
+msgid "Artist"
+msgstr "Kunstner"
+
+#: src/gtkui/columns.c:33
+msgid "Year"
+msgstr "År"
+
+#: src/gtkui/columns.c:33
+msgid "Album"
+msgstr "Album"
+
+#: src/gtkui/columns.c:33
+msgid "Track"
+msgstr "Nummer"
+
+#: src/gtkui/columns.c:33
+msgid "Genre"
+msgstr "Genre"
+
+#: src/gtkui/columns.c:34
+msgid "Queue position"
+msgstr "Køposition"
+
+#: src/gtkui/columns.c:34
+msgid "Length"
+msgstr "Længde"
+
+#: src/gtkui/columns.c:34
+msgid "File path"
+msgstr "Filsti"
+
+#: src/gtkui/columns.c:34
+msgid "File name"
+msgstr "Filnavn"
+
+#: src/gtkui/columns.c:35
+msgid "Custom title"
+msgstr "Tilpasset titel"
+
+#: src/gtkui/columns.c:35
+msgid "Bitrate"
+msgstr "Bithastighed"
+
+#: src/gtkui/columns.c:277
+msgid "Choose Columns"
+msgstr "Vælg kolonner"
+
+#: src/gtkui/columns.c:293
+msgid "Available:"
+msgstr "Tilgængelige:"
+
+#: src/gtkui/columns.c:327
+msgid "Chosen:"
+msgstr "Valgt:"
+
+#: src/gtkui/layout.c:119
+msgid "Dock at Left"
+msgstr "Dok til venstre"
+
+#: src/gtkui/layout.c:119
+msgid "Dock at Right"
+msgstr "Dok til højre"
+
+#: src/gtkui/layout.c:120
+msgid "Dock at Top"
+msgstr "Dok øverst"
+
+#: src/gtkui/layout.c:120
+msgid "Dock at Bottom"
+msgstr "Dok nederst"
+
+#: src/gtkui/layout.c:120
+msgid "Undock"
+msgstr "Fjern dok"
+
+#: src/gtkui/layout.c:120 src/ladspa/plugin.c:623
+msgid "Disable"
+msgstr "Deaktiver"
+
+#: src/gtkui/menus.c:170
+msgid "_Open Files ..."
+msgstr "_Åbn filer ..."
+
+#: src/gtkui/menus.c:171
+msgid "Open _URL ..."
+msgstr "Åbn a_dresse ..."
+
+#: src/gtkui/menus.c:172
+msgid "_Add Files ..."
+msgstr "_Tilføj filer ..."
+
+#: src/gtkui/menus.c:173
+msgid "Add U_RL ..."
+msgstr "_Tilføj adresse ..."
+
+#: src/gtkui/menus.c:175
+msgid "_Search Library"
+msgstr "_Søg i biblioteket"
+
+#: src/gtkui/menus.c:177
+msgid "A_bout ..."
+msgstr "_Om ..."
+
+#: src/gtkui/menus.c:178
+msgid "_Preferences ..."
+msgstr "_Præferencer ..."
+
+#: src/gtkui/menus.c:179 src/skins/ui_manager.c:413
+msgid "_Quit"
+msgstr "_Afslut"
+
+#: src/gtkui/menus.c:182 src/gtkui/menus.c:296
+msgid "_Play"
+msgstr "_Afspil"
+
+#: src/gtkui/menus.c:183
+msgid "Paus_e"
+msgstr "_Pause"
+
+#: src/gtkui/menus.c:184
+msgid "_Stop"
+msgstr "_Stop"
+
+#: src/gtkui/menus.c:185
+msgid "Pre_vious"
+msgstr "_Forrige"
+
+#: src/gtkui/menus.c:186
+msgid "_Next"
+msgstr "_Næste"
+
+#: src/gtkui/menus.c:188
+msgid "_Repeat"
+msgstr "_Gentag"
+
+#: src/gtkui/menus.c:189
+msgid "S_huffle"
+msgstr "_Bland"
+
+#: src/gtkui/menus.c:190
+msgid "N_o Playlist Advance"
+msgstr "_Ingen næste afspilningsliste"
+
+#: src/gtkui/menus.c:191
+msgid "Stop A_fter This Song"
+msgstr "Stop _Efter denne sang"
+
+#: src/gtkui/menus.c:193 src/gtkui/menus.c:284
+msgid "Song _Info ..."
+msgstr "_Sanginformation ..."
+
+#: src/gtkui/menus.c:194
+msgid "Jump to _Time ..."
+msgstr "_Hop til tid ..."
+
+#: src/gtkui/menus.c:195
+msgid "_Jump to Song ..."
+msgstr "_Hop til sang ..."
+
+#: src/gtkui/menus.c:197
+msgid "Set Repeat Point _A"
+msgstr ""
+
+#: src/gtkui/menus.c:198
+msgid "Set Repeat Point _B"
+msgstr ""
+
+#: src/gtkui/menus.c:199
+msgid "_Clear Repeat Points"
+msgstr ""
+
+#: src/gtkui/menus.c:202 src/gtkui/menus.c:208 src/gtkui/menus.c:221
+msgid "By _Title"
+msgstr "Efter _titel"
+
+#: src/gtkui/menus.c:203
+msgid "By _Filename"
+msgstr ""
+
+#: src/gtkui/menus.c:204
+msgid "By File _Path"
+msgstr ""
+
+#: src/gtkui/menus.c:207 src/gtkui/menus.c:220
+msgid "By Track _Number"
+msgstr "Efter _rækkefølge for nummeret"
+
+#: src/gtkui/menus.c:209 src/gtkui/menus.c:222
+msgid "By _Artist"
+msgstr "Efter _kunstner"
+
+#: src/gtkui/menus.c:210 src/gtkui/menus.c:223
+msgid "By Al_bum"
+msgstr ""
+
+#: src/gtkui/menus.c:211 src/gtkui/menus.c:224
+msgid "By Release _Date"
+msgstr "Efter _udgivelsesdato"
+
+#: src/gtkui/menus.c:212 src/gtkui/menus.c:225
+msgid "By _Length"
+msgstr ""
+
+#: src/gtkui/menus.c:213 src/gtkui/menus.c:226
+msgid "By _File Path"
+msgstr "Efter _filsti"
+
+#: src/gtkui/menus.c:214 src/gtkui/menus.c:227
+msgid "By _Custom Title"
+msgstr "Efter _tilpasset titel"
+
+#: src/gtkui/menus.c:216 src/gtkui/menus.c:229
+msgid "R_everse Order"
+msgstr "_Omvendt rækkefølge"
+
+#: src/gtkui/menus.c:217 src/gtkui/menus.c:230
+msgid "_Random Order"
+msgstr "_Vilkårlig rækkefølge"
+
+#: src/gtkui/menus.c:233
+msgid "_Play This Playlist"
+msgstr "_Start denne afspilningsliste"
+
+#: src/gtkui/menus.c:234 src/gtkui/menus.c:286
+msgid "_Refresh"
+msgstr "_Opdater"
+
+#: src/gtkui/menus.c:236
+msgid "_Sort"
+msgstr "_Sorter"
+
+#: src/gtkui/menus.c:237
+msgid "Sort S_elected"
+msgstr ""
+
+#: src/gtkui/menus.c:238
+msgid "Remove _Duplicates"
+msgstr ""
+
+#: src/gtkui/menus.c:239
+msgid "Remove _Unavailable Files"
+msgstr "Fjern _utilgængelige filer"
+
+#: src/gtkui/menus.c:241
+msgid "_New"
+msgstr "_Ny"
+
+#: src/gtkui/menus.c:242
+msgid "Ren_ame ..."
+msgstr "_Omdøb ..."
+
+#: src/gtkui/menus.c:243 src/gtkui/menus.c:298
+msgid "_Close"
+msgstr "_Luk"
+
+#: src/gtkui/menus.c:245
+msgid "_Import ..."
+msgstr "_Importer ..."
+
+#: src/gtkui/menus.c:246
+msgid "_Export ..."
+msgstr "_Eksporter ..."
+
+#: src/gtkui/menus.c:248
+msgid "Playlist _Manager ..."
+msgstr ""
+
+#: src/gtkui/menus.c:249
+msgid "_Queue Manager ..."
+msgstr "_Køhåndtering ..."
+
+#: src/gtkui/menus.c:252
+msgid "Volume _Up"
+msgstr "Lydstyrke _op"
+
+#: src/gtkui/menus.c:253
+msgid "Volume _Down"
+msgstr "Lydstyrke _ned"
+
+#: src/gtkui/menus.c:255
+msgid "_Equalizer"
+msgstr "_Equalizer"
+
+#: src/gtkui/menus.c:257
+msgid "E_ffects"
+msgstr "_Effekter"
+
+#: src/gtkui/menus.c:260
+msgid "_Interface"
+msgstr "_Grænseflade"
+
+#: src/gtkui/menus.c:261
+msgid "_Visualizations"
+msgstr "_Visualisationer"
+
+#: src/gtkui/menus.c:263
+msgid "Show _Menu Bar"
+msgstr "Vis _menubjælke"
+
+#: src/gtkui/menus.c:264
+msgid "Show I_nfo Bar"
+msgstr "Vis _informationsbjælke"
+
+#: src/gtkui/menus.c:265
+msgid "Show Info Bar Vis_ualization"
+msgstr "Vis _visualisering for informationsbjælken"
+
+#: src/gtkui/menus.c:266
+msgid "Show _Status Bar"
+msgstr "Vis _statusbjælke"
+
+#: src/gtkui/menus.c:268
+msgid "Show _Remaining Time"
+msgstr ""
+
+#: src/gtkui/menus.c:270
+msgid "Show Close _Buttons"
+msgstr ""
+
+#: src/gtkui/menus.c:271
+msgid "Show Column _Headers"
+msgstr "Vis kolonnens _teksthoved"
+
+#: src/gtkui/menus.c:272
+msgid "Choose _Columns ..."
+msgstr "Vælg _kolonner ..."
+
+#: src/gtkui/menus.c:273
+msgid "Scrol_l on Song Change"
+msgstr "_Rul ved sangændring"
+
+#: src/gtkui/menus.c:276
+msgid "_File"
+msgstr "_Fil"
+
+#: src/gtkui/menus.c:277
+msgid "_Playback"
+msgstr "_Afspilning"
+
+#: src/gtkui/menus.c:278
+msgid "P_laylist"
+msgstr "_Afspilningsliste"
+
+#: src/gtkui/menus.c:279 src/gtkui/menus.c:293
+msgid "_Services"
+msgstr "_Tjenester"
+
+#: src/gtkui/menus.c:280
+msgid "_Output"
+msgstr "_Lydudgang"
+
+#: src/gtkui/menus.c:281
+msgid "_View"
+msgstr "_Vis"
+
+#: src/gtkui/menus.c:285
+msgid "_Queue/Unqueue"
+msgstr "_Sæt i kø/fjern fra kø"
+
+#: src/gtkui/menus.c:288
+msgid "Cu_t"
+msgstr "_Klip"
+
+#: src/gtkui/menus.c:289
+msgid "_Copy"
+msgstr "_Kopier"
+
+#: src/gtkui/menus.c:290
+msgid "_Paste"
+msgstr "_Indsæt"
+
+#: src/gtkui/menus.c:291
+msgid "Select _All"
+msgstr "Vælg _alle"
+
+#: src/gtkui/menus.c:297
+msgid "_Rename ..."
+msgstr "_Omdøb ..."
+
+#: src/gtkui/ui_gtk.c:96
+msgid "GTK Interface"
+msgstr "GTK-grænseflade"
+
+#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
+#, c-format
+msgid "%s - Audacious"
+msgstr "%s - Audacious"
+
+#: src/gtkui/ui_gtk.c:204
+msgid "Buffering ..."
+msgstr "Mellemlagrer ..."
+
+#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
+msgid "Audacious"
+msgstr "Audacious"
+
+#: src/gtkui/ui_gtk.c:253 src/lyricwiki/lyricwiki.c:208
+#: src/lyricwiki/lyricwiki.c:218 src/lyricwiki/lyricwiki.c:242
+#: src/lyricwiki/lyricwiki.c:252 src/lyricwiki/lyricwiki.c:271
+#: src/skins/plugin.c:176
+msgid "Error"
+msgstr "Fejl"
+
+#: src/gtkui/ui_statusbar.c:108
+#, c-format
+msgid "%d channel"
+msgid_plural "%d channels"
+msgstr[0] "%d kanal"
+msgstr[1] "%d kanaler"
+
+#: src/gtkui/ui_statusbar.c:123
+#, c-format
+msgid "%d kbps"
+msgstr "%d kbps"
+
+#: src/hotkey/gui.c:70
+msgid "Previous track"
+msgstr "Forrige nummer"
+
+#: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
+#: src/skins/ui_manager.c:178
+msgid "Play"
+msgstr "Afspil"
+
+#: src/hotkey/gui.c:72
+msgid "Pause/Resume"
+msgstr "Pause/genoptag"
+
+#: src/hotkey/gui.c:73 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
+msgid "Stop"
+msgstr "Stop"
+
+#: src/hotkey/gui.c:74
+msgid "Next track"
+msgstr "Næste nummer"
+
+#: src/hotkey/gui.c:75
+msgid "Forward 5 seconds"
+msgstr "Fremad 5 sekunder"
+
+#: src/hotkey/gui.c:76
+msgid "Rewind 5 seconds"
+msgstr "Tilbage 5 sekunder"
+
+#: src/hotkey/gui.c:77
+msgid "Mute"
+msgstr "Sluk lyden"
+
+#: src/hotkey/gui.c:78
+msgid "Volume up"
+msgstr "Lydstyrke op"
+
+#: src/hotkey/gui.c:79
+msgid "Volume down"
+msgstr "Lydstyrke ned"
+
+#: src/hotkey/gui.c:80
+msgid "Jump to file"
+msgstr "Hop til fil"
+
+#: src/hotkey/gui.c:81
+msgid "Toggle player window(s)"
+msgstr "Skift afspillervinduer"
+
+#: src/hotkey/gui.c:82
+msgid "Show On-Screen-Display"
+msgstr "Vis On-Screen-Display"
+
+#: src/hotkey/gui.c:83
+msgid "Toggle repeat"
+msgstr "Skift gentag"
+
+#: src/hotkey/gui.c:84
+msgid "Toggle shuffle"
+msgstr "Skift bland"
+
+#: src/hotkey/gui.c:85
+msgid "Toggle stop after current"
+msgstr "Skift stop efter nuværende"
+
+#: src/hotkey/gui.c:86
+msgid "Raise player window(s)"
+msgstr ""
+
+#: src/hotkey/gui.c:96
+msgid "(none)"
+msgstr "(ingen)"
+
+#: src/hotkey/gui.c:233
+msgid ""
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
+"\n"
+"Do you want to continue?"
+msgstr ""
+"Det anbefales ikke at binde de primære museknapper uden modifikatorer.\n"
+"\n"
+"Ønsker du at fortsætte?"
+
+#: src/hotkey/gui.c:235
+msgid "Binding mouse buttons"
+msgstr "Binding af museknapper"
+
+#: src/hotkey/gui.c:385
+msgid "Global Hotkey Plugin Configuration"
+msgstr "Konfiguration af udvid.modul for globale genvejstaster"
+
+#: src/hotkey/gui.c:401
+msgid ""
+"Press a key combination inside a text field.\n"
+"You can also bind mouse buttons."
+msgstr ""
+"Tryk på en tastekombination i et tekstfelt.\n"
+"Du kan også binde museknapper."
+
+#: src/hotkey/gui.c:406
+msgid "Hotkeys:"
+msgstr "Genvejstaster:"
+
+#: src/hotkey/gui.c:423
+msgid "<b>Action:</b>"
+msgstr "<b>Handling:</b>"
+
+#: src/hotkey/gui.c:430
+msgid "<b>Key Binding:</b>"
+msgstr "<b>Genvejstast:</b>"
+
+#: src/hotkey/plugin.c:66
+msgid ""
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
+"\n"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
+msgstr ""
+
+#: src/hotkey/plugin.c:78
+msgid "Global Hotkeys"
+msgstr "Globale genvejstaster"
+
+#: src/jack/jack.c:410
+msgid ""
+"Based on xmms-jack, by Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Ported to Audacious by Giacomo Lozito"
+msgstr ""
+
+#: src/jack/jack.c:416
+msgid "JACK Output"
+msgstr "JACK-lydkanal"
+
+#: src/ladspa/plugin.c:493
+#, c-format
+msgid "%s Settings"
+msgstr "%s-indstillinger"
+
+#: src/ladspa/plugin.c:561
+msgid "LADSPA Host Settings"
+msgstr "Indstillinger for LADSPA-vært"
+
+#: src/ladspa/plugin.c:570
+msgid "Module paths:"
+msgstr "Modulstier:"
+
+#: src/ladspa/plugin.c:575
+msgid ""
+"<small>Separate multiple paths with a colon.\n"
+"These paths are searched in addition to LADSPA_PATH.\n"
+"After adding new paths, press Enter to scan for new plugins.</small>"
+msgstr ""
+"<small>Adskil flere stier med et kolon.\n"
+"Disse stier er søgbare udover LADSPA_PATH.\n"
+"Efter tilføjelse af nye stier, tryk Retur for at skanne for nye "
+"udvidelsesmoduler.</small>"
+
+#: src/ladspa/plugin.c:591
+msgid "Available plugins:"
+msgstr "Tilgængelige udvidelsesmoduler:"
+
+#: src/ladspa/plugin.c:604 src/modplug/plugin_main.c:115
+#: src/modplug/plugin_main.c:119 src/modplug/plugin_main.c:123
+#: src/modplug/plugin_main.c:127
+msgid "Enable"
+msgstr "Aktiver"
+
+#: src/ladspa/plugin.c:610
+msgid "Enabled plugins:"
+msgstr "Aktiverede udvidelsesmoduler:"
+
+#: src/ladspa/plugin.c:626
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: src/ladspa/plugin.c:645
+msgid ""
+"LADSPA Host for Audacious\n"
+"Copyright 2011 John Lindgren"
+msgstr ""
+
+#: src/ladspa/plugin.c:650
+msgid "LADSPA Host"
+msgstr "LADSPA-vært"
+
+#: src/lirc/lirc.c:76
+#, c-format
+msgid "%s: could not init LIRC support\n"
+msgstr "%s: Kunne ikke initiere LIRC-understøttelse\n"
+
+#: src/lirc/lirc.c:83
+#, c-format
+msgid ""
+"%s: could not read LIRC config file\n"
+"%s: please read the documentation of LIRC\n"
+"%s: how to create a proper config file\n"
+msgstr ""
+
+#: src/lirc/lirc.c:114
+#, c-format
+msgid "%s: trying to reconnect...\n"
+msgstr "%s: Forsøger at forbinde igen ...\n"
+
+#: src/lirc/lirc.c:354
+#, c-format
+msgid "%s: unknown command \"%s\"\n"
+msgstr "%s: Ukendt kommando »%s«\n"
+
+#: src/lirc/lirc.c:365
+#, c-format
+msgid "%s: disconnected from LIRC\n"
+msgstr "%s: Frakoblet fra LIRC\n"
+
+#: src/lirc/lirc.c:371
+#, c-format
+msgid "%s: will try reconnect every %d seconds...\n"
+msgstr "%s: Vil forsøge at forbinde igen hver %d sekunder ...\n"
+
+#: src/lirc/lirc.c:381
+msgid ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+msgstr ""
+
+#: src/lirc/lirc.c:392
+msgid "<b>Connection</b>"
+msgstr "<b>Forbindelse</b>"
+
+#: src/lirc/lirc.c:393
+msgid "Reconnect to LIRC server"
+msgstr "Forbind igen til LIRC-serveren"
+
+#: src/lirc/lirc.c:395
+msgid "Wait before reconnecting:"
+msgstr "Vent før du forbinder igen:"
+
+#: src/lirc/lirc.c:405
+msgid "LIRC Plugin"
+msgstr "LIRC-udvidelsesmodul"
+
+#: src/lyricwiki/lyricwiki.c:117
+msgid "No lyrics available"
+msgstr "Ingen sangtekster er tilgængelige"
+
+#: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
+#, c-format
+msgid "Unable to fetch %s"
+msgstr "Kunne ikke hente %s"
+
+#: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
+#, c-format
+msgid "Unable to parse %s"
+msgstr "Kunne ikke fortolke %s"
+
+#: src/lyricwiki/lyricwiki.c:260
+msgid "Looking for lyrics ..."
+msgstr "Kigger efter sangtekster ..."
+
+#: src/lyricwiki/lyricwiki.c:271
+msgid "Missing song metadata"
+msgstr "Manglende sangmetadata"
+
+#: src/lyricwiki/lyricwiki.c:284
+msgid "Connecting to lyrics.wikia.com ..."
+msgstr "Forbinder til lyrics.wikia.com ..."
+
+#: src/lyricwiki/lyricwiki.c:411
+msgid "LyricWiki Plugin"
+msgstr "LyricWiki-udvidelsesmodul"
+
+#: src/m3u/m3u.c:121
+msgid "M3U Playlists"
+msgstr "M3U-afspilningslister"
+
+#: src/metronom/metronom.c:127
+#, c-format
+msgid "Tact generator: %d bpm"
+msgstr "Tact-opretter: %d bpm"
+
+#: src/metronom/metronom.c:129
+#, c-format
+msgid "Tact generator: %d bpm %d/%d"
+msgstr "Tact-opretter: %d bpm %d/%d"
+
+#: src/metronom/metronom.c:246
+msgid ""
+"A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"To use it, add a URL: tact://beats*num/den\n"
+"e.g. tact://77 to play 77 beats per minute\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
+msgstr ""
+
+#: src/metronom/metronom.c:255
+msgid "Tact Generator"
+msgstr ""
+
+#: src/mixer/mixer.c:169
+msgid ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
+
+#: src/mixer/mixer.c:173
+msgid "<b>Channel Mixer</b>"
+msgstr "<b>Kanalmikser</b>"
+
+#: src/mixer/mixer.c:174
+msgid "Output channels:"
+msgstr "Kanaler for lydudgang:"
+
+#: src/mixer/mixer.c:184
+msgid "Channel Mixer"
+msgstr "Kanalmikser"
+
+#: src/mms/mms.c:224
+msgid "MMS Plugin"
+msgstr "MMS-udvidelsemodul"
+
+#: src/modplug/plugin_main.c:57
+msgid "<b>Resolution</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:58
+msgid "8-bit"
+msgstr "8-bit"
+
+#: src/modplug/plugin_main.c:60
+msgid "16-bit"
+msgstr "16-bit"
+
+#: src/modplug/plugin_main.c:62
+msgid "<b>Channels</b>"
+msgstr "<b>Kanaler</b>"
+
+#: src/modplug/plugin_main.c:67
+msgid "<b>Resampling</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:68
+msgid "Nearest (fastest)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:70
+msgid "Linear (fast)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:72
+msgid "Spline (good)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:74
+msgid "Polyphase (best)"
+msgstr ""
+
+#: src/modplug/plugin_main.c:76
+msgid "<b>Sampling rate</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:77
+msgid "22 kHz"
+msgstr "22 kHz"
+
+#: src/modplug/plugin_main.c:79
+msgid "44 kHz"
+msgstr "44 kHz"
+
+#: src/modplug/plugin_main.c:81
+msgid "48 kHz"
+msgstr "48 kHz"
+
+#: src/modplug/plugin_main.c:83
+msgid "96 kHz"
+msgstr "96 kHz"
+
+#: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
+#: src/modplug/plugin_main.c:102
+msgid "Level:"
+msgstr "Niveau:"
+
+#: src/modplug/plugin_main.c:97
+msgid "Cutoff:"
+msgstr ""
+
+#: src/modplug/plugin_main.c:114
+msgid "<b>Reverb</b>"
+msgstr "<b>Ekko</b>"
+
+#: src/modplug/plugin_main.c:118
+msgid "<b>Bass Boost</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:122
+msgid "<b>Surround</b>"
+msgstr "<b>Surround</b>"
+
+#: src/modplug/plugin_main.c:126
+msgid "<b>Preamp</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:133
+msgid "<b>Miscellaneous</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.c:134
+msgid "Oversample"
+msgstr ""
+
+#: src/modplug/plugin_main.c:136
+msgid "Noise reduction"
+msgstr "Støjreduktion"
+
+#: src/modplug/plugin_main.c:138
+msgid "Play Amiga MODs"
+msgstr "Afspil Amiga MOD'er"
+
+#: src/modplug/plugin_main.c:140
+msgid "<b>Repeat</b>"
+msgstr "<b>Gentag</b>"
+
+#: src/modplug/plugin_main.c:141
+msgid "Repeat count:"
+msgstr "Antal gentagelser:"
+
+#: src/modplug/plugin_main.c:143
+msgid "To repeat forever, set the repeat count to -1."
+msgstr "For at gentage for evigt, så sæt antal gentagelser til -1."
+
+#: src/modplug/plugin_main.c:238
+msgid "ModPlug (Module Player)"
+msgstr "ModPlug (Module-afspiller)"
+
+#: src/mpg123/mpg123.c:211
+msgid "Surround"
+msgstr "Surround"
+
+#: src/mpg123/mpg123.c:569
+msgid "MPG123 Plugin"
+msgstr "MPG123-udvidelsesmodul"
+
+#: src/mpris2/plugin.c:403
+msgid "MPRIS 2 Server"
+msgstr "MPRIS 2-server"
+
+#: src/neon/neon.c:1228
+msgid "Neon HTTP/HTTPS Plugin"
+msgstr "Neon HTTP/HTTPS-udvidelsesmodul"
+
+#: src/notify/event.c:64
+msgid "Stopped"
+msgstr "Stoppet"
+
+#: src/notify/event.c:64
+msgid "Audacious is not playing."
+msgstr "Audacious afspiller ikke."
+
+#: src/notify/notify.c:33
+msgid ""
+"Desktop Notifications Plugin for Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+
+#: src/notify/notify.c:77
+msgid "Show playback controls"
+msgstr ""
+
+#: src/notify/notify.c:80
+msgid "Always show notification"
+msgstr "Vis altid påmindelse"
+
+#: src/notify/notify.c:92
+msgid "Desktop Notifications"
+msgstr "Skrivebordspåmindelser"
+
+#: src/notify/osd.c:57
+msgid "Show"
+msgstr "Vis"
+
+#: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
+msgid "Pause"
+msgstr "Pause"
+
+#: src/notify/osd.c:72 src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
+msgid "Next"
+msgstr "Næste"
+
+#: src/oss4/plugin.c:36
+msgid "1. Default device"
+msgstr "1. Standardenhed"
+
+#: src/oss4/plugin.c:75 src/sndio/sndio.c:393
+msgid "Audio device:"
+msgstr "Lydenhed:"
+
+#: src/oss4/plugin.c:77
+msgid "Use alternate device:"
+msgstr "Brug anden enhed:"
+
+#: src/oss4/plugin.c:81
+msgid "Save volume between sessions."
+msgstr "Gem lydstyrke mellem sessioner."
+
+#: src/oss4/plugin.c:83
+msgid "Enable format conversions made by the OSS software."
+msgstr "Aktiver formatkonvertering lavet af OSS-programmer."
+
+#: src/oss4/plugin.c:85
+msgid "Enable exclusive mode to prevent virtual mixing."
+msgstr "Aktiver eksklusiv tilstand for at forhindre virtuel blanding."
+
+#: src/oss4/plugin.c:108
+msgid ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+
+#: src/oss4/plugin.c:115
+msgid "OSS4 Output"
+msgstr "OSS4-lydkanal"
+
+#: src/pls/pls.c:113
+msgid "PLS Playlists"
+msgstr "PLS-afspilningslister"
+
+#: src/psf/plugin.c:264
+msgid "OpenPSF PSF1/PSF2 Decoder"
+msgstr "OpenPSF PSF1/PSF2-afkoder"
+
+#: src/pulse_audio/pulse_audio.c:644
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+
+#: src/pulse_audio/pulse_audio.c:662
+msgid "PulseAudio Output"
+msgstr "PulseAudio-lydkanal"
+
+#: src/resample/resample.c:161
+msgid ""
+"Sample Rate Converter Plugin for Audacious\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+
+#: src/resample/resample.c:165
+msgid "Skip/repeat samples"
+msgstr "Udelad/gentag samplinger"
+
+#: src/resample/resample.c:166
+msgid "Linear interpolation"
+msgstr "Lineær interpolation"
+
+#: src/resample/resample.c:167
+msgid "Fast sinc interpolation"
+msgstr "Fast sinc-interpolation"
+
+#: src/resample/resample.c:168
+msgid "Medium sinc interpolation"
+msgstr "Medium sinc-interpolation"
+
+#: src/resample/resample.c:169
+msgid "Best sinc interpolation"
+msgstr "Bedste sinc-interpolation"
+
+#: src/resample/resample.c:172
+msgid "<b>Conversion</b>"
+msgstr ""
+
+#: src/resample/resample.c:173
+msgid "Method:"
+msgstr "Metode:"
+
+#: src/resample/resample.c:176 src/sox-resampler/sox-resampler.c:151
+msgid "Rate:"
+msgstr "Hastighed:"
+
+#: src/resample/resample.c:179
+msgid "<b>Rate Mappings</b>"
+msgstr "<b>Hastighedsoversættelser</b>"
+
+#: src/resample/resample.c:180
+msgid "Use rate mappings"
+msgstr "Brug hastighedsoversættelser"
+
+#: src/resample/resample.c:182
+msgid "8 kHz:"
+msgstr "8 kHz:"
+
+#: src/resample/resample.c:185
+msgid "16 kHz:"
+msgstr "16 kHz:"
+
+#: src/resample/resample.c:188
+msgid "22.05 kHz:"
+msgstr "22.05 kHz:"
+
+#: src/resample/resample.c:191
+msgid "44.1 kHz:"
+msgstr "44.1 kHz:"
+
+#: src/resample/resample.c:194
+msgid "48 kHz:"
+msgstr "48 kHz:"
+
+#: src/resample/resample.c:197
+msgid "96 kHz:"
+msgstr "96 kHz:"
+
+#: src/resample/resample.c:200
+msgid "192 kHz:"
+msgstr "192 kHz:"
+
+#: src/resample/resample.c:210
+msgid "Sample Rate Converter"
+msgstr ""
+
+#: src/scrobbler2/config_window.c:41
+#, c-format
+msgid "OK. Scrobbling for user: %s"
+msgstr ""
+
+#: src/scrobbler2/config_window.c:52
+msgid "Permission Denied"
+msgstr "Tilladelse nægtet"
+
+#: src/scrobbler2/config_window.c:54
+msgid "Access the following link to allow Audacious to scrobble your plays:"
+msgstr ""
+
+#: src/scrobbler2/config_window.c:63
+msgid "Keep this window open and click 'Check Permission' again.\n"
+msgstr ""
+
+#: src/scrobbler2/config_window.c:66 src/scrobbler2/config_window.c:77
+msgid ""
+"Don't worry. Your scrobbles are saved on your computer.\n"
+"They will be submitted as soon as Audacious is allowed to do so."
+msgstr ""
+
+#: src/scrobbler2/config_window.c:74
+msgid "Network Problem."
+msgstr "Netværksproblem."
+
+#: src/scrobbler2/config_window.c:75
+msgid "There was a problem contacting Last.fm. Please try again later."
+msgstr ""
+"Der opstod et problem under forsøget på at kontakte Last.fm. Prøv igen "
+"senere."
+
+#: src/scrobbler2/config_window.c:107
+msgid "Checking..."
+msgstr "Kontrollerer ..."
+
+#: src/scrobbler2/config_window.c:173
+msgid "C_heck Permission"
+msgstr "_Kontroller rettighed"
+
+#: src/scrobbler2/config_window.c:174
+msgid "_Revoke Permission"
+msgstr "_Tilbagekald rettighed"
+
+#: src/scrobbler2/config_window.c:221
+msgid ""
+"You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
+msgstr ""
+
+#: src/scrobbler2/scrobbler.c:233
+msgid ""
+"The Scrobbler plugin could not be started.\n"
+"There might be a problem with your installation."
+msgstr ""
+
+#: src/scrobbler2/scrobbler.c:311
+msgid ""
+"Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
+"\n"
+"Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this "
+"project.\n"
+"\n"
+msgstr ""
+
+#: src/scrobbler2/scrobbler.c:317
+msgid "Scrobbler 2.0"
+msgstr "Scrobbler 2.0"
+
+#: src/scrobbler2/scrobbler_communication.c:690
+msgid ""
+"Audacious is now using an improved version of the Last.fm Scrobbler.\n"
+"Please check the Preferences for the Scrobbler plugin."
+msgstr ""
+"Audacious bruger nu en forbedret version af Last.fm Scrobbler.\n"
+"Kontroller præferencerne for Scrobbler-udvidelsesmodulet."
+
+#: src/sdlout/plugin.c:26
+msgid ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+
+#: src/sdlout/plugin.c:31
+msgid "SDL Output"
+msgstr ""
+
+#: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
+msgid "Library"
+msgstr "Bibliotek"
+
+#: src/search-tool/search-tool.c:219
+msgid "Unknown Artist"
+msgstr "Ukendt kunstner"
+
+#: src/search-tool/search-tool.c:221
+msgid "Unknown Album"
+msgstr "Ukendt album"
+
+#: src/search-tool/search-tool.c:632
+#, c-format
+msgid ""
+"%s\n"
+" on %s by %s"
+msgstr ""
+"%s\n"
+" på %s af %s"
+
+#: src/search-tool/search-tool.c:638
+#, c-format
+msgid "%d album"
+msgid_plural "%d albums"
+msgstr[0] "%d album"
+msgstr[1] "%d albummer"
+
+#: src/search-tool/search-tool.c:640
+#, c-format
+msgid ""
+"%s\n"
+" %s, %d song"
+msgid_plural ""
+"%s\n"
+" %s, %d songs"
+msgstr[0] ""
+"%s\n"
+" %s, %d sang"
+msgstr[1] ""
+"%s\n"
+" %s, %d sang"
+
+#: src/search-tool/search-tool.c:646
+#, c-format
+msgid ""
+"%s\n"
+" %d song by %s"
+msgid_plural ""
+"%s\n"
+" %d songs by %s"
+msgstr[0] ""
+"%s\n"
+" %d sang af %s"
+msgstr[1] ""
+"%s\n"
+" %d sange af %s"
+
+#: src/search-tool/search-tool.c:687
+msgid "_Create Playlist"
+msgstr "_Opret afspilningsliste"
+
+#: src/search-tool/search-tool.c:694
+msgid "_Add to Playlist"
+msgstr "_Tilføj til afspilningsliste"
+
+#: src/search-tool/search-tool.c:734
+msgid "Search library"
+msgstr "Søg bibliotek"
+
+#: src/search-tool/search-tool.c:739
+msgid ""
+"To import your music library into Audacious, choose a folder and then click "
+"the \"refresh\" icon."
+msgstr ""
+"For at importere dit musikbibliotek til Audacious skal du vælge en mappe og "
+"så klikke på ikonet »Opdater«."
+
+#: src/search-tool/search-tool.c:747
+msgid "Please wait ..."
+msgstr "Vent venligst ..."
+
+#: src/search-tool/search-tool.c:769
+msgid "Choose Folder"
+msgstr "Vælg mappe"
+
+#: src/search-tool/search-tool.c:808
+msgid "Search Tool"
+msgstr "Søgeværktøj"
+
+#: src/skins/plugin.c:49
+msgid "Winamp Classic Interface"
+msgstr "Winamps klassiske brugerflade"
+
+#: src/skins/skins_cfg.c:204
+msgid "_Player:"
+msgstr "_Afspiller:"
+
+#: src/skins/skins_cfg.c:205
+msgid "Select main player window font:"
+msgstr "Vælg skrifttype for hovedafspillerens vindue:"
+
+#: src/skins/skins_cfg.c:207
+msgid "_Playlist:"
+msgstr "_Afspilningsliste:"
+
+#: src/skins/skins_cfg.c:208
+msgid "Select playlist font:"
+msgstr "Vælg skrifttype for afspilningslisten:"
+
+#: src/skins/skins_cfg.c:212
+msgid "<b>_Fonts</b>"
+msgstr "<b>_Skrifttyper</b>"
+
+#: src/skins/skins_cfg.c:215
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr "Brug bitmap-skrifttyper (understøtter kun ASCII)"
+
+#: src/skins/skins_cfg.c:217
+msgid "Scroll song title in both directions"
+msgstr "Rul sangtitel i begge retninger"
+
+#: src/skins/skins_cfg.c:295
+msgid "<b>_Skin</b>"
+msgstr "<b>_Tema</b>"
+
+#: src/skins/skins_cfg.c:342
+msgid "Interface Preferences"
+msgstr "Grænsefladepræferencer"
+
+#: src/skins/ui_equalizer.c:328
+msgid "Preamp"
+msgstr ""
+
+#: src/skins/ui_equalizer.c:332
+msgid "31 Hz"
+msgstr "31 Hz"
+
+#: src/skins/ui_equalizer.c:333
+msgid "63 Hz"
+msgstr "63 Hz"
+
+#: src/skins/ui_equalizer.c:333
+msgid "125 Hz"
+msgstr "125 Hz"
+
+#: src/skins/ui_equalizer.c:333
+msgid "250 Hz"
+msgstr "250 Hz"
+
+#: src/skins/ui_equalizer.c:333
+msgid "500 Hz"
+msgstr "500 Hz"
+
+#: src/skins/ui_equalizer.c:333
+msgid "1 kHz"
+msgstr "1 kHz"
+
+#: src/skins/ui_equalizer.c:334
+msgid "2 kHz"
+msgstr "2 kHz"
+
+#: src/skins/ui_equalizer.c:334
+msgid "4 kHz"
+msgstr "4 kHz"
+
+#: src/skins/ui_equalizer.c:334
+msgid "8 kHz"
+msgstr "8 kHz"
+
+#: src/skins/ui_equalizer.c:334
+msgid "16 kHz"
+msgstr "16 kHz"
+
+#: src/skins/ui_equalizer.c:375
+msgid "Audacious Equalizer"
+msgstr "Audacious-equalizer"
+
+#: src/skins/ui_equalizer.c:890
+msgid "Presets"
+msgstr "Forhåndsindstillinger"
+
+#: src/skins/ui_equalizer.c:971 src/skins/ui_manager.c:451
+msgid "Load preset"
+msgstr "Indlæs forhåndsindstilling"
+
+#: src/skins/ui_equalizer.c:988
+msgid "Load auto-preset"
+msgstr "Indlæs automatisk forhåndsindstilling"
+
+#: src/skins/ui_equalizer.c:1018 src/skins/ui_equalizer.c:1036
+#: src/skins/ui_equalizer.c:1052
+msgid "Load equalizer preset"
+msgstr "Indlæs equalizerforhåndsindstilling"
+
+#: src/skins/ui_equalizer.c:1071 src/skins/ui_manager.c:472
+msgid "Save preset"
+msgstr "Gem forhåndsindstilling"
+
+#: src/skins/ui_equalizer.c:1087
+msgid "Save auto-preset"
+msgstr "Gem automatisk forhåndsindstilling"
+
+#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
+msgid "Save equalizer preset"
+msgstr "Gem equalizerforhåndsindstilling"
+
+#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
+msgid "Delete preset"
+msgstr "Slet forhåndsindstilling"
+
+#: src/skins/ui_equalizer.c:1190
+msgid "Delete auto-preset"
+msgstr "Slet automatisk forhåndsindstilling"
+
+#: src/skins/ui_main.c:414
+msgid "kbps"
+msgstr "kbps"
+
+#: src/skins/ui_main.c:422
+msgid "kHz"
+msgstr "kHz"
+
+#: src/skins/ui_main.c:770
+#, c-format
+msgid "Seek to %d:%-2.2d / %d:%-2.2d"
+msgstr "Søg til %d:%-2.2d / %d:%-2.2d"
+
+#: src/skins/ui_main.c:791
+#, c-format
+msgid "Volume: %d%%"
+msgstr "Lydstyrke: %d%%"
+
+#: src/skins/ui_main.c:814
+#, c-format
+msgid "Balance: %d%% left"
+msgstr "Balance: %d%% venstre"
+
+#: src/skins/ui_main.c:816
+msgid "Balance: center"
+msgstr "Balance: centrum"
+
+#: src/skins/ui_main.c:818
+#, c-format
+msgid "Balance: %d%% right"
+msgstr "Balance: %d%% højre"
+
+#: src/skins/ui_main.c:942
+msgid "Options Menu"
+msgstr "Menu for indstillinger"
+
+#: src/skins/ui_main.c:946
+msgid "Disable 'Always On Top'"
+msgstr "Deakiver »Altid øverst«"
+
+#: src/skins/ui_main.c:948
+msgid "Enable 'Always On Top'"
+msgstr "Aktiver »Altid øverst«"
+
+#: src/skins/ui_main.c:951
+msgid "File Info Box"
+msgstr "Filinformationsboks"
+
+#: src/skins/ui_main.c:956
+msgid "Visualization Menu"
+msgstr "Visualiseringsmenu"
+
+#: src/skins/ui_main.c:1591
+msgid "Single mode."
+msgstr "Tilstand for én."
+
+#: src/skins/ui_main.c:1593
+msgid "Playlist mode."
+msgstr "Afspilningstilstand."
+
+#: src/skins/ui_main.c:1615
+msgid "Stopping after song."
+msgstr "Stopper efter sang."
+
+#: src/skins/ui_main.c:1617
+msgid "Not stopping after song."
+msgstr "Stopper ikke efter sang."
+
+#: src/skins/ui_main.c:1752
+msgid "Repeat point A set."
+msgstr ""
+
+#: src/skins/ui_main.c:1757
+msgid "Repeat point B set."
+msgstr ""
+
+#: src/skins/ui_main.c:1766
+msgid "Repeat points cleared."
+msgstr ""
+
+#: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
+msgid "Autoscroll Song Name"
+msgstr "Rul automatisk sangnavn"
+
+#: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
+msgid "Stop after Current Song"
+msgstr "Stop efter nuværende sang"
+
+#: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
+msgid "Peaks"
+msgstr "Højdepunkter"
+
+#: src/skins/ui_manager.c:75 src/skins/ui_manager.c:76
+msgid "Repeat"
+msgstr "Gentag"
+
+#: src/skins/ui_manager.c:78 src/skins/ui_manager.c:79
+msgid "Shuffle"
+msgstr "Bland"
+
+#: src/skins/ui_manager.c:81 src/skins/ui_manager.c:82
+msgid "No Playlist Advance"
+msgstr "Ingen næste afspilningsliste"
+
+#: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
+msgid "Show Player"
+msgstr "Vis afspiller"
+
+#: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
+msgid "Show Playlist Editor"
+msgstr "Vis redigeringsprogram for afspilningslister"
+
+#: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
+msgid "Show Equalizer"
+msgstr "Vis equalizer"
+
+#: src/skins/ui_manager.c:93 src/skins/ui_manager.c:94
+msgid "Always on Top"
+msgstr "Altid øverst"
+
+#: src/skins/ui_manager.c:96 src/skins/ui_manager.c:97
+msgid "Put on All Workspaces"
+msgstr "Placer på alle arbejdsrum"
+
+#: src/skins/ui_manager.c:99 src/skins/ui_manager.c:100
+msgid "Roll up Player"
+msgstr "Rul op-afspiller"
+
+#: src/skins/ui_manager.c:102 src/skins/ui_manager.c:103
+msgid "Roll up Playlist Editor"
+msgstr "Rul op-redigeringsprogram for afspilningslister"
+
+#: src/skins/ui_manager.c:105 src/skins/ui_manager.c:106
+msgid "Roll up Equalizer"
+msgstr "Rul op-equalizer"
+
+#: src/skins/ui_manager.c:114
+msgid "Analyzer"
+msgstr "Analyseprogram"
+
+#: src/skins/ui_manager.c:115
+msgid "Scope"
+msgstr "Omfang"
+
+#: src/skins/ui_manager.c:116
+msgid "Voiceprint"
+msgstr "Stemmeaftryk"
+
+#: src/skins/ui_manager.c:117
+msgid "Off"
+msgstr "Slukket"
+
+#: src/skins/ui_manager.c:121 src/skins/ui_manager.c:138
+#: src/skins/ui_manager.c:144
+msgid "Normal"
+msgstr "Normal"
+
+#: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
+msgid "Fire"
+msgstr "Ild"
+
+#: src/skins/ui_manager.c:123
+msgid "Vertical Lines"
+msgstr "Lodrette linjer"
+
+#: src/skins/ui_manager.c:127
+msgid "Lines"
+msgstr "Linjer"
+
+#: src/skins/ui_manager.c:128
+msgid "Bars"
+msgstr "Bjælker"
+
+#: src/skins/ui_manager.c:132
+msgid "Dot Scope"
+msgstr "Punktumomfang"
+
+#: src/skins/ui_manager.c:133
+msgid "Line Scope"
+msgstr "LInjeomfang"
+
+#: src/skins/ui_manager.c:134
+msgid "Solid Scope"
+msgstr "Fast omfang"
+
+#: src/skins/ui_manager.c:140
+msgid "Ice"
+msgstr "Is"
+
+#: src/skins/ui_manager.c:145
+msgid "Smooth"
+msgstr "Blød"
+
+#: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
+msgid "Slowest"
+msgstr "Langsomst"
+
+#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
+msgid "Slow"
+msgstr "Langsom"
+
+#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
+#: src/sox-resampler/sox-resampler.c:143
+msgid "Medium"
+msgstr "Mellem"
+
+#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
+msgid "Fast"
+msgstr "Hurtig"
+
+#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
+msgid "Fastest"
+msgstr "Hurtigst"
+
+#: src/skins/ui_manager.c:165
+msgid "Time Elapsed"
+msgstr "Tid forløbet"
+
+#: src/skins/ui_manager.c:166
+msgid "Time Remaining"
+msgstr "Tid tilbage"
+
+#: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
+msgid "Previous"
+msgstr "Forrige"
+
+#: src/skins/ui_manager.c:195
+msgid "Visualization"
+msgstr "Visualisering"
+
+#: src/skins/ui_manager.c:196
+msgid "Visualization Mode"
+msgstr "Visualiseringstilstand"
+
+#: src/skins/ui_manager.c:197
+msgid "Analyzer Mode"
+msgstr "Analysetilstand"
+
+#: src/skins/ui_manager.c:198
+msgid "Scope Mode"
+msgstr "Omfangstilstand"
+
+#: src/skins/ui_manager.c:199
+msgid "Voiceprint Mode"
+msgstr "Stemmeaftrykstilstand"
+
+#: src/skins/ui_manager.c:200
+msgid "WindowShade VU Mode"
+msgstr "WindowsShade VU-tilstand"
+
+#: src/skins/ui_manager.c:201
+msgid "Analyzer Falloff"
+msgstr ""
+
+#: src/skins/ui_manager.c:202
+msgid "Peaks Falloff"
+msgstr ""
+
+#: src/skins/ui_manager.c:207
+msgid "Playlist"
+msgstr "Afspilningsliste"
+
+#: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
+msgid "Play Playlist"
+msgstr "Start afspilningsliste"
+
+#: src/skins/ui_manager.c:212 src/skins/ui_manager.c:213
+msgid "New Playlist"
+msgstr "Ny afspilningsliste"
+
+#: src/skins/ui_manager.c:215 src/skins/ui_manager.c:216
+msgid "Select Next Playlist"
+msgstr "Vælg næste afspilningsliste"
+
+#: src/skins/ui_manager.c:218 src/skins/ui_manager.c:219
+msgid "Select Previous Playlist"
+msgstr "Vælg forrige afspilningsliste"
+
+#: src/skins/ui_manager.c:221 src/skins/ui_manager.c:222
+msgid "Delete Playlist"
+msgstr "Slet afspilningsliste"
+
+#: src/skins/ui_manager.c:224
+msgid "Import Playlist"
+msgstr "Importer afspilningsliste"
+
+#: src/skins/ui_manager.c:225
+msgid "Loads a playlist file into the selected playlist."
+msgstr "Indlæs en afspilningslistefil i den valgte afspilningsliste."
+
+#: src/skins/ui_manager.c:228
+msgid "Export Playlist"
+msgstr "Eksporter afspilningsliste"
+
+#: src/skins/ui_manager.c:229
+msgid "Saves the selected playlist."
+msgstr "Gem den valgte afspilningsliste."
+
+#: src/skins/ui_manager.c:231
+msgid "Refresh List"
+msgstr "Opdater liste"
+
+#: src/skins/ui_manager.c:232
+msgid "Refreshes metadata associated with a playlist entry."
+msgstr "Opdaterer metadata forbundet med et afspilningslistepunkt."
+
+#: src/skins/ui_manager.c:235
+msgid "Playlist Manager"
+msgstr "Håndtering af afspilningslister"
+
+#: src/skins/ui_manager.c:238
+msgid "Queue Manager"
+msgstr "Køhåndtering"
+
+#: src/skins/ui_manager.c:243
+msgid "View"
+msgstr "Vis"
+
+#: src/skins/ui_manager.c:244
+msgid "Interface"
+msgstr "Grænseflade"
+
+#: src/skins/ui_manager.c:245
+msgid "Interface Preferences ..."
+msgstr "Grænsefladepræferencer ..."
+
+#: src/skins/ui_manager.c:250
+msgid "Add Internet Address..."
+msgstr "Tilføj internetadresse ..."
+
+#: src/skins/ui_manager.c:251
+msgid "Adds a remote track to the playlist."
+msgstr "Tilføjer et eksternt nummer til afspilningslisten."
+
+#: src/skins/ui_manager.c:254
+msgid "Add Files..."
+msgstr "Tilføj filer ..."
+
+#: src/skins/ui_manager.c:255
+msgid "Adds files to the playlist."
+msgstr "Tilføjer filer til afspilningslisten."
+
+#: src/skins/ui_manager.c:260
+msgid "Search and Select"
+msgstr "Søg og vælg"
+
+#: src/skins/ui_manager.c:261
+msgid ""
+"Searches the playlist and selects playlist entries based on specific "
+"criteria."
+msgstr ""
+"Søger i afspilningslisten og vælger afspilningspunkter baseret på specifikke "
+"kriterier."
+
+#: src/skins/ui_manager.c:264
+msgid "Invert Selection"
+msgstr "Vend markering om"
+
+#: src/skins/ui_manager.c:265
+msgid "Inverts the selected and unselected entries."
+msgstr "Vend de valgte og uvalgte punkter om."
+
+#: src/skins/ui_manager.c:268
+msgid "Select All"
+msgstr "Vælg alle"
+
+#: src/skins/ui_manager.c:269
+msgid "Selects all of the playlist entries."
+msgstr "Vælg alle punkter i afspilningslisten."
+
+#: src/skins/ui_manager.c:272
+msgid "Select None"
+msgstr "Vælg ingen"
+
+#: src/skins/ui_manager.c:273
+msgid "Deselects all of the playlist entries."
+msgstr "Fravælger alle punkter i afspilningslisten."
+
+#: src/skins/ui_manager.c:278
+msgid "Remove All"
+msgstr "Fjern alle"
+
+#: src/skins/ui_manager.c:279
+msgid "Removes all entries from the playlist."
+msgstr "Fjern alle punkter fra afspilningslisten."
+
+#: src/skins/ui_manager.c:282
+msgid "Clear Queue"
+msgstr "Ryd kø"
+
+#: src/skins/ui_manager.c:283
+msgid "Clears the queue associated with this playlist."
+msgstr "Ryd køen forbundet med denne afspilningsliste."
+
+#: src/skins/ui_manager.c:286
+msgid "Remove Unavailable Files"
+msgstr "Fjern utilgængelige filer"
+
+#: src/skins/ui_manager.c:287
+msgid "Removes unavailable files from the playlist."
+msgstr "Fjern utilgængelige filer fra afspilningslisten."
+
+#: src/skins/ui_manager.c:290
+msgid "Remove Duplicates"
+msgstr "Fjern duplikater"
+
+#: src/skins/ui_manager.c:292 src/skins/ui_manager.c:324
+#: src/skins/ui_manager.c:354
+msgid "By Title"
+msgstr "Efter titel"
+
+#: src/skins/ui_manager.c:293
+msgid "Removes duplicate entries from the playlist by title."
+msgstr "Fjerner duplikater fra afspilningslisten efter titel."
+
+#: src/skins/ui_manager.c:296 src/skins/ui_manager.c:336
+#: src/skins/ui_manager.c:366
+msgid "By Filename"
+msgstr "Efter filnavn"
+
+#: src/skins/ui_manager.c:297
+msgid "Removes duplicate entries from the playlist by filename."
+msgstr "Fjerner duplikate punkter fra afspilningslisten efter filnavn."
+
+#: src/skins/ui_manager.c:300 src/skins/ui_manager.c:340
+#: src/skins/ui_manager.c:370
+msgid "By Path + Filename"
+msgstr "Efter sti + filnavn"
+
+#: src/skins/ui_manager.c:301
+msgid "Removes duplicate entries from the playlist by their full path."
+msgstr "Fjerner ens punkter fra afspilningslisten efter deres fulde sti."
+
+#: src/skins/ui_manager.c:304
+msgid "Remove Unselected"
+msgstr "Fjern dem som ikke er valgt"
+
+#: src/skins/ui_manager.c:305
+msgid "Remove unselected entries from the playlist."
+msgstr "Fjern dem som ikke er valgt fra afspilningslisten."
+
+#: src/skins/ui_manager.c:308
+msgid "Remove Selected"
+msgstr "Fjern de valgte"
+
+#: src/skins/ui_manager.c:309
+msgid "Remove selected entries from the playlist."
+msgstr "Fjern de valgte punkter fra afspilningslisten."
+
+#: src/skins/ui_manager.c:314
+msgid "Randomize List"
+msgstr "Sæt listen i vilkårlig rækkefølge"
+
+#: src/skins/ui_manager.c:315
+msgid "Randomizes the playlist."
+msgstr "Sæt afspilningslisten i vilkårlig rækkefølge"
+
+#: src/skins/ui_manager.c:318
+msgid "Reverse List"
+msgstr "Vend listen om"
+
+#: src/skins/ui_manager.c:319
+msgid "Reverses the playlist."
+msgstr "Vend afspilningslisten om."
+
+#: src/skins/ui_manager.c:322
+msgid "Sort List"
+msgstr "Sorter listen"
+
+#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
+msgid "Sorts the list by title."
+msgstr "Sorter listen efter titel."
+
+#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
+msgid "By Album"
+msgstr "Efter album"
+
+#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
+msgid "Sorts the list by album."
+msgstr "Sorterer listen efter album."
+
+#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
+msgid "By Artist"
+msgstr "Efter kunstner"
+
+#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
+msgid "Sorts the list by artist."
+msgstr "Sorterer listen efter kunstner."
+
+#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
+msgid "Sorts the list by filename."
+msgstr "Sorterer listen efter filnavn."
+
+#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
+msgid "Sorts the list by full pathname."
+msgstr "Sorterer listen efter fuld stinavn."
+
+#: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
+msgid "By Date"
+msgstr "Efter dato"
+
+#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
+msgid "Sorts the list by modification time."
+msgstr "Sorterer listen efter ændringstidspunkt."
+
+#: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
+msgid "By Track Number"
+msgstr "Efter rækkefølge"
+
+#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
+msgid "Sorts the list by track number."
+msgstr "Sorterer listen efter rækkefølge"
+
+#: src/skins/ui_manager.c:352
+msgid "Sort Selected"
+msgstr "Sorter valgt"
+
+#: src/skins/ui_manager.c:388
+msgid "File"
+msgstr "Fil"
+
+#: src/skins/ui_manager.c:391
+msgid "Plugin Services"
+msgstr "Udvidelsesmodultjenester"
+
+#: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
+msgid "View Track Details"
+msgstr "Vis deltaljer for nummeret"
+
+#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
+msgid "View track details"
+msgstr "Vis detaljer for nummeret"
+
+#: src/skins/ui_manager.c:399 src/skins/ui_manager.c:400
+msgid "About Audacious"
+msgstr "Om Audacious"
+
+#: src/skins/ui_manager.c:402
+msgid "Play File"
+msgstr "Afspil fil"
+
+#: src/skins/ui_manager.c:403
+msgid "Load and play a file"
+msgstr "Indlæs og afspil en fil"
+
+#: src/skins/ui_manager.c:405
+msgid "Play Location"
+msgstr "Afspil sted"
+
+#: src/skins/ui_manager.c:406
+msgid "Play media from the selected location"
+msgstr "Afspil medie fra valgt sted"
+
+#: src/skins/ui_manager.c:408
+msgid "Plugin services"
+msgstr "Udvidelsesmodultjenester"
+
+#: src/skins/ui_manager.c:410
+msgid "Preferences"
+msgstr "Præferencer"
+
+#: src/skins/ui_manager.c:411
+msgid "Open preferences window"
+msgstr "Åbn vindue for præferencer"
+
+#: src/skins/ui_manager.c:414
+msgid "Quit Audacious"
+msgstr "Afslut Audacious"
+
+#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
+msgid "Set A-B"
+msgstr "Sæt A-B"
+
+#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
+msgid "Clear A-B"
+msgstr "Ryd A-B"
+
+#: src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
+msgid "Jump to File"
+msgstr "Hop til fil"
+
+#: src/skins/ui_manager.c:425 src/skins/ui_manager.c:426
+msgid "Jump to Time"
+msgstr "Hop til tid"
+
+#: src/skins/ui_manager.c:428
+msgid "Queue Toggle"
+msgstr "Skift køstatus"
+
+#: src/skins/ui_manager.c:429
+msgid "Enables/disables the entry in the playlist's queue."
+msgstr "Aktiverer/deaktiverer punktet i afspilningslistens kø."
+
+#: src/skins/ui_manager.c:432
+msgid "Copy"
+msgstr "Kopier"
+
+#: src/skins/ui_manager.c:435
+msgid "Cut"
+msgstr "Klip"
+
+#: src/skins/ui_manager.c:438
+msgid "Paste"
+msgstr "Indsæt"
+
+#: src/skins/ui_manager.c:445
+msgid "Load"
+msgstr "Indlæs"
+
+#: src/skins/ui_manager.c:446
+msgid "Import"
+msgstr "Importer"
+
+#: src/skins/ui_manager.c:447
+msgid "Save"
+msgstr "Gem"
+
+#: src/skins/ui_manager.c:448
+msgid "Delete"
+msgstr "Slet"
+
+#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
+#: src/skins/ui_manager.c:486
+msgid "Preset"
+msgstr "Forhåndsindstilling"
+
+#: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
+#: src/skins/ui_manager.c:489
+msgid "Auto-load preset"
+msgstr "Automatisk forhåndsindstilling"
+
+#: src/skins/ui_manager.c:454
+msgid "Load auto-load preset"
+msgstr "Indlæs automatisk forhåndsindstilling"
+
+#: src/skins/ui_manager.c:457
+msgid "Load default preset into equalizer"
+msgstr "Indlæs forhåndsindstilling i equalizer"
+
+#: src/skins/ui_manager.c:459
+msgid "Zero"
+msgstr "Nul"
+
+#: src/skins/ui_manager.c:460
+msgid "Set equalizer preset levels to zero"
+msgstr "Sæt equalizerens forhåndsindstillingsniveauer til nul"
+
+#: src/skins/ui_manager.c:462
+msgid "From file"
+msgstr "Fra fil"
+
+#: src/skins/ui_manager.c:463
+msgid "Load preset from file"
+msgstr "Indlæs forhåndsindstilling fra fil"
+
+#: src/skins/ui_manager.c:465
+msgid "From WinAMP EQF file"
+msgstr "Fra WinAMP EQF-fil"
+
+#: src/skins/ui_manager.c:466
+msgid "Load preset from WinAMP EQF file"
+msgstr "Indlæs forhåndsindstilling fra WinAMP EQF-fil"
+
+#: src/skins/ui_manager.c:468
+msgid "WinAMP Presets"
+msgstr "WinAMP-forhåndsindstillinger"
+
+#: src/skins/ui_manager.c:469
+msgid "Import WinAMP presets"
+msgstr "Importer WinAMP-forhåndsindstillinger"
+
+#: src/skins/ui_manager.c:475
+msgid "Save auto-load preset"
+msgstr "Gem automatisk forhåndsindstilling"
+
+#: src/skins/ui_manager.c:478
+msgid "Save default preset"
+msgstr "Gem standardforhåndsindstilling"
+
+#: src/skins/ui_manager.c:480
+msgid "To file"
+msgstr "Til fil"
+
+#: src/skins/ui_manager.c:481
+msgid "Save preset to file"
+msgstr "Gem forhåndsindstilling til fil"
+
+#: src/skins/ui_manager.c:483
+msgid "To WinAMP EQF file"
+msgstr "Til WinAMP EQF-fil"
+
+#: src/skins/ui_manager.c:484
+msgid "Save preset to WinAMP EQF file"
+msgstr "Gem forhåndsindstilling til WinAMP EQF-fil"
+
+#: src/skins/ui_manager.c:490
+msgid "Delete auto-load preset"
+msgstr "Slet automatisk forhåndsindstilling"
+
+#: src/skins/ui_playlist.c:244
+msgid "Search entries in active playlist"
+msgstr "Søg i punkter i aktiv afspilningsliste"
+
+#: src/skins/ui_playlist.c:251
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+"Vælg punkter i afspilningslisten ved at udfylde et eller flere felter. "
+"Felter bruger regulære udtryk, tager ikke hensyn til store/små bogstaver. "
+"Hvis du ikke ved hvordan regulære udtryk fungerer, så indsæt bare en lille "
+"del af hvad du søger efter."
+
+#: src/skins/ui_playlist.c:259
+msgid "Title: "
+msgstr "Titel:"
+
+#: src/skins/ui_playlist.c:267
+msgid "Album: "
+msgstr "Album:"
+
+#: src/skins/ui_playlist.c:275
+msgid "Artist: "
+msgstr "Kunstner:"
+
+#: src/skins/ui_playlist.c:283
+msgid "Filename: "
+msgstr "Filnavn:"
+
+#: src/skins/ui_playlist.c:292
+msgid "Clear previous selection before searching"
+msgstr "Ryd forrige valg før søgning"
+
+#: src/skins/ui_playlist.c:295
+msgid "Automatically toggle queue for matching entries"
+msgstr "Skift automatisk kø for matchende punkter"
+
+#: src/skins/ui_playlist.c:298
+msgid "Create a new playlist with matching entries"
+msgstr "Opret en ny afspilningsliste med matchende punkter"
+
+#: src/skins/ui_playlist.c:738
+msgid "Audacious Playlist Editor"
+msgstr "Redigeringsprogram for Audacious' afspilningslister"
+
+#: src/skins/ui_playlist.c:772
+#, c-format
+msgid "%s (%d of %d)"
+msgstr "%s (%d of %d)"
+
+#: src/skins/ui_skinselector.c:162
+msgid "Archived Winamp 2.x skin"
+msgstr "Arkiveret Winamp 2.x-tema"
+
+#: src/skins/ui_skinselector.c:167
+msgid "Unarchived Winamp 2.x skin"
+msgstr "Winamp 2.x-tema der ikke er i arkiv"
+
+#: src/skins/util.c:773
+#, c-format
+msgid "Could not create directory (%s): %s\n"
+msgstr "Kunne ikke oprette mappe (%s): %s\n"
+
+#: src/sndfile/plugin.c:416
+msgid ""
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+
+#: src/sndfile/plugin.c:435
+msgid "Sndfile Plugin"
+msgstr "Sndfile-udvidelsesmodul"
+
+#: src/sndio/sndio.c:172
+msgid "About Sndio Output Plugin"
+msgstr "Om Sndio Output-udvidelsesmodulet"
+
+#: src/sndio/sndio.c:173
+msgid ""
+"Sndio Output Plugin\n"
+"\n"
+"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+msgstr ""
+"Sndio Output-udvidelsesmodulet\n"
+"\n"
+"Skrevet af Thomas Pfaff <tpfaff@tp76.info>\n"
+
+#: src/sndio/sndio.c:248
+msgid "Unsupported format"
+msgstr "Format er ikke understøttet"
+
+#: src/sndio/sndio.c:249
+msgid ""
+"A format not supported by the audio device was requested.\n"
+"\n"
+"Please try again with the sndiod(1) server running."
+msgstr ""
+"Der blev forespurgt om et format der ikke understøttes af lydenheden.\n"
+"\n"
+"Prøv igen med sndiod(1)-serveren kørende."
+
+#: src/sndio/sndio.c:384
+msgid "sndio device"
+msgstr "sndio-enhed"
+
+#: src/sndio/sndio.c:400
+msgid "(empty means default)"
+msgstr "(tom er standard)"
+
+#: src/sndio/sndio.c:416
+msgid "OK"
+msgstr "O.k."
+
+#: src/sndio/sndio.c:424
+msgid "Cancel"
+msgstr "Afbryd"
+
+#: src/song_change/song_change.c:54
+msgid "Song Change"
+msgstr "Sangændring"
+
+#: src/song_change/song_change.c:436
+msgid "Command to run when Audacious starts a new song."
+msgstr "Kommando der skal køres når Audacious starter en ny sang."
+
+#: src/song_change/song_change.c:438 src/song_change/song_change.c:444
+#: src/song_change/song_change.c:450 src/song_change/song_change.c:456
+msgid "Command:"
+msgstr "Kommando:"
+
+#: src/song_change/song_change.c:442
+msgid "Command to run toward the end of a song."
+msgstr "Kommando der skal køres mod slutningen af en sang."
+
+#: src/song_change/song_change.c:448
+msgid "Command to run when Audacious reaches the end of the playlist."
+msgstr ""
+"Kommandoen der skal køres når Audacious når slutningen af afspilningslisten."
+
+#: src/song_change/song_change.c:454
+msgid ""
+"Command to run when title changes for a song (i.e. network streams titles)."
+msgstr ""
+"Kommando der skal køres når titlen ændres sig for en sang (dvs. titler for "
+"netværksudsendelser)."
+
+#: src/song_change/song_change.c:460
+msgid ""
+"You can use the following format strings which\n"
+"will be substituted before calling the command\n"
+"(not all are useful for the end-of-playlist command):\n"
+"\n"
+"%F: Frequency (in hertz)\n"
+"%c: Number of channels\n"
+"%f: File name (full path)\n"
+"%l: Length (in milliseconds)\n"
+"%n or %s: Song name\n"
+"%r: Rate (in bits per second)\n"
+"%t: Playlist position (%02d)\n"
+"%p: Currently playing (1 or 0)\n"
+"%a: Artist\n"
+"%b: Album\n"
+"%T: Track title"
+msgstr ""
+"Du kan bruge de følgende formatsternge som\n"
+"vil blive erstattet før kommandoen kaldes\n"
+"(ikke alle er nyttige til kommandoen for slut på afspilningslisten)\n"
+"\n"
+"%F: Frekvens (i hertz)\n"
+"%c: Antallet af kanaler\n"
+"%f: Filnavn (fuld sti)\n"
+"%l: Længde (i milllisekunder)\n"
+"%n eller %s: Sangnavn\n"
+"%r: Hastighed (i bit per sekund)\n"
+"%t: Afspilningslsitens position (%02d)\n"
+"%p: Afspiller i øjeblikket (1 eller 0)\n"
+"%a: Kunstner\n"
+"%b: Album\n"
+"%T: Nummerets titel"
+
+#: src/song_change/song_change.c:487
+msgid ""
+"<span size='small'>Parameters passed to the shell should be encapsulated in "
+"quotes. Doing otherwise is a security risk.</span>"
+msgstr ""
+"<span size='small'>Parametre sendt til skallen skal omsluttes af "
+"citationstegn. Alt andet er en sikkerhedsrisiko.</span>"
+
+#: src/song_change/song_change.c:498
+msgid "Commands"
+msgstr "Kommandoer"
+
+#: src/sox-resampler/sox-resampler.c:135
+msgid ""
+"SoX Resampler Plugin for Audacious\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"Based on Sample Rate Converter Plugin:\n"
+"Copyright 2010-2012 John Lindgren"
+msgstr ""
+
+#: src/sox-resampler/sox-resampler.c:141
+msgid "Quick"
+msgstr ""
+
+#: src/sox-resampler/sox-resampler.c:142
+msgid "Low"
+msgstr ""
+
+#: src/sox-resampler/sox-resampler.c:144
+msgid "High"
+msgstr ""
+
+#: src/sox-resampler/sox-resampler.c:145
+msgid "Very High"
+msgstr ""
+
+#: src/sox-resampler/sox-resampler.c:148
+msgid "Quality:"
+msgstr ""
+
+#: src/sox-resampler/sox-resampler.c:162
+msgid "SoX Resampler"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:225
+msgid "<b>Speed and Pitch</b>"
+msgstr ""
+
+#: src/speed-pitch/speed-pitch.c:226
+msgid "Speed:"
+msgstr "Hastighed:"
+
+#: src/speed-pitch/speed-pitch.c:229
+msgid "Pitch:"
+msgstr "Tonehøjde:"
+
+#: src/speed-pitch/speed-pitch.c:264
+msgid "Speed and Pitch"
+msgstr "Hastighed og tonehøjde"
+
+#: src/statusicon/statusicon.c:390
+msgid ""
+"Status Icon Plugin\n"
+"\n"
+"Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"This plugin provides a status icon, placed in\n"
+"the system tray area of the window manager."
+msgstr ""
+
+#: src/statusicon/statusicon.c:397
+msgid "<b>Mouse Scroll Action</b>"
+msgstr ""
+
+#: src/statusicon/statusicon.c:398
+msgid "Change volume"
+msgstr "Ændr lydstyrke"
+
+#: src/statusicon/statusicon.c:401
+msgid "Change playing song"
+msgstr "Ændr sang der afspilles"
+
+#: src/statusicon/statusicon.c:404
+msgid "<b>Other Settings</b>"
+msgstr "<b>Andre indstillinger</b>"
+
+#: src/statusicon/statusicon.c:405
+msgid "Disable the popup window"
+msgstr "Deaktiver pop op-vinduet"
+
+#: src/statusicon/statusicon.c:407
+msgid "Close to the system tray"
+msgstr ""
+
+#: src/statusicon/statusicon.c:409
+msgid "Advance in playlist when scrolling upward"
+msgstr "Gå fremad i afspilningslisten når der rulles opad"
+
+#: src/statusicon/statusicon.c:418
+msgid "Status Icon"
+msgstr "Statusikon"
+
+#: src/stereo_plugin/stereo.c:17
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin, 1999"
+msgstr ""
+
+#: src/stereo_plugin/stereo.c:25
+msgid "<b>Extra Stereo</b>"
+msgstr "<b>Ekstra stereo</b>"
+
+#: src/stereo_plugin/stereo.c:36
+msgid "Extra Stereo"
+msgstr "Ekstra stereo"
+
+#: src/tonegen/tonegen.c:84
+#, c-format
+msgid "%s %.1f Hz"
+msgstr "%s %.1f Hz"
+
+#: src/tonegen/tonegen.c:84
+msgid "Tone Generator: "
+msgstr "Tonegenerator:"
+
+#: src/tonegen/tonegen.c:197
+msgid ""
+"Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
+msgstr ""
+
+#: src/tonegen/tonegen.c:206
+msgid "Tone Generator"
+msgstr ""
+
+#: src/unix-io/unix-io.c:243
+msgid ""
+"File I/O Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
+msgstr ""
+
+#: src/unix-io/unix-io.c:266
+msgid "File I/O Plugin"
+msgstr "File I/O-udvidelsesmodul"
+
+#: src/voice_removal/voice_removal.c:58
+msgid "Voice Removal"
+msgstr "Stemmefjernelse"
+
+#: src/vorbis/vorbis.c:555
+msgid ""
+"Audacious Ogg Vorbis Decoder\n"
+"\n"
+"Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Original code by:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Contributions from:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
+msgstr ""
+
+#: src/vorbis/vorbis.c:575
+msgid "Ogg Vorbis Decoder"
+msgstr "Ogg Vorbis-afkoder"
+
+#: src/vtx/vtx.c:242
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+
+#: src/vtx/vtx.c:248
+msgid "VTX Decoder"
+msgstr "VTX-afkoder"
+
+#: src/wavpack/wavpack.c:282
+msgid "lossy (hybrid)"
+msgstr "kvalitetstab (hybrid)"
+
+#: src/wavpack/wavpack.c:284
+msgid "lossy"
+msgstr "kvalitetstab"
+
+#: src/wavpack/wavpack.c:334
+msgid ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Some of the plugin code was by Miles Egan."
+msgstr ""
+
+#: src/wavpack/wavpack.c:341
+msgid "WavPack Decoder"
+msgstr "WavPack-afkoder"
+
+#: src/xsf/plugin.c:272
+msgid "2SF Decoder"
+msgstr "2SF-afkoder"
+
+#: src/xspf/xspf.c:440
+msgid "XML Shareable Playlists (XSPF)"
+msgstr "XML Shareable-afspilningslister (XSPF)"
