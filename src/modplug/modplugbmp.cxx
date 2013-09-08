@@ -17,6 +17,7 @@
 extern "C" {
 #include <libaudcore/audstrings.h>
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 }
 
 #include "archive/open.h"
@@ -143,13 +144,13 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
     return false;
 }
 
-void ModplugXMMS::PlayLoop(InputPlayback *playback)
+void ModplugXMMS::PlayLoop()
 {
     uint32_t lLength;
 
-    while (! playback->check_stop ())
+    while (! aud_input_check_stop ())
     {
-        int seek_time = playback->check_seek ();
+        int seek_time = aud_input_check_seek ();
         if (seek_time != -1)
             mSoundFile->SetCurrentPos (seek_time * (int64_t)
              mSoundFile->GetMaxPosition () / (mSoundFile->GetSongTime () * 1000));
@@ -188,7 +189,7 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
             }
         }
 
-        playback->output->write_audio (mBuffer, mBufSize);
+        aud_input_write_audio (mBuffer, mBufSize);
     }
 
     //Unload the file
@@ -202,7 +203,7 @@ void ModplugXMMS::PlayLoop(InputPlayback *playback)
     }
 }
 
-bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
+bool ModplugXMMS::PlayFile(const string& aFilename)
 {
     //open and mmap the file
     mArchive = OpenArchive(aFilename);
@@ -284,16 +285,16 @@ bool ModplugXMMS::PlayFile(const string& aFilename, InputPlayback *ipb)
 
     Tuple* ti = GetSongTuple( aFilename );
     if ( ti ) {
-        ipb->set_tuple(ipb,ti);
+        aud_input_set_tuple(ti);
     }
 
-    ipb->set_params(ipb, mSoundFile->GetNumChannels() * 1000, mModProps.mFrequency, mModProps.mChannels);
+    aud_input_set_bitrate(mSoundFile->GetNumChannels() * 1000);
 
     int fmt = (mModProps.mBits == 16) ? FMT_S16_NE : FMT_U8;
-    if (! ipb->output->open_audio (fmt, mModProps.mFrequency, mModProps.mChannels))
+    if (! aud_input_open_audio(fmt, mModProps.mFrequency, mModProps.mChannels))
         return false;
 
-    this->PlayLoop(ipb);
+    PlayLoop();
 
     return true;
 }

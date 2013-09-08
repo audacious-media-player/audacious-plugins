@@ -45,6 +45,7 @@
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
@@ -86,7 +87,7 @@ static int monitor_source = 0;
 
 static bool_t cdaudio_init (void);
 static int cdaudio_is_our_file (const char * filename, VFSFile * file);
-static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file);
+static bool_t cdaudio_play (const char * name, VFSFile * file);
 static void cdaudio_cleanup (void);
 static Tuple * make_tuple (const char * filename, VFSFile * file);
 static void scan_cd (void);
@@ -275,7 +276,7 @@ static void cdaudio_set_fullinfo (trackinfo_t * t,
 }
 
 /* play thread only */
-static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file)
+static bool_t cdaudio_play (const char * name, VFSFile * file)
 {
     pthread_mutex_lock (& mutex);
 
@@ -299,7 +300,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file
         cdaudio_error (_("Track %d not found."), trackno);
     else if (! cdda_track_audiop (pcdrom_drive, trackno))
         cdaudio_error (_("Track %d is a data track."), trackno);
-    else if (! p->output->open_audio (FMT_S16_LE, 44100, 2))
+    else if (! aud_input_open_audio (FMT_S16_LE, 44100, 2))
         cdaudio_error (_("Failed to open audio output."));
     else
         okay = TRUE;
@@ -315,7 +316,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file
 
     playing = TRUE;
 
-    p->set_params (p, 1411200, 44100, 2);
+    aud_input_set_bitrate (1411200);
 
     int buffer_size = aud_get_int (NULL, "output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");
@@ -325,9 +326,9 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file
     int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
 
-    while (! p->check_stop ())
+    while (! aud_input_check_stop ())
     {
-        int seek_time = p->check_seek ();
+        int seek_time = aud_input_check_seek ();
         if (seek_time >= 0)
             currlsn = startlsn + (seek_time * 75 / 1000);
 
@@ -343,7 +344,7 @@ static bool_t cdaudio_play (InputPlayback * p, const char * name, VFSFile * file
          currlsn, sectors);
 
         if (ret == DRIVER_OP_SUCCESS)
-            p->output->write_audio (buffer, 2352 * sectors);
+            aud_input_write_audio (buffer, 2352 * sectors);
 
         pthread_mutex_lock (& mutex);
 

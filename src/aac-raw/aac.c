@@ -5,6 +5,7 @@
 
 #include <neaacdec.h>
 
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
@@ -340,8 +341,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
     }
 }
 
-static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
- VFSFile * file)
+static bool_t my_decode_aac (const char * filename, VFSFile * file)
 {
     NeAACDecHandle decoder = 0;
     NeAACDecConfigurationPtr decoder_config;
@@ -349,7 +349,7 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
     unsigned char channels = 0;
     int bitrate = 0;
 
-    Tuple * tuple = playback->get_tuple (playback);
+    Tuple * tuple = aud_input_get_tuple ();
 
     if (tuple != NULL)
     {
@@ -417,23 +417,23 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
     if (tuple && aac_title_changed (filename, file, tuple))
     {
         tuple_ref (tuple);
-        playback->set_tuple (playback, tuple);
+        aud_input_set_tuple (tuple);
     }
 
     /* == START PLAYBACK == */
 
-    if (! playback->output->open_audio (FMT_FLOAT, samplerate, channels))
+    if (! aud_input_open_audio (FMT_FLOAT, samplerate, channels))
         goto ERR_CLOSE_DECODER;
 
-    playback->set_params (playback, bitrate, samplerate, channels);
+    aud_input_set_bitrate (bitrate);
 
     /* == MAIN LOOP == */
 
-    while (! playback->check_stop ())
+    while (! aud_input_check_stop ())
     {
         /* == HANDLE SEEK REQUESTS == */
 
-        int seek_value = playback->check_seek ();
+        int seek_value = aud_input_check_seek ();
 
         if (seek_value >= 0)
         {
@@ -453,7 +453,7 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
         if (tuple && aac_title_changed (filename, file, tuple))
         {
             tuple_ref (tuple);
-            playback->set_tuple (playback, tuple);
+            aud_input_set_tuple (tuple);
         }
 
         /* == DECODE A FRAME == */
@@ -486,7 +486,7 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
         /* == PLAY THE SOUND == */
 
         if (audio && info.samples)
-            playback->output->write_audio (audio, sizeof (float) * info.samples);
+            aud_input_write_audio (audio, sizeof (float) * info.samples);
     }
 
     NeAACDecClose (decoder);

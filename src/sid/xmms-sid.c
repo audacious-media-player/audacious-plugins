@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 
 #include "xs_sidplay2.h"
@@ -110,14 +111,12 @@ void xs_close(void)
 /*
  * Start playing the given file
  */
-bool_t xs_play_file(InputPlayback *pb, const char *filename, VFSFile *file)
+bool_t xs_play_file(const char *filename, VFSFile *file)
 {
     xs_tuneinfo_t *tmpTune;
     int audioBufSize, bufRemaining, tmpLength, subTune = -1;
     char *audioBuffer = NULL, *oversampleBuffer = NULL;
     Tuple *tmpTuple;
-
-    assert(pb);
 
     uri_parse (filename, NULL, NULL, NULL, & subTune);
 
@@ -178,8 +177,7 @@ bool_t xs_play_file(InputPlayback *pb, const char *filename, VFSFile *file)
     }
 
     /* Open the audio output */
-    if (!pb->output->open_audio(FMT_S16_NE, xs_status.audioFrequency,
-     channels))
+    if (!aud_input_open_audio(FMT_S16_NE, xs_status.audioFrequency, channels))
     {
         xs_error("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
             FMT_S16_NE,
@@ -197,29 +195,28 @@ bool_t xs_play_file(InputPlayback *pb, const char *filename, VFSFile *file)
 
     pthread_mutex_unlock(&xs_status_mutex);
 
-    pb->set_tuple(pb, tmpTuple);
-    pb->set_params (pb, -1, xs_status.audioFrequency, channels);
+    aud_input_set_tuple(tmpTuple);
 
-    while (! pb->check_stop ())
+    while (! aud_input_check_stop ())
     {
         bufRemaining = xs_sidplayfp_fillbuffer(&xs_status, audioBuffer, audioBufSize);
 
-        pb->output->write_audio (audioBuffer, bufRemaining);
+        aud_input_write_audio (audioBuffer, bufRemaining);
 
         /* Check if we have played enough */
         if (xs_cfg.playMaxTimeEnable) {
             if (xs_cfg.playMaxTimeUnknown) {
                 if (tmpLength < 0 &&
-                    pb->output->written_time() >= xs_cfg.playMaxTime * 1000)
+                    aud_input_written_time() >= xs_cfg.playMaxTime * 1000)
                     break;
             } else {
-                if (pb->output->written_time() >= xs_cfg.playMaxTime * 1000)
+                if (aud_input_written_time() >= xs_cfg.playMaxTime * 1000)
                     break;
             }
         }
 
         if (tmpLength >= 0) {
-            if (pb->output->written_time() >= tmpLength * 1000)
+            if (aud_input_written_time() >= tmpLength * 1000)
                 break;
         }
     }

@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
@@ -49,7 +50,7 @@ typedef struct {
     int32_t (*start)(uint8_t *buffer, uint32_t length);
     int32_t (*stop)(void);
     int32_t (*seek)(uint32_t);
-    int32_t (*execute)(InputPlayback *data);
+    int32_t (*execute)(void);
 } PSFEngineFunctors;
 
 static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
@@ -127,7 +128,7 @@ Tuple *psf2_tuple(const char *filename, VFSFile *file)
 	return t;
 }
 
-static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * file)
+static bool_t psf2_play(const char * filename, VFSFile * file)
 {
 	void *buffer;
 	int64_t size;
@@ -154,13 +155,13 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 		return FALSE;
 	}
 
-	data->output->open_audio(FMT_S16_NE, 44100, 2);
+	aud_input_open_audio(FMT_S16_NE, 44100, 2);
 
-	data->set_params(data, 44100*2*2*8, 44100, 2);
+	aud_input_set_bitrate(44100*2*2*8);
 
 	stop_flag = FALSE;
 
-	f->execute(data);
+	f->execute();
 	f->stop();
 
 	f = NULL;
@@ -170,15 +171,15 @@ static bool_t psf2_play(InputPlayback * data, const char * filename, VFSFile * f
 	return ! error;
 }
 
-void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
+void psf2_update(unsigned char *buffer, long count)
 {
-	if (! buffer || playback->check_stop ())
+	if (! buffer || aud_input_check_stop ())
 	{
 		stop_flag = TRUE;
 		return;
 	}
 
-	int seek = playback->check_seek ();
+	int seek = aud_input_check_seek ();
 
 	if (seek >= 0)
 	{
@@ -186,7 +187,7 @@ void psf2_update(unsigned char *buffer, long count, InputPlayback *playback)
 		return;
 	}
 
-	playback->output->write_audio (buffer, count);
+	aud_input_write_audio (buffer, count);
 }
 
 int psf2_is_our_fd(const char *filename, VFSFile *file)

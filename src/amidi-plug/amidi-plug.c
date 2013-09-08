@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
@@ -40,10 +41,9 @@ enum
     AMIDIPLUG_ERR
 };
 
-static void amidiplug_play_loop (InputPlayback * playback);
+static void amidiplug_play_loop (void);
 
-static bool_t amidiplug_play (InputPlayback * playback, const char *
-                              filename_uri, VFSFile * file);
+static bool_t amidiplug_play (const char * filename_uri, VFSFile * file);
 static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
 static void amidiplug_skipto (int playing_tick);
 
@@ -139,24 +139,22 @@ static int s_samplerate, s_channels;
 static int s_bufsize;
 static void * s_buf;
 
-static bool_t audio_init (InputPlayback * playback)
+static bool_t audio_init (void)
 {
     int bitdepth;
 
     backend->audio_info_get (& s_channels, & bitdepth, & s_samplerate);
 
-    if (bitdepth != 16 || ! playback->output->open_audio (FMT_S16_NE, s_samplerate, s_channels))
+    if (bitdepth != 16 || ! aud_input_open_audio (FMT_S16_NE, s_samplerate, s_channels))
         return FALSE;
 
     s_bufsize = 2 * s_channels * (s_samplerate / 4);
     s_buf = malloc (s_bufsize);
 
-    playback->set_params (playback, 0, s_samplerate, s_channels);
-
     return TRUE;
 }
 
-static void audio_generate (InputPlayback * playback, double seconds)
+static void audio_generate (double seconds)
 {
     int total = 2 * s_channels * (int) round (seconds * s_samplerate);
 
@@ -165,7 +163,7 @@ static void audio_generate (InputPlayback * playback, double seconds)
         int chunk = (total < s_bufsize) ? total : s_bufsize;
 
         backend->generate_audio (s_buf, chunk);
-        playback->output->write_audio (s_buf, chunk);
+        aud_input_write_audio (s_buf, chunk);
 
         total -= chunk;
     }
@@ -176,10 +174,9 @@ static void audio_cleanup (void)
     free (s_buf);
 }
 
-static bool_t amidiplug_play (InputPlayback * playback, const char *
-                              filename_uri, VFSFile * file)
+static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
 {
-    if (! audio_init (playback))
+    if (! audio_init ())
         return FALSE;
 
     DEBUGMSG ("PLAY requested, midifile init\n");
@@ -229,7 +226,7 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
         /* play play play! */
         DEBUGMSG ("PLAY requested, starting play thread\n");
         amidiplug_playing_status = AMIDIPLUG_PLAY;
-        amidiplug_play_loop (playback);
+        amidiplug_play_loop ();
         break;
     }
 
@@ -246,14 +243,14 @@ static bool_t amidiplug_play (InputPlayback * playback, const char *
     return TRUE;
 }
 
-static void generate_to_tick (InputPlayback * playback, int tick)
+static void generate_to_tick (int tick)
 {
     double ticksecs = (double) midifile.current_tempo / midifile.ppq / 1000000;
-    audio_generate (playback, ticksecs * (tick - midifile.playing_tick));
+    audio_generate (ticksecs * (tick - midifile.playing_tick));
     midifile.playing_tick = tick;
 }
 
-static void amidiplug_play_loop (InputPlayback * playback)
+static void amidiplug_play_loop ()
 {
     bool_t stopped = FALSE;
 
@@ -263,9 +260,9 @@ static void amidiplug_play_loop (InputPlayback * playback)
     for (int j = 0; j < midifile.num_tracks; ++j)
         midifile.tracks[j].current_event = midifile.tracks[j].first_event;
 
-    while (! (stopped = playback->check_stop ()))
+    while (! (stopped = aud_input_check_stop ()))
     {
-        int seektime = playback->check_seek ();
+        int seektime = aud_input_check_seek ();
         if (seektime >= 0)
             amidiplug_skipto ((int64_t) seektime * 1000 / midifile.avg_microsec_per_tick);
 
@@ -294,7 +291,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
         event_track->current_event = event->next;
 
         if (event->tick > midifile.playing_tick)
-            generate_to_tick (playback, event->tick);
+            generate_to_tick (event->tick);
 
         switch (event->type)
         {
@@ -352,7 +349,7 @@ static void amidiplug_play_loop (InputPlayback * playback)
     }
 
     if (! stopped)
-        generate_to_tick (playback, midifile.max_tick);
+        generate_to_tick (midifile.max_tick);
 
     backend->reset ();
 

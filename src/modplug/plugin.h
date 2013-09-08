@@ -11,7 +11,7 @@ extern "C" {
 
 void InitSettings (const ModplugSettings * settings);
 int CanPlayFileFromVFS (const char * filename, VFSFile * file);
-bool_t PlayFile (InputPlayback * data, const char * filename, VFSFile * file);
+bool_t PlayFile (const char * filename, VFSFile * file);
 Tuple * GetSongTuple (const char * filename, VFSFile * file);
 
 #ifdef __cplusplus

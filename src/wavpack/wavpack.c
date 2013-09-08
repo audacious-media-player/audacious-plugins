@@ -6,6 +6,7 @@
 #include <audacious/audtag.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 
 #define BUFFER_SIZE 256 /* read buffer size, in samples / frames */
@@ -101,8 +102,7 @@ static void wv_deattach (VFSFile * wvc_input, WavpackContext * ctx)
     WavpackCloseFile(ctx);
 }
 
-static bool_t wv_play (InputPlayback * playback, const char * filename,
- VFSFile * file)
+static bool_t wv_play (const char * filename, VFSFile * file)
 {
     if (file == NULL)
         return FALSE;
@@ -128,7 +128,7 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
     bits_per_sample = WavpackGetBitsPerSample(ctx);
     num_samples = WavpackGetNumSamples(ctx);
 
-    if (!playback->output->open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
+    if (!aud_input_open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
         fprintf (stderr, "Error opening audio output.");
         error = TRUE;
@@ -140,14 +140,11 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
     if (input == NULL || output == NULL)
         goto error_exit;
 
-    playback->set_gain_from_playlist(playback);
+    aud_input_set_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
 
-    playback->set_params(playback, (int) WavpackGetAverageBitrate(ctx, num_channels),
-        sample_rate, num_channels);
-
-    while (! playback->check_stop ())
+    while (! aud_input_check_stop ())
     {
-        int seek_value = playback->check_seek ();
+        int seek_value = aud_input_check_seek ();
         if (seek_value >= 0)
             WavpackSeekSample (ctx, (int64_t) seek_value * sample_rate / 1000);
 
@@ -189,7 +186,7 @@ static bool_t wv_play (InputPlayback * playback, const char * filename,
                     *wp4 = *rp;
             }
 
-            playback->output->write_audio(output, ret * num_channels * SAMPLE_SIZE(bits_per_sample));
+            aud_input_write_audio(output, ret * num_channels * SAMPLE_SIZE(bits_per_sample));
         }
     }
 

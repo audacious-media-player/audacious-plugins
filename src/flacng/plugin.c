@@ -22,6 +22,7 @@
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 
 #include "flacng.h"
@@ -119,8 +120,7 @@ static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
     }
 }
 
-static bool_t flac_play (InputPlayback * playback, const char * filename,
- VFSFile * file)
+static bool_t flac_play (const char * filename, VFSFile * file)
 {
     if (!file)
         return FALSE;
@@ -144,22 +144,21 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
         goto ERR_NO_CLOSE;
     }
 
-    if (! playback->output->open_audio (SAMPLE_FMT (info->bits_per_sample),
+    if (! aud_input_open_audio (SAMPLE_FMT (info->bits_per_sample),
         info->sample_rate, info->channels))
     {
         error = TRUE;
         goto ERR_NO_CLOSE;
     }
 
-    playback->set_params(playback, info->bitrate, info->sample_rate, info->channels);
-    playback->set_gain_from_playlist(playback);
+    aud_input_set_bitrate(info->bitrate);
 
     while (FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_END_OF_STREAM)
     {
-        if (playback->check_stop ())
+        if (aud_input_check_stop ())
             break;
 
-        int seek_value = playback->check_seek ();
+        int seek_value = aud_input_check_seek ();
         if (seek_value >= 0)
             FLAC__stream_decoder_seek_absolute (decoder, (int64_t)
              seek_value * info->sample_rate / 1000);
@@ -173,7 +172,7 @@ static bool_t flac_play (InputPlayback * playback, const char * filename,
         }
 
         squeeze_audio(info->output_buffer, play_buffer, info->buffer_used, info->bits_per_sample);
-        playback->output->write_audio(play_buffer, info->buffer_used * SAMPLE_SIZE(info->bits_per_sample));
+        aud_input_write_audio(play_buffer, info->buffer_used * SAMPLE_SIZE(info->bits_per_sample));
 
         reset_info(info);
     }

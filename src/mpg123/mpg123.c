@@ -32,6 +32,7 @@
 #include <libaudcore/audstrings.h>
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 #include <audacious/audtag.h>
 
@@ -269,8 +270,7 @@ update_stream_metadata(VFSFile *file, const char *name, Tuple *tuple, int item)
 	return changed;
 }
 
-static Tuple * get_stream_tuple (InputPlayback * p, const char * filename,
- VFSFile * file)
+static Tuple * get_stream_tuple (const char * filename, VFSFile * file)
 {
 	Tuple * tuple = mpg123_probe_for_tuple (filename, file);
 	if (! tuple)
@@ -280,19 +280,18 @@ static Tuple * get_stream_tuple (InputPlayback * p, const char * filename,
 	update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST);
 
 	tuple_ref (tuple);
-	p->set_tuple (p, tuple);
+	aud_input_set_tuple (tuple);
 
 	return tuple;
 }
 
-static void update_stream_tuple (InputPlayback * p, VFSFile * file,
- Tuple * tuple)
+static void update_stream_tuple (VFSFile * file, Tuple * tuple)
 {
 	if (update_stream_metadata (file, "track-name", tuple, FIELD_TITLE) ||
 	 update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST))
 	{
 		tuple_ref (tuple);
-		p->set_tuple (p, tuple);
+		aud_input_set_tuple (tuple);
 	}
 }
 
@@ -301,8 +300,7 @@ static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
 	fprintf (stderr, "mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
 }
 
-static bool_t mpg123_playback_worker (InputPlayback * data, const char *
- filename, VFSFile * file)
+static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
 {
 	bool_t error = FALSE;
 	MPG123PlaybackContext ctx;
@@ -320,7 +318,7 @@ static bool_t mpg123_playback_worker (InputPlayback * data, const char *
 
 	AUDDBG ("Checking for streaming ...\n");
 	ctx.stream = vfs_is_streaming (file);
-	ctx.tu = ctx.stream ? get_stream_tuple (data, filename, file) : NULL;
+	ctx.tu = ctx.stream ? get_stream_tuple (filename, file) : NULL;
 
 	ctx.decoder = mpg123_new (NULL, NULL);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
@@ -367,19 +365,17 @@ GET_FORMAT:
 		goto OPEN_ERROR;
 
 	bitrate = fi.bitrate * 1000;
-	data->set_params (data, bitrate, ctx.rate, ctx.channels);
+	aud_input_set_bitrate (bitrate);
 
-	if (! data->output->open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
+	if (! aud_input_open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
 	{
 		error = TRUE;
 		goto cleanup;
 	}
 
-	data->set_gain_from_playlist (data);
-
-	while (! data->check_stop ())
+	while (! aud_input_check_stop ())
 	{
-		int seek = data->check_seek ();
+		int seek = aud_input_check_seek ();
 
 		if (seek >= 0)
 		{
@@ -394,18 +390,17 @@ GET_FORMAT:
 		bitrate_count ++;
 
 		if (bitrate_sum / bitrate_count != bitrate && abs
-		 (data->output->written_time () - bitrate_updated) >= 1000)
+		 (aud_input_written_time () - bitrate_updated) >= 1000)
 		{
-			data->set_params (data, bitrate_sum / bitrate_count * 1000,
-			 ctx.rate, ctx.channels);
+			aud_input_set_bitrate (bitrate_sum / bitrate_count * 1000);
 			bitrate = bitrate_sum / bitrate_count;
 			bitrate_sum = 0;
 			bitrate_count = 0;
-			bitrate_updated = data->output->written_time ();
+			bitrate_updated = aud_input_written_time ();
 		}
 
 		if (ctx.stream)
-			update_stream_tuple (data, file, ctx.tu);
+			update_stream_tuple (file, ctx.tu);
 
 		if (! outbuf_size && (ret = mpg123_read (ctx.decoder, (void *) outbuf,
 		 sizeof outbuf, & outbuf_size)) < 0)
@@ -425,7 +420,7 @@ GET_FORMAT:
 		{
 			error_count = 0;
 
-			data->output->write_audio (outbuf, outbuf_size);
+			aud_input_write_audio (outbuf, outbuf_size);
 			outbuf_size = 0;
 		}
 	}

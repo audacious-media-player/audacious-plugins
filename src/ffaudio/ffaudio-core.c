@@ -32,6 +32,7 @@
 
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/debug.h>
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
@@ -401,8 +402,7 @@ static gboolean ffaudio_write_tag (const char * filename, VFSFile * file, const 
     return tag_tuple_write(tuple, file, TAG_TYPE_NONE);
 }
 
-static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
- VFSFile * file)
+static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
 {
     AUDDBG ("Playing %s.\n", filename);
     if (! file)
@@ -458,24 +458,22 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
     /* Open audio output */
     AUDDBG("opening audio output\n");
 
-    if (playback->output->open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels) <= 0)
+    if (aud_input_open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels) <= 0)
     {
         error = TRUE;
         goto error_exit;
     }
 
-    playback->set_gain_from_playlist(playback);
-
     AUDDBG("setting parameters\n");
 
-    playback->set_params(playback, ic->bit_rate, cinfo.context->sample_rate, cinfo.context->channels);
+    aud_input_set_bitrate(ic->bit_rate);
 
     errcount = 0;
     seekable = ffaudio_codec_is_seekable(cinfo.codec);
 
-    while (! playback->check_stop ())
+    while (! aud_input_check_stop ())
     {
-        int seek_value = playback->check_seek ();
+        int seek_value = aud_input_check_seek ();
 
         if (seek_value >= 0 && seekable)
         {
@@ -521,11 +519,11 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
         /* Decode and play packet/frame */
         memcpy(&tmp, &pkt, sizeof(tmp));
-        while (tmp.size > 0 && ! playback->check_stop ())
+        while (tmp.size > 0 && ! aud_input_check_stop ())
         {
             /* Check for seek request and bail out if we have one */
             if (seek_value < 0)
-                seek_value = playback->check_seek ();
+                seek_value = aud_input_check_seek ();
 
             if (seek_value >= 0)
                 break;
@@ -558,10 +556,10 @@ static gboolean ffaudio_play (InputPlayback * playback, const gchar * filename,
 
                 audio_interlace ((const void * *) frame->data, out_fmt,
                  cinfo.context->channels, buf, frame->nb_samples);
-                playback->output->write_audio (buf, size);
+                aud_input_write_audio (buf, size);
             }
             else
-                playback->output->write_audio (frame->data[0], size);
+                aud_input_write_audio (frame->data[0], size);
 
             av_free (frame);
         }

@@ -17,6 +17,7 @@
  */
 
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
@@ -91,8 +92,7 @@ static gchar *tone_title(const gchar * filename)
     return title;
 }
 
-static gboolean tone_play(InputPlayback *playback, const gchar *filename,
-    VFSFile *file)
+static gboolean tone_play(const gchar *filename, VFSFile *file)
 {
     GArray *frequencies;
     gfloat data[BUF_SAMPLES];
@@ -108,13 +108,13 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
     if (frequencies == NULL)
         return FALSE;
 
-    if (playback->output->open_audio(FMT_FLOAT, OUTPUT_FREQ, 1) == 0)
+    if (aud_input_open_audio(FMT_FLOAT, OUTPUT_FREQ, 1) == 0)
     {
         error = TRUE;
         goto error_exit;
     }
 
-    playback->set_params(playback, 16 * OUTPUT_FREQ, OUTPUT_FREQ, 1);
+    aud_input_set_bitrate(16 * OUTPUT_FREQ);
 
     tone = g_malloc(frequencies->len * sizeof(*tone));
     for (i = 0; i < frequencies->len; i++)
@@ -125,7 +125,7 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
         tone[i].t = 0;
     }
 
-    while (!playback->check_stop())
+    while (!aud_input_check_stop())
     {
         for (i = 0; i < BUF_SAMPLES; i++)
         {
@@ -143,7 +143,7 @@ static gboolean tone_play(InputPlayback *playback, const gchar *filename,
             data[i] = (sum_sines * 0.999 / (gdouble) frequencies->len);
         }
 
-        playback->output->write_audio(data, BUF_BYTES);
+        aud_input_write_audio(data, BUF_BYTES);
     }
 
 error_exit:

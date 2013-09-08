@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
@@ -110,7 +111,7 @@ static int xsf_get_length(const char *filename)
 	return c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 }
 
-static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile * file)
+static bool_t xsf_play(const char * filename, VFSFile * file)
 {
 	void *buffer;
 	int64_t size;
@@ -132,23 +133,23 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 		goto ERR_NO_CLOSE;
 	}
 
-	if (!playback->output->open_audio(FMT_S16_NE, 44100, 2))
+	if (!aud_input_open_audio(FMT_S16_NE, 44100, 2))
 	{
 		error = TRUE;
 		goto ERR_NO_CLOSE;
 	}
 
-	playback->set_params(playback, 44100*2*2*8, 44100, 2);
+	aud_input_set_bitrate(44100*2*2*8);
 
-	while (! playback->check_stop ())
+	while (! aud_input_check_stop ())
 	{
-		int seek_value = playback->check_seek ();
+		int seek_value = aud_input_check_seek ();
 
 		if (seek_value >= 0)
 		{
-			if (seek_value > playback->output->written_time ())
+			if (seek_value > aud_input_written_time ())
 			{
-				pos = playback->output->written_time ();
+				pos = aud_input_written_time ();
 
 				while (pos < seek_value)
 				{
@@ -156,7 +157,7 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 					pos += 16.666;
 				}
 			}
-			else if (seek_value < playback->output->written_time ())
+			else if (seek_value < aud_input_written_time ())
 			{
 				xsf_term();
 
@@ -178,9 +179,9 @@ static bool_t xsf_play(InputPlayback * playback, const char * filename, VFSFile 
 		}
 
 		xsf_gen(samples, seglen);
-		playback->output->write_audio((uint8_t *)samples, seglen * 4);
+		aud_input_write_audio((uint8_t *)samples, seglen * 4);
 
-		if (playback->output->written_time() >= length)
+		if (aud_input_written_time() >= length)
 			goto CLEANUP;
 	}
 

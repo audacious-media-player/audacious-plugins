@@ -29,6 +29,7 @@
 #include "players.h"
 
 extern "C" {
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
@@ -76,8 +77,6 @@ static struct
   unsigned int subsong, songlength;
   char * filename;
 } plr = {0, 0, 0, 0, NULL};
-
-static InputPlayback *playback;
 
 /***** Debugging *****/
 
@@ -146,8 +145,7 @@ extern "C" Tuple * adplug_get_tuple (const char * filename, VFSFile * fd)
 // Define sampsize macro (only usable inside play_loop()!)
 #define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
 
-static bool_t play_loop (InputPlayback * playback, const char * filename,
- VFSFile * fd)
+static bool_t play_loop (const char * filename, VFSFile * fd)
 /* Main playback thread. Takes the filename to play as argument. */
 {
   dbg_printf ("play_loop(\"%s\"): ", filename);
@@ -186,7 +184,7 @@ static bool_t play_loop (InputPlayback * playback, const char * filename,
 
   // Set XMMS main window information
   dbg_printf ("xmms, ");
-  playback->set_params (playback, freq * sampsize * 8, freq, stereo ? 2 : 1);
+  aud_input_set_bitrate (freq * sampsize * 8);
 
   // Rewind player to right subsong
   dbg_printf ("rewind, ");
@@ -196,15 +194,15 @@ static bool_t play_loop (InputPlayback * playback, const char * filename,
   dbg_printf ("loop.\n");
   while ((playing || conf.endless))
   {
-    if (playback->check_stop ())
+    if (aud_input_check_stop ())
       break;
 
-    int seek = playback->check_seek ();
+    int seek = aud_input_check_seek ();
 
     // seek requested ?
     if (seek != -1)
     {
-      int time = playback->output->written_time ();
+      int time = aud_input_written_time ();
 
       // backward seek ?
       if (seek < time)
@@ -235,7 +233,7 @@ static bool_t play_loop (InputPlayback * playback, const char * filename,
       toadd -= (long) (plr.p->getrefresh () * i);
     }
 
-    playback->output->write_audio (sndbuf, SNDBUFSIZE * sampsize);
+    aud_input_write_audio (sndbuf, SNDBUFSIZE * sampsize);
   }
 
   // free everything and exit
@@ -275,23 +273,20 @@ adplug_is_our_fd (const char * filename, VFSFile * fd)
 /***** Player control *****/
 
 extern "C" bool_t
-adplug_play (InputPlayback * data, const char * filename, VFSFile * file)
+adplug_play (const char * filename, VFSFile * file)
 {
-  playback = data;
   dbg_printf ("adplug_play(\"%s\"): ", filename);
   audio_error = FALSE;
 
   // open output plugin
   dbg_printf ("open, ");
-  if (!playback->output->
-      open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq,
-                  conf.stereo ? 2 : 1))
+  if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
   {
     audio_error = TRUE;
     return TRUE;
   }
 
-  play_loop (playback, filename, file);
+  play_loop (filename, file);
   return FALSE;
 }
 

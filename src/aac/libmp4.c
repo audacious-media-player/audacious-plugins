@@ -8,6 +8,7 @@
 #include "mp4ff.h"
 #include "tagging.h"
 
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
@@ -154,8 +155,7 @@ static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
     return tuple;
 }
 
-static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
- mp4ff_t * mp4file)
+static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
 {
     // We are reading an MP4 file
     int mp4track = getAACTrack (mp4file);
@@ -205,17 +205,16 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
     }
     numSamples = mp4ff_num_samples (mp4file, mp4track);
 
-    if (!playback->output->open_audio (FMT_FLOAT, samplerate, channels))
+    if (!aud_input_open_audio (FMT_FLOAT, samplerate, channels))
     {
         NeAACDecClose (decoder);
         return FALSE;
     }
 
-    playback->set_tuple (playback, generate_tuple (filename, mp4file, mp4track));
-    playback->set_params (playback, mp4ff_get_avg_bitrate (mp4file, mp4track),
-     samplerate, channels);
+    aud_input_set_tuple (generate_tuple (filename, mp4file, mp4track));
+    aud_input_set_bitrate (mp4ff_get_avg_bitrate (mp4file, mp4track));
 
-    while (! playback->check_stop ())
+    while (! aud_input_check_stop ())
     {
         void *sampleBuffer;
         NeAACDecFrameInfo frameInfo;
@@ -272,7 +271,7 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
 
         /* Respond to seek/stop requests.  This needs to be done after we
          * calculate frame size but of course before we write any audio. */
-        int seek_value = playback->check_seek ();
+        int seek_value = aud_input_check_seek ();
 
         if (seek_value >= 0)
         {
@@ -280,7 +279,7 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
             continue;
         }
 
-        playback->output->write_audio (sampleBuffer, sizeof (float) * frameInfo.samples);
+        aud_input_write_audio (sampleBuffer, sizeof (float) * frameInfo.samples);
     }
 
     NeAACDecClose (decoder);
@@ -288,8 +287,7 @@ static bool_t my_decode_mp4 (InputPlayback * playback, const char * filename,
     return TRUE;
 }
 
-static bool_t mp4_play (InputPlayback * playback, const char * filename,
- VFSFile * file)
+static bool_t mp4_play (const char * filename, VFSFile * file)
 {
     bool_t result;
 
@@ -300,7 +298,7 @@ static bool_t mp4_play (InputPlayback * playback, const char * filename,
     };
 
     mp4ff_t * mp4file = mp4ff_open_read (& mp4cb);
-    result = my_decode_mp4 (playback, filename, mp4file);
+    result = my_decode_mp4 (filename, mp4file);
     mp4ff_close (mp4file);
 
     return result;

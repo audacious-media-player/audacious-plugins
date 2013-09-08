@@ -21,6 +21,7 @@
 #include <strings.h>
 
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/debug.h>
@@ -83,8 +84,7 @@ Tuple *vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return NULL;
 }
 
-static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
- VFSFile * file)
+static gboolean vtx_play(const gchar * filename, VFSFile * file)
 {
     gboolean eof = FALSE;
     void *stream;               /* pointer to current position in sound buffer */
@@ -115,18 +115,18 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
     ayemu_set_chip_freq(&ay, vtx.hdr.chipFreq);
     ayemu_set_stereo(&ay, vtx.hdr.stereo, NULL);
 
-    if (playback->output->open_audio(FMT_S16_NE, freq, chans) == 0)
+    if (aud_input_open_audio(FMT_S16_NE, freq, chans) == 0)
     {
         g_print("libvtx: output audio error!\n");
         return FALSE;
     }
 
-    playback->set_params(playback, 14 * 50 * 8, freq, bits / 8);
+    aud_input_set_bitrate(14 * 50 * 8);
 
-    while (!playback->check_stop() && !eof)
+    while (!aud_input_check_stop() && !eof)
     {
         /* (time in sec) * 50 = offset in AY register data frames */
-        int seek_value = playback->check_seek();
+        int seek_value = aud_input_check_seek();
         if (seek_value >= 0)
             vtx.pos = seek_value / 20;
 
@@ -158,7 +158,7 @@ static gboolean vtx_play(InputPlayback * playback, const gchar * filename,
             }
         }
 
-        playback->output->write_audio(sndbuf, SNDBUFSIZE);
+        aud_input_write_audio(sndbuf, SNDBUFSIZE);
     }
 
     ayemu_vtx_free(&vtx);

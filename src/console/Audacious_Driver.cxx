@@ -11,6 +11,7 @@
 
 extern "C" {
 #include <libaudcore/audstrings.h>
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 }
 
@@ -206,8 +207,7 @@ extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return NULL;
 }
 
-extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
-    VFSFile *file)
+extern "C" gboolean console_play(const gchar *filename, VFSFile *file)
 {
     gint length, sample_rate;
     track_info_t info;
@@ -264,7 +264,7 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
         {
             length = tuple_get_int(ti, FIELD_LENGTH, NULL);
             tuple_unref(ti);
-            playback->set_params(playback, fh.m_emu->voice_count() * 1000, sample_rate, 2);
+            aud_input_set_bitrate(fh.m_emu->voice_count() * 1000);
         }
     }
 
@@ -274,7 +274,7 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
 
     log_warning(fh.m_emu);
 
-    if (!playback->output->open_audio(FMT_S16_NE, sample_rate, 2))
+    if (!aud_input_open_audio(FMT_S16_NE, sample_rate, 2))
         return FALSE;
 
     // set fade time
@@ -284,10 +284,10 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
         length -= fade_length / 2;
     fh.m_emu->set_fade(length, fade_length);
 
-    while (!playback->check_stop())
+    while (!aud_input_check_stop())
     {
         /* Perform seek, if requested */
-        int seek_value = playback->check_seek();
+        int seek_value = aud_input_check_seek();
         if (seek_value >= 0)
             fh.m_emu->seek(seek_value);
 
@@ -297,7 +297,7 @@ extern "C" gboolean console_play(InputPlayback *playback, const gchar *filename,
 
         fh.m_emu->play(buf_size, buf);
 
-        playback->output->write_audio(buf, sizeof(buf));
+        aud_input_write_audio(buf, sizeof(buf));
 
         if (fh.m_emu->track_ended())
             break;

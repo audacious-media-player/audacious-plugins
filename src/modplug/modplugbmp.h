@@ -50,7 +50,7 @@ public:
 
     bool CanPlayFileFromVFS(const std::string& aFilename, VFSFile *file);
 
-    bool PlayFile(const std::string& aFilename, InputPlayback *data);
+    bool PlayFile(const std::string& aFilename);
 
     Tuple* GetSongTuple(const std::string& aFilename);
 
@@ -69,7 +69,7 @@ private:
 
     float mPreampFactor;
 
-    void PlayLoop(InputPlayback *);
+    void PlayLoop();
 };
 
 #endif //included

@@ -43,6 +43,7 @@
 
 #include <sndfile.h>
 
+#include <audacious/input.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
@@ -283,8 +284,7 @@ static Tuple * get_song_tuple (const char * filename, VFSFile * file)
     return ti;
 }
 
-static bool_t play_start (InputPlayback * playback, const char * filename,
- VFSFile * file)
+static bool_t play_start (const char * filename, VFSFile * file)
 {
     if (file == NULL)
         return FALSE;
@@ -295,24 +295,19 @@ static bool_t play_start (InputPlayback * playback, const char * filename,
     if (sndfile == NULL)
         return FALSE;
 
-    if (! playback->output->open_audio (FMT_FLOAT, sfinfo.samplerate,
+    if (! aud_input_open_audio (FMT_FLOAT, sfinfo.samplerate,
      sfinfo.channels))
     {
         sf_close (sndfile);
         return FALSE;
     }
 
-    /* Fix me!  Find out bitrate from libsndfile.  The old calculation was based
-     * on the decoded data and therefore wrong for anything but floating-point
-     * files. */
-    playback->set_params (playback, 0, sfinfo.samplerate, sfinfo.channels);
-
     int size = sfinfo.channels * (sfinfo.samplerate / 50);
     float * buffer = malloc (sizeof (float) * size);
 
-    while (! playback->check_stop ())
+    while (! aud_input_check_stop ())
     {
-        int seek_value = playback->check_seek ();
+        int seek_value = aud_input_check_seek ();
         if (seek_value != -1)
             sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
 
@@ -320,7 +315,7 @@ static bool_t play_start (InputPlayback * playback, const char * filename,
         if (! samples)
             break;
 
-        playback->output->write_audio (buffer, sizeof (float) * samples);
+        aud_input_write_audio (buffer, sizeof (float) * samples);
     }
 
     sf_close (sndfile);

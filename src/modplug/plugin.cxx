@@ -23,9 +23,9 @@ int CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
     return 0;
 }
 
-bool_t PlayFile(InputPlayback * data, const char * filename, VFSFile * file)
+bool_t PlayFile(const char * filename, VFSFile * file)
 {
-    return gModplugXMMS.PlayFile(filename, data);
+    return gModplugXMMS.PlayFile(filename);
 }
 
 Tuple* GetSongTuple(const char* aFilename, VFSFile *fd)

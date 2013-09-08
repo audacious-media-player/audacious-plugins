@@ -38,6 +38,7 @@
 #include <vorbis/vorbisfile.h>
 
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
@@ -280,8 +281,7 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 #define PCM_FRAMES 1024
 #define PCM_BUFSIZE (PCM_FRAMES * 2)
 
-static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
- VFSFile * file)
+static gboolean vorbis_play (const gchar * filename, VFSFile * file)
 {
     if (file == NULL)
         return FALSE;
@@ -314,15 +314,15 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
     channels = vi->channels;
     samplerate = vi->rate;
 
-    playback->set_params (playback, br, samplerate, channels);
+    aud_input_set_bitrate (br);
 
-    if (!playback->output->open_audio(FMT_FLOAT, samplerate, channels)) {
+    if (!aud_input_open_audio(FMT_FLOAT, samplerate, channels)) {
         error = TRUE;
         goto play_cleanup;
     }
 
     vorbis_update_replaygain(&vf, &rg_info);
-    playback->output->set_replaygain_info (& rg_info);
+    aud_input_set_gain (& rg_info);
 
     /*
      * Note that chaining changes things here; A vorbis file may
@@ -331,9 +331,9 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
      * using the ov_ interface.
      */
 
-    while (! playback->check_stop ())
+    while (! aud_input_check_stop ())
     {
-        int seek_value = playback->check_seek();
+        int seek_value = aud_input_check_seek();
         if (seek_value >= 0)
             ov_time_seek (& vf, (double) seek_value / 1000);
 
@@ -357,7 +357,7 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
                 g_free (title);
                 title = g_strdup (new_title);
 
-                playback->set_tuple (playback, get_tuple_for_vorbisfile (& vf,
+                aud_input_set_tuple (get_tuple_for_vorbisfile (& vf,
                  filename));
             }
         }
@@ -379,25 +379,23 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
                 samplerate = vi->rate;
                 channels = vi->channels;
 
-                if (!playback->output->open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
+                if (!aud_input_open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
                     error = TRUE;
                     goto stop_processing;
                 }
 
-                // FIXME: Audacious core should handle this automatically
-                // playback->output->flush(ov_time_tell(&vf) * 1000);
                 vorbis_update_replaygain(&vf, &rg_info);
-                playback->output->set_replaygain_info (& rg_info); /* audio reopened */
+                aud_input_set_gain (& rg_info); /* audio reopened */
             }
         }
 
-        playback->output->write_audio (pcmout, bytes);
+        aud_input_write_audio (pcmout, bytes);
 
 stop_processing:
 
         if (current_section != last_section)
         {
-            playback->set_params (playback, br, samplerate, channels);
+            aud_input_set_bitrate (br);
             last_section = current_section;
         }
     } /* main loop */

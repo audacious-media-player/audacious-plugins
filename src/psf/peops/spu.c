@@ -132,7 +132,7 @@ static const int f[5][2] = {
 s16 * pS;
 static s32 ttemp;
 
-extern void psf2_update(unsigned char *samples, long lBytes, void *data);
+extern void psf2_update(unsigned char *samples, long lBytes);
 
 ////////////////////////////////////////////////////////////////////////
 // CODE AREA
@@ -217,7 +217,7 @@ void setlength(s32 stop, s32 fade)
 }
 
 #define CLIP(_x) {if(_x>32767) _x=32767; if(_x<-32767) _x=-32767;}
-int SPUasync(u32 cycles, void *data)
+int SPUasync(u32 cycles)
 {
  int volmul=iVolume;
  static s32 dosampies;
@@ -468,7 +468,7 @@ int SPUasync(u32 cycles, void *data)
    {
     if(sampcount>=decayend)
     {
-	    psf2_update(NULL, 0, data);
+	    psf2_update(NULL, 0);
 	    return(0);
     }
     dmul=256-(256*(sampcount-decaybegin)/(decayend-decaybegin));
@@ -523,7 +523,7 @@ int SPUasync(u32 cycles, void *data)
 
    if (iSilenceCount < 20)
 #endif
-     psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
+     psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
 
    pS=(short *)pSpuBuffer;
  }

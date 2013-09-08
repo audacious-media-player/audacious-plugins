@@ -20,6 +20,7 @@
 #include <string.h>
 
 #include <audacious/i18n.h>
+#include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
@@ -129,8 +130,7 @@ static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, char 
     return TRUE;
 }
 
-static bool_t metronom_play(InputPlayback *playback, const char *filename,
-    VFSFile *file)
+static bool_t metronom_play (const char * filename, VFSFile * file)
 {
     metronom_t pmetronom;
     int16_t data[BUF_SAMPLES];
@@ -141,7 +141,7 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
     int datalast = datamiddle;
     int data_form[TACT_FORM_MAX];
 
-    if (playback->output->open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
+    if (aud_input_open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
         return FALSE;
 
     if (!metronom_get_cp(filename, &pmetronom, NULL))
@@ -150,7 +150,7 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
         return FALSE;
     }
 
-    playback->set_params(playback, sizeof(data[0]) * 8 * AUDIO_FREQ, AUDIO_FREQ, 1);
+    aud_input_set_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
 
     tact = 60 * AUDIO_FREQ / pmetronom.bpm;
 
@@ -161,7 +161,7 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
     }
 
     num = 0;
-    while (!playback->check_stop())
+    while (!aud_input_check_stop())
     {
         int i;
 
@@ -193,7 +193,7 @@ static bool_t metronom_play(InputPlayback *playback, const char *filename,
             t++;
         }
 
-        playback->output->write_audio(data, BUF_BYTES);
+        aud_input_write_audio(data, BUF_BYTES);
     }
 
     return TRUE;

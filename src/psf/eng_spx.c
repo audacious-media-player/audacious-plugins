@@ -123,7 +123,7 @@ int32_t spx_start(uint8_t *buffer, uint32_t length)
 	return AO_SUCCESS;
 }
 
-extern int SPUasync(uint32_t cycles, void *data);
+extern int SPUasync(uint32_t cycles);
 static void spx_tick(void)
 {
 	uint32_t time, reg, size;
@@ -212,7 +212,7 @@ static void spx_tick(void)
 	cur_tick++;
 }
 
-int32_t spx_execute(InputPlayback *playback)
+int32_t spx_execute(void)
 {
 	int i, run = 1;
 
@@ -228,7 +228,7 @@ int32_t spx_execute(InputPlayback *playback)
 			for (i = 0; i < 44100 / 60; i++)
 			{
 			  	spx_tick();
-				SPUasync(384, (void *) playback);
+				SPUasync(384);
 			}
 		}
 	}

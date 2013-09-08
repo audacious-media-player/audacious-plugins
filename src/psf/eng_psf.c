@@ -374,14 +374,14 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	return AO_SUCCESS;
 }
 
-int32_t psf_execute(InputPlayback *playback)
+int32_t psf_execute(void)
 {
 	int i;
 
 	while (!stop_flag) {
 		for (i = 0; i < 44100 / 60; i++) {
 			psx_hw_slice();
-			SPUasync(384, (void *) playback);
+			SPUasync(384);
 		}
 
 		psx_hw_frame();
