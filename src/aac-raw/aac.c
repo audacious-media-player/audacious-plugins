@@ -5,6 +5,7 @@
 
 #include <neaacdec.h>
 
+#include <audacious/drct.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 
@@ -347,21 +348,15 @@ static bool_t my_decode_aac (InputPlayback * playback, const char * filename,
     NeAACDecConfigurationPtr decoder_config;
     unsigned long samplerate = 0;
     unsigned char channels = 0;
-    Tuple *tuple;
     int bitrate = 0;
 
-    tuple = aac_get_tuple (filename, file);
+    Tuple * tuple = aud_drct_get_tuple ();
+
     if (tuple != NULL)
     {
-        tuple_ref (tuple);
-        playback->set_tuple (playback, tuple);
-
         bitrate = tuple_get_int (tuple, FIELD_BITRATE, NULL);
         bitrate = 1000 * MAX (0, bitrate);
     }
-
-    if (vfs_fseek (file, 0, SEEK_SET) < 0)
-        goto ERR;
 
     if ((decoder = NeAACDecOpen ()) == NULL)
     {
