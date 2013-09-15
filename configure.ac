@@ -8,10 +8,8 @@ AC_PREREQ([2.59])
 AC_INIT([audacious-plugins], [3.5-devel])
 AC_COPYRIGHT([(C) 2005-2013 Audacious Team])
 
-AC_SUBST([PACKAGE], [AC_PACKAGE_TARNAME])
-AC_SUBST([VERSION], [AC_PACKAGE_VERSION])
-AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE", [Name of package])
-AC_DEFINE_UNQUOTED([VERSION], "$VERSION", [Version number of package])
+AC_DEFINE_UNQUOTED([PACKAGE], "$AC_PACKAGE_NAME", [Name of package])
+AC_DEFINE_UNQUOTED([VERSION], "$AC_PACKAGE_VERSION", [Version number of package])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
@@ -988,16 +986,6 @@ AC_SUBST(GENERAL_PLUGIN_DIR)
 AC_SUBST(VISUALIZATION_PLUGIN_DIR)
 AC_SUBST(CONTAINER_PLUGIN_DIR)
 AC_SUBST(TRANSPORT_PLUGIN_DIR)
-AC_SUBST(pluginsubs)
-
-dnl XXX Work around some autoconf bugs.
-if test "x$prefix" = "xNONE"; then
-        prefix="${ac_default_prefix}"
-fi
-
-if test -z "$datadir"; then
-    datadir="${prefix}/share"
-fi
 
 localedir="$datarootdir/locale"
 AC_SUBST(localedir)
@@ -1009,7 +997,6 @@ AC_SUBST(OUTPUT_PLUGINS)
 AC_SUBST(VISUALIZATION_PLUGINS)
 AC_SUBST(CONTAINER_PLUGINS)
 AC_SUBST(TRANSPORT_PLUGINS)
-AC_SUBST(GCC42_CFLAGS)
 
 
 dnl Reliably #include "config.h" (for large file support)
