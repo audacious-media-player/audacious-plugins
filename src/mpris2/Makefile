@@ -8,9 +8,9 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
-CPPFLAGS += -I../.. ${GLIB_CFLAGS} ${GIO_UNIX_CFLAGS}
+CPPFLAGS += -I../.. ${GLIB_CFLAGS} ${GIO_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lm ${GLIB_LIBS} ${GIO_UNIX_LIBS}
+LIBS += -lm ${GLIB_LIBS} ${GIO_LIBS}
 
 pre-depend: object-core.c object-core.h object-player.c object-player.h
 

@@ -17,9 +17,6 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_CANONICAL_HOST
-AC_CANONICAL_TARGET
-
 AUD_COMMON_PROGS
 
 BUILDSYS_SHARED_LIB
@@ -62,27 +59,7 @@ EFFECT_PLUGINS="compressor crossfade crystalizer ladspa mixer stereo_plugin voic
 GENERAL_PLUGINS="alarm albumart search-tool"
 VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
-TRANSPORT_PLUGINS="unix-io"
-
-dnl Check for GIO
-dnl =============
-
-AC_ARG_ENABLE(gio,
- [AS_HELP_STRING([--disable-gio], [disable GIO support])],
- [enable_gio=$enableval], [enable_gio=auto])
-
-have_gio=no
-if test "x$enable_gio" != "xno"; then
-    PKG_CHECK_MODULES(GIO, [gio-2.0 >= 2.22],
-        [have_gio=yes
-         TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS gio"
-         AC_SUBST(GIO_CFLAGS)
-         AC_SUBST(GIO_LIBS)],
-        [if test "x$enable_gio" = "xyes"; then
-            AC_MSG_ERROR([Cannot find GIO development files (ver >= 2.22), but compilation of GIO support has been explicitly requested; please install GIO dev files and run configure again])
-         fi]
-    )
-fi
+TRANSPORT_PLUGINS="unix-io gio"
 
 dnl Console
 dnl =======
@@ -327,20 +304,18 @@ dnl MPRIS 2 (requires GDBus)
 dnl ========================
 
 AC_ARG_ENABLE(mpris2,
- [AS_HELP_STRING([--disable-mpris2], [disable MPRIS 2 support (default=enabled)])],
- [enable_mpris2=$enableval], [enable_mpris2=auto])
+ AS_HELP_STRING(--disable-mpris2, [disable MPRIS 2 support (default=auto)]),
+ enable_mpris2=$enableval, enable_mpris2=auto)
 
-have_mpris2=no
-if test "x$enable_mpris2" != "xno"; then
-    PKG_CHECK_MODULES([GIO_UNIX], [gio-unix-2.0 >= 2.30],
-        [have_mpris2=yes
-         GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
-         AC_SUBST(GIO_UNIX_CFLAGS)
-         AC_SUBST(GIO_UNIX_LIBS)],
-        [if test "x$enable_mpris2" = "xyes"; then
-            AC_MSG_ERROR([Cannot find GIO-UNIX development files (ver >= 2.30), but compilation of MPRIS 2 support has been explicitly requested; please install GIO-UNIX dev files and run configure again])
-         fi]
-    )
+if test $enable_mpris2 = no ; then
+	have_mpris2=no
+else
+	AC_CHECK_PROG(have_mpris2, gdbus-codegen, yes, no)
+	if test $have_mpris2 = yes ; then
+		GENERAL_PLUGINS="$GENERAL_PLUGINS mpris2"
+	elif test $enable_mpris2 = yes ; then
+		AC_MSG_ERROR([MPRIS 2 plugin could not be enabled; check config.log])
+	fi
 fi
 
 dnl *** AdPlug requirement (libbinio)
