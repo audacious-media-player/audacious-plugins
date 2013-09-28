@@ -1,6 +1,6 @@
 /*
  * OpenGL Spectrum Analyzer for Audacious
- * Copyright 2013 Christophe Budé and John Lindgren
+ * Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini
  *
  * Based on the XMMS plugin:
  * Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and
@@ -27,11 +27,19 @@
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 
-#include <gdk/gdkx.h>
+#include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
 #include <GL/gl.h>
+
+#ifdef GDK_WINDOWING_X11
 #include <GL/glx.h>
+#include <gdk/gdkx.h>
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+#include <gdk/gdkwin32.h>
+#endif
 
 #define NUM_BANDS 32
 #define DB_RANGE 40
@@ -42,7 +50,18 @@
 static float logscale[NUM_BANDS + 1];
 static float colors[NUM_BANDS][NUM_BANDS][3];
 
+#ifdef GDK_WINDOWING_X11
+static Display * s_display;
+static Window s_xwindow;
 static GLXContext s_context;
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+static HWND s_hwnd;
+static HDC s_hdc;
+static HGLRC s_glrc;
+#endif
+
 static GtkWidget * s_widget = NULL;
 
 static int s_pos = 0;
@@ -200,10 +219,15 @@ static void draw_bars (void)
 
 static bool_t draw_cb (GtkWidget * widget, cairo_t * cr)
 {
-    Display * xdisplay = GDK_SCREEN_XDISPLAY (gdk_screen_get_default ());
-    Window xwindow = GDK_WINDOW_XID (gtk_widget_get_window (widget));
+#ifdef GDK_WINDOWING_X11
+    if (! s_context)
+        return FALSE;
+#endif
 
-    glXMakeCurrent (xdisplay, xwindow, s_context);
+#ifdef GDK_WINDOWING_WIN32
+    if (! s_glrc)
+        return FALSE;
+#endif
 
     GtkAllocation alloc;
     gtk_widget_get_allocation (widget, & alloc);
@@ -235,24 +259,27 @@ static bool_t draw_cb (GtkWidget * widget, cairo_t * cr)
     glDisable (GL_BLEND);
     glDepthMask (GL_TRUE);
 
-    glXSwapBuffers (xdisplay, xwindow);
+#ifdef GDK_WINDOWING_X11
+    glXSwapBuffers (s_display, s_xwindow);
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+    SwapBuffers (s_hdc);
+#endif
 
     return TRUE;
 }
 
-static /* GtkWidget * */ void * get_widget (void)
+static void widget_realized (void)
 {
-    if (s_widget)
-        return s_widget;
+    GdkWindow * window = gtk_widget_get_window (s_widget);
 
-    s_widget = gtk_drawing_area_new ();
-
-    g_signal_connect (s_widget, "draw", (GCallback) draw_cb, NULL);
-    g_signal_connect (s_widget, "destroy", (GCallback) gtk_widget_destroyed, & s_widget);
-
-    GdkScreen * screen = gdk_screen_get_default ();
-    Display * xdisplay = GDK_SCREEN_XDISPLAY (screen);
+#ifdef GDK_WINDOWING_X11
+    GdkScreen * screen = gdk_window_get_screen (window);
     int nscreen = GDK_SCREEN_XNUMBER (screen);
+
+    s_display = GDK_SCREEN_XDISPLAY (screen);
+    s_xwindow = GDK_WINDOW_XID (window);
 
     /* Create s_context */
     int attribs[] = {
@@ -266,12 +293,102 @@ static /* GtkWidget * */ void * get_widget (void)
      None
     };
 
-    XVisualInfo * xvinfo = glXChooseVisual (xdisplay, nscreen, attribs);
-    s_context = glXCreateContext (xdisplay, xvinfo, 0, True);
+    XVisualInfo * xvinfo = glXChooseVisual (s_display, nscreen, attribs);
+    g_return_if_fail (xvinfo);
 
     /* Fix up visual/colormap */
     GdkVisual * visual = gdk_x11_screen_lookup_visual (screen, xvinfo->visualid);
+    g_return_if_fail (visual);
+
     gtk_widget_set_visual (s_widget, visual);
+
+    s_context = glXCreateContext (s_display, xvinfo, 0, True);
+    g_return_if_fail (s_context);
+
+    XFree (xvinfo);
+
+    glXMakeCurrent (s_display, s_xwindow, s_context);
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+    s_hwnd = GDK_WINDOW_HWND (window);
+    s_hdc = GetDC (s_hwnd);
+
+    PIXELFORMATDESCRIPTOR desc = {
+     sizeof (PIXELFORMATDESCRIPTOR),
+     1,                                 // version number (?)
+     PFD_DRAW_TO_WINDOW |               // format must support window
+     PFD_SUPPORT_OPENGL |               // format must support OpenGL
+     PFD_DOUBLEBUFFER,                  // must support double buffering
+     PFD_TYPE_RGBA,                     // request an RGBA format
+     24,                                // select a 8:8:8 bit color depth
+     0, 0, 0, 0, 0, 0,                  // color bits ignored (?)
+     0,                                 // no alpha buffer
+     0,                                 // shift bit ignored (?)
+     0,                                 // no accumulation buffer
+     0, 0, 0, 0,                        // accumulation bits ignored (?)
+     16,                                // 16-bit z-buffer (depth buffer)
+     0,                                 // no stencil buffer
+     0,                                 // no auxiliary buffer (?)
+     PFD_MAIN_PLANE,                    // main drawing layer
+     0,                                 // reserved (?)
+     0, 0, 0                            // layer masks ignored (?)
+    };
+
+    int format = ChoosePixelFormat (s_hdc, & desc);
+    g_return_if_fail (format != 0);
+
+    SetPixelFormat (s_hdc, format, & desc);
+
+    s_glrc = wglCreateContext (s_hdc);
+    g_return_if_fail (s_glrc);
+
+    wglMakeCurrent (s_hdc, s_glrc);
+#endif
+}
+
+static void widget_destroyed (void)
+{
+    s_widget = NULL;
+
+#ifdef GDK_WINDOWING_X11
+    if (s_context)
+    {
+        glXDestroyContext (s_display, s_context);
+        s_context = NULL;
+    }
+
+    s_display = NULL;
+#endif
+
+#ifdef GDK_WINDOWING_WIN32
+    if (s_glrc)
+    {
+        wglMakeCurrent (s_hdc, NULL);
+        wglDeleteContext (s_glrc);
+        s_glrc = NULL;
+    }
+
+    if (s_hdc)
+    {
+        ReleaseDC (s_hwnd, s_hdc);
+        s_hdc = NULL;
+    }
+
+    s_hwnd = NULL;
+#endif
+}
+
+static /* GtkWidget * */ void * get_widget (void)
+{
+    if (s_widget)
+        return s_widget;
+
+    s_widget = gtk_drawing_area_new ();
+
+    g_signal_connect (s_widget, "draw", (GCallback) draw_cb, NULL);
+    g_signal_connect (s_widget, "realize", (GCallback) widget_realized, NULL);
+    g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, NULL);
 
     /* Disable GTK double buffering */
     gtk_widget_set_double_buffered (s_widget, FALSE);
@@ -281,7 +398,7 @@ static /* GtkWidget * */ void * get_widget (void)
 
 static const char about_text[] =
  N_("OpenGL Spectrum Analyzer for Audacious\n"
-    "Copyright 2013 Christophe Budé and John Lindgren\n\n"
+    "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n\n"
     "Based on the XMMS plugin:\n"
     "Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, "
     "and 4Front Technologies\n\n"

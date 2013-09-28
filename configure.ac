@@ -950,19 +950,28 @@ dnl OpenGL Spectrum Analyzer
 dnl ========================
 
 AC_ARG_ENABLE(glspectrum,
- [AS_HELP_STRING([--disable-glspectrum], [disable OpenGL Spectrum Analyzer (default=enabled)])],
+ [AS_HELP_STRING([--enable-glspectrum], [enable OpenGL Spectrum Analyzer (default=auto)])],
  [enable_glspectrum=$enableval], [enable_glspectrum=auto])
 
 have_glspectrum=no
-if test "x$enable_glspectrum" != "xno"; then
-    AC_CHECK_LIB([GL], [glXChooseVisual],
-        [have_glspectrum=yes
-         VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum"],
-        [if test "x$enable_glspectrum" = "xyes"; then
-            AC_MSG_ERROR([Cannot find GLX development files, but compilation of OpenGL Spectrum Analyzer has been explicitly requested; please install GLX dev files and run configure again])
-         fi]
-    )
+
+if test $enable_glspectrum != no ; then
+    if test $HAVE_MSWINDOWS = yes ; then
+        have_glspectrum=yes
+        GL_LIBS="-lopengl32"
+    else
+        AC_CHECK_LIB(GL, glXCreateContext, [have_glspectrum=yes], [have_glspectrum=no])
+        if test $have_glspectrum = yes ; then
+            GL_LIBS="-lGL -lX11"
+        fi
+    fi
+
+    if test $enable_glspectrum = yes && test $have_glspectrum = no ; then
+        AC_MSG_ERROR([Unable to enable OpenGL Spectrum Analyzer; check config.log])
+    fi
 fi
+
+AC_SUBST(GL_LIBS)
 
 dnl *** End of all plugin checks ***
 
