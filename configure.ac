@@ -8,8 +8,8 @@ AC_PREREQ([2.59])
 AC_INIT([audacious-plugins], [3.5-devel])
 AC_COPYRIGHT([(C) 2005-2013 Audacious Team])
 
-AC_DEFINE_UNQUOTED([PACKAGE], "$AC_PACKAGE_NAME", [Name of package])
-AC_DEFINE_UNQUOTED([VERSION], "$AC_PACKAGE_VERSION", [Version number of package])
+AC_DEFINE_UNQUOTED([PACKAGE], "$PACKAGE_NAME", [Name of package])
+AC_DEFINE_UNQUOTED([VERSION], "$PACKAGE_VERSION", [Version number of package])
 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
