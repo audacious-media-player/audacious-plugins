@@ -39,6 +39,8 @@
 /* Define to read all frame headers when calculating file length */
 /* #define FULL_SCAN */
 
+#define DECODE_OPTIONS (MPG123_QUIET | MPG123_GAPLESS | MPG123_SEEKBUFFER | MPG123_FUZZY)
+
 static ssize_t replace_read (void * file, void * buffer, size_t length)
 {
 	return vfs_fread (buffer, 1, length, file);
@@ -118,7 +120,7 @@ static bool_t mpg123_probe_for_fd (const char * fname, VFSFile * file)
 	}
 
 	mpg123_handle * dec = mpg123_new (NULL, NULL);
-	mpg123_param (dec, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+	mpg123_param (dec, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
 
 	if (is_streaming)
 		mpg123_replace_reader_handle (dec, replace_read, replace_lseek_dummy, NULL);
@@ -181,7 +183,7 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	struct mpg123_frameinfo info;
 	char scratch[32];
 
-	mpg123_param (decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
+	mpg123_param (decoder, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
 
 	if (stream)
 		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek_dummy, NULL);
@@ -321,9 +323,7 @@ static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
 	ctx.tu = ctx.stream ? get_stream_tuple (filename, file) : NULL;
 
 	ctx.decoder = mpg123_new (NULL, NULL);
-	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_QUIET, 0);
-	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_GAPLESS, 0);
-	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, MPG123_SEEKBUFFER, 0);
+	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
 
 	if (ctx.stream)
 		mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek_dummy, NULL);
