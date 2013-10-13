@@ -156,6 +156,8 @@ static void volume_down (void)
 }
 
 static gboolean menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible"); }
+static gboolean playlist_tabs_get (void) {return aud_get_bool ("gtkui", "playlist_tabs_visible"); }
+static void playlist_tabs_set (gboolean show) {aud_set_bool ("gtkui", "playlist_tabs_visible", show); show_playlist_tabs (); }
 static gboolean infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
 static gboolean infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
 static gboolean status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
@@ -262,6 +264,7 @@ static const struct MenuItem view_items[] = {
  {N_("_Visualizations"), .get_sub = audgui_create_vis_menu},
  {.sep = TRUE},
  {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL, .get = menu_bar_get, show_menu},
+ {N_("Always Show Playlist _Tabs"), NULL, 't', SHIFT | CTRL, .get = playlist_tabs_get, playlist_tabs_set},
  {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL, .get = infoarea_get, show_infoarea},
  {N_("Show Info Bar Vis_ualization"), .get = infoarea_vis_get, show_infoarea_vis},
  {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL, .get = status_bar_get, show_statusbar},

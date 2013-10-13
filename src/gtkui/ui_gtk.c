@@ -44,6 +44,7 @@ static const gchar * const gtkui_defaults[] = {
  "infoarea_show_vis", "TRUE",
  "infoarea_visible", "TRUE",
  "menu_visible", "TRUE",
+ "playlist_tabs_visible", "TRUE",
  "statusbar_visible", "TRUE",
  "entry_count_visible", "FALSE",
  "close_button_visible", "TRUE",
@@ -677,7 +678,7 @@ static void ui_hooks_associate(void)
     hook_associate ("playback pause", (HookFunction) pause_cb, NULL);
     hook_associate ("playback unpause", (HookFunction) pause_cb, NULL);
     hook_associate ("playback stop", (HookFunction) ui_playback_stop, NULL);
-    hook_associate("playlist update", ui_playlist_notebook_update, NULL);
+    hook_associate ("playlist update", ui_playlist_notebook_update, NULL);
     hook_associate ("playlist activate", ui_playlist_notebook_activate, NULL);
     hook_associate ("playlist set playing", ui_playlist_notebook_set_playing, NULL);
     hook_associate ("playlist position", ui_playlist_notebook_position, NULL);
@@ -967,6 +968,17 @@ void show_menu (gboolean show)
             g_signal_connect (menu_button, "toggled", (GCallback) menu_button_cb, NULL);
         }
     }
+}
+
+void show_playlist_tabs (void)
+{
+    gboolean single_pl = aud_playlist_count () > 1;
+    gboolean show_tabs = aud_get_bool ("gtkui", "playlist_tabs_visible");
+
+    show_tabs = single_pl || show_tabs;
+
+    gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, show_tabs);
+    gtk_notebook_set_show_border (UI_PLAYLIST_NOTEBOOK, show_tabs);
 }
 
 void show_infoarea (gboolean show)

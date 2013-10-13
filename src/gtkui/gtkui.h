@@ -34,6 +34,7 @@ void set_ab_repeat_a (void);
 void set_ab_repeat_b (void);
 void clear_ab_repeat (void);
 void show_menu (gboolean show);
+void show_playlist_tabs (void);
 void show_infoarea (gboolean show);
 void show_infoarea_vis (gboolean show);
 void show_statusbar (gboolean show);

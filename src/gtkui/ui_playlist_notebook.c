@@ -466,6 +466,8 @@ static void add_remove_pages (void)
     apply_column_widths (playlist_get_treeview (active));
     gtk_notebook_set_current_page ((GtkNotebook *) notebook, active);
 
+    show_playlist_tabs ();
+
     g_signal_handlers_unblock_by_func (notebook, (void *) tab_changed, NULL);
     g_signal_handlers_unblock_by_func (notebook, (void *) tab_reordered, NULL);
 }
@@ -557,12 +559,13 @@ GtkWidget * ui_playlist_notebook_new (void)
     gtk_notebook_set_scrollable ((GtkNotebook *) notebook, TRUE);
     make_add_button (notebook);
 
+    show_playlist_tabs ();
     hook_associate ("config save", (HookFunction) save_column_widths, NULL);
 
     gtk_widget_add_events (notebook, GDK_SCROLL_MASK);
     g_signal_connect (notebook, "scroll-event", (GCallback) scroll_cb, NULL);
-
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
+
     return notebook;
 }
 
