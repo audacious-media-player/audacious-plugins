@@ -978,7 +978,6 @@ void show_playlist_tabs (void)
     show_tabs = single_pl || show_tabs;
 
     gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, show_tabs);
-    gtk_notebook_set_show_border (UI_PLAYLIST_NOTEBOOK, show_tabs);
 }
 
 void show_infoarea (gboolean show)
