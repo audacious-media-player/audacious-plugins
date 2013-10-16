@@ -334,8 +334,13 @@ static gboolean vorbis_play (const gchar * filename, VFSFile * file)
     while (! aud_input_check_stop ())
     {
         int seek_value = aud_input_check_seek();
-        if (seek_value >= 0)
-            ov_time_seek (& vf, (double) seek_value / 1000);
+
+        if (seek_value >= 0 && ov_time_seek (& vf, (double) seek_value / 1000) < 0)
+        {
+            fprintf (stderr, "vorbis: seek failed\n");
+            error = TRUE;
+            break;
+        }
 
         gint current_section = last_section;
         bytes = ov_read_float(&vf, &pcm, PCM_FRAMES, &current_section);
