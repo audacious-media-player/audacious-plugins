@@ -710,9 +710,6 @@ static gboolean init (void)
 
     aud_config_set_defaults ("gtkui", gtkui_defaults);
 
-    audgui_set_default_icon();
-    audgui_register_stock_icons();
-
     pw_col_init ();
 
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -960,7 +957,8 @@ void show_menu (gboolean show)
 
         if (! menu_button)
         {
-            menu_button = gtk_toggle_tool_button_new_from_stock (AUD_STOCK_AUDACIOUS);
+            menu_button = gtk_toggle_tool_button_new ();
+            gtk_tool_button_set_icon_name ((GtkToolButton *) menu_button, "audacious");
             g_signal_connect (menu_button, "destroy", (GCallback)
              gtk_widget_destroyed, & menu_button);
             gtk_widget_show ((GtkWidget *) menu_button);

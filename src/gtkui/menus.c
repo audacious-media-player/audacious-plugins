@@ -248,8 +248,8 @@ static const struct MenuItem playlist_items[] = {
  {N_("_Import ..."), GTK_STOCK_OPEN, .func = audgui_import_playlist},
  {N_("_Export ..."), GTK_STOCK_SAVE, .func = audgui_export_playlist},
  {.sep = TRUE},
- {N_("Playlist _Manager ..."), AUD_STOCK_PLAYLIST, 'p', CTRL, .func = audgui_playlist_manager},
- {N_("_Queue Manager ..."), AUD_STOCK_QUEUETOGGLE, 'u', CTRL, .func = audgui_queue_manager_show}};
+ {N_("Playlist _Manager ..."), NULL, 'p', CTRL, .func = audgui_playlist_manager},
+ {N_("_Queue Manager ..."), NULL, 'u', CTRL, .func = audgui_queue_manager_show}};
 
 static const struct MenuItem output_items[] = {
  {N_("Volume _Up"), GTK_STOCK_GO_UP, '+', CTRL, .func = volume_up},
@@ -285,7 +285,7 @@ static const struct MenuItem main_items[] = {
 
 static const struct MenuItem rclick_items[] = {
  {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', ALT, .func = playlist_song_info},
- {N_("_Queue/Unqueue"), AUD_STOCK_QUEUETOGGLE, 'q', ALT, .func = playlist_queue_toggle},
+ {N_("_Queue/Unqueue"), NULL, 'q', ALT, .func = playlist_queue_toggle},
  {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F6, .func = pl_refresh_sel},
  {.sep = TRUE},
  {N_("Cu_t"), GTK_STOCK_CUT, .func = playlist_cut},

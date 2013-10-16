@@ -232,10 +232,10 @@ static GtkActionEntry action_entries_playlist[] = {
       N_("Refreshes metadata associated with a playlist entry."),
       G_CALLBACK(action_playlist_refresh_list) },
 
-    { "playlist manager", AUD_STOCK_PLAYLIST, N_("Playlist Manager"), "P", NULL,
+    { "playlist manager", NULL, N_("Playlist Manager"), "P", NULL,
       (GCallback) audgui_playlist_manager },
 
-    { "queue manager", AUD_STOCK_QUEUETOGGLE, N_("Queue Manager"), "<Ctrl>U", NULL,
+    { "queue manager", NULL, N_("Queue Manager"), "<Ctrl>U", NULL,
       (GCallback) audgui_queue_manager_show }
 };
 
@@ -388,7 +388,7 @@ static GtkActionEntry action_entries_others[] = {
     { "file", NULL, N_("File") },
     { "help", NULL, N_("Help") },
 
-    { "plugins-menu", AUD_STOCK_PLUGIN, N_("Plugin Services") },
+    { "plugins-menu", NULL, N_("Plugin Services") },
 
     { "current track info", GTK_STOCK_INFO , N_("View Track Details"), "I",
       N_("View track details"), G_CALLBACK(audgui_infowin_show_current) },
@@ -425,7 +425,7 @@ static GtkActionEntry action_entries_others[] = {
     { "jump to time", GTK_STOCK_JUMP_TO , N_("Jump to Time"), "<Ctrl>J",
       N_("Jump to Time"), (GCallback) audgui_jump_to_time },
 
-    { "queue toggle", AUD_STOCK_QUEUETOGGLE , N_("Queue Toggle"), "Q",
+    { "queue toggle", NULL , N_("Queue Toggle"), "Q",
       N_("Enables/disables the entry in the playlist's queue."),
       G_CALLBACK(action_queue_toggle) },
 

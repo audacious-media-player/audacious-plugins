@@ -97,9 +97,6 @@ static gboolean skins_init (void)
     skins_init_paths();
     skins_cfg_load();
 
-    audgui_set_default_icon();
-    audgui_register_stock_icons();
-
     ui_manager_init();
     ui_manager_create_menus();
 
