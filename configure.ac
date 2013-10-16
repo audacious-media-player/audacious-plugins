@@ -969,6 +969,10 @@ if test $enable_glspectrum != no ; then
     if test $enable_glspectrum = yes && test $have_glspectrum = no ; then
         AC_MSG_ERROR([Unable to enable OpenGL Spectrum Analyzer; check config.log])
     fi
+
+    if test $have_glspectrum = yes ; then
+        VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum"
+    fi
 fi
 
 AC_SUBST(GL_LIBS)
