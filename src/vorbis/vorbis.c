@@ -361,7 +361,14 @@ static gboolean vorbis_play (InputPlayback * playback, const gchar * filename,
 
         if (seek_value >= 0)
         {
-            ov_time_seek (& vf, (double) seek_value / 1000);
+            if (ov_time_seek (& vf, (double) seek_value / 1000) < 0)
+            {
+                fprintf (stderr, "vorbis: seek failed\n");
+                error = TRUE;
+                pthread_mutex_unlock (& seek_mutex);
+                break;
+            }
+
             playback->output->flush (seek_value);
             seek_value = -1;
         }
