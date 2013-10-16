@@ -23,6 +23,10 @@ AUD_COMMON_PROGS
 BUILDSYS_INIT
 BUILDSYS_SHARED_LIB
 
+dnl Disable deprecation warnings for stable branch
+dnl ==============================================
+CFLAGS="$CFLAGS -Wno-deprecated-declarations"
+
 dnl Headers and functions
 dnl =====================
 AC_CHECK_FUNCS([mkdtemp])
