@@ -105,10 +105,12 @@ static int xsf_get_length(const char *filename)
 		return -1;
 	}
 
+	int length = c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
+
 	free(c);
 	free(buf);
 
-	return c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
+	return length;
 }
 
 static bool_t xsf_play(const char * filename, VFSFile * file)
