@@ -39,6 +39,7 @@ callback_info *init_callback_info(void)
     if ((info->output_buffer = malloc (BUFFER_SIZE_BYTE)) == NULL)
     {
         FLACNG_ERROR("Could not allocate memory for output buffer!");
+        free (info);
         return NULL;
     }
 
