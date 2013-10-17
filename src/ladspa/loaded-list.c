@@ -58,14 +58,14 @@ static void select_all (void * user, int selected)
 
 static void shift_rows (void * user, int row, int before)
 {
-    pthread_mutex_lock (& mutex);
-
     int rows = index_count (loadeds);
     g_return_if_fail (row >= 0 && row < rows);
     g_return_if_fail (before >= 0 && before <= rows);
 
     if (before == row)
         return;
+
+    pthread_mutex_lock (& mutex);
 
     Index * move = index_new ();
     Index * others = index_new ();
