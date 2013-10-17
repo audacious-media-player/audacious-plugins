@@ -128,6 +128,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (svis_scope_colors[h]);
             }
+            break;
         case SCOPE_LINE:
             for (gint x = 0; x < 37; x++)
             {
