@@ -160,9 +160,6 @@ static void vorbis_write_real (void * data, gint length)
 
             while ((result = ogg_stream_pageout(&os, &og)))
             {
-                if (result == 0)
-                    break;
-
                 write_output(og.header, og.header_len);
                 write_output(og.body, og.body_len);
             }
