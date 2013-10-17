@@ -98,7 +98,7 @@ void mp4ff_close(mp4ff_t *ff)
     mp4ff_tag_delete(&(ff->tags));
 #endif
 
-    if (ff) free(ff);
+    free(ff);
 }
 
 void mp4ff_track_add(mp4ff_t *f)
