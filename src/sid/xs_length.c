@@ -190,6 +190,7 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
         }
     }
 
+    xs_sldb_node_free(tmnode);
     return NULL;
 }
 
