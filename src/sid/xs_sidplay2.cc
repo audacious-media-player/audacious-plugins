@@ -163,7 +163,7 @@ bool_t xs_sidplayfp_init(xs_status_t * status)
     engine->currConfig.forceSidModel = xs_cfg.forceModel;
 
     /* Now set the emulator configuration */
-    if (engine->currEng->config(engine->currConfig) < 0) {
+    if (!engine->currEng->config(engine->currConfig)) {
         xs_error("[SIDPlayFP] Emulator engine configuration failed!\n");
         return FALSE;
     }
@@ -226,7 +226,7 @@ bool_t xs_sidplayfp_initsong(xs_status_t * status)
         return FALSE;
     }
 
-    if (engine->currEng->load(engine->currTune) < 0) {
+    if (!engine->currEng->load(engine->currTune)) {
         xs_error("[SIDPlayFP] currEng->load() failed\n");
         return FALSE;
     }
