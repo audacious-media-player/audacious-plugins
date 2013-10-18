@@ -297,7 +297,11 @@ aosd_osd_create ( void )
   osd_data->fade_data.deco_code = osd_data->cfg_osd->decoration.code;
   osd_data->dalpha_in = 1.0 / ( osd_data->cfg_osd->animation.timing_fadein / (gfloat)AOSD_TIMING );
   osd_data->dalpha_out = 1.0 / ( osd_data->cfg_osd->animation.timing_fadeout / (gfloat)AOSD_TIMING );
-  osd_data->ddisplay_stay = 1.0 / ( osd_data->cfg_osd->animation.timing_display / (gfloat)AOSD_TIMING );
+  if (osd_data->cfg_osd->animation.timing_display) {
+      osd_data->ddisplay_stay = 1.0 / ( osd_data->cfg_osd->animation.timing_display / (gfloat)AOSD_TIMING );
+  } else {
+      osd_data->ddisplay_stay = 0;
+  }
   ghosd_set_render( osd , (GhosdRenderFunc)aosd_fade_func , &(osd_data->fade_data) , NULL );
 
   /* show the osd (with alpha 0, invisible) */

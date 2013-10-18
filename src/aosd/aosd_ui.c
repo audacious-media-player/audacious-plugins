@@ -275,7 +275,7 @@ aosd_ui_configure_animation_timing ( gchar * label_string )
   GtkWidget *hbox, *desc_label, *spinbt;
   hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
   desc_label = gtk_label_new( label_string );
-  spinbt = gtk_spin_button_new_with_range( 0 , 99999 , 1 );
+  spinbt = gtk_spin_button_new_with_range( 0 , 9999999 , 1 );
   gtk_box_pack_start( GTK_BOX(hbox) , desc_label , FALSE , FALSE , 0 );
   gtk_box_pack_start( GTK_BOX(hbox) , spinbt , FALSE , FALSE , 0 );
   g_object_set_data( G_OBJECT(hbox) , "spinbt" , spinbt );
