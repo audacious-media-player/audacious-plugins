@@ -170,32 +170,32 @@ static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll
 static void autoscroll_set (gboolean on) {aud_set_bool ("gtkui", "autoscroll", on); }
 
 static const struct MenuItem file_items[] = {
- {N_("_Open Files ..."), GTK_STOCK_OPEN, 'o', CTRL, .func = open_files},
- {N_("Open _URL ..."), GTK_STOCK_NETWORK, 'l', CTRL, .func = open_url},
- {N_("_Add Files ..."), GTK_STOCK_ADD, 'o', SHIFT | CTRL, .func = add_files},
- {N_("Add U_RL ..."), GTK_STOCK_NETWORK, 'l', SHIFT | CTRL, .func = add_url},
+ {N_("_Open Files ..."), "document-open", 'o', CTRL, .func = open_files},
+ {N_("Open _URL ..."), "folder-remote", 'l', CTRL, .func = open_url},
+ {N_("_Add Files ..."), "list-add", 'o', SHIFT | CTRL, .func = add_files},
+ {N_("Add U_RL ..."), "folder-remote", 'l', SHIFT | CTRL, .func = add_url},
  {.sep = TRUE},
- {N_("_Search Library"), GTK_STOCK_FIND, 'y', CTRL, .func = activate_search_tool},
+ {N_("_Search Library"), "edit-find", 'y', CTRL, .func = activate_search_tool},
  {.sep = TRUE},
- {N_("A_bout ..."), GTK_STOCK_ABOUT, .func = audgui_show_about_window},
- {N_("_Preferences ..."), GTK_STOCK_PREFERENCES, .func = aud_show_prefs_window},
- {N_("_Quit"), GTK_STOCK_QUIT, 'q', CTRL, .func = aud_drct_quit}};
+ {N_("A_bout ..."), "help-about", .func = audgui_show_about_window},
+ {N_("_Preferences ..."), "preferences-system", .func = aud_show_prefs_window},
+ {N_("_Quit"), "application-exit", 'q', CTRL, .func = aud_drct_quit}};
 
 static const struct MenuItem playback_items[] = {
- {N_("_Play"), GTK_STOCK_MEDIA_PLAY, GDK_KEY_Return, CTRL, .func = aud_drct_play},
- {N_("Paus_e"), GTK_STOCK_MEDIA_PAUSE, ',', CTRL, .func = aud_drct_pause},
- {N_("_Stop"), GTK_STOCK_MEDIA_STOP, '.', CTRL, .func = aud_drct_stop},
- {N_("Pre_vious"), GTK_STOCK_MEDIA_PREVIOUS, GDK_KEY_Up, ALT, .func = aud_drct_pl_prev},
- {N_("_Next"), GTK_STOCK_MEDIA_NEXT, GDK_KEY_Down, ALT, .func = aud_drct_pl_next},
+ {N_("_Play"), "media-playback-start", GDK_KEY_Return, CTRL, .func = aud_drct_play},
+ {N_("Paus_e"), "media-playback-pause", ',', CTRL, .func = aud_drct_pause},
+ {N_("_Stop"), "media-playback-stop", '.', CTRL, .func = aud_drct_stop},
+ {N_("Pre_vious"), "media-skip-backward", GDK_KEY_Up, ALT, .func = aud_drct_pl_prev},
+ {N_("_Next"), "media-skip-forward", GDK_KEY_Down, ALT, .func = aud_drct_pl_next},
  {.sep = TRUE},
  {N_("_Repeat"), NULL, 'r', CTRL, .get = repeat_get, repeat_set, "set repeat"},
  {N_("S_huffle"), NULL, 's', CTRL, .get = shuffle_get, shuffle_set, "set shuffle"},
  {N_("N_o Playlist Advance"), NULL, 'n', CTRL, .get = no_advance_get, no_advance_set, "set no_playlist_advance"},
  {N_("Stop A_fter This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
  {.sep = TRUE},
- {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', CTRL, .func = audgui_infowin_show_current},
- {N_("Jump to _Time ..."), GTK_STOCK_JUMP_TO, 'k', CTRL, .func = audgui_jump_to_time},
- {N_("_Jump to Song ..."), GTK_STOCK_JUMP_TO, 'j', CTRL, .func = audgui_jump_to_track},
+ {N_("Song _Info ..."), "dialog-information", 'i', CTRL, .func = audgui_infowin_show_current},
+ {N_("Jump to _Time ..."), "go-jump", 'k', CTRL, .func = audgui_jump_to_time},
+ {N_("_Jump to Song ..."), "go-jump", 'j', CTRL, .func = audgui_jump_to_track},
  {.sep = TRUE},
  {N_("Set Repeat Point _A"), NULL, '1', CTRL, .func = set_ab_repeat_a},
  {N_("Set Repeat Point _B"), NULL, '2', CTRL, .func = set_ab_repeat_b},
@@ -216,7 +216,7 @@ static const struct MenuItem sort_items[] = {
  {N_("By _File Path"), .func = pl_sort_path},
  {N_("By _Custom Title"), .func = pl_sort_custom},
  {.sep = TRUE},
- {N_("R_everse Order"), GTK_STOCK_SORT_DESCENDING, .func = pl_reverse},
+ {N_("R_everse Order"), "view-sort-descending", .func = pl_reverse},
  {N_("_Random Order"), .func = pl_random}};
 
  static const struct MenuItem sort_selected_items[] = {
@@ -229,33 +229,33 @@ static const struct MenuItem sort_items[] = {
  {N_("By _File Path"), .func = pl_sort_selected_path},
  {N_("By _Custom Title"), .func = pl_sort_selected_custom},
  {.sep = TRUE},
- {N_("R_everse Order"), GTK_STOCK_SORT_DESCENDING, .func = pl_reverse_selected},
+ {N_("R_everse Order"), "view-sort-descending", .func = pl_reverse_selected},
  {N_("_Random Order"), .func = pl_random_selected}};
 
 static const struct MenuItem playlist_items[] = {
- {N_("_Play This Playlist"), GTK_STOCK_MEDIA_PLAY, GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
- {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F5, .func = pl_refresh},
+ {N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
+ {N_("_Refresh"), "view-refresh", GDK_KEY_F5, .func = pl_refresh},
  {.sep = TRUE},
- {N_("_Sort"), GTK_STOCK_SORT_ASCENDING, .items = sort_items, G_N_ELEMENTS (sort_items)},
- {N_("Sort Se_lected"), GTK_STOCK_SORT_ASCENDING, .items = sort_selected_items, G_N_ELEMENTS (sort_selected_items)},
- {N_("Remove _Duplicates"), GTK_STOCK_REMOVE, .items = dupe_items, G_N_ELEMENTS (dupe_items)},
- {N_("Remove _Unavailable Files"), GTK_STOCK_REMOVE, .func = pl_remove_failed},
+ {N_("_Sort"), "view-sort-ascending", .items = sort_items, G_N_ELEMENTS (sort_items)},
+ {N_("Sort Se_lected"), "view-sort-ascending", .items = sort_selected_items, G_N_ELEMENTS (sort_selected_items)},
+ {N_("Remove _Duplicates"), "list-remove", .items = dupe_items, G_N_ELEMENTS (dupe_items)},
+ {N_("Remove _Unavailable Files"), "list-remove", .func = pl_remove_failed},
  {.sep = TRUE},
- {N_("_New"), GTK_STOCK_NEW, 't', CTRL, .func = pl_new},
- {N_("Ren_ame ..."), GTK_STOCK_EDIT, GDK_KEY_F2, .func = pl_rename},
- {N_("Remo_ve"), GTK_STOCK_DELETE, 'w', CTRL, .func = pl_close},
+ {N_("_New"), "document-new", 't', CTRL, .func = pl_new},
+ {N_("Ren_ame ..."), "insert-text", GDK_KEY_F2, .func = pl_rename},
+ {N_("Remo_ve"), "edit-delete", 'w', CTRL, .func = pl_close},
  {.sep = TRUE},
- {N_("_Import ..."), GTK_STOCK_OPEN, .func = audgui_import_playlist},
- {N_("_Export ..."), GTK_STOCK_SAVE, .func = audgui_export_playlist},
+ {N_("_Import ..."), "document-open", .func = audgui_import_playlist},
+ {N_("_Export ..."), "document-save", .func = audgui_export_playlist},
  {.sep = TRUE},
- {N_("Playlist _Manager ..."), NULL, 'p', CTRL, .func = audgui_playlist_manager},
+ {N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, .func = audgui_playlist_manager},
  {N_("_Queue Manager ..."), NULL, 'u', CTRL, .func = audgui_queue_manager_show}};
 
 static const struct MenuItem output_items[] = {
- {N_("Volume _Up"), GTK_STOCK_GO_UP, '+', CTRL, .func = volume_up},
- {N_("Volume _Down"), GTK_STOCK_GO_DOWN, '-', CTRL, .func = volume_down},
+ {N_("Volume _Up"), "audio-volume-high", '+', CTRL, .func = volume_up},
+ {N_("Volume _Down"), "audio-volume-low", '-', CTRL, .func = volume_down},
  {.sep = TRUE},
- {N_("_Equalizer"), GTK_STOCK_PREFERENCES, 'e', CTRL, .func = audgui_show_equalizer_window},
+ {N_("_Equalizer"), "multimedia-volume-control", 'e', CTRL, .func = audgui_show_equalizer_window},
  {.sep = TRUE},
  {N_("E_ffects"), .get_sub = audgui_create_effects_menu}};
 
@@ -284,21 +284,21 @@ static const struct MenuItem main_items[] = {
  {N_("_View"), .items = view_items, G_N_ELEMENTS (view_items)}};
 
 static const struct MenuItem rclick_items[] = {
- {N_("Song _Info ..."), GTK_STOCK_INFO, 'i', ALT, .func = playlist_song_info},
+ {N_("Song _Info ..."), "dialog-information", 'i', ALT, .func = playlist_song_info},
  {N_("_Queue/Unqueue"), NULL, 'q', ALT, .func = playlist_queue_toggle},
- {N_("_Refresh"), GTK_STOCK_REFRESH, GDK_KEY_F6, .func = pl_refresh_sel},
+ {N_("_Refresh"), "view-refresh", GDK_KEY_F6, .func = pl_refresh_sel},
  {.sep = TRUE},
- {N_("Cu_t"), GTK_STOCK_CUT, .func = playlist_cut},
- {N_("_Copy"), GTK_STOCK_COPY, .func = playlist_copy},
- {N_("_Paste"), GTK_STOCK_PASTE, .func = playlist_paste},
- {N_("Select _All"), GTK_STOCK_SELECT_ALL, .func = pl_select_all},
+ {N_("Cu_t"), "edit-cut", .func = playlist_cut},
+ {N_("_Copy"), "edit-copy", .func = playlist_copy},
+ {N_("_Paste"), "edit-paste", .func = playlist_paste},
+ {N_("Select _All"), "edit-select-all", .func = pl_select_all},
  {.sep = TRUE},
  {N_("_Services"), .get_sub = get_services_pl}};
 
 static const struct MenuItem tab_items[] = {
- {N_("_Play"), GTK_STOCK_MEDIA_PLAY, .func = pl_tab_play},
- {N_("_Rename ..."), GTK_STOCK_EDIT, .func = pl_tab_rename},
- {N_("_Remo_ve"), GTK_STOCK_DELETE, .func = pl_tab_close},
+ {N_("_Play"), "media-playback-start", .func = pl_tab_play},
+ {N_("_Rename ..."), "insert-text", .func = pl_tab_rename},
+ {N_("_Remo_ve"), "edit-delete", .func = pl_tab_close},
  {.sep = TRUE},
  {N_("Show _Entry Count"), .get = entry_count_get, playlist_show_entry_counts},
  {N_("Show Close _Buttons"), .get = close_button_get, playlist_show_close_buttons}};
@@ -332,12 +332,8 @@ static void populate_menu (GtkWidget * shell, const struct MenuItem * items,
 
         if (item->name && item->func) /* normal widget */
         {
-            widget = gtk_image_menu_item_new_with_mnemonic (_(item->name));
+            widget = audgui_menu_item_new (_(item->name), item->icon);
             g_signal_connect (widget, "activate", item->func, NULL);
-
-            if (item->icon)
-                gtk_image_menu_item_set_image ((GtkImageMenuItem *) widget,
-                 gtk_image_new_from_stock (item->icon, GTK_ICON_SIZE_MENU));
         }
         else if (item->name && item->get && item->set) /* toggle widget */
         {
@@ -357,11 +353,7 @@ static void populate_menu (GtkWidget * shell, const struct MenuItem * items,
         }
         else if (item->name && (item->items || item->get_sub)) /* submenu */
         {
-            widget = gtk_image_menu_item_new_with_mnemonic (_(item->name));
-
-            if (item->icon)
-                gtk_image_menu_item_set_image ((GtkImageMenuItem *) widget,
-                 gtk_image_new_from_stock (item->icon, GTK_ICON_SIZE_MENU));
+            widget = audgui_menu_item_new (_(item->name), item->icon);
 
             GtkWidget * sub;
 

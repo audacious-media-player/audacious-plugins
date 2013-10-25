@@ -39,8 +39,7 @@ static gboolean cd_init (void)
 {
     for (gint m = 0; m < N_MENUS; m ++)
         for (gint i = 0; i < N_ITEMS; i ++)
-            aud_plugin_menu_add (menus[m], funcs[i], _(titles[i]),
-             GTK_STOCK_CDROM);
+            aud_plugin_menu_add (menus[m], funcs[i], _(titles[i]), "media-optical");
 
     return TRUE;
 }
