@@ -176,21 +176,6 @@ void i_configure_ev_sflist_commit (void * sfont_lv)
 }
 
 
-void i_configure_ev_sfload_commit (void * sfload_radiobt)
-{
-    GSList * group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (sfload_radiobt));
-
-    while (group != NULL)
-    {
-        if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (group->data)))
-            aud_set_int ("amidiplug", "fsyn_soundfont_load",
-             GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group->data), "val")));
-
-        group = group->next;
-    }
-}
-
-
 void i_configure_ev_sygain_commit (void * gain_spinbt)
 {
     int gain = -1;
@@ -297,7 +282,6 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         GtkTreeSelection * soundfont_file_lv_sel;
         GtkWidget * soundfont_file_bbox_vbox, *soundfont_file_bbox_addbt, *soundfont_file_bbox_rembt;
         GtkWidget * soundfont_file_bbox_mvupbt, *soundfont_file_bbox_mvdownbt;
-        GtkWidget * soundfont_load_hbox, *soundfont_load_option[2];
         GtkWidget * synth_frame, *synth_hbox, *synth_leftcol_vbox, *synth_rightcol_vbox;
         GtkWidget * synth_samplerate_frame, *synth_samplerate_vbox, *synth_samplerate_option[4];
         GtkWidget * synth_samplerate_optionhbox, *synth_samplerate_optionentry, *synth_samplerate_optionlabel;
@@ -402,25 +386,6 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         gtk_box_pack_start (GTK_BOX (soundfont_file_hbox), soundfont_file_lv_sw, TRUE, TRUE, 0);
         gtk_box_pack_start (GTK_BOX (soundfont_file_hbox), soundfont_file_bbox_vbox, FALSE, FALSE, 0);
         gtk_box_pack_start (GTK_BOX (soundfont_vbox), soundfont_file_hbox, FALSE, FALSE, 0);
-
-        /* soundfont settings - load */
-        soundfont_load_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-        soundfont_load_option[0] = gtk_radio_button_new_with_label (NULL,
-                                   _("Load SF on player start"));
-        g_object_set_data (G_OBJECT (soundfont_load_option[0]), "val", GINT_TO_POINTER (0));
-        soundfont_load_option[1] = gtk_radio_button_new_with_label_from_widget (
-                                       GTK_RADIO_BUTTON (soundfont_load_option[0]),
-                                       _("Load SF on first MIDI file play"));
-        g_object_set_data (G_OBJECT (soundfont_load_option[1]), "val", GINT_TO_POINTER (1));
-
-        if (aud_get_int ("amidiplug", "fsyn_soundfont_load") == 0)
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (soundfont_load_option[0]), TRUE);
-        else
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (soundfont_load_option[1]), TRUE);
-
-        gtk_box_pack_start (GTK_BOX (soundfont_load_hbox), soundfont_load_option[0], TRUE, TRUE, 0);
-        gtk_box_pack_start (GTK_BOX (soundfont_load_hbox), soundfont_load_option[1], TRUE, TRUE, 0);
-        gtk_box_pack_start (GTK_BOX (soundfont_vbox), soundfont_load_hbox, FALSE, FALSE, 0);
 
         gtk_box_pack_start (GTK_BOX (content_vbox), soundfont_frame, FALSE, FALSE, 0);
 
@@ -624,8 +589,6 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         /* commit events  */
         g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
                                   G_CALLBACK (i_configure_ev_sflist_commit), soundfont_file_lv);
-        g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
-                                  G_CALLBACK (i_configure_ev_sfload_commit), soundfont_load_option[0]);
         g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
                                   G_CALLBACK (i_configure_ev_sygain_commit), synth_gain_value_spin);
         g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",

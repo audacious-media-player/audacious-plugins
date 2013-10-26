@@ -70,7 +70,6 @@ static bool_t amidiplug_init (void)
         "ap_opts_drumshift_value", "0",
         "ap_opts_lyrics_extract", "0",
         "ap_opts_comments_extract", "0",
-        "fsyn_soundfont_load", "1",
         "fsyn_synth_samplerate", "44100",
         "fsyn_synth_gain", "-1",
         "fsyn_synth_polyphony", "-1",

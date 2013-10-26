@@ -63,10 +63,6 @@ int backend_init (void)
 
     sc.synth = new_fluid_synth (sc.settings);
 
-    /* soundfont loader, check if we should load soundfont on backend init */
-    if (aud_get_int ("amidiplug", "fsyn_soundfont_load") == 0)
-        i_soundfont_load();
-
     return 1;
 }
 
@@ -93,7 +89,7 @@ int backend_cleanup (void)
 static void backend_prepare (void)
 {
     /* soundfont loader, check if we should load soundfont on first midifile play */
-    if (aud_get_int ("amidiplug", "fsyn_soundfont_load") == 1 && ! sc.soundfont_ids->len)
+    if (! sc.soundfont_ids->len)
         i_soundfont_load();
 }
 
