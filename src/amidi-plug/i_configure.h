@@ -31,45 +31,12 @@ typedef struct
 }
 amidiplug_cfg_ap_t;
 
-typedef struct
-{
-    char * alsa_seq_wports;
-    int alsa_mixer_card_id;
-    char * alsa_mixer_ctl_name;
-    int alsa_mixer_ctl_id;
-}
-amidiplug_cfg_alsa_t;
-
-typedef struct
-{
-    char * fsyn_soundfont_file;
-    int fsyn_soundfont_load;
-    int fsyn_synth_samplerate;
-    int fsyn_synth_gain;
-    int fsyn_synth_polyphony;
-    int fsyn_synth_reverb;
-    int fsyn_synth_chorus;
-}
-amidiplug_cfg_fsyn_t;
-
-struct amidiplug_cfg_backend_s
-{
-    amidiplug_cfg_alsa_t * alsa;
-    amidiplug_cfg_fsyn_t * fsyn;
-};
-
-typedef struct amidiplug_cfg_backend_s amidiplug_cfg_backend_t;
-
 extern amidiplug_cfg_ap_t * amidiplug_cfg_ap;
-extern amidiplug_cfg_backend_t * amidiplug_cfg_backend;
 
 void i_configure_gui (void);
 void i_configure_cfg_ap_read (void);
 void i_configure_cfg_ap_save (void);
 void i_configure_cfg_ap_free (void);
-void i_configure_cfg_backend_alloc (void);
 void i_configure_cfg_backend_read (void);
-void i_configure_cfg_backend_save (void);
-void i_configure_cfg_backend_free (void);
 
 #endif /* !_I_CONFIGURE_H */

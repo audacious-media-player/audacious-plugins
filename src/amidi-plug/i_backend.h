@@ -23,12 +23,11 @@
 
 #include <libaudcore/core.h>
 
-struct amidiplug_cfg_backend_s;
 struct midievent_s;
 
 typedef struct
 {
-    int (*init) (struct amidiplug_cfg_backend_s *);
+    int (*init) (void);
     int (*cleanup) (void);
     void (* prepare) (void);
     void (* reset) (void);

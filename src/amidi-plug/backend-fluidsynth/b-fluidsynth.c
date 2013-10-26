@@ -18,6 +18,7 @@
 *
 */
 
+#include <stdlib.h>
 #include <string.h>
 
 #include <audacious/i18n.h>
@@ -30,37 +31,40 @@
 /* sequencer instance */
 static sequencer_client_t sc;
 /* options */
-static amidiplug_cfg_fsyn_t * fsyn_cfg;
 
-int backend_init (amidiplug_cfg_backend_t * cfg)
+int backend_init (void)
 {
-    fsyn_cfg = cfg->fsyn;
-
     sc.soundfont_ids = g_array_new (FALSE, FALSE, sizeof (int));
     sc.settings = new_fluid_settings();
 
-    fluid_settings_setnum (sc.settings, "synth.sample-rate", fsyn_cfg->fsyn_synth_samplerate);
+    fluid_settings_setnum (sc.settings, "synth.sample-rate",
+     aud_get_int ("amidiplug", "fsyn_synth_samplerate"));
 
-    if (fsyn_cfg->fsyn_synth_gain != -1)
-        fluid_settings_setnum (sc.settings, "synth.gain", (gdouble) fsyn_cfg->fsyn_synth_gain / 10);
+    int gain = aud_get_int ("amidiplug", "fsyn_synth_gain");
+    int polyphony = aud_get_int ("amidiplug", "fsyn_synth_polyphony");
+    int reverb = aud_get_int ("amidiplug", "fsyn_synth_reverb");
+    int chorus = aud_get_int ("amidiplug", "fsyn_synth_chorus");
 
-    if (fsyn_cfg->fsyn_synth_polyphony != -1)
-        fluid_settings_setint (sc.settings, "synth.polyphony", fsyn_cfg->fsyn_synth_polyphony);
+    if (gain != -1)
+        fluid_settings_setnum (sc.settings, "synth.gain", gain / 10.0);
 
-    if (fsyn_cfg->fsyn_synth_reverb == 1)
+    if (polyphony != -1)
+        fluid_settings_setint (sc.settings, "synth.polyphony", polyphony);
+
+    if (reverb == 1)
         fluid_settings_setstr (sc.settings, "synth.reverb.active", "yes");
-    else if (fsyn_cfg->fsyn_synth_reverb == 0)
+    else if (reverb == 0)
         fluid_settings_setstr (sc.settings, "synth.reverb.active", "no");
 
-    if (fsyn_cfg->fsyn_synth_chorus == 1)
+    if (chorus == 1)
         fluid_settings_setstr (sc.settings, "synth.chorus.active", "yes");
-    else if (fsyn_cfg->fsyn_synth_chorus == 0)
+    else if (chorus == 0)
         fluid_settings_setstr (sc.settings, "synth.chorus.active", "no");
 
     sc.synth = new_fluid_synth (sc.settings);
 
     /* soundfont loader, check if we should load soundfont on backend init */
-    if (fsyn_cfg->fsyn_soundfont_load == 0)
+    if (aud_get_int ("amidiplug", "fsyn_soundfont_load") == 0)
         i_soundfont_load();
 
     return 1;
@@ -89,7 +93,7 @@ int backend_cleanup (void)
 static void backend_prepare (void)
 {
     /* soundfont loader, check if we should load soundfont on first midifile play */
-    if ((fsyn_cfg->fsyn_soundfont_load == 1) && (sc.soundfont_ids->len == 0))
+    if (aud_get_int ("amidiplug", "fsyn_soundfont_load") == 1 && ! sc.soundfont_ids->len)
         i_soundfont_load();
 }
 
@@ -206,7 +210,7 @@ int audio_info_get (int * channels, int * bitdepth, int * samplerate)
 {
     *channels = 2;
     *bitdepth = 16; /* always 16 bit, we use fluid_synth_write_s16() */
-    *samplerate = fsyn_cfg->fsyn_synth_samplerate;
+    *samplerate = aud_get_int ("amidiplug", "fsyn_synth_samplerate");
     return 1; /* valid information */
 }
 
@@ -217,9 +221,11 @@ int audio_info_get (int * channels, int * bitdepth, int * samplerate)
 
 void i_soundfont_load (void)
 {
-    if (strcmp (fsyn_cfg->fsyn_soundfont_file, ""))
+    char * soundfont_file = aud_get_string ("amidiplug", "fsyn_soundfont_file");
+
+    if (soundfont_file[0])
     {
-        char ** sffiles = g_strsplit (fsyn_cfg->fsyn_soundfont_file, ";", 0);
+        char ** sffiles = g_strsplit (soundfont_file, ";", 0);
         int i = 0;
 
         while (sffiles[i] != NULL)
@@ -249,6 +255,8 @@ void i_soundfont_load (void)
     {
         g_warning ("FluidSynth backend was selected, but no SoundFont has been specified\n");
     }
+
+    free (soundfont_file);
 }
 
 amidiplug_sequencer_backend_t fluidsynth_backend =

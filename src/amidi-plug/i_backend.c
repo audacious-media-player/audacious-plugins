@@ -31,7 +31,7 @@ amidiplug_sequencer_backend_t * i_backend_load (void)
 {
     amidiplug_sequencer_backend_t * backend = & fluidsynth_backend;
 
-    backend->init (amidiplug_cfg_backend);
+    backend->init ();
 
     return backend;
 }

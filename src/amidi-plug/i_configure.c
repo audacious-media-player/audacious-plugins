@@ -36,7 +36,6 @@
 extern amidiplug_sequencer_backend_t * backend;
 
 amidiplug_cfg_ap_t * amidiplug_cfg_ap;
-amidiplug_cfg_backend_t * amidiplug_cfg_backend;
 
 static void i_configure_commit (void);
 
@@ -107,7 +106,6 @@ static void i_configure_commit (void)
 {
     DEBUGMSG ("saving configuration...\n");
     i_configure_cfg_ap_save(); /* save amidiplug settings */
-    i_configure_cfg_backend_save(); /* save backend settings */
     DEBUGMSG ("configuration saved\n");
 
     /* stop playback before reloading backend
@@ -125,31 +123,10 @@ static void i_configure_commit (void)
 }
 
 
-void i_configure_cfg_backend_free (void)
-{
-#ifdef AMIDIPLUG_FLUIDSYNTH
-    i_configure_cfg_fsyn_free(); /* free fluidsynth backend configuration */
-#endif
-
-    free (amidiplug_cfg_backend);
-}
-
-
 void i_configure_cfg_backend_read (void)
 {
-    amidiplug_cfg_backend = malloc (sizeof (amidiplug_cfg_backend_t));
-    memset (amidiplug_cfg_backend, 0, sizeof (amidiplug_cfg_backend_t));
-
 #ifdef AMIDIPLUG_FLUIDSYNTH
     i_configure_cfg_fsyn_read ();
-#endif
-}
-
-
-void i_configure_cfg_backend_save (void)
-{
-#ifdef AMIDIPLUG_FLUIDSYNTH
-    i_configure_cfg_fsyn_save (); /* save fluidsynth backend configuration */
 #endif
 }
 

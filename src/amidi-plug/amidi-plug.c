@@ -64,7 +64,6 @@ static void amidiplug_cleanup (void)
         i_backend_unload (backend);
 
     i_configure_cfg_ap_free ();
-    i_configure_cfg_backend_free ();
 }
 
 static bool_t amidiplug_init (void)

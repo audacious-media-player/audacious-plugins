@@ -148,7 +148,6 @@ void i_configure_ev_sflist_swap (GtkWidget * button, void * sfont_lv)
 
 void i_configure_ev_sflist_commit (void * sfont_lv)
 {
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
     GtkTreeIter iter;
     GtkTreeModel * store = gtk_tree_view_get_model (GTK_TREE_VIEW (sfont_lv));
     GString * sflist_string = g_string_new ("");
@@ -173,21 +172,21 @@ void i_configure_ev_sflist_commit (void * sfont_lv)
     if (sflist_string->len > 0)
         g_string_truncate (sflist_string, sflist_string->len - 1);
 
-    free (fsyncfg->fsyn_soundfont_file);  /* free previous */
-    fsyncfg->fsyn_soundfont_file = g_strdup (sflist_string->str);
+    aud_set_string ("amidiplug", "fsyn_soundfont_file", sflist_string->str);
+
     g_string_free (sflist_string, TRUE);
 }
 
 
 void i_configure_ev_sfload_commit (void * sfload_radiobt)
 {
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
     GSList * group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (sfload_radiobt));
 
     while (group != NULL)
     {
         if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (group->data)))
-            fsyncfg->fsyn_soundfont_load = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group->data), "val"));
+            aud_set_int ("amidiplug", "fsyn_soundfont_load",
+             GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group->data), "val")));
 
         group = group->next;
     }
@@ -196,55 +195,55 @@ void i_configure_ev_sfload_commit (void * sfload_radiobt)
 
 void i_configure_ev_sygain_commit (void * gain_spinbt)
 {
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
+    int gain = -1;
 
     if (gtk_widget_get_sensitive (gain_spinbt))
-        fsyncfg->fsyn_synth_gain = (int) (gtk_spin_button_get_value (GTK_SPIN_BUTTON (gain_spinbt)) * 10);
-    else
-        fsyncfg->fsyn_synth_gain = -1;
+        gain = gtk_spin_button_get_value (GTK_SPIN_BUTTON (gain_spinbt)) * 10;
+
+    aud_set_int ("amidiplug", "fsyn_synth_gain", gain);
 }
 
 
 void i_configure_ev_sypoly_commit (void * poly_spinbt)
 {
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
+    int polyphony = -1;
 
     if (gtk_widget_get_sensitive (poly_spinbt))
-        fsyncfg->fsyn_synth_polyphony = (int) (gtk_spin_button_get_value (GTK_SPIN_BUTTON (poly_spinbt)));
-    else
-        fsyncfg->fsyn_synth_polyphony = -1;
+        polyphony = gtk_spin_button_get_value (GTK_SPIN_BUTTON (poly_spinbt));
+
+    aud_set_int ("amidiplug", "fsyn_synth_polyphony", polyphony);
 }
 
 
 void i_configure_ev_syreverb_commit (void * reverb_yes_radiobt)
 {
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
+    int reverb = -1;
 
     if (gtk_widget_get_sensitive (reverb_yes_radiobt))
     {
         if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (reverb_yes_radiobt)))
-            fsyncfg->fsyn_synth_reverb = 1;
+            reverb = 1;
         else
-            fsyncfg->fsyn_synth_reverb = 0;
+            reverb = 0;
     }
-    else
-        fsyncfg->fsyn_synth_reverb = -1;
+
+    aud_set_int ("amidiplug", "fsyn_synth_reverb", reverb);
 }
 
 
 void i_configure_ev_sychorus_commit (void * chorus_yes_radiobt)
 {
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
+    int chorus = -1;
 
     if (gtk_widget_get_sensitive (chorus_yes_radiobt))
     {
         if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (chorus_yes_radiobt)))
-            fsyncfg->fsyn_synth_chorus = 1;
+            chorus = 1;
         else
-            fsyncfg->fsyn_synth_chorus = 0;
+            chorus = 0;
     }
-    else
-        fsyncfg->fsyn_synth_chorus = -1;
+
+    aud_set_int ("amidiplug", "fsyn_synth_chorus", chorus);
 }
 
 
@@ -259,17 +258,15 @@ void i_configure_ev_sysamplerate_togglecustom (GtkToggleButton * custom_radiobt,
 
 void i_configure_ev_sysamplerate_commit (void * samplerate_custom_radiobt)
 {
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-
     if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (samplerate_custom_radiobt)))
     {
         GtkWidget * customentry = g_object_get_data (G_OBJECT (samplerate_custom_radiobt), "customentry");
         int customvalue = strtol (gtk_entry_get_text (GTK_ENTRY (customentry)), NULL, 10);
 
-        if ((customvalue > 22050) && (customvalue < 96000))
-            fsyncfg->fsyn_synth_samplerate = customvalue;
-        else
-            fsyncfg->fsyn_synth_samplerate = 44100;
+        if (customvalue < 22050 || customvalue > 96000)
+            customvalue = 44100;
+
+        aud_set_int ("amidiplug", "fsyn_synth_samplerate", customvalue);
     }
     else
     {
@@ -278,7 +275,8 @@ void i_configure_ev_sysamplerate_commit (void * samplerate_custom_radiobt)
         while (group != NULL)
         {
             if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (group->data)))
-                fsyncfg->fsyn_synth_samplerate = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group->data), "val"));
+                aud_set_int ("amidiplug", "fsyn_synth_samplerate",
+                 GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group->data), "val")));
 
             group = group->next;
         }
@@ -314,8 +312,6 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         GtkWidget * synth_chorus_frame, *synth_chorus_hbox, *synth_chorus_value_hbox;
         GtkWidget * synth_chorus_value_option[2], *synth_chorus_defcheckbt;
 
-        amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-
         /* soundfont settings */
         soundfont_frame = gtk_frame_new (_("SoundFont settings"));
         soundfont_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
@@ -324,10 +320,12 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         /* soundfont settings - soundfont files - listview */
         soundfont_file_store = gtk_list_store_new (LISTSFONT_N_COLUMNS, G_TYPE_STRING, G_TYPE_INT);
 
-        if (strlen (fsyncfg->fsyn_soundfont_file) > 0)
+        char * soundfont_file = aud_get_string ("amidiplug", "fsyn_soundfont_file");
+
+        if (soundfont_file[0])
         {
             /* fill soundfont list with fsyn_soundfont_file information */
-            char ** sffiles = g_strsplit (fsyncfg->fsyn_soundfont_file, ";", 0);
+            char ** sffiles = g_strsplit (soundfont_file, ";", 0);
             GtkTreeIter iter;
             int i = 0;
 
@@ -348,6 +346,8 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
 
             g_strfreev (sffiles);
         }
+
+        free (soundfont_file);
 
         soundfont_file_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
         soundfont_file_lv = gtk_tree_view_new_with_model (GTK_TREE_MODEL (soundfont_file_store));
@@ -415,7 +415,7 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
                                        _("Load SF on first MIDI file play"));
         g_object_set_data (G_OBJECT (soundfont_load_option[1]), "val", GINT_TO_POINTER (1));
 
-        if (fsyncfg->fsyn_soundfont_load == 0)
+        if (aud_get_int ("amidiplug", "fsyn_soundfont_load") == 0)
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (soundfont_load_option[0]), TRUE);
         else
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (soundfont_load_option[1]), TRUE);
@@ -451,15 +451,17 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         g_signal_connect (G_OBJECT (synth_gain_defcheckbt), "toggled",
                           G_CALLBACK (i_configure_ev_toggle_default), synth_gain_value_hbox);
 
-        if (fsyncfg->fsyn_synth_gain < 0)
-        {
+        int gain = aud_get_int ("amidiplug", "fsyn_synth_gain");
+        int polyphony = aud_get_int ("amidiplug", "fsyn_synth_polyphony");
+        int reverb = aud_get_int ("amidiplug", "fsyn_synth_reverb");
+        int chorus = aud_get_int ("amidiplug", "fsyn_synth_chorus");
+
+        if (gain < 0)
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_gain_defcheckbt), TRUE);
-        }
         else
         {
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_gain_defcheckbt), FALSE);
-            gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_gain_value_spin),
-                                       (gdouble) fsyncfg->fsyn_synth_gain / 10);
+            gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_gain_value_spin), gain / 10.0);
         }
 
         gtk_box_pack_start (GTK_BOX (synth_gain_hbox), synth_gain_value_hbox, FALSE, FALSE, 0);
@@ -481,15 +483,12 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         g_signal_connect (G_OBJECT (synth_poly_defcheckbt), "toggled",
                           G_CALLBACK (i_configure_ev_toggle_default), synth_poly_value_hbox);
 
-        if (fsyncfg->fsyn_synth_polyphony < 0)
-        {
+        if (polyphony < 0)
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_poly_defcheckbt), TRUE);
-        }
         else
         {
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_poly_defcheckbt), FALSE);
-            gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_poly_value_spin),
-                                       (gdouble) fsyncfg->fsyn_synth_polyphony);
+            gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_poly_value_spin), polyphony);
         }
 
         gtk_box_pack_start (GTK_BOX (synth_poly_hbox), synth_poly_value_hbox, FALSE, FALSE, 0);
@@ -512,15 +511,13 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         g_signal_connect (G_OBJECT (synth_reverb_defcheckbt), "toggled",
                           G_CALLBACK (i_configure_ev_toggle_default), synth_reverb_value_hbox);
 
-        if (fsyncfg->fsyn_synth_reverb < 0)
-        {
+        if (reverb < 0)
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_defcheckbt), TRUE);
-        }
         else
         {
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_defcheckbt), FALSE);
 
-            if (fsyncfg->fsyn_synth_reverb == 0)
+            if (reverb == 0)
                 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_value_option[1]), TRUE);
             else
                 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_value_option[0]), TRUE);
@@ -546,15 +543,13 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         g_signal_connect (G_OBJECT (synth_chorus_defcheckbt), "toggled",
                           G_CALLBACK (i_configure_ev_toggle_default), synth_chorus_value_hbox);
 
-        if (fsyncfg->fsyn_synth_chorus < 0)
-        {
+        if (chorus < 0)
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_defcheckbt), TRUE);
-        }
         else
         {
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_defcheckbt), FALSE);
 
-            if (fsyncfg->fsyn_synth_chorus == 0)
+            if (chorus == 0)
                 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_value_option[1]), TRUE);
             else
                 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_value_option[0]), TRUE);
@@ -592,7 +587,9 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         gtk_box_pack_start (GTK_BOX (synth_samplerate_optionhbox), synth_samplerate_optionentry, TRUE, TRUE, 0);
         gtk_box_pack_start (GTK_BOX (synth_samplerate_optionhbox), synth_samplerate_optionlabel, FALSE, FALSE, 0);
 
-        switch (fsyncfg->fsyn_synth_samplerate)
+        int samplerate = aud_get_int ("amidiplug", "fsyn_synth_samplerate");
+
+        switch (samplerate)
         {
         case 22050:
             gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[0]), TRUE);
@@ -607,9 +604,9 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
             break;
 
         default:
-            if ((fsyncfg->fsyn_synth_samplerate > 22050) && (fsyncfg->fsyn_synth_samplerate < 96000))
+            if (samplerate > 22050 && samplerate < 96000)
             {
-                char * samplerate_value = g_strdup_printf ("%i", fsyncfg->fsyn_synth_samplerate);
+                char * samplerate_value = g_strdup_printf ("%i", samplerate);
                 gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[3]), TRUE);
                 gtk_entry_set_text (GTK_ENTRY (synth_samplerate_optionentry), samplerate_value);
                 g_free (samplerate_value);
@@ -667,13 +664,6 @@ void i_configure_gui_tablabel_fsyn (GtkWidget * fsyn_page_alignment,
 }
 
 
-void i_configure_cfg_fsyn_free (void)
-{
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-    free (fsyncfg->fsyn_soundfont_file);
-}
-
-
 void i_configure_cfg_fsyn_read (void)
 {
     static const char * const defaults[] =
@@ -688,31 +678,6 @@ void i_configure_cfg_fsyn_read (void)
     };
 
     aud_config_set_defaults ("amidiplug", defaults);
-
-    amidiplug_cfg_fsyn_t * fsyncfg = malloc (sizeof (amidiplug_cfg_fsyn_t));
-    amidiplug_cfg_backend->fsyn = fsyncfg;
-
-    fsyncfg->fsyn_soundfont_file = aud_get_string ("amidiplug", "fsyn_soundfont_file");
-    fsyncfg->fsyn_soundfont_load = aud_get_int ("amidiplug", "fsyn_soundfont_load");
-    fsyncfg->fsyn_synth_samplerate = aud_get_int ("amidiplug", "fsyn_synth_samplerate");
-    fsyncfg->fsyn_synth_gain = aud_get_int ("amidiplug", "fsyn_synth_gain");
-    fsyncfg->fsyn_synth_polyphony = aud_get_int ("amidiplug", "fsyn_synth_polyphony");
-    fsyncfg->fsyn_synth_reverb = aud_get_int ("amidiplug", "fsyn_synth_reverb");
-    fsyncfg->fsyn_synth_chorus = aud_get_int ("amidiplug", "fsyn_synth_chorus");
-}
-
-
-void i_configure_cfg_fsyn_save (void)
-{
-    amidiplug_cfg_fsyn_t * fsyncfg = amidiplug_cfg_backend->fsyn;
-
-    aud_set_string ("amidiplug", "fsyn_soundfont_file", fsyncfg->fsyn_soundfont_file);
-    aud_set_int ("amidiplug", "fsyn_soundfont_load", fsyncfg->fsyn_soundfont_load);
-    aud_set_int ("amidiplug", "fsyn_synth_samplerate", fsyncfg->fsyn_synth_samplerate);
-    aud_set_int ("amidiplug", "fsyn_synth_gain", fsyncfg->fsyn_synth_gain);
-    aud_set_int ("amidiplug", "fsyn_synth_polyphony", fsyncfg->fsyn_synth_polyphony);
-    aud_set_int ("amidiplug", "fsyn_synth_reverb", fsyncfg->fsyn_synth_reverb);
-    aud_set_int ("amidiplug", "fsyn_synth_chorus", fsyncfg->fsyn_synth_chorus);
 }
 
 #endif /* AMIDIPLUG_FLUIDSYNTH */
