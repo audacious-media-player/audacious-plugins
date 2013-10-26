@@ -7,6 +7,7 @@
  */
 
 #include <math.h>
+#include <stdio.h>
 #include <string.h>
 
 extern "C" {
@@ -19,20 +20,21 @@ extern "C" {
 #include "Music_Emu.h"
 #include "Gzip_Reader.h"
 
-static const gint fade_threshold = 10 * 1000;
-static const gint fade_length    = 8 * 1000;
+static const int fade_threshold = 10 * 1000;
+static const int fade_length    = 8 * 1000;
 
 static blargg_err_t log_err(blargg_err_t err)
 {
-    if (err) g_critical("console: %s\n", err);
+    if (err)
+        fprintf (stderr, "console: %s\n", err);
     return err;
 }
 
 static void log_warning(Music_Emu * emu)
 {
-    const gchar *str = emu->warning();
+    const char *str = emu->warning();
     if (str != NULL)
-        g_warning("console: %s\n", str);
+        fprintf (stderr, "console: %s\n", str);
 }
 
 /* Handles URL parsing, file opening and identification, and file
@@ -41,36 +43,36 @@ static void log_warning(Music_Emu * emu)
  */
 class ConsoleFileHandler {
 public:
-    gchar *m_path;            // path without track number specification
-    gint m_track;             // track number (0 = first track)
+    char *m_path;            // path without track number specification
+    int m_track;             // track number (0 = first track)
     Music_Emu* m_emu;         // set to 0 to take ownership
     gme_type_t m_type;
 
     // Parses path and identifies file type
-    ConsoleFileHandler(const gchar* path, VFSFile *fd = NULL);
+    ConsoleFileHandler(const char* path, VFSFile *fd = NULL);
 
     // Creates emulator and returns 0. If this wasn't a music file or
     // emulator couldn't be created, returns 1.
-    gint load(gint sample_rate);
+    int load(int sample_rate);
 
     // Deletes owned emu and closes file
     ~ConsoleFileHandler();
 
 private:
-    gchar m_header[4];
+    char m_header[4];
     Vfs_File_Reader vfs_in;
     Gzip_Reader gzip_in;
 };
 
-ConsoleFileHandler::ConsoleFileHandler(const gchar *path, VFSFile *fd)
+ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
 {
     m_emu   = NULL;
     m_type  = 0;
     m_track = -1;
 
-    const gchar * sub;
+    const char * sub;
     uri_parse (path, NULL, NULL, & sub, & m_track);
-    m_path = g_strndup (path, sub - path);
+    m_path = strndup (path, sub - path);
 
     m_track -= 1;
 
@@ -100,10 +102,10 @@ ConsoleFileHandler::ConsoleFileHandler(const gchar *path, VFSFile *fd)
 ConsoleFileHandler::~ConsoleFileHandler()
 {
     gme_delete(m_emu);
-    g_free(m_path);
+    free(m_path);
 }
 
-gint ConsoleFileHandler::load(gint sample_rate)
+int ConsoleFileHandler::load(int sample_rate)
 {
     if (!m_type)
         return 1;
@@ -128,8 +130,8 @@ gint ConsoleFileHandler::load(gint sample_rate)
 
 #if 0
     // load .m3u from same directory( replace/add extension with ".m3u")
-    gchar *m3u_path = g_strdup(m_path);
-    gchar *ext = strrchr(m3u_path, '.');
+    char *m3u_path = g_strdup(m_path);
+    char *ext = strrchr(m3u_path, '.');
     if (ext == NULL)
     {
         ext = g_strdup_printf("%s.m3u", m3u_path);
@@ -155,7 +157,7 @@ static inline void set_str (Tuple * tuple, int field, const char * str)
     free (valid);
 }
 
-static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const gint track)
+static Tuple * get_track_ti(const char *path, const track_info_t *info, const int track)
 {
     Tuple *ti = tuple_new_from_filename(path);
 
@@ -190,7 +192,7 @@ static Tuple * get_track_ti(const gchar *path, const track_info_t *info, const g
     return ti;
 }
 
-extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
+extern "C" Tuple * console_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     ConsoleFileHandler fh(filename, fd);
 
@@ -207,9 +209,9 @@ extern "C" Tuple * console_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return NULL;
 }
 
-extern "C" gboolean console_play(const gchar *filename, VFSFile *file)
+extern "C" bool_t console_play(const char *filename, VFSFile *file)
 {
-    gint length, sample_rate;
+    int length, sample_rate;
     track_info_t info;
 
     // identify file
@@ -292,7 +294,7 @@ extern "C" gboolean console_play(const gchar *filename, VFSFile *file)
             fh.m_emu->seek(seek_value);
 
         /* Fill and play buffer of audio */
-        gint const buf_size = 1024;
+        int const buf_size = 1024;
         Music_Emu::sample_t buf[buf_size];
 
         fh.m_emu->play(buf_size, buf);
@@ -303,11 +305,5 @@ extern "C" gboolean console_play(const gchar *filename, VFSFile *file)
             break;
     }
 
-    return TRUE;
-}
-
-extern "C" gboolean console_init (void)
-{
-    console_cfg_load();
     return TRUE;
 }
