@@ -22,17 +22,15 @@
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "alsa.h"
+
 char * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
  * alsa_config_mixer_element = NULL;
 int alsa_config_drain_workaround = 1;
 
 static GtkListStore * pcm_list, * mixer_list, * mixer_element_list;
-static GtkWidget * window, * pcm_combo, * mixer_combo, * mixer_element_combo,
- * drain_workaround_check;
+static GtkWidget * pcm_combo, * mixer_combo, * mixer_element_combo, * drain_workaround_check;
 
 static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
 {
@@ -423,13 +421,9 @@ static const char * combo_selected_text (GtkWidget * combo, GtkListStore * list)
     return text;
 }
 
-static void create_window (void)
+static GtkWidget * create_vbox (void)
 {
-    window = gtk_dialog_new_with_buttons (_("ALSA Output Plugin Preferences"),
-     NULL, 0, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-    gtk_window_set_resizable ((GtkWindow *) window, 0);
-
-    GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) window);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
     gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("PCM device:"), pcm_list,
      & pcm_combo, 1), 0, 0, 0);
@@ -444,7 +438,7 @@ static void create_window (void)
      alsa_config_drain_workaround);
     gtk_box_pack_start ((GtkBox *) vbox, drain_workaround_check, 0, 0, 0);
 
-    gtk_widget_show_all (window);
+    return vbox;
 }
 
 static void pcm_changed (GtkComboBox * combo, void * unused)
@@ -510,27 +504,15 @@ static void connect_callbacks (void)
      mixer_element_changed, NULL);
     g_signal_connect ((GObject *) drain_workaround_check, "toggled", (GCallback)
      boolean_toggled, & alsa_config_drain_workaround);
-    g_signal_connect ((GObject *) window, "response", (GCallback)
-     gtk_widget_destroy, window);
-    g_signal_connect ((GObject *) window, "destroy", (GCallback)
-     gtk_widget_destroyed, & window);
-
-    audgui_destroy_on_escape (window);
 }
 
-void alsa_configure (void)
+void * alsa_create_config_widget (void)
 {
-    if (window != NULL)
-    {
-        gtk_window_present ((GtkWindow *) window);
-        return;
-    }
-
     pcm_list_fill ();
     mixer_list_fill ();
     mixer_element_list_fill ();
 
-    create_window ();
+    GtkWidget * vbox = create_vbox ();
 
     combo_select_by_text (pcm_combo, pcm_list, alsa_config_pcm);
     combo_select_by_text (mixer_combo, mixer_list, alsa_config_mixer);
@@ -538,4 +520,6 @@ void alsa_configure (void)
      alsa_config_mixer_element);
 
     connect_callbacks ();
+
+    return vbox;
 }

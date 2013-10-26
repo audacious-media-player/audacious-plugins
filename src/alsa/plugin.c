@@ -19,13 +19,22 @@
 
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 
 #include "alsa.h"
+
 static const char alsa_about[] =
  N_("ALSA Output Plugin for Audacious\n"
     "Copyright 2009-2012 John Lindgren\n\n"
     "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
     "code served as a reference when the ALSA manual was not enough.");
+
+static const PreferencesWidget alsa_widgets[] = {
+ {WIDGET_CUSTOM, .data = {.populate = alsa_create_config_widget}}};
+
+static const PluginPreferences alsa_prefs = {
+ .widgets = alsa_widgets,
+ .n_widgets = sizeof alsa_widgets / sizeof alsa_widgets[0]};
 
 AUD_OUTPUT_PLUGIN
 (
@@ -46,5 +55,5 @@ AUD_OUTPUT_PLUGIN
     .pause = alsa_pause,
     .set_volume = alsa_set_volume,
     .get_volume = alsa_get_volume,
-    .configure = alsa_configure,
+    .prefs = & alsa_prefs,
 )

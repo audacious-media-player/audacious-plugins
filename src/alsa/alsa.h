@@ -78,6 +78,6 @@ extern int alsa_config_drop_workaround, alsa_config_drain_workaround,
 
 void alsa_config_load (void);
 void alsa_config_save (void);
-void alsa_configure (void);
+void * alsa_create_config_widget (void);
 
 #endif
