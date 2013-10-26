@@ -21,16 +21,33 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <fluidsynth.h>
+#include <glib.h>
+
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
 #include "../i_backend.h"
 #include "../i_configure.h"
-#include "b-fluidsynth.h"
+#include "../i_midievent.h"
+
+/* #define DEBUGMSG(...) fprintf (stderr, __VA_ARGS__) */
+#define DEBUGMSG(...)
+
+typedef struct
+{
+    fluid_settings_t * settings;
+    fluid_synth_t * synth;
+
+    GArray * soundfont_ids;
+}
+sequencer_client_t;
 
 /* sequencer instance */
 static sequencer_client_t sc;
 /* options */
+
+static void i_soundfont_load (void);
 
 int backend_init (void)
 {
@@ -215,7 +232,7 @@ int audio_info_get (int * channels, int * bitdepth, int * samplerate)
    *** INTERNALS ****************************************************
    ****************************************************************** */
 
-void i_soundfont_load (void)
+static void i_soundfont_load (void)
 {
     char * soundfont_file = aud_get_string ("amidiplug", "fsyn_soundfont_file");
 

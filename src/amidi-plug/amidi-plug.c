@@ -22,13 +22,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 
 #include "i_backend.h"
-#include "i_common.h"
 #include "i_configure.h"
 #include "i_fileinfo.h"
 #include "i_midi.h"
@@ -46,8 +46,6 @@ static void amidiplug_play_loop (void);
 static bool_t amidiplug_play (const char * filename_uri, VFSFile * file);
 static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
 static void amidiplug_skipto (int playing_tick);
-
-static int amidiplug_playing_status = AMIDIPLUG_STOP;
 
 static midifile_t midifile;
 
@@ -103,7 +101,7 @@ static int amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * 
 
     if (!strncmp (magic_bytes, "MThd", 4))
     {
-        DEBUGMSG ("MIDI found, %s is a standard midi file\n", filename_uri);
+        AUDDBG ("MIDI found, %s is a standard midi file\n", filename_uri);
         return TRUE;
     }
 
@@ -119,7 +117,7 @@ static int amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * 
 
         if (!strncmp (magic_bytes, "RMID", 4))
         {
-            DEBUGMSG ("MIDI found, %s is a riff midi file\n", filename_uri);
+            AUDDBG ("MIDI found, %s is a riff midi file\n", filename_uri);
             return TRUE;
         }
     }
@@ -187,68 +185,75 @@ static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
     if (! audio_init ())
         return FALSE;
 
-    DEBUGMSG ("PLAY requested, midifile init\n");
+    AUDDBG ("PLAY requested, midifile init\n");
     /* midifile init */
     i_midi_init (&midifile);
 
-    DEBUGMSG ("PLAY requested, opening file: %s\n", filename_uri);
+    AUDDBG ("PLAY requested, opening file: %s\n", filename_uri);
     midifile.file_pointer = file;
     midifile.file_name = strdup (filename_uri);
 
     switch (i_midi_file_read_id (&midifile))
     {
     case MAKE_ID ('R', 'I', 'F', 'F') :
-    {
-        DEBUGMSG ("PLAY requested, RIFF chunk found, processing...\n");
+        AUDDBG ("PLAY requested, RIFF chunk found, processing...\n");
 
         /* read riff chunk */
         if (!i_midi_file_parse_riff (&midifile))
-            WARNANDBREAKANDPLAYERR ("%s: invalid file format (riff parser)\n", filename_uri);
+        {
+            fprintf (stderr, "%s: invalid file format (riff parser)\n", filename_uri);
+            goto ERR;
+        }
 
         /* if that was read correctly, go ahead and read smf data */
-    }
 
     case MAKE_ID ('M', 'T', 'h', 'd') :
-    {
-        DEBUGMSG ("PLAY requested, MThd chunk found, processing...\n");
+        AUDDBG ("PLAY requested, MThd chunk found, processing...\n");
 
         if (!i_midi_file_parse_smf (&midifile, 1))
-            WARNANDBREAKANDPLAYERR ("%s: invalid file format (smf parser)\n", filename_uri);
+        {
+            fprintf (stderr, "%s: invalid file format (smf parser)\n", filename_uri);
+            goto ERR;
+        }
 
         if (midifile.time_division < 1)
-            WARNANDBREAKANDPLAYERR ("%s: invalid time division (%i)\n", filename_uri, midifile.time_division);
+        {
+            fprintf (stderr, "%s: invalid time division (%i)\n", filename_uri, midifile.time_division);
+            goto ERR;
+        }
 
-        DEBUGMSG ("PLAY requested, setting ppq and tempo...\n");
+        AUDDBG ("PLAY requested, setting ppq and tempo...\n");
 
         /* fill midifile.ppq and midifile.tempo using time_division */
         if (!i_midi_setget_tempo (&midifile))
-            WARNANDBREAKANDPLAYERR ("%s: invalid values while setting ppq and tempo\n", filename_uri);
+        {
+            fprintf (stderr, "%s: invalid values while setting ppq and tempo\n", filename_uri);
+            goto ERR;
+        }
 
         /* fill midifile.length, keeping in count tempo-changes */
         i_midi_setget_length (&midifile);
-        DEBUGMSG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
+        AUDDBG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
 
         /* done with file */
         midifile.file_pointer = NULL;
 
         /* play play play! */
-        DEBUGMSG ("PLAY requested, starting play thread\n");
-        amidiplug_playing_status = AMIDIPLUG_PLAY;
+        AUDDBG ("PLAY requested, starting play thread\n");
         amidiplug_play_loop ();
         break;
-    }
 
     default:
-    {
-        amidiplug_playing_status = AMIDIPLUG_ERR;
         fprintf (stderr, "%s is not a Standard MIDI File\n", filename_uri);
-        break;
-    }
+        goto ERR;
     }
 
     audio_cleanup ();
-
     return TRUE;
+
+ERR:
+    audio_cleanup ();
+    return FALSE;
 }
 
 static void generate_to_tick (int tick)
@@ -337,7 +342,7 @@ static void amidiplug_play_loop ()
 
         case SND_SEQ_EVENT_TEMPO:
             backend->seq_event_tempo (event);
-            DEBUGMSG ("PLAY thread, processing tempo event with value %i on tick %i\n",
+            AUDDBG ("PLAY thread, processing tempo event with value %i on tick %i\n",
                       event->data.tempo, event->tick);
             midifile.current_tempo = event->data.tempo;
             break;
@@ -351,7 +356,7 @@ static void amidiplug_play_loop ()
             break;
 
         default:
-            DEBUGMSG ("PLAY thread, encountered invalid event type %i\n", event->type);
+            AUDDBG ("PLAY thread, encountered invalid event type %i\n", event->type);
             break;
         }
     }
@@ -403,14 +408,14 @@ static void amidiplug_skipto (int playing_tick)
         /* unlikely here... unless very strange MIDI files are played :) */
         if (!event)
         {
-            DEBUGMSG ("SKIPTO request, reached the last event but not the requested tick (!)\n");
+            AUDDBG ("SKIPTO request, reached the last event but not the requested tick (!)\n");
             break; /* end of song reached */
         }
 
         /* reached the requested tick, job done */
         if (event->tick >= playing_tick)
         {
-            DEBUGMSG ("SKIPTO request, reached the requested tick, exiting from skipto loop\n");
+            AUDDBG ("SKIPTO request, reached the requested tick, exiting from skipto loop\n");
             break;
         }
 

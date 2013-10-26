@@ -28,7 +28,6 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
-#include "i_common.h"
 #include "i_configure.h"
 
 #include "backend-fluidsynth/backend-fluidsynth-icon.xpm"
@@ -89,7 +88,7 @@ void i_configure_ev_sflist_add (void * sfont_lv)
             gtk_list_store_set (GTK_LIST_STORE (store), &iterapp,
                                 LISTSFONT_FILENAME_COLUMN, filename,
                                 LISTSFONT_FILESIZE_COLUMN, filesize, -1);
-            DEBUGMSG ("selected file: %s\n", filename);
+
             free (filename);
         }
 

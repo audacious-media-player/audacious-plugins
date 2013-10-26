@@ -22,7 +22,6 @@
 
 #include <stdlib.h>
 
-#include "i_common.h"
 #include "i_configure.h"
 
 extern amidiplug_sequencer_backend_t fluidsynth_backend;

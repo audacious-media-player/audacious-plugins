@@ -23,13 +23,18 @@
 
 #include "i_midi.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <audacious/misc.h>
 
-#include "i_common.h"
 #include "i_configure.h"
+
+/* #define DEBUGMSG(...) fprintf (stderr, __VA_ARGS__) */
+#define DEBUGMSG(...)
+
+#define WARNANDBREAK(...) { fprintf (stderr, __VA_ARGS__); break; }
 
 #define ERRMSG_MIDITRACK() { fprintf(stderr, "%s: invalid MIDI data (offset %#x)", mf->file_name, mf->file_offset ); return 0; }
 

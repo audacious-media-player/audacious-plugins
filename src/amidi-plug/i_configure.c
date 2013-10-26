@@ -27,7 +27,6 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
-#include "i_common.h"
 #include "i_backend.h"
 #include "i_configure-ap.h"
 #include "i_configure-fluidsynth.h"
@@ -56,10 +55,7 @@ void i_configure_gui (void)
     static GtkWidget * configwin = NULL;
 
     if (configwin != NULL)
-    {
-        DEBUGMSG ("config window is already open!\n");
         return;
-    }
 
     configwin = gtk_dialog_new_with_buttons (_("AMIDI-Plug Settings"), NULL, 0,
                 GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
