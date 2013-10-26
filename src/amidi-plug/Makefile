@@ -4,7 +4,6 @@ SRCS = amidi-plug.c		\
        backend-fluidsynth/b-fluidsynth.c \
        i_midi.c			\
        i_configure.c		\
-       i_configure-ap.c		\
        i_configure-fluidsynth.c	\
        i_utils.c		\
        i_fileinfo.c

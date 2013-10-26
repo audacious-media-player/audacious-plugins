@@ -30,8 +30,6 @@
 
 #include "i_configure.h"
 
-#include "backend-fluidsynth/backend-fluidsynth-icon.xpm"
-
 enum
 {
     LISTSFONT_FILENAME_COLUMN = 0,
@@ -39,15 +37,7 @@ enum
     LISTSFONT_N_COLUMNS
 };
 
-
-void i_configure_ev_toggle_default (GtkToggleButton * togglebutton, void * hbox)
-{
-    if (gtk_toggle_button_get_active (togglebutton))
-        gtk_widget_set_sensitive (GTK_WIDGET (hbox), FALSE);
-    else
-        gtk_widget_set_sensitive (GTK_WIDGET (hbox), TRUE);
-}
-
+static void i_configure_ev_sflist_commit (void * sfont_lv);
 
 void i_configure_ev_sflist_add (void * sfont_lv)
 {
@@ -94,6 +84,8 @@ void i_configure_ev_sflist_add (void * sfont_lv)
 
         gtk_widget_destroy (browse_dialog);
     }
+
+    i_configure_ev_sflist_commit (sfont_lv);
 }
 
 
@@ -105,6 +97,8 @@ void i_configure_ev_sflist_rem (void * sfont_lv)
 
     if (gtk_tree_selection_get_selected (listsel, &store, &iter))
         gtk_list_store_remove (GTK_LIST_STORE (store), &iter);
+
+    i_configure_ev_sflist_commit (sfont_lv);
 }
 
 
@@ -140,6 +134,8 @@ void i_configure_ev_sflist_swap (GtkWidget * button, void * sfont_lv)
                 gtk_list_store_swap (GTK_LIST_STORE (store), &iter, &iter_prev);
         }
     }
+
+    i_configure_ev_sflist_commit (sfont_lv);
 }
 
 
@@ -172,108 +168,14 @@ void i_configure_ev_sflist_commit (void * sfont_lv)
     aud_set_string ("amidiplug", "fsyn_soundfont_file", sflist_string->str);
 
     g_string_free (sflist_string, TRUE);
+
+    /* reset backend at beginning of next song to apply changes */
+    g_atomic_int_set (& backend_settings_changed, TRUE);
 }
 
 
-void i_configure_ev_sygain_commit (void * gain_spinbt)
+void * create_soundfont_list (void)
 {
-    int gain = -1;
-
-    if (gtk_widget_get_sensitive (gain_spinbt))
-        gain = gtk_spin_button_get_value (GTK_SPIN_BUTTON (gain_spinbt)) * 10;
-
-    aud_set_int ("amidiplug", "fsyn_synth_gain", gain);
-}
-
-
-void i_configure_ev_sypoly_commit (void * poly_spinbt)
-{
-    int polyphony = -1;
-
-    if (gtk_widget_get_sensitive (poly_spinbt))
-        polyphony = gtk_spin_button_get_value (GTK_SPIN_BUTTON (poly_spinbt));
-
-    aud_set_int ("amidiplug", "fsyn_synth_polyphony", polyphony);
-}
-
-
-void i_configure_ev_syreverb_commit (void * reverb_yes_radiobt)
-{
-    int reverb = -1;
-
-    if (gtk_widget_get_sensitive (reverb_yes_radiobt))
-    {
-        if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (reverb_yes_radiobt)))
-            reverb = 1;
-        else
-            reverb = 0;
-    }
-
-    aud_set_int ("amidiplug", "fsyn_synth_reverb", reverb);
-}
-
-
-void i_configure_ev_sychorus_commit (void * chorus_yes_radiobt)
-{
-    int chorus = -1;
-
-    if (gtk_widget_get_sensitive (chorus_yes_radiobt))
-    {
-        if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (chorus_yes_radiobt)))
-            chorus = 1;
-        else
-            chorus = 0;
-    }
-
-    aud_set_int ("amidiplug", "fsyn_synth_chorus", chorus);
-}
-
-
-void i_configure_ev_sysamplerate_togglecustom (GtkToggleButton * custom_radiobt, void * custom_entry)
-{
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (custom_radiobt)))
-        gtk_widget_set_sensitive (GTK_WIDGET (custom_entry), TRUE);
-    else
-        gtk_widget_set_sensitive (GTK_WIDGET (custom_entry), FALSE);
-}
-
-
-void i_configure_ev_sysamplerate_commit (void * samplerate_custom_radiobt)
-{
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (samplerate_custom_radiobt)))
-    {
-        GtkWidget * customentry = g_object_get_data (G_OBJECT (samplerate_custom_radiobt), "customentry");
-        int customvalue = strtol (gtk_entry_get_text (GTK_ENTRY (customentry)), NULL, 10);
-
-        if (customvalue < 22050 || customvalue > 96000)
-            customvalue = 44100;
-
-        aud_set_int ("amidiplug", "fsyn_synth_samplerate", customvalue);
-    }
-    else
-    {
-        GSList * group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (samplerate_custom_radiobt));
-
-        while (group != NULL)
-        {
-            if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (group->data)))
-                aud_set_int ("amidiplug", "fsyn_synth_samplerate",
-                 GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group->data), "val")));
-
-            group = group->next;
-        }
-    }
-}
-
-
-void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
-                               void * commit_button)
-{
-    GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-
-    if (1)
-    {
-        GtkWidget * soundfont_frame, *soundfont_vbox;
         GtkListStore * soundfont_file_store;
         GtkCellRenderer * soundfont_file_lv_text_rndr;
         GtkTreeViewColumn * soundfont_file_lv_fname_col, *soundfont_file_lv_fsize_col;
@@ -281,23 +183,7 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         GtkTreeSelection * soundfont_file_lv_sel;
         GtkWidget * soundfont_file_bbox_vbox, *soundfont_file_bbox_addbt, *soundfont_file_bbox_rembt;
         GtkWidget * soundfont_file_bbox_mvupbt, *soundfont_file_bbox_mvdownbt;
-        GtkWidget * synth_frame, *synth_hbox, *synth_leftcol_vbox, *synth_rightcol_vbox;
-        GtkWidget * synth_samplerate_frame, *synth_samplerate_vbox, *synth_samplerate_option[4];
-        GtkWidget * synth_samplerate_optionhbox, *synth_samplerate_optionentry, *synth_samplerate_optionlabel;
-        GtkWidget * synth_gain_frame, *synth_gain_hbox, *synth_gain_value_hbox;
-        GtkWidget * synth_gain_value_label, *synth_gain_value_spin, *synth_gain_defcheckbt;
-        GtkWidget * synth_poly_frame, *synth_poly_hbox, *synth_poly_value_hbox;
-        GtkWidget * synth_poly_value_label, *synth_poly_value_spin, *synth_poly_defcheckbt;
-        GtkWidget * synth_reverb_frame, *synth_reverb_hbox, *synth_reverb_value_hbox;
-        GtkWidget * synth_reverb_value_option[2], *synth_reverb_defcheckbt;
-        GtkWidget * synth_chorus_frame, *synth_chorus_hbox, *synth_chorus_value_hbox;
-        GtkWidget * synth_chorus_value_option[2], *synth_chorus_defcheckbt;
 
-        /* soundfont settings */
-        soundfont_frame = gtk_frame_new (_("SoundFont settings"));
-        soundfont_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-        gtk_container_set_border_width (GTK_CONTAINER (soundfont_vbox), 4);
-        gtk_container_add (GTK_CONTAINER (soundfont_frame), soundfont_vbox);
         /* soundfont settings - soundfont files - listview */
         soundfont_file_store = gtk_list_store_new (LISTSFONT_N_COLUMNS, G_TYPE_STRING, G_TYPE_INT);
 
@@ -384,241 +270,6 @@ void i_configure_gui_tab_fsyn (GtkWidget * fsyn_page_alignment,
         gtk_box_pack_start (GTK_BOX (soundfont_file_bbox_vbox), soundfont_file_bbox_mvdownbt, FALSE, FALSE, 0);
         gtk_box_pack_start (GTK_BOX (soundfont_file_hbox), soundfont_file_lv_sw, TRUE, TRUE, 0);
         gtk_box_pack_start (GTK_BOX (soundfont_file_hbox), soundfont_file_bbox_vbox, FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (soundfont_vbox), soundfont_file_hbox, FALSE, FALSE, 0);
 
-        gtk_box_pack_start (GTK_BOX (content_vbox), soundfont_frame, FALSE, FALSE, 0);
-
-        /* synth settings */
-        synth_frame = gtk_frame_new (_("Synthesizer settings"));
-        synth_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-        gtk_container_set_border_width (GTK_CONTAINER (synth_hbox), 4);
-        gtk_container_add (GTK_CONTAINER (synth_frame), synth_hbox);
-        synth_leftcol_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-        synth_rightcol_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-        gtk_box_pack_start (GTK_BOX (synth_hbox), synth_leftcol_vbox, TRUE, TRUE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_hbox), synth_rightcol_vbox, FALSE, FALSE, 0);
-        /* synth settings - gain */
-        synth_gain_frame = gtk_frame_new (_("gain"));
-        gtk_frame_set_label_align (GTK_FRAME (synth_gain_frame), 0.5, 0.5);
-        gtk_box_pack_start (GTK_BOX (synth_leftcol_vbox), synth_gain_frame, TRUE, TRUE, 0);
-        synth_gain_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-        gtk_container_set_border_width (GTK_CONTAINER (synth_gain_hbox), 2);
-        gtk_container_add (GTK_CONTAINER (synth_gain_frame), synth_gain_hbox);
-        synth_gain_defcheckbt = gtk_check_button_new_with_label (_("use default"));
-        gtk_box_pack_start (GTK_BOX (synth_gain_hbox), synth_gain_defcheckbt, FALSE, FALSE, 0);
-        synth_gain_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-        synth_gain_value_label = gtk_label_new (_("value:"));
-        synth_gain_value_spin = gtk_spin_button_new_with_range (0.0, 10.0, 0.1);
-        gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_gain_value_spin), 0.2);
-        g_signal_connect (G_OBJECT (synth_gain_defcheckbt), "toggled",
-                          G_CALLBACK (i_configure_ev_toggle_default), synth_gain_value_hbox);
-
-        int gain = aud_get_int ("amidiplug", "fsyn_synth_gain");
-        int polyphony = aud_get_int ("amidiplug", "fsyn_synth_polyphony");
-        int reverb = aud_get_int ("amidiplug", "fsyn_synth_reverb");
-        int chorus = aud_get_int ("amidiplug", "fsyn_synth_chorus");
-
-        if (gain < 0)
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_gain_defcheckbt), TRUE);
-        else
-        {
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_gain_defcheckbt), FALSE);
-            gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_gain_value_spin), gain / 10.0);
-        }
-
-        gtk_box_pack_start (GTK_BOX (synth_gain_hbox), synth_gain_value_hbox, FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_gain_value_hbox), synth_gain_value_label, FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_gain_value_hbox), synth_gain_value_spin, FALSE, FALSE, 0);
-        /* synth settings - polyphony */
-        synth_poly_frame = gtk_frame_new (_("polyphony"));
-        gtk_frame_set_label_align (GTK_FRAME (synth_poly_frame), 0.5, 0.5);
-        gtk_box_pack_start (GTK_BOX (synth_leftcol_vbox), synth_poly_frame, TRUE, TRUE, 0);
-        synth_poly_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-        gtk_container_set_border_width (GTK_CONTAINER (synth_poly_hbox), 2);
-        gtk_container_add (GTK_CONTAINER (synth_poly_frame), synth_poly_hbox);
-        synth_poly_defcheckbt = gtk_check_button_new_with_label (_("use default"));
-        gtk_box_pack_start (GTK_BOX (synth_poly_hbox), synth_poly_defcheckbt, FALSE, FALSE, 0);
-        synth_poly_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-        synth_poly_value_label = gtk_label_new (_("value:"));
-        synth_poly_value_spin = gtk_spin_button_new_with_range (16, 4096, 1);
-        gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_poly_value_spin), 256);
-        g_signal_connect (G_OBJECT (synth_poly_defcheckbt), "toggled",
-                          G_CALLBACK (i_configure_ev_toggle_default), synth_poly_value_hbox);
-
-        if (polyphony < 0)
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_poly_defcheckbt), TRUE);
-        else
-        {
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_poly_defcheckbt), FALSE);
-            gtk_spin_button_set_value (GTK_SPIN_BUTTON (synth_poly_value_spin), polyphony);
-        }
-
-        gtk_box_pack_start (GTK_BOX (synth_poly_hbox), synth_poly_value_hbox, FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_poly_value_hbox), synth_poly_value_label, FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_poly_value_hbox), synth_poly_value_spin, FALSE, FALSE, 0);
-        /* synth settings - reverb */
-        synth_reverb_frame = gtk_frame_new (_("reverb"));
-        gtk_frame_set_label_align (GTK_FRAME (synth_reverb_frame), 0.5, 0.5);
-        gtk_box_pack_start (GTK_BOX (synth_leftcol_vbox), synth_reverb_frame, TRUE, TRUE, 0);
-        synth_reverb_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-        gtk_container_set_border_width (GTK_CONTAINER (synth_reverb_hbox), 2);
-        gtk_container_add (GTK_CONTAINER (synth_reverb_frame), synth_reverb_hbox);
-        synth_reverb_defcheckbt = gtk_check_button_new_with_label (_("use default"));
-        gtk_box_pack_start (GTK_BOX (synth_reverb_hbox), synth_reverb_defcheckbt, FALSE, FALSE, 0);
-        synth_reverb_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-        synth_reverb_value_option[0] = gtk_radio_button_new_with_label (NULL, _("yes"));
-        synth_reverb_value_option[1] = gtk_radio_button_new_with_label_from_widget (
-                                           GTK_RADIO_BUTTON (synth_reverb_value_option[0]), _("no"));
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_value_option[0]), TRUE);
-        g_signal_connect (G_OBJECT (synth_reverb_defcheckbt), "toggled",
-                          G_CALLBACK (i_configure_ev_toggle_default), synth_reverb_value_hbox);
-
-        if (reverb < 0)
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_defcheckbt), TRUE);
-        else
-        {
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_defcheckbt), FALSE);
-
-            if (reverb == 0)
-                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_value_option[1]), TRUE);
-            else
-                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_reverb_value_option[0]), TRUE);
-        }
-
-        gtk_box_pack_start (GTK_BOX (synth_reverb_hbox), synth_reverb_value_hbox, FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_reverb_value_hbox), synth_reverb_value_option[0], FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_reverb_value_hbox), synth_reverb_value_option[1], FALSE, FALSE, 0);
-        /* synth settings - chorus */
-        synth_chorus_frame = gtk_frame_new (_("chorus"));
-        gtk_frame_set_label_align (GTK_FRAME (synth_chorus_frame), 0.5, 0.5);
-        gtk_box_pack_start (GTK_BOX (synth_leftcol_vbox), synth_chorus_frame, TRUE, TRUE, 0);
-        synth_chorus_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-        gtk_container_set_border_width (GTK_CONTAINER (synth_chorus_hbox), 2);
-        gtk_container_add (GTK_CONTAINER (synth_chorus_frame), synth_chorus_hbox);
-        synth_chorus_defcheckbt = gtk_check_button_new_with_label (_("use default"));
-        gtk_box_pack_start (GTK_BOX (synth_chorus_hbox), synth_chorus_defcheckbt, FALSE, FALSE, 0);
-        synth_chorus_value_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-        synth_chorus_value_option[0] = gtk_radio_button_new_with_label (NULL, _("yes"));
-        synth_chorus_value_option[1] = gtk_radio_button_new_with_label_from_widget (
-                                           GTK_RADIO_BUTTON (synth_chorus_value_option[0]), _("no"));
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_value_option[0]), TRUE);
-        g_signal_connect (G_OBJECT (synth_chorus_defcheckbt), "toggled",
-                          G_CALLBACK (i_configure_ev_toggle_default), synth_chorus_value_hbox);
-
-        if (chorus < 0)
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_defcheckbt), TRUE);
-        else
-        {
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_defcheckbt), FALSE);
-
-            if (chorus == 0)
-                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_value_option[1]), TRUE);
-            else
-                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_chorus_value_option[0]), TRUE);
-        }
-
-        gtk_box_pack_start (GTK_BOX (synth_chorus_hbox), synth_chorus_value_hbox, FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_chorus_value_hbox), synth_chorus_value_option[0], FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_chorus_value_hbox), synth_chorus_value_option[1], FALSE, FALSE, 0);
-        /* synth settings - samplerate */
-        synth_samplerate_frame = gtk_frame_new (_("sample rate"));
-        gtk_frame_set_label_align (GTK_FRAME (synth_samplerate_frame), 0.5, 0.5);
-        synth_samplerate_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-        gtk_container_set_border_width (GTK_CONTAINER (synth_samplerate_vbox), 6);
-        gtk_container_add (GTK_CONTAINER (synth_samplerate_frame), synth_samplerate_vbox);
-        gtk_box_pack_start (GTK_BOX (synth_rightcol_vbox), synth_samplerate_frame, FALSE, FALSE, 0);
-        synth_samplerate_option[0] = gtk_radio_button_new_with_label (NULL, _("22050 Hz "));
-        g_object_set_data (G_OBJECT (synth_samplerate_option[0]), "val", GINT_TO_POINTER (22050));
-        synth_samplerate_option[1] = gtk_radio_button_new_with_label_from_widget (
-                                         GTK_RADIO_BUTTON (synth_samplerate_option[0]), _("44100 Hz "));
-        g_object_set_data (G_OBJECT (synth_samplerate_option[1]), "val", GINT_TO_POINTER (44100));
-        synth_samplerate_option[2] = gtk_radio_button_new_with_label_from_widget (
-                                         GTK_RADIO_BUTTON (synth_samplerate_option[0]), _("96000 Hz "));
-        g_object_set_data (G_OBJECT (synth_samplerate_option[2]), "val", GINT_TO_POINTER (96000));
-        synth_samplerate_option[3] = gtk_radio_button_new_with_label_from_widget (
-                                         GTK_RADIO_BUTTON (synth_samplerate_option[0]), _("custom "));
-        synth_samplerate_optionhbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-        synth_samplerate_optionentry = gtk_entry_new();
-        gtk_widget_set_sensitive (GTK_WIDGET (synth_samplerate_optionentry), FALSE);
-        gtk_entry_set_width_chars (GTK_ENTRY (synth_samplerate_optionentry), 8);
-        gtk_entry_set_max_length (GTK_ENTRY (synth_samplerate_optionentry), 5);
-        g_object_set_data (G_OBJECT (synth_samplerate_option[3]), "customentry", synth_samplerate_optionentry);
-        g_signal_connect (G_OBJECT (synth_samplerate_option[3]), "toggled",
-                          G_CALLBACK (i_configure_ev_sysamplerate_togglecustom), synth_samplerate_optionentry);
-        synth_samplerate_optionlabel = gtk_label_new (_("Hz "));
-        gtk_box_pack_start (GTK_BOX (synth_samplerate_optionhbox), synth_samplerate_optionentry, TRUE, TRUE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_samplerate_optionhbox), synth_samplerate_optionlabel, FALSE, FALSE, 0);
-
-        int samplerate = aud_get_int ("amidiplug", "fsyn_synth_samplerate");
-
-        switch (samplerate)
-        {
-        case 22050:
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[0]), TRUE);
-            break;
-
-        case 44100:
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[1]), TRUE);
-            break;
-
-        case 96000:
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[2]), TRUE);
-            break;
-
-        default:
-            if (samplerate > 22050 && samplerate < 96000)
-            {
-                char * samplerate_value = g_strdup_printf ("%i", samplerate);
-                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[3]), TRUE);
-                gtk_entry_set_text (GTK_ENTRY (synth_samplerate_optionentry), samplerate_value);
-                g_free (samplerate_value);
-            }
-            else
-                gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (synth_samplerate_option[1]), TRUE);
-        }
-
-        gtk_box_pack_start (GTK_BOX (synth_samplerate_vbox), synth_samplerate_option[0], FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_samplerate_vbox), synth_samplerate_option[1], FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_samplerate_vbox), synth_samplerate_option[2], FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_samplerate_vbox), synth_samplerate_option[3], FALSE, FALSE, 0);
-        gtk_box_pack_start (GTK_BOX (synth_samplerate_vbox), synth_samplerate_optionhbox, FALSE, FALSE, 0);
-
-        gtk_box_pack_start (GTK_BOX (content_vbox), synth_frame, TRUE, TRUE, 0);
-
-        /* commit events  */
-        g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
-                                  G_CALLBACK (i_configure_ev_sflist_commit), soundfont_file_lv);
-        g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
-                                  G_CALLBACK (i_configure_ev_sygain_commit), synth_gain_value_spin);
-        g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
-                                  G_CALLBACK (i_configure_ev_sypoly_commit), synth_poly_value_spin);
-        g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
-                                  G_CALLBACK (i_configure_ev_syreverb_commit), synth_reverb_value_option[0]);
-        g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
-                                  G_CALLBACK (i_configure_ev_sychorus_commit), synth_chorus_value_option[0]);
-        g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",
-                                  G_CALLBACK (i_configure_ev_sysamplerate_commit), synth_samplerate_option[3]);
-    }
-
-    gtk_container_add ((GtkContainer *) fsyn_page_alignment, content_vbox);
-}
-
-
-void i_configure_gui_tablabel_fsyn (GtkWidget * fsyn_page_alignment,
-                                    void * commit_button)
-{
-    GtkWidget * pagelabel_vbox, *pagelabel_image, *pagelabel_label;
-    GdkPixbuf * pagelabel_image_pix;
-    pagelabel_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 1);
-    pagelabel_image_pix = gdk_pixbuf_new_from_xpm_data ((const char **) backend_fluidsynth_icon_xpm);
-    pagelabel_image = gtk_image_new_from_pixbuf (pagelabel_image_pix);
-    g_object_unref (pagelabel_image_pix);
-    pagelabel_label = gtk_label_new ("");
-    gtk_label_set_markup (GTK_LABEL (pagelabel_label), _("<span size=\"smaller\">FluidSynth\nbackend</span>"));
-    gtk_label_set_justify (GTK_LABEL (pagelabel_label), GTK_JUSTIFY_CENTER);
-    gtk_box_pack_start (GTK_BOX (pagelabel_vbox), pagelabel_image, FALSE, FALSE, 1);
-    gtk_box_pack_start (GTK_BOX (pagelabel_vbox), pagelabel_label, FALSE, FALSE, 1);
-    gtk_container_add (GTK_CONTAINER (fsyn_page_alignment), pagelabel_vbox);
-    gtk_widget_show_all (fsyn_page_alignment);
-    return;
+        return soundfont_file_hbox;
 }

@@ -174,7 +174,7 @@ static void audio_cleanup (void)
 
 static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
 {
-    if (g_atomic_int_compare_and_exchange (& settings_changed_flag, TRUE, FALSE))
+    if (g_atomic_int_compare_and_exchange (& backend_settings_changed, TRUE, FALSE))
     {
         AUDDBG ("Settings changed, reinitializing backend\n");
         backend_cleanup ();
@@ -467,7 +467,7 @@ AUD_INPUT_PLUGIN
     .domain = PACKAGE,
     .init = amidiplug_init,
     .about = i_about_gui,
-    .configure = i_configure_gui,
+    .prefs = & amidiplug_prefs,
     .play = amidiplug_play,
     .cleanup = amidiplug_cleanup,
     .probe_for_tuple = amidiplug_get_song_tuple,

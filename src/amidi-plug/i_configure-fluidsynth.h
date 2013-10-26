@@ -21,9 +21,6 @@
 #ifndef _I_CONFIGURE_FLUIDSYNTH_H
 #define _I_CONFIGURE_FLUIDSYNTH_H 1
 
-#include <gtk/gtk.h>
-
-void i_configure_gui_tab_fsyn (GtkWidget *, void *);
-void i_configure_gui_tablabel_fsyn (GtkWidget *, void *);
+void * create_soundfont_list (void);
 
 #endif /* !_I_CONFIGURE_FLUIDSYNTH_H */

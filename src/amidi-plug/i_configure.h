@@ -21,9 +21,10 @@
 #ifndef _I_CONFIGURE_H
 #define _I_CONFIGURE_H 1
 
-/* atomic */
-extern int settings_changed_flag;
+#include <audacious/preferences.h>
 
-void i_configure_gui (void);
+extern int backend_settings_changed;  /* atomic */
+
+extern const PluginPreferences amidiplug_prefs;
 
 #endif /* !_I_CONFIGURE_H */
