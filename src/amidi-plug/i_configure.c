@@ -23,7 +23,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
@@ -31,18 +30,17 @@
 #include "i_configure-ap.h"
 #include "i_configure-fluidsynth.h"
 
+/* atomic */
+int settings_changed_flag = FALSE;
+
 static void response_cb (GtkWidget * window, int response)
 {
     if (response == GTK_RESPONSE_OK)
     {
-        if (aud_drct_get_playing ())
-            aud_drct_stop ();
-
         g_signal_emit_by_name (window, "ap-commit");
 
-        /* reset backend to apply settings */
-        backend_cleanup ();
-        backend_init ();
+        /* reset backend at beginning of next song to apply settings */
+        g_atomic_int_set (& settings_changed_flag, TRUE);
     }
 
     gtk_widget_destroy (window);

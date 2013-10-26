@@ -21,6 +21,9 @@
 #ifndef _I_CONFIGURE_H
 #define _I_CONFIGURE_H 1
 
+/* atomic */
+extern int settings_changed_flag;
+
 void i_configure_gui (void);
 
 #endif /* !_I_CONFIGURE_H */

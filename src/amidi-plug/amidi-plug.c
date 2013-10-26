@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/input.h>
@@ -172,6 +174,13 @@ static void audio_cleanup (void)
 
 static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
 {
+    if (g_atomic_int_compare_and_exchange (& settings_changed_flag, TRUE, FALSE))
+    {
+        AUDDBG ("Settings changed, reinitializing backend\n");
+        backend_cleanup ();
+        backend_init ();
+    }
+
     if (! audio_init ())
         return FALSE;
 
