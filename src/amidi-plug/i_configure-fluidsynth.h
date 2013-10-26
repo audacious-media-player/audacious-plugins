@@ -23,12 +23,7 @@
 
 #include <gtk/gtk.h>
 
-#ifdef AMIDIPLUG_FLUIDSYNTH
-
 void i_configure_gui_tab_fsyn (GtkWidget *, void *);
 void i_configure_gui_tablabel_fsyn (GtkWidget *, void *);
-void i_configure_cfg_fsyn_read (void);
-
-#endif /* AMIDIPLUG_FLUIDSYNTH */
 
 #endif /* !_I_CONFIGURE_FLUIDSYNTH_H */

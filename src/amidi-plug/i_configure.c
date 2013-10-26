@@ -86,7 +86,6 @@ void i_configure_gui (void)
     gtk_notebook_append_page (GTK_NOTEBOOK (configwin_notebook),
                               ap_page_alignment, ap_pagelabel_alignment);
 
-#if AMIDIPLUG_FLUIDSYNTH
     /* FLUIDSYNTH BACKEND CONFIGURATION TAB */
     GtkWidget * fsyn_pagelabel_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
     GtkWidget * fsyn_page_alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
@@ -95,7 +94,6 @@ void i_configure_gui (void)
     i_configure_gui_tablabel_fsyn (fsyn_pagelabel_alignment, configwin);
     gtk_notebook_append_page (GTK_NOTEBOOK (configwin_notebook),
                               fsyn_page_alignment, fsyn_pagelabel_alignment);
-#endif
 
     gtk_widget_show_all (configwin);
 }
@@ -114,28 +112,4 @@ static void i_configure_commit (void)
      * again, it's better than crashing */
     if (! backend)
         aud_drct_quit ();
-}
-
-
-void i_configure_cfg_backend_read (void)
-{
-#ifdef AMIDIPLUG_FLUIDSYNTH
-    i_configure_cfg_fsyn_read ();
-#endif
-}
-
-
-/* read only the amidi-plug part of configuration */
-void i_configure_cfg_ap_read (void)
-{
-    static const char * const defaults[] =
-    {
-        "ap_opts_transpose_value", "0",
-        "ap_opts_drumshift_value", "0",
-        "ap_opts_lyrics_extract", "0",
-        "ap_opts_comments_extract", "0",
-        NULL
-    };
-
-    aud_config_set_defaults ("amidiplug", defaults);
 }

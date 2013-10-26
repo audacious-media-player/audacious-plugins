@@ -22,7 +22,5 @@
 #define _I_CONFIGURE_H 1
 
 void i_configure_gui (void);
-void i_configure_cfg_ap_read (void);
-void i_configure_cfg_backend_read (void);
 
 #endif /* !_I_CONFIGURE_H */

@@ -31,8 +31,6 @@
 #include "i_common.h"
 #include "i_configure.h"
 
-#ifdef AMIDIPLUG_FLUIDSYNTH
-
 #include "backend-fluidsynth/backend-fluidsynth-icon.xpm"
 
 enum
@@ -662,22 +660,3 @@ void i_configure_gui_tablabel_fsyn (GtkWidget * fsyn_page_alignment,
     gtk_widget_show_all (fsyn_page_alignment);
     return;
 }
-
-
-void i_configure_cfg_fsyn_read (void)
-{
-    static const char * const defaults[] =
-    {
-        "fsyn_soundfont_load", "1",
-        "fsyn_synth_samplerate", "44100",
-        "fsyn_synth_gain", "-1",
-        "fsyn_synth_polyphony", "-1",
-        "fsyn_synth_reverb", "-1",
-        "fsyn_synth_chorus", "-1",
-        NULL
-    };
-
-    aud_config_set_defaults ("amidiplug", defaults);
-}
-
-#endif /* AMIDIPLUG_FLUIDSYNTH */

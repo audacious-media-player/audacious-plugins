@@ -64,8 +64,22 @@ static void amidiplug_cleanup (void)
 
 static bool_t amidiplug_init (void)
 {
-    i_configure_cfg_ap_read ();
-    i_configure_cfg_backend_read ();
+    static const char * const defaults[] =
+    {
+        "ap_opts_transpose_value", "0",
+        "ap_opts_drumshift_value", "0",
+        "ap_opts_lyrics_extract", "0",
+        "ap_opts_comments_extract", "0",
+        "fsyn_soundfont_load", "1",
+        "fsyn_synth_samplerate", "44100",
+        "fsyn_synth_gain", "-1",
+        "fsyn_synth_polyphony", "-1",
+        "fsyn_synth_reverb", "-1",
+        "fsyn_synth_chorus", "-1",
+        NULL
+    };
+
+    aud_config_set_defaults ("amidiplug", defaults);
 
     backend = i_backend_load ();
 
