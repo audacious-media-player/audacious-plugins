@@ -3,7 +3,6 @@ PLUGIN = amidi-plug${PLUGIN_SUFFIX}
 SRCS = amidi-plug.c		\
        backend-fluidsynth/b-fluidsynth.c \
        i_midi.c			\
-       i_backend.c		\
        i_configure.c		\
        i_configure-ap.c		\
        i_configure-fluidsynth.c	\

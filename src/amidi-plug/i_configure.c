@@ -31,11 +31,6 @@
 #include "i_configure-ap.h"
 #include "i_configure-fluidsynth.h"
 
-/* from amidi-plug.c */
-extern amidiplug_sequencer_backend_t * backend;
-
-static void i_configure_commit (void);
-
 static void response_cb (GtkWidget * window, int response)
 {
     if (response == GTK_RESPONSE_OK)
@@ -44,7 +39,10 @@ static void response_cb (GtkWidget * window, int response)
             aud_drct_stop ();
 
         g_signal_emit_by_name (window, "ap-commit");
-        i_configure_commit ();
+
+        /* reset backend to apply settings */
+        backend_cleanup ();
+        backend_init ();
     }
 
     gtk_widget_destroy (window);
@@ -92,20 +90,4 @@ void i_configure_gui (void)
                               fsyn_page_alignment, fsyn_pagelabel_alignment);
 
     gtk_widget_show_all (configwin);
-}
-
-static void i_configure_commit (void)
-{
-    /* stop playback before reloading backend
-     * not pretty, but it's better than crashing */
-    if (aud_drct_get_playing ())
-        aud_drct_stop ();
-
-    i_backend_unload (backend);
-    backend = i_backend_load ();
-
-    /* quit if new backend fails to load
-     * again, it's better than crashing */
-    if (! backend)
-        aud_drct_quit ();
 }

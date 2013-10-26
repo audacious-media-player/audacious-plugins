@@ -21,33 +21,26 @@
 #ifndef _I_BACKEND_H
 #define _I_BACKEND_H 1
 
-#include <libaudcore/core.h>
-
 struct midievent_s;
 
-typedef struct
-{
-    int (*init) (void);
-    int (*cleanup) (void);
-    void (* prepare) (void);
-    void (* reset) (void);
-    int (*audio_info_get) (int *, int *, int *);
-    int (*seq_event_noteon) (struct midievent_s *);
-    int (*seq_event_noteoff) (struct midievent_s *);
-    int (*seq_event_allnoteoff) (int);
-    int (*seq_event_keypress) (struct midievent_s *);
-    int (*seq_event_controller) (struct midievent_s *);
-    int (*seq_event_pgmchange) (struct midievent_s *);
-    int (*seq_event_chanpress) (struct midievent_s *);
-    int (*seq_event_pitchbend) (struct midievent_s *);
-    int (*seq_event_sysex) (struct midievent_s *);
-    int (*seq_event_tempo) (struct midievent_s *);
-    int (*seq_event_other) (struct midievent_s *);
-    void (* generate_audio) (void * buf, int bufsize);
-}
-amidiplug_sequencer_backend_t;
+void backend_init (void);
+void backend_cleanup (void);
+void backend_prepare (void);
+void backend_reset (void);
 
-amidiplug_sequencer_backend_t * i_backend_load (void);
-void i_backend_unload (amidiplug_sequencer_backend_t * backend);
+void backend_audio_info (int *, int *, int *);
+void backend_generate_audio (void * buf, int bufsize);
+
+void seq_event_noteon (struct midievent_s *);
+void seq_event_noteoff (struct midievent_s *);
+void seq_event_allnoteoff (int);
+void seq_event_keypress (struct midievent_s *);
+void seq_event_controller (struct midievent_s *);
+void seq_event_pgmchange (struct midievent_s *);
+void seq_event_chanpress (struct midievent_s *);
+void seq_event_pitchbend (struct midievent_s *);
+void seq_event_sysex (struct midievent_s *);
+void seq_event_tempo (struct midievent_s *);
+void seq_event_other (struct midievent_s *);
 
 #endif /* !_I_BACKEND_H */

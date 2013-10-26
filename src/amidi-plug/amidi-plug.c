@@ -51,13 +51,9 @@ static midifile_t midifile;
 
 static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", NULL};
 
-/* also used in i_configure.c */
-amidiplug_sequencer_backend_t * backend;
-
 static void amidiplug_cleanup (void)
 {
-    if (backend)
-        i_backend_unload (backend);
+    backend_cleanup ();
 }
 
 static bool_t amidiplug_init (void)
@@ -78,13 +74,7 @@ static bool_t amidiplug_init (void)
 
     aud_config_set_defaults ("amidiplug", defaults);
 
-    backend = i_backend_load ();
-
-    if (! backend)
-    {
-        amidiplug_cleanup ();
-        return FALSE;
-    }
+    backend_init ();
 
     return TRUE;
 }
@@ -149,7 +139,7 @@ static bool_t audio_init (void)
 {
     int bitdepth;
 
-    backend->audio_info_get (& s_channels, & bitdepth, & s_samplerate);
+    backend_audio_info (& s_channels, & bitdepth, & s_samplerate);
 
     if (bitdepth != 16 || ! aud_input_open_audio (FMT_S16_NE, s_samplerate, s_channels))
         return FALSE;
@@ -168,7 +158,7 @@ static void audio_generate (double seconds)
     {
         int chunk = (total < s_bufsize) ? total : s_bufsize;
 
-        backend->generate_audio (s_buf, chunk);
+        backend_generate_audio (s_buf, chunk);
         aud_input_write_audio (s_buf, chunk);
 
         total -= chunk;
@@ -267,7 +257,7 @@ static void amidiplug_play_loop ()
 {
     bool_t stopped = FALSE;
 
-    backend->prepare ();
+    backend_prepare ();
 
     /* initialize current position in each track */
     for (int j = 0; j < midifile.num_tracks; ++j)
@@ -309,39 +299,39 @@ static void amidiplug_play_loop ()
         switch (event->type)
         {
         case SND_SEQ_EVENT_NOTEON:
-            backend->seq_event_noteon (event);
+            seq_event_noteon (event);
             break;
 
         case SND_SEQ_EVENT_NOTEOFF:
-            backend->seq_event_noteoff (event);
+            seq_event_noteoff (event);
             break;
 
         case SND_SEQ_EVENT_KEYPRESS:
-            backend->seq_event_keypress (event);
+            seq_event_keypress (event);
             break;
 
         case SND_SEQ_EVENT_CONTROLLER:
-            backend->seq_event_controller (event);
+            seq_event_controller (event);
             break;
 
         case SND_SEQ_EVENT_PGMCHANGE:
-            backend->seq_event_pgmchange (event);
+            seq_event_pgmchange (event);
             break;
 
         case SND_SEQ_EVENT_CHANPRESS:
-            backend->seq_event_chanpress (event);
+            seq_event_chanpress (event);
             break;
 
         case SND_SEQ_EVENT_PITCHBEND:
-            backend->seq_event_pitchbend (event);
+            seq_event_pitchbend (event);
             break;
 
         case SND_SEQ_EVENT_SYSEX:
-            backend->seq_event_sysex (event);
+            seq_event_sysex (event);
             break;
 
         case SND_SEQ_EVENT_TEMPO:
-            backend->seq_event_tempo (event);
+            seq_event_tempo (event);
             AUDDBG ("PLAY thread, processing tempo event with value %i on tick %i\n",
                       event->data.tempo, event->tick);
             midifile.current_tempo = event->data.tempo;
@@ -364,7 +354,7 @@ static void amidiplug_play_loop ()
     if (! stopped)
         generate_to_tick (midifile.max_tick);
 
-    backend->reset ();
+    backend_reset ();
 
     i_midi_free (& midifile);
 }
@@ -375,7 +365,7 @@ static void amidiplug_play_loop ()
    istantaneously and proceed this way until the playing_tick is reached */
 static void amidiplug_skipto (int playing_tick)
 {
-    backend->reset ();
+    backend_reset ();
 
     /* this check is always made, for safety*/
     if (playing_tick >= midifile.max_tick)
@@ -432,27 +422,27 @@ static void amidiplug_skipto (int playing_tick)
               break;
             } */
         case SND_SEQ_EVENT_CONTROLLER:
-            backend->seq_event_controller (event);
+            seq_event_controller (event);
             break;
 
         case SND_SEQ_EVENT_PGMCHANGE:
-            backend->seq_event_pgmchange (event);
+            seq_event_pgmchange (event);
             break;
 
         case SND_SEQ_EVENT_CHANPRESS:
-            backend->seq_event_chanpress (event);
+            seq_event_chanpress (event);
             break;
 
         case SND_SEQ_EVENT_PITCHBEND:
-            backend->seq_event_pitchbend (event);
+            seq_event_pitchbend (event);
             break;
 
         case SND_SEQ_EVENT_SYSEX:
-            backend->seq_event_sysex (event);
+            seq_event_sysex (event);
             break;
 
         case SND_SEQ_EVENT_TEMPO:
-            backend->seq_event_tempo (event);
+            seq_event_tempo (event);
             midifile.current_tempo = event->data.tempo;
             break;
         }
