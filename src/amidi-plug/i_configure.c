@@ -40,34 +40,6 @@ amidiplug_cfg_backend_t * amidiplug_cfg_backend;
 
 static void i_configure_commit (void);
 
-void i_configure_ev_browse_for_entry (GtkWidget * target_entry)
-{
-    GtkWidget * parent_window = gtk_widget_get_toplevel (target_entry);
-    GtkFileChooserAction act = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (target_entry),"fc-act"));
-
-    if (gtk_widget_is_toplevel (parent_window))
-    {
-        GtkWidget * browse_dialog = gtk_file_chooser_dialog_new (_("AMIDI-Plug - select file"),
-                                    GTK_WINDOW (parent_window), act,
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
-
-        if (strcmp (gtk_entry_get_text (GTK_ENTRY (target_entry)), ""))
-            gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (browse_dialog),
-                                           gtk_entry_get_text (GTK_ENTRY (target_entry)));
-
-        if (gtk_dialog_run (GTK_DIALOG (browse_dialog)) == GTK_RESPONSE_ACCEPT)
-        {
-            char * filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (browse_dialog));
-            gtk_entry_set_text (GTK_ENTRY (target_entry), filename);
-            DEBUGMSG ("selected file: %s\n", filename);
-            free (filename);
-        }
-
-        gtk_widget_destroy (browse_dialog);
-    }
-}
-
 static void response_cb (GtkWidget * window, int response)
 {
     if (response == GTK_RESPONSE_OK)
