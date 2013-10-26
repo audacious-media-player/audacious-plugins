@@ -35,8 +35,6 @@
 /* from amidi-plug.c */
 extern amidiplug_sequencer_backend_t * backend;
 
-amidiplug_cfg_ap_t * amidiplug_cfg_ap;
-
 static void i_configure_commit (void);
 
 static void response_cb (GtkWidget * window, int response)
@@ -104,10 +102,6 @@ void i_configure_gui (void)
 
 static void i_configure_commit (void)
 {
-    DEBUGMSG ("saving configuration...\n");
-    i_configure_cfg_ap_save(); /* save amidiplug settings */
-    DEBUGMSG ("configuration saved\n");
-
     /* stop playback before reloading backend
      * not pretty, but it's better than crashing */
     if (aud_drct_get_playing ())
@@ -138,41 +132,10 @@ void i_configure_cfg_ap_read (void)
     {
         "ap_opts_transpose_value", "0",
         "ap_opts_drumshift_value", "0",
-        "ap_opts_length_precalc", "0",
         "ap_opts_lyrics_extract", "0",
         "ap_opts_comments_extract", "0",
         NULL
     };
 
     aud_config_set_defaults ("amidiplug", defaults);
-
-    amidiplug_cfg_ap = malloc (sizeof (amidiplug_cfg_ap_t));
-    amidiplug_cfg_ap->ap_opts_transpose_value = aud_get_int ("amidiplug", "ap_opts_transpose_value");
-    amidiplug_cfg_ap->ap_opts_drumshift_value = aud_get_int ("amidiplug", "ap_opts_drumshift_value");
-    amidiplug_cfg_ap->ap_opts_length_precalc = aud_get_int ("amidiplug", "ap_opts_length_precalc");
-    amidiplug_cfg_ap->ap_opts_lyrics_extract = aud_get_int ("amidiplug", "ap_opts_lyrics_extract");
-    amidiplug_cfg_ap->ap_opts_comments_extract = aud_get_int ("amidiplug", "ap_opts_comments_extract");
-}
-
-
-void i_configure_cfg_ap_save (void)
-{
-    aud_set_int ("amidiplug", "ap_opts_transpose_value", amidiplug_cfg_ap->ap_opts_transpose_value);
-    aud_set_int ("amidiplug", "ap_opts_drumshift_value", amidiplug_cfg_ap->ap_opts_drumshift_value);
-    aud_set_int ("amidiplug", "ap_opts_length_precalc", amidiplug_cfg_ap->ap_opts_length_precalc);
-    aud_set_int ("amidiplug", "ap_opts_lyrics_extract", amidiplug_cfg_ap->ap_opts_lyrics_extract);
-    aud_set_int ("amidiplug", "ap_opts_comments_extract", amidiplug_cfg_ap->ap_opts_comments_extract);
-}
-
-
-void i_configure_cfg_ap_free (void)
-{
-    free (amidiplug_cfg_ap);
-    amidiplug_cfg_ap = NULL;
-}
-
-
-char * i_configure_cfg_get_file (void)
-{
-    return g_build_filename (aud_get_path (AUD_PATH_USER_DIR), "amidi-plug.conf", NULL);
 }

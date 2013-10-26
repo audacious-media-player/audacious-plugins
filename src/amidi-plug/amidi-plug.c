@@ -51,9 +51,7 @@ static int amidiplug_playing_status = AMIDIPLUG_STOP;
 
 static midifile_t midifile;
 
-static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi",
-        "rmid", NULL
-                                                       };
+static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", NULL};
 
 /* also used in i_configure.c */
 amidiplug_sequencer_backend_t * backend;
@@ -62,8 +60,6 @@ static void amidiplug_cleanup (void)
 {
     if (backend)
         i_backend_unload (backend);
-
-    i_configure_cfg_ap_free ();
 }
 
 static bool_t amidiplug_init (void)

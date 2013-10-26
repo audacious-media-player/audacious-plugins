@@ -23,7 +23,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
+
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 
 #include "i_backend.h"
 #include "i_configure.h"
@@ -47,39 +49,25 @@ void i_configure_ev_settplay_commit (void * settplay_vbox)
                                             "ap_opts_transpose_value");
     GtkWidget * settplay_drumshift_spinbt = g_object_get_data (G_OBJECT (settplay_vbox),
                                             "ap_opts_drumshift_value");
-    amidiplug_cfg_ap->ap_opts_transpose_value = gtk_spin_button_get_value_as_int (
-                GTK_SPIN_BUTTON (settplay_transpose_spinbt));
-    amidiplug_cfg_ap->ap_opts_drumshift_value = gtk_spin_button_get_value_as_int (
-                GTK_SPIN_BUTTON (settplay_drumshift_spinbt));
-    return;
+
+    aud_set_int ("amidiplug", "ap_opts_transpose_value",
+     gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (settplay_transpose_spinbt)));
+    aud_set_int ("amidiplug", "ap_opts_drumshift_value",
+     gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (settplay_drumshift_spinbt)));
 }
 
 
 void i_configure_ev_settadva_commit (void * settadva_vbox)
 {
-    GtkWidget * settadva_precalc_checkbt = g_object_get_data (G_OBJECT (settadva_vbox),
-                                           "ap_opts_length_precalc");
     GtkWidget * settadva_extractlyr_checkbt = g_object_get_data (G_OBJECT (settadva_vbox),
             "ap_opts_lyrics_extract");
     GtkWidget * settadva_extractcomm_checkbt = g_object_get_data (G_OBJECT (settadva_vbox),
             "ap_opts_comments_extract");
 
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (settadva_precalc_checkbt)))
-        amidiplug_cfg_ap->ap_opts_length_precalc = 1;
-    else
-        amidiplug_cfg_ap->ap_opts_length_precalc = 0;
-
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (settadva_extractlyr_checkbt)))
-        amidiplug_cfg_ap->ap_opts_lyrics_extract = 1;
-    else
-        amidiplug_cfg_ap->ap_opts_lyrics_extract = 0;
-
-    if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (settadva_extractcomm_checkbt)))
-        amidiplug_cfg_ap->ap_opts_comments_extract = 1;
-    else
-        amidiplug_cfg_ap->ap_opts_comments_extract = 0;
-
-    return;
+    aud_set_int ("amidiplug", "ap_opts_lyrics_extract",
+     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (settadva_extractlyr_checkbt)));
+    aud_set_int ("amidiplug", "ap_opts_comments_extract",
+     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (settadva_extractcomm_checkbt)));
 }
 
 
@@ -102,7 +90,7 @@ void i_configure_gui_tab_ap (GtkWidget * ap_page_alignment,
     GtkWidget * settplay_transpose_hbox, *settplay_transpose_label1, *settplay_transpose_spinbt;
     GtkWidget * settplay_drumshift_hbox, *settplay_drumshift_label1, *settplay_drumshift_spinbt;
     GtkWidget * settadva_frame, *settadva_vbox;
-    GtkWidget * settadva_precalc_checkbt, *settadva_extractcomm_checkbt, *settadva_extractlyr_checkbt;
+    GtkWidget * settadva_extractcomm_checkbt, *settadva_extractlyr_checkbt;
 
     GtkWidget * content_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
@@ -116,7 +104,7 @@ void i_configure_gui_tab_ap (GtkWidget * ap_page_alignment,
     settplay_transpose_label1 = gtk_label_new (_("Transpose: "));
     settplay_transpose_spinbt = gtk_spin_button_new_with_range (-20, 20, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (settplay_transpose_spinbt),
-                               amidiplug_cfg_ap->ap_opts_transpose_value);
+     aud_get_int ("amidiplug", "ap_opts_transpose_value"));
     gtk_box_pack_start (GTK_BOX (settplay_transpose_hbox), settplay_transpose_label1, FALSE, FALSE, 0);
     gtk_box_pack_start (GTK_BOX (settplay_transpose_hbox), settplay_transpose_spinbt, FALSE, FALSE, 2);
     gtk_box_pack_start (GTK_BOX (settplay_transpose_and_drumshift_hbox),
@@ -125,7 +113,7 @@ void i_configure_gui_tab_ap (GtkWidget * ap_page_alignment,
     settplay_drumshift_label1 = gtk_label_new (_("Drum shift: "));
     settplay_drumshift_spinbt = gtk_spin_button_new_with_range (0, 127, 1);
     gtk_spin_button_set_value (GTK_SPIN_BUTTON (settplay_drumshift_spinbt),
-                               amidiplug_cfg_ap->ap_opts_drumshift_value);
+     aud_get_int ("amidiplug", "ap_opts_drumshift_value"));
     gtk_box_pack_start (GTK_BOX (settplay_drumshift_hbox), settplay_drumshift_label1, FALSE, FALSE, 0);
     gtk_box_pack_start (GTK_BOX (settplay_drumshift_hbox), settplay_drumshift_spinbt, FALSE, FALSE, 2);
     gtk_box_pack_start (GTK_BOX (settplay_transpose_and_drumshift_hbox),
@@ -143,30 +131,22 @@ void i_configure_gui_tab_ap (GtkWidget * ap_page_alignment,
     settadva_frame = gtk_frame_new (_("Advanced settings"));
     settadva_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width (GTK_CONTAINER (settadva_vbox), 4);
-    settadva_precalc_checkbt = gtk_check_button_new_with_label (
-                                   _("pre-calculate length of MIDI files in playlist"));
-
-    if (amidiplug_cfg_ap->ap_opts_length_precalc)
-        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (settadva_precalc_checkbt), TRUE);
-
-    gtk_box_pack_start (GTK_BOX (settadva_vbox), settadva_precalc_checkbt, FALSE, FALSE, 2);
     settadva_extractcomm_checkbt = gtk_check_button_new_with_label (
                                        _("extract comments from MIDI file (if available)"));
 
-    if (amidiplug_cfg_ap->ap_opts_comments_extract)
+    if (aud_get_int ("amidiplug", "ap_opts_comments_extract"))
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (settadva_extractcomm_checkbt), TRUE);
 
     gtk_box_pack_start (GTK_BOX (settadva_vbox), settadva_extractcomm_checkbt, FALSE, FALSE, 2);
     settadva_extractlyr_checkbt = gtk_check_button_new_with_label (
                                       _("extract lyrics from MIDI file (if available)"));
 
-    if (amidiplug_cfg_ap->ap_opts_lyrics_extract)
+    if (aud_get_int ("amidiplug", "ap_opts_lyrics_extract"))
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (settadva_extractlyr_checkbt), TRUE);
 
     gtk_box_pack_start (GTK_BOX (settadva_vbox), settadva_extractlyr_checkbt, FALSE, FALSE, 2);
     gtk_container_add (GTK_CONTAINER (settadva_frame), settadva_vbox);
     /* attach pointers of options to settadva_vbox so we can handle all of them in a single callback */
-    g_object_set_data (G_OBJECT (settadva_vbox), "ap_opts_length_precalc", settadva_precalc_checkbt);
     g_object_set_data (G_OBJECT (settadva_vbox), "ap_opts_comments_extract", settadva_extractcomm_checkbt);
     g_object_set_data (G_OBJECT (settadva_vbox), "ap_opts_lyrics_extract", settadva_extractlyr_checkbt);
     g_signal_connect_swapped (G_OBJECT (commit_button), "ap-commit",

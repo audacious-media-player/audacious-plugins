@@ -23,7 +23,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
+
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 
 #include "i_configure.h"
 /* this is needed to retrieve information */
@@ -188,10 +190,12 @@ void i_fileinfo_gui (const char * filename_uri)
      *** MIDI INFO BOX ***/
     midiinfoboxes_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
 
+    int comments_extract = aud_get_int ("amidiplug", "ap_opts_comments_extract");
+    int lyrics_extract = aud_get_int ("amidiplug", "ap_opts_lyrics_extract");
+
     /* pick the entire space if both comments and lyrics boxes are not displayed,
        pick only required space if at least one of them is displayed */
-    if ((amidiplug_cfg_ap->ap_opts_comments_extract == 0) &&
-            (amidiplug_cfg_ap->ap_opts_lyrics_extract == 0))
+    if (! comments_extract && ! lyrics_extract)
         gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, TRUE, TRUE, 0);
     else
         gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, FALSE, FALSE, 0);
@@ -287,12 +291,10 @@ void i_fileinfo_gui (const char * filename_uri)
     lyrics_tb = gtk_text_view_get_buffer (GTK_TEXT_VIEW (lyrics_tv));
 
     /* call the buffer fill routine if at least one between comments and lyrics is enabled */
-    if ((amidiplug_cfg_ap->ap_opts_comments_extract > 0) ||
-            (amidiplug_cfg_ap->ap_opts_lyrics_extract > 0))
+    if (comments_extract || lyrics_extract)
         i_fileinfo_text_fill (mf, text_tb, lyrics_tb);
 
-    if ((amidiplug_cfg_ap->ap_opts_comments_extract > 0) &&
-            (gtk_text_buffer_get_char_count (text_tb) == 0))
+    if (comments_extract && ! gtk_text_buffer_get_char_count (text_tb))
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (text_tb, "italicstyle",
@@ -304,8 +306,7 @@ void i_fileinfo_gui (const char * filename_uri)
         gtk_text_buffer_apply_tag (text_tb, tag, &start, &end);
     }
 
-    if ((amidiplug_cfg_ap->ap_opts_lyrics_extract > 0) &&
-            (gtk_text_buffer_get_char_count (lyrics_tb) == 0))
+    if (lyrics_extract && ! gtk_text_buffer_get_char_count (lyrics_tb))
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (lyrics_tb, "italicstyle",
@@ -318,18 +319,17 @@ void i_fileinfo_gui (const char * filename_uri)
     }
 
     /* hide boxes for disabled options (comments and/or lyrics) */
-    if ((amidiplug_cfg_ap->ap_opts_comments_extract == 0) &&
-            (amidiplug_cfg_ap->ap_opts_lyrics_extract == 0))
+    if (! comments_extract && ! lyrics_extract)
     {
         gtk_widget_set_no_show_all (miditextboxes_vbox, TRUE);
         gtk_widget_hide (miditextboxes_vbox);
     }
-    else if (amidiplug_cfg_ap->ap_opts_comments_extract == 0)
+    else if (! comments_extract)
     {
         gtk_widget_set_no_show_all (text_frame, TRUE);
         gtk_widget_hide (text_frame);
     }
-    else if (amidiplug_cfg_ap->ap_opts_lyrics_extract == 0)
+    else if (! lyrics_extract)
     {
         gtk_widget_set_no_show_all (lyrics_frame, TRUE);
         gtk_widget_hide (lyrics_frame);

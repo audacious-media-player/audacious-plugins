@@ -21,22 +21,8 @@
 #ifndef _I_CONFIGURE_H
 #define _I_CONFIGURE_H 1
 
-typedef struct
-{
-    int ap_opts_transpose_value;
-    int ap_opts_drumshift_value;
-    int ap_opts_length_precalc;
-    int ap_opts_comments_extract;
-    int ap_opts_lyrics_extract;
-}
-amidiplug_cfg_ap_t;
-
-extern amidiplug_cfg_ap_t * amidiplug_cfg_ap;
-
 void i_configure_gui (void);
 void i_configure_cfg_ap_read (void);
-void i_configure_cfg_ap_save (void);
-void i_configure_cfg_ap_free (void);
 void i_configure_cfg_backend_read (void);
 
 #endif /* !_I_CONFIGURE_H */

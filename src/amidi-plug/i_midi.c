@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <audacious/misc.h>
+
 #include "i_common.h"
 #include "i_configure.h"
 
@@ -218,8 +220,8 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
             /* if this note is not in standard drum channel (10), apply transpose */
             if (event->data.d[0] != 9)
             {
-                int data_tr = (i_midi_file_read_byte (mf) & 0x7f) +
-                              amidiplug_cfg_ap->ap_opts_transpose_value;
+                int transpose = aud_get_int ("amidiplug", "ap_opts_transpose_value");
+                int data_tr = (i_midi_file_read_byte (mf) & 0x7f) + transpose;
 
                 if (data_tr > 127) data_tr = 127;
                 else if (data_tr < 0) data_tr = 0;
@@ -228,8 +230,8 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
             }
             else /* this note is in standard drum channel (10), apply drum shift */
             {
-                int data_ds = (i_midi_file_read_byte (mf) & 0x7f) +
-                              amidiplug_cfg_ap->ap_opts_drumshift_value; /* always > 0 */
+                int drumshift = aud_get_int ("amidiplug", "ap_opts_drumshift_value");
+                int data_ds = (i_midi_file_read_byte (mf) & 0x7f) + drumshift; /* always > 0 */
 
                 if (data_ds > 127) data_ds -= 127;
 
@@ -354,7 +356,7 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
 
                 case 0x01: /* text comments */
                 {
-                    if (amidiplug_cfg_ap->ap_opts_comments_extract > 0)
+                    if (aud_get_int ("amidiplug", "ap_opts_comments_extract") > 0)
                     {
                         int ic = 0;
 
@@ -378,7 +380,7 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
 
                 case 0x05: /* lyrics */
                 {
-                    if (amidiplug_cfg_ap->ap_opts_lyrics_extract > 0)
+                    if (aud_get_int ("amidiplug", "ap_opts_lyrics_extract"))
                     {
                         int ic = 0;
 
