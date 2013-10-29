@@ -88,7 +88,7 @@ extern gchar *username;
 extern bool_t read_authentication_test_result(char **error_code, char **error_detail);
 extern bool_t read_token(char **error_code, char **error_detail);
 extern bool_t read_session_key(char **error_code, char **error_detail);
-extern bool_t read_scrobble_result(char **error_code, char **error_detail);
+extern bool_t read_scrobble_result(char **error_code, char **error_detail, bool_t *ignored, char **ignored_code);
 
 //scrobbler.c //TODO: refactor this
 extern gchar *remove_tabs(const char *string);

@@ -329,18 +329,32 @@ bool_t scrobbler_communication_init() {
     return TRUE;
 }
 
+static void set_timestamp_to_current(gchar **line) {
+    //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
+    //artist  album   title   number  length  "L"     timestamp NULL
 
-static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, gchar *queuepath) {
+    gchar **splitted_line = g_strsplit(*line, "\t", 0);
+    g_free(splitted_line[6]);
+    splitted_line[6] = g_strdup_printf("%"G_GINT64_FORMAT"", g_get_real_time() / G_USEC_PER_SEC);
+    AUDDBG("splitted line's timestamp is now: %s.\n", splitted_line[6]);
+    g_free(*line);
+    (*line) = g_strjoinv("\t", splitted_line);
+}
+
+static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList **lines_to_retry_ptr, gchar *queuepath) {
     GSList *lines_to_remove = *lines_to_remove_ptr;
+    GSList *lines_to_retry = *lines_to_retry_ptr;
     gchar *contents = NULL;
     gchar **lines = NULL;
     gchar **finallines = g_malloc_n(1, sizeof(gchar *));
     int n_finallines;
 
-    if (lines_to_remove == NULL) {
-        return;
+    if (lines_to_remove != NULL) {
+        lines_to_remove = g_slist_reverse(lines_to_remove);
     }
-    lines_to_remove = g_slist_reverse(lines_to_remove);
+    if (lines_to_retry != NULL) {
+        lines_to_retry = g_slist_reverse(lines_to_retry);
+    }
 
 
     pthread_mutex_lock(&log_access_mutex);
@@ -358,6 +372,18 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, gchar 
                 lines_to_remove = g_slist_next(lines_to_remove);
             } else {
                 //keep this line
+                AUDDBG("Going to keep line %i\n", i);
+                if (lines_to_retry != NULL && *((int *) (lines_to_retry->data)) == i) {
+                  lines_to_retry = g_slist_next(lines_to_retry);
+                  //this line will be retried with a zero timestamp
+                  AUDDBG("Going to zero this line.\n");
+                  AUDDBG("Line before: %s.\n", lines[i]);
+                  set_timestamp_to_current(&(lines[i]));
+                  AUDDBG("Line after: %s.\n", lines[i]);
+
+                } else {
+                  AUDDBG("not zeroing this line\n");
+                }
                 n_finallines++;
                 finallines = g_realloc_n(finallines, n_finallines, sizeof(gchar *));
                 finallines[n_finallines-1] = g_strdup(lines[i]);
@@ -398,9 +424,13 @@ static void scrobble_cached_queue() {
     gchar **lines = NULL;
     gchar **line;
     gchar *scrobblemsg;
-    GSList *lines_to_remove = NULL;
+    GSList *lines_to_remove = NULL; //lines to remove because they were scrobbled (or ignored, and will not be retried)
+    GSList *lines_to_retry = NULL; //lines to retry later because they were too old TODO: or "daily scrobble limit reached"
     gchar *error_code = NULL;
     gchar *error_detail = NULL;
+    bool_t ignored = FALSE;
+    gchar *ignored_code = NULL;
+
     pthread_mutex_lock(&log_access_mutex);
     success = g_file_get_contents(queuepath, &contents, NULL, NULL);
     pthread_mutex_unlock(&log_access_mutex);
@@ -430,12 +460,23 @@ static void scrobble_cached_queue() {
                 if (send_message_to_lastfm(scrobblemsg) == TRUE) {
                     error_code = NULL;
                     error_detail = NULL;
-                    if (read_scrobble_result(&error_code, &error_detail) == TRUE) {
-                        //TODO: a track might not be scrobbled due to "daily scrobble limit exeeded".
-                        //This message comes on the ignoredMessage attribute, inside the XML of the response.
-                        //We are not dealing with this case currently and are losing that scrobble.
-                        AUDDBG("SCROBBLE OK.\n");
-                        save_line_to_remove(&lines_to_remove, i);
+                    if (read_scrobble_result(&error_code, &error_detail, &ignored, &ignored_code) == TRUE) {
+                        AUDDBG("SCROBBLE OK. Error code: %s. Error detail: %s\n", error_code, error_detail);
+                        AUDDBG("SCROBBLE OK. ignored: %i.\n", ignored);
+                        AUDDBG("SCROBBLE OK. ignored code: %s.\n", ignored_code);
+                        if (ignored == TRUE && g_strcmp0(ignored_code, "3") == 0) { //3: Timestamp was too old
+                            AUDDBG("SCROBBLE IGNORED!!! %i, detail: %s\n", ignored, ignored_code);
+                            save_line_to_remove(&lines_to_retry, i);
+                        } else if (ignored == TRUE && g_strcmp0(ignored_code, "") == 0) { //5: Daily scrobble limit reached
+                           //TODO: a track might not be scrobbled due to "daily scrobble limit exeeded".
+                           //This message comes on the ignoredMessage attribute, inside the XML of the response.
+                           //We are not dealing with this case currently and are losing that scrobble.
+                           //TODO
+
+                        } else {
+                            AUDDBG("Not ignored. Carrying on...\n");
+                            save_line_to_remove(&lines_to_remove, i);
+                        }
                     } else {
                         AUDDBG("SCROBBLE NOT OK. Error code: %s. Error detail: %s.\n", error_code, error_detail);
 
@@ -470,6 +511,9 @@ static void scrobble_cached_queue() {
                 }
 
                 g_free(scrobblemsg);
+                //TODO: Avoid spamming last.fm --- It's not as simple as just adding a wait here:
+                //If audacious is closed while we're on this loop, tracks might be re-scrobbled.
+                //This shall be doable if we only pick one track at a time from the scrobbler.log
             } else {
                 AUDDBG("Unscrobbable line.\n");
                 //leave entry on the cache file
@@ -477,10 +521,16 @@ static void scrobble_cached_queue() {
             g_strfreev(line);
         }//for
 
+
+        delete_lines_from_scrobble_log(&lines_to_remove, &lines_to_retry, queuepath);
+
         if (lines_to_remove != NULL) {
-            delete_lines_from_scrobble_log(&lines_to_remove, queuepath);
             g_slist_free_full(lines_to_remove, g_free);
         }
+        if (lines_to_retry != NULL) {
+            g_slist_free_full(lines_to_retry, g_free);
+        }
+
         g_strfreev(lines);
     }
 
@@ -491,8 +541,10 @@ static void scrobble_cached_queue() {
 
 static void send_now_playing() {
 
-  gchar *error_code = NULL;
-  gchar *error_detail = NULL;
+  gchar  *error_code = NULL;
+  gchar  *error_detail = NULL;
+  bool_t ignored = FALSE;
+  gchar  *ignored_code = NULL;
   /*
    * now_playing_track can be set to something else while we this method is
    * running. Creating a local variable avoids to get data for different tracks,
@@ -551,7 +603,7 @@ static void send_now_playing() {
       return;
     }
 
-    if (read_scrobble_result(&error_code, &error_detail) == TRUE) {
+    if (read_scrobble_result(&error_code, &error_detail, &ignored, &ignored_code) == TRUE) {
       //see scrobble_cached_queue()
       AUDDBG("NOW PLAYING OK.\n");
     } else {
@@ -570,6 +622,7 @@ static void send_now_playing() {
     }
     g_free(error_code);
     g_free(error_detail);
+    g_free(ignored_code);
     //We don't care if the now playing was not accepted, no need to read the result from the server.
 
   }
