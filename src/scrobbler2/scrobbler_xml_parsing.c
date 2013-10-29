@@ -127,10 +127,24 @@ static xmlChar *check_status (xmlChar **error_code, xmlChar **error_detail) {
     return status;
 }
 
-bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
+/*
+ * Returns:
+ *  * TRUE if the scrobble was successful
+ *    * with ignored = TRUE if it was ignored
+ *      * ignored_code_out must be checked
+ *    * with ignored = FALSE if it was scrobbled OK
+ *  * FALSE if the scrobble was unsuccessful
+ *    * error_code_out and error_detail_out must be checked:
+ *      * They are NULL if an API communication error occur
+ */
+bool_t read_scrobble_result(char **error_code_out, char **error_detail_out, bool_t *ignored_out, char **ignored_code_out) {
     xmlChar *status;
     xmlChar *error_code = NULL;
     xmlChar *error_detail = NULL;
+
+    bool_t ignored = FALSE;
+    xmlChar *ignored_code = NULL;
+
     bool_t result = TRUE;
 
 
@@ -140,7 +154,6 @@ bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
     }
 
     status = check_status(&error_code, &error_detail);
-
     (*error_code_out) = g_strdup((gchar *) error_code);
     (*error_detail_out) = g_strdup((gchar *) error_detail);
 
@@ -154,7 +167,26 @@ bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
     if (xmlStrEqual(status, (xmlChar *) "failed")) {
         AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
         result = FALSE;
+
+    } else {
+        //TODO: We are assuming that only one track is scrobbled per request! This will have to be
+        //re-done to support multiple tracks being scrobbled in batch
+        xmlChar *ignored_scrobble = get_attribute_value((xmlChar *) "/lfm/scrobbles[@ignored]", (xmlChar *) "ignored");
+
+        if (ignored_scrobble != NULL && ! xmlStrEqual(ignored_scrobble, (xmlChar *) "0")) {
+          //The track was ignored
+          //TODO: this assumes ignored_scrobble == 1!!!
+          ignored = TRUE;
+          ignored_code = get_attribute_value((xmlChar *) "/lfm/scrobbles/scrobble/ignoredMessage[@code]", (xmlChar *) "code");
+        }
+        if (ignored_scrobble != NULL) {
+          xmlFree(ignored_scrobble);
+        }
+        AUDDBG("ignored? %i, ignored_code: %s\n", ignored, ignored_code);
     }
+
+    (*ignored_out) = ignored;
+    (*ignored_code_out) = g_strdup((gchar *) ignored_code);
 
 
     xmlFree(status);
@@ -163,6 +195,9 @@ bool_t read_scrobble_result(char **error_code_out, char **error_detail_out) {
     }
     if (error_detail != NULL) {
         xmlFree(error_detail);
+    }
+    if (ignored_code != NULL) {
+        xmlFree(ignored_code);
     }
 
     clean_data();
@@ -197,11 +232,11 @@ bool_t read_authentication_test_result (char **error_code_out, char **error_deta
         result = FALSE;
 
     } else {
-      username = (gchar *) get_attribute_value((xmlChar *) "/lfm/recommendations[@user]", (xmlChar *) "user");
-      if (username == NULL || strlen(username) == 0) {
-        AUDDBG("last.fm not answering according to the API.\n");
-        result = FALSE;
-      }
+        username = (gchar *) get_attribute_value((xmlChar *) "/lfm/recommendations[@user]", (xmlChar *) "user");
+        if (username == NULL || strlen(username) == 0) {
+          AUDDBG("last.fm not answering according to the API.\n");
+          result = FALSE;
+        }
     }
 
 
