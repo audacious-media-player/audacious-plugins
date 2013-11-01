@@ -56,7 +56,7 @@ GSList * i_backend_list_lookup (void)
         while (backend_directory_entry != NULL)
         {
             /* simple filename checking */
-            if (i_str_has_pref_and_suff (backend_directory_entry, "ap-", ".so") == TRUE)
+            if (i_str_has_pref_and_suff (backend_directory_entry, "ap-", "." G_MODULE_SUFFIX) == TRUE)
             {
                 GModule * module;
                 char * (*getapmoduleinfo) (char **, char **, char **, int *);
@@ -122,7 +122,7 @@ void i_backend_list_free (GSList * backend_list)
 
 amidiplug_sequencer_backend_t * i_backend_load (const char * module_name)
 {
-    SPRINTF (path, AMIDIPLUGBACKENDDIR "/ap-%s.so", module_name);
+    SPRINTF (path, AMIDIPLUGBACKENDDIR "/ap-%s." G_MODULE_SUFFIX, module_name);
     GModule * module = g_module_open (path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
 
     if (! module)
