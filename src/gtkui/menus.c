@@ -112,10 +112,17 @@ static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_ge
 static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
 static void pl_remove_dupes_by_filename (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FILENAME); }
 static void pl_remove_dupes_by_path (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
-static void pl_rename (void) {ui_playlist_notebook_edit_tab_title (aud_playlist_get_active ()); }
 static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
 static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }
 static void pl_select_all (void) {aud_playlist_select_all (aud_playlist_get_active (), TRUE); }
+
+static void pl_rename (void)
+{
+    if (aud_get_bool ("gtkui", "playlist_tabs_visible"))
+        ui_playlist_notebook_edit_tab_title (aud_playlist_get_active ());
+    else
+        audgui_show_playlist_rename (aud_playlist_get_active ());
+}
 
 static void pl_tab_play (void)
 {
