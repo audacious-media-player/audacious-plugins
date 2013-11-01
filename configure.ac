@@ -605,12 +605,15 @@ AC_ARG_ENABLE(sdlout,
 
 have_sdlout=no
 if test "x$enable_sdlout" != "xno"; then
-    PKG_CHECK_MODULES([SDL], [sdl >= 1.2.11],
-        [have_sdlout=yes
-         OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"],
-        [if test "x$enable_sdlout" = "xyes"; then
-            AC_MSG_ERROR([Cannot find SDL development files (ver >= 1.2.11), but compilation of SDL output plugin has been explicitly requested; please install SDL dev files and run configure again])
-         fi])
+    PKG_CHECK_MODULES([SDL], [sdl2 >= 2.0],
+       [have_sdlout=yes
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"],
+       [PKG_CHECK_MODULES([SDL], [sdl >= 1.2.11],
+           [have_sdlout=yes
+            OUTPUT_PLUGINS="$OUTPUT_PLUGINS sdlout"],
+           [if test "x$enable_sdlout" = "xyes"; then
+               AC_MSG_ERROR([Cannot find SDL development files (ver >= 1.2.11), but compilation of SDL output plugin has been explicitly requested; please install SDL dev files and run configure again])
+            fi])])
 fi
 
 dnl *** sndio output
