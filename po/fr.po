@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
-"PO-Revision-Date: 2013-07-30 13:08+0000\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
+"PO-Revision-Date: 2013-09-11 03:31+0000\n"
 "Last-Translator: Alain-Olivier  Breysse <yahoe.001@gmail.com>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/audacious/"
 "language/fr/)\n"
@@ -496,11 +496,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - choix du fichier"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "Paramètres d'AMIDI-Plug"
 
@@ -1411,7 +1407,7 @@ msgstr "Déterminer le nom du fichier à partir de :"
 
 #: src/filewriter/filewriter.c:484
 msgid "original file tags"
-msgstr "labels du fichier d'origine"
+msgstr "étiquettes du fichier d'origine"
 
 #: src/filewriter/filewriter.c:490
 msgid "original filename"
@@ -1469,12 +1465,12 @@ msgid "Joint Stereo"
 msgstr "Stéréo combiné"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "Stéréo"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "Mono"
 
@@ -1522,7 +1518,7 @@ msgstr "Forcer le respect strict des normes ISO"
 msgid "Error protection"
 msgstr "Protection contre les erreurs"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "Qualité"
 
@@ -1588,25 +1584,25 @@ msgstr "Paramètres ID3 :"
 
 #: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
-msgstr "Forcer l'ajout de la version 2 des labels"
+msgstr "Forcer l'ajout de la version 2 des étiquettes"
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr "Ajouter uniquement la version 1 des labels"
+msgstr "Ajouter uniquement la version 1 des étiquettes"
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr "Ajouter uniquement la version 2 des labels"
+msgstr "Ajouter uniquement la version 2 des étiquettes"
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
-msgstr "Labels"
+msgstr "Étiquettes"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Configuration de l'encodeur Vorbis"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "Niveau de qualité (0 - 10) :"
 
@@ -1923,8 +1919,9 @@ msgid "_Sort"
 msgstr "_Trier"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr "Trier la sél_ection"
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "Trier la sélection"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2603,7 +2600,7 @@ msgstr "Pour répéter à l'infini, mettre le comptage des répétions à -1."
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (Lecteur de module)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "Son ambiophonique"
 
@@ -2947,7 +2944,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr "Scrobbler 2.0"
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -4291,7 +4288,7 @@ msgstr "Greffon d'entrée/sortie des fichiers"
 msgid "Voice Removal"
 msgstr "Karaoké"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4329,7 +4326,7 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Décodeur Ogg Vorbis"
 
@@ -4369,10 +4366,16 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "Décodeur WavPack"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr "Décodeur 2SF"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Listes de lecture XSPF"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug - choix du fichier"
+
+#~ msgid "Sort S_elected"
+#~ msgstr "Trier la sél_ection"

@@ -8,9 +8,9 @@
 # P.I.Balasinghe <pushpika.indrachapa@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
 "PO-Revision-Date: 2013-06-03 17:20+0000\n"
 "Last-Translator: ashintha89 <ashintha@gmail.com>\n"
 "Language-Team: Sinhala (http://www.transifex.com/projects/p/audacious/"
@@ -489,11 +489,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI⏎\n"
 "පේනු</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-පේනු - ගොනුව තෝරන්න​"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "AMIDI-පේනු මෘදුකාංග සකසනයන්"
 
@@ -1441,12 +1437,12 @@ msgid "Joint Stereo"
 msgstr "එකතු වූ ත්‍රිමාණ​"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "ත‍්‍ර‍්‍රිමාණ "
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "තනි "
 
@@ -1494,7 +1490,7 @@ msgstr "විධිමත් ISO අනුකූලවීමකට බල ක�
 msgid "Error protection"
 msgstr "දෝෂ ආරක්‍ෂාව​"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "ප්‍රශස්තතාව"
 
@@ -1574,11 +1570,11 @@ msgstr "2 වන සංස්කරණයේ සම්බන්ධකය පම�
 msgid "Tags"
 msgstr "සම්බන්ධක"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis විකේතකයේ වින්‍යාසය"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "ප්‍රශස්ථතා මට්ටම​ (0 - 10):"
 
@@ -1895,8 +1891,9 @@ msgid "_Sort"
 msgstr "_අනුපිළිවෙලට සකසන්න​"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr "තෝරාගත් අනුපිළිවලට"
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "තෝරාගත් අනුපිළිවලට "
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2567,7 +2564,7 @@ msgstr "සදහටම නැවත නැවත කිරීමට, නැව�
 msgid "ModPlug (Module Player)"
 msgstr "මොඩ් කෙවෙනිය (මොඩියුල  ධාවකය)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "සිසාළ "
 
@@ -2893,7 +2890,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr "ස්ක්රෝබ්ලර් 2.0"
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -4216,7 +4213,7 @@ msgstr "ගොනු ආදාන ප්‍රතිදාන​ පේනු �
 msgid "Voice Removal"
 msgstr "කටහඬ ඉවත් කිරීම​"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4254,7 +4251,7 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis විකේතකය"
 
@@ -4293,10 +4290,16 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack විකේතකය"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr " 2SF විකේතකය"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML හුවමාරු කළ හැකි ධාවන ලැයිස්තුව​ (XSPF)"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-පේනු - ගොනුව තෝරන්න​"
+
+#~ msgid "Sort S_elected"
+#~ msgstr "තෝරාගත් අනුපිළිවලට"

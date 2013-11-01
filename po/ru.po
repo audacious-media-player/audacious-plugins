@@ -6,24 +6,33 @@
 # Alexander Orlov <alxorlov@pochta.ru>, 2007
 # Someonefree <drag-sasha@mail.ru>, 2013
 # iavojd <iavojd@gmail.com>, 2013
+# iavojd <iavojd@gmail.com>, 2013
+# joshuazzz <joshuazzz@yandex.ru>, 2012
 # joshuazzz <joshuazzz@yandex.ru>, 2012
 # StreamThreaedr <kvantarium@gmail.com>, 2012
 # Maxim Musatov <m1kc@yandex.ru>, 2012
+# Maxim Musatov <m1kc@yandex.ru>, 2012
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012-2013
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012
+# NEKURIM <kvadrocu7@gmail.com>, 2013
 # Rax Garfield <admin@dvizho.ks.ua>, 2012
 #   <sejava@mail.ru>, 2012
 # senyalutyi <senyalutyi@ya.ru>, 2013
+# senyalutyi <senyalutyi@ya.ru>, 2013
+# serg0 <sergo@bk.ru>, 2010
 # Sergey V. Mironov <serg0@ulx.ru>, 2009
 # serg0 <sergo@bk.ru>, 2010
+# Someonefree <drag-sasha@mail.ru>, 2013
+# StreamThreaedr <kvantarium@gmail.com>, 2012
+# Victor Ponomarev <victor.a.ponomarev@gmail.com>, 2013
 # NEKURIM <kvadrocu7@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
-"PO-Revision-Date: 2013-07-05 10:19+0000\n"
-"Last-Translator: NEKURIM <kvadrocu7@gmail.com>\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
+"PO-Revision-Date: 2013-09-26 18:30+0000\n"
+"Last-Translator: victorponomarev <lidlencom@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
@@ -176,7 +185,7 @@ msgstr ""
 
 #: src/alarm/interface.c:81
 msgid "This is your wakeup call."
-msgstr "Это ваш звонок будильника."
+msgstr "Это ваш звонок будильника"
 
 #: src/alarm/interface.c:99
 msgid "Your reminder for today is..."
@@ -360,8 +369,8 @@ msgstr ""
 "ALSA Плагин вывода для Audacious\n"
 "Авторство 2009-2012 John Lindgren\n"
 "\n"
-"Моя благодарность Уильяму Pitcock, автор Вывода ALSA NG, чей код служит "
-"ориентиром когда руководства по ALSA было недостаточно."
+"Моя благодарность Уильяму Pitcock, автор Вывода ALSA NG, чей код служил "
+"ориентиром, когда руководства по ALSA было недостаточно."
 
 #: src/alsa/plugin.c:32
 msgid "ALSA Output"
@@ -505,11 +514,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - выбор файла"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "Настройки AMIDI-Plugin"
 
@@ -1477,12 +1482,12 @@ msgid "Joint Stereo"
 msgstr "Объединённое стерео"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "Стерео"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "Моно"
 
@@ -1530,7 +1535,7 @@ msgstr "Строгое соответствие ISO"
 msgid "Error protection"
 msgstr "Защита от ошибок"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "Качество"
 
@@ -1610,11 +1615,11 @@ msgstr "Только 2-я версия тегов"
 msgid "Tags"
 msgstr "Теги"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Настройка кодека Vorbis"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "Уровень качества (0 – 10):"
 
@@ -1932,8 +1937,9 @@ msgid "_Sort"
 msgstr "_Сортировать"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr "Сортировать Выделенное"
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "Сортировать выбранные"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2609,7 +2615,7 @@ msgstr "Повторять всегда, задать число повторо�
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (модульный плеер)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "Объёмное звучание"
 
@@ -2863,7 +2869,7 @@ msgstr "Конвертер частоты"
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr "OK.Прослушивание для пользователя: %s"
+msgstr "OK. Прослушивание для пользователя: %s"
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
@@ -2872,29 +2878,30 @@ msgstr "Отказано в доступе"
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
 msgstr ""
-"Воспользуйтесь следующей ссылкой чтобы разрешить Audacious прослушивать ваши "
-"композиции:"
+"Воспользуйтесь следующей ссылкой чтобы разрешить Audacious отправлять "
+"прослушанные композиции на Last.fm:"
 
 #: src/scrobbler2/config_window.c:63
 msgid "Keep this window open and click 'Check Permission' again.\n"
 msgstr ""
-"Оставте это окно открытым, и нажмите кнопку \" Проверить Разрешение' снова.\n"
+"Оставте это окно открытым и нажмите кнопку \" Запросить разрешение' снова.\n"
 
 #: src/scrobbler2/config_window.c:66 src/scrobbler2/config_window.c:77
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
-"Не беспокойтесь. Ваш прослушивания сохраняются на вашем компьютере.\n"
-"Они будут представлены как только Audacious разрешит это сделать."
+"Не беспокойтесь, список ваших прослушиваний сохраняется на компьютере.\n"
+"Он будет доставлен на Last.fm, как только Audacious получит разрешение это "
+"сделать."
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
-msgstr "Проблемы с сетью."
+msgstr "Проблемы с сетью"
 
 #: src/scrobbler2/config_window.c:75
 msgid "There was a problem contacting Last.fm. Please try again later."
-msgstr "Невозможно подключится к Last.fm. Попробуйте повторить позже."
+msgstr "Невозможно подключится к Last.fm. Попробуйте повторить позже"
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
@@ -2902,17 +2909,18 @@ msgstr "Проверка..."
 
 #: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
-msgstr "С_черт Разрешено"
+msgstr "З_апросить разрешение"
 
 #: src/scrobbler2/config_window.c:174
 msgid "_Revoke Permission"
-msgstr "_Отменить Разрешение"
+msgstr "_Отменить разрешение"
 
 #: src/scrobbler2/config_window.c:221
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
-"Вы должны разрешить Audacious прослушивать дорожки вашего аккаунта Last.fm.\n"
+"Вы должны разрешить Audacious отправлять прослушанные дорожки в ваш аккаунт "
+"Last.fm\n"
 
 #: src/scrobbler2/scrobbler.c:233
 msgid ""
@@ -2920,7 +2928,7 @@ msgid ""
 "There might be a problem with your installation."
 msgstr ""
 "Плагин scrobbler не может быть запущен.\n"
-"Могут быть проблемы с установкой."
+"Могут быть проблемы с установкой"
 
 #: src/scrobbler2/scrobbler.c:311
 msgid ""
@@ -2942,7 +2950,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr "Скробблер 2.0"
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -2969,7 +2977,7 @@ msgstr "Библиотека"
 
 #: src/search-tool/search-tool.c:219
 msgid "Unknown Artist"
-msgstr "Неизвастный исполнитель"
+msgstr "Неизвестный исполнитель"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Album"
@@ -3045,7 +3053,7 @@ msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Для импорта музыки в библиотеку Audacious, выберите каталог, затем нажмите "
+"Для импорта музыки в библиотеку Audacious выберите каталог, затем нажмите "
 "иконку \"обновить\"."
 
 #: src/search-tool/search-tool.c:747
@@ -3171,7 +3179,7 @@ msgstr "Сохранить предустановки"
 
 #: src/skins/ui_equalizer.c:1087
 msgid "Save auto-preset"
-msgstr "Сохранить авто-установки"
+msgstr "Сохранить автоустановки"
 
 #: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
 msgid "Save equalizer preset"
@@ -3183,7 +3191,7 @@ msgstr "Удалить предустановку"
 
 #: src/skins/ui_equalizer.c:1190
 msgid "Delete auto-preset"
-msgstr "Удалить авто-установки"
+msgstr "Удалить автоустановки"
 
 #: src/skins/ui_main.c:414
 msgid "kbps"
@@ -3239,31 +3247,31 @@ msgstr "Меню визуализации"
 
 #: src/skins/ui_main.c:1591
 msgid "Single mode."
-msgstr "Одиночный режим."
+msgstr "Одиночный режим"
 
 #: src/skins/ui_main.c:1593
 msgid "Playlist mode."
-msgstr "Режим списка воспроизведения."
+msgstr "Режим списка воспроизведения"
 
 #: src/skins/ui_main.c:1615
 msgid "Stopping after song."
-msgstr "Остановить после дорожки."
+msgstr "Остановить после дорожки"
 
 #: src/skins/ui_main.c:1617
 msgid "Not stopping after song."
-msgstr "Не останавливать после дорожки."
+msgstr "Не останавливать после дорожки"
 
 #: src/skins/ui_main.c:1752
 msgid "Repeat point A set."
-msgstr "Повторить установки A."
+msgstr "Повторить установки A"
 
 #: src/skins/ui_main.c:1757
 msgid "Repeat point B set."
-msgstr "Повторить установки B."
+msgstr "Повторить установки B"
 
 #: src/skins/ui_main.c:1766
 msgid "Repeat points cleared."
-msgstr "Повторить очищенные пункты."
+msgstr "Повторить очищенные пункты"
 
 #: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
 msgid "Autoscroll Song Name"
@@ -3473,7 +3481,7 @@ msgstr "Импортировать список воспроизведения"
 
 #: src/skins/ui_manager.c:225
 msgid "Loads a playlist file into the selected playlist."
-msgstr "Загрузить список воспроизведения из файла в выбранный список."
+msgstr "Загрузить список воспроизведения из файла в выбранный список"
 
 #: src/skins/ui_manager.c:228
 msgid "Export Playlist"
@@ -3481,7 +3489,7 @@ msgstr "Экспортировать список воспроизведения
 
 #: src/skins/ui_manager.c:229
 msgid "Saves the selected playlist."
-msgstr "Сохранить выбранный список воспроизведения."
+msgstr "Сохранить выбранный список воспроизведения"
 
 #: src/skins/ui_manager.c:231
 msgid "Refresh List"
@@ -3489,7 +3497,7 @@ msgstr "Обновить список"
 
 #: src/skins/ui_manager.c:232
 msgid "Refreshes metadata associated with a playlist entry."
-msgstr "Обновить метаданные и соотнести их с записями списка воспроизведения."
+msgstr "Обновить метаданные и соотнести их с записями списка воспроизведения"
 
 #: src/skins/ui_manager.c:235
 msgid "Playlist Manager"
@@ -3517,7 +3525,7 @@ msgstr "Добавить адрес..."
 
 #: src/skins/ui_manager.c:251
 msgid "Adds a remote track to the playlist."
-msgstr "Добавить звуковой поток из сети в список воспроизведения."
+msgstr "Добавить звуковой поток из сети в список воспроизведения"
 
 #: src/skins/ui_manager.c:254
 msgid "Add Files..."
@@ -3525,7 +3533,7 @@ msgstr "Добавить файлы..."
 
 #: src/skins/ui_manager.c:255
 msgid "Adds files to the playlist."
-msgstr "Добавить файлы в список воспроизведения."
+msgstr "Добавить файлы в список воспроизведения"
 
 #: src/skins/ui_manager.c:260
 msgid "Search and Select"
@@ -3537,7 +3545,7 @@ msgid ""
 "criteria."
 msgstr ""
 "Найти в списке воспроизведения и отметить записи, соответствующие заданному "
-"критерию."
+"критерию"
 
 #: src/skins/ui_manager.c:264
 msgid "Invert Selection"
@@ -3545,7 +3553,7 @@ msgstr "Инвертировать выбор"
 
 #: src/skins/ui_manager.c:265
 msgid "Inverts the selected and unselected entries."
-msgstr "Снять выделение с отмеченных пунктов и пометить не отмеченные."
+msgstr "Снять выделение с отмеченных пунктов и пометить не отмеченные"
 
 #: src/skins/ui_manager.c:268
 msgid "Select All"
@@ -3553,7 +3561,7 @@ msgstr "Выбрать все"
 
 #: src/skins/ui_manager.c:269
 msgid "Selects all of the playlist entries."
-msgstr "Выбрать все записи списка воспроизведения."
+msgstr "Выбрать все записи списка воспроизведения"
 
 #: src/skins/ui_manager.c:272
 msgid "Select None"
@@ -3561,7 +3569,7 @@ msgstr "Снять выделение"
 
 #: src/skins/ui_manager.c:273
 msgid "Deselects all of the playlist entries."
-msgstr "Снять выделение с ранее выделенных записей."
+msgstr "Снять выделение с ранее выделенных записей"
 
 #: src/skins/ui_manager.c:278
 msgid "Remove All"
@@ -3569,7 +3577,7 @@ msgstr "Удалить все"
 
 #: src/skins/ui_manager.c:279
 msgid "Removes all entries from the playlist."
-msgstr "Удалить все записи из списка воспроизведения."
+msgstr "Удалить все записи из списка воспроизведения"
 
 #: src/skins/ui_manager.c:282
 msgid "Clear Queue"
@@ -3577,7 +3585,7 @@ msgstr "Очистить очередь"
 
 #: src/skins/ui_manager.c:283
 msgid "Clears the queue associated with this playlist."
-msgstr "Очистить очередь, связанную с этим списком воспроизведения."
+msgstr "Очистить очередь, связанную с этим списком воспроизведения"
 
 #: src/skins/ui_manager.c:286
 msgid "Remove Unavailable Files"
@@ -3585,7 +3593,7 @@ msgstr "Удалить недоступные файлы"
 
 #: src/skins/ui_manager.c:287
 msgid "Removes unavailable files from the playlist."
-msgstr "Удалить недоступные файлы из списка воспроизведения."
+msgstr "Удалить недоступные файлы из списка воспроизведения"
 
 #: src/skins/ui_manager.c:290
 msgid "Remove Duplicates"
@@ -3599,8 +3607,7 @@ msgstr "По названию"
 #: src/skins/ui_manager.c:293
 msgid "Removes duplicate entries from the playlist by title."
 msgstr ""
-"Удалить из списка воспроизведения дублирующиеся записи с одинаковым "
-"названием."
+"Удалить из списка воспроизведения дублирующиеся записи с одинаковым названием"
 
 #: src/skins/ui_manager.c:296 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
@@ -3611,7 +3618,7 @@ msgstr "По имени файла"
 msgid "Removes duplicate entries from the playlist by filename."
 msgstr ""
 "Удалить из списка воспроизведения дублирующиеся записи с одинаковыми именами "
-"файлов."
+"файлов"
 
 #: src/skins/ui_manager.c:300 src/skins/ui_manager.c:340
 #: src/skins/ui_manager.c:370
@@ -3622,7 +3629,7 @@ msgstr "По пути и имени файла"
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr ""
 "Удалить из списка воспроизведения дублирующиеся записи, имеющие одинаковый "
-"абсолютный путь."
+"абсолютный путь"
 
 #: src/skins/ui_manager.c:304
 msgid "Remove Unselected"
@@ -3630,7 +3637,7 @@ msgstr "Удалить не отмеченные"
 
 #: src/skins/ui_manager.c:305
 msgid "Remove unselected entries from the playlist."
-msgstr "Удалить из списка воспроизведения не выделенные записи."
+msgstr "Удалить из списка воспроизведения не выделенные записи"
 
 #: src/skins/ui_manager.c:308
 msgid "Remove Selected"
@@ -3638,7 +3645,7 @@ msgstr "Удалить выбранные"
 
 #: src/skins/ui_manager.c:309
 msgid "Remove selected entries from the playlist."
-msgstr "Удалить из списка воспроизведения выделенные записи."
+msgstr "Удалить из списка воспроизведения выделенные записи"
 
 #: src/skins/ui_manager.c:314
 msgid "Randomize List"
@@ -3646,7 +3653,7 @@ msgstr "Сортировать в случайном порядке"
 
 #: src/skins/ui_manager.c:315
 msgid "Randomizes the playlist."
-msgstr "Сортировать записи в списке воспроизведения в случайном порядке."
+msgstr "Сортировать записи в списке воспроизведения в случайном порядке"
 
 #: src/skins/ui_manager.c:318
 msgid "Reverse List"
@@ -3654,7 +3661,7 @@ msgstr "В обратном порядке"
 
 #: src/skins/ui_manager.c:319
 msgid "Reverses the playlist."
-msgstr "Обратить порядок записей в списке воспроизведения на противоположный."
+msgstr "Обратить порядок записей в списке воспроизведения на противоположный"
 
 #: src/skins/ui_manager.c:322
 msgid "Sort List"
@@ -3662,7 +3669,7 @@ msgstr "Сортировать список"
 
 #: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "Sorts the list by title."
-msgstr "Сортировать список воспроизведения по названию."
+msgstr "Сортировать список воспроизведения по названию"
 
 #: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 msgid "By Album"
@@ -3670,7 +3677,7 @@ msgstr "По альбому"
 
 #: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "Sorts the list by album."
-msgstr "Сортировать список воспроизведения по альбому."
+msgstr "Сортировать список воспроизведения по альбому"
 
 #: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "By Artist"
@@ -3678,15 +3685,15 @@ msgstr "По исполнителю"
 
 #: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "Sorts the list by artist."
-msgstr "Сортировать список воспроизведения по исполнителю."
+msgstr "Сортировать список воспроизведения по исполнителю"
 
 #: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "Sorts the list by filename."
-msgstr "Сортировать список воспроизведения по имени файла."
+msgstr "Сортировать список воспроизведения по имени файла"
 
 #: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
 msgid "Sorts the list by full pathname."
-msgstr "Сортировать список воспроизведения по абсолютному пути к файлу."
+msgstr "Сортировать список воспроизведения по абсолютному пути к файлу"
 
 #: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
 msgid "By Date"
@@ -3694,7 +3701,7 @@ msgstr "По дате"
 
 #: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "Sorts the list by modification time."
-msgstr "Сортировать список воспроизведения по дате изменения."
+msgstr "Сортировать список воспроизведения по дате изменения"
 
 #: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
 msgid "By Track Number"
@@ -3702,7 +3709,7 @@ msgstr "По номеру дорожки"
 
 #: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "Sorts the list by track number."
-msgstr "Сортировать список воспроизведения по номеру дорожки."
+msgstr "Сортировать список воспроизведения по номеру дорожки"
 
 #: src/skins/ui_manager.c:352
 msgid "Sort Selected"
@@ -3722,7 +3729,7 @@ msgstr "Информация о дорожке"
 
 #: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
 msgid "View track details"
-msgstr "Просмотреть информацию о дорожке."
+msgstr "Просмотреть информацию о дорожке"
 
 #: src/skins/ui_manager.c:399 src/skins/ui_manager.c:400
 msgid "About Audacious"
@@ -3742,7 +3749,7 @@ msgstr "Воспроизвести из адреса"
 
 #: src/skins/ui_manager.c:406
 msgid "Play media from the selected location"
-msgstr "Воспроизвести аудиоданные из выбранного места."
+msgstr "Воспроизвести аудиоданные из выбранного места"
 
 #: src/skins/ui_manager.c:408
 msgid "Plugin services"
@@ -3782,7 +3789,7 @@ msgstr "Показать/скрыть очередь"
 
 #: src/skins/ui_manager.c:429
 msgid "Enables/disables the entry in the playlist's queue."
-msgstr "Включить или отключить очерёдность записей в списке воспроизведения."
+msgstr "Включить или отключить очерёдность записей в списке воспроизведения"
 
 #: src/skins/ui_manager.c:432
 msgid "Copy"
@@ -3901,10 +3908,10 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Выберите записи в списке воспроизведения путём заполнения одного или "
-"нескольких полей. В полях используется написание регулярных выражений, не "
-"чувствительное к регистру. Если вы не знаете, как работают регулярные "
-"выражения, просто вставьте часть букв из слова, которые хотите найти."
+"Выберите записи в списке воспроизведения, заполнив соответствующие поля. В "
+"полях используется написание регулярных выражений, не чувствительное к "
+"регистру. Если вы не знаете, как работают регулярные выражения, просто "
+"вставьте часть букв из слова, которые хотите найти."
 
 #: src/skins/ui_playlist.c:259
 msgid "Title: "
@@ -3982,19 +3989,19 @@ msgstr ""
 "\n"
 "Адаптация для Audacious Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"Это свободная программа; вы можете повторно распространять ее или "
-"модифицировать ее в соответствии с условиями GNU General Public License, "
-"опубликованной Free Software Foundation; либо версии 2 Лицензии, либо (по "
+"Это свободная программа; вы можете повторно распространять или "
+"модифицировать её в соответствии с условиями GNU General Public License, "
+"опубликованной Free Software Foundation, либо версии 2 Лицензии, либо (по "
 "вашему выбору) любой более поздней версии.\n"
 "\n"
 "Эта программа распространяется в надежде, что она будет полезной, но БЕЗ "
-"КАКИХ-либо ГАРАНТИЙ; даже без подразумеваемых гарантий коммерческой ценности "
-"или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Смотрите больше деталей GNU General "
+"КАКИХ-ЛИБО ГАРАНТИЙ, даже без подразумеваемых гарантий коммерческой ценности "
+"или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Узнайте подробности в GNU General "
 "Public License.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+"Вы должны были получить копию GNU General Public License вместе с этой "
+"программой; если этого не произошло, напишите во Free Software Foundation, "
+"Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndfile/plugin.c:435
 msgid "Sndfile Plugin"
@@ -4026,7 +4033,7 @@ msgid ""
 msgstr ""
 "Формат не поддерживается запрошенным звуковым устройством.\n"
 "\n"
-"Попробуйте ещё раз, запустив сервер sndiod(1)."
+"Попробуйте ещё раз, запустив сервер sndiod(1)"
 
 #: src/sndio/sndio.c:384
 msgid "sndio device"
@@ -4050,7 +4057,7 @@ msgstr "Смена дорожки"
 
 #: src/song_change/song_change.c:436
 msgid "Command to run when Audacious starts a new song."
-msgstr "Команда, запускаемая Audacious в начале воспроизведения новой дорожки."
+msgstr "Команда, запускаемая Audacious в начале воспроизведения новой дорожки"
 
 #: src/song_change/song_change.c:438 src/song_change/song_change.c:444
 #: src/song_change/song_change.c:450 src/song_change/song_change.c:456
@@ -4059,19 +4066,19 @@ msgstr "Команда:"
 
 #: src/song_change/song_change.c:442
 msgid "Command to run toward the end of a song."
-msgstr "Команда, запускаемая после окончания дорожки."
+msgstr "Команда, запускаемая после окончания дорожки"
 
 #: src/song_change/song_change.c:448
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
-"Команда, запускаемая Audacious при достижении конца списка воспроизведения."
+"Команда, запускаемая Audacious при достижении конца списка воспроизведения"
 
 #: src/song_change/song_change.c:454
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Команда, запускаемая при изменении названия дорожки (например, при "
-"воспроизведении из сети)."
+"воспроизведении из сети)"
 
 #: src/song_change/song_change.c:460
 msgid ""
@@ -4104,7 +4111,7 @@ msgid ""
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 "<span size='small'>Параметры, передаваемые оболочке, должны быть заключены в "
-"кавычки. В противном случае возможны проблемы с безопасностью.</span>"
+"кавычки. В противном случае возможны проблемы с безопасностью</span>"
 
 #: src/song_change/song_change.c:498
 msgid "Commands"
@@ -4180,7 +4187,7 @@ msgstr ""
 "Copyright 2010 Michał Lipski <tallica@o2.pl>\n"
 "\n"
 "Этот модуль отображает значок программы\n"
-"в системном лотке."
+"в системном лотке"
 
 #: src/statusicon/statusicon.c:397
 msgid "<b>Mouse Scroll Action</b>"
@@ -4222,7 +4229,7 @@ msgid ""
 msgstr ""
 "Модуль Дополнительное стерео\n"
 "\n"
-"Johan Levin 1999."
+"Johan Levin 1999"
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
@@ -4280,7 +4287,7 @@ msgstr "Плагин файлового ввода-вывода"
 msgid "Voice Removal"
 msgstr "Удаление вокала"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4316,7 +4323,7 @@ msgstr ""
 "\n"
 "Посетите сайт Xiph.org Foundation по адресу http://www.xiph.org/"
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Декодер Ogg Vorbis"
 
@@ -4350,16 +4357,22 @@ msgid ""
 msgstr ""
 "Авторство 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
-"Некоторый код плагина Miles Egan."
+"Некоторый код плагина Miles Egan"
 
 #: src/wavpack/wavpack.c:341
 msgid "WavPack Decoder"
 msgstr "Декодер WavPack"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr "Декодер 2SF"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XSPF"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug - выбор файла"
+
+#~ msgid "Sort S_elected"
+#~ msgstr "Сортировать Выделенное"

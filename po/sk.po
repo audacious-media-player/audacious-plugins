@@ -10,9 +10,9 @@
 # Corduroy <vdcorduroy@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
 "PO-Revision-Date: 2013-05-04 12:38+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/audacious/"
@@ -450,11 +450,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - vyberte súbor"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "AMIDI-Plug Nastavenia"
 
@@ -1414,12 +1410,12 @@ msgid "Joint Stereo"
 msgstr "Joint Stereo"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "Stereo"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "Mono"
 
@@ -1467,7 +1463,7 @@ msgstr "Vynútiť prísnu zhodu s ISO"
 msgid "Error protection"
 msgstr "Ochrana pred chybami"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "Kvalita"
 
@@ -1547,11 +1543,11 @@ msgstr "Pridávať iba značky verzie 2"
 msgid "Tags"
 msgstr "Značky"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Nastavenie kodéra Vorbis"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0-10):"
 
@@ -1860,8 +1856,9 @@ msgid "_Sort"
 msgstr "_Zoradiť"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr ""
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "Triediť výber"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2536,7 +2533,7 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (Module Player) zásuvný modul"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "Priestorový zvuk"
 
@@ -2843,7 +2840,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr ""
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -4177,7 +4174,7 @@ msgstr "File I/O zásuvný modul"
 msgid "Voice Removal"
 msgstr "Odstránenie hlasu"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4215,7 +4212,7 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis dekodér"
 
@@ -4255,10 +4252,13 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack dekodér"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr "2SF dekodér"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists (XSPF)"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug - vyberte súbor"

@@ -18,9 +18,9 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
 "PO-Revision-Date: 2013-07-11 13:11+0000\n"
 "Last-Translator: rustam <rustam.tsurik@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/audacious/"
@@ -506,11 +506,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI-\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - вибір файлу"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "Налаштування плаґіну AMIDI"
 
@@ -1468,12 +1464,12 @@ msgid "Joint Stereo"
 msgstr "Об’єднане стерео"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "Стерео"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "Моно"
 
@@ -1522,7 +1518,7 @@ msgstr ""
 msgid "Error protection"
 msgstr "CRC-захист від збоїв (дещо менша якість)"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "Якість"
 
@@ -1602,11 +1598,11 @@ msgstr "Додавати лише v2-теґ"
 msgid "Tags"
 msgstr "Теґи"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Налаштування кодувальника Vorbis"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "Рівень якості (0-10, менше - краще):"
 
@@ -1922,8 +1918,9 @@ msgid "_Sort"
 msgstr "_Сортувати"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr "Сортувати _вибране"
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "Сортувати виділене"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2602,7 +2599,7 @@ msgstr "Для безкінечного повторення, встановіт
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (програвач модулів)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "Об’ємний звук"
 
@@ -2945,7 +2942,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr "Скроблер 2.0"
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -4277,7 +4274,7 @@ msgstr "Плаґін файлового вводу-виводу"
 msgid "Voice Removal"
 msgstr "Видалення голосу"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4315,7 +4312,7 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Декодер Ogg Vorbis"
 
@@ -4356,10 +4353,16 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "Декодер WavPack"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr "Декодер 2SF"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML-списки відтворення (XSPF)"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug - вибір файлу"
+
+#~ msgid "Sort S_elected"
+#~ msgstr "Сортувати _вибране"

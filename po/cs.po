@@ -5,16 +5,18 @@
 # Translators:
 # jui <appukonrad@gmail.com>, 2012-2013
 # Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004
+# fri <pavelfric@seznam.cz>, 2012-2013
 # fri <pavelfric@seznam.cz>, 2012
-# Petr Pisar <petr.pisar@atlas.cz>, 2007, 2008, 2009, 2010, 2011, 2012
+# Petr Pisar <petr.pisar@atlas.cz>, 2007-2012
+# petr.simacek <petr.simacek@gmail.com>, 2012
 # petr.simacek <petr.simacek@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
-"PO-Revision-Date: 2013-05-04 12:38+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
+"PO-Revision-Date: 2013-09-08 07:47+0000\n"
+"Last-Translator: fri <pavelfric@seznam.cz>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/audacious/language/"
 "cs/)\n"
 "Language: cs\n"
@@ -37,7 +39,7 @@ msgstr "prostorový zvuk"
 
 #: src/aac/libmp4.c:930
 msgid "AAC Decoder"
-msgstr "AAC Dekodér"
+msgstr "Dekodér AAC"
 
 #: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
 #: src/psf/plugin.c:124 src/vtx/vtx.c:69 src/xsf/plugin.c:85
@@ -450,11 +452,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug – vyberte soubor"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "Nastavení AMIDI-Pluginu"
 
@@ -996,7 +994,7 @@ msgstr "Stopa %d nebyla nalezena."
 #: src/cdaudio-ng/cdaudio-ng.c:310
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "Stopa %d je datová stopa."
 
 #: src/cdaudio-ng/cdaudio-ng.c:312
 msgid "Failed to open audio output."
@@ -1286,7 +1284,7 @@ msgstr "FFmpeg Plugin"
 
 #: src/filewriter/filewriter.c:409
 msgid "FileWriter Configuration"
-msgstr ""
+msgstr "Nastavení pro FileWriter"
 
 #: src/filewriter/filewriter.c:421
 msgid "Output file format:"
@@ -1366,7 +1364,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.c:532
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "Přídavný modul FileWriter"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
@@ -1377,12 +1375,12 @@ msgid "Joint Stereo"
 msgstr "Joint-stereo"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "Stereo"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "Mono"
 
@@ -1430,7 +1428,7 @@ msgstr "Vynutit přísnou shodu s ISO"
 msgid "Error protection"
 msgstr "Ochrana před chybami"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "Kvalita"
 
@@ -1510,17 +1508,17 @@ msgstr "Přidávat jen popisky verze 2"
 msgid "Tags"
 msgstr "Popisky"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Nastavení vorbis kodéru"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "Úroveň kvality (0–10):"
 
 #: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
 msgid "lossless"
-msgstr ""
+msgstr "Bezztrátová kvalita"
 
 #: src/flacng/plugin.c:269
 msgid ""
@@ -1736,7 +1734,7 @@ msgstr "Žádné p_okračování dle seznamu skladeb"
 
 #: src/gtkui/menus.c:191
 msgid "Stop A_fter This Song"
-msgstr ""
+msgstr "Zastavit _po této skladbě"
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:284
 msgid "Song _Info ..."
@@ -1823,8 +1821,9 @@ msgid "_Sort"
 msgstr "_Seřadit"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr ""
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "Seřadit vybrané"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -1904,7 +1903,7 @@ msgstr "Zobrazit _stavový panel"
 
 #: src/gtkui/menus.c:268
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "Ukázat _zbývající čas"
 
 #: src/gtkui/menus.c:270
 msgid "Show Close _Buttons"
@@ -2009,7 +2008,7 @@ msgstr "%d kb/s"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr ""
+msgstr "Předchozí skladba"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
 #: src/skins/ui_manager.c:178
@@ -2030,11 +2029,11 @@ msgstr ""
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "Vpřed o 5 sekund"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "Zpět o 5 sekund"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
@@ -2042,19 +2041,19 @@ msgstr "Vypnout zvuk"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Zvýšit hlasitost"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Snížit hlasitost"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Přejít na soubor"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
-msgstr ""
+msgstr "Přepnout okno přehrávače"
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
@@ -2062,19 +2061,19 @@ msgstr "Zobrazit OSD (nápis na obrazovce)"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr ""
+msgstr "Přepnout opakování"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr ""
+msgstr "Přepnout zamíchání"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
-msgstr ""
+msgstr "Přepnout zastavení po současné skladbě"
 
 #: src/hotkey/gui.c:86
 msgid "Raise player window(s)"
-msgstr ""
+msgstr "Vyvolat okno přehrávače"
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
@@ -2377,118 +2376,118 @@ msgstr "MMS Plugin"
 
 #: src/modplug/plugin_main.c:57
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Rozlišení</b>"
 
 #: src/modplug/plugin_main.c:58
 msgid "8-bit"
-msgstr ""
+msgstr "8 bitů"
 
 #: src/modplug/plugin_main.c:60
 msgid "16-bit"
-msgstr ""
+msgstr "16 bitů"
 
 #: src/modplug/plugin_main.c:62
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Kanály</b>"
 
 #: src/modplug/plugin_main.c:67
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Převzorkování</b>"
 
 #: src/modplug/plugin_main.c:68
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Nejbližší (nejrychlejší)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Lineární (rychlé)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Spline (good)"
-msgstr ""
+msgstr "Křivka (dobré)"
 
 #: src/modplug/plugin_main.c:74
 msgid "Polyphase (best)"
-msgstr ""
+msgstr "Vícefázové (nejlepší)"
 
 #: src/modplug/plugin_main.c:76
 msgid "<b>Sampling rate</b>"
-msgstr ""
+msgstr "<b>Vzorkovací kmitočet</b>"
 
 #: src/modplug/plugin_main.c:77
 msgid "22 kHz"
-msgstr ""
+msgstr "22 kHz"
 
 #: src/modplug/plugin_main.c:79
 msgid "44 kHz"
-msgstr ""
+msgstr "44 kHz"
 
 #: src/modplug/plugin_main.c:81
 msgid "48 kHz"
-msgstr ""
+msgstr "48 kHz"
 
 #: src/modplug/plugin_main.c:83
 msgid "96 kHz"
-msgstr ""
+msgstr "96 kHz"
 
 #: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
 #: src/modplug/plugin_main.c:102
 msgid "Level:"
-msgstr ""
+msgstr "Úroveň:"
 
 #: src/modplug/plugin_main.c:97
 msgid "Cutoff:"
-msgstr ""
+msgstr "Bod zkrácení:"
 
 #: src/modplug/plugin_main.c:114
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Dozvuk</b>"
 
 #: src/modplug/plugin_main.c:118
 msgid "<b>Bass Boost</b>"
-msgstr ""
+msgstr "<b>Zdůraznění basů</b>"
 
 #: src/modplug/plugin_main.c:122
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Prostorový zvuk</b>"
 
 #: src/modplug/plugin_main.c:126
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Předzesílení</b>"
 
 #: src/modplug/plugin_main.c:133
 msgid "<b>Miscellaneous</b>"
-msgstr ""
+msgstr "<b>Různé</b>"
 
 #: src/modplug/plugin_main.c:134
 msgid "Oversample"
-msgstr ""
+msgstr "Oblast vzorku"
 
 #: src/modplug/plugin_main.c:136
 msgid "Noise reduction"
-msgstr ""
+msgstr "Zmenšení šumu"
 
 #: src/modplug/plugin_main.c:138
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Přehrát Amiga MOD"
 
 #: src/modplug/plugin_main.c:140
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Opakovat</b>"
 
 #: src/modplug/plugin_main.c:141
 msgid "Repeat count:"
-msgstr ""
+msgstr "Počet opakování:"
 
 #: src/modplug/plugin_main.c:143
 msgid "To repeat forever, set the repeat count to -1."
-msgstr ""
+msgstr "Pro opakování navždy, nastavte počet opakování na -1."
 
 #: src/modplug/plugin_main.c:238
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (Module Player)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "Prostorový zvuk"
 
@@ -2534,11 +2533,11 @@ msgstr ""
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr ""
+msgstr "Ukázat ovládání přehrávání"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "Vždy ukázat oznámení"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
@@ -2546,7 +2545,7 @@ msgstr "Oznámení na plochu"
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "Ukázat"
 
 #: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
 msgid "Pause"
@@ -2646,15 +2645,15 @@ msgstr "Lineární interpolace"
 
 #: src/resample/resample.c:167
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Rychlá sinc interpolace"
 
 #: src/resample/resample.c:168
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Střední sinc interpolace"
 
 #: src/resample/resample.c:169
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Nejlepší sinc interpolace"
 
 #: src/resample/resample.c:172
 msgid "<b>Conversion</b>"
@@ -2706,7 +2705,7 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:210
 msgid "Sample Rate Converter"
-msgstr ""
+msgstr "Převodník vzorkovacího kmitočtu"
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
@@ -2715,7 +2714,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
-msgstr ""
+msgstr "Přístup odepřen"
 
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
@@ -2741,7 +2740,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
-msgstr ""
+msgstr "Prověřuje se..."
 
 #: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
@@ -2777,7 +2776,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr ""
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -3909,23 +3908,23 @@ msgstr ""
 
 #: src/sox-resampler/sox-resampler.c:141
 msgid "Quick"
-msgstr ""
+msgstr "Rychle"
 
 #: src/sox-resampler/sox-resampler.c:142
 msgid "Low"
-msgstr ""
+msgstr "Nízká"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "High"
-msgstr ""
+msgstr "Vysoká"
 
 #: src/sox-resampler/sox-resampler.c:145
 msgid "Very High"
-msgstr ""
+msgstr "Velmi vysoká"
 
 #: src/sox-resampler/sox-resampler.c:148
 msgid "Quality:"
-msgstr ""
+msgstr "Kvalita:"
 
 #: src/sox-resampler/sox-resampler.c:162
 msgid "SoX Resampler"
@@ -4043,7 +4042,7 @@ msgstr ""
 msgid "Voice Removal"
 msgstr "Odstranění hlasu"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4064,7 +4063,7 @@ msgid ""
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis Dekodér"
 
@@ -4101,10 +4100,13 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack Dekodér"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr "2SF Dekodér"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists (XSPF)"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug – vyberte soubor"

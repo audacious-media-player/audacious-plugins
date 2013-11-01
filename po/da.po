@@ -6,9 +6,9 @@
 # Joe Hansen <joedalton2@yahoo.dk>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
 "PO-Revision-Date: 2013-07-28 17:44+0000\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/audacious/"
@@ -442,11 +442,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI-\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - vælg fil"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "AMIDI-Plug-indstillinger"
 
@@ -1353,12 +1349,12 @@ msgid "Joint Stereo"
 msgstr "Fælles stereo"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "Stereo"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "Mono"
 
@@ -1406,7 +1402,7 @@ msgstr "Fremtving streng ISO-overholdelse"
 msgid "Error protection"
 msgstr "Fejlbeskyttelse"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "Kvalitet"
 
@@ -1486,11 +1482,11 @@ msgstr "Tilføj kun v2-mærke"
 msgid "Tags"
 msgstr "Mærker"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Konfiguration af Vorbiskoder"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "Kvalitetsniveau (0-10):"
 
@@ -1797,8 +1793,9 @@ msgid "_Sort"
 msgstr "_Sorter"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr ""
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "Sorter valgt"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2432,7 +2429,7 @@ msgstr "For at gentage for evigt, så sæt antal gentagelser til -1."
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (Module-afspiller)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "Surround"
 
@@ -2718,7 +2715,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr "Scrobbler 2.0"
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -4006,7 +4003,7 @@ msgstr "File I/O-udvidelsesmodul"
 msgid "Voice Removal"
 msgstr "Stemmefjernelse"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4027,7 +4024,7 @@ msgid ""
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis-afkoder"
 
@@ -4061,10 +4058,13 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack-afkoder"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr "2SF-afkoder"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable-afspilningslister (XSPF)"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug - vælg fil"

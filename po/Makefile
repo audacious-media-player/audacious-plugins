@@ -8,6 +8,7 @@
 #   'make update-pot' respectively.
 #
 LOCALES = be.po \
+	  bg.po \
 	  ca.po \
 	  cs.po \
 	  da.po \
@@ -30,6 +31,7 @@ LOCALES = be.po \
 	  ky.po \
 	  lt.po \
 	  lv.po \
+	  ml_IN.po \
 	  pl.po \
 	  pt_BR.po \
 	  pt_PT.po \
@@ -38,6 +40,7 @@ LOCALES = be.po \
 	  sk.po \
 	  sr_RS.po \
 	  ta.po \
+	  tr.po \
 	  uk.po \
 	  zh_CN.po \
 	  zh_TW.po

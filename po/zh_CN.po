@@ -11,9 +11,9 @@
 # 4679kun <btchina@live.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
 "PO-Revision-Date: 2013-05-14 07:15+0000\n"
 "Last-Translator: 4679kun <btchina@live.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/"
@@ -431,11 +431,7 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - 选择文件"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "AMIDI 插件设置"
 
@@ -1321,12 +1317,12 @@ msgid "Joint Stereo"
 msgstr "联合立体声"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "立体声"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "单声道"
 
@@ -1374,7 +1370,7 @@ msgstr "强制严格遵从ISO"
 msgid "Error protection"
 msgstr "错误保护"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "质量"
 
@@ -1454,11 +1450,11 @@ msgstr "仅添加v2标签"
 msgid "Tags"
 msgstr "标签"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis编码器设置"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "质量等级(0-10)："
 
@@ -1757,8 +1753,9 @@ msgid "_Sort"
 msgstr "排序(_S)"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr ""
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "排序已选中的"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2382,7 +2379,7 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "环绕音"
 
@@ -2666,7 +2663,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr ""
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -3909,7 +3906,7 @@ msgstr ""
 msgid "Voice Removal"
 msgstr ""
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -3930,7 +3927,7 @@ msgid ""
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr ""
 
@@ -3964,10 +3961,13 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr ""
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr ""
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug - 选择文件"

@@ -5,17 +5,19 @@
 # Translators:
 # 		ChoSeongWoo <syn333@gmail.com>, 2008
 # Darkcircle <darkcircle.0426@gmail.com>, 2013
+# Darkcircle <darkcircle.0426@gmail.com>, 2012-2013
 #       Jaegeum Choe <baedaron@hananet.net>, 2001
 #       Man-Yong Lee <yong@linuxkorea.co.kr>, 2000
 #       Sang-Jin Hwang <accel@accellinux.org>, 1999
 # Darkcircle <darkcircle.0426@gmail.com>, 2012
 # Darkcircle <darkcircle.0426@gmail.com>, 2012
+# Darkcircle <darkcircle.0426@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-09-01 21:09+0200\n"
-"PO-Revision-Date: 2013-07-07 08:39+0000\n"
+"POT-Creation-Date: 2013-11-01 16:34+0100\n"
+"PO-Revision-Date: 2013-09-30 14:46+0000\n"
 "Last-Translator: Darkcircle <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
 "language/ko/)\n"
@@ -56,7 +58,7 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"임의의 시간에 재생을 시작할때 사용하는 플러그인입니다.\n"
+"임의의 시간에 재생을 시작할 때 사용하는 플러그인입니다.\n"
 "\n"
 "초기에 Adam Feakin과 Daniel Stodden이 작성했습니다."
 
@@ -315,7 +317,7 @@ msgstr "도움말"
 
 #: src/albumart/albumart.c:143
 msgid "Album Art"
-msgstr "음반 표지"
+msgstr "앨범 표지"
 
 #: src/alsa/config.c:212
 msgid "Default PCM device"
@@ -353,7 +355,7 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"오다셔스용 ALSA 출력 플러그인\n"
+"오데이셔스용 ALSA 출력 플러그인\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
 "ALSA 메뉴얼이 충분히 도움이 되지 않았을 때, 코드 참고서가 되어준 ALSA 출력 플"
@@ -498,21 +500,17 @@ msgstr ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - 파일 선택"
-
-#: src/amidi-plug/i_configure.c:104
+#: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
 msgstr "AMIDI-Plug 설정"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:63
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - 사운드폰트 파일 선택"
+msgstr "AMIDI-Plug - 사운드 폰트 파일 선택"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:321
 msgid "SoundFont settings"
-msgstr "사운드폰트 설정"
+msgstr "사운드 폰트 설정"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:359
 msgid "Filename"
@@ -706,7 +704,7 @@ msgstr ""
 
 #: src/aosd/aosd.c:29
 msgid "Audacious OSD "
-msgstr "오다셔스 OSD"
+msgstr "오데이셔스 OSD"
 
 #: src/aosd/aosd.c:37
 msgid "AOSD (On-Screen Display)"
@@ -883,8 +881,8 @@ msgid ""
 "manager otherwise the OSD won't work properly"
 msgstr ""
 "합성 관리자를 삭제하지 못했습니다.\n"
-"적어도 하나가 실행중인지 알지 못한다면, 합성 관리자를 활성화 해 주시기 바랍니"
-"다. 그렇지 않으면 OSD가 제대로 동작하지 않을 것입니다"
+"적어도 하나가 실행중인지 알지 못한다면, 합성 관리자를 활성화 해 주십시오. 그"
+"렇지 않으면 OSD가 제대로 동작하지 않습니다"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
@@ -913,11 +911,11 @@ msgstr "합성 확장을 사용할 수 없습니다"
 #: src/aosd/aosd_ui.c:914
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>오다셔스 OSD</span>"
+msgstr "<span font_desc='%s'>오데이셔스 OSD</span>"
 
 #: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
-msgstr "오다셔스 OSD - 설정"
+msgstr "오데이셔스 OSD - 설정"
 
 #: src/aosd/aosd_ui.c:1016
 msgid "Test"
@@ -953,7 +951,7 @@ msgstr "ASXv1/ASXv2 재생 목록"
 
 #: src/audpl/audpl.c:222
 msgid "Audacious Playlists (audpl)"
-msgstr "오다셔스 재생 목록(audpl)"
+msgstr "오데이셔스 재생 목록(audpl)"
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
@@ -1000,12 +998,12 @@ msgid ""
 msgstr ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
-"libcdio 개발자들 <http://www.gnu.org/software/libcdio/>과\n"
-"libcddb 개발자 <http://libcddb.sourceforge.net/> 여러분들께 감사드립니다.\n"
+"libcdio 개발자 <http://www.gnu.org/software/libcdio/>과\n"
+"libcddb 개발자 <http://libcddb.sourceforge.net/> 여러분께 감사드립니다.\n"
 "\n"
 "또한 저를 지도해준 Tony Vroon 에게 감사드립니다.\n"
 "\n"
-"이 프로젝트는 GSoC 2007 에서 만들었습니다."
+"이 프로젝트는 GSoC 2007에서 만들었습니다."
 
 #: src/cdaudio-ng/cdaudio-ng.c:121
 msgid "<b>Device</b>"
@@ -1159,7 +1157,7 @@ msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"오다셔스용 동적 범위 압축 플러그인\n"
+"오데이셔스용 동적 범위 압축 플러그인\n"
 "Copyright 2010-2012 John Lindgren"
 
 #: src/compressor/plugin.c:58
@@ -1248,7 +1246,7 @@ msgstr ""
 " Game_Music_Emu 0.5.2 기반 콘솔 음악 디코더 플러그인\n"
 "지원 형식: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
 "\n"
-"오다셔스 플러그인 작성:\n"
+"오데이셔스 플러그인 작성:\n"
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 
@@ -1258,23 +1256,23 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"곡이 다른 채널 수를 가지고 있어 크로스페이딩에 실패했습니다. 곡이 동일한 채"
-"널 수를 가지도록 변환하기 위해 채널 믹서를 사용할 수 있습니다."
+"곡이 다른 채널 수를 가지고 있어 크로스페이딩에 실패했습니다. 채널 믹서를 사용"
+"하여 동일한 채널 수를 가지도록 곡을 변환할 수 있습니다."
 
 #: src/crossfade/crossfade.c:88
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"곡이 다른 샘플주파수를 가지고 있어 크로스페이딩에 실패했습니다. 곡이 동일한 "
-"샘플주파수를 가지도록 변환하기 위해 샘플 주파수 변환기를 사용할 수 있습니다."
+"곡이 다른 샘플 주파수를 가지고 있어 크로스페이딩에 실패했습니다. 샘플 주파수 "
+"변환기를 사용하여 동일한 샘플 주파수를 가지도록 곡을 변환 할 수 있습니다."
 
 #: src/crossfade/crossfade.c:254
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"오다셔스용 교차 페이드 플러그인\n"
+"오데이셔스용 교차 페이드 플러그인\n"
 "Copyright 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:258
@@ -1353,7 +1351,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 "FFmpeg 멀티미디어 프레임워크를 사용한\n"
-"오다셔스용 다중 형식 오디오 디코딩 플러그인\n"
+"오데이셔스용 다중 형식 오디오 디코딩 플러그인\n"
 "\n"
 "오다셔서 플러그인 작성:\n"
 "William Pitcock <nenolod@nenolod.net>\n"
@@ -1429,7 +1427,7 @@ msgid ""
 "USA."
 msgstr ""
 "이 프로그램은 자유 소프트웨어입니다; 자유 소프트웨어 재단이 공표한\n"
-"GNU 일반 공중 사용허가서 2판 (또는 여러분의 의사에 따라) 이상의 조항\n"
+"GNU 일반 공중 사용 허가서 2판(또는 여러분의 취향에 따라) 이상의 조항\n"
 "에 따라 재배포 또는 수정할 수 있습니다.\n"
 "\n"
 "이 프로그램이 유용하게 사용되길 바라지만 그 어떤 보증도 없으며 심지어는\n"
@@ -1453,12 +1451,12 @@ msgid "Joint Stereo"
 msgstr "통합 스테레오"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Stereo"
 msgstr "스테레오"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Mono"
 msgstr "모도"
 
@@ -1472,7 +1470,7 @@ msgstr "알고리즘 품질:"
 
 #: src/filewriter/mp3.c:737
 msgid "Output Samplerate:"
-msgstr "출력 샘플주파수:"
+msgstr "출력 샘플 주파수:"
 
 #: src/filewriter/mp3.c:765
 msgid "(Hz)"
@@ -1506,7 +1504,7 @@ msgstr "엄격한 ISO 규격 강제"
 msgid "Error protection"
 msgstr "오류 방지"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
 msgstr "음질"
 
@@ -1586,11 +1584,11 @@ msgstr "v2 태그만 추가"
 msgid "Tags"
 msgstr "태그"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis 인코더 설정"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
 msgstr "음질 수준(0-10):"
 
@@ -1619,7 +1617,7 @@ msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"오다셔스용 GIO 플러그인\n"
+"오데이셔스용 GIO 플러그인\n"
 "Copyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:322
@@ -1657,8 +1655,8 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
-"그놈 바로가기 플러그인\n"
-"그놈 바로가기를 통해 재생기를 제어할 수 있게 해줍니다.\n"
+"그놈 바로 가기 플러그인\n"
+"그놈 바로 가기를 통해 재생기를 제어할 수 있게 해줍니다.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
@@ -1684,7 +1682,7 @@ msgstr "연도"
 
 #: src/gtkui/columns.c:33
 msgid "Album"
-msgstr "음반"
+msgstr "앨범"
 
 #: src/gtkui/columns.c:33
 msgid "Track"
@@ -1784,7 +1782,7 @@ msgstr "기본 설정(_P) ..."
 
 #: src/gtkui/menus.c:179 src/skins/ui_manager.c:413
 msgid "_Quit"
-msgstr "나가기(_Q)"
+msgstr "끝내기(_Q)"
 
 #: src/gtkui/menus.c:182 src/gtkui/menus.c:296
 msgid "_Play"
@@ -1907,8 +1905,9 @@ msgid "_Sort"
 msgstr "정렬(_S)"
 
 #: src/gtkui/menus.c:237
-msgid "Sort S_elected"
-msgstr "선택 항목 정렬(_E)"
+#, fuzzy
+msgid "Sort Se_lected"
+msgstr "선택한 항목 정렬"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -1972,19 +1971,19 @@ msgstr "시각화(_V)"
 
 #: src/gtkui/menus.c:263
 msgid "Show _Menu Bar"
-msgstr "메뉴 표시줄 보이기(_M)"
+msgstr "메뉴 표시줄 표시(_M)"
 
 #: src/gtkui/menus.c:264
 msgid "Show I_nfo Bar"
-msgstr "정보 표시줄 보이기(_N)"
+msgstr "정보 표시줄 표시(_N)"
 
 #: src/gtkui/menus.c:265
 msgid "Show Info Bar Vis_ualization"
-msgstr "정보 표시줄 시각화 보이기(_U)"
+msgstr "정보 표시줄 시각화 표시(_U)"
 
 #: src/gtkui/menus.c:266
 msgid "Show _Status Bar"
-msgstr "상태 표시줄 보이기(_S)"
+msgstr "상태 표시줄 표시(_S)"
 
 #: src/gtkui/menus.c:268
 msgid "Show _Remaining Time"
@@ -1992,11 +1991,11 @@ msgstr "남은 시간 표시(_R)"
 
 #: src/gtkui/menus.c:270
 msgid "Show Close _Buttons"
-msgstr "닫기 단추 보이기(_B)"
+msgstr "닫기 단추 표시(_B)"
 
 #: src/gtkui/menus.c:271
 msgid "Show Column _Headers"
-msgstr "컬럼 헤더 보이기(_H)"
+msgstr "컬럼 헤더 표시(_H)"
 
 #: src/gtkui/menus.c:272
 msgid "Choose _Columns ..."
@@ -2061,7 +2060,7 @@ msgstr "GTK 인터페이스"
 #: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
 #, c-format
 msgid "%s - Audacious"
-msgstr "%s - 오다셔스"
+msgstr "%s - 오데이셔스"
 
 #: src/gtkui/ui_gtk.c:204
 msgid "Buffering ..."
@@ -2069,7 +2068,7 @@ msgstr "버퍼링 ..."
 
 #: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
 msgid "Audacious"
-msgstr "오다셔스"
+msgstr "오데이셔스"
 
 #: src/gtkui/ui_gtk.c:253 src/lyricwiki/lyricwiki.c:208
 #: src/lyricwiki/lyricwiki.c:218 src/lyricwiki/lyricwiki.c:242
@@ -2082,7 +2081,7 @@ msgstr "오류"
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d개의 채널"
+msgstr[0] "채널 %d개"
 
 #: src/gtkui/ui_statusbar.c:123
 #, c-format
@@ -2120,7 +2119,7 @@ msgstr "5초 되감기"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "묵음"
+msgstr "음소거"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
@@ -2220,7 +2219,7 @@ msgstr ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
 "\n"
-"다음 공헌자분들도 있습니다:\n"
+"다음 공헌자도 있습니다:\n"
 "Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
 "Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
 " Bryn Davies <curious@ihug.com.au>,\n"
@@ -2267,8 +2266,8 @@ msgid ""
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
 "<small>여러 경로를 콜론으로 구분합니다.\n"
-"이 경로들은 LADSPA_PATH에서도 찾았습니다.\n"
-"새 경로를 추가한 다음 새 플러그인 검색을 위해 Enter 키를 누르세요.</small>"
+"이 경로들을 LADSPA_PATH에서도 찾았습니다.\n"
+"새 플러그인을 검색하려면 새 경로를 추가하고 Enter 키를 누르십시오.</small>"
 
 #: src/ladspa/plugin.c:591
 msgid "Available plugins:"
@@ -2293,7 +2292,7 @@ msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
-"오다셔스용 LADSPA 호스트\n"
+"오데이셔스용 LADSPA 호스트\n"
 "Copyright 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:650
@@ -2314,7 +2313,7 @@ msgid ""
 msgstr ""
 "%s: LIRC 설정 파일을 읽을 수 없습니다\n"
 "%s: 적당한 설정 파일을 어떻게 만드는지\n"
-"%s: LIRC 문서를 읽어주시기 바랍니다\n"
+"%s: LIRC 문서를 읽어주십시오\n"
 
 #: src/lirc/lirc.c:114
 #, c-format
@@ -2334,7 +2333,7 @@ msgstr "%s: LIRC로부터 끊어졌습니다\n"
 #: src/lirc/lirc.c:371
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: 매 %d 초 후 다시 연결을 시도할 것입니다...\n"
+msgstr "%s: 매 %d 초 후 다시 연결을 시도합니다...\n"
 
 #: src/lirc/lirc.c:381
 msgid ""
@@ -2351,9 +2350,9 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
-"LIRC 원격 제어 데몬을 사용하여 오다셔스를 제어하기 위한 간단한 플러그인\n"
+"LIRC 원격 제어 데몬을 사용하여 오데이셔스를 제어하기 위한 간단한 플러그인\n"
 "\n"
-"오다셔스에 적용함:Tony Vroon <chainsaw@gentoo.org>\n"
+"오데이셔스에 적용함:Tony Vroon <chainsaw@gentoo.org>\n"
 "Joonas Harjumäki <jharjuma@gmail.com>\n"
 "\n"
 "XMMS LIRC 플러그인 기반 작성:\n"
@@ -2434,8 +2433,8 @@ msgstr ""
 "tact 생성기 by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
 "사용하려면, 다음 URL을 추가하십시오: tact://beats*num/den\n"
-"사용 예) tact://77 은 분당 77 비트\n"
-"또는 tact://60*3/4 는 3/4 tact에서 분당 60 bpm "
+"사용 예) tact://77은 분당 77 비트\n"
+"또는 tact://60*3/4는 3/4 tact에서 분당 60 bpm"
 
 #: src/metronom/metronom.c:255
 msgid "Tact Generator"
@@ -2446,7 +2445,7 @@ msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"오다셔스용 채널 음량 조절기 플러그인\n"
+"오데이셔스용 채널 음량 조절기 플러그인\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 
 #: src/mixer/mixer.c:173
@@ -2487,19 +2486,19 @@ msgstr "<b>리샘플링</b>"
 
 #: src/modplug/plugin_main.c:68
 msgid "Nearest (fastest)"
-msgstr "근접 (가장 빠름)"
+msgstr "근접(가장 빠름)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Linear (fast)"
-msgstr "선형 (빠름)"
+msgstr "선형(빠름)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Spline (good)"
-msgstr "스플라인 (좋음)"
+msgstr "스플라인(좋음)"
 
 #: src/modplug/plugin_main.c:74
 msgid "Polyphase (best)"
-msgstr "다중 페이스 (최상)"
+msgstr "다중 페이스(최상)"
 
 #: src/modplug/plugin_main.c:76
 msgid "<b>Sampling rate</b>"
@@ -2578,7 +2577,7 @@ msgstr "계속 반복하려면 반복 횟수를 -1로 설정하십시오."
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (모듈 재생기)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:213
 msgid "Surround"
 msgstr "서라운드"
 
@@ -2600,7 +2599,7 @@ msgstr "정지함"
 
 #: src/notify/event.c:64
 msgid "Audacious is not playing."
-msgstr "오다셔스가 재생중이 아닙니다."
+msgstr "오데이셔스가 재생중이 아닙니다."
 
 #: src/notify/notify.c:33
 msgid ""
@@ -2621,28 +2620,28 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Audacious용 데스크톱 알림 플러그인⏎\n"
-"Copyright (C) 2010 Maximilian Bogner⏎\n"
-"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac⏎\n"
-"⏎\n"
+"Audacious용 데스크톱 알림 플러그인\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
 "이 플러그인은 자유 소프트웨어입니다; 자유 소프트웨어 재단이 공표한 GNU 일반 "
 "공중 사용허가서 3판 (또는 여러분의 의사에 따라) 이상의 조항에 따라 재배포 또"
-"는 수정할 수 있습니다.⏎\n"
-"⏎\n"
+"는 수정할 수 있습니다.\n"
+"\n"
 "이 프로그램이 유용하게 사용되길 바라지만 그 어떤 보증도 없으며 심지어는 상업"
 "적 보증이나 일부 목적의 적합성에 대한 암시적 보증도 하지 않습니다. 자세한 내"
-"용은 GNU 일반 공중 사용허가서를 보십시오.⏎\n"
-"⏎\n"
+"용은 GNU 일반 공중 사용허가서를 보십시오.\n"
+"\n"
 "이 프로그램과 함께 GNU 일반 공중 사용 허가서 사본을 받아야 합니다. 만약 사본"
 "이 없다면 <http://www.gnu.org/licenses/> 링크를 참조하십시오."
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr "재생 컨트롤 보이기"
+msgstr "재생 컨트롤 표시"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr "알림 항상 보이기"
+msgstr "항상 알림 표시"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
@@ -2692,11 +2691,11 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
-"오다셔스용 OSS4 출력 플러그인\n"
+"오데이셔스용 OSS4 출력 플러그인\n"
 "Copyright 2010-2012 Michał Lipski\n"
 "\n"
 "#audacious 사람들, 특히 Tony Vroon, John Lindgren, 이전에 OSS 플러그인을 만"
-"든 저작자 분들께 감사드리고 싶습니다."
+"든 저작자분께 감사드리고 싶습니다."
 
 #: src/oss4/plugin.c:115
 msgid "OSS4 Output"
@@ -2729,7 +2728,7 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"오다셔스 펄스오디오 출력 플러그인\n"
+"오데이셔스 펄스오디오 출력 플러그인\n"
 "\n"
 "이 프로그램은 자유 소프트웨어입니다; 자유 소프트웨어 재단이 공표한\n"
 "GNU 일반 공중 사용허가서 2판 (또는 여러분의 의사에 따라) 이상의\n"
@@ -2752,7 +2751,7 @@ msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"오다셔스용 샘플 주파수 변환 플러그인\n"
+"오데이셔스용 샘플 주파수 변환 플러그인\n"
 "Copyright 2010-2012 John Lindgren"
 
 #: src/resample/resample.c:165
@@ -2825,7 +2824,7 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:210
 msgid "Sample Rate Converter"
-msgstr "샘플주파수 변환기"
+msgstr "샘플 주파수 변환기"
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
@@ -2839,7 +2838,7 @@ msgstr "권한이 거부되었습니다"
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
 msgstr ""
-"재생 항목을 오다셔스에서 스크롤 하도록 하려면 다음 연결을 방문하십시오:"
+"재생 항목을 오데이셔스에서 스크롤 하도록 하려면 다음 연결을 방문하십시오:"
 
 #: src/scrobbler2/config_window.c:63
 msgid "Keep this window open and click 'Check Permission' again.\n"
@@ -2851,7 +2850,7 @@ msgid ""
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
 "걱정하지 마십시오. 스크로블을 컴퓨터에 저장했습니다.\n"
-"오다셔스가 동작할 수 있는대로 바로 제출할 것입니다."
+"오데이셔스가 동작할 수 있는대로 바로 제출합니다."
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
@@ -2876,7 +2875,7 @@ msgstr "권한 취소(_R)"
 #: src/scrobbler2/config_window.c:221
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
-msgstr "오다셔스가 Last.fm 계정에 트랙을 추출할 수 있게 해야 합니다.\n"
+msgstr "오데이셔스가 Last.fm 계정에 트랙을 추출할 수 있게 해야 합니다.\n"
 
 #: src/scrobbler2/scrobbler.c:233
 msgid ""
@@ -2907,7 +2906,7 @@ msgstr ""
 msgid "Scrobbler 2.0"
 msgstr "스크로블러 2.0"
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -2920,7 +2919,7 @@ msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
-"오다셔스용 SDL 출력 플러그인\n"
+"오데이셔스용 SDL 출력 플러그인\n"
 "Copyright 2010 John Lindgren"
 
 #: src/sdlout/plugin.c:31
@@ -2937,7 +2936,7 @@ msgstr "알 수 없는 음악가"
 
 #: src/search-tool/search-tool.c:221
 msgid "Unknown Album"
-msgstr "알 수 없는 음반"
+msgstr "알 수 없는 앨범"
 
 #: src/search-tool/search-tool.c:632
 #, c-format
@@ -2952,7 +2951,7 @@ msgstr ""
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "%d개의 음반"
+msgstr[0] "앨범 %d개"
 
 #: src/search-tool/search-tool.c:640
 #, c-format
@@ -2964,7 +2963,7 @@ msgid_plural ""
 " %s, %d songs"
 msgstr[0] ""
 "%s\n"
-" %s, %d개의 곡"
+" %s, 곡 %d개"
 
 #: src/search-tool/search-tool.c:646
 #, c-format
@@ -2995,8 +2994,8 @@ msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"음악 라이브러리를 오다셔스로 가져오려면 폴더를 선택하고 \"새로고침\"아이콘을 "
-"누르십시오."
+"음악 라이브러리를 오데이셔스로 가져오려면 폴더를 선택하고 \"새로고침\"아이콘"
+"을 누르십시오."
 
 #: src/search-tool/search-tool.c:747
 msgid "Please wait ..."
@@ -3096,7 +3095,7 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:375
 msgid "Audacious Equalizer"
-msgstr "오다셔스 이퀄라이저"
+msgstr "오데이셔스 이퀄라이저"
 
 #: src/skins/ui_equalizer.c:890
 msgid "Presets"
@@ -3241,15 +3240,15 @@ msgstr "이전 재생목록이 없습니다"
 
 #: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
 msgid "Show Player"
-msgstr "재생기 보이기"
+msgstr "재생기 표시"
 
 #: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
 msgid "Show Playlist Editor"
-msgstr "재생 목록 편집기 보이기"
+msgstr "재생 목록 편집기 표시"
 
 #: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
 msgid "Show Equalizer"
-msgstr "이퀄라이저 보이기"
+msgstr "이퀄라이저 표시"
 
 #: src/skins/ui_manager.c:93 src/skins/ui_manager.c:94
 msgid "Always on Top"
@@ -3609,11 +3608,11 @@ msgstr "제목순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 msgid "By Album"
-msgstr "음반 제목순"
+msgstr "앨범 제목순"
 
 #: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "Sorts the list by album."
-msgstr "음반 제목 순으로 목록을 정렬합니다."
+msgstr "앨범 제목 순으로 목록을 정렬합니다."
 
 #: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "By Artist"
@@ -3669,7 +3668,7 @@ msgstr "트랙 세부정보 보기"
 
 #: src/skins/ui_manager.c:399 src/skins/ui_manager.c:400
 msgid "About Audacious"
-msgstr "오다셔스 정보"
+msgstr "오데이셔스 정보"
 
 #: src/skins/ui_manager.c:402
 msgid "Play File"
@@ -3701,7 +3700,7 @@ msgstr "기본 설정 창 열기"
 
 #: src/skins/ui_manager.c:414
 msgid "Quit Audacious"
-msgstr "오다셔스 나가기"
+msgstr "오데이셔스 나가기"
 
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Set A-B"
@@ -3854,7 +3853,7 @@ msgstr "제목:"
 
 #: src/skins/ui_playlist.c:267
 msgid "Album: "
-msgstr "음반:"
+msgstr "앨범:"
 
 #: src/skins/ui_playlist.c:275
 msgid "Artist: "
@@ -3878,7 +3877,7 @@ msgstr "일치하는 항목에 대해 새 재생 목록 만들기"
 
 #: src/skins/ui_playlist.c:738
 msgid "Audacious Playlist Editor"
-msgstr "오다셔스 재생 목록 편집기"
+msgstr "오데이셔스 재생 목록 편집기"
 
 #: src/skins/ui_playlist.c:772
 #, c-format
@@ -3967,7 +3966,7 @@ msgid ""
 msgstr ""
 "오디오 장치가 지원하지 않는 형식을 요청했습니다.\n"
 "\n"
-"sndiod(1) 서버를 실행하고 다시 시도해주시기 바랍니다."
+"sndiod(1) 서버를 실행하고 다시 시도하십시오."
 
 #: src/sndio/sndio.c:384
 msgid "sndio device"
@@ -3991,7 +3990,7 @@ msgstr "곡 바꾸기"
 
 #: src/song_change/song_change.c:436
 msgid "Command to run when Audacious starts a new song."
-msgstr "오다셔스가 새 곡 재생을 시작할 때 실행할 명령입니다."
+msgstr "오데이셔스가 새 곡 재생을 시작할 때 실행할 명령입니다."
 
 #: src/song_change/song_change.c:438 src/song_change/song_change.c:444
 #: src/song_change/song_change.c:450 src/song_change/song_change.c:456
@@ -4042,7 +4041,7 @@ msgstr ""
 "%t: 재생 목록 위치(%02d)\n"
 "%p: 현재 재생중 여부(1 or 0)\n"
 "%a: 음악가\n"
-"%b: 음반\n"
+"%b: 앨범\n"
 "%T: 트랙 제목"
 
 #: src/song_change/song_change.c:487
@@ -4201,7 +4200,7 @@ msgstr ""
 "\n"
 "사용하려면 다음 URL을 추가하십시오: tone://frequency1;frequency2;"
 "frequency3;...\n"
-"사용 예) tone://2000;2005 은 2000 Hz 톤과 a 2005 Hz 톤으로 재생합니다."
+"사용 예) tone://2000;2005는 2000 Hz 톤과 a 2005 Hz 톤으로 재생합니다."
 
 #: src/tonegen/tonegen.c:206
 msgid "Tone Generator"
@@ -4214,7 +4213,7 @@ msgid ""
 "\n"
 "THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
 msgstr ""
-"오다셔스용 파일 입출력 플러그인\n"
+"오데이셔스용 파일 입출력 플러그인\n"
 "Copyright 2009-2012 John Lindgren\n"
 "\n"
 "이 플러그인은 반드시 필요합니다. 비활성화 하지 마십시오."
@@ -4227,7 +4226,7 @@ msgstr "파일 입출력 플러그인"
 msgid "Voice Removal"
 msgstr "육성 제거"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:562
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4247,7 +4246,7 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
-"오다셔스 Ogg Vorbis 디코더\n"
+"오데이셔스 Ogg Vorbis 디코더\n"
 "\n"
 "Xiph.org 재단의 Ogg Vorbis 플러그인을 기반으로 합니다:\n"
 "http://www.xiph.org/\n"
@@ -4265,7 +4264,7 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:582
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis "
 
@@ -4276,8 +4275,8 @@ msgid ""
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
 "Vortex 파일 형식 재생기 by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Roman Sherbakov <v_soft@microfor.ru>의 in_vtx.dll 을 기반으로 함\n"
-"Pavel Vymetalek <pvymetalek@seznam.cz>이 오다셔스 플러그인 제작."
+"Roman Sherbakov <v_soft@microfor.ru>의 in_vtx.dll을 기반으로 함\n"
+"Pavel Vymetalek <pvymetalek@seznam.cz>이 오데이셔스 플러그인 제작"
 
 #: src/vtx/vtx.c:248
 msgid "VTX Decoder"
@@ -4285,7 +4284,7 @@ msgstr "VTX 디코더"
 
 #: src/wavpack/wavpack.c:282
 msgid "lossy (hybrid)"
-msgstr "손실 (혼성)"
+msgstr "손실(혼성)"
 
 #: src/wavpack/wavpack.c:284
 msgid "lossy"
@@ -4305,10 +4304,16 @@ msgstr ""
 msgid "WavPack Decoder"
 msgstr "WavPack 디코더"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:274
 msgid "2SF Decoder"
 msgstr "2SF 디코더"
 
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML 공유 가능 재생 목록(XSPF)"
+
+#~ msgid "AMIDI-Plug - select file"
+#~ msgstr "AMIDI-Plug - 파일 선택"
+
+#~ msgid "Sort S_elected"
+#~ msgstr "선택 항목 정렬(_E)"
