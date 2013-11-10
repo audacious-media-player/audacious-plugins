@@ -35,9 +35,9 @@
 
 struct format_info input;
 
-static GtkWidget *configure_win = NULL, *configure_vbox;
-static GtkWidget *path_hbox, *path_label, *path_dirbrowser;
-static GtkWidget *fileext_hbox, *fileext_label, *fileext_combo, *plugin_button;
+static GtkWidget * configure_win = NULL;
+static GtkWidget * path_hbox, * path_dirbrowser;
+static GtkWidget * fileext_combo, * plugin_button;
 
 enum fileext_t
 {
@@ -71,10 +71,9 @@ static const gchar *fileext_str[FILEEXT_MAX] =
 
 static FileWriter *plugin;
 
-static GtkWidget *saveplace_hbox, *saveplace;
 static gboolean save_original;
 
-static GtkWidget *filenamefrom_hbox, *filenamefrom_label, *filenamefrom_toggle;
+static GtkWidget *filenamefrom_hbox, *filenamefrom_label;
 static gboolean filenamefromtags;
 
 static GtkWidget *use_suffix_toggle = NULL;
@@ -409,16 +408,12 @@ static void file_configure(void)
          (_("FileWriter Configuration"), NULL, 0, GTK_STOCK_CANCEL,
          GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
 
-        g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
-        g_signal_connect (configure_win, "destroy", (GCallback)
-         gtk_widget_destroyed, & configure_win);
+        GtkWidget * configure_vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
 
-        configure_vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
-
-        fileext_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+        GtkWidget * fileext_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
 
-        fileext_label = gtk_label_new(_("Output file format:"));
+        GtkWidget * fileext_label = gtk_label_new (_("Output file format:"));
         gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_label, FALSE, FALSE, 0);
 
         fileext_combo = gtk_combo_box_text_new ();
@@ -434,35 +429,33 @@ static void file_configure(void)
 #endif
         gtk_box_pack_start(GTK_BOX(fileext_hbox), fileext_combo, FALSE, FALSE, 0);
         gtk_combo_box_set_active(GTK_COMBO_BOX(fileext_combo), fileext);
-        g_signal_connect(G_OBJECT(fileext_combo), "changed", G_CALLBACK(fileext_cb), NULL);
 
         plugin_button = gtk_button_new_with_label(_("Configure"));
         gtk_widget_set_sensitive(plugin_button, plugin->configure != NULL);
-        g_signal_connect(G_OBJECT(plugin_button), "clicked", G_CALLBACK(plugin_configure_cb), NULL);
         gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, FALSE, FALSE, 0);
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
-        saveplace_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+        GtkWidget * saveplace_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), saveplace_hbox);
 
-        saveplace = gtk_radio_button_new_with_label(NULL, _("Save into original directory"));
-        g_signal_connect(G_OBJECT(saveplace), "toggled", G_CALLBACK(saveplace_original_cb), NULL);
-        gtk_box_pack_start(GTK_BOX(saveplace_hbox), saveplace, FALSE, FALSE, 0);
+        GtkWidget * saveplace1 = gtk_radio_button_new_with_label (NULL,
+         _("Save into original directory"));
+        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace1, FALSE, FALSE, 0);
 
-        saveplace = gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(saveplace),
-                                                                _("Save into custom directory"));
+        GtkWidget * saveplace2 = gtk_radio_button_new_with_label_from_widget
+         ((GtkRadioButton *) saveplace1, _("Save into custom directory"));
+
         if (!save_original)
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(saveplace), TRUE);
+            gtk_toggle_button_set_active ((GtkToggleButton *) saveplace2, TRUE);
 
-        g_signal_connect(G_OBJECT(saveplace), "toggled", G_CALLBACK(saveplace_custom_cb), NULL);
-        gtk_box_pack_start(GTK_BOX(saveplace_hbox), saveplace, FALSE, FALSE, 0);
+        gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace2, FALSE, FALSE, 0);
 
         path_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), path_hbox, FALSE, FALSE, 0);
 
-        path_label = gtk_label_new(_("Output file folder:"));
-        gtk_box_pack_start(GTK_BOX(path_hbox), path_label, FALSE, FALSE, 0);
+        GtkWidget * path_label = gtk_label_new (_("Output file folder:"));
+        gtk_box_pack_start ((GtkBox *) path_hbox, path_label, FALSE, FALSE, 0);
 
         path_dirbrowser =
             gtk_file_chooser_button_new (_("Pick a folder"),
@@ -481,18 +474,17 @@ static void file_configure(void)
         filenamefrom_label = gtk_label_new(_("Get filename from:"));
         gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_label, FALSE, FALSE, 0);
 
-        filenamefrom_toggle = gtk_radio_button_new_with_label(NULL, _("original file tags"));
-        g_signal_connect(G_OBJECT(filenamefrom_toggle), "toggled", G_CALLBACK(filenamefromtags_cb), NULL);
-        gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_toggle, FALSE, FALSE, 0);
+        GtkWidget * filenamefrom_toggle1 = gtk_radio_button_new_with_label
+         (NULL, _("original file tags"));
+        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle1, FALSE, FALSE, 0);
 
-        filenamefrom_toggle =
-            gtk_radio_button_new_with_label_from_widget(GTK_RADIO_BUTTON(filenamefrom_toggle),
-                                                        _("original filename"));
-        g_signal_connect(G_OBJECT(filenamefrom_toggle), "toggled", G_CALLBACK(filenamefromfilename_cb), NULL);
-        gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_toggle, FALSE, FALSE, 0);
+        GtkWidget * filenamefrom_toggle2 =
+         gtk_radio_button_new_with_label_from_widget
+         ((GtkRadioButton *) filenamefrom_toggle1, _("original filename"));
+        gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle2, FALSE, FALSE, 0);
 
         if (!filenamefromtags)
-            gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(filenamefrom_toggle), TRUE);
+            gtk_toggle_button_set_active ((GtkToggleButton *) filenamefrom_toggle2, TRUE);
 
         use_suffix_toggle = gtk_check_button_new_with_label(_("Don't strip file name extension"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
@@ -508,6 +500,18 @@ static void file_configure(void)
         gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, FALSE, FALSE, 0);
 
         gtk_widget_show_all(configure_win);
+
+        g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
+        g_signal_connect (configure_win, "destroy", (GCallback)
+         gtk_widget_destroyed, & configure_win);
+
+        g_signal_connect (fileext_combo, "changed", (GCallback) fileext_cb, NULL);
+        g_signal_connect (plugin_button, "clicked", (GCallback) plugin_configure_cb, NULL);
+        g_signal_connect (saveplace1, "toggled", (GCallback) saveplace_original_cb, NULL);
+        g_signal_connect (saveplace2, "toggled", (GCallback) saveplace_custom_cb, NULL);
+        g_signal_connect (filenamefrom_toggle1, "toggled", (GCallback) filenamefromtags_cb, NULL);
+        g_signal_connect (filenamefrom_toggle2, "toggled",
+         (GCallback) filenamefromfilename_cb, NULL);
     }
 }
 
