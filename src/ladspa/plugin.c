@@ -492,7 +492,7 @@ static void configure_plugin (LoadedPlugin * loaded)
 
     snprintf (buf, sizeof buf, _("%s Settings"), plugin->desc->Name);
     loaded->settings_win = gtk_dialog_new_with_buttons (buf, (GtkWindow *)
-     config_win, GTK_DIALOG_DESTROY_WITH_PARENT, GTK_STOCK_CLOSE,
+     config_win, GTK_DIALOG_DESTROY_WITH_PARENT, _("_Close"),
      GTK_RESPONSE_CLOSE, NULL);
     gtk_window_set_resizable ((GtkWindow *) loaded->settings_win, 0);
 
@@ -559,7 +559,7 @@ static void configure (void)
     }
 
     config_win = gtk_dialog_new_with_buttons (_("LADSPA Host Settings"), NULL,
-     0, GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+     0, _("_Close"), GTK_RESPONSE_CLOSE, NULL);
     gtk_window_set_default_size ((GtkWindow *) config_win, 480, 360);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) config_win);
