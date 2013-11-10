@@ -35,9 +35,6 @@ static const gchar * const bs2b_defaults[] = {
  "fcut", "700",
  NULL};
 
-#define feed_level aud_get_int("bs2b", "feed")
-#define fcut_level aud_get_int("bs2b", "fcut")
-
 gboolean init()
 {
     aud_config_set_defaults("bs2b", bs2b_defaults);
@@ -46,8 +43,8 @@ gboolean init()
     if (bs2b == NULL)
         return FALSE;
 
-    bs2b_set_level_feed(bs2b, feed_level);
-    bs2b_set_level_fcut(bs2b, fcut_level);
+    bs2b_set_level_feed (bs2b, aud_get_int ("bs2b", "feed"));
+    bs2b_set_level_fcut (bs2b, aud_get_int ("bs2b", "fcut"));
 
     return TRUE;
 }
@@ -89,7 +86,8 @@ static void bs2b_finish (gfloat * * data, gint * samples)
 
 static void feed_value_changed(GtkRange *range, gpointer data)
 {
-    aud_set_int("bs2b", "feed", gtk_range_get_value(range));
+    int feed_level = gtk_range_get_value (range);
+    aud_set_int ("bs2b", "feed", feed_level);
     bs2b_set_level_feed(bs2b, feed_level);
 }
 
@@ -100,7 +98,8 @@ static gchar *feed_format_value(GtkScale *scale, gdouble value)
 
 static void fcut_value_changed(GtkRange *range, gpointer data)
 {
-    aud_set_int("bs2b", "fcut", gtk_range_get_value(range));
+    int fcut_level = gtk_range_get_value (range);
+    aud_set_int ("bs2b", "fcut", fcut_level);
     bs2b_set_level_fcut(bs2b, fcut_level);
 }
 
@@ -128,6 +127,9 @@ static GtkWidget *preset_button(const gchar *label, gint clevel)
 
 static void configure (void)
 {
+    int feed_level = aud_get_int ("bs2b", "feed");
+    int fcut_level = aud_get_int ("bs2b", "fcut");
+
     if (config_window == NULL)
     {
         GtkWidget *vbox, *hbox, *button;
