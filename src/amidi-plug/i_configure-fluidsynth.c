@@ -50,8 +50,8 @@ void i_configure_ev_sflist_add (void * sfont_lv)
         GtkWidget * browse_dialog = gtk_file_chooser_dialog_new (_("AMIDI-Plug - select SoundFont file"),
                                     GTK_WINDOW (parent_window),
                                     GTK_FILE_CHOOSER_ACTION_OPEN,
-                                    GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                    GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT, NULL);
+                                    _("_Cancel"), GTK_RESPONSE_CANCEL,
+                                    _("_Open"), GTK_RESPONSE_ACCEPT, NULL);
 
         if (gtk_tree_selection_get_selected (listsel, NULL, &itersel))
         {
@@ -244,26 +244,26 @@ void * create_soundfont_list (void)
         soundfont_file_bbox_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
         soundfont_file_bbox_addbt = gtk_button_new();
         gtk_button_set_image (GTK_BUTTON (soundfont_file_bbox_addbt),
-                              gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
+                              gtk_image_new_from_icon_name ("list-add", GTK_ICON_SIZE_MENU));
         g_signal_connect_swapped (G_OBJECT (soundfont_file_bbox_addbt), "clicked",
                                   G_CALLBACK (i_configure_ev_sflist_add), soundfont_file_lv);
         gtk_box_pack_start (GTK_BOX (soundfont_file_bbox_vbox), soundfont_file_bbox_addbt, FALSE, FALSE, 0);
         soundfont_file_bbox_rembt = gtk_button_new();
         gtk_button_set_image (GTK_BUTTON (soundfont_file_bbox_rembt),
-                              gtk_image_new_from_stock (GTK_STOCK_REMOVE, GTK_ICON_SIZE_MENU));
+                              gtk_image_new_from_icon_name ("list-remove", GTK_ICON_SIZE_MENU));
         g_signal_connect_swapped (G_OBJECT (soundfont_file_bbox_rembt), "clicked",
                                   G_CALLBACK (i_configure_ev_sflist_rem), soundfont_file_lv);
         gtk_box_pack_start (GTK_BOX (soundfont_file_bbox_vbox), soundfont_file_bbox_rembt, FALSE, FALSE, 0);
         soundfont_file_bbox_mvupbt = gtk_button_new();
         gtk_button_set_image (GTK_BUTTON (soundfont_file_bbox_mvupbt),
-                              gtk_image_new_from_stock (GTK_STOCK_GO_UP, GTK_ICON_SIZE_MENU));
+                              gtk_image_new_from_icon_name ("go-up", GTK_ICON_SIZE_MENU));
         g_object_set_data (G_OBJECT (soundfont_file_bbox_mvupbt), "swapdire", GUINT_TO_POINTER (0));
         g_signal_connect (G_OBJECT (soundfont_file_bbox_mvupbt), "clicked",
                           G_CALLBACK (i_configure_ev_sflist_swap), soundfont_file_lv);
         gtk_box_pack_start (GTK_BOX (soundfont_file_bbox_vbox), soundfont_file_bbox_mvupbt, FALSE, FALSE, 0);
         soundfont_file_bbox_mvdownbt = gtk_button_new();
         gtk_button_set_image (GTK_BUTTON (soundfont_file_bbox_mvdownbt),
-                              gtk_image_new_from_stock (GTK_STOCK_GO_DOWN, GTK_ICON_SIZE_MENU));
+                              gtk_image_new_from_icon_name ("go-down", GTK_ICON_SIZE_MENU));
         g_object_set_data (G_OBJECT (soundfont_file_bbox_mvdownbt), "swapdire", GUINT_TO_POINTER (1));
         g_signal_connect (G_OBJECT (soundfont_file_bbox_mvdownbt), "clicked",
                           G_CALLBACK (i_configure_ev_sflist_swap), soundfont_file_lv);

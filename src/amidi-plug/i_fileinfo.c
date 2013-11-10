@@ -339,7 +339,7 @@ void i_fileinfo_gui (const char * filename_uri)
      *** FOOTER ***/
     footer_hbbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
     gtk_button_box_set_layout (GTK_BUTTON_BOX (footer_hbbox), GTK_BUTTONBOX_END);
-    footer_bclose = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+    footer_bclose = gtk_button_new_with_mnemonic (_("_Close"));
     g_signal_connect (G_OBJECT (footer_bclose), "clicked", G_CALLBACK (i_fileinfo_ev_close), fileinfowin);
     gtk_container_add (GTK_CONTAINER (footer_hbbox), footer_bclose);
     gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), footer_hbbox, FALSE, FALSE, 0);

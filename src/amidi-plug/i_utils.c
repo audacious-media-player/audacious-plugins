@@ -37,7 +37,7 @@ void i_about_gui (void)
         return;
 
     aboutwin = gtk_dialog_new_with_buttons (_("About AMIDI-Plug"), NULL, 0,
-                                            GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
+                                            _("_Close"), GTK_RESPONSE_CLOSE, NULL);
     gtk_window_set_resizable (GTK_WINDOW (aboutwin), FALSE);
 
     g_signal_connect (aboutwin, "response", (GCallback) gtk_widget_destroy, NULL);
