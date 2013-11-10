@@ -686,8 +686,8 @@ static void mp3_configure(void)
     if (! configure_win)
     {
         configure_win = gtk_dialog_new_with_buttons (_("MP3 Configuration"),
-         NULL, 0, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, GTK_STOCK_OK,
-         GTK_RESPONSE_OK, NULL);
+         NULL, 0, _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"), GTK_RESPONSE_OK,
+         NULL);
 
         g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
         g_signal_connect (configure_win, "destroy", (GCallback)

@@ -206,7 +206,7 @@ static void vorbis_configure(void)
     if (! configure_win)
     {
         configure_win = gtk_dialog_new_with_buttons
-         (_("Vorbis Encoder Configuration"), NULL, 0, GTK_STOCK_CLOSE,
+         (_("Vorbis Encoder Configuration"), NULL, 0, _("_Close"),
          GTK_RESPONSE_CLOSE, NULL);
 
         g_signal_connect (configure_win, "response", (GCallback) gtk_widget_destroy, NULL);
