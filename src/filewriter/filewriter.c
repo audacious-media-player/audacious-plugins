@@ -25,6 +25,7 @@
 
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
+#include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -35,7 +36,6 @@
 
 struct format_info input;
 
-static GtkWidget * configure_win = NULL;
 static GtkWidget * path_hbox, * path_dirbrowser;
 static GtkWidget * fileext_combo, * plugin_button;
 
@@ -316,14 +316,8 @@ static gint file_get_time (void)
     return samples_written * 1000 / (input.channels * input.frequency);
 }
 
-static void configure_response_cb (GtkWidget * window, int response)
+static void configure_response_cb (void)
 {
-    if (response != GTK_RESPONSE_OK)
-    {
-        gtk_widget_destroy (window);
-        return;
-    }
-
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 
     g_free (file_path);
@@ -341,8 +335,6 @@ static void configure_response_cb (GtkWidget * window, int response)
     aud_set_bool ("filewriter", "prependnumber", prependnumber);
     aud_set_bool ("filewriter", "save_original", save_original);
     aud_set_bool ("filewriter", "use_suffix", use_suffix);
-
-    gtk_widget_destroy (window);
 }
 
 static void fileext_cb(GtkWidget *combo, gpointer data)
@@ -400,15 +392,9 @@ static void filenamefromfilename_cb(GtkWidget *button, gpointer data)
     }
 }
 
-static void file_configure(void)
+static void * file_configure (void)
 {
-    if (!configure_win)
-    {
-        configure_win = gtk_dialog_new_with_buttons
-         (_("FileWriter Configuration"), NULL, 0, GTK_STOCK_CANCEL,
-         GTK_RESPONSE_CANCEL, GTK_STOCK_OK, GTK_RESPONSE_OK, NULL);
-
-        GtkWidget * configure_vbox = gtk_dialog_get_content_area ((GtkDialog *) configure_win);
+        GtkWidget * configure_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
         GtkWidget * fileext_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
@@ -499,12 +485,6 @@ static void file_configure(void)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);
         gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, FALSE, FALSE, 0);
 
-        gtk_widget_show_all(configure_win);
-
-        g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
-        g_signal_connect (configure_win, "destroy", (GCallback)
-         gtk_widget_destroyed, & configure_win);
-
         g_signal_connect (fileext_combo, "changed", (GCallback) fileext_cb, NULL);
         g_signal_connect (plugin_button, "clicked", (GCallback) plugin_configure_cb, NULL);
         g_signal_connect (saveplace1, "toggled", (GCallback) saveplace_original_cb, NULL);
@@ -512,7 +492,8 @@ static void file_configure(void)
         g_signal_connect (filenamefrom_toggle1, "toggled", (GCallback) filenamefromtags_cb, NULL);
         g_signal_connect (filenamefrom_toggle2, "toggled",
          (GCallback) filenamefromfilename_cb, NULL);
-    }
+
+        return configure_vbox;
 }
 
 static const char file_about[] =
@@ -531,6 +512,14 @@ static const char file_about[] =
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
     "USA.");
 
+static const PreferencesWidget file_widgets[] = {
+ {WIDGET_CUSTOM, .data = {.populate = file_configure}}};
+
+static const PluginPreferences file_prefs = {
+ .widgets = file_widgets,
+ .n_widgets = G_N_ELEMENTS (file_widgets),
+ .apply = configure_response_cb};
+
 AUD_OUTPUT_PLUGIN
 (
     .name = N_("FileWriter Plugin"),
@@ -538,7 +527,7 @@ AUD_OUTPUT_PLUGIN
     .about_text = file_about,
     .init = file_init,
     .cleanup = file_cleanup,
-    .configure = file_configure,
+    .prefs = & file_prefs,
     .probe_priority = 0,
     .open_audio = file_open,
     .close_audio = file_close,
