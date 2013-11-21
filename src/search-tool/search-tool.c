@@ -28,6 +28,7 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 
 #define MAX_RESULTS 100
@@ -679,21 +680,17 @@ static void list_right_click (void * user, GdkEventButton * event)
 {
     GtkWidget * menu = gtk_menu_new ();
 
-    GtkWidget * item = gtk_image_menu_item_new_from_stock (GTK_STOCK_MEDIA_PLAY, NULL);
+    GtkWidget * item = audgui_menu_item_new (_("_Play"), "media-playback-start");
     g_signal_connect (item, "activate", (GCallback) action_play, NULL);
     gtk_widget_show (item);
     gtk_menu_shell_append ((GtkMenuShell *) menu, item);
 
-    item = gtk_image_menu_item_new_with_mnemonic (_("_Create Playlist"));
-    gtk_image_menu_item_set_image ((GtkImageMenuItem *) item,
-     gtk_image_new_from_stock (GTK_STOCK_NEW, GTK_ICON_SIZE_MENU));
+    item = audgui_menu_item_new (_("_Create Playlist"), "document-new");
     g_signal_connect (item, "activate", (GCallback) action_create_playlist, NULL);
     gtk_widget_show (item);
     gtk_menu_shell_append ((GtkMenuShell *) menu, item);
 
-    item = gtk_image_menu_item_new_with_mnemonic (_("_Add to Playlist"));
-    gtk_image_menu_item_set_image ((GtkImageMenuItem *) item,
-     gtk_image_new_from_stock (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
+    item = audgui_menu_item_new (_("_Add to Playlist"), "list-add");
     g_signal_connect (item, "activate", (GCallback) action_add_to_playlist, NULL);
     gtk_widget_show (item);
     gtk_menu_shell_append ((GtkMenuShell *) menu, item);
@@ -729,10 +726,8 @@ static void * search_get_widget (void)
     GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
     entry = gtk_entry_new ();
-    gtk_entry_set_icon_from_stock ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, GTK_STOCK_FIND);
-#if GTK_CHECK_VERSION (3, 2, 0)
+    gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
     gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
-#endif
     g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
     gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
 
@@ -775,8 +770,8 @@ static void * search_get_widget (void)
     g_free (path);
 
     GtkWidget * button = gtk_button_new ();
-    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
-     (GTK_STOCK_REFRESH, GTK_ICON_SIZE_BUTTON));
+    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
+     ("view-refresh", GTK_ICON_SIZE_BUTTON));
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_box_pack_start ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
