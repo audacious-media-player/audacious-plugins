@@ -20,16 +20,18 @@
  */
 
 #include <gtk/gtk.h>
-#include <audacious/plugin.h>
+
 #include <audacious/i18n.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 #include <audacious/misc.h>
+#include <audacious/plugin.h>
+#include <audacious/preferences.h>
+
 #include <bs2b.h>
 
 static t_bs2bdp bs2b = NULL;
 static gint bs2b_channels;
-static GtkWidget *config_window, *feed_slider, *fcut_slider;
+static GtkWidget *feed_slider, *fcut_slider;
+
 static const gchar * const bs2b_defaults[] = {
  "feed", "45",
  "fcut", "700",
@@ -125,23 +127,15 @@ static GtkWidget *preset_button(const gchar *label, gint clevel)
     return button;
 }
 
-static void configure (void)
+static void *create_config_widget (void)
 {
     int feed_level = aud_get_int ("bs2b", "feed");
     int fcut_level = aud_get_int ("bs2b", "fcut");
 
-    if (config_window == NULL)
     {
         GtkWidget *vbox, *hbox, *button;
 
-        config_window = gtk_dialog_new_with_buttons
-         (_("Bauer Stereophonic-to-Binaural Preferences"), NULL, 0,
-         GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE, NULL);
-        gtk_window_set_resizable ((GtkWindow *) config_window, FALSE);
-        g_signal_connect (config_window, "destroy", (GCallback)
-                gtk_widget_destroyed, & config_window);
-
-        vbox = gtk_dialog_get_content_area ((GtkDialog *) config_window);
+        vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
         hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
@@ -185,14 +179,16 @@ static void configure (void)
         button = preset_button("J. Meier", BS2B_JMEIER_CLEVEL);
         gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
 
-        g_signal_connect (config_window, "response", (GCallback) gtk_widget_destroy, NULL);
-        audgui_destroy_on_escape (config_window);
-
-        gtk_widget_show_all (vbox);
+        return vbox;
     }
-
-    gtk_window_present ((GtkWindow *) config_window);
 }
+
+static const PreferencesWidget bs2b_widgets[] = {
+ {WIDGET_CUSTOM, .data = {.populate = create_config_widget}}};
+
+static const PluginPreferences bs2b_prefs = {
+ .widgets = bs2b_widgets,
+ .n_widgets = sizeof bs2b_widgets / sizeof bs2b_widgets[0]};
 
 AUD_EFFECT_PLUGIN
 (
@@ -200,7 +196,7 @@ AUD_EFFECT_PLUGIN
     .domain = PACKAGE,
     .init = init,
     .cleanup = cleanup,
-    .configure = configure,
+    .prefs = & bs2b_prefs,
     .start = bs2b_start,
     .process = bs2b_process,
     .finish = bs2b_finish,
