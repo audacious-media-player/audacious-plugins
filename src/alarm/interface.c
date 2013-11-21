@@ -172,8 +172,8 @@ GtkWidget *create_config_dialog (void)
 
 
     /* General */
-    config_dialog = gtk_dialog_new_with_buttons (_("Alarm Settings"), NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
-     GTK_STOCK_OK, GTK_RESPONSE_OK, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL, NULL);
+    config_dialog = gtk_dialog_new_with_buttons (_("Alarm Settings"), NULL, 0,
+     _("_OK"), GTK_RESPONSE_OK, _("_Cancel"), GTK_RESPONSE_CANCEL, NULL);
     gtk_dialog_set_default_response (GTK_DIALOG (config_dialog), GTK_RESPONSE_OK);
     action_area = gtk_dialog_get_action_area (GTK_DIALOG (config_dialog));
     content_area = gtk_dialog_get_content_area (GTK_DIALOG (config_dialog));
