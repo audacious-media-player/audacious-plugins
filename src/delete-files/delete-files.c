@@ -119,7 +119,7 @@ static void start_delete (void)
          (AudguiCallback) confirm_delete, NULL);
     }
 
-    button2 = audgui_button_new (_("Cancel"), "window-close", NULL, NULL);
+    button2 = audgui_button_new (_("Cancel"), "process-stop", NULL, NULL);
     dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION, _("Delete Files"),
      message, button1, button2);
 

@@ -279,7 +279,7 @@ void pw_col_choose (void)
     gtk_window_set_default_size ((GtkWindow *) window, 400, 300);
     gtk_dialog_set_default_response ((GtkDialog *) window, GTK_RESPONSE_ACCEPT);
 
-    GtkWidget * cancel_button = audgui_button_new (_("_Cancel"), "window-close", NULL, NULL);
+    GtkWidget * cancel_button = audgui_button_new (_("_Cancel"), "process-stop", NULL, NULL);
     gtk_dialog_add_action_widget ((GtkDialog *) window, cancel_button, GTK_RESPONSE_CANCEL);
 
     GtkWidget * apply_button = audgui_button_new (_("_Set"), "system-run", NULL, NULL);

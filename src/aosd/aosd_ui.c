@@ -21,7 +21,9 @@
 #include <math.h>
 
 #include <gtk/gtk.h>
+
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "aosd_ui.h"
 #include "aosd_style.h"
@@ -941,15 +943,13 @@ aosd_ui_configure ( aosd_cfg_t * cfg )
   cfg_bbar_hbbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
   gtk_button_box_set_layout( GTK_BUTTON_BOX(cfg_bbar_hbbox) , GTK_BUTTONBOX_START );
   gtk_box_pack_start( GTK_BOX(cfg_vbox) , cfg_bbar_hbbox , FALSE , FALSE , 0 );
-  cfg_bbar_bt_test = gtk_button_new_with_label( _("Test") );
-  gtk_button_set_image( GTK_BUTTON(cfg_bbar_bt_test) ,
-    gtk_image_new_from_icon_name( "media-playback-start" , GTK_ICON_SIZE_BUTTON ) );
+  cfg_bbar_bt_test = audgui_button_new (_("_Test"), "media-playback-start", NULL, NULL);
   gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_test );
   gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_test , FALSE );
-  cfg_bbar_bt_cancel = gtk_button_new_with_mnemonic( _("_Cancel") );
+  cfg_bbar_bt_cancel = audgui_button_new (_("_Cancel"), "process-stop", NULL, NULL);
   gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_cancel );
   gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_cancel , TRUE );
-  cfg_bbar_bt_ok = gtk_button_new_with_mnemonic( _("_OK") );
+  cfg_bbar_bt_ok = audgui_button_new (_("_Set"), "system-run", NULL, NULL);
   gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_ok );
   gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_ok , TRUE );
 

@@ -474,7 +474,7 @@ void show_configure ()
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_START);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
 
-    button = gtk_button_new_with_mnemonic (_("_Add"));
+    button = audgui_button_new (_("_Add"), "list-add", NULL, NULL);
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (add_callback), first_controls);
@@ -484,12 +484,12 @@ void show_configure ()
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_END);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
 
-    button = gtk_button_new_with_mnemonic (_("_Cancel"));
+    button = audgui_button_new (_("_Cancel"), "process-stop", NULL, NULL);
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (cancel_callback), NULL);
 
-    button = gtk_button_new_with_mnemonic (_("_OK"));
+    button = audgui_button_new (_("_Set"), "system-run", NULL, NULL);
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (ok_callback), first_controls);
