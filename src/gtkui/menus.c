@@ -182,10 +182,10 @@ static const struct MenuItem file_items[] = {
  {N_("_Add Files ..."), "list-add", 'o', SHIFT | CTRL, .func = add_files},
  {N_("Add U_RL ..."), "folder-remote", 'l', SHIFT | CTRL, .func = add_url},
  {.sep = TRUE},
- {N_("_Search Library"), "edit-find", 'y', CTRL, .func = activate_search_tool},
+ {N_("Search _Library"), "edit-find", 'y', CTRL, .func = activate_search_tool},
  {.sep = TRUE},
  {N_("A_bout ..."), "help-about", .func = audgui_show_about_window},
- {N_("_Preferences ..."), "preferences-system", .func = aud_show_prefs_window},
+ {N_("_Settings ..."), "preferences-system", .func = aud_show_prefs_window},
  {N_("_Quit"), "application-exit", 'q', CTRL, .func = aud_drct_quit}};
 
 static const struct MenuItem playback_items[] = {
