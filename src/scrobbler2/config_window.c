@@ -36,7 +36,7 @@ static gboolean permission_checker_thread (gpointer data) {
         g_assert(perm_result != PERMISSION_UNKNOWN);
 
         if (perm_result == PERMISSION_ALLOWED) {
-            gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_YES, GTK_ICON_SIZE_SMALL_TOOLBAR);
+            gtk_image_set_from_icon_name(GTK_IMAGE(permission_status_icon), "face-smile", GTK_ICON_SIZE_SMALL_TOOLBAR);
 
             gchar *markup = g_markup_printf_escaped(_("OK. Scrobbling for user: %s"), username);
 
@@ -45,8 +45,8 @@ static gboolean permission_checker_thread (gpointer data) {
 
         } else if (perm_result == PERMISSION_DENIED) {
 
-            gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_NO,   GTK_ICON_SIZE_SMALL_TOOLBAR);
-            gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
+            gtk_image_set_from_icon_name(GTK_IMAGE(permission_status_icon), "dialog-error", GTK_ICON_SIZE_SMALL_TOOLBAR);
+            gtk_image_set_from_icon_name(GTK_IMAGE(additional_details_icon), "dialog-information", GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 
             gtk_label_set_label(GTK_LABEL(permission_status_label), _("Permission Denied"));
@@ -67,8 +67,8 @@ static gboolean permission_checker_thread (gpointer data) {
                                   "They will be submitted as soon as Audacious is allowed to do so."));
 
         } else if (perm_result == PERMISSION_NONET) {
-            gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon),  GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_SMALL_TOOLBAR);
-            gtk_image_set_from_stock(GTK_IMAGE(additional_details_icon), GTK_STOCK_INFO, GTK_ICON_SIZE_SMALL_TOOLBAR);
+            gtk_image_set_from_icon_name(GTK_IMAGE(permission_status_icon), "dialog-warning", GTK_ICON_SIZE_SMALL_TOOLBAR);
+            gtk_image_set_from_icon_name(GTK_IMAGE(additional_details_icon), "dialog-information", GTK_ICON_SIZE_SMALL_TOOLBAR);
 
 
             gtk_label_set_label(GTK_LABEL(permission_status_label), _("Network Problem."));
@@ -103,7 +103,7 @@ static void cleanup_window() {
 static void permission_checker (GtkButton *button12, gpointer data) {
     cleanup_window();
 
-    gtk_image_set_from_stock(GTK_IMAGE(permission_status_icon), GTK_STOCK_EXECUTE, GTK_ICON_SIZE_SMALL_TOOLBAR);
+    gtk_image_set_from_icon_name(GTK_IMAGE(permission_status_icon), "system-run", GTK_ICON_SIZE_SMALL_TOOLBAR);
     gtk_label_set_label(GTK_LABEL(permission_status_label), _("Checking..."));
 
     //This will make the communication thread check the permission
