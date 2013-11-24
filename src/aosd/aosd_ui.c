@@ -716,13 +716,13 @@ aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpoint
   {
     if ( aosd_osd_check_composite_mgr() )
     {
-      gtk_image_set_from_stock( GTK_IMAGE(img) , GTK_STOCK_YES , GTK_ICON_SIZE_MENU );
+      gtk_image_set_from_icon_name( GTK_IMAGE(img) , "face-smile" , GTK_ICON_SIZE_MENU );
       gtk_label_set_text( GTK_LABEL(label) , _("Composite manager detected") );
       gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , TRUE );
     }
     else
     {
-      gtk_image_set_from_stock( GTK_IMAGE(img) , GTK_STOCK_DIALOG_WARNING , GTK_ICON_SIZE_MENU );
+      gtk_image_set_from_icon_name( GTK_IMAGE(img) , "dialog-warning" , GTK_ICON_SIZE_MENU );
       gtk_label_set_text( GTK_LABEL(label) ,
         _("Composite manager not detected;\nunless you know that you have one running, "
           "please activate a composite manager otherwise the OSD won't work properly") );
@@ -731,7 +731,7 @@ aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpoint
   }
   else
   {
-    gtk_image_set_from_stock( GTK_IMAGE(img) , GTK_STOCK_DIALOG_INFO , GTK_ICON_SIZE_MENU );
+    gtk_image_set_from_icon_name( GTK_IMAGE(img) , "dialog-information" , GTK_ICON_SIZE_MENU );
     gtk_label_set_text( GTK_LABEL(label) , _("Composite manager not required for fake transparency") );
     gtk_widget_set_sensitive( GTK_WIDGET(status_hbox) , FALSE );
   }
@@ -816,16 +816,16 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   {
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
     gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
-    gtk_image_set_from_stock( GTK_IMAGE(mis_transp_status_img) ,
-    GTK_STOCK_DIALOG_ERROR , GTK_ICON_SIZE_MENU );
+    gtk_image_set_from_icon_name( GTK_IMAGE(mis_transp_status_img) ,
+      "dialog-error" , GTK_ICON_SIZE_MENU );
     gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not loaded") );
     gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , FALSE );
   }
 #else
   gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
   gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_real_rbt) , FALSE );
-  gtk_image_set_from_stock( GTK_IMAGE(mis_transp_status_img) ,
-    GTK_STOCK_DIALOG_ERROR , GTK_ICON_SIZE_MENU );
+  gtk_image_set_from_icon_name( GTK_IMAGE(mis_transp_status_img) ,
+    "dialog-error" , GTK_ICON_SIZE_MENU );
   gtk_label_set_text( GTK_LABEL(mis_transp_status_label) , _("Composite extension not available") );
   gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , FALSE );
 #endif
@@ -943,13 +943,13 @@ aosd_ui_configure ( aosd_cfg_t * cfg )
   gtk_box_pack_start( GTK_BOX(cfg_vbox) , cfg_bbar_hbbox , FALSE , FALSE , 0 );
   cfg_bbar_bt_test = gtk_button_new_with_label( _("Test") );
   gtk_button_set_image( GTK_BUTTON(cfg_bbar_bt_test) ,
-    gtk_image_new_from_stock( GTK_STOCK_MEDIA_PLAY , GTK_ICON_SIZE_BUTTON ) );
+    gtk_image_new_from_icon_name( "media-playback-start" , GTK_ICON_SIZE_BUTTON ) );
   gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_test );
   gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_test , FALSE );
-  cfg_bbar_bt_cancel = gtk_button_new_from_stock( GTK_STOCK_CANCEL );
+  cfg_bbar_bt_cancel = gtk_button_new_with_mnemonic( _("_Cancel") );
   gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_cancel );
   gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_cancel , TRUE );
-  cfg_bbar_bt_ok = gtk_button_new_from_stock( GTK_STOCK_OK );
+  cfg_bbar_bt_ok = gtk_button_new_with_mnemonic( _("_OK") );
   gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_ok );
   gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_ok , TRUE );
 
