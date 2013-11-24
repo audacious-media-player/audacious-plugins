@@ -775,6 +775,8 @@ static gboolean alarm_init (void)
 
     timeout_source = g_timeout_add_seconds (10, alarm_timeout, NULL);
 
+    aud_plugin_menu_add (AUD_MENU_MAIN, alarm_configure, _("Set Alarm ..."), "appointment-new");
+
     return TRUE;
 }
 
@@ -784,6 +786,8 @@ static gboolean alarm_init (void)
 static void alarm_cleanup(void)
 {
     AUDDBG("alarm_cleanup\n");
+
+    aud_plugin_menu_remove (AUD_MENU_MAIN, alarm_configure);
 
     if (timeout_source)
     {
