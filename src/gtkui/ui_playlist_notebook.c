@@ -52,8 +52,8 @@ static void make_add_button (GtkWidget * notebook)
 {
     GtkWidget * button = gtk_button_new ();
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
-     (GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
+    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
+     ("list-add", GTK_ICON_SIZE_MENU));
     gtk_widget_set_can_focus (button, FALSE);
 
     g_signal_connect (button, "clicked", (GCallback) add_button_cb, NULL);
@@ -70,7 +70,7 @@ static void close_button_cb (GtkWidget * button, void * id)
 static GtkWidget * make_close_button (GtkWidget * ebox, gint list)
 {
     GtkWidget * button = gtk_button_new ();
-    GtkWidget * image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+    GtkWidget * image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
     gtk_button_set_image ((GtkButton *) button, image);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_button_set_focus_on_click ((GtkButton *) button, FALSE);

@@ -24,6 +24,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudcore/index.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 
 #include "ui_playlist_notebook.h"
@@ -208,8 +209,7 @@ static void response_cb (GtkWidget * widget, gint response, void * unused)
         ui_playlist_notebook_empty ();
 
         for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
-            pw_cols[pw_num_cols] = ((Column *) index_get (chosen, pw_num_cols))
-             ->column;
+            pw_cols[pw_num_cols] = ((Column *) index_get (chosen, pw_num_cols))->column;
 
         aud_set_string ("gtkui", "column_widths", "");
         aud_set_string ("gtkui", "column_expand", "");
@@ -274,11 +274,16 @@ void pw_col_choose (void)
         index_append (avail, column);
     }
 
-    window = gtk_dialog_new_with_buttons (_("Choose Columns"), NULL, 0,
-     GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
-     NULL);
+    window = gtk_dialog_new ();
+    gtk_window_set_title ((GtkWindow *) window, _("Set Columns"));
     gtk_window_set_default_size ((GtkWindow *) window, 400, 300);
     gtk_dialog_set_default_response ((GtkDialog *) window, GTK_RESPONSE_ACCEPT);
+
+    GtkWidget * cancel_button = audgui_button_new (_("_Cancel"), "window-close", NULL, NULL);
+    gtk_dialog_add_action_widget ((GtkDialog *) window, cancel_button, GTK_RESPONSE_CANCEL);
+
+    GtkWidget * apply_button = audgui_button_new (_("_Set"), "system-run", NULL, NULL);
+    gtk_dialog_add_action_widget ((GtkDialog *) window, apply_button, GTK_RESPONSE_ACCEPT);
 
     g_signal_connect (window, "response", (GCallback) response_cb, NULL);
     g_signal_connect (window, "destroy", (GCallback) destroy_cb, NULL);
@@ -310,14 +315,14 @@ void pw_col_choose (void)
     gtk_box_pack_start ((GtkBox *) hbox, vbox, FALSE, FALSE, 0);
 
     GtkWidget * button = gtk_button_new ();
-    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
-     (GTK_STOCK_GO_FORWARD, GTK_ICON_SIZE_BUTTON));
+    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
+     ("go-next", GTK_ICON_SIZE_BUTTON));
     gtk_box_pack_start ((GtkBox *) vbox, button, TRUE, FALSE, 0);
     g_signal_connect_swapped (button, "clicked", (GCallback) transfer, avail);
 
     button = gtk_button_new ();
-    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_stock
-     (GTK_STOCK_GO_BACK, GTK_ICON_SIZE_BUTTON));
+    gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
+     ("go-previous", GTK_ICON_SIZE_BUTTON));
     gtk_box_pack_start ((GtkBox *) vbox, button, TRUE, FALSE, 0);
     g_signal_connect_swapped (button, "clicked", (GCallback) transfer, chosen);
 

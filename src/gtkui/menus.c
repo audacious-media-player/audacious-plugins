@@ -279,7 +279,7 @@ static const struct MenuItem view_items[] = {
  {.sep = TRUE},
  {N_("Always Show Playlist _Tabs"), .get = playlist_tabs_get, playlist_tabs_set},
  {N_("Show Column _Headers"), .get = column_headers_get, playlist_show_headers},
- {N_("Choose _Columns ..."), .func = pw_col_choose},
+ {N_("Set _Columns ..."), .func = pw_col_choose},
  {N_("Scrol_l on Song Change"), .get = autoscroll_get, autoscroll_set}};
 
 static const struct MenuItem main_items[] = {
