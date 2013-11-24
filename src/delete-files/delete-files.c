@@ -17,24 +17,49 @@
  * the use of this software.
  */
 
-
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
+#include <gio/gio.h>
 #include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 static const int menus[] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_RCLICK};
 
 static GtkWidget * dialog = NULL;
+
+static void move_to_trash (const char * filename)
+{
+    GFile * gfile = g_file_new_for_path (filename);
+    GError * gerror = NULL;
+
+    if (! g_file_trash (gfile, NULL, & gerror))
+    {
+        SPRINTF (error, _("Error moving %s to trash: %s."), filename, gerror->message);
+        aud_interface_show_error (error);
+        g_error_free (gerror);
+    }
+
+    g_object_unref ((GObject *) gfile);
+}
+
+static void really_delete (const char * filename)
+{
+    if (unlink (filename) < 0)
+    {
+        SPRINTF (error, _("Error deleting %s: %s."), filename, strerror (errno));
+        aud_interface_show_error (error);
+    }
+}
 
 static void confirm_delete (void)
 {
@@ -49,19 +74,22 @@ static void confirm_delete (void)
         char * uri = aud_playlist_entry_get_filename (playlist, i);
         char * filename = uri_to_filename (uri);
 
-        if (! filename)
+        if (filename)
+        {
+            if (aud_get_bool ("delete_files", "use_trash"))
+                move_to_trash (filename);
+            else
+                really_delete (filename);
+
+            free (filename);
+        }
+        else
         {
             SPRINTF (error, _("Error deleting %s: not a local file."), uri);
             aud_interface_show_error (error);
         }
-        else if (unlink (filename) < 0)
-        {
-            SPRINTF (error, _("Error deleting %s: %s."), filename, strerror (errno));
-            aud_interface_show_error (error);
-        }
 
         str_unref (uri);
-        free (filename);
     }
 
     aud_playlist_delete_selected (playlist);
@@ -75,22 +103,40 @@ static void start_delete (void)
         return;
     }
 
-    GtkWidget * button1 = audgui_button_new (_("Delete"), "edit-delete",
-     (AudguiCallback) confirm_delete, NULL);
-    GtkWidget * button2 = audgui_button_new (_("Cancel"), "window-close", NULL, NULL);
+    const char * message;
+    GtkWidget * button1, * button2;
 
-    dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION,
-     _("Delete Files"), _("Do you want to permanently delete the selected "
-     "files from the filesystem?"), button1, button2);
+    if (aud_get_bool ("delete_files", "use_trash"))
+    {
+        message = _("Do you want to move the selected files to the trash?");
+        button1 = audgui_button_new (_("Move to Trash"), "user-trash",
+         (AudguiCallback) confirm_delete, NULL);
+    }
+    else
+    {
+        message = _("Do you want to permanently delete the selected files?");
+        button1 = audgui_button_new (_("Delete"), "edit-delete",
+         (AudguiCallback) confirm_delete, NULL);
+    }
+
+    button2 = audgui_button_new (_("Cancel"), "window-close", NULL, NULL);
+    dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION, _("Delete Files"),
+     message, button1, button2);
 
     g_signal_connect (dialog, "destroy", (GCallback) gtk_widget_destroyed, & dialog);
     gtk_widget_show_all (dialog);
 }
 
+static const char * const delete_files_defaults[] = {
+ "use_trash", "TRUE",
+ NULL};
+
 static bool_t delete_files_init (void)
 {
+    aud_config_set_defaults ("delete_files", delete_files_defaults);
+
     for (int i = 0; i < G_N_ELEMENTS (menus); i ++)
-        aud_plugin_menu_add (menus[i], start_delete, _("Delete from Filesystem"), "edit-delete");
+        aud_plugin_menu_add (menus[i], start_delete, _("Delete Selected Files"), "edit-delete");
 
     return TRUE;
 }
@@ -104,10 +150,20 @@ static void delete_files_cleanup (void)
         aud_plugin_menu_remove (menus[i], start_delete);
 }
 
+static const PreferencesWidget delete_files_widgets[] = {
+ {WIDGET_LABEL, N_("<b>Delete Method</b>")},
+ {WIDGET_CHK_BTN, N_("Move to trash instead of deleting immediately"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "delete_files", .cname = "use_trash"}};
+
+static const PluginPreferences delete_files_prefs = {
+ .widgets = delete_files_widgets,
+ .n_widgets = G_N_ELEMENTS (delete_files_widgets)};
+
 AUD_GENERAL_PLUGIN
 (
-    .name = N_("Delete from Filesystem"),
+    .name = N_("Delete Files"),
     .domain = PACKAGE,
     .init = delete_files_init,
     .cleanup = delete_files_cleanup,
+    .prefs = & delete_files_prefs,
 )

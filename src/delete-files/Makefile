@@ -7,6 +7,6 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
-CPPFLAGS += -I../.. ${GTK_CFLAGS}
+CPPFLAGS += -I../.. ${GIO_CFLAGS} ${GTK_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += ${GTK_LIBS}
+LIBS += ${GIO_LIBS} ${GTK_LIBS}
