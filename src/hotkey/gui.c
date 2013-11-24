@@ -350,8 +350,8 @@ KeyControls* add_event_controls(KeyControls* list,
 
 
     controls->button = gtk_button_new();
-    gtk_button_set_image( GTK_BUTTON(controls->button),
-                        gtk_image_new_from_stock( GTK_STOCK_DELETE , GTK_ICON_SIZE_BUTTON));
+    gtk_button_set_image (GTK_BUTTON (controls->button),
+     gtk_image_new_from_icon_name ("edit-delete", GTK_ICON_SIZE_BUTTON));
     gtk_grid_attach (GTK_GRID (grid), controls->button, 2, row, 1, 1);
     g_signal_connect (G_OBJECT (controls->button), "clicked",
             G_CALLBACK (clear_keyboard), controls);
@@ -396,7 +396,7 @@ void show_configure ()
     gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 4, 0, 0, 0);
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
     gtk_container_add (GTK_CONTAINER (alignment), hbox);
-    image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO, GTK_ICON_SIZE_DIALOG);
+    image = gtk_image_new_from_icon_name ("dialog-information", GTK_ICON_SIZE_DIALOG);
     gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, TRUE, 0);
     label = gtk_label_new (_("Press a key combination inside a text field.\nYou can also bind mouse buttons."));
     gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
@@ -474,7 +474,7 @@ void show_configure ()
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_START);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
 
-    button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+    button = gtk_button_new_with_mnemonic (_("_Add"));
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (add_callback), first_controls);
@@ -484,12 +484,12 @@ void show_configure ()
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_END);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
 
-    button = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+    button = gtk_button_new_with_mnemonic (_("_Cancel"));
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (cancel_callback), NULL);
 
-    button = gtk_button_new_from_stock (GTK_STOCK_OK);
+    button = gtk_button_new_with_mnemonic (_("_OK"));
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (ok_callback), first_controls);

@@ -375,32 +375,14 @@ gdk_filter(GdkXEvent *xevent,
 
 gboolean setup_filter()
 {
-    GdkDisplay *display;
-    int screen;
-
-    display = gdk_display_get_default();
-
-    for (screen = 0; screen<gdk_display_get_n_screens(display); screen++)
-    {
-        gdk_window_add_filter(gdk_screen_get_root_window(gdk_display_get_screen(display, screen)),
-                    gdk_filter,
-                    NULL);
-    }
+    gdk_window_add_filter (gdk_screen_get_root_window
+     (gdk_screen_get_default ()), gdk_filter, NULL);
 
     return TRUE;
 }
 
 void release_filter()
 {
-    GdkDisplay *display;
-    int screen;
-
-    display = gdk_display_get_default();
-
-    for (screen = 0; screen<gdk_display_get_n_screens(display); screen++)
-    {
-        gdk_window_remove_filter(gdk_screen_get_root_window(gdk_display_get_screen(display, screen)),
-                    gdk_filter,
-                    NULL);
-    }
+    gdk_window_remove_filter (gdk_screen_get_root_window
+     (gdk_screen_get_default ()), gdk_filter, NULL);
 }
