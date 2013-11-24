@@ -251,7 +251,7 @@ static GtkWidget *si_smallmenu_create(void)
     GtkWidget *si_smenu_stop_item, *si_smenu_next_item, *si_smenu_sep_item, *si_smenu_eject_item;
     GtkWidget *si_smenu_pref_item, *si_smenu_quit_item;
 
-    si_smenu_eject_item = audgui_menu_item_new (_("_Open Files"), "document-open");
+    si_smenu_eject_item = audgui_menu_item_new (_("_Open Files ..."), "document-open");
     g_signal_connect_swapped(si_smenu_eject_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_EJECT));
     gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_eject_item);
     gtk_widget_show(si_smenu_eject_item);
@@ -281,7 +281,7 @@ static GtkWidget *si_smallmenu_create(void)
     si_smenu_sep_item = gtk_separator_menu_item_new();
     gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_sep_item);
     gtk_widget_show(si_smenu_sep_item);
-    si_smenu_pref_item = audgui_menu_item_new (_("P_references ..."), "preferences-system");
+    si_smenu_pref_item = audgui_menu_item_new (_("Se_ttings ..."), "preferences-system");
     g_signal_connect_swapped(si_smenu_pref_item, "activate", G_CALLBACK(aud_show_prefs_window), NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_pref_item);
     gtk_widget_show(si_smenu_pref_item);
