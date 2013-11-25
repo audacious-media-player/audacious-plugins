@@ -28,14 +28,16 @@
 
 #include <gtk/gtk.h>
 
+#include <libaudcore/vfs.h>
+
 typedef gboolean(*DirForeachFunc) (const gchar *path, const gchar *basename,
                                    gpointer user_data);
 
 gchar * find_file_case (const gchar * folder, const gchar * basename);
 gchar * find_file_case_path (const gchar * folder, const gchar * basename);
-gchar * find_file_case_uri (const gchar * folder, const gchar * basename);
 
-gchar * load_text_file (const gchar * filename);
+VFSFile * open_local_file_nocase (const char * folder, const char * basename);
+
 gchar * text_parse_line (gchar * text);
 
 void del_directory(const gchar *dirname);

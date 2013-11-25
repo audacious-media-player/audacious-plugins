@@ -62,13 +62,7 @@ struct _SkinPixmapIdMapping {
     gint width, height;
 };
 
-struct _SkinMaskInfo {
-    gint width, height;
-    gchar *inistr;
-};
-
 typedef struct _SkinPixmapIdMapping SkinPixmapIdMapping;
-typedef struct _SkinMaskInfo SkinMaskInfo;
 
 static gboolean skin_load (Skin * skin, const gchar * path);
 static void skin_parse_hints (Skin * skin, const gchar * path_p);
@@ -76,13 +70,6 @@ static void skin_parse_hints (Skin * skin, const gchar * path_p);
 Skin *active_skin = NULL;
 
 static gint skin_current_num;
-
-static SkinMaskInfo skin_mask_info[] = {
-    {275, 116, "Normal"},
-    {275, 16,  "WindowShade"},
-    {275, 116, "Equalizer"},
-    {275, 16,  "EqualizerWS"}
-};
 
 static SkinPixmapIdMapping skin_pixmap_id_map[] = {
     {SKIN_MAIN, "main", NULL, 0, 0},
@@ -130,30 +117,15 @@ static const guint32 default_vis_colors[24] = {
     COLOR (200, 200, 200)
 };
 
-static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
- gchar * file, const gchar * section, GdkWindow * window, gint width, gint
- height);
-
 static INIFile * open_ini_file (const char * path, const char * name)
 {
-    gchar * filename = find_file_case_uri (path, name);
-    if (! filename)
-        return NULL;
-
-    VFSFile * file = vfs_fopen (filename, "r");
-    g_free (filename);
+    VFSFile * file = open_local_file_nocase (path, name);
     if (! file)
         return NULL;
 
     INIFile * inifile = inifile_read (file);
     vfs_fclose (file);
     return inifile;
-}
-
-static GArray * read_ini_array (INIFile * inifile, const char * section, const char * key)
-{
-    const gchar * str = inifile_lookup (inifile, section, key);
-    return str ? string_to_garray (str) : NULL;
 }
 
 gboolean active_skin_load (const gchar * path)
@@ -350,20 +322,6 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
     return skin->pixmaps[id] ? TRUE : FALSE;
 }
 
-static void skin_mask_create (Skin * skin, const gchar * path, gint id,
- GdkWindow * window)
-{
-    skin->masks[id] = skin_create_transparent_mask (path, "region.txt",
-     skin_mask_info[id].inistr, window, skin_mask_info[id].width,
-     skin_mask_info[id].height);
-}
-
-static cairo_region_t * create_default_mask (GdkWindow * parent, gint w, gint h)
-{
-    cairo_rectangle_int_t rect = {0, 0, w, h};
-    return cairo_region_create_rectangle (& rect);
-}
-
 static gint color_diff (guint32 a, guint32 b)
 {
     return abs (COLOR_R (a) - COLOR_R (b)) + abs (COLOR_G (a) - COLOR_G (b)) +
@@ -505,9 +463,7 @@ static void skin_parse_hints (Skin * skin, const gchar * path_p)
     skin->properties.mainwin_eject_x = 136;
     skin->properties.mainwin_eject_y = 89;
     skin->properties.mainwin_width = 275;
-    skin_mask_info[0].width = skin->properties.mainwin_width;
     skin->properties.mainwin_height = 116;
-    skin_mask_info[0].height = skin->properties.mainwin_height;
     skin->properties.mainwin_about_x = 247;
     skin->properties.mainwin_about_y = 83;
     skin->properties.mainwin_shuffle_x = 164;
@@ -610,9 +566,6 @@ static void skin_parse_hints (Skin * skin, const gchar * path_p)
     }
 
     inifile_destroy (inifile);
-
-    skin_mask_info[0].height = skin->properties.mainwin_height;
-    skin_mask_info[0].width = skin->properties.mainwin_width;
 }
 
 static gint hex_chars_to_int (gchar hi, gchar lo)
@@ -657,97 +610,25 @@ static guint32 skin_load_color (INIFile * inifile, const gchar * section,
     return COLOR (red, green, blue);
 }
 
-static cairo_region_t * skin_create_transparent_mask (const gchar * path, const
- gchar * file, const gchar * section, GdkWindow * window, gint width, gint
- height)
-{
-    GArray * num = NULL, * point = NULL;
-
-    INIFile * inifile = open_ini_file (path, file);
-    if (inifile)
-    {
-        num = read_ini_array (inifile, section, "numpoints");
-        point = read_ini_array (inifile, section, "pointlist");
-        inifile_destroy (inifile);
-    }
-
-    if (! num || ! point)
-    {
-        if (num) g_array_free (num, TRUE);
-        if (point) g_array_free (point, TRUE);
-        return create_default_mask (window, width, height);
-    }
-
-    cairo_region_t * mask = cairo_region_create ();
-    gboolean created_mask = FALSE;
-
-    gint j = 0;
-    for (gint i = 0; i < num->len; i ++)
-    {
-        gint n_points = g_array_index (num, gint, i);
-        if (n_points <= 0 || j + 2 * n_points > point->len)
-            break;
-
-        GdkPoint gpoints[n_points];
-        for (gint k = 0; k < n_points; k ++)
-        {
-            gpoints[k].x = g_array_index (point, gint, j + k * 2);
-            gpoints[k].y = g_array_index (point, gint, j + k * 2 + 1);
-        }
-
-        gint xmin = width, ymin = height, xmax = 0, ymax = 0;
-        for (gint k = 0; k < n_points; k ++)
-        {
-            xmin = MIN (xmin, gpoints[k].x);
-            ymin = MIN (ymin, gpoints[k].y);
-            xmax = MAX (xmax, gpoints[k].x);
-            ymax = MAX (ymax, gpoints[k].y);
-        }
-
-        if (xmax > xmin && ymax > ymin)
-        {
-            cairo_rectangle_int_t rect = {xmin, ymin, xmax - xmin, ymax - ymin};
-            cairo_region_union_rectangle (mask, & rect);
-        }
-
-        created_mask = TRUE;
-        j += n_points * 2;
-    }
-
-    g_array_free(num, TRUE);
-    g_array_free(point, TRUE);
-
-    if (!created_mask)
-    {
-        cairo_rectangle_int_t rect = {0, 0, width, height};
-        cairo_region_union_rectangle (mask, & rect);
-    }
-
-    return mask;
-}
-
 static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
  basename)
 {
-    gchar * filename, * buffer, * string, * next;
-    gint line;
-
     memcpy (skin->vis_colors, default_vis_colors, sizeof skin->vis_colors);
 
-    filename = find_file_case_uri (path, basename);
-    if (filename == NULL)
+    VFSFile * file = open_local_file_nocase (path, basename);
+    if (! file)
         return;
 
-    buffer = load_text_file (filename);
-    g_free (filename);
-    string = buffer;
+    void * buffer = NULL;
+    vfs_file_read_all (file, & buffer, NULL);
+    vfs_fclose (file);
 
-    for (line = 0; string != NULL && line < 24; line ++)
+    char * string = buffer;
+
+    for (int line = 0; string && line < 24; line ++)
     {
-        GArray * array;
-
-        next = text_parse_line (string);
-        array = string_to_garray (string);
+        char * next = text_parse_line (string);
+        GArray * array = string_to_garray (string);
 
         if (array->len >= 3)
             skin->vis_colors[line] = COLOR (g_array_index (array, gint, 0),
@@ -757,7 +638,7 @@ static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
         string = next;
     }
 
-    g_free (buffer);
+    free (buffer);
 }
 
 static void
@@ -810,10 +691,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     if (inifile)
         inifile_destroy (inifile);
 
-    skin_mask_create (skin, path, SKIN_MASK_MAIN, gtk_widget_get_window (mainwin));
-    skin_mask_create (skin, path, SKIN_MASK_MAIN_SHADE, gtk_widget_get_window (mainwin));
-    skin_mask_create (skin, path, SKIN_MASK_EQ, gtk_widget_get_window (equalizerwin));
-    skin_mask_create (skin, path, SKIN_MASK_EQ_SHADE, gtk_widget_get_window (equalizerwin));
+    skin_load_masks (skin, path);
 
     skin_load_viscolor(skin, path, "viscolor.txt");
 

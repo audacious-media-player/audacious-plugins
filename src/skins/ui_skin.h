@@ -193,6 +193,9 @@ void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
  gboolean focus);
 void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
 
+/* ui_skin_load_masks.c */
+void skin_load_masks (Skin * skin, const char * path);
+
 static inline void set_cairo_color (cairo_t * cr, guint32 c)
 {
     cairo_set_source_rgb (cr, COLOR_R(c) / 255.0, COLOR_G(c) / 255.0, COLOR_B(c)

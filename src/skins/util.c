@@ -101,40 +101,21 @@ gchar * find_file_case_path (const gchar * folder, const gchar * basename)
     return path;
 }
 
-gchar * find_file_case_uri (const gchar * folder, const gchar * basename)
+VFSFile * open_local_file_nocase (const char * folder, const char * basename)
 {
-    gchar * found, * uri;
-
-    if ((found = find_file_case_path (folder, basename)) == NULL)
+    char * path = find_file_case_path (folder, basename);
+    if (! path)
         return NULL;
 
-    uri = g_filename_to_uri (found, NULL, NULL);
-    g_free (found);
-    return uri;
-}
+    char * uri = filename_to_uri (path);
+    free (path);
 
-gchar * load_text_file (const gchar * filename)
-{
-    VFSFile * file;
-    gint size;
-    gchar * buffer;
-
-    file = vfs_fopen (filename, "r");
-
-    if (file == NULL)
+    if (! uri)
         return NULL;
 
-    size = vfs_fsize (file);
-    size = MAX (0, size);
-    buffer = g_malloc (size + 1);
-
-    size = vfs_fread (buffer, 1, size, file);
-    size = MAX (0, size);
-    buffer[size] = 0;
-
-    vfs_fclose (file);
-
-    return buffer;
+    VFSFile * file = vfs_fopen (uri, "r");
+    free (uri);
+    return file;
 }
 
 gchar * text_parse_line (gchar * text)
