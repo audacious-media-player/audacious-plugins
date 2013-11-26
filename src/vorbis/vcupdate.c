@@ -39,18 +39,12 @@
 
 static gboolean write_and_pivot_files(vcedit_state * state);
 
-/* str_unref() may be a macro */
-static void str_unref_cb (void * str)
-{
-    str_unref (str);
-}
-
 static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
 {
     gint i;
 
     GHashTable * dict = g_hash_table_new_full (g_str_hash, g_str_equal,
-     str_unref_cb, str_unref_cb);
+     (GDestroyNotify) str_unref, (GDestroyNotify) str_unref);
 
     for (i = 0; i < vc->comments; i++) {
         gchar **frags;

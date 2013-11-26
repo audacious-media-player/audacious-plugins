@@ -63,12 +63,6 @@ static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list
 
 static void item_free (Item * item);
 
-/* str_unref() may be a macro */
-static void str_unref_cb (void * str)
-{
-    str_unref (str);
-}
-
 static Item * item_new (int field, char * name, Item * parent)
 {
     Item * item = g_slice_new (Item);
@@ -362,7 +356,8 @@ static void begin_add (const char * path)
 
     /* speed things up by using g_direct_equal() instead of g_str_equal()
        because identical pooled strings have the same pointer */
-    added_table = g_hash_table_new_full (g_str_hash, g_direct_equal, str_unref_cb, NULL);
+    added_table = g_hash_table_new_full (g_str_hash, g_direct_equal,
+     (GDestroyNotify) str_unref, NULL);
 
     int entries = aud_playlist_entry_count (list);
 
