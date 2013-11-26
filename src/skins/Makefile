@@ -5,7 +5,7 @@ SRCS = drag-handle.c \
        skins_cfg.c \
        surface.c \
        ui_skin.c \
-       ui_skin_load_masks.c \
+       ui_skin_load_ini.c \
        ui_skinned_window.c \
        ui_dock.c \
        util.c \

@@ -32,7 +32,6 @@
 
 #include <audacious/debug.h>
 #include <audacious/misc.h>
-#include <libaudcore/inifile.h>
 
 #include "plugin.h"
 #include "skins_cfg.h"
@@ -65,11 +64,8 @@ struct _SkinPixmapIdMapping {
 typedef struct _SkinPixmapIdMapping SkinPixmapIdMapping;
 
 static gboolean skin_load (Skin * skin, const gchar * path);
-static void skin_parse_hints (Skin * skin, const gchar * path_p);
 
 Skin *active_skin = NULL;
-
-static gint skin_current_num;
 
 static SkinPixmapIdMapping skin_pixmap_id_map[] = {
     {SKIN_MAIN, "main", NULL, 0, 0},
@@ -116,17 +112,6 @@ static const guint32 default_vis_colors[24] = {
     COLOR (0, 32, 64),
     COLOR (200, 200, 200)
 };
-
-static INIFile * open_ini_file (const char * path, const char * name)
-{
-    VFSFile * file = open_local_file_nocase (path, name);
-    if (! file)
-        return NULL;
-
-    INIFile * inifile = inifile_read (file);
-    vfs_fclose (file);
-    return inifile;
-}
 
 gboolean active_skin_load (const gchar * path)
 {
@@ -359,7 +344,7 @@ init_skins(const gchar * path)
 {
     active_skin = skin_new();
 
-    skin_parse_hints(active_skin, NULL);
+    active_skin->properties = skin_default_hints;
 
     /* create the windows if they haven't been created yet, needed for bootstrapping */
     if (mainwin == NULL)
@@ -409,213 +394,11 @@ void cleanup_skins()
     equalizerwin = NULL;
 }
 
-
-/*
- * Opens and parses a skin's hints file.
- * Hints files are somewhat like "scripts" in Winamp3/5.
- * We'll probably add scripts to it next.
- */
-static void skin_parse_hints (Skin * skin, const gchar * path_p)
-{
-    path_p = path_p ? path_p : skin->path;
-
-    skin->properties.mainwin_vis_x = 24;
-    skin->properties.mainwin_vis_y = 43;
-    skin->properties.mainwin_text_x = 112;
-    skin->properties.mainwin_text_y = 27;
-    skin->properties.mainwin_text_width = 153;
-    skin->properties.mainwin_infobar_x = 112;
-    skin->properties.mainwin_infobar_y = 43;
-    skin->properties.mainwin_number_0_x = 36;
-    skin->properties.mainwin_number_0_y = 26;
-    skin->properties.mainwin_number_1_x = 48;
-    skin->properties.mainwin_number_1_y = 26;
-    skin->properties.mainwin_number_2_x = 60;
-    skin->properties.mainwin_number_2_y = 26;
-    skin->properties.mainwin_number_3_x = 78;
-    skin->properties.mainwin_number_3_y = 26;
-    skin->properties.mainwin_number_4_x = 90;
-    skin->properties.mainwin_number_4_y = 26;
-    skin->properties.mainwin_playstatus_x = 24;
-    skin->properties.mainwin_playstatus_y = 28;
-    skin->properties.mainwin_menurow_visible = TRUE;
-    skin->properties.mainwin_streaminfo_visible = TRUE;
-    skin->properties.mainwin_volume_x = 107;
-    skin->properties.mainwin_volume_y = 57;
-    skin->properties.mainwin_balance_x = 177;
-    skin->properties.mainwin_balance_y = 57;
-    skin->properties.mainwin_position_x = 16;
-    skin->properties.mainwin_position_y = 72;
-    skin->properties.mainwin_othertext_is_status = FALSE;
-    skin->properties.mainwin_othertext_visible = FALSE;
-    skin->properties.mainwin_text_visible = TRUE;
-    skin->properties.mainwin_vis_visible = TRUE;
-    skin->properties.mainwin_previous_x = 16;
-    skin->properties.mainwin_previous_y = 88;
-    skin->properties.mainwin_play_x = 39;
-    skin->properties.mainwin_play_y = 88;
-    skin->properties.mainwin_pause_x = 62;
-    skin->properties.mainwin_pause_y = 88;
-    skin->properties.mainwin_stop_x = 85;
-    skin->properties.mainwin_stop_y = 88;
-    skin->properties.mainwin_next_x = 108;
-    skin->properties.mainwin_next_y = 88;
-    skin->properties.mainwin_eject_x = 136;
-    skin->properties.mainwin_eject_y = 89;
-    skin->properties.mainwin_width = 275;
-    skin->properties.mainwin_height = 116;
-    skin->properties.mainwin_about_x = 247;
-    skin->properties.mainwin_about_y = 83;
-    skin->properties.mainwin_shuffle_x = 164;
-    skin->properties.mainwin_shuffle_y = 89;
-    skin->properties.mainwin_repeat_x = 210;
-    skin->properties.mainwin_repeat_y = 89;
-    skin->properties.mainwin_eqbutton_x = 219;
-    skin->properties.mainwin_eqbutton_y = 58;
-    skin->properties.mainwin_plbutton_x = 242;
-    skin->properties.mainwin_plbutton_y = 58;
-    skin->properties.textbox_bitmap_font_width = 5;
-    skin->properties.textbox_bitmap_font_height = 6;
-    skin->properties.mainwin_minimize_x = 244;
-    skin->properties.mainwin_minimize_y = 3;
-    skin->properties.mainwin_shade_x = 254;
-    skin->properties.mainwin_shade_y = 3;
-    skin->properties.mainwin_close_x = 264;
-    skin->properties.mainwin_close_y = 3;
-
-    if (path_p == NULL)
-        return;
-
-    INIFile * inifile = open_ini_file (path_p, "skin.hints");
-    if (! inifile)
-        return;
-
-    struct {
-        const gchar * name;
-        gint * value;
-    } pairs[] = {
-     {"mainwinvisx", & skin->properties.mainwin_vis_x},
-     {"mainwinvisy", & skin->properties.mainwin_vis_y},
-     {"mainwintextx", & skin->properties.mainwin_text_x},
-     {"mainwintexty", & skin->properties.mainwin_text_y},
-     {"mainwintextwidth", & skin->properties.mainwin_text_width},
-     {"mainwininfobarx", & skin->properties.mainwin_infobar_x},
-     {"mainwininfobary", & skin->properties.mainwin_infobar_y},
-     {"mainwinnumber0x", & skin->properties.mainwin_number_0_x},
-     {"mainwinnumber0y", & skin->properties.mainwin_number_0_y},
-     {"mainwinnumber1x", & skin->properties.mainwin_number_1_x},
-     {"mainwinnumber1y", & skin->properties.mainwin_number_1_y},
-     {"mainwinnumber2x", & skin->properties.mainwin_number_2_x},
-     {"mainwinnumber2y", & skin->properties.mainwin_number_2_y},
-     {"mainwinnumber3x", & skin->properties.mainwin_number_3_x},
-     {"mainwinnumber3y", & skin->properties.mainwin_number_3_y},
-     {"mainwinnumber4x", & skin->properties.mainwin_number_4_x},
-     {"mainwinnumber4y", & skin->properties.mainwin_number_4_y},
-     {"mainwinplaystatusx", & skin->properties.mainwin_playstatus_x},
-     {"mainwinplaystatusy", & skin->properties.mainwin_playstatus_y},
-     {"mainwinmenurowvisible", & skin->properties.mainwin_menurow_visible},
-     {"mainwinstreaminfovisible", & skin->properties.mainwin_streaminfo_visible},
-     {"mainwinvolumex", & skin->properties.mainwin_volume_x},
-     {"mainwinvolumey", & skin->properties.mainwin_volume_y},
-     {"mainwinbalancex", & skin->properties.mainwin_balance_x},
-     {"mainwinbalancey", & skin->properties.mainwin_balance_y},
-     {"mainwinpositionx", & skin->properties.mainwin_position_x},
-     {"mainwinpositiony", & skin->properties.mainwin_position_y},
-     {"mainwinothertextisstatus", & skin->properties.mainwin_othertext_is_status},
-     {"mainwinothertextvisible", & skin->properties.mainwin_othertext_visible},
-     {"mainwintextvisible", & skin->properties.mainwin_text_visible},
-     {"mainwinvisvisible", & skin->properties.mainwin_vis_visible},
-     {"mainwinpreviousx", & skin->properties.mainwin_previous_x},
-     {"mainwinpreviousy", & skin->properties.mainwin_previous_y},
-     {"mainwinplayx", & skin->properties.mainwin_play_x},
-     {"mainwinplayy", & skin->properties.mainwin_play_y},
-     {"mainwinpausex", & skin->properties.mainwin_pause_x},
-     {"mainwinpausey", & skin->properties.mainwin_pause_y},
-     {"mainwinstopx", & skin->properties.mainwin_stop_x},
-     {"mainwinstopy", & skin->properties.mainwin_stop_y},
-     {"mainwinnextx", & skin->properties.mainwin_next_x},
-     {"mainwinnexty", & skin->properties.mainwin_next_y},
-     {"mainwinejectx", & skin->properties.mainwin_eject_x},
-     {"mainwinejecty", & skin->properties.mainwin_eject_y},
-     {"mainwinwidth", & skin->properties.mainwin_width},
-     {"mainwinheight", & skin->properties.mainwin_height},
-     {"mainwinaboutx", & skin->properties.mainwin_about_x},
-     {"mainwinabouty", & skin->properties.mainwin_about_y},
-     {"mainwinshufflex", & skin->properties.mainwin_shuffle_x},
-     {"mainwinshuffley", & skin->properties.mainwin_shuffle_y},
-     {"mainwinrepeatx", & skin->properties.mainwin_repeat_x},
-     {"mainwinrepeaty", & skin->properties.mainwin_repeat_y},
-     {"mainwineqbuttonx", & skin->properties.mainwin_eqbutton_x},
-     {"mainwineqbuttony", & skin->properties.mainwin_eqbutton_y},
-     {"mainwinplbuttonx", & skin->properties.mainwin_plbutton_x},
-     {"mainwinplbuttony", & skin->properties.mainwin_plbutton_y},
-     {"textboxbitmapfontwidth", & skin->properties.textbox_bitmap_font_width},
-     {"textboxbitmapfontheight", & skin->properties.textbox_bitmap_font_height},
-     {"mainwinminimizex", & skin->properties.mainwin_minimize_x},
-     {"mainwinminimizey", & skin->properties.mainwin_minimize_y},
-     {"mainwinshadex", & skin->properties.mainwin_shade_x},
-     {"mainwinshadey", & skin->properties.mainwin_shade_y},
-     {"mainwinclosex", & skin->properties.mainwin_close_x},
-     {"mainwinclosey", & skin->properties.mainwin_close_y}};
-
-    for (gint i = 0; i < G_N_ELEMENTS (pairs); i ++)
-    {
-        const gchar * s = inifile_lookup (inifile, "skin", pairs[i].name);
-        if (s)
-            * pairs[i].value = atoi (s);
-    }
-
-    inifile_destroy (inifile);
-}
-
-static gint hex_chars_to_int (gchar hi, gchar lo)
-{
-    /*
-     * Converts a value in the range 0x00-0xFF
-     * to a integer in the range 0-255
-     */
-    gchar str[3] = {hi, lo, 0};
-    return strtol (str, NULL, 16);
-}
-
-static guint32 skin_load_color (INIFile * inifile, const gchar * section,
- const gchar * key, const gchar * default_hex)
-{
-    const gchar * value = inifile ? inifile_lookup (inifile, section, key) : NULL;
-    const gchar * ptr = value ? value : default_hex;
-
-    if (* ptr == '#')
-        ptr ++;
-
-    gint red = 0, green = 0, blue = 0;
-
-    /*
-     * The handling of incomplete values is done this way
-     * to maximize winamp compatibility
-     */
-    gint len = strlen (ptr);
-    if (len >= 6)
-    {
-        red = hex_chars_to_int (ptr[0], ptr[1]);
-        ptr += 2;
-    }
-    if (len >= 4)
-    {
-        green = hex_chars_to_int (ptr[0], ptr[1]);
-        ptr += 2;
-    }
-    if (len >= 2)
-        blue = hex_chars_to_int (ptr[0], ptr[1]);
-
-    return COLOR (red, green, blue);
-}
-
-static void skin_load_viscolor (Skin * skin, const gchar * path, const gchar *
- basename)
+static void skin_load_viscolor (Skin * skin, const gchar * path)
 {
     memcpy (skin->vis_colors, default_vis_colors, sizeof skin->vis_colors);
 
-    VFSFile * file = open_local_file_nocase (path, basename);
+    VFSFile * file = open_local_file_nocase (path, "viscolor.txt");
     if (! file)
         return;
 
@@ -677,23 +460,9 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
      (skin->pixmaps[SKIN_NUMBERS]) < 108)
         skin_numbers_generate_dash (skin);
 
-    INIFile * inifile = open_ini_file (path, "pledit.txt");
-
-    skin->colors[SKIN_PLEDIT_NORMAL] =
-        skin_load_color(inifile, "text", "normal", "#2499ff");
-    skin->colors[SKIN_PLEDIT_CURRENT] =
-        skin_load_color(inifile, "text", "current", "#ffeeff");
-    skin->colors[SKIN_PLEDIT_NORMALBG] =
-        skin_load_color(inifile, "text", "normalbg", "#0a120a");
-    skin->colors[SKIN_PLEDIT_SELECTEDBG] =
-        skin_load_color(inifile, "text", "selectedbg", "#0a124a");
-
-    if (inifile)
-        inifile_destroy (inifile);
-
+    skin_load_pl_colors (skin, path);
     skin_load_masks (skin, path);
-
-    skin_load_viscolor(skin, path, "viscolor.txt");
+    skin_load_viscolor (skin, path);
 
     return TRUE;
 }
@@ -762,12 +531,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     skin_free(skin);
     skin->path = newpath;
 
-    memset(&(skin->properties), 0, sizeof(SkinProperties)); /* do it only if all tests above passed! --asphyx */
-
-    skin_current_num++;
-
-    /* Parse the hints for this skin. */
-    skin_parse_hints(skin, skin_path);
+    skin_load_hints (skin, skin_path);
 
     if (!skin_load_pixmaps(skin, skin_path)) {
         if(archive) del_directory(skin_path);

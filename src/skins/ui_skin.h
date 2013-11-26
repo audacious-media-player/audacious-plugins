@@ -166,6 +166,8 @@ typedef struct {
     gint textbox_bitmap_font_height;
 } SkinProperties;
 
+extern const SkinProperties skin_default_hints;
+
 typedef struct {
     gchar *path;
     cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT];
@@ -193,7 +195,9 @@ void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
  gboolean focus);
 void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
 
-/* ui_skin_load_masks.c */
+/* ui_skin_load_ini.c */
+void skin_load_hints (Skin * skin, const char * path);
+void skin_load_pl_colors (Skin * skin, const char * path);
 void skin_load_masks (Skin * skin, const char * path);
 
 static inline void set_cairo_color (cairo_t * cr, guint32 c)
