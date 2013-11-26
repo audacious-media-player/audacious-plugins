@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -29,41 +30,46 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
+typedef struct {
+    const char * filename;
+    bool_t valid_heading;
+    Index * filenames;
+} PLSLoadState;
+
+void pls_handle_heading (const char * heading, void * data)
+{
+    PLSLoadState * state = data;
+
+    state->valid_heading = ! strcasecmp (heading, "playlist");
+}
+
+void pls_handle_entry (const char * key, const char * value, void * data)
+{
+    PLSLoadState * state = data;
+
+    if (! state->valid_heading || strncasecmp (key, "file", 4))
+        return;
+
+    char * uri = aud_construct_uri (value, state->filename);
+    if (! uri)
+        return;
+
+    index_append (state->filenames, str_get (uri));
+    free (uri);
+}
+
 static bool_t playlist_load_pls (const char * filename, VFSFile * file,
  char * * title, Index * filenames, Index * tuples)
 {
-    INIFile * inifile = inifile_read (file);
-    if (! inifile)
-        return FALSE;
+    PLSLoadState state = {
+        .filename = filename,
+        .valid_heading = FALSE,
+        .filenames = filenames
+    };
 
-    * title = NULL;
+    inifile_parse (file, pls_handle_heading, pls_handle_entry, & state);
 
-    const char * val = inifile_lookup (inifile, "playlist", "numberofentries");
-    if (! val)
-    {
-        inifile_destroy (inifile);
-        return FALSE;
-    }
-
-    int count = atoi (val);
-
-    for (int i = 1; i <= count; i ++)
-    {
-        SPRINTF (key, "file%d", i);
-
-        if (! (val = inifile_lookup (inifile, "playlist", key)))
-            continue;
-
-        char * uri = aud_construct_uri (val, filename);
-        if (! uri)
-            continue;
-
-        index_append (filenames, str_get (uri));
-        free (uri);
-    }
-
-    inifile_destroy (inifile);
-    return TRUE;
+    return (index_count (filenames) != 0);
 }
 
 static bool_t playlist_save_pls (const char * filename, VFSFile * file,
