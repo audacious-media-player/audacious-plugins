@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -27,66 +28,50 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
+typedef struct {
+    const char * filename;
+    bool_t valid_heading;
+    Index * filenames;
+} ASXLoadState;
+
+void asx_handle_heading (const char * heading, void * data)
+{
+    ASXLoadState * state = data;
+
+    state->valid_heading = ! strcasecmp (heading, "reference");
+}
+
+void asx_handle_entry (const char * key, const char * value, void * data)
+{
+    ASXLoadState * state = data;
+
+    if (! state->valid_heading || strncasecmp (key, "ref", 3))
+        return;
+
+    char * uri = aud_construct_uri (value, state->filename);
+    if (! uri)
+        return;
+
+    if (! strncmp ("http://", uri, 7))
+        str_replace_fragment (uri, strlen (uri), "http://", "mms://");
+
+    index_append (state->filenames, str_get (uri));
+    free (uri);
+}
+
 static bool_t playlist_load_asx (const char * filename, VFSFile * file,
  char * * title, Index * filenames, Index * tuples)
 {
-    INIFile * inifile = inifile_read (file);
-    if (! inifile)
-        return FALSE;
+    ASXLoadState state = {
+        .filename = filename,
+        .valid_heading = FALSE,
+        .filenames = filenames
+    };
 
-    * title = NULL;
+    inifile_parse (file, asx_handle_heading, asx_handle_entry, & state);
 
-    for (int i = 1;; i ++)
-    {
-        SPRINTF (key, "ref%d", i);
-
-        const char * val = inifile_lookup (inifile, "reference", key);
-        if (! val)
-            break;
-
-        char * uri = aud_construct_uri (val, filename);
-        if (! uri)
-            continue;
-
-        if (! strncmp ("http://", uri, 7))
-            str_replace_fragment (uri, strlen (uri), "http://", "mms://");
-
-        index_append (filenames, str_get (uri));
-        free (uri);
-    }
-
-    inifile_destroy (inifile);
     return (index_count (filenames) != 0);
 }
-
-#if 0 // disabled since we can save to ASXv3 now
-static bool_t playlist_save_asx (const char * filename, VFSFile * file,
- const char * title, Index * filenames, Index * tuples)
-{
-    int entries = index_count (filenames);
-
-    vfs_fprintf (file, "[Reference]\r\n");
-
-    for (int count = 0; count < entries; count ++)
-    {
-        const char * filename = index_get (filenames, count);
-        char * fn;
-
-        if (! strncmp (filename, "file://", 7))
-            fn = uri_to_filename (filename);
-        else
-            fn = strdup (filename);
-
-        if (! fn)
-            continue;
-
-        vfs_fprintf (file, "Ref%d=%s\r\n", 1 + count, fn);
-        free (fn);
-    }
-
-    return TRUE;
-}
-#endif
 
 static const char * const asx_exts[] = {"asx", NULL};
 
