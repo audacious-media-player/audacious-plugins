@@ -49,12 +49,6 @@ typedef struct
 }
 CodecInfo;
 
-/* str_unref() may be a macro */
-static void str_unref_cb (void * str)
-{
-    str_unref (str);
-}
-
 static gint lockmgr (void * * mutexp, enum AVLockOp op)
 {
     switch (op)
@@ -104,7 +98,7 @@ static const gchar * ffaudio_strerror (gint error)
 static GHashTable * create_extension_dict (void)
 {
     GHashTable * dict = g_hash_table_new_full (g_str_hash, g_str_equal,
-     str_unref_cb, NULL);
+     (GDestroyNotify) str_unref, NULL);
 
     AVInputFormat * f;
     for (f = av_iformat_next (NULL); f; f = av_iformat_next (f))
