@@ -25,7 +25,6 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
 typedef struct {
@@ -53,9 +52,13 @@ void asx_handle_entry (const char * key, const char * value, void * data)
         return;
 
     if (! strncmp ("http://", uri, 7))
-        str_replace_fragment (uri, strlen (uri), "http://", "mms://");
+    {
+        SPRINTF (mod, "mms://%s", uri + 7);
+        index_insert (state->filenames, -1, str_get (mod));
+    }
+    else
+        index_insert (state->filenames, -1, str_get (uri));
 
-    index_insert (state->filenames, -1, str_get (uri));
     free (uri);
 }
 
