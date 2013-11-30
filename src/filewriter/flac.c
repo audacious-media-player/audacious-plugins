@@ -63,7 +63,7 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
  const char * name, const Tuple * tuple, int field)
 {
     TupleValueType type = tuple_field_get_type (field);
-    if (tuple_get_value_type (tuple, field, NULL) != type)
+    if (tuple_get_value_type (tuple, field) != type)
         return;
 
     char * temp;
@@ -71,11 +71,11 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
     switch (type)
     {
     case TUPLE_INT:;
-        int ival = tuple_get_int (tuple, field, NULL);
+        int ival = tuple_get_int (tuple, field);
         temp = g_strdup_printf ("%s=%d", name, ival);
         break;
     case TUPLE_STRING:;
-        char * sval = tuple_get_str (tuple, field, NULL);
+        char * sval = tuple_get_str (tuple, field);
         temp = g_strdup_printf ("%s=%s", name, sval);
         str_unref (sval);
         break;

@@ -206,11 +206,11 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 
 	Tuple * tuple = tuple_new_from_filename (filename);
 	make_format_string (& info, scratch, sizeof scratch);
-	tuple_set_str (tuple, FIELD_CODEC, NULL, scratch);
+	tuple_set_str (tuple, FIELD_CODEC, scratch);
 	snprintf (scratch, sizeof scratch, "%s, %d Hz", (channels == 2)
 	 ? _("Stereo") : (channels > 2) ? _("Surround") : _("Mono"), (int) rate);
-	tuple_set_str (tuple, FIELD_QUALITY, NULL, scratch);
-	tuple_set_int (tuple, FIELD_BITRATE, NULL, info.bitrate);
+	tuple_set_str (tuple, FIELD_QUALITY, scratch);
+	tuple_set_int (tuple, FIELD_BITRATE, info.bitrate);
 
 	if (! stream)
 	{
@@ -219,9 +219,9 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 		int length = (samples > 0 && rate > 0) ? samples * 1000 / rate : 0;
 
 		if (length > 0)
-			tuple_set_int (tuple, FIELD_LENGTH, NULL, length);
+			tuple_set_int (tuple, FIELD_LENGTH, length);
 		if (size > 0 && length > 0)
-			tuple_set_int (tuple, FIELD_BITRATE, NULL, 8 * size / length);
+			tuple_set_int (tuple, FIELD_BITRATE, 8 * size / length);
 	}
 
 	mpg123_delete (decoder);
@@ -260,12 +260,12 @@ get_stream_metadata(VFSFile *file, const char *name)
 static bool_t
 update_stream_metadata(VFSFile *file, const char *name, Tuple *tuple, int item)
 {
-	char *old = tuple_get_str(tuple, item, NULL);
+	char *old = tuple_get_str(tuple, item);
 	char *new = get_stream_metadata(file, name);
 	bool_t changed = (new != NULL && (old == NULL || strcmp(old, new)));
 
 	if (changed)
-		tuple_set_str(tuple, item, NULL, new);
+		tuple_set_str(tuple, item, new);
 
 	free(new);
 	str_unref(old);

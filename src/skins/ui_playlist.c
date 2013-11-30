@@ -336,19 +336,19 @@ playlistwin_select_search(void)
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_title) );
          AUDDBG("title=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_TITLE, NULL, searchdata);
+         tuple_set_str(tuple, FIELD_TITLE, searchdata);
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_album) );
          AUDDBG("album=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_ALBUM, NULL, searchdata);
+         tuple_set_str(tuple, FIELD_ALBUM, searchdata);
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_performer) );
          AUDDBG("performer=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_ARTIST, NULL, searchdata);
+         tuple_set_str(tuple, FIELD_ARTIST, searchdata);
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_file_name) );
          AUDDBG("filename=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_FILE_NAME, NULL, searchdata);
+         tuple_set_str(tuple, FIELD_FILE_NAME, searchdata);
 
          /* check if previous selection should be cleared before searching */
          if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel)) == TRUE )

@@ -153,7 +153,7 @@ int ConsoleFileHandler::load(int sample_rate)
 static inline void set_str (Tuple * tuple, int field, const char * str)
 {
     char * valid = str_to_utf8 (str);
-    tuple_set_str (tuple, field, NULL, valid);
+    tuple_set_str (tuple, field, valid);
     free (valid);
 }
 
@@ -172,9 +172,9 @@ static Tuple * get_track_ti(const char *path, const track_info_t *info, const in
 
         if (track >= 0)
         {
-            tuple_set_int(ti, FIELD_TRACK_NUMBER, NULL, track + 1);
-            tuple_set_int(ti, FIELD_SUBSONG_ID, NULL, track + 1);
-            tuple_set_int(ti, FIELD_SUBSONG_NUM, NULL, info->track_count);
+            tuple_set_int(ti, FIELD_TRACK_NUMBER, track + 1);
+            tuple_set_int(ti, FIELD_SUBSONG_ID, track + 1);
+            tuple_set_int(ti, FIELD_SUBSONG_NUM, info->track_count);
         }
         else
             tuple_set_subtunes (ti, info->track_count, NULL);
@@ -186,7 +186,7 @@ static Tuple * get_track_ti(const char *path, const track_info_t *info, const in
             length = audcfg.loop_length * 1000;
         else if (length >= fade_threshold)
             length += fade_length;
-        tuple_set_int(ti, FIELD_LENGTH, NULL, length);
+        tuple_set_int(ti, FIELD_LENGTH, length);
     }
 
     return ti;
@@ -264,7 +264,7 @@ extern "C" bool_t console_play(const char *filename, VFSFile *file)
         Tuple *ti = get_track_ti(fh.m_path, &info, fh.m_track);
         if (ti != NULL)
         {
-            length = tuple_get_int(ti, FIELD_LENGTH, NULL);
+            length = tuple_get_int(ti, FIELD_LENGTH);
             tuple_unref(ti);
             aud_input_set_bitrate(fh.m_emu->voice_count() * 1000);
         }

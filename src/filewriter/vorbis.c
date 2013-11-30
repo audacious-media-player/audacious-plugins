@@ -59,7 +59,7 @@ static void vorbis_init(write_output_callback write_output_func)
 static void add_string_from_tuple (vorbis_comment * vc, const char * name,
  const Tuple * tuple, gint field)
 {
-    gchar * val = tuple_get_str (tuple, field, NULL);
+    gchar * val = tuple_get_str (tuple, field);
     if (! val)
         return;
 
@@ -90,13 +90,13 @@ static gint vorbis_open(void)
         add_string_from_tuple (& vc, "date", tuple, FIELD_DATE);
         add_string_from_tuple (& vc, "comment", tuple, FIELD_COMMENT);
 
-        if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL)))
+        if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER)))
         {
             g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
             vorbis_comment_add_tag(&vc, "tracknumber", tmpstr);
         }
 
-        if ((scrint = tuple_get_int(tuple, FIELD_YEAR, NULL)))
+        if ((scrint = tuple_get_int(tuple, FIELD_YEAR)))
         {
             g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
             vorbis_comment_add_tag(&vc, "year", tmpstr);

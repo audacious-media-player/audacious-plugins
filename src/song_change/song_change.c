@@ -197,7 +197,7 @@ static void do_command (char * cmd)
         Tuple * tuple = aud_playlist_entry_get_tuple
             (aud_playlist_get_active (), pos, 0);
 
-        char * artist = tuple ? tuple_get_str (tuple, FIELD_ARTIST, NULL) : NULL;
+        char * artist = tuple ? tuple_get_str (tuple, FIELD_ARTIST) : NULL;
         if (artist)
         {
             formatter_associate(formatter, 'a', artist);
@@ -206,7 +206,7 @@ static void do_command (char * cmd)
         else
             formatter_associate(formatter, 'a', "");
 
-        char * album = tuple ? tuple_get_str (tuple, FIELD_ALBUM, NULL) : NULL;
+        char * album = tuple ? tuple_get_str (tuple, FIELD_ALBUM) : NULL;
         if (album)
         {
             formatter_associate(formatter, 'b', album);
@@ -215,7 +215,7 @@ static void do_command (char * cmd)
         else
             formatter_associate(formatter, 'b', "");
 
-        char * title = tuple ? tuple_get_str (tuple, FIELD_TITLE, NULL) : NULL;
+        char * title = tuple ? tuple_get_str (tuple, FIELD_TITLE) : NULL;
         if (title)
         {
             formatter_associate(formatter, 'T', title);

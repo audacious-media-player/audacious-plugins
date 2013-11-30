@@ -238,37 +238,37 @@ static Tuple *aac_get_tuple (const char * filename, VFSFile * handle)
     char *temp;
     int length, bitrate, samplerate, channels;
 
-    tuple_set_str (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
+    tuple_set_str (tuple, FIELD_CODEC, "MPEG-2/4 AAC");
 
     if (!vfs_is_remote (filename))
     {
         calc_aac_info (handle, &length, &bitrate, &samplerate, &channels);
 
         if (length > 0)
-            tuple_set_int (tuple, FIELD_LENGTH, NULL, length);
+            tuple_set_int (tuple, FIELD_LENGTH, length);
 
         if (bitrate > 0)
-            tuple_set_int (tuple, FIELD_BITRATE, NULL, bitrate);
+            tuple_set_int (tuple, FIELD_BITRATE, bitrate);
     }
 
     temp = vfs_get_metadata (handle, "track-name");
     if (temp != NULL)
     {
-        tuple_set_str (tuple, FIELD_TITLE, NULL, temp);
+        tuple_set_str (tuple, FIELD_TITLE, temp);
         free (temp);
     }
 
     temp = vfs_get_metadata (handle, "stream-name");
     if (temp != NULL)
     {
-        tuple_set_str (tuple, FIELD_ALBUM, NULL, temp);
+        tuple_set_str (tuple, FIELD_ALBUM, temp);
         free (temp);
     }
 
     temp = vfs_get_metadata (handle, "content-bitrate");
     if (temp != NULL)
     {
-        tuple_set_int (tuple, FIELD_BITRATE, NULL, atoi (temp) / 1000);
+        tuple_set_int (tuple, FIELD_BITRATE, atoi (temp) / 1000);
         free (temp);
     }
 
@@ -278,13 +278,13 @@ static Tuple *aac_get_tuple (const char * filename, VFSFile * handle)
 static bool_t aac_title_changed (const char * filename, VFSFile * handle,
  Tuple * tuple)
 {
-    char *old = tuple_get_str (tuple, FIELD_TITLE, NULL);
+    char *old = tuple_get_str (tuple, FIELD_TITLE);
     char *new = vfs_get_metadata (handle, "track-name");
     bool_t changed = FALSE;
 
     changed = (new != NULL && (old == NULL || strcmp (old, new)));
     if (changed)
-        tuple_set_str (tuple, FIELD_TITLE, NULL, new);
+        tuple_set_str (tuple, FIELD_TITLE, new);
 
     free (new);
     str_unref(old);
@@ -353,7 +353,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
     if (tuple != NULL)
     {
-        bitrate = tuple_get_int (tuple, FIELD_BITRATE, NULL);
+        bitrate = tuple_get_int (tuple, FIELD_BITRATE);
         bitrate = 1000 * MAX (0, bitrate);
     }
 
@@ -437,7 +437,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
         if (seek_value >= 0)
         {
-            int length = tuple ? tuple_get_int (tuple, FIELD_LENGTH, NULL) : 0;
+            int length = tuple ? tuple_get_int (tuple, FIELD_LENGTH) : 0;
 
             if (length > 0)
                 aac_seek (file, decoder, seek_value, length, buf, sizeof buf, & buflen);

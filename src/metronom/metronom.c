@@ -206,7 +206,7 @@ static Tuple *metronom_probe_for_tuple(const char * filename, VFSFile *fd)
     char *tmp = NULL;
 
     if (metronom_get_cp(filename, &metronom, &tmp))
-        tuple_set_str(tuple, FIELD_TITLE, NULL, tmp);
+        tuple_set_str(tuple, FIELD_TITLE, tmp);
 
     str_unref(tmp);
 

@@ -80,9 +80,9 @@ static gboolean queue_track_to_scrobble (gpointer data) {
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
 
-    char *artist = tuple_get_str(playing_track, FIELD_ARTIST, NULL);
-    char *title  = tuple_get_str(playing_track, FIELD_TITLE, NULL);
-    char *album  = tuple_get_str(playing_track, FIELD_ALBUM, NULL);
+    char *artist = tuple_get_str(playing_track, FIELD_ARTIST);
+    char *title  = tuple_get_str(playing_track, FIELD_TITLE);
+    char *album  = tuple_get_str(playing_track, FIELD_ALBUM);
 
     tab_remover = remove_tabs(artist);
     str_unref(artist);
@@ -97,8 +97,8 @@ static gboolean queue_track_to_scrobble (gpointer data) {
     album = tab_remover;
     tab_remover = NULL;
 
-    int number = tuple_get_int(playing_track, FIELD_TRACK_NUMBER, NULL);
-    int length = tuple_get_int(playing_track, FIELD_LENGTH, NULL) / 1000;
+    int number = tuple_get_int(playing_track, FIELD_TRACK_NUMBER);
+    int length = tuple_get_int(playing_track, FIELD_LENGTH) / 1000;
 
     //artist, title and timestamp are required for a successful scrobble
     if (  artist != NULL && strlen(artist) > 0
@@ -168,7 +168,7 @@ static void ready (void *hook_data, void *user_data) {
 
     Tuple *current_track = aud_playlist_entry_get_tuple(aud_playlist_get_playing(), aud_playlist_get_position(aud_playlist_get_playing()), FALSE);
 
-    int duration_seconds = tuple_get_int(current_track, FIELD_LENGTH, NULL) / 1000;
+    int duration_seconds = tuple_get_int(current_track, FIELD_LENGTH) / 1000;
     if (duration_seconds <= 30) {
         tuple_unref(current_track);
         return;

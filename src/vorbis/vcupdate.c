@@ -79,7 +79,7 @@ static void dictionary_to_vorbis_comment (vorbis_comment * vc, GHashTable * dict
 static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
  fieldn, GHashTable * dict, const char * key)
 {
-    char * val = tuple_get_str (tuple, fieldn, NULL);
+    char * val = tuple_get_str (tuple, fieldn);
 
     if (val && val[0])
         g_hash_table_insert (dict, str_get (key), str_ref (val));
@@ -92,7 +92,7 @@ static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
 static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
  fieldn, GHashTable * dict, const char * key)
 {
-    int val = tuple_get_int (tuple, fieldn, NULL);
+    int val = tuple_get_int (tuple, fieldn);
 
     if (val > 0)
     {

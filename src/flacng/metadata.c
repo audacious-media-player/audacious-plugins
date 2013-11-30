@@ -104,7 +104,7 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
  const Tuple * tuple, int tuple_name, char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    char *val = tuple_get_str(tuple, tuple_name, NULL);
+    char *val = tuple_get_str(tuple, tuple_name);
 
     if (val == NULL)
         return;
@@ -121,7 +121,7 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
  const Tuple * tuple, int tuple_name, char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    int val = tuple_get_int(tuple, tuple_name, NULL);
+    int val = tuple_get_int(tuple, tuple_name);
 
     if (val <= 0)
         return;
@@ -279,24 +279,24 @@ static void set_gain_info(Tuple *tuple, int field, int unit_field, const char *t
 
     parse_gain_text(text, &value, &unit);
 
-    if (tuple_get_value_type(tuple, unit_field, NULL) == TUPLE_INT)
-        value = value * (int64_t) tuple_get_int(tuple, unit_field, NULL) / unit;
+    if (tuple_get_value_type(tuple, unit_field) == TUPLE_INT)
+        value = value * (int64_t) tuple_get_int(tuple, unit_field) / unit;
     else
-        tuple_set_int(tuple, unit_field, NULL, unit);
+        tuple_set_int(tuple, unit_field, unit);
 
-    tuple_set_int(tuple, field, NULL, value);
+    tuple_set_int(tuple, field, value);
 }
 
 static void add_text (Tuple * tuple, int field, const char * value)
 {
-    char * cur = tuple_get_str (tuple, field, NULL);
+    char * cur = tuple_get_str (tuple, field);
     if (cur)
     {
         SPRINTF (both, "%s, %s", cur, value);
-        tuple_set_str (tuple, field, NULL, both);
+        tuple_set_str (tuple, field, both);
     }
     else
-        tuple_set_str (tuple, field, NULL, value);
+        tuple_set_str (tuple, field, value);
 
     str_unref(cur);
 }
@@ -325,9 +325,9 @@ static void parse_comment (Tuple * tuple, const char * key, const char * value)
     }
 
     if (! strcasecmp (key, "TRACKNUMBER"))
-        tuple_set_int(tuple, FIELD_TRACK_NUMBER, NULL, atoi(value));
+        tuple_set_int(tuple, FIELD_TRACK_NUMBER, atoi(value));
     else if (! strcasecmp (key, "DATE"))
-        tuple_set_int(tuple, FIELD_YEAR, NULL, atoi(value));
+        tuple_set_int(tuple, FIELD_YEAR, atoi(value));
     else if (! strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
         set_gain_info(tuple, FIELD_GAIN_TRACK_GAIN, FIELD_GAIN_GAIN_UNIT, value);
     else if (! strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
@@ -353,8 +353,8 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
 
     tuple = tuple_new_from_filename(filename);
 
-    tuple_set_str(tuple, FIELD_CODEC, NULL, "Free Lossless Audio Codec (FLAC)");
-    tuple_set_str(tuple, FIELD_QUALITY, NULL, _("lossless"));
+    tuple_set_str(tuple, FIELD_CODEC, "Free Lossless Audio Codec (FLAC)");
+    tuple_set_str(tuple, FIELD_QUALITY, _("lossless"));
 
     chain = FLAC__metadata_chain_new();
 
@@ -401,25 +401,25 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
                 if (metadata->data.stream_info.sample_rate == 0)
                 {
                     FLACNG_ERROR("Invalid sample rate for stream!\n");
-                    tuple_set_int(tuple, FIELD_LENGTH, NULL, -1);
+                    tuple_set_int(tuple, FIELD_LENGTH, -1);
                 }
                 else
                 {
-                    tuple_set_int(tuple, FIELD_LENGTH, NULL,
+                    tuple_set_int(tuple, FIELD_LENGTH,
                         (metadata->data.stream_info.total_samples / metadata->data.stream_info.sample_rate) * 1000);
-                    AUDDBG("Stream length: %d seconds\n", tuple_get_int(tuple, FIELD_LENGTH, NULL));
+                    AUDDBG("Stream length: %d seconds\n", tuple_get_int(tuple, FIELD_LENGTH));
                 }
 
                 int64_t size = vfs_fsize(fd);
 
                 if (size == -1 || metadata->data.stream_info.total_samples == 0)
-                    tuple_set_int(tuple, FIELD_BITRATE, NULL, 0);
+                    tuple_set_int(tuple, FIELD_BITRATE, 0);
                 else
                 {
                     int bitrate = 8 * size *
                         (int64_t) metadata->data.stream_info.sample_rate / metadata->data.stream_info.total_samples;
 
-                    tuple_set_int(tuple, FIELD_BITRATE, NULL, (bitrate + 500) / 1000);
+                    tuple_set_int(tuple, FIELD_BITRATE, (bitrate + 500) / 1000);
                 }
                 break;
 

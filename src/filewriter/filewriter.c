@@ -226,7 +226,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     if (prependnumber)
     {
-        gint number = tuple_get_int(tuple, FIELD_TRACK_NUMBER, NULL);
+        gint number = tuple_get_int(tuple, FIELD_TRACK_NUMBER);
         if (!tuple || !number)
             number = pos + 1;
 

@@ -137,13 +137,13 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                         case TUPLE_STRING:
                             if (! tuple)
                                 tuple = tuple_new ();
-                            tuple_set_str(tuple, xspf_entries[i].tupleField, NULL, (gchar *)str);
+                            tuple_set_str(tuple, xspf_entries[i].tupleField, (gchar *)str);
                             break;
 
                         case TUPLE_INT:
                             if (! tuple)
                                 tuple = tuple_new ();
-                            tuple_set_int(tuple, xspf_entries[i].tupleField, NULL, atol((char *)str));
+                            tuple_set_int(tuple, xspf_entries[i].tupleField, atol((char *)str));
                             break;
 
                         default:
@@ -394,18 +394,17 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
             gint i;
             for (i = 0; i < xspf_nentries; i++) {
                 const xspf_entry_t *xs = &xspf_entries[i];
-                gboolean isOK = (tuple_get_value_type (tuple, xs->tupleField,
-                 NULL) == xs->type);
+                gboolean isOK = (tuple_get_value_type (tuple, xs->tupleField) == xs->type);
 
                 switch (xs->type) {
                     case TUPLE_STRING:
-                        scratch = tuple_get_str (tuple, xs->tupleField, NULL);
+                        scratch = tuple_get_str (tuple, xs->tupleField);
                         if (! scratch)
                             isOK = FALSE;
                         str_unref(scratch);
                         break;
                     case TUPLE_INT:
-                        scratchi = tuple_get_int (tuple, xs->tupleField, NULL);
+                        scratchi = tuple_get_int (tuple, xs->tupleField);
                         break;
                     default:
                         break;

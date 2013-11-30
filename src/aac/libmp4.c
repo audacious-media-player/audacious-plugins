@@ -67,7 +67,7 @@ static void read_and_set_string (mp4ff_t * mp4, int (*func) (const mp4ff_t *
     func (mp4, &string);
 
     if (string != NULL)
-        tuple_set_str (tuple, field, NULL, string);
+        tuple_set_str (tuple, field, string);
 
     free (string);
 }
@@ -80,13 +80,13 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     char *year = NULL, *cd_track = NULL;
     char scratch[32];
 
-    tuple_set_str (tuple, FIELD_CODEC, NULL, "MPEG-2/4 AAC");
+    tuple_set_str (tuple, FIELD_CODEC, "MPEG-2/4 AAC");
 
     length = mp4ff_get_track_duration (mp4, track);
     scale = mp4ff_time_scale (mp4, track);
 
     if (length > 0 && scale > 0)
-        tuple_set_int (tuple, FIELD_LENGTH, NULL, length * 1000 / scale);
+        tuple_set_int (tuple, FIELD_LENGTH, length * 1000 / scale);
 
     rate = mp4ff_get_sample_rate (mp4, track);
     channels = mp4ff_get_channel_count (mp4, track);
@@ -95,13 +95,13 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     {
         snprintf (scratch, sizeof scratch, "%d kHz, %s", rate / 1000, channels
          == 1 ? _("mono") : channels == 2 ? _("stereo") : _("surround"));
-        tuple_set_str (tuple, FIELD_QUALITY, NULL, scratch);
+        tuple_set_str (tuple, FIELD_QUALITY, scratch);
     }
 
     bitrate = mp4ff_get_avg_bitrate (mp4, track);
 
     if (bitrate > 0)
-        tuple_set_int (tuple, FIELD_BITRATE, NULL, bitrate / 1000);
+        tuple_set_int (tuple, FIELD_BITRATE, bitrate / 1000);
 
     read_and_set_string (mp4, mp4ff_meta_get_title, tuple, FIELD_TITLE);
     read_and_set_string (mp4, mp4ff_meta_get_album, tuple, FIELD_ALBUM);
@@ -112,14 +112,14 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     mp4ff_meta_get_date (mp4, &year);
 
     if (year != NULL)
-        tuple_set_int (tuple, FIELD_YEAR, NULL, atoi (year));
+        tuple_set_int (tuple, FIELD_YEAR, atoi (year));
 
     free (year);
 
     mp4ff_meta_get_track (mp4, &cd_track);
 
     if (cd_track != NULL)
-        tuple_set_int (tuple, FIELD_TRACK_NUMBER, NULL, atoi (cd_track));
+        tuple_set_int (tuple, FIELD_TRACK_NUMBER, atoi (cd_track));
 
     free (cd_track);
 

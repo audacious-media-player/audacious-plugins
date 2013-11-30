@@ -92,14 +92,14 @@ static void copy_string (SNDFILE * sf, int sf_id, Tuple * tup, int tup_id)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str)
-        tuple_set_str (tup, tup_id, NULL, str);
+        tuple_set_str (tup, tup_id, str);
 }
 
 static void copy_int (SNDFILE * sf, int sf_id, Tuple * tup, int tup_id)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str && atoi (str))
-        tuple_set_int (tup, tup_id, NULL, atoi (str));
+        tuple_set_int (tup, tup_id, atoi (str));
 }
 
 static Tuple * get_song_tuple (const char * filename, VFSFile * file)
@@ -130,7 +130,7 @@ static Tuple * get_song_tuple (const char * filename, VFSFile * file)
 
     if (sfinfo.samplerate > 0)
     {
-        tuple_set_int(ti, FIELD_LENGTH, NULL,
+        tuple_set_int(ti, FIELD_LENGTH,
         (int) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
     }
 

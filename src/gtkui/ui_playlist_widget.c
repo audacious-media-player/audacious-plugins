@@ -52,7 +52,7 @@ typedef struct {
 
 static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
 {
-    gint i = tuple ? tuple_get_int (tuple, field, NULL) : 0;
+    gint i = tuple ? tuple_get_int (tuple, field) : 0;
     if (i > 0)
         g_value_take_string (value, g_strdup_printf ("%d", i));
     else
@@ -62,7 +62,7 @@ static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
 static void set_string_from_tuple (GValue * value, const Tuple * tuple,
  gint field)
 {
-    gchar *str = tuple ? tuple_get_str (tuple, field, NULL) : NULL;
+    gchar *str = tuple ? tuple_get_str (tuple, field) : NULL;
     g_value_set_string (value, str);
     str_unref(str);
 }

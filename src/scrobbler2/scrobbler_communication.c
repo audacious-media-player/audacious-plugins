@@ -554,9 +554,9 @@ static void send_now_playing() {
 
   gchar *tab_remover;
 
-  gchar *artist = tuple_get_str(curr_track, FIELD_ARTIST, NULL);
-  gchar *album = tuple_get_str(curr_track, FIELD_ALBUM, NULL);
-  gchar *title = tuple_get_str(curr_track, FIELD_TITLE, NULL);
+  gchar *artist = tuple_get_str(curr_track, FIELD_ARTIST);
+  gchar *album = tuple_get_str(curr_track, FIELD_ALBUM);
+  gchar *title = tuple_get_str(curr_track, FIELD_TITLE);
 
   tab_remover = remove_tabs(artist);
   str_unref(artist);
@@ -572,8 +572,8 @@ static void send_now_playing() {
 
   tab_remover = NULL;
 
-  gchar *number = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_TRACK_NUMBER, NULL));
-  gchar *length = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_LENGTH, NULL) / 1000);
+  gchar *number = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_TRACK_NUMBER));
+  gchar *length = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_LENGTH) / 1000);
   tuple_unref(curr_track);
 
 

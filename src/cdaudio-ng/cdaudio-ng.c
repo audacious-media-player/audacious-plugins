@@ -458,18 +458,18 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
 
     tuple = tuple_new_from_filename (filename);
     tuple_set_format (tuple, _("Audio CD"), 2, 44100, 1411);
-    tuple_set_int (tuple, FIELD_TRACK_NUMBER, NULL, trackno);
-    tuple_set_int (tuple, FIELD_LENGTH, NULL, calculate_track_length
+    tuple_set_int (tuple, FIELD_TRACK_NUMBER, trackno);
+    tuple_set_int (tuple, FIELD_LENGTH, calculate_track_length
      (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 
     if (trackinfo[trackno].performer[0])
-        tuple_set_str (tuple, FIELD_ARTIST, NULL, trackinfo[trackno].performer);
+        tuple_set_str (tuple, FIELD_ARTIST, trackinfo[trackno].performer);
     if (trackinfo[0].name[0])
-        tuple_set_str (tuple, FIELD_ALBUM, NULL, trackinfo[0].name);
+        tuple_set_str (tuple, FIELD_ALBUM, trackinfo[0].name);
     if (trackinfo[trackno].name[0])
-        tuple_set_str (tuple, FIELD_TITLE, NULL, trackinfo[trackno].name);
+        tuple_set_str (tuple, FIELD_TITLE, trackinfo[trackno].name);
     if (trackinfo[trackno].genre[0])
-        tuple_set_str (tuple, FIELD_GENRE, NULL, trackinfo[trackno].genre);
+        tuple_set_str (tuple, FIELD_GENRE, trackinfo[trackno].genre);
 
   DONE:
     pthread_mutex_unlock (& mutex);

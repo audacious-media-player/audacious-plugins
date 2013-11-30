@@ -236,12 +236,12 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
 
     tu = tuple_new_from_filename(filename);
 
-    tuple_set_int(tu, FIELD_LENGTH, NULL,
+    tuple_set_int(tu, FIELD_LENGTH,
         ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
-    tuple_set_str(tu, FIELD_CODEC, NULL, "WavPack");
+    tuple_set_str(tu, FIELD_CODEC, "WavPack");
 
     char * quality = wv_get_quality (ctx);
-    tuple_set_str (tu, FIELD_QUALITY, NULL, quality);
+    tuple_set_str (tu, FIELD_QUALITY, quality);
     str_unref (quality);
 
     WavpackCloseFile(ctx);

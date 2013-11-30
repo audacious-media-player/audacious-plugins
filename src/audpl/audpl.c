@@ -142,9 +142,9 @@ static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
                 break;
 
             if (type == TUPLE_STRING)
-                tuple_set_str (tuple, field, NULL, val);
+                tuple_set_str (tuple, field, val);
             else if (type == TUPLE_INT)
-                tuple_set_int (tuple, field, NULL, atoi (val));
+                tuple_set_int (tuple, field, atoi (val));
         }
 
         index_insert (filenames, -1, uri);
@@ -179,11 +179,11 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 if (f == FIELD_FILE_PATH || f == FIELD_FILE_NAME || f == FIELD_FILE_EXT)
                     continue;
 
-                TupleValueType type = tuple_get_value_type (tuple, f, NULL);
+                TupleValueType type = tuple_get_value_type (tuple, f);
 
                 if (type == TUPLE_STRING)
                 {
-                    char * str = tuple_get_str (tuple, f, NULL);
+                    char * str = tuple_get_str (tuple, f);
 
                     if (! write_key (file, tuple_field_get_name (f), str))
                     {
@@ -197,7 +197,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 else if (type == TUPLE_INT)
                 {
                     char buf[32];
-                    snprintf (buf, sizeof buf, "%d", tuple_get_int (tuple, f, NULL));
+                    snprintf (buf, sizeof buf, "%d", tuple_get_int (tuple, f));
 
                     if (! write_key (file, tuple_field_get_name (f), buf))
                         return FALSE;

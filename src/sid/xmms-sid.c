@@ -255,15 +255,15 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, int subTun
     char *tmpStr;
 
     tmpStr = str_to_utf8(info->sidName);
-    tuple_set_str(tuple, FIELD_TITLE, NULL, tmpStr);
+    tuple_set_str(tuple, FIELD_TITLE, tmpStr);
     free(tmpStr);
     tmpStr = str_to_utf8(info->sidComposer);
-    tuple_set_str(tuple, FIELD_ARTIST, NULL, tmpStr);
+    tuple_set_str(tuple, FIELD_ARTIST, tmpStr);
     free(tmpStr);
     tmpStr = str_to_utf8(info->sidCopyright);
-    tuple_set_str(tuple, FIELD_COPYRIGHT, NULL, tmpStr);
+    tuple_set_str(tuple, FIELD_COPYRIGHT, tmpStr);
     free(tmpStr);
-    tuple_set_str(tuple, FIELD_CODEC, NULL, info->sidFormat);
+    tuple_set_str(tuple, FIELD_CODEC, info->sidFormat);
 
 #if 0
     switch (info->sidModel) {
@@ -281,7 +281,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, int subTun
 
     if (subTune > 0 && subTune <= info->nsubTunes) {
         int tmpInt = info->subTunes[subTune - 1].tuneLength;
-        tuple_set_int(tuple, FIELD_LENGTH, NULL, (tmpInt < 0) ? -1 : tmpInt * 1000);
+        tuple_set_int(tuple, FIELD_LENGTH, (tmpInt < 0) ? -1 : tmpInt * 1000);
 
 #if 0
         tmpInt = info->subTunes[subTune - 1].tuneSpeed;
@@ -305,9 +305,9 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, int subTun
     } else
         subTune = 1;
 
-    tuple_set_int(tuple, FIELD_SUBSONG_NUM, NULL, info->nsubTunes);
-    tuple_set_int(tuple, FIELD_SUBSONG_ID, NULL, subTune);
-    tuple_set_int(tuple, FIELD_TRACK_NUMBER, NULL, subTune);
+    tuple_set_int(tuple, FIELD_SUBSONG_NUM, info->nsubTunes);
+    tuple_set_int(tuple, FIELD_SUBSONG_ID, subTune);
+    tuple_set_int(tuple, FIELD_TRACK_NUMBER, subTune);
 }
 
 
@@ -341,7 +341,7 @@ Tuple * xs_probe_for_tuple(const char *filename, VFSFile *fd)
 
     /* Get information from URL */
     tuple = tuple_new_from_filename (filename);
-    tune = tuple_get_int (tuple, FIELD_SUBSONG_NUM, NULL);
+    tune = tuple_get_int (tuple, FIELD_SUBSONG_NUM);
 
     /* Get tune information from emulation engine */
     pthread_mutex_lock(&xs_status_mutex);

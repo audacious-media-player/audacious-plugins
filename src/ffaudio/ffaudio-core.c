@@ -331,9 +331,9 @@ static void read_metadata_dict (Tuple * tuple, AVDictionary * dict)
         if (entry && entry->value)
         {
             if (m->ttype == TUPLE_STRING)
-                tuple_set_str (tuple, m->field, NULL, entry->value);
+                tuple_set_str (tuple, m->field, entry->value);
             else if (m->ttype == TUPLE_INT)
-                tuple_set_int (tuple, m->field, NULL, atoi (entry->value));
+                tuple_set_int (tuple, m->field, atoi (entry->value));
         }
     }
 }
@@ -351,11 +351,11 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
         {
             tuple = tuple_new_from_filename (filename);
 
-            tuple_set_int (tuple, FIELD_LENGTH, NULL, ic->duration / 1000);
-            tuple_set_int (tuple, FIELD_BITRATE, NULL, ic->bit_rate / 1000);
+            tuple_set_int (tuple, FIELD_LENGTH, ic->duration / 1000);
+            tuple_set_int (tuple, FIELD_BITRATE, ic->bit_rate / 1000);
 
             if (cinfo.codec->long_name)
-                tuple_set_str (tuple, FIELD_CODEC, NULL, cinfo.codec->long_name);
+                tuple_set_str (tuple, FIELD_CODEC, cinfo.codec->long_name);
 
             if (ic->metadata)
                 read_metadata_dict (tuple, ic->metadata);

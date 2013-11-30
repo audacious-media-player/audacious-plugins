@@ -51,7 +51,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, int tuple_type, int pti)
     if (text == NULL)
         return;
 
-    tuple_set_str(tuple, tuple_type, NULL, text);
+    tuple_set_str(tuple, tuple_type, text);
 }
 
 static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
@@ -111,23 +111,23 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
 
         Tuple * tuple = (base_tuple != NULL) ? tuple_copy (base_tuple) :
          tuple_new_from_filename (filename);
-        tuple_set_int (tuple, FIELD_TRACK_NUMBER, NULL, track);
+        tuple_set_int (tuple, FIELD_TRACK_NUMBER, track);
 
         int begin = (int64_t) track_get_start (current) * 1000 / 75;
-        tuple_set_int (tuple, FIELD_SEGMENT_START, NULL, begin);
+        tuple_set_int (tuple, FIELD_SEGMENT_START, begin);
 
         if (last_track)
         {
             if (base_tuple != NULL && tuple_get_value_type (base_tuple,
-             FIELD_LENGTH, NULL) == TUPLE_INT)
-                tuple_set_int (tuple, FIELD_LENGTH, NULL, tuple_get_int
-                 (base_tuple, FIELD_LENGTH, NULL) - begin);
+             FIELD_LENGTH) == TUPLE_INT)
+                tuple_set_int (tuple, FIELD_LENGTH, tuple_get_int
+                 (base_tuple, FIELD_LENGTH) - begin);
         }
         else
         {
             int length = (int64_t) track_get_length (current) * 1000 / 75;
-            tuple_set_int (tuple, FIELD_LENGTH, NULL, length);
-            tuple_set_int (tuple, FIELD_SEGMENT_END, NULL, begin + length);
+            tuple_set_int (tuple, FIELD_LENGTH, length);
+            tuple_set_int (tuple, FIELD_SEGMENT_END, begin + length);
         }
 
         for (int i = 0; i < sizeof pti_map / sizeof pti_map[0]; i ++)
