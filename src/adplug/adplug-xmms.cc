@@ -320,7 +320,7 @@ extern "C" bool_t adplug_init (void)
         char exclude[strlen (cfgstr) + 2];
         memcpy (exclude, cfgstr, sizeof exclude - 1);
         exclude[sizeof exclude - 1] = 0;
-        string_replace_char (exclude, ':', 0);
+        str_replace_char (exclude, ':', 0);
 
         for (char * p = exclude; * p; p += strlen (p) + 1)
             conf.players.remove (conf.players.lookup_filetype (p));

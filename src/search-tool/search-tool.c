@@ -285,7 +285,7 @@ static void search_cb (void * key, void * _item, void * _state)
 static int item_compare (const void * _a, const void * _b)
 {
     const Item * a = _a, * b = _b;
-    return string_compare (a->name, b->name);
+    return str_compare (a->name, b->name);
 }
 
 static void do_search (void)
