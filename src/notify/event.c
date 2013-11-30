@@ -97,8 +97,7 @@ static void playback_update (void)
     str_unref (artist);
     str_unref (album);
 
-    /* pointer comparison works for pooled strings */
-    if (title == last_title && message == last_message)
+    if (str_equal (title, last_title) && str_equal (message, last_message))
     {
         str_unref (title);
         str_unref (message);

@@ -73,13 +73,11 @@ static Item * item_new (int field, char * name, Item * parent)
     item->parent = parent;
     item->matches = g_array_new (FALSE, FALSE, sizeof (int));
 
-    /* speed things up by using g_direct_equal() instead of g_str_equal()
-       because identical pooled strings have the same pointer */
     if (field == TITLE)
         item->children = NULL;
     else
-        item->children = g_hash_table_new_full (g_str_hash, g_direct_equal,
-         NULL, (GDestroyNotify) item_free);
+        item->children = g_hash_table_new_full ((GHashFunc) str_hash,
+         (GEqualFunc) str_equal, NULL, (GDestroyNotify) item_free);
 
     return item;
 }
@@ -189,10 +187,8 @@ static void create_database (int list)
 {
     destroy_database ();
 
-    /* speed things up by using g_direct_equal() instead of g_str_equal()
-       because identical pooled strings have the same pointer */
-    database = g_hash_table_new_full (g_str_hash, g_direct_equal, NULL,
-     (GDestroyNotify) item_free);
+    database = g_hash_table_new_full ((GHashFunc) str_hash, (GEqualFunc)
+     str_equal, NULL, (GDestroyNotify) item_free);
 
     int entries = aud_playlist_entry_count (list);
 
@@ -355,10 +351,8 @@ static void begin_add (const char * path)
 
     destroy_added_table ();
 
-    /* speed things up by using g_direct_equal() instead of g_str_equal()
-       because identical pooled strings have the same pointer */
-    added_table = g_hash_table_new_full (g_str_hash, g_direct_equal,
-     (GDestroyNotify) str_unref, NULL);
+    added_table = g_hash_table_new_full ((GHashFunc) str_hash, (GEqualFunc)
+     str_equal, (GDestroyNotify) str_unref, NULL);
 
     int entries = aud_playlist_entry_count (list);
 
