@@ -59,7 +59,7 @@ static void start_plugin (LoadedPlugin * loaded)
     for (int i = 0; i < instances; i ++)
     {
         LADSPA_Handle handle = desc->instantiate (desc, ladspa_rate);
-        index_append (loaded->instances, handle);
+        index_insert (loaded->instances, -1, handle);
 
         int controls = index_count (plugin->controls);
         for (int c = 0; c < controls; c ++)

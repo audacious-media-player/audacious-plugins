@@ -131,17 +131,17 @@ static void shift_rows (void * user, gint row, gint before)
     for (gint i = begin; i < end; i ++)
     {
         Column * c = index_get (user, i);
-        index_append (c->selected ? move : others, c);
+        index_insert (c->selected ? move : others, -1, c);
     }
 
     if (before < row)
     {
-        index_merge_append (move, others);
+        index_copy_insert (others, 0, move, -1, -1);
         index_free (others);
     }
     else
     {
-        index_merge_append (others, move);
+        index_copy_insert (move, 0, others, -1, -1);
         index_free (move);
         move = others;
     }
@@ -193,7 +193,7 @@ static void transfer (Index * source)
         index_delete (source, row, 1);
         audgui_list_delete_rows (source_list, row, 1);
         source_rows --;
-        index_append (dest, c);
+        index_insert (dest, -1, c);
         audgui_list_insert_rows (dest_list, dest_rows, 1);
         dest_rows ++;
     }
@@ -261,7 +261,7 @@ void pw_col_choose (void)
         Column * column = g_slice_new (Column);
         column->column = pw_cols[i];
         column->selected = 0;
-        index_append (chosen, column);
+        index_insert (chosen, -1, column);
     }
 
     for (gint i = 0; i < PW_COLS; i ++)
@@ -271,7 +271,7 @@ void pw_col_choose (void)
         Column * column = g_slice_new (Column);
         column->column = i;
         column->selected = 0;
-        index_append (avail, column);
+        index_insert (avail, -1, column);
     }
 
     window = gtk_dialog_new ();

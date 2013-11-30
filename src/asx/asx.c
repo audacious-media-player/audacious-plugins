@@ -55,7 +55,7 @@ void asx_handle_entry (const char * key, const char * value, void * data)
     if (! strncmp ("http://", uri, 7))
         str_replace_fragment (uri, strlen (uri), "http://", "mms://");
 
-    index_append (state->filenames, str_get (uri));
+    index_insert (state->filenames, -1, str_get (uri));
     free (uri);
 }
 

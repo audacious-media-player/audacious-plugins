@@ -91,14 +91,6 @@ equalizer_preset_free(EqualizerPreset * preset)
     g_free(preset);
 }
 
-static void free_presets (Index * presets)
-{
-    for (int p = 0; p < index_count (presets); p ++)
-        equalizer_preset_free (index_get (presets, p));
-
-    index_free (presets);
-}
-
 void equalizerwin_set_shape (void)
 {
     gint id = config.equalizer_shaded ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ;
@@ -394,8 +386,8 @@ static void equalizerwin_destroyed (void)
 
     hook_dissociate ("playlist position", position_cb);
 
-    free_presets (equalizer_presets);
-    free_presets (equalizer_auto_presets);
+    index_free_full (equalizer_presets, (IndexFreeFunc) equalizer_preset_free);
+    index_free_full (equalizer_auto_presets, (IndexFreeFunc) equalizer_preset_free);
     equalizer_presets = NULL;
     equalizer_auto_presets = NULL;
 }
@@ -495,7 +487,7 @@ static void equalizerwin_save_preset (Index * list, const char * name,
     {
         preset = g_new0(EqualizerPreset, 1);
         preset->name = g_strdup(name);
-        index_append (list, preset);
+        index_insert (list, -1, preset);
     }
 
     preset->preamp = equalizerwin_get_preamp();
@@ -511,9 +503,7 @@ static void equalizerwin_delete_preset (Index * list, gchar * name, gchar * file
     if (p < 0)
         return;
 
-    EqualizerPreset * preset = index_get (list, p);
-    equalizer_preset_free(preset);
-    index_delete (list, p, 1);
+    index_delete_full (list, p, 1, (IndexFreeFunc) equalizer_preset_free);
 
     aud_equalizer_write_preset_file(list, filename);
 }
@@ -582,7 +572,7 @@ equalizerwin_read_winamp_eqf(VFSFile * file)
     equalizerwin_eq_changed();
 
 DONE:
-    free_presets (presets);
+    index_free_full (presets, (IndexFreeFunc) equalizer_preset_free);
 }
 
 static gboolean equalizerwin_read_aud_preset (const gchar * file)
@@ -784,7 +774,7 @@ import_winamp_file(const gchar * filename)
     if (! list)
         goto CLOSE;
 
-    index_merge_append (equalizer_presets, list);
+    index_copy_insert (list, 0, equalizer_presets, -1, -1);
     index_free (list);
 
     aud_equalizer_write_preset_file(equalizer_presets, "eq.preset");

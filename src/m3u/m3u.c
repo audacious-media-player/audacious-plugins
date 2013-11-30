@@ -88,7 +88,7 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
 
         char * s = aud_construct_uri (parse, path);
         if (s)
-            index_append (filenames, str_get (s));
+            index_insert (filenames, -1, str_get (s));
 
         free (s);
 

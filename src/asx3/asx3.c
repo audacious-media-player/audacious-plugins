@@ -99,7 +99,7 @@ static void parse_entry (const xmlNode * entry, Index * filenames)
         {
             const char * uri = get_prop_nocase (node, "href");
             if (uri)
-                index_append (filenames, str_get (uri));
+                index_insert (filenames, -1, str_get (uri));
         }
     }
 }

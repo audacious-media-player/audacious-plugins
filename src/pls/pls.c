@@ -54,7 +54,7 @@ void pls_handle_entry (const char * key, const char * value, void * data)
     if (! uri)
         return;
 
-    index_append (state->filenames, str_get (uri));
+    index_insert (state->filenames, -1, str_get (uri));
     free (uri);
 }
 

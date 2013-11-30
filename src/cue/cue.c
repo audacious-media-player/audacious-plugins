@@ -133,8 +133,8 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         for (int i = 0; i < sizeof pti_map / sizeof pti_map[0]; i ++)
             tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type, pti_map[i].pti);
 
-        index_append (filenames, str_get (filename));
-        index_append (tuples, tuple);
+        index_insert (filenames, -1, str_get (filename));
+        index_insert (tuples, -1, tuple);
 
         current = next;
         free (filename);

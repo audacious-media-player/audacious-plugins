@@ -163,8 +163,8 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
         if (tuple)
             tuple_set_filename (tuple, location);
 
-        index_append(filenames, location);
-        index_append(tuples, tuple);
+        index_insert (filenames, -1, location);
+        index_insert (tuples, -1, tuple);
     }
     else if (tuple)
         tuple_unref (tuple);

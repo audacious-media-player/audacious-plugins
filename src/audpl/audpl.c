@@ -147,8 +147,8 @@ static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
                 tuple_set_int (tuple, field, NULL, atoi (val));
         }
 
-        index_append (filenames, uri);
-        index_append (tuples, tuple);
+        index_insert (filenames, -1, uri);
+        index_insert (tuples, -1, tuple);
     }
 
     free (state);

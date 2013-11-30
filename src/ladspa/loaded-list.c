@@ -89,17 +89,17 @@ static void shift_rows (void * user, int row, int before)
     for (gint i = begin; i < end; i ++)
     {
         LoadedPlugin * loaded = index_get (loadeds, i);
-        index_append (loaded->selected ? move : others, loaded);
+        index_insert (loaded->selected ? move : others, -1, loaded);
     }
 
     if (before < row)
     {
-        index_merge_append (move, others);
+        index_copy_insert (others, 0, move, -1, -1);
         index_free (others);
     }
     else
     {
-        index_merge_append (others, move);
+        index_copy_insert (move, 0, others, -1, -1);
         index_free (move);
         move = others;
     }

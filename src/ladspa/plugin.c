@@ -107,6 +107,12 @@ static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
     return control;
 }
 
+static void free_control (ControlData * control)
+{
+    g_free (control->name);
+    g_slice_free (ControlData, control);
+}
+
 static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * desc)
 {
     const char * slash = strrchr (path, G_DIR_SEPARATOR);
@@ -127,7 +133,7 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
         {
             ControlData * control = parse_control (desc, i);
             if (control)
-                index_append (plugin->controls, control);
+                index_insert (plugin->controls, -1, control);
         }
         else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
          LADSPA_IS_PORT_INPUT (desc->PortDescriptors[i]))
@@ -142,16 +148,8 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
 
 static void close_plugin (PluginData * plugin)
 {
-    int count = index_count (plugin->controls);
-    for (int i = 0; i < count; i ++)
-    {
-        ControlData * control = index_get (plugin->controls, i);
-        g_free (control->name);
-        g_slice_free (ControlData, control);
-    }
-
     g_free (plugin->path);
-    index_free (plugin->controls);
+    index_free_full (plugin->controls, (IndexFreeFunc) free_control);
     g_array_free (plugin->in_ports, 1);
     g_array_free (plugin->out_ports, 1);
     g_slice_free (PluginData, plugin);
@@ -181,7 +179,7 @@ static void * open_module (const char * path)
     {
         PluginData * plugin = open_plugin (path, desc);
         if (plugin)
-            index_append (plugins, plugin);
+            index_insert (plugins, -1, plugin);
     }
 
     return handle;
@@ -207,7 +205,7 @@ static void open_modules_for_path (const char * path)
 
         void * handle = open_module (filename);
         if (handle)
-            index_append (modules, handle);
+            index_insert (modules, -1, handle);
     }
 
     closedir (folder);
@@ -234,17 +232,8 @@ static void open_modules (void)
 
 static void close_modules (void)
 {
-    int count = index_count (plugins);
-    for (int i = 0; i < count; i ++)
-        close_plugin (index_get (plugins, i));
-
-    index_delete (plugins, 0, count);
-
-    count = index_count (modules);
-    for (int i = 0; i < count; i ++)
-        g_module_close (index_get (modules, i));
-
-    index_delete (modules, 0, count);
+    index_delete_full (plugins, 0, -1, (IndexFreeFunc) close_plugin);
+    index_delete_full (modules, 0, -1, (IndexFreeFunc) g_module_close);
 }
 
 LoadedPlugin * enable_plugin_locked (PluginData * plugin)
@@ -269,7 +258,7 @@ LoadedPlugin * enable_plugin_locked (PluginData * plugin)
 
     loaded->settings_win = NULL;
 
-    index_append (loadeds, loaded);
+    index_insert (loadeds, -1, loaded);
     return loaded;
 }
 

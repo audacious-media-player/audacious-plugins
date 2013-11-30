@@ -274,7 +274,7 @@ static void search_cb (void * key, void * _item, void * _state)
     }
 
     if (! state->mask)
-        index_append (state->items[item->field], item);
+        index_insert (state->items[item->field], -1, item);
 
     if (item->children)
         g_hash_table_foreach (item->children, search_cb, state);
@@ -318,7 +318,7 @@ static void do_search (void)
         if (count)
         {
             index_sort (state.items[f], item_compare);
-            index_copy_append (state.items[f], 0, items, count);
+            index_copy_insert (state.items[f], 0, items, -1, count);
             total += count;
         }
 
@@ -377,7 +377,7 @@ static void begin_add (const char * path)
     aud_playlist_remove_failed (list);
 
     Index * add = index_new ();
-    index_append (add, str_get (uri));
+    index_insert (add, -1, str_get (uri));
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
 
     g_free (uri);
@@ -557,8 +557,8 @@ static void do_add (bool_t play, char * * title)
         for (int m = 0; m < item->matches->len; m ++)
         {
             int entry = g_array_index (item->matches, int, m);
-            index_append (filenames, aud_playlist_entry_get_filename (list, entry));
-            index_append (tuples, aud_playlist_entry_get_tuple (list, entry, TRUE));
+            index_insert (filenames, -1, aud_playlist_entry_get_filename (list, entry));
+            index_insert (tuples, -1, aud_playlist_entry_get_tuple (list, entry, TRUE));
         }
 
         n_selected ++;

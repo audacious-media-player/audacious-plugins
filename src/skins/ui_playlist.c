@@ -216,8 +216,8 @@ static void copy_selected_to_new (gint playlist)
     {
         if (aud_playlist_entry_get_selected (playlist, entry))
         {
-            index_append (filenames, aud_playlist_entry_get_filename (playlist, entry));
-            index_append (tuples, aud_playlist_entry_get_tuple (playlist, entry, TRUE));
+            index_insert (filenames, -1, aud_playlist_entry_get_filename (playlist, entry));
+            index_insert (tuples, -1, aud_playlist_entry_get_tuple (playlist, entry, TRUE));
         }
     }
 
