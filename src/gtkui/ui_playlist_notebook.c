@@ -137,8 +137,8 @@ static void save_column_widths ()
     aud_set_string ("gtkui", "column_widths", widths);
     aud_set_string ("gtkui", "column_expand", expand);
 
-    free (widths);
-    free (expand);
+    str_unref (widths);
+    str_unref (expand);
 }
 
 static void apply_column_widths (GtkWidget * treeview)
