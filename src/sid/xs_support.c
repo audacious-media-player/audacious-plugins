@@ -27,17 +27,25 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 uint16_t xs_fread_be16(VFSFile *f)
 {
     uint16_t val;
-    return vfs_fget_be16(&val, f) ? val : 0;
+    if (vfs_fread (& val, 1, sizeof val, f) != sizeof val)
+        return 0;
+
+    return GUINT16_FROM_BE (val);
 }
 
 
 uint32_t xs_fread_be32(VFSFile *f)
 {
     uint32_t val;
-    return vfs_fget_be32(&val, f) ? val : 0;
+    if (vfs_fread (& val, 1, sizeof val, f) != sizeof val)
+        return 0;
+
+    return GUINT32_FROM_BE (val);
 }
 
 
