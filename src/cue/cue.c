@@ -51,26 +51,26 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, int tuple_type, int pti)
     if (text == NULL)
         return;
 
-    tuple_set_str(tuple, tuple_type, text);
+    char * utf8 = str_to_utf8 (text, -1);
+    if (! utf8)
+        return;
+
+    tuple_set_str (tuple, tuple_type, utf8);
+    str_unref (utf8);
 }
 
 static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
  char * * title, Index * filenames, Index * tuples)
 {
-    int64_t size = vfs_fsize (file);
-    char * buffer = malloc (size + 1);
-    size = vfs_fread (buffer, 1, size, file);
-    buffer[size] = 0;
-
-    char * text = str_to_utf8 (buffer);
-    free (buffer);
-    if (text == NULL)
+    void * buffer = NULL;
+    vfs_file_read_all (file, & buffer, NULL);
+    if (! buffer)
         return FALSE;
 
     * title = NULL;
 
-    Cd * cd = cue_parse_string (text);
-    free (text);
+    Cd * cd = cue_parse_string (buffer);
+    free (buffer);
     if (cd == NULL)
         return FALSE;
 
@@ -86,7 +86,12 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
     if (track_filename == NULL)
         return FALSE;
 
-    char * filename = aud_construct_uri (track_filename, cue_filename);
+    char * utf8_filename = str_to_utf8 (track_filename, -1);
+    if (! utf8_filename)
+        return FALSE;
+
+    char * filename = aud_construct_uri (track_filename, utf8_filename);
+    str_unref (utf8_filename);
 
     Tuple * base_tuple = NULL;
     bool_t base_tuple_scanned = FALSE;

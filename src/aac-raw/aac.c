@@ -255,21 +255,21 @@ static Tuple *aac_get_tuple (const char * filename, VFSFile * handle)
     if (temp != NULL)
     {
         tuple_set_str (tuple, FIELD_TITLE, temp);
-        free (temp);
+        str_unref (temp);
     }
 
     temp = vfs_get_metadata (handle, "stream-name");
     if (temp != NULL)
     {
         tuple_set_str (tuple, FIELD_ALBUM, temp);
-        free (temp);
+        str_unref (temp);
     }
 
     temp = vfs_get_metadata (handle, "content-bitrate");
     if (temp != NULL)
     {
         tuple_set_int (tuple, FIELD_BITRATE, atoi (temp) / 1000);
-        free (temp);
+        str_unref (temp);
     }
 
     return tuple;
@@ -286,8 +286,8 @@ static bool_t aac_title_changed (const char * filename, VFSFile * handle,
     if (changed)
         tuple_set_str (tuple, FIELD_TITLE, new);
 
-    free (new);
-    str_unref(old);
+    str_unref (new);
+    str_unref (old);
     return changed;
 }
 

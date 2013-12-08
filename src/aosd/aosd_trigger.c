@@ -162,9 +162,9 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 static gchar * aosd_trigger_utf8convert (const gchar * str)
 {
   if ( global_config->osd->text.utf8conv_disable == FALSE )
-    return str_to_utf8( str );
+    return str_to_utf8 (str, -1);
   else
-    return g_strdup( str );
+    return str_get (str);
 }
 
 
@@ -196,7 +196,7 @@ aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
             aosd_osd_display(utf8_title_markup, global_config->osd, FALSE);
             g_free(utf8_title_markup);
         }
-        g_free(utf8_title);
+        str_unref (utf8_title);
         str_unref (title);
     }
 }
@@ -262,7 +262,7 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
             aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
             g_free( utf8_title_markup );
           }
-          g_free( utf8_title );
+          str_unref (utf8_title);
           g_free( prevs->title );
           prevs->title = g_strdup(pl_entry_title);
         }

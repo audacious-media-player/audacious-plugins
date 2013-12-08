@@ -247,27 +247,17 @@ typedef struct {
 	Tuple *tu;
 } MPG123PlaybackContext;
 
-static char *
-get_stream_metadata(VFSFile *file, const char *name)
-{
-	char *raw = vfs_get_metadata(file, name);
-	char *converted = (raw != NULL && raw[0]) ? str_to_utf8(raw) : NULL;
-
-	free(raw);
-	return converted;
-}
-
 static bool_t
 update_stream_metadata(VFSFile *file, const char *name, Tuple *tuple, int item)
 {
 	char *old = tuple_get_str(tuple, item);
-	char *new = get_stream_metadata(file, name);
+	char *new = vfs_get_metadata(file, name);
 	bool_t changed = (new != NULL && (old == NULL || strcmp(old, new)));
 
 	if (changed)
 		tuple_set_str(tuple, item, new);
 
-	free(new);
+	str_unref(new);
 	str_unref(old);
 	return changed;
 }

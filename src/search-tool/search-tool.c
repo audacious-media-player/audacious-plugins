@@ -377,10 +377,9 @@ static void begin_add (const char * path)
     aud_playlist_remove_failed (list);
 
     Index * add = index_new ();
-    index_insert (add, -1, str_get (uri));
+    index_insert (add, -1, uri);
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
 
-    g_free (uri);
     g_free (prefix);
     adding = TRUE;
 }

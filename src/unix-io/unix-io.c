@@ -85,11 +85,11 @@ static void * unix_fopen (const char * uri, const char * mode)
     if (handle < 0)
     {
         unix_error ("Cannot open %s: %s.", filename, strerror (errno));
-        free (filename);
+        str_unref (filename);
         return NULL;
     }
 
-    free (filename);
+    str_unref (filename);
     return INT_TO_POINTER (handle);
 }
 

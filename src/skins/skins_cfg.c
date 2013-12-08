@@ -232,26 +232,31 @@ on_skin_view_drag_data_received(GtkWidget * widget,
     if (! end) end = strchr (data, '\n');
     if (! end) end = data + strlen (data);
 
-    gchar * path = g_strndup (data, end - data);
+    char * path = str_nget (data, end - data);
 
     if (strstr (path, "://"))
     {
-        gchar * path2 = uri_to_filename (path);
+        char * path2 = uri_to_filename (path);
         if (path2)
         {
-            g_free (path);
+            str_unref (path);
             path = path2;
         }
     }
 
-    if (file_is_archive(path)) {
+    if (file_is_archive(path))
+    {
         if (! active_skin_load (path))
-            return;
+            goto DONE;
+
         skin_install_skin(path);
 
         if (skin_view)
             skin_view_update ((GtkTreeView *) skin_view);
     }
+
+DONE:
+    str_unref (path);
 }
 
 static GtkWidget * config_window = NULL;

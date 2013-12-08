@@ -88,10 +88,10 @@ static bool_t playlist_save_pls (const char * filename, VFSFile * file,
         if (! strncmp (filename, "file://", 7))
             fn = uri_to_filename (filename);
         else
-            fn = strdup (filename);
+            fn = str_ref (filename);
 
         vfs_fprintf (file, "File%d=%s\n", 1 + count, fn);
-        free (fn);
+        str_unref (fn);
     }
 
     return TRUE;

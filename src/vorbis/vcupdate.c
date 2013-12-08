@@ -141,18 +141,6 @@ gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tu
     return ret;
 }
 
-gchar * filename_to_uri (const gchar * filename)
-{
-    gchar * utf8 = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
-    if (! utf8)
-        utf8 = g_strdup (filename);
-
-    gchar * uri = g_filename_to_uri (utf8, NULL, NULL);
-
-    g_free (utf8);
-    return uri;
-}
-
 #define COPY_BUF 65536
 
 gboolean copy_vfs (VFSFile * in, VFSFile * out)
@@ -204,7 +192,7 @@ gboolean write_and_pivot_files (vcedit_state * state)
     VFSFile * temp_vfs = vfs_fopen (temp_uri, "r+");
     g_return_val_if_fail (temp_vfs, FALSE);
 
-    g_free (temp_uri);
+    str_unref (temp_uri);
 
     if (vcedit_write (state, temp_vfs) < 0)
     {

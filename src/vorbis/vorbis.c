@@ -145,9 +145,9 @@ set_tuple_str(Tuple *tuple, const gint nfield,
 {
     gchar *str = vorbis_comment_query(comment, key, 0);
     if (str != NULL) {
-        gchar *tmp = str_to_utf8(str);
+        char * tmp = str_to_utf8 (str, -1);
         tuple_set_str(tuple, nfield, tmp);
-        g_free(tmp);
+        str_unref (tmp);
     }
 }
 

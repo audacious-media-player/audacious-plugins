@@ -47,9 +47,7 @@ static char * read_win_text (VFSFile * file)
         return NULL;
 
     strip_char (raw, '\r');
-    char * text = str_to_utf8 (raw);
-    free (raw);
-    return text;
+    return raw;
 }
 
 static char * split_line (char * line)
@@ -86,10 +84,15 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
         if (* parse == '#')
             goto NEXT;
 
-        char * s = aud_construct_uri (parse, path);
+        char * utf8 = str_to_utf8 (parse, -1);
+        if (! utf8)
+            goto NEXT;
+
+        char * s = aud_construct_uri (utf8, path);
         if (s)
             index_insert (filenames, -1, str_get (s));
 
+        str_unref (utf8);
         free (s);
 
 NEXT:

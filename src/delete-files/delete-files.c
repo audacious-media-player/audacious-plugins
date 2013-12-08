@@ -81,7 +81,7 @@ static void confirm_delete (void)
             else
                 really_delete (filename);
 
-            free (filename);
+            str_unref (filename);
         }
         else
         {

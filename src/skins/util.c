@@ -114,7 +114,7 @@ VFSFile * open_local_file_nocase (const char * folder, const char * basename)
         return NULL;
 
     VFSFile * file = vfs_fopen (uri, "r");
-    free (uri);
+    str_unref (uri);
     return file;
 }
 

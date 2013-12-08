@@ -152,9 +152,9 @@ int ConsoleFileHandler::load(int sample_rate)
 
 static inline void set_str (Tuple * tuple, int field, const char * str)
 {
-    char * valid = str_to_utf8 (str);
+    char * valid = str_to_utf8 (str, -1);
     tuple_set_str (tuple, field, valid);
-    free (valid);
+    str_unref (valid);
 }
 
 static Tuple * get_track_ti(const char *path, const track_info_t *info, const int track)

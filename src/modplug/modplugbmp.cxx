@@ -346,12 +346,12 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
     tuple_set_str(ti, FIELD_QUALITY, _("sequenced"));
     tuple_set_int(ti, FIELD_LENGTH, lSoundFile->GetSongTime() * 1000);
 
-    char *tmps2 = str_to_utf8(lSoundFile->GetTitle());
+    char *tmps2 = str_to_utf8 (lSoundFile->GetTitle(), -1);
     // Chop any leading spaces off. They are annoying in the playlist.
     char *tmps3 = tmps2; // Make another pointer so tmps2 can still be free()d
     while ( *tmps3 == ' ' ) tmps3++ ;
     tuple_set_str(ti, FIELD_TITLE, tmps3);
-    free(tmps2);
+    str_unref (tmps2);
 
     //unload the file
     lSoundFile->Destroy();
