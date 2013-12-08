@@ -143,12 +143,7 @@ static void
 set_tuple_str(Tuple *tuple, const gint nfield,
     vorbis_comment *comment, gchar *key)
 {
-    gchar *str = vorbis_comment_query(comment, key, 0);
-    if (str != NULL) {
-        char * tmp = str_to_utf8 (str, -1);
-        tuple_set_str(tuple, nfield, tmp);
-        str_unref (tmp);
-    }
+    tuple_set_str (tuple, nfield, vorbis_comment_query (comment, key, 0));
 }
 
 static Tuple *

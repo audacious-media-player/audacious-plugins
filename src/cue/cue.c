@@ -51,12 +51,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, int tuple_type, int pti)
     if (text == NULL)
         return;
 
-    char * utf8 = str_to_utf8 (text, -1);
-    if (! utf8)
-        return;
-
-    tuple_set_str (tuple, tuple_type, utf8);
-    str_unref (utf8);
+    tuple_set_str (tuple, tuple_type, text);
 }
 
 static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,

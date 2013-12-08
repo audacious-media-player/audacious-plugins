@@ -252,17 +252,9 @@ xs_err_exit:
  */
 static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, int subTune)
 {
-    char *tmpStr;
-
-    tmpStr = str_to_utf8(info->sidName, -1);
-    tuple_set_str(tuple, FIELD_TITLE, tmpStr);
-    str_unref(tmpStr);
-    tmpStr = str_to_utf8(info->sidComposer, -1);
-    tuple_set_str(tuple, FIELD_ARTIST, tmpStr);
-    str_unref(tmpStr);
-    tmpStr = str_to_utf8(info->sidCopyright, -1);
-    tuple_set_str(tuple, FIELD_COPYRIGHT, tmpStr);
-    str_unref(tmpStr);
+    tuple_set_str(tuple, FIELD_TITLE, info->sidName);
+    tuple_set_str(tuple, FIELD_ARTIST, info->sidComposer);
+    tuple_set_str(tuple, FIELD_COPYRIGHT, info->sidCopyright);
     tuple_set_str(tuple, FIELD_CODEC, info->sidFormat);
 
 #if 0

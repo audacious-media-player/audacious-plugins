@@ -150,25 +150,18 @@ int ConsoleFileHandler::load(int sample_rate)
     return 0;
 }
 
-static inline void set_str (Tuple * tuple, int field, const char * str)
-{
-    char * valid = str_to_utf8 (str, -1);
-    tuple_set_str (tuple, field, valid);
-    str_unref (valid);
-}
-
 static Tuple * get_track_ti(const char *path, const track_info_t *info, const int track)
 {
     Tuple *ti = tuple_new_from_filename(path);
 
     if (ti != NULL)
     {
-        set_str (ti, FIELD_ARTIST, info->author);
-        set_str (ti, FIELD_ALBUM, info->game);
-        set_str (ti, FIELD_TITLE, info->song);
-        set_str (ti, FIELD_COPYRIGHT, info->copyright);
-        set_str (ti, FIELD_CODEC, info->system);
-        set_str (ti, FIELD_COMMENT, info->comment);
+        tuple_set_str (ti, FIELD_ARTIST, info->author);
+        tuple_set_str (ti, FIELD_ALBUM, info->game);
+        tuple_set_str (ti, FIELD_TITLE, info->song);
+        tuple_set_str (ti, FIELD_COPYRIGHT, info->copyright);
+        tuple_set_str (ti, FIELD_CODEC, info->system);
+        tuple_set_str (ti, FIELD_COMMENT, info->comment);
 
         if (track >= 0)
         {
