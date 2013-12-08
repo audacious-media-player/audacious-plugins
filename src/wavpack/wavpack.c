@@ -8,6 +8,7 @@
 #include <audacious/i18n.h>
 #include <audacious/input.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #define BUFFER_SIZE 256 /* read buffer size, in samples / frames */
 #define SAMPLE_SIZE(a) (a == 8 ? sizeof(uint8_t) : (a == 16 ? sizeof(uint16_t) : sizeof(uint32_t)))

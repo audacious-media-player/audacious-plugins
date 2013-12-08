@@ -23,6 +23,7 @@
 #include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #define MIN_BPM         1
 #define MAX_BPM         512

@@ -27,6 +27,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 typedef struct {
     GFile * file;

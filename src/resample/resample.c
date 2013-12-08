@@ -26,6 +26,7 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
+#include <libaudcore/audstrings.h>
 
 #define MIN_RATE 8000
 #define MAX_RATE 192000

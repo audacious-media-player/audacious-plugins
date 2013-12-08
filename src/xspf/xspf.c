@@ -33,6 +33,7 @@
 
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #define XSPF_ROOT_NODE_NAME "playlist"
 #define XSPF_XMLNS "http://xspf.org/ns/0/"

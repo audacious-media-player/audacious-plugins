@@ -27,6 +27,7 @@
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/list.h>
 #include <libaudgui/libaudgui.h>

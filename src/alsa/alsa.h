@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <audacious/misc.h>
+#include <libaudcore/audstrings.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 

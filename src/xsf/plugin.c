@@ -33,6 +33,7 @@
 #include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #include "ao.h"
 #include "corlett.h"

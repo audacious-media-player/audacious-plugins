@@ -23,6 +23,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #define N_ITEMS 2
 #define N_MENUS 3
