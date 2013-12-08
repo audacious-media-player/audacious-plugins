@@ -219,35 +219,15 @@ xs_tuneinfo_t *xs_tuneinfo_new(const char * filename,
 
     /* Allocate structure */
     result = (xs_tuneinfo_t *) g_malloc0(sizeof(xs_tuneinfo_t));
-    if (!result) {
-        xs_error("Could not allocate memory for tuneinfo ('%s')\n",
-            filename);
-        return NULL;
-    }
 
-    result->sidFilename = g_strdup(filename);
-    if (!result->sidFilename) {
-        xs_error("Could not allocate sidFilename ('%s')\n",
-            filename);
-        g_free(result);
-        return NULL;
-    }
+    result->sidFilename = str_get (filename);
 
     /* Allocate space for subtune information */
     result->subTunes = g_malloc0(sizeof(xs_subtuneinfo_t) * (nsubTunes + 1));
-    if (!result->subTunes) {
-        xs_error("Could not allocate memory for subtuneinfo ('%s', %i)\n",
-            filename, nsubTunes);
 
-        g_free(result->sidFilename);
-        g_free(result);
-        return NULL;
-    }
-
-    /* The following allocations don't matter if they fail */
-    result->sidName = g_convert(sidName, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
-    result->sidComposer = g_convert(sidComposer, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
-    result->sidCopyright = g_convert(sidCopyright, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
+    result->sidName = str_get (sidName);
+    result->sidComposer = str_get (sidComposer);
+    result->sidCopyright = str_get (sidCopyright);
 
     result->nsubTunes = nsubTunes;
     result->startTune = startTune;
@@ -256,7 +236,7 @@ xs_tuneinfo_t *xs_tuneinfo_new(const char * filename,
     result->initAddr = initAddr;
     result->playAddr = playAddr;
     result->dataFileLen = dataFileLen;
-    result->sidFormat = g_convert(sidFormat, -1, "UTF-8", XS_SID_CHARSET, NULL, NULL, NULL);
+    result->sidFormat = str_get (sidFormat);
 
     result->sidModel = sidModel;
 
@@ -284,10 +264,10 @@ void xs_tuneinfo_free(xs_tuneinfo_t * tune)
     if (!tune) return;
 
     g_free(tune->subTunes);
-    g_free(tune->sidFilename);
-    g_free(tune->sidName);
-    g_free(tune->sidComposer);
-    g_free(tune->sidCopyright);
-    g_free(tune->sidFormat);
+    str_unref (tune->sidFilename);
+    str_unref (tune->sidName);
+    str_unref (tune->sidComposer);
+    str_unref (tune->sidCopyright);
+    str_unref (tune->sidFormat);
     g_free(tune);
 }

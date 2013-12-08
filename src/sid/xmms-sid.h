@@ -45,11 +45,6 @@ extern "C" {
  * Largest SID files I've seen are ~70kB. */
 #define XS_SIDBUF_SIZE          (128*1024)
 
-/* Character sets used in STIL database and PlaySID file metadata
- */
-#define XS_STIL_CHARSET	        "ISO-8859-1"
-#define XS_SID_CHARSET          "ISO-8859-1"
-
 /* Plugin-wide typedefs
  */
 typedef struct {
