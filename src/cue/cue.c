@@ -81,12 +81,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
     if (track_filename == NULL)
         return FALSE;
 
-    char * utf8_filename = str_to_utf8 (track_filename, -1);
-    if (! utf8_filename)
-        return FALSE;
-
-    char * filename = aud_construct_uri (track_filename, utf8_filename);
-    str_unref (utf8_filename);
+    char * filename = aud_construct_uri (track_filename, cue_filename);
 
     Tuple * base_tuple = NULL;
     bool_t base_tuple_scanned = FALSE;
@@ -137,7 +132,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         index_insert (tuples, -1, tuple);
 
         current = next;
-        free (filename);
+        str_unref (filename);
         filename = next_filename;
 
         if (last_track && base_tuple != NULL)

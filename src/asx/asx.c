@@ -53,13 +53,11 @@ void asx_handle_entry (const char * key, const char * value, void * data)
 
     if (! strncmp ("http://", uri, 7))
     {
-        SPRINTF (mod, "mms://%s", uri + 7);
-        index_insert (state->filenames, -1, str_get (mod));
+        index_insert (state->filenames, -1, str_printf ("mms://%s", uri + 7));
+        str_unref (uri);
     }
     else
-        index_insert (state->filenames, -1, str_get (uri));
-
-    free (uri);
+        index_insert (state->filenames, -1, uri);
 }
 
 static bool_t playlist_load_asx (const char * filename, VFSFile * file,
