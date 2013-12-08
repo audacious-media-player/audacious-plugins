@@ -51,11 +51,8 @@ void pls_handle_entry (const char * key, const char * value, void * data)
         return;
 
     char * uri = aud_construct_uri (value, state->filename);
-    if (! uri)
-        return;
-
-    index_insert (state->filenames, -1, str_get (uri));
-    free (uri);
+    if (uri)
+        index_insert (state->filenames, -1, uri);
 }
 
 static bool_t playlist_load_pls (const char * filename, VFSFile * file,
