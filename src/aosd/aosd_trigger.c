@@ -103,7 +103,6 @@ aosd_trigger_get_codes_array ( gint ** array , gint * array_size )
 {
   *array = aosd_trigger_codes;
   *array_size = AOSD_TRIGGER_CODES_ARRAY_SIZE;
-  return;
 }
 
 
@@ -138,7 +137,6 @@ aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
   /* When called, this hook will display the text of the user pointer
      or the current playing song, if NULL */
   hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , NULL );
-  return;
 }
 
 
@@ -153,18 +151,6 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
     if (trig_code >= 0 && trig_code < G_N_ELEMENTS (aosd_triggers))
       aosd_triggers[trig_code].onoff_func (FALSE);
   }
-  return;
-}
-
-
-/* HELPER FUNCTIONS */
-
-static gchar * aosd_trigger_utf8convert (const gchar * str)
-{
-  if ( global_config->osd->text.utf8conv_disable == FALSE )
-    return str_to_utf8 (str, -1);
-  else
-    return str_get (str);
 }
 
 
@@ -177,28 +163,18 @@ aosd_trigger_func_pb_start_onoff(gboolean turn_on)
     hook_associate("playback begin", aosd_trigger_func_pb_start_cb, NULL);
   else
     hook_dissociate("playback begin", aosd_trigger_func_pb_start_cb);
-  return;
 }
 
 static void
 aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
 {
-    char * title = aud_drct_get_title ();
+  char * title = aud_drct_get_title ();
+  char * markup = g_markup_printf_escaped ("<span font_desc='%s'>%s</span>",
+   global_config->osd->text.fonts_name[0], title);
 
-    if (title != NULL)
-    {
-        gchar *utf8_title = aosd_trigger_utf8convert(title);
-
-        if (g_utf8_validate(utf8_title, -1, NULL) == TRUE)
-        {
-            gchar *utf8_title_markup = g_markup_printf_escaped(
-                "<span font_desc='%s'>%s</span>", global_config->osd->text.fonts_name[0], utf8_title);
-            aosd_osd_display(utf8_title_markup, global_config->osd, FALSE);
-            g_free(utf8_title_markup);
-        }
-        str_unref (utf8_title);
-        str_unref (title);
-    }
+  aosd_osd_display (markup, global_config->osd, FALSE);
+  g_free (markup);
+  str_unref (title);
 }
 
 typedef struct
@@ -231,7 +207,6 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
       prevs = NULL;
     }
   }
-  return;
 }
 
 static void
@@ -254,15 +229,13 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
         if ( ( pl_entry_title != NULL ) && ( strcmp(pl_entry_title,prevs->title) ) )
         {
           /* string formatting is done here a.t.m. - TODO - improve this area */
-          gchar *utf8_title = aosd_trigger_utf8convert( pl_entry_title );
-          if ( g_utf8_validate( utf8_title , -1 , NULL ) == TRUE )
-          {
-            gchar *utf8_title_markup = g_markup_printf_escaped(
-              "<span font_desc='%s'>%s</span>" , global_config->osd->text.fonts_name[0] , utf8_title );
-            aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
-            g_free( utf8_title_markup );
-          }
-          str_unref (utf8_title);
+          char * markup = g_markup_printf_escaped
+           ("<span font_desc='%s'>%s</span>",
+           global_config->osd->text.fonts_name[0], pl_entry_title);
+
+          aosd_osd_display (markup, global_config->osd, FALSE);
+          g_free (markup);
+
           g_free( prevs->title );
           prevs->title = g_strdup(pl_entry_title);
         }
@@ -299,17 +272,15 @@ aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
     hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , NULL );
   else
     hook_dissociate( "playback pause" , aosd_trigger_func_pb_pauseon_cb );
-  return;
 }
 
 static void
 aosd_trigger_func_pb_pauseon_cb ( gpointer unused1 , gpointer unused2 )
 {
-  gchar *utf8_title_markup = g_markup_printf_escaped(
-    "<span font_desc='%s'>Paused</span>" , global_config->osd->text.fonts_name[0] );
-  aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
-  g_free( utf8_title_markup );
-  return;
+  char * markup = g_markup_printf_escaped ("<span font_desc='%s'>Paused</span>",
+   global_config->osd->text.fonts_name[0]);
+  aosd_osd_display (markup, global_config->osd, FALSE);
+  g_free (markup);
 }
 
 
@@ -320,7 +291,6 @@ aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
     hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , NULL );
   else
     hook_dissociate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb );
-  return;
 }
 
 static void
@@ -328,7 +298,6 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
 {
   gint active = aud_playlist_get_active();
   gint pos = aud_playlist_get_position(active);
-  gchar *utf8_title, *utf8_title_markup;
   gint time_cur, time_tot;
   gint time_cur_m, time_cur_s, time_tot_m, time_tot_s;
 
@@ -339,14 +308,15 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
   time_tot_s = time_tot % 60;
   time_tot_m = (time_tot - time_tot_s) / 60;
 
-  utf8_title = aud_playlist_entry_get_title (active, pos, FALSE);
-  utf8_title_markup = g_markup_printf_escaped(
-    "<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>" ,
-    global_config->osd->text.fonts_name[0] , utf8_title , time_cur_m , time_cur_s , time_tot_m , time_tot_s );
-  aosd_osd_display( utf8_title_markup , global_config->osd , FALSE );
-  g_free( utf8_title_markup );
-  str_unref (utf8_title);
-  return;
+  char * title = aud_playlist_entry_get_title (active, pos, FALSE);
+  char * markup = g_markup_printf_escaped
+   ("<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>",
+   global_config->osd->text.fonts_name[0], title, time_cur_m, time_cur_s,
+   time_tot_m, time_tot_s);
+
+  aosd_osd_display (markup, global_config->osd, FALSE);
+  g_free (markup);
+  str_unref (title);
 }
 
 
@@ -364,5 +334,4 @@ aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused )
     /* Display currently playing song */
     aosd_trigger_func_pb_start_cb (NULL, NULL);
   }
-  return;
 }
