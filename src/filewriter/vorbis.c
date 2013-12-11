@@ -28,6 +28,7 @@
 #include <stdint.h>
 
 #include <audacious/misc.h>
+#include <libaudcore/audstrings.h>
 
 static gint (*write_output)(void *ptr, gint length);
 
@@ -92,13 +93,13 @@ static gint vorbis_open(void)
 
         if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER)))
         {
-            g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
+            str_itoa (scrint, tmpstr, sizeof tmpstr);
             vorbis_comment_add_tag(&vc, "tracknumber", tmpstr);
         }
 
         if ((scrint = tuple_get_int(tuple, FIELD_YEAR)))
         {
-            g_snprintf(tmpstr, sizeof(tmpstr), "%d", scrint);
+            str_itoa (scrint, tmpstr, sizeof tmpstr);
             vorbis_comment_add_tag(&vc, "year", tmpstr);
         }
     }

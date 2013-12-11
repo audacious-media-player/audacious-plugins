@@ -95,10 +95,7 @@ static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
     int val = tuple_get_int (tuple, fieldn);
 
     if (val > 0)
-    {
-        SPRINTF (buf, "%d", val);
-        g_hash_table_insert (dict, str_get (key), str_get (buf));
-    }
+        g_hash_table_insert (dict, str_get (key), int_to_str (val));
     else
         g_hash_table_remove (dict, key);
 }

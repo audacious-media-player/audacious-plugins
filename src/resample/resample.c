@@ -84,7 +84,8 @@ void resample_start (int * channels, int * rate)
 
     if (aud_get_bool ("resample", "use-mappings"))
     {
-        SPRINTF (rate_s, "%d", * rate);
+        char rate_s[16];
+        str_itoa (* rate, rate_s, sizeof rate_s);
         new_rate = aud_get_int ("resample", rate_s);
     }
 

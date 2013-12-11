@@ -1151,7 +1151,7 @@ gchar *neon_vfs_metadata_impl(VFSFile* file, const gchar* field) {
     if (! strcmp (field, "content-type") && h->icy_metadata.stream_contenttype)
         return str_to_utf8 (h->icy_metadata.stream_contenttype, -1);
     if (! strcmp (field, "content-bitrate"))
-        return str_printf ("%d", h->icy_metadata.stream_bitrate * 1000);
+        return int_to_str (h->icy_metadata.stream_bitrate * 1000);
 
     return NULL;
 }

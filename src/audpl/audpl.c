@@ -197,7 +197,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 else if (type == TUPLE_INT)
                 {
                     char buf[32];
-                    snprintf (buf, sizeof buf, "%d", tuple_get_int (tuple, f));
+                    str_itoa (tuple_get_int (tuple, f), buf, sizeof buf);
 
                     if (! write_key (file, tuple_field_get_name (f), buf))
                         return FALSE;

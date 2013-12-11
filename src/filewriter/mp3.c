@@ -205,10 +205,10 @@ static gint mp3_open(void)
         lameid3.genre = tuple_get_str (tuple, FIELD_GENRE);
         id3tag_set_genre(gfp, lameid3.genre);
 
-        lameid3.year = str_printf ("%d", tuple_get_int (tuple, FIELD_YEAR));
+        lameid3.year = int_to_str (tuple_get_int (tuple, FIELD_YEAR));
         id3tag_set_year(gfp, lameid3.year);
 
-        lameid3.track_number = str_printf ("%d", tuple_get_int (tuple, FIELD_TRACK_NUMBER));
+        lameid3.track_number = int_to_str (tuple_get_int (tuple, FIELD_TRACK_NUMBER));
         id3tag_set_track(gfp, lameid3.track_number);
 
         if (force_v2_val) {
@@ -753,7 +753,7 @@ static void mp3_configure(void)
         for (int i = 0; i < G_N_ELEMENTS (available_samplerates); i ++)
         {
             gchar buf[10];
-            snprintf (buf, sizeof buf, "%d", available_samplerates[i]);
+            str_itoa (available_samplerates[i], buf, sizeof buf);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
 
             if (out_samplerate_val == available_samplerates[i])
@@ -804,7 +804,7 @@ static void mp3_configure(void)
         for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
-            snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
+            str_itoa (available_bitrates[i], buf, sizeof buf);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
 
             if (bitrate_val == available_bitrates[i])
@@ -988,7 +988,7 @@ static void mp3_configure(void)
         for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
-            snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
+            str_itoa (available_bitrates[i], buf, sizeof buf);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
 
             if (vbr_min_val == available_bitrates[i])
@@ -1015,7 +1015,7 @@ static void mp3_configure(void)
         for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
-            snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
+            str_itoa (available_bitrates[i], buf, sizeof buf);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
 
             if (vbr_max_val == available_bitrates[i])
@@ -1059,7 +1059,7 @@ static void mp3_configure(void)
         for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
         {
             gchar buf[10];
-            snprintf (buf, sizeof buf, "%d", available_bitrates[i]);
+            str_itoa (available_bitrates[i], buf, sizeof buf);
             gtk_combo_box_text_append_text ((GtkComboBoxText *) combo, buf);
 
             if (abr_val == available_bitrates[i])

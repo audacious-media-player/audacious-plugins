@@ -172,25 +172,25 @@ static void do_command (char * cmd)
         int length = aud_playlist_entry_get_length (playlist, pos, FALSE);
         if (length > 0)
         {
-            g_snprintf(numbuf, sizeof(numbuf), "%d", length);
+            str_itoa (length, numbuf, sizeof numbuf);
             formatter_associate(formatter, 'l', numbuf);
         }
         else
             formatter_associate(formatter, 'l', "0");
 
         playing = aud_drct_get_playing();
-        g_snprintf(numbuf, sizeof(numbuf), "%d", playing);
+        str_itoa (playing, numbuf, sizeof numbuf);
         formatter_associate(formatter, 'p', numbuf);
 
         if (playing)
         {
             int brate, srate, chans;
             aud_drct_get_info (& brate, & srate, & chans);
-            snprintf (numbuf, sizeof numbuf, "%d", brate);
+            str_itoa (brate, numbuf, sizeof numbuf);
             formatter_associate (formatter, 'r', numbuf);
-            snprintf (numbuf, sizeof numbuf, "%d", srate);
+            str_itoa (srate, numbuf, sizeof numbuf);
             formatter_associate (formatter, 'F', numbuf);
-            snprintf (numbuf, sizeof numbuf, "%d", chans);
+            str_itoa (chans, numbuf, sizeof numbuf);
             formatter_associate (formatter, 'c', numbuf);
         }
 

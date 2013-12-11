@@ -7,6 +7,7 @@
 #include <inttypes.h>
 
 #include <audacious/plugin.h>
+#include <libaudcore/audstrings.h>
 
 #include "ayemu.h"
 
@@ -230,7 +231,7 @@ static void append_string(char *buf, const int sz, const char *str)
 static void append_number(char *buf, const int sz, const int num)
 {
   char s[32];
-  snprintf(s, sizeof(s), "%d", num);
+  str_itoa (num, s, sizeof s);
   append_string(buf, sz, s);
 }
 

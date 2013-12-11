@@ -338,7 +338,7 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
             break;
 
         case TUPLE_INT:
-            g_snprintf(tmps, sizeof(tmps), "%d", intVal);
+            str_itoa (intVal, tmps, sizeof tmps);
             xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
             break;
 
