@@ -17,155 +17,119 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/inifile.h>
 
 typedef struct {
-    VFSFile * file;
-    char * cur;
-    int len;
-    char buf[65536];
-} ReadState;
+    char * * title;
+    Index * filenames;
+    Index * tuples;
+    char * uri;
+    Tuple * tuple;
+} LoadState;
 
-static bool_t read_key_raw (ReadState * state, char * * keyp, char * * valp)
+static void finish_item (LoadState * state)
 {
-    char * newline = memchr (state->cur, '\n', state->len);
-
-    if (! newline)
-    {
-        memmove (state->buf, state->cur, state->len);
-        state->cur = state->buf;
-        state->len += vfs_fread (state->buf + state->len, 1,
-         sizeof state->buf - state->len, state->file);
-
-        newline = memchr (state->cur, '\n', state->len);
-
-        if (! newline)
-            return FALSE;
-    }
-
-    * newline = 0;
-
-    char * equals = strchr (state->cur, '=');
-
-    if (! equals)
-        return FALSE;
-
-    * equals = 0;
-
-    * keyp = state->cur;
-    * valp = equals + 1;
-
-    state->len -= newline + 1 - state->cur;
-    state->cur = newline + 1;
-
-    return TRUE;
+    index_insert (state->filenames, -1, state->uri);
+    index_insert (state->tuples, -1, state->tuple);
+    state->uri = NULL;
+    state->tuple = NULL;
 }
 
-static bool_t read_key (ReadState * state, char * * keyp, char * * valp)
+static void handle_heading (const char * heading, void * data)
 {
-    if (! read_key_raw (state, keyp, valp))
-        return FALSE;
-
-    if (strcmp (* keyp, "uri"))
-        str_decode_percent (* valp, -1, * valp);
-
-    return TRUE;
+    /* no headings */
 }
 
-static bool_t write_key_raw (VFSFile * file, const char * key, const char * val)
+static void handle_entry (const char * key, const char * value, void * data)
 {
-    int keylen = strlen (key);
-    int vallen = strlen (val);
-    char buf[keylen + vallen + 2];
+    LoadState * state = data;
 
-    memcpy (buf, key, keylen);
-    buf[keylen] = '=';
-    memcpy (buf + keylen + 1, val, vallen);
-    buf[keylen + vallen + 1] = '\n';
-
-    return (vfs_fwrite (buf, 1, keylen + vallen + 2, file) == keylen + vallen + 2);
-}
-
-static bool_t write_key (VFSFile * file, const char * key, const char * val)
-{
     if (! strcmp (key, "uri"))
-        return write_key_raw (file, key, val);
+    {
+        /* finish previous item */
+        if (state->uri)
+            finish_item (state);
 
-    char buf[3 * strlen (val) + 1];
-    str_encode_percent (val, -1, buf);
-    return write_key_raw (file, key, buf);
+        /* start new item */
+        state->uri = str_get (value);
+    }
+    else if (state->uri)
+    {
+        /* item field */
+        if (! state->tuple)
+            state->tuple = tuple_new_from_filename (state->uri);
+
+        if (strcmp (key, "empty"))
+        {
+            int field = tuple_field_by_name (key);
+            if (field < 0)
+                return;
+
+            TupleValueType type = tuple_field_get_type (field);
+
+            if (type == TUPLE_STRING)
+            {
+                char buf[strlen (value) + 1];
+                str_decode_percent (value, -1, buf);
+                tuple_set_str (state->tuple, field, buf);
+            }
+            else if (type == TUPLE_INT)
+                tuple_set_int (state->tuple, field, atoi (value));
+        }
+    }
+    else
+    {
+        /* top-level field */
+        if (! strcmp (key, "title") && ! * state->title)
+        {
+            char buf[strlen (value) + 1];
+            str_decode_percent (value, -1, buf);
+            * state->title = str_get (buf);
+        }
+    }
 }
 
 static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
  Index * filenames, Index * tuples)
 {
-    ReadState * state = malloc (sizeof (ReadState));
-    state->file = file;
-    state->cur = state->buf;
-    state->len = 0;
+    LoadState state = {
+        .title = title,
+        .filenames = filenames,
+        .tuples = tuples
+    };
 
-    char * key, * val;
+    inifile_parse (file, handle_heading, handle_entry, & state);
 
-    if (! read_key (state, & key, & val) || strcmp (key, "title"))
-    {
-        free (state);
-        return FALSE;
-    }
+    /* finish last item */
+    if (state.uri)
+        finish_item (& state);
 
-    * title = str_get (val);
-
-    bool_t readed = read_key (state, & key, & val);
-
-    while (readed && ! strcmp (key, "uri"))
-    {
-        char * uri = str_get (val);
-        Tuple * tuple = NULL;
-
-        while ((readed = read_key (state, & key, & val)) && strcmp (key, "uri"))
-        {
-            if (! tuple)
-                tuple = tuple_new_from_filename (uri);
-
-            if (! strcmp (key, "empty"))
-                continue;
-
-            int field = tuple_field_by_name (key);
-            TupleValueType type = tuple_field_get_type (field);
-
-            if (field < 0)
-                break;
-
-            if (type == TUPLE_STRING)
-                tuple_set_str (tuple, field, val);
-            else if (type == TUPLE_INT)
-                tuple_set_int (tuple, field, atoi (val));
-        }
-
-        index_insert (filenames, -1, uri);
-        index_insert (tuples, -1, tuple);
-    }
-
-    free (state);
     return TRUE;
+}
+
+static bool_t write_encoded_entry (VFSFile * file, const char * key, const char * val)
+{
+    char buf[3 * strlen (val) + 1];
+    str_encode_percent (val, -1, buf);
+    return inifile_write_entry (file, key, buf);
 }
 
 static bool_t audpl_save (const char * path, VFSFile * file,
  const char * title, Index * filenames, Index * tuples)
 {
-    if (! write_key (file, "title", title))
+    if (! write_encoded_entry (file, "title", title))
         return FALSE;
 
     int count = index_count (filenames);
 
     for (int i = 0; i < count; i ++)
     {
-        if (! write_key (file, "uri", index_get (filenames, i)))
+        if (! inifile_write_entry (file, "uri", index_get (filenames, i)))
             return FALSE;
 
         const Tuple * tuple = tuples ? index_get (tuples, i) : NULL;
@@ -185,7 +149,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 {
                     char * str = tuple_get_str (tuple, f);
 
-                    if (! write_key (file, tuple_field_get_name (f), str))
+                    if (! write_encoded_entry (file, tuple_field_get_name (f), str))
                     {
                         str_unref (str);
                         return FALSE;
@@ -199,7 +163,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                     char buf[32];
                     str_itoa (tuple_get_int (tuple, f), buf, sizeof buf);
 
-                    if (! write_key (file, tuple_field_get_name (f), buf))
+                    if (! inifile_write_entry (file, tuple_field_get_name (f), buf))
                         return FALSE;
 
                     keys ++;
@@ -207,7 +171,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
             }
 
             /* distinguish between an empty tuple and no tuple at all */
-            if (! keys && ! write_key (file, "empty", "1"))
+            if (! keys && ! inifile_write_entry (file, "empty", "1"))
                 return FALSE;
         }
     }
