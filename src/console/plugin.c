@@ -54,7 +54,7 @@ static const PreferencesWidget console_widgets[] = {
 
 static const PluginPreferences console_prefs = {
  .widgets = console_widgets,
- .n_widgets = sizeof console_widgets / sizeof console_widgets[0]};
+ .n_widgets = ARRAY_LEN (console_widgets)};
 
 AUD_INPUT_PLUGIN
 (

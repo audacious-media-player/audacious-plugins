@@ -81,8 +81,6 @@ static const xspf_entry_t xspf_entries[] = {
     { FIELD_GAIN_PEAK_UNIT, "gain-peak-unit", TUPLE_INT,  TRUE},
 };
 
-static const gint xspf_nentries = (sizeof(xspf_entries) / sizeof(xspf_entries[0]));
-
 static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
  * base, Index * filenames, Index * tuples)
 {
@@ -130,7 +128,7 @@ static void xspf_add_file (xmlNode * track, const gchar * filename, const gchar
                     findName = xmlStrdup(nptr->name);
                 }
 
-                for (i = 0; i < xspf_nentries; i++)
+                for (i = 0; i < ARRAY_LEN (xspf_entries); i++)
                 if ((xspf_entries[i].isMeta == isMeta) &&
                     !xmlStrcmp(findName, (xmlChar *)xspf_entries[i].xspfName)) {
                     xmlChar *str = xmlNodeGetContent(nptr);
@@ -393,7 +391,7 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
         if (tuple != NULL)
         {
             gint i;
-            for (i = 0; i < xspf_nentries; i++) {
+            for (i = 0; i < ARRAY_LEN (xspf_entries); i++) {
                 const xspf_entry_t *xs = &xspf_entries[i];
                 gboolean isOK = (tuple_get_value_type (tuple, xs->tupleField) == xs->type);
 

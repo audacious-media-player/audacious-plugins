@@ -188,7 +188,7 @@ static const PreferencesWidget bs2b_widgets[] = {
 
 static const PluginPreferences bs2b_prefs = {
  .widgets = bs2b_widgets,
- .n_widgets = sizeof bs2b_widgets / sizeof bs2b_widgets[0]};
+ .n_widgets = ARRAY_LEN (bs2b_widgets)};
 
 AUD_EFFECT_PLUGIN
 (

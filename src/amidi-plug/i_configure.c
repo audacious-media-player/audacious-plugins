@@ -134,10 +134,10 @@ static const PreferencesWidget amidiplug_widgets[] = {
  {WIDGET_LABEL, N_("<b>SoundFont</b>")},
  {WIDGET_CUSTOM, .data = {.populate = create_soundfont_list}},
  {WIDGET_LABEL, N_("<b>Synthesizer</b>")},
- {WIDGET_BOX, .data = {.box = {gain_widgets, G_N_ELEMENTS (gain_widgets), TRUE}}},
- {WIDGET_BOX, .data = {.box = {polyphony_widgets, G_N_ELEMENTS (polyphony_widgets), TRUE}}},
- {WIDGET_BOX, .data = {.box = {reverb_widgets, G_N_ELEMENTS (reverb_widgets), TRUE}}},
- {WIDGET_BOX, .data = {.box = {chorus_widgets, G_N_ELEMENTS (chorus_widgets), TRUE}}},
+ {WIDGET_BOX, .data = {.box = {gain_widgets, ARRAY_LEN (gain_widgets), TRUE}}},
+ {WIDGET_BOX, .data = {.box = {polyphony_widgets, ARRAY_LEN (polyphony_widgets), TRUE}}},
+ {WIDGET_BOX, .data = {.box = {reverb_widgets, ARRAY_LEN (reverb_widgets), TRUE}}},
+ {WIDGET_BOX, .data = {.box = {chorus_widgets, ARRAY_LEN (chorus_widgets), TRUE}}},
  {WIDGET_SPIN_BTN, N_("Sampling rate:"), .data = {.spin_btn = {22050, 96000, 1}},
   .cfg_type = VALUE_INT, .csect = "amidiplug", .cname = "fsyn_synth_samplerate",
   .callback = backend_change}};
@@ -145,4 +145,4 @@ static const PreferencesWidget amidiplug_widgets[] = {
 const PluginPreferences amidiplug_prefs = {
  .init = get_values,
  .widgets = amidiplug_widgets,
- .n_widgets = G_N_ELEMENTS (amidiplug_widgets)};
+ .n_widgets = ARRAY_LEN (amidiplug_widgets)};

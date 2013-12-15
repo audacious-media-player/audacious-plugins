@@ -177,7 +177,7 @@ static const PreferencesWidget mixer_widgets[] = {
 
 static const PluginPreferences mixer_prefs = {
  .widgets = mixer_widgets,
- .n_widgets = sizeof mixer_widgets / sizeof mixer_widgets[0]};
+ .n_widgets = ARRAY_LEN (mixer_widgets)};
 
 AUD_EFFECT_PLUGIN
 (

@@ -78,7 +78,7 @@ static void set_format (mpg123_handle * dec)
 	 44100, 48000};
 
 	mpg123_format_none (dec);
-	for (int i = 0; i < sizeof rates / sizeof rates[0]; i ++)
+	for (int i = 0; i < ARRAY_LEN (rates); i ++)
 		mpg123_format (dec, rates[i], MPG123_MONO | MPG123_STEREO,
 		 MPG123_ENC_FLOAT_32);
 }

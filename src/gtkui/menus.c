@@ -243,9 +243,9 @@ static const struct MenuItem playlist_items[] = {
  {N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
  {N_("_Refresh"), "view-refresh", GDK_KEY_F5, .func = pl_refresh},
  {.sep = TRUE},
- {N_("_Sort"), "view-sort-ascending", .items = sort_items, G_N_ELEMENTS (sort_items)},
- {N_("Sort Se_lected"), "view-sort-ascending", .items = sort_selected_items, G_N_ELEMENTS (sort_selected_items)},
- {N_("Remove _Duplicates"), "list-remove", .items = dupe_items, G_N_ELEMENTS (dupe_items)},
+ {N_("_Sort"), "view-sort-ascending", .items = sort_items, ARRAY_LEN (sort_items)},
+ {N_("Sort Se_lected"), "view-sort-ascending", .items = sort_selected_items, ARRAY_LEN (sort_selected_items)},
+ {N_("Remove _Duplicates"), "list-remove", .items = dupe_items, ARRAY_LEN (dupe_items)},
  {N_("Remove _Unavailable Files"), "list-remove", .func = pl_remove_failed},
  {.sep = TRUE},
  {N_("_New"), "document-new", 't', CTRL, .func = pl_new},
@@ -283,12 +283,12 @@ static const struct MenuItem view_items[] = {
  {N_("Scrol_l on Song Change"), .get = autoscroll_get, autoscroll_set}};
 
 static const struct MenuItem main_items[] = {
- {N_("_File"), .items = file_items, G_N_ELEMENTS (file_items)},
- {N_("_Playback"), .items = playback_items, G_N_ELEMENTS (playback_items)},
- {N_("P_laylist"), .items = playlist_items, G_N_ELEMENTS (playlist_items)},
+ {N_("_File"), .items = file_items, ARRAY_LEN (file_items)},
+ {N_("_Playback"), .items = playback_items, ARRAY_LEN (playback_items)},
+ {N_("P_laylist"), .items = playlist_items, ARRAY_LEN (playlist_items)},
  {N_("_Services"), .get_sub = get_services_main},
- {N_("_Output"), .items = output_items, G_N_ELEMENTS (output_items)},
- {N_("_View"), .items = view_items, G_N_ELEMENTS (view_items)}};
+ {N_("_Output"), .items = output_items, ARRAY_LEN (output_items)},
+ {N_("_View"), .items = view_items, ARRAY_LEN (view_items)}};
 
 static const struct MenuItem rclick_items[] = {
  {N_("Song _Info ..."), "dialog-information", 'i', ALT, .func = playlist_song_info},
@@ -392,27 +392,27 @@ static void populate_menu (GtkWidget * shell, const struct MenuItem * items,
 GtkWidget * make_menu_bar (GtkAccelGroup * accel)
 {
     GtkWidget * bar = gtk_menu_bar_new ();
-    populate_menu (bar, main_items, G_N_ELEMENTS (main_items), accel);
+    populate_menu (bar, main_items, ARRAY_LEN (main_items), accel);
     return bar;
 }
 
 GtkWidget * make_menu_main (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    populate_menu (shell, main_items, G_N_ELEMENTS (main_items), accel);
+    populate_menu (shell, main_items, ARRAY_LEN (main_items), accel);
     return shell;
 }
 
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    populate_menu (shell, rclick_items, G_N_ELEMENTS (rclick_items), accel);
+    populate_menu (shell, rclick_items, ARRAY_LEN (rclick_items), accel);
     return shell;
 }
 
 GtkWidget * make_menu_tab (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    populate_menu (shell, tab_items, G_N_ELEMENTS (tab_items), accel);
+    populate_menu (shell, tab_items, ARRAY_LEN (tab_items), accel);
     return shell;
 }

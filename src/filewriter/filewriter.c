@@ -517,7 +517,7 @@ static const PreferencesWidget file_widgets[] = {
 
 static const PluginPreferences file_prefs = {
  .widgets = file_widgets,
- .n_widgets = G_N_ELEMENTS (file_widgets),
+ .n_widgets = ARRAY_LEN (file_widgets),
  .apply = configure_response_cb};
 
 AUD_OUTPUT_PLUGIN

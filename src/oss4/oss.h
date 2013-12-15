@@ -81,8 +81,6 @@ do { \
     } \
 } while (0)
 
-#define N_ELEMENTS(arr) (sizeof (arr) / sizeof ((arr)[0]))
-
 #define DEFAULT_MIXER "/dev/mixer"
 #define DEFAULT_DSP "/dev/dsp"
 

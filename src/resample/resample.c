@@ -174,7 +174,7 @@ static const PreferencesWidget resample_widgets[] = {
  {WIDGET_LABEL, N_("<b>Conversion</b>")},
  {WIDGET_COMBO_BOX, N_("Method:"),
   .cfg_type = VALUE_STRING, .csect = "resample", .cname = "method",
-  .data = {.combo = {method_list, sizeof method_list / sizeof method_list[0]}}},
+  .data = {.combo = {method_list, ARRAY_LEN (method_list)}}},
  {WIDGET_SPIN_BTN, N_("Rate:"),
   .cfg_type = VALUE_INT, .csect = "resample", .cname = "default-rate",
   .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
@@ -205,7 +205,7 @@ static const PreferencesWidget resample_widgets[] = {
 
 static const PluginPreferences resample_prefs = {
  .widgets = resample_widgets,
- .n_widgets = sizeof resample_widgets / sizeof resample_widgets[0]};
+ .n_widgets = ARRAY_LEN (resample_widgets)};
 
 AUD_EFFECT_PLUGIN
 (

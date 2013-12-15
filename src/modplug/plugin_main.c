@@ -13,8 +13,6 @@
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 
-#define ARRAY_LEN(x) (sizeof (x) / sizeof (x)[0])
-
 #define MODPLUG_CFGID "modplug"
 
 static const char * fmts[] =

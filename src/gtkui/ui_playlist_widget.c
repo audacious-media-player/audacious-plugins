@@ -330,7 +330,7 @@ static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
     if (! remain)
         remain ++; /* force non-match if there are no non-blank keys */
 
-    for (gint i = 0; i < G_N_ELEMENTS (s); i ++)
+    for (gint i = 0; i < ARRAY_LEN (s); i ++)
     {
         if (! s[i])
             continue;

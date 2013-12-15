@@ -211,7 +211,7 @@ sndio_open(int fmt, int rate, int nch)
 
 	sio_initpar(&askpar);
 	for (i = 0; ; i++) {
-		if (i == sizeof(fmt_to_par) / sizeof(struct fmt_to_par)) {
+		if (i == ARRAY_LEN(fmt_to_par)) {
 			g_warning("unknown format %d requested", fmt);
 			sndio_close();
 			return 0;

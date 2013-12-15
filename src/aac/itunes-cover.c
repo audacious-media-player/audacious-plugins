@@ -43,7 +43,7 @@ bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
 
     /* Descend into frame hierarchy. */
 
-    for (int h = 0; h < sizeof hier / sizeof hier[0]; h ++)
+    for (int h = 0; h < ARRAY_LEN (hier); h ++)
     {
         while (1)
         {

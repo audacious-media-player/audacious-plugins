@@ -495,7 +495,7 @@ static void * custom_warning (void)
 }
 
 static const PreferencesWidget settings[] = {
-    {WIDGET_BOX, N_("Commands"), .data = {.box = {elements, G_N_ELEMENTS (elements), .frame = TRUE}}},
+    {WIDGET_BOX, N_("Commands"), .data = {.box = {elements, ARRAY_LEN (elements), .frame = TRUE}}},
     {WIDGET_CUSTOM, .data = {.populate = custom_warning}}};
 
 static void configure_init(void)
@@ -525,7 +525,7 @@ static void configure_cleanup(void)
 
 static const PluginPreferences preferences = {
     .widgets = settings,
-    .n_widgets = G_N_ELEMENTS (settings),
+    .n_widgets = ARRAY_LEN (settings),
     .init = configure_init,
     .cleanup = configure_cleanup,
 };

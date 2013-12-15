@@ -320,7 +320,7 @@ static const ffaudio_meta_t metaentries[] = {
 
 static void read_metadata_dict (Tuple * tuple, AVDictionary * dict)
 {
-    for (int i = 0; i < G_N_ELEMENTS (metaentries); i ++)
+    for (int i = 0; i < ARRAY_LEN (metaentries); i ++)
     {
         const ffaudio_meta_t * m = & metaentries[i];
         AVDictionaryEntry * entry = NULL;

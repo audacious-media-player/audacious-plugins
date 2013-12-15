@@ -44,7 +44,7 @@ static const PreferencesWidget cryst_widgets[] = {
 
 static const PluginPreferences cryst_prefs = {
  .widgets = cryst_widgets,
- .n_widgets = sizeof cryst_widgets / sizeof cryst_widgets[0]};
+ .n_widgets = ARRAY_LEN (cryst_widgets)};
 
 AUD_EFFECT_PLUGIN
 (

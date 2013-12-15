@@ -398,7 +398,7 @@ static const PreferencesWidget widgets[] = {
 
 static const PluginPreferences prefs = {
  .widgets = widgets,
- .n_widgets = sizeof widgets / sizeof widgets[0]};
+ .n_widgets = ARRAY_LEN (widgets)};
 
 AUD_GENERAL_PLUGIN
 (

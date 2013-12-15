@@ -137,7 +137,7 @@ static const PreferencesWidget cdaudio_widgets[] = {
 
 static const PluginPreferences cdaudio_prefs = {
  .widgets = cdaudio_widgets,
- .n_widgets = G_N_ELEMENTS (cdaudio_widgets)};
+ .n_widgets = ARRAY_LEN (cdaudio_widgets)};
 
 AUD_INPUT_PLUGIN
 (

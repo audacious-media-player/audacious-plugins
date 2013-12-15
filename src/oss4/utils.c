@@ -45,7 +45,7 @@ char *oss_format_to_text(int format)
 
     int count;
 
-    for (count = 0; count < N_ELEMENTS(table); count++)
+    for (count = 0; count < ARRAY_LEN(table); count++)
     {
         if (table[count].format == format)
         {
@@ -82,7 +82,7 @@ int oss_convert_aud_format(int aud_format)
 
     int count;
 
-    for (count = 0; count < N_ELEMENTS(table); count++)
+    for (count = 0; count < ARRAY_LEN(table); count++)
     {
         if (table[count].aud_format == aud_format)
         {
@@ -164,7 +164,7 @@ char *oss_describe_error(void)
     };
 
     int count;
-    for (count = 0; count < N_ELEMENTS(table); count++)
+    for (count = 0; count < ARRAY_LEN(table); count++)
     {
         if (table[count].error == errno)
             return table[count].text;

@@ -389,7 +389,7 @@ static void samplerate_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo) - 1;
 
-    if (i >= 0 && i < G_N_ELEMENTS (available_samplerates))
+    if (i >= 0 && i < ARRAY_LEN (available_samplerates))
         out_samplerate_val = available_samplerates[i];
     else
         out_samplerate_val = 0;
@@ -399,7 +399,7 @@ static void bitrate_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
 
-    if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
+    if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         bitrate_val = available_bitrates[i];
     else
         bitrate_val = 128;
@@ -502,7 +502,7 @@ static void vbr_min_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
 
-    if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
+    if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         vbr_min_val = available_bitrates[i];
     else
         vbr_min_val = 32;
@@ -512,7 +512,7 @@ static void vbr_max_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
 
-    if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
+    if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         vbr_max_val = available_bitrates[i];
     else
         vbr_max_val = 320;
@@ -543,7 +543,7 @@ static void abr_changed (GtkComboBox * combo)
 {
     gint i = gtk_combo_box_get_active (combo);
 
-    if (i >= 0 && i < G_N_ELEMENTS (available_bitrates))
+    if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         abr_val = available_bitrates[i];
     else
         abr_val = 128;
@@ -750,7 +750,7 @@ static void mp3_configure(void)
         if (! out_samplerate_val)
             gtk_combo_box_set_active ((GtkComboBox *) combo, 0);
 
-        for (int i = 0; i < G_N_ELEMENTS (available_samplerates); i ++)
+        for (int i = 0; i < ARRAY_LEN (available_samplerates); i ++)
         {
             gchar buf[10];
             str_itoa (available_samplerates[i], buf, sizeof buf);
@@ -801,7 +801,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < ARRAY_LEN (available_bitrates); i ++)
         {
             gchar buf[10];
             str_itoa (available_bitrates[i], buf, sizeof buf);
@@ -985,7 +985,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < ARRAY_LEN (available_bitrates); i ++)
         {
             gchar buf[10];
             str_itoa (available_bitrates[i], buf, sizeof buf);
@@ -1012,7 +1012,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < ARRAY_LEN (available_bitrates); i ++)
         {
             gchar buf[10];
             str_itoa (available_bitrates[i], buf, sizeof buf);
@@ -1056,7 +1056,7 @@ static void mp3_configure(void)
 
         combo = gtk_combo_box_text_new ();
 
-        for (int i = 0; i < G_N_ELEMENTS (available_bitrates); i ++)
+        for (int i = 0; i < ARRAY_LEN (available_bitrates); i ++)
         {
             gchar buf[10];
             str_itoa (available_bitrates[i], buf, sizeof buf);

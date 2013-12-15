@@ -147,7 +147,7 @@ static const ComboBoxElements method_list[] = {
 static const PreferencesWidget sox_resampler_widgets[] = {
  {WIDGET_COMBO_BOX, N_("Quality:"),
   .cfg_type = VALUE_STRING, .csect = "soxr", .cname = "quality",
-  .data = {.combo = {method_list, sizeof method_list / sizeof method_list[0]}}},
+  .data = {.combo = {method_list, ARRAY_LEN (method_list)}}},
  {WIDGET_SPIN_BTN, N_("Rate:"),
   .cfg_type = VALUE_INT, .csect = "soxr", .cname = "rate",
   .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}}
@@ -155,7 +155,7 @@ static const PreferencesWidget sox_resampler_widgets[] = {
 
 static const PluginPreferences sox_resampler_prefs = {
  .widgets = sox_resampler_widgets,
- .n_widgets = sizeof sox_resampler_widgets / sizeof sox_resampler_widgets[0]};
+ .n_widgets = ARRAY_LEN (sox_resampler_widgets)};
 
 AUD_EFFECT_PLUGIN
 (

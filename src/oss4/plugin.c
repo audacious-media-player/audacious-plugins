@@ -100,7 +100,7 @@ static void prefs_cleanup()
 
 static const PluginPreferences oss_prefs = {
  .widgets = oss_widgets,
- .n_widgets = N_ELEMENTS(oss_widgets),
+ .n_widgets = ARRAY_LEN(oss_widgets),
  .init = prefs_init,
  .cleanup = prefs_cleanup};
 

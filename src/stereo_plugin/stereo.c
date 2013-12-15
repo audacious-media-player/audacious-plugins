@@ -29,7 +29,7 @@ static const PreferencesWidget stereo_widgets[] = {
 
 static const PluginPreferences stereo_prefs = {
  .widgets = stereo_widgets,
- .n_widgets = sizeof stereo_widgets / sizeof stereo_widgets[0]};
+ .n_widgets = ARRAY_LEN (stereo_widgets)};
 
 AUD_EFFECT_PLUGIN
 (

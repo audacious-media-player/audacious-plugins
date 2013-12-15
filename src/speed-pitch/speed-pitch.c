@@ -232,7 +232,7 @@ static const PreferencesWidget speed_widgets[] = {
 
 static const PluginPreferences speed_prefs = {
  .widgets = speed_widgets,
- .n_widgets = sizeof speed_widgets / sizeof speed_widgets[0]};
+ .n_widgets = ARRAY_LEN (speed_widgets)};
 
 static bool_t speed_init (void)
 {

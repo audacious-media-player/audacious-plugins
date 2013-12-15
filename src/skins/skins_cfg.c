@@ -146,7 +146,7 @@ static const skins_cfg_strent skins_strents[] = {
 
 void skins_cfg_free (void)
 {
-    for (gint i = 0; i < G_N_ELEMENTS (skins_strents); i ++)
+    for (gint i = 0; i < ARRAY_LEN (skins_strents); i ++)
     {
         g_free (* skins_strents[i].ptr);
         * skins_strents[i].ptr = NULL;
@@ -157,25 +157,25 @@ void skins_cfg_load (void)
 {
     aud_config_set_defaults ("skins", skins_defaults);
 
-    for (gint i = 0; i < G_N_ELEMENTS (skins_boolents); i ++)
+    for (gint i = 0; i < ARRAY_LEN (skins_boolents); i ++)
         * skins_boolents[i].ptr = aud_get_bool ("skins", skins_boolents[i].name);
 
-    for (gint i = 0; i < G_N_ELEMENTS (skins_numents); i ++)
+    for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
         * skins_numents[i].ptr = aud_get_int ("skins", skins_numents[i].name);
 
-    for (gint i = 0; i < G_N_ELEMENTS (skins_strents); i ++)
+    for (gint i = 0; i < ARRAY_LEN (skins_strents); i ++)
         * skins_strents[i].ptr = aud_get_string ("skins", skins_strents[i].name);
 }
 
 void skins_cfg_save (void)
 {
-    for (gint i = 0; i < G_N_ELEMENTS (skins_boolents); i ++)
+    for (gint i = 0; i < ARRAY_LEN (skins_boolents); i ++)
         aud_set_bool ("skins", skins_boolents[i].name, * skins_boolents[i].ptr);
 
-    for (gint i = 0; i < G_N_ELEMENTS (skins_numents); i ++)
+    for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
         aud_set_int ("skins", skins_numents[i].name, * skins_numents[i].ptr);
 
-    for (gint i = 0; i < G_N_ELEMENTS (skins_strents); i ++)
+    for (gint i = 0; i < ARRAY_LEN (skins_strents); i ++)
         aud_set_string ("skins", skins_strents[i].name, * skins_strents[i].ptr);
 }
 
@@ -211,7 +211,7 @@ static PreferencesWidget font_table_elements[] = {
 static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_LABEL, N_("<b>_Fonts</b>"), NULL, NULL, NULL, FALSE},
     {WIDGET_TABLE, .child = TRUE, .data = {.table = {font_table_elements,
-     G_N_ELEMENTS (font_table_elements)}}},
+     ARRAY_LEN (font_table_elements)}}},
     {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = bitmap_fonts_cb},
     {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
@@ -318,7 +318,7 @@ void skins_configure (void)
     gtk_container_add (GTK_CONTAINER (skin_view_scrolled_window), skin_view);
     gtk_widget_set_size_request (skin_view, -1, 100);
 
-    aud_create_widgets(GTK_BOX(vbox37), appearance_misc_widgets, G_N_ELEMENTS(appearance_misc_widgets));
+    aud_create_widgets(GTK_BOX(vbox37), appearance_misc_widgets, ARRAY_LEN(appearance_misc_widgets));
 
     g_signal_connect(skin_view, "drag-data-received",
                      G_CALLBACK(on_skin_view_drag_data_received),

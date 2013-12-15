@@ -262,7 +262,7 @@ static const PreferencesWidget crossfade_widgets[] = {
 
 static const PluginPreferences crossfade_prefs = {
  .widgets = crossfade_widgets,
- .n_widgets = sizeof crossfade_widgets / sizeof crossfade_widgets[0]};
+ .n_widgets = ARRAY_LEN (crossfade_widgets)};
 
 AUD_EFFECT_PLUGIN
 (

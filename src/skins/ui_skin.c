@@ -84,7 +84,7 @@ static SkinPixmapIdMapping skin_pixmap_id_map[] = {
     {SKIN_EQ_EX, "eq_ex", NULL, 0, 0}
 };
 
-static guint skin_pixmap_id_map_size = G_N_ELEMENTS(skin_pixmap_id_map);
+static guint skin_pixmap_id_map_size = ARRAY_LEN(skin_pixmap_id_map);
 
 static const guint32 default_vis_colors[24] = {
     COLOR (9, 34, 53),

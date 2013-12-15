@@ -224,7 +224,7 @@ static void hints_handle_entry (const char * key, const char * value, void * dat
 
     HintPair key_pair = {.name = key};
     HintPair * pair = bsearch (& key_pair, hint_pairs,
-     G_N_ELEMENTS (hint_pairs), sizeof (HintPair), hint_pair_compare);
+     ARRAY_LEN (hint_pairs), sizeof (HintPair), hint_pair_compare);
 
     if (pair)
         * pair->value_ptr = atoi (value);

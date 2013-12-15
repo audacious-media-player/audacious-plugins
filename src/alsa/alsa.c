@@ -316,7 +316,7 @@ static int convert_aud_format (int aud_format)
         {FMT_U32_BE, SND_PCM_FORMAT_U32_BE},
     };
 
-    for (int count = 0; count < sizeof table / sizeof table[0]; count ++)
+    for (int count = 0; count < ARRAY_LEN (table); count ++)
     {
         if (table[count].aud_format == aud_format)
             return table[count].format;

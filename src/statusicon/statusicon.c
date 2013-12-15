@@ -410,7 +410,7 @@ static const PreferencesWidget si_widgets[] = {
 
 static const PluginPreferences si_prefs = {
  .widgets = si_widgets,
- .n_widgets = G_N_ELEMENTS (si_widgets)};
+ .n_widgets = ARRAY_LEN (si_widgets)};
 
 AUD_GENERAL_PLUGIN
 (

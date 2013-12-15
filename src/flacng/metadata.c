@@ -316,7 +316,7 @@ static void parse_comment (Tuple * tuple, const char * key, const char * value)
      {"COMMENT", FIELD_COMMENT},
      {"GENRE", FIELD_GENRE}};
 
-    for (int i = 0; i < sizeof tfields / sizeof tfields[0]; i ++)
+    for (int i = 0; i < ARRAY_LEN (tfields); i ++)
     {
         if (! strcasecmp (key, tfields[i].key))
         {

@@ -49,7 +49,7 @@ static const PreferencesWidget bscope_widgets[] = {
 
 static const PluginPreferences bscope_prefs = {
  .widgets = bscope_widgets,
- .n_widgets = G_N_ELEMENTS (bscope_widgets)};
+ .n_widgets = ARRAY_LEN (bscope_widgets)};
 
 AUD_VIS_PLUGIN
 (
