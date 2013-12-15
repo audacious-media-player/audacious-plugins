@@ -57,7 +57,7 @@ EFFECT_PLUGINS="compressor crossfade crystalizer ladspa mixer stereo_plugin voic
 GENERAL_PLUGINS="alarm albumart delete-files search-tool"
 VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
-TRANSPORT_PLUGINS="unix-io gio"
+TRANSPORT_PLUGINS="gio"
 
 dnl Console
 dnl =======
