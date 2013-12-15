@@ -900,8 +900,8 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     // Check if skin path has all necessary files.
     if (!skin_check_pixmaps(skin, skin_path)) {
         if(archive) del_directory(skin_path);
-        g_free(skin_path);
         AUDDBG("Skin path (%s) doesn't have all wanted pixmaps\n", skin_path);
+        g_free(skin_path);
         return FALSE;
     }
 
