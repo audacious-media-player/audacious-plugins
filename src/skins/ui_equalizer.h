@@ -28,6 +28,9 @@
 
 #include <gtk/gtk.h>
 
+#define EQUALIZER_DEFAULT_DIR_PRESET "dir_default.preset"
+#define EQUALIZER_DEFAULT_PRESET_EXT "preset"
+
 void equalizerwin_set_shape (void);
 void equalizerwin_create(void);
 void equalizerwin_show(gboolean show);

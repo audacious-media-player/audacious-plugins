@@ -1121,11 +1121,10 @@ action_equ_save_preset_file(void)
 
     if (title != NULL)
     {
-        gchar * ext = aud_get_string (NULL, "eqpreset_extension");
+        gchar * ext = EQUALIZER_DEFAULT_PRESET_EXT;
         gchar * eqname = g_strdup_printf ("%s.%s", title, ext);
         gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), eqname);
         g_free (eqname);
-        g_free (ext);
         str_unref (title);
     }
 
@@ -1197,37 +1196,24 @@ action_equ_delete_auto_preset(void)
 
 static void load_auto_preset (const gchar * filename)
 {
-    gchar * ext = aud_get_string (NULL, "eqpreset_extension");
-    if (ext[0])
-    {
-        gchar * eq_file = g_strconcat (filename, ".", ext, NULL);
-        gboolean success = equalizerwin_read_aud_preset (eq_file);
-        g_free (eq_file);
+    gchar * ext = EQUALIZER_DEFAULT_PRESET_EXT;
+    gchar * eq_file = g_strconcat (filename, ".", ext, NULL);
+    gboolean success = equalizerwin_read_aud_preset (eq_file);
+    g_free (eq_file);
 
-        if (success)
-        {
-            g_free (ext);
-            return;
-        }
-    }
-    g_free (ext);
+    if (success)
+        return;
 
-    gchar * deffile = aud_get_string (NULL, "eqpreset_default_file");
-    if (deffile[0])
-    {
-        gchar * folder = g_path_get_dirname (filename);
-        gchar * eq_file = g_build_filename (folder, deffile, NULL);
-        gboolean success = equalizerwin_read_aud_preset (eq_file);
-        g_free (folder);
-        g_free (eq_file);
+    gchar * deffile = EQUALIZER_DEFAULT_DIR_PRESET;
+    gchar * folder = g_path_get_dirname (filename);
+    eq_file = g_build_filename (folder, deffile, NULL);
+    success = equalizerwin_read_aud_preset (eq_file);
 
-        if (success)
-        {
-            g_free (deffile);
-            return;
-        }
-    }
-    g_free (deffile);
+    g_free (folder);
+    g_free (eq_file);
+
+    if (success)
+        return;
 
     gchar * base = g_path_get_basename (filename);
 
