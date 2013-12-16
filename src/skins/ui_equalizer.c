@@ -1112,10 +1112,23 @@ void
 action_equ_save_preset_file(void)
 {
     GtkWidget *dialog;
-    gchar *file_uri;
+    gchar *file_uri, *title;
     gint i;
 
     dialog = make_filebrowser(_("Save equalizer preset"), TRUE);
+
+    title = aud_drct_get_title ();
+
+    if (title != NULL)
+    {
+        gchar * ext = aud_get_string (NULL, "eqpreset_extension");
+        gchar * eqname = g_strdup_printf ("%s.%s", title, ext);
+        gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), eqname);
+        g_free (eqname);
+        g_free (ext);
+        str_unref (title);
+    }
+
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
     {
         file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
@@ -1127,19 +1140,6 @@ action_equ_save_preset_file(void)
         aud_save_preset_file(preset, file_uri);
         equalizer_preset_free(preset);
         g_free(file_uri);
-    }
-
-    char * songname = aud_drct_get_filename ();
-
-    if (songname != NULL)
-    {
-        gchar * ext = aud_get_string (NULL, "eqpreset_extension");
-        gchar * eqname = g_strdup_printf ("%s.%s", songname, ext);
-        gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(dialog),
-                                      eqname);
-        g_free (eqname);
-        g_free (ext);
-        str_unref (songname);
     }
 
     gtk_widget_destroy(dialog);
