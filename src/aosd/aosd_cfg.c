@@ -21,6 +21,7 @@
 #include "aosd_cfg.h"
 #include "aosd_style.h"
 #include <glib.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -95,7 +96,6 @@ aosd_cfg_osd_new( void )
   aosd_cfg_osd_t *cfg_osd = g_malloc0(sizeof(aosd_cfg_osd_t));
   cfg_osd->decoration.colors = g_array_sized_new( FALSE , TRUE , sizeof(aosd_color_t) ,
                                                   aosd_deco_style_get_max_numcol() );
-  cfg_osd->decoration.skin_file = NULL; /* TODO paranoid, remove me when implemented */
   cfg_osd->trigger.active = g_array_new( FALSE , TRUE , sizeof(gint) );
   return cfg_osd;
 }
@@ -109,14 +109,7 @@ aosd_cfg_osd_delete ( aosd_cfg_osd_t * cfg_osd )
     gint i = 0;
     /* free configuration fields */
     for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
-    {
-      if ( cfg_osd->text.fonts_name[i] != NULL )
-        g_free( cfg_osd->text.fonts_name[i] );
-    }
-    /* TODO not implemented yet
-    if ( cfg_osd->decoration.skin_file != NULL )
-      g_free( cfg_osd->decoration.skin_file );
-    */
+      str_unref (cfg_osd->text.fonts_name[i]);
     if ( cfg_osd->decoration.colors != NULL )
       g_array_free( cfg_osd->decoration.colors , TRUE );
     if ( cfg_osd->trigger.active != NULL )
@@ -144,14 +137,13 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
   cfg_osd_copy->animation.timing_fadeout = cfg_osd->animation.timing_fadeout;
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
-    cfg_osd_copy->text.fonts_name[i] = g_strdup( cfg_osd->text.fonts_name[i] );
+    cfg_osd_copy->text.fonts_name[i] = str_ref (cfg_osd->text.fonts_name[i]);
     cfg_osd_copy->text.fonts_color[i] = cfg_osd->text.fonts_color[i];
     cfg_osd_copy->text.fonts_draw_shadow[i] = cfg_osd->text.fonts_draw_shadow[i];
     cfg_osd_copy->text.fonts_shadow_color[i] = cfg_osd->text.fonts_shadow_color[i];
   }
   cfg_osd_copy->text.utf8conv_disable = cfg_osd->text.utf8conv_disable;
   cfg_osd_copy->decoration.code = cfg_osd->decoration.code;
-  cfg_osd_copy->decoration.skin_file = g_strdup( cfg_osd->decoration.skin_file );
   for ( i = 0 ; i < cfg_osd->decoration.colors->len ; i++ )
   {
     aosd_color_t color = g_array_index( cfg_osd->decoration.colors , aosd_color_t , i );
@@ -199,7 +191,6 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
   g_print("  disable utf8 conversion: %i\n", cfg->osd->text.utf8conv_disable);
   g_print("\nDECORATION\n");
   g_print("  code: %i\n", cfg->osd->decoration.code);
-  /*g_print("  custom skin file: %s\n", cfg->osd->decoration.skin_file);*/
   for ( i = 0 ; i < cfg->osd->decoration.colors->len ; i++ )
   {
     aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
@@ -265,27 +256,23 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
     gchar *color_str = NULL;
-    gchar *key_str = NULL;
+    gchar key_str[32];
 
-    key_str = g_strdup_printf( "text_fonts_name_%i" , i );
-    cfg->osd->text.fonts_name[i] = aud_get_string ("aosd", key_str);
-    g_free( key_str );
+    snprintf (key_str, sizeof key_str, "text_fonts_name_%i" , i );
+    cfg->osd->text.fonts_name[i] = aud_get_str ("aosd", key_str);
 
-    key_str = g_strdup_printf( "text_fonts_color_%i" , i );
-    color_str = aud_get_string ("aosd", key_str);
+    snprintf (key_str, sizeof key_str, "text_fonts_color_%i", i);
+    color_str = aud_get_str ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &(cfg->osd->text.fonts_color[i]) );
-    g_free( key_str );
-    g_free( color_str );
+    str_unref (color_str);
 
-    key_str = g_strdup_printf( "text_fonts_draw_shadow_%i" , i );
+    snprintf (key_str, sizeof key_str, "text_fonts_draw_shadow_%i", i);
     cfg->osd->text.fonts_draw_shadow[i] = aud_get_bool ("aosd", key_str);
-    g_free( key_str );
 
-    key_str = g_strdup_printf( "text_fonts_shadow_color_%i" , i );
-    color_str = aud_get_string ("aosd", key_str);
+    snprintf (key_str, sizeof key_str, "text_fonts_shadow_color_%i", i);
+    color_str = aud_get_str ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &(cfg->osd->text.fonts_shadow_color[i]) );
-    g_free( key_str );
-    g_free( color_str );
+    str_unref (color_str);
   }
 
   cfg->osd->text.utf8conv_disable = aud_get_bool ("aosd", "text_utf8conv_disable");
@@ -293,27 +280,22 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   /* decoration */
   cfg->osd->decoration.code = aud_get_int ("aosd", "decoration_code");
 
-  /* TODO not implemented yet
-  if ( !aud_cfg_db_get_string( cfgfile , "aosd" ,
-       "decoration_skin_file" , &(cfg->osd->decoration.skin_file) ) )
-    cfg->osd->decoration.skin_file = g_strdup( "" );
-  */
-
   /* decoration - colors */
   max_numcol = aosd_deco_style_get_max_numcol();
   for ( i = 0 ; i < max_numcol ; i++ )
   {
-    gchar *key_str = NULL;
+    gchar key_str[32];
     gchar *color_str = NULL;
     aosd_color_t color;
-    key_str = g_strdup_printf( "decoration_color_%i" , i );
-    color_str = aud_get_string ("aosd", key_str);
+    snprintf (key_str, sizeof key_str, "decoration_color_%i", i);
+    color_str = aud_get_str ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &color );
+    str_unref (color_str);
     g_array_insert_val( cfg->osd->decoration.colors , i , color );
   }
 
   /* trigger */
-  trig_active_str = aud_get_string ("aosd", "trigger_active");
+  trig_active_str = aud_get_str ("aosd", "trigger_active");
 
   if (strcmp (trig_active_str, "x"))
   {
@@ -328,7 +310,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     g_strfreev( trig_active_strv );
   }
 
-  g_free (trig_active_str);
+  str_unref (trig_active_str);
 
   /* miscellanous */
   cfg->osd->misc.transparency_mode = aud_get_int ("aosd", "transparency_mode");
@@ -366,26 +348,22 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
     gchar *color_str = NULL;
-    gchar *key_str = NULL;
+    gchar key_str[32];
 
-    key_str = g_strdup_printf( "text_fonts_name_%i" , i );
-    aud_set_string ("aosd", key_str, cfg->osd->text.fonts_name[i]);
-    g_free( key_str );
+    snprintf (key_str, sizeof key_str, "text_fonts_name_%i", i);
+    aud_set_str ("aosd", key_str, cfg->osd->text.fonts_name[i]);
 
-    key_str = g_strdup_printf( "text_fonts_color_%i" , i );
+    snprintf (key_str, sizeof key_str, "text_fonts_color_%i", i);
     aosd_cfg_util_color_to_str( cfg->osd->text.fonts_color[i] , &color_str );
-    aud_set_string ("aosd", key_str, color_str);
-    g_free( key_str );
+    aud_set_str ("aosd", key_str, color_str);
     g_free( color_str );
 
-    key_str = g_strdup_printf( "text_fonts_draw_shadow_%i" , i );
+    snprintf (key_str, sizeof key_str, "text_fonts_draw_shadow_%i", i);
     aud_set_bool ("aosd", key_str, cfg->osd->text.fonts_draw_shadow[i]);
-    g_free( key_str );
 
-    key_str = g_strdup_printf( "text_fonts_shadow_color_%i" , i );
+    snprintf (key_str, sizeof key_str, "text_fonts_shadow_color_%i", i);
     aosd_cfg_util_color_to_str( cfg->osd->text.fonts_shadow_color[i] , &color_str );
-    aud_set_string ("aosd", key_str, color_str);
-    g_free( key_str );
+    aud_set_str ("aosd", key_str, color_str);
     g_free( color_str );
   }
 
@@ -395,21 +373,16 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
   aud_set_int ("aosd" ,
     "decoration_code" , cfg->osd->decoration.code );
 
-  /* TODO skip this since it's not implemented yet
-  aud_set_string ("aosd" ,
-    "decoration_skin_file" , cfg->osd->decoration.skin_file ); */
-
   /* decoration - colors */
   max_numcol = aosd_deco_style_get_max_numcol();
   for ( i = 0 ; i < max_numcol ; i++ )
   {
-    gchar *key_str = NULL;
+    gchar key_str[32];
     gchar *color_str = NULL;
     aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
-    key_str = g_strdup_printf( "decoration_color_%i" , i );
+    snprintf (key_str, sizeof key_str, "decoration_color_%i", i);
     aosd_cfg_util_color_to_str( color , &color_str );
-    aud_set_string ("aosd", key_str, color_str);
-    g_free( key_str );
+    aud_set_str ("aosd", key_str, color_str);
     g_free( color_str );
   }
 
@@ -420,7 +393,7 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
     g_string_truncate( string , string->len - 1 );
   else
     g_string_assign( string , "x" );
-  aud_set_string ("aosd", "trigger_active", string->str);
+  aud_set_str ("aosd", "trigger_active", string->str);
   g_string_free( string , TRUE );
 
   /* miscellaneous */

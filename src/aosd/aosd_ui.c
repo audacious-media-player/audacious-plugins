@@ -359,7 +359,10 @@ aosd_cb_configure_text_font_commit ( GtkWidget * fontbt , aosd_cfg_t * cfg )
   gint fontnum = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(fontbt) , "fontnum" ));
   GtkColorChooser * chooser;
 
-  cfg->osd->text.fonts_name[fontnum] = g_strdup( gtk_font_button_get_font_name(GTK_FONT_BUTTON(fontbt)) );
+  str_unref (cfg->osd->text.fonts_name[fontnum]);
+  cfg->osd->text.fonts_name[fontnum] =
+   str_get (gtk_font_button_get_font_name (GTK_FONT_BUTTON (fontbt)));
+
   cfg->osd->text.fonts_draw_shadow[fontnum] = gtk_toggle_button_get_active(
     GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(fontbt),"use_shadow")) );
 

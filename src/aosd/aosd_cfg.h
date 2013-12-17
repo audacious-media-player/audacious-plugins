@@ -61,7 +61,6 @@ typedef struct
 {
   gint code;
   GArray *colors;
-  gchar *skin_file;
 }
 aosd_cfg_osd_decoration_t;
 
@@ -69,7 +68,7 @@ aosd_cfg_osd_decoration_t;
 /* config portion containing osd text information */
 typedef struct
 {
-  gchar *fonts_name[AOSD_TEXT_FONTS_NUM];
+  gchar *fonts_name[AOSD_TEXT_FONTS_NUM]; /* pooled */
   aosd_color_t fonts_color[AOSD_TEXT_FONTS_NUM];
   gboolean fonts_draw_shadow[AOSD_TEXT_FONTS_NUM];
   aosd_color_t fonts_shadow_color[AOSD_TEXT_FONTS_NUM];
