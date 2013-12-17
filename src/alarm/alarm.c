@@ -140,7 +140,6 @@ static struct
 
     GtkEntry *reminder;
     GtkToggleButton *reminder_cb;
-    gchar *reminder_msg;
     gboolean reminder_on;
 }
 alarm_conf;
@@ -154,10 +153,7 @@ static gint volume, quietvol;
 
 static gint fading;
 
-static gchar *cmdstr = NULL;
 static gboolean cmd_on;
-
-static gchar *playlist = NULL;
 
 static GtkWidget *config_dialog = NULL;
 static GtkWidget *alarm_dialog = NULL;
@@ -228,21 +224,21 @@ void alarm_save(void)
     aud_set_int ("alarm", "fading", fading);
     aud_set_bool ("alarm", "stop_on", stop_on);
 
+    char * cmdstr = gtk_editable_get_chars ((GtkEditable *) alarm_conf.cmdstr, 0, -1);
+    aud_set_str ("alarm", "cmdstr", cmdstr);
     g_free (cmdstr);
-    cmdstr = gtk_editable_get_chars ((GtkEditable *) alarm_conf.cmdstr, 0, -1);
-    aud_set_string ("alarm", "cmdstr", cmdstr);
 
     cmd_on = gtk_toggle_button_get_active (alarm_conf.cmd_on);
     aud_set_bool ("alarm", "cmd_on", cmd_on);
 
+    char * playlist = gtk_editable_get_chars ((GtkEditable *) alarm_conf.playlist, 0, -1);
+    aud_set_str ("alarm", "playlist", playlist);
     g_free (playlist);
-    playlist = gtk_editable_get_chars ((GtkEditable *) alarm_conf.playlist, 0, -1);
-    aud_set_string ("alarm", "playlist", playlist);
 
     /* reminder */
-    g_free (alarm_conf.reminder_msg);
-    alarm_conf.reminder_msg = gtk_editable_get_chars ((GtkEditable *) alarm_conf.reminder, 0, -1);
-    aud_set_string ("alarm", "reminder_msg", alarm_conf.reminder_msg);
+    char * reminder_msg = gtk_editable_get_chars ((GtkEditable *) alarm_conf.reminder, 0, -1);
+    aud_set_str ("alarm", "reminder_msg", reminder_msg);
+    g_free (reminder_msg);
 
     alarm_conf.reminder_on = gtk_toggle_button_get_active (alarm_conf.reminder_cb);
     aud_set_bool ("alarm", "reminder_on", alarm_conf.reminder_on);
@@ -273,15 +269,8 @@ static void alarm_read_config(void)
 
     fading = aud_get_int ("alarm", "fading");
 
-    g_free (cmdstr);
-    cmdstr = aud_get_string ("alarm", "cmdstr");
     cmd_on = aud_get_bool ("alarm", "cmd_on");
 
-    g_free (playlist);
-    playlist = aud_get_string ("alarm", "playlist");
-
-    g_free (alarm_conf.reminder_msg);
-    alarm_conf.reminder_msg = aud_get_string ("alarm", "reminder_msg");
     alarm_conf.reminder_on = aud_get_bool ("alarm", "reminder_on");
 
     /* day flags and times */
@@ -406,21 +395,27 @@ static void alarm_configure(void)
     alarm_conf.fading = GTK_SPIN_BUTTON(w);
     gtk_spin_button_set_value(alarm_conf.fading, fading);
 
+    char * cmdstr = aud_get_str ("alarm", "cmdstr");
     w = lookup_widget(config_dialog, "cmd_entry");
     alarm_conf.cmdstr = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.cmdstr, cmdstr);
+    str_unref (cmdstr);
 
     w = lookup_widget(config_dialog, "cmd_checkb");
     alarm_conf.cmd_on = GTK_TOGGLE_BUTTON(w);
     gtk_toggle_button_set_active(alarm_conf.cmd_on, cmd_on);
 
+    char * playlist = aud_get_str ("alarm", "playlist");
     w = lookup_widget(config_dialog, "playlist");
     alarm_conf.playlist = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.playlist, playlist);
+    str_unref (playlist);
 
+    char * reminder_msg = aud_get_str ("alarm", "reminder_msg");
     w = lookup_widget(config_dialog, "reminder_text");
     alarm_conf.reminder = GTK_ENTRY(w);
-    gtk_entry_set_text(alarm_conf.reminder, alarm_conf.reminder_msg);
+    gtk_entry_set_text(alarm_conf.reminder, reminder_msg);
+    str_unref (reminder_msg);
 
     w = lookup_widget(config_dialog, "reminder_cb");
     alarm_conf.reminder_cb = GTK_TOGGLE_BUTTON(w);
@@ -688,18 +683,22 @@ static gboolean alarm_timeout (void * unused)
 
     if(cmd_on == TRUE)
     {
+        char * cmdstr = aud_get_str ("alarm", "cmdstr");
         AUDDBG("Executing %s, cmd_on is true\n", cmdstr);
         if(system(cmdstr) == -1)
             AUDDBG("Executing %s failed\n",cmdstr);
+        str_unref (cmdstr);
     }
 
     bool_t started = FALSE;
 
+    char * playlist = aud_get_str ("alarm", "playlist");
     if (playlist[0])
     {
         aud_drct_pl_open (playlist);
         started = TRUE;
     }
+    str_unref (playlist);
 
     if(fading)
     {
@@ -735,11 +734,13 @@ static gboolean alarm_timeout (void * unused)
 
     if(alarm_conf.reminder_on == TRUE)
     {
+        char * reminder_msg = aud_get_str ("alarm", "reminder_msg");
         GtkWidget *reminder_dialog;
-        AUDDBG("Showing reminder '%s'\n", alarm_conf.reminder_msg);
+        AUDDBG("Showing reminder '%s'\n", reminder_msg);
 
-        reminder_dialog = (GtkWidget*) create_reminder_dialog(alarm_conf.reminder_msg);
+        reminder_dialog = (GtkWidget*) create_reminder_dialog(reminder_msg);
         gtk_widget_show_all(reminder_dialog);
+        str_unref (reminder_msg);
     }
 
     /* bring up the wakeup call dialog if stop_on is set TRUE, this
@@ -770,7 +771,6 @@ static gboolean alarm_init (void)
 {
     AUDDBG("alarm_init\n");
 
-    alarm_conf.reminder_msg = NULL;
     alarm_read_config();
 
     timeout_source = g_timeout_add_seconds (10, alarm_timeout, NULL);
@@ -800,13 +800,6 @@ static void alarm_cleanup(void)
         pthread_cancel(stop.tid);
         stop.is_valid = FALSE;
     }
-
-    g_free(alarm_conf.reminder_msg);
-    alarm_conf.reminder_msg = NULL;
-    g_free(playlist);
-    playlist = NULL;
-    g_free(cmdstr);
-    cmdstr = NULL;
 }
 
 static const char alarm_about[] =
