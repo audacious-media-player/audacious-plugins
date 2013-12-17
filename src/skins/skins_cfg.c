@@ -139,20 +139,6 @@ typedef struct skins_cfg_strent_t {
     gchar * * ptr;
 } skins_cfg_strent;
 
-static const skins_cfg_strent skins_strents[] = {
- {"skin", & config.skin},
- {"mainwin_font", & config.mainwin_font},
- {"playlist_font", & config.playlist_font}};
-
-void skins_cfg_free (void)
-{
-    for (gint i = 0; i < ARRAY_LEN (skins_strents); i ++)
-    {
-        g_free (* skins_strents[i].ptr);
-        * skins_strents[i].ptr = NULL;
-    }
-}
-
 void skins_cfg_load (void)
 {
     aud_config_set_defaults ("skins", skins_defaults);
@@ -162,9 +148,6 @@ void skins_cfg_load (void)
 
     for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
         * skins_numents[i].ptr = aud_get_int ("skins", skins_numents[i].name);
-
-    for (gint i = 0; i < ARRAY_LEN (skins_strents); i ++)
-        * skins_strents[i].ptr = aud_get_string ("skins", skins_strents[i].name);
 }
 
 void skins_cfg_save (void)
@@ -174,46 +157,38 @@ void skins_cfg_save (void)
 
     for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
         aud_set_int ("skins", skins_numents[i].name, * skins_numents[i].ptr);
-
-    for (gint i = 0; i < ARRAY_LEN (skins_strents); i ++)
-        aud_set_string ("skins", skins_strents[i].name, * skins_strents[i].ptr);
 }
 
 static void
 mainwin_font_set_cb()
 {
-    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL :
-     config.mainwin_font);
+    char * font = aud_get_str ("skins", "mainwin_font");
+    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL : font);
+    str_unref (font);
 }
 
 static void
 playlist_font_set_cb()
 {
-    AUDDBG("Attempt to set font \"%s\"\n", config.playlist_font);
-    ui_skinned_playlist_set_font (playlistwin_list, config.playlist_font);
-}
-
-static void
-bitmap_fonts_cb()
-{
-    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL :
-     config.mainwin_font);
+    char * font = aud_get_str ("skins", "playlist_font");
+    ui_skinned_playlist_set_font (playlistwin_list, font);
+    str_unref (font);
 }
 
 static PreferencesWidget font_table_elements[] = {
- {WIDGET_FONT_BTN, N_("_Player:"), .cfg_type = VALUE_STRING, .cfg = & config.mainwin_font,
-  .callback = mainwin_font_set_cb, .data = {.font_btn = {N_("Select main "
-  "player window font:")}}},
- {WIDGET_FONT_BTN, N_("_Playlist:"), .cfg_type = VALUE_STRING, .cfg = & config.playlist_font,
-  .callback = playlist_font_set_cb, .data = {.font_btn = {N_("Select playlist "
-  "font:")}}}};
+ {WIDGET_FONT_BTN, N_("_Player:"),
+  .cfg_type = VALUE_STRING, .csect = "skins", .cname = "mainwin_font",
+  .callback = mainwin_font_set_cb, .data = {.font_btn = {N_("Select main player window font:")}}},
+ {WIDGET_FONT_BTN, N_("_Playlist:"),
+  .cfg_type = VALUE_STRING, .csect = "skins", .cname = "playlist_font",
+  .callback = playlist_font_set_cb, .data = {.font_btn = {N_("Select playlist font:")}}}};
 
 static PreferencesWidget appearance_misc_widgets[] = {
     {WIDGET_LABEL, N_("<b>_Fonts</b>"), NULL, NULL, NULL, FALSE},
     {WIDGET_TABLE, .child = TRUE, .data = {.table = {font_table_elements,
      ARRAY_LEN (font_table_elements)}}},
     {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
-     .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = bitmap_fonts_cb},
+     .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = mainwin_font_set_cb},
     {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = textbox_update_all}};
 

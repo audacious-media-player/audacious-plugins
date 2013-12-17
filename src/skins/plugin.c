@@ -22,6 +22,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
@@ -100,7 +101,10 @@ static gboolean skins_init (void)
     ui_manager_init();
     ui_manager_create_menus();
 
-    init_skins(config.skin);
+    char * skin = aud_get_str ("skins", "skin");
+    init_skins (skin);
+    str_unref (skin);
+
     mainwin_setup_menus();
 
     if (aud_drct_get_playing ())
@@ -131,7 +135,6 @@ static void skins_cleanup (void)
 
         cleanup_skins();
         skins_free_paths();
-        skins_cfg_free();
         ui_manager_destroy();
 
         plugin_is_active = FALSE;

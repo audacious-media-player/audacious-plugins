@@ -30,7 +30,6 @@ typedef struct {
     gint playlist_width, playlist_height;
     gboolean autoscroll;
     gboolean always_on_top, sticky;
-    gchar *skin;
     gboolean equalizer_visible, playlist_visible;
     gboolean player_shaded, equalizer_shaded, playlist_shaded;
     gboolean analyzer_peaks;
@@ -43,13 +42,10 @@ typedef struct {
     gint vu_mode;
     gint analyzer_falloff, peaks_falloff;
     gboolean mainwin_use_bitmapfont;
-    gchar *playlist_font, *mainwin_font;
 } skins_cfg_t;
 
 extern skins_cfg_t config;
 
-skins_cfg_t * skins_cfg_new(void);
-void skins_cfg_free();
 void skins_cfg_load();
 void skins_cfg_save();
 

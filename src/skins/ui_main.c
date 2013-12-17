@@ -602,22 +602,6 @@ mainwin_drag_data_received(GtkWidget * widget,
      (selection_data);
     g_return_if_fail (data);
 
-    if (str_has_prefix_nocase (data, "fonts:///"))
-    {
-        const gchar * path = data;
-        gchar *decoded = g_filename_from_uri(path, NULL, NULL);
-
-        if (decoded == NULL)
-            return;
-
-        config.playlist_font = g_strconcat(decoded, strrchr(config.playlist_font, ' '), NULL);
-        ui_skinned_playlist_set_font (playlistwin_list, config.playlist_font);
-
-        g_free(decoded);
-
-        return;
-    }
-
     if (str_has_prefix_nocase (data, "file:///"))
     {
         if (str_has_suffix_nocase (data, ".wsz\r\n") || str_has_suffix_nocase
@@ -1258,8 +1242,11 @@ mainwin_create_widgets(void)
     window_put_widget (mainwin, FALSE, mainwin_pl, 242, 58);
     button_on_release (mainwin_pl, mainwin_pl_cb);
 
+    char * font = aud_get_str ("skins", "mainwin_font");
     mainwin_info = textbox_new (153, "", config.mainwin_use_bitmapfont ? NULL :
-     config.mainwin_font, config.autoscroll);
+     font, config.autoscroll);
+    str_unref (font);
+
     window_put_widget (mainwin, FALSE, mainwin_info, 112, 27);
     g_signal_connect (mainwin_info, "button-press-event", (GCallback)
      mainwin_info_button_press, NULL);

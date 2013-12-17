@@ -634,8 +634,10 @@ playlistwin_create_widgets(void)
     window_put_widget (playlistwin, FALSE, playlistwin_close, w - 11, 3);
     button_on_release (playlistwin_close, (ButtonCB) playlistwin_hide);
 
-    playlistwin_list = ui_skinned_playlist_new (w - 31, h - 58, config.playlist_font);
+    char * font = aud_get_str ("skins", "playlist_font");
+    playlistwin_list = ui_skinned_playlist_new (w - 31, h - 58, font);
     window_put_widget (playlistwin, FALSE, playlistwin_list, 12, 20);
+    str_unref (font);
 
     /* playlist list box slider */
     playlistwin_slider = ui_skinned_playlist_slider_new (playlistwin_list, h - 58);
