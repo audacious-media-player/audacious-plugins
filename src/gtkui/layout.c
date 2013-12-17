@@ -530,12 +530,12 @@ void layout_save (void)
         gchar key[16], value[64];
 
         snprintf (key, sizeof key, "item%d_name", i);
-        aud_set_string ("gtkui-layout", key, item->name);
+        aud_set_str ("gtkui-layout", key, item->name);
 
         snprintf (key, sizeof key, "item%d_pos", i);
         snprintf (value, sizeof value, "%d,%d,%d,%d,%d", item->dock, item->x,
          item->y, item->w, item->h);
-        aud_set_string ("gtkui-layout", key, value);
+        aud_set_str ("gtkui-layout", key, value);
 
         i ++;
     }
@@ -554,14 +554,14 @@ void layout_load (void)
         gchar key[16];
 
         snprintf (key, sizeof key, "item%d_name", i);
-        gchar * name = aud_get_string ("gtkui-layout", key);
+        gchar * name = aud_get_str ("gtkui-layout", key);
         Item * item = item_new (name);
-        g_free (name);
+        str_unref (name);
 
         snprintf (key, sizeof key, "item%d_pos", i);
-        gchar * pos = aud_get_string ("gtkui-layout", key);
+        gchar * pos = aud_get_str ("gtkui-layout", key);
         sscanf (pos, "%d,%d,%d,%d,%d", & item->dock, & item->x, & item->y, & item->w, & item->h);
-        g_free (pos);
+        str_unref (pos);
     }
 }
 

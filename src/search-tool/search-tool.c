@@ -149,17 +149,24 @@ static void set_search_phrase (const char * phrase)
 
 static char * get_path (void)
 {
-    char * path = aud_get_string ("search-tool", "path");
+    char * path = aud_get_str ("search-tool", "path");
     if (g_file_test (path, G_FILE_TEST_EXISTS))
         return path;
 
-    g_free (path);
-    path = g_build_filename (g_get_home_dir (), "Music", NULL);
-    if (g_file_test (path, G_FILE_TEST_EXISTS))
-        return path;
+    str_unref (path);
 
-    g_free (path);
-    return g_strdup (g_get_home_dir ());
+    char * temp = g_build_filename (g_get_home_dir (), "Music", NULL);
+
+    if (g_file_test (temp, G_FILE_TEST_EXISTS))
+    {
+        path = str_get (temp);
+        g_free (temp);
+        return path;
+    }
+
+    g_free (temp);
+
+    return str_get (g_get_home_dir ());
 }
 
 static void destroy_added_table (void)
@@ -343,7 +350,7 @@ static void begin_add (const char * path)
     if (list < 0)
         list = create_playlist ();
 
-    aud_set_string ("search-tool", "path", path);
+    aud_set_str ("search-tool", "path", path);
 
     char * uri = filename_to_uri (path);
     g_return_if_fail (uri);
@@ -755,7 +762,7 @@ static void * search_get_widget (void)
 
     char * path = get_path ();
     gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, path);
-    g_free (path);
+    str_unref (path);
 
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name

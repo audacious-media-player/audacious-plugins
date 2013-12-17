@@ -165,20 +165,23 @@ static int jack_playing(void)
 void jack_set_port_connection_mode()
 {
   /* setup the port connection mode that determines how bio2jack will connect ports */
+  char * mode_str = aud_get_str ("jack", "port_connection_mode");
   enum JACK_PORT_CONNECTION_MODE mode;
 
-  if(strcmp(jack_cfg.port_connection_mode, "CONNECT_ALL") == 0)
+  if(strcmp(mode_str, "CONNECT_ALL") == 0)
       mode = CONNECT_ALL;
-  else if(strcmp(jack_cfg.port_connection_mode, "CONNECT_OUTPUT") == 0)
+  else if(strcmp(mode_str, "CONNECT_OUTPUT") == 0)
       mode = CONNECT_OUTPUT;
-  else if(strcmp(jack_cfg.port_connection_mode, "CONNECT_NONE") == 0)
+  else if(strcmp(mode_str, "CONNECT_NONE") == 0)
       mode = CONNECT_NONE;
   else
   {
       TRACE("Defaulting to CONNECT_ALL");
       mode = CONNECT_ALL;
   }
+
   JACK_SetPortConnectionMode(mode);
+  str_unref (mode_str);
 }
 
 static const char * const jack_defaults[] = {
@@ -194,7 +197,6 @@ static bool_t jack_init (void)
   aud_config_set_defaults ("jack", jack_defaults);
 
   jack_cfg.isTraceEnabled = aud_get_bool ("jack", "isTraceEnabled");
-  jack_cfg.port_connection_mode = aud_get_string ("jack", "port_connection_mode");
   jack_cfg.volume_left = aud_get_int ("jack", "volume_left");
   jack_cfg.volume_right = aud_get_int ("jack", "volume_right");
 

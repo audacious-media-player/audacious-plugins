@@ -299,8 +299,8 @@ static void guess_mixer_element (void)
     {
         if (list_has_member (mixer_element_list, guesses[count]))
         {
-            free (alsa_config_mixer_element);
-            alsa_config_mixer_element = strdup (guesses[count]);
+            str_unref (alsa_config_mixer_element);
+            alsa_config_mixer_element = str_get (guesses[count]);
             return;
         }
     }
@@ -318,9 +318,9 @@ void alsa_config_load (void)
 {
     aud_config_set_defaults ("alsa", alsa_defaults);
 
-    alsa_config_pcm = aud_get_string ("alsa", "pcm");
-    alsa_config_mixer = aud_get_string ("alsa", "mixer");
-    alsa_config_mixer_element = aud_get_string ("alsa", "mixer-element");
+    alsa_config_pcm = aud_get_str ("alsa", "pcm");
+    alsa_config_mixer = aud_get_str ("alsa", "mixer");
+    alsa_config_mixer_element = aud_get_str ("alsa", "mixer-element");
     alsa_config_drain_workaround = aud_get_bool ("alsa", "drain-workaround");
 
     if (! alsa_config_mixer_element[0])
@@ -347,16 +347,16 @@ void alsa_config_save (void)
         mixer_element_list = NULL;
     }
 
-    aud_set_string ("alsa", "pcm", alsa_config_pcm);
-    aud_set_string ("alsa", "mixer", alsa_config_mixer);
-    aud_set_string ("alsa", "mixer-element", alsa_config_mixer_element);
+    aud_set_str ("alsa", "pcm", alsa_config_pcm);
+    aud_set_str ("alsa", "mixer", alsa_config_mixer);
+    aud_set_str ("alsa", "mixer-element", alsa_config_mixer_element);
     aud_set_bool ("alsa", "drain-workaround", alsa_config_drain_workaround);
 
-    free (alsa_config_pcm);
+    str_unref (alsa_config_pcm);
     alsa_config_pcm = NULL;
-    free (alsa_config_mixer);
+    str_unref (alsa_config_mixer);
     alsa_config_mixer = NULL;
-    free (alsa_config_mixer_element);
+    str_unref (alsa_config_mixer_element);
     alsa_config_mixer_element = NULL;
 }
 
@@ -448,8 +448,8 @@ static void pcm_changed (GtkComboBox * combo, void * unused)
     if (new == NULL || ! strcmp (new, alsa_config_pcm))
         return;
 
-    free (alsa_config_pcm);
-    alsa_config_pcm = strdup (combo_selected_text (pcm_combo, pcm_list));
+    str_unref (alsa_config_pcm);
+    alsa_config_pcm = str_get (combo_selected_text (pcm_combo, pcm_list));
 
     aud_output_reset (OUTPUT_RESET_SOFT);
 }
@@ -461,8 +461,8 @@ static void mixer_changed (GtkComboBox * combo, void * unused)
     if (new == NULL || ! strcmp (new, alsa_config_mixer))
         return;
 
-    free (alsa_config_mixer);
-    alsa_config_mixer = strdup (new);
+    str_unref (alsa_config_mixer);
+    alsa_config_mixer = str_get (new);
 
     mixer_element_list_refill ();
     guess_mixer_element ();
@@ -482,8 +482,8 @@ static void mixer_element_changed (GtkComboBox * combo, void * unused)
      alsa_config_mixer_element)))
         return;
 
-    free (alsa_config_mixer_element);
-    alsa_config_mixer_element = strdup (new);
+    str_unref (alsa_config_mixer_element);
+    alsa_config_mixer_element = str_get (new);
 
     alsa_close_mixer ();
     alsa_open_mixer ();

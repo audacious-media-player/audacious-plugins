@@ -27,7 +27,7 @@ Tuple *now_playing_track        = NULL;
 pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t communication_signal = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t log_access_mutex = PTHREAD_MUTEX_INITIALIZER;
-gchar *session_key = NULL;
+gchar *session_key = NULL; /* pooled */
 gchar *request_token = NULL;
 
 
@@ -235,39 +235,37 @@ static bool_t scrobbler_init (void) {
         return FALSE;
     }
 
-    session_key = aud_get_string("scrobbler", "session_key");
-    if (session_key != NULL && strlen(session_key) == 0) {
-        session_key = NULL;
+    session_key = aud_get_str("scrobbler", "session_key");
+    if (!session_key[0])
         scrobbling_enabled = FALSE;
-    }
+
     request_token = NULL;
 
     //TODO: Remove this after we are "sure" that noone is using the old scrobbler (from audacious < 3.4)
     //By Debian's standard, this will probably be by 2020 or so
     //Migration from the old scrobbler config
-    if (session_key == NULL) {
+    if (!session_key[0]) {
       //We haven't been configured yet
 
-      char *migrated = aud_get_string("scrobbler", "migrated");
-      if (g_strcmp0(migrated, "true") != 0) {
+      char *migrated = aud_get_str("scrobbler", "migrated");
+      if (strcmp(migrated, "true") != 0) {
         //We haven't been migrated yet
 
-        char *oldpass = aud_get_string("audioscrobbler","password");
-        if (oldpass != NULL && strlen(oldpass) != 0) {
+        char *oldpass = aud_get_str("audioscrobbler","password");
+        if (oldpass[0]) {
 
-          char *olduser = aud_get_string("audioscrobbler","username");
-          if (olduser != NULL && strlen(olduser) != 0) {
+          char *olduser = aud_get_str("audioscrobbler","username");
+          if (olduser[0]) {
             //And the old scrobbler was configured
 
-            session_key = NULL;
             scrobbling_enabled = FALSE;
             migrate_config_requested = TRUE;
           }
-          g_free(olduser);
+          str_unref(olduser);
         }
-        g_free(oldpass);
+        str_unref(oldpass);
       }
-      g_free(migrated);
+      str_unref(migrated);
     }
 
 
@@ -301,7 +299,7 @@ static void scrobbler_cleanup (void) {
     pthread_join(communicator, NULL);
 
     g_free(request_token);
-    g_free(session_key);
+    str_unref(session_key);
     request_token = NULL;
     session_key   = NULL;
     scrobbler_running = TRUE;

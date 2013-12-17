@@ -198,7 +198,7 @@ sndio_open(int fmt, int rate, int nch)
 	GtkWidget *dialog = NULL;
 	unsigned buffer_size;
 
-	char *audiodev = aud_get_string("sndio", "audiodev");
+	char *audiodev = aud_get_str("sndio", "audiodev");
 
 	hdl = sio_open(strlen(audiodev) > 0 ? audiodev : NULL, SIO_PLAY, 1);
 	if (!hdl) {
@@ -207,7 +207,7 @@ sndio_open(int fmt, int rate, int nch)
 		return (0);
 	}
 
-	free(audiodev);
+	str_unref(audiodev);
 
 	sio_initpar(&askpar);
 	for (i = 0; ; i++) {
@@ -361,7 +361,7 @@ onvol_cb(void *addr, unsigned ctl)
 void
 configure_win_ok_cb(GtkWidget *w, gpointer data)
 {
-	aud_set_string("sndio", "audiodev", gtk_entry_get_text(GTK_ENTRY(adevice_entry)));
+	aud_set_str("sndio", "audiodev", gtk_entry_get_text(GTK_ENTRY(adevice_entry)));
 	gtk_widget_destroy(configure_win);
 }
 
@@ -400,13 +400,13 @@ sndio_configure(void)
 	adevice_text = gtk_label_new(_("(empty means default)"));
 	gtk_box_pack_start(GTK_BOX(adevice_vbox), adevice_text, TRUE, TRUE, 0);
 
-	char *audiodev = aud_get_string("sndio", "audiodev");
+	char *audiodev = aud_get_str("sndio", "audiodev");
 
 	adevice_entry = gtk_entry_new();
 	gtk_entry_set_text(GTK_ENTRY(adevice_entry), audiodev);
 	gtk_box_pack_start(GTK_BOX(adevice_vbox), adevice_entry, TRUE, TRUE, 0);
 
-	free(audiodev);
+	str_unref(audiodev);
 
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);

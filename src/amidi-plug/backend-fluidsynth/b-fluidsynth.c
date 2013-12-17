@@ -218,7 +218,7 @@ void backend_audio_info (int * channels, int * bitdepth, int * samplerate)
 
 static void i_soundfont_load (void)
 {
-    char * soundfont_file = aud_get_string ("amidiplug", "fsyn_soundfont_file");
+    char * soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
 
     if (soundfont_file[0])
     {
@@ -253,5 +253,5 @@ static void i_soundfont_load (void)
         g_warning ("FluidSynth backend was selected, but no SoundFont has been specified\n");
     }
 
-    free (soundfont_file);
+    str_unref (soundfont_file);
 }

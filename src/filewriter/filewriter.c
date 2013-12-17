@@ -129,15 +129,15 @@ static gboolean file_init (void)
 
     fileext = aud_get_int ("filewriter", "fileext");
     filenamefromtags = aud_get_bool ("filewriter", "filenamefromtags");
-    file_path = aud_get_string ("filewriter", "file_path");
+    file_path = aud_get_str ("filewriter", "file_path");
     prependnumber = aud_get_bool ("filewriter", "prependnumber");
     save_original = aud_get_bool ("filewriter", "save_original");
     use_suffix = aud_get_bool ("filewriter", "use_suffix");
 
     if (! file_path[0])
     {
-        g_return_val_if_fail (getenv ("HOME") != NULL, FALSE);
-        file_path = g_filename_to_uri (getenv ("HOME"), NULL, NULL);
+        str_unref (file_path);
+        file_path = filename_to_uri (g_get_home_dir ());
         g_return_val_if_fail (file_path != NULL, FALSE);
     }
 
@@ -150,7 +150,7 @@ static gboolean file_init (void)
 
 static void file_cleanup (void)
 {
-    g_free (file_path);
+    str_unref (file_path);
     file_path = NULL;
 }
 
@@ -320,8 +320,10 @@ static void configure_response_cb (void)
 {
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 
-    g_free (file_path);
-    file_path = gtk_file_chooser_get_uri ((GtkFileChooser *) path_dirbrowser);
+    char * temp = gtk_file_chooser_get_uri ((GtkFileChooser *) path_dirbrowser);
+    str_unref (file_path);
+    file_path = str_get (temp);
+    g_free (temp);
 
     use_suffix =
         gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_suffix_toggle));
@@ -331,7 +333,7 @@ static void configure_response_cb (void)
 
     aud_set_int ("filewriter", "fileext", fileext);
     aud_set_bool ("filewriter", "filenamefromtags", filenamefromtags);
-    aud_set_string ("filewriter", "file_path", file_path);
+    aud_set_str ("filewriter", "file_path", file_path);
     aud_set_bool ("filewriter", "prependnumber", prependnumber);
     aud_set_bool ("filewriter", "save_original", save_original);
     aud_set_bool ("filewriter", "use_suffix", use_suffix);

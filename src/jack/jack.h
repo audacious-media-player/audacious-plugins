@@ -9,7 +9,6 @@ typedef struct
 {
     bool_t isTraceEnabled; /* if true we will print debug information to the console */
     int volume_left, volume_right; /* for loading the stored volume setting */
-    char *port_connection_mode; /* the port connection mode setting */
 } jackconfig;
 
 void jack_set_port_connection_mode(); /* called by jack_init() and the 'ok' handler in configure.c */

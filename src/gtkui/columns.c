@@ -46,7 +46,7 @@ void pw_col_init (void)
 {
     pw_num_cols = 0;
 
-    gchar * columns = aud_get_string ("gtkui", "playlist_columns");
+    gchar * columns = aud_get_str ("gtkui", "playlist_columns");
     gchar * * split = g_strsplit (columns, " ", -1);
 
     for (gchar * * elem = split; * elem && pw_num_cols < PW_COLS; elem ++)
@@ -62,7 +62,7 @@ void pw_col_init (void)
     }
 
     g_strfreev (split);
-    g_free (columns);
+    str_unref (columns);
 }
 
 typedef struct {
@@ -211,8 +211,8 @@ static void response_cb (GtkWidget * widget, gint response, void * unused)
         for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
             pw_cols[pw_num_cols] = ((Column *) index_get (chosen, pw_num_cols))->column;
 
-        aud_set_string ("gtkui", "column_widths", "");
-        aud_set_string ("gtkui", "column_expand", "");
+        aud_set_str ("gtkui", "column_widths", "");
+        aud_set_str ("gtkui", "column_expand", "");
 
         ui_playlist_notebook_populate ();
     }
@@ -360,7 +360,7 @@ void pw_col_save (void)
             break;
     }
 
-    aud_set_string ("gtkui", "playlist_columns", s->str);
+    aud_set_str ("gtkui", "playlist_columns", s->str);
     g_string_free (s, TRUE);
 }
 

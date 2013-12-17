@@ -399,13 +399,13 @@ static void handle_headers(struct neon_handle* h) {
 static int neon_proxy_auth_cb (void * userdata, const char * realm, int attempt,
  char * username, char * password)
 {
-    gchar * value = aud_get_string (NULL, "proxy_user");
+    gchar * value = aud_get_str (NULL, "proxy_user");
     g_strlcpy (username, value, NE_ABUFSIZ);
-    g_free (value);
+    str_unref (value);
 
-    value = aud_get_string (NULL, "proxy_pass");
+    value = aud_get_str (NULL, "proxy_pass");
     g_strlcpy (password, value, NE_ABUFSIZ);
-    g_free (value);
+    str_unref (value);
 
     return attempt;
 }
@@ -530,7 +530,7 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
     gboolean use_proxy_auth = aud_get_bool (NULL, "use_proxy_auth");
 
     if (use_proxy) {
-        proxy_host = aud_get_string (NULL, "proxy_host");
+        proxy_host = aud_get_str (NULL, "proxy_host");
         proxy_port = aud_get_int (NULL, "proxy_port");
     }
 
@@ -582,14 +582,14 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
 
         if (ret == 0)
         {
-            g_free (proxy_host);
+            str_unref (proxy_host);
             return 0;
         }
         else if (ret == -1)
         {
             ne_session_destroy(handle->session);
             handle->session = NULL;
-            g_free (proxy_host);
+            str_unref (proxy_host);
             return -1;
         }
 
@@ -605,7 +605,7 @@ static gint open_handle(struct neon_handle* handle, gulong startbyte) {
     _ERROR ("<%p> Redirect count exceeded for URL %s", (void *) handle,
      handle->url);
 
-    g_free (proxy_host);
+    str_unref (proxy_host);
     return 1;
 }
 

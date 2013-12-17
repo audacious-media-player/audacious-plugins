@@ -482,7 +482,7 @@ static void open_cd (void)
     AUDDBG ("Opening CD drive.\n");
     g_return_if_fail (pcdrom_drive == NULL);
 
-    char * device = aud_get_string ("CDDA", "device");
+    char * device = aud_get_str ("CDDA", "device");
 
     if (device[0])
     {
@@ -505,7 +505,7 @@ static void open_cd (void)
             cdio_free_device_list (ppcd_drives);
     }
 
-    free (device);
+    str_unref (device);
 }
 
 /* mutex must be locked */
@@ -662,16 +662,16 @@ static void scan_cd (void)
                 cddb_cache_enable (pcddb_conn);
                 // cddb_cache_set_dir(pcddb_conn, "~/.cddbslave");
 
-                char * server = aud_get_string ("CDDA", "cddbserver");
-                char * path = aud_get_string ("CDDA", "cddbpath");
+                char * server = aud_get_str ("CDDA", "cddbserver");
+                char * path = aud_get_str ("CDDA", "cddbpath");
                 int port = aud_get_int ("CDDA", "cddbport");
 
                 if (aud_get_bool (NULL, "use_proxy"))
                 {
-                    char * prhost = aud_get_string (NULL, "proxy_host");
+                    char * prhost = aud_get_str (NULL, "proxy_host");
                     int prport = aud_get_int (NULL, "proxy_port");
-                    char * pruser = aud_get_string (NULL, "proxy_user");
-                    char * prpass = aud_get_string (NULL, "proxy_pass");
+                    char * pruser = aud_get_str (NULL, "proxy_user");
+                    char * prpass = aud_get_str (NULL, "proxy_pass");
 
                     cddb_http_proxy_enable (pcddb_conn);
                     cddb_set_http_proxy_server_name (pcddb_conn, prhost);
@@ -679,9 +679,9 @@ static void scan_cd (void)
                     cddb_set_http_proxy_username (pcddb_conn, pruser);
                     cddb_set_http_proxy_password (pcddb_conn, prpass);
 
-                    free (prhost);
-                    free (pruser);
-                    free (prpass);
+                    str_unref (prhost);
+                    str_unref (pruser);
+                    str_unref (prpass);
 
                     cddb_set_server_name (pcddb_conn, server);
                     cddb_set_server_port (pcddb_conn, port);
@@ -699,8 +699,8 @@ static void scan_cd (void)
                     cddb_set_server_port (pcddb_conn, port);
                 }
 
-                free (server);
-                free (path);
+                str_unref (server);
+                str_unref (path);
 
                 pcddb_disc = cddb_disc_new ();
 

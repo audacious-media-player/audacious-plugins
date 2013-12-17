@@ -207,9 +207,9 @@ static bool_t update_session_key() {
     }
 
     if (session_key == NULL) {
-        aud_set_string("scrobbler", "session_key", "");
+        aud_set_str("scrobbler", "session_key", "");
     } else {
-        aud_set_string("scrobbler", "session_key", session_key);
+        aud_set_str("scrobbler", "session_key", session_key);
     }
     return result;
 }
@@ -283,7 +283,7 @@ static bool_t scrobbler_test_connection() {
             g_free(error_detail);
             g_free(session_key);
             session_key = NULL;
-            aud_set_string("scrobbler", "session_key", "");
+            aud_set_str("scrobbler", "session_key", "");
             scrobbling_enabled = FALSE;
             return TRUE;
         } else {
@@ -494,7 +494,7 @@ static void scrobble_cached_queue() {
                             scrobbling_enabled = FALSE;
                             g_free(session_key);
                             session_key = NULL;
-                            aud_set_string("scrobbler", "session_key", "");
+                            aud_set_str("scrobbler", "session_key", "");
                         }
                         else {
                             save_line_to_remove(&lines_to_remove, i);
@@ -616,7 +616,7 @@ static void send_now_playing() {
         scrobbling_enabled = FALSE;
         g_free(session_key);
         session_key = NULL;
-        aud_set_string("scrobbler", "session_key", "");
+        aud_set_str("scrobbler", "session_key", "");
       }
 
     }
@@ -688,16 +688,16 @@ static void treat_permission_check_request() {
 // TRUE if a new session_key was obtained
 static bool_t treat_migrate_config() {
 
-    char *password = aud_get_string("audioscrobbler","password");
+    char *password = aud_get_str("audioscrobbler","password");
     if (password == NULL || strlen(password) == 0) {
-        g_free(password);
+        str_unref(password);
         return FALSE;
     }
 
-    char *username = aud_get_string("audioscrobbler","username");
+    char *username = aud_get_str("audioscrobbler","username");
     if (username == NULL || strlen(username) == 0) {
-        g_free(password);
-        g_free(username);
+        str_unref(password);
+        str_unref(username);
         return FALSE;
     }
 
@@ -709,8 +709,8 @@ static bool_t treat_migrate_config() {
                                                  "authToken", authToken,
                                                  "username", username,
                                                  "api_key", SCROBBLER_API_KEY);
-    g_free(username);
-    g_free(password);
+    str_unref(username);
+    str_unref(password);
     g_free(checksumThis);
     g_free(authToken);
 
@@ -742,7 +742,7 @@ gpointer scrobbling_thread (gpointer input_data) {
           if (treat_migrate_config() == FALSE) {
             aud_interface_show_error(_("Audacious is now using an improved version of the Last.fm Scrobbler.\nPlease check the Preferences for the Scrobbler plugin."));
           }
-          aud_set_string("scrobbler", "migrated", "true");
+          aud_set_str("scrobbler", "migrated", "true");
           migrate_config_requested = FALSE;
 
         } else if (permission_check_requested) {
@@ -751,7 +751,7 @@ gpointer scrobbling_thread (gpointer input_data) {
 
         } else if (invalidate_session_requested) {
             session_key = NULL;
-            aud_set_string("scrobbler", "session_key", "");
+            aud_set_str("scrobbler", "session_key", "");
             invalidate_session_requested = FALSE;
 
         } else if (now_playing_requested) {

@@ -302,10 +302,10 @@ static void save_enabled_to_config (void)
         char key[32];
 
         snprintf (key, sizeof key, "plugin%d_path", i);
-        aud_set_string ("ladspa", key, loaded->plugin->path);
+        aud_set_str ("ladspa", key, loaded->plugin->path);
 
         snprintf (key, sizeof key, "plugin%d_label", i);
-        aud_set_string ("ladspa", key, loaded->plugin->desc->Label);
+        aud_set_str ("ladspa", key, loaded->plugin->desc->Label);
 
         snprintf (key, sizeof key, "plugin%d_controls", i);
 
@@ -316,7 +316,7 @@ static void save_enabled_to_config (void)
             temp[ci] = loaded->values[ci];
 
         char * controls = double_array_to_str (temp, ccount);
-        aud_set_string ("ladspa", key, controls);
+        aud_set_str ("ladspa", key, controls);
         str_unref (controls);
 
         disable_plugin_locked (0);
@@ -327,13 +327,13 @@ static void save_enabled_to_config (void)
         char key[32];
 
         snprintf (key, sizeof key, "plugin%d_path", i);
-        aud_set_string ("ladspa", key, "");
+        aud_set_str ("ladspa", key, "");
 
         snprintf (key, sizeof key, "plugin%d_label", i);
-        aud_set_string ("ladspa", key, "");
+        aud_set_str ("ladspa", key, "");
 
         snprintf (key, sizeof key, "plugin%d_controls", i);
-        aud_set_string ("ladspa", key, "");
+        aud_set_str ("ladspa", key, "");
     }
 }
 
@@ -346,10 +346,10 @@ static void load_enabled_from_config (void)
         char key[32];
 
         snprintf (key, sizeof key, "plugin%d_path", i);
-        char * path = aud_get_string ("ladspa", key);
+        char * path = aud_get_str ("ladspa", key);
 
         snprintf (key, sizeof key, "plugin%d_label", i);
-        char * label = aud_get_string ("ladspa", key);
+        char * label = aud_get_str ("ladspa", key);
 
         PluginData * plugin = find_plugin (path, label);
         if (plugin)
@@ -361,7 +361,7 @@ static void load_enabled_from_config (void)
             int ccount = index_count (loaded->plugin->controls);
             double temp[ccount];
 
-            char * controls = aud_get_string ("ladspa", key);
+            char * controls = aud_get_str ("ladspa", key);
 
             if (str_to_double_array (controls, temp, ccount))
             {
@@ -379,11 +379,11 @@ static void load_enabled_from_config (void)
                 }
             }
 
-            g_free (controls);
+            str_unref (controls);
         }
 
-        g_free (path);
-        g_free (label);
+        str_unref (path);
+        str_unref (label);
     }
 }
 
@@ -397,7 +397,7 @@ static int init (void)
 
     aud_config_set_defaults ("ladspa", ladspa_defaults);
 
-    module_path = aud_get_string ("ladspa", "module_path");
+    module_path = aud_get_str ("ladspa", "module_path");
 
     open_modules ();
     load_enabled_from_config ();
@@ -413,7 +413,7 @@ static void cleanup (void)
 
     pthread_mutex_lock (& mutex);
 
-    aud_set_string ("ladspa", "module_path", module_path);
+    aud_set_str ("ladspa", "module_path", module_path);
     save_enabled_to_config ();
     close_modules ();
 
@@ -424,7 +424,7 @@ static void cleanup (void)
     index_free (loadeds);
     loadeds = NULL;
 
-    g_free (module_path);
+    str_unref (module_path);
     module_path = NULL;
 
     pthread_mutex_unlock (& mutex);
@@ -437,8 +437,8 @@ static void set_module_path (GtkEntry * entry)
     save_enabled_to_config ();
     close_modules ();
 
-    g_free (module_path);
-    module_path = g_strdup (gtk_entry_get_text (entry));
+    str_unref (module_path);
+    module_path = str_get (gtk_entry_get_text (entry));
 
     open_modules ();
     load_enabled_from_config ();

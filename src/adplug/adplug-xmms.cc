@@ -313,7 +313,7 @@ extern "C" bool_t adplug_init (void)
   // Read file type exclusion list
   dbg_printf ("exclusion, ");
   {
-    char * cfgstr = aud_get_string (CFG_VERSION, "Exclude");
+    char * cfgstr = aud_get_str (CFG_VERSION, "Exclude");
 
     if (cfgstr[0])
     {
@@ -326,7 +326,7 @@ extern "C" bool_t adplug_init (void)
             conf.players.remove (conf.players.lookup_filetype (p));
     }
 
-    free (cfgstr);
+    str_unref (cfgstr);
   }
 
   // Load database from disk and hand it to AdPlug
@@ -382,5 +382,5 @@ adplug_quit (void)
       exclude += (*i)->filetype;
     }
 
-  aud_set_string (CFG_VERSION, "Exclude", exclude.c_str ());
+  aud_set_str (CFG_VERSION, "Exclude", exclude.c_str ());
 }

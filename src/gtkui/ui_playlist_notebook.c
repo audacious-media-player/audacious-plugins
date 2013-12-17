@@ -135,8 +135,8 @@ static void save_column_widths ()
     char * widths, * expand;
     ui_playlist_widget_get_column_widths (treeview, & widths, & expand);
 
-    aud_set_string ("gtkui", "column_widths", widths);
-    aud_set_string ("gtkui", "column_expand", expand);
+    aud_set_str ("gtkui", "column_widths", widths);
+    aud_set_str ("gtkui", "column_expand", expand);
 
     str_unref (widths);
     str_unref (expand);
@@ -144,14 +144,14 @@ static void save_column_widths ()
 
 static void apply_column_widths (GtkWidget * treeview)
 {
-    char * widths = aud_get_string ("gtkui", "column_widths");
-    char * expand = aud_get_string ("gtkui", "column_expand");
+    char * widths = aud_get_str ("gtkui", "column_widths");
+    char * expand = aud_get_str ("gtkui", "column_expand");
 
     if (widths && widths[0] && expand && expand[0])
         ui_playlist_widget_set_column_widths (treeview, widths, expand);
 
-    free (widths);
-    free (expand);
+    str_unref (widths);
+    str_unref (expand);
 }
 
 static void tab_title_reset(GtkWidget *ebox)

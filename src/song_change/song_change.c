@@ -241,10 +241,10 @@ static void do_command (char * cmd)
 
 static void read_config(void)
 {
-    cmd_line = aud_get_string("song_change", "cmd_line");
-    cmd_line_after = aud_get_string("song_change", "cmd_line_after");
-    cmd_line_end = aud_get_string("song_change", "cmd_line_end");
-    cmd_line_ttc = aud_get_string("song_change", "cmd_line_ttc");
+    cmd_line = aud_get_str("song_change", "cmd_line");
+    cmd_line_after = aud_get_str("song_change", "cmd_line_after");
+    cmd_line_end = aud_get_str("song_change", "cmd_line_end");
+    cmd_line_ttc = aud_get_str("song_change", "cmd_line_ttc");
 }
 
 static void cleanup(void)
@@ -262,43 +262,35 @@ static void cleanup(void)
         ttc_prevs = NULL;
     }
 
-    g_free(cmd_line);
-    g_free(cmd_line_after);
-    g_free(cmd_line_end);
-    g_free(cmd_line_ttc);
+    str_unref(cmd_line);
+    str_unref(cmd_line_after);
+    str_unref(cmd_line_end);
+    str_unref(cmd_line_ttc);
+
     cmd_line = NULL;
     cmd_line_after = NULL;
     cmd_line_end = NULL;
     cmd_line_ttc = NULL;
+
     signal(SIGCHLD, SIG_DFL);
 }
 
 static void save_and_close(gchar * cmd, gchar * cmd_after, gchar * cmd_end, gchar * cmd_ttc)
 {
-    aud_set_string("song_change", "cmd_line", cmd);
-    aud_set_string("song_change", "cmd_line_after", cmd_after);
-    aud_set_string("song_change", "cmd_line_end", cmd_end);
-    aud_set_string("song_change", "cmd_line_ttc", cmd_ttc);
+    aud_set_str("song_change", "cmd_line", cmd);
+    aud_set_str("song_change", "cmd_line_after", cmd_after);
+    aud_set_str("song_change", "cmd_line_end", cmd_end);
+    aud_set_str("song_change", "cmd_line_ttc", cmd_ttc);
 
-    if (cmd_line != NULL)
-        g_free(cmd_line);
+    str_unref(cmd_line);
+    str_unref(cmd_line_after);
+    str_unref(cmd_line_end);
+    str_unref(cmd_line_ttc);
 
-    cmd_line = g_strdup(cmd);
-
-    if (cmd_line_after != NULL)
-        g_free(cmd_line_after);
-
-    cmd_line_after = g_strdup(cmd_after);
-
-    if (cmd_line_end != NULL)
-        g_free(cmd_line_end);
-
-    cmd_line_end = g_strdup(cmd_end);
-
-    if (cmd_line_ttc != NULL)
-        g_free(cmd_line_ttc);
-
-    cmd_line_ttc = g_strdup(cmd_ttc);
+    cmd_line = str_get(cmd);
+    cmd_line_after = str_get(cmd_after);
+    cmd_line_end = str_get(cmd_end);
+    cmd_line_ttc = str_get(cmd_ttc);
 }
 
 static int check_command(char *command)
