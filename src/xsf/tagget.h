@@ -92,7 +92,7 @@ typedef struct
 static int xsf_tagenum_callback_tagget(void *pWork, const char *pNameTop, const char *pNameEnd, const char *pValueTop, const char *pValueEnd)
 {
 	xsf_tagget_work_t *pwork = (xsf_tagget_work_t *)pWork;
-	if (pwork->taglen == pNameEnd - pNameTop && !strncasecmp(pNameTop, pwork->tag, pwork->taglen))
+	if (pwork->taglen == pNameEnd - pNameTop && !g_ascii_strncasecmp(pNameTop, pwork->tag, pwork->taglen))
 	{
 		char *ret = (char *)malloc(pValueEnd - pValueTop + 1);
 		if (!ret) return xsf_tagenum_callback_returnvaluecontinue;

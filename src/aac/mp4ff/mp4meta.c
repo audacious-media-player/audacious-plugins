@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <strings.h>
+#include <glib.h>
 #include "mp4ffint.h"
 
 
@@ -76,7 +76,7 @@ static int32_t mp4ff_tag_set_field(mp4ff_metadata_t *tags, const char *item, con
 
     for (i = 0; i < tags->count; i++)
     {
-        if (!strcasecmp(tags->tags[i].item, item))
+        if (!g_ascii_strcasecmp(tags->tags[i].item, item))
         {
             free(tags->tags[i].value);
             tags->tags[i].value = strdup(value);
@@ -140,7 +140,7 @@ uint32_t mp4ff_meta_genre_to_index(const char * genrestr)
     unsigned n;
     for(n=0;n<sizeof(ID3v1GenreList)/sizeof(ID3v1GenreList[0]);n++)
     {
-        if (!strcasecmp(genrestr,ID3v1GenreList[n])) return n+1;
+        if (!g_ascii_strcasecmp(genrestr,ID3v1GenreList[n])) return n+1;
     }
     return 0;
 }
@@ -357,7 +357,7 @@ static int32_t mp4ff_meta_find_by_name(const mp4ff_t *f, const char *item, char 
 
     for (i = 0; i < f->tags.count; i++)
     {
-        if (!strcasecmp(f->tags.tags[i].item, item))
+        if (!g_ascii_strcasecmp(f->tags.tags[i].item, item))
         {
             *value = strdup(f->tags.tags[i].value);
             return 1;

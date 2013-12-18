@@ -24,7 +24,6 @@
  */
 
 #include <string.h>
-#include <strings.h>
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
@@ -455,7 +454,7 @@ static int equalizerwin_find_preset (Index * list, const char * name)
     for (int p = 0; p < index_count (list); p ++)
     {
         EqualizerPreset * preset = index_get (list, p);
-        if (!strcasecmp(preset->name, name))
+        if (!g_ascii_strcasecmp(preset->name, name))
             return p;
     }
 

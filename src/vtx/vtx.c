@@ -18,7 +18,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <strings.h>
 
 #include <audacious/i18n.h>
 #include <audacious/input.h>
@@ -45,7 +44,7 @@ gint vtx_is_our_fd(const gchar * filename, VFSFile * fp)
     gchar buf[2];
     if (vfs_fread(buf, 1, 2, fp) < 2)
         return FALSE;
-    return (!strncasecmp(buf, "ay", 2) || !strncasecmp(buf, "ym", 2));
+    return (!g_ascii_strncasecmp(buf, "ay", 2) || !g_ascii_strncasecmp(buf, "ym", 2));
 }
 
 Tuple *vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)

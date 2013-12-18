@@ -22,7 +22,8 @@
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
-#include <strings.h>
+
+#include <glib.h>
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
@@ -318,24 +319,24 @@ static void parse_comment (Tuple * tuple, const char * key, const char * value)
 
     for (int i = 0; i < ARRAY_LEN (tfields); i ++)
     {
-        if (! strcasecmp (key, tfields[i].key))
+        if (! g_ascii_strcasecmp (key, tfields[i].key))
         {
             add_text (tuple, tfields[i].field, value);
             return;
         }
     }
 
-    if (! strcasecmp (key, "TRACKNUMBER"))
+    if (! g_ascii_strcasecmp (key, "TRACKNUMBER"))
         tuple_set_int(tuple, FIELD_TRACK_NUMBER, atoi(value));
-    else if (! strcasecmp (key, "DATE"))
+    else if (! g_ascii_strcasecmp (key, "DATE"))
         tuple_set_int(tuple, FIELD_YEAR, atoi(value));
-    else if (! strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
+    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
         set_gain_info(tuple, FIELD_GAIN_TRACK_GAIN, FIELD_GAIN_GAIN_UNIT, value);
-    else if (! strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
+    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
         set_gain_info(tuple, FIELD_GAIN_TRACK_PEAK, FIELD_GAIN_PEAK_UNIT, value);
-    else if (! strcasecmp (key, "REPLAYGAIN_ALBUM_GAIN"))
+    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_GAIN"))
         set_gain_info(tuple, FIELD_GAIN_ALBUM_GAIN, FIELD_GAIN_GAIN_UNIT, value);
-    else if (! strcasecmp (key, "REPLAYGAIN_ALBUM_PEAK"))
+    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_PEAK"))
         set_gain_info(tuple, FIELD_GAIN_ALBUM_PEAK, FIELD_GAIN_PEAK_UNIT, value);
 }
 

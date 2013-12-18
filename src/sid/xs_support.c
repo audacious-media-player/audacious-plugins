@@ -23,7 +23,6 @@
 
 #include "xs_support.h"
 
-#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -97,7 +96,7 @@ int xs_pstrcat(char **result, const char *str)
 
 void xs_findnext(const char *str, size_t *pos)
 {
-    while (str[*pos] && isspace(str[*pos]))
+    while (str[*pos] && g_ascii_isspace(str[*pos]))
         (*pos)++;
 }
 
@@ -111,7 +110,7 @@ void xs_findeol(const char *str, size_t *pos)
 
 void xs_findnum(const char *str, size_t *pos)
 {
-    while (str[*pos] && isdigit(str[*pos]))
+    while (str[*pos] && g_ascii_isdigit(str[*pos]))
         (*pos)++;
 }
 

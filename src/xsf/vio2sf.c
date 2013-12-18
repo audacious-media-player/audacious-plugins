@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 
 #include "desmume/MMU.h"
 #include "desmume/armcpu.h"
@@ -10,6 +9,7 @@
 #include "desmume/SPU.h"
 #include "desmume/cp15.h"
 
+#include <glib.h>
 #include <zlib.h>
 #include "tagget.h"
 #include "vio2sf.h"
@@ -227,7 +227,7 @@ static int load_psfcb(void *pWork, const char *pNameTop, const char *pNameEnd, c
 {
 	loadlibwork_t *pwork = (loadlibwork_t *)pWork;
 	int ret = xsf_tagenum_callback_returnvaluecontinue;
-	if (pNameEnd - pNameTop == pwork->taglen && !strncasecmp(pNameTop, pwork->tag , pwork->taglen))
+	if (pNameEnd - pNameTop == pwork->taglen && !g_ascii_strncasecmp(pNameTop, pwork->tag , pwork->taglen))
 	{
 		unsigned l = pValueEnd - pValueTop;
 		char *lib = malloc(l + 1);

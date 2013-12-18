@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
+#include <glib.h>
 #include "mp4ffint.h"
 
 #ifdef USE_TAGGING
@@ -237,7 +237,7 @@ static const char* find_standard_meta(const char * name) //returns atom name if 
     unsigned n;
     for(n=0;n<sizeof(stdmetas)/sizeof(stdmetas[0]);n++)
     {
-        if (!strcasecmp(name,stdmetas[n].name)) return stdmetas[n].atom;
+        if (!g_ascii_strcasecmp(name,stdmetas[n].name)) return stdmetas[n].atom;
     }
     return 0;
 }
@@ -326,32 +326,32 @@ static uint32_t create_ilst(const mp4ff_metadata_t * data,void ** out_buffer,uin
         for(metaptr = 0; metaptr < data->count; metaptr++)
         {
             mp4ff_tag_t * tag = &data->tags[metaptr];
-            if (!strcasecmp(tag->item,"tracknumber") || !strcasecmp(tag->item,"track"))
+            if (!g_ascii_strcasecmp(tag->item,"tracknumber") || !g_ascii_strcasecmp(tag->item,"track"))
             {
                 if (tracknumber_ptr==0) tracknumber_ptr = tag->value;
                 mask[metaptr] = 1;
             }
-            else if (!strcasecmp(tag->item,"totaltracks"))
+            else if (!g_ascii_strcasecmp(tag->item,"totaltracks"))
             {
                 if (totaltracks_ptr==0) totaltracks_ptr = tag->value;
                 mask[metaptr] = 1;
             }
-            else if (!strcasecmp(tag->item,"discnumber") || !strcasecmp(tag->item,"disc"))
+            else if (!g_ascii_strcasecmp(tag->item,"discnumber") || !g_ascii_strcasecmp(tag->item,"disc"))
             {
                 if (discnumber_ptr==0) discnumber_ptr = tag->value;
                 mask[metaptr] = 1;
             }
-            else if (!strcasecmp(tag->item,"totaldiscs"))
+            else if (!g_ascii_strcasecmp(tag->item,"totaldiscs"))
             {
                 if (totaldiscs_ptr==0) totaldiscs_ptr = tag->value;
                 mask[metaptr] = 1;
             }
-            else if (!strcasecmp(tag->item,"genre"))
+            else if (!g_ascii_strcasecmp(tag->item,"genre"))
             {
                 if (genre_ptr==0) genre_ptr = tag->value;
                 mask[metaptr] = 1;
             }
-            else if (!strcasecmp(tag->item,"tempo"))
+            else if (!g_ascii_strcasecmp(tag->item,"tempo"))
             {
                 if (tempo_ptr==0) tempo_ptr = tag->value;
                 mask[metaptr] = 1;

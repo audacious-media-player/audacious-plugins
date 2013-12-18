@@ -19,7 +19,6 @@
  */
 
 #include <stdlib.h>
-#include <strings.h>
 
 #include <libaudcore/inifile.h>
 
@@ -205,14 +204,14 @@ static const HintPair hint_pairs[] = {
 
 static int hint_pair_compare (const void * a, const void * b)
 {
-    return strcasecmp (((const HintPair *) a)->name, ((const HintPair *) b)->name);
+    return g_ascii_strcasecmp (((const HintPair *) a)->name, ((const HintPair *) b)->name);
 }
 
 static void hints_handle_heading (const char * heading, void * data)
 {
     HintsLoadState * state = data;
 
-    state->valid_heading = ! strcasecmp (heading, "skin");
+    state->valid_heading = ! g_ascii_strcasecmp (heading, "skin");
 }
 
 static void hints_handle_entry (const char * key, const char * value, void * data)
@@ -260,7 +259,7 @@ static void pl_colors_handle_heading (const char * heading, void * data)
 {
     PLColorsLoadState * state = data;
 
-    state->valid_heading = ! strcasecmp (heading, "text");
+    state->valid_heading = ! g_ascii_strcasecmp (heading, "text");
 }
 
 static uint32_t convert_color_string (const char * str)
@@ -278,13 +277,13 @@ static void pl_colors_handle_entry (const char * key, const char * value, void *
     if (! state->valid_heading)
         return;
 
-    if (! strcasecmp (key, "normal"))
+    if (! g_ascii_strcasecmp (key, "normal"))
         state->skin->colors[SKIN_PLEDIT_NORMAL] = convert_color_string (value);
-    else if (! strcasecmp (key, "current"))
+    else if (! g_ascii_strcasecmp (key, "current"))
         state->skin->colors[SKIN_PLEDIT_CURRENT] = convert_color_string (value);
-    else if (! strcasecmp (key, "normalbg"))
+    else if (! g_ascii_strcasecmp (key, "normalbg"))
         state->skin->colors[SKIN_PLEDIT_NORMALBG] = convert_color_string (value);
-    else if (! strcasecmp (key, "selectedbg"))
+    else if (! g_ascii_strcasecmp (key, "selectedbg"))
         state->skin->colors[SKIN_PLEDIT_SELECTEDBG] = convert_color_string (value);
 }
 
@@ -323,13 +322,13 @@ static void mask_handle_heading (const char * heading, void * data)
 {
     MaskLoadState * state = data;
 
-    if (! strcasecmp (heading, "normal"))
+    if (! g_ascii_strcasecmp (heading, "normal"))
         state->current_id = SKIN_MASK_MAIN;
-    else if (! strcasecmp (heading, "windowshade"))
+    else if (! g_ascii_strcasecmp (heading, "windowshade"))
         state->current_id = SKIN_MASK_MAIN_SHADE;
-    else if (! strcasecmp (heading, "equalizer"))
+    else if (! g_ascii_strcasecmp (heading, "equalizer"))
         state->current_id = SKIN_MASK_EQ;
-    else if (! strcasecmp (heading, "equalizerws"))
+    else if (! g_ascii_strcasecmp (heading, "equalizerws"))
         state->current_id = SKIN_MASK_EQ_SHADE;
     else
         state->current_id = -1;
@@ -343,12 +342,12 @@ static void mask_handle_entry (const char * key, const char * value, void * data
     if (id == -1)
         return;
 
-    if (! strcasecmp (key, "numpoints"))
+    if (! g_ascii_strcasecmp (key, "numpoints"))
     {
         if (! state->numpoints[id])
             state->numpoints[id] = string_to_garray (value);
     }
-    else if (! strcasecmp (key, "pointlist"))
+    else if (! g_ascii_strcasecmp (key, "pointlist"))
     {
         if (! state->pointlist[id])
             state->pointlist[id] = string_to_garray (value);

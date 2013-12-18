@@ -23,12 +23,10 @@
  *  Audacious or using our public API to be a derived work.
  */
 
-#include <ctype.h>
 #include <errno.h>
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -82,7 +80,7 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
 
     for (; list != NULL; list = list->next)
     {
-        if (! strcasecmp (list->data, basename))
+        if (! g_ascii_strcasecmp (list->data, basename))
             return g_strdup (list->data);
     }
 
@@ -406,7 +404,7 @@ GArray *string_to_garray(const gchar *str)
             break;
         g_array_append_val(array, temp);
         ptr = endptr;
-        while (!isdigit((int)*ptr) && (*ptr) != '\0')
+        while (!g_ascii_isdigit((int)*ptr) && (*ptr) != '\0')
             ptr++;
         if (*ptr == '\0')
             break;

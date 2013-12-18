@@ -23,7 +23,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -207,7 +206,7 @@ static gint skinlist_compare_func (const void * _a, const void * _b)
     const SkinNode * a = _a, * b = _b;
     g_return_val_if_fail (a && a->name, 1);
     g_return_val_if_fail (b && b->name, 1);
-    return strcasecmp (a->name, b->name);
+    return g_ascii_strcasecmp (a->name, b->name);
 }
 
 static void skin_free_func (void * _data)

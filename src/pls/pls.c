@@ -22,7 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
+
+#include <glib.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -40,14 +41,14 @@ void pls_handle_heading (const char * heading, void * data)
 {
     PLSLoadState * state = data;
 
-    state->valid_heading = ! strcasecmp (heading, "playlist");
+    state->valid_heading = ! g_ascii_strcasecmp (heading, "playlist");
 }
 
 void pls_handle_entry (const char * key, const char * value, void * data)
 {
     PLSLoadState * state = data;
 
-    if (! state->valid_heading || strncasecmp (key, "file", 4))
+    if (! state->valid_heading || g_ascii_strncasecmp (key, "file", 4))
         return;
 
     char * uri = aud_construct_uri (value, state->filename);

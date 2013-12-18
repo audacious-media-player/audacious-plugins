@@ -23,6 +23,8 @@
 #include <algorithm>
 #include <string.h>
 
+#include <glib.h>
+
 #include "rol.h"
 #include "debug.h"
 
@@ -701,7 +703,7 @@ int CrolPlayer::get_ins_index( std::string const &name ) const
 {
     for(unsigned int i=0; i<ins_list.size(); ++i)
     {
-        if( stricmp(ins_list[i].name.c_str(), name.c_str()) == 0 )
+        if( g_ascii_strcasecmp(ins_list[i].name.c_str(), name.c_str()) == 0 )
         {
             return i;
         }

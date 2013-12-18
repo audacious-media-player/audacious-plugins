@@ -20,7 +20,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
+
+#include <glib.h>
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
@@ -38,14 +39,14 @@ void asx_handle_heading (const char * heading, void * data)
 {
     ASXLoadState * state = data;
 
-    state->valid_heading = ! strcasecmp (heading, "reference");
+    state->valid_heading = ! g_ascii_strcasecmp (heading, "reference");
 }
 
 void asx_handle_entry (const char * key, const char * value, void * data)
 {
     ASXLoadState * state = data;
 
-    if (! state->valid_heading || strncasecmp (key, "ref", 3))
+    if (! state->valid_heading || g_ascii_strncasecmp (key, "ref", 3))
         return;
 
     char * uri = aud_construct_uri (value, state->filename);

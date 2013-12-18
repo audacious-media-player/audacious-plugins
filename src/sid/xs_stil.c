@@ -23,7 +23,6 @@
 #include "xs_stil.h"
 
 #include <assert.h>
-#include <ctype.h>
 #include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -220,7 +219,7 @@ int xs_stildb_read(xs_stildb_t *db, char *filename)
             linePos++;
             if (line[linePos] == '#') {
                 linePos++;
-                if (isdigit(line[linePos])) {
+                if (g_ascii_isdigit(line[linePos])) {
                     size_t savePos = linePos;
                     xs_findnum(line, &linePos);
                     line[linePos] = 0;

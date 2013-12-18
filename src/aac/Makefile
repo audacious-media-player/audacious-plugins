@@ -17,5 +17,5 @@ include ../../extra.mk
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${FAAD_CFLAGS} -I../.. -I. -Imp4ff -DUSE_TAGGING=1
-LIBS += ${FAAD_LIBS} -lm
+CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${FAAD_CFLAGS} -I../.. -I. -Imp4ff -DUSE_TAGGING=1
+LIBS += ${GLIB_LIBS} ${FAAD_LIBS} -lm

@@ -23,6 +23,8 @@
 #include <cstdlib>
 #include <string.h>
 
+#include <glib.h>
+
 #include "rix.h"
 #include "debug.h"
 
@@ -91,7 +93,7 @@ CrixPlayer::load (VFSFile * fd, const CFileProvider & fp)
   unsigned long i = 0;
   std::string filename (vfs_get_filename (fd));
 
-  if (stricmp (filename.substr (filename.length () - 4, 4).c_str (), ".mkf")
+  if (g_ascii_strcasecmp (filename.substr (filename.length () - 4, 4).c_str (), ".mkf")
       == 0)
   {
     flag_mkf = 1;

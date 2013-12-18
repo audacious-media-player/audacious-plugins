@@ -23,10 +23,11 @@
 #include "xs_length.h"
 
 #include <assert.h>
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <glib.h>
 
 #include "xmms-sid.h"
 #include "xs_support.h"
@@ -70,10 +71,10 @@ static int xs_sldb_gettime(char *str, size_t *pos)
     int result, tmp;
 
     /* Check if it starts with a digit */
-    if (isdigit(str[*pos])) {
+    if (g_ascii_isdigit(str[*pos])) {
         /* Get minutes-field */
         result = 0;
-        while (isdigit(str[*pos]))
+        while (g_ascii_isdigit(str[*pos]))
             result = (result * 10) + (str[(*pos)++] - '0');
 
         result *= 60;
@@ -83,7 +84,7 @@ static int xs_sldb_gettime(char *str, size_t *pos)
             /* Get seconds-field */
             (*pos)++;
             tmp = 0;
-            while (isdigit(str[*pos])) {
+            while (g_ascii_isdigit(str[*pos])) {
                 tmp = (tmp * 10) + (str[(*pos)++] - '0');
             }
 
@@ -94,7 +95,7 @@ static int xs_sldb_gettime(char *str, size_t *pos)
         result = -1;
 
     /* Ignore and skip the possible attributes */
-    while (str[*pos] && !isspace(str[*pos]))
+    while (str[*pos] && !g_ascii_isspace(str[*pos]))
         (*pos)++;
 
     return result;

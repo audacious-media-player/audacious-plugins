@@ -27,7 +27,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <strings.h>
 
 #include <glib.h>
 
@@ -287,7 +286,7 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 		int i;
 		for (i = 0; i < MAX_UNKNOWN_TAGS; i++)
 		{
-			if (!strcasecmp(c->tag_name[i], "psfby"))
+			if (!g_ascii_strcasecmp(c->tag_name[i], "psfby"))
 				strcpy(psfby, c->tag_data[i]);
 		}
 	}

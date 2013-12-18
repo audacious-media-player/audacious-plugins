@@ -79,7 +79,6 @@ The following data is optional and may be omitted:
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include <strings.h>
 
 #include <glib.h>
 #include <zlib.h>
@@ -228,7 +227,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 		for (num_tags = 0; num_tags < MAX_UNKNOWN_TAGS; num_tags++)
 		{
 			// See if tag belongs in one of the special fields we have
-			if (!strcasecmp((*c)->tag_name[num_tags], "_lib"))
+			if (!g_ascii_strcasecmp((*c)->tag_name[num_tags], "_lib"))
 			{
 				strcpy((*c)->lib, (*c)->tag_data[num_tags]);
 				(*c)->tag_data[num_tags][0] = 0;

@@ -20,6 +20,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include <glib.h>
+
 #ifdef DEBUG
 #define NEON_DEBUG
 #endif

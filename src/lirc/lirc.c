@@ -32,8 +32,6 @@
 #include <string.h>
 #include <signal.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include <strings.h>
 
 #include <glib.h>
 #include <lirc/lirc_client.h>
@@ -159,18 +157,18 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
     {
         while ((ret = lirc_code2char (config, code, &c)) == 0 && c != NULL)
         {
-            if (strcasecmp ("PLAY", c) == 0)
+            if (g_ascii_strcasecmp ("PLAY", c) == 0)
                 aud_drct_play ();
-            else if (strcasecmp ("STOP", c) == 0)
+            else if (g_ascii_strcasecmp ("STOP", c) == 0)
                 aud_drct_stop ();
-            else if (strcasecmp ("PAUSE", c) == 0)
+            else if (g_ascii_strcasecmp ("PAUSE", c) == 0)
                 aud_drct_pause ();
-            else if (strcasecmp ("PLAYPAUSE", c) == 0)
+            else if (g_ascii_strcasecmp ("PLAYPAUSE", c) == 0)
                 aud_drct_play_pause ();
-            else if (strncasecmp ("NEXT", c, 4) == 0)
+            else if (g_ascii_strncasecmp ("NEXT", c, 4) == 0)
             {
                 ptr = c + 4;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr);
 
@@ -181,10 +179,10 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     aud_drct_pl_next ();
                 }
             }
-            else if (strncasecmp ("PREV", c, 4) == 0)
+            else if (g_ascii_strncasecmp ("PREV", c, 4) == 0)
             {
                 ptr = c + 4;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr);
 
@@ -195,14 +193,14 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     aud_drct_pl_prev ();
                 }
             }
-            else if (strcasecmp ("SHUFFLE", c) == 0)
+            else if (g_ascii_strcasecmp ("SHUFFLE", c) == 0)
                 aud_set_bool (NULL, "shuffle", ! aud_get_bool (NULL, "shuffle"));
-            else if (strcasecmp ("REPEAT", c) == 0)
+            else if (g_ascii_strcasecmp ("REPEAT", c) == 0)
                 aud_set_bool (NULL, "repeat", ! aud_get_bool (NULL, "repeat"));
-            else if (strncasecmp ("FWD", c, 3) == 0)
+            else if (g_ascii_strncasecmp ("FWD", c, 3) == 0)
             {
                 ptr = c + 3;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr) * 1000;
 
@@ -219,10 +217,10 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     output_time = playlist_time - n;
                 aud_drct_seek (output_time + n);
             }
-            else if (strncasecmp ("BWD", c, 3) == 0)
+            else if (g_ascii_strncasecmp ("BWD", c, 3) == 0)
             {
                 ptr = c + 3;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr) * 1000;
 
@@ -233,10 +231,10 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     output_time = n;
                 aud_drct_seek (output_time - n);
             }
-            else if (strncasecmp ("VOL_UP", c, 6) == 0)
+            else if (g_ascii_strncasecmp ("VOL_UP", c, 6) == 0)
             {
                 ptr = c + 6;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr);
                 if (n <= 0)
@@ -247,10 +245,10 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     v = 100 - n;
                 aud_drct_set_volume_main (v + n);
             }
-            else if (strncasecmp ("VOL_DOWN", c, 8) == 0)
+            else if (g_ascii_strncasecmp ("VOL_DOWN", c, 8) == 0)
             {
                 ptr = c + 8;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr);
                 if (n <= 0)
@@ -261,11 +259,11 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     v = n;
                 aud_drct_set_volume_main (v - n);
             }
-            else if (strcasecmp ("QUIT", c) == 0)
+            else if (g_ascii_strcasecmp ("QUIT", c) == 0)
             {
                 aud_drct_quit ();
             }
-            else if (strcasecmp ("MUTE", c) == 0)
+            else if (g_ascii_strcasecmp ("MUTE", c) == 0)
             {
                 if (mute == 0)
                 {
@@ -281,10 +279,10 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     aud_drct_set_volume_main (mute_vol);
                 }
             }
-            else if (strncasecmp ("BAL_LEFT", c, 8) == 0)
+            else if (g_ascii_strncasecmp ("BAL_LEFT", c, 8) == 0)
             {
                 ptr = c + 8;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr);
                 if (n <= 0)
@@ -296,10 +294,10 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     balance = -100;
                 aud_drct_set_volume_balance (balance);
             }
-            else if (strncasecmp ("BAL_RIGHT", c, 9) == 0)
+            else if (g_ascii_strncasecmp ("BAL_RIGHT", c, 9) == 0)
             {
                 ptr = c + 9;
-                while (isspace (*ptr))
+                while (g_ascii_isspace (*ptr))
                     ptr++;
                 n = atoi (ptr);
                 if (n <= 0)
@@ -311,12 +309,12 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     balance = 100;
                 aud_drct_set_volume_balance (balance);
             }
-            else if (strcasecmp ("BAL_CENTER", c) == 0)
+            else if (g_ascii_strcasecmp ("BAL_CENTER", c) == 0)
             {
                 balance = 0;
                 aud_drct_set_volume_balance (balance);
             }
-            else if (strcasecmp ("LIST", c) == 0)
+            else if (g_ascii_strcasecmp ("LIST", c) == 0)
             {
 #if 0
                 show_pl = aud_drct_pl_win_is_visible ();
@@ -324,7 +322,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 aud_drct_pl_win_toggle (show_pl);
 #endif
             }
-            else if (strcasecmp ("PLAYLIST_CLEAR", c) == 0)
+            else if (g_ascii_strcasecmp ("PLAYLIST_CLEAR", c) == 0)
             {
                 aud_drct_stop ();
                 int playlist = aud_playlist_get_active ();
@@ -332,7 +330,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                                            aud_playlist_entry_count
                                            (playlist));
             }
-            else if (strncasecmp ("PLAYLIST_ADD ", c, 13) == 0)
+            else if (g_ascii_strncasecmp ("PLAYLIST_ADD ", c, 13) == 0)
             {
                 aud_drct_pl_add (c + 13, -1);
             }
