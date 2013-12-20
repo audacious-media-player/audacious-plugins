@@ -222,10 +222,10 @@ int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
         xs_findnext(inLine, &linePos);
 
         /* Check if it is datafield */
-        if (isxdigit(inLine[linePos])) {
+        if (g_ascii_isxdigit(inLine[linePos])) {
             /* Check the length of the hash */
             int hashLen;
-            for (hashLen = 0; inLine[linePos] && isxdigit(inLine[linePos]); hashLen++, linePos++);
+            for (hashLen = 0; inLine[linePos] && g_ascii_isxdigit(inLine[linePos]); hashLen++, linePos++);
 
             if (hashLen != XS_MD5HASH_LENGTH_CH) {
                 xs_error("Invalid MD5-hash in SongLengthDB file '%s' line #%d!\n",
