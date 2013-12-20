@@ -50,6 +50,7 @@
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -462,12 +463,18 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
     tuple_set_int (tuple, FIELD_LENGTH, calculate_track_length
      (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 
+    if (trackinfo[trackno].name[0])
+        tuple_set_str (tuple, FIELD_TITLE, trackinfo[trackno].name);
+    else
+    {
+        SPRINTF (title, _("Track %d"), trackno);
+        tuple_set_str (tuple, FIELD_TITLE, title);
+    }
+
     if (trackinfo[trackno].performer[0])
         tuple_set_str (tuple, FIELD_ARTIST, trackinfo[trackno].performer);
     if (trackinfo[0].name[0])
         tuple_set_str (tuple, FIELD_ALBUM, trackinfo[0].name);
-    if (trackinfo[trackno].name[0])
-        tuple_set_str (tuple, FIELD_TITLE, trackinfo[trackno].name);
     if (trackinfo[trackno].genre[0])
         tuple_set_str (tuple, FIELD_GENRE, trackinfo[trackno].genre);
 
@@ -633,12 +640,6 @@ static void scan_cd (void)
                                  pcdtext->field[CDTEXT_GENRE]);
 #endif
             cdtext_was_available = TRUE;
-        }
-        else
-        {
-            cdaudio_set_strinfo (&trackinfo[trackno], "", "", "");
-            snprintf (trackinfo[trackno].name, DEF_STRING_LEN,
-                      "Track %d", trackno);
         }
     }
 
