@@ -27,7 +27,7 @@
 #include "playlist_util.h"
 #include "ui_playlist_notebook.h"
 
-GtkWidget * playlist_get_treeview (gint playlist)
+GtkWidget * playlist_get_treeview (int playlist)
 {
     GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, playlist);
 
@@ -37,10 +37,10 @@ GtkWidget * playlist_get_treeview (gint playlist)
     return g_object_get_data ((GObject *) page, "treeview");
 }
 
-gint playlist_count_selected_in_range (gint list, gint top, gint length)
+int playlist_count_selected_in_range (int list, int top, int length)
 {
-    gint selected = 0;
-    gint count;
+    int selected = 0;
+    int count;
 
     for (count = 0; count < length; count ++)
     {
@@ -53,8 +53,8 @@ gint playlist_count_selected_in_range (gint list, gint top, gint length)
 
 void playlist_song_info (void)
 {
-    gint list = aud_playlist_get_active ();
-    gint focus = aud_playlist_get_focus (list);
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
 
     if (focus < 0)
         return;
@@ -64,13 +64,13 @@ void playlist_song_info (void)
 
 void playlist_queue_toggle (void)
 {
-    gint list = aud_playlist_get_active ();
-    gint focus = aud_playlist_get_focus (list);
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
 
     if (focus < 0)
         return;
 
-    gint at = aud_playlist_queue_find_entry (list, focus);
+    int at = aud_playlist_queue_find_entry (list, focus);
 
     if (at < 0)
         aud_playlist_queue_insert (list, -1, focus);
@@ -80,14 +80,14 @@ void playlist_queue_toggle (void)
 
 void playlist_delete_selected (void)
 {
-    gint list = aud_playlist_get_active ();
+    int list = aud_playlist_get_active ();
     aud_playlist_delete_selected (list);
     aud_playlist_entry_set_selected (list, aud_playlist_get_focus (list), TRUE);
 }
 
 void playlist_copy (void)
 {
-    gchar * text = audgui_urilist_create_from_selected (aud_playlist_get_active ());
+    char * text = audgui_urilist_create_from_selected (aud_playlist_get_active ());
     if (! text)
         return;
 
@@ -103,20 +103,20 @@ void playlist_cut (void)
 
 void playlist_paste (void)
 {
-    gchar * text = gtk_clipboard_wait_for_text (gtk_clipboard_get
+    char * text = gtk_clipboard_wait_for_text (gtk_clipboard_get
      (GDK_SELECTION_CLIPBOARD));
     if (! text)
         return;
 
-    gint list = aud_playlist_get_active ();
+    int list = aud_playlist_get_active ();
     audgui_urilist_insert (list, aud_playlist_get_focus (list), text);
     g_free (text);
 }
 
-void playlist_shift (gint offset)
+void playlist_shift (int offset)
 {
-    gint list = aud_playlist_get_active ();
-    gint focus = aud_playlist_get_focus (list);
+    int list = aud_playlist_get_active ();
+    int focus = aud_playlist_get_focus (list);
 
     if (focus < 0 || ! aud_playlist_entry_get_selected (list, focus))
         return;

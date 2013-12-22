@@ -22,11 +22,11 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * ui_playlist_widget_new (gint playlist);
-gint ui_playlist_widget_get_playlist (GtkWidget * widget);
-void ui_playlist_widget_set_playlist (GtkWidget * widget, gint playlist);
-void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
- gint count);
+GtkWidget * ui_playlist_widget_new (int playlist);
+int ui_playlist_widget_get_playlist (GtkWidget * widget);
+void ui_playlist_widget_set_playlist (GtkWidget * widget, int playlist);
+void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
+ int count);
 void ui_playlist_widget_scroll (GtkWidget * widget);
 
 void ui_playlist_widget_get_column_widths (GtkWidget * widget, char * * widths,
@@ -38,10 +38,10 @@ enum {PW_COL_NUMBER, PW_COL_TITLE, PW_COL_ARTIST, PW_COL_YEAR, PW_COL_ALBUM,
  PW_COL_TRACK, PW_COL_GENRE, PW_COL_QUEUED, PW_COL_LENGTH, PW_COL_PATH,
  PW_COL_FILENAME, PW_COL_CUSTOM, PW_COL_BITRATE, PW_COLS};
 
-extern const gchar * const pw_col_names[PW_COLS];
+extern const char * const pw_col_names[PW_COLS];
 
-extern gint pw_num_cols;
-extern gint pw_cols[PW_COLS];
+extern int pw_num_cols;
+extern int pw_cols[PW_COLS];
 
 void pw_col_init (void);
 void pw_col_choose (void);

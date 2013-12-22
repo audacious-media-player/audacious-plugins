@@ -38,28 +38,28 @@
 #define ALT GDK_MOD1_MASK
 
 struct MenuItem {
-    const gchar * name;
-    const gchar * icon;
-    guint key;
+    const char * name;
+    const char * icon;
+    unsigned key;
     GdkModifierType mod;
 
     /* for normal items */
     void (* func) (void);
 
     /* for toggle items */
-    gboolean (* get) (void);
-    void (* set) (gboolean on);
-    const gchar * hook;
+    bool_t (* get) (void);
+    void (* set) (bool_t on);
+    const char * hook;
 
     /* for submenus */
     const struct MenuItem * items;
-    gint n_items;
+    int n_items;
 
     /* for custom submenus */
     GtkWidget * (* get_sub) (void);
 
     /* for separators */
-    gboolean sep;
+    bool_t sep;
 };
 
 int menu_tab_playlist_id = -1; /* should really be stored in the menu somehow */
@@ -69,14 +69,14 @@ static void open_url (void) {audgui_show_add_url_window (TRUE); }
 static void add_files (void) {audgui_run_filebrowser (FALSE); }
 static void add_url (void) {audgui_show_add_url_window (FALSE); }
 
-static gboolean repeat_get (void) {return aud_get_bool (NULL, "repeat"); }
-static void repeat_set (gboolean on) {aud_set_bool (NULL, "repeat", on); }
-static gboolean shuffle_get (void) {return aud_get_bool (NULL, "shuffle"); }
-static void shuffle_set (gboolean on) {aud_set_bool (NULL, "shuffle", on); }
-static gboolean no_advance_get (void) {return aud_get_bool (NULL, "no_playlist_advance"); }
-static void no_advance_set (gboolean on) {aud_set_bool (NULL, "no_playlist_advance", on); }
-static gboolean stop_after_get (void) {return aud_get_bool (NULL, "stop_after_current_song"); }
-static void stop_after_set (gboolean on) {aud_set_bool (NULL, "stop_after_current_song", on); }
+static bool_t repeat_get (void) {return aud_get_bool (NULL, "repeat"); }
+static void repeat_set (bool_t on) {aud_set_bool (NULL, "repeat", on); }
+static bool_t shuffle_get (void) {return aud_get_bool (NULL, "shuffle"); }
+static void shuffle_set (bool_t on) {aud_set_bool (NULL, "shuffle", on); }
+static bool_t no_advance_get (void) {return aud_get_bool (NULL, "no_playlist_advance"); }
+static void no_advance_set (bool_t on) {aud_set_bool (NULL, "no_playlist_advance", on); }
+static bool_t stop_after_get (void) {return aud_get_bool (NULL, "stop_after_current_song"); }
+static void stop_after_set (bool_t on) {aud_set_bool (NULL, "stop_after_current_song", on); }
 
 static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK); }
 static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
@@ -162,19 +162,19 @@ static void volume_down (void)
     aud_drct_set_volume_main (vol - 5);
 }
 
-static gboolean menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible"); }
-static gboolean playlist_tabs_get (void) {return aud_get_bool ("gtkui", "playlist_tabs_visible"); }
-static void playlist_tabs_set (gboolean show) {aud_set_bool ("gtkui", "playlist_tabs_visible", show); show_playlist_tabs (); }
-static gboolean infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
-static gboolean infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
-static gboolean status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
-static gboolean remaining_time_get (void) {return aud_get_bool ("gtkui", "show_remaining_time"); }
-static void remaining_time_set (gboolean show) {aud_set_bool ("gtkui", "show_remaining_time", show); }
-static gboolean entry_count_get (void) {return aud_get_bool ("gtkui", "entry_count_visible"); }
-static gboolean close_button_get (void) {return aud_get_bool ("gtkui", "close_button_visible"); }
-static gboolean column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
-static gboolean autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
-static void autoscroll_set (gboolean on) {aud_set_bool ("gtkui", "autoscroll", on); }
+static bool_t menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible"); }
+static bool_t playlist_tabs_get (void) {return aud_get_bool ("gtkui", "playlist_tabs_visible"); }
+static void playlist_tabs_set (bool_t show) {aud_set_bool ("gtkui", "playlist_tabs_visible", show); show_playlist_tabs (); }
+static bool_t infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
+static bool_t infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
+static bool_t status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
+static bool_t remaining_time_get (void) {return aud_get_bool ("gtkui", "show_remaining_time"); }
+static void remaining_time_set (bool_t show) {aud_set_bool ("gtkui", "show_remaining_time", show); }
+static bool_t entry_count_get (void) {return aud_get_bool ("gtkui", "entry_count_visible"); }
+static bool_t close_button_get (void) {return aud_get_bool ("gtkui", "close_button_visible"); }
+static bool_t column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
+static bool_t autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
+static void autoscroll_set (bool_t on) {aud_set_bool ("gtkui", "autoscroll", on); }
 
 static const struct MenuItem file_items[] = {
  {N_("_Open Files ..."), "document-open", 'o', CTRL, .func = open_files},
@@ -330,9 +330,9 @@ static void unhook_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
 }
 
 static void populate_menu (GtkWidget * shell, const struct MenuItem * items,
- gint n_items, GtkAccelGroup * accel)
+ int n_items, GtkAccelGroup * accel)
 {
-    for (gint i = 0; i < n_items; i ++)
+    for (int i = 0; i < n_items; i ++)
     {
         const struct MenuItem * item = & items[i];
         GtkWidget * widget = NULL;

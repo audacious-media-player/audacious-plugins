@@ -28,7 +28,7 @@ void layout_cleanup (void);
 
 GtkWidget * layout_new (void);
 void layout_add_center (GtkWidget * add);
-void layout_add (GtkWidget * add, const gchar * name);
+void layout_add (GtkWidget * add, const char * name);
 void layout_remove (GtkWidget * rem);
 
 #endif

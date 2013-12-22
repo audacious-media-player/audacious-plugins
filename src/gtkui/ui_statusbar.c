@@ -37,11 +37,11 @@
  __VA_ARGS__)
 
 static void
-ui_statusbar_update_playlist_length(gpointer unused, GtkWidget *label)
+ui_statusbar_update_playlist_length(void * unused, GtkWidget *label)
 {
-    gint playlist = aud_playlist_get_active();
-    gint64 selection, total;
-    gchar *sel_text, *tot_text, *text;
+    int playlist = aud_playlist_get_active();
+    int64_t selection, total;
+    char *sel_text, *tot_text, *text;
 
     total = aud_playlist_get_total_length (playlist) / 1000;
     selection = aud_playlist_get_selected_length (playlist) / 1000;
@@ -69,23 +69,23 @@ ui_statusbar_update_playlist_length(gpointer unused, GtkWidget *label)
 }
 
 static void
-ui_statusbar_info_change(gpointer unused, GtkWidget *label)
+ui_statusbar_info_change(void * unused, GtkWidget *label)
 {
     /* may be called asynchronously */
     if (!aud_drct_get_playing())
         return;
 
-    gint playlist = aud_playlist_get_playing ();
+    int playlist = aud_playlist_get_playing ();
     Tuple * tuple = aud_playlist_entry_get_tuple (playlist,
      aud_playlist_get_position (playlist), FALSE);
-    gchar * codec = tuple ? tuple_get_str (tuple, FIELD_CODEC) : NULL;
+    char * codec = tuple ? tuple_get_str (tuple, FIELD_CODEC) : NULL;
     if (tuple)
         tuple_unref (tuple);
 
-    gint bitrate, samplerate, channels;
+    int bitrate, samplerate, channels;
     aud_drct_get_info(&bitrate, &samplerate, &channels);
 
-    gchar buf[256];
+    char buf[256];
     buf[0] = 0;
 
     if (codec)
@@ -125,12 +125,12 @@ ui_statusbar_info_change(gpointer unused, GtkWidget *label)
 }
 
 static void
-ui_statusbar_playback_stop(gpointer unused, GtkWidget *label)
+ui_statusbar_playback_stop(void * unused, GtkWidget *label)
 {
     gtk_label_set_text(GTK_LABEL(label), "");
 }
 
-static void ui_statusbar_destroy_cb(GtkWidget *widget, gpointer user_data)
+static void ui_statusbar_destroy_cb(GtkWidget *widget, void * user_data)
 {
     hook_dissociate("playback ready", (HookFunction) ui_statusbar_info_change);
     hook_dissociate("info change", (HookFunction) ui_statusbar_info_change);

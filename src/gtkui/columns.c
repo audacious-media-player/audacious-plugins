@@ -30,15 +30,15 @@
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
-const gchar * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
+const char * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
  N_("Artist"), N_("Year"), N_("Album"), N_("Track"), N_("Genre"),
  N_("Queue position"), N_("Length"), N_("File path"), N_("File name"),
  N_("Custom title"), N_("Bitrate")};
 
-gint pw_num_cols;
-gint pw_cols[PW_COLS];
+int pw_num_cols;
+int pw_cols[PW_COLS];
 
-static const gchar * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
+static const char * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
  "year", "album", "track", "genre", "queued", "length", "path", "filename",
  "custom", "bitrate"};
 
@@ -46,12 +46,12 @@ void pw_col_init (void)
 {
     pw_num_cols = 0;
 
-    gchar * columns = aud_get_str ("gtkui", "playlist_columns");
-    gchar * * split = g_strsplit (columns, " ", -1);
+    char * columns = aud_get_str ("gtkui", "playlist_columns");
+    char * * split = g_strsplit (columns, " ", -1);
 
-    for (gchar * * elem = split; * elem && pw_num_cols < PW_COLS; elem ++)
+    for (char * * elem = split; * elem && pw_num_cols < PW_COLS; elem ++)
     {
-        gint i = 0;
+        int i = 0;
         while (i < PW_COLS && strcmp (* elem, pw_col_keys[i]))
             i ++;
 
@@ -66,43 +66,43 @@ void pw_col_init (void)
 }
 
 typedef struct {
-    gint column;
-    gboolean selected;
+    int column;
+    bool_t selected;
 } Column;
 
 static GtkWidget * window = NULL;
 static GtkWidget * chosen_list = NULL, * avail_list = NULL;
 static Index * chosen = NULL, * avail = NULL;
 
-static void get_value (void * user, gint row, gint column, GValue * value)
+static void get_value (void * user, int row, int column, GValue * value)
 {
     g_return_if_fail (row >= 0 && row < index_count (user));
     Column * c = index_get (user, row);
     g_value_set_string (value, _(pw_col_names[c->column]));
 }
 
-static gboolean get_selected (void * user, gint row)
+static bool_t get_selected (void * user, int row)
 {
     g_return_val_if_fail (row >= 0 && row < index_count (user), FALSE);
     return ((Column *) index_get (user, row))->selected;
 }
 
-static void set_selected (void * user, gint row, gboolean selected)
+static void set_selected (void * user, int row, bool_t selected)
 {
     g_return_if_fail (row >= 0 && row < index_count (user));
     ((Column *) index_get (user, row))->selected = selected;
 }
 
-static void select_all (void * user, gboolean selected)
+static void select_all (void * user, bool_t selected)
 {
-    gint rows = index_count (user);
-    for (gint row = 0; row < rows; row ++)
+    int rows = index_count (user);
+    for (int row = 0; row < rows; row ++)
         ((Column *) index_get (user, row))->selected = selected;
 }
 
-static void shift_rows (void * user, gint row, gint before)
+static void shift_rows (void * user, int row, int before)
 {
-    gint rows = index_count (user);
+    int rows = index_count (user);
     g_return_if_fail (row >= 0 && row < rows);
     g_return_if_fail (before >= 0 && before <= rows);
 
@@ -112,7 +112,7 @@ static void shift_rows (void * user, gint row, gint before)
     Index * move = index_new ();
     Index * others = index_new ();
 
-    gint begin, end;
+    int begin, end;
     if (before < row)
     {
         begin = before;
@@ -128,7 +128,7 @@ static void shift_rows (void * user, gint row, gint before)
         end = before;
     }
 
-    for (gint i = begin; i < end; i ++)
+    for (int i = begin; i < end; i ++)
     {
         Column * c = index_get (user, i);
         index_insert (c->selected ? move : others, -1, c);
@@ -178,10 +178,10 @@ static void transfer (Index * source)
         dest_list = chosen_list;
     }
 
-    gint source_rows = index_count (source);
-    gint dest_rows = index_count (dest);
+    int source_rows = index_count (source);
+    int dest_rows = index_count (dest);
 
-    for (gint row = 0; row < source_rows; )
+    for (int row = 0; row < source_rows; )
     {
         Column * c = index_get (source, row);
         if (! c->selected)
@@ -199,11 +199,11 @@ static void transfer (Index * source)
     }
 }
 
-static void response_cb (GtkWidget * widget, gint response, void * unused)
+static void response_cb (GtkWidget * widget, int response, void * unused)
 {
     if (response == GTK_RESPONSE_ACCEPT)
     {
-        gint cols = index_count (chosen);
+        int cols = index_count (chosen);
         g_return_if_fail (cols <= PW_COLS);
 
         ui_playlist_notebook_empty ();
@@ -226,14 +226,14 @@ static void destroy_cb (void)
     chosen_list = NULL;
     avail_list = NULL;
 
-    gint rows = index_count (chosen);
-    for (gint row = 0; row < rows; row ++)
+    int rows = index_count (chosen);
+    for (int row = 0; row < rows; row ++)
         g_slice_free (Column, index_get (chosen, row));
     index_free (chosen);
     chosen = NULL;
 
     rows = index_count (avail);
-    for (gint row = 0; row < rows; row ++)
+    for (int row = 0; row < rows; row ++)
         g_slice_free (Column, index_get (avail, row));
     index_free (avail);
     avail = NULL;
@@ -250,10 +250,10 @@ void pw_col_choose (void)
     chosen = index_new ();
     avail = index_new ();
 
-    gboolean added[PW_COLS];
+    bool_t added[PW_COLS];
     memset (added, 0, sizeof added);
 
-    for (gint i = 0; i < pw_num_cols; i ++)
+    for (int i = 0; i < pw_num_cols; i ++)
     {
         if (added[pw_cols[i]])
             continue;
@@ -264,7 +264,7 @@ void pw_col_choose (void)
         index_insert (chosen, -1, column);
     }
 
-    for (gint i = 0; i < PW_COLS; i ++)
+    for (int i = 0; i < PW_COLS; i ++)
     {
         if (added[i])
             continue;
@@ -296,7 +296,7 @@ void pw_col_choose (void)
     gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
 
     GtkWidget * label = gtk_label_new (_("Available:"));
-    g_object_set ((GObject *) label, "xalign", (gfloat) 0, NULL);
+    g_object_set ((GObject *) label, "xalign", (float) 0, NULL);
     gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
 
     GtkWidget * scroll = gtk_scrolled_window_new (NULL, NULL);
@@ -330,7 +330,7 @@ void pw_col_choose (void)
     gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
 
     label = gtk_label_new (_("Chosen:"));
-    g_object_set ((GObject *) label, "xalign", (gfloat) 0, NULL);
+    g_object_set ((GObject *) label, "xalign", (float) 0, NULL);
     gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
 
     scroll = gtk_scrolled_window_new (NULL, NULL);
@@ -351,7 +351,7 @@ void pw_col_choose (void)
 void pw_col_save (void)
 {
     GString * s = g_string_new_len (NULL, 0);
-    for (gint i = 0; ; )
+    for (int i = 0; ; )
     {
         g_string_append (s, pw_col_keys[pw_cols[i]]);
         if (++ i < pw_num_cols)

@@ -33,13 +33,13 @@ extern int menu_tab_playlist_id;
 void set_ab_repeat_a (void);
 void set_ab_repeat_b (void);
 void clear_ab_repeat (void);
-void show_menu (gboolean show);
+void show_menu (bool_t show);
 void show_playlist_tabs (void);
-void show_infoarea (gboolean show);
-void show_infoarea_vis (gboolean show);
-void show_statusbar (gboolean show);
-void popup_menu_rclick (guint button, guint32 time);
-void popup_menu_tab (guint button, guint32 time, int playlist);
+void show_infoarea (bool_t show);
+void show_infoarea_vis (bool_t show);
+void show_statusbar (bool_t show);
+void popup_menu_rclick (unsigned button, uint32_t time);
+void popup_menu_tab (unsigned button, uint32_t time, int playlist);
 void activate_search_tool (void);
 
 #endif

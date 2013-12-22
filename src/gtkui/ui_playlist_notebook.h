@@ -26,7 +26,7 @@
 
 GtkNotebook *ui_playlist_get_notebook(void);
 GtkWidget *ui_playlist_notebook_new();
-void ui_playlist_notebook_create_tab(gint playlist);
+void ui_playlist_notebook_create_tab(int playlist);
 void ui_playlist_notebook_edit_tab_title (int playlist);
 void ui_playlist_notebook_populate(void);
 void ui_playlist_notebook_empty (void);
@@ -35,8 +35,8 @@ void ui_playlist_notebook_activate (void * data, void * user);
 void ui_playlist_notebook_set_playing (void * data, void * user);
 void ui_playlist_notebook_position (void * data, void * user);
 
-void playlist_show_entry_counts (gboolean show);
-void playlist_show_close_buttons (gboolean show);
-void playlist_show_headers (gboolean show);
+void playlist_show_entry_counts (bool_t show);
+void playlist_show_close_buttons (bool_t show);
+void playlist_show_headers (bool_t show);
 
 #endif

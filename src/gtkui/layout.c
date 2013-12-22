@@ -40,9 +40,9 @@ enum {DOCK_LEFT, DOCK_RIGHT, DOCK_TOP, DOCK_BOTTOM, DOCKS};
  gtk_widget_destroyed, & (w))
 
 typedef struct {
-    gchar * name;
+    char * name;
     GtkWidget * widget, * vbox, * paned, * window;
-    gint dock, x, y, w, h;
+    int dock, x, y, w, h;
 } Item;
 
 static GList * items = NULL;
@@ -69,7 +69,7 @@ void layout_add_center (GtkWidget * widget)
     NULL_ON_DESTROY (center);
 }
 
-static void layout_move (GtkWidget * widget, gint dock);
+static void layout_move (GtkWidget * widget, int dock);
 
 static void layout_dock_left (GtkWidget * widget)
 {
@@ -103,7 +103,7 @@ static void layout_disable (GtkWidget * widget)
     aud_plugin_enable (plugin, FALSE);
 }
 
-static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
+static bool_t menu_cb (GtkWidget * widget, GdkEventButton * event)
 {
     g_return_val_if_fail (widget && event, FALSE);
 
@@ -116,13 +116,13 @@ static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
     menu = gtk_menu_new ();
     g_signal_connect (menu, "destroy", (GCallback) gtk_widget_destroyed, & menu);
 
-    const gchar * names[6] = {N_("Dock at Left"), N_("Dock at Right"),
+    const char * names[6] = {N_("Dock at Left"), N_("Dock at Right"),
      N_("Dock at Top"), N_("Dock at Bottom"), N_("Undock"), N_("Disable")};
     void (* const funcs[6]) (GtkWidget * widget) = {layout_dock_left,
      layout_dock_right, layout_dock_top, layout_dock_bottom, layout_undock,
      layout_disable};
 
-    for (gint i = 0; i < 6; i ++)
+    for (int i = 0; i < 6; i ++)
     {
         GtkWidget * item = gtk_menu_item_new_with_label (_(names[i]));
         gtk_menu_shell_append ((GtkMenuShell *) menu, item);
@@ -135,7 +135,7 @@ static gboolean menu_cb (GtkWidget * widget, GdkEventButton * event)
     return TRUE;
 }
 
-static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
+static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
 {
     g_return_val_if_fail (widget && name, NULL);
 
@@ -147,7 +147,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
      widget);
 
     GtkWidget * label = gtk_label_new (NULL);
-    gchar * markup = g_markup_printf_escaped ("<small><b>%s</b></small>", name);
+    char * markup = g_markup_printf_escaped ("<small><b>%s</b></small>", name);
     gtk_label_set_markup ((GtkLabel *) label, markup);
     g_free (markup);
     gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
@@ -163,15 +163,15 @@ static GtkWidget * vbox_new (GtkWidget * widget, const gchar * name)
 typedef struct {
     GtkWidget * paned;
     GtkWidget * widget;
-    gboolean vertical;
-    gint w, h;
+    bool_t vertical;
+    int w, h;
 } RestoreSizeData;
 
-static gboolean restore_size_cb (RestoreSizeData * d)
+static bool_t restore_size_cb (RestoreSizeData * d)
 {
     GtkAllocation rect;
     gtk_widget_get_allocation (d->widget, & rect);
-    gint pos = gtk_paned_get_position ((GtkPaned *) d->paned);
+    int pos = gtk_paned_get_position ((GtkPaned *) d->paned);
     pos -= d->vertical ? d->h - rect.height : d->w - rect.width;
     gtk_paned_set_position ((GtkPaned *) d->paned, pos);
 
@@ -179,7 +179,7 @@ static gboolean restore_size_cb (RestoreSizeData * d)
     return FALSE;
 }
 
-static GtkWidget * paned_new (gboolean vertical, gboolean after, gint w, gint h)
+static GtkWidget * paned_new (bool_t vertical, bool_t after, int w, int h)
 {
     GtkWidget * paned = gtk_paned_new (vertical ? GTK_ORIENTATION_VERTICAL :
      GTK_ORIENTATION_HORIZONTAL);
@@ -214,7 +214,7 @@ static GtkWidget * paned_new (gboolean vertical, gboolean after, gint w, gint h)
     return paned;
 }
 
-static Item * item_new (const gchar * name)
+static Item * item_new (const char * name)
 {
     Item * item = g_slice_new (Item);
     item->name = g_strdup (name);
@@ -233,23 +233,23 @@ static Item * item_new (const gchar * name)
     return item;
 }
 
-static gint item_by_widget (Item * item, GtkWidget * widget)
+static int item_by_widget (Item * item, GtkWidget * widget)
 {
     return (item->widget != widget);
 }
 
-static gint item_by_name (Item * item, const gchar * name)
+static int item_by_name (Item * item, const char * name)
 {
     return strcmp (item->name, name);
 }
 
-static gboolean delete_cb (GtkWidget * widget)
+static bool_t delete_cb (GtkWidget * widget)
 {
     layout_disable (widget);
     return TRUE;
 }
 
-static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event)
+static bool_t escape_cb (GtkWidget * widget, GdkEventKey * event)
 {
     if (event->keyval == GDK_KEY_Escape)
     {
@@ -260,11 +260,11 @@ static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event)
     return FALSE;
 }
 
-static GtkWidget * dock_get_parent (gint dock)
+static GtkWidget * dock_get_parent (int dock)
 {
     g_return_val_if_fail (dock >= 0 && dock < DOCKS, NULL);
 
-    for (gint scan = dock; scan --; )
+    for (int scan = dock; scan --; )
     {
         if (docks[scan])
             return g_object_get_data ((GObject *) docks[scan], "next");
@@ -342,7 +342,7 @@ static void item_add (Item * item)
     {
         /* Screwy logic to figure out where we need to add a GtkPaned and which
          * widget goes in which pane of it. */
-        gboolean swap = FALSE;
+        bool_t swap = FALSE;
         Item * where = item;
         GtkWidget * parent, * paned;
 
@@ -402,7 +402,7 @@ static void item_remove (Item * item)
     {
         /* Screwy logic to figure out which GtkPaned we need to remove and which
          * pane of it has the widget we need to keep. */
-        gboolean swap = FALSE;
+        bool_t swap = FALSE;
         Item * where = item;
         GtkWidget * parent, * paned;
 
@@ -455,7 +455,7 @@ static void size_changed_cb (GtkWidget * widget, GdkRectangle * rect, Item * ite
     }
 }
 
-void layout_add (GtkWidget * widget, const gchar * name)
+void layout_add (GtkWidget * widget, const char * name)
 {
     g_return_if_fail (layout && center && widget && name && strlen (name) <= 256
      && ! strchr (name, '\n'));
@@ -482,7 +482,7 @@ void layout_add (GtkWidget * widget, const gchar * name)
     item_add (item);
 }
 
-static void layout_move (GtkWidget * widget, gint dock)
+static void layout_move (GtkWidget * widget, int dock)
 {
     g_return_if_fail (layout && center && widget && dock < DOCKS);
 
@@ -520,14 +520,14 @@ void layout_remove (GtkWidget * widget)
 
 void layout_save (void)
 {
-    gint i = 0;
+    int i = 0;
 
     for (GList * node = items; node; node = node->next)
     {
         Item * item = node->data;
         g_return_if_fail (item && item->name);
 
-        gchar key[16], value[64];
+        char key[16], value[64];
 
         snprintf (key, sizeof key, "item%d_name", i);
         aud_set_str ("gtkui-layout", key, item->name);
@@ -547,19 +547,19 @@ void layout_load (void)
 {
     g_return_if_fail (! items);
 
-    gint count = aud_get_int ("gtkui-layout", "item_count");
+    int count = aud_get_int ("gtkui-layout", "item_count");
 
-    for (gint i = 0; i < count; i ++)
+    for (int i = 0; i < count; i ++)
     {
-        gchar key[16];
+        char key[16];
 
         snprintf (key, sizeof key, "item%d_name", i);
-        gchar * name = aud_get_str ("gtkui-layout", key);
+        char * name = aud_get_str ("gtkui-layout", key);
         Item * item = item_new (name);
         str_unref (name);
 
         snprintf (key, sizeof key, "item%d_pos", i);
-        gchar * pos = aud_get_str ("gtkui-layout", key);
+        char * pos = aud_get_str ("gtkui-layout", key);
         sscanf (pos, "%d,%d,%d,%d,%d", & item->dock, & item->x, & item->y, & item->w, & item->h);
         str_unref (pos);
     }

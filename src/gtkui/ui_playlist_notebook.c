@@ -38,10 +38,10 @@
 #include "playlist_util.h"
 
 static GtkWidget * notebook = NULL;
-static gint highlighted = -1;
+static int highlighted = -1;
 
-static gint switch_handler = 0;
-static gint reorder_handler = 0;
+static int switch_handler = 0;
+static int reorder_handler = 0;
 
 static void add_button_cb (GtkButton * button, void * unused)
 {
@@ -68,7 +68,7 @@ static void close_button_cb (GtkWidget * button, void * id)
     audgui_confirm_playlist_delete (aud_playlist_by_unique_id (GPOINTER_TO_INT (id)));
 }
 
-static GtkWidget * make_close_button (GtkWidget * ebox, gint list)
+static GtkWidget * make_close_button (GtkWidget * ebox, int list)
 {
     GtkWidget * button = gtk_button_new ();
     GtkWidget * image = gtk_image_new_from_icon_name ("window-close", GTK_ICON_SIZE_MENU);
@@ -103,13 +103,13 @@ static GtkWidget * make_close_button (GtkWidget * ebox, gint list)
     return button;
 }
 
-void playlist_show_close_buttons (gboolean show)
+void playlist_show_close_buttons (bool_t show)
 {
     aud_set_bool ("gtkui", "close_button_visible", show);
 
-    gint pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
+    int pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
 
-    for (gint i = 0; i < pages; i ++)
+    for (int i = 0; i < pages; i ++)
     {
         GtkWidget * page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, i);
         GtkWidget * ebox = gtk_notebook_get_tab_label ((GtkNotebook *) notebook, page);
@@ -162,7 +162,7 @@ static void tab_title_reset(GtkWidget *ebox)
     gtk_widget_show(label);
 }
 
-static void tab_title_save(GtkEntry *entry, gpointer ebox)
+static void tab_title_save(GtkEntry *entry, void * ebox)
 {
     int id = GPOINTER_TO_INT (g_object_get_data ((GObject *) ebox, "playlist-id"));
     GtkWidget *label = g_object_get_data(G_OBJECT(ebox), "label");
@@ -172,7 +172,7 @@ static void tab_title_save(GtkEntry *entry, gpointer ebox)
     gtk_widget_show(label);
 }
 
-static gboolean tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
+static bool_t tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, void * user_data)
 {
     if (event->keyval == GDK_KEY_Escape)
         tab_title_reset(widget);
@@ -180,7 +180,7 @@ static gboolean tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, gpointer
     return FALSE;
 }
 
-static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, gpointer user_data)
+static bool_t tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, void * user_data)
 {
     int id = GPOINTER_TO_INT (g_object_get_data ((GObject *) ebox, "playlist-id"));
     int playlist = aud_playlist_by_unique_id (id);
@@ -216,7 +216,7 @@ static bool_t scroll_cb (GtkWidget * widget, GdkEventScroll * event)
     }
 }
 
-static void tab_changed (GtkNotebook * notebook, GtkWidget * page, gint
+static void tab_changed (GtkNotebook * notebook, GtkWidget * page, int
  page_num, void * unused)
 {
     save_column_widths ();
@@ -225,34 +225,34 @@ static void tab_changed (GtkNotebook * notebook, GtkWidget * page, gint
     aud_playlist_set_active (page_num);
 }
 
-static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, guint page_num, gpointer user_data)
+static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, unsigned page_num, void * user_data)
 {
     GtkWidget * widget = g_object_get_data ((GObject *) child, "treeview");
     g_return_if_fail (widget);
     aud_playlist_reorder (ui_playlist_widget_get_playlist (widget), page_num, 1);
 }
 
-static GtkLabel *get_tab_label(gint playlist)
+static GtkLabel *get_tab_label(int playlist)
 {
     GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, playlist);
     GtkWidget *ebox = gtk_notebook_get_tab_label(UI_PLAYLIST_NOTEBOOK, page);
     return GTK_LABEL(g_object_get_data(G_OBJECT(ebox), "label"));
 }
 
-static void set_tab_label (gint list, GtkLabel * label)
+static void set_tab_label (int list, GtkLabel * label)
 {
-    gchar * title = aud_playlist_get_title (list);
+    char * title = aud_playlist_get_title (list);
 
     if (aud_get_bool ("gtkui", "entry_count_visible"))
     {
-        gchar * temp = str_printf ("%s (%d)", title, aud_playlist_entry_count (list));
+        char * temp = str_printf ("%s (%d)", title, aud_playlist_entry_count (list));
         str_unref (title);
         title = temp;
     }
 
     if (list == aud_playlist_get_playing ())
     {
-        gchar * markup = g_markup_printf_escaped ("<b>%s</b>", title);
+        char * markup = g_markup_printf_escaped ("<b>%s</b>", title);
         gtk_label_set_markup (label, markup);
         g_free (markup);
     }
@@ -262,7 +262,7 @@ static void set_tab_label (gint list, GtkLabel * label)
     str_unref (title);
 }
 
-void playlist_show_entry_counts (gboolean show)
+void playlist_show_entry_counts (bool_t show)
 {
     aud_set_bool ("gtkui", "entry_count_visible", show);
 
@@ -280,7 +280,7 @@ void ui_playlist_notebook_edit_tab_title (int playlist)
     GtkWidget *entry = g_object_get_data(G_OBJECT(ebox), "entry");
     gtk_widget_hide(label);
 
-    gchar * title = aud_playlist_get_title (playlist);
+    char * title = aud_playlist_get_title (playlist);
     gtk_entry_set_text ((GtkEntry *) entry, title);
     str_unref (title);
     gtk_widget_grab_focus(entry);
@@ -288,12 +288,12 @@ void ui_playlist_notebook_edit_tab_title (int playlist)
     gtk_widget_show(entry);
 }
 
-void ui_playlist_notebook_create_tab(gint playlist)
+void ui_playlist_notebook_create_tab(int playlist)
 {
     GtkWidget *scrollwin, *treeview;
     GtkWidget *label, *entry, *ebox, *hbox;
     GtkAdjustment *vscroll;
-    gint position = aud_playlist_get_position (playlist);
+    int position = aud_playlist_get_position (playlist);
 
     scrollwin = gtk_scrolled_window_new(NULL, NULL);
     vscroll = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrollwin));
@@ -361,8 +361,8 @@ void ui_playlist_notebook_create_tab(gint playlist)
 
 void ui_playlist_notebook_populate(void)
 {
-    gint playlists = aud_playlist_count();
-    gint count;
+    int playlists = aud_playlist_count();
+    int count;
 
     for (count = 0; count < playlists; count++)
         ui_playlist_notebook_create_tab(count);
@@ -389,7 +389,7 @@ void ui_playlist_notebook_empty (void)
         g_signal_handler_disconnect (notebook, reorder_handler);
     reorder_handler = 0;
 
-    gint n_pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
+    int n_pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
     while (n_pages)
         gtk_notebook_remove_page ((GtkNotebook *) notebook, -- n_pages);
 }
@@ -401,15 +401,15 @@ static void add_remove_pages (void)
 
     save_column_widths ();
 
-    gint lists = aud_playlist_count ();
-    gint pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
+    int lists = aud_playlist_count ();
+    int pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
 
     /* scan through existing treeviews */
-    for (gint i = 0; i < pages; )
+    for (int i = 0; i < pages; )
     {
         GtkWidget * page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, i);
         GtkWidget * tree = g_object_get_data ((GObject *) page, "treeview");
-        gint tree_id = GPOINTER_TO_INT (g_object_get_data ((GObject *) tree, "playlist-id"));
+        int tree_id = GPOINTER_TO_INT (g_object_get_data ((GObject *) tree, "playlist-id"));
 
         /* do we have an orphaned treeview? */
         if (aud_playlist_by_unique_id (tree_id) < 0)
@@ -420,7 +420,7 @@ static void add_remove_pages (void)
         }
 
         /* do we have the right treeview? */
-        gint list_id = aud_playlist_get_unique_id (i);
+        int list_id = aud_playlist_get_unique_id (i);
 
         if (tree_id == list_id)
         {
@@ -430,9 +430,9 @@ static void add_remove_pages (void)
         }
 
         /* look for the right treeview */
-        gint found = FALSE;
+        int found = FALSE;
 
-        for (gint j = i + 1; j < pages; j ++)
+        for (int j = i + 1; j < pages; j ++)
         {
             page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, j);
             tree = g_object_get_data ((GObject *) page, "treeview");
@@ -475,22 +475,22 @@ static void add_remove_pages (void)
 
 void ui_playlist_notebook_update (void * data, void * user)
 {
-    gint global_level = GPOINTER_TO_INT (data);
+    int global_level = GPOINTER_TO_INT (data);
 
     if (global_level == PLAYLIST_UPDATE_STRUCTURE)
         add_remove_pages ();
 
-    gint lists = aud_playlist_count ();
+    int lists = aud_playlist_count ();
 
-    for (gint list = 0; list < lists; list ++)
+    for (int list = 0; list < lists; list ++)
     {
         if (global_level >= PLAYLIST_UPDATE_METADATA)
             set_tab_label (list, get_tab_label (list));
 
         GtkWidget * treeview = playlist_get_treeview (list);
 
-        gint at, count;
-        gint level = aud_playlist_updated_range (list, & at, & count);
+        int at, count;
+        int level = aud_playlist_updated_range (list, & at, & count);
 
         if (level)
             ui_playlist_widget_update (treeview, level, at, count);
@@ -503,8 +503,8 @@ void ui_playlist_notebook_update (void * data, void * user)
 
 void ui_playlist_notebook_position (void * data, void * user)
 {
-    gint list = GPOINTER_TO_INT (data);
-    gint row = aud_playlist_get_position (list);
+    int list = GPOINTER_TO_INT (data);
+    int row = aud_playlist_get_position (list);
 
     if (aud_get_bool ("gtkui", "autoscroll"))
     {
@@ -525,18 +525,18 @@ void ui_playlist_notebook_activate (void * data, void * user)
 
 void ui_playlist_notebook_set_playing (void * data, void * user)
 {
-    gint new = aud_playlist_get_unique_id (aud_playlist_get_playing ());
+    int new = aud_playlist_get_unique_id (aud_playlist_get_playing ());
 
     if (highlighted == new)
         return;
 
-    gint pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
+    int pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
 
-    for (gint i = 0; i < pages; i ++)
+    for (int i = 0; i < pages; i ++)
     {
         GtkWidget * page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, i);
         GtkWidget * tree = g_object_get_data ((GObject *) page, "treeview");
-        gint tree_id = GPOINTER_TO_INT (g_object_get_data ((GObject *) tree, "playlist-id"));
+        int tree_id = GPOINTER_TO_INT (g_object_get_data ((GObject *) tree, "playlist-id"));
 
         if (tree_id == highlighted || tree_id == new)
             set_tab_label (i, get_tab_label (i));
@@ -570,9 +570,9 @@ GtkWidget * ui_playlist_notebook_new (void)
     return notebook;
 }
 
-void playlist_show_headers (gboolean show)
+void playlist_show_headers (bool_t show)
 {
-    gboolean old = aud_get_bool ("gtkui", "playlist_headers");
+    bool_t old = aud_get_bool ("gtkui", "playlist_headers");
     if (old == show)
         return;
 

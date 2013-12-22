@@ -38,21 +38,21 @@ static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING};
-static const gboolean pw_col_widths[PW_COLS] = {7, -1, -1, 4, -1, 2, -1, 3, 7,
+static const bool_t pw_col_widths[PW_COLS] = {7, -1, -1, 4, -1, 2, -1, 3, 7,
  -1, -1, -1, 3};
-static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
+static const bool_t pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
  FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
 
 typedef struct {
-    gint list;
+    int list;
     GList * queue;
-    gint popup_source, popup_pos;
-    gboolean popup_shown;
+    int popup_source, popup_pos;
+    bool_t popup_shown;
 } PlaylistWidgetData;
 
-static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
+static void set_int_from_tuple (GValue * value, const Tuple * tuple, int field)
 {
-    gint i = tuple ? tuple_get_int (tuple, field) : 0;
+    int i = tuple ? tuple_get_int (tuple, field) : 0;
     if (i > 0)
         g_value_take_string (value, g_strdup_printf ("%d", i));
     else
@@ -60,14 +60,14 @@ static void set_int_from_tuple (GValue * value, const Tuple * tuple, gint field)
 }
 
 static void set_string_from_tuple (GValue * value, const Tuple * tuple,
- gint field)
+ int field)
 {
-    gchar *str = tuple ? tuple_get_str (tuple, field) : NULL;
+    char *str = tuple ? tuple_get_str (tuple, field) : NULL;
     g_value_set_string (value, str);
     str_unref(str);
 }
 
-static void set_queued (GValue * value, gint list, gint row)
+static void set_queued (GValue * value, int list, int row)
 {
     int q = aud_playlist_queue_find_entry (list, row);
     if (q < 0)
@@ -76,14 +76,14 @@ static void set_queued (GValue * value, gint list, gint row)
         g_value_take_string (value, g_strdup_printf ("#%d", 1 + q));
 }
 
-static void set_length (GValue * value, gint list, gint row)
+static void set_length (GValue * value, int list, int row)
 {
-    gint len = aud_playlist_entry_get_length (list, row, TRUE);
+    int len = aud_playlist_entry_get_length (list, row, TRUE);
     if (len)
     {
         len /= 1000;
 
-        gchar s[16];
+        char s[16];
         if (len < 3600)
             snprintf (s, sizeof s, aud_get_bool (NULL, "leading_zero") ?
              "%02d:%02d" : "%d:%02d", len / 60, len % 60);
@@ -97,7 +97,7 @@ static void set_length (GValue * value, gint list, gint row)
         g_value_set_string (value, "");
 }
 
-static void get_value (void * user, gint row, gint column, GValue * value)
+static void get_value (void * user, int row, int column, GValue * value)
 {
     PlaylistWidgetData * data = user;
     g_return_if_fail (column >= 0 && column < pw_num_cols);
@@ -105,7 +105,7 @@ static void get_value (void * user, gint row, gint column, GValue * value)
 
     column = pw_cols[column];
 
-    gchar * title = NULL, * artist = NULL, * album = NULL;
+    char * title = NULL, * artist = NULL, * album = NULL;
     Tuple * tuple = NULL;
 
     if (column == PW_COL_TITLE || column == PW_COL_ARTIST || column ==
@@ -153,7 +153,7 @@ static void get_value (void * user, gint row, gint column, GValue * value)
         set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
         break;
     case PW_COL_CUSTOM:;
-        gchar * custom = aud_playlist_entry_get_title (data->list, row, TRUE);
+        char * custom = aud_playlist_entry_get_title (data->list, row, TRUE);
         g_value_set_string (value, custom);
         str_unref (custom);
         break;
@@ -169,31 +169,31 @@ static void get_value (void * user, gint row, gint column, GValue * value)
         tuple_unref (tuple);
 }
 
-static gboolean get_selected (void * user, gint row)
+static bool_t get_selected (void * user, int row)
 {
     return aud_playlist_entry_get_selected (((PlaylistWidgetData *) user)->list,
      row);
 }
 
-static void set_selected (void * user, gint row, gboolean selected)
+static void set_selected (void * user, int row, bool_t selected)
 {
     aud_playlist_entry_set_selected (((PlaylistWidgetData *) user)->list, row,
      selected);
 }
 
-static void select_all (void * user, gboolean selected)
+static void select_all (void * user, bool_t selected)
 {
     aud_playlist_select_all (((PlaylistWidgetData *) user)->list, selected);
 }
 
-static void focus_change (void * user, gint row)
+static void focus_change (void * user, int row)
 {
     aud_playlist_set_focus (((PlaylistWidgetData *) user)->list, row);
 }
 
-static void activate_row (void * user, gint row)
+static void activate_row (void * user, int row)
 {
-    gint list = ((PlaylistWidgetData *) user)->list;
+    int list = ((PlaylistWidgetData *) user)->list;
     aud_playlist_set_position (list, row);
     aud_drct_play_playlist (list);
 }
@@ -203,9 +203,9 @@ static void right_click (void * user, GdkEventButton * event)
     popup_menu_rclick (event->button, event->time);
 }
 
-static void shift_rows (void * user, gint row, gint before)
+static void shift_rows (void * user, int row, int before)
 {
-    gint list = ((PlaylistWidgetData *) user)->list;
+    int list = ((PlaylistWidgetData *) user)->list;
 
     /* Adjust the shift amount so that the selected entry closest to the
      * destination ends up at the destination. */
@@ -217,7 +217,7 @@ static void shift_rows (void * user, gint row, gint before)
     aud_playlist_shift (list, row, before - row);
 }
 
-static gboolean popup_show (PlaylistWidgetData * data)
+static bool_t popup_show (PlaylistWidgetData * data)
 {
     audgui_infopopup_show (data->list, data->popup_pos);
     data->popup_shown = TRUE;
@@ -244,7 +244,7 @@ static void popup_hide (PlaylistWidgetData * data)
     data->popup_pos = -1;
 }
 
-static void popup_trigger (PlaylistWidgetData * data, gint pos)
+static void popup_trigger (PlaylistWidgetData * data, int pos)
 {
     popup_hide (data);
 
@@ -253,7 +253,7 @@ static void popup_trigger (PlaylistWidgetData * data, gint pos)
      100, (GSourceFunc) popup_show, data);
 }
 
-static void mouse_motion (void * user, GdkEventMotion * event, gint row)
+static void mouse_motion (void * user, GdkEventMotion * event, int row)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) user;
 
@@ -267,23 +267,23 @@ static void mouse_motion (void * user, GdkEventMotion * event, gint row)
         popup_trigger (data, row);
 }
 
-static void mouse_leave (void * user, GdkEventMotion * event, gint row)
+static void mouse_leave (void * user, GdkEventMotion * event, int row)
 {
     popup_hide ((PlaylistWidgetData *) user);
 }
 
-static void get_data (void * user, void * * data, gint * length)
+static void get_data (void * user, void * * data, int * length)
 {
-    gchar * text = audgui_urilist_create_from_selected
+    char * text = audgui_urilist_create_from_selected
      (((PlaylistWidgetData *) user)->list);
     g_return_if_fail (text);
     * data = text;
     * length = strlen (text);
 }
 
-static void receive_data (void * user, gint row, const void * data, gint length)
+static void receive_data (void * user, int row, const void * data, int length)
 {
-    gchar * text = g_malloc (length + 1);
+    char * text = g_malloc (length + 1);
     memcpy (text, data, length);
     text[length] = 0;
     audgui_urilist_insert (((PlaylistWidgetData *) user)->list, row, text);
@@ -305,24 +305,24 @@ static const AudguiListCallbacks callbacks = {
  .get_data = get_data,
  .receive_data = receive_data};
 
-static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
+static bool_t search_cb (GtkTreeModel * model, int column, const char * key,
  GtkTreeIter * iter, void * user)
 {
     GtkTreePath * path = gtk_tree_model_get_path (model, iter);
     g_return_val_if_fail (path, TRUE);
-    gint row = gtk_tree_path_get_indices (path)[0];
+    int row = gtk_tree_path_get_indices (path)[0];
     g_return_val_if_fail (row >= 0, TRUE);
-    gchar * s[3] = {NULL, NULL, NULL};
+    char * s[3] = {NULL, NULL, NULL};
     aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
      & s[0], & s[1], & s[2], FALSE);
     gtk_tree_path_free (path);
 
-    gchar * temp = g_utf8_strdown (key, -1);
-    gchar * * keys = g_strsplit (temp, " ", 0);
+    char * temp = g_utf8_strdown (key, -1);
+    char * * keys = g_strsplit (temp, " ", 0);
     g_free (temp);
 
-    gint remain = 0; /* number of keys remaining to be matched */
-    for (gint j = 0; keys[j]; j ++)
+    int remain = 0; /* number of keys remaining to be matched */
+    for (int j = 0; keys[j]; j ++)
     {
         if (keys[j][0])
             remain ++;
@@ -330,7 +330,7 @@ static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
     if (! remain)
         remain ++; /* force non-match if there are no non-blank keys */
 
-    for (gint i = 0; i < ARRAY_LEN (s); i ++)
+    for (int i = 0; i < ARRAY_LEN (s); i ++)
     {
         if (! s[i])
             continue;
@@ -339,7 +339,7 @@ static gboolean search_cb (GtkTreeModel * model, gint column, const gchar * key,
         {
             temp = g_utf8_strdown (s[i], -1);
 
-            for (gint j = 0; keys[j] && remain; j ++)
+            for (int j = 0; keys[j] && remain; j ++)
             {
                 if (keys[j][0] && strstr (temp, keys[j]))
                 {
@@ -364,7 +364,7 @@ static void destroy_cb (PlaylistWidgetData * data)
     g_free (data);
 }
 
-GtkWidget * ui_playlist_widget_new (gint playlist)
+GtkWidget * ui_playlist_widget_new (int playlist)
 {
     PlaylistWidgetData * data = g_malloc0 (sizeof (PlaylistWidgetData));
     data->list = playlist;
@@ -387,9 +387,9 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
      * box can still be brought up with CTRL-F. */
     gtk_tree_view_set_enable_search ((GtkTreeView *) list, FALSE);
 
-    for (gint i = 0; i < pw_num_cols; i ++)
+    for (int i = 0; i < pw_num_cols; i ++)
     {
-        gint n = pw_cols[i];
+        int n = pw_cols[i];
         audgui_list_add_column (list, pw_col_label[n] ? _(pw_col_names[n]) :
          NULL, i, pw_col_types[n], pw_col_widths[n]);
     }
@@ -397,14 +397,14 @@ GtkWidget * ui_playlist_widget_new (gint playlist)
     return list;
 }
 
-gint ui_playlist_widget_get_playlist (GtkWidget * widget)
+int ui_playlist_widget_get_playlist (GtkWidget * widget)
 {
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_val_if_fail (data, -1);
     return data->list;
 }
 
-void ui_playlist_widget_set_playlist (GtkWidget * widget, gint list)
+void ui_playlist_widget_set_playlist (GtkWidget * widget, int list)
 {
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_if_fail (data);
@@ -419,7 +419,7 @@ static void update_queue (GtkWidget * widget, PlaylistWidgetData * data)
     g_list_free (data->queue);
     data->queue = NULL;
 
-    for (gint i = aud_playlist_queue_count (data->list); i --; )
+    for (int i = aud_playlist_queue_count (data->list); i --; )
         data->queue = g_list_prepend (data->queue, GINT_TO_POINTER
          (aud_playlist_queue_get_entry (data->list, i)));
 
@@ -427,16 +427,16 @@ static void update_queue (GtkWidget * widget, PlaylistWidgetData * data)
         audgui_list_update_rows (widget, GPOINTER_TO_INT (node->data), 1);
 }
 
-void ui_playlist_widget_update (GtkWidget * widget, gint type, gint at,
- gint count)
+void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
+ int count)
 {
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_if_fail (data);
 
     if (type == PLAYLIST_UPDATE_STRUCTURE)
     {
-        gint old_entries = audgui_list_row_count (widget);
-        gint entries = aud_playlist_entry_count (data->list);
+        int old_entries = audgui_list_row_count (widget);
+        int entries = aud_playlist_entry_count (data->list);
 
         audgui_list_delete_rows (widget, at, old_entries - (entries - count));
         audgui_list_insert_rows (widget, at, count);
@@ -462,11 +462,11 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
     PlaylistWidgetData * data = audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    gint row = -1;
+    int row = -1;
 
     if (gtk_widget_get_realized (widget))
     {
-        gint x, y;
+        int x, y;
         audgui_get_mouse_coords (widget, & x, & y);
         row = audgui_list_row_at_point (widget, x, y);
     }

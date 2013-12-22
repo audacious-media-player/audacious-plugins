@@ -23,6 +23,6 @@
 #include <gtk/gtk.h>
 
 GtkWidget * ui_infoarea_new (void);
-void ui_infoarea_show_vis (gboolean show);
+void ui_infoarea_show_vis (bool_t show);
 
 #endif

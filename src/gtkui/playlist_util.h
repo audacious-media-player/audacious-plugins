@@ -20,15 +20,15 @@
 #ifndef __PLAYLISTUTIL_H__
 #define __PLAYLISTUTIL_H__
 
-GtkWidget * playlist_get_treeview (gint playlist);
+GtkWidget * playlist_get_treeview (int playlist);
 
-gint playlist_count_selected_in_range (gint list, gint top, gint length);
+int playlist_count_selected_in_range (int list, int top, int length);
 void playlist_song_info (void);
 void playlist_queue_toggle (void);
 void playlist_delete_selected (void);
 void playlist_copy (void);
 void playlist_cut (void);
 void playlist_paste (void);
-void playlist_shift (gint offset);
+void playlist_shift (int offset);
 
 #endif

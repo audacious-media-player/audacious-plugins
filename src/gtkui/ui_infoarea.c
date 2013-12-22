@@ -43,37 +43,37 @@
 typedef struct {
     GtkWidget * box, * main;
 
-    gchar * title, * artist, * album; /* pooled */
-    gchar * last_title, * last_artist, * last_album; /* pooled */
-    gfloat alpha, last_alpha;
+    char * title, * artist, * album; /* pooled */
+    char * last_title, * last_artist, * last_album; /* pooled */
+    float alpha, last_alpha;
 
-    gboolean stopped;
-    gint fade_timeout;
+    bool_t stopped;
+    int fade_timeout;
 
     GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
 
 static struct {
     GtkWidget * widget;
-    gchar bars[VIS_BANDS];
-    gchar delay[VIS_BANDS];
+    char bars[VIS_BANDS];
+    char delay[VIS_BANDS];
 } vis;
 
 /****************************************************************************/
 
 static UIInfoArea * area = NULL;
 
-static void vis_render_cb (const gfloat * freq)
+static void vis_render_cb (const float * freq)
 {
     /* xscale[i] = pow (256, i / VIS_BANDS) - 0.5; */
-    const gfloat xscale[VIS_BANDS + 1] = {0.5, 1.09, 2.02, 3.5, 5.85, 9.58,
+    const float xscale[VIS_BANDS + 1] = {0.5, 1.09, 2.02, 3.5, 5.85, 9.58,
      15.5, 24.9, 39.82, 63.5, 101.09, 160.77, 255.5};
 
-    for (gint i = 0; i < VIS_BANDS; i ++)
+    for (int i = 0; i < VIS_BANDS; i ++)
     {
-        gint a = ceilf (xscale[i]);
-        gint b = floorf (xscale[i + 1]);
-        gfloat n = 0;
+        int a = ceilf (xscale[i]);
+        int b = floorf (xscale[i + 1]);
+        float n = 0;
 
         if (b < a)
             n += freq[b] * (xscale[i + 1] - xscale[i]);
@@ -88,7 +88,7 @@ static void vis_render_cb (const gfloat * freq)
         }
 
         /* 40 dB range */
-        gint x = 40 + 20 * log10f (n);
+        int x = 40 + 20 * log10f (n);
         x = CLAMP (x, 0, 40);
 
         vis.bars[i] -= MAX (0, VIS_FALLOFF - vis.delay[i]);
@@ -136,9 +136,9 @@ static void clear (GtkWidget * widget, cairo_t * cr)
     cairo_pattern_destroy (gradient);
 }
 
-static void draw_text (GtkWidget * widget, cairo_t * cr, gint x, gint y, gint
- width, gfloat r, gfloat g, gfloat b, gfloat a, const gchar * font,
- const gchar * text)
+static void draw_text (GtkWidget * widget, cairo_t * cr, int x, int y, int
+ width, float r, float g, float b, float a, const char * font,
+ const char * text)
 {
     cairo_move_to(cr, x, y);
     cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
@@ -159,10 +159,10 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, gint x, gint y, gint
 
 /****************************************************************************/
 
-static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s,
- gfloat * v)
+static void rgb_to_hsv (float r, float g, float b, float * h, float * s,
+ float * v)
 {
-    gfloat max, min;
+    float max, min;
 
     max = r;
     if (g > max)
@@ -195,12 +195,12 @@ static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s,
     * s = (max - min) / max;
 }
 
-static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g,
- gfloat * b)
+static void hsv_to_rgb (float h, float s, float v, float * r, float * g,
+ float * b)
 {
     for (; h >= 2; h -= 2)
     {
-        gfloat * p = r;
+        float * p = r;
         r = g;
         g = b;
         b = p;
@@ -224,7 +224,7 @@ static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g,
     * b = v * (1 - s * (1 - * b));
 }
 
-static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
+static void get_color (int i, float * r, float * g, float * b)
 {
     static GdkRGBA c;
     static bool_t valid = FALSE;
@@ -243,7 +243,7 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
         valid = TRUE;
     }
 
-    gfloat h, s, v;
+    float h, s, v;
     rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
@@ -258,17 +258,17 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
     hsv_to_rgb (h, s, v, r, g, b);
 }
 
-static gboolean draw_vis_cb (GtkWidget * widget, cairo_t * cr)
+static bool_t draw_vis_cb (GtkWidget * widget, cairo_t * cr)
 {
     clear (widget, cr);
 
-    for (gint i = 0; i < VIS_BANDS; i++)
+    for (int i = 0; i < VIS_BANDS; i++)
     {
-        gint x = SPACING + 8 * i;
-        gint t = VIS_CENTER - vis.bars[i];
-        gint m = MIN (VIS_CENTER + vis.bars[i], HEIGHT);
+        int x = SPACING + 8 * i;
+        int t = VIS_CENTER - vis.bars[i];
+        int m = MIN (VIS_CENTER + vis.bars[i], HEIGHT);
 
-        gfloat r, g, b;
+        float r, g, b;
         get_color (i, & r, & g, & b);
 
         cairo_set_source_rgb (cr, r, g, b);
@@ -307,8 +307,8 @@ static void draw_title (cairo_t * cr)
     GtkAllocation alloc;
     gtk_widget_get_allocation (area->main, & alloc);
 
-    gint x = ICON_SIZE + SPACING * 2;
-    gint width = alloc.width - x;
+    int x = ICON_SIZE + SPACING * 2;
+    int width = alloc.width - x;
 
     if (area->title != NULL)
         draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->alpha,
@@ -330,7 +330,7 @@ static void draw_title (cairo_t * cr)
          0.7, 0.7, area->last_alpha, "9", area->last_album);
 }
 
-static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
+static bool_t draw_cb (GtkWidget * widget, cairo_t * cr)
 {
     g_return_val_if_fail (area, FALSE);
 
@@ -342,10 +342,10 @@ static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
     return TRUE;
 }
 
-static gboolean ui_infoarea_do_fade (void)
+static bool_t ui_infoarea_do_fade (void)
 {
     g_return_val_if_fail (area, FALSE);
-    gboolean ret = FALSE;
+    bool_t ret = FALSE;
 
     if (aud_drct_get_playing () && area->alpha < 1)
     {
@@ -374,10 +374,10 @@ static void ui_infoarea_set_title (void)
     if (! aud_drct_get_playing ())
         return;
 
-    gint playlist = aud_playlist_get_playing ();
-    gint entry = aud_playlist_get_position (playlist);
+    int playlist = aud_playlist_get_playing ();
+    int entry = aud_playlist_get_position (playlist);
 
-    gchar * title, * artist, * album;
+    char * title, * artist, * album;
     aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
 
     if (! g_strcmp0 (title, area->title) && ! g_strcmp0 (artist, area->artist)
@@ -485,7 +485,7 @@ static void realize_cb (GtkWidget * widget)
     gdk_window_ensure_native (gtk_widget_get_window (widget));
 }
 
-void ui_infoarea_show_vis (gboolean show)
+void ui_infoarea_show_vis (bool_t show)
 {
     if (! area)
         return;

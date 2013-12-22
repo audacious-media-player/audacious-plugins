@@ -40,7 +40,7 @@
 #include "ui_statusbar.h"
 #include "playlist_util.h"
 
-static const gchar * const gtkui_defaults[] = {
+static const char * const gtkui_defaults[] = {
  "infoarea_show_vis", "TRUE",
  "infoarea_visible", "TRUE",
  "menu_visible", "TRUE",
@@ -65,8 +65,8 @@ static const gchar * const gtkui_defaults[] = {
 static PluginHandle * search_tool;
 
 static GtkWidget *volume;
-static gboolean volume_slider_is_moving = FALSE;
-static guint update_volume_timeout_source = 0;
+static bool_t volume_slider_is_moving = FALSE;
+static unsigned update_volume_timeout_source = 0;
 static gulong volume_change_handler_id;
 
 static GtkAccelGroup * accel;
@@ -78,14 +78,14 @@ static GtkToolItem * menu_button, * search_button, * button_play, * button_stop,
 static GtkWidget * slider, * label_time;
 static GtkWidget * menu_main, * menu_rclick, * menu_tab;
 
-static gboolean slider_is_moving = FALSE;
-static gint slider_seek_time = -1;
-static guint delayed_title_change_source = 0;
-static guint update_song_timeout_source = 0;
+static bool_t slider_is_moving = FALSE;
+static int slider_seek_time = -1;
+static unsigned delayed_title_change_source = 0;
+static unsigned update_song_timeout_source = 0;
 
-static gboolean init (void);
+static bool_t init (void);
 static void cleanup (void);
-static void ui_show (gboolean show);
+static void ui_show (bool_t show);
 
 AUD_IFACE_PLUGIN
 (
@@ -94,13 +94,13 @@ AUD_IFACE_PLUGIN
     .init = init,
     .cleanup = cleanup,
     .show = ui_show,
-    .run_gtk_plugin = (void (*) (void *, const gchar *)) layout_add,
+    .run_gtk_plugin = (void (*) (void *, const char *)) layout_add,
     .stop_gtk_plugin = (void (*) (void *)) layout_remove,
 )
 
 static void save_window_size (void)
 {
-    gint x, y, w, h;
+    int x, y, w, h;
     gtk_window_get_position ((GtkWindow *) window, & x, & y);
     gtk_window_get_size ((GtkWindow *) window, & w, & h);
 
@@ -112,10 +112,10 @@ static void save_window_size (void)
 
 static void restore_window_size (void)
 {
-    gint x = aud_get_int ("gtkui", "player_x");
-    gint y = aud_get_int ("gtkui", "player_y");
-    gint w = aud_get_int ("gtkui", "player_width");
-    gint h = aud_get_int ("gtkui", "player_height");
+    int x = aud_get_int ("gtkui", "player_x");
+    int y = aud_get_int ("gtkui", "player_y");
+    int w = aud_get_int ("gtkui", "player_width");
+    int h = aud_get_int ("gtkui", "player_height");
 
     gtk_window_set_default_size ((GtkWindow *) window, w, h);
 
@@ -123,9 +123,9 @@ static void restore_window_size (void)
         gtk_window_move ((GtkWindow *) window, x, y);
 }
 
-static gboolean window_delete()
+static bool_t window_delete()
 {
-    gboolean handle = FALSE;
+    bool_t handle = FALSE;
 
     hook_call("window close", &handle);
 
@@ -173,7 +173,7 @@ void clear_ab_repeat (void)
     aud_drct_set_ab_repeat (-1, -1);
 }
 
-static gboolean title_change_cb (void)
+static bool_t title_change_cb (void)
 {
     if (delayed_title_change_source)
     {
@@ -185,8 +185,8 @@ static gboolean title_change_cb (void)
     {
         if (aud_drct_get_ready ())
         {
-            gchar * title = aud_drct_get_title ();
-            gchar * title_s = g_strdup_printf (_("%s - Audacious"), title);
+            char * title = aud_drct_get_title ();
+            char * title_s = g_strdup_printf (_("%s - Audacious"), title);
             gtk_window_set_title ((GtkWindow *) window, title_s);
             g_free (title_s);
             str_unref (title);
@@ -200,7 +200,7 @@ static gboolean title_change_cb (void)
     return FALSE;
 }
 
-static void ui_show (gboolean show)
+static void ui_show (bool_t show)
 {
     if (show)
     {
@@ -242,9 +242,9 @@ static void append_time_str (char * buf, int bufsize, int time)
          time / 3600, (time / 60) % 60, time % 60);
 }
 
-static void set_time_label (gint time, gint len)
+static void set_time_label (int time, int len)
 {
-    gchar s[128] = "<b>";
+    char s[128] = "<b>";
 
     if (len && aud_get_bool ("gtkui", "show_remaining_time"))
         append_time_str (s, sizeof s, len - time);
@@ -279,20 +279,20 @@ static void set_time_label (gint time, gint len)
         gtk_label_set_markup ((GtkLabel *) label_time, s);
 }
 
-static void set_slider (gint time)
+static void set_slider (int time)
 {
     gtk_range_set_value ((GtkRange *) slider, time);
 }
 
-static gboolean time_counter_cb (void)
+static bool_t time_counter_cb (void)
 {
     if (slider_is_moving)
         return TRUE;
 
     slider_seek_time = -1;  // delayed reset to avoid seeking twice
 
-    gint time = aud_drct_get_time ();
-    gint length = aud_drct_get_length ();
+    int time = aud_drct_get_time ();
+    int length = aud_drct_get_length ();
 
     if (length > 0)
         set_slider (time);
@@ -302,9 +302,9 @@ static gboolean time_counter_cb (void)
     return TRUE;
 }
 
-static void do_seek (gint time)
+static void do_seek (int time)
 {
-    gint length = aud_drct_get_length ();
+    int length = aud_drct_get_length ();
     time = CLAMP (time, 0, length);
 
     set_slider (time);
@@ -321,11 +321,11 @@ static void do_seek (gint time)
     }
 }
 
-static gboolean ui_slider_change_value_cb (GtkRange * range,
- GtkScrollType scroll, gdouble value)
+static bool_t ui_slider_change_value_cb (GtkRange * range,
+ GtkScrollType scroll, double value)
 {
-    gint length = aud_drct_get_length ();
-    gint time = CLAMP ((gint) value, 0, length);
+    int length = aud_drct_get_length ();
+    int time = CLAMP ((int) value, 0, length);
 
     set_time_label (time, length);
 
@@ -337,13 +337,13 @@ static gboolean ui_slider_change_value_cb (GtkRange * range,
     return FALSE;
 }
 
-static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
+static bool_t ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, void * user_data)
 {
     slider_is_moving = TRUE;
     return FALSE;
 }
 
-static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, gpointer user_data)
+static bool_t ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, void * user_data)
 {
     if (slider_seek_time != -1)
         do_seek (slider_seek_time);
@@ -352,33 +352,33 @@ static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton *
     return FALSE;
 }
 
-static gboolean ui_volume_value_changed_cb(GtkButton * button, gdouble volume, gpointer user_data)
+static bool_t ui_volume_value_changed_cb(GtkButton * button, double volume, void * user_data)
 {
-    aud_drct_set_volume((gint) volume, (gint) volume);
+    aud_drct_set_volume((int) volume, (int) volume);
 
     return TRUE;
 }
 
-static void ui_volume_pressed_cb(GtkButton *button, gpointer user_data)
+static void ui_volume_pressed_cb(GtkButton *button, void * user_data)
 {
     volume_slider_is_moving = TRUE;
 }
 
-static void ui_volume_released_cb(GtkButton *button, gpointer user_data)
+static void ui_volume_released_cb(GtkButton *button, void * user_data)
 {
     volume_slider_is_moving = FALSE;
 }
 
-static gboolean ui_volume_slider_update(gpointer data)
+static bool_t ui_volume_slider_update(void * data)
 {
-    gint volume;
+    int volume;
 
     if (volume_slider_is_moving || data == NULL)
         return TRUE;
 
     aud_drct_get_volume_main(&volume);
 
-    if (volume == (gint) gtk_scale_button_get_value(GTK_SCALE_BUTTON(data)))
+    if (volume == (int) gtk_scale_button_get_value(GTK_SCALE_BUTTON(data)))
         return TRUE;
 
     g_signal_handler_block(data, volume_change_handler_id);
@@ -388,7 +388,7 @@ static gboolean ui_volume_slider_update(gpointer data)
     return TRUE;
 }
 
-static void set_slider_length (gint length)
+static void set_slider_length (int length)
 {
     if (length > 0)
     {
@@ -456,7 +456,7 @@ static void ui_playback_stop (void)
 }
 
 static GtkToolItem * toolbar_button_add (GtkWidget * toolbar,
- void (* callback) (void), const gchar * icon)
+ void (* callback) (void), const char * icon)
 {
     GtkToolItem * item = gtk_tool_button_new (NULL, NULL);
     gtk_tool_button_set_icon_name ((GtkToolButton *) item, icon);
@@ -465,7 +465,7 @@ static GtkToolItem * toolbar_button_add (GtkWidget * toolbar,
     return item;
 }
 
-static GtkToolItem * toggle_button_new (const gchar * icon,
+static GtkToolItem * toggle_button_new (const char * icon,
  void (* toggled) (GtkToggleToolButton * button))
 {
     GtkToolItem * item = gtk_toggle_tool_button_new ();
@@ -474,7 +474,7 @@ static GtkToolItem * toggle_button_new (const gchar * icon,
     return item;
 }
 
-static GtkWidget *markup_label_new(const gchar * str)
+static GtkWidget *markup_label_new(const char * str)
 {
     GtkWidget *label = gtk_label_new(str);
     g_object_set(G_OBJECT(label), "use-markup", TRUE, NULL);
@@ -486,7 +486,7 @@ static void window_mapped_cb (GtkWidget * widget, void * unused)
     gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
 }
 
-static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, void * unused)
+static bool_t window_keypress_cb (GtkWidget * widget, GdkEventKey * event, void * unused)
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
@@ -582,7 +582,7 @@ static gboolean window_keypress_cb (GtkWidget * widget, GdkEventKey * event, voi
     return TRUE;
 }
 
-static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event, void * unused)
+static bool_t playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event, void * unused)
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
@@ -647,7 +647,7 @@ static void toggle_search_tool (GtkToggleToolButton * button)
     aud_plugin_enable (search_tool, gtk_toggle_tool_button_get_active (button));
 }
 
-static gboolean search_tool_toggled (PluginHandle * plugin, void * unused)
+static bool_t search_tool_toggled (PluginHandle * plugin, void * unused)
 {
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) search_button,
      aud_plugin_get_enabled (plugin));
@@ -697,7 +697,7 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
-static gboolean init (void)
+static bool_t init (void)
 {
     search_tool = aud_plugin_lookup_basename ("search-tool");
 
@@ -783,7 +783,7 @@ static gboolean init (void)
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     gtk_widget_set_can_focus(volume, FALSE);
 
-    gint lvol = 0, rvol = 0;
+    int lvol = 0, rvol = 0;
     aud_drct_get_volume(&lvol, &rvol);
     gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
 
@@ -913,7 +913,7 @@ static void menu_hide_cb (void)
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) menu_button, FALSE);
 }
 
-void show_menu (gboolean show)
+void show_menu (bool_t show)
 {
     aud_set_bool ("gtkui", "menu_visible", show);
 
@@ -963,15 +963,15 @@ void show_menu (gboolean show)
 
 void show_playlist_tabs (void)
 {
-    gboolean single_pl = aud_playlist_count () > 1;
-    gboolean show_tabs = aud_get_bool ("gtkui", "playlist_tabs_visible");
+    bool_t single_pl = aud_playlist_count () > 1;
+    bool_t show_tabs = aud_get_bool ("gtkui", "playlist_tabs_visible");
 
     show_tabs = single_pl || show_tabs;
 
     gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, show_tabs);
 }
 
-void show_infoarea (gboolean show)
+void show_infoarea (bool_t show)
 {
     aud_set_bool ("gtkui", "infoarea_visible", show);
 
@@ -994,13 +994,13 @@ void show_infoarea (gboolean show)
     }
 }
 
-void show_infoarea_vis (gboolean show)
+void show_infoarea_vis (bool_t show)
 {
     aud_set_bool ("gtkui", "infoarea_show_vis", show);
     ui_infoarea_show_vis (show);
 }
 
-void show_statusbar (gboolean show)
+void show_statusbar (bool_t show)
 {
     aud_set_bool ("gtkui", "statusbar_visible", show);
 
@@ -1018,13 +1018,13 @@ void show_statusbar (gboolean show)
     }
 }
 
-void popup_menu_rclick (guint button, guint32 time)
+void popup_menu_rclick (unsigned button, uint32_t time)
 {
     gtk_menu_popup ((GtkMenu *) menu_rclick, NULL, NULL, NULL, NULL, button,
      time);
 }
 
-void popup_menu_tab (guint button, guint32 time, int playlist)
+void popup_menu_tab (unsigned button, uint32_t time, int playlist)
 {
     menu_tab_playlist_id = aud_playlist_get_unique_id (playlist);
     gtk_menu_popup ((GtkMenu *) menu_tab, NULL, NULL, NULL, NULL, button, time);
