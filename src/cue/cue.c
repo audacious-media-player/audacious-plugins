@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <libcue/libcue.h>
 
 #include <audacious/i18n.h>
@@ -65,7 +67,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
     * title = NULL;
 
     Cd * cd = cue_parse_string (buffer);
-    free (buffer);
+    g_free (buffer);
     if (cd == NULL)
         return FALSE;
 

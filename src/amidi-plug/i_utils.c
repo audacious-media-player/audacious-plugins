@@ -67,7 +67,7 @@ void i_about_gui (void)
 
     GtkWidget * label = gtk_label_new (text);
     gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
-    free (text);
+    g_free (text);
 
     gtk_widget_show_all (aboutwin);
 }

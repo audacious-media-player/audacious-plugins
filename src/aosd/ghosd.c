@@ -20,6 +20,8 @@
 #include <X11/extensions/Xcomposite.h>
 #endif
 
+#include <glib.h>
+
 #include "ghosd.h"
 #include "ghosd-internal.h"
 
@@ -344,7 +346,7 @@ ghosd_new(void) {
 
   win = make_window(dpy, root_win, visual, colormap, use_argbvisual);
 
-  ghosd = calloc(1, sizeof(Ghosd));
+  ghosd = g_new0(Ghosd, 1);
   ghosd->dpy = dpy;
   ghosd->visual = visual;
   ghosd->colormap = colormap;
@@ -385,7 +387,7 @@ ghosd_new_with_argbvisual(void) {
 
   win = make_window(dpy, root_win, visual, colormap, use_argbvisual);
 
-  ghosd = calloc(1, sizeof(Ghosd));
+  ghosd = g_new0(Ghosd, 1);
   ghosd->dpy = dpy;
   ghosd->visual = visual;
   ghosd->colormap = colormap;

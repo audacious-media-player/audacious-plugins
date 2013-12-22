@@ -54,8 +54,7 @@ static void * gio_fopen (const char * filename, const char * mode)
 {
     GError * error = 0;
 
-    FileData * data = malloc (sizeof (FileData));
-    memset (data, 0, sizeof (FileData));
+    FileData * data = g_new0 (FileData, 1);
 
     data->file = g_file_new_for_uri (filename);
 
@@ -114,7 +113,7 @@ static void * gio_fopen (const char * filename, const char * mode)
     return data;
 
 FAILED:
-    free (data);
+    g_free (data);
     return 0;
 }
 

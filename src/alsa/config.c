@@ -47,11 +47,11 @@ static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
 
         if (! strcmp (iter_text, text))
         {
-            free (iter_text);
+            g_free (iter_text);
             return & iter;
         }
 
-        free (iter_text);
+        g_free (iter_text);
     }
     while (gtk_tree_model_iter_next ((GtkTreeModel *) list, & iter));
 
@@ -81,11 +81,11 @@ static void get_defined_devices (const char * type, int capture, void (* found)
             char * description = snd_device_name_get_hint (hints[count], "DESC");
 
             found (name, description);
-            free (name);
-            free (description);
+            g_free (name);
+            g_free (description);
         }
 
-        free (type);
+        g_free (type);
     }
 
 FAILED:
@@ -119,7 +119,7 @@ static void get_cards (void (* found) (int card, const char * description))
         if ((description = get_card_description (card)) != NULL)
         {
             found (card, description);
-            free (description);
+            g_free (description);
         }
     }
 
@@ -140,7 +140,7 @@ static char * get_device_description (snd_ctl_t * control, int device, int
     switch (snd_ctl_pcm_info (control, info))
     {
     case 0:
-        return strdup (snd_pcm_info_get_name (info));
+        return g_strdup (snd_pcm_info_get_name (info));
 
     case -ENOENT: /* capture but we want playback (or other way around) */
         return NULL;
@@ -178,7 +178,7 @@ static void get_devices (int card, int capture, void (* found) (const char *
         if (description != NULL)
             found (name, description);
 
-        free (description);
+        g_free (description);
     }
 
 FAILED:

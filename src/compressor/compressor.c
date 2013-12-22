@@ -21,6 +21,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <audacious/misc.h>
 
 #include "compressor.h"
@@ -100,7 +102,7 @@ static void output_append (float * data, int length)
     if (output_size < output_filled + length)
     {
         output_size = output_filled + length;
-        output = realloc (output, sizeof (float) * output_size);
+        output = g_renew (float, output, output_size);
     }
 
     memcpy (output + output_filled, data, sizeof (float) * length);
@@ -200,17 +202,17 @@ int compressor_init (void)
 
 void compressor_cleanup (void)
 {
-    free (buffer);
-    free (output);
-    free (peaks);
+    g_free (buffer);
+    g_free (output);
+    g_free (peaks);
 }
 
 void compressor_start (int * channels, int * rate)
 {
     chunk_size = (* channels) * (int) ((* rate) * CHUNK_TIME);
     buffer_size = chunk_size * CHUNKS;
-    buffer = realloc (buffer, sizeof (float) * buffer_size);
-    peaks = realloc (peaks, sizeof (float) * CHUNKS);
+    buffer = g_renew (float, buffer, buffer_size);
+    peaks = g_renew (float, peaks, CHUNKS);
 
     current_channels = * channels;
     current_rate = * rate;

@@ -33,6 +33,8 @@
 #include <sys/time.h>
 #include <samplerate.h>
 
+#include <glib.h>
+
 #include "bio2jack.h"
 
 /* enable/disable TRACING through the JACK_Callback() function */
@@ -1002,11 +1004,8 @@ JACK_OpenDevice(jack_driver_t * drv)
 
 
   /* build the client name */
-  our_client_name = (char *) malloc(snprintf
-                                    (our_client_name, 0, "%s_%d_%d%02d", client_name, getpid(),
-                                     drv->deviceID, drv->clientCtr + 1) + 1);
-  sprintf(our_client_name, "%s_%d_%d%02d", client_name, getpid(),
-          drv->deviceID, drv->clientCtr++);
+  our_client_name = g_strdup_printf("%s_%d_%d%02d", client_name, getpid(),
+                                    drv->deviceID, drv->clientCtr++);
 
   /* try to become a client of the JACK server */
   TRACE("client name '%s'\n", our_client_name);
@@ -1017,12 +1016,12 @@ JACK_OpenDevice(jack_driver_t * drv)
     if((drv->client = jack_client_open(our_client_name, JackNullOption | JackNoStartServer, NULL)) == 0)
     {
       ERR("jack server not running?\n");
-      free(our_client_name);
+      g_free(our_client_name);
       return ERR_OPENING_JACK;
     }
   }
 
-  free(our_client_name);
+  g_free(our_client_name);
 
   TRACE("setting up jack callbacks\n");
 
@@ -1186,7 +1185,7 @@ JACK_OpenDevice(jack_driver_t * drv)
           }
       }
 
-      free(ports);              /* free the returned array of ports */
+      g_free(ports);              /* free the returned array of ports */
     }
     else
     {
@@ -1213,7 +1212,7 @@ JACK_OpenDevice(jack_driver_t * drv)
           ERR("cannot connect to output port %d('%s')\n", 0, ports[0]);
           failed = 1;
         }
-        free(ports);            /* free the returned array of ports */
+        g_free(ports);            /* free the returned array of ports */
       }
     }
   }                             /* if( drv->num_output_channels > 0 ) */
@@ -1303,7 +1302,7 @@ JACK_OpenDevice(jack_driver_t * drv)
         }
       }
 
-      free(ports);              /* free the returned array of ports */
+      g_free(ports);              /* free the returned array of ports */
     }
     else
     {
@@ -1330,7 +1329,7 @@ JACK_OpenDevice(jack_driver_t * drv)
           ERR("cannot connect to input port %d('%s')\n", 0, ports[0]);
           failed = 1;
         }
-        free(ports);            /* free the returned array of ports */
+        g_free(ports);            /* free the returned array of ports */
       }
     }
   }                             /* if( drv->num_input_channels > 0 ) */
@@ -1396,8 +1395,8 @@ JACK_CloseDevice(jack_driver_t * drv)
     if(drv->jack_port_name_count > 1)
     {
       for(i = 0; i < drv->jack_port_name_count; i++)
-        free(drv->jack_port_name[i]);
-      free(drv->jack_port_name);
+        g_free(drv->jack_port_name[i]);
+      g_free(drv->jack_port_name);
     }
     JACK_CleanupDriver(drv);
 
@@ -1588,11 +1587,10 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
 
     if(drv->jack_port_name_count != 0)
     {
-      drv->jack_port_name =
-        (char **) malloc(sizeof(char *) * drv->jack_port_name_count);
+      drv->jack_port_name = g_new(char *, drv->jack_port_name_count);
       for(i = 0; i < drv->jack_port_name_count; i++)
       {
-        drv->jack_port_name[i] = strdup(jack_port_name[i]);
+        drv->jack_port_name[i] = g_strdup(jack_port_name[i]);
         TRACE("jack_port_name[%d] == '%s'\n", i, jack_port_name[i]);
       }
     } else
@@ -1727,15 +1725,15 @@ JACK_Close(int deviceID)
 
   /* free buffer memory */
   drv->callback_buffer1_size = 0;
-  if(drv->callback_buffer1) free(drv->callback_buffer1);
+  if(drv->callback_buffer1) g_free(drv->callback_buffer1);
   drv->callback_buffer1 = 0;
 
   drv->callback_buffer2_size = 0;
-  if(drv->callback_buffer2) free(drv->callback_buffer2);
+  if(drv->callback_buffer2) g_free(drv->callback_buffer2);
   drv->callback_buffer2 = 0;
 
   drv->rw_buffer1_size = 0;
-  if(drv->rw_buffer1) free(drv->rw_buffer1);
+  if(drv->rw_buffer1) g_free(drv->rw_buffer1);
   drv->rw_buffer1 = 0;
 
   if(drv->pPlayPtr) jack_ringbuffer_free(drv->pPlayPtr);
@@ -2647,19 +2645,9 @@ JACK_SetClientName(char *name)
 {
   if(name)
   {
-    if(client_name) free(client_name);
+    if(client_name) g_free(client_name);
 
-    /* jack_client_name_size() is the max length of a client name, including
-       the terminating null. */
-    int size = strlen(name) + 1;        /* take into account the terminating null */
-    if(size > jack_client_name_size())
-      size = jack_client_name_size();
-
-    client_name = malloc(size);
-    if(client_name)
-      snprintf(client_name, size, "%s", name);
-    else
-      ERR("unable to allocate %d bytes for client_name\n", size);
+    client_name = g_strdup(name);
   }
 }
 

@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
@@ -51,12 +53,12 @@ static void reset (void)
     state = STATE_OFF;
     current_channels = 0;
     current_rate = 0;
-    free (buffer);
+    g_free (buffer);
     buffer = NULL;
     buffer_size = 0;
     buffer_filled = 0;
     prebuffer_filled = 0;
-    free (output);
+    g_free (output);
     output = NULL;
     output_size = 0;
 }
@@ -118,7 +120,7 @@ static void enlarge_buffer (int length)
 {
     if (length > buffer_size)
     {
-        buffer = realloc (buffer, sizeof (float) * length);
+        buffer = g_renew (float, buffer, length);
         buffer_size = length;
     }
 }
@@ -181,7 +183,7 @@ static void enlarge_output (int length)
 {
     if (length > output_size)
     {
-        output = realloc (output, sizeof (float) * length);
+        output = g_renew (float, output, length);
         output_size = length;
     }
 }

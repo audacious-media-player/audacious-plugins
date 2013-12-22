@@ -23,6 +23,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
 #include <soxr.h>
 
 #include <audacious/i18n.h>
@@ -58,7 +60,7 @@ void sox_resampler_cleanup (void)
 {
     soxr_delete (soxr);
     soxr = 0;
-    free (buffer);
+    g_free (buffer);
     buffer = NULL;
     buffer_samples = 0;
 }
@@ -97,7 +99,7 @@ void do_resample (float * * data, int * samples)
     if (buffer_samples < (int) (* samples * ratio) + 256)
     {
         buffer_samples = (int) (* samples * ratio) + 256;
-        buffer = realloc (buffer, sizeof (float) * buffer_samples);
+        buffer = g_renew (float, buffer, buffer_samples);
     }
 
     size_t samples_done;

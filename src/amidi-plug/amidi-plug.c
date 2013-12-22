@@ -147,7 +147,7 @@ static bool_t audio_init (void)
         return FALSE;
 
     s_bufsize = 2 * s_channels * (s_samplerate / 4);
-    s_buf = malloc (s_bufsize);
+    s_buf = g_malloc (s_bufsize);
 
     return TRUE;
 }
@@ -169,7 +169,7 @@ static void audio_generate (double seconds)
 
 static void audio_cleanup (void)
 {
-    free (s_buf);
+    g_free (s_buf);
 }
 
 static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
@@ -190,7 +190,7 @@ static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
 
     AUDDBG ("PLAY requested, opening file: %s\n", filename_uri);
     midifile.file_pointer = file;
-    midifile.file_name = strdup (filename_uri);
+    midifile.file_name = g_strdup (filename_uri);
 
     switch (i_midi_file_read_id (&midifile))
     {

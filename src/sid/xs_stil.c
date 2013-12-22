@@ -114,7 +114,7 @@ static stil_node_t *xs_stildb_node_new(char *filename)
     memset(result, 0, sizeof(stil_node_t));
 
     /* Allocate filename and initial space for one subtune */
-    result->filename = strdup(filename);
+    result->filename = g_strdup(filename);
     if (result->filename == NULL || !xs_stildb_node_realloc(result, 1)) {
         xs_stildb_node_free(result);
         return NULL;
@@ -279,17 +279,17 @@ int xs_stildb_read(xs_stildb_t *db, char *filename)
             if (strncmp(line, "   NAME:", 8) == 0) {
                 XS_STILDB_MULTI;
                 free(node->subTunes[subEntry]->name);
-                node->subTunes[subEntry]->name = strdup(&line[9]);
+                node->subTunes[subEntry]->name = g_strdup(&line[9]);
             } else if (strncmp(line, "  TITLE:", 8) == 0) {
                 XS_STILDB_MULTI;
                 multi = TRUE;
                 if (!node->subTunes[subEntry]->title)
-                    node->subTunes[subEntry]->title = strdup(&line[9]);
+                    node->subTunes[subEntry]->title = g_strdup(&line[9]);
                 xs_pstrcat(&(node->subTunes[subEntry]->info), &line[2]);
             } else if (strncmp(line, " AUTHOR:", 8) == 0) {
                 XS_STILDB_MULTI;
                 free(node->subTunes[subEntry]->author);
-                node->subTunes[subEntry]->author = strdup(&line[9]);
+                node->subTunes[subEntry]->author = g_strdup(&line[9]);
             } else if (strncmp(line, " ARTIST:", 8) == 0) {
                 XS_STILDB_MULTI;
                 multi = TRUE;

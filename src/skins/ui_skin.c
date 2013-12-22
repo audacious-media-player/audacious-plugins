@@ -416,7 +416,7 @@ static void skin_load_viscolor (Skin * skin, const gchar * path)
         string = next;
     }
 
-    free (buffer);
+    g_free (buffer);
 }
 
 static void

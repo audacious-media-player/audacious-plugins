@@ -45,6 +45,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <glib.h>
+
 #include <alsa/asoundlib.h>
 
 #include <audacious/debug.h>
@@ -110,7 +112,7 @@ static char poll_setup (void)
     }
 
     poll_count = 1 + snd_pcm_poll_descriptors_count (alsa_handle);
-    poll_handles = malloc (sizeof (struct pollfd) * poll_count);
+    poll_handles = g_new (struct pollfd, poll_count);
     poll_handles[0].fd = poll_pipe[0];
     poll_handles[0].events = POLLIN;
     poll_count = 1 + snd_pcm_poll_descriptors (alsa_handle, poll_handles + 1,
@@ -146,7 +148,7 @@ static void poll_cleanup (void)
 {
     close (poll_pipe[0]);
     close (poll_pipe[1]);
-    free (poll_handles);
+    g_free (poll_handles);
 }
 
 static void * pump (void * unused)
@@ -372,7 +374,7 @@ int alsa_open_audio (int aud_format, int rate, int channels)
 
     alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (int64_t)
      soft_buffer * rate / 1000);
-    alsa_buffer = malloc (alsa_buffer_length);
+    alsa_buffer = g_malloc (alsa_buffer_length);
     alsa_buffer_data_start = 0;
     alsa_buffer_data_length = 0;
 
@@ -411,7 +413,7 @@ void alsa_close_audio (void)
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    free (alsa_buffer);
+    g_free (alsa_buffer);
     poll_cleanup ();
     snd_pcm_close (alsa_handle);
     alsa_handle = NULL;

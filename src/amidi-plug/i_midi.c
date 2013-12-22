@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <audacious/misc.h>
 
 #include "i_configure.h"
@@ -134,8 +136,8 @@ midievent_t * i_midi_file_new_event (midifile_track_t * track, int sysex_length)
 {
     midievent_t * event;
 
-    event = malloc (sizeof (midievent_t));
-    event->sysex = sysex_length ? malloc (sysex_length) : NULL;
+    event = g_new (midievent_t, 1);
+    event->sysex = sysex_length ? g_malloc (sysex_length) : NULL;
     event->next = NULL;
 
     /* append at the end of the track's linked list */
@@ -371,7 +373,7 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
                         event = i_midi_file_new_event (track, 0);
                         event->type = SND_SEQ_EVENT_META_TEXT;
                         event->tick = tick;
-                        event->data.metat = malloc (len + 1);
+                        event->data.metat = g_malloc (len + 1);
 
                         for (ic = 0 ; ic < len ; ic++)
                             event->data.metat[ic] = i_midi_file_read_byte (mf);
@@ -395,7 +397,7 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
                         event = i_midi_file_new_event (track, 0);
                         event->type = SND_SEQ_EVENT_META_LYRIC;
                         event->tick = tick;
-                        event->data.metat = malloc (len + 1);
+                        event->data.metat = g_malloc (len + 1);
 
                         for (ic = 0 ; ic < len ; ic++)
                             event->data.metat[ic] = i_midi_file_read_byte (mf);
@@ -463,8 +465,7 @@ int i_midi_file_parse_smf (midifile_t * mf, int port_count)
         return 0;
     }
 
-    mf->tracks = malloc (mf->num_tracks * sizeof (midifile_track_t));
-    memset (mf->tracks, 0, mf->num_tracks * sizeof (midifile_track_t));
+    mf->tracks = g_new0 (midifile_track_t, mf->num_tracks);
 
     mf->time_division = i_midi_file_read_int (mf,2);
 
@@ -584,7 +585,7 @@ void i_midi_init (midifile_t * mf)
 
 void i_midi_free (midifile_t * mf)
 {
-    free (mf->file_name);
+    g_free (mf->file_name);
     mf->file_name = NULL;
 
     if (mf->tracks)
@@ -604,15 +605,15 @@ void i_midi_free (midifile_t * mf)
 
                 if ((event_tmp->type == SND_SEQ_EVENT_META_TEXT) ||
                         (event_tmp->type == SND_SEQ_EVENT_META_LYRIC))
-                    free (event_tmp->data.metat);
+                    g_free (event_tmp->data.metat);
 
-                free (event_tmp->sysex);
-                free (event_tmp);
+                g_free (event_tmp->sysex);
+                g_free (event_tmp);
             }
         }
 
         /* free track array */
-        free (mf->tracks);
+        g_free (mf->tracks);
         mf->tracks = NULL;
     }
 }
@@ -845,7 +846,7 @@ int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
         return 0;
     }
 
-    mf->file_name = strdup (filename);
+    mf->file_name = g_strdup (filename);
 
     switch (i_midi_file_read_id (mf))
     {

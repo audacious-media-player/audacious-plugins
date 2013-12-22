@@ -106,7 +106,7 @@ VFSFile * open_local_file_nocase (const char * folder, const char * basename)
         return NULL;
 
     char * uri = filename_to_uri (path);
-    free (path);
+    g_free (path);
 
     if (! uri)
         return NULL;

@@ -353,7 +353,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                          plugin_name, c);
             }
         }
-        free (code);
+        g_free (code);
         if (ret == -1)
             break;
     }

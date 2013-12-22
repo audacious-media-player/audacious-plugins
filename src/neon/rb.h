@@ -17,32 +17,14 @@
 #ifndef _RB_H
 #define _RB_H
 
-#ifdef _RB_USE_GLIB
-#include <glib.h>
-
-typedef GMutex rb_mutex_t;
-#define _RB_LOCK(L) g_mutex_lock(L)
-#define _RB_UNLOCK(L) g_mutex_unlock(L)
-
-#else
 #include <pthread.h>
 
 typedef pthread_mutex_t rb_mutex_t;
 #define _RB_LOCK(L) pthread_mutex_lock(L)
 #define _RB_UNLOCK(L) pthread_mutex_unlock(L)
-#endif
-
-#include <stdlib.h>
-
-#ifdef RB_DEBUG
-#define ASSERT_RB(buf) _assert_rb(buf)
-#else
-#define ASSERT_RB(buf)
-#endif
 
 struct ringbuf {
     rb_mutex_t* lock;
-    char _free_lock;
     char* buf;
     char* end;
     char* wp;
@@ -52,7 +34,6 @@ struct ringbuf {
     unsigned int size;
 };
 
-int init_rb(struct ringbuf* rb, unsigned int size);
 int init_rb_with_lock(struct ringbuf* rb, unsigned int size, rb_mutex_t* lock);
 int write_rb(struct ringbuf* rb, void* buf, unsigned int size);
 int read_rb(struct ringbuf* rb, void* buf, unsigned int size);

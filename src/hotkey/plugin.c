@@ -302,8 +302,7 @@ void add_hotkey(HotkeyConfiguration** pphotkey, KeySym keysym, gint mask, gint t
     keycode = XKeysymToKeycode(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), keysym);
     if (keycode == 0) return;
     if (photkey->key) {
-        photkey->next = (HotkeyConfiguration*)
-            malloc(sizeof (HotkeyConfiguration));
+        photkey->next = g_new(HotkeyConfiguration, 1);
         photkey = photkey->next;
         *pphotkey = photkey;
         photkey->next = NULL;
@@ -361,8 +360,7 @@ void load_config (void)
         gchar *text = NULL;
 
         if (hotkey->key) {
-            hotkey->next = (HotkeyConfiguration*)
-                malloc(sizeof (HotkeyConfiguration));
+            hotkey->next = g_new(HotkeyConfiguration, 1);
             hotkey = hotkey->next;
             hotkey->next = NULL;
             hotkey->key = 0;
@@ -436,7 +434,7 @@ static void cleanup (void)
         HotkeyConfiguration * old;
         old = hotkey;
         hotkey = hotkey->next;
-        free(old);
+        g_free(old);
     }
     plugin_cfg.first.next = NULL;
     plugin_cfg.first.key = 0;

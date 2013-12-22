@@ -58,7 +58,7 @@ static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
     for (gint i = 0; i < nparams; i++) {
         api_sig_length += strlen(parameters[i].paramName) + strlen(parameters[i].argument);
     }
-    all_params = calloc(api_sig_length, sizeof(gchar));
+    all_params = g_new0(gchar, api_sig_length);
 
     for (int i = 0; i < nparams; i++) {
         strcat(all_params, parameters[i].paramName);
@@ -66,7 +66,7 @@ static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
     }
 
     api_sig = g_strconcat(all_params, SCROBBLER_SHARED_SECRET, NULL);
-    free(all_params);
+    g_free(all_params);
 
 
     result = g_compute_checksum_for_string(G_CHECKSUM_MD5, api_sig, -1);
@@ -791,7 +791,7 @@ gpointer scrobbling_thread (gpointer input_data) {
     }//while(scrobbler_running)
 
     //reset all vars to their initial values
-    free(received_data);
+    g_free(received_data);
     received_data = NULL;
     received_data_size = 0;
 

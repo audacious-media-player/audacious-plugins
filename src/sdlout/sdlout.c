@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
+#include <glib.h>
+
 #include <SDL.h>
 #include <SDL_audio.h>
 
@@ -187,7 +189,7 @@ int sdlout_open_audio (int format, int rate, int chan)
     sdlout_rate = rate;
 
     buffer_size = 2 * chan * (aud_get_int (NULL, "output_buffer_size") * rate / 1000);
-    buffer = malloc (buffer_size);
+    buffer = g_malloc (buffer_size);
     buffer_data_start = 0;
     buffer_data_len = 0;
 
@@ -206,7 +208,7 @@ int sdlout_open_audio (int format, int rate, int chan)
     if (SDL_OpenAudio (& spec, NULL) < 0)
     {
         sdlout_error ("Failed to open audio stream: %s.\n", SDL_GetError ());
-        free (buffer);
+        g_free (buffer);
         buffer = NULL;
         return 0;
     }
@@ -218,7 +220,7 @@ void sdlout_close_audio (void)
 {
     AUDDBG ("Closing audio.\n");
     SDL_CloseAudio ();
-    free (buffer);
+    g_free (buffer);
     buffer = NULL;
 }
 

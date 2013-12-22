@@ -20,6 +20,8 @@
  */
 
 #include <string.h>
+#include <glib.h>
+
 #include <audacious/debug.h>
 
 #include "flacng.h"
@@ -28,20 +30,8 @@ callback_info *init_callback_info(void)
 {
     callback_info *info;
 
-    if ((info = malloc (sizeof (callback_info))) == NULL)
-    {
-        FLACNG_ERROR("Could not allocate memory for callback structure!");
-        return NULL;
-    }
-
-    memset (info, 0, sizeof (callback_info));
-
-    if ((info->output_buffer = malloc (BUFFER_SIZE_BYTE)) == NULL)
-    {
-        FLACNG_ERROR("Could not allocate memory for output buffer!");
-        free (info);
-        return NULL;
-    }
+    info = g_new0 (callback_info, 1);
+    info->output_buffer = g_malloc (BUFFER_SIZE_BYTE);
 
     reset_info(info);
 
@@ -52,8 +42,8 @@ callback_info *init_callback_info(void)
 
 void clean_callback_info(callback_info *info)
 {
-    free (info->output_buffer);
-    free (info);
+    g_free (info->output_buffer);
+    g_free (info);
 }
 
 void reset_info(callback_info *info)

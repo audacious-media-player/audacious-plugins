@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
 #include <samplerate.h>
 
 #include <audacious/i18n.h>
@@ -67,7 +69,7 @@ void resample_cleanup (void)
         state = NULL;
     }
 
-    free (buffer);
+    g_free (buffer);
     buffer = NULL;
     buffer_samples = 0;
 }
@@ -119,7 +121,7 @@ void do_resample (float * * data, int * samples, bool_t finish)
     if (buffer_samples < (int) (* samples * ratio) + 256)
     {
         buffer_samples = (int) (* samples * ratio) + 256;
-        buffer = realloc (buffer, sizeof (float) * buffer_samples);
+        buffer = g_renew (float, buffer, buffer_samples);
     }
 
     SRC_DATA d = {

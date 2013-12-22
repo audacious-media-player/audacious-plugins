@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
@@ -47,7 +49,7 @@ static bool_t init (void)
 
 static void cleanup(void)
 {
-    free(buffer);
+    g_free(buffer);
     buffer = NULL;
 }
 
@@ -59,7 +61,7 @@ static void echo_start(int *channels, int *rate)
     static int old_srate, old_nch;
 
     if (buffer == NULL)
-        buffer = malloc (BUFFER_BYTES);
+        buffer = g_malloc (BUFFER_BYTES);
 
     echo_channels = *channels;
     echo_rate = *rate;

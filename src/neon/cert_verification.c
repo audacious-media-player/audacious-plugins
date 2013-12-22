@@ -247,7 +247,7 @@ gboolean cert_get_hash(const ne_ssl_certificate* cert, guint32* out_hash) {
     g_return_val_if_fail(certPem != NULL, 1);
     gsize derLength = 0;
     guchar* certDer = g_base64_decode(certPem, &derLength);
-    free(certPem);
+    g_free(certPem);
     g_return_val_if_fail(certDer != NULL, 1);
 
     struct DerData data = {

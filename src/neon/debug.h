@@ -20,9 +20,6 @@
 
 #include <stdio.h>
 
-#define _ENTER _DEBUG("enter")
-#define _LEAVE _DEBUG("leave"); return
-
 #define _ERROR(...) do { printf ("neon: " __VA_ARGS__); putchar ('\n'); } while (0)
 
 #ifdef NEON_DEBUG

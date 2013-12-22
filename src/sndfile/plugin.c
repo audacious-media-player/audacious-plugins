@@ -41,6 +41,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
 #include <sndfile.h>
 
 #include <audacious/input.h>
@@ -304,7 +306,7 @@ static bool_t play_start (const char * filename, VFSFile * file)
     }
 
     int size = sfinfo.channels * (sfinfo.samplerate / 50);
-    float * buffer = malloc (sizeof (float) * size);
+    float * buffer = g_new (float, size);
 
     while (! aud_input_check_stop ())
     {
@@ -320,7 +322,7 @@ static bool_t play_start (const char * filename, VFSFile * file)
     }
 
     sf_close (sndfile);
-    free (buffer);
+    g_free (buffer);
 
     return TRUE;
 }

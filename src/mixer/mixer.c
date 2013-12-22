@@ -22,6 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
@@ -37,7 +39,7 @@ static void mono_to_stereo (float * * data, int * samples)
 {
     int frames = * samples;
     float * get = * data;
-    float * set = mixer_buf = realloc (mixer_buf, sizeof (float) * 2 * frames);
+    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
 
     * data = mixer_buf;
     * samples = 2 * frames;
@@ -54,7 +56,7 @@ static void stereo_to_mono (float * * data, int * samples)
 {
     int frames = * samples / 2;
     float * get = * data;
-    float * set = mixer_buf = realloc (mixer_buf, sizeof (float) * frames);
+    float * set = mixer_buf = g_renew (float, mixer_buf, frames);
 
     * data = mixer_buf;
     * samples = frames;
@@ -71,7 +73,7 @@ static void quadro_to_stereo (float * * data, int * samples)
 {
     int frames = * samples / 4;
     float * get = * data;
-    float * set = mixer_buf = realloc (mixer_buf, sizeof (float) * 2 * frames);
+    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
 
     * data = mixer_buf;
     * samples = 2 * frames;
@@ -91,7 +93,7 @@ static void surround_5p1_to_stereo (float * * data, int * samples)
 {
     int frames = * samples / 6;
     float * get = * data;
-    float * set = mixer_buf = realloc (mixer_buf, sizeof (float) * 2 * frames);
+    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
 
     * data = mixer_buf;
     * samples = 2 * frames;
@@ -161,7 +163,7 @@ static bool_t mixer_init (void)
 
 static void mixer_cleanup (void)
 {
-    free (mixer_buf);
+    g_free (mixer_buf);
     mixer_buf = 0;
 }
 

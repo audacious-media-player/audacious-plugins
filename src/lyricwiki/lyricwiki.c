@@ -54,7 +54,7 @@ static void libxml_error_handler(void *ctx, const char *msg, ...)
 {
 }
 
-/* free() returned text */
+/* g_free() returned text */
 static char *scrape_lyrics_from_lyricwiki_edit_page(const char *buf, int64_t len)
 {
 	xmlDocPtr doc;
@@ -113,8 +113,8 @@ give_up:
 				ret = g_match_info_fetch(match_info, 2);
 				if (!g_utf8_collate(ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
 				{
-					free(ret);
-					ret = strdup(_("No lyrics available"));
+					g_free(ret);
+					ret = g_strdup(_("No lyrics available"));
 				}
 
 				g_regex_unref(reg);
@@ -196,7 +196,7 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 {
 	if (!state.uri || strcmp(state.uri, requri))
 	{
-		free(buf);
+		g_free(buf);
 		str_unref(requri);
 		return FALSE;
 	}
@@ -206,7 +206,7 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 	{
 		SPRINTF(error, _("Unable to fetch %s"), state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
-		free(buf);
+		g_free(buf);
 		return FALSE;
 	}
 
@@ -216,13 +216,13 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 	{
 		SPRINTF(error, _("Unable to parse %s"), state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
-		free(buf);
+		g_free(buf);
 		return FALSE;
 	}
 
 	update_lyrics_window(state.title, state.artist, lyrics);
 
-	free(lyrics);
+	g_free(lyrics);
 	return TRUE;
 }
 
@@ -230,7 +230,7 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 {
 	if (strcmp(state.uri, requri))
 	{
-		free(buf);
+		g_free(buf);
 		str_unref(requri);
 		return FALSE;
 	}
@@ -240,7 +240,7 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 	{
 		SPRINTF(error, _("Unable to fetch %s"), state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
-		free(buf);
+		g_free(buf);
 		return FALSE;
 	}
 
@@ -250,7 +250,7 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 	{
 		SPRINTF(error, _("Unable to parse %s"), state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
-		free(buf);
+		g_free(buf);
 		return FALSE;
 	}
 
@@ -260,7 +260,7 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 	update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
 	vfs_async_file_get_contents(uri, get_lyrics_step_3, str_ref(state.uri));
 
-	free(buf);
+	g_free(buf);
 	return TRUE;
 }
 

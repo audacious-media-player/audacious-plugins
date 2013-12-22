@@ -13,6 +13,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <glib.h>
+
 #include <libaudcore/vfs.h>
 
 static const char * const hier[] = {"moov", "udta", "meta", "ilst", "covr", "data"};
@@ -75,12 +77,12 @@ bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
 
     /* We're there. */
 
-    * data = malloc (stop - at);
+    * data = g_malloc (stop - at);
     * size = stop - at;
 
     if (vfs_fread (* data, 1, stop - at, file) != stop - at)
     {
-        free (* data);
+        g_free (* data);
         * data = NULL;
         * size = 0;
         return FALSE;

@@ -3,6 +3,7 @@
 */
 
 #include <stdlib.h>
+#include <glib.h>
 
 #include "mp4ff.h"
 #include "neaacdec.h"
@@ -48,7 +49,7 @@ int getAACTrack (mp4ff_t * infile)
         if (buff != NULL)
         {
             rc = AudioSpecificConfig (buff, buff_size, &mp4ASC);
-            free (buff);
+            g_free (buff);
             if (rc < 0)
                 continue;
             return i;

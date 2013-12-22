@@ -544,7 +544,7 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
             {
                 if (bufsize < size)
                 {
-                    buf = realloc (buf, size);
+                    buf = g_realloc (buf, size);
                     bufsize = size;
                 }
 
@@ -570,7 +570,7 @@ error_exit:
     if (ic != NULL)
         close_input_file(ic);
 
-    free (buf);
+    g_free (buf);
 
     return ! error;
 }

@@ -19,6 +19,7 @@
  */
 
 #include <string.h>
+#include <glib.h>
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
@@ -137,12 +138,7 @@ static bool_t flac_play (const char * filename, VFSFile * file)
         goto ERR_NO_CLOSE;
     }
 
-    if ((play_buffer = malloc (BUFFER_SIZE_BYTE)) == NULL)
-    {
-        FLACNG_ERROR("Could not allocate conversion buffer\n");
-        error = TRUE;
-        goto ERR_NO_CLOSE;
-    }
+    play_buffer = g_malloc (BUFFER_SIZE_BYTE);
 
     if (! aud_input_open_audio (SAMPLE_FMT (info->bits_per_sample),
         info->sample_rate, info->channels))
@@ -178,7 +174,7 @@ static bool_t flac_play (const char * filename, VFSFile * file)
     }
 
 ERR_NO_CLOSE:
-    free (play_buffer);
+    g_free (play_buffer);
     reset_info(info);
 
     if (FLAC__stream_decoder_flush(decoder) == FALSE)

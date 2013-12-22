@@ -60,8 +60,8 @@ void i_configure_ev_sflist_add (void * sfont_lv)
             gtk_tree_model_get (GTK_TREE_MODEL (store), &itersel, LISTSFONT_FILENAME_COLUMN, &selfilename, -1);
             selfiledir = g_path_get_dirname (selfilename);
             gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (browse_dialog), selfiledir);
-            free (selfiledir);
-            free (selfilename);
+            g_free (selfiledir);
+            g_free (selfilename);
         }
 
         if (gtk_dialog_run (GTK_DIALOG (browse_dialog)) == GTK_RESPONSE_ACCEPT)
@@ -79,7 +79,7 @@ void i_configure_ev_sflist_add (void * sfont_lv)
                                 LISTSFONT_FILENAME_COLUMN, filename,
                                 LISTSFONT_FILESIZE_COLUMN, filesize, -1);
 
-            free (filename);
+            g_free (filename);
         }
 
         gtk_widget_destroy (browse_dialog);
@@ -156,7 +156,7 @@ void i_configure_ev_sflist_commit (void * sfont_lv)
                                 LISTSFONT_FILENAME_COLUMN, &fname, -1);
             g_string_prepend_c (sflist_string, ';');
             g_string_prepend (sflist_string, fname);
-            free (fname);
+            g_free (fname);
             iter_is_valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter);
         }
         while (iter_is_valid == TRUE);

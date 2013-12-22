@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <wavpack/wavpack.h>
 
 #include <audacious/audtag.h>
@@ -136,8 +138,8 @@ static bool_t wv_play (const char * filename, VFSFile * file)
         goto error_exit;
     }
 
-    input = malloc(BUFFER_SIZE * num_channels * sizeof(uint32_t));
-    output = malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
+    input = g_new(int32_t, BUFFER_SIZE * num_channels);
+    output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
     if (input == NULL || output == NULL)
         goto error_exit;
 
@@ -193,8 +195,8 @@ static bool_t wv_play (const char * filename, VFSFile * file)
 
 error_exit:
 
-    free(input);
-    free(output);
+    g_free(input);
+    g_free(output);
     wv_deattach (wvc_input, ctx);
 
     return ! error;

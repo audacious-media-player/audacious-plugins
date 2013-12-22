@@ -21,6 +21,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <samplerate.h>
 
 #include <audacious/i18n.h>
@@ -66,7 +68,7 @@ static void bufgrow (Buffer * b, int len)
 {
     if (len > b->size)
     {
-        b->mem = realloc (b->mem, BYTES (len));
+        b->mem = g_realloc (b->mem, BYTES (len));
         b->size = len;
     }
 
@@ -132,7 +134,7 @@ static void speed_start (int * chans, int * rate)
 
     /* Generate the cosine window, scaled vertically to compensate for the
      * overlap of the reassembled pieces of audio. */
-    cosine = realloc (cosine, width * sizeof (double));
+    cosine = g_realloc (cosine, width * sizeof (double));
     for (int i = 0; i < width; i ++)
         cosine[i] = (1.0 - cos (2.0 * M_PI * i / width)) / OVERLAP;
 
@@ -247,14 +249,14 @@ static void speed_cleanup (void)
 
     srcstate = NULL;
 
-    free (cosine);
+    g_free (cosine);
     cosine = NULL;
 
-    free (in.mem);
+    g_free (in.mem);
     in.mem = NULL;
     in.size = 0;
 
-    free (out.mem);
+    g_free (out.mem);
     out.mem = NULL;
     out.size = 0;
 }

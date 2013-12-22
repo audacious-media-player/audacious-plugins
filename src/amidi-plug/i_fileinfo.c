@@ -37,7 +37,7 @@
 void i_fileinfo_ev_destroy (GtkWidget * win, void * mf)
 {
     i_midi_free ((midifile_t *) mf);
-    free (mf);
+    g_free (mf);
 }
 
 
@@ -135,7 +135,7 @@ void i_fileinfo_gui (const char * filename_uri)
     if (fileinfowin)
         return;
 
-    mf = malloc (sizeof (midifile_t));
+    mf = g_new (midifile_t, 1);
 
     /****************** midifile parser ******************/
     if (!i_midi_parse_from_filename (filename_uri, mf))

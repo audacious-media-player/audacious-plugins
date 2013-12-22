@@ -221,7 +221,7 @@ bool_t flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *l
         {
             AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
 
-            * data = malloc (metadata->data.picture.data_length);
+            * data = g_malloc (metadata->data.picture.data_length);
             * length = metadata->data.picture.data_length;
             memcpy (* data, metadata->data.picture.data, * length);
             has_image = TRUE;
@@ -389,8 +389,8 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
                         else
                         {
                             parse_comment(tuple, key, value);
-                            free(key);
-                            free(value);
+                            g_free(key);
+                            g_free(value);
                         }
                     }
                 }

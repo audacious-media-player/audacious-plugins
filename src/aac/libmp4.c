@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <neaacdec.h>
 
 #include "mp4ff.h"
@@ -69,7 +71,7 @@ static void read_and_set_string (mp4ff_t * mp4, int (*func) (const mp4ff_t *
     if (string != NULL)
         tuple_set_str (tuple, field, string);
 
-    free (string);
+    g_free (string);
 }
 
 static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
@@ -114,14 +116,14 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     if (year != NULL)
         tuple_set_int (tuple, FIELD_YEAR, atoi (year));
 
-    free (year);
+    g_free (year);
 
     mp4ff_meta_get_track (mp4, &cd_track);
 
     if (cd_track != NULL)
         tuple_set_int (tuple, FIELD_TRACK_NUMBER, atoi (cd_track));
 
-    free (cd_track);
+    g_free (cd_track);
 
     return tuple;
 }
@@ -196,7 +198,7 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
         return FALSE;
     }
 
-    free (buffer);
+    g_free (buffer);
     if (!channels)
     {
         NeAACDecClose (decoder);
@@ -254,7 +256,7 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
         }
         if (buffer)
         {
-            free (buffer);
+            g_free (buffer);
             buffer = NULL;
             bufferSize = 0;
         }

@@ -21,6 +21,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <glib.h>
+
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
@@ -92,7 +94,7 @@ NEXT:
         parse = next;
     }
 
-    free (text);
+    g_free (text);
     return TRUE;
 }
 
