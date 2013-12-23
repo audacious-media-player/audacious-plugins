@@ -305,57 +305,51 @@ static const AudguiListCallbacks callbacks = {
  .get_data = get_data,
  .receive_data = receive_data};
 
-static bool_t search_cb (GtkTreeModel * model, int column, const char * key,
+static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
  GtkTreeIter * iter, void * user)
 {
     GtkTreePath * path = gtk_tree_model_get_path (model, iter);
     g_return_val_if_fail (path, TRUE);
     int row = gtk_tree_path_get_indices (path)[0];
     g_return_val_if_fail (row >= 0, TRUE);
-    char * s[3] = {NULL, NULL, NULL};
-    aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
-     & s[0], & s[1], & s[2], FALSE);
     gtk_tree_path_free (path);
 
-    char * temp = g_utf8_strdown (key, -1);
-    char * * keys = g_strsplit (temp, " ", 0);
-    g_free (temp);
+    Index * keys = str_list_to_index (search, " ");
+    int n_keys = index_count (keys);
 
-    int remain = 0; /* number of keys remaining to be matched */
-    for (int j = 0; keys[j]; j ++)
+    bool_t matched = FALSE;
+
+    if (n_keys)
     {
-        if (keys[j][0])
-            remain ++;
-    }
-    if (! remain)
-        remain ++; /* force non-match if there are no non-blank keys */
+        char * s[3] = {NULL, NULL, NULL};
+        aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
+         & s[0], & s[1], & s[2], FALSE);
 
-    for (int i = 0; i < ARRAY_LEN (s); i ++)
-    {
-        if (! s[i])
-            continue;
-
-        if (remain)
+        for (int i = 0; i < ARRAY_LEN (s); i ++)
         {
-            temp = g_utf8_strdown (s[i], -1);
+            if (! s[i])
+                continue;
 
-            for (int j = 0; keys[j] && remain; j ++)
+            for (int j = 0; j < n_keys;)
             {
-                if (keys[j][0] && strstr (temp, keys[j]))
+                if (strstr_nocase_utf8 (s[i], index_get (keys, j)))
                 {
-                    keys[j][0] = 0; /* don't look for this one again */
-                    remain --;
+                    index_delete_full (keys, j, 1, (IndexFreeFunc) str_unref);
+                    n_keys --;
                 }
+                else
+                    j ++;
             }
 
-            g_free (temp);
+            str_unref (s[i]);
         }
 
-        str_unref (s[i]);
+        matched = ! n_keys;
     }
 
-    g_strfreev (keys);
-    return remain ? TRUE : FALSE; /* TRUE == not matched, FALSE == matched */
+    index_free_full (keys, (IndexFreeFunc) str_unref);
+
+    return ! matched;
 }
 
 static void destroy_cb (PlaylistWidgetData * data)
