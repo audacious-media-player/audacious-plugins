@@ -50,7 +50,7 @@ typedef struct {
 } SearchState;
 
 static int playlist_id;
-static char * * search_terms;
+static Index * search_terms;
 
 static GHashTable * added_table;
 static GHashTable * database;
@@ -69,7 +69,7 @@ static Item * item_new (int field, char * name, Item * parent)
     Item * item = g_slice_new (Item);
     item->field = field;
     item->name = name;
-    item->folded = g_utf8_casefold (name, -1);
+    item->folded = str_tolower_utf8 (name);
     item->parent = parent;
     item->matches = g_array_new (FALSE, FALSE, sizeof (int));
 
@@ -88,7 +88,7 @@ static void item_free (Item * item)
         g_hash_table_destroy (item->children);
 
     str_unref (item->name);
-    g_free (item->folded);
+    str_unref (item->folded);
     g_array_free (item->matches, TRUE);
     g_slice_free (Item, item);
 }
@@ -140,11 +140,10 @@ static int get_playlist (bool_t require_added, bool_t require_scanned)
 
 static void set_search_phrase (const char * phrase)
 {
-    g_strfreev (search_terms);
-
-    char * folded = g_utf8_casefold (phrase, -1);
-    search_terms = g_strsplit (folded, " ", -1);
-    g_free (folded);
+    char * folded = str_tolower_utf8 (phrase);
+    index_free_full (search_terms, (IndexFreeFunc) str_unref);
+    search_terms = str_list_to_index (folded, " ");
+    str_unref (folded);
 }
 
 static char * get_path (void)
@@ -263,13 +262,14 @@ static void search_cb (void * key, void * _item, void * _state)
         return;
 
     int oldmask = state->mask;
+    int count = index_count (search_terms);
 
-    for (int t = 0, bit = 1; search_terms[t]; t ++, bit <<= 1)
+    for (int t = 0, bit = 1; t < count; t ++, bit <<= 1)
     {
         if (! (state->mask & bit))
             continue; /* skip term if it is already found */
 
-        if (strstr (item->folded, search_terms[t]))
+        if (strstr (item->folded, index_get (search_terms, t)))
             state->mask &= ~bit; /* we found it */
         else if (! item->children)
             break; /* quit early if there are no children to search */
@@ -303,9 +303,7 @@ static void do_search (void)
         state.items[f] = index_new ();
 
     /* effectively limits number of search terms to 32 */
-    state.mask = 0;
-    for (int t = 0, bit = 1; search_terms[t]; t ++, bit <<= 1)
-        state.mask |= bit;
+    state.mask = (1 << index_count (search_terms)) - 1;
 
     g_hash_table_foreach (database, search_cb, & state);
 
@@ -506,7 +504,7 @@ static bool_t search_init (void)
 {
     find_playlist ();
 
-    set_search_phrase ("");
+    search_terms = index_new ();
     items = index_new ();
     selection = g_array_new (FALSE, FALSE, 1);
 
@@ -531,7 +529,7 @@ static void search_cleanup (void)
         search_source = 0;
     }
 
-    g_strfreev (search_terms);
+    index_free_full (search_terms, (IndexFreeFunc) str_unref);
     search_terms = NULL;
 
     index_free (items);
