@@ -283,11 +283,8 @@ static void get_data (void * user, void * * data, int * length)
 
 static void receive_data (void * user, int row, const void * data, int length)
 {
-    char * text = g_malloc (length + 1);
-    memcpy (text, data, length);
-    text[length] = 0;
+    SNCOPY (text, data, length);
     audgui_urilist_insert (((PlaylistWidgetData *) user)->list, row, text);
-    g_free (text);
 }
 
 static const AudguiListCallbacks callbacks = {
@@ -355,12 +352,12 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
 static void destroy_cb (PlaylistWidgetData * data)
 {
     g_list_free (data->queue);
-    g_free (data);
+    g_slice_free (PlaylistWidgetData, data);
 }
 
 GtkWidget * ui_playlist_widget_new (int playlist)
 {
-    PlaylistWidgetData * data = g_malloc0 (sizeof (PlaylistWidgetData));
+    PlaylistWidgetData * data = g_slice_new (PlaylistWidgetData);
     data->list = playlist;
     data->queue = NULL;
     data->popup_source = 0;

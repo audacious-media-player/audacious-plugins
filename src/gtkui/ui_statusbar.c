@@ -33,39 +33,33 @@
 
 #include "ui_statusbar.h"
 
-#define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), \
- __VA_ARGS__)
+#define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
 
 static void
 ui_statusbar_update_playlist_length(void * unused, GtkWidget *label)
 {
     int playlist = aud_playlist_get_active();
-    int64_t selection, total;
-    char *sel_text, *tot_text, *text;
+    int64_t selection = aud_playlist_get_selected_length (playlist) / 1000;
+    int64_t total = aud_playlist_get_total_length (playlist) / 1000;
 
-    total = aud_playlist_get_total_length (playlist) / 1000;
-    selection = aud_playlist_get_selected_length (playlist) / 1000;
+    char buf[64];
+    buf[0] = 0;
 
     if (selection >= 3600)
-        sel_text = g_strdup_printf ("%" PRId64 ":%02" PRId64 ":%02" PRId64,
-        selection / 3600, selection / 60 % 60, selection % 60);
+        APPEND (buf, "%" PRId64 ":%02" PRId64 ":%02" PRId64,
+         selection / 3600, selection / 60 % 60, selection % 60);
     else
-        sel_text = g_strdup_printf ("%" PRId64 ":%02" PRId64,
-        selection / 60, selection % 60);
+        APPEND (buf, "%" PRId64 ":%02" PRId64,
+         selection / 60, selection % 60);
 
     if (total >= 3600)
-        tot_text = g_strdup_printf ("%" PRId64 ":%02" PRId64 ":%02" PRId64,
-        total / 3600, total / 60 % 60, total % 60);
+        APPEND (buf, "/%" PRId64 ":%02" PRId64 ":%02" PRId64,
+         total / 3600, total / 60 % 60, total % 60);
     else
-        tot_text = g_strdup_printf ("%" PRId64 ":%02" PRId64,
-        total / 60, total % 60);
+        APPEND (buf, "/%" PRId64 ":%02" PRId64,
+         total / 60, total % 60);
 
-    text = g_strconcat(sel_text, "/", tot_text, NULL);
-    gtk_label_set_text(GTK_LABEL(label), text);
-
-    g_free(text);
-    g_free(tot_text);
-    g_free(sel_text);
+    gtk_label_set_text ((GtkLabel *) label, buf);
 }
 
 static void

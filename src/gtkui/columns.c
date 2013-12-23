@@ -24,6 +24,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudcore/index.h>
+#include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 
@@ -47,12 +48,18 @@ void pw_col_init (void)
     pw_num_cols = 0;
 
     char * columns = aud_get_str ("gtkui", "playlist_columns");
-    char * * split = g_strsplit (columns, " ", -1);
+    Index * index = str_list_to_index (columns, " ");
 
-    for (char * * elem = split; * elem && pw_num_cols < PW_COLS; elem ++)
+    int count = index_count (index);
+    if (count > PW_COLS)
+        count = PW_COLS;
+
+    for (int c = 0; c < count; c ++)
     {
+        char * column = index_get (index, c);
+
         int i = 0;
-        while (i < PW_COLS && strcmp (* elem, pw_col_keys[i]))
+        while (i < PW_COLS && strcmp (column, pw_col_keys[i]))
             i ++;
 
         if (i == PW_COLS)
@@ -61,7 +68,7 @@ void pw_col_init (void)
         pw_cols[pw_num_cols ++] = i;
     }
 
-    g_strfreev (split);
+    index_free_full (index, (IndexFreeFunc) str_unref);
     str_unref (columns);
 }
 
@@ -350,18 +357,16 @@ void pw_col_choose (void)
 
 void pw_col_save (void)
 {
-    GString * s = g_string_new_len (NULL, 0);
-    for (int i = 0; ; )
-    {
-        g_string_append (s, pw_col_keys[pw_cols[i]]);
-        if (++ i < pw_num_cols)
-            g_string_append_c (s, ' ');
-        else
-            break;
-    }
+    Index * index = index_new ();
 
-    aud_set_str ("gtkui", "playlist_columns", s->str);
-    g_string_free (s, TRUE);
+    for (int i = 0; i < pw_num_cols; i ++)
+        index_insert (index, -1, (void *) pw_col_keys[pw_cols[i]]);
+
+    char * columns = index_to_str_list (index, " ");
+    aud_set_str ("gtkui", "playlist_columns", columns);
+    str_unref (columns);
+
+    index_free (index);
 }
 
 void pw_col_cleanup (void)

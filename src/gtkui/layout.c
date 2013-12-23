@@ -217,7 +217,7 @@ static GtkWidget * paned_new (bool_t vertical, bool_t after, int w, int h)
 static Item * item_new (const char * name)
 {
     Item * item = g_slice_new (Item);
-    item->name = g_strdup (name);
+    item->name = str_get (name);
     item->widget = item->vbox = item->paned = item->window = NULL;
     item->dock = item->x = item->y = -1;
     item->w = DEFAULT_WIDTH;
@@ -571,7 +571,7 @@ void layout_cleanup (void)
     {
         Item * item = node->data;
         g_return_if_fail (item && ! item->widget && ! item->vbox && ! item->window);
-        g_free (item->name);
+        str_unref (item->name);
         g_slice_free (Item, item);
     }
 

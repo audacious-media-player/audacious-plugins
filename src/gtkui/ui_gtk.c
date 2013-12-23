@@ -29,6 +29,7 @@
 #include <audacious/plugin.h>
 #include <audacious/plugins.h>
 #include <audacious/misc.h>
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
@@ -186,9 +187,8 @@ static bool_t title_change_cb (void)
         if (aud_drct_get_ready ())
         {
             char * title = aud_drct_get_title ();
-            char * title_s = g_strdup_printf (_("%s - Audacious"), title);
+            SPRINTF (title_s, _("%s - Audacious"), title);
             gtk_window_set_title ((GtkWindow *) window, title_s);
-            g_free (title_s);
             str_unref (title);
         }
         else
