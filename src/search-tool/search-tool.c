@@ -155,16 +155,11 @@ static char * get_path (void)
 
     str_unref (path);
 
-    char * temp = g_build_filename (g_get_home_dir (), "Music", NULL);
-
-    if (g_file_test (temp, G_FILE_TEST_EXISTS))
-    {
-        path = str_get (temp);
-        g_free (temp);
+    path = filename_build (g_get_home_dir (), "Music");
+    if (g_file_test (path, G_FILE_TEST_EXISTS))
         return path;
-    }
 
-    g_free (temp);
+    str_unref (path);
 
     return str_get (g_get_home_dir ());
 }
@@ -340,7 +335,7 @@ static void do_search (void)
 
 static bool_t filter_cb (const char * filename, void * unused)
 {
-    return added_table && ! g_hash_table_lookup_extended (added_table, filename, NULL, NULL);
+    return added_table && ! g_hash_table_contains (added_table, filename);
 }
 
 static void begin_add (const char * path)
@@ -354,7 +349,13 @@ static void begin_add (const char * path)
 
     char * uri = filename_to_uri (path);
     g_return_if_fail (uri);
-    char * prefix = g_str_has_suffix (uri, "/") ? g_strdup (uri) : g_strconcat (uri, "/", NULL);
+
+    if (! g_str_has_suffix (uri, "/"))
+    {
+        SCONCAT2 (temp, uri, "/");
+        str_unref (uri);
+        uri = str_get (temp);
+    }
 
     destroy_added_table ();
 
@@ -367,8 +368,7 @@ static void begin_add (const char * path)
     {
         char * filename = aud_playlist_entry_get_filename (list, entry);
 
-        if (g_str_has_prefix (filename, prefix) && ! g_hash_table_lookup_extended
-         (added_table, filename, NULL, NULL))
+        if (g_str_has_prefix (filename, uri) && ! g_hash_table_contains (added_table, filename))
         {
             aud_playlist_entry_set_selected (list, entry, FALSE);
             g_hash_table_insert (added_table, filename, NULL);
@@ -387,7 +387,6 @@ static void begin_add (const char * path)
     index_insert (add, -1, uri);
     aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
 
-    g_free (prefix);
     adding = TRUE;
 }
 
