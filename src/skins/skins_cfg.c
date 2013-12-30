@@ -183,10 +183,14 @@ static PreferencesWidget font_table_elements[] = {
   .cfg_type = VALUE_STRING, .csect = "skins", .cname = "playlist_font",
   .callback = playlist_font_set_cb, .data = {.font_btn = {N_("Select playlist font:")}}}};
 
+static void * create_skin_view (void);
+
 static PreferencesWidget appearance_misc_widgets[] = {
-    {WIDGET_LABEL, N_("<b>_Fonts</b>"), NULL, NULL, NULL, FALSE},
-    {WIDGET_TABLE, .child = TRUE, .data = {.table = {font_table_elements,
-     ARRAY_LEN (font_table_elements)}}},
+    {WIDGET_LABEL, N_("<b>Skin</b>")},
+    {WIDGET_CUSTOM, .data.populate = create_skin_view},
+    {WIDGET_LABEL, N_("<b>Fonts</b>")},
+    {WIDGET_TABLE, .child = TRUE,
+     .data.table = {font_table_elements, ARRAY_LEN (font_table_elements)}},
     {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = mainwin_font_set_cb},
     {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
@@ -234,6 +238,28 @@ DONE:
     str_unref (path);
 }
 
+static void * create_skin_view (void)
+{
+    GtkWidget * scrolled = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
+     GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
+    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
+    gtk_widget_set_size_request (scrolled, -1, 160);
+
+    skin_view = gtk_tree_view_new ();
+    skin_view_realize ((GtkTreeView *) skin_view);
+    skin_view_update ((GtkTreeView *) skin_view);
+    gtk_container_add ((GtkContainer *) scrolled, skin_view);
+
+    drag_dest_set (skin_view);
+
+    g_signal_connect (skin_view, "drag-data-received",
+     (GCallback) on_skin_view_drag_data_received, NULL);
+    g_signal_connect (skin_view, "destroy", (GCallback) gtk_widget_destroyed, & skin_view);
+
+    return scrolled;
+}
+
 static GtkWidget * config_window = NULL;
 
 void skins_configure (void)
@@ -244,63 +270,10 @@ void skins_configure (void)
         return;
     }
 
-    GtkWidget *appearance_page_vbox;
-    GtkWidget *vbox37;
-    GtkWidget *vbox38;
-    GtkWidget *hbox12;
-    GtkWidget *alignment94;
-    GtkWidget *hbox13;
-    GtkWidget *label103;
-    GtkWidget *alignment95;
-    GtkWidget *skin_view_scrolled_window;
+    GtkWidget * appearance_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 
-    appearance_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-
-    vbox37 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-    gtk_box_pack_start (GTK_BOX (appearance_page_vbox), vbox37, TRUE, TRUE, 0);
-
-    vbox38 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-    gtk_box_pack_start (GTK_BOX (vbox37), vbox38, FALSE, TRUE, 0);
-
-    hbox12 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_box_pack_start (GTK_BOX (vbox38), hbox12, TRUE, TRUE, 0);
-
-    alignment94 = gtk_alignment_new (0.5, 0.5, 1, 1);
-    gtk_box_pack_start (GTK_BOX (hbox12), alignment94, TRUE, TRUE, 0);
-    gtk_alignment_set_padding (GTK_ALIGNMENT (alignment94), 0, 4, 0, 0);
-
-    hbox13 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_container_add (GTK_CONTAINER (alignment94), hbox13);
-
-    label103 = gtk_label_new_with_mnemonic (_("<b>_Skin</b>"));
-    gtk_box_pack_start (GTK_BOX (hbox13), label103, TRUE, TRUE, 0);
-    gtk_label_set_use_markup (GTK_LABEL (label103), TRUE);
-    gtk_misc_set_alignment (GTK_MISC (label103), 0, 0);
-
-    alignment95 = gtk_alignment_new (0.5, 0.5, 1, 1);
-    gtk_box_pack_start (GTK_BOX (vbox38), alignment95, TRUE, TRUE, 0);
-    gtk_widget_set_size_request (alignment95, -1, 172);
-    gtk_alignment_set_padding (GTK_ALIGNMENT (alignment95), 0, 12, 12, 0);
-
-    skin_view_scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-    gtk_container_add (GTK_CONTAINER (alignment95), skin_view_scrolled_window);
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (skin_view_scrolled_window), GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
-    gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (skin_view_scrolled_window), GTK_SHADOW_IN);
-
-    skin_view = gtk_tree_view_new ();
-    skin_view_realize ((GtkTreeView *) skin_view);
-    skin_view_update ((GtkTreeView *) skin_view);
-    gtk_container_add (GTK_CONTAINER (skin_view_scrolled_window), skin_view);
-    gtk_widget_set_size_request (skin_view, -1, 100);
-
-    aud_create_widgets(GTK_BOX(vbox37), appearance_misc_widgets, ARRAY_LEN(appearance_misc_widgets));
-
-    g_signal_connect(skin_view, "drag-data-received",
-                     G_CALLBACK(on_skin_view_drag_data_received),
-                     NULL);
-    drag_dest_set(skin_view);
-
-    g_signal_connect (skin_view, "destroy", (GCallback) gtk_widget_destroyed, & skin_view);
+    aud_create_widgets ((GtkBox *) appearance_page_vbox,
+     appearance_misc_widgets, ARRAY_LEN (appearance_misc_widgets));
 
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) appearance_page_vbox, hbox, FALSE, FALSE, 0);
