@@ -52,6 +52,8 @@ typedef struct {
     GTime *time;
 } SkinNode;
 
+static void skin_view_on_cursor_changed (GtkTreeView * treeview, void * data);
+
 static GList *skinlist = NULL;
 
 static gchar *
@@ -272,7 +274,7 @@ void skin_view_update (GtkTreeView * treeview)
     gchar *name;
     GList *entry;
 
-    gtk_widget_set_sensitive(GTK_WIDGET(treeview), FALSE);
+    g_signal_handlers_block_by_func (treeview, (GCallback) skin_view_on_cursor_changed, NULL);
 
     store = GTK_LIST_STORE(gtk_tree_view_get_model(treeview));
 
@@ -315,7 +317,7 @@ void skin_view_update (GtkTreeView * treeview)
         gtk_tree_path_free(path);
     }
 
-    gtk_widget_set_sensitive(GTK_WIDGET(treeview), TRUE);
+    g_signal_handlers_unblock_by_func (treeview, (GCallback) skin_view_on_cursor_changed, NULL);
 }
 
 
