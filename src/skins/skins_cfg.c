@@ -300,9 +300,7 @@ void skins_configure (void)
                      NULL);
     drag_dest_set(skin_view);
 
-    g_signal_connect(mainwin, "drag-data-received",
-                     G_CALLBACK(mainwin_drag_data_received),
-                     skin_view);
+    g_signal_connect (skin_view, "destroy", (GCallback) gtk_widget_destroyed, & skin_view);
 
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) appearance_page_vbox, hbox, FALSE, FALSE, 0);
