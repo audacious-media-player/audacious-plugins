@@ -53,8 +53,9 @@ cairo_surface_t * surface_new_from_file (const gchar * name)
 
 guint32 surface_get_pixel (cairo_surface_t * s, gint x, gint y)
 {
-    g_return_val_if_fail (x >= 0 && x < cairo_image_surface_get_width (s), 0);
-    g_return_val_if_fail (y >= 0 && y < cairo_image_surface_get_height (s), 0);
+    if (x < 0 || x >= cairo_image_surface_get_width (s) ||
+     y < 0 || y >= cairo_image_surface_get_height (s))
+        return 0;
 
     return * ((guint32 *) (cairo_image_surface_get_data (s) +
      cairo_image_surface_get_stride (s) * y) + x) & 0xffffff;
