@@ -24,6 +24,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <audacious/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
@@ -47,7 +48,7 @@ AUD_IFACE_PLUGIN
     .domain = PACKAGE,
     .init = skins_init,
     .cleanup = skins_cleanup,
-    .configure = skins_configure,
+    .prefs = & skins_prefs,
     .show = mainwin_show
 )
 
@@ -125,8 +126,6 @@ static void skins_cleanup (void)
 {
     if (plugin_is_active)
     {
-        skins_configure_cleanup ();
-
         mainwin_unhook ();
         playlistwin_unhook ();
         g_source_remove (update_source);
@@ -150,4 +149,10 @@ bool_t handle_window_close (void)
         aud_drct_quit ();
 
     return TRUE;
+}
+
+/* temporary */
+void skins_configure (void)
+{
+    aud_plugin_do_configure (aud_plugin_by_header (& _aud_plugin_self));
 }

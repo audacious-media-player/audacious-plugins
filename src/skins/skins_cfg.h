@@ -23,6 +23,8 @@
 
 #include <gtk/gtk.h>
 
+#include <audacious/types.h>
+
 typedef struct {
     gint player_x, player_y;
     gint equalizer_x, equalizer_y;
@@ -50,7 +52,6 @@ void skins_cfg_load();
 void skins_cfg_save();
 
 void skins_configure (void);
-void skins_configure_cleanup (void);
 
 void on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
@@ -58,5 +59,7 @@ void on_skin_view_drag_data_received(GtkWidget * widget,
                                 GtkSelectionData * selection_data,
                                 guint info, guint time,
                                 gpointer user_data);
+
+extern const PluginPreferences skins_prefs;
 
 #endif

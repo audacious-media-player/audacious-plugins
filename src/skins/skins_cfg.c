@@ -185,7 +185,7 @@ static PreferencesWidget font_table_elements[] = {
 
 static void * create_skin_view (void);
 
-static PreferencesWidget appearance_misc_widgets[] = {
+static PreferencesWidget skins_widgets[] = {
     {WIDGET_LABEL, N_("<b>Skin</b>")},
     {WIDGET_CUSTOM, .data.populate = create_skin_view},
     {WIDGET_LABEL, N_("<b>Fonts</b>")},
@@ -195,6 +195,11 @@ static PreferencesWidget appearance_misc_widgets[] = {
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = mainwin_font_set_cb},
     {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = textbox_update_all}};
+
+const PluginPreferences skins_prefs = {
+    .widgets = skins_widgets,
+    .n_widgets = ARRAY_LEN (skins_widgets)
+};
 
 void
 on_skin_view_drag_data_received(GtkWidget * widget,
@@ -258,48 +263,4 @@ static void * create_skin_view (void)
     g_signal_connect (skin_view, "destroy", (GCallback) gtk_widget_destroyed, & skin_view);
 
     return scrolled;
-}
-
-static GtkWidget * config_window = NULL;
-
-void skins_configure (void)
-{
-    if (config_window)
-    {
-        gtk_window_present ((GtkWindow *) config_window);
-        return;
-    }
-
-    GtkWidget * appearance_page_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-
-    aud_create_widgets ((GtkBox *) appearance_page_vbox,
-     appearance_misc_widgets, ARRAY_LEN (appearance_misc_widgets));
-
-    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_start ((GtkBox *) appearance_page_vbox, hbox, FALSE, FALSE, 0);
-
-    GtkWidget * button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
-    g_signal_connect (button, "clicked", (GCallback) skins_configure_cleanup,
-     NULL);
-    gtk_widget_set_can_default (button, TRUE);
-    gtk_box_pack_end ((GtkBox *) hbox, button, FALSE, FALSE, 0);
-
-    config_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    g_signal_connect (config_window, "destroy", (GCallback)
-     gtk_widget_destroyed, & config_window);
-
-    gtk_window_set_type_hint ((GtkWindow *) config_window,
-     GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_title ((GtkWindow *) config_window, _("Interface Preferences"));
-    gtk_window_set_resizable ((GtkWindow *) config_window, FALSE);
-    gtk_container_set_border_width ((GtkContainer *) config_window, 6);
-
-    gtk_container_add ((GtkContainer *) config_window, appearance_page_vbox);
-    gtk_widget_show_all (config_window);
-}
-
-void skins_configure_cleanup (void)
-{
-    if (config_window)
-        gtk_widget_destroy (config_window);
 }
