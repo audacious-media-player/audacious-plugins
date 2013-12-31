@@ -275,26 +275,18 @@ void * pw_col_create_chooser (void)
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_widget_set_size_request (hbox, -1, 160);
 
-    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
-    gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
-
-    GtkWidget * label = gtk_label_new (_("Available columns:"));
-    g_object_set ((GObject *) label, "xalign", (float) 0, NULL);
-    gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
-
     GtkWidget * scroll = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scroll,
      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scroll,
      GTK_SHADOW_IN);
-    gtk_box_pack_start ((GtkBox *) vbox, scroll, TRUE, TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, scroll, TRUE, TRUE, 0);
 
     avail_list = audgui_list_new (& callbacks, avail, index_count (avail));
-    gtk_tree_view_set_headers_visible ((GtkTreeView *) avail_list, FALSE);
-    audgui_list_add_column (avail_list, NULL, 0, G_TYPE_STRING, -1);
+    audgui_list_add_column (avail_list, _("Available columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, avail_list);
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, FALSE, FALSE, 0);
 
     GtkWidget * button = gtk_button_new ();
@@ -309,23 +301,15 @@ void * pw_col_create_chooser (void)
     gtk_box_pack_start ((GtkBox *) vbox, button, TRUE, FALSE, 0);
     g_signal_connect_swapped (button, "clicked", (GCallback) transfer, chosen);
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
-    gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
-
-    label = gtk_label_new (_("Displayed columns:"));
-    g_object_set ((GObject *) label, "xalign", (float) 0, NULL);
-    gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
-
     scroll = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scroll,
      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scroll,
      GTK_SHADOW_IN);
-    gtk_box_pack_start ((GtkBox *) vbox, scroll, TRUE, TRUE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, scroll, TRUE, TRUE, 0);
 
     chosen_list = audgui_list_new (& callbacks, chosen, index_count (chosen));
-    gtk_tree_view_set_headers_visible ((GtkTreeView *) chosen_list, FALSE);
-    audgui_list_add_column (chosen_list, NULL, 0, G_TYPE_STRING, -1);
+    audgui_list_add_column (chosen_list, _("Displayed columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, chosen_list);
 
     g_signal_connect (hbox, "destroy", (GCallback) destroy_cb, NULL);
