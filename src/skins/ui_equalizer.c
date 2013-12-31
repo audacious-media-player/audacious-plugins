@@ -32,7 +32,6 @@
 #include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "actions-equalizer.h"
 #include "plugin.h"
@@ -158,16 +157,6 @@ static void eq_presets_cb (GtkWidget * button, GdkEventButton * event)
      FALSE, FALSE, event->button, event->time);
 }
 
-static GtkWidget * get_eq_effects_menu (void)
-{
-    static GtkWidget * menu = NULL;
-
-    if (menu == NULL)
-        menu = audgui_create_effects_menu ();
-
-    return menu;
-}
-
 static gboolean
 equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
                    gpointer callback_data)
@@ -180,8 +169,8 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
 
     if (event->button == 3)
     {
-        gtk_menu_popup ((GtkMenu *) get_eq_effects_menu (), NULL, NULL, NULL,
-         NULL, 3, event->time);
+        ui_popup_menu_show (UI_MENU_MAIN, event->x_root, event->y_root, FALSE,
+         FALSE, event->button, event->time);
         return TRUE;
     }
 
