@@ -14,6 +14,7 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 
 #include "bio2jack.h" /* includes for the bio2jack library */
 #include "jack.h"
@@ -190,6 +191,25 @@ static const char * const jack_defaults[] = {
  "volume_left", "25",
  "volume_right", "25",
  NULL};
+
+static const ComboBoxElements mode_list[] = {
+ {"CONNECT_ALL", N_("Connect to all available jack ports")},
+ {"CONNECT_OUTPUT", N_("Connect only the output ports")},
+ {"CONNECT_NONE", N_("Don't connect to any port")},
+};
+
+static const PreferencesWidget jack_widgets[] = {
+ {WIDGET_COMBO_BOX, N_("Connection mode:"),
+  .cfg_type = VALUE_STRING, .csect = "jack", .cname = "port_connection_mode",
+  .data = {.combo = {mode_list, sizeof mode_list / sizeof mode_list[0]}}},
+ {WIDGET_CHK_BTN, N_("Enable debug printing"),
+  .cfg_type = VALUE_BOOLEAN, .csect = "jack", .cname = "isTraceEnabled"},
+};
+
+static const PluginPreferences jack_prefs = {
+ .widgets = jack_widgets,
+ .n_widgets = sizeof jack_widgets / sizeof jack_widgets[0]
+};
 
 /* Initialize necessary things */
 static bool_t jack_init (void)
@@ -420,9 +440,7 @@ AUD_OUTPUT_PLUGIN
     .about_text = jack_about,
     .init = jack_init,
     .cleanup = jack_cleanup,
-#if 0
-    .configure = jack_configure,
-#endif
+    .prefs = & jack_prefs,
     .get_volume = jack_get_volume,
     .set_volume = jack_set_volume,
     .open_audio = jack_open,
