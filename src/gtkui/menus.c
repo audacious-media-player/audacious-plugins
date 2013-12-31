@@ -163,18 +163,11 @@ static void volume_down (void)
 }
 
 static bool_t menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible"); }
-static bool_t playlist_tabs_get (void) {return aud_get_bool ("gtkui", "playlist_tabs_visible"); }
-static void playlist_tabs_set (bool_t show) {aud_set_bool ("gtkui", "playlist_tabs_visible", show); show_playlist_tabs (); }
 static bool_t infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
 static bool_t infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
 static bool_t status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
 static bool_t remaining_time_get (void) {return aud_get_bool ("gtkui", "show_remaining_time"); }
 static void remaining_time_set (bool_t show) {aud_set_bool ("gtkui", "show_remaining_time", show); }
-static bool_t entry_count_get (void) {return aud_get_bool ("gtkui", "entry_count_visible"); }
-static bool_t close_button_get (void) {return aud_get_bool ("gtkui", "close_button_visible"); }
-static bool_t column_headers_get (void) {return aud_get_bool ("gtkui", "playlist_headers"); }
-static bool_t autoscroll_get (void) {return aud_get_bool ("gtkui", "autoscroll"); }
-static void autoscroll_set (bool_t on) {aud_set_bool ("gtkui", "autoscroll", on); }
 
 static const struct MenuItem file_items[] = {
  {N_("_Open Files ..."), "document-open", 'o', CTRL, .func = open_files},
@@ -274,12 +267,7 @@ static const struct MenuItem view_items[] = {
  {N_("Show Info Bar Vis_ualization"), .get = infoarea_vis_get, show_infoarea_vis},
  {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL, .get = status_bar_get, show_statusbar},
  {.sep = TRUE},
- {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL, .get = remaining_time_get, remaining_time_set},
- {.sep = TRUE},
- {N_("Always Show Playlist _Tabs"), .get = playlist_tabs_get, playlist_tabs_set},
- {N_("Show Column _Headers"), .get = column_headers_get, playlist_show_headers},
- {N_("Set _Columns ..."), .func = pw_col_choose},
- {N_("Scrol_l on Song Change"), .get = autoscroll_get, autoscroll_set}};
+ {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL, .get = remaining_time_get, remaining_time_set}};
 
 static const struct MenuItem main_items[] = {
  {N_("_File"), .items = file_items, ARRAY_LEN (file_items)},
@@ -304,10 +292,7 @@ static const struct MenuItem rclick_items[] = {
 static const struct MenuItem tab_items[] = {
  {N_("_Play"), "media-playback-start", .func = pl_tab_play},
  {N_("_Rename ..."), "insert-text", .func = pl_tab_rename},
- {N_("Remo_ve"), "edit-delete", .func = pl_tab_close},
- {.sep = TRUE},
- {N_("Show _Entry Count"), .get = entry_count_get, playlist_show_entry_counts},
- {N_("Show Close _Buttons"), .get = close_button_get, playlist_show_close_buttons}};
+ {N_("Remo_ve"), "edit-delete", .func = pl_tab_close}};
 
 static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
 {

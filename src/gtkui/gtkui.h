@@ -20,7 +20,10 @@
 #ifndef GTKUI_H
 #define GTKUI_H
 
+#include <stdint.h>
+
 #include <gtk/gtk.h>
+#include <audacious/types.h>
 
 /* menus.c */
 GtkWidget * make_menu_bar (GtkAccelGroup * accel);
@@ -28,6 +31,9 @@ GtkWidget * make_menu_main (GtkAccelGroup * accel);
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel);
 GtkWidget * make_menu_tab (GtkAccelGroup * accel);
 extern int menu_tab_playlist_id;
+
+/* settings.c */
+extern const PluginPreferences gtkui_prefs;
 
 /* ui_gtk.c */
 void set_ab_repeat_a (void);

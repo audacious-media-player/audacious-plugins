@@ -35,8 +35,4 @@ void ui_playlist_notebook_activate (void * data, void * user);
 void ui_playlist_notebook_set_playing (void * data, void * user);
 void ui_playlist_notebook_position (void * data, void * user);
 
-void playlist_show_entry_counts (bool_t show);
-void playlist_show_close_buttons (bool_t show);
-void playlist_show_headers (bool_t show);
-
 #endif

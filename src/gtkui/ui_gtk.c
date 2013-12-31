@@ -92,6 +92,7 @@ AUD_IFACE_PLUGIN
 (
     .name = N_("GTK Interface"),
     .domain = PACKAGE,
+    .prefs = & gtkui_prefs,
     .init = init,
     .cleanup = cleanup,
     .show = ui_show,
@@ -882,7 +883,6 @@ static void cleanup (void)
     if (search_tool)
         aud_plugin_remove_watch (search_tool, search_tool_toggled, NULL);
 
-    pw_col_cleanup ();
     gtk_widget_destroy (window);
     layout_cleanup ();
 }

@@ -77,7 +77,6 @@ typedef struct {
     bool_t selected;
 } Column;
 
-static GtkWidget * window = NULL;
 static GtkWidget * chosen_list = NULL, * avail_list = NULL;
 static Index * chosen = NULL, * avail = NULL;
 
@@ -228,7 +227,6 @@ static void transfer (Index * source)
 
 static void destroy_cb (void)
 {
-    window = NULL;
     chosen_list = NULL;
     avail_list = NULL;
 
@@ -245,14 +243,8 @@ static void destroy_cb (void)
     avail = NULL;
 }
 
-void pw_col_choose (void)
+void * pw_col_create_chooser (void)
 {
-    if (window)
-    {
-        gtk_window_present ((GtkWindow *) window);
-        return;
-    }
-
     chosen = index_new ();
     avail = index_new ();
 
@@ -280,25 +272,13 @@ void pw_col_choose (void)
         index_insert (avail, -1, column);
     }
 
-    window = gtk_dialog_new ();
-    gtk_window_set_title ((GtkWindow *) window, _("Set Columns"));
-    gtk_window_set_default_size ((GtkWindow *) window, 400, 300);
-    gtk_dialog_set_default_response ((GtkDialog *) window, GTK_RESPONSE_ACCEPT);
-
-    GtkWidget * close_button = audgui_button_new (_("_Close"), "window-close", NULL, NULL);
-    gtk_dialog_add_action_widget ((GtkDialog *) window, close_button, GTK_RESPONSE_ACCEPT);
-
-    g_signal_connect (window, "response", (GCallback) gtk_widget_destroy, NULL);
-    g_signal_connect (window, "destroy", (GCallback) destroy_cb, NULL);
-
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_start ((GtkBox *) gtk_dialog_get_content_area ((GtkDialog *)
-     window), hbox, TRUE, TRUE, 0);
+    gtk_widget_set_size_request (hbox, -1, 160);
 
     GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
 
-    GtkWidget * label = gtk_label_new (_("Available:"));
+    GtkWidget * label = gtk_label_new (_("Available columns:"));
     g_object_set ((GObject *) label, "xalign", (float) 0, NULL);
     gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
 
@@ -332,7 +312,7 @@ void pw_col_choose (void)
     vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 3);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, TRUE, TRUE, 0);
 
-    label = gtk_label_new (_("Chosen:"));
+    label = gtk_label_new (_("Displayed columns:"));
     g_object_set ((GObject *) label, "xalign", (float) 0, NULL);
     gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);
 
@@ -348,7 +328,9 @@ void pw_col_choose (void)
     audgui_list_add_column (chosen_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, chosen_list);
 
-    gtk_widget_show_all (window);
+    g_signal_connect (hbox, "destroy", (GCallback) destroy_cb, NULL);
+
+    return hbox;
 }
 
 void pw_col_save (void)
@@ -363,10 +345,4 @@ void pw_col_save (void)
     str_unref (columns);
 
     index_free (index);
-}
-
-void pw_col_cleanup (void)
-{
-    if (window)
-        gtk_widget_destroy (window);
 }
