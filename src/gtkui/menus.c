@@ -69,6 +69,9 @@ static void open_url (void) {audgui_show_add_url_window (TRUE); }
 static void add_files (void) {audgui_run_filebrowser (FALSE); }
 static void add_url (void) {audgui_show_add_url_window (FALSE); }
 
+static void configure_effects (void) {aud_show_prefs_for_plugin_type (PLUGIN_TYPE_EFFECT); }
+static void configure_visualizations (void) {aud_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS); }
+
 static bool_t repeat_get (void) {return aud_get_bool (NULL, "repeat"); }
 static void repeat_set (bool_t on) {aud_set_bool (NULL, "repeat", on); }
 static bool_t shuffle_get (void) {return aud_get_bool (NULL, "shuffle"); }
@@ -257,17 +260,17 @@ static const struct MenuItem output_items[] = {
  {.sep = TRUE},
  {N_("_Equalizer"), "multimedia-volume-control", 'e', CTRL, .func = audgui_show_equalizer_window},
  {.sep = TRUE},
- {N_("E_ffects"), .get_sub = audgui_create_effects_menu}};
+ {N_("E_ffects ..."), .func = configure_effects}};
 
 static const struct MenuItem view_items[] = {
- {N_("_Visualizations"), .get_sub = audgui_create_vis_menu},
- {.sep = TRUE},
  {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL, .get = menu_bar_get, show_menu},
  {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL, .get = infoarea_get, show_infoarea},
  {N_("Show Info Bar Vis_ualization"), .get = infoarea_vis_get, show_infoarea_vis},
  {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL, .get = status_bar_get, show_statusbar},
  {.sep = TRUE},
- {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL, .get = remaining_time_get, remaining_time_set}};
+ {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL, .get = remaining_time_get, remaining_time_set},
+ {.sep = TRUE},
+ {N_("_Visualizations ..."), .func = configure_visualizations}};
 
 static const struct MenuItem main_items[] = {
  {N_("_File"), .items = file_items, ARRAY_LEN (file_items)},
