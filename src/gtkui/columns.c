@@ -81,6 +81,22 @@ static GtkWidget * window = NULL;
 static GtkWidget * chosen_list = NULL, * avail_list = NULL;
 static Index * chosen = NULL, * avail = NULL;
 
+static void apply_changes (void)
+{
+    int cols = index_count (chosen);
+    g_return_if_fail (cols <= PW_COLS);
+
+    ui_playlist_notebook_empty ();
+
+    for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
+        pw_cols[pw_num_cols] = ((Column *) index_get (chosen, pw_num_cols))->column;
+
+    aud_set_str ("gtkui", "column_widths", "");
+    aud_set_str ("gtkui", "column_expand", "");
+
+    ui_playlist_notebook_populate ();
+}
+
 static void get_value (void * user, int row, int column, GValue * value)
 {
     g_return_if_fail (row >= 0 && row < index_count (user));
@@ -159,6 +175,8 @@ static void shift_rows (void * user, int row, int before)
     GtkWidget * list = (user == chosen) ? chosen_list : avail_list;
     audgui_list_update_rows (list, begin, end - begin);
     audgui_list_update_selection (list, begin, end - begin);
+
+    apply_changes ();
 }
 
 static const AudguiListCallbacks callbacks = {
@@ -204,27 +222,8 @@ static void transfer (Index * source)
         audgui_list_insert_rows (dest_list, dest_rows, 1);
         dest_rows ++;
     }
-}
 
-static void response_cb (GtkWidget * widget, int response, void * unused)
-{
-    if (response == GTK_RESPONSE_ACCEPT)
-    {
-        int cols = index_count (chosen);
-        g_return_if_fail (cols <= PW_COLS);
-
-        ui_playlist_notebook_empty ();
-
-        for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
-            pw_cols[pw_num_cols] = ((Column *) index_get (chosen, pw_num_cols))->column;
-
-        aud_set_str ("gtkui", "column_widths", "");
-        aud_set_str ("gtkui", "column_expand", "");
-
-        ui_playlist_notebook_populate ();
-    }
-
-    gtk_widget_destroy (window);
+    apply_changes ();
 }
 
 static void destroy_cb (void)
@@ -286,13 +285,10 @@ void pw_col_choose (void)
     gtk_window_set_default_size ((GtkWindow *) window, 400, 300);
     gtk_dialog_set_default_response ((GtkDialog *) window, GTK_RESPONSE_ACCEPT);
 
-    GtkWidget * cancel_button = audgui_button_new (_("_Cancel"), "process-stop", NULL, NULL);
-    gtk_dialog_add_action_widget ((GtkDialog *) window, cancel_button, GTK_RESPONSE_CANCEL);
+    GtkWidget * close_button = audgui_button_new (_("_Close"), "window-close", NULL, NULL);
+    gtk_dialog_add_action_widget ((GtkDialog *) window, close_button, GTK_RESPONSE_ACCEPT);
 
-    GtkWidget * apply_button = audgui_button_new (_("_Set"), "system-run", NULL, NULL);
-    gtk_dialog_add_action_widget ((GtkDialog *) window, apply_button, GTK_RESPONSE_ACCEPT);
-
-    g_signal_connect (window, "response", (GCallback) response_cb, NULL);
+    g_signal_connect (window, "response", (GCallback) gtk_widget_destroy, NULL);
     g_signal_connect (window, "destroy", (GCallback) destroy_cb, NULL);
 
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
