@@ -35,7 +35,6 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudcore/audstrings.h>
-#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
 #include "actions-mainwin.h"
@@ -216,17 +215,6 @@ static gboolean mainwin_vis_cb (GtkWidget * widget, GdkEventButton * event)
          FALSE, FALSE, 3, event->time);
 
     return TRUE;
-}
-
-static void show_main_menu (GdkEventButton * event, void * unused)
-{
-    GdkScreen * screen = gdk_event_get_screen ((GdkEvent *) event);
-    gint width = gdk_screen_get_width (screen);
-    gint height = gdk_screen_get_height (screen);
-
-    ui_popup_menu_show (UI_MENU_MAIN, event->x_root, event->y_root,
-     event->x_root > width / 2, event->y_root > height / 2, event->button,
-     event->time);
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -1476,7 +1464,6 @@ void mainwin_unhook (void)
         seek_source = 0;
     }
 
-    hook_dissociate ("show main menu", (HookFunction) show_main_menu);
     ui_main_evlistener_dissociate ();
     start_stop_visual (TRUE);
 }
@@ -1491,7 +1478,6 @@ mainwin_create(void)
     mainwin_create_widgets();
     show_widgets ();
 
-    hook_associate ("show main menu", (HookFunction) show_main_menu, 0);
     status_message_enabled = TRUE;
 }
 
