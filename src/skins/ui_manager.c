@@ -21,12 +21,10 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "actions-equalizer.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
-#include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_manager.h"
 #include "ui_vis.h"
@@ -240,10 +238,7 @@ static GtkActionEntry action_entries_playlist[] = {
 };
 
 static GtkActionEntry action_entries_view[] = {
-    { "view", NULL, N_("View") },
-    { "iface menu", NULL, N_("Interface") },
-    { "iface prefs", GTK_STOCK_PREFERENCES, N_("Interface Preferences ..."), NULL,
-      NULL, (GCallback) skins_configure }
+    { "view", NULL, N_("View") }
 };
 
 static GtkActionEntry action_entries_playlist_add[] = {
@@ -727,11 +722,6 @@ static GtkWidget * create_menu (gint id)
             gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), sub);
             attached_menus = g_list_prepend (attached_menus, sub);
         }
-
-        if (id == UI_MENU_MAIN)
-            gtk_menu_item_set_submenu ((GtkMenuItem *) gtk_ui_manager_get_widget
-             (ui_manager, "/mainwin-menus/main-menu/view/iface menu"),
-             audgui_create_iface_menu ());
     }
 
     return menus[id];

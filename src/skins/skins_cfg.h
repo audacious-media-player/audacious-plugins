@@ -51,8 +51,6 @@ extern skins_cfg_t config;
 void skins_cfg_load();
 void skins_cfg_save();
 
-void skins_configure (void);
-
 void on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
                                 gint x, gint y,

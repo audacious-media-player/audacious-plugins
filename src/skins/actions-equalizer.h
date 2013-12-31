@@ -20,6 +20,8 @@
 #ifndef SKINS_ACTIONS_EQUALIZER_H
 #define SKINS_ACTIONS_EQUALIZER_H
 
+#include <gtk/gtk.h>
+
 void action_equ_load_preset(void);
 void action_equ_load_auto_preset(void);
 void action_equ_load_default_preset(void);

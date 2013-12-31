@@ -24,7 +24,6 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <audacious/plugins.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
@@ -149,10 +148,4 @@ bool_t handle_window_close (void)
         aud_drct_quit ();
 
     return TRUE;
-}
-
-/* temporary */
-void skins_configure (void)
-{
-    aud_plugin_do_configure (aud_plugin_by_header (& _aud_plugin_self));
 }
