@@ -171,18 +171,16 @@ static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file
     {
         if (filled < size)
             filled += vfs_fread (buf + filled, 1, size - filled, file);
-        if (filled < size)
-            break;
 
-        memset (buf + size, 0, AVPROBE_PADDING_SIZE);
-        AVProbeData d = {name, buf, size};
+        memset (buf + filled, 0, AVPROBE_PADDING_SIZE);
+        AVProbeData d = {name, buf, filled};
         score = target;
 
         f = av_probe_input_format2 (& d, TRUE, & score);
         if (f)
             break;
 
-        if (size < 16384)
+        if (size < 16384 && filled == size)
             size *= 4;
         else if (target > 10)
             target = 10;
@@ -191,7 +189,7 @@ static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file
     }
 
     if (f)
-        AUDDBG ("Format %s, buffer size %d, score %d.\n", f->name, size, score);
+        AUDDBG ("Format %s, buffer size %d, score %d.\n", f->name, filled, score);
     else
         AUDDBG ("Format unknown.\n");
 
