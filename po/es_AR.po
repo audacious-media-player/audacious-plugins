@@ -9,9 +9,9 @@
 # xukosky <xukosky@yahoo.es>, 2011
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-11-01 16:34+0100\n"
+"POT-Creation-Date: 2014-01-03 15:42+0100\n"
 "PO-Revision-Date: 2013-05-04 12:38+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/projects/p/"
@@ -22,15 +22,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:418
 msgid "mono"
 msgstr "mono"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:417
 msgid "stereo"
 msgstr "estéreo"
 
-#: src/aac/libmp4.c:439 src/skins/ui_main.c:429
+#: src/aac/libmp4.c:439 src/skins/ui_main.c:417
 msgid "surround"
 msgstr "envolvente"
 
@@ -921,7 +921,7 @@ msgstr "Estereofónico-a-Binaural Bauer (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Analizador de Espectro"
 
-#: src/cdaudio-ng/cdaudio-ng.c:103
+#: src/cdaudio-ng/cdaudio-ng.c:104
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -933,126 +933,131 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:122
 msgid "<b>Device</b>"
 msgstr "<b>Dispositivo</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Read speed:"
 msgstr "Leer velocidad:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Override device:"
 msgstr "Anular dispositivo:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:127
+#: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "<b>Metadata</b>"
 msgstr "<b>Metadatos</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "Use CD-Text"
 msgstr "Usar CD-Texto"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:131
 msgid "Use CDDB"
 msgstr "Usar CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:133
 msgid "Use HTTP instead of CDDBP"
 msgstr "Usar HTTP en lugar de CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:134
+#: src/cdaudio-ng/cdaudio-ng.c:135
 msgid "Server:"
 msgstr "Servidor:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:136
+#: src/cdaudio-ng/cdaudio-ng.c:137
 msgid "Path:"
 msgstr "Ruta:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:138
+#: src/cdaudio-ng/cdaudio-ng.c:139
 msgid "Port:"
 msgstr "Puerto:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:148
+#: src/cdaudio-ng/cdaudio-ng.c:149
 msgid "Audio CD Plugin"
 msgstr "Plugin de CD de audio"
 
-#: src/cdaudio-ng/cdaudio-ng.c:249
+#: src/cdaudio-ng/cdaudio-ng.c:250
 msgid "Failed to initialize cdio subsystem."
 msgstr "Error en la inicialización del subsistema cdio."
 
-#: src/cdaudio-ng/cdaudio-ng.c:306
+#: src/cdaudio-ng/cdaudio-ng.c:307
 #, c-format
 msgid "Invalid URI %s."
 msgstr "URI inválido %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:308
+#: src/cdaudio-ng/cdaudio-ng.c:309
 #, c-format
 msgid "Track %d not found."
 msgstr "Pista %d no encontrada."
 
-#: src/cdaudio-ng/cdaudio-ng.c:310
+#: src/cdaudio-ng/cdaudio-ng.c:311
 #, c-format
 msgid "Track %d is a data track."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:312
+#: src/cdaudio-ng/cdaudio-ng.c:313
 msgid "Failed to open audio output."
 msgstr "Error al abrir la salida de audio."
 
-#: src/cdaudio-ng/cdaudio-ng.c:395
+#: src/cdaudio-ng/cdaudio-ng.c:396
 msgid "Error reading audio CD."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:505
+#: src/cdaudio-ng/cdaudio-ng.c:506
 msgid "Audio CD"
 msgstr "CD de audio"
 
-#: src/cdaudio-ng/cdaudio-ng.c:535 src/cdaudio-ng/cdaudio-ng.c:544
+#: src/cdaudio-ng/cdaudio-ng.c:515
+#, fuzzy, c-format
+msgid "Track %d"
+msgstr "Pista"
+
+#: src/cdaudio-ng/cdaudio-ng.c:542 src/cdaudio-ng/cdaudio-ng.c:551
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Error al abrir la lectora de CD %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:547
+#: src/cdaudio-ng/cdaudio-ng.c:554
 msgid "No audio capable CD drive found."
 msgstr "No hay audio que se pueda reproducir en la lectora de CD localizada."
 
-#: src/cdaudio-ng/cdaudio-ng.c:574
+#: src/cdaudio-ng/cdaudio-ng.c:581
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Error al finalizar la lectora de CD inicializada oportunamente."
 
-#: src/cdaudio-ng/cdaudio-ng.c:587
+#: src/cdaudio-ng/cdaudio-ng.c:594
 msgid "Failed to retrieve first/last track number."
 msgstr "Error al obtener el primer/último número de pista."
 
-#: src/cdaudio-ng/cdaudio-ng.c:612
+#: src/cdaudio-ng/cdaudio-ng.c:619
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "No se puede leer el LSN del comienzo/final de la pista %d."
 
-#: src/cdaudio-ng/cdaudio-ng.c:702
+#: src/cdaudio-ng/cdaudio-ng.c:703
 msgid "Failed to create the cddb connection."
 msgstr "Error al crear la conexión a cddb."
 
-#: src/cdaudio-ng/cdaudio-ng.c:777
+#: src/cdaudio-ng/cdaudio-ng.c:778
 msgid "Failed to query the CDDB server"
 msgstr "Error al consultar el servidor CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:779
+#: src/cdaudio-ng/cdaudio-ng.c:780
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Error al consultar el servidor CDDB: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:803
+#: src/cdaudio-ng/cdaudio-ng.c:804
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Error al leer la información cddb: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:876
+#: src/cdaudio-ng/cdaudio-ng.c:877
 msgid "Drive is empty."
 msgstr "La unidad está vacía."
 
-#: src/cdaudio-ng/cdaudio-ng.c:878
+#: src/cdaudio-ng/cdaudio-ng.c:879
 msgid "Unsupported disk type."
 msgstr "Tipo de disco no soportado."
 
@@ -1258,7 +1263,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Eco"
 
-#: src/ffaudio/ffaudio-core.c:648
+#: src/ffaudio/ffaudio-core.c:640
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1268,59 +1273,59 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:695
+#: src/ffaudio/ffaudio-core.c:690
 msgid "FFmpeg Plugin"
 msgstr "Plugin FFmpeg"
 
-#: src/filewriter/filewriter.c:409
+#: src/filewriter/filewriter.c:408
 msgid "FileWriter Configuration"
 msgstr "Configuración de FileWriter"
 
-#: src/filewriter/filewriter.c:421
+#: src/filewriter/filewriter.c:416
 msgid "Output file format:"
 msgstr "Formato del archivo de salida:"
 
-#: src/filewriter/filewriter.c:439
+#: src/filewriter/filewriter.c:433
 msgid "Configure"
 msgstr "Configurar"
 
-#: src/filewriter/filewriter.c:449
+#: src/filewriter/filewriter.c:443
 msgid "Save into original directory"
 msgstr "Guardar dentro del directorio original"
 
-#: src/filewriter/filewriter.c:454
+#: src/filewriter/filewriter.c:447
 msgid "Save into custom directory"
 msgstr "Guardar dentro de directorio personalizado"
 
-#: src/filewriter/filewriter.c:464
+#: src/filewriter/filewriter.c:457
 msgid "Output file folder:"
 msgstr "Carpeta de archivo de salida:"
 
-#: src/filewriter/filewriter.c:468
+#: src/filewriter/filewriter.c:461
 msgid "Pick a folder"
 msgstr "Elija una carpeta"
 
-#: src/filewriter/filewriter.c:481
+#: src/filewriter/filewriter.c:474
 msgid "Get filename from:"
 msgstr "Obtener nombre de archivo desde:"
 
-#: src/filewriter/filewriter.c:484
+#: src/filewriter/filewriter.c:478
 msgid "original file tags"
 msgstr "etiquetas del archivo original"
 
-#: src/filewriter/filewriter.c:490
+#: src/filewriter/filewriter.c:483
 msgid "original filename"
 msgstr "nombre del archivo original"
 
-#: src/filewriter/filewriter.c:497
+#: src/filewriter/filewriter.c:489
 msgid "Don't strip file name extension"
 msgstr "No quitar la extensión del archivo"
 
-#: src/filewriter/filewriter.c:506
+#: src/filewriter/filewriter.c:498
 msgid "Prepend track number to filename"
 msgstr "Anteponer el número de pista al nombre de archivo"
 
-#: src/filewriter/filewriter.c:515
+#: src/filewriter/filewriter.c:519
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -1338,7 +1343,7 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/filewriter/filewriter.c:532
+#: src/filewriter/filewriter.c:536
 msgid "FileWriter Plugin"
 msgstr "Plugin FileWriter"
 
@@ -1939,7 +1944,7 @@ msgstr "_Renombrar ..."
 msgid "GTK Interface"
 msgstr "Interfaz GTK"
 
-#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
+#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:294
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
@@ -1948,7 +1953,7 @@ msgstr "%s - Audacious"
 msgid "Buffering ..."
 msgstr "Gestión de memoria intermedia ..."
 
-#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
+#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:296 src/skins/ui_main.c:1439
 msgid "Audacious"
 msgstr "Audacious"
 
@@ -2726,19 +2731,19 @@ msgstr ""
 msgid "SDL Output"
 msgstr "Salida SDL"
 
-#: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
+#: src/search-tool/search-tool.c:105 src/search-tool/search-tool.c:115
 msgid "Library"
 msgstr "Biblioteca"
 
-#: src/search-tool/search-tool.c:219
+#: src/search-tool/search-tool.c:213
 msgid "Unknown Artist"
 msgstr "Artista Desconocido"
 
-#: src/search-tool/search-tool.c:221
+#: src/search-tool/search-tool.c:215
 msgid "Unknown Album"
 msgstr "Album Desconocido"
 
-#: src/search-tool/search-tool.c:632
+#: src/search-tool/search-tool.c:627
 #, c-format
 msgid ""
 "%s\n"
@@ -2747,14 +2752,14 @@ msgstr ""
 "%s\n"
 " en %s por %s"
 
-#: src/search-tool/search-tool.c:638
+#: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d álbum"
 msgstr[1] "%d álbumes"
 
-#: src/search-tool/search-tool.c:640
+#: src/search-tool/search-tool.c:635
 #, c-format
 msgid ""
 "%s\n"
@@ -2769,7 +2774,7 @@ msgstr[1] ""
 "%s\n"
 " %s, %d canciones"
 
-#: src/search-tool/search-tool.c:646
+#: src/search-tool/search-tool.c:641
 #, c-format
 msgid ""
 "%s\n"
@@ -2784,19 +2789,19 @@ msgstr[1] ""
 "%s\n"
 " %d canciones por %s"
 
-#: src/search-tool/search-tool.c:687
+#: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
 msgstr "_Crear lista de reproducción"
 
-#: src/search-tool/search-tool.c:694
+#: src/search-tool/search-tool.c:689
 msgid "_Add to Playlist"
 msgstr "_Añadir a la lista de reproducción"
 
-#: src/search-tool/search-tool.c:734
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
 msgstr "Buscar biblioteca"
 
-#: src/search-tool/search-tool.c:739
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2804,15 +2809,15 @@ msgstr ""
 "Para importar su colección musical en Audacious, elija una carpeta y pulse "
 "el botón «actualizar»."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
 msgstr "Espere por favor..."
 
-#: src/search-tool/search-tool.c:769
+#: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
 msgstr "Elija una carpeta"
 
-#: src/search-tool/search-tool.c:808
+#: src/search-tool/search-tool.c:803
 msgid "Search Tool"
 msgstr "Herramienta de búsqueda"
 
@@ -2852,7 +2857,7 @@ msgstr "Desplazar el título de la canción en ambas direcciones"
 msgid "<b>_Skin</b>"
 msgstr "<b>_Tema</b>"
 
-#: src/skins/skins_cfg.c:342
+#: src/skins/skins_cfg.c:340
 msgid "Interface Preferences"
 msgstr "Preferencias del interfaz"
 
@@ -2929,95 +2934,95 @@ msgstr "Guardar predefinido"
 msgid "Save auto-preset"
 msgstr "Guardar auto-predefinido"
 
-#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
+#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1153
 msgid "Save equalizer preset"
 msgstr "Guardar ecualizador predefinido"
 
-#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
+#: src/skins/ui_equalizer.c:1172 src/skins/ui_manager.c:487
 msgid "Delete preset"
 msgstr "Borrar predefinido"
 
-#: src/skins/ui_equalizer.c:1190
+#: src/skins/ui_equalizer.c:1189
 msgid "Delete auto-preset"
 msgstr "Borrar auto-predefinido"
 
-#: src/skins/ui_main.c:414
+#: src/skins/ui_main.c:402
 msgid "kbps"
 msgstr "kbps"
 
-#: src/skins/ui_main.c:422
+#: src/skins/ui_main.c:410
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:770
+#: src/skins/ui_main.c:758
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Ir a la posición %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.c:791
+#: src/skins/ui_main.c:779
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Volumen: %d%%"
 
-#: src/skins/ui_main.c:814
+#: src/skins/ui_main.c:802
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balance: %d%% izquierda"
 
-#: src/skins/ui_main.c:816
+#: src/skins/ui_main.c:804
 msgid "Balance: center"
 msgstr "Balance: centrado"
 
-#: src/skins/ui_main.c:818
+#: src/skins/ui_main.c:806
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balance: %d%% derecha"
 
-#: src/skins/ui_main.c:942
+#: src/skins/ui_main.c:930
 msgid "Options Menu"
 msgstr "Menú de opciones"
 
-#: src/skins/ui_main.c:946
+#: src/skins/ui_main.c:934
 msgid "Disable 'Always On Top'"
 msgstr "Desactivar 'Siempre encima'"
 
-#: src/skins/ui_main.c:948
+#: src/skins/ui_main.c:936
 msgid "Enable 'Always On Top'"
 msgstr "Activar 'Siempre encima'"
 
-#: src/skins/ui_main.c:951
+#: src/skins/ui_main.c:939
 msgid "File Info Box"
 msgstr "Caja de información de archivo"
 
-#: src/skins/ui_main.c:956
+#: src/skins/ui_main.c:944
 msgid "Visualization Menu"
 msgstr "Menú de visualización"
 
-#: src/skins/ui_main.c:1591
+#: src/skins/ui_main.c:1577
 msgid "Single mode."
 msgstr "Modo único."
 
-#: src/skins/ui_main.c:1593
+#: src/skins/ui_main.c:1579
 msgid "Playlist mode."
 msgstr "Modo de lista de reproducción."
 
-#: src/skins/ui_main.c:1615
+#: src/skins/ui_main.c:1601
 msgid "Stopping after song."
 msgstr "Parar después de la canción."
 
-#: src/skins/ui_main.c:1617
+#: src/skins/ui_main.c:1603
 msgid "Not stopping after song."
 msgstr "No parar después de la canción."
 
-#: src/skins/ui_main.c:1752
+#: src/skins/ui_main.c:1738
 msgid "Repeat point A set."
 msgstr ""
 
-#: src/skins/ui_main.c:1757
+#: src/skins/ui_main.c:1743
 msgid "Repeat point B set."
 msgstr ""
 
-#: src/skins/ui_main.c:1766
+#: src/skins/ui_main.c:1752
 msgid "Repeat points cleared."
 msgstr ""
 
@@ -3699,11 +3704,11 @@ msgstr "Editor de listas de reproducción de Audacious"
 msgid "%s (%d of %d)"
 msgstr "%s (%d de %d)"
 
-#: src/skins/ui_skinselector.c:162
+#: src/skins/ui_skinselector.c:164
 msgid "Archived Winamp 2.x skin"
 msgstr "Tema para Winamp 2.x archivado"
 
-#: src/skins/ui_skinselector.c:167
+#: src/skins/ui_skinselector.c:169
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Tema para Winamp 2.x no archivado"
 

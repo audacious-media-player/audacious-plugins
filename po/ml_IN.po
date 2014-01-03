@@ -4,13 +4,15 @@
 #
 # Translators:
 # nandakumar <nandakumar96@gmail.com>, 2013
+# navaneeths52 <navaneeths52@gmail.com>, 2013-2014
+# navaneeths52 <navaneeths52@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-11-01 16:34+0100\n"
-"PO-Revision-Date: 2013-10-16 05:04+0000\n"
-"Last-Translator: nandakumar <nandakumar96@gmail.com>\n"
+"POT-Creation-Date: 2014-01-03 15:42+0100\n"
+"PO-Revision-Date: 2014-01-03 06:01+0000\n"
+"Last-Translator: navaneeths52 <navaneeths52@gmail.com>\n"
 "Language-Team: Malayalam (India) (http://www.transifex.com/projects/p/"
 "audacious/language/ml_IN/)\n"
 "Language: ml_IN\n"
@@ -19,15 +21,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:418
 msgid "mono"
 msgstr "മോണോ"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
+#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:417
 msgid "stereo"
 msgstr "സ്റ്റീരിയോ"
 
-#: src/aac/libmp4.c:439 src/skins/ui_main.c:429
+#: src/aac/libmp4.c:439 src/skins/ui_main.c:417
 msgid "surround"
 msgstr "സറൗണ്ട്"
 
@@ -169,11 +171,11 @@ msgstr "അലാം മുഴങ്ങേണ്ട സമയം (സ്വത�
 
 #: src/alarm/interface.c:216
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #: src/alarm/interface.c:220
 msgid "Quiet after:"
-msgstr ""
+msgstr "ശേഷം ശാന്തമാകൂ :"
 
 #: src/alarm/interface.c:234
 msgid "hours"
@@ -185,7 +187,7 @@ msgstr "മിനിറ്റുകള്‍"
 
 #: src/alarm/interface.c:255
 msgid "Choose the days for the alarm to come on"
-msgstr ""
+msgstr "അലാം മുഴങ്ങേണ്ട ദിനങ്ങള്‍ തെരെഞ്ഞെടുക്കുക"
 
 #: src/alarm/interface.c:262
 msgid "Day"
@@ -215,7 +217,7 @@ msgstr "ഉച്ചത"
 
 #: src/alarm/interface.c:339
 msgid "Start at"
-msgstr "ഇവിടെ തുടങ്ങുക: "
+msgstr "ഇവിടെ തുടങ്ങുക"
 
 #: src/alarm/interface.c:357
 msgid "Final"
@@ -243,7 +245,7 @@ msgstr "ഒരു പ്ലേലിസ്റ്റ് തിരഞ്ഞെട�
 
 #: src/alarm/interface.c:419
 msgid "Use reminder"
-msgstr "സ്മാരം ഉപയോഗിയ്ക്കുക"
+msgstr "സ്മാരകം ഉപയോഗിയ്ക്കുക"
 
 #: src/alarm/interface.c:428
 msgid "Options"
@@ -275,11 +277,11 @@ msgstr "അല്‍സ ഔട്പുട്ട് പ്ലഗ്ഗിന്�
 
 #: src/alsa/config.c:434
 msgid "PCM device:"
-msgstr "PCM ഉപകരണം"
+msgstr "PCM ഉപകരണം:"
 
 #: src/alsa/config.c:436
 msgid "Mixer device:"
-msgstr "മിക്സര്‍ ഉപകരണം"
+msgstr "മിക്സര്‍ ഉപകരണം:"
 
 #: src/alsa/config.c:438
 msgid "Mixer element:"
@@ -287,7 +289,7 @@ msgstr "മിക്സര്‍ എലമെന്റ്:"
 
 #: src/alsa/config.c:441
 msgid "Work around drain hangup"
-msgstr ""
+msgstr "‍‍ഡ്രൈന്‍ ഹാങ്ങപ്പിന് ചുറ്റും പ്രവര്‍ത്തിക്കുക"
 
 #: src/alsa/plugin.c:25
 msgid ""
@@ -307,6 +309,8 @@ msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
+"MIDI പ്ലേബാക്കിന് വേണ്ടിയുള്ള ഒരു സീക്വന്‍സര്‍ പോര്‍ട്ടുകളും താങ്കള്‍ തെരെഞ്ഞെടുത്തിട്ടില്ല. MIDI "
+"പ്ലഗിന്‍ ക്രമീകരണങ്ങളില്‍ ഇങ്ങനെ ചെയ്യാവുന്നതാണ്."
 
 #: src/amidi-plug/amidi-plug.c:708
 msgid "AMIDI-Plug (MIDI Player)"
@@ -402,21 +406,23 @@ msgstr "സങ്കീര്‍ണമായ ക്രമീകരണങ്ങ�
 
 #: src/amidi-plug/i_configure-ap.c:297
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "പ്ലേലിസ്റ്റിലെ MIDI ഫയലുകളുടെ നീളം കണക്കുകൂട്ടുക"
 
 #: src/amidi-plug/i_configure-ap.c:304
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI ഫയലിലെ വിവരണങ്ങള്‍ ചികഞ്ഞെടുക്കുക (നിലവിലുണ്ടെങ്കില്‍ മാത്രം)"
 
 #: src/amidi-plug/i_configure-ap.c:311
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "MIDI ഫയലിലെ വരികള്‍ ചികഞ്ഞെടുക്കുക (നിലവിലുണ്ടെങ്കില്‍ മാത്രം)"
 
 #: src/amidi-plug/i_configure-ap.c:344
 msgid ""
 "<span size=\"smaller\">AMIDI\n"
 "Plug</span>"
 msgstr ""
+"<span size=\"smaller\">AMIDI\n"
+"പ്ലഗ്ഗ്</span>"
 
 #: src/amidi-plug/i_configure.c:76
 msgid "AMIDI-Plug Settings"
@@ -424,7 +430,7 @@ msgstr "AMIDI പ്ലഗ് ക്രമീകരണങ്ങള്‍"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:63
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr ""
+msgstr "AMIDI-പ്ലഗ്ഗ് - സൗണ്ട് ഫോണ്ട് തെരെഞ്ഞെടുക്കുക"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:321
 msgid "SoundFont settings"
@@ -440,7 +446,7 @@ msgstr "വലിപ്പം (ബൈറ്റുകള്‍)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:412
 msgid "Load SF on player start"
-msgstr ""
+msgstr "പ്ലെയര്‍ തുടങ്ങുമ്പോള്‍ SF ലോഡ് ചെയ്യുക"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "Load SF on first MIDI file play"
@@ -452,7 +458,7 @@ msgstr "സിന്തസൈസര്‍ ക്രമീകരണങ്ങള�
 
 #: src/amidi-plug/i_configure-fluidsynth.c:440
 msgid "gain"
-msgstr ""
+msgstr "നേടുക"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:446
 #: src/amidi-plug/i_configure-fluidsynth.c:476
@@ -477,12 +483,12 @@ msgstr "റിവേര്‍ബ്"
 #: src/amidi-plug/i_configure-fluidsynth.c:509
 #: src/amidi-plug/i_configure-fluidsynth.c:543
 msgid "yes"
-msgstr ""
+msgstr "ശരിയാ​ണ്"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:511
 #: src/amidi-plug/i_configure-fluidsynth.c:545
 msgid "no"
-msgstr ""
+msgstr "തെറ്റാണ്"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:534
 msgid "chorus"
@@ -506,7 +512,7 @@ msgstr "96000 Hz "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:583
 msgid "custom "
-msgstr ""
+msgstr "നിര്‍ദ്ദേശാനുസരണം"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:592
 msgid "Hz "
@@ -524,7 +530,7 @@ msgstr "പേര്:"
 
 #: src/amidi-plug/i_fileinfo.c:200
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI വിവരങ്ങള്‍ </span>"
 
 #: src/amidi-plug/i_fileinfo.c:214
 msgid "Format:"
@@ -532,7 +538,7 @@ msgstr "ഫോര്‍മാറ്റ്:"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "Length (msec):"
-msgstr ""
+msgstr "നീളം (മില്ലി സെക്കന്‍ഡില്‍):"
 
 #: src/amidi-plug/i_fileinfo.c:220
 msgid "No. of Tracks:"
@@ -556,19 +562,19 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:250
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI വിവരണങ്ങളും വരികളും </span>"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no comments available in this MIDI file *"
-msgstr ""
+msgstr "* ഈ MIDI ഫയലില്‍ നിലവിലുള്ള വിവരണങ്ങള്‍ ഒന്നുമില്ല *"
 
 #: src/amidi-plug/i_fileinfo.c:314
 msgid "* no lyrics available in this MIDI file *"
-msgstr ""
+msgstr "* ഈ MIDI ഫയലില്‍ നിലവിലുള്ള വരികള്‍ ഒന്നുമില്ല *"
 
 #: src/amidi-plug/i_fileinfo.c:367
 msgid "  (invalid UTF-8)"
-msgstr ""
+msgstr "(പ്രാബല്യമില്ലാത്ത UTF-8)"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
@@ -635,7 +641,7 @@ msgstr ""
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr ""
+msgstr "തലക്കെട്ടിലെ മാറ്റം"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -662,7 +668,7 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr ""
+msgstr "അവസ്ഥ"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
@@ -745,7 +751,7 @@ msgstr "നിറങ്ങള്‍"
 #: src/aosd/aosd_ui.c:602
 #, c-format
 msgid "Color %i:"
-msgstr ""
+msgstr "നിറം %i:"
 
 #: src/aosd/aosd_ui.c:620
 msgid "Custom Skin"
@@ -757,7 +763,7 @@ msgstr "സ്കിന്‍ ഫയല്‍:"
 
 #: src/aosd/aosd_ui.c:630
 msgid "Browse"
-msgstr ""
+msgstr "തിരയുക"
 
 #: src/aosd/aosd_ui.c:729
 msgid "Enable trigger"
@@ -765,11 +771,11 @@ msgstr "കാഞ്ചി സാദ്ധ്യമാക്കുക"
 
 #: src/aosd/aosd_ui.c:756
 msgid "Event"
-msgstr ""
+msgstr "സംഭവം"
 
 #: src/aosd/aosd_ui.c:784
 msgid "Composite manager detected"
-msgstr ""
+msgstr "കമ്പോസിറ്റ് മാനേജര്‍ ശ്രദ്ധയില്‍ പെട്ടു"
 
 #: src/aosd/aosd_ui.c:791
 msgid ""
@@ -777,10 +783,13 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
+"കമ്പോസിറ്റ് മാനേജര്‍ ശ്രദ്ധയില്‍ പെട്ടിട്ടില്ല;\n"
+"മറ്റൊന്ന് പ്രവര്‍ത്തിക്കുന്നത് നിങ്ങള്‍ക്കറിയാമെങ്കില്‍, ദയവ് ചെയ്ത് ഒരു കമ്പോസിറ്റ് മാനേജര്‍ "
+"പ്രാവര്‍ത്തികമാക്കുക അല്ലെങ്കില്‍ OSD പ്രവര്‍ത്തിച്ചില്ലെന്ന് വരാം"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
-msgstr ""
+msgstr "വ്യാജമായ സുതാര്യതയ്ക്ക് കമ്പോസിറ്റ് മാനേജര്‍ ആവശ്യമില്ല"
 
 #: src/aosd/aosd_ui.c:837
 msgid "Transparency"
@@ -792,20 +801,20 @@ msgstr "കപടസുതാര്യത"
 
 #: src/aosd/aosd_ui.c:845
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr ""
+msgstr "യഥാര്‍ത്ഥ സുതാര്യത (X composite Ext. ആവശ്യമുണ്ട്)"
 
 #: src/aosd/aosd_ui.c:887
 msgid "Composite extension not loaded"
-msgstr ""
+msgstr "കോമ്പോസിറ്റ് എക്സ്റ്റന്‍ഷന്‍ നിലവില്‍ വന്നിട്ടില്ല"
 
 #: src/aosd/aosd_ui.c:895
 msgid "Composite extension not available"
-msgstr ""
+msgstr "കോമ്പോസിറ്റ് എക്സ്റ്റന്‍ഷന്‍ നിലവിലില്ല"
 
 #: src/aosd/aosd_ui.c:914
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr ""
+msgstr "<span font_desc='%s'>ഒഡാഷ്യസ് OSD</span>"
 
 #: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
@@ -813,7 +822,7 @@ msgstr "ഒഡാഷ്യസ് OSD ക്രമീകരണം"
 
 #: src/aosd/aosd_ui.c:1016
 msgid "Test"
-msgstr ""
+msgstr "പരിശോധന"
 
 #: src/aosd/aosd_ui.c:1031
 msgid "Position"
@@ -879,7 +888,7 @@ msgstr ""
 msgid "Spectrum Analyzer"
 msgstr "സ്പെക്ട്രം അനലൈസര്‍"
 
-#: src/cdaudio-ng/cdaudio-ng.c:103
+#: src/cdaudio-ng/cdaudio-ng.c:104
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -891,126 +900,131 @@ msgid ""
 "This was a Google Summer of Code 2007 project."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:122
 msgid "<b>Device</b>"
 msgstr "<b>ഉപകരണം</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Read speed:"
 msgstr "വായനയുടെ വേഗം:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Override device:"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:127
+#: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "<b>Metadata</b>"
 msgstr "<b>മെറ്റാഡേറ്റ</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:129
 msgid "Use CD-Text"
 msgstr "സി.ഡി.-ടെക്സ്റ്റ് ഉപയോഗിയ്ക്കുക"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:131
 msgid "Use CDDB"
 msgstr "CDDB ഉപയോഗിയ്ക്കുക"
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:133
 msgid "Use HTTP instead of CDDBP"
-msgstr ""
+msgstr "CDDBP യ്ക്ക് പകരം HTTP ഉപയോഗിക്കാം"
 
-#: src/cdaudio-ng/cdaudio-ng.c:134
+#: src/cdaudio-ng/cdaudio-ng.c:135
 msgid "Server:"
 msgstr "സെര്‍വര്‍:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:136
+#: src/cdaudio-ng/cdaudio-ng.c:137
 msgid "Path:"
 msgstr "പാത്ത്:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:138
+#: src/cdaudio-ng/cdaudio-ng.c:139
 msgid "Port:"
 msgstr "പോര്‍ട്ട്:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:148
+#: src/cdaudio-ng/cdaudio-ng.c:149
 msgid "Audio CD Plugin"
 msgstr "ഓഡിയോ സി.ഡി. പ്ലഗ്ഗിന്‍"
 
-#: src/cdaudio-ng/cdaudio-ng.c:249
+#: src/cdaudio-ng/cdaudio-ng.c:250
 msgid "Failed to initialize cdio subsystem."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:306
+#: src/cdaudio-ng/cdaudio-ng.c:307
 #, c-format
 msgid "Invalid URI %s."
 msgstr "അസാധുവായ URI %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:308
+#: src/cdaudio-ng/cdaudio-ng.c:309
 #, c-format
 msgid "Track %d not found."
 msgstr "ട്രാക്ക് %d കണ്ടുകിട്ടിയില്ല."
 
-#: src/cdaudio-ng/cdaudio-ng.c:310
+#: src/cdaudio-ng/cdaudio-ng.c:311
 #, c-format
 msgid "Track %d is a data track."
 msgstr "ട്രാക്ക് %d ഒരു ഡേറ്റാ ട്രാക്ക് ആണ്."
 
-#: src/cdaudio-ng/cdaudio-ng.c:312
+#: src/cdaudio-ng/cdaudio-ng.c:313
 msgid "Failed to open audio output."
 msgstr "ഓഡിയോ ഔട്പുട്ട് തുറക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: src/cdaudio-ng/cdaudio-ng.c:395
+#: src/cdaudio-ng/cdaudio-ng.c:396
 msgid "Error reading audio CD."
 msgstr "ഓഡിയോ സി.ഡി. വായിയ്ക്കുന്നതില്‍ പിശക്."
 
-#: src/cdaudio-ng/cdaudio-ng.c:505
+#: src/cdaudio-ng/cdaudio-ng.c:506
 msgid "Audio CD"
 msgstr "ഓഡിയോ സി.ഡി."
 
-#: src/cdaudio-ng/cdaudio-ng.c:535 src/cdaudio-ng/cdaudio-ng.c:544
+#: src/cdaudio-ng/cdaudio-ng.c:515
+#, fuzzy, c-format
+msgid "Track %d"
+msgstr "ട്രാക്ക്"
+
+#: src/cdaudio-ng/cdaudio-ng.c:542 src/cdaudio-ng/cdaudio-ng.c:551
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "സി.ഡി. ഉപകരണം %s തുറക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: src/cdaudio-ng/cdaudio-ng.c:547
+#: src/cdaudio-ng/cdaudio-ng.c:554
 msgid "No audio capable CD drive found."
 msgstr "ഓഡിയോ ശേഷിയുള്ള സി.ഡി. ഡ്രൈവ് കണ്ടുകിട്ടിയില്ല."
 
-#: src/cdaudio-ng/cdaudio-ng.c:574
+#: src/cdaudio-ng/cdaudio-ng.c:581
 msgid "Failed to finish initializing opened CD drive."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:587
+#: src/cdaudio-ng/cdaudio-ng.c:594
 msgid "Failed to retrieve first/last track number."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:612
+#: src/cdaudio-ng/cdaudio-ng.c:619
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:702
+#: src/cdaudio-ng/cdaudio-ng.c:703
 msgid "Failed to create the cddb connection."
 msgstr "cddb ബന്ധം സാദ്ധ്യമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
-#: src/cdaudio-ng/cdaudio-ng.c:777
+#: src/cdaudio-ng/cdaudio-ng.c:778
 msgid "Failed to query the CDDB server"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:779
+#: src/cdaudio-ng/cdaudio-ng.c:780
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr ""
 
-#: src/cdaudio-ng/cdaudio-ng.c:803
+#: src/cdaudio-ng/cdaudio-ng.c:804
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "cddb ഇന്‍ഫോ വായിയ്ക്കുന്നതില്‍ പരാജയം: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:876
+#: src/cdaudio-ng/cdaudio-ng.c:877
 msgid "Drive is empty."
 msgstr "ഡ്രൈവ് ശൂന്യമാണ്."
 
-#: src/cdaudio-ng/cdaudio-ng.c:878
+#: src/cdaudio-ng/cdaudio-ng.c:879
 msgid "Unsupported disk type."
 msgstr "പിന്തുണയില്ലാത്ത തരം ഡിസ്ക്."
 
@@ -1032,7 +1046,7 @@ msgstr "<b>കംപ്രഷന്‍</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr ""
+msgstr "ഉറവിടത്തിലെ ഉച്ചത:"
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
@@ -1075,7 +1089,7 @@ msgstr "ട്രെബ്ള്‍:"
 
 #: src/console/configure.c:200
 msgid "Default song length:"
-msgstr ""
+msgstr "പാട്ടിന്റെ സ്വതസ്സിദ്ധമായ നീളം"
 
 #: src/console/configure.c:206
 msgid "Resampling"
@@ -1104,17 +1118,19 @@ msgstr "SPC"
 
 #: src/console/configure.c:243
 msgid "Ignore length from SPC tags"
-msgstr ""
+msgstr "SPC ഉപനാമങ്ങളില്‍ നിന്നും നീളം അവഗണിക്കുക"
 
 #: src/console/configure.c:244
 msgid "Increase reverb"
-msgstr ""
+msgstr "പ്രതിദ്ധ്വനി കൂട്ടുക"
 
 #: src/console/configure.c:269
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
+" സെക്കന്‍ഡുകളില്‍ കാണിച്ചിരിക്കുന്ന, സ്വതസ്സിദ്ധമായ പാട്ടിന്റെ നീളം, നീളത്തെപ്പറ്റി വിവരണം "
+"കാണിക്കാത്ത പാട്ടുകള്‍ക്കുവേണ്ടി ഉപയോഗിച്ചിരിക്കുന്നു (അതായത് ബന്ധിക്കുന്ന ട്രാക്കുകള്‍)."
 
 #: src/console/plugin.c:27
 msgid ""
@@ -1207,7 +1223,7 @@ msgstr ""
 msgid "Echo"
 msgstr "പ്രതിധ്വനി"
 
-#: src/ffaudio/ffaudio-core.c:648
+#: src/ffaudio/ffaudio-core.c:640
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1217,59 +1233,59 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:695
+#: src/ffaudio/ffaudio-core.c:690
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg പ്ലഗ്ഗിന്‍"
 
-#: src/filewriter/filewriter.c:409
+#: src/filewriter/filewriter.c:408
 msgid "FileWriter Configuration"
 msgstr "FileWriter ക്രമീകരണം"
 
-#: src/filewriter/filewriter.c:421
+#: src/filewriter/filewriter.c:416
 msgid "Output file format:"
 msgstr "ഔട്പുട്ട് ഫയല്‍ ഫോര്‍മാറ്റ്:"
 
-#: src/filewriter/filewriter.c:439
+#: src/filewriter/filewriter.c:433
 msgid "Configure"
 msgstr "ക്രമീകരിയ്ക്കുക"
 
-#: src/filewriter/filewriter.c:449
+#: src/filewriter/filewriter.c:443
 msgid "Save into original directory"
 msgstr "യഥാര്‍ത്ഥഡയറക്റ്ററിയിലേയ്ക്ക സേവ് ചെയ്യുക"
 
-#: src/filewriter/filewriter.c:454
+#: src/filewriter/filewriter.c:447
 msgid "Save into custom directory"
 msgstr "സ്വേച്ഛയാലുള്ള ഡയറക്റ്ററിയിലേയ്ക്ക് സേവ് ചെയ്യുക"
 
-#: src/filewriter/filewriter.c:464
+#: src/filewriter/filewriter.c:457
 msgid "Output file folder:"
 msgstr "ഔട്പുട്ട് ഫയല്‍ ഫോള്‍ഡര്‍:"
 
-#: src/filewriter/filewriter.c:468
+#: src/filewriter/filewriter.c:461
 msgid "Pick a folder"
 msgstr "ഒരു ഫോള്‍ഡര്‍ തിരഞ്ഞെടുക്കുക"
 
-#: src/filewriter/filewriter.c:481
+#: src/filewriter/filewriter.c:474
 msgid "Get filename from:"
-msgstr ""
+msgstr "ഫയല്‍നാമം ലഭിക്കുന്നത്:"
 
-#: src/filewriter/filewriter.c:484
+#: src/filewriter/filewriter.c:478
 msgid "original file tags"
 msgstr "യഥാര്‍ത്ഥ ഫയല്‍ ടാഗുകള്‍"
 
-#: src/filewriter/filewriter.c:490
+#: src/filewriter/filewriter.c:483
 msgid "original filename"
 msgstr "യഥാര്‍ത്ഥ ഫയല്‍നെയിം"
 
-#: src/filewriter/filewriter.c:497
+#: src/filewriter/filewriter.c:489
 msgid "Don't strip file name extension"
-msgstr ""
+msgstr "ഫയല്‍നാമത്തിന്റെ വിപുലീകരണം ഭാഗിക്കരുത്"
 
-#: src/filewriter/filewriter.c:506
+#: src/filewriter/filewriter.c:498
 msgid "Prepend track number to filename"
-msgstr ""
+msgstr "ട്രാക്ക് സംഖ്യ ഫയല്‍നാമത്തിന് മുന്നിലായി ചേർക്കുക"
 
-#: src/filewriter/filewriter.c:515
+#: src/filewriter/filewriter.c:519
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -1287,17 +1303,17 @@ msgid ""
 "USA."
 msgstr ""
 
-#: src/filewriter/filewriter.c:532
+#: src/filewriter/filewriter.c:536
 msgid "FileWriter Plugin"
 msgstr "FileWriter പ്ലഗ്ഗിന്‍"
 
 #: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
 msgid "Auto"
-msgstr ""
+msgstr "സ്വയം"
 
 #: src/filewriter/mp3.c:37
 msgid "Joint Stereo"
-msgstr ""
+msgstr "കൂട്ടിച്ചേര്‍ത്ത സ്റ്റീരിയോ"
 
 #: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
 #: src/mpg123/mpg123.c:213
@@ -1327,7 +1343,7 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr ""
+msgstr "ബൈട്രേറ്റ് / കംപ്രഷന്‍ അനുപാതം"
 
 #: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
@@ -1347,11 +1363,11 @@ msgstr "പലവക:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr ""
+msgstr "ISO ഒതുക്കം കര്‍ശനമായി നിര്‍ബന്ധിക്കുക"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
-msgstr ""
+msgstr "സംരക്ഷണ പിശക്"
 
 #: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:219
 msgid "Quality"
@@ -1379,7 +1395,7 @@ msgstr "പരമാവധി ബിറ്റ്‌റേറ്റ് (kbps):"
 
 #: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
-msgstr ""
+msgstr "ചുരുങ്ങിയ ബൈട്രേറ്റ് കര്‍ശനമായി നിര്‍ബന്ധിക്കുക"
 
 #: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
@@ -1395,7 +1411,7 @@ msgstr "VBR ഗുണനിലവാരം:"
 
 #: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
-msgstr ""
+msgstr "Xing VBR തലക്കെട്ട് എഴുതുന്നത് ഒഴിവാക്കാം"
 
 #: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
@@ -1407,39 +1423,39 @@ msgstr "ഫ്രേം പരാമീറ്ററുകള്‍:"
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
-msgstr ""
+msgstr "കോപ്പിറൈറ്റടായി അടയാളപ്പെടുത്തുക"
 
 #: src/filewriter/mp3.c:1144
 msgid "Mark as original"
-msgstr ""
+msgstr "പ്രഥമമായി അടയാളപ്പെടുത്തുക"
 
 #: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
-msgstr ""
+msgstr "ID3 പാരംസ്"
 
 #: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
-msgstr ""
+msgstr "വെര്‍ഷന്‍ 2 ടാഗിന്റെ സംയോഗം നിര്‍ബന്ധിക്കുക"
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr ""
+msgstr "v1 ടാഗ് മാത്രം സംയോഗിക്കുക"
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr ""
+msgstr "v2 ടാഗ് മാത്രം സംയോഗിക്കുക"
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
-msgstr ""
+msgstr "ടാഗുകള്‍"
 
 #: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
-msgstr ""
+msgstr "വോര്‍ബിസ് എന്‍കോഡര്‍ ക്രമീകരണം"
 
 #: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
-msgstr ""
+msgstr "ഗുണനിലവാരം ( 0 - 10):"
 
 #: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
 msgid "lossless"
@@ -1601,7 +1617,7 @@ msgstr "U_RL ചേര്‍ക്കുക"
 
 #: src/gtkui/menus.c:175
 msgid "_Search Library"
-msgstr ""
+msgstr "ഗ്രന്ഥശാല _തിരയുക"
 
 #: src/gtkui/menus.c:177
 msgid "A_bout ..."
@@ -1645,7 +1661,7 @@ msgstr "_കശക്കുക"
 
 #: src/gtkui/menus.c:190
 msgid "N_o Playlist Advance"
-msgstr ""
+msgstr "N_o  പ്ലേലിസ്റ്റ് പുരോഗമനം"
 
 #: src/gtkui/menus.c:191
 msgid "Stop A_fter This Song"
@@ -1657,11 +1673,11 @@ msgstr "സോങ് ഇന്‍ഫോ ..."
 
 #: src/gtkui/menus.c:194
 msgid "Jump to _Time ..."
-msgstr ""
+msgstr "_സമയത്തിലേക്ക് ചാടുക ..."
 
 #: src/gtkui/menus.c:195
 msgid "_Jump to Song ..."
-msgstr ""
+msgstr "പാട്ടിലേക്ക് _ചാടുക ..."
 
 #: src/gtkui/menus.c:197
 msgid "Set Repeat Point _A"
@@ -1717,11 +1733,11 @@ msgstr "സ്വേച്ഛയാലുള്ള തലക്കെട്ട�
 
 #: src/gtkui/menus.c:216 src/gtkui/menus.c:229
 msgid "R_everse Order"
-msgstr ""
+msgstr "നേ_ര്‍വിപരീത രീതി"
 
 #: src/gtkui/menus.c:217 src/gtkui/menus.c:230
 msgid "_Random Order"
-msgstr ""
+msgstr "_ക്രമമില്ലാത്ത രീതി"
 
 #: src/gtkui/menus.c:233
 msgid "_Play This Playlist"
@@ -1736,9 +1752,8 @@ msgid "_Sort"
 msgstr "_ക്രമത്തിലാക്കുക"
 
 #: src/gtkui/menus.c:237
-#, fuzzy
 msgid "Sort Se_lected"
-msgstr "തിരഞ്ഞെടുത്തവ ക്രമീകരിയ്ക്കുക"
+msgstr ""
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -1818,7 +1833,7 @@ msgstr "_സ്റ്റാറ്റസ്ബാര്‍ കാണിയ്ക�
 
 #: src/gtkui/menus.c:268
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "_അവശേഷിക്കുന്ന സമയം കാണിക്കുക"
 
 #: src/gtkui/menus.c:270
 msgid "Show Close _Buttons"
@@ -1826,7 +1841,7 @@ msgstr "ക്ലോസ് _ബട്ടണുകള്‍ കാണിയ്ക
 
 #: src/gtkui/menus.c:271
 msgid "Show Column _Headers"
-msgstr ""
+msgstr "നിരയുടെ _തലക്കെട്ടുകള്‍ കാണിക്കുക"
 
 #: src/gtkui/menus.c:272
 msgid "Choose _Columns ..."
@@ -1834,7 +1849,7 @@ msgstr "_കോളങ്ങള്‍ തിരഞ്ഞെടുക്കുക 
 
 #: src/gtkui/menus.c:273
 msgid "Scrol_l on Song Change"
-msgstr ""
+msgstr "പാട്ടിന്റെ മാറ്റത്തില്‍ സ്‌ക്രോ_ള്‍ ചെയ്യുക"
 
 #: src/gtkui/menus.c:276
 msgid "_File"
@@ -1886,9 +1901,9 @@ msgstr "പേര് _മാറ്റുക ..."
 
 #: src/gtkui/ui_gtk.c:96
 msgid "GTK Interface"
-msgstr ""
+msgstr "GTK ഇന്‍ഡര്‍ഫേസ്"
 
-#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
+#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:294
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - ഒഡാഷ്യസ്"
@@ -1897,7 +1912,7 @@ msgstr "%s - ഒഡാഷ്യസ്"
 msgid "Buffering ..."
 msgstr "ബഫര്‍ ചെയ്യുന്നു ..."
 
-#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
+#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:296 src/skins/ui_main.c:1439
 msgid "Audacious"
 msgstr "ഒഡാഷ്യസ്"
 
@@ -1912,8 +1927,8 @@ msgstr "പിശക്"
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d ചാനല്‍"
+msgstr[1] "%d ചാനലുകള്‍"
 
 #: src/gtkui/ui_statusbar.c:123
 #, c-format
@@ -1963,7 +1978,7 @@ msgstr "ശബ്ദം കുറയ്ക്കുക"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "ഫയലിലേയ്ക്ക് ചാടുക"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -2000,20 +2015,25 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"പ്രൈമറി മൗസ് ബട്ടണുകള്‍ മാറ്റങ്ങളില്ലാതെ ബൈന്‍ഡ് ചെയ്യാന്‍ ശുപാര്‍ശ ചെയ്യുന്നില്ല.\n"
+"\n"
+"നിങ്ങള്‍ക്ക് തുടരാന്‍ താല്പര്യമുണ്ടോ ?"
 
 #: src/hotkey/gui.c:235
 msgid "Binding mouse buttons"
-msgstr ""
+msgstr "മൗസ് ബട്ടണുകള്‍ ബൈന്റ് ചെയ്യുന്നു"
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr ""
+msgstr "ആഗോള ഹോട്ട് കീ പ്ലഗിന്‍ ക്രമീകരണം"
 
 #: src/hotkey/gui.c:401
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
+"ടെക്സ്റ്റ് ഫീല്‍ഡിനുള്ളില്‍ ഒരു കീ കോമ്പിനേഷന്‍ അമര്‍ത്തുക.\n"
+"മൗസ് ബട്ടണുകളും നിങ്ങള്‍ക്ക് ബൈന്‍ഡ് ചെയ്യാം."
 
 #: src/hotkey/gui.c:406
 msgid "Hotkeys:"
@@ -2021,11 +2041,11 @@ msgstr "ഹോട്കീകള്‍"
 
 #: src/hotkey/gui.c:423
 msgid "<b>Action:</b>"
-msgstr ""
+msgstr "<b>പ്രവൃത്തി:</b>"
 
 #: src/hotkey/gui.c:430
 msgid "<b>Key Binding:</b>"
-msgstr ""
+msgstr "<b>കീ ബൈന്റിങ്:</b>"
 
 #: src/hotkey/plugin.c:66
 msgid ""
@@ -2065,7 +2085,7 @@ msgstr "%s ക്രമീകരണങ്ങള്‍"
 
 #: src/ladspa/plugin.c:561
 msgid "LADSPA Host Settings"
-msgstr ""
+msgstr "LADSPA ഹോസ്റ്റ് ക്രമീകരണങ്ങള്‍"
 
 #: src/ladspa/plugin.c:570
 msgid "Module paths:"
@@ -2122,22 +2142,22 @@ msgstr ""
 #: src/lirc/lirc.c:114
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: പുനര്‍ബന്ധനത്തിന് ശ്രമിക്കുന്നു...\n"
 
 #: src/lirc/lirc.c:354
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s അജ്ഞാതമായ കമാന്റ് \"%s\"\n"
 
 #: src/lirc/lirc.c:365
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr ""
+msgstr "%s: LIRC യില്‍ നിന്നും ബന്ധം വേര്‍പെടുത്തി\n"
 
 #: src/lirc/lirc.c:371
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: എല്ലാ %d സെക്കന്‍ഡുകളിലും പുനര്‍ബന്ധത്തിന് ശ്രമിക്കും...\n"
 
 #: src/lirc/lirc.c:381
 msgid ""
@@ -2165,7 +2185,7 @@ msgstr "LIRC സെര്‍വറുമായി വീണ്ടും ബന�
 
 #: src/lirc/lirc.c:395
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "പുനര്‍ബന്ധത്തിനു മുമ്പ് കാത്തിരിക്കുക:"
 
 #: src/lirc/lirc.c:405
 msgid "LIRC Plugin"
@@ -2272,7 +2292,7 @@ msgstr "<b>റീസാംപ്ലിങ്</b>"
 
 #: src/modplug/plugin_main.c:68
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "ഏറ്റവും അടുത്തുള്ളത് (ഏറ്റവും വേഗതയുള്ളത്)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Linear (fast)"
@@ -2317,7 +2337,7 @@ msgstr "കട്ടോഫ്:"
 
 #: src/modplug/plugin_main.c:114
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b> പ്രതിധ്വനി </b>"
 
 #: src/modplug/plugin_main.c:118
 msgid "<b>Bass Boost</b>"
@@ -2353,7 +2373,7 @@ msgstr "<b>ആവര്‍ത്തിയ്ക്കുക</b>"
 
 #: src/modplug/plugin_main.c:141
 msgid "Repeat count:"
-msgstr ""
+msgstr "ആവര്‍ത്തങ്ങളുടെ എണ്ണം:"
 
 #: src/modplug/plugin_main.c:143
 msgid "To repeat forever, set the repeat count to -1."
@@ -2385,7 +2405,7 @@ msgstr "നിര്‍ത്തി"
 
 #: src/notify/event.c:64
 msgid "Audacious is not playing."
-msgstr ""
+msgstr "ഒഡാഷ്യസ് പ്രവര്‍ത്തിക്കുന്നില്ല."
 
 #: src/notify/notify.c:33
 msgid ""
@@ -2409,11 +2429,11 @@ msgstr ""
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr ""
+msgstr "പ്ലേബാക്ക് ക്രമീകരണങ്ങള്‍ കാണിക്കുക"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "എല്ലായ്പ്പോഴും വിജ്ഞാപനങ്ങള്‍ കാണിക്കുക"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
@@ -2445,11 +2465,11 @@ msgstr "ബദല്‍ ഉപകരണം ഉപയോഗിയ്ക്കു�
 
 #: src/oss4/plugin.c:81
 msgid "Save volume between sessions."
-msgstr ""
+msgstr "സെഷനുകളുടെ ഇടയിലുള്ള ഉച്ചത സേവ് ചെയ്യുക."
 
 #: src/oss4/plugin.c:83
 msgid "Enable format conversions made by the OSS software."
-msgstr ""
+msgstr "OSS സോഫ്റ്റ്വെയര്‍ തയ്യാറാക്കിയ ഫോര്‍മാറ്റ് മാറ്റങ്ങള്‍ സാധ്യമാക്കുക."
 
 #: src/oss4/plugin.c:85
 msgid "Enable exclusive mode to prevent virtual mixing."
@@ -2470,7 +2490,7 @@ msgstr "OSS4 ഔട്പുട്ട്"
 
 #: src/pls/pls.c:113
 msgid "PLS Playlists"
-msgstr ""
+msgstr "PLS പ്ലേലിസ്റ്റുകള്‍"
 
 #: src/psf/plugin.c:264
 msgid "OpenPSF PSF1/PSF2 Decoder"
@@ -2585,7 +2605,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:52
 msgid "Permission Denied"
-msgstr ""
+msgstr "അനുവാദം ഇല്ല"
 
 #: src/scrobbler2/config_window.c:54
 msgid "Access the following link to allow Audacious to scrobble your plays:"
@@ -2603,7 +2623,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:74
 msgid "Network Problem."
-msgstr ""
+msgstr "നെറ്റ്‌വര്‍ക്ക് കുഴപ്പം."
 
 #: src/scrobbler2/config_window.c:75
 msgid "There was a problem contacting Last.fm. Please try again later."
@@ -2611,7 +2631,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:107
 msgid "Checking..."
-msgstr ""
+msgstr "പരിശോധിക്കുന്നു..."
 
 #: src/scrobbler2/config_window.c:173
 msgid "C_heck Permission"
@@ -2645,7 +2665,7 @@ msgstr ""
 
 #: src/scrobbler2/scrobbler.c:317
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "സ്‌ക്രോബ്ബ്ലര്‍ 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:743
 msgid ""
@@ -2663,33 +2683,33 @@ msgstr ""
 msgid "SDL Output"
 msgstr ""
 
-#: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
+#: src/search-tool/search-tool.c:105 src/search-tool/search-tool.c:115
 msgid "Library"
-msgstr ""
+msgstr "ഗ്രന്ഥശാല"
 
-#: src/search-tool/search-tool.c:219
+#: src/search-tool/search-tool.c:213
 msgid "Unknown Artist"
-msgstr ""
+msgstr "അജ്ഞാതനായ കലാകാരന്‍"
 
-#: src/search-tool/search-tool.c:221
+#: src/search-tool/search-tool.c:215
 msgid "Unknown Album"
-msgstr ""
+msgstr "അജ്ഞാതമായ പാട്ട്"
 
-#: src/search-tool/search-tool.c:632
+#: src/search-tool/search-tool.c:627
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
 
-#: src/search-tool/search-tool.c:638
+#: src/search-tool/search-tool.c:633
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d പാട്ട്"
+msgstr[1] "%d പാട്ടുകള്‍"
 
-#: src/search-tool/search-tool.c:640
+#: src/search-tool/search-tool.c:635
 #, c-format
 msgid ""
 "%s\n"
@@ -2700,7 +2720,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/search-tool/search-tool.c:646
+#: src/search-tool/search-tool.c:641
 #, c-format
 msgid ""
 "%s\n"
@@ -2711,35 +2731,35 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/search-tool/search-tool.c:687
+#: src/search-tool/search-tool.c:682
 msgid "_Create Playlist"
-msgstr ""
+msgstr "പ്ലേലിസ്റ്റ് _നിര്‍മിക്കുക"
 
-#: src/search-tool/search-tool.c:694
+#: src/search-tool/search-tool.c:689
 msgid "_Add to Playlist"
 msgstr "പ്ലേലിസ്റ്റിലേയ്ക്ക് _ചേര്‍ക്കുക"
 
-#: src/search-tool/search-tool.c:734
+#: src/search-tool/search-tool.c:729
 msgid "Search library"
-msgstr ""
+msgstr "ഗ്രന്ഥശാല തിരയുക"
 
-#: src/search-tool/search-tool.c:739
+#: src/search-tool/search-tool.c:734
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:742
 msgid "Please wait ..."
-msgstr ""
+msgstr "ദയവായി കാത്തിരിക്കുക ..."
 
-#: src/search-tool/search-tool.c:769
+#: src/search-tool/search-tool.c:764
 msgid "Choose Folder"
-msgstr ""
+msgstr "ഫോള്‍ഡര്‍ തെരെഞ്ഞെടുക്കുക"
 
-#: src/search-tool/search-tool.c:808
+#: src/search-tool/search-tool.c:803
 msgid "Search Tool"
-msgstr ""
+msgstr "തിരച്ചില്‍ ടുള്‍"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -2751,7 +2771,7 @@ msgstr "_പ്ലേയര്‍:"
 
 #: src/skins/skins_cfg.c:205
 msgid "Select main player window font:"
-msgstr ""
+msgstr "പ്രധാനപ്പെട്ട പ്ലെയര്‍ വിന്‍ഡോയുടെ ഫോണ്ട് തെരെഞ്ഞെടുക്കുക:"
 
 #: src/skins/skins_cfg.c:207
 msgid "_Playlist:"
@@ -2759,7 +2779,7 @@ msgstr "പ്ലേ_ലിസ്റ്റ്:"
 
 #: src/skins/skins_cfg.c:208
 msgid "Select playlist font:"
-msgstr ""
+msgstr "പ്ലേലിസ്റ്റ് ഫോണ്ട് തെരെഞ്ഞെടുക്കുക:"
 
 #: src/skins/skins_cfg.c:212
 msgid "<b>_Fonts</b>"
@@ -2767,17 +2787,17 @@ msgstr "<b>_ഫോണ്ടുകള്‍</b>"
 
 #: src/skins/skins_cfg.c:215
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr ""
+msgstr "ബിറ്റ്മാപ് ഫോണ്ടുകള്‍ ഉപയോഗിക്കാം (ASCII മാത്രം പിന്‍തുണയ്ക്കും)"
 
 #: src/skins/skins_cfg.c:217
 msgid "Scroll song title in both directions"
-msgstr ""
+msgstr "രണ്ട് ദിശകളിലും പാട്ടിന്റെ ശീര്‍ഷകം സ്‌ക്രോള്‍ ചെയ്യുക"
 
 #: src/skins/skins_cfg.c:295
 msgid "<b>_Skin</b>"
 msgstr "<b>_സ്കിന്‍</b>"
 
-#: src/skins/skins_cfg.c:342
+#: src/skins/skins_cfg.c:340
 msgid "Interface Preferences"
 msgstr "ഇന്റര്‍ഫെയ്സ് ക്രമീകരണങ്ങള്‍"
 
@@ -2854,95 +2874,95 @@ msgstr "പ്രീസെറ്റ് സേവ് ചെയ്യുക"
 msgid "Save auto-preset"
 msgstr "ഓട്ടോ പ്രീസെറ്റ് സേവ് ചെയ്യുക"
 
-#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
+#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1153
 msgid "Save equalizer preset"
 msgstr "ഈക്വലൈസര്‍ പ്രീസെറ്റ് സേവ് ചെയ്യുക"
 
-#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
+#: src/skins/ui_equalizer.c:1172 src/skins/ui_manager.c:487
 msgid "Delete preset"
 msgstr "പ്രീസെറ്റ് നീക്കംചെയ്യുക"
 
-#: src/skins/ui_equalizer.c:1190
+#: src/skins/ui_equalizer.c:1189
 msgid "Delete auto-preset"
 msgstr "ഓട്ടോ പ്രീസെറ്റ് നീക്കം ചെയ്യുക"
 
-#: src/skins/ui_main.c:414
+#: src/skins/ui_main.c:402
 msgid "kbps"
 msgstr "kbps"
 
-#: src/skins/ui_main.c:422
+#: src/skins/ui_main.c:410
 msgid "kHz"
 msgstr "kHz"
 
-#: src/skins/ui_main.c:770
+#: src/skins/ui_main.c:758
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr ""
+msgstr "തിരയുക %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.c:791
+#: src/skins/ui_main.c:779
 #, c-format
 msgid "Volume: %d%%"
 msgstr "ശബ്ദം: %d%%"
 
-#: src/skins/ui_main.c:814
+#: src/skins/ui_main.c:802
 #, c-format
 msgid "Balance: %d%% left"
-msgstr ""
+msgstr "അവശേഷിക്കുന്നത്: %d%% വലത്"
 
-#: src/skins/ui_main.c:816
+#: src/skins/ui_main.c:804
 msgid "Balance: center"
-msgstr ""
+msgstr "അവശേഷിക്കുന്നത്: നടുവില്‍"
 
-#: src/skins/ui_main.c:818
+#: src/skins/ui_main.c:806
 #, c-format
 msgid "Balance: %d%% right"
-msgstr ""
+msgstr "അവശേഷിക്കുന്നത്: %d%% ഇടത്"
 
-#: src/skins/ui_main.c:942
+#: src/skins/ui_main.c:930
 msgid "Options Menu"
 msgstr "ഓപ്ഷന്‍സ് മെനു"
 
-#: src/skins/ui_main.c:946
+#: src/skins/ui_main.c:934
 msgid "Disable 'Always On Top'"
 msgstr "'എപ്പോഴും മുകളില്‍' അസാദ്ധ്യമാക്കുക"
 
-#: src/skins/ui_main.c:948
+#: src/skins/ui_main.c:936
 msgid "Enable 'Always On Top'"
 msgstr "'എപ്പോഴും മുകളില്‍' സാദ്ധ്യമാക്കുക"
 
-#: src/skins/ui_main.c:951
+#: src/skins/ui_main.c:939
 msgid "File Info Box"
 msgstr "ഫയല്‍ ഇന്‍ഫോ ജാലകം"
 
-#: src/skins/ui_main.c:956
+#: src/skins/ui_main.c:944
 msgid "Visualization Menu"
 msgstr "ദൃശ്യവത്കരണമെനു"
 
-#: src/skins/ui_main.c:1591
+#: src/skins/ui_main.c:1577
 msgid "Single mode."
 msgstr "സിംഗ്ള്‍ മോഡ്"
 
-#: src/skins/ui_main.c:1593
+#: src/skins/ui_main.c:1579
 msgid "Playlist mode."
 msgstr "പ്ലേലിസ്റ്റ് മോഡ്"
 
-#: src/skins/ui_main.c:1615
+#: src/skins/ui_main.c:1601
 msgid "Stopping after song."
-msgstr ""
+msgstr "പാട്ടിനു ശേഷം നിര്‍ത്തുന്നു."
 
-#: src/skins/ui_main.c:1617
+#: src/skins/ui_main.c:1603
 msgid "Not stopping after song."
-msgstr ""
+msgstr "പാട്ടിനു ശേഷം നിര്‍ത്തുന്നില്ല."
 
-#: src/skins/ui_main.c:1752
+#: src/skins/ui_main.c:1738
 msgid "Repeat point A set."
 msgstr ""
 
-#: src/skins/ui_main.c:1757
+#: src/skins/ui_main.c:1743
 msgid "Repeat point B set."
 msgstr ""
 
-#: src/skins/ui_main.c:1766
+#: src/skins/ui_main.c:1752
 msgid "Repeat points cleared."
 msgstr ""
 
@@ -2952,7 +2972,7 @@ msgstr ""
 
 #: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
 msgid "Stop after Current Song"
-msgstr ""
+msgstr "ഇപ്പോഴത്തെ പാട്ടിനു ശേഷം നിര്‍ത്തുക"
 
 #: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
 msgid "Peaks"
@@ -2976,7 +2996,7 @@ msgstr "പ്ലേയര്‍ പ്രദര്‍ശിപ്പിയ്�
 
 #: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
 msgid "Show Playlist Editor"
-msgstr ""
+msgstr "പ്ലേലിസ്റ്റ് എഡിറ്റര്‍ കാണിക്കുക"
 
 #: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
 msgid "Show Equalizer"
@@ -3053,7 +3073,7 @@ msgstr "സോളിഡ് സ്കോപ്പ്"
 
 #: src/skins/ui_manager.c:140
 msgid "Ice"
-msgstr ""
+msgstr "ഐസ്"
 
 #: src/skins/ui_manager.c:145
 msgid "Smooth"
@@ -3154,7 +3174,7 @@ msgstr "പ്ലേലിസ്റ്റ് ഇറക്കുമതി ചെ�
 
 #: src/skins/ui_manager.c:225
 msgid "Loads a playlist file into the selected playlist."
-msgstr ""
+msgstr "തെരെഞ്ഞെടുത്ത പ്ലേലിസ്റ്റിലേയ്ക്ക് ഒരു പ്ലേലിസ്റ്റ് ഫയല്‍ മാറ്റുന്നു."
 
 #: src/skins/ui_manager.c:228
 msgid "Export Playlist"
@@ -3162,7 +3182,7 @@ msgstr "പ്ലേലിസ്റ്റ് കയറ്റുമതി ചെ�
 
 #: src/skins/ui_manager.c:229
 msgid "Saves the selected playlist."
-msgstr ""
+msgstr "തെരെഞ്ഞെടുത്ത പ്ലേലിസ്റ്റ് സേവ് ചെയ്യുന്നു"
 
 #: src/skins/ui_manager.c:231
 msgid "Refresh List"
@@ -3198,7 +3218,7 @@ msgstr "ഇന്റര്‍നെറ്റ് വിലാസം ചേര്�
 
 #: src/skins/ui_manager.c:251
 msgid "Adds a remote track to the playlist."
-msgstr ""
+msgstr "പ്ലേലിസ്റ്റിലേയ്ക് ഒറ്റപ്പെട്ട ഒരു ട്രാക്ക് ഉള്‍പ്പെടുത്തുന്നു."
 
 #: src/skins/ui_manager.c:254
 msgid "Add Files..."
@@ -3217,6 +3237,8 @@ msgid ""
 "Searches the playlist and selects playlist entries based on specific "
 "criteria."
 msgstr ""
+"പ്ലേലിസ്റ്റ് തിരയുകയും പ്രത്യേക മാനദണ്ഡങ്ങളുടെ അടിസ്ഥാനത്തില്‍ പ്ലേലിസ്റ്റ് എന്‍ട്രികള്‍ "
+"തെരെഞ്ഞെടുക്കുകയും ചെയ്യുന്നു."
 
 #: src/skins/ui_manager.c:264
 msgid "Invert Selection"
@@ -3232,7 +3254,7 @@ msgstr "എ​ല്ലാം തിരഞ്ഞെടുക്കുക"
 
 #: src/skins/ui_manager.c:269
 msgid "Selects all of the playlist entries."
-msgstr ""
+msgstr "എല്ലാ പ്ലേലിസ്റ്റ് എന്‍ട്രികളും തെരെഞ്ഞെടുക്കുന്നു."
 
 #: src/skins/ui_manager.c:272
 msgid "Select None"
@@ -3240,7 +3262,7 @@ msgstr "ഒന്നും തിരഞ്ഞെടുക്കേണ്ട"
 
 #: src/skins/ui_manager.c:273
 msgid "Deselects all of the playlist entries."
-msgstr ""
+msgstr "എല്ലാ പ്ലേലിസ്റ്റ് എന്‍ട്രികളും തെരെഞ്ഞെടുക്കുന്നില്ല."
 
 #: src/skins/ui_manager.c:278
 msgid "Remove All"
@@ -3248,7 +3270,7 @@ msgstr "എല്ലാം നീക്കം ചെയ്യുക"
 
 #: src/skins/ui_manager.c:279
 msgid "Removes all entries from the playlist."
-msgstr ""
+msgstr "എല്ലാ പ്ലേലിസ്റ്റ് എന്‍ട്രികളും നീക്കം ചെയ്യുന്നു"
 
 #: src/skins/ui_manager.c:282
 msgid "Clear Queue"
@@ -3264,11 +3286,11 @@ msgstr "ലഭ്യമല്ലാത്ത ഫയലുകള്‍ നീക�
 
 #: src/skins/ui_manager.c:287
 msgid "Removes unavailable files from the playlist."
-msgstr ""
+msgstr "നിലവിലില്ലാത്ത ഫയലുകളെ പ്ലേലിസ്റ്റില്‍ നിന്നും ഒഴിവാക്കുന്നു."
 
 #: src/skins/ui_manager.c:290
 msgid "Remove Duplicates"
-msgstr ""
+msgstr "പകര്‍പ്പുകള്‍ ഒഴിവാക്കുക"
 
 #: src/skins/ui_manager.c:292 src/skins/ui_manager.c:324
 #: src/skins/ui_manager.c:354
@@ -3277,7 +3299,7 @@ msgstr "ടൈറ്റിലിനനുസരിച്ച്"
 
 #: src/skins/ui_manager.c:293
 msgid "Removes duplicate entries from the playlist by title."
-msgstr ""
+msgstr "ശീര്‍ഷകത്തിന്റെ അടിസ്ഥാനത്തില്‍ പ്ലേലിസ്റ്റില്‍ നിന്ന് പകര്‍പ്പുകളായ എന്‍ട്രികളെ ഒഴിവാക്കുന്നു"
 
 #: src/skins/ui_manager.c:296 src/skins/ui_manager.c:336
 #: src/skins/ui_manager.c:366
@@ -3286,7 +3308,7 @@ msgstr "ഫയല്‍നെയിമനുസരിച്ച്"
 
 #: src/skins/ui_manager.c:297
 msgid "Removes duplicate entries from the playlist by filename."
-msgstr ""
+msgstr "ഫയല്‍നാമത്തിന്റെ അടിസ്ഥാനത്തില്‍ പ്ലേലിസ്റ്റില്‍ നിന്ന് പകര്‍പ്പുകളായ എന്‍ട്രികളെ ഒഴിവാക്കുന്നു"
 
 #: src/skins/ui_manager.c:300 src/skins/ui_manager.c:340
 #: src/skins/ui_manager.c:370
@@ -3296,6 +3318,7 @@ msgstr ""
 #: src/skins/ui_manager.c:301
 msgid "Removes duplicate entries from the playlist by their full path."
 msgstr ""
+"പൂര്‍ണമായ പാത്തിന്റെ അടിസ്ഥാനത്തില്‍ പ്ലേലിസ്റ്റില്‍ നിന്ന് പകര്‍പ്പുകളായ എന്‍ട്രികളെ ഒഴിവാക്കുന്നു."
 
 #: src/skins/ui_manager.c:304
 msgid "Remove Unselected"
@@ -3303,7 +3326,7 @@ msgstr "തിരഞ്ഞെടുക്കാത്തവ നീക്കം�
 
 #: src/skins/ui_manager.c:305
 msgid "Remove unselected entries from the playlist."
-msgstr ""
+msgstr "തെരെഞ്ഞെടുക്കാത്ത എന്‍ട്രികളെ പ്ലേലിസ്റ്റില്‍ നിന്ന് ഒഴിവാക്കുക."
 
 #: src/skins/ui_manager.c:308
 msgid "Remove Selected"
@@ -3311,15 +3334,15 @@ msgstr "തിരഞ്ഞെടുത്തവ നീക്കംചെയ്�
 
 #: src/skins/ui_manager.c:309
 msgid "Remove selected entries from the playlist."
-msgstr ""
+msgstr "തെരെഞ്ഞെടുത്ത എന്‍ട്രികളെ പ്ലേലിസ്റ്റില്‍ നിന്ന് ഒഴിവാക്കുക."
 
 #: src/skins/ui_manager.c:314
 msgid "Randomize List"
-msgstr ""
+msgstr "ലിസ്റ്റ് ക്രമമില്ലാതെയാക്കുക"
 
 #: src/skins/ui_manager.c:315
 msgid "Randomizes the playlist."
-msgstr ""
+msgstr "പ്ലേലിസ്റ്റ് ക്രമമില്ലാതെയാക്കുക."
 
 #: src/skins/ui_manager.c:318
 msgid "Reverse List"
@@ -3327,7 +3350,7 @@ msgstr "പട്ടിക തലതിരിയ്ക്കുക"
 
 #: src/skins/ui_manager.c:319
 msgid "Reverses the playlist."
-msgstr ""
+msgstr "പ്ലേലിസ്റ്റ് നേര്‍ വിപരീതമാക്കുക."
 
 #: src/skins/ui_manager.c:322
 msgid "Sort List"
@@ -3335,7 +3358,7 @@ msgstr "പട്ടിക അക്ഷരമാലാക്രമത്തി�
 
 #: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
 msgid "Sorts the list by title."
-msgstr ""
+msgstr "ശീര്‍ഷകത്തിന്റെ അടിസ്ഥാനത്തില്‍ ലിസ്റ്റ് ക്രമീകരിക്കുക."
 
 #: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
 msgid "By Album"
@@ -3343,7 +3366,7 @@ msgstr "ആല്‍ബമനുസരിച്ച്"
 
 #: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
 msgid "Sorts the list by album."
-msgstr ""
+msgstr "പാട്ടിന്റെ അടിസ്ഥാനത്തില്‍ ലിസ്റ്റ് ക്രമീകരിക്കുക."
 
 #: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
 msgid "By Artist"
@@ -3351,15 +3374,15 @@ msgstr "ആര്‍ട്ടസ്റ്റിനനുസരിച്ച്"
 
 #: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
 msgid "Sorts the list by artist."
-msgstr ""
+msgstr "കലാകാരന്റെ അടിസ്ഥാനത്തില്‍ ലിസ്റ്റ് ക്രമീകരിക്കുക."
 
 #: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
 msgid "Sorts the list by filename."
-msgstr ""
+msgstr "ഫയല്‍നാമത്തിന്റെ അടിസ്ഥാനത്തില്‍ ലിസ്റ്റ് ക്രമീകരിക്കുക."
 
 #: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
 msgid "Sorts the list by full pathname."
-msgstr ""
+msgstr "പാത്തിന്റെ അടിസ്ഥാനത്തില്‍ ലിസ്റ്റ് ക്രമീകരിക്കുക."
 
 #: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
 msgid "By Date"
@@ -3367,7 +3390,7 @@ msgstr "തീയതിയ്ക്കനുസരിച്ച്"
 
 #: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
 msgid "Sorts the list by modification time."
-msgstr ""
+msgstr "മാറ്റം വരുത്തിയ സമയത്തിന്റെ അടിസ്ഥാനത്തില്‍ ലിസ്റ്റ് ക്രമീകരിക്കുക."
 
 #: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
 msgid "By Track Number"
@@ -3375,7 +3398,7 @@ msgstr "ട്രാക്ക് നമ്പര്‍ അനുസരിച്�
 
 #: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
 msgid "Sorts the list by track number."
-msgstr ""
+msgstr "ട്രാക്ക് സംഖ്യയുടെ അടിസ്ഥാനത്തില്‍ ലിസ്റ്റ് ക്രമീകരിക്കുക."
 
 #: src/skins/ui_manager.c:352
 msgid "Sort Selected"
@@ -3415,7 +3438,7 @@ msgstr "ലൊക്കേഷന്‍ പാടുക"
 
 #: src/skins/ui_manager.c:406
 msgid "Play media from the selected location"
-msgstr ""
+msgstr "തെരെഞ്ഞെടുത്ത സ്ഥലത്തുവച്ച് പാട്ട് പാടിക്കാം"
 
 #: src/skins/ui_manager.c:408
 msgid "Plugin services"
@@ -3435,11 +3458,11 @@ msgstr "ഒഡാഷ്യസ്സില്‍നിന്ന് പുറത�
 
 #: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
 msgid "Set A-B"
-msgstr ""
+msgstr "A-B ക്രമീകരിക്കുക"
 
 #: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
 msgid "Clear A-B"
-msgstr ""
+msgstr "A-B കാലിയാക്കുക"
 
 #: src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
 msgid "Jump to File"
@@ -3447,7 +3470,7 @@ msgstr "ഫയലിലേയ്ക്ക് ചാടുക"
 
 #: src/skins/ui_manager.c:425 src/skins/ui_manager.c:426
 msgid "Jump to Time"
-msgstr ""
+msgstr "സമയത്തിലേക്ക് ചാടുക"
 
 #: src/skins/ui_manager.c:428
 msgid "Queue Toggle"
@@ -3589,7 +3612,7 @@ msgstr "ആര്‍ട്ടിസ്റ്റ്:"
 
 #: src/skins/ui_playlist.c:283
 msgid "Filename: "
-msgstr "ഫയല്‍നെയിം:"
+msgstr "ഫയല്‍നാമം:"
 
 #: src/skins/ui_playlist.c:292
 msgid "Clear previous selection before searching"
@@ -3612,18 +3635,18 @@ msgstr "ഒഡാഷ്യസ് പ്ലേലിസ്റ്റ് എഡി�
 msgid "%s (%d of %d)"
 msgstr ""
 
-#: src/skins/ui_skinselector.c:162
+#: src/skins/ui_skinselector.c:164
 msgid "Archived Winamp 2.x skin"
 msgstr ""
 
-#: src/skins/ui_skinselector.c:167
+#: src/skins/ui_skinselector.c:169
 msgid "Unarchived Winamp 2.x skin"
 msgstr ""
 
 #: src/skins/util.c:773
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr ""
+msgstr "ഫോള്‍ഡര്‍ നിര്‍മാണം സാധ്യമല്ല (%s): %s\n"
 
 #: src/sndfile/plugin.c:416
 msgid ""
@@ -3679,7 +3702,7 @@ msgstr ""
 
 #: src/sndio/sndio.c:400
 msgid "(empty means default)"
-msgstr ""
+msgstr "(ശുന്യം എന്ന് അര്‍ത്ഥമാക്കുന്നത് സ്വതസ്സിദ്ധത്തെയാണ്)"
 
 #: src/sndio/sndio.c:416
 msgid "OK"
@@ -3691,7 +3714,7 @@ msgstr "റദ്ദാക്കുക"
 
 #: src/song_change/song_change.c:54
 msgid "Song Change"
-msgstr ""
+msgstr "പാട്ട് മാറ്റുക"
 
 #: src/song_change/song_change.c:436
 msgid "Command to run when Audacious starts a new song."
@@ -3704,16 +3727,17 @@ msgstr "കല്‍പ്പന:"
 
 #: src/song_change/song_change.c:442
 msgid "Command to run toward the end of a song."
-msgstr ""
+msgstr "പാട്ടിന്റെ അവസാനത്തിലേക്ക് റണ്‍ ചെയ്യാന്‍ വേണ്ട കമാന്റ്."
 
 #: src/song_change/song_change.c:448
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
+msgstr "ഒഡാഷ്യസ് പ്ലേലിസ്റ്റിന്റെ അവസാനത്തിലേയ്ക്ക് എത്തുമ്പോള്‍ റണ്‍ ചെയ്യാന്‍ വേണ്ട കമാന്റ്."
 
 #: src/song_change/song_change.c:454
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
+"പാട്ടിന്റെ ശീര്‍ഷകം മാറുമ്പോള്‍ റണ്‍ ചെയ്യുന്ന കമാന്റ് (അതായത് നെറ്റ്‌വര്‍ക്ക് സ്‌ട്രീമുകളുടെ ശീര്‍ഷകങ്ങള്‍)."
 
 #: src/song_change/song_change.c:460
 msgid ""
@@ -3854,7 +3878,7 @@ msgstr "എക്സ്ട്രാ സ്റ്റീരിയോ"
 #: src/tonegen/tonegen.c:84
 #, c-format
 msgid "%s %.1f Hz"
-msgstr ""
+msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:84
 msgid "Tone Generator: "
@@ -3951,6 +3975,3 @@ msgstr "2SF ഡീകോഡര്‍"
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
-
-#~ msgid "Sort S_elected"
-#~ msgstr "_തിരഞ്ഞെടുത്തവ ക്രമത്തിലാക്കുക"
