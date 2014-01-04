@@ -407,8 +407,9 @@ extern "C" bool_t adplug_init (void)
 
     if (homedir)
     {
-      std::string userdb;
-      userdb = std::string ("file://") + homedir + "/" ADPLUG_CONFDIR "/" + ADPLUGDB_FILE;
+      char * homeuri = filename_to_uri (homedir);
+      std::string userdb = std::string (homeuri) + "/" ADPLUG_CONFDIR "/" + ADPLUGDB_FILE;
+      free (homeuri);
 
       if (vfs_file_test (userdb.c_str (), VFS_EXISTS))
       {
