@@ -1,6 +1,6 @@
 /*
  * menus.c
- * Copyright 2011 John Lindgren
+ * Copyright 2011-2014 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -24,9 +24,8 @@
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
-#include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <libaudgui/menu.h>
 
 #include "gtkui.h"
 #include "playlist_util.h"
@@ -36,31 +35,6 @@
 #define SHIFT GDK_SHIFT_MASK
 #define CTRL GDK_CONTROL_MASK
 #define ALT GDK_MOD1_MASK
-
-struct MenuItem {
-    const char * name;
-    const char * icon;
-    unsigned key;
-    GdkModifierType mod;
-
-    /* for normal items */
-    void (* func) (void);
-
-    /* for toggle items */
-    const char * csect;
-    const char * cname;
-    const char * hook;
-
-    /* for submenus */
-    const struct MenuItem * items;
-    int n_items;
-
-    /* for custom submenus */
-    GtkWidget * (* get_sub) (void);
-
-    /* for separators */
-    bool_t sep;
-};
 
 int menu_tab_playlist_id = -1; /* should really be stored in the menu somehow */
 
@@ -149,7 +123,7 @@ static void volume_down (void)
     aud_drct_set_volume_main (vol - 5);
 }
 
-static const struct MenuItem file_items[] = {
+static const AudguiMenuItem file_items[] = {
  {N_("_Open Files ..."), "document-open", 'o', CTRL, .func = open_files},
  {N_("Open _URL ..."), "folder-remote", 'l', CTRL, .func = open_url},
  {N_("_Add Files ..."), "list-add", 'o', SHIFT | CTRL, .func = add_files},
@@ -161,7 +135,7 @@ static const struct MenuItem file_items[] = {
  {N_("_Settings ..."), "preferences-system", .func = aud_show_prefs_window},
  {N_("_Quit"), "application-exit", 'q', CTRL, .func = aud_drct_quit}};
 
-static const struct MenuItem playback_items[] = {
+static const AudguiMenuItem playback_items[] = {
  {N_("_Play"), "media-playback-start", GDK_KEY_Return, CTRL, .func = aud_drct_play},
  {N_("Paus_e"), "media-playback-pause", ',', CTRL, .func = aud_drct_pause},
  {N_("_Stop"), "media-playback-stop", '.', CTRL, .func = aud_drct_stop},
@@ -183,12 +157,12 @@ static const struct MenuItem playback_items[] = {
  {N_("Set Repeat Point _B"), NULL, '2', CTRL, .func = set_ab_repeat_b},
  {N_("_Clear Repeat Points"), NULL, '3', CTRL, .func = clear_ab_repeat}};
 
-static const struct MenuItem dupe_items[] = {
+static const AudguiMenuItem dupe_items[] = {
  {N_("By _Title"), .func = pl_remove_dupes_by_title},
  {N_("By _Filename"), .func = pl_remove_dupes_by_filename},
  {N_("By File _Path"), .func = pl_remove_dupes_by_path}};
 
-static const struct MenuItem sort_items[] = {
+static const AudguiMenuItem sort_items[] = {
  {N_("By Track _Number"), .func = pl_sort_track},
  {N_("By _Title"), .func = pl_sort_title},
  {N_("By _Artist"), .func = pl_sort_artist},
@@ -201,7 +175,7 @@ static const struct MenuItem sort_items[] = {
  {N_("R_everse Order"), "view-sort-descending", .func = pl_reverse},
  {N_("_Random Order"), .func = pl_random}};
 
- static const struct MenuItem sort_selected_items[] = {
+ static const AudguiMenuItem sort_selected_items[] = {
  {N_("By Track _Number"), .func = pl_sort_selected_track},
  {N_("By _Title"), .func = pl_sort_selected_title},
  {N_("By _Artist"), .func = pl_sort_selected_artist},
@@ -214,7 +188,7 @@ static const struct MenuItem sort_items[] = {
  {N_("R_everse Order"), "view-sort-descending", .func = pl_reverse_selected},
  {N_("_Random Order"), .func = pl_random_selected}};
 
-static const struct MenuItem playlist_items[] = {
+static const AudguiMenuItem playlist_items[] = {
  {N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
  {N_("_Refresh"), "view-refresh", GDK_KEY_F5, .func = pl_refresh},
  {.sep = TRUE},
@@ -233,7 +207,7 @@ static const struct MenuItem playlist_items[] = {
  {N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, .func = audgui_playlist_manager},
  {N_("_Queue Manager ..."), NULL, 'u', CTRL, .func = audgui_queue_manager_show}};
 
-static const struct MenuItem output_items[] = {
+static const AudguiMenuItem output_items[] = {
  {N_("Volume _Up"), "audio-volume-high", '+', CTRL, .func = volume_up},
  {N_("Volume _Down"), "audio-volume-low", '-', CTRL, .func = volume_down},
  {.sep = TRUE},
@@ -241,7 +215,7 @@ static const struct MenuItem output_items[] = {
  {.sep = TRUE},
  {N_("E_ffects ..."), .func = configure_effects}};
 
-static const struct MenuItem view_items[] = {
+static const AudguiMenuItem view_items[] = {
  {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL,
   .csect = "gtkui", "menu_visible", .func = show_hide_menu},
  {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL,
@@ -256,7 +230,7 @@ static const struct MenuItem view_items[] = {
  {.sep = TRUE},
  {N_("_Visualizations ..."), .func = configure_visualizations}};
 
-static const struct MenuItem main_items[] = {
+static const AudguiMenuItem main_items[] = {
  {N_("_File"), .items = file_items, ARRAY_LEN (file_items)},
  {N_("_Playback"), .items = playback_items, ARRAY_LEN (playback_items)},
  {N_("P_laylist"), .items = playlist_items, ARRAY_LEN (playlist_items)},
@@ -264,7 +238,7 @@ static const struct MenuItem main_items[] = {
  {N_("_Output"), .items = output_items, ARRAY_LEN (output_items)},
  {N_("_View"), .items = view_items, ARRAY_LEN (view_items)}};
 
-static const struct MenuItem rclick_items[] = {
+static const AudguiMenuItem rclick_items[] = {
  {N_("Song _Info ..."), "dialog-information", 'i', ALT, .func = playlist_song_info},
  {N_("_Queue/Unqueue"), NULL, 'q', ALT, .func = playlist_queue_toggle},
  {N_("_Refresh"), "view-refresh", GDK_KEY_F6, .func = pl_refresh_sel},
@@ -276,118 +250,36 @@ static const struct MenuItem rclick_items[] = {
  {.sep = TRUE},
  {N_("_Services"), .get_sub = get_services_pl}};
 
-static const struct MenuItem tab_items[] = {
+static const AudguiMenuItem tab_items[] = {
  {N_("_Play"), "media-playback-start", .func = pl_tab_play},
  {N_("_Rename ..."), "insert-text", .func = pl_tab_rename},
  {N_("Remo_ve"), "edit-delete", .func = pl_tab_close}};
 
-static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
-{
-    bool_t on = gtk_check_menu_item_get_active (check);
-
-    if (aud_get_bool (item->csect, item->cname) == on)
-        return;
-
-    aud_set_bool (item->csect, item->cname, on);
-
-    if (item->func)
-        item->func ();
-}
-
-static void hook_cb (void * data, GtkWidget * check)
-{
-    const struct MenuItem * item = g_object_get_data ((GObject *) check, "item");
-    gtk_check_menu_item_set_active ((GtkCheckMenuItem *) check, aud_get_bool
-     (item->csect, item->cname));
-}
-
-static void unhook_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
-{
-    hook_dissociate_full (item->hook, (HookFunction) hook_cb, check);
-}
-
-static void populate_menu (GtkWidget * shell, const struct MenuItem * items,
- int n_items, GtkAccelGroup * accel)
-{
-    for (int i = 0; i < n_items; i ++)
-    {
-        const struct MenuItem * item = & items[i];
-        GtkWidget * widget = NULL;
-
-        if (item->name && item->func && ! item->cname) /* normal widget */
-        {
-            widget = audgui_menu_item_new (_(item->name), item->icon);
-            g_signal_connect (widget, "activate", item->func, NULL);
-        }
-        else if (item->name && item->cname) /* toggle widget */
-        {
-            widget = gtk_check_menu_item_new_with_mnemonic (_(item->name));
-            gtk_check_menu_item_set_active ((GtkCheckMenuItem *) widget,
-             aud_get_bool (item->csect, item->cname));
-            g_signal_connect (widget, "toggled", (GCallback) toggled_cb, (void *) item);
-
-            if (item->hook)
-            {
-                g_object_set_data ((GObject *) widget, "item", (void *) item);
-                hook_associate (item->hook, (HookFunction) hook_cb, widget);
-                g_signal_connect (widget, "destroy", (GCallback) unhook_cb, (void *) item);
-            }
-        }
-        else if (item->name && (item->items || item->get_sub)) /* submenu */
-        {
-            widget = audgui_menu_item_new (_(item->name), item->icon);
-
-            GtkWidget * sub;
-
-            if (item->get_sub)
-                sub = item->get_sub ();
-            else
-            {
-                sub = gtk_menu_new ();
-                populate_menu (sub, item->items, item->n_items, accel);
-            }
-
-            gtk_menu_item_set_submenu ((GtkMenuItem *) widget, sub);
-        }
-        else if (item->sep) /* separator */
-            widget = gtk_separator_menu_item_new ();
-
-        if (! widget)
-            continue;
-
-        if (item->key)
-            gtk_widget_add_accelerator (widget, "activate", accel, item->key,
-             item->mod, GTK_ACCEL_VISIBLE);
-
-        gtk_widget_show (widget);
-        gtk_menu_shell_append ((GtkMenuShell *) shell, widget);
-    }
-}
 
 GtkWidget * make_menu_bar (GtkAccelGroup * accel)
 {
     GtkWidget * bar = gtk_menu_bar_new ();
-    populate_menu (bar, main_items, ARRAY_LEN (main_items), accel);
+    audgui_menu_init (bar, main_items, ARRAY_LEN (main_items), accel);
     return bar;
 }
 
 GtkWidget * make_menu_main (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    populate_menu (shell, main_items, ARRAY_LEN (main_items), accel);
+    audgui_menu_init (shell, main_items, ARRAY_LEN (main_items), accel);
     return shell;
 }
 
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    populate_menu (shell, rclick_items, ARRAY_LEN (rclick_items), accel);
+    audgui_menu_init (shell, rclick_items, ARRAY_LEN (rclick_items), accel);
     return shell;
 }
 
 GtkWidget * make_menu_tab (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    populate_menu (shell, tab_items, ARRAY_LEN (tab_items), accel);
+    audgui_menu_init (shell, tab_items, ARRAY_LEN (tab_items), accel);
     return shell;
 }
