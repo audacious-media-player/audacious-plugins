@@ -242,8 +242,14 @@ static void set_tab_label (int list, GtkLabel * label)
     str_unref (title);
 }
 
-void ui_playlist_notebook_edit_tab_title (int playlist)
+void start_rename_playlist (int playlist)
 {
+    if (! gtk_notebook_get_show_tabs ((GtkNotebook *) notebook))
+    {
+        audgui_show_playlist_rename (playlist);
+        return;
+    }
+
     GtkWidget * page = gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, playlist);
     GtkWidget * ebox = gtk_notebook_get_tab_label (UI_PLAYLIST_NOTEBOOK, page);
 
@@ -447,7 +453,7 @@ static void add_remove_pages (void)
     apply_column_widths (playlist_get_treeview (active));
     gtk_notebook_set_current_page ((GtkNotebook *) notebook, active);
 
-    show_playlist_tabs ();
+    show_hide_playlist_tabs ();
 
     g_signal_handlers_unblock_by_func (notebook, (void *) tab_changed, NULL);
     g_signal_handlers_unblock_by_func (notebook, (void *) tab_reordered, NULL);
@@ -540,7 +546,8 @@ GtkWidget * ui_playlist_notebook_new (void)
     gtk_notebook_set_scrollable ((GtkNotebook *) notebook, TRUE);
     make_add_button (notebook);
 
-    show_playlist_tabs ();
+    show_hide_playlist_tabs ();
+
     hook_associate ("config save", (HookFunction) save_column_widths, NULL);
 
     gtk_widget_add_events (notebook, GDK_SCROLL_MASK);
@@ -548,4 +555,10 @@ GtkWidget * ui_playlist_notebook_new (void)
     g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
 
     return notebook;
+}
+
+void show_hide_playlist_tabs (void)
+{
+    gtk_notebook_set_show_tabs ((GtkNotebook *) notebook, aud_get_bool ("gtkui",
+     "playlist_tabs_visible") || aud_playlist_count () > 1);
 }

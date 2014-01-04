@@ -205,24 +205,20 @@ static void ui_show (bool_t show)
 {
     if (show)
     {
-        if (! gtk_window_is_active ((GtkWindow *) window))
+        if (! gtk_widget_get_visible (window))
             restore_window_size ();
 
         gtk_window_present ((GtkWindow *) window);
-
-        /* turn visualization back on if necessary */
-        ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
     }
     else
     {
-        if (gtk_window_is_active ((GtkWindow *) window))
+        if (gtk_widget_get_visible (window))
             save_window_size ();
 
         gtk_widget_hide (window);
-
-        /* turn visualization off to reduce CPU usage */
-        ui_infoarea_show_vis (FALSE);
     }
+
+    show_hide_infoarea_vis ();
 }
 
 static void append_str (char * buf, int bufsize, const char * str)
@@ -657,7 +653,7 @@ static bool_t search_tool_toggled (PluginHandle * plugin, void * unused)
 
 static void config_save (void)
 {
-    if (gtk_window_is_active ((GtkWindow *) window))
+    if (gtk_widget_get_visible (window))
         save_window_size ();
 
     layout_save ();
@@ -803,14 +799,9 @@ static bool_t init (void)
     gtk_box_pack_start ((GtkBox *) vbox, (GtkWidget *) UI_PLAYLIST_NOTEBOOK, TRUE, TRUE, 0);
 
     /* optional UI elements */
-    show_menu (aud_get_bool ("gtkui", "menu_visible"));
-    show_infoarea (aud_get_bool ("gtkui", "infoarea_visible"));
-
-    if (aud_get_bool ("gtkui", "statusbar_visible"))
-    {
-        statusbar = ui_statusbar_new ();
-        gtk_box_pack_end ((GtkBox *) vbox_outer, statusbar, FALSE, FALSE, 0);
-    }
+    show_hide_menu ();
+    show_hide_infoarea ();
+    show_hide_statusbar ();
 
     AUDDBG("hooks associate\n");
     ui_hooks_associate();
@@ -913,11 +904,9 @@ static void menu_hide_cb (void)
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) menu_button, FALSE);
 }
 
-void show_menu (bool_t show)
+void show_hide_menu (void)
 {
-    aud_set_bool ("gtkui", "menu_visible", show);
-
-    if (show)
+    if (aud_get_bool ("gtkui", "menu_visible"))
     {
         /* remove menu button from toolbar and show menu bar */
         if (menu_main)
@@ -961,19 +950,9 @@ void show_menu (bool_t show)
     }
 }
 
-void show_playlist_tabs (void)
+void show_hide_infoarea (void)
 {
-    bool_t single_pl = aud_playlist_count () > 1;
-    bool_t show_tabs = aud_get_bool ("gtkui", "playlist_tabs_visible");
-
-    show_tabs = single_pl || show_tabs;
-
-    gtk_notebook_set_show_tabs (UI_PLAYLIST_NOTEBOOK, show_tabs);
-}
-
-void show_infoarea (bool_t show)
-{
-    aud_set_bool ("gtkui", "infoarea_visible", show);
+    bool_t show = aud_get_bool ("gtkui", "infoarea_visible");
 
     if (show && ! infoarea)
     {
@@ -982,9 +961,7 @@ void show_infoarea (bool_t show)
         gtk_box_pack_end ((GtkBox *) vbox, infoarea, FALSE, FALSE, 0);
         gtk_widget_show_all (infoarea);
 
-        /* only turn on visualization if interface is shown */
-        if (gtk_window_is_active ((GtkWindow *) window))
-            ui_infoarea_show_vis (aud_get_bool ("gtkui", "infoarea_show_vis"));
+        show_hide_infoarea_vis ();
     }
 
     if (! show && infoarea)
@@ -994,15 +971,16 @@ void show_infoarea (bool_t show)
     }
 }
 
-void show_infoarea_vis (bool_t show)
+void show_hide_infoarea_vis (void)
 {
-    aud_set_bool ("gtkui", "infoarea_show_vis", show);
-    ui_infoarea_show_vis (show);
+    /* only turn on visualization if interface is shown */
+    ui_infoarea_show_vis (gtk_widget_get_visible (window) && aud_get_bool
+     ("gtkui", "infoarea_show_vis"));
 }
 
-void show_statusbar (bool_t show)
+void show_hide_statusbar (void)
 {
-    aud_set_bool ("gtkui", "statusbar_visible", show);
+    bool_t show = aud_get_bool ("gtkui", "statusbar_visible");
 
     if (show && ! statusbar)
     {

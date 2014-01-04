@@ -35,7 +35,7 @@ static PreferencesWidget gtkui_widgets[] = {
     {WIDGET_LABEL, N_("<b>Playlist Tabs</b>")},
     {WIDGET_CHK_BTN, N_("Always show tabs"),
      .cfg_type = VALUE_BOOLEAN, .csect = "gtkui", .cname = "playlist_tabs_visible",
-     .callback = show_playlist_tabs},
+     .callback = show_hide_playlist_tabs},
     {WIDGET_CHK_BTN, N_("Show entry counts"),
      .cfg_type = VALUE_BOOLEAN, .csect = "gtkui", .cname = "entry_count_visible",
      .callback = redisplay_playlists},

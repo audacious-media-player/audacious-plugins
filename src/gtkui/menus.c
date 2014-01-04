@@ -47,8 +47,8 @@ struct MenuItem {
     void (* func) (void);
 
     /* for toggle items */
-    bool_t (* get) (void);
-    void (* set) (bool_t on);
+    const char * csect;
+    const char * cname;
     const char * hook;
 
     /* for submenus */
@@ -71,15 +71,6 @@ static void add_url (void) {audgui_show_add_url_window (FALSE); }
 
 static void configure_effects (void) {aud_show_prefs_for_plugin_type (PLUGIN_TYPE_EFFECT); }
 static void configure_visualizations (void) {aud_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS); }
-
-static bool_t repeat_get (void) {return aud_get_bool (NULL, "repeat"); }
-static void repeat_set (bool_t on) {aud_set_bool (NULL, "repeat", on); }
-static bool_t shuffle_get (void) {return aud_get_bool (NULL, "shuffle"); }
-static void shuffle_set (bool_t on) {aud_set_bool (NULL, "shuffle", on); }
-static bool_t no_advance_get (void) {return aud_get_bool (NULL, "no_playlist_advance"); }
-static void no_advance_set (bool_t on) {aud_set_bool (NULL, "no_playlist_advance", on); }
-static bool_t stop_after_get (void) {return aud_get_bool (NULL, "stop_after_current_song"); }
-static void stop_after_set (bool_t on) {aud_set_bool (NULL, "stop_after_current_song", on); }
 
 static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK); }
 static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
@@ -115,17 +106,10 @@ static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_ge
 static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
 static void pl_remove_dupes_by_filename (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FILENAME); }
 static void pl_remove_dupes_by_path (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
+static void pl_rename (void) {start_rename_playlist (aud_playlist_get_active ()); }
 static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
 static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }
 static void pl_select_all (void) {aud_playlist_select_all (aud_playlist_get_active (), TRUE); }
-
-static void pl_rename (void)
-{
-    if (aud_get_bool ("gtkui", "playlist_tabs_visible"))
-        ui_playlist_notebook_edit_tab_title (aud_playlist_get_active ());
-    else
-        audgui_show_playlist_rename (aud_playlist_get_active ());
-}
 
 static void pl_tab_play (void)
 {
@@ -138,7 +122,7 @@ static void pl_tab_rename (void)
 {
     int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
     if (playlist >= 0)
-        ui_playlist_notebook_edit_tab_title (playlist);
+        start_rename_playlist (playlist);
 }
 
 static void pl_tab_close (void)
@@ -165,13 +149,6 @@ static void volume_down (void)
     aud_drct_set_volume_main (vol - 5);
 }
 
-static bool_t menu_bar_get (void) {return aud_get_bool ("gtkui", "menu_visible"); }
-static bool_t infoarea_get (void) {return aud_get_bool ("gtkui", "infoarea_visible"); }
-static bool_t infoarea_vis_get (void) {return aud_get_bool ("gtkui", "infoarea_show_vis"); }
-static bool_t status_bar_get (void) {return aud_get_bool ("gtkui", "statusbar_visible"); }
-static bool_t remaining_time_get (void) {return aud_get_bool ("gtkui", "show_remaining_time"); }
-static void remaining_time_set (bool_t show) {aud_set_bool ("gtkui", "show_remaining_time", show); }
-
 static const struct MenuItem file_items[] = {
  {N_("_Open Files ..."), "document-open", 'o', CTRL, .func = open_files},
  {N_("Open _URL ..."), "folder-remote", 'l', CTRL, .func = open_url},
@@ -191,10 +168,12 @@ static const struct MenuItem playback_items[] = {
  {N_("Pre_vious"), "media-skip-backward", GDK_KEY_Up, ALT, .func = aud_drct_pl_prev},
  {N_("_Next"), "media-skip-forward", GDK_KEY_Down, ALT, .func = aud_drct_pl_next},
  {.sep = TRUE},
- {N_("_Repeat"), NULL, 'r', CTRL, .get = repeat_get, repeat_set, "set repeat"},
- {N_("S_huffle"), NULL, 's', CTRL, .get = shuffle_get, shuffle_set, "set shuffle"},
- {N_("N_o Playlist Advance"), NULL, 'n', CTRL, .get = no_advance_get, no_advance_set, "set no_playlist_advance"},
- {N_("Stop A_fter This Song"), NULL, 'm', CTRL, .get = stop_after_get, stop_after_set, "set stop_after_current_song"},
+ {N_("_Repeat"), NULL, 'r', CTRL, .cname = "repeat", .hook = "set repeat"},
+ {N_("S_huffle"), NULL, 's', CTRL, .cname = "shuffle", .hook = "set shuffle"},
+ {N_("N_o Playlist Advance"), NULL, 'n', CTRL,
+  .cname = "no_playlist_advance", .hook = "set no_playlist_advance"},
+ {N_("Stop A_fter This Song"), NULL, 'm', CTRL,
+  .cname = "stop_after_current_song", .hook = "set stop_after_current_song"},
  {.sep = TRUE},
  {N_("Song _Info ..."), "dialog-information", 'i', CTRL, .func = audgui_infowin_show_current},
  {N_("Jump to _Time ..."), "go-jump", 'k', CTRL, .func = audgui_jump_to_time},
@@ -263,12 +242,17 @@ static const struct MenuItem output_items[] = {
  {N_("E_ffects ..."), .func = configure_effects}};
 
 static const struct MenuItem view_items[] = {
- {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL, .get = menu_bar_get, show_menu},
- {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL, .get = infoarea_get, show_infoarea},
- {N_("Show Info Bar Vis_ualization"), .get = infoarea_vis_get, show_infoarea_vis},
- {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL, .get = status_bar_get, show_statusbar},
+ {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL,
+  .csect = "gtkui", "menu_visible", .func = show_hide_menu},
+ {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL,
+  .csect = "gtkui", "infoarea_visible", .func = show_hide_infoarea},
+ {N_("Show Info Bar Vis_ualization"),
+  .csect = "gtkui", "infoarea_show_vis", .func = show_hide_infoarea_vis},
+ {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL,
+  .csect = "gtkui", "statusbar_visible", .func = show_hide_statusbar},
  {.sep = TRUE},
- {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL, .get = remaining_time_get, remaining_time_set},
+ {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL,
+  .csect = "gtkui", "show_remaining_time"},
  {.sep = TRUE},
  {N_("_Visualizations ..."), .func = configure_visualizations}};
 
@@ -299,16 +283,22 @@ static const struct MenuItem tab_items[] = {
 
 static void toggled_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
 {
-    if (item->get () == gtk_check_menu_item_get_active (check))
+    bool_t on = gtk_check_menu_item_get_active (check);
+
+    if (aud_get_bool (item->csect, item->cname) == on)
         return;
 
-    item->set (gtk_check_menu_item_get_active (check));
+    aud_set_bool (item->csect, item->cname, on);
+
+    if (item->func)
+        item->func ();
 }
 
 static void hook_cb (void * data, GtkWidget * check)
 {
     const struct MenuItem * item = g_object_get_data ((GObject *) check, "item");
-    gtk_check_menu_item_set_active ((GtkCheckMenuItem *) check, item->get ());
+    gtk_check_menu_item_set_active ((GtkCheckMenuItem *) check, aud_get_bool
+     (item->csect, item->cname));
 }
 
 static void unhook_cb (GtkCheckMenuItem * check, const struct MenuItem * item)
@@ -324,25 +314,23 @@ static void populate_menu (GtkWidget * shell, const struct MenuItem * items,
         const struct MenuItem * item = & items[i];
         GtkWidget * widget = NULL;
 
-        if (item->name && item->func) /* normal widget */
+        if (item->name && item->func && ! item->cname) /* normal widget */
         {
             widget = audgui_menu_item_new (_(item->name), item->icon);
             g_signal_connect (widget, "activate", item->func, NULL);
         }
-        else if (item->name && item->get && item->set) /* toggle widget */
+        else if (item->name && item->cname) /* toggle widget */
         {
             widget = gtk_check_menu_item_new_with_mnemonic (_(item->name));
             gtk_check_menu_item_set_active ((GtkCheckMenuItem *) widget,
-             item->get ());
-            g_signal_connect (widget, "toggled", (GCallback) toggled_cb,
-             (void *) item);
+             aud_get_bool (item->csect, item->cname));
+            g_signal_connect (widget, "toggled", (GCallback) toggled_cb, (void *) item);
 
             if (item->hook)
             {
                 g_object_set_data ((GObject *) widget, "item", (void *) item);
                 hook_associate (item->hook, (HookFunction) hook_cb, widget);
-                g_signal_connect (widget, "destroy", (GCallback) unhook_cb,
-                 (void *) item);
+                g_signal_connect (widget, "destroy", (GCallback) unhook_cb, (void *) item);
             }
         }
         else if (item->name && (item->items || item->get_sub)) /* submenu */
