@@ -28,18 +28,7 @@ enum {
     SI_CFG_SCROLL_ACTION_SKIP
 };
 
-enum {
-    SI_PLAYBACK_CTRL_PREV,
-    SI_PLAYBACK_CTRL_PLAY,
-    SI_PLAYBACK_CTRL_PAUSE,
-    SI_PLAYBACK_CTRL_STOP,
-    SI_PLAYBACK_CTRL_NEXT,
-    SI_PLAYBACK_CTRL_EJECT
-};
-
 /* util.c */
 void si_volume_change (int value);
-void si_playback_skip (int count);
-void si_playback_ctrl (void * ctrl);
 
 #endif

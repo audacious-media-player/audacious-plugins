@@ -31,6 +31,7 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
+#include <libaudgui/menu.h>
 
 #include <glib.h>
 #include <gdk/gdk.h>
@@ -130,7 +131,10 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
                 si_volume_change (aud_get_int ("statusicon", "volume_delta"));
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
-                si_playback_skip (aud_get_bool ("statusicon", "reverse_scroll") ? 1 : -1);
+                if (aud_get_bool ("statusicon", "reverse_scroll"))
+                    aud_drct_pl_next ();
+                else
+                    aud_drct_pl_prev ();
                 break;
           }
           break;
@@ -144,7 +148,10 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
                 si_volume_change (-aud_get_int ("statusicon", "volume_delta"));
                 break;
             case SI_CFG_SCROLL_ACTION_SKIP:
-                si_playback_skip (aud_get_bool ("statusicon", "reverse_scroll") ? -1 : 1);
+                if (aud_get_bool ("statusicon", "reverse_scroll"))
+                    aud_drct_pl_prev ();
+                else
+                    aud_drct_pl_next ();
                 break;
           }
           break;
@@ -244,52 +251,27 @@ static void si_smallmenu_show(gint x, gint y, guint button, guint32 time, gpoint
     gtk_menu_popup(GTK_MENU(si_smenu), NULL, NULL, NULL, NULL, button, time);
 }
 
+static void open_files (void)
+{
+    audgui_run_filebrowser (TRUE);
+}
+
 static GtkWidget *si_smallmenu_create(void)
 {
+    static const AudguiMenuItem items[] = {
+        {N_("_Open Files ..."), "document-open", .func = open_files},
+        {N_("Pre_vious"), "media-skip-backward", .func = aud_drct_pl_prev},
+        {N_("_Play"), "media-playback-start", .func = aud_drct_play},
+        {N_("Paus_e"), "media-playback-pause", .func = aud_drct_pause},
+        {N_("_Stop"), "media-playback-stop", .func = aud_drct_stop},
+        {N_("_Next"), "media-skip-forward", .func = aud_drct_pl_next},
+        {.sep = TRUE},
+        {N_("Se_ttings ..."), "preferences-system", .func = aud_show_prefs_window},
+        {N_("_Quit"), "application-exit", .func = aud_drct_quit}
+    };
+
     GtkWidget *si_smenu = gtk_menu_new();
-    GtkWidget *si_smenu_prev_item, *si_smenu_play_item, *si_smenu_pause_item;
-    GtkWidget *si_smenu_stop_item, *si_smenu_next_item, *si_smenu_sep_item, *si_smenu_eject_item;
-    GtkWidget *si_smenu_pref_item, *si_smenu_quit_item;
-
-    si_smenu_eject_item = audgui_menu_item_new (_("_Open Files ..."), "document-open");
-    g_signal_connect_swapped(si_smenu_eject_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_EJECT));
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_eject_item);
-    gtk_widget_show(si_smenu_eject_item);
-    si_smenu_sep_item = gtk_separator_menu_item_new();
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_sep_item);
-    gtk_widget_show(si_smenu_sep_item);
-    si_smenu_prev_item = audgui_menu_item_new (_("Pre_vious"), "media-skip-backward");
-    g_signal_connect_swapped(si_smenu_prev_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_PREV));
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_prev_item);
-    gtk_widget_show(si_smenu_prev_item);
-    si_smenu_play_item = audgui_menu_item_new (_("_Play"), "media-playback-start");
-    g_signal_connect_swapped(si_smenu_play_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_PLAY));
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_play_item);
-    gtk_widget_show(si_smenu_play_item);
-    si_smenu_pause_item = audgui_menu_item_new (_("Paus_e"), "media-playback-pause");
-    g_signal_connect_swapped(si_smenu_pause_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_PAUSE));
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_pause_item);
-    gtk_widget_show(si_smenu_pause_item);
-    si_smenu_stop_item = audgui_menu_item_new (_("_Stop"), "media-playback-stop");
-    g_signal_connect_swapped(si_smenu_stop_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_STOP));
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_stop_item);
-    gtk_widget_show(si_smenu_stop_item);
-    si_smenu_next_item = audgui_menu_item_new (_("_Next"), "media-skip-forward");
-    g_signal_connect_swapped(si_smenu_next_item, "activate", G_CALLBACK(si_playback_ctrl), GINT_TO_POINTER(SI_PLAYBACK_CTRL_NEXT));
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_next_item);
-    gtk_widget_show(si_smenu_next_item);
-    si_smenu_sep_item = gtk_separator_menu_item_new();
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_sep_item);
-    gtk_widget_show(si_smenu_sep_item);
-    si_smenu_pref_item = audgui_menu_item_new (_("Se_ttings ..."), "preferences-system");
-    g_signal_connect_swapped(si_smenu_pref_item, "activate", G_CALLBACK(aud_show_prefs_window), NULL);
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_pref_item);
-    gtk_widget_show(si_smenu_pref_item);
-    si_smenu_quit_item = audgui_menu_item_new (_("_Quit"), "application-exit");
-    g_signal_connect_swapped(si_smenu_quit_item, "activate", G_CALLBACK(aud_drct_quit), NULL);
-    gtk_menu_shell_append(GTK_MENU_SHELL(si_smenu), si_smenu_quit_item);
-    gtk_widget_show(si_smenu_quit_item);
-
+    audgui_menu_init (si_smenu, items, ARRAY_LEN (items), NULL);
     return si_smenu;
 }
 
