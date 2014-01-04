@@ -15,52 +15,6 @@
 			<menuitem action="play file" />
 			<menuitem action="play location" />
         	<separator />
-			<menu action="visualization">
-				<menu action="vismode">
-					<menuitem action="vismode analyzer" />
-					<menuitem action="vismode scope" />
-					<menuitem action="vismode voiceprint" />
-					<menuitem action="vismode off" />
-				</menu>
-				<menu action="anamode">
-					<menuitem action="anamode normal" />
-					<menuitem action="anamode fire" />
-					<menuitem action="anamode vertical lines" />
-					<separator />
-					<menuitem action="anatype lines" />
-					<menuitem action="anatype bars" />
-					<separator />
-					<menuitem action="anamode peaks" />
-				</menu>
-				<menu action="scomode">
-					<menuitem action="scomode dot" />
-					<menuitem action="scomode line" />
-					<menuitem action="scomode solid" />
-				</menu>
-				<menu action="vprmode">
-					<menuitem action="vprmode normal" />
-					<menuitem action="vprmode fire" />
-					<menuitem action="vprmode ice" />
-				</menu>
-				<menu action="wshmode">
-					<menuitem action="wshmode normal" />
-					<menuitem action="wshmode smooth" />
-				</menu>
-				<menu action="anafoff">
-					<menuitem action="anafoff slowest" />
-					<menuitem action="anafoff slow" />
-					<menuitem action="anafoff medium" />
-					<menuitem action="anafoff fast" />
-					<menuitem action="anafoff fastest" />
-				</menu>
-				<menu action="peafoff">
-					<menuitem action="peafoff slowest" />
-					<menuitem action="peafoff slow" />
-					<menuitem action="peafoff medium" />
-					<menuitem action="peafoff fast" />
-					<menuitem action="peafoff fastest" />
-				</menu>
-			</menu>
 			<menu action="playback">
 				<menuitem action="playback repeat" />
 				<menuitem action="playback shuffle" />

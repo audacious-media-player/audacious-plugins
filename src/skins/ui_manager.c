@@ -27,24 +27,14 @@
 #include "actions-playlist.h"
 #include "ui_main.h"
 #include "ui_manager.h"
-#include "ui_vis.h"
 
 static GtkWidget * ui_manager_get_popup_menu (GtkUIManager * self, const gchar *
  path);
 
 GtkActionGroup *toggleaction_group_others;
-GtkActionGroup *radioaction_group_anamode; /* Analyzer mode */
-GtkActionGroup *radioaction_group_anatype; /* Analyzer type */
-GtkActionGroup *radioaction_group_scomode; /* Scope mode */
-GtkActionGroup *radioaction_group_vprmode; /* Voiceprint mode */
-GtkActionGroup *radioaction_group_wshmode; /* WindowShade VU mode */
-GtkActionGroup *radioaction_group_anafoff; /* Analyzer Falloff */
-GtkActionGroup *radioaction_group_peafoff; /* Peak Falloff */
-GtkActionGroup *radioaction_group_vismode; /* Visualization mode */
 GtkActionGroup *radioaction_group_viewtime; /* View time (remaining/elapsed) */
 
 static GtkActionGroup *action_group_playback;
-static GtkActionGroup *action_group_visualization;
 static GtkActionGroup *action_group_view;
 static GtkActionGroup *action_group_others;
 static GtkActionGroup *action_group_playlist;
@@ -66,9 +56,6 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
     { "stop after current song", NULL , N_("Stop after Current Song"), "<Ctrl>M",
       N_("Stop after Current Song"), G_CALLBACK(action_stop_after_current_song) , FALSE },
-
-    { "anamode peaks", NULL , N_("Peaks"), NULL,
-      N_("Peaks"), G_CALLBACK(action_anamode_peaks) , FALSE },
 
     { "playback repeat", NULL , N_("Repeat"), "R",
       N_("Repeat"), G_CALLBACK(action_playback_repeat) , FALSE },
@@ -108,57 +95,6 @@ static GtkToggleActionEntry toggleaction_entries_others[] = {
 
 /* radio action entries */
 
-static GtkRadioActionEntry radioaction_entries_vismode[] = {
-    { "vismode analyzer", NULL , N_("Analyzer"), NULL, N_("Analyzer"), VIS_ANALYZER },
-    { "vismode scope", NULL , N_("Scope"), NULL, N_("Scope"), VIS_SCOPE },
-    { "vismode voiceprint", NULL , N_("Voiceprint"), NULL, N_("Voiceprint"), VIS_VOICEPRINT },
-    { "vismode off", NULL , N_("Off"), NULL, N_("Off"), VIS_OFF }
-};
-
-static GtkRadioActionEntry radioaction_entries_anamode[] = {
-    { "anamode normal", NULL , N_("Normal"), NULL, N_("Normal"), ANALYZER_NORMAL },
-    { "anamode fire", NULL , N_("Fire"), NULL, N_("Fire"), ANALYZER_FIRE },
-    { "anamode vertical lines", NULL , N_("Vertical Lines"), NULL, N_("Vertical Lines"), ANALYZER_VLINES }
-};
-
-static GtkRadioActionEntry radioaction_entries_anatype[] = {
-    { "anatype lines", NULL , N_("Lines"), NULL, N_("Lines"), ANALYZER_LINES },
-    { "anatype bars", NULL , N_("Bars"), NULL, N_("Bars"), ANALYZER_BARS }
-};
-
-static GtkRadioActionEntry radioaction_entries_scomode[] = {
-    { "scomode dot", NULL , N_("Dot Scope"), NULL, N_("Dot Scope"), SCOPE_DOT },
-    { "scomode line", NULL , N_("Line Scope"), NULL, N_("Line Scope"), SCOPE_LINE },
-    { "scomode solid", NULL , N_("Solid Scope"), NULL, N_("Solid Scope"), SCOPE_SOLID }
-};
-
-static GtkRadioActionEntry radioaction_entries_vprmode[] = {
-    { "vprmode normal", NULL , N_("Normal"), NULL, N_("Normal"), VOICEPRINT_NORMAL },
-    { "vprmode fire", NULL , N_("Fire"), NULL, N_("Fire"), VOICEPRINT_FIRE },
-    { "vprmode ice", NULL , N_("Ice"), NULL, N_("Ice"), VOICEPRINT_ICE }
-};
-
-static GtkRadioActionEntry radioaction_entries_wshmode[] = {
-    { "wshmode normal", NULL , N_("Normal"), NULL, N_("Normal"), VU_NORMAL },
-    { "wshmode smooth", NULL , N_("Smooth"), NULL, N_("Smooth"), VU_SMOOTH }
-};
-
-static GtkRadioActionEntry radioaction_entries_anafoff[] = {
-    { "anafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
-    { "anafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
-    { "anafoff medium", NULL , N_("Medium"), NULL, N_("Medium"), FALLOFF_MEDIUM },
-    { "anafoff fast", NULL , N_("Fast"), NULL, N_("Fast"), FALLOFF_FAST },
-    { "anafoff fastest", NULL , N_("Fastest"), NULL, N_("Fastest"), FALLOFF_FASTEST }
-};
-
-static GtkRadioActionEntry radioaction_entries_peafoff[] = {
-    { "peafoff slowest", NULL , N_("Slowest"), NULL, N_("Slowest"), FALLOFF_SLOWEST },
-    { "peafoff slow", NULL , N_("Slow"), NULL, N_("Slow"), FALLOFF_SLOW },
-    { "peafoff medium", NULL , N_("Medium"), NULL, N_("Medium"), FALLOFF_MEDIUM },
-    { "peafoff fast", NULL , N_("Fast"), NULL, N_("Fast"), FALLOFF_FAST },
-    { "peafoff fastest", NULL , N_("Fastest"), NULL, N_("Fastest"), FALLOFF_FASTEST }
-};
-
 static GtkRadioActionEntry radioaction_entries_viewtime[] = {
     { "view time elapsed", NULL , N_("Time Elapsed"), "<Ctrl>E", N_("Time Elapsed"), TIMER_ELAPSED },
     { "view time remaining", NULL , N_("Time Remaining"), "<Ctrl>R", N_("Time Remaining"), TIMER_REMAINING }
@@ -188,17 +124,6 @@ static GtkActionEntry action_entries_playback[] = {
       N_("Next"), G_CALLBACK(aud_drct_pl_next) }
 };
 
-
-static GtkActionEntry action_entries_visualization[] = {
-    { "visualization", NULL, N_("Visualization") },
-    { "vismode", NULL, N_("Visualization Mode") },
-    { "anamode", NULL, N_("Analyzer Mode") },
-    { "scomode", NULL, N_("Scope Mode") },
-    { "vprmode", NULL, N_("Voiceprint Mode") },
-    { "wshmode", NULL, N_("WindowShade VU Mode") },
-    { "anafoff", NULL, N_("Analyzer Falloff") },
-    { "peafoff", NULL, N_("Peaks Falloff") }
-};
 
 static GtkActionEntry action_entries_playlist[] = {
 
@@ -508,46 +433,6 @@ ui_manager_init ( void )
       ARRAY_LEN(toggleaction_entries_others) , NULL );
 
     /* radio actions */
-    radioaction_group_anamode = ui_manager_new_action_group("radioaction_anamode");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_anamode , radioaction_entries_anamode ,
-      ARRAY_LEN(radioaction_entries_anamode) , 0 , G_CALLBACK(action_anamode) , NULL );
-
-    radioaction_group_anatype = ui_manager_new_action_group("radioaction_anatype");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_anatype , radioaction_entries_anatype ,
-      ARRAY_LEN(radioaction_entries_anatype) , 0 , G_CALLBACK(action_anatype) , NULL );
-
-    radioaction_group_scomode = ui_manager_new_action_group("radioaction_scomode");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_scomode , radioaction_entries_scomode ,
-      ARRAY_LEN(radioaction_entries_scomode) , 0 , G_CALLBACK(action_scomode) , NULL );
-
-    radioaction_group_vprmode = ui_manager_new_action_group("radioaction_vprmode");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_vprmode , radioaction_entries_vprmode ,
-      ARRAY_LEN(radioaction_entries_vprmode) , 0 , G_CALLBACK(action_vprmode) , NULL );
-
-    radioaction_group_wshmode = ui_manager_new_action_group("radioaction_wshmode");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_wshmode , radioaction_entries_wshmode ,
-      ARRAY_LEN(radioaction_entries_wshmode) , 0 , G_CALLBACK(action_wshmode) , NULL );
-
-    radioaction_group_anafoff = ui_manager_new_action_group("radioaction_anafoff");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_anafoff , radioaction_entries_anafoff ,
-      ARRAY_LEN(radioaction_entries_anafoff) , 0 , G_CALLBACK(action_anafoff) , NULL );
-
-    radioaction_group_peafoff = ui_manager_new_action_group("radioaction_peafoff");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_peafoff , radioaction_entries_peafoff ,
-      ARRAY_LEN(radioaction_entries_peafoff) , 0 , G_CALLBACK(action_peafoff) , NULL );
-
-    radioaction_group_vismode = ui_manager_new_action_group("radioaction_vismode");
-    gtk_action_group_add_radio_actions(
-      radioaction_group_vismode , radioaction_entries_vismode ,
-      ARRAY_LEN(radioaction_entries_vismode) , 0 , G_CALLBACK(action_vismode) , NULL );
-
     radioaction_group_viewtime = ui_manager_new_action_group("radioaction_viewtime");
     gtk_action_group_add_radio_actions(
       radioaction_group_viewtime , radioaction_entries_viewtime ,
@@ -563,11 +448,6 @@ ui_manager_init ( void )
     gtk_action_group_add_actions(
       action_group_playlist , action_entries_playlist ,
       ARRAY_LEN(action_entries_playlist) , NULL );
-
-    action_group_visualization = ui_manager_new_action_group("action_visualization");
-    gtk_action_group_add_actions(
-      action_group_visualization , action_entries_visualization ,
-      ARRAY_LEN(action_entries_visualization) , NULL );
 
     action_group_view = ui_manager_new_action_group("action_view");
     gtk_action_group_add_actions(
@@ -607,18 +487,9 @@ ui_manager_init ( void )
     /* ui */
     ui_manager = gtk_ui_manager_new();
     gtk_ui_manager_insert_action_group( ui_manager , toggleaction_group_others , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anamode , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anatype , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_scomode , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vprmode , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_wshmode , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_anafoff , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_peafoff , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_vismode , 0 );
     gtk_ui_manager_insert_action_group( ui_manager , radioaction_group_viewtime , 0 );
     gtk_ui_manager_insert_action_group( ui_manager , action_group_playback , 0 );
     gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist , 0 );
-    gtk_ui_manager_insert_action_group( ui_manager , action_group_visualization , 0 );
     gtk_ui_manager_insert_action_group( ui_manager , action_group_view , 0 );
     gtk_ui_manager_insert_action_group( ui_manager , action_group_others , 0 );
     gtk_ui_manager_insert_action_group( ui_manager , action_group_playlist_add , 0 );
@@ -691,7 +562,6 @@ static GtkWidget * create_menu (gint id)
         {"/mainwin-menus/main-menu/playlist", NULL, 0},
         {"/mainwin-menus/songname-menu", NULL, 0},
         {"/mainwin-menus/main-menu/view", NULL, 0},
-        {"/mainwin-menus/main-menu/visualization", NULL, 0},
         {"/playlist-menus/add-menu", "/playlist-menus/add-menu/plugins-menu",
          AUD_MENU_PLAYLIST_ADD},
         {"/playlist-menus/del-menu", "/playlist-menus/del-menu/plugins-menu",
@@ -823,18 +693,9 @@ ui_manager_destroy( void )
     destroy_menus ();
 
     g_object_unref(G_OBJECT(toggleaction_group_others));
-    g_object_unref(G_OBJECT(radioaction_group_anamode));
-    g_object_unref(G_OBJECT(radioaction_group_anatype));
-    g_object_unref(G_OBJECT(radioaction_group_scomode));
-    g_object_unref(G_OBJECT(radioaction_group_vprmode));
-    g_object_unref(G_OBJECT(radioaction_group_wshmode));
-    g_object_unref(G_OBJECT(radioaction_group_anafoff));
-    g_object_unref(G_OBJECT(radioaction_group_peafoff));
-    g_object_unref(G_OBJECT(radioaction_group_vismode));
     g_object_unref(G_OBJECT(radioaction_group_viewtime));
     g_object_unref(G_OBJECT(action_group_playback));
     g_object_unref(G_OBJECT(action_group_playlist));
-    g_object_unref(G_OBJECT(action_group_visualization));
     g_object_unref(G_OBJECT(action_group_view));
     g_object_unref(G_OBJECT(action_group_others));
     g_object_unref(G_OBJECT(action_group_playlist_add));

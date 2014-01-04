@@ -32,6 +32,7 @@
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
+#include "ui_main_evlisteners.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
 #include "ui_skinned_playlist.h"
@@ -175,6 +176,13 @@ playlist_font_set_cb()
     str_unref (font);
 }
 
+static void vis_reset_cb (void)
+{
+    ui_vis_clear_data (mainwin_vis);
+    ui_svis_clear_data (mainwin_svis);
+    start_stop_visual (FALSE);
+}
+
 static PreferencesWidget font_table_elements[] = {
  {WIDGET_FONT_BTN, N_("_Player:"),
   .cfg_type = VALUE_STRING, .csect = "skins", .cname = "mainwin_font",
@@ -185,7 +193,7 @@ static PreferencesWidget font_table_elements[] = {
 
 static void * create_skin_view (void);
 
-static PreferencesWidget skins_widgets[] = {
+static const PreferencesWidget skins_widgets_general[] = {
     {WIDGET_LABEL, N_("<b>Skin</b>")},
     {WIDGET_CUSTOM, .data.populate = create_skin_view},
     {WIDGET_LABEL, N_("<b>Fonts</b>")},
@@ -194,7 +202,91 @@ static PreferencesWidget skins_widgets[] = {
     {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = mainwin_font_set_cb},
     {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
-     .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = textbox_update_all}};
+     .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = textbox_update_all}
+};
+
+static ComboBoxElements vis_mode_elements[] = {
+    {GINT_TO_POINTER (VIS_ANALYZER), N_("Analyzer")},
+    {GINT_TO_POINTER (VIS_SCOPE), N_("Scope")},
+    {GINT_TO_POINTER (VIS_VOICEPRINT), N_("Voiceprint / VU meter")},
+    {GINT_TO_POINTER (VIS_OFF), N_("Off")}
+};
+
+static ComboBoxElements analyzer_mode_elements[] = {
+    {GINT_TO_POINTER (ANALYZER_NORMAL), N_("Normal")},
+    {GINT_TO_POINTER (ANALYZER_FIRE), N_("Fire")},
+    {GINT_TO_POINTER (ANALYZER_VLINES), N_("Vertical lines")}
+};
+
+static ComboBoxElements analyzer_type_elements[] = {
+    {GINT_TO_POINTER (ANALYZER_LINES), N_("Lines")},
+    {GINT_TO_POINTER (ANALYZER_BARS), N_("Bars")}
+};
+
+static ComboBoxElements falloff_elements[] = {
+    {GINT_TO_POINTER (FALLOFF_SLOWEST), N_("Slowest")},
+    {GINT_TO_POINTER (FALLOFF_SLOW), N_("Slow")},
+    {GINT_TO_POINTER (FALLOFF_MEDIUM), N_("Medium")},
+    {GINT_TO_POINTER (FALLOFF_FAST), N_("Fast")},
+    {GINT_TO_POINTER (FALLOFF_FASTEST), N_("Fastest")}
+};
+
+static ComboBoxElements scope_mode_elements[] = {
+    {GINT_TO_POINTER (SCOPE_DOT), N_("Dots")},
+    {GINT_TO_POINTER (SCOPE_LINE), N_("Line")},
+    {GINT_TO_POINTER (SCOPE_SOLID), N_("Solid")}
+};
+
+static ComboBoxElements voiceprint_mode_elements[] = {
+    {GINT_TO_POINTER (VOICEPRINT_NORMAL), N_("Normal")},
+    {GINT_TO_POINTER (VOICEPRINT_FIRE), N_("Fire")},
+    {GINT_TO_POINTER (VOICEPRINT_ICE), N_("Ice")}
+};
+
+static ComboBoxElements vu_mode_elements[] = {
+    {GINT_TO_POINTER (VU_NORMAL), N_("Normal")},
+    {GINT_TO_POINTER (VU_SMOOTH), N_("Smooth")}
+};
+
+static const PreferencesWidget skins_widgets_vis[] = {
+    {WIDGET_LABEL, N_("<b>Type</b>")},
+    {WIDGET_COMBO_BOX, N_("Visualization type:"),
+     .cfg_type = VALUE_INT, .cfg = & config.vis_type, .callback = vis_reset_cb,
+     .data.combo = {vis_mode_elements, ARRAY_LEN (vis_mode_elements)}},
+    {WIDGET_LABEL, N_("<b>Analyzer</b>")},
+    {WIDGET_CHK_BTN, N_("Show peaks"), .cfg_type = VALUE_BOOLEAN, .cfg = & config.analyzer_peaks},
+    {WIDGET_COMBO_BOX, N_("Coloring:"),
+     .cfg_type = VALUE_INT, .cfg = & config.analyzer_mode, .callback = vis_reset_cb,
+     .data.combo = {analyzer_mode_elements, ARRAY_LEN (analyzer_mode_elements)}},
+    {WIDGET_COMBO_BOX, N_("Style:"),
+     .cfg_type = VALUE_INT, .cfg = & config.analyzer_type, .callback = vis_reset_cb,
+     .data.combo = {analyzer_type_elements, ARRAY_LEN (analyzer_type_elements)}},
+    {WIDGET_COMBO_BOX, N_("Falloff:"),
+     .cfg_type = VALUE_INT, .cfg = & config.analyzer_falloff, .callback = vis_reset_cb,
+     .data.combo = {falloff_elements, ARRAY_LEN (falloff_elements)}},
+    {WIDGET_COMBO_BOX, N_("Peak falloff:"),
+     .cfg_type = VALUE_INT, .cfg = & config.peaks_falloff, .callback = vis_reset_cb,
+     .data.combo = {falloff_elements, ARRAY_LEN (falloff_elements)}},
+    {WIDGET_LABEL, N_("<b>Miscellaneous</b>")},
+    {WIDGET_COMBO_BOX, N_("Scope Style:"),
+     .cfg_type = VALUE_INT, .cfg = & config.scope_mode, .callback = vis_reset_cb,
+     .data.combo = {scope_mode_elements, ARRAY_LEN (scope_mode_elements)}},
+    {WIDGET_COMBO_BOX, N_("Voiceprint Coloring:"),
+     .cfg_type = VALUE_INT, .cfg = & config.voiceprint_mode, .callback = vis_reset_cb,
+     .data.combo = {voiceprint_mode_elements, ARRAY_LEN (voiceprint_mode_elements)}},
+    {WIDGET_COMBO_BOX, N_("VU Meter Style:"),
+     .cfg_type = VALUE_INT, .cfg = & config.vu_mode, .callback = vis_reset_cb,
+     .data.combo = {vu_mode_elements, ARRAY_LEN (vu_mode_elements)}}
+};
+
+static const NotebookTab skins_notebook_tabs[] = {
+    {N_("General"), skins_widgets_general, ARRAY_LEN (skins_widgets_general)},
+    {N_("Visualization"), skins_widgets_vis, ARRAY_LEN (skins_widgets_vis)}
+};
+
+static const PreferencesWidget skins_widgets[] = {
+    {WIDGET_NOTEBOOK, .data.notebook = {skins_notebook_tabs, ARRAY_LEN (skins_notebook_tabs)}}
+};
 
 const PluginPreferences skins_prefs = {
     .widgets = skins_widgets,

@@ -146,34 +146,6 @@ void mainwin_set_shape (void)
     gtk_widget_shape_combine_region (mainwin, active_skin->masks[id]);
 }
 
-static void mainwin_vis_set_type (VisType mode)
-{
-    GtkAction *action;
-
-    switch ( mode )
-    {
-        case VIS_ANALYZER:
-            action = gtk_action_group_get_action(radioaction_group_vismode,
-                                                 "vismode analyzer");
-            break;
-        case VIS_SCOPE:
-            action = gtk_action_group_get_action(radioaction_group_vismode,
-                                                 "vismode scope");
-            break;
-        case VIS_VOICEPRINT:
-            action = gtk_action_group_get_action(radioaction_group_vismode,
-                                                 "vismode voiceprint");
-            break;
-        case VIS_OFF:
-        default:
-            action = gtk_action_group_get_action(radioaction_group_vismode,
-                                                 "vismode off");
-            break;
-    }
-
-    gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , TRUE );
-}
-
 static void
 mainwin_menubtn_cb(void)
 {
@@ -195,26 +167,6 @@ static void
 mainwin_shade_toggle(void)
 {
     mainwin_set_shade(!config.player_shaded);
-}
-
-static gboolean mainwin_vis_cb (GtkWidget * widget, GdkEventButton * event)
-{
-    if (event->button == 1) {
-        config.vis_type++;
-
-        if (config.vis_type > VIS_OFF)
-            config.vis_type = VIS_ANALYZER;
-
-        ui_vis_clear_data (mainwin_vis);
-        ui_svis_clear_data (mainwin_svis);
-
-        mainwin_vis_set_type(config.vis_type);
-    }
-    else if (event->button == 3)
-        ui_popup_menu_show(UI_MENU_VISUALIZATION, event->x_root, event->y_root,
-         FALSE, FALSE, 3, event->time);
-
-    return TRUE;
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -922,12 +874,7 @@ void mainwin_mr_change (MenuRowItem i)
         case MENUROW_FILEINFOBOX:
             mainwin_lock_info_text(_("File Info Box"));
             break;
-        case MENUROW_SCALE:
-            break;
-        case MENUROW_VISUALIZATION:
-            mainwin_lock_info_text(_("Visualization Menu"));
-            break;
-        case MENUROW_NONE:
+        default:
             break;
     }
 }
@@ -947,13 +894,7 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
         case MENUROW_FILEINFOBOX:
             audgui_infowin_show_current ();
             break;
-        case MENUROW_SCALE:
-            break;
-        case MENUROW_VISUALIZATION:
-            ui_popup_menu_show(UI_MENU_VISUALIZATION, event->x_root,
-             event->y_root, FALSE, FALSE, 1, event->time);
-            break;
-        case MENUROW_NONE:
+        default:
             break;
     }
 
@@ -1018,131 +959,6 @@ mainwin_setup_menus(void)
      aud_get_bool (NULL, "no_playlist_advance"));
 
     mainwin_enable_status_message (TRUE);
-
-    /* Visualization menu */
-
-    switch ( config.vis_type )
-    {
-        case VIS_ANALYZER:
-            check_set(radioaction_group_vismode, "vismode analyzer", TRUE);
-            break;
-        case VIS_SCOPE:
-            check_set(radioaction_group_vismode, "vismode scope", TRUE);
-            break;
-        case VIS_VOICEPRINT:
-            check_set(radioaction_group_vismode, "vismode voiceprint", TRUE);
-            break;
-        case VIS_OFF:
-        default:
-            check_set(radioaction_group_vismode, "vismode off", TRUE);
-            break;
-    }
-
-    switch ( config.analyzer_mode )
-    {
-        case ANALYZER_FIRE:
-            check_set(radioaction_group_anamode, "anamode fire", TRUE);
-            break;
-        case ANALYZER_VLINES:
-            check_set(radioaction_group_anamode, "anamode vertical lines", TRUE);
-            break;
-        case ANALYZER_NORMAL:
-        default:
-            check_set(radioaction_group_anamode, "anamode normal", TRUE);
-            break;
-    }
-
-    switch ( config.analyzer_type )
-    {
-        case ANALYZER_BARS:
-            check_set(radioaction_group_anatype, "anatype bars", TRUE);
-            break;
-        case ANALYZER_LINES:
-        default:
-            check_set(radioaction_group_anatype, "anatype lines", TRUE);
-            break;
-    }
-
-    check_set(toggleaction_group_others, "anamode peaks", config.analyzer_peaks );
-
-    switch ( config.scope_mode )
-    {
-        case SCOPE_LINE:
-            check_set(radioaction_group_scomode, "scomode line", TRUE);
-            break;
-        case SCOPE_SOLID:
-            check_set(radioaction_group_scomode, "scomode solid", TRUE);
-            break;
-        case SCOPE_DOT:
-        default:
-            check_set(radioaction_group_scomode, "scomode dot", TRUE);
-            break;
-    }
-
-    switch ( config.voiceprint_mode )
-    {
-        case VOICEPRINT_FIRE:
-            check_set(radioaction_group_vprmode, "vprmode fire", TRUE);
-            break;
-        case VOICEPRINT_ICE:
-            check_set(radioaction_group_vprmode, "vprmode ice", TRUE);
-            break;
-        case VOICEPRINT_NORMAL:
-        default:
-            check_set(radioaction_group_vprmode, "vprmode normal", TRUE);
-            break;
-    }
-
-    switch ( config.vu_mode )
-    {
-        case VU_SMOOTH:
-            check_set(radioaction_group_wshmode, "wshmode smooth", TRUE);
-            break;
-        case VU_NORMAL:
-        default:
-            check_set(radioaction_group_wshmode, "wshmode normal", TRUE);
-            break;
-    }
-
-    switch ( config.analyzer_falloff )
-    {
-        case FALLOFF_SLOW:
-            check_set(radioaction_group_anafoff, "anafoff slow", TRUE);
-            break;
-        case FALLOFF_MEDIUM:
-            check_set(radioaction_group_anafoff, "anafoff medium", TRUE);
-            break;
-        case FALLOFF_FAST:
-            check_set(radioaction_group_anafoff, "anafoff fast", TRUE);
-            break;
-        case FALLOFF_FASTEST:
-            check_set(radioaction_group_anafoff, "anafoff fastest", TRUE);
-            break;
-        case FALLOFF_SLOWEST:
-        default:
-            check_set(radioaction_group_anafoff, "anafoff slowest", TRUE);
-            break;
-    }
-
-    switch ( config.peaks_falloff )
-    {
-        case FALLOFF_SLOW:
-            check_set(radioaction_group_peafoff, "peafoff slow", TRUE);
-            break;
-        case FALLOFF_MEDIUM:
-            check_set(radioaction_group_peafoff, "peafoff medium", TRUE);
-            break;
-        case FALLOFF_FAST:
-            check_set(radioaction_group_peafoff, "peafoff fast", TRUE);
-            break;
-        case FALLOFF_FASTEST:
-            check_set(radioaction_group_peafoff, "peafoff fastest", TRUE);
-            break;
-        case FALLOFF_SLOWEST:
-        default:
-            check_set(radioaction_group_peafoff, "peafoff slowest", TRUE);
-            break;
-    }
 }
 
 static gboolean mainwin_info_button_press (GtkWidget * widget, GdkEventButton *
@@ -1293,7 +1109,6 @@ mainwin_create_widgets(void)
 
     mainwin_vis = ui_vis_new ();
     window_put_widget (mainwin, FALSE, mainwin_vis, 24, 43);
-    g_signal_connect(mainwin_vis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
 
     mainwin_position = hslider_new (0, 219, SKIN_POSBAR, 248, 10, 0, 0, 29, 10, 248, 0, 278, 0);
     window_put_widget (mainwin, FALSE, mainwin_position, 16, 72);
@@ -1344,7 +1159,6 @@ mainwin_create_widgets(void)
 
     mainwin_svis = ui_svis_new ();
     window_put_widget (mainwin, TRUE, mainwin_svis, 79, 5);
-    g_signal_connect(mainwin_svis, "button-press-event", G_CALLBACK(mainwin_vis_cb), NULL);
 
     mainwin_sposition = hslider_new (1, 13, SKIN_TITLEBAR, 17, 7, 0, 36, 3, 7, 17, 36, 17, 36);
     window_put_widget (mainwin, TRUE, mainwin_sposition, 226, 4);
@@ -1542,13 +1356,6 @@ void mainwin_update_song_info (void)
 
 /* toggleactionentries actions */
 
-void action_anamode_peaks (GtkToggleAction * action)
-{
-    config.analyzer_peaks = gtk_toggle_action_get_active (action);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
 void action_autoscroll_songname (GtkToggleAction * action)
 {
     config.autoscroll = gtk_toggle_action_get_active (action);
@@ -1634,64 +1441,6 @@ void action_show_player (GtkToggleAction * action)
 
 
 /* radioactionentries actions (one callback for each radio group) */
-
-void action_anafoff (GtkAction * action, GtkRadioAction * current)
-{
-    config.analyzer_falloff = gtk_radio_action_get_current_value (current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
-void action_anamode (GtkAction * action, GtkRadioAction * current)
-{
-    config.analyzer_mode = gtk_radio_action_get_current_value (current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
-void action_anatype (GtkAction * action, GtkRadioAction * current)
-{
-    config.analyzer_type = gtk_radio_action_get_current_value (current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
-void action_peafoff (GtkAction * action, GtkRadioAction * current)
-{
-    config.peaks_falloff = gtk_radio_action_get_current_value (current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
-void action_scomode (GtkAction * action, GtkRadioAction * current)
-{
-    config.scope_mode = gtk_radio_action_get_current_value (current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
-void action_vismode (GtkAction * action, GtkRadioAction * current)
-{
-    config.vis_type = gtk_radio_action_get_current_value (current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-
-    start_stop_visual (FALSE);
-}
-
-void action_vprmode (GtkAction * action, GtkRadioAction * current)
-{
-    config.voiceprint_mode = gtk_radio_action_get_current_value(current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
-
-void action_wshmode (GtkAction * action, GtkRadioAction * current)
-{
-    config.vu_mode = gtk_radio_action_get_current_value(current);
-    ui_vis_clear_data (mainwin_vis);
-    ui_svis_clear_data (mainwin_svis);
-}
 
 void action_viewtime (GtkAction * action, GtkRadioAction * current)
 {

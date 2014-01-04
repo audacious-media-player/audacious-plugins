@@ -29,7 +29,6 @@ enum
     UI_MENU_PLAYLIST,
     UI_MENU_SONGNAME,
     UI_MENU_VIEW,
-    UI_MENU_VISUALIZATION,
     UI_MENU_PLAYLIST_ADD,
     UI_MENU_PLAYLIST_REMOVE,
     UI_MENU_PLAYLIST_SELECT,
@@ -41,14 +40,6 @@ enum
 };
 
 extern GtkActionGroup *toggleaction_group_others;
-extern GtkActionGroup *radioaction_group_anamode; /* Analyzer mode */
-extern GtkActionGroup *radioaction_group_anatype; /* Analyzer type */
-extern GtkActionGroup *radioaction_group_scomode; /* Scope mode */
-extern GtkActionGroup *radioaction_group_vprmode; /* Voiceprint mode */
-extern GtkActionGroup *radioaction_group_wshmode; /* WindowShade VU mode */
-extern GtkActionGroup *radioaction_group_anafoff; /* Analyzer Falloff */
-extern GtkActionGroup *radioaction_group_peafoff; /* Peak Falloff */
-extern GtkActionGroup *radioaction_group_vismode; /* Visualization mode */
 extern GtkActionGroup *radioaction_group_viewtime; /* View time (remaining/elapsed) */
 
 void ui_manager_init ( void );

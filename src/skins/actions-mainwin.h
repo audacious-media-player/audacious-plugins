@@ -26,7 +26,6 @@
 
 
 /* toggle actions */
-void action_anamode_peaks(GtkToggleAction*);
 void action_autoscroll_songname(GtkToggleAction*);
 void action_playback_noplaylistadvance(GtkToggleAction*);
 void action_playback_repeat(GtkToggleAction*);
@@ -38,14 +37,6 @@ void action_roll_up_player(GtkToggleAction*);
 void action_show_player(GtkToggleAction*);
 
 /* radio actions (one for each radio action group) */
-void action_anafoff(GtkAction*,GtkRadioAction*);
-void action_anamode(GtkAction*,GtkRadioAction*);
-void action_anatype(GtkAction*,GtkRadioAction*);
-void action_peafoff(GtkAction*,GtkRadioAction*);
-void action_scomode(GtkAction*,GtkRadioAction*);
-void action_vismode(GtkAction*,GtkRadioAction*);
-void action_vprmode(GtkAction*,GtkRadioAction*);
-void action_wshmode(GtkAction*,GtkRadioAction*);
 void action_viewtime(GtkAction*,GtkRadioAction*);
 
 /* normal actions */
