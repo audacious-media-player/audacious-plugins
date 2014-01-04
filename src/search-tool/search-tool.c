@@ -28,8 +28,8 @@
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
-#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
+#include <libaudgui/menu.h>
 
 #define MAX_RESULTS 100
 #define SEARCH_DELAY 300
@@ -670,23 +670,14 @@ static void list_activate_row (void * user, int row)
 
 static void list_right_click (void * user, GdkEventButton * event)
 {
+    static const AudguiMenuItem items[] = {
+        {N_("_Play"), "media-playback-start", .func = action_play},
+        {N_("_Create Playlist"), "document-new", .func = action_create_playlist},
+        {N_("_Add to Playlist"), "list-add", .func = action_add_to_playlist}
+    };
+
     GtkWidget * menu = gtk_menu_new ();
-
-    GtkWidget * item = audgui_menu_item_new (_("_Play"), "media-playback-start");
-    g_signal_connect (item, "activate", (GCallback) action_play, NULL);
-    gtk_widget_show (item);
-    gtk_menu_shell_append ((GtkMenuShell *) menu, item);
-
-    item = audgui_menu_item_new (_("_Create Playlist"), "document-new");
-    g_signal_connect (item, "activate", (GCallback) action_create_playlist, NULL);
-    gtk_widget_show (item);
-    gtk_menu_shell_append ((GtkMenuShell *) menu, item);
-
-    item = audgui_menu_item_new (_("_Add to Playlist"), "list-add");
-    g_signal_connect (item, "activate", (GCallback) action_add_to_playlist, NULL);
-    gtk_widget_show (item);
-    gtk_menu_shell_append ((GtkMenuShell *) menu, item);
-
+    audgui_menu_init (menu, items, ARRAY_LEN (items), NULL);
     gtk_menu_popup ((GtkMenu *) menu, NULL, NULL, NULL, NULL, event->button, event->time);
 }
 
