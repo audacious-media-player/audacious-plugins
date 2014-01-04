@@ -800,7 +800,7 @@ static void menu_positioner(GtkMenu *menu, gint *x, gint *y, gboolean *push_in,
 
     get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), orig_x,
      orig_y, & geom);
-    gtk_widget_get_preferred_size(GTK_WIDGET(menu), &request, NULL);
+    gtk_widget_get_preferred_size ((GtkWidget *) menu, NULL, & request);
 
     if (leftward)
         * x = MAX (orig_x - request.width, geom.x);
