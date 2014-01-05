@@ -33,7 +33,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-static const int menus[] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_RCLICK, AUD_MENU_PLAYLIST_REMOVE};
+static const int menus[] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST, AUD_MENU_PLAYLIST_REMOVE};
 
 static GtkWidget * dialog = NULL;
 

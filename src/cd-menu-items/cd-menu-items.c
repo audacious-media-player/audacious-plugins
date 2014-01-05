@@ -29,8 +29,7 @@
 #define N_MENUS 3
 
 static const gchar * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
-static const gint menus[N_MENUS] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_ADD,
- AUD_MENU_PLAYLIST_RCLICK};
+static const gint menus[N_MENUS] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_ADD, AUD_MENU_PLAYLIST};
 
 static void cd_play (void) {aud_drct_pl_open ("cdda://"); }
 static void cd_add (void) {aud_drct_pl_add ("cdda://", -1); }
