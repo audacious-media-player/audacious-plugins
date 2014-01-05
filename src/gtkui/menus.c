@@ -107,7 +107,7 @@ static void pl_tab_close (void)
 }
 
 static GtkWidget * get_services_main (void) {return aud_get_plugin_menu (AUD_MENU_MAIN); }
-static GtkWidget * get_services_pl (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST_RCLICK); }
+static GtkWidget * get_services_pl (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST); }
 
 static void volume_up (void)
 {
@@ -189,13 +189,13 @@ static const AudguiMenuItem sort_items[] = {
  {N_("_Random Order"), .func = pl_random_selected}};
 
 static const AudguiMenuItem playlist_items[] = {
- {N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT | CTRL, .func = pl_play},
+ {N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT, .func = pl_play},
  {N_("_Refresh"), "view-refresh", GDK_KEY_F5, .func = pl_refresh},
  {.sep = TRUE},
  {N_("_Sort"), "view-sort-ascending", .items = sort_items, ARRAY_LEN (sort_items)},
  {N_("Sort Se_lected"), "view-sort-ascending", .items = sort_selected_items, ARRAY_LEN (sort_selected_items)},
- {N_("Remove _Duplicates"), "list-remove", .items = dupe_items, ARRAY_LEN (dupe_items)},
- {N_("Remove _Unavailable Files"), "list-remove", .func = pl_remove_failed},
+ {N_("Remove _Duplicates"), "edit-copy", .items = dupe_items, ARRAY_LEN (dupe_items)},
+ {N_("Remove _Unavailable Files"), "dialog-warning", .func = pl_remove_failed},
  {.sep = TRUE},
  {N_("_New"), "document-new", 't', CTRL, .func = pl_new},
  {N_("Ren_ame ..."), "insert-text", GDK_KEY_F2, .func = pl_rename},
