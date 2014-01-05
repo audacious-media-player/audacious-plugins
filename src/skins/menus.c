@@ -29,10 +29,10 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/menu.h>
 
-#include "actions-equalizer.h"
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "preset-browser.h"
+#include "preset-list.h"
 #include "view.h"
 
 #define SHIFT GDK_SHIFT_MASK
@@ -204,24 +204,24 @@ static const AudguiMenuItem playlist_context_items[] = {
 };
 
 static const AudguiMenuItem eq_preset_items[] = {
-    {N_("Load Preset ..."), "document-open", .func = action_equ_load_preset},
-    {N_("Load Auto Preset ..."), .func = action_equ_load_auto_preset},
-    {N_("Load Default"), .func = action_equ_load_default_preset},
+    {N_("Load Preset ..."), "document-open", .func = eq_preset_load},
+    {N_("Load Auto Preset ..."), .func = eq_preset_load_auto},
+    {N_("Load Default"), .func = eq_preset_load_default},
     {N_("Load Preset File ..."), .func = eq_preset_load_file},
     {N_("Load EQF File ..."), .func = eq_preset_load_eqf},
     {.sep = TRUE},
-    {N_("Save Preset ..."), "document-save", .func = action_equ_save_preset},
-    {N_("Save Auto Preset ..."), .func = action_equ_save_auto_preset},
-    {N_("Save Default"), .func = action_equ_save_default_preset},
+    {N_("Save Preset ..."), "document-save", .func = eq_preset_save},
+    {N_("Save Auto Preset ..."), .func = eq_preset_save_auto},
+    {N_("Save Default"), .func = eq_preset_save_default},
     {N_("Save Preset File ..."), .func = eq_preset_save_file},
     {N_("Save EQF File ..."), .func = eq_preset_save_eqf},
     {.sep = TRUE},
-    {N_("Delete Preset ..."), "edit-delete", .func = action_equ_delete_preset},
-    {N_("Delete Auto Preset ..."), .func = action_equ_delete_auto_preset},
+    {N_("Delete Preset ..."), "edit-delete", .func = eq_preset_delete},
+    {N_("Delete Auto Preset ..."), .func = eq_preset_delete_auto},
     {.sep = TRUE},
     {N_("Import Winamp Presets ..."), "document-open", .func = eq_preset_import_winamp},
     {.sep = TRUE},
-    {N_("Reset to Zero"), "edit-clear", .func = action_equ_zero_preset}
+    {N_("Reset to Zero"), "edit-clear", .func = eq_preset_set_zero}
 };
 
 void menu_init (void)

@@ -23,13 +23,14 @@
  *  Audacious or using our public API to be a derived work.
  */
 
+#include "preset-list.h"
+
 #include <string.h>
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 
-#include "actions-equalizer.h"
 #include "ui_equalizer.h"
 
 static GtkWidget *equalizerwin_load_window = NULL;
@@ -325,8 +326,7 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
     return *window;
 }
 
-void
-action_equ_load_preset(void)
+void eq_preset_load (void)
 {
     if (equalizerwin_load_window) {
         gtk_window_present(GTK_WINDOW(equalizerwin_load_window));
@@ -342,8 +342,7 @@ action_equ_load_preset(void)
                                     G_CALLBACK(equalizerwin_load_select));
 }
 
-void
-action_equ_load_auto_preset(void)
+void eq_preset_load_auto (void)
 {
     if (equalizerwin_load_auto_window) {
         gtk_window_present(GTK_WINDOW(equalizerwin_load_auto_window));
@@ -359,8 +358,7 @@ action_equ_load_auto_preset(void)
                                     G_CALLBACK(equalizerwin_load_auto_select));
 }
 
-void
-action_equ_save_preset(void)
+void eq_preset_save (void)
 {
     if (equalizerwin_save_window) {
         gtk_window_present(GTK_WINDOW(equalizerwin_save_window));
@@ -377,8 +375,7 @@ action_equ_save_preset(void)
                                     G_CALLBACK(equalizerwin_save_select));
 }
 
-void
-action_equ_save_auto_preset(void)
+void eq_preset_save_auto (void)
 {
     if (equalizerwin_save_auto_window)
         gtk_window_present(GTK_WINDOW(equalizerwin_save_auto_window));
@@ -403,8 +400,7 @@ action_equ_save_auto_preset(void)
     }
 }
 
-void
-action_equ_delete_preset(void)
+void eq_preset_delete (void)
 {
     if (equalizerwin_delete_window) {
         gtk_window_present(GTK_WINDOW(equalizerwin_delete_window));
@@ -420,8 +416,7 @@ action_equ_delete_preset(void)
                                     NULL);
 }
 
-void
-action_equ_delete_auto_preset(void)
+void eq_preset_delete_auto (void)
 {
     if (equalizerwin_delete_auto_window) {
         gtk_window_present(GTK_WINDOW(equalizerwin_delete_auto_window));
@@ -435,4 +430,41 @@ action_equ_delete_auto_preset(void)
                                     GTK_STOCK_DELETE,
                                     G_CALLBACK(equalizerwin_delete_auto_delete),
                                     NULL);
+}
+
+void eq_preset_load_default (void)
+{
+    if (! equalizerwin_load_preset (equalizer_presets, _("Default")))
+        eq_preset_set_zero ();
+}
+
+void eq_preset_save_default (void)
+{
+    equalizerwin_save_preset (equalizer_presets, _("Default"), "eq.preset");
+}
+
+void eq_preset_set_zero (void)
+{
+    const EqualizerPreset zero = {0};
+    equalizerwin_apply_preset (& zero);
+}
+
+void eq_preset_list_cleanup (void)
+{
+    if (equalizerwin_load_window)
+        gtk_widget_destroy (equalizerwin_load_window);
+    if (equalizerwin_load_auto_window)
+        gtk_widget_destroy (equalizerwin_load_auto_window);
+    if (equalizerwin_save_window)
+        gtk_widget_destroy (equalizerwin_save_window);
+    if (equalizerwin_save_entry)
+        gtk_widget_destroy (equalizerwin_save_entry);
+    if (equalizerwin_save_auto_window)
+        gtk_widget_destroy (equalizerwin_save_auto_window);
+    if (equalizerwin_save_auto_entry)
+        gtk_widget_destroy (equalizerwin_save_auto_entry);
+    if (equalizerwin_delete_window)
+        gtk_widget_destroy (equalizerwin_delete_window);
+    if (equalizerwin_delete_auto_window)
+        gtk_widget_destroy (equalizerwin_delete_auto_window);
 }

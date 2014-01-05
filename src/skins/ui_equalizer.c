@@ -34,9 +34,9 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-#include "actions-equalizer.h"
 #include "menus.h"
 #include "plugin.h"
+#include "preset-list.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -481,27 +481,6 @@ static gfloat equalizerwin_get_band (gint band)
     return eq_slider_get_val (equalizerwin_bands[band]);
 }
 
-void
-action_equ_load_default_preset(void)
-{
-    equalizerwin_load_preset(equalizer_presets, "Default");
-}
-
-void
-action_equ_zero_preset(void)
-{
-    gint i;
-
-    equalizerwin_set_preamp(0);
-    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
-        equalizerwin_set_band(i, 0);
-}
-
-void action_equ_save_default_preset (void)
-{
-    equalizerwin_save_preset (equalizer_presets, _("Default"), "eq.preset");
-}
-
 static void load_auto_preset (const gchar * filename)
 {
     gchar * ext = EQUALIZER_DEFAULT_PRESET_EXT;
@@ -526,10 +505,7 @@ static void load_auto_preset (const gchar * filename)
     gchar * base = g_path_get_basename (filename);
 
     if (! equalizerwin_load_preset (equalizer_auto_presets, base))
-    {
-        if (! equalizerwin_load_preset (equalizer_presets, "Default"))
-            action_equ_zero_preset ();
-    }
+        eq_preset_load_default ();
 
     g_free (base);
 }

@@ -30,6 +30,7 @@
 #include "menus.h"
 #include "plugin.h"
 #include "preset-browser.h"
+#include "preset-list.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -137,6 +138,8 @@ static void skins_cleanup (void)
         skins_free_paths();
 
         eq_preset_browser_cleanup ();
+        eq_preset_list_cleanup ();
+
         menu_cleanup ();
 
         plugin_is_active = FALSE;
