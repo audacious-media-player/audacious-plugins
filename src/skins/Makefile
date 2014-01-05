@@ -162,9 +162,3 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GTK_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
 LIBS += -lm ${GTK_LIBS}
-
-#  -- TODO --
-# Migrate from GtkUIManager (now deprecated) to some other system for creating
-# menus.  GTKUI has its own system, which can probably be fleshed out and moved
-# to libaudgui, but it doesn't meet the requirements of the skinned UI yet.
-CFLAGS += "-Wno-deprecated-declarations"

@@ -235,11 +235,11 @@ playlistwin_select_search(void)
     searchdlg_win = gtk_dialog_new_with_buttons(
       _("Search entries in active playlist") , GTK_WINDOW(mainwin) ,
       GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT ,
-      GTK_STOCK_CANCEL , GTK_RESPONSE_REJECT , GTK_STOCK_OK , GTK_RESPONSE_ACCEPT , NULL );
+      _("Cancel") , GTK_RESPONSE_REJECT , _("Search") , GTK_RESPONSE_ACCEPT , NULL );
 
     /* help text and logo */
     searchdlg_hbox = gtk_box_new( GTK_ORIENTATION_HORIZONTAL , 4 );
-    searchdlg_logo = gtk_image_new_from_stock( GTK_STOCK_FIND , GTK_ICON_SIZE_DIALOG );
+    searchdlg_logo = gtk_image_new_from_icon_name( "edit-find" , GTK_ICON_SIZE_DIALOG );
     searchdlg_helptext = gtk_label_new( _("Select entries in playlist by filling one or more "
       "fields. Fields use regular expressions syntax, case-insensitive. If you don't know how "
       "regular expressions work, simply insert a literal portion of what you're searching for.") );
