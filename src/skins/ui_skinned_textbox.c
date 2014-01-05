@@ -110,21 +110,20 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     pango_layout_set_font_description (layout, data->font);
 
     PangoRectangle rect;
-    pango_layout_get_pixel_extents (layout, NULL, & rect);
-    gint crop = (rect.height + 2) / 5;
+    pango_layout_get_pixel_extents (layout, & rect, NULL);
 
-    gtk_widget_set_size_request (textbox, data->width, rect.height - crop);
+    gtk_widget_set_size_request (textbox, data->width, rect.height);
 
     data->buf_width = MAX (rect.width, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width, rect.height - crop);
+     data->buf_width, rect.height);
 
     cairo_t * cr = cairo_create (data->buf);
 
     set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
-    cairo_move_to (cr, 0, -crop);
+    cairo_move_to (cr, -rect.x, -rect.y);
     set_cairo_color (cr, active_skin->colors[SKIN_TEXTFG]);
     pango_cairo_show_layout (cr, layout);
 
