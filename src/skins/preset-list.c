@@ -30,6 +30,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "ui_equalizer.h"
 
@@ -235,12 +236,12 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
                                 GtkWidget **window,
                                 GtkSelectionMode sel_mode,
                                 GtkWidget **entry,
-                                const gchar *action_name,
+                                GtkWidget *button_action,
                                 GCallback action_func,
                                 GCallback select_row_func)
 {
     GtkWidget *vbox, *scrolled_window, *bbox, *view;
-    GtkWidget *button_cancel, *button_action;
+    GtkWidget *button_cancel;
 
     GtkListStore *store;
     GtkTreeIter iter;
@@ -264,6 +265,7 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
     gtk_container_add(GTK_CONTAINER(*window), vbox);
 
     scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled_window, GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 
@@ -305,12 +307,11 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
     gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-    button_cancel = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
+    button_cancel = audgui_button_new (_("Cancel"), "window-close", NULL, NULL);
     g_signal_connect_swapped (button_cancel, "clicked", (GCallback)
      gtk_widget_destroy, * window);
     gtk_box_pack_start(GTK_BOX(bbox), button_cancel, TRUE, TRUE, 0);
 
-    button_action = gtk_button_new_from_stock(action_name);
     g_signal_connect(button_action, "clicked", G_CALLBACK(action_func), view);
     gtk_widget_set_can_default (button_action, TRUE);
 
@@ -337,7 +338,7 @@ void eq_preset_load (void)
                                     _("Load preset"),
                                     &equalizerwin_load_window,
                                     GTK_SELECTION_SINGLE, NULL,
-                                    GTK_STOCK_OK,
+                                    audgui_button_new (_("Load"), "document-open", NULL, NULL),
                                     G_CALLBACK(equalizerwin_load_ok),
                                     G_CALLBACK(equalizerwin_load_select));
 }
@@ -353,7 +354,7 @@ void eq_preset_load_auto (void)
                                     _("Load auto-preset"),
                                     &equalizerwin_load_auto_window,
                                     GTK_SELECTION_SINGLE, NULL,
-                                    GTK_STOCK_OK,
+                                    audgui_button_new (_("Load"), "document-open", NULL, NULL),
                                     G_CALLBACK(equalizerwin_load_auto_ok),
                                     G_CALLBACK(equalizerwin_load_auto_select));
 }
@@ -370,7 +371,7 @@ void eq_preset_save (void)
                                     &equalizerwin_save_window,
                                     GTK_SELECTION_SINGLE,
                                     &equalizerwin_save_entry,
-                                    GTK_STOCK_OK,
+                                    audgui_button_new (_("Save"), "document-save", NULL, NULL),
                                     G_CALLBACK(equalizerwin_save_ok),
                                     G_CALLBACK(equalizerwin_save_select));
 }
@@ -385,7 +386,7 @@ void eq_preset_save_auto (void)
                                         &equalizerwin_save_auto_window,
                                         GTK_SELECTION_SINGLE,
                                         &equalizerwin_save_auto_entry,
-                                        GTK_STOCK_OK,
+                                        audgui_button_new (_("Save"), "document-save", NULL, NULL),
                                         G_CALLBACK(equalizerwin_save_auto_ok),
                                         G_CALLBACK(equalizerwin_save_auto_select));
 
@@ -411,7 +412,7 @@ void eq_preset_delete (void)
                                     _("Delete preset"),
                                     &equalizerwin_delete_window,
                                     GTK_SELECTION_MULTIPLE, NULL,
-                                    GTK_STOCK_DELETE,
+                                    audgui_button_new (_("Delete"), "edit-delete", NULL, NULL),
                                     G_CALLBACK(equalizerwin_delete_delete),
                                     NULL);
 }
@@ -427,7 +428,7 @@ void eq_preset_delete_auto (void)
                                     _("Delete auto-preset"),
                                     &equalizerwin_delete_auto_window,
                                     GTK_SELECTION_MULTIPLE, NULL,
-                                    GTK_STOCK_DELETE,
+                                    audgui_button_new (_("Delete"), "edit-delete", NULL, NULL),
                                     G_CALLBACK(equalizerwin_delete_auto_delete),
                                     NULL);
 }
@@ -457,12 +458,8 @@ void eq_preset_list_cleanup (void)
         gtk_widget_destroy (equalizerwin_load_auto_window);
     if (equalizerwin_save_window)
         gtk_widget_destroy (equalizerwin_save_window);
-    if (equalizerwin_save_entry)
-        gtk_widget_destroy (equalizerwin_save_entry);
     if (equalizerwin_save_auto_window)
         gtk_widget_destroy (equalizerwin_save_auto_window);
-    if (equalizerwin_save_auto_entry)
-        gtk_widget_destroy (equalizerwin_save_auto_entry);
     if (equalizerwin_delete_window)
         gtk_widget_destroy (equalizerwin_delete_window);
     if (equalizerwin_delete_auto_window)
