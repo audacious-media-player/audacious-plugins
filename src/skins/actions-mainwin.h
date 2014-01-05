@@ -26,7 +26,6 @@
 
 
 /* toggle actions */
-void action_autoscroll_songname(GtkToggleAction*);
 void action_playback_noplaylistadvance(GtkToggleAction*);
 void action_playback_repeat(GtkToggleAction*);
 void action_playback_shuffle(GtkToggleAction*);

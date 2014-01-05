@@ -176,6 +176,12 @@ playlist_font_set_cb()
     str_unref (font);
 }
 
+static void autoscroll_set_cb (void)
+{
+    textbox_set_scroll (mainwin_info, config.autoscroll);
+    textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
+}
+
 static void vis_reset_cb (void)
 {
     ui_vis_clear_data (mainwin_vis);
@@ -201,8 +207,10 @@ static const PreferencesWidget skins_widgets_general[] = {
      .data.table = {font_table_elements, ARRAY_LEN (font_table_elements)}},
     {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
      .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = mainwin_font_set_cb},
+    {WIDGET_CHK_BTN, N_("Scroll song title"),
+     .cfg_type = VALUE_BOOLEAN, .cfg = & config.autoscroll, .callback = autoscroll_set_cb},
     {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
-     .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = textbox_update_all}
+     .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = autoscroll_set_cb}
 };
 
 static ComboBoxElements vis_mode_elements[] = {

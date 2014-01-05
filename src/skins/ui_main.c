@@ -947,7 +947,6 @@ mainwin_setup_menus(void)
 
     /* Songname menu */
 
-    check_set(toggleaction_group_others, "autoscroll songname", config.autoscroll);
     check_set (toggleaction_group_others, "stop after current song",
      aud_get_bool (NULL, "stop_after_current_song"));
 
@@ -1355,13 +1354,6 @@ void mainwin_update_song_info (void)
 }
 
 /* toggleactionentries actions */
-
-void action_autoscroll_songname (GtkToggleAction * action)
-{
-    config.autoscroll = gtk_toggle_action_get_active (action);
-    textbox_set_scroll (mainwin_info, config.autoscroll);
-    textbox_set_scroll (playlistwin_sinfo, config.autoscroll);
-}
 
 void action_playback_noplaylistadvance (GtkToggleAction * action)
 {

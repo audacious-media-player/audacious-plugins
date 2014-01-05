@@ -5,7 +5,6 @@
 		<menu action="dummy" name="songname-menu">
 			<menuitem action="current track info" />
 			<separator />
-			<menuitem action="autoscroll songname" />
 			<menuitem action="stop after current song" />
 		</menu>
 
@@ -61,7 +60,6 @@
 				<separator />
 				<menuitem action="view always on top" />
 				<menuitem action="view put on all workspaces" />
-				<menuitem action="autoscroll songname" />
 				<separator />
 				<menuitem action="roll up player" />
 				<menuitem action="roll up playlist editor" />

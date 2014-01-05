@@ -51,9 +51,6 @@ static GList * attached_menus = NULL;
 
 static GtkToggleActionEntry toggleaction_entries_others[] = {
 
-    { "autoscroll songname", NULL , N_("Autoscroll Song Name"), NULL,
-      N_("Autoscroll Song Name"), G_CALLBACK(action_autoscroll_songname) , FALSE },
-
     { "stop after current song", NULL , N_("Stop after Current Song"), "<Ctrl>M",
       N_("Stop after Current Song"), G_CALLBACK(action_stop_after_current_song) , FALSE },
 
