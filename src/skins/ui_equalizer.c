@@ -944,8 +944,13 @@ action_equ_load_preset_file(void)
     {
         file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
         EqualizerPreset *preset = aud_load_preset_file(file_uri);
-        equalizerwin_apply_preset(preset);
-        aud_equalizer_preset_free(preset);
+
+        if (preset)
+        {
+            equalizerwin_apply_preset (preset);
+            aud_equalizer_preset_free (preset);
+        }
+
         g_free(file_uri);
     }
     gtk_widget_destroy(dialog);
