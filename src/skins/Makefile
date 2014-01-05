@@ -4,6 +4,7 @@ SRCS = drag-handle.c \
        menus.c \
        plugin.c \
        preset-browser.c \
+       preset-list.c \
        skins_cfg.c \
        surface.c \
        ui_skin.c \
