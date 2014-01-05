@@ -34,17 +34,18 @@
 #include <libaudcore/hook.h>
 
 #include "actions-equalizer.h"
+#include "menus.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
-#include "ui_manager.h"
 #include "ui_skinned_button.h"
 #include "ui_skinned_equalizer_graph.h"
 #include "ui_skinned_equalizer_slider.h"
 #include "ui_skinned_horizontal_slider.h"
 #include "ui_skinned_window.h"
 #include "util.h"
+#include "view.h"
 
 enum PresetViewCols {
     PRESET_VIEW_COL_NAME,
@@ -82,22 +83,14 @@ static Index * equalizer_presets = NULL, * equalizer_auto_presets = NULL;
 
 void equalizerwin_set_shape (void)
 {
-    gint id = config.equalizer_shaded ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ;
+    int id = aud_get_bool ("skins", "equalizer_shaded") ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ;
     gtk_widget_shape_combine_region (equalizerwin, active_skin->masks[id]);
-}
-
-static void
-equalizerwin_set_shade(gboolean shaded)
-{
-    GtkAction *action = gtk_action_group_get_action(
-      toggleaction_group_others , "roll up equalizer" );
-    gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , shaded );
 }
 
 static void
 equalizerwin_shade_toggle(void)
 {
-    equalizerwin_set_shade(!config.equalizer_shaded);
+    view_set_equalizer_shaded (! aud_get_bool ("skins", "equalizer_shaded"));
 }
 
 void
@@ -153,24 +146,24 @@ static void update_from_config (void * unused1, void * unused2)
 
 static void eq_presets_cb (GtkWidget * button, GdkEventButton * event)
 {
-    ui_popup_menu_show (UI_MENU_EQUALIZER_PRESET, event->x_root, event->y_root,
-     FALSE, FALSE, event->button, event->time);
+    menu_popup (UI_MENU_EQUALIZER_PRESET, event->x_root, event->y_root, FALSE,
+     FALSE, event->button, event->time);
 }
 
 static gboolean
 equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
                    gpointer callback_data)
 {
-    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS
-             && event->y < 14) {
-        equalizerwin_set_shade(!config.equalizer_shaded);
+    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y < 14)
+    {
+        equalizerwin_shade_toggle ();
         return TRUE;
     }
 
     if (event->button == 3)
     {
-        ui_popup_menu_show (UI_MENU_MAIN, event->x_root, event->y_root, FALSE,
-         FALSE, event->button, event->time);
+        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
+         event->button, event->time);
         return TRUE;
     }
 
@@ -180,7 +173,7 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
 static void
 equalizerwin_close_cb(void)
 {
-    equalizerwin_show(FALSE);
+    view_set_show_equalizer (FALSE);
 }
 
 static void eqwin_volume_set_knob (void)
@@ -333,11 +326,11 @@ equalizerwin_create_widgets(void)
 
 static void eq_win_draw (GtkWidget * window, cairo_t * cr)
 {
-    gint height = config.equalizer_shaded ? 14 : 116;
+    bool_t shaded = aud_get_bool ("skins", "equalizer_shaded");
 
-    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, height);
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 0, 0, 0, 275, shaded ? 14 : 116);
 
-    if (config.equalizer_shaded)
+    if (shaded)
         skin_draw_pixbuf (cr, SKIN_EQ_EX, 0, 0, 0, 0, 275, 14);
     else
         skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 134, 0, 0, 275, 14);
@@ -346,9 +339,10 @@ static void eq_win_draw (GtkWidget * window, cairo_t * cr)
 static void
 equalizerwin_create_window(void)
 {
+    bool_t shaded = aud_get_bool ("skins", "equalizer_shaded");
+
     equalizerwin = window_new (& config.equalizer_x, & config.equalizer_y, 275,
-     config.equalizer_shaded ? 14 : 116, FALSE, config.equalizer_shaded,
-     eq_win_draw);
+     shaded ? 14 : 116, FALSE, shaded, eq_win_draw);
 
     gtk_window_set_title(GTK_WINDOW(equalizerwin), _("Audacious Equalizer"));
 
@@ -391,7 +385,7 @@ equalizerwin_create(void)
 
     equalizerwin_create_window();
 
-    gtk_window_add_accel_group( GTK_WINDOW(equalizerwin) , ui_manager_get_accel_group() );
+    gtk_window_add_accel_group ((GtkWindow *) equalizerwin, menu_get_accel_group ());
 
     equalizerwin_create_widgets();
     window_show_all (equalizerwin);
@@ -411,29 +405,6 @@ equalizerwin_create(void)
         position_cb (GINT_TO_POINTER (playlist), NULL);
 
     hook_associate ("playlist position", position_cb, NULL);
-}
-
-static void equalizerwin_real_show (gboolean show)
-{
-    if (show)
-        gtk_window_present ((GtkWindow *) equalizerwin);
-    else
-        gtk_widget_hide (equalizerwin);
-}
-
-void equalizerwin_show (gboolean show)
-{
-    GtkAction * a = gtk_action_group_get_action (toggleaction_group_others,
-     "show equalizer");
-
-    if (a && gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (a)) != show)
-        gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
-    else
-    {
-        config.equalizer_visible = show;
-        button_set_active (mainwin_eq, show);
-        equalizerwin_real_show (show && gtk_widget_get_visible (mainwin));
-    }
 }
 
 static int equalizerwin_find_preset (Index * list, const char * name)
@@ -1187,18 +1158,4 @@ static void position_cb (void * data, void * user_data)
     gchar * filename = aud_playlist_entry_get_filename (playlist, position);
     load_auto_preset (filename);
     str_unref (filename);
-}
-
-void action_show_equalizer (GtkToggleAction * action)
-{
-    equalizerwin_show (gtk_toggle_action_get_active (action));
-}
-
-void action_roll_up_equalizer (GtkToggleAction * action)
-{
-    config.equalizer_shaded = gtk_toggle_action_get_active (action);
-
-    window_set_shaded (equalizerwin, config.equalizer_shaded);
-    window_set_size (equalizerwin, 275, config.equalizer_shaded ? 14 : 116);
-    equalizerwin_set_shape ();
 }

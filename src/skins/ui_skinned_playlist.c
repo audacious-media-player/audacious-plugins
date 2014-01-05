@@ -30,9 +30,9 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "draw-compat.h"
+#include "menus.h"
 #include "skins_cfg.h"
 #include "ui_playlist.h"
-#include "ui_manager.h"
 #include "ui_skin.h"
 #include "ui_skinned_playlist.h"
 #include "ui_skinned_playlist_slider.h"
@@ -782,7 +782,7 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
                     select_single (data, FALSE, position);
             }
 
-            ui_popup_menu_show ((position == -1) ? UI_MENU_PLAYLIST :
+            menu_popup ((position == -1) ? UI_MENU_PLAYLIST :
              UI_MENU_PLAYLIST_CONTEXT, event->x_root, event->y_root, FALSE,
              FALSE, 3, event->time);
             break;

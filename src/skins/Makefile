@@ -1,6 +1,7 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
 SRCS = drag-handle.c \
+       menus.c \
        plugin.c \
        skins_cfg.c \
        surface.c \
@@ -26,9 +27,8 @@ SRCS = drag-handle.c \
        ui_equalizer.c \
        ui_playlist.c \
        ui_main_evlisteners.c \
-       ui_manager.c \
-       ui_hints.c \
-       ui_skinselector.c
+       ui_skinselector.c \
+       view.c
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -153,10 +153,7 @@ DATA = Skins/Classic/balance.png	\
        Skins/Refugee/text.png		\
        Skins/Refugee/titlebar.png	\
        Skins/Refugee/viscolor.txt	\
-       Skins/Refugee/volume.png \
-       ui/equalizer.ui \
-       ui/mainwin.ui \
-       ui/playlist.ui
+       Skins/Refugee/volume.png
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 

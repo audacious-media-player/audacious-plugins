@@ -25,6 +25,8 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <audacious/misc.h>
+
 #include "draw-compat.h"
 #include "skins_cfg.h"
 #include "ui_skin.h"
@@ -49,7 +51,7 @@ DRAW_FUNC_BEGIN (menurow_draw)
 
     if (mr.pushed)
     {
-        if (config.always_on_top)
+        if (aud_get_bool ("skins", "always_on_top"))
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);
 #if 0
         if (config.scaled)
@@ -99,13 +101,6 @@ static gboolean menurow_button_release (GtkWidget * widget, GdkEventButton *
 
     if (! mr.pushed)
         return TRUE;
-
-    if (mr.selected == MENUROW_ALWAYS)
-        config.always_on_top = ! config.always_on_top;
-#if 0
-    else if (mr.selected == MENUROW_SCALE)
-        config.scaled = ! config.scaled;
-#endif
 
     mainwin_mr_release (mr.selected, event);
 

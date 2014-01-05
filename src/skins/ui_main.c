@@ -40,13 +40,12 @@
 #include "actions-mainwin.h"
 #include "actions-playlist.h"
 #include "dnd.h"
+#include "menus.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
-#include "ui_hints.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
-#include "ui_manager.h"
 #include "ui_playlist.h"
 #include "ui_skinned_button.h"
 #include "ui_skinned_horizontal_slider.h"
@@ -59,6 +58,7 @@
 #include "ui_skinned_window.h"
 #include "ui_vis.h"
 #include "util.h"
+#include "view.h"
 
 #define SEEK_THRESHOLD 200 /* milliseconds */
 #define SEEK_TIMEOUT 100 /* milliseconds */
@@ -76,7 +76,7 @@ static GtkWidget *mainwin_rew, *mainwin_fwd;
 static GtkWidget *mainwin_eject;
 static GtkWidget *mainwin_play, *mainwin_pause, *mainwin_stop;
 
-static GtkWidget *mainwin_shuffle, *mainwin_repeat;
+GtkWidget *mainwin_shuffle, *mainwin_repeat;
 GtkWidget *mainwin_eq, *mainwin_pl;
 
 GtkWidget *mainwin_info;
@@ -94,7 +94,7 @@ GtkWidget *mainwin_svis;
 
 GtkWidget *mainwin_sposition = NULL;
 
-static GtkWidget *mainwin_menurow;
+GtkWidget *mainwin_menurow;
 static GtkWidget *mainwin_volume, *mainwin_balance;
 GtkWidget *mainwin_position;
 
@@ -105,14 +105,13 @@ static GtkWidget *mainwin_sstop, *mainwin_sfwd, *mainwin_seject, *mainwin_about;
 static gboolean mainwin_info_text_locked = FALSE;
 static guint mainwin_volume_release_timeout = 0;
 
-static void change_timer_mode(void);
 static void mainwin_position_motion_cb (void);
 static void mainwin_position_release_cb (void);
 static void mainwin_set_volume_diff (gint diff);
 
 static void format_time (gchar buf[7], gint time, gint length)
 {
-    if (config.timer_mode == TIMER_REMAINING && length > 0)
+    if (aud_get_bool ("skins", "show_remaining_time") && length > 0)
     {
         if (length - time < 60000)         /* " -0:SS" */
             snprintf (buf, 7, " -0:%02d", (length - time) / 1000);
@@ -132,17 +131,9 @@ static void format_time (gchar buf[7], gint time, gint length)
     buf[3] = 0;
 }
 
-static void
-mainwin_set_shade(gboolean shaded)
-{
-    GtkAction *action = gtk_action_group_get_action(toggleaction_group_others,
-                                                    "roll up player");
-    gtk_toggle_action_set_active( GTK_TOGGLE_ACTION(action) , shaded );
-}
-
 void mainwin_set_shape (void)
 {
-    gint id = config.player_shaded ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN;
+    int id = aud_get_bool ("skins", "player_shaded") ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN;
     gtk_widget_shape_combine_region (mainwin, active_skin->masks[id]);
 }
 
@@ -151,8 +142,7 @@ mainwin_menubtn_cb(void)
 {
     gint x, y;
     gtk_window_get_position(GTK_WINDOW(mainwin), &x, &y);
-    ui_popup_menu_show (UI_MENU_MAIN, x + 6, y + MAINWIN_SHADED_HEIGHT, FALSE,
-     FALSE, 1, GDK_CURRENT_TIME);
+    menu_popup (UI_MENU_MAIN, x + 6, y + MAINWIN_SHADED_HEIGHT, FALSE, FALSE, 1, GDK_CURRENT_TIME);
 }
 
 static void mainwin_minimize_cb (void)
@@ -166,7 +156,7 @@ static void mainwin_minimize_cb (void)
 static void
 mainwin_shade_toggle(void)
 {
-    mainwin_set_shade(!config.player_shaded);
+    view_set_player_shaded (! aud_get_bool ("skins", "player_shaded"));
 }
 
 static gchar *mainwin_tb_old_text = NULL;
@@ -211,13 +201,6 @@ static void mainwin_set_info_text (const gchar * text)
         textbox_set_text (mainwin_info, text);
 }
 
-static gboolean status_message_enabled;
-
-void mainwin_enable_status_message (gboolean enable)
-{
-    status_message_enabled = enable;
-}
-
 static gint status_message_source = 0;
 
 static gboolean clear_status_message (void * unused)
@@ -229,9 +212,6 @@ static gboolean clear_status_message (void * unused)
 
 void mainwin_show_status_message (const gchar * message)
 {
-    if (! status_message_enabled)
-        return;
-
     if (status_message_source)
         g_source_remove (status_message_source);
 
@@ -317,7 +297,7 @@ void mainwin_refresh_hints (void)
     setup_widget (mainwin_shade, p->mainwin_shade_x, p->mainwin_shade_y, TRUE);
     setup_widget (mainwin_close, p->mainwin_close_x, p->mainwin_close_y, TRUE);
 
-    if (config.player_shaded)
+    if (aud_get_bool ("skins", "player_shaded"))
         window_set_size (mainwin, MAINWIN_SHADED_WIDTH, MAINWIN_SHADED_HEIGHT);
     else
         window_set_size (mainwin, p->mainwin_width, p->mainwin_height);
@@ -444,14 +424,14 @@ mainwin_mouse_button_press(GtkWidget * widget,
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y < 14)
     {
-        mainwin_set_shade(!config.player_shaded);
+        mainwin_shade_toggle ();
         return TRUE;
     }
 
     if (event->button == 3)
     {
-        ui_popup_menu_show (UI_MENU_MAIN, event->x_root, event->y_root, FALSE,
-         FALSE, event->button, event->time);
+        menu_popup (UI_MENU_MAIN, event->x_root, event->y_root, FALSE, FALSE,
+         event->button, event->time);
         return TRUE;
     }
 
@@ -460,8 +440,8 @@ mainwin_mouse_button_press(GtkWidget * widget,
 
 static void mainwin_playback_rpress (GtkWidget * button, GdkEventButton * event)
 {
-    ui_popup_menu_show (UI_MENU_PLAYBACK, event->x_root, event->y_root,
-     FALSE, FALSE, event->button, event->time);
+    menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE, FALSE,
+     event->button, event->time);
 }
 
 gboolean mainwin_keypress (GtkWidget * widget, GdkEventKey * event,
@@ -639,13 +619,13 @@ static void mainwin_fwd_release (GtkWidget * button, GdkEventButton * event)
  {seek_release (button, event, FALSE); }
 
 static void mainwin_shuffle_cb (GtkWidget * button, GdkEventButton * event)
- {check_set (toggleaction_group_others, "playback shuffle", button_get_active (button)); }
+ {aud_set_bool (NULL, "shuffle", button_get_active (button)); }
 static void mainwin_repeat_cb (GtkWidget * button, GdkEventButton * event)
- {check_set (toggleaction_group_others, "playback repeat", button_get_active (button)); }
+ {aud_set_bool (NULL, "repeat", button_get_active (button)); }
 static void mainwin_eq_cb (GtkWidget * button, GdkEventButton * event)
- {equalizerwin_show (button_get_active (button)); }
+ {view_set_show_equalizer (button_get_active (button)); }
 static void mainwin_pl_cb (GtkWidget * button, GdkEventButton * event)
- {playlistwin_show (button_get_active (button)); }
+ {view_set_show_playlist (button_get_active (button)); }
 
 static void mainwin_spos_set_knob (void)
 {
@@ -834,31 +814,6 @@ static void mainwin_set_volume_diff (gint diff)
         g_timeout_add(700, (GSourceFunc)(mainwin_volume_release_cb), NULL);
 }
 
-static void mainwin_real_show (gboolean show)
-{
-    if (show)
-        gtk_window_present ((GtkWindow *) mainwin);
-    else
-        gtk_widget_hide (mainwin);
-}
-
-void mainwin_show (gboolean show)
-{
-    GtkAction * a;
-
-    a = gtk_action_group_get_action (toggleaction_group_others, "show player");
-
-    if (a && gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (a)) != show)
-        gtk_toggle_action_set_active (GTK_TOGGLE_ACTION (a), show);
-    else
-    {
-        mainwin_real_show (show);
-        equalizerwin_show (config.equalizer_visible);
-        playlistwin_show (config.playlist_visible);
-        start_stop_visual (FALSE);
-    }
-}
-
 void mainwin_mr_change (MenuRowItem i)
 {
     switch (i) {
@@ -866,7 +821,7 @@ void mainwin_mr_change (MenuRowItem i)
             mainwin_lock_info_text(_("Options Menu"));
             break;
         case MENUROW_ALWAYS:
-            if (config.always_on_top)
+            if (aud_get_bool ("skins", "always_on_top"))
                 mainwin_lock_info_text(_("Disable 'Always On Top'"));
             else
                 mainwin_lock_info_text(_("Enable 'Always On Top'"));
@@ -883,13 +838,10 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
 {
     switch (i) {
         case MENUROW_OPTIONS:
-            ui_popup_menu_show(UI_MENU_VIEW, event->x_root, event->y_root,
-             FALSE, FALSE, 1, event->time);
+            menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, FALSE, FALSE, 1, event->time);
             break;
         case MENUROW_ALWAYS:
-            gtk_toggle_action_set_active ((GtkToggleAction *)
-             gtk_action_group_get_action (toggleaction_group_others,
-             "view always on top"), config.always_on_top);
+            view_set_on_top (! aud_get_bool ("skins", "always_on_top"));
             break;
         case MENUROW_FILEINFOBOX:
             audgui_infowin_show_current ();
@@ -901,63 +853,15 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
     mainwin_release_info_text();
 }
 
-static void
-set_timer_mode(TimerMode mode)
-{
-    if (mode == TIMER_ELAPSED)
-        check_set(radioaction_group_viewtime, "view time elapsed", TRUE);
-    else
-        check_set(radioaction_group_viewtime, "view time remaining", TRUE);
-}
-
 gboolean
 change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event)
 {
-    if (event->button == 1) {
-        change_timer_mode();
-    } else if (event->button == 3)
+    if (event->button == 1)
+        view_set_show_remaining (! aud_get_bool ("skins", "show_remaining_time"));
+    else if (event->button == 3)
         return FALSE;
 
     return TRUE;
-}
-
-static void change_timer_mode(void) {
-    if (config.timer_mode == TIMER_ELAPSED)
-        set_timer_mode(TIMER_REMAINING);
-    else
-        set_timer_mode(TIMER_ELAPSED);
-    if (aud_drct_get_playing())
-        mainwin_update_song_info();
-}
-
-void
-mainwin_setup_menus(void)
-{
-    set_timer_mode(config.timer_mode);
-
-    /* View menu */
-
-    check_set(toggleaction_group_others, "view always on top", config.always_on_top);
-    check_set(toggleaction_group_others, "view put on all workspaces", config.sticky);
-    check_set(toggleaction_group_others, "roll up player", config.player_shaded);
-    check_set(toggleaction_group_others, "roll up playlist editor", config.playlist_shaded);
-    check_set(toggleaction_group_others, "roll up equalizer", config.equalizer_shaded);
-
-    mainwin_enable_status_message (FALSE);
-
-    /* Songname menu */
-
-    check_set (toggleaction_group_others, "stop after current song",
-     aud_get_bool (NULL, "stop_after_current_song"));
-
-    /* Playback menu */
-
-    check_set (toggleaction_group_others, "playback repeat", aud_get_bool (NULL, "repeat"));
-    check_set (toggleaction_group_others, "playback shuffle", aud_get_bool (NULL, "shuffle"));
-    check_set (toggleaction_group_others, "playback no playlist advance",
-     aud_get_bool (NULL, "no_playlist_advance"));
-
-    mainwin_enable_status_message (TRUE);
 }
 
 static gboolean mainwin_info_button_press (GtkWidget * widget, GdkEventButton *
@@ -965,8 +869,8 @@ static gboolean mainwin_info_button_press (GtkWidget * widget, GdkEventButton *
 {
     if (event->type == GDK_BUTTON_PRESS && event->button == 3)
     {
-        ui_popup_menu_show (UI_MENU_SONGNAME, event->x_root, event->y_root,
-         FALSE, FALSE, event->button, event->time);
+        menu_popup (UI_MENU_PLAYBACK, event->x_root, event->y_root, FALSE,
+         FALSE, event->button, event->time);
         return TRUE;
     }
 
@@ -1031,10 +935,12 @@ mainwin_create_widgets(void)
 
     mainwin_shuffle = button_new_toggle (46, 15, 28, 0, 28, 15, 28, 30, 28, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     window_put_widget (mainwin, FALSE, mainwin_shuffle, 164, 89);
+    button_set_active (mainwin_shuffle, aud_get_bool (NULL, "shuffle"));
     button_on_release (mainwin_shuffle, mainwin_shuffle_cb);
 
     mainwin_repeat = button_new_toggle (28, 15, 0, 0, 0, 15, 0, 30, 0, 45, SKIN_SHUFREP, SKIN_SHUFREP);
     window_put_widget (mainwin, FALSE, mainwin_repeat, 210, 89);
+    button_set_active (mainwin_repeat, aud_get_bool (NULL, "repeat"));
     button_on_release (mainwin_repeat, mainwin_repeat_cb);
 
     mainwin_eq = button_new_toggle (23, 12, 0, 61, 46, 61, 0, 73, 46, 73, SKIN_SHUFREP, SKIN_SHUFREP);
@@ -1186,7 +1092,7 @@ static void show_widgets (void)
     gtk_widget_set_no_show_all (mainwin_position, TRUE);
     gtk_widget_set_no_show_all (mainwin_sposition, TRUE);
 
-    window_set_shaded (mainwin, config.player_shaded);
+    window_set_shaded (mainwin, aud_get_bool ("skins", "player_shaded"));
     window_show_all (mainwin);
 }
 
@@ -1194,47 +1100,33 @@ static gboolean state_cb (GtkWidget * widget, GdkEventWindowState * event,
  void * unused)
 {
     if (event->changed_mask & GDK_WINDOW_STATE_STICKY)
-    {
-        config.sticky = (event->new_window_state & GDK_WINDOW_STATE_STICKY) ?
-         TRUE : FALSE;
-
-        GtkToggleAction * action = (GtkToggleAction *)
-         gtk_action_group_get_action (toggleaction_group_others,
-         "view put on all workspaces");
-        gtk_toggle_action_set_active (action, config.sticky);
-    }
+        view_set_sticky (!! (event->new_window_state & GDK_WINDOW_STATE_STICKY));
 
     if (event->changed_mask & GDK_WINDOW_STATE_ABOVE)
-    {
-        config.always_on_top = (event->new_window_state &
-         GDK_WINDOW_STATE_ABOVE) ? TRUE : FALSE;
-
-        GtkToggleAction * action = (GtkToggleAction *)
-         gtk_action_group_get_action (toggleaction_group_others,
-         "view always on top");
-        gtk_toggle_action_set_active (action, config.always_on_top);
-    }
+        view_set_on_top (!! (event->new_window_state & GDK_WINDOW_STATE_ABOVE));
 
     return TRUE;
 }
 
 static void mainwin_draw (GtkWidget * window, cairo_t * cr)
 {
-    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
-    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
+    bool_t shaded = aud_get_bool ("skins", "player_shaded");
+    int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
+    int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
 
     skin_draw_pixbuf (cr, SKIN_MAIN, 0, 0, 0, 0, width, height);
-    skin_draw_mainwin_titlebar (cr, config.player_shaded, TRUE);
+    skin_draw_mainwin_titlebar (cr, shaded, TRUE);
 }
 
 static void
 mainwin_create_window(void)
 {
-    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
-    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
+    bool_t shaded = aud_get_bool ("skins", "player_shaded");
+    int width = shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
+    int height = shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
 
     mainwin = window_new (& config.player_x, & config.player_y, width, height,
-     TRUE, config.player_shaded, mainwin_draw);
+     TRUE, shaded, mainwin_draw);
 
     gtk_window_set_title(GTK_WINDOW(mainwin), _("Audacious"));
 
@@ -1273,12 +1165,10 @@ mainwin_create(void)
 {
     mainwin_create_window();
 
-    gtk_window_add_accel_group( GTK_WINDOW(mainwin) , ui_manager_get_accel_group() );
+    gtk_window_add_accel_group ((GtkWindow *) mainwin, menu_get_accel_group ());
 
     mainwin_create_widgets();
     show_widgets ();
-
-    status_message_enabled = TRUE;
 }
 
 static void mainwin_update_volume (void)
@@ -1352,93 +1242,6 @@ void mainwin_update_song_info (void)
     mainwin_update_time_display (time, length);
     mainwin_update_time_slider (time, length);
 }
-
-/* toggleactionentries actions */
-
-void action_playback_noplaylistadvance (GtkToggleAction * action)
-{
-    aud_set_bool (NULL, "no_playlist_advance", gtk_toggle_action_get_active (action));
-
-    if (gtk_toggle_action_get_active (action))
-        mainwin_show_status_message (_("Single mode."));
-    else
-        mainwin_show_status_message (_("Playlist mode."));
-}
-
-void action_playback_repeat (GtkToggleAction * action)
-{
-    aud_set_bool (NULL, "repeat", gtk_toggle_action_get_active (action));
-    button_set_active (mainwin_repeat, gtk_toggle_action_get_active (action));
-}
-
-void action_playback_shuffle (GtkToggleAction * action)
-{
-    aud_set_bool (NULL, "shuffle", gtk_toggle_action_get_active (action));
-    button_set_active (mainwin_shuffle, gtk_toggle_action_get_active (action));
-}
-
-void action_stop_after_current_song (GtkToggleAction * action)
-{
-    gboolean active = gtk_toggle_action_get_active (action);
-
-    if (active != aud_get_bool (NULL, "stop_after_current_song"))
-    {
-        if (active)
-            mainwin_show_status_message (_("Stopping after song."));
-        else
-            mainwin_show_status_message (_("Not stopping after song."));
-
-        aud_set_bool (NULL, "stop_after_current_song", active);
-    }
-}
-
-void action_view_always_on_top (GtkToggleAction * action)
-{
-    gboolean on_top = gtk_toggle_action_get_active (action);
-
-    if (config.always_on_top != on_top)
-    {
-        config.always_on_top = on_top;
-        ui_skinned_menurow_update (mainwin_menurow);
-        hint_set_always (config.always_on_top);
-    }
-}
-
-void action_view_on_all_workspaces (GtkToggleAction * action)
-{
-    gboolean sticky = gtk_toggle_action_get_active (action);
-
-    if (config.sticky != sticky)
-    {
-        config.sticky = sticky;
-        hint_set_sticky (sticky);
-    }
-}
-
-void action_roll_up_player (GtkToggleAction * action)
-{
-    config.player_shaded = gtk_toggle_action_get_active (action);
-    window_set_shaded (mainwin, config.player_shaded);
-
-    gint width = config.player_shaded ? MAINWIN_SHADED_WIDTH : active_skin->properties.mainwin_width;
-    gint height = config.player_shaded ? MAINWIN_SHADED_HEIGHT : active_skin->properties.mainwin_height;
-    window_set_size (mainwin, width, height);
-    mainwin_set_shape ();
-}
-
-void action_show_player (GtkToggleAction * action)
-{
-    mainwin_show(gtk_toggle_action_get_active(action));
-}
-
-
-/* radioactionentries actions (one callback for each radio group) */
-
-void action_viewtime (GtkAction * action, GtkRadioAction * current)
-{
-    config.timer_mode = gtk_radio_action_get_current_value (current);
-}
-
 
 /* actionentries actions */
 

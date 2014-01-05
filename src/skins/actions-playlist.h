@@ -26,6 +26,7 @@ void action_playlist_play(void);
 void action_playlist_new(void);
 void action_playlist_prev(void);
 void action_playlist_next(void);
+void action_playlist_rename(void);
 void action_playlist_delete(void);
 
 void action_playlist_search_and_select(void);
@@ -70,8 +71,5 @@ void action_playlist_sort_selected_by_track_number(void);
 
 void action_playlist_track_info(void);
 void action_queue_toggle(void);
-
-void action_show_playlist_editor(GtkToggleAction*);
-void action_roll_up_playlist_editor(GtkToggleAction*);
 
 #endif /* SKINS_ACTIONS_PLAYLIST_H */

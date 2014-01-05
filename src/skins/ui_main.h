@@ -32,13 +32,9 @@
 #define MAINWIN_SHADED_WIDTH     MAINWIN_WIDTH
 #define MAINWIN_SHADED_HEIGHT    MAINWIN_TITLEBAR_HEIGHT
 
-typedef enum {
-    TIMER_ELAPSED,
-    TIMER_REMAINING
-} TimerMode;
-
 extern GtkWidget *mainwin;
 
+extern GtkWidget *mainwin_shuffle, *mainwin_repeat;
 extern GtkWidget *mainwin_eq, *mainwin_pl;
 extern GtkWidget *mainwin_info;
 
@@ -52,6 +48,7 @@ extern GtkWidget *mainwin_playstatus;
 extern GtkWidget *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num;
 extern GtkWidget *mainwin_10sec_num, *mainwin_sec_num;
 
+extern GtkWidget *mainwin_menurow;
 extern GtkWidget *mainwin_position, *mainwin_sposition;
 
 void mainwin_create(void);
@@ -71,12 +68,10 @@ void mainwin_clear_song_info(void);
 
 void mainwin_set_shape (void);
 
-void mainwin_show(gboolean);
 void mainwin_disable_seekbar(void);
 
 void mainwin_update_song_info (void);
 void mainwin_show_status_message (const gchar * message);
-void mainwin_enable_status_message (gboolean enable);
 
 void mainwin_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
@@ -87,7 +82,6 @@ void mainwin_drag_data_received(GtkWidget * widget,
                                 guint time,
                                 gpointer user_data);
 
-void mainwin_setup_menus(void);
 gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 
 /* widget should be null if called manually. */

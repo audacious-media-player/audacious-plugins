@@ -21,14 +21,15 @@
 #include <math.h>
 
 #include <audacious/drct.h>
+#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <libaudcore/hook.h>
 
 #include "skins_cfg.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
-#include "ui_manager.h"
 #include "ui_skin.h"
+#include "ui_skinned_button.h"
 #include "ui_skinned_playstatus.h"
 #include "ui_vis.h"
 #include "util.h"
@@ -94,28 +95,26 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 
 static void repeat_toggled (void * data, void * user)
 {
-    bool_t repeat = aud_get_bool (NULL, "repeat");
-    check_set (toggleaction_group_others, "playback repeat", repeat);
+    button_set_active (mainwin_repeat, aud_get_bool (NULL, "repeat"));
 }
 
 static void shuffle_toggled (void * data, void * user)
 {
-    bool_t shuffle = aud_get_bool (NULL, "shuffle");
-    check_set (toggleaction_group_others, "playback shuffle", shuffle);
+    button_set_active (mainwin_shuffle, aud_get_bool (NULL, "shuffle"));
 }
 
 static void no_advance_toggled (void * data, void * user)
 {
-    bool_t no_advance = aud_get_bool (NULL, "no_playlist_advance");
-    check_set (toggleaction_group_others, "playback no playlist advance", no_advance);
+    if (aud_get_bool (NULL, "no_playlist_advance"))
+        mainwin_show_status_message (_("Single mode."));
+    else
+        mainwin_show_status_message (_("Playlist mode."));
 }
 
 static void stop_after_song_toggled (void * hook_data, void * user_data)
 {
-    mainwin_enable_status_message (FALSE);
-    check_set (toggleaction_group_others, "stop after current song",
-     aud_get_bool (NULL, "stop_after_current_song"));
-    mainwin_enable_status_message (TRUE);
+    if (aud_get_bool (NULL, "stop_after_current_song"))
+        mainwin_show_status_message (_("Stopping after song."));
 }
 
 void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
@@ -150,7 +149,7 @@ static void render_mono_pcm (const gfloat * pcm)
         data[i] = CLAMP (val, 0, 16);
     }
 
-    if (config.player_shaded)
+    if (aud_get_bool ("skins", "player_shaded"))
         ui_svis_timeout_func (mainwin_svis, data);
     else
         ui_vis_timeout_func (mainwin_vis, data);
@@ -173,7 +172,7 @@ static gfloat calc_peak_level (const gfloat * pcm, gint step)
 static void render_multi_pcm (const gfloat * pcm, gint channels)
 {
     /* "VU meter" */
-    if (config.vis_type != VIS_VOICEPRINT || ! config.player_shaded)
+    if (config.vis_type != VIS_VOICEPRINT || ! aud_get_bool ("skins", "player_shaded"))
         return;
 
     guchar data[512];
@@ -245,31 +244,33 @@ static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
 
 static void render_freq (const gfloat * freq)
 {
+    bool_t shaded = aud_get_bool ("skins", "player_shaded");
+
     guchar data[512];
 
     if (config.vis_type == VIS_ANALYZER)
     {
         if (config.analyzer_type == ANALYZER_BARS)
         {
-            if (config.player_shaded)
+            if (shaded)
                 make_log_graph (freq, 13, 40, 8, data);
             else
                 make_log_graph (freq, 19, 40, 16, data);
         }
         else
         {
-            if (config.player_shaded)
+            if (shaded)
                 make_log_graph (freq, 37, 40, 8, data);
             else
                 make_log_graph (freq, 75, 40, 16, data);
         }
     }
-    else if (config.vis_type == VIS_VOICEPRINT && ! config.player_shaded)
+    else if (config.vis_type == VIS_VOICEPRINT && ! shaded)
         make_log_graph (freq, 17, 40, 255, data);
     else
         return;
 
-    if (config.player_shaded)
+    if (shaded)
         ui_svis_timeout_func (mainwin_svis, data);
     else
         ui_vis_timeout_func (mainwin_vis, data);

@@ -20,8 +20,6 @@
 #ifndef SKINS_ACTIONS_EQUALIZER_H
 #define SKINS_ACTIONS_EQUALIZER_H
 
-#include <gtk/gtk.h>
-
 void action_equ_load_preset(void);
 void action_equ_load_auto_preset(void);
 void action_equ_load_default_preset(void);
@@ -36,8 +34,5 @@ void action_equ_save_preset_file(void);
 void action_equ_save_preset_eqf(void);
 void action_equ_delete_preset(void);
 void action_equ_delete_auto_preset(void);
-
-void action_show_equalizer(GtkToggleAction*);
-void action_roll_up_equalizer(GtkToggleAction*);
 
 #endif /* SKINS_ACTIONS_EQUALIZER_H */

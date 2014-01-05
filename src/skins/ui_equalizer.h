@@ -33,7 +33,6 @@
 
 void equalizerwin_set_shape (void);
 void equalizerwin_create(void);
-void equalizerwin_show(gboolean show);
 void equalizerwin_set_volume_slider(gint percent);
 void equalizerwin_set_balance_slider(gint percent);
 void equalizerwin_eq_changed(void);

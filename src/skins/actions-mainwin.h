@@ -20,25 +20,6 @@
 #ifndef SKINS_ACTIONS_MAINWIN_H
 #define SKINS_ACTIONS_MAINWIN_H
 
-#include <gtk/gtk.h>
-
-/* actions below are handled in mainwin.c */
-
-
-/* toggle actions */
-void action_playback_noplaylistadvance(GtkToggleAction*);
-void action_playback_repeat(GtkToggleAction*);
-void action_playback_shuffle(GtkToggleAction*);
-void action_stop_after_current_song(GtkToggleAction*);
-void action_view_always_on_top(GtkToggleAction*);
-void action_view_on_all_workspaces(GtkToggleAction*);
-void action_roll_up_player(GtkToggleAction*);
-void action_show_player(GtkToggleAction*);
-
-/* radio actions (one for each radio action group) */
-void action_viewtime(GtkAction*,GtkRadioAction*);
-
-/* normal actions */
 void action_ab_clear(void);
 void action_ab_set(void);
 void action_play_file(void);

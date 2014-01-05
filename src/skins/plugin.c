@@ -27,14 +27,15 @@
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
+#include "menus.h"
 #include "plugin.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_main_evlisteners.h"
-#include "ui_manager.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
+#include "view.h"
 
 gchar * skins_paths[SKINS_PATH_COUNT];
 
@@ -48,7 +49,7 @@ AUD_IFACE_PLUGIN
     .init = skins_init,
     .cleanup = skins_cleanup,
     .prefs = & skins_prefs,
-    .show = mainwin_show
+    .show = view_show_player
 )
 
 static gboolean plugin_is_active = FALSE;
@@ -98,14 +99,14 @@ static gboolean skins_init (void)
     skins_init_paths();
     skins_cfg_load();
 
-    ui_manager_init();
-    ui_manager_create_menus();
+    menu_init ();
 
     char * skin = aud_get_str ("skins", "skin");
     init_skins (skin);
     str_unref (skin);
 
-    mainwin_setup_menus();
+    view_apply_on_top ();
+    view_apply_sticky ();
 
     if (aud_drct_get_playing ())
     {
@@ -133,7 +134,7 @@ static void skins_cleanup (void)
 
         cleanup_skins();
         skins_free_paths();
-        ui_manager_destroy();
+        menu_cleanup ();
 
         plugin_is_active = FALSE;
     }

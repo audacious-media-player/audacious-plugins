@@ -31,12 +31,8 @@ typedef struct {
     gint playlist_x, playlist_y;
     gint playlist_width, playlist_height;
     gboolean autoscroll;
-    gboolean always_on_top, sticky;
-    gboolean equalizer_visible, playlist_visible;
-    gboolean player_shaded, equalizer_shaded, playlist_shaded;
     gboolean analyzer_peaks;
     gboolean twoway_scroll;
-    gint timer_mode;
     gint vis_type;
     gint analyzer_mode, analyzer_type;
     gint scope_mode;

@@ -47,7 +47,7 @@ static const gchar * const skins_defaults[] = {
  "mainwin_font", "Sans Bold 9",
  "mainwin_use_bitmapfont", "TRUE",
  "playlist_font", "Sans Bold 8",
- "timer_mode", "0", /* TIMER_ELAPSED */
+ "show_remaining_time", "FALSE",
  "twoway_scroll", "FALSE",
 
  /* visualizer */
@@ -95,16 +95,7 @@ static const skins_cfg_boolent skins_boolents[] = {
  {"twoway_scroll", & config.twoway_scroll},
 
  /* visualizer */
- {"analyzer_peaks", & config.analyzer_peaks},
-
- /* windows */
- {"always_on_top", & config.always_on_top},
- {"equalizer_shaded", & config.equalizer_shaded},
- {"equalizer_visible", & config.equalizer_visible},
- {"player_shaded", & config.player_shaded},
- {"playlist_shaded", & config.playlist_shaded},
- {"playlist_visible", & config.playlist_visible},
- {"sticky", & config.sticky}};
+ {"analyzer_peaks", & config.analyzer_peaks}};
 
 typedef struct skins_cfg_nument_t {
     const gchar * name;
@@ -112,9 +103,6 @@ typedef struct skins_cfg_nument_t {
 } skins_cfg_nument;
 
 static const skins_cfg_nument skins_numents[] = {
- /* general */
- {"timer_mode", & config.timer_mode},
-
  /* visualizer */
  {"analyzer_falloff", & config.analyzer_falloff},
  {"analyzer_mode", & config.analyzer_mode},
