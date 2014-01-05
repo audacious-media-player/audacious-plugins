@@ -30,15 +30,12 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include <gtk/gtk.h>
-
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs.h>
 
-#include "ui_main.h"
 #include "util.h"
 
 typedef struct
@@ -444,37 +441,6 @@ gboolean dir_foreach(const gchar *path, DirForeachFunc function,
     return TRUE;
 }
 
-GtkWidget *make_filebrowser(const gchar *title, gboolean save)
-{
-    GtkWidget *dialog;
-    GtkWidget *button;
-
-    g_return_val_if_fail(title != NULL, NULL);
-
-    dialog =
-        gtk_file_chooser_dialog_new(title, GTK_WINDOW(mainwin),
-                                    save ? GTK_FILE_CHOOSER_ACTION_SAVE :
-                                    GTK_FILE_CHOOSER_ACTION_OPEN, NULL, NULL);
-
-    button =
-        gtk_dialog_add_button(GTK_DIALOG(dialog), GTK_STOCK_CANCEL,
-                              GTK_RESPONSE_REJECT);
-
-    gtk_button_set_use_stock(GTK_BUTTON(button), TRUE);
-    gtk_widget_set_can_default (button, TRUE);
-
-    button =
-        gtk_dialog_add_button(GTK_DIALOG(dialog),
-                              save ? GTK_STOCK_SAVE : GTK_STOCK_OPEN,
-                              GTK_RESPONSE_ACCEPT);
-
-    gtk_button_set_use_stock(GTK_BUTTON(button), TRUE);
-    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
-    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER);    /* centering */
-
-    return dialog;
-}
-
 #ifndef HAVE_MKDTEMP
 static void make_directory(const gchar *path, mode_t mode)
 {
@@ -485,13 +451,3 @@ static void make_directory(const gchar *path, mode_t mode)
                g_strerror(errno));
 }
 #endif
-
-void check_set (GtkActionGroup * action_group, const gchar * action_name,
- gboolean is_on)
-{
-    GtkAction * action = gtk_action_group_get_action (action_group, action_name);
-
-    g_return_if_fail (action != NULL);
-
-    gtk_toggle_action_set_active ((GtkToggleAction *) action, is_on);
-}

@@ -24,14 +24,9 @@ void action_equ_load_preset(void);
 void action_equ_load_auto_preset(void);
 void action_equ_load_default_preset(void);
 void action_equ_zero_preset(void);
-void action_equ_load_preset_file(void);
-void action_equ_load_preset_eqf(void);
-void action_equ_import_winamp_presets(void);
 void action_equ_save_preset(void);
 void action_equ_save_auto_preset(void);
 void action_equ_save_default_preset(void);
-void action_equ_save_preset_file(void);
-void action_equ_save_preset_eqf(void);
 void action_equ_delete_preset(void);
 void action_equ_delete_auto_preset(void);
 

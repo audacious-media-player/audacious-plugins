@@ -3,6 +3,7 @@ PLUGIN = skins${PLUGIN_SUFFIX}
 SRCS = drag-handle.c \
        menus.c \
        plugin.c \
+       preset-browser.c \
        skins_cfg.c \
        surface.c \
        ui_skin.c \

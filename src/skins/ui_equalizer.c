@@ -1,5 +1,5 @@
 /*  Audacious - Cross-platform multimedia player
- *  Copyright (C) 2005-2011  Audacious development team.
+ *  Copyright (C) 2005-2014  Audacious development team.
  *
  *  Based on BMP:
  *  Copyright (C) 2003-2004  BMP development team.
@@ -32,6 +32,7 @@
 #include <audacious/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudgui/libaudgui-gtk.h>
 
 #include "actions-equalizer.h"
 #include "menus.h"
@@ -105,24 +106,26 @@ equalizerwin_eq_changed(void)
     aud_eq_set_bands (bands);
 }
 
-static void
-equalizerwin_apply_preset(EqualizerPreset *preset)
+void equalizerwin_apply_preset (const EqualizerPreset * preset)
 {
-    if (preset == NULL)
-       return;
-
-    gint i;
-
-    equalizerwin_set_preamp(preset->preamp);
-    for (i = 0; i < AUD_EQUALIZER_NBANDS; i++)
-        equalizerwin_set_band(i, preset->bands[i]);
+    equalizerwin_set_preamp (preset->preamp);
+    for (int i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
+        equalizerwin_set_band (i, preset->bands[i]);
 }
 
-static void equalizerwin_update_preset (EqualizerPreset * preset)
+void equalizerwin_update_preset (EqualizerPreset * preset)
 {
     preset->preamp = equalizerwin_get_preamp ();
     for (int i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
         preset->bands[i] = equalizerwin_get_band (i);
+}
+
+void equalizerwin_import_presets (Index * presets)
+{
+    index_copy_insert (presets, 0, equalizer_presets, -1, -1);
+    index_free (presets);
+
+    aud_equalizer_write_presets (equalizer_presets, "eq.preset");
 }
 
 static void eq_on_cb (GtkWidget * button, GdkEventButton * event)
@@ -425,12 +428,7 @@ static bool_t equalizerwin_load_preset (Index * list, const char * name)
     if (p < 0)
         return FALSE;
 
-    EqualizerPreset * preset = index_get (list, p);
-    equalizerwin_set_preamp (preset->preamp);
-
-    for (int i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
-        equalizerwin_set_band (i, preset->bands[i]);
-
+    equalizerwin_apply_preset (index_get (list, p));
     return TRUE;
 }
 
@@ -504,34 +502,6 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, gchar *filename)
 
         gtk_list_store_remove(GTK_LIST_STORE(model), &iter);
     }
-}
-
-static void
-equalizerwin_read_winamp_eqf(VFSFile * file)
-{
-    Index * presets = aud_import_winamp_presets (file);
-
-    if (! presets)
-    {
-        SPRINTF (error, _("Error importing Winamp EQF file '%s'"), vfs_get_filename (file));
-        aud_interface_show_error (error);
-        return;
-    }
-
-    if (! index_count (presets))
-        goto DONE;
-
-    /* just get the first preset --asphyx */
-    EqualizerPreset * preset = index_get (presets, 0);
-    equalizerwin_set_preamp(preset->preamp);
-
-    for (int i = 0; i < AUD_EQUALIZER_NBANDS; i ++)
-        equalizerwin_set_band(i, preset->bands[i]);
-
-    equalizerwin_eq_changed();
-
-DONE:
-    index_free_full (presets, (IndexFreeFunc) aud_equalizer_preset_free);
 }
 
 static gboolean equalizerwin_read_aud_preset (const gchar * file)
@@ -688,69 +658,6 @@ static void
 equalizerwin_delete_auto_delete(GtkWidget *widget, gpointer data)
 {
     equalizerwin_delete_selected_presets(GTK_TREE_VIEW(data), "eq.auto_preset");
-}
-
-static VFSFile *
-open_vfs_file(const gchar *filename, const gchar *mode)
-{
-    VFSFile *file;
-
-    if (!(file = vfs_fopen(filename, mode))) {
-        SPRINTF (error, _("Error loading file '%s'"), filename);
-        aud_interface_show_error (error);
-    }
-
-    return file;
-}
-
-static void
-load_winamp_file(const gchar * filename)
-{
-    VFSFile *file;
-
-    if (!(file = open_vfs_file(filename, "rb")))
-        return;
-
-    equalizerwin_read_winamp_eqf(file);
-    vfs_fclose(file);
-}
-
-static void
-import_winamp_file(const gchar * filename)
-{
-    VFSFile * file = open_vfs_file (filename, "r");
-    if (! file)
-        return;
-
-    Index * list = aud_import_winamp_presets (file);
-    if (! list)
-        goto CLOSE;
-
-    index_copy_insert (list, 0, equalizer_presets, -1, -1);
-    index_free (list);
-
-    aud_equalizer_write_presets (equalizer_presets, "eq.preset");
-
-CLOSE:
-    vfs_fclose(file);
-}
-
-static gboolean save_winamp_file (const gchar * filename)
-{
-    VFSFile *file;
-
-    if (!(file = open_vfs_file(filename, "wb")))
-        return FALSE;
-
-    EqualizerPreset * preset = aud_equalizer_preset_new ("Preset1");
-    equalizerwin_update_preset (preset);
-
-    bool_t success = aud_export_winamp_preset (preset, file);
-
-    aud_equalizer_preset_free (preset);
-    vfs_fclose (file);
-
-    return success;
 }
 
 static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
@@ -934,61 +841,6 @@ action_equ_zero_preset(void)
 }
 
 void
-action_equ_load_preset_file(void)
-{
-    GtkWidget *dialog;
-    gchar *file_uri;
-
-    dialog = make_filebrowser(_("Load equalizer preset"), FALSE);
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
-        EqualizerPreset *preset = aud_load_preset_file(file_uri);
-
-        if (preset)
-        {
-            equalizerwin_apply_preset (preset);
-            aud_equalizer_preset_free (preset);
-        }
-
-        g_free(file_uri);
-    }
-    gtk_widget_destroy(dialog);
-}
-
-void
-action_equ_load_preset_eqf(void)
-{
-    GtkWidget *dialog;
-    gchar *file_uri;
-
-    dialog = make_filebrowser(_("Load equalizer preset"), FALSE);
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
-        load_winamp_file(file_uri);
-        g_free(file_uri);
-    }
-    gtk_widget_destroy(dialog);
-}
-
-void
-action_equ_import_winamp_presets(void)
-{
-    GtkWidget *dialog;
-    gchar *file_uri;
-
-    dialog = make_filebrowser(_("Load equalizer preset"), FALSE);
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
-        import_winamp_file(file_uri);
-        g_free(file_uri);
-    }
-    gtk_widget_destroy(dialog);
-}
-
-void
 action_equ_save_preset(void)
 {
     if (equalizerwin_save_window) {
@@ -1035,54 +887,6 @@ action_equ_save_auto_preset(void)
 void action_equ_save_default_preset (void)
 {
     equalizerwin_save_preset (equalizer_presets, _("Default"), "eq.preset");
-}
-
-void
-action_equ_save_preset_file(void)
-{
-    GtkWidget *dialog;
-    gchar *file_uri, *title;
-
-    dialog = make_filebrowser(_("Save equalizer preset"), TRUE);
-
-    title = aud_drct_get_title ();
-
-    if (title != NULL)
-    {
-        gchar * ext = EQUALIZER_DEFAULT_PRESET_EXT;
-        gchar * eqname = g_strdup_printf ("%s.%s", title, ext);
-        gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), eqname);
-        g_free (eqname);
-        str_unref (title);
-    }
-
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
-        EqualizerPreset * preset = aud_equalizer_preset_new ("");
-        equalizerwin_update_preset (preset);
-        aud_save_preset_file(preset, file_uri);
-        aud_equalizer_preset_free(preset);
-        g_free(file_uri);
-    }
-
-    gtk_widget_destroy(dialog);
-}
-
-void
-action_equ_save_preset_eqf(void)
-{
-    GtkWidget *dialog;
-    gchar *file_uri;
-
-    dialog = make_filebrowser(_("Save equalizer preset"), TRUE);
-    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT)
-    {
-        file_uri = gtk_file_chooser_get_uri(GTK_FILE_CHOOSER(dialog));
-        save_winamp_file(file_uri);
-        g_free(file_uri);
-    }
-    gtk_widget_destroy(dialog);
 }
 
 void

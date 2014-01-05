@@ -27,15 +27,22 @@
 #define SKINS_UI_EQUALIZER_H
 
 #include <gtk/gtk.h>
+#include <audacious/types.h>
 
 #define EQUALIZER_DEFAULT_DIR_PRESET "dir_default.preset"
 #define EQUALIZER_DEFAULT_PRESET_EXT "preset"
+
+struct _Index;
 
 void equalizerwin_set_shape (void);
 void equalizerwin_create(void);
 void equalizerwin_set_volume_slider(gint percent);
 void equalizerwin_set_balance_slider(gint percent);
 void equalizerwin_eq_changed(void);
+
+void equalizerwin_apply_preset (const EqualizerPreset * preset);
+void equalizerwin_update_preset (EqualizerPreset * preset);
+void equalizerwin_import_presets (struct _Index * presets);
 
 extern GtkWidget *equalizerwin;
 
