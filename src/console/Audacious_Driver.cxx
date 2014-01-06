@@ -72,7 +72,7 @@ ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
 
     const char * sub;
     uri_parse (path, NULL, NULL, & sub, & m_track);
-    m_path = strndup (path, sub - path);
+    m_path = str_nget (path, sub - path);
 
     m_track -= 1;
 
@@ -102,7 +102,7 @@ ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
 ConsoleFileHandler::~ConsoleFileHandler()
 {
     gme_delete(m_emu);
-    free(m_path);
+    str_unref (m_path);
 }
 
 int ConsoleFileHandler::load(int sample_rate)
