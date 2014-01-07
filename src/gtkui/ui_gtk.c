@@ -985,6 +985,7 @@ void show_hide_statusbar (void)
     if (show && ! statusbar)
     {
         statusbar = ui_statusbar_new ();
+        g_signal_connect (statusbar, "destroy", (GCallback) gtk_widget_destroyed, & statusbar);
         gtk_box_pack_end ((GtkBox *) vbox_outer, statusbar, FALSE, FALSE, 0);
         gtk_widget_show_all (statusbar);
     }
