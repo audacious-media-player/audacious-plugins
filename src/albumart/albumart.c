@@ -27,9 +27,9 @@ static void album_set_unscaled (GtkWidget * widget, GdkPixbuf * unscaled)
 {
     GdkPixbuf * old;
 
-    if ((old = g_object_get_data ((GObject *) widget, "pixbux-unscaled")))
+    if ((old = g_object_get_data ((GObject *) widget, "pixbuf-unscaled")))
         g_object_unref (old);
-    if ((old = g_object_get_data ((GObject *) widget, "pixbux-scaled")))
+    if ((old = g_object_get_data ((GObject *) widget, "pixbuf-scaled")))
         g_object_unref (old);
 
     g_object_set_data ((GObject *) widget, "pixbuf-unscaled", unscaled);
