@@ -22,6 +22,6 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget *ui_statusbar_new(void);
+GtkWidget * ui_statusbar_new (void);
 
 #endif
