@@ -201,14 +201,14 @@ static const ComboBoxElements mode_list[] = {
 static const PreferencesWidget jack_widgets[] = {
  {WIDGET_COMBO_BOX, N_("Connection mode:"),
   .cfg_type = VALUE_STRING, .csect = "jack", .cname = "port_connection_mode",
-  .data = {.combo = {mode_list, sizeof mode_list / sizeof mode_list[0]}}},
+  .data.combo = {mode_list, ARRAY_LEN (mode_list)}},
  {WIDGET_CHK_BTN, N_("Enable debug printing"),
   .cfg_type = VALUE_BOOLEAN, .csect = "jack", .cname = "isTraceEnabled"},
 };
 
 static const PluginPreferences jack_prefs = {
  .widgets = jack_widgets,
- .n_widgets = sizeof jack_widgets / sizeof jack_widgets[0]
+ .n_widgets = ARRAY_LEN (jack_widgets)
 };
 
 /* Initialize necessary things */
