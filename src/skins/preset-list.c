@@ -261,6 +261,8 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
     g_signal_connect(*window, "destroy",
                      G_CALLBACK(gtk_widget_destroyed), window);
 
+    audgui_destroy_on_escape (* window);
+
     vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_container_add(GTK_CONTAINER(*window), vbox);
 
