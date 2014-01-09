@@ -128,23 +128,6 @@ static gboolean button_release (GtkWidget * button, GdkEventButton * event)
     return TRUE;
 }
 
-static gboolean leave_notify (GtkWidget * button, GdkEventCrossing * event)
-{
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
-    g_return_val_if_fail (data, FALSE);
-
-    if (data->pressed || data->rpressed)
-    {
-        data->pressed = FALSE;
-        data->rpressed = FALSE;
-
-        if (data->type != BUTTON_TYPE_SMALL)
-            gtk_widget_queue_draw (button);
-    }
-
-    return TRUE;
-}
-
 static void button_destroy (GtkWidget * button)
 {
     g_free (g_object_get_data ((GObject *) button, "buttondata"));
@@ -173,8 +156,6 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
      NULL);
     g_signal_connect (button, "button-release-event", (GCallback)
      button_release, NULL);
-    g_signal_connect (button, "leave-notify-event", (GCallback) leave_notify,
-     NULL);
     g_signal_connect (button, "destroy", (GCallback) button_destroy, NULL);
 
     ButtonData * data = g_malloc0 (sizeof (ButtonData));
