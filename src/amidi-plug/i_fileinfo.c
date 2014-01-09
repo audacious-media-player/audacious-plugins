@@ -148,7 +148,6 @@ void i_fileinfo_gui (const char * filename_uri)
 
     fileinfowin = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_type_hint (GTK_WINDOW (fileinfowin), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_position (GTK_WINDOW (fileinfowin), GTK_WIN_POS_CENTER);
     g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (i_fileinfo_ev_destroy), mf);
     g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (gtk_widget_destroyed), &fileinfowin);
     gtk_container_set_border_width (GTK_CONTAINER (fileinfowin), 10);

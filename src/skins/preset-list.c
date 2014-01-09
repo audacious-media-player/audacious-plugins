@@ -254,7 +254,6 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
     gtk_window_set_title(GTK_WINDOW(*window), title);
     gtk_window_set_type_hint(GTK_WINDOW(*window), GDK_WINDOW_TYPE_HINT_DIALOG);
     gtk_window_set_default_size(GTK_WINDOW(*window), 350, 300);
-    gtk_window_set_position(GTK_WINDOW(*window), GTK_WIN_POS_CENTER);
     gtk_container_set_border_width(GTK_CONTAINER(*window), 10);
     gtk_window_set_transient_for(GTK_WINDOW(*window),
                                  GTK_WINDOW(equalizerwin));
