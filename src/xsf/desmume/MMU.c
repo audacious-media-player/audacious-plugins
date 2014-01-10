@@ -3190,7 +3190,7 @@ print_memory_profiling( void) {
       for ( mem_profile = 0;
             mem_profile < PROFILE_NUM_MEM_ACCESS_PROFILES;
             mem_profile++) {
-        printf( "address %08x: %lld\n",
+        printf( "address %08lx: %llu\n",
                 profile_memory_accesses[arm][access_type][mem_profile].masked_value,
                 profile_memory_accesses[arm][access_type][mem_profile].num_accesses);
       }

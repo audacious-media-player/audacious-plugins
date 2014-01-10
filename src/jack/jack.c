@@ -251,7 +251,7 @@ static int audacious_jack_free(void)
   {
     tmp = return_val;
     return_val = (return_val * effect.frequency) / output.frequency;
-    TRACE("adjusting from %ld to %ld free bytes to compensate for frequency differences\n", tmp, return_val);
+    TRACE("adjusting from %lu to %lu free bytes to compensate for frequency differences\n", tmp, return_val);
   }
 
   if(return_val > INT_MAX)
@@ -260,7 +260,7 @@ static int audacious_jack_free(void)
       return_val = INT_MAX;
   }
 
-  TRACE("free space of %ld bytes\n", return_val);
+  TRACE("free space of %lu bytes\n", return_val);
 
   return return_val;
 }

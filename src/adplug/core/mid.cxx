@@ -199,7 +199,7 @@ CmidPlayer::load_sierra_ins (const std::string & fname,
     for (k = 0; k < 48; k++)
     {
       l = i * 48 + k;
-      midiprintf ("\n%2d: ", l);
+      midiprintf ("\n%2ld: ", l);
       for (j = 0; j < 28; j++)
         ins[j] = f->readInt (1);
 
@@ -258,7 +258,7 @@ CmidPlayer::sierra_next_section ()
     track[curtrack].tend = flen;    //0xFC will kill it
     track[curtrack].iwait = 0;
     track[curtrack].pv = 0;
-    midiprintf ("track %d starts at %lx\n", curtrack, track[curtrack].spos);
+    midiprintf ("track %u starts at %lx\n", curtrack, track[curtrack].spos);
 
     getnext (2);
     i = getnext (1);
@@ -517,7 +517,7 @@ CmidPlayer::update ()
         track[curtrack].pv = (unsigned char) v;
 
         c = v & 0x0f;
-        midiprintf ("[%2X]", v);
+        midiprintf ("[%2lX]", v);
         switch (v & 0xf0)
         {
         case 0x80:             /*note off */
@@ -630,7 +630,7 @@ CmidPlayer::update ()
                 chp[on][2] = 0;
               }
             }
-            midiprintf (" [%d:%d:%d:%d]\n", c, ch[c].inum, note, vel);
+            midiprintf (" [%d:%d:%ld:%ld]\n", c, ch[c].inum, note, vel);
           }
           else
             midiprintf ("off");
@@ -652,12 +652,12 @@ CmidPlayer::update ()
           switch (ctrl)
           {
           case 0x07:
-            midiprintf ("(pb:%d: %d %d)", c, ctrl, vel);
+            midiprintf ("(pb:%d: %ld %ld)", c, ctrl, vel);
             ch[c].vol = vel;
             midiprintf ("vol");
             break;
           case 0x67:
-            midiprintf ("\n\nhere:%d\n\n", vel);
+            midiprintf ("\n\nhere:%ld\n\n", vel);
             if ((adlib_style & CMF_STYLE) != 0)
             {
               adlib_mode = vel;
@@ -690,7 +690,7 @@ CmidPlayer::update ()
             l = getval ();
             if (datalook (pos + l) == 0xf7)
               i = 1;
-            midiprintf ("{%d}", l);
+            midiprintf ("{%ld}", l);
             midiprintf ("\n");
 
             if (datalook (pos) == 0x7d &&
@@ -748,7 +748,7 @@ CmidPlayer::update ()
             {
               midiprintf ("\n");
               for (j = 0; j < l; j++)
-                midiprintf ("%2X ", getnext (1));
+                midiprintf ("%2lX ", getnext (1));
             }
 
             midiprintf ("\n");
@@ -776,7 +776,7 @@ CmidPlayer::update ()
             if (type == FILE_SIERRA || type == FILE_ADVSIERRA)
             {
               track[curtrack].tend = pos;
-              midiprintf ("endmark: %ld -- %lx\n", pos, pos);
+              midiprintf ("endmark: %lu -- %lx\n", pos, pos);
             }
             break;
           case 0xfe:
@@ -787,7 +787,7 @@ CmidPlayer::update ()
             v = getnext (1);
             l = getval ();
             midiprintf ("\n");
-            midiprintf ("{%X_%X}", v, l);
+            midiprintf ("{%lX_%lX}", v, l);
             if (v == 0x51)
             {
               lnum = getnext (l);
@@ -797,13 +797,13 @@ CmidPlayer::update ()
             else
             {
               for (i = 0; i < l; i++)
-                midiprintf ("%2X ", getnext (1));
+                midiprintf ("%2lX ", getnext (1));
             }
             break;
           }
           break;
         default:
-          midiprintf ("!", v);  /* if we get down here, a error occurred */
+          midiprintf ("%lX!", v);  /* if we get down here, a error occurred */
           break;
         }
 
@@ -869,7 +869,7 @@ CmidPlayer::update ()
     if (track[i].on)
     {
       if (track[i].pos < track[i].tend)
-        midiprintf ("<%d>", track[i].iwait);
+        midiprintf ("<%lu>", track[i].iwait);
       else
         midiprintf ("stop");
     }
@@ -968,7 +968,7 @@ CmidPlayer::rewind (int subsong)
     track[curtrack].on = 1;
     track[curtrack].tend = getnext (4);
     track[curtrack].spos = pos;
-    midiprintf ("tracklen:%ld\n", track[curtrack].tend);
+    midiprintf ("tracklen:%lu\n", track[curtrack].tend);
     break;
   case FILE_OLDLUCAS:
     msqtr = 250000;
@@ -980,7 +980,7 @@ CmidPlayer::rewind (int subsong)
     tins = i;
     for (j = 0; j < i; j++)
     {
-      midiprintf ("\n%d: ", j);
+      midiprintf ("\n%ld: ", j);
       for (l = 0; l < 16; l++)
         ins[l] = (unsigned char) getnext (1);
 

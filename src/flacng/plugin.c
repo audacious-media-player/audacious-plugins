@@ -117,7 +117,7 @@ static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
             break;
 
         default:
-            FLACNG_ERROR("Can not convert to %d bps\n", res);
+            FLACNG_ERROR("Can not convert to %u bps\n", res);
     }
 }
 

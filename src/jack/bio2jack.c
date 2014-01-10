@@ -534,8 +534,7 @@ JACK_callback(nframes_t nframes, void *arg)
 {
   jack_driver_t *drv = (jack_driver_t *) arg;
 
-  unsigned int i;
-  int src_error = 0;
+  int i, src_error = 0;
 
   TIMER("start\n");
   gettimeofday(&drv->previousTime, 0);  /* record the current time */
@@ -735,7 +734,7 @@ JACK_callback(nframes_t nframes, void *arg)
 
       if(!ensure_buffer_size(&drv->callback_buffer1, &drv->callback_buffer1_size, jack_bytes))
       {
-        ERR("allocated %lu bytes, need %lu bytes\n",
+        ERR("allocated %lu bytes, need %ld bytes\n",
             drv->callback_buffer1_size, jack_bytes);
         return -1;
       }
@@ -980,8 +979,7 @@ JACK_OpenDevice(jack_driver_t * drv)
 {
   const char **ports;
   char *our_client_name = 0;
-  unsigned int i;
-  int failed = 0;
+  int i, failed = 0;
 
   TRACE("creating jack client and setting up callbacks\n");
 
@@ -1549,7 +1547,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
 
   if(output_channels > MAX_OUTPUT_PORTS)
   {
-    ERR("output_channels == %d, MAX_OUTPUT_PORTS == %d\n", output_channels,
+    ERR("output_channels == %u, MAX_OUTPUT_PORTS == %u\n", output_channels,
         MAX_OUTPUT_PORTS);
     releaseDriver(drv);
     pthread_mutex_unlock(&device_mutex);
@@ -1558,7 +1556,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
 
   if(input_channels > MAX_INPUT_PORTS)
   {
-    ERR("input_channels == %d, MAX_INPUT_PORTS == %d\n", input_channels,
+    ERR("input_channels == %u, MAX_INPUT_PORTS == %u\n", input_channels,
         MAX_INPUT_PORTS);
     releaseDriver(drv);
     pthread_mutex_unlock(&device_mutex);
@@ -1575,7 +1573,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
      && ((jack_port_name_count < output_channels)
          || (jack_port_name_count < input_channels)))
   {
-    ERR("specified individual port names but not enough, gave %d names, need %d\n",
+    ERR("specified individual port names but not enough, gave %u names, need %u\n",
        jack_port_name_count, output_channels);
     releaseDriver(drv);
     pthread_mutex_unlock(&device_mutex);
@@ -2020,7 +2018,7 @@ JACK_GetVolumeForChannel(int deviceID, unsigned int channel,
   /* ensure that we have the channel we are getting volume for */
   if(channel > (drv->num_output_channels - 1))
   {
-    ERR("asking for channel index %d but we only have %ld channels\n", channel, drv->num_output_channels);
+    ERR("asking for channel index %u but we only have %lu channels\n", channel, drv->num_output_channels);
     releaseDriver(drv);
     return;
   }
