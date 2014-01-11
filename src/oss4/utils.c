@@ -19,6 +19,8 @@
 
 #include "oss.h"
 
+#include <libaudcore/audstrings.h>
+
 char *oss_format_to_text(int format)
 {
     const struct

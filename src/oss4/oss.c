@@ -22,6 +22,8 @@
 
 #include "oss.h"
 
+#include <libaudcore/audstrings.h>
+
 static const char * const oss_defaults[] = {
  "device", DEFAULT_DSP,
  "use_alt_device", "FALSE",
