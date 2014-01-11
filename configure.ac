@@ -1114,7 +1114,7 @@ echo "  Transport"
 echo "  ---------"
 echo "  neon-based http/https:                  $have_neon"
 echo "  libmms-based mms:                       $have_mms"
-echo "  GIO:                                    $have_gio"
+echo "  GIO:                                    yes"
 echo
 echo "  Container"
 echo "  ---------"
