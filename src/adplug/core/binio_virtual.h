@@ -6,7 +6,7 @@
 #ifndef __BINIO_VIRTUAL__
 #define __BINIO_VIRTUAL__
 
-#include <libbinio/binio.h>
+#include <binio.h>
 #include <stdio.h>
 
 extern "C" {
