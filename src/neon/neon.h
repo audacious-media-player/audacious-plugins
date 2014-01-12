@@ -27,9 +27,11 @@
 #include <ne_session.h>
 #include <ne_request.h>
 #include <ne_uri.h>
+
 #include "rb.h"
 
-typedef enum {
+typedef enum
+{
     NEON_READER_INIT=0,
     NEON_READER_RUN=1,
     NEON_READER_ERROR,
@@ -37,39 +39,41 @@ typedef enum {
     NEON_READER_TERM
 } neon_reader_t;
 
-struct reader_status {
+struct reader_status
+{
     pthread_mutex_t mutex;
     pthread_cond_t cond;
-    gboolean reading;
+    bool_t reading;
     neon_reader_t status;
 };
 
-struct icy_metadata {
-    gchar* stream_name;
-    gchar* stream_title;
-    gchar* stream_url;
-    gchar* stream_contenttype;
-    gint   stream_bitrate;
+struct icy_metadata
+{
+    char * stream_name;
+    char * stream_title;
+    char * stream_url;
+    char * stream_contenttype;
+    int   stream_bitrate;
 };
 
-struct neon_handle {
-    gchar* url;                         /* The URL, as passed to us */
-    ne_uri* purl;                       /* The URL, parsed into a structure */
+struct neon_handle
+{
+    char * url;                        /* The URL, as passed to us */
+    ne_uri * purl;                      /* The URL, parsed into a structure */
     struct ringbuf rb;                  /* Ringbuffer for our data */
-    guchar redircount;                  /* Redirect count for the opened URL */
+    unsigned char redircount;                  /* Redirect count for the opened URL */
     long pos;                           /* Current position in the stream (number of last byte delivered to the player) */
     gulong content_start;               /* Start position in the stream */
     long content_length;                /* Total content length, counting from content_start, if known. -1 if unknown */
-    gboolean can_ranges;                /* TRUE if the webserver advertised accept-range: bytes */
+    bool_t can_ranges;                /* TRUE if the webserver advertised accept-range: bytes */
     gulong icy_metaint;                 /* Interval in which the server will send metadata announcements. 0 if no announcments */
     gulong icy_metaleft;                /* Bytes left until the next metadata block */
     struct icy_metadata icy_metadata;   /* Current ICY metadata */
-    ne_session* session;
-    ne_request* request;
+    ne_session * session;
+    ne_request * request;
     pthread_t reader;
     struct reader_status reader_status;
-    gboolean eof;
+    bool_t eof;
 };
-
 
 #endif

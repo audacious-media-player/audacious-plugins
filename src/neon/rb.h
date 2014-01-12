@@ -20,29 +20,31 @@
 #include <pthread.h>
 
 typedef pthread_mutex_t rb_mutex_t;
-#define _RB_LOCK(L) pthread_mutex_lock(L)
-#define _RB_UNLOCK(L) pthread_mutex_unlock(L)
 
-struct ringbuf {
-    rb_mutex_t* lock;
-    char* buf;
-    char* end;
-    char* wp;
-    char* rp;
-    unsigned int free;
-    unsigned int used;
-    unsigned int size;
+#define _RB_LOCK(L) pthread_mutex_lock (L)
+#define _RB_UNLOCK(L) pthread_mutex_unlock (L)
+
+struct ringbuf
+{
+    rb_mutex_t * lock;
+    char * buf;
+    char * end;
+    char * wp;
+    char * rp;
+    unsigned free;
+    unsigned used;
+    unsigned size;
 };
 
-int init_rb_with_lock(struct ringbuf* rb, unsigned int size, rb_mutex_t* lock);
-int write_rb(struct ringbuf* rb, void* buf, unsigned int size);
-int read_rb(struct ringbuf* rb, void* buf, unsigned int size);
-int read_rb_locked(struct ringbuf* rb, void* buf, unsigned int size);
-void reset_rb(struct ringbuf* rb);
-unsigned int free_rb(struct ringbuf* rb);
-unsigned int free_rb_locked(struct ringbuf* rb);
-unsigned int used_rb(struct ringbuf* rb);
-unsigned int used_rb_locked(struct ringbuf* rb);
-void destroy_rb(struct ringbuf* rb);
+void init_rb_with_lock (struct ringbuf * rb, unsigned size, rb_mutex_t * lock);
+void write_rb (struct ringbuf * rb, void * buf, unsigned size);
+int read_rb (struct ringbuf * rb, void * buf, unsigned size);
+int read_rb_locked (struct ringbuf * rb, void * buf, unsigned size);
+void reset_rb (struct ringbuf * rb);
+unsigned free_rb (struct ringbuf * rb);
+unsigned free_rb_locked (struct ringbuf * rb);
+unsigned used_rb (struct ringbuf * rb);
+unsigned used_rb_locked (struct ringbuf * rb);
+void destroy_rb (struct ringbuf * rb);
 
 #endif
