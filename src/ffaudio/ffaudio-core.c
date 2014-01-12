@@ -622,6 +622,8 @@ static const gchar *ffaudio_fmts[] = {
     NULL
 };
 
+static const char * const ffaudio_mimes[] = {"application/ogg", NULL};
+
 AUD_INPUT_PLUGIN
 (
     .name = N_("FFmpeg Plugin"),
@@ -629,10 +631,11 @@ AUD_INPUT_PLUGIN
     .about_text = ffaudio_about,
     .init = ffaudio_init,
     .cleanup = ffaudio_cleanup,
+    .extensions = ffaudio_fmts,
+    .mimes = ffaudio_mimes,
     .is_our_file_from_vfs = ffaudio_probe,
     .probe_for_tuple = ffaudio_probe_for_tuple,
     .play = ffaudio_play,
-    .extensions = ffaudio_fmts,
     .update_song_tuple = ffaudio_write_tag,
 
     /* lowest priority fallback */
