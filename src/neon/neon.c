@@ -909,10 +909,10 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 
     _DEBUG ("<%p> Seek requested: offset %ld, whence %d", h, offset, whence);
 
-    /* Two things must be satisfied for us to be able to seek:
+    /* To seek to a non-zero offset, two things must be satisfied:
      * - the server must advertise a content-length
      * - the server must advertise accept-ranges: bytes */
-    if (h->content_length < 0 || ! h->can_ranges)
+    if ((whence != SEEK_SET || offset) && (h->content_length < 0 || ! h->can_ranges))
     {
         _DEBUG ("<%p> Can not seek due to server restrictions", h);
         return -1;
@@ -955,7 +955,7 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
         return -1;
     }
 
-    if (newpos >= content_length)
+    if (newpos && newpos >= content_length)
     {
         _ERROR ("<%p> Can not seek beyond end of stream (%ld >= %ld)",
          (void *) h, newpos, content_length);
