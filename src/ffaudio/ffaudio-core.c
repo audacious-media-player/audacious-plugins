@@ -280,7 +280,11 @@ ffaudio_codec_is_seekable(AVCodec *codec)
      */
     switch (codec->id) {
 #ifndef FFAUDIO_NO_BLACKLIST
+#if CHECK_LIBAVCODEC_VERSION(54, 25, 0)
+        case AV_CODEC_ID_MUSEPACK8:
+#else
         case CODEC_ID_MUSEPACK8:
+#endif
             AUDDBG("codec is blacklisted from seeking\n");
             return FALSE;
 #endif
