@@ -24,7 +24,6 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -122,9 +121,12 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 	float pos;
 	bool_t error = FALSE;
 
-	char dirbuf[strlen (filename) + 1];
-	strcpy (dirbuf, filename);
-	dirpath = dirname (dirbuf);
+	const char * slash = strrchr (filename, '/');
+	if (! slash)
+		return FALSE;
+
+	SNCOPY (dirbuf, filename, slash + 1 - filename);
+	dirpath = dirbuf;
 
 	vfs_file_get_contents (filename, & buffer, & size);
 
