@@ -28,7 +28,7 @@ pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t communication_signal = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t log_access_mutex = PTHREAD_MUTEX_INITIALIZER;
 gchar *session_key = NULL; /* pooled */
-gchar *request_token = NULL;
+gchar *request_token = NULL; /* pooled */
 
 
 //static (private) variables
@@ -239,8 +239,6 @@ static bool_t scrobbler_init (void) {
     if (!session_key[0])
         scrobbling_enabled = FALSE;
 
-    request_token = NULL;
-
     //TODO: Remove this after we are "sure" that noone is using the old scrobbler (from audacious < 3.4)
     //By Debian's standard, this will probably be by 2020 or so
     //Migration from the old scrobbler config
@@ -298,10 +296,12 @@ static void scrobbler_cleanup (void) {
 
     pthread_join(communicator, NULL);
 
-    g_free(request_token);
+    str_unref(request_token);
     str_unref(session_key);
+    str_unref(username);
     request_token = NULL;
     session_key   = NULL;
+    username      = NULL;
     scrobbler_running = TRUE;
 }
 

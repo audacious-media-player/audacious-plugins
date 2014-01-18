@@ -9,7 +9,7 @@
 bool_t          permission_check_requested   = FALSE;
 bool_t          invalidate_session_requested = FALSE;
 enum permission perm_result                  = PERMISSION_UNKNOWN;
-gchar          *username                     = "";
+gchar          *username                     = NULL; /* pooled */
 
 
 //static (private) variables
@@ -42,6 +42,7 @@ static gboolean permission_checker_thread (gpointer data) {
 
             gtk_label_set_markup(GTK_LABEL(permission_status_label), markup);
             gtk_widget_set_sensitive(revoke_button, TRUE);
+            g_free(markup);
 
         } else if (perm_result == PERMISSION_DENIED) {
 

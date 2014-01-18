@@ -80,9 +80,9 @@ extern gchar *received_data;
 extern size_t received_data_size;
 
 //Data filled by the XML parser
-extern gchar *request_token;
-extern gchar *session_key;
-extern gchar *username;
+extern gchar *request_token; /* pooled */
+extern gchar *session_key; /* pooled */
+extern gchar *username; /* pooled */
 
 //scrobbler_xml_parsing.c
 extern bool_t read_authentication_test_result(char **error_code, char **error_detail);

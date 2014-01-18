@@ -171,18 +171,22 @@ static bool_t scrobbler_request_token() {
         return FALSE;
     }
 
+    bool_t success = TRUE;
     gchar *error_code = NULL;
     gchar *error_detail = NULL;
+
     if (read_token(&error_code, &error_detail) == FALSE) {
+        success = FALSE;
         if (error_code != NULL && g_strcmp0(error_code, "8")) {
             //error code 8: There was an error granting the request token. Please try again later
+            str_unref(request_token);
             request_token = NULL;
-            return FALSE;
         }
-        return FALSE;
     }
 
-    return TRUE;
+    str_unref(error_code);
+    str_unref(error_detail);
+    return success;
 }
 
 
@@ -198,7 +202,7 @@ static bool_t update_session_key() {
                 g_strcmp0(error_code, "15") == 0    //token expired
             )) {
             AUDDBG("error code CAUGHT: %s\n", error_code);
-            g_free(session_key);
+            str_unref(session_key);
             session_key = NULL;
             result = TRUE;
         } else {
@@ -206,11 +210,10 @@ static bool_t update_session_key() {
         }
     }
 
-    if (session_key == NULL) {
-        aud_set_str("scrobbler", "session_key", "");
-    } else {
-        aud_set_str("scrobbler", "session_key", session_key);
-    }
+    aud_set_str("scrobbler", "session_key", session_key ? session_key : "");
+
+    str_unref(error_code);
+    str_unref(error_detail);
     return result;
 }
 
@@ -231,9 +234,7 @@ static bool_t scrobbler_request_session() {
 
     g_free(sessionmsg);
     //the token can only be sent once
-    if (request_token != NULL) {
-        g_free(request_token);
-    }
+    str_unref(request_token);
     request_token = NULL;
 
     return update_session_key();
@@ -248,7 +249,7 @@ static bool_t scrobbler_request_session() {
 //sets session_key to NULL if it is invalid
 static bool_t scrobbler_test_connection() {
 
-    if (session_key == NULL || strlen(session_key) == 0) {
+    if (!session_key || !session_key[0]) {
         scrobbling_enabled = FALSE;
         return TRUE;
     }
@@ -273,31 +274,32 @@ static bool_t scrobbler_test_connection() {
 
     gchar *error_code = NULL;
     gchar *error_detail = NULL;
+
     if (read_authentication_test_result(&error_code, &error_detail) == FALSE) {
         AUDDBG("Error code: %s. Detail: %s.\n", error_code, error_detail);
         if (error_code != NULL && (
                 g_strcmp0(error_code, "4") == 0 || //error code 4: Authentication Failed - You do not have permissions to access the service
                 g_strcmp0(error_code, "9") == 0    //error code 9: Invalid session key - Please re-authenticate
             )) {
-            g_free(error_code);
-            g_free(error_detail);
-            g_free(session_key);
+            str_unref(session_key);
             session_key = NULL;
             aud_set_str("scrobbler", "session_key", "");
             scrobbling_enabled = FALSE;
-            return TRUE;
         } else {
             //network problem.
             scrobbling_enabled = FALSE;
             AUDDBG("Connection NOT OK. Scrobbling disabled\n");
-            return FALSE;
+            success = FALSE;
         }
     } else {
         //THIS IS THE ONLY PLACE WHERE SCROBBLING IS SET TO ENABLED IN RUN-TIME
         scrobbling_enabled = TRUE;
         AUDDBG("Connection OK. Scrobbling enabled.\n");
-        return TRUE;
     }
+
+    str_unref(error_code);
+    str_unref(error_detail);
+    return success;
 }
 
 //called from scrobbler_init() @ scrobbler.c
@@ -426,10 +428,6 @@ static void scrobble_cached_queue() {
     gchar *scrobblemsg;
     GSList *lines_to_remove = NULL; //lines to remove because they were scrobbled (or ignored, and will not be retried)
     GSList *lines_to_retry = NULL; //lines to retry later because they were too old TODO: or "daily scrobble limit reached"
-    gchar *error_code = NULL;
-    gchar *error_detail = NULL;
-    bool_t ignored = FALSE;
-    gchar *ignored_code = NULL;
 
     pthread_mutex_lock(&log_access_mutex);
     success = g_file_get_contents(queuepath, &contents, NULL, NULL);
@@ -458,8 +456,11 @@ static void scrobble_cached_queue() {
                                                        "api_key", SCROBBLER_API_KEY,
                                                        "sk", session_key);
                 if (send_message_to_lastfm(scrobblemsg) == TRUE) {
-                    error_code = NULL;
-                    error_detail = NULL;
+                    char *error_code = NULL;
+                    char *error_detail = NULL;
+                    bool_t ignored = FALSE;
+                    char *ignored_code = NULL;
+
                     if (read_scrobble_result(&error_code, &error_detail, &ignored, &ignored_code) == TRUE) {
                         AUDDBG("SCROBBLE OK. Error code: %s. Error detail: %s\n", error_code, error_detail);
                         AUDDBG("SCROBBLE OK. ignored: %i.\n", ignored);
@@ -492,7 +493,7 @@ static void scrobble_cached_queue() {
                         else if (g_strcmp0(error_code,  "9") == 0) {
                             //Bad Session. Reauth.
                             scrobbling_enabled = FALSE;
-                            g_free(session_key);
+                            str_unref(session_key);
                             session_key = NULL;
                             aud_set_str("scrobbler", "session_key", "");
                         }
@@ -501,9 +502,9 @@ static void scrobble_cached_queue() {
                         }
                     }
 
-                    g_free(error_code);
-                    g_free(error_detail);
-
+                    str_unref(error_code);
+                    str_unref(error_detail);
+                    str_unref(ignored_code);
                 } else {
                     AUDDBG("Could not scrobble a track on the queue. Network problem?\n");
                     //scrobble to be retried
@@ -614,47 +615,48 @@ static void send_now_playing() {
         //Bad Session. Reauth.
         //We don't really care about any other errors.
         scrobbling_enabled = FALSE;
-        g_free(session_key);
+        str_unref(session_key);
         session_key = NULL;
         aud_set_str("scrobbler", "session_key", "");
       }
 
     }
-    g_free(error_code);
-    g_free(error_detail);
-    g_free(ignored_code);
     //We don't care if the now playing was not accepted, no need to read the result from the server.
 
   }
+
+  str_unref(error_code);
+  str_unref(error_detail);
+  str_unref(ignored_code);
 }
 
 static void treat_permission_check_request() {
-    if (session_key == NULL || strlen(session_key) == 0) {
+    if (!session_key || !session_key[0]) {
         perm_result = PERMISSION_DENIED;
 
-        if (request_token == NULL || strlen(request_token) == 0) {
-            if (scrobbler_request_token() == FALSE || request_token == NULL || strlen(request_token) == 0) {
+        if (!request_token || !request_token[0]) {
+            if (scrobbler_request_token() == FALSE || !request_token || !request_token[0]) {
                 perm_result = PERMISSION_NONET;
             } //else PERMISSION_DENIED
 
         } else if (scrobbler_request_session() == FALSE) {
             perm_result = PERMISSION_NONET;
 
-        } else if (session_key == NULL || strlen(session_key) == 0) {
+        } else if (!session_key || !session_key[0]) {
             //This means we had a token, a session was requested now,
             //but the token was not accepted or expired.
             //Ask for a new token now.
-            if (scrobbler_request_token() == FALSE || request_token == NULL || strlen(request_token) == 0) {
+            if (scrobbler_request_token() == FALSE || !request_token || !request_token[0]) {
                 perm_result = PERMISSION_NONET;
             } //else PERMISSION_DENIED
         }
     }
-    if (session_key != NULL && strlen(session_key) != 0 ){
+    if (session_key && session_key[0]) {
         if (scrobbler_test_connection() == FALSE) {
             perm_result = PERMISSION_NONET;
 
-            if (session_key == NULL || strlen(session_key) == 0) {
-                if (scrobbler_request_token() != FALSE && request_token != NULL && strlen(request_token) != 0) {
+            if (!session_key || !session_key[0]) {
+                if (scrobbler_request_token() != FALSE && request_token && request_token[0]) {
                     perm_result = PERMISSION_DENIED;
                 } //else PERMISSION_NONET
             }
@@ -671,7 +673,7 @@ static void treat_permission_check_request() {
               * c) the user fiddled with the audacious config file and
               * the key is now invalid
               */
-                if (scrobbler_request_token() != FALSE && request_token != NULL && strlen(request_token) != 0) {
+                if (scrobbler_request_token() != FALSE && request_token && request_token[0]) {
                     perm_result = PERMISSION_DENIED;
                 } else {
                     perm_result = PERMISSION_NONET;
@@ -689,13 +691,13 @@ static void treat_permission_check_request() {
 static bool_t treat_migrate_config() {
 
     char *password = aud_get_str("audioscrobbler","password");
-    if (password == NULL || strlen(password) == 0) {
+    if (!password[0]) {
         str_unref(password);
         return FALSE;
     }
 
     char *username = aud_get_str("audioscrobbler","username");
-    if (username == NULL || strlen(username) == 0) {
+    if (!username[0]) {
         str_unref(password);
         str_unref(username);
         return FALSE;
@@ -721,15 +723,10 @@ static bool_t treat_migrate_config() {
 
     g_free(sessionmsg);
 
-    if (update_session_key() == TRUE) {
-        if(session_key != NULL && strlen(session_key) != 0) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    } else {
+    if (!update_session_key())
         return FALSE;
-    }
+
+    return (session_key && session_key[0]);
 }
 
 
@@ -750,6 +747,7 @@ gpointer scrobbling_thread (gpointer input_data) {
             permission_check_requested = FALSE;
 
         } else if (invalidate_session_requested) {
+            str_unref(session_key);
             session_key = NULL;
             aud_set_str("scrobbler", "session_key", "");
             invalidate_session_requested = FALSE;
