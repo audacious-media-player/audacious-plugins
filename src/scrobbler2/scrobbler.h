@@ -90,6 +90,6 @@ extern bool_t read_token(char **error_code, char **error_detail);
 extern bool_t read_session_key(char **error_code, char **error_detail);
 extern bool_t read_scrobble_result(char **error_code, char **error_detail, bool_t *ignored, char **ignored_code);
 
-//scrobbler.c //TODO: refactor this
-extern gchar *remove_tabs(const char *string);
+//scrobbler.c
+extern char *clean_string(char *string);
 #endif /* SCROBBLER_H_ */

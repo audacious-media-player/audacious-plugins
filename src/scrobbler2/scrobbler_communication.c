@@ -5,6 +5,8 @@
 #include <sys/time.h>
 #include <curl/curl.h>
 
+#include <libaudcore/audstrings.h>
+
 //plugin includes
 #include "scrobbler.h"
 
@@ -553,58 +555,39 @@ static void send_now_playing() {
    */
   Tuple *curr_track = now_playing_track;
 
-  gchar *tab_remover;
+  char *artist = clean_string(tuple_get_str(curr_track, FIELD_ARTIST));
+  char *title  = clean_string(tuple_get_str(curr_track, FIELD_TITLE));
+  char *album  = clean_string(tuple_get_str(curr_track, FIELD_ALBUM));
 
-  gchar *artist = tuple_get_str(curr_track, FIELD_ARTIST);
-  gchar *album = tuple_get_str(curr_track, FIELD_ALBUM);
-  gchar *title = tuple_get_str(curr_track, FIELD_TITLE);
+  int track  = tuple_get_int(curr_track, FIELD_TRACK_NUMBER);
+  int length = tuple_get_int(curr_track, FIELD_LENGTH);
 
-  tab_remover = remove_tabs(artist);
-  str_unref(artist);
-  artist = tab_remover;
-
-  tab_remover = remove_tabs(album);
-  str_unref(album);
-  album = tab_remover;
-
-  tab_remover = remove_tabs(title);
-  str_unref(title);
-  title = tab_remover;
-
-  tab_remover = NULL;
-
-  gchar *number = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_TRACK_NUMBER));
-  gchar *length = g_strdup_printf("%i", tuple_get_int(curr_track, FIELD_LENGTH) / 1000);
   tuple_unref(curr_track);
 
-
-  if (artist != NULL && strlen(artist) > 0 &&
-       title != NULL && strlen(title)  > 0) {
+  if (artist[0] && title[0] && length > 0) {
+    char *track_str = (track > 0) ? int_to_str(track) : str_get("");
+    char *length_str = int_to_str(length / 1000);
 
     gchar *playingmsg = create_message_to_lastfm("track.updateNowPlaying",
                                             7,
                                            "artist", artist,
-                                           "album", (album == NULL ? "" : album),
+                                           "album", album,
                                            "track", title,
-                                           "trackNumber", number,
-                                           "duration", length,
+                                           "trackNumber", track_str,
+                                           "duration", length_str,
                                            "api_key", SCROBBLER_API_KEY,
                                            "sk", session_key);
-    g_free(artist);
-    g_free(album);
-    g_free(title);
-    g_free(number);
-    g_free(length);
 
     bool_t success = send_message_to_lastfm(playingmsg);
     g_free(playingmsg);
+
+    str_unref(track_str);
+    str_unref(length_str);
+
     if (success == FALSE) {
       AUDDBG("Network problems. Could not send \"now playing\" to last.fm\n");
       scrobbling_enabled = FALSE;
-      return;
-    }
-
-    if (read_scrobble_result(&error_code, &error_detail, &ignored, &ignored_code) == TRUE) {
+    } else if (read_scrobble_result(&error_code, &error_detail, &ignored, &ignored_code) == TRUE) {
       //see scrobble_cached_queue()
       AUDDBG("NOW PLAYING OK.\n");
     } else {
@@ -624,6 +607,10 @@ static void send_now_playing() {
     //We don't care if the now playing was not accepted, no need to read the result from the server.
 
   }
+
+  str_unref(artist);
+  str_unref(title);
+  str_unref(album);
 
   str_unref(error_code);
   str_unref(error_detail);
