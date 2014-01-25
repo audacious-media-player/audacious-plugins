@@ -17,6 +17,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <inttypes.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -357,7 +358,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
         handle->request = ne_request_create (handle->session, "GET", handle->purl->path);
 
     if (startbyte > 0)
-        ne_print_request_header (handle->request, "Range", "bytes=%ld-", startbyte);
+        ne_print_request_header (handle->request, "Range", "bytes=%"PRIu64"-", startbyte);
 
     ne_print_request_header (handle->request, "Icy-MetaData", "1");
 
