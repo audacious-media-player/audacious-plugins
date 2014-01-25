@@ -35,9 +35,9 @@ LIBS="$LIBS $LIBINTL"
 dnl Check for Audacious
 dnl ===================
 
-PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.4],
+PKG_CHECK_MODULES(AUDACIOUS, [audacious >= 3.5],
     [],
-    [AC_MSG_ERROR([Cannot find Audacious 3.4; have you installed Audacious yet?])]
+    [AC_MSG_ERROR([Cannot find Audacious 3.5; have you installed Audacious yet?])]
 )
 
 CPPFLAGS="$CPPFLAGS $AUDACIOUS_CFLAGS"
