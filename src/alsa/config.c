@@ -27,12 +27,14 @@
 
 char * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
  * alsa_config_mixer_element = NULL;
+unsigned alsa_config_mixer_element_index = 0;
 int alsa_config_drain_workaround = 1;
 
 static GtkListStore * pcm_list, * mixer_list, * mixer_element_list;
 static GtkWidget * pcm_combo, * mixer_combo, * mixer_element_combo, * drain_workaround_check;
 
-static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
+static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text,
+ unsigned uint)
 {
     static GtkTreeIter iter;
 
@@ -42,10 +44,18 @@ static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
     do
     {
         char * iter_text;
+        unsigned iter_uint;
 
         gtk_tree_model_get ((GtkTreeModel *) list, & iter, 0, & iter_text, -1);
 
-        if (! strcmp (iter_text, text))
+        // ignore uint?
+        if (uint == ~0)
+            iter_uint = ~0;
+        else
+            gtk_tree_model_get ((GtkTreeModel *) list, & iter, 1, & iter_uint,
+             -1);
+
+        if (! strcmp (iter_text, text) && iter_uint == uint)
         {
             g_free (iter_text);
             return & iter;
@@ -60,7 +70,7 @@ static GtkTreeIter * list_lookup_member (GtkListStore * list, const char * text)
 
 static int list_has_member (GtkListStore * list, const char * text)
 {
-    return (list_lookup_member (list, text) != NULL);
+    return (list_lookup_member (list, text, ~0) != NULL);
 }
 
 static void get_defined_devices (const char * type, int capture, void (* found)
@@ -242,7 +252,7 @@ static void mixer_list_fill (void)
 }
 
 static void get_mixer_elements (const char * mixer, void (* found)
- (const char * name))
+ (const char * name, unsigned index))
 {
     snd_mixer_t * mixer_handle = NULL;
     snd_mixer_elem_t * element;
@@ -257,7 +267,8 @@ static void get_mixer_elements (const char * mixer, void (* found)
     while (element != NULL)
     {
         if (snd_mixer_selem_has_playback_volume (element))
-            found (snd_mixer_selem_get_name (element));
+            found (snd_mixer_selem_get_name (element),
+             snd_mixer_selem_get_index (element));
 
         element = snd_mixer_elem_next (element);
     }
@@ -267,12 +278,12 @@ FAILED:
         snd_mixer_close (mixer_handle);
 }
 
-static void mixer_element_found (const char * name)
+static void mixer_element_found (const char * name, unsigned index)
 {
     GtkTreeIter iter;
 
     gtk_list_store_append (mixer_element_list, & iter);
-    gtk_list_store_set (mixer_element_list, & iter, 0, name, -1);
+    gtk_list_store_set (mixer_element_list, & iter, 0, name, 1, index, -1);
 }
 
 static void mixer_element_list_fill (void)
@@ -280,7 +291,7 @@ static void mixer_element_list_fill (void)
     if (mixer_element_list)
         return;
 
-    mixer_element_list = gtk_list_store_new (1, G_TYPE_STRING);
+    mixer_element_list = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_UINT);
     get_mixer_elements (alsa_config_mixer, mixer_element_found);
 }
 
@@ -321,6 +332,8 @@ void alsa_config_load (void)
     alsa_config_pcm = aud_get_str ("alsa", "pcm");
     alsa_config_mixer = aud_get_str ("alsa", "mixer");
     alsa_config_mixer_element = aud_get_str ("alsa", "mixer-element");
+    alsa_config_mixer_element_index = aud_get_int ("alsa",
+     "mixer-element-index");
     alsa_config_drain_workaround = aud_get_bool ("alsa", "drain-workaround");
 
     if (! alsa_config_mixer_element[0])
@@ -350,6 +363,8 @@ void alsa_config_save (void)
     aud_set_str ("alsa", "pcm", alsa_config_pcm);
     aud_set_str ("alsa", "mixer", alsa_config_mixer);
     aud_set_str ("alsa", "mixer-element", alsa_config_mixer_element);
+    aud_set_int ("alsa", "mixer-element-index",
+     alsa_config_mixer_element_index);
     aud_set_bool ("alsa", "drain-workaround", alsa_config_drain_workaround);
 
     str_unref (alsa_config_pcm);
@@ -401,7 +416,26 @@ static void combo_select_by_text (GtkWidget * combo, GtkListStore * list,
         return;
     }
 
-    iter = list_lookup_member (list, text);
+    iter = list_lookup_member (list, text, ~0);
+
+    if (iter == NULL)
+        return;
+
+    gtk_combo_box_set_active_iter ((GtkComboBox *) combo, iter);
+}
+
+static void combo_select_by_text_uint (GtkWidget * combo, GtkListStore * list,
+ const char * text, unsigned uint)
+{
+    GtkTreeIter * iter;
+
+    if (text == NULL)
+    {
+        gtk_combo_box_set_active ((GtkComboBox *) combo, -1);
+        return;
+    }
+
+    iter = list_lookup_member (list, text, uint);
 
     if (iter == NULL)
         return;
@@ -419,6 +453,18 @@ static const char * combo_selected_text (GtkWidget * combo, GtkListStore * list)
 
     gtk_tree_model_get ((GtkTreeModel *) list, & iter, 0, & text, -1);
     return text;
+}
+
+static unsigned combo_selected_uint (GtkWidget * combo, GtkListStore * list)
+{
+    GtkTreeIter iter;
+    unsigned uint;
+
+    if (! gtk_combo_box_get_active_iter ((GtkComboBox *) combo, & iter))
+        return 0;
+
+    gtk_tree_model_get ((GtkTreeModel *) list, & iter, 1, & uint, -1);
+    return uint;
 }
 
 static GtkWidget * create_vbox (void)
@@ -478,12 +524,19 @@ static void mixer_element_changed (GtkComboBox * combo, void * unused)
     const char * new = combo_selected_text (mixer_element_combo,
      mixer_element_list);
 
-    if (new == NULL || (alsa_config_mixer_element != NULL && ! strcmp (new,
-     alsa_config_mixer_element)))
+    if (new == NULL)
+        return;
+
+    unsigned index = combo_selected_uint (mixer_element_combo,
+     mixer_element_list);
+
+    if (alsa_config_mixer_element != NULL && ! strcmp (new,
+     alsa_config_mixer_element) && alsa_config_mixer_element_index == index)
         return;
 
     str_unref (alsa_config_mixer_element);
     alsa_config_mixer_element = str_get (new);
+    alsa_config_mixer_element_index = index;
 
     alsa_close_mixer ();
     alsa_open_mixer ();
@@ -516,8 +569,8 @@ void * alsa_create_config_widget (void)
 
     combo_select_by_text (pcm_combo, pcm_list, alsa_config_pcm);
     combo_select_by_text (mixer_combo, mixer_list, alsa_config_mixer);
-    combo_select_by_text (mixer_element_combo, mixer_element_list,
-     alsa_config_mixer_element);
+    combo_select_by_text_uint (mixer_element_combo, mixer_element_list,
+     alsa_config_mixer_element, alsa_config_mixer_element_index);
 
     connect_callbacks ();
 

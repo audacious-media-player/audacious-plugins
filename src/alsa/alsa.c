@@ -617,6 +617,7 @@ void alsa_open_mixer (void)
 
     snd_mixer_selem_id_alloca (& selem_id);
     snd_mixer_selem_id_set_name (selem_id, alsa_config_mixer_element);
+    snd_mixer_selem_id_set_index (selem_id, alsa_config_mixer_element_index);
     alsa_mixer_element = snd_mixer_find_selem (alsa_mixer, selem_id);
 
     if (alsa_mixer_element == NULL)
