@@ -959,7 +959,7 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
     if (newpos && newpos >= content_length)
     {
         _ERROR ("<%p> Can not seek beyond end of stream (%ld >= %ld)",
-         (void *) h, newpos, content_length);
+         (void *) h, (long) newpos, (long) content_length);
         return -1;
     }
 
