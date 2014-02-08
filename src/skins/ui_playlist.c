@@ -484,7 +484,8 @@ playlistwin_press(GtkWidget * widget,
                   GdkEventButton * event,
                   gpointer callback_data)
 {
-    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS && event->y < 14)
+    if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
+     event->window == gtk_widget_get_window (widget) && event->y < 14)
         playlistwin_shade_toggle();
     else if (event->button == 3)
         menu_popup (UI_MENU_PLAYLIST, event->x_root, event->y_root, FALSE, FALSE, 3, event->time);
