@@ -23,6 +23,8 @@
 
 #include <mpg123.h>
 
+#include "prefs.h"
+
 #ifdef DEBUG_MPG123_IO
 # define MPG123_IODBG(...)	AUDDBG(__VA_ARGS__)
 #else
@@ -34,10 +36,8 @@
 #include <audacious/i18n.h>
 #include <audacious/input.h>
 #include <audacious/plugin.h>
+#include <audacious/preferences.h>
 #include <audacious/audtag.h>
-
-/* Define to read all frame headers when calculating file length */
-/* #define FULL_SCAN */
 
 #define DECODE_OPTIONS (MPG123_QUIET | MPG123_GAPLESS | MPG123_SEEKBUFFER | MPG123_FUZZY)
 
@@ -62,12 +62,15 @@ static bool_t aud_mpg123_init (void)
 	AUDDBG("initializing mpg123 library\n");
 	mpg123_init();
 
+	mpg123_cfg_load ();
+
 	return TRUE;
 }
 
 static void
 aud_mpg123_deinit(void)
 {
+	mpg123_cfg_save ();
 	AUDDBG("deinitializing mpg123 library\n");
 	mpg123_exit();
 }
@@ -138,10 +141,9 @@ ERR:
 		return FALSE;
 	}
 
-#ifdef FULL_SCAN
-	if (mpg123_scan (dec) < 0)
-		goto ERR;
-#endif
+	if (mpg123cfg.full_scan)
+		if (mpg123_scan (dec) < 0)
+			goto ERR;
 
 RETRY:;
 	long rate;
@@ -193,10 +195,9 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	if ((result = mpg123_open_handle (decoder, file)) < 0)
 		goto ERR;
 
-#ifdef FULL_SCAN
-	if (mpg123_scan (decoder) < 0)
-		goto ERR;
-#endif
+	if (mpg123cfg.full_scan)
+		if (mpg123_scan (decoder) < 0)
+			goto ERR;
 
 	if ((result = mpg123_getformat (decoder, & rate, & channels, & encoding)) <
 	 0)
@@ -333,10 +334,9 @@ OPEN_ERROR:
 	float outbuf[8192];
 	size_t outbuf_size = 0;
 
-#ifdef FULL_SCAN
-	if (mpg123_scan (ctx.decoder) < 0)
-		goto OPEN_ERROR;
-#endif
+	if (mpg123cfg.full_scan)
+		if (mpg123_scan (ctx.decoder) < 0)
+			goto OPEN_ERROR;
 
 GET_FORMAT:
 	if (mpg123_getformat (ctx.decoder, & ctx.rate, & ctx.channels,
@@ -442,12 +442,27 @@ static bool_t mpg123_get_image (const char * filename, VFSFile * handle,
 /** plugin description header **/
 static const char *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 
+
+/** Prefs **/
+static const PreferencesWidget mpg123_widgets[] = {
+	{WIDGET_LABEL, N_("<b>mpg123</b>")},
+	{WIDGET_CHK_BTN, N_("Use full scan (fixes wrong length detection)"),
+		.cfg_type = VALUE_BOOLEAN, .cfg = & mpg123cfg.full_scan}
+};
+
+static const PluginPreferences mpg123_prefs = {
+	.widgets = mpg123_widgets,
+	.n_widgets = ARRAY_LEN (mpg123_widgets)
+};
+
+
 AUD_INPUT_PLUGIN
 (
 	.name = N_("MPG123 Plugin"),
 	.domain = PACKAGE,
 	.init = aud_mpg123_init,
 	.cleanup = aud_mpg123_deinit,
+	.prefs = & mpg123_prefs,
 	.extensions = mpg123_fmts,
 	.is_our_file_from_vfs = mpg123_probe_for_fd,
 	.probe_for_tuple = mpg123_probe_for_tuple,
