@@ -240,15 +240,18 @@ mainwin_set_song_title(const gchar * title)
 
 static void setup_widget (GtkWidget * widget, gint x, gint y, gboolean show)
 {
-    GtkRequisition size;
-    gtk_widget_get_preferred_size (widget, & size, NULL);
-
     /* leave no-show-all widgets alone (they are shown/hidden elsewhere) */
     if (! gtk_widget_get_no_show_all (widget))
     {
+        int width, height;
+
+        /* use get_size_request(), not get_preferred_size() */
+        /* get_preferred_size() will return 0x0 for hidden widgets */
+        gtk_widget_get_size_request (widget, & width, & height);
+
         /* hide widgets that are outside the window boundary */
-        if (x < 0 || x + size.width > active_skin->properties.mainwin_width ||
-         y < 0 || y + size.height > active_skin->properties.mainwin_height)
+        if (x < 0 || x + width > active_skin->properties.mainwin_width ||
+         y < 0 || y + height > active_skin->properties.mainwin_height)
             show = FALSE;
 
         gtk_widget_set_visible (widget, show);
