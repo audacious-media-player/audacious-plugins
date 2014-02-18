@@ -168,6 +168,7 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
         set_tuple_str(tuple, FIELD_ALBUM, comment, "album");
         set_tuple_str(tuple, FIELD_GENRE, comment, "genre");
         set_tuple_str(tuple, FIELD_COMMENT, comment, "comment");
+	set_tuple_str(tuple, FIELD_MBID, comment, "musicbrainz_trackid");
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
             tuple_set_int(tuple, FIELD_TRACK_NUMBER, atoi(tmps));

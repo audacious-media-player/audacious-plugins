@@ -334,8 +334,8 @@ bool_t scrobbler_communication_init() {
 }
 
 static void set_timestamp_to_current(gchar **line) {
-    //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
-    //artist  album   title   number  length  "L"     timestamp NULL
+    //line[0] line[1] line[2] line[3] line[4] line[5] line[6] line[7]   line[8]
+    //artist  album   title   number  length  "L"     timestamp mbid    NULL
 
     gchar **splitted_line = g_strsplit(*line, "\t", 0);
     g_free(splitted_line[6]);
@@ -443,18 +443,19 @@ static void scrobble_cached_queue() {
         for (int i = 0; lines[i] != NULL && strlen(lines[i]) > 0 && scrobbling_enabled; i++) {
             line = g_strsplit(lines[i], "\t", 0);
 
-            //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
-            //artist  album   title   number  length  "L"     timestamp NULL
+	    //line[0] line[1] line[2] line[3] line[4] line[5] line[6] line[7]   line[8]
+	    //artist  album   title   number  length  "L"     timestamp mbid    NULL
 
-            if (line[0] && line[2] && (strcmp(line[5], "L") == 0) && line[6] && (line[7] == NULL)) {
+            if (line[0] && line[2] && (strcmp(line[5], "L") == 0) && line[6] && (line[8] == NULL)) {
                 scrobblemsg = create_message_to_lastfm("track.scrobble",
-                                                       8,
+                                                       9,
                                                        "artist", line[0],
                                                        "album", line[1],
                                                        "track", line[2],
                                                        "trackNumber", line[3],
                                                        "duration", line[4],
                                                        "timestamp", line[6],
+						       "mbid", line[7],
                                                        "api_key", SCROBBLER_API_KEY,
                                                        "sk", session_key);
                 if (send_message_to_lastfm(scrobblemsg) == TRUE) {
@@ -558,6 +559,7 @@ static void send_now_playing() {
   char *artist = clean_string(tuple_get_str(curr_track, FIELD_ARTIST));
   char *title  = clean_string(tuple_get_str(curr_track, FIELD_TITLE));
   char *album  = clean_string(tuple_get_str(curr_track, FIELD_ALBUM));
+  char *mbid = clean_string(tuple_get_str(curr_track, FIELD_MBID));
 
   int track  = tuple_get_int(curr_track, FIELD_TRACK_NUMBER);
   int length = tuple_get_int(curr_track, FIELD_LENGTH);
@@ -569,10 +571,11 @@ static void send_now_playing() {
     char *length_str = int_to_str(length / 1000);
 
     gchar *playingmsg = create_message_to_lastfm("track.updateNowPlaying",
-                                            7,
+                                            8,
                                            "artist", artist,
                                            "album", album,
                                            "track", title,
+					   "mbid", mbid,
                                            "trackNumber", track_str,
                                            "duration", length_str,
                                            "api_key", SCROBBLER_API_KEY,
@@ -611,6 +614,7 @@ static void send_now_playing() {
   str_unref(artist);
   str_unref(title);
   str_unref(album);
+  str_unref(mbid);
 
   str_unref(error_code);
   str_unref(error_detail);

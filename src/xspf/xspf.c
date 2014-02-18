@@ -47,6 +47,7 @@ typedef struct {
 
 
 static const xspf_entry_t xspf_entries[] = {
+    { FIELD_MBID,         "identifier",   TUPLE_STRING,   FALSE},
     { FIELD_ARTIST,       "creator",      TUPLE_STRING,   FALSE},
     { FIELD_TITLE,        "title",        TUPLE_STRING,   FALSE},
     { FIELD_ALBUM,        "album",        TUPLE_STRING,   FALSE},
@@ -412,7 +413,21 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
                 if (isOK)
                     xspf_add_node(track, xs->type, xs->isMeta, xs->xspfName, scratch, scratchi);
             }
+	    scratch = tuple_get_str (tuple, FIELD_MBID);
+	    if (scratch != NULL)
+	    {
+		xmlNodePtr musicbrainz;
+		gchar tmps[94];
+
+		musicbrainz = xmlNewNode(NULL, (xmlChar *) "meta");
+		xmlSetProp(musicbrainz, (xmlChar *) "rel", (xmlChar *) "http://musicbrainz.org/recording");
+		g_snprintf(tmps, sizeof(tmps),
+			   "http://musicbrainz.org/ws/2/recording/%s?inc=artist-credits", scratch);
+		xmlAddChild (musicbrainz, xmlNewText ((xmlChar *) tmps));
+		xmlAddChild (track, musicbrainz);
+	    }
         }
+
     }
 
     xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, NULL,

@@ -167,6 +167,7 @@ bool_t flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple *tu
     insert_str_tuple_to_vc(vc_block, tuple, FIELD_ALBUM, "ALBUM");
     insert_str_tuple_to_vc(vc_block, tuple, FIELD_GENRE, "GENRE");
     insert_str_tuple_to_vc(vc_block, tuple, FIELD_COMMENT, "COMMENT");
+    insert_str_tuple_to_vc(vc_block, tuple, FIELD_MBID, "musicbrainz_trackid");
 
     insert_int_tuple_to_vc(vc_block, tuple, FIELD_YEAR, "DATE");
     insert_int_tuple_to_vc(vc_block, tuple, FIELD_TRACK_NUMBER, "TRACKNUMBER");
@@ -315,7 +316,8 @@ static void parse_comment (Tuple * tuple, const char * key, const char * value)
      {"ALBUM", FIELD_ALBUM},
      {"TITLE", FIELD_TITLE},
      {"COMMENT", FIELD_COMMENT},
-     {"GENRE", FIELD_GENRE}};
+     {"GENRE", FIELD_GENRE},
+     {"musicbrainz_trackid", FIELD_MBID}};
 
     for (int i = 0; i < ARRAY_LEN (tfields); i ++)
     {

@@ -80,6 +80,7 @@ static gboolean queue_track_to_scrobble (gpointer data) {
     char *artist = clean_string(tuple_get_str(playing_track, FIELD_ARTIST));
     char *title  = clean_string(tuple_get_str(playing_track, FIELD_TITLE));
     char *album  = clean_string(tuple_get_str(playing_track, FIELD_ALBUM));
+    char *mbid   = clean_string(tuple_get_str(playing_track, FIELD_MBID));
 
     int track  = tuple_get_int(playing_track, FIELD_TRACK_NUMBER);
     int length = tuple_get_int(playing_track, FIELD_LENGTH);
@@ -97,8 +98,10 @@ static gboolean queue_track_to_scrobble (gpointer data) {
             //This isn't exactly the scrobbler.log format because the header
             //is missing, but we're sticking to it anyway...
             //See http://www.audioscrobbler.net/wiki/Portable_Player_Logging
-            if (fprintf(f, "%s\t%s\t%s\t%s\t%i\tL\t%"G_GINT64_FORMAT"\n",
-             artist, album, title, track_str, length / 1000, timestamp) < 0) {
+	    //line[0] line[1] line[2] line[3] line[4] line[5] line[6] line[7]   line[8]
+	    //artist  album   title   number  length  "L"     timestamp mbid    NULL
+            if (fprintf(f, "%s\t%s\t%s\t%s\t%i\tL\t%"G_GINT64_FORMAT"\t%s\n",
+		artist, album, title, track_str, length / 1000, timestamp, mbid) < 0) {
                 perror("fprintf");
             } else {
                 pthread_mutex_lock(&communication_mutex);
@@ -115,6 +118,7 @@ static gboolean queue_track_to_scrobble (gpointer data) {
     str_unref(artist);
     str_unref(title);
     str_unref(album);
+    str_unref(mbid);
 
     cleanup_current_track();
     return FALSE;
