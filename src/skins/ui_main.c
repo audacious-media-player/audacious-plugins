@@ -306,6 +306,8 @@ void mainwin_refresh_hints (void)
         window_set_size (mainwin, p->mainwin_width, p->mainwin_height);
 }
 
+/* note that the song info is not translated since it is displayed using
+ * the skinned bitmap font, which supports only the English alphabet */
 void mainwin_set_song_info (gint bitrate, gint samplerate, gint channels)
 {
     gchar scratch[32];
@@ -334,7 +336,7 @@ void mainwin_set_song_info (gint bitrate, gint samplerate, gint channels)
     ui_skinned_monostereo_set_num_channels (mainwin_monostereo, channels);
 
     if (bitrate > 0)
-        snprintf (scratch, sizeof scratch, "%d %s", bitrate / 1000, _("kbps"));
+        snprintf (scratch, sizeof scratch, "%d %s", bitrate / 1000, "kbps");
     else
         scratch[0] = 0;
 
@@ -342,15 +344,14 @@ void mainwin_set_song_info (gint bitrate, gint samplerate, gint channels)
     {
         length = strlen (scratch);
         snprintf (scratch + length, sizeof scratch - length, "%s%d %s", length ?
-         ", " : "", samplerate / 1000, _("kHz"));
+         ", " : "", samplerate / 1000, "kHz");
     }
 
     if (channels > 0)
     {
         length = strlen (scratch);
         snprintf (scratch + length, sizeof scratch - length, "%s%s", length ?
-         ", " : "", channels > 2 ? _("surround") : channels > 1 ? _("stereo") :
-         _("mono"));
+         ", " : "", channels > 2 ? "surround" : channels > 1 ? "stereo" : "mono");
     }
 
     textbox_set_text (mainwin_othertext, scratch);
