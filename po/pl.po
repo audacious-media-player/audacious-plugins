@@ -11,6 +11,7 @@
 # mgrvnwald <marco@mgrvnwald.com>, 2013
 # mgrvnwald <marco@mgrvnwald.com>, 2013
 # mgrvnwald <marco@mgrvnwald.com>, 2013
+# mkkot <marcin2006@gmail.com>, 2013-2014
 # Piotr Sokół <psokol@jabster.pl>, 2012
 # Szymon Weihs <sz.weihs@gmail.com>, 2011
 # Szymon Weihs <sz.weihs@gmail.com>, 2011-2012
@@ -18,10 +19,10 @@
 # vojcek <vojcek@tlen.pl>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-01-03 15:42+0100\n"
-"PO-Revision-Date: 2013-07-07 13:21+0000\n"
+"POT-Creation-Date: 2014-02-22 00:13+0100\n"
+"PO-Revision-Date: 2014-01-04 14:14+0000\n"
 "Last-Translator: mkkot <marcin2006@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/audacious/"
 "language/pl/)\n"
@@ -1916,9 +1917,8 @@ msgid "_Sort"
 msgstr "_Sortuj"
 
 #: src/gtkui/menus.c:237
-#, fuzzy
 msgid "Sort Se_lected"
-msgstr "Posortuj zaznaczone"
+msgstr "Sortuj _wybrane"
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -2248,7 +2248,28 @@ msgstr ""
 msgid "Global Hotkeys"
 msgstr "Globalne skróty klawiszowe"
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:193
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/jack.c:194
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/jack.c:195
+msgid "Don't connect to any port"
+msgstr ""
+
+#: src/jack/jack.c:199
+#, fuzzy
+msgid "Connection mode:"
+msgstr "<b>Połącznenie</b>"
+
+#: src/jack/jack.c:202
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:430
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2259,7 +2280,7 @@ msgstr ""
 "http://xmms-jack.sourceforge.net/\n"
 "Ported to Audacious by Giacomo Lozito"
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:436
 msgid "JACK Output"
 msgstr "JACK"
 
@@ -4352,9 +4373,3 @@ msgstr "Dekoder 2SF"
 #: src/xspf/xspf.c:440
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Współdzielone playlisty XML (XSPF)"
-
-#~ msgid "AMIDI-Plug - select file"
-#~ msgstr "AMIDI-Plug - wybierz plik"
-
-#~ msgid "Sort S_elected"
-#~ msgstr "Sortuj wybran_e"

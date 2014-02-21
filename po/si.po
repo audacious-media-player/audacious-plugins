@@ -8,9 +8,9 @@
 # P.I.Balasinghe <pushpika.indrachapa@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-01-03 15:42+0100\n"
+"POT-Creation-Date: 2014-02-22 00:13+0100\n"
 "PO-Revision-Date: 2013-06-03 17:20+0000\n"
 "Last-Translator: ashintha89 <ashintha@gmail.com>\n"
 "Language-Team: Sinhala (http://www.transifex.com/projects/p/audacious/"
@@ -2221,7 +2221,28 @@ msgstr ""
 msgid "Global Hotkeys"
 msgstr "ගෝලීය විශේෂ බොත්තම්:"
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:193
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/jack.c:194
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/jack.c:195
+msgid "Don't connect to any port"
+msgstr ""
+
+#: src/jack/jack.c:199
+#, fuzzy
+msgid "Connection mode:"
+msgstr "<b>සබැඳුම</b>"
+
+#: src/jack/jack.c:202
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:430
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2233,7 +2254,7 @@ msgstr ""
 "⏎\n"
 "Audacious වෙත ඇතුලත් කළේ ජියාකොමෝ ලොසීටෝ විසිනි"
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:436
 msgid "JACK Output"
 msgstr "JACK ප්‍රතිදානය"
 

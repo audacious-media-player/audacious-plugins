@@ -4,13 +4,14 @@
 #
 # Translators:
 # Mikalai Udodau <crom-a@tut.by>, 2012
+# debconf <prach.by@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-01-03 15:42+0100\n"
-"PO-Revision-Date: 2013-05-04 12:38+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-02-22 00:13+0100\n"
+"PO-Revision-Date: 2014-01-06 14:04+0000\n"
+"Last-Translator: debconf <prach.by@gmail.com>\n"
 "Language-Team: Belarusian (http://www.transifex.com/projects/p/audacious/"
 "language/be/)\n"
 "Language: be\n"
@@ -54,7 +55,7 @@ msgstr ""
 
 #: src/alarm/alarm.c:814 src/alarm/interface.c:82
 msgid "Alarm"
-msgstr ""
+msgstr "Алярм"
 
 #: src/alarm/interface.c:28
 msgid ""
@@ -117,7 +118,7 @@ msgstr ""
 
 #: src/alarm/interface.c:81
 msgid "This is your wakeup call."
-msgstr ""
+msgstr "Гэта ваш выклік абуджэння."
 
 #: src/alarm/interface.c:99
 msgid "Your reminder for today is..."
@@ -125,7 +126,7 @@ msgstr ""
 
 #: src/alarm/interface.c:101 src/alarm/interface.c:415
 msgid "Reminder"
-msgstr ""
+msgstr "Напамін"
 
 #: src/alarm/interface.c:140
 msgid "Monday"
@@ -157,7 +158,7 @@ msgstr "Нядзеля"
 
 #: src/alarm/interface.c:175
 msgid "Alarm Settings"
-msgstr ""
+msgstr "Наладкі алярмаў"
 
 #: src/alarm/interface.c:186 src/alarm/interface.c:250
 #: src/alarm/interface.c:265
@@ -166,7 +167,7 @@ msgstr "Час"
 
 #: src/alarm/interface.c:193
 msgid "Alarm at (default):"
-msgstr ""
+msgstr "Алярм у час (па-змоўчванню):"
 
 #: src/alarm/interface.c:216
 msgid "h"
@@ -182,11 +183,11 @@ msgstr "гадзін"
 
 #: src/alarm/interface.c:246
 msgid "minutes"
-msgstr "мінуты"
+msgstr "хвілін"
 
 #: src/alarm/interface.c:255
 msgid "Choose the days for the alarm to come on"
-msgstr ""
+msgstr "Абярыце дні для ўжывання алярмаў"
 
 #: src/alarm/interface.c:262
 msgid "Day"
@@ -196,7 +197,7 @@ msgstr "Дзень"
 #: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:456
 #: src/skins/ui_manager.c:477
 msgid "Default"
-msgstr "Тыповы"
+msgstr "Па-змоўчванню"
 
 #: src/alarm/interface.c:310
 msgid "Days"
@@ -220,7 +221,7 @@ msgstr "Пачаць у"
 
 #: src/alarm/interface.c:357
 msgid "Final"
-msgstr ""
+msgstr "Фінальны"
 
 #: src/alarm/interface.c:372
 msgid "Current"
@@ -244,7 +245,7 @@ msgstr "Выбраць плэйліст"
 
 #: src/alarm/interface.c:419
 msgid "Use reminder"
-msgstr ""
+msgstr "Ужываць напамін"
 
 #: src/alarm/interface.c:428
 msgid "Options"
@@ -264,7 +265,7 @@ msgstr "Афармленне альбома"
 
 #: src/alsa/config.c:212
 msgid "Default PCM device"
-msgstr "Тыповая прылада PCM"
+msgstr "Тыповая PCM-прылада"
 
 #: src/alsa/config.c:241
 msgid "Default mixer device"
@@ -272,11 +273,11 @@ msgstr "Тыповая прылада мікшара"
 
 #: src/alsa/config.c:428
 msgid "ALSA Output Plugin Preferences"
-msgstr "Настаўленні плагіна вываду ALSA"
+msgstr "Наладкі плагіна вываду ALSA"
 
 #: src/alsa/config.c:434
 msgid "PCM device:"
-msgstr "Прылада PCM:"
+msgstr "PCM прылада:"
 
 #: src/alsa/config.c:436
 msgid "Mixer device:"
@@ -284,11 +285,11 @@ msgstr "Прылада мікшара:"
 
 #: src/alsa/config.c:438
 msgid "Mixer element:"
-msgstr ""
+msgstr "Элемент мікшара:"
 
 #: src/alsa/config.c:441
 msgid "Work around drain hangup"
-msgstr ""
+msgstr "Апрацоўваць бітыя завісанні"
 
 #: src/alsa/plugin.c:25
 msgid ""
@@ -308,6 +309,8 @@ msgid ""
 "You have not selected any sequencer ports for MIDI playback.  You can do so "
 "in the MIDI plugin preferences."
 msgstr ""
+"Вы не абралі ніякага порта сэквенсару для прайгравання MIDI.  Вам варта "
+"змяніць наладкі MIDI-плагіну."
 
 #: src/amidi-plug/amidi-plug.c:708
 msgid "AMIDI-Plug (MIDI Player)"
@@ -328,6 +331,14 @@ msgid ""
 "hardware synth will be directly played.\n"
 "Backend written by Giacomo Lozito."
 msgstr ""
+"Гэты backend дасылае MIDI-падзеі групе абраных карыстальнікам портаў ALSA "
+"сэквенсэру. Інтэрфейс ALSA сэквенсэра вельмі гнуткі, ён можа забяспечваць "
+"порты як для аўдыёкартак апаратнага сінтэзу (г.з. emu10k1) так і для "
+"праграмнага сінтэзу, вонкавых прылад, і г.д.\n"
+"Гэты backend не стварае аўды, MIDI-падзеі кіруюцца непасрэдна з прылад/"
+"праграм за ALSA портамі; напрклад, MIDI-падзеі дасланыя на апаратны сінтэз "
+"будуць грацца непасрэдна.\n"
+"Backend напісаны Giacomo Lozito."
 
 #: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:45
 msgid "FluidSynth Backend "
@@ -357,19 +368,19 @@ msgstr "Назва порта"
 
 #: src/amidi-plug/i_configure-alsa.c:371
 msgid "ALSA output ports"
-msgstr "Парты вываду ALSA"
+msgstr "Порты вываду ALSA"
 
 #: src/amidi-plug/i_configure-alsa.c:432
 msgid "Soundcard: "
-msgstr "Гукавая карта: "
+msgstr "Гукавая картка: "
 
 #: src/amidi-plug/i_configure-alsa.c:434
 msgid "Mixer control: "
-msgstr "Рэгулятары мікшара: "
+msgstr "Рэгулятары мікшару: "
 
 #: src/amidi-plug/i_configure-alsa.c:444
 msgid "Mixer settings"
-msgstr "Настаўленні мікшара"
+msgstr "Наладкі мікшару"
 
 #: src/amidi-plug/i_configure-alsa.c:472
 msgid ""
@@ -389,7 +400,7 @@ msgstr "Выбар рухавіка"
 
 #: src/amidi-plug/i_configure-ap.c:261
 msgid "Playback settings"
-msgstr "Настаўленні прайгравання"
+msgstr "Наладкі прайгравання"
 
 #: src/amidi-plug/i_configure-ap.c:266
 msgid "Transpose: "
@@ -397,23 +408,23 @@ msgstr "Транспазіцыя: "
 
 #: src/amidi-plug/i_configure-ap.c:275
 msgid "Drum shift: "
-msgstr ""
+msgstr "Зрушэнне барабану:"
 
 #: src/amidi-plug/i_configure-ap.c:293
 msgid "Advanced settings"
-msgstr "Адмысловыя настаўленні"
+msgstr "Адмысловыя наладкі"
 
 #: src/amidi-plug/i_configure-ap.c:297
 msgid "pre-calculate length of MIDI files in playlist"
-msgstr ""
+msgstr "прадлічаная даўжыня MIDI-файлаў у спісе"
 
 #: src/amidi-plug/i_configure-ap.c:304
 msgid "extract comments from MIDI file (if available)"
-msgstr ""
+msgstr "выцягваць каментары з MIDI-файлаў (калі ёсць)"
 
 #: src/amidi-plug/i_configure-ap.c:311
 msgid "extract lyrics from MIDI file (if available)"
-msgstr ""
+msgstr "выцягваць словы песні з MIDI-файла (калі ёсць)"
 
 #: src/amidi-plug/i_configure-ap.c:344
 msgid ""
@@ -431,7 +442,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:321
 msgid "SoundFont settings"
-msgstr "Настаўленні SoundFont"
+msgstr "Наладкі SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:359
 msgid "Filename"
@@ -443,7 +454,7 @@ msgstr "Памер (байтаў)"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:412
 msgid "Load SF on player start"
-msgstr "Чытаць ГШ па запуску плэера"
+msgstr "Чытаць SF па запуску плэера"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:416
 msgid "Load SF on first MIDI file play"
@@ -451,18 +462,18 @@ msgstr "Чытаць ГШ па першым прайграванні MIDI-фай
 
 #: src/amidi-plug/i_configure-fluidsynth.c:431
 msgid "Synthesizer settings"
-msgstr "Настаўленні сінтэзатара"
+msgstr "Наладкі сінтэзатара"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:440
 msgid "gain"
-msgstr ""
+msgstr "узмацненне"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:446
 #: src/amidi-plug/i_configure-fluidsynth.c:476
 #: src/amidi-plug/i_configure-fluidsynth.c:506
 #: src/amidi-plug/i_configure-fluidsynth.c:540
 msgid "use default"
-msgstr "ужываць тыповы"
+msgstr "ужываць па-змоўчванню"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:449
 #: src/amidi-plug/i_configure-fluidsynth.c:479
@@ -475,7 +486,7 @@ msgstr "паліфанія"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:500
 msgid "reverb"
-msgstr ""
+msgstr "рэха"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:509
 #: src/amidi-plug/i_configure-fluidsynth.c:543
@@ -489,11 +500,11 @@ msgstr "не"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:534
 msgid "chorus"
-msgstr "хорус"
+msgstr "хорам"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:568
 msgid "sample rate"
-msgstr ""
+msgstr "частата сэмпла"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:574
 msgid "22050 Hz "
@@ -509,7 +520,7 @@ msgstr "96000 Гц "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:583
 msgid "custom "
-msgstr "адмысловыя "
+msgstr "адмысловая "
 
 #: src/amidi-plug/i_configure-fluidsynth.c:592
 msgid "Hz "
@@ -549,11 +560,11 @@ msgstr "пераменны"
 
 #: src/amidi-plug/i_fileinfo.c:228
 msgid "BPM:"
-msgstr ""
+msgstr "УЗХ:"
 
 #: src/amidi-plug/i_fileinfo.c:236
 msgid "BPM (wavg):"
-msgstr ""
+msgstr "УЗХ (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:239
 msgid "Time Div:"
@@ -561,7 +572,7 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:250
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr ""
+msgstr "<span size=\"smaller\"> MIDI Каментары і Лірыка </span>"
 
 #: src/amidi-plug/i_fileinfo.c:301
 msgid "* no comments available in this MIDI file *"
@@ -569,11 +580,11 @@ msgstr " * у гэтым MIDI-файле каментарыі недаступн
 
 #: src/amidi-plug/i_fileinfo.c:314
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* у гэтым MIDI-файле каментарыі недаступныя *"
+msgstr "* у гэтым MIDI-файле лірыка недаступная *"
 
 #: src/amidi-plug/i_fileinfo.c:367
 msgid "  (invalid UTF-8)"
-msgstr "  (недапушчальны UTF-8)"
+msgstr "(недапушчальны UTF-8)"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
@@ -620,27 +631,27 @@ msgstr "Прамавугольнік"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr ""
+msgstr "Скруглены Прамавугольнік"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr ""
+msgstr "Увагнуты Прамавугольнік"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "Ніхто"
+msgstr "Няма"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr ""
+msgstr "Старт Прайгравання"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr ""
+msgstr "Выводзіць OSD калі пункт плэйліста прайграваецца."
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr ""
+msgstr "Змена Назвы"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -648,46 +659,49 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
+"Выводзіць OSD, калі падчас прайгравання змяняецца назва песні, але імя файла "
+"застаецца ранейшым. Гэта ў асноўным карысна для вываду зменаў у інтэрнэт-"
+"трансляцыях."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr ""
+msgstr "Паўза УКЛ."
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr ""
+msgstr "Выводзіць OSD калі прайграванне на паўзе."
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr ""
+msgstr "Паўза ВЫКЛ."
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr ""
+msgstr "Выводзіць OSD калі прайраванне працягваецца з паўзы."
 
 #: src/aosd/aosd_ui.c:168
 msgid "Placement"
-msgstr ""
+msgstr "Змяшчэнне"
 
 #: src/aosd/aosd_ui.c:200
 msgid "Relative X offset:"
-msgstr ""
+msgstr "Зрушэнне адносна X:"
 
 #: src/aosd/aosd_ui.c:207
 msgid "Relative Y offset:"
-msgstr ""
+msgstr "Зрушэнне адносна Y:"
 
 #: src/aosd/aosd_ui.c:214
 msgid "Max OSD width:"
-msgstr ""
+msgstr "Максімальная шырыня OSD:"
 
 #: src/aosd/aosd_ui.c:225
 msgid "Multi-Monitor options"
-msgstr ""
+msgstr "Опцыі для некалькіх манітораў"
 
 #: src/aosd/aosd_ui.c:229
 msgid "Display OSD using:"
-msgstr ""
+msgstr "Паказваць OSD праз:"
 
 #: src/aosd/aosd_ui.c:231
 msgid "all monitors"
@@ -700,7 +714,7 @@ msgstr "манітор %i"
 
 #: src/aosd/aosd_ui.c:287
 msgid "Timing (ms)"
-msgstr ""
+msgstr "Затрымка (мс)"
 
 #: src/aosd/aosd_ui.c:292
 msgid "Display:"
@@ -708,11 +722,11 @@ msgstr "Паказваць:"
 
 #: src/aosd/aosd_ui.c:297
 msgid "Fade in:"
-msgstr ""
+msgstr "З'яўленне:"
 
 #: src/aosd/aosd_ui.c:302
 msgid "Fade out:"
-msgstr ""
+msgstr "Знікненне:"
 
 #: src/aosd/aosd_ui.c:383
 msgid "Fonts"
@@ -733,7 +747,7 @@ msgstr "Інтэрнацыяналізацыя"
 
 #: src/aosd/aosd_ui.c:445
 msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr ""
+msgstr "Выключыць канвертаванне UTF-8 тэксту (у aosd)"
 
 #: src/aosd/aosd_ui.c:462
 msgid "Select Skin File"
@@ -741,7 +755,7 @@ msgstr "Выбраць файл вокладкі"
 
 #: src/aosd/aosd_ui.c:573
 msgid "Render Style"
-msgstr ""
+msgstr "Стыль Рэндэру"
 
 #: src/aosd/aosd_ui.c:589
 msgid "Colors"
@@ -774,7 +788,7 @@ msgstr "Падзея"
 
 #: src/aosd/aosd_ui.c:784
 msgid "Composite manager detected"
-msgstr "Выяўлены кампазітны менеджар"
+msgstr "Выяўлены кампазітны менэджар"
 
 #: src/aosd/aosd_ui.c:791
 msgid ""
@@ -782,10 +796,13 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
+"Кампазітны менэджар не выяўлены;\n"
+"калі вы не ведаёце, ці запушчаны ён, актывуйце кампазітны менэджар. Інакш "
+"OSD не будзе працаваць карэктна"
 
 #: src/aosd/aosd_ui.c:799
 msgid "Composite manager not required for fake transparency"
-msgstr ""
+msgstr "Кампазітны менэджар не патрэбны для імітацыйнай празрыстасці"
 
 #: src/aosd/aosd_ui.c:837
 msgid "Transparency"
@@ -793,19 +810,19 @@ msgstr "Празрыстасць"
 
 #: src/aosd/aosd_ui.c:843
 msgid "Fake transparency"
-msgstr ""
+msgstr "Імітацыйная празрыстасць"
 
 #: src/aosd/aosd_ui.c:845
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr ""
+msgstr "Сапраўдная празрыстасць (патрабуе X Composite Ext.)"
 
 #: src/aosd/aosd_ui.c:887
 msgid "Composite extension not loaded"
-msgstr ""
+msgstr "Кампазітныя пашырэнні не загружаны"
 
 #: src/aosd/aosd_ui.c:895
 msgid "Composite extension not available"
-msgstr ""
+msgstr "Кампазітныя пашырэнні недаступныя"
 
 #: src/aosd/aosd_ui.c:914
 #, c-format
@@ -814,7 +831,7 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:995
 msgid "Audacious OSD - configuration"
-msgstr ""
+msgstr "Audacious OSD - канфігураванне"
 
 #: src/aosd/aosd_ui.c:1016
 msgid "Test"
@@ -842,7 +859,7 @@ msgstr "Пераключальнік"
 
 #: src/aosd/aosd_ui.c:1056
 msgid "Misc"
-msgstr ""
+msgstr "Іншае"
 
 #: src/asx/asx.c:96
 msgid "ASXv1/ASXv2 Playlists"
@@ -969,7 +986,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:506
 msgid "Audio CD"
-msgstr "Аўдыё КД"
+msgstr "Audio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:515
 #, fuzzy, c-format
@@ -1026,11 +1043,11 @@ msgstr "Тып не падтрымліваецца."
 
 #: src/cd-menu-items/cd-menu-items.c:30
 msgid "Play CD"
-msgstr "Прайграць КД"
+msgstr "Прайграць CD"
 
 #: src/cd-menu-items/cd-menu-items.c:30
 msgid "Add CD"
-msgstr "Дадаць КД"
+msgstr "Дадаць CD"
 
 #: src/cd-menu-items/cd-menu-items.c:57
 msgid "Audio CD Menu Items"
@@ -1042,7 +1059,7 @@ msgstr "<b>Кампрэсія</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr ""
+msgstr "Гучнасць цэнтру:"
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
@@ -1081,7 +1098,7 @@ msgstr "сек"
 
 #: src/console/configure.c:179
 msgid "Treble:"
-msgstr ""
+msgstr "Сапрана:"
 
 #: src/console/configure.c:200
 msgid "Default song length:"
@@ -1089,15 +1106,15 @@ msgstr "Тыповая працягласць песні:"
 
 #: src/console/configure.c:206
 msgid "Resampling"
-msgstr ""
+msgstr "Перасэмплаванне"
 
 #: src/console/configure.c:212
 msgid "Enable audio resampling"
-msgstr ""
+msgstr "Уключыць перасэмплаванне гуку"
 
 #: src/console/configure.c:227
 msgid "Resampling rate:"
-msgstr ""
+msgstr "Частата перасэмплавання:"
 
 #: src/console/configure.c:231 src/modplug/plugin_main.c:98
 #: src/resample/resample.c:178 src/resample/resample.c:184
@@ -1118,13 +1135,15 @@ msgstr ""
 
 #: src/console/configure.c:244
 msgid "Increase reverb"
-msgstr ""
+msgstr "Узмацніць рэха"
 
 #: src/console/configure.c:269
 msgid ""
 "The default song length, expressed in seconds, is used for songs that do not "
 "provide length information (i.e. looping tracks)."
 msgstr ""
+"Тыповая працягласць песні, выяўленая ў секундах, ужывальная для песень, якія "
+"не маюз звестак працягласці (г.з. закальцаваныя)."
 
 #: src/console/plugin.c:27
 msgid ""
@@ -1241,7 +1260,7 @@ msgstr "Фармат файла вываду:"
 
 #: src/filewriter/filewriter.c:433
 msgid "Configure"
-msgstr "Наставіць"
+msgstr "Канфігураваць"
 
 #: src/filewriter/filewriter.c:443
 msgid "Save into original directory"
@@ -1257,7 +1276,7 @@ msgstr "Каталог файлаў вываду:"
 
 #: src/filewriter/filewriter.c:461
 msgid "Pick a folder"
-msgstr "Выбар каталога"
+msgstr "Абраць каталог"
 
 #: src/filewriter/filewriter.c:474
 msgid "Get filename from:"
@@ -1273,11 +1292,11 @@ msgstr "арыгінальнай назвы файла"
 
 #: src/filewriter/filewriter.c:489
 msgid "Don't strip file name extension"
-msgstr "Не адкідваць канчатак назвы файла"
+msgstr "Не адкідваць пашырэнне назвы файла"
 
 #: src/filewriter/filewriter.c:498
 msgid "Prepend track number to filename"
-msgstr "Дадаваць нумар трэка да назвы файла"
+msgstr "Дадаваць нумар трэка перад назвай файла"
 
 #: src/filewriter/filewriter.c:519
 msgid ""
@@ -1337,7 +1356,7 @@ msgstr "(Гц)"
 
 #: src/filewriter/mp3.c:772
 msgid "Bitrate / Compression ratio:"
-msgstr ""
+msgstr "Суадносіны Bitrate / Compression:"
 
 #: src/filewriter/mp3.c:796
 msgid "Bitrate (kbps):"
@@ -1353,11 +1372,11 @@ msgstr "Рэжым аўдыё:"
 
 #: src/filewriter/mp3.c:878
 msgid "Misc:"
-msgstr ""
+msgstr "Інш:"
 
 #: src/filewriter/mp3.c:889
 msgid "Enforce strict ISO complience"
-msgstr ""
+msgstr "Забяспечыць строгую фдпаведнасць ISO"
 
 #: src/filewriter/mp3.c:900
 msgid "Error protection"
@@ -1389,7 +1408,7 @@ msgstr "Максімальны бітрэйт (кб/с):"
 
 #: src/filewriter/mp3.c:1030
 msgid "Strictly enforce minimum bitrate"
-msgstr ""
+msgstr "Строгая адпаведнасць мінімальнаму бітрэйту"
 
 #: src/filewriter/mp3.c:1042
 msgid "ABR Options:"
@@ -1405,7 +1424,7 @@ msgstr "Узровень якасці VBR:"
 
 #: src/filewriter/mp3.c:1099
 msgid "Don't write Xing VBR header"
-msgstr ""
+msgstr "Не запісваць загаловак Xing VBR"
 
 #: src/filewriter/mp3.c:1112
 msgid "VBR/ABR"
@@ -1417,27 +1436,27 @@ msgstr ""
 
 #: src/filewriter/mp3.c:1133
 msgid "Mark as copyright"
-msgstr ""
+msgstr "Пазначыць copyright"
 
 #: src/filewriter/mp3.c:1144
 msgid "Mark as original"
-msgstr ""
+msgstr "Пазначыць як арыгінал"
 
 #: src/filewriter/mp3.c:1156
 msgid "ID3 params:"
-msgstr ""
+msgstr "ID3 параметры:"
 
 #: src/filewriter/mp3.c:1167
 msgid "Force addition of version 2 tag"
-msgstr ""
+msgstr "Прымусова дадаваць тэг версіі 2"
 
 #: src/filewriter/mp3.c:1177
 msgid "Only add v1 tag"
-msgstr ""
+msgstr "Дадаваць толькі тэг v1"
 
 #: src/filewriter/mp3.c:1184
 msgid "Only add v2 tag"
-msgstr ""
+msgstr "Дадаваць толькі тэг v2"
 
 #: src/filewriter/mp3.c:1205
 msgid "Tags"
@@ -1445,11 +1464,11 @@ msgstr "Тэгі"
 
 #: src/filewriter/vorbis.c:209
 msgid "Vorbis Encoder Configuration"
-msgstr ""
+msgstr "Канфігурацыя Энкэдэра Vorbis"
 
 #: src/filewriter/vorbis.c:232
 msgid "Quality level (0 - 10):"
-msgstr ""
+msgstr "Узровень якасці (0 - 10):"
 
 #: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
 msgid "lossless"
@@ -1511,7 +1530,7 @@ msgstr "Нумар запіса"
 
 #: src/gtkui/columns.c:32
 msgid "Title"
-msgstr "Загаловак"
+msgstr "Назва"
 
 #: src/gtkui/columns.c:33
 msgid "Artist"
@@ -1539,7 +1558,7 @@ msgstr "Пазіцыя ў чарзе"
 
 #: src/gtkui/columns.c:34
 msgid "Length"
-msgstr "Даўжыня"
+msgstr "Працягласць"
 
 #: src/gtkui/columns.c:34
 msgid "File path"
@@ -1571,19 +1590,19 @@ msgstr "Выбраныя:"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
-msgstr ""
+msgstr "Стыкаваць Злева"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Right"
-msgstr ""
+msgstr "Стыкаваць Справа"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Top"
-msgstr ""
+msgstr "Стыкаваць Уверсе"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Bottom"
-msgstr ""
+msgstr "Стыкаваць Долу"
 
 #: src/gtkui/layout.c:120
 msgid "Undock"
@@ -1615,11 +1634,11 @@ msgstr "Шукаць у бібліятэц_ы"
 
 #: src/gtkui/menus.c:177
 msgid "A_bout ..."
-msgstr "П_ра ..."
+msgstr "Аб ..."
 
 #: src/gtkui/menus.c:178
 msgid "_Preferences ..."
-msgstr "Наста_ўленні ..."
+msgstr "Настаўленні ..."
 
 #: src/gtkui/menus.c:179 src/skins/ui_manager.c:413
 msgid "_Quit"
@@ -1746,9 +1765,8 @@ msgid "_Sort"
 msgstr "_Парадкаваць"
 
 #: src/gtkui/menus.c:237
-#, fuzzy
 msgid "Sort Se_lected"
-msgstr "Сартаваць вылучаныя"
+msgstr ""
 
 #: src/gtkui/menus.c:238
 msgid "Remove _Duplicates"
@@ -1922,10 +1940,10 @@ msgstr "Памылка"
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "%d канал"
+msgstr[1] "%d каналы"
+msgstr[2] "%d каналаў"
+msgstr[3] "%d каналаў"
 
 #: src/gtkui/ui_statusbar.c:123
 #, c-format
@@ -1939,11 +1957,11 @@ msgstr ""
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
 #: src/skins/ui_manager.c:178
 msgid "Play"
-msgstr "Праграць"
+msgstr "Граць"
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
-msgstr ""
+msgstr "Паўза/Працягнуць"
 
 #: src/hotkey/gui.c:73 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
 msgid "Stop"
@@ -1963,7 +1981,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "Выкл"
+msgstr "Цішыня"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
@@ -1983,7 +2001,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
-msgstr ""
+msgstr "Паказаць Дысплей на Экране :OSD:"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
@@ -2058,7 +2076,28 @@ msgstr ""
 msgid "Global Hotkeys"
 msgstr ""
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:193
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/jack.c:194
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/jack.c:195
+msgid "Don't connect to any port"
+msgstr ""
+
+#: src/jack/jack.c:199
+#, fuzzy
+msgid "Connection mode:"
+msgstr "<b>Злучэнне</b>"
+
+#: src/jack/jack.c:202
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:430
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2066,7 +2105,7 @@ msgid ""
 "Ported to Audacious by Giacomo Lozito"
 msgstr ""
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:436
 msgid "JACK Output"
 msgstr "Вывад JACK"
 

@@ -18,9 +18,9 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-01-03 15:42+0100\n"
+"POT-Creation-Date: 2014-02-22 00:13+0100\n"
 "PO-Revision-Date: 2013-07-11 13:11+0000\n"
 "Last-Translator: rustam <rustam.tsurik@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/audacious/"
@@ -2252,7 +2252,28 @@ msgstr ""
 msgid "Global Hotkeys"
 msgstr "Гарячі клавіші"
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:193
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/jack.c:194
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/jack.c:195
+msgid "Don't connect to any port"
+msgstr ""
+
+#: src/jack/jack.c:199
+#, fuzzy
+msgid "Connection mode:"
+msgstr "<b>З’еднання</b>"
+
+#: src/jack/jack.c:202
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:430
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2264,7 +2285,7 @@ msgstr ""
 "\n"
 "Автор портування до Audacious — Giacomo Lozito."
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:436
 msgid "JACK Output"
 msgstr "JACK-вивід"
 

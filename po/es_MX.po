@@ -6,9 +6,9 @@
 # Jorge A. García Sosa <jagsmd@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-01-03 15:42+0100\n"
+"POT-Creation-Date: 2014-02-22 00:13+0100\n"
 "PO-Revision-Date: 2013-05-07 05:02+0000\n"
 "Last-Translator: Jorge A. García Sosa <jagsmd@gmail.com>\n"
 "Language-Team: Spanish (Mexico) (http://www.transifex.com/projects/p/"
@@ -2246,7 +2246,28 @@ msgstr ""
 msgid "Global Hotkeys"
 msgstr "Hotkeys Globales"
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:193
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/jack.c:194
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/jack.c:195
+msgid "Don't connect to any port"
+msgstr ""
+
+#: src/jack/jack.c:199
+#, fuzzy
+msgid "Connection mode:"
+msgstr "<b>Conexión</b>"
+
+#: src/jack/jack.c:202
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:430
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2258,7 +2279,7 @@ msgstr ""
 "\n"
 "Llevado a Audacious por Giacomo Lozito"
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:436
 msgid "JACK Output"
 msgstr "Salida JACK"
 

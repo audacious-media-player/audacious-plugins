@@ -6,12 +6,13 @@
 # nandakumar <nandakumar96@gmail.com>, 2013
 # navaneeths52 <navaneeths52@gmail.com>, 2013-2014
 # navaneeths52 <navaneeths52@gmail.com>, 2013
+# STyM Alfaz, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-01-03 15:42+0100\n"
-"PO-Revision-Date: 2014-01-03 06:01+0000\n"
+"POT-Creation-Date: 2014-02-22 00:13+0100\n"
+"PO-Revision-Date: 2014-01-26 15:49+0000\n"
 "Last-Translator: navaneeths52 <navaneeths52@gmail.com>\n"
 "Language-Team: Malayalam (India) (http://www.transifex.com/projects/p/"
 "audacious/language/ml_IN/)\n"
@@ -379,6 +380,8 @@ msgid ""
 "<span size=\"smaller\">ALSA\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">അല്‍സ\n"
+"ബാക്കെന്‍ഡ്</span>"
 
 #: src/amidi-plug/i_configure-ap.c:63
 msgid "AMIDI-Plug - backend information"
@@ -523,6 +526,8 @@ msgid ""
 "<span size=\"smaller\">FluidSynth\n"
 "backend</span>"
 msgstr ""
+"<span size=\"smaller\">ഫ്ലൂയിഡ്സിന്ത്\n"
+"ബാക്കെന്‍ഡ്</span>"
 
 #: src/amidi-plug/i_fileinfo.c:175
 msgid "Name:"
@@ -2066,7 +2071,28 @@ msgstr ""
 msgid "Global Hotkeys"
 msgstr ""
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:193
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/jack.c:194
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/jack.c:195
+msgid "Don't connect to any port"
+msgstr ""
+
+#: src/jack/jack.c:199
+#, fuzzy
+msgid "Connection mode:"
+msgstr "<b>ബന്ധം</b>"
+
+#: src/jack/jack.c:202
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:430
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2074,7 +2100,7 @@ msgid ""
 "Ported to Audacious by Giacomo Lozito"
 msgstr ""
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:436
 msgid "JACK Output"
 msgstr "ജാക്ക് ഔട്പുട്ട്"
 
@@ -3633,15 +3659,15 @@ msgstr "ഒഡാഷ്യസ് പ്ലേലിസ്റ്റ് എഡി�
 #: src/skins/ui_playlist.c:772
 #, c-format
 msgid "%s (%d of %d)"
-msgstr ""
+msgstr "%s (%d / %d)"
 
 #: src/skins/ui_skinselector.c:164
 msgid "Archived Winamp 2.x skin"
-msgstr ""
+msgstr "ശേഖരിക്കപ്പെട്ട വിനാമ്പ് 2.x രൂപം"
 
 #: src/skins/ui_skinselector.c:169
 msgid "Unarchived Winamp 2.x skin"
-msgstr ""
+msgstr "ശേഖരിക്കാത്ത വിനാമ്പ് 2.x രൂപം"
 
 #: src/skins/util.c:773
 #, c-format
@@ -3718,7 +3744,7 @@ msgstr "പാട്ട് മാറ്റുക"
 
 #: src/song_change/song_change.c:436
 msgid "Command to run when Audacious starts a new song."
-msgstr ""
+msgstr "ഒഡാഷ്യസ് പുതിയ പാട്ട് ആരംഭിക്കുമ്പോള്‍ പ്രവര്‍ത്തിപ്പിക്കാനുള്ള കമാന്റ്."
 
 #: src/song_change/song_change.c:438 src/song_change/song_change.c:444
 #: src/song_change/song_change.c:450 src/song_change/song_change.c:456

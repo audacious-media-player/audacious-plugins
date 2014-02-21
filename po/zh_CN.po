@@ -1,6 +1,6 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Chinese (simplified) translation for Audacious Plugins
+# Copyright (C) Audacious translators
+# This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
 # Chasye <chasye@gmail.com>, 2010
@@ -9,13 +9,13 @@
 # michaeljayt <michaeljayt@gmail.com>, 2013
 # Luke <runningwaterpro@gmail.com>, 2012
 # sd542927172 <sd542927172@live.cn>, 2013
-# zhangmin <zm1990s@gmail.com>, 2013
+# MinZhang <zm1990s@gmail.com>, 2013
 # 4679kun <btchina@live.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-01-03 15:51+0100\n"
+"POT-Creation-Date: 2014-02-22 00:13+0100\n"
 "PO-Revision-Date: 2014-01-02 03:09+0000\n"
 "Last-Translator: JeffBai <jeffbaichina@members.fsf.org>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/"
@@ -2214,7 +2214,28 @@ msgstr ""
 msgid "Global Hotkeys"
 msgstr "全局热键"
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:193
+msgid "Connect to all available jack ports"
+msgstr ""
+
+#: src/jack/jack.c:194
+msgid "Connect only the output ports"
+msgstr ""
+
+#: src/jack/jack.c:195
+msgid "Don't connect to any port"
+msgstr ""
+
+#: src/jack/jack.c:199
+#, fuzzy
+msgid "Connection mode:"
+msgstr "<b>连接</b>"
+
+#: src/jack/jack.c:202
+msgid "Enable debug printing"
+msgstr ""
+
+#: src/jack/jack.c:430
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2226,7 +2247,7 @@ msgstr ""
 "\n"
 "由 Giacomo Lozito 移植到 Audacious"
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:436
 msgid "JACK Output"
 msgstr "JACK 输出"
 
