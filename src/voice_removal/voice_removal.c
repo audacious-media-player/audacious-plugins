@@ -54,5 +54,6 @@ AUD_EFFECT_PLUGIN
 	.domain = PACKAGE,
 	.start = voice_start,
 	.process = voice_process,
-	.finish = voice_finish
+	.finish = voice_finish,
+	.preserves_format = TRUE
 )
