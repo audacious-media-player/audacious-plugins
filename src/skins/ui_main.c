@@ -336,15 +336,15 @@ void mainwin_set_song_info (gint bitrate, gint samplerate, gint channels)
     ui_skinned_monostereo_set_num_channels (mainwin_monostereo, channels);
 
     if (bitrate > 0)
-        snprintf (scratch, sizeof scratch, "%d %s", bitrate / 1000, "kbps");
+        snprintf (scratch, sizeof scratch, "%d kbps", bitrate / 1000);
     else
         scratch[0] = 0;
 
     if (samplerate > 0)
     {
         length = strlen (scratch);
-        snprintf (scratch + length, sizeof scratch - length, "%s%d %s", length ?
-         ", " : "", samplerate / 1000, "kHz");
+        snprintf (scratch + length, sizeof scratch - length, "%s%d kHz", length ?
+         ", " : "", samplerate / 1000);
     }
 
     if (channels > 0)
