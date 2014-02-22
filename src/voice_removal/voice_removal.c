@@ -38,13 +38,8 @@ static void voice_process(float **d, int *samples)
 
 	for (f = *d; f < end; f += 2)
 	{
-		float left, right;
-
-		left = (f[1] - f[0]);
-		right = (f[0] - f[1]);
-
-		f[0] = left;
-		f[1] = right;
+		f[0] -= f[1];
+		f[1] = f[0];
 	}
 }
 
