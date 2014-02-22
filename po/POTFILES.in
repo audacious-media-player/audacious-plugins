@@ -1,5 +1,6 @@
 # Please don't update this file manually - use ./update-potfiles.sh instead!
 src/aac/libmp4.c
+src/aac-raw/aac.c
 src/adplug/adplug-xmms.cc
 src/adplug/plugin.c
 src/alarm/alarm.c
@@ -8,10 +9,6 @@ src/albumart/albumart.c
 src/alsa/config.c
 src/alsa/plugin.c
 src/amidi-plug/amidi-plug.c
-src/amidi-plug/backend-alsa/b-alsa.c
-src/amidi-plug/backend-fluidsynth/b-fluidsynth.c
-src/amidi-plug/i_configure-alsa.c
-src/amidi-plug/i_configure-ap.c
 src/amidi-plug/i_configure.c
 src/amidi-plug/i_configure-fluidsynth.c
 src/amidi-plug/i_fileinfo.c
@@ -20,6 +17,7 @@ src/aosd/aosd.c
 src/aosd/aosd_style.c
 src/aosd/aosd_trigger.c
 src/aosd/aosd_ui.c
+src/asx3/asx3.c
 src/asx/asx.c
 src/audpl/audpl.c
 src/blur_scope/blur_scope.c
@@ -32,7 +30,6 @@ src/console/Ay_Apu.cxx
 src/console/Ay_Emu.cxx
 src/console/Blip_Buffer.cxx
 src/console/Classic_Emu.cxx
-src/console/configure.c
 src/console/Data_Reader.cxx
 src/console/Dual_Resampler.cxx
 src/console/Fir_Resampler.cxx
@@ -58,6 +55,7 @@ src/console/Ym2612_Emu.cxx
 src/crossfade/crossfade.c
 src/crystalizer/crystalizer.c
 src/cue/cue.c
+src/delete-files/delete-files.c
 src/echo_plugin/echo.c
 src/ffaudio/ffaudio-core.c
 src/filewriter/filewriter.c
@@ -71,6 +69,7 @@ src/gnomeshortcuts/gnomeshortcuts.c
 src/gtkui/columns.c
 src/gtkui/layout.c
 src/gtkui/menus.c
+src/gtkui/settings.c
 src/gtkui/ui_gtk.c
 src/gtkui/ui_playlist_widget.c
 src/gtkui/ui_statusbar.c
@@ -103,11 +102,14 @@ src/scrobbler2/scrobbler.c
 src/scrobbler2/scrobbler_communication.c
 src/sdlout/plugin.c
 src/search-tool/search-tool.c
+src/skins/menus.c
 src/skins/plugin.c
+src/skins/preset-browser.c
+src/skins/preset-list.c
 src/skins/skins_cfg.c
 src/skins/ui_equalizer.c
 src/skins/ui_main.c
-src/skins/ui_manager.c
+src/skins/ui_main_evlisteners.c
 src/skins/ui_playlist.c
 src/skins/ui_skinselector.c
 src/skins/util.c
@@ -119,7 +121,6 @@ src/speed-pitch/speed-pitch.c
 src/statusicon/statusicon.c
 src/stereo_plugin/stereo.c
 src/tonegen/tonegen.c
-src/unix-io/unix-io.c
 src/voice_removal/voice_removal.c
 src/vorbis/vorbis.c
 src/vtx/vtx.c
