@@ -79,64 +79,49 @@ ov_callbacks vorbis_callbacks_stream = {
     NULL
 };
 
-static gint
-vorbis_check_fd(const gchar *filename, VFSFile *stream)
+static bool_t vorbis_check_fd (const char * filename, VFSFile * file)
 {
-    OggVorbis_File vfile;
-    gint result;
+    ogg_sync_state oy = {0};
+    ogg_stream_state os = {0};
+    ogg_page og = {0};
+    ogg_packet op = {0};
 
-    /*
-     * The open function performs full stream detection and machine
-     * initialization.  If it returns zero, the stream *is* Vorbis and
-     * we're fully ready to decode.
-     */
+    bool_t result = FALSE;
 
-    memset(&vfile, 0, sizeof(vfile));
+    ogg_sync_init (& oy);
 
-    result = ov_test_callbacks (stream, & vfile, NULL, 0, vfs_is_streaming
-     (stream) ? vorbis_callbacks_stream : vorbis_callbacks);
+    while (1)
+    {
+        int64_t bytes = ogg_sync_pageseek (& oy, & og);
 
-    switch (result) {
-    case OV_EREAD:
-#ifdef DEBUG
-        g_message("** vorbis.c: Media read error: %s", filename);
-#endif
-        return FALSE;
-        break;
-    case OV_ENOTVORBIS:
-#ifdef DEBUG
-        g_message("** vorbis.c: Not Vorbis data: %s", filename);
-#endif
-        return FALSE;
-        break;
-    case OV_EVERSION:
-#ifdef DEBUG
-        g_message("** vorbis.c: Version mismatch: %s", filename);
-#endif
-        return FALSE;
-        break;
-    case OV_EBADHEADER:
-#ifdef DEBUG
-        g_message("** vorbis.c: Invalid Vorbis bistream header: %s",
-                  filename);
-#endif
-        return FALSE;
-        break;
-    case OV_EFAULT:
-#ifdef DEBUG
-        g_message("** vorbis.c: Internal logic fault while reading %s",
-                  filename);
-#endif
-        return FALSE;
-        break;
-    case 0:
-        break;
-    default:
-        break;
+        if (bytes < 0) /* skipped some bytes */
+            continue;
+        if (bytes > 0) /* got a page */
+            break;
+
+        void * buffer = ogg_sync_buffer (& oy, 2048);
+        bytes = vfs_fread (buffer, 1, 2048, file);
+
+        if (bytes <= 0)
+            goto end;
+
+        ogg_sync_wrote (& oy, bytes);
     }
 
-    ov_clear(&vfile);
-    return TRUE;
+    if (! ogg_page_bos (& og))
+        goto end;
+
+    ogg_stream_init (& os, ogg_page_serialno (& og));
+    ogg_stream_pagein (& os, & og);
+
+    if (ogg_stream_packetout (& os, & op) > 0 && vorbis_synthesis_idheader (& op))
+        result = TRUE;
+
+end:
+    ogg_sync_clear (& oy);
+    ogg_stream_clear (& os);
+
+    return result;
 }
 
 static void
