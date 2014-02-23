@@ -424,37 +424,56 @@ static gboolean get_song_image (const gchar * filename, VFSFile * file,
     if (! comment)
         goto ERR;
 
-    const gchar * s = vorbis_comment_query (comment, "METADATA_BLOCK_PICTURE", 0);
-    if (! s)
-        goto ERR;
+    const gchar * s;
 
-    gsize length2;
-    void * data2 = g_base64_decode (s, & length2);
-    if (! data2 || length2 < 8)
-        goto PARSE_ERR;
+    if ((s = vorbis_comment_query (comment, "METADATA_BLOCK_PICTURE", 0)))
+    {
+        gsize length2;
+        void * data2 = g_base64_decode (s, & length2);
+        if (! data2 || length2 < 8)
+            goto PARSE_ERR;
 
-    gint mime_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 4));
-    if (length2 < 8 + mime_length + 4)
-        goto PARSE_ERR;
+        gint mime_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 4));
+        if (length2 < 8 + mime_length + 4)
+            goto PARSE_ERR;
 
-    gint desc_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length));
-    if (length2 < 8 + mime_length + 4 + desc_length + 20)
-        goto PARSE_ERR;
+        gint desc_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length));
+        if (length2 < 8 + mime_length + 4 + desc_length + 20)
+            goto PARSE_ERR;
 
-    * size = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length + 4 + desc_length + 16));
-    if (length2 < 8 + mime_length + 4 + desc_length + 20 + * size)
-        goto PARSE_ERR;
+        * size = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length + 4 + desc_length + 16));
+        if (length2 < 8 + mime_length + 4 + desc_length + 20 + * size)
+            goto PARSE_ERR;
 
-    * data = g_malloc (* size);
-    memcpy (* data, (char *) data2 + 8 + mime_length + 4 + desc_length + 20, * size);
+        * data = g_memdup ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, * size);
 
-    g_free (data2);
-    ov_clear (& vfile);
-    return TRUE;
+        g_free (data2);
+        ov_clear (& vfile);
+        return TRUE;
 
-PARSE_ERR:
-    fprintf (stderr, "vorbis: Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
-    g_free (data2);
+    PARSE_ERR:
+        fprintf (stderr, "vorbis: Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
+        g_free (data2);
+    }
+
+    if ((s = vorbis_comment_query (comment, "COVERART", 0)))
+    {
+        gsize length2;
+        void * data2 = g_base64_decode (s, & length2);
+
+        if (! data2 || ! length2)
+        {
+            fprintf (stderr, "vorbis: Error parsing COVERART in %s.\n", filename);
+            g_free (data2);
+            goto ERR;
+        }
+
+        * data = data2;
+        * size = length2;
+
+        ov_clear (& vfile);
+        return TRUE;
+    }
 
 ERR:
     ov_clear (& vfile);
