@@ -54,6 +54,7 @@ static const char * const gtkui_defaults[] = {
  "playlist_columns", "title artist album queued length",
  "playlist_headers", "TRUE",
  "show_remaining_time", "FALSE",
+ "step_size", "5",
 
  "player_x", "-1000",
  "player_y", "-1000",
@@ -396,6 +397,12 @@ static void set_slider_length (int length)
         gtk_widget_hide (slider);
 }
 
+void update_step_size (void)
+{
+    double step_size = aud_get_double ("gtkui", "step_size");
+    gtk_range_set_increments ((GtkRange *) slider, step_size * 1000, step_size * 1000);
+}
+
 static void pause_cb (void)
 {
     gtk_tool_button_set_icon_name ((GtkToolButton *) button_play,
@@ -523,11 +530,11 @@ static bool_t window_keypress_cb (GtkWidget * widget, GdkEventKey * event, void 
             return TRUE;
         case GDK_KEY_Left:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () - 5000);
+                do_seek (aud_drct_get_time () - aud_get_double ("gtkui", "step_size") * 1000);
             return TRUE;
         case GDK_KEY_Right:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () + 5000);
+                do_seek (aud_drct_get_time () + aud_get_double ("gtkui", "step_size") * 1000);
             return TRUE;
         }
 
@@ -563,11 +570,11 @@ static bool_t window_keypress_cb (GtkWidget * widget, GdkEventKey * event, void 
         {
           case GDK_KEY_Left:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () - 5000);
+                do_seek (aud_drct_get_time () - aud_get_double ("gtkui", "step_size") * 1000);
             break;
           case GDK_KEY_Right:
             if (aud_drct_get_playing ())
-                do_seek (aud_drct_get_time () + 5000);
+                do_seek (aud_drct_get_time () + aud_get_double ("gtkui", "step_size") * 1000);
             break;
           default:
             return FALSE;
@@ -749,12 +756,13 @@ static bool_t init (void)
     gtk_container_add ((GtkContainer *) boxitem1, box1);
 
     slider = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, NULL);
-    gtk_range_set_increments ((GtkRange *) slider, 5000, 5000);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
     gtk_widget_set_size_request(slider, 120, -1);
     gtk_widget_set_valign (slider, GTK_ALIGN_CENTER);
     gtk_widget_set_can_focus(slider, FALSE);
     gtk_box_pack_start ((GtkBox *) box1, slider, TRUE, TRUE, 6);
+
+    update_step_size ();
 
     label_time = markup_label_new(NULL);
     gtk_box_pack_end ((GtkBox *) box1, label_time, FALSE, FALSE, 6);

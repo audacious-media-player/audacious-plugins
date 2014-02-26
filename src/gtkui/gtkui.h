@@ -46,5 +46,6 @@ void show_hide_statusbar (void);
 void popup_menu_rclick (unsigned button, uint32_t time);
 void popup_menu_tab (unsigned button, uint32_t time, int playlist);
 void activate_search_tool (void);
+void update_step_size (void);
 
 #endif
