@@ -427,7 +427,7 @@ static bool_t mpg123_write_tag (const char * filename, VFSFile * handle, const T
 	if (! handle)
 		return FALSE;
 
-	return tag_tuple_write (tuple, handle, TAG_TYPE_APE);
+	return tag_tuple_write (tuple, handle, TAG_TYPE_ID3V2);
 }
 
 static bool_t mpg123_get_image (const char * filename, VFSFile * handle,
