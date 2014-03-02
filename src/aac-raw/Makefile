@@ -9,4 +9,4 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${FAAD_CFLAGS} -I../..
-LIBS += ${FAAD_LIBS} -lm
+LIBS += ${FAAD_LIBS} -lm -laudtag

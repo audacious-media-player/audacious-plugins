@@ -5,6 +5,7 @@
 
 #include <neaacdec.h>
 
+#include <audacious/audtag.h>
 #include <audacious/input.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
@@ -235,7 +236,6 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
 static Tuple *aac_get_tuple (const char * filename, VFSFile * handle)
 {
     Tuple *tuple = tuple_new_from_filename (filename);
-    char *temp;
     int length, bitrate, samplerate, channels;
 
     tuple_set_str (tuple, FIELD_CODEC, "MPEG-2/4 AAC");
@@ -251,44 +251,9 @@ static Tuple *aac_get_tuple (const char * filename, VFSFile * handle)
             tuple_set_int (tuple, FIELD_BITRATE, bitrate);
     }
 
-    temp = vfs_get_metadata (handle, "track-name");
-    if (temp != NULL)
-    {
-        tuple_set_str (tuple, FIELD_TITLE, temp);
-        str_unref (temp);
-    }
-
-    temp = vfs_get_metadata (handle, "stream-name");
-    if (temp != NULL)
-    {
-        tuple_set_str (tuple, FIELD_ALBUM, temp);
-        str_unref (temp);
-    }
-
-    temp = vfs_get_metadata (handle, "content-bitrate");
-    if (temp != NULL)
-    {
-        tuple_set_int (tuple, FIELD_BITRATE, atoi (temp) / 1000);
-        str_unref (temp);
-    }
+    tag_update_stream_metadata (tuple, handle);
 
     return tuple;
-}
-
-static bool_t aac_title_changed (const char * filename, VFSFile * handle,
- Tuple * tuple)
-{
-    char *old = tuple_get_str (tuple, FIELD_TITLE);
-    char *new = vfs_get_metadata (handle, "track-name");
-    bool_t changed = FALSE;
-
-    changed = (new != NULL && (old == NULL || strcmp (old, new)));
-    if (changed)
-        tuple_set_str (tuple, FIELD_TITLE, new);
-
-    str_unref (new);
-    str_unref (old);
-    return changed;
 }
 
 static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
@@ -414,7 +379,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
     /* == CHECK FOR METADATA == */
 
-    if (tuple && aac_title_changed (filename, file, tuple))
+    if (tuple && tag_update_stream_metadata (tuple, file))
     {
         tuple_ref (tuple);
         aud_input_set_tuple (tuple);
@@ -450,7 +415,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
         /* == CHECK FOR METADATA == */
 
-        if (tuple && aac_title_changed (filename, file, tuple))
+        if (tuple && tag_update_stream_metadata (tuple, file))
         {
             tuple_ref (tuple);
             aud_input_set_tuple (tuple);
