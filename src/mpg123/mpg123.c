@@ -198,8 +198,7 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 		goto ERR;
 #endif
 
-	if ((result = mpg123_getformat (decoder, & rate, & channels, & encoding)) <
-	 0)
+	if ((result = mpg123_getformat (decoder, & rate, & channels, & encoding)) < 0)
 		goto ERR;
 	if ((result = mpg123_info (decoder, & info)) < 0)
 		goto ERR;
@@ -229,6 +228,9 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	if (! stream && ! vfs_fseek (file, 0, SEEK_SET))
 		tag_tuple_read (tuple, file);
 
+	if (stream)
+		tag_update_stream_metadata (tuple, file);
+
 	return tuple;
 
 ERR:
@@ -246,46 +248,6 @@ typedef struct {
 	bool_t stream;
 	Tuple *tu;
 } MPG123PlaybackContext;
-
-static bool_t
-update_stream_metadata(VFSFile *file, const char *name, Tuple *tuple, int item)
-{
-	char *old = tuple_get_str(tuple, item);
-	char *new = vfs_get_metadata(file, name);
-	bool_t changed = (new != NULL && (old == NULL || strcmp(old, new)));
-
-	if (changed)
-		tuple_set_str(tuple, item, new);
-
-	str_unref(new);
-	str_unref(old);
-	return changed;
-}
-
-static Tuple * get_stream_tuple (const char * filename, VFSFile * file)
-{
-	Tuple * tuple = mpg123_probe_for_tuple (filename, file);
-	if (! tuple)
-		tuple = tuple_new_from_filename (filename);
-
-	update_stream_metadata (file, "track-name", tuple, FIELD_TITLE);
-	update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST);
-
-	tuple_ref (tuple);
-	aud_input_set_tuple (tuple);
-
-	return tuple;
-}
-
-static void update_stream_tuple (VFSFile * file, Tuple * tuple)
-{
-	if (update_stream_metadata (file, "track-name", tuple, FIELD_TITLE) ||
-	 update_stream_metadata (file, "stream-name", tuple, FIELD_ARTIST))
-	{
-		tuple_ref (tuple);
-		aud_input_set_tuple (tuple);
-	}
-}
 
 static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
 {
@@ -310,7 +272,7 @@ static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
 
 	AUDDBG ("Checking for streaming ...\n");
 	ctx.stream = vfs_is_streaming (file);
-	ctx.tu = ctx.stream ? get_stream_tuple (filename, file) : NULL;
+	ctx.tu = ctx.stream ? aud_input_get_tuple () : NULL;
 
 	ctx.decoder = mpg123_new (NULL, NULL);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
@@ -389,8 +351,11 @@ GET_FORMAT:
 			bitrate_updated = aud_input_written_time ();
 		}
 
-		if (ctx.stream)
-			update_stream_tuple (file, ctx.tu);
+		if (ctx.tu && tag_update_stream_metadata (ctx.tu, file))
+		{
+			tuple_ref (ctx.tu);
+			aud_input_set_tuple (ctx.tu);
+		}
 
 		if (! outbuf_size && (ret = mpg123_read (ctx.decoder, (void *) outbuf,
 		 sizeof outbuf, & outbuf_size)) < 0)
