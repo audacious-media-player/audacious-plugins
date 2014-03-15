@@ -18,15 +18,16 @@
 *
 */
 
+#include <audacious/i18n.h>
+
 #include "aosd.h"
 #include "aosd_ui.h"
 #include "aosd_osd.h"
 #include "aosd_cfg.h"
 #include "aosd_trigger.h"
-#include <audacious/i18n.h>
 
 static const char aosd_about[] =
- N_("Audacious OSD " AOSD_VERSION_PLUGIN "\n"
+ N_("Audacious OSD\n"
     "http://www.develia.org/projects.php?p=audacious#aosd\n\n"
     "Written by Giacomo Lozito <james@develia.org>\n\n"
     "Based in part on Evan Martin's Ghosd library:\n"
@@ -83,8 +84,6 @@ aosd_cleanup ( void )
 
     plugin_is_active = FALSE;
   }
-
-  return;
 }
 
 
@@ -99,5 +98,4 @@ aosd_configure ( void )
   aosd_ui_configure( cfg );
   /* delete configuration object */
   aosd_cfg_delete( cfg );
-  return;
 }
