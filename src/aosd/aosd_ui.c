@@ -643,6 +643,7 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_container_set_border_width( GTK_CONTAINER(vbox) , 6 );
     label = gtk_label_new( _(aosd_trigger_get_desc( trigger_code_array[i] )) );
     gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
+    gtk_label_set_max_width_chars( GTK_LABEL(label), 40 );
     gtk_misc_set_alignment( GTK_MISC(label) , 0.0 , 0.0 );
     checkbt = gtk_check_button_new_with_label( _("Enable trigger") );
     if ( aosd_cb_configure_trigger_findinarr( cfg->osd->trigger.active , trigger_code_array[i] ) )
