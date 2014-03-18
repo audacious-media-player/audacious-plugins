@@ -29,20 +29,20 @@
 #include <bs2b.h>
 
 static t_bs2bdp bs2b = NULL;
-static gint bs2b_channels;
-static GtkWidget *feed_slider, *fcut_slider;
+static int bs2b_channels;
+static GtkWidget * feed_slider, * fcut_slider;
 
 static const gchar * const bs2b_defaults[] = {
  "feed", "45",
  "fcut", "700",
  NULL};
 
-gboolean init()
+bool_t init (void)
 {
-    aud_config_set_defaults("bs2b", bs2b_defaults);
-    bs2b = bs2b_open();
+    aud_config_set_defaults ("bs2b", bs2b_defaults);
+    bs2b = bs2b_open ();
 
-    if (bs2b == NULL)
+    if (! bs2b)
         return FALSE;
 
     bs2b_set_level_feed (bs2b, aud_get_int ("bs2b", "feed"));
@@ -51,18 +51,18 @@ gboolean init()
     return TRUE;
 }
 
-static void cleanup()
+static void cleanup (void)
 {
-    if (bs2b == NULL)
+    if (! bs2b)
         return;
 
-    bs2b_close(bs2b);
+    bs2b_close (bs2b);
     bs2b = NULL;
 }
 
-static void bs2b_start (gint * channels, gint * rate)
+static void bs2b_start (int * channels, int * rate)
 {
-    if (bs2b == NULL)
+    if (! bs2b)
         return;
 
     bs2b_channels = * channels;
@@ -73,114 +73,108 @@ static void bs2b_start (gint * channels, gint * rate)
     bs2b_set_srate (bs2b, * rate);
 }
 
-static void bs2b_process (gfloat * * data, gint * samples)
+static void bs2b_process (float * * data, int * samples)
 {
-    if (bs2b == NULL || bs2b_channels != 2)
+    if (! bs2b || bs2b_channels != 2)
         return;
 
     bs2b_cross_feed_f (bs2b, * data, (* samples) / 2);
 }
 
-static void bs2b_finish (gfloat * * data, gint * samples)
+static void bs2b_finish (float * * data, int * samples)
 {
     bs2b_process (data, samples);
 }
 
-static void feed_value_changed(GtkRange *range, gpointer data)
+static void feed_value_changed (GtkRange * range, gpointer data)
 {
     int feed_level = gtk_range_get_value (range);
     aud_set_int ("bs2b", "feed", feed_level);
-    bs2b_set_level_feed(bs2b, feed_level);
+    bs2b_set_level_feed (bs2b, feed_level);
 }
 
-static gchar *feed_format_value(GtkScale *scale, gdouble value)
+static gchar * feed_format_value (GtkScale * scale, double value)
 {
-    return g_strdup_printf("%.1f dB", (float) value / 10);
+    return g_strdup_printf ("%.1f dB", (float) value / 10);
 }
 
-static void fcut_value_changed(GtkRange *range, gpointer data)
+static void fcut_value_changed (GtkRange * range, gpointer data)
 {
     int fcut_level = gtk_range_get_value (range);
     aud_set_int ("bs2b", "fcut", fcut_level);
-    bs2b_set_level_fcut(bs2b, fcut_level);
+    bs2b_set_level_fcut (bs2b, fcut_level);
 }
 
-static gchar *fcut_format_value(GtkScale *scale, gdouble value)
+static gchar * fcut_format_value (GtkScale * scale, double value)
 {
-    return g_strdup_printf("%d Hz, %dµs", (int) value, bs2b_level_delay((int) value));
+    return g_strdup_printf ("%d Hz, %d µs", (int) value, bs2b_level_delay ((int) value));
 }
 
-static void preset_button_clicked(GtkButton *button, gpointer data)
+static void preset_button_clicked (GtkButton * button, gpointer data)
 {
-    gint clevel = GPOINTER_TO_INT(data);
-    gtk_range_set_value(GTK_RANGE(feed_slider), clevel >> 16);
-    gtk_range_set_value(GTK_RANGE(fcut_slider), clevel & 0xffff);
+    int clevel = GPOINTER_TO_INT (data);
+    gtk_range_set_value ((GtkRange *) feed_slider, clevel >> 16);
+    gtk_range_set_value ((GtkRange *) fcut_slider, clevel & 0xffff);
 }
 
-static GtkWidget *preset_button(const gchar *label, gint clevel)
+static GtkWidget * preset_button (const char * label, int clevel)
 {
-    GtkWidget *button = gtk_button_new_with_label(label);
-    gtk_button_set_relief(GTK_BUTTON(button), GTK_RELIEF_NONE);
+    GtkWidget * button = gtk_button_new_with_label (label);
+    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     g_signal_connect(button, "clicked", (GCallback)
-        preset_button_clicked, GINT_TO_POINTER(clevel));
+     preset_button_clicked, GINT_TO_POINTER (clevel));
 
     return button;
 }
 
-static void *create_config_widget (void)
+static void * create_config_widget (void)
 {
     int feed_level = aud_get_int ("bs2b", "feed");
     int fcut_level = aud_get_int ("bs2b", "fcut");
 
-    {
-        GtkWidget *vbox, *hbox, *button;
+    GtkWidget * vbox, * hbox, * button;
 
-        vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
-        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-        gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
-        gtk_box_pack_start(GTK_BOX(hbox), gtk_label_new(_("Feed level:")), TRUE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Feed level:")), TRUE, FALSE, 0);
 
-        feed_slider = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, BS2B_MINFEED, BS2B_MAXFEED, 1.0);
-        gtk_range_set_value (GTK_RANGE(feed_slider), feed_level);
-        gtk_widget_set_size_request (feed_slider, 200, -1);
-        gtk_box_pack_start ((GtkBox *) hbox, feed_slider, FALSE, FALSE, 0);
-        g_signal_connect (feed_slider, "value-changed", (GCallback) feed_value_changed,
-                NULL);
-        g_signal_connect (feed_slider, "format-value", (GCallback) feed_format_value,
-                NULL);
+    feed_slider = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, BS2B_MINFEED, BS2B_MAXFEED, 1.0);
+    gtk_range_set_value ((GtkRange *) feed_slider, feed_level);
+    gtk_widget_set_size_request (feed_slider, 200, -1);
+    gtk_box_pack_start ((GtkBox *) hbox, feed_slider, FALSE, FALSE, 0);
+    g_signal_connect (feed_slider, "value-changed", (GCallback) feed_value_changed, NULL);
+    g_signal_connect (feed_slider, "format-value", (GCallback) feed_format_value, NULL);
 
-        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-        gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
-        gtk_box_pack_start (GTK_BOX(hbox), gtk_label_new(_("Cut frequency:")), TRUE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Cut frequency:")), TRUE, FALSE, 0);
 
-        fcut_slider = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, BS2B_MINFCUT, BS2B_MAXFCUT, 1.0);
-        gtk_range_set_value (GTK_RANGE(fcut_slider), fcut_level);
-        gtk_widget_set_size_request (fcut_slider, 200, -1);
-        gtk_box_pack_start ((GtkBox *) hbox, fcut_slider, FALSE, FALSE, 0);
-        g_signal_connect (fcut_slider, "value-changed", (GCallback) fcut_value_changed,
-                NULL);
-        g_signal_connect (fcut_slider, "format-value", (GCallback) fcut_format_value,
-                NULL);
+    fcut_slider = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, BS2B_MINFCUT, BS2B_MAXFCUT, 1.0);
+    gtk_range_set_value ((GtkRange *) fcut_slider, fcut_level);
+    gtk_widget_set_size_request (fcut_slider, 200, -1);
+    gtk_box_pack_start ((GtkBox *) hbox, fcut_slider, FALSE, FALSE, 0);
+    g_signal_connect (fcut_slider, "value-changed", (GCallback) fcut_value_changed, NULL);
+    g_signal_connect (fcut_slider, "format-value", (GCallback) fcut_format_value, NULL);
 
-        hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-        gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
-        gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new(_("Presets:")), TRUE, FALSE, 0);
+    gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Presets:")), TRUE, FALSE, 0);
 
-        button = preset_button(_("Default"), BS2B_DEFAULT_CLEVEL);
-        gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
+    button = preset_button (_("Default"), BS2B_DEFAULT_CLEVEL);
+    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
 
-        button = preset_button("C. Moy", BS2B_CMOY_CLEVEL);
-        gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
+    button = preset_button ("C. Moy", BS2B_CMOY_CLEVEL);
+    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
 
-        button = preset_button("J. Meier", BS2B_JMEIER_CLEVEL);
-        gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
+    button = preset_button ("J. Meier", BS2B_JMEIER_CLEVEL);
+    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
 
-        return vbox;
-    }
+    return vbox;
 }
 
 static const PreferencesWidget bs2b_widgets[] = {
