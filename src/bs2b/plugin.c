@@ -32,7 +32,7 @@ static t_bs2bdp bs2b = NULL;
 static int bs2b_channels;
 static GtkWidget * feed_slider, * fcut_slider;
 
-static const gchar * const bs2b_defaults[] = {
+static const char * const bs2b_defaults[] = {
  "feed", "45",
  "fcut", "700",
  NULL};
@@ -93,7 +93,7 @@ static void feed_value_changed (GtkRange * range, gpointer data)
     bs2b_set_level_feed (bs2b, feed_level);
 }
 
-static gchar * feed_format_value (GtkScale * scale, double value)
+static char * feed_format_value (GtkScale * scale, double value)
 {
     return g_strdup_printf ("%.1f dB", (float) value / 10);
 }
@@ -105,7 +105,7 @@ static void fcut_value_changed (GtkRange * range, gpointer data)
     bs2b_set_level_fcut (bs2b, fcut_level);
 }
 
-static gchar * fcut_format_value (GtkScale * scale, double value)
+static char * fcut_format_value (GtkScale * scale, double value)
 {
     return g_strdup_printf ("%d Hz, %d µs", (int) value, bs2b_level_delay ((int) value));
 }
@@ -121,7 +121,7 @@ static GtkWidget * preset_button (const char * label, int clevel)
 {
     GtkWidget * button = gtk_button_new_with_label (label);
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    g_signal_connect(button, "clicked", (GCallback)
+    g_signal_connect (button, "clicked", (GCallback)
      preset_button_clicked, GINT_TO_POINTER (clevel));
 
     return button;
@@ -178,7 +178,7 @@ static void * create_config_widget (void)
 }
 
 static const PreferencesWidget bs2b_widgets[] = {
- {WIDGET_CUSTOM, .data = {.populate = create_config_widget}}};
+ {WIDGET_CUSTOM, .data.populate = create_config_widget}};
 
 static const PluginPreferences bs2b_prefs = {
  .widgets = bs2b_widgets,
