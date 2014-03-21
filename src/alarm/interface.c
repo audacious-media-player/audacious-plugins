@@ -418,12 +418,12 @@ GtkWidget *create_config_dialog (void)
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
-    reminder_checkb = gtk_check_button_new_with_label (_("Use reminder"));
-    g_object_set_data (G_OBJECT (config_dialog), "reminder_cb", reminder_checkb);
     reminder_text = gtk_entry_new ();
+    reminder_checkb = gtk_check_button_new_with_label (_("enable"));
     g_object_set_data (G_OBJECT (config_dialog), "reminder_text", reminder_text);
+    g_object_set_data (G_OBJECT (config_dialog), "reminder_cb", reminder_checkb);
+    gtk_box_pack_start (GTK_BOX (hbox), reminder_text, TRUE, TRUE, 0);
     gtk_container_add (GTK_CONTAINER (hbox), reminder_checkb);
-    gtk_box_pack_end (GTK_BOX (hbox), reminder_text, TRUE, TRUE, 0);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
     gtk_container_add (GTK_CONTAINER (vbox), frame);
 
