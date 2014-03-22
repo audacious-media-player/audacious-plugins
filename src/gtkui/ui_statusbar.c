@@ -23,13 +23,14 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 #include <string.h>
-#include <inttypes.h>
 #include <unistd.h>
 #include <errno.h>
 
 #include <audacious/drct.h>
 #include <audacious/playlist.h>
+#include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudgui/libaudgui.h>
 
 #include "ui_statusbar.h"
 
@@ -38,26 +39,12 @@
 static void ui_statusbar_update_playlist_length (void * unused, GtkWidget * label)
 {
     int playlist = aud_playlist_get_active ();
-    int64_t selection = aud_playlist_get_selected_length (playlist) / 1000;
-    int64_t total = aud_playlist_get_total_length (playlist) / 1000;
 
-    char buf[64];
-    buf[0] = 0;
+    char s1[16], s2[16];
+    audgui_format_time (s1, sizeof s1, aud_playlist_get_selected_length (playlist));
+    audgui_format_time (s2, sizeof s2, aud_playlist_get_total_length (playlist));
 
-    if (selection >= 3600)
-        APPEND (buf, "%" PRId64 ":%02" PRId64 ":%02" PRId64,
-         selection / 3600, selection / 60 % 60, selection % 60);
-    else
-        APPEND (buf, "%" PRId64 ":%02" PRId64,
-         selection / 60, selection % 60);
-
-    if (total >= 3600)
-        APPEND (buf, "/%" PRId64 ":%02" PRId64 ":%02" PRId64,
-         total / 3600, total / 60 % 60, total % 60);
-    else
-        APPEND (buf, "/%" PRId64 ":%02" PRId64,
-         total / 60, total % 60);
-
+    SCONCAT3 (buf, s1, " / ", s2);
     gtk_label_set_text ((GtkLabel *) label, buf);
 }
 

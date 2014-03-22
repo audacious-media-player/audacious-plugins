@@ -229,15 +229,7 @@ static void append_str (char * buf, int bufsize, const char * str)
 
 static void append_time_str (char * buf, int bufsize, int time)
 {
-    time /= 1000;
-
-    if (time < 3600)
-        snprintf (buf + strlen (buf), bufsize - strlen (buf),
-         aud_get_bool (NULL, "leading_zero") ? "%02d:%02d" : "%d:%02d",
-         time / 60, time % 60);
-    else
-        snprintf (buf + strlen (buf), bufsize - strlen (buf), "%d:%02d:%02d",
-         time / 3600, (time / 60) % 60, time % 60);
+    audgui_format_time (buf + strlen (buf), bufsize - strlen (buf), time);
 }
 
 static void set_time_label (int time, int len)

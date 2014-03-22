@@ -81,16 +81,8 @@ static void set_length (GValue * value, int list, int row)
     int len = aud_playlist_entry_get_length (list, row, TRUE);
     if (len)
     {
-        len /= 1000;
-
         char s[16];
-        if (len < 3600)
-            snprintf (s, sizeof s, aud_get_bool (NULL, "leading_zero") ?
-             "%02d:%02d" : "%d:%02d", len / 60, len % 60);
-        else
-            snprintf (s, sizeof s, "%d:%02d:%02d", len / 3600, (len / 60) % 60,
-             len % 60);
-
+        audgui_format_time (s, sizeof s, len);
         g_value_set_string (value, s);
     }
     else
