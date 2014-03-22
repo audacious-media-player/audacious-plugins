@@ -111,24 +111,31 @@ static void mainwin_set_volume_diff (gint diff);
 
 static void format_time (gchar buf[7], gint time, gint length)
 {
-    if (aud_get_bool ("skins", "show_remaining_time") && length > 0)
+    bool_t zero = aud_get_bool (NULL, "leading_zero");
+    bool_t remaining = aud_get_bool ("skins", "show_remaining_time");
+
+    if (remaining && length > 0)
     {
-        if (length - time < 60000)         /* " -0:SS" */
-            snprintf (buf, 7, " -0:%02d", (length - time) / 1000);
-        else if (length - time < 6000000)  /* "-MM:SS" */
-            snprintf (buf, 7, "%3d:%02d", (time - length) / 60000, (length - time) / 1000 % 60);
-        else                               /* "-HH:MM" */
-            snprintf (buf, 7, "%3d:%02d", (time - length) / 3600000, (length - time) / 60000 % 60);
+        time = (length - time) / 1000;
+
+        if (time < 60)
+            snprintf (buf, 7, zero ? "-00:%02d" : " -0:%02d", time);
+        else if (time < 6000)
+            snprintf (buf, 7, zero ? "%03d:%02d" : "%3d:%02d", -time / 60, time % 60);
+        else
+            snprintf (buf, 7, "%3d:%02d", -time / 3600, time / 60 % 60);
     }
     else
     {
-        if (time < 60000000)  /* MMM:SS */
-            snprintf (buf, 7, "%3d:%02d", time / 60000, time / 1000 % 60);
-        else                  /* HHH:MM */
-            snprintf (buf, 7, "%3d:%02d", time / 3600000, time / 60000 % 60);
-    }
+        time /= 1000;
 
-    buf[3] = 0;
+        if (time < 6000)
+            snprintf (buf, 7, zero ? " %02d:%02d" : " %2d:%02d", time / 60, time % 60);
+        else if (time < 60000)
+            snprintf (buf, 7, "%3d:%02d", time / 60, time % 60);
+        else
+            snprintf (buf, 7, "%3d:%02d", time / 3600, time / 60 % 60);
+    }
 }
 
 void mainwin_set_shape (void)
