@@ -121,18 +121,17 @@ GtkWidget * ui_statusbar_new (void)
 {
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
     GtkWidget * status = gtk_widget_new (GTK_TYPE_LABEL, "xalign", 0.0, NULL);
+    GtkWidget * length = gtk_widget_new (GTK_TYPE_LABEL, "xalign", 1.0, NULL);
 
     gtk_label_set_ellipsize ((GtkLabel *) status, PANGO_ELLIPSIZE_END);
     gtk_box_pack_start ((GtkBox *) hbox, status, TRUE, TRUE, 5);
+    gtk_box_pack_start ((GtkBox *) hbox, length, FALSE, FALSE, 5);
+
+    ui_statusbar_update_playlist_length (NULL, length);
 
     hook_associate ("playback ready", (HookFunction) ui_statusbar_info_change, status);
     hook_associate ("info change", (HookFunction) ui_statusbar_info_change, status);
     hook_associate ("playback stop", (HookFunction) ui_statusbar_playback_stop, status);
-
-    GtkWidget * length = gtk_widget_new (GTK_TYPE_LABEL, "xalign", 1.0, NULL);
-    gtk_box_pack_start ((GtkBox *) hbox, length, FALSE, FALSE, 5);
-    ui_statusbar_update_playlist_length (NULL, length);
-
     hook_associate ("playlist activate", (HookFunction) ui_statusbar_update_playlist_length, length);
     hook_associate ("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
 
