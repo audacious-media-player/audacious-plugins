@@ -1,42 +1,37 @@
-# Czech translation for Audacious Plugins
+# Sinhala translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# jui <appukonrad@gmail.com>, 2012-2013
-# Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004
-# fri <pavelfric@seznam.cz>, 2012-2013
-# fri <pavelfric@seznam.cz>, 2012
-# Petr Pisar <petr.pisar@atlas.cz>, 2007-2012
-# petr.simacek <petr.simacek@gmail.com>, 2012
-# petr.simacek <petr.simacek@gmail.com>, 2012
-# petr.simacek <petr.simacek@gmail.com>, 2013
+# ashintha89 <ashintha@gmail.com>, 2013
+# D.N.Perera <deen.niro@gmail.com>, 2013
+# P.I.Balasinghe <pushpika.indrachapa@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2014-03-23 20:36+0100\n"
 "PO-Revision-Date: 2014-03-21 09:15+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/audacious/language/"
-"cs/)\n"
-"Language: cs\n"
+"Language-Team: Sinhala (http://www.transifex.com/projects/p/audacious/"
+"language/si/)\n"
+"Language: si\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
 msgid "mono"
-msgstr "mono"
+msgstr " තනි "
 
 #: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
-msgstr "stereo"
+msgstr "ත්‍රිමාන "
 
 #: src/aac/libmp4.c:99
 msgid "surround"
-msgstr "prostorový zvuk"
+msgstr "සිසාළ "
 
 #: src/aac/libmp4.c:314
 msgid "AAC (MP4) Decoder"
@@ -49,11 +44,11 @@ msgstr ""
 #: src/adplug/adplug-xmms.cc:137 src/modplug/modplugbmp.cxx:348
 #: src/psf/plugin.c:122 src/vtx/vtx.c:62 src/xsf/plugin.c:80
 msgid "sequenced"
-msgstr "Sekvencován"
+msgstr "අනුපිළිවෙළ"
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib přehrávač)"
+msgstr "Adකෙවෙනිය (AdLib ධාවකය)"
 
 #: src/alarm/alarm.c:778
 msgid "Set Alarm ..."
@@ -65,13 +60,13 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"Zásuvný modul pro spuštění přehrávání v přesně určený čas.\n"
-"\n"
-"Původně napsal Adam Feakin a Daniel Stodden."
+"කිසියම් වෙලාවකදී ධාවනය කිරීමට යොදාගත හැකි පේනු මෘදුකාංගයක්.⏎\n"
+"⏎\n"
+"මුලින් ලියන ලද්දේ ඇඩම් ෆීකින් සහ ඩැනියෙල් ස්ටොඩ්ඩන් විසිනි."
 
 #: src/alarm/alarm.c:811 src/alarm/interface.c:86
 msgid "Alarm"
-msgstr "Budík"
+msgstr "සිහි කැඳවීම​"
 
 #: src/alarm/interface.c:32
 msgid ""
@@ -95,6 +90,25 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"කාලය\n"
+"සංඥාව කරන්න:\n"
+"සංඥා කල යුතු කාලය.\n"
+"\n"
+"ඉවත්වන්න පසුව:\n"
+"මෙම කාලයෙන් පසුව සංඥාව නවත්වන්න.\n"
+"(අවධි සංවාද කොටුව පෙන්වන්න)\n"
+"\n"
+"\n"
+"දින\n"
+"දිනය:\n"
+"සංඥා කිරීම සක්‍රිය කරන දින වරණය කරන්න.\n"
+"\n"
+"කාලය\n"
+"දිනපතා සංඥා කරන කාලය තෝරන්න,\n"
+"හෝ පුරුදු යොදාගැනීමට ටොගල බොත්තම වරණය කරන්න\n"
+"කාලය.\n"
+"\n"
+"\n"
 
 #: src/alarm/interface.c:49
 msgid ""
@@ -117,6 +131,21 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 msgstr ""
+"ශබ්දය \n"
+"හායනය:\n"
+"ශබ්දය තොරණ ලද ශබ්දය තෙක් හායනය කරන්න \n"
+"මෙම කාල මට්ටමට.\n"
+"\n"
+"ආරම්භ කල:\n"
+"හායනය මෙම ශබ්ද මට්ටමේ සිට ආරම්භ කරන්න.\n"
+"\n"
+"අවසානය:\n"
+"හායනය අවසන් කල යුතු ශබ්දය. හායන වෙලාව 0 නම් ශබ්දය මෙම මට්ටමේ තබා ධාවනය ආරම්භ කරන්න.\n"
+"\n"
+"\n"
+"විකල්ප:\n"
+"වැඩිපුර විධාන:\n"
+"මෙම විධාන සිහිගන්වීමේ වෙලාවේදී ධාවනය කරන්න.\n"
 
 #: src/alarm/interface.c:66
 msgid ""
@@ -131,50 +160,60 @@ msgid ""
 "    Type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown."
 msgstr ""
+"ධාවන ලැයිස්තුව\n"
+"මෙම ධාවන ලැයිස්තුව ප්‍රවේශනය කරන්න. ධාවන ලැයිස්තුවක් නොමැතිනම්\n"
+"ලබා දී ඇත, පවත්නා දෙය යොදා ගනු ලැබේ.\n"
+"mp3/ogg දහරක URL\n"
+"මෙහි ඇතුල් කල හැක.\n"
+"\n"
+"සිහි කැදවුම:\n"
+"සංඥා කිරීම අවසන් වූ පසු සිහි කැදවුමක් පෙන්වන්න\n"
+"කොටුව තුල සිහි කැදවුම ටයිප් කරන්න සහ ඔබට එය පෙන්වීමට\n"
+"අවශ්‍ය නම් ටොගල බොත්තම සක්‍රිය කරන්න "
 
 #: src/alarm/interface.c:85
 msgid "This is your wakeup call."
-msgstr "Toto je váš budící signál."
+msgstr "මේ ඔබගේ සිහි කැඳවීමේ ඇමතුමයි."
 
 #: src/alarm/interface.c:103
 msgid "Your reminder for today is..."
-msgstr "Vaše připomínka pro dnešek je..."
+msgstr "ඔබගේ අද දවසේ මතක් කිරීම වන්නේ..."
 
 #: src/alarm/interface.c:105 src/alarm/interface.c:417
 msgid "Reminder"
-msgstr "Upomínání"
+msgstr "මතක් කිරීම​"
 
 #: src/alarm/interface.c:144
 msgid "Monday"
-msgstr "Pondělí"
+msgstr "සඳුදා"
 
 #: src/alarm/interface.c:144
 msgid "Tuesday"
-msgstr "Úterý"
+msgstr "අඟහරුවාදා"
 
 #: src/alarm/interface.c:144
 msgid "Wednesday"
-msgstr "Středa"
+msgstr "බදාදා"
 
 #: src/alarm/interface.c:145
 msgid "Thursday"
-msgstr "Čtvrtek"
+msgstr "බ්‍රහස්පතින්දා"
 
 #: src/alarm/interface.c:145
 msgid "Friday"
-msgstr "Pátek"
+msgstr "සිකුරාදා"
 
 #: src/alarm/interface.c:145
 msgid "Saturday"
-msgstr "Sobota"
+msgstr "සෙනසුරාදා"
 
 #: src/alarm/interface.c:145
 msgid "Sunday"
-msgstr "Neděle"
+msgstr "ඉරිදා"
 
 #: src/alarm/interface.c:179
 msgid "Alarm Settings"
-msgstr "Nastavení budíku"
+msgstr "සිහි කැඳවීම් සකසනයන්"
 
 #: src/alarm/interface.c:180 src/filewriter/mp3.c:690
 msgid "_OK"
@@ -188,125 +227,125 @@ msgstr ""
 #: src/alarm/interface.c:188 src/alarm/interface.c:252
 #: src/alarm/interface.c:267
 msgid "Time"
-msgstr "Čas"
+msgstr "වෙලාව​"
 
 #: src/alarm/interface.c:195
 msgid "Alarm at (default):"
-msgstr "Budit v (standardní):"
+msgstr "සිහිකැඳවීම​ (පෙරනිමිය​)"
 
 #: src/alarm/interface.c:218
 msgid "h"
-msgstr "h"
+msgstr "පැ"
 
 #: src/alarm/interface.c:222
 msgid "Quiet after:"
-msgstr "Ticho po:"
+msgstr "පසු නිහඬවන්න:​"
 
 #: src/alarm/interface.c:236
 msgid "hours"
-msgstr "h"
+msgstr "පැය​"
 
 #: src/alarm/interface.c:248
 msgid "minutes"
-msgstr "min"
+msgstr "මිනිත්තු"
 
 #: src/alarm/interface.c:257
 msgid "Choose the days for the alarm to come on"
-msgstr "Vyberte dny, kdy má budík budit"
+msgstr "සිහි කැඳවීම් ලැබිය යුතු දිනයන් තෝරන්න​"
 
 #: src/alarm/interface.c:264
 msgid "Day"
-msgstr "Den"
+msgstr "දවස​"
 
 #: src/alarm/interface.c:282 src/bs2b/plugin.c:168 src/skins/preset-list.c:439
 #: src/skins/preset-list.c:445
 msgid "Default"
-msgstr "Standardní"
+msgstr "පෙරනිමිය​"
 
 #: src/alarm/interface.c:312
 msgid "Days"
-msgstr "Dny"
+msgstr "දවස්"
 
 #: src/alarm/interface.c:321
 msgid "Fading"
-msgstr "Zesilování"
+msgstr "හායනය"
 
 #: src/alarm/interface.c:329 src/console/plugin.c:41
 #: src/crossfade/crossfade.c:263 src/gtkui/settings.c:53 src/lirc/lirc.c:395
 msgid "seconds"
-msgstr "sekund"
+msgstr "තප්පර​"
 
 #: src/alarm/interface.c:336 src/alarm/interface.c:383
 msgid "Volume"
-msgstr "Hlasitost"
+msgstr "ශබ්ද මට්ටම​"
 
 #: src/alarm/interface.c:341
 msgid "Start at"
-msgstr "Začít na"
+msgstr "ආරම්භ කරන්න​"
 
 #: src/alarm/interface.c:359
 msgid "Final"
-msgstr "Skončit na"
+msgstr "අවසානය​"
 
 #: src/alarm/interface.c:374
 msgid "Current"
-msgstr "Současná"
+msgstr "දැන්"
 
 #: src/alarm/interface.c:389
 msgid "Additional Command"
-msgstr "Dodatečný příkaz"
+msgstr "අමතර විධාන​"
 
 #: src/alarm/interface.c:395 src/alarm/interface.c:422
 msgid "enable"
-msgstr "zapnout"
+msgstr "සක්‍රීය​"
 
 #: src/alarm/interface.c:402
 msgid "Playlist (optional)"
-msgstr "Seznam skladeb (volitelné)"
+msgstr "ධාවනය වන ගොනුව (අමතර​)"
 
 #: src/alarm/interface.c:409
 msgid "Select a playlist"
-msgstr "Vybrat seznam skladeb"
+msgstr "ධාවන ලැයිස්තුවක්​ තෝරන්න"
 
 #: src/alarm/interface.c:430
 msgid "Options"
-msgstr "Nastavení"
+msgstr "විකල්ප​"
 
 #: src/alarm/interface.c:435
 msgid "What do these options mean?"
-msgstr "Co tyto volby znamenají?"
+msgstr "මොනවාද මේ විකල්පයන්ගෙන් අදහස් වන්නේ?"
 
 #: src/alarm/interface.c:449
 msgid "Help"
-msgstr "Nápověda"
+msgstr "උදව්"
 
 #: src/albumart/albumart.c:72
 msgid "Album Art"
-msgstr "Album"
+msgstr "ඇල්බම් කලාව"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "Implicitní PCM zařízení"
+msgstr "පෙරනිමි PCM ආම්පන්නය "
 
 #: src/alsa/config.c:239
 msgid "Default mixer device"
-msgstr "Implicitní směšovací zařízení"
+msgstr "පෙරනිමි මිශ්‍ර කිරීමේ ආම්පන්නය "
 
 #: src/alsa/config.c:428
 msgid "PCM device:"
-msgstr "Zařízení PCM:"
+msgstr "PCM ආම්පන්නය:"
 
 #: src/alsa/config.c:430
 msgid "Mixer device:"
-msgstr "Zařízení směšovače:"
+msgstr "මිශ්‍ර කිරීමේ ආම්පන්නය:"
 
 #: src/alsa/config.c:432
 msgid "Mixer element:"
-msgstr "Prvek směšovače:"
+msgstr "මිශ්‍ර කිරීමේ මූලද්‍රව්‍ය:"
 
 #: src/alsa/config.c:435
 msgid "Work around drain hangup"
-msgstr "Obejít zaseknutí při vyprazdňovaní"
+msgstr "ක්‍රමයෙන් අඩු වී නැවතීමක් පිළිබඳ ක්‍රියා කිරීම​"
 
 #: src/alsa/plugin.c:27
 msgid ""
@@ -316,19 +355,18 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"ALSA výstupní modul pro Audacious\n"
-"Copyright 2009-2012 John Lindgren\n"
-"\n"
-"Mé díky patří Williamu Pitcockovy, autoru výstupního ALSA Zásuvného modulu "
-"NG, jehož kód sloužil jako reference, když použití ALSA mauálu nestačilo."
+"ඔඩෙෂස් සඳහා ALSA ප්‍රතිදාන පේනු  මෘදුකාංගය\n"
+"ප්‍රකාශන හිමිකම ජෝන් ලින්ඩ්ග්රෙන් 2009-2012\n"
+"මගේ ස්තුතිය ALSA  ප්‍රතිදාන පේනු  මෘදුකාංගයේ කර්තෘ විලියම් පිට්කොක් වෙත පුදන අතර ඔහුගේ කේතය "
+"ALSA අත්පොත ප්‍රමාණවත් නොවන විට ආදේශකයක් ලෙස භාවිතා කරන ලදී."
 
 #: src/alsa/plugin.c:41
 msgid "ALSA Output"
-msgstr "ALSA výstup:"
+msgstr "ALSA ප්‍රතිදානය "
 
 #: src/amidi-plug/amidi-plug.c:466
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (MIDI přehrávač)"
+msgstr "AMIDI-කෙවෙනිය (MIDI ධාවකය)"
 
 #: src/amidi-plug/i_configure.c:96
 msgid "Override default gain:"
@@ -388,7 +426,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:50
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug – vyberte soundfontový soubor"
+msgstr "AMIDI-පේනු - SoundFont ගොනුව තෝරන්න​"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:54
 msgid "_Open"
@@ -396,35 +434,35 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:225
 msgid "Filename"
-msgstr "Jméno souboru"
+msgstr "ගොනු නම​"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:229
 msgid "Size (bytes)"
-msgstr "Velikost (v bajtech):"
+msgstr "ප්‍රමාණය (බයිට්ස්)"
 
 #: src/amidi-plug/i_fileinfo.c:176
 msgid "Name:"
-msgstr "Jméno:"
+msgstr "නම​:"
 
 #: src/amidi-plug/i_fileinfo.c:203
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"small\"> Podrobnosti o MIDI </span>"
+msgstr "<span size=\"smaller\"> MIDI තොරතුරු </span>"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "Format:"
-msgstr "Formát:"
+msgstr "හැඩතලය​:"
 
 #: src/amidi-plug/i_fileinfo.c:220
 msgid "Length (msec):"
-msgstr "Délka (ms):"
+msgstr "දිග (මිලි තප්පර​):"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "No. of Tracks:"
-msgstr "č. skladby"
+msgstr "ඛණ්ඩ ගණන:"
 
 #: src/amidi-plug/i_fileinfo.c:229
 msgid "variable"
-msgstr "proměnlivé"
+msgstr "විචල්‍යය"
 
 #: src/amidi-plug/i_fileinfo.c:231
 msgid "BPM:"
@@ -432,40 +470,40 @@ msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:239
 msgid "BPM (wavg):"
-msgstr "BPM (váž.):"
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:242
 msgid "Time Div:"
-msgstr "Čas. pom.:"
+msgstr "කාලය​ බෙදීම​:"
 
 #: src/amidi-plug/i_fileinfo.c:253
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"small\"> Komentáře a text MIDI skladby </span>"
+msgstr "<span size=\"smaller\"> MIDI අදහස් දැක්වීම් සහ පද රචනයන් </span>"
 
 #: src/amidi-plug/i_fileinfo.c:302
 msgid "* no comments available in this MIDI file *"
-msgstr "* v MIDI souboru se nenachází žádné komentáře *"
+msgstr "* මෙම MIDI ගොනුවෙහි අදහස් දැක්වීම් නොමැත​ *"
 
 #: src/amidi-plug/i_fileinfo.c:314
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* v MIDI souboru se nenachází text skladby *"
+msgstr "* මෙම MIDI ගොනුවෙහි පද රචනා නොමැත​ *"
 
 #: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
-msgstr "_Zavřít"
+msgstr "_වසන්න​"
 
 #: src/amidi-plug/i_fileinfo.c:366
 msgid "  (invalid UTF-8)"
-msgstr "  (neplatné UTF8)"
+msgstr "(අවලංගු UTF-8)"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
-msgstr "O AMIDI-Pluginu"
+msgstr "AMIDI-කෙවෙනිය ගැන "
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
-msgstr ""
+msgstr "AMIDI-පේනුව "
 
 #: src/amidi-plug/i_utils.c:54
 msgid ""
@@ -489,6 +527,24 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"\n"
+"මොඩියුල MIDI ගීත ධාවකය \n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"රචනා කරන ලද්දේ Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"විශේෂ ස්තුතිය...\n"
+"Clemens Ladisch සහ  Jaroslav Kysela\n"
+"ඔවුන්ගේ වැඩසටහන් වන aplaymidi සහ  amixer; ඒවා \n"
+"ඉතා ප්‍රයෝජනවත් විය. එමෙන්ම alsa-lib ලේඛන \n"
+"ALSA API වැඩිදුර ඉගෙන ගැනීමට \n"
+"\n"
+"Alfredo Spadafina\n"
+"හට අලංකාර midi යතුරු පුවරු ලාංඡනය සඳහා \n"
+"\n"
+"Tony Vroon\n"
+"හට ඇල්ෆා පරීක්ෂණ සඳහා සහය දැක්වීම වෙනුවෙන් "
 
 #: src/aosd/aosd.c:30
 msgid ""
@@ -503,35 +559,35 @@ msgstr ""
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
-msgstr "AOSD (On-Screen Display)"
+msgstr "AOSD (තිරය මත සංදර්ශනය)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "Obdélník"
+msgstr "ඍජුකෝණාශ්‍රය"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "Zaoblený obdélník"
+msgstr "වටකුරු කොන් සහිත​ ඍජුකෝණාශ්‍රය"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "Konkávní obdélník"
+msgstr "අවතල ඍජුකෝණාශ්‍රය"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "Žádný"
+msgstr "කිසිවක් නැත​"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "Zahájení přehrávání"
+msgstr "පිළිවැයීම ආරම්භ කිරීම​"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Spustí OSD, když se začne přehrávat skladba."
+msgstr "ධාවන ලැයිස්තු අයිතමයක් ක්‍රියාත්මක වනවිට OSD කියාත්මක කිරීම​"
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "Změna názvu"
+msgstr "මාතෘකාව වෙනස්කිරීම"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -539,112 +595,111 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Spustí OSD, když se během přehrávaní změní název skladby, ale jméno souboru "
-"je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se "
-"střídají skladby."
+"ධාවනය අතරතුර​, ගීත මාතෘකාව වෙනස් වුවද ගොනු නම එයම නම් OSD ක්‍රියාත්මක කිරීම​. අන්තර්ජාල "
+"ගලනයන්හි දී මාතෘකාව වෙනස් වීම් පෙන්වීමට මෙය ඉතා ප්‍රයෝජනවත් වේ."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "Pozastavení"
+msgstr "විරාමය ක්‍රියාත්මකයි"
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "Spustí OSD, když je přehrávání pozastaveno."
+msgstr "පිළිවැයීම් විරාමයේදී OSD ක්‍රියාත්මක කිරීම​"
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "Obnovení přehrávání"
+msgstr "විරාමය ක්‍රියාවිරහිතයි"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Spustí OSD, když přehrávání obnoveno."
+msgstr "පිළිවැයීම් විරාමය අවසානයේදී OSD ක්‍රියාත්මක කිරීම​"
 
 #: src/aosd/aosd_ui.c:192
 msgid "Placement"
-msgstr "Umístění"
+msgstr "ස්ථාපනය"
 
 #: src/aosd/aosd_ui.c:224
 msgid "Relative X offset:"
-msgstr "Relativní odsazení ve směru osy X:"
+msgstr "සාපේක්ෂ X අනුලම්බය:"
 
 #: src/aosd/aosd_ui.c:231
 msgid "Relative Y offset:"
-msgstr "Relativní odsazení ve směru osy Y"
+msgstr "සාපේක්ෂ Y අනුලම්බය:"
 
 #: src/aosd/aosd_ui.c:238
 msgid "Max OSD width:"
-msgstr "Maximální šířka OSD"
+msgstr "උපරිම OSD පළල:​"
 
 #: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
-msgstr "Nastavení pro více monitorů"
+msgstr "බහු මොනිටර විකල්ප​"
 
 #: src/aosd/aosd_ui.c:253
 msgid "Display OSD using:"
-msgstr "Zobrazit OSD na:"
+msgstr "OSD දර්ශනයට​ භාවිතා කරන්න​:"
 
 #: src/aosd/aosd_ui.c:255
 msgid "all monitors"
-msgstr "všech monitorech"
+msgstr "සියලුම මොනිටර​"
 
 #: src/aosd/aosd_ui.c:258
 #, c-format
 msgid "monitor %i"
-msgstr "monitoru %i"
+msgstr "මොනිටර​ය​ %i"
 
 #: src/aosd/aosd_ui.c:310
 msgid "Timing (ms)"
-msgstr "Časování (ms)"
+msgstr "කාල නියමය (මිලි තප්පර​)"
 
 #: src/aosd/aosd_ui.c:315
 msgid "Display:"
-msgstr "Zobrazení:"
+msgstr "දර්ශනය​:"
 
 #: src/aosd/aosd_ui.c:320
 msgid "Fade in:"
-msgstr "Rozsvícení:"
+msgstr "ක්‍රමෝද්දීපනය:"
 
 #: src/aosd/aosd_ui.c:325
 msgid "Fade out:"
-msgstr "Pohasnutí:"
+msgstr "ක්‍රමාවදීපනය:"
 
 #: src/aosd/aosd_ui.c:390
 msgid "Fonts"
-msgstr "Fonty"
+msgstr "අකුරු වර්ගය​"
 
 #: src/aosd/aosd_ui.c:397
 #, c-format
 msgid "Font %i:"
-msgstr "Font %i:"
+msgstr "අකුරු වර්ගය ​%i:"
 
 #: src/aosd/aosd_ui.c:412
 msgid "Shadow"
-msgstr "Stín"
+msgstr "සෙවනැල්ල​"
 
 #: src/aosd/aosd_ui.c:518
 msgid "Render Style"
-msgstr "Styl vyobrazení"
+msgstr "විදැහුම් අන්දම"
 
 #: src/aosd/aosd_ui.c:534
 msgid "Colors"
-msgstr "Barvy"
+msgstr "පාට​"
 
 #: src/aosd/aosd_ui.c:545
 #, c-format
 msgid "Color %i:"
-msgstr "Barvy %i:"
+msgstr "පාට​ %i:"
 
 #: src/aosd/aosd_ui.c:648
 msgid "Enable trigger"
-msgstr "Povolit spouštěč"
+msgstr "ක්‍රියාරම්භකය සක්‍රිය කිරිම"
 
 #: src/aosd/aosd_ui.c:675
 msgid "Event"
-msgstr "Událost"
+msgstr "සිද්ධිය​"
 
 #: src/aosd/aosd_ui.c:703
 msgid "Composite manager detected"
-msgstr "Nalezen kompozitní správce"
+msgstr "සංයුක්ත කළමනාකාරකය හඳුනා ගන්නා ලදී"
 
 #: src/aosd/aosd_ui.c:710
 msgid ""
@@ -652,42 +707,42 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Kompozitní správce nebyl nalezen.\n"
-"Pokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte "
-"kompozitního správce, jinak OSD nebude správně fungovat."
+"සංයුක්ත කළමනාකාරකය හඳුනා ගෙන නොමැත​;\n"
+"දැනටමත් එකක් ධාවනය වෙමින් නොපවතී නම් කරුණාකර සංයුක්ත කළමනාකාරකයක් සක්‍රීය කරන්න​. එසේ නැතිනම් "
+"OSD නිසි ලෙස ක්‍රියා නොකරයි"
 
 #: src/aosd/aosd_ui.c:718
 msgid "Composite manager not required for fake transparency"
-msgstr "Při falešné průhlednosti není kompozitní správce potřeba"
+msgstr "ව්‍යාජ විනිවිද පෙනීම සඳහා සංයුක්ත කළමනාකාරකය අවශ්‍ය නැත​"
 
 #: src/aosd/aosd_ui.c:754
 msgid "Transparency"
-msgstr "Průhlednost"
+msgstr "විනිවිද පෙනීම"
 
 #: src/aosd/aosd_ui.c:760
 msgid "Fake transparency"
-msgstr "Falešná průhlednost"
+msgstr "ව්‍යාජ විනිවිද පෙනීම​"
 
 #: src/aosd/aosd_ui.c:762
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Skutečná průhlednost (vyžaduje kompozitní rozšíření X)"
+msgstr "සත්‍ය විනිවිද පෙනීම​ (X සංයුක්ත Ext. අවශ්‍යයයි)"
 
 #: src/aosd/aosd_ui.c:804
 msgid "Composite extension not loaded"
-msgstr "Kompozitní rozšíření není nahráno"
+msgstr "සංයුක්ත දිගුව​ ප්‍රවේශනය වී නොමැත​"
 
 #: src/aosd/aosd_ui.c:812
 msgid "Composite extension not available"
-msgstr "Kompozitní rozšíření není dostupné"
+msgstr "සංයුක්ත දිගුව​ නොමැත​"
 
 #: src/aosd/aosd_ui.c:831
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>OSD Audacious</span>"
+msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
 #: src/aosd/aosd_ui.c:906
 msgid "Audacious OSD - configuration"
-msgstr "OSD pro Audacious – nastavení"
+msgstr "Audacious OSD - වින්‍යාසය​"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
@@ -699,27 +754,27 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:940
 msgid "Position"
-msgstr "Umístění"
+msgstr "පිහිටීම​"
 
 #: src/aosd/aosd_ui.c:945
 msgid "Animation"
-msgstr "Animace"
+msgstr "සජීවනය​"
 
 #: src/aosd/aosd_ui.c:950
 msgid "Text"
-msgstr "Text"
+msgstr "පෙළ​"
 
 #: src/aosd/aosd_ui.c:955
 msgid "Decoration"
-msgstr "Výzdoba"
+msgstr "අලංකරණය"
 
 #: src/aosd/aosd_ui.c:960
 msgid "Trigger"
-msgstr "Spouštěč"
+msgstr "ක්‍රියාරම්භකය"
 
 #: src/aosd/aosd_ui.c:965
 msgid "Misc"
-msgstr "Různé"
+msgstr "විවිධ"
 
 #: src/asx3/asx3.c:179
 msgid "ASXv3 Playlists"
@@ -727,39 +782,39 @@ msgstr ""
 
 #: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "ASXv1/ASXv2 seznamy skladeb"
+msgstr "ASXv1/ASXv2 ධාවන ලැයිස්තුව "
 
 #: src/audpl/audpl.c:186
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious seszam skladeb (audpl)"
+msgstr "ඔඩෙෂස් ධාවන ලැස්තු (audpl)"
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
-msgstr "<b>Barva</b>"
+msgstr "<b>වර්ණ</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
-msgstr "Rozsah rozostření"
+msgstr "නොපැහැදිලි විෂය පථය"
 
 #: src/bs2b/plugin.c:142
 msgid "Feed level:"
-msgstr "Úroveň přeslechu:"
+msgstr "සංග්‍රහ මට්ටම:"
 
 #: src/bs2b/plugin.c:154
 msgid "Cut frequency:"
-msgstr "Ořezová frekvence:"
+msgstr "සංඛ්‍යාතය කපන්න:"
 
 #: src/bs2b/plugin.c:166
 msgid "Presets:"
-msgstr "Předvolby:"
+msgstr "පෙර සකසන ලද:"
 
 #: src/bs2b/plugin.c:189
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr "ත්‍රිමාන ධ්වානික සංචාලන වල සිට ද්විකර්ණික වෙත (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:297
 msgid "Spectrum Analyzer"
-msgstr "Analyzátor spektra"
+msgstr "වර්ණාවලි විශ්ලේශකය"
 
 #: src/cdaudio-ng/cdaudio-ng.c:101
 msgid ""
@@ -772,81 +827,86 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"ප්‍රකාශන හිමිකම් (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> සහ පිරිස.\n"
+"විශේෂ ස්තුතිය libcdio සංවර්ධකයන්ට <http://www.gnu.org/software/libcdio/>\n"
+"සහ libcddb සංවර්ධකයන්ට <http://libcddb.sourceforge.net/>.\n"
+"උපදෙස් දීම සහ මගපෙන්වීම වෙනුවෙන් මගේ ස්තුතිය Tony Vroon වෙත පුද කරමි.\n"
+"මෙය 2007 වසරේ  Google Summer of Code ව්‍යාපෘතියකි."
 
 #: src/cdaudio-ng/cdaudio-ng.c:119
 msgid "<b>Device</b>"
-msgstr "<b>Zařízení</b>"
+msgstr "<b>ආම්පන්නය</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:120
 msgid "Read speed:"
-msgstr "Rychlost čtení:"
+msgstr "වේගයෙන් කියවන්න:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Override device:"
-msgstr "Přepsat zařízení:"
+msgstr "ප්‍රතික්ෂේපිත ආම්පන්නය:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "<b>Metadata</b>"
-msgstr "<b>Metadata</b>"
+msgstr "<b>පාරදත්ත</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Use CD-Text"
-msgstr "Použití CD-Text"
+msgstr "භාවිතා කරන්න CD-පෙළ "
 
 #: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CDDB"
-msgstr "Používat CDDB"
+msgstr "භාවිතා කරන්න CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use HTTP instead of CDDBP"
-msgstr "Použít HTTP místo CDDBP"
+msgstr "CDDBP වෙනුවට HTTP භාවිතා කරන්න​"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Server:"
-msgstr "Server:"
+msgstr "සේවාදායකය:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Path:"
-msgstr "Cesta:"
+msgstr "පථය:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Port:"
-msgstr "Port:"
+msgstr "තොට:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Audio CD Plugin"
-msgstr "Audio CD Plugin"
+msgstr "ශ්‍රව්‍ය CD පේනු මෘදුකාංගය "
 
 #: src/cdaudio-ng/cdaudio-ng.c:244
 msgid "Failed to initialize cdio subsystem."
-msgstr "Nepodařilo se inicializovat cdio subsystému."
+msgstr "cdio උප පද්ධතිය ඇරඹීම අසාර්ථකය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:300
 #, c-format
 msgid "Invalid URI %s."
-msgstr "Neplatná URI %s."
+msgstr "අවලංගු  URI %s."
 
 #: src/cdaudio-ng/cdaudio-ng.c:302
 #, c-format
 msgid "Track %d not found."
-msgstr "Stopa %d nebyla nalezena."
+msgstr "ඛණ්ඩය %d සොයාගත නොහැක."
 
 #: src/cdaudio-ng/cdaudio-ng.c:304
 #, c-format
 msgid "Track %d is a data track."
-msgstr "Stopa %d je datová stopa."
+msgstr "ඛණ්ඩ %d දත්ත ඛණ්ඩයකි."
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 msgid "Failed to open audio output."
-msgstr "Nelze otevřít zvukový výstup"
+msgstr "ශ්‍රව්‍ය ප්‍රතිදානය විවෘත කිරීම අසාර්ථක විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:378
 msgid "Error reading audio CD."
-msgstr "Chyba při čtení zvukového CD."
+msgstr "ශ්‍රව්‍ය CD කියවීමේ දෝෂය"
 
 #: src/cdaudio-ng/cdaudio-ng.c:449
 msgid "Audio CD"
-msgstr "Zvukové CD"
+msgstr "ශ්‍රව්‍ය CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:458
 #, c-format
@@ -856,84 +916,86 @@ msgstr ""
 #: src/cdaudio-ng/cdaudio-ng.c:485 src/cdaudio-ng/cdaudio-ng.c:494
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "Nelze otevřít CD zařízení %s."
+msgstr "CD අම්පන්නය  %s විවෘත කිරීම අසාර්ථක විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:497
 msgid "No audio capable CD drive found."
-msgstr "Nebyly nalezeny funkční CD mechaniky"
+msgstr "ශ්‍රව්‍ය ක්‍රියා කල හැකි CD අම්පන්නය සොයාගත නොහැක."
 
 #: src/cdaudio-ng/cdaudio-ng.c:524
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Nepodařilo se dokončit inicializaci otevření CD mechaniky."
+msgstr "විවෘත කරන ලද CD අම්පන්නය අවසානය තෙක් ක්‍රියාත්මක කිරීම අසාර්ථක විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:537
 msgid "Failed to retrieve first/last track number."
-msgstr "Nepodařilo se načíst první/poslední číslo skladby."
+msgstr "පළමු/අවසාන ඛණ්ඩ අංකය සොයාගැනීම අසාර්ථක විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:562
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "nelze přečíst začátek/konec LSN pro skladbu %d."
+msgstr "ඛණ්ඩ  %d හි පළමු/අවසාන LSN කියවීමට නොහැක."
 
 #: src/cdaudio-ng/cdaudio-ng.c:646
 msgid "Failed to create the cddb connection."
-msgstr "Nepodařilo se vytvořit připojení k CDDB."
+msgstr "cddb සම්බන්ධතාව තැනීම අසාර්ථක විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:721
 msgid "Failed to query the CDDB server"
-msgstr "Nepodařil se dotaz na server CDDB"
+msgstr "CDDB සේවාදායකය විමසුමට අපොහොසත් විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:723
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr "Nepodařil se dotaz na server CDDB: %s"
+msgstr "CDDB සේවාදායකය : %s විමසුමට අපොහොසත් විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:747
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr "Nepodařilo se přečíst cddb info: %s"
+msgstr "cddb තොරතුරු:  %s කියවීමට අපොහොසත් විය."
 
 #: src/cdaudio-ng/cdaudio-ng.c:818
 msgid "Drive is empty."
-msgstr "Mechanika je prázdná"
+msgstr "ධාවකය හිස්."
 
 #: src/cdaudio-ng/cdaudio-ng.c:820
 msgid "Unsupported disk type."
-msgstr "Nepodporovaný druh disku."
+msgstr "සහාය නොමැති තැටි වර්ගයකි."
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Play CD"
-msgstr "Přehrát CD"
+msgstr "සංයුක්ත තැටිය​ ධාවනය කරන්න "
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Add CD"
-msgstr "Přidat CD"
+msgstr "සංයුක්ත තැටිය එකතු කරන්න​"
 
 #: src/cd-menu-items/cd-menu-items.c:56
 msgid "Audio CD Menu Items"
-msgstr "Položky Audio CD menu"
+msgstr "ශ්‍රව්‍ය CD මෙනු අයිතම "
 
 #: src/compressor/plugin.c:35
 msgid "<b>Compression</b>"
-msgstr "<b>Komprese</b>"
+msgstr "<b>හැකිලීම</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr "Hlasitost středu:"
+msgstr "මධ්‍ය ශබ්ද මට්ටම​ :"
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
-msgstr "Rozsah dynamiky:"
+msgstr "ගතික පරාසය:"
 
 #: src/compressor/plugin.c:53
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"ඔඩෙෂස් පේනු මෘදුකාංගය සඳහා ගතික පරාස සම්පීඩනය\n"
+"ප්‍රකාශන හිමිකම් 2010-2012 ජෝන් ලින්ඩ්ග්රෙන්"
 
 #: src/compressor/plugin.c:58
 msgid "Dynamic Range Compressor"
-msgstr "Dynamický rozsah kompresoru"
+msgstr "ගතික පරාස සම්පීඩකය"
 
 #: src/console/plugin.c:19
 msgid ""
@@ -944,14 +1006,20 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
+"ක්‍රීඩා_ගීත_Emu 0.5.2 මත වූ කොන්සෝල ගීත විකේතක එන්ජිම \n"
+"සහය වන ආකෘති: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"ඔඩෙෂස් පේනු මෘදුකාංගය:\n"
+" William Pitcock<nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.c:34
 msgid "Bass:"
-msgstr "Hloubky:"
+msgstr "මන්ද්‍රස්වර:"
 
 #: src/console/plugin.c:36
 msgid "Treble:"
-msgstr "Výšky:"
+msgstr "උච්චස්වනය:"
 
 #: src/console/plugin.c:38
 msgid "Echo:"
@@ -959,19 +1027,19 @@ msgstr ""
 
 #: src/console/plugin.c:40
 msgid "Default song length:"
-msgstr "Implicitní délka skladby:"
+msgstr "පෙරනිමි ගීත දිග​:"
 
 #: src/console/plugin.c:43 src/modplug/plugin_main.c:65
 msgid "<b>Resampling</b>"
-msgstr "<b>Převzorkování</b>"
+msgstr " <b>නැවත සාම්පල කිරීම</b>"
 
 #: src/console/plugin.c:44
 msgid "Enable audio resampling"
-msgstr "Povolit převzorkování zvuku"
+msgstr "නැවත නියැදීම​ සක්‍රිය කරන්න​"
 
 #: src/console/plugin.c:46
 msgid "Resampling rate:"
-msgstr "Převzorkovat na:"
+msgstr "නැවත නියැදීම් අනුපාතය​:"
 
 #: src/console/plugin.c:47 src/modplug/plugin_main.c:96
 #: src/resample/resample.c:182 src/resample/resample.c:188
@@ -980,7 +1048,7 @@ msgstr "Převzorkovat na:"
 #: src/resample/resample.c:203 src/resample/resample.c:206
 #: src/sox-resampler/sox-resampler.c:155
 msgid "Hz"
-msgstr "Hz"
+msgstr "හර්ට්ස්"
 
 #: src/console/plugin.c:49
 msgid "<b>SPC</b>"
@@ -988,15 +1056,15 @@ msgstr ""
 
 #: src/console/plugin.c:50
 msgid "Ignore length from SPC tags"
-msgstr "Ignorovat délku z SPC popisků"
+msgstr "SPC \tසම්බන්ධකයෙන් දිග නොසලකා හරින්න​"
 
 #: src/console/plugin.c:52
 msgid "Increase reverb"
-msgstr "Prodloužit dozvuk"
+msgstr "ප්‍රතිරාවය වැඩි කරන්න​"
 
 #: src/console/plugin.c:61
 msgid "Game Console Music Decoder"
-msgstr "Dekodér hudby pro herní konzole"
+msgstr "ක්‍රීඩා පාලන පුවරු සංගීත විකේතකය​"
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -1004,53 +1072,52 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Prolínání se nezdařilo, protože písně měly různý počet kanálů.  Můžete "
-"použít Míchání kanálů a převést písně na stejný počet kanálů."
+"ගීත වලට වෙනස් නාලිකා කිහිපයක් තිබීම නිසා එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීමට අසමත් වී ඇත.  "
+"නාලිකා මිශ්‍රකය භාවිතයෙන් ඔබට ගීත සමාන නාලිකා ගණනකට වෙනස් කල හැක."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Prolínání se nezdařilo, protože písničky měly různé vzorkovací frekvence. "
-"Můžete použít Převádění vzorkovací frekvence pro převod skladeb na stejnou "
-"vzorkovací frekvenci."
+"ගීත වලට වෙනස් නියැදි අනුපාත තිබීම නිසා එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීමට අසමත් වී ඇත.  "
+"නාලිකා මිශ්‍රකය භාවිතයෙන් ඔබට ගීත එක් නියැදි අනුපාතයකට වෙනස් කල හැක."
 
 #: src/crossfade/crossfade.c:256
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Prolínání zásuvný modul pro Audacious\n"
-"Copyright 2010-2012 John Lindgren"
+"Audacious සඳහා වන හරහා පෑහීමේ පේනු මෘදුකාංගය⏎\n"
+"ප්‍රකාශන අයිතිය 2010-2012 ජෝන් ලින්ඩ්ග්‍රෙන්"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
-msgstr "<b>Prolínání</b>"
+msgstr "<b>එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීම</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
-msgstr "Přesah:"
+msgstr "අතිච්ඡාදන:"
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
-msgstr "Prolínání"
+msgstr "එක් ශබ්දයකින් තවත් ශබ්දයකට මාරු වීම"
 
 #: src/crystalizer/crystalizer.c:40
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Crystalizer</b>"
+msgstr "<b>පළිඟුව</b>"
 
 #: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
 msgid "Intensity:"
-msgstr "Intenzita:"
+msgstr "තීව්‍රතාව:"
 
 #: src/crystalizer/crystalizer.c:51
 msgid "Crystalizer"
-msgstr "Krystalizér"
+msgstr "පළිඟුව"
 
 #: src/cue/cue.c:155
 msgid "Cue Sheet Plugin"
-msgstr ""
+msgstr "සලකුණු පත් පේනු මෘදුකාංගය "
 
 #: src/delete-files/delete-files.c:47
 #, c-format
@@ -1082,13 +1149,13 @@ msgstr ""
 #: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
-msgstr "Smazat"
+msgstr "මකන්න "
 
 #: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "අවලංගු කිරීම​"
 
 #: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
 msgid "Delete Files"
@@ -1108,25 +1175,25 @@ msgstr ""
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr "<b>Ozvěna</ b>"
+msgstr "<b>ප්‍රතිරාව</b>"
 
 #: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:88
 #: src/modplug/plugin_main.c:102
 msgid "Delay:"
-msgstr "Zpoždění:"
+msgstr "ප්‍රමාදය:"
 
 #: src/echo_plugin/echo.c:29 src/modplug/plugin_main.c:89
 #: src/modplug/plugin_main.c:103
 msgid "ms"
-msgstr "ms"
+msgstr "මාත සංවේද්‍යතාව"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr "Zpětná vazba:"
+msgstr "ප්‍රතිපෝෂණය:"
 
 #: src/echo_plugin/echo.c:33 src/modplug/plugin_main.c:107
 msgid "Volume:"
-msgstr "Hlasitost:"
+msgstr "ශබ්ද මට්ටම​ :"
 
 #: src/echo_plugin/echo.c:116
 msgid ""
@@ -1135,14 +1202,14 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik, 1999"
 msgstr ""
-"Ozvěna zásuvný modul \n"
-"Od Johna Levina, 1999\n"
-"\n"
-"Prostorová ozvěna od Carla van Schaika, 1999"
+"ප්‍රතිධ්වනි පේනු මෘදුකාංගය⏎\n"
+"ජොහාන් ලෙවින් විසින්, 1999⏎\n"
+"⏎\n"
+"සිසාළ ප්‍රතිධ්වනි කාර්ල් වෑන් ස්චේයික් විසින්, 1999"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr "Ozvěna"
+msgstr "ප්‍රතිරාව"
 
 #: src/ffaudio/ffaudio-core.c:581
 msgid ""
@@ -1153,60 +1220,60 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
-"Multiformátový audio dekodovací zásuný modul pro použití v Audacious\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-"\n"
-"Audacious zásuvný modul od:\n"
-"Williama Pitcocka <nenolod@nenolod.net>\n"
-"Matti Hämäläinena <ccr@tnsp.org>"
+"Audacious සඳහා වන බහු ආකෘති ශ්‍රව්‍ය විකේතන​ පේනු මෘදුකාංගය සෑදීමට යොදාගත්තේ⏎\n"
+"FFmpeg බහුමාධ්‍ය සැකිල්ල​ (http://www.ffmpeg.org/)⏎\n"
+"⏎\n"
+"Audacious පේනු මෘදුකාංගය සාදනු ලැබුවේ:⏎\n"
+"විලියම් පිට්කොක් <nenolod@nenolod.net>⏎\n"
+"මැටී හැමලේයිනෙන් <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:633
 msgid "FFmpeg Plugin"
-msgstr "FFmpeg Plugin"
+msgstr "FFmpeg පේනු මෘදුකාංගය "
 
 #: src/filewriter/filewriter.c:404
 msgid "Output file format:"
-msgstr "Formát výstupního souboru:"
+msgstr "ප්‍රතිදාන ගොනු ආකෘතිය:"
 
 #: src/filewriter/filewriter.c:421
 msgid "Configure"
-msgstr "Nastavit"
+msgstr "වින්‍යාස කරන්න​"
 
 #: src/filewriter/filewriter.c:431
 msgid "Save into original directory"
-msgstr "Ukládat do původního adresáře"
+msgstr "මූලික නාමාවලියට සුරකින්න​"
 
 #: src/filewriter/filewriter.c:435
 msgid "Save into custom directory"
-msgstr "Ukládat do vlastního adresáře"
+msgstr "අභිරුචි නාමාවලියටකට​ සුරකින්න​"
 
 #: src/filewriter/filewriter.c:445
 msgid "Output file folder:"
-msgstr "Složka s výstupními soubory:"
+msgstr "ප්‍රතිදාන ගොනු ෆෝල්ඩරය​:"
 
 #: src/filewriter/filewriter.c:449
 msgid "Pick a folder"
-msgstr "Vybrat složku"
+msgstr "ෆෝල්ඩරයක්​ තෝරන්න​"
 
 #: src/filewriter/filewriter.c:462
 msgid "Get filename from:"
-msgstr "Získat jméno souboru z:"
+msgstr "වෙතින් ගොනු නාමයක් ලබාගන්න​:"
 
 #: src/filewriter/filewriter.c:466
 msgid "original file tags"
-msgstr "původních značek v souboru"
+msgstr "මූලික ගොනු සම්බන්ධකය"
 
 #: src/filewriter/filewriter.c:471
 msgid "original filename"
-msgstr "jména původního souboru"
+msgstr "මූලික ගොනු නම​"
 
 #: src/filewriter/filewriter.c:477
 msgid "Don't strip file name extension"
-msgstr "Nezkracovat příponu jména souboru"
+msgstr "ගොනු නම් දිගුව ඉවත් නොකරන්න​"
 
 #: src/filewriter/filewriter.c:486
 msgid "Prepend track number to filename"
-msgstr "Předřadit jménu souboru číslo stopy"
+msgstr "පථ අංකය ගොනු නමට එකතු කරන්න​"
 
 #: src/filewriter/filewriter.c:502
 msgid ""
@@ -1225,130 +1292,126 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Tento program je svobodným softwarem; můžete jej šířit a/nebo modifikovat\n"
-"a to podle podmínek GNU General Public Licence, vydávané\n"
-"Free Software Foundation; buď verze 2 této licence, nebo\n"
-"(podle vašeho uvážení) kterékoli pozdější verze.\n"
+"මෙම​ මෘදුකාංගය නිදහස් කි; නිදහස් මෘදුකාංග පදනම විසින් ප්‍රකාශ කරන ලද GNU සාමාන්‍ය පොදු "
+"බලපත්‍රය යටතේ ඔබට මෙය නැවත බෙදා හැරීම හෝ වෙනස් කිරීම කළ හැක​; බලපත්‍රයේ 2වන සංස්කරණය "
+"හෝ(ඔබගේ කැමත්ත අනුව​) පසු සංස්කරණයක් යටතේ.\n"
 "\n"
-"Tento program je rozšiřován v naději, že bude užitečný,\n"
-"ale BEZ JAKÉKOLIV ZÁRUKY; dokonce i bez předpokládané záruky\n"
-"PRODEJNOSTI anebo VHODNOSTI PRO URČITÝ ÚČEL. viz\n"
-"GNU General Public License pro více informací.\n"
-"\n"
-"Měli byste obdržet kopii GNU General Public License\n"
-"spolu s tímto programem; pokud ne, napište na Free Software\n"
-"Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"මෙම මෘදුකාංගය බෙදාහැර ඇත්තේ ප්‍රයෝජනවත් වේ යන බලාපොරොත්තුවෙන් වුවත් වගකීමක් නොමැත​; විකිණිය "
+"හැකි හෝ යම් නිශ්චිත අරමුණකට ලෙසවත් ගම්‍යමාන වන වගකීමකින් තොරයි. වැඩි විස්තර සඳහා GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය බලන්න​. මෙම සමග ඔබට හි පිටපතක් ලැබිය යුතුයි; නැතිනම් නිදහස් මෘදුකාංග පදනමට දන්වන්න​"
+". Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
 #: src/filewriter/filewriter.c:527
 msgid "FileWriter Plugin"
-msgstr "Přídavný modul FileWriter"
+msgstr "ගොනු රචක පේනු මෘදුකාංගය "
 
 #: src/filewriter/mp3.c:38 src/filewriter/mp3.c:749
 msgid "Auto"
-msgstr "Auto"
+msgstr "ස්වයංක්‍රීය​"
 
 #: src/filewriter/mp3.c:38
 msgid "Joint Stereo"
-msgstr "Joint-stereo"
+msgstr "එකතු වූ ත්‍රිමාණ​"
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:63
 #: src/mpg123/mpg123.c:210
 msgid "Stereo"
-msgstr "Stereo"
+msgstr "ත‍්‍ර‍්‍රිමාණ "
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:61
 #: src/mpg123/mpg123.c:210
 msgid "Mono"
-msgstr "Mono"
+msgstr "තනි "
 
 #: src/filewriter/mp3.c:689
 msgid "MP3 Configuration"
-msgstr "Nastavení MP3"
+msgstr "MP3 වින්‍යාසය"
 
 #: src/filewriter/mp3.c:713
 msgid "Algorithm Quality:"
-msgstr "Kvalita algoritmu:"
+msgstr "ඇල්ගොරිතම තත්ත්වය:"
 
 #: src/filewriter/mp3.c:738
 msgid "Output Samplerate:"
-msgstr "Výstupní vzorkovací kmitočet"
+msgstr "ප්‍රතිදාන නියැදි අනුපාතය​:"
 
 #: src/filewriter/mp3.c:766
 msgid "(Hz)"
-msgstr "(Hz)"
+msgstr "(හර්ට්ස්)"
 
 #: src/filewriter/mp3.c:773
 msgid "Bitrate / Compression ratio:"
-msgstr "Datový tok / Kompresní poměr:"
+msgstr "බිට් රේටය / සම්පීඩක අනුපාතය​:"
 
 #: src/filewriter/mp3.c:797
 msgid "Bitrate (kbps):"
-msgstr "Datový tok (kb/s):"
+msgstr "බිට් රේටය (තප්පරයට කි.බ​.)"
 
 #: src/filewriter/mp3.c:830
 msgid "Compression ratio:"
-msgstr "Kompresní poměr:"
+msgstr "සම්පීඩක අනුපාතය​:"
 
 #: src/filewriter/mp3.c:854
 msgid "Audio Mode:"
-msgstr "Zvukový režim:"
+msgstr "ශ්‍රව්‍ය​ ප්‍රකාරය​:"
 
 #: src/filewriter/mp3.c:879
 msgid "Misc:"
-msgstr "Různé:"
+msgstr "ප්‍රකීර්ණ:"
 
 #: src/filewriter/mp3.c:890
 msgid "Enforce strict ISO complience"
-msgstr "Vynutit přísnou shodu s ISO"
+msgstr "විධිමත් ISO අනුකූලවීමකට බල කරන්න​"
 
 #: src/filewriter/mp3.c:901
 msgid "Error protection"
-msgstr "Ochrana před chybami"
+msgstr "දෝෂ ආරක්‍ෂාව​"
 
 #: src/filewriter/mp3.c:913 src/filewriter/vorbis.c:220
 msgid "Quality"
-msgstr "Kvalita"
+msgstr "ප්‍රශස්තතාව"
 
 #: src/filewriter/mp3.c:922
 msgid "Enable VBR/ABR"
-msgstr "Povolit VBR/ABR"
+msgstr "VBR/ABR සක්‍රිය කරන්න​"
 
 #: src/filewriter/mp3.c:932
 msgid "Type:"
-msgstr "Druh:"
+msgstr "වර්ගය​:"
 
 #: src/filewriter/mp3.c:965
 msgid "VBR Options:"
-msgstr "Nastavení VBR:"
+msgstr "VBR විකල්ප​:"
 
 #: src/filewriter/mp3.c:981
 msgid "Minimum bitrate (kbps):"
-msgstr "Nejmenší datový tok (kb/s):"
+msgstr "අවම බිට් රේටය (තප්පරයට කි.බ​.)"
 
 #: src/filewriter/mp3.c:1008
 msgid "Maximum bitrate (kbps):"
-msgstr "Největší datový tok (kb/s):"
+msgstr "උපරිම​ බිට් රේටය (තප්පරයට කි.බ​.)"
 
 #: src/filewriter/mp3.c:1031
 msgid "Strictly enforce minimum bitrate"
-msgstr "Přísně vynucovat nejmenší datový tok"
+msgstr "අවම බිට් රේටය සඳහා තදින් බලකරන්න​"
 
 #: src/filewriter/mp3.c:1043
 msgid "ABR Options:"
-msgstr "Nastavení ABR:"
+msgstr "ABR විකල්ප​:"
 
 #: src/filewriter/mp3.c:1053
 msgid "Average bitrate (kbps):"
-msgstr "Průměrný datový tok (kb/s):"
+msgstr "සාමාන්‍ය බිට් රේටය (තත්පරයට කි.බ​.)"
 
 #: src/filewriter/mp3.c:1081
 msgid "VBR quality level:"
-msgstr "Úroveň kvality VBR:"
+msgstr "VBR ප්‍රශස්තතා මට්ටම​:"
 
 #: src/filewriter/mp3.c:1100
 msgid "Don't write Xing VBR header"
-msgstr "Nezapisovat VBR hlavičku Xing"
+msgstr "Xing VBR ශීර්‍ෂකය​ නොලියන්න​"
 
 #: src/filewriter/mp3.c:1113
 msgid "VBR/ABR"
@@ -1356,47 +1419,47 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1122
 msgid "Frame parameters:"
-msgstr "Parametry rámců:"
+msgstr "රාමු පරාමිතිය :"
 
 #: src/filewriter/mp3.c:1134
 msgid "Mark as copyright"
-msgstr "Označit jako podléhající autorskému právu"
+msgstr "ප්‍රකාශන අයිතිය සහිත ලෙස සලකුණු කරන්න"
 
 #: src/filewriter/mp3.c:1145
 msgid "Mark as original"
-msgstr "Označit jako původní"
+msgstr "මුල් පිටපතක් ලෙස සලකුණු කරන්න​"
 
 #: src/filewriter/mp3.c:1157
 msgid "ID3 params:"
-msgstr "Parametry ID3:"
+msgstr "ID3 params:"
 
 #: src/filewriter/mp3.c:1168
 msgid "Force addition of version 2 tag"
-msgstr "Vynutit přidání popisků verze 2"
+msgstr "2 වන සංස්කරණයේ සම්බන්ධකයට​ බලෙන් ඇතුලත් කිරීම​"
 
 #: src/filewriter/mp3.c:1178
 msgid "Only add v1 tag"
-msgstr "Přidávat jen popisky verze 1"
+msgstr "1 වන සංස්කරණයේ සම්බන්ධකය පමණක් එකතු කරන්න​"
 
 #: src/filewriter/mp3.c:1185
 msgid "Only add v2 tag"
-msgstr "Přidávat jen popisky verze 2"
+msgstr "2 වන සංස්කරණයේ සම්බන්ධකය පමණක් එකතු කරන්න​"
 
 #: src/filewriter/mp3.c:1206
 msgid "Tags"
-msgstr "Popisky"
+msgstr "සම්බන්ධක"
 
 #: src/filewriter/vorbis.c:210
 msgid "Vorbis Encoder Configuration"
-msgstr "Nastavení vorbis kodéru"
+msgstr "Vorbis විකේතකයේ වින්‍යාසය"
 
 #: src/filewriter/vorbis.c:233
 msgid "Quality level (0 - 10):"
-msgstr "Úroveň kvality (0–10):"
+msgstr "ප්‍රශස්ථතා මට්ටම​ (0 - 10):"
 
 #: src/flacng/metadata.c:359 src/wavpack/wavpack.c:212
 msgid "lossless"
-msgstr "Bezztrátová kvalita"
+msgstr "හානි වී නොමැති "
 
 #: src/flacng/plugin.c:187
 msgid ""
@@ -1405,26 +1468,26 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
-"Původní kód od\n"
-"Ralfa Ertzingera <ralf@skytale.net>\n"
-"\n"
+"මූලක කේතය සකසනු ලැබුවේ⏎\n"
+"රැල්ෆ් අර්ට්සින්ගර් <ralf@skytale.net>⏎\n"
+"⏎\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:195
 msgid "FLAC Decoder"
-msgstr "FLAC Dekodér"
+msgstr "FLAC විකේතකය"
 
 #: src/gio/gio.c:295
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"GIO zásuvný modul pro Audacious\n"
-"Copyright 2009-2012 John Lindgren"
+"Audacious සඳහා වන​ GIO පේනු මෘදුකාංගය⏎\n"
+"ප්‍රකාශන අයිතිය 2009-2012 ජෝන් ලින්ඩ්ග්‍රෙන්"
 
 #: src/gio/gio.c:314
 msgid "GIO Plugin"
-msgstr "GIO Plugin"
+msgstr "GIO පේනු මෘදුකාංගය "
 
 #: src/gl-spectrum/gl-spectrum.c:400
 msgid ""
@@ -1440,7 +1503,7 @@ msgstr ""
 
 #: src/gl-spectrum/gl-spectrum.c:409
 msgid "OpenGL Spectrum Analyzer"
-msgstr "OpenGL analyzátor spektra"
+msgstr "OpenGL වර්ණාවලි විශ්ලේශකය"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -1449,66 +1512,66 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
-"Zásuvný modul pro klávesové zkratky v Gnome\n"
-"Umožňuje ovládat program pomocí klávesových Gnome\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
+"ග්නෝම් කෙටි යෙදුම් පේනු මෘදුකාංගය⏎\n"
+"ග්නෝම් කෙටි යෙදුම් මගින් ඔබට ධාවකය පාලනයට ඉඩ සලසයි.⏎\n"
+"⏎\n"
+"ප්‍රකාශන අයිතිය​ (C) 2007-2008 සස්චා හ්ලුසියැක් <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:47
 msgid "Gnome Shortcuts"
-msgstr "Klávesové zkratky Gnome"
+msgstr "Gnome කෙටිමග "
 
 #: src/gtkui/columns.c:34
 msgid "Entry number"
-msgstr "Číslo položky"
+msgstr "ඇතුලත් කිරීමේ අංකය​"
 
 #: src/gtkui/columns.c:34
 msgid "Title"
-msgstr "Název"
+msgstr "මාතෘකාව"
 
 #: src/gtkui/columns.c:35
 msgid "Artist"
-msgstr "Umělec"
+msgstr "ශිල්පියා "
 
 #: src/gtkui/columns.c:35
 msgid "Year"
-msgstr "Rok"
+msgstr "වර්ෂය "
 
 #: src/gtkui/columns.c:35
 msgid "Album"
-msgstr "Album"
+msgstr "ඇල්බමය "
 
 #: src/gtkui/columns.c:35
 msgid "Track"
-msgstr "Stopa"
+msgstr "ඛණ්ඩය "
 
 #: src/gtkui/columns.c:35
 msgid "Genre"
-msgstr "Žánr"
+msgstr "ප්‍රභේදය"
 
 #: src/gtkui/columns.c:36
 msgid "Queue position"
-msgstr "Umístění ve frontě"
+msgstr "පේලියෙහි පිහිටන ස්ථානය​"
 
 #: src/gtkui/columns.c:36
 msgid "Length"
-msgstr "Délka"
+msgstr "දිග"
 
 #: src/gtkui/columns.c:36
 msgid "File path"
-msgstr "Cesta k souboru"
+msgstr "ගොනු පථය"
 
 #: src/gtkui/columns.c:36
 msgid "File name"
-msgstr "Název souboru"
+msgstr "ගොනු නම​"
 
 #: src/gtkui/columns.c:37
 msgid "Custom title"
-msgstr "Vlastní název"
+msgstr "අභිරුචි මාතෘකාව​"
 
 #: src/gtkui/columns.c:37
 msgid "Bitrate"
-msgstr "Datový tok"
+msgstr "බිට් රේටය​"
 
 #: src/gtkui/columns.c:286
 msgid "Available columns"
@@ -1520,43 +1583,43 @@ msgstr ""
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
-msgstr "Umístit vlevo"
+msgstr "වමට ඈඳන්න​"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Right"
-msgstr "Umístit vpravo"
+msgstr "දකුණට ​ඈඳන්න​"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Top"
-msgstr "Umístit nahoru"
+msgstr "ඉහළට​ ඈඳන්න​"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Bottom"
-msgstr "Umístit dolů"
+msgstr " පහළට ඈඳන්න​"
 
 #: src/gtkui/layout.c:120
 msgid "Undock"
-msgstr "Neumisťovat"
+msgstr "ඈඳීම​ අවලංගු කරන්න​"
 
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
-msgstr "Zakázat"
+msgstr "අක්‍රීය කරන්න​"
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
-msgstr "_Otevřít soubory…"
+msgstr "_ගොනු විවෘත කරන්න ..."
 
 #: src/gtkui/menus.c:128
 msgid "Open _URL ..."
-msgstr "Otevřít _URL…"
+msgstr "_URL විවෘත කරන්න ..."
 
 #: src/gtkui/menus.c:129
 msgid "_Add Files ..."
-msgstr "Přid_at soubory…"
+msgstr "_ගොනු එකතු කරන්න ..."
 
 #: src/gtkui/menus.c:130
 msgid "Add U_RL ..."
-msgstr "Přidat U_RL…"
+msgstr "U_RL එකතු කරන්න ..."
 
 #: src/gtkui/menus.c:132
 msgid "Search _Library"
@@ -1564,7 +1627,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:134
 msgid "A_bout ..."
-msgstr "_O programu… "
+msgstr "පි_ළිබඳ​ ..."
 
 #: src/gtkui/menus.c:135
 msgid "_Settings ..."
@@ -1572,148 +1635,148 @@ msgstr ""
 
 #: src/gtkui/menus.c:136 src/statusicon/statusicon.c:270
 msgid "_Quit"
-msgstr "_Konec"
+msgstr "_පිටවෙන්න​"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
 #: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
 msgid "_Play"
-msgstr "_Hrát"
+msgstr "_ධාවනය කරන්න​"
 
 #: src/gtkui/menus.c:140 src/statusicon/statusicon.c:265
 msgid "Paus_e"
-msgstr "P_ozastavit"
+msgstr "විරාම_ය​"
 
 #: src/gtkui/menus.c:141 src/statusicon/statusicon.c:266
 msgid "_Stop"
-msgstr "Za_stavit"
+msgstr "_නවත්වන්න​"
 
 #: src/gtkui/menus.c:142 src/statusicon/statusicon.c:263
 msgid "Pre_vious"
-msgstr "Před_chozí"
+msgstr "ක_ලින්"
 
 #: src/gtkui/menus.c:143 src/statusicon/statusicon.c:267
 msgid "_Next"
-msgstr "_Další"
+msgstr "_ඊළඟ​"
 
 #: src/gtkui/menus.c:145
 msgid "_Repeat"
-msgstr "_Opakovat"
+msgstr "_නැවත​ ධාවනය​"
 
 #: src/gtkui/menus.c:146
 msgid "S_huffle"
-msgstr "Ná_hodné přehrávání"
+msgstr "ක_ළවම් කිරීම​"
 
 #: src/gtkui/menus.c:147
 msgid "N_o Playlist Advance"
-msgstr "Žádné p_okračování dle seznamu skladeb"
+msgstr "ධාවන ලැස්තු නැ_ත "
 
 #: src/gtkui/menus.c:149
 msgid "Stop A_fter This Song"
-msgstr "Zastavit _po této skladbě"
+msgstr "මෙම ගීතයෙන් පසු නවත්තන්න "
 
 #: src/gtkui/menus.c:152 src/gtkui/menus.c:242
 msgid "Song _Info ..."
-msgstr "_Informace o skladbě…"
+msgstr "ගීත_තොරතුරු ..."
 
 #: src/gtkui/menus.c:153
 msgid "Jump to _Time ..."
-msgstr "Přejí_t na čas…"
+msgstr "මගහැර වේලාවට_පිවිසෙන්න ..."
 
 #: src/gtkui/menus.c:154
 msgid "_Jump to Song ..."
-msgstr "Pře_jít na skladbu…"
+msgstr "_මගහැර ගීතයට පිවිසෙන්න ..."
 
 #: src/gtkui/menus.c:156
 msgid "Set Repeat Point _A"
-msgstr "Nastavit bod opakování _A"
+msgstr "නැවත සිදුවන ස්ථාන_A පිහිටුවන්න "
 
 #: src/gtkui/menus.c:157
 msgid "Set Repeat Point _B"
-msgstr "Nastavit bod opakování _B"
+msgstr "නැවත සිදුවන ස්ථාන_B පිහිටුවන්න "
 
 #: src/gtkui/menus.c:158
 msgid "_Clear Repeat Points"
-msgstr "_Vymazat body opakování"
+msgstr "නැවත සිදුවන ස්ථාන හිස්කරන්න "
 
 #: src/gtkui/menus.c:161 src/gtkui/menus.c:167 src/gtkui/menus.c:180
 msgid "By _Title"
-msgstr "Podle ná_zvu"
+msgstr "මාතෘකා_වෙන්"
 
 #: src/gtkui/menus.c:162
 msgid "By _Filename"
-msgstr "Podle _přípony"
+msgstr "ගොනු නාමයෙන් "
 
 #: src/gtkui/menus.c:163
 msgid "By File _Path"
-msgstr "Podle cesty k _souboru"
+msgstr "ගොනු පථයෙන් "
 
 #: src/gtkui/menus.c:166 src/gtkui/menus.c:179
 msgid "By Track _Number"
-msgstr "Podle čísla _stopy"
+msgstr "ඛණ්ඩ_අංකයෙන් "
 
 #: src/gtkui/menus.c:168 src/gtkui/menus.c:181
 msgid "By _Artist"
-msgstr "Podle _umělce"
+msgstr "ශිල්පියා_ගෙන්"
 
 #: src/gtkui/menus.c:169 src/gtkui/menus.c:182
 msgid "By Al_bum"
-msgstr "Podle Al_ba"
+msgstr "ඇල්බමයෙන් "
 
 #: src/gtkui/menus.c:170 src/gtkui/menus.c:183
 msgid "By Release _Date"
-msgstr "Podle data vy_dání"
+msgstr "පිට කල _දිනයෙන්"
 
 #: src/gtkui/menus.c:171 src/gtkui/menus.c:184
 msgid "By _Length"
-msgstr "Podle _délky"
+msgstr "දුරෙන් "
 
 #: src/gtkui/menus.c:172 src/gtkui/menus.c:185
 msgid "By _File Path"
-msgstr "Podle _cesty k souboru"
+msgstr "ගොනු_පථයෙන්"
 
 #: src/gtkui/menus.c:173 src/gtkui/menus.c:186
 msgid "By _Custom Title"
-msgstr "_Vlastní název"
+msgstr "අභිරුචි_මාතෘකාවෙන් "
 
 #: src/gtkui/menus.c:175 src/gtkui/menus.c:188
 msgid "R_everse Order"
-msgstr "_Obrátit pořadí"
+msgstr "අග_සිට මුලට​"
 
 #: src/gtkui/menus.c:176 src/gtkui/menus.c:189
 msgid "_Random Order"
-msgstr "Ná_hodné pořadí"
+msgstr "_සසම්භාවී පිළිවෙල​"
 
 #: src/gtkui/menus.c:192
 msgid "_Play This Playlist"
-msgstr "_Přehrát tento seznam skladeb"
+msgstr "_ධාවන ලැයිස්තුව ධාවනය කරන්න​"
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:244
 msgid "_Refresh"
-msgstr "_Obnovit"
+msgstr "_නැවුම් කරන්න​"
 
 #: src/gtkui/menus.c:195
 msgid "_Sort"
-msgstr "_Seřadit"
+msgstr "_අනුපිළිවෙලට සකසන්න​"
 
 #: src/gtkui/menus.c:196
 msgid "Sort Se_lected"
-msgstr "Seřadit vy_brané"
+msgstr ""
 
 #: src/gtkui/menus.c:197
 msgid "Remove _Duplicates"
-msgstr "Odstranit _duplikáty"
+msgstr "අනුපිටපත්_ඉවත් කිරීම "
 
 #: src/gtkui/menus.c:198
 msgid "Remove _Unavailable Files"
-msgstr "Odstranit nedost_upné soubory"
+msgstr "අනුපයෝජ්‍ය_ගොනු ඉවත් කරන්න"
 
 #: src/gtkui/menus.c:200
 msgid "_New"
-msgstr "_Nový"
+msgstr "_නව​"
 
 #: src/gtkui/menus.c:201
 msgid "Ren_ame ..."
-msgstr "Přej_menovat"
+msgstr "Ren_ame ..."
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:256
 msgid "Remo_ve"
@@ -1721,31 +1784,31 @@ msgstr ""
 
 #: src/gtkui/menus.c:204
 msgid "_Import ..."
-msgstr "_Importovat…"
+msgstr "_ආයාත කරන්න​ ..."
 
 #: src/gtkui/menus.c:205
 msgid "_Export ..."
-msgstr "_Exportovat…"
+msgstr "_නිර්යාත කරන්න ..."
 
 #: src/gtkui/menus.c:207
 msgid "Playlist _Manager ..."
-msgstr "Organizace seznamů skladeb"
+msgstr "ධාවන ලැයිස්තු_කළමනාකාරකය​ ..."
 
 #: src/gtkui/menus.c:208
 msgid "_Queue Manager ..."
-msgstr "Správce _fronty…"
+msgstr "_පෙළගැස්ම කළමනාකරණය ..."
 
 #: src/gtkui/menus.c:211
 msgid "Volume _Up"
-msgstr "Ze_sílit"
+msgstr "ශබ්ද මට්ටම​ _වැඩි කරන්න"
 
 #: src/gtkui/menus.c:212
 msgid "Volume _Down"
-msgstr "Z_tišit"
+msgstr "ශබ්ද මට්ටම​ _අඩු කරන්න"
 
 #: src/gtkui/menus.c:214
 msgid "_Equalizer"
-msgstr "_Ekvalizér"
+msgstr "_ඊක්‍යුවලයිසරය​"
 
 #: src/gtkui/menus.c:216
 msgid "E_ffects ..."
@@ -1753,23 +1816,23 @@ msgstr ""
 
 #: src/gtkui/menus.c:219
 msgid "Show _Menu Bar"
-msgstr "Zobrazit h_lavní nabídku"
+msgstr "_මෙනු තීරුව පෙන්වන්න​"
 
 #: src/gtkui/menus.c:221
 msgid "Show I_nfo Bar"
-msgstr "Zobrazit oblast i_nformací"
+msgstr "තොරතුරු තී_රුව පෙන්වන්න​"
 
 #: src/gtkui/menus.c:223
 msgid "Show Info Bar Vis_ualization"
-msgstr "Zobrazit znázornění oblasti informací"
+msgstr "තොරතුරු තීරුවේ දෘෂ්ටි කල්පනය පෙන්වන්න "
 
 #: src/gtkui/menus.c:225
 msgid "Show _Status Bar"
-msgstr "Zobrazit _stavový panel"
+msgstr "තත්ව _තීරුව පෙන්වන්න​"
 
 #: src/gtkui/menus.c:228
 msgid "Show _Remaining Time"
-msgstr "Ukázat _zbývající čas"
+msgstr "ඉතුරුවී ඇති කාලය පෙන්වන්න."
 
 #: src/gtkui/menus.c:231
 msgid "_Visualizations ..."
@@ -1777,51 +1840,51 @@ msgstr ""
 
 #: src/gtkui/menus.c:234
 msgid "_File"
-msgstr "_Soubor"
+msgstr "_ගොනුව​"
 
 #: src/gtkui/menus.c:235
 msgid "_Playback"
-msgstr "_Přehrát"
+msgstr "_පිළිවැයුම​"
 
 #: src/gtkui/menus.c:236
 msgid "P_laylist"
-msgstr "Seznam sk_ladeb"
+msgstr "ධා_වන ලැයිස්තුව​"
 
 #: src/gtkui/menus.c:237 src/gtkui/menus.c:251
 msgid "_Services"
-msgstr "_Služby"
+msgstr "_සේවා"
 
 #: src/gtkui/menus.c:238
 msgid "_Output"
-msgstr "_Výstup"
+msgstr "_ප්‍රතිදාන​"
 
 #: src/gtkui/menus.c:239
 msgid "_View"
-msgstr "_Zobrazení"
+msgstr "_දසුන​"
 
 #: src/gtkui/menus.c:243
 msgid "_Queue/Unqueue"
-msgstr "Ode_brat/přidat z/do fronty"
+msgstr "_පෙළගස්වන්න​/පෙළගැස්ම අවලංගු කරන්න​"
 
 #: src/gtkui/menus.c:246
 msgid "Cu_t"
-msgstr "V_yjmout"
+msgstr "කපන්_න​"
 
 #: src/gtkui/menus.c:247
 msgid "_Copy"
-msgstr "_Kopírovat"
+msgstr "_පිටපත් කරන්න​"
 
 #: src/gtkui/menus.c:248
 msgid "_Paste"
-msgstr "V_ložit"
+msgstr "_අලවන්න​"
 
 #: src/gtkui/menus.c:249
 msgid "Select _All"
-msgstr "Vybr_at vše"
+msgstr "සියල්ල_තෝරන්න"
 
 #: src/gtkui/menus.c:255
 msgid "_Rename ..."
-msgstr "_Přejmenovat ..."
+msgstr "_නැවත නම් කිරීම​ ..."
 
 #: src/gtkui/settings.c:35
 msgid "<b>Playlist Tabs</b>"
@@ -1850,7 +1913,7 @@ msgstr ""
 #: src/gtkui/settings.c:50 src/modplug/plugin_main.c:131
 #: src/skins/skins_cfg.c:267
 msgid "<b>Miscellaneous</b>"
-msgstr "<b>Různé</b>"
+msgstr "<b>විවිධ</b>"
 
 #: src/gtkui/settings.c:51
 msgid "Arrow keys seek by:"
@@ -1862,105 +1925,104 @@ msgstr ""
 
 #: src/gtkui/ui_gtk.c:94
 msgid "GTK Interface"
-msgstr "Rozhraní GTK"
+msgstr "GTK අතුරු මුහුණත"
 
 #: src/gtkui/ui_gtk.c:192 src/skins/ui_main.c:233
 #, c-format
 msgid "%s - Audacious"
-msgstr "%s – Audacious"
+msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.c:197
 msgid "Buffering ..."
-msgstr "Plnění vyrovnávácí paměti…"
+msgstr "අන්තරාචයනය..."
 
 #: src/gtkui/ui_gtk.c:200 src/skins/ui_main.c:235 src/skins/ui_main.c:1143
 msgid "Audacious"
-msgstr "Audacious"
+msgstr "ඔඩෙෂස් "
 
 #: src/gtkui/ui_statusbar.c:86
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d kanál"
-msgstr[1] "%d kanály"
-msgstr[2] "%d kanálů"
+msgstr[0] "%d නාලිකාව "
+msgstr[1] "%d නාලිකා "
 
 #: src/gtkui/ui_statusbar.c:101
 #, c-format
 msgid "%d kbps"
-msgstr "%d kb/s"
+msgstr "%d තත්පරයට කිලෝ බයිට් "
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr "Předchozí skladba"
+msgstr "පෙර ඛණ්ඩය"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/menus.c:78
 msgid "Play"
-msgstr "Hrát"
+msgstr "ධාවනය කරන්න "
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
-msgstr "Pozastavit/Pokračovat"
+msgstr "නැවතීම/නැවත ඇරඹීම  "
 
 #: src/hotkey/gui.c:73 src/skins/menus.c:80
 msgid "Stop"
-msgstr "Zastavit"
+msgstr "නැවතීම "
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr "Další stopa"
+msgstr "පසු ඛණ්ඩය "
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr "Vpřed o 5 sekund"
+msgstr "තත්.5 ධාවනය කරන්න"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr "Zpět o 5 sekund"
+msgstr "තත්.5 පසු ධාවනය කරන්න"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "Vypnout zvuk"
+msgstr "නිහඬ කරන්න "
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr "Zvýšit hlasitost"
+msgstr "ශබ්ද මට්ටම​ වැඩි කරන්න"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr "Snížit hlasitost"
+msgstr "ශබ්ද මට්ටම​ අඩු කරන්න"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr "Přejít na soubor"
+msgstr "මගහැර ගොනුවට පිවිසෙන්න "
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
-msgstr "Přepnout okno přehrávače"
+msgstr "ධාවක කවුළු(ව) පුරුක් කරන්න"
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
-msgstr "Zobrazit OSD (nápis na obrazovce)"
+msgstr "තිරය මත සංදර්ශනය කර පෙන්වන්න "
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr "Přepnout opakování"
+msgstr "නැවත කිරීම ටොගල් කරන්න"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr "Přepnout zamíchání"
+msgstr "කළවම් කිරිම ටොගල් කරන්න"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
-msgstr "Přepnout zastavení po současné skladbě"
+msgstr "පවතින ගීතයෙන් පසු නැවතීම ටොගල් කරන්න "
 
 #: src/hotkey/gui.c:86
 msgid "Raise player window(s)"
-msgstr "Vyvolat okno přehrávače"
+msgstr "ධාවක කවුළු(ව) පෙන්වන්න"
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
-msgstr "(žádné)"
+msgstr "(කිසිවක් නැත)"
 
 #: src/hotkey/gui.c:233
 msgid ""
@@ -1969,37 +2031,36 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n"
-"\n"
-"Chcete pokračovat?"
+"ප්‍රාථමික මූසික බොත්තම් නවීකරණයකින් තොරව බැඳීමට නිර්දේශ නොකෙරේ.\n"
+"ඔබට ඉදිරියටයාම‍ට අවශ්‍යද ?"
 
 #: src/hotkey/gui.c:235
 msgid "Binding mouse buttons"
-msgstr "Přiřazuji tlačítka myši"
+msgstr "බැඳෙන මූසික බොත්තම් "
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Hlavní nastavení modulu pro horké klávesy"
+msgstr "ගෝලීය  විශේෂ  බොත්තම්  පේනු මෘදුකංග වින්‍යාසය "
 
 #: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Uvnitř textového pole stiskněte kombinaci kláves.\n"
-"Navázat lze také tlačítka myši."
+"පෙළ ක්ෂේත්‍රය ඇතුලත යතුරු එකතුව ඔබන්න.\n"
+"ඔබට මූසික බොත්තමද බැඳීය හැක."
 
 #: src/hotkey/gui.c:405
 msgid "Hotkeys:"
-msgstr "Horké klávesy:"
+msgstr "විශේෂ බොත්තම්:"
 
 #: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
-msgstr "<b>Akce</b>"
+msgstr "<b>ක්‍රියාව:</b>"
 
 #: src/hotkey/gui.c:429
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Navázání kláves:</b>"
+msgstr "<b>යතුරු බැඳීම:</b>"
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
@@ -2019,10 +2080,21 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Global Hotkey පේනු මෘදුකාංගය\n"
+"Global key සංකලන​ මගින් හෝ බහු මාධ්‍ය යතුරු මගින් ධාවකය පාලනය කරන්න​.\n"
+"\n"
+"ප්‍රකාශන අයිතිය (C) 2007-2008 සස්චා හ්ලුසියැක් <contact@saschahlusiak.de>\n"
+"\n"
+"දායක වූවන්:\n"
+"ප්‍රකාශන අයිතිය (C) 2006-2007 ව්ලැඩිමිර් පැස්කෝව් <vlado.paskov@gmail.com>\n"
+"ප්‍රකාශන අයිතිය (C) 2000-2002 විලී සිර්ජාලා <syrjala@sci.fi>,\n"
+"බ්‍රයන් ඩේවිස් <curious@ihug.com.au>,\n"
+"ජොනතන් ඒ. ඩේවිස් <davis@jdhouse.org>,\n"
+"ජෙරමි ටෑන් <nsx@nsx.homeip.net>"
 
 #: src/hotkey/plugin.c:79
 msgid "Global Hotkeys"
-msgstr "Globální klávesové zkratky"
+msgstr "ගෝලීය විශේෂ බොත්තම්:"
 
 #: src/jack/jack.c:196
 msgid "Connect to all available jack ports"
@@ -2051,27 +2123,27 @@ msgid ""
 "\n"
 "Ported to Audacious by Giacomo Lozito"
 msgstr ""
-"Na základě xmms-jack, od Chrise Morgana:\n"
-"http://xmms-jack.sourceforge.net/\n"
-"\n"
-"Portováno pro Audacious od Giacomo Lozito"
+"ක්‍රිස් මෝර්ගන් ගේ xmms-jack මත පදනම් වී ඇත​:⏎\n"
+"http://xmms-jack.sourceforge.net/⏎\n"
+"⏎\n"
+"Audacious වෙත ඇතුලත් කළේ ජියාකොමෝ ලොසීටෝ විසිනි"
 
 #: src/jack/jack.c:438
 msgid "JACK Output"
-msgstr "JACK výstup"
+msgstr "JACK ප්‍රතිදානය"
 
 #: src/ladspa/plugin.c:519
 #, c-format
 msgid "%s Settings"
-msgstr "Nastavení %s"
+msgstr "%s සිටුවම "
 
 #: src/ladspa/plugin.c:587
 msgid "LADSPA Host Settings"
-msgstr "Nastavení hostitele LADSPA"
+msgstr "LADSPA  සත්කාරක සිටුවම "
 
 #: src/ladspa/plugin.c:596
 msgid "Module paths:"
-msgstr "Cesta k modulům:"
+msgstr "මොඩියුල පථය:"
 
 #: src/ladspa/plugin.c:601
 msgid ""
@@ -2079,45 +2151,44 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Cesty se od sebe oddělují dvojtečkou.\n"
-"Tyto cesty se prohledávají spolu s LADSPA_PATH.\n"
-"Po té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly "
-"nové moduly.</small>"
+"<small>බහු පථ දෙතිතෙන් වෙන්කරන්න.\n"
+"මෙම පථ සොයන්නේ LADSPA_PATH එකට අමතරවය.\n"
+"නව පථ ඇතුලත් කිරීමෙන් පසුව, නව පේනු මෘදුකාංග සදහා Enter යතුර ඔබන්න.</small>"
 
 #: src/ladspa/plugin.c:617
 msgid "Available plugins:"
-msgstr "Dostupné moduly:"
+msgstr "උපයෝජ්‍ය පේනු මෘදුකාංග:"
 
 #: src/ladspa/plugin.c:630 src/modplug/plugin_main.c:113
 #: src/modplug/plugin_main.c:117 src/modplug/plugin_main.c:121
 #: src/modplug/plugin_main.c:125
 msgid "Enable"
-msgstr "Povolit"
+msgstr "සක්‍රිය "
 
 #: src/ladspa/plugin.c:636
 msgid "Enabled plugins:"
-msgstr "Povolené moduly:"
+msgstr "සක්‍රිය පේනු මෘදුකාංග:"
 
 #: src/ladspa/plugin.c:652
 msgid "Settings"
-msgstr "Nastavení"
+msgstr "සිටුවම් "
 
 #: src/ladspa/plugin.c:671
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
-"LADSPA Host pro Audacious\n"
-"Copyright 2011 John Lindgren"
+"Audacious සඳහා වන LADSPA සත්කාරකය​⏎\n"
+"ප්‍රකාශන අයිතිය​ 2011 ජෝන් ලින්ඩ්ග්‍රෙන්"
 
 #: src/ladspa/plugin.c:676
 msgid "LADSPA Host"
-msgstr "LADSPA Host"
+msgstr "LADSPA සත්කාරක "
 
 #: src/lirc/lirc.c:74
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: nelze inicializovat podporu LIRC\n"
+msgstr "%s: LIRC සඳහා සහයවිය නොහැක\n"
 
 #: src/lirc/lirc.c:81
 #, c-format
@@ -2126,29 +2197,29 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: nelze číst z konfiguračního souboru LIRC\n"
-"%s: prosím, přečtěte si dokumentaci k LIRC,\n"
-"%s: jak správně vytvořit konfigurační soubor\n"
+"%s: LIRC වින්‍යාස ගොනුව කියවිය නොහැක \n"
+"%s: කරුණාකර  LIRC වලට අදාල ලේඛන කියවන්න \n"
+"%s: ක්‍රමානුකූල වින්‍යාස ගොනුවක් සාදන්නේ කෙසේද \n"
 
 #: src/lirc/lirc.c:112
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: pokouším se znovu připojit…\n"
+msgstr " %s: ප්‍රතිසම්බන්ධ වීමට උත්සාහ කිරීම...\n"
 
 #: src/lirc/lirc.c:352
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: neznámý příkaz „%s“\n"
+msgstr "%s: නොදන්නා විධානයකි \"%s\"\n"
 
 #: src/lirc/lirc.c:363
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: odpojeno od LIRC\n"
+msgstr "%s: LIRC වලින් ක්‍රියාවිරහිත කර ඇත \n"
 
 #: src/lirc/lirc.c:369
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: pokus o připojení budu opakovat každých %d sekund…\n"
+msgstr "%s: සෑම තත්පර %d වරක් නැවත සම්බන්ධ වීමට  උත්සාහ කරයි...\n"
 
 #: src/lirc/lirc.c:379
 msgid ""
@@ -2165,85 +2236,84 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
-"Jednoduchý zásuvný modul na ovládání Audacious použitím LIRC démona vzdálené "
-"kontroly.\n"
-"\n"
-"Upraveno pro Audacious od:\n"
-"Tonyho Vroona <chainsaw@gentoo.org>\n"
-"Joonase Harjumäki <jharjuma@gmail.com>\n"
-"\n"
-"Na základě XMMS pluginu LIRC od:\n"
-"Carla van Schaika <carl@leg.uct.ac.za>\n"
-"Christophera Bartelmuse <xmms@bartelmus.de>\n"
-"Andrewa O. Shadoura <bugzilla@tut.by>\n"
-"\n"
-"Pro více informací o LIRC, navštivte http://lirc.org."
+"LIRC දුරස්ථ පාලක daemon භාවිතයෙන් Audacious පාලනය කිරීමට සරල පේනු මෘදුකාංගයක්⏎\n"
+"⏎\n"
+"වෙත ඇතුලත් කරන ලද්දේ:⏎\n"
+"ටෝන්‍ය් ව්‍රෝන් <chainsaw@gentoo.org>⏎\n"
+"ජෝනෑස් හැජුමැකි <jharjuma@gmail.com>⏎\n"
+"⏎\n"
+"XMMS LIRC පේනු මෘදුකාංගයමත පදනම් විය​:⏎\n"
+"Carl van Schaik <carl@leg.uct.ac.za>⏎\n"
+"Christoph Bartelmus <xmms@bartelmus.de>⏎\n"
+"Andrew O. Shadoura <bugzilla@tut.by>⏎\n"
+"⏎\n"
+"LIRC පිළිබඳ වැඩි විස්තර සඳහා,http://lirc.org බලන්න​."
 
 #: src/lirc/lirc.c:390
 msgid "<b>Connection</b>"
-msgstr "<b>Připojení</ b>"
+msgstr "<b>සබැඳුම</b>"
 
 #: src/lirc/lirc.c:391
 msgid "Reconnect to LIRC server"
-msgstr "Znovu se připojit k serveru LIRC"
+msgstr "සේවාදායකයට ප්‍රතිසම්බන්ධ කරන්න "
 
 #: src/lirc/lirc.c:393
 msgid "Wait before reconnecting:"
-msgstr "Vyčkat před opětovným připojením:"
+msgstr "ප්‍රතිසම්බන්ධ වීමට පෙර මදක් සිටින්න:"
 
 #: src/lirc/lirc.c:403
 msgid "LIRC Plugin"
-msgstr "LIRC Plugin"
+msgstr "LIRC පේනු මෘදුකාංගය"
 
 #: src/lyricwiki/lyricwiki.c:117
 msgid "No lyrics available"
-msgstr "Žádný text k dispozici"
+msgstr "පද රචනා නොමැත​"
 
 #: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
 #, c-format
 msgid "Unable to fetch %s"
-msgstr "Nelze načíst %s"
+msgstr "කැඳවාගෙන යා නොහැක​ %s"
 
 #: src/lyricwiki/lyricwiki.c:208 src/lyricwiki/lyricwiki.c:218
 #: src/lyricwiki/lyricwiki.c:242 src/lyricwiki/lyricwiki.c:252
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Error"
-msgstr "Chyba"
+msgstr "දෝෂය "
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
 msgid "Unable to parse %s"
-msgstr "Nelze analyzovat %s"
+msgstr "parse කළ නොහැක​ %s"
 
 #: src/lyricwiki/lyricwiki.c:260
 msgid "Looking for lyrics ..."
-msgstr "Hledám texty ..."
+msgstr "පද රචනා සොයමින් පවතී ..."
 
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Missing song metadata"
-msgstr "Chybí metadata skladby"
+msgstr "ගීතයේ metadata නොමැත​"
 
 #: src/lyricwiki/lyricwiki.c:284
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr "Připojování k lyrics.wikia.com ..."
+msgstr "lyrics.wikia.com වෙත​ සම්බන්ද වෙමින් පවතී ..."
 
 #: src/lyricwiki/lyricwiki.c:411
 msgid "LyricWiki Plugin"
-msgstr "LyricWiki Plugin"
+msgstr "ලිරික් විකී  පේනු මෘදුකාංගය"
 
 #: src/m3u/m3u.c:116
 msgid "M3U Playlists"
-msgstr "M3U Playlisty"
+msgstr "M3U ධාවන ලැයිස්තුව​"
 
 #: src/metronom/metronom.c:127
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Generátor taktu: %d dob/min"
+msgstr "ටැක්ට් ජනකය: %d මිනිත්තුවට බයිට්ස් "
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Generátor taktu: %d dob/min %d⁄%d"
+msgstr "ටැක්ට් ජනකය: %d මිනිත්තුවට බයිට්ස්  %d/%d"
 
 #: src/metronom/metronom.c:218
 msgid ""
@@ -2253,75 +2323,75 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
-"Generátor taktů od Martina Strausse <mys@faveve.uni-stuttgart.de>\n"
-"\n"
-"Chcete-li jej použít, přidejte adrese URL: tact://beats*num/den\n"
-"např. tact://77 pro přehrání 77 beatů za minutu\n"
-"nebo tact://60*3/4 pro přehrání 60 bpm v 3/4 taktu"
+"මාර්ටින් ස්ට්‍රේස් විසින් චාතුර්යය උත්පාදකක් <mys@faveve.uni-stuttgart.de>⏎\n"
+"⏎\n"
+"භාවිතා කිරීම සඳහා, add a URL: tact://beats*num/den⏎\n"
+"e.g. tact://77 to play 77 beats per minute⏎\n"
+"or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 
 #: src/metronom/metronom.c:227
 msgid "Tact Generator"
-msgstr "Genetátor taktů"
+msgstr "ටැක්ට් ජනකය"
 
 #: src/mixer/mixer.c:171
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"Zásuvný modul kanáloveho mixeru pro Audacious\n"
-"Copyright 2011-2012 John Lindgren a Michał Lipski"
+"Audacious සඳහා නාලිකා මිශ්‍රන​ පේනු මෘදුකාංගයක්\n"
+"ප්‍රකාශන අයිතිය​ 2011-2012 John Lindgren and Michał Lipski"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>Míchání kanálů</b>"
+msgstr "<b>නාලිකා මිශ්‍රකය</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
-msgstr "Výstupní kanály:"
+msgstr "ප්‍රතිදාන නාලිකා:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr "Míchání kanálů"
+msgstr "නාලිකා මිශ්‍රකය"
 
 #: src/mms/mms.c:195
 msgid "MMS Plugin"
-msgstr "MMS Plugin"
+msgstr "MMS පේනු මෘදුකාංගය"
 
 #: src/modplug/plugin_main.c:55
 msgid "<b>Resolution</b>"
-msgstr "<b>Rozlišení</b>"
+msgstr "<b>විභේදනය</b>"
 
 #: src/modplug/plugin_main.c:56
 msgid "8-bit"
-msgstr "8 bitů"
+msgstr "බිටු-8"
 
 #: src/modplug/plugin_main.c:58
 msgid "16-bit"
-msgstr "16 bitů"
+msgstr "බිටු-16"
 
 #: src/modplug/plugin_main.c:60
 msgid "<b>Channels</b>"
-msgstr "<b>Kanály</b>"
+msgstr "<b>නාලිකා </b>"
 
 #: src/modplug/plugin_main.c:66
 msgid "Nearest (fastest)"
-msgstr "Nejbližší (nejrychlejší)"
+msgstr "කිට්ටුතම (වේගවත්ම)"
 
 #: src/modplug/plugin_main.c:68
 msgid "Linear (fast)"
-msgstr "Lineární (rychlé)"
+msgstr "රේඛීය (වේගවත්)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Spline (good)"
-msgstr "Křivka (dobré)"
+msgstr "හිර ඇලිය (යහපත්)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Polyphase (best)"
-msgstr "Vícefázové (nejlepší)"
+msgstr "බහු අදියර (ප්‍රශස්ත)"
 
 #: src/modplug/plugin_main.c:74
 msgid "<b>Sampling rate</b>"
-msgstr "<b>Vzorkovací kmitočet</b>"
+msgstr "<b>සාම්පල ශ්‍රීඝ‍්‍රතාව</b>"
 
 #: src/modplug/plugin_main.c:75
 msgid "22 kHz"
@@ -2342,79 +2412,79 @@ msgstr "96 kHz"
 #: src/modplug/plugin_main.c:86 src/modplug/plugin_main.c:93
 #: src/modplug/plugin_main.c:100
 msgid "Level:"
-msgstr "Úroveň:"
+msgstr "මට්ටම:"
 
 #: src/modplug/plugin_main.c:95
 msgid "Cutoff:"
-msgstr "Bod zkrácení:"
+msgstr "කපා හැරීම:"
 
 #: src/modplug/plugin_main.c:112
 msgid "<b>Reverb</b>"
-msgstr "<b>Dozvuk</b>"
+msgstr "<b>ප්‍රතිනාදකය</b>"
 
 #: src/modplug/plugin_main.c:116
 msgid "<b>Bass Boost</b>"
-msgstr "<b>Zdůraznění basů</b>"
+msgstr "\t<b>මන්ද්‍රස්වරය වැඩිවීම</b>"
 
 #: src/modplug/plugin_main.c:120
 msgid "<b>Surround</b>"
-msgstr "<b>Prostorový zvuk</b>"
+msgstr "<b>වටපිටාව</b>"
 
 #: src/modplug/plugin_main.c:124
 msgid "<b>Preamp</b>"
-msgstr "<b>Předzesílení</b>"
+msgstr "<b>ප්‍රාක්වර්ධකය</b>"
 
 #: src/modplug/plugin_main.c:132
 msgid "Oversample"
-msgstr "Oblast vzorku"
+msgstr "අධික සාම්පල"
 
 #: src/modplug/plugin_main.c:134
 msgid "Noise reduction"
-msgstr "Zmenšení šumu"
+msgstr "ශබ්දය අඩු කිරීම"
 
 #: src/modplug/plugin_main.c:136
 msgid "Play Amiga MODs"
-msgstr "Přehrát Amiga MOD"
+msgstr "Amiga MODs ධාවනය කරන්න "
 
 #: src/modplug/plugin_main.c:138
 msgid "<b>Repeat</b>"
-msgstr "<b>Opakovat</b>"
+msgstr "<b>නැවත කිරීම</b>"
 
 #: src/modplug/plugin_main.c:139
 msgid "Repeat count:"
-msgstr "Počet opakování:"
+msgstr "නැවත ගණන් කිරීම"
 
 #: src/modplug/plugin_main.c:141
 msgid "To repeat forever, set the repeat count to -1."
-msgstr "Pro opakování navždy, nastavte počet opakování na -1."
+msgstr "සදහටම නැවත නැවත කිරීමට, නැවත වරක් ගණන් කිරීම -1 හි පිහිටුවන්න."
 
 #: src/modplug/plugin_main.c:236
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (Module Player)"
+msgstr "මොඩ් කෙවෙනිය (මොඩියුල  ධාවකය)"
 
 #: src/mpg123/mpg123.c:210
 msgid "Surround"
-msgstr "Prostorový zvuk"
+msgstr "සිසාළ "
 
 #: src/mpg123/mpg123.c:412
 msgid "MPG123 Plugin"
-msgstr "MPG123 Plugin"
+msgstr "MPG123  පේනු මෘදුකාංගය"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 Server"
+msgstr "MPRIS 2 සේවාදායකය"
 
 #: src/neon/neon.c:1056
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Neon HTTP/HTTPS Plugin"
+msgstr "නිඕන් HTTP/HTTPS පේනු මෘදුකාංගය"
 
 #: src/notify/event.c:65
 msgid "Stopped"
-msgstr "Zastaveno"
+msgstr "නැවතුන "
 
 #: src/notify/event.c:65
 msgid "Audacious is not playing."
-msgstr "Audacious nyní nehraje."
+msgstr "ඔඩෙෂස්  ක්‍රියාත්මක නොවේ."
 
 #: src/notify/notify.c:33
 msgid ""
@@ -2435,54 +2505,68 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Audacious සදහා වැඩතල දැනුම් දීම් පෙනු-මෘදුකාංගය\n"
+"කතු හිමිකම(c) 2010 Maximilian Bogner\n"
+"කතු හිමිකම(c) 2011-2013 Lindgren සහ Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"මෙම පෙනු-මෘදුකාංගය නොමිලේ මෘදුකාංගයකි: ඔබට එය නැවත බෙදාහැරීම සහ/හෝ එයට ෆ්‍රී සොෆ්ට්වෙයා "
+"ෆඋන්ඩේශන් මගින් ප්‍රකාශනය කල GNU පොදු  මහජන වරපත අනුවාද 3 හෝ (ඔබගේ තෝරාගැනීම පරිදී) "
+"ඕනෑම පසු අනුවාදයක් යටතේ වෙනස්කම් සිදු කල හැක. \n"
+"\n"
+"මෙම  පෙනු-මෘදුකාංගය බෙදා හරින්නේ එය ප්‍රයෝජනවත් වේ යැයි අපේක්ෂාවෙනි, නමුත් කිසිදු වගකීමකින් "
+"තොරවය; විකිණිය හැකි ව්‍යංග්‍ය වගකීම හා අවශ්‍යතාවට සරිලන ව්‍යංග වගකීම ද නොමැතිවය. වැඩි විස්තර "
+"සදහා GNU පොදු  මහජන වරපත බලන්න.\n"
+"\n"
+"ඔබට මම මෘදුකාංගය සමග GNU පොදු  මහජන වරපතේ පිටපතක් ලැබී තිබිය යුතුය, එසේ නොමැති නම් "
+"<http://www.gnu.org/licenses/>. බලන්න."
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr "Ukázat ovládání přehrávání"
+msgstr "යළි ධාවන පාලන යතුරු පෙන්නන්න  "
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr "Vždy ukázat oznámení"
+msgstr "නිතර නිවේදන පෙන්නන්න"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
-msgstr "Oznámení na plochu"
+msgstr "වැඩතලය දැනුම් දීම "
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr "Ukázat"
+msgstr "පෙන්නන්න "
 
 #: src/notify/osd.c:65 src/skins/menus.c:79
 msgid "Pause"
-msgstr "Pozastavit"
+msgstr "විරාමය "
 
 #: src/notify/osd.c:72 src/skins/menus.c:82
 msgid "Next"
-msgstr "Další"
+msgstr "ඊළඟ  "
 
 #: src/oss4/plugin.c:38
 msgid "1. Default device"
-msgstr "1. Implicitní zařízení"
+msgstr "1.පෙරනිමි ආම්පන්නය "
 
 #: src/oss4/plugin.c:77 src/sndio/sndio.c:393
 msgid "Audio device:"
-msgstr "Zvukové zařízení:"
+msgstr "ස්වයංක්‍රිය අම්පන්නය:"
 
 #: src/oss4/plugin.c:79
 msgid "Use alternate device:"
-msgstr "Použít jiné zařízení:"
+msgstr "විකල්ප අම්පන්නයක් භාවිතා කරන්න:"
 
 #: src/oss4/plugin.c:83
 msgid "Save volume between sessions."
-msgstr "Uložit hlasitost mezi relacemi."
+msgstr "සැසි අතර ශබ්දය සුරකින්න."
 
 #: src/oss4/plugin.c:85
 msgid "Enable format conversions made by the OSS software."
-msgstr "Zapnout převody formátu prostřednictvím OSS."
+msgstr "OSS මෘදුකාංගයෙන් සාදන ලද ආකෘති අනුවර්තන සක්‍රීය කරන්න."
 
 #: src/oss4/plugin.c:87
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "Zabránit virtuálnímu směšování použitím výlučného režimu."
+msgstr "අතාත්වික ඝටනාවෙන් මිදීමට කේවල ප්‍රකාරය සක්‍රිය කරන්න."
 
 #: src/oss4/plugin.c:110
 msgid ""
@@ -2492,23 +2576,23 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
-"OSS4 Výstupní zásuvný modul pro Audacious 2010-2012\n"
-"Copyright 2010-2012 Michał Lipski\n"
+"Audacious සඳහා වන OSS4 ප්‍රතිදාන \n"
+"ප්‍රකාශන අයිතිය​ 2010-2012 Michał Lipski\n"
 "\n"
-"Rád bych poděkoval lidem z #audacious, zejména Tonymu Vroonnovy a Johnu "
-"Lindgrennovy a samozřejmě také autorům předešlého OSS zásuvného modulu."
+"#audacious හි මිනිසුන් වෙත ස්තූති කරමි, විශේෂයෙන් Tony Vroon සහ​ John Lindgren මෙන්ම පෙර "
+"OSS පේනු මෘදුකාංගයයෙහි කතෘන් හට ."
 
 #: src/oss4/plugin.c:117
 msgid "OSS4 Output"
-msgstr "OSS4 výstup"
+msgstr "OSS4 ප්‍රතිදානය"
 
 #: src/pls/pls.c:102
 msgid "PLS Playlists"
-msgstr "PLS seznamy skladeb"
+msgstr "PLS ධාවන ලැයිස්තුව​"
 
 #: src/psf/plugin.c:209
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 Dekodér"
+msgstr "PSF PSF1/PSF2 විකේතකය විවෘත කරන්න "
 
 #: src/pulse_audio/pulse_audio.c:644
 msgid ""
@@ -2529,143 +2613,162 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Audacious PulseAudio ප්‍රතිදාන​ පේනු මෘදුකාංගය\n"
+"\n"
+"මෙම​ මෘදුකාංගය නිදහස් මෘදුකාංගයකි; නිදහස් මෘදුකාංග පදනම විසින් ප්‍රකාශ කරන ලද GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය යටතේ ඔබට මෙය නැවත බෙදා හැරීම හෝ වෙනස් කිරීම කළ හැක​; බලපත්‍රයේ 2වන "
+"සංස්කරණය හෝ(ඔබගේ කැමත්ත අනුව​) පසු සංස්කරණයක් යටතේ.\n"
+"\n"
+"මෙම මෘදුකාංගය බෙදාහැර ඇත්තේ ප්‍රයෝජනවත් වේ යන බලාපොරොත්තුවෙන් වුවත් වගකීමක් නොමැත​; විකිණිය "
+"හැකි හෝ යම් නිශ්චිත අරමුණකට ලෙසවත් ගම්‍යමාන වන වගකීමකින් තොරයි. වැඩි විස්තර සඳහා GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය බලන්න​. \n"
+"\n"
+"මෙම මෘදුකාංගය සමග ඔබට GNU සාමාන්‍ය පොදු බලපත්‍රයහි පිටපතක් ලැබිය යුතුයි; නැතිනම් නිදහස් "
+"මෘදුකාංග පදනමට දන්වන්න​. Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
-msgstr "PulseAudio Výstup"
+msgstr "ශ්‍රව්‍ය ස්පන්ද ප්‍රතිදානය "
 
 #: src/resample/resample.c:165
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"ඔඩෙෂස් සඳහා නියැදි අනුපාත පරිවර්තකය \n"
+"ප්‍රකාශන හිමිකම 2010-2012 ජෝන් ලින්දඩ්ග්රෙන් "
 
 #: src/resample/resample.c:169
 msgid "Skip/repeat samples"
-msgstr "Přeskočit/opakovat vzorky"
+msgstr "නියැදි මගහැරීම/නැවත කිරීම "
 
 #: src/resample/resample.c:170
 msgid "Linear interpolation"
-msgstr "Lineární interpolace"
+msgstr "රේඛිය අන්තර් නිවේෂණය"
 
 #: src/resample/resample.c:171
 msgid "Fast sinc interpolation"
-msgstr "Rychlá sinc interpolace"
+msgstr "වේගවත් සින්ක්  අන්තර් නිවේෂණය"
 
 #: src/resample/resample.c:172
 msgid "Medium sinc interpolation"
-msgstr "Střední sinc interpolace"
+msgstr "මධ්‍යම සින්ක්  අන්තර් නිවේෂණය"
 
 #: src/resample/resample.c:173
 msgid "Best sinc interpolation"
-msgstr "Nejlepší sinc interpolace"
+msgstr "හොඳම සින්ක්  අන්තර් නිවේෂණය"
 
 #: src/resample/resample.c:176
 msgid "<b>Conversion</b>"
-msgstr "<b>Převod</b>"
+msgstr "<b>පරිවර්තනය</b>"
 
 #: src/resample/resample.c:177
 msgid "Method:"
-msgstr "Metoda:"
+msgstr "ක්‍රමය "
 
 #: src/resample/resample.c:180 src/sox-resampler/sox-resampler.c:153
 msgid "Rate:"
-msgstr "Hodnocení:"
+msgstr "අනුපාතය:"
 
 #: src/resample/resample.c:183
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>අනුපාතය සිතියම්කරණය</b>"
 
 #: src/resample/resample.c:184
 msgid "Use rate mappings"
-msgstr "Použít přiřazení frekvencí"
+msgstr "අනුපාතය සිතියම්කරණය භාවිතා කරන්න​"
 
 #: src/resample/resample.c:186
 msgid "8 kHz:"
-msgstr "8 kHz:"
+msgstr "8 කිලෝ හරට්ස්:"
 
 #: src/resample/resample.c:189
 msgid "16 kHz:"
-msgstr "16 kHz:"
+msgstr "16 කිලෝ හරට්ස්:"
 
 #: src/resample/resample.c:192
 msgid "22.05 kHz:"
-msgstr "22.05 kHz:"
+msgstr "22.05 කිලෝ හරට්ස්:"
 
 #: src/resample/resample.c:195
 msgid "44.1 kHz:"
-msgstr "44.1 kHz:"
+msgstr "44.1 කිලෝ හරට්ස්:"
 
 #: src/resample/resample.c:198
 msgid "48 kHz:"
-msgstr "48 kHz:"
+msgstr "48 කිලෝ හරට්ස්:"
 
 #: src/resample/resample.c:201
 msgid "96 kHz:"
-msgstr "96 kHz:"
+msgstr "96 කිලෝ හරට්ස්:"
 
 #: src/resample/resample.c:204
 msgid "192 kHz:"
-msgstr "192 kHz:"
+msgstr "192 කිලෝ හරට්ස්:"
 
 #: src/resample/resample.c:214
 msgid "Sample Rate Converter"
-msgstr "Převodník vzorkovacího kmitočtu"
+msgstr "නියැදි අනුපාත පරිවර්තකය "
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "ඔව්. \tපරිශ්‍රීලක: %s සදහා භාවිත දත්ත සුරකින්න"
 
 #: src/scrobbler2/config_window.c:53
 msgid "Permission Denied"
-msgstr "Přístup odepřen"
+msgstr "අනුමැතිය තහනම් කිරීම "
 
 #: src/scrobbler2/config_window.c:55
 msgid "Access the following link to allow Audacious to scrobble your plays:"
-msgstr ""
+msgstr "Audacious සදහා භාවිත දත්ත සුරකීමට මෙම අමුණට පිවිසෙන්න :"
 
 #: src/scrobbler2/config_window.c:64
 msgid "Keep this window open and click 'Check Permission' again.\n"
-msgstr ""
+msgstr "මම කවුළුව විවෘත​ව තබා 'අවසර පිරික්සන්න' නැවත ක්ලික් කරන්න\n"
 
 #: src/scrobbler2/config_window.c:67 src/scrobbler2/config_window.c:78
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
+"කණගාටු නොවන්න ඔබගේ භාවිත දත්ත ඔබගේ පරිගණකයේ ම සුරක්ෂිත කරයි.\n"
+"ඒවා Audacious සදහා අවසර ලැබුණු වහාම සුරක්ෂිත වේ"
 
 #: src/scrobbler2/config_window.c:75
 msgid "Network Problem."
-msgstr "Problém se sítí."
+msgstr "ජාල ගැටළු."
 
 #: src/scrobbler2/config_window.c:76
 msgid "There was a problem contacting Last.fm. Please try again later."
-msgstr ""
-"Objevil se problém při kontaktování Last.fm. Zkuste to prosím za chvíli."
+msgstr "අවසානයට සම්බන්ධ වීමේ ගැටළුවක් විය.fm.කරුණාකර පසුව නැවත උත්සහ කරන්න "
 
 #: src/scrobbler2/config_window.c:108
 msgid "Checking..."
-msgstr "Prověřuje se..."
+msgstr "පිරික්සන..."
 
 #: src/scrobbler2/config_window.c:174
 msgid "C_heck Permission"
-msgstr "Z_kontrolovat oprávnění"
+msgstr "C_heck අනුමැතිය "
 
 #: src/scrobbler2/config_window.c:175
 msgid "_Revoke Permission"
-msgstr "_Odvolání oprávnění"
+msgstr "_අනුමැතිය අවලංගු කිරීම "
 
 #: src/scrobbler2/config_window.c:222
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
-msgstr "Musíte povolit Audacious scrobblovat skladby do Last.fm účtu.\n"
+msgstr "ඔබ ඔඩෙෂස් හට ඔබගේ අවසාන fm ගිණුමෙන් ගීත ලබා ගැනීමට අවසර දිය යුතුය.\n"
 
 #: src/scrobbler2/scrobbler.c:218
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"Scrobbler පේනු මෘදුකාංගය ඇරභිය නොහැකිය.⏎\n"
+"සමහරවිට ඔබගේ පිහිටැවුමෙහි ගැටලුවක් ඇත."
 
 #: src/scrobbler2/scrobbler.c:294
 msgid ""
@@ -2677,53 +2780,61 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Pitxyoki විසින් Audacious Scrobbler පේනු මෘදුකාංගය,\n"
+"\n"
+"ප්‍රකාශන අයිතිය © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 
 #: src/scrobbler2/scrobbler.c:300
 msgid "Scrobbler 2.0"
-msgstr "Scrobbler 2.0"
+msgstr "ස්ක්රෝබ්ලර් 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:727
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"Audacious අවසානයට වැඩි දියුණුකළ අනුවාදය භාවිත කරයි.fm Scrobbler.⏎ \n"
+"කරුණාකර Scrobbler පේනු මෘදුකාංගයේ අභිරුචිය පරීක්ෂා කර බලන්න."
 
 #: src/sdlout/plugin.c:26
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Audacious සඳහා වන SDL ප්‍රතිදාන​ පේනු මෘදුකාංගය\n"
+"ප්‍රකාශන අයිතිය 2010 ජෝන් ලින්ඩ්ග්‍රෙන්"
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
-msgstr "SDL Výstup"
+msgstr "SDL ප්‍රතිදානය"
 
 #: src/search-tool/search-tool.c:104 src/search-tool/search-tool.c:114
 msgid "Library"
-msgstr "Knihovna"
+msgstr "පුස්තකාලය "
 
 #: src/search-tool/search-tool.c:211
 msgid "Unknown Artist"
-msgstr "Neznámý interpret"
+msgstr "නාඳුනන ශිල්පියා"
 
 #: src/search-tool/search-tool.c:213
 msgid "Unknown Album"
-msgstr "Neznámé Album"
+msgstr "නාඳුනන ඇල්බමය "
 
 #: src/search-tool/search-tool.c:625
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr "%s⏎ na %s od %s"
+msgstr ""
+"%s\n"
+"මතුපිට %s විසින්  %s"
 
 #: src/search-tool/search-tool.c:631
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "%d album"
-msgstr[1] "%d alba"
-msgstr[2] "%d alb"
+msgstr[0] "%d ඇල්බමය "
+msgstr[1] "%d ඇල්බම"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
@@ -2735,9 +2846,10 @@ msgid_plural ""
 " %s, %d songs"
 msgstr[0] ""
 "%s⏎\n"
-" %s, %d skladba"
-msgstr[1] "%s⏎ %s, %d skladby"
-msgstr[2] "%s⏎ %s, %d skladeb"
+"%s, %d ගීතය "
+msgstr[1] ""
+"%s\n"
+"%s, %d ගීත "
 
 #: src/search-tool/search-tool.c:639
 #, c-format
@@ -2748,42 +2860,42 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
-" %s⏎\n"
-" %d skladba od %s"
-msgstr[1] " %s⏎ %d skladby od %s"
-msgstr[2] " %s⏎ %d skladeb od %s"
+"%s\n"
+"%d ගීතයෙන් %s"
+msgstr[1] ""
+"%s⏎\n"
+"%d ගීත වලින් %s"
 
 #: src/search-tool/search-tool.c:675
 msgid "_Create Playlist"
-msgstr "_Vytvořit seznam skladeb"
+msgstr "_ධාවන ලැයිස්තුව​ තනන්න "
 
 #: src/search-tool/search-tool.c:676
 msgid "_Add to Playlist"
-msgstr "Přid_at do seznamu skladeb"
+msgstr "_ධාවන ලැයිස්තුව​ට එකතු කරන්න "
 
 #: src/search-tool/search-tool.c:713
 msgid "Search library"
-msgstr "Prohledat knihovnu"
+msgstr "පුස්තකාලය සොයන්න "
 
 #: src/search-tool/search-tool.c:717
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak "
-"kliknete na ikonu „obnovit“."
+"ඔඩෙෂස් තුලට ඔබගේ ගීත පුස්තකාලය ආයාත කිරීමට, ෆෝල්ඩරයක් තෝරා \"නැවුම් කරන්න\" නිරූපකය ඔබන්න."
 
 #: src/search-tool/search-tool.c:725
 msgid "Please wait ..."
-msgstr "Prosím, počkejte…"
+msgstr "කරුණාකර රැඳී සිටින්න ..."
 
 #: src/search-tool/search-tool.c:747
 msgid "Choose Folder"
-msgstr "Vybrat složku"
+msgstr "ෆෝල්ඩරය තෝරන්න "
 
 #: src/search-tool/search-tool.c:786
 msgid "Search Tool"
-msgstr "Vyhledávací nástroj"
+msgstr "සෙවීමේ මෙවලම "
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
@@ -2795,15 +2907,15 @@ msgstr ""
 
 #: src/skins/menus.c:59
 msgid "Playback"
-msgstr "Přehrát"
+msgstr "පිළිවැයීම"
 
 #: src/skins/menus.c:60
 msgid "Playlist"
-msgstr "Seznam skladeb"
+msgstr "ධාවන ලැයිස්තුව​"
 
 #: src/skins/menus.c:61
 msgid "View"
-msgstr "Zobrazení"
+msgstr "දක්වන්න "
 
 #: src/skins/menus.c:63 src/skins/menus.c:133 src/skins/menus.c:146
 #: src/skins/menus.c:203
@@ -2828,15 +2940,15 @@ msgstr ""
 
 #: src/skins/menus.c:73
 msgid "Repeat"
-msgstr "Opakovat"
+msgstr "නැවත  කරන්න "
 
 #: src/skins/menus.c:74
 msgid "Shuffle"
-msgstr "Náhodné přehrávání"
+msgstr "කලවම් කරන්න "
 
 #: src/skins/menus.c:75
 msgid "No Playlist Advance"
-msgstr "Žádné pokračování dle seznamu skladeb"
+msgstr "ධාවන ලැස්තු නැත "
 
 #: src/skins/menus.c:76
 msgid "Stop After This Song"
@@ -2844,7 +2956,7 @@ msgstr ""
 
 #: src/skins/menus.c:81
 msgid "Previous"
-msgstr "Předchozí"
+msgstr "පෙර "
 
 #: src/skins/menus.c:84
 msgid "Set A-B Repeat"
@@ -2868,7 +2980,7 @@ msgstr ""
 
 #: src/skins/menus.c:94
 msgid "New Playlist"
-msgstr "Nový seznam skladeb"
+msgstr "නව ධාවන ලැයිස්තුව​"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
@@ -2908,11 +3020,11 @@ msgstr ""
 
 #: src/skins/menus.c:111
 msgid "Show Playlist Editor"
-msgstr "Zobrazit editor seznamu skladeb"
+msgstr "ධාවන ලැස්තු සකසනය පෙන්වන්න "
 
 #: src/skins/menus.c:113
 msgid "Show Equalizer"
-msgstr "Ukázat ekvalizér"
+msgstr " ඉකුවලිසරය  පෙන්වන්න "
 
 #: src/skins/menus.c:116
 msgid "Show Remaining Time"
@@ -2920,7 +3032,7 @@ msgstr ""
 
 #: src/skins/menus.c:119
 msgid "Always on Top"
-msgstr "Vždy na vrchu"
+msgstr "සැමවිටම  ඉහළ"
 
 #: src/skins/menus.c:121
 msgid "On All Workspaces"
@@ -2948,11 +3060,11 @@ msgstr ""
 
 #: src/skins/menus.c:140 src/skins/menus.c:167 src/skins/menus.c:177
 msgid "By Title"
-msgstr "Podle názvu"
+msgstr "මාතෘකාවෙන් "
 
 #: src/skins/menus.c:141 src/skins/menus.c:170 src/skins/menus.c:180
 msgid "By Filename"
-msgstr "Podle jména souboru"
+msgstr "ගොනු නාමයෙන් "
 
 #: src/skins/menus.c:142 src/skins/menus.c:171 src/skins/menus.c:181
 msgid "By File Path"
@@ -2960,51 +3072,51 @@ msgstr ""
 
 #: src/skins/menus.c:148
 msgid "Remove All"
-msgstr "Odebrat všechny"
+msgstr "සියල්ල ඉවත් කරන්න "
 
 #: src/skins/menus.c:149
 msgid "Clear Queue"
-msgstr "Vyprázdnit frontu"
+msgstr "පෙළගැස්ම හිස් කරන්න"
 
 #: src/skins/menus.c:151
 msgid "Remove Unavailable Files"
-msgstr "Odstranit nedostupné soubory"
+msgstr "අනුපයෝජ්‍ය ගොනු ඉවත් කරන්න "
 
 #: src/skins/menus.c:152
 msgid "Remove Duplicates"
-msgstr "Odebrat duplikáty"
+msgstr "ද්විකරණ ඉවත් කරන්න "
 
 #: src/skins/menus.c:154
 msgid "Remove Unselected"
-msgstr "Odebrat neoznačené"
+msgstr "තෝරානොගත් ඒවා ඉවත් කරන්න "
 
 #: src/skins/menus.c:155
 msgid "Remove Selected"
-msgstr "Odebrat označené"
+msgstr "තෝරාගත් ඒවා ඉවත් කරන්න "
 
 #: src/skins/menus.c:159
 msgid "Search and Select"
-msgstr "Hledání a výběr"
+msgstr "සොයන්න සහ තෝරන්න "
 
 #: src/skins/menus.c:161
 msgid "Invert Selection"
-msgstr "Invertovat výběr"
+msgstr "වරණය පෙරලන්න "
 
 #: src/skins/menus.c:162
 msgid "Select None"
-msgstr "Nevybrat žádné"
+msgstr "කිසිවක් තෝරානොගන්න "
 
 #: src/skins/menus.c:163
 msgid "Select All"
-msgstr "Vybrat vše"
+msgstr "සියල්ල තෝරන්න"
 
 #: src/skins/menus.c:168 src/skins/menus.c:178
 msgid "By Album"
-msgstr "Podle alba"
+msgstr "ඇල්බමයෙන් "
 
 #: src/skins/menus.c:169 src/skins/menus.c:179
 msgid "By Artist"
-msgstr "Podle umělce"
+msgstr "ශිල්පියාගෙන් "
 
 #: src/skins/menus.c:172 src/skins/menus.c:182
 msgid "By Release Date"
@@ -3012,35 +3124,35 @@ msgstr ""
 
 #: src/skins/menus.c:173 src/skins/menus.c:183
 msgid "By Track Number"
-msgstr "Podle čísla stopy"
+msgstr "ඛණ්ඩ අංකයෙන් "
 
 #: src/skins/menus.c:187
 msgid "Randomize List"
-msgstr "Zamíchat pořadí"
+msgstr "සසම්භාවී ධාවන ලැයිස්තුව "
 
 #: src/skins/menus.c:188
 msgid "Reverse List"
-msgstr "Otočit seznam"
+msgstr "ලැස්තුවේ  ආපස්සට යන්න "
 
 #: src/skins/menus.c:190
 msgid "Sort Selected"
-msgstr "Seřadit vybrané"
+msgstr "තෝරාගත් අනුපිළිවලට "
 
 #: src/skins/menus.c:191
 msgid "Sort List"
-msgstr "Seřadit seznam"
+msgstr "ලැයිස්තුව අනුපිළිවලට සකසන්න "
 
 #: src/skins/menus.c:197
 msgid "Cut"
-msgstr "Oříznout"
+msgstr "කපන්න "
 
 #: src/skins/menus.c:198
 msgid "Copy"
-msgstr "Kopírovat"
+msgstr "පිටපත් කරන්න "
 
 #: src/skins/menus.c:199
 msgid "Paste"
-msgstr "Vložit"
+msgstr "අලවන්න "
 
 #: src/skins/menus.c:201
 msgid "Queue/Unqueue"
@@ -3104,17 +3216,17 @@ msgstr ""
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr "Rozhraní Winamp Classic "
+msgstr "Winamp සම්භාව්‍ය අතුරු මුහුණත"
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:375
 #: src/skins/preset-list.c:390
 msgid "Save"
-msgstr "Uložit"
+msgstr "සුරකින්න "
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:342
 #: src/skins/preset-list.c:358
 msgid "Load"
-msgstr "Načíst"
+msgstr "ප්‍රවේශනය "
 
 #: src/skins/preset-browser.c:82
 msgid "Load Preset File"
@@ -3138,47 +3250,47 @@ msgstr ""
 
 #: src/skins/preset-list.c:289
 msgid "Presets"
-msgstr "Předvolby"
+msgstr "පෙර සකසන ලද "
 
 #: src/skins/preset-list.c:339
 msgid "Load preset"
-msgstr "Načíst předvolbu"
+msgstr "පෙර සකසනය  ප්‍රවේශනය කරන්න "
 
 #: src/skins/preset-list.c:355
 msgid "Load auto-preset"
-msgstr "Načíst souborovou předvolbu"
+msgstr "පෙර සකසන-ස්වයංක්‍රිය ප්‍රවේශනය"
 
 #: src/skins/preset-list.c:371
 msgid "Save preset"
-msgstr "Uložit předvolbu"
+msgstr "පෙර සකසනය සුරකින්න "
 
 #: src/skins/preset-list.c:386
 msgid "Save auto-preset"
-msgstr "Uložit automatickou předvolbu"
+msgstr "පෙර සකසනය-ස්වයංක්‍රියව සුරකින්න"
 
 #: src/skins/preset-list.c:413
 msgid "Delete preset"
-msgstr "Smazat předvolbu"
+msgstr "පෙර සකසනය මකන්න"
 
 #: src/skins/preset-list.c:429
 msgid "Delete auto-preset"
-msgstr "Smazat souborovou předvolbu"
+msgstr "පෙර සකසනය-ස්වයංක්‍රියව මකන්න"
 
 #: src/skins/skins_cfg.c:181
 msgid "_Player:"
-msgstr "_Přehrávač:"
+msgstr "_ධාවකය:"
 
 #: src/skins/skins_cfg.c:183
 msgid "Select main player window font:"
-msgstr "Font v hlavním okně přehrávače:"
+msgstr "කවුළු ෆොන්ටයේ ප්‍රධාන ධාවකය තෝරන්න:"
 
 #: src/skins/skins_cfg.c:184
 msgid "_Playlist:"
-msgstr "_Seznamu skladeb:"
+msgstr "_ධාවන ලැස්තුව:"
 
 #: src/skins/skins_cfg.c:186
 msgid "Select playlist font:"
-msgstr "Vyberte font pro seznam skladeb:"
+msgstr "ධාවන ලැස්තු ෆොන්ටය තෝරන්න:"
 
 #: src/skins/skins_cfg.c:191
 msgid "<b>Skin</b>"
@@ -3190,7 +3302,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:196
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Použít bitmapové fonty (podporuje pouze ASCII)"
+msgstr "බිට්මැප් ෆොන්ට භාවිතා කරන්න (ASCII පමණක් සහය වන )"
 
 #: src/skins/skins_cfg.c:198
 msgid "Scroll song title"
@@ -3198,15 +3310,15 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:200
 msgid "Scroll song title in both directions"
-msgstr "Převíjet název skladby oběma směry"
+msgstr "ගීත තේමාව දෙපසට චලනය කරන්න "
 
 #: src/skins/skins_cfg.c:205
 msgid "Analyzer"
-msgstr "Analyzátor"
+msgstr "විශ්ලේශකය "
 
 #: src/skins/skins_cfg.c:206
 msgid "Scope"
-msgstr "Vlnovka"
+msgstr "විෂය පථය "
 
 #: src/skins/skins_cfg.c:207
 msgid "Voiceprint / VU meter"
@@ -3214,16 +3326,16 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:208
 msgid "Off"
-msgstr "Žádný"
+msgstr "වහනවා "
 
 #: src/skins/skins_cfg.c:212 src/skins/skins_cfg.c:237
 #: src/skins/skins_cfg.c:243
 msgid "Normal"
-msgstr "Normální"
+msgstr "සාමාන්‍ය "
 
 #: src/skins/skins_cfg.c:213 src/skins/skins_cfg.c:238
 msgid "Fire"
-msgstr "Oheň"
+msgstr "දල්වනවා "
 
 #: src/skins/skins_cfg.c:214
 msgid "Vertical lines"
@@ -3231,31 +3343,31 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:218
 msgid "Lines"
-msgstr "Čáry"
+msgstr " රේඛා"
 
 #: src/skins/skins_cfg.c:219
 msgid "Bars"
-msgstr "Sloupce"
+msgstr "තීරු "
 
 #: src/skins/skins_cfg.c:223
 msgid "Slowest"
-msgstr "Nejpomalejší"
+msgstr "මන්දගාමිම "
 
 #: src/skins/skins_cfg.c:224
 msgid "Slow"
-msgstr "Pomalé"
+msgstr "මන්දගාමි"
 
 #: src/skins/skins_cfg.c:225 src/sox-resampler/sox-resampler.c:145
 msgid "Medium"
-msgstr "Střední"
+msgstr "මධ්‍යම "
 
 #: src/skins/skins_cfg.c:226
 msgid "Fast"
-msgstr "Rychlé"
+msgstr "වේගවත් "
 
 #: src/skins/skins_cfg.c:227
 msgid "Fastest"
-msgstr "Nejrychlejší"
+msgstr "වේගවත්ම "
 
 #: src/skins/skins_cfg.c:231
 msgid "Dots"
@@ -3271,11 +3383,11 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:239
 msgid "Ice"
-msgstr "Led"
+msgstr "හිම "
 
 #: src/skins/skins_cfg.c:244
 msgid "Smooth"
-msgstr "Plynulý"
+msgstr "මෘදු "
 
 #: src/skins/skins_cfg.c:248
 msgid "<b>Type</b>"
@@ -3323,127 +3435,127 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:280
 msgid "General"
-msgstr "Obecné"
+msgstr "සාමාන්‍ය"
 
 #: src/skins/skins_cfg.c:281
 msgid "Visualization"
-msgstr "Znázornění"
+msgstr "දෘෂ්ටි කල්පනය "
 
 #: src/skins/ui_equalizer.c:289
 msgid "Preamp"
-msgstr "Předzesílení"
+msgstr "පූර්ව වර්ධකය"
 
 #: src/skins/ui_equalizer.c:293
 msgid "31 Hz"
-msgstr "31 Hz"
+msgstr "31 හරට්ස් "
 
 #: src/skins/ui_equalizer.c:294
 msgid "63 Hz"
-msgstr "63 Hz"
+msgstr "63  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:294
 msgid "125 Hz"
-msgstr "125 Hz"
+msgstr "125  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:294
 msgid "250 Hz"
-msgstr "250 Hz "
+msgstr "250  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:294
 msgid "500 Hz"
-msgstr "500 Hz"
+msgstr "500  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:294
 msgid "1 kHz"
-msgstr "1 kHz"
+msgstr "1  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:295
 msgid "2 kHz"
-msgstr "2 kHz"
+msgstr "2  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:295
 msgid "4 kHz"
-msgstr "4 kHz"
+msgstr "4  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:295
 msgid "8 kHz"
-msgstr "8 kHz"
+msgstr "8  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:295
 msgid "16 kHz"
-msgstr "16 kHz"
+msgstr "16  හරට්ස් "
 
 #: src/skins/ui_equalizer.c:337
 msgid "Audacious Equalizer"
-msgstr "Ekvalizér"
+msgstr "ඔඩෙෂස් ඉකුවලිසරය "
 
 #: src/skins/ui_main.c:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Přejít na %d:%-2.2d / %d:%-2.2d"
+msgstr "සොයනවා %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:707
 #, c-format
 msgid "Volume: %d%%"
-msgstr "Hlasitost: %d %%"
+msgstr "ශබ්ද මට්ටම​ : %d%%"
 
 #: src/skins/ui_main.c:730
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Vyvážení: %d %% vlevo"
+msgstr "තුලනය : %d%% වමට "
 
 #: src/skins/ui_main.c:732
 msgid "Balance: center"
-msgstr "Vyvážení: střed"
+msgstr "තුලනය: මැදට "
 
 #: src/skins/ui_main.c:734
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Vyvážení: %d %% vpravo"
+msgstr "තුලනය: %d%% දකුණට "
 
 #: src/skins/ui_main.c:833
 msgid "Options Menu"
-msgstr "Nabídka nastavení"
+msgstr "විකල්ප මෙනුව "
 
 #: src/skins/ui_main.c:837
 msgid "Disable 'Always On Top'"
-msgstr "Vypnout „Vždy na vrchu“"
+msgstr "අක්‍රිය කරන්න 'සැමවිටම  ඉහළ '"
 
 #: src/skins/ui_main.c:839
 msgid "Enable 'Always On Top'"
-msgstr "Zapnout „Vždy na vrchu“"
+msgstr "සක්‍රිය කරන්න 'සැමවිටම  ඉහළ '"
 
 #: src/skins/ui_main.c:842
 msgid "File Info Box"
-msgstr "Informace o souboru"
+msgstr "ගොනු තොරතුරු පෙට්ටිය "
 
 #: src/skins/ui_main.c:1281
 msgid "Repeat point A set."
-msgstr ""
+msgstr "පුනරාවර්ථන ස්ථානය A කුලකය."
 
 #: src/skins/ui_main.c:1286
 msgid "Repeat point B set."
-msgstr ""
+msgstr "පුනරාවර්ථන ස්ථානය B කුලකය."
 
 #: src/skins/ui_main.c:1295
 msgid "Repeat points cleared."
-msgstr ""
+msgstr "පුනරාවර්ථන ස්ථාන හිස් කරන ලදී."
 
 #: src/skins/ui_main_evlisteners.c:109
 msgid "Single mode."
-msgstr "Režim jedné skladby."
+msgstr "තනි ප්‍රකාරය."
 
 #: src/skins/ui_main_evlisteners.c:111
 msgid "Playlist mode."
-msgstr "Režim seznamu skladeb."
+msgstr "ධාවන ලැස්තු ප්‍රකාරය."
 
 #: src/skins/ui_main_evlisteners.c:117
 msgid "Stopping after song."
-msgstr "Zastavuje po skladbě."
+msgstr "ගීතයකින් පසු නැවතීම."
 
 #: src/skins/ui_playlist.c:222
 msgid "Search entries in active playlist"
-msgstr "Vyhledat skladby v současném seznamu skladeb"
+msgstr "සක්‍රිය ධාවන ලැයිස්තුවේ  පිවිසුම් සොයන්න "
 
 #: src/skins/ui_playlist.c:224
 msgid "Search"
@@ -3456,60 +3568,59 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Položky seznamu skladeb vyberete vyplněním jednoho, nebo více polí. Pole "
-"používají regulární výrazy a neberou ohled na velikost písmen. Pokud "
-"regulárním výrazům nerozumíte, jednoduše vložte části textu, které chcete "
-"vyhledat."
+"ධාවන ලැයිස්තුවේ  පිවිසුම්, ක්ෂේත්‍ර එකක් හෝ වැඩි ගණනක් ගොනු කිරිමනේ තෝරන්න. ක්ෂේත්‍ර විධිමත් ප්‍රකාශන "
+"වාග් රීති, අකුරු තටු-සංවේදී නැති භාවිතා කරයි. ඔබට  විධිමත් ප්‍රකාශන වාග් රීති ක්‍රියාත්මක වන ආකාරය "
+"පිළිබඳ අවබෝධයක් නැති නම්, ඔබ සොයන වචන කොටස ඇතුල් කරන්න."
 
 #: src/skins/ui_playlist.c:237
 msgid "Title: "
-msgstr "Název: "
+msgstr "මාතෘකාව:"
 
 #: src/skins/ui_playlist.c:245
 msgid "Album: "
-msgstr "Album: "
+msgstr "ඇල්බමය:"
 
 #: src/skins/ui_playlist.c:253
 msgid "Artist: "
-msgstr "Umělec: "
+msgstr "ශිල්පියා:"
 
 #: src/skins/ui_playlist.c:261
 msgid "Filename: "
-msgstr "Jméno souboru: "
+msgstr "ගොනු නාමය:"
 
 #: src/skins/ui_playlist.c:270
 msgid "Clear previous selection before searching"
-msgstr "Před hledáním vymazat předchozí výběr"
+msgstr "පෙර තේරීම සෙවීමට පෙර හිස් කරන්න "
 
 #: src/skins/ui_playlist.c:273
 msgid "Automatically toggle queue for matching entries"
-msgstr "Shodující se položky automaticky zařadit/vyřadit z fronty"
+msgstr "ගැලපෙන පිවිසුම් සඳහා ස්වයංක්‍රියව පෙළගැස්ම ටෝගල කරන්න "
 
 #: src/skins/ui_playlist.c:276
 msgid "Create a new playlist with matching entries"
-msgstr "Ze shodujících se položek vytvořit nový seznam skladeb"
+msgstr "ගැලපෙන පිවිසුම් සමග නව ධාවන ලැයිස්තුව තනන්න "
 
 #: src/skins/ui_playlist.c:721
 msgid "Audacious Playlist Editor"
-msgstr "Zobrazit editor seznamu skladeb"
+msgstr "ඔඩෙෂස් ධාවන ලැස්තු සකසනය "
 
 #: src/skins/ui_playlist.c:755
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d z %d)"
+msgstr "%s (%d ගෙන්  %d)"
 
 #: src/skins/ui_skinselector.c:163
 msgid "Archived Winamp 2.x skin"
-msgstr "Zabalený skin Winapmu 2.x"
+msgstr "සංරක්ෂිත Winamp 2.x මතුපිට "
 
 #: src/skins/ui_skinselector.c:168
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Nezabalený skin Winampu 2.x"
+msgstr "සංරක්ෂණය නොකරන ලද Winamp 2.x මතුපිට"
 
 #: src/skins/util.c:450
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "Adresář („%s“) nebylo možné vytvořit: %s\n"
+msgstr "නාමාවලිය නිර්මාණය කීරීමට නොහැකිය (%s): %s\n"
 
 #: src/sndfile/plugin.c:350
 msgid ""
@@ -3532,14 +3643,31 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"xmms_sndfile පේනු මෘදුකාංගය මත පදනම් වී ඇත​:\n"
+"ප්‍රකාශන අයිතිය (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Audacious සඳහා ඇතුලත් කරන ලද්දේ Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"මෙම​ මෘදුකාංගය නිදහස් මෘදුකාංගයකි; නිදහස් මෘදුකාංග පදනම විසින් ප්‍රකාශ කරන ලද GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය යටතේ ඔබට මෙය නැවත බෙදා හැරීම හෝ වෙනස් කිරීම කළ හැක​; බලපත්‍රයේ 2වන "
+"සංස්කරණය හෝ(ඔබගේ කැමත්ත අනුව​) පසු සංස්කරණයක් යටතේ.\n"
+"\n"
+"මෙම මෘදුකාංගය බෙදාහැර ඇත්තේ ප්‍රයෝජනවත් වේ යන බලාපොරොත්තුවෙන් වුවත් වගකීමක් නොමැත​; විකිණිය "
+"හැකි හෝ යම් නිශ්චිත අරමුණකට ලෙසවත් ගම්‍යමාන වන වගකීමකින් තොරයි. වැඩි විස්තර සඳහා GNU සාමාන්‍ය "
+"පොදු බලපත්‍රය බලන්න​. \n"
+"\n"
+"මෙම මෘදුකාංගය සමග ඔබට GNU සාමාන්‍ය පොදු බලපත්‍රයහි පිටපතක් ලැබිය යුතුයි; නැතිනම් නිදහස් "
+"මෘදුකාංග පදනමට දන්වන්න​. Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
 
 #: src/sndfile/plugin.c:369
 msgid "Sndfile Plugin"
-msgstr "Sndfile modul"
+msgstr "Snd ගොනු පේනු මෘදුකාංගය"
 
 #: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
-msgstr "O výstupním pluginu Sndio"
+msgstr "Sndio ප්‍රතිදාන පේනු මෘදුකාංගය පිළිබඳ​"
 
 #: src/sndio/sndio.c:173
 msgid ""
@@ -3547,13 +3675,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
-"Sndio výstupní plugin\n"
-"\n"
-"napsal Thomas Pfaff <tpfaff@tp76.info>\n"
+"Sndio ප්‍රතිදාන පේනු මෘදුකාංගය⏎\n"
+"⏎\n"
+"ලියනු ලැබුවේ තෝමස් ප්ෆැෆ් විසින් <tpfaff@tp76.info>⏎\n"
 
 #: src/sndio/sndio.c:248
 msgid "Unsupported format"
-msgstr "Nepodporovaný formát"
+msgstr "සහාය නොමැති හැඩතලය​කි"
 
 #: src/sndio/sndio.c:249
 msgid ""
@@ -3561,49 +3689,47 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
-"Formát není podporován tímto zvukovým zařízením. ⏎ ⏎ Zkuste to prosím znovu "
-"s běžícím sndiod(1) serverem."
+"ශ්‍රව්‍ය ආම්පන්නයට සහය නොදක්වන හැඩතලයක් අයැදුම් කරන ලදී.⏎\n"
+"⏎\n"
+"sndiod(1) සේවාදායකය​ ධාවනය වන අතරතුර නැවත උත්සාහ කරන්න​."
 
 #: src/sndio/sndio.c:384
 msgid "sndio device"
-msgstr "sndio zařízení"
+msgstr "sndio ආම්පන්නය"
 
 #: src/sndio/sndio.c:400
 msgid "(empty means default)"
-msgstr "(prázdné znamená výchozí)"
+msgstr "(හිස් ව තැබීම යනු පෙරනිමියයි )"
 
 #: src/sndio/sndio.c:416
 msgid "OK"
-msgstr "Budiž"
+msgstr "එකඟයි"
 
 #: src/song_change/song_change.c:54
 msgid "Song Change"
-msgstr "Změna skladby"
+msgstr "ගීත වෙනස්කිරීම "
 
 #: src/song_change/song_change.c:428
 msgid "Command to run when Audacious starts a new song."
-msgstr "Příkaz, který se provede, když Audacious začne novou skladbu."
+msgstr "ඔඩෙෂස් නව ගීතයක් ආරම්භ කළ විට ධාවනය සඳහා විධානය."
 
 #: src/song_change/song_change.c:430 src/song_change/song_change.c:436
 #: src/song_change/song_change.c:442 src/song_change/song_change.c:448
 msgid "Command:"
-msgstr "Příkaz:"
+msgstr "විධානය:"
 
 #: src/song_change/song_change.c:434
 msgid "Command to run toward the end of a song."
-msgstr "Příkaz, který se provede na konci skladby."
+msgstr "ගීතයක අවසානය තෙක් ධාවනය සඳහා විධානය."
 
 #: src/song_change/song_change.c:440
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-"Příkaz, který se provede, když Audacious dosáhne konce seznamu skladeb."
+msgstr "ඔඩෙෂස් ධාවන ලැස්තුවේ අවසානයට පැමිණිවිට ධාවනය සඳහා විධානය."
 
 #: src/song_change/song_change.c:446
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr ""
-"Příkaz, který se provede při změně názvu skladbu (tj. názvy v síťových "
-"proudech)."
+msgstr "ගීතයක මාතෘකාව වෙනස් වූ විට ධාවනය සඳහා විධානය (ජාල ප්‍රවාහ මාතෘකා )."
 
 #: src/song_change/song_change.c:452
 msgid ""
@@ -3623,18 +3749,32 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
+"ඔබට පහත දැක්වෙන අනුලකුණු වැල්හි ආකෘති විධානය කිරීමට පෙර ආදේශ කළ හැක\n"
+"(ධාවන ලැයිස්තු විධාන අවසානයේදී ඇතැම්විට සියලුම විධාන ප්‍රයෝජනවත් නොවිය හැක):\n"
+"\n"
+"%F: සංඛ්‍යාතය  (හර්ට්ස් වලින්)\n"
+"%c: නාලිකා ගණන \n"
+"%f: ගොනු නාමය  (සම්පුර්ණ පථය)\n"
+"%l: ආයාමය (මිලි තත්පර වලින්)\n"
+"%n හෝ  %s: ගීතයේ නම \n"
+"%r: අනුපාතය  (තත්පරයට බිට්ස් වලින්)\n"
+"%t: ධාවන  ලැයිස්තුවේ ස්ථානය  (%02d)\n"
+"%p: දැන්  ධාවනය වන (1 or 0)\n"
+"%a: ශිල්පියා \n"
+"%b: ඇල්බමය \n"
+"%T: ඛණ්ඩයේ මතෘකාව "
 
 #: src/song_change/song_change.c:479
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>Parametry předávané shellu by měly být uzavřeny do "
-"uvozovek. Nerespektování této rady představuje bezpečnostní riziko.</span>"
+"<span size='small'>කවචය වෙත හුවමාරු කරන ලද පරාමිතික කොටස් ලෙස ප්‍රාවරිකෘත කර ඇත. එය "
+"එසේ නොකරහොත් ආරක්ෂාව පිළිබඳ අවදානමක් පවතී.</span>"
 
 #: src/song_change/song_change.c:490
 msgid "Commands"
-msgstr "Příkazy"
+msgstr "විධාන:"
 
 #: src/sox-resampler/sox-resampler.c:137
 msgid ""
@@ -3644,46 +3784,51 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Audacious සඳහා වන SoX Resampler ​පේනු මෘදුකාංගය\n"
+"ප්‍රකාශන අයිතිය 2013 Michał Lipski\n"
+"\n"
+"නියැදි අනුපාත පරිවර්තන පේනු මෘදුකාංගය මත පදනම් වී ඇත​:\n"
+"ප්‍රකාශන අයිතිය 2010-2012 John Lindgren"
 
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
-msgstr "Rychle"
+msgstr "කඩිනම්"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
-msgstr "Nízká"
+msgstr "පහළ"
 
 #: src/sox-resampler/sox-resampler.c:146
 msgid "High"
-msgstr "Vysoká"
+msgstr "ඉහළ"
 
 #: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
-msgstr "Velmi vysoká"
+msgstr "අති- උච්ච"
 
 #: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
-msgstr "Kvalita:"
+msgstr "ප්‍රශස්තතාව:"
 
 #: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"
-msgstr "Sox převzorkování"
+msgstr "Sox නැවත සාම්පල කිරීම "
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr "<b>Rychlost a výška</b>"
+msgstr "<b>වේගය සහ ස්වරමානය</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr "Rachlost:"
+msgstr "වේගය:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr "Výška:"
+msgstr "ස්වරමානය:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr "Rychlost a výška:"
+msgstr "වේගය සහ ස්වරමානය"
 
 #: src/statusicon/statusicon.c:269
 msgid "Se_ttings ..."
@@ -3699,38 +3844,45 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"තත්ත්ව සුරුවම් පේනු මෘදුකාංගයක්\n"
+"\n"
+"ප්‍රකාශන අයිතිය 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"ප්‍රකාශන අයිතිය 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"මෙම පේනු මෘදුකාංගය තත්ත්ව සුරුවමක් සපයනු ලබයි,  කවුළු කළමනාකාරකයෙහි පද්ධති ට්‍රේ කොටසේ රඳවා "
+"තැබෙන ලෙස."
 
 #: src/statusicon/statusicon.c:378
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Reakce na rolování myší</b>"
+msgstr "<b>මුසික අනුචලන ක්‍රියාව</b>"
 
 #: src/statusicon/statusicon.c:379
 msgid "Change volume"
-msgstr "Změnit hlasitost"
+msgstr "ශබ්දය වෙනස්කිරීම "
 
 #: src/statusicon/statusicon.c:382
 msgid "Change playing song"
-msgstr "Změnit hranou skladbu"
+msgstr "වාදනය වන ගීතය වෙනස්කිරීම "
 
 #: src/statusicon/statusicon.c:385
 msgid "<b>Other Settings</b>"
-msgstr "<b>Ostatní nastavení</b>"
+msgstr "<b>අනෙකුත් සැකසුම්</b>"
 
 #: src/statusicon/statusicon.c:386
 msgid "Disable the popup window"
-msgstr "Zakázat vyskakovací okno"
+msgstr "උත්පතන කවුළුව අක්‍රිය කරන්න "
 
 #: src/statusicon/statusicon.c:388
 msgid "Close to the system tray"
-msgstr "Zavřít do systémové oblasti"
+msgstr "පද්ධති තට්ටුවට ආසන්නව "
 
 #: src/statusicon/statusicon.c:390
 msgid "Advance in playlist when scrolling upward"
-msgstr "Přecházet v seznamu skladeb, když se roluje nahoru"
+msgstr "අනුචලනය ඉහළට සිදුකරන විට ධාවන ලැයිස්තු ප්‍රගමනය "
 
 #: src/statusicon/statusicon.c:399
 msgid "Status Icon"
-msgstr "Stavová ikona"
+msgstr "තත්ව නිරූපකය"
 
 #: src/stereo_plugin/stereo.c:17
 msgid ""
@@ -3738,26 +3890,26 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
-"Extra Stereo modul\n"
+"Extra Stereo පේනු මෘදුකාංගය\n"
 "\n"
-"Od Johana Levina, 1999"
+"Johan Levin විසින්, 1999"
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Extra Stereo</b>"
+msgstr "<b>අතිරේක ත්‍රිමාන</b>"
 
 #: src/stereo_plugin/stereo.c:36
 msgid "Extra Stereo"
-msgstr "Extra Stereo"
+msgstr "අතිරේක ත‍්‍ර‍්‍රිමාණ"
 
 #: src/tonegen/tonegen.c:83
 #, c-format
 msgid "%s %.1f Hz"
-msgstr "%s %.1f Hz"
+msgstr "%s %.1f හර්ට්ස් "
 
 #: src/tonegen/tonegen.c:83
 msgid "Tone Generator: "
-msgstr "Generátor tónů:"
+msgstr "ස්වර ජනකය:"
 
 #: src/tonegen/tonegen.c:174
 msgid ""
@@ -3767,14 +3919,19 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
+"Sine tone ජනකය​ Håvard Kvålen විසින් <havardk@xmms.org>\n"
+"වෙනස් කරන ලද්දේ Daniel J. Peng විසින් <danielpeng@bigfoot.com>\n"
+"\n"
+"භාවිතා කිරීම සඳහා, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 
 #: src/tonegen/tonegen.c:183
 msgid "Tone Generator"
-msgstr "Generátor tónu"
+msgstr "ස්වර ජනකය"
 
 #: src/voice_removal/voice_removal.c:53
 msgid "Voice Removal"
-msgstr "Odstranění hlasu"
+msgstr "කටහඬ ඉවත් කිරීම​"
 
 #: src/vorbis/vorbis.c:484
 msgid ""
@@ -3796,10 +3953,27 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
+"Audacious Ogg Vorbis විකේතකය​\n"
+"\n"
+"Xiph.org Foundation's Ogg Vorbis පේනු මෘදුකාංගය මත පදනම් වී ඇත​:\n"
+"http://www.xiph.org/\n"
+"\n"
+"මූලික කේතය කරනු ලැබුවේ:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"දායකත්වය​:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.c:504
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis Dekodér"
+msgstr "Ogg Vorbis විකේතකය"
 
 #: src/vtx/vtx.c:167
 msgid ""
@@ -3807,18 +3981,21 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
+"Vortex ගොනු හැඩතල ධාවකය​ Sashnov Alexander විසින්<sashnov@ngs.ru>\n"
+"Based on in_vtx.dll Roman Sherbakov විසින් <v_soft@microfor.ru>\n"
+"Audacious පේනු මෘදුකාංගය Pavel Vymetalek විසින් <pvymetalek@seznam.cz>"
 
 #: src/vtx/vtx.c:173
 msgid "VTX Decoder"
-msgstr "VTX Dekodér"
+msgstr "VTX විකේතකය"
 
 #: src/wavpack/wavpack.c:214
 msgid "lossy (hybrid)"
-msgstr "Ztrátové (hybridní)"
+msgstr "හානිමත් (දෙමුහුන්)"
 
 #: src/wavpack/wavpack.c:216
 msgid "lossy"
-msgstr "Ztrátové"
+msgstr "හානිමත් "
 
 #: src/wavpack/wavpack.c:265
 msgid ""
@@ -3826,18 +4003,17 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
-"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
-"\n"
-"Některý kód pluginů vytvořil Miles Egan."
+"ප්‍රකාශන හිමිකම 2006 William Pitcock <nenolod@nenolod.net>\n"
+"ඇතැම් පේනු  මෘදුකාංග කේත Miles Egan විසිනි."
 
 #: src/wavpack/wavpack.c:272
 msgid "WavPack Decoder"
-msgstr "WavPack Dekodér"
+msgstr "WavPack විකේතකය"
 
 #: src/xsf/plugin.c:217
 msgid "2SF Decoder"
-msgstr "2SF Dekodér"
+msgstr " 2SF විකේතකය"
 
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "XML Shareable Playlists (XSPF)"
+msgstr "XML හුවමාරු කළ හැකි ධාවන ලැයිස්තුව​ (XSPF)"

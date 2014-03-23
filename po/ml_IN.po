@@ -1,42 +1,38 @@
-# Czech translation for Audacious Plugins
+# Malayalam translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# jui <appukonrad@gmail.com>, 2012-2013
-# Based on audacious-1.2.2.cs.po by Jan Nárovec <finn@sendmail.cz>, 2004
-# fri <pavelfric@seznam.cz>, 2012-2013
-# fri <pavelfric@seznam.cz>, 2012
-# Petr Pisar <petr.pisar@atlas.cz>, 2007-2012
-# petr.simacek <petr.simacek@gmail.com>, 2012
-# petr.simacek <petr.simacek@gmail.com>, 2012
-# petr.simacek <petr.simacek@gmail.com>, 2013
+# nandakumar <nandakumar96@gmail.com>, 2013
+# navaneeths52 <navaneeths52@gmail.com>, 2013-2014
+# navaneeths52 <navaneeths52@gmail.com>, 2013
+# STyM Alfaz, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2014-03-23 20:36+0100\n"
 "PO-Revision-Date: 2014-03-21 09:15+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/audacious/language/"
-"cs/)\n"
-"Language: cs\n"
+"Language-Team: Malayalam (India) (http://www.transifex.com/projects/p/"
+"audacious/language/ml_IN/)\n"
+"Language: ml_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
 msgid "mono"
-msgstr "mono"
+msgstr "മോണോ"
 
 #: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
-msgstr "stereo"
+msgstr "സ്റ്റീരിയോ"
 
 #: src/aac/libmp4.c:99
 msgid "surround"
-msgstr "prostorový zvuk"
+msgstr "സറൗണ്ട്"
 
 #: src/aac/libmp4.c:314
 msgid "AAC (MP4) Decoder"
@@ -49,11 +45,11 @@ msgstr ""
 #: src/adplug/adplug-xmms.cc:137 src/modplug/modplugbmp.cxx:348
 #: src/psf/plugin.c:122 src/vtx/vtx.c:62 src/xsf/plugin.c:80
 msgid "sequenced"
-msgstr "Sekvencován"
+msgstr "സീക്വന്‍സ്ഡ്"
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
-msgstr "AdPlug (AdLib přehrávač)"
+msgstr "AdPlug (AdLib പ്ലേയര്‍)"
 
 #: src/alarm/alarm.c:778
 msgid "Set Alarm ..."
@@ -65,13 +61,10 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
-"Zásuvný modul pro spuštění přehrávání v přesně určený čas.\n"
-"\n"
-"Původně napsal Adam Feakin a Daniel Stodden."
 
 #: src/alarm/alarm.c:811 src/alarm/interface.c:86
 msgid "Alarm"
-msgstr "Budík"
+msgstr "അലാം"
 
 #: src/alarm/interface.c:32
 msgid ""
@@ -134,47 +127,47 @@ msgstr ""
 
 #: src/alarm/interface.c:85
 msgid "This is your wakeup call."
-msgstr "Toto je váš budící signál."
+msgstr "ഇത് നിങ്ങളുടെ ഉണര്‍ത്തുപാട്ടാണ്."
 
 #: src/alarm/interface.c:103
 msgid "Your reminder for today is..."
-msgstr "Vaše připomínka pro dnešek je..."
+msgstr "ഇന്നേയ്ക്കുള്ള നിങ്ങളുടെ സ്മാരകം: "
 
 #: src/alarm/interface.c:105 src/alarm/interface.c:417
 msgid "Reminder"
-msgstr "Upomínání"
+msgstr "സ്മാരകം"
 
 #: src/alarm/interface.c:144
 msgid "Monday"
-msgstr "Pondělí"
+msgstr "തിങ്കളാഴ്ച"
 
 #: src/alarm/interface.c:144
 msgid "Tuesday"
-msgstr "Úterý"
+msgstr "ചൊവ്വാഴ്ച"
 
 #: src/alarm/interface.c:144
 msgid "Wednesday"
-msgstr "Středa"
+msgstr "ബുധനാഴ്ച"
 
 #: src/alarm/interface.c:145
 msgid "Thursday"
-msgstr "Čtvrtek"
+msgstr "വ്യാഴാഴ്ച"
 
 #: src/alarm/interface.c:145
 msgid "Friday"
-msgstr "Pátek"
+msgstr "വെള്ളിയാഴ്ച"
 
 #: src/alarm/interface.c:145
 msgid "Saturday"
-msgstr "Sobota"
+msgstr "ശനിയാഴ്ച"
 
 #: src/alarm/interface.c:145
 msgid "Sunday"
-msgstr "Neděle"
+msgstr "ഞായറാഴ്ച"
 
 #: src/alarm/interface.c:179
 msgid "Alarm Settings"
-msgstr "Nastavení budíku"
+msgstr "അലാം ക്രമീകരണങ്ങള്‍"
 
 #: src/alarm/interface.c:180 src/filewriter/mp3.c:690
 msgid "_OK"
@@ -188,11 +181,11 @@ msgstr ""
 #: src/alarm/interface.c:188 src/alarm/interface.c:252
 #: src/alarm/interface.c:267
 msgid "Time"
-msgstr "Čas"
+msgstr "സമയം"
 
 #: src/alarm/interface.c:195
 msgid "Alarm at (default):"
-msgstr "Budit v (standardní):"
+msgstr "അലാം മുഴങ്ങേണ്ട സമയം (സ്വതവേയുള്ളത്):"
 
 #: src/alarm/interface.c:218
 msgid "h"
@@ -200,113 +193,113 @@ msgstr "h"
 
 #: src/alarm/interface.c:222
 msgid "Quiet after:"
-msgstr "Ticho po:"
+msgstr "ശേഷം ശാന്തമാകൂ :"
 
 #: src/alarm/interface.c:236
 msgid "hours"
-msgstr "h"
+msgstr "മണിക്കൂറുകള്‍"
 
 #: src/alarm/interface.c:248
 msgid "minutes"
-msgstr "min"
+msgstr "മിനിറ്റുകള്‍"
 
 #: src/alarm/interface.c:257
 msgid "Choose the days for the alarm to come on"
-msgstr "Vyberte dny, kdy má budík budit"
+msgstr "അലാം മുഴങ്ങേണ്ട ദിനങ്ങള്‍ തെരെഞ്ഞെടുക്കുക"
 
 #: src/alarm/interface.c:264
 msgid "Day"
-msgstr "Den"
+msgstr "ദിവസം"
 
 #: src/alarm/interface.c:282 src/bs2b/plugin.c:168 src/skins/preset-list.c:439
 #: src/skins/preset-list.c:445
 msgid "Default"
-msgstr "Standardní"
+msgstr "സ്വതസ്സിദ്ധം"
 
 #: src/alarm/interface.c:312
 msgid "Days"
-msgstr "Dny"
+msgstr "ദിവസങ്ങള്‍"
 
 #: src/alarm/interface.c:321
 msgid "Fading"
-msgstr "Zesilování"
+msgstr "മായുന്നു"
 
 #: src/alarm/interface.c:329 src/console/plugin.c:41
 #: src/crossfade/crossfade.c:263 src/gtkui/settings.c:53 src/lirc/lirc.c:395
 msgid "seconds"
-msgstr "sekund"
+msgstr "സെക്കന്‍ഡുകള്‍"
 
 #: src/alarm/interface.c:336 src/alarm/interface.c:383
 msgid "Volume"
-msgstr "Hlasitost"
+msgstr "ഉച്ചത"
 
 #: src/alarm/interface.c:341
 msgid "Start at"
-msgstr "Začít na"
+msgstr "ഇവിടെ തുടങ്ങുക"
 
 #: src/alarm/interface.c:359
 msgid "Final"
-msgstr "Skončit na"
+msgstr "അവസാനത്തേത്"
 
 #: src/alarm/interface.c:374
 msgid "Current"
-msgstr "Současná"
+msgstr "നിലവിലുള്ളത്"
 
 #: src/alarm/interface.c:389
 msgid "Additional Command"
-msgstr "Dodatečný příkaz"
+msgstr "അധികകല്‍പ്പന"
 
 #: src/alarm/interface.c:395 src/alarm/interface.c:422
 msgid "enable"
-msgstr "zapnout"
+msgstr "സാദ്ധ്യമാക്കുക"
 
 #: src/alarm/interface.c:402
 msgid "Playlist (optional)"
-msgstr "Seznam skladeb (volitelné)"
+msgstr "പ്ലേലിസ്റ്റ് (നിര്‍ബന്ധമില്ല)"
 
 #: src/alarm/interface.c:409
 msgid "Select a playlist"
-msgstr "Vybrat seznam skladeb"
+msgstr "ഒരു പ്ലേലിസ്റ്റ് തിരഞ്ഞെടുക്കുക"
 
 #: src/alarm/interface.c:430
 msgid "Options"
-msgstr "Nastavení"
+msgstr "ഓപ്ഷനുകള്‍"
 
 #: src/alarm/interface.c:435
 msgid "What do these options mean?"
-msgstr "Co tyto volby znamenají?"
+msgstr "ഈ ഓപ്ഷനുകള്‍ എന്താണ് അര്‍ത്ഥമാക്കുന്നത്?"
 
 #: src/alarm/interface.c:449
 msgid "Help"
-msgstr "Nápověda"
+msgstr "സഹായം"
 
 #: src/albumart/albumart.c:72
 msgid "Album Art"
-msgstr "Album"
+msgstr "ആല്‍ബം ആര്‍ട്ട്"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "Implicitní PCM zařízení"
+msgstr "സ്വതവേയുള്ള PCM ഉപകരണം"
 
 #: src/alsa/config.c:239
 msgid "Default mixer device"
-msgstr "Implicitní směšovací zařízení"
+msgstr "സ്വതവേയുള്ള മിക്സര്‍ ഉപകരണം"
 
 #: src/alsa/config.c:428
 msgid "PCM device:"
-msgstr "Zařízení PCM:"
+msgstr "PCM ഉപകരണം:"
 
 #: src/alsa/config.c:430
 msgid "Mixer device:"
-msgstr "Zařízení směšovače:"
+msgstr "മിക്സര്‍ ഉപകരണം:"
 
 #: src/alsa/config.c:432
 msgid "Mixer element:"
-msgstr "Prvek směšovače:"
+msgstr "മിക്സര്‍ എലമെന്റ്:"
 
 #: src/alsa/config.c:435
 msgid "Work around drain hangup"
-msgstr "Obejít zaseknutí při vyprazdňovaní"
+msgstr "‍‍ഡ്രൈന്‍ ഹാങ്ങപ്പിന് ചുറ്റും പ്രവര്‍ത്തിക്കുക"
 
 #: src/alsa/plugin.c:27
 msgid ""
@@ -316,19 +309,14 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
-"ALSA výstupní modul pro Audacious\n"
-"Copyright 2009-2012 John Lindgren\n"
-"\n"
-"Mé díky patří Williamu Pitcockovy, autoru výstupního ALSA Zásuvného modulu "
-"NG, jehož kód sloužil jako reference, když použití ALSA mauálu nestačilo."
 
 #: src/alsa/plugin.c:41
 msgid "ALSA Output"
-msgstr "ALSA výstup:"
+msgstr "അല്‍സ ഔട്പുട്ട്"
 
 #: src/amidi-plug/amidi-plug.c:466
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr "AMIDI-Plug (MIDI přehrávač)"
+msgstr "AMIDI-പ്ലഗ്ഗ് (MIDI പ്ലേയര്‍)"
 
 #: src/amidi-plug/i_configure.c:96
 msgid "Override default gain:"
@@ -388,7 +376,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:50
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug – vyberte soundfontový soubor"
+msgstr "AMIDI-പ്ലഗ്ഗ് - സൗണ്ട് ഫോണ്ട് തെരെഞ്ഞെടുക്കുക"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:54
 msgid "_Open"
@@ -396,35 +384,35 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:225
 msgid "Filename"
-msgstr "Jméno souboru"
+msgstr "ഫയല്‍നെയിം"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:229
 msgid "Size (bytes)"
-msgstr "Velikost (v bajtech):"
+msgstr "വലിപ്പം (ബൈറ്റുകള്‍)"
 
 #: src/amidi-plug/i_fileinfo.c:176
 msgid "Name:"
-msgstr "Jméno:"
+msgstr "പേര്:"
 
 #: src/amidi-plug/i_fileinfo.c:203
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"small\"> Podrobnosti o MIDI </span>"
+msgstr "<span size=\"smaller\"> MIDI വിവരങ്ങള്‍ </span>"
 
 #: src/amidi-plug/i_fileinfo.c:217
 msgid "Format:"
-msgstr "Formát:"
+msgstr "ഫോര്‍മാറ്റ്:"
 
 #: src/amidi-plug/i_fileinfo.c:220
 msgid "Length (msec):"
-msgstr "Délka (ms):"
+msgstr "നീളം (മില്ലി സെക്കന്‍ഡില്‍):"
 
 #: src/amidi-plug/i_fileinfo.c:223
 msgid "No. of Tracks:"
-msgstr "č. skladby"
+msgstr "ട്രാക്കുകളുടെ എണ്ണം:"
 
 #: src/amidi-plug/i_fileinfo.c:229
 msgid "variable"
-msgstr "proměnlivé"
+msgstr "ചരം"
 
 #: src/amidi-plug/i_fileinfo.c:231
 msgid "BPM:"
@@ -432,40 +420,40 @@ msgstr "BPM:"
 
 #: src/amidi-plug/i_fileinfo.c:239
 msgid "BPM (wavg):"
-msgstr "BPM (váž.):"
+msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:242
 msgid "Time Div:"
-msgstr "Čas. pom.:"
+msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:253
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"small\"> Komentáře a text MIDI skladby </span>"
+msgstr "<span size=\"smaller\"> MIDI വിവരണങ്ങളും വരികളും </span>"
 
 #: src/amidi-plug/i_fileinfo.c:302
 msgid "* no comments available in this MIDI file *"
-msgstr "* v MIDI souboru se nenachází žádné komentáře *"
+msgstr "* ഈ MIDI ഫയലില്‍ നിലവിലുള്ള വിവരണങ്ങള്‍ ഒന്നുമില്ല *"
 
 #: src/amidi-plug/i_fileinfo.c:314
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* v MIDI souboru se nenachází text skladby *"
+msgstr "* ഈ MIDI ഫയലില്‍ നിലവിലുള്ള വരികള്‍ ഒന്നുമില്ല *"
 
 #: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
-msgstr "_Zavřít"
+msgstr "_അടയ്ക്കുക"
 
 #: src/amidi-plug/i_fileinfo.c:366
 msgid "  (invalid UTF-8)"
-msgstr "  (neplatné UTF8)"
+msgstr "(പ്രാബല്യമില്ലാത്ത UTF-8)"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
-msgstr "O AMIDI-Pluginu"
+msgstr "AMIDI പ്ലഗ്ഗിനെപ്പറ്റി"
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
-msgstr ""
+msgstr "AMIDI പ്ലഗ്ഗ്"
 
 #: src/amidi-plug/i_utils.c:54
 msgid ""
@@ -503,35 +491,35 @@ msgstr ""
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
-msgstr "AOSD (On-Screen Display)"
+msgstr ""
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "Obdélník"
+msgstr "ചതുരം"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "Zaoblený obdélník"
+msgstr "വക്കുവളഞ്ഞ ചതും"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "Konkávní obdélník"
+msgstr "അവതലചതുരം"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "Žádný"
+msgstr "ശൂന്യം"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "Zahájení přehrávání"
+msgstr "പ്ലേബാക്ക് തുടങ്ങുക"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Spustí OSD, když se začne přehrávat skladba."
+msgstr ""
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "Změna názvu"
+msgstr "തലക്കെട്ടിലെ മാറ്റം"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -539,112 +527,109 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Spustí OSD, když se během přehrávaní změní název skladby, ale jméno souboru "
-"je stále stejné. To se hodí při přehrávání internetových proudů, v nichž se "
-"střídají skladby."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "Pozastavení"
+msgstr "പോസ് ഓണ്‍"
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "Spustí OSD, když je přehrávání pozastaveno."
+msgstr ""
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "Obnovení přehrávání"
+msgstr "പോസ് ഓഫ്"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Spustí OSD, když přehrávání obnoveno."
+msgstr ""
 
 #: src/aosd/aosd_ui.c:192
 msgid "Placement"
-msgstr "Umístění"
+msgstr "അവസ്ഥ"
 
 #: src/aosd/aosd_ui.c:224
 msgid "Relative X offset:"
-msgstr "Relativní odsazení ve směru osy X:"
+msgstr "താരതമ്യേനയുള്ള X ഓഫ്‌സെറ്റ്"
 
 #: src/aosd/aosd_ui.c:231
 msgid "Relative Y offset:"
-msgstr "Relativní odsazení ve směru osy Y"
+msgstr "താരതമ്യേനയുള്ള Y ഓഫ്‌സെറ്റ്"
 
 #: src/aosd/aosd_ui.c:238
 msgid "Max OSD width:"
-msgstr "Maximální šířka OSD"
+msgstr "പരമാവധി OSD നീളം"
 
 #: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
-msgstr "Nastavení pro více monitorů"
+msgstr "മള്‍ട്ടി മോണിറ്റര്‍ ക്രമീകരണങ്ങള്‍"
 
 #: src/aosd/aosd_ui.c:253
 msgid "Display OSD using:"
-msgstr "Zobrazit OSD na:"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:255
 msgid "all monitors"
-msgstr "všech monitorech"
+msgstr "എല്ലാ മോണിറ്ററുകളും"
 
 #: src/aosd/aosd_ui.c:258
 #, c-format
 msgid "monitor %i"
-msgstr "monitoru %i"
+msgstr "മോണിറ്റര്‍ %i"
 
 #: src/aosd/aosd_ui.c:310
 msgid "Timing (ms)"
-msgstr "Časování (ms)"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:315
 msgid "Display:"
-msgstr "Zobrazení:"
+msgstr "ഡിസ്പ്ലേ:"
 
 #: src/aosd/aosd_ui.c:320
 msgid "Fade in:"
-msgstr "Rozsvícení:"
+msgstr "ഫെയ്ഡ് ഇന്‍:"
 
 #: src/aosd/aosd_ui.c:325
 msgid "Fade out:"
-msgstr "Pohasnutí:"
+msgstr "ഫെയ്ഡ് ഔട്ട്"
 
 #: src/aosd/aosd_ui.c:390
 msgid "Fonts"
-msgstr "Fonty"
+msgstr "ഫോണ്ടുകള്‍"
 
 #: src/aosd/aosd_ui.c:397
 #, c-format
 msgid "Font %i:"
-msgstr "Font %i:"
+msgstr "ഫോണ്ട് %i"
 
 #: src/aosd/aosd_ui.c:412
 msgid "Shadow"
-msgstr "Stín"
+msgstr "നിഴല്‍"
 
 #: src/aosd/aosd_ui.c:518
 msgid "Render Style"
-msgstr "Styl vyobrazení"
+msgstr "റെന്‍ഡര്‍ സ്റ്റൈല്‍"
 
 #: src/aosd/aosd_ui.c:534
 msgid "Colors"
-msgstr "Barvy"
+msgstr "നിറങ്ങള്‍"
 
 #: src/aosd/aosd_ui.c:545
 #, c-format
 msgid "Color %i:"
-msgstr "Barvy %i:"
+msgstr "നിറം %i:"
 
 #: src/aosd/aosd_ui.c:648
 msgid "Enable trigger"
-msgstr "Povolit spouštěč"
+msgstr "കാഞ്ചി സാദ്ധ്യമാക്കുക"
 
 #: src/aosd/aosd_ui.c:675
 msgid "Event"
-msgstr "Událost"
+msgstr "സംഭവം"
 
 #: src/aosd/aosd_ui.c:703
 msgid "Composite manager detected"
-msgstr "Nalezen kompozitní správce"
+msgstr "കമ്പോസിറ്റ് മാനേജര്‍ ശ്രദ്ധയില്‍ പെട്ടു"
 
 #: src/aosd/aosd_ui.c:710
 msgid ""
@@ -652,42 +637,42 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Kompozitní správce nebyl nalezen.\n"
-"Pokud nevíte, že byste jste již nějakého spustili, prosím, aktivujte "
-"kompozitního správce, jinak OSD nebude správně fungovat."
+"കമ്പോസിറ്റ് മാനേജര്‍ ശ്രദ്ധയില്‍ പെട്ടിട്ടില്ല;\n"
+"മറ്റൊന്ന് പ്രവര്‍ത്തിക്കുന്നത് നിങ്ങള്‍ക്കറിയാമെങ്കില്‍, ദയവ് ചെയ്ത് ഒരു കമ്പോസിറ്റ് മാനേജര്‍ "
+"പ്രാവര്‍ത്തികമാക്കുക അല്ലെങ്കില്‍ OSD പ്രവര്‍ത്തിച്ചില്ലെന്ന് വരാം"
 
 #: src/aosd/aosd_ui.c:718
 msgid "Composite manager not required for fake transparency"
-msgstr "Při falešné průhlednosti není kompozitní správce potřeba"
+msgstr "വ്യാജമായ സുതാര്യതയ്ക്ക് കമ്പോസിറ്റ് മാനേജര്‍ ആവശ്യമില്ല"
 
 #: src/aosd/aosd_ui.c:754
 msgid "Transparency"
-msgstr "Průhlednost"
+msgstr "സുതാര്യത"
 
 #: src/aosd/aosd_ui.c:760
 msgid "Fake transparency"
-msgstr "Falešná průhlednost"
+msgstr "കപടസുതാര്യത"
 
 #: src/aosd/aosd_ui.c:762
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Skutečná průhlednost (vyžaduje kompozitní rozšíření X)"
+msgstr "യഥാര്‍ത്ഥ സുതാര്യത (X composite Ext. ആവശ്യമുണ്ട്)"
 
 #: src/aosd/aosd_ui.c:804
 msgid "Composite extension not loaded"
-msgstr "Kompozitní rozšíření není nahráno"
+msgstr "കോമ്പോസിറ്റ് എക്സ്റ്റന്‍ഷന്‍ നിലവില്‍ വന്നിട്ടില്ല"
 
 #: src/aosd/aosd_ui.c:812
 msgid "Composite extension not available"
-msgstr "Kompozitní rozšíření není dostupné"
+msgstr "കോമ്പോസിറ്റ് എക്സ്റ്റന്‍ഷന്‍ നിലവിലില്ല"
 
 #: src/aosd/aosd_ui.c:831
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
-msgstr "<span font_desc='%s'>OSD Audacious</span>"
+msgstr "<span font_desc='%s'>ഒഡാഷ്യസ് OSD</span>"
 
 #: src/aosd/aosd_ui.c:906
 msgid "Audacious OSD - configuration"
-msgstr "OSD pro Audacious – nastavení"
+msgstr "ഒഡാഷ്യസ് OSD ക്രമീകരണം"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
@@ -699,27 +684,27 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:940
 msgid "Position"
-msgstr "Umístění"
+msgstr "സ്ഥാനം"
 
 #: src/aosd/aosd_ui.c:945
 msgid "Animation"
-msgstr "Animace"
+msgstr "അനിമേഷന്‍"
 
 #: src/aosd/aosd_ui.c:950
 msgid "Text"
-msgstr "Text"
+msgstr "എഴുത്ത്"
 
 #: src/aosd/aosd_ui.c:955
 msgid "Decoration"
-msgstr "Výzdoba"
+msgstr "അലങ്കാരം"
 
 #: src/aosd/aosd_ui.c:960
 msgid "Trigger"
-msgstr "Spouštěč"
+msgstr "കാഞ്ചി"
 
 #: src/aosd/aosd_ui.c:965
 msgid "Misc"
-msgstr "Různé"
+msgstr "പലവക"
 
 #: src/asx3/asx3.c:179
 msgid "ASXv3 Playlists"
@@ -727,39 +712,39 @@ msgstr ""
 
 #: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
-msgstr "ASXv1/ASXv2 seznamy skladeb"
+msgstr ""
 
 #: src/audpl/audpl.c:186
 msgid "Audacious Playlists (audpl)"
-msgstr "Audacious seszam skladeb (audpl)"
+msgstr ""
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
-msgstr "<b>Barva</b>"
+msgstr "<b>നിറം</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
-msgstr "Rozsah rozostření"
+msgstr "ബ്ലര്‍ സ്കോപ്പ്"
 
 #: src/bs2b/plugin.c:142
 msgid "Feed level:"
-msgstr "Úroveň přeslechu:"
+msgstr "ഫീഡ് ലെവല്‍:"
 
 #: src/bs2b/plugin.c:154
 msgid "Cut frequency:"
-msgstr "Ořezová frekvence:"
+msgstr "ആവൃത്തി മുറിയ്ക്കുക:"
 
 #: src/bs2b/plugin.c:166
 msgid "Presets:"
-msgstr "Předvolby:"
+msgstr "പ്രീസെറ്റുകള്‍:"
 
 #: src/bs2b/plugin.c:189
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
+msgstr ""
 
 #: src/cairo-spectrum/cairo-spectrum.c:297
 msgid "Spectrum Analyzer"
-msgstr "Analyzátor spektra"
+msgstr "സ്പെക്ട്രം അനലൈസര്‍"
 
 #: src/cdaudio-ng/cdaudio-ng.c:101
 msgid ""
@@ -775,78 +760,78 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:119
 msgid "<b>Device</b>"
-msgstr "<b>Zařízení</b>"
+msgstr "<b>ഉപകരണം</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:120
 msgid "Read speed:"
-msgstr "Rychlost čtení:"
+msgstr "വായനയുടെ വേഗം:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Override device:"
-msgstr "Přepsat zařízení:"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "<b>Metadata</b>"
-msgstr "<b>Metadata</b>"
+msgstr "<b>മെറ്റാഡേറ്റ</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Use CD-Text"
-msgstr "Použití CD-Text"
+msgstr "സി.ഡി.-ടെക്സ്റ്റ് ഉപയോഗിയ്ക്കുക"
 
 #: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CDDB"
-msgstr "Používat CDDB"
+msgstr "CDDB ഉപയോഗിയ്ക്കുക"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use HTTP instead of CDDBP"
-msgstr "Použít HTTP místo CDDBP"
+msgstr "CDDBP യ്ക്ക് പകരം HTTP ഉപയോഗിക്കാം"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Server:"
-msgstr "Server:"
+msgstr "സെര്‍വര്‍:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Path:"
-msgstr "Cesta:"
+msgstr "പാത്ത്:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Port:"
-msgstr "Port:"
+msgstr "പോര്‍ട്ട്:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Audio CD Plugin"
-msgstr "Audio CD Plugin"
+msgstr "ഓഡിയോ സി.ഡി. പ്ലഗ്ഗിന്‍"
 
 #: src/cdaudio-ng/cdaudio-ng.c:244
 msgid "Failed to initialize cdio subsystem."
-msgstr "Nepodařilo se inicializovat cdio subsystému."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:300
 #, c-format
 msgid "Invalid URI %s."
-msgstr "Neplatná URI %s."
+msgstr "അസാധുവായ URI %s."
 
 #: src/cdaudio-ng/cdaudio-ng.c:302
 #, c-format
 msgid "Track %d not found."
-msgstr "Stopa %d nebyla nalezena."
+msgstr "ട്രാക്ക് %d കണ്ടുകിട്ടിയില്ല."
 
 #: src/cdaudio-ng/cdaudio-ng.c:304
 #, c-format
 msgid "Track %d is a data track."
-msgstr "Stopa %d je datová stopa."
+msgstr "ട്രാക്ക് %d ഒരു ഡേറ്റാ ട്രാക്ക് ആണ്."
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 msgid "Failed to open audio output."
-msgstr "Nelze otevřít zvukový výstup"
+msgstr "ഓഡിയോ ഔട്പുട്ട് തുറക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
 #: src/cdaudio-ng/cdaudio-ng.c:378
 msgid "Error reading audio CD."
-msgstr "Chyba při čtení zvukového CD."
+msgstr "ഓഡിയോ സി.ഡി. വായിയ്ക്കുന്നതില്‍ പിശക്."
 
 #: src/cdaudio-ng/cdaudio-ng.c:449
 msgid "Audio CD"
-msgstr "Zvukové CD"
+msgstr "ഓഡിയോ സി.ഡി."
 
 #: src/cdaudio-ng/cdaudio-ng.c:458
 #, c-format
@@ -856,74 +841,74 @@ msgstr ""
 #: src/cdaudio-ng/cdaudio-ng.c:485 src/cdaudio-ng/cdaudio-ng.c:494
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr "Nelze otevřít CD zařízení %s."
+msgstr "സി.ഡി. ഉപകരണം %s തുറക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
 #: src/cdaudio-ng/cdaudio-ng.c:497
 msgid "No audio capable CD drive found."
-msgstr "Nebyly nalezeny funkční CD mechaniky"
+msgstr "ഓഡിയോ ശേഷിയുള്ള സി.ഡി. ഡ്രൈവ് കണ്ടുകിട്ടിയില്ല."
 
 #: src/cdaudio-ng/cdaudio-ng.c:524
 msgid "Failed to finish initializing opened CD drive."
-msgstr "Nepodařilo se dokončit inicializaci otevření CD mechaniky."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:537
 msgid "Failed to retrieve first/last track number."
-msgstr "Nepodařilo se načíst první/poslední číslo skladby."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:562
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr "nelze přečíst začátek/konec LSN pro skladbu %d."
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:646
 msgid "Failed to create the cddb connection."
-msgstr "Nepodařilo se vytvořit připojení k CDDB."
+msgstr "cddb ബന്ധം സാദ്ധ്യമാക്കുന്നതില്‍ പരാജയപ്പെട്ടു."
 
 #: src/cdaudio-ng/cdaudio-ng.c:721
 msgid "Failed to query the CDDB server"
-msgstr "Nepodařil se dotaz na server CDDB"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:723
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr "Nepodařil se dotaz na server CDDB: %s"
+msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:747
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr "Nepodařilo se přečíst cddb info: %s"
+msgstr "cddb ഇന്‍ഫോ വായിയ്ക്കുന്നതില്‍ പരാജയം: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:818
 msgid "Drive is empty."
-msgstr "Mechanika je prázdná"
+msgstr "ഡ്രൈവ് ശൂന്യമാണ്."
 
 #: src/cdaudio-ng/cdaudio-ng.c:820
 msgid "Unsupported disk type."
-msgstr "Nepodporovaný druh disku."
+msgstr "പിന്തുണയില്ലാത്ത തരം ഡിസ്ക്."
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Play CD"
-msgstr "Přehrát CD"
+msgstr "സി.ഡി. പാടുക"
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Add CD"
-msgstr "Přidat CD"
+msgstr "സി.ഡി. ചേര്‍ക്കുക"
 
 #: src/cd-menu-items/cd-menu-items.c:56
 msgid "Audio CD Menu Items"
-msgstr "Položky Audio CD menu"
+msgstr "ഓഡിയോ സി.ഡി. മെനു അംഗങ്ങള്‍"
 
 #: src/compressor/plugin.c:35
 msgid "<b>Compression</b>"
-msgstr "<b>Komprese</b>"
+msgstr "<b>കംപ്രഷന്‍</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr "Hlasitost středu:"
+msgstr "ഉറവിടത്തിലെ ഉച്ചത:"
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
-msgstr "Rozsah dynamiky:"
+msgstr "ഡൈനാമിക് റെയ്ഞ്ച്:"
 
 #: src/compressor/plugin.c:53
 msgid ""
@@ -933,7 +918,7 @@ msgstr ""
 
 #: src/compressor/plugin.c:58
 msgid "Dynamic Range Compressor"
-msgstr "Dynamický rozsah kompresoru"
+msgstr ""
 
 #: src/console/plugin.c:19
 msgid ""
@@ -947,11 +932,11 @@ msgstr ""
 
 #: src/console/plugin.c:34
 msgid "Bass:"
-msgstr "Hloubky:"
+msgstr "ബേസ്:"
 
 #: src/console/plugin.c:36
 msgid "Treble:"
-msgstr "Výšky:"
+msgstr "ട്രെബ്ള്‍:"
 
 #: src/console/plugin.c:38
 msgid "Echo:"
@@ -959,19 +944,19 @@ msgstr ""
 
 #: src/console/plugin.c:40
 msgid "Default song length:"
-msgstr "Implicitní délka skladby:"
+msgstr "പാട്ടിന്റെ സ്വതസ്സിദ്ധമായ നീളം"
 
 #: src/console/plugin.c:43 src/modplug/plugin_main.c:65
 msgid "<b>Resampling</b>"
-msgstr "<b>Převzorkování</b>"
+msgstr "<b>റീസാംപ്ലിങ്</b>"
 
 #: src/console/plugin.c:44
 msgid "Enable audio resampling"
-msgstr "Povolit převzorkování zvuku"
+msgstr "ഓഡിയോ റീസാംപ്ലിങ് സാദ്ധ്യമാക്കുക"
 
 #: src/console/plugin.c:46
 msgid "Resampling rate:"
-msgstr "Převzorkovat na:"
+msgstr "റീസാംപ്ലിങ് നിരക്ക്:"
 
 #: src/console/plugin.c:47 src/modplug/plugin_main.c:96
 #: src/resample/resample.c:182 src/resample/resample.c:188
@@ -988,15 +973,15 @@ msgstr ""
 
 #: src/console/plugin.c:50
 msgid "Ignore length from SPC tags"
-msgstr "Ignorovat délku z SPC popisků"
+msgstr "SPC ഉപനാമങ്ങളില്‍ നിന്നും നീളം അവഗണിക്കുക"
 
 #: src/console/plugin.c:52
 msgid "Increase reverb"
-msgstr "Prodloužit dozvuk"
+msgstr "പ്രതിദ്ധ്വനി കൂട്ടുക"
 
 #: src/console/plugin.c:61
 msgid "Game Console Music Decoder"
-msgstr "Dekodér hudby pro herní konzole"
+msgstr "ഗെയിം കണ്‍സോള്‍ മ്യൂസിക് ഡീകോഡര്‍"
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -1004,49 +989,42 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
-"Prolínání se nezdařilo, protože písně měly různý počet kanálů.  Můžete "
-"použít Míchání kanálů a převést písně na stejný počet kanálů."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
-"Prolínání se nezdařilo, protože písničky měly různé vzorkovací frekvence. "
-"Můžete použít Převádění vzorkovací frekvence pro převod skladeb na stejnou "
-"vzorkovací frekvenci."
 
 #: src/crossfade/crossfade.c:256
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
-"Prolínání zásuvný modul pro Audacious\n"
-"Copyright 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
-msgstr "<b>Prolínání</b>"
+msgstr "<b>ക്രോസ്‌ഫെയ്ഡ്</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
-msgstr "Přesah:"
+msgstr "ഓവര്‍ലാപ്പ്:"
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
-msgstr "Prolínání"
+msgstr "ക്രോസ്‌ഫെയ്ഡ്"
 
 #: src/crystalizer/crystalizer.c:40
 msgid "<b>Crystalizer</b>"
-msgstr "<b>Crystalizer</b>"
+msgstr "<b>ക്രിസ്റ്റലൈസര്‍</b>"
 
 #: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
 msgid "Intensity:"
-msgstr "Intenzita:"
+msgstr "തീവ്രത:"
 
 #: src/crystalizer/crystalizer.c:51
 msgid "Crystalizer"
-msgstr "Krystalizér"
+msgstr "ക്രിസ്റ്റലൈസര്‍"
 
 #: src/cue/cue.c:155
 msgid "Cue Sheet Plugin"
@@ -1082,13 +1060,13 @@ msgstr ""
 #: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
-msgstr "Smazat"
+msgstr "നീക്കം ചെയ്യുക"
 
 #: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr "റദ്ദാക്കുക"
 
 #: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
 msgid "Delete Files"
@@ -1108,25 +1086,25 @@ msgstr ""
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr "<b>Ozvěna</ b>"
+msgstr "<b>പ്രതിധ്വനി</b>"
 
 #: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:88
 #: src/modplug/plugin_main.c:102
 msgid "Delay:"
-msgstr "Zpoždění:"
+msgstr "താമസം:"
 
 #: src/echo_plugin/echo.c:29 src/modplug/plugin_main.c:89
 #: src/modplug/plugin_main.c:103
 msgid "ms"
-msgstr "ms"
+msgstr ""
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr "Zpětná vazba:"
+msgstr "അഭിപ്രായം:"
 
 #: src/echo_plugin/echo.c:33 src/modplug/plugin_main.c:107
 msgid "Volume:"
-msgstr "Hlasitost:"
+msgstr "ശബ്ദോച്ചത:"
 
 #: src/echo_plugin/echo.c:116
 msgid ""
@@ -1135,14 +1113,10 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik, 1999"
 msgstr ""
-"Ozvěna zásuvný modul \n"
-"Od Johna Levina, 1999\n"
-"\n"
-"Prostorová ozvěna od Carla van Schaika, 1999"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr "Ozvěna"
+msgstr "പ്രതിധ്വനി"
 
 #: src/ffaudio/ffaudio-core.c:581
 msgid ""
@@ -1153,60 +1127,54 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
-"Multiformátový audio dekodovací zásuný modul pro použití v Audacious\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-"\n"
-"Audacious zásuvný modul od:\n"
-"Williama Pitcocka <nenolod@nenolod.net>\n"
-"Matti Hämäläinena <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:633
 msgid "FFmpeg Plugin"
-msgstr "FFmpeg Plugin"
+msgstr "FFmpeg പ്ലഗ്ഗിന്‍"
 
 #: src/filewriter/filewriter.c:404
 msgid "Output file format:"
-msgstr "Formát výstupního souboru:"
+msgstr "ഔട്പുട്ട് ഫയല്‍ ഫോര്‍മാറ്റ്:"
 
 #: src/filewriter/filewriter.c:421
 msgid "Configure"
-msgstr "Nastavit"
+msgstr "ക്രമീകരിയ്ക്കുക"
 
 #: src/filewriter/filewriter.c:431
 msgid "Save into original directory"
-msgstr "Ukládat do původního adresáře"
+msgstr "യഥാര്‍ത്ഥഡയറക്റ്ററിയിലേയ്ക്ക സേവ് ചെയ്യുക"
 
 #: src/filewriter/filewriter.c:435
 msgid "Save into custom directory"
-msgstr "Ukládat do vlastního adresáře"
+msgstr "സ്വേച്ഛയാലുള്ള ഡയറക്റ്ററിയിലേയ്ക്ക് സേവ് ചെയ്യുക"
 
 #: src/filewriter/filewriter.c:445
 msgid "Output file folder:"
-msgstr "Složka s výstupními soubory:"
+msgstr "ഔട്പുട്ട് ഫയല്‍ ഫോള്‍ഡര്‍:"
 
 #: src/filewriter/filewriter.c:449
 msgid "Pick a folder"
-msgstr "Vybrat složku"
+msgstr "ഒരു ഫോള്‍ഡര്‍ തിരഞ്ഞെടുക്കുക"
 
 #: src/filewriter/filewriter.c:462
 msgid "Get filename from:"
-msgstr "Získat jméno souboru z:"
+msgstr "ഫയല്‍നാമം ലഭിക്കുന്നത്:"
 
 #: src/filewriter/filewriter.c:466
 msgid "original file tags"
-msgstr "původních značek v souboru"
+msgstr "യഥാര്‍ത്ഥ ഫയല്‍ ടാഗുകള്‍"
 
 #: src/filewriter/filewriter.c:471
 msgid "original filename"
-msgstr "jména původního souboru"
+msgstr "യഥാര്‍ത്ഥ ഫയല്‍നെയിം"
 
 #: src/filewriter/filewriter.c:477
 msgid "Don't strip file name extension"
-msgstr "Nezkracovat příponu jména souboru"
+msgstr "ഫയല്‍നാമത്തിന്റെ വിപുലീകരണം ഭാഗിക്കരുത്"
 
 #: src/filewriter/filewriter.c:486
 msgid "Prepend track number to filename"
-msgstr "Předřadit jménu souboru číslo stopy"
+msgstr "ട്രാക്ക് സംഖ്യ ഫയല്‍നാമത്തിന് മുന്നിലായി ചേർക്കുക"
 
 #: src/filewriter/filewriter.c:502
 msgid ""
@@ -1225,54 +1193,40 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
-"Tento program je svobodným softwarem; můžete jej šířit a/nebo modifikovat\n"
-"a to podle podmínek GNU General Public Licence, vydávané\n"
-"Free Software Foundation; buď verze 2 této licence, nebo\n"
-"(podle vašeho uvážení) kterékoli pozdější verze.\n"
-"\n"
-"Tento program je rozšiřován v naději, že bude užitečný,\n"
-"ale BEZ JAKÉKOLIV ZÁRUKY; dokonce i bez předpokládané záruky\n"
-"PRODEJNOSTI anebo VHODNOSTI PRO URČITÝ ÚČEL. viz\n"
-"GNU General Public License pro více informací.\n"
-"\n"
-"Měli byste obdržet kopii GNU General Public License\n"
-"spolu s tímto programem; pokud ne, napište na Free Software\n"
-"Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
 
 #: src/filewriter/filewriter.c:527
 msgid "FileWriter Plugin"
-msgstr "Přídavný modul FileWriter"
+msgstr "FileWriter പ്ലഗ്ഗിന്‍"
 
 #: src/filewriter/mp3.c:38 src/filewriter/mp3.c:749
 msgid "Auto"
-msgstr "Auto"
+msgstr "സ്വയം"
 
 #: src/filewriter/mp3.c:38
 msgid "Joint Stereo"
-msgstr "Joint-stereo"
+msgstr "കൂട്ടിച്ചേര്‍ത്ത സ്റ്റീരിയോ"
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:63
 #: src/mpg123/mpg123.c:210
 msgid "Stereo"
-msgstr "Stereo"
+msgstr "സ്റ്റീരിയോ"
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:61
 #: src/mpg123/mpg123.c:210
 msgid "Mono"
-msgstr "Mono"
+msgstr "മോണോ"
 
 #: src/filewriter/mp3.c:689
 msgid "MP3 Configuration"
-msgstr "Nastavení MP3"
+msgstr "MP3 ക്രമീകരണം"
 
 #: src/filewriter/mp3.c:713
 msgid "Algorithm Quality:"
-msgstr "Kvalita algoritmu:"
+msgstr "ഓല്‍ഗൊരിതം ഗുണമേന്മ:"
 
 #: src/filewriter/mp3.c:738
 msgid "Output Samplerate:"
-msgstr "Výstupní vzorkovací kmitočet"
+msgstr "ഔട്പുട്ട് സാംപിള്‍നിരക്ക്:"
 
 #: src/filewriter/mp3.c:766
 msgid "(Hz)"
@@ -1280,75 +1234,75 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:773
 msgid "Bitrate / Compression ratio:"
-msgstr "Datový tok / Kompresní poměr:"
+msgstr "ബൈട്രേറ്റ് / കംപ്രഷന്‍ അനുപാതം"
 
 #: src/filewriter/mp3.c:797
 msgid "Bitrate (kbps):"
-msgstr "Datový tok (kb/s):"
+msgstr "ബിറ്റ്‌റേറ്റ് (kbps):"
 
 #: src/filewriter/mp3.c:830
 msgid "Compression ratio:"
-msgstr "Kompresní poměr:"
+msgstr "കംപ്രഷന്‍ നിരക്ക്:"
 
 #: src/filewriter/mp3.c:854
 msgid "Audio Mode:"
-msgstr "Zvukový režim:"
+msgstr "ഓഡിയോ മോഡ്:"
 
 #: src/filewriter/mp3.c:879
 msgid "Misc:"
-msgstr "Různé:"
+msgstr "പലവക:"
 
 #: src/filewriter/mp3.c:890
 msgid "Enforce strict ISO complience"
-msgstr "Vynutit přísnou shodu s ISO"
+msgstr "ISO ഒതുക്കം കര്‍ശനമായി നിര്‍ബന്ധിക്കുക"
 
 #: src/filewriter/mp3.c:901
 msgid "Error protection"
-msgstr "Ochrana před chybami"
+msgstr "സംരക്ഷണ പിശക്"
 
 #: src/filewriter/mp3.c:913 src/filewriter/vorbis.c:220
 msgid "Quality"
-msgstr "Kvalita"
+msgstr "ഗുണമേന്മ"
 
 #: src/filewriter/mp3.c:922
 msgid "Enable VBR/ABR"
-msgstr "Povolit VBR/ABR"
+msgstr "VBR/ABR സാദ്ധ്യമാക്കുക"
 
 #: src/filewriter/mp3.c:932
 msgid "Type:"
-msgstr "Druh:"
+msgstr "തരം:"
 
 #: src/filewriter/mp3.c:965
 msgid "VBR Options:"
-msgstr "Nastavení VBR:"
+msgstr "VBR ഓപ്ഷനുകള്‍"
 
 #: src/filewriter/mp3.c:981
 msgid "Minimum bitrate (kbps):"
-msgstr "Nejmenší datový tok (kb/s):"
+msgstr "കുറഞ്ഞ ബിറ്റ്‌റേറ്റ് (kbps):"
 
 #: src/filewriter/mp3.c:1008
 msgid "Maximum bitrate (kbps):"
-msgstr "Největší datový tok (kb/s):"
+msgstr "പരമാവധി ബിറ്റ്‌റേറ്റ് (kbps):"
 
 #: src/filewriter/mp3.c:1031
 msgid "Strictly enforce minimum bitrate"
-msgstr "Přísně vynucovat nejmenší datový tok"
+msgstr "ചുരുങ്ങിയ ബൈട്രേറ്റ് കര്‍ശനമായി നിര്‍ബന്ധിക്കുക"
 
 #: src/filewriter/mp3.c:1043
 msgid "ABR Options:"
-msgstr "Nastavení ABR:"
+msgstr "ABR ക്രമീകരണങ്ങള്‍:"
 
 #: src/filewriter/mp3.c:1053
 msgid "Average bitrate (kbps):"
-msgstr "Průměrný datový tok (kb/s):"
+msgstr "ശരാശരി ബിറ്റ്റേറ്റ് (kbps):"
 
 #: src/filewriter/mp3.c:1081
 msgid "VBR quality level:"
-msgstr "Úroveň kvality VBR:"
+msgstr "VBR ഗുണനിലവാരം:"
 
 #: src/filewriter/mp3.c:1100
 msgid "Don't write Xing VBR header"
-msgstr "Nezapisovat VBR hlavičku Xing"
+msgstr "Xing VBR തലക്കെട്ട് എഴുതുന്നത് ഒഴിവാക്കാം"
 
 #: src/filewriter/mp3.c:1113
 msgid "VBR/ABR"
@@ -1356,47 +1310,47 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1122
 msgid "Frame parameters:"
-msgstr "Parametry rámců:"
+msgstr "ഫ്രേം പരാമീറ്ററുകള്‍:"
 
 #: src/filewriter/mp3.c:1134
 msgid "Mark as copyright"
-msgstr "Označit jako podléhající autorskému právu"
+msgstr "കോപ്പിറൈറ്റടായി അടയാളപ്പെടുത്തുക"
 
 #: src/filewriter/mp3.c:1145
 msgid "Mark as original"
-msgstr "Označit jako původní"
+msgstr "പ്രഥമമായി അടയാളപ്പെടുത്തുക"
 
 #: src/filewriter/mp3.c:1157
 msgid "ID3 params:"
-msgstr "Parametry ID3:"
+msgstr "ID3 പാരംസ്"
 
 #: src/filewriter/mp3.c:1168
 msgid "Force addition of version 2 tag"
-msgstr "Vynutit přidání popisků verze 2"
+msgstr "വെര്‍ഷന്‍ 2 ടാഗിന്റെ സംയോഗം നിര്‍ബന്ധിക്കുക"
 
 #: src/filewriter/mp3.c:1178
 msgid "Only add v1 tag"
-msgstr "Přidávat jen popisky verze 1"
+msgstr "v1 ടാഗ് മാത്രം സംയോഗിക്കുക"
 
 #: src/filewriter/mp3.c:1185
 msgid "Only add v2 tag"
-msgstr "Přidávat jen popisky verze 2"
+msgstr "v2 ടാഗ് മാത്രം സംയോഗിക്കുക"
 
 #: src/filewriter/mp3.c:1206
 msgid "Tags"
-msgstr "Popisky"
+msgstr "ടാഗുകള്‍"
 
 #: src/filewriter/vorbis.c:210
 msgid "Vorbis Encoder Configuration"
-msgstr "Nastavení vorbis kodéru"
+msgstr "വോര്‍ബിസ് എന്‍കോഡര്‍ ക്രമീകരണം"
 
 #: src/filewriter/vorbis.c:233
 msgid "Quality level (0 - 10):"
-msgstr "Úroveň kvality (0–10):"
+msgstr "ഗുണനിലവാരം ( 0 - 10):"
 
 #: src/flacng/metadata.c:359 src/wavpack/wavpack.c:212
 msgid "lossless"
-msgstr "Bezztrátová kvalita"
+msgstr "ലോസ്‌ലെസ്സ്"
 
 #: src/flacng/plugin.c:187
 msgid ""
@@ -1405,26 +1359,20 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
-"Původní kód od\n"
-"Ralfa Ertzingera <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:195
 msgid "FLAC Decoder"
-msgstr "FLAC Dekodér"
+msgstr "FLAC ഡീകോഡര്‍"
 
 #: src/gio/gio.c:295
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
-"GIO zásuvný modul pro Audacious\n"
-"Copyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:314
 msgid "GIO Plugin"
-msgstr "GIO Plugin"
+msgstr "GIO പ്ലഗ്ഗിന്‍"
 
 #: src/gl-spectrum/gl-spectrum.c:400
 msgid ""
@@ -1440,7 +1388,7 @@ msgstr ""
 
 #: src/gl-spectrum/gl-spectrum.c:409
 msgid "OpenGL Spectrum Analyzer"
-msgstr "OpenGL analyzátor spektra"
+msgstr "OpenGL സ്പെക്ട്രം അനലൈസര്‍"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -1449,66 +1397,62 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
-"Zásuvný modul pro klávesové zkratky v Gnome\n"
-"Umožňuje ovládat program pomocí klávesových Gnome\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:47
 msgid "Gnome Shortcuts"
-msgstr "Klávesové zkratky Gnome"
+msgstr "ഗ്നോം എളുപ്പവഴികള്‍"
 
 #: src/gtkui/columns.c:34
 msgid "Entry number"
-msgstr "Číslo položky"
+msgstr "എന്‍ട്രി നമ്പര്‍"
 
 #: src/gtkui/columns.c:34
 msgid "Title"
-msgstr "Název"
+msgstr "ടൈറ്റില്‍"
 
 #: src/gtkui/columns.c:35
 msgid "Artist"
-msgstr "Umělec"
+msgstr "ആര്‍ട്ടിസ്റ്റ്"
 
 #: src/gtkui/columns.c:35
 msgid "Year"
-msgstr "Rok"
+msgstr "വര്‍ഷം"
 
 #: src/gtkui/columns.c:35
 msgid "Album"
-msgstr "Album"
+msgstr "ആല്‍ബം"
 
 #: src/gtkui/columns.c:35
 msgid "Track"
-msgstr "Stopa"
+msgstr "ട്രാക്ക്"
 
 #: src/gtkui/columns.c:35
 msgid "Genre"
-msgstr "Žánr"
+msgstr "തരം"
 
 #: src/gtkui/columns.c:36
 msgid "Queue position"
-msgstr "Umístění ve frontě"
+msgstr "വരിയിലുള്ള സ്ഥാനം"
 
 #: src/gtkui/columns.c:36
 msgid "Length"
-msgstr "Délka"
+msgstr "നീളം"
 
 #: src/gtkui/columns.c:36
 msgid "File path"
-msgstr "Cesta k souboru"
+msgstr "ഫയല്‍ പാത്ത്"
 
 #: src/gtkui/columns.c:36
 msgid "File name"
-msgstr "Název souboru"
+msgstr "ഫയല്‍ നെയിം"
 
 #: src/gtkui/columns.c:37
 msgid "Custom title"
-msgstr "Vlastní název"
+msgstr "സ്വേച്ഛയാലുള്ള തലക്കെട്ട്"
 
 #: src/gtkui/columns.c:37
 msgid "Bitrate"
-msgstr "Datový tok"
+msgstr "ബിറ്റ്‌റേറ്റ്"
 
 #: src/gtkui/columns.c:286
 msgid "Available columns"
@@ -1520,43 +1464,43 @@ msgstr ""
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
-msgstr "Umístit vlevo"
+msgstr "ഇടതുവശത്ത് ഡോക്ക് ചെയ്യുക"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Right"
-msgstr "Umístit vpravo"
+msgstr "വലതുവശത്ത് ഡോക്ക് ചെയ്യുക"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Top"
-msgstr "Umístit nahoru"
+msgstr "മുകളില്‍ ഡോക്ക് ചെയ്യുക"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Bottom"
-msgstr "Umístit dolů"
+msgstr "താഴെ ഡോക്ക് ചെയ്യുക"
 
 #: src/gtkui/layout.c:120
 msgid "Undock"
-msgstr "Neumisťovat"
+msgstr "ഡോക്കിങ് ഒഴിവാക്കുക"
 
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
-msgstr "Zakázat"
+msgstr "അസാദ്ധ്യമാക്കുക"
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
-msgstr "_Otevřít soubory…"
+msgstr "ഫയലുകള്‍ _തുറക്കുക ..."
 
 #: src/gtkui/menus.c:128
 msgid "Open _URL ..."
-msgstr "Otevřít _URL…"
+msgstr "_URL തുറക്കുക"
 
 #: src/gtkui/menus.c:129
 msgid "_Add Files ..."
-msgstr "Přid_at soubory…"
+msgstr "_ഫയലുകള്‍ ചേര്‍ക്കുക"
 
 #: src/gtkui/menus.c:130
 msgid "Add U_RL ..."
-msgstr "Přidat U_RL…"
+msgstr "U_RL ചേര്‍ക്കുക"
 
 #: src/gtkui/menus.c:132
 msgid "Search _Library"
@@ -1564,7 +1508,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:134
 msgid "A_bout ..."
-msgstr "_O programu… "
+msgstr "_ഇതേപ്പറ്റി ..."
 
 #: src/gtkui/menus.c:135
 msgid "_Settings ..."
@@ -1572,148 +1516,148 @@ msgstr ""
 
 #: src/gtkui/menus.c:136 src/statusicon/statusicon.c:270
 msgid "_Quit"
-msgstr "_Konec"
+msgstr "_പുറത്തുകടക്കുക"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
 #: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
 msgid "_Play"
-msgstr "_Hrát"
+msgstr "_പാടുക"
 
 #: src/gtkui/menus.c:140 src/statusicon/statusicon.c:265
 msgid "Paus_e"
-msgstr "P_ozastavit"
+msgstr "പോ_സ് ചെയ്യുക"
 
 #: src/gtkui/menus.c:141 src/statusicon/statusicon.c:266
 msgid "_Stop"
-msgstr "Za_stavit"
+msgstr "_നിര്‍ത്തുക"
 
 #: src/gtkui/menus.c:142 src/statusicon/statusicon.c:263
 msgid "Pre_vious"
-msgstr "Před_chozí"
+msgstr "_മുമ്പത്തേത്"
 
 #: src/gtkui/menus.c:143 src/statusicon/statusicon.c:267
 msgid "_Next"
-msgstr "_Další"
+msgstr "_അടുത്തത്"
 
 #: src/gtkui/menus.c:145
 msgid "_Repeat"
-msgstr "_Opakovat"
+msgstr "_ആവര്‍ത്തിയ്ക്കുക"
 
 #: src/gtkui/menus.c:146
 msgid "S_huffle"
-msgstr "Ná_hodné přehrávání"
+msgstr "_കശക്കുക"
 
 #: src/gtkui/menus.c:147
 msgid "N_o Playlist Advance"
-msgstr "Žádné p_okračování dle seznamu skladeb"
+msgstr "N_o  പ്ലേലിസ്റ്റ് പുരോഗമനം"
 
 #: src/gtkui/menus.c:149
 msgid "Stop A_fter This Song"
-msgstr "Zastavit _po této skladbě"
+msgstr "_ഈ പാട്ട് കഴിഞ്ഞാല്‍ നിര്‍ത്തുക"
 
 #: src/gtkui/menus.c:152 src/gtkui/menus.c:242
 msgid "Song _Info ..."
-msgstr "_Informace o skladbě…"
+msgstr "സോങ് ഇന്‍ഫോ ..."
 
 #: src/gtkui/menus.c:153
 msgid "Jump to _Time ..."
-msgstr "Přejí_t na čas…"
+msgstr "_സമയത്തിലേക്ക് ചാടുക ..."
 
 #: src/gtkui/menus.c:154
 msgid "_Jump to Song ..."
-msgstr "Pře_jít na skladbu…"
+msgstr "പാട്ടിലേക്ക് _ചാടുക ..."
 
 #: src/gtkui/menus.c:156
 msgid "Set Repeat Point _A"
-msgstr "Nastavit bod opakování _A"
+msgstr ""
 
 #: src/gtkui/menus.c:157
 msgid "Set Repeat Point _B"
-msgstr "Nastavit bod opakování _B"
+msgstr ""
 
 #: src/gtkui/menus.c:158
 msgid "_Clear Repeat Points"
-msgstr "_Vymazat body opakování"
+msgstr ""
 
 #: src/gtkui/menus.c:161 src/gtkui/menus.c:167 src/gtkui/menus.c:180
 msgid "By _Title"
-msgstr "Podle ná_zvu"
+msgstr "_ടൈറ്റില്‍ അനുസരിച്ച്"
 
 #: src/gtkui/menus.c:162
 msgid "By _Filename"
-msgstr "Podle _přípony"
+msgstr "_ഫയല്‍നെയിം അനുസരിച്ച്"
 
 #: src/gtkui/menus.c:163
 msgid "By File _Path"
-msgstr "Podle cesty k _souboru"
+msgstr "ഫയല്‍_പാത്ത് അനുസരിച്ച്"
 
 #: src/gtkui/menus.c:166 src/gtkui/menus.c:179
 msgid "By Track _Number"
-msgstr "Podle čísla _stopy"
+msgstr "ട്രാക്ക് _നമ്പര്‍ അനുസരിച്ച്"
 
 #: src/gtkui/menus.c:168 src/gtkui/menus.c:181
 msgid "By _Artist"
-msgstr "Podle _umělce"
+msgstr "_ആര്‍ട്ടിസ്റ്റിനനുസരിച്ച്"
 
 #: src/gtkui/menus.c:169 src/gtkui/menus.c:182
 msgid "By Al_bum"
-msgstr "Podle Al_ba"
+msgstr "ആ_ല്‍ബമനുസരിച്ച്"
 
 #: src/gtkui/menus.c:170 src/gtkui/menus.c:183
 msgid "By Release _Date"
-msgstr "Podle data vy_dání"
+msgstr "റിലീസ് ഡേറ്റ് അനുസരിച്ച്"
 
 #: src/gtkui/menus.c:171 src/gtkui/menus.c:184
 msgid "By _Length"
-msgstr "Podle _délky"
+msgstr "_നീളമനുസരിച്ച്"
 
 #: src/gtkui/menus.c:172 src/gtkui/menus.c:185
 msgid "By _File Path"
-msgstr "Podle _cesty k souboru"
+msgstr "ഫയല്‍ പാത്ത് അനുസരിച്ച്"
 
 #: src/gtkui/menus.c:173 src/gtkui/menus.c:186
 msgid "By _Custom Title"
-msgstr "_Vlastní název"
+msgstr "സ്വേച്ഛയാലുള്ള തലക്കെട്ട് അനുസരിച്ച്"
 
 #: src/gtkui/menus.c:175 src/gtkui/menus.c:188
 msgid "R_everse Order"
-msgstr "_Obrátit pořadí"
+msgstr "നേ_ര്‍വിപരീത രീതി"
 
 #: src/gtkui/menus.c:176 src/gtkui/menus.c:189
 msgid "_Random Order"
-msgstr "Ná_hodné pořadí"
+msgstr "_ക്രമമില്ലാത്ത രീതി"
 
 #: src/gtkui/menus.c:192
 msgid "_Play This Playlist"
-msgstr "_Přehrát tento seznam skladeb"
+msgstr "ഈ പ്ലേലിസ്റ്റ് _പാടുക"
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:244
 msgid "_Refresh"
-msgstr "_Obnovit"
+msgstr "പു_തുക്കുക"
 
 #: src/gtkui/menus.c:195
 msgid "_Sort"
-msgstr "_Seřadit"
+msgstr "_ക്രമത്തിലാക്കുക"
 
 #: src/gtkui/menus.c:196
 msgid "Sort Se_lected"
-msgstr "Seřadit vy_brané"
+msgstr ""
 
 #: src/gtkui/menus.c:197
 msgid "Remove _Duplicates"
-msgstr "Odstranit _duplikáty"
+msgstr "_പകര്‍പ്പുകള്‍ നീക്കം ചെയ്യുക"
 
 #: src/gtkui/menus.c:198
 msgid "Remove _Unavailable Files"
-msgstr "Odstranit nedost_upné soubory"
+msgstr "_ലഭ്യമല്ലാത്ത ഫയലുകള്‍ നീക്കം ചെയ്യുക"
 
 #: src/gtkui/menus.c:200
 msgid "_New"
-msgstr "_Nový"
+msgstr "_പുതിയത്"
 
 #: src/gtkui/menus.c:201
 msgid "Ren_ame ..."
-msgstr "Přej_menovat"
+msgstr "പേര് _മാറ്റുക"
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:256
 msgid "Remo_ve"
@@ -1721,31 +1665,31 @@ msgstr ""
 
 #: src/gtkui/menus.c:204
 msgid "_Import ..."
-msgstr "_Importovat…"
+msgstr "_ഇറക്കുമതി ചെയ്യുക ..."
 
 #: src/gtkui/menus.c:205
 msgid "_Export ..."
-msgstr "_Exportovat…"
+msgstr "_കയറ്റുമതി ചെയ്യുക ..."
 
 #: src/gtkui/menus.c:207
 msgid "Playlist _Manager ..."
-msgstr "Organizace seznamů skladeb"
+msgstr "പ്ലേലിസ്റ്റ് _മാനേജര്‍ ..."
 
 #: src/gtkui/menus.c:208
 msgid "_Queue Manager ..."
-msgstr "Správce _fronty…"
+msgstr "ക്യൂ മാനേജര്‍ ..."
 
 #: src/gtkui/menus.c:211
 msgid "Volume _Up"
-msgstr "Ze_sílit"
+msgstr "ശബ്ദം കൂട്ടുക (_U)"
 
 #: src/gtkui/menus.c:212
 msgid "Volume _Down"
-msgstr "Z_tišit"
+msgstr "ശബ്ദം കുറയ്ക്കുക (_D)"
 
 #: src/gtkui/menus.c:214
 msgid "_Equalizer"
-msgstr "_Ekvalizér"
+msgstr "_ഈക്വലൈസര്‍"
 
 #: src/gtkui/menus.c:216
 msgid "E_ffects ..."
@@ -1753,23 +1697,23 @@ msgstr ""
 
 #: src/gtkui/menus.c:219
 msgid "Show _Menu Bar"
-msgstr "Zobrazit h_lavní nabídku"
+msgstr "_മെനുബാര്‍ കാണിയ്ക്കുക"
 
 #: src/gtkui/menus.c:221
 msgid "Show I_nfo Bar"
-msgstr "Zobrazit oblast i_nformací"
+msgstr "_ഇന്‍ഫോബാര്‍ കാണിയ്ക്കുക"
 
 #: src/gtkui/menus.c:223
 msgid "Show Info Bar Vis_ualization"
-msgstr "Zobrazit znázornění oblasti informací"
+msgstr ""
 
 #: src/gtkui/menus.c:225
 msgid "Show _Status Bar"
-msgstr "Zobrazit _stavový panel"
+msgstr "_സ്റ്റാറ്റസ്ബാര്‍ കാണിയ്ക്കുക"
 
 #: src/gtkui/menus.c:228
 msgid "Show _Remaining Time"
-msgstr "Ukázat _zbývající čas"
+msgstr "_അവശേഷിക്കുന്ന സമയം കാണിക്കുക"
 
 #: src/gtkui/menus.c:231
 msgid "_Visualizations ..."
@@ -1777,51 +1721,51 @@ msgstr ""
 
 #: src/gtkui/menus.c:234
 msgid "_File"
-msgstr "_Soubor"
+msgstr "_ഫയല്‍"
 
 #: src/gtkui/menus.c:235
 msgid "_Playback"
-msgstr "_Přehrát"
+msgstr "_പ്ലേബാക്ക്"
 
 #: src/gtkui/menus.c:236
 msgid "P_laylist"
-msgstr "Seznam sk_ladeb"
+msgstr "പ്ലേ_ലിസ്റ്റ്"
 
 #: src/gtkui/menus.c:237 src/gtkui/menus.c:251
 msgid "_Services"
-msgstr "_Služby"
+msgstr "_സേവനങ്ങള്‍"
 
 #: src/gtkui/menus.c:238
 msgid "_Output"
-msgstr "_Výstup"
+msgstr "_ഔട്പുട്ട്"
 
 #: src/gtkui/menus.c:239
 msgid "_View"
-msgstr "_Zobrazení"
+msgstr "_കാഴ്ച"
 
 #: src/gtkui/menus.c:243
 msgid "_Queue/Unqueue"
-msgstr "Ode_brat/přidat z/do fronty"
+msgstr "_ക്യൂ/അണ്‍ക്യൂ"
 
 #: src/gtkui/menus.c:246
 msgid "Cu_t"
-msgstr "V_yjmout"
+msgstr "_മുറിയ്ക്കുക"
 
 #: src/gtkui/menus.c:247
 msgid "_Copy"
-msgstr "_Kopírovat"
+msgstr "_പകര്‍ത്തുക"
 
 #: src/gtkui/menus.c:248
 msgid "_Paste"
-msgstr "V_ložit"
+msgstr "_ഒട്ടിയ്ക്കുക"
 
 #: src/gtkui/menus.c:249
 msgid "Select _All"
-msgstr "Vybr_at vše"
+msgstr "_എല്ലാം തിരഞ്ഞെടുക്കുക"
 
 #: src/gtkui/menus.c:255
 msgid "_Rename ..."
-msgstr "_Přejmenovat ..."
+msgstr "പേര് _മാറ്റുക ..."
 
 #: src/gtkui/settings.c:35
 msgid "<b>Playlist Tabs</b>"
@@ -1850,7 +1794,7 @@ msgstr ""
 #: src/gtkui/settings.c:50 src/modplug/plugin_main.c:131
 #: src/skins/skins_cfg.c:267
 msgid "<b>Miscellaneous</b>"
-msgstr "<b>Různé</b>"
+msgstr "<b>പലവക</b>"
 
 #: src/gtkui/settings.c:51
 msgid "Arrow keys seek by:"
@@ -1862,105 +1806,104 @@ msgstr ""
 
 #: src/gtkui/ui_gtk.c:94
 msgid "GTK Interface"
-msgstr "Rozhraní GTK"
+msgstr "GTK ഇന്‍ഡര്‍ഫേസ്"
 
 #: src/gtkui/ui_gtk.c:192 src/skins/ui_main.c:233
 #, c-format
 msgid "%s - Audacious"
-msgstr "%s – Audacious"
+msgstr "%s - ഒഡാഷ്യസ്"
 
 #: src/gtkui/ui_gtk.c:197
 msgid "Buffering ..."
-msgstr "Plnění vyrovnávácí paměti…"
+msgstr "ബഫര്‍ ചെയ്യുന്നു ..."
 
 #: src/gtkui/ui_gtk.c:200 src/skins/ui_main.c:235 src/skins/ui_main.c:1143
 msgid "Audacious"
-msgstr "Audacious"
+msgstr "ഒഡാഷ്യസ്"
 
 #: src/gtkui/ui_statusbar.c:86
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] "%d kanál"
-msgstr[1] "%d kanály"
-msgstr[2] "%d kanálů"
+msgstr[0] "%d ചാനല്‍"
+msgstr[1] "%d ചാനലുകള്‍"
 
 #: src/gtkui/ui_statusbar.c:101
 #, c-format
 msgid "%d kbps"
-msgstr "%d kb/s"
+msgstr "%d kbps"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr "Předchozí skladba"
+msgstr "മുമ്പത്തെ ട്രാക്ക്"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/menus.c:78
 msgid "Play"
-msgstr "Hrát"
+msgstr "പാടുക"
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
-msgstr "Pozastavit/Pokračovat"
+msgstr "പോസ്/റെസ്യൂം"
 
 #: src/hotkey/gui.c:73 src/skins/menus.c:80
 msgid "Stop"
-msgstr "Zastavit"
+msgstr "നിര്‍ത്തുക"
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr "Další stopa"
+msgstr "അടുത്ത ട്രാക്ക്"
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr "Vpřed o 5 sekund"
+msgstr "5 സെക്കന്‍ഡ് മുന്നോട്ട്"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr "Zpět o 5 sekund"
+msgstr "5 സെക്കന്‍ഡ് പിന്നോട്ട്"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "Vypnout zvuk"
+msgstr "നിശ്ശബ്ദമാക്കുക"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr "Zvýšit hlasitost"
+msgstr "ശബ്ദം കൂട്ടുക"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr "Snížit hlasitost"
+msgstr "ശബ്ദം കുറയ്ക്കുക"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr "Přejít na soubor"
+msgstr "ഫയലിലേയ്ക്ക് ചാടുക"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
-msgstr "Přepnout okno přehrávače"
+msgstr ""
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
-msgstr "Zobrazit OSD (nápis na obrazovce)"
+msgstr "ഓണ്‍-സ്ക്രീന്‍-ഡിസ്‌പ്ലേ കാണിയ്ക്കുക"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr "Přepnout opakování"
+msgstr ""
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr "Přepnout zamíchání"
+msgstr ""
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
-msgstr "Přepnout zastavení po současné skladbě"
+msgstr ""
 
 #: src/hotkey/gui.c:86
 msgid "Raise player window(s)"
-msgstr "Vyvolat okno přehrávače"
+msgstr ""
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
-msgstr "(žádné)"
+msgstr "(ശൂന്യം)"
 
 #: src/hotkey/gui.c:233
 msgid ""
@@ -1969,37 +1912,37 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"Přiřazení prvního tlačítka myši mez modifikátoru není doporučeno.\n"
+"പ്രൈമറി മൗസ് ബട്ടണുകള്‍ മാറ്റങ്ങളില്ലാതെ ബൈന്‍ഡ് ചെയ്യാന്‍ ശുപാര്‍ശ ചെയ്യുന്നില്ല.\n"
 "\n"
-"Chcete pokračovat?"
+"നിങ്ങള്‍ക്ക് തുടരാന്‍ താല്പര്യമുണ്ടോ ?"
 
 #: src/hotkey/gui.c:235
 msgid "Binding mouse buttons"
-msgstr "Přiřazuji tlačítka myši"
+msgstr "മൗസ് ബട്ടണുകള്‍ ബൈന്റ് ചെയ്യുന്നു"
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Hlavní nastavení modulu pro horké klávesy"
+msgstr "ആഗോള ഹോട്ട് കീ പ്ലഗിന്‍ ക്രമീകരണം"
 
 #: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Uvnitř textového pole stiskněte kombinaci kláves.\n"
-"Navázat lze také tlačítka myši."
+"ടെക്സ്റ്റ് ഫീല്‍ഡിനുള്ളില്‍ ഒരു കീ കോമ്പിനേഷന്‍ അമര്‍ത്തുക.\n"
+"മൗസ് ബട്ടണുകളും നിങ്ങള്‍ക്ക് ബൈന്‍ഡ് ചെയ്യാം."
 
 #: src/hotkey/gui.c:405
 msgid "Hotkeys:"
-msgstr "Horké klávesy:"
+msgstr "ഹോട്കീകള്‍"
 
 #: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
-msgstr "<b>Akce</b>"
+msgstr "<b>പ്രവൃത്തി:</b>"
 
 #: src/hotkey/gui.c:429
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Navázání kláves:</b>"
+msgstr "<b>കീ ബൈന്റിങ്:</b>"
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
@@ -2022,7 +1965,7 @@ msgstr ""
 
 #: src/hotkey/plugin.c:79
 msgid "Global Hotkeys"
-msgstr "Globální klávesové zkratky"
+msgstr ""
 
 #: src/jack/jack.c:196
 msgid "Connect to all available jack ports"
@@ -2051,27 +1994,23 @@ msgid ""
 "\n"
 "Ported to Audacious by Giacomo Lozito"
 msgstr ""
-"Na základě xmms-jack, od Chrise Morgana:\n"
-"http://xmms-jack.sourceforge.net/\n"
-"\n"
-"Portováno pro Audacious od Giacomo Lozito"
 
 #: src/jack/jack.c:438
 msgid "JACK Output"
-msgstr "JACK výstup"
+msgstr "ജാക്ക് ഔട്പുട്ട്"
 
 #: src/ladspa/plugin.c:519
 #, c-format
 msgid "%s Settings"
-msgstr "Nastavení %s"
+msgstr "%s ക്രമീകരണങ്ങള്‍"
 
 #: src/ladspa/plugin.c:587
 msgid "LADSPA Host Settings"
-msgstr "Nastavení hostitele LADSPA"
+msgstr "LADSPA ഹോസ്റ്റ് ക്രമീകരണങ്ങള്‍"
 
 #: src/ladspa/plugin.c:596
 msgid "Module paths:"
-msgstr "Cesta k modulům:"
+msgstr "മൊഡ്യൂള്‍ പാത്തുകള്‍:"
 
 #: src/ladspa/plugin.c:601
 msgid ""
@@ -2079,45 +2018,39 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Cesty se od sebe oddělují dvojtečkou.\n"
-"Tyto cesty se prohledávají spolu s LADSPA_PATH.\n"
-"Po té, co přidáte novou cestu, je třeba stisknout Enter, aby se vyhledaly "
-"nové moduly.</small>"
 
 #: src/ladspa/plugin.c:617
 msgid "Available plugins:"
-msgstr "Dostupné moduly:"
+msgstr "ലഭ്യമായ പ്ലഗ്ഗിന്നുകള്‍:"
 
 #: src/ladspa/plugin.c:630 src/modplug/plugin_main.c:113
 #: src/modplug/plugin_main.c:117 src/modplug/plugin_main.c:121
 #: src/modplug/plugin_main.c:125
 msgid "Enable"
-msgstr "Povolit"
+msgstr "സാദ്ധ്യമാക്കുക"
 
 #: src/ladspa/plugin.c:636
 msgid "Enabled plugins:"
-msgstr "Povolené moduly:"
+msgstr "പ്ലഗ്ഗിനുകള്‍ സാദ്ധ്യമാക്കുക:"
 
 #: src/ladspa/plugin.c:652
 msgid "Settings"
-msgstr "Nastavení"
+msgstr "ക്രമീകരണങ്ങള്‍"
 
 #: src/ladspa/plugin.c:671
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
-"LADSPA Host pro Audacious\n"
-"Copyright 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:676
 msgid "LADSPA Host"
-msgstr "LADSPA Host"
+msgstr "LADSPA ഹോസ്റ്റ്"
 
 #: src/lirc/lirc.c:74
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr "%s: nelze inicializovat podporu LIRC\n"
+msgstr ""
 
 #: src/lirc/lirc.c:81
 #, c-format
@@ -2126,29 +2059,26 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
-"%s: nelze číst z konfiguračního souboru LIRC\n"
-"%s: prosím, přečtěte si dokumentaci k LIRC,\n"
-"%s: jak správně vytvořit konfigurační soubor\n"
 
 #: src/lirc/lirc.c:112
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr "%s: pokouším se znovu připojit…\n"
+msgstr "%s: പുനര്‍ബന്ധനത്തിന് ശ്രമിക്കുന്നു...\n"
 
 #: src/lirc/lirc.c:352
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr "%s: neznámý příkaz „%s“\n"
+msgstr "%s അജ്ഞാതമായ കമാന്റ് \"%s\"\n"
 
 #: src/lirc/lirc.c:363
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr "%s: odpojeno od LIRC\n"
+msgstr "%s: LIRC യില്‍ നിന്നും ബന്ധം വേര്‍പെടുത്തി\n"
 
 #: src/lirc/lirc.c:369
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s: pokus o připojení budu opakovat každých %d sekund…\n"
+msgstr "%s: എല്ലാ %d സെക്കന്‍ഡുകളിലും പുനര്‍ബന്ധത്തിന് ശ്രമിക്കും...\n"
 
 #: src/lirc/lirc.c:379
 msgid ""
@@ -2165,85 +2095,72 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
-"Jednoduchý zásuvný modul na ovládání Audacious použitím LIRC démona vzdálené "
-"kontroly.\n"
-"\n"
-"Upraveno pro Audacious od:\n"
-"Tonyho Vroona <chainsaw@gentoo.org>\n"
-"Joonase Harjumäki <jharjuma@gmail.com>\n"
-"\n"
-"Na základě XMMS pluginu LIRC od:\n"
-"Carla van Schaika <carl@leg.uct.ac.za>\n"
-"Christophera Bartelmuse <xmms@bartelmus.de>\n"
-"Andrewa O. Shadoura <bugzilla@tut.by>\n"
-"\n"
-"Pro více informací o LIRC, navštivte http://lirc.org."
 
 #: src/lirc/lirc.c:390
 msgid "<b>Connection</b>"
-msgstr "<b>Připojení</ b>"
+msgstr "<b>ബന്ധം</b>"
 
 #: src/lirc/lirc.c:391
 msgid "Reconnect to LIRC server"
-msgstr "Znovu se připojit k serveru LIRC"
+msgstr "LIRC സെര്‍വറുമായി വീണ്ടും ബന്ധിപ്പിയ്ക്കുക"
 
 #: src/lirc/lirc.c:393
 msgid "Wait before reconnecting:"
-msgstr "Vyčkat před opětovným připojením:"
+msgstr "പുനര്‍ബന്ധത്തിനു മുമ്പ് കാത്തിരിക്കുക:"
 
 #: src/lirc/lirc.c:403
 msgid "LIRC Plugin"
-msgstr "LIRC Plugin"
+msgstr "LIRC പ്ലഗ്ഗിന്‍"
 
 #: src/lyricwiki/lyricwiki.c:117
 msgid "No lyrics available"
-msgstr "Žádný text k dispozici"
+msgstr "വരികള്‌ ലഭ്യമല്ല"
 
 #: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
 #, c-format
 msgid "Unable to fetch %s"
-msgstr "Nelze načíst %s"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:208 src/lyricwiki/lyricwiki.c:218
 #: src/lyricwiki/lyricwiki.c:242 src/lyricwiki/lyricwiki.c:252
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Error"
-msgstr "Chyba"
+msgstr "പിശക്"
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
 msgid "Unable to parse %s"
-msgstr "Nelze analyzovat %s"
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:260
 msgid "Looking for lyrics ..."
-msgstr "Hledám texty ..."
+msgstr "വരികള്‍ക്കായി നോക്കുന്നു ..."
 
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Missing song metadata"
-msgstr "Chybí metadata skladby"
+msgstr "ചില മെറ്റാഡേറ്റ ലഭ്യമല്ല"
 
 #: src/lyricwiki/lyricwiki.c:284
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr "Připojování k lyrics.wikia.com ..."
+msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:411
 msgid "LyricWiki Plugin"
-msgstr "LyricWiki Plugin"
+msgstr "LyricWiki പ്ലഗ്ഗിന്‍"
 
 #: src/m3u/m3u.c:116
 msgid "M3U Playlists"
-msgstr "M3U Playlisty"
+msgstr "M3U പ്ലേലിസ്റ്റുകള്‍"
 
 #: src/metronom/metronom.c:127
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Generátor taktu: %d dob/min"
+msgstr ""
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Generátor taktu: %d dob/min %d⁄%d"
+msgstr ""
 
 #: src/metronom/metronom.c:218
 msgid ""
@@ -2253,75 +2170,68 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
-"Generátor taktů od Martina Strausse <mys@faveve.uni-stuttgart.de>\n"
-"\n"
-"Chcete-li jej použít, přidejte adrese URL: tact://beats*num/den\n"
-"např. tact://77 pro přehrání 77 beatů za minutu\n"
-"nebo tact://60*3/4 pro přehrání 60 bpm v 3/4 taktu"
 
 #: src/metronom/metronom.c:227
 msgid "Tact Generator"
-msgstr "Genetátor taktů"
+msgstr "ടാക്റ്റ് ജനറേറ്റര്‍"
 
 #: src/mixer/mixer.c:171
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
-"Zásuvný modul kanáloveho mixeru pro Audacious\n"
-"Copyright 2011-2012 John Lindgren a Michał Lipski"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr "<b>Míchání kanálů</b>"
+msgstr "<b>ചാനല്‍ മിക്സര്‍</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
-msgstr "Výstupní kanály:"
+msgstr "ഔട്പുട്ട് ചാനലുകള്‍:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr "Míchání kanálů"
+msgstr "ചാനല്‍ മിക്സര്‍"
 
 #: src/mms/mms.c:195
 msgid "MMS Plugin"
-msgstr "MMS Plugin"
+msgstr "MMS പ്ലഗ്ഗിന്‍"
 
 #: src/modplug/plugin_main.c:55
 msgid "<b>Resolution</b>"
-msgstr "<b>Rozlišení</b>"
+msgstr "<b>റെസല്യൂഷന്‍</b>"
 
 #: src/modplug/plugin_main.c:56
 msgid "8-bit"
-msgstr "8 bitů"
+msgstr "8-ബിറ്റ്"
 
 #: src/modplug/plugin_main.c:58
 msgid "16-bit"
-msgstr "16 bitů"
+msgstr "16-ബിറ്റ്"
 
 #: src/modplug/plugin_main.c:60
 msgid "<b>Channels</b>"
-msgstr "<b>Kanály</b>"
+msgstr "<b>ചാനലുകള്‍</b>"
 
 #: src/modplug/plugin_main.c:66
 msgid "Nearest (fastest)"
-msgstr "Nejbližší (nejrychlejší)"
+msgstr "ഏറ്റവും അടുത്തുള്ളത് (ഏറ്റവും വേഗതയുള്ളത്)"
 
 #: src/modplug/plugin_main.c:68
 msgid "Linear (fast)"
-msgstr "Lineární (rychlé)"
+msgstr ""
 
 #: src/modplug/plugin_main.c:70
 msgid "Spline (good)"
-msgstr "Křivka (dobré)"
+msgstr ""
 
 #: src/modplug/plugin_main.c:72
 msgid "Polyphase (best)"
-msgstr "Vícefázové (nejlepší)"
+msgstr ""
 
 #: src/modplug/plugin_main.c:74
 msgid "<b>Sampling rate</b>"
-msgstr "<b>Vzorkovací kmitočet</b>"
+msgstr "<b>സാംപ്ലിങ് നിരക്ക്</b>"
 
 #: src/modplug/plugin_main.c:75
 msgid "22 kHz"
@@ -2342,79 +2252,79 @@ msgstr "96 kHz"
 #: src/modplug/plugin_main.c:86 src/modplug/plugin_main.c:93
 #: src/modplug/plugin_main.c:100
 msgid "Level:"
-msgstr "Úroveň:"
+msgstr "തലം:"
 
 #: src/modplug/plugin_main.c:95
 msgid "Cutoff:"
-msgstr "Bod zkrácení:"
+msgstr "കട്ടോഫ്:"
 
 #: src/modplug/plugin_main.c:112
 msgid "<b>Reverb</b>"
-msgstr "<b>Dozvuk</b>"
+msgstr "<b> പ്രതിധ്വനി </b>"
 
 #: src/modplug/plugin_main.c:116
 msgid "<b>Bass Boost</b>"
-msgstr "<b>Zdůraznění basů</b>"
+msgstr "<b>ബേസ് ബൂസ്റ്റ്</b>"
 
 #: src/modplug/plugin_main.c:120
 msgid "<b>Surround</b>"
-msgstr "<b>Prostorový zvuk</b>"
+msgstr "<b>സറൗണ്ട്</b>"
 
 #: src/modplug/plugin_main.c:124
 msgid "<b>Preamp</b>"
-msgstr "<b>Předzesílení</b>"
+msgstr "<b>പ്രീആംപ്</b>"
 
 #: src/modplug/plugin_main.c:132
 msgid "Oversample"
-msgstr "Oblast vzorku"
+msgstr "ഓവര്‍സാമ്പ്ള്‍"
 
 #: src/modplug/plugin_main.c:134
 msgid "Noise reduction"
-msgstr "Zmenšení šumu"
+msgstr "നോയ്സ് റിഡക്ഷന്‍"
 
 #: src/modplug/plugin_main.c:136
 msgid "Play Amiga MODs"
-msgstr "Přehrát Amiga MOD"
+msgstr ""
 
 #: src/modplug/plugin_main.c:138
 msgid "<b>Repeat</b>"
-msgstr "<b>Opakovat</b>"
+msgstr "<b>ആവര്‍ത്തിയ്ക്കുക</b>"
 
 #: src/modplug/plugin_main.c:139
 msgid "Repeat count:"
-msgstr "Počet opakování:"
+msgstr "ആവര്‍ത്തങ്ങളുടെ എണ്ണം:"
 
 #: src/modplug/plugin_main.c:141
 msgid "To repeat forever, set the repeat count to -1."
-msgstr "Pro opakování navždy, nastavte počet opakování na -1."
+msgstr ""
 
 #: src/modplug/plugin_main.c:236
 msgid "ModPlug (Module Player)"
-msgstr "ModPlug (Module Player)"
+msgstr ""
 
 #: src/mpg123/mpg123.c:210
 msgid "Surround"
-msgstr "Prostorový zvuk"
+msgstr "സറൗണ്ട്"
 
 #: src/mpg123/mpg123.c:412
 msgid "MPG123 Plugin"
-msgstr "MPG123 Plugin"
+msgstr "MPG123 പ്ലഗ്ഗിന്‍"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr "MPRIS 2 Server"
+msgstr "MPRIS 2 സെര്‍വര്‍"
 
 #: src/neon/neon.c:1056
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr "Neon HTTP/HTTPS Plugin"
+msgstr ""
 
 #: src/notify/event.c:65
 msgid "Stopped"
-msgstr "Zastaveno"
+msgstr "നിര്‍ത്തി"
 
 #: src/notify/event.c:65
 msgid "Audacious is not playing."
-msgstr "Audacious nyní nehraje."
+msgstr "ഒഡാഷ്യസ് പ്രവര്‍ത്തിക്കുന്നില്ല."
 
 #: src/notify/notify.c:33
 msgid ""
@@ -2438,51 +2348,51 @@ msgstr ""
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr "Ukázat ovládání přehrávání"
+msgstr "പ്ലേബാക്ക് ക്രമീകരണങ്ങള്‍ കാണിക്കുക"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr "Vždy ukázat oznámení"
+msgstr "എല്ലായ്പ്പോഴും വിജ്ഞാപനങ്ങള്‍ കാണിക്കുക"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
-msgstr "Oznámení na plochu"
+msgstr "ഡെസ്ക്ടോപ്പ് അറിയിപ്പുകള്‍"
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr "Ukázat"
+msgstr "കാണിയ്ക്കുക"
 
 #: src/notify/osd.c:65 src/skins/menus.c:79
 msgid "Pause"
-msgstr "Pozastavit"
+msgstr "പോസ് ചെയ്യുക"
 
 #: src/notify/osd.c:72 src/skins/menus.c:82
 msgid "Next"
-msgstr "Další"
+msgstr "അടുത്തത്"
 
 #: src/oss4/plugin.c:38
 msgid "1. Default device"
-msgstr "1. Implicitní zařízení"
+msgstr "1. സ്വതവേയുള്ള ഉപകരണം"
 
 #: src/oss4/plugin.c:77 src/sndio/sndio.c:393
 msgid "Audio device:"
-msgstr "Zvukové zařízení:"
+msgstr "ഓഡിയോ ഉപകരണം:"
 
 #: src/oss4/plugin.c:79
 msgid "Use alternate device:"
-msgstr "Použít jiné zařízení:"
+msgstr "ബദല്‍ ഉപകരണം ഉപയോഗിയ്ക്കുക"
 
 #: src/oss4/plugin.c:83
 msgid "Save volume between sessions."
-msgstr "Uložit hlasitost mezi relacemi."
+msgstr "സെഷനുകളുടെ ഇടയിലുള്ള ഉച്ചത സേവ് ചെയ്യുക."
 
 #: src/oss4/plugin.c:85
 msgid "Enable format conversions made by the OSS software."
-msgstr "Zapnout převody formátu prostřednictvím OSS."
+msgstr "OSS സോഫ്റ്റ്വെയര്‍ തയ്യാറാക്കിയ ഫോര്‍മാറ്റ് മാറ്റങ്ങള്‍ സാധ്യമാക്കുക."
 
 #: src/oss4/plugin.c:87
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "Zabránit virtuálnímu směšování použitím výlučného režimu."
+msgstr ""
 
 #: src/oss4/plugin.c:110
 msgid ""
@@ -2492,23 +2402,18 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
-"OSS4 Výstupní zásuvný modul pro Audacious 2010-2012\n"
-"Copyright 2010-2012 Michał Lipski\n"
-"\n"
-"Rád bych poděkoval lidem z #audacious, zejména Tonymu Vroonnovy a Johnu "
-"Lindgrennovy a samozřejmě také autorům předešlého OSS zásuvného modulu."
 
 #: src/oss4/plugin.c:117
 msgid "OSS4 Output"
-msgstr "OSS4 výstup"
+msgstr "OSS4 ഔട്പുട്ട്"
 
 #: src/pls/pls.c:102
 msgid "PLS Playlists"
-msgstr "PLS seznamy skladeb"
+msgstr "PLS പ്ലേലിസ്റ്റുകള്‍"
 
 #: src/psf/plugin.c:209
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr "OpenPSF PSF1/PSF2 Dekodér"
+msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:644
 msgid ""
@@ -2532,7 +2437,7 @@ msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
-msgstr "PulseAudio Výstup"
+msgstr "പള്‍സ്‌ഓഡിയോ ഔട്പുട്ട്"
 
 #: src/resample/resample.c:165
 msgid ""
@@ -2542,35 +2447,35 @@ msgstr ""
 
 #: src/resample/resample.c:169
 msgid "Skip/repeat samples"
-msgstr "Přeskočit/opakovat vzorky"
+msgstr ""
 
 #: src/resample/resample.c:170
 msgid "Linear interpolation"
-msgstr "Lineární interpolace"
+msgstr ""
 
 #: src/resample/resample.c:171
 msgid "Fast sinc interpolation"
-msgstr "Rychlá sinc interpolace"
+msgstr ""
 
 #: src/resample/resample.c:172
 msgid "Medium sinc interpolation"
-msgstr "Střední sinc interpolace"
+msgstr ""
 
 #: src/resample/resample.c:173
 msgid "Best sinc interpolation"
-msgstr "Nejlepší sinc interpolace"
+msgstr ""
 
 #: src/resample/resample.c:176
 msgid "<b>Conversion</b>"
-msgstr "<b>Převod</b>"
+msgstr "<b>കണ്‍വേര്‍ഷന്‍</b>"
 
 #: src/resample/resample.c:177
 msgid "Method:"
-msgstr "Metoda:"
+msgstr "രീതി:"
 
 #: src/resample/resample.c:180 src/sox-resampler/sox-resampler.c:153
 msgid "Rate:"
-msgstr "Hodnocení:"
+msgstr "തോത്:"
 
 #: src/resample/resample.c:183
 msgid "<b>Rate Mappings</b>"
@@ -2578,7 +2483,7 @@ msgstr ""
 
 #: src/resample/resample.c:184
 msgid "Use rate mappings"
-msgstr "Použít přiřazení frekvencí"
+msgstr ""
 
 #: src/resample/resample.c:186
 msgid "8 kHz:"
@@ -2610,7 +2515,7 @@ msgstr "192 kHz:"
 
 #: src/resample/resample.c:214
 msgid "Sample Rate Converter"
-msgstr "Převodník vzorkovacího kmitočtu"
+msgstr ""
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
@@ -2619,7 +2524,7 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:53
 msgid "Permission Denied"
-msgstr "Přístup odepřen"
+msgstr "അനുവാദം ഇല്ല"
 
 #: src/scrobbler2/config_window.c:55
 msgid "Access the following link to allow Audacious to scrobble your plays:"
@@ -2637,29 +2542,28 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:75
 msgid "Network Problem."
-msgstr "Problém se sítí."
+msgstr "നെറ്റ്‌വര്‍ക്ക് കുഴപ്പം."
 
 #: src/scrobbler2/config_window.c:76
 msgid "There was a problem contacting Last.fm. Please try again later."
 msgstr ""
-"Objevil se problém při kontaktování Last.fm. Zkuste to prosím za chvíli."
 
 #: src/scrobbler2/config_window.c:108
 msgid "Checking..."
-msgstr "Prověřuje se..."
+msgstr "പരിശോധിക്കുന്നു..."
 
 #: src/scrobbler2/config_window.c:174
 msgid "C_heck Permission"
-msgstr "Z_kontrolovat oprávnění"
+msgstr ""
 
 #: src/scrobbler2/config_window.c:175
 msgid "_Revoke Permission"
-msgstr "_Odvolání oprávnění"
+msgstr ""
 
 #: src/scrobbler2/config_window.c:222
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
-msgstr "Musíte povolit Audacious scrobblovat skladby do Last.fm účtu.\n"
+msgstr ""
 
 #: src/scrobbler2/scrobbler.c:218
 msgid ""
@@ -2680,7 +2584,7 @@ msgstr ""
 
 #: src/scrobbler2/scrobbler.c:300
 msgid "Scrobbler 2.0"
-msgstr "Scrobbler 2.0"
+msgstr "സ്‌ക്രോബ്ബ്ലര്‍ 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:727
 msgid ""
@@ -2696,34 +2600,33 @@ msgstr ""
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
-msgstr "SDL Výstup"
+msgstr ""
 
 #: src/search-tool/search-tool.c:104 src/search-tool/search-tool.c:114
 msgid "Library"
-msgstr "Knihovna"
+msgstr "ഗ്രന്ഥശാല"
 
 #: src/search-tool/search-tool.c:211
 msgid "Unknown Artist"
-msgstr "Neznámý interpret"
+msgstr "അജ്ഞാതനായ കലാകാരന്‍"
 
 #: src/search-tool/search-tool.c:213
 msgid "Unknown Album"
-msgstr "Neznámé Album"
+msgstr "അജ്ഞാതമായ പാട്ട്"
 
 #: src/search-tool/search-tool.c:625
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
-msgstr "%s⏎ na %s od %s"
+msgstr ""
 
 #: src/search-tool/search-tool.c:631
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] "%d album"
-msgstr[1] "%d alba"
-msgstr[2] "%d alb"
+msgstr[0] "%d പാട്ട്"
+msgstr[1] "%d പാട്ടുകള്‍"
 
 #: src/search-tool/search-tool.c:633
 #, c-format
@@ -2734,10 +2637,7 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
-"%s⏎\n"
-" %s, %d skladba"
-msgstr[1] "%s⏎ %s, %d skladby"
-msgstr[2] "%s⏎ %s, %d skladeb"
+msgstr[1] ""
 
 #: src/search-tool/search-tool.c:639
 #, c-format
@@ -2748,42 +2648,37 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
-" %s⏎\n"
-" %d skladba od %s"
-msgstr[1] " %s⏎ %d skladby od %s"
-msgstr[2] " %s⏎ %d skladeb od %s"
+msgstr[1] ""
 
 #: src/search-tool/search-tool.c:675
 msgid "_Create Playlist"
-msgstr "_Vytvořit seznam skladeb"
+msgstr "പ്ലേലിസ്റ്റ് _നിര്‍മിക്കുക"
 
 #: src/search-tool/search-tool.c:676
 msgid "_Add to Playlist"
-msgstr "Přid_at do seznamu skladeb"
+msgstr "പ്ലേലിസ്റ്റിലേയ്ക്ക് _ചേര്‍ക്കുക"
 
 #: src/search-tool/search-tool.c:713
 msgid "Search library"
-msgstr "Prohledat knihovnu"
+msgstr "ഗ്രന്ഥശാല തിരയുക"
 
 #: src/search-tool/search-tool.c:717
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
-"Hudební knihovnu se do Audacious naimportuje tak, že vyberete složku a pak "
-"kliknete na ikonu „obnovit“."
 
 #: src/search-tool/search-tool.c:725
 msgid "Please wait ..."
-msgstr "Prosím, počkejte…"
+msgstr "ദയവായി കാത്തിരിക്കുക ..."
 
 #: src/search-tool/search-tool.c:747
 msgid "Choose Folder"
-msgstr "Vybrat složku"
+msgstr "ഫോള്‍ഡര്‍ തെരെഞ്ഞെടുക്കുക"
 
 #: src/search-tool/search-tool.c:786
 msgid "Search Tool"
-msgstr "Vyhledávací nástroj"
+msgstr "തിരച്ചില്‍ ടുള്‍"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
@@ -2795,15 +2690,15 @@ msgstr ""
 
 #: src/skins/menus.c:59
 msgid "Playback"
-msgstr "Přehrát"
+msgstr "പ്ലേബാക്ക്"
 
 #: src/skins/menus.c:60
 msgid "Playlist"
-msgstr "Seznam skladeb"
+msgstr "പ്ലേലിസ്റ്റ്"
 
 #: src/skins/menus.c:61
 msgid "View"
-msgstr "Zobrazení"
+msgstr "കാണുക"
 
 #: src/skins/menus.c:63 src/skins/menus.c:133 src/skins/menus.c:146
 #: src/skins/menus.c:203
@@ -2828,15 +2723,15 @@ msgstr ""
 
 #: src/skins/menus.c:73
 msgid "Repeat"
-msgstr "Opakovat"
+msgstr "ആവര്‍ത്തിയ്ക്കുക"
 
 #: src/skins/menus.c:74
 msgid "Shuffle"
-msgstr "Náhodné přehrávání"
+msgstr "കശക്കുക"
 
 #: src/skins/menus.c:75
 msgid "No Playlist Advance"
-msgstr "Žádné pokračování dle seznamu skladeb"
+msgstr ""
 
 #: src/skins/menus.c:76
 msgid "Stop After This Song"
@@ -2844,7 +2739,7 @@ msgstr ""
 
 #: src/skins/menus.c:81
 msgid "Previous"
-msgstr "Předchozí"
+msgstr "മുമ്പത്തേത്"
 
 #: src/skins/menus.c:84
 msgid "Set A-B Repeat"
@@ -2868,7 +2763,7 @@ msgstr ""
 
 #: src/skins/menus.c:94
 msgid "New Playlist"
-msgstr "Nový seznam skladeb"
+msgstr "പുതിയ പ്ലേലിസ്റ്റ്"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
@@ -2908,11 +2803,11 @@ msgstr ""
 
 #: src/skins/menus.c:111
 msgid "Show Playlist Editor"
-msgstr "Zobrazit editor seznamu skladeb"
+msgstr "പ്ലേലിസ്റ്റ് എഡിറ്റര്‍ കാണിക്കുക"
 
 #: src/skins/menus.c:113
 msgid "Show Equalizer"
-msgstr "Ukázat ekvalizér"
+msgstr "ഈക്വലൈര്‍ പ്രദര്‍ശിപ്പിയ്ക്കുക"
 
 #: src/skins/menus.c:116
 msgid "Show Remaining Time"
@@ -2920,7 +2815,7 @@ msgstr ""
 
 #: src/skins/menus.c:119
 msgid "Always on Top"
-msgstr "Vždy na vrchu"
+msgstr "എപ്പോഴും മുകളില്‍"
 
 #: src/skins/menus.c:121
 msgid "On All Workspaces"
@@ -2948,11 +2843,11 @@ msgstr ""
 
 #: src/skins/menus.c:140 src/skins/menus.c:167 src/skins/menus.c:177
 msgid "By Title"
-msgstr "Podle názvu"
+msgstr "ടൈറ്റിലിനനുസരിച്ച്"
 
 #: src/skins/menus.c:141 src/skins/menus.c:170 src/skins/menus.c:180
 msgid "By Filename"
-msgstr "Podle jména souboru"
+msgstr "ഫയല്‍നെയിമനുസരിച്ച്"
 
 #: src/skins/menus.c:142 src/skins/menus.c:171 src/skins/menus.c:181
 msgid "By File Path"
@@ -2960,51 +2855,51 @@ msgstr ""
 
 #: src/skins/menus.c:148
 msgid "Remove All"
-msgstr "Odebrat všechny"
+msgstr "എല്ലാം നീക്കം ചെയ്യുക"
 
 #: src/skins/menus.c:149
 msgid "Clear Queue"
-msgstr "Vyprázdnit frontu"
+msgstr "വരി വെടിപ്പാക്കുക"
 
 #: src/skins/menus.c:151
 msgid "Remove Unavailable Files"
-msgstr "Odstranit nedostupné soubory"
+msgstr "ലഭ്യമല്ലാത്ത ഫയലുകള്‍ നീക്കംചെയ്യുക"
 
 #: src/skins/menus.c:152
 msgid "Remove Duplicates"
-msgstr "Odebrat duplikáty"
+msgstr "പകര്‍പ്പുകള്‍ ഒഴിവാക്കുക"
 
 #: src/skins/menus.c:154
 msgid "Remove Unselected"
-msgstr "Odebrat neoznačené"
+msgstr "തിരഞ്ഞെടുക്കാത്തവ നീക്കംചെയ്യുക"
 
 #: src/skins/menus.c:155
 msgid "Remove Selected"
-msgstr "Odebrat označené"
+msgstr "തിരഞ്ഞെടുത്തവ നീക്കംചെയ്യുക"
 
 #: src/skins/menus.c:159
 msgid "Search and Select"
-msgstr "Hledání a výběr"
+msgstr "തിരയുക, തിരഞ്ഞെടുക്കുക"
 
 #: src/skins/menus.c:161
 msgid "Invert Selection"
-msgstr "Invertovat výběr"
+msgstr "തിരഞ്ഞെടുപ്പ് ഇന്‍വേര്‍ട്ട് ചെയ്യുക"
 
 #: src/skins/menus.c:162
 msgid "Select None"
-msgstr "Nevybrat žádné"
+msgstr "ഒന്നും തിരഞ്ഞെടുക്കേണ്ട"
 
 #: src/skins/menus.c:163
 msgid "Select All"
-msgstr "Vybrat vše"
+msgstr "എ​ല്ലാം തിരഞ്ഞെടുക്കുക"
 
 #: src/skins/menus.c:168 src/skins/menus.c:178
 msgid "By Album"
-msgstr "Podle alba"
+msgstr "ആല്‍ബമനുസരിച്ച്"
 
 #: src/skins/menus.c:169 src/skins/menus.c:179
 msgid "By Artist"
-msgstr "Podle umělce"
+msgstr "ആര്‍ട്ടസ്റ്റിനനുസരിച്ച്"
 
 #: src/skins/menus.c:172 src/skins/menus.c:182
 msgid "By Release Date"
@@ -3012,35 +2907,35 @@ msgstr ""
 
 #: src/skins/menus.c:173 src/skins/menus.c:183
 msgid "By Track Number"
-msgstr "Podle čísla stopy"
+msgstr "ട്രാക്ക് നമ്പര്‍ അനുസരിച്ച്"
 
 #: src/skins/menus.c:187
 msgid "Randomize List"
-msgstr "Zamíchat pořadí"
+msgstr "ലിസ്റ്റ് ക്രമമില്ലാതെയാക്കുക"
 
 #: src/skins/menus.c:188
 msgid "Reverse List"
-msgstr "Otočit seznam"
+msgstr "പട്ടിക തലതിരിയ്ക്കുക"
 
 #: src/skins/menus.c:190
 msgid "Sort Selected"
-msgstr "Seřadit vybrané"
+msgstr "തിരഞ്ഞെടുത്തവ ക്രമീകരിയ്ക്കുക"
 
 #: src/skins/menus.c:191
 msgid "Sort List"
-msgstr "Seřadit seznam"
+msgstr "പട്ടിക അക്ഷരമാലാക്രമത്തിലാക്കുക"
 
 #: src/skins/menus.c:197
 msgid "Cut"
-msgstr "Oříznout"
+msgstr "മുറിയ്ക്കുക"
 
 #: src/skins/menus.c:198
 msgid "Copy"
-msgstr "Kopírovat"
+msgstr "പകര്‍ത്തുക"
 
 #: src/skins/menus.c:199
 msgid "Paste"
-msgstr "Vložit"
+msgstr "ഒട്ടിയ്ക്കുക"
 
 #: src/skins/menus.c:201
 msgid "Queue/Unqueue"
@@ -3104,17 +2999,17 @@ msgstr ""
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr "Rozhraní Winamp Classic "
+msgstr ""
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:375
 #: src/skins/preset-list.c:390
 msgid "Save"
-msgstr "Uložit"
+msgstr "സേവ്"
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:342
 #: src/skins/preset-list.c:358
 msgid "Load"
-msgstr "Načíst"
+msgstr "ലോഡ് ചെയ്യുക"
 
 #: src/skins/preset-browser.c:82
 msgid "Load Preset File"
@@ -3138,47 +3033,47 @@ msgstr ""
 
 #: src/skins/preset-list.c:289
 msgid "Presets"
-msgstr "Předvolby"
+msgstr "പ്രീസെറ്റുകള്‍"
 
 #: src/skins/preset-list.c:339
 msgid "Load preset"
-msgstr "Načíst předvolbu"
+msgstr "പ്രീസെറ്റ് ലോഡ് ചെയ്യുക"
 
 #: src/skins/preset-list.c:355
 msgid "Load auto-preset"
-msgstr "Načíst souborovou předvolbu"
+msgstr "ഓട്ടോ-പ്രീസെറ്റ് ലോഡ് ചെയ്യുക"
 
 #: src/skins/preset-list.c:371
 msgid "Save preset"
-msgstr "Uložit předvolbu"
+msgstr "പ്രീസെറ്റ് സേവ് ചെയ്യുക"
 
 #: src/skins/preset-list.c:386
 msgid "Save auto-preset"
-msgstr "Uložit automatickou předvolbu"
+msgstr "ഓട്ടോ പ്രീസെറ്റ് സേവ് ചെയ്യുക"
 
 #: src/skins/preset-list.c:413
 msgid "Delete preset"
-msgstr "Smazat předvolbu"
+msgstr "പ്രീസെറ്റ് നീക്കംചെയ്യുക"
 
 #: src/skins/preset-list.c:429
 msgid "Delete auto-preset"
-msgstr "Smazat souborovou předvolbu"
+msgstr "ഓട്ടോ പ്രീസെറ്റ് നീക്കം ചെയ്യുക"
 
 #: src/skins/skins_cfg.c:181
 msgid "_Player:"
-msgstr "_Přehrávač:"
+msgstr "_പ്ലേയര്‍:"
 
 #: src/skins/skins_cfg.c:183
 msgid "Select main player window font:"
-msgstr "Font v hlavním okně přehrávače:"
+msgstr "പ്രധാനപ്പെട്ട പ്ലെയര്‍ വിന്‍ഡോയുടെ ഫോണ്ട് തെരെഞ്ഞെടുക്കുക:"
 
 #: src/skins/skins_cfg.c:184
 msgid "_Playlist:"
-msgstr "_Seznamu skladeb:"
+msgstr "പ്ലേ_ലിസ്റ്റ്:"
 
 #: src/skins/skins_cfg.c:186
 msgid "Select playlist font:"
-msgstr "Vyberte font pro seznam skladeb:"
+msgstr "പ്ലേലിസ്റ്റ് ഫോണ്ട് തെരെഞ്ഞെടുക്കുക:"
 
 #: src/skins/skins_cfg.c:191
 msgid "<b>Skin</b>"
@@ -3190,7 +3085,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:196
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Použít bitmapové fonty (podporuje pouze ASCII)"
+msgstr "ബിറ്റ്മാപ് ഫോണ്ടുകള്‍ ഉപയോഗിക്കാം (ASCII മാത്രം പിന്‍തുണയ്ക്കും)"
 
 #: src/skins/skins_cfg.c:198
 msgid "Scroll song title"
@@ -3198,15 +3093,15 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:200
 msgid "Scroll song title in both directions"
-msgstr "Převíjet název skladby oběma směry"
+msgstr "രണ്ട് ദിശകളിലും പാട്ടിന്റെ ശീര്‍ഷകം സ്‌ക്രോള്‍ ചെയ്യുക"
 
 #: src/skins/skins_cfg.c:205
 msgid "Analyzer"
-msgstr "Analyzátor"
+msgstr "അനലൈസര്‍"
 
 #: src/skins/skins_cfg.c:206
 msgid "Scope"
-msgstr "Vlnovka"
+msgstr "സ്കോപ്പ്"
 
 #: src/skins/skins_cfg.c:207
 msgid "Voiceprint / VU meter"
@@ -3214,16 +3109,16 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:208
 msgid "Off"
-msgstr "Žádný"
+msgstr "ഓഫ്"
 
 #: src/skins/skins_cfg.c:212 src/skins/skins_cfg.c:237
 #: src/skins/skins_cfg.c:243
 msgid "Normal"
-msgstr "Normální"
+msgstr "സാധാരണം"
 
 #: src/skins/skins_cfg.c:213 src/skins/skins_cfg.c:238
 msgid "Fire"
-msgstr "Oheň"
+msgstr "തീ"
 
 #: src/skins/skins_cfg.c:214
 msgid "Vertical lines"
@@ -3231,31 +3126,31 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:218
 msgid "Lines"
-msgstr "Čáry"
+msgstr "വരകള്‍"
 
 #: src/skins/skins_cfg.c:219
 msgid "Bars"
-msgstr "Sloupce"
+msgstr "നാടകള്‍"
 
 #: src/skins/skins_cfg.c:223
 msgid "Slowest"
-msgstr "Nejpomalejší"
+msgstr "വളരെപ്പതുക്കെ"
 
 #: src/skins/skins_cfg.c:224
 msgid "Slow"
-msgstr "Pomalé"
+msgstr "പതുക്കെ"
 
 #: src/skins/skins_cfg.c:225 src/sox-resampler/sox-resampler.c:145
 msgid "Medium"
-msgstr "Střední"
+msgstr "പാകം"
 
 #: src/skins/skins_cfg.c:226
 msgid "Fast"
-msgstr "Rychlé"
+msgstr "വേഗം"
 
 #: src/skins/skins_cfg.c:227
 msgid "Fastest"
-msgstr "Nejrychlejší"
+msgstr "അതിദ്രുതം"
 
 #: src/skins/skins_cfg.c:231
 msgid "Dots"
@@ -3271,11 +3166,11 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:239
 msgid "Ice"
-msgstr "Led"
+msgstr "ഐസ്"
 
 #: src/skins/skins_cfg.c:244
 msgid "Smooth"
-msgstr "Plynulý"
+msgstr "മൃദുലം"
 
 #: src/skins/skins_cfg.c:248
 msgid "<b>Type</b>"
@@ -3323,99 +3218,99 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:280
 msgid "General"
-msgstr "Obecné"
+msgstr "പൊതുവായവ"
 
 #: src/skins/skins_cfg.c:281
 msgid "Visualization"
-msgstr "Znázornění"
+msgstr "ദൃശ്യവത്കരണം"
 
 #: src/skins/ui_equalizer.c:289
 msgid "Preamp"
-msgstr "Předzesílení"
+msgstr "പ്രീആംപ്"
 
 #: src/skins/ui_equalizer.c:293
 msgid "31 Hz"
-msgstr "31 Hz"
+msgstr "31 Hz"
 
 #: src/skins/ui_equalizer.c:294
 msgid "63 Hz"
-msgstr "63 Hz"
+msgstr "63 Hz"
 
 #: src/skins/ui_equalizer.c:294
 msgid "125 Hz"
-msgstr "125 Hz"
+msgstr "125 Hz"
 
 #: src/skins/ui_equalizer.c:294
 msgid "250 Hz"
-msgstr "250 Hz "
+msgstr "250 Hz"
 
 #: src/skins/ui_equalizer.c:294
 msgid "500 Hz"
-msgstr "500 Hz"
+msgstr "500 Hz"
 
 #: src/skins/ui_equalizer.c:294
 msgid "1 kHz"
-msgstr "1 kHz"
+msgstr "1 kHz"
 
 #: src/skins/ui_equalizer.c:295
 msgid "2 kHz"
-msgstr "2 kHz"
+msgstr "2 kHz"
 
 #: src/skins/ui_equalizer.c:295
 msgid "4 kHz"
-msgstr "4 kHz"
+msgstr "4 kHz"
 
 #: src/skins/ui_equalizer.c:295
 msgid "8 kHz"
-msgstr "8 kHz"
+msgstr "8 kHz"
 
 #: src/skins/ui_equalizer.c:295
 msgid "16 kHz"
-msgstr "16 kHz"
+msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:337
 msgid "Audacious Equalizer"
-msgstr "Ekvalizér"
+msgstr "ഒഡാഷ്യസ് ഈക്വലൈസര്‍"
 
 #: src/skins/ui_main.c:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Přejít na %d:%-2.2d / %d:%-2.2d"
+msgstr "തിരയുക %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:707
 #, c-format
 msgid "Volume: %d%%"
-msgstr "Hlasitost: %d %%"
+msgstr "ശബ്ദം: %d%%"
 
 #: src/skins/ui_main.c:730
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Vyvážení: %d %% vlevo"
+msgstr "അവശേഷിക്കുന്നത്: %d%% വലത്"
 
 #: src/skins/ui_main.c:732
 msgid "Balance: center"
-msgstr "Vyvážení: střed"
+msgstr "അവശേഷിക്കുന്നത്: നടുവില്‍"
 
 #: src/skins/ui_main.c:734
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Vyvážení: %d %% vpravo"
+msgstr "അവശേഷിക്കുന്നത്: %d%% ഇടത്"
 
 #: src/skins/ui_main.c:833
 msgid "Options Menu"
-msgstr "Nabídka nastavení"
+msgstr "ഓപ്ഷന്‍സ് മെനു"
 
 #: src/skins/ui_main.c:837
 msgid "Disable 'Always On Top'"
-msgstr "Vypnout „Vždy na vrchu“"
+msgstr "'എപ്പോഴും മുകളില്‍' അസാദ്ധ്യമാക്കുക"
 
 #: src/skins/ui_main.c:839
 msgid "Enable 'Always On Top'"
-msgstr "Zapnout „Vždy na vrchu“"
+msgstr "'എപ്പോഴും മുകളില്‍' സാദ്ധ്യമാക്കുക"
 
 #: src/skins/ui_main.c:842
 msgid "File Info Box"
-msgstr "Informace o souboru"
+msgstr "ഫയല്‍ ഇന്‍ഫോ ജാലകം"
 
 #: src/skins/ui_main.c:1281
 msgid "Repeat point A set."
@@ -3431,19 +3326,19 @@ msgstr ""
 
 #: src/skins/ui_main_evlisteners.c:109
 msgid "Single mode."
-msgstr "Režim jedné skladby."
+msgstr "സിംഗ്ള്‍ മോഡ്"
 
 #: src/skins/ui_main_evlisteners.c:111
 msgid "Playlist mode."
-msgstr "Režim seznamu skladeb."
+msgstr "പ്ലേലിസ്റ്റ് മോഡ്"
 
 #: src/skins/ui_main_evlisteners.c:117
 msgid "Stopping after song."
-msgstr "Zastavuje po skladbě."
+msgstr "പാട്ടിനു ശേഷം നിര്‍ത്തുന്നു."
 
 #: src/skins/ui_playlist.c:222
 msgid "Search entries in active playlist"
-msgstr "Vyhledat skladby v současném seznamu skladeb"
+msgstr "സജീവമായ പ്ലേലിസ്റ്റിലെ എന്‍ട്രികള്‍ തിരയുക"
 
 #: src/skins/ui_playlist.c:224
 msgid "Search"
@@ -3456,60 +3351,56 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
-"Položky seznamu skladeb vyberete vyplněním jednoho, nebo více polí. Pole "
-"používají regulární výrazy a neberou ohled na velikost písmen. Pokud "
-"regulárním výrazům nerozumíte, jednoduše vložte části textu, které chcete "
-"vyhledat."
 
 #: src/skins/ui_playlist.c:237
 msgid "Title: "
-msgstr "Název: "
+msgstr "ടൈറ്റില്‍:"
 
 #: src/skins/ui_playlist.c:245
 msgid "Album: "
-msgstr "Album: "
+msgstr "ആല്‍ബം:"
 
 #: src/skins/ui_playlist.c:253
 msgid "Artist: "
-msgstr "Umělec: "
+msgstr "ആര്‍ട്ടിസ്റ്റ്:"
 
 #: src/skins/ui_playlist.c:261
 msgid "Filename: "
-msgstr "Jméno souboru: "
+msgstr "ഫയല്‍നാമം:"
 
 #: src/skins/ui_playlist.c:270
 msgid "Clear previous selection before searching"
-msgstr "Před hledáním vymazat předchozí výběr"
+msgstr "തിരയുന്നതിനുമുമ്പ് മുമ്പുള്ള തിരഞ്ഞെടുപ്പ് വെടിപ്പാക്കുക"
 
 #: src/skins/ui_playlist.c:273
 msgid "Automatically toggle queue for matching entries"
-msgstr "Shodující se položky automaticky zařadit/vyřadit z fronty"
+msgstr ""
 
 #: src/skins/ui_playlist.c:276
 msgid "Create a new playlist with matching entries"
-msgstr "Ze shodujících se položek vytvořit nový seznam skladeb"
+msgstr "യോജിയ്ക്കുന്ന എന്‍ട്രികള്‍ ഉപയോഗിച്ച് പുതിയൊരു പ്ലേലിസ്റ്റ് ഉണ്ടാക്കുക"
 
 #: src/skins/ui_playlist.c:721
 msgid "Audacious Playlist Editor"
-msgstr "Zobrazit editor seznamu skladeb"
+msgstr "ഒഡാഷ്യസ് പ്ലേലിസ്റ്റ് എഡിറ്റര്‍"
 
 #: src/skins/ui_playlist.c:755
 #, c-format
 msgid "%s (%d of %d)"
-msgstr "%s (%d z %d)"
+msgstr "%s (%d / %d)"
 
 #: src/skins/ui_skinselector.c:163
 msgid "Archived Winamp 2.x skin"
-msgstr "Zabalený skin Winapmu 2.x"
+msgstr "ശേഖരിക്കപ്പെട്ട വിനാമ്പ് 2.x രൂപം"
 
 #: src/skins/ui_skinselector.c:168
 msgid "Unarchived Winamp 2.x skin"
-msgstr "Nezabalený skin Winampu 2.x"
+msgstr "ശേഖരിക്കാത്ത വിനാമ്പ് 2.x രൂപം"
 
 #: src/skins/util.c:450
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr "Adresář („%s“) nebylo možné vytvořit: %s\n"
+msgstr "ഫോള്‍ഡര്‍ നിര്‍മാണം സാധ്യമല്ല (%s): %s\n"
 
 #: src/sndfile/plugin.c:350
 msgid ""
@@ -3535,11 +3426,11 @@ msgstr ""
 
 #: src/sndfile/plugin.c:369
 msgid "Sndfile Plugin"
-msgstr "Sndfile modul"
+msgstr "Sndfile പ്ലഗ്ഗിന്‍"
 
 #: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
-msgstr "O výstupním pluginu Sndio"
+msgstr ""
 
 #: src/sndio/sndio.c:173
 msgid ""
@@ -3547,13 +3438,10 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
-"Sndio výstupní plugin\n"
-"\n"
-"napsal Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:248
 msgid "Unsupported format"
-msgstr "Nepodporovaný formát"
+msgstr "പിന്തുണയില്ലാത്ത ഫോര്‍മാറ്റ്"
 
 #: src/sndio/sndio.c:249
 msgid ""
@@ -3561,49 +3449,45 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
-"Formát není podporován tímto zvukovým zařízením. ⏎ ⏎ Zkuste to prosím znovu "
-"s běžícím sndiod(1) serverem."
 
 #: src/sndio/sndio.c:384
 msgid "sndio device"
-msgstr "sndio zařízení"
+msgstr ""
 
 #: src/sndio/sndio.c:400
 msgid "(empty means default)"
-msgstr "(prázdné znamená výchozí)"
+msgstr "(ശുന്യം എന്ന് അര്‍ത്ഥമാക്കുന്നത് സ്വതസ്സിദ്ധത്തെയാണ്)"
 
 #: src/sndio/sndio.c:416
 msgid "OK"
-msgstr "Budiž"
+msgstr "ശരി"
 
 #: src/song_change/song_change.c:54
 msgid "Song Change"
-msgstr "Změna skladby"
+msgstr "പാട്ട് മാറ്റുക"
 
 #: src/song_change/song_change.c:428
 msgid "Command to run when Audacious starts a new song."
-msgstr "Příkaz, který se provede, když Audacious začne novou skladbu."
+msgstr "ഒഡാഷ്യസ് പുതിയ പാട്ട് ആരംഭിക്കുമ്പോള്‍ പ്രവര്‍ത്തിപ്പിക്കാനുള്ള കമാന്റ്."
 
 #: src/song_change/song_change.c:430 src/song_change/song_change.c:436
 #: src/song_change/song_change.c:442 src/song_change/song_change.c:448
 msgid "Command:"
-msgstr "Příkaz:"
+msgstr "കല്‍പ്പന:"
 
 #: src/song_change/song_change.c:434
 msgid "Command to run toward the end of a song."
-msgstr "Příkaz, který se provede na konci skladby."
+msgstr "പാട്ടിന്റെ അവസാനത്തിലേക്ക് റണ്‍ ചെയ്യാന്‍ വേണ്ട കമാന്റ്."
 
 #: src/song_change/song_change.c:440
 msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr ""
-"Příkaz, který se provede, když Audacious dosáhne konce seznamu skladeb."
+msgstr "ഒഡാഷ്യസ് പ്ലേലിസ്റ്റിന്റെ അവസാനത്തിലേയ്ക്ക് എത്തുമ്പോള്‍ റണ്‍ ചെയ്യാന്‍ വേണ്ട കമാന്റ്."
 
 #: src/song_change/song_change.c:446
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
-"Příkaz, který se provede při změně názvu skladbu (tj. názvy v síťových "
-"proudech)."
+"പാട്ടിന്റെ ശീര്‍ഷകം മാറുമ്പോള്‍ റണ്‍ ചെയ്യുന്ന കമാന്റ് (അതായത് നെറ്റ്‌വര്‍ക്ക് സ്‌ട്രീമുകളുടെ ശീര്‍ഷകങ്ങള്‍)."
 
 #: src/song_change/song_change.c:452
 msgid ""
@@ -3629,12 +3513,10 @@ msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
-"<span size='small'>Parametry předávané shellu by měly být uzavřeny do "
-"uvozovek. Nerespektování této rady představuje bezpečnostní riziko.</span>"
 
 #: src/song_change/song_change.c:490
 msgid "Commands"
-msgstr "Příkazy"
+msgstr "കല്‍പ്പനകള്‍"
 
 #: src/sox-resampler/sox-resampler.c:137
 msgid ""
@@ -3647,43 +3529,43 @@ msgstr ""
 
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
-msgstr "Rychle"
+msgstr "ദ്രുതം"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
-msgstr "Nízká"
+msgstr "താഴ്ന്നത്"
 
 #: src/sox-resampler/sox-resampler.c:146
 msgid "High"
-msgstr "Vysoká"
+msgstr "ഉയര്‍ന്നത്"
 
 #: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
-msgstr "Velmi vysoká"
+msgstr "വളരെ ഉയര്‍ന്നത്"
 
 #: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
-msgstr "Kvalita:"
+msgstr "ഗുണമേന്മ:"
 
 #: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"
-msgstr "Sox převzorkování"
+msgstr "SoX റീസാംപ്ലര്‍"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr "<b>Rychlost a výška</b>"
+msgstr "<b>വേഗവും ശ്രുതിയും</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr "Rachlost:"
+msgstr "വേഗം:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr "Výška:"
+msgstr "ശ്രൂതി:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr "Rychlost a výška:"
+msgstr "വേഗവും ശ്രുതിയും"
 
 #: src/statusicon/statusicon.c:269
 msgid "Se_ttings ..."
@@ -3702,35 +3584,35 @@ msgstr ""
 
 #: src/statusicon/statusicon.c:378
 msgid "<b>Mouse Scroll Action</b>"
-msgstr "<b>Reakce na rolování myší</b>"
+msgstr ""
 
 #: src/statusicon/statusicon.c:379
 msgid "Change volume"
-msgstr "Změnit hlasitost"
+msgstr "ശബ്ദോച്ചത മാറ്റുക"
 
 #: src/statusicon/statusicon.c:382
 msgid "Change playing song"
-msgstr "Změnit hranou skladbu"
+msgstr "പാടുന്ന പാട്ട് മാറ്റുക"
 
 #: src/statusicon/statusicon.c:385
 msgid "<b>Other Settings</b>"
-msgstr "<b>Ostatní nastavení</b>"
+msgstr "<b>മറ്റു ക്രമീകരണങ്ങള്‍</b>"
 
 #: src/statusicon/statusicon.c:386
 msgid "Disable the popup window"
-msgstr "Zakázat vyskakovací okno"
+msgstr "പോപ്പപ്പ് ജാലകം അസാദ്ധ്യമാക്കുക"
 
 #: src/statusicon/statusicon.c:388
 msgid "Close to the system tray"
-msgstr "Zavřít do systémové oblasti"
+msgstr "സിസ്റ്റം ട്രേയിലേയ്ക്ക് അടച്ചിടുക"
 
 #: src/statusicon/statusicon.c:390
 msgid "Advance in playlist when scrolling upward"
-msgstr "Přecházet v seznamu skladeb, když se roluje nahoru"
+msgstr ""
 
 #: src/statusicon/statusicon.c:399
 msgid "Status Icon"
-msgstr "Stavová ikona"
+msgstr "സ്റ്റാറ്റസ് ഐക്കണ്‍"
 
 #: src/stereo_plugin/stereo.c:17
 msgid ""
@@ -3738,26 +3620,23 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
-"Extra Stereo modul\n"
-"\n"
-"Od Johana Levina, 1999"
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
-msgstr "<b>Extra Stereo</b>"
+msgstr "<b>എക്സ്ട്രാ സ്റ്റീരിയോ</b>"
 
 #: src/stereo_plugin/stereo.c:36
 msgid "Extra Stereo"
-msgstr "Extra Stereo"
+msgstr "എക്സ്ട്രാ സ്റ്റീരിയോ"
 
 #: src/tonegen/tonegen.c:83
 #, c-format
 msgid "%s %.1f Hz"
-msgstr "%s %.1f Hz"
+msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:83
 msgid "Tone Generator: "
-msgstr "Generátor tónů:"
+msgstr "ടോണ്‍ ജനറേറ്റര്‍: "
 
 #: src/tonegen/tonegen.c:174
 msgid ""
@@ -3770,11 +3649,11 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:183
 msgid "Tone Generator"
-msgstr "Generátor tónu"
+msgstr "ടോണ്‍ ജനറേറ്റര്‍"
 
 #: src/voice_removal/voice_removal.c:53
 msgid "Voice Removal"
-msgstr "Odstranění hlasu"
+msgstr "വോയ്സ് റിമൂവല്‍"
 
 #: src/vorbis/vorbis.c:484
 msgid ""
@@ -3799,7 +3678,7 @@ msgstr ""
 
 #: src/vorbis/vorbis.c:504
 msgid "Ogg Vorbis Decoder"
-msgstr "Ogg Vorbis Dekodér"
+msgstr "Ogg Vorbis ഡീകോഡര്‍"
 
 #: src/vtx/vtx.c:167
 msgid ""
@@ -3810,15 +3689,15 @@ msgstr ""
 
 #: src/vtx/vtx.c:173
 msgid "VTX Decoder"
-msgstr "VTX Dekodér"
+msgstr "VTX ഡീകോഡര്‍"
 
 #: src/wavpack/wavpack.c:214
 msgid "lossy (hybrid)"
-msgstr "Ztrátové (hybridní)"
+msgstr "ലോസി (സങ്കരം)"
 
 #: src/wavpack/wavpack.c:216
 msgid "lossy"
-msgstr "Ztrátové"
+msgstr "ലോസി"
 
 #: src/wavpack/wavpack.c:265
 msgid ""
@@ -3826,18 +3705,15 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
-"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
-"\n"
-"Některý kód pluginů vytvořil Miles Egan."
 
 #: src/wavpack/wavpack.c:272
 msgid "WavPack Decoder"
-msgstr "WavPack Dekodér"
+msgstr "WavPack ഡീകോഡര്‍"
 
 #: src/xsf/plugin.c:217
 msgid "2SF Decoder"
-msgstr "2SF Dekodér"
+msgstr "2SF ഡീകോഡര്‍"
 
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
-msgstr "XML Shareable Playlists (XSPF)"
+msgstr ""

@@ -3,18 +3,18 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Algimantas Margevičius <gymka@archlinux.lt>, 2012-2013
+# Algimantas Margevičius <gymka@archlinux.lt>, 2011-2014
 # Algimantas Margevičius <gymka@archlinux.lt>, 2011
 # Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2011-2012
 # Algimantas Margevičius <margevicius.algimantas@gmail.com>, 2012-2013, 2011, 2011-2012, 2013
 # gymka <gymka@mail.ru>, 2011
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2013-05-31 19:01+0200\n"
-"PO-Revision-Date: 2013-05-04 12:51+0000\n"
-"Last-Translator: Algimantas Margevičius <gymka@archlinux.lt>\n"
+"POT-Creation-Date: 2014-03-23 20:36+0100\n"
+"PO-Revision-Date: 2014-03-21 09:16+0000\n"
+"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Lithuanian (http://www.transifex.com/projects/p/audacious/"
 "language/lt/)\n"
 "Language: lt\n"
@@ -24,24 +24,28 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:104 src/skins/ui_main.c:430
+#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
 msgid "mono"
 msgstr "mono"
 
-#: src/aac/libmp4.c:439 src/gtkui/ui_statusbar.c:106 src/skins/ui_main.c:429
+#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
 msgstr "stereo"
 
-#: src/aac/libmp4.c:439 src/skins/ui_main.c:429
+#: src/aac/libmp4.c:99
 msgid "surround"
 msgstr "erdvinis"
 
-#: src/aac/libmp4.c:930
-msgid "AAC Decoder"
-msgstr "AAC dekoderis"
+#: src/aac/libmp4.c:314
+msgid "AAC (MP4) Decoder"
+msgstr "AAC (MP4) Dekoderis"
 
-#: src/adplug/adplug-xmms.cc:147 src/modplug/modplugbmp.cxx:407
-#: src/psf/plugin.c:125 src/vtx/vtx.c:69 src/xsf/plugin.c:85
+#: src/aac-raw/aac.c:476
+msgid "AAC (Raw) Decoder"
+msgstr "AAC (Raw) Dekoderis"
+
+#: src/adplug/adplug-xmms.cc:137 src/modplug/modplugbmp.cxx:348
+#: src/psf/plugin.c:122 src/vtx/vtx.c:62 src/xsf/plugin.c:80
 msgid "sequenced"
 msgstr "nuoseklus"
 
@@ -49,7 +53,11 @@ msgstr "nuoseklus"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib grotuvas)"
 
-#: src/alarm/alarm.c:809
+#: src/alarm/alarm.c:778
+msgid "Set Alarm ..."
+msgstr "Nustatyti perspėjimą..."
+
+#: src/alarm/alarm.c:806
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -59,11 +67,11 @@ msgstr ""
 "\n"
 "Originaliai parašė Adam Feakin ir Daniel Stodden."
 
-#: src/alarm/alarm.c:814 src/alarm/interface.c:82
+#: src/alarm/alarm.c:811 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "Žadintuvas"
 
-#: src/alarm/interface.c:28
+#: src/alarm/interface.c:32
 msgid ""
 "Time\n"
 "  Alarm at:\n"
@@ -105,7 +113,7 @@ msgstr ""
 "\n"
 "\n"
 
-#: src/alarm/interface.c:45
+#: src/alarm/interface.c:49
 msgid ""
 "Volume\n"
 "  Fading:\n"
@@ -142,7 +150,7 @@ msgstr ""
 "atėjus signalo laikui paleisti šią komandą.\n"
 "\n"
 
-#: src/alarm/interface.c:62
+#: src/alarm/interface.c:66
 msgid ""
 "  Playlist:\n"
 "    Load this playlist. If no playlist\n"
@@ -165,182 +173,183 @@ msgstr ""
 "    Įrašykite priminimą ir perjunkite mygtuką \n"
 "    jei norite jog jis būtų rodomas."
 
-#: src/alarm/interface.c:81
+#: src/alarm/interface.c:85
 msgid "This is your wakeup call."
 msgstr "Tai pabudimo skambutis."
 
-#: src/alarm/interface.c:99
+#: src/alarm/interface.c:103
 msgid "Your reminder for today is..."
 msgstr "Šiandienos priminimas..."
 
-#: src/alarm/interface.c:101 src/alarm/interface.c:415
+#: src/alarm/interface.c:105 src/alarm/interface.c:417
 msgid "Reminder"
 msgstr "Priminimas"
 
-#: src/alarm/interface.c:140
+#: src/alarm/interface.c:144
 msgid "Monday"
 msgstr "Pirmadienis"
 
-#: src/alarm/interface.c:140
+#: src/alarm/interface.c:144
 msgid "Tuesday"
 msgstr "Antradienis"
 
-#: src/alarm/interface.c:140
+#: src/alarm/interface.c:144
 msgid "Wednesday"
 msgstr "Trečiadienis"
 
-#: src/alarm/interface.c:141
+#: src/alarm/interface.c:145
 msgid "Thursday"
 msgstr "Ketvirtadienis"
 
-#: src/alarm/interface.c:141
+#: src/alarm/interface.c:145
 msgid "Friday"
 msgstr "Penktadienis"
 
-#: src/alarm/interface.c:141
+#: src/alarm/interface.c:145
 msgid "Saturday"
 msgstr "Šeštadienis"
 
-#: src/alarm/interface.c:141
+#: src/alarm/interface.c:145
 msgid "Sunday"
 msgstr "Sekmadienis"
 
-#: src/alarm/interface.c:175
+#: src/alarm/interface.c:179
 msgid "Alarm Settings"
 msgstr "Žadintuvo nustatymai"
 
-#: src/alarm/interface.c:186 src/alarm/interface.c:250
-#: src/alarm/interface.c:265
+#: src/alarm/interface.c:180 src/filewriter/mp3.c:690
+msgid "_OK"
+msgstr "_Gerai"
+
+#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:53
+#: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
+msgid "_Cancel"
+msgstr "_Atsisakyti"
+
+#: src/alarm/interface.c:188 src/alarm/interface.c:252
+#: src/alarm/interface.c:267
 msgid "Time"
 msgstr "Laikas"
 
-#: src/alarm/interface.c:193
+#: src/alarm/interface.c:195
 msgid "Alarm at (default):"
 msgstr "Žadinti (numatyta):"
 
-#: src/alarm/interface.c:216
+#: src/alarm/interface.c:218
 msgid "h"
 msgstr "v"
 
-#: src/alarm/interface.c:220
+#: src/alarm/interface.c:222
 msgid "Quiet after:"
 msgstr "Nutildyti po:"
 
-#: src/alarm/interface.c:234
+#: src/alarm/interface.c:236
 msgid "hours"
 msgstr "valandos"
 
-#: src/alarm/interface.c:246
+#: src/alarm/interface.c:248
 msgid "minutes"
 msgstr "minutės"
 
-#: src/alarm/interface.c:255
+#: src/alarm/interface.c:257
 msgid "Choose the days for the alarm to come on"
 msgstr "Pasirinkite dienas kuriomis žadinti"
 
-#: src/alarm/interface.c:262
+#: src/alarm/interface.c:264
 msgid "Day"
 msgstr "Diena"
 
-#: src/alarm/interface.c:280 src/bs2b/plugin.c:177
-#: src/skins/ui_equalizer.c:1108 src/skins/ui_manager.c:456
-#: src/skins/ui_manager.c:477
+#: src/alarm/interface.c:282 src/bs2b/plugin.c:168 src/skins/preset-list.c:439
+#: src/skins/preset-list.c:445
 msgid "Default"
 msgstr "Numatytosios"
 
-#: src/alarm/interface.c:310
+#: src/alarm/interface.c:312
 msgid "Days"
 msgstr "Dienos"
 
-#: src/alarm/interface.c:319
+#: src/alarm/interface.c:321
 msgid "Fading"
 msgstr "Išblukimas"
 
-#: src/alarm/interface.c:327 src/crossfade/crossfade.c:261 src/lirc/lirc.c:397
+#: src/alarm/interface.c:329 src/console/plugin.c:41
+#: src/crossfade/crossfade.c:263 src/gtkui/settings.c:53 src/lirc/lirc.c:395
 msgid "seconds"
 msgstr "sekundės"
 
-#: src/alarm/interface.c:334 src/alarm/interface.c:381
+#: src/alarm/interface.c:336 src/alarm/interface.c:383
 msgid "Volume"
 msgstr "Garsas"
 
-#: src/alarm/interface.c:339
+#: src/alarm/interface.c:341
 msgid "Start at"
 msgstr "Pradėti nuo"
 
-#: src/alarm/interface.c:357
+#: src/alarm/interface.c:359
 msgid "Final"
 msgstr "Baigti"
 
-#: src/alarm/interface.c:372
+#: src/alarm/interface.c:374
 msgid "Current"
 msgstr "Dabartinis"
 
-#: src/alarm/interface.c:387
+#: src/alarm/interface.c:389
 msgid "Additional Command"
 msgstr "Papildoma komanda"
 
-#: src/alarm/interface.c:393
+#: src/alarm/interface.c:395 src/alarm/interface.c:422
 msgid "enable"
 msgstr "Įjungti"
 
-#: src/alarm/interface.c:400
+#: src/alarm/interface.c:402
 msgid "Playlist (optional)"
 msgstr "Grojaraštis (nebūtina)"
 
-#: src/alarm/interface.c:407
+#: src/alarm/interface.c:409
 msgid "Select a playlist"
 msgstr "Pasirinkite grojaraštį"
 
-#: src/alarm/interface.c:419
-msgid "Use reminder"
-msgstr "Naudoti priminimą"
-
-#: src/alarm/interface.c:428
+#: src/alarm/interface.c:430
 msgid "Options"
 msgstr "Pasirinktys"
 
-#: src/alarm/interface.c:433
+#: src/alarm/interface.c:435
 msgid "What do these options mean?"
 msgstr "Ką šios pasirinktys reiškia?"
 
-#: src/alarm/interface.c:447 src/skins/ui_manager.c:389
+#: src/alarm/interface.c:449
 msgid "Help"
 msgstr "Žinynas"
 
-#: src/albumart/albumart.c:143
+#: src/albumart/albumart.c:72
 msgid "Album Art"
 msgstr "Albumo apipavadalinimas"
 
-#: src/alsa/config.c:212
+#: src/alsa/config.c:210
 msgid "Default PCM device"
 msgstr "Numatytasis PCM įrenginys"
 
-#: src/alsa/config.c:241
+#: src/alsa/config.c:239
 msgid "Default mixer device"
 msgstr "Numatytasis mikšerio įrenginys"
 
 #: src/alsa/config.c:428
-msgid "ALSA Output Plugin Preferences"
-msgstr "ALSA išvesties įskiepio nustatymai"
-
-#: src/alsa/config.c:434
 msgid "PCM device:"
 msgstr "PCM įrenginys:"
 
-#: src/alsa/config.c:436
+#: src/alsa/config.c:430
 msgid "Mixer device:"
 msgstr "Mikšerio įrenginys:"
 
-#: src/alsa/config.c:438
+#: src/alsa/config.c:432
 msgid "Mixer element:"
 msgstr "Mikšerio elementas:"
 
-#: src/alsa/config.c:441
+#: src/alsa/config.c:435
 msgid "Work around drain hangup"
 msgstr "Apeiti sausą pakibimą"
 
-#: src/alsa/plugin.c:25
+#: src/alsa/plugin.c:27
 msgid ""
 "ALSA Output Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren\n"
@@ -354,293 +363,127 @@ msgstr ""
 "Dėkoju William Pitcock, „ALSA Output Plugin NG“ autoriui, jo kodas buvo kaip "
 "pagrindas kai ALSA žinynas negelbėdavo."
 
-#: src/alsa/plugin.c:32
+#: src/alsa/plugin.c:41
 msgid "ALSA Output"
 msgstr "ALSA išvestis"
 
-#: src/amidi-plug/amidi-plug.c:248
-msgid ""
-"You have not selected any sequencer ports for MIDI playback.  You can do so "
-"in the MIDI plugin preferences."
-msgstr ""
-"Nepasirinkti jokie MIDI atkūrimo prievadai. Juos pasirinkti galite MIDI "
-"įskiepio nustatymuose."
-
-#: src/amidi-plug/amidi-plug.c:708
+#: src/amidi-plug/amidi-plug.c:466
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI grotuvas)"
 
-#: src/amidi-plug/backend-alsa/b-alsa.c:38
-msgid "ALSA Backend "
-msgstr "ALSA posistemė"
+#: src/amidi-plug/i_configure.c:96
+msgid "Override default gain:"
+msgstr "Perrašyti numatytąjį garsą:"
 
-#: src/amidi-plug/backend-alsa/b-alsa.c:41
-msgid ""
-"This backend sends MIDI events to a group of user-chosen ALSA sequencer "
-"ports. The ALSA sequencer interface is very versatile, it can provide ports "
-"for audio cards hardware synthesizers (i.e. emu10k1) but also for software "
-"synths, external devices, etc.\n"
-"This backend does not produce audio, MIDI events are handled directly from "
-"devices/programs behind the ALSA ports; in example, MIDI events sent to the "
-"hardware synth will be directly played.\n"
-"Backend written by Giacomo Lozito."
-msgstr ""
-"Ši posistemė siunčia MIDI įvykius naudotojo pasirinktai ALSA eiliškumo "
-"prievadų grupei. ALSA sekvencerio sąsaja yra labai universali, ji gali "
-"suteikti prievadus audio plokščių sintezatoriams (pvz. emu10k1) beto "
-"programiniams sintezatoriams, papildomiems įrenginiams ir t.t.\n"
-"Ši posistemė nekuria garso, MIDI įvykius apdoroja tiesiogiai įrenginiai/"
-"programos už ALSA prievadų; pavyzdžiui MIDI įvykiai nusiųsti į sintezatorių "
-"bus grojami tiesiogiai.\n"
-"Posistemę sukūrė Giacomo Lozito."
+#: src/amidi-plug/i_configure.c:102
+msgid "Override default polyphony:"
+msgstr "Perrašyti numatytąją polifoniją:"
 
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:45
-msgid "FluidSynth Backend "
-msgstr "FluidSynth Posistemė"
+#: src/amidi-plug/i_configure.c:108
+msgid "Override default reverb:"
+msgstr "Perrašyti numatytąjį aidą:"
 
-#: src/amidi-plug/backend-fluidsynth/b-fluidsynth.c:48
-msgid ""
-"This backend produces audio by sending MIDI events to FluidSynth, a real-"
-"time software synthesizer based on the SoundFont2 specification (www."
-"fluidsynth.org).\n"
-"Produced audio can be manipulated via player effect plugins and is processed "
-"by chosen output plugin.\n"
-"Backend written by Giacomo Lozito."
-msgstr ""
-"Ši posistemė kuria garsą siųsdama MIDI įvykius į FluidSynth, realaus laiko "
-"programinis sintezatorius paremtas SoundFont2 specifika (www.fluidsynth."
-"org).\n"
-"Sukurtas garsas gali būti manipuliuojamas grotuvo efektų įskiepiais ir yra "
-"apdorojamas pasirinktu išvesties įskiepiu.\n"
-"Posistemę sukūrė Giacomo Lozito."
+#: src/amidi-plug/i_configure.c:110 src/amidi-plug/i_configure.c:116
+msgid "On"
+msgstr "Įjungta"
 
-#: src/amidi-plug/i_configure-alsa.c:353
-msgid "Port"
-msgstr "Prievadas"
+#: src/amidi-plug/i_configure.c:114
+msgid "Override default chorus:"
+msgstr "Perrašyti numatytąjį chorą:"
 
-#: src/amidi-plug/i_configure-alsa.c:355
-msgid "Client name"
-msgstr "Vardas"
+#: src/amidi-plug/i_configure.c:122 src/console/plugin.c:33
+msgid "<b>Playback</b>"
+msgstr "<b>Atkūrimas</b>"
 
-#: src/amidi-plug/i_configure-alsa.c:357
-msgid "Port name"
-msgstr "Prievado vardas"
+#: src/amidi-plug/i_configure.c:123
+msgid "Transpose:"
+msgstr "Perkėlimas:"
 
-#: src/amidi-plug/i_configure-alsa.c:371
-msgid "ALSA output ports"
-msgstr "ALSA išvesties prievadai"
+#: src/amidi-plug/i_configure.c:125
+msgid "Drum shift:"
+msgstr "Būgnų poslinkis:"
 
-#: src/amidi-plug/i_configure-alsa.c:432
-msgid "Soundcard: "
-msgstr "Garso plokštė:"
+#: src/amidi-plug/i_configure.c:127
+msgid "<b>Advanced</b>"
+msgstr "<b>Sudėtingesni</b>"
 
-#: src/amidi-plug/i_configure-alsa.c:434
-msgid "Mixer control: "
-msgstr "Mikšerio valdymas:"
+#: src/amidi-plug/i_configure.c:128
+msgid "Extract comments from MIDI file"
+msgstr "Išgauti komentarus iš MIDI failo"
 
-#: src/amidi-plug/i_configure-alsa.c:444
-msgid "Mixer settings"
-msgstr "Mikšerio nustatymai"
+#: src/amidi-plug/i_configure.c:130
+msgid "Extract lyrics from MIDI file"
+msgstr "Gauti žodžius iš MIDI failo"
 
-#: src/amidi-plug/i_configure-alsa.c:472
-msgid ""
-"<span size=\"smaller\">ALSA\n"
-"backend</span>"
-msgstr ""
-"<span size=\"smaller\">ALSA\n"
-"posistemė</span>"
+#: src/amidi-plug/i_configure.c:134
+msgid "<b>SoundFont</b>"
+msgstr "<b>SoundFont</b>"
 
-#: src/amidi-plug/i_configure-ap.c:63
-msgid "AMIDI-Plug - backend information"
-msgstr "AMIDI-Plug - posistemės informacija"
+#: src/amidi-plug/i_configure.c:136
+msgid "<b>Synthesizer</b>"
+msgstr "<b>Sintezatorius</b>"
 
-#: src/amidi-plug/i_configure-ap.c:221
-msgid "Backend selection"
-msgstr "Posistemės pasirinkimas"
+#: src/amidi-plug/i_configure.c:141
+msgid "Sampling rate:"
+msgstr "Diskretizacijos dažnis:"
 
-#: src/amidi-plug/i_configure-ap.c:261
-msgid "Playback settings"
-msgstr "Atkūrimo nustatymai"
-
-#: src/amidi-plug/i_configure-ap.c:266
-msgid "Transpose: "
-msgstr "Perkelti:"
-
-#: src/amidi-plug/i_configure-ap.c:275
-msgid "Drum shift: "
-msgstr "Būgnų poslinkis: "
-
-#: src/amidi-plug/i_configure-ap.c:293
-msgid "Advanced settings"
-msgstr "Papildomi nustatymai"
-
-#: src/amidi-plug/i_configure-ap.c:297
-msgid "pre-calculate length of MIDI files in playlist"
-msgstr "numanomas MIDI failų, grojaraštyje, ilgis"
-
-#: src/amidi-plug/i_configure-ap.c:304
-msgid "extract comments from MIDI file (if available)"
-msgstr "gauti komentarus iš MIDI failo (jei įmanoma)"
-
-#: src/amidi-plug/i_configure-ap.c:311
-msgid "extract lyrics from MIDI file (if available)"
-msgstr "gauti žodžius iš MIDI failo (jei įmanoma)"
-
-#: src/amidi-plug/i_configure-ap.c:344
-msgid ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
-msgstr ""
-"<span size=\"smaller\">AMIDI\n"
-"Plug</span>"
-
-#: src/amidi-plug/i_configure.c:59
-msgid "AMIDI-Plug - select file"
-msgstr "AMIDI-Plug - pasirinkti failą"
-
-#: src/amidi-plug/i_configure.c:104
-msgid "AMIDI-Plug Settings"
-msgstr "AMIDI-Plug nustatymai"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:63
+#: src/amidi-plug/i_configure-fluidsynth.c:50
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - pasirinkite SoundFont failą"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:321
-msgid "SoundFont settings"
-msgstr "SoundFont nustatymai"
+#: src/amidi-plug/i_configure-fluidsynth.c:54
+msgid "_Open"
+msgstr "_Atverti"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:359
+#: src/amidi-plug/i_configure-fluidsynth.c:225
 msgid "Filename"
 msgstr "Failo vardas"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:363
+#: src/amidi-plug/i_configure-fluidsynth.c:229
 msgid "Size (bytes)"
 msgstr "Dydis (bitais)"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:412
-msgid "Load SF on player start"
-msgstr "Įkrauti SF paleidžiant grotuvą"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:416
-msgid "Load SF on first MIDI file play"
-msgstr "Paleidus MIDI failą įkrauti SF"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:431
-msgid "Synthesizer settings"
-msgstr "Sintezatoriaus nustatymai"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:440
-msgid "gain"
-msgstr "gauti"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:446
-#: src/amidi-plug/i_configure-fluidsynth.c:476
-#: src/amidi-plug/i_configure-fluidsynth.c:506
-#: src/amidi-plug/i_configure-fluidsynth.c:540
-msgid "use default"
-msgstr "naudoti numatytą"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:449
-#: src/amidi-plug/i_configure-fluidsynth.c:479
-msgid "value:"
-msgstr "vertė:"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:470
-msgid "polyphony"
-msgstr "polifonija"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:500
-msgid "reverb"
-msgstr "aidas"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:509
-#: src/amidi-plug/i_configure-fluidsynth.c:543
-msgid "yes"
-msgstr "taip"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:511
-#: src/amidi-plug/i_configure-fluidsynth.c:545
-msgid "no"
-msgstr "ne"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:534
-msgid "chorus"
-msgstr "choras"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:568
-msgid "sample rate"
-msgstr "diskretizacijos dažnis"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:574
-msgid "22050 Hz "
-msgstr "22050 Hz "
-
-#: src/amidi-plug/i_configure-fluidsynth.c:577
-msgid "44100 Hz "
-msgstr "44100 Hz "
-
-#: src/amidi-plug/i_configure-fluidsynth.c:580
-msgid "96000 Hz "
-msgstr "96000 Hz "
-
-#: src/amidi-plug/i_configure-fluidsynth.c:583
-msgid "custom "
-msgstr "derinta"
-
-#: src/amidi-plug/i_configure-fluidsynth.c:592
-msgid "Hz "
-msgstr "Hz "
-
-#: src/amidi-plug/i_configure-fluidsynth.c:662
-msgid ""
-"<span size=\"smaller\">FluidSynth\n"
-"backend</span>"
-msgstr ""
-"<span size=\"smaller\">FluidSynth\n"
-"posistemė</span>"
-
-#: src/amidi-plug/i_fileinfo.c:175
+#: src/amidi-plug/i_fileinfo.c:176
 msgid "Name:"
 msgstr "Pavadinimas:"
 
-#: src/amidi-plug/i_fileinfo.c:200
+#: src/amidi-plug/i_fileinfo.c:203
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI Info </span>"
 
-#: src/amidi-plug/i_fileinfo.c:214
+#: src/amidi-plug/i_fileinfo.c:217
 msgid "Format:"
 msgstr "Formatas:"
 
-#: src/amidi-plug/i_fileinfo.c:217
+#: src/amidi-plug/i_fileinfo.c:220
 msgid "Length (msec):"
 msgstr "Trukmė (ms):"
 
-#: src/amidi-plug/i_fileinfo.c:220
+#: src/amidi-plug/i_fileinfo.c:223
 msgid "No. of Tracks:"
 msgstr "Takelių:"
 
-#: src/amidi-plug/i_fileinfo.c:226
+#: src/amidi-plug/i_fileinfo.c:229
 msgid "variable"
 msgstr "kintamasis"
 
-#: src/amidi-plug/i_fileinfo.c:228
+#: src/amidi-plug/i_fileinfo.c:231
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidi-plug/i_fileinfo.c:236
+#: src/amidi-plug/i_fileinfo.c:239
 msgid "BPM (wavg):"
 msgstr "BPM (wavg):"
 
-#: src/amidi-plug/i_fileinfo.c:239
+#: src/amidi-plug/i_fileinfo.c:242
 msgid "Time Div:"
 msgstr "Laiko div:"
 
-#: src/amidi-plug/i_fileinfo.c:250
+#: src/amidi-plug/i_fileinfo.c:253
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI komentarai ir žodžiai</span>"
 
-#: src/amidi-plug/i_fileinfo.c:301
+#: src/amidi-plug/i_fileinfo.c:302
 msgid "* no comments available in this MIDI file *"
 msgstr "* Šiame MIDI faile nėra komentarų *"
 
@@ -648,7 +491,12 @@ msgstr "* Šiame MIDI faile nėra komentarų *"
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* Šiame MIDI faile nėra žodžių *"
 
-#: src/amidi-plug/i_fileinfo.c:367
+#: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
+#: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
+msgid "_Close"
+msgstr "_Uždaryti"
+
+#: src/amidi-plug/i_fileinfo.c:366
 msgid "  (invalid UTF-8)"
 msgstr "  (neteisingas UTF-8)"
 
@@ -699,11 +547,25 @@ msgstr ""
 "Tony Vroon\n"
 "už pagalbą testuojan alfa"
 
-#: src/aosd/aosd.c:29
-msgid "Audacious OSD "
-msgstr "Audacious OSD "
+#: src/aosd/aosd.c:30
+msgid ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Written by Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Based in part on Evan Martin's Ghosd library:\n"
+"http://neugierig.org/software/ghosd/"
+msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Sukūrė Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Paremta Evan Martin Ghosd biblioteka:\n"
+"http://neugierig.org/software/ghosd/"
 
-#: src/aosd/aosd.c:37
+#: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
 msgstr "AOSD (Rodymas ekrane)"
 
@@ -761,118 +623,94 @@ msgstr "Pauzė išjungiama"
 msgid "Triggers OSD when playback is unpaused."
 msgstr "Sužadina OSD kai atkūrimas atkuriamas po pauzės."
 
-#: src/aosd/aosd_ui.c:168
+#: src/aosd/aosd_ui.c:192
 msgid "Placement"
 msgstr "Padėtis"
 
-#: src/aosd/aosd_ui.c:200
+#: src/aosd/aosd_ui.c:224
 msgid "Relative X offset:"
 msgstr "Reliatyvus X poslinkis:"
 
-#: src/aosd/aosd_ui.c:207
+#: src/aosd/aosd_ui.c:231
 msgid "Relative Y offset:"
 msgstr "Reliatyvus Y poslinkis:"
 
-#: src/aosd/aosd_ui.c:214
+#: src/aosd/aosd_ui.c:238
 msgid "Max OSD width:"
 msgstr "Didžiausias OSD plotis:"
 
-#: src/aosd/aosd_ui.c:225
+#: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
 msgstr "Kelių vaizduoklių pasirinktys"
 
-#: src/aosd/aosd_ui.c:229
+#: src/aosd/aosd_ui.c:253
 msgid "Display OSD using:"
 msgstr "Vaizduoklis naudoja OSD:"
 
-#: src/aosd/aosd_ui.c:231
+#: src/aosd/aosd_ui.c:255
 msgid "all monitors"
 msgstr "visi vaizduokliai"
 
-#: src/aosd/aosd_ui.c:234
+#: src/aosd/aosd_ui.c:258
 #, c-format
 msgid "monitor %i"
 msgstr "vaizduoklis %i"
 
-#: src/aosd/aosd_ui.c:287
+#: src/aosd/aosd_ui.c:310
 msgid "Timing (ms)"
 msgstr "Laiko derinimas (ms)"
 
-#: src/aosd/aosd_ui.c:292
+#: src/aosd/aosd_ui.c:315
 msgid "Display:"
 msgstr "Monitorius:"
 
-#: src/aosd/aosd_ui.c:297
+#: src/aosd/aosd_ui.c:320
 msgid "Fade in:"
 msgstr "Nustelbti:"
 
-#: src/aosd/aosd_ui.c:302
+#: src/aosd/aosd_ui.c:325
 msgid "Fade out:"
 msgstr "Išblukti:"
 
-#: src/aosd/aosd_ui.c:383
+#: src/aosd/aosd_ui.c:390
 msgid "Fonts"
 msgstr "Šriftai"
 
-#: src/aosd/aosd_ui.c:391
+#: src/aosd/aosd_ui.c:397
 #, c-format
 msgid "Font %i:"
 msgstr "Šriftas %i:"
 
-#: src/aosd/aosd_ui.c:409
+#: src/aosd/aosd_ui.c:412
 msgid "Shadow"
 msgstr "Šešėlis"
 
-#: src/aosd/aosd_ui.c:439
-msgid "Internationalization"
-msgstr "Lokalizavimas"
-
-#: src/aosd/aosd_ui.c:445
-msgid "Disable UTF-8 conversion of text (in aosd)"
-msgstr "Išjungti UTF-8 teksto konvertavimą (aosd)"
-
-#: src/aosd/aosd_ui.c:462
-msgid "Select Skin File"
-msgstr "Pasirinkti išvaizdos failą"
-
-#: src/aosd/aosd_ui.c:573
+#: src/aosd/aosd_ui.c:518
 msgid "Render Style"
 msgstr "Atvaizdavimo stilius"
 
-#: src/aosd/aosd_ui.c:589
+#: src/aosd/aosd_ui.c:534
 msgid "Colors"
 msgstr "Spalvos"
 
-#: src/aosd/aosd_ui.c:602
+#: src/aosd/aosd_ui.c:545
 #, c-format
 msgid "Color %i:"
 msgstr "Spalva %i:"
 
-#: src/aosd/aosd_ui.c:620
-msgid "Custom Skin"
-msgstr "Pasirinktinis apipavalidinimas"
-
-#: src/aosd/aosd_ui.c:626
-msgid "Skin file:"
-msgstr "Išvaizdos failas:"
-
-#: src/aosd/aosd_ui.c:630
-msgid "Browse"
-msgstr "Naršyti"
-
-#: src/aosd/aosd_ui.c:729
+#: src/aosd/aosd_ui.c:648
 msgid "Enable trigger"
 msgstr "Sužadinti"
 
-#: src/aosd/aosd_ui.c:756
+#: src/aosd/aosd_ui.c:675
 msgid "Event"
 msgstr "Įvykis"
 
-#: src/aosd/aosd_ui.c:784
+#: src/aosd/aosd_ui.c:703
 msgid "Composite manager detected"
 msgstr "Kompozicionavimo tvarkyklė aptikta"
 
-#: src/aosd/aosd_ui.c:791
+#: src/aosd/aosd_ui.c:710
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
@@ -881,72 +719,80 @@ msgstr ""
 "Kompozicionavimo tvarkyklė nerasta;\n"
 "įjunkite kompozicionavimo tvarkyklę, nes OSD neveiks taip kaip priklauso"
 
-#: src/aosd/aosd_ui.c:799
+#: src/aosd/aosd_ui.c:718
 msgid "Composite manager not required for fake transparency"
 msgstr "Netikram permatomumui kompozicionavimo tvarkyklė nebūtina"
 
-#: src/aosd/aosd_ui.c:837
+#: src/aosd/aosd_ui.c:754
 msgid "Transparency"
 msgstr "Permatomumas"
 
-#: src/aosd/aosd_ui.c:843
+#: src/aosd/aosd_ui.c:760
 msgid "Fake transparency"
 msgstr "Netikras permatomumas"
 
-#: src/aosd/aosd_ui.c:845
+#: src/aosd/aosd_ui.c:762
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "Tikras permatomumas (reikalinga X kompozicionavimo plėtinys)"
 
-#: src/aosd/aosd_ui.c:887
+#: src/aosd/aosd_ui.c:804
 msgid "Composite extension not loaded"
 msgstr "Kompozicionavimo plėtinys neįkrautas"
 
-#: src/aosd/aosd_ui.c:895
+#: src/aosd/aosd_ui.c:812
 msgid "Composite extension not available"
 msgstr "Kompozicionavimo plėtinys neprieinamas"
 
-#: src/aosd/aosd_ui.c:914
+#: src/aosd/aosd_ui.c:831
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.c:995
+#: src/aosd/aosd_ui.c:906
 msgid "Audacious OSD - configuration"
 msgstr "Audacious OSD - konfigūracija"
 
-#: src/aosd/aosd_ui.c:1016
-msgid "Test"
-msgstr "Testas"
+#: src/aosd/aosd_ui.c:927
+msgid "_Test"
+msgstr "_Testas"
 
-#: src/aosd/aosd_ui.c:1031
+#: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
+msgid "_Set"
+msgstr "_Nustatyti"
+
+#: src/aosd/aosd_ui.c:940
 msgid "Position"
 msgstr "Pozicija"
 
-#: src/aosd/aosd_ui.c:1036
+#: src/aosd/aosd_ui.c:945
 msgid "Animation"
 msgstr "Animacija"
 
-#: src/aosd/aosd_ui.c:1041
+#: src/aosd/aosd_ui.c:950
 msgid "Text"
 msgstr "Tekstas"
 
-#: src/aosd/aosd_ui.c:1046
+#: src/aosd/aosd_ui.c:955
 msgid "Decoration"
 msgstr "Dekoracijos"
 
-#: src/aosd/aosd_ui.c:1051
+#: src/aosd/aosd_ui.c:960
 msgid "Trigger"
 msgstr "Sužadintojas"
 
-#: src/aosd/aosd_ui.c:1056
+#: src/aosd/aosd_ui.c:965
 msgid "Misc"
 msgstr "Kita"
 
-#: src/asx/asx.c:96
+#: src/asx3/asx3.c:179
+msgid "ASXv3 Playlists"
+msgstr "ASXv3 Grojaraščiai"
+
+#: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
 msgstr "ASXv1/ASXv2 grojaraščiai"
 
-#: src/audpl/audpl.c:222
+#: src/audpl/audpl.c:186
 msgid "Audacious Playlists (audpl)"
 msgstr "Audacious grojaraščiai (audpl)"
 
@@ -958,23 +804,19 @@ msgstr "<b>Spalva</b>"
 msgid "Blur Scope"
 msgstr "Išsiliejimo sritis"
 
-#: src/bs2b/plugin.c:136
-msgid "Bauer Stereophonic-to-Binaural Preferences"
-msgstr "Bauer Stereophonic-to-Binaural Preferences"
-
-#: src/bs2b/plugin.c:147
+#: src/bs2b/plugin.c:142
 msgid "Feed level:"
 msgstr "Duoti lygį:"
 
-#: src/bs2b/plugin.c:161
+#: src/bs2b/plugin.c:154
 msgid "Cut frequency:"
 msgstr "Nukirpti dažnius:"
 
-#: src/bs2b/plugin.c:175
+#: src/bs2b/plugin.c:166
 msgid "Presets:"
 msgstr "Profiliai:"
 
-#: src/bs2b/plugin.c:197
+#: src/bs2b/plugin.c:189
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
@@ -982,7 +824,7 @@ msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 msgid "Spectrum Analyzer"
 msgstr "Spektro analizatorius"
 
-#: src/cdaudio-ng/cdaudio-ng.c:103
+#: src/cdaudio-ng/cdaudio-ng.c:101
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -1002,138 +844,143 @@ msgstr ""
 "\n"
 "Tai buvo Google Summer Code 2007 projektas."
 
-#: src/cdaudio-ng/cdaudio-ng.c:121
+#: src/cdaudio-ng/cdaudio-ng.c:119
 msgid "<b>Device</b>"
 msgstr "<b>Įrenginys</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:122
+#: src/cdaudio-ng/cdaudio-ng.c:120
 msgid "Read speed:"
 msgstr "Skaitymo greitis:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Override device:"
 msgstr "Perrašyti įrenginį:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:127
+#: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "<b>Metadata</b>"
 msgstr "<b>Meta duomenys</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Use CD-Text"
 msgstr "Naudoti CD-Text"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CDDB"
 msgstr "Naudoti CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use HTTP instead of CDDBP"
 msgstr "Naudoti HTTP vietoj CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:134
+#: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Server:"
 msgstr "Serveris:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:136
+#: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Path:"
 msgstr "Kelias:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:138
+#: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Port:"
 msgstr "Prievadas:"
 
-#: src/cdaudio-ng/cdaudio-ng.c:148
+#: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Audio CD Plugin"
 msgstr "Audio CD įskiepis"
 
-#: src/cdaudio-ng/cdaudio-ng.c:249
+#: src/cdaudio-ng/cdaudio-ng.c:244
 msgid "Failed to initialize cdio subsystem."
 msgstr "Inicijuoti cdio posistemės nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.c:306
+#: src/cdaudio-ng/cdaudio-ng.c:300
 #, c-format
 msgid "Invalid URI %s."
 msgstr "Netinkamas URI %s."
 
-#: src/cdaudio-ng/cdaudio-ng.c:308
+#: src/cdaudio-ng/cdaudio-ng.c:302
 #, c-format
 msgid "Track %d not found."
 msgstr "Takelis %d nerastas."
 
-#: src/cdaudio-ng/cdaudio-ng.c:310
+#: src/cdaudio-ng/cdaudio-ng.c:304
 #, c-format
 msgid "Track %d is a data track."
 msgstr "Takelis %d yra duomenų takelis."
 
-#: src/cdaudio-ng/cdaudio-ng.c:312
+#: src/cdaudio-ng/cdaudio-ng.c:306
 msgid "Failed to open audio output."
 msgstr "Atverti audio išvesties nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.c:395
+#: src/cdaudio-ng/cdaudio-ng.c:378
 msgid "Error reading audio CD."
 msgstr "Klaida skaitant audio CD."
 
-#: src/cdaudio-ng/cdaudio-ng.c:505
+#: src/cdaudio-ng/cdaudio-ng.c:449
 msgid "Audio CD"
 msgstr "Audio CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:535 src/cdaudio-ng/cdaudio-ng.c:544
+#: src/cdaudio-ng/cdaudio-ng.c:458
+#, c-format
+msgid "Track %d"
+msgstr "Takelis %d"
+
+#: src/cdaudio-ng/cdaudio-ng.c:485 src/cdaudio-ng/cdaudio-ng.c:494
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "Atverti CD įrenginio %s nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.c:547
+#: src/cdaudio-ng/cdaudio-ng.c:497
 msgid "No audio capable CD drive found."
 msgstr "CD įrenginio suderinamo su audio nerasta."
 
-#: src/cdaudio-ng/cdaudio-ng.c:574
+#: src/cdaudio-ng/cdaudio-ng.c:524
 msgid "Failed to finish initializing opened CD drive."
 msgstr "Nepavyko užbaigti inicijuoto atverto CD įrenginio."
 
-#: src/cdaudio-ng/cdaudio-ng.c:587
+#: src/cdaudio-ng/cdaudio-ng.c:537
 msgid "Failed to retrieve first/last track number."
 msgstr "Gauti pirmo/paskutinio takelio numerio nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.c:612
+#: src/cdaudio-ng/cdaudio-ng.c:562
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "Perskaityti LSN takelio %d pradžios/pabaigos nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.c:702
+#: src/cdaudio-ng/cdaudio-ng.c:646
 msgid "Failed to create the cddb connection."
 msgstr "Sukurti cddb sujungimo nepavyko."
 
-#: src/cdaudio-ng/cdaudio-ng.c:777
+#: src/cdaudio-ng/cdaudio-ng.c:721
 msgid "Failed to query the CDDB server"
 msgstr "Užlausti CDDB serverio nepavyko"
 
-#: src/cdaudio-ng/cdaudio-ng.c:779
+#: src/cdaudio-ng/cdaudio-ng.c:723
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "Užlausti CDDB serverio nepavyko: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:803
+#: src/cdaudio-ng/cdaudio-ng.c:747
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "Perskaityti cddb informaciją nepavyko: %s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:876
+#: src/cdaudio-ng/cdaudio-ng.c:818
 msgid "Drive is empty."
 msgstr "Diskasukis tuščias."
 
-#: src/cdaudio-ng/cdaudio-ng.c:878
+#: src/cdaudio-ng/cdaudio-ng.c:820
 msgid "Unsupported disk type."
 msgstr "Nepalaikomas disko tipas."
 
-#: src/cd-menu-items/cd-menu-items.c:30
+#: src/cd-menu-items/cd-menu-items.c:31
 msgid "Play CD"
 msgstr "Groti CD"
 
-#: src/cd-menu-items/cd-menu-items.c:30
+#: src/cd-menu-items/cd-menu-items.c:31
 msgid "Add CD"
 msgstr "Pridėti CD"
 
-#: src/cd-menu-items/cd-menu-items.c:57
+#: src/cd-menu-items/cd-menu-items.c:56
 msgid "Audio CD Menu Items"
 msgstr "Audio CD Meniu elementai"
 
@@ -1161,77 +1008,7 @@ msgstr ""
 msgid "Dynamic Range Compressor"
 msgstr "Dynamic Range Compressor"
 
-#: src/console/configure.c:134 src/console/plugin.c:42
-msgid "Game Console Music Decoder"
-msgstr "Žaidimų konsolės muzikos dekoderis"
-
-#: src/console/configure.c:151
-msgid "General"
-msgstr "Pagrindinės"
-
-#: src/console/configure.c:153 src/skins/ui_manager.c:175
-msgid "Playback"
-msgstr "Atkūrimas"
-
-#: src/console/configure.c:168
-msgid "Bass:"
-msgstr "Bosas:"
-
-#: src/console/configure.c:172 src/console/configure.c:183
-#: src/console/configure.c:204
-msgid "secs"
-msgstr "sekundės"
-
-#: src/console/configure.c:179
-msgid "Treble:"
-msgstr "Aukšti:"
-
-#: src/console/configure.c:200
-msgid "Default song length:"
-msgstr "Numatyta dainos trukmė:"
-
-#: src/console/configure.c:206
-msgid "Resampling"
-msgstr "Diskretizacija"
-
-#: src/console/configure.c:212
-msgid "Enable audio resampling"
-msgstr "Įjungti garso diskretizaciją"
-
-#: src/console/configure.c:227
-msgid "Resampling rate:"
-msgstr "Diskretizacijos dažnis:"
-
-#: src/console/configure.c:231 src/modplug/plugin_main.c:98
-#: src/resample/resample.c:178 src/resample/resample.c:184
-#: src/resample/resample.c:187 src/resample/resample.c:190
-#: src/resample/resample.c:193 src/resample/resample.c:196
-#: src/resample/resample.c:199 src/resample/resample.c:202
-#: src/sox-resampler/sox-resampler.c:153
-msgid "Hz"
-msgstr "Hz"
-
-#: src/console/configure.c:242
-msgid "SPC"
-msgstr "SPC"
-
-#: src/console/configure.c:243
-msgid "Ignore length from SPC tags"
-msgstr "Nepaisyti trukmės iš SPC žymų"
-
-#: src/console/configure.c:244
-msgid "Increase reverb"
-msgstr "Padidinti reverb"
-
-#: src/console/configure.c:269
-msgid ""
-"The default song length, expressed in seconds, is used for songs that do not "
-"provide length information (i.e. looping tracks)."
-msgstr ""
-"Numatyta dainos trukmė, išreikšta sekundėmis, naudojama dainom kurios "
-"nesuteikia trukmės informacijos (pvz. besikartojantiems takeliams)"
-
-#: src/console/plugin.c:27
+#: src/console/plugin.c:19
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
@@ -1247,7 +1024,60 @@ msgstr ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 
-#: src/crossfade/crossfade.c:81
+#: src/console/plugin.c:34
+msgid "Bass:"
+msgstr "Bosas:"
+
+#: src/console/plugin.c:36
+msgid "Treble:"
+msgstr "Aukšti:"
+
+#: src/console/plugin.c:38
+msgid "Echo:"
+msgstr "Aidas:"
+
+#: src/console/plugin.c:40
+msgid "Default song length:"
+msgstr "Numatyta dainos trukmė:"
+
+#: src/console/plugin.c:43 src/modplug/plugin_main.c:65
+msgid "<b>Resampling</b>"
+msgstr "<b>Perdarymas (resampling)</b>"
+
+#: src/console/plugin.c:44
+msgid "Enable audio resampling"
+msgstr "Įjungti garso diskretizaciją"
+
+#: src/console/plugin.c:46
+msgid "Resampling rate:"
+msgstr "Diskretizacijos dažnis:"
+
+#: src/console/plugin.c:47 src/modplug/plugin_main.c:96
+#: src/resample/resample.c:182 src/resample/resample.c:188
+#: src/resample/resample.c:191 src/resample/resample.c:194
+#: src/resample/resample.c:197 src/resample/resample.c:200
+#: src/resample/resample.c:203 src/resample/resample.c:206
+#: src/sox-resampler/sox-resampler.c:155
+msgid "Hz"
+msgstr "Hz"
+
+#: src/console/plugin.c:49
+msgid "<b>SPC</b>"
+msgstr "<b>SPC</b>"
+
+#: src/console/plugin.c:50
+msgid "Ignore length from SPC tags"
+msgstr "Nepaisyti trukmės iš SPC žymų"
+
+#: src/console/plugin.c:52
+msgid "Increase reverb"
+msgstr "Padidinti reverb"
+
+#: src/console/plugin.c:61
+msgid "Game Console Music Decoder"
+msgstr "Žaidimų konsolės muzikos dekoderis"
+
+#: src/crossfade/crossfade.c:83
 msgid ""
 "Crossfading failed because the songs had a different number of channels.  "
 "You can use the Channel Mixer to convert the songs to the same number of "
@@ -1256,7 +1086,7 @@ msgstr ""
 "Garso perėjimo efektas nepavyko, nes dainos turi skirtingą skaičių kanalų. "
 "Galite panaudoti kanalų mikšerio įrankį ir suvienodinti kanalų skaičių."
 
-#: src/crossfade/crossfade.c:88
+#: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
@@ -1265,7 +1095,7 @@ msgstr ""
 "dažnius.  Galite panaudoti diskretizacijos konvertavimo įrankį ir paversti "
 "dainas į tą patį dažnį."
 
-#: src/crossfade/crossfade.c:254
+#: src/crossfade/crossfade.c:256
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
@@ -1273,15 +1103,15 @@ msgstr ""
 "Crossfade Plugin skirtas Audacious\n"
 "Autorinės teisės 2010-2012 John Lindgren"
 
-#: src/crossfade/crossfade.c:258
+#: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
 msgstr "<b>Persidengimas</b>"
 
-#: src/crossfade/crossfade.c:259
+#: src/crossfade/crossfade.c:261
 msgid "Overlap:"
 msgstr "Perdengti:"
 
-#: src/crossfade/crossfade.c:269
+#: src/crossfade/crossfade.c:271
 msgid "Crossfade"
 msgstr "Perdengimas"
 
@@ -1297,33 +1127,87 @@ msgstr "Intensyvumas:"
 msgid "Crystalizer"
 msgstr "Crystalizer"
 
-#: src/cue/cue.c:158
+#: src/cue/cue.c:155
 msgid "Cue Sheet Plugin"
 msgstr "Cue Sheet įskiepis"
 
-#: src/echo_plugin/echo.c:24
+#: src/delete-files/delete-files.c:47
+#, c-format
+msgid "Error moving %s to trash: %s."
+msgstr "Klaida perkeliant %s į šiukšlinę: %s"
+
+#: src/delete-files/delete-files.c:59
+#, c-format
+msgid "Error deleting %s: %s."
+msgstr "Klaida šalinant %s: %s."
+
+#: src/delete-files/delete-files.c:97
+#, c-format
+msgid "Error deleting %s: not a local file."
+msgstr "Klaida šalinant %s: ne vietinis failas."
+
+#: src/delete-files/delete-files.c:118
+msgid "Do you want to move the selected files to the trash?"
+msgstr "Ar tikrai norite perkelti pasirinktus failus į šiukšliadėžę?"
+
+#: src/delete-files/delete-files.c:119
+msgid "Move to Trash"
+msgstr "Perkelti į šiukšlinę"
+
+#: src/delete-files/delete-files.c:124
+msgid "Do you want to permanently delete the selected files?"
+msgstr "Ar tikrai norite negrįžtamai ištrinti pasirinktus failus?"
+
+#: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
+#: src/skins/preset-list.c:432
+msgid "Delete"
+msgstr "Ištrinti"
+
+#: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
+#: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
+#: src/sndio/sndio.c:424
+msgid "Cancel"
+msgstr "Atšaukti"
+
+#: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
+msgid "Delete Files"
+msgstr "Pašalinti failus"
+
+#: src/delete-files/delete-files.c:146
+msgid "Delete Selected Files"
+msgstr "Pašalinti pasirinktus failus"
+
+#: src/delete-files/delete-files.c:161
+msgid "<b>Delete Method</b>"
+msgstr "<b>Šalinimo metodas</b>"
+
+#: src/delete-files/delete-files.c:162
+msgid "Move to trash instead of deleting immediately"
+msgstr "Perkelti į šiukšlinę, iškart nepašalinti"
+
+#: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
 msgstr "<b>Aidas</b>"
 
-#: src/echo_plugin/echo.c:25 src/modplug/plugin_main.c:90
-#: src/modplug/plugin_main.c:104
+#: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:88
+#: src/modplug/plugin_main.c:102
 msgid "Delay:"
 msgstr "Delsa:"
 
-#: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:91
-#: src/modplug/plugin_main.c:105
+#: src/echo_plugin/echo.c:29 src/modplug/plugin_main.c:89
+#: src/modplug/plugin_main.c:103
 msgid "ms"
 msgstr "ms"
 
-#: src/echo_plugin/echo.c:28
+#: src/echo_plugin/echo.c:30
 msgid "Feedback:"
 msgstr "Garsinis atsakas:"
 
-#: src/echo_plugin/echo.c:31 src/modplug/plugin_main.c:109
+#: src/echo_plugin/echo.c:33 src/modplug/plugin_main.c:107
 msgid "Volume:"
 msgstr "Garsumas:"
 
-#: src/echo_plugin/echo.c:114
+#: src/echo_plugin/echo.c:116
 msgid ""
 "Echo Plugin\n"
 "By Johan Levin, 1999\n"
@@ -1335,11 +1219,11 @@ msgstr ""
 "\n"
 "Surround echo sukūrė Carl van Schaik, 1999"
 
-#: src/echo_plugin/echo.c:120
+#: src/echo_plugin/echo.c:122
 msgid "Echo"
 msgstr "Aidas"
 
-#: src/ffaudio/ffaudio-core.c:656
+#: src/ffaudio/ffaudio-core.c:581
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1355,59 +1239,55 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:703
+#: src/ffaudio/ffaudio-core.c:633
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg įskiepis"
 
-#: src/filewriter/filewriter.c:409
-msgid "FileWriter Configuration"
-msgstr "FileWriter konfigūracija"
-
-#: src/filewriter/filewriter.c:421
+#: src/filewriter/filewriter.c:404
 msgid "Output file format:"
 msgstr "Išvesties failo formatas:"
 
-#: src/filewriter/filewriter.c:439
+#: src/filewriter/filewriter.c:421
 msgid "Configure"
 msgstr "Konfigūruoti"
 
-#: src/filewriter/filewriter.c:449
+#: src/filewriter/filewriter.c:431
 msgid "Save into original directory"
 msgstr "Išsaugoti originalo aplanke"
 
-#: src/filewriter/filewriter.c:454
+#: src/filewriter/filewriter.c:435
 msgid "Save into custom directory"
 msgstr "Išsaugoti pasirinktame aplanke"
 
-#: src/filewriter/filewriter.c:464
+#: src/filewriter/filewriter.c:445
 msgid "Output file folder:"
 msgstr "Paskirties aplankas:"
 
-#: src/filewriter/filewriter.c:468
+#: src/filewriter/filewriter.c:449
 msgid "Pick a folder"
 msgstr "Pasirinkite aplanką"
 
-#: src/filewriter/filewriter.c:481
+#: src/filewriter/filewriter.c:462
 msgid "Get filename from:"
 msgstr "Gauti failo vardą iš:"
 
-#: src/filewriter/filewriter.c:484
+#: src/filewriter/filewriter.c:466
 msgid "original file tags"
 msgstr "originalios failo žymės"
 
-#: src/filewriter/filewriter.c:490
+#: src/filewriter/filewriter.c:471
 msgid "original filename"
 msgstr "originalus failo vardas"
 
-#: src/filewriter/filewriter.c:497
+#: src/filewriter/filewriter.c:477
 msgid "Don't strip file name extension"
 msgstr "Neištrinti failo plėtinio"
 
-#: src/filewriter/filewriter.c:506
+#: src/filewriter/filewriter.c:486
 msgid "Prepend track number to filename"
 msgstr "Įdėti takelio numerį į failo vardą"
 
-#: src/filewriter/filewriter.c:515
+#: src/filewriter/filewriter.c:502
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -1439,165 +1319,165 @@ msgstr ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 
-#: src/filewriter/filewriter.c:532
+#: src/filewriter/filewriter.c:527
 msgid "FileWriter Plugin"
 msgstr "FileWriter įskiepis"
 
-#: src/filewriter/mp3.c:37 src/filewriter/mp3.c:748
+#: src/filewriter/mp3.c:38 src/filewriter/mp3.c:749
 msgid "Auto"
 msgstr "Auto"
 
-#: src/filewriter/mp3.c:37
+#: src/filewriter/mp3.c:38
 msgid "Joint Stereo"
 msgstr "Sujungtas stereo"
 
-#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:65
-#: src/mpg123/mpg123.c:211
+#: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:63
+#: src/mpg123/mpg123.c:210
 msgid "Stereo"
 msgstr "Stereo"
 
-#: src/filewriter/mp3.c:38 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:61
+#: src/mpg123/mpg123.c:210
 msgid "Mono"
 msgstr "Mono"
 
-#: src/filewriter/mp3.c:688
+#: src/filewriter/mp3.c:689
 msgid "MP3 Configuration"
 msgstr "MP3 konfigūravimas"
 
-#: src/filewriter/mp3.c:712
+#: src/filewriter/mp3.c:713
 msgid "Algorithm Quality:"
 msgstr "Algoritmo kokybė:"
 
-#: src/filewriter/mp3.c:737
+#: src/filewriter/mp3.c:738
 msgid "Output Samplerate:"
 msgstr "Išvesties diskretizavimo dažnis:"
 
-#: src/filewriter/mp3.c:765
+#: src/filewriter/mp3.c:766
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:772
+#: src/filewriter/mp3.c:773
 msgid "Bitrate / Compression ratio:"
 msgstr "Bitų dažnis / Kompresijos santykis:"
 
-#: src/filewriter/mp3.c:796
+#: src/filewriter/mp3.c:797
 msgid "Bitrate (kbps):"
 msgstr "Bitų dažnis(kbps):"
 
-#: src/filewriter/mp3.c:829
+#: src/filewriter/mp3.c:830
 msgid "Compression ratio:"
 msgstr "Kompresijos santykis:"
 
-#: src/filewriter/mp3.c:853
+#: src/filewriter/mp3.c:854
 msgid "Audio Mode:"
 msgstr "Audio režimas:"
 
-#: src/filewriter/mp3.c:878
+#: src/filewriter/mp3.c:879
 msgid "Misc:"
 msgstr "Kita:"
 
-#: src/filewriter/mp3.c:889
+#: src/filewriter/mp3.c:890
 msgid "Enforce strict ISO complience"
 msgstr "Priversti griežtai laikytis ISO suderinamumo"
 
-#: src/filewriter/mp3.c:900
+#: src/filewriter/mp3.c:901
 msgid "Error protection"
 msgstr "Apsauga nuo klaidų"
 
-#: src/filewriter/mp3.c:912 src/filewriter/vorbis.c:222
+#: src/filewriter/mp3.c:913 src/filewriter/vorbis.c:220
 msgid "Quality"
 msgstr "Kokybė"
 
-#: src/filewriter/mp3.c:921
+#: src/filewriter/mp3.c:922
 msgid "Enable VBR/ABR"
 msgstr "Įjungti VBR/ABR"
 
-#: src/filewriter/mp3.c:931
+#: src/filewriter/mp3.c:932
 msgid "Type:"
 msgstr "Tipas:"
 
-#: src/filewriter/mp3.c:964
+#: src/filewriter/mp3.c:965
 msgid "VBR Options:"
 msgstr "VBR pasirinktys:"
 
-#: src/filewriter/mp3.c:980
+#: src/filewriter/mp3.c:981
 msgid "Minimum bitrate (kbps):"
 msgstr "Minimalus bitų dažnis (kbps):"
 
-#: src/filewriter/mp3.c:1007
+#: src/filewriter/mp3.c:1008
 msgid "Maximum bitrate (kbps):"
 msgstr "Maksimalus bitų dažnis (kbps):"
 
-#: src/filewriter/mp3.c:1030
+#: src/filewriter/mp3.c:1031
 msgid "Strictly enforce minimum bitrate"
 msgstr "Griežtai laikytis minimalaus bitų dažnio"
 
-#: src/filewriter/mp3.c:1042
+#: src/filewriter/mp3.c:1043
 msgid "ABR Options:"
 msgstr "ABR pasirinktys:"
 
-#: src/filewriter/mp3.c:1052
+#: src/filewriter/mp3.c:1053
 msgid "Average bitrate (kbps):"
 msgstr "Vidutinis bitų dažnis (kbps):"
 
-#: src/filewriter/mp3.c:1080
+#: src/filewriter/mp3.c:1081
 msgid "VBR quality level:"
 msgstr "VBR kokybės lygis:"
 
-#: src/filewriter/mp3.c:1099
+#: src/filewriter/mp3.c:1100
 msgid "Don't write Xing VBR header"
 msgstr "Nerašyti Xing VBR antraštės"
 
-#: src/filewriter/mp3.c:1112
+#: src/filewriter/mp3.c:1113
 msgid "VBR/ABR"
 msgstr "VBR/ABR"
 
-#: src/filewriter/mp3.c:1121
+#: src/filewriter/mp3.c:1122
 msgid "Frame parameters:"
 msgstr "Kadro nustatymai:"
 
-#: src/filewriter/mp3.c:1133
+#: src/filewriter/mp3.c:1134
 msgid "Mark as copyright"
 msgstr "Pažymėti kaip saugomą autorinių teisių"
 
-#: src/filewriter/mp3.c:1144
+#: src/filewriter/mp3.c:1145
 msgid "Mark as original"
 msgstr "Pažymėti kaip originalą"
 
-#: src/filewriter/mp3.c:1156
+#: src/filewriter/mp3.c:1157
 msgid "ID3 params:"
 msgstr "ID3 parametrai"
 
-#: src/filewriter/mp3.c:1167
+#: src/filewriter/mp3.c:1168
 msgid "Force addition of version 2 tag"
 msgstr "Priverstinai pridėti 2 versijos žymą"
 
-#: src/filewriter/mp3.c:1177
+#: src/filewriter/mp3.c:1178
 msgid "Only add v1 tag"
 msgstr "Pridėti tik v1 žymą"
 
-#: src/filewriter/mp3.c:1184
+#: src/filewriter/mp3.c:1185
 msgid "Only add v2 tag"
 msgstr "Pridėti tik v2 žymą"
 
-#: src/filewriter/mp3.c:1205
+#: src/filewriter/mp3.c:1206
 msgid "Tags"
 msgstr "Žymos"
 
-#: src/filewriter/vorbis.c:212
+#: src/filewriter/vorbis.c:210
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis koduotojo konfigūracija"
 
-#: src/filewriter/vorbis.c:235
+#: src/filewriter/vorbis.c:233
 msgid "Quality level (0 - 10):"
 msgstr "Kokybės lygis (0 - 10):"
 
-#: src/flacng/metadata.c:357 src/wavpack/wavpack.c:280
+#: src/flacng/metadata.c:359 src/wavpack/wavpack.c:212
 msgid "lossless"
 msgstr "lossless"
 
-#: src/flacng/plugin.c:269
+#: src/flacng/plugin.c:187
 msgid ""
 "Original code by\n"
 "Ralf Ertzinger <ralf@skytale.net>\n"
@@ -1609,11 +1489,11 @@ msgstr ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 
-#: src/flacng/plugin.c:277
+#: src/flacng/plugin.c:195
 msgid "FLAC Decoder"
 msgstr "FLAC dekoderis"
 
-#: src/gio/gio.c:300
+#: src/gio/gio.c:295
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
@@ -1621,14 +1501,14 @@ msgstr ""
 "GIO įskiepis skirtas Audacious\n"
 "Autorinės teisės 2009-2012 John Lindgren"
 
-#: src/gio/gio.c:322
+#: src/gio/gio.c:314
 msgid "GIO Plugin"
 msgstr "GIO įskiepis"
 
-#: src/gl-spectrum/gl-spectrum.c:283
+#: src/gl-spectrum/gl-spectrum.c:400
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
-"Copyright 2013 Christophe Budé and John Lindgren\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
 "Based on the XMMS plugin:\n"
 "Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
@@ -1636,16 +1516,16 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
-"OpenGL Spektro analizatorius skirtas Audacious\n"
-"Autorinės teisės 2013 Christophe Budé ir John Lindgren\n"
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
-"Paremta XMMS įskiepiu:\n"
-"Autorinės teisės 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
-"Nilsson, ir 4Front Technologies\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
 "\n"
-"Licencija: GPLv2+"
+"License: GPLv2+"
 
-#: src/gl-spectrum/gl-spectrum.c:292
+#: src/gl-spectrum/gl-spectrum.c:409
 msgid "OpenGL Spectrum Analyzer"
 msgstr "OpenGL spektro analizatorius"
 
@@ -1665,69 +1545,65 @@ msgstr ""
 msgid "Gnome Shortcuts"
 msgstr "Gnome spartieji klavišai"
 
-#: src/gtkui/columns.c:32
+#: src/gtkui/columns.c:34
 msgid "Entry number"
 msgstr "Įrašo numeris"
 
-#: src/gtkui/columns.c:32
+#: src/gtkui/columns.c:34
 msgid "Title"
 msgstr "Pavadinimas"
 
-#: src/gtkui/columns.c:33
+#: src/gtkui/columns.c:35
 msgid "Artist"
 msgstr "Atlikėjas"
 
-#: src/gtkui/columns.c:33
+#: src/gtkui/columns.c:35
 msgid "Year"
 msgstr "Metai"
 
-#: src/gtkui/columns.c:33
+#: src/gtkui/columns.c:35
 msgid "Album"
 msgstr "Albumas"
 
-#: src/gtkui/columns.c:33
+#: src/gtkui/columns.c:35
 msgid "Track"
 msgstr "Takelis"
 
-#: src/gtkui/columns.c:33
+#: src/gtkui/columns.c:35
 msgid "Genre"
 msgstr "Žanras"
 
-#: src/gtkui/columns.c:34
+#: src/gtkui/columns.c:36
 msgid "Queue position"
 msgstr "Vieta eilėje"
 
-#: src/gtkui/columns.c:34
+#: src/gtkui/columns.c:36
 msgid "Length"
 msgstr "Trukmė"
 
-#: src/gtkui/columns.c:34
+#: src/gtkui/columns.c:36
 msgid "File path"
 msgstr "Bylos kelias"
 
-#: src/gtkui/columns.c:34
+#: src/gtkui/columns.c:36
 msgid "File name"
 msgstr "Bylos vardas"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.c:37
 msgid "Custom title"
 msgstr "Derintas pavadinimas"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.c:37
 msgid "Bitrate"
 msgstr "Bitų seka"
 
-#: src/gtkui/columns.c:277
-msgid "Choose Columns"
-msgstr "Rinktis stulpelius"
+#: src/gtkui/columns.c:286
+msgid "Available columns"
+msgstr "Prieinami stulpeliai"
 
-#: src/gtkui/columns.c:293
-msgid "Available:"
-msgstr "Prieinama:"
-
-#: src/gtkui/columns.c:327
-msgid "Chosen:"
-msgstr "Pasirinkta:"
+#: src/gtkui/columns.c:312
+msgid "Displayed columns"
+msgstr "Rodomų stulpelių sąrašas"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
@@ -1749,335 +1625,346 @@ msgstr "Sumažinti apačioje"
 msgid "Undock"
 msgstr "Padidinti"
 
-#: src/gtkui/layout.c:120 src/ladspa/plugin.c:623
+#: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
 msgstr "Išjungti"
 
-#: src/gtkui/menus.c:170
+#: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
 msgstr "_Atverti failus ..."
 
-#: src/gtkui/menus.c:171
+#: src/gtkui/menus.c:128
 msgid "Open _URL ..."
 msgstr "Atverti _URL ..."
 
-#: src/gtkui/menus.c:172
+#: src/gtkui/menus.c:129
 msgid "_Add Files ..."
 msgstr "_Pridėti failus..."
 
-#: src/gtkui/menus.c:173
+#: src/gtkui/menus.c:130
 msgid "Add U_RL ..."
 msgstr "Pridėti U_RL ..."
 
-#: src/gtkui/menus.c:175
-msgid "_Search Library"
-msgstr "_Ieškoti fonotekoje"
+#: src/gtkui/menus.c:132
+msgid "Search _Library"
+msgstr "Ieškoti _bibliotekoje"
 
-#: src/gtkui/menus.c:177
+#: src/gtkui/menus.c:134
 msgid "A_bout ..."
 msgstr "A_pie"
 
-#: src/gtkui/menus.c:178
-msgid "_Preferences ..."
-msgstr "_Nustatymai ..."
+#: src/gtkui/menus.c:135
+msgid "_Settings ..."
+msgstr "_Nustatymai..."
 
-#: src/gtkui/menus.c:179 src/skins/ui_manager.c:413
+#: src/gtkui/menus.c:136 src/statusicon/statusicon.c:270
 msgid "_Quit"
 msgstr "_Išeiti"
 
-#: src/gtkui/menus.c:182 src/gtkui/menus.c:296
+#: src/gtkui/menus.c:139 src/gtkui/menus.c:254
+#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "_Groti"
 
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.c:140 src/statusicon/statusicon.c:265
 msgid "Paus_e"
 msgstr "Pauz_ė"
 
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.c:141 src/statusicon/statusicon.c:266
 msgid "_Stop"
 msgstr "_Sustabdyti"
 
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.c:142 src/statusicon/statusicon.c:263
 msgid "Pre_vious"
 msgstr "Ankste_snis"
 
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.c:143 src/statusicon/statusicon.c:267
 msgid "_Next"
 msgstr "_Sekantis"
 
-#: src/gtkui/menus.c:188
+#: src/gtkui/menus.c:145
 msgid "_Repeat"
 msgstr "_Kartoti"
 
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.c:146
 msgid "S_huffle"
 msgstr "S_umaišyti"
 
-#: src/gtkui/menus.c:190
+#: src/gtkui/menus.c:147
 msgid "N_o Playlist Advance"
 msgstr "N_esislinkti grojaraščiu"
 
-#: src/gtkui/menus.c:191
+#: src/gtkui/menus.c:149
 msgid "Stop A_fter This Song"
 msgstr "Sustabdyti _po šios dainos"
 
-#: src/gtkui/menus.c:193 src/gtkui/menus.c:284
+#: src/gtkui/menus.c:152 src/gtkui/menus.c:242
 msgid "Song _Info ..."
 msgstr "Dainos _informacija ..."
 
-#: src/gtkui/menus.c:194
+#: src/gtkui/menus.c:153
 msgid "Jump to _Time ..."
 msgstr "Šokti į _laiką"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.c:154
 msgid "_Jump to Song ..."
 msgstr "_Pereiti prie dainos ..."
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.c:156
 msgid "Set Repeat Point _A"
 msgstr "Nustatyti kartojimo tašką _A"
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.c:157
 msgid "Set Repeat Point _B"
 msgstr "Nustatyti kartojimo tašką _B"
 
-#: src/gtkui/menus.c:199
+#: src/gtkui/menus.c:158
 msgid "_Clear Repeat Points"
 msgstr "_Išvalyti kartojimo taškus"
 
-#: src/gtkui/menus.c:202 src/gtkui/menus.c:208 src/gtkui/menus.c:221
+#: src/gtkui/menus.c:161 src/gtkui/menus.c:167 src/gtkui/menus.c:180
 msgid "By _Title"
 msgstr "Pagal _pavadinimą"
 
-#: src/gtkui/menus.c:203
+#: src/gtkui/menus.c:162
 msgid "By _Filename"
 msgstr "Pagal failo _vardą"
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.c:163
 msgid "By File _Path"
 msgstr "Pagal failo _kelią"
 
-#: src/gtkui/menus.c:207 src/gtkui/menus.c:220
+#: src/gtkui/menus.c:166 src/gtkui/menus.c:179
 msgid "By Track _Number"
 msgstr "Pagal takelio _numerį"
 
-#: src/gtkui/menus.c:209 src/gtkui/menus.c:222
+#: src/gtkui/menus.c:168 src/gtkui/menus.c:181
 msgid "By _Artist"
 msgstr "Pagal _atlikėją"
 
-#: src/gtkui/menus.c:210 src/gtkui/menus.c:223
+#: src/gtkui/menus.c:169 src/gtkui/menus.c:182
 msgid "By Al_bum"
 msgstr "Pagal _albumą"
 
-#: src/gtkui/menus.c:211 src/gtkui/menus.c:224
+#: src/gtkui/menus.c:170 src/gtkui/menus.c:183
 msgid "By Release _Date"
 msgstr "Pagal išleidimo _datą"
 
-#: src/gtkui/menus.c:212 src/gtkui/menus.c:225
+#: src/gtkui/menus.c:171 src/gtkui/menus.c:184
 msgid "By _Length"
 msgstr "Pagal _trukmę"
 
-#: src/gtkui/menus.c:213 src/gtkui/menus.c:226
+#: src/gtkui/menus.c:172 src/gtkui/menus.c:185
 msgid "By _File Path"
 msgstr "Pagal _failo kelią"
 
-#: src/gtkui/menus.c:214 src/gtkui/menus.c:227
+#: src/gtkui/menus.c:173 src/gtkui/menus.c:186
 msgid "By _Custom Title"
 msgstr "Pagal _derintą eilutę"
 
-#: src/gtkui/menus.c:216 src/gtkui/menus.c:229
+#: src/gtkui/menus.c:175 src/gtkui/menus.c:188
 msgid "R_everse Order"
 msgstr "A_tvirkštine tvarka"
 
-#: src/gtkui/menus.c:217 src/gtkui/menus.c:230
+#: src/gtkui/menus.c:176 src/gtkui/menus.c:189
 msgid "_Random Order"
 msgstr "_Atsitiktine tvarka"
 
-#: src/gtkui/menus.c:233
+#: src/gtkui/menus.c:192
 msgid "_Play This Playlist"
 msgstr "_Groti šį grojaraštį"
 
-#: src/gtkui/menus.c:234 src/gtkui/menus.c:286
+#: src/gtkui/menus.c:193 src/gtkui/menus.c:244
 msgid "_Refresh"
 msgstr "_Atnaujinti"
 
-#: src/gtkui/menus.c:236
+#: src/gtkui/menus.c:195
 msgid "_Sort"
 msgstr "_Rikiuoti"
 
-#: src/gtkui/menus.c:237
-msgid "Sort S_elected"
+#: src/gtkui/menus.c:196
+msgid "Sort Se_lected"
 msgstr "Rikuoti _pasirinktus"
 
-#: src/gtkui/menus.c:238
+#: src/gtkui/menus.c:197
 msgid "Remove _Duplicates"
 msgstr "Pašalinti _dubliuotus"
 
-#: src/gtkui/menus.c:239
+#: src/gtkui/menus.c:198
 msgid "Remove _Unavailable Files"
 msgstr "Pašalinti _neprieinamus failus"
 
-#: src/gtkui/menus.c:241
+#: src/gtkui/menus.c:200
 msgid "_New"
 msgstr "_Naujas"
 
-#: src/gtkui/menus.c:242
+#: src/gtkui/menus.c:201
 msgid "Ren_ame ..."
 msgstr "_Pervadinti"
 
-#: src/gtkui/menus.c:243 src/gtkui/menus.c:298
-msgid "_Close"
-msgstr "_Uždaryti"
+#: src/gtkui/menus.c:202 src/gtkui/menus.c:256
+msgid "Remo_ve"
+msgstr "_Šalinti"
 
-#: src/gtkui/menus.c:245
+#: src/gtkui/menus.c:204
 msgid "_Import ..."
 msgstr "_Įkelti ..."
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.c:205
 msgid "_Export ..."
 msgstr "_Eksportuoti ..."
 
-#: src/gtkui/menus.c:248
+#: src/gtkui/menus.c:207
 msgid "Playlist _Manager ..."
 msgstr "Grojaraščio _redaktorius"
 
-#: src/gtkui/menus.c:249
+#: src/gtkui/menus.c:208
 msgid "_Queue Manager ..."
 msgstr "_Eilės redaktorius ..."
 
-#: src/gtkui/menus.c:252
+#: src/gtkui/menus.c:211
 msgid "Volume _Up"
 msgstr "Pagarsi_nti"
 
-#: src/gtkui/menus.c:253
+#: src/gtkui/menus.c:212
 msgid "Volume _Down"
 msgstr "Patil_dyti"
 
-#: src/gtkui/menus.c:255
+#: src/gtkui/menus.c:214
 msgid "_Equalizer"
 msgstr "_Ekvalaizeris"
 
-#: src/gtkui/menus.c:257
-msgid "E_ffects"
-msgstr "E_fektai"
+#: src/gtkui/menus.c:216
+msgid "E_ffects ..."
+msgstr "E_fektai..."
 
-#: src/gtkui/menus.c:260
-msgid "_Interface"
-msgstr "_Naudotojo sąsaja"
-
-#: src/gtkui/menus.c:261
-msgid "_Visualizations"
-msgstr "_Vizualizacijos"
-
-#: src/gtkui/menus.c:263
+#: src/gtkui/menus.c:219
 msgid "Show _Menu Bar"
 msgstr "Rodyti _meniu juostą"
 
-#: src/gtkui/menus.c:264
+#: src/gtkui/menus.c:221
 msgid "Show I_nfo Bar"
 msgstr "Rodyti i_nfo juostą"
 
-#: src/gtkui/menus.c:265
+#: src/gtkui/menus.c:223
 msgid "Show Info Bar Vis_ualization"
 msgstr "Rodyti informacijos juostos _vizualizaciją"
 
-#: src/gtkui/menus.c:266
+#: src/gtkui/menus.c:225
 msgid "Show _Status Bar"
 msgstr "Rodyti _būsenos juostą"
 
-#: src/gtkui/menus.c:268
+#: src/gtkui/menus.c:228
 msgid "Show _Remaining Time"
 msgstr "_Rodyti likusį laiką"
 
-#: src/gtkui/menus.c:270
-msgid "Show Close _Buttons"
-msgstr "Rodyti _užvėrimo mygtukus"
+#: src/gtkui/menus.c:231
+msgid "_Visualizations ..."
+msgstr "_Vaizdiniai..."
 
-#: src/gtkui/menus.c:271
-msgid "Show Column _Headers"
-msgstr "Rodyti stulpelio _antraštes"
-
-#: src/gtkui/menus.c:272
-msgid "Choose _Columns ..."
-msgstr "Pasirinkti _stulpelius ..."
-
-#: src/gtkui/menus.c:273
-msgid "Scrol_l on Song Change"
-msgstr "Slinkt_is keičiantis dainai"
-
-#: src/gtkui/menus.c:276
+#: src/gtkui/menus.c:234
 msgid "_File"
 msgstr "_Failas"
 
-#: src/gtkui/menus.c:277
+#: src/gtkui/menus.c:235
 msgid "_Playback"
 msgstr "_Atkūrimas"
 
-#: src/gtkui/menus.c:278
+#: src/gtkui/menus.c:236
 msgid "P_laylist"
 msgstr "G_rojaraštis"
 
-#: src/gtkui/menus.c:279 src/gtkui/menus.c:293
+#: src/gtkui/menus.c:237 src/gtkui/menus.c:251
 msgid "_Services"
 msgstr "_Tarnybos"
 
-#: src/gtkui/menus.c:280
+#: src/gtkui/menus.c:238
 msgid "_Output"
 msgstr "_Išvestis"
 
-#: src/gtkui/menus.c:281
+#: src/gtkui/menus.c:239
 msgid "_View"
 msgstr "_Rodymas"
 
-#: src/gtkui/menus.c:285
+#: src/gtkui/menus.c:243
 msgid "_Queue/Unqueue"
 msgstr "_Į eilę/Iš eilės"
 
-#: src/gtkui/menus.c:288
+#: src/gtkui/menus.c:246
 msgid "Cu_t"
 msgstr "Iškirpt_i"
 
-#: src/gtkui/menus.c:289
+#: src/gtkui/menus.c:247
 msgid "_Copy"
 msgstr "_Kopijuoti"
 
-#: src/gtkui/menus.c:290
+#: src/gtkui/menus.c:248
 msgid "_Paste"
 msgstr "_Įklijuoti"
 
-#: src/gtkui/menus.c:291
+#: src/gtkui/menus.c:249
 msgid "Select _All"
 msgstr "Pasirinkti _viską"
 
-#: src/gtkui/menus.c:297
+#: src/gtkui/menus.c:255
 msgid "_Rename ..."
 msgstr "_Pervadinti..."
 
-#: src/gtkui/ui_gtk.c:96
+#: src/gtkui/settings.c:35
+msgid "<b>Playlist Tabs</b>"
+msgstr "<b>Grojaraščio kortelės</b>"
+
+#: src/gtkui/settings.c:36
+msgid "Always show tabs"
+msgstr "Visada rodyti korteles"
+
+#: src/gtkui/settings.c:39
+msgid "Show entry counts"
+msgstr "Rodyti įvesčių skaičių"
+
+#: src/gtkui/settings.c:42
+msgid "Show close buttons"
+msgstr "Rodyti uždarymo mygtukus"
+
+#: src/gtkui/settings.c:45
+msgid "<b>Playlist Columns</b>"
+msgstr "<b>Grojaračio stulpeliai</b>"
+
+#: src/gtkui/settings.c:47
+msgid "Show column headers"
+msgstr "Rodyti stulpelio antraštes"
+
+#: src/gtkui/settings.c:50 src/modplug/plugin_main.c:131
+#: src/skins/skins_cfg.c:267
+msgid "<b>Miscellaneous</b>"
+msgstr "<b>Kita</b>"
+
+#: src/gtkui/settings.c:51
+msgid "Arrow keys seek by:"
+msgstr "Krypčių klavišai persuka:"
+
+#: src/gtkui/settings.c:54
+msgid "Scroll on song change"
+msgstr "Keičiantis dainai slinkti"
+
+#: src/gtkui/ui_gtk.c:94
 msgid "GTK Interface"
 msgstr "GTK naudotojo sąsaja"
 
-#: src/gtkui/ui_gtk.c:198 src/skins/ui_main.c:306
+#: src/gtkui/ui_gtk.c:192 src/skins/ui_main.c:233
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:204
+#: src/gtkui/ui_gtk.c:197
 msgid "Buffering ..."
 msgstr "Įkraunama į atmintį ..."
 
-#: src/gtkui/ui_gtk.c:207 src/skins/ui_main.c:308 src/skins/ui_main.c:1451
+#: src/gtkui/ui_gtk.c:200 src/skins/ui_main.c:235 src/skins/ui_main.c:1143
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_gtk.c:253 src/lyricwiki/lyricwiki.c:208
-#: src/lyricwiki/lyricwiki.c:218 src/lyricwiki/lyricwiki.c:242
-#: src/lyricwiki/lyricwiki.c:252 src/lyricwiki/lyricwiki.c:271
-#: src/skins/plugin.c:176
-msgid "Error"
-msgstr "Klaida"
-
-#: src/gtkui/ui_statusbar.c:108
+#: src/gtkui/ui_statusbar.c:86
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
@@ -2085,7 +1972,7 @@ msgstr[0] "%d kanalas"
 msgstr[1] "%d kanalai"
 msgstr[2] "%d kanalų"
 
-#: src/gtkui/ui_statusbar.c:123
+#: src/gtkui/ui_statusbar.c:101
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
@@ -2094,8 +1981,7 @@ msgstr "%d kbps"
 msgid "Previous track"
 msgstr "Ankstesnis takelis"
 
-#: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/ui_manager.c:177
-#: src/skins/ui_manager.c:178
+#: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/menus.c:78
 msgid "Play"
 msgstr "Groti"
 
@@ -2103,7 +1989,7 @@ msgstr "Groti"
 msgid "Pause/Resume"
 msgstr "Sustabdyti/Paleisti"
 
-#: src/hotkey/gui.c:73 src/skins/ui_manager.c:183 src/skins/ui_manager.c:184
+#: src/hotkey/gui.c:73 src/skins/menus.c:80
 msgid "Stop"
 msgstr "Stabdyti"
 
@@ -2182,7 +2068,7 @@ msgstr "Saistyti pelės mygtukus"
 msgid "Global Hotkey Plugin Configuration"
 msgstr "Global Hotkey įskiepio konfigūravimas"
 
-#: src/hotkey/gui.c:401
+#: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2190,19 +2076,23 @@ msgstr ""
 "Paspauskite klavišų kombinaciją teksto lauke.\n"
 "Taip pat galima sieti ir pelės mygtukus."
 
-#: src/hotkey/gui.c:406
+#: src/hotkey/gui.c:405
 msgid "Hotkeys:"
 msgstr "Spartieji klavišai:"
 
-#: src/hotkey/gui.c:423
+#: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
 msgstr "<b>Veiksmas:</b>"
 
-#: src/hotkey/gui.c:430
+#: src/hotkey/gui.c:429
 msgid "<b>Key Binding:</b>"
 msgstr "<b>Klavišo susiejimas:</b>"
 
-#: src/hotkey/plugin.c:66
+#: src/hotkey/gui.c:476
+msgid "_Add"
+msgstr "_Pridėti"
+
+#: src/hotkey/plugin.c:67
 msgid ""
 "Global Hotkey Plugin\n"
 "Control the player with global key combinations or multimedia keys.\n"
@@ -2228,11 +2118,31 @@ msgstr ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/hotkey/plugin.c:78
+#: src/hotkey/plugin.c:79
 msgid "Global Hotkeys"
 msgstr "Bendri karštieji klavišai"
 
-#: src/jack/jack.c:410
+#: src/jack/jack.c:196
+msgid "Connect to all available jack ports"
+msgstr "Prisijungti prie visų prieinamų jack prievadų"
+
+#: src/jack/jack.c:197
+msgid "Connect only the output ports"
+msgstr "Prisijungti tik prie išvesties prievadų"
+
+#: src/jack/jack.c:198
+msgid "Don't connect to any port"
+msgstr "Nesijungti prie jokio prievado"
+
+#: src/jack/jack.c:202
+msgid "Connection mode:"
+msgstr "Prisijungimo režimas:"
+
+#: src/jack/jack.c:205
+msgid "Enable debug printing"
+msgstr "Įjungti derinimo pranešimus"
+
+#: src/jack/jack.c:432
 msgid ""
 "Based on xmms-jack, by Chris Morgan:\n"
 "http://xmms-jack.sourceforge.net/\n"
@@ -2244,24 +2154,24 @@ msgstr ""
 "\n"
 "Pritaikė Audacious, Giacomo Lozito"
 
-#: src/jack/jack.c:416
+#: src/jack/jack.c:438
 msgid "JACK Output"
 msgstr "JACK išvestis"
 
-#: src/ladspa/plugin.c:493
+#: src/ladspa/plugin.c:519
 #, c-format
 msgid "%s Settings"
 msgstr "%s nustatymai:"
 
-#: src/ladspa/plugin.c:561
+#: src/ladspa/plugin.c:587
 msgid "LADSPA Host Settings"
 msgstr "LADSPA Host nustatymai"
 
-#: src/ladspa/plugin.c:570
+#: src/ladspa/plugin.c:596
 msgid "Module paths:"
 msgstr "Modulio kelias:"
 
-#: src/ladspa/plugin.c:575
+#: src/ladspa/plugin.c:601
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
@@ -2272,25 +2182,25 @@ msgstr ""
 "Kai pridedami nauji keliai, paspauskite ENTER naujų įskiepių paieškai.</"
 "small>"
 
-#: src/ladspa/plugin.c:591
+#: src/ladspa/plugin.c:617
 msgid "Available plugins:"
 msgstr "Prieinami įskiepiai:"
 
-#: src/ladspa/plugin.c:604 src/modplug/plugin_main.c:115
-#: src/modplug/plugin_main.c:119 src/modplug/plugin_main.c:123
-#: src/modplug/plugin_main.c:127
+#: src/ladspa/plugin.c:630 src/modplug/plugin_main.c:113
+#: src/modplug/plugin_main.c:117 src/modplug/plugin_main.c:121
+#: src/modplug/plugin_main.c:125
 msgid "Enable"
 msgstr "Įjungti"
 
-#: src/ladspa/plugin.c:610
+#: src/ladspa/plugin.c:636
 msgid "Enabled plugins:"
 msgstr "Įjungti įskiepiai:"
 
-#: src/ladspa/plugin.c:626
+#: src/ladspa/plugin.c:652
 msgid "Settings"
 msgstr "Nustatymai"
 
-#: src/ladspa/plugin.c:645
+#: src/ladspa/plugin.c:671
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
@@ -2298,16 +2208,16 @@ msgstr ""
 "LADSPA Host skirta Audacious\n"
 "Autorinės teisės 2011 John Lindgren"
 
-#: src/ladspa/plugin.c:650
+#: src/ladspa/plugin.c:676
 msgid "LADSPA Host"
 msgstr "LADSPA Host"
 
-#: src/lirc/lirc.c:76
+#: src/lirc/lirc.c:74
 #, c-format
 msgid "%s: could not init LIRC support\n"
 msgstr "%s: inicijuoti LIRC palaikymo nepavyko\n"
 
-#: src/lirc/lirc.c:83
+#: src/lirc/lirc.c:81
 #, c-format
 msgid ""
 "%s: could not read LIRC config file\n"
@@ -2318,27 +2228,27 @@ msgstr ""
 "%s: paskaitykite LIRC dokumentaciją\n"
 "%s: kaip sukurti tinkamą konfigūracijos failą\n"
 
-#: src/lirc/lirc.c:114
+#: src/lirc/lirc.c:112
 #, c-format
 msgid "%s: trying to reconnect...\n"
 msgstr "%s: bandoma prisijungti iš naujo...\n"
 
-#: src/lirc/lirc.c:354
+#: src/lirc/lirc.c:352
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
 msgstr "%s: nežinoma komanda „%s“\n"
 
-#: src/lirc/lirc.c:365
+#: src/lirc/lirc.c:363
 #, c-format
 msgid "%s: disconnected from LIRC\n"
 msgstr "%s: atsijungta nuo LIRC\n"
 
-#: src/lirc/lirc.c:371
+#: src/lirc/lirc.c:369
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
 msgstr "%s: bus bandoma prisijungti iš naujo kas %d sekundes...\n"
 
-#: src/lirc/lirc.c:381
+#: src/lirc/lirc.c:379
 msgid ""
 "A simple plugin to control Audacious using the LIRC remote control daemon\n"
 "\n"
@@ -2366,19 +2276,19 @@ msgstr ""
 "\n"
 "Apie LIRC galite sužinoti tinklalapy http://lirc.org."
 
-#: src/lirc/lirc.c:392
+#: src/lirc/lirc.c:390
 msgid "<b>Connection</b>"
 msgstr "<b>Prisijungimas</b>"
 
-#: src/lirc/lirc.c:393
+#: src/lirc/lirc.c:391
 msgid "Reconnect to LIRC server"
 msgstr "Iš naujo prisijungti prie LIRC serverio"
 
-#: src/lirc/lirc.c:395
+#: src/lirc/lirc.c:393
 msgid "Wait before reconnecting:"
 msgstr "Prieš jungiantis iš naujo palaukti:"
 
-#: src/lirc/lirc.c:405
+#: src/lirc/lirc.c:403
 msgid "LIRC Plugin"
 msgstr "LIRC įskiepis"
 
@@ -2390,6 +2300,12 @@ msgstr "Nėra prieinamų dainų žodžių"
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "Gauti %s nepavyko"
+
+#: src/lyricwiki/lyricwiki.c:208 src/lyricwiki/lyricwiki.c:218
+#: src/lyricwiki/lyricwiki.c:242 src/lyricwiki/lyricwiki.c:252
+#: src/lyricwiki/lyricwiki.c:271
+msgid "Error"
+msgstr "Klaida"
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
@@ -2412,7 +2328,7 @@ msgstr "Jungiamasi prie lyrics.wikia.com ..."
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki įskiepis"
 
-#: src/m3u/m3u.c:121
+#: src/m3u/m3u.c:116
 msgid "M3U Playlists"
 msgstr "M3U grojaraščiai"
 
@@ -2426,7 +2342,7 @@ msgstr "Takto generatorius: %d bpm"
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "Takto generatorius: %d bpm %d/%d"
 
-#: src/metronom/metronom.c:246
+#: src/metronom/metronom.c:218
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
@@ -2439,11 +2355,11 @@ msgstr ""
 "pvz. tact://77 norint atkurt 77 dūžius per minutę\n"
 "ar tact://60*3/4 norint atkurti 60 bpm 3/4 taktu"
 
-#: src/metronom/metronom.c:255
+#: src/metronom/metronom.c:227
 msgid "Tact Generator"
 msgstr "Takto generatorius"
 
-#: src/mixer/mixer.c:169
+#: src/mixer/mixer.c:171
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
@@ -2451,156 +2367,148 @@ msgstr ""
 "Channel Mixer įskiepis skirtas Audacious\n"
 "Autorinės teisės 2011-2012 John Lindgren ir Michał Lipski"
 
-#: src/mixer/mixer.c:173
+#: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
 msgstr "<b>Kanalų mikšeris</b>"
 
-#: src/mixer/mixer.c:174
+#: src/mixer/mixer.c:176
 msgid "Output channels:"
 msgstr "Išvesties kanalai:"
 
-#: src/mixer/mixer.c:184
+#: src/mixer/mixer.c:186
 msgid "Channel Mixer"
 msgstr "Kanalų mikšeris"
 
-#: src/mms/mms.c:224
+#: src/mms/mms.c:195
 msgid "MMS Plugin"
 msgstr "MMS įskiepis"
 
-#: src/modplug/plugin_main.c:57
+#: src/modplug/plugin_main.c:55
 msgid "<b>Resolution</b>"
 msgstr "<b>Raiška</b>"
 
-#: src/modplug/plugin_main.c:58
+#: src/modplug/plugin_main.c:56
 msgid "8-bit"
 msgstr "8-bitai"
 
-#: src/modplug/plugin_main.c:60
+#: src/modplug/plugin_main.c:58
 msgid "16-bit"
 msgstr "16-bitų"
 
-#: src/modplug/plugin_main.c:62
+#: src/modplug/plugin_main.c:60
 msgid "<b>Channels</b>"
 msgstr "<b>Kanalai</b>"
 
-#: src/modplug/plugin_main.c:67
-msgid "<b>Resampling</b>"
-msgstr "<b>Perdarymas (resampling)</b>"
-
-#: src/modplug/plugin_main.c:68
+#: src/modplug/plugin_main.c:66
 msgid "Nearest (fastest)"
 msgstr "Arčiausias (greičiausia)"
 
-#: src/modplug/plugin_main.c:70
+#: src/modplug/plugin_main.c:68
 msgid "Linear (fast)"
 msgstr "Linijinis (greitas)"
 
-#: src/modplug/plugin_main.c:72
+#: src/modplug/plugin_main.c:70
 msgid "Spline (good)"
 msgstr "Spline (gerai)"
 
-#: src/modplug/plugin_main.c:74
+#: src/modplug/plugin_main.c:72
 msgid "Polyphase (best)"
 msgstr "Polifazinis (geriausiai)"
 
-#: src/modplug/plugin_main.c:76
+#: src/modplug/plugin_main.c:74
 msgid "<b>Sampling rate</b>"
 msgstr "<b>Diskretizacijos dažnis</b>"
 
-#: src/modplug/plugin_main.c:77
+#: src/modplug/plugin_main.c:75
 msgid "22 kHz"
 msgstr "22 kHz"
 
-#: src/modplug/plugin_main.c:79
+#: src/modplug/plugin_main.c:77
 msgid "44 kHz"
 msgstr "44 kHz"
 
-#: src/modplug/plugin_main.c:81
+#: src/modplug/plugin_main.c:79
 msgid "48 kHz"
 msgstr "48 kHz"
 
-#: src/modplug/plugin_main.c:83
+#: src/modplug/plugin_main.c:81
 msgid "96 kHz"
 msgstr "96 kHz"
 
-#: src/modplug/plugin_main.c:88 src/modplug/plugin_main.c:95
-#: src/modplug/plugin_main.c:102
+#: src/modplug/plugin_main.c:86 src/modplug/plugin_main.c:93
+#: src/modplug/plugin_main.c:100
 msgid "Level:"
 msgstr "Lygis:"
 
-#: src/modplug/plugin_main.c:97
+#: src/modplug/plugin_main.c:95
 msgid "Cutoff:"
 msgstr "Nukirpimas:"
 
-#: src/modplug/plugin_main.c:114
+#: src/modplug/plugin_main.c:112
 msgid "<b>Reverb</b>"
 msgstr "<b>Reverb</b>"
 
-#: src/modplug/plugin_main.c:118
+#: src/modplug/plugin_main.c:116
 msgid "<b>Bass Boost</b>"
 msgstr "<b>Boso garsinimas</b>"
 
-#: src/modplug/plugin_main.c:122
+#: src/modplug/plugin_main.c:120
 msgid "<b>Surround</b>"
 msgstr "<b>Erdvinis</b>"
 
-#: src/modplug/plugin_main.c:126
+#: src/modplug/plugin_main.c:124
 msgid "<b>Preamp</b>"
 msgstr "<b>Stiprinimas</b>"
 
-#: src/modplug/plugin_main.c:133
-msgid "<b>Miscellaneous</b>"
-msgstr "<b>Kita</b>"
-
-#: src/modplug/plugin_main.c:134
+#: src/modplug/plugin_main.c:132
 msgid "Oversample"
 msgstr "Oversample"
 
-#: src/modplug/plugin_main.c:136
+#: src/modplug/plugin_main.c:134
 msgid "Noise reduction"
 msgstr "Triukšmo mažinimas"
 
-#: src/modplug/plugin_main.c:138
+#: src/modplug/plugin_main.c:136
 msgid "Play Amiga MODs"
 msgstr "Groti Amiga MOD"
 
-#: src/modplug/plugin_main.c:140
+#: src/modplug/plugin_main.c:138
 msgid "<b>Repeat</b>"
 msgstr "<b>Kartoti</b>"
 
-#: src/modplug/plugin_main.c:141
+#: src/modplug/plugin_main.c:139
 msgid "Repeat count:"
 msgstr "Kartojimų skaičius:"
 
-#: src/modplug/plugin_main.c:143
+#: src/modplug/plugin_main.c:141
 msgid "To repeat forever, set the repeat count to -1."
 msgstr "Norėdami kartoti amžinai, nustatykite „-1“."
 
-#: src/modplug/plugin_main.c:238
+#: src/modplug/plugin_main.c:236
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (Module grotuvas)"
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:210
 msgid "Surround"
 msgstr "Erdvinis garsas"
 
-#: src/mpg123/mpg123.c:569
+#: src/mpg123/mpg123.c:412
 msgid "MPG123 Plugin"
 msgstr "MPG123 įskiepis"
 
-#: src/mpris2/plugin.c:415
+#: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 Serveris"
 
-#: src/neon/neon.c:1229
+#: src/neon/neon.c:1056
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS įskiepis"
 
-#: src/notify/event.c:64
+#: src/notify/event.c:65
 msgid "Stopped"
 msgstr "Sustabdyta"
 
-#: src/notify/event.c:64
+#: src/notify/event.c:65
 msgid "Audacious is not playing."
 msgstr "Audacious negroja."
 
@@ -2656,39 +2564,39 @@ msgstr "Darbastalio pranešimai"
 msgid "Show"
 msgstr "Rodyti"
 
-#: src/notify/osd.c:65 src/skins/ui_manager.c:180 src/skins/ui_manager.c:181
+#: src/notify/osd.c:65 src/skins/menus.c:79
 msgid "Pause"
 msgstr "Pauzė"
 
-#: src/notify/osd.c:72 src/skins/ui_manager.c:189 src/skins/ui_manager.c:190
+#: src/notify/osd.c:72 src/skins/menus.c:82
 msgid "Next"
 msgstr "Sekantis"
 
-#: src/oss4/plugin.c:36
+#: src/oss4/plugin.c:38
 msgid "1. Default device"
 msgstr "1. Numatytasis įrenginys"
 
-#: src/oss4/plugin.c:75 src/sndio/sndio.c:393
+#: src/oss4/plugin.c:77 src/sndio/sndio.c:393
 msgid "Audio device:"
 msgstr "Audio įrenginys:"
 
-#: src/oss4/plugin.c:77
+#: src/oss4/plugin.c:79
 msgid "Use alternate device:"
 msgstr "Naudoti alternatyvų įrenginį:"
 
-#: src/oss4/plugin.c:81
+#: src/oss4/plugin.c:83
 msgid "Save volume between sessions."
 msgstr "Išsaugoti garsą tarp sesijų"
 
-#: src/oss4/plugin.c:83
+#: src/oss4/plugin.c:85
 msgid "Enable format conversions made by the OSS software."
 msgstr "Įgalinti formato keitimą kurį padarė OSS programinė įranga."
 
-#: src/oss4/plugin.c:85
+#: src/oss4/plugin.c:87
 msgid "Enable exclusive mode to prevent virtual mixing."
 msgstr "Įgalinti išskirtinį režimą, siekiant išvengti virtualaus maišymosi."
 
-#: src/oss4/plugin.c:108
+#: src/oss4/plugin.c:110
 msgid ""
 "OSS4 Output Plugin for Audacious\n"
 "Copyright 2010-2012 Michał Lipski\n"
@@ -2702,15 +2610,15 @@ msgstr ""
 "Norėčiau padėkoti žmonėms #audacious kanale, ypatingai Tony Vroon ir John "
 "Lindgren ir savaime aišku ankstesnės OSS įskiepio versijos autoriams."
 
-#: src/oss4/plugin.c:115
+#: src/oss4/plugin.c:117
 msgid "OSS4 Output"
 msgstr "OSS4 išvestis"
 
-#: src/pls/pls.c:113
+#: src/pls/pls.c:102
 msgid "PLS Playlists"
 msgstr "PLS grojaraščiai"
 
-#: src/psf/plugin.c:262
+#: src/psf/plugin.c:209
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1/PSF2 dekoderis"
 
@@ -2754,7 +2662,7 @@ msgstr ""
 msgid "PulseAudio Output"
 msgstr "PulseAudio išvestis"
 
-#: src/resample/resample.c:161
+#: src/resample/resample.c:165
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
@@ -2762,75 +2670,75 @@ msgstr ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Autorinės teisės 2010-2012 John Lindgren"
 
-#: src/resample/resample.c:165
+#: src/resample/resample.c:169
 msgid "Skip/repeat samples"
 msgstr "Praleisti/kartoti pavyzdžius"
 
-#: src/resample/resample.c:166
+#: src/resample/resample.c:170
 msgid "Linear interpolation"
 msgstr "Linijinė interpoliacija"
 
-#: src/resample/resample.c:167
+#: src/resample/resample.c:171
 msgid "Fast sinc interpolation"
 msgstr "Greita interpoliacija"
 
-#: src/resample/resample.c:168
+#: src/resample/resample.c:172
 msgid "Medium sinc interpolation"
 msgstr "Vidutinė interpoliacija"
 
-#: src/resample/resample.c:169
+#: src/resample/resample.c:173
 msgid "Best sinc interpolation"
 msgstr "Geriausia interpoliacija"
 
-#: src/resample/resample.c:172
+#: src/resample/resample.c:176
 msgid "<b>Conversion</b>"
 msgstr "<b>Konvertavimas</b>"
 
-#: src/resample/resample.c:173
+#: src/resample/resample.c:177
 msgid "Method:"
 msgstr "Metodas:"
 
-#: src/resample/resample.c:176 src/sox-resampler/sox-resampler.c:151
+#: src/resample/resample.c:180 src/sox-resampler/sox-resampler.c:153
 msgid "Rate:"
 msgstr "Dažnis:"
 
-#: src/resample/resample.c:179
+#: src/resample/resample.c:183
 msgid "<b>Rate Mappings</b>"
 msgstr "<b>Dažnio nustatymai</b>"
 
-#: src/resample/resample.c:180
+#: src/resample/resample.c:184
 msgid "Use rate mappings"
 msgstr "Naudoti dažnio nustatymus"
 
-#: src/resample/resample.c:182
+#: src/resample/resample.c:186
 msgid "8 kHz:"
 msgstr "8 kHz:"
 
-#: src/resample/resample.c:185
+#: src/resample/resample.c:189
 msgid "16 kHz:"
 msgstr "16 kHz:"
 
-#: src/resample/resample.c:188
+#: src/resample/resample.c:192
 msgid "22.05 kHz:"
 msgstr "22.05 kHz:"
 
-#: src/resample/resample.c:191
+#: src/resample/resample.c:195
 msgid "44.1 kHz:"
 msgstr "44.1 kHz:"
 
-#: src/resample/resample.c:194
+#: src/resample/resample.c:198
 msgid "48 kHz:"
 msgstr "48 kHz:"
 
-#: src/resample/resample.c:197
+#: src/resample/resample.c:201
 msgid "96 kHz:"
 msgstr "96 kHz:"
 
-#: src/resample/resample.c:200
+#: src/resample/resample.c:204
 msgid "192 kHz:"
 msgstr "192 kHz:"
 
-#: src/resample/resample.c:210
+#: src/resample/resample.c:214
 msgid "Sample Rate Converter"
 msgstr "Diskretizavimo dažnio keitėjas"
 
@@ -2839,21 +2747,21 @@ msgstr "Diskretizavimo dažnio keitėjas"
 msgid "OK. Scrobbling for user: %s"
 msgstr "Gerai. Ieškoma informacijos naudotojui: %s"
 
-#: src/scrobbler2/config_window.c:52
+#: src/scrobbler2/config_window.c:53
 msgid "Permission Denied"
 msgstr "Neleidžiama"
 
-#: src/scrobbler2/config_window.c:54
+#: src/scrobbler2/config_window.c:55
 msgid "Access the following link to allow Audacious to scrobble your plays:"
 msgstr ""
 "Nueikite šia nuoroda ir leiskite Audacious gauti informaciją apie dainas:"
 
-#: src/scrobbler2/config_window.c:63
+#: src/scrobbler2/config_window.c:64
 msgid "Keep this window open and click 'Check Permission' again.\n"
 msgstr ""
 "Palikite šį langą atvertą ir paspauskite „Tikrinti leidimus“ dar kartą.\n"
 
-#: src/scrobbler2/config_window.c:66 src/scrobbler2/config_window.c:77
+#: src/scrobbler2/config_window.c:67 src/scrobbler2/config_window.c:78
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
@@ -2861,33 +2769,33 @@ msgstr ""
 "Nesijaudinkite. Jūsų informacija saugoma kompiuteryje.\n"
 "Ji bus išsiųsta kai tik Audacious leis tai padaryti."
 
-#: src/scrobbler2/config_window.c:74
+#: src/scrobbler2/config_window.c:75
 msgid "Network Problem."
 msgstr "Tinklo problema."
 
-#: src/scrobbler2/config_window.c:75
+#: src/scrobbler2/config_window.c:76
 msgid "There was a problem contacting Last.fm. Please try again later."
 msgstr "Bandant susisiekti su Last.fm įvyko klaida. Pabandykite vėliau."
 
-#: src/scrobbler2/config_window.c:107
+#: src/scrobbler2/config_window.c:108
 msgid "Checking..."
 msgstr "Tikrinama..."
 
-#: src/scrobbler2/config_window.c:173
+#: src/scrobbler2/config_window.c:174
 msgid "C_heck Permission"
 msgstr "_Tikrinti leidimus"
 
-#: src/scrobbler2/config_window.c:174
+#: src/scrobbler2/config_window.c:175
 msgid "_Revoke Permission"
 msgstr "_Atšaukti leidimą"
 
-#: src/scrobbler2/config_window.c:221
+#: src/scrobbler2/config_window.c:222
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
 "Turite leisti Audacious perduoti takelių informaciją jūsų Last.fm paskyrai.\n"
 
-#: src/scrobbler2/scrobbler.c:233
+#: src/scrobbler2/scrobbler.c:218
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
@@ -2895,7 +2803,7 @@ msgstr ""
 "Scrobbler įskiepio paleisti nepavyko.\n"
 "Gali būt jog yra problemų su jūsų įdiegimu."
 
-#: src/scrobbler2/scrobbler.c:311
+#: src/scrobbler2/scrobbler.c:294
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2912,11 +2820,11 @@ msgstr ""
 "Dėkojame John Lindgren už pagalbą.\n"
 "\n"
 
-#: src/scrobbler2/scrobbler.c:317
+#: src/scrobbler2/scrobbler.c:300
 msgid "Scrobbler 2.0"
 msgstr "Scrobbler 2.0"
 
-#: src/scrobbler2/scrobbler_communication.c:690
+#: src/scrobbler2/scrobbler_communication.c:727
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -2936,19 +2844,19 @@ msgstr ""
 msgid "SDL Output"
 msgstr "SDL išvestis"
 
-#: src/search-tool/search-tool.c:111 src/search-tool/search-tool.c:121
+#: src/search-tool/search-tool.c:104 src/search-tool/search-tool.c:114
 msgid "Library"
 msgstr "Fonoteka"
 
-#: src/search-tool/search-tool.c:219
+#: src/search-tool/search-tool.c:211
 msgid "Unknown Artist"
 msgstr "Nežinomas atlikėjas"
 
-#: src/search-tool/search-tool.c:221
+#: src/search-tool/search-tool.c:213
 msgid "Unknown Album"
 msgstr "Nežinomas albumas"
 
-#: src/search-tool/search-tool.c:632
+#: src/search-tool/search-tool.c:625
 #, c-format
 msgid ""
 "%s\n"
@@ -2957,7 +2865,7 @@ msgstr ""
 "%s\n"
 " ant %s su %s"
 
-#: src/search-tool/search-tool.c:638
+#: src/search-tool/search-tool.c:631
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
@@ -2965,7 +2873,7 @@ msgstr[0] "%d albumas"
 msgstr[1] "%d albumai"
 msgstr[2] "%d albumų"
 
-#: src/search-tool/search-tool.c:640
+#: src/search-tool/search-tool.c:633
 #, c-format
 msgid ""
 "%s\n"
@@ -2983,7 +2891,7 @@ msgstr[2] ""
 "%s\n"
 " %s, %d dainų"
 
-#: src/search-tool/search-tool.c:646
+#: src/search-tool/search-tool.c:639
 #, c-format
 msgid ""
 "%s\n"
@@ -3001,19 +2909,19 @@ msgstr[2] ""
 "%s\n"
 " %d dainų kurias sukūrė %s"
 
-#: src/search-tool/search-tool.c:687
+#: src/search-tool/search-tool.c:675
 msgid "_Create Playlist"
 msgstr "_Sukurti grojaraštį"
 
-#: src/search-tool/search-tool.c:694
+#: src/search-tool/search-tool.c:676
 msgid "_Add to Playlist"
 msgstr "_Pridėti į grojaraštį"
 
-#: src/search-tool/search-tool.c:734
+#: src/search-tool/search-tool.c:713
 msgid "Search library"
 msgstr "Ieškoti fonotekoje"
 
-#: src/search-tool/search-tool.c:739
+#: src/search-tool/search-tool.c:717
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -3021,845 +2929,683 @@ msgstr ""
 "Norėdami importuoti muziką į Audacious fonoteką, pasirinkite aplanką ir "
 "paspauskite „atnaujinti“ piktogramą."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:725
 msgid "Please wait ..."
 msgstr "Palaukite..."
 
-#: src/search-tool/search-tool.c:769
+#: src/search-tool/search-tool.c:747
 msgid "Choose Folder"
 msgstr "Pasirinkite aplanką"
 
-#: src/search-tool/search-tool.c:808
+#: src/search-tool/search-tool.c:786
 msgid "Search Tool"
 msgstr "Paieškos įrankis"
+
+#: src/skins/menus.c:56
+msgid "Open Files ..."
+msgstr "Atverti failus..."
+
+#: src/skins/menus.c:57
+msgid "Open URL ..."
+msgstr "Atverti URL..."
+
+#: src/skins/menus.c:59
+msgid "Playback"
+msgstr "Atkūrimas"
+
+#: src/skins/menus.c:60
+msgid "Playlist"
+msgstr "Grojaraštis"
+
+#: src/skins/menus.c:61
+msgid "View"
+msgstr "Rodymas"
+
+#: src/skins/menus.c:63 src/skins/menus.c:133 src/skins/menus.c:146
+#: src/skins/menus.c:203
+msgid "Services"
+msgstr "Tarnybos"
+
+#: src/skins/menus.c:65
+msgid "About ..."
+msgstr "Apie..."
+
+#: src/skins/menus.c:66
+msgid "Settings ..."
+msgstr "Nustatymai..."
+
+#: src/skins/menus.c:67
+msgid "Quit"
+msgstr "Baigti"
+
+#: src/skins/menus.c:71 src/skins/menus.c:195
+msgid "Song Info ..."
+msgstr "Dainos informacija..."
+
+#: src/skins/menus.c:73
+msgid "Repeat"
+msgstr "Kartoti"
+
+#: src/skins/menus.c:74
+msgid "Shuffle"
+msgstr "Maišyti"
+
+#: src/skins/menus.c:75
+msgid "No Playlist Advance"
+msgstr "Nesislinkti grojaraščiu"
+
+#: src/skins/menus.c:76
+msgid "Stop After This Song"
+msgstr "Sustabdyti po šios dainos"
+
+#: src/skins/menus.c:81
+msgid "Previous"
+msgstr "Ankstesnis"
+
+#: src/skins/menus.c:84
+msgid "Set A-B Repeat"
+msgstr "Nustatyti A-B kartojimą"
+
+#: src/skins/menus.c:85
+msgid "Clear A-B Repeat"
+msgstr "Išvalyti A-B kartojimą"
+
+#: src/skins/menus.c:87
+msgid "Jump to Song ..."
+msgstr "Pereiti prie dainos ..."
+
+#: src/skins/menus.c:88
+msgid "Jump to Time ..."
+msgstr "Šokti į laiką..."
+
+#: src/skins/menus.c:92
+msgid "Play This Playlist"
+msgstr "Groti šį grojaraštį"
+
+#: src/skins/menus.c:94
+msgid "New Playlist"
+msgstr "Naujas grojaraštis"
+
+#: src/skins/menus.c:95
+msgid "Rename Playlist ..."
+msgstr "Pervadinti grojaraštį..."
+
+#: src/skins/menus.c:96
+msgid "Remove Playlist"
+msgstr "Pašalinti grojaraštį"
+
+#: src/skins/menus.c:98
+msgid "Previous Playlist"
+msgstr "Ankstesnis grojaraštis"
+
+#: src/skins/menus.c:99
+msgid "Next Playlist"
+msgstr "Sekantis grojaraštis"
+
+#: src/skins/menus.c:101
+msgid "Import Playlist ..."
+msgstr "Įkelti grojaraštį..."
+
+#: src/skins/menus.c:102
+msgid "Export Playlist ..."
+msgstr "Eksportuoti grojaraštį..."
+
+#: src/skins/menus.c:104
+msgid "Playlist Manager ..."
+msgstr "Grojaraščių redaktorius..."
+
+#: src/skins/menus.c:105
+msgid "Queue Manager ..."
+msgstr "Eilės redaktorius ..."
+
+#: src/skins/menus.c:107
+msgid "Refresh Playlist"
+msgstr "Atnaujinti grojaraštį"
+
+#: src/skins/menus.c:111
+msgid "Show Playlist Editor"
+msgstr "Rodyti grojaraščio redaktorių"
+
+#: src/skins/menus.c:113
+msgid "Show Equalizer"
+msgstr "Rodyti ekvalaizerį"
+
+#: src/skins/menus.c:116
+msgid "Show Remaining Time"
+msgstr "Rodyti likusį laiką"
+
+#: src/skins/menus.c:119
+msgid "Always on Top"
+msgstr "Visada viršuje"
+
+#: src/skins/menus.c:121
+msgid "On All Workspaces"
+msgstr "Visuose darbalaukiuose"
+
+#: src/skins/menus.c:124
+msgid "Roll Up Player"
+msgstr "Sustumti grotuvą"
+
+#: src/skins/menus.c:126
+msgid "Roll Up Playlist Editor"
+msgstr "Sustumti grojaraščio redaktorių"
+
+#: src/skins/menus.c:128
+msgid "Roll Up Equalizer"
+msgstr "Sustumti ekvalaizerį"
+
+#: src/skins/menus.c:135
+msgid "Add URL ..."
+msgstr "Pridėti URL..."
+
+#: src/skins/menus.c:136
+msgid "Add Files ..."
+msgstr "Pridėti failus..."
+
+#: src/skins/menus.c:140 src/skins/menus.c:167 src/skins/menus.c:177
+msgid "By Title"
+msgstr "Pagal pavadinimą"
+
+#: src/skins/menus.c:141 src/skins/menus.c:170 src/skins/menus.c:180
+msgid "By Filename"
+msgstr "Pagal failo vardą"
+
+#: src/skins/menus.c:142 src/skins/menus.c:171 src/skins/menus.c:181
+msgid "By File Path"
+msgstr "Pagal failo kelią"
+
+#: src/skins/menus.c:148
+msgid "Remove All"
+msgstr "Pašalinti visus"
+
+#: src/skins/menus.c:149
+msgid "Clear Queue"
+msgstr "Išvalyti eilę"
+
+#: src/skins/menus.c:151
+msgid "Remove Unavailable Files"
+msgstr "Pašalina neprieinamus failus"
+
+#: src/skins/menus.c:152
+msgid "Remove Duplicates"
+msgstr "Pašalinti dubliuotus"
+
+#: src/skins/menus.c:154
+msgid "Remove Unselected"
+msgstr "Pašalint nepažymėtus"
+
+#: src/skins/menus.c:155
+msgid "Remove Selected"
+msgstr "Pašalint pažymėtus"
+
+#: src/skins/menus.c:159
+msgid "Search and Select"
+msgstr "Ieškoti ir pasirinkti"
+
+#: src/skins/menus.c:161
+msgid "Invert Selection"
+msgstr "Invertuoti pažymėjimą"
+
+#: src/skins/menus.c:162
+msgid "Select None"
+msgstr "Nieko nepasirinkti"
+
+#: src/skins/menus.c:163
+msgid "Select All"
+msgstr "Pasirinkti viską"
+
+#: src/skins/menus.c:168 src/skins/menus.c:178
+msgid "By Album"
+msgstr "Pagal albumą"
+
+#: src/skins/menus.c:169 src/skins/menus.c:179
+msgid "By Artist"
+msgstr "Pagal atlikėją"
+
+#: src/skins/menus.c:172 src/skins/menus.c:182
+msgid "By Release Date"
+msgstr "Pagal išleidimo datą"
+
+#: src/skins/menus.c:173 src/skins/menus.c:183
+msgid "By Track Number"
+msgstr "Pagal takelio numerį"
+
+#: src/skins/menus.c:187
+msgid "Randomize List"
+msgstr "Sumaišyti sąrašą"
+
+#: src/skins/menus.c:188
+msgid "Reverse List"
+msgstr "Apversti sąrašą"
+
+#: src/skins/menus.c:190
+msgid "Sort Selected"
+msgstr "Rikuoti pasirinktus"
+
+#: src/skins/menus.c:191
+msgid "Sort List"
+msgstr "Rikiuoti sąrašą"
+
+#: src/skins/menus.c:197
+msgid "Cut"
+msgstr "Iškirpti"
+
+#: src/skins/menus.c:198
+msgid "Copy"
+msgstr "Kopijuoti"
+
+#: src/skins/menus.c:199
+msgid "Paste"
+msgstr "Įklijuoti"
+
+#: src/skins/menus.c:201
+msgid "Queue/Unqueue"
+msgstr "Į eilę/Iš eilės"
+
+#: src/skins/menus.c:207
+msgid "Load Preset ..."
+msgstr "Įkrauti šabloną..."
+
+#: src/skins/menus.c:208
+msgid "Load Auto Preset ..."
+msgstr "Įkrauti savaime įsikraunantį šabloną..."
+
+#: src/skins/menus.c:209
+msgid "Load Default"
+msgstr "Įkelti numatytus"
+
+#: src/skins/menus.c:210
+msgid "Load Preset File ..."
+msgstr "Įkrauti šabloną iš failo..."
+
+#: src/skins/menus.c:211
+msgid "Load EQF File ..."
+msgstr "Įkelti EQF failą..."
+
+#: src/skins/menus.c:213
+msgid "Save Preset ..."
+msgstr "Išsaugoti šabloną..."
+
+#: src/skins/menus.c:214
+msgid "Save Auto Preset ..."
+msgstr "Išsaugoti savaime įsikraunantį šabloną..."
+
+#: src/skins/menus.c:215
+msgid "Save Default"
+msgstr "Įrašyti numatytuosius"
+
+#: src/skins/menus.c:216
+msgid "Save Preset File ..."
+msgstr "Išsaugoti šabloną į failą..."
+
+#: src/skins/menus.c:217
+msgid "Save EQF File ..."
+msgstr "Išsaugoti šabloną į EQF failą..."
+
+#: src/skins/menus.c:219
+msgid "Delete Preset ..."
+msgstr "Pašalinti šabloną..."
+
+#: src/skins/menus.c:220
+msgid "Delete Auto Preset ..."
+msgstr "Ištrinti savaime įsikraunantį šabloną..."
+
+#: src/skins/menus.c:222
+msgid "Import Winamp Presets ..."
+msgstr "Importuoti WinAMP šablonus..."
+
+#: src/skins/menus.c:224
+msgid "Reset to Zero"
+msgstr "Atstatyti nulį"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
 msgstr "Klasikinė Winamp sąsaja"
 
-#: src/skins/skins_cfg.c:204
-msgid "_Player:"
-msgstr "_Grotuvas:"
+#: src/skins/preset-browser.c:57 src/skins/preset-list.c:375
+#: src/skins/preset-list.c:390
+msgid "Save"
+msgstr "Išsaugoti"
 
-#: src/skins/skins_cfg.c:205
-msgid "Select main player window font:"
-msgstr "Pasirinkti pagrindinį lango šriftą:"
+#: src/skins/preset-browser.c:57 src/skins/preset-list.c:342
+#: src/skins/preset-list.c:358
+msgid "Load"
+msgstr "Įkrauti"
 
-#: src/skins/skins_cfg.c:207
-msgid "_Playlist:"
-msgstr "_Grojaraštis:"
+#: src/skins/preset-browser.c:82
+msgid "Load Preset File"
+msgstr "Įkrauti šabloną iš failo"
 
-#: src/skins/skins_cfg.c:208
-msgid "Select playlist font:"
-msgstr "Pasirinkti grojaraščio šriftą:"
+#: src/skins/preset-browser.c:106
+msgid "Load EQF File"
+msgstr "Įkelti EQF failą"
 
-#: src/skins/skins_cfg.c:212
-msgid "<b>_Fonts</b>"
-msgstr "<b>_Šriftai</b>"
+#: src/skins/preset-browser.c:122
+msgid "Save Preset File"
+msgstr "Išsaugoti šabloną į failą"
 
-#: src/skins/skins_cfg.c:215
-msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Naudoti bitmap šriftus (palaiko tik ASCII)"
+#: src/skins/preset-browser.c:144
+msgid "Save EQF File"
+msgstr "Išsaugoti šabloną į EQF failą"
 
-#: src/skins/skins_cfg.c:217
-msgid "Scroll song title in both directions"
-msgstr "Slinkti pavadinimą į abi puses"
+#: src/skins/preset-browser.c:162
+msgid "Import Winamp Presets"
+msgstr "Importuoti WinAMP šablonus"
 
-#: src/skins/skins_cfg.c:295
-msgid "<b>_Skin</b>"
-msgstr "<b>_Išvaizda</b>"
-
-#: src/skins/skins_cfg.c:342
-msgid "Interface Preferences"
-msgstr "Sąsajos nustatymai"
-
-#: src/skins/ui_equalizer.c:328
-msgid "Preamp"
-msgstr "Preamp"
-
-#: src/skins/ui_equalizer.c:332
-msgid "31 Hz"
-msgstr "31 Hz"
-
-#: src/skins/ui_equalizer.c:333
-msgid "63 Hz"
-msgstr "63 Hz"
-
-#: src/skins/ui_equalizer.c:333
-msgid "125 Hz"
-msgstr "125 Hz"
-
-#: src/skins/ui_equalizer.c:333
-msgid "250 Hz"
-msgstr "250 Hz"
-
-#: src/skins/ui_equalizer.c:333
-msgid "500 Hz"
-msgstr "500 Hz"
-
-#: src/skins/ui_equalizer.c:333
-msgid "1 kHz"
-msgstr "1 kHz"
-
-#: src/skins/ui_equalizer.c:334
-msgid "2 kHz"
-msgstr "2 kHz"
-
-#: src/skins/ui_equalizer.c:334
-msgid "4 kHz"
-msgstr "4 kHz"
-
-#: src/skins/ui_equalizer.c:334
-msgid "8 kHz"
-msgstr "8 kHz"
-
-#: src/skins/ui_equalizer.c:334
-msgid "16 kHz"
-msgstr "16 kHz"
-
-#: src/skins/ui_equalizer.c:375
-msgid "Audacious Equalizer"
-msgstr "Audacious ekvalaizeris"
-
-#: src/skins/ui_equalizer.c:890
+#: src/skins/preset-list.c:289
 msgid "Presets"
 msgstr "Šablonai"
 
-#: src/skins/ui_equalizer.c:971 src/skins/ui_manager.c:451
+#: src/skins/preset-list.c:339
 msgid "Load preset"
 msgstr "Įkrauti šabloną"
 
-#: src/skins/ui_equalizer.c:988
+#: src/skins/preset-list.c:355
 msgid "Load auto-preset"
 msgstr "Įkrauti auto išankstinius nustatymus"
 
-#: src/skins/ui_equalizer.c:1018 src/skins/ui_equalizer.c:1036
-#: src/skins/ui_equalizer.c:1052
-msgid "Load equalizer preset"
-msgstr "Įkrauti ekvalaizerio išankstinius nustatymus"
-
-#: src/skins/ui_equalizer.c:1071 src/skins/ui_manager.c:472
+#: src/skins/preset-list.c:371
 msgid "Save preset"
 msgstr "Išsaugoti šablonus"
 
-#: src/skins/ui_equalizer.c:1087
+#: src/skins/preset-list.c:386
 msgid "Save auto-preset"
 msgstr "Išsaugoti auto išankstinius nustatymus"
 
-#: src/skins/ui_equalizer.c:1118 src/skins/ui_equalizer.c:1154
-msgid "Save equalizer preset"
-msgstr "Išsaugoti ekvalaizerio išankstinius nustatymus"
-
-#: src/skins/ui_equalizer.c:1173 src/skins/ui_manager.c:487
+#: src/skins/preset-list.c:413
 msgid "Delete preset"
 msgstr "Ištrinti šabloną"
 
-#: src/skins/ui_equalizer.c:1190
+#: src/skins/preset-list.c:429
 msgid "Delete auto-preset"
 msgstr "Ištrinti auto išankstinius nustatymus"
 
-#: src/skins/ui_main.c:414
-msgid "kbps"
-msgstr "kbps"
+#: src/skins/skins_cfg.c:181
+msgid "_Player:"
+msgstr "_Grotuvas:"
 
-#: src/skins/ui_main.c:422
-msgid "kHz"
-msgstr "kHz"
+#: src/skins/skins_cfg.c:183
+msgid "Select main player window font:"
+msgstr "Pasirinkti pagrindinį lango šriftą:"
 
-#: src/skins/ui_main.c:770
+#: src/skins/skins_cfg.c:184
+msgid "_Playlist:"
+msgstr "_Grojaraštis:"
+
+#: src/skins/skins_cfg.c:186
+msgid "Select playlist font:"
+msgstr "Pasirinkti grojaraščio šriftą:"
+
+#: src/skins/skins_cfg.c:191
+msgid "<b>Skin</b>"
+msgstr "<b>Išvaizda</b>"
+
+#: src/skins/skins_cfg.c:193
+msgid "<b>Fonts</b>"
+msgstr "<b>Šriftai</b>"
+
+#: src/skins/skins_cfg.c:196
+msgid "Use bitmap fonts (supports ASCII only)"
+msgstr "Naudoti bitmap šriftus (palaiko tik ASCII)"
+
+#: src/skins/skins_cfg.c:198
+msgid "Scroll song title"
+msgstr "Slinkti pavadinimą"
+
+#: src/skins/skins_cfg.c:200
+msgid "Scroll song title in both directions"
+msgstr "Slinkti pavadinimą į abi puses"
+
+#: src/skins/skins_cfg.c:205
+msgid "Analyzer"
+msgstr "Analizatorius"
+
+#: src/skins/skins_cfg.c:206
+msgid "Scope"
+msgstr "Sritis"
+
+#: src/skins/skins_cfg.c:207
+msgid "Voiceprint / VU meter"
+msgstr "Voiceprint / VU meter"
+
+#: src/skins/skins_cfg.c:208
+msgid "Off"
+msgstr "Išjungta"
+
+#: src/skins/skins_cfg.c:212 src/skins/skins_cfg.c:237
+#: src/skins/skins_cfg.c:243
+msgid "Normal"
+msgstr "Normalus"
+
+#: src/skins/skins_cfg.c:213 src/skins/skins_cfg.c:238
+msgid "Fire"
+msgstr "Ugnis"
+
+#: src/skins/skins_cfg.c:214
+msgid "Vertical lines"
+msgstr "Vertikalios linijos"
+
+#: src/skins/skins_cfg.c:218
+msgid "Lines"
+msgstr "Linijos"
+
+#: src/skins/skins_cfg.c:219
+msgid "Bars"
+msgstr "Juostos"
+
+#: src/skins/skins_cfg.c:223
+msgid "Slowest"
+msgstr "Lėčiausias"
+
+#: src/skins/skins_cfg.c:224
+msgid "Slow"
+msgstr "Lėtas"
+
+#: src/skins/skins_cfg.c:225 src/sox-resampler/sox-resampler.c:145
+msgid "Medium"
+msgstr "Vidutinis"
+
+#: src/skins/skins_cfg.c:226
+msgid "Fast"
+msgstr "Greitas"
+
+#: src/skins/skins_cfg.c:227
+msgid "Fastest"
+msgstr "Greičiausias"
+
+#: src/skins/skins_cfg.c:231
+msgid "Dots"
+msgstr "Taškai"
+
+#: src/skins/skins_cfg.c:232
+msgid "Line"
+msgstr "Eilutė "
+
+#: src/skins/skins_cfg.c:233
+msgid "Solid"
+msgstr "Vientisa"
+
+#: src/skins/skins_cfg.c:239
+msgid "Ice"
+msgstr "Ledas"
+
+#: src/skins/skins_cfg.c:244
+msgid "Smooth"
+msgstr "Tolygus"
+
+#: src/skins/skins_cfg.c:248
+msgid "<b>Type</b>"
+msgstr "<b>Tipas</b>"
+
+#: src/skins/skins_cfg.c:249
+msgid "Visualization type:"
+msgstr "Vaizdo efektų tipas:"
+
+#: src/skins/skins_cfg.c:252
+msgid "<b>Analyzer</b>"
+msgstr "<b>Analizatorius</b>"
+
+#: src/skins/skins_cfg.c:253
+msgid "Show peaks"
+msgstr "Rodyti pikus"
+
+#: src/skins/skins_cfg.c:255
+msgid "Coloring:"
+msgstr "Spalvinimas:"
+
+#: src/skins/skins_cfg.c:258
+msgid "Style:"
+msgstr "Stilius:"
+
+#: src/skins/skins_cfg.c:261
+msgid "Falloff:"
+msgstr "Pikų krytis:"
+
+#: src/skins/skins_cfg.c:264
+msgid "Peak falloff:"
+msgstr "Pikų krytis:"
+
+#: src/skins/skins_cfg.c:268
+msgid "Scope Style:"
+msgstr "Srities stilius:"
+
+#: src/skins/skins_cfg.c:271
+msgid "Voiceprint Coloring:"
+msgstr "Voiceprint spalvojimas:"
+
+#: src/skins/skins_cfg.c:274
+msgid "VU Meter Style:"
+msgstr "VU Meter stilius:"
+
+#: src/skins/skins_cfg.c:280
+msgid "General"
+msgstr "Pagrindinės"
+
+#: src/skins/skins_cfg.c:281
+msgid "Visualization"
+msgstr "Vizualizacija"
+
+#: src/skins/ui_equalizer.c:289
+msgid "Preamp"
+msgstr "Preamp"
+
+#: src/skins/ui_equalizer.c:293
+msgid "31 Hz"
+msgstr "31 Hz"
+
+#: src/skins/ui_equalizer.c:294
+msgid "63 Hz"
+msgstr "63 Hz"
+
+#: src/skins/ui_equalizer.c:294
+msgid "125 Hz"
+msgstr "125 Hz"
+
+#: src/skins/ui_equalizer.c:294
+msgid "250 Hz"
+msgstr "250 Hz"
+
+#: src/skins/ui_equalizer.c:294
+msgid "500 Hz"
+msgstr "500 Hz"
+
+#: src/skins/ui_equalizer.c:294
+msgid "1 kHz"
+msgstr "1 kHz"
+
+#: src/skins/ui_equalizer.c:295
+msgid "2 kHz"
+msgstr "2 kHz"
+
+#: src/skins/ui_equalizer.c:295
+msgid "4 kHz"
+msgstr "4 kHz"
+
+#: src/skins/ui_equalizer.c:295
+msgid "8 kHz"
+msgstr "8 kHz"
+
+#: src/skins/ui_equalizer.c:295
+msgid "16 kHz"
+msgstr "16 kHz"
+
+#: src/skins/ui_equalizer.c:337
+msgid "Audacious Equalizer"
+msgstr "Audacious ekvalaizeris"
+
+#: src/skins/ui_main.c:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "Eiti į %d:%-2.2d / %d:%-2.2d"
 
-#: src/skins/ui_main.c:791
+#: src/skins/ui_main.c:707
 #, c-format
 msgid "Volume: %d%%"
 msgstr "Garsumas: %d%%"
 
-#: src/skins/ui_main.c:814
+#: src/skins/ui_main.c:730
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "Balansas: %d%% kairė"
 
-#: src/skins/ui_main.c:816
+#: src/skins/ui_main.c:732
 msgid "Balance: center"
 msgstr "Balansas: centras"
 
-#: src/skins/ui_main.c:818
+#: src/skins/ui_main.c:734
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "Balansas: %d%% dešinė"
 
-#: src/skins/ui_main.c:942
+#: src/skins/ui_main.c:833
 msgid "Options Menu"
 msgstr "Pasirinkčių meniu"
 
-#: src/skins/ui_main.c:946
+#: src/skins/ui_main.c:837
 msgid "Disable 'Always On Top'"
 msgstr "Išjungti „Visada viršuje“"
 
-#: src/skins/ui_main.c:948
+#: src/skins/ui_main.c:839
 msgid "Enable 'Always On Top'"
 msgstr "Įjungti „Visada viršuje“"
 
-#: src/skins/ui_main.c:951
+#: src/skins/ui_main.c:842
 msgid "File Info Box"
 msgstr "Failo informacijos langas"
 
-#: src/skins/ui_main.c:956
-msgid "Visualization Menu"
-msgstr "Vizualizacijos meniu"
-
-#: src/skins/ui_main.c:1591
-msgid "Single mode."
-msgstr "Vieno režimas."
-
-#: src/skins/ui_main.c:1593
-msgid "Playlist mode."
-msgstr "Grojaraščio režimas."
-
-#: src/skins/ui_main.c:1615
-msgid "Stopping after song."
-msgstr "Sustabdymas po dainos."
-
-#: src/skins/ui_main.c:1617
-msgid "Not stopping after song."
-msgstr "Nesustabdyti po dainos."
-
-#: src/skins/ui_main.c:1752
+#: src/skins/ui_main.c:1281
 msgid "Repeat point A set."
 msgstr "Kartojimo taškas A nustatytas."
 
-#: src/skins/ui_main.c:1757
+#: src/skins/ui_main.c:1286
 msgid "Repeat point B set."
 msgstr "Kartojimo taškas B nustatytas."
 
-#: src/skins/ui_main.c:1766
+#: src/skins/ui_main.c:1295
 msgid "Repeat points cleared."
 msgstr "Kartojimo taškai išvalyti."
 
-#: src/skins/ui_manager.c:66 src/skins/ui_manager.c:67
-msgid "Autoscroll Song Name"
-msgstr "Automatiškai slinkti dainos pavadinimą"
-
-#: src/skins/ui_manager.c:69 src/skins/ui_manager.c:70
-msgid "Stop after Current Song"
-msgstr "Sustabdyti po grojamos dainos"
-
-#: src/skins/ui_manager.c:72 src/skins/ui_manager.c:73
-msgid "Peaks"
-msgstr "Viršūnės"
-
-#: src/skins/ui_manager.c:75 src/skins/ui_manager.c:76
-msgid "Repeat"
-msgstr "Kartoti"
-
-#: src/skins/ui_manager.c:78 src/skins/ui_manager.c:79
-msgid "Shuffle"
-msgstr "Maišyti"
-
-#: src/skins/ui_manager.c:81 src/skins/ui_manager.c:82
-msgid "No Playlist Advance"
-msgstr "Nesislinkti grojaraščiu"
-
-#: src/skins/ui_manager.c:84 src/skins/ui_manager.c:85
-msgid "Show Player"
-msgstr "Rodyti grotuvą"
-
-#: src/skins/ui_manager.c:87 src/skins/ui_manager.c:88
-msgid "Show Playlist Editor"
-msgstr "Rodyti grojaraščio redaktorių"
-
-#: src/skins/ui_manager.c:90 src/skins/ui_manager.c:91
-msgid "Show Equalizer"
-msgstr "Rodyti ekvalaizerį"
-
-#: src/skins/ui_manager.c:93 src/skins/ui_manager.c:94
-msgid "Always on Top"
-msgstr "Visada viršuje"
-
-#: src/skins/ui_manager.c:96 src/skins/ui_manager.c:97
-msgid "Put on All Workspaces"
-msgstr "Rodyti visuose darbalaukiuose"
-
-#: src/skins/ui_manager.c:99 src/skins/ui_manager.c:100
-msgid "Roll up Player"
-msgstr "Suskleisti grotuvą"
-
-#: src/skins/ui_manager.c:102 src/skins/ui_manager.c:103
-msgid "Roll up Playlist Editor"
-msgstr "Suskleisti grojaraščio redaktorių"
-
-#: src/skins/ui_manager.c:105 src/skins/ui_manager.c:106
-msgid "Roll up Equalizer"
-msgstr "Suskleisti ekvalaizerį"
-
-#: src/skins/ui_manager.c:114
-msgid "Analyzer"
-msgstr "Analizatorius"
-
-#: src/skins/ui_manager.c:115
-msgid "Scope"
-msgstr "Sritis"
-
-#: src/skins/ui_manager.c:116
-msgid "Voiceprint"
-msgstr "Voiceprint"
-
-#: src/skins/ui_manager.c:117
-msgid "Off"
-msgstr "Išjungta"
-
-#: src/skins/ui_manager.c:121 src/skins/ui_manager.c:138
-#: src/skins/ui_manager.c:144
-msgid "Normal"
-msgstr "Normalus"
-
-#: src/skins/ui_manager.c:122 src/skins/ui_manager.c:139
-msgid "Fire"
-msgstr "Ugnis"
-
-#: src/skins/ui_manager.c:123
-msgid "Vertical Lines"
-msgstr "Vertikalios linijos"
-
-#: src/skins/ui_manager.c:127
-msgid "Lines"
-msgstr "Linijos"
-
-#: src/skins/ui_manager.c:128
-msgid "Bars"
-msgstr "Juostos"
-
-#: src/skins/ui_manager.c:132
-msgid "Dot Scope"
-msgstr "Taško sritis"
-
-#: src/skins/ui_manager.c:133
-msgid "Line Scope"
-msgstr "Linijos sritis"
-
-#: src/skins/ui_manager.c:134
-msgid "Solid Scope"
-msgstr "Vientisa sritis"
-
-#: src/skins/ui_manager.c:140
-msgid "Ice"
-msgstr "Ledas"
-
-#: src/skins/ui_manager.c:145
-msgid "Smooth"
-msgstr "Tolygus"
-
-#: src/skins/ui_manager.c:149 src/skins/ui_manager.c:157
-msgid "Slowest"
-msgstr "Lėčiausias"
-
-#: src/skins/ui_manager.c:150 src/skins/ui_manager.c:158
-msgid "Slow"
-msgstr "Lėtas"
-
-#: src/skins/ui_manager.c:151 src/skins/ui_manager.c:159
-#: src/sox-resampler/sox-resampler.c:143
-msgid "Medium"
-msgstr "Vidutinis"
-
-#: src/skins/ui_manager.c:152 src/skins/ui_manager.c:160
-msgid "Fast"
-msgstr "Greitas"
-
-#: src/skins/ui_manager.c:153 src/skins/ui_manager.c:161
-msgid "Fastest"
-msgstr "Greičiausias"
-
-#: src/skins/ui_manager.c:165
-msgid "Time Elapsed"
-msgstr "Praėjo laiko"
-
-#: src/skins/ui_manager.c:166
-msgid "Time Remaining"
-msgstr "Liko laiko"
-
-#: src/skins/ui_manager.c:186 src/skins/ui_manager.c:187
-msgid "Previous"
-msgstr "Ankstesnis"
-
-#: src/skins/ui_manager.c:195
-msgid "Visualization"
-msgstr "Vizualizacija"
-
-#: src/skins/ui_manager.c:196
-msgid "Visualization Mode"
-msgstr "Vizualizacijos režimas"
-
-#: src/skins/ui_manager.c:197
-msgid "Analyzer Mode"
-msgstr "Analizatoriaus režimas"
-
-#: src/skins/ui_manager.c:198
-msgid "Scope Mode"
-msgstr "Akiračio režimas"
-
-#: src/skins/ui_manager.c:199
-msgid "Voiceprint Mode"
-msgstr "Voiceprint režimas"
-
-#: src/skins/ui_manager.c:200
-msgid "WindowShade VU Mode"
-msgstr "WindowShade VU režimas"
-
-#: src/skins/ui_manager.c:201
-msgid "Analyzer Falloff"
-msgstr "Analizatoriaus nukritimas"
-
-#: src/skins/ui_manager.c:202
-msgid "Peaks Falloff"
-msgstr "Pikų krytis"
-
-#: src/skins/ui_manager.c:207
-msgid "Playlist"
-msgstr "Grojaraštis"
-
-#: src/skins/ui_manager.c:209 src/skins/ui_manager.c:210
-msgid "Play Playlist"
-msgstr "Groti grojaraštį"
-
-#: src/skins/ui_manager.c:212 src/skins/ui_manager.c:213
-msgid "New Playlist"
-msgstr "Naujas grojaraštis"
-
-#: src/skins/ui_manager.c:215 src/skins/ui_manager.c:216
-msgid "Select Next Playlist"
-msgstr "Pasirinkti sekantį grojaraštį"
-
-#: src/skins/ui_manager.c:218 src/skins/ui_manager.c:219
-msgid "Select Previous Playlist"
-msgstr "Pasirinkti ankstesnį grojaraštį"
-
-#: src/skins/ui_manager.c:221 src/skins/ui_manager.c:222
-msgid "Delete Playlist"
-msgstr "Ištrinti grojaraštį"
-
-#: src/skins/ui_manager.c:224
-msgid "Import Playlist"
-msgstr "Įkelti grojaraštį"
-
-#: src/skins/ui_manager.c:225
-msgid "Loads a playlist file into the selected playlist."
-msgstr "Įkrauna grojaraščio failą į pasirinktą grojaraštį."
-
-#: src/skins/ui_manager.c:228
-msgid "Export Playlist"
-msgstr "Eksportuoti grojaraštį"
-
-#: src/skins/ui_manager.c:229
-msgid "Saves the selected playlist."
-msgstr "Išsaugo pasirinktą grojaraštį."
-
-#: src/skins/ui_manager.c:231
-msgid "Refresh List"
-msgstr "Atnaujinti sąrašą"
-
-#: src/skins/ui_manager.c:232
-msgid "Refreshes metadata associated with a playlist entry."
-msgstr "Atnaujina meta duomenis susietus su grojaraščio elementu."
-
-#: src/skins/ui_manager.c:235
-msgid "Playlist Manager"
-msgstr "Grojaraščio redaktorius"
-
-#: src/skins/ui_manager.c:238
-msgid "Queue Manager"
-msgstr "Eilės redaktorius"
-
-#: src/skins/ui_manager.c:243
-msgid "View"
-msgstr "Rodymas"
-
-#: src/skins/ui_manager.c:244
-msgid "Interface"
-msgstr "Naudotojo sąsaja"
-
-#: src/skins/ui_manager.c:245
-msgid "Interface Preferences ..."
-msgstr "Naudotojo sąsajos nustatymai..."
-
-#: src/skins/ui_manager.c:250
-msgid "Add Internet Address..."
-msgstr "Pridėti interneto adresą..."
-
-#: src/skins/ui_manager.c:251
-msgid "Adds a remote track to the playlist."
-msgstr "Pridėti nutolusį takelį į grojaraštį."
-
-#: src/skins/ui_manager.c:254
-msgid "Add Files..."
-msgstr "Pridėti failus..."
-
-#: src/skins/ui_manager.c:255
-msgid "Adds files to the playlist."
-msgstr "Prideda failus į grojaraštį."
-
-#: src/skins/ui_manager.c:260
-msgid "Search and Select"
-msgstr "Ieškoti ir pasirinkti"
-
-#: src/skins/ui_manager.c:261
-msgid ""
-"Searches the playlist and selects playlist entries based on specific "
-"criteria."
-msgstr "Ieško ir pasirenka grojaraščio elementus pagal nurodytą kriterijų."
-
-#: src/skins/ui_manager.c:264
-msgid "Invert Selection"
-msgstr "Invertuoti pažymėjimą"
-
-#: src/skins/ui_manager.c:265
-msgid "Inverts the selected and unselected entries."
-msgstr "Apverčia visus elementus."
-
-#: src/skins/ui_manager.c:268
-msgid "Select All"
-msgstr "Pasirinkti viską"
-
-#: src/skins/ui_manager.c:269
-msgid "Selects all of the playlist entries."
-msgstr "Pasirenka visus grojaraščio įrašus."
-
-#: src/skins/ui_manager.c:272
-msgid "Select None"
-msgstr "Nieko nepasirinkti"
-
-#: src/skins/ui_manager.c:273
-msgid "Deselects all of the playlist entries."
-msgstr "Atžymi visus grojaraščio įrašus."
-
-#: src/skins/ui_manager.c:278
-msgid "Remove All"
-msgstr "Pašalinti visus"
-
-#: src/skins/ui_manager.c:279
-msgid "Removes all entries from the playlist."
-msgstr "Pašalina visus įrašus iš grojaraščio."
-
-#: src/skins/ui_manager.c:282
-msgid "Clear Queue"
-msgstr "Išvalyti eilę"
-
-#: src/skins/ui_manager.c:283
-msgid "Clears the queue associated with this playlist."
-msgstr "Išvalo eilę susietą su šiuo grojaraščiu."
-
-#: src/skins/ui_manager.c:286
-msgid "Remove Unavailable Files"
-msgstr "Pašalina neprieinamus failus"
-
-#: src/skins/ui_manager.c:287
-msgid "Removes unavailable files from the playlist."
-msgstr "Pašalina neprieinamus failus iš grojaraščio."
-
-#: src/skins/ui_manager.c:290
-msgid "Remove Duplicates"
-msgstr "Pašalinti dubliuotus"
-
-#: src/skins/ui_manager.c:292 src/skins/ui_manager.c:324
-#: src/skins/ui_manager.c:354
-msgid "By Title"
-msgstr "Pagal pavadinimą"
-
-#: src/skins/ui_manager.c:293
-msgid "Removes duplicate entries from the playlist by title."
-msgstr "Pašalina dubliuotus įrašus iš grojaraščio pagal pavadinimą."
-
-#: src/skins/ui_manager.c:296 src/skins/ui_manager.c:336
-#: src/skins/ui_manager.c:366
-msgid "By Filename"
-msgstr "Pagal failo vardą"
-
-#: src/skins/ui_manager.c:297
-msgid "Removes duplicate entries from the playlist by filename."
-msgstr "Pašalina dubliuotus įrašus iš grojaraščio pagal failo vardą."
-
-#: src/skins/ui_manager.c:300 src/skins/ui_manager.c:340
-#: src/skins/ui_manager.c:370
-msgid "By Path + Filename"
-msgstr "Pagal kelią + failo vardą"
-
-#: src/skins/ui_manager.c:301
-msgid "Removes duplicate entries from the playlist by their full path."
-msgstr "Pašalina dubliuotus įrašus iš grojaraščio pagal pilną jų kelią."
-
-#: src/skins/ui_manager.c:304
-msgid "Remove Unselected"
-msgstr "Pašalint nepažymėtus"
-
-#: src/skins/ui_manager.c:305
-msgid "Remove unselected entries from the playlist."
-msgstr "Pašalina nepažymėtus."
-
-#: src/skins/ui_manager.c:308
-msgid "Remove Selected"
-msgstr "Pašalint pažymėtus"
-
-#: src/skins/ui_manager.c:309
-msgid "Remove selected entries from the playlist."
-msgstr "Pašalina pažymėtus elementus iš grojaraščio."
-
-#: src/skins/ui_manager.c:314
-msgid "Randomize List"
-msgstr "Sumaišyti sąrašą"
-
-#: src/skins/ui_manager.c:315
-msgid "Randomizes the playlist."
-msgstr "Sumaišo sąrašą."
-
-#: src/skins/ui_manager.c:318
-msgid "Reverse List"
-msgstr "Apversti sąrašą"
-
-#: src/skins/ui_manager.c:319
-msgid "Reverses the playlist."
-msgstr "Apverčia grojaraštį."
-
-#: src/skins/ui_manager.c:322
-msgid "Sort List"
-msgstr "Rikiuoti sąrašą"
-
-#: src/skins/ui_manager.c:325 src/skins/ui_manager.c:355
-msgid "Sorts the list by title."
-msgstr "Rikiuoja sąrašą pagal pavadinimą."
-
-#: src/skins/ui_manager.c:328 src/skins/ui_manager.c:358
-msgid "By Album"
-msgstr "Pagal albumą"
-
-#: src/skins/ui_manager.c:329 src/skins/ui_manager.c:359
-msgid "Sorts the list by album."
-msgstr "Rikiuoja sąrašą pagal albumą."
-
-#: src/skins/ui_manager.c:332 src/skins/ui_manager.c:362
-msgid "By Artist"
-msgstr "Pagal atlikėją"
-
-#: src/skins/ui_manager.c:333 src/skins/ui_manager.c:363
-msgid "Sorts the list by artist."
-msgstr "Rikiuoja sąrašą pagal atlikėją."
-
-#: src/skins/ui_manager.c:337 src/skins/ui_manager.c:367
-msgid "Sorts the list by filename."
-msgstr "Rikiuoja sąrašą pagal failo vardą."
-
-#: src/skins/ui_manager.c:341 src/skins/ui_manager.c:371
-msgid "Sorts the list by full pathname."
-msgstr "Rikiuoja sąrašą pagal pilną kelią."
-
-#: src/skins/ui_manager.c:344 src/skins/ui_manager.c:374
-msgid "By Date"
-msgstr "Pagal datą"
-
-#: src/skins/ui_manager.c:345 src/skins/ui_manager.c:375
-msgid "Sorts the list by modification time."
-msgstr "Rikiuoja sąrašą pagal keitimo laiką."
-
-#: src/skins/ui_manager.c:348 src/skins/ui_manager.c:378
-msgid "By Track Number"
-msgstr "Pagal takelio numerį"
-
-#: src/skins/ui_manager.c:349 src/skins/ui_manager.c:379
-msgid "Sorts the list by track number."
-msgstr "Rikiuoja sąrašą pagal takelio numerį."
-
-#: src/skins/ui_manager.c:352
-msgid "Sort Selected"
-msgstr "Rikuoti pasirinktus"
-
-#: src/skins/ui_manager.c:388
-msgid "File"
-msgstr "Failas"
-
-#: src/skins/ui_manager.c:391
-msgid "Plugin Services"
-msgstr "Įskiepių paslaugos"
-
-#: src/skins/ui_manager.c:393 src/skins/ui_manager.c:396
-msgid "View Track Details"
-msgstr "Pažiūrėti takelio detales"
-
-#: src/skins/ui_manager.c:394 src/skins/ui_manager.c:397
-msgid "View track details"
-msgstr "Pažiūrėti takelio detales"
-
-#: src/skins/ui_manager.c:399 src/skins/ui_manager.c:400
-msgid "About Audacious"
-msgstr "Apie Audacious"
-
-#: src/skins/ui_manager.c:402
-msgid "Play File"
-msgstr "Groti failą"
-
-#: src/skins/ui_manager.c:403
-msgid "Load and play a file"
-msgstr "Įkrauti ir groti failą"
-
-#: src/skins/ui_manager.c:405
-msgid "Play Location"
-msgstr "Groti vietą"
-
-#: src/skins/ui_manager.c:406
-msgid "Play media from the selected location"
-msgstr "Groti failą iš pasirinktos vietos"
-
-#: src/skins/ui_manager.c:408
-msgid "Plugin services"
-msgstr "Įskiepių paslaugos"
-
-#: src/skins/ui_manager.c:410
-msgid "Preferences"
-msgstr "Nustatymai"
-
-#: src/skins/ui_manager.c:411
-msgid "Open preferences window"
-msgstr "Atverti nustatymų langą"
-
-#: src/skins/ui_manager.c:414
-msgid "Quit Audacious"
-msgstr "Užverti Audacious"
-
-#: src/skins/ui_manager.c:416 src/skins/ui_manager.c:417
-msgid "Set A-B"
-msgstr "Nustatyti A-B"
-
-#: src/skins/ui_manager.c:419 src/skins/ui_manager.c:420
-msgid "Clear A-B"
-msgstr "Išvalyti A-B"
-
-#: src/skins/ui_manager.c:422 src/skins/ui_manager.c:423
-msgid "Jump to File"
-msgstr "Šokti į failą"
-
-#: src/skins/ui_manager.c:425 src/skins/ui_manager.c:426
-msgid "Jump to Time"
-msgstr "Šokti į laiką"
-
-#: src/skins/ui_manager.c:428
-msgid "Queue Toggle"
-msgstr "Perjungti eilę"
-
-#: src/skins/ui_manager.c:429
-msgid "Enables/disables the entry in the playlist's queue."
-msgstr "Įjungia/Išjungia įrašą grojaraščio eilėje."
-
-#: src/skins/ui_manager.c:432
-msgid "Copy"
-msgstr "Kopijuoti"
-
-#: src/skins/ui_manager.c:435
-msgid "Cut"
-msgstr "Iškirpti"
-
-#: src/skins/ui_manager.c:438
-msgid "Paste"
-msgstr "Įklijuoti"
-
-#: src/skins/ui_manager.c:445
-msgid "Load"
-msgstr "Įkrauti"
-
-#: src/skins/ui_manager.c:446
-msgid "Import"
-msgstr "Importuoti"
-
-#: src/skins/ui_manager.c:447
-msgid "Save"
-msgstr "Išsaugoti"
-
-#: src/skins/ui_manager.c:448
-msgid "Delete"
-msgstr "Ištrinti"
-
-#: src/skins/ui_manager.c:450 src/skins/ui_manager.c:471
-#: src/skins/ui_manager.c:486
-msgid "Preset"
-msgstr "Šablonas"
-
-#: src/skins/ui_manager.c:453 src/skins/ui_manager.c:474
-#: src/skins/ui_manager.c:489
-msgid "Auto-load preset"
-msgstr "Savaime įsikraunantis šablonas"
-
-#: src/skins/ui_manager.c:454
-msgid "Load auto-load preset"
-msgstr "Įkrauti savaime įsikraunantį šabloną"
-
-#: src/skins/ui_manager.c:457
-msgid "Load default preset into equalizer"
-msgstr "Įkrauti numatytąjį šabloną į ekvalaizerį"
-
-#: src/skins/ui_manager.c:459
-msgid "Zero"
-msgstr "Nulis"
-
-#: src/skins/ui_manager.c:460
-msgid "Set equalizer preset levels to zero"
-msgstr "Nustatyti ekvalaizerio šablono lygius nuliui"
-
-#: src/skins/ui_manager.c:462
-msgid "From file"
-msgstr "Iš failo"
-
-#: src/skins/ui_manager.c:463
-msgid "Load preset from file"
-msgstr "Įkrauti šabloną iš failo"
-
-#: src/skins/ui_manager.c:465
-msgid "From WinAMP EQF file"
-msgstr "Iš WinAMP EQF failo"
-
-#: src/skins/ui_manager.c:466
-msgid "Load preset from WinAMP EQF file"
-msgstr "Įkrauti šabloną iš WinAMP EQF failo"
-
-#: src/skins/ui_manager.c:468
-msgid "WinAMP Presets"
-msgstr "WinAMP šablonai"
-
-#: src/skins/ui_manager.c:469
-msgid "Import WinAMP presets"
-msgstr "Importuoti WinAMP šablonus"
-
-#: src/skins/ui_manager.c:475
-msgid "Save auto-load preset"
-msgstr "Išsaugoti savaime įsikraunantį šabloną"
-
-#: src/skins/ui_manager.c:478
-msgid "Save default preset"
-msgstr "Išsaugoti numatytąjį šabloną"
-
-#: src/skins/ui_manager.c:480
-msgid "To file"
-msgstr "Į failą"
-
-#: src/skins/ui_manager.c:481
-msgid "Save preset to file"
-msgstr "Išsaugoti šabloną į failą"
-
-#: src/skins/ui_manager.c:483
-msgid "To WinAMP EQF file"
-msgstr "Į WinAMP EQF failą"
-
-#: src/skins/ui_manager.c:484
-msgid "Save preset to WinAMP EQF file"
-msgstr "Išsaugoti šabloną į WinAMP EQF failą"
-
-#: src/skins/ui_manager.c:490
-msgid "Delete auto-load preset"
-msgstr "Ištrinti savaime įsikraunantį šabloną"
-
-#: src/skins/ui_playlist.c:244
+#: src/skins/ui_main_evlisteners.c:109
+msgid "Single mode."
+msgstr "Vieno režimas."
+
+#: src/skins/ui_main_evlisteners.c:111
+msgid "Playlist mode."
+msgstr "Grojaraščio režimas."
+
+#: src/skins/ui_main_evlisteners.c:117
+msgid "Stopping after song."
+msgstr "Sustabdymas po dainos."
+
+#: src/skins/ui_playlist.c:222
 msgid "Search entries in active playlist"
 msgstr "Ieškoti įrašų aktyviame grojaraštyje"
 
-#: src/skins/ui_playlist.c:251
+#: src/skins/ui_playlist.c:224
+msgid "Search"
+msgstr "Ieškoti"
+
+#: src/skins/ui_playlist.c:229
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3871,57 +3617,57 @@ msgstr ""
 "nesvarbus. Jei nežinai kaip veikia reguliariosios išraiškos, paprasčiausiai "
 "įrašyk paraidžiui tai ko ieškai."
 
-#: src/skins/ui_playlist.c:259
+#: src/skins/ui_playlist.c:237
 msgid "Title: "
 msgstr "Pavadinimas:"
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:245
 msgid "Album: "
 msgstr "Albumas:"
 
-#: src/skins/ui_playlist.c:275
+#: src/skins/ui_playlist.c:253
 msgid "Artist: "
 msgstr "Atlikėjas:"
 
-#: src/skins/ui_playlist.c:283
+#: src/skins/ui_playlist.c:261
 msgid "Filename: "
 msgstr "Failo vardas:"
 
-#: src/skins/ui_playlist.c:292
+#: src/skins/ui_playlist.c:270
 msgid "Clear previous selection before searching"
 msgstr "Prie ieškant, išvalyti buvusius pasirinkimus"
 
-#: src/skins/ui_playlist.c:295
+#: src/skins/ui_playlist.c:273
 msgid "Automatically toggle queue for matching entries"
 msgstr "Atitinkantiems įrašams automatiškai perjungti eilę"
 
-#: src/skins/ui_playlist.c:298
+#: src/skins/ui_playlist.c:276
 msgid "Create a new playlist with matching entries"
 msgstr "Iš surastų įrašų sukurti naują grojaraštį"
 
-#: src/skins/ui_playlist.c:738
+#: src/skins/ui_playlist.c:721
 msgid "Audacious Playlist Editor"
 msgstr "Audacious grojaraščio redaktorius"
 
-#: src/skins/ui_playlist.c:772
+#: src/skins/ui_playlist.c:755
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d iš %d)"
 
-#: src/skins/ui_skinselector.c:162
+#: src/skins/ui_skinselector.c:163
 msgid "Archived Winamp 2.x skin"
 msgstr "Archyvuotas Winamp 2.x skin"
 
-#: src/skins/ui_skinselector.c:167
+#: src/skins/ui_skinselector.c:168
 msgid "Unarchived Winamp 2.x skin"
 msgstr "Išarchyvuotas Winamp 2.x skin"
 
-#: src/skins/util.c:773
+#: src/skins/util.c:450
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "Negaliu sukurti aplanko (%s): %s\n"
 
-#: src/sndfile/plugin.c:416
+#: src/sndfile/plugin.c:350
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3961,7 +3707,7 @@ msgstr ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/sndfile/plugin.c:435
+#: src/sndfile/plugin.c:369
 msgid "Sndfile Plugin"
 msgstr "Sndfile įskiepis"
 
@@ -4005,39 +3751,35 @@ msgstr "(tuščia reiškia numatytą)"
 msgid "OK"
 msgstr "Gerai"
 
-#: src/sndio/sndio.c:424
-msgid "Cancel"
-msgstr "Atšaukti"
-
 #: src/song_change/song_change.c:54
 msgid "Song Change"
 msgstr "Dainos keitimas"
 
-#: src/song_change/song_change.c:436
+#: src/song_change/song_change.c:428
 msgid "Command to run when Audacious starts a new song."
 msgstr "Komanda kurią paleisti kai Audacious paleidžia naują dainą."
 
-#: src/song_change/song_change.c:438 src/song_change/song_change.c:444
-#: src/song_change/song_change.c:450 src/song_change/song_change.c:456
+#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
+#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
 msgid "Command:"
 msgstr "Komanda:"
 
-#: src/song_change/song_change.c:442
+#: src/song_change/song_change.c:434
 msgid "Command to run toward the end of a song."
 msgstr "Komanda kurią paleisti prieš pasibaigiant dainai."
 
-#: src/song_change/song_change.c:448
+#: src/song_change/song_change.c:440
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Komanda kurią paleisti kai Audacious pasiekia grojaraščio pabaigą."
 
-#: src/song_change/song_change.c:454
+#: src/song_change/song_change.c:446
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Komanda kurią paleisti kai dainos pavadinimas pasikeičia (t.y. interneto "
 "srautų pavadinimai)"
 
-#: src/song_change/song_change.c:460
+#: src/song_change/song_change.c:452
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -4071,7 +3813,7 @@ msgstr ""
 "%b: Albumas\n"
 "%T: Takelio pavadinimas"
 
-#: src/song_change/song_change.c:487
+#: src/song_change/song_change.c:479
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -4079,11 +3821,11 @@ msgstr ""
 "<span size='small'>Parametrai pateikti komandų interpretatoriui turi būti "
 "kabutėse. Darant kitaip rizikuojate savo saugumu.</span>"
 
-#: src/song_change/song_change.c:498
+#: src/song_change/song_change.c:490
 msgid "Commands"
 msgstr "Komandos"
 
-#: src/sox-resampler/sox-resampler.c:135
+#: src/sox-resampler/sox-resampler.c:137
 msgid ""
 "SoX Resampler Plugin for Audacious\n"
 "Copyright 2013 Michał Lipski\n"
@@ -4094,47 +3836,51 @@ msgstr ""
 "SoX Resampler įskiepis skirtas Audacious⏎ Copyright 2013 Michał Lipski⏎ ⏎ "
 "Paremta Sample Rate Converter įskiepiu:⏎ Copyright 2010-2012 John Lindgren"
 
-#: src/sox-resampler/sox-resampler.c:141
+#: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
 msgstr "Greita"
 
-#: src/sox-resampler/sox-resampler.c:142
+#: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
 msgstr "Žema"
 
-#: src/sox-resampler/sox-resampler.c:144
+#: src/sox-resampler/sox-resampler.c:146
 msgid "High"
 msgstr "Aukšta"
 
-#: src/sox-resampler/sox-resampler.c:145
+#: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
 msgstr "Labai aukšta"
 
-#: src/sox-resampler/sox-resampler.c:148
+#: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
 msgstr "Kokybė:"
 
-#: src/sox-resampler/sox-resampler.c:162
+#: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"
 msgstr "SoX Resampler"
 
-#: src/speed-pitch/speed-pitch.c:225
+#: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
 msgstr "<b>Greitis ir žingsnis</b>"
 
-#: src/speed-pitch/speed-pitch.c:226
+#: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
 msgstr "Greitis:"
 
-#: src/speed-pitch/speed-pitch.c:229
+#: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
 msgstr "Žingsnis:"
 
-#: src/speed-pitch/speed-pitch.c:264
+#: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
 msgstr "Greitis ir žingsnis"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:269
+msgid "Se_ttings ..."
+msgstr "Nus_tatymai..."
+
+#: src/statusicon/statusicon.c:371
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -4152,35 +3898,35 @@ msgstr ""
 "Šis įskiepis suteikia būsenos piktogramą, kuri\n"
 "rodoma sistemos dėkle."
 
-#: src/statusicon/statusicon.c:397
+#: src/statusicon/statusicon.c:378
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Pelės slinkimo veiksmas</b>"
 
-#: src/statusicon/statusicon.c:398
+#: src/statusicon/statusicon.c:379
 msgid "Change volume"
 msgstr "Keisti garsą"
 
-#: src/statusicon/statusicon.c:401
+#: src/statusicon/statusicon.c:382
 msgid "Change playing song"
 msgstr "Keisti grojančią dainą"
 
-#: src/statusicon/statusicon.c:404
+#: src/statusicon/statusicon.c:385
 msgid "<b>Other Settings</b>"
 msgstr "<b>Kiti nustatymai</b>"
 
-#: src/statusicon/statusicon.c:405
+#: src/statusicon/statusicon.c:386
 msgid "Disable the popup window"
 msgstr "Išjungti iššokantį langą"
 
-#: src/statusicon/statusicon.c:407
+#: src/statusicon/statusicon.c:388
 msgid "Close to the system tray"
 msgstr "Užverti į sistemos dėklą"
 
-#: src/statusicon/statusicon.c:409
+#: src/statusicon/statusicon.c:390
 msgid "Advance in playlist when scrolling upward"
 msgstr "Slenkant aukštyn, žengti grojaraščiu"
 
-#: src/statusicon/statusicon.c:418
+#: src/statusicon/statusicon.c:399
 msgid "Status Icon"
 msgstr "Būsenos piktograma"
 
@@ -4202,16 +3948,16 @@ msgstr "<b>Extra Stereo</b>"
 msgid "Extra Stereo"
 msgstr "Extra Stereo"
 
-#: src/tonegen/tonegen.c:84
+#: src/tonegen/tonegen.c:83
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:84
+#: src/tonegen/tonegen.c:83
 msgid "Tone Generator: "
 msgstr "Tono generatorius: "
 
-#: src/tonegen/tonegen.c:197
+#: src/tonegen/tonegen.c:174
 msgid ""
 "Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -4225,31 +3971,15 @@ msgstr ""
 "Norėdami naudoti, pridėkite URL: tone://dažnis1;dažnis2;dažnis3;...\n"
 "pvz. tone://2000;2005 norint atkurti 2000 Hz toną ir 2005 Hz toną"
 
-#: src/tonegen/tonegen.c:206
+#: src/tonegen/tonegen.c:183
 msgid "Tone Generator"
 msgstr "Tono generatorius"
 
-#: src/unix-io/unix-io.c:243
-msgid ""
-"File I/O Plugin for Audacious\n"
-"Copyright 2009-2012 John Lindgren\n"
-"\n"
-"THIS PLUGIN IS REQUIRED.  DO NOT DISABLE IT."
-msgstr ""
-"File I/O Plugin skirtas Audacious\n"
-"Autorinės teisės 2009-2012 John Lindgren\n"
-"\n"
-"ŠIS ĮSKIEPIS BŪTINAS. NEIŠJUNKITE."
-
-#: src/unix-io/unix-io.c:266
-msgid "File I/O Plugin"
-msgstr "Failo įvesties/išvesties įskiepis"
-
-#: src/voice_removal/voice_removal.c:58
+#: src/voice_removal/voice_removal.c:53
 msgid "Voice Removal"
 msgstr "Balso pašalinimas"
 
-#: src/vorbis/vorbis.c:555
+#: src/vorbis/vorbis.c:484
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4287,11 +4017,11 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 
-#: src/vorbis/vorbis.c:575
+#: src/vorbis/vorbis.c:504
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis dekoderis"
 
-#: src/vtx/vtx.c:242
+#: src/vtx/vtx.c:167
 msgid ""
 "Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
@@ -4301,19 +4031,19 @@ msgstr ""
 "Paremta in_vtx.dll kurį sukūrė Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious įskiepį sukūrė Pavel Vymetalek <pvymetalek@seznam.cz>"
 
-#: src/vtx/vtx.c:248
+#: src/vtx/vtx.c:173
 msgid "VTX Decoder"
 msgstr "VTX Decoder"
 
-#: src/wavpack/wavpack.c:282
+#: src/wavpack/wavpack.c:214
 msgid "lossy (hybrid)"
 msgstr "lossy (hibridinis)"
 
-#: src/wavpack/wavpack.c:284
+#: src/wavpack/wavpack.c:216
 msgid "lossy"
 msgstr "lossy"
 
-#: src/wavpack/wavpack.c:334
+#: src/wavpack/wavpack.c:265
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
@@ -4323,14 +4053,14 @@ msgstr ""
 "\n"
 "Dalį kodo parašė Miles Egan."
 
-#: src/wavpack/wavpack.c:341
+#: src/wavpack/wavpack.c:272
 msgid "WavPack Decoder"
 msgstr "WavPack dekoderis"
 
-#: src/xsf/plugin.c:272
+#: src/xsf/plugin.c:217
 msgid "2SF Decoder"
 msgstr "2SF dekoderis"
 
-#: src/xspf/xspf.c:440
+#: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML viešinami grojaraščiai (XSPF)"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-02-22 15:02-0500\n"
+"POT-Creation-Date: 2014-03-23 21:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:95
+#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
 msgid "mono"
 msgstr ""
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:97
+#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
 msgstr ""
 
@@ -34,7 +34,7 @@ msgstr ""
 msgid "AAC (MP4) Decoder"
 msgstr ""
 
-#: src/aac-raw/aac.c:511
+#: src/aac-raw/aac.c:476
 msgid "AAC (Raw) Decoder"
 msgstr ""
 
@@ -170,7 +170,7 @@ msgid "_OK"
 msgstr ""
 
 #: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:53
-#: src/aosd/aosd_ui.c:929 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
+#: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-#: src/alarm/interface.c:282 src/bs2b/plugin.c:173 src/skins/preset-list.c:439
+#: src/alarm/interface.c:282 src/bs2b/plugin.c:168 src/skins/preset-list.c:439
 #: src/skins/preset-list.c:445
 msgid "Default"
 msgstr ""
@@ -221,7 +221,7 @@ msgid "Fading"
 msgstr ""
 
 #: src/alarm/interface.c:329 src/console/plugin.c:41
-#: src/crossfade/crossfade.c:263 src/lirc/lirc.c:395
+#: src/crossfade/crossfade.c:263 src/gtkui/settings.c:53 src/lirc/lirc.c:395
 msgid "seconds"
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 msgid "Additional Command"
 msgstr ""
 
-#: src/alarm/interface.c:395
+#: src/alarm/interface.c:395 src/alarm/interface.c:422
 msgid "enable"
 msgstr ""
 
@@ -255,10 +255,6 @@ msgstr ""
 
 #: src/alarm/interface.c:409
 msgid "Select a playlist"
-msgstr ""
-
-#: src/alarm/interface.c:421
-msgid "Use reminder"
 msgstr ""
 
 #: src/alarm/interface.c:430
@@ -478,11 +474,18 @@ msgid ""
 "for the good help with alpha testing"
 msgstr ""
 
-#: src/aosd/aosd.c:29
-msgid "Audacious OSD "
+#: src/aosd/aosd.c:30
+msgid ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Written by Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Based in part on Evan Martin's Ghosd library:\n"
+"http://neugierig.org/software/ghosd/"
 msgstr ""
 
-#: src/aosd/aosd.c:37
+#: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
 msgstr ""
 
@@ -612,87 +615,87 @@ msgstr ""
 msgid "Color %i:"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:647
+#: src/aosd/aosd_ui.c:648
 msgid "Enable trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:674
+#: src/aosd/aosd_ui.c:675
 msgid "Event"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:702
+#: src/aosd/aosd_ui.c:703
 msgid "Composite manager detected"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:709
+#: src/aosd/aosd_ui.c:710
 msgid ""
 "Composite manager not detected;\n"
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:717
+#: src/aosd/aosd_ui.c:718
 msgid "Composite manager not required for fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:753
+#: src/aosd/aosd_ui.c:754
 msgid "Transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:759
+#: src/aosd/aosd_ui.c:760
 msgid "Fake transparency"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:761
+#: src/aosd/aosd_ui.c:762
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:803
+#: src/aosd/aosd_ui.c:804
 msgid "Composite extension not loaded"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:811
+#: src/aosd/aosd_ui.c:812
 msgid "Composite extension not available"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:830
+#: src/aosd/aosd_ui.c:831
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:905
+#: src/aosd/aosd_ui.c:906
 msgid "Audacious OSD - configuration"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:926
+#: src/aosd/aosd_ui.c:927
 msgid "_Test"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:932 src/hotkey/gui.c:491
+#: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
 msgid "_Set"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:939
+#: src/aosd/aosd_ui.c:940
 msgid "Position"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:944
+#: src/aosd/aosd_ui.c:945
 msgid "Animation"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:949
+#: src/aosd/aosd_ui.c:950
 msgid "Text"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:954
+#: src/aosd/aosd_ui.c:955
 msgid "Decoration"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:959
+#: src/aosd/aosd_ui.c:960
 msgid "Trigger"
 msgstr ""
 
-#: src/aosd/aosd_ui.c:964
+#: src/aosd/aosd_ui.c:965
 msgid "Misc"
 msgstr ""
 
@@ -716,19 +719,19 @@ msgstr ""
 msgid "Blur Scope"
 msgstr ""
 
-#: src/bs2b/plugin.c:143
+#: src/bs2b/plugin.c:142
 msgid "Feed level:"
 msgstr ""
 
-#: src/bs2b/plugin.c:157
+#: src/bs2b/plugin.c:154
 msgid "Cut frequency:"
 msgstr ""
 
-#: src/bs2b/plugin.c:171
+#: src/bs2b/plugin.c:166
 msgid "Presets:"
 msgstr ""
 
-#: src/bs2b/plugin.c:195
+#: src/bs2b/plugin.c:189
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
@@ -1053,7 +1056,7 @@ msgid "Delete"
 msgstr ""
 
 #: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
-#: src/skins/preset-list.c:311 src/skins/ui_playlist.c:238
+#: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr ""
@@ -1197,12 +1200,12 @@ msgid "Joint Stereo"
 msgstr ""
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:210
 msgid "Stereo"
 msgstr ""
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:61
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:210
 msgid "Mono"
 msgstr ""
 
@@ -1787,34 +1790,38 @@ msgid "<b>Miscellaneous</b>"
 msgstr ""
 
 #: src/gtkui/settings.c:51
+msgid "Arrow keys seek by:"
+msgstr ""
+
+#: src/gtkui/settings.c:54
 msgid "Scroll on song change"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:93
+#: src/gtkui/ui_gtk.c:94
 msgid "GTK Interface"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:191 src/skins/ui_main.c:226
+#: src/gtkui/ui_gtk.c:192 src/skins/ui_main.c:233
 #, c-format
 msgid "%s - Audacious"
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:196
+#: src/gtkui/ui_gtk.c:197
 msgid "Buffering ..."
 msgstr ""
 
-#: src/gtkui/ui_gtk.c:199 src/skins/ui_main.c:228 src/skins/ui_main.c:1136
+#: src/gtkui/ui_gtk.c:200 src/skins/ui_main.c:235 src/skins/ui_main.c:1143
 msgid "Audacious"
 msgstr ""
 
-#: src/gtkui/ui_statusbar.c:99
+#: src/gtkui/ui_statusbar.c:86
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/gtkui/ui_statusbar.c:114
+#: src/gtkui/ui_statusbar.c:101
 #, c-format
 msgid "%d kbps"
 msgstr ""
@@ -2283,11 +2290,11 @@ msgstr ""
 msgid "ModPlug (Module Player)"
 msgstr ""
 
-#: src/mpg123/mpg123.c:211
+#: src/mpg123/mpg123.c:210
 msgid "Surround"
 msgstr ""
 
-#: src/mpg123/mpg123.c:447
+#: src/mpg123/mpg123.c:412
 msgid "MPG123 Plugin"
 msgstr ""
 
@@ -3253,55 +3260,55 @@ msgstr ""
 msgid "Audacious Equalizer"
 msgstr ""
 
-#: src/skins/ui_main.c:679
+#: src/skins/ui_main.c:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr ""
 
-#: src/skins/ui_main.c:700
+#: src/skins/ui_main.c:707
 #, c-format
 msgid "Volume: %d%%"
 msgstr ""
 
-#: src/skins/ui_main.c:723
+#: src/skins/ui_main.c:730
 #, c-format
 msgid "Balance: %d%% left"
 msgstr ""
 
-#: src/skins/ui_main.c:725
+#: src/skins/ui_main.c:732
 msgid "Balance: center"
 msgstr ""
 
-#: src/skins/ui_main.c:727
+#: src/skins/ui_main.c:734
 #, c-format
 msgid "Balance: %d%% right"
 msgstr ""
 
-#: src/skins/ui_main.c:826
+#: src/skins/ui_main.c:833
 msgid "Options Menu"
 msgstr ""
 
-#: src/skins/ui_main.c:830
+#: src/skins/ui_main.c:837
 msgid "Disable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:832
+#: src/skins/ui_main.c:839
 msgid "Enable 'Always On Top'"
 msgstr ""
 
-#: src/skins/ui_main.c:835
+#: src/skins/ui_main.c:842
 msgid "File Info Box"
 msgstr ""
 
-#: src/skins/ui_main.c:1274
+#: src/skins/ui_main.c:1281
 msgid "Repeat point A set."
 msgstr ""
 
-#: src/skins/ui_main.c:1279
+#: src/skins/ui_main.c:1286
 msgid "Repeat point B set."
 msgstr ""
 
-#: src/skins/ui_main.c:1288
+#: src/skins/ui_main.c:1295
 msgid "Repeat points cleared."
 msgstr ""
 
@@ -3317,15 +3324,15 @@ msgstr ""
 msgid "Stopping after song."
 msgstr ""
 
-#: src/skins/ui_playlist.c:236
+#: src/skins/ui_playlist.c:222
 msgid "Search entries in active playlist"
 msgstr ""
 
-#: src/skins/ui_playlist.c:238
+#: src/skins/ui_playlist.c:224
 msgid "Search"
 msgstr ""
 
-#: src/skins/ui_playlist.c:243
+#: src/skins/ui_playlist.c:229
 msgid ""
 "Select entries in playlist by filling one or more fields. Fields use regular "
 "expressions syntax, case-insensitive. If you don't know how regular "
@@ -3333,39 +3340,39 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:251
+#: src/skins/ui_playlist.c:237
 msgid "Title: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:259
+#: src/skins/ui_playlist.c:245
 msgid "Album: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:267
+#: src/skins/ui_playlist.c:253
 msgid "Artist: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:275
+#: src/skins/ui_playlist.c:261
 msgid "Filename: "
 msgstr ""
 
-#: src/skins/ui_playlist.c:284
+#: src/skins/ui_playlist.c:270
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:287
+#: src/skins/ui_playlist.c:273
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:290
+#: src/skins/ui_playlist.c:276
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:735
+#: src/skins/ui_playlist.c:721
 msgid "Audacious Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_playlist.c:769
+#: src/skins/ui_playlist.c:755
 #, c-format
 msgid "%s (%d of %d)"
 msgstr ""
@@ -3635,7 +3642,7 @@ msgstr ""
 msgid "Voice Removal"
 msgstr ""
 
-#: src/vorbis/vorbis.c:480
+#: src/vorbis/vorbis.c:484
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -3656,7 +3663,7 @@ msgid ""
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
 
-#: src/vorbis/vorbis.c:500
+#: src/vorbis/vorbis.c:504
 msgid "Ogg Vorbis Decoder"
 msgstr ""
 
