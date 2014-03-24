@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include <dirent.h>
 #include <errno.h>
 #include <math.h>
 #include <stdio.h>
@@ -187,28 +186,29 @@ static void * open_module (const char * path)
 
 static void open_modules_for_path (const char * path)
 {
-    DIR * folder = opendir (path);
+    GDir * folder = g_dir_open (path, 0, NULL);
     if (! folder)
     {
         fprintf (stderr, "ladspa: Failed to read folder %s: %s\n", path, strerror (errno));
         return;
     }
 
-    struct dirent * entry;
-    while ((entry = readdir (folder)))
+    const char * name;
+    while ((name = g_dir_read_name (folder)))
     {
-        if (entry->d_name[0] == '.' || ! str_has_suffix_nocase (entry->d_name, G_MODULE_SUFFIX))
+        if (! str_has_suffix_nocase (name, G_MODULE_SUFFIX))
             continue;
 
-        char filename[strlen (path) + strlen (entry->d_name) + 2];
-        snprintf (filename, sizeof filename, "%s" G_DIR_SEPARATOR_S "%s", path, entry->d_name);
-
+        char * filename = filename_build (path, name);
         void * handle = open_module (filename);
+
         if (handle)
             index_insert (modules, -1, handle);
+
+        str_unref (filename);
     }
 
-    closedir (folder);
+    g_dir_close (folder);
 }
 
 static void open_modules_for_paths (const char * paths)

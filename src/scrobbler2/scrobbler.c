@@ -7,6 +7,8 @@
  * It is licensed under the GNU General Public License, version 3.
  */
 
+#include <glib/gstdio.h>
+
 //audacious includes
 #include <audacious/plugin.h>
 #include <audacious/drct.h>
@@ -89,7 +91,7 @@ static gboolean queue_track_to_scrobble (gpointer data) {
         char *track_str = (track > 0) ? int_to_str(track) : str_get("");
 
         pthread_mutex_lock(&log_access_mutex);
-        FILE *f = fopen(queuepath, "a");
+        FILE *f = g_fopen(queuepath, "a");
 
         if (f == NULL) {
             perror("fopen");

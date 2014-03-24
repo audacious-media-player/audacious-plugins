@@ -24,11 +24,12 @@
  */
 
 #include <errno.h>
-#include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+
+#include <glib/gstdio.h>
 
 #include <audacious/debug.h>
 #include <audacious/i18n.h>
@@ -62,17 +63,16 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
         list = vlist;
     else
     {
-        DIR * handle;
-        struct dirent * entry;
-
-        if ((handle = opendir (folder)) == NULL)
+        GDir * handle = g_dir_open (folder, 0, NULL);
+        if (! handle)
             return NULL;
 
-        while ((entry = readdir (handle)) != NULL)
-            list = g_list_prepend (list, g_strdup (entry->d_name));
+        const char * name;
+        while ((name = g_dir_read_name (handle)))
+            list = g_list_prepend (list, g_strdup (name));
 
         g_hash_table_insert (cache, g_strdup (folder), list);
-        closedir (handle);
+        g_dir_close (handle);
     }
 
     for (; list != NULL; list = list->next)
@@ -371,11 +371,11 @@ static gboolean del_directory_func(const gchar *path, const gchar *basename,
     if (g_file_test(path, G_FILE_TEST_IS_DIR))
     {
         dir_foreach(path, del_directory_func, NULL, NULL);
-        rmdir(path);
+        g_rmdir(path);
         return FALSE;
     }
 
-    unlink(path);
+    g_unlink(path);
 
     return FALSE;
 }
@@ -383,7 +383,7 @@ static gboolean del_directory_func(const gchar *path, const gchar *basename,
 void del_directory(const gchar *path)
 {
     dir_foreach(path, del_directory_func, NULL, NULL);
-    rmdir(path);
+    g_rmdir(path);
 }
 
 GArray *string_to_garray(const gchar *str)

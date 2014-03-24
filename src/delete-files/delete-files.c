@@ -23,6 +23,7 @@
 #include <unistd.h>
 
 #include <gio/gio.h>
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
 #include <audacious/i18n.h>
@@ -54,7 +55,7 @@ static void move_to_trash (const char * filename)
 
 static void really_delete (const char * filename)
 {
-    if (unlink (filename) < 0)
+    if (g_unlink (filename) < 0)
     {
         SPRINTF (error, _("Error deleting %s: %s."), filename, strerror (errno));
         aud_interface_show_error (error);

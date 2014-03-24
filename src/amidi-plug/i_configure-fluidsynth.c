@@ -24,7 +24,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#include <glib/gstdio.h>
 #include <gtk/gtk.h>
+
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
 
@@ -66,12 +68,12 @@ void i_configure_ev_sflist_add (void * sfont_lv)
 
         if (gtk_dialog_run (GTK_DIALOG (browse_dialog)) == GTK_RESPONSE_ACCEPT)
         {
-            struct stat finfo;
+            GStatBuf finfo;
             GtkTreeModel * store = gtk_tree_view_get_model (GTK_TREE_VIEW (sfont_lv));
             char * filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (browse_dialog));
             int filesize = -1;
 
-            if (stat (filename, &finfo) == 0)
+            if (g_stat (filename, &finfo) == 0)
                 filesize = finfo.st_size;
 
             gtk_list_store_append (GTK_LIST_STORE (store), &iterapp);
@@ -199,9 +201,9 @@ void * create_soundfont_list (void)
             while (sffiles[i] != NULL)
             {
                 int filesize = -1;
-                struct stat finfo;
+                GStatBuf finfo;
 
-                if (stat (sffiles[i], &finfo) == 0)
+                if (g_stat (sffiles[i], &finfo) == 0)
                     filesize = finfo.st_size;
 
                 gtk_list_store_prepend (GTK_LIST_STORE (soundfont_file_store), &iter);
