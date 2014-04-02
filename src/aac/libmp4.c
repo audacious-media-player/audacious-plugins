@@ -8,7 +8,6 @@
 #include <neaacdec.h>
 
 #include "mp4ff.h"
-#include "tagging.h"
 
 #include <audacious/input.h>
 #include <audacious/plugin.h>
