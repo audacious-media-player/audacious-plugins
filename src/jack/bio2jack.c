@@ -76,35 +76,30 @@ static struct timeval timer_now;
 #endif
 
 #if TRACE_ENABLE
-#define TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) "format, __FILE__, __FUNCTION__, __LINE__,##args);	\
-         fflush(OUTFILE);
+#define TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) "format, __FILE__, __FUNCTION__, __LINE__,##args)
 #else
 #define TRACE(...)
 #endif
 
 #if DEBUG_OUTPUT
-#define DEBUG(format,args...) fprintf(OUTFILE, "%s::%s(%d) "format, __FILE__, __FUNCTION__, __LINE__,##args);	\
-         fflush(OUTFILE);
+#define DEBUG(format,args...) fprintf(OUTFILE, "%s::%s(%d) "format, __FILE__, __FUNCTION__, __LINE__,##args)
 #else
 #define DEBUG(...)
 #endif
 
 #if TRACE_CALLBACK
-#define CALLBACK_TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) "format, __FILE__, __FUNCTION__, __LINE__,##args);	\
-         fflush(OUTFILE);
+#define CALLBACK_TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) "format, __FILE__, __FUNCTION__, __LINE__,##args)
 #else
 #define CALLBACK_TRACE(...)
 #endif
 
 #if ENABLE_WARNINGS
-#define WARN(format,args...) fprintf(OUTFILE, "WARN: %s::%s(%d) "format, __FILE__,__FUNCTION__,__LINE__,##args);	\
-         fflush(OUTFILE);
+#define WARN(format,args...) fprintf(OUTFILE, "WARN: %s::%s(%d) "format, __FILE__,__FUNCTION__,__LINE__,##args)
 #else
 #define WARN(...)
 #endif
 
-#define ERR(format,args...) fprintf(OUTFILE, "ERR: %s::%s(%d) "format, __FILE__,__FUNCTION__,__LINE__,##args);	\
-         fflush(OUTFILE);
+#define ERR(format,args...) fprintf(OUTFILE, "ERR: %s::%s(%d) "format, __FILE__,__FUNCTION__,__LINE__,##args)
 
 #define min(a,b)   (((a) < (b)) ? (a) : (b))
 #define max(a,b)   (((a) < (b)) ? (b) : (a))
