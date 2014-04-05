@@ -2435,13 +2435,14 @@ JACK_GetMaxOutputBufferedBytes(int deviceID)
   jack_driver_t *drv = getDriver(deviceID);
   long return_val;
 
-  if(drv->pPlayPtr == 0 || drv->bytes_per_jack_output_frame == 0) return_val = 0;
-
   /* adjust from jack bytes to client bytes */
-  return_val =
-    (jack_ringbuffer_read_space(drv->pPlayPtr) +
-     jack_ringbuffer_write_space(drv->pPlayPtr)) /
-    drv->bytes_per_jack_output_frame * drv->bytes_per_output_frame;
+  if(drv->pPlayPtr == 0 || drv->bytes_per_jack_output_frame == 0)
+    return_val = 0;
+  else
+    return_val =
+      (jack_ringbuffer_read_space(drv->pPlayPtr) +
+       jack_ringbuffer_write_space(drv->pPlayPtr)) /
+      drv->bytes_per_jack_output_frame * drv->bytes_per_output_frame;
 
   releaseDriver(drv);
 
@@ -2457,13 +2458,14 @@ JACK_GetMaxInputBufferedBytes(int deviceID)
   jack_driver_t *drv = getDriver(deviceID);
   long return_val;
 
-  if(drv->pRecPtr == 0 || drv->bytes_per_jack_input_frame == 0) return_val = 0;
-
   /* adjust from jack bytes to client bytes */
-  return_val =
-    (jack_ringbuffer_read_space(drv->pRecPtr) +
-     jack_ringbuffer_write_space(drv->pRecPtr)) /
-    drv->bytes_per_jack_input_frame * drv->bytes_per_input_frame;
+  if(drv->pRecPtr == 0 || drv->bytes_per_jack_input_frame == 0)
+    return_val = 0;
+  else
+    return_val =
+      (jack_ringbuffer_read_space(drv->pRecPtr) +
+       jack_ringbuffer_write_space(drv->pRecPtr)) /
+      drv->bytes_per_jack_input_frame * drv->bytes_per_input_frame;
 
   releaseDriver(drv);
 
