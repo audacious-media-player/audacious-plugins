@@ -1529,6 +1529,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
   if(!drv)
   {
     ERR("no more devices available\n");
+    pthread_mutex_unlock(&device_mutex);
     return ERR_OPENING_JACK;
   }
 
