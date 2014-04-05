@@ -33,7 +33,7 @@ static void voice_process(float **d, int *samples)
 	float *f = *d, *end;
 	end = *d + *samples;
 
-	if (voice_channels != 2 || samples == 0)
+	if (voice_channels != 2)
 		return;
 
 	for (f = *d; f < end; f += 2)
