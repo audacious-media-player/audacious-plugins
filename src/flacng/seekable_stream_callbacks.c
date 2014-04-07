@@ -21,7 +21,7 @@
 #include <string.h>
 #include <FLAC/all.h>
 
-#include <audacious/debug.h>
+#include <libaudcore/debug.h>
 
 #include "flacng.h"
 

@@ -22,7 +22,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>

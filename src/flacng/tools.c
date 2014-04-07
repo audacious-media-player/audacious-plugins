@@ -22,7 +22,7 @@
 #include <string.h>
 #include <glib.h>
 
-#include <audacious/debug.h>
+#include <libaudcore/debug.h>
 
 #include "flacng.h"
 

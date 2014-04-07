@@ -26,7 +26,7 @@
 #include <libmms/mms.h>
 #include <libmms/mmsh.h>
 
-#include <audacious/debug.h>
+#include <libaudcore/debug.h>
 #include <audacious/i18n.h>
 #include <audacious/plugin.h>
 

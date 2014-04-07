@@ -21,7 +21,6 @@
 #include <math.h>
 #include <gtk/gtk.h>
 
-#include <audacious/debug.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>

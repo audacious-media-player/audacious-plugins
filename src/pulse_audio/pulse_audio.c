@@ -26,7 +26,7 @@
 
 #include <pulse/pulseaudio.h>
 
-#include <audacious/debug.h>
+#include <libaudcore/debug.h>
 #include <audacious/drct.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>

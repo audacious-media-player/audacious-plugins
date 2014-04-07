@@ -20,8 +20,8 @@
 //audacious includes
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
-#include <audacious/debug.h>
 #include <audacious/preferences.h>
+#include <libaudcore/debug.h>
 
 #define SCROBBLER_API_KEY "4b4f73bda181868353f9b438604adf52"
 #define SCROBBLER_SHARED_SECRET "716cc0a784bb62835de5bd674e65eb57"

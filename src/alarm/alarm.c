@@ -34,7 +34,7 @@
 #include <assert.h>
 #include <math.h>
 
-#include <audacious/debug.h>
+#include <libaudcore/debug.h>
 #include <audacious/drct.h>
 #include <audacious/i18n.h>
 #include <audacious/misc.h>

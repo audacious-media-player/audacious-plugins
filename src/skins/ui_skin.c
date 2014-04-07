@@ -30,7 +30,7 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/debug.h>
+#include <libaudcore/debug.h>
 #include <audacious/misc.h>
 
 #include "plugin.h"

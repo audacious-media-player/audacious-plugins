@@ -33,7 +33,7 @@
 #include "ffaudio-stdinc.h"
 #include <audacious/i18n.h>
 #include <audacious/input.h>
-#include <audacious/debug.h>
+#include <libaudcore/debug.h>
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
 

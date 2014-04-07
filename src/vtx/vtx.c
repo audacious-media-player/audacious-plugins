@@ -23,7 +23,6 @@
 #include <audacious/input.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
-#include <audacious/debug.h>
 
 #include "vtx.h"
 #include "ayemu.h"

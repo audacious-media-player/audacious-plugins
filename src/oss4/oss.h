@@ -36,7 +36,6 @@
 
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
-#include <audacious/debug.h>
 #include <audacious/misc.h>
 
 #define ERROR(...) \
