@@ -6,7 +6,7 @@
 #include <wavpack/wavpack.h>
 
 #include <audacious/audtag.h>
-#include <libaudcore/debug.h>
+#include <libaudcore/runtime.h>
 #include <audacious/i18n.h>
 #include <audacious/input.h>
 #include <audacious/plugin.h>

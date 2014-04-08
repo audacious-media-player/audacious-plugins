@@ -21,7 +21,7 @@
 #include <string.h>
 #include <FLAC/all.h>
 
-#include <libaudcore/debug.h>
+#include <libaudcore/runtime.h>
 
 #include "flacng.h"
 

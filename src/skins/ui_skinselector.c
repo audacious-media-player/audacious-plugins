@@ -26,6 +26,7 @@
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "plugin.h"

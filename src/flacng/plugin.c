@@ -21,7 +21,7 @@
 #include <string.h>
 #include <glib.h>
 
-#include <libaudcore/debug.h>
+#include <libaudcore/runtime.h>
 #include <audacious/i18n.h>
 #include <audacious/input.h>
 #include <audacious/plugin.h>

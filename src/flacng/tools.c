@@ -22,7 +22,7 @@
 #include <string.h>
 #include <glib.h>
 
-#include <libaudcore/debug.h>
+#include <libaudcore/runtime.h>
 
 #include "flacng.h"
 

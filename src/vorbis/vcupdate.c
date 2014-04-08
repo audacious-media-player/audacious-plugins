@@ -30,7 +30,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
-#include <libaudcore/debug.h>
+#include <libaudcore/runtime.h>
 #include <audacious/plugin.h>
 #include <audacious/i18n.h>
 #include <libaudcore/audstrings.h>

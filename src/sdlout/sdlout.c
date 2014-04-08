@@ -30,7 +30,7 @@
 #include <SDL.h>
 #include <SDL_audio.h>
 
-#include <libaudcore/debug.h>
+#include <libaudcore/runtime.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
