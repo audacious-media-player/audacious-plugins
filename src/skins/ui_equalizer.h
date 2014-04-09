@@ -28,8 +28,7 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/types.h>
-#include <libaudcore/index.h>
+#include <libaudcore/equalizer.h>
 
 #define EQUALIZER_DEFAULT_DIR_PRESET "dir_default.preset"
 #define EQUALIZER_DEFAULT_PRESET_EXT "preset"

@@ -61,7 +61,7 @@ static void eq_slider_moved (EqSliderData * data, gint pos)
     if (data->pos == 24 || data->pos == 26)
         data->pos = 25;
 
-    data->val = (gfloat) (25 - data->pos) * EQUALIZER_MAX_GAIN / 25;
+    data->val = (gfloat) (25 - data->pos) * AUD_EQ_MAX_GAIN / 25;
 
     equalizerwin_eq_changed ();
 
@@ -141,7 +141,7 @@ void eq_slider_set_val (GtkWidget * slider, gfloat val)
         return;
 
     data->val = val;
-    data->pos = 25 - (gint) (val * 25 / EQUALIZER_MAX_GAIN);
+    data->pos = 25 - (gint) (val * 25 / AUD_EQ_MAX_GAIN);
     data->pos = CLAMP (data->pos, 0, 50);
 
     gtk_widget_queue_draw (slider);

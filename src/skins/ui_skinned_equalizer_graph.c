@@ -23,6 +23,7 @@
  */
 
 #include <audacious/misc.h>
+#include <libaudcore/equalizer.h>
 #include <libaudcore/runtime.h>
 
 #include "draw-compat.h"
@@ -83,12 +84,12 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (NULL,
-     "equalizer_preamp") * 9 + EQUALIZER_MAX_GAIN / 2) / EQUALIZER_MAX_GAIN, 113, 1);
+     "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);
 
     guint32 cols[19];
     skin_get_eq_spline_colors(active_skin, cols);
 
-    gdouble bands[AUD_EQUALIZER_NBANDS];
+    gdouble bands[AUD_EQ_NBANDS];
     aud_eq_get_bands (bands);
 
     gdouble yf[10];
@@ -98,7 +99,7 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
     gint py = 0;
     for (gint i = 0; i < 109; i ++)
     {
-        gint y = 9.5 - eval_spline (x, bands, yf, 10, i) * 9 / EQUALIZER_MAX_GAIN;
+        gint y = 9.5 - eval_spline (x, bands, yf, 10, i) * 9 / AUD_EQ_MAX_GAIN;
         y = CLAMP (y, 0, 18);
 
         if (!i)
