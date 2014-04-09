@@ -54,8 +54,6 @@ AUD_IFACE_PLUGIN
     .show = view_show_player
 )
 
-static gboolean plugin_is_active = FALSE;
-
 static gint update_source;
 
 static void skins_free_paths(void) {
@@ -95,9 +93,6 @@ static gboolean update_cb (void * unused)
 
 static gboolean skins_init (void)
 {
-    plugin_is_active = TRUE;
-    g_log_set_handler(NULL, G_LOG_LEVEL_WARNING, g_log_default_handler, NULL);
-
     skins_init_paths();
     skins_cfg_load();
 
@@ -126,24 +121,19 @@ static gboolean skins_init (void)
 
 static void skins_cleanup (void)
 {
-    if (plugin_is_active)
-    {
-        mainwin_unhook ();
-        playlistwin_unhook ();
-        g_source_remove (update_source);
+    mainwin_unhook ();
+    playlistwin_unhook ();
+    g_source_remove (update_source);
 
-        skins_cfg_save();
+    skins_cfg_save();
 
-        cleanup_skins();
-        skins_free_paths();
+    cleanup_skins();
+    skins_free_paths();
 
-        eq_preset_browser_cleanup ();
-        eq_preset_list_cleanup ();
+    eq_preset_browser_cleanup ();
+    eq_preset_list_cleanup ();
 
-        menu_cleanup ();
-
-        plugin_is_active = FALSE;
-    }
+    menu_cleanup ();
 }
 
 bool_t handle_window_close (void)
