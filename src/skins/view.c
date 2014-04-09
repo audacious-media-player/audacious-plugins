@@ -24,6 +24,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/hook.h>
 
+#include "plugin-window.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -36,9 +37,15 @@
 void view_show_player (bool_t show)
 {
     if (show)
+    {
         gtk_window_present ((GtkWindow *) mainwin);
+        show_plugin_windows ();
+    }
     else
+    {
         gtk_widget_hide (mainwin);
+        hide_plugin_windows ();
+    }
 
     view_apply_show_playlist ();
     view_apply_show_equalizer ();

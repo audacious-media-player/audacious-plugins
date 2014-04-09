@@ -41,6 +41,7 @@ enum {DOCK_LEFT, DOCK_RIGHT, DOCK_TOP, DOCK_BOTTOM, DOCKS};
 
 typedef struct {
     char * name;
+    PluginHandle * plugin;
     GtkWidget * widget, * vbox, * paned, * window;
     int dock, x, y, w, h;
 } Item;
@@ -51,6 +52,41 @@ static GtkWidget * layout = NULL;
 static GtkWidget * center = NULL;
 static GtkWidget * docks[DOCKS] = {NULL, NULL, NULL, NULL};
 static GtkWidget * menu = NULL;
+
+static Item * item_new (const char * name)
+{
+    Item * item = g_slice_new (Item);
+    item->name = str_get (name);
+    item->plugin = NULL;
+    item->widget = item->vbox = item->paned = item->window = NULL;
+    item->dock = item->x = item->y = -1;
+    item->w = DEFAULT_WIDTH;
+    item->h = DEFAULT_HEIGHT;
+
+    if (! strcmp (name, _("Search Tool")))
+    {
+        item->dock = DOCK_LEFT;
+        item->w = 200;
+    }
+
+    items = g_list_append (items, item);
+    return item;
+}
+
+static int item_by_plugin (Item * item, PluginHandle * plugin)
+{
+    return (item->plugin != plugin);
+}
+
+static int item_by_widget (Item * item, GtkWidget * widget)
+{
+    return (item->widget != widget);
+}
+
+static int item_by_name (Item * item, const char * name)
+{
+    return strcmp (item->name, name);
+}
 
 GtkWidget * layout_new (void)
 {
@@ -98,9 +134,15 @@ static void layout_undock (GtkWidget * widget)
 
 static void layout_disable (GtkWidget * widget)
 {
-    PluginHandle * plugin = aud_plugin_by_widget (widget);
-    g_return_if_fail (plugin);
-    aud_plugin_enable (plugin, FALSE);
+    g_return_if_fail (layout && center && widget);
+
+    GList * node = g_list_find_custom (items, widget, (GCompareFunc) item_by_widget);
+    g_return_if_fail (node);
+
+    Item * item = node->data;
+    g_return_if_fail (item->plugin);
+
+    aud_plugin_enable (item->plugin, FALSE);
 }
 
 static bool_t menu_cb (GtkWidget * widget, GdkEventButton * event)
@@ -212,35 +254,6 @@ static GtkWidget * paned_new (bool_t vertical, bool_t after, int w, int h)
     }
 
     return paned;
-}
-
-static Item * item_new (const char * name)
-{
-    Item * item = g_slice_new (Item);
-    item->name = str_get (name);
-    item->widget = item->vbox = item->paned = item->window = NULL;
-    item->dock = item->x = item->y = -1;
-    item->w = DEFAULT_WIDTH;
-    item->h = DEFAULT_HEIGHT;
-
-    if (! strcmp (name, _("Search Tool")))
-    {
-        item->dock = DOCK_LEFT;
-        item->w = 200;
-    }
-
-    items = g_list_append (items, item);
-    return item;
-}
-
-static int item_by_widget (Item * item, GtkWidget * widget)
-{
-    return (item->widget != widget);
-}
-
-static int item_by_name (Item * item, const char * name)
-{
-    return strcmp (item->name, name);
 }
 
 static bool_t delete_cb (GtkWidget * widget)
@@ -455,10 +468,12 @@ static void size_changed_cb (GtkWidget * widget, GdkRectangle * rect, Item * ite
     }
 }
 
-void layout_add (GtkWidget * widget, const char * name)
+void layout_add (PluginHandle * plugin, GtkWidget * widget)
 {
-    g_return_if_fail (layout && center && widget && name && strlen (name) <= 256
-     && ! strchr (name, '\n'));
+    g_return_if_fail (layout && center && plugin && widget);
+
+    const char * name = aud_plugin_get_name (plugin);
+    g_return_if_fail (name);
 
     GList * node = g_list_find_custom (items, name, (GCompareFunc) item_by_name);
     Item * item = node ? node->data : NULL;
@@ -472,6 +487,7 @@ void layout_add (GtkWidget * widget, const char * name)
     else
         item = item_new (name);
 
+    item->plugin = plugin;
     item->widget = widget;
     NULL_ON_DESTROY (item->widget);
     item->vbox = vbox_new (widget, name);
@@ -487,7 +503,7 @@ static void layout_move (GtkWidget * widget, int dock)
     g_return_if_fail (layout && center && widget && dock < DOCKS);
 
     GList * node = g_list_find_custom (items, widget, (GCompareFunc) item_by_widget);
-    g_return_if_fail (node && node->data);
+    g_return_if_fail (node);
     Item * item = node->data;
 
     g_return_if_fail (item->vbox);
@@ -502,20 +518,19 @@ static void layout_move (GtkWidget * widget, int dock)
     g_object_unref (item->vbox);
 }
 
-void layout_remove (GtkWidget * widget)
+void layout_remove (PluginHandle * plugin)
 {
-    g_return_if_fail (layout && center && widget);
+    g_return_if_fail (layout && center && plugin);
+
+    GList * node = g_list_find_custom (items, plugin, (GCompareFunc) item_by_plugin);
+    if (! node)
+        return;
 
     /* menu may hold pointers to this widget */
     if (menu)
         gtk_widget_destroy (menu);
 
-    GList * node = g_list_find_custom (items, widget, (GCompareFunc) item_by_widget);
-    g_return_if_fail (node && node->data);
-    Item * item = node->data;
-
-    item_remove (item);
-    g_return_if_fail (! item->widget && ! item->vbox && ! item->window);
+    item_remove (node->data);
 }
 
 void layout_save (void)
@@ -570,7 +585,7 @@ void layout_cleanup (void)
     for (GList * node = items; node; node = node->next)
     {
         Item * item = node->data;
-        g_return_if_fail (item && ! item->widget && ! item->vbox && ! item->window);
+        g_return_if_fail (! item->widget && ! item->vbox && ! item->window);
         str_unref (item->name);
         g_slice_free (Item, item);
     }

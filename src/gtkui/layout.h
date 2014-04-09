@@ -27,8 +27,8 @@ void layout_save (void);
 void layout_cleanup (void);
 
 GtkWidget * layout_new (void);
-void layout_add_center (GtkWidget * add);
-void layout_add (GtkWidget * add, const char * name);
-void layout_remove (GtkWidget * rem);
+void layout_add_center (GtkWidget * widget);
+void layout_add (PluginHandle * plugin, GtkWidget * widget);
+void layout_remove (PluginHandle * plugin);
 
 #endif

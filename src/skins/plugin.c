@@ -117,11 +117,15 @@ static gboolean skins_init (void)
 
     update_source = g_timeout_add (250, update_cb, NULL);
 
+    create_plugin_windows ();
+
     return TRUE;
 }
 
 static void skins_cleanup (void)
 {
+    destroy_plugin_windows ();
+
     mainwin_unhook ();
     playlistwin_unhook ();
     g_source_remove (update_source);

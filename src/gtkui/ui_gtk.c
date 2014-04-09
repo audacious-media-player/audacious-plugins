@@ -96,9 +96,7 @@ AUD_IFACE_PLUGIN
     .prefs = & gtkui_prefs,
     .init = init,
     .cleanup = cleanup,
-    .show = ui_show,
-    .run_gtk_plugin = (void (*) (void *, const char *)) layout_add,
-    .stop_gtk_plugin = (void (*) (void *)) layout_remove,
+    .show = ui_show
 )
 
 static void save_window_size (void)
@@ -693,6 +691,39 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
+static bool_t add_dock_plugin (PluginHandle * plugin, void * unused)
+{
+    GtkWidget * widget = aud_plugin_get_widget (plugin);
+    if (widget)
+        layout_add (plugin, widget);
+
+    return TRUE;
+}
+
+static bool_t remove_dock_plugin (PluginHandle * plugin, void * unused)
+{
+    layout_remove (plugin);
+    return TRUE;
+}
+
+static void add_dock_plugins (void)
+{
+    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, add_dock_plugin, NULL);
+    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, add_dock_plugin, NULL);
+
+    hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, NULL);
+    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, NULL);
+}
+
+static void remove_dock_plugins (void)
+{
+    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, remove_dock_plugin, NULL);
+    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, remove_dock_plugin, NULL);
+
+    hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
+    hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
+}
+
 static bool_t init (void)
 {
     search_tool = aud_plugin_lookup_basename ("search-tool");
@@ -840,11 +871,15 @@ static bool_t init (void)
     menu_rclick = make_menu_rclick (accel);
     menu_tab = make_menu_tab (accel);
 
+    add_dock_plugins ();
+
     return TRUE;
 }
 
 static void cleanup (void)
 {
+    remove_dock_plugins ();
+
     if (menu_main)
         gtk_widget_destroy (menu_main);
 
