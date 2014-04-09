@@ -31,7 +31,7 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 
 #include "plugin.h"
 #include "skins_cfg.h"

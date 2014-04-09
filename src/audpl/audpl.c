@@ -19,7 +19,7 @@
 
 #include <stdlib.h>
 
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>

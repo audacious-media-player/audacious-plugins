@@ -29,7 +29,7 @@
 
 #include <glib.h>
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 
 #include "i_configure.h"
 

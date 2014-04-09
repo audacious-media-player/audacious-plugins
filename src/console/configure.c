@@ -10,7 +10,7 @@
 
 #include "configure.h"
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 
 #define CON_CFGID "console"
 

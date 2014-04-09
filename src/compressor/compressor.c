@@ -23,7 +23,7 @@
 
 #include <glib.h>
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 
 #include "compressor.h"
 

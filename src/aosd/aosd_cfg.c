@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <audacious/plugin.h>
 
 static gint

@@ -38,7 +38,7 @@
 #include "ui_skinned_playlist_slider.h"
 
 #include <audacious/drct.h>
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <audacious/playlist.h>
 #include <libaudgui/libaudgui.h>
 

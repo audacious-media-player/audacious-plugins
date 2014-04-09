@@ -31,7 +31,7 @@
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
 
 #include "ffaudio-stdinc.h"
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <audacious/input.h>
 #include <libaudcore/runtime.h>
 #include <audacious/audtag.h>

@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
 
 static gint (*write_output)(void *ptr, gint length);

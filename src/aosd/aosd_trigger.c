@@ -22,7 +22,7 @@
 #include <string.h>
 
 #include <audacious/drct.h>
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>

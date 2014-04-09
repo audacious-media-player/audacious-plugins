@@ -21,7 +21,7 @@
 
 #include "view.h"
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <libaudcore/hook.h>
 
 #include "skins_cfg.h"

@@ -50,7 +50,7 @@
 #include <alsa/asoundlib.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <audacious/plugin.h>
 
 #include "alsa.h"

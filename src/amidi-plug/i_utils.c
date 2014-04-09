@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 #include <gtk/gtk.h>
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 
 #include "amidi-plug.logo.xpm"
 

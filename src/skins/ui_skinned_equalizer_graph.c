@@ -23,6 +23,7 @@
  */
 
 #include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 
 #include "draw-compat.h"
 #include "ui_skin.h"

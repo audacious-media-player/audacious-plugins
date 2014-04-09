@@ -13,9 +13,9 @@
 
 #include <string.h>
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <audacious/drct.h>
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 #include <audacious/playlist.h>

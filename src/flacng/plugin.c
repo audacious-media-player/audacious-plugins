@@ -22,7 +22,7 @@
 #include <glib.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <audacious/input.h>
 #include <audacious/plugin.h>
 

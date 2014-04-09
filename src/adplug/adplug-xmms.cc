@@ -30,8 +30,8 @@
 
 extern "C" {
 #include <audacious/input.h>
-#include <audacious/misc.h>
-#include <audacious/i18n.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
 
 #include "adplug-xmms.h"

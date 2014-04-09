@@ -22,7 +22,7 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <audacious/types.h>
 
 #include "draw-compat.h"

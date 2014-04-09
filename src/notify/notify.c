@@ -22,10 +22,10 @@
 
 #include <libnotify/notify.h>
 
-#include <audacious/i18n.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
-#include <audacious/misc.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 
 #include "event.h"
 

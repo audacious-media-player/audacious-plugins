@@ -18,7 +18,7 @@
 *
 */
 
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 
 #include "aosd.h"
 #include "aosd_ui.h"

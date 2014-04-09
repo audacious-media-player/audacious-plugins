@@ -29,7 +29,7 @@
 #include <lame/lame.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
 
 #define MODES 4

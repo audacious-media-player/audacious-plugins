@@ -22,7 +22,7 @@
 #include "aosd_style_private.h"
 #include "aosd_cfg.h"
 #include <glib.h>
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <X11/Xlib.h>
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>

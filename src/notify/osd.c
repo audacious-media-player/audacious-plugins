@@ -22,9 +22,10 @@
 
 #include <libnotify/notify.h>
 
-#include <audacious/i18n.h>
 #include <audacious/drct.h>
 #include <audacious/misc.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/i18n.h>
 
 static void show_cb (void)
 {

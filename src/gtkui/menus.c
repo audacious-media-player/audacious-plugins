@@ -21,9 +21,10 @@
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
-#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/menu.h>
 

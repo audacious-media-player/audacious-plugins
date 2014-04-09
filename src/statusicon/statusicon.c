@@ -23,12 +23,12 @@
 #include "statusicon.h"
 
 #include <audacious/drct.h>
-#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/plugins.h>
 #include <audacious/preferences.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>

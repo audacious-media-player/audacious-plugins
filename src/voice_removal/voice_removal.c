@@ -18,7 +18,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 #include <audacious/plugin.h>
 
 static int voice_channels;

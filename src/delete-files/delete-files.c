@@ -26,12 +26,13 @@
 #include <glib/gstdio.h>
 #include <gtk/gtk.h>
 
-#include <audacious/i18n.h>
 #include <audacious/misc.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <audacious/preferences.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 static const int menus[] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST, AUD_MENU_PLAYLIST_REMOVE};

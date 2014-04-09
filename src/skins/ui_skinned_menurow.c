@@ -25,7 +25,7 @@
  * Audacious or using our public API to be a derived work.
  */
 
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 
 #include "draw-compat.h"
 #include "skins_cfg.h"

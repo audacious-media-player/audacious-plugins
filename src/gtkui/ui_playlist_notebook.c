@@ -23,7 +23,7 @@
 #include <gtk/gtk.h>
 
 #include <audacious/drct.h>
-#include <audacious/misc.h>
+#include <libaudcore/runtime.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>

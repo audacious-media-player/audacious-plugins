@@ -22,8 +22,8 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/i18n.h>
-#include <audacious/misc.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 #include <audacious/plugins.h>
 
 #include "layout.h"

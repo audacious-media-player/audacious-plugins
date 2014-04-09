@@ -27,7 +27,7 @@
 
 #include <audacious/drct.h>
 #include <audacious/plugin.h>
-#include <audacious/i18n.h>
+#include <libaudcore/i18n.h>
 
 static gboolean init (void);
 static void cleanup (void);

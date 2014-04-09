@@ -24,8 +24,8 @@
 #include <fluidsynth.h>
 #include <glib.h>
 
-#include <audacious/i18n.h>
-#include <audacious/misc.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 
 #include "../i_backend.h"
 #include "../i_configure.h"
