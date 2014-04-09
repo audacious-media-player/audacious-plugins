@@ -223,7 +223,7 @@ static Item * item_new (const char * name)
     item->w = DEFAULT_WIDTH;
     item->h = DEFAULT_HEIGHT;
 
-    if (! strcmp (name, "Search Tool"))
+    if (! strcmp (name, _("Search Tool")))
     {
         item->dock = DOCK_LEFT;
         item->w = 200;
