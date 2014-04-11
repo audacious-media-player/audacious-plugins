@@ -776,6 +776,7 @@ static bool_t init (void)
     gtk_container_add ((GtkContainer *) boxitem2, box2);
 
     volume = gtk_volume_button_new();
+    g_object_set ((GObject *) volume, "size", GTK_ICON_SIZE_LARGE_TOOLBAR, NULL);
     gtk_button_set_relief(GTK_BUTTON(volume), GTK_RELIEF_NONE);
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     gtk_widget_set_can_focus(volume, FALSE);
