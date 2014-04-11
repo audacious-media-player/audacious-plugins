@@ -154,7 +154,8 @@ static void ready (void *hook_data, void *user_data) {
     cleanup_current_track();
 
     Tuple *current_track = aud_playlist_entry_get_tuple(aud_playlist_get_playing(), aud_playlist_get_position(aud_playlist_get_playing()), FALSE);
-
+    if (tuple_get_int(current_track, FIELD_TRACK_NUMBER) == -1) 
+        tuple_set_int(current_track, FIELD_TRACK_NUMBER, 0);
     int duration_seconds = tuple_get_int(current_track, FIELD_LENGTH) / 1000;
     if (duration_seconds <= 30) {
         tuple_unref(current_track);
