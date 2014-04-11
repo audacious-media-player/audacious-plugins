@@ -64,7 +64,7 @@ static const AudguiMenuItem main_items[] = {
     {N_("Services"), .get_sub = get_plugin_menu_main},
     {.sep = TRUE},
     {N_("About ..."), "help-about", .func = audgui_show_about_window},
-    {N_("Settings ..."), "preferences-system", 'p', CTRL, .func = aud_show_prefs_window},
+    {N_("Settings ..."), "preferences-system", 'p', CTRL, .func = audgui_show_prefs_window},
     {N_("Quit"), "application-exit", 'q', CTRL, .func = aud_drct_quit}
 };
 

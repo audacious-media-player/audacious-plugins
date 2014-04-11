@@ -44,8 +44,8 @@ static void open_url (void) {audgui_show_add_url_window (TRUE); }
 static void add_files (void) {audgui_run_filebrowser (FALSE); }
 static void add_url (void) {audgui_show_add_url_window (FALSE); }
 
-static void configure_effects (void) {aud_show_prefs_for_plugin_type (PLUGIN_TYPE_EFFECT); }
-static void configure_visualizations (void) {aud_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS); }
+static void configure_effects (void) {audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_EFFECT); }
+static void configure_visualizations (void) {audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS); }
 
 static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK); }
 static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
@@ -133,7 +133,7 @@ static const AudguiMenuItem file_items[] = {
  {N_("Search _Library"), "edit-find", 'y', CTRL, .func = activate_search_tool},
  {.sep = TRUE},
  {N_("A_bout ..."), "help-about", .func = audgui_show_about_window},
- {N_("_Settings ..."), "preferences-system", .func = aud_show_prefs_window},
+ {N_("_Settings ..."), "preferences-system", .func = audgui_show_prefs_window},
  {N_("_Quit"), "application-exit", 'q', CTRL, .func = aud_drct_quit}};
 
 static const AudguiMenuItem playback_items[] = {

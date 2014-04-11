@@ -27,7 +27,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <audacious/plugin.h>
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 
 #define MAX_CHANNELS 8
 

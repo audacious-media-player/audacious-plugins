@@ -26,7 +26,7 @@
 #include <audacious/misc.h>
 #include <audacious/plugin.h>
 #include <audacious/plugins.h>
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
@@ -267,7 +267,7 @@ static GtkWidget *si_smallmenu_create(void)
         {N_("_Stop"), "media-playback-stop", .func = aud_drct_stop},
         {N_("_Next"), "media-skip-forward", .func = aud_drct_pl_next},
         {.sep = TRUE},
-        {N_("Se_ttings ..."), "preferences-system", .func = aud_show_prefs_window},
+        {N_("Se_ttings ..."), "preferences-system", .func = audgui_show_prefs_window},
         {N_("_Quit"), "application-exit", .func = aud_drct_quit}
     };
 

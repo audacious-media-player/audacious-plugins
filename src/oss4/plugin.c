@@ -19,7 +19,7 @@
 
 #include "oss.h"
 
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
 
 static void combo_init(ComboBoxElements ** elements, int * n_elements)

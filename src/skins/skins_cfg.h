@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/types.h>
+#include <libaudcore/core.h>
 
 typedef struct {
     gint player_x, player_y;

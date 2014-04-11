@@ -21,7 +21,7 @@
 #ifndef _I_CONFIGURE_H
 #define _I_CONFIGURE_H 1
 
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 
 extern int backend_settings_changed;  /* atomic */
 

@@ -6,7 +6,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <audacious/plugin.h>
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 
 #define MAX_DELAY 1000
 #define MAX_SRATE 50000

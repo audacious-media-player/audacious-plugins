@@ -23,7 +23,7 @@
  */
 
 #include <libaudcore/i18n.h>
-#include <audacious/types.h>
+#include <libaudcore/core.h>
 
 #include "draw-compat.h"
 #include "ui_equalizer.h"

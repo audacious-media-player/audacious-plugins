@@ -20,7 +20,7 @@
 #include "gtkui.h"
 
 #include <libaudcore/i18n.h>
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"

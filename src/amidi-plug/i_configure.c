@@ -24,7 +24,7 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 
 #include "i_configure-fluidsynth.h"
 

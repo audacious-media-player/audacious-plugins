@@ -41,7 +41,7 @@
 #include <libaudcore/runtime.h>
 #include <audacious/playlist.h>
 #include <audacious/plugin.h>
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/hook.h>
 
 static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition, void * data);

@@ -30,7 +30,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <audacious/plugin.h>
-#include <audacious/preferences.h>
+#include <libaudcore/preferences.h>
 
 #define MIN_RATE 8000
 #define MAX_RATE 192000
