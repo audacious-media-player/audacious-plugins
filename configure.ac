@@ -51,7 +51,7 @@ PKG_CHECK_MODULES([XML], [libxml-2.0])
 dnl Default Set of Plugins
 dnl ======================
 
-INPUT_PLUGINS="tonegen metronom vtx"
+INPUT_PLUGINS="tonegen metronom"
 OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer ladspa mixer stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="alarm albumart delete-files search-tool"
@@ -980,6 +980,17 @@ fi
 
 AC_SUBST(GL_LIBS)
 
+dnl VTX Decoder
+dnl =============
+
+AC_ARG_ENABLE(vtx,
+ [AS_HELP_STRING([--disable-vtx], [disable VTX Decoder])],
+ [enable_vtx=$enableval], [enable_vtx="yes"])
+
+if test "x$enable_vtx" != "xno"; then
+    INPUT_PLUGINS="$INPUT_PLUGINS vtx"
+fi
+
 dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
@@ -1071,6 +1082,7 @@ echo "  Nintendo DS audio (xsf):                $enable_xsf"
 echo "  AdLib synthesizer (adplug):             $have_adplug"
 echo "  WavPack 4.31+ (wavpack):                $have_wavpack"
 echo "  Metronom:                               yes"
+echo "  VTX Decoder:                            $enable_vtx"
 echo
 echo "  General"
 echo "  -------"
