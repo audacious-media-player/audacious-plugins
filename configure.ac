@@ -54,7 +54,7 @@ dnl ======================
 INPUT_PLUGINS="tonegen metronom"
 OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer mixer stereo_plugin voice_removal echo_plugin"
-GENERAL_PLUGINS="alarm albumart delete-files search-tool"
+GENERAL_PLUGINS=""
 VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
@@ -1024,6 +1024,50 @@ if test "x$enable_cairo_spectrum" != "xno"; then
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS cairo-spectrum"
 fi
 
+dnl Alarm
+dnl =============
+
+AC_ARG_ENABLE(alarm,
+ [AS_HELP_STRING([--disable-alarm], [disable Alarm])],
+ [enable_alarm=$enableval], [enable_alarm="yes"])
+
+if test "x$enable_alarm" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm"
+fi
+
+dnl Album Art
+dnl =============
+
+AC_ARG_ENABLE(albumart,
+ [AS_HELP_STRING([--disable-albumart], [disable Album Art])],
+ [enable_albumart=$enableval], [enable_albumart="yes"])
+
+if test "x$enable_albumart" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart"
+fi
+
+dnl Delete Files
+dnl =============
+
+AC_ARG_ENABLE(delete_files,
+ [AS_HELP_STRING([--disable-delete-files], [disable Delete Files])],
+ [enable_delete_files=$enableval], [enable_delete_files="yes"])
+
+if test "x$enable_delete_files" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS delete-files"
+fi
+
+dnl Search Tool
+dnl =============
+
+AC_ARG_ENABLE(search_tool,
+ [AS_HELP_STRING([--disable-search-tool], [disable Search Tool])],
+ [enable_search_tool=$enableval], [enable_search_tool="yes"])
+
+if test "x$enable_search_tool" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS search-tool"
+fi
+
 dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
@@ -1119,12 +1163,12 @@ echo "  VTX Decoder:                            $enable_vtx"
 echo
 echo "  General"
 echo "  -------"
-echo "  Alarm:                                  yes"
-echo "  Album Art:                              yes"
-echo "  Delete from Filesystem:                 yes"
+echo "  Alarm:                                  $enable_alarm"
+echo "  Album Art:                              $enable_albumart"
+echo "  Delete from Filesystem:                 $enable_delete_files"
 echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
-echo "  Search Tool:                            yes"
+echo "  Search Tool:                            $enable_search_tool"
 echo "  Song Change:                            $have_songchange"
 echo "  Status Icon:                            $have_statusicon"
 echo "  Audacious OSD:                          $have_aosd"
