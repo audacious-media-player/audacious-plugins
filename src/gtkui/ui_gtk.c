@@ -740,6 +740,8 @@ static void remove_dock_plugins (void)
 
 static bool_t init (void)
 {
+    audgui_init ();
+
     search_tool = aud_plugin_lookup_basename ("search-tool");
 
     aud_config_set_defaults ("gtkui", gtkui_defaults);
@@ -926,6 +928,8 @@ static void cleanup (void)
 
     gtk_widget_destroy (window);
     layout_cleanup ();
+
+    audgui_cleanup ();
 }
 
 static void menu_position_cb (GtkMenu * menu, int * x, int * y, int * push, void * button)

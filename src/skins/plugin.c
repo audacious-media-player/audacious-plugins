@@ -108,6 +108,8 @@ static gboolean update_cb (void * unused)
 
 static gboolean skins_init (void)
 {
+    audgui_init ();
+
     skins_init_paths();
     skins_cfg_load();
 
@@ -153,6 +155,8 @@ static void skins_cleanup (void)
     eq_preset_list_cleanup ();
 
     menu_cleanup ();
+
+    audgui_cleanup ();
 }
 
 bool_t handle_window_close (void)

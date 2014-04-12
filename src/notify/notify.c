@@ -26,6 +26,7 @@
 #include <libaudcore/preferences.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui.h>
 
 #include "event.h"
 
@@ -57,13 +58,15 @@ static bool_t plugin_init (void)
     if (! notify_init ("Audacious"))
         return FALSE;
 
-    event_init();
+    audgui_init ();
+    event_init ();
     return TRUE;
 }
 
 static void plugin_cleanup (void)
 {
     event_uninit ();
+    audgui_cleanup ();
     notify_uninit ();
 }
 

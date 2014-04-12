@@ -48,7 +48,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui.h>
 
 #include "plugin.h"
 #include "gui.h"
@@ -247,7 +246,7 @@ gboolean handle_keyevent (EVENT event)
     /* Open Jump-To-File dialog */
     if (event == EVENT_JUMP_TO_FILE && ! aud_get_headless_mode ())
     {
-        audgui_jump_to_track ();
+        aud_ui_show_jump_to_song ();
         return TRUE;
     }
 

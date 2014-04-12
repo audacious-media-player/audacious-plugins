@@ -18,4 +18,4 @@ plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GTK_CFLAGS}
-LIBS += -lm ${GTK_LIBS}
+LIBS += -lm ${GTK_LIBS} -laudgui
