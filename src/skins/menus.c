@@ -28,6 +28,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/menu.h>
 
 #include "actions-mainwin.h"
@@ -48,10 +49,10 @@ static GtkWidget * get_menu_playback (void) {return menus[UI_MENU_PLAYBACK]; }
 static GtkWidget * get_menu_playlist (void) {return menus[UI_MENU_PLAYLIST]; }
 static GtkWidget * get_menu_view (void) {return menus[UI_MENU_VIEW]; }
 
-static GtkWidget * get_plugin_menu_main (void) {return aud_get_plugin_menu (AUD_MENU_MAIN); }
-static GtkWidget * get_plugin_menu_playlist (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST); }
-static GtkWidget * get_plugin_menu_playlist_add (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST_ADD); }
-static GtkWidget * get_plugin_menu_playlist_remove (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST_REMOVE); }
+static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AUD_MENU_MAIN); }
+static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST); }
+static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_ADD); }
+static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_REMOVE); }
 
 static const AudguiMenuItem main_items[] = {
     {N_("Open Files ..."), "document-open", 'l', .func = action_play_file},

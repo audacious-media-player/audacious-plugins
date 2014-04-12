@@ -26,6 +26,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/menu.h>
 
 #include "gtkui.h"
@@ -107,8 +108,8 @@ static void pl_tab_close (void)
         audgui_confirm_playlist_delete (playlist);
 }
 
-static GtkWidget * get_services_main (void) {return aud_get_plugin_menu (AUD_MENU_MAIN); }
-static GtkWidget * get_services_pl (void) {return aud_get_plugin_menu (AUD_MENU_PLAYLIST); }
+static GtkWidget * get_services_main (void) {return audgui_get_plugin_menu (AUD_MENU_MAIN); }
+static GtkWidget * get_services_pl (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST); }
 
 static void volume_up (void)
 {
