@@ -227,7 +227,7 @@ static void append_str (char * buf, int bufsize, const char * str)
 
 static void append_time_str (char * buf, int bufsize, int time)
 {
-    audgui_format_time (buf + strlen (buf), bufsize - strlen (buf), time);
+    str_format_time (buf + strlen (buf), bufsize - strlen (buf), time);
 }
 
 static void set_time_label (int time, int len)

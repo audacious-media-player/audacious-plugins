@@ -41,8 +41,8 @@ static void ui_statusbar_update_playlist_length (void * unused, GtkWidget * labe
     int playlist = aud_playlist_get_active ();
 
     char s1[16], s2[16];
-    audgui_format_time (s1, sizeof s1, aud_playlist_get_selected_length (playlist));
-    audgui_format_time (s2, sizeof s2, aud_playlist_get_total_length (playlist));
+    str_format_time (s1, sizeof s1, aud_playlist_get_selected_length (playlist));
+    str_format_time (s2, sizeof s2, aud_playlist_get_total_length (playlist));
 
     SCONCAT3 (buf, s1, " / ", s2);
     gtk_label_set_text ((GtkLabel *) label, buf);

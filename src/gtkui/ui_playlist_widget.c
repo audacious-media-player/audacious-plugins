@@ -82,7 +82,7 @@ static void set_length (GValue * value, int list, int row)
     if (len)
     {
         char s[16];
-        audgui_format_time (s, sizeof s, len);
+        str_format_time (s, sizeof s, len);
         g_value_set_string (value, s);
     }
     else

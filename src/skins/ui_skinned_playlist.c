@@ -37,6 +37,7 @@
 #include "ui_skinned_playlist.h"
 #include "ui_skinned_playlist_slider.h"
 
+#include <libaudcore/audstrings.h>
 #include <audacious/drct.h>
 #include <libaudcore/runtime.h>
 #include <audacious/playlist.h>
@@ -222,7 +223,7 @@ DRAW_FUNC_BEGIN (playlist_draw)
             continue;
 
         char buf[16];
-        audgui_format_time (buf, sizeof buf, len);
+        str_format_time (buf, sizeof buf, len);
 
         layout = gtk_widget_create_pango_layout (wid, buf);
         pango_layout_set_font_description (layout, data->font);
