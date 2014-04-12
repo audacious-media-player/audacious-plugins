@@ -55,7 +55,7 @@ INPUT_PLUGINS="tonegen metronom"
 OUTPUT_PLUGINS=""
 EFFECT_PLUGINS="compressor crossfade crystalizer mixer stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="alarm albumart delete-files search-tool"
-VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
+VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
 
@@ -1002,6 +1002,28 @@ if test "x$enable_ladspa" != "xno"; then
     EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
 fi
 
+dnl Blur Scope
+dnl =============
+
+AC_ARG_ENABLE(blur_scope,
+ [AS_HELP_STRING([--disable-blur-scope], [disable Blur Scope])],
+ [enable_blur_scope=$enableval], [enable_blur_scope="yes"])
+
+if test "x$enable_blur_scope" != "xno"; then
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS blur_scope"
+fi
+
+dnl Cairo Spectrum Analyzer
+dnl =============
+
+AC_ARG_ENABLE(cairo_spectrum,
+ [AS_HELP_STRING([--disable-cairo-spectrum], [disable Cairo Spectrum Analyzer])],
+ [enable_cairo_spectrum=$enableval], [enable_cairo_spectrum="yes"])
+
+if test "x$enable_cairo_spectrum" != "xno"; then
+    VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS cairo-spectrum"
+fi
+
 dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
@@ -1129,8 +1151,8 @@ echo "  SoX Resampler:                          $have_soxr"
 echo
 echo "  Visualization"
 echo "  -------------"
-echo "  Blur Scope:                             yes"
-echo "  Cairo Spectrum Analyzer:                yes"
+echo "  Blur Scope:                             $enable_blur_scope"
+echo "  Cairo Spectrum Analyzer:                $enable_cairo_spectrum"
 echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
 echo
 echo "  Transport"
