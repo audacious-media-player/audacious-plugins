@@ -46,7 +46,14 @@ LIBS="$LIBS $AUDACIOUS_LIBS"
 dnl Check for libxml2 (required to load XSPF playlists from previous versions)
 dnl ==========================================================================
 
-PKG_CHECK_MODULES([XML], [libxml-2.0])
+if test $HAVE_DARWIN = yes ; then
+    XML_LIBS="-lxml2"
+    XML_CFLAGS="-I/usr/include/libxml2"
+    AC_SUBST(XML_LIBS)
+    AC_SUBST(XML_CFLAGS)
+else
+    PKG_CHECK_MODULES([XML], [libxml-2.0])
+fi
 
 dnl Default Set of Plugins
 dnl ======================
