@@ -52,7 +52,21 @@ AUD_IFACE_PLUGIN
     .init = skins_init,
     .cleanup = skins_cleanup,
     .prefs = & skins_prefs,
-    .show = view_show_player
+
+    .show = view_show_player,
+    .run = gtk_main,
+    .quit = gtk_main_quit,
+
+    .show_about_window = audgui_show_about_window,
+    .hide_about_window = audgui_hide_about_window,
+    .show_filebrowser = audgui_run_filebrowser,
+    .hide_filebrowser = audgui_hide_filebrowser,
+    .show_jump_to_song = audgui_jump_to_track,
+    .hide_jump_to_song = audgui_jump_to_track_hide,
+    .show_prefs_window = audgui_show_prefs_window,
+    .hide_prefs_window = audgui_hide_prefs_window,
+    .plugin_menu_add = audgui_plugin_menu_add,
+    .plugin_menu_remove = audgui_plugin_menu_remove
 )
 
 static gint update_source;

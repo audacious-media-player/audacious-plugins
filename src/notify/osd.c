@@ -29,7 +29,7 @@
 
 static void show_cb (void)
 {
-    aud_interface_show (TRUE);
+    aud_ui_show (TRUE);
 }
 
 static void osd_setup (NotifyNotification *notification)

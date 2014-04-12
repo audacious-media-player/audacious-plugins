@@ -27,8 +27,6 @@
 #include <audacious/playlist.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include "filewriter.h"
 #include "plugins.h"

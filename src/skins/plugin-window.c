@@ -55,7 +55,7 @@ static bool_t add_dock_plugin (PluginHandle * plugin, void * unused)
 
         windows = g_list_prepend (windows, window);
 
-        if (aud_interface_is_shown ())
+        if (aud_ui_is_shown ())
             gtk_widget_show_all (window);
     }
 

@@ -95,7 +95,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
           if (event->state & GDK_SHIFT_MASK)
               aud_drct_pl_next();
           else if (! aud_get_headless_mode ())
-              aud_interface_show (! aud_interface_is_shown ());
+              aud_ui_show (! aud_ui_is_shown ());
           break;
       }
 
@@ -292,7 +292,7 @@ static void si_window_close(gpointer data, gpointer user_data)
     if (aud_get_bool ("statusicon", "close_to_tray"))
     {
         *handle = TRUE;
-        aud_interface_show (FALSE);
+        aud_ui_show (FALSE);
     }
 }
 
@@ -337,8 +337,8 @@ static void si_enable(gboolean enable)
          * by disabling the plugin while Audacious is closed to the tray. */
         extern GeneralPlugin _aud_plugin_self;
         PluginHandle *si = aud_plugin_by_header(&_aud_plugin_self);
-        if (! aud_plugin_get_enabled(si) && ! aud_get_headless_mode() && ! aud_interface_is_shown())
-            aud_interface_show(TRUE);
+        if (! aud_plugin_get_enabled(si) && ! aud_get_headless_mode() && ! aud_ui_is_shown())
+            aud_ui_show(TRUE);
 
         GtkWidget *si_smenu = g_object_get_data(G_OBJECT(si_applet), "smenu");
         si_popup_timer_stop(si_applet);   /* just in case the timer is active */

@@ -52,8 +52,6 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #define DEF_STRING_LEN 256
 
@@ -165,7 +163,7 @@ static void cdaudio_error (const char * message_format, ...)
     msg = g_markup_vprintf_escaped (message_format, args);
     va_end (args);
 
-    aud_interface_show_error (msg);
+    aud_ui_show_error (msg);
     g_free (msg);
 }
 

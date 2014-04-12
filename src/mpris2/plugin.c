@@ -49,7 +49,7 @@ static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
 static bool_t raise_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation *
  call, void * unused)
 {
-    aud_interface_show (TRUE);
+    aud_ui_show (TRUE);
     mpris_media_player2_complete_raise (object, call);
     return TRUE;
 }

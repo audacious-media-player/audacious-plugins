@@ -254,7 +254,7 @@ gboolean handle_keyevent (EVENT event)
     /* Toggle Windows */
     if (event == EVENT_TOGGLE_WIN && ! aud_get_headless_mode ())
     {
-        aud_interface_show (! aud_interface_is_shown ());
+        aud_ui_show (! aud_ui_is_shown ());
         return TRUE;
     }
 
@@ -285,7 +285,7 @@ gboolean handle_keyevent (EVENT event)
 
     if (event == EVENT_RAISE)
     {
-        aud_interface_show (TRUE);
+        aud_ui_show (TRUE);
         return TRUE;
     }
 

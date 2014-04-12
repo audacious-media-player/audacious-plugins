@@ -28,7 +28,7 @@
 
 #define ERROR_NOISY(...) do { \
     SPRINTF (ERROR_NOISY_buf, "ALSA error: " __VA_ARGS__); \
-    aud_interface_show_error (ERROR_NOISY_buf); \
+    aud_ui_show_error (ERROR_NOISY_buf); \
 } while (0)
 
 #define CHECK_VAL(value, function, ...) \

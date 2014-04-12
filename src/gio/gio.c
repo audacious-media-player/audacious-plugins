@@ -39,7 +39,7 @@ typedef struct {
 
 #define gio_error(...) do { \
     SPRINTF (gio_error_buf, __VA_ARGS__); \
-    aud_interface_show_error (gio_error_buf); \
+    aud_ui_show_error (gio_error_buf); \
 } while (0)
 
 #define CHECK_ERROR(op, name) do { \

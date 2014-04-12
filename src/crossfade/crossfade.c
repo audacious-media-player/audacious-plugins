@@ -81,14 +81,14 @@ static void crossfade_start (int * channels, int * rate)
         reset ();
     else if (* channels != current_channels)
     {
-        aud_interface_show_error (_("Crossfading failed because the songs had "
+        aud_ui_show_error (_("Crossfading failed because the songs had "
          "a different number of channels.  You can use the Channel Mixer to "
          "convert the songs to the same number of channels."));
         reset ();
     }
     else if (* rate != current_rate)
     {
-        aud_interface_show_error (_("Crossfading failed because the songs had "
+        aud_ui_show_error (_("Crossfading failed because the songs had "
          "different sample rates.  You can use the Sample Rate Converter to "
          "convert the songs to the same sample rate."));
         reset ();

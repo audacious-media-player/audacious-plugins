@@ -41,7 +41,7 @@
 
 #define sdlout_error(...) do { \
     SPRINTF (sdlout_error_buf, "SDL error: " __VA_ARGS__); \
-    aud_interface_show_error (sdlout_error_buf); \
+    aud_ui_show_error (sdlout_error_buf); \
 } while (0)
 
 static const char * const sdl_defaults[] = {

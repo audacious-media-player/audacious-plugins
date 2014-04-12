@@ -47,7 +47,7 @@ do { \
 #define ERROR_NOISY(...) \
 do { \
     SPRINTF(oss_error_buf, "OSS4 error: "__VA_ARGS__); \
-    aud_interface_show_error(oss_error_buf); \
+    aud_ui_show_error(oss_error_buf); \
     ERROR(__VA_ARGS__); \
 } while (0) \
 
