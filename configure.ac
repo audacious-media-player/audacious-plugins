@@ -53,7 +53,7 @@ dnl ======================
 
 INPUT_PLUGINS="tonegen metronom"
 OUTPUT_PLUGINS=""
-EFFECT_PLUGINS="compressor crossfade crystalizer ladspa mixer stereo_plugin voice_removal echo_plugin"
+EFFECT_PLUGINS="compressor crossfade crystalizer mixer stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS="alarm albumart delete-files search-tool"
 VISUALIZATION_PLUGINS="blur_scope cairo-spectrum"
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
@@ -991,6 +991,17 @@ if test "x$enable_vtx" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS vtx"
 fi
 
+dnl LADSPA Host
+dnl =============
+
+AC_ARG_ENABLE(ladspa,
+ [AS_HELP_STRING([--disable-ladspa], [disable LADSPA Host])],
+ [enable_ladspa=$enableval], [enable_ladspa="yes"])
+
+if test "x$enable_ladspa" != "xno"; then
+    EFFECT_PLUGINS="$EFFECT_PLUGINS ladspa"
+fi
+
 dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
@@ -1109,7 +1120,7 @@ echo "  Crystalizer:                            yes"
 echo "  Dynamic Range Compressor:               yes"
 echo "  Echo/Surround:                          yes"
 echo "  Extra Stereo:                           yes"
-echo "  LADSPA Host:                            yes"
+echo "  LADSPA Host:                            $enable_ladspa"
 echo "  Voice Removal:                          yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $have_resample"
