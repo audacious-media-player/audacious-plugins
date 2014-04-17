@@ -29,7 +29,7 @@
 #include "players.h"
 
 extern "C" {
-#include <audacious/input.h>
+#include <libaudcore/input.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>

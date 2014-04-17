@@ -28,7 +28,7 @@
 
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 typedef struct
 {

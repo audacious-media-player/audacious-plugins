@@ -23,10 +23,10 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/drct.h>
-#include <libaudcore/i18n.h>
-#include <audacious/misc.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/vfs.h>
 
 #include "ui_equalizer.h"
 

@@ -22,7 +22,7 @@
 
 #include <glib.h>
 
-#include <audacious/drct.h>
+#include <libaudcore/drct.h>
 #include <libaudgui/libaudgui.h>
 
 #include "statusicon.h"

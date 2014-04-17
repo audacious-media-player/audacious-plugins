@@ -27,7 +27,7 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
 /* The general idea of the speed change algorithm is to divide the input signal

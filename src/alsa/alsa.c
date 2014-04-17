@@ -49,9 +49,8 @@
 
 #include <alsa/asoundlib.h>
 
+#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/runtime.h>
-#include <audacious/plugin.h>
 
 #include "alsa.h"
 

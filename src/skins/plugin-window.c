@@ -25,9 +25,9 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
-#include <audacious/plugins.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/hook.h>
 
 static GList * windows;

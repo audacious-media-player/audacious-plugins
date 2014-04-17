@@ -12,12 +12,12 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif 
+#endif
 
 #include <stdio.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 typedef gint64 (*vcedit_read_func)(void *, gint64, gint64, void *);
 typedef gint64 (*vcedit_write_func)(const void *, gint64, gint64, void *);
@@ -57,7 +57,7 @@ extern char *vcedit_error(vcedit_state *state);
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif /* __VCEDIT_H */
 

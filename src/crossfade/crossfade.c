@@ -22,10 +22,10 @@
 
 #include <glib.h>
 
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
-#include <libaudcore/preferences.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 
 enum

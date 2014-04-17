@@ -22,10 +22,10 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/drct.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "ui_infoarea.h"

@@ -34,9 +34,8 @@
 #include <soundcard.h>
 #endif
 
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
-#include <audacious/misc.h>
 
 #define ERROR(...) \
 do { \

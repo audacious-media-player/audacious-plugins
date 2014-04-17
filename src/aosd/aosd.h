@@ -26,7 +26,7 @@
 
 #include "aosd_common.h"
 #include <glib.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 gboolean aosd_init (void);
 void aosd_cleanup ( void );

@@ -24,9 +24,8 @@
 #include <glib.h>
 
 #include <libaudcore/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 
 static void strip_char (char * text, char c)
@@ -86,7 +85,7 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
         if (* parse == '#')
             goto NEXT;
 
-        char * s = aud_construct_uri (parse, path);
+        char * s = uri_construct (parse, path);
         if (s)
             index_insert (filenames, -1, s);
 

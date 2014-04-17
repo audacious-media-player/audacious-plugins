@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 void vtx_file_info(const char *filename);
 

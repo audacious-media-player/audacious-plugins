@@ -8,8 +8,8 @@
 #include <audacious/audtag.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <audacious/input.h>
-#include <audacious/plugin.h>
+#include <libaudcore/input.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 
 #define BUFFER_SIZE 256 /* read buffer size, in samples / frames */

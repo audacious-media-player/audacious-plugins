@@ -20,7 +20,7 @@
 #ifndef ADPLUG_XMMS_H
 #define ADPLUG_XMMS_H
 
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 bool_t adplug_init (void);
 void adplug_quit (void);

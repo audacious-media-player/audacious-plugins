@@ -27,12 +27,11 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 
-#include <audacious/drct.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
-#include <audacious/plugins.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>

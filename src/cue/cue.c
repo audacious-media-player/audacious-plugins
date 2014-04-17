@@ -24,10 +24,10 @@
 
 #include <libcue/libcue.h>
 
-#include <libaudcore/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/probe.h>
 
 typedef struct {
     int tuple_type;
@@ -83,7 +83,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
     if (track_filename == NULL)
         return FALSE;
 
-    char * filename = aud_construct_uri (track_filename, cue_filename);
+    char * filename = uri_construct (track_filename, cue_filename);
 
     Tuple * base_tuple = NULL;
     bool_t base_tuple_scanned = FALSE;
@@ -102,7 +102,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         }
 
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : NULL;
-        char * next_filename = (next != NULL) ? aud_construct_uri
+        char * next_filename = (next != NULL) ? uri_construct
          (track_get_filename (next), cue_filename) : NULL;
         bool_t last_track = (next_filename == NULL || strcmp (next_filename, filename));
 

@@ -26,8 +26,8 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include <audacious/drct.h>
-#include <audacious/playlist.h>
+#include <libaudcore/drct.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>

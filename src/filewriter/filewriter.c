@@ -24,7 +24,7 @@
 #include <stdlib.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/playlist.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
 

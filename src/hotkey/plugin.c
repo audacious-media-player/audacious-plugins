@@ -42,11 +42,11 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
-#include <audacious/drct.h>
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
-#include <libaudcore/i18n.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #include "plugin.h"

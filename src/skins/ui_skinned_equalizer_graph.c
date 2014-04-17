@@ -22,7 +22,6 @@
  * along with this program;  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include <audacious/misc.h>
 #include <libaudcore/equalizer.h>
 #include <libaudcore/runtime.h>
 

@@ -4,7 +4,7 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
 static bool_t init (void);

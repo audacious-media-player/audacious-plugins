@@ -27,8 +27,8 @@
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
-#include <audacious/input.h>
-#include <audacious/plugin.h>
+#include <libaudcore/input.h>
+#include <libaudcore/plugin.h>
 
 #include "xs_sidplay2.h"
 

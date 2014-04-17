@@ -31,7 +31,7 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 
 #include <ne_socket.h>

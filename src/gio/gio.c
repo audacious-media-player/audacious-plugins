@@ -24,10 +24,10 @@
 
 #include <gio/gio.h>
 
-#include <libaudcore/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
 
 typedef struct {
     GFile * file;

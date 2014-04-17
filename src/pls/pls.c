@@ -26,8 +26,7 @@
 #include <glib.h>
 
 #include <libaudcore/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
@@ -51,7 +50,7 @@ void pls_handle_entry (const char * key, const char * value, void * data)
     if (! state->valid_heading || g_ascii_strncasecmp (key, "file", 4))
         return;
 
-    char * uri = aud_construct_uri (value, state->filename);
+    char * uri = uri_construct (value, state->filename);
     if (uri)
         index_insert (state->filenames, -1, uri);
 }

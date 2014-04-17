@@ -3,7 +3,7 @@
 
 #include <glib.h>
 #include <inttypes.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include "ayemu_8912.h"
 
 /* The following constants and data structure comes from
@@ -65,17 +65,17 @@ typedef struct
     \return Return true if success, else false
 */
 EXTERN int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename);
-  
+
 /** Read and encode lha data from .vtx file.
  * \return Return pointer to unpacked data or NULL.
  */
 EXTERN char *ayemu_vtx_load_data (ayemu_vtx_t *vtx);
-  
+
 /** Get next 14-bytes frame of AY register data.
  * \return Return value: true if sucess, false if not enought data.
  */
 EXTERN int ayemu_vtx_get_next_frame (ayemu_vtx_t *vtx, char *regs);
-  
+
 /** Print formated file name. If fmt is NULL the default format %a - %t will used
  * \return none.
  */

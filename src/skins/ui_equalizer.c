@@ -26,9 +26,8 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
-#include <audacious/drct.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
+#include <libaudcore/drct.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>

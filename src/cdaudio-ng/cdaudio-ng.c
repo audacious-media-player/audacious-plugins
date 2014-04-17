@@ -43,14 +43,14 @@
 
 #include <glib.h>
 
-#include <audacious/input.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
-#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/input.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 
 #define DEF_STRING_LEN 256

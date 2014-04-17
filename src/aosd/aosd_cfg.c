@@ -26,7 +26,7 @@
 #include <string.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 static gint
 aosd_cfg_util_str_to_color ( gchar * str , aosd_color_t * color )

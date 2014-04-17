@@ -23,11 +23,11 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/drct.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
-#include <audacious/plugins.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -147,7 +147,7 @@ static bool_t window_delete()
     if (handle)
         return TRUE;
 
-    aud_drct_quit ();
+    aud_quit ();
     return TRUE;
 }
 

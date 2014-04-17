@@ -19,9 +19,9 @@
 
 //audacious includes
 #include <libaudcore/i18n.h>
-#include <audacious/misc.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/tuple.h>
 
 #define SCROBBLER_API_KEY "4b4f73bda181868353f9b438604adf52"
 #define SCROBBLER_SHARED_SECRET "716cc0a784bb62835de5bd674e65eb57"

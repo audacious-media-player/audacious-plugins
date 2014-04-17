@@ -6,6 +6,7 @@
 #include <curl/curl.h>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/interface.h>
 
 //plugin includes
 #include "scrobbler.h"

@@ -14,11 +14,11 @@
 #include <string.h>
 
 #include <libaudcore/runtime.h>
-#include <audacious/drct.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
-#include <audacious/playlist.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/tuple.h>

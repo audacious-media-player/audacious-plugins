@@ -6,8 +6,8 @@
 #include <neaacdec.h>
 
 #include <audacious/audtag.h>
-#include <audacious/input.h>
-#include <audacious/plugin.h>
+#include <libaudcore/input.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 
 /*

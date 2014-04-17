@@ -7,7 +7,7 @@
  */
 
 #include <libaudcore/i18n.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
 #include "configure.h"

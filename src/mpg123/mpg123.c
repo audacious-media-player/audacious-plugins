@@ -32,8 +32,8 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <audacious/input.h>
-#include <audacious/plugin.h>
+#include <libaudcore/input.h>
+#include <libaudcore/plugin.h>
 #include <audacious/audtag.h>
 
 /* Define to read all frame headers when calculating file length */

@@ -21,8 +21,9 @@
 #define AUDACIOUS_ALSA_H
 
 #include <stdio.h>
-#include <audacious/misc.h>
+
 #include <libaudcore/audstrings.h>
+#include <libaudcore/interface.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 

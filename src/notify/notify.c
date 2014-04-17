@@ -22,7 +22,7 @@
 
 #include <libnotify/notify.h>
 
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>

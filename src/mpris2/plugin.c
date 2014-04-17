@@ -21,12 +21,14 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include <audacious/drct.h>
-#include <libaudcore/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/probe.h>
+#include <libaudcore/runtime.h>
 
 #include "object-core.h"
 #include "object-player.h"
@@ -41,7 +43,7 @@ static int update_timer;
 static bool_t quit_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation * call,
  void * unused)
 {
-    aud_drct_quit ();
+    aud_quit ();
     mpris_media_player2_complete_quit (object, call);
     return TRUE;
 }

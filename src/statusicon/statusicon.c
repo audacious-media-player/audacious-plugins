@@ -22,13 +22,13 @@
 
 #include "statusicon.h"
 
-#include <audacious/drct.h>
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
-#include <audacious/plugins.h>
+#include <libaudcore/drct.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/hook.h>
-#include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -268,7 +268,7 @@ static GtkWidget *si_smallmenu_create(void)
         {N_("_Next"), "media-skip-forward", .func = aud_drct_pl_next},
         {.sep = TRUE},
         {N_("Se_ttings ..."), "preferences-system", .func = audgui_show_prefs_window},
-        {N_("_Quit"), "application-exit", .func = aud_drct_quit}
+        {N_("_Quit"), "application-exit", .func = aud_quit}
     };
 
     GtkWidget *si_smenu = gtk_menu_new();

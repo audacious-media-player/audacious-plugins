@@ -10,7 +10,7 @@
 #include <string>
 
 extern "C" {
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 }
 
 #include "settings.h"

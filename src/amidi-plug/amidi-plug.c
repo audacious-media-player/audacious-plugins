@@ -26,9 +26,8 @@
 
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <audacious/input.h>
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
+#include <libaudcore/input.h>
+#include <libaudcore/plugin.h>
 
 #include "i_backend.h"
 #include "i_configure.h"

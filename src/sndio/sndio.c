@@ -23,10 +23,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 

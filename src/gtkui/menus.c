@@ -20,10 +20,10 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <audacious/drct.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -135,7 +135,7 @@ static const AudguiMenuItem file_items[] = {
  {.sep = TRUE},
  {N_("A_bout ..."), "help-about", .func = audgui_show_about_window},
  {N_("_Settings ..."), "preferences-system", .func = audgui_show_prefs_window},
- {N_("_Quit"), "application-exit", 'q', CTRL, .func = aud_drct_quit}};
+ {N_("_Quit"), "application-exit", 'q', CTRL, .func = aud_quit}};
 
 static const AudguiMenuItem playback_items[] = {
  {N_("_Play"), "media-playback-start", GDK_KEY_Return, CTRL, .func = aud_drct_play},

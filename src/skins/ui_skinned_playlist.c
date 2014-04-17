@@ -38,9 +38,9 @@
 #include "ui_skinned_playlist_slider.h"
 
 #include <libaudcore/audstrings.h>
-#include <audacious/drct.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/runtime.h>
-#include <audacious/playlist.h>
+#include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
 
 enum {DRAG_SELECT = 1, DRAG_MOVE};

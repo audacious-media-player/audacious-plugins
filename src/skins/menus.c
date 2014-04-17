@@ -23,9 +23,9 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#include <audacious/drct.h>
-#include <audacious/misc.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -66,7 +66,7 @@ static const AudguiMenuItem main_items[] = {
     {.sep = TRUE},
     {N_("About ..."), "help-about", .func = audgui_show_about_window},
     {N_("Settings ..."), "preferences-system", 'p', CTRL, .func = audgui_show_prefs_window},
-    {N_("Quit"), "application-exit", 'q', CTRL, .func = aud_drct_quit}
+    {N_("Quit"), "application-exit", 'q', CTRL, .func = aud_quit}
 };
 
 static const AudguiMenuItem playback_items[] = {

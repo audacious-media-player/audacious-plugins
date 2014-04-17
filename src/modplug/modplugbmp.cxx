@@ -19,7 +19,7 @@
 extern "C" {
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <audacious/input.h>
+#include <libaudcore/input.h>
 }
 
 #include "archive/open.h"

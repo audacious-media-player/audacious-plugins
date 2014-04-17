@@ -19,11 +19,11 @@
 
 #include <gtk/gtk.h>
 
-#include <audacious/drct.h>
-#include <libaudcore/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
 
 #define N_ITEMS 2
 #define N_MENUS 3
@@ -33,7 +33,7 @@ static const gint menus[N_MENUS] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_ADD, AUD_ME
 
 static void cd_play (void) {aud_drct_pl_open ("cdda://"); }
 static void cd_add (void) {aud_drct_pl_add ("cdda://", -1); }
-static MenuFunc funcs[N_ITEMS] = {cd_play, cd_add};
+static void (* funcs[N_ITEMS]) (void) = {cd_play, cd_add};
 
 static gboolean cd_init (void)
 {

@@ -24,7 +24,7 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <audacious/plugins.h>
+#include <libaudcore/plugins.h>
 
 #include "layout.h"
 

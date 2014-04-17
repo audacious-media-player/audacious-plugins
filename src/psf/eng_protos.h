@@ -1,4 +1,4 @@
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 int32_t psf2_start(uint8_t *, uint32_t length);
 int32_t psf2_execute(void);

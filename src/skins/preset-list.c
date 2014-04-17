@@ -28,7 +28,7 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
-#include <audacious/drct.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudgui/libaudgui-gtk.h>
 

@@ -21,7 +21,7 @@
 
 #define _ERROR(...) printf ("ffaudio: " __VA_ARGS__)
 
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>

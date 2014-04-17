@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include <inttypes.h>
 
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 
 #include "ayemu.h"

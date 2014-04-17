@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 
 void InitSettings (const ModplugSettings * settings);
 int CanPlayFileFromVFS (const char * filename, VFSFile * file);

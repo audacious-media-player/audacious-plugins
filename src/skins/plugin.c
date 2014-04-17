@@ -20,10 +20,10 @@
 
 #include <stdlib.h>
 
-#include <audacious/drct.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
-#include <audacious/plugin.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
 #include <libaudgui/libaudgui.h>
 
@@ -165,7 +165,7 @@ bool_t handle_window_close (void)
     hook_call ("window close", & handled);
 
     if (! handled)
-        aud_drct_quit ();
+        aud_quit ();
 
     return TRUE;
 }
