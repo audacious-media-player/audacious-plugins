@@ -89,7 +89,7 @@ static int cdaudio_is_our_file (const char * filename, VFSFile * file);
 static bool_t cdaudio_play (const char * name, VFSFile * file);
 static void cdaudio_cleanup (void);
 static Tuple * make_tuple (const char * filename, VFSFile * file);
-static void scan_cd (void);
+static bool_t scan_cd (void);
 static void refresh_trackinfo (bool_t warning);
 static void reset_trackinfo (void);
 static int calculate_track_length (int startlsn, int endlsn);
@@ -114,26 +114,33 @@ static const char * const cdaudio_defaults[] = {
  NULL};
 
 static const PreferencesWidget cdaudio_widgets[] = {
- {WIDGET_LABEL, N_("<b>Device</b>")},
- {WIDGET_SPIN_BTN, N_("Read speed:"),
-  .cfg_type = VALUE_INT, .csect = "CDDA", .cname = "disc_speed",
-  .data = {.spin_btn = {MIN_DISC_SPEED, MAX_DISC_SPEED, 1}}},
- {WIDGET_ENTRY, N_("Override device:"),
-  .cfg_type = VALUE_STRING, .csect = "CDDA", .cname = "device"},
- {WIDGET_LABEL, N_("<b>Metadata</b>")},
- {WIDGET_CHK_BTN, N_("Use CD-Text"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "CDDA", .cname = "use_cdtext"},
- {WIDGET_CHK_BTN, N_("Use CDDB"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "CDDA", .cname = "use_cddb"},
- {WIDGET_CHK_BTN, N_("Use HTTP instead of CDDBP"), .child = TRUE,
-  .cfg_type = VALUE_BOOLEAN, .csect = "CDDA", .cname = "cddbhttp"},
- {WIDGET_ENTRY, N_("Server:"), .child = TRUE,
-  .cfg_type = VALUE_STRING, .csect = "CDDA", .cname = "cddbserver"},
- {WIDGET_ENTRY, N_("Path:"), .child = TRUE,
-  .cfg_type = VALUE_STRING, .csect = "CDDA", .cname = "cddbpath"},
- {WIDGET_SPIN_BTN, N_("Port:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "CDDA", .cname = "cddbport",
-  .data = {.spin_btn = {0, 65535, 1}}}};
+    WidgetLabel (N_("<b>Device</b>")),
+    WidgetSpin (N_("Read speed:"),
+        {VALUE_INT, 0, "CDDA", "disc_speed"},
+        {MIN_DISC_SPEED, MAX_DISC_SPEED, 1}),
+    WidgetEntry (N_("Override device:"),
+        {VALUE_STRING, 0, "CDDA", "device"}),
+    WidgetLabel (N_("<b>Metadata</b>")),
+    WidgetCheck (N_("Use CD-Text"),
+        {VALUE_BOOLEAN, 0, "CDDA", "use_cdtext"}),
+    WidgetCheck (N_("Use CDDB"),
+        {VALUE_BOOLEAN, 0, "CDDA", "use_cddb"}),
+    WidgetCheck (N_("Use HTTP instead of CDDBP"),
+        {VALUE_BOOLEAN, 0, "CDDA", "cddbhttp"},
+        WIDGET_CHILD),
+    WidgetEntry (N_("Server:"),
+        {VALUE_STRING, 0, "CDDA", "cddbserver"},
+        {false},
+        WIDGET_CHILD),
+    WidgetEntry (N_("Path:"),
+        {VALUE_STRING, 0, "CDDA", "cddbpath"},
+        {false},
+        WIDGET_CHILD),
+    WidgetSpin (N_("Port:"),
+        {VALUE_INT, 0, "CDDA", "cddbport"},
+        {0, 65535, 1},
+        WIDGET_CHILD)
+};
 
 static const PluginPreferences cdaudio_prefs = {
  .widgets = cdaudio_widgets,
@@ -424,44 +431,44 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
                 subtunes[i ++] = trackno;
 
         tuple_set_subtunes (tuple, n_audio_tracks, subtunes);
-
-        goto DONE;
     }
-
-    int trackno = find_trackno_from_filename (filename);
-
-    if (trackno < firsttrackno || trackno > lasttrackno)
-    {
-        warn ("Track %d not found.\n", trackno);
-        goto DONE;
-    }
-
-    if (!cdda_track_audiop (pcdrom_drive, trackno))
-    {
-        warn ("Track %d is a data track.\n", trackno);
-        goto DONE;
-    }
-
-    tuple = tuple_new_from_filename (filename);
-    tuple_set_format (tuple, _("Audio CD"), 2, 44100, 1411);
-    tuple_set_int (tuple, FIELD_TRACK_NUMBER, trackno);
-    tuple_set_int (tuple, FIELD_LENGTH, calculate_track_length
-     (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
-
-    if (trackinfo[trackno].name[0])
-        tuple_set_str (tuple, FIELD_TITLE, trackinfo[trackno].name);
     else
     {
-        SPRINTF (title, _("Track %d"), trackno);
-        tuple_set_str (tuple, FIELD_TITLE, title);
-    }
+        int trackno = find_trackno_from_filename (filename);
 
-    if (trackinfo[trackno].performer[0])
-        tuple_set_str (tuple, FIELD_ARTIST, trackinfo[trackno].performer);
-    if (trackinfo[0].name[0])
-        tuple_set_str (tuple, FIELD_ALBUM, trackinfo[0].name);
-    if (trackinfo[trackno].genre[0])
-        tuple_set_str (tuple, FIELD_GENRE, trackinfo[trackno].genre);
+        if (trackno < firsttrackno || trackno > lasttrackno)
+        {
+            warn ("Track %d not found.\n", trackno);
+            goto DONE;
+        }
+
+        if (!cdda_track_audiop (pcdrom_drive, trackno))
+        {
+            warn ("Track %d is a data track.\n", trackno);
+            goto DONE;
+        }
+
+        tuple = tuple_new_from_filename (filename);
+        tuple_set_format (tuple, _("Audio CD"), 2, 44100, 1411);
+        tuple_set_int (tuple, FIELD_TRACK_NUMBER, trackno);
+        tuple_set_int (tuple, FIELD_LENGTH, calculate_track_length
+         (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
+
+        if (trackinfo[trackno].name[0])
+            tuple_set_str (tuple, FIELD_TITLE, trackinfo[trackno].name);
+        else
+        {
+            SPRINTF (title, _("Track %d"), trackno);
+            tuple_set_str (tuple, FIELD_TITLE, title);
+        }
+
+        if (trackinfo[trackno].performer[0])
+            tuple_set_str (tuple, FIELD_ARTIST, trackinfo[trackno].performer);
+        if (trackinfo[0].name[0])
+            tuple_set_str (tuple, FIELD_ALBUM, trackinfo[0].name);
+        if (trackinfo[trackno].genre[0])
+            tuple_set_str (tuple, FIELD_GENRE, trackinfo[trackno].genre);
+    }
 
   DONE:
     pthread_mutex_unlock (& mutex);
@@ -501,11 +508,11 @@ static void open_cd (void)
 }
 
 /* mutex must be locked */
-static void scan_cd (void)
+static bool_t scan_cd (void)
 {
     AUDDBG ("Scanning CD drive.\n");
-    g_return_if_fail (pcdrom_drive != NULL);
-    g_return_if_fail (trackinfo == NULL);
+    g_return_val_if_fail (pcdrom_drive, FALSE);
+    g_return_val_if_fail (! trackinfo, FALSE);
 
     int trackno;
 
@@ -519,7 +526,7 @@ static void scan_cd (void)
     if (cdda_open (pcdrom_drive) != 0)
     {
         cdaudio_error (_("Failed to finish initializing opened CD drive."));
-        goto ERR;
+        return FALSE;
     }
 
     int speed = aud_get_int ("CDDA", "disc_speed");
@@ -532,7 +539,7 @@ static void scan_cd (void)
     if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK)
     {
         cdaudio_error (_("Failed to retrieve first/last track number."));
-        goto ERR;
+        return FALSE;
     }
     AUDDBG ("first track is %d and last track is %d\n", firsttrackno,
            lasttrackno);
@@ -557,7 +564,7 @@ static void scan_cd (void)
             || trackinfo[trackno].endlsn == CDIO_INVALID_LSN)
         {
             cdaudio_error (_("Cannot read start/end LSN for track %d."), trackno);
-            goto ERR;
+            return FALSE;
         }
 
         /* count how many tracks are audio tracks */
@@ -785,11 +792,7 @@ static void scan_cd (void)
             cddb_destroy (pcddb_conn);
     }
 
-    return;
-
-  ERR:
-    g_free (trackinfo);
-    trackinfo = NULL;
+    return TRUE;
 }
 
 /* mutex must be locked */
@@ -825,10 +828,11 @@ static void refresh_trackinfo (bool_t warning)
     {
         g_free (trackinfo);
         trackinfo = NULL;
-        scan_cd ();
 
-        if (trackinfo != NULL)
+        if (scan_cd ())
             trigger_monitor ();
+        else
+            reset_trackinfo ();
     }
 }
 

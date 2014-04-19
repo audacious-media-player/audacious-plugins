@@ -1,6 +1,6 @@
 PLUGIN = cdaudio-ng${PLUGIN_SUFFIX}
 
-SRCS = cdaudio-ng.c
+SRCS = cdaudio-ng.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
