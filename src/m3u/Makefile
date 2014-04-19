@@ -1,6 +1,6 @@
 PLUGIN = m3u${PLUGIN_SUFFIX}
 
-SRCS = m3u.c
+SRCS = m3u.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

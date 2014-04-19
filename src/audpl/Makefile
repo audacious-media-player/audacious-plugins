@@ -1,6 +1,6 @@
 PLUGIN = audpl${PLUGIN_SUFFIX}
 
-SRCS = audpl.c
+SRCS = audpl.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

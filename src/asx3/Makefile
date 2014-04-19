@@ -1,6 +1,6 @@
 PLUGIN = asx3${PLUGIN_SUFFIX}
 
-SRCS = asx3.c
+SRCS = asx3.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

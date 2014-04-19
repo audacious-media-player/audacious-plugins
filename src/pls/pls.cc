@@ -38,14 +38,14 @@ typedef struct {
 
 void pls_handle_heading (const char * heading, void * data)
 {
-    PLSLoadState * state = data;
+    PLSLoadState * state = (PLSLoadState *) data;
 
     state->valid_heading = ! g_ascii_strcasecmp (heading, "playlist");
 }
 
 void pls_handle_entry (const char * key, const char * value, void * data)
 {
-    PLSLoadState * state = data;
+    PLSLoadState * state = (PLSLoadState *) data;
 
     if (! state->valid_heading || g_ascii_strncasecmp (key, "file", 4))
         return;
@@ -79,7 +79,7 @@ static bool_t playlist_save_pls (const char * filename, VFSFile * file,
 
     for (int count = 0; count < entries; count ++)
     {
-        const char * filename = index_get (filenames, count);
+        const char * filename = (char *) index_get (filenames, count);
         char * fn;
 
         if (! strncmp (filename, "file://", 7))

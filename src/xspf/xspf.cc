@@ -40,7 +40,7 @@
 
 typedef struct {
     gint tupleField;
-    gchar *xspfName;
+    const gchar *xspfName;
     TupleValueType type;
     gboolean isMeta;
 } xspf_entry_t;
@@ -184,12 +184,12 @@ static void xspf_find_track (xmlNode * tracklist, const gchar * filename, const
 
 static gint read_cb (void * file, gchar * buf, gint len)
 {
-    return vfs_fread (buf, 1, len, file);
+    return vfs_fread (buf, 1, len, (VFSFile *) file);
 }
 
 static gint write_cb (void * file, const gchar * buf, gint len)
 {
-    return vfs_fwrite (buf, 1, len, file);
+    return vfs_fwrite (buf, 1, len, (VFSFile *) file);
 }
 
 static gint close_cb (void * file)
@@ -255,26 +255,26 @@ static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
 /* check for characters that are invalid in XML */
 static gboolean is_valid_string (const gchar * s, gchar * * subst)
 {
-    if (! g_utf8_validate (s, -1, NULL))
-        goto NOT_VALID;
+    bool valid = g_utf8_validate (s, -1, NULL);
 
-    const gchar * p = s;
-    while (* p)
+    if (valid)
     {
-        gunichar c = g_utf8_get_char (p);
+        for (const char * p = s; * p; p = g_utf8_next_char (p))
+        {
+            if (! IS_VALID_CHAR (g_utf8_get_char (p)))
+            {
+                valid = false;
+                break;
+            }
+        }
 
-        if (IS_VALID_CHAR (c))
-            p = g_utf8_next_char (p);
-        else
-            goto NOT_VALID;
+        if (valid)
+            return TRUE;
     }
 
-    return TRUE;
-
-NOT_VALID:;
     gint len = 0;
 
-    p = s;
+    const char * p = s;
     while (* p)
     {
         gunichar c = g_utf8_get_char_validated (p, -1);
@@ -288,7 +288,7 @@ NOT_VALID:;
             p ++;
     }
 
-    * subst = g_malloc (len + 1);
+    * subst = g_new (char, len + 1);
     gchar * w = * subst;
 
     p = s;
@@ -375,8 +375,8 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
 
     for (count = 0; count < entries; count ++)
     {
-        const gchar * filename = index_get (filenames, count);
-        const Tuple * tuple = index_get (tuples, count);
+        const char * filename = (char *) index_get (filenames, count);
+        const Tuple * tuple = (Tuple *) index_get (tuples, count);
         xmlNodePtr track, location;
         gchar *scratch = NULL;
         gint scratchi = 0;

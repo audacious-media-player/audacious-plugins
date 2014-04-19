@@ -1,5 +1,5 @@
 PLUGIN = asx${PLUGIN_SUFFIX}
-SRCS = asx.c
+SRCS = asx.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

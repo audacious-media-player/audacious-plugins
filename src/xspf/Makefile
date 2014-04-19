@@ -1,6 +1,6 @@
 PLUGIN = xspf${PLUGIN_SUFFIX}
 
-SRCS = xspf.c
+SRCS = xspf.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

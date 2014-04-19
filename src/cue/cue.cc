@@ -22,7 +22,9 @@
 
 #include <glib.h>
 
+extern "C" {
 #include <libcue/libcue.h>
+}
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
@@ -66,7 +68,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
 
     * title = NULL;
 
-    Cd * cd = cue_parse_string (buffer);
+    Cd * cd = cue_parse_string ((char *) buffer);
     g_free (buffer);
     if (cd == NULL)
         return FALSE;

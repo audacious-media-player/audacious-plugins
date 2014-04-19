@@ -36,14 +36,14 @@ typedef struct {
 
 void asx_handle_heading (const char * heading, void * data)
 {
-    ASXLoadState * state = data;
+    ASXLoadState * state = (ASXLoadState *) data;
 
     state->valid_heading = ! g_ascii_strcasecmp (heading, "reference");
 }
 
 void asx_handle_entry (const char * key, const char * value, void * data)
 {
-    ASXLoadState * state = data;
+    ASXLoadState * state = (ASXLoadState *) data;
 
     if (! state->valid_heading || g_ascii_strncasecmp (key, "ref", 3))
         return;

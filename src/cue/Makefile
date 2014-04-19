@@ -1,6 +1,6 @@
 PLUGIN = cue${PLUGIN_SUFFIX}
 
-SRCS = cue.c
+SRCS = cue.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -47,7 +47,7 @@ static void handle_heading (const char * heading, void * data)
 
 static void handle_entry (const char * key, const char * value, void * data)
 {
-    LoadState * state = data;
+    LoadState * state = (LoadState *) data;
 
     if (! strcmp (key, "uri"))
     {
@@ -129,10 +129,10 @@ static bool_t audpl_save (const char * path, VFSFile * file,
 
     for (int i = 0; i < count; i ++)
     {
-        if (! inifile_write_entry (file, "uri", index_get (filenames, i)))
+        if (! inifile_write_entry (file, "uri", (char *) index_get (filenames, i)))
             return FALSE;
 
-        const Tuple * tuple = tuples ? index_get (tuples, i) : NULL;
+        const Tuple * tuple = tuples ? (Tuple *) index_get (tuples, i) : NULL;
 
         if (tuple)
         {

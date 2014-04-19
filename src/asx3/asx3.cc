@@ -31,12 +31,12 @@
 
 static int read_cb (void * file, char * buf, int len)
 {
-    return vfs_fread (buf, 1, len, file);
+    return vfs_fread (buf, 1, len, (VFSFile *) file);
 }
 
 static int write_cb (void * file, const char * buf, int len)
 {
-    return vfs_fwrite (buf, 1, len, file);
+    return vfs_fwrite (buf, 1, len, (VFSFile *) file);
 }
 
 static int close_cb (void * file)

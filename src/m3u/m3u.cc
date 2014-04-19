@@ -47,8 +47,8 @@ static char * read_win_text (VFSFile * file)
     if (! raw)
         return NULL;
 
-    strip_char (raw, '\r');
-    return raw;
+    strip_char ((char *) raw, '\r');
+    return (char *) raw;
 }
 
 static char * split_line (char * line)
@@ -75,21 +75,14 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
     while (parse)
     {
         char * next = split_line (parse);
+        char * s;
 
         while (* parse == ' ' || * parse == '\t')
             parse ++;
 
-        if (! * parse)
-            goto NEXT;
-
-        if (* parse == '#')
-            goto NEXT;
-
-        char * s = uri_construct (parse, path);
-        if (s)
+        if (* parse && * parse != '#' && (s = uri_construct (parse, path)))
             index_insert (filenames, -1, s);
 
-NEXT:
         parse = next;
     }
 
