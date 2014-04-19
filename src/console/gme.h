@@ -4,10 +4,6 @@
 #ifndef GME_H
 #define GME_H
 
-#ifdef __cplusplus
-	extern "C" {
-#endif
-
 /* Error string returned by library functions, or NULL if no error (success) */
 typedef const char* gme_err_t;
 
@@ -229,10 +225,5 @@ void* gme_user_data( Music_Emu const* );
 clear it. Passes user_data to cleanup function. */
 typedef void (*gme_user_cleanup_t)( void* user_data );
 void gme_set_user_cleanup( Music_Emu*, gme_user_cleanup_t func );
-
-
-#ifdef __cplusplus
-	}
-#endif
 
 #endif

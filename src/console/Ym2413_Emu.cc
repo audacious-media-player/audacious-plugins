@@ -68,10 +68,6 @@ typedef unsigned long   e_uint32;
   #define EMU2413_API
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define PI 3.14159265358979323846
 
 enum OPLL_TONE_ENUM {OPLL_2413_TONE=0, OPLL_VRC7_TONE=1, OPLL_281B_TONE=2} ;
@@ -201,10 +197,6 @@ EMU2413_API e_uint32 OPLL_setMask(OPLL *, e_uint32 mask) ;
 EMU2413_API e_uint32 OPLL_toggleMask(OPLL *, e_uint32 mask) ;
 
 #define dump2patch OPLL_dump2patch
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

@@ -10,11 +10,9 @@
 #include <stdio.h>
 #include <string.h>
 
-extern "C" {
 #include <libaudcore/audstrings.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
-}
 
 #include "configure.h"
 #include "Music_Emu.h"
@@ -185,7 +183,7 @@ static Tuple * get_track_ti(const char *path, const track_info_t *info, const in
     return ti;
 }
 
-extern "C" Tuple * console_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple * console_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     ConsoleFileHandler fh(filename, fd);
 
@@ -202,7 +200,7 @@ extern "C" Tuple * console_probe_for_tuple(const char *filename, VFSFile *fd)
     return NULL;
 }
 
-extern "C" bool_t console_play(const char *filename, VFSFile *file)
+bool_t console_play(const char *filename, VFSFile *file)
 {
     int length, sample_rate;
     track_info_t info;

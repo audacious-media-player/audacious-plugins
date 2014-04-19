@@ -2,9 +2,7 @@
 
 #include "Vfs_File.h"
 
-extern "C" {
 #include "libaudcore/vfs.h"
-}
 
 struct reader_private {
 	VFSFile * file, * owned_file;
