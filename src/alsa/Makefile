@@ -1,8 +1,8 @@
 PLUGIN = alsa${PLUGIN_SUFFIX}
 
-SRCS = alsa.c \
-       config.c \
-       plugin.c \
+SRCS = alsa.cc \
+       config.cc \
+       plugin.cc \
 
 include ../../buildsys.mk
 include ../../extra.mk

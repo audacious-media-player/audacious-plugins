@@ -30,7 +30,8 @@ static const char alsa_about[] =
     "code served as a reference when the ALSA manual was not enough.");
 
 static const PreferencesWidget alsa_widgets[] = {
- {WIDGET_CUSTOM, .data = {.populate = alsa_create_config_widget}}};
+    WidgetCustom (alsa_create_config_widget)
+};
 
 static const PluginPreferences alsa_prefs = {
  .widgets = alsa_widgets,

@@ -155,16 +155,14 @@ FAILED:
 static void get_devices (int card, int capture, void (* found) (const char *
  name, const char * description))
 {
-    char card_name[16];
+    SPRINTF (card_name, "hw:%d", card);
     snd_ctl_t * control = NULL;
     int device = -1;
 
-    snprintf (card_name, sizeof card_name, "hw:%d", card);
     CHECK (snd_ctl_open, & control, card_name, 0);
 
     while (1)
     {
-        char name[16];
         char * description;
 
         CHECK (snd_ctl_pcm_next_device, control, & device);
@@ -172,7 +170,7 @@ static void get_devices (int card, int capture, void (* found) (const char *
         if (device < 0)
             break;
 
-        snprintf (name, sizeof name, "hw:%d,%d", card, device);
+        SPRINTF (name, "hw:%d,%d", card, device);
         description = get_device_description (control, device, capture);
 
         if (description != NULL)
@@ -189,11 +187,10 @@ FAILED:
 static void pcm_found (const char * name, const char * description)
 {
     GtkTreeIter iter;
-    char new[512];
+    SPRINTF (formatted, "(%s)", description);
 
     gtk_list_store_append (pcm_list, & iter);
-    snprintf (new, sizeof new, "(%s)", description);
-    gtk_list_store_set (pcm_list, & iter, 0, name, 1, new, -1);
+    gtk_list_store_set (pcm_list, & iter, 0, name, 1, formatted, -1);
 }
 
 static void pcm_card_found (int card, const char * description)
@@ -215,18 +212,15 @@ static void pcm_list_fill (void)
 static void mixer_found (const char * name, const char * description)
 {
     GtkTreeIter iter;
-    char new[512];
+    SPRINTF (formatted, "(%s)", description);
 
     gtk_list_store_append (mixer_list, & iter);
-    snprintf (new, sizeof new, "(%s)", description);
-    gtk_list_store_set (mixer_list, & iter, 0, name, 1, new, -1);
+    gtk_list_store_set (mixer_list, & iter, 0, name, 1, formatted, -1);
 }
 
 static void mixer_card_found (int card, const char * description)
 {
-    char name[16];
-
-    snprintf (name, sizeof name, "hw:%d", card);
+    SPRINTF (name, "hw:%d", card);
     mixer_found (name, description);
 }
 
@@ -443,26 +437,26 @@ static GtkWidget * create_vbox (void)
 
 static void pcm_changed (GtkComboBox * combo, void * unused)
 {
-    const char * new = combo_selected_text (pcm_combo, pcm_list);
+    const char * pcm = combo_selected_text (pcm_combo, pcm_list);
 
-    if (new == NULL || ! strcmp (new, alsa_config_pcm))
+    if (! pcm || ! strcmp (pcm, alsa_config_pcm))
         return;
 
     str_unref (alsa_config_pcm);
-    alsa_config_pcm = str_get (combo_selected_text (pcm_combo, pcm_list));
+    alsa_config_pcm = str_get (pcm);
 
     aud_output_reset (OUTPUT_RESET_SOFT);
 }
 
 static void mixer_changed (GtkComboBox * combo, void * unused)
 {
-    const char * new = combo_selected_text (mixer_combo, mixer_list);
+    const char * mixer = combo_selected_text (mixer_combo, mixer_list);
 
-    if (new == NULL || ! strcmp (new, alsa_config_mixer))
+    if (! mixer || ! strcmp (mixer, alsa_config_mixer))
         return;
 
     str_unref (alsa_config_mixer);
-    alsa_config_mixer = str_get (new);
+    alsa_config_mixer = str_get (mixer);
 
     mixer_element_list_refill ();
     guess_mixer_element ();
@@ -475,15 +469,15 @@ static void mixer_changed (GtkComboBox * combo, void * unused)
 
 static void mixer_element_changed (GtkComboBox * combo, void * unused)
 {
-    const char * new = combo_selected_text (mixer_element_combo,
+    const char * element = combo_selected_text (mixer_element_combo,
      mixer_element_list);
 
-    if (new == NULL || (alsa_config_mixer_element != NULL && ! strcmp (new,
+    if (! element || (alsa_config_mixer_element && ! strcmp (element,
      alsa_config_mixer_element)))
         return;
 
     str_unref (alsa_config_mixer_element);
-    alsa_config_mixer_element = str_get (new);
+    alsa_config_mixer_element = str_get (element);
 
     alsa_close_mixer ();
     alsa_open_mixer ();

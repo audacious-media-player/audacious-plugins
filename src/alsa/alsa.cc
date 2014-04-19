@@ -292,11 +292,12 @@ void alsa_cleanup (void)
     alsa_config_save ();
 }
 
-static int convert_aud_format (int aud_format)
+static snd_pcm_format_t convert_aud_format (int aud_format)
 {
     const struct
     {
-        int aud_format, format;
+        int aud_format;
+        snd_pcm_format_t format;
     }
     table[] =
     {
@@ -328,11 +329,15 @@ static int convert_aud_format (int aud_format)
 
 int alsa_open_audio (int aud_format, int rate, int channels)
 {
+    int total_buffer, hard_buffer, soft_buffer;
+    unsigned useconds;
+    int direction;
+
     pthread_mutex_lock (& alsa_mutex);
 
     assert (alsa_handle == NULL);
 
-    int format = convert_aud_format (aud_format);
+    snd_pcm_format_t format = convert_aud_format (aud_format);
     AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
      alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
     CHECK_NOISY (snd_pcm_open, & alsa_handle, alsa_config_pcm,
@@ -352,12 +357,12 @@ int alsa_open_audio (int aud_format, int rate, int channels)
     alsa_channels = channels;
     alsa_rate = rate;
 
-    int total_buffer = aud_get_int (NULL, "output_buffer_size");
-    unsigned int useconds = 1000 * MIN (1000, total_buffer / 2);
-    int direction = 0;
+    total_buffer = aud_get_int (NULL, "output_buffer_size");
+    useconds = 1000 * MIN (1000, total_buffer / 2);
+    direction = 0;
     CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_near, alsa_handle, params,
      & useconds, & direction);
-    int hard_buffer = useconds / 1000;
+    hard_buffer = useconds / 1000;
 
     useconds = 1000 * (hard_buffer / 4);
     direction = 0;
@@ -367,7 +372,7 @@ int alsa_open_audio (int aud_format, int rate, int channels)
 
     CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
 
-    int soft_buffer = MAX (total_buffer / 2, total_buffer - hard_buffer);
+    soft_buffer = MAX (total_buffer / 2, total_buffer - hard_buffer);
     AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
      hard_buffer, soft_buffer, alsa_period);
 
