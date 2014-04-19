@@ -209,7 +209,7 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
             goto DONE;
         }
 
-        if (frame.samplerate != *samplerate || frame.channels != *channels)
+        if ((int)frame.samplerate != *samplerate || (int)frame.channels != *channels)
         {
             PROBE_DEBUG ("Parameter mismatch.\n");
             goto DONE;
@@ -277,7 +277,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
 
     /* == FIND FRAME HEADER == */
 
-    int used = aac_probe (buf, * buflen);
+    int used = aac_probe ((unsigned char *) buf, * buflen);
 
     if (used == * buflen)
     {
@@ -298,7 +298,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
     unsigned char chan;
     unsigned long rate;
 
-    if ((used = NeAACDecInit (dec, buf, * buflen, & rate, & chan)))
+    if ((used = NeAACDecInit (dec, (unsigned char *) buf, * buflen, & rate, & chan)))
     {
         * buflen -= used;
         memmove (buf, (char *) buf + used, * buflen);
@@ -335,7 +335,8 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
     /* == FILL BUFFER == */
 
     unsigned char buf[BUFFER_SIZE];
-    int buflen = vfs_fread (buf, 1, sizeof buf, file);
+    int buflen;
+    buflen = vfs_fread (buf, 1, sizeof buf, file);
 
     /* == SKIP ID3 TAG == */
 
@@ -353,7 +354,8 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
     /* == FIND FRAME HEADER == */
 
-    int used = aac_probe (buf, buflen);
+    int used;
+    used = aac_probe (buf, buflen);
 
     if (used == buflen)
     {

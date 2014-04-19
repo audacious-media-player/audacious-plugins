@@ -1,6 +1,6 @@
 PLUGIN = aac-raw${PLUGIN_SUFFIX}
 
-SRCS = aac.c
+SRCS = aac.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
