@@ -1,8 +1,8 @@
 PLUGIN = aac${PLUGIN_SUFFIX}
 
-SRCS = itunes-cover.c \
-       libmp4.c \
-       mp4_utils.c		\
+SRCS = itunes-cover.cc \
+       libmp4.cc \
+       mp4_utils.cc		\
        mp4ff/mp4ff.c		\
        mp4ff/mp4atom.c		\
        mp4ff/mp4meta.c		\

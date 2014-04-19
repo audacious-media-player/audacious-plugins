@@ -43,9 +43,11 @@ static uint32_t mp4_seek_callback (void *data, uint64_t pos)
 static bool_t is_mp4_aac_file (const char * filename, VFSFile * handle)
 {
     mp4ff_callback_t mp4_data = {
-        .read = mp4_read_callback,
-        .seek = mp4_seek_callback,
-        .user_data = handle
+        mp4_read_callback,
+        NULL,  // write
+        mp4_seek_callback,
+        NULL,  // truncate
+        handle
     };
 
     mp4ff_t *mp4_handle = mp4ff_open_read (&mp4_data);
@@ -129,14 +131,17 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
 
 static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
 {
-    mp4ff_callback_t mp4cb;
+    mp4ff_callback_t mp4cb = {
+        mp4_read_callback,
+        NULL,  // write
+        mp4_seek_callback,
+        NULL,  // truncate
+        handle
+    };
+
     mp4ff_t *mp4;
     int track;
     Tuple *tuple;
-
-    mp4cb.read = mp4_read_callback;
-    mp4cb.seek = mp4_seek_callback;
-    mp4cb.user_data = handle;
 
     mp4 = mp4ff_open_read (&mp4cb);
 
@@ -290,13 +295,15 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
 
 static bool_t mp4_play (const char * filename, VFSFile * file)
 {
-    bool_t result;
-
     mp4ff_callback_t mp4cb = {
-        .read = mp4_read_callback,
-        .seek = mp4_seek_callback,
-        .user_data = file
+        mp4_read_callback,
+        NULL,  // write
+        mp4_seek_callback,
+        NULL,  // truncate
+        file
     };
+
+    bool_t result;
 
     mp4ff_t * mp4file = mp4ff_open_read (& mp4cb);
     result = my_decode_mp4 (filename, mp4file);
