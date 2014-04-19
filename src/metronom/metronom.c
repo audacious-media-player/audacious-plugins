@@ -221,13 +221,12 @@ static const char metronom_about[] =
 
 static const char * const schemes[] = {"tact", NULL};
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("Tact Generator"),
-    .domain = PACKAGE,
-    .about_text = metronom_about,
-    .schemes = schemes,
-    .is_our_file_from_vfs = metronom_is_our_fd,
-    .play = metronom_play,
-    .probe_for_tuple = metronom_probe_for_tuple,
-)
+#define AUD_PLUGIN_NAME        N_("Tact Generator")
+#define AUD_PLUGIN_ABOUT       metronom_about
+#define AUD_INPUT_SCHEMES      schemes
+#define AUD_INPUT_IS_OUR_FILE  metronom_is_our_fd
+#define AUD_INPUT_PLAY         metronom_play
+#define AUD_INPUT_READ_TUPLE   metronom_probe_for_tuple
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

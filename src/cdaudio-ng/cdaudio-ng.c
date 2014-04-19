@@ -139,20 +139,19 @@ static const PluginPreferences cdaudio_prefs = {
  .widgets = cdaudio_widgets,
  .n_widgets = ARRAY_LEN (cdaudio_widgets)};
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("Audio CD Plugin"),
-    .domain = PACKAGE,
-    .about_text = cdaudio_about,
-    .prefs = & cdaudio_prefs,
-    .init = cdaudio_init,
-    .cleanup = cdaudio_cleanup,
-    .is_our_file_from_vfs = cdaudio_is_our_file,
-    .play = cdaudio_play,
-    .probe_for_tuple = make_tuple,
-    .schemes = schemes,
-    .have_subtune = TRUE,
-)
+#define AUD_PLUGIN_NAME        N_("Audio CD Plugin")
+#define AUD_PLUGIN_ABOUT       cdaudio_about
+#define AUD_PLUGIN_PREFS       & cdaudio_prefs
+#define AUD_PLUGIN_INIT        cdaudio_init
+#define AUD_PLUGIN_CLEANUP     cdaudio_cleanup
+#define AUD_INPUT_IS_OUR_FILE  cdaudio_is_our_file
+#define AUD_INPUT_PLAY         cdaudio_play
+#define AUD_INPUT_READ_TUPLE   make_tuple
+#define AUD_INPUT_SCHEMES      schemes
+#define AUD_INPUT_SUBTUNES     TRUE
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>
 
 static void cdaudio_error (const char * message_format, ...)
 {

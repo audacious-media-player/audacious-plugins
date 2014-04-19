@@ -77,10 +77,9 @@ static bool_t playlist_load_asx (const char * filename, VFSFile * file,
 
 static const char * const asx_exts[] = {"asx", NULL};
 
-AUD_PLAYLIST_PLUGIN
-(
-    .name = N_("ASXv1/ASXv2 Playlists"),
-    .domain = PACKAGE,
-    .extensions = asx_exts,
-    .load = playlist_load_asx
-)
+#define AUD_PLUGIN_NAME        N_("ASXv1/ASXv2 Playlists")
+#define AUD_PLAYLIST_EXTS      asx_exts
+#define AUD_PLAYLIST_LOAD      playlist_load_asx
+
+#define AUD_DECLARE_PLAYLIST
+#include <libaudcore/plugin-declare.h>

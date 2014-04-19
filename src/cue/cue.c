@@ -150,10 +150,9 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
 
 static const char * const cue_exts[] = {"cue", NULL};
 
-AUD_PLAYLIST_PLUGIN
-(
- .name = N_("Cue Sheet Plugin"),
- .domain = PACKAGE,
- .extensions = cue_exts,
- .load = playlist_load_cue
-)
+#define AUD_PLUGIN_NAME        N_("Cue Sheet Plugin")
+#define AUD_PLAYLIST_EXTS      cue_exts
+#define AUD_PLAYLIST_LOAD      playlist_load_cue
+
+#define AUD_DECLARE_PLAYLIST
+#include <libaudcore/plugin-declare.h>

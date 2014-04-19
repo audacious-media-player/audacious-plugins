@@ -69,24 +69,24 @@ static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 static GtkWidget *configure_win;
 static GtkWidget *adevice_entry;
 
-AUD_OUTPUT_PLUGIN
-(
-	.name = "sndio",
-	.init = sndio_init,
-	.about = sndio_about,
-	.configure = sndio_configure,
-	.probe_priority = 2,
-	.get_volume = sndio_get_volume,
-	.set_volume = sndio_set_volume,
-	.open_audio = sndio_open,
-	.write_audio = sndio_write,
-	.close_audio = sndio_close,
-	.buffer_free = sndio_buffer_free,
-	.period_wait = sndio_period_wait,
-	.flush = sndio_flush,
-	.pause = sndio_pause,
-	.output_time = sndio_output_time
-)
+#define AUD_PLUGIN_NAME        "sndio"
+#define AUD_PLUGIN_INIT        sndio_init
+#define AUD_PLUGIN_ABOUTWIN    sndio_about
+#define AUD_PLUGIN_CONFIGWIN   sndio_configure
+#define AUD_OUTPUT_PRIORITY    2
+#define AUD_OUTPUT_GET_VOLUME  sndio_get_volume
+#define AUD_OUTPUT_SET_VOLUME  sndio_set_volume
+#define AUD_OUTPUT_OPEN        sndio_open
+#define AUD_OUTPUT_WRITE       sndio_write
+#define AUD_OUTPUT_CLOSE       sndio_close
+#define AUD_OUTPUT_GET_FREE    sndio_buffer_free
+#define AUD_OUTPUT_WAIT_FREE   sndio_period_wait
+#define AUD_OUTPUT_FLUSH       sndio_flush
+#define AUD_OUTPUT_PAUSE       sndio_pause
+#define AUD_OUTPUT_GET_TIME    sndio_output_time
+
+#define AUD_DECLARE_OUTPUT
+#include <libaudcore/plugin-declare.h>
 
 static struct fmt_to_par {
 	int fmt, bits, sig, le;

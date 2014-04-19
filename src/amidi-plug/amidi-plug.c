@@ -459,18 +459,16 @@ static void amidiplug_skipto (int playing_tick)
     midifile.playing_tick = playing_tick;
 }
 
+#define AUD_PLUGIN_NAME        N_("AMIDI-Plug (MIDI Player)")
+#define AUD_PLUGIN_INIT        amidiplug_init
+#define AUD_PLUGIN_ABOUTWIN    i_about_gui
+#define AUD_PLUGIN_PREFS       & amidiplug_prefs
+#define AUD_INPUT_PLAY         amidiplug_play
+#define AUD_PLUGIN_CLEANUP     amidiplug_cleanup
+#define AUD_INPUT_READ_TUPLE   amidiplug_get_song_tuple
+#define AUD_INPUT_INFOWIN      i_fileinfo_gui
+#define AUD_INPUT_IS_OUR_FILE  amidiplug_is_our_file_from_vfs
+#define AUD_INPUT_EXTS         amidiplug_vfs_extensions
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("AMIDI-Plug (MIDI Player)"),
-    .domain = PACKAGE,
-    .init = amidiplug_init,
-    .about = i_about_gui,
-    .prefs = & amidiplug_prefs,
-    .play = amidiplug_play,
-    .cleanup = amidiplug_cleanup,
-    .probe_for_tuple = amidiplug_get_song_tuple,
-    .file_info_box = i_fileinfo_gui,
-    .is_our_file_from_vfs = amidiplug_is_our_file_from_vfs,
-    .extensions = amidiplug_vfs_extensions,
-)
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

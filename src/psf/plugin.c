@@ -203,12 +203,11 @@ int psf2_is_our_fd(const char *filename, VFSFile *file)
 
 static const char *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
 
-AUD_INPUT_PLUGIN
-(
-	.name = N_("OpenPSF PSF1/PSF2 Decoder"),
-	.domain = PACKAGE,
-	.play = psf2_play,
-	.probe_for_tuple = psf2_tuple,
-	.is_our_file_from_vfs = psf2_is_our_fd,
-	.extensions = psf2_fmts,
-)
+#define AUD_PLUGIN_NAME        N_("OpenPSF PSF1/PSF2 Decoder")
+#define AUD_INPUT_PLAY         psf2_play
+#define AUD_INPUT_READ_TUPLE   psf2_tuple
+#define AUD_INPUT_IS_OUR_FILE  psf2_is_our_fd
+#define AUD_INPUT_EXTS         psf2_fmts
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

@@ -407,16 +407,15 @@ static bool_t mpg123_get_image (const char * filename, VFSFile * handle,
 /** plugin description header **/
 static const char *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 
-AUD_INPUT_PLUGIN
-(
-	.name = N_("MPG123 Plugin"),
-	.domain = PACKAGE,
-	.init = aud_mpg123_init,
-	.cleanup = aud_mpg123_deinit,
-	.extensions = mpg123_fmts,
-	.is_our_file_from_vfs = mpg123_probe_for_fd,
-	.probe_for_tuple = mpg123_probe_for_tuple,
-	.play = mpg123_playback_worker,
-	.update_song_tuple = mpg123_write_tag,
-	.get_song_image = mpg123_get_image,
-)
+#define AUD_PLUGIN_NAME        N_("MPG123 Plugin")
+#define AUD_PLUGIN_INIT        aud_mpg123_init
+#define AUD_PLUGIN_CLEANUP     aud_mpg123_deinit
+#define AUD_INPUT_EXTS         mpg123_fmts
+#define AUD_INPUT_IS_OUR_FILE  mpg123_probe_for_fd
+#define AUD_INPUT_READ_TUPLE   mpg123_probe_for_tuple
+#define AUD_INPUT_PLAY         mpg123_playback_worker
+#define AUD_INPUT_WRITE_TUPLE  mpg123_write_tag
+#define AUD_INPUT_READ_IMAGE   mpg123_get_image
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

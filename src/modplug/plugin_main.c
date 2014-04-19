@@ -231,15 +231,14 @@ static const PluginPreferences modplug_prefs = {
  .apply = modplug_settings_apply
 };
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("ModPlug (Module Player)"),
-    .domain = PACKAGE,
-    .prefs = &modplug_prefs,
-    .init = modplug_init,
-    .play = PlayFile,
-    .probe_for_tuple = GetSongTuple,
-    .is_our_file_from_vfs = CanPlayFileFromVFS,
-    .extensions = fmts,
-    .have_subtune = TRUE,   // to exclude .zip etc which doesn't contain any mod file --yaz
-)
+#define AUD_PLUGIN_NAME        N_("ModPlug (Module Player)")
+#define AUD_PLUGIN_PREFS       &modplug_prefs
+#define AUD_PLUGIN_INIT        modplug_init
+#define AUD_INPUT_PLAY         PlayFile
+#define AUD_INPUT_READ_TUPLE   GetSongTuple
+#define AUD_INPUT_IS_OUR_FILE  CanPlayFileFromVFS
+#define AUD_INPUT_EXTS         fmts
+#define AUD_INPUT_SUBTUNES     TRUE
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

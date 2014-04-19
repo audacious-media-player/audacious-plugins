@@ -1051,12 +1051,11 @@ static VFSConstructor constructor =
     .vfs_get_metadata_impl = neon_vfs_metadata_impl
 };
 
-AUD_TRANSPORT_PLUGIN
-(
-    .name = N_("Neon HTTP/HTTPS Plugin"),
-    .domain = PACKAGE,
-    .schemes = neon_schemes,
-    .init = neon_plugin_init,
-    .cleanup = neon_plugin_fini,
-    .vtable = & constructor
-)
+#define AUD_PLUGIN_NAME        N_("Neon HTTP/HTTPS Plugin")
+#define AUD_TRANSPORT_SCHEMES  neon_schemes
+#define AUD_PLUGIN_INIT        neon_plugin_init
+#define AUD_PLUGIN_CLEANUP     neon_plugin_fini
+#define AUD_TRANSPORT_VTABLE   & constructor
+
+#define AUD_DECLARE_TRANSPORT
+#include <libaudcore/plugin-declare.h>

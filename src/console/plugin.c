@@ -56,16 +56,16 @@ static const PluginPreferences console_prefs = {
  .widgets = console_widgets,
  .n_widgets = ARRAY_LEN (console_widgets)};
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("Game Console Music Decoder"),
-    .domain = PACKAGE,
-    .about_text = console_about,
-    .init = console_cfg_load,
-    .cleanup = console_cfg_save,
-    .prefs = & console_prefs,
-    .play = console_play,
-    .extensions = gme_fmts,
-    .probe_for_tuple = console_probe_for_tuple,
-    .have_subtune = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Game Console Music Decoder")
+#define AUD_PLUGIN_ABOUT       console_about
+#define AUD_PLUGIN_INIT        console_cfg_load
+#define AUD_PLUGIN_CLEANUP     console_cfg_save
+#define AUD_PLUGIN_PREFS       & console_prefs
+#define AUD_INPUT_IS_OUR_FILE  NULL
+#define AUD_INPUT_PLAY         console_play
+#define AUD_INPUT_EXTS         gme_fmts
+#define AUD_INPUT_READ_TUPLE   console_probe_for_tuple
+#define AUD_INPUT_SUBTUNES     TRUE
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

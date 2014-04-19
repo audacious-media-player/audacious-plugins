@@ -36,24 +36,23 @@ static const PluginPreferences alsa_prefs = {
  .widgets = alsa_widgets,
  .n_widgets = ARRAY_LEN (alsa_widgets)};
 
-AUD_OUTPUT_PLUGIN
-(
-    .name = N_("ALSA Output"),
-    .domain = PACKAGE,
-    .about_text = alsa_about,
-    .probe_priority = 5,
-    .init = alsa_init,
-    .cleanup = alsa_cleanup,
-    .open_audio = alsa_open_audio,
-    .close_audio = alsa_close_audio,
-    .buffer_free = alsa_buffer_free,
-    .write_audio = alsa_write_audio,
-    .period_wait = alsa_period_wait,
-    .drain = alsa_drain,
-    .output_time = alsa_output_time,
-    .flush = alsa_flush,
-    .pause = alsa_pause,
-    .set_volume = alsa_set_volume,
-    .get_volume = alsa_get_volume,
-    .prefs = & alsa_prefs,
-)
+#define AUD_PLUGIN_NAME        N_("ALSA Output")
+#define AUD_PLUGIN_ABOUT       alsa_about
+#define AUD_OUTPUT_PRIORITY    5
+#define AUD_PLUGIN_INIT        alsa_init
+#define AUD_PLUGIN_CLEANUP     alsa_cleanup
+#define AUD_OUTPUT_OPEN        alsa_open_audio
+#define AUD_OUTPUT_CLOSE       alsa_close_audio
+#define AUD_OUTPUT_GET_FREE    alsa_buffer_free
+#define AUD_OUTPUT_WRITE       alsa_write_audio
+#define AUD_OUTPUT_WAIT_FREE   alsa_period_wait
+#define AUD_OUTPUT_DRAIN       alsa_drain
+#define AUD_OUTPUT_GET_TIME    alsa_output_time
+#define AUD_OUTPUT_FLUSH       alsa_flush
+#define AUD_OUTPUT_PAUSE       alsa_pause
+#define AUD_OUTPUT_SET_VOLUME  alsa_set_volume
+#define AUD_OUTPUT_GET_VOLUME  alsa_get_volume
+#define AUD_PLUGIN_PREFS       & alsa_prefs
+
+#define AUD_DECLARE_OUTPUT
+#include <libaudcore/plugin-declare.h>

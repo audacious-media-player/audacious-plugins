@@ -181,11 +181,10 @@ static bool_t audpl_save (const char * path, VFSFile * file,
 
 static const char * const audpl_exts[] = {"audpl", NULL};
 
-AUD_PLAYLIST_PLUGIN
-(
-    .name = N_("Audacious Playlists (audpl)"),
-    .domain = PACKAGE,
-    .extensions = audpl_exts,
-    .load = audpl_load,
-    .save = audpl_save
-)
+#define AUD_PLUGIN_NAME        N_("Audacious Playlists (audpl)")
+#define AUD_PLAYLIST_EXTS      audpl_exts
+#define AUD_PLAYLIST_LOAD      audpl_load
+#define AUD_PLAYLIST_SAVE      audpl_save
+
+#define AUD_DECLARE_PLAYLIST
+#include <libaudcore/plugin-declare.h>

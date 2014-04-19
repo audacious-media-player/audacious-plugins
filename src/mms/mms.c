@@ -190,10 +190,9 @@ static VFSConstructor constructor =
     .vfs_fsize_impl = mms_vfs_fsize_impl
 };
 
-AUD_TRANSPORT_PLUGIN
-(
-    .name = N_("MMS Plugin"),
-    .domain = PACKAGE,
-    .schemes = mms_schemes,
-    .vtable = & constructor
-)
+#define AUD_PLUGIN_NAME        N_("MMS Plugin")
+#define AUD_TRANSPORT_SCHEMES  mms_schemes
+#define AUD_TRANSPORT_VTABLE   & constructor
+
+#define AUD_DECLARE_TRANSPORT
+#include <libaudcore/plugin-declare.h>

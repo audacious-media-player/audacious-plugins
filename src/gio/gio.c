@@ -309,11 +309,10 @@ static VFSConstructor constructor = {
     .vfs_fsize_impl = gio_fsize
 };
 
-AUD_TRANSPORT_PLUGIN
-(
-    .name = N_("GIO Plugin"),
-    .domain = PACKAGE,
-    .about_text = gio_about,
-    .schemes = gio_schemes,
-    .vtable = & constructor
-)
+#define AUD_PLUGIN_NAME        N_("GIO Plugin")
+#define AUD_PLUGIN_ABOUT       gio_about
+#define AUD_TRANSPORT_SCHEMES  gio_schemes
+#define AUD_TRANSPORT_VTABLE   & constructor
+
+#define AUD_DECLARE_TRANSPORT
+#include <libaudcore/plugin-declare.h>

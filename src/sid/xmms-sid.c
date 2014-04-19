@@ -358,18 +358,18 @@ Tuple * xs_probe_for_tuple(const char *filename, VFSFile *fd)
  */
 static const char *xs_sid_fmts[] = { "sid", "psid", NULL };
 
-AUD_INPUT_PLUGIN
-(
-    .name = "SID Player",               /* Plugin description */
-    .domain = PACKAGE,
-    .init = xs_init,                    /* Initialization */
-    .cleanup = xs_close,                /* Cleanup */
-    .play = xs_play_file,               /* Play given file */
-    .probe_for_tuple = xs_probe_for_tuple,
+#define AUD_PLUGIN_NAME        "SID Player"
+#define AUD_PLUGIN_INIT        xs_init
+#define AUD_PLUGIN_CLEANUP     xs_close
+#define AUD_INPUT_IS_OUR_FILE  NULL
+#define AUD_INPUT_PLAY         xs_play_file
+#define AUD_INPUT_READ_TUPLE   xs_probe_for_tuple
 
-    .extensions = xs_sid_fmts,          /* File ext assist */
-    .have_subtune = TRUE,
+#define AUD_INPUT_EXTS         xs_sid_fmts
+#define AUD_INPUT_SUBTUNES     TRUE
 
-    /* medium priority (slow to initialize) */
-    .priority = 5,
-)
+/* medium priority (slow to initialize) */
+#define AUD_INPUT_PRIORITY     5
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

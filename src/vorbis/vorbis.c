@@ -498,19 +498,18 @@ static const char vorbis_about[] =
 static const gchar *vorbis_fmts[] = { "ogg", "ogm", "oga", NULL };
 static const gchar * const mimes[] = {"application/ogg", NULL};
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("Ogg Vorbis Decoder"),
-    .domain = PACKAGE,
-    .about_text = vorbis_about,
-    .play = vorbis_play,
-    .probe_for_tuple = get_song_tuple,
-    .get_song_image = get_song_image,
-    .update_song_tuple = vorbis_update_song_tuple,
-    .is_our_file_from_vfs = vorbis_check_fd,
-    .extensions = vorbis_fmts,
-    .mimes = mimes,
+#define AUD_PLUGIN_NAME        N_("Ogg Vorbis Decoder")
+#define AUD_PLUGIN_ABOUT       vorbis_about
+#define AUD_INPUT_PLAY         vorbis_play
+#define AUD_INPUT_READ_TUPLE   get_song_tuple
+#define AUD_INPUT_READ_IMAGE   get_song_image
+#define AUD_INPUT_WRITE_TUPLE  vorbis_update_song_tuple
+#define AUD_INPUT_IS_OUR_FILE  vorbis_check_fd
+#define AUD_INPUT_EXTS         vorbis_fmts
+#define AUD_INPUT_MIMES        mimes
 
-    /* medium-high priority (a little slow) */
-    .priority = 2,
-)
+/* medium-high priority (a little slow) */
+#define AUD_INPUT_PRIORITY     2
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

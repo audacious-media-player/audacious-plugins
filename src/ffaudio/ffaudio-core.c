@@ -636,20 +636,19 @@ static const gchar *ffaudio_fmts[] = {
 
 static const char * const ffaudio_mimes[] = {"application/ogg", NULL};
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("FFmpeg Plugin"),
-    .domain = PACKAGE,
-    .about_text = ffaudio_about,
-    .init = ffaudio_init,
-    .cleanup = ffaudio_cleanup,
-    .extensions = ffaudio_fmts,
-    .mimes = ffaudio_mimes,
-    .is_our_file_from_vfs = ffaudio_probe,
-    .probe_for_tuple = ffaudio_probe_for_tuple,
-    .play = ffaudio_play,
-    .update_song_tuple = ffaudio_write_tag,
+#define AUD_PLUGIN_NAME        N_("FFmpeg Plugin")
+#define AUD_PLUGIN_ABOUT       ffaudio_about
+#define AUD_PLUGIN_INIT        ffaudio_init
+#define AUD_PLUGIN_CLEANUP     ffaudio_cleanup
+#define AUD_INPUT_EXTS         ffaudio_fmts
+#define AUD_INPUT_MIMES        ffaudio_mimes
+#define AUD_INPUT_IS_OUR_FILE  ffaudio_probe
+#define AUD_INPUT_READ_TUPLE   ffaudio_probe_for_tuple
+#define AUD_INPUT_PLAY         ffaudio_play
+#define AUD_INPUT_WRITE_TUPLE  ffaudio_write_tag
 
-    /* lowest priority fallback */
-    .priority = 10,
-)
+/* lowest priority fallback */
+#define AUD_INPUT_PRIORITY     10
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

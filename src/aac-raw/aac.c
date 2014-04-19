@@ -471,12 +471,11 @@ ERR:
     return FALSE;
 }
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("AAC (Raw) Decoder"),
-    .domain = PACKAGE,
-    .play = my_decode_aac,
-    .is_our_file_from_vfs = parse_aac_stream,
-    .probe_for_tuple = aac_get_tuple,
-    .extensions = fmts,
-)
+#define AUD_PLUGIN_NAME        N_("AAC (Raw) Decoder")
+#define AUD_INPUT_PLAY         my_decode_aac
+#define AUD_INPUT_IS_OUR_FILE  parse_aac_stream
+#define AUD_INPUT_READ_TUPLE   aac_get_tuple
+#define AUD_INPUT_EXTS         fmts
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

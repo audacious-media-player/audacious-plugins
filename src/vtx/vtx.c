@@ -166,14 +166,13 @@ static const char vtx_about[] =
     "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
     "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>");
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("VTX Decoder"),
-    .domain = PACKAGE,
-    .about_text = vtx_about,
-    .play = vtx_play,
-    .file_info_box = vtx_file_info,
-    .probe_for_tuple = vtx_probe_for_tuple,
-    .is_our_file_from_vfs = vtx_is_our_fd,
-    .extensions = vtx_fmts
-)
+#define AUD_PLUGIN_NAME        N_("VTX Decoder")
+#define AUD_PLUGIN_ABOUT       vtx_about
+#define AUD_INPUT_PLAY         vtx_play
+#define AUD_INPUT_INFOWIN      vtx_file_info
+#define AUD_INPUT_READ_TUPLE   vtx_probe_for_tuple
+#define AUD_INPUT_IS_OUR_FILE  vtx_is_our_fd
+#define AUD_INPUT_EXTS         vtx_fmts
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

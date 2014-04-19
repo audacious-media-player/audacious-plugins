@@ -267,13 +267,13 @@ static const char wv_about[] =
 
 static const char *wv_fmts[] = { "wv", NULL };
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("WavPack Decoder"),
-    .domain = PACKAGE,
-    .about_text = wv_about,
-    .play = wv_play,
-    .extensions = wv_fmts,
-    .probe_for_tuple = wv_probe_for_tuple,
-    .update_song_tuple = wv_write_tag,
-)
+#define AUD_PLUGIN_NAME        N_("WavPack Decoder")
+#define AUD_PLUGIN_ABOUT       wv_about
+#define AUD_INPUT_IS_OUR_FILE  NULL
+#define AUD_INPUT_PLAY         wv_play
+#define AUD_INPUT_EXTS         wv_fmts
+#define AUD_INPUT_READ_TUPLE   wv_probe_for_tuple
+#define AUD_INPUT_WRITE_TUPLE  wv_write_tag
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

@@ -308,13 +308,12 @@ static bool_t mp4_play (const char * filename, VFSFile * file)
 bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
  data, int64_t * size);
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("AAC (MP4) Decoder"),
-    .domain = PACKAGE,
-    .play = mp4_play,
-    .is_our_file_from_vfs = is_mp4_aac_file,
-    .probe_for_tuple = mp4_get_tuple,
-    .get_song_image = read_itunes_cover,
-    .extensions = fmts,
-)
+#define AUD_PLUGIN_NAME        N_("AAC (MP4) Decoder")
+#define AUD_INPUT_PLAY         mp4_play
+#define AUD_INPUT_IS_OUR_FILE  is_mp4_aac_file
+#define AUD_INPUT_READ_TUPLE   mp4_get_tuple
+#define AUD_INPUT_READ_IMAGE   read_itunes_cover
+#define AUD_INPUT_EXTS         fmts
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

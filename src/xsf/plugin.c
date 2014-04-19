@@ -211,12 +211,11 @@ int xsf_is_our_fd(const char *filename, VFSFile *file)
 
 static const char *xsf_fmts[] = { "2sf", "mini2sf", NULL };
 
-AUD_INPUT_PLUGIN
-(
-	.name = N_("2SF Decoder"),
-	.domain = PACKAGE,
-	.play = xsf_play,
-	.probe_for_tuple = xsf_tuple,
-	.is_our_file_from_vfs = xsf_is_our_fd,
-	.extensions = xsf_fmts,
-)
+#define AUD_PLUGIN_NAME        N_("2SF Decoder")
+#define AUD_INPUT_PLAY         xsf_play
+#define AUD_INPUT_READ_TUPLE   xsf_tuple
+#define AUD_INPUT_IS_OUR_FILE  xsf_is_our_fd
+#define AUD_INPUT_EXTS         xsf_fmts
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

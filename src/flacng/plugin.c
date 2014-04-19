@@ -190,18 +190,17 @@ static const char flac_about[] =
 
 static const char *flac_fmts[] = { "flac", "fla", NULL };
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("FLAC Decoder"),
-    .domain = PACKAGE,
-    .about_text = flac_about,
-    .init = flac_init,
-    .cleanup = flac_cleanup,
-    .play = flac_play,
-    .probe_for_tuple = flac_probe_for_tuple,
-    .is_our_file_from_vfs = flac_is_our_fd,
-    .extensions = flac_fmts,
-    .update_song_tuple = flac_update_song_tuple,
-    .get_song_image = flac_get_image,
-    .priority = 1
-)
+#define AUD_PLUGIN_NAME        N_("FLAC Decoder")
+#define AUD_PLUGIN_ABOUT       flac_about
+#define AUD_PLUGIN_INIT        flac_init
+#define AUD_PLUGIN_CLEANUP     flac_cleanup
+#define AUD_INPUT_PLAY         flac_play
+#define AUD_INPUT_READ_TUPLE   flac_probe_for_tuple
+#define AUD_INPUT_IS_OUR_FILE  flac_is_our_fd
+#define AUD_INPUT_EXTS         flac_fmts
+#define AUD_INPUT_WRITE_TUPLE  flac_update_song_tuple
+#define AUD_INPUT_READ_IMAGE   flac_get_image
+#define AUD_INPUT_PRIORITY     1
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

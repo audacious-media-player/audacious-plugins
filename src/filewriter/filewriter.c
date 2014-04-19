@@ -520,21 +520,22 @@ static const PluginPreferences file_prefs = {
  .n_widgets = ARRAY_LEN (file_widgets),
  .apply = configure_response_cb};
 
-AUD_OUTPUT_PLUGIN
-(
-    .name = N_("FileWriter Plugin"),
-    .domain = PACKAGE,
-    .about_text = file_about,
-    .init = file_init,
-    .cleanup = file_cleanup,
-    .prefs = & file_prefs,
-    .probe_priority = 0,
-    .open_audio = file_open,
-    .close_audio = file_close,
-    .write_audio = file_write,
-    .drain = file_drain,
-    .output_time = file_get_time,
-    .pause = file_pause,
-    .flush = file_flush,
-    .force_reopen = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("FileWriter Plugin")
+#define AUD_PLUGIN_ABOUT       file_about
+#define AUD_PLUGIN_INIT        file_init
+#define AUD_PLUGIN_CLEANUP     file_cleanup
+#define AUD_PLUGIN_PREFS       & file_prefs
+#define AUD_OUTPUT_PRIORITY    0
+#define AUD_OUTPUT_OPEN        file_open
+#define AUD_OUTPUT_CLOSE       file_close
+#define AUD_OUTPUT_GET_FREE    NULL
+#define AUD_OUTPUT_WAIT_FREE   NULL
+#define AUD_OUTPUT_WRITE       file_write
+#define AUD_OUTPUT_DRAIN       file_drain
+#define AUD_OUTPUT_GET_TIME    file_get_time
+#define AUD_OUTPUT_PAUSE       file_pause
+#define AUD_OUTPUT_FLUSH       file_flush
+#define AUD_OUTPUT_REOPEN      TRUE
+
+#define AUD_DECLARE_OUTPUT
+#include <libaudcore/plugin-declare.h>

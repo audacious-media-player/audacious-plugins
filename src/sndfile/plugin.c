@@ -364,16 +364,15 @@ const char plugin_about[] =
 
 static const char *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("Sndfile Plugin"),
-    .domain = PACKAGE,
-    .about_text = plugin_about,
-    .play = play_start,
-    .probe_for_tuple = get_song_tuple,
-    .is_our_file_from_vfs = is_our_file_from_vfs,
-    .extensions = sndfile_fmts,
+#define AUD_PLUGIN_NAME        N_("Sndfile Plugin")
+#define AUD_PLUGIN_ABOUT       plugin_about
+#define AUD_INPUT_PLAY         play_start
+#define AUD_INPUT_READ_TUPLE   get_song_tuple
+#define AUD_INPUT_IS_OUR_FILE  is_our_file_from_vfs
+#define AUD_INPUT_EXTS         sndfile_fmts
 
-    /* low priority fallback (but before ffaudio) */
-    .priority = 9,
-)
+/* low priority fallback (but before ffaudio) */
+#define AUD_INPUT_PRIORITY     9
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

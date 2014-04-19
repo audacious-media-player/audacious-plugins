@@ -433,21 +433,22 @@ static const char jack_about[] =
     "http://xmms-jack.sourceforge.net/\n\n"
     "Ported to Audacious by Giacomo Lozito");
 
-AUD_OUTPUT_PLUGIN
-(
-    .name = N_("JACK Output"),
-    .domain = PACKAGE,
-    .about_text = jack_about,
-    .init = jack_init,
-    .cleanup = jack_cleanup,
-    .prefs = & jack_prefs,
-    .get_volume = jack_get_volume,
-    .set_volume = jack_set_volume,
-    .open_audio = jack_open,
-    .write_audio = jack_write,
-    .close_audio = jack_close,
-    .flush = jack_flush,
-    .pause = jack_pause,
-    .buffer_free = audacious_jack_free,
-    .output_time = jack_get_output_time
-)
+#define AUD_PLUGIN_NAME        N_("JACK Output")
+#define AUD_PLUGIN_ABOUT       jack_about
+#define AUD_PLUGIN_INIT        jack_init
+#define AUD_PLUGIN_CLEANUP     jack_cleanup
+#define AUD_PLUGIN_PREFS       & jack_prefs
+#define AUD_OUTPUT_GET_VOLUME  jack_get_volume
+#define AUD_OUTPUT_SET_VOLUME  jack_set_volume
+#define AUD_OUTPUT_OPEN        jack_open
+#define AUD_OUTPUT_WRITE       jack_write
+#define AUD_OUTPUT_DRAIN       NULL
+#define AUD_OUTPUT_CLOSE       jack_close
+#define AUD_OUTPUT_FLUSH       jack_flush
+#define AUD_OUTPUT_PAUSE       jack_pause
+#define AUD_OUTPUT_GET_FREE    audacious_jack_free
+#define AUD_OUTPUT_WAIT_FREE   NULL
+#define AUD_OUTPUT_GET_TIME    jack_get_output_time
+
+#define AUD_DECLARE_OUTPUT
+#include <libaudcore/plugin-declare.h>

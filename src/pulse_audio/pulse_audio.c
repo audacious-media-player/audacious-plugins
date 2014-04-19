@@ -657,21 +657,21 @@ static const char pulse_about[] =
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
     "USA.");
 
-AUD_OUTPUT_PLUGIN
-(
-    .name = N_("PulseAudio Output"),
-    .domain = PACKAGE,
-    .about_text = pulse_about,
-    .probe_priority = 8,
-    .init = pulse_init,
-    .get_volume = pulse_get_volume,
-    .set_volume = pulse_set_volume,
-    .open_audio = pulse_open,
-    .write_audio = pulse_write,
-    .close_audio = pulse_close,
-    .flush = pulse_flush,
-    .pause = pulse_pause,
-    .buffer_free = pulse_free,
-    .drain = pulse_drain,
-    .output_time = pulse_get_output_time
-)
+#define AUD_PLUGIN_NAME        N_("PulseAudio Output")
+#define AUD_PLUGIN_ABOUT       pulse_about
+#define AUD_OUTPUT_PRIORITY    8
+#define AUD_PLUGIN_INIT        pulse_init
+#define AUD_OUTPUT_GET_VOLUME  pulse_get_volume
+#define AUD_OUTPUT_SET_VOLUME  pulse_set_volume
+#define AUD_OUTPUT_OPEN        pulse_open
+#define AUD_OUTPUT_WRITE       pulse_write
+#define AUD_OUTPUT_CLOSE       pulse_close
+#define AUD_OUTPUT_FLUSH       pulse_flush
+#define AUD_OUTPUT_PAUSE       pulse_pause
+#define AUD_OUTPUT_GET_FREE    pulse_free
+#define AUD_OUTPUT_WAIT_FREE   NULL
+#define AUD_OUTPUT_DRAIN       pulse_drain
+#define AUD_OUTPUT_GET_TIME    pulse_get_output_time
+
+#define AUD_DECLARE_OUTPUT
+#include <libaudcore/plugin-declare.h>

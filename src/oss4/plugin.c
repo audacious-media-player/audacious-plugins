@@ -112,23 +112,22 @@ static const char oss_about[] =
     "I would like to thank people on #audacious, especially Tony Vroon and "
     "John Lindgren and of course the authors of the previous OSS plugin.");
 
-AUD_OUTPUT_PLUGIN
-(
-    .name = N_("OSS4 Output"),
-    .domain = PACKAGE,
-    .probe_priority = 5,
-    .init = oss_init,
-    .cleanup = oss_cleanup,
-    .open_audio = oss_open_audio,
-    .close_audio = oss_close_audio,
-    .write_audio = oss_write_audio,
-    .drain = oss_drain,
-    .buffer_free = oss_buffer_free,
-    .output_time = oss_output_time,
-    .flush = oss_flush,
-    .pause = oss_pause,
-    .set_volume = oss_set_volume,
-    .get_volume = oss_get_volume,
-    .about_text = oss_about,
-    .prefs = &oss_prefs
-)
+#define AUD_PLUGIN_NAME        N_("OSS4 Output")
+#define AUD_OUTPUT_PRIORITY    5
+#define AUD_PLUGIN_INIT        oss_init
+#define AUD_PLUGIN_CLEANUP     oss_cleanup
+#define AUD_OUTPUT_OPEN        oss_open_audio
+#define AUD_OUTPUT_CLOSE       oss_close_audio
+#define AUD_OUTPUT_WRITE       oss_write_audio
+#define AUD_OUTPUT_DRAIN       oss_drain
+#define AUD_OUTPUT_GET_FREE    oss_buffer_free
+#define AUD_OUTPUT_GET_TIME    oss_output_time
+#define AUD_OUTPUT_FLUSH       oss_flush
+#define AUD_OUTPUT_PAUSE       oss_pause
+#define AUD_OUTPUT_SET_VOLUME  oss_set_volume
+#define AUD_OUTPUT_GET_VOLUME  oss_get_volume
+#define AUD_PLUGIN_ABOUT       oss_about
+#define AUD_PLUGIN_PREFS       &oss_prefs
+
+#define AUD_DECLARE_OUTPUT
+#include <libaudcore/plugin-declare.h>

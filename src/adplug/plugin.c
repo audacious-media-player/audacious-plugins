@@ -9,14 +9,13 @@ static const char * fmts[] =
       "sng", "wlf", "xad", "xsm",
       NULL };
 
-AUD_INPUT_PLUGIN
-(
-  .name = N_("AdPlug (AdLib Player)"),
-  .domain = PACKAGE,
-  .init = adplug_init,
-  .cleanup = adplug_quit,
-  .play = adplug_play,
-  .probe_for_tuple = adplug_get_tuple,
-  .is_our_file_from_vfs = adplug_is_our_fd,
-  .extensions = fmts,
-)
+#define AUD_PLUGIN_NAME        N_("AdPlug (AdLib Player)")
+#define AUD_PLUGIN_INIT        adplug_init
+#define AUD_PLUGIN_CLEANUP     adplug_quit
+#define AUD_INPUT_PLAY         adplug_play
+#define AUD_INPUT_READ_TUPLE   adplug_get_tuple
+#define AUD_INPUT_IS_OUR_FILE  adplug_is_our_fd
+#define AUD_INPUT_EXTS         fmts
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>

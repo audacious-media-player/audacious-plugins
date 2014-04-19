@@ -110,11 +110,10 @@ static bool_t playlist_save_m3u (const char * path, VFSFile * file,
 
 static const char * const m3u_exts[] = {"m3u", "m3u8", NULL};
 
-AUD_PLAYLIST_PLUGIN
-(
- .name = N_("M3U Playlists"),
- .domain = PACKAGE,
- .extensions = m3u_exts,
- .load = playlist_load_m3u,
- .save = playlist_save_m3u
-)
+#define AUD_PLUGIN_NAME        N_("M3U Playlists")
+#define AUD_PLAYLIST_EXTS      m3u_exts
+#define AUD_PLAYLIST_LOAD      playlist_load_m3u
+#define AUD_PLAYLIST_SAVE      playlist_save_m3u
+
+#define AUD_DECLARE_PLAYLIST
+#include <libaudcore/plugin-declare.h>

@@ -433,11 +433,10 @@ ERR:
 
 static const gchar * const xspf_exts[] = {"xspf", NULL};
 
-AUD_PLAYLIST_PLUGIN
-(
- .name = N_("XML Shareable Playlists (XSPF)"),
- .domain = PACKAGE,
- .extensions = xspf_exts,
- .load = xspf_playlist_load,
- .save = xspf_playlist_save
-)
+#define AUD_PLUGIN_NAME        N_("XML Shareable Playlists (XSPF)")
+#define AUD_PLAYLIST_EXTS      xspf_exts
+#define AUD_PLAYLIST_LOAD      xspf_playlist_load
+#define AUD_PLAYLIST_SAVE      xspf_playlist_save
+
+#define AUD_DECLARE_PLAYLIST
+#include <libaudcore/plugin-declare.h>

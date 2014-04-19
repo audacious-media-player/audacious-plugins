@@ -96,11 +96,10 @@ static bool_t playlist_save_pls (const char * filename, VFSFile * file,
 
 static const char * const pls_exts[] = {"pls", NULL};
 
-AUD_PLAYLIST_PLUGIN
-(
-    .name = N_("PLS Playlists"),
-    .domain = PACKAGE,
-    .extensions = pls_exts,
-    .load = playlist_load_pls,
-    .save = playlist_save_pls
-)
+#define AUD_PLUGIN_NAME        N_("PLS Playlists")
+#define AUD_PLAYLIST_EXTS      pls_exts
+#define AUD_PLAYLIST_LOAD      playlist_load_pls
+#define AUD_PLAYLIST_SAVE      playlist_save_pls
+
+#define AUD_DECLARE_PLAYLIST
+#include <libaudcore/plugin-declare.h>

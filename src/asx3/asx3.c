@@ -174,11 +174,10 @@ static bool_t playlist_save_asx3 (const char * filename, VFSFile * file,
 
 static const char * const asx3_exts[] = {"asx", NULL};
 
-AUD_PLAYLIST_PLUGIN
-(
-    .name = N_("ASXv3 Playlists"),
-    .domain = PACKAGE,
-    .extensions = asx3_exts,
-    .load = playlist_load_asx3,
-    .save = playlist_save_asx3
-)
+#define AUD_PLUGIN_NAME        N_("ASXv3 Playlists")
+#define AUD_PLAYLIST_EXTS      asx3_exts
+#define AUD_PLAYLIST_LOAD      playlist_load_asx3
+#define AUD_PLAYLIST_SAVE      playlist_save_asx3
+
+#define AUD_DECLARE_PLAYLIST
+#include <libaudcore/plugin-declare.h>

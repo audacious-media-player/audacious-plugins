@@ -177,13 +177,12 @@ static const char tone_about[] =
 
 static const gchar * const schemes[] = {"tone", NULL};
 
-AUD_INPUT_PLUGIN
-(
-    .name = N_("Tone Generator"),
-    .domain = PACKAGE,
-    .about_text = tone_about,
-    .schemes = schemes,
-    .is_our_file_from_vfs = tone_is_our_fd,
-    .play = tone_play,
-    .probe_for_tuple = tone_probe_for_tuple
-)
+#define AUD_PLUGIN_NAME        N_("Tone Generator")
+#define AUD_PLUGIN_ABOUT       tone_about
+#define AUD_INPUT_SCHEMES      schemes
+#define AUD_INPUT_IS_OUR_FILE  tone_is_our_fd
+#define AUD_INPUT_PLAY         tone_play
+#define AUD_INPUT_READ_TUPLE   tone_probe_for_tuple
+
+#define AUD_DECLARE_INPUT
+#include <libaudcore/plugin-declare.h>
