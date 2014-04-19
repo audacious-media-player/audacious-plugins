@@ -2,17 +2,17 @@
  * ADLIBEMU.C
  * Copyright (C) 1998-2001 Ken Silverman
  * Ken Silverman's official web site: "http://www.advsys.net/ken"
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -49,13 +49,7 @@ I'm not sure about a few things in my code:
 
 #include <math.h>
 #include <string.h>
-
-#if !defined(max) && !defined(__cplusplus)
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
-#endif
-#if !defined(min) && !defined(__cplusplus)
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
-#endif
+#include <algorithm>
 
 #define PI 3.141592653589793
 #define MAXCELLS 18
@@ -466,8 +460,8 @@ void adlibgetsample (unsigned char *sndptr, long numbytes)
 	    {
 		nlvol[rptrs] = lvol[i]*f;
 		nrvol[rptrs] = rvol[i]*f;
-		nlplc[rptrs] = rend-min(max(lplc[i],0),FIFOSIZ);
-		nrplc[rptrs] = rend-min(max(rplc[i],0),FIFOSIZ);
+		nlplc[rptrs] = rend-std::min(std::max(lplc[i],0L),(long)FIFOSIZ);
+		nrplc[rptrs] = rend-std::min(std::max(rplc[i],0L),(long)FIFOSIZ);
 		rptrs++;
 	    }
 	    rptr[i] = &rbuf[rptrs-1][0];
@@ -480,8 +474,8 @@ void adlibgetsample (unsigned char *sndptr, long numbytes)
 
     for(ns=0;ns<numsamples;ns+=endsamples)
     {
-	endsamples = min(FIFOSIZ*2-rend,FIFOSIZ);
-	endsamples = min(endsamples,numsamples-ns);
+	endsamples = std::min(FIFOSIZ*2-rend,(long)FIFOSIZ);
+	endsamples = std::min(endsamples,numsamples-ns);
 
 	for(i=0;i<9;i++)
 	    nrptr[i] = &rptr[i][rend];

@@ -28,14 +28,12 @@
 #include "silentopl.h"
 #include "players.h"
 
-extern "C" {
 #include <libaudcore/input.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
 
 #include "adplug-xmms.h"
-}
 
 /***** Defines *****/
 
@@ -111,7 +109,7 @@ factory (VFSFile * fd, Copl * newopl)
 
 /***** Main player (!! threaded !!) *****/
 
-extern "C" Tuple * adplug_get_tuple (const char * filename, VFSFile * fd)
+Tuple * adplug_get_tuple (const char * filename, VFSFile * fd)
 {
   Tuple * ti = NULL;
   CSilentopl tmpopl;
@@ -250,7 +248,7 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
 
 /***** Informational *****/
 
-extern "C" int
+int
 adplug_is_our_fd (const char * filename, VFSFile * fd)
 {
   CSilentopl tmpopl;
@@ -272,7 +270,7 @@ adplug_is_our_fd (const char * filename, VFSFile * fd)
 
 /***** Player control *****/
 
-extern "C" bool_t
+bool_t
 adplug_play (const char * filename, VFSFile * file)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
@@ -301,7 +299,7 @@ static const char * const adplug_defaults[] = {
  "Endless", "FALSE",
  NULL};
 
-extern "C" bool_t adplug_init (void)
+bool_t adplug_init (void)
 {
   aud_config_set_defaults (CFG_VERSION, adplug_defaults);
 
@@ -354,7 +352,7 @@ extern "C" bool_t adplug_init (void)
   return TRUE;
 }
 
-extern "C" void
+void
 adplug_quit (void)
 {
   // Close database

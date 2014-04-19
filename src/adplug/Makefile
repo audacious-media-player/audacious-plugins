@@ -1,59 +1,59 @@
 PLUGIN = adplug${PLUGIN_SUFFIX}
 
 SRCS = adplug-xmms.cc		\
-       core/fmopl.c		\
-       core/debug.c		\
-       core/adlibemu.c		\
-       core/adplug.cxx		\
-       core/emuopl.cxx		\
-       core/fprovide.cxx	\
-       core/player.cxx		\
-       core/database.cxx	\
-       core/hsc.cxx		\
-       core/sng.cxx		\
-       core/imf.cxx		\
-       core/players.cxx		\
-       core/protrack.cxx	\
-       core/a2m.cxx		\
-       core/adtrack.cxx		\
-       core/amd.cxx		\
-       core/bam.cxx		\
-       core/cmf.cxx		\
-       core/d00.cxx		\
-       core/dfm.cxx		\
-       core/dmo.cxx		\
-       core/hsp.cxx		\
-       core/ksm.cxx		\
-       core/mad.cxx		\
-       core/mid.cxx		\
-       core/mkj.cxx		\
-       core/cff.cxx		\
-       core/dtm.cxx		\
-       core/fmc.cxx		\
-       core/mtk.cxx		\
-       core/rad.cxx		\
-       core/raw.cxx		\
-       core/sa2.cxx		\
-       core/s3m.cxx		\
-       core/xad.cxx		\
-       core/flash.cxx		\
-       core/bmf.cxx		\
-       core/hybrid.cxx		\
-       core/hyp.cxx		\
-       core/psi.cxx		\
-       core/rat.cxx		\
-       core/u6m.cxx		\
-       core/rol.cxx		\
-       core/xsm.cxx		\
-       core/dro.cxx		\
-       core/dro2.cxx		\
-       core/lds.cxx		\
-       core/temuopl.cxx		\
-       core/msc.cxx		\
-       core/rix.cxx		\
-       core/adl.cxx		\
-       core/jbm.cxx		\
-       plugin.c
+       core/fmopl.cc		\
+       core/debug.cc		\
+       core/adlibemu.cc		\
+       core/adplug.cc		\
+       core/emuopl.cc		\
+       core/fprovide.cc	\
+       core/player.cc		\
+       core/database.cc	\
+       core/hsc.cc		\
+       core/sng.cc		\
+       core/imf.cc		\
+       core/players.cc		\
+       core/protrack.cc	\
+       core/a2m.cc		\
+       core/adtrack.cc		\
+       core/amd.cc		\
+       core/bam.cc		\
+       core/cmf.cc		\
+       core/d00.cc		\
+       core/dfm.cc		\
+       core/dmo.cc		\
+       core/hsp.cc		\
+       core/ksm.cc		\
+       core/mad.cc		\
+       core/mid.cc		\
+       core/mkj.cc		\
+       core/cff.cc		\
+       core/dtm.cc		\
+       core/fmc.cc		\
+       core/mtk.cc		\
+       core/rad.cc		\
+       core/raw.cc		\
+       core/sa2.cc		\
+       core/s3m.cc		\
+       core/xad.cc		\
+       core/flash.cc		\
+       core/bmf.cc		\
+       core/hybrid.cc		\
+       core/hyp.cc		\
+       core/psi.cc		\
+       core/rat.cc		\
+       core/u6m.cc		\
+       core/rol.cc		\
+       core/xsm.cc		\
+       core/dro.cc		\
+       core/dro2.cc		\
+       core/lds.cc		\
+       core/temuopl.cc		\
+       core/msc.cc		\
+       core/rix.cc		\
+       core/adl.cc		\
+       core/jbm.cc		\
+       plugin.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -62,6 +62,6 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
-CXXFLAGS += ${PLUGIN_CFLAGS}
+CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-narrowing -Wno-sign-compare
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${BINIO_CFLAGS} -I../.. -I./core
 LIBS += ${GLIB_LIBS} ${BINIO_LIBS}

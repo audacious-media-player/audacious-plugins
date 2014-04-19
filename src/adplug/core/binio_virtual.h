@@ -9,9 +9,7 @@
 #include <binio.h>
 #include <stdio.h>
 
-extern "C" {
 #include <libaudcore/vfs.h>
-};
 
 class vfsistream : public binistream {
 private:
