@@ -1,5 +1,5 @@
 /* XPM */
-static char * amidiplug_xpm_midiicon[] = {
+static const char * amidiplug_xpm_midiicon[] = {
 "48 52 257 2",
 "  	c None",
 ". 	c #000000",

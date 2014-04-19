@@ -84,14 +84,9 @@ void backend_init (void)
 
 void backend_cleanup (void)
 {
-    if (sc.soundfont_ids->len > 0)
-    {
-        /* unload soundfonts */
-        int i = 0;
-
-        for (i = 0 ; i < sc.soundfont_ids->len ; i++)
-            fluid_synth_sfunload (sc.synth, g_array_index (sc.soundfont_ids, int, i), 0);
-    }
+    /* unload soundfonts */
+    for (unsigned i = 0; i < sc.soundfont_ids->len; i ++)
+        fluid_synth_sfunload (sc.synth, g_array_index (sc.soundfont_ids, int, i), 0);
 
     g_array_free (sc.soundfont_ids, TRUE);
     delete_fluid_synth (sc.synth);

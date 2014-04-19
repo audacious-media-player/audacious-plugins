@@ -137,7 +137,7 @@ midievent_t * i_midi_file_new_event (midifile_track_t * track, int sysex_length)
     midievent_t * event;
 
     event = g_new (midievent_t, 1);
-    event->sysex = sysex_length ? g_malloc (sysex_length) : NULL;
+    event->sysex = sysex_length ? g_new (unsigned char, sysex_length) : NULL;
     event->next = NULL;
 
     /* append at the end of the track's linked list */
@@ -203,15 +203,16 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
         switch (cmd >> 4)
         {
             /* maps SMF events to ALSA sequencer events */
-            static unsigned char cmd_type[] =
+            static unsigned char cmd_type[16] =
             {
-                [0x8] = SND_SEQ_EVENT_NOTEOFF,
-                [0x9] = SND_SEQ_EVENT_NOTEON,
-                [0xa] = SND_SEQ_EVENT_KEYPRESS,
-                [0xb] = SND_SEQ_EVENT_CONTROLLER,
-                [0xc] = SND_SEQ_EVENT_PGMCHANGE,
-                [0xd] = SND_SEQ_EVENT_CHANPRESS,
-                [0xe] = SND_SEQ_EVENT_PITCHBEND
+                0, 0, 0, 0, 0, 0, 0, 0,
+                SND_SEQ_EVENT_NOTEOFF,     // 08h
+                SND_SEQ_EVENT_NOTEON,      // 09h
+                SND_SEQ_EVENT_KEYPRESS,    // 0ah
+                SND_SEQ_EVENT_CONTROLLER,  // 0bh
+                SND_SEQ_EVENT_PGMCHANGE,   // 0ch
+                SND_SEQ_EVENT_CHANPRESS,   // 0dh
+                SND_SEQ_EVENT_PITCHBEND    // 0eh
             };
 
         case 0x8: /* channel msg with 2 parameter bytes */
@@ -373,7 +374,7 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
                         event = i_midi_file_new_event (track, 0);
                         event->type = SND_SEQ_EVENT_META_TEXT;
                         event->tick = tick;
-                        event->data.metat = g_malloc (len + 1);
+                        event->data.metat = g_new (char, len + 1);
 
                         for (ic = 0 ; ic < len ; ic++)
                             event->data.metat[ic] = i_midi_file_read_byte (mf);
@@ -397,7 +398,7 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
                         event = i_midi_file_new_event (track, 0);
                         event->type = SND_SEQ_EVENT_META_LYRIC;
                         event->tick = tick;
-                        event->data.metat = g_malloc (len + 1);
+                        event->data.metat = g_new (char, len + 1);
 
                         for (ic = 0 ; ic < len ; ic++)
                             event->data.metat[ic] = i_midi_file_read_byte (mf);

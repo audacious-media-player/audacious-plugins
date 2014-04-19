@@ -43,7 +43,7 @@ static void i_configure_ev_sflist_commit (void * sfont_lv);
 
 void i_configure_ev_sflist_add (void * sfont_lv)
 {
-    GtkWidget * parent_window = gtk_widget_get_toplevel (sfont_lv);
+    GtkWidget * parent_window = gtk_widget_get_toplevel ((GtkWidget *) sfont_lv);
 
     if (gtk_widget_is_toplevel (parent_window))
     {

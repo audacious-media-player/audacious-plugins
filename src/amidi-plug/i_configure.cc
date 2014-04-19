@@ -93,56 +93,69 @@ static void backend_change (void)
 }
 
 static const PreferencesWidget gain_widgets[] = {
- {WIDGET_CHK_BTN, N_("Override default gain:"),
-  .cfg_type = VALUE_BOOLEAN, .cfg = & override_gain, .callback = backend_change},
- {WIDGET_SPIN_BTN, .child = TRUE, .data = {.spin_btn = {0, 10, 0.1}},
-  .cfg_type = VALUE_FLOAT, .cfg = & gain_setting, .callback = backend_change}};
+    WidgetCheck (N_("Override default gain:"),
+        {VALUE_BOOLEAN, & override_gain, 0, 0, backend_change}),
+    WidgetSpin (0, {VALUE_FLOAT, & gain_setting, 0, 0, backend_change},
+        {0, 10, 0.1},
+        WIDGET_CHILD)
+};
 
 static const PreferencesWidget polyphony_widgets[] = {
- {WIDGET_CHK_BTN, N_("Override default polyphony:"),
-  .cfg_type = VALUE_BOOLEAN, .cfg = & override_polyphony, .callback = backend_change},
- {WIDGET_SPIN_BTN, .child = TRUE, .data = {.spin_btn = {16, 4096, 1}},
-  .cfg_type = VALUE_INT, .cfg = & polyphony_setting, .callback = backend_change}};
+    WidgetCheck (N_("Override default polyphony:"),
+        {VALUE_BOOLEAN, & override_polyphony, 0, 0, backend_change}),
+    WidgetSpin (0, {VALUE_INT, & polyphony_setting, 0, 0, backend_change},
+        {16, 4096, 1},
+        WIDGET_CHILD)
+};
 
 static const PreferencesWidget reverb_widgets[] = {
- {WIDGET_CHK_BTN, N_("Override default reverb:"),
-  .cfg_type = VALUE_BOOLEAN, .cfg = & override_reverb, .callback = backend_change},
- {WIDGET_CHK_BTN, N_("On"), .child = TRUE,
-  .cfg_type = VALUE_BOOLEAN, .cfg = & reverb_setting, .callback = backend_change}};
+    WidgetCheck (N_("Override default reverb:"),
+        {VALUE_BOOLEAN, & override_reverb, 0, 0, backend_change}),
+    WidgetCheck (N_("On"),
+        {VALUE_BOOLEAN, & reverb_setting, 0, 0, backend_change},
+        WIDGET_CHILD)
+};
 
 static const PreferencesWidget chorus_widgets[] = {
- {WIDGET_CHK_BTN, N_("Override default chorus:"),
-  .cfg_type = VALUE_BOOLEAN, .cfg = & override_chorus, .callback = backend_change},
- {WIDGET_CHK_BTN, N_("On"), .child = TRUE,
-  .cfg_type = VALUE_BOOLEAN, .cfg = & chorus_setting, .callback = backend_change}};
+    WidgetCheck (N_("Override default chorus:"),
+        {VALUE_BOOLEAN, & override_chorus, 0, 0, backend_change}),
+    WidgetCheck (N_("On"),
+        {VALUE_BOOLEAN, & chorus_setting, 0, 0, backend_change},
+        WIDGET_CHILD)
+};
 
 static const PreferencesWidget amidiplug_widgets[] = {
 
- /* global settings */
- {WIDGET_LABEL, N_("<b>Playback</b>")},
- {WIDGET_SPIN_BTN, N_("Transpose:"), .data = {.spin_btn = {-20, 20, 1}},
-  .cfg_type = VALUE_INT, .csect = "amidiplug", .cname = "ap_opts_transpose_value"},
- {WIDGET_SPIN_BTN, N_("Drum shift:"), .data = {.spin_btn = {0, 127, 1}},
-  .cfg_type = VALUE_INT, .csect = "amidiplug", .cname = "ap_opts_drumshift_value"},
- {WIDGET_LABEL, N_("<b>Advanced</b>")},
- {WIDGET_CHK_BTN, N_("Extract comments from MIDI file"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "amidiplug", .cname = "ap_opts_comments_extract"},
- {WIDGET_CHK_BTN, N_("Extract lyrics from MIDI file"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "amidiplug", .cname = "ap_opts_lyrics_extract"},
+    /* global settings */
+    WidgetLabel (N_("<b>Playback</b>")),
+    WidgetSpin (N_("Transpose:"),
+        {VALUE_INT, 0, "amidiplug", "ap_opts_transpose_value"},
+        {-20, 20, 1}),
+    WidgetSpin (N_("Drum shift:"),
+        {VALUE_INT, 0, "amidiplug", "ap_opts_drumshift_value"},
+        {0, 127, 1}),
+    WidgetLabel (N_("<b>Advanced</b>")),
+    WidgetCheck (N_("Extract comments from MIDI file"),
+        {VALUE_BOOLEAN, 0, "amidiplug", "ap_opts_comments_extract"}),
+    WidgetCheck (N_("Extract lyrics from MIDI file"),
+        {VALUE_BOOLEAN, 0, "amidiplug", "ap_opts_lyrics_extract"}),
 
- /* backend settings */
- {WIDGET_LABEL, N_("<b>SoundFont</b>")},
- {WIDGET_CUSTOM, .data = {.populate = create_soundfont_list}},
- {WIDGET_LABEL, N_("<b>Synthesizer</b>")},
- {WIDGET_BOX, .data = {.box = {gain_widgets, ARRAY_LEN (gain_widgets), TRUE}}},
- {WIDGET_BOX, .data = {.box = {polyphony_widgets, ARRAY_LEN (polyphony_widgets), TRUE}}},
- {WIDGET_BOX, .data = {.box = {reverb_widgets, ARRAY_LEN (reverb_widgets), TRUE}}},
- {WIDGET_BOX, .data = {.box = {chorus_widgets, ARRAY_LEN (chorus_widgets), TRUE}}},
- {WIDGET_SPIN_BTN, N_("Sampling rate:"), .data = {.spin_btn = {22050, 96000, 1}},
-  .cfg_type = VALUE_INT, .csect = "amidiplug", .cname = "fsyn_synth_samplerate",
-  .callback = backend_change}};
+    /* backend settings */
+    WidgetLabel (N_("<b>SoundFont</b>")),
+    WidgetCustom (create_soundfont_list),
+    WidgetLabel (N_("<b>Synthesizer</b>")),
+    WidgetBox ({gain_widgets, ARRAY_LEN (gain_widgets), TRUE}),
+    WidgetBox ({polyphony_widgets, ARRAY_LEN (polyphony_widgets), TRUE}),
+    WidgetBox ({reverb_widgets, ARRAY_LEN (reverb_widgets), TRUE}),
+    WidgetBox ({chorus_widgets, ARRAY_LEN (chorus_widgets), TRUE}),
+    WidgetSpin (N_("Sampling rate:"),
+        {VALUE_INT, 0, "amidiplug", "fsyn_synth_samplerate", backend_change},
+        {22050, 96000, 1})
+};
 
 const PluginPreferences amidiplug_prefs = {
- .init = get_values,
- .widgets = amidiplug_widgets,
- .n_widgets = ARRAY_LEN (amidiplug_widgets)};
+    amidiplug_widgets,
+    ARRAY_LEN (amidiplug_widgets),
+    get_values
+};
+

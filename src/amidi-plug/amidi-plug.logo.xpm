@@ -1,5 +1,5 @@
 /* XPM */
-static char * amidiplug_xpm_logo[] = {
+static const char * amidiplug_xpm_logo[] = {
 "398 123 617 2",
 "  	c #FFFFFF",
 ". 	c #FCFCFC",

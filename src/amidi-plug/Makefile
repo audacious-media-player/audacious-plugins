@@ -1,12 +1,12 @@
 PLUGIN = amidi-plug${PLUGIN_SUFFIX}
 
-SRCS = amidi-plug.c		\
-       backend-fluidsynth/b-fluidsynth.c \
-       i_midi.c			\
-       i_configure.c		\
-       i_configure-fluidsynth.c	\
-       i_utils.c		\
-       i_fileinfo.c
+SRCS = amidi-plug.cc		\
+       backend-fluidsynth/b-fluidsynth.cc \
+       i_midi.cc			\
+       i_configure.cc		\
+       i_configure-fluidsynth.cc	\
+       i_utils.cc		\
+       i_fileinfo.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

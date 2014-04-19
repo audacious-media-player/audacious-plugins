@@ -245,7 +245,7 @@ typedef struct
     midifile_track_t * tracks;
 
     unsigned short format;
-    unsigned max_tick;
+    int max_tick;
     int smpte_timing;
 
     int time_division;

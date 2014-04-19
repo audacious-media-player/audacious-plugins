@@ -36,7 +36,7 @@ void i_about_gui (void)
     if (aboutwin != NULL)
         return;
 
-    aboutwin = gtk_dialog_new_with_buttons (_("About AMIDI-Plug"), NULL, 0,
+    aboutwin = gtk_dialog_new_with_buttons (_("About AMIDI-Plug"), NULL, (GtkDialogFlags) 0,
                                             _("_Close"), GTK_RESPONSE_CLOSE, NULL);
     gtk_window_set_resizable (GTK_WINDOW (aboutwin), FALSE);
 
