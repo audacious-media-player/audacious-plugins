@@ -3,7 +3,7 @@
 
 #include "filewriter.h"
 
-gpointer convert_output;
+extern gpointer convert_output;
 
 gboolean convert_init(gint input_fmt, gint output_fmt, gint channels);
 

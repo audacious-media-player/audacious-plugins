@@ -82,17 +82,17 @@ static gint wav_open(void)
 static void pack24 (void * * data, int * len)
 {
     int samples = (* len) / sizeof (int32_t);
-    char * new = g_malloc (samples * 3);
-    int32_t * data32 = * data;
+    char * buf = g_new (char, samples * 3);
+    int32_t * data32 = (int32_t *) * data;
     int32_t * end = data32 + samples;
 
-    * data = new;
+    * data = buf;
     * len = samples * 3;
 
     while (data32 < end)
     {
-        memcpy (new, data32 ++, 3);
-        new += 3;
+        memcpy (buf, data32 ++, 3);
+        buf += 3;
     }
 }
 

@@ -236,7 +236,7 @@ static gint mp3_open(void)
     lame_set_quality(gfp, algo_quality_val);
     if (audio_mode_val != 4) {
         AUDDBG("set mode to %d\n", audio_mode_val);
-        lame_set_mode(gfp, audio_mode_val);
+        lame_set_mode(gfp, (MPEG_mode) audio_mode_val);
     }
 
     lame_set_errorf(gfp, lame_debugf);
@@ -257,9 +257,9 @@ static gint mp3_open(void)
 
     if (vbr_on != 0) {
         if (vbr_type == 0)
-            lame_set_VBR(gfp, 2);
+            lame_set_VBR(gfp, (vbr_mode) 2);
         else
-            lame_set_VBR(gfp, 3);
+            lame_set_VBR(gfp, (vbr_mode) 3);
         lame_set_VBR_q(gfp, vbr_quality_val);
         lame_set_VBR_mean_bitrate_kbps(gfp, abr_val);
         lame_set_VBR_min_bitrate_kbps(gfp, vbr_min_val);
@@ -297,21 +297,21 @@ static void mp3_write(void *ptr, gint length)
     if (write_buffer_size == 0)
     {
         write_buffer_size = 8192;
-        write_buffer = g_realloc (write_buffer, write_buffer_size);
+        write_buffer = g_renew (guchar, write_buffer, write_buffer_size);
     }
 
 RETRY:
     if (input.channels == 1)
-        encoded = lame_encode_buffer (gfp, ptr, ptr, length / 2, write_buffer,
-         write_buffer_size);
+        encoded = lame_encode_buffer (gfp, (int16_t *) ptr, (int16_t *) ptr,
+         length / 2, write_buffer, write_buffer_size);
     else
-        encoded = lame_encode_buffer_interleaved (gfp, ptr, length / 4,
-         write_buffer, write_buffer_size);
+        encoded = lame_encode_buffer_interleaved (gfp, (int16_t *) ptr,
+         length / 4, write_buffer, write_buffer_size);
 
     if (encoded == -1)
     {
         write_buffer_size *= 2;
-        write_buffer = g_realloc (write_buffer, write_buffer_size);
+        write_buffer = g_renew (guchar, write_buffer, write_buffer_size);
         goto RETRY;
     }
 
@@ -486,12 +486,12 @@ static void toggle_vbr(GtkToggleButton * togglebutton, gpointer user_data)
 static void vbr_abr_toggle(GtkToggleButton * togglebutton,
                            gpointer user_data)
 {
-    if (!strcmp(user_data, "VBR")) {
+    if (!strcmp((char *) user_data, "VBR")) {
         gtk_widget_set_sensitive(abr_frame, FALSE);
         gtk_widget_set_sensitive(vbr_frame, TRUE);
         vbr_type = 0;
     }
-    else if (!strcmp(user_data, "ABR")) {
+    else if (!strcmp((char *) user_data, "ABR")) {
         gtk_widget_set_sensitive(abr_frame, TRUE);
         gtk_widget_set_sensitive(vbr_frame, FALSE);
         vbr_type = 1;
@@ -607,7 +607,7 @@ static void force_v2_toggle(GtkToggleButton * togglebutton,
 static void id3_only_version(GtkToggleButton * togglebutton,
                              gpointer user_data)
 {
-    if (!strcmp(user_data, "v1") && inside != 1) {
+    if (!strcmp((char *) user_data, "v1") && inside != 1) {
         if (gtk_toggle_button_get_active
             (GTK_TOGGLE_BUTTON(tags_only_v1_toggle)) == TRUE)
         {
@@ -621,7 +621,7 @@ static void id3_only_version(GtkToggleButton * togglebutton,
             inside = 0;
         }
     }
-    else if (!strcmp(user_data, "v2") && inside != 1) {
+    else if (!strcmp((char *) user_data, "v2") && inside != 1) {
         if (gtk_toggle_button_get_active
             (GTK_TOGGLE_BUTTON(tags_only_v2_toggle)) == TRUE)
         {
@@ -687,8 +687,8 @@ static void mp3_configure(void)
     if (! configure_win)
     {
         configure_win = gtk_dialog_new_with_buttons (_("MP3 Configuration"),
-         NULL, 0, _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"), GTK_RESPONSE_OK,
-         NULL);
+         NULL, (GtkDialogFlags) 0, _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"),
+         GTK_RESPONSE_OK, NULL);
 
         g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
         g_signal_connect (configure_win, "destroy", (GCallback)
@@ -956,9 +956,9 @@ static void mp3_configure(void)
                                          (vbr_type_radio2), TRUE);
 
         g_signal_connect (vbr_type_radio1, "toggled", (GCallback)
-         vbr_abr_toggle, "VBR");
+         vbr_abr_toggle, (void *) "VBR");
         g_signal_connect (vbr_type_radio2, "toggled", (GCallback)
-         vbr_abr_toggle, "ABR");
+         vbr_abr_toggle, (void *) "ABR");
 
         /* VBR Options */
 
@@ -1179,14 +1179,14 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(tags_id3_hbox), tags_only_v1_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (tags_only_v1_toggle, "toggled", (GCallback)
-         id3_only_version, "v1");
+         id3_only_version, (void *) "v1");
 
         tags_only_v2_toggle =
             gtk_check_button_new_with_label(_("Only add v2 tag"));
         gtk_box_pack_start(GTK_BOX(tags_id3_hbox), tags_only_v2_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (tags_only_v2_toggle, "toggled", (GCallback)
-         id3_only_version, "v2");
+         id3_only_version, (void *) "v2");
 
         if (force_v2_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON

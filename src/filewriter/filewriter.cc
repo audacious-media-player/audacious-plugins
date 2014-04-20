@@ -513,12 +513,15 @@ static const char file_about[] =
     "USA.");
 
 static const PreferencesWidget file_widgets[] = {
- {WIDGET_CUSTOM, .data = {.populate = file_configure}}};
+    WidgetCustom (file_configure)
+};
 
 static const PluginPreferences file_prefs = {
- .widgets = file_widgets,
- .n_widgets = ARRAY_LEN (file_widgets),
- .apply = configure_response_cb};
+    file_widgets,
+    ARRAY_LEN (file_widgets),
+    NULL,  // init
+    configure_response_cb
+};
 
 #define AUD_PLUGIN_NAME        N_("FileWriter Plugin")
 #define AUD_PLUGIN_ABOUT       file_about

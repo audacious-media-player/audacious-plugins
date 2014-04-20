@@ -32,7 +32,9 @@ static FLAC__StreamMetadata *flac_metadata;
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
     const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
 {
-    if (vfs_fwrite (buffer, 1, bytes, data) != bytes)
+    VFSFile *file = (VFSFile *) data;
+
+    if (vfs_fwrite (buffer, 1, bytes, file) != (int64_t) bytes)
         return FLAC__STREAM_ENCODER_WRITE_STATUS_FATAL_ERROR;
 
     return FLAC__STREAM_ENCODER_WRITE_STATUS_OK;
@@ -70,15 +72,19 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
 
     switch (type)
     {
-    case TUPLE_INT:;
+    case TUPLE_INT:
+    {
         int ival = tuple_get_int (tuple, field);
         temp = g_strdup_printf ("%s=%d", name, ival);
         break;
-    case TUPLE_STRING:;
+    }
+    case TUPLE_STRING:
+    {
         char * sval = tuple_get_str (tuple, field);
         temp = g_strdup_printf ("%s=%s", name, sval);
         str_unref (sval);
         break;
+    }
     default:
         return;
     }
@@ -126,7 +132,7 @@ static void flac_write(gpointer data, gint length)
 {
 #if 1
     FLAC__int32 *encbuffer[2];
-    short int *tmpdata = data;
+    int16_t *tmpdata = (int16_t *) data;
     int i;
 
     encbuffer[0] = g_new0(FLAC__int32, length / input.channels);
