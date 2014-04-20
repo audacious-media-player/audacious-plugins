@@ -55,16 +55,16 @@ static gint lockmgr (void * * mutexp, enum AVLockOp op)
     {
     case AV_LOCK_CREATE:
         * mutexp = g_slice_new (pthread_mutex_t);
-        pthread_mutex_init (* mutexp, NULL);
+        pthread_mutex_init ((pthread_mutex_t *) * mutexp, NULL);
         break;
     case AV_LOCK_OBTAIN:
-        pthread_mutex_lock (* mutexp);
+        pthread_mutex_lock ((pthread_mutex_t *) * mutexp);
         break;
     case AV_LOCK_RELEASE:
-        pthread_mutex_unlock (* mutexp);
+        pthread_mutex_unlock ((pthread_mutex_t *) * mutexp);
         break;
     case AV_LOCK_DESTROY:
-        pthread_mutex_destroy (* mutexp);
+        pthread_mutex_destroy ((pthread_mutex_t *) * mutexp);
         g_slice_free (pthread_mutex_t, * mutexp);
         break;
     }
@@ -143,7 +143,7 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
     if (! extension_dict)
         extension_dict = create_extension_dict ();
 
-    AVInputFormat * f = g_hash_table_lookup (extension_dict, ext);
+    AVInputFormat * f = (AVInputFormat *) g_hash_table_lookup (extension_dict, ext);
     pthread_mutex_unlock (& data_mutex);
 
     if (f)
@@ -248,7 +248,7 @@ static bool_t find_codec (AVFormatContext * c, CodecInfo * cinfo)
 {
     avformat_find_stream_info (c, NULL);
 
-    for (int i = 0; i < c->nb_streams; i++)
+    for (unsigned i = 0; i < c->nb_streams; i++)
     {
         AVStream * stream = c->streams[i];
 
@@ -304,7 +304,7 @@ static gboolean ffaudio_probe (const gchar * filename, VFSFile * file)
 typedef struct {
     TupleValueType ttype;   /* Tuple field value type */
     gint field;             /* Tuple field constant */
-    gchar *keys[5];         /* Keys to match (case-insensitive), ended by NULL */
+    const gchar *keys[5];         /* Keys to match (case-insensitive), ended by NULL */
 } ffaudio_meta_t;
 
 static const ffaudio_meta_t metaentries[] = {
@@ -404,7 +404,7 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
     if (! file)
         return FALSE;
 
-    AVPacket pkt = {.data = NULL};
+    AVPacket pkt = AVPacket();
     gint errcount;
     gboolean codec_opened = FALSE;
     gint out_fmt;

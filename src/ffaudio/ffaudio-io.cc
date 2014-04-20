@@ -24,22 +24,22 @@
 
 static gint read_cb (void * file, guchar * buf, gint size)
 {
-    return vfs_fread (buf, 1, size, file);
+    return vfs_fread (buf, 1, size, (VFSFile *) file);
 }
 
 static gint64 seek_cb (void * file, gint64 offset, gint whence)
 {
     if (whence == AVSEEK_SIZE)
-        return vfs_fsize (file);
-    if (vfs_fseek (file, offset, whence & ~(gint) AVSEEK_FORCE))
+        return vfs_fsize ((VFSFile *) file);
+    if (vfs_fseek ((VFSFile *) file, offset, whence & ~(gint) AVSEEK_FORCE))
         return -1;
-    return vfs_ftell (file);
+    return vfs_ftell ((VFSFile *) file);
 }
 
 AVIOContext * io_context_new (VFSFile * file)
 {
-    guchar * buf = av_malloc (IOBUF);
-    return avio_alloc_context (buf, IOBUF, 0, file, read_cb, NULL, seek_cb);
+    void * buf = av_malloc (IOBUF);
+    return avio_alloc_context ((unsigned char *) buf, IOBUF, 0, file, read_cb, NULL, seek_cb);
 }
 
 void io_context_free (AVIOContext * io)

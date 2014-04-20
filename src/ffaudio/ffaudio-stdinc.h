@@ -22,9 +22,12 @@
 #define _ERROR(...) printf ("ffaudio: " __VA_ARGS__)
 
 #include <libaudcore/plugin.h>
+
+extern "C" {
 #include <libavformat/avformat.h>
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
+}
 
 #define CHECK_LIBAVCODEC_VERSION(a, b, c) (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT (a, b, c))
 #define CHECK_LIBAVFORMAT_VERSION(a, b, c) (LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT (a, b, c))
