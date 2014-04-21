@@ -1,9 +1,9 @@
 PLUGIN = ladspa${PLUGIN_SUFFIX}
 
-SRCS = effect.c \
-       loaded-list.c \
-       plugin.c \
-       plugin-list.c
+SRCS = effect.cc \
+       loaded-list.cc \
+       plugin.cc \
+       plugin-list.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -35,7 +35,7 @@ static void start_plugin (LoadedPlugin * loaded)
     PluginData * plugin = loaded->plugin;
     const LADSPA_Descriptor * desc = plugin->desc;
 
-    int ports = plugin->in_ports->len;
+    unsigned ports = plugin->in_ports->len;
 
     if (ports == 0 || ports != plugin->out_ports->len)
     {
@@ -53,8 +53,8 @@ static void start_plugin (LoadedPlugin * loaded)
     int instances = ladspa_channels / ports;
 
     loaded->instances = index_new ();
-    loaded->in_bufs = g_malloc (sizeof (float *) * ladspa_channels);
-    loaded->out_bufs = g_malloc (sizeof (float *) * ladspa_channels);
+    loaded->in_bufs = g_new (float *, ladspa_channels);
+    loaded->out_bufs = g_new (float *, ladspa_channels);
 
     for (int i = 0; i < instances; i ++)
     {
@@ -64,20 +64,20 @@ static void start_plugin (LoadedPlugin * loaded)
         int controls = index_count (plugin->controls);
         for (int c = 0; c < controls; c ++)
         {
-            ControlData * control = index_get (plugin->controls, c);
+            ControlData * control = (ControlData *) index_get (plugin->controls, c);
             desc->connect_port (handle, control->port, & loaded->values[c]);
         }
 
-        for (int p = 0; p < ports; p ++)
+        for (unsigned p = 0; p < ports; p ++)
         {
             int channel = ports * i + p;
 
-            float * in = g_malloc (sizeof (float) * LADSPA_BUFLEN);
+            float * in = g_new (float, LADSPA_BUFLEN);
             loaded->in_bufs[channel] = in;
             int in_port = g_array_index (plugin->in_ports, int, p);
             desc->connect_port (handle, in_port, in);
 
-            float * out = g_malloc (sizeof (float) * LADSPA_BUFLEN);
+            float * out = g_new (float, LADSPA_BUFLEN);
             loaded->out_bufs[channel] = out;
             int out_port = g_array_index (plugin->out_ports, int, p);
             desc->connect_port (handle, out_port, out);
@@ -106,7 +106,7 @@ static void run_plugin (LoadedPlugin * loaded, float * data, int samples)
 
         for (int i = 0; i < instances; i ++)
         {
-            LADSPA_Handle * handle = index_get (loaded->instances, i);
+            LADSPA_Handle * handle = (LADSPA_Handle *) index_get (loaded->instances, i);
 
             for (int p = 0; p < ports; p ++)
             {
@@ -155,7 +155,7 @@ static void flush_plugin (LoadedPlugin * loaded)
     int instances = index_count (loaded->instances);
     for (int i = 0; i < instances; i ++)
     {
-        LADSPA_Handle * handle = index_get (loaded->instances, i);
+        LADSPA_Handle * handle = (LADSPA_Handle *) index_get (loaded->instances, i);
 
         if (desc->deactivate)
             desc->deactivate (handle);
@@ -177,7 +177,7 @@ void shutdown_plugin_locked (LoadedPlugin * loaded)
     int instances = index_count (loaded->instances);
     for (int i = 0; i < instances; i ++)
     {
-        LADSPA_Handle * handle = index_get (loaded->instances, i);
+        LADSPA_Handle * handle = (LADSPA_Handle *) index_get (loaded->instances, i);
 
         if (desc->deactivate)
             desc->deactivate (handle);
@@ -206,7 +206,7 @@ void ladspa_start (int * channels, int * rate)
     int count = index_count (loadeds);
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         shutdown_plugin_locked (loaded);
     }
 
@@ -223,7 +223,7 @@ void ladspa_process (float * * data, int * samples)
     int count = index_count (loadeds);
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         start_plugin (loaded);
         run_plugin (loaded, * data, * samples);
     }
@@ -238,7 +238,7 @@ void ladspa_flush (void)
     int count = index_count (loadeds);
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         flush_plugin (loaded);
     }
 
@@ -252,7 +252,7 @@ void ladspa_finish (float * * data, int * samples)
     int count = index_count (loadeds);
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         start_plugin (loaded);
         run_plugin (loaded, * data, * samples);
         shutdown_plugin_locked (loaded);

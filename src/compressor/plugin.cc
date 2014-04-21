@@ -32,13 +32,14 @@ static const char * const compressor_defaults[] = {
  NULL};
 
 static const PreferencesWidget compressor_widgets[] = {
- {WIDGET_LABEL, N_("<b>Compression</b>")},
- {WIDGET_SPIN_BTN, N_("Center volume:"),
-  .cfg_type = VALUE_FLOAT, .csect = "compressor", .cname = "center",
-  .data = {.spin_btn = {0.1, 1, 0.1}}},
- {WIDGET_SPIN_BTN, N_("Dynamic range:"),
-  .cfg_type = VALUE_FLOAT, .csect = "compressor", .cname = "range",
-  .data = {.spin_btn = {0.0, 3.0, 0.1}}}};
+    WidgetLabel (N_("<b>Compression</b>")),
+    WidgetSpin (N_("Center volume:"),
+        {VALUE_FLOAT, 0, "compressor", "center"},
+        {0.1, 1, 0.1}),
+    WidgetSpin (N_("Dynamic range:"),
+        {VALUE_FLOAT, 0, "compressor", "range"},
+        {0.0, 3.0, 0.1})
+};
 
 static const PluginPreferences compressor_prefs = {
  .widgets = compressor_widgets,

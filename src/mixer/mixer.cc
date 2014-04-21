@@ -111,11 +111,19 @@ static void surround_5p1_to_stereo (float * * data, int * samples)
     }
 }
 
-static const Converter converters[MAX_CHANNELS + 1][MAX_CHANNELS + 1] = {
- [1][2] = mono_to_stereo,
- [2][1] = stereo_to_mono,
- [4][2] = quadro_to_stereo,
- [6][2] = surround_5p1_to_stereo};
+static Converter get_converter (int in, int out)
+{
+    if (in == 1 && out == 2)
+        return mono_to_stereo;
+    if (in == 2 && out == 1)
+        return stereo_to_mono;
+    if (in == 4 && out == 2)
+        return quadro_to_stereo;
+    if (in == 6 && out == 2)
+        return surround_5p1_to_stereo;
+
+    return NULL;
+}
 
 static int input_channels, output_channels;
 
@@ -129,7 +137,7 @@ void mixer_start (int * channels, int * rate)
         return;
 
     if (input_channels < 1 || input_channels > MAX_CHANNELS ||
-     ! converters[input_channels][output_channels])
+     ! get_converter (input_channels, output_channels))
     {
         fprintf (stderr, "Converting %d to %d channels is not implemented.\n",
          input_channels, output_channels);
@@ -144,11 +152,9 @@ void mixer_process (float * * data, int * samples)
     if (input_channels == output_channels)
         return;
 
-    if (input_channels < 1 || input_channels > MAX_CHANNELS ||
-     ! converters[input_channels][output_channels])
-        return;
-
-    converters[input_channels][output_channels] (data, samples);
+    Converter converter = get_converter (input_channels, output_channels);
+    if (converter)
+        converter (data, samples);
 }
 
 static const char * const mixer_defaults[] = {
@@ -172,10 +178,11 @@ static const char mixer_about[] =
     "Copyright 2011-2012 John Lindgren and Michał Lipski");
 
 static const PreferencesWidget mixer_widgets[] = {
- {WIDGET_LABEL, N_("<b>Channel Mixer</b>")},
- {WIDGET_SPIN_BTN, N_("Output channels:"),
-  .cfg_type = VALUE_INT, .csect = "mixer", .cname = "channels",
-  .data = {.spin_btn = {1, MAX_CHANNELS, 1}}}};
+    WidgetLabel (N_("<b>Channel Mixer</b>")),
+    WidgetSpin (N_("Output channels:"),
+        {VALUE_INT, 0, "mixer", "channels"},
+        {1, MAX_CHANNELS, 1})
+};
 
 static const PluginPreferences mixer_prefs = {
  .widgets = mixer_widgets,

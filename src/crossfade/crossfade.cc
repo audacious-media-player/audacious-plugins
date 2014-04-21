@@ -111,10 +111,10 @@ static void do_ramp (float * data, int length, float a, float b)
     }
 }
 
-static void mix (float * data, float * new, int length)
+static void mix (float * data, float * add, int length)
 {
     while (length --)
-        (* data ++) += (* new ++);
+        (* data ++) += (* add ++);
 }
 
 static void enlarge_buffer (int length)
@@ -258,10 +258,11 @@ static const char crossfade_about[] =
     "Copyright 2010-2012 John Lindgren");
 
 static const PreferencesWidget crossfade_widgets[] = {
- {WIDGET_LABEL, N_("<b>Crossfade</b>")},
- {WIDGET_SPIN_BTN, N_("Overlap:"),
-  .cfg_type = VALUE_INT, .csect = "crossfade", .cname = "length",
-  .data = {.spin_btn = {1, 10, 1, N_("seconds")}}}};
+    WidgetLabel (N_("<b>Crossfade</b>")),
+    WidgetSpin (N_("Overlap:"),
+        {VALUE_INT, 0, "crossfade", "length"},
+        {1, 10, 1, N_("seconds")})
+};
 
 static const PluginPreferences crossfade_prefs = {
  .widgets = crossfade_widgets,

@@ -26,7 +26,7 @@ static void get_value (void * user, int row, int column, GValue * value)
     g_return_if_fail (row >= 0 && row < index_count (loadeds));
     g_return_if_fail (column == 0);
 
-    LoadedPlugin * loaded = index_get (loadeds, row);
+    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, row);
     g_value_set_string (value, loaded->plugin->desc->Name);
 }
 
@@ -34,7 +34,7 @@ static int get_selected (void * user, int row)
 {
     g_return_val_if_fail (row >= 0 && row < index_count (loadeds), 0);
 
-    LoadedPlugin * loaded = index_get (loadeds, row);
+    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, row);
     return loaded->selected;
 }
 
@@ -42,7 +42,7 @@ static void set_selected (void * user, int row, int selected)
 {
     g_return_if_fail (row >= 0 && row < index_count (loadeds));
 
-    LoadedPlugin * loaded = index_get (loadeds, row);
+    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, row);
     loaded->selected = selected;
 }
 
@@ -51,7 +51,7 @@ static void select_all (void * user, int selected)
     int count = index_count (loadeds);
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         loaded->selected = selected;
     }
 }
@@ -88,7 +88,7 @@ static void shift_rows (void * user, int row, int before)
 
     for (gint i = begin; i < end; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         index_insert (loaded->selected ? move : others, -1, loaded);
     }
 
@@ -114,11 +114,14 @@ static void shift_rows (void * user, int row, int before)
 }
 
 static const AudguiListCallbacks callbacks = {
- .get_value = get_value,
- .get_selected = get_selected,
- .set_selected = set_selected,
- .select_all = select_all,
- .shift_rows = shift_rows};
+    get_value,
+    get_selected,
+    set_selected,
+    select_all,
+    NULL,  // activate_row
+    NULL,  // right_click
+    shift_rows
+};
 
 GtkWidget * create_loaded_list (void)
 {

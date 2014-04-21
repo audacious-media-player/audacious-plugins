@@ -178,7 +178,8 @@ static void * create_config_widget (void)
 }
 
 static const PreferencesWidget bs2b_widgets[] = {
- {WIDGET_CUSTOM, .data.populate = create_config_widget}};
+    WidgetCustom (create_config_widget)
+};
 
 static const PluginPreferences bs2b_prefs = {
  .widgets = bs2b_widgets,

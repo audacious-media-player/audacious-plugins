@@ -1,6 +1,6 @@
 PLUGIN = echo${PLUGIN_SUFFIX}
 
-SRCS = echo.c
+SRCS = echo.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

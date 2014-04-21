@@ -22,10 +22,11 @@ static const char * const stereo_defaults[] = {
  NULL};
 
 static const PreferencesWidget stereo_widgets[] = {
- {WIDGET_LABEL, N_("<b>Extra Stereo</b>")},
- {WIDGET_SPIN_BTN, N_("Intensity:"),
-  .cfg_type = VALUE_FLOAT, .csect = "extra_stereo", .cname = "intensity",
-  .data = {.spin_btn = {0, 10, 0.1}}}};
+    WidgetLabel (N_("<b>Extra Stereo</b>")),
+    WidgetSpin (N_("Intensity:"),
+        {VALUE_FLOAT, 0, "extra_stereo", "intensity"},
+        {0, 10, 0.1})
+};
 
 static const PluginPreferences stereo_prefs = {
  .widgets = stereo_widgets,

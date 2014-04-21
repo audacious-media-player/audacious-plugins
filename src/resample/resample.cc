@@ -127,13 +127,14 @@ void do_resample (float * * data, int * samples, bool_t finish)
         buffer = g_renew (float, buffer, buffer_samples);
     }
 
-    SRC_DATA d = {
-     .data_in = * data,
-     .input_frames = * samples / stored_channels,
-     .data_out = buffer,
-     .output_frames = buffer_samples / stored_channels,
-     .src_ratio = ratio,
-     .end_of_input = finish};
+    SRC_DATA d = {0};
+
+    d.data_in = * data;
+    d.input_frames = * samples / stored_channels;
+    d.data_out = buffer;
+    d.output_frames = buffer_samples / stored_channels;
+    d.src_ratio = ratio;
+    d.end_of_input = finish;
 
     int error;
     if ((error = src_process (state, & d)))
@@ -176,46 +177,57 @@ static const ComboBoxElements method_list[] = {
  {"0", N_("Best sinc interpolation")}}; /* SRC_SINC_BEST_QUALITY */
 
 static const PreferencesWidget resample_widgets[] = {
- {WIDGET_LABEL, N_("<b>Conversion</b>")},
- {WIDGET_COMBO_BOX, N_("Method:"),
-  .cfg_type = VALUE_STRING, .csect = "resample", .cname = "method",
-  .data = {.combo = {method_list, ARRAY_LEN (method_list)}}},
- {WIDGET_SPIN_BTN, N_("Rate:"),
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "default-rate",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_LABEL, N_("<b>Rate Mappings</b>")},
- {WIDGET_CHK_BTN, N_("Use rate mappings"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "resample", .cname = "use-mappings"},
- {WIDGET_SPIN_BTN, N_("8 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "8000",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("16 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "16000",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("22.05 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "22050",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("32.0 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "32000",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("44.1 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "44100",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("48 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "48000",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("88.2 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "88200",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("96 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "96000",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("176.4 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "176400",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
- {WIDGET_SPIN_BTN, N_("192 kHz:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "resample", .cname = "192000",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}}};
+    WidgetLabel (N_("<b>Conversion</b>")),
+    WidgetCombo (N_("Method:"),
+        {VALUE_STRING, 0, "resample", "method"},
+        {method_list, ARRAY_LEN (method_list)}),
+    WidgetSpin (N_("Rate:"),
+        {VALUE_INT, 0, "resample", "default-rate"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}),
+    WidgetLabel (N_("<b>Rate Mappings</b>")),
+    WidgetCheck (N_("Use rate mappings"),
+        {VALUE_BOOLEAN, 0, "resample", "use-mappings"}),
+    WidgetSpin (N_("8 kHz:"),
+        {VALUE_INT, 0, "resample", "8000"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("16 kHz:"),
+        {VALUE_INT, 0, "resample", "16000"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("22.05 kHz:"),
+        {VALUE_INT, 0, "resample", "22050"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("32.0 kHz:"),
+        {VALUE_INT, 0, "resample", "32000"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("44.1 kHz:"),
+        {VALUE_INT, 0, "resample", "44100"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("48 kHz:"),
+        {VALUE_INT, 0, "resample", "48000"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("88.2 kHz:"),
+        {VALUE_INT, 0, "resample", "88200"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("96 kHz:"),
+        {VALUE_INT, 0, "resample", "96000"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("176.4 kHz:"),
+        {VALUE_INT, 0, "resample", "176400"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD),
+    WidgetSpin (N_("192 kHz:"),
+        {VALUE_INT, 0, "resample", "192000"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
+        WIDGET_CHILD)
+};
 
 static const PluginPreferences resample_prefs = {
  .widgets = resample_widgets,

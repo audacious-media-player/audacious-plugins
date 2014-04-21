@@ -1,6 +1,6 @@
 PLUGIN = resample${PLUGIN_SUFFIX}
 
-SRCS = resample.c
+SRCS = resample.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

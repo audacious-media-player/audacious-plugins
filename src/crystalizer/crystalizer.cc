@@ -37,10 +37,11 @@ static const char * const cryst_defaults[] = {
  NULL};
 
 static const PreferencesWidget cryst_widgets[] = {
- {WIDGET_LABEL, N_("<b>Crystalizer</b>")},
- {WIDGET_SPIN_BTN, N_("Intensity:"),
-  .cfg_type = VALUE_FLOAT, .csect = "crystalizer", .cname = "intensity",
-  .data = {.spin_btn = {0, 10, 0.1}}}};
+    WidgetLabel (N_("<b>Crystalizer</b>")),
+    WidgetSpin (N_("Intensity:"),
+        {VALUE_FLOAT, 0, "crystalizer", "intensity"},
+        {0, 10, 0.1})
+};
 
 static const PluginPreferences cryst_prefs = {
  .widgets = cryst_widgets,
@@ -70,7 +71,7 @@ static bool_t init (void)
 static void cryst_start (int * channels, int * rate)
 {
     cryst_channels = * channels;
-    cryst_prev = realloc (cryst_prev, sizeof (float) * cryst_channels);
+    cryst_prev = (float *) realloc (cryst_prev, sizeof (float) * cryst_channels);
     memset (cryst_prev, 0, sizeof (float) * cryst_channels);
 }
 

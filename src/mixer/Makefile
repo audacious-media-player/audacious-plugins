@@ -1,6 +1,6 @@
 PLUGIN = mixer${PLUGIN_SUFFIX}
 
-SRCS = mixer.c
+SRCS = mixer.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

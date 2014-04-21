@@ -1,6 +1,6 @@
 PLUGIN = crystalizer${PLUGIN_SUFFIX}
 
-SRCS = crystalizer.c
+SRCS = crystalizer.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

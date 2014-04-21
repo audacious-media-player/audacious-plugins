@@ -68,7 +68,7 @@ static void bufgrow (Buffer * b, int len)
 {
     if (len > b->size)
     {
-        b->mem = g_realloc (b->mem, BYTES (len));
+        b->mem = (float *) g_realloc (b->mem, BYTES (len));
         b->size = len;
     }
 
@@ -91,12 +91,13 @@ static void bufadd (Buffer * b, float * data, int len, double ratio)
     int max = len * ratio + 100;
     bufgrow (b, oldlen + max);
 
-    SRC_DATA d = {
-     .data_in = data,
-     .input_frames = len,
-     .data_out = OFFSET (b->mem, oldlen),
-     .output_frames = max,
-     .src_ratio = ratio};
+    SRC_DATA d;
+
+    d.data_in = data;
+    d.input_frames = len;
+    d.data_out = OFFSET (b->mem, oldlen);
+    d.output_frames = max;
+    d.src_ratio = ratio;
 
     src_process (srcstate, & d);
     b->len = oldlen + d.output_frames_gen;
@@ -134,7 +135,7 @@ static void speed_start (int * chans, int * rate)
 
     /* Generate the cosine window, scaled vertically to compensate for the
      * overlap of the reassembled pieces of audio. */
-    cosine = g_realloc (cosine, width * sizeof (double));
+    cosine = g_renew (double, cosine, width);
     for (int i = 0; i < width; i ++)
         cosine[i] = (1.0 - cos (2.0 * M_PI * i / width)) / OVERLAP;
 
@@ -224,13 +225,14 @@ static const char * const speed_defaults[] = {
  NULL};
 
 static const PreferencesWidget speed_widgets[] = {
- {WIDGET_LABEL, N_("<b>Speed and Pitch</b>")},
- {WIDGET_SPIN_BTN, N_("Speed:"),
-  .cfg_type = VALUE_FLOAT, .csect = CFGSECT, .cname = "speed",
-  .data = {.spin_btn = {MINSPEED, MAXSPEED, 0.05}}},
- {WIDGET_SPIN_BTN, N_("Pitch:"),
-  .cfg_type = VALUE_FLOAT, .csect = CFGSECT, .cname = "pitch",
-  .data = {.spin_btn = {MINPITCH, MAXPITCH, 0.05}}}};
+    WidgetLabel (N_("<b>Speed and Pitch</b>")),
+    WidgetSpin (N_("Speed:"),
+        {VALUE_FLOAT, 0, CFGSECT, "speed"},
+        {MINSPEED, MAXSPEED, 0.05}),
+    WidgetSpin (N_("Pitch:"),
+        {VALUE_FLOAT, 0, CFGSECT, "pitch"},
+        {MINPITCH, MAXPITCH, 0.05})
+};
 
 static const PluginPreferences speed_prefs = {
  .widgets = speed_widgets,

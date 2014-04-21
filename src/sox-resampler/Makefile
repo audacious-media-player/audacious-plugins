@@ -1,6 +1,6 @@
 PLUGIN = sox-resampler${PLUGIN_SUFFIX}
 
-SRCS = sox-resampler.c
+SRCS = sox-resampler.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -1,6 +1,6 @@
 PLUGIN = speed-pitch${PLUGIN_SUFFIX}
 
-SRCS = speed-pitch.c
+SRCS = speed-pitch.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

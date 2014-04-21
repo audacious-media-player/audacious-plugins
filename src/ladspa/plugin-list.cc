@@ -26,7 +26,7 @@ static void get_value (void * user, int row, int column, GValue * value)
     g_return_if_fail (row >= 0 && row < index_count (plugins));
     g_return_if_fail (column == 0);
 
-    PluginData * plugin = index_get (plugins, row);
+    PluginData * plugin = (PluginData *) index_get (plugins, row);
     g_value_set_string (value, plugin->desc->Name);
 }
 
@@ -34,7 +34,7 @@ static int get_selected (void * user, int row)
 {
     g_return_val_if_fail (row >= 0 && row < index_count (plugins), 0);
 
-    PluginData * plugin = index_get (plugins, row);
+    PluginData * plugin = (PluginData *) index_get (plugins, row);
     return plugin->selected;
 }
 
@@ -42,7 +42,7 @@ static void set_selected (void * user, int row, int selected)
 {
     g_return_if_fail (row >= 0 && row < index_count (plugins));
 
-    PluginData * plugin = index_get (plugins, row);
+    PluginData * plugin = (PluginData *) index_get (plugins, row);
     plugin->selected = selected;
 }
 
@@ -51,7 +51,7 @@ static void select_all (void * user, int selected)
     int count = index_count (plugins);
     for (int i = 0; i < count; i ++)
     {
-        PluginData * plugin = index_get (plugins, i);
+        PluginData * plugin = (PluginData *) index_get (plugins, i);
         plugin->selected = selected;
     }
 }

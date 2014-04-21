@@ -1,6 +1,6 @@
 PLUGIN = bs2b${PLUGIN_SUFFIX}
 
-SRCS = plugin.c
+SRCS = plugin.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

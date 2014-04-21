@@ -126,7 +126,7 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
     plugin->out_ports = g_array_new (0, 0, sizeof (int));
     plugin->selected = 0;
 
-    for (int i = 0; i < desc->PortCount; i ++)
+    for (unsigned i = 0; i < desc->PortCount; i ++)
     {
         if (LADSPA_IS_PORT_CONTROL (desc->PortDescriptors[i]))
         {
@@ -243,11 +243,11 @@ LoadedPlugin * enable_plugin_locked (PluginData * plugin)
     loaded->selected = 0;
 
     int count = index_count (plugin->controls);
-    loaded->values = g_malloc (sizeof (float) * count);
+    loaded->values = g_new (float, count);
 
     for (int i = 0; i < count; i ++)
     {
-        ControlData * control = index_get (plugin->controls, i);
+        ControlData * control = (ControlData *) index_get (plugin->controls, i);
         loaded->values[i] = control->def;
     }
 
@@ -265,7 +265,7 @@ LoadedPlugin * enable_plugin_locked (PluginData * plugin)
 void disable_plugin_locked (int i)
 {
     g_return_if_fail (i >= 0 && i < index_count (loadeds));
-    LoadedPlugin * loaded = index_get (loadeds, i);
+    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
 
     if (loaded->settings_win)
         gtk_widget_destroy (loaded->settings_win);
@@ -282,7 +282,7 @@ static PluginData * find_plugin (const char * path, const char * label)
     int count = index_count (plugins);
     for (int i = 0; i < count; i ++)
     {
-        PluginData * plugin = index_get (plugins, i);
+        PluginData * plugin = (PluginData *) index_get (plugins, i);
         if (! strcmp (plugin->path, path) && ! strcmp (plugin->desc->Label, label))
             return plugin;
     }
@@ -298,7 +298,7 @@ static void save_enabled_to_config (void)
 
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, 0);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, 0);
         char key[32];
 
         snprintf (key, sizeof key, "plugin%d_path", i);
@@ -458,7 +458,7 @@ static void enable_selected (void)
     int count = index_count (plugins);
     for (int i = 0; i < count; i ++)
     {
-        PluginData * plugin = index_get (plugins, i);
+        PluginData * plugin = (PluginData *) index_get (plugins, i);
         if (plugin->selected)
             enable_plugin_locked (plugin);
     }
@@ -477,7 +477,7 @@ static void disable_selected (void)
     int offset = 0;
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i - offset);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i - offset);
         if (loaded->selected)
         {
             disable_plugin_locked (i - offset);
@@ -527,7 +527,7 @@ static void configure_plugin (LoadedPlugin * loaded)
     int count = index_count (plugin->controls);
     for (int i = 0; i < count; i ++)
     {
-        ControlData * control = index_get (plugin->controls, i);
+        ControlData * control = (ControlData *) index_get (plugin->controls, i);
 
         GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
@@ -568,7 +568,7 @@ static void configure_selected (void)
     int count = index_count (loadeds);
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = index_get (loadeds, i);
+        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         if (loaded->selected)
             configure_plugin (loaded);
     }
@@ -585,7 +585,7 @@ static void configure (void)
     }
 
     config_win = gtk_dialog_new_with_buttons (_("LADSPA Host Settings"), NULL,
-     0, _("_Close"), GTK_RESPONSE_CLOSE, NULL);
+     (GtkDialogFlags) 0, _("_Close"), GTK_RESPONSE_CLOSE, NULL);
     gtk_window_set_default_size ((GtkWindow *) config_win, 480, 360);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) config_win);

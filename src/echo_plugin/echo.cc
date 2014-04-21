@@ -23,16 +23,17 @@ static const char * const echo_defaults[] = {
  NULL};
 
 static const PreferencesWidget echo_widgets[] = {
- {WIDGET_LABEL, N_("<b>Echo</b>")},
- {WIDGET_SPIN_BTN, N_("Delay:"),
-  .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "delay",
-  .data = {.spin_btn = {0, MAX_DELAY, 10, N_("ms")}}},
- {WIDGET_SPIN_BTN, N_("Feedback:"),
-  .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "feedback",
-  .data = {.spin_btn = {0, 100, 1, "%"}}},
- {WIDGET_SPIN_BTN, N_("Volume:"),
-  .cfg_type = VALUE_INT, .csect = "echo_plugin", .cname = "volume",
-  .data = {.spin_btn = {0, 100, 1, "%"}}}};
+    WidgetLabel (N_("<b>Echo</b>")),
+    WidgetSpin (N_("Delay:"),
+        {VALUE_INT, 0, "echo_plugin", "delay"},
+        {0, MAX_DELAY, 10, N_("ms")}),
+    WidgetSpin (N_("Feedback:"),
+        {VALUE_INT, 0, "echo_plugin", "feedback"},
+        {0, 100, 1, "%"}),
+    WidgetSpin (N_("Volume:"),
+        {VALUE_INT, 0, "echo_plugin", "volume"},
+        {0, 100, 1, "%"})
+};
 
 static const PluginPreferences echo_prefs = {
  .widgets = echo_widgets,
@@ -61,7 +62,7 @@ static void echo_start(int *channels, int *rate)
     static int old_srate, old_nch;
 
     if (buffer == NULL)
-        buffer = g_malloc (BUFFER_BYTES);
+        buffer = (float *) g_malloc (BUFFER_BYTES);
 
     echo_channels = *channels;
     echo_rate = *rate;

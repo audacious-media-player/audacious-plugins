@@ -1,6 +1,6 @@
 PLUGIN = stereo${PLUGIN_SUFFIX}
 
-SRCS = stereo.c
+SRCS = stereo.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

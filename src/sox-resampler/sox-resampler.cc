@@ -96,9 +96,9 @@ void do_resample (float * * data, int * samples)
     if (! soxr)
          return;
 
-    if (buffer_samples < (int) (* samples * ratio) + 256)
+    if (buffer_samples < (unsigned) (* samples * ratio) + 256)
     {
-        buffer_samples = (int) (* samples * ratio) + 256;
+        buffer_samples = (unsigned) (* samples * ratio) + 256;
         buffer = g_renew (float, buffer, buffer_samples);
     }
 
@@ -147,12 +147,12 @@ static const ComboBoxElements method_list[] = {
  {"6", N_("Very High")}}; /* SOXR_VHQ */
 
 static const PreferencesWidget sox_resampler_widgets[] = {
- {WIDGET_COMBO_BOX, N_("Quality:"),
-  .cfg_type = VALUE_STRING, .csect = "soxr", .cname = "quality",
-  .data = {.combo = {method_list, ARRAY_LEN (method_list)}}},
- {WIDGET_SPIN_BTN, N_("Rate:"),
-  .cfg_type = VALUE_INT, .csect = "soxr", .cname = "rate",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}}
+    WidgetCombo (N_("Quality:"),
+        {VALUE_STRING, 0, "soxr", "quality"},
+        {method_list, ARRAY_LEN (method_list)}),
+    WidgetSpin (N_("Rate:"),
+        {VALUE_INT, 0, "soxr", "rate"},
+        {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")})
 };
 
 static const PluginPreferences sox_resampler_prefs = {

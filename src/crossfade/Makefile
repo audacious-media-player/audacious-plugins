@@ -1,6 +1,6 @@
 PLUGIN = crossfade${PLUGIN_SUFFIX}
 
-SRCS = crossfade.c
+SRCS = crossfade.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
