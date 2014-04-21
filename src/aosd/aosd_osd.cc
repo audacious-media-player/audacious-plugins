@@ -79,7 +79,7 @@ static GhosdData *osd_data;
 static void
 aosd_osd_data_alloc ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
 {
-  osd_data = g_malloc0(sizeof(GhosdData));
+  osd_data = g_new0 (GhosdData, 1);
   osd_data->markup_message = g_strdup( markup_string );
   if ( copy_cfg == TRUE )
   {
@@ -147,7 +147,7 @@ aosd_osd_hide ( void )
 static void
 aosd_fade_func ( Ghosd * gosd , cairo_t * cr , void * user_data )
 {
-  GhosdFadeData *fade_data = user_data;
+  GhosdFadeData *fade_data = (GhosdFadeData *) user_data;
 
   if ( fade_data->surface == NULL )
   {

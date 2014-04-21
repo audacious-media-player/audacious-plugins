@@ -77,7 +77,7 @@ aosd_ui_cb_t;
 static void
 aosd_callback_list_add ( GList ** list , GtkWidget * widget , aosd_ui_cb_func_t func )
 {
-  aosd_ui_cb_t *cb = g_malloc(sizeof(aosd_ui_cb_t));
+  aosd_ui_cb_t *cb = g_new (aosd_ui_cb_t, 1);
   cb->widget = widget;
   cb->func = func;
   *list = g_list_append( *list , cb );
@@ -132,7 +132,7 @@ aosd_cb_configure_position_placement_commit ( GtkWidget * grid , aosd_cfg_t * cf
 
   while ( list_iter != NULL )
   {
-    GtkWidget *placbt = list_iter->data;
+    GtkWidget *placbt = (GtkWidget *) list_iter->data;
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(placbt) ) == TRUE )
     {
       cfg->osd->position.placement = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(placbt),"value"));
@@ -366,10 +366,10 @@ aosd_cb_configure_text_font_commit ( GtkWidget * fontbt , aosd_cfg_t * cfg )
   cfg->osd->text.fonts_draw_shadow[fontnum] = gtk_toggle_button_get_active(
     GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(fontbt),"use_shadow")) );
 
-  chooser = g_object_get_data ((GObject *) fontbt, "color");
+  chooser = (GtkColorChooser *) g_object_get_data ((GObject *) fontbt, "color");
   chooser_get_aosd_color (chooser, & cfg->osd->text.fonts_color[fontnum]);
 
-  chooser = g_object_get_data ((GObject *) fontbt, "shadow_color");
+  chooser = (GtkColorChooser *) g_object_get_data ((GObject *) fontbt, "shadow_color");
   chooser_get_aosd_color (chooser, & cfg->osd->text.fonts_shadow_color[fontnum]);
 }
 
@@ -581,7 +581,7 @@ static gboolean
 aosd_cb_configure_trigger_findinarr ( GArray * array , gint value )
 {
   gint i = 0;
-  for ( i = 0 ; i < array->len ; i++ )
+  for ( i = 0 ; i < (int) array->len ; i++ )
   {
     if ( g_array_index( array , gint , i ) == value )
       return TRUE;
@@ -693,8 +693,8 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
 static void
 aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpointer status_hbox )
 {
-  GtkWidget *img = g_object_get_data( G_OBJECT(status_hbox) , "img" );
-  GtkWidget *label = g_object_get_data( G_OBJECT(status_hbox) , "label" );
+  GtkWidget *img = (GtkWidget *) g_object_get_data( G_OBJECT(status_hbox) , "img" );
+  GtkWidget *label = (GtkWidget *) g_object_get_data( G_OBJECT(status_hbox) , "label" );
   if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(real_rbt) ) )
   {
     if ( aosd_osd_check_composite_mgr() )
@@ -824,7 +824,7 @@ aosd_cb_configure_test ( gpointer cfg_win )
 {
   gchar *markup_message = NULL;
   aosd_cfg_t *cfg = aosd_cfg_new();
-  GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
+  GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_run( cb_list , cfg );
   cfg->set = TRUE;
   markup_message = g_markup_printf_escaped(
@@ -841,7 +841,7 @@ aosd_cb_configure_test ( gpointer cfg_win )
 static void
 aosd_cb_configure_cancel ( gpointer cfg_win )
 {
-  GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
+  GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_free( cb_list );
   aosd_osd_shutdown(); /* stop any displayed osd */
   aosd_osd_cleanup(); /* just in case it's active */
@@ -856,7 +856,7 @@ aosd_cb_configure_ok ( gpointer cfg_win )
 {
   //gchar *markup_message = NULL;
   aosd_cfg_t *cfg = aosd_cfg_new();
-  GList *cb_list = g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
+  GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_run( cb_list , cfg );
   cfg->set = TRUE;
   aosd_osd_shutdown(); /* stop any displayed osd */

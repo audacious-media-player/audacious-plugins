@@ -21,9 +21,6 @@
 #ifndef _I_AOSD_TRIGGER_H
 #define _I_AOSD_TRIGGER_H 1
 
-#undef PACKAGE
-#define PACKAGE "audacious-plugins"
-
 #include "aosd_common.h"
 #include "aosd_cfg.h"
 #include <glib.h>

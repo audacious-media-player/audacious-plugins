@@ -34,6 +34,10 @@ GhosdEventButton;
 typedef void (*GhosdRenderFunc)(Ghosd *ghosd, cairo_t *cr, void *user_data);
 typedef void (*GhosdEventButtonCb)(Ghosd *ghosd, GhosdEventButton *event, void *user_data);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 Ghosd *ghosd_new(void);
 void   ghosd_destroy(Ghosd* ghosd);
 #ifdef HAVE_XCOMPOSITE
@@ -59,6 +63,10 @@ void ghosd_main_until(Ghosd *ghosd, struct timeval *until);
 void ghosd_flash(Ghosd *ghosd, int fade_ms, int total_display_ms);
 
 int ghosd_get_socket(Ghosd *ghosd);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __GHOSD_H__ */
 

@@ -128,7 +128,7 @@ void
 aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
 {
   gint i = 0;
-  for ( i = 0 ; i < cfg_trigger->active->len ; i++ )
+  for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
   {
     gint trig_code = g_array_index( cfg_trigger->active , gint , i );
     if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
@@ -145,7 +145,7 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 {
   gint i = 0;
   hook_dissociate( "aosd toggle" , aosd_trigger_func_hook_cb );
-  for ( i = 0 ; i < cfg_trigger->active->len ; i++ )
+  for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
   {
     gint trig_code = g_array_index( cfg_trigger->active , gint , i );
     if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
@@ -191,7 +191,7 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
 
   if ( turn_on == TRUE )
   {
-    prevs = g_malloc0(sizeof(aosd_pb_titlechange_prevs_t));
+    prevs = g_new0 (aosd_pb_titlechange_prevs_t, 1);
     prevs->title = NULL;
     prevs->filename = NULL;
     hook_associate( "title change" , aosd_trigger_func_pb_titlechange_cb , prevs );
@@ -214,7 +214,7 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
 {
   if (aud_drct_get_playing ())
   {
-    aosd_pb_titlechange_prevs_t *prevs = prevs_gp;
+    aosd_pb_titlechange_prevs_t *prevs = (aosd_pb_titlechange_prevs_t *) prevs_gp;
     gint playlist = aud_playlist_get_playing();
     gint pl_entry = aud_playlist_get_position(playlist);
     gchar * pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
@@ -329,7 +329,7 @@ aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused )
   if ( markup_text != NULL )
   {
     /* Display text from caller */
-    aosd_osd_display( markup_text , global_config->osd , FALSE );
+    aosd_osd_display ((char *) markup_text, global_config->osd, FALSE);
   } else {
     /* Display currently playing song */
     aosd_trigger_func_pb_start_cb (NULL, NULL);

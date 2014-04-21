@@ -21,9 +21,6 @@
 #ifndef _I_AOSD_STYLE_H
 #define _I_AOSD_STYLE_H 1
 
-#undef PACKAGE
-#define PACKAGE "audacious-plugins"
-
 #include "aosd_common.h"
 #include <glib.h>
 

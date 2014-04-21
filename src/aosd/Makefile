@@ -1,11 +1,11 @@
 PLUGIN = aosd${PLUGIN_SUFFIX}
 
-SRCS = aosd.c		\
-       aosd_osd.c	\
-       aosd_style.c	\
-       aosd_trigger.c	\
-       aosd_ui.c	\
-       aosd_cfg.c	\
+SRCS = aosd.cc		\
+       aosd_osd.cc	\
+       aosd_style.cc	\
+       aosd_trigger.cc	\
+       aosd_ui.cc	\
+       aosd_cfg.cc	\
        ghosd.c		\
        ghosd-main.c
 

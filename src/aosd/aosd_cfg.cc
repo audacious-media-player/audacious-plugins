@@ -69,7 +69,7 @@ aosd_cfg_util_color_to_str ( aosd_color_t color , gchar ** str )
 aosd_cfg_t *
 aosd_cfg_new ( void )
 {
-  aosd_cfg_t *cfg = g_malloc0(sizeof(aosd_cfg_t));
+  aosd_cfg_t *cfg = g_new0 (aosd_cfg_t, 1);
   aosd_cfg_osd_t *cfg_osd = aosd_cfg_osd_new();
   cfg->set = FALSE;
   cfg->osd = cfg_osd;
@@ -93,7 +93,7 @@ aosd_cfg_delete ( aosd_cfg_t * cfg )
 aosd_cfg_osd_t *
 aosd_cfg_osd_new( void )
 {
-  aosd_cfg_osd_t *cfg_osd = g_malloc0(sizeof(aosd_cfg_osd_t));
+  aosd_cfg_osd_t *cfg_osd = g_new0 (aosd_cfg_osd_t, 1);
   cfg_osd->decoration.colors = g_array_sized_new( FALSE , TRUE , sizeof(aosd_color_t) ,
                                                   aosd_deco_style_get_max_numcol() );
   cfg_osd->trigger.active = g_array_new( FALSE , TRUE , sizeof(gint) );
@@ -144,12 +144,12 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
   }
   cfg_osd_copy->text.utf8conv_disable = cfg_osd->text.utf8conv_disable;
   cfg_osd_copy->decoration.code = cfg_osd->decoration.code;
-  for ( i = 0 ; i < cfg_osd->decoration.colors->len ; i++ )
+  for ( i = 0 ; i < (int) cfg_osd->decoration.colors->len ; i++ )
   {
     aosd_color_t color = g_array_index( cfg_osd->decoration.colors , aosd_color_t , i );
     g_array_insert_val( cfg_osd_copy->decoration.colors , i , color );
   }
-  for ( i = 0 ; i < cfg_osd->trigger.active->len ; i++ )
+  for ( i = 0 ; i < (int) cfg_osd->trigger.active->len ; i++ )
   {
     gint trigger_id = g_array_index( cfg_osd->trigger.active , gint , i );
     g_array_insert_val( cfg_osd_copy->trigger.active , i , trigger_id );
@@ -387,7 +387,7 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
   }
 
   /* trigger */
-  for ( i = 0 ; i < cfg->osd->trigger.active->len ; i++ )
+  for ( i = 0 ; i < (int) cfg->osd->trigger.active->len ; i++ )
     g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , gint , i ) );
   if ( string->len > 1 )
     g_string_truncate( string , string->len - 1 );

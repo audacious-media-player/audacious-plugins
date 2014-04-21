@@ -133,7 +133,8 @@ aosd_deco_style_get_numcol ( gint deco_code )
 void
 aosd_deco_style_render ( gint deco_code , gpointer ghosd , gpointer cr , gpointer user_data )
 {
-  aosd_deco_styles[deco_code].render_func( (Ghosd*)ghosd , (cairo_t*)cr , user_data );
+  aosd_deco_styles[deco_code].render_func ((Ghosd *) ghosd, (cairo_t *) cr,
+   (aosd_deco_style_data_t *) user_data);
 }
 
 
