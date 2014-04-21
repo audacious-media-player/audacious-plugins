@@ -1,13 +1,13 @@
 PLUGIN = sid${PLUGIN_SUFFIX}
 
-SRCS = xs_support.c	\
-       xs_config.c	\
-       xs_length.c	\
-       xs_md5.c \
-       xs_stil.c	\
+SRCS = xs_support.cc	\
+       xs_config.cc	\
+       xs_length.cc	\
+       xs_md5.cc \
+       xs_stil.cc	\
        xs_sidplay2.cc	\
-       xs_slsup.c	\
-       xmms-sid.c
+       xs_slsup.cc	\
+       xmms-sid.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -366,6 +366,7 @@ typedef struct {
     uint16_t reserved;
 } psidv2_header_t;
 
+#define READ_CHARS(c, f) (vfs_fread ((c), 1, sizeof (c), (f)) == sizeof (c))
 
 static int xs_get_sid_hash(const char *filename, xs_md5hash_t hash)
 {
@@ -382,7 +383,8 @@ static int xs_get_sid_hash(const char *filename, xs_md5hash_t hash)
         return -1;
 
     /* Read PSID header in */
-    if (vfs_fread(psidH.magicID, 1, sizeof psidH.magicID, inFile) < sizeof psidH.magicID) {
+    if (! READ_CHARS (psidH.magicID, inFile))
+    {
         vfs_fclose(inFile);
         return -1;
     }
@@ -402,9 +404,10 @@ static int xs_get_sid_hash(const char *filename, xs_md5hash_t hash)
     psidH.startSong = xs_fread_be16(inFile);
     psidH.speed = xs_fread_be32(inFile);
 
-    if (vfs_fread(psidH.sidName, 1, sizeof psidH.sidName, inFile) < sizeof psidH.sidName
-     || vfs_fread(psidH.sidAuthor, 1, sizeof psidH.sidAuthor, inFile) < sizeof psidH.sidAuthor
-     || vfs_fread(psidH.sidCopyright, 1, sizeof psidH.sidCopyright, inFile) < sizeof psidH.sidCopyright) {
+    if (! READ_CHARS (psidH.sidName, inFile)
+     || ! READ_CHARS (psidH.sidAuthor, inFile)
+     || ! READ_CHARS (psidH.sidCopyright, inFile))
+    {
         vfs_fclose(inFile);
         xs_error("Error reading SID file header from '%s'\n", filename);
         return -4;
@@ -494,8 +497,8 @@ sldb_node_t *xs_sldb_get(xs_sldb_t *db, const char *filename)
     /* Get the hash and then look up from db */
     if (xs_get_sid_hash(filename, keyItem.md5Hash) == 0) {
         key = &keyItem;
-        item = bsearch(&key, db->pindex, db->n,
-            sizeof(db->pindex[0]), xs_sldb_cmp);
+        item = (sldb_node_t * *) bsearch (& key, db->pindex, db->n,
+         sizeof db->pindex[0], xs_sldb_cmp);
 
         if (item)
             return *item;

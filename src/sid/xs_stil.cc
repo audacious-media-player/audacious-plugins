@@ -384,7 +384,9 @@ stil_node_t *xs_stildb_get_node(xs_stildb_t *db, char *filename)
     /* Look-up index using binary search */
     keyItem.filename = filename;
     key = &keyItem;
-    item = bsearch(&key, db->pindex, db->n, sizeof(stil_node_t *), xs_stildb_cmp);
+    item = (stil_node_t * *) bsearch (& key, db->pindex, db->n,
+     sizeof (stil_node_t *), xs_stildb_cmp);
+
     if (item)
         return *item;
     else

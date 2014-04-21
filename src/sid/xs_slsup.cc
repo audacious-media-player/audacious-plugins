@@ -55,12 +55,7 @@ int xs_stil_init(void)
         xs_stildb_free(xs_stildb_db);
 
     /* Allocate database */
-    xs_stildb_db = (xs_stildb_t *) g_malloc0(sizeof(xs_stildb_t));
-    if (!xs_stildb_db) {
-        pthread_mutex_unlock(&xs_cfg_mutex);
-        pthread_mutex_unlock(&xs_stildb_db_mutex);
-        return -2;
-    }
+    xs_stildb_db = g_new0 (xs_stildb_t, 1);
 
     /* Read the database */
     if (xs_stildb_read(xs_stildb_db, xs_cfg.stilDBPath) != 0) {
@@ -142,12 +137,7 @@ int xs_songlen_init(void)
         xs_sldb_free(xs_sldb_db);
 
     /* Allocate database */
-    xs_sldb_db = (xs_sldb_t *) g_malloc0(sizeof(xs_sldb_t));
-    if (!xs_sldb_db) {
-        pthread_mutex_unlock(&xs_cfg_mutex);
-        pthread_mutex_unlock(&xs_sldb_db_mutex);
-        return -2;
-    }
+    xs_sldb_db = g_new0 (xs_sldb_t, 1);
 
     /* Read the database */
     if (xs_sldb_read(xs_sldb_db, xs_cfg.songlenDBPath) != 0) {
@@ -206,12 +196,12 @@ xs_tuneinfo_t *xs_tuneinfo_new(const char * filename,
     int i;
 
     /* Allocate structure */
-    result = (xs_tuneinfo_t *) g_malloc0(sizeof(xs_tuneinfo_t));
+    result = g_new0 (xs_tuneinfo_t, 1);
 
     result->sidFilename = str_get (filename);
 
     /* Allocate space for subtune information */
-    result->subTunes = g_malloc0(sizeof(xs_subtuneinfo_t) * (nsubTunes + 1));
+    result->subTunes = g_new0 (xs_subtuneinfo_t, nsubTunes + 1);
 
     result->sidName = str_get (sidName);
     result->sidComposer = str_get (sidComposer);
