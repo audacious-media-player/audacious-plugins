@@ -1,6 +1,6 @@
 PLUGIN = metronom${PLUGIN_SUFFIX}
 
-SRCS = metronom.c
+SRCS = metronom.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
