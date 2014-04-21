@@ -120,7 +120,7 @@ int  JACK_GetNumOutputChannels(int deviceID);
 
 long JACK_GetSampleRate(int deviceID); /* samples per second */
 
-void JACK_SetClientName(char *name); /* sets the name that bio2jack will use when
+void JACK_SetClientName(const char *name); /* sets the name that bio2jack will use when
                                         creating a new jack client.  name_%pid%_%deviceID%%counter%
                                         will be used
                                         NOTE: this defaults to name = bio2jack

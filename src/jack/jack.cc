@@ -199,11 +199,11 @@ static const ComboBoxElements mode_list[] = {
 };
 
 static const PreferencesWidget jack_widgets[] = {
- {WIDGET_COMBO_BOX, N_("Connection mode:"),
-  .cfg_type = VALUE_STRING, .csect = "jack", .cname = "port_connection_mode",
-  .data.combo = {mode_list, ARRAY_LEN (mode_list)}},
- {WIDGET_CHK_BTN, N_("Enable debug printing"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "jack", .cname = "isTraceEnabled"},
+    WidgetCombo (N_("Connection mode:"),
+        {VALUE_STRING, 0, "jack", "port_connection_mode"},
+        {mode_list, ARRAY_LEN (mode_list)}),
+    WidgetCheck (N_("Enable debug printing"),
+        {VALUE_BOOLEAN, 0, "jack", "isTraceEnabled"})
 };
 
 static const PluginPreferences jack_prefs = {

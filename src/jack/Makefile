@@ -1,7 +1,7 @@
 PLUGIN = jackout${PLUGIN_SUFFIX}
 
-SRCS = jack.c		\
-       bio2jack.c
+SRCS = jack.cc		\
+       bio2jack.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
