@@ -270,7 +270,7 @@ uint32_t psf2_load_elf(uint8_t *start, uint32_t len)
 	return entry;
 }
 
-static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, char *file, uint8_t *buf, uint32_t buflen)
+static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, const char *file, uint8_t *buf, uint32_t buflen)
 {
 	int32_t numfiles, i, j;
 	uint8_t *cptr;
@@ -278,7 +278,8 @@ static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, char *f
 	uint32_t X;
 	uLongf dlength;
 	int uerr;
-	char matchname[512], *remainder;
+	char matchname[512];
+	const char *remainder;
 
 	// strip out to only the directory name
 	i = 0;
@@ -348,7 +349,7 @@ static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, char *f
 	return 0xffffffff;
 }
 
-static uint32_t load_file(int fs, char *file, uint8_t *buf, uint32_t buflen)
+static uint32_t load_file(int fs, const char *file, uint8_t *buf, uint32_t buflen)
 {
 	return load_file_ex(filesys[fs], filesys[fs], fssize[fs], file, buf, buflen);
 }
@@ -427,7 +428,7 @@ static dump_files(int fs, uint8_t *buf, uint32_t buflen)
 #endif
 
 // find a file on our filesystems
-uint32_t psf2_load_file(char *file, uint8_t *buf, uint32_t buflen)
+uint32_t psf2_load_file(const char *file, uint8_t *buf, uint32_t buflen)
 {
 	int i;
 	uint32_t flen;
@@ -586,7 +587,7 @@ int32_t psf2_execute(void)
 	{
 		for (i = 0; i < 44100 / 60; i++)
 		{
-			SPU2async(1);
+			SPU2async(1, NULL);
 			ps2_hw_slice();
 		}
 
@@ -665,7 +666,7 @@ uint32_t psf2_get_loadaddr(void)
 	return loadAddr;
 }
 
-void psf2_set_loadaddr(uint32_t new)
+void psf2_set_loadaddr(uint32_t addr)
 {
-	loadAddr = new;
+	loadAddr = addr;
 }

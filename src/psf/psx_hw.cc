@@ -71,7 +71,7 @@ extern void SPUwriteDMAMem(uint32_t usPSXMem,int iSize);
 extern void SPUreadDMAMem(uint32_t usPSXMem,int iSize);
 extern void mips_shorten_frame(void);
 extern int mips_execute( int cycles );
-extern uint32_t psf2_load_file(char *file, uint8_t *buf, uint32_t buflen);
+extern uint32_t psf2_load_file(const char *file, uint8_t *buf, uint32_t buflen);
 extern uint32_t psf2_load_elf(uint8_t *start, uint32_t len);
 void psx_hw_runcounters(void);
 int mips_get_icount(void);
@@ -96,7 +96,7 @@ static int filestat[MAX_FILE_SLOTS];
 static uint8_t *filedata[MAX_FILE_SLOTS];
 static uint32_t filesize[MAX_FILE_SLOTS], filepos[MAX_FILE_SLOTS];
 uint32_t psf2_get_loadaddr(void);
-void psf2_set_loadaddr(uint32_t new);
+void psf2_set_loadaddr(uint32_t addr);
 static void call_irq_routine(uint32_t routine, uint32_t parameter);
 static int intr_susp = 0;
 
@@ -3377,7 +3377,7 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 					printf("IOP: open(\"%s\") (PC=%08x)\n", mname, mipsinfo.i);
 					#endif
 
-					filedata[slot2use] = malloc(6*1024*1024);
+					filedata[slot2use] = (uint8_t *) malloc(6*1024*1024);
 					filesize[slot2use] = psf2_load_file(mname, filedata[slot2use], 6*1024*1024);
 					filepos[slot2use] = 0;
 					filestat[slot2use] = 1;

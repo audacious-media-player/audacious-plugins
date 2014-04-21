@@ -129,7 +129,7 @@ static const int f[5][2] = {
                         {  115, -52 },
                         {   98, -55 },
                         {  122, -60 } };
-s16 * pS;
+static s16 * pS;
 static s32 ttemp;
 
 extern void psf2_update(unsigned char *samples, long lBytes);
@@ -140,12 +140,12 @@ extern void psf2_update(unsigned char *samples, long lBytes);
 
 // dirty inline func includes
 
-#include "../peops/reverb.c"
-#include "../peops/adsr.c"
+#include "../peops/reverb.cc"
+#include "../peops/adsr.cc"
 
 // Try this to increase speed.
-#include "../peops/registers.c"
-#include "../peops/dma.c"
+#include "../peops/registers.cc"
+#include "../peops/dma.cc"
 
 ////////////////////////////////////////////////////////////////////////
 // helpers for so-called "gauss interpolation"

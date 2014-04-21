@@ -166,7 +166,7 @@ short * pS;
 static int lastch=-1;      // last channel processed on spu irq in timer mode
 static int iSecureStart=0; // secure start counter
 
-extern void psf2_update(unsigned char *samples, long lBytes, void *data);
+extern void psf2_update(unsigned char *samples, long lBytes);
 
 ////////////////////////////////////////////////////////////////////////
 // CODE AREA
@@ -174,8 +174,8 @@ extern void psf2_update(unsigned char *samples, long lBytes, void *data);
 
 // dirty inline func includes
 
-#include "reverb.c"
-#include "adsr.c"
+#include "reverb.cc"
+#include "adsr.cc"
 
 ////////////////////////////////////////////////////////////////////////
 // helpers for simple interpolation
@@ -748,7 +748,7 @@ ENDX:   ;
     	{
 		if(sampcount>=decayend)
 		{
-			psf2_update(NULL, 0, data);
+			psf2_update(NULL, 0);
 		        return(0);
 		}
 
@@ -786,7 +786,7 @@ ENDX:   ;
 		}
 
 		if (iSilenceCount < 20)
-		    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer, data);
+		    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
 
 	        pS=(short *)pSpuBuffer;
 	}

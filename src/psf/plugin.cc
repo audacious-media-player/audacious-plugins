@@ -90,7 +90,7 @@ int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
 	SPRINTF(path2, "%s/%s", dirpath, filename);
 	vfs_file_get_contents(path2, &filebuf, &size);
 
-	*buffer = filebuf;
+	*buffer = (uint8_t *) filebuf;
 	*length = (uint64_t)size;
 
 	return AO_SUCCESS;
@@ -108,7 +108,7 @@ Tuple *psf2_tuple(const char *filename, VFSFile *file)
 	if (!buf)
 		return NULL;
 
-	if (corlett_decode(buf, sz, NULL, NULL, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *) buf, sz, NULL, NULL, &c) != AO_SUCCESS)
 		return NULL;
 
 	t = tuple_new_from_filename(filename);
@@ -143,7 +143,7 @@ static bool_t psf2_play(const char * filename, VFSFile * file)
 
 	vfs_file_get_contents (filename, & buffer, & size);
 
-	eng = psf_probe(buffer);
+	eng = psf_probe((uint8_t *) buffer);
 	if (eng == ENG_NONE || eng == ENG_COUNT)
 	{
 		free(buffer);
@@ -151,7 +151,7 @@ static bool_t psf2_play(const char * filename, VFSFile * file)
 	}
 
 	f = &psf_functor_map[eng];
-	if (f->start(buffer, size) != AO_SUCCESS)
+	if (f->start((uint8_t *) buffer, size) != AO_SUCCESS)
 	{
 		free(buffer);
 		return FALSE;
