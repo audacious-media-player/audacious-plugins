@@ -1,8 +1,8 @@
 PLUGIN = neon${PLUGIN_SUFFIX}
 
-SRCS = neon.c	\
-       rb.c	\
-       cert_verification.c
+SRCS = neon.cc	\
+       rb.cc	\
+       cert_verification.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

@@ -31,15 +31,15 @@ struct ringbuf
     char * end;
     char * wp;
     char * rp;
-    unsigned free;
-    unsigned used;
-    unsigned size;
+    int free;
+    int used;
+    int size;
 };
 
-void init_rb_with_lock (struct ringbuf * rb, unsigned size, rb_mutex_t * lock);
-void write_rb (struct ringbuf * rb, void * buf, unsigned size);
-int read_rb (struct ringbuf * rb, void * buf, unsigned size);
-int read_rb_locked (struct ringbuf * rb, void * buf, unsigned size);
+void init_rb_with_lock (struct ringbuf * rb, int size, rb_mutex_t * lock);
+void write_rb (struct ringbuf * rb, void * buf, int size);
+int read_rb (struct ringbuf * rb, void * buf, int size);
+int read_rb_locked (struct ringbuf * rb, void * buf, int size);
 void reset_rb (struct ringbuf * rb);
 unsigned free_rb (struct ringbuf * rb);
 unsigned free_rb_locked (struct ringbuf * rb);

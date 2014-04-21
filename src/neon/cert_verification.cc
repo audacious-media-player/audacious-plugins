@@ -103,7 +103,7 @@ static bool_t der_read_tag_number (unsigned char * in_buffer,
         return FALSE;
 
     unsigned char typeOctet = in_buffer[0];
-    enum AsnType typeCode = typeOctet & ASNTYPE_CODE_MASK;
+    enum AsnType typeCode = (AsnType) (typeOctet & ASNTYPE_CODE_MASK);
     int typeCodeLength = 1;
 
     // Variable length types are not supported.
@@ -241,12 +241,11 @@ static bool_t cert_get_hash (const ne_ssl_certificate * cert, uint32_t * out_has
     g_free (certPem);
     g_return_val_if_fail (certDer != NULL, 1);
 
-    struct DerData data =
-    {
-        .start = certDer,
-        .bufferEnd = (certDer + derLength)
-    };
-    struct DerData content;
+    struct DerData data = {0};
+    struct DerData content = {0};
+
+    data.start = certDer;
+    data.bufferEnd = certDer + derLength;
 
     // Walk through certificate content until we reach subject field.
 

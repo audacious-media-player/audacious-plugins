@@ -46,12 +46,12 @@ void reset_rb (struct ringbuf * rb)
  * The mutex to be used is passed in the function call.
  * The mutex must not be held while calling this function.
  */
-void init_rb_with_lock (struct ringbuf * rb, unsigned size, rb_mutex_t * lock)
+void init_rb_with_lock (struct ringbuf * rb, int size, rb_mutex_t * lock)
 {
     assert (size > 0);
 
     rb->lock = lock;
-    rb->buf = g_malloc (size);
+    rb->buf = g_new (char, size);
     rb->size = size;
     reset_rb (rb);
 }
@@ -59,7 +59,7 @@ void init_rb_with_lock (struct ringbuf * rb, unsigned size, rb_mutex_t * lock)
 /*
  * Write size bytes at buf into the ringbuffer.
  */
-void write_rb (struct ringbuf * rb, void * buf, unsigned size)
+void write_rb (struct ringbuf * rb, void * buf, int size)
 {
     _RB_LOCK (rb->lock);
 
@@ -99,7 +99,7 @@ void write_rb (struct ringbuf * rb, void * buf, unsigned size)
  * Read size byes from buffer into buf.
  * Return -1 on error (not enough data in buffer)
  */
-int read_rb (struct ringbuf * rb, void * buf, unsigned size)
+int read_rb (struct ringbuf * rb, void * buf, int size)
 {
     _RB_LOCK (rb->lock);
     int ret = read_rb_locked (rb, buf, size);
@@ -112,7 +112,7 @@ int read_rb (struct ringbuf * rb, void * buf, unsigned size)
  * Read size bytes from buffer into buf, assuming the buffer lock is already held.
  * Return -1 on error (not enough data in buffer)
  */
-int read_rb_locked (struct ringbuf * rb, void * buf, unsigned size)
+int read_rb_locked (struct ringbuf * rb, void * buf, int size)
 {
     if (rb->used < size)
     {

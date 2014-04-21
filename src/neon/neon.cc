@@ -227,7 +227,7 @@ static void kill_reader (struct neon_handle * h)
 static int server_auth_callback (void * userdata, const char * realm,
  int attempt, char * username, char * password)
 {
-    struct neon_handle * h = userdata;
+    struct neon_handle * h = (neon_handle *) userdata;
 
     if (! h->purl->userinfo || ! h->purl->userinfo[0])
     {
@@ -358,7 +358,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
         handle->request = ne_request_create (handle->session, "GET", handle->purl->path);
 
     if (startbyte > 0)
-        ne_print_request_header (handle->request, "Range", "bytes=%"PRIu64"-", startbyte);
+        ne_print_request_header (handle->request, "Range", "bytes=%" PRIu64 "-", startbyte);
 
     ne_print_request_header (handle->request, "Icy-MetaData", "1");
 
@@ -576,7 +576,7 @@ static FillBufferResult fill_buffer (struct neon_handle * h)
 
 static void * reader_thread (void * data)
 {
-    struct neon_handle * h = data;
+    struct neon_handle * h = (neon_handle *) data;
 
     pthread_mutex_lock (& h->reader_status.mutex);
 
@@ -646,7 +646,7 @@ void * neon_vfs_fopen_impl (const char * path, const char * mode)
 
 int neon_vfs_fclose_impl (VFSFile * file)
 {
-    struct neon_handle * h = vfs_get_handle (file);
+    struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
     if (h->reader_status.reading)
         kill_reader (h);
@@ -663,7 +663,7 @@ int neon_vfs_fclose_impl (VFSFile * file)
 
 static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile * file)
 {
-    struct neon_handle * h = vfs_get_handle (file);
+    struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
     if (! h->request)
     {
@@ -856,15 +856,15 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
  * must call it repeatedly until we have read the full request. */
 int64_t neon_vfs_fread_impl (void * buffer, int64_t size, int64_t count, VFSFile * handle)
 {
-    size_t total = 0, new;
+    size_t total = 0, part;
 
     _DEBUG ("<%p> fread %d x %d", (void *) handle, (int) size, (int) count);
 
-    while (count > 0 && (new = neon_fread_real (buffer, size, count, handle)) > 0)
+    while (count > 0 && (part = neon_fread_real (buffer, size, count, handle)) > 0)
     {
-        buffer = (char *) buffer + size * new;
-        total += new;
-        count -= new;
+        buffer = (char *) buffer + size * part;
+        total += part;
+        count -= part;
     }
 
     _DEBUG ("<%p> fread = %d", (void *) handle, (int) total);
@@ -881,7 +881,7 @@ int64_t neon_vfs_fwrite_impl (const void * ptr, int64_t size, int64_t nmemb, VFS
 
 int64_t neon_vfs_ftell_impl (VFSFile * file)
 {
-    struct neon_handle * h = vfs_get_handle (file);
+    struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
     _DEBUG ("<%p> Current file position: %ld", h, h->pos);
 
@@ -890,7 +890,7 @@ int64_t neon_vfs_ftell_impl (VFSFile * file)
 
 bool_t neon_vfs_feof_impl (VFSFile * file)
 {
-    struct neon_handle * h = vfs_get_handle (file);
+    struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
     _DEBUG ("<%p> EOF status: %s", h, h->eof ? "TRUE" : "FALSE");
 
@@ -906,7 +906,7 @@ int neon_vfs_truncate_impl (VFSFile * file, int64_t size)
 
 int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 {
-    struct neon_handle * h = vfs_get_handle (file);
+    struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
     _DEBUG ("<%p> Seek requested: offset %ld, whence %d", h, offset, whence);
 
@@ -1003,7 +1003,7 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 
 char * neon_vfs_metadata_impl (VFSFile * file, const char * field)
 {
-    struct neon_handle * h = vfs_get_handle (file);
+    struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
     _DEBUG ("<%p> Field name: %s", h, field);
 
@@ -1024,7 +1024,7 @@ char * neon_vfs_metadata_impl (VFSFile * file, const char * field)
 
 int64_t neon_vfs_fsize_impl (VFSFile * file)
 {
-    struct neon_handle * h = vfs_get_handle (file);
+    struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
     if (h->content_length < 0)
     {
