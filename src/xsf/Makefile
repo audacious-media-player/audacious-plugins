@@ -1,16 +1,18 @@
 PLUGIN = xsf${PLUGIN_SUFFIX}
 
-SRCS = corlett.c \
-       plugin.c \
-       vio2sf.c \
-       desmume/armcpu.c            desmume/bios.c  desmume/FIFO.c  desmume/matrix.c  desmume/MMU.c        desmume/SPU.c \
-       desmume/arm_instructions.c  desmume/cp15.c  desmume/GPU.c   desmume/mc.c      desmume/NDSSystem.c  desmume/thumb_instructions.c \
+SRCS = corlett.cc \
+       plugin.cc \
+       vio2sf.cc \
+       desmume/armcpu.cc            desmume/bios.cc  desmume/FIFO.cc  desmume/matrix.cc  desmume/MMU.cc        desmume/SPU.cc \
+       desmume/arm_instructions.cc  desmume/cp15.cc  desmume/GPU.cc   desmume/mc.cc      desmume/NDSSystem.cc  desmume/thumb_instructions.cc \
 
 include ../../buildsys.mk
 include ../../extra.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
-CFLAGS += ${PLUGIN_CFLAGS} -O0
+LD = ${CXX}
+
+CXXFLAGS += ${PLUGIN_CFLAGS} -O0 -Wno-sign-compare -Wno-maybe-uninitialized
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} -I../.. -Ispu/
 LIBS += -lm -lz ${GLIB_LIBS}

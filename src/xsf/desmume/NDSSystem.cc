@@ -152,7 +152,7 @@ int NDS_Init( void) {
 
      if (Screen_Init(GFXCORE_DUMMY) != 0)
         return -1;
-     
+
  #ifdef GDB_STUB
      armcpu_new(&NDS_ARM7,1, arm7_mem_if, arm7_ctrl_iface);
      armcpu_new(&NDS_ARM9,0, arm9_mem_if, arm9_ctrl_iface);
@@ -198,11 +198,11 @@ BOOL NDS_SetROM(u8 * rom, u32 mask)
      MMU_setRom(rom, mask);
 
      return TRUE;
-} 
+}
 
 NDS_header * NDS_getROMHeader(void)
 {
-	NDS_header * header = malloc(sizeof(NDS_header));
+	NDS_header * header = (NDS_header *) malloc(sizeof(NDS_header));
 
 	memcpy(header->gameTile, MMU.CART_ROM, 12);
 	memcpy(header->gameCode, MMU.CART_ROM + 12, 4);
@@ -247,7 +247,7 @@ NDS_header * NDS_getROMHeader(void)
 	return header;
 
      //return (NDS_header *)MMU.CART_ROM;
-} 
+}
 
 
 
@@ -261,7 +261,7 @@ void NDS_FreeROM(void)
 //   MMU.bupmem.fp = NULL;
 }
 
-                         
+
 
 void NDS_Reset( void)
 {
@@ -289,7 +289,7 @@ void NDS_Reset( void)
 
    src = header->ARM7src;
    dst = header->ARM7cpy;
-     
+
    for(i = 0; i < (header->ARM7binSize>>2); ++i)
    {
       MMU_write32(1, dst, T1ReadLong(MMU.CART_ROM, src));
@@ -299,7 +299,7 @@ void NDS_Reset( void)
 
    armcpu_init(&NDS_ARM7, header->ARM7exe);
    armcpu_init(&NDS_ARM9, header->ARM9exe);
-     
+
    nds.ARM9Cycle = 0;
    nds.ARM7Cycle = 0;
    nds.cycles = 0;
@@ -337,10 +337,10 @@ void NDS_Reset( void)
 	{
 		MMU_write32 (0, 0x027FFE00+i*4, LE_TO_LOCAL_32(((u32*)MMU.CART_ROM)[i]));
 	}
-     
+
    MainScreen.offset = 0;
    SubScreen.offset = 192;
-     
+
    //MMU_write32(0, 0x02007FFC, 0xE92D4030);
 
      //ARM7 BIOS IRQ HANDLER
@@ -353,7 +353,7 @@ void NDS_Reset( void)
      MMU_write32(1, 0x2C, 0xE510F004);
      MMU_write32(1, 0x30, 0xE8BD500F);
      MMU_write32(1, 0x34, 0xE25EF004);
-    
+
      //ARM9 BIOS IRQ HANDLER
      MMU_write32(0, 0xFFFF0018, 0xEA000000);
      MMU_write32(0, 0xFFFF0020, 0xE92D500F);
@@ -365,7 +365,7 @@ void NDS_Reset( void)
      MMU_write32(0, 0xFFFF0038, 0xE510F004);
      MMU_write32(0, 0xFFFF003C, 0xE8BD500F);
      MMU_write32(0, 0xFFFF0040, 0xE25EF004);
-        
+
      MMU_write32(0, 0x0000004, 0xE3A0010E);
      MMU_write32(0, 0x0000008, 0xE3A01020);
 //     MMU_write32(0, 0x000000C, 0xE1B02110);
@@ -443,7 +443,7 @@ static void dma_check(void)
 	if((MMU.reg_IF[0]&MMU.reg_IE[0]) && (MMU.reg_IME[0]))
 	{
 #ifdef GDB_STUB
-		if ( armcpu_flagIrq( &NDS_ARM9)) 
+		if ( armcpu_flagIrq( &NDS_ARM9))
 #else
 		if ( armcpu_irqExeption(&NDS_ARM9))
 #endif
@@ -455,7 +455,7 @@ static void dma_check(void)
 	if((MMU.reg_IF[1]&MMU.reg_IE[1]) && (MMU.reg_IME[1]))
 	{
 #ifdef GDB_STUB
-		if ( armcpu_flagIrq( &NDS_ARM7)) 
+		if ( armcpu_flagIrq( &NDS_ARM7))
 #else
 		if ( armcpu_irqExeption(&NDS_ARM7))
 #endif
@@ -632,7 +632,7 @@ void NDS_exec_hframe(int cpu_clockdown_level_arm9, int cpu_clockdown_level_arm7)
 				MMU_doDMA(1, 3);
 				MMU.DMAStartTime[1][3] = 0;
 			}
-                            
+
 			if(nds.VCount == 192)
 			{
 				/* VBLANK */

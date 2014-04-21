@@ -66,7 +66,7 @@ Tuple *xsf_tuple(const char *filename, VFSFile *fd)
 	if (!buf)
 		return NULL;
 
-	if (corlett_decode(buf, sz, NULL, NULL, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *) buf, sz, NULL, NULL, &c) != AO_SUCCESS)
 		return NULL;
 
 	t = tuple_new_from_filename(filename);
@@ -96,7 +96,7 @@ static int xsf_get_length(const char *filename)
 	if (!buf)
 		return -1;
 
-	if (corlett_decode(buf, size, NULL, NULL, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *) buf, size, NULL, NULL, &c) != AO_SUCCESS)
 	{
 		free(buf);
 		return -1;

@@ -64,7 +64,7 @@ static int load_map(int issave, unsigned char *udata, unsigned usize)
 	}
 	if (!iptr)
 	{
-		iptr = malloc(xofs + xsize + 10);
+		iptr = (unsigned char *) malloc(xofs + xsize + 10);
 		if (!iptr)
 			return XSF_FALSE;
 		memset(iptr, 0, xofs + xsize + 10);
@@ -83,7 +83,7 @@ static int load_map(int issave, unsigned char *udata, unsigned usize)
 			rsize |= rsize >> 16;
 			rsize += 1;
 		}
-		xptr = realloc(iptr, xofs + rsize + 10);
+		xptr = (unsigned char *) realloc(iptr, xofs + rsize + 10);
 		if (!xptr)
 		{
 			free(iptr);
@@ -115,7 +115,7 @@ static int load_mapz(int issave, unsigned char *zdata, unsigned zsize, unsigned 
 	unsigned char *udata;
 	unsigned char *rdata;
 
-	udata = malloc(usize);
+	udata = (unsigned char *) malloc(usize);
 	if (!udata)
 		return XSF_FALSE;
 
@@ -143,12 +143,12 @@ static int load_mapz(int issave, unsigned char *zdata, unsigned zsize, unsigned 
 			usize = rsize;
 		}
 		free(udata);
-		udata = malloc(usize);
+		udata = (unsigned char *) malloc(usize);
 		if (!udata)
 			return XSF_FALSE;
 	}
 
-	rdata = realloc(udata, usize);
+	rdata = (unsigned char *) realloc(udata, usize);
 	if (!rdata)
 	{
 		free(udata);
@@ -230,7 +230,7 @@ static int load_psfcb(void *pWork, const char *pNameTop, const char *pNameEnd, c
 	if (pNameEnd - pNameTop == pwork->taglen && !g_ascii_strncasecmp(pNameTop, pwork->tag , pwork->taglen))
 	{
 		unsigned l = pValueEnd - pValueTop;
-		char *lib = malloc(l + 1);
+		char *lib = (char *) malloc(l + 1);
 		if (!lib)
 		{
 			ret = xsf_tagenum_callback_returnvaluebreak;
@@ -247,7 +247,7 @@ static int load_psfcb(void *pWork, const char *pNameTop, const char *pNameEnd, c
 			}
 			else
 			{
-				if (!load_libs(pwork->level + 1, libbuf, libsize) || !load_psf_one(libbuf, libsize))
+				if (!load_libs(pwork->level + 1, libbuf, libsize) || !load_psf_one((unsigned char *) libbuf, libsize))
 					ret = xsf_tagenum_callback_returnvaluebreak;
 				else
 				{
@@ -278,7 +278,7 @@ static int load_libs(int level, void *pfile, unsigned bytes)
 		work.taglen = strlen(work.tag);
 		work.found = 0;
 
-		if (xsf_tagenum(load_psfcb, &work, pfile, bytes) < 0)
+		if (xsf_tagenum(load_psfcb, &work, (unsigned char *) pfile, bytes) < 0)
 			return XSF_FALSE;
 
 #ifdef HAVE_SPRINTF_S
@@ -297,7 +297,7 @@ static int load_psf(void *pfile, unsigned bytes)
 {
 	load_term();
 
-	if (!load_libs(1, pfile, bytes) || !load_psf_one(pfile, bytes))
+	if (!load_libs(1, pfile, bytes) || !load_psf_one((unsigned char *) pfile, bytes))
 		return XSF_FALSE;
 
 	return XSF_TRUE;
@@ -572,10 +572,10 @@ static int SNDIFInit(int buffersize)
 {
 	u32 bufferbytes = buffersize * sizeof(s16);
 	SNDIFDeInit();
-	sndifwork.pcmbufalloc = malloc(bufferbytes + 3);
+	sndifwork.pcmbufalloc = (unsigned char *) malloc(bufferbytes + 3);
 	if (!sndifwork.pcmbufalloc)
 		return -1;
-	sndifwork.pcmbuftop = (void *) (((uintptr_t) sndifwork.pcmbufalloc + 3) & ~3);
+	sndifwork.pcmbuftop = (unsigned char *) (((uintptr_t) sndifwork.pcmbufalloc + 3) & ~3);
 	sndifwork.bufferbytes = bufferbytes;
 	sndifwork.filled = 0;
 	sndifwork.used = 0;
@@ -630,11 +630,11 @@ static struct armcpu_ctrl_iface *arm7_ctrl_iface = 0;
 
 int xsf_start(void *pfile, unsigned bytes)
 {
-	int frames = xsf_tagget_int("_frames", pfile, bytes, -1);
-	int clockdown = xsf_tagget_int("_clockdown", pfile, bytes, 0);
-	sndifwork.sync_type = xsf_tagget_int("_vio2sf_sync_type", pfile, bytes, 0);
-	sndifwork.arm9_clockdown_level = xsf_tagget_int("_vio2sf_arm9_clockdown_level", pfile, bytes, clockdown);
-	sndifwork.arm7_clockdown_level = xsf_tagget_int("_vio2sf_arm7_clockdown_level", pfile, bytes, clockdown);
+	int frames = xsf_tagget_int("_frames", (unsigned char *) pfile, bytes, -1);
+	int clockdown = xsf_tagget_int("_clockdown", (unsigned char *) pfile, bytes, 0);
+	sndifwork.sync_type = xsf_tagget_int("_vio2sf_sync_type", (unsigned char *) pfile, bytes, 0);
+	sndifwork.arm9_clockdown_level = xsf_tagget_int("_vio2sf_arm9_clockdown_level", (unsigned char *) pfile, bytes, clockdown);
+	sndifwork.arm7_clockdown_level = xsf_tagget_int("_vio2sf_arm7_clockdown_level", (unsigned char *) pfile, bytes, clockdown);
 
 	sndifwork.xfs_load = 0;
 	printf("load_psf... ");
@@ -760,7 +760,7 @@ int xsf_start(void *pfile, unsigned bytes)
 
 int xsf_gen(void *pbuffer, unsigned samples)
 {
-	unsigned char *ptr = pbuffer;
+	unsigned char *ptr = (unsigned char *) pbuffer;
 	unsigned bytes = samples <<= 2;
 	if (!sndifwork.xfs_load) return 0;
 	while (bytes)

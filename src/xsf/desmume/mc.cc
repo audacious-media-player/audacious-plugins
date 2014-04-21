@@ -59,7 +59,7 @@ void mc_init(memory_chip_t *mc, int type)
         mc->writeable_buffer = FALSE;
         mc->type = type;
         mc->autodetectsize = 0;
-                               
+
         switch(mc->type)
         {
            case MC_TYPE_EEPROM1:
@@ -79,7 +79,7 @@ void mc_init(memory_chip_t *mc, int type)
 u8 *mc_alloc(memory_chip_t *mc, u32 size)
 {
 	u8 *buffer;
-	buffer = malloc(size);
+	buffer = (u8 *) malloc(size);
 
 	mc->data = buffer;
 	if(!buffer) { return NULL; }

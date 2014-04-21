@@ -84,14 +84,14 @@ int SPU_ChangeSoundCore(int coreid, int buffersize)
 
    // Allocate memory for sound buffer
 	spu.buflen = buffersize * 2; /* stereo */
-	spu.pmixbuf = malloc(spu.buflen * sizeof(s32));
+	spu.pmixbuf = (s32 *) malloc(spu.buflen * sizeof(s32));
 	if (!spu.pmixbuf)
 	{
 		SPU_DeInit();
 		return -1;
 	}
 
-	spu.pclipingbuf = malloc(spu.buflen * sizeof(s16));
+	spu.pclipingbuf = (s16 *) malloc(spu.buflen * sizeof(s16));
 	if (!spu.pclipingbuf)
 	{
 		SPU_DeInit();

@@ -116,7 +116,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 			return AO_FAIL;
 
 		// Decompress data if any
-		decomp_dat = malloc(DECOMP_MAX_SIZE);
+		decomp_dat = (uint8_t *) malloc(DECOMP_MAX_SIZE);
 		decomp_length = DECOMP_MAX_SIZE;
 		if (uncompress(decomp_dat, &decomp_length, (unsigned char *)&buf[4+(res_area/4)], comp_length) != Z_OK)
 		{
@@ -125,7 +125,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 		}
 
 		// Resize memory buffer to what we actually need
-		decomp_dat = realloc(decomp_dat, (size_t)decomp_length + 1);
+		decomp_dat = (uint8_t *) realloc(decomp_dat, (size_t)decomp_length + 1);
 	}
 	else
 	{
@@ -134,7 +134,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 	}
 
 	// Make structure
-	*c = malloc(sizeof(corlett_t));
+	*c = (corlett_t *) malloc(sizeof(corlett_t));
 	if (!(*c))
 	{
 		free(decomp_dat);
