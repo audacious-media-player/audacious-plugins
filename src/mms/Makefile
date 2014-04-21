@@ -1,6 +1,6 @@
 PLUGIN = mms${PLUGIN_SUFFIX}
 
-SRCS = mms.c
+SRCS = mms.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

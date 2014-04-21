@@ -73,7 +73,7 @@ static int mms_vfs_fclose_impl (VFSFile * file)
 
 static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSFile * file)
 {
-    MMSHandle * h = vfs_get_handle (file);
+    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
     int64_t bytes_total = size * count;
     int64_t bytes_read = 0;
 
@@ -106,7 +106,7 @@ static int64_t mms_vfs_fwrite_impl (const void * data, int64_t size, int64_t cou
 
 static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 {
-    MMSHandle * h = vfs_get_handle (file);
+    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
     if (whence == SEEK_CUR)
     {
@@ -141,7 +141,7 @@ static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 
 static int64_t mms_vfs_ftell_impl (VFSFile * file)
 {
-    MMSHandle * h = vfs_get_handle (file);
+    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
     if (h->mms)
         return mms_get_current_pos (h->mms);
@@ -151,7 +151,7 @@ static int64_t mms_vfs_ftell_impl (VFSFile * file)
 
 static bool_t mms_vfs_feof_impl (VFSFile * file)
 {
-    MMSHandle * h = vfs_get_handle (file);
+    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
     if (h->mms)
         return (mms_get_current_pos (h->mms) < mms_get_length (h->mms));
@@ -167,7 +167,7 @@ static int mms_vfs_truncate_impl (VFSFile * file, int64_t size)
 
 static int64_t mms_vfs_fsize_impl (VFSFile * file)
 {
-    MMSHandle * h = vfs_get_handle (file);
+    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
     if (h->mms)
         return mms_get_length (h->mms);
