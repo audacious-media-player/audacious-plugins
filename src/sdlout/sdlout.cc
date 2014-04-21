@@ -189,7 +189,7 @@ int sdlout_open_audio (int format, int rate, int chan)
     sdlout_rate = rate;
 
     buffer_size = 2 * chan * (aud_get_int (NULL, "output_buffer_size") * rate / 1000);
-    buffer = g_malloc (buffer_size);
+    buffer = g_new (unsigned char, buffer_size);
     buffer_data_start = 0;
     buffer_data_len = 0;
 
@@ -197,13 +197,13 @@ int sdlout_open_audio (int format, int rate, int chan)
     prebuffer_flag = 1;
     paused_flag = 0;
 
-    SDL_AudioSpec spec = {
-     .freq = rate,
-     .format = AUDIO_S16,
-     .channels = chan,
-     .samples = 4096,
-     .callback = callback,
-     .userdata = NULL};
+    SDL_AudioSpec spec = {0};
+
+    spec.freq = rate;
+    spec.format = AUDIO_S16;
+    spec.channels = chan;
+    spec.samples = 4096;
+    spec.callback = callback;
 
     if (SDL_OpenAudio (& spec, NULL) < 0)
     {
