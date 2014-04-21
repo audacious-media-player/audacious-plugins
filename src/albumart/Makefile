@@ -1,6 +1,6 @@
 PLUGIN = albumart${PLUGIN_SUFFIX}
 
-SRCS = albumart.c
+SRCS = albumart.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

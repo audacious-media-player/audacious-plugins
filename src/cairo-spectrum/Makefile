@@ -1,6 +1,6 @@
 PLUGIN = cairo-spectrum${PLUGIN_SUFFIX}
 
-SRCS = cairo-spectrum.c
+SRCS = cairo-spectrum.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

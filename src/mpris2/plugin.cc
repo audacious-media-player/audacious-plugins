@@ -329,8 +329,8 @@ bool_t mpris2_init (void)
         return FALSE;
     }
 
-    g_bus_own_name_on_connection (bus, "org.mpris.MediaPlayer2.audacious", 0,
-     NULL, NULL, NULL, NULL);
+    g_bus_own_name_on_connection (bus, "org.mpris.MediaPlayer2.audacious",
+     (GBusNameOwnerFlags) 0, NULL, NULL, NULL, NULL);
 
     object_core = (GObject *) mpris_media_player2_skeleton_new ();
 

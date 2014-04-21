@@ -82,7 +82,7 @@ static void confirm_delete (void)
 
     for (int i = 0; i < file_count; i ++)
     {
-        char * uri = index_get (files, i);
+        char * uri = (char *) index_get (files, i);
         char * filename = uri_to_filename (uri);
 
         if (filename)
@@ -160,9 +160,10 @@ static void delete_files_cleanup (void)
 }
 
 static const PreferencesWidget delete_files_widgets[] = {
- {WIDGET_LABEL, N_("<b>Delete Method</b>")},
- {WIDGET_CHK_BTN, N_("Move to trash instead of deleting immediately"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "delete_files", .cname = "use_trash"}};
+    WidgetLabel (N_("<b>Delete Method</b>")),
+    WidgetCheck (N_("Move to trash instead of deleting immediately"),
+        {VALUE_BOOLEAN, 0, "delete_files", "use_trash"})
+};
 
 static const PluginPreferences delete_files_prefs = {
  .widgets = delete_files_widgets,

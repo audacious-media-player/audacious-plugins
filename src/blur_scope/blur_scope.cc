@@ -44,8 +44,9 @@ static void /* GtkWidget */ * bscope_get_widget (void);
 static void /* GtkWidget */ * bscope_get_color_chooser (void);
 
 static const PreferencesWidget bscope_widgets[] = {
- {WIDGET_LABEL, N_("<b>Color</b>")},
- {WIDGET_CUSTOM, .data = {.populate = bscope_get_color_chooser}}};
+    WidgetLabel (N_("<b>Color</b>")),
+    WidgetCustom (bscope_get_color_chooser)
+};
 
 static const PluginPreferences bscope_prefs = {
  .widgets = bscope_widgets,
@@ -94,7 +95,7 @@ static void bscope_resize (gint w, gint h)
     height = h;
     stride = width + 2;
     image_size = (stride << 2) * (height + 2);
-    image = g_realloc (image, image_size);
+    image = (guint32 *) g_realloc (image, image_size);
     memset (image, 0, image_size);
     corner = image + stride + 1;
 }
@@ -172,7 +173,7 @@ static void bscope_blur (void)
     }
 }
 
-static inline void draw_vert_line (gint x, guint y1, gint y2)
+static inline void draw_vert_line (gint x, gint y1, gint y2)
 {
     gint y, h;
 

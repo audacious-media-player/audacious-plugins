@@ -1,6 +1,6 @@
 PLUGIN = gl-spectrum${PLUGIN_SUFFIX}
 
-SRCS = gl-spectrum.c
+SRCS = gl-spectrum.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

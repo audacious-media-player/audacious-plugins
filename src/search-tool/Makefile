@@ -1,6 +1,6 @@
 PLUGIN = search-tool${PLUGIN_SUFFIX}
 
-SRCS = search-tool.c
+SRCS = search-tool.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

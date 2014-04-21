@@ -1,6 +1,6 @@
 PLUGIN = delete-files${PLUGIN_SUFFIX}
 
-SRCS = delete-files.c
+SRCS = delete-files.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

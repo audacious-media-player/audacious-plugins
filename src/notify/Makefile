@@ -1,6 +1,6 @@
 PLUGIN = notify${PLUGIN_SUFFIX}
 
-SRCS = event.c notify.c osd.c
+SRCS = event.cc notify.cc osd.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

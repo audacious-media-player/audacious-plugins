@@ -77,12 +77,10 @@ static void plugin_reinit (void)
 }
 
 static const PreferencesWidget prefs_widgets[] = {
- {WIDGET_CHK_BTN, N_("Show playback controls"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "notify", .cname = "actions",
-  .callback = plugin_reinit},
- {WIDGET_CHK_BTN, N_("Always show notification"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "notify", .cname = "resident",
-  .callback = plugin_reinit}
+    WidgetCheck (N_("Show playback controls"),
+        {VALUE_BOOLEAN, 0, "notify", "actions", plugin_reinit}),
+    WidgetCheck (N_("Always show notification"),
+        {VALUE_BOOLEAN, 0, "notify", "resident", plugin_reinit})
 };
 
 static const PluginPreferences plugin_prefs = {

@@ -212,7 +212,7 @@ static void create_database (int list)
         if (! album)
             album = str_get (_("Unknown Album"));
 
-        artist_item = g_hash_table_lookup (database, artist);
+        artist_item = (Item *) g_hash_table_lookup (database, artist);
 
         if (! artist_item)
         {
@@ -225,7 +225,7 @@ static void create_database (int list)
 
         g_array_append_val (artist_item->matches, e);
 
-        album_item = g_hash_table_lookup (artist_item->children, album);
+        album_item = (Item *) g_hash_table_lookup (artist_item->children, album);
 
         if (! album_item)
         {
@@ -238,7 +238,7 @@ static void create_database (int list)
 
         g_array_append_val (album_item->matches, e);
 
-        title_item = g_hash_table_lookup (album_item->children, title);
+        title_item = (Item *) g_hash_table_lookup (album_item->children, title);
 
         if (! title_item)
         {
@@ -255,8 +255,8 @@ static void create_database (int list)
 
 static void search_cb (void * key, void * _item, void * _state)
 {
-    Item * item = _item;
-    SearchState * state = _state;
+    Item * item = (Item *) _item;
+    SearchState * state = (SearchState *) _state;
 
     if (index_count (state->items[item->field]) > MAX_RESULTS)
         return;
@@ -269,7 +269,7 @@ static void search_cb (void * key, void * _item, void * _state)
         if (! (state->mask & bit))
             continue; /* skip term if it is already found */
 
-        if (strstr (item->folded, index_get (search_terms, t)))
+        if (strstr (item->folded, (char *) index_get (search_terms, t)))
             state->mask &= ~bit; /* we found it */
         else if (! item->children)
             break; /* quit early if there are no children to search */
@@ -286,7 +286,7 @@ static void search_cb (void * key, void * _item, void * _state)
 
 static int item_compare (const void * _a, const void * _b)
 {
-    const Item * a = _a, * b = _b;
+    const Item * a = (const Item *) _a, * b = (const Item *) _b;
     return str_compare (a->name, b->name);
 }
 
@@ -555,9 +555,9 @@ static void do_add (bool_t play, char * * title)
         if (! selection->data[i])
             continue;
 
-        Item * item = index_get (items, i);
+        Item * item = (Item *) index_get (items, i);
 
-        for (int m = 0; m < item->matches->len; m ++)
+        for (unsigned m = 0; m < item->matches->len; m ++)
         {
             int entry = g_array_index (item->matches, int, m);
             index_insert (filenames, -1, aud_playlist_entry_get_filename (list, entry));
@@ -613,7 +613,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
 {
     g_return_if_fail (items && row >= 0 && row < index_count (items));
 
-    Item * item = index_get (items, row);
+    Item * item = (Item *) index_get (items, row);
     char * string = NULL;
 
     switch (item->field)
@@ -647,13 +647,13 @@ static void list_get_value (void * user, int row, int column, GValue * value)
 
 static bool_t list_get_selected (void * user, int row)
 {
-    g_return_val_if_fail (selection && row >= 0 && row < selection->len, FALSE);
+    g_return_val_if_fail (selection && row >= 0 && (unsigned) row < selection->len, FALSE);
     return selection->data[row];
 }
 
 static void list_set_selected (void * user, int row, bool_t selected)
 {
-    g_return_if_fail (selection && row >= 0 && row < selection->len);
+    g_return_if_fail (selection && row >= 0 && (unsigned) row < selection->len);
     selection->data[row] = selected;
 }
 
@@ -671,9 +671,12 @@ static void list_activate_row (void * user, int row)
 static void list_right_click (void * user, GdkEventButton * event)
 {
     static const AudguiMenuItem items[] = {
-        {N_("_Play"), "media-playback-start", .func = action_play},
-        {N_("_Create Playlist"), "document-new", .func = action_create_playlist},
-        {N_("_Add to Playlist"), "list-add", .func = action_add_to_playlist}
+        MenuCommand (N_("_Play"), "media-playback-start",
+         0, (GdkModifierType) 0, action_play),
+        MenuCommand (N_("_Create Playlist"), "document-new",
+         0, (GdkModifierType) 0, action_create_playlist),
+        MenuCommand (N_("_Add to Playlist"), "list-add",
+         0, (GdkModifierType) 0, action_add_to_playlist)
     };
 
     GtkWidget * menu = gtk_menu_new ();

@@ -1,6 +1,6 @@
 PLUGIN = blur_scope${PLUGIN_SUFFIX}
 
-SRCS = blur_scope.c
+SRCS = blur_scope.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
