@@ -43,12 +43,12 @@
 
 static ssize_t replace_read (void * file, void * buffer, size_t length)
 {
-	return vfs_fread (buffer, 1, length, file);
+	return vfs_fread (buffer, 1, length, (VFSFile *) file);
 }
 
 static off_t replace_lseek (void * file, off_t to, int whence)
 {
-	return (! vfs_fseek (file, to, whence)) ? vfs_ftell (file) : -1;
+	return (! vfs_fseek ((VFSFile *) file, to, whence)) ? vfs_ftell ((VFSFile *) file) : -1;
 }
 
 static off_t replace_lseek_dummy (void * file, off_t to, int whence)
@@ -155,7 +155,7 @@ RETRY:;
 
 	float out[chan * (rate / 10)];
 	size_t done;
-	while ((res = mpg123_read (dec, (void *) out, sizeof out, & done)) < 0)
+	while ((res = mpg123_read (dec, (unsigned char *) out, sizeof out, & done)) < 0)
 	{
 		if (res == MPG123_NEW_FORMAT)
 			goto RETRY;
@@ -190,18 +190,17 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	else
 		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, NULL);
 
-	if ((result = mpg123_open_handle (decoder, file)) < 0)
-		goto ERR;
-
+	if ((result = mpg123_open_handle (decoder, file)) < 0
 #ifdef FULL_SCAN
-	if (mpg123_scan (decoder) < 0)
-		goto ERR;
+	 || (result = mpg123_scan (decoder)) < 0
 #endif
-
-	if ((result = mpg123_getformat (decoder, & rate, & channels, & encoding)) < 0)
-		goto ERR;
-	if ((result = mpg123_info (decoder, & info)) < 0)
-		goto ERR;
+	 || (result = mpg123_getformat (decoder, & rate, & channels, & encoding)) < 0
+	 || (result = mpg123_info (decoder, & info)) < 0)
+	{
+		fprintf (stderr, "mpg123 probe error for %s: %s\n", filename, mpg123_plain_strerror (result));
+		mpg123_delete (decoder);
+		return NULL;
+	}
 
 	Tuple * tuple = tuple_new_from_filename (filename);
 	make_format_string (& info, scratch, sizeof scratch);
@@ -232,11 +231,6 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 		tag_update_stream_metadata (tuple, file);
 
 	return tuple;
-
-ERR:
-	fprintf (stderr, "mpg123 probe error for %s: %s\n", filename, mpg123_plain_strerror (result));
-	mpg123_delete (decoder);
-	return NULL;
 }
 
 typedef struct {
@@ -284,6 +278,9 @@ static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
 
 	set_format (ctx.decoder);
 
+	float outbuf[8192];
+	size_t outbuf_size = 0;
+
 	if (mpg123_open_handle (ctx.decoder, file) < 0)
 	{
 OPEN_ERROR:
@@ -291,9 +288,6 @@ OPEN_ERROR:
 		error = TRUE;
 		goto cleanup;
 	}
-
-	float outbuf[8192];
-	size_t outbuf_size = 0;
 
 #ifdef FULL_SCAN
 	if (mpg123_scan (ctx.decoder) < 0)
@@ -305,8 +299,8 @@ GET_FORMAT:
 	 & ctx.encoding) < 0)
 		goto OPEN_ERROR;
 
-	while ((ret = mpg123_read (ctx.decoder, (void *) outbuf, sizeof outbuf,
-	 & outbuf_size)) < 0)
+	while ((ret = mpg123_read (ctx.decoder, (unsigned char *) outbuf,
+	 sizeof outbuf, & outbuf_size)) < 0)
 	{
 		if (ret == MPG123_NEW_FORMAT)
 			goto GET_FORMAT;
@@ -357,8 +351,8 @@ GET_FORMAT:
 			aud_input_set_tuple (ctx.tu);
 		}
 
-		if (! outbuf_size && (ret = mpg123_read (ctx.decoder, (void *) outbuf,
-		 sizeof outbuf, & outbuf_size)) < 0)
+		if (! outbuf_size && (ret = mpg123_read (ctx.decoder,
+		 (unsigned char *) outbuf, sizeof outbuf, & outbuf_size)) < 0)
 		{
 			if (ret == MPG123_DONE || ret == MPG123_ERR_READER)
 				break;
