@@ -1,6 +1,6 @@
 PLUGIN = lirc${PLUGIN_SUFFIX}
 
-SRCS = lirc.c
+SRCS = lirc.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

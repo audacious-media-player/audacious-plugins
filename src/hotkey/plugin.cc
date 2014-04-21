@@ -348,7 +348,7 @@ void load_config (void)
     hotkey->next = NULL;
     hotkey->key = 0;
     hotkey->mask = 0;
-    hotkey->event = 0;
+    hotkey->event = (EVENT) 0;
     hotkey->type = TYPE_KEY;
 
     max = aud_get_int ("globalHotkey", "NumHotkeys");
@@ -364,7 +364,7 @@ void load_config (void)
             hotkey->next = NULL;
             hotkey->key = 0;
             hotkey->mask = 0;
-            hotkey->event = 0;
+            hotkey->event = (EVENT) 0;
             hotkey->type = TYPE_KEY;
         }
         text = g_strdup_printf("Hotkey_%d_key", i);
@@ -380,7 +380,7 @@ void load_config (void)
         g_free(text);
 
         text = g_strdup_printf("Hotkey_%d_event", i);
-        hotkey->event = aud_get_int ("globalHotkey", text);
+        hotkey->event = (EVENT) aud_get_int ("globalHotkey", text);
         g_free(text);
     }
 }
@@ -437,7 +437,7 @@ static void cleanup (void)
     }
     plugin_cfg.first.next = NULL;
     plugin_cfg.first.key = 0;
-    plugin_cfg.first.event = 0;
+    plugin_cfg.first.event = (EVENT) 0;
     plugin_cfg.first.mask = 0;
     loaded = FALSE;
 }

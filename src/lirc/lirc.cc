@@ -69,7 +69,7 @@ void init_lirc (void)
 {
     int flags;
 
-    if ((lirc_fd = lirc_init ("audacious", 1)) == -1)
+    if ((lirc_fd = lirc_init ((char *) "audacious", 1)) == -1)
     {
         fprintf (stderr, _("%s: could not init LIRC support\n"), plugin_name);
         return;
@@ -387,12 +387,14 @@ static const char about[] =
     "For more information about LIRC, see http://lirc.org.");
 
 static const PreferencesWidget widgets[] = {
- {WIDGET_LABEL, N_("<b>Connection</b>")},
- {WIDGET_CHK_BTN, N_("Reconnect to LIRC server"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "lirc", .cname = "enable_reconnect"},
- {WIDGET_SPIN_BTN, N_("Wait before reconnecting:"), .child = TRUE,
-  .cfg_type = VALUE_INT, .csect = "lirc", .cname = "reconnect_timeout",
-  .data = {.spin_btn = {1, 120, 1, N_("seconds")}}}};
+    WidgetLabel (N_("<b>Connection</b>")),
+    WidgetCheck (N_("Reconnect to LIRC server"),
+        {VALUE_BOOLEAN, 0, "lirc", "enable_reconnect"}),
+    WidgetSpin (N_("Wait before reconnecting:"),
+        {VALUE_INT, 0, "lirc", "reconnect_timeout"},
+        {1, 120, 1, N_("seconds")},
+        WIDGET_CHILD)
+};
 
 static const PluginPreferences prefs = {
  .widgets = widgets,

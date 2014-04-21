@@ -1,6 +1,6 @@
 PLUGIN = song_change${PLUGIN_SUFFIX}
 
-SRCS = formatter.c song_change.c
+SRCS = formatter.cc song_change.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

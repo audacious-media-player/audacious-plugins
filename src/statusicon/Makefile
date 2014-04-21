@@ -1,7 +1,7 @@
 PLUGIN = statusicon${PLUGIN_SUFFIX}
 
-SRCS = statusicon.c \
-       util.c
+SRCS = statusicon.cc \
+       util.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

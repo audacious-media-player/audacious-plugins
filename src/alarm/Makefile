@@ -1,7 +1,7 @@
 PLUGIN = alarm${PLUGIN_SUFFIX}
 
-SRCS = alarm.c		\
-       interface.c
+SRCS = alarm.cc		\
+       interface.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

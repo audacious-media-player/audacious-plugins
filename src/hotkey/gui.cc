@@ -66,7 +66,7 @@ static void destroy_callback (GtkWidget *widget, gpointer data);
 static void ok_callback (GtkWidget *widget, gpointer data);
 
 
-static gchar* event_desc[EVENT_MAX] = {
+static const char * event_desc[EVENT_MAX] = {
     [EVENT_PREV_TRACK] = N_("Previous track"),
     [EVENT_PLAY] = N_("Play"),
     [EVENT_PAUSE] = N_("Pause/Resume"),
@@ -95,9 +95,9 @@ static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
     {
         text = g_strdup(_("(none)"));
     } else {
-        static char *modifier_string[] = { "Control", "Shift", "Alt", "Mod2", "Mod3", "Super", "Mod5" };
-        static unsigned int modifiers[] = { ControlMask, ShiftMask, Mod1Mask, Mod2Mask, Mod3Mask, Mod4Mask, Mod5Mask };
-        gchar *strings[9];
+        static const char *modifier_string[] = { "Control", "Shift", "Alt", "Mod2", "Mod3", "Super", "Mod5" };
+        static const unsigned int modifiers[] = { ControlMask, ShiftMask, Mod1Mask, Mod2Mask, Mod3Mask, Mod4Mask, Mod5Mask };
+        const char *strings[9];
         gchar *keytext = NULL;
         int i, j;
         if (type == TYPE_KEY)
@@ -124,7 +124,7 @@ static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
         if (key != 0) strings[i++] = keytext;
         strings[i] = NULL;
 
-        text = g_strjoinv(" + ", strings);
+        text = g_strjoinv(" + ", (char **)strings);
         g_free(keytext);
     }
 
@@ -225,7 +225,7 @@ on_entry_button_press_event(GtkWidget * widget,
     if ((event->button <= 3) && (mod == 0))
     {
         GtkWidget* dialog;
-        GtkResponseType response;
+        int response;
         dialog = gtk_message_dialog_new (GTK_WINDOW(gtk_widget_get_toplevel(widget)),
             GTK_DIALOG_MODAL,
             GTK_MESSAGE_WARNING,
@@ -319,7 +319,7 @@ KeyControls* add_event_controls(KeyControls* list,
         controls->hotkey.key = 0;
         controls->hotkey.mask = 0;
         controls->hotkey.type = TYPE_KEY;
-        controls->hotkey.event = 0;
+        controls->hotkey.event = (EVENT) 0;
     }
 
     controls->combobox = gtk_combo_box_text_new();
@@ -442,7 +442,7 @@ void show_configure ()
     first_controls->first = first_controls;
     first_controls->hotkey.key = 0;
     first_controls->hotkey.mask = 0;
-    first_controls->hotkey.event = 0;
+    first_controls->hotkey.event = (EVENT) 0;
     first_controls->hotkey.type = TYPE_KEY;
     current_controls = first_controls;
     if (hotkey -> key != 0)
@@ -458,9 +458,11 @@ void show_configure ()
     temphotkey.mask = 0;
     temphotkey.type = TYPE_KEY;
     if (current_controls != first_controls)
-        temphotkey.event = current_controls->hotkey.event+1;
-    else temphotkey.event = 0;
-    if (temphotkey.event >= EVENT_MAX) temphotkey.event = 0;
+        temphotkey.event = (EVENT) (current_controls->hotkey.event + 1);
+    else
+        temphotkey.event = (EVENT) 0;
+    if (temphotkey.event >= EVENT_MAX)
+        temphotkey.event = (EVENT) 0;
     add_event_controls(current_controls, grid, i, &temphotkey);
 
 
@@ -581,8 +583,9 @@ void add_callback (GtkWidget *widget, gpointer data)
     temphotkey.key = 0;
     temphotkey.mask = 0;
     temphotkey.type = TYPE_KEY;
-    temphotkey.event = controls->hotkey.event+1;
-    if (temphotkey.event >= EVENT_MAX) temphotkey.event = 0;
+    temphotkey.event = (EVENT) (controls->hotkey.event + 1);
+    if (temphotkey.event >= EVENT_MAX)
+        temphotkey.event = (EVENT) 0;
     add_event_controls(controls, controls->grid, count, &temphotkey);
     gtk_widget_show_all (GTK_WIDGET (controls->grid));
 }
@@ -624,7 +627,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
     }
     plugin_cfg->first.next = NULL;
     plugin_cfg->first.key = 0;
-    plugin_cfg->first.event = 0;
+    plugin_cfg->first.event = (EVENT) 0;
     plugin_cfg->first.mask = 0;
 
     hotkey = &(plugin_cfg->first);
@@ -638,7 +641,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
             }
             hotkey->key = controls->hotkey.key;
             hotkey->mask = controls->hotkey.mask;
-            hotkey->event = gtk_combo_box_get_active( GTK_COMBO_BOX(controls->combobox) );
+            hotkey->event = (EVENT) gtk_combo_box_get_active( GTK_COMBO_BOX(controls->combobox) );
             hotkey->type = controls->hotkey.type;
         }
         controls = controls->next;

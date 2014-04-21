@@ -94,8 +94,6 @@ static time_t play_start;
 static alarm_thread_t stop;     /* thread id of stop loop */
 static pthread_mutex_t fader_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static GeneralPlugin alarm_plugin;
-
 /* string tokens to allow loops and shorten code */
 static char day_cb[7][7] = {"sun_cb", "mon_cb", "tue_cb",
                             "wed_cb", "thu_cb", "fri_cb", "sat_cb"};
@@ -160,7 +158,7 @@ static GtkWidget *alarm_dialog = NULL;
 
 static GtkWidget *lookup_widget(GtkWidget *w, const gchar *name)
 {
-    GtkWidget * widget = g_object_get_data ((GObject *) w, name);
+    GtkWidget * widget = (GtkWidget *) g_object_get_data ((GObject *) w, name);
     g_return_val_if_fail(widget != NULL, NULL);
 
     return widget;
@@ -546,7 +544,6 @@ static inline alarm_thread_t alarm_thread_create(void *(*start_routine)(void *),
 static void *alarm_fade(void *arg)
 {
     fader *vols = (fader *)arg;
-    guint i;
     gint v;
     gint inc, diff, adiff;
 
@@ -572,10 +569,9 @@ static void *alarm_fade(void *arg)
         inc = 1;
 
     aud_drct_set_volume_main((gint)vols->start);
-    //for(i=0;i<(vols->end - vols->start);i++)
-    for(i=0;i<adiff;i++)
+
+    for (int i = 0; i < adiff; i ++)
     {
-        //threadsleep((gfloat)fading / (vols->end - vols->start));
         threadsleep((gfloat)fading / (gfloat)adiff);
         aud_drct_get_volume_main(&v);
         aud_drct_set_volume_main(v + inc);

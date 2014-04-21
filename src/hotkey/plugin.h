@@ -33,8 +33,8 @@ typedef enum {
 
 
 typedef struct _HotkeyConfiguration {
-    gint key, mask;
-    gint type;
+    unsigned key, mask;
+    unsigned type;
     EVENT event;
     struct _HotkeyConfiguration *next;
 } HotkeyConfiguration;

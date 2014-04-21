@@ -25,8 +25,6 @@
 
 #include "formatter.h"
 
-static const PluginPreferences preferences;
-
 static gboolean init (void);
 static void cleanup(void);
 static void songchange_playback_begin(gpointer unused, gpointer unused2);
@@ -49,14 +47,6 @@ static char *cmd_line_ttc = NULL;
 
 static GtkWidget *cmd_warn_label, *cmd_warn_img;
 
-#define AUD_PLUGIN_NAME        N_("Song Change")
-#define AUD_PLUGIN_PREFS       & preferences
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
-
 /**
  * Escapes characters that are special to the shell inside double quotes.
  *
@@ -74,7 +64,7 @@ static gchar *escape_shell_chars(const gchar * string)
         if (strchr(special, *in++))
             num++;
 
-    escaped = g_malloc(strlen(string) + num + 1);
+    escaped = g_new(char, strlen(string) + num + 1);
 
     in = string;
     out = escaped;
@@ -96,7 +86,7 @@ static void bury_child(int signal)
 
 static void execute_command(char *cmd)
 {
-    char *argv[4] = {"/bin/sh", "-c", NULL, NULL};
+    const char *argv[4] = {"/bin/sh", "-c", NULL, NULL};
     int i;
     argv[2] = cmd;
     signal(SIGCHLD, bury_child);
@@ -105,7 +95,7 @@ static void execute_command(char *cmd)
         /* We don't want this process to hog the audio device etc */
         for (i = 3; i < 255; i++)
             close(i);
-        execv("/bin/sh", argv);
+        execv("/bin/sh", (char **)argv);
     }
 }
 
@@ -316,7 +306,7 @@ static gboolean init (void)
     hook_associate("playback end", songchange_playback_end, NULL);
     hook_associate("playlist end reached", songchange_playlist_eof, NULL);
 
-    ttc_prevs = g_malloc0(sizeof(songchange_playback_ttc_prevs_t));
+    ttc_prevs = g_new0(songchange_playback_ttc_prevs_t, 1);
     ttc_prevs->title = NULL;
     ttc_prevs->filename = NULL;
     // hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
@@ -423,47 +413,6 @@ static void configure_ok_cb()
     g_free(cmd_ttc);
 }
 
-static const PreferencesWidget elements[] = {
-    {WIDGET_LABEL, N_("Command to run when Audacious starts a new song."),
-        .data = {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd, .callback = configure_ok_cb},
-    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
-
-    {WIDGET_LABEL, N_("Command to run toward the end of a song."),
-        .data = {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd_after, .callback = configure_ok_cb},
-    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
-
-    {WIDGET_LABEL, N_("Command to run when Audacious reaches the end of the "
-            "playlist."), .data = {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd_end, .callback = configure_ok_cb},
-    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
-
-    {WIDGET_LABEL, N_("Command to run when title changes for a song (i.e. "
-            "network streams titles)."), .data = {.label = {.single_line = TRUE}}},
-    {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd_ttc, .callback = configure_ok_cb},
-    {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
-
-    {WIDGET_LABEL, N_("You can use the following format strings which\n"
-            "will be substituted before calling the command\n"
-            "(not all are useful for the end-of-playlist command):\n\n"
-            "%F: Frequency (in hertz)\n"
-            "%c: Number of channels\n"
-            "%f: File name (full path)\n"
-            "%l: Length (in milliseconds)\n"
-            "%n or %s: Song name\n"
-            "%r: Rate (in bits per second)\n"
-            "%t: Playlist position (%02d)\n"
-            "%p: Currently playing (1 or 0)\n"
-            "%a: Artist\n"
-            "%b: Album\n"
-            "%T: Track title")},
-};
-
 /* static GtkWidget * custom_warning (void) */
 static void * custom_warning (void)
 {
@@ -486,8 +435,41 @@ static void * custom_warning (void)
 }
 
 static const PreferencesWidget settings[] = {
-    {WIDGET_BOX, N_("Commands"), .data = {.box = {elements, ARRAY_LEN (elements), .frame = TRUE}}},
-    {WIDGET_CUSTOM, .data = {.populate = custom_warning}}};
+    WidgetLabel (N_("<b>Commands</b>")),
+
+    WidgetLabel (N_("Command to run when starting a new song:")),
+    WidgetEntry (0, {VALUE_STRING, & config.cmd, 0, 0, configure_ok_cb}),
+    WidgetSeparator (),
+
+    WidgetLabel (N_("Command to run at the end of a song:")),
+    WidgetEntry (0, {VALUE_STRING, & config.cmd_after, 0, 0, configure_ok_cb}),
+    WidgetSeparator (),
+
+    WidgetLabel (N_("Command to run at the end of the playlist:")),
+    WidgetEntry (0, {VALUE_STRING, & config.cmd_end, 0, 0, configure_ok_cb}),
+    WidgetSeparator (),
+
+    WidgetLabel (N_("Command to run when song title changes (for network streams):")),
+    WidgetEntry (0, {VALUE_STRING, & config.cmd_ttc, 0, 0, configure_ok_cb}),
+    WidgetSeparator (),
+
+    WidgetLabel (N_("You can use the following format strings which "
+                    "will be substituted before calling the command "
+                    "(not all are useful for the end-of-playlist command):\n\n"
+                    "%F: Frequency (in hertz)\n"
+                    "%c: Number of channels\n"
+                    "%f: File name (full path)\n"
+                    "%l: Length (in milliseconds)\n"
+                    "%n or %s: Song name\n"
+                    "%r: Rate (in bits per second)\n"
+                    "%t: Playlist position (%02d)\n"
+                    "%p: Currently playing (1 or 0)\n"
+                    "%a: Artist\n"
+                    "%b: Album\n"
+                    "%T: Track title")),
+
+    WidgetCustom (custom_warning)
+};
 
 static void configure_init(void)
 {
@@ -515,8 +497,17 @@ static void configure_cleanup(void)
 }
 
 static const PluginPreferences preferences = {
-    .widgets = settings,
-    .n_widgets = ARRAY_LEN (settings),
-    .init = configure_init,
-    .cleanup = configure_cleanup,
+    settings,
+    ARRAY_LEN (settings),
+    configure_init,
+    NULL,  // apply
+    configure_cleanup,
 };
+
+#define AUD_PLUGIN_NAME        N_("Song Change")
+#define AUD_PLUGIN_PREFS       & preferences
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

@@ -81,7 +81,7 @@ formatter_format(Formatter * formatter, gchar *format)
         }
         else
             len++;
-    buffer = g_malloc(len + 1);
+    buffer = g_new(char, len + 1);
     for (p = format, q = buffer; *p; p++)
         if (*p == '%') {
             if (formatter->values[(int) *++p]) {

@@ -171,12 +171,12 @@ static gboolean si_popup_show(gpointer icon)
     static gint count = 0;
 
     audgui_get_mouse_coords (NULL, & x, & y);
-    gtk_status_icon_get_geometry (icon, NULL, & area, NULL);
+    gtk_status_icon_get_geometry ((GtkStatusIcon *) icon, NULL, & area, NULL);
 
     if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
     {
-        si_popup_timer_stop(icon);
-        si_popup_hide(icon);
+        si_popup_timer_stop ((GtkStatusIcon *) icon);
+        si_popup_hide ((GtkStatusIcon *) icon);
         count = 0;
 
         return TRUE;
@@ -235,7 +235,7 @@ static void si_popup_timer_stop(GtkStatusIcon * icon)
 
 static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean keyboard_mode, GtkTooltip * tooltip, gpointer user_data)
 {
-    GtkWidget *menu = g_object_get_data(G_OBJECT(icon), "smenu");
+    GtkWidget *menu = (GtkWidget *) g_object_get_data(G_OBJECT(icon), "smenu");
 
     if (aud_get_bool("statusicon", "disable_popup") || gtk_widget_get_visible(menu))
         return FALSE;
@@ -248,7 +248,7 @@ static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean key
 
 static void si_smallmenu_show(gint x, gint y, guint button, guint32 time, gpointer evbox)
 {
-    GtkWidget *si_smenu = g_object_get_data(G_OBJECT(evbox), "smenu");
+    GtkWidget *si_smenu = (GtkWidget *) g_object_get_data(G_OBJECT(evbox), "smenu");
     gtk_menu_popup(GTK_MENU(si_smenu), NULL, NULL, NULL, NULL, button, time);
 }
 
@@ -260,15 +260,15 @@ static void open_files (void)
 static GtkWidget *si_smallmenu_create(void)
 {
     static const AudguiMenuItem items[] = {
-        {N_("_Open Files ..."), "document-open", .func = open_files},
-        {N_("Pre_vious"), "media-skip-backward", .func = aud_drct_pl_prev},
-        {N_("_Play"), "media-playback-start", .func = aud_drct_play},
-        {N_("Paus_e"), "media-playback-pause", .func = aud_drct_pause},
-        {N_("_Stop"), "media-playback-stop", .func = aud_drct_stop},
-        {N_("_Next"), "media-skip-forward", .func = aud_drct_pl_next},
-        {.sep = TRUE},
-        {N_("Se_ttings ..."), "preferences-system", .func = audgui_show_prefs_window},
-        {N_("_Quit"), "application-exit", .func = aud_quit}
+        MenuCommand (N_("_Open Files ..."), "document-open", 0, (GdkModifierType) 0, open_files),
+        MenuCommand (N_("Pre_vious"), "media-skip-backward", 0, (GdkModifierType) 0, aud_drct_pl_prev),
+        MenuCommand (N_("_Play"), "media-playback-start", 0, (GdkModifierType) 0, aud_drct_play),
+        MenuCommand (N_("Paus_e"), "media-playback-pause", 0, (GdkModifierType) 0, aud_drct_pause),
+        MenuCommand (N_("_Stop"), "media-playback-stop", 0, (GdkModifierType) 0, aud_drct_stop),
+        MenuCommand (N_("_Next"), "media-skip-forward", 0, (GdkModifierType) 0, aud_drct_pl_next),
+        MenuSep (),
+        MenuCommand (N_("Se_ttings ..."), "preferences-system", 0, (GdkModifierType) 0, audgui_show_prefs_window),
+        MenuCommand (N_("_Quit"), "application-exit", 0, (GdkModifierType) 0, aud_quit)
     };
 
     GtkWidget *si_smenu = gtk_menu_new();
@@ -278,7 +278,7 @@ static GtkWidget *si_smallmenu_create(void)
 
 static void si_smallmenu_recreate(GtkStatusIcon * icon)
 {
-    GtkWidget *smenu = g_object_get_data(G_OBJECT(icon), "smenu");
+    GtkWidget *smenu = (GtkWidget *) g_object_get_data(G_OBJECT(icon), "smenu");
     gtk_widget_destroy(GTK_WIDGET(smenu));
     smenu = si_smallmenu_create();
     g_object_set_data(G_OBJECT(icon), "smenu", smenu);
@@ -340,7 +340,7 @@ static void si_enable(gboolean enable)
         if (! aud_plugin_get_enabled(si) && ! aud_get_headless_mode() && ! aud_ui_is_shown())
             aud_ui_show(TRUE);
 
-        GtkWidget *si_smenu = g_object_get_data(G_OBJECT(si_applet), "smenu");
+        GtkWidget *si_smenu = (GtkWidget *) g_object_get_data(G_OBJECT(si_applet), "smenu");
         si_popup_timer_stop(si_applet);   /* just in case the timer is active */
         gtk_widget_destroy(si_smenu);
         g_object_unref(si_applet);
@@ -376,20 +376,21 @@ static const char si_about[] =
     "the system tray area of the window manager.");
 
 static const PreferencesWidget si_widgets[] = {
- {WIDGET_LABEL, N_("<b>Mouse Scroll Action</b>")},
- {WIDGET_RADIO_BTN, N_("Change volume"),
-  .cfg_type = VALUE_INT, .csect = "statusicon", .cname = "scroll_action",
-  .data = {.radio_btn = {SI_CFG_SCROLL_ACTION_VOLUME}}},
- {WIDGET_RADIO_BTN, N_("Change playing song"),
-  .cfg_type = VALUE_INT, .csect = "statusicon", .cname = "scroll_action",
-  .data = {.radio_btn = {SI_CFG_SCROLL_ACTION_SKIP}}},
- {WIDGET_LABEL, N_("<b>Other Settings</b>")},
- {WIDGET_CHK_BTN, N_("Disable the popup window"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "statusicon", .cname = "disable_popup"},
- {WIDGET_CHK_BTN, N_("Close to the system tray"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "statusicon", .cname = "close_to_tray"},
- {WIDGET_CHK_BTN, N_("Advance in playlist when scrolling upward"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "statusicon", .cname = "reverse_scroll"}};
+    WidgetLabel (N_("<b>Mouse Scroll Action</b>")),
+    WidgetRadio (N_("Change volume"),
+        {VALUE_INT, 0, "statusicon", "scroll_action"},
+        {SI_CFG_SCROLL_ACTION_VOLUME}),
+    WidgetRadio (N_("Change playing song"),
+        {VALUE_INT, 0, "statusicon", "scroll_action"},
+        {SI_CFG_SCROLL_ACTION_SKIP}),
+    WidgetLabel (N_("<b>Other Settings</b>")),
+    WidgetCheck (N_("Disable the popup window"),
+        {VALUE_BOOLEAN, 0, "statusicon", "disable_popup"}),
+    WidgetCheck (N_("Close to the system tray"),
+        {VALUE_BOOLEAN, 0, "statusicon", "close_to_tray"}),
+    WidgetCheck (N_("Advance in playlist when scrolling upward"),
+        {VALUE_BOOLEAN, 0, "statusicon", "reverse_scroll"})
+};
 
 static const PluginPreferences si_prefs = {
  .widgets = si_widgets,

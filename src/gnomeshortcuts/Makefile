@@ -1,6 +1,6 @@
 PLUGIN = gnomeshortcuts${PLUGIN_SUFFIX}
 
-SRCS = gnomeshortcuts.c
+SRCS = gnomeshortcuts.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
