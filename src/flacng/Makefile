@@ -1,9 +1,9 @@
 PLUGIN = flacng${PLUGIN_SUFFIX}
 
-SRCS = plugin.c \
-       tools.c \
-       seekable_stream_callbacks.c	\
-       metadata.c
+SRCS = plugin.cc \
+       tools.cc \
+       seekable_stream_callbacks.cc	\
+       metadata.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

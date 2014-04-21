@@ -92,27 +92,26 @@ bool_t flac_is_our_fd(const char *filename, VFSFile *fd)
 
 static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
 {
-    int i;
     int32_t* rp = src;
-    int8_t*  wp = dst;
-    int16_t* wp2 = dst;
-    int32_t* wp4 = dst;
+    int8_t*  wp = (int8_t*) dst;
+    int16_t* wp2 = (int16_t*) dst;
+    int32_t* wp4 = (int32_t*) dst;
 
     switch (res)
     {
         case 8:
-            for (i = 0; i < count; i++, wp++, rp++)
+            for (unsigned i = 0; i < count; i++, wp++, rp++)
                 *wp = *rp & 0xff;
             break;
 
         case 16:
-            for (i = 0; i < count; i++, wp2++, rp++)
+            for (unsigned i = 0; i < count; i++, wp2++, rp++)
                 *wp2 = *rp & 0xffff;
             break;
 
         case 24:
         case 32:
-            for (i = 0; i < count; i++, wp4++, rp++)
+            for (unsigned i = 0; i < count; i++, wp4++, rp++)
                 *wp4 = *rp;
             break;
 

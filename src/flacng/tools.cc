@@ -31,7 +31,7 @@ callback_info *init_callback_info(void)
     callback_info *info;
 
     info = g_new0 (callback_info, 1);
-    info->output_buffer = g_malloc (BUFFER_SIZE_BYTE);
+    info->output_buffer = (int32_t*) g_malloc (BUFFER_SIZE_BYTE);
 
     reset_info(info);
 

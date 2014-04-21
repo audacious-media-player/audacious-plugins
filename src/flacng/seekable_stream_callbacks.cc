@@ -74,11 +74,14 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    if ((*offset = vfs_ftell(info->fd)) == -1)
+    int64_t result = vfs_ftell(info->fd);
+    if (result < 0)
     {
         FLACNG_ERROR("Could not tell current position!\n");
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
+
+    *offset = result;
 
     AUDDBG ("Current position: %d\n", (int) * offset);
 
@@ -95,7 +98,8 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
 {
     callback_info *info = (callback_info*) client_data;
 
-    if ((*length = vfs_fsize(info->fd)) == -1)
+    int64_t result = vfs_fsize(info->fd);
+    if (result < 0)
     {
         /*
          * Could not get the stream size. This is not necessarily an
@@ -106,6 +110,8 @@ FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decod
         *length = 0;
         return FLAC__STREAM_DECODER_LENGTH_STATUS_UNSUPPORTED;
     }
+
+    *length = result;
 
     AUDDBG ("Stream length is %d bytes\n", (int) * length);
 
@@ -124,7 +130,7 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
 
     for (long sample = 0; sample < frame->header.blocksize; sample++)
     {
-        for (short channel = 0; channel < frame->header.channels; channel++)
+        for (unsigned channel = 0; channel < frame->header.channels; channel++)
         {
             *(info->write_pointer++) = buffer[channel][sample];
             info->buffer_used += 1;

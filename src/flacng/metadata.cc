@@ -41,7 +41,7 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
         return -1;
     }
 
-    read = vfs_fread(ptr, size, nmemb, handle);
+    read = vfs_fread(ptr, size, nmemb, (VFSFile*) handle);
 
     switch (read)
     {
@@ -60,12 +60,12 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
 
 static size_t write_cb(const void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handle)
 {
-    return vfs_fwrite(ptr, size, nmemb, handle);
+    return vfs_fwrite(ptr, size, nmemb, (VFSFile*) handle);
 }
 
 static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 {
-    if (vfs_fseek(handle, offset, whence) != 0)
+    if (vfs_fseek((VFSFile*) handle, offset, whence) != 0)
     {
         FLACNG_ERROR("Could not seek to %ld!\n", (long)offset);
         return -1;
@@ -76,9 +76,9 @@ static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 
 static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 {
-    uint64_t offset;
+    int64_t offset;
 
-    if ((offset = vfs_ftell(handle)) == -1)
+    if ((offset = vfs_ftell((VFSFile*) handle)) < 0)
     {
         FLACNG_ERROR("Could not tell current position!\n");
         return -1;
@@ -90,7 +90,7 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 
 static int eof_cb(FLAC__IOHandle handle)
 {
-    return vfs_feof(handle);
+    return vfs_feof((VFSFile*) handle);
 }
 
 static FLAC__IOCallbacks io_callbacks = {
@@ -103,7 +103,7 @@ static FLAC__IOCallbacks io_callbacks = {
 };
 
 static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple * tuple, int tuple_name, char * field_name)
+ const Tuple * tuple, int tuple_name, const char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     char *val = tuple_get_str(tuple, tuple_name);
@@ -120,7 +120,7 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
 }
 
 static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple * tuple, int tuple_name, char * field_name)
+ const Tuple * tuple, int tuple_name, const char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     int val = tuple_get_int(tuple, tuple_name);
@@ -382,7 +382,7 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
 
                     entry = metadata->data.vorbis_comment.comments;
 
-                    for (int i = 0; i < metadata->data.vorbis_comment.num_comments; i++, entry++)
+                    for (unsigned i = 0; i < metadata->data.vorbis_comment.num_comments; i++, entry++)
                     {
                         if (FLAC__metadata_object_vorbiscomment_entry_to_name_value_pair(*entry, &key, &value) == false)
                             AUDDBG("Could not parse comment\n");
@@ -397,6 +397,7 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
                 break;
 
             case FLAC__METADATA_TYPE_STREAMINFO:
+            {
                 metadata = FLAC__metadata_iterator_get_block(iter);
 
                 /* Calculate the stream length (milliseconds) */
@@ -414,7 +415,7 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
 
                 int64_t size = vfs_fsize(fd);
 
-                if (size == -1 || metadata->data.stream_info.total_samples == 0)
+                if (size < 0 || metadata->data.stream_info.total_samples == 0)
                     tuple_set_int(tuple, FIELD_BITRATE, 0);
                 else
                 {
@@ -424,6 +425,7 @@ Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd)
                     tuple_set_int(tuple, FIELD_BITRATE, (bitrate + 500) / 1000);
                 }
                 break;
+            }
 
             default:
                 ;
