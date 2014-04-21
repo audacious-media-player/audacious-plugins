@@ -9,11 +9,11 @@
 # Радослав <reckku@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-03-23 20:36+0100\n"
-"PO-Revision-Date: 2014-03-21 09:16+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-04-21 23:02+0200\n"
+"PO-Revision-Date: 2014-04-13 11:48+0000\n"
+"Last-Translator: Радослав <reckku@gmail.com>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/projects/p/audacious/"
 "language/bg/)\n"
 "Language: bg\n"
@@ -22,19 +22,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:82
 msgid "mono"
 msgstr "еднозвучие"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
 msgstr "многозвучие"
 
-#: src/aac/libmp4.c:99
+#: src/aac/libmp4.c:98
 msgid "surround"
 msgstr "обграждащ звук"
 
-#: src/aac/libmp4.c:314
+#: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
 msgstr "Разкодиране на AAC (MP4)"
 
@@ -222,7 +222,7 @@ msgstr "Настройки на аларма"
 msgid "_OK"
 msgstr "_Добре"
 
-#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:53
+#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
 msgstr "_Отказ"
@@ -429,19 +429,19 @@ msgstr "<b>Синтезатор</b>"
 msgid "Sampling rate:"
 msgstr "Честота на дискретизация:"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:50
+#: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Контакт - избор на файл за звуково изравняване"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:54
+#: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
 msgstr "_Отваряне"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:225
+#: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
 msgstr "Име на файл"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:229
+#: src/amidi-plug/i_configure-fluidsynth.c:231
 msgid "Size (bytes)"
 msgstr "Размер (байтове)"
 
@@ -562,6 +562,13 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Написан от Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Базиран отчасти на Ghosd библиотеката на Evan Martin:\n"
+"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
@@ -1067,13 +1074,11 @@ msgstr "Хц"
 
 #: src/console/plugin.c:49
 msgid "<b>SPC</b>"
-msgstr ""
+msgstr "<b>SPC</b>"
 
 #: src/console/plugin.c:50
 msgid "Ignore length from SPC tags"
-msgstr ""
-"Незачитане на продължителността\n"
-"от маркерите на спектрометъра"
+msgstr "Незачитане на продължителността според SPC етикетите"
 
 #: src/console/plugin.c:52
 msgid "Increase reverb"
@@ -1138,57 +1143,57 @@ msgstr "Кристализатор"
 msgid "Cue Sheet Plugin"
 msgstr "Приставка за условности"
 
-#: src/delete-files/delete-files.c:47
+#: src/delete-files/delete-files.c:48
 #, c-format
 msgid "Error moving %s to trash: %s."
 msgstr "Грешка при преместването на %s в коша: %s."
 
-#: src/delete-files/delete-files.c:59
+#: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
 msgstr "Грешка при изтриването на %s: %s."
 
-#: src/delete-files/delete-files.c:97
+#: src/delete-files/delete-files.c:98
 #, c-format
 msgid "Error deleting %s: not a local file."
 msgstr "Грешка при изтриването на %s: не е местен файл."
 
-#: src/delete-files/delete-files.c:118
+#: src/delete-files/delete-files.c:119
 msgid "Do you want to move the selected files to the trash?"
 msgstr "Искате ли да преместите избраните файлове в коша?"
 
-#: src/delete-files/delete-files.c:119
+#: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
 msgstr "Преместване в Коша"
 
-#: src/delete-files/delete-files.c:124
+#: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
 msgstr "Искате ли окончателно да изтриете избраните файлове?"
 
-#: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
+#: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
 msgstr "Изтриване"
 
-#: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
+#: src/delete-files/delete-files.c:130 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr "Отказ"
 
-#: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
+#: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
 msgstr "Изтриване на файлове"
 
-#: src/delete-files/delete-files.c:146
+#: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
 msgstr "Изтриване на избраните файлове"
 
-#: src/delete-files/delete-files.c:161
+#: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
 msgstr "<b>Начин на изтриване</b>"
 
-#: src/delete-files/delete-files.c:162
+#: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
 msgstr "Премести в коша, вместо незабавно изтриване"
 
@@ -1230,7 +1235,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Ехо"
 
-#: src/ffaudio/ffaudio-core.c:581
+#: src/ffaudio/ffaudio-core.c:589
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1246,7 +1251,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:633
+#: src/ffaudio/ffaudio-core.c:641
 msgid "FFmpeg Plugin"
 msgstr "Приставка за FFmpeg"
 
@@ -1521,6 +1526,14 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL Спектрален анализатор за Audacious\n"
+"Запазени права 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
+"\n"
+"Базиран на XMMS плъгин:\n"
+"Запазени права 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
+"Nilsson, и 4Front Technologies\n"
+"\n"
+"Лиценз: GPLv2+"
 
 #: src/gl-spectrum/gl-spectrum.c:409
 msgid "OpenGL Spectrum Analyzer"
@@ -1625,6 +1638,10 @@ msgstr "Без панел"
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
 msgstr "Деактивиране"
+
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+msgid "Search Tool"
+msgstr "Инструмент за търсене"
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
@@ -2793,7 +2810,7 @@ msgstr ""
 "Нужно е да позволите на Audacious да споделя записите във Вашият Last.fm "
 "профил.\n"
 
-#: src/scrobbler2/scrobbler.c:218
+#: src/scrobbler2/scrobbler.c:220
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
@@ -2801,7 +2818,7 @@ msgstr ""
 "Приставката Споделяне на песен не може да се стартира.\n"
 "Може би има проблем с инсталацията."
 
-#: src/scrobbler2/scrobbler.c:294
+#: src/scrobbler2/scrobbler.c:296
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2818,7 +2835,7 @@ msgstr ""
 "Благодарности на John Lindgren за оказаната помощ в този проект.\n"
 "\n"
 
-#: src/scrobbler2/scrobbler.c:300
+#: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
 msgstr "Споделяне 2.0"
 
@@ -2927,10 +2944,6 @@ msgstr "Моля изчакайте..."
 #: src/search-tool/search-tool.c:747
 msgid "Choose Folder"
 msgstr "Избор на папка"
-
-#: src/search-tool/search-tool.c:786
-msgid "Search Tool"
-msgstr "Инструмент за търсене"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
@@ -3155,7 +3168,7 @@ msgstr "По Изпълнител"
 
 #: src/skins/menus.c:172 src/skins/menus.c:182
 msgid "By Release Date"
-msgstr ""
+msgstr "По дата на издаване"
 
 #: src/skins/menus.c:173 src/skins/menus.c:183
 msgid "By Track Number"
@@ -3211,7 +3224,7 @@ msgstr "Зареди файл с подготвени..."
 
 #: src/skins/menus.c:211
 msgid "Load EQF File ..."
-msgstr ""
+msgstr "Зареди на EQF файл..."
 
 #: src/skins/menus.c:213
 msgid "Save Preset ..."
@@ -3231,7 +3244,7 @@ msgstr "Запази файл с подготвено..."
 
 #: src/skins/menus.c:217
 msgid "Save EQF File ..."
-msgstr ""
+msgstr "Запамети EQF файл..."
 
 #: src/skins/menus.c:219
 msgid "Delete Preset ..."
@@ -3269,7 +3282,7 @@ msgstr "Зареди файл с подготвени"
 
 #: src/skins/preset-browser.c:106
 msgid "Load EQF File"
-msgstr ""
+msgstr "Зареди EQF файл"
 
 #: src/skins/preset-browser.c:122
 msgid "Save Preset File"
@@ -3277,7 +3290,7 @@ msgstr "Запази файл с подготвено"
 
 #: src/skins/preset-browser.c:144
 msgid "Save EQF File"
-msgstr ""
+msgstr "Запамети EQF файл"
 
 #: src/skins/preset-browser.c:162
 msgid "Import Winamp Presets"
@@ -3357,7 +3370,7 @@ msgstr "Осцилоскоп"
 
 #: src/skins/skins_cfg.c:207
 msgid "Voiceprint / VU meter"
-msgstr ""
+msgstr "Гласов отпечатък / VU-метър"
 
 #: src/skins/skins_cfg.c:208
 msgid "Off"
@@ -3438,7 +3451,7 @@ msgstr "<b>Анализатор</b>"
 
 #: src/skins/skins_cfg.c:253
 msgid "Show peaks"
-msgstr ""
+msgstr "Показвай пикове"
 
 #: src/skins/skins_cfg.c:255
 msgid "Coloring:"
@@ -3454,19 +3467,19 @@ msgstr "Падане:"
 
 #: src/skins/skins_cfg.c:264
 msgid "Peak falloff:"
-msgstr ""
+msgstr "Падане на пиковете:"
 
 #: src/skins/skins_cfg.c:268
 msgid "Scope Style:"
-msgstr ""
+msgstr "Осцилоскопичен стил:"
 
 #: src/skins/skins_cfg.c:271
 msgid "Voiceprint Coloring:"
-msgstr ""
+msgstr "Цвят на гласовия отпечатък:"
 
 #: src/skins/skins_cfg.c:274
 msgid "VU Meter Style:"
-msgstr ""
+msgstr "Стил на VU-метър:"
 
 #: src/skins/skins_cfg.c:280
 msgid "General"
@@ -4058,3 +4071,12 @@ msgstr "Разкодиране 2SF"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Споделяеми списъци XML (XSPF)"
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 кХц:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 кХц:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 кХц:"

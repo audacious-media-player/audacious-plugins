@@ -8,10 +8,10 @@
 # P.I.Balasinghe <pushpika.indrachapa@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-03-23 20:36+0100\n"
-"PO-Revision-Date: 2014-03-21 09:15+0000\n"
+"POT-Creation-Date: 2014-04-21 23:02+0200\n"
+"PO-Revision-Date: 2014-04-11 16:24+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Sinhala (http://www.transifex.com/projects/p/audacious/"
 "language/si/)\n"
@@ -21,19 +21,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:82
 msgid "mono"
 msgstr " තනි "
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
 msgstr "ත්‍රිමාන "
 
-#: src/aac/libmp4.c:99
+#: src/aac/libmp4.c:98
 msgid "surround"
 msgstr "සිසාළ "
 
-#: src/aac/libmp4.c:314
+#: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgstr "සිහි කැඳවීම් සකසනයන්"
 msgid "_OK"
 msgstr ""
 
-#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:53
+#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
 msgstr ""
@@ -424,19 +424,19 @@ msgstr ""
 msgid "Sampling rate:"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:50
+#: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-පේනු - SoundFont ගොනුව තෝරන්න​"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:54
+#: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:225
+#: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
 msgstr "ගොනු නම​"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:229
+#: src/amidi-plug/i_configure-fluidsynth.c:231
 msgid "Size (bytes)"
 msgstr "ප්‍රමාණය (බයිට්ස්)"
 
@@ -1119,57 +1119,57 @@ msgstr "පළිඟුව"
 msgid "Cue Sheet Plugin"
 msgstr "සලකුණු පත් පේනු මෘදුකාංගය "
 
-#: src/delete-files/delete-files.c:47
+#: src/delete-files/delete-files.c:48
 #, c-format
 msgid "Error moving %s to trash: %s."
 msgstr ""
 
-#: src/delete-files/delete-files.c:59
+#: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
 msgstr ""
 
-#: src/delete-files/delete-files.c:97
+#: src/delete-files/delete-files.c:98
 #, c-format
 msgid "Error deleting %s: not a local file."
 msgstr ""
 
-#: src/delete-files/delete-files.c:118
+#: src/delete-files/delete-files.c:119
 msgid "Do you want to move the selected files to the trash?"
 msgstr ""
 
-#: src/delete-files/delete-files.c:119
+#: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
 msgstr ""
 
-#: src/delete-files/delete-files.c:124
+#: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
 msgstr ""
 
-#: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
+#: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
 msgstr "මකන්න "
 
-#: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
+#: src/delete-files/delete-files.c:130 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr "අවලංගු කිරීම​"
 
-#: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
+#: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
 msgstr ""
 
-#: src/delete-files/delete-files.c:146
+#: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
 msgstr ""
 
-#: src/delete-files/delete-files.c:161
+#: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
 msgstr ""
 
-#: src/delete-files/delete-files.c:162
+#: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
 msgstr ""
 
@@ -1211,7 +1211,7 @@ msgstr ""
 msgid "Echo"
 msgstr "ප්‍රතිරාව"
 
-#: src/ffaudio/ffaudio-core.c:581
+#: src/ffaudio/ffaudio-core.c:589
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1227,7 +1227,7 @@ msgstr ""
 "විලියම් පිට්කොක් <nenolod@nenolod.net>⏎\n"
 "මැටී හැමලේයිනෙන් <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:633
+#: src/ffaudio/ffaudio-core.c:641
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg පේනු මෘදුකාංගය "
 
@@ -1604,6 +1604,10 @@ msgstr "ඈඳීම​ අවලංගු කරන්න​"
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
 msgstr "අක්‍රීය කරන්න​"
+
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+msgid "Search Tool"
+msgstr "සෙවීමේ මෙවලම "
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
@@ -2762,7 +2766,7 @@ msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr "ඔබ ඔඩෙෂස් හට ඔබගේ අවසාන fm ගිණුමෙන් ගීත ලබා ගැනීමට අවසර දිය යුතුය.\n"
 
-#: src/scrobbler2/scrobbler.c:218
+#: src/scrobbler2/scrobbler.c:220
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
@@ -2770,7 +2774,7 @@ msgstr ""
 "Scrobbler පේනු මෘදුකාංගය ඇරභිය නොහැකිය.⏎\n"
 "සමහරවිට ඔබගේ පිහිටැවුමෙහි ගැටලුවක් ඇත."
 
-#: src/scrobbler2/scrobbler.c:294
+#: src/scrobbler2/scrobbler.c:296
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2784,7 +2788,7 @@ msgstr ""
 "\n"
 "ප්‍රකාශන අයිතිය © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 
-#: src/scrobbler2/scrobbler.c:300
+#: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
 msgstr "ස්ක්රෝබ්ලර් 2.0"
 
@@ -2892,10 +2896,6 @@ msgstr "කරුණාකර රැඳී සිටින්න ..."
 #: src/search-tool/search-tool.c:747
 msgid "Choose Folder"
 msgstr "ෆෝල්ඩරය තෝරන්න "
-
-#: src/search-tool/search-tool.c:786
-msgid "Search Tool"
-msgstr "සෙවීමේ මෙවලම "
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."

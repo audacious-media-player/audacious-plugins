@@ -8,6 +8,7 @@
 # elma sevmem <drmxmyt@gmail.com>, 2013
 # elma sevmem <drmxmyt@gmail.com>, 2013
 # emfi <emrefirat93@gmail.com>, 2013
+# etc <etcetin@gmail.com>, 2014
 # emfi <emrefirat93@gmail.com>, 2013
 # ferhatelmas <elmas.ferhat@gmail.com>, 2013
 # ferhatelmas <elmas.ferhat@gmail.com>, 2013
@@ -21,10 +22,10 @@
 # volkangezer <volkangezer@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-03-23 20:36+0100\n"
-"PO-Revision-Date: 2014-03-21 09:15+0000\n"
+"POT-Creation-Date: 2014-04-21 23:02+0200\n"
+"PO-Revision-Date: 2014-04-11 16:24+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/audacious/"
 "language/tr/)\n"
@@ -34,19 +35,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:82
 msgid "mono"
 msgstr "mono"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
 msgstr "stereo"
 
-#: src/aac/libmp4.c:99
+#: src/aac/libmp4.c:98
 msgid "surround"
 msgstr ""
 
-#: src/aac/libmp4.c:314
+#: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
 msgstr ""
 
@@ -185,7 +186,7 @@ msgstr "Alarm Ayarları"
 msgid "_OK"
 msgstr ""
 
-#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:53
+#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
 msgstr ""
@@ -364,7 +365,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.c:127
 msgid "<b>Advanced</b>"
-msgstr ""
+msgstr "<b>Gelişmiş</b>"
 
 #: src/amidi-plug/i_configure.c:128
 msgid "Extract comments from MIDI file"
@@ -386,19 +387,19 @@ msgstr ""
 msgid "Sampling rate:"
 msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:50
+#: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - SoundFont dosyası seç"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:54
+#: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
-msgstr ""
+msgstr "_Aç"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:225
+#: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
 msgstr "Dosya adı"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:229
+#: src/amidi-plug/i_configure-fluidsynth.c:231
 msgid "Size (bytes)"
 msgstr "Boyut (bayt)"
 
@@ -691,11 +692,11 @@ msgstr "Audacious OSD - yapılandırması"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
-msgstr ""
+msgstr "_Sına"
 
 #: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
 msgid "_Set"
-msgstr ""
+msgstr "_Ayarla"
 
 #: src/aosd/aosd_ui.c:940
 msgid "Position"
@@ -723,7 +724,7 @@ msgstr "Çeşitli"
 
 #: src/asx3/asx3.c:179
 msgid "ASXv3 Playlists"
-msgstr ""
+msgstr "ASXv3 Parça listesi"
 
 #: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
@@ -851,7 +852,7 @@ msgstr "Ses CD'si"
 #: src/cdaudio-ng/cdaudio-ng.c:458
 #, c-format
 msgid "Track %d"
-msgstr ""
+msgstr "Parça %d"
 
 #: src/cdaudio-ng/cdaudio-ng.c:485 src/cdaudio-ng/cdaudio-ng.c:494
 #, c-format
@@ -1045,57 +1046,57 @@ msgstr ""
 msgid "Cue Sheet Plugin"
 msgstr ""
 
-#: src/delete-files/delete-files.c:47
+#: src/delete-files/delete-files.c:48
 #, c-format
 msgid "Error moving %s to trash: %s."
 msgstr ""
 
-#: src/delete-files/delete-files.c:59
+#: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
 msgstr ""
 
-#: src/delete-files/delete-files.c:97
+#: src/delete-files/delete-files.c:98
 #, c-format
 msgid "Error deleting %s: not a local file."
 msgstr ""
 
-#: src/delete-files/delete-files.c:118
+#: src/delete-files/delete-files.c:119
 msgid "Do you want to move the selected files to the trash?"
 msgstr ""
 
-#: src/delete-files/delete-files.c:119
+#: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
-msgstr ""
+msgstr "Çöp kutusuna taşı"
 
-#: src/delete-files/delete-files.c:124
+#: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Seçilen dosyaları kalıcı olarak silmek istiyor musunuz?"
 
-#: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
+#: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
 msgstr "Sil"
 
-#: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
+#: src/delete-files/delete-files.c:130 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr "İptal"
 
-#: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
+#: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
-msgstr ""
+msgstr "Dosyaları Sil"
 
-#: src/delete-files/delete-files.c:146
+#: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Seçilen Dosyaları Sil"
 
-#: src/delete-files/delete-files.c:161
+#: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
 msgstr ""
 
-#: src/delete-files/delete-files.c:162
+#: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
 msgstr ""
 
@@ -1133,7 +1134,7 @@ msgstr ""
 msgid "Echo"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:581
+#: src/ffaudio/ffaudio-core.c:589
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1143,7 +1144,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:633
+#: src/ffaudio/ffaudio-core.c:641
 msgid "FFmpeg Plugin"
 msgstr ""
 
@@ -1365,7 +1366,7 @@ msgstr "Kalite seviyesi (0 - 10):"
 
 #: src/flacng/metadata.c:359 src/wavpack/wavpack.c:212
 msgid "lossless"
-msgstr ""
+msgstr "kayıpsız"
 
 #: src/flacng/plugin.c:187
 msgid ""
@@ -1500,6 +1501,10 @@ msgstr "Çıkar"
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
 msgstr "Devre Dışı"
+
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+msgid "Search Tool"
+msgstr "Arama Aracı"
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
@@ -1850,7 +1855,7 @@ msgstr "%d kbps"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr ""
+msgstr "Önceki parça"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/menus.c:78
 msgid "Play"
@@ -1866,15 +1871,15 @@ msgstr "Dur"
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr ""
+msgstr "Sonraki parça"
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "5 saniye sonrası"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "5 saniye öncesi"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
@@ -1882,15 +1887,15 @@ msgstr "Sessiz"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Sesi aç"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Sesi kıs"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Dosyaya Atla"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -1956,7 +1961,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
-msgstr ""
+msgstr "_Ekle"
 
 #: src/hotkey/plugin.c:67
 msgid ""
@@ -2265,7 +2270,7 @@ msgstr ""
 #: src/modplug/plugin_main.c:86 src/modplug/plugin_main.c:93
 #: src/modplug/plugin_main.c:100
 msgid "Level:"
-msgstr ""
+msgstr "Seviye:"
 
 #: src/modplug/plugin_main.c:95
 msgid "Cutoff:"
@@ -2365,7 +2370,7 @@ msgstr ""
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "Her zaman bildirim göster"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
@@ -2373,7 +2378,7 @@ msgstr ""
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "Göster"
 
 #: src/notify/osd.c:65 src/skins/menus.c:79
 msgid "Pause"
@@ -2555,11 +2560,12 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:75
 msgid "Network Problem."
-msgstr ""
+msgstr "Ağ Sorunu."
 
 #: src/scrobbler2/config_window.c:76
 msgid "There was a problem contacting Last.fm. Please try again later."
 msgstr ""
+"Last.fm ile iletişimde bir sorun var. Lütfen daha sonra tekrar deneyin."
 
 #: src/scrobbler2/config_window.c:108
 msgid "Checking..."
@@ -2578,13 +2584,13 @@ msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr ""
 
-#: src/scrobbler2/scrobbler.c:218
+#: src/scrobbler2/scrobbler.c:220
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
 
-#: src/scrobbler2/scrobbler.c:294
+#: src/scrobbler2/scrobbler.c:296
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2595,7 +2601,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/scrobbler2/scrobbler.c:300
+#: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
 msgstr ""
 
@@ -2689,17 +2695,13 @@ msgstr ""
 msgid "Choose Folder"
 msgstr ""
 
-#: src/search-tool/search-tool.c:786
-msgid "Search Tool"
-msgstr ""
-
 #: src/skins/menus.c:56
 msgid "Open Files ..."
-msgstr ""
+msgstr "Dosya Aç ..."
 
 #: src/skins/menus.c:57
 msgid "Open URL ..."
-msgstr ""
+msgstr "URL Aç ..."
 
 #: src/skins/menus.c:59
 msgid "Playback"
@@ -2716,23 +2718,23 @@ msgstr "Görünüm"
 #: src/skins/menus.c:63 src/skins/menus.c:133 src/skins/menus.c:146
 #: src/skins/menus.c:203
 msgid "Services"
-msgstr ""
+msgstr "Hizmetler"
 
 #: src/skins/menus.c:65
 msgid "About ..."
-msgstr ""
+msgstr "Hakkında ..."
 
 #: src/skins/menus.c:66
 msgid "Settings ..."
-msgstr ""
+msgstr "Ayarlar ..."
 
 #: src/skins/menus.c:67
 msgid "Quit"
-msgstr ""
+msgstr "Çıkış"
 
 #: src/skins/menus.c:71 src/skins/menus.c:195
 msgid "Song Info ..."
-msgstr ""
+msgstr "Şarkı Bilgisi ..."
 
 #: src/skins/menus.c:73
 msgid "Repeat"
@@ -2748,7 +2750,7 @@ msgstr ""
 
 #: src/skins/menus.c:76
 msgid "Stop After This Song"
-msgstr ""
+msgstr "Şarkıdan Sonra Durdur"
 
 #: src/skins/menus.c:81
 msgid "Previous"
@@ -2772,7 +2774,7 @@ msgstr ""
 
 #: src/skins/menus.c:92
 msgid "Play This Playlist"
-msgstr ""
+msgstr "Çalma Listesini Oynat"
 
 #: src/skins/menus.c:94
 msgid "New Playlist"
@@ -2780,39 +2782,39 @@ msgstr "Yeni Çalma Listesi"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
-msgstr ""
+msgstr "Çalma Listesini Yeniden Adlandır"
 
 #: src/skins/menus.c:96
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Çalma Listesini Kaldır"
 
 #: src/skins/menus.c:98
 msgid "Previous Playlist"
-msgstr ""
+msgstr "Önceki Çalma Listesi"
 
 #: src/skins/menus.c:99
 msgid "Next Playlist"
-msgstr ""
+msgstr "Sonraki Çalma Listesi"
 
 #: src/skins/menus.c:101
 msgid "Import Playlist ..."
-msgstr ""
+msgstr "Çalma Listesi İçe Aktar"
 
 #: src/skins/menus.c:102
 msgid "Export Playlist ..."
-msgstr ""
+msgstr "Çalma Listesi Dışa Aktar"
 
 #: src/skins/menus.c:104
 msgid "Playlist Manager ..."
-msgstr ""
+msgstr "Çalma Listesi Yöneticisi"
 
 #: src/skins/menus.c:105
 msgid "Queue Manager ..."
-msgstr ""
+msgstr "Kuyruk Yöneticisi"
 
 #: src/skins/menus.c:107
 msgid "Refresh Playlist"
-msgstr ""
+msgstr "Çalma Listesini Yenile"
 
 #: src/skins/menus.c:111
 msgid "Show Playlist Editor"
@@ -3545,23 +3547,23 @@ msgstr ""
 
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
-msgstr ""
+msgstr "Hızlı"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
-msgstr ""
+msgstr "Düşük"
 
 #: src/sox-resampler/sox-resampler.c:146
 msgid "High"
-msgstr ""
+msgstr "Yüksek"
 
 #: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
-msgstr ""
+msgstr "Daha Yüksek"
 
 #: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
-msgstr ""
+msgstr "Kalite:"
 
 #: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"

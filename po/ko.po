@@ -14,10 +14,10 @@
 # Darkcircle <darkcircle.0426@gmail.com>, 2012-2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-03-23 20:36+0100\n"
-"PO-Revision-Date: 2014-03-21 09:16+0000\n"
+"POT-Creation-Date: 2014-04-21 23:02+0200\n"
+"PO-Revision-Date: 2014-04-11 16:24+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
 "language/ko/)\n"
@@ -27,19 +27,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:82
 msgid "mono"
 msgstr "모노"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
 msgstr "스테레오"
 
-#: src/aac/libmp4.c:99
+#: src/aac/libmp4.c:98
 msgid "surround"
 msgstr "서라운드"
 
-#: src/aac/libmp4.c:314
+#: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
 msgstr "AAC (MP4) 디코더"
 
@@ -228,7 +228,7 @@ msgstr "알림 설정"
 msgid "_OK"
 msgstr "확인(_O)"
 
-#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:53
+#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
 msgstr "취소(_C)"
@@ -434,19 +434,19 @@ msgstr "<b>신디사이저</b>"
 msgid "Sampling rate:"
 msgstr "샘플 주파수:"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:50
+#: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - 사운드 폰트 파일 선택"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:54
+#: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
 msgstr "열기(_O)"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:225
+#: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
 msgstr "파일 이름"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:229
+#: src/amidi-plug/i_configure-fluidsynth.c:231
 msgid "Size (bytes)"
 msgstr "크기(바이트)"
 
@@ -1131,57 +1131,57 @@ msgstr "크리스털라이저"
 msgid "Cue Sheet Plugin"
 msgstr "큐 시트 플러그인"
 
-#: src/delete-files/delete-files.c:47
+#: src/delete-files/delete-files.c:48
 #, c-format
 msgid "Error moving %s to trash: %s."
 msgstr "%s을(를) 휴지통으로 이동하는 중 오류: %s."
 
-#: src/delete-files/delete-files.c:59
+#: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
 msgstr "%s을(를) 삭제하는 중 오류: %s."
 
-#: src/delete-files/delete-files.c:97
+#: src/delete-files/delete-files.c:98
 #, c-format
 msgid "Error deleting %s: not a local file."
 msgstr "%s을(를) 삭제하는 중 오류: 로컬 파일이 아닙니다."
 
-#: src/delete-files/delete-files.c:118
+#: src/delete-files/delete-files.c:119
 msgid "Do you want to move the selected files to the trash?"
 msgstr "선택한 파일을 휴지통으로 이동하시겠습니까?"
 
-#: src/delete-files/delete-files.c:119
+#: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
 msgstr "휴지통으로 이동"
 
-#: src/delete-files/delete-files.c:124
+#: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
 msgstr "선택한 파일을 완전히 삭제하시겠습니까?"
 
-#: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
+#: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
 msgstr "삭제"
 
-#: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
+#: src/delete-files/delete-files.c:130 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr "취소"
 
-#: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
+#: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
 msgstr "파일 삭제"
 
-#: src/delete-files/delete-files.c:146
+#: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
 msgstr "선택한 파일 삭제"
 
-#: src/delete-files/delete-files.c:161
+#: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
 msgstr "<b>삭제 방식</b>"
 
-#: src/delete-files/delete-files.c:162
+#: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
 msgstr "즉시 삭제하는 대신 휴지통으로 이동"
 
@@ -1223,7 +1223,7 @@ msgstr ""
 msgid "Echo"
 msgstr "울림"
 
-#: src/ffaudio/ffaudio-core.c:581
+#: src/ffaudio/ffaudio-core.c:589
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1239,7 +1239,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:633
+#: src/ffaudio/ffaudio-core.c:641
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg 플러그인"
 
@@ -1625,6 +1625,10 @@ msgstr "떼어내기"
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
 msgstr "비활성화"
+
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+msgid "Search Tool"
+msgstr "검색 도구"
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
@@ -2782,7 +2786,7 @@ msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr "오데이셔스가 Last.fm 계정에 트랙을 추출할 수 있게 해야 합니다.\n"
 
-#: src/scrobbler2/scrobbler.c:218
+#: src/scrobbler2/scrobbler.c:220
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
@@ -2790,7 +2794,7 @@ msgstr ""
 "스크로블러 플러그인을 시작할 수 없습니다.\n"
 "설치에 문제가 있는 것 같습니다."
 
-#: src/scrobbler2/scrobbler.c:294
+#: src/scrobbler2/scrobbler.c:296
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2807,7 +2811,7 @@ msgstr ""
 "이 프로젝트를 시작하는데 도움을 준 John Lindgren에게 감사드립니다.\n"
 "\n"
 
-#: src/scrobbler2/scrobbler.c:300
+#: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
 msgstr "스크로블러 2.0"
 
@@ -2909,10 +2913,6 @@ msgstr "기다려 주십시오 ..."
 #: src/search-tool/search-tool.c:747
 msgid "Choose Folder"
 msgstr "폴더 선택"
-
-#: src/search-tool/search-tool.c:786
-msgid "Search Tool"
-msgstr "검색 도구"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."

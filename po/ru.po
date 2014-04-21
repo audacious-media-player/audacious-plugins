@@ -6,6 +6,7 @@
 # Alexander Orlov <alxorlov@pochta.ru>, 2007
 # dane <alpi_bel@mail.ru>, 2014
 # Someonefree <drag-sasha@mail.ru>, 2013-2014
+# arinov <i.arinov@iht.kz>, 2014
 # iavojd <iavojd@gmail.com>, 2013
 # iavojd <iavojd@gmail.com>, 2013
 # joshuazzz <joshuazzz@yandex.ru>, 2012
@@ -29,10 +30,10 @@
 # NEKURIM <kvadrocu7@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-03-23 20:36+0100\n"
-"PO-Revision-Date: 2014-03-21 09:16+0000\n"
+"POT-Creation-Date: 2014-04-21 23:02+0200\n"
+"PO-Revision-Date: 2014-04-11 16:24+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/audacious/"
 "language/ru/)\n"
@@ -43,19 +44,19 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:82
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:82
 msgid "mono"
 msgstr "моно"
 
-#: src/aac/libmp4.c:99 src/gtkui/ui_statusbar.c:84
+#: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:84
 msgid "stereo"
 msgstr "стерео"
 
-#: src/aac/libmp4.c:99
+#: src/aac/libmp4.c:98
 msgid "surround"
 msgstr "объёмное звучание"
 
-#: src/aac/libmp4.c:314
+#: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
 msgstr "Декодер AAC(MP4)"
 
@@ -240,7 +241,7 @@ msgstr "Настройки будильника"
 msgid "_OK"
 msgstr "_ОК"
 
-#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:53
+#: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
 msgstr "Закончить"
@@ -392,7 +393,7 @@ msgstr "Плагин AMIDI (проигрыватель MIDI)"
 
 #: src/amidi-plug/i_configure.c:96
 msgid "Override default gain:"
-msgstr ""
+msgstr "Заменить дефолтный усилитель на:"
 
 #: src/amidi-plug/i_configure.c:102
 msgid "Override default polyphony:"
@@ -400,7 +401,7 @@ msgstr "Изменить полифонию по умолчанию:"
 
 #: src/amidi-plug/i_configure.c:108
 msgid "Override default reverb:"
-msgstr ""
+msgstr "Заменить ревербацию по умолчанию на:"
 
 #: src/amidi-plug/i_configure.c:110 src/amidi-plug/i_configure.c:116
 msgid "On"
@@ -408,7 +409,7 @@ msgstr "На"
 
 #: src/amidi-plug/i_configure.c:114
 msgid "Override default chorus:"
-msgstr ""
+msgstr "Заменить хор по умолчанию на:"
 
 #: src/amidi-plug/i_configure.c:122 src/console/plugin.c:33
 msgid "<b>Playback</b>"
@@ -428,37 +429,37 @@ msgstr "<b>Расширенные</b>"
 
 #: src/amidi-plug/i_configure.c:128
 msgid "Extract comments from MIDI file"
-msgstr ""
+msgstr "Считывать комментарии из MIDI-файлов"
 
 #: src/amidi-plug/i_configure.c:130
 msgid "Extract lyrics from MIDI file"
-msgstr ""
+msgstr "Считывать тексты из MIDI-файлов"
 
 #: src/amidi-plug/i_configure.c:134
 msgid "<b>SoundFont</b>"
-msgstr ""
+msgstr "<b>Шрифт</b>"
 
 #: src/amidi-plug/i_configure.c:136
 msgid "<b>Synthesizer</b>"
-msgstr ""
+msgstr "<b>Синтезатор</b>"
 
 #: src/amidi-plug/i_configure.c:141
 msgid "Sampling rate:"
-msgstr ""
+msgstr "Частота дискретизации:"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:50
+#: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - выбор SoundFont файла"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:54
+#: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
 msgstr "_Открыть"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:225
+#: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
 msgstr "Имя файла"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:229
+#: src/amidi-plug/i_configure-fluidsynth.c:231
 msgid "Size (bytes)"
 msgstr "Размер (байт)"
 
@@ -580,6 +581,13 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Разработал Giacomo Lozito <james@develia.org>\n"
+"\n"
+"В основе библиотека Ghosd Evan Martin'а:\n"
+" http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
@@ -804,7 +812,7 @@ msgstr "Прочее"
 
 #: src/asx3/asx3.c:179
 msgid "ASXv3 Playlists"
-msgstr ""
+msgstr "ASXv3 Плейлисты"
 
 #: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
@@ -1086,7 +1094,7 @@ msgstr "Гц"
 
 #: src/console/plugin.c:49
 msgid "<b>SPC</b>"
-msgstr ""
+msgstr "<b>SPC</b>"
 
 #: src/console/plugin.c:50
 msgid "Ignore length from SPC tags"
@@ -1155,59 +1163,59 @@ msgstr "Кристализатор"
 msgid "Cue Sheet Plugin"
 msgstr "Плагин Cue листов"
 
-#: src/delete-files/delete-files.c:47
+#: src/delete-files/delete-files.c:48
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr ""
+msgstr "Ошибка при перемещении %s в корзину: %s."
 
-#: src/delete-files/delete-files.c:59
+#: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr ""
+msgstr "ошибка удаления %s: %s"
 
-#: src/delete-files/delete-files.c:97
+#: src/delete-files/delete-files.c:98
 #, c-format
 msgid "Error deleting %s: not a local file."
-msgstr ""
-
-#: src/delete-files/delete-files.c:118
-msgid "Do you want to move the selected files to the trash?"
-msgstr ""
+msgstr "Ошибка удаления %s: это не локальный файл."
 
 #: src/delete-files/delete-files.c:119
-msgid "Move to Trash"
-msgstr ""
+msgid "Do you want to move the selected files to the trash?"
+msgstr "Вы хотите удалить  выбранные файлы в корзину?"
 
-#: src/delete-files/delete-files.c:124
+#: src/delete-files/delete-files.c:120
+msgid "Move to Trash"
+msgstr "Удалить в Корзину"
+
+#: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
 msgstr "Вы хотите удалить без восстановления выбранные файлы”?"
 
-#: src/delete-files/delete-files.c:125 src/skins/preset-list.c:416
+#: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
 msgstr "Удалить"
 
-#: src/delete-files/delete-files.c:129 src/skins/preset-browser.c:56
+#: src/delete-files/delete-files.c:130 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
 msgstr "Отмена"
 
-#: src/delete-files/delete-files.c:130 src/delete-files/delete-files.c:171
+#: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
 msgstr "Удалить файлы"
 
-#: src/delete-files/delete-files.c:146
+#: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
 msgstr "Удалить выбранный файлы"
 
-#: src/delete-files/delete-files.c:161
+#: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
 msgstr "<b>Метод Удаления</b>"
 
-#: src/delete-files/delete-files.c:162
+#: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
-msgstr ""
+msgstr "Перемещать в корзину вместо немедленного удаления"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
@@ -1247,7 +1255,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Эхо"
 
-#: src/ffaudio/ffaudio-core.c:581
+#: src/ffaudio/ffaudio-core.c:589
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1263,7 +1271,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:633
+#: src/ffaudio/ffaudio-core.c:641
 msgid "FFmpeg Plugin"
 msgstr "Плагин FFmpeg"
 
@@ -1541,6 +1549,14 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"OpenGL Spectrum Analyzer для Audacious\n"
+"Авторское право 2013 Christophe Budé, John Lindgren, и Carlo Bramini\n"
+"\n"
+"Основан на плагине для XMMS:\n"
+"Авторское право 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas "
+"Nilsson, и 4Front Technologies\n"
+"\n"
+"Лицензия: GPLv2+"
 
 #: src/gl-spectrum/gl-spectrum.c:409
 msgid "OpenGL Spectrum Analyzer"
@@ -1617,11 +1633,11 @@ msgstr "Битрейт"
 
 #: src/gtkui/columns.c:286
 msgid "Available columns"
-msgstr ""
+msgstr "Доступные колонки"
 
 #: src/gtkui/columns.c:312
 msgid "Displayed columns"
-msgstr ""
+msgstr "Показанные колонки"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
@@ -1646,6 +1662,10 @@ msgstr "Открепить"
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
 msgstr "Отключить"
+
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+msgid "Search Tool"
+msgstr "Поиск"
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
@@ -1822,7 +1842,7 @@ msgstr "Пере_именовать"
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:256
 msgid "Remo_ve"
-msgstr ""
+msgstr "Убрать"
 
 #: src/gtkui/menus.c:204
 msgid "_Import ..."
@@ -1930,27 +1950,27 @@ msgstr "Пере_именовать..."
 
 #: src/gtkui/settings.c:35
 msgid "<b>Playlist Tabs</b>"
-msgstr ""
+msgstr "<b>Вкладки плейлиста</b>"
 
 #: src/gtkui/settings.c:36
 msgid "Always show tabs"
-msgstr ""
+msgstr "Всегда показывать вкладки"
 
 #: src/gtkui/settings.c:39
 msgid "Show entry counts"
-msgstr ""
+msgstr "Показывать счетчик элементов"
 
 #: src/gtkui/settings.c:42
 msgid "Show close buttons"
-msgstr ""
+msgstr "Показывать кнопки закрытия"
 
 #: src/gtkui/settings.c:45
 msgid "<b>Playlist Columns</b>"
-msgstr ""
+msgstr "<b>Колонки плейлиста</b>"
 
 #: src/gtkui/settings.c:47
 msgid "Show column headers"
-msgstr ""
+msgstr "Показывать заголовки столбцов"
 
 #: src/gtkui/settings.c:50 src/modplug/plugin_main.c:131
 #: src/skins/skins_cfg.c:267
@@ -1959,11 +1979,11 @@ msgstr "<b>Разное</b>"
 
 #: src/gtkui/settings.c:51
 msgid "Arrow keys seek by:"
-msgstr ""
+msgstr "Поиск стрелками:"
 
 #: src/gtkui/settings.c:54
 msgid "Scroll on song change"
-msgstr ""
+msgstr "Прокручивать при смене песни"
 
 #: src/gtkui/ui_gtk.c:94
 msgid "GTK Interface"
@@ -2152,7 +2172,7 @@ msgstr "Подсоединиться только к портам вывода"
 
 #: src/jack/jack.c:198
 msgid "Don't connect to any port"
-msgstr ""
+msgstr "Не подключаться ни к каким портам"
 
 #: src/jack/jack.c:202
 msgid "Connection mode:"
@@ -2816,7 +2836,7 @@ msgstr ""
 "Вы должны разрешить Audacious отправлять прослушанные дорожки в ваш аккаунт "
 "Last.fm\n"
 
-#: src/scrobbler2/scrobbler.c:218
+#: src/scrobbler2/scrobbler.c:220
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
@@ -2824,7 +2844,7 @@ msgstr ""
 "Плагин scrobbler не может быть запущен.\n"
 "Могут быть проблемы с установкой"
 
-#: src/scrobbler2/scrobbler.c:294
+#: src/scrobbler2/scrobbler.c:296
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
@@ -2840,7 +2860,7 @@ msgstr ""
 "\n"
 "Спасибо Джону Линдгрен что подал мне руку в начале этого проекта.\n"
 
-#: src/scrobbler2/scrobbler.c:300
+#: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
 msgstr "Скробблер 2.0"
 
@@ -2957,10 +2977,6 @@ msgstr "Пожалуйста, подождите ..."
 #: src/search-tool/search-tool.c:747
 msgid "Choose Folder"
 msgstr "Выберите каталог"
-
-#: src/search-tool/search-tool.c:786
-msgid "Search Tool"
-msgstr "Поиск"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
@@ -3221,27 +3237,27 @@ msgstr "Вставить"
 
 #: src/skins/menus.c:201
 msgid "Queue/Unqueue"
-msgstr ""
+msgstr "В очередь/Из очереди"
 
 #: src/skins/menus.c:207
 msgid "Load Preset ..."
-msgstr ""
+msgstr "Загрузить Предустановку"
 
 #: src/skins/menus.c:208
 msgid "Load Auto Preset ..."
-msgstr ""
+msgstr "Загрузить Авто Установку..."
 
 #: src/skins/menus.c:209
 msgid "Load Default"
-msgstr ""
+msgstr "Загрузить по умолчанию"
 
 #: src/skins/menus.c:210
 msgid "Load Preset File ..."
-msgstr ""
+msgstr "Загрузить файл предустановки"
 
 #: src/skins/menus.c:211
 msgid "Load EQF File ..."
-msgstr ""
+msgstr "Загрузить EQF файл ..."
 
 #: src/skins/menus.c:213
 msgid "Save Preset ..."
@@ -3257,11 +3273,11 @@ msgstr "Сохранить  по умолчанию"
 
 #: src/skins/menus.c:216
 msgid "Save Preset File ..."
-msgstr ""
+msgstr "сохранить файл предустановки"
 
 #: src/skins/menus.c:217
 msgid "Save EQF File ..."
-msgstr ""
+msgstr "Сохранить EQF Файл"
 
 #: src/skins/menus.c:219
 msgid "Delete Preset ..."
@@ -3277,7 +3293,7 @@ msgstr "Импортировать предустановки WinAMP'a...."
 
 #: src/skins/menus.c:224
 msgid "Reset to Zero"
-msgstr ""
+msgstr "Сброс на Ноль"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -3299,19 +3315,19 @@ msgstr "Загрузить файл предустановки"
 
 #: src/skins/preset-browser.c:106
 msgid "Load EQF File"
-msgstr ""
+msgstr "Загрузить EQF файл"
 
 #: src/skins/preset-browser.c:122
 msgid "Save Preset File"
-msgstr ""
+msgstr "Сохранить файл предустановки"
 
 #: src/skins/preset-browser.c:144
 msgid "Save EQF File"
-msgstr ""
+msgstr "Сохранить EQF файл"
 
 #: src/skins/preset-browser.c:162
 msgid "Import Winamp Presets"
-msgstr ""
+msgstr "Импортировать предустановки WinAMP'a"
 
 #: src/skins/preset-list.c:289
 msgid "Presets"
@@ -3359,11 +3375,11 @@ msgstr "Выберите шрифт списка воспроизведения:
 
 #: src/skins/skins_cfg.c:191
 msgid "<b>Skin</b>"
-msgstr ""
+msgstr "<b>Скин</b>"
 
 #: src/skins/skins_cfg.c:193
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Шрифты</b>"
 
 #: src/skins/skins_cfg.c:196
 msgid "Use bitmap fonts (supports ASCII only)"
@@ -3371,7 +3387,7 @@ msgstr "Использовать растровые шрифты (поддерж
 
 #: src/skins/skins_cfg.c:198
 msgid "Scroll song title"
-msgstr ""
+msgstr "Прокручивать название песни "
 
 #: src/skins/skins_cfg.c:200
 msgid "Scroll song title in both directions"
@@ -3387,7 +3403,7 @@ msgstr "Осциллограмма"
 
 #: src/skins/skins_cfg.c:207
 msgid "Voiceprint / VU meter"
-msgstr ""
+msgstr "Отпечаток голоса / VU измеритель"
 
 #: src/skins/skins_cfg.c:208
 msgid "Off"
@@ -3404,7 +3420,7 @@ msgstr "Огонь"
 
 #: src/skins/skins_cfg.c:214
 msgid "Vertical lines"
-msgstr ""
+msgstr "Вертикальные линии"
 
 #: src/skins/skins_cfg.c:218
 msgid "Lines"
@@ -3436,15 +3452,15 @@ msgstr "Очень быстро"
 
 #: src/skins/skins_cfg.c:231
 msgid "Dots"
-msgstr ""
+msgstr "Точки"
 
 #: src/skins/skins_cfg.c:232
 msgid "Line"
-msgstr ""
+msgstr "Линия"
 
 #: src/skins/skins_cfg.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Сплошная"
 
 #: src/skins/skins_cfg.c:239
 msgid "Ice"
@@ -3456,47 +3472,47 @@ msgstr "Сглаженный"
 
 #: src/skins/skins_cfg.c:248
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Тип</b>"
 
 #: src/skins/skins_cfg.c:249
 msgid "Visualization type:"
-msgstr ""
+msgstr "Тип визуализации:"
 
 #: src/skins/skins_cfg.c:252
 msgid "<b>Analyzer</b>"
-msgstr ""
+msgstr "<b>Анализатор</b>"
 
 #: src/skins/skins_cfg.c:253
 msgid "Show peaks"
-msgstr ""
+msgstr "Показывать пики"
 
 #: src/skins/skins_cfg.c:255
 msgid "Coloring:"
-msgstr ""
+msgstr "Окраска:"
 
 #: src/skins/skins_cfg.c:258
 msgid "Style:"
-msgstr ""
+msgstr "Стиль:"
 
 #: src/skins/skins_cfg.c:261
 msgid "Falloff:"
-msgstr ""
+msgstr "Спад:"
 
 #: src/skins/skins_cfg.c:264
 msgid "Peak falloff:"
-msgstr ""
+msgstr "Спад пиков:"
 
 #: src/skins/skins_cfg.c:268
 msgid "Scope Style:"
-msgstr ""
+msgstr "Стиль осциллограммы:"
 
 #: src/skins/skins_cfg.c:271
 msgid "Voiceprint Coloring:"
-msgstr ""
+msgstr "Окраска отпечатка голоса:"
 
 #: src/skins/skins_cfg.c:274
 msgid "VU Meter Style:"
-msgstr ""
+msgstr "Стиль VU измерителя:"
 
 #: src/skins/skins_cfg.c:280
 msgid "General"
@@ -3624,7 +3640,7 @@ msgstr "Поиск записей в активном списке воспро�
 
 #: src/skins/ui_playlist.c:224
 msgid "Search"
-msgstr ""
+msgstr "Поиск"
 
 #: src/skins/ui_playlist.c:229
 msgid ""
@@ -3894,7 +3910,7 @@ msgstr "Скорость и высота"
 
 #: src/statusicon/statusicon.c:269
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "Настройки ..."
 
 #: src/statusicon/statusicon.c:371
 msgid ""
