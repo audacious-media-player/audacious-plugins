@@ -56,15 +56,8 @@ int xs_pstrcpy(char **result, const char *str)
     if (!result || !str)
         return -1;
 
-    /* Allocate memory for destination */
-    if (*result)
-        free(*result);
-    *result = (char *) malloc(strlen(str) + 1);
-    if (!*result)
-        return -2;
-
-    /* Copy to the destination */
-    strcpy(*result, str);
+    g_free (* result);
+    * result = g_strdup (str);
 
     return 0;
 }
@@ -78,17 +71,14 @@ int xs_pstrcat(char **result, const char *str)
     if (!result || !str)
         return -1;
 
-    if (*result != NULL) {
-        *result = (char *) realloc(*result, strlen(*result) + strlen(str) + 1);
-        if (*result == NULL)
-            return -1;
-        strcat(*result, str);
-    } else {
-        *result = (char *) malloc(strlen(str) + 1);
-        if (*result == NULL)
-            return -1;
-        strcpy(*result, str);
-    }
+    char * old = * result;
+
+    if (old)
+        * result = g_strconcat (old, str, NULL);
+    else
+        * result = g_strdup (str);
+
+    g_free (old);
 
     return 0;
 }

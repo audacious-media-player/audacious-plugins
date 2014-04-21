@@ -31,7 +31,7 @@ typedef struct {
 /* Functions
  */
 int xs_stildb_read(xs_stildb_t *, char *);
-int xs_stildb_index(xs_stildb_t *);
+void xs_stildb_index(xs_stildb_t *);
 void xs_stildb_free(xs_stildb_t *);
 stil_node_t *xs_stildb_get_node(xs_stildb_t *, char *);
 

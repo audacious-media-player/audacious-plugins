@@ -72,13 +72,7 @@ int xs_stil_init(void)
     }
 
     /* Create index */
-    if (xs_stildb_index(xs_stildb_db) != 0) {
-        xs_stildb_free(xs_stildb_db);
-        xs_stildb_db = NULL;
-        pthread_mutex_unlock(&xs_cfg_mutex);
-        pthread_mutex_unlock(&xs_stildb_db_mutex);
-        return -4;
-    }
+    xs_stildb_index (xs_stildb_db);
 
     pthread_mutex_unlock(&xs_cfg_mutex);
     pthread_mutex_unlock(&xs_stildb_db_mutex);
@@ -165,13 +159,7 @@ int xs_songlen_init(void)
     }
 
     /* Create index */
-    if (xs_sldb_index(xs_sldb_db) != 0) {
-        xs_sldb_free(xs_sldb_db);
-        xs_sldb_db = NULL;
-        pthread_mutex_unlock(&xs_cfg_mutex);
-        pthread_mutex_unlock(&xs_sldb_db_mutex);
-        return -4;
-    }
+    xs_sldb_index (xs_sldb_db);
 
     pthread_mutex_unlock(&xs_cfg_mutex);
     pthread_mutex_unlock(&xs_sldb_db_mutex);

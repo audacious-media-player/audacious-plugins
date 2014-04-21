@@ -29,7 +29,7 @@ typedef struct {
 /* Functions
  */
 int            xs_sldb_read(xs_sldb_t *, const char *);
-int            xs_sldb_index(xs_sldb_t *);
+void           xs_sldb_index(xs_sldb_t *);
 void            xs_sldb_free(xs_sldb_t *);
 sldb_node_t *   xs_sldb_get(xs_sldb_t *, const char *);
 

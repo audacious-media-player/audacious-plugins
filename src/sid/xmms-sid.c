@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
@@ -154,12 +156,7 @@ bool_t xs_play_file(const char *filename, VFSFile *file)
     audioBufSize = xs_status.audioFrequency * channels * FMT_SIZEOF (FMT_S16_NE);
     if (audioBufSize < 512) audioBufSize = 512;
 
-    audioBuffer = (char *) malloc(audioBufSize);
-    if (audioBuffer == NULL) {
-        xs_error("Couldn't allocate memory for audio data buffer!\n");
-        pthread_mutex_unlock(&xs_status_mutex);
-        goto xs_err_exit;
-    }
+    audioBuffer = g_new (char, audioBufSize);
 
     /* Check minimum playtime */
     tmpLength = tmpTune->subTunes[xs_status.currSong - 1].tuneLength;
@@ -222,8 +219,8 @@ bool_t xs_play_file(const char *filename, VFSFile *file)
     }
 
 DONE:
-    free(audioBuffer);
-    free(oversampleBuffer);
+    g_free(audioBuffer);
+    g_free(oversampleBuffer);
 
     /* Set playing status to false (stopped), thus when
      * XMMS next calls xs_get_time(), it can return appropriate

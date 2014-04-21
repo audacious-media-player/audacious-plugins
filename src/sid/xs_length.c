@@ -38,8 +38,8 @@ static void xs_sldb_node_free(sldb_node_t *node)
 {
     if (node) {
         /* Nothing much to do here ... */
-        free(node->lengths);
-        free(node);
+        g_free(node->lengths);
+        g_free(node);
     }
 }
 
@@ -112,12 +112,7 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
     sldb_node_t *tmnode;
 
     /* Allocate new node */
-    tmnode = (sldb_node_t *) malloc(sizeof(sldb_node_t));
-    if (!tmnode) {
-        xs_error("Error allocating new node. Fatal error.\n");
-        return NULL;
-    }
-    memset(tmnode, 0, sizeof(sldb_node_t));
+    tmnode = g_new0 (sldb_node_t, 1);
 
     /* Get hash value */
     linePos = 0;
@@ -153,13 +148,7 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
 
             /* Allocate memory for lengths */
             if (tmnode->nlengths > 0) {
-                tmnode->lengths = (int *) malloc(tmnode->nlengths * sizeof(int));
-                if (!tmnode->lengths) {
-                    xs_error("Could not allocate memory for node.\n");
-                    xs_sldb_node_free(tmnode);
-                    return NULL;
-                }
-                memset(tmnode->lengths, 0, tmnode->nlengths * sizeof(int));
+                tmnode->lengths = g_new0 (int, tmnode->nlengths);
             } else {
                 xs_sldb_node_free(tmnode);
                 return NULL;
@@ -283,7 +272,7 @@ static int xs_sldb_cmp(const void *node1, const void *node2)
 
 /* (Re)create index
  */
-int xs_sldb_index(xs_sldb_t * db)
+void xs_sldb_index(xs_sldb_t * db)
 {
     sldb_node_t *pCurr;
     size_t i;
@@ -291,7 +280,7 @@ int xs_sldb_index(xs_sldb_t * db)
 
     /* Free old index */
     if (db->pindex) {
-        free(db->pindex);
+        g_free(db->pindex);
         db->pindex = NULL;
     }
 
@@ -306,9 +295,7 @@ int xs_sldb_index(xs_sldb_t * db)
     /* Check number of nodes */
     if (db->n > 0) {
         /* Allocate memory for index-table */
-        db->pindex = (sldb_node_t **) malloc(sizeof(sldb_node_t *) * db->n);
-        if (!db->pindex)
-            return -1;
+        db->pindex = g_new (sldb_node_t *, db->n);
 
         /* Get node-pointers to table */
         i = 0;
@@ -321,8 +308,6 @@ int xs_sldb_index(xs_sldb_t * db)
         /* Sort the indexes */
         qsort(db->pindex, db->n, sizeof(sldb_node_t *), xs_sldb_cmp);
     }
-
-    return 0;
 }
 
 
@@ -347,13 +332,13 @@ void xs_sldb_free(xs_sldb_t * db)
 
     /* Free memory allocated for index */
     if (db->pindex) {
-        free(db->pindex);
+        g_free(db->pindex);
         db->pindex = NULL;
     }
 
     /* Free structure */
     db->n = 0;
-    free(db);
+    g_free(db);
 }
 
 
@@ -437,12 +422,7 @@ static int xs_get_sid_hash(const char *filename, xs_md5hash_t hash)
     }
 
     /* Allocate buffer */
-    songData = (uint8_t *) malloc(XS_SIDBUF_SIZE * sizeof(uint8_t));
-    if (!songData) {
-        vfs_fclose(inFile);
-        xs_error("Error allocating temp data buffer for file '%s'\n", filename);
-        return -3;
-    }
+    songData = g_new (uint8_t, XS_SIDBUF_SIZE);
 
     /* Read data to buffer */
     result = vfs_fread(songData, sizeof(uint8_t), XS_SIDBUF_SIZE, inFile);
@@ -460,7 +440,7 @@ static int xs_get_sid_hash(const char *filename, xs_md5hash_t hash)
     }
 
     /* Free buffer */
-    free(songData);
+    g_free(songData);
 
     /* Append header data to hash */
 #define XSADDHASH(QDATAB) do {                    \
