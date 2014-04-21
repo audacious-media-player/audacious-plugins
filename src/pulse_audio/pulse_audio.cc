@@ -408,13 +408,15 @@ static void pulse_write(void* ptr, int length) {
          void * pptr = (char *) ptr + writeoffs;
 
          writable = length - writeoffs;
-         size_t fragsize = pa_stream_writable_size(stream);
+         int fragsize = pa_stream_writable_size(stream);
 
          /* don't write more than what PA is willing to handle right now. */
          if (writable > fragsize)
              writable = fragsize;
 
-         if (pa_stream_write(stream, pptr, writable, NULL, PA_SEEK_RELATIVE, 0) < 0) {
+         if (pa_stream_write(stream, pptr, writable, NULL, PA_SEEK_RELATIVE,
+          (pa_seek_mode_t) 0) < 0)
+         {
              AUDDBG("pa_stream_write() failed: %s", pa_strerror(pa_context_errno(context)));
              goto fail;
          }
@@ -455,52 +457,38 @@ static void pulse_close(void)
     volume_valid = 0;
 }
 
+static pa_sample_format_t to_pulse_format (int aformat)
+{
+    switch (aformat)
+    {
+    case FMT_U8:      return PA_SAMPLE_U8;
+    case FMT_S16_LE:  return PA_SAMPLE_S16LE;
+    case FMT_S16_BE:  return PA_SAMPLE_S16BE;
+#ifdef PA_SAMPLE_S24_32LE
+    case FMT_S24_LE:  return PA_SAMPLE_S24_32LE;
+    case FMT_S24_BE:  return PA_SAMPLE_S24_32BE;
+#endif
+#ifdef PA_SAMPLE_S32LE
+    case FMT_S32_LE:  return PA_SAMPLE_S32LE;
+    case FMT_S32_BE:  return PA_SAMPLE_S32BE;
+#endif
+	case FMT_FLOAT:   return PA_SAMPLE_FLOAT32NE;
+    default:          return PA_SAMPLE_INVALID;
+    }
+}
+
 static int pulse_open(int fmt, int rate, int nch) {
     pa_sample_spec ss;
-    pa_operation *o = NULL;
-    int success;
 
     assert(!mainloop);
     assert(!context);
     assert(!stream);
     assert(!connected);
 
-    switch(fmt)
-    {
-        case FMT_U8:
-            ss.format = PA_SAMPLE_U8;
-            break;
-        case FMT_S16_LE:
-            ss.format = PA_SAMPLE_S16LE;
-            break;
-        case FMT_S16_BE:
-            ss.format = PA_SAMPLE_S16BE;
-            break;
+    ss.format = to_pulse_format (fmt);
+    if (ss.format == PA_SAMPLE_INVALID)
+        return FALSE;
 
-#ifdef PA_SAMPLE_S24_32LE
-        case FMT_S24_LE:
-            ss.format = PA_SAMPLE_S24_32LE;
-            break;
-        case FMT_S24_BE:
-            ss.format = PA_SAMPLE_S24_32BE;
-            break;
-#endif
-
-#ifdef PA_SAMPLE_S32LE
-        case FMT_S32_LE:
-            ss.format = PA_SAMPLE_S32LE;
-            break;
-        case FMT_S32_BE:
-            ss.format = PA_SAMPLE_S32BE;
-            break;
-#endif
-
-	case FMT_FLOAT:
-            ss.format = PA_SAMPLE_FLOAT32NE;
-            break;
-        default:
-            return FALSE;
-    }
     ss.rate = rate;
     ss.channels = nch;
 
@@ -509,27 +497,27 @@ static int pulse_open(int fmt, int rate, int nch) {
 
     if (!(mainloop = pa_threaded_mainloop_new())) {
         ERROR ("Failed to allocate main loop");
-        goto fail;
+        return FALSE;
     }
 
     pa_threaded_mainloop_lock(mainloop);
 
     if (!(context = pa_context_new(pa_threaded_mainloop_get_api(mainloop), "Audacious"))) {
         ERROR ("Failed to allocate context");
-        goto unlock_and_fail;
+        goto FAIL1;
     }
 
     pa_context_set_state_callback(context, context_state_cb, NULL);
     pa_context_set_subscribe_callback(context, subscribe_cb, NULL);
 
-    if (pa_context_connect(context, NULL, 0, NULL) < 0) {
+    if (pa_context_connect(context, NULL, (pa_context_flags_t) 0, NULL) < 0) {
         ERROR ("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL1;
     }
 
     if (pa_threaded_mainloop_start(mainloop) < 0) {
         ERROR ("Failed to start main loop");
-        goto unlock_and_fail;
+        goto FAIL1;
     }
 
     /* Wait until the context is ready */
@@ -537,12 +525,16 @@ static int pulse_open(int fmt, int rate, int nch) {
 
     if (pa_context_get_state(context) != PA_CONTEXT_READY) {
         ERROR ("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL1;
     }
 
     if (!(stream = pa_stream_new(context, "Audacious", &ss, NULL))) {
         ERROR ("Failed to create stream: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+
+FAIL1:
+        pa_threaded_mainloop_unlock (mainloop);
+        pulse_close ();
+        return FALSE;
     }
 
     pa_stream_set_state_callback(stream, stream_state_cb, NULL);
@@ -554,11 +546,17 @@ static int pulse_open(int fmt, int rate, int nch) {
 
     int aud_buffer = aud_get_int(NULL, "output_buffer_size");
     size_t buffer_size = pa_usec_to_bytes(aud_buffer, &ss) * 1000;
-    pa_buffer_attr buffer = {(uint32_t) -1, buffer_size, (uint32_t) -1, (uint32_t) -1, buffer_size};
+    pa_buffer_attr buffer = {(uint32_t) -1, (uint32_t) buffer_size,
+     (uint32_t) -1, (uint32_t) -1, (uint32_t) buffer_size};
 
-    if (pa_stream_connect_playback(stream, NULL, &buffer, PA_STREAM_INTERPOLATE_TIMING|PA_STREAM_AUTO_TIMING_UPDATE, NULL, NULL) < 0) {
+    pa_operation *o = NULL;
+    int success;
+
+    if (pa_stream_connect_playback (stream, NULL, & buffer, (pa_stream_flags_t)
+     (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE), NULL, NULL) < 0)
+    {
         ERROR ("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL2;
     }
 
 
@@ -567,24 +565,24 @@ static int pulse_open(int fmt, int rate, int nch) {
 
     if (pa_stream_get_state(stream) != PA_STREAM_READY) {
         ERROR ("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL2;
     }
 
     /* Now subscribe to events */
     if (!(o = pa_context_subscribe(context, PA_SUBSCRIPTION_MASK_SINK_INPUT, context_success_cb, &success))) {
         ERROR ("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL2;
     }
 
     success = 0;
     while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
-        CHECK_DEAD_GOTO(fail, 1);
+        CHECK_DEAD_GOTO(FAIL2, 1);
         pa_threaded_mainloop_wait(mainloop);
     }
 
     if (!success) {
         ERROR ("pa_context_subscribe() failed: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL2;
     }
 
     pa_operation_unref(o);
@@ -592,17 +590,17 @@ static int pulse_open(int fmt, int rate, int nch) {
     /* Now request the initial stream info */
     if (!(o = pa_context_get_sink_input_info(context, pa_stream_get_index(stream), info_cb, NULL))) {
         ERROR ("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL2;
     }
 
     while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
-        CHECK_DEAD_GOTO(fail, 1);
+        CHECK_DEAD_GOTO(FAIL2, 1);
         pa_threaded_mainloop_wait(mainloop);
     }
 
     if (!volume_valid) {
         ERROR ("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
-        goto unlock_and_fail;
+        goto FAIL2;
     }
     pa_operation_unref(o);
 
@@ -617,17 +615,12 @@ static int pulse_open(int fmt, int rate, int nch) {
 
     return TRUE;
 
-unlock_and_fail:
-
+FAIL2:
     if (o)
         pa_operation_unref(o);
 
     pa_threaded_mainloop_unlock(mainloop);
-
-fail:
-
     pulse_close();
-
     return FALSE;
 }
 

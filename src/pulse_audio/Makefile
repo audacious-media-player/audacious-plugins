@@ -1,6 +1,6 @@
 PLUGIN = pulse_audio${PLUGIN_SUFFIX}
 
-SRCS = pulse_audio.c
+SRCS = pulse_audio.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
