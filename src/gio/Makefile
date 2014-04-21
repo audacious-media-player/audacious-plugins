@@ -1,6 +1,6 @@
 PLUGIN = gio${PLUGIN_SUFFIX}
 
-SRCS = gio.c
+SRCS = gio.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

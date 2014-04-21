@@ -79,7 +79,8 @@ static void * gio_fopen (const char * filename, const char * mode)
     case 'w':
         if (strchr (mode, '+'))
         {
-            data->iostream = (GIOStream *) g_file_replace_readwrite (data->file, 0, 0, 0, 0, & error);
+            data->iostream = (GIOStream *) g_file_replace_readwrite (data->file,
+             0, 0, (GFileCreateFlags) 0, 0, & error);
             CHECK_ERROR ("open", filename);
             data->istream = g_io_stream_get_input_stream (data->iostream);
             data->ostream = g_io_stream_get_output_stream (data->iostream);
@@ -87,7 +88,8 @@ static void * gio_fopen (const char * filename, const char * mode)
         }
         else
         {
-            data->ostream = (GOutputStream *) g_file_replace (data->file, 0, 0, 0, 0, & error);
+            data->ostream = (GOutputStream *) g_file_replace (data->file, 0, 0,
+             (GFileCreateFlags) 0, 0, & error);
             CHECK_ERROR ("open", filename);
             data->seekable = (GSeekable *) data->ostream;
         }
@@ -100,7 +102,8 @@ static void * gio_fopen (const char * filename, const char * mode)
         }
         else
         {
-            data->ostream = (GOutputStream *) g_file_append_to (data->file, 0, 0, & error);
+            data->ostream = (GOutputStream *) g_file_append_to (data->file,
+             (GFileCreateFlags) 0, 0, & error);
             CHECK_ERROR ("open", filename);
             data->seekable = (GSeekable *) data->ostream;
         }
@@ -119,7 +122,7 @@ FAILED:
 
 static int gio_fclose (VFSFile * file)
 {
-    FileData * data = vfs_get_handle (file);
+    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
     if (data->iostream)
@@ -155,7 +158,7 @@ FAILED:
 
 static int64_t gio_fread (void * buf, int64_t size, int64_t nitems, VFSFile * file)
 {
-    FileData * data = vfs_get_handle (file);
+    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
     if (! data->istream)
@@ -175,7 +178,7 @@ FAILED:
 
 static int64_t gio_fwrite (const void * buf, int64_t size, int64_t nitems, VFSFile * file)
 {
-    FileData * data = vfs_get_handle (file);
+    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
     if (! data->ostream)
@@ -195,7 +198,7 @@ FAILED:
 
 static int gio_fseek (VFSFile * file, int64_t offset, int whence)
 {
-    FileData * data = vfs_get_handle (file);
+    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
     GSeekType gwhence;
 
@@ -226,7 +229,7 @@ FAILED:
 
 static int64_t gio_ftell (VFSFile * file)
 {
-    FileData * data = vfs_get_handle (file);
+    FileData * data = (FileData *) vfs_get_handle (file);
     return g_seekable_tell (data->seekable);
 }
 
@@ -254,7 +257,7 @@ static bool_t gio_feof (VFSFile * file)
 
 static int gio_ftruncate (VFSFile * file, int64_t length)
 {
-    FileData * data = vfs_get_handle (file);
+    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
     g_seekable_truncate (data->seekable, length, NULL, & error);
@@ -268,8 +271,9 @@ FAILED:
 
 static int64_t gio_fsize (VFSFile * file)
 {
-    FileData * data = vfs_get_handle (file);
+    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
+    int64_t size;
 
     /* Audacious core expects one of two cases:
      *  1) File size is known and file is seekable.
@@ -279,10 +283,10 @@ static int64_t gio_fsize (VFSFile * file)
         return -1;
 
     GFileInfo * info = g_file_query_info (data->file,
-     G_FILE_ATTRIBUTE_STANDARD_SIZE, 0, 0, & error);
+     G_FILE_ATTRIBUTE_STANDARD_SIZE, (GFileQueryInfoFlags) 0, 0, & error);
     CHECK_ERROR ("get size of", vfs_get_filename (file));
 
-    int64_t size = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
+    size = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
 
     g_object_unref (info);
     return size;
