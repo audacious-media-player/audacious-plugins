@@ -2,7 +2,7 @@ include ../../extra.mk
 
 PLUGIN = sndfile${PLUGIN_SUFFIX}
 
-SRCS = plugin.c
+SRCS = plugin.cc
 
 include ../../buildsys.mk
 

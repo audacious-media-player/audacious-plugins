@@ -55,31 +55,31 @@
 static sf_count_t
 sf_get_filelen (void *user_data)
 {
-    return vfs_fsize (user_data);
+    return vfs_fsize ((VFSFile *) user_data);
 }
 
 static sf_count_t
 sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
-    return vfs_fseek(user_data, offset, whence);
+    return vfs_fseek ((VFSFile *) user_data, offset, whence);
 }
 
 static sf_count_t
 sf_vread (void *ptr, sf_count_t count, void *user_data)
 {
-    return vfs_fread(ptr, 1, count, user_data);
+    return vfs_fread (ptr, 1, count, (VFSFile *) user_data);
 }
 
 static sf_count_t
 sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
 {
-    return vfs_fwrite(ptr, 1, count, user_data);
+    return vfs_fwrite (ptr, 1, count, (VFSFile *) user_data);
 }
 
 static sf_count_t
 sf_tell (void *user_data)
 {
-    return vfs_ftell(user_data);
+    return vfs_ftell ((VFSFile *) user_data);
 }
 
 static SF_VIRTUAL_IO sf_virtual_io =
