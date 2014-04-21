@@ -167,25 +167,24 @@ static bool_t wv_play (const char * filename, VFSFile * file)
         else
         {
             /* Perform audio data conversion and output */
-            unsigned i;
             int32_t *rp = input;
-            int8_t *wp = output;
-            int16_t *wp2 = output;
-            int32_t *wp4 = output;
+            int8_t *wp = (int8_t *) output;
+            int16_t *wp2 = (int16_t *) output;
+            int32_t *wp4 = (int32_t *) output;
 
             if (bits_per_sample == 8)
             {
-                for (i = 0; i < ret * num_channels; i++, wp++, rp++)
+                for (int i = 0; i < ret * num_channels; i++, wp++, rp++)
                     *wp = *rp & 0xff;
             }
             else if (bits_per_sample == 16)
             {
-                for (i = 0; i < ret * num_channels; i++, wp2++, rp++)
+                for (int i = 0; i < ret * num_channels; i++, wp2++, rp++)
                     *wp2 = *rp & 0xffff;
             }
             else if (bits_per_sample == 24 || bits_per_sample == 32)
             {
-                for (i = 0; i < ret * num_channels; i++, wp4++, rp++)
+                for (int i = 0; i < ret * num_channels; i++, wp4++, rp++)
                     *wp4 = *rp;
             }
 
