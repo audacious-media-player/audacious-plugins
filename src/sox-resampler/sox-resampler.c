@@ -159,17 +159,16 @@ static const PluginPreferences sox_resampler_prefs = {
  .widgets = sox_resampler_widgets,
  .n_widgets = ARRAY_LEN (sox_resampler_widgets)};
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("SoX Resampler"),
-    .domain = PACKAGE,
-    .about_text = sox_resampler_about,
-    .prefs = & sox_resampler_prefs,
-    .init = sox_resampler_init,
-    .cleanup = sox_resampler_cleanup,
-    .start = sox_resampler_start,
-    .process = sox_resampler_process,
-    .flush = sox_resampler_flush,
-    .finish = sox_resampler_finish,
-    .order = 2 /* must be before crossfade */
-)
+#define AUD_PLUGIN_NAME        N_("SoX Resampler")
+#define AUD_PLUGIN_ABOUT       sox_resampler_about
+#define AUD_PLUGIN_PREFS       & sox_resampler_prefs
+#define AUD_PLUGIN_INIT        sox_resampler_init
+#define AUD_PLUGIN_CLEANUP     sox_resampler_cleanup
+#define AUD_EFFECT_START       sox_resampler_start
+#define AUD_EFFECT_PROCESS     sox_resampler_process
+#define AUD_EFFECT_FLUSH       sox_resampler_flush
+#define AUD_EFFECT_FINISH      sox_resampler_finish
+#define AUD_EFFECT_ORDER       2  /* must be before crossfade */
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

@@ -51,17 +51,16 @@ static const PluginPreferences bscope_prefs = {
  .widgets = bscope_widgets,
  .n_widgets = ARRAY_LEN (bscope_widgets)};
 
-AUD_VIS_PLUGIN
-(
-    .name = N_("Blur Scope"),
-    .domain = PACKAGE,
-    .prefs = & bscope_prefs,
-    .init = bscope_init,                /* init */
-    .cleanup = bscope_cleanup,             /* cleanup */
-    .clear = bscope_clear,
-    .render_mono_pcm = bscope_render,
-    .get_widget = bscope_get_widget,
-)
+#define AUD_PLUGIN_NAME        N_("Blur Scope")
+#define AUD_PLUGIN_PREFS       & bscope_prefs
+#define AUD_PLUGIN_INIT        bscope_init
+#define AUD_PLUGIN_CLEANUP     bscope_cleanup
+#define AUD_VIS_CLEAR          bscope_clear
+#define AUD_VIS_RENDER_MONO    bscope_render
+#define AUD_VIS_GET_WIDGET     bscope_get_widget
+
+#define AUD_DECLARE_VIS
+#include <libaudcore/plugin-declare.h>
 
 static GtkWidget * area = NULL;
 static gint width, height, stride, image_size;

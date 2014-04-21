@@ -51,11 +51,10 @@ void cd_cleanup (void)
             aud_plugin_menu_remove (menus[m], funcs[i]);
 }
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Audio CD Menu Items"),
-    .domain = PACKAGE,
-    .enabled_by_default = TRUE,
-    .init = cd_init,
-    .cleanup = cd_cleanup,
-)
+#define AUD_PLUGIN_NAME        N_("Audio CD Menu Items")
+#define AUD_GENERAL_AUTO_ENABLE  TRUE
+#define AUD_PLUGIN_INIT        cd_init
+#define AUD_PLUGIN_CLEANUP     cd_cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

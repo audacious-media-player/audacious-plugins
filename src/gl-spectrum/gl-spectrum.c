@@ -404,13 +404,12 @@ static const char about_text[] =
     "and 4Front Technologies\n\n"
     "License: GPLv2+");
 
-AUD_VIS_PLUGIN
-(
-    .name = N_("OpenGL Spectrum Analyzer"),
-    .domain = PACKAGE,
-    .about_text = about_text,
-    .init = init,
-    .render_freq = render_freq,
-    .clear = clear,
-    .get_widget = get_widget,
-)
+#define AUD_PLUGIN_NAME        N_("OpenGL Spectrum Analyzer")
+#define AUD_PLUGIN_ABOUT       about_text
+#define AUD_PLUGIN_INIT        init
+#define AUD_VIS_RENDER_FREQ    render_freq
+#define AUD_VIS_CLEAR          clear
+#define AUD_VIS_GET_WIDGET     get_widget
+
+#define AUD_DECLARE_VIS
+#include <libaudcore/plugin-declare.h>

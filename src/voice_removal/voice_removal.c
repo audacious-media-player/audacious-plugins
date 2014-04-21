@@ -48,12 +48,11 @@ static void voice_finish(float **d, int *samples)
 	voice_process(d, samples);
 }
 
-AUD_EFFECT_PLUGIN
-(
-	.name = N_("Voice Removal"),
-	.domain = PACKAGE,
-	.start = voice_start,
-	.process = voice_process,
-	.finish = voice_finish,
-	.preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Voice Removal")
+#define AUD_EFFECT_START       voice_start
+#define AUD_EFFECT_PROCESS     voice_process
+#define AUD_EFFECT_FINISH      voice_finish
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

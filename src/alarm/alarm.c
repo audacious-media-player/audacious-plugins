@@ -806,12 +806,11 @@ static const char alarm_about[] =
  N_("A plugin that can be used to start playing at a certain time.\n\n"
     "Originally written by Adam Feakin and Daniel Stodden.");
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Alarm"),
-    .domain = PACKAGE,
-    .about_text = alarm_about,
-    .init = alarm_init,
-    .configure = alarm_configure,
-    .cleanup = alarm_cleanup,
-)
+#define AUD_PLUGIN_NAME        N_("Alarm")
+#define AUD_PLUGIN_ABOUT       alarm_about
+#define AUD_PLUGIN_INIT        alarm_init
+#define AUD_PLUGIN_CONFIGWIN   alarm_configure
+#define AUD_PLUGIN_CLEANUP     alarm_cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

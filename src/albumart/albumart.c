@@ -72,9 +72,8 @@ static void * album_get_widget (void)
     return widget;
 }
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Album Art"),
-    .domain = PACKAGE,
-    .get_widget = album_get_widget
-)
+#define AUD_PLUGIN_NAME        N_("Album Art")
+#define AUD_GENERAL_GET_WIDGET   album_get_widget
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

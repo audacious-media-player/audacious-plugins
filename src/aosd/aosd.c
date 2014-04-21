@@ -33,15 +33,14 @@ static const char aosd_about[] =
     "Based in part on Evan Martin's Ghosd library:\n"
     "http://neugierig.org/software/ghosd/");
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("AOSD (On-Screen Display)"),
-    .domain = PACKAGE,
-    .about_text = aosd_about,
-    .init = aosd_init,
-    .configure = aosd_configure,
-    .cleanup = aosd_cleanup
-)
+#define AUD_PLUGIN_NAME        N_("AOSD (On-Screen Display)")
+#define AUD_PLUGIN_ABOUT       aosd_about
+#define AUD_PLUGIN_INIT        aosd_init
+#define AUD_PLUGIN_CONFIGWIN   aosd_configure
+#define AUD_PLUGIN_CLEANUP     aosd_cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>
 
 aosd_cfg_t * global_config = NULL;
 gboolean plugin_is_active = FALSE;

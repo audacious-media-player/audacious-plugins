@@ -181,16 +181,15 @@ static const PluginPreferences mixer_prefs = {
  .widgets = mixer_widgets,
  .n_widgets = ARRAY_LEN (mixer_widgets)};
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Channel Mixer"),
-    .domain = PACKAGE,
-    .about_text = mixer_about,
-    .prefs = & mixer_prefs,
-    .init = mixer_init,
-    .cleanup = mixer_cleanup,
-    .start = mixer_start,
-    .process = mixer_process,
-    .finish = mixer_process,
-    .order = 2, /* must be before crossfade */
-)
+#define AUD_PLUGIN_NAME        N_("Channel Mixer")
+#define AUD_PLUGIN_ABOUT       mixer_about
+#define AUD_PLUGIN_PREFS       & mixer_prefs
+#define AUD_PLUGIN_INIT        mixer_init
+#define AUD_PLUGIN_CLEANUP     mixer_cleanup
+#define AUD_EFFECT_START       mixer_start
+#define AUD_EFFECT_PROCESS     mixer_process
+#define AUD_EFFECT_FINISH      mixer_process
+#define AUD_EFFECT_ORDER       2  /* must be before crossfade */
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

@@ -168,11 +168,10 @@ static const PluginPreferences delete_files_prefs = {
  .widgets = delete_files_widgets,
  .n_widgets = ARRAY_LEN (delete_files_widgets)};
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Delete Files"),
-    .domain = PACKAGE,
-    .init = delete_files_init,
-    .cleanup = delete_files_cleanup,
-    .prefs = & delete_files_prefs,
-)
+#define AUD_PLUGIN_NAME        N_("Delete Files")
+#define AUD_PLUGIN_INIT        delete_files_init
+#define AUD_PLUGIN_CLEANUP     delete_files_cleanup
+#define AUD_PLUGIN_PREFS       & delete_files_prefs
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

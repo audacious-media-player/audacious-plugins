@@ -671,17 +671,16 @@ static const char about[] =
  N_("LADSPA Host for Audacious\n"
     "Copyright 2011 John Lindgren");
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("LADSPA Host"),
-    .domain = PACKAGE,
-    .about_text = about,
-    .init = init,
-    .cleanup = cleanup,
-    .configure = configure,
-    .start = ladspa_start,
-    .process = ladspa_process,
-    .flush = ladspa_flush,
-    .finish = ladspa_finish,
-    .preserves_format = 1,
-)
+#define AUD_PLUGIN_NAME        N_("LADSPA Host")
+#define AUD_PLUGIN_ABOUT       about
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_CONFIGWIN   configure
+#define AUD_EFFECT_START       ladspa_start
+#define AUD_EFFECT_PROCESS     ladspa_process
+#define AUD_EFFECT_FLUSH       ladspa_flush
+#define AUD_EFFECT_FINISH      ladspa_finish
+#define AUD_EFFECT_SAME_FMT    1
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

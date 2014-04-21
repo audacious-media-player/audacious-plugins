@@ -197,7 +197,7 @@ static const PreferencesWidget resample_widgets[] = {
   .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
  {WIDGET_SPIN_BTN, N_("32.0 kHz:"), .child = TRUE,
   .cfg_type = VALUE_INT, .csect = "resample", .cname = "32000",
-  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}}, 
+  .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
  {WIDGET_SPIN_BTN, N_("44.1 kHz:"), .child = TRUE,
   .cfg_type = VALUE_INT, .csect = "resample", .cname = "44100",
   .data = {.spin_btn = {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}}},
@@ -221,17 +221,16 @@ static const PluginPreferences resample_prefs = {
  .widgets = resample_widgets,
  .n_widgets = ARRAY_LEN (resample_widgets)};
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Sample Rate Converter"),
-    .domain = PACKAGE,
-    .about_text = resample_about,
-    .prefs = & resample_prefs,
-    .init = resample_init,
-    .cleanup = resample_cleanup,
-    .start = resample_start,
-    .process = resample_process,
-    .flush = resample_flush,
-    .finish = resample_finish,
-    .order = 2 /* must be before crossfade */
-)
+#define AUD_PLUGIN_NAME        N_("Sample Rate Converter")
+#define AUD_PLUGIN_ABOUT       resample_about
+#define AUD_PLUGIN_PREFS       & resample_prefs
+#define AUD_PLUGIN_INIT        resample_init
+#define AUD_PLUGIN_CLEANUP     resample_cleanup
+#define AUD_EFFECT_START       resample_start
+#define AUD_EFFECT_PROCESS     resample_process
+#define AUD_EFFECT_FLUSH       resample_flush
+#define AUD_EFFECT_FINISH      resample_finish
+#define AUD_EFFECT_ORDER       2  /* must be before crossfade */
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

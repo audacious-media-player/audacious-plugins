@@ -117,16 +117,15 @@ static const char echo_about[] =
     "By Johan Levin, 1999\n\n"
     "Surround echo by Carl van Schaik, 1999");
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Echo"),
-    .domain = PACKAGE,
-    .about_text = echo_about,
-    .prefs = & echo_prefs,
-    .init = init,
-    .cleanup = cleanup,
-    .start = echo_start,
-    .process = echo_process,
-    .finish = echo_finish,
-    .preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Echo")
+#define AUD_PLUGIN_ABOUT       echo_about
+#define AUD_PLUGIN_PREFS       & echo_prefs
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_EFFECT_START       echo_start
+#define AUD_EFFECT_PROCESS     echo_process
+#define AUD_EFFECT_FINISH      echo_finish
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

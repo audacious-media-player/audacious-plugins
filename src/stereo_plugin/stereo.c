@@ -31,18 +31,17 @@ static const PluginPreferences stereo_prefs = {
  .widgets = stereo_widgets,
  .n_widgets = ARRAY_LEN (stereo_widgets)};
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Extra Stereo"),
-    .domain = PACKAGE,
-    .about_text = stereo_about,
-    .prefs = & stereo_prefs,
-    .init = init,
-    .start = stereo_start,
-    .process = stereo_process,
-    .finish = stereo_finish,
-    .preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Extra Stereo")
+#define AUD_PLUGIN_ABOUT       stereo_about
+#define AUD_PLUGIN_PREFS       & stereo_prefs
+#define AUD_PLUGIN_INIT        init
+#define AUD_EFFECT_START       stereo_start
+#define AUD_EFFECT_PROCESS     stereo_process
+#define AUD_EFFECT_FINISH      stereo_finish
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>
 
 static bool_t init (void)
 {

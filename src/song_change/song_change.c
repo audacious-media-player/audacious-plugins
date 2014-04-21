@@ -49,14 +49,13 @@ static char *cmd_line_ttc = NULL;
 
 static GtkWidget *cmd_warn_label, *cmd_warn_img;
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Song Change"),
-    .domain = PACKAGE,
-    .prefs = & preferences,
-    .init = init,
-    .cleanup = cleanup
-)
+#define AUD_PLUGIN_NAME        N_("Song Change")
+#define AUD_PLUGIN_PREFS       & preferences
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>
 
 /**
  * Escapes characters that are special to the shell inside double quotes.

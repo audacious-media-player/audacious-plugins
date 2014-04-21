@@ -400,11 +400,10 @@ bool_t mpris2_init (void)
     return TRUE;
 }
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("MPRIS 2 Server"),
-    .domain = PACKAGE,
-    .enabled_by_default = TRUE,
-    .init = mpris2_init,
-    .cleanup = mpris2_cleanup
-)
+#define AUD_PLUGIN_NAME        N_("MPRIS 2 Server")
+#define AUD_GENERAL_AUTO_ENABLE  TRUE
+#define AUD_PLUGIN_INIT        mpris2_init
+#define AUD_PLUGIN_CLEANUP     mpris2_cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

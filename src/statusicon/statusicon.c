@@ -395,12 +395,11 @@ static const PluginPreferences si_prefs = {
  .widgets = si_widgets,
  .n_widgets = ARRAY_LEN (si_widgets)};
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Status Icon"),
-    .domain = PACKAGE,
-    .about_text = si_about,
-    .prefs = & si_prefs,
-    .init = si_init,
-    .cleanup = si_cleanup,
-)
+#define AUD_PLUGIN_NAME        N_("Status Icon")
+#define AUD_PLUGIN_ABOUT       si_about
+#define AUD_PLUGIN_PREFS       & si_prefs
+#define AUD_PLUGIN_INIT        si_init
+#define AUD_PLUGIN_CLEANUP     si_cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

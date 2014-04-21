@@ -298,12 +298,11 @@ static const char scrobbler_about[] =
     "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n\n"
     "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
 
+#define AUD_PLUGIN_NAME        N_("Scrobbler 2.0")
+#define AUD_PLUGIN_ABOUT       scrobbler_about
+#define AUD_PLUGIN_INIT        scrobbler_init
+#define AUD_PLUGIN_CLEANUP     scrobbler_cleanup
+#define AUD_PLUGIN_PREFS       &configuration
 
-AUD_GENERAL_PLUGIN (
-    .name = N_("Scrobbler 2.0"),
-    .domain = PACKAGE,
-    .about_text = scrobbler_about,
-    .init = scrobbler_init,
-    .cleanup = scrobbler_cleanup,
-    .prefs = &configuration //see config_window.c
-)
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

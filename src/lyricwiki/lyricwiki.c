@@ -405,11 +405,10 @@ static void *get_widget(void)
 	return vbox;
 }
 
-AUD_GENERAL_PLUGIN
-(
-	.name = N_("LyricWiki Plugin"),
-	.domain = PACKAGE,
-	.init = init,
-	.cleanup = cleanup,
-	.get_widget = get_widget,
-)
+#define AUD_PLUGIN_NAME        N_("LyricWiki Plugin")
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_GENERAL_GET_WIDGET   get_widget
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

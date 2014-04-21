@@ -42,14 +42,13 @@ static const char about[] =
     "Lets you control the player with Gnome's shortcuts.\n\n"
     "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>");
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Gnome Shortcuts"),
-    .domain = PACKAGE,
-    .about_text = about,
-    .init = init,
-    .cleanup = cleanup
-)
+#define AUD_PLUGIN_NAME        N_("Gnome Shortcuts")
+#define AUD_PLUGIN_ABOUT       about
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>
 
 #define g_marshal_value_peek_string(v)   (char*) g_value_get_string (v)
 

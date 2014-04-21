@@ -46,18 +46,17 @@ static const PluginPreferences cryst_prefs = {
  .widgets = cryst_widgets,
  .n_widgets = ARRAY_LEN (cryst_widgets)};
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Crystalizer"),
-    .domain = PACKAGE,
-    .prefs = & cryst_prefs,
-    .init = init,
-    .start = cryst_start,
-    .process = cryst_process,
-    .flush = cryst_flush,
-    .finish = cryst_finish,
-    .preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Crystalizer")
+#define AUD_PLUGIN_PREFS       & cryst_prefs
+#define AUD_PLUGIN_INIT        init
+#define AUD_EFFECT_START       cryst_start
+#define AUD_EFFECT_PROCESS     cryst_process
+#define AUD_EFFECT_FLUSH       cryst_flush
+#define AUD_EFFECT_FINISH      cryst_finish
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>
 
 static int cryst_channels;
 static float * cryst_prev;

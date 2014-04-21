@@ -291,9 +291,9 @@ static /* GtkWidget * */ gpointer get_widget(void)
     return frame;
 }
 
-AUD_VIS_PLUGIN
-(
-    .name = N_("Spectrum Analyzer"),
-    .domain = PACKAGE,
-    .get_widget = get_widget
-)
+#define AUD_PLUGIN_NAME        N_("Spectrum Analyzer")
+#define AUD_VIS_GET_WIDGET     get_widget
+#define AUD_VIS_CLEAR          NULL
+
+#define AUD_DECLARE_VIS
+#include <libaudcore/plugin-declare.h>

@@ -261,17 +261,16 @@ static void speed_cleanup (void)
     out.size = 0;
 }
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Speed and Pitch"),
-    .domain = PACKAGE,
-    .prefs = & speed_prefs,
-    .init = speed_init,
-    .cleanup = speed_cleanup,
-    .start = speed_start,
-    .process = speed_process,
-    .flush = speed_flush,
-    .finish = speed_finish,
-    .adjust_delay = speed_adjust_delay,
-    .preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Speed and Pitch")
+#define AUD_PLUGIN_PREFS       & speed_prefs
+#define AUD_PLUGIN_INIT        speed_init
+#define AUD_PLUGIN_CLEANUP     speed_cleanup
+#define AUD_EFFECT_START       speed_start
+#define AUD_EFFECT_PROCESS     speed_process
+#define AUD_EFFECT_FLUSH       speed_flush
+#define AUD_EFFECT_FINISH      speed_finish
+#define AUD_EFFECT_ADJ_DELAY   speed_adjust_delay
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

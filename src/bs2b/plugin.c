@@ -184,15 +184,14 @@ static const PluginPreferences bs2b_prefs = {
  .widgets = bs2b_widgets,
  .n_widgets = ARRAY_LEN (bs2b_widgets)};
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Bauer Stereophonic-to-Binaural (BS2B)"),
-    .domain = PACKAGE,
-    .init = init,
-    .cleanup = cleanup,
-    .prefs = & bs2b_prefs,
-    .start = bs2b_start,
-    .process = bs2b_process,
-    .finish = bs2b_finish,
-    .preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Bauer Stereophonic-to-Binaural (BS2B)")
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_PREFS       & bs2b_prefs
+#define AUD_EFFECT_START       bs2b_start
+#define AUD_EFFECT_PROCESS     bs2b_process
+#define AUD_EFFECT_FINISH      bs2b_finish
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

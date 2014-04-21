@@ -74,15 +74,14 @@ static const char about[] =
     " Jonathan A. Davis <davis@jdhouse.org>,\n"
     " Jeremy Tan <nsx@nsx.homeip.net>");
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Global Hotkeys"),
-    .domain = PACKAGE,
-    .about_text = about,
-    .init = init,
-    .configure = show_configure,
-    .cleanup = cleanup
-)
+#define AUD_PLUGIN_NAME        N_("Global Hotkeys")
+#define AUD_PLUGIN_ABOUT       about
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CONFIGWIN   show_configure
+#define AUD_PLUGIN_CLEANUP     cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>
 
 PluginConfig* get_config(void)
 {

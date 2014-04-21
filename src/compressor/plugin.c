@@ -53,18 +53,17 @@ static const char compressor_about[] =
  N_("Dynamic Range Compression Plugin for Audacious\n"
     "Copyright 2010-2012 John Lindgren");
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Dynamic Range Compressor"),
-    .domain = PACKAGE,
-    .about_text = compressor_about,
-    .prefs = & compressor_prefs,
-    .init = compressor_init,
-    .cleanup = compressor_cleanup,
-    .start = compressor_start,
-    .process = compressor_process,
-    .flush = compressor_flush,
-    .finish = compressor_finish,
-    .adjust_delay = compressor_adjust_delay,
-    .preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Dynamic Range Compressor")
+#define AUD_PLUGIN_ABOUT       compressor_about
+#define AUD_PLUGIN_PREFS       & compressor_prefs
+#define AUD_PLUGIN_INIT        compressor_init
+#define AUD_PLUGIN_CLEANUP     compressor_cleanup
+#define AUD_EFFECT_START       compressor_start
+#define AUD_EFFECT_PROCESS     compressor_process
+#define AUD_EFFECT_FLUSH       compressor_flush
+#define AUD_EFFECT_FINISH      compressor_finish
+#define AUD_EFFECT_ADJ_DELAY   compressor_adjust_delay
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

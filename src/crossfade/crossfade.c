@@ -267,19 +267,18 @@ static const PluginPreferences crossfade_prefs = {
  .widgets = crossfade_widgets,
  .n_widgets = ARRAY_LEN (crossfade_widgets)};
 
-AUD_EFFECT_PLUGIN
-(
-    .name = N_("Crossfade"),
-    .domain = PACKAGE,
-    .about_text = crossfade_about,
-    .prefs = & crossfade_prefs,
-    .init = crossfade_init,
-    .cleanup = crossfade_cleanup,
-    .start = crossfade_start,
-    .process = crossfade_process,
-    .flush = crossfade_flush,
-    .finish = crossfade_finish,
-    .adjust_delay = crossfade_adjust_delay,
-    .order = 5, /* must be after resample and mixer */
-    .preserves_format = TRUE
-)
+#define AUD_PLUGIN_NAME        N_("Crossfade")
+#define AUD_PLUGIN_ABOUT       crossfade_about
+#define AUD_PLUGIN_PREFS       & crossfade_prefs
+#define AUD_PLUGIN_INIT        crossfade_init
+#define AUD_PLUGIN_CLEANUP     crossfade_cleanup
+#define AUD_EFFECT_START       crossfade_start
+#define AUD_EFFECT_PROCESS     crossfade_process
+#define AUD_EFFECT_FLUSH       crossfade_flush
+#define AUD_EFFECT_FINISH      crossfade_finish
+#define AUD_EFFECT_ADJ_DELAY   crossfade_adjust_delay
+#define AUD_EFFECT_ORDER       5  /* must be after resample and mixer */
+#define AUD_EFFECT_SAME_FMT    TRUE
+
+#define AUD_DECLARE_EFFECT
+#include <libaudcore/plugin-declare.h>

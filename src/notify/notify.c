@@ -90,12 +90,11 @@ static const PluginPreferences plugin_prefs = {
  .n_widgets = ARRAY_LEN (prefs_widgets)
 };
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Desktop Notifications"),
-    .domain = PACKAGE,
-    .about_text = plugin_about,
-    .prefs = & plugin_prefs,
-    .init = plugin_init,
-    .cleanup = plugin_cleanup
-)
+#define AUD_PLUGIN_NAME        N_("Desktop Notifications")
+#define AUD_PLUGIN_ABOUT       plugin_about
+#define AUD_PLUGIN_PREFS       & plugin_prefs
+#define AUD_PLUGIN_INIT        plugin_init
+#define AUD_PLUGIN_CLEANUP     plugin_cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

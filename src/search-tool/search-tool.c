@@ -781,12 +781,11 @@ int search_take_message (const char * code, const void * data, int size)
     return EINVAL;
 }
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("Search Tool"),
-    .domain = PACKAGE,
-    .init = search_init,
-    .cleanup = search_cleanup,
-    .get_widget = search_get_widget,
-    .take_message = search_take_message
-)
+#define AUD_PLUGIN_NAME        N_("Search Tool")
+#define AUD_PLUGIN_INIT        search_init
+#define AUD_PLUGIN_CLEANUP     search_cleanup
+#define AUD_GENERAL_GET_WIDGET   search_get_widget
+#define AUD_PLUGIN_TAKE_MESSAGE  search_take_message
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>

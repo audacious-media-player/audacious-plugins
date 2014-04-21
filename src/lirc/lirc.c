@@ -398,12 +398,11 @@ static const PluginPreferences prefs = {
  .widgets = widgets,
  .n_widgets = ARRAY_LEN (widgets)};
 
-AUD_GENERAL_PLUGIN
-(
-    .name = N_("LIRC Plugin"),
-    .domain = PACKAGE,
-    .about_text = about,
-    .prefs = & prefs,
-    .init = init,
-    .cleanup = cleanup
-)
+#define AUD_PLUGIN_NAME        N_("LIRC Plugin")
+#define AUD_PLUGIN_ABOUT       about
+#define AUD_PLUGIN_PREFS       & prefs
+#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_CLEANUP     cleanup
+
+#define AUD_DECLARE_GENERAL
+#include <libaudcore/plugin-declare.h>
