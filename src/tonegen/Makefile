@@ -1,6 +1,6 @@
 PLUGIN = tonegen${PLUGIN_SUFFIX}
 
-SRCS = tonegen.c
+SRCS = tonegen.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

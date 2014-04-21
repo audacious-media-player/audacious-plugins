@@ -91,17 +91,19 @@ static gchar *tone_title(const gchar * filename)
     return title;
 }
 
+struct tone_t
+{
+    double wd;
+    unsigned period, t;
+};
+
 static gboolean tone_play(const gchar *filename, VFSFile *file)
 {
     GArray *frequencies;
     gfloat data[BUF_SAMPLES];
     gsize i;
     gboolean error = FALSE;
-    struct
-    {
-        gdouble wd;
-        guint period, t;
-    } *tone = NULL;
+    tone_t *tone = NULL;
 
     frequencies = tone_filename_parse(filename);
     if (frequencies == NULL)
@@ -115,7 +117,7 @@ static gboolean tone_play(const gchar *filename, VFSFile *file)
 
     aud_input_set_bitrate(16 * OUTPUT_FREQ);
 
-    tone = g_malloc(frequencies->len * sizeof(*tone));
+    tone = g_new(tone_t, frequencies->len);
     for (i = 0; i < frequencies->len; i++)
     {
         gdouble f = g_array_index(frequencies, gdouble, i);
