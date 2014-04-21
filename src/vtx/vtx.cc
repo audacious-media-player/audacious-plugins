@@ -108,7 +108,7 @@ static gboolean vtx_play(const gchar * filename, VFSFile * file)
     ayemu_init(&ay);
     ayemu_set_chip_type(&ay, vtx.hdr.chiptype, NULL);
     ayemu_set_chip_freq(&ay, vtx.hdr.chipFreq);
-    ayemu_set_stereo(&ay, vtx.hdr.stereo, NULL);
+    ayemu_set_stereo(&ay, (ayemu_stereo_t) vtx.hdr.stereo, NULL);
 
     if (aud_input_open_audio(FMT_S16_NE, freq, chans) == 0)
     {

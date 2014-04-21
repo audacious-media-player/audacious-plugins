@@ -45,7 +45,7 @@ static unsigned short c_table[4096], pt_table[256];
 static int j;  /* remaining bytes to copy */
 
 
-static void error(char *msg)
+static void error(const char *msg)
 {
   fprintf(stderr, "libayemu: lh5dec.c: %s\n", msg);
   exit(EXIT_FAILURE);

@@ -1,10 +1,10 @@
 PLUGIN = vtx${PLUGIN_SUFFIX}
 
-SRCS = ay8912.c		\
-       info.c		\
-       lh5dec.c		\
-       vtx.c		\
-       vtxfile.c
+SRCS = ay8912.cc		\
+       info.cc		\
+       lh5dec.cc		\
+       vtx.cc		\
+       vtxfile.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

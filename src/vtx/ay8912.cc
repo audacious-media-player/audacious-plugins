@@ -6,7 +6,7 @@
 
 #define debuglog stderr;
 
-char *ayemu_err;
+const char *ayemu_err;
 
 /*static const char VERSION[] = "libayemu 0.9";*/
 
@@ -403,7 +403,7 @@ void *ayemu_gen_sound(ayemu_ay_t *ay, void *buff, size_t sound_bufsize)
   int tmpvol;
   int m;
   int snd_numcount;
-  unsigned char *sound_buf = buff;
+  unsigned char *sound_buf = (unsigned char *) buff;
 
   if (!check_magic(ay))
     return 0;

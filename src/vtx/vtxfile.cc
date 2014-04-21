@@ -224,7 +224,7 @@ int ayemu_vtx_get_next_frame (ayemu_vtx_t *vtx, char *regs)
 
 static void append_string(char *buf, const int sz, const char *str)
 {
-  if (strlen(buf) + strlen(str) < sz - 1)
+  if ((int) (strlen(buf) + strlen(str)) < sz - 1)
     strcat(buf, str);
 }
 
@@ -260,7 +260,7 @@ static void append_char(char *buf, const int sz, const char c)
  */
 void ayemu_vtx_sprintname (const ayemu_vtx_t *vtx, char *const buf, const int sz, const char *fmt)
 {
-  static char *stereo_types[] = { "MONO", "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" };
+  static const char *stereo_types[] = { "MONO", "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" };
 
   if (fmt == NULL)
     fmt = "%a - %t";
