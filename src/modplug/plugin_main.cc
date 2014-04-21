@@ -52,105 +52,105 @@ static const char * const modplug_defaults[] = {
 static ModplugSettings modplug_settings;
 
 static const PreferencesWidget quality_widgets[] = {
-    {WIDGET_LABEL, N_("<b>Resolution</b>")},
-    {WIDGET_RADIO_BTN, N_("8-bit"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mBits, .data = {.radio_btn = {8}}},
-    {WIDGET_RADIO_BTN, N_("16-bit"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mBits, .data = {.radio_btn = {16}}},
-    {WIDGET_LABEL, N_("<b>Channels</b>")},
-    {WIDGET_RADIO_BTN, N_("Mono"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mChannels, .data = {.radio_btn = {1}}},
-    {WIDGET_RADIO_BTN, N_("Stereo"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mChannels, .data = {.radio_btn = {2}}},
-    {WIDGET_LABEL, N_("<b>Resampling</b>")},
-    {WIDGET_RADIO_BTN, N_("Nearest (fastest)"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mResamplingMode, .data = {.radio_btn = {0}}},
-    {WIDGET_RADIO_BTN, N_("Linear (fast)"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mResamplingMode, .data = {.radio_btn = {1}}},
-    {WIDGET_RADIO_BTN, N_("Spline (good)"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mResamplingMode, .data = {.radio_btn = {2}}},
-    {WIDGET_RADIO_BTN, N_("Polyphase (best)"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mResamplingMode, .data = {.radio_btn = {3}}},
-    {WIDGET_LABEL, N_("<b>Sampling rate</b>")},
-    {WIDGET_RADIO_BTN, N_("22 kHz"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mFrequency, .data = {.radio_btn = {22050}}},
-    {WIDGET_RADIO_BTN, N_("44 kHz"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mFrequency, .data = {.radio_btn = {44100}}},
-    {WIDGET_RADIO_BTN, N_("48 kHz"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mFrequency, .data = {.radio_btn = {48000}}},
-    {WIDGET_RADIO_BTN, N_("96 kHz"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mFrequency, .data = {.radio_btn = {96000}}}
+    WidgetLabel (N_("<b>Resolution</b>")),
+    WidgetRadio (N_("8-bit"), {VALUE_INT,
+     & modplug_settings.mBits}, {8}),
+    WidgetRadio (N_("16-bit"), {VALUE_INT,
+     & modplug_settings.mBits}, {16}),
+    WidgetLabel (N_("<b>Channels</b>")),
+    WidgetRadio (N_("Mono"), {VALUE_INT,
+     & modplug_settings.mChannels}, {1}),
+    WidgetRadio (N_("Stereo"), {VALUE_INT,
+     & modplug_settings.mChannels}, {2}),
+    WidgetLabel (N_("<b>Resampling</b>")),
+    WidgetRadio (N_("Nearest (fastest)"), {VALUE_INT,
+     & modplug_settings.mResamplingMode}, {0}),
+    WidgetRadio (N_("Linear (fast)"), {VALUE_INT,
+     & modplug_settings.mResamplingMode}, {1}),
+    WidgetRadio (N_("Spline (good)"), {VALUE_INT,
+     & modplug_settings.mResamplingMode}, {2}),
+    WidgetRadio (N_("Polyphase (best)"), {VALUE_INT,
+     & modplug_settings.mResamplingMode}, {3}),
+    WidgetLabel (N_("<b>Sampling rate</b>")),
+    WidgetRadio (N_("22 kHz"), {VALUE_INT,
+     & modplug_settings.mFrequency}, {22050}),
+    WidgetRadio (N_("44 kHz"), {VALUE_INT,
+     & modplug_settings.mFrequency}, {44100}),
+    WidgetRadio (N_("48 kHz"), {VALUE_INT,
+     & modplug_settings.mFrequency}, {48000}),
+    WidgetRadio (N_("96 kHz"), {VALUE_INT,
+     & modplug_settings.mFrequency}, {96000})
 };
 
 static PreferencesWidget reverb_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Level:"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mReverbDepth, .data = {.spin_btn = {0, 100, 1, "%"}}},
-    {WIDGET_SPIN_BTN, N_("Delay:"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mReverbDelay, .data = {.spin_btn = {40, 200, 1, N_("ms")}}}
+    WidgetSpin (N_("Level:"), {VALUE_INT,
+     & modplug_settings.mReverbDepth}, {0, 100, 1, "%"}),
+    WidgetSpin (N_("Delay:"), {VALUE_INT,
+     & modplug_settings.mReverbDelay}, {40, 200, 1, N_("ms")})
 };
 
 static PreferencesWidget bass_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Level:"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mBassAmount, .data = {.spin_btn = {0, 100, 1, "%"}}},
-    {WIDGET_SPIN_BTN, N_("Cutoff:"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mBassRange, .data = {.spin_btn = {10, 100, 1, N_("Hz")}}}
+    WidgetSpin (N_("Level:"), {VALUE_INT,
+     & modplug_settings.mBassAmount}, {0, 100, 1, "%"}),
+    WidgetSpin (N_("Cutoff:"), {VALUE_INT,
+     & modplug_settings.mBassRange}, {10, 100, 1, N_("Hz")})
 };
 
 static PreferencesWidget surround_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Level:"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mSurroundDepth, .data = {.spin_btn = {0, 100, 1, "%"}}},
-    {WIDGET_SPIN_BTN, N_("Delay:"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mSurroundDelay, .data = {.spin_btn = {5,  40, 1, N_("ms")}}}
+    WidgetSpin (N_("Level:"), {VALUE_INT,
+     & modplug_settings.mSurroundDepth}, {0, 100, 1, "%"}),
+    WidgetSpin (N_("Delay:"), {VALUE_INT,
+     & modplug_settings.mSurroundDelay}, {5,  40, 1, N_("ms")})
 };
 
 static PreferencesWidget preamp_fields[] = {
-    {WIDGET_SPIN_BTN, N_("Volume:"), .cfg_type = VALUE_FLOAT,
-     .cfg = & modplug_settings.mPreampLevel, .data = {.spin_btn = {-3, 3, 0.1}}},
+    WidgetSpin (N_("Volume:"), {VALUE_FLOAT,
+     & modplug_settings.mPreampLevel}, {-3, 3, 0.1}),
 };
 
 static const PreferencesWidget effects_widgets[] = {
-    {WIDGET_LABEL, N_("<b>Reverb</b>")},
-    {WIDGET_CHK_BTN, N_("Enable"), .cfg_type = VALUE_BOOLEAN,
-     .cfg = & modplug_settings.mReverb},
-    {WIDGET_TABLE, .child = TRUE, .data = {.table = {reverb_fields, ARRAY_LEN (reverb_fields)}}},
-    {WIDGET_LABEL, N_("<b>Bass Boost</b>")},
-    {WIDGET_CHK_BTN, N_("Enable"), .cfg_type = VALUE_BOOLEAN,
-     .cfg = & modplug_settings.mMegabass },
-    {WIDGET_TABLE, .child = TRUE, .data = {.table = {bass_fields, ARRAY_LEN (bass_fields)}}},
-    {WIDGET_LABEL, N_("<b>Surround</b>")},
-    {WIDGET_CHK_BTN, N_("Enable"), .cfg_type = VALUE_BOOLEAN,
-     .cfg = & modplug_settings.mSurround },
-    {WIDGET_TABLE, .child = TRUE, .data = {.table = {surround_fields, ARRAY_LEN (surround_fields)}}},
-    {WIDGET_LABEL, N_("<b>Preamp</b>")},
-    {WIDGET_CHK_BTN, N_("Enable"), .cfg_type = VALUE_BOOLEAN,
-     .cfg = & modplug_settings.mPreamp },
-    {WIDGET_TABLE, .child = TRUE, .data = {.table = {preamp_fields, ARRAY_LEN (preamp_fields)}}}
+    WidgetLabel (N_("<b>Reverb</b>")),
+    WidgetCheck (N_("Enable"), {VALUE_BOOLEAN,
+     & modplug_settings.mReverb}),
+    WidgetTable ({reverb_fields, ARRAY_LEN (reverb_fields)}, WIDGET_CHILD),
+    WidgetLabel (N_("<b>Bass Boost</b>")),
+    WidgetCheck (N_("Enable"), {VALUE_BOOLEAN,
+     & modplug_settings.mMegabass}),
+    WidgetTable ({bass_fields, ARRAY_LEN (bass_fields)}, WIDGET_CHILD),
+    WidgetLabel (N_("<b>Surround</b>")),
+    WidgetCheck (N_("Enable"), {VALUE_BOOLEAN,
+     & modplug_settings.mSurround}),
+    WidgetTable ({surround_fields, ARRAY_LEN (surround_fields)}, WIDGET_CHILD),
+    WidgetLabel (N_("<b>Preamp</b>")),
+    WidgetCheck (N_("Enable"), {VALUE_BOOLEAN,
+     & modplug_settings.mPreamp}),
+    WidgetTable ({preamp_fields, ARRAY_LEN (preamp_fields)}, WIDGET_CHILD)
 };
 
 static const PreferencesWidget misc_widgets[] = {
-    {WIDGET_LABEL, N_("<b>Miscellaneous</b>")},
-    {WIDGET_CHK_BTN, N_("Oversample"), .cfg_type = VALUE_BOOLEAN,
-     .cfg = & modplug_settings.mOversamp},
-    {WIDGET_CHK_BTN, N_("Noise reduction"), .cfg_type = VALUE_BOOLEAN,
-     .cfg = & modplug_settings.mNoiseReduction},
-    {WIDGET_CHK_BTN, N_("Play Amiga MODs"), .cfg_type = VALUE_BOOLEAN,
-     .cfg = & modplug_settings.mGrabAmigaMOD},
-    {WIDGET_LABEL, N_("<b>Repeat</b>")},
-    {WIDGET_SPIN_BTN, N_("Repeat count:"), .cfg_type = VALUE_INT,
-     .cfg = & modplug_settings.mLoopCount, .data = {.spin_btn = {-1, 100, 1}}},
-    {WIDGET_LABEL, N_("To repeat forever, set the repeat count to -1.")}
+    WidgetLabel (N_("<b>Miscellaneous</b>")),
+    WidgetCheck (N_("Oversample"), {VALUE_BOOLEAN,
+     & modplug_settings.mOversamp}),
+    WidgetCheck (N_("Noise reduction"), {VALUE_BOOLEAN,
+     & modplug_settings.mNoiseReduction}),
+    WidgetCheck (N_("Play Amiga MODs"), {VALUE_BOOLEAN,
+     & modplug_settings.mGrabAmigaMOD}),
+    WidgetLabel (N_("<b>Repeat</b>")),
+    WidgetSpin (N_("Repeat count:"), {VALUE_INT,
+     & modplug_settings.mLoopCount}, {-1, 100, 1}),
+    WidgetLabel (N_("To repeat forever, set the repeat count to -1."))
 };
 
 static const PreferencesWidget modplug_columns[] = {
-    {WIDGET_BOX, .data = {.box = {quality_widgets, ARRAY_LEN (quality_widgets)}}},
-    {WIDGET_SEPARATOR},
-    {WIDGET_BOX, .data = {.box = {effects_widgets, ARRAY_LEN (effects_widgets)}}},
-    {WIDGET_SEPARATOR},
-    {WIDGET_BOX, .data = {.box = {misc_widgets, ARRAY_LEN (misc_widgets)}}}
+    WidgetBox ({quality_widgets, ARRAY_LEN (quality_widgets)}),
+    WidgetSeparator (),
+    WidgetBox ({effects_widgets, ARRAY_LEN (effects_widgets)}),
+    WidgetSeparator (),
+    WidgetBox ({misc_widgets, ARRAY_LEN (misc_widgets)})
 };
 
 static const PreferencesWidget modplug_widgets[] = {
-    {WIDGET_BOX, .data = {.box = {modplug_columns, ARRAY_LEN (modplug_columns), .horizontal = TRUE}}}
+    WidgetBox ({modplug_columns, ARRAY_LEN (modplug_columns), .horizontal = TRUE})
 };
 
 static void modplug_settings_load ()

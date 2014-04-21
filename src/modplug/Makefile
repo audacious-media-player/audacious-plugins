@@ -1,11 +1,11 @@
 PLUGIN = modplug${PLUGIN_SUFFIX}
 
-SRCS = archive/arch_raw.cxx \
-       archive/archive.cxx \
-       archive/open.cxx \
-       plugin.cxx \
-       modplugbmp.cxx \
-       plugin_main.c
+SRCS = archive/arch_raw.cc \
+       archive/archive.cc \
+       archive/open.cc \
+       plugin.cc \
+       modplugbmp.cc \
+       plugin_main.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
