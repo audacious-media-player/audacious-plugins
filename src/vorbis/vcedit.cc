@@ -24,7 +24,7 @@ vcedit_new_state(void)
     return g_new0(vcedit_state, 1);
 }
 
-char *
+const char *
 vcedit_error(vcedit_state * state)
 {
     return state->lasterror;
@@ -73,7 +73,7 @@ vcedit_clear(vcedit_state * state)
  * - we don't want to overwrite the vendor string.
  */
 static void
-_v_writestring(oggpack_buffer * o, char *s, int len)
+_v_writestring(oggpack_buffer * o, const char *s, int len)
 {
     while (len--) {
         oggpack_write(o, *s++, 8);
@@ -112,7 +112,7 @@ _commentheader_out(vorbis_comment * vc, char *vendor, ogg_packet * op)
     }
     oggpack_write(&opb, 1, 1);
 
-    op->packet = _ogg_malloc(oggpack_bytes(&opb));
+    op->packet = (unsigned char *) _ogg_malloc(oggpack_bytes(&opb));
     memcpy(op->packet, opb.buffer, oggpack_bytes(&opb));
 
     op->bytes = oggpack_bytes(&opb);
@@ -126,15 +126,15 @@ _commentheader_out(vorbis_comment * vc, char *vendor, ogg_packet * op)
 static int
 _blocksize(vcedit_state * s, ogg_packet * p)
 {
-    int this = vorbis_packet_blocksize(&s->vi, p);
-    int ret = (this + s->prevW) / 4;
+    int size = vorbis_packet_blocksize(&s->vi, p);
+    int ret = (size + s->prevW) / 4;
 
     if (!s->prevW) {
-        s->prevW = this;
+        s->prevW = size;
         return 0;
     }
 
-    s->prevW = this;
+    s->prevW = size;
     return ret;
 }
 
@@ -241,7 +241,7 @@ vcedit_open_callbacks(vcedit_state * state, void *in,
     }
 
     state->mainlen = header_main.bytes;
-    state->mainbuf = g_malloc(state->mainlen);
+    state->mainbuf = g_new (unsigned char, state->mainlen);
     memcpy(state->mainbuf, header_main.packet, header_main.bytes);
 
     i = 0;
@@ -264,7 +264,7 @@ vcedit_open_callbacks(vcedit_state * state, void *in,
                     vorbis_synthesis_headerin(&state->vi, state->vc, header);
                     if (i == 1) {
                         state->booklen = header->bytes;
-                        state->bookbuf = g_malloc(state->booklen);
+                        state->bookbuf = g_new (unsigned char, state->booklen);
                         memcpy(state->bookbuf, header->packet, header->bytes);
                     }
                     i++;
@@ -283,8 +283,7 @@ vcedit_open_callbacks(vcedit_state * state, void *in,
     }
 
     /* Copy the vendor tag */
-    state->vendor = g_malloc(strlen(state->vc->vendor) + 1);
-    strcpy(state->vendor, state->vc->vendor);
+    state->vendor = g_strdup (state->vc->vendor);
 
     /* Headers are done! */
     return 0;
@@ -342,11 +341,9 @@ vcedit_write(vcedit_state * state, void *out)
     ogg_stream_packetin(&streamout, &header_codebooks);
 
     while ((result = ogg_stream_flush(&streamout, &ogout))) {
-        if (state->write(ogout.header, 1, ogout.header_len, out) !=
-            (size_t) ogout.header_len)
+        if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
             goto cleanup;
-        if (state->write(ogout.body, 1, ogout.body_len, out) !=
-            (size_t) ogout.body_len)
+        if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
             goto cleanup;
     }
 
@@ -357,21 +354,17 @@ vcedit_write(vcedit_state * state, void *out)
 
         if (needflush) {
             if (ogg_stream_flush(&streamout, &ogout)) {
-                if (state->write(ogout.header, 1, ogout.header_len,
-                                 out) != (size_t) ogout.header_len)
+                if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
                     goto cleanup;
-                if (state->write(ogout.body, 1, ogout.body_len,
-                                 out) != (size_t) ogout.body_len)
+                if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
                     goto cleanup;
             }
         }
         else if (needout) {
             if (ogg_stream_pageout(&streamout, &ogout)) {
-                if (state->write(ogout.header, 1, ogout.header_len,
-                                 out) != (size_t) ogout.header_len)
+                if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
                     goto cleanup;
-                if (state->write(ogout.body, 1, ogout.body_len,
-                                 out) != (size_t) ogout.body_len)
+                if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
                     goto cleanup;
             }
         }
@@ -398,11 +391,9 @@ vcedit_write(vcedit_state * state, void *out)
 
     streamout.e_o_s = 1;
     while (ogg_stream_flush(&streamout, &ogout)) {
-        if (state->write(ogout.header, 1, ogout.header_len,
-                         out) != (size_t) ogout.header_len)
+        if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
             goto cleanup;
-        if (state->write(ogout.body, 1, ogout.body_len,
-                         out) != (size_t) ogout.body_len)
+        if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
             goto cleanup;
     }
 
@@ -411,11 +402,9 @@ vcedit_write(vcedit_state * state, void *out)
     vorbis_info_clear(&state->vi);
 
     if (state->extrapage) {
-        if (state->write(ogin.header, 1, ogin.header_len,
-                         out) != (size_t) ogin.header_len)
+        if (state->write(ogin.header, 1, ogin.header_len, out) != ogin.header_len)
             goto cleanup;
-        if (state->write(ogin.body, 1, ogin.body_len, out) !=
-            (size_t) ogin.body_len)
+        if (state->write(ogin.body, 1, ogin.body_len, out) != ogin.body_len)
             goto cleanup;
     }
 
@@ -432,11 +421,9 @@ vcedit_write(vcedit_state * state, void *out)
             else {
                 /* Don't bother going through the rest, we can just
                  * write the page out now */
-                if (state->write(ogout.header, 1, ogout.header_len,
-                                 out) != (size_t) ogout.header_len)
+                if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
                     goto cleanup;
-                if (state->write(ogout.body, 1, ogout.body_len, out) !=
-                    (size_t) ogout.body_len)
+                if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
                     goto cleanup;
             }
         }

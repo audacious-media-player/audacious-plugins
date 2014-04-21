@@ -46,12 +46,12 @@
 
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
-    return vfs_fread (buffer, size, count, file);
+    return vfs_fread (buffer, size, count, (VFSFile *) file);
 }
 
 static int ovcb_seek (void * file, ogg_int64_t offset, int whence)
 {
-    return vfs_fseek (file, offset, whence);
+    return vfs_fseek ((VFSFile *) file, offset, whence);
 }
 
 static int ovcb_close (void * file)
@@ -61,7 +61,7 @@ static int ovcb_close (void * file)
 
 static long ovcb_tell (void * file)
 {
-    return vfs_ftell (file);
+    return vfs_ftell ((VFSFile *) file);
 }
 
 ov_callbacks vorbis_callbacks = {
@@ -125,7 +125,7 @@ end:
 
 static void
 set_tuple_str(Tuple *tuple, const gint nfield,
-    vorbis_comment *comment, gchar *key)
+    vorbis_comment *comment, const gchar *key)
 {
     tuple_set_str (tuple, nfield, vorbis_comment_query (comment, key, 0));
 }
@@ -134,13 +134,13 @@ static Tuple *
 get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
 {
     Tuple *tuple;
-    gint length;
+    gint length = -1;
     vorbis_comment *comment = NULL;
 
     tuple = tuple_new_from_filename(filename);
 
-    length = vfs_is_streaming (vorbisfile->datasource) ? -1 : ov_time_total
-     (vorbisfile, -1) * 1000;
+    if (! vfs_is_streaming ((VFSFile *) vorbisfile->datasource))
+        length = ov_time_total (vorbisfile, -1) * 1000;
 
     /* associate with tuple */
     tuple_set_int(tuple, FIELD_LENGTH, length);
@@ -427,21 +427,23 @@ static gboolean get_song_image (const gchar * filename, VFSFile * file,
 
     if ((s = vorbis_comment_query (comment, "METADATA_BLOCK_PICTURE", 0)))
     {
+        unsigned mime_length, desc_length;
+
         gsize length2;
-        void * data2 = g_base64_decode (s, & length2);
+        unsigned char * data2 = g_base64_decode (s, & length2);
         if (! data2 || length2 < 8)
             goto PARSE_ERR;
 
-        gint mime_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 4));
+        mime_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 4));
         if (length2 < 8 + mime_length + 4)
             goto PARSE_ERR;
 
-        gint desc_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length));
+        desc_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length));
         if (length2 < 8 + mime_length + 4 + desc_length + 20)
             goto PARSE_ERR;
 
         * size = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length + 4 + desc_length + 16));
-        if (length2 < 8 + mime_length + 4 + desc_length + 20 + * size)
+        if (length2 < 8 + mime_length + 4 + desc_length + 20 + (unsigned) (* size))
             goto PARSE_ERR;
 
         * data = g_memdup ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, * size);

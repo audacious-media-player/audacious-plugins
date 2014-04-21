@@ -68,7 +68,7 @@ static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
 
 static void add_tag_cb (void * key, void * field, void * vc)
 {
-    vorbis_comment_add_tag (vc, key, field);
+    vorbis_comment_add_tag ((vorbis_comment *) vc, (const char *) key, (const char *) field);
 }
 
 static void dictionary_to_vorbis_comment (vorbis_comment * vc, GHashTable * dict)
@@ -146,7 +146,7 @@ gboolean copy_vfs (VFSFile * in, VFSFile * out)
     if (vfs_fseek (in, 0, SEEK_SET) < 0 || vfs_fseek (out, 0, SEEK_SET) < 0)
         return FALSE;
 
-    gchar * buffer = g_malloc (COPY_BUF);
+    char * buffer = g_new (char, COPY_BUF);
     gint64 size = 0, readed;
 
     while ((readed = vfs_fread (buffer, 1, COPY_BUF, in)) > 0)
@@ -200,7 +200,7 @@ gboolean write_and_pivot_files (vcedit_state * state)
         return FALSE;
     }
 
-    if (! copy_vfs (temp_vfs, state->in))
+    if (! copy_vfs (temp_vfs, (VFSFile *) state->in))
     {
         fprintf (stderr, "Failed to copy temp file.  The temp file has not "
          "been deleted: %s.\n", temp);

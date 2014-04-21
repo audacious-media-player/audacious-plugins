@@ -1,8 +1,8 @@
 PLUGIN = vorbis${PLUGIN_SUFFIX}
 
-SRCS = vcupdate.c \
-       vcedit.c		\
-       vorbis.c
+SRCS = vcupdate.cc \
+       vcedit.cc		\
+       vorbis.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
