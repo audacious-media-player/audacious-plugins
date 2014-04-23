@@ -106,7 +106,10 @@ give_up:
 				GMatchInfo *match_info;
 				GRegex *reg;
 
-				reg = g_regex_new("<(lyrics?)>[[:space:]]*(.*?)[[:space:]]*</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL), 0, NULL);
+				reg = g_regex_new
+				 ("<(lyrics?)>[[:space:]]*(.*?)[[:space:]]*</\\1>",
+				 (GRegexCompileFlags) (G_REGEX_MULTILINE | G_REGEX_DOTALL),
+				 (GRegexMatchFlags) 0, NULL);
 				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
@@ -140,7 +143,9 @@ static char *scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t le
 	 */
 	GRegex *reg;
 
-	reg = g_regex_new("<(lyrics?)>.*</\\1>", (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY), 0, NULL);
+	reg = g_regex_new ("<(lyrics?)>.*</\\1>", (GRegexCompileFlags)
+	 (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY),
+	 (GRegexMatchFlags) 0, NULL);
 	gchar *newbuf = g_regex_replace_literal(reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, NULL);
 	g_regex_unref(reg);
 
@@ -193,13 +198,13 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 
 static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 {
-	if (!state.uri || strcmp(state.uri, requri))
+	if (!state.uri || strcmp(state.uri, (char *) requri))
 	{
 		g_free(buf);
-		str_unref(requri);
+		str_unref((char *) requri);
 		return FALSE;
 	}
-	str_unref(requri);
+	str_unref((char *) requri);
 
 	if(!len)
 	{
@@ -209,7 +214,7 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 		return FALSE;
 	}
 
-	char *lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf, len);
+	char *lyrics = scrape_lyrics_from_lyricwiki_edit_page((char *) buf, len);
 
 	if(!lyrics)
 	{
@@ -227,13 +232,13 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 
 static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 {
-	if (strcmp(state.uri, requri))
+	if (strcmp(state.uri, (char *) requri))
 	{
 		g_free(buf);
-		str_unref(requri);
+		str_unref((char *) requri);
 		return FALSE;
 	}
-	str_unref(requri);
+	str_unref((char *) requri);
 
 	if(!len)
 	{
@@ -243,7 +248,7 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 		return FALSE;
 	}
 
-	char *uri = scrape_uri_from_lyricwiki_search_result(buf, len);
+	char *uri = scrape_uri_from_lyricwiki_search_result((char *) buf, len);
 
 	if(!uri)
 	{

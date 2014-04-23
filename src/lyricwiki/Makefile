@@ -1,6 +1,6 @@
 PLUGIN = lyricwiki${PLUGIN_SUFFIX}
 
-SRCS = lyricwiki.c
+SRCS = lyricwiki.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
