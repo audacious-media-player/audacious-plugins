@@ -217,15 +217,8 @@ static void *config_status_checker () {
 
 
 static const PreferencesWidget config_contents[] = {
-    {
-        .type  = WIDGET_LABEL,
-        .label = N_("You need to allow Audacious to scrobble tracks to your Last.fm account.\n"),
-        .data  = { .label = {.single_line = TRUE} }
-    },
-    {
-        .type = WIDGET_CUSTOM,
-        .data = { .populate = config_status_checker }
-    }
+    WidgetLabel (N_("You need to allow Audacious to scrobble tracks to your Last.fm account.\n")),
+    WidgetCustom (config_status_checker)
 };
 
 const PluginPreferences configuration = {

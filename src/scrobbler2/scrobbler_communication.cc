@@ -5,6 +5,8 @@
 #include <sys/time.h>
 #include <curl/curl.h>
 
+#include <glib.h>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
 
@@ -31,7 +33,7 @@ static size_t result_callback (void *buffer, size_t size, size_t nmemb, void *us
 
     const size_t len = size*nmemb;
 
-    gchar *temp_data = realloc(received_data, received_data_size + len + 1);
+    gchar *temp_data = g_renew(char, received_data, received_data_size + len + 1);
 
     if (temp_data == NULL) {
       return 0;
@@ -91,7 +93,7 @@ static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
  *
  * Returns NULL if an error occurrs
  */
-static gchar *create_message_to_lastfm (char *method_name, int n_args, ...) {
+static gchar *create_message_to_lastfm (const char *method_name, int n_args, ...) {
     //TODO: Improve this f-ugly mess.
     gchar *result = NULL;
 
@@ -340,7 +342,7 @@ static void set_timestamp_to_current(gchar **line) {
 
     gchar **splitted_line = g_strsplit(*line, "\t", 0);
     g_free(splitted_line[6]);
-    splitted_line[6] = g_strdup_printf("%"G_GINT64_FORMAT"", g_get_real_time() / G_USEC_PER_SEC);
+    splitted_line[6] = g_strdup_printf("%" G_GINT64_FORMAT, g_get_real_time() / G_USEC_PER_SEC);
     AUDDBG("splitted line's timestamp is now: %s.\n", splitted_line[6]);
     g_free(*line);
     (*line) = g_strjoinv("\t", splitted_line);
@@ -351,7 +353,7 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList
     GSList *lines_to_retry = *lines_to_retry_ptr;
     gchar *contents = NULL;
     gchar **lines = NULL;
-    gchar **finallines = g_malloc_n(1, sizeof(gchar *));
+    gchar **finallines = g_new (char *, 1);
     int n_finallines;
 
     if (lines_to_remove != NULL) {
@@ -390,12 +392,12 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList
                   AUDDBG("not zeroing this line\n");
                 }
                 n_finallines++;
-                finallines = g_realloc_n(finallines, n_finallines, sizeof(gchar *));
+                finallines = g_renew (char *, finallines, n_finallines);
                 finallines[n_finallines-1] = g_strdup(lines[i]);
             }
         }
 
-        finallines = g_realloc_n(finallines, n_finallines+2, sizeof(gchar *));
+        finallines = g_renew (char *, finallines, n_finallines + 2);
         finallines[n_finallines] = g_strdup("");
         finallines[n_finallines+1] = NULL;
         g_free(contents);
@@ -416,7 +418,7 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList
 }
 
 static void save_line_to_remove(GSList **lines_to_remove, int linenumber) {
-    int *rem = g_malloc(sizeof(int));
+    int *rem = g_new (int, 1);
     *rem = linenumber;
     (*lines_to_remove) = g_slist_prepend((*lines_to_remove), rem);
 }
