@@ -63,6 +63,8 @@ static GtkStatusIcon *si_create(void)
     GtkStatusIcon *icon;
     GtkIconTheme *theme;
 
+    gtk_init (NULL, NULL);
+
     theme = gtk_icon_theme_get_default();
 
     if (gtk_icon_theme_has_icon(theme, "audacious-panel"))
