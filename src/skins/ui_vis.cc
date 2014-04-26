@@ -110,7 +110,8 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
 
     switch (config.vis_type)
     {
-    case VIS_ANALYZER:;
+    case VIS_ANALYZER:
+    {
         gboolean bars = (config.analyzer_type == ANALYZER_BARS);
 
         for (gint x = 0; x < 75; x ++)
@@ -152,7 +153,9 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         }
 
         break;
+    }
     case VIS_VOICEPRINT:
+    {
         if (vis.voiceprint_advance)
         {
             vis.voiceprint_advance = FALSE;
@@ -173,7 +176,9 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         for (gint x = 0; x < 76; x ++)
             RGB_SET (colors[* get ++]);
         break;
+    }
     case VIS_SCOPE:
+    {
         if (! vis.active)
             goto DRAW;
 
@@ -206,6 +211,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
             RGB_SEEK (74, h);
             RGB_SET_INDEX (vis_scope_colors[h]);
             break;
+        }
         default: /* SCOPE_SOLID */
             for (gint x = 0; x < 75; x++)
             {
@@ -226,8 +232,8 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
     }
 
 DRAW:;
-    cairo_surface_t * surf = cairo_image_surface_create_for_data ((void *) rgb,
-     CAIRO_FORMAT_RGB24, 76, 16, 4 * 76);
+    cairo_surface_t * surf = cairo_image_surface_create_for_data
+     ((unsigned char *) rgb, CAIRO_FORMAT_RGB24, 76, 16, 4 * 76);
     cairo_set_source_surface (cr, surf, 0, 0);
     cairo_paint (cr);
     cairo_surface_destroy (surf);

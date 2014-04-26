@@ -209,20 +209,20 @@ static int hint_pair_compare (const void * a, const void * b)
 
 static void hints_handle_heading (const char * heading, void * data)
 {
-    HintsLoadState * state = data;
+    HintsLoadState * state = (HintsLoadState *) data;
 
     state->valid_heading = ! g_ascii_strcasecmp (heading, "skin");
 }
 
 static void hints_handle_entry (const char * key, const char * value, void * data)
 {
-    HintsLoadState * state = data;
+    HintsLoadState * state = (HintsLoadState *) data;
 
     if (! state->valid_heading)
         return;
 
     HintPair key_pair = {.name = key};
-    HintPair * pair = bsearch (& key_pair, hint_pairs,
+    HintPair * pair = (HintPair *) bsearch (& key_pair, hint_pairs,
      ARRAY_LEN (hint_pairs), sizeof (HintPair), hint_pair_compare);
 
     if (pair)
@@ -257,7 +257,7 @@ typedef struct {
 
 static void pl_colors_handle_heading (const char * heading, void * data)
 {
-    PLColorsLoadState * state = data;
+    PLColorsLoadState * state = (PLColorsLoadState *) data;
 
     state->valid_heading = ! g_ascii_strcasecmp (heading, "text");
 }
@@ -272,7 +272,7 @@ static uint32_t convert_color_string (const char * str)
 
 static void pl_colors_handle_entry (const char * key, const char * value, void * data)
 {
-    PLColorsLoadState * state = data;
+    PLColorsLoadState * state = (PLColorsLoadState *) data;
 
     if (! state->valid_heading)
         return;
@@ -320,7 +320,7 @@ typedef struct {
 
 static void mask_handle_heading (const char * heading, void * data)
 {
-    MaskLoadState * state = data;
+    MaskLoadState * state = (MaskLoadState *) data;
 
     if (! g_ascii_strcasecmp (heading, "normal"))
         state->current_id = SKIN_MASK_MAIN;
@@ -331,12 +331,12 @@ static void mask_handle_heading (const char * heading, void * data)
     else if (! g_ascii_strcasecmp (heading, "equalizerws"))
         state->current_id = SKIN_MASK_EQ_SHADE;
     else
-        state->current_id = -1;
+        state->current_id = (SkinMaskId) -1;
 }
 
 static void mask_handle_entry (const char * key, const char * value, void * data)
 {
-    MaskLoadState * state = data;
+    MaskLoadState * state = (MaskLoadState *) data;
     SkinMaskId id = state->current_id;
 
     if (id == -1)
@@ -366,8 +366,8 @@ static cairo_region_t * skin_create_mask (const GArray * num,
     cairo_region_t * mask = cairo_region_create ();
     gboolean created_mask = FALSE;
 
-    int j = 0;
-    for (int i = 0; i < num->len; i ++)
+    unsigned j = 0;
+    for (unsigned i = 0; i < num->len; i ++)
     {
         int n_points = g_array_index (num, int, i);
         if (n_points <= 0 || j + 2 * n_points > point->len)
@@ -417,7 +417,7 @@ void skin_load_masks (Skin * skin, const char * path)
         {275, 16}
     };
 
-    MaskLoadState state = {.current_id = -1};
+    MaskLoadState state = {(SkinMaskId) -1, {0}, {0}};
 
     VFSFile * file = open_local_file_nocase (path, "region.txt");
 
@@ -427,7 +427,7 @@ void skin_load_masks (Skin * skin, const char * path)
         vfs_fclose (file);
     }
 
-    for (SkinMaskId id = 0; id < SKIN_MASK_COUNT; id ++)
+    for (int id = 0; id < SKIN_MASK_COUNT; id ++)
     {
         skin->masks[id] = skin_create_mask (state.numpoints[id],
          state.pointlist[id], sizes[id][0], sizes[id][1]);

@@ -1,37 +1,37 @@
 PLUGIN = skins${PLUGIN_SUFFIX}
 
-SRCS = drag-handle.c \
-       menus.c \
-       plugin.c \
-       plugin-window.c \
-       preset-browser.c \
-       preset-list.c \
-       skins_cfg.c \
-       surface.c \
-       ui_skin.c \
-       ui_skin_load_ini.c \
-       ui_skinned_window.c \
-       ui_dock.c \
-       util.c \
-       ui_vis.c \
-       ui_svis.c \
-       ui_skinned_menurow.c \
-       ui_skinned_button.c \
-       ui_skinned_textbox.c \
-       ui_skinned_playstatus.c \
-       ui_skinned_monostereo.c \
-       ui_skinned_number.c \
-       ui_skinned_horizontal_slider.c \
-       ui_skinned_equalizer_graph.c \
-       ui_skinned_equalizer_slider.c \
-       ui_skinned_playlist.c \
-       ui_skinned_playlist_slider.c \
-       ui_main.c \
-       ui_equalizer.c \
-       ui_playlist.c \
-       ui_main_evlisteners.c \
-       ui_skinselector.c \
-       view.c
+SRCS = drag-handle.cc \
+       menus.cc \
+       plugin.cc \
+       plugin-window.cc \
+       preset-browser.cc \
+       preset-list.cc \
+       skins_cfg.cc \
+       surface.cc \
+       ui_skin.cc \
+       ui_skin_load_ini.cc \
+       ui_skinned_window.cc \
+       ui_dock.cc \
+       util.cc \
+       ui_vis.cc \
+       ui_svis.cc \
+       ui_skinned_menurow.cc \
+       ui_skinned_button.cc \
+       ui_skinned_textbox.cc \
+       ui_skinned_playstatus.cc \
+       ui_skinned_monostereo.cc \
+       ui_skinned_number.cc \
+       ui_skinned_horizontal_slider.cc \
+       ui_skinned_equalizer_graph.cc \
+       ui_skinned_equalizer_slider.cc \
+       ui_skinned_playlist.cc \
+       ui_skinned_playlist_slider.cc \
+       ui_main.cc \
+       ui_equalizer.cc \
+       ui_playlist.cc \
+       ui_main_evlisteners.cc \
+       ui_skinselector.cc \
+       view.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -159,6 +159,8 @@ DATA = Skins/Classic/balance.png	\
        Skins/Refugee/volume.png
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
+
+LD = ${CXX}
 
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${GTK_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}

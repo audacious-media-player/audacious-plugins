@@ -39,7 +39,7 @@ typedef struct {
 } EqSliderData;
 
 DRAW_FUNC_BEGIN (eq_slider_draw)
-    EqSliderData * data = g_object_get_data ((GObject *) wid, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) wid, "eqsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     gint frame = 27 - data->pos * 27 / 50;
@@ -73,7 +73,7 @@ static void eq_slider_moved (EqSliderData * data, gint pos)
 static gboolean eq_slider_button_press (GtkWidget * slider, GdkEventButton *
  event)
 {
-    EqSliderData * data = g_object_get_data ((GObject *) slider, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button != 1)
@@ -89,7 +89,7 @@ static gboolean eq_slider_button_press (GtkWidget * slider, GdkEventButton *
 static gboolean eq_slider_button_release (GtkWidget * slider, GdkEventButton *
  event)
 {
-    EqSliderData * data = g_object_get_data ((GObject *) slider, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button != 1)
@@ -107,7 +107,7 @@ static gboolean eq_slider_button_release (GtkWidget * slider, GdkEventButton *
 
 static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event)
 {
-    EqSliderData * data = g_object_get_data ((GObject *) slider, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     if (! data->pressed)
@@ -120,7 +120,7 @@ static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event)
 
 static gboolean eq_slider_scroll (GtkWidget * slider, GdkEventScroll * event)
 {
-    EqSliderData * data = g_object_get_data ((GObject *) slider, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->direction == GDK_SCROLL_UP)
@@ -134,7 +134,7 @@ static gboolean eq_slider_scroll (GtkWidget * slider, GdkEventScroll * event)
 
 void eq_slider_set_val (GtkWidget * slider, gfloat val)
 {
-    EqSliderData * data = g_object_get_data ((GObject *) slider, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
     g_return_if_fail (data);
 
     if (data->pressed)
@@ -149,7 +149,7 @@ void eq_slider_set_val (GtkWidget * slider, gfloat val)
 
 gfloat eq_slider_get_val (GtkWidget * slider)
 {
-    EqSliderData * data = g_object_get_data ((GObject *) slider, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
     g_return_val_if_fail (data, 0);
 
     return data->val;
@@ -157,7 +157,7 @@ gfloat eq_slider_get_val (GtkWidget * slider)
 
 static void eq_slider_destroy (GtkWidget * slider)
 {
-    EqSliderData * data = g_object_get_data ((GObject *) slider, "eqsliderdata");
+    EqSliderData * data = (EqSliderData *) g_object_get_data ((GObject *) slider, "eqsliderdata");
     g_return_if_fail (data);
 
     g_free (data->name);
@@ -183,7 +183,7 @@ GtkWidget * eq_slider_new (const gchar * name)
      NULL);
     g_signal_connect (slider, "destroy", (GCallback) eq_slider_destroy, NULL);
 
-    EqSliderData * data = g_malloc0 (sizeof (EqSliderData));
+    EqSliderData * data = g_new0 (EqSliderData, 1);
     data->name = g_strdup (name);
     g_object_set_data ((GObject *) slider, "eqsliderdata", data);
 

@@ -30,7 +30,7 @@ typedef struct {
 
 static gboolean handle_button_press (GtkWidget * handle, GdkEventButton * event)
 {
-    DHandleData * data = g_object_get_data ((GObject *) handle, "dhandledata");
+    DHandleData * data = (DHandleData *) g_object_get_data ((GObject *) handle, "dhandledata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button != 1)
@@ -49,7 +49,7 @@ static gboolean handle_button_press (GtkWidget * handle, GdkEventButton * event)
 static gboolean handle_button_release (GtkWidget * handle, GdkEventButton *
  event)
 {
-    DHandleData * data = g_object_get_data ((GObject *) handle, "dhandledata");
+    DHandleData * data = (DHandleData *) g_object_get_data ((GObject *) handle, "dhandledata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button != 1)
@@ -61,7 +61,7 @@ static gboolean handle_button_release (GtkWidget * handle, GdkEventButton *
 
 static gboolean handle_motion (GtkWidget * handle, GdkEventMotion * event)
 {
-    DHandleData * data = g_object_get_data ((GObject *) handle, "dhandledata");
+    DHandleData * data = (DHandleData *) g_object_get_data ((GObject *) handle, "dhandledata");
     g_return_val_if_fail (data, FALSE);
 
     if (! data->held)
@@ -96,7 +96,7 @@ GtkWidget * drag_handle_new (gint w, gint h, void (* press) (void), void
      NULL);
     g_signal_connect (handle, "destroy", (GCallback) handle_destroy, NULL);
 
-    DHandleData * data = g_malloc0 (sizeof (DHandleData));
+    DHandleData * data = g_new0 (DHandleData, 1);
     data->press = press;
     data->drag = drag;
     g_object_set_data ((GObject *) handle, "dhandledata", data);

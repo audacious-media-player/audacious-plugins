@@ -35,7 +35,7 @@ typedef struct {
 } ButtonData;
 
 DRAW_FUNC_BEGIN (button_draw)
-    ButtonData * data = g_object_get_data ((GObject *) wid, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) wid, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
     switch (data->type)
@@ -67,7 +67,7 @@ DRAW_FUNC_END
 
 static gboolean button_press (GtkWidget * button, GdkEventButton * event)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
     /* pass events through to the parent widget only if neither the press nor
@@ -96,7 +96,7 @@ static gboolean button_press (GtkWidget * button, GdkEventButton * event)
 
 static gboolean button_release (GtkWidget * button, GdkEventButton * event)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button == 1 && (data->on_press || data->on_release))
@@ -158,7 +158,7 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
      button_release, NULL);
     g_signal_connect (button, "destroy", (GCallback) button_destroy, NULL);
 
-    ButtonData * data = g_malloc0 (sizeof (ButtonData));
+    ButtonData * data = g_new0 (ButtonData, 1);
     data->type = type;
     data->w = w;
     data->h = h;
@@ -171,7 +171,7 @@ GtkWidget * button_new (gint w, gint h, gint nx, gint ny, gint px, gint py,
  SkinPixmapId si1, SkinPixmapId si2)
 {
     GtkWidget * button = button_new_base (BUTTON_TYPE_NORMAL, w, h);
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, NULL);
 
     data->nx = nx;
@@ -188,7 +188,7 @@ GtkWidget * button_new_toggle (gint w, gint h, gint nx, gint ny, gint px, gint
  py, gint pnx, gint pny, gint ppx, gint ppy, SkinPixmapId si1, SkinPixmapId si2)
 {
     GtkWidget * button = button_new_base (BUTTON_TYPE_TOGGLE, w, h);
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data, NULL);
 
     data->nx = nx;
@@ -212,7 +212,7 @@ GtkWidget * button_new_small (gint w, gint h)
 
 void button_on_press (GtkWidget * button, ButtonCB callback)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_if_fail (data);
 
     data->on_press = callback;
@@ -220,7 +220,7 @@ void button_on_press (GtkWidget * button, ButtonCB callback)
 
 void button_on_release (GtkWidget * button, ButtonCB callback)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_if_fail (data);
 
     data->on_release = callback;
@@ -228,7 +228,7 @@ void button_on_release (GtkWidget * button, ButtonCB callback)
 
 void button_on_rpress (GtkWidget * button, ButtonCB callback)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_if_fail (data);
 
     data->on_rpress = callback;
@@ -236,7 +236,7 @@ void button_on_rpress (GtkWidget * button, ButtonCB callback)
 
 void button_on_rrelease (GtkWidget * button, ButtonCB callback)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_if_fail (data);
 
     data->on_rrelease = callback;
@@ -244,7 +244,7 @@ void button_on_rrelease (GtkWidget * button, ButtonCB callback)
 
 gboolean button_get_active (GtkWidget * button)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_val_if_fail (data && data->type == BUTTON_TYPE_TOGGLE, FALSE);
 
     return data->active;
@@ -252,7 +252,7 @@ gboolean button_get_active (GtkWidget * button)
 
 void button_set_active (GtkWidget * button, gboolean active)
 {
-    ButtonData * data = g_object_get_data ((GObject *) button, "buttondata");
+    ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
     g_return_if_fail (data && data->type == BUTTON_TYPE_TOGGLE);
 
     if (data->active == active)

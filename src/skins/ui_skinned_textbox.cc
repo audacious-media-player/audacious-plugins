@@ -49,7 +49,7 @@ typedef struct {
 static GList * textboxes;
 
 DRAW_FUNC_BEGIN (textbox_draw)
-    TextboxData * data = g_object_get_data ((GObject *) wid, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) wid, "textboxdata");
     g_return_val_if_fail (data && data->buf, FALSE);
 
     if (data->scrolling)
@@ -73,7 +73,7 @@ DRAW_FUNC_END
 
 static gboolean textbox_scroll (GtkWidget * textbox)
 {
-    TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_val_if_fail (data, FALSE);
 
     if (data->delay < DELAY)
@@ -283,7 +283,7 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
 
 void textbox_set_width (GtkWidget * textbox, gint width)
 {
-    TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
     if (data->width == width)
@@ -295,7 +295,7 @@ void textbox_set_width (GtkWidget * textbox, gint width)
 
 const gchar * textbox_get_text (GtkWidget * textbox)
 {
-    TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_val_if_fail (data, NULL);
 
     return data->text;
@@ -303,7 +303,7 @@ const gchar * textbox_get_text (GtkWidget * textbox)
 
 void textbox_set_text (GtkWidget * textbox, const gchar * text)
 {
-    TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
     if (! text)
@@ -319,7 +319,7 @@ void textbox_set_text (GtkWidget * textbox, const gchar * text)
 
 void textbox_set_font (GtkWidget * textbox, const gchar * font)
 {
-    TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
     if (data->font)
@@ -336,7 +336,7 @@ void textbox_set_font (GtkWidget * textbox, const gchar * font)
 
 void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
 {
-    TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
     if (data->may_scroll == scroll)
@@ -348,7 +348,7 @@ void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
 
 static void textbox_destroy (GtkWidget * textbox)
 {
-    TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
+    TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
     if (data->font)
@@ -375,7 +375,7 @@ GtkWidget * textbox_new (gint width, const gchar * text, const gchar * font,
     DRAW_CONNECT (textbox, textbox_draw);
     g_signal_connect (textbox, "destroy", (GCallback) textbox_destroy, NULL);
 
-    TextboxData * data = g_malloc0 (sizeof (TextboxData));
+    TextboxData * data = g_new0 (TextboxData, 1);
     data->width = width;
     data->text = g_strdup (text);
     data->may_scroll = scroll;
@@ -394,10 +394,9 @@ void textbox_update_all (void)
 {
     for (GList * node = textboxes; node; node = node->next)
     {
-        GtkWidget * textbox = node->data;
+        GtkWidget * textbox = (GtkWidget *) node->data;
         g_return_if_fail (textbox);
-        TextboxData * data = g_object_get_data ((GObject *) textbox,
-         "textboxdata");
+        TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
         g_return_if_fail (data);
 
         textbox_render (textbox, data);

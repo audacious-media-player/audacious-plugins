@@ -36,7 +36,7 @@
 
 #define EXTENSION_TARGETS 7
 
-static gchar *ext_targets[EXTENSION_TARGETS] = { "bmp", "xpm", "png", "svg",
+static const gchar *ext_targets[EXTENSION_TARGETS] = { "bmp", "xpm", "png", "svg",
         "gif", "jpg", "jpeg" };
 
 enum SkinViewCols {
@@ -206,7 +206,7 @@ scan_skindir(const gchar * path)
 
 static gint skinlist_compare_func (const void * _a, const void * _b)
 {
-    const SkinNode * a = _a, * b = _b;
+    const SkinNode * a = (SkinNode *) _a, * b = (SkinNode *) _b;
     g_return_val_if_fail (a && a->name, 1);
     g_return_val_if_fail (b && b->name, 1);
     return g_ascii_strcasecmp (a->name, b->name);
@@ -214,7 +214,7 @@ static gint skinlist_compare_func (const void * _a, const void * _b)
 
 static void skin_free_func (void * _data)
 {
-    SkinNode * data = _data;
+    SkinNode * data = (SkinNode *) _data;
     g_return_if_fail(data != NULL);
     g_free (data->name);
     g_free (data->path);
@@ -275,7 +275,7 @@ void skin_view_update (GtkTreeView * treeview)
     gchar *name;
     GList *entry;
 
-    g_signal_handlers_block_by_func (treeview, (GCallback) skin_view_on_cursor_changed, NULL);
+    g_signal_handlers_block_by_func (treeview, (void *) skin_view_on_cursor_changed, NULL);
 
     store = GTK_LIST_STORE(gtk_tree_view_get_model(treeview));
 
@@ -285,7 +285,7 @@ void skin_view_update (GtkTreeView * treeview)
 
     for (entry = skinlist; entry; entry = entry->next)
     {
-        SkinNode * node = entry->data;
+        SkinNode * node = (SkinNode *) entry->data;
 
         thumbnail = skin_get_thumbnail (node->path);
         formattedname = g_strdup_printf ("<big><b>%s</b></big>\n<i>%s</i>",
@@ -318,7 +318,7 @@ void skin_view_update (GtkTreeView * treeview)
         gtk_tree_path_free(path);
     }
 
-    g_signal_handlers_unblock_by_func (treeview, (GCallback) skin_view_on_cursor_changed, NULL);
+    g_signal_handlers_unblock_by_func (treeview, (void *) skin_view_on_cursor_changed, NULL);
 }
 
 

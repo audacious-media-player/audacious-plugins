@@ -44,7 +44,7 @@ static GtkWidget *equalizerwin_delete_window = NULL;
 static GtkWidget *equalizerwin_delete_auto_window = NULL;
 
 static void
-equalizerwin_delete_selected_presets(GtkTreeView *view, gchar *filename)
+equalizerwin_delete_selected_presets(GtkTreeView *view, const gchar *filename)
 {
     gchar *text;
 
@@ -65,13 +65,13 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, gchar *filename)
 
     for (litr = list; litr; litr = litr->next)
     {
-        GtkTreePath *path = litr->data;
+        GtkTreePath *path = (GtkTreePath *) litr->data;
         rrefs = g_list_append(rrefs, gtk_tree_row_reference_new(model, path));
     }
 
     for (litr = rrefs; litr; litr = litr->next)
     {
-        GtkTreeRowReference *ref = litr->data;
+        GtkTreeRowReference *ref = (GtkTreeRowReference *) litr->data;
         GtkTreePath *path = gtk_tree_row_reference_get_path(ref);
         GtkTreeIter iter;
         gtk_tree_model_get_iter(model, &iter, path);
@@ -274,7 +274,7 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
     store = gtk_list_store_new(1, G_TYPE_STRING);
     for (int p = 0; p < index_count (preset_list); p ++)
     {
-        EqualizerPreset * preset = index_get (preset_list, p);
+        EqualizerPreset * preset = (EqualizerPreset *) index_get (preset_list, p);
         gtk_list_store_append(store, &iter);
         gtk_list_store_set (store, & iter, 0, preset->name, -1);
     }

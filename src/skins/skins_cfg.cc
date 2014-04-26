@@ -177,27 +177,28 @@ static void vis_reset_cb (void)
 }
 
 static PreferencesWidget font_table_elements[] = {
- {WIDGET_FONT_BTN, N_("_Player:"),
-  .cfg_type = VALUE_STRING, .csect = "skins", .cname = "mainwin_font",
-  .callback = mainwin_font_set_cb, .data = {.font_btn = {N_("Select main player window font:")}}},
- {WIDGET_FONT_BTN, N_("_Playlist:"),
-  .cfg_type = VALUE_STRING, .csect = "skins", .cname = "playlist_font",
-  .callback = playlist_font_set_cb, .data = {.font_btn = {N_("Select playlist font:")}}}};
+    WidgetFonts (N_("_Player:"),
+        {VALUE_STRING, 0, "skins", "mainwin_font", mainwin_font_set_cb},
+        {N_("Select main player window font:")}),
+    WidgetFonts (N_("_Playlist:"),
+        {VALUE_STRING, 0, "skins", "playlist_font", playlist_font_set_cb},
+        {N_("Select playlist font:")})
+};
 
 static void * create_skin_view (void);
 
 static const PreferencesWidget skins_widgets_general[] = {
-    {WIDGET_LABEL, N_("<b>Skin</b>")},
-    {WIDGET_CUSTOM, .data.populate = create_skin_view},
-    {WIDGET_LABEL, N_("<b>Fonts</b>")},
-    {WIDGET_TABLE, .child = TRUE,
-     .data.table = {font_table_elements, ARRAY_LEN (font_table_elements)}},
-    {WIDGET_CHK_BTN, N_("Use bitmap fonts (supports ASCII only)"),
-     .cfg_type = VALUE_BOOLEAN, .cfg = & config.mainwin_use_bitmapfont, .callback = mainwin_font_set_cb},
-    {WIDGET_CHK_BTN, N_("Scroll song title"),
-     .cfg_type = VALUE_BOOLEAN, .cfg = & config.autoscroll, .callback = autoscroll_set_cb},
-    {WIDGET_CHK_BTN, N_("Scroll song title in both directions"),
-     .cfg_type = VALUE_BOOLEAN, .cfg = & config.twoway_scroll, .callback = autoscroll_set_cb}
+    WidgetLabel (N_("<b>Skin</b>")),
+    WidgetCustom (create_skin_view),
+    WidgetLabel (N_("<b>Fonts</b>")),
+    WidgetTable ({font_table_elements, ARRAY_LEN (font_table_elements)},
+        WIDGET_CHILD),
+    WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),
+        {VALUE_BOOLEAN, & config.mainwin_use_bitmapfont, 0, 0, mainwin_font_set_cb}),
+    WidgetCheck (N_("Scroll song title"),
+        {VALUE_BOOLEAN, & config.autoscroll, 0, 0, autoscroll_set_cb}),
+    WidgetCheck (N_("Scroll song title in both directions"),
+        {VALUE_BOOLEAN, & config.twoway_scroll, 0, 0, autoscroll_set_cb})
 };
 
 static ComboBoxElements vis_mode_elements[] = {
@@ -244,35 +245,35 @@ static ComboBoxElements vu_mode_elements[] = {
 };
 
 static const PreferencesWidget skins_widgets_vis[] = {
-    {WIDGET_LABEL, N_("<b>Type</b>")},
-    {WIDGET_COMBO_BOX, N_("Visualization type:"),
-     .cfg_type = VALUE_INT, .cfg = & config.vis_type, .callback = vis_reset_cb,
-     .data.combo = {vis_mode_elements, ARRAY_LEN (vis_mode_elements)}},
-    {WIDGET_LABEL, N_("<b>Analyzer</b>")},
-    {WIDGET_CHK_BTN, N_("Show peaks"),
-     .cfg_type = VALUE_BOOLEAN, .cfg = & config.analyzer_peaks, .callback = vis_reset_cb},
-    {WIDGET_COMBO_BOX, N_("Coloring:"),
-     .cfg_type = VALUE_INT, .cfg = & config.analyzer_mode, .callback = vis_reset_cb,
-     .data.combo = {analyzer_mode_elements, ARRAY_LEN (analyzer_mode_elements)}},
-    {WIDGET_COMBO_BOX, N_("Style:"),
-     .cfg_type = VALUE_INT, .cfg = & config.analyzer_type, .callback = vis_reset_cb,
-     .data.combo = {analyzer_type_elements, ARRAY_LEN (analyzer_type_elements)}},
-    {WIDGET_COMBO_BOX, N_("Falloff:"),
-     .cfg_type = VALUE_INT, .cfg = & config.analyzer_falloff, .callback = vis_reset_cb,
-     .data.combo = {falloff_elements, ARRAY_LEN (falloff_elements)}},
-    {WIDGET_COMBO_BOX, N_("Peak falloff:"),
-     .cfg_type = VALUE_INT, .cfg = & config.peaks_falloff, .callback = vis_reset_cb,
-     .data.combo = {falloff_elements, ARRAY_LEN (falloff_elements)}},
-    {WIDGET_LABEL, N_("<b>Miscellaneous</b>")},
-    {WIDGET_COMBO_BOX, N_("Scope Style:"),
-     .cfg_type = VALUE_INT, .cfg = & config.scope_mode, .callback = vis_reset_cb,
-     .data.combo = {scope_mode_elements, ARRAY_LEN (scope_mode_elements)}},
-    {WIDGET_COMBO_BOX, N_("Voiceprint Coloring:"),
-     .cfg_type = VALUE_INT, .cfg = & config.voiceprint_mode, .callback = vis_reset_cb,
-     .data.combo = {voiceprint_mode_elements, ARRAY_LEN (voiceprint_mode_elements)}},
-    {WIDGET_COMBO_BOX, N_("VU Meter Style:"),
-     .cfg_type = VALUE_INT, .cfg = & config.vu_mode, .callback = vis_reset_cb,
-     .data.combo = {vu_mode_elements, ARRAY_LEN (vu_mode_elements)}}
+    WidgetLabel (N_("<b>Type</b>")),
+    WidgetCombo (N_("Visualization type:"),
+        {VALUE_INT, & config.vis_type, 0, 0, vis_reset_cb},
+        {vis_mode_elements, ARRAY_LEN (vis_mode_elements)}),
+    WidgetLabel (N_("<b>Analyzer</b>")),
+    WidgetCheck (N_("Show peaks"),
+        {VALUE_BOOLEAN, & config.analyzer_peaks, 0, 0, vis_reset_cb}),
+    WidgetCombo (N_("Coloring:"),
+        {VALUE_INT, & config.analyzer_mode, 0, 0, vis_reset_cb},
+        {analyzer_mode_elements, ARRAY_LEN (analyzer_mode_elements)}),
+    WidgetCombo (N_("Style:"),
+        {VALUE_INT, & config.analyzer_type, 0, 0, vis_reset_cb},
+        {analyzer_type_elements, ARRAY_LEN (analyzer_type_elements)}),
+    WidgetCombo (N_("Falloff:"),
+        {VALUE_INT, & config.analyzer_falloff, 0, 0, vis_reset_cb},
+        {falloff_elements, ARRAY_LEN (falloff_elements)}),
+    WidgetCombo (N_("Peak falloff:"),
+        {VALUE_INT, & config.peaks_falloff, 0, 0, vis_reset_cb},
+        {falloff_elements, ARRAY_LEN (falloff_elements)}),
+    WidgetLabel (N_("<b>Miscellaneous</b>")),
+    WidgetCombo (N_("Scope Style:"),
+        {VALUE_INT, & config.scope_mode, 0, 0, vis_reset_cb},
+        {scope_mode_elements, ARRAY_LEN (scope_mode_elements)}),
+    WidgetCombo (N_("Voiceprint Coloring:"),
+        {VALUE_INT, & config.voiceprint_mode, 0, 0, vis_reset_cb},
+        {voiceprint_mode_elements, ARRAY_LEN (voiceprint_mode_elements)}),
+    WidgetCombo (N_("VU Meter Style:"),
+        {VALUE_INT, & config.vu_mode, 0, 0, vis_reset_cb},
+        {vu_mode_elements, ARRAY_LEN (vu_mode_elements)})
 };
 
 static const NotebookTab skins_notebook_tabs[] = {
@@ -281,7 +282,7 @@ static const NotebookTab skins_notebook_tabs[] = {
 };
 
 static const PreferencesWidget skins_widgets[] = {
-    {WIDGET_NOTEBOOK, .data.notebook = {skins_notebook_tabs, ARRAY_LEN (skins_notebook_tabs)}}
+    WidgetNotebook ({skins_notebook_tabs, ARRAY_LEN (skins_notebook_tabs)})
 };
 
 const PluginPreferences skins_prefs = {

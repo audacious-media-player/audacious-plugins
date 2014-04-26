@@ -42,7 +42,7 @@ typedef struct {
 } HSliderData;
 
 DRAW_FUNC_BEGIN (hslider_draw)
-    HSliderData * data = g_object_get_data ((GObject *) wid, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) wid, "hsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     skin_draw_pixbuf (cr, data->si, data->fx, data->fy, 0, 0, data->w, data->h);
@@ -58,7 +58,7 @@ DRAW_FUNC_END
 static gboolean hslider_button_press (GtkWidget * hslider, GdkEventButton *
  event)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button != 1)
@@ -78,7 +78,7 @@ static gboolean hslider_button_press (GtkWidget * hslider, GdkEventButton *
 static gboolean hslider_button_release (GtkWidget * hslider, GdkEventButton *
  event)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button != 1)
@@ -101,7 +101,7 @@ static gboolean hslider_button_release (GtkWidget * hslider, GdkEventButton *
 static gboolean hslider_motion_notify (GtkWidget * hslider, GdkEventMotion *
  event)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     if (! data->pressed)
@@ -141,7 +141,7 @@ GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
      hslider_motion_notify, NULL);
     g_signal_connect (hslider, "destroy", (GCallback) hslider_destroy, NULL);
 
-    HSliderData * data = g_malloc0 (sizeof (HSliderData));
+    HSliderData * data = g_new0 (HSliderData, 1);
     data->min = min;
     data->max = max;
     data->pos = min;
@@ -163,7 +163,7 @@ GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
 
 void hslider_set_frame (GtkWidget * hslider, gint fx, gint fy)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);
 
     data->fx = fx;
@@ -174,7 +174,7 @@ void hslider_set_frame (GtkWidget * hslider, gint fx, gint fy)
 void hslider_set_knob (GtkWidget * hslider, gint knx, gint kny, gint kpx, gint
  kpy)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);
 
     data->knx = knx;
@@ -186,7 +186,7 @@ void hslider_set_knob (GtkWidget * hslider, gint knx, gint kny, gint kpx, gint
 
 gint hslider_get_pos (GtkWidget * hslider)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_val_if_fail (data, 0);
 
     return data->pos;
@@ -194,7 +194,7 @@ gint hslider_get_pos (GtkWidget * hslider)
 
 void hslider_set_pos (GtkWidget * hslider, gint pos)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);
 
     if (data->pressed)
@@ -206,7 +206,7 @@ void hslider_set_pos (GtkWidget * hslider, gint pos)
 
 gboolean hslider_get_pressed (GtkWidget * hslider)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_val_if_fail (data, FALSE);
 
     return data->pressed;
@@ -214,7 +214,7 @@ gboolean hslider_get_pressed (GtkWidget * hslider)
 
 void hslider_set_pressed (GtkWidget * hslider, gboolean pressed)
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);
 
     data->pressed = pressed;
@@ -223,7 +223,7 @@ void hslider_set_pressed (GtkWidget * hslider, gboolean pressed)
 
 void hslider_on_motion (GtkWidget * hslider, void (* callback) (void))
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);
 
     data->on_motion = callback;
@@ -231,7 +231,7 @@ void hslider_on_motion (GtkWidget * hslider, void (* callback) (void))
 
 void hslider_on_release (GtkWidget * hslider, void (* callback) (void))
 {
-    HSliderData * data = g_object_get_data ((GObject *) hslider, "hsliderdata");
+    HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);
 
     data->on_release = callback;

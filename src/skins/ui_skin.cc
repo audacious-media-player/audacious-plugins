@@ -50,7 +50,7 @@
 
 #define EXTENSION_TARGETS 7
 
-static gchar *ext_targets[EXTENSION_TARGETS] =
+static const gchar *ext_targets[EXTENSION_TARGETS] =
 { "bmp", "xpm", "png", "svg", "gif", "jpg", "jpeg" };
 
 struct _SkinPixmapIdMapping {
@@ -220,7 +220,7 @@ static gchar * skin_pixmap_locate (const gchar * dirname, gchar * * basenames)
 static gchar **
 skin_pixmap_create_basenames(const SkinPixmapIdMapping * pixmap_id_mapping)
 {
-    gchar **basenames = g_malloc0(sizeof(gchar*) * (EXTENSION_TARGETS * 2 + 1));
+    gchar **basenames = g_new0 (gchar *, EXTENSION_TARGETS * 2 + 1);
     gint i, y;
 
     // Create list of all possible image formats that can be loaded
@@ -397,7 +397,7 @@ static void skin_load_viscolor (Skin * skin, const gchar * path)
     vfs_file_read_all (file, & buffer, NULL);
     vfs_fclose (file);
 
-    char * string = buffer;
+    char * string = (char *) buffer;
 
     for (int line = 0; string && line < 24; line ++)
     {
@@ -425,14 +425,14 @@ skin_numbers_generate_dash(Skin * skin)
         return;
 
     gint h = cairo_image_surface_get_height (old);
-    cairo_surface_t * new = surface_new (108, h);
+    cairo_surface_t * surface = surface_new (108, h);
 
-    surface_copy_rect (old, 0, 0, 99, h, new, 0, 0);
-    surface_copy_rect (old, 90, 0, 9, h, new, 99, 0);
-    surface_copy_rect (old, 20, 6, 5, 1, new, 101, 6);
+    surface_copy_rect (old, 0, 0, 99, h, surface, 0, 0);
+    surface_copy_rect (old, 90, 0, 9, h, surface, 99, 0);
+    surface_copy_rect (old, 20, 6, 5, 1, surface, 101, 6);
 
     cairo_surface_destroy (old);
-    skin->pixmaps[SKIN_NUMBERS] = new;
+    skin->pixmaps[SKIN_NUMBERS] = surface;
 }
 
 static gboolean
@@ -441,7 +441,7 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
     AUDDBG("Loading pixmaps in %s\n", path);
 
     for (gint i = 0; i < SKIN_PIXMAP_COUNT; i++)
-        if (! skin_load_pixmap_id (skin, i, path))
+        if (! skin_load_pixmap_id (skin, (SkinPixmapId) i, path))
             return FALSE;
 
     if (skin->pixmaps[SKIN_TEXT])

@@ -57,7 +57,8 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
 
     switch (config.vis_type)
     {
-    case VIS_ANALYZER:;
+    case VIS_ANALYZER:
+    {
         gboolean bars = (config.analyzer_type == ANALYZER_BARS);
 
         for (gint x = 0; x < 38; x ++)
@@ -74,6 +75,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
         }
 
         break;
+    }
     case VIS_VOICEPRINT:
         switch (config.vu_mode)
         {
@@ -112,7 +114,8 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
             break;
         }
         break;
-    case VIS_SCOPE:;
+    case VIS_SCOPE:
+    {
         static const gint scale[17] = {0, 0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 4,
          4, 4, 4, 4, 4};
 
@@ -130,6 +133,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
             }
             break;
         case SCOPE_LINE:
+        {
             for (gint x = 0; x < 37; x++)
             {
                 gint h = scale[CLAMP (svis.data[2 * x], 0, 16)];
@@ -147,6 +151,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
             RGB_SEEK (37, h);
             RGB_SET_INDEX (svis_scope_colors[h]);
             break;
+        }
         default: /* SCOPE_SOLID */
             for (gint x = 0; x < 38; x++)
             {
@@ -164,10 +169,11 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
         }
         break;
     }
+    }
 
 DRAW:;
-    cairo_surface_t * surf = cairo_image_surface_create_for_data ((void *) rgb,
-     CAIRO_FORMAT_RGB24, 38, 5, 4 * 38);
+    cairo_surface_t * surf = cairo_image_surface_create_for_data
+     ((unsigned char *) rgb, CAIRO_FORMAT_RGB24, 38, 5, 4 * 38);
     cairo_set_source_surface (cr, surf, 0, 0);
     cairo_paint (cr);
     cairo_surface_destroy (surf);

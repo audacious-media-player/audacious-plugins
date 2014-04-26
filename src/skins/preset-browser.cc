@@ -60,7 +60,7 @@ static void show_preset_browser (const char * title, bool_t save,
     if (default_filename)
         gtk_file_chooser_set_current_name ((GtkFileChooser *) preset_browser, default_filename);
 
-    g_signal_connect (preset_browser, "response", (GCallback) browser_response, callback);
+    g_signal_connect (preset_browser, "response", (GCallback) browser_response, (void *) callback);
     g_signal_connect (preset_browser, "destroy", (GCallback)
      gtk_widget_destroyed, & preset_browser);
 
@@ -93,7 +93,7 @@ static void do_load_eqf (const char * filename)
     if (presets)
     {
         if (index_count (presets) >= 1)
-            equalizerwin_apply_preset (index_get (presets, 0));
+            equalizerwin_apply_preset ((EqualizerPreset *) index_get (presets, 0));
 
         index_free_full (presets, (IndexFreeFunc) aud_eq_preset_free);
     }

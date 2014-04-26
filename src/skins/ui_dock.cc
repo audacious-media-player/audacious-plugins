@@ -71,7 +71,7 @@ static DockWindow * find_window (GSList * list, GtkWidget * window)
 {
     for (GSList * node = list; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         if (dw->window == window)
             return dw;
     }
@@ -106,7 +106,7 @@ static void dock_sync (void)
 {
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         gtk_window_get_position ((GtkWindow *) dw->window, dw->x, dw->y);
     }
 }
@@ -115,7 +115,7 @@ static void clear_docked (void)
 {
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         dw->docked = FALSE;
     }
 }
@@ -138,7 +138,7 @@ static void find_docked (DockWindow * base, gint type)
 {
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         if (dw->docked || dw == base)
             continue;
 
@@ -152,7 +152,7 @@ static void invert_docked (void)
 {
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         dw->docked = ! dw->docked;
     }
 }
@@ -187,7 +187,7 @@ void dock_set_size (GtkWidget * window, gint w, gint h)
 
             for (GSList * node = windows; node; node = node->next)
             {
-                DockWindow * dw = node->data;
+                DockWindow * dw = (DockWindow *) node->data;
                 if (! dw->docked || dw == base)
                     continue;
 
@@ -201,7 +201,7 @@ void dock_set_size (GtkWidget * window, gint w, gint h)
 
         for (GSList * node = windows; node; node = node->next)
         {
-            DockWindow * dw = node->data;
+            DockWindow * dw = (DockWindow *) node->data;
             if (! dw->docked)
                 continue;
 
@@ -223,7 +223,7 @@ void dock_set_size (GtkWidget * window, gint w, gint h)
 
             for (GSList * node = windows; node; node = node->next)
             {
-                DockWindow * dw = node->data;
+                DockWindow * dw = (DockWindow *) node->data;
                 if (! dw->docked || dw == base)
                     continue;
 
@@ -235,7 +235,7 @@ void dock_set_size (GtkWidget * window, gint w, gint h)
 
         for (GSList * node = windows; node; node = node->next)
         {
-            DockWindow * dw = node->data;
+            DockWindow * dw = (DockWindow *) node->data;
             if (! dw->docked)
                 continue;
 
@@ -283,7 +283,7 @@ void dock_move (gint x, gint y)
 
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         if (! dw->docked)
             continue;
 
@@ -312,7 +312,7 @@ void dock_move (gint x, gint y)
 
         for (GSList * node = windows; node; node = node->next)
         {
-            DockWindow * dw = node->data;
+            DockWindow * dw = (DockWindow *) node->data;
             if (! dw->docked)
                 continue;
 
@@ -329,13 +329,13 @@ void dock_move (gint x, gint y)
 
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         if (! dw->docked)
             continue;
 
         for (GSList * node2 = windows; node2; node2 = node2->next)
         {
-            DockWindow * dw2 = node2->data;
+            DockWindow * dw2 = (DockWindow *) node2->data;
             if (dw2->docked)
                 continue;
 
@@ -360,7 +360,7 @@ void dock_move (gint x, gint y)
 
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         if (! dw->docked)
             continue;
 
@@ -375,7 +375,7 @@ void dock_move (gint x, gint y)
 
     for (GSList * node = windows; node; node = node->next)
     {
-        DockWindow * dw = node->data;
+        DockWindow * dw = (DockWindow *) node->data;
         if (! dw->docked)
             continue;
 

@@ -202,7 +202,7 @@ static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
     /* conversion table for the x-axis */
     if (bands != last_bands)
     {
-        xscale = g_realloc (xscale, sizeof (gfloat) * (bands + 1));
+        xscale = g_renew (float, xscale, bands + 1);
         for (int i = 0; i <= bands; i ++)
             xscale[i] = powf (256, (float) i / bands) - 0.5f;
 

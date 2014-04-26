@@ -45,29 +45,28 @@ gchar * skins_paths[SKINS_PATH_COUNT];
 static gboolean skins_init (void);
 static void skins_cleanup (void);
 
-AUD_IFACE_PLUGIN
-(
-    .name = N_("Winamp Classic Interface"),
-    .domain = PACKAGE,
-    .init = skins_init,
-    .cleanup = skins_cleanup,
-    .prefs = & skins_prefs,
+#define AUD_PLUGIN_NAME     N_("Winamp Classic Interface")
+#define AUD_PLUGIN_PREFS    & skins_prefs
+#define AUD_PLUGIN_INIT     skins_init
+#define AUD_PLUGIN_CLEANUP  skins_cleanup
 
-    .show = view_show_player,
-    .run = gtk_main,
-    .quit = gtk_main_quit,
+#define AUD_IFACE_SHOW  view_show_player
+#define AUD_IFACE_RUN   gtk_main
+#define AUD_IFACE_QUIT  gtk_main_quit
 
-    .show_about_window = audgui_show_about_window,
-    .hide_about_window = audgui_hide_about_window,
-    .show_filebrowser = audgui_run_filebrowser,
-    .hide_filebrowser = audgui_hide_filebrowser,
-    .show_jump_to_song = audgui_jump_to_track,
-    .hide_jump_to_song = audgui_jump_to_track_hide,
-    .show_prefs_window = audgui_show_prefs_window,
-    .hide_prefs_window = audgui_hide_prefs_window,
-    .plugin_menu_add = audgui_plugin_menu_add,
-    .plugin_menu_remove = audgui_plugin_menu_remove
-)
+#define AUD_IFACE_SHOW_ABOUT         audgui_show_about_window
+#define AUD_IFACE_HIDE_ABOUT         audgui_hide_about_window
+#define AUD_IFACE_SHOW_FILEBROWSER   audgui_run_filebrowser
+#define AUD_IFACE_HIDE_FILEBROWSER   audgui_hide_filebrowser
+#define AUD_IFACE_SHOW_JUMP_TO_SONG  audgui_jump_to_track
+#define AUD_IFACE_HIDE_JUMP_TO_SONG  audgui_jump_to_track_hide
+#define AUD_IFACE_SHOW_SETTINGS      audgui_show_prefs_window
+#define AUD_IFACE_HIDE_SETTINGS      audgui_hide_prefs_window
+#define AUD_IFACE_MENU_ADD           audgui_plugin_menu_add
+#define AUD_IFACE_MENU_REMOVE        audgui_plugin_menu_remove
+
+#define AUD_DECLARE_IFACE
+#include <libaudcore/plugin-declare.h>
 
 static gint update_source;
 

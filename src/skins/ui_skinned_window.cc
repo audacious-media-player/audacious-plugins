@@ -30,7 +30,7 @@ typedef struct {
 } WindowData;
 
 DRAW_FUNC_BEGIN (window_draw)
-    WindowData * data = g_object_get_data ((GObject *) wid, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) wid, "windowdata");
     g_return_val_if_fail (data, FALSE);
 
     if (data->draw)
@@ -39,7 +39,7 @@ DRAW_FUNC_END
 
 static gboolean window_button_press (GtkWidget * window, GdkEventButton * event)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_val_if_fail (data, FALSE);
 
     /* pass double clicks through; they are handled elsewhere */
@@ -57,7 +57,7 @@ static gboolean window_button_press (GtkWidget * window, GdkEventButton * event)
 static gboolean window_button_release (GtkWidget * window, GdkEventButton *
  event)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_val_if_fail (data, FALSE);
 
     if (event->button != 1)
@@ -69,7 +69,7 @@ static gboolean window_button_release (GtkWidget * window, GdkEventButton *
 
 static gboolean window_motion (GtkWidget * window, GdkEventMotion * event)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_val_if_fail (data, FALSE);
 
     if (! data->is_moving)
@@ -81,7 +81,7 @@ static gboolean window_motion (GtkWidget * window, GdkEventMotion * event)
 
 static void window_destroy (GtkWidget * window)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 
     dock_remove_window (window);
@@ -116,7 +116,7 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
     g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, NULL);
     g_signal_connect (window, "destroy", (GCallback) window_destroy, NULL);
 
-    WindowData * data = g_malloc0 (sizeof (WindowData));
+    WindowData * data = g_new0 (WindowData, 1);
     g_object_set_data ((GObject *) window, "windowdata", data);
 
     data->normal = gtk_fixed_new ();
@@ -146,7 +146,7 @@ void window_set_size (GtkWidget * window, gint w, gint h)
 
 void window_set_shaded (GtkWidget * window, gboolean shaded)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 
     if (data->is_shaded == shaded)
@@ -169,7 +169,7 @@ void window_set_shaded (GtkWidget * window, gboolean shaded)
 void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
  gint x, gint y)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 
     GtkWidget * fixed = shaded ? data->shaded : data->normal;
@@ -179,7 +179,7 @@ void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
 void window_move_widget (GtkWidget * window, gboolean shaded, GtkWidget *
  widget, gint x, gint y)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 
     GtkWidget * fixed = shaded ? data->shaded : data->normal;
@@ -188,7 +188,7 @@ void window_move_widget (GtkWidget * window, gboolean shaded, GtkWidget *
 
 void window_show_all (GtkWidget * window)
 {
-    WindowData * data = g_object_get_data ((GObject *) window, "windowdata");
+    WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 
     gtk_widget_show_all (data->normal);

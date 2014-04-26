@@ -35,7 +35,7 @@ typedef struct {
 } NumberData;
 
 DRAW_FUNC_BEGIN (number_draw)
-    NumberData * data = g_object_get_data ((GObject *) wid, "numberdata");
+    NumberData * data = (NumberData *) g_object_get_data ((GObject *) wid, "numberdata");
     g_return_val_if_fail (data, FALSE);
 
     skin_draw_pixbuf (cr, SKIN_NUMBERS, data->num * 9, 0, 0, 0, data->w, data->h);
@@ -57,7 +57,7 @@ GtkWidget * ui_skinned_number_new (void)
     DRAW_CONNECT (number, number_draw);
     g_signal_connect (number, "destroy", (GCallback) number_destroy, NULL);
 
-    NumberData * data = g_malloc0 (sizeof (NumberData));
+    NumberData * data = g_new0 (NumberData, 1);
     data->w = 9;
     data->h = 13;
     g_object_set_data ((GObject *) number, "numberdata", data);
@@ -67,7 +67,7 @@ GtkWidget * ui_skinned_number_new (void)
 
 void ui_skinned_number_set (GtkWidget * number, gchar c)
 {
-    NumberData * data = g_object_get_data ((GObject *) number, "numberdata");
+    NumberData * data = (NumberData *) g_object_get_data ((GObject *) number, "numberdata");
     g_return_if_fail (data);
 
     gint value = (c >= '0' && c <= '9') ? c - '0' : (c == '-') ? 11 : 10;
@@ -81,7 +81,7 @@ void ui_skinned_number_set (GtkWidget * number, gchar c)
 
 void ui_skinned_number_set_size (GtkWidget * number, gint width, gint height)
 {
-    NumberData * data = g_object_get_data ((GObject *) number, "numberdata");
+    NumberData * data = (NumberData *) g_object_get_data ((GObject *) number, "numberdata");
     g_return_if_fail (data);
 
     data->w = width;

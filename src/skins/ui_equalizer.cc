@@ -401,7 +401,7 @@ static int equalizerwin_find_preset (Index * list, const char * name)
 {
     for (int p = 0; p < index_count (list); p ++)
     {
-        EqualizerPreset * preset = index_get (list, p);
+        EqualizerPreset * preset = (EqualizerPreset *) index_get (list, p);
         if (!g_ascii_strcasecmp(preset->name, name))
             return p;
     }
@@ -415,14 +415,14 @@ bool_t equalizerwin_load_preset (Index * list, const char * name)
     if (p < 0)
         return FALSE;
 
-    equalizerwin_apply_preset (index_get (list, p));
+    equalizerwin_apply_preset ((EqualizerPreset *) index_get (list, p));
     return TRUE;
 }
 
 void equalizerwin_save_preset (Index * list, const char * name, const char * filename)
 {
     int p = equalizerwin_find_preset (list, name);
-    EqualizerPreset * preset = (p >= 0) ? index_get (list, p) : NULL;
+    EqualizerPreset * preset = (p >= 0) ? (EqualizerPreset *) index_get (list, p) : NULL;
 
     if (! preset)
     {
@@ -484,17 +484,15 @@ static gfloat equalizerwin_get_band (gint band)
 
 static void load_auto_preset (const gchar * filename)
 {
-    gchar * ext = EQUALIZER_DEFAULT_PRESET_EXT;
-    gchar * eq_file = g_strconcat (filename, ".", ext, NULL);
+    gchar * eq_file = g_strconcat (filename, ".", EQUALIZER_DEFAULT_PRESET_EXT, NULL);
     gboolean success = equalizerwin_read_aud_preset (eq_file);
     g_free (eq_file);
 
     if (success)
         return;
 
-    gchar * deffile = EQUALIZER_DEFAULT_DIR_PRESET;
     gchar * folder = g_path_get_dirname (filename);
-    eq_file = g_build_filename (folder, deffile, NULL);
+    eq_file = g_build_filename (folder, EQUALIZER_DEFAULT_DIR_PRESET, NULL);
     success = equalizerwin_read_aud_preset (eq_file);
 
     g_free (folder);

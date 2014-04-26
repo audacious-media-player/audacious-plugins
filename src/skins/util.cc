@@ -60,7 +60,7 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
         cache = g_hash_table_new (g_str_hash, g_str_equal);
 
     if (g_hash_table_lookup_extended (cache, folder, NULL, & vlist))
-        list = vlist;
+        list = (GList *) vlist;
     else
     {
         GDir * handle = g_dir_open (folder, 0, NULL);
@@ -77,8 +77,8 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
 
     for (; list != NULL; list = list->next)
     {
-        if (! g_ascii_strcasecmp (list->data, basename))
-            return g_strdup (list->data);
+        if (! g_ascii_strcasecmp ((char *) list->data, basename))
+            return g_strdup ((char *) list->data);
     }
 
     return NULL;
@@ -286,7 +286,7 @@ escape_shell_chars(const gchar * string)
         if (strchr(special, *in++))
             num++;
 
-    escaped = g_malloc(strlen(string) + num + 1);
+    escaped = g_new (char, strlen(string) + num + 1);
 
     in = string;
     out = escaped;

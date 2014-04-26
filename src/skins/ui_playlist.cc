@@ -183,12 +183,12 @@ playlistwin_select_none(void)
 static void copy_selected_to_new (gint playlist)
 {
     gint entries = aud_playlist_entry_count (playlist);
-    gint new = aud_playlist_count ();
+    gint new_list = aud_playlist_count ();
     Index * filenames = index_new ();
     Index * tuples = index_new ();
     gint entry;
 
-    aud_playlist_insert (new);
+    aud_playlist_insert (new_list);
 
     for (entry = 0; entry < entries; entry ++)
     {
@@ -199,8 +199,8 @@ static void copy_selected_to_new (gint playlist)
         }
     }
 
-    aud_playlist_entry_insert_batch (new, 0, filenames, tuples, FALSE);
-    aud_playlist_set_active (new);
+    aud_playlist_entry_insert_batch (new_list, 0, filenames, tuples, FALSE);
+    aud_playlist_set_active (new_list);
 }
 
 static void
@@ -220,7 +220,7 @@ playlistwin_select_search(void)
     /* create dialog */
     searchdlg_win = gtk_dialog_new_with_buttons(
       _("Search entries in active playlist") , GTK_WINDOW(mainwin) ,
-      GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT ,
+      (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
       _("Cancel") , GTK_RESPONSE_REJECT , _("Search") , GTK_RESPONSE_ACCEPT , NULL );
 
     /* help text and logo */

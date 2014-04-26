@@ -40,7 +40,7 @@ static bool_t delete_cb (GtkWidget * window, GdkEvent * event, PluginHandle * pl
 
 static bool_t add_dock_plugin (PluginHandle * plugin, void * unused)
 {
-    GtkWidget * widget = aud_plugin_get_widget (plugin);
+    GtkWidget * widget = (GtkWidget *) aud_plugin_get_widget (plugin);
 
     if (widget)
     {
@@ -73,7 +73,7 @@ static bool_t remove_dock_plugin (PluginHandle * plugin, void * unused)
 
     if (node)
     {
-        gtk_widget_destroy (node->data);
+        gtk_widget_destroy ((GtkWidget *) node->data);
         windows = g_list_delete_link (windows, node);
     }
 

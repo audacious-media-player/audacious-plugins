@@ -137,7 +137,7 @@ static void cancel_all (GtkWidget * list, PlaylistData * data)
 }
 
 DRAW_FUNC_BEGIN (playlist_draw)
-    PlaylistData * data = g_object_get_data ((GObject *) wid, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) wid, "playlistdata");
     g_return_val_if_fail (data, FALSE);
 
     gint active_entry = aud_playlist_get_position (active_playlist);
@@ -328,7 +328,7 @@ DRAW_FUNC_END
 
 static void playlist_destroy (GtkWidget * list)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     cancel_all (list, data);
@@ -355,7 +355,7 @@ GtkWidget * ui_skinned_playlist_new (gint width, gint height, const gchar * font
      NULL);
     g_signal_connect (list, "destroy", (GCallback) playlist_destroy, NULL);
 
-    PlaylistData * data = g_malloc0 (sizeof (PlaylistData));
+    PlaylistData * data = g_new0 (PlaylistData, 1);
     data->width = width;
     data->height = height;
     data->hover = -1;
@@ -369,7 +369,7 @@ GtkWidget * ui_skinned_playlist_new (gint width, gint height, const gchar * font
 
 void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     data->slider = slider;
@@ -377,7 +377,7 @@ void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider)
 
 void ui_skinned_playlist_resize (GtkWidget * list, gint width, gint height)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     gtk_widget_set_size_request (list, width, height);
@@ -394,7 +394,7 @@ void ui_skinned_playlist_resize (GtkWidget * list, gint width, gint height)
 
 void ui_skinned_playlist_set_font (GtkWidget * list, const gchar * font)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     pango_font_description_free (data->font);
@@ -420,7 +420,7 @@ void ui_skinned_playlist_set_font (GtkWidget * list, const gchar * font)
 
 void ui_skinned_playlist_update (GtkWidget * list)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     calc_layout (data);
@@ -523,7 +523,7 @@ static void delete_selected (PlaylistData * data)
 
 gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
 
     cancel_all (list, data);
@@ -656,7 +656,7 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
 
 void ui_skinned_playlist_row_info (GtkWidget * list, gint * rows, gint * first)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     * rows = data->rows;
@@ -665,7 +665,7 @@ void ui_skinned_playlist_row_info (GtkWidget * list, gint * rows, gint * first)
 
 void ui_skinned_playlist_scroll_to (GtkWidget * list, gint row)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     cancel_all (list, data);
@@ -680,7 +680,7 @@ void ui_skinned_playlist_scroll_to (GtkWidget * list, gint row)
 
 void ui_skinned_playlist_set_focused (GtkWidget * list, gint row)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
     cancel_all (list, data);
@@ -692,32 +692,32 @@ void ui_skinned_playlist_set_focused (GtkWidget * list, gint row)
 
 void ui_skinned_playlist_hover (GtkWidget * list, gint x, gint y)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
-    gint new;
+    gint row;
 
     if (y < data->offset)
-        new = data->first;
+        row = data->first;
     else if (y > data->offset + data->row_height * data->rows)
-        new = data->first + data->rows;
+        row = data->first + data->rows;
     else
-        new = data->first + (y - data->offset + data->row_height / 2) /
+        row = data->first + (y - data->offset + data->row_height / 2) /
          data->row_height;
 
-    if (new > active_length)
-        new = active_length;
+    if (row > active_length)
+        row = active_length;
 
-    if (new != data->hover)
+    if (row != data->hover)
     {
-        data->hover = new;
+        data->hover = row;
         gtk_widget_queue_draw (list);
     }
 }
 
 gint ui_skinned_playlist_hover_end (GtkWidget * list)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, -1);
 
     gint temp = data->hover;
@@ -729,7 +729,7 @@ gint ui_skinned_playlist_hover_end (GtkWidget * list)
 
 static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
 
     gint position = calc_position (data, event->y);
@@ -811,7 +811,7 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
 static gboolean playlist_button_release (GtkWidget * list, GdkEventButton *
  event)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
 
     cancel_all (list, data);
@@ -841,7 +841,7 @@ static gboolean scroll_cb (PlaylistData * data)
 
 static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
 
     gint position = calc_position (data, event->y);
@@ -900,7 +900,7 @@ static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
 
 static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
 
     if (! data->drag)
@@ -911,7 +911,7 @@ static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event)
 
 static gboolean popup_show (GtkWidget * list)
 {
-    PlaylistData * data = g_object_get_data ((GObject *) list, "playlistdata");
+    PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
 
     audgui_infopopup_show (active_playlist, data->popup_pos);
