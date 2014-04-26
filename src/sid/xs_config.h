@@ -4,11 +4,6 @@
 #include <pthread.h>
 #include <libaudcore/core.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
 /* Configuration structure
  */
 enum XS_CHANNELS {
@@ -75,7 +70,4 @@ extern pthread_mutex_t xs_cfg_mutex;
  */
 void xs_init_configuration(void);
 
-#ifdef __cplusplus
-}
-#endif
 #endif    /* XS_CONFIG_H */

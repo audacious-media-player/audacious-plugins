@@ -8,8 +8,6 @@
 #include <stddef.h>
 #include <inttypes.h>
 
-BEGIN_C_DECLS
-
 /** Types of stereo.
     The codes of stereo types used for generage sound. */
 typedef enum
@@ -43,7 +41,7 @@ typedef enum {
 typedef struct
 {
   int tone_a;           /**< R0, R1 */
-  int tone_b;		/**< R2, R3 */	
+  int tone_b;		/**< R2, R3 */
   int tone_c;		/**< R4, R5 */
   int noise;		/**< R6 */
   int R7_tone_a;	/**< R7 bit 0 */
@@ -79,7 +77,7 @@ ayemu_sndfmt_t;
 /*@{*/
 
 /** Data structure for sound chip emulation \internal
- * 
+ *
  */
 typedef struct
 {
@@ -88,7 +86,7 @@ typedef struct
   ayemu_chip_t type;		/**< general chip type (\b AYEMU_AY or \b AYEMU_YM) */
   int32_t ChipFreq;			/**< chip emulator frequency */
   int eq[6];			/**< volumes for channels.
-				   Array contains 6 elements: 
+				   Array contains 6 elements:
 				   A left, A right, B left, B right, C left and C right;
 				   range -100...100 */
   ayemu_regdata_t regs;		/**< parsed registers data */
@@ -126,7 +124,7 @@ ayemu_init(ayemu_ay_t *ay);
 EXTERN void
 ayemu_reset(ayemu_ay_t *ay);
 
-EXTERN int 
+EXTERN int
 ayemu_set_chip_type(ayemu_ay_t *ay, ayemu_chip_t chip, int *custom_table);
 
 EXTERN void
@@ -138,14 +136,12 @@ ayemu_set_stereo(ayemu_ay_t *ay, ayemu_stereo_t stereo, int *custom_eq);
 EXTERN int
 ayemu_set_sound_format (ayemu_ay_t *ay, int freq, int chans, int bits);
 
-EXTERN void 
+EXTERN void
 ayemu_set_regs (ayemu_ay_t *ay, unsigned char *regs);
 
 EXTERN void*
 ayemu_gen_sound (ayemu_ay_t *ay, void *buf, size_t bufsize);
 
 /*@}*/
-
-END_C_DECLS
 
 #endif

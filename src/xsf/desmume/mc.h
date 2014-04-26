@@ -21,10 +21,6 @@
 #ifndef __FW_H__
 #define __FW_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdio.h>
 #include "types.h"
 
@@ -51,9 +47,9 @@ typedef struct
         u32 addr;        /* current address for reading/writing */
         u8 addr_shift;   /* shift for address (since addresses are transfered by 3 bytes units) */
         u8 addr_size;    /* size of addr when writing/reading */
-	
+
 	BOOL write_enable;	/* is write enabled ? */
-	
+
         u8 *data;       /* memory data */
         u32 size;       /* memory size */
 	BOOL writeable_buffer;	/* is "data" writeable ? */
@@ -76,10 +72,6 @@ void mc_free(memory_chip_t *mc);    /* delete mc memory */
 void mc_reset_com(memory_chip_t *mc);       /* reset communication with mc */
 u8 fw_transfer(memory_chip_t *mc, u8 data); /* transfer to, then receive data from firmware */
 u8 bm_transfer(memory_chip_t *mc, u8 data); /* transfer to, then receive data from backup memory */
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /*__FW_H__*/
 

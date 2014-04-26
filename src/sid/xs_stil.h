@@ -3,10 +3,6 @@
 
 #include <sys/types.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Types
  */
 typedef struct {
@@ -35,7 +31,4 @@ void xs_stildb_index(xs_stildb_t *);
 void xs_stildb_free(xs_stildb_t *);
 stil_node_t *xs_stildb_get_node(xs_stildb_t *, char *);
 
-#ifdef __cplusplus
-}
-#endif
 #endif /* XS_STIL_H */

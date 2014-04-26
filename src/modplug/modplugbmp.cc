@@ -16,11 +16,9 @@
 #include <libmodplug/stdafx.h>
 #include <libmodplug/sndfile.h>
 
-extern "C" {
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
-}
 
 #include "archive/open.h"
 

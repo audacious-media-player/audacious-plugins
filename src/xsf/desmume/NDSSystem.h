@@ -31,11 +31,6 @@
 #include "mem.h"
 //#include "wifi.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
 extern volatile BOOL execute;
 extern BOOL click;
 
@@ -65,37 +60,37 @@ typedef struct
        u8       cardSize;
        u8       cardInfo[8];
        u8       flags;
-       
+
        u32      ARM9src;
        u32      ARM9exe;
        u32      ARM9cpy;
        u32      ARM9binSize;
-       
+
        u32      ARM7src;
        u32      ARM7exe;
        u32      ARM7cpy;
        u32      ARM7binSize;
-       
+
        u32      FNameTblOff;
        u32      FNameTblSize;
-       
+
        u32      FATOff;
        u32      FATSize;
-       
+
        u32     ARM9OverlayOff;
        u32     ARM9OverlaySize;
        u32     ARM7OverlayOff;
        u32     ARM7OverlaySize;
-       
+
        u32     unknown2a;
        u32     unknown2b;
-       
+
        u32     IconOff;
        u16     CRC16;
        u16     ROMtimeout;
        u32     ARM9unk;
        u32     ARM7unk;
-       
+
        u8      unknown3c[8];
        u32     ROMSize;
        u32     HeaderSize;
@@ -120,7 +115,7 @@ typedef struct
        u32 old;
        s32 diff;
        BOOL lignerendu;
-       
+
        u16 touchX;
        u16 touchY;
 } NDSSystem;
@@ -181,7 +176,7 @@ NDS_FillDefaultFirmwareConfigData( struct NDS_fw_config_data *fw_config);
 
 BOOL NDS_SetROM(u8 * rom, u32 mask);
 NDS_header * NDS_getROMHeader(void);
- 
+
 void NDS_setTouchPos(u16 x, u16 y);
 void NDS_releasTouch(void);
 
@@ -205,7 +200,7 @@ NDS_exec(s32 nb, BOOL force);
                  NDS_ARM9.wIRQ = TRUE;
             }
        }
-       
+
        static INLINE void NDS_ARM7HBlankInt(void)
        {
             if(T1ReadWord(MMU.ARM7_REG, 4) & 0x10)
@@ -214,7 +209,7 @@ NDS_exec(s32 nb, BOOL force);
                  NDS_ARM7.wIRQ = TRUE;
             }
        }
-       
+
        static INLINE void NDS_ARM9VBlankInt(void)
        {
             if(T1ReadWord(ARM9Mem.ARM9_REG, 4) & 0x8)
@@ -225,7 +220,7 @@ NDS_exec(s32 nb, BOOL force);
                       /*logcount++;*/
             }
        }
-       
+
        static INLINE void NDS_ARM7VBlankInt(void)
        {
             if(T1ReadWord(MMU.ARM7_REG, 4) & 0x8)
@@ -233,23 +228,19 @@ NDS_exec(s32 nb, BOOL force);
                  NDS_ARM7.wIRQ = TRUE;
                  //execute = FALSE;
        }
-       
+
        static INLINE void NDS_swapScreen(void)
        {
 	       u16 tmp = MainScreen.offset;
 	       MainScreen.offset = SubScreen.offset;
 	       SubScreen.offset = tmp;
        }
- 
- 
+
+
 
 void NDS_exec_frame(int cpu_clockdown_level_arm9, int cpu_clockdown_level_arm7);
 void NDS_exec_hframe(int cpu_clockdown_level_arm9, int cpu_clockdown_level_arm7);
 
-#ifdef __cplusplus
-}
 #endif
 
-#endif
 
- 	  	 

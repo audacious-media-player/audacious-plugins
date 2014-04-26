@@ -10,10 +10,6 @@
 #ifndef __VCEDIT_H
 #define __VCEDIT_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdio.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
@@ -54,10 +50,6 @@ extern int vcedit_open_callbacks(vcedit_state *state, void *in,
                                  vcedit_write_func write_func);
 extern int vcedit_write(vcedit_state *state, void *out);
 extern const char *vcedit_error(vcedit_state *state);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* __VCEDIT_H */
 

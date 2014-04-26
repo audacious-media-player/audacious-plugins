@@ -23,10 +23,6 @@
 #ifndef XMMS_SID_H
 #define XMMS_SID_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <libaudcore/core.h>
 
 /*
@@ -64,7 +60,4 @@ typedef struct {
 #define xs_verror(fmt, args) vfprintf(stderr, fmt, args)
 #define xs_error(...) fprintf(stderr, __VA_ARGS__)
 
-#ifdef __cplusplus
-}
-#endif
 #endif /* XMMS_SID_H */

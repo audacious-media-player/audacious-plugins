@@ -9,9 +9,7 @@
 
 #include "archive.h"
 
-extern "C" {
 #include <libaudcore/vfs.h>
-}
 
 class arch_Raw: public Archive
 {

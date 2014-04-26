@@ -61,9 +61,6 @@ xs_sidplayfp_t::xs_sidplayfp_t(void)
 }
 
 
-/* We need to 'export' all this pseudo-C++ crap */
-extern "C" {
-
 /* Check if we can play the given file
  */
 bool_t xs_sidplayfp_probe(VFSFile *f)
@@ -438,5 +435,3 @@ bool_t xs_sidplayfp_updateinfo(xs_status_t *myStatus)
 
     return TRUE;
 }
-
-}    /* extern "C" */

@@ -9,8 +9,6 @@
 
 static ModplugXMMS gModplugXMMS;
 
-extern "C" {
-
 void InitSettings (const ModplugSettings * settings)
 {
     gModplugXMMS.SetModProps (* settings);
@@ -32,5 +30,3 @@ Tuple* GetSongTuple(const char* aFilename, VFSFile *fd)
 {
     return gModplugXMMS.GetSongTuple(aFilename);
 }
-
-} /* extern "C" */

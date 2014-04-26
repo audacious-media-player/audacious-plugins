@@ -21,12 +21,6 @@
 
 #include <jack/jack.h>
 
-#ifdef __cplusplus
-extern "C" {
-#else
-#define bool long
-#endif
-
 #ifndef TRUE
 #define TRUE 1
 #endif
@@ -137,9 +131,5 @@ enum JACK_PORT_CONNECTION_MODE
 /* set the mode for port connections */
 /* defaults to CONNECT_ALL */
 void JACK_SetPortConnectionMode(enum JACK_PORT_CONNECTION_MODE mode);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* #ifndef JACK_OUT_H */

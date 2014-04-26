@@ -1,10 +1,6 @@
 #ifndef MODPLUG_SETTINGS_H
 #define MODPLUG_SETTINGS_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <libaudcore/core.h>
 
 typedef struct {
@@ -33,9 +29,5 @@ typedef struct {
     bool_t mGrabAmigaMOD;
     int mLoopCount;
 } ModplugSettings;
-
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
 
 #endif /* MODPLUG_SETTINGS_H */

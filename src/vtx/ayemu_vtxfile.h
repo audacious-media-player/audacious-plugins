@@ -15,8 +15,6 @@
 
 typedef char NTstring[AYEMU_VTX_NTSTRING_MAX+1];
 
-BEGIN_C_DECLS
-
 /** VTX file format header and status of open file
  * \internal
  *
@@ -87,7 +85,5 @@ EXTERN void ayemu_vtx_sprintname (const ayemu_vtx_t *vtx, char *buf, const int s
 EXTERN void ayemu_vtx_free (ayemu_vtx_t *vtx);
 
 /*@}*/
-
-END_C_DECLS
 
 #endif

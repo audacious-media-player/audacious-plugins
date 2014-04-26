@@ -30,10 +30,6 @@
 #include "ARM9.h"
 #include "mc.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern char szRomPath[512];
 extern char szRomBaseName[512];
 
@@ -42,35 +38,35 @@ extern char szRomBaseName[512];
 
 /* theses ones for reading in rom data */
 #define ROM_8(m, a)  (((u8*)(m))[(a)])
- 
+
 #define IPCFIFO  0
 #define MAIN_MEMORY_DISP_FIFO 2
- 
+
 typedef struct {
         //ARM7 mem
         u8 ARM7_BIOS[0x4000];
         u8 ARM7_ERAM[0x10000];
         u8 ARM7_REG[0x10000];
         u8 ARM7_WIRAM[0x10000];
-        
+
 	u8 vram_mode[9];
 	u8 vScreen;
 
         //Shared ram
         u8 SWIRAM[0x8000];
-        
+
         //Card rom & ram
         u8 * CART_ROM;
         u8 CART_RAM[0x10000];
 
 	//Unused ram
 	u8 UNUSED_RAM[4];
-        
+
         u8 * * MMU_MEM[2];
         u32 * MMU_MASK[2];
-        
+
         u8 ARM9_RW_MODE;
-        
+
         FIFO fifos[16];
 
         u32 * MMU_WAIT16[2];
@@ -78,27 +74,27 @@ typedef struct {
 
         u32 DTCMRegion;
         u32 ITCMRegion;
-        
+
         u16 timer[2][4];
         s32 timerMODE[2][4];
         u32 timerON[2][4];
         u32 timerRUN[2][4];
         u16 timerReload[2][4];
-        
+
         u32 reg_IME[2];
         u32 reg_IE[2];
         u32 reg_IF[2];
-        
+
         u32 DMAStartTime[2][4];
         s32 DMACycle[2][4];
         u32 DMACrt[2][4];
         BOOL DMAing[2][4];
-		  
+
         memory_chip_t fw;
         memory_chip_t bupmem;
-		  
+
         nds_dscard dscard[2];
-		  
+
 } MMU_struct;
 
 extern MMU_struct MMU;
@@ -171,7 +167,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val);
 	#define MMU_write16_acl MMU_write16
 	#define MMU_write32_acl MMU_write32
 #endif
- 
+
 void FASTCALL MMU_doDMA(u32 proc, u32 num);
 
 
@@ -180,11 +176,6 @@ void FASTCALL MMU_doDMA(u32 proc, u32 num);
  */
 extern struct armcpu_memory_iface arm9_base_memory_iface;
 extern struct armcpu_memory_iface arm7_base_memory_iface;
-extern struct armcpu_memory_iface arm9_direct_memory_iface;	
-
-
-#ifdef __cplusplus
-}
-#endif
+extern struct armcpu_memory_iface arm9_direct_memory_iface;
 
 #endif

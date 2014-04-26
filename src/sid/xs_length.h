@@ -5,10 +5,6 @@
 
 #include "xs_md5.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Types
  */
 typedef struct _sldb_node_t {
@@ -33,7 +29,4 @@ void           xs_sldb_index(xs_sldb_t *);
 void            xs_sldb_free(xs_sldb_t *);
 sldb_node_t *   xs_sldb_get(xs_sldb_t *, const char *);
 
-#ifdef __cplusplus
-}
-#endif
 #endif /* XS_LENGTH_H */

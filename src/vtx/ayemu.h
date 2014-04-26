@@ -16,19 +16,11 @@
   License along with this library; if not, write to the Free
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-  Alexander Sashnov 
+  Alexander Sashnov
   sashnov@ngs.ru
 */
 #ifndef _AYEMU_H
 #define _AYEMU_H
-
-#ifdef __cplusplus
-#  define BEGIN_C_DECLS extern "C" {
-#  define END_C_DECLS   }
-#else /* !__cplusplus */
-#  define BEGIN_C_DECLS
-#  define END_C_DECLS
-#endif /* __cplusplus */
 
 #define EXTERN extern
 

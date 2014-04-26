@@ -26,10 +26,6 @@
 
 #include "types.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef struct
 {
        u32 data[0x8000];
@@ -43,9 +39,5 @@ typedef struct
 void FIFOInit(FIFO * fifo);
 void FIFOAdd(FIFO * fifo, u32 v);
 u32 FIFOValue(FIFO * fifo);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

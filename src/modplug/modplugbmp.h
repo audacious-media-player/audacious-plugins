@@ -9,9 +9,7 @@
 
 #include <string>
 
-extern "C" {
 #include <libaudcore/plugin.h>
-}
 
 #include "settings.h"
 

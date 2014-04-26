@@ -5,10 +5,6 @@
 #include "xs_stil.h"
 #include "xs_length.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 int xs_stil_init(void);
 void xs_stil_close(void);
 stil_node_t *xs_stil_get(char *filename);
@@ -23,7 +19,4 @@ xs_tuneinfo_t *xs_tuneinfo_new(const char *pcFilename, int nsubTunes,
  int dataFileLen, const char *sidFormat, int sidModel);
 void xs_tuneinfo_free(xs_tuneinfo_t *tune);
 
-#ifdef __cplusplus
-}
-#endif
 #endif /* XS_SLSUP_H */

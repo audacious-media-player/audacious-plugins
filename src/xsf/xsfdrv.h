@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef int (PASCAL * LPFNGETLIB_XSFDRV)(void *lpWork, LPSTR lpszFilename, void **ppBuffer, DWORD *pdwSize);
 typedef struct
 {
@@ -14,8 +10,3 @@ typedef struct
 
 typedef IXSFDRV * (PASCAL * LPFNXSFDRVSETUP)(LPFNGETLIB_XSFDRV lpfn, void *lpWork);
 /* IXSFDRV * PASCAL XSFDRVSetup(LPFNGETLIB_XSFDRV lpfn, void *lpWork); */
-
-#ifdef __cplusplus
-}
-#endif
-
