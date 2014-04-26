@@ -139,7 +139,7 @@ static void layout_disable (GtkWidget * widget)
     GList * node = g_list_find_custom (items, widget, (GCompareFunc) item_by_widget);
     g_return_if_fail (node);
 
-    Item * item = node->data;
+    Item * item = (Item *) node->data;
     g_return_if_fail (item->plugin);
 
     aud_plugin_enable (item->plugin, FALSE);
@@ -280,7 +280,7 @@ static GtkWidget * dock_get_parent (int dock)
     for (int scan = dock; scan --; )
     {
         if (docks[scan])
-            return g_object_get_data ((GObject *) docks[scan], "next");
+            return (GtkWidget *) g_object_get_data ((GObject *) docks[scan], "next");
     }
 
     return layout;
@@ -288,12 +288,12 @@ static GtkWidget * dock_get_parent (int dock)
 
 static Item * item_get_prev (Item * item)
 {
-    GList * this = g_list_find (items, item);
-    g_return_val_if_fail (this, NULL);
+    GList * node = g_list_find (items, item);
+    g_return_val_if_fail (node, NULL);
 
-    for (GList * node = this->prev; node; node = node->prev)
+    while ((node = node->prev))
     {
-        Item * test = node->data;
+        Item * test = (Item *) node->data;
         if (test->widget && test->dock == item->dock)
             return test;
     }
@@ -303,12 +303,12 @@ static Item * item_get_prev (Item * item)
 
 static Item * item_get_next (Item * item)
 {
-    GList * this = g_list_find (items, item);
-    g_return_val_if_fail (this, NULL);
+    GList * node = g_list_find (items, item);
+    g_return_val_if_fail (node, NULL);
 
-    for (GList * node = this->next; node; node = node->next)
+    while ((node = node->next))
     {
-        Item * test = node->data;
+        Item * test = (Item *) node->data;
         if (test->widget && test->dock == item->dock)
             return test;
     }
@@ -319,8 +319,11 @@ static Item * item_get_next (Item * item)
 static GtkWidget * item_get_parent (Item * item)
 {
     Item * prev = item_get_prev (item);
-    return prev ? g_object_get_data ((GObject *) prev->paned, "next") :
-     g_object_get_data ((GObject *) docks[item->dock], "mine");
+
+    if (prev)
+        return (GtkWidget *) g_object_get_data ((GObject *) prev->paned, "next");
+    else
+        return (GtkWidget *) g_object_get_data ((GObject *) docks[item->dock], "mine");
 }
 
 static void item_add (Item * item)
@@ -387,8 +390,8 @@ static void item_add (Item * item)
             NULL_ON_DESTROY (docks[item->dock]);
         }
 
-        GtkWidget * mine = g_object_get_data ((GObject *) paned, "mine");
-        GtkWidget * next = g_object_get_data ((GObject *) paned, "next");
+        GtkWidget * mine = (GtkWidget *) g_object_get_data ((GObject *) paned, "mine");
+        GtkWidget * next = (GtkWidget *) g_object_get_data ((GObject *) paned, "next");
         GtkWidget * child = gtk_bin_get_child ((GtkBin *) parent);
         g_return_if_fail (mine && next && child);
 
@@ -442,8 +445,8 @@ static void item_remove (Item * item)
             paned = docks[item->dock];
         }
 
-        GtkWidget * mine = g_object_get_data ((GObject *) paned, "mine");
-        GtkWidget * next = g_object_get_data ((GObject *) paned, "next");
+        GtkWidget * mine = (GtkWidget *) g_object_get_data ((GObject *) paned, "mine");
+        GtkWidget * next = (GtkWidget *) g_object_get_data ((GObject *) paned, "next");
         GtkWidget * child = gtk_bin_get_child ((GtkBin *) (swap ? mine : next));
         g_return_if_fail (mine && next && child);
 
@@ -476,7 +479,7 @@ void layout_add (PluginHandle * plugin, GtkWidget * widget)
     g_return_if_fail (name);
 
     GList * node = g_list_find_custom (items, name, (GCompareFunc) item_by_name);
-    Item * item = node ? node->data : NULL;
+    Item * item = node ? (Item *) node->data : NULL;
 
     if (item)
     {
@@ -504,7 +507,7 @@ static void layout_move (GtkWidget * widget, int dock)
 
     GList * node = g_list_find_custom (items, widget, (GCompareFunc) item_by_widget);
     g_return_if_fail (node);
-    Item * item = node->data;
+    Item * item = (Item *) node->data;
 
     g_return_if_fail (item->vbox);
     g_object_ref (item->vbox);
@@ -530,7 +533,7 @@ void layout_remove (PluginHandle * plugin)
     if (menu)
         gtk_widget_destroy (menu);
 
-    item_remove (node->data);
+    item_remove ((Item *) node->data);
 }
 
 void layout_save (void)
@@ -539,7 +542,7 @@ void layout_save (void)
 
     for (GList * node = items; node; node = node->next)
     {
-        Item * item = node->data;
+        Item * item = (Item *) node->data;
         g_return_if_fail (item && item->name);
 
         char key[16], value[64];
@@ -584,7 +587,7 @@ void layout_cleanup (void)
 {
     for (GList * node = items; node; node = node->next)
     {
-        Item * item = node->data;
+        Item * item = (Item *) node->data;
         g_return_if_fail (! item->widget && ! item->vbox && ! item->window);
         str_unref (item->name);
         g_slice_free (Item, item);

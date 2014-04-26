@@ -34,7 +34,7 @@ GtkWidget * playlist_get_treeview (int playlist)
     if (!page)
         return NULL;
 
-    return g_object_get_data ((GObject *) page, "treeview");
+    return (GtkWidget *) g_object_get_data ((GObject *) page, "treeview");
 }
 
 int playlist_count_selected_in_range (int list, int top, int length)

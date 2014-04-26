@@ -135,8 +135,8 @@ static void apply_column_widths (GtkWidget * treeview)
 
 static void tab_title_reset(GtkWidget *ebox)
 {
-    GtkWidget *label = g_object_get_data(G_OBJECT(ebox), "label");
-    GtkWidget *entry = g_object_get_data(G_OBJECT(ebox), "entry");
+    GtkWidget *label = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "label");
+    GtkWidget *entry = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "entry");
     gtk_widget_hide(entry);
     gtk_widget_show(label);
 }
@@ -144,7 +144,7 @@ static void tab_title_reset(GtkWidget *ebox)
 static void tab_title_save(GtkEntry *entry, void * ebox)
 {
     int id = GPOINTER_TO_INT (g_object_get_data ((GObject *) ebox, "playlist-id"));
-    GtkWidget *label = g_object_get_data(G_OBJECT(ebox), "label");
+    GtkWidget *label = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "label");
 
     aud_playlist_set_title (aud_playlist_by_unique_id (id), gtk_entry_get_text (entry));
     gtk_widget_hide(GTK_WIDGET(entry));
@@ -206,7 +206,7 @@ static void tab_changed (GtkNotebook * notebook, GtkWidget * page, int
 
 static void tab_reordered(GtkNotebook *notebook, GtkWidget *child, unsigned page_num, void * user_data)
 {
-    GtkWidget * widget = g_object_get_data ((GObject *) child, "treeview");
+    GtkWidget * widget = (GtkWidget *) g_object_get_data ((GObject *) child, "treeview");
     g_return_if_fail (widget);
     aud_playlist_reorder (ui_playlist_widget_get_playlist (widget), page_num, 1);
 }
@@ -252,8 +252,8 @@ void start_rename_playlist (int playlist)
     GtkWidget * page = gtk_notebook_get_nth_page (UI_PLAYLIST_NOTEBOOK, playlist);
     GtkWidget * ebox = gtk_notebook_get_tab_label (UI_PLAYLIST_NOTEBOOK, page);
 
-    GtkWidget *label = g_object_get_data(G_OBJECT(ebox), "label");
-    GtkWidget *entry = g_object_get_data(G_OBJECT(ebox), "entry");
+    GtkWidget *label = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "label");
+    GtkWidget *entry = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "entry");
     gtk_widget_hide(label);
 
     char * title = aud_playlist_get_title (playlist);
@@ -393,7 +393,7 @@ static void add_remove_pages (void)
     for (int i = 0; i < pages; )
     {
         GtkWidget * page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, i);
-        GtkWidget * tree = g_object_get_data ((GObject *) page, "treeview");
+        GtkWidget * tree = (GtkWidget *) g_object_get_data ((GObject *) page, "treeview");
         int tree_id = GPOINTER_TO_INT (g_object_get_data ((GObject *) tree, "playlist-id"));
 
         /* do we have an orphaned treeview? */
@@ -420,7 +420,7 @@ static void add_remove_pages (void)
         for (int j = i + 1; j < pages; j ++)
         {
             page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, j);
-            tree = g_object_get_data ((GObject *) page, "treeview");
+            tree = (GtkWidget *) g_object_get_data ((GObject *) page, "treeview");
             tree_id = GPOINTER_TO_INT (g_object_get_data ((GObject *) tree, "playlist-id"));
 
             /* found it? move it to the right place */
@@ -510,9 +510,9 @@ void ui_playlist_notebook_activate (void * data, void * user)
 
 void ui_playlist_notebook_set_playing (void * data, void * user)
 {
-    int new = aud_playlist_get_unique_id (aud_playlist_get_playing ());
+    int id = aud_playlist_get_unique_id (aud_playlist_get_playing ());
 
-    if (highlighted == new)
+    if (highlighted == id)
         return;
 
     int pages = gtk_notebook_get_n_pages ((GtkNotebook *) notebook);
@@ -520,14 +520,14 @@ void ui_playlist_notebook_set_playing (void * data, void * user)
     for (int i = 0; i < pages; i ++)
     {
         GtkWidget * page = gtk_notebook_get_nth_page ((GtkNotebook *) notebook, i);
-        GtkWidget * tree = g_object_get_data ((GObject *) page, "treeview");
+        GtkWidget * tree = (GtkWidget *) g_object_get_data ((GObject *) page, "treeview");
         int tree_id = GPOINTER_TO_INT (g_object_get_data ((GObject *) tree, "playlist-id"));
 
-        if (tree_id == highlighted || tree_id == new)
+        if (tree_id == highlighted || tree_id == id)
             set_tab_label (i, get_tab_label (i));
     }
 
-    highlighted = new;
+    highlighted = id;
 }
 
 static void destroy_cb (void)

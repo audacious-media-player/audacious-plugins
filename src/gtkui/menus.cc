@@ -38,6 +38,9 @@
 #define CTRL GDK_CONTROL_MASK
 #define ALT GDK_MOD1_MASK
 
+#define SHIFT_CTRL (GdkModifierType) (SHIFT | CTRL)
+#define NONE       0, (GdkModifierType) 0
+
 int menu_tab_playlist_id = -1; /* should really be stored in the menu somehow */
 
 static void open_files (void) {audgui_run_filebrowser (TRUE); }
@@ -126,136 +129,140 @@ static void volume_down (void)
 }
 
 static const AudguiMenuItem file_items[] = {
- {N_("_Open Files ..."), "document-open", 'o', CTRL, .func = open_files},
- {N_("Open _URL ..."), "folder-remote", 'l', CTRL, .func = open_url},
- {N_("_Add Files ..."), "list-add", 'o', SHIFT | CTRL, .func = add_files},
- {N_("Add U_RL ..."), "folder-remote", 'l', SHIFT | CTRL, .func = add_url},
- {.sep = TRUE},
- {N_("Search _Library"), "edit-find", 'y', CTRL, .func = activate_search_tool},
- {.sep = TRUE},
- {N_("A_bout ..."), "help-about", .func = audgui_show_about_window},
- {N_("_Settings ..."), "preferences-system", .func = audgui_show_prefs_window},
- {N_("_Quit"), "application-exit", 'q', CTRL, .func = aud_quit}};
+    MenuCommand (N_("_Open Files ..."), "document-open", 'o', CTRL, open_files),
+    MenuCommand (N_("Open _URL ..."), "folder-remote", 'l', CTRL, open_url),
+    MenuCommand (N_("_Add Files ..."), "list-add", 'o', SHIFT_CTRL, add_files),
+    MenuCommand (N_("Add U_RL ..."), "folder-remote", 'l', SHIFT_CTRL, add_url),
+    MenuSep (),
+    MenuCommand (N_("Search _Library"), "edit-find", 'y', CTRL, activate_search_tool),
+    MenuSep (),
+    MenuCommand (N_("A_bout ..."), "help-about", NONE, audgui_show_about_window),
+    MenuCommand (N_("_Settings ..."), "preferences-system", NONE, audgui_show_prefs_window),
+    MenuCommand (N_("_Quit"), "application-exit", 'q', CTRL, aud_quit)
+};
 
 static const AudguiMenuItem playback_items[] = {
- {N_("_Play"), "media-playback-start", GDK_KEY_Return, CTRL, .func = aud_drct_play},
- {N_("Paus_e"), "media-playback-pause", ',', CTRL, .func = aud_drct_pause},
- {N_("_Stop"), "media-playback-stop", '.', CTRL, .func = aud_drct_stop},
- {N_("Pre_vious"), "media-skip-backward", GDK_KEY_Up, ALT, .func = aud_drct_pl_prev},
- {N_("_Next"), "media-skip-forward", GDK_KEY_Down, ALT, .func = aud_drct_pl_next},
- {.sep = TRUE},
- {N_("_Repeat"), NULL, 'r', CTRL, .cname = "repeat", .hook = "set repeat"},
- {N_("S_huffle"), NULL, 's', CTRL, .cname = "shuffle", .hook = "set shuffle"},
- {N_("N_o Playlist Advance"), NULL, 'n', CTRL,
-  .cname = "no_playlist_advance", .hook = "set no_playlist_advance"},
- {N_("Stop A_fter This Song"), NULL, 'm', CTRL,
-  .cname = "stop_after_current_song", .hook = "set stop_after_current_song"},
- {.sep = TRUE},
- {N_("Song _Info ..."), "dialog-information", 'i', CTRL, .func = audgui_infowin_show_current},
- {N_("Jump to _Time ..."), "go-jump", 'k', CTRL, .func = audgui_jump_to_time},
- {N_("_Jump to Song ..."), "go-jump", 'j', CTRL, .func = audgui_jump_to_track},
- {.sep = TRUE},
- {N_("Set Repeat Point _A"), NULL, '1', CTRL, .func = set_ab_repeat_a},
- {N_("Set Repeat Point _B"), NULL, '2', CTRL, .func = set_ab_repeat_b},
- {N_("_Clear Repeat Points"), NULL, '3', CTRL, .func = clear_ab_repeat}};
+    MenuCommand (N_("_Play"), "media-playback-start", GDK_KEY_Return, CTRL, aud_drct_play),
+    MenuCommand (N_("Paus_e"), "media-playback-pause", ',', CTRL, aud_drct_pause),
+    MenuCommand (N_("_Stop"), "media-playback-stop", '.', CTRL, aud_drct_stop),
+    MenuCommand (N_("Pre_vious"), "media-skip-backward", GDK_KEY_Up, ALT, aud_drct_pl_prev),
+    MenuCommand (N_("_Next"), "media-skip-forward", GDK_KEY_Down, ALT, aud_drct_pl_next),
+    MenuSep (),
+    MenuToggle (N_("_Repeat"), NULL, 'r', CTRL, NULL, "repeat", NULL, "set repeat"),
+    MenuToggle (N_("S_huffle"), NULL, 's', CTRL, NULL, "shuffle", NULL, "set shuffle"),
+    MenuToggle (N_("N_o Playlist Advance"), NULL, 'n', CTRL, NULL, "no_playlist_advance", NULL, "set no_playlist_advance"),
+    MenuToggle (N_("Stop A_fter This Song"), NULL, 'm', CTRL, NULL, "stop_after_current_song", NULL, "set stop_after_current_song"),
+    MenuSep (),
+    MenuCommand (N_("Song _Info ..."), "dialog-information", 'i', CTRL, audgui_infowin_show_current),
+    MenuCommand (N_("Jump to _Time ..."), "go-jump", 'k', CTRL, audgui_jump_to_time),
+    MenuCommand (N_("_Jump to Song ..."), "go-jump", 'j', CTRL, audgui_jump_to_track),
+    MenuSep (),
+    MenuCommand (N_("Set Repeat Point _A"), NULL, '1', CTRL, set_ab_repeat_a),
+    MenuCommand (N_("Set Repeat Point _B"), NULL, '2', CTRL, set_ab_repeat_b),
+    MenuCommand (N_("_Clear Repeat Points"), NULL, '3', CTRL, clear_ab_repeat)
+};
 
 static const AudguiMenuItem dupe_items[] = {
- {N_("By _Title"), .func = pl_remove_dupes_by_title},
- {N_("By _Filename"), .func = pl_remove_dupes_by_filename},
- {N_("By File _Path"), .func = pl_remove_dupes_by_path}};
+    MenuCommand (N_("By _Title"), NULL, NONE, pl_remove_dupes_by_title),
+    MenuCommand (N_("By _Filename"), NULL, NONE, pl_remove_dupes_by_filename),
+    MenuCommand (N_("By File _Path"), NULL, NONE, pl_remove_dupes_by_path)
+};
 
 static const AudguiMenuItem sort_items[] = {
- {N_("By Track _Number"), .func = pl_sort_track},
- {N_("By _Title"), .func = pl_sort_title},
- {N_("By _Artist"), .func = pl_sort_artist},
- {N_("By Al_bum"), .func = pl_sort_album},
- {N_("By Release _Date"), .func = pl_sort_date},
- {N_("By _Length"), .func = pl_sort_length},
- {N_("By _File Path"), .func = pl_sort_path},
- {N_("By _Custom Title"), .func = pl_sort_custom},
- {.sep = TRUE},
- {N_("R_everse Order"), "view-sort-descending", .func = pl_reverse},
- {N_("_Random Order"), .func = pl_random}};
+    MenuCommand (N_("By Track _Number"), NULL, NONE, pl_sort_track),
+    MenuCommand (N_("By _Title"), NULL, NONE, pl_sort_title),
+    MenuCommand (N_("By _Artist"), NULL, NONE, pl_sort_artist),
+    MenuCommand (N_("By Al_bum"), NULL, NONE, pl_sort_album),
+    MenuCommand (N_("By Release _Date"), NULL, NONE, pl_sort_date),
+    MenuCommand (N_("By _Length"), NULL, NONE, pl_sort_length),
+    MenuCommand (N_("By _File Path"), NULL, NONE, pl_sort_path),
+    MenuCommand (N_("By _Custom Title"), NULL, NONE, pl_sort_custom),
+    MenuSep (),
+    MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, pl_reverse),
+    MenuCommand (N_("_Random Order"), NULL, NONE, pl_random)
+};
 
  static const AudguiMenuItem sort_selected_items[] = {
- {N_("By Track _Number"), .func = pl_sort_selected_track},
- {N_("By _Title"), .func = pl_sort_selected_title},
- {N_("By _Artist"), .func = pl_sort_selected_artist},
- {N_("By Al_bum"), .func = pl_sort_selected_album},
- {N_("By Release _Date"), .func = pl_sort_selected_date},
- {N_("By _Length"), .func = pl_sort_selected_length},
- {N_("By _File Path"), .func = pl_sort_selected_path},
- {N_("By _Custom Title"), .func = pl_sort_selected_custom},
- {.sep = TRUE},
- {N_("R_everse Order"), "view-sort-descending", .func = pl_reverse_selected},
- {N_("_Random Order"), .func = pl_random_selected}};
+    MenuCommand (N_("By Track _Number"), NULL, NONE, pl_sort_selected_track),
+    MenuCommand (N_("By _Title"), NULL, NONE, pl_sort_selected_title),
+    MenuCommand (N_("By _Artist"), NULL, NONE, pl_sort_selected_artist),
+    MenuCommand (N_("By Al_bum"), NULL, NONE, pl_sort_selected_album),
+    MenuCommand (N_("By Release _Date"), NULL, NONE, pl_sort_selected_date),
+    MenuCommand (N_("By _Length"), NULL, NONE, pl_sort_selected_length),
+    MenuCommand (N_("By _File Path"), NULL, NONE, pl_sort_selected_path),
+    MenuCommand (N_("By _Custom Title"), NULL, NONE, pl_sort_selected_custom),
+    MenuSep (),
+    MenuCommand (N_("R_everse Order"), "view-sort-descending", NONE, pl_reverse_selected),
+    MenuCommand (N_("_Random Order"), NULL, NONE, pl_random_selected)
+};
 
 static const AudguiMenuItem playlist_items[] = {
- {N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT, .func = pl_play},
- {N_("_Refresh"), "view-refresh", GDK_KEY_F5, .func = pl_refresh},
- {.sep = TRUE},
- {N_("_Sort"), "view-sort-ascending", .items = sort_items, ARRAY_LEN (sort_items)},
- {N_("Sort Se_lected"), "view-sort-ascending", .items = sort_selected_items, ARRAY_LEN (sort_selected_items)},
- {N_("Remove _Duplicates"), "edit-copy", .items = dupe_items, ARRAY_LEN (dupe_items)},
- {N_("Remove _Unavailable Files"), "dialog-warning", .func = pl_remove_failed},
- {.sep = TRUE},
- {N_("_New"), "document-new", 't', CTRL, .func = pl_new},
- {N_("Ren_ame ..."), "insert-text", GDK_KEY_F2, .func = pl_rename},
- {N_("Remo_ve"), "edit-delete", 'w', CTRL, .func = pl_close},
- {.sep = TRUE},
- {N_("_Import ..."), "document-open", .func = audgui_import_playlist},
- {N_("_Export ..."), "document-save", .func = audgui_export_playlist},
- {.sep = TRUE},
- {N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, .func = audgui_playlist_manager},
- {N_("_Queue Manager ..."), NULL, 'u', CTRL, .func = audgui_queue_manager_show}};
+    MenuCommand (N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT, pl_play),
+    MenuCommand (N_("_Refresh"), "view-refresh", GDK_KEY_F5, (GdkModifierType) 0, pl_refresh),
+    MenuSep (),
+    MenuSub (N_("_Sort"), "view-sort-ascending", sort_items, ARRAY_LEN (sort_items)),
+    MenuSub (N_("Sort Se_lected"), "view-sort-ascending", sort_selected_items, ARRAY_LEN (sort_selected_items)),
+    MenuSub (N_("Remove _Duplicates"), "edit-copy", dupe_items, ARRAY_LEN (dupe_items)),
+    MenuCommand (N_("Remove _Unavailable Files"), "dialog-warning", NONE, pl_remove_failed),
+    MenuSep (),
+    MenuCommand (N_("_New"), "document-new", 't', CTRL, pl_new),
+    MenuCommand (N_("Ren_ame ..."), "insert-text", GDK_KEY_F2, (GdkModifierType) 0, pl_rename),
+    MenuCommand (N_("Remo_ve"), "edit-delete", 'w', CTRL, pl_close),
+    MenuSep (),
+    MenuCommand (N_("_Import ..."), "document-open", NONE, audgui_import_playlist),
+    MenuCommand (N_("_Export ..."), "document-save", NONE, audgui_export_playlist),
+    MenuSep (),
+    MenuCommand (N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, audgui_playlist_manager),
+    MenuCommand (N_("_Queue Manager ..."), NULL, 'u', CTRL, audgui_queue_manager_show)
+};
 
 static const AudguiMenuItem output_items[] = {
- {N_("Volume _Up"), "audio-volume-high", '+', CTRL, .func = volume_up},
- {N_("Volume _Down"), "audio-volume-low", '-', CTRL, .func = volume_down},
- {.sep = TRUE},
- {N_("_Equalizer"), "multimedia-volume-control", 'e', CTRL, .func = audgui_show_equalizer_window},
- {.sep = TRUE},
- {N_("E_ffects ..."), .func = configure_effects}};
+    MenuCommand (N_("Volume _Up"), "audio-volume-high", '+', CTRL, volume_up),
+    MenuCommand (N_("Volume _Down"), "audio-volume-low", '-', CTRL, volume_down),
+    MenuSep (),
+    MenuCommand (N_("_Equalizer"), "multimedia-volume-control", 'e', CTRL, audgui_show_equalizer_window),
+    MenuSep (),
+    MenuCommand (N_("E_ffects ..."), NULL, NONE, configure_effects)
+};
 
 static const AudguiMenuItem view_items[] = {
- {N_("Show _Menu Bar"), NULL, 'm', SHIFT | CTRL,
-  .csect = "gtkui", "menu_visible", .func = show_hide_menu},
- {N_("Show I_nfo Bar"), NULL, 'i', SHIFT | CTRL,
-  .csect = "gtkui", "infoarea_visible", .func = show_hide_infoarea},
- {N_("Show Info Bar Vis_ualization"),
-  .csect = "gtkui", "infoarea_show_vis", .func = show_hide_infoarea_vis},
- {N_("Show _Status Bar"), NULL, 's', SHIFT | CTRL,
-  .csect = "gtkui", "statusbar_visible", .func = show_hide_statusbar},
- {.sep = TRUE},
- {N_("Show _Remaining Time"), NULL, 'r', SHIFT | CTRL,
-  .csect = "gtkui", "show_remaining_time"},
- {.sep = TRUE},
- {N_("_Visualizations ..."), .func = configure_visualizations}};
+    MenuToggle (N_("Show _Menu Bar"), NULL, 'm', SHIFT_CTRL, "gtkui", "menu_visible", show_hide_menu),
+    MenuToggle (N_("Show I_nfo Bar"), NULL, 'i', SHIFT_CTRL, "gtkui", "infoarea_visible", show_hide_infoarea),
+    MenuToggle (N_("Show Info Bar Vis_ualization"), NULL, NONE, "gtkui", "infoarea_show_vis", show_hide_infoarea_vis),
+    MenuToggle (N_("Show _Status Bar"), NULL, 's', SHIFT_CTRL, "gtkui", "statusbar_visible", show_hide_statusbar),
+    MenuSep (),
+    MenuToggle (N_("Show _Remaining Time"), NULL, 'r', SHIFT_CTRL, "gtkui", "show_remaining_time"),
+    MenuSep (),
+    MenuCommand (N_("_Visualizations ..."), NULL, NONE, configure_visualizations)
+};
 
 static const AudguiMenuItem main_items[] = {
- {N_("_File"), .items = file_items, ARRAY_LEN (file_items)},
- {N_("_Playback"), .items = playback_items, ARRAY_LEN (playback_items)},
- {N_("P_laylist"), .items = playlist_items, ARRAY_LEN (playlist_items)},
- {N_("_Services"), .get_sub = get_services_main},
- {N_("_Output"), .items = output_items, ARRAY_LEN (output_items)},
- {N_("_View"), .items = view_items, ARRAY_LEN (view_items)}};
+    MenuSub (N_("_File"), NULL, file_items, ARRAY_LEN (file_items)),
+    MenuSub (N_("_Playback"), NULL, playback_items, ARRAY_LEN (playback_items)),
+    MenuSub (N_("P_laylist"), NULL, playlist_items, ARRAY_LEN (playlist_items)),
+    MenuSub (N_("_Services"), NULL, get_services_main),
+    MenuSub (N_("_Output"), NULL, output_items, ARRAY_LEN (output_items)),
+    MenuSub (N_("_View"), NULL, view_items, ARRAY_LEN (view_items))
+};
 
 static const AudguiMenuItem rclick_items[] = {
- {N_("Song _Info ..."), "dialog-information", 'i', ALT, .func = playlist_song_info},
- {N_("_Queue/Unqueue"), NULL, 'q', ALT, .func = playlist_queue_toggle},
- {N_("_Refresh"), "view-refresh", GDK_KEY_F6, .func = pl_refresh_sel},
- {.sep = TRUE},
- {N_("Cu_t"), "edit-cut", .func = playlist_cut},
- {N_("_Copy"), "edit-copy", .func = playlist_copy},
- {N_("_Paste"), "edit-paste", .func = playlist_paste},
- {N_("Select _All"), "edit-select-all", .func = pl_select_all},
- {.sep = TRUE},
- {N_("_Services"), .get_sub = get_services_pl}};
+    MenuCommand (N_("Song _Info ..."), "dialog-information", 'i', ALT, playlist_song_info),
+    MenuCommand (N_("_Queue/Unqueue"), NULL, 'q', ALT, playlist_queue_toggle),
+    MenuCommand (N_("_Refresh"), "view-refresh", GDK_KEY_F6, (GdkModifierType) 0, pl_refresh_sel),
+    MenuSep (),
+    MenuCommand (N_("Cu_t"), "edit-cut", NONE, playlist_cut),
+    MenuCommand (N_("_Copy"), "edit-copy", NONE, playlist_copy),
+    MenuCommand (N_("_Paste"), "edit-paste", NONE, playlist_paste),
+    MenuCommand (N_("Select _All"), "edit-select-all", NONE, pl_select_all),
+    MenuSep (),
+    MenuSub (N_("_Services"), NULL, get_services_pl)
+};
 
 static const AudguiMenuItem tab_items[] = {
- {N_("_Play"), "media-playback-start", .func = pl_tab_play},
- {N_("_Rename ..."), "insert-text", .func = pl_tab_rename},
- {N_("Remo_ve"), "edit-delete", .func = pl_tab_close}};
+    MenuCommand (N_("_Play"), "media-playback-start", NONE, pl_tab_play),
+    MenuCommand (N_("_Rename ..."), "insert-text", NONE, pl_tab_rename),
+    MenuCommand (N_("Remo_ve"), "edit-delete", NONE, pl_tab_close)
+};
 
 
 GtkWidget * make_menu_bar (GtkAccelGroup * accel)

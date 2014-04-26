@@ -91,7 +91,7 @@ static void set_length (GValue * value, int list, int row)
 
 static void get_value (void * user, int row, int column, GValue * value)
 {
-    PlaylistWidgetData * data = user;
+    PlaylistWidgetData * data = (PlaylistWidgetData *) user;
     g_return_if_fail (column >= 0 && column < pw_num_cols);
     g_return_if_fail (row >= 0 && row < aud_playlist_entry_count (data->list));
 
@@ -144,11 +144,13 @@ static void get_value (void * user, int row, int column, GValue * value)
     case PW_COL_PATH:
         set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
         break;
-    case PW_COL_CUSTOM:;
+    case PW_COL_CUSTOM:
+    {
         char * custom = aud_playlist_entry_get_title (data->list, row, TRUE);
         g_value_set_string (value, custom);
         str_unref (custom);
         break;
+    }
     case PW_COL_BITRATE:
         set_int_from_tuple (value, tuple, FIELD_BITRATE);
         break;
@@ -275,24 +277,25 @@ static void get_data (void * user, void * * data, int * length)
 
 static void receive_data (void * user, int row, const void * data, int length)
 {
-    SNCOPY (text, data, length);
+    SNCOPY (text, (const char *) data, length);
     audgui_urilist_insert (((PlaylistWidgetData *) user)->list, row, text);
 }
 
 static const AudguiListCallbacks callbacks = {
- .get_value = get_value,
- .get_selected = get_selected,
- .set_selected = set_selected,
- .select_all = select_all,
- .focus_change = focus_change,
- .activate_row = activate_row,
- .right_click = right_click,
- .shift_rows = shift_rows,
- .mouse_motion = mouse_motion,
- .mouse_leave = mouse_leave,
- .data_type = "text/uri-list",
- .get_data = get_data,
- .receive_data = receive_data};
+    get_value,
+    get_selected,
+    set_selected,
+    select_all,
+    activate_row,
+    right_click,
+    shift_rows,
+    "text/uri-list",
+    get_data,
+    receive_data,
+    mouse_motion,
+    mouse_leave,
+    focus_change
+};
 
 static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
  GtkTreeIter * iter, void * user)
@@ -321,7 +324,7 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
 
             for (int j = 0; j < n_keys;)
             {
-                if (strstr_nocase_utf8 (s[i], index_get (keys, j)))
+                if (strstr_nocase_utf8 (s[i], (const char *) index_get (keys, j)))
                 {
                     index_delete_full (keys, j, 1, (IndexFreeFunc) str_unref);
                     n_keys --;
@@ -382,14 +385,14 @@ GtkWidget * ui_playlist_widget_new (int playlist)
 
 int ui_playlist_widget_get_playlist (GtkWidget * widget)
 {
-    PlaylistWidgetData * data = audgui_list_get_user (widget);
+    PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_val_if_fail (data, -1);
     return data->list;
 }
 
 void ui_playlist_widget_set_playlist (GtkWidget * widget, int list)
 {
-    PlaylistWidgetData * data = audgui_list_get_user (widget);
+    PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
     data->list = list;
 }
@@ -413,7 +416,7 @@ static void update_queue (GtkWidget * widget, PlaylistWidgetData * data)
 void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
  int count)
 {
-    PlaylistWidgetData * data = audgui_list_get_user (widget);
+    PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
 
     if (type == PLAYLIST_UPDATE_STRUCTURE)
@@ -442,7 +445,7 @@ void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
 
 void ui_playlist_widget_scroll (GtkWidget * widget)
 {
-    PlaylistWidgetData * data = audgui_list_get_user (widget);
+    PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
 
     int row = -1;

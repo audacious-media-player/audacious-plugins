@@ -1,15 +1,15 @@
 PLUGIN = gtkui${PLUGIN_SUFFIX}
 
-SRCS = columns.c \
-       layout.c \
-       menus.c \
-       ui_infoarea.c \
-       ui_gtk.c \
-       ui_playlist_widget.c \
-       ui_playlist_notebook.c \
-       ui_statusbar.c \
-       playlist_util.c \
-       settings.c
+SRCS = columns.cc \
+       layout.cc \
+       menus.cc \
+       ui_infoarea.cc \
+       ui_gtk.cc \
+       ui_playlist_widget.cc \
+       ui_playlist_notebook.cc \
+       ui_statusbar.cc \
+       playlist_util.cc \
+       settings.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

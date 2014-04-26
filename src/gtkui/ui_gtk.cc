@@ -89,29 +89,28 @@ static bool_t init (void);
 static void cleanup (void);
 static void ui_show (bool_t show);
 
-AUD_IFACE_PLUGIN
-(
-    .name = N_("GTK Interface"),
-    .domain = PACKAGE,
-    .prefs = & gtkui_prefs,
-    .init = init,
-    .cleanup = cleanup,
+#define AUD_PLUGIN_NAME     N_("GTK Interface")
+#define AUD_PLUGIN_PREFS    & gtkui_prefs
+#define AUD_PLUGIN_INIT     init
+#define AUD_PLUGIN_CLEANUP  cleanup
 
-    .show = ui_show,
-    .run = gtk_main,
-    .quit = gtk_main_quit,
+#define AUD_IFACE_SHOW  ui_show
+#define AUD_IFACE_RUN   gtk_main
+#define AUD_IFACE_QUIT  gtk_main_quit
 
-    .show_about_window = audgui_show_about_window,
-    .hide_about_window = audgui_hide_about_window,
-    .show_filebrowser = audgui_run_filebrowser,
-    .hide_filebrowser = audgui_hide_filebrowser,
-    .show_jump_to_song = audgui_jump_to_track,
-    .hide_jump_to_song = audgui_jump_to_track_hide,
-    .show_prefs_window = audgui_show_prefs_window,
-    .hide_prefs_window = audgui_hide_prefs_window,
-    .plugin_menu_add = audgui_plugin_menu_add,
-    .plugin_menu_remove = audgui_plugin_menu_remove
-)
+#define AUD_IFACE_SHOW_ABOUT         audgui_show_about_window
+#define AUD_IFACE_HIDE_ABOUT         audgui_hide_about_window
+#define AUD_IFACE_SHOW_FILEBROWSER   audgui_run_filebrowser
+#define AUD_IFACE_HIDE_FILEBROWSER   audgui_hide_filebrowser
+#define AUD_IFACE_SHOW_JUMP_TO_SONG  audgui_jump_to_track
+#define AUD_IFACE_HIDE_JUMP_TO_SONG  audgui_jump_to_track_hide
+#define AUD_IFACE_SHOW_SETTINGS      audgui_show_prefs_window
+#define AUD_IFACE_HIDE_SETTINGS      audgui_hide_prefs_window
+#define AUD_IFACE_MENU_ADD           audgui_plugin_menu_add
+#define AUD_IFACE_MENU_REMOVE        audgui_plugin_menu_remove
+
+#define AUD_DECLARE_IFACE
+#include <libaudcore/plugin-declare.h>
 
 static void save_window_size (void)
 {
@@ -498,7 +497,8 @@ static bool_t window_keypress_cb (GtkWidget * widget, GdkEventKey * event, void 
 {
     switch (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK))
     {
-      case 0:;
+      case 0:
+      {
         GtkWidget * focused = gtk_window_get_focus ((GtkWindow *) window);
 
         /* escape key returns focus to playlist */
@@ -543,6 +543,7 @@ static bool_t window_keypress_cb (GtkWidget * widget, GdkEventKey * event, void 
         }
 
         return FALSE;
+      }
 
       case GDK_CONTROL_MASK:
         switch (event->keyval)
@@ -707,7 +708,7 @@ static void ui_hooks_disassociate(void)
 
 static bool_t add_dock_plugin (PluginHandle * plugin, void * unused)
 {
-    GtkWidget * widget = aud_plugin_get_widget (plugin);
+    GtkWidget * widget = (GtkWidget *) aud_plugin_get_widget (plugin);
     if (widget)
         layout_add (plugin, widget);
 
@@ -937,10 +938,10 @@ static void menu_position_cb (GtkMenu * menu, int * x, int * y, int * push, void
     int xorig, yorig, xwin, ywin;
 
     gdk_window_get_origin (gtk_widget_get_window (window), & xorig, & yorig);
-    gtk_widget_translate_coordinates (button, window, 0, 0, & xwin, & ywin);
+    gtk_widget_translate_coordinates ((GtkWidget *) button, window, 0, 0, & xwin, & ywin);
 
     * x = xorig + xwin;
-    * y = yorig + ywin + gtk_widget_get_allocated_height (button);
+    * y = yorig + ywin + gtk_widget_get_allocated_height ((GtkWidget *) button);
     * push = TRUE;
 }
 

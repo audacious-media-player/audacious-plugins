@@ -56,7 +56,7 @@ void pw_col_init (void)
 
     for (int c = 0; c < count; c ++)
     {
-        char * column = index_get (index, c);
+        char * column = (char *) index_get (index, c);
 
         int i = 0;
         while (i < PW_COLS && strcmp (column, pw_col_keys[i]))
@@ -98,33 +98,38 @@ static void apply_changes (void)
 
 static void get_value (void * user, int row, int column, GValue * value)
 {
-    g_return_if_fail (row >= 0 && row < index_count (user));
-    Column * c = index_get (user, row);
+    Index * index = (Index *) user;
+    g_return_if_fail (row >= 0 && row < index_count (index));
+    Column * c = (Column *) index_get (index, row);
     g_value_set_string (value, _(pw_col_names[c->column]));
 }
 
 static bool_t get_selected (void * user, int row)
 {
-    g_return_val_if_fail (row >= 0 && row < index_count (user), FALSE);
-    return ((Column *) index_get (user, row))->selected;
+    Index * index = (Index *) user;
+    g_return_val_if_fail (row >= 0 && row < index_count (index), FALSE);
+    return ((Column *) index_get (index, row))->selected;
 }
 
 static void set_selected (void * user, int row, bool_t selected)
 {
-    g_return_if_fail (row >= 0 && row < index_count (user));
-    ((Column *) index_get (user, row))->selected = selected;
+    Index * index = (Index *) user;
+    g_return_if_fail (row >= 0 && row < index_count (index));
+    ((Column *) index_get (index, row))->selected = selected;
 }
 
 static void select_all (void * user, bool_t selected)
 {
-    int rows = index_count (user);
+    Index * index = (Index *) user;
+    int rows = index_count (index);
     for (int row = 0; row < rows; row ++)
-        ((Column *) index_get (user, row))->selected = selected;
+        ((Column *) index_get (index, row))->selected = selected;
 }
 
 static void shift_rows (void * user, int row, int before)
 {
-    int rows = index_count (user);
+    Index * index = (Index *) user;
+    int rows = index_count (index);
     g_return_if_fail (row >= 0 && row < rows);
     g_return_if_fail (before >= 0 && before <= rows);
 
@@ -139,20 +144,20 @@ static void shift_rows (void * user, int row, int before)
     {
         begin = before;
         end = row + 1;
-        while (end < rows && ((Column *) index_get (user, end))->selected)
+        while (end < rows && ((Column *) index_get (index, end))->selected)
             end ++;
     }
     else
     {
         begin = row;
-        while (begin > 0 && ((Column *) index_get (user, begin - 1))->selected)
+        while (begin > 0 && ((Column *) index_get (index, begin - 1))->selected)
             begin --;
         end = before;
     }
 
     for (int i = begin; i < end; i ++)
     {
-        Column * c = index_get (user, i);
+        Column * c = (Column *) index_get (index, i);
         index_insert (c->selected ? move : others, -1, c);
     }
 
@@ -168,10 +173,10 @@ static void shift_rows (void * user, int row, int before)
         move = others;
     }
 
-    index_copy_set (move, 0, user, begin, end - begin);
+    index_copy_set (move, 0, index, begin, end - begin);
     index_free (move);
 
-    GtkWidget * list = (user == chosen) ? chosen_list : avail_list;
+    GtkWidget * list = (index == chosen) ? chosen_list : avail_list;
     audgui_list_update_rows (list, begin, end - begin);
     audgui_list_update_selection (list, begin, end - begin);
 
@@ -179,11 +184,14 @@ static void shift_rows (void * user, int row, int before)
 }
 
 static const AudguiListCallbacks callbacks = {
- .get_value = get_value,
- .get_selected = get_selected,
- .set_selected = set_selected,
- .select_all = select_all,
- .shift_rows = shift_rows};
+    get_value,
+    get_selected,
+    set_selected,
+    select_all,
+    NULL,  // activate_row
+    NULL,  // right_click
+    shift_rows
+};
 
 static void transfer (Index * source)
 {
@@ -207,7 +215,7 @@ static void transfer (Index * source)
 
     for (int row = 0; row < source_rows; )
     {
-        Column * c = index_get (source, row);
+        Column * c = (Column *) index_get (source, row);
         if (! c->selected)
         {
             row ++;
