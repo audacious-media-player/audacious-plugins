@@ -73,7 +73,7 @@ static void combo_cleanup(ComboBoxElements * elements, int n_elements)
     free(elements);
 }
 
-static PreferencesWidget oss_widgets[] = {
+static const PreferencesWidget oss_widgets[] = {
  {WIDGET_COMBO_BOX, N_("Audio device:"),
   .cfg_type = VALUE_STRING, .csect = "oss4", .cname = "device"},
  {WIDGET_CHK_BTN, N_("Use alternate device:"),

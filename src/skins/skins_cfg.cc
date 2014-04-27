@@ -176,7 +176,7 @@ static void vis_reset_cb (void)
     start_stop_visual (FALSE);
 }
 
-static PreferencesWidget font_table_elements[] = {
+static const PreferencesWidget font_table_elements[] = {
     WidgetFonts (N_("_Player:"),
         {VALUE_STRING, 0, "skins", "mainwin_font", mainwin_font_set_cb},
         {N_("Select main player window font:")}),

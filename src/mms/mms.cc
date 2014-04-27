@@ -177,7 +177,7 @@ static int64_t mms_vfs_fsize_impl (VFSFile * file)
 
 static const char * const mms_schemes[] = {"mms", NULL};
 
-static VFSConstructor constructor =
+static const VFSConstructor constructor =
 {
     .vfs_fopen_impl = mms_vfs_fopen_impl,
     .vfs_fclose_impl = mms_vfs_fclose_impl,

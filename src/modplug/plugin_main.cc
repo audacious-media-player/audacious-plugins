@@ -82,28 +82,28 @@ static const PreferencesWidget quality_widgets[] = {
      & modplug_settings.mFrequency}, {96000})
 };
 
-static PreferencesWidget reverb_fields[] = {
+static const PreferencesWidget reverb_fields[] = {
     WidgetSpin (N_("Level:"), {VALUE_INT,
      & modplug_settings.mReverbDepth}, {0, 100, 1, "%"}),
     WidgetSpin (N_("Delay:"), {VALUE_INT,
      & modplug_settings.mReverbDelay}, {40, 200, 1, N_("ms")})
 };
 
-static PreferencesWidget bass_fields[] = {
+static const PreferencesWidget bass_fields[] = {
     WidgetSpin (N_("Level:"), {VALUE_INT,
      & modplug_settings.mBassAmount}, {0, 100, 1, "%"}),
     WidgetSpin (N_("Cutoff:"), {VALUE_INT,
      & modplug_settings.mBassRange}, {10, 100, 1, N_("Hz")})
 };
 
-static PreferencesWidget surround_fields[] = {
+static const PreferencesWidget surround_fields[] = {
     WidgetSpin (N_("Level:"), {VALUE_INT,
      & modplug_settings.mSurroundDepth}, {0, 100, 1, "%"}),
     WidgetSpin (N_("Delay:"), {VALUE_INT,
      & modplug_settings.mSurroundDelay}, {5,  40, 1, N_("ms")})
 };
 
-static PreferencesWidget preamp_fields[] = {
+static const PreferencesWidget preamp_fields[] = {
     WidgetSpin (N_("Volume:"), {VALUE_FLOAT,
      & modplug_settings.mPreampLevel}, {-3, 3, 0.1}),
 };

@@ -31,7 +31,7 @@ static void redisplay_playlists (void)
     ui_playlist_notebook_populate ();
 }
 
-static PreferencesWidget gtkui_widgets[] = {
+static const PreferencesWidget gtkui_widgets[] = {
     WidgetLabel (N_("<b>Playlist Tabs</b>")),
     WidgetCheck (N_("Always show tabs"),
         {VALUE_BOOLEAN, 0, "gtkui", "playlist_tabs_visible", show_hide_playlist_tabs}),

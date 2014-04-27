@@ -301,7 +301,7 @@ static const char gio_about[] =
 
 static const char * const gio_schemes[] = {"ftp", "sftp", "smb", 0};
 
-static VFSConstructor constructor = {
+static const VFSConstructor constructor = {
     .vfs_fopen_impl = gio_fopen,
     .vfs_fclose_impl = gio_fclose,
     .vfs_fread_impl = gio_fread,

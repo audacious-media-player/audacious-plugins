@@ -1037,7 +1037,7 @@ int64_t neon_vfs_fsize_impl (VFSFile * file)
 
 static const char * const neon_schemes[] = {"http", "https", NULL};
 
-static VFSConstructor constructor =
+static const VFSConstructor constructor =
 {
     .vfs_fopen_impl = neon_vfs_fopen_impl,
     .vfs_fclose_impl = neon_vfs_fclose_impl,
