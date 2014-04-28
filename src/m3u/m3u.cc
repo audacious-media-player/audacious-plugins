@@ -62,7 +62,7 @@ static char * split_line (char * line)
 }
 
 static bool_t playlist_load_m3u (const char * path, VFSFile * file,
- char * * title, Index * filenames, Index * tuples)
+ char * * title, Index<PlaylistAddItem> & items)
 {
     char * text = read_win_text (file);
     if (! text)
@@ -81,7 +81,7 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
             parse ++;
 
         if (* parse && * parse != '#' && (s = uri_construct (parse, path)))
-            index_insert (filenames, -1, s);
+            items.append ({s});
 
         parse = next;
     }
@@ -91,12 +91,10 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
 }
 
 static bool_t playlist_save_m3u (const char * path, VFSFile * file,
- const char * title, Index * filenames, Index * tuples)
+ const char * title, const Index<PlaylistAddItem> & items)
 {
-    int count = index_count (filenames);
-
-    for (int i = 0; i < count; i ++)
-        vfs_fprintf (file, "%s\n", (const char *) index_get (filenames, i));
+    for (auto & item : items)
+        vfs_fprintf (file, "%s\n", item.filename);
 
     return TRUE;
 }

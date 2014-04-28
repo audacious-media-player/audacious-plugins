@@ -40,9 +40,9 @@ static const gchar * const ladspa_defaults[] = {
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 char * module_path;
-Index * modules; /* (void *) */
-Index * plugins; /* (PluginData *) */
-Index * loadeds; /* (LoadedPlugin *) */
+Index<GModule *> modules;
+Index<PluginData *> plugins;
+Index<LoadedPlugin *> loadeds;
 
 GtkWidget * config_win;
 GtkWidget * plugin_list;
@@ -53,7 +53,7 @@ static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
     g_return_val_if_fail (desc->PortNames[port], NULL);
     const LADSPA_PortRangeHint * hint = & desc->PortRangeHints[port];
 
-    ControlData * control = g_slice_new (ControlData);
+    ControlData * control = new ControlData ();
     control->port = port;
     control->name = g_strdup (desc->PortNames[port]);
     control->is_toggle = LADSPA_IS_HINT_TOGGLED (hint->HintDescriptor) ? 1 : 0;
@@ -109,7 +109,7 @@ static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
 static void free_control (ControlData * control)
 {
     g_free (control->name);
-    g_slice_free (ControlData, control);
+    delete control;
 }
 
 static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * desc)
@@ -118,10 +118,9 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
     g_return_val_if_fail (slash && slash[1], NULL);
     g_return_val_if_fail (desc->Label && desc->Name, NULL);
 
-    PluginData * plugin = g_slice_new (PluginData);
+    PluginData * plugin = new PluginData ();
     plugin->path = g_strdup (slash + 1);
     plugin->desc = desc;
-    plugin->controls = index_new ();
     plugin->in_ports = g_array_new (0, 0, sizeof (int));
     plugin->out_ports = g_array_new (0, 0, sizeof (int));
     plugin->selected = 0;
@@ -132,7 +131,7 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
         {
             ControlData * control = parse_control (desc, i);
             if (control)
-                index_insert (plugin->controls, -1, control);
+                plugin->controls.append (control);
         }
         else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
          LADSPA_IS_PORT_INPUT (desc->PortDescriptors[i]))
@@ -148,13 +147,16 @@ static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * de
 static void close_plugin (PluginData * plugin)
 {
     g_free (plugin->path);
-    index_free_full (plugin->controls, (IndexFreeFunc) free_control);
+
+    for (ControlData * control : plugin->controls)
+        free_control (control);
+
     g_array_free (plugin->in_ports, 1);
     g_array_free (plugin->out_ports, 1);
-    g_slice_free (PluginData, plugin);
+    delete plugin;
 }
 
-static void * open_module (const char * path)
+static GModule * open_module (const char * path)
 {
     GModule * handle = g_module_open (path, G_MODULE_BIND_LOCAL);
     if (! handle)
@@ -178,7 +180,7 @@ static void * open_module (const char * path)
     {
         PluginData * plugin = open_plugin (path, desc);
         if (plugin)
-            index_insert (plugins, -1, plugin);
+            plugins.append (plugin);
     }
 
     return handle;
@@ -200,10 +202,10 @@ static void open_modules_for_path (const char * path)
             continue;
 
         char * filename = filename_build (path, name);
-        void * handle = open_module (filename);
+        GModule * handle = open_module (filename);
 
         if (handle)
-            index_insert (modules, -1, handle);
+            modules.append (handle);
 
         str_unref (filename);
     }
@@ -232,40 +234,31 @@ static void open_modules (void)
 
 static void close_modules (void)
 {
-    index_delete_full (plugins, 0, -1, (IndexFreeFunc) close_plugin);
-    index_delete_full (modules, 0, -1, (IndexFreeFunc) g_module_close);
+    for (PluginData * plugin : plugins)
+        close_plugin (plugin);
+    for (GModule * module : modules)
+        g_module_close (module);
 }
 
 LoadedPlugin * enable_plugin_locked (PluginData * plugin)
 {
-    LoadedPlugin * loaded = g_slice_new (LoadedPlugin);
+    LoadedPlugin * loaded = new LoadedPlugin ();
     loaded->plugin = plugin;
-    loaded->selected = 0;
 
-    int count = index_count (plugin->controls);
+    int count = plugin->controls.len ();
     loaded->values = g_new (float, count);
 
     for (int i = 0; i < count; i ++)
-    {
-        ControlData * control = (ControlData *) index_get (plugin->controls, i);
-        loaded->values[i] = control->def;
-    }
+        loaded->values[i] = plugin->controls[i]->def;
 
-    loaded->active = 0;
-    loaded->instances = NULL;
-    loaded->in_bufs = NULL;
-    loaded->out_bufs = NULL;
-
-    loaded->settings_win = NULL;
-
-    index_insert (loadeds, -1, loaded);
+    loadeds.append (loaded);
     return loaded;
 }
 
 void disable_plugin_locked (int i)
 {
-    g_return_if_fail (i >= 0 && i < index_count (loadeds));
-    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
+    g_return_if_fail (i >= 0 && i < loadeds.len ());
+    LoadedPlugin * loaded = loadeds[i];
 
     if (loaded->settings_win)
         gtk_widget_destroy (loaded->settings_win);
@@ -273,16 +266,14 @@ void disable_plugin_locked (int i)
     shutdown_plugin_locked (loaded);
 
     g_free (loaded->values);
-    g_slice_free (LoadedPlugin, loaded);
-    index_delete (loadeds, i, 1);
+    delete loaded;
+    loadeds.remove (i, 1);
 }
 
 static PluginData * find_plugin (const char * path, const char * label)
 {
-    int count = index_count (plugins);
-    for (int i = 0; i < count; i ++)
+    for (PluginData * plugin : plugins)
     {
-        PluginData * plugin = (PluginData *) index_get (plugins, i);
         if (! strcmp (plugin->path, path) && ! strcmp (plugin->desc->Label, label))
             return plugin;
     }
@@ -292,13 +283,13 @@ static PluginData * find_plugin (const char * path, const char * label)
 
 static void save_enabled_to_config (void)
 {
-    int count = index_count (loadeds);
+    int count = loadeds.len ();
     int old_count = aud_get_int ("ladspa", "plugin_count");
     aud_set_int ("ladspa", "plugin_count", count);
 
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, 0);
+        LoadedPlugin * loaded = loadeds[0];
         char key[32];
 
         snprintf (key, sizeof key, "plugin%d_path", i);
@@ -309,7 +300,7 @@ static void save_enabled_to_config (void)
 
         snprintf (key, sizeof key, "plugin%d_controls", i);
 
-        int ccount = index_count (loaded->plugin->controls);
+        int ccount = loaded->plugin->controls.len ();
         double temp[ccount];
 
         for (int ci = 0; ci < ccount; ci ++)
@@ -358,7 +349,7 @@ static void load_enabled_from_config (void)
 
             snprintf (key, sizeof key, "plugin%d_controls", i);
 
-            int ccount = index_count (loaded->plugin->controls);
+            int ccount = loaded->plugin->controls.len ();
             double temp[ccount];
 
             char * controls = aud_get_str ("ladspa", key);
@@ -391,10 +382,6 @@ static int init (void)
 {
     pthread_mutex_lock (& mutex);
 
-    modules = index_new ();
-    plugins = index_new ();
-    loadeds = index_new ();
-
     aud_config_set_defaults ("ladspa", ladspa_defaults);
 
     module_path = aud_get_str ("ladspa", "module_path");
@@ -417,12 +404,9 @@ static void cleanup (void)
     save_enabled_to_config ();
     close_modules ();
 
-    index_free (modules);
-    modules = NULL;
-    index_free (plugins);
-    plugins = NULL;
-    index_free (loadeds);
-    loadeds = NULL;
+    modules.clear ();
+    plugins.clear ();
+    loadeds.clear ();
 
     str_unref (module_path);
     module_path = NULL;
@@ -455,10 +439,8 @@ static void enable_selected (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = index_count (plugins);
-    for (int i = 0; i < count; i ++)
+    for (PluginData * plugin : plugins)
     {
-        PluginData * plugin = (PluginData *) index_get (plugins, i);
         if (plugin->selected)
             enable_plugin_locked (plugin);
     }
@@ -473,12 +455,11 @@ static void disable_selected (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = index_count (loadeds);
+    int count = loadeds.len ();
     int offset = 0;
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i - offset);
-        if (loaded->selected)
+        if (loadeds[i - offset]->selected)
         {
             disable_plugin_locked (i - offset);
             offset ++;
@@ -524,10 +505,10 @@ static void configure_plugin (LoadedPlugin * loaded)
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded->settings_win);
 
-    int count = index_count (plugin->controls);
+    int count = plugin->controls.len ();
     for (int i = 0; i < count; i ++)
     {
-        ControlData * control = (ControlData *) index_get (plugin->controls, i);
+        ControlData * control = plugin->controls[i];
 
         GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
@@ -565,10 +546,8 @@ static void configure_selected (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = index_count (loadeds);
-    for (int i = 0; i < count; i ++)
+    for (LoadedPlugin * loaded : loadeds)
     {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         if (loaded->selected)
             configure_plugin (loaded);
     }

@@ -69,12 +69,11 @@ static void show_preset_browser (const char * title, bool_t save,
 
 static void do_load_file (const char * filename)
 {
-    EqualizerPreset * preset = aud_load_preset_file (filename);
-    if (! preset)
+    EqualizerPreset preset;
+    if (! aud_load_preset_file (preset, filename))
         return;
 
     equalizerwin_apply_preset (preset);
-    aud_eq_preset_free (preset);
 }
 
 void eq_preset_load_file (void)
@@ -88,15 +87,10 @@ static void do_load_eqf (const char * filename)
     if (! file)
         return;
 
-    Index * presets = aud_import_winamp_presets (file);
+    Index<EqualizerPreset> presets = aud_import_winamp_presets (file);
 
-    if (presets)
-    {
-        if (index_count (presets) >= 1)
-            equalizerwin_apply_preset ((EqualizerPreset *) index_get (presets, 0));
-
-        index_free_full (presets, (IndexFreeFunc) aud_eq_preset_free);
-    }
+    if (presets.len ())
+        equalizerwin_apply_preset (presets[0]);
 
     vfs_fclose (file);
 }
@@ -108,10 +102,9 @@ void eq_preset_load_eqf (void)
 
 static void do_save_file (const char * filename)
 {
-    EqualizerPreset * preset = aud_eq_preset_new ("");
+    EqualizerPreset preset;
     equalizerwin_update_preset (preset);
     aud_save_preset_file (preset, filename);
-    aud_eq_preset_free (preset);
 }
 
 void eq_preset_save_file (void)
@@ -131,10 +124,9 @@ static void do_save_eqf (const char * filename)
     if (! file)
         return;
 
-    EqualizerPreset * preset = aud_eq_preset_new ("Preset1");
+    EqualizerPreset preset ("Preset1");
     equalizerwin_update_preset (preset);
     aud_export_winamp_preset (preset, file);
-    aud_eq_preset_free (preset);
 
     vfs_fclose (file);
 }
@@ -150,9 +142,7 @@ static void do_import_winamp (const char * filename)
     if (! file)
         return;
 
-    Index * list = aud_import_winamp_presets (file);
-    if (list)
-        equalizerwin_import_presets (list);
+    equalizerwin_import_presets (aud_import_winamp_presets (file));
 
     vfs_fclose (file);
 }

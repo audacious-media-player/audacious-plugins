@@ -93,7 +93,7 @@ static bool_t check_root (const xmlNode * root)
     return TRUE;
 }
 
-static void parse_entry (const xmlNode * entry, Index * filenames)
+static void parse_entry (const xmlNode * entry, Index<PlaylistAddItem> & items)
 {
     for (const xmlNode * node = entry->xmlChildrenNode; node; node = node->next)
     {
@@ -101,13 +101,13 @@ static void parse_entry (const xmlNode * entry, Index * filenames)
         {
             const char * uri = get_prop_nocase (node, "href");
             if (uri)
-                index_insert (filenames, -1, str_get (uri));
+                items.append ({str_get (uri)});
         }
     }
 }
 
 static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
- char * * title, Index * filenames, Index * tuples)
+ char * * title, Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL, XML_PARSE_RECOVER);
     if (! doc)
@@ -124,7 +124,7 @@ static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
     for (xmlNode * node = root->xmlChildrenNode; node; node = node->next)
     {
         if (! xmlStrcasecmp (node->name, (const xmlChar *) "entry"))
-            parse_entry (node, filenames);
+            parse_entry (node, items);
         else if (! xmlStrcasecmp (node->name, (const xmlChar *) "title"))
         {
             if (! (* title))
@@ -137,7 +137,7 @@ static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
 }
 
 static bool_t playlist_save_asx3 (const char * filename, VFSFile * file,
- const char * title, Index * filenames, Index * tuples)
+ const char * title, const Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlNewDoc ((const xmlChar *) "1.0");
     doc->charset = XML_CHAR_ENCODING_UTF8;
@@ -150,12 +150,11 @@ static bool_t playlist_save_asx3 (const char * filename, VFSFile * file,
     if (title)
         xmlNewTextChild (root, NULL, (const xmlChar *) "title", (const xmlChar *) title);
 
-    int entries = index_count (filenames);
-    for (int i = 0; i < entries; i ++)
+    for (auto & item : items)
     {
         xmlNode * entry = xmlNewNode (NULL, (const xmlChar *) "entry");
         xmlNode * ref = xmlNewNode (NULL, (const xmlChar *) "ref");
-        xmlSetProp (ref, (const xmlChar *) "href", (const xmlChar *) index_get (filenames, i));
+        xmlSetProp (ref, (const xmlChar *) "href", (const xmlChar *) item.filename);
         xmlAddChild (entry, ref);
         xmlAddChild (root, entry);
     }

@@ -59,7 +59,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, int tuple_type, int pti)
 }
 
 static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
- char * * title, Index * filenames, Index * tuples)
+ char * * title, Index<PlaylistAddItem> & items)
 {
     void * buffer = NULL;
     vfs_file_read_all (file, & buffer, NULL);
@@ -132,11 +132,9 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         for (int i = 0; i < ARRAY_LEN (pti_map); i ++)
             tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type, pti_map[i].pti);
 
-        index_insert (filenames, -1, str_get (filename));
-        index_insert (tuples, -1, tuple);
+        items.append ({str_get (filename), tuple});
 
         current = next;
-        str_unref (filename);
         filename = next_filename;
 
         if (last_track && base_tuple != NULL)

@@ -26,16 +26,14 @@
 
 typedef struct {
     char * * title;
-    Index * filenames;
-    Index * tuples;
+    Index<PlaylistAddItem> & items;
     char * uri;
     Tuple * tuple;
 } LoadState;
 
 static void finish_item (LoadState * state)
 {
-    index_insert (state->filenames, -1, state->uri);
-    index_insert (state->tuples, -1, state->tuple);
+    state->items.append ({state->uri, state->tuple});
     state->uri = NULL;
     state->tuple = NULL;
 }
@@ -95,12 +93,11 @@ static void handle_entry (const char * key, const char * value, void * data)
 }
 
 static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
- Index * filenames, Index * tuples)
+ Index<PlaylistAddItem> & items)
 {
     LoadState state = {
-        .title = title,
-        .filenames = filenames,
-        .tuples = tuples
+        title,
+        items
     };
 
     inifile_parse (file, handle_heading, handle_entry, & state);
@@ -120,19 +117,17 @@ static bool_t write_encoded_entry (VFSFile * file, const char * key, const char 
 }
 
 static bool_t audpl_save (const char * path, VFSFile * file,
- const char * title, Index * filenames, Index * tuples)
+ const char * title, const Index<PlaylistAddItem> & items)
 {
     if (! write_encoded_entry (file, "title", title))
         return FALSE;
 
-    int count = index_count (filenames);
-
-    for (int i = 0; i < count; i ++)
+    for (auto & item : items)
     {
-        if (! inifile_write_entry (file, "uri", (char *) index_get (filenames, i)))
+        if (! inifile_write_entry (file, "uri", item.filename))
             return FALSE;
 
-        const Tuple * tuple = tuples ? (Tuple *) index_get (tuples, i) : NULL;
+        const Tuple * tuple = item.tuple;
 
         if (tuple)
         {

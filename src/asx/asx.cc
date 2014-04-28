@@ -31,7 +31,7 @@
 typedef struct {
     const char * filename;
     bool_t valid_heading;
-    Index * filenames;
+    Index<PlaylistAddItem> & items;
 } ASXLoadState;
 
 void asx_handle_heading (const char * heading, void * data)
@@ -54,25 +54,25 @@ void asx_handle_entry (const char * key, const char * value, void * data)
 
     if (! strncmp ("http://", uri, 7))
     {
-        index_insert (state->filenames, -1, str_printf ("mms://%s", uri + 7));
+        state->items.append ({str_printf ("mms://%s", uri + 7)});
         str_unref (uri);
     }
     else
-        index_insert (state->filenames, -1, uri);
+        state->items.append ({uri});
 }
 
 static bool_t playlist_load_asx (const char * filename, VFSFile * file,
- char * * title, Index * filenames, Index * tuples)
+ char * * title, Index<PlaylistAddItem> & items)
 {
     ASXLoadState state = {
-        .filename = filename,
-        .valid_heading = FALSE,
-        .filenames = filenames
+        filename,
+        FALSE,
+        items
     };
 
     inifile_parse (file, asx_handle_heading, asx_handle_entry, & state);
 
-    return (index_count (filenames) != 0);
+    return (items.len () > 0);
 }
 
 static const char * const asx_exts[] = {"asx", NULL};

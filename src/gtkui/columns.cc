@@ -48,15 +48,15 @@ void pw_col_init (void)
     pw_num_cols = 0;
 
     char * columns = aud_get_str ("gtkui", "playlist_columns");
-    Index * index = str_list_to_index (columns, " ");
+    Index<char *> index = str_list_to_index (columns, " ");
 
-    int count = index_count (index);
+    int count = index.len ();
     if (count > PW_COLS)
         count = PW_COLS;
 
     for (int c = 0; c < count; c ++)
     {
-        char * column = (char *) index_get (index, c);
+        char * column = index[c];
 
         int i = 0;
         while (i < PW_COLS && strcmp (column, pw_col_keys[i]))
@@ -68,7 +68,9 @@ void pw_col_init (void)
         pw_cols[pw_num_cols ++] = i;
     }
 
-    index_free_full (index, (IndexFreeFunc) str_unref);
+    for (char * column : index)
+        str_unref (column);
+
     str_unref (columns);
 }
 
@@ -78,17 +80,17 @@ typedef struct {
 } Column;
 
 static GtkWidget * chosen_list = NULL, * avail_list = NULL;
-static Index * chosen = NULL, * avail = NULL;
+static Index<Column *> chosen, avail;
 
 static void apply_changes (void)
 {
-    int cols = index_count (chosen);
+    int cols = chosen.len ();
     g_return_if_fail (cols <= PW_COLS);
 
     ui_playlist_notebook_empty ();
 
     for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
-        pw_cols[pw_num_cols] = ((Column *) index_get (chosen, pw_num_cols))->column;
+        pw_cols[pw_num_cols] = chosen[pw_num_cols]->column;
 
     aud_set_str ("gtkui", "column_widths", "");
     aud_set_str ("gtkui", "column_expand", "");
@@ -98,85 +100,79 @@ static void apply_changes (void)
 
 static void get_value (void * user, int row, int column, GValue * value)
 {
-    Index * index = (Index *) user;
-    g_return_if_fail (row >= 0 && row < index_count (index));
-    Column * c = (Column *) index_get (index, row);
+    auto & index = * (Index<Column *> *) user;
+    g_return_if_fail (row >= 0 && row < index.len ());
+    Column * c = index[row];
     g_value_set_string (value, _(pw_col_names[c->column]));
 }
 
 static bool_t get_selected (void * user, int row)
 {
-    Index * index = (Index *) user;
-    g_return_val_if_fail (row >= 0 && row < index_count (index), FALSE);
-    return ((Column *) index_get (index, row))->selected;
+    auto & index = * (Index<Column *> *) user;
+    g_return_val_if_fail (row >= 0 && row < index.len (), FALSE);
+    return index[row]->selected;
 }
 
 static void set_selected (void * user, int row, bool_t selected)
 {
-    Index * index = (Index *) user;
-    g_return_if_fail (row >= 0 && row < index_count (index));
-    ((Column *) index_get (index, row))->selected = selected;
+    auto & index = * (Index<Column *> *) user;
+    g_return_if_fail (row >= 0 && row < index.len ());
+    index[row]->selected = selected;
 }
 
 static void select_all (void * user, bool_t selected)
 {
-    Index * index = (Index *) user;
-    int rows = index_count (index);
+    auto & index = * (Index<Column *> *) user;
+    int rows = index.len ();
     for (int row = 0; row < rows; row ++)
-        ((Column *) index_get (index, row))->selected = selected;
+        index[row]->selected = selected;
 }
 
 static void shift_rows (void * user, int row, int before)
 {
-    Index * index = (Index *) user;
-    int rows = index_count (index);
+    auto & index = * (Index<Column *> *) user;
+    int rows = index.len ();
     g_return_if_fail (row >= 0 && row < rows);
     g_return_if_fail (before >= 0 && before <= rows);
 
     if (before == row)
         return;
 
-    Index * move = index_new ();
-    Index * others = index_new ();
+    Index<Column *> move;
+    Index<Column *> others;
 
     int begin, end;
     if (before < row)
     {
         begin = before;
         end = row + 1;
-        while (end < rows && ((Column *) index_get (index, end))->selected)
+        while (end < rows && index[end]->selected)
             end ++;
     }
     else
     {
         begin = row;
-        while (begin > 0 && ((Column *) index_get (index, begin - 1))->selected)
+        while (begin > 0 && index[begin - 1]->selected)
             begin --;
         end = before;
     }
 
     for (int i = begin; i < end; i ++)
     {
-        Column * c = (Column *) index_get (index, i);
-        index_insert (c->selected ? move : others, -1, c);
+        if (index[i]->selected)
+            move.append (index[i]);
+        else
+            others.append (index[i]);
     }
 
     if (before < row)
-    {
-        index_copy_insert (others, 0, move, -1, -1);
-        index_free (others);
-    }
+        move.move_from (others, 0, -1, -1, true, true);
     else
-    {
-        index_copy_insert (move, 0, others, -1, -1);
-        index_free (move);
-        move = others;
-    }
+        move.move_from (others, 0, 0, -1, true, true);
 
-    index_copy_set (move, 0, index, begin, end - begin);
-    index_free (move);
+    index.move_from (move, 0, begin, end - begin, false, true);
 
-    GtkWidget * list = (index == chosen) ? chosen_list : avail_list;
+    GtkWidget * list = (& index == & chosen) ? chosen_list : avail_list;
     audgui_list_update_rows (list, begin, end - begin);
     audgui_list_update_selection (list, begin, end - begin);
 
@@ -193,39 +189,39 @@ static const AudguiListCallbacks callbacks = {
     shift_rows
 };
 
-static void transfer (Index * source)
+static void transfer (Index<Column *> * source)
 {
-    Index * dest;
+    Index<Column *> * dest;
     GtkWidget * source_list, * dest_list;
-    if (source == chosen)
+    if (source == & chosen)
     {
-        dest = avail;
+        dest = & avail;
         source_list = chosen_list;
         dest_list = avail_list;
     }
     else
     {
-        dest = chosen;
+        dest = & chosen;
         source_list = avail_list;
         dest_list = chosen_list;
     }
 
-    int source_rows = index_count (source);
-    int dest_rows = index_count (dest);
+    int source_rows = source->len ();
+    int dest_rows = dest->len ();
 
     for (int row = 0; row < source_rows; )
     {
-        Column * c = (Column *) index_get (source, row);
+        Column * c = (* source)[row];
         if (! c->selected)
         {
             row ++;
             continue;
         }
 
-        index_delete (source, row, 1);
+        source->remove (row, 1);
         audgui_list_delete_rows (source_list, row, 1);
         source_rows --;
-        index_insert (dest, -1, c);
+        dest->append (c);
         audgui_list_insert_rows (dest_list, dest_rows, 1);
         dest_rows ++;
     }
@@ -238,24 +234,17 @@ static void destroy_cb (void)
     chosen_list = NULL;
     avail_list = NULL;
 
-    int rows = index_count (chosen);
-    for (int row = 0; row < rows; row ++)
-        g_slice_free (Column, index_get (chosen, row));
-    index_free (chosen);
-    chosen = NULL;
+    for (Column * column : chosen)
+        g_slice_free (Column, column);
+    for (Column * column : avail)
+        g_slice_free (Column, column);
 
-    rows = index_count (avail);
-    for (int row = 0; row < rows; row ++)
-        g_slice_free (Column, index_get (avail, row));
-    index_free (avail);
-    avail = NULL;
+    chosen.clear ();
+    avail.clear ();
 }
 
 void * pw_col_create_chooser (void)
 {
-    chosen = index_new ();
-    avail = index_new ();
-
     bool_t added[PW_COLS];
     memset (added, 0, sizeof added);
 
@@ -267,7 +256,7 @@ void * pw_col_create_chooser (void)
         Column * column = g_slice_new (Column);
         column->column = pw_cols[i];
         column->selected = 0;
-        index_insert (chosen, -1, column);
+        chosen.append (column);
     }
 
     for (int i = 0; i < PW_COLS; i ++)
@@ -277,7 +266,7 @@ void * pw_col_create_chooser (void)
         Column * column = g_slice_new (Column);
         column->column = i;
         column->selected = 0;
-        index_insert (avail, -1, column);
+        avail.append (column);
     }
 
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
@@ -290,7 +279,7 @@ void * pw_col_create_chooser (void)
      GTK_SHADOW_IN);
     gtk_box_pack_start ((GtkBox *) hbox, scroll, TRUE, TRUE, 0);
 
-    avail_list = audgui_list_new (& callbacks, avail, index_count (avail));
+    avail_list = audgui_list_new (& callbacks, & avail, avail.len ());
     audgui_list_add_column (avail_list, _("Available columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, avail_list);
 
@@ -301,13 +290,13 @@ void * pw_col_create_chooser (void)
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
      ("go-next", GTK_ICON_SIZE_BUTTON));
     gtk_box_pack_start ((GtkBox *) vbox, button, TRUE, FALSE, 0);
-    g_signal_connect_swapped (button, "clicked", (GCallback) transfer, avail);
+    g_signal_connect_swapped (button, "clicked", (GCallback) transfer, & avail);
 
     button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name
      ("go-previous", GTK_ICON_SIZE_BUTTON));
     gtk_box_pack_start ((GtkBox *) vbox, button, TRUE, FALSE, 0);
-    g_signal_connect_swapped (button, "clicked", (GCallback) transfer, chosen);
+    g_signal_connect_swapped (button, "clicked", (GCallback) transfer, & chosen);
 
     scroll = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scroll,
@@ -316,7 +305,7 @@ void * pw_col_create_chooser (void)
      GTK_SHADOW_IN);
     gtk_box_pack_start ((GtkBox *) hbox, scroll, TRUE, TRUE, 0);
 
-    chosen_list = audgui_list_new (& callbacks, chosen, index_count (chosen));
+    chosen_list = audgui_list_new (& callbacks, & chosen, chosen.len ());
     audgui_list_add_column (chosen_list, _("Displayed columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, chosen_list);
 
@@ -327,14 +316,11 @@ void * pw_col_create_chooser (void)
 
 void pw_col_save (void)
 {
-    Index * index = index_new ();
-
+    Index<char *> index;
     for (int i = 0; i < pw_num_cols; i ++)
-        index_insert (index, -1, (void *) pw_col_keys[pw_cols[i]]);
+        index.append ((char *) pw_col_keys[pw_cols[i]]);
 
     char * columns = index_to_str_list (index, " ");
     aud_set_str ("gtkui", "playlist_columns", columns);
     str_unref (columns);
-
-    index_free (index);
 }

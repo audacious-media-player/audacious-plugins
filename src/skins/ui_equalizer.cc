@@ -66,7 +66,7 @@ static GtkWidget *equalizerwin_presets;
 static GtkWidget *equalizerwin_preamp,*equalizerwin_bands[10];
 static GtkWidget *equalizerwin_volume, *equalizerwin_balance;
 
-Index * equalizer_presets, * equalizer_auto_presets;
+Index<EqualizerPreset> equalizer_presets, equalizer_auto_presets;
 
 void equalizerwin_set_shape (void)
 {
@@ -92,25 +92,23 @@ equalizerwin_eq_changed(void)
     aud_eq_set_bands (bands);
 }
 
-void equalizerwin_apply_preset (const EqualizerPreset * preset)
+void equalizerwin_apply_preset (const EqualizerPreset & preset)
 {
-    equalizerwin_set_preamp (preset->preamp);
+    equalizerwin_set_preamp (preset.preamp);
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        equalizerwin_set_band (i, preset->bands[i]);
+        equalizerwin_set_band (i, preset.bands[i]);
 }
 
-void equalizerwin_update_preset (EqualizerPreset * preset)
+void equalizerwin_update_preset (EqualizerPreset & preset)
 {
-    preset->preamp = equalizerwin_get_preamp ();
+    preset.preamp = equalizerwin_get_preamp ();
     for (int i = 0; i < AUD_EQ_NBANDS; i ++)
-        preset->bands[i] = equalizerwin_get_band (i);
+        preset.bands[i] = equalizerwin_get_band (i);
 }
 
-void equalizerwin_import_presets (Index * presets)
+void equalizerwin_import_presets (Index<EqualizerPreset> && presets)
 {
-    index_copy_insert (presets, 0, equalizer_presets, -1, -1);
-    index_free (presets);
-
+    equalizer_presets.move_from (presets, 0, -1, -1, true, true);
     aud_eq_write_presets (equalizer_presets, "eq.preset");
 }
 
@@ -356,10 +354,8 @@ static void equalizerwin_destroyed (void)
 
     hook_dissociate ("playlist position", position_cb);
 
-    index_free_full (equalizer_presets, (IndexFreeFunc) aud_eq_preset_free);
-    index_free_full (equalizer_auto_presets, (IndexFreeFunc) aud_eq_preset_free);
-    equalizer_presets = NULL;
-    equalizer_auto_presets = NULL;
+    equalizer_presets.clear ();
+    equalizer_auto_presets.clear ();
 }
 
 void
@@ -367,11 +363,6 @@ equalizerwin_create(void)
 {
     equalizer_presets = aud_eq_read_presets("eq.preset");
     equalizer_auto_presets = aud_eq_read_presets("eq.auto_preset");
-
-    if (! equalizer_presets)
-        equalizer_presets = index_new ();
-    if (! equalizer_auto_presets)
-        equalizer_auto_presets = index_new ();
 
     equalizerwin_create_window();
 
@@ -397,64 +388,60 @@ equalizerwin_create(void)
     hook_associate ("playlist position", position_cb, NULL);
 }
 
-static int equalizerwin_find_preset (Index * list, const char * name)
+static int equalizerwin_find_preset (Index<EqualizerPreset> & list, const char * name)
 {
-    for (int p = 0; p < index_count (list); p ++)
+    for (int p = 0; p < list.len (); p ++)
     {
-        EqualizerPreset * preset = (EqualizerPreset *) index_get (list, p);
-        if (!g_ascii_strcasecmp(preset->name, name))
+        if (! g_ascii_strcasecmp (list[p].name, name))
             return p;
     }
 
     return -1;
 }
 
-bool_t equalizerwin_load_preset (Index * list, const char * name)
+bool_t equalizerwin_load_preset (Index<EqualizerPreset> & list, const char * name)
 {
     int p = equalizerwin_find_preset (list, name);
     if (p < 0)
         return FALSE;
 
-    equalizerwin_apply_preset ((EqualizerPreset *) index_get (list, p));
+    equalizerwin_apply_preset (list[p]);
     return TRUE;
 }
 
-void equalizerwin_save_preset (Index * list, const char * name, const char * filename)
+void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name, const char * filename)
 {
     int p = equalizerwin_find_preset (list, name);
-    EqualizerPreset * preset = (p >= 0) ? (EqualizerPreset *) index_get (list, p) : NULL;
 
-    if (! preset)
+    if (p < 0)
     {
-        preset = aud_eq_preset_new (name);
-        index_insert (list, -1, preset);
+        EqualizerPreset & preset = list.append ();
+        preset.name = str_get (name);
+        p = list.len () - 1;
     }
 
-    equalizerwin_update_preset (preset);
+    equalizerwin_update_preset (list[p]);
 
     aud_eq_write_presets (list, filename);
 }
 
-void equalizerwin_delete_preset (Index * list, const char * name, const char * filename)
+void equalizerwin_delete_preset (Index<EqualizerPreset> & list, const char * name, const char * filename)
 {
     int p = equalizerwin_find_preset (list, name);
     if (p < 0)
         return;
 
-    index_delete_full (list, p, 1, (IndexFreeFunc) aud_eq_preset_free);
-
+    list.remove (p, 1);
     aud_eq_write_presets (list, filename);
 }
 
 static gboolean equalizerwin_read_aud_preset (const gchar * file)
 {
-    EqualizerPreset * preset = aud_load_preset_file (file);
-
-    if (preset == NULL)
+    EqualizerPreset preset;
+    if (! aud_load_preset_file (preset, file))
         return FALSE;
 
     equalizerwin_apply_preset (preset);
-    aud_eq_preset_free (preset);
     return TRUE;
 }
 

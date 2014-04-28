@@ -36,25 +36,25 @@
 
 enum {ARTIST, ALBUM, TITLE, FIELDS};
 
-typedef struct item {
+struct Item {
     int field;
     char * name, * folded;
-    struct item * parent;
+    Item * parent;
     GHashTable * children;
     GArray * matches;
-} Item;
+};
 
-typedef struct {
-    Index * items[FIELDS];
+struct SearchState {
+    Index<Item *> items[FIELDS];
     int mask;
-} SearchState;
+};
 
 static int playlist_id;
-static Index * search_terms;
+static Index<char *> search_terms;
 
 static GHashTable * added_table;
 static GHashTable * database;
-static Index * items;
+static Index<Item *> items;
 static GArray * selection;
 
 static bool_t adding;
@@ -140,8 +140,10 @@ static int get_playlist (bool_t require_added, bool_t require_scanned)
 
 static void set_search_phrase (const char * phrase)
 {
+    for (char * term : search_terms)
+        str_unref (term);
+
     char * folded = str_tolower_utf8 (phrase);
-    index_free_full (search_terms, (IndexFreeFunc) str_unref);
     search_terms = str_list_to_index (folded, " ");
     str_unref (folded);
 }
@@ -174,8 +176,7 @@ static void destroy_added_table (void)
 
 static void destroy_database (void)
 {
-    if (items)
-        index_delete (items, 0, index_count (items));
+    items.clear ();
 
     if (database)
     {
@@ -258,25 +259,25 @@ static void search_cb (void * key, void * _item, void * _state)
     Item * item = (Item *) _item;
     SearchState * state = (SearchState *) _state;
 
-    if (index_count (state->items[item->field]) > MAX_RESULTS)
+    if (state->items[item->field].len () > MAX_RESULTS)
         return;
 
     int oldmask = state->mask;
-    int count = index_count (search_terms);
+    int count = search_terms.len ();
 
     for (int t = 0, bit = 1; t < count; t ++, bit <<= 1)
     {
         if (! (state->mask & bit))
             continue; /* skip term if it is already found */
 
-        if (strstr (item->folded, (char *) index_get (search_terms, t)))
+        if (strstr (item->folded, search_terms[t]))
             state->mask &= ~bit; /* we found it */
         else if (! item->children)
             break; /* quit early if there are no children to search */
     }
 
     if (! state->mask)
-        index_insert (state->items[item->field], -1, item);
+        state->items[item->field].append (item);
 
     if (item->children)
         g_hash_table_foreach (item->children, search_cb, state);
@@ -284,26 +285,22 @@ static void search_cb (void * key, void * _item, void * _state)
     state->mask = oldmask;
 }
 
-static int item_compare (const void * _a, const void * _b)
+static int item_compare (Item * const & a, Item * const & b, void *)
 {
-    const Item * a = (const Item *) _a, * b = (const Item *) _b;
     return str_compare (a->name, b->name);
 }
 
 static void do_search (void)
 {
-    index_delete (items, 0, index_count (items));
+    items.clear ();
 
     if (! database)
         return;
 
     SearchState state;
 
-    for (int f = 0; f < FIELDS; f ++)
-        state.items[f] = index_new ();
-
     /* effectively limits number of search terms to 32 */
-    state.mask = (1 << index_count (search_terms)) - 1;
+    state.mask = (1 << search_terms.len ()) - 1;
 
     g_hash_table_foreach (database, search_cb, & state);
 
@@ -311,18 +308,16 @@ static void do_search (void)
 
     for (int f = 0; f < FIELDS; f ++)
     {
-        int count = index_count (state.items[f]);
+        int count = state.items[f].len ();
         if (count > MAX_RESULTS - total)
             count = MAX_RESULTS - total;
 
         if (count)
         {
-            index_sort (state.items[f], item_compare);
-            index_copy_insert (state.items[f], 0, items, -1, count);
+            state.items[f].sort (item_compare, nullptr);
+            items.move_from (state.items[f], 0, -1, count, true, false);
             total += count;
         }
-
-        index_free (state.items[f]);
     }
 
     g_array_set_size (selection, total);
@@ -381,9 +376,9 @@ static void begin_add (const char * path)
     aud_playlist_delete_selected (list);
     aud_playlist_remove_failed (list);
 
-    Index * add = index_new ();
-    index_insert (add, -1, uri);
-    aud_playlist_entry_insert_filtered (list, -1, add, NULL, filter_cb, NULL, FALSE);
+    Index<PlaylistAddItem> add;
+    add.append ({uri});
+    aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, NULL, FALSE);
 
     adding = TRUE;
 }
@@ -423,7 +418,7 @@ static int search_timeout (void * unused)
     if (results_list)
     {
         audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
-        audgui_list_insert_rows (results_list, 0, index_count (items));
+        audgui_list_insert_rows (results_list, 0, items.len ());
     }
 
     if (search_source)
@@ -504,8 +499,6 @@ static bool_t search_init (void)
 {
     find_playlist ();
 
-    search_terms = index_new ();
-    items = index_new ();
     selection = g_array_new (FALSE, FALSE, 1);
 
     update_database ();
@@ -529,11 +522,12 @@ static void search_cleanup (void)
         search_source = 0;
     }
 
-    index_free_full (search_terms, (IndexFreeFunc) str_unref);
-    search_terms = NULL;
+    for (char * term : search_terms)
+        str_unref (term);
 
-    index_free (items);
-    items = NULL;
+    search_terms.clear ();
+    items.clear ();
+
     g_array_free (selection, TRUE);
     selection = NULL;
 
@@ -544,24 +538,24 @@ static void search_cleanup (void)
 static void do_add (bool_t play, char * * title)
 {
     int list = aud_playlist_by_unique_id (playlist_id);
-    int n_items = index_count (items);
+    int n_items = items.len ();
     int n_selected = 0;
 
-    Index * filenames = index_new ();
-    Index * tuples = index_new ();
+    Index<PlaylistAddItem> add;
 
     for (int i = 0; i < n_items; i ++)
     {
         if (! selection->data[i])
             continue;
 
-        Item * item = (Item *) index_get (items, i);
+        Item * item = items[i];
 
         for (unsigned m = 0; m < item->matches->len; m ++)
         {
             int entry = g_array_index (item->matches, int, m);
-            index_insert (filenames, -1, aud_playlist_entry_get_filename (list, entry));
-            index_insert (tuples, -1, aud_playlist_entry_get_tuple (list, entry, TRUE));
+            char * filename = aud_playlist_entry_get_filename (list, entry);
+            Tuple * tuple = aud_playlist_entry_get_tuple (list, entry, TRUE);
+            add.append ({filename, tuple});
         }
 
         n_selected ++;
@@ -572,8 +566,7 @@ static void do_add (bool_t play, char * * title)
     if (title && n_selected != 1)
         * title = NULL;
 
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, filenames,
-     tuples, play);
+    aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, std::move (add), play);
 }
 
 static void action_play (void)
@@ -611,9 +604,9 @@ static void action_add_to_playlist (void)
 
 static void list_get_value (void * user, int row, int column, GValue * value)
 {
-    g_return_if_fail (items && row >= 0 && row < index_count (items));
+    g_return_if_fail (row >= 0 && row < items.len ());
 
-    Item * item = (Item *) index_get (items, row);
+    Item * item = items[row];
     char * string = NULL;
 
     switch (item->field)
@@ -738,7 +731,7 @@ static void * search_get_widget (void)
     gtk_widget_set_no_show_all (scrolled, TRUE);
     gtk_box_pack_start ((GtkBox *) vbox, scrolled, TRUE, TRUE, 0);
 
-    results_list = audgui_list_new (& list_callbacks, NULL, items ? index_count (items) : 0);
+    results_list = audgui_list_new (& list_callbacks, NULL, items.len ());
     g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, FALSE);
     audgui_list_add_column (results_list, NULL, 0, G_TYPE_STRING, -1);

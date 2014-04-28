@@ -29,13 +29,13 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <libaudcore/runtime.h>
-#include <libaudcore/drct.h>
-#include <libaudcore/i18n.h>
-#include <libaudcore/runtime.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/tuple.h>
 #include <libaudgui/libaudgui.h>
 
 #include "actions-mainwin.h"
@@ -184,8 +184,7 @@ static void copy_selected_to_new (gint playlist)
 {
     gint entries = aud_playlist_entry_count (playlist);
     gint new_list = aud_playlist_count ();
-    Index * filenames = index_new ();
-    Index * tuples = index_new ();
+    Index<PlaylistAddItem> items;
     gint entry;
 
     aud_playlist_insert (new_list);
@@ -194,12 +193,13 @@ static void copy_selected_to_new (gint playlist)
     {
         if (aud_playlist_entry_get_selected (playlist, entry))
         {
-            index_insert (filenames, -1, aud_playlist_entry_get_filename (playlist, entry));
-            index_insert (tuples, -1, aud_playlist_entry_get_tuple (playlist, entry, TRUE));
+            PlaylistAddItem & item = items.append ();
+            item.filename = aud_playlist_entry_get_filename (playlist, entry);
+            item.tuple = aud_playlist_entry_get_tuple (playlist, entry, TRUE);
         }
     }
 
-    aud_playlist_entry_insert_batch (new_list, 0, filenames, tuples, FALSE);
+    aud_playlist_entry_insert_batch (new_list, 0, std::move (items), FALSE);
     aud_playlist_set_active (new_list);
 }
 

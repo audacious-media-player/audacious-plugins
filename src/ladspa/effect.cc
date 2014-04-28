@@ -52,19 +52,18 @@ static void start_plugin (LoadedPlugin * loaded)
 
     int instances = ladspa_channels / ports;
 
-    loaded->instances = index_new ();
     loaded->in_bufs = g_new (float *, ladspa_channels);
     loaded->out_bufs = g_new (float *, ladspa_channels);
 
     for (int i = 0; i < instances; i ++)
     {
         LADSPA_Handle handle = desc->instantiate (desc, ladspa_rate);
-        index_insert (loaded->instances, -1, handle);
+        loaded->instances.append (handle);
 
-        int controls = index_count (plugin->controls);
+        int controls = plugin->controls.len ();
         for (int c = 0; c < controls; c ++)
         {
-            ControlData * control = (ControlData *) index_get (plugin->controls, c);
+            ControlData * control = plugin->controls[c];
             desc->connect_port (handle, control->port, & loaded->values[c]);
         }
 
@@ -90,14 +89,14 @@ static void start_plugin (LoadedPlugin * loaded)
 
 static void run_plugin (LoadedPlugin * loaded, float * data, int samples)
 {
-    if (! loaded->instances)
+    if (! loaded->instances.len ())
         return;
 
     PluginData * plugin = loaded->plugin;
     const LADSPA_Descriptor * desc = plugin->desc;
 
     int ports = plugin->in_ports->len;
-    int instances = index_count (loaded->instances);
+    int instances = loaded->instances.len ();
     assert (ports * instances == ladspa_channels);
 
     while (samples / ladspa_channels > 0)
@@ -106,7 +105,7 @@ static void run_plugin (LoadedPlugin * loaded, float * data, int samples)
 
         for (int i = 0; i < instances; i ++)
         {
-            LADSPA_Handle * handle = (LADSPA_Handle *) index_get (loaded->instances, i);
+            LADSPA_Handle handle = loaded->instances[i];
 
             for (int p = 0; p < ports; p ++)
             {
@@ -146,16 +145,16 @@ static void run_plugin (LoadedPlugin * loaded, float * data, int samples)
 
 static void flush_plugin (LoadedPlugin * loaded)
 {
-    if (! loaded->instances)
+    if (! loaded->instances.len ())
         return;
 
     PluginData * plugin = loaded->plugin;
     const LADSPA_Descriptor * desc = plugin->desc;
 
-    int instances = index_count (loaded->instances);
+    int instances = loaded->instances.len ();
     for (int i = 0; i < instances; i ++)
     {
-        LADSPA_Handle * handle = (LADSPA_Handle *) index_get (loaded->instances, i);
+        LADSPA_Handle handle = loaded->instances[i];
 
         if (desc->deactivate)
             desc->deactivate (handle);
@@ -168,16 +167,16 @@ void shutdown_plugin_locked (LoadedPlugin * loaded)
 {
     loaded->active = 0;
 
-    if (! loaded->instances)
+    if (! loaded->instances.len ())
         return;
 
     PluginData * plugin = loaded->plugin;
     const LADSPA_Descriptor * desc = plugin->desc;
 
-    int instances = index_count (loaded->instances);
+    int instances = loaded->instances.len ();
     for (int i = 0; i < instances; i ++)
     {
-        LADSPA_Handle * handle = (LADSPA_Handle *) index_get (loaded->instances, i);
+        LADSPA_Handle handle = loaded->instances[i];
 
         if (desc->deactivate)
             desc->deactivate (handle);
@@ -191,8 +190,8 @@ void shutdown_plugin_locked (LoadedPlugin * loaded)
         g_free (loaded->out_bufs[channel]);
     }
 
-    index_free (loaded->instances);
-    loaded->instances = NULL;
+    loaded->instances.clear ();
+
     g_free (loaded->in_bufs);
     loaded->in_bufs = NULL;
     g_free (loaded->out_bufs);
@@ -203,12 +202,8 @@ void ladspa_start (int * channels, int * rate)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = index_count (loadeds);
-    for (int i = 0; i < count; i ++)
-    {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
+    for (LoadedPlugin * loaded : loadeds)
         shutdown_plugin_locked (loaded);
-    }
 
     ladspa_channels = * channels;
     ladspa_rate = * rate;
@@ -220,10 +215,8 @@ void ladspa_process (float * * data, int * samples)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = index_count (loadeds);
-    for (int i = 0; i < count; i ++)
+    for (LoadedPlugin * loaded : loadeds)
     {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         start_plugin (loaded);
         run_plugin (loaded, * data, * samples);
     }
@@ -235,12 +228,8 @@ void ladspa_flush (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = index_count (loadeds);
-    for (int i = 0; i < count; i ++)
-    {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
+    for (LoadedPlugin * loaded : loadeds)
         flush_plugin (loaded);
-    }
 
     pthread_mutex_unlock (& mutex);
 }
@@ -249,10 +238,8 @@ void ladspa_finish (float * * data, int * samples)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = index_count (loadeds);
-    for (int i = 0; i < count; i ++)
+    for (LoadedPlugin * loaded : loadeds)
     {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
         start_plugin (loaded);
         run_plugin (loaded, * data, * samples);
         shutdown_plugin_locked (loaded);

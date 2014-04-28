@@ -23,42 +23,35 @@
 
 static void get_value (void * user, int row, int column, GValue * value)
 {
-    g_return_if_fail (row >= 0 && row < index_count (loadeds));
+    g_return_if_fail (row >= 0 && row < loadeds.len ());
     g_return_if_fail (column == 0);
 
-    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, row);
-    g_value_set_string (value, loaded->plugin->desc->Name);
+    g_value_set_string (value, loadeds[row]->plugin->desc->Name);
 }
 
 static int get_selected (void * user, int row)
 {
-    g_return_val_if_fail (row >= 0 && row < index_count (loadeds), 0);
+    g_return_val_if_fail (row >= 0 && row < loadeds.len (), 0);
 
-    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, row);
-    return loaded->selected;
+    return loadeds[row]->selected;
 }
 
 static void set_selected (void * user, int row, int selected)
 {
-    g_return_if_fail (row >= 0 && row < index_count (loadeds));
+    g_return_if_fail (row >= 0 && row < loadeds.len ());
 
-    LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, row);
-    loaded->selected = selected;
+    loadeds[row]->selected = selected;
 }
 
 static void select_all (void * user, int selected)
 {
-    int count = index_count (loadeds);
-    for (int i = 0; i < count; i ++)
-    {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
+    for (LoadedPlugin * loaded : loadeds)
         loaded->selected = selected;
-    }
 }
 
 static void shift_rows (void * user, int row, int before)
 {
-    int rows = index_count (loadeds);
+    int rows = loadeds.len ();
     g_return_if_fail (row >= 0 && row < rows);
     g_return_if_fail (before >= 0 && before <= rows);
 
@@ -67,45 +60,39 @@ static void shift_rows (void * user, int row, int before)
 
     pthread_mutex_lock (& mutex);
 
-    Index * move = index_new ();
-    Index * others = index_new ();
+    Index<LoadedPlugin *> move;
+    Index<LoadedPlugin *> others;
 
     int begin, end;
     if (before < row)
     {
         begin = before;
         end = row + 1;
-        while (end < rows && ((LoadedPlugin *) index_get (loadeds, end))->selected)
+        while (end < rows && loadeds[end]->selected)
             end ++;
     }
     else
     {
         begin = row;
-        while (begin > 0 && ((LoadedPlugin *) index_get (loadeds, begin - 1))->selected)
+        while (begin > 0 && loadeds[begin - 1]->selected)
             begin --;
         end = before;
     }
 
     for (gint i = begin; i < end; i ++)
     {
-        LoadedPlugin * loaded = (LoadedPlugin *) index_get (loadeds, i);
-        index_insert (loaded->selected ? move : others, -1, loaded);
+        if (loadeds[i]->selected)
+            move.append (loadeds[i]);
+        else
+            others.append (loadeds[i]);
     }
 
     if (before < row)
-    {
-        index_copy_insert (others, 0, move, -1, -1);
-        index_free (others);
-    }
+        move.move_from (others, 0, -1, -1, true, true);
     else
-    {
-        index_copy_insert (move, 0, others, -1, -1);
-        index_free (move);
-        move = others;
-    }
+        move.move_from (others, 0, 0, -1, true, true);
 
-    index_copy_set (move, 0, loadeds, begin, end - begin);
-    index_free (move);
+    loadeds.move_from (move, 0, begin, end - begin, false, true);
 
     pthread_mutex_unlock (& mutex);
 
@@ -125,7 +112,7 @@ static const AudguiListCallbacks callbacks = {
 
 GtkWidget * create_loaded_list (void)
 {
-    GtkWidget * list = audgui_list_new (& callbacks, NULL, index_count (loadeds));
+    GtkWidget * list = audgui_list_new (& callbacks, NULL, loadeds.len ());
     audgui_list_add_column (list, NULL, 0, G_TYPE_STRING, -1);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list, 0);
     return list;
@@ -134,5 +121,5 @@ GtkWidget * create_loaded_list (void)
 void update_loaded_list (GtkWidget * list)
 {
     audgui_list_delete_rows (list, 0, audgui_list_row_count (list));
-    audgui_list_insert_rows (list, 0, index_count (loadeds));
+    audgui_list_insert_rows (list, 0, loadeds.len ());
 }

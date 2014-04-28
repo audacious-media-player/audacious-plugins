@@ -33,7 +33,7 @@
 typedef struct {
     const char * filename;
     bool_t valid_heading;
-    Index * filenames;
+    Index<PlaylistAddItem> & items;
 } PLSLoadState;
 
 void pls_handle_heading (const char * heading, void * data)
@@ -52,34 +52,34 @@ void pls_handle_entry (const char * key, const char * value, void * data)
 
     char * uri = uri_construct (value, state->filename);
     if (uri)
-        index_insert (state->filenames, -1, uri);
+        state->items.append ({uri});
 }
 
 static bool_t playlist_load_pls (const char * filename, VFSFile * file,
- char * * title, Index * filenames, Index * tuples)
+ char * * title, Index<PlaylistAddItem> & items)
 {
     PLSLoadState state = {
-        .filename = filename,
-        .valid_heading = FALSE,
-        .filenames = filenames
+        filename,
+        FALSE,
+        items
     };
 
     inifile_parse (file, pls_handle_heading, pls_handle_entry, & state);
 
-    return (index_count (filenames) != 0);
+    return (items.len () > 0);
 }
 
 static bool_t playlist_save_pls (const char * filename, VFSFile * file,
-                                   const char * title, Index * filenames, Index * tuples)
+ const char * title, const Index<PlaylistAddItem> & items)
 {
-    int entries = index_count (filenames);
+    int entries = items.len ();
 
     vfs_fprintf (file, "[playlist]\n");
     vfs_fprintf (file, "NumberOfEntries=%d\n", entries);
 
     for (int count = 0; count < entries; count ++)
     {
-        const char * filename = (char *) index_get (filenames, count);
+        const char * filename = items[count].filename;
         char * fn;
 
         if (! strncmp (filename, "file://", 7))

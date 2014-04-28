@@ -26,10 +26,11 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include <libaudcore/drct.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/tuple.h>
 #include <libaudgui/libaudgui.h>
 
 #include "ui_statusbar.h"

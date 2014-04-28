@@ -231,14 +231,10 @@ equalizerwin_delete_auto_delete(GtkWidget *widget, gpointer data)
     equalizerwin_delete_selected_presets(GTK_TREE_VIEW(data), "eq.auto_preset");
 }
 
-static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
-                                const gchar *title,
-                                GtkWidget **window,
-                                GtkSelectionMode sel_mode,
-                                GtkWidget **entry,
-                                GtkWidget *button_action,
-                                GCallback action_func,
-                                GCallback select_row_func)
+static GtkWidget * equalizerwin_create_list_window
+ (const Index<EqualizerPreset> & preset_list, const char * title,
+ GtkWidget * * window, GtkSelectionMode sel_mode, GtkWidget * * entry,
+ GtkWidget * button_action, GCallback action_func, GCallback select_row_func)
 {
     GtkWidget *vbox, *scrolled_window, *bbox, *view;
     GtkWidget *button_cancel;
@@ -272,11 +268,10 @@ static GtkWidget * equalizerwin_create_list_window (Index * preset_list,
 
     /* fill the store with the names of all available presets */
     store = gtk_list_store_new(1, G_TYPE_STRING);
-    for (int p = 0; p < index_count (preset_list); p ++)
+    for (const EqualizerPreset & preset : preset_list)
     {
-        EqualizerPreset * preset = (EqualizerPreset *) index_get (preset_list, p);
-        gtk_list_store_append(store, &iter);
-        gtk_list_store_set (store, & iter, 0, preset->name, -1);
+        gtk_list_store_append (store, & iter);
+        gtk_list_store_set (store, & iter, 0, preset.name, -1);
     }
     model = GTK_TREE_MODEL(store);
 
@@ -447,8 +442,7 @@ void eq_preset_save_default (void)
 
 void eq_preset_set_zero (void)
 {
-    const EqualizerPreset zero = {0};
-    equalizerwin_apply_preset (& zero);
+    equalizerwin_apply_preset (EqualizerPreset ());
 }
 
 void eq_preset_list_cleanup (void)

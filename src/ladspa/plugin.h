@@ -38,7 +38,7 @@ typedef struct {
 typedef struct {
     char * path;
     const LADSPA_Descriptor * desc;
-    Index * controls; /* (ControlData *) */
+    Index<ControlData *> controls;
     GArray * in_ports, * out_ports; /* (int) */
     char selected;
 } PluginData;
@@ -48,8 +48,8 @@ typedef struct {
     float * values;
     char selected;
     char active;
-    Index * instances; /* (LADSPA_Handle) */
-    float * * in_bufs, * * out_bufs; /* (float *) */
+    Index<LADSPA_Handle> instances;
+    float * * in_bufs, * * out_bufs;
     GtkWidget * settings_win;
 } LoadedPlugin;
 
@@ -61,9 +61,9 @@ typedef struct {
 
 extern pthread_mutex_t mutex;
 extern char * module_path;
-extern Index * modules; /* (GModule *) */
-extern Index * plugins; /* (PluginData *) */
-extern Index * loadeds; /* (LoadedPlugin *) */
+extern Index<GModule *> modules;
+extern Index<PluginData *> plugins;
+extern Index<LoadedPlugin *> loadeds;
 
 extern GtkWidget * about_win;
 extern GtkWidget * config_win;

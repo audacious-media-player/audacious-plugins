@@ -21,11 +21,12 @@
 
 #include <gtk/gtk.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
-#include <libaudcore/audstrings.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/tuple.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
@@ -306,8 +307,8 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
     g_return_val_if_fail (row >= 0, TRUE);
     gtk_tree_path_free (path);
 
-    Index * keys = str_list_to_index (search, " ");
-    int n_keys = index_count (keys);
+    Index<char *> keys = str_list_to_index (search, " ");
+    int n_keys = keys.len ();
 
     bool_t matched = FALSE;
 
@@ -324,9 +325,10 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
 
             for (int j = 0; j < n_keys;)
             {
-                if (strstr_nocase_utf8 (s[i], (const char *) index_get (keys, j)))
+                if (strstr_nocase_utf8 (s[i], keys[j]))
                 {
-                    index_delete_full (keys, j, 1, (IndexFreeFunc) str_unref);
+                    str_unref (keys[j]);
+                    keys.remove (j, 1);
                     n_keys --;
                 }
                 else
@@ -339,7 +341,8 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
         matched = ! n_keys;
     }
 
-    index_free_full (keys, (IndexFreeFunc) str_unref);
+    for (char * key : keys)
+        str_unref (key);
 
     return ! matched;
 }
