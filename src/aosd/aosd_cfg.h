@@ -23,6 +23,7 @@
 
 #include "aosd_common.h"
 #include <glib.h>
+#include <libaudcore/objects.h>
 
 /* in this release only one user font is supported */
 #define AOSD_TEXT_FONTS_NUM 1
@@ -68,7 +69,7 @@ aosd_cfg_osd_decoration_t;
 /* config portion containing osd text information */
 typedef struct
 {
-  gchar *fonts_name[AOSD_TEXT_FONTS_NUM]; /* pooled */
+  String fonts_name[AOSD_TEXT_FONTS_NUM];
   aosd_color_t fonts_color[AOSD_TEXT_FONTS_NUM];
   gboolean fonts_draw_shadow[AOSD_TEXT_FONTS_NUM];
   aosd_color_t fonts_shadow_color[AOSD_TEXT_FONTS_NUM];

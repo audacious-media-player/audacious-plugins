@@ -85,7 +85,7 @@ static void xspf_add_file (xmlNode * track, const gchar * filename,
  const gchar * base, Index<PlaylistAddItem> & items)
 {
     xmlNode *nptr;
-    gchar *location = NULL;
+    String location;
     Tuple * tuple = NULL;
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
@@ -95,7 +95,7 @@ static void xspf_add_file (xmlNode * track, const gchar * filename,
                 gchar *str = (gchar *)xmlNodeGetContent(nptr);
 
                 if (strstr (str, "://") != NULL)
-                    location = str_get (str);
+                    location = String (str);
                 else if (str[0] == '/' && base != NULL)
                 {
                     const gchar * colon = strstr (base, "://");
@@ -197,14 +197,12 @@ static gint close_cb (void * file)
 }
 
 static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
- gchar * * title, Index<PlaylistAddItem> & items)
+ String & title, Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL,
      XML_PARSE_RECOVER);
     if (! doc)
         return FALSE;
-
-    * title = NULL;
 
     xmlNode *nptr, *nptr2;
 
@@ -225,10 +223,7 @@ static gboolean xspf_playlist_load (const gchar * filename, VFSFile * file,
                 {
                     xmlChar * xml_title = xmlNodeGetContent (nptr2);
                     if (xml_title && xml_title[0])
-                    {
-                        str_unref (* title);
-                        * title = str_get ((gchar *) xml_title);
-                    }
+                        title = String ((gchar *) xml_title);
                     xmlFree (xml_title);
                 }
                 else if (! xmlStrcmp (nptr2->name, (xmlChar *) "trackList"))
@@ -375,7 +370,7 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
         const char * filename = item.filename;
         const Tuple * tuple = item.tuple;
         xmlNodePtr track, location;
-        gchar *scratch = NULL;
+        String scratch;
         gint scratchi = 0;
 
         track = xmlNewNode(NULL, (xmlChar *)"track");
@@ -397,7 +392,6 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
                         scratch = tuple_get_str (tuple, xs->tupleField);
                         if (! scratch)
                             isOK = FALSE;
-                        str_unref(scratch);
                         break;
                     case TUPLE_INT:
                         scratchi = tuple_get_int (tuple, xs->tupleField);

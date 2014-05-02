@@ -36,12 +36,35 @@
 
 enum {ARTIST, ALBUM, TITLE, FIELDS};
 
-struct Item {
+struct Item
+{
     int field;
-    char * name, * folded;
+    String name, folded;
     Item * parent;
     GHashTable * children;
-    GArray * matches;
+    Index<int> matches;
+
+    Item (int field, const String & name, Item * parent) :
+        field (field),
+        name (name),
+        folded (str_tolower_utf8 (name)),
+        parent (parent),
+        children (nullptr)
+    {
+        if (field != TITLE)
+            children = g_hash_table_new_full ((GHashFunc) str_hash,
+             (GEqualFunc) str_equal, (GDestroyNotify) str_unref,
+             (GDestroyNotify) destroy);
+    }
+
+    ~Item ()
+    {
+        if (children)
+            g_hash_table_destroy (children);
+    }
+
+    static void destroy (Item * item)
+        { delete item; }
 };
 
 struct SearchState {
@@ -50,48 +73,17 @@ struct SearchState {
 };
 
 static int playlist_id;
-static Index<char *> search_terms;
+static Index<String> search_terms;
 
 static GHashTable * added_table;
 static GHashTable * database;
 static Index<Item *> items;
-static GArray * selection;
+static Index<bool> selection;
 
 static bool_t adding;
 static int search_source;
 
 static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list;
-
-static void item_free (Item * item);
-
-static Item * item_new (int field, char * name, Item * parent)
-{
-    Item * item = g_slice_new (Item);
-    item->field = field;
-    item->name = name;
-    item->folded = str_tolower_utf8 (name);
-    item->parent = parent;
-    item->matches = g_array_new (FALSE, FALSE, sizeof (int));
-
-    if (field == TITLE)
-        item->children = NULL;
-    else
-        item->children = g_hash_table_new_full ((GHashFunc) str_hash,
-         (GEqualFunc) str_equal, NULL, (GDestroyNotify) item_free);
-
-    return item;
-}
-
-static void item_free (Item * item)
-{
-    if (item->children)
-        g_hash_table_destroy (item->children);
-
-    str_unref (item->name);
-    str_unref (item->folded);
-    g_array_free (item->matches, TRUE);
-    g_slice_free (Item, item);
-}
 
 static void find_playlist (void)
 {
@@ -99,12 +91,9 @@ static void find_playlist (void)
 
     for (int p = 0; playlist_id < 0 && p < aud_playlist_count (); p ++)
     {
-        char * title = aud_playlist_get_title (p);
-
+        String title = aud_playlist_get_title (p);
         if (! strcmp (title, _("Library")))
             playlist_id = aud_playlist_get_unique_id (p);
-
-        str_unref (title);
     }
 }
 
@@ -140,29 +129,20 @@ static int get_playlist (bool_t require_added, bool_t require_scanned)
 
 static void set_search_phrase (const char * phrase)
 {
-    for (char * term : search_terms)
-        str_unref (term);
-
-    char * folded = str_tolower_utf8 (phrase);
-    search_terms = str_list_to_index (folded, " ");
-    str_unref (folded);
+    search_terms = str_list_to_index (str_tolower_utf8 (phrase), " ");
 }
 
-static char * get_path (void)
+static String get_path (void)
 {
-    char * path = aud_get_str ("search-tool", "path");
+    String path = aud_get_str ("search-tool", "path");
     if (g_file_test (path, G_FILE_TEST_EXISTS))
         return path;
-
-    str_unref (path);
 
     path = filename_build (g_get_home_dir (), "Music");
     if (g_file_test (path, G_FILE_TEST_EXISTS))
         return path;
 
-    str_unref (path);
-
-    return str_get (g_get_home_dir ());
+    return String (g_get_home_dir ());
 }
 
 static void destroy_added_table (void)
@@ -190,67 +170,54 @@ static void create_database (int list)
     destroy_database ();
 
     database = g_hash_table_new_full ((GHashFunc) str_hash, (GEqualFunc)
-     str_equal, NULL, (GDestroyNotify) item_free);
+     str_equal, (GDestroyNotify) str_unref, (GDestroyNotify) Item::destroy);
 
     int entries = aud_playlist_entry_count (list);
 
     for (int e = 0; e < entries; e ++)
     {
-        char * title, * artist, * album;
+        String title, artist, album;
         Item * artist_item, * album_item, * title_item;
 
-        aud_playlist_entry_describe (list, e, & title, & artist, & album, TRUE);
+        aud_playlist_entry_describe (list, e, title, artist, album, TRUE);
 
         if (! title)
-        {
-            str_unref (artist);
-            str_unref (album);
             continue;
-        }
 
         if (! artist)
-            artist = str_get (_("Unknown Artist"));
+            artist = String (_("Unknown Artist"));
         if (! album)
-            album = str_get (_("Unknown Album"));
+            album = String (_("Unknown Album"));
 
         artist_item = (Item *) g_hash_table_lookup (database, artist);
 
         if (! artist_item)
         {
-            /* item_new() takes ownership of reference to artist */
-            artist_item = item_new (ARTIST, artist, NULL);
-            g_hash_table_insert (database, artist, artist_item);
+            artist_item = new Item (ARTIST, artist, NULL);
+            g_hash_table_insert (database, artist.to_c (), artist_item);
         }
-        else
-            str_unref (artist);
 
-        g_array_append_val (artist_item->matches, e);
+        artist_item->matches.append (e);
 
         album_item = (Item *) g_hash_table_lookup (artist_item->children, album);
 
         if (! album_item)
         {
-            /* item_new() takes ownership of reference to album */
-            album_item = item_new (ALBUM, album, artist_item);
-            g_hash_table_insert (artist_item->children, album, album_item);
+            album_item = new Item (ALBUM, album, artist_item);
+            g_hash_table_insert (artist_item->children, album.to_c (), album_item);
         }
-        else
-            str_unref (album);
 
-        g_array_append_val (album_item->matches, e);
+        album_item->matches.append (e);
 
         title_item = (Item *) g_hash_table_lookup (album_item->children, title);
 
         if (! title_item)
         {
-            /* item_new() takes ownership of reference to title */
-            title_item = item_new (TITLE, title, album_item);
-            g_hash_table_insert (album_item->children, title, title_item);
+            title_item = new Item (TITLE, title, album_item);
+            g_hash_table_insert (album_item->children, title.to_c (), title_item);
         }
-        else
-            str_unref (title);
 
-        g_array_append_val (title_item->matches, e);
+        title_item->matches.append (e);
     }
 }
 
@@ -320,10 +287,10 @@ static void do_search (void)
         }
     }
 
-    g_array_set_size (selection, total);
-    memset (selection->data, 0, selection->len);
-    if (selection->len > 0)
-        selection->data[0] = 1;
+    selection.remove (0, -1);
+    selection.insert (0, total);
+    if (total > 0)
+        selection[0] = true;
 }
 
 static bool_t filter_cb (const char * filename, void * unused)
@@ -340,14 +307,13 @@ static void begin_add (const char * path)
 
     aud_set_str ("search-tool", "path", path);
 
-    char * uri = filename_to_uri (path);
+    String uri = filename_to_uri (path);
     g_return_if_fail (uri);
 
     if (! g_str_has_suffix (uri, "/"))
     {
         SCONCAT2 (temp, uri, "/");
-        str_unref (uri);
-        uri = str_get (temp);
+        uri = String (temp);
     }
 
     destroy_added_table ();
@@ -359,18 +325,15 @@ static void begin_add (const char * path)
 
     for (int entry = 0; entry < entries; entry ++)
     {
-        char * filename = aud_playlist_entry_get_filename (list, entry);
+        String filename = aud_playlist_entry_get_filename (list, entry);
 
         if (g_str_has_prefix (filename, uri) && ! g_hash_table_contains (added_table, filename))
         {
             aud_playlist_entry_set_selected (list, entry, FALSE);
-            g_hash_table_insert (added_table, filename, NULL);
+            g_hash_table_insert (added_table, filename.to_c (), NULL);
         }
         else
-        {
             aud_playlist_entry_set_selected (list, entry, TRUE);
-            str_unref (filename);
-        }
     }
 
     aud_playlist_delete_selected (list);
@@ -499,8 +462,6 @@ static bool_t search_init (void)
 {
     find_playlist ();
 
-    selection = g_array_new (FALSE, FALSE, 1);
-
     update_database ();
 
     hook_associate ("playlist add complete", add_complete_cb, NULL);
@@ -522,20 +483,15 @@ static void search_cleanup (void)
         search_source = 0;
     }
 
-    for (char * term : search_terms)
-        str_unref (term);
-
     search_terms.clear ();
     items.clear ();
-
-    g_array_free (selection, TRUE);
-    selection = NULL;
+    selection.clear ();
 
     destroy_added_table ();
     destroy_database ();
 }
 
-static void do_add (bool_t play, char * * title)
+static void do_add (bool_t play, String & title)
 {
     int list = aud_playlist_by_unique_id (playlist_id);
     int n_items = items.len ();
@@ -545,26 +501,25 @@ static void do_add (bool_t play, char * * title)
 
     for (int i = 0; i < n_items; i ++)
     {
-        if (! selection->data[i])
+        if (! selection[i])
             continue;
 
         Item * item = items[i];
 
-        for (unsigned m = 0; m < item->matches->len; m ++)
+        for (int entry : item->matches)
         {
-            int entry = g_array_index (item->matches, int, m);
-            char * filename = aud_playlist_entry_get_filename (list, entry);
-            Tuple * tuple = aud_playlist_entry_get_tuple (list, entry, TRUE);
-            add.append ({filename, tuple});
+            PlaylistAddItem & item = add.append ();
+            item.filename = aud_playlist_entry_get_filename (list, entry);
+            item.tuple = aud_playlist_entry_get_tuple (list, entry, TRUE);
         }
 
         n_selected ++;
-        if (title && n_selected == 1)
-            * title = item->name;
+        if (n_selected == 1)
+            title = item->name;
     }
 
-    if (title && n_selected != 1)
-        * title = NULL;
+    if (n_selected != 1)
+        title = String ();
 
     aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, std::move (add), play);
 }
@@ -579,16 +534,17 @@ static void action_play (void)
     else
         aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
 
-    do_add (TRUE, NULL);
+    String title;
+    do_add (TRUE, title);
 }
 
 static void action_create_playlist (void)
 {
-    char * title;
-
     aud_playlist_insert (-1);
     aud_playlist_set_active (aud_playlist_count () - 1);
-    do_add (FALSE, & title);
+
+    String title;
+    do_add (FALSE, title);
 
     if (title)
         aud_playlist_set_title (aud_playlist_count () - 1, title);
@@ -599,7 +555,8 @@ static void action_add_to_playlist (void)
     if (aud_playlist_by_unique_id (playlist_id) == aud_playlist_get_active ())
         return;
 
-    do_add (FALSE, NULL);
+    String title;
+    do_add (FALSE, title);
 }
 
 static void list_get_value (void * user, int row, int column, GValue * value)
@@ -615,8 +572,9 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         char scratch[128];
 
     case TITLE:
-        string = g_strdup_printf (_("%s\n on %s by %s"), item->name,
-         item->parent->name, item->parent->parent->name);
+        string = g_strdup_printf (_("%s\n on %s by %s"),
+         (const char *) item->name, (const char *) item->parent->name,
+         (const char *) item->parent->parent->name);
         break;
 
     case ARTIST:
@@ -624,14 +582,15 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         snprintf (scratch, sizeof scratch, dngettext (PACKAGE, "%d album",
          "%d albums", albums), albums);
         string = g_strdup_printf (dngettext (PACKAGE, "%s\n %s, %d song",
-         "%s\n %s, %d songs", item->matches->len), item->name, scratch,
-         item->matches->len);
+         "%s\n %s, %d songs", item->matches.len ()), (const char *) item->name,
+         scratch, item->matches.len ());
         break;
 
     case ALBUM:
         string = g_strdup_printf (dngettext (PACKAGE, "%s\n %d song by %s",
-         "%s\n %d songs by %s", item->matches->len), item->name,
-         item->matches->len, item->parent->name);
+         "%s\n %d songs by %s", item->matches.len ()),
+         (const char *) item->name, item->matches.len (),
+         (const char *) item->parent->name);
         break;
     }
 
@@ -640,20 +599,20 @@ static void list_get_value (void * user, int row, int column, GValue * value)
 
 static bool_t list_get_selected (void * user, int row)
 {
-    g_return_val_if_fail (selection && row >= 0 && (unsigned) row < selection->len, FALSE);
-    return selection->data[row];
+    g_return_val_if_fail (row >= 0 && row < selection.len (), FALSE);
+    return selection[row];
 }
 
 static void list_set_selected (void * user, int row, bool_t selected)
 {
-    g_return_if_fail (selection && row >= 0 && (unsigned) row < selection->len);
-    selection->data[row] = selected;
+    g_return_if_fail (row >= 0 && row < selection.len ());
+    selection[row] = selected;
 }
 
 static void list_select_all (void * user, bool_t selected)
 {
-    g_return_if_fail (selection);
-    memset (selection->data, selected, selection->len);
+    for (bool & s : selection)
+        s = selected;
 }
 
 static void list_activate_row (void * user, int row)
@@ -744,9 +703,7 @@ static void * search_get_widget (void)
      GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
     gtk_box_pack_start ((GtkBox *) hbox, chooser, TRUE, TRUE, 0);
 
-    char * path = get_path ();
-    gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, path);
-    str_unref (path);
+    gtk_file_chooser_set_filename ((GtkFileChooser *) chooser, get_path ());
 
     GtkWidget * button = gtk_button_new ();
     gtk_container_add ((GtkContainer *) button, gtk_image_new_from_icon_name

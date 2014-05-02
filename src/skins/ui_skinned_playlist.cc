@@ -281,15 +281,13 @@ DRAW_FUNC_BEGIN (playlist_draw)
     for (gint i = data->first; i < data->first + data->rows && i <
      active_length; i ++)
     {
-        gchar * title = aud_playlist_entry_get_title (active_playlist, i, TRUE);
+        String title = aud_playlist_entry_get_title (active_playlist, i, TRUE);
 
         layout = gtk_widget_create_pango_layout (wid, title);
         pango_layout_set_font_description (layout, data->font);
         pango_layout_set_width (layout, PANGO_SCALE * (data->width - left -
          right));
         pango_layout_set_ellipsize (layout, PANGO_ELLIPSIZE_END);
-
-        str_unref (title);
 
         cairo_move_to (cr, left, data->offset + data->row_height * (i -
          data->first));

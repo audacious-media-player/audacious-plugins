@@ -31,8 +31,8 @@ Tuple *now_playing_track        = NULL;
 pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t communication_signal = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t log_access_mutex = PTHREAD_MUTEX_INITIALIZER;
-gchar *session_key = NULL; /* pooled */
-gchar *request_token = NULL; /* pooled */
+String session_key;
+String request_token;
 
 
 //static (private) variables
@@ -65,14 +65,13 @@ static void cleanup_current_track(void) {
     }
 }
 
-char *clean_string(char *string) {
+String clean_string (const char *string) {
     if (!string)
-        return str_get("");
+        return String("");
 
     SCOPY(temp, string);
     str_replace_char(temp, '\t', ' ');
-    str_unref(string);
-    return str_get(temp);
+    return String(temp);
 }
 
 static gboolean queue_track_to_scrobble (gpointer data) {
@@ -80,16 +79,16 @@ static gboolean queue_track_to_scrobble (gpointer data) {
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
 
-    char *artist = clean_string(tuple_get_str(playing_track, FIELD_ARTIST));
-    char *title  = clean_string(tuple_get_str(playing_track, FIELD_TITLE));
-    char *album  = clean_string(tuple_get_str(playing_track, FIELD_ALBUM));
+    String artist = clean_string(tuple_get_str(playing_track, FIELD_ARTIST));
+    String title  = clean_string(tuple_get_str(playing_track, FIELD_TITLE));
+    String album  = clean_string(tuple_get_str(playing_track, FIELD_ALBUM));
 
     int track  = tuple_get_int(playing_track, FIELD_TRACK_NUMBER);
     int length = tuple_get_int(playing_track, FIELD_LENGTH);
 
     //artist, title and length are required for a successful scrobble
     if (artist[0] && title[0] && length > 0) {
-        char *track_str = (track > 0) ? int_to_str(track) : str_get("");
+        String track_str = (track > 0) ? int_to_str(track) : String("");
 
         pthread_mutex_lock(&log_access_mutex);
         FILE *f = g_fopen(queuepath, "a");
@@ -101,7 +100,8 @@ static gboolean queue_track_to_scrobble (gpointer data) {
             //is missing, but we're sticking to it anyway...
             //See http://www.audioscrobbler.net/wiki/Portable_Player_Logging
             if (fprintf(f, "%s\t%s\t%s\t%s\t%i\tL\t%" G_GINT64_FORMAT "\n",
-             artist, album, title, track_str, length / 1000, timestamp) < 0) {
+             (const char *)artist, (const char *)album, (const char *)title,
+             (const char *)track_str, length / 1000, timestamp) < 0) {
                 perror("fprintf");
             } else {
                 pthread_mutex_lock(&communication_mutex);
@@ -111,14 +111,8 @@ static gboolean queue_track_to_scrobble (gpointer data) {
             fclose(f);
         }
         pthread_mutex_unlock(&log_access_mutex);
-
-        str_unref(track_str);
     }
     g_free(queuepath);
-    str_unref(artist);
-    str_unref(title);
-    str_unref(album);
-
     cleanup_current_track();
     return FALSE;
 }
@@ -233,28 +227,20 @@ static bool_t scrobbler_init (void) {
     if (!session_key[0]) {
       //We haven't been configured yet
 
-      char *migrated = aud_get_str("scrobbler", "migrated");
+      String migrated = aud_get_str("scrobbler", "migrated");
       if (strcmp(migrated, "true") != 0) {
         //We haven't been migrated yet
 
-        char *oldpass = aud_get_str("audioscrobbler","password");
-        if (oldpass[0]) {
+        String oldpass = aud_get_str("audioscrobbler","password");
+        String olduser = aud_get_str("audioscrobbler","username");
+        if (oldpass[0] && olduser[0]) {
+          //And the old scrobbler was configured
 
-          char *olduser = aud_get_str("audioscrobbler","username");
-          if (olduser[0]) {
-            //And the old scrobbler was configured
-
-            scrobbling_enabled = FALSE;
-            migrate_config_requested = TRUE;
-          }
-          str_unref(olduser);
+          scrobbling_enabled = FALSE;
+          migrate_config_requested = TRUE;
         }
-        str_unref(oldpass);
       }
-      str_unref(migrated);
     }
-
-
 
     pthread_create(&communicator, NULL, scrobbling_thread, NULL);
 
@@ -284,12 +270,9 @@ static void scrobbler_cleanup (void) {
 
     pthread_join(communicator, NULL);
 
-    str_unref(request_token);
-    str_unref(session_key);
-    str_unref(username);
-    request_token = NULL;
-    session_key   = NULL;
-    username      = NULL;
+    request_token = String();
+    session_key = String();
+    username = String();
     scrobbler_running = TRUE;
 }
 

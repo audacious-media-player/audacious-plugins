@@ -41,7 +41,7 @@ static void log_warning(Music_Emu * emu)
  */
 class ConsoleFileHandler {
 public:
-    char *m_path;            // path without track number specification
+    String m_path;            // path without track number specification
     int m_track;             // track number (0 = first track)
     Music_Emu* m_emu;         // set to 0 to take ownership
     gme_type_t m_type;
@@ -100,7 +100,6 @@ ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
 ConsoleFileHandler::~ConsoleFileHandler()
 {
     gme_delete(m_emu);
-    str_unref (m_path);
 }
 
 int ConsoleFileHandler::load(int sample_rate)

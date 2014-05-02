@@ -416,7 +416,7 @@ void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name,
     if (p < 0)
     {
         EqualizerPreset & preset = list.append ();
-        preset.name = str_get (name);
+        preset.name = String (name);
         p = list.len () - 1;
     }
 
@@ -505,7 +505,6 @@ static void position_cb (void * data, void * user_data)
      aud_playlist_get_playing () || position == -1)
         return;
 
-    gchar * filename = aud_playlist_entry_get_filename (playlist, position);
+    String filename = aud_playlist_entry_get_filename (playlist, position);
     load_auto_preset (filename);
-    str_unref (filename);
 }

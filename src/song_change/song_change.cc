@@ -40,10 +40,10 @@ typedef struct
 songchange_playback_ttc_prevs_t;
 static songchange_playback_ttc_prevs_t *ttc_prevs = NULL;
 
-static char *cmd_line = NULL;
-static char *cmd_line_after = NULL;
-static char *cmd_line_end = NULL;
-static char *cmd_line_ttc = NULL;
+static String cmd_line;
+static String cmd_line_after;
+static String cmd_line_end;
+static String cmd_line_ttc;
 
 static GtkWidget *cmd_warn_label, *cmd_warn_img;
 
@@ -116,7 +116,7 @@ static void execute_command(char *cmd)
  */
 /* do_command(): do @cmd after replacing the format codes
    @cmd: command to run */
-static void do_command (char * cmd)
+static void do_command (const char * cmd)
 {
     int playlist = aud_playlist_get_playing ();
     int pos = aud_playlist_get_position (playlist);
@@ -129,14 +129,13 @@ static void do_command (char * cmd)
     {
         formatter = formatter_new();
 
-        char * ctitle = aud_playlist_entry_get_title (playlist, pos, FALSE);
+        String ctitle = aud_playlist_entry_get_title (playlist, pos, FALSE);
         if (ctitle)
         {
             temp = escape_shell_chars (ctitle);
             formatter_associate(formatter, 's', temp);
             formatter_associate(formatter, 'n', temp);
             g_free(temp);
-            str_unref (ctitle);
         }
         else
         {
@@ -144,13 +143,12 @@ static void do_command (char * cmd)
             formatter_associate(formatter, 'n', "");
         }
 
-        char * filename = aud_playlist_entry_get_filename (playlist, pos);
+        String filename = aud_playlist_entry_get_filename (playlist, pos);
         if (filename)
         {
             temp = escape_shell_chars (filename);
             formatter_associate(formatter, 'f', temp);
             g_free(temp);
-            str_unref (filename);
         }
         else
             formatter_associate(formatter, 'f', "");
@@ -186,30 +184,21 @@ static void do_command (char * cmd)
         Tuple * tuple = aud_playlist_entry_get_tuple
             (aud_playlist_get_active (), pos, 0);
 
-        char * artist = tuple ? tuple_get_str (tuple, FIELD_ARTIST) : NULL;
+        String artist = tuple ? tuple_get_str (tuple, FIELD_ARTIST) : String ();
         if (artist)
-        {
             formatter_associate(formatter, 'a', artist);
-            str_unref(artist);
-        }
         else
             formatter_associate(formatter, 'a', "");
 
-        char * album = tuple ? tuple_get_str (tuple, FIELD_ALBUM) : NULL;
+        String album = tuple ? tuple_get_str (tuple, FIELD_ALBUM) : String ();
         if (album)
-        {
             formatter_associate(formatter, 'b', album);
-            str_unref(album);
-        }
         else
             formatter_associate(formatter, 'b', "");
 
-        char * title = tuple ? tuple_get_str (tuple, FIELD_TITLE) : NULL;
+        String title = tuple ? tuple_get_str (tuple, FIELD_TITLE) : String ();
         if (title)
-        {
             formatter_associate(formatter, 'T', title);
-            str_unref(title);
-        }
         else
             formatter_associate(formatter, 'T', "");
 
@@ -251,15 +240,10 @@ static void cleanup(void)
         ttc_prevs = NULL;
     }
 
-    str_unref(cmd_line);
-    str_unref(cmd_line_after);
-    str_unref(cmd_line_end);
-    str_unref(cmd_line_ttc);
-
-    cmd_line = NULL;
-    cmd_line_after = NULL;
-    cmd_line_end = NULL;
-    cmd_line_ttc = NULL;
+    cmd_line = String ();
+    cmd_line_after = String ();
+    cmd_line_end = String ();
+    cmd_line_ttc = String ();
 
     signal(SIGCHLD, SIG_DFL);
 }
@@ -271,15 +255,10 @@ static void save_and_close(gchar * cmd, gchar * cmd_after, gchar * cmd_end, gcha
     aud_set_str("song_change", "cmd_line_end", cmd_end);
     aud_set_str("song_change", "cmd_line_ttc", cmd_ttc);
 
-    str_unref(cmd_line);
-    str_unref(cmd_line_after);
-    str_unref(cmd_line_end);
-    str_unref(cmd_line_ttc);
-
-    cmd_line = str_get(cmd);
-    cmd_line_after = str_get(cmd_after);
-    cmd_line_end = str_get(cmd_end);
-    cmd_line_ttc = str_get(cmd_ttc);
+    cmd_line = String (cmd);
+    cmd_line_after = String (cmd_after);
+    cmd_line_end = String (cmd_end);
+    cmd_line_ttc = String (cmd_ttc);
 }
 
 static int check_command(char *command)

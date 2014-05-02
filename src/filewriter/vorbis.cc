@@ -60,12 +60,9 @@ static void vorbis_init(write_output_callback write_output_func)
 static void add_string_from_tuple (vorbis_comment * vc, const char * name,
  const Tuple * tuple, gint field)
 {
-    gchar * val = tuple_get_str (tuple, field);
-    if (! val)
-        return;
-
-    vorbis_comment_add_tag (vc, name, val);
-    str_unref (val);
+    String val = tuple_get_str (tuple, field);
+    if (val)
+        vorbis_comment_add_tag (vc, name, val);
 }
 
 static gint vorbis_open(void)

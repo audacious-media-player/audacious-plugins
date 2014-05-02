@@ -7,5 +7,7 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${CONTAINER_PLUGIN_DIR}
 
+LD = ${CXX}
+
 CPPFLAGS += -I../..
 CFLAGS += ${PLUGIN_CFLAGS}

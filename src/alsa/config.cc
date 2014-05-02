@@ -25,8 +25,7 @@
 
 #include "alsa.h"
 
-char * alsa_config_pcm = NULL, * alsa_config_mixer = NULL,
- * alsa_config_mixer_element = NULL;
+String alsa_config_pcm, alsa_config_mixer, alsa_config_mixer_element;
 int alsa_config_drain_workaround = 1;
 
 static GtkListStore * pcm_list, * mixer_list, * mixer_element_list;
@@ -293,8 +292,7 @@ static void guess_mixer_element (void)
     {
         if (list_has_member (mixer_element_list, guesses[count]))
         {
-            str_unref (alsa_config_mixer_element);
-            alsa_config_mixer_element = str_get (guesses[count]);
+            alsa_config_mixer_element = String (guesses[count]);
             return;
         }
     }
@@ -346,12 +344,9 @@ void alsa_config_save (void)
     aud_set_str ("alsa", "mixer-element", alsa_config_mixer_element);
     aud_set_bool ("alsa", "drain-workaround", alsa_config_drain_workaround);
 
-    str_unref (alsa_config_pcm);
-    alsa_config_pcm = NULL;
-    str_unref (alsa_config_mixer);
-    alsa_config_mixer = NULL;
-    str_unref (alsa_config_mixer_element);
-    alsa_config_mixer_element = NULL;
+    alsa_config_pcm = String ();
+    alsa_config_mixer = String ();
+    alsa_config_mixer_element = String ();
 }
 
 static GtkWidget * combo_new (const char * title, GtkListStore * list,
@@ -442,8 +437,7 @@ static void pcm_changed (GtkComboBox * combo, void * unused)
     if (! pcm || ! strcmp (pcm, alsa_config_pcm))
         return;
 
-    str_unref (alsa_config_pcm);
-    alsa_config_pcm = str_get (pcm);
+    alsa_config_pcm = String (pcm);
 
     aud_output_reset (OUTPUT_RESET_SOFT);
 }
@@ -455,8 +449,7 @@ static void mixer_changed (GtkComboBox * combo, void * unused)
     if (! mixer || ! strcmp (mixer, alsa_config_mixer))
         return;
 
-    str_unref (alsa_config_mixer);
-    alsa_config_mixer = str_get (mixer);
+    alsa_config_mixer = String (mixer);
 
     mixer_element_list_refill ();
     guess_mixer_element ();
@@ -476,8 +469,7 @@ static void mixer_element_changed (GtkComboBox * combo, void * unused)
      alsa_config_mixer_element)))
         return;
 
-    str_unref (alsa_config_mixer_element);
-    alsa_config_mixer_element = str_get (element);
+    alsa_config_mixer_element = String (element);
 
     alsa_close_mixer ();
     alsa_open_mixer ();

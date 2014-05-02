@@ -339,7 +339,7 @@ int alsa_open_audio (int aud_format, int rate, int channels)
 
     snd_pcm_format_t format = convert_aud_format (aud_format);
     AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
-     alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
+     (const char *) alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
     CHECK_NOISY (snd_pcm_open, & alsa_handle, alsa_config_pcm,
      SND_PCM_STREAM_PLAYBACK, 0);
 
@@ -613,7 +613,7 @@ void alsa_open_mixer (void)
     if (alsa_config_mixer_element == NULL)
         goto FAILED;
 
-    AUDDBG ("Opening mixer card %s.\n", alsa_config_mixer);
+    AUDDBG ("Opening mixer card %s.\n", (const char *) alsa_config_mixer);
     CHECK_NOISY (snd_mixer_open, & alsa_mixer, 0);
     CHECK_NOISY (snd_mixer_attach, alsa_mixer, alsa_config_mixer);
     CHECK_NOISY (snd_mixer_selem_register, alsa_mixer, NULL, NULL);

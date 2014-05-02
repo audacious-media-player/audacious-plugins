@@ -9,7 +9,7 @@
 bool_t          permission_check_requested   = FALSE;
 bool_t          invalidate_session_requested = FALSE;
 enum permission perm_result                  = PERMISSION_UNKNOWN;
-gchar          *username                     = NULL; /* pooled */
+String          username;
 
 
 //static (private) variables
@@ -38,7 +38,8 @@ static gboolean permission_checker_thread (gpointer data) {
         if (perm_result == PERMISSION_ALLOWED) {
             gtk_image_set_from_icon_name(GTK_IMAGE(permission_status_icon), "face-smile", GTK_ICON_SIZE_SMALL_TOOLBAR);
 
-            gchar *markup = g_markup_printf_escaped(_("OK. Scrobbling for user: %s"), username);
+            gchar *markup = g_markup_printf_escaped(_("OK. Scrobbling for user: %s"),
+             (const char *)username);
 
             gtk_label_set_markup(GTK_LABEL(permission_status_label), markup);
             gtk_widget_set_sensitive(revoke_button, TRUE);
@@ -54,7 +55,8 @@ static gboolean permission_checker_thread (gpointer data) {
 
             gtk_label_set_markup(GTK_LABEL(details_label_first), _("Access the following link to allow Audacious to scrobble your plays:"));
 
-            gchar *url = g_markup_printf_escaped("http://www.last.fm/api/auth/?api_key=%s&token=%s", SCROBBLER_API_KEY, request_token);
+            gchar *url = g_markup_printf_escaped("http://www.last.fm/api/auth/?api_key=%s&token=%s",
+             SCROBBLER_API_KEY, (const char *)request_token);
 
             gtk_link_button_set_uri(GTK_LINK_BUTTON(url_button), url);
             gtk_button_set_label(GTK_BUTTON(url_button), url);

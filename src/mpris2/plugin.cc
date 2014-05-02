@@ -34,7 +34,7 @@
 #include "object-player.h"
 
 static GObject * object_core, * object_player;
-static char * last_title, * last_artist, * last_album, * last_file;
+static String last_title, last_artist, last_album, last_file;
 static int last_length;
 static const char * image_file;
 static bool_t recheck_image;
@@ -58,7 +58,7 @@ static bool_t raise_cb (MprisMediaPlayer2 * object, GDBusMethodInvocation *
 
 static void update_metadata (void * data, GObject * object)
 {
-    char * title = NULL, * artist = NULL, * album = NULL, * file = NULL;
+    String title, artist, album, file;
     int length = 0;
 
     int playlist = aud_playlist_get_playing ();
@@ -66,7 +66,7 @@ static void update_metadata (void * data, GObject * object)
 
     if (entry >= 0)
     {
-        aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
+        aud_playlist_entry_describe (playlist, entry, title, artist, album, TRUE);
         file = aud_playlist_entry_get_filename (playlist, entry);
         length = aud_playlist_entry_get_length (playlist, entry, TRUE);
     }
@@ -74,13 +74,7 @@ static void update_metadata (void * data, GObject * object)
     if (str_equal (title, last_title) && str_equal (artist, last_artist) &&
      str_equal (album, last_album) && str_equal (file, last_file) && length ==
      last_length && ! recheck_image)
-    {
-        str_unref (title);
-        str_unref (artist);
-        str_unref (album);
-        str_unref (file);
         return;
-    }
 
     if (! str_equal (file, last_file) || recheck_image)
     {
@@ -90,10 +84,6 @@ static void update_metadata (void * data, GObject * object)
         recheck_image = FALSE;
     }
 
-    str_unref (last_title);
-    str_unref (last_artist);
-    str_unref (last_album);
-    str_unref (last_file);
     last_title = title;
     last_artist = artist;
     last_album = album;
@@ -309,11 +299,10 @@ void mpris2_cleanup (void)
         image_file = NULL;
     }
 
-    str_unref (last_title);
-    str_unref (last_artist);
-    str_unref (last_album);
-    str_unref (last_file);
-    last_title = last_artist = last_album = last_file = NULL;
+    last_title = String ();
+    last_artist = String ();
+    last_album = String ();
+    last_file = String ();
     last_length = 0;
 }
 

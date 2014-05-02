@@ -59,14 +59,12 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, int tuple_type, int pti)
 }
 
 static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
- char * * title, Index<PlaylistAddItem> & items)
+ String & title, Index<PlaylistAddItem> & items)
 {
     void * buffer = NULL;
     vfs_file_read_all (file, & buffer, NULL);
     if (! buffer)
         return FALSE;
-
-    * title = NULL;
 
     Cd * cd = cue_parse_string ((char *) buffer);
     g_free (buffer);
@@ -85,7 +83,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
     if (track_filename == NULL)
         return FALSE;
 
-    char * filename = uri_construct (track_filename, cue_filename);
+    String filename = uri_construct (track_filename, cue_filename);
 
     Tuple * base_tuple = NULL;
     bool_t base_tuple_scanned = FALSE;
@@ -104,8 +102,8 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         }
 
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : NULL;
-        char * next_filename = (next != NULL) ? uri_construct
-         (track_get_filename (next), cue_filename) : NULL;
+        String next_filename = (next != NULL) ? uri_construct
+         (track_get_filename (next), cue_filename) : String ();
         bool_t last_track = (next_filename == NULL || strcmp (next_filename, filename));
 
         Tuple * tuple = (base_tuple != NULL) ? tuple_copy (base_tuple) :
@@ -132,7 +130,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         for (int i = 0; i < ARRAY_LEN (pti_map); i ++)
             tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type, pti_map[i].pti);
 
-        items.append ({str_get (filename), tuple});
+        items.append ({filename, tuple});
 
         current = next;
         filename = next_filename;

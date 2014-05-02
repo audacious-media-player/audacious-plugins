@@ -65,7 +65,7 @@ static void really_delete (const char * filename)
 
 static void confirm_delete (void)
 {
-    Index<char *> files;
+    Index<String> files;
 
     int playlist = aud_playlist_get_active ();
     int entry_count = aud_playlist_entry_count (playlist);
@@ -78,9 +78,9 @@ static void confirm_delete (void)
 
     aud_playlist_delete_selected (playlist);
 
-    for (char * uri : files)
+    for (const String & uri : files)
     {
-        char * filename = uri_to_filename (uri);
+        String filename = uri_to_filename (uri);
 
         if (filename)
         {
@@ -88,16 +88,12 @@ static void confirm_delete (void)
                 move_to_trash (filename);
             else
                 really_delete (filename);
-
-            str_unref (filename);
         }
         else
         {
-            SPRINTF (error, _("Error deleting %s: not a local file."), uri);
+            SPRINTF (error, _("Error deleting %s: not a local file."), (const char *) uri);
             aud_ui_show_error (error);
         }
-
-        str_unref (uri);
     }
 }
 

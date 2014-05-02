@@ -106,17 +106,16 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
  const Tuple * tuple, int tuple_name, const char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    char *val = tuple_get_str(tuple, tuple_name);
+    String val = tuple_get_str(tuple, tuple_name);
 
     if (val == NULL)
         return;
 
-    SPRINTF (str, "%s=%s", field_name, val);
+    SPRINTF (str, "%s=%s", field_name, (const char *) val);
     entry.entry = (FLAC__byte *) str;
     entry.length = strlen(str);
     FLAC__metadata_object_vorbiscomment_insert_comment(vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
-    str_unref(val);
 }
 
 static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
@@ -291,16 +290,14 @@ static void set_gain_info(Tuple *tuple, int field, int unit_field, const char *t
 
 static void add_text (Tuple * tuple, int field, const char * value)
 {
-    char * cur = tuple_get_str (tuple, field);
+    String cur = tuple_get_str (tuple, field);
     if (cur)
     {
-        SPRINTF (both, "%s, %s", cur, value);
+        SPRINTF (both, "%s, %s", (const char *) cur, value);
         tuple_set_str (tuple, field, both);
     }
     else
         tuple_set_str (tuple, field, value);
-
-    str_unref(cur);
 }
 
 static void parse_comment (Tuple * tuple, const char * key, const char * value)

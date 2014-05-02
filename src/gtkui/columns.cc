@@ -47,8 +47,8 @@ void pw_col_init (void)
 {
     pw_num_cols = 0;
 
-    char * columns = aud_get_str ("gtkui", "playlist_columns");
-    Index<char *> index = str_list_to_index (columns, " ");
+    String columns = aud_get_str ("gtkui", "playlist_columns");
+    Index<String> index = str_list_to_index (columns, " ");
 
     int count = index.len ();
     if (count > PW_COLS)
@@ -56,7 +56,7 @@ void pw_col_init (void)
 
     for (int c = 0; c < count; c ++)
     {
-        char * column = index[c];
+        const String & column = index[c];
 
         int i = 0;
         while (i < PW_COLS && strcmp (column, pw_col_keys[i]))
@@ -67,11 +67,6 @@ void pw_col_init (void)
 
         pw_cols[pw_num_cols ++] = i;
     }
-
-    for (char * column : index)
-        str_unref (column);
-
-    str_unref (columns);
 }
 
 typedef struct {
@@ -316,11 +311,10 @@ void * pw_col_create_chooser (void)
 
 void pw_col_save (void)
 {
-    Index<char *> index;
+    Index<String> index;
     for (int i = 0; i < pw_num_cols; i ++)
-        index.append ((char *) pw_col_keys[pw_cols[i]]);
+        index.append (String (pw_col_keys[pw_cols[i]]));
 
-    char * columns = index_to_str_list (index, " ");
+    String columns = index_to_str_list (index, " ");
     aud_set_str ("gtkui", "playlist_columns", columns);
-    str_unref (columns);
 }

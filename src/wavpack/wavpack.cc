@@ -201,7 +201,7 @@ error_exit:
     return ! error;
 }
 
-static char *
+static String
 wv_get_quality(WavpackContext *ctx)
 {
     int mode = WavpackGetMode(ctx);
@@ -242,9 +242,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
         ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
     tuple_set_str(tu, FIELD_CODEC, "WavPack");
 
-    char * quality = wv_get_quality (ctx);
-    tuple_set_str (tu, FIELD_QUALITY, quality);
-    str_unref (quality);
+    tuple_set_str (tu, FIELD_QUALITY, wv_get_quality (ctx));
 
     WavpackCloseFile(ctx);
 

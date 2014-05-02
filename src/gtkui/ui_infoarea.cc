@@ -43,8 +43,8 @@
 typedef struct {
     GtkWidget * box, * main;
 
-    char * title, * artist, * album; /* pooled */
-    char * last_title, * last_artist, * last_album; /* pooled */
+    String title, artist, album;
+    String last_title, last_artist, last_album;
     float alpha, last_alpha;
 
     bool_t stopped;
@@ -377,24 +377,16 @@ static void ui_infoarea_set_title (void)
     int playlist = aud_playlist_get_playing ();
     int entry = aud_playlist_get_position (playlist);
 
-    char * title, * artist, * album;
-    aud_playlist_entry_describe (playlist, entry, & title, & artist, & album, TRUE);
+    String title, artist, album;
+    aud_playlist_entry_describe (playlist, entry, title, artist, album, TRUE);
 
     if (! g_strcmp0 (title, area->title) && ! g_strcmp0 (artist, area->artist)
      && ! g_strcmp0 (album, area->album))
-    {
-        str_unref (title);
-        str_unref (artist);
-        str_unref (album);
         return;
-    }
 
-    str_unref (area->title);
-    str_unref (area->artist);
-    str_unref (area->album);
-    area->title = title;
-    area->artist = artist;
-    area->album = album;
+    area->title = std::move (title);
+    area->artist = std::move (artist);
+    area->album = std::move (album);
 
     gtk_widget_queue_draw (area->main);
 }
@@ -433,17 +425,9 @@ static void infoarea_next (void)
     area->last_pb = area->pb;
     area->pb = NULL;
 
-    str_unref (area->last_title);
-    area->last_title = area->title;
-    area->title = NULL;
-
-    str_unref (area->last_artist);
-    area->last_artist = area->artist;
-    area->artist = NULL;
-
-    str_unref (area->last_album);
-    area->last_album = area->album;
-    area->album = NULL;
+    area->last_title = std::move (area->title);
+    area->last_artist = std::move (area->artist);
+    area->last_album = std::move (area->album);
 
     area->last_alpha = area->alpha;
     area->alpha = 0;
@@ -540,26 +524,19 @@ static void destroy_cb (GtkWidget * widget)
         area->fade_timeout = 0;
     }
 
-    str_unref (area->title);
-    str_unref (area->artist);
-    str_unref (area->album);
-    str_unref (area->last_title);
-    str_unref (area->last_artist);
-    str_unref (area->last_album);
-
     if (area->pb)
         g_object_unref (area->pb);
     if (area->last_pb)
         g_object_unref (area->last_pb);
 
-    g_slice_free (UIInfoArea, area);
+    delete area;
     area = NULL;
 }
 
 GtkWidget * ui_infoarea_new (void)
 {
     g_return_val_if_fail (! area, NULL);
-    area = g_slice_new0 (UIInfoArea);
+    area = new UIInfoArea ();
 
     area->box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 

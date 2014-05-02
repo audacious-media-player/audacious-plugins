@@ -63,9 +63,10 @@ formatter_dissociate(Formatter * formatter, const guchar id)
 }
 
 gchar *
-formatter_format(Formatter * formatter, gchar *format)
+formatter_format(Formatter * formatter, const gchar *format)
 {
-    gchar *p, *q, *buffer;
+    const gchar *p;
+    gchar *q, *buffer;
     gint len;
 
     for (p = format, len = 0; *p; p++)

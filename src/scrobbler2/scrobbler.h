@@ -80,16 +80,16 @@ extern gchar *received_data;
 extern size_t received_data_size;
 
 //Data filled by the XML parser
-extern gchar *request_token; /* pooled */
-extern gchar *session_key; /* pooled */
-extern gchar *username; /* pooled */
+extern String request_token;
+extern String session_key;
+extern String username;
 
 //scrobbler_xml_parsing.c
-extern bool_t read_authentication_test_result(char **error_code, char **error_detail);
-extern bool_t read_token(char **error_code, char **error_detail);
-extern bool_t read_session_key(char **error_code, char **error_detail);
-extern bool_t read_scrobble_result(char **error_code, char **error_detail, bool_t *ignored, char **ignored_code);
+extern bool_t read_authentication_test_result(String &error_code, String &error_detail);
+extern bool_t read_token(String &error_code, String &error_detail);
+extern bool_t read_session_key(String &error_code, String &error_detail);
+extern bool_t read_scrobble_result(String &error_code, String &error_detail, bool_t *ignored, String &ignored_code);
 
 //scrobbler.c
-extern char *clean_string(char *string);
+extern String clean_string(const char *string);
 #endif /* SCROBBLER_H_ */

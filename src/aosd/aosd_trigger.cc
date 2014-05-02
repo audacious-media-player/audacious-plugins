@@ -168,13 +168,12 @@ aosd_trigger_func_pb_start_onoff(gboolean turn_on)
 static void
 aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
 {
-  char * title = aud_drct_get_title ();
+  String title = aud_drct_get_title ();
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>%s</span>",
-   global_config->osd->text.fonts_name[0], title);
+   (const char *) global_config->osd->text.fonts_name[0], (const char *) title);
 
   aosd_osd_display (markup, global_config->osd, FALSE);
   g_free (markup);
-  str_unref (title);
 }
 
 typedef struct
@@ -217,8 +216,8 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
     aosd_pb_titlechange_prevs_t *prevs = (aosd_pb_titlechange_prevs_t *) prevs_gp;
     gint playlist = aud_playlist_get_playing();
     gint pl_entry = aud_playlist_get_position(playlist);
-    gchar * pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
-    gchar * pl_entry_title = aud_playlist_entry_get_title (playlist, pl_entry, FALSE);
+    String pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
+    String pl_entry_title = aud_playlist_entry_get_title (playlist, pl_entry, FALSE);
 
     /* same filename but title changed, useful to detect http stream song changes */
 
@@ -231,7 +230,8 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
           /* string formatting is done here a.t.m. - TODO - improve this area */
           char * markup = g_markup_printf_escaped
            ("<span font_desc='%s'>%s</span>",
-           global_config->osd->text.fonts_name[0], pl_entry_title);
+           (const char *) global_config->osd->text.fonts_name[0],
+           (const char *) pl_entry_title);
 
           aosd_osd_display (markup, global_config->osd, FALSE);
           g_free (markup);
@@ -259,9 +259,6 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
         g_free(prevs->filename);
       prevs->filename = g_strdup(pl_entry_filename);
     }
-
-    str_unref (pl_entry_filename);
-    str_unref (pl_entry_title);
   }
 }
 
@@ -278,7 +275,7 @@ static void
 aosd_trigger_func_pb_pauseon_cb ( gpointer unused1 , gpointer unused2 )
 {
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>Paused</span>",
-   global_config->osd->text.fonts_name[0]);
+   (const char *) global_config->osd->text.fonts_name[0]);
   aosd_osd_display (markup, global_config->osd, FALSE);
   g_free (markup);
 }
@@ -308,15 +305,14 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
   time_tot_s = time_tot % 60;
   time_tot_m = (time_tot - time_tot_s) / 60;
 
-  char * title = aud_playlist_entry_get_title (active, pos, FALSE);
+  String title = aud_playlist_entry_get_title (active, pos, FALSE);
   char * markup = g_markup_printf_escaped
    ("<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>",
-   global_config->osd->text.fonts_name[0], title, time_cur_m, time_cur_s,
-   time_tot_m, time_tot_s);
+   (const char *) global_config->osd->text.fonts_name[0], (const char *) title,
+   time_cur_m, time_cur_s, time_tot_m, time_tot_s);
 
   aosd_osd_display (markup, global_config->osd, FALSE);
   g_free (markup);
-  str_unref (title);
 }
 
 

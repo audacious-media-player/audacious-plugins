@@ -58,9 +58,8 @@ static void ui_statusbar_info_change (void * unused, GtkWidget * label)
     int playlist = aud_playlist_get_playing ();
     Tuple * tuple = aud_playlist_entry_get_tuple (playlist,
      aud_playlist_get_position (playlist), FALSE);
-    char * codec = tuple ? tuple_get_str (tuple, FIELD_CODEC) : NULL;
-    if (tuple)
-        tuple_unref (tuple);
+    String codec = tuple ? tuple_get_str (tuple, FIELD_CODEC) : String ();
+    tuple_unref (tuple);
 
     int bitrate, samplerate, channels;
     aud_drct_get_info (& bitrate, & samplerate, & channels);
@@ -70,12 +69,10 @@ static void ui_statusbar_info_change (void * unused, GtkWidget * label)
 
     if (codec)
     {
-        APPEND (buf, "%s", codec);
+        APPEND (buf, "%s", (const char *) codec);
         if (channels > 0 || samplerate > 0 || bitrate > 0)
             APPEND (buf, ", ");
     }
-
-    str_unref (codec);
 
     if (channels > 0)
     {

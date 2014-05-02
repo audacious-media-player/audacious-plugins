@@ -63,9 +63,8 @@ static void set_int_from_tuple (GValue * value, const Tuple * tuple, int field)
 static void set_string_from_tuple (GValue * value, const Tuple * tuple,
  int field)
 {
-    char *str = tuple ? tuple_get_str (tuple, field) : NULL;
+    String str = tuple ? tuple_get_str (tuple, field) : String ();
     g_value_set_string (value, str);
-    str_unref(str);
 }
 
 static void set_queued (GValue * value, int list, int row)
@@ -98,17 +97,26 @@ static void get_value (void * user, int row, int column, GValue * value)
 
     column = pw_cols[column];
 
-    char * title = NULL, * artist = NULL, * album = NULL;
+    String title, artist, album;
     Tuple * tuple = NULL;
 
-    if (column == PW_COL_TITLE || column == PW_COL_ARTIST || column ==
-     PW_COL_ALBUM)
-        aud_playlist_entry_describe (data->list, row, & title, & artist,
-         & album, TRUE);
-    else if (column == PW_COL_YEAR || column == PW_COL_TRACK || column ==
-     PW_COL_GENRE || column == PW_COL_FILENAME || column == PW_COL_PATH ||
-     column == PW_COL_BITRATE)
+    switch (column)
+    {
+    case PW_COL_TITLE:
+    case PW_COL_ARTIST:
+    case PW_COL_ALBUM:
+        aud_playlist_entry_describe (data->list, row, title, artist, album, TRUE);
+        break;
+
+    case PW_COL_YEAR:
+    case PW_COL_TRACK:
+    case PW_COL_GENRE:
+    case PW_COL_FILENAME:
+    case PW_COL_PATH:
+    case PW_COL_BITRATE:
         tuple = aud_playlist_entry_get_tuple (data->list, row, TRUE);
+        break;
+    }
 
     switch (column)
     {
@@ -146,22 +154,14 @@ static void get_value (void * user, int row, int column, GValue * value)
         set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
         break;
     case PW_COL_CUSTOM:
-    {
-        char * custom = aud_playlist_entry_get_title (data->list, row, TRUE);
-        g_value_set_string (value, custom);
-        str_unref (custom);
+        g_value_set_string (value, aud_playlist_entry_get_title (data->list, row, TRUE));
         break;
-    }
     case PW_COL_BITRATE:
         set_int_from_tuple (value, tuple, FIELD_BITRATE);
         break;
     }
 
-    str_unref (title);
-    str_unref (artist);
-    str_unref (album);
-    if (tuple)
-        tuple_unref (tuple);
+    tuple_unref (tuple);
 }
 
 static bool_t get_selected (void * user, int row)
@@ -307,16 +307,16 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
     g_return_val_if_fail (row >= 0, TRUE);
     gtk_tree_path_free (path);
 
-    Index<char *> keys = str_list_to_index (search, " ");
+    Index<String> keys = str_list_to_index (search, " ");
     int n_keys = keys.len ();
 
     bool_t matched = FALSE;
 
     if (n_keys)
     {
-        char * s[3] = {NULL, NULL, NULL};
+        String s[3];
         aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
-         & s[0], & s[1], & s[2], FALSE);
+         s[0], s[1], s[2], FALSE);
 
         for (int i = 0; i < ARRAY_LEN (s); i ++)
         {
@@ -327,22 +327,16 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
             {
                 if (strstr_nocase_utf8 (s[i], keys[j]))
                 {
-                    str_unref (keys[j]);
                     keys.remove (j, 1);
                     n_keys --;
                 }
                 else
                     j ++;
             }
-
-            str_unref (s[i]);
         }
 
         matched = ! n_keys;
     }
-
-    for (char * key : keys)
-        str_unref (key);
 
     return ! matched;
 }
@@ -469,8 +463,7 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
         popup_hide (data);
 }
 
-void ui_playlist_widget_get_column_widths (GtkWidget * widget, char * * widths,
- char * * expand)
+void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, String & expand)
 {
     int w[pw_num_cols], ex[pw_num_cols];
 
@@ -481,8 +474,8 @@ void ui_playlist_widget_get_column_widths (GtkWidget * widget, char * * widths,
         ex[i] = gtk_tree_view_column_get_expand (col);
     }
 
-    * widths = int_array_to_str (w, pw_num_cols);
-    * expand = int_array_to_str (ex, pw_num_cols);
+    widths = int_array_to_str (w, pw_num_cols);
+    expand = int_array_to_str (ex, pw_num_cols);
 }
 
 void ui_playlist_widget_set_column_widths (GtkWidget * widget,
@@ -499,5 +492,5 @@ void ui_playlist_widget_set_column_widths (GtkWidget * widget,
         GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) widget, i);
         gtk_tree_view_column_set_fixed_width (col, w[i]);
         gtk_tree_view_column_set_expand (col, ex[i]);
-     }
+    }
 }

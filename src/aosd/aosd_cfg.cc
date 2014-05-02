@@ -29,7 +29,7 @@
 #include <libaudcore/plugin.h>
 
 static gint
-aosd_cfg_util_str_to_color ( gchar * str , aosd_color_t * color )
+aosd_cfg_util_str_to_color ( const gchar * str , aosd_color_t * color )
 {
   /* color strings are in format "x,x,x,x", where x are numbers
      that represent respectively red, green, blue and alpha values (0-65535) */
@@ -109,7 +109,7 @@ aosd_cfg_osd_delete ( aosd_cfg_osd_t * cfg_osd )
     gint i = 0;
     /* free configuration fields */
     for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
-      str_unref (cfg_osd->text.fonts_name[i]);
+      cfg_osd->text.fonts_name[i] = String ();
     if ( cfg_osd->decoration.colors != NULL )
       g_array_free( cfg_osd->decoration.colors , TRUE );
     if ( cfg_osd->trigger.active != NULL )
@@ -137,7 +137,7 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
   cfg_osd_copy->animation.timing_fadeout = cfg_osd->animation.timing_fadeout;
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
-    cfg_osd_copy->text.fonts_name[i] = str_ref (cfg_osd->text.fonts_name[i]);
+    cfg_osd_copy->text.fonts_name[i] = cfg_osd->text.fonts_name[i];
     cfg_osd_copy->text.fonts_color[i] = cfg_osd->text.fonts_color[i];
     cfg_osd_copy->text.fonts_draw_shadow[i] = cfg_osd->text.fonts_draw_shadow[i];
     cfg_osd_copy->text.fonts_shadow_color[i] = cfg_osd->text.fonts_shadow_color[i];
@@ -238,7 +238,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
 
   gint i = 0;
   gint max_numcol;
-  gchar *trig_active_str;
+  String trig_active_str;
 
   /* position */
   cfg->osd->position.placement = aud_get_int ("aosd", "position_placement");
@@ -255,7 +255,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   /* text */
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
-    gchar *color_str = NULL;
+    String color_str;
     gchar key_str[32];
 
     snprintf (key_str, sizeof key_str, "text_fonts_name_%i" , i );
@@ -264,7 +264,6 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     snprintf (key_str, sizeof key_str, "text_fonts_color_%i", i);
     color_str = aud_get_str ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &(cfg->osd->text.fonts_color[i]) );
-    str_unref (color_str);
 
     snprintf (key_str, sizeof key_str, "text_fonts_draw_shadow_%i", i);
     cfg->osd->text.fonts_draw_shadow[i] = aud_get_bool ("aosd", key_str);
@@ -272,7 +271,6 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     snprintf (key_str, sizeof key_str, "text_fonts_shadow_color_%i", i);
     color_str = aud_get_str ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &(cfg->osd->text.fonts_shadow_color[i]) );
-    str_unref (color_str);
   }
 
   cfg->osd->text.utf8conv_disable = aud_get_bool ("aosd", "text_utf8conv_disable");
@@ -285,12 +283,11 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   for ( i = 0 ; i < max_numcol ; i++ )
   {
     gchar key_str[32];
-    gchar *color_str = NULL;
+    String color_str;
     aosd_color_t color;
     snprintf (key_str, sizeof key_str, "decoration_color_%i", i);
     color_str = aud_get_str ("aosd", key_str);
     aosd_cfg_util_str_to_color( color_str , &color );
-    str_unref (color_str);
     g_array_insert_val( cfg->osd->decoration.colors , i , color );
   }
 
@@ -309,8 +306,6 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
     }
     g_strfreev( trig_active_strv );
   }
-
-  str_unref (trig_active_str);
 
   /* miscellanous */
   cfg->osd->misc.transparency_mode = aud_get_int ("aosd", "transparency_mode");

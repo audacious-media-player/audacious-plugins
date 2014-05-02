@@ -50,13 +50,13 @@ void pls_handle_entry (const char * key, const char * value, void * data)
     if (! state->valid_heading || g_ascii_strncasecmp (key, "file", 4))
         return;
 
-    char * uri = uri_construct (value, state->filename);
+    String uri = uri_construct (value, state->filename);
     if (uri)
         state->items.append ({uri});
 }
 
 static bool_t playlist_load_pls (const char * filename, VFSFile * file,
- char * * title, Index<PlaylistAddItem> & items)
+ String & title, Index<PlaylistAddItem> & items)
 {
     PLSLoadState state = {
         filename,
@@ -80,15 +80,14 @@ static bool_t playlist_save_pls (const char * filename, VFSFile * file,
     for (int count = 0; count < entries; count ++)
     {
         const char * filename = items[count].filename;
-        char * fn;
+        String fn;
 
         if (! strncmp (filename, "file://", 7))
             fn = uri_to_filename (filename);
         else
-            fn = str_ref (filename);
+            fn = String (filename);
 
-        vfs_fprintf (file, "File%d=%s\n", 1 + count, fn);
-        str_unref (fn);
+        vfs_fprintf (file, "File%d=%s\n", 1 + count, (const char *) fn);
     }
 
     return TRUE;

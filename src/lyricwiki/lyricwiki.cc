@@ -36,11 +36,10 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>
 
-/* all strings in this struct are pooled */
 typedef struct {
-	char *filename; /* of song file */
-	char *title, *artist;
-	char *uri; /* URI we are trying to retrieve */
+	String filename; /* of song file */
+	String title, artist;
+	String uri; /* URI we are trying to retrieve */
 } LyricsState;
 
 static LyricsState state;
@@ -131,11 +130,10 @@ give_up:
 	return ret;
 }
 
-/* str_unref() returned string */
-static char *scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t len)
+static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t len)
 {
 	xmlDocPtr doc;
-	gchar *uri = NULL;
+	String uri;
 
 	/*
 	 * workaround buggy lyricwiki search output where it cuts the lyrics
@@ -208,7 +206,7 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 
 	if(!len)
 	{
-		SPRINTF(error, _("Unable to fetch %s"), state.uri);
+		SPRINTF(error, _("Unable to fetch %s"), (const char *) state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
 		g_free(buf);
 		return FALSE;
@@ -218,7 +216,7 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 
 	if(!lyrics)
 	{
-		SPRINTF(error, _("Unable to parse %s"), state.uri);
+		SPRINTF(error, _("Unable to parse %s"), (const char *) state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
 		g_free(buf);
 		return FALSE;
@@ -242,23 +240,22 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 
 	if(!len)
 	{
-		SPRINTF(error, _("Unable to fetch %s"), state.uri);
+		SPRINTF(error, _("Unable to fetch %s"), (const char *) state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
 		g_free(buf);
 		return FALSE;
 	}
 
-	char *uri = scrape_uri_from_lyricwiki_search_result((char *) buf, len);
+	String uri = scrape_uri_from_lyricwiki_search_result((char *) buf, len);
 
 	if(!uri)
 	{
-		SPRINTF(error, _("Unable to parse %s"), state.uri);
+		SPRINTF(error, _("Unable to parse %s"), (const char *) state.uri);
 		update_lyrics_window(_("Error"), NULL, error);
 		g_free(buf);
 		return FALSE;
 	}
 
-	str_unref(state.uri);
 	state.uri = uri;
 
 	update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
@@ -281,7 +278,6 @@ static void get_lyrics_step_1(void)
 	str_encode_percent(state.title, -1, title_buf);
 	str_encode_percent(state.artist, -1, artist_buf);
 
-	str_unref(state.uri);
 	state.uri = str_printf("http://lyrics.wikia.com/api.php?action=lyrics&"
 	 "artist=%s&song=%s&fmt=xml", artist_buf, title_buf);
 
@@ -358,17 +354,14 @@ static void lyricwiki_playback_began(void)
 		return;
 
 	/* FIXME: cancel previous VFS requests (not possible with current API) */
-	str_unref(state.filename);
-	str_unref(state.title);
-	str_unref(state.artist);
-	str_unref(state.uri);
 
 	int playlist = aud_playlist_get_playing();
 	int pos = aud_playlist_get_position(playlist);
+	String album;
 
 	state.filename = aud_playlist_entry_get_filename(playlist, pos);
-	aud_playlist_entry_describe(playlist, pos, &state.title, &state.artist, NULL, FALSE);
-	state.uri = NULL;
+	aud_playlist_entry_describe(playlist, pos, state.title, state.artist, album, FALSE);
+	state.uri = String ();
 
 	get_lyrics_step_1();
 }
@@ -386,14 +379,10 @@ static gboolean init (void)
 
 static void cleanup(void)
 {
-	str_unref(state.filename);
-	str_unref(state.title);
-	str_unref(state.artist);
-	str_unref(state.uri);
-	state.filename = NULL;
-	state.title = NULL;
-	state.artist = NULL;
-	state.uri = NULL;
+	state.filename = String ();
+	state.title = String ();
+	state.artist = String ();
+	state.uri = String ();
 
 	hook_dissociate("title change", (HookFunction) lyricwiki_playback_began);
 	hook_dissociate("playback ready", (HookFunction) lyricwiki_playback_began);

@@ -393,27 +393,24 @@ static void alarm_configure(void)
     alarm_conf.fading = GTK_SPIN_BUTTON(w);
     gtk_spin_button_set_value(alarm_conf.fading, fading);
 
-    char * cmdstr = aud_get_str ("alarm", "cmdstr");
+    String cmdstr = aud_get_str ("alarm", "cmdstr");
     w = lookup_widget(config_dialog, "cmd_entry");
     alarm_conf.cmdstr = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.cmdstr, cmdstr);
-    str_unref (cmdstr);
 
     w = lookup_widget(config_dialog, "cmd_checkb");
     alarm_conf.cmd_on = GTK_TOGGLE_BUTTON(w);
     gtk_toggle_button_set_active(alarm_conf.cmd_on, cmd_on);
 
-    char * playlist = aud_get_str ("alarm", "playlist");
+    String playlist = aud_get_str ("alarm", "playlist");
     w = lookup_widget(config_dialog, "playlist");
     alarm_conf.playlist = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.playlist, playlist);
-    str_unref (playlist);
 
-    char * reminder_msg = aud_get_str ("alarm", "reminder_msg");
+    String reminder_msg = aud_get_str ("alarm", "reminder_msg");
     w = lookup_widget(config_dialog, "reminder_text");
     alarm_conf.reminder = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.reminder, reminder_msg);
-    str_unref (reminder_msg);
 
     w = lookup_widget(config_dialog, "reminder_cb");
     alarm_conf.reminder_cb = GTK_TOGGLE_BUTTON(w);
@@ -679,22 +676,20 @@ static gboolean alarm_timeout (void * unused)
 
     if(cmd_on == TRUE)
     {
-        char * cmdstr = aud_get_str ("alarm", "cmdstr");
-        AUDDBG("Executing %s, cmd_on is true\n", cmdstr);
+        String cmdstr = aud_get_str ("alarm", "cmdstr");
+        AUDDBG("Executing %s, cmd_on is true\n", (const char *) cmdstr);
         if(system(cmdstr) == -1)
-            AUDDBG("Executing %s failed\n",cmdstr);
-        str_unref (cmdstr);
+            AUDDBG("Executing %s failed\n", (const char *) cmdstr);
     }
 
     bool_t started = FALSE;
 
-    char * playlist = aud_get_str ("alarm", "playlist");
+    String playlist = aud_get_str ("alarm", "playlist");
     if (playlist[0])
     {
         aud_drct_pl_open (playlist);
         started = TRUE;
     }
-    str_unref (playlist);
 
     if(fading)
     {
@@ -730,13 +725,12 @@ static gboolean alarm_timeout (void * unused)
 
     if(alarm_conf.reminder_on == TRUE)
     {
-        char * reminder_msg = aud_get_str ("alarm", "reminder_msg");
+        String reminder_msg = aud_get_str ("alarm", "reminder_msg");
         GtkWidget *reminder_dialog;
-        AUDDBG("Showing reminder '%s'\n", reminder_msg);
+        AUDDBG("Showing reminder '%s'\n", (const char *) reminder_msg);
 
         reminder_dialog = (GtkWidget*) create_reminder_dialog(reminder_msg);
         gtk_widget_show_all(reminder_dialog);
-        str_unref (reminder_msg);
     }
 
     /* bring up the wakeup call dialog if stop_on is set TRUE, this

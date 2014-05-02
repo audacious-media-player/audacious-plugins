@@ -22,6 +22,8 @@
 
 #include <gtk/gtk.h>
 
+#include <libaudcore/objects.h>
+
 GtkWidget * ui_playlist_widget_new (int playlist);
 int ui_playlist_widget_get_playlist (GtkWidget * widget);
 void ui_playlist_widget_set_playlist (GtkWidget * widget, int playlist);
@@ -29,8 +31,7 @@ void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
  int count);
 void ui_playlist_widget_scroll (GtkWidget * widget);
 
-void ui_playlist_widget_get_column_widths (GtkWidget * widget, char * * widths,
- char * * expand);
+void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, String & expand);
 void ui_playlist_widget_set_column_widths (GtkWidget * widget,
  const char * widths, const char * expand);
 

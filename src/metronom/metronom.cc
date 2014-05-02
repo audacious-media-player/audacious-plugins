@@ -79,7 +79,7 @@ static bool_t metronom_is_our_fd(const char * filename, VFSFile *fd)
     return FALSE;
 }
 
-static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, char **str)
+static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, String & str)
 {
     int count;
 
@@ -123,9 +123,9 @@ static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, char 
         return TRUE;
 
     if (pmetronom->num == 1 && pmetronom->den == 1)
-        *str = str_printf (_("Tact generator: %d bpm"), pmetronom->bpm);
+        str = str_printf (_("Tact generator: %d bpm"), pmetronom->bpm);
     else
-        *str = str_printf (_("Tact generator: %d bpm %d/%d"), pmetronom->bpm, pmetronom->num, pmetronom->den);
+        str = str_printf (_("Tact generator: %d bpm %d/%d"), pmetronom->bpm, pmetronom->num, pmetronom->den);
 
     return TRUE;
 }
@@ -140,11 +140,12 @@ static bool_t metronom_play (const char * filename, VFSFile * file)
     int datacurrent = datamiddle;
     int datalast = datamiddle;
     int data_form[TACT_FORM_MAX];
+    String desc;
 
     if (aud_input_open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
         return FALSE;
 
-    if (!metronom_get_cp(filename, &pmetronom, NULL))
+    if (!metronom_get_cp(filename, &pmetronom, desc))
     {
         fprintf (stderr, "Invalid metronom tact parameters in URI %s", filename);
         return FALSE;
@@ -203,12 +204,10 @@ static Tuple *metronom_probe_for_tuple(const char * filename, VFSFile *fd)
 {
     Tuple *tuple = tuple_new_from_filename(filename);
     metronom_t metronom;
-    char *tmp = NULL;
+    String desc;
 
-    if (metronom_get_cp(filename, &metronom, &tmp))
-        tuple_set_str(tuple, FIELD_TITLE, tmp);
-
-    str_unref(tmp);
+    if (metronom_get_cp(filename, &metronom, desc))
+        tuple_set_str(tuple, FIELD_TITLE, desc);
 
     return tuple;
 }

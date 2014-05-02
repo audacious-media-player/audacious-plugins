@@ -12,6 +12,8 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${OUTPUT_PLUGIN_DIR}
 
+LD = ${CXX}
+
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${GTK_CFLAGS} ${FILEWRITER_CFLAGS} -I../..
 LIBS += ${GTK_LIBS} ${FILEWRITER_LIBS}

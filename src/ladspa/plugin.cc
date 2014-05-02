@@ -39,7 +39,7 @@ static const gchar * const ladspa_defaults[] = {
  NULL};
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-char * module_path;
+String module_path;
 Index<GModule *> modules;
 Index<PluginData *> plugins;
 Index<LoadedPlugin *> loadeds;
@@ -201,13 +201,11 @@ static void open_modules_for_path (const char * path)
         if (! str_has_suffix_nocase (name, G_MODULE_SUFFIX))
             continue;
 
-        char * filename = filename_build (path, name);
+        String filename = filename_build (path, name);
         GModule * handle = open_module (filename);
 
         if (handle)
             modules.append (handle);
-
-        str_unref (filename);
     }
 
     g_dir_close (folder);
@@ -306,9 +304,8 @@ static void save_enabled_to_config (void)
         for (int ci = 0; ci < ccount; ci ++)
             temp[ci] = loaded->values[ci];
 
-        char * controls = double_array_to_str (temp, ccount);
+        String controls = double_array_to_str (temp, ccount);
         aud_set_str ("ladspa", key, controls);
-        str_unref (controls);
 
         disable_plugin_locked (0);
     }
@@ -337,10 +334,10 @@ static void load_enabled_from_config (void)
         char key[32];
 
         snprintf (key, sizeof key, "plugin%d_path", i);
-        char * path = aud_get_str ("ladspa", key);
+        String path = aud_get_str ("ladspa", key);
 
         snprintf (key, sizeof key, "plugin%d_label", i);
-        char * label = aud_get_str ("ladspa", key);
+        String label = aud_get_str ("ladspa", key);
 
         PluginData * plugin = find_plugin (path, label);
         if (plugin)
@@ -352,7 +349,7 @@ static void load_enabled_from_config (void)
             int ccount = loaded->plugin->controls.len ();
             double temp[ccount];
 
-            char * controls = aud_get_str ("ladspa", key);
+            String controls = aud_get_str ("ladspa", key);
 
             if (str_to_double_array (controls, temp, ccount))
             {
@@ -369,12 +366,7 @@ static void load_enabled_from_config (void)
                     aud_set_str ("ladspa", key, "");
                 }
             }
-
-            str_unref (controls);
         }
-
-        str_unref (path);
-        str_unref (label);
     }
 }
 
@@ -408,8 +400,7 @@ static void cleanup (void)
     plugins.clear ();
     loadeds.clear ();
 
-    str_unref (module_path);
-    module_path = NULL;
+    module_path = String ();
 
     pthread_mutex_unlock (& mutex);
 }
@@ -421,8 +412,7 @@ static void set_module_path (GtkEntry * entry)
     save_enabled_to_config ();
     close_modules ();
 
-    str_unref (module_path);
-    module_path = str_get (gtk_entry_get_text (entry));
+    module_path = String (gtk_entry_get_text (entry));
 
     open_modules ();
     load_enabled_from_config ();

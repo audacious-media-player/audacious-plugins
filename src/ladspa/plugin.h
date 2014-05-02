@@ -22,7 +22,9 @@
 
 #include <pthread.h>
 #include <gtk/gtk.h>
+
 #include <libaudcore/index.h>
+#include <libaudcore/objects.h>
 
 #include "ladspa.h"
 
@@ -60,7 +62,7 @@ typedef struct {
  * audio thread is reading from them. */
 
 extern pthread_mutex_t mutex;
-extern char * module_path;
+extern String module_path;
 extern Index<GModule *> modules;
 extern Index<PluginData *> plugins;
 extern Index<LoadedPlugin *> loadeds;

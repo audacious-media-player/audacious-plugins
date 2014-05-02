@@ -8,6 +8,8 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
+LD = ${CXX}
+
 CPPFLAGS += -I../.. ${GLIB_CFLAGS} ${GIO_CFLAGS}
 CFLAGS += ${PLUGIN_CFLAGS}
 LIBS += -lm ${GLIB_LIBS} ${GIO_LIBS}

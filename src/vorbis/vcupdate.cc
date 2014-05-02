@@ -80,14 +80,12 @@ static void dictionary_to_vorbis_comment (vorbis_comment * vc, GHashTable * dict
 static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
  fieldn, GHashTable * dict, const char * key)
 {
-    char * val = tuple_get_str (tuple, fieldn);
+    String val = tuple_get_str (tuple, fieldn);
 
     if (val && val[0])
         g_hash_table_insert (dict, str_get (key), str_ref (val));
     else
         g_hash_table_remove (dict, key);
-
-    str_unref(val);
 }
 
 static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
@@ -96,7 +94,7 @@ static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
     int val = tuple_get_int (tuple, fieldn);
 
     if (val > 0)
-        g_hash_table_insert (dict, str_get (key), int_to_str (val));
+        g_hash_table_insert (dict, str_get (key), int_to_str (val).to_c ());
     else
         g_hash_table_remove (dict, key);
 }
@@ -185,12 +183,10 @@ gboolean write_and_pivot_files (vcedit_state * state)
 
     close (handle);
 
-    gchar * temp_uri = filename_to_uri (temp);
+    String temp_uri = filename_to_uri (temp);
     g_return_val_if_fail (temp_uri, FALSE);
     VFSFile * temp_vfs = vfs_fopen (temp_uri, "r+");
     g_return_val_if_fail (temp_vfs, FALSE);
-
-    str_unref (temp_uri);
 
     if (vcedit_write (state, temp_vfs) < 0)
     {

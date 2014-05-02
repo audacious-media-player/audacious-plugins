@@ -199,10 +199,9 @@ static bool_t title_change_cb (void)
     {
         if (aud_drct_get_ready ())
         {
-            char * title = aud_drct_get_title ();
-            SPRINTF (title_s, _("%s - Audacious"), title);
+            String title = aud_drct_get_title ();
+            SPRINTF (title_s, _("%s - Audacious"), (const char *) title);
             gtk_window_set_title ((GtkWindow *) window, title_s);
-            str_unref (title);
         }
         else
             gtk_window_set_title ((GtkWindow *) window, _("Buffering ..."));

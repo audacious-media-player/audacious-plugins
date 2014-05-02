@@ -80,7 +80,7 @@ static gboolean use_suffix;
 static GtkWidget *prependnumber_toggle;
 static gboolean prependnumber;
 
-static gchar *file_path;
+static String file_path;
 
 VFSFile *output_file = NULL;
 Tuple *tuple = NULL;
@@ -134,7 +134,6 @@ static gboolean file_init (void)
 
     if (! file_path[0])
     {
-        str_unref (file_path);
         file_path = filename_to_uri (g_get_home_dir ());
         g_return_val_if_fail (file_path != NULL, FALSE);
     }
@@ -148,8 +147,7 @@ static gboolean file_init (void)
 
 static void file_cleanup (void)
 {
-    str_unref (file_path);
-    file_path = NULL;
+    file_path = String ();
 }
 
 static VFSFile * safe_create (const gchar * filename)
@@ -200,22 +198,21 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     if (filenamefromtags)
     {
-        gchar * utf8 = aud_playlist_entry_get_title (playlist, pos, FALSE);
-        str_replace_char (utf8, '/', ' ');
+        String title = aud_playlist_entry_get_title (playlist, pos, FALSE);
 
-        gchar buf[3 * strlen (utf8) + 1];
-        str_encode_percent (utf8, -1, buf);
-        str_unref (utf8);
+        gchar buf[3 * strlen (title) + 1];
+        str_encode_percent (title, -1, buf);
+        str_replace_char (buf, '/', '-');
 
         filename = g_strdup (buf);
     }
     else
     {
-        temp = aud_playlist_entry_get_filename (playlist, pos);
-        gchar * original = strrchr (temp, '/');
+        String path = aud_playlist_entry_get_filename (playlist, pos);
+
+        const char * original = strrchr (path, '/');
         g_return_val_if_fail (original != NULL, 0);
         filename = g_strdup (original + 1);
-        str_unref (temp);
 
         if (!use_suffix)
             if ((temp = strrchr(filename, '.')) != NULL)
@@ -235,9 +232,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     if (save_original)
     {
-        temp = aud_playlist_entry_get_filename (playlist, pos);
-        directory = g_strdup (temp);
-        str_unref (temp);
+        directory = g_strdup (aud_playlist_entry_get_filename (playlist, pos));
         temp = strrchr (directory, '/');
         g_return_val_if_fail (temp != NULL, 0);
         temp[1] = 0;
@@ -248,7 +243,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
         if (file_path[strlen (file_path) - 1] == '/')
             directory = g_strdup (file_path);
         else
-            directory = g_strdup_printf ("%s/", file_path);
+            directory = g_strdup_printf ("%s/", (const char *) file_path);
     }
 
     temp = g_strdup_printf ("%s%s.%s", directory, filename, fileext_str[fileext]);
@@ -319,8 +314,7 @@ static void configure_response_cb (void)
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
 
     char * temp = gtk_file_chooser_get_uri ((GtkFileChooser *) path_dirbrowser);
-    str_unref (file_path);
-    file_path = str_get (temp);
+    file_path = String (temp);
     g_free (temp);
 
     use_suffix =

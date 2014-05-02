@@ -30,15 +30,13 @@
 
 #include "osd.h"
 
-static char * last_title = NULL, * last_message = NULL; /* pooled */
+static String last_title, last_message;
 static GdkPixbuf * last_pixbuf = NULL;
 
 static void clear_cache (void)
 {
-    str_unref (last_title);
-    last_title = NULL;
-    str_unref (last_message);
-    last_message = NULL;
+    last_title = String ();
+    last_message = String ();
 
     if (last_pixbuf)
     {
@@ -79,35 +77,26 @@ static void playback_update (void)
     int list = aud_playlist_get_playing ();
     int entry = aud_playlist_get_position (list);
 
-    char * title, * artist, * album;
-    aud_playlist_entry_describe (list, entry, & title, & artist, & album, FALSE);
+    String title, artist, album;
+    aud_playlist_entry_describe (list, entry, title, artist, album, FALSE);
 
-    char * message;
+    String message;
     if (artist)
     {
         if (album)
-            message = str_printf ("%s\n%s", artist, album);
+            message = str_printf ("%s\n%s", (const char *) artist, (const char *) album);
         else
-            message = str_ref (artist);
+            message = artist;
     }
     else if (album)
-        message = str_ref (album);
+        message = album;
     else
-        message = str_get ("");
-
-    str_unref (artist);
-    str_unref (album);
+        message = String ("");
 
     if (str_equal (title, last_title) && str_equal (message, last_message))
-    {
-        str_unref (title);
-        str_unref (message);
         return;
-    }
 
-    str_unref (last_title);
     last_title = title;
-    str_unref (last_message);
     last_message = message;
 
     get_album_art ();

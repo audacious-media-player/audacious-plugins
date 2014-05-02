@@ -101,13 +101,13 @@ static void parse_entry (const xmlNode * entry, Index<PlaylistAddItem> & items)
         {
             const char * uri = get_prop_nocase (node, "href");
             if (uri)
-                items.append ({str_get (uri)});
+                items.append ({String (uri)});
         }
     }
 }
 
 static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
- char * * title, Index<PlaylistAddItem> & items)
+ String & title, Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL, XML_PARSE_RECOVER);
     if (! doc)
@@ -127,8 +127,8 @@ static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
             parse_entry (node, items);
         else if (! xmlStrcasecmp (node->name, (const xmlChar *) "title"))
         {
-            if (! (* title))
-                * title = str_get (get_content (node));
+            if (! title)
+                title = String (get_content (node));
         }
     }
 
@@ -154,7 +154,7 @@ static bool_t playlist_save_asx3 (const char * filename, VFSFile * file,
     {
         xmlNode * entry = xmlNewNode (NULL, (const xmlChar *) "entry");
         xmlNode * ref = xmlNewNode (NULL, (const xmlChar *) "ref");
-        xmlSetProp (ref, (const xmlChar *) "href", (const xmlChar *) item.filename);
+        xmlSetProp (ref, (const xmlChar *) "href", (const xmlChar *) (const char *) item.filename);
         xmlAddChild (entry, ref);
         xmlAddChild (root, entry);
     }

@@ -111,26 +111,20 @@ static void save_column_widths ()
     int current = gtk_notebook_get_current_page ((GtkNotebook *) notebook);
     GtkWidget * treeview = playlist_get_treeview (current);
 
-    char * widths, * expand;
-    ui_playlist_widget_get_column_widths (treeview, & widths, & expand);
+    String widths, expand;
+    ui_playlist_widget_get_column_widths (treeview, widths, expand);
 
     aud_set_str ("gtkui", "column_widths", widths);
     aud_set_str ("gtkui", "column_expand", expand);
-
-    str_unref (widths);
-    str_unref (expand);
 }
 
 static void apply_column_widths (GtkWidget * treeview)
 {
-    char * widths = aud_get_str ("gtkui", "column_widths");
-    char * expand = aud_get_str ("gtkui", "column_expand");
+    String widths = aud_get_str ("gtkui", "column_widths");
+    String expand = aud_get_str ("gtkui", "column_expand");
 
-    if (widths && widths[0] && expand && expand[0])
+    if (widths[0] && expand[0])
         ui_playlist_widget_set_column_widths (treeview, widths, expand);
-
-    str_unref (widths);
-    str_unref (expand);
 }
 
 static void tab_title_reset(GtkWidget *ebox)
@@ -220,25 +214,19 @@ static GtkLabel *get_tab_label(int playlist)
 
 static void set_tab_label (int list, GtkLabel * label)
 {
-    char * title = aud_playlist_get_title (list);
+    String title = aud_playlist_get_title (list);
 
     if (aud_get_bool ("gtkui", "entry_count_visible"))
-    {
-        char * temp = str_printf ("%s (%d)", title, aud_playlist_entry_count (list));
-        str_unref (title);
-        title = temp;
-    }
+        title = str_printf ("%s (%d)", (const char *) title, aud_playlist_entry_count (list));
 
     if (list == aud_playlist_get_playing ())
     {
-        char * markup = g_markup_printf_escaped ("<b>%s</b>", title);
+        char * markup = g_markup_printf_escaped ("<b>%s</b>", (const char *) title);
         gtk_label_set_markup (label, markup);
         g_free (markup);
     }
     else
         gtk_label_set_text (label, title);
-
-    str_unref (title);
 }
 
 void start_rename_playlist (int playlist)
@@ -256,9 +244,8 @@ void start_rename_playlist (int playlist)
     GtkWidget *entry = (GtkWidget *) g_object_get_data(G_OBJECT(ebox), "entry");
     gtk_widget_hide(label);
 
-    char * title = aud_playlist_get_title (playlist);
-    gtk_entry_set_text ((GtkEntry *) entry, title);
-    str_unref (title);
+    gtk_entry_set_text ((GtkEntry *) entry, aud_playlist_get_title (playlist));
+
     gtk_widget_grab_focus(entry);
     gtk_editable_select_region(GTK_EDITABLE(entry), 0, -1);
     gtk_widget_show(entry);

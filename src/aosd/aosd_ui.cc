@@ -359,9 +359,8 @@ aosd_cb_configure_text_font_commit ( GtkWidget * fontbt , aosd_cfg_t * cfg )
   gint fontnum = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(fontbt) , "fontnum" ));
   GtkColorChooser * chooser;
 
-  str_unref (cfg->osd->text.fonts_name[fontnum]);
   cfg->osd->text.fonts_name[fontnum] =
-   str_get (gtk_font_button_get_font_name (GTK_FONT_BUTTON (fontbt)));
+   String (gtk_font_button_get_font_name (GTK_FONT_BUTTON (fontbt)));
 
   cfg->osd->text.fonts_draw_shadow[fontnum] = gtk_toggle_button_get_active(
     GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(fontbt),"use_shadow")) );
@@ -827,8 +826,11 @@ aosd_cb_configure_test ( gpointer cfg_win )
   GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_run( cb_list , cfg );
   cfg->set = TRUE;
-  markup_message = g_markup_printf_escaped(
-    _("<span font_desc='%s'>Audacious OSD</span>") , cfg->osd->text.fonts_name[0] );
+
+  markup_message = g_markup_printf_escaped
+   (_("<span font_desc='%s'>Audacious OSD</span>"),
+   (const char *) cfg->osd->text.fonts_name[0]);
+
   aosd_osd_shutdown(); /* stop any displayed osd */
   aosd_osd_cleanup(); /* just in case it's active */
   aosd_osd_init( cfg->osd->misc.transparency_mode );

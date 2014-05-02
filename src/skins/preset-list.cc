@@ -271,7 +271,7 @@ static GtkWidget * equalizerwin_create_list_window
     for (const EqualizerPreset & preset : preset_list)
     {
         gtk_list_store_append (store, & iter);
-        gtk_list_store_set (store, & iter, 0, preset.name, -1);
+        gtk_list_store_set (store, & iter, 0, (const char *) preset.name, -1);
     }
     model = GTK_TREE_MODEL(store);
 
@@ -386,14 +386,13 @@ void eq_preset_save_auto (void)
                                         G_CALLBACK(equalizerwin_save_auto_ok),
                                         G_CALLBACK(equalizerwin_save_auto_select));
 
-    char * name = aud_drct_get_filename ();
+    String name = aud_drct_get_filename ();
 
     if (name != NULL)
     {
         char * base = g_path_get_basename (name);
         gtk_entry_set_text ((GtkEntry *) equalizerwin_save_auto_entry, base);
         g_free (base);
-        str_unref (name);
     }
 }
 

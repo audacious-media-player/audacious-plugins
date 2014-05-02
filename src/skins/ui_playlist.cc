@@ -115,9 +115,8 @@ static void update_rollup_text (void)
         if (aud_get_bool (NULL, "show_numbers_in_pl"))
             APPEND (scratch, "%d. ", 1 + entry);
 
-        gchar * title = aud_playlist_entry_get_title (playlist, entry, TRUE);
-        APPEND (scratch, "%s", title);
-        str_unref (title);
+        String title = aud_playlist_entry_get_title (playlist, entry, TRUE);
+        APPEND (scratch, "%s", (const char *) title);
 
         if (length > 0)
         {
@@ -613,10 +612,9 @@ playlistwin_create_widgets(void)
     window_put_widget (playlistwin, FALSE, playlistwin_close, w - 11, 3);
     button_on_release (playlistwin_close, (ButtonCB) playlistwin_hide);
 
-    char * font = aud_get_str ("skins", "playlist_font");
+    String font = aud_get_str ("skins", "playlist_font");
     playlistwin_list = ui_skinned_playlist_new (w - 31, h - 58, font);
     window_put_widget (playlistwin, FALSE, playlistwin_list, 12, 20);
-    str_unref (font);
 
     /* playlist list box slider */
     playlistwin_slider = ui_skinned_playlist_slider_new (playlistwin_list, h - 58);
@@ -751,10 +749,9 @@ static void get_title (void)
 
     if (playlists > 1)
     {
-        gchar * title = aud_playlist_get_title (active_playlist);
-        active_title = g_strdup_printf (_("%s (%d of %d)"), title, 1 +
-         active_playlist, playlists);
-        str_unref (title);
+        String title = aud_playlist_get_title (active_playlist);
+        active_title = g_strdup_printf (_("%s (%d of %d)"),
+         (const char *) title, 1 + active_playlist, playlists);
     }
     else
         active_title = NULL;

@@ -80,9 +80,8 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
     }
     case TUPLE_STRING:
     {
-        char * sval = tuple_get_str (tuple, field);
-        temp = g_strdup_printf ("%s=%s", name, sval);
-        str_unref (sval);
+        String sval = tuple_get_str (tuple, field);
+        temp = g_strdup_printf ("%s=%s", name, (const char *) sval);
         break;
     }
     default:

@@ -572,14 +572,12 @@ void layout_load (void)
         char key[16];
 
         snprintf (key, sizeof key, "item%d_name", i);
-        char * name = aud_get_str ("gtkui-layout", key);
+        String name = aud_get_str ("gtkui-layout", key);
         Item * item = item_new (name);
-        str_unref (name);
 
         snprintf (key, sizeof key, "item%d_pos", i);
-        char * pos = aud_get_str ("gtkui-layout", key);
+        String pos = aud_get_str ("gtkui-layout", key);
         sscanf (pos, "%d,%d,%d,%d,%d", & item->dock, & item->x, & item->y, & item->w, & item->h);
-        str_unref (pos);
     }
 }
 

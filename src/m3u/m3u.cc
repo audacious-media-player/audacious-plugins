@@ -62,26 +62,27 @@ static char * split_line (char * line)
 }
 
 static bool_t playlist_load_m3u (const char * path, VFSFile * file,
- char * * title, Index<PlaylistAddItem> & items)
+ String & title, Index<PlaylistAddItem> & items)
 {
     char * text = read_win_text (file);
     if (! text)
         return FALSE;
-
-    * title = NULL;
 
     char * parse = text;
 
     while (parse)
     {
         char * next = split_line (parse);
-        char * s;
 
         while (* parse == ' ' || * parse == '\t')
             parse ++;
 
-        if (* parse && * parse != '#' && (s = uri_construct (parse, path)))
-            items.append ({s});
+        if (* parse && * parse != '#')
+        {
+            String s = uri_construct (parse, path);
+            if (s)
+                items.append ({s});
+        }
 
         parse = next;
     }
@@ -94,7 +95,7 @@ static bool_t playlist_save_m3u (const char * path, VFSFile * file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     for (auto & item : items)
-        vfs_fprintf (file, "%s\n", item.filename);
+        vfs_fprintf (file, "%s\n", (const char *) item.filename);
 
     return TRUE;
 }

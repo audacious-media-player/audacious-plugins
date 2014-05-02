@@ -332,13 +332,11 @@ static void handle_headers (struct neon_handle * h)
 static int neon_proxy_auth_cb (void * userdata, const char * realm, int attempt,
  char * username, char * password)
 {
-    char * value = aud_get_str (NULL, "proxy_user");
+    String value = aud_get_str (NULL, "proxy_user");
     g_strlcpy (username, value, NE_ABUFSIZ);
-    str_unref (value);
 
     value = aud_get_str (NULL, "proxy_pass");
     g_strlcpy (password, value, NE_ABUFSIZ);
-    str_unref (value);
 
     return attempt;
 }
@@ -445,7 +443,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
 static int open_handle (struct neon_handle * handle, uint64_t startbyte)
 {
     int ret;
-    char * proxy_host = NULL;
+    String proxy_host;
     int proxy_port = 0;
 
     bool_t use_proxy = aud_get_bool (NULL, "use_proxy");
@@ -512,16 +510,12 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
         ret = open_request (handle, startbyte);
 
         if (! ret)
-        {
-            str_unref (proxy_host);
             return 0;
-        }
 
         if (ret == -1)
         {
             ne_session_destroy (handle->session);
             handle->session = NULL;
-            str_unref (proxy_host);
             return -1;
         }
 
@@ -533,7 +527,6 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
     /* If we get here, our redirect count exceeded */
     _ERROR ("<%p> Redirect count exceeded for URL %s", (void *) handle, handle->url);
 
-    str_unref (proxy_host);
     return 1;
 }
 
@@ -1001,7 +994,7 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
     return 0;
 }
 
-char * neon_vfs_metadata_impl (VFSFile * file, const char * field)
+String neon_vfs_metadata_impl (VFSFile * file, const char * field)
 {
     struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
@@ -1019,7 +1012,7 @@ char * neon_vfs_metadata_impl (VFSFile * file, const char * field)
     if (! strcmp (field, "content-bitrate"))
         return int_to_str (h->icy_metadata.stream_bitrate * 1000);
 
-    return NULL;
+    return String ();
 }
 
 int64_t neon_vfs_fsize_impl (VFSFile * file)

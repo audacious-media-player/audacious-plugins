@@ -189,7 +189,7 @@ void * create_soundfont_list (void)
         /* soundfont settings - soundfont files - listview */
         soundfont_file_store = gtk_list_store_new (LISTSFONT_N_COLUMNS, G_TYPE_STRING, G_TYPE_INT);
 
-        char * soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
+        String soundfont_file = aud_get_str ("amidiplug", "fsyn_soundfont_file");
 
         if (soundfont_file[0])
         {
@@ -215,8 +215,6 @@ void * create_soundfont_list (void)
 
             g_strfreev (sffiles);
         }
-
-        str_unref (soundfont_file);
 
         soundfont_file_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
         soundfont_file_lv = gtk_tree_view_new_with_model (GTK_TREE_MODEL (soundfont_file_store));

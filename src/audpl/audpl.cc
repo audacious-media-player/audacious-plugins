@@ -25,16 +25,15 @@
 #include <libaudcore/inifile.h>
 
 typedef struct {
-    char * * title;
+    String & title;
     Index<PlaylistAddItem> & items;
-    char * uri;
+    String uri;
     Tuple * tuple;
 } LoadState;
 
 static void finish_item (LoadState * state)
 {
-    state->items.append ({state->uri, state->tuple});
-    state->uri = NULL;
+    state->items.append ({std::move (state->uri), state->tuple});
     state->tuple = NULL;
 }
 
@@ -54,7 +53,7 @@ static void handle_entry (const char * key, const char * value, void * data)
             finish_item (state);
 
         /* start new item */
-        state->uri = str_get (value);
+        state->uri = String (value);
     }
     else if (state->uri)
     {
@@ -83,16 +82,16 @@ static void handle_entry (const char * key, const char * value, void * data)
     else
     {
         /* top-level field */
-        if (! strcmp (key, "title") && ! * state->title)
+        if (! strcmp (key, "title") && ! state->title)
         {
             char buf[strlen (value) + 1];
             str_decode_percent (value, -1, buf);
-            * state->title = str_get (buf);
+            state->title = String (buf);
         }
     }
 }
 
-static bool_t audpl_load (const char * path, VFSFile * file, char * * title,
+static bool_t audpl_load (const char * path, VFSFile * file, String & title,
  Index<PlaylistAddItem> & items)
 {
     LoadState state = {
@@ -142,15 +141,11 @@ static bool_t audpl_save (const char * path, VFSFile * file,
 
                 if (type == TUPLE_STRING)
                 {
-                    char * str = tuple_get_str (tuple, f);
+                    String str = tuple_get_str (tuple, f);
 
                     if (! write_encoded_entry (file, tuple_field_get_name (f), str))
-                    {
-                        str_unref (str);
                         return FALSE;
-                    }
 
-                    str_unref (str);
                     keys ++;
                 }
                 else if (type == TUPLE_INT)

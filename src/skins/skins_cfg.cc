@@ -150,17 +150,15 @@ void skins_cfg_save (void)
 static void
 mainwin_font_set_cb()
 {
-    char * font = aud_get_str ("skins", "mainwin_font");
-    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL : font);
-    str_unref (font);
+    String font = aud_get_str ("skins", "mainwin_font");
+    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL : (const char *) font);
 }
 
 static void
 playlist_font_set_cb()
 {
-    char * font = aud_get_str ("skins", "playlist_font");
+    String font = aud_get_str ("skins", "playlist_font");
     ui_skinned_playlist_set_font (playlistwin_list, font);
-    str_unref (font);
 }
 
 static void autoscroll_set_cb (void)
@@ -305,31 +303,25 @@ on_skin_view_drag_data_received(GtkWidget * widget,
     if (! end) end = strchr (data, '\n');
     if (! end) end = data + strlen (data);
 
-    char * path = str_nget (data, end - data);
+    String path = str_nget (data, end - data);
 
     if (strstr (path, "://"))
     {
-        char * path2 = uri_to_filename (path);
+        String path2 = uri_to_filename (path);
         if (path2)
-        {
-            str_unref (path);
             path = path2;
-        }
     }
 
     if (file_is_archive(path))
     {
         if (! active_skin_load (path))
-            goto DONE;
+            return;
 
         skin_install_skin(path);
 
         if (skin_view)
             skin_view_update ((GtkTreeView *) skin_view);
     }
-
-DONE:
-    str_unref (path);
 }
 
 static void * create_skin_view (void)

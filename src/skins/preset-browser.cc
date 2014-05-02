@@ -109,13 +109,11 @@ static void do_save_file (const char * filename)
 
 void eq_preset_save_file (void)
 {
-    char * title = aud_drct_get_title ();
-    char * name = title ? str_printf ("%s.%s", title, EQUALIZER_DEFAULT_PRESET_EXT) : NULL;
+    String title = aud_drct_get_title ();
+    String name = title ? str_printf ("%s.%s", (const char *) title,
+     EQUALIZER_DEFAULT_PRESET_EXT) : String ();
 
     show_preset_browser (_("Save Preset File"), TRUE, name, do_save_file);
-
-    str_unref (title);
-    str_unref (name);
 }
 
 static void do_save_eqf (const char * filename)
@@ -124,7 +122,9 @@ static void do_save_eqf (const char * filename)
     if (! file)
         return;
 
-    EqualizerPreset preset ("Preset1");
+    EqualizerPreset preset = EqualizerPreset ();
+    preset.name = String ("Preset1");
+
     equalizerwin_update_preset (preset);
     aud_export_winamp_preset (preset, file);
 

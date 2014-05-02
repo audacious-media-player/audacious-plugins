@@ -114,9 +114,7 @@ static gboolean skins_init (void)
 
     menu_init ();
 
-    char * skin = aud_get_str ("skins", "skin");
-    init_skins (skin);
-    str_unref (skin);
+    init_skins (aud_get_str ("skins", "skin"));
 
     view_apply_on_top ();
     view_apply_sticky ();

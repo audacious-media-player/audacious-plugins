@@ -79,14 +79,14 @@ static gint available_samplerates[] =
 static gint available_bitrates[] =
 { 8, 16, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320 } ;
 
-typedef struct {
-    gchar *track_name;
-    gchar *album_name;
-    gchar *performer;
-    gchar *genre;
-    gchar *year;
-    gchar *track_number;
-} lameid3_t;
+struct lameid3_t {
+    String track_name;
+    String album_name;
+    String performer;
+    String genre;
+    String year;
+    String track_number;
+};
 
 static lameid3_t lameid3;
 
@@ -96,23 +96,6 @@ static int id3v2_size;
 
 static guchar * write_buffer;
 static gint write_buffer_size;
-
-static void free_lameid3(lameid3_t *p)
-{
-    str_unref (p->track_name);
-    str_unref (p->album_name);
-    str_unref (p->performer);
-    str_unref (p->genre);
-    str_unref (p->year);
-    str_unref (p->track_number);
-
-    p->track_name = NULL;
-    p->album_name = NULL;
-    p->performer = NULL;
-    p->genre = NULL;
-    p->year = NULL;
-    p->track_number = NULL;
-}
 
 static void lame_debugf(const char *format, va_list ap)
 {
@@ -366,7 +349,7 @@ static void mp3_close(void)
     lame_close(gfp);
     AUDDBG("lame_close() done\n");
 
-    free_lameid3(&lameid3);
+    lameid3 = lameid3_t ();
     numsamples = 0;
 }
 

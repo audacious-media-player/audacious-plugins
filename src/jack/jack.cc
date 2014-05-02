@@ -166,7 +166,7 @@ static int jack_playing(void)
 void jack_set_port_connection_mode()
 {
   /* setup the port connection mode that determines how bio2jack will connect ports */
-  char * mode_str = aud_get_str ("jack", "port_connection_mode");
+  String mode_str = aud_get_str ("jack", "port_connection_mode");
   enum JACK_PORT_CONNECTION_MODE mode;
 
   if(strcmp(mode_str, "CONNECT_ALL") == 0)
@@ -182,7 +182,6 @@ void jack_set_port_connection_mode()
   }
 
   JACK_SetPortConnectionMode(mode);
-  str_unref (mode_str);
 }
 
 static const char * const jack_defaults[] = {
