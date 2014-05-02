@@ -203,13 +203,13 @@ static gint file_open(gint fmt, gint rate, gint nch)
     if (filenamefromtags)
     {
         gchar * utf8 = aud_playlist_entry_get_title (playlist, pos, FALSE);
-        str_replace_char (utf8, '/', ' ');
 
         gchar buf[3 * strlen (utf8) + 1];
         str_encode_percent (utf8, -1, buf);
-        str_unref (utf8);
-
+        str_replace_char (buf, '/', '-');
         filename = g_strdup (buf);
+
+        str_unref (utf8);
     }
     else
     {
