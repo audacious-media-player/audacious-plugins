@@ -28,6 +28,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/multihash.h>
 #include <libaudgui/list.h>
 #include <libaudgui/menu.h>
 
@@ -41,34 +42,18 @@ struct Item
     int field;
     String name, folded;
     Item * parent;
-    GHashTable * children;
+    SimpleHash<String, Item> children;
     Index<int> matches;
 
     Item (int field, const String & name, Item * parent) :
         field (field),
         name (name),
         folded (str_tolower_utf8 (name)),
-        parent (parent),
-        children (nullptr)
-    {
-        if (field != TITLE)
-            children = g_hash_table_new_full ((GHashFunc) str_hash,
-             (GEqualFunc) str_equal, (GDestroyNotify) str_unref,
-             (GDestroyNotify) destroy);
-    }
-
-    ~Item ()
-    {
-        if (children)
-            g_hash_table_destroy (children);
-    }
-
-    static void destroy (Item * item)
-        { delete item; }
+        parent (parent) {}
 };
 
 struct SearchState {
-    Index<Item *> items[FIELDS];
+    Index<const Item *> items[FIELDS];
     int mask;
 };
 
@@ -76,8 +61,9 @@ static int playlist_id;
 static Index<String> search_terms;
 
 static GHashTable * added_table;
-static GHashTable * database;
-static Index<Item *> items;
+static SimpleHash<String, Item> database;
+static bool database_valid;
+static Index<const Item *> items;
 static Index<bool> selection;
 
 static bool_t adding;
@@ -157,20 +143,13 @@ static void destroy_added_table (void)
 static void destroy_database (void)
 {
     items.clear ();
-
-    if (database)
-    {
-        g_hash_table_destroy (database);
-        database = NULL;
-    }
+    database.clear ();
+    database_valid = false;
 }
 
 static void create_database (int list)
 {
     destroy_database ();
-
-    database = g_hash_table_new_full ((GHashFunc) str_hash, (GEqualFunc)
-     str_equal, (GDestroyNotify) str_unref, (GDestroyNotify) Item::destroy);
 
     int entries = aud_playlist_entry_count (list);
 
@@ -189,44 +168,36 @@ static void create_database (int list)
         if (! album)
             album = String (_("Unknown Album"));
 
-        artist_item = (Item *) g_hash_table_lookup (database, artist);
+        artist_item = database.lookup (artist);
 
         if (! artist_item)
-        {
-            artist_item = new Item (ARTIST, artist, NULL);
-            g_hash_table_insert (database, artist.to_c (), artist_item);
-        }
+            artist_item = database.add (artist, Item (ARTIST, artist, NULL));
 
         artist_item->matches.append (e);
 
-        album_item = (Item *) g_hash_table_lookup (artist_item->children, album);
+        album_item = artist_item->children.lookup (album);
 
         if (! album_item)
-        {
-            album_item = new Item (ALBUM, album, artist_item);
-            g_hash_table_insert (artist_item->children, album.to_c (), album_item);
-        }
+            album_item = artist_item->children.add (album, Item (ALBUM, album, artist_item));
 
         album_item->matches.append (e);
 
-        title_item = (Item *) g_hash_table_lookup (album_item->children, title);
+        title_item = album_item->children.lookup (title);
 
         if (! title_item)
-        {
-            title_item = new Item (TITLE, title, album_item);
-            g_hash_table_insert (album_item->children, title.to_c (), title_item);
-        }
+            title_item = album_item->children.add (title, Item (TITLE, title, album_item));
 
         title_item->matches.append (e);
     }
+
+    database_valid = true;
 }
 
-static void search_cb (void * key, void * _item, void * _state)
+static void search_cb (const String & key, const Item & item, void * _state)
 {
-    Item * item = (Item *) _item;
     SearchState * state = (SearchState *) _state;
 
-    if (state->items[item->field].len () > MAX_RESULTS)
+    if (state->items[item.field].len () > MAX_RESULTS)
         return;
 
     int oldmask = state->mask;
@@ -237,22 +208,21 @@ static void search_cb (void * key, void * _item, void * _state)
         if (! (state->mask & bit))
             continue; /* skip term if it is already found */
 
-        if (strstr (item->folded, search_terms[t]))
+        if (strstr (item.folded, search_terms[t]))
             state->mask &= ~bit; /* we found it */
-        else if (! item->children)
+        else if (! item.children.n_items ())
             break; /* quit early if there are no children to search */
     }
 
     if (! state->mask)
-        state->items[item->field].append (item);
+        state->items[item.field].append (& item);
 
-    if (item->children)
-        g_hash_table_foreach (item->children, search_cb, state);
+    item.children.iterate (search_cb, state);
 
     state->mask = oldmask;
 }
 
-static int item_compare (Item * const & a, Item * const & b, void *)
+static int item_compare (const Item * const & a, const Item * const & b, void *)
 {
     return str_compare (a->name, b->name);
 }
@@ -261,7 +231,7 @@ static void do_search (void)
 {
     items.clear ();
 
-    if (! database)
+    if (! database_valid)
         return;
 
     SearchState state;
@@ -269,7 +239,7 @@ static void do_search (void)
     /* effectively limits number of search terms to 32 */
     state.mask = (1 << search_terms.len ()) - 1;
 
-    g_hash_table_foreach (database, search_cb, & state);
+    database.iterate (search_cb, & state);
 
     int total = 0;
 
@@ -361,7 +331,7 @@ static void show_hide_widgets (void)
     {
         gtk_widget_hide (help_label);
 
-        if (database)
+        if (database_valid)
         {
             gtk_widget_hide (wait_label);
             gtk_widget_show (scrolled);
@@ -433,19 +403,19 @@ static void add_complete_cb (void * unused, void * unused2)
         }
     }
 
-    if (! database && ! aud_playlist_update_pending ())
+    if (! database_valid && ! aud_playlist_update_pending ())
         update_database ();
 }
 
 static void scan_complete_cb (void * unused, void * unused2)
 {
-    if (! database && ! aud_playlist_update_pending ())
+    if (! database_valid && ! aud_playlist_update_pending ())
         update_database ();
 }
 
 static void playlist_update_cb (void * data, void * unused)
 {
-    if (! database)
+    if (! database_valid)
         update_database ();
     else
     {
@@ -504,7 +474,7 @@ static void do_add (bool_t play, String & title)
         if (! selection[i])
             continue;
 
-        Item * item = items[i];
+        const Item * item = items[i];
 
         for (int entry : item->matches)
         {
@@ -563,7 +533,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
 {
     g_return_if_fail (row >= 0 && row < items.len ());
 
-    Item * item = items[row];
+    const Item * item = items[row];
     char * string = NULL;
 
     switch (item->field)
@@ -578,7 +548,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
         break;
 
     case ARTIST:
-        albums = g_hash_table_size (item->children);
+        albums = item->children.n_items ();
         snprintf (scratch, sizeof scratch, dngettext (PACKAGE, "%d album",
          "%d albums", albums), albums);
         string = g_strdup_printf (dngettext (PACKAGE, "%s\n %s, %d song",
