@@ -57,7 +57,7 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
     void * vlist;
 
     if (cache == NULL)
-        cache = g_hash_table_new (g_str_hash, g_str_equal);
+        cache = g_hash_table_new ((GHashFunc) str_calc_hash, g_str_equal);
 
     if (g_hash_table_lookup_extended (cache, folder, NULL, & vlist))
         list = (GList *) vlist;

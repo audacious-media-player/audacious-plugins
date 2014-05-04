@@ -44,8 +44,8 @@ static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
 {
     gint i;
 
-    GHashTable * dict = g_hash_table_new_full (g_str_hash, g_str_equal,
-     (GDestroyNotify) str_unref, (GDestroyNotify) str_unref);
+    GHashTable * dict = g_hash_table_new_full ((GHashFunc) str_calc_hash,
+     g_str_equal, (GDestroyNotify) str_unref, (GDestroyNotify) str_unref);
 
     for (i = 0; i < vc->comments; i++) {
         gchar **frags;
