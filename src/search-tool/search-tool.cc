@@ -193,7 +193,7 @@ static void create_database (int list)
     database_valid = true;
 }
 
-static void search_cb (const String & key, const Item & item, void * _state)
+static void search_cb (const String & key, Item & item, void * _state)
 {
     SearchState * state = (SearchState *) _state;
 
