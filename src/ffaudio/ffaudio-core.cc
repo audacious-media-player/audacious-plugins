@@ -31,14 +31,13 @@
 #undef FFAUDIO_NO_BLACKLIST /* Don't blacklist any recognized codecs/formats */
 
 #include "ffaudio-stdinc.h"
-#include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
-#include <libaudcore/runtime.h>
+
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
-
-static pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
-static GHashTable * extension_dict = NULL;
+#include <libaudcore/i18n.h>
+#include <libaudcore/input.h>
+#include <libaudcore/multihash.h>
+#include <libaudcore/runtime.h>
 
 typedef struct
 {
@@ -48,6 +47,10 @@ typedef struct
     AVCodec * codec;
 }
 CodecInfo;
+
+static SimpleHash<String, AVInputFormat *> extension_dict;
+
+static void create_extension_dict ();
 
 static gint lockmgr (void * * mutexp, enum AVLockOp op)
 {
@@ -77,14 +80,15 @@ static gboolean ffaudio_init (void)
     av_register_all();
     av_lockmgr_register (lockmgr);
 
+    create_extension_dict ();
+
     return TRUE;
 }
 
 static void
 ffaudio_cleanup(void)
 {
-    if (extension_dict)
-        g_hash_table_destroy (extension_dict);
+    extension_dict.clear ();
 
     av_lockmgr_register (NULL);
 }
@@ -95,11 +99,8 @@ static const gchar * ffaudio_strerror (gint error)
     return (! av_strerror (error, buf, sizeof buf)) ? buf : "unknown error";
 }
 
-static GHashTable * create_extension_dict (void)
+static void create_extension_dict ()
 {
-    GHashTable * dict = g_hash_table_new_full ((GHashFunc) str_calc_hash,
-     g_str_equal, (GDestroyNotify) str_unref, NULL);
-
     AVInputFormat * f;
     for (f = av_iformat_next (NULL); f; f = av_iformat_next (f))
     {
@@ -118,13 +119,11 @@ static GHashTable * create_extension_dict (void)
                 next ++;
             }
 
-            g_hash_table_insert (dict, str_get(parse), f);
+            extension_dict.add (String (parse), std::move (f));
         }
 
         g_free (exts);
     }
-
-    return dict;
 }
 
 static AVInputFormat * get_format_by_extension (const gchar * name)
@@ -138,21 +137,15 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
     gchar * ext = g_ascii_strdown (ext0 + 1, sub - ext0 - 1);
 
     AUDDBG ("Get format by extension: %s\n", name);
-    pthread_mutex_lock (& data_mutex);
+    AVInputFormat * * f = extension_dict.lookup (String (ext));
 
-    if (! extension_dict)
-        extension_dict = create_extension_dict ();
-
-    AVInputFormat * f = (AVInputFormat *) g_hash_table_lookup (extension_dict, ext);
-    pthread_mutex_unlock (& data_mutex);
-
-    if (f)
-        AUDDBG ("Format %s.\n", f->name);
+    if (f && * f)
+        AUDDBG ("Format %s.\n", (* f)->name);
     else
         AUDDBG ("Format unknown.\n");
 
     g_free (ext);
-    return f;
+    return * f;
 }
 
 static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file)

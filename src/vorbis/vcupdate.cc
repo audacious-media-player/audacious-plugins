@@ -30,24 +30,25 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
-#include <libaudcore/runtime.h>
-#include <libaudcore/plugin.h>
-#include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/multihash.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "vorbis.h"
 #include "vcedit.h"
 
 static gboolean write_and_pivot_files(vcedit_state * state);
 
-static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
+typedef SimpleHash<String, String> Dictionary;
+
+static Dictionary dictionary_from_vorbis_comment (vorbis_comment * vc)
 {
-    gint i;
+    Dictionary dict;
 
-    GHashTable * dict = g_hash_table_new_full ((GHashFunc) str_calc_hash,
-     g_str_equal, (GDestroyNotify) str_unref, (GDestroyNotify) str_unref);
-
-    for (i = 0; i < vc->comments; i++) {
+    for (int i = 0; i < vc->comments; i ++)
+    {
         gchar **frags;
 
         AUDDBG("%s\n", vc->user_comments[i]);
@@ -56,7 +57,7 @@ static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
         if (frags[0] && frags[1])
         {
             gchar * key = g_ascii_strdown (frags[0], -1);
-            g_hash_table_insert (dict, str_get (key), str_get (frags[1]));
+            dict.add (String (key), String (frags[1]));
             g_free (key);
         }
 
@@ -66,37 +67,37 @@ static GHashTable * dictionary_from_vorbis_comment (vorbis_comment * vc)
     return dict;
 }
 
-static void add_tag_cb (void * key, void * field, void * vc)
+static void add_tag_cb (const String & key, String & field, void * vc)
 {
-    vorbis_comment_add_tag ((vorbis_comment *) vc, (const char *) key, (const char *) field);
+    vorbis_comment_add_tag ((vorbis_comment *) vc, key, field);
 }
 
-static void dictionary_to_vorbis_comment (vorbis_comment * vc, GHashTable * dict)
+static void dictionary_to_vorbis_comment (vorbis_comment * vc, Dictionary & dict)
 {
     vorbis_comment_clear(vc);
-    g_hash_table_foreach (dict, add_tag_cb, vc);
+    dict.iterate (add_tag_cb, vc);
 }
 
-static void insert_str_tuple_field_to_dictionary (const Tuple * tuple, int
- fieldn, GHashTable * dict, const char * key)
+static void insert_str_tuple_field_to_dictionary (const Tuple * tuple,
+ int fieldn, Dictionary & dict, const char * key)
 {
     String val = tuple_get_str (tuple, fieldn);
 
     if (val && val[0])
-        g_hash_table_insert (dict, str_get (key), str_ref (val));
+        dict.add (String (key), std::move (val));
     else
-        g_hash_table_remove (dict, key);
+        dict.remove (String (key));
 }
 
-static void insert_int_tuple_field_to_dictionary (const Tuple * tuple, int
- fieldn, GHashTable * dict, const char * key)
+static void insert_int_tuple_field_to_dictionary (const Tuple * tuple,
+ int fieldn, Dictionary & dict, const char * key)
 {
     int val = tuple_get_int (tuple, fieldn);
 
     if (val > 0)
-        g_hash_table_insert (dict, str_get (key), int_to_str (val).to_c ());
+        dict.add (String (key), int_to_str (val));
     else
-        g_hash_table_remove (dict, key);
+        dict.remove (String (key));
 }
 
 gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple * tuple)
@@ -116,7 +117,7 @@ gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tu
     }
 
     comment = vcedit_comments(state);
-    GHashTable * dict = dictionary_from_vorbis_comment (comment);
+    Dictionary dict = dictionary_from_vorbis_comment (comment);
 
     insert_str_tuple_field_to_dictionary(tuple, FIELD_TITLE, dict, "title");
     insert_str_tuple_field_to_dictionary(tuple, FIELD_ARTIST, dict, "artist");
@@ -128,7 +129,6 @@ gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tu
     insert_int_tuple_field_to_dictionary(tuple, FIELD_TRACK_NUMBER, dict, "tracknumber");
 
     dictionary_to_vorbis_comment(comment, dict);
-    g_hash_table_destroy (dict);
 
     ret = write_and_pivot_files(state);
 

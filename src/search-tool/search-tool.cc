@@ -60,7 +60,7 @@ struct SearchState {
 static int playlist_id;
 static Index<String> search_terms;
 
-static GHashTable * added_table;
+static SimpleHash<String, bool> added_table;
 static SimpleHash<String, Item> database;
 static bool database_valid;
 static Index<const Item *> items;
@@ -129,15 +129,6 @@ static String get_path (void)
         return path;
 
     return String (g_get_home_dir ());
-}
-
-static void destroy_added_table (void)
-{
-    if (added_table)
-    {
-        g_hash_table_destroy (added_table);
-        added_table = NULL;
-    }
 }
 
 static void destroy_database (void)
@@ -265,7 +256,7 @@ static void do_search (void)
 
 static bool_t filter_cb (const char * filename, void * unused)
 {
-    return added_table && ! g_hash_table_contains (added_table, filename);
+    return ! added_table.lookup (String (filename));
 }
 
 static void begin_add (const char * path)
@@ -286,10 +277,7 @@ static void begin_add (const char * path)
         uri = String (temp);
     }
 
-    destroy_added_table ();
-
-    added_table = g_hash_table_new_full ((GHashFunc) str_hash, (GEqualFunc)
-     str_equal, (GDestroyNotify) str_unref, NULL);
+    added_table.clear ();
 
     int entries = aud_playlist_entry_count (list);
 
@@ -297,10 +285,10 @@ static void begin_add (const char * path)
     {
         String filename = aud_playlist_entry_get_filename (list, entry);
 
-        if (g_str_has_prefix (filename, uri) && ! g_hash_table_contains (added_table, filename))
+        if (g_str_has_prefix (filename, uri) && ! added_table.lookup (filename))
         {
             aud_playlist_entry_set_selected (list, entry, FALSE);
-            g_hash_table_insert (added_table, filename.to_c (), NULL);
+            added_table.add (filename, true);
         }
         else
             aud_playlist_entry_set_selected (list, entry, TRUE);
@@ -398,7 +386,7 @@ static void add_complete_cb (void * unused, void * unused2)
         if (list >= 0 && ! aud_playlist_add_in_progress (list))
         {
             adding = FALSE;
-            destroy_added_table ();
+            added_table.clear ();
             aud_playlist_sort_by_scheme (list, PLAYLIST_SORT_PATH);
         }
     }
@@ -457,7 +445,7 @@ static void search_cleanup (void)
     items.clear ();
     selection.clear ();
 
-    destroy_added_table ();
+    added_table.clear ();
     destroy_database ();
 }
 
