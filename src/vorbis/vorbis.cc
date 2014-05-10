@@ -124,26 +124,26 @@ end:
 }
 
 static void
-set_tuple_str(Tuple *tuple, const gint nfield,
+set_tuple_str(Tuple &tuple, const gint nfield,
     vorbis_comment *comment, const gchar *key)
 {
-    tuple_set_str (tuple, nfield, vorbis_comment_query (comment, key, 0));
+    tuple.set_str (nfield, vorbis_comment_query (comment, key, 0));
 }
 
-static Tuple *
+static Tuple
 get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
 {
-    Tuple *tuple;
+    Tuple tuple;
     gint length = -1;
     vorbis_comment *comment = NULL;
 
-    tuple = tuple_new_from_filename(filename);
+    tuple.set_filename(filename);
 
     if (! vfs_is_streaming ((VFSFile *) vorbisfile->datasource))
         length = ov_time_total (vorbisfile, -1) * 1000;
 
     /* associate with tuple */
-    tuple_set_int(tuple, FIELD_LENGTH, length);
+    tuple.set_int (FIELD_LENGTH, length);
 
     if ((comment = ov_comment(vorbisfile, -1)) != NULL) {
         gchar *tmps;
@@ -154,17 +154,16 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const gchar *filename)
         set_tuple_str(tuple, FIELD_COMMENT, comment, "comment");
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != NULL)
-            tuple_set_int(tuple, FIELD_TRACK_NUMBER, atoi(tmps));
+            tuple.set_int (FIELD_TRACK_NUMBER, atoi(tmps));
 
         if ((tmps = vorbis_comment_query (comment, "date", 0)) != NULL)
-            tuple_set_int (tuple, FIELD_YEAR, atoi (tmps));
+            tuple.set_int (FIELD_YEAR, atoi (tmps));
     }
 
     vorbis_info * info = ov_info (vorbisfile, -1);
-    tuple_set_format (tuple, "Ogg Vorbis", info->channels, info->rate,
-     info->bitrate_nominal / 1000);
+    tuple.set_format ("Ogg Vorbis", info->channels, info->rate, info->bitrate_nominal / 1000);
 
-    tuple_set_str(tuple, FIELD_MIMETYPE, "application/ogg");
+    tuple.set_str (FIELD_MIMETYPE, "application/ogg");
 
     return tuple;
 }
@@ -391,10 +390,9 @@ play_cleanup:
     return ! error;
 }
 
-static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
+static Tuple get_song_tuple (const gchar * filename, VFSFile * file)
 {
     OggVorbis_File vfile;          /* avoid thread interaction */
-    Tuple *tuple = NULL;
 
     /*
      * The open function performs full stream detection and
@@ -403,9 +401,9 @@ static Tuple * get_song_tuple (const gchar * filename, VFSFile * file)
      */
     if (ov_open_callbacks (file, & vfile, NULL, 0, vfs_is_streaming (file) ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
-        return NULL;
+        return Tuple ();
 
-    tuple = get_tuple_for_vorbisfile(&vfile, filename);
+    Tuple tuple = get_tuple_for_vorbisfile(&vfile, filename);
     ov_clear(&vfile);
     return tuple;
 }

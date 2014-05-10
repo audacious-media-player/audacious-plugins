@@ -45,7 +45,7 @@ enum
 static void amidiplug_play_loop (void);
 
 static bool_t amidiplug_play (const char * filename_uri, VFSFile * file);
-static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
+static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
 static void amidiplug_skipto (int playing_tick);
 
 static midifile_t midifile;
@@ -116,15 +116,16 @@ static int amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * 
     return FALSE;
 }
 
-static Tuple * amidiplug_get_song_tuple (const char * filename_uri, VFSFile *
-        file)
+static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file)
 {
     /* song title, get it from the filename */
-    Tuple * tuple = tuple_new_from_filename (filename_uri);
+    Tuple tuple;
+    tuple.set_filename (filename_uri);
+
     midifile_t mf;
 
     if (i_midi_parse_from_filename (filename_uri, &mf))
-        tuple_set_int (tuple, FIELD_LENGTH, mf.length / 1000);
+        tuple.set_int (FIELD_LENGTH, mf.length / 1000);
 
     i_midi_free (&mf);
 

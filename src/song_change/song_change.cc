@@ -181,29 +181,26 @@ static void do_command (const char * cmd)
             formatter_associate (formatter, 'c', numbuf);
         }
 
-        Tuple * tuple = aud_playlist_entry_get_tuple
+        Tuple tuple = aud_playlist_entry_get_tuple
             (aud_playlist_get_active (), pos, 0);
 
-        String artist = tuple ? tuple_get_str (tuple, FIELD_ARTIST) : String ();
+        String artist = tuple.get_str (FIELD_ARTIST);
         if (artist)
             formatter_associate(formatter, 'a', artist);
         else
             formatter_associate(formatter, 'a', "");
 
-        String album = tuple ? tuple_get_str (tuple, FIELD_ALBUM) : String ();
+        String album = tuple.get_str (FIELD_ALBUM);
         if (album)
             formatter_associate(formatter, 'b', album);
         else
             formatter_associate(formatter, 'b', "");
 
-        String title = tuple ? tuple_get_str (tuple, FIELD_TITLE) : String ();
+        String title = tuple.get_str (FIELD_TITLE);
         if (title)
             formatter_associate(formatter, 'T', title);
         else
             formatter_associate(formatter, 'T', "");
-
-        if (tuple)
-            tuple_unref (tuple);
 
         shstring = formatter_format(formatter, cmd);
         formatter_destroy(formatter);

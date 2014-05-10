@@ -308,31 +308,30 @@ playlistwin_select_search(void)
       case GTK_RESPONSE_ACCEPT:
       {
          /* create a TitleInput tuple with user search data */
-         Tuple *tuple = tuple_new();
+         Tuple tuple;
          gchar *searchdata = NULL;
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_title) );
          AUDDBG("title=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_TITLE, searchdata);
+         tuple.set_str (FIELD_TITLE, searchdata);
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_album) );
          AUDDBG("album=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_ALBUM, searchdata);
+         tuple.set_str (FIELD_ALBUM, searchdata);
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_performer) );
          AUDDBG("performer=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_ARTIST, searchdata);
+         tuple.set_str (FIELD_ARTIST, searchdata);
 
          searchdata = (gchar*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_file_name) );
          AUDDBG("filename=\"%s\"\n", searchdata);
-         tuple_set_str(tuple, FIELD_FILE_NAME, searchdata);
+         tuple.set_str (FIELD_FILE_NAME, searchdata);
 
          /* check if previous selection should be cleared before searching */
          if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel)) == TRUE )
              playlistwin_select_none();
 
          aud_playlist_select_by_patterns (active_playlist, tuple);
-         tuple_unref (tuple);
 
          /* check if a new playlist should be created after searching */
          if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_newplaylist)) == TRUE )

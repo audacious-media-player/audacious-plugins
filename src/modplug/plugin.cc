@@ -26,7 +26,7 @@ bool_t PlayFile(const char * filename, VFSFile * file)
     return gModplugXMMS.PlayFile(filename);
 }
 
-Tuple* GetSongTuple(const char* aFilename, VFSFile *fd)
+Tuple GetSongTuple(const char* aFilename, VFSFile *fd)
 {
     return gModplugXMMS.GetSongTuple(aFilename);
 }

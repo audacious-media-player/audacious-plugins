@@ -50,7 +50,7 @@ public:
 
     bool PlayFile(const std::string& aFilename);
 
-    Tuple* GetSongTuple(const std::string& aFilename);
+    Tuple GetSongTuple(const std::string& aFilename);
 
     void SetModProps(const ModplugSettings& aModProps);
 

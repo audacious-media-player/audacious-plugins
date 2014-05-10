@@ -63,33 +63,34 @@ static bool_t is_mp4_aac_file (const char * filename, VFSFile * handle)
 }
 
 static void read_and_set_string (mp4ff_t * mp4, int (*func) (const mp4ff_t *
- mp4, char * *string), Tuple * tuple, int field)
+ mp4, char * *string), Tuple & tuple, int field)
 {
     char *string = NULL;
 
     func (mp4, &string);
 
     if (string != NULL)
-        tuple_set_str (tuple, field, string);
+        tuple.set_str (field, string);
 
     g_free (string);
 }
 
-static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
+static Tuple generate_tuple (const char * filename, mp4ff_t * mp4, int track)
 {
-    Tuple *tuple = tuple_new_from_filename (filename);
+    Tuple tuple;
     int64_t length;
     int scale, rate, channels, bitrate;
     char *year = NULL, *cd_track = NULL;
     char scratch[32];
 
-    tuple_set_str (tuple, FIELD_CODEC, "MPEG-2/4 AAC");
+    tuple.set_filename (filename);
+    tuple.set_str (FIELD_CODEC, "MPEG-2/4 AAC");
 
     length = mp4ff_get_track_duration (mp4, track);
     scale = mp4ff_time_scale (mp4, track);
 
     if (length > 0 && scale > 0)
-        tuple_set_int (tuple, FIELD_LENGTH, length * 1000 / scale);
+        tuple.set_int (FIELD_LENGTH, length * 1000 / scale);
 
     rate = mp4ff_get_sample_rate (mp4, track);
     channels = mp4ff_get_channel_count (mp4, track);
@@ -98,13 +99,13 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     {
         snprintf (scratch, sizeof scratch, "%d kHz, %s", rate / 1000, channels
          == 1 ? _("mono") : channels == 2 ? _("stereo") : _("surround"));
-        tuple_set_str (tuple, FIELD_QUALITY, scratch);
+        tuple.set_str (FIELD_QUALITY, scratch);
     }
 
     bitrate = mp4ff_get_avg_bitrate (mp4, track);
 
     if (bitrate > 0)
-        tuple_set_int (tuple, FIELD_BITRATE, bitrate / 1000);
+        tuple.set_int (FIELD_BITRATE, bitrate / 1000);
 
     read_and_set_string (mp4, mp4ff_meta_get_title, tuple, FIELD_TITLE);
     read_and_set_string (mp4, mp4ff_meta_get_album, tuple, FIELD_ALBUM);
@@ -115,21 +116,21 @@ static Tuple *generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     mp4ff_meta_get_date (mp4, &year);
 
     if (year != NULL)
-        tuple_set_int (tuple, FIELD_YEAR, atoi (year));
+        tuple.set_int (FIELD_YEAR, atoi (year));
 
     g_free (year);
 
     mp4ff_meta_get_track (mp4, &cd_track);
 
     if (cd_track != NULL)
-        tuple_set_int (tuple, FIELD_TRACK_NUMBER, atoi (cd_track));
+        tuple.set_int (FIELD_TRACK_NUMBER, atoi (cd_track));
 
     g_free (cd_track);
 
     return tuple;
 }
 
-static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
+static Tuple mp4_get_tuple (const char * filename, VFSFile * handle)
 {
     mp4ff_callback_t mp4cb = {
         mp4_read_callback,
@@ -141,22 +142,21 @@ static Tuple *mp4_get_tuple (const char * filename, VFSFile * handle)
 
     mp4ff_t *mp4;
     int track;
-    Tuple *tuple;
 
     mp4 = mp4ff_open_read (&mp4cb);
 
     if (mp4 == NULL)
-        return NULL;
+        return Tuple ();
 
     track = getAACTrack (mp4);
 
     if (track < 0)
     {
         mp4ff_close (mp4);
-        return NULL;
+        return Tuple ();
     }
 
-    tuple = generate_tuple (filename, mp4, track);
+    Tuple tuple = generate_tuple (filename, mp4, track);
     mp4ff_close (mp4);
     return tuple;
 }

@@ -91,33 +91,33 @@ static SF_VIRTUAL_IO sf_virtual_io =
     sf_tell
 };
 
-static void copy_string (SNDFILE * sf, int sf_id, Tuple * tup, int tup_id)
+static void copy_string (SNDFILE * sf, int sf_id, Tuple & tup, int tup_id)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str)
-        tuple_set_str (tup, tup_id, str);
+        tup.set_str (tup_id, str);
 }
 
-static void copy_int (SNDFILE * sf, int sf_id, Tuple * tup, int tup_id)
+static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, int tup_id)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str && atoi (str))
-        tuple_set_int (tup, tup_id, atoi (str));
+        tup.set_int (tup_id, atoi (str));
 }
 
-static Tuple * get_song_tuple (const char * filename, VFSFile * file)
+static Tuple get_song_tuple (const char * filename, VFSFile * file)
 {
     SNDFILE *sndfile;
     SF_INFO sfinfo;
     const char *format, *subformat;
-    Tuple * ti;
+    Tuple ti;
 
     sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, file);
 
     if (sndfile == NULL)
-        return NULL;
+        return ti;
 
-    ti = tuple_new_from_filename (filename);
+    ti.set_filename (filename);
 
     /* I have no idea version of sndfile ALBUM, GENRE, and TRACKNUMBER were
      * added in. -jlindgren */
@@ -132,10 +132,7 @@ static Tuple * get_song_tuple (const char * filename, VFSFile * file)
     sf_close (sndfile);
 
     if (sfinfo.samplerate > 0)
-    {
-        tuple_set_int(ti, FIELD_LENGTH,
-        (int) ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
-    }
+        ti.set_int (FIELD_LENGTH, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
 
     switch (sfinfo.format & SF_FORMAT_TYPEMASK)
     {
@@ -279,10 +276,10 @@ static Tuple * get_song_tuple (const char * filename, VFSFile * file)
     if (subformat != NULL)
     {
         SPRINTF (codec, "%s (%s)", format, subformat);
-        tuple_set_format (ti, codec, sfinfo.channels, sfinfo.samplerate, 0);
+        ti.set_format (codec, sfinfo.channels, sfinfo.samplerate, 0);
     }
     else
-        tuple_set_format (ti, format, sfinfo.channels, sfinfo.samplerate, 0);
+        ti.set_format (format, sfinfo.channels, sfinfo.samplerate, 0);
 
     return ti;
 }

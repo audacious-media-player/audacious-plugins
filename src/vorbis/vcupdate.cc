@@ -78,10 +78,10 @@ static void dictionary_to_vorbis_comment (vorbis_comment * vc, Dictionary & dict
     dict.iterate (add_tag_cb, vc);
 }
 
-static void insert_str_tuple_field_to_dictionary (const Tuple * tuple,
+static void insert_str_tuple_field_to_dictionary (const Tuple & tuple,
  int fieldn, Dictionary & dict, const char * key)
 {
-    String val = tuple_get_str (tuple, fieldn);
+    String val = tuple.get_str (fieldn);
 
     if (val && val[0])
         dict.add (String (key), std::move (val));
@@ -89,10 +89,10 @@ static void insert_str_tuple_field_to_dictionary (const Tuple * tuple,
         dict.remove (String (key));
 }
 
-static void insert_int_tuple_field_to_dictionary (const Tuple * tuple,
+static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
  int fieldn, Dictionary & dict, const char * key)
 {
-    int val = tuple_get_int (tuple, fieldn);
+    int val = tuple.get_int (fieldn);
 
     if (val > 0)
         dict.add (String (key), int_to_str (val));
@@ -100,7 +100,7 @@ static void insert_int_tuple_field_to_dictionary (const Tuple * tuple,
         dict.remove (String (key));
 }
 
-gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple * tuple)
+gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple & tuple)
 {
 
     vcedit_state *state;

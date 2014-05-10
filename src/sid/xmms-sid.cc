@@ -41,7 +41,7 @@
 xs_status_t xs_status;
 pthread_mutex_t xs_status_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static void xs_get_song_tuple_info(Tuple *pResult, xs_tuneinfo_t *pInfo, int subTune);
+static void xs_get_song_tuple_info(Tuple &pResult, xs_tuneinfo_t *pInfo, int subTune);
 
 /*
  * Initialization functions
@@ -118,7 +118,7 @@ bool_t xs_play_file(const char *filename, VFSFile *file)
     xs_tuneinfo_t *tmpTune;
     int audioBufSize, bufRemaining, tmpLength, subTune = -1;
     char *audioBuffer = NULL, *oversampleBuffer = NULL;
-    Tuple *tmpTuple;
+    Tuple tmpTuple;
 
     uri_parse (filename, NULL, NULL, NULL, & subTune);
 
@@ -187,12 +187,12 @@ bool_t xs_play_file(const char *filename, VFSFile *file)
 
     /* Set song information for current subtune */
     xs_sidplayfp_updateinfo(&xs_status);
-    tmpTuple = tuple_new_from_filename(tmpTune->sidFilename);
+    tmpTuple.set_filename (tmpTune->sidFilename);
     xs_get_song_tuple_info(tmpTuple, tmpTune, xs_status.currSong);
 
     pthread_mutex_unlock(&xs_status_mutex);
 
-    aud_input_set_tuple(tmpTuple);
+    aud_input_set_tuple (std::move (tmpTuple));
 
     while (! aud_input_check_stop ())
     {
@@ -247,12 +247,12 @@ xs_err_exit:
 /*
  * Return song information Tuple
  */
-static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, int subTune)
+static void xs_get_song_tuple_info(Tuple &tuple, xs_tuneinfo_t *info, int subTune)
 {
-    tuple_set_str(tuple, FIELD_TITLE, info->sidName);
-    tuple_set_str(tuple, FIELD_ARTIST, info->sidComposer);
-    tuple_set_str(tuple, FIELD_COPYRIGHT, info->sidCopyright);
-    tuple_set_str(tuple, FIELD_CODEC, info->sidFormat);
+    tuple.set_str (FIELD_TITLE, info->sidName);
+    tuple.set_str (FIELD_ARTIST, info->sidComposer);
+    tuple.set_str (FIELD_COPYRIGHT, info->sidCopyright);
+    tuple.set_str (FIELD_CODEC, info->sidFormat);
 
 #if 0
     switch (info->sidModel) {
@@ -270,7 +270,7 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, int subTun
 
     if (subTune > 0 && subTune <= info->nsubTunes) {
         int tmpInt = info->subTunes[subTune - 1].tuneLength;
-        tuple_set_int(tuple, FIELD_LENGTH, (tmpInt < 0) ? -1 : tmpInt * 1000);
+        tuple.set_int (FIELD_LENGTH, (tmpInt < 0) ? -1 : tmpInt * 1000);
 
 #if 0
         tmpInt = info->subTunes[subTune - 1].tuneSpeed;
@@ -294,13 +294,13 @@ static void xs_get_song_tuple_info(Tuple *tuple, xs_tuneinfo_t *info, int subTun
     } else
         subTune = 1;
 
-    tuple_set_int(tuple, FIELD_SUBSONG_NUM, info->nsubTunes);
-    tuple_set_int(tuple, FIELD_SUBSONG_ID, subTune);
-    tuple_set_int(tuple, FIELD_TRACK_NUMBER, subTune);
+    tuple.set_int (FIELD_SUBSONG_NUM, info->nsubTunes);
+    tuple.set_int (FIELD_SUBSONG_ID, subTune);
+    tuple.set_int (FIELD_TRACK_NUMBER, subTune);
 }
 
 
-static void xs_fill_subtunes(Tuple *tuple, xs_tuneinfo_t *info)
+static void xs_fill_subtunes(Tuple &tuple, xs_tuneinfo_t *info)
 {
     int count, found;
     int subtunes[info->nsubTunes];
@@ -312,25 +312,25 @@ static void xs_fill_subtunes(Tuple *tuple, xs_tuneinfo_t *info)
             subtunes[found ++] = count + 1;
     }
 
-    tuple_set_subtunes (tuple, found, subtunes);
+    tuple.set_subtunes (found, subtunes);
 }
 
-Tuple * xs_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
 {
-    Tuple *tuple;
+    Tuple tuple;
     xs_tuneinfo_t *info;
     int tune = -1;
 
     pthread_mutex_lock(&xs_status_mutex);
     if (!xs_sidplayfp_probe(fd)) {
         pthread_mutex_unlock(&xs_status_mutex);
-        return NULL;
+        return tuple;
     }
     pthread_mutex_unlock(&xs_status_mutex);
 
     /* Get information from URL */
-    tuple = tuple_new_from_filename (filename);
-    tune = tuple_get_int (tuple, FIELD_SUBSONG_NUM);
+    tuple.set_filename (filename);
+    tune = tuple.get_int (FIELD_SUBSONG_NUM);
 
     /* Get tune information from emulation engine */
     pthread_mutex_lock(&xs_status_mutex);

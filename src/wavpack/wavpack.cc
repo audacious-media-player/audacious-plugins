@@ -222,38 +222,38 @@ wv_get_quality(WavpackContext *ctx)
         "");
 }
 
-static Tuple *
+static Tuple
 wv_probe_for_tuple(const char * filename, VFSFile * fd)
 {
     WavpackContext *ctx;
-    Tuple *tu;
+    Tuple tuple;
     char error[1024];
 
     ctx = WavpackOpenFileInputEx(&wv_readers, fd, NULL, error, OPEN_TAGS, 0);
 
     if (ctx == NULL)
-        return NULL;
+        return tuple;
 
     AUDDBG("starting probe of %p\n", (void *) fd);
 
-    tu = tuple_new_from_filename(filename);
+    tuple.set_filename (filename);
 
-    tuple_set_int(tu, FIELD_LENGTH,
+    tuple.set_int (FIELD_LENGTH,
         ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
-    tuple_set_str(tu, FIELD_CODEC, "WavPack");
+    tuple.set_str (FIELD_CODEC, "WavPack");
 
-    tuple_set_str (tu, FIELD_QUALITY, wv_get_quality (ctx));
+    tuple.set_str (FIELD_QUALITY, wv_get_quality (ctx));
 
     WavpackCloseFile(ctx);
 
     if (! vfs_fseek (fd, 0, SEEK_SET))
-        tag_tuple_read (tu, fd);
+        tag_tuple_read (tuple, fd);
 
-    AUDDBG("returning tuple %p for file %p\n", (void *) tu, (void *) fd);
-    return tu;
+    AUDDBG("returning tuple for file %p\n", (void *) fd);
+    return tuple;
 }
 
-static bool_t wv_write_tag (const char * filename, VFSFile * handle, const Tuple * tuple)
+static bool_t wv_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
 {
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }

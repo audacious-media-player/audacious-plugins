@@ -40,7 +40,7 @@ extern struct format_info input;
 
 extern VFSFile *output_file;
 extern guint64 offset;
-extern Tuple * tuple;
+extern Tuple tuple;
 
 typedef gint (*write_output_callback)(void *ptr, gint length);
 

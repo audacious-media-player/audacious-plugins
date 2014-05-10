@@ -170,10 +170,10 @@ RETRY:;
 	return TRUE;
 }
 
-static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
+static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 {
 	if (! file)
-		return NULL;
+		return Tuple ();
 
 	bool_t stream = vfs_is_streaming (file);
 	mpg123_handle * decoder = mpg123_new (NULL, NULL);
@@ -199,16 +199,17 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	{
 		fprintf (stderr, "mpg123 probe error for %s: %s\n", filename, mpg123_plain_strerror (result));
 		mpg123_delete (decoder);
-		return NULL;
+		return Tuple ();
 	}
 
-	Tuple * tuple = tuple_new_from_filename (filename);
+	Tuple tuple;
+	tuple.set_filename (filename);
 	make_format_string (& info, scratch, sizeof scratch);
-	tuple_set_str (tuple, FIELD_CODEC, scratch);
+	tuple.set_str (FIELD_CODEC, scratch);
 	snprintf (scratch, sizeof scratch, "%s, %d Hz", (channels == 2)
 	 ? _("Stereo") : (channels > 2) ? _("Surround") : _("Mono"), (int) rate);
-	tuple_set_str (tuple, FIELD_QUALITY, scratch);
-	tuple_set_int (tuple, FIELD_BITRATE, info.bitrate);
+	tuple.set_str (FIELD_QUALITY, scratch);
+	tuple.set_int (FIELD_BITRATE, info.bitrate);
 
 	if (! stream)
 	{
@@ -217,9 +218,9 @@ static Tuple * mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 		int length = (samples > 0 && rate > 0) ? samples * 1000 / rate : 0;
 
 		if (length > 0)
-			tuple_set_int (tuple, FIELD_LENGTH, length);
+			tuple.set_int (FIELD_LENGTH, length);
 		if (size > 0 && length > 0)
-			tuple_set_int (tuple, FIELD_BITRATE, 8 * size / length);
+			tuple.set_int (FIELD_BITRATE, 8 * size / length);
 	}
 
 	mpg123_delete (decoder);
@@ -240,7 +241,7 @@ typedef struct {
 	int channels;
 	int encoding;
 	bool_t stream;
-	Tuple *tu;
+	Tuple tu;
 } MPG123PlaybackContext;
 
 static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
@@ -266,7 +267,7 @@ static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
 
 	AUDDBG ("Checking for streaming ...\n");
 	ctx.stream = vfs_is_streaming (file);
-	ctx.tu = ctx.stream ? aud_input_get_tuple () : NULL;
+	ctx.tu = ctx.stream ? aud_input_get_tuple () : Tuple ();
 
 	ctx.decoder = mpg123_new (NULL, NULL);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
@@ -346,10 +347,7 @@ GET_FORMAT:
 		}
 
 		if (ctx.tu && tag_update_stream_metadata (ctx.tu, file))
-		{
-			tuple_ref (ctx.tu);
-			aud_input_set_tuple (ctx.tu);
-		}
+			aud_input_set_tuple (ctx.tu.ref ());
 
 		if (! outbuf_size && (ret = mpg123_read (ctx.decoder,
 		 (unsigned char *) outbuf, sizeof outbuf, & outbuf_size)) < 0)
@@ -376,12 +374,10 @@ GET_FORMAT:
 
 cleanup:
 	mpg123_delete(ctx.decoder);
-	if (ctx.tu)
-		tuple_unref (ctx.tu);
 	return ! error;
 }
 
-static bool_t mpg123_write_tag (const char * filename, VFSFile * handle, const Tuple * tuple)
+static bool_t mpg123_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
 {
 	if (! handle)
 		return FALSE;

@@ -313,7 +313,7 @@ static const ffaudio_meta_t metaentries[] = {
  {TUPLE_INT,    FIELD_TRACK_NUMBER, {"track", "WM/TrackNumber", NULL}},
 };
 
-static void read_metadata_dict (Tuple * tuple, AVDictionary * dict)
+static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
 {
     for (int i = 0; i < ARRAY_LEN (metaentries); i ++)
     {
@@ -326,16 +326,16 @@ static void read_metadata_dict (Tuple * tuple, AVDictionary * dict)
         if (entry && entry->value)
         {
             if (m->ttype == TUPLE_STRING)
-                tuple_set_str (tuple, m->field, entry->value);
+                tuple.set_str (m->field, entry->value);
             else if (m->ttype == TUPLE_INT)
-                tuple_set_int (tuple, m->field, atoi (entry->value));
+                tuple.set_int (m->field, atoi (entry->value));
         }
     }
 }
 
-static Tuple * read_tuple (const gchar * filename, VFSFile * file)
+static Tuple read_tuple (const gchar * filename, VFSFile * file)
 {
-    Tuple * tuple = NULL;
+    Tuple tuple;
     AVFormatContext * ic = open_input_file (filename, file);
 
     if (ic)
@@ -344,13 +344,13 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
 
         if (find_codec (ic, & cinfo))
         {
-            tuple = tuple_new_from_filename (filename);
+            tuple.set_filename (filename);
 
-            tuple_set_int (tuple, FIELD_LENGTH, ic->duration / 1000);
-            tuple_set_int (tuple, FIELD_BITRATE, ic->bit_rate / 1000);
+            tuple.set_int (FIELD_LENGTH, ic->duration / 1000);
+            tuple.set_int (FIELD_BITRATE, ic->bit_rate / 1000);
 
             if (cinfo.codec->long_name)
-                tuple_set_str (tuple, FIELD_CODEC, cinfo.codec->long_name);
+                tuple.set_str (FIELD_CODEC, cinfo.codec->long_name);
 
             if (ic->metadata)
                 read_metadata_dict (tuple, ic->metadata);
@@ -364,23 +364,21 @@ static Tuple * read_tuple (const gchar * filename, VFSFile * file)
     return tuple;
 }
 
-static Tuple *
+static Tuple
 ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     if (! fd)
-        return NULL;
+        return Tuple ();
 
-    Tuple * t = read_tuple (filename, fd);
-    if (t == NULL)
-        return NULL;
+    Tuple t = read_tuple (filename, fd);
 
-    if (! vfs_fseek (fd, 0, SEEK_SET))
+    if (t && ! vfs_fseek (fd, 0, SEEK_SET))
         tag_tuple_read (t, fd);
 
     return t;
 }
 
-static gboolean ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple * tuple)
+static gboolean ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple & tuple)
 {
     if (! file)
         return FALSE;

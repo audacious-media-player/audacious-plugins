@@ -233,22 +233,23 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
         NeAACDecClose (decoder);
 }
 
-static Tuple *aac_get_tuple (const char * filename, VFSFile * handle)
+static Tuple aac_get_tuple (const char * filename, VFSFile * handle)
 {
-    Tuple *tuple = tuple_new_from_filename (filename);
+    Tuple tuple;
     int length, bitrate, samplerate, channels;
 
-    tuple_set_str (tuple, FIELD_CODEC, "MPEG-2/4 AAC");
+    tuple.set_filename (filename);
+    tuple.set_str (FIELD_CODEC, "MPEG-2/4 AAC");
 
     if (!vfs_is_remote (filename))
     {
         calc_aac_info (handle, &length, &bitrate, &samplerate, &channels);
 
         if (length > 0)
-            tuple_set_int (tuple, FIELD_LENGTH, length);
+            tuple.set_int (FIELD_LENGTH, length);
 
         if (bitrate > 0)
-            tuple_set_int (tuple, FIELD_BITRATE, bitrate);
+            tuple.set_int (FIELD_BITRATE, bitrate);
     }
 
     tag_update_stream_metadata (tuple, handle);
@@ -314,18 +315,18 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
     unsigned char channels = 0;
     int bitrate = 0;
 
-    Tuple * tuple = aud_input_get_tuple ();
+    Tuple tuple = aud_input_get_tuple ();
 
-    if (tuple != NULL)
+    if (tuple)
     {
-        bitrate = tuple_get_int (tuple, FIELD_BITRATE);
+        bitrate = tuple.get_int (FIELD_BITRATE);
         bitrate = 1000 * MAX (0, bitrate);
     }
 
     if ((decoder = NeAACDecOpen ()) == NULL)
     {
         fprintf (stderr, "AAC: Open Decoder Error\n");
-        goto ERR;
+        return FALSE;
     }
 
     decoder_config = NeAACDecGetCurrentConfiguration (decoder);
@@ -382,10 +383,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
     /* == CHECK FOR METADATA == */
 
     if (tuple && tag_update_stream_metadata (tuple, file))
-    {
-        tuple_ref (tuple);
-        aud_input_set_tuple (tuple);
-    }
+        aud_input_set_tuple (tuple.ref ());
 
     /* == START PLAYBACK == */
 
@@ -404,7 +402,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
         if (seek_value >= 0)
         {
-            int length = tuple ? tuple_get_int (tuple, FIELD_LENGTH) : 0;
+            int length = tuple ? tuple.get_int (FIELD_LENGTH) : 0;
 
             if (length > 0)
                 aac_seek (file, decoder, seek_value, length, buf, sizeof buf, & buflen);
@@ -418,10 +416,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
         /* == CHECK FOR METADATA == */
 
         if (tuple && tag_update_stream_metadata (tuple, file))
-        {
-            tuple_ref (tuple);
-            aud_input_set_tuple (tuple);
-        }
+            aud_input_set_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */
 
@@ -457,19 +452,10 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
     }
 
     NeAACDecClose (decoder);
-
-    if (tuple)
-        tuple_unref (tuple);
-
     return TRUE;
 
 ERR_CLOSE_DECODER:
     NeAACDecClose (decoder);
-
-ERR:
-    if (tuple)
-        tuple_unref (tuple);
-
     return FALSE;
 }
 

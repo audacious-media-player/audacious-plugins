@@ -109,35 +109,35 @@ factory (VFSFile * fd, Copl * newopl)
 
 /***** Main player (!! threaded !!) *****/
 
-Tuple * adplug_get_tuple (const char * filename, VFSFile * fd)
+Tuple adplug_get_tuple (const char * filename, VFSFile * fd)
 {
-  Tuple * ti = NULL;
+  Tuple tuple;
   CSilentopl tmpopl;
 
   if (!fd)
-    return NULL;
+    return tuple;
 
   CPlayer *p = factory (fd, &tmpopl);
 
   if (p)
   {
-    ti = tuple_new_from_filename (filename);
+    tuple.set_filename (filename);
 
     if (! p->getauthor().empty())
-      tuple_set_str(ti, FIELD_ARTIST, p->getauthor().c_str());
+      tuple.set_str (FIELD_ARTIST, p->getauthor().c_str());
 
     if (! p->gettitle().empty())
-      tuple_set_str(ti, FIELD_TITLE, p->gettitle().c_str());
+      tuple.set_str (FIELD_TITLE, p->gettitle().c_str());
     else if (! p->getdesc().empty())
-      tuple_set_str(ti, FIELD_TITLE, p->getdesc().c_str());
+      tuple.set_str (FIELD_TITLE, p->getdesc().c_str());
 
-    tuple_set_str(ti, FIELD_CODEC, p->gettype().c_str());
-    tuple_set_str(ti, FIELD_QUALITY, _("sequenced"));
-    tuple_set_int(ti, FIELD_LENGTH, p->songlength (plr.subsong));
+    tuple.set_str (FIELD_CODEC, p->gettype().c_str());
+    tuple.set_str (FIELD_QUALITY, _("sequenced"));
+    tuple.set_int (FIELD_LENGTH, p->songlength (plr.subsong));
     delete p;
   }
 
-  return ti;
+  return tuple;
 }
 
 // Define sampsize macro (only usable inside play_loop()!)

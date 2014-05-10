@@ -154,17 +154,15 @@ error_exit:
     return !error;
 }
 
-static Tuple *tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
+static Tuple tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
-    Tuple *tuple = tuple_new_from_filename(filename);
+    Tuple tuple;
+    tuple.set_filename (filename);
     gchar *tmp;
-
-    if (tuple == NULL)
-        return NULL;
 
     if ((tmp = tone_title(filename)) != NULL)
     {
-        tuple_set_str(tuple, FIELD_TITLE, tmp);
+        tuple.set_str (FIELD_TITLE, tmp);
         g_free(tmp);
     }
 

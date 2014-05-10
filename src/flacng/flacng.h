@@ -49,9 +49,9 @@ typedef struct callback_info {
 } callback_info;
 
 /* metadata.c */
-bool_t flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple *tuple);
+bool_t flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple &tuple);
 bool_t flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length);
-Tuple *flac_probe_for_tuple(const char *filename, VFSFile *fd);
+Tuple flac_probe_for_tuple(const char *filename, VFSFile *fd);
 
 /* seekable_stream_callbacks.c */
 FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);

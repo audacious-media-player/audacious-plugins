@@ -88,7 +88,7 @@ static bool_t cdaudio_init (void);
 static int cdaudio_is_our_file (const char * filename, VFSFile * file);
 static bool_t cdaudio_play (const char * name, VFSFile * file);
 static void cdaudio_cleanup (void);
-static Tuple * make_tuple (const char * filename, VFSFile * file);
+static Tuple make_tuple (const char * filename, VFSFile * file);
 static bool_t scan_cd (void);
 static void refresh_trackinfo (bool_t warning);
 static void reset_trackinfo (void);
@@ -400,10 +400,10 @@ static void cdaudio_cleanup (void)
 }
 
 /* thread safe */
-static Tuple * make_tuple (const char * filename, VFSFile * file)
+static Tuple make_tuple (const char * filename, VFSFile * file)
 {
     bool_t whole_disk = ! strcmp (filename, "cdda://");
-    Tuple * tuple = NULL;
+    Tuple tuple;
 
     pthread_mutex_lock (& mutex);
 
@@ -418,7 +418,7 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
 
     if (whole_disk)
     {
-        tuple = tuple_new_from_filename (filename);
+        tuple.set_filename (filename);
 
         int subtunes[n_audio_tracks];
         int i = 0;
@@ -428,7 +428,7 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
             if (cdda_track_audiop (pcdrom_drive, trackno))
                 subtunes[i ++] = trackno;
 
-        tuple_set_subtunes (tuple, n_audio_tracks, subtunes);
+        tuple.set_subtunes (n_audio_tracks, subtunes);
     }
     else
     {
@@ -446,26 +446,26 @@ static Tuple * make_tuple (const char * filename, VFSFile * file)
             goto DONE;
         }
 
-        tuple = tuple_new_from_filename (filename);
-        tuple_set_format (tuple, _("Audio CD"), 2, 44100, 1411);
-        tuple_set_int (tuple, FIELD_TRACK_NUMBER, trackno);
-        tuple_set_int (tuple, FIELD_LENGTH, calculate_track_length
+        tuple.set_filename (filename);
+        tuple.set_format (_("Audio CD"), 2, 44100, 1411);
+        tuple.set_int (FIELD_TRACK_NUMBER, trackno);
+        tuple.set_int (FIELD_LENGTH, calculate_track_length
          (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 
         if (trackinfo[trackno].name[0])
-            tuple_set_str (tuple, FIELD_TITLE, trackinfo[trackno].name);
+            tuple.set_str (FIELD_TITLE, trackinfo[trackno].name);
         else
         {
             SPRINTF (title, _("Track %d"), trackno);
-            tuple_set_str (tuple, FIELD_TITLE, title);
+            tuple.set_str (FIELD_TITLE, title);
         }
 
         if (trackinfo[trackno].performer[0])
-            tuple_set_str (tuple, FIELD_ARTIST, trackinfo[trackno].performer);
+            tuple.set_str (FIELD_ARTIST, trackinfo[trackno].performer);
         if (trackinfo[0].name[0])
-            tuple_set_str (tuple, FIELD_ALBUM, trackinfo[0].name);
+            tuple.set_str (FIELD_ALBUM, trackinfo[0].name);
         if (trackinfo[trackno].genre[0])
-            tuple_set_str (tuple, FIELD_GENRE, trackinfo[trackno].genre);
+            tuple.set_str (FIELD_GENRE, trackinfo[trackno].genre);
     }
 
   DONE:

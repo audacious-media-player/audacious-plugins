@@ -8,6 +8,8 @@ include ../../buildsys.mk
 
 plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
+LD = ${CXX}
+
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${SNDFILE_CFLAGS} -I../..
 LIBS += ${GLIB_LIBS} ${SNDFILE_LIBS} -lm

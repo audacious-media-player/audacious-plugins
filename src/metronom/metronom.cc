@@ -200,14 +200,15 @@ static bool_t metronom_play (const char * filename, VFSFile * file)
     return TRUE;
 }
 
-static Tuple *metronom_probe_for_tuple(const char * filename, VFSFile *fd)
+static Tuple metronom_probe_for_tuple(const char * filename, VFSFile *fd)
 {
-    Tuple *tuple = tuple_new_from_filename(filename);
+    Tuple tuple;
     metronom_t metronom;
     String desc;
 
+    tuple.set_filename (filename);
     if (metronom_get_cp(filename, &metronom, desc))
-        tuple_set_str(tuple, FIELD_TITLE, desc);
+        tuple.set_str (FIELD_TITLE, desc);
 
     return tuple;
 }

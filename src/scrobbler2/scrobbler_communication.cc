@@ -545,17 +545,17 @@ static void send_now_playing() {
    * now_playing_track can be set to something else while we this method is
    * running. Creating a local variable avoids to get data for different tracks,
    * while now_playing_track was updated concurrently.
+   *
+   * FIXME: Make this actually thread-safe.
    */
-  Tuple *curr_track = now_playing_track;
+  Tuple curr_track = now_playing_track.ref ();
 
-  String artist = clean_string(tuple_get_str(curr_track, FIELD_ARTIST));
-  String title = clean_string(tuple_get_str(curr_track, FIELD_TITLE));
-  String album = clean_string(tuple_get_str(curr_track, FIELD_ALBUM));
+  String artist = clean_string (curr_track.get_str (FIELD_ARTIST));
+  String title = clean_string (curr_track.get_str (FIELD_TITLE));
+  String album = clean_string (curr_track.get_str (FIELD_ALBUM));
 
-  int track  = tuple_get_int(curr_track, FIELD_TRACK_NUMBER);
-  int length = tuple_get_int(curr_track, FIELD_LENGTH);
-
-  tuple_unref(curr_track);
+  int track  = curr_track.get_int (FIELD_TRACK_NUMBER);
+  int length = curr_track.get_int (FIELD_LENGTH);
 
   if (artist[0] && title[0] && length > 0) {
     String track_str = (track > 0) ? int_to_str(track) : String("");

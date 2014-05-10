@@ -83,7 +83,7 @@ static gboolean prependnumber;
 static String file_path;
 
 VFSFile *output_file = NULL;
-Tuple *tuple = NULL;
+Tuple tuple;
 
 static gint64 samples_written;
 
@@ -193,7 +193,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     pos = aud_playlist_get_position(playlist);
     tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
-    if (tuple == NULL)
+    if (! tuple)
         return 0;
 
     if (filenamefromtags)
@@ -221,8 +221,8 @@ static gint file_open(gint fmt, gint rate, gint nch)
 
     if (prependnumber)
     {
-        gint number = tuple_get_int(tuple, FIELD_TRACK_NUMBER);
-        if (!tuple || !number)
+        gint number = tuple.get_int (FIELD_TRACK_NUMBER);
+        if (number < 0)
             number = pos + 1;
 
         temp = g_strdup_printf ("%d%%20%s", number, filename);
@@ -288,11 +288,7 @@ static void file_close(void)
         vfs_fclose(output_file);
     output_file = NULL;
 
-    if (tuple)
-    {
-        tuple_unref (tuple);
-        tuple = NULL;
-    }
+    tuple = Tuple ();
 }
 
 static void file_flush(gint time)

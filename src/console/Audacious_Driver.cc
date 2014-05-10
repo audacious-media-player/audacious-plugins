@@ -147,47 +147,45 @@ int ConsoleFileHandler::load(int sample_rate)
     return 0;
 }
 
-static Tuple * get_track_ti(const char *path, const track_info_t *info, const int track)
+static Tuple get_track_ti(const char *path, const track_info_t *info, const int track)
 {
-    Tuple *ti = tuple_new_from_filename(path);
+    Tuple tuple;
+    tuple.set_filename (path);
 
-    if (ti != NULL)
+    tuple.set_str (FIELD_ARTIST, info->author);
+    tuple.set_str (FIELD_ALBUM, info->game);
+    tuple.set_str (FIELD_TITLE, info->song);
+    tuple.set_str (FIELD_COPYRIGHT, info->copyright);
+    tuple.set_str (FIELD_CODEC, info->system);
+    tuple.set_str (FIELD_COMMENT, info->comment);
+
+    if (track >= 0)
     {
-        tuple_set_str (ti, FIELD_ARTIST, info->author);
-        tuple_set_str (ti, FIELD_ALBUM, info->game);
-        tuple_set_str (ti, FIELD_TITLE, info->song);
-        tuple_set_str (ti, FIELD_COPYRIGHT, info->copyright);
-        tuple_set_str (ti, FIELD_CODEC, info->system);
-        tuple_set_str (ti, FIELD_COMMENT, info->comment);
-
-        if (track >= 0)
-        {
-            tuple_set_int(ti, FIELD_TRACK_NUMBER, track + 1);
-            tuple_set_int(ti, FIELD_SUBSONG_ID, track + 1);
-            tuple_set_int(ti, FIELD_SUBSONG_NUM, info->track_count);
-        }
-        else
-            tuple_set_subtunes (ti, info->track_count, NULL);
-
-        int length = info->length;
-        if (length <= 0)
-            length = info->intro_length + 2 * info->loop_length;
-        if (length <= 0)
-            length = audcfg.loop_length * 1000;
-        else if (length >= fade_threshold)
-            length += fade_length;
-        tuple_set_int(ti, FIELD_LENGTH, length);
+        tuple.set_int (FIELD_TRACK_NUMBER, track + 1);
+        tuple.set_int (FIELD_SUBSONG_ID, track + 1);
+        tuple.set_int (FIELD_SUBSONG_NUM, info->track_count);
     }
+    else
+        tuple.set_subtunes (info->track_count, NULL);
 
-    return ti;
+    int length = info->length;
+    if (length <= 0)
+        length = info->intro_length + 2 * info->loop_length;
+    if (length <= 0)
+        length = audcfg.loop_length * 1000;
+    else if (length >= fade_threshold)
+        length += fade_length;
+    tuple.set_int (FIELD_LENGTH, length);
+
+    return tuple;
 }
 
-Tuple * console_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple console_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     ConsoleFileHandler fh(filename, fd);
 
     if (!fh.m_type)
-        return NULL;
+        return Tuple ();
 
     if (!fh.load(gme_info_only))
     {
@@ -196,7 +194,7 @@ Tuple * console_probe_for_tuple(const char *filename, VFSFile *fd)
             return get_track_ti(fh.m_path, &info, fh.m_track);
     }
 
-    return NULL;
+    return Tuple ();
 }
 
 bool_t console_play(const char *filename, VFSFile *file)
@@ -251,11 +249,10 @@ bool_t console_play(const char *filename, VFSFile *file)
         if (fh.m_type == gme_spc_type && audcfg.ignore_spc_length)
             info.length = -1;
 
-        Tuple *ti = get_track_ti(fh.m_path, &info, fh.m_track);
-        if (ti != NULL)
+        Tuple tuple = get_track_ti(fh.m_path, &info, fh.m_track);
+        if (tuple)
         {
-            length = tuple_get_int(ti, FIELD_LENGTH);
-            tuple_unref(ti);
+            length = tuple.get_int (FIELD_LENGTH);
             aud_input_set_bitrate(fh.m_emu->voice_count() * 1000);
         }
     }

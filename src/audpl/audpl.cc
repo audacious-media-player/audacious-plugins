@@ -28,13 +28,12 @@ typedef struct {
     String & title;
     Index<PlaylistAddItem> & items;
     String uri;
-    Tuple * tuple;
+    Tuple tuple;
 } LoadState;
 
 static void finish_item (LoadState * state)
 {
-    state->items.append ({std::move (state->uri), state->tuple});
-    state->tuple = NULL;
+    state->items.append ({std::move (state->uri), std::move (state->tuple)});
 }
 
 static void handle_heading (const char * heading, void * data)
@@ -59,24 +58,24 @@ static void handle_entry (const char * key, const char * value, void * data)
     {
         /* item field */
         if (! state->tuple)
-            state->tuple = tuple_new_from_filename (state->uri);
+            state->tuple.set_filename (state->uri);
 
         if (strcmp (key, "empty"))
         {
-            int field = tuple_field_by_name (key);
+            int field = Tuple::field_by_name (key);
             if (field < 0)
                 return;
 
-            TupleValueType type = tuple_field_get_type (field);
+            TupleValueType type = Tuple::field_get_type (field);
 
             if (type == TUPLE_STRING)
             {
                 char buf[strlen (value) + 1];
                 str_decode_percent (value, -1, buf);
-                tuple_set_str (state->tuple, field, buf);
+                state->tuple.set_str (field, buf);
             }
             else if (type == TUPLE_INT)
-                tuple_set_int (state->tuple, field, atoi (value));
+                state->tuple.set_int (field, atoi (value));
         }
     }
     else
@@ -126,7 +125,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
         if (! inifile_write_entry (file, "uri", item.filename))
             return FALSE;
 
-        const Tuple * tuple = item.tuple;
+        const Tuple & tuple = item.tuple;
 
         if (tuple)
         {
@@ -137,13 +136,13 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 if (f == FIELD_FILE_PATH || f == FIELD_FILE_NAME || f == FIELD_FILE_EXT)
                     continue;
 
-                TupleValueType type = tuple_get_value_type (tuple, f);
+                TupleValueType type = tuple.get_value_type (f);
 
                 if (type == TUPLE_STRING)
                 {
-                    String str = tuple_get_str (tuple, f);
+                    String str = tuple.get_str (f);
 
-                    if (! write_encoded_entry (file, tuple_field_get_name (f), str))
+                    if (! write_encoded_entry (file, Tuple::field_get_name (f), str))
                         return FALSE;
 
                     keys ++;
@@ -151,9 +150,9 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 else if (type == TUPLE_INT)
                 {
                     char buf[32];
-                    str_itoa (tuple_get_int (tuple, f), buf, sizeof buf);
+                    str_itoa (tuple.get_int (f), buf, sizeof buf);
 
-                    if (! inifile_write_entry (file, tuple_field_get_name (f), buf))
+                    if (! inifile_write_entry (file, Tuple::field_get_name (f), buf))
                         return FALSE;
 
                     keys ++;

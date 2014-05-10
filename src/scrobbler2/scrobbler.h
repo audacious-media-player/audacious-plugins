@@ -63,7 +63,7 @@ extern bool_t migrate_config_requested;
 
 //Send "now playing"
 extern bool_t now_playing_requested;
-extern Tuple *now_playing_track;
+extern Tuple now_playing_track;
 
 
 

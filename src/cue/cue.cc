@@ -42,7 +42,7 @@ TuplePTIMap pti_map[] = {
 };
 
 static void
-tuple_attach_cdtext(Tuple *tuple, Track *track, int tuple_type, int pti)
+tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
 {
     Cdtext *cdtext;
     const char *text;
@@ -55,7 +55,7 @@ tuple_attach_cdtext(Tuple *tuple, Track *track, int tuple_type, int pti)
     if (text == NULL)
         return;
 
-    tuple_set_str (tuple, tuple_type, text);
+    tuple.set_str (tuple_type, text);
 }
 
 static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
@@ -85,7 +85,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
 
     String filename = uri_construct (track_filename, cue_filename);
 
-    Tuple * base_tuple = NULL;
+    Tuple base_tuple;
     bool_t base_tuple_scanned = FALSE;
 
     for (int track = 1; track <= tracks; track ++)
@@ -93,7 +93,7 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         if (current == NULL || filename == NULL)
             return FALSE;
 
-        if (base_tuple == NULL && ! base_tuple_scanned)
+        if (! base_tuple_scanned)
         {
             base_tuple_scanned = TRUE;
             PluginHandle * decoder = aud_file_find_decoder (filename, FALSE);
@@ -106,39 +106,36 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
          (track_get_filename (next), cue_filename) : String ();
         bool_t last_track = (next_filename == NULL || strcmp (next_filename, filename));
 
-        Tuple * tuple = (base_tuple != NULL) ? tuple_copy (base_tuple) :
-         tuple_new_from_filename (filename);
-        tuple_set_int (tuple, FIELD_TRACK_NUMBER, track);
+        Tuple tuple = base_tuple.ref ();
+        tuple.set_filename (filename);
+        tuple.set_int (FIELD_TRACK_NUMBER, track);
 
         int begin = (int64_t) track_get_start (current) * 1000 / 75;
-        tuple_set_int (tuple, FIELD_SEGMENT_START, begin);
+        tuple.set_int (FIELD_SEGMENT_START, begin);
 
         if (last_track)
         {
-            if (base_tuple != NULL && tuple_get_value_type (base_tuple,
-             FIELD_LENGTH) == TUPLE_INT)
-                tuple_set_int (tuple, FIELD_LENGTH, tuple_get_int
-                 (base_tuple, FIELD_LENGTH) - begin);
+            if (base_tuple.get_value_type (FIELD_LENGTH) == TUPLE_INT)
+                tuple.set_int (FIELD_LENGTH, base_tuple.get_int (FIELD_LENGTH) - begin);
         }
         else
         {
             int length = (int64_t) track_get_length (current) * 1000 / 75;
-            tuple_set_int (tuple, FIELD_LENGTH, length);
-            tuple_set_int (tuple, FIELD_SEGMENT_END, begin + length);
+            tuple.set_int (FIELD_LENGTH, length);
+            tuple.set_int (FIELD_SEGMENT_END, begin + length);
         }
 
         for (int i = 0; i < ARRAY_LEN (pti_map); i ++)
             tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type, pti_map[i].pti);
 
-        items.append ({filename, tuple});
+        items.append ({filename, std::move (tuple)});
 
         current = next;
         filename = next_filename;
 
-        if (last_track && base_tuple != NULL)
+        if (last_track)
         {
-            tuple_unref (base_tuple);
-            base_tuple = NULL;
+            base_tuple = Tuple ();
             base_tuple_scanned = FALSE;
         }
     }

@@ -96,9 +96,9 @@ int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
 	return AO_SUCCESS;
 }
 
-Tuple *psf2_tuple(const char *filename, VFSFile *file)
+Tuple psf2_tuple(const char *filename, VFSFile *file)
 {
-	Tuple *t;
+	Tuple t;
 	corlett_t *c;
 	void *buf;
 	int64_t sz;
@@ -106,20 +106,20 @@ Tuple *psf2_tuple(const char *filename, VFSFile *file)
 	vfs_file_get_contents (filename, & buf, & sz);
 
 	if (!buf)
-		return NULL;
+		return t;
 
 	if (corlett_decode((uint8_t *) buf, sz, NULL, NULL, &c) != AO_SUCCESS)
-		return NULL;
+		return t;
 
-	t = tuple_new_from_filename(filename);
+	t.set_filename (filename);
 
-	tuple_set_int(t, FIELD_LENGTH, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
-	tuple_set_str(t, FIELD_ARTIST, c->inf_artist);
-	tuple_set_str(t, FIELD_ALBUM, c->inf_game);
-	tuple_set_str(t, FIELD_TITLE, c->inf_title);
-	tuple_set_str(t, FIELD_COPYRIGHT, c->inf_copy);
-	tuple_set_str(t, FIELD_QUALITY, _("sequenced"));
-	tuple_set_str(t, FIELD_CODEC, "PlayStation 1/2 Audio");
+	t.set_int (FIELD_LENGTH, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
+	t.set_str (FIELD_ARTIST, c->inf_artist);
+	t.set_str (FIELD_ALBUM, c->inf_game);
+	t.set_str (FIELD_TITLE, c->inf_title);
+	t.set_str (FIELD_COPYRIGHT, c->inf_copy);
+	t.set_str (FIELD_QUALITY, _("sequenced"));
+	t.set_str (FIELD_CODEC, "PlayStation 1/2 Audio");
 
 	free(c);
 	free(buf);

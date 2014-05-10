@@ -51,19 +51,19 @@ typedef struct {
     bool_t popup_shown;
 } PlaylistWidgetData;
 
-static void set_int_from_tuple (GValue * value, const Tuple * tuple, int field)
+static void set_int_from_tuple (GValue * value, const Tuple & tuple, int field)
 {
-    int i = tuple ? tuple_get_int (tuple, field) : 0;
+    int i = tuple ? tuple.get_int (field) : 0;
     if (i > 0)
         g_value_take_string (value, g_strdup_printf ("%d", i));
     else
         g_value_set_string (value, "");
 }
 
-static void set_string_from_tuple (GValue * value, const Tuple * tuple,
+static void set_string_from_tuple (GValue * value, const Tuple & tuple,
  int field)
 {
-    String str = tuple ? tuple_get_str (tuple, field) : String ();
+    String str = tuple ? tuple.get_str (field) : String ();
     g_value_set_string (value, str);
 }
 
@@ -98,7 +98,7 @@ static void get_value (void * user, int row, int column, GValue * value)
     column = pw_cols[column];
 
     String title, artist, album;
-    Tuple * tuple = NULL;
+    Tuple tuple;
 
     switch (column)
     {
@@ -160,8 +160,6 @@ static void get_value (void * user, int row, int column, GValue * value)
         set_int_from_tuple (value, tuple, FIELD_BITRATE);
         break;
     }
-
-    tuple_unref (tuple);
 }
 
 static bool_t get_selected (void * user, int row)

@@ -283,10 +283,9 @@ bool ModplugXMMS::PlayFile(const string& aFilename)
         mArchive->Size()
     );
 
-    Tuple* ti = GetSongTuple( aFilename );
-    if ( ti ) {
-        aud_input_set_tuple(ti);
-    }
+    Tuple ti = GetSongTuple (aFilename);
+    if (ti)
+        aud_input_set_tuple (std::move (ti));
 
     aud_input_set_bitrate(mSoundFile->GetNumChannels() * 1000);
 
@@ -299,21 +298,23 @@ bool ModplugXMMS::PlayFile(const string& aFilename)
     return true;
 }
 
-Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
+Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
 {
     CSoundFile* lSoundFile;
     Archive* lArchive;
     const char *tmps;
 
     //open and mmap the file
-        lArchive = OpenArchive(aFilename);
-        if(lArchive->Size() == 0)
-        {
-                delete lArchive;
-                return NULL;
-        }
+    lArchive = OpenArchive(aFilename);
+    if(lArchive->Size() == 0)
+    {
+        delete lArchive;
+        return Tuple ();
+    }
 
-    Tuple *ti = tuple_new_from_filename(aFilename.c_str());
+    Tuple ti;
+    ti.set_filename (aFilename.c_str ());
+
     lSoundFile = new CSoundFile;
     lSoundFile->Create((unsigned char*)lArchive->Map(), lArchive->Size());
 
@@ -342,14 +343,14 @@ Tuple* ModplugXMMS::GetSongTuple(const string& aFilename)
     case MOD_TYPE_PSM:  tmps = "Protracker Studio Module"; break;
     default:        tmps = "ModPlug unknown"; break;
     }
-    tuple_set_str(ti, FIELD_CODEC, tmps);
-    tuple_set_str(ti, FIELD_QUALITY, _("sequenced"));
-    tuple_set_int(ti, FIELD_LENGTH, lSoundFile->GetSongTime() * 1000);
+    ti.set_str (FIELD_CODEC, tmps);
+    ti.set_str (FIELD_QUALITY, _("sequenced"));
+    ti.set_int (FIELD_LENGTH, lSoundFile->GetSongTime() * 1000);
 
     const char *tmps2 = lSoundFile->GetTitle();
     // Chop any leading spaces off. They are annoying in the playlist.
     while ( *tmps2 == ' ' ) tmps2++ ;
-    tuple_set_str(ti, FIELD_TITLE, tmps2);
+    ti.set_str (FIELD_TITLE, tmps2);
 
     //unload the file
     lSoundFile->Destroy();

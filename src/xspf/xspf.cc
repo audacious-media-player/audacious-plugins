@@ -86,7 +86,7 @@ static void xspf_add_file (xmlNode * track, const gchar * filename,
 {
     xmlNode *nptr;
     String location;
-    Tuple * tuple = NULL;
+    Tuple tuple;
 
     for (nptr = track->children; nptr != NULL; nptr = nptr->next) {
         if (nptr->type == XML_ELEMENT_NODE) {
@@ -134,15 +134,11 @@ static void xspf_add_file (xmlNode * track, const gchar * filename,
                     xmlChar *str = xmlNodeGetContent(nptr);
                     switch (xspf_entries[i].type) {
                         case TUPLE_STRING:
-                            if (! tuple)
-                                tuple = tuple_new ();
-                            tuple_set_str(tuple, xspf_entries[i].tupleField, (gchar *)str);
+                            tuple.set_str (xspf_entries[i].tupleField, (gchar *)str);
                             break;
 
                         case TUPLE_INT:
-                            if (! tuple)
-                                tuple = tuple_new ();
-                            tuple_set_int(tuple, xspf_entries[i].tupleField, atol((char *)str));
+                            tuple.set_int (xspf_entries[i].tupleField, atol((char *)str));
                             break;
 
                         default:
@@ -160,12 +156,10 @@ static void xspf_add_file (xmlNode * track, const gchar * filename,
     if (location != NULL)
     {
         if (tuple)
-            tuple_set_filename (tuple, location);
+            tuple.set_filename (location);
 
-        items.append ({location, tuple});
+        items.append ({location, std::move (tuple)});
     }
-    else if (tuple)
-        tuple_unref (tuple);
 }
 
 
@@ -368,7 +362,7 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
     for (auto & item : items)
     {
         const char * filename = item.filename;
-        const Tuple * tuple = item.tuple;
+        const Tuple & tuple = item.tuple;
         xmlNodePtr track, location;
         String scratch;
         gint scratchi = 0;
@@ -380,21 +374,21 @@ static gboolean xspf_playlist_save (const gchar * filename, VFSFile * file,
         xmlAddChild(track, location);
         xmlAddChild(tracklist, track);
 
-        if (tuple != NULL)
+        if (tuple)
         {
             gint i;
             for (i = 0; i < ARRAY_LEN (xspf_entries); i++) {
                 const xspf_entry_t *xs = &xspf_entries[i];
-                gboolean isOK = (tuple_get_value_type (tuple, xs->tupleField) == xs->type);
+                gboolean isOK = (tuple.get_value_type (xs->tupleField) == xs->type);
 
                 switch (xs->type) {
                     case TUPLE_STRING:
-                        scratch = tuple_get_str (tuple, xs->tupleField);
+                        scratch = tuple.get_str (xs->tupleField);
                         if (! scratch)
                             isOK = FALSE;
                         break;
                     case TUPLE_INT:
-                        scratchi = tuple_get_int (tuple, xs->tupleField);
+                        scratchi = tuple.get_int (xs->tupleField);
                         break;
                     default:
                         break;

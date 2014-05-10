@@ -62,10 +62,10 @@ static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *enc
 }
 
 static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
- const char * name, const Tuple * tuple, int field)
+ const char * name, const Tuple & tuple, int field)
 {
-    TupleValueType type = tuple_field_get_type (field);
-    if (tuple_get_value_type (tuple, field) != type)
+    TupleValueType type = Tuple::field_get_type (field);
+    if (tuple.get_value_type (field) != type)
         return;
 
     char * temp;
@@ -74,13 +74,13 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
     {
     case TUPLE_INT:
     {
-        int ival = tuple_get_int (tuple, field);
+        int ival = tuple.get_int (field);
         temp = g_strdup_printf ("%s=%d", name, ival);
         break;
     }
     case TUPLE_STRING:
     {
-        String sval = tuple_get_str (tuple, field);
+        String sval = tuple.get_str (field);
         temp = g_strdup_printf ("%s=%s", name, (const char *) sval);
         break;
     }

@@ -54,9 +54,9 @@ int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 	return AO_SUCCESS;
 }
 
-Tuple *xsf_tuple(const char *filename, VFSFile *fd)
+Tuple xsf_tuple(const char *filename, VFSFile *fd)
 {
-	Tuple *t;
+	Tuple t;
 	corlett_t *c;
 	void *buf;
 	int64_t sz;
@@ -64,20 +64,20 @@ Tuple *xsf_tuple(const char *filename, VFSFile *fd)
 	vfs_file_get_contents (filename, & buf, & sz);
 
 	if (!buf)
-		return NULL;
+		return t;
 
 	if (corlett_decode((uint8_t *) buf, sz, NULL, NULL, &c) != AO_SUCCESS)
-		return NULL;
+		return t;
 
-	t = tuple_new_from_filename(filename);
+	t.set_filename (filename);
 
-	tuple_set_int(t, FIELD_LENGTH, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
-	tuple_set_str(t, FIELD_ARTIST, c->inf_artist);
-	tuple_set_str(t, FIELD_ALBUM, c->inf_game);
-	tuple_set_str(t, FIELD_TITLE, c->inf_title);
-	tuple_set_str(t, FIELD_COPYRIGHT, c->inf_copy);
-	tuple_set_str(t, FIELD_QUALITY, _("sequenced"));
-	tuple_set_str(t, FIELD_CODEC, "GBA/Nintendo DS Audio");
+	t.set_int (FIELD_LENGTH, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
+	t.set_str (FIELD_ARTIST, c->inf_artist);
+	t.set_str (FIELD_ALBUM, c->inf_game);
+	t.set_str (FIELD_TITLE, c->inf_title);
+	t.set_str (FIELD_COPYRIGHT, c->inf_copy);
+	t.set_str (FIELD_QUALITY, _("sequenced"));
+	t.set_str (FIELD_CODEC, "GBA/Nintendo DS Audio");
 
 	free(c);
 	free(buf);

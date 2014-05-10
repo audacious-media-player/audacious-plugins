@@ -12,7 +12,7 @@
 
 #include "configure.h"
 
-Tuple * console_probe_for_tuple(const char *filename, VFSFile *fd);
+Tuple console_probe_for_tuple(const char *filename, VFSFile *fd);
 bool_t console_play(const char *filename, VFSFile *file);
 
 static const char console_about[] =

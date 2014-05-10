@@ -45,38 +45,39 @@ gint vtx_is_our_fd(const gchar * filename, VFSFile * fp)
     return (!g_ascii_strncasecmp(buf, "ay", 2) || !g_ascii_strncasecmp(buf, "ym", 2));
 }
 
-Tuple *vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
+Tuple vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
 {
-    Tuple *out = tuple_new_from_filename(filename);
+    Tuple tuple;
+    tuple.set_filename (filename);
 
-    tuple_set_str(out, FIELD_ARTIST, in->hdr.author);
-    tuple_set_str(out, FIELD_TITLE, in->hdr.title);
+    tuple.set_str (FIELD_ARTIST, in->hdr.author);
+    tuple.set_str (FIELD_TITLE, in->hdr.title);
 
-    tuple_set_int(out, FIELD_LENGTH, in->hdr.regdata_size / 14 * 1000 / 50);
+    tuple.set_int (FIELD_LENGTH, in->hdr.regdata_size / 14 * 1000 / 50);
 
-    tuple_set_str(out, FIELD_GENRE, (in->hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
-    tuple_set_str(out, FIELD_ALBUM, in->hdr.from);
+    tuple.set_str (FIELD_GENRE, (in->hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
+    tuple.set_str (FIELD_ALBUM, in->hdr.from);
 
-    tuple_set_str(out, FIELD_QUALITY, _("sequenced"));
-    tuple_set_str(out, FIELD_CODEC, in->hdr.tracker);
+    tuple.set_str (FIELD_QUALITY, _("sequenced"));
+    tuple.set_str (FIELD_CODEC, in->hdr.tracker);
 
-    tuple_set_int(out, FIELD_YEAR, in->hdr.year);
+    tuple.set_int (FIELD_YEAR, in->hdr.year);
 
-    return out;
+    return tuple;
 }
 
-Tuple *vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
+Tuple vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
 {
     ayemu_vtx_t tmp;
 
     if (ayemu_vtx_open(&tmp, filename))
     {
-        Tuple *ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
+        Tuple ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
         ayemu_vtx_free(&tmp);
         return ti;
     }
 
-    return NULL;
+    return Tuple ();
 }
 
 static gboolean vtx_play(const gchar * filename, VFSFile * file)

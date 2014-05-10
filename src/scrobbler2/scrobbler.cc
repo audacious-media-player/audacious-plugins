@@ -26,7 +26,7 @@
 bool_t scrobbler_running        = TRUE;
 bool_t migrate_config_requested = FALSE;
 bool_t now_playing_requested    = FALSE;
-Tuple *now_playing_track        = NULL;
+Tuple now_playing_track;
 
 pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t communication_signal = PTHREAD_COND_INITIALIZER;
@@ -36,7 +36,7 @@ String request_token;
 
 
 //static (private) variables
-static Tuple * playing_track       = NULL;
+static Tuple playing_track;
 //all times are in microseconds
 static  gint64 timestamp           = 0;
 static  gint64 play_started_at     = 0;
@@ -59,10 +59,7 @@ static void cleanup_current_track(void) {
             AUDDBG("BUG: No success on g_source_remove!\n");
         }
     }
-    if (playing_track != NULL) {
-        tuple_unref(playing_track);
-        playing_track = NULL;
-    }
+    playing_track = Tuple ();
 }
 
 String clean_string (const char *string) {
@@ -79,12 +76,12 @@ static gboolean queue_track_to_scrobble (gpointer data) {
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
 
-    String artist = clean_string(tuple_get_str(playing_track, FIELD_ARTIST));
-    String title  = clean_string(tuple_get_str(playing_track, FIELD_TITLE));
-    String album  = clean_string(tuple_get_str(playing_track, FIELD_ALBUM));
+    String artist = clean_string (playing_track.get_str (FIELD_ARTIST));
+    String title  = clean_string (playing_track.get_str (FIELD_TITLE));
+    String album  = clean_string (playing_track.get_str (FIELD_ALBUM));
 
-    int track  = tuple_get_int(playing_track, FIELD_TRACK_NUMBER);
-    int length = tuple_get_int(playing_track, FIELD_LENGTH);
+    int track  = playing_track.get_int (FIELD_TRACK_NUMBER);
+    int length = playing_track.get_int (FIELD_LENGTH);
 
     //artist, title and length are required for a successful scrobble
     if (artist[0] && title[0] && length > 0) {
@@ -127,7 +124,7 @@ static void ended (void *hook_data, void *user_data) {
     //Called when when a track finishes playing.
 
     //TODO: hic sunt race conditions
-    if (playing_track != NULL && (g_get_monotonic_time() > (play_started_at + 30*G_USEC_PER_SEC)) ) {
+    if (playing_track && (g_get_monotonic_time() > (play_started_at + 30*G_USEC_PER_SEC)) ) {
       //This is an odd situation when the track's real length doesn't correspond to the length reported by the player.
       //If we are at the end of the track, it is longer than 30 seconds and it wasn't scrobbled, we scrobble it by then.
 
@@ -148,16 +145,16 @@ static void ended (void *hook_data, void *user_data) {
 static void ready (void *hook_data, void *user_data) {
     cleanup_current_track();
 
-    Tuple *current_track = aud_playlist_entry_get_tuple(aud_playlist_get_playing(), aud_playlist_get_position(aud_playlist_get_playing()), FALSE);
+    int playlist = aud_playlist_get_playing ();
+    int position = aud_playlist_get_position (playlist);
+    Tuple current_track = aud_playlist_entry_get_tuple (playlist, position, FALSE);
 
-    int duration_seconds = tuple_get_int(current_track, FIELD_LENGTH) / 1000;
-    if (duration_seconds <= 30) {
-        tuple_unref(current_track);
+    int duration_seconds = current_track.get_int (FIELD_LENGTH) / 1000;
+    if (duration_seconds <= 30)
         return;
-    }
 
     pthread_mutex_lock(&communication_mutex);
-    now_playing_track = tuple_ref(current_track);
+    now_playing_track = current_track.ref ();
     now_playing_requested = TRUE;
     pthread_cond_signal(&communication_signal);
     pthread_mutex_unlock(&communication_mutex);
@@ -168,14 +165,14 @@ static void ready (void *hook_data, void *user_data) {
     }
     timestamp = g_get_real_time() / G_USEC_PER_SEC;
     play_started_at = g_get_monotonic_time();
-    playing_track = current_track;
+    playing_track = std::move (current_track);
 
     queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, NULL);
 
 }
 
 static void paused (void *hook_data, void *user_data) {
-    if (playing_track == NULL) {
+    if (! playing_track) {
         //This happens when audacious is started in paused mode
         return;
     }
@@ -192,7 +189,7 @@ static void paused (void *hook_data, void *user_data) {
 
 static void unpaused (void *hook_data, void *user_data) {
 
-    if (playing_track == NULL
+    if (! playing_track
         || pause_started_at == 0) { //TODO: audacious was started with a paused track.
         return;
     }
