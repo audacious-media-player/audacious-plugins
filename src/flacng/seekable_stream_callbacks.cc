@@ -28,7 +28,7 @@
 FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data)
 {
     callback_info* info = (callback_info*) client_data;
-    size_t read;
+    int64_t read;
 
     if (info->fd == NULL)
     {
