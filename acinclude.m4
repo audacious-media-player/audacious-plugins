@@ -21,13 +21,6 @@ dnl ** Common checks
 dnl **
 AC_DEFUN([AUD_COMMON_PROGS], [
 
-dnl Check for C and C++ compilers
-dnl =============================
-AC_REQUIRE([AC_PROG_CC])
-AC_REQUIRE([AC_PROG_CXX])
-AC_REQUIRE([AC_C_BIGENDIAN])
-AC_REQUIRE([AC_SYS_LARGEFILE])
-
 dnl Check platform
 dnl ==============
 
