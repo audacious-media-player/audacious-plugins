@@ -10,10 +10,9 @@
 
 #define MAX_DELAY 1000
 #define MAX_SRATE 50000
-#define MAX_CHANNELS 2
 #define BYTES_PS sizeof(float)
 #define BUFFER_SAMPLES (MAX_SRATE * MAX_DELAY / 1000)
-#define BUFFER_SHORTS (BUFFER_SAMPLES * MAX_CHANNELS)
+#define BUFFER_SHORTS (BUFFER_SAMPLES * AUD_MAX_CHANNELS)
 #define BUFFER_BYTES (BUFFER_SHORTS * BYTES_PS)
 
 static const char * const echo_defaults[] = {

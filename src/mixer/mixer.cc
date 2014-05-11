@@ -29,8 +29,6 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-#define MAX_CHANNELS 8
-
 typedef void (* Converter) (float * * data, int * samples);
 
 static float * mixer_buf;
@@ -131,13 +129,11 @@ void mixer_start (int * channels, int * rate)
 {
     input_channels = * channels;
     output_channels = aud_get_int ("mixer", "channels");
-    output_channels = CLAMP (output_channels, 1, MAX_CHANNELS);
 
     if (input_channels == output_channels)
         return;
 
-    if (input_channels < 1 || input_channels > MAX_CHANNELS ||
-     ! get_converter (input_channels, output_channels))
+    if (! get_converter (input_channels, output_channels))
     {
         fprintf (stderr, "Converting %d to %d channels is not implemented.\n",
          input_channels, output_channels);
@@ -181,7 +177,7 @@ static const PreferencesWidget mixer_widgets[] = {
     WidgetLabel (N_("<b>Channel Mixer</b>")),
     WidgetSpin (N_("Output channels:"),
         {VALUE_INT, 0, "mixer", "channels"},
-        {1, MAX_CHANNELS, 1})
+        {1, AUD_MAX_CHANNELS, 1})
 };
 
 static const PluginPreferences mixer_prefs = {
