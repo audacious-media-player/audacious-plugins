@@ -62,13 +62,10 @@ static void cleanup_current_track(void) {
     playing_track = Tuple ();
 }
 
-String clean_string (const char *string) {
-    if (!string)
-        return String("");
-
-    SCOPY(temp, string);
-    str_replace_char(temp, '\t', ' ');
-    return String(temp);
+StringBuf clean_string (const char *string) {
+    StringBuf temp = str_copy (string ? string : "");
+    str_replace_char (temp, '\t', ' ');
+    return temp;
 }
 
 static gboolean queue_track_to_scrobble (gpointer data) {
@@ -76,16 +73,16 @@ static gboolean queue_track_to_scrobble (gpointer data) {
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
 
-    String artist = clean_string (playing_track.get_str (FIELD_ARTIST));
-    String title  = clean_string (playing_track.get_str (FIELD_TITLE));
-    String album  = clean_string (playing_track.get_str (FIELD_ALBUM));
+    StringBuf artist = clean_string (playing_track.get_str (FIELD_ARTIST));
+    StringBuf title  = clean_string (playing_track.get_str (FIELD_TITLE));
+    StringBuf album  = clean_string (playing_track.get_str (FIELD_ALBUM));
 
     int track  = playing_track.get_int (FIELD_TRACK_NUMBER);
     int length = playing_track.get_int (FIELD_LENGTH);
 
     //artist, title and length are required for a successful scrobble
     if (artist[0] && title[0] && length > 0) {
-        String track_str = (track > 0) ? int_to_str(track) : String("");
+        StringBuf track_str = (track > 0) ? int_to_str (track) : str_copy ("");
 
         pthread_mutex_lock(&log_access_mutex);
         FILE *f = g_fopen(queuepath, "a");

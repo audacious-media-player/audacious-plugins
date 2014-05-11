@@ -201,8 +201,7 @@ static void open_modules_for_path (const char * path)
         if (! str_has_suffix_nocase (name, G_MODULE_SUFFIX))
             continue;
 
-        String filename = filename_build (path, name);
-        GModule * handle = open_module (filename);
+        GModule * handle = open_module (filename_build ({path, name}));
 
         if (handle)
             modules.append (handle);
@@ -304,8 +303,7 @@ static void save_enabled_to_config (void)
         for (int ci = 0; ci < ccount; ci ++)
             temp[ci] = loaded->values[ci];
 
-        String controls = double_array_to_str (temp, ccount);
-        aud_set_str ("ladspa", key, controls);
+        aud_set_str ("ladspa", key, double_array_to_str (temp, ccount));
 
         disable_plugin_locked (0);
     }

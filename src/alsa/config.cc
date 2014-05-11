@@ -154,7 +154,7 @@ FAILED:
 static void get_devices (int card, int capture, void (* found) (const char *
  name, const char * description))
 {
-    SPRINTF (card_name, "hw:%d", card);
+    StringBuf card_name = str_printf ("hw:%d", card);
     snd_ctl_t * control = NULL;
     int device = -1;
 
@@ -169,7 +169,7 @@ static void get_devices (int card, int capture, void (* found) (const char *
         if (device < 0)
             break;
 
-        SPRINTF (name, "hw:%d,%d", card, device);
+        StringBuf name = str_printf ("hw:%d,%d", card, device);
         description = get_device_description (control, device, capture);
 
         if (description != NULL)
@@ -186,10 +186,9 @@ FAILED:
 static void pcm_found (const char * name, const char * description)
 {
     GtkTreeIter iter;
-    SPRINTF (formatted, "(%s)", description);
-
     gtk_list_store_append (pcm_list, & iter);
-    gtk_list_store_set (pcm_list, & iter, 0, name, 1, formatted, -1);
+    gtk_list_store_set (pcm_list, & iter, 0, name, 1,
+     (const char *) str_printf ("(%s)", description), -1);
 }
 
 static void pcm_card_found (int card, const char * description)
@@ -211,16 +210,14 @@ static void pcm_list_fill (void)
 static void mixer_found (const char * name, const char * description)
 {
     GtkTreeIter iter;
-    SPRINTF (formatted, "(%s)", description);
-
     gtk_list_store_append (mixer_list, & iter);
-    gtk_list_store_set (mixer_list, & iter, 0, name, 1, formatted, -1);
+    gtk_list_store_set (mixer_list, & iter, 0, name, 1,
+     (const char *) str_printf ("(%s)", description), -1);
 }
 
 static void mixer_card_found (int card, const char * description)
 {
-    SPRINTF (name, "hw:%d", card);
-    mixer_found (name, description);
+    mixer_found (str_printf ("hw:%d", card), description);
 }
 
 static void mixer_list_fill (void)

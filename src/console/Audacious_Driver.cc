@@ -70,7 +70,7 @@ ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
 
     const char * sub;
     uri_parse (path, NULL, NULL, & sub, & m_track);
-    m_path = str_nget (path, sub - path);
+    m_path = String (str_copy (path, sub - path));
 
     m_track -= 1;
 

@@ -119,13 +119,11 @@ static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, Strin
             pmetronom->id = id;
     }
 
-    if (str == NULL)
-        return TRUE;
-
     if (pmetronom->num == 1 && pmetronom->den == 1)
-        str = str_printf (_("Tact generator: %d bpm"), pmetronom->bpm);
+        str = String (str_printf (_("Tact generator: %d bpm"), pmetronom->bpm));
     else
-        str = str_printf (_("Tact generator: %d bpm %d/%d"), pmetronom->bpm, pmetronom->num, pmetronom->den);
+        str = String (str_printf (_("Tact generator: %d bpm %d/%d"),
+         pmetronom->bpm, pmetronom->num, pmetronom->den));
 
     return TRUE;
 }

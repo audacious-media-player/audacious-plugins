@@ -121,7 +121,7 @@ static void do_command (const char * cmd)
     int playlist = aud_playlist_get_playing ();
     int pos = aud_playlist_get_position (playlist);
 
-    char *shstring = NULL, *temp, numbuf[32];
+    char *shstring = NULL, *temp;
     gboolean playing;
     Formatter *formatter;
 
@@ -153,32 +153,24 @@ static void do_command (const char * cmd)
         else
             formatter_associate(formatter, 'f', "");
 
-        g_snprintf(numbuf, sizeof(numbuf), "%02d", pos + 1);
-        formatter_associate(formatter, 't', numbuf);
+        formatter_associate(formatter, 't', str_printf ("%02d", pos + 1));
 
         int length = aud_playlist_entry_get_length (playlist, pos, FALSE);
         if (length > 0)
-        {
-            str_itoa (length, numbuf, sizeof numbuf);
-            formatter_associate(formatter, 'l', numbuf);
-        }
+            formatter_associate(formatter, 'l', int_to_str (length));
         else
             formatter_associate(formatter, 'l', "0");
 
         playing = aud_drct_get_playing();
-        str_itoa (playing, numbuf, sizeof numbuf);
-        formatter_associate(formatter, 'p', numbuf);
+        formatter_associate(formatter, 'p', int_to_str (playing));
 
         if (playing)
         {
             int brate, srate, chans;
             aud_drct_get_info (& brate, & srate, & chans);
-            str_itoa (brate, numbuf, sizeof numbuf);
-            formatter_associate (formatter, 'r', numbuf);
-            str_itoa (srate, numbuf, sizeof numbuf);
-            formatter_associate (formatter, 'F', numbuf);
-            str_itoa (chans, numbuf, sizeof numbuf);
-            formatter_associate (formatter, 'c', numbuf);
+            formatter_associate (formatter, 'r', int_to_str (brate));
+            formatter_associate (formatter, 'F', int_to_str (srate));
+            formatter_associate (formatter, 'c', int_to_str (chans));
         }
 
         Tuple tuple = aud_playlist_entry_get_tuple

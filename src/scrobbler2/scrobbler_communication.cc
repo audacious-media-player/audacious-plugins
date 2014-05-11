@@ -550,16 +550,16 @@ static void send_now_playing() {
    */
   Tuple curr_track = now_playing_track.ref ();
 
-  String artist = clean_string (curr_track.get_str (FIELD_ARTIST));
-  String title = clean_string (curr_track.get_str (FIELD_TITLE));
-  String album = clean_string (curr_track.get_str (FIELD_ALBUM));
+  StringBuf artist = clean_string (curr_track.get_str (FIELD_ARTIST));
+  StringBuf title = clean_string (curr_track.get_str (FIELD_TITLE));
+  StringBuf album = clean_string (curr_track.get_str (FIELD_ALBUM));
 
   int track  = curr_track.get_int (FIELD_TRACK_NUMBER);
   int length = curr_track.get_int (FIELD_LENGTH);
 
   if (artist[0] && title[0] && length > 0) {
-    String track_str = (track > 0) ? int_to_str(track) : String("");
-    String length_str = int_to_str(length / 1000);
+    StringBuf track_str = (track > 0) ? int_to_str (track) : str_copy ("");
+    StringBuf length_str = int_to_str (length / 1000);
 
     gchar *playingmsg = create_message_to_lastfm("track.updateNowPlaying",
                                             7,

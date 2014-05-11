@@ -134,7 +134,7 @@ static gboolean file_init (void)
 
     if (! file_path[0])
     {
-        file_path = filename_to_uri (g_get_home_dir ());
+        file_path = String (filename_to_uri (g_get_home_dir ()));
         g_return_val_if_fail (file_path != NULL, FALSE);
     }
 
@@ -199,11 +199,8 @@ static gint file_open(gint fmt, gint rate, gint nch)
     if (filenamefromtags)
     {
         String title = aud_playlist_entry_get_title (playlist, pos, FALSE);
-
-        gchar buf[3 * strlen (title) + 1];
-        str_encode_percent (title, -1, buf);
+        StringBuf buf = str_encode_percent (title);
         str_replace_char (buf, '/', '-');
-
         filename = g_strdup (buf);
     }
     else

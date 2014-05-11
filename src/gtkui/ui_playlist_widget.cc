@@ -80,11 +80,7 @@ static void set_length (GValue * value, int list, int row)
 {
     int len = aud_playlist_entry_get_length (list, row, TRUE);
     if (len)
-    {
-        char s[16];
-        str_format_time (s, sizeof s, len);
-        g_value_set_string (value, s);
-    }
+        g_value_set_string (value, str_format_time (len));
     else
         g_value_set_string (value, "");
 }
@@ -276,8 +272,8 @@ static void get_data (void * user, void * * data, int * length)
 
 static void receive_data (void * user, int row, const void * data, int length)
 {
-    SNCOPY (text, (const char *) data, length);
-    audgui_urilist_insert (((PlaylistWidgetData *) user)->list, row, text);
+    audgui_urilist_insert (((PlaylistWidgetData *) user)->list, row,
+     str_copy ((const char *) data, length));
 }
 
 static const AudguiListCallbacks callbacks = {
@@ -472,8 +468,8 @@ void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, 
         ex[i] = gtk_tree_view_column_get_expand (col);
     }
 
-    widths = int_array_to_str (w, pw_num_cols);
-    expand = int_array_to_str (ex, pw_num_cols);
+    widths = String (int_array_to_str (w, pw_num_cols));
+    expand = String (int_array_to_str (ex, pw_num_cols));
 }
 
 void ui_playlist_widget_set_column_widths (GtkWidget * widget,

@@ -46,8 +46,8 @@ static void move_to_trash (const char * filename)
 
     if (! g_file_trash (gfile, NULL, & gerror))
     {
-        SPRINTF (error, _("Error moving %s to trash: %s."), filename, gerror->message);
-        aud_ui_show_error (error);
+        aud_ui_show_error (str_printf (_("Error moving %s to trash: %s."),
+         filename, gerror->message));
         g_error_free (gerror);
     }
 
@@ -57,10 +57,7 @@ static void move_to_trash (const char * filename)
 static void really_delete (const char * filename)
 {
     if (g_unlink (filename) < 0)
-    {
-        SPRINTF (error, _("Error deleting %s: %s."), filename, strerror (errno));
-        aud_ui_show_error (error);
-    }
+        aud_ui_show_error (str_printf (_("Error deleting %s: %s."), filename, strerror (errno)));
 }
 
 static void confirm_delete (void)
@@ -80,7 +77,7 @@ static void confirm_delete (void)
 
     for (const String & uri : files)
     {
-        String filename = uri_to_filename (uri);
+        StringBuf filename = uri_to_filename (uri);
 
         if (filename)
         {
@@ -90,10 +87,8 @@ static void confirm_delete (void)
                 really_delete (filename);
         }
         else
-        {
-            SPRINTF (error, _("Error deleting %s: not a local file."), (const char *) uri);
-            aud_ui_show_error (error);
-        }
+            aud_ui_show_error (str_printf
+             (_("Error deleting %s: not a local file."), (const char *) uri));
     }
 }
 

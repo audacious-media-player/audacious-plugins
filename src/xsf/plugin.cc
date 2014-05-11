@@ -38,15 +38,15 @@
 #include "vio2sf.h"
 
 /* xsf_get_lib: called to load secondary files */
-static const char *dirpath;
+static String dirpath;
 
 int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 {
 	void *filebuf;
 	int64_t size;
 
-	SPRINTF(path2, "%s/%s", dirpath, filename);
-	vfs_file_get_contents(path2, &filebuf, &size);
+	StringBuf path = filename_build ({dirpath, filename});
+	vfs_file_get_contents(path, &filebuf, &size);
 
 	*buffer = filebuf;
 	*length = (uint64_t)size;
@@ -124,8 +124,7 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 	if (! slash)
 		return FALSE;
 
-	SNCOPY (dirbuf, filename, slash + 1 - filename);
-	dirpath = dirbuf;
+	dirpath = String (str_copy (filename, slash + 1 - filename));
 
 	vfs_file_get_contents (filename, & buffer, & size);
 
@@ -191,7 +190,7 @@ CLEANUP:
 	xsf_term();
 
 ERR_NO_CLOSE:
-	dirpath = NULL;
+	dirpath = String ();
 	free(buffer);
 
 	return !error;

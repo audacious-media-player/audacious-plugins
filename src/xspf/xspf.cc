@@ -101,16 +101,16 @@ static void xspf_add_file (xmlNode * track, const gchar * filename,
                     const gchar * colon = strstr (base, "://");
 
                     if (colon != NULL)
-                        location = str_printf ("%.*s%s", (gint) (colon + 3 -
-                         base), base, str);
+                        location = String (str_printf ("%.*s%s",
+                         (int) (colon + 3 - base), base, str));
                 }
                 else if (base != NULL)
                 {
                     const gchar * slash = strrchr (base, '/');
 
                     if (slash != NULL)
-                        location = str_printf ("%.*s%s", (gint) (slash + 1 -
-                         base), base, str);
+                        location = String (str_printf ("%.*s%s",
+                         (int) (slash + 1 - base), base, str));
                 }
 
                 xmlFree(str);
@@ -302,7 +302,6 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
         gboolean isMeta, const gchar *xspfName, const gchar *strVal,
         const gint intVal)
 {
-    gchar tmps[64];
     xmlNodePtr tmp;
 
     if (isMeta) {
@@ -324,8 +323,7 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
             break;
 
         case TUPLE_INT:
-            str_itoa (intVal, tmps, sizeof tmps);
-            xmlAddChild(tmp, xmlNewText((xmlChar *) tmps));
+            xmlAddChild (tmp, xmlNewText ((xmlChar *) (char *) int_to_str (intVal)));
             break;
 
         default:

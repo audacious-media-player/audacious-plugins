@@ -38,8 +38,7 @@ typedef struct {
 } FileData;
 
 #define gio_error(...) do { \
-    SPRINTF (gio_error_buf, __VA_ARGS__); \
-    aud_ui_show_error (gio_error_buf); \
+    aud_ui_show_error (str_printf (__VA_ARGS__)); \
 } while (0)
 
 #define CHECK_ERROR(op, name) do { \

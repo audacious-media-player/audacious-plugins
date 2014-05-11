@@ -102,7 +102,7 @@ VFSFile * open_local_file_nocase (const char * folder, const char * basename)
     if (! path)
         return NULL;
 
-    String uri = filename_to_uri (path);
+    StringBuf uri = filename_to_uri (path);
     g_free (path);
 
     if (! uri)

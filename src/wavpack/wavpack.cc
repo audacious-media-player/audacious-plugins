@@ -87,7 +87,7 @@ static bool_t wv_attach (const char * filename, VFSFile * wv_input,
 {
     if (flags & OPEN_WVC)
     {
-        SPRINTF (corrFilename, "%sc", filename);
+        StringBuf corrFilename = str_concat ({filename, "c"});
         if (vfs_file_test (corrFilename, VFS_IS_REGULAR))
             * wvc_input = vfs_fopen (corrFilename, "r");
         else
@@ -201,7 +201,7 @@ error_exit:
     return ! error;
 }
 
-static String
+static StringBuf
 wv_get_quality(WavpackContext *ctx)
 {
     int mode = WavpackGetMode(ctx);
@@ -214,12 +214,8 @@ wv_get_quality(WavpackContext *ctx)
     else
         quality = _("lossy");
 
-    return str_printf ("%s%s%s", quality,
-        (mode & MODE_WVC) ? " (wvc corrected)" : "",
-#ifdef MODE_DNS /* WavPack 4.50 or later */
-        (mode & MODE_DNS) ? " (dynamic noise shaped)" :
-#endif
-        "");
+    return str_concat ({quality, (mode & MODE_WVC) ? " (wvc corrected)" : "",
+     (mode & MODE_DNS) ? " (dynamic noise shaped)" : ""});
 }
 
 static Tuple

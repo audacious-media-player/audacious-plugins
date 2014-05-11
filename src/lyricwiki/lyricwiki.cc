@@ -176,8 +176,8 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
 				lyric = xmlNodeGetContent(cur);
 				basename = g_path_get_basename((gchar *) lyric);
 
-				uri = str_printf("http://lyrics.wikia.com/index.php?action=edit"
-				 "&title=%s", basename);
+				uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
+				 "action=edit&title=%s", basename));
 
 				g_free(basename);
 				xmlFree(lyric);
@@ -206,8 +206,8 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 
 	if(!len)
 	{
-		SPRINTF(error, _("Unable to fetch %s"), (const char *) state.uri);
-		update_lyrics_window(_("Error"), NULL, error);
+		update_lyrics_window (_("Error"), NULL,
+		 str_printf (_("Unable to fetch %s"), (const char *) state.uri));
 		g_free(buf);
 		return FALSE;
 	}
@@ -216,8 +216,8 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 
 	if(!lyrics)
 	{
-		SPRINTF(error, _("Unable to parse %s"), (const char *) state.uri);
-		update_lyrics_window(_("Error"), NULL, error);
+		update_lyrics_window (_("Error"), NULL,
+		 str_printf (_("Unable to parse %s"), (const char *) state.uri));
 		g_free(buf);
 		return FALSE;
 	}
@@ -240,8 +240,8 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 
 	if(!len)
 	{
-		SPRINTF(error, _("Unable to fetch %s"), (const char *) state.uri);
-		update_lyrics_window(_("Error"), NULL, error);
+		update_lyrics_window (_("Error"), NULL,
+		 str_printf (_("Unable to fetch %s"), (const char *) state.uri));
 		g_free(buf);
 		return FALSE;
 	}
@@ -250,8 +250,8 @@ static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 
 	if(!uri)
 	{
-		SPRINTF(error, _("Unable to parse %s"), (const char *) state.uri);
-		update_lyrics_window(_("Error"), NULL, error);
+		update_lyrics_window (_("Error"), NULL,
+		 str_printf (_("Unable to parse %s"), (const char *) state.uri));
 		g_free(buf);
 		return FALSE;
 	}
@@ -273,13 +273,12 @@ static void get_lyrics_step_1(void)
 		return;
 	}
 
-	char title_buf[strlen(state.title) * 3 + 1];
-	char artist_buf[strlen(state.artist) * 3 + 1];
-	str_encode_percent(state.title, -1, title_buf);
-	str_encode_percent(state.artist, -1, artist_buf);
+	StringBuf title_buf = str_encode_percent (state.title);
+	StringBuf artist_buf = str_encode_percent (state.artist);
 
-	state.uri = str_printf("http://lyrics.wikia.com/api.php?action=lyrics&"
-	 "artist=%s&song=%s&fmt=xml", artist_buf, title_buf);
+	state.uri = String (str_printf ("http://lyrics.wikia.com/api.php?"
+	 "action=lyrics&artist=%s&song=%s&fmt=xml", (const char *) artist_buf,
+	 (const char *) title_buf));
 
 	update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
 	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, str_ref(state.uri));

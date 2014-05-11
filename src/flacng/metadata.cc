@@ -111,8 +111,8 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
     if (val == NULL)
         return;
 
-    SPRINTF (str, "%s=%s", field_name, (const char *) val);
-    entry.entry = (FLAC__byte *) str;
+    StringBuf str = str_printf ("%s=%s", field_name, (const char *) val);
+    entry.entry = (FLAC__byte *) (char *) str;
     entry.length = strlen(str);
     FLAC__metadata_object_vorbiscomment_insert_comment(vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
@@ -127,8 +127,8 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
     if (val <= 0)
         return;
 
-    SPRINTF (str, "%s=%d", field_name, val);
-    entry.entry = (FLAC__byte *) str;
+    StringBuf str = str_printf ("%s=%d", field_name, val);
+    entry.entry = (FLAC__byte *) (char *) str;
     entry.length = strlen(str);
     FLAC__metadata_object_vorbiscomment_insert_comment(vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
@@ -292,10 +292,7 @@ static void add_text (Tuple & tuple, int field, const char * value)
 {
     String cur = tuple.get_str (field);
     if (cur)
-    {
-        SPRINTF (both, "%s, %s", (const char *) cur, value);
-        tuple.set_str (field, both);
-    }
+        tuple.set_str (field, str_concat ({cur, ", ", value}));
     else
         tuple.set_str (field, value);
 }

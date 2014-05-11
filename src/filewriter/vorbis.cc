@@ -78,7 +78,6 @@ static gint vorbis_open(void)
 
     if (tuple)
     {
-        gchar tmpstr[32];
         gint scrint;
 
         add_string_from_tuple (& vc, "title", tuple, FIELD_TITLE);
@@ -88,17 +87,11 @@ static gint vorbis_open(void)
         add_string_from_tuple (& vc, "date", tuple, FIELD_DATE);
         add_string_from_tuple (& vc, "comment", tuple, FIELD_COMMENT);
 
-        if ((scrint = tuple.get_int (FIELD_TRACK_NUMBER)))
-        {
-            str_itoa (scrint, tmpstr, sizeof tmpstr);
-            vorbis_comment_add_tag(&vc, "tracknumber", tmpstr);
-        }
+        if ((scrint = tuple.get_int (FIELD_TRACK_NUMBER)) > 0)
+            vorbis_comment_add_tag(&vc, "tracknumber", int_to_str (scrint));
 
-        if ((scrint = tuple.get_int (FIELD_YEAR)))
-        {
-            str_itoa (scrint, tmpstr, sizeof tmpstr);
-            vorbis_comment_add_tag(&vc, "year", tmpstr);
-        }
+        if ((scrint = tuple.get_int (FIELD_YEAR)) > 0)
+            vorbis_comment_add_tag(&vc, "year", int_to_str (scrint));
     }
 
     if (vorbis_encode_init_vbr (& vi, input.channels, input.frequency,

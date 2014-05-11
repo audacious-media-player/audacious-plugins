@@ -48,14 +48,14 @@ void asx_handle_entry (const char * key, const char * value, void * data)
     if (! state->valid_heading || g_ascii_strncasecmp (key, "ref", 3))
         return;
 
-    String uri = uri_construct (value, state->filename);
+    StringBuf uri = uri_construct (value, state->filename);
     if (! uri)
         return;
 
     if (! strncmp ("http://", uri, 7))
-        state->items.append ({str_printf ("mms://%s", uri + 7)});
+        state->items.append ({String (str_printf ("mms://%s", uri + 7))});
     else
-        state->items.append ({uri});
+        state->items.append ({String (uri)});
 }
 
 static bool_t playlist_load_asx (const char * filename, VFSFile * file,

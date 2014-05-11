@@ -110,8 +110,8 @@ static void do_save_file (const char * filename)
 void eq_preset_save_file (void)
 {
     String title = aud_drct_get_title ();
-    String name = title ? str_printf ("%s.%s", (const char *) title,
-     EQUALIZER_DEFAULT_PRESET_EXT) : String ();
+    StringBuf name = title ? str_printf ("%s.%s", (const char *) title,
+     EQUALIZER_DEFAULT_PRESET_EXT) : StringBuf ();
 
     show_preset_browser (_("Save Preset File"), TRUE, name, do_save_file);
 }

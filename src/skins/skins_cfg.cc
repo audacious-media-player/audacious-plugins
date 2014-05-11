@@ -303,13 +303,13 @@ on_skin_view_drag_data_received(GtkWidget * widget,
     if (! end) end = strchr (data, '\n');
     if (! end) end = data + strlen (data);
 
-    String path = str_nget (data, end - data);
+    StringBuf path = str_copy (data, end - data);
 
     if (strstr (path, "://"))
     {
-        String path2 = uri_to_filename (path);
+        StringBuf path2 = uri_to_filename (path);
         if (path2)
-            path = path2;
+            path.steal (std::move (path2));
     }
 
     if (file_is_archive(path))

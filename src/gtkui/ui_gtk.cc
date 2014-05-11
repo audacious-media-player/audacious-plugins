@@ -200,8 +200,8 @@ static bool_t title_change_cb (void)
         if (aud_drct_get_ready ())
         {
             String title = aud_drct_get_title ();
-            SPRINTF (title_s, _("%s - Audacious"), (const char *) title);
-            gtk_window_set_title ((GtkWindow *) window, title_s);
+            gtk_window_set_title ((GtkWindow *) window,
+             str_printf (_("%s - Audacious"), (const char *) title));
         }
         else
             gtk_window_set_title ((GtkWindow *) window, _("Buffering ..."));
@@ -237,24 +237,19 @@ static void append_str (char * buf, int bufsize, const char * str)
     snprintf (buf + strlen (buf), bufsize - strlen (buf), "%s", str);
 }
 
-static void append_time_str (char * buf, int bufsize, int time)
-{
-    str_format_time (buf + strlen (buf), bufsize - strlen (buf), time);
-}
-
 static void set_time_label (int time, int len)
 {
     char s[128] = "<b>";
 
     if (len && aud_get_bool ("gtkui", "show_remaining_time"))
-        append_time_str (s, sizeof s, len - time);
+        append_str (s, sizeof s, str_format_time (len - time));
     else
-        append_time_str (s, sizeof s, time);
+        append_str (s, sizeof s, str_format_time (time));
 
     if (len)
     {
         append_str (s, sizeof s, " / ");
-        append_time_str (s, sizeof s, len);
+        append_str (s, sizeof s, str_format_time (len));
 
         int a, b;
         aud_drct_get_ab_repeat (& a, & b);
@@ -262,13 +257,13 @@ static void set_time_label (int time, int len)
         if (a >= 0)
         {
             append_str (s, sizeof s, " A=");
-            append_time_str (s, sizeof s, a);
+            append_str (s, sizeof s, str_format_time (a));
         }
 
         if (b >= 0)
         {
             append_str (s, sizeof s, " B=");
-            append_time_str (s, sizeof s, b);
+            append_str (s, sizeof s, str_format_time (b));
         }
     }
 

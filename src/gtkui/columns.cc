@@ -315,6 +315,5 @@ void pw_col_save (void)
     for (int i = 0; i < pw_num_cols; i ++)
         index.append (String (pw_col_keys[pw_cols[i]]));
 
-    String columns = index_to_str_list (index, " ");
-    aud_set_str ("gtkui", "playlist_columns", columns);
+    aud_set_str ("gtkui", "playlist_columns", index_to_str_list (index, " "));
 }

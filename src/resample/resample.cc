@@ -88,11 +88,7 @@ void resample_start (int * channels, int * rate)
     int new_rate = 0;
 
     if (aud_get_bool ("resample", "use-mappings"))
-    {
-        char rate_s[16];
-        str_itoa (* rate, rate_s, sizeof rate_s);
-        new_rate = aud_get_int ("resample", rate_s);
-    }
+        new_rate = aud_get_int ("resample", int_to_str (* rate));
 
     if (! new_rate)
         new_rate = aud_get_int ("resample", "default-rate");

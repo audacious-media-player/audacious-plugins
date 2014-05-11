@@ -230,9 +230,7 @@ static void append_string(char *buf, const int sz, const char *str)
 
 static void append_number(char *buf, const int sz, const int num)
 {
-  char s[32];
-  str_itoa (num, s, sizeof s);
-  append_string(buf, sz, s);
+  append_string(buf, sz, int_to_str (num));
 }
 
 static void append_char(char *buf, const int sz, const char c)

@@ -222,10 +222,7 @@ DRAW_FUNC_BEGIN (playlist_draw)
         if (len <= 0)
             continue;
 
-        char buf[16];
-        str_format_time (buf, sizeof buf, len);
-
-        layout = gtk_widget_create_pango_layout (wid, buf);
+        layout = gtk_widget_create_pango_layout (wid, str_format_time (len));
         pango_layout_set_font_description (layout, data->font);
 
         PangoRectangle rect;

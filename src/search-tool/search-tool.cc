@@ -120,13 +120,13 @@ static void set_search_phrase (const char * phrase)
 
 static String get_path (void)
 {
-    String path = aud_get_str ("search-tool", "path");
-    if (g_file_test (path, G_FILE_TEST_EXISTS))
-        return path;
+    String path1 = aud_get_str ("search-tool", "path");
+    if (g_file_test (path1, G_FILE_TEST_EXISTS))
+        return path1;
 
-    path = filename_build (g_get_home_dir (), "Music");
-    if (g_file_test (path, G_FILE_TEST_EXISTS))
-        return path;
+    StringBuf path2 = filename_build ({g_get_home_dir (), "Music"});
+    if (g_file_test (path2, G_FILE_TEST_EXISTS))
+        return String (path2);
 
     return String (g_get_home_dir ());
 }
@@ -268,14 +268,11 @@ static void begin_add (const char * path)
 
     aud_set_str ("search-tool", "path", path);
 
-    String uri = filename_to_uri (path);
+    StringBuf uri = filename_to_uri (path);
     g_return_if_fail (uri);
 
     if (! g_str_has_suffix (uri, "/"))
-    {
-        SCONCAT2 (temp, uri, "/");
-        uri = String (temp);
-    }
+        str_insert (uri, -1, "/");
 
     added_table.clear ();
 
@@ -298,7 +295,7 @@ static void begin_add (const char * path)
     aud_playlist_remove_failed (list);
 
     Index<PlaylistAddItem> add;
-    add.append ({uri});
+    add.append ({String (uri)});
     aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, NULL, FALSE);
 
     adding = TRUE;

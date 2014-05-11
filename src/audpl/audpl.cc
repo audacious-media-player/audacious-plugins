@@ -69,11 +69,7 @@ static void handle_entry (const char * key, const char * value, void * data)
             TupleValueType type = Tuple::field_get_type (field);
 
             if (type == TUPLE_STRING)
-            {
-                char buf[strlen (value) + 1];
-                str_decode_percent (value, -1, buf);
-                state->tuple.set_str (field, buf);
-            }
+                state->tuple.set_str (field, str_decode_percent (value));
             else if (type == TUPLE_INT)
                 state->tuple.set_int (field, atoi (value));
         }
@@ -82,11 +78,7 @@ static void handle_entry (const char * key, const char * value, void * data)
     {
         /* top-level field */
         if (! strcmp (key, "title") && ! state->title)
-        {
-            char buf[strlen (value) + 1];
-            str_decode_percent (value, -1, buf);
-            state->title = String (buf);
-        }
+            state->title = String (str_decode_percent (value));
     }
 }
 
@@ -107,17 +99,10 @@ static bool_t audpl_load (const char * path, VFSFile * file, String & title,
     return TRUE;
 }
 
-static bool_t write_encoded_entry (VFSFile * file, const char * key, const char * val)
-{
-    char buf[3 * strlen (val) + 1];
-    str_encode_percent (val, -1, buf);
-    return inifile_write_entry (file, key, buf);
-}
-
 static bool_t audpl_save (const char * path, VFSFile * file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
-    if (! write_encoded_entry (file, "title", title))
+    if (! inifile_write_entry (file, "title", str_encode_percent (title)))
         return FALSE;
 
     for (auto & item : items)
@@ -136,23 +121,21 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 if (f == FIELD_FILE_PATH || f == FIELD_FILE_NAME || f == FIELD_FILE_EXT)
                     continue;
 
+                const char * key = Tuple::field_get_name (f);
                 TupleValueType type = tuple.get_value_type (f);
 
                 if (type == TUPLE_STRING)
                 {
                     String str = tuple.get_str (f);
-
-                    if (! write_encoded_entry (file, Tuple::field_get_name (f), str))
+                    if (! inifile_write_entry (file, key, str_encode_percent (str)))
                         return FALSE;
 
                     keys ++;
                 }
                 else if (type == TUPLE_INT)
                 {
-                    char buf[32];
-                    str_itoa (tuple.get_int (f), buf, sizeof buf);
-
-                    if (! inifile_write_entry (file, Tuple::field_get_name (f), buf))
+                    int val = tuple.get_int (f);
+                    if (! inifile_write_entry (file, key, int_to_str (val)))
                         return FALSE;
 
                     keys ++;

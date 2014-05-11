@@ -349,7 +349,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
 
     if (handle->purl->query && * (handle->purl->query))
     {
-        SCONCAT3 (tmp, handle->purl->path, "?", handle->purl->query);
+        StringBuf tmp = str_concat ({handle->purl->path, "?", handle->purl->query});
         handle->request = ne_request_create (handle->session, "GET", tmp);
     }
     else
@@ -1001,16 +1001,16 @@ String neon_vfs_metadata_impl (VFSFile * file, const char * field)
     _DEBUG ("<%p> Field name: %s", h, field);
 
     if (! strcmp (field, "track-name") && h->icy_metadata.stream_title)
-        return str_to_utf8 (h->icy_metadata.stream_title, -1);
+        return String (str_to_utf8 (h->icy_metadata.stream_title));
 
     if (! strcmp (field, "stream-name") && h->icy_metadata.stream_name)
-        return str_to_utf8 (h->icy_metadata.stream_name, -1);
+        return String (str_to_utf8 (h->icy_metadata.stream_name));
 
     if (! strcmp (field, "content-type") && h->icy_metadata.stream_contenttype)
-        return str_to_utf8 (h->icy_metadata.stream_contenttype, -1);
+        return String (str_to_utf8 (h->icy_metadata.stream_contenttype));
 
     if (! strcmp (field, "content-bitrate"))
-        return int_to_str (h->icy_metadata.stream_bitrate * 1000);
+        return String (int_to_str (h->icy_metadata.stream_bitrate * 1000));
 
     return String ();
 }

@@ -79,9 +79,9 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
 
         if (* parse && * parse != '#')
         {
-            String s = uri_construct (parse, path);
+            StringBuf s = uri_construct (parse, path);
             if (s)
-                items.append ({s});
+                items.append ({String (s)});
         }
 
         parse = next;

@@ -274,10 +274,8 @@ static Tuple get_song_tuple (const char * filename, VFSFile * file)
     }
 
     if (subformat != NULL)
-    {
-        SPRINTF (codec, "%s (%s)", format, subformat);
-        ti.set_format (codec, sfinfo.channels, sfinfo.samplerate, 0);
-    }
+        ti.set_format (str_printf ("%s (%s)", format, subformat),
+         sfinfo.channels, sfinfo.samplerate, 0);
     else
         ti.set_format (format, sfinfo.channels, sfinfo.samplerate, 0);
 

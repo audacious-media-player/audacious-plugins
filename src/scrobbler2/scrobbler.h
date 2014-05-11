@@ -91,5 +91,5 @@ extern bool_t read_session_key(String &error_code, String &error_detail);
 extern bool_t read_scrobble_result(String &error_code, String &error_detail, bool_t *ignored, String &ignored_code);
 
 //scrobbler.c
-extern String clean_string(const char *string);
+extern StringBuf clean_string(const char *string);
 #endif /* SCROBBLER_H_ */

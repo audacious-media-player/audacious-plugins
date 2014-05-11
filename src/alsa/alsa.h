@@ -28,8 +28,7 @@
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 
 #define ERROR_NOISY(...) do { \
-    SPRINTF (ERROR_NOISY_buf, "ALSA error: " __VA_ARGS__); \
-    aud_ui_show_error (ERROR_NOISY_buf); \
+    aud_ui_show_error (str_printf ("ALSA error: " __VA_ARGS__)); \
 } while (0)
 
 #define CHECK_VAL(value, function, ...) \

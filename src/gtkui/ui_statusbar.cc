@@ -40,13 +40,9 @@
 static void ui_statusbar_update_playlist_length (void * unused, GtkWidget * label)
 {
     int playlist = aud_playlist_get_active ();
-
-    char s1[16], s2[16];
-    str_format_time (s1, sizeof s1, aud_playlist_get_selected_length (playlist));
-    str_format_time (s2, sizeof s2, aud_playlist_get_total_length (playlist));
-
-    SCONCAT3 (buf, s1, " / ", s2);
-    gtk_label_set_text ((GtkLabel *) label, buf);
+    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
+    StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
+    gtk_label_set_text ((GtkLabel *) label, str_concat ({s1, " / ", s2}));
 }
 
 static void ui_statusbar_info_change (void * unused, GtkWidget * label)

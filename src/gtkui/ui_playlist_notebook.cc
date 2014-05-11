@@ -214,10 +214,10 @@ static GtkLabel *get_tab_label(int playlist)
 
 static void set_tab_label (int list, GtkLabel * label)
 {
-    String title = aud_playlist_get_title (list);
-
-    if (aud_get_bool ("gtkui", "entry_count_visible"))
-        title = str_printf ("%s (%d)", (const char *) title, aud_playlist_entry_count (list));
+    String title0 = aud_playlist_get_title (list);
+    StringBuf title = aud_get_bool ("gtkui", "entry_count_visible") ?
+     str_printf ("%s (%d)", (const char *) title0, aud_playlist_entry_count (list)) :
+     str_copy (title0);
 
     if (list == aud_playlist_get_playing ())
     {

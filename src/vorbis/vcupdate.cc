@@ -95,7 +95,7 @@ static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
     int val = tuple.get_int (fieldn);
 
     if (val > 0)
-        dict.add (String (key), int_to_str (val));
+        dict.add (String (key), String (int_to_str (val)));
     else
         dict.remove (String (key));
 }
@@ -183,7 +183,7 @@ gboolean write_and_pivot_files (vcedit_state * state)
 
     close (handle);
 
-    String temp_uri = filename_to_uri (temp);
+    StringBuf temp_uri = filename_to_uri (temp);
     g_return_val_if_fail (temp_uri, FALSE);
     VFSFile * temp_vfs = vfs_fopen (temp_uri, "r+");
     g_return_val_if_fail (temp_vfs, FALSE);

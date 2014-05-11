@@ -92,12 +92,9 @@ static gboolean song_changed;
 
 static void playlistwin_update_info (void)
 {
-    char s1[16], s2[16];
-    str_format_time (s1, sizeof s1, aud_playlist_get_selected_length (active_playlist));
-    str_format_time (s2, sizeof s2, aud_playlist_get_total_length (active_playlist));
-
-    SCONCAT3 (buf, s1, "/", s2);
-    textbox_set_text (playlistwin_info, buf);
+    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (active_playlist));
+    StringBuf s2 = str_format_time (aud_playlist_get_total_length (active_playlist));
+    textbox_set_text (playlistwin_info, str_concat ({s1, "/", s2}));
 }
 
 static void update_rollup_text (void)
@@ -120,9 +117,8 @@ static void update_rollup_text (void)
 
         if (length > 0)
         {
-            char buf[16];
-            str_format_time (buf, sizeof buf, length);
-            APPEND (scratch, " (%s)", buf);
+            StringBuf buf = str_format_time (length);
+            APPEND (scratch, " (%s)", (const char *) buf);
         }
     }
 

@@ -60,7 +60,7 @@ static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
 };
 
 static PSFEngineFunctors *f;
-static const char *dirpath;
+static String dirpath;
 
 bool_t stop_flag = FALSE;
 
@@ -87,8 +87,8 @@ int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
 	void *filebuf;
 	int64_t size;
 
-	SPRINTF(path2, "%s/%s", dirpath, filename);
-	vfs_file_get_contents(path2, &filebuf, &size);
+	StringBuf path = filename_build ({dirpath, filename});
+	vfs_file_get_contents(path, &filebuf, &size);
 
 	*buffer = (uint8_t *) filebuf;
 	*length = (uint64_t)size;
@@ -138,8 +138,7 @@ static bool_t psf2_play(const char * filename, VFSFile * file)
 	if (! slash)
 		return FALSE;
 
-	SNCOPY (dirbuf, filename, slash + 1 - filename);
-	dirpath = dirbuf;
+	dirpath = String (str_copy (filename, slash + 1 - filename));
 
 	vfs_file_get_contents (filename, & buffer, & size);
 
@@ -167,7 +166,7 @@ static bool_t psf2_play(const char * filename, VFSFile * file)
 	f->stop();
 
 	f = NULL;
-	dirpath = NULL;
+	dirpath = String ();
 	free(buffer);
 
 	return ! error;

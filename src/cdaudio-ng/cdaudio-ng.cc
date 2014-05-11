@@ -455,10 +455,7 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
         if (trackinfo[trackno].name[0])
             tuple.set_str (FIELD_TITLE, trackinfo[trackno].name);
         else
-        {
-            SPRINTF (title, _("Track %d"), trackno);
-            tuple.set_str (FIELD_TITLE, title);
-        }
+            tuple.set_str (FIELD_TITLE, str_printf (_("Track %d"), trackno));
 
         if (trackinfo[trackno].performer[0])
             tuple.set_str (FIELD_ARTIST, trackinfo[trackno].performer);

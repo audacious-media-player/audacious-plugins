@@ -40,8 +40,7 @@
 #define VOLUME_RANGE 40 /* decibels */
 
 #define sdlout_error(...) do { \
-    SPRINTF (sdlout_error_buf, "SDL error: " __VA_ARGS__); \
-    aud_ui_show_error (sdlout_error_buf); \
+    aud_ui_show_error (str_printf ("SDL error: " __VA_ARGS__)); \
 } while (0)
 
 static const char * const sdl_defaults[] = {
