@@ -69,102 +69,102 @@ typedef enum {
     SKIN_COLOR_COUNT
 } SkinColorId;
 
-typedef struct {
+struct SkinProperties {
     /* Vis properties */
-    gint mainwin_vis_x;
-    gint mainwin_vis_y;
-    gboolean mainwin_vis_visible;
+    int mainwin_vis_x = 24;
+    int mainwin_vis_y = 43;
+    int mainwin_vis_visible = true;
 
     /* Text properties */
-    gint mainwin_text_x;
-    gint mainwin_text_y;
-    gint mainwin_text_width;
-    gboolean mainwin_text_visible;
+    int mainwin_text_x = 112;
+    int mainwin_text_y = 27;
+    int mainwin_text_width = 153;
+    int mainwin_text_visible = true;
 
     /* Infobar properties */
-    gint mainwin_infobar_x;
-    gint mainwin_infobar_y;
-    gboolean mainwin_othertext_visible;
+    int mainwin_infobar_x = 112;
+    int mainwin_infobar_y = 43;
+    int mainwin_othertext_visible = false;
 
-    gint mainwin_number_0_x;
-    gint mainwin_number_0_y;
+    int mainwin_number_0_x = 36;
+    int mainwin_number_0_y = 26;
 
-    gint mainwin_number_1_x;
-    gint mainwin_number_1_y;
+    int mainwin_number_1_x = 48;
+    int mainwin_number_1_y = 26;
 
-    gint mainwin_number_2_x;
-    gint mainwin_number_2_y;
+    int mainwin_number_2_x = 60;
+    int mainwin_number_2_y = 26;
 
-    gint mainwin_number_3_x;
-    gint mainwin_number_3_y;
+    int mainwin_number_3_x = 78;
+    int mainwin_number_3_y = 26;
 
-    gint mainwin_number_4_x;
-    gint mainwin_number_4_y;
+    int mainwin_number_4_x = 90;
+    int mainwin_number_4_y = 26;
 
-    gint mainwin_playstatus_x;
-    gint mainwin_playstatus_y;
+    int mainwin_playstatus_x = 24;
+    int mainwin_playstatus_y = 28;
 
-    gint mainwin_volume_x;
-    gint mainwin_volume_y;
+    int mainwin_volume_x = 107;
+    int mainwin_volume_y = 57;
 
-    gint mainwin_balance_x;
-    gint mainwin_balance_y;
+    int mainwin_balance_x = 177;
+    int mainwin_balance_y = 57;
 
-    gint mainwin_position_x;
-    gint mainwin_position_y;
+    int mainwin_position_x = 16;
+    int mainwin_position_y = 72;
 
-    gint mainwin_previous_x;
-    gint mainwin_previous_y;
+    int mainwin_previous_x = 16;
+    int mainwin_previous_y = 88;
 
-    gint mainwin_play_x;
-    gint mainwin_play_y;
+    int mainwin_play_x = 39;
+    int mainwin_play_y = 88;
 
-    gint mainwin_pause_x;
-    gint mainwin_pause_y;
+    int mainwin_pause_x = 62;
+    int mainwin_pause_y = 88;
 
-    gint mainwin_stop_x;
-    gint mainwin_stop_y;
+    int mainwin_stop_x = 85;
+    int mainwin_stop_y = 88;
 
-    gint mainwin_next_x;
-    gint mainwin_next_y;
+    int mainwin_next_x = 108;
+    int mainwin_next_y = 88;
 
-    gint mainwin_eject_x;
-    gint mainwin_eject_y;
+    int mainwin_eject_x = 136;
+    int mainwin_eject_y = 89;
 
-    gint mainwin_eqbutton_x;
-    gint mainwin_eqbutton_y;
+    int mainwin_eqbutton_x = 219;
+    int mainwin_eqbutton_y = 58;
 
-    gint mainwin_plbutton_x;
-    gint mainwin_plbutton_y;
+    int mainwin_plbutton_x = 242;
+    int mainwin_plbutton_y = 58;
 
-    gint mainwin_shuffle_x;
-    gint mainwin_shuffle_y;
+    int mainwin_shuffle_x = 164;
+    int mainwin_shuffle_y = 89;
 
-    gint mainwin_repeat_x;
-    gint mainwin_repeat_y;
+    int mainwin_repeat_x = 210;
+    int mainwin_repeat_y = 89;
 
-    gint mainwin_about_x;
-    gint mainwin_about_y;
+    int mainwin_about_x = 247;
+    int mainwin_about_y = 83;
 
-    gint mainwin_minimize_x;
-    gint mainwin_minimize_y;
+    int mainwin_minimize_x = 244;
+    int mainwin_minimize_y = 3;
 
-    gint mainwin_shade_x;
-    gint mainwin_shade_y;
+    int mainwin_shade_x = 254;
+    int mainwin_shade_y = 3;
 
-    gint mainwin_close_x;
-    gint mainwin_close_y;
+    int mainwin_close_x = 264;
+    int mainwin_close_y = 3;
 
-    gint mainwin_width;
-    gint mainwin_height;
+    int mainwin_width = 275;
+    int mainwin_height = 116;
 
-    gboolean mainwin_menurow_visible;
-    gboolean mainwin_streaminfo_visible;
-    gboolean mainwin_othertext_is_status;
+    int mainwin_menurow_visible = true;
+    int mainwin_streaminfo_visible = true;
+    int mainwin_othertext_is_status = false;
 
-    gint textbox_bitmap_font_width;
-    gint textbox_bitmap_font_height;
-} SkinProperties;
+    int textbox_bitmap_font_width = 5;
+    int textbox_bitmap_font_height = 6;
+};
 
 extern const SkinProperties skin_default_hints;
 

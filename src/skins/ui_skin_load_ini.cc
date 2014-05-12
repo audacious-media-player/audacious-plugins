@@ -38,99 +38,7 @@ typedef struct {
     bool_t valid_heading;
 } HintsLoadState;
 
-const SkinProperties skin_default_hints = {
-    .mainwin_vis_x = 24,
-    .mainwin_vis_y = 43,
-    .mainwin_vis_visible = TRUE,
-
-    .mainwin_text_x = 112,
-    .mainwin_text_y = 27,
-    .mainwin_text_width = 153,
-    .mainwin_text_visible = TRUE,
-
-    .mainwin_infobar_x = 112,
-    .mainwin_infobar_y = 43,
-    .mainwin_othertext_visible = FALSE,
-
-    .mainwin_number_0_x = 36,
-    .mainwin_number_0_y = 26,
-
-    .mainwin_number_1_x = 48,
-    .mainwin_number_1_y = 26,
-
-    .mainwin_number_2_x = 60,
-    .mainwin_number_2_y = 26,
-
-    .mainwin_number_3_x = 78,
-    .mainwin_number_3_y = 26,
-
-    .mainwin_number_4_x = 90,
-    .mainwin_number_4_y = 26,
-
-    .mainwin_playstatus_x = 24,
-    .mainwin_playstatus_y = 28,
-
-    .mainwin_volume_x = 107,
-    .mainwin_volume_y = 57,
-
-    .mainwin_balance_x = 177,
-    .mainwin_balance_y = 57,
-
-    .mainwin_position_x = 16,
-    .mainwin_position_y = 72,
-
-    .mainwin_previous_x = 16,
-    .mainwin_previous_y = 88,
-
-    .mainwin_play_x = 39,
-    .mainwin_play_y = 88,
-
-    .mainwin_pause_x = 62,
-    .mainwin_pause_y = 88,
-
-    .mainwin_stop_x = 85,
-    .mainwin_stop_y = 88,
-
-    .mainwin_next_x = 108,
-    .mainwin_next_y = 88,
-
-    .mainwin_eject_x = 136,
-    .mainwin_eject_y = 89,
-
-    .mainwin_eqbutton_x = 219,
-    .mainwin_eqbutton_y = 58,
-
-    .mainwin_plbutton_x = 242,
-    .mainwin_plbutton_y = 58,
-
-    .mainwin_shuffle_x = 164,
-    .mainwin_shuffle_y = 89,
-
-    .mainwin_repeat_x = 210,
-    .mainwin_repeat_y = 89,
-
-    .mainwin_about_x = 247,
-    .mainwin_about_y = 83,
-
-    .mainwin_minimize_x = 244,
-    .mainwin_minimize_y = 3,
-
-    .mainwin_shade_x = 254,
-    .mainwin_shade_y = 3,
-
-    .mainwin_close_x = 264,
-    .mainwin_close_y = 3,
-
-    .mainwin_width = 275,
-    .mainwin_height = 116,
-
-    .mainwin_menurow_visible = TRUE,
-    .mainwin_streaminfo_visible = TRUE,
-    .mainwin_othertext_is_status = FALSE,
-
-    .textbox_bitmap_font_width = 5,
-    .textbox_bitmap_font_height = 6
-};
+const SkinProperties skin_default_hints;
 
 /* so we can use static addresses in the table below */
 static SkinProperties static_hints;
@@ -202,9 +110,9 @@ static const HintPair hint_pairs[] = {
     {"textboxbitmapfontwidth", & static_hints.textbox_bitmap_font_width},
 };
 
-static int hint_pair_compare (const void * a, const void * b)
+static int hint_pair_compare (const void * key, const void * pair)
 {
-    return g_ascii_strcasecmp (((const HintPair *) a)->name, ((const HintPair *) b)->name);
+    return g_ascii_strcasecmp ((const char *) key, ((const HintPair *) pair)->name);
 }
 
 static void hints_handle_heading (const char * heading, void * data)
@@ -221,8 +129,7 @@ static void hints_handle_entry (const char * key, const char * value, void * dat
     if (! state->valid_heading)
         return;
 
-    HintPair key_pair = {.name = key};
-    HintPair * pair = (HintPair *) bsearch (& key_pair, hint_pairs,
+    HintPair * pair = (HintPair *) bsearch (key, hint_pairs,
      ARRAY_LEN (hint_pairs), sizeof (HintPair), hint_pair_compare);
 
     if (pair)
@@ -233,7 +140,7 @@ void skin_load_hints (Skin * skin, const char * path)
 {
     static_hints = skin_default_hints;
 
-    HintsLoadState state = {.valid_heading = FALSE};
+    HintsLoadState state = {false};
 
     VFSFile * file = open_local_file_nocase (path, "skin.hints");
 
@@ -294,15 +201,11 @@ void skin_load_pl_colors (Skin * skin, const char * path)
     skin->colors[SKIN_PLEDIT_NORMALBG] = 0x0a120a;
     skin->colors[SKIN_PLEDIT_SELECTEDBG] = 0x0a124a;
 
-    PLColorsLoadState state = {
-        .valid_heading = FALSE,
-        .skin = skin
-    };
-
     VFSFile * file = open_local_file_nocase (path, "pledit.txt");
 
     if (file)
     {
+        PLColorsLoadState state = {false, skin};
         inifile_parse (file, pl_colors_handle_heading, pl_colors_handle_entry, & state);
         vfs_fclose (file);
     }
@@ -373,20 +276,17 @@ static cairo_region_t * skin_create_mask (const GArray * num,
         if (n_points <= 0 || j + 2 * n_points > point->len)
             break;
 
-        GdkPoint gpoints[n_points];
-        for (int k = 0; k < n_points; k ++)
-        {
-            gpoints[k].x = g_array_index (point, int, j + k * 2);
-            gpoints[k].y = g_array_index (point, int, j + k * 2 + 1);
-        }
-
         int xmin = width, ymin = height, xmax = 0, ymax = 0;
+
         for (int k = 0; k < n_points; k ++)
         {
-            xmin = MIN (xmin, gpoints[k].x);
-            ymin = MIN (ymin, gpoints[k].y);
-            xmax = MAX (xmax, gpoints[k].x);
-            ymax = MAX (ymax, gpoints[k].y);
+            int x = g_array_index (point, int, j + k * 2);
+            int y = g_array_index (point, int, j + k * 2 + 1);
+
+            xmin = MIN (xmin, x);
+            ymin = MIN (ymin, y);
+            xmax = MAX (xmax, x);
+            ymax = MAX (ymax, y);
         }
 
         if (xmax > xmin && ymax > ymin)
