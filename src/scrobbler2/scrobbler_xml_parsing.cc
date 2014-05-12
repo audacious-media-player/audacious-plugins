@@ -178,7 +178,7 @@ bool_t read_scrobble_result(String &error_code, String &error_detail,
           ignored_code = get_attribute_value("/lfm/scrobbles/scrobble/ignoredMessage[@code]", "code");
         }
 
-        AUDDBG("ignored? %i, ignored_code: %s\n", *ignored, *ignored_code);
+        AUDDBG("ignored? %i, ignored_code: %s\n", *ignored, (const char *)ignored_code);
     }
 
     clean_data();
@@ -239,7 +239,8 @@ bool_t read_token (String &error_code, String &error_detail) {
     }
 
     if (!strcmp(status, "failed")) {
-        AUDDBG("Error code: %s. Detail: %s.\n", *error_code, *error_detail);
+        AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
+         (const char *)error_detail);
         result = FALSE;
     }
     else {
@@ -278,7 +279,8 @@ bool_t read_session_key(String &error_code, String &error_detail) {
     }
 
     if (!strcmp(status, "failed")) {
-        AUDDBG("Error code: %s. Detail: %s.\n", *error_code, *error_detail);
+        AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
+         (const char *)error_detail);
         result = FALSE;
 
     } else {

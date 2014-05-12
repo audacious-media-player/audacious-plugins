@@ -62,6 +62,6 @@ plugindir := ${plugindir}/${INPUT_PLUGIN_DIR}
 
 LD = ${CXX}
 CFLAGS += ${PLUGIN_CFLAGS}
-CXXFLAGS += ${PLUGIN_CFLAGS}
+CXXFLAGS += ${PLUGIN_CFLAGS} -Wno-narrowing -Wno-sign-compare
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} ${BINIO_CFLAGS} -I../.. -I./core
 LIBS += ${GLIB_LIBS} ${BINIO_LIBS}

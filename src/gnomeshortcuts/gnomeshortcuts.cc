@@ -64,9 +64,9 @@ hotkey_marshal_VOID__STRING_STRING (GClosure     *closure,
     typedef void (*GMarshalFunc_VOID__STRING_STRING) (gpointer data1,
                                                       gpointer arg_1,
                                                       gpointer arg_2);
-    register GMarshalFunc_VOID__STRING_STRING callback;
-    register GCClosure *cc = (GCClosure*) closure;
-    register gpointer data1;
+    GMarshalFunc_VOID__STRING_STRING callback;
+    GCClosure *cc = (GCClosure*) closure;
+    gpointer data1;
 
     g_return_if_fail (n_param_values == 3);
 

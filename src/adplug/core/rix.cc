@@ -201,7 +201,7 @@ CrixPlayer::set_new_int ()
 inline void
 CrixPlayer::Pause ()
 {
-  register unsigned short i;
+  unsigned short i;
   pause_flag = 1;
   for (i = 0; i < 11; i++)
     switch_ad_bd (i);
@@ -241,7 +241,7 @@ CrixPlayer::data_initial ()
 inline unsigned short
 CrixPlayer::ad_initial ()
 {
-  register unsigned short i, j, k = 0;
+  unsigned short i, j, k = 0;
   for (i = 0; i < 25; i++)
   {
     f_buffer[i * 12] =
@@ -455,7 +455,7 @@ CrixPlayer::ad_a0b0l_reg (unsigned short index, unsigned short p2,
 inline void
 CrixPlayer::rix_B0_pro (unsigned short ctrl_l, unsigned short index)
 {
-  register int temp = 0;
+  int temp = 0;
   if (rhythm == 0 || ctrl_l < 6)
     temp = modify[ctrl_l * 2 + 1];
   else
@@ -471,7 +471,7 @@ CrixPlayer::rix_B0_pro (unsigned short ctrl_l, unsigned short index)
 inline void
 CrixPlayer::rix_C0_pro (unsigned short ctrl_l, unsigned short index)
 {
-  register unsigned short i = index >= 12 ? index - 12 : 0;
+  unsigned short i = index >= 12 ? index - 12 : 0;
   if (ctrl_l < 6 || rhythm == 0)
   {
     ad_a0b0l_reg (ctrl_l, i, 1);
@@ -513,7 +513,7 @@ inline void
 CrixPlayer::ins_to_reg (unsigned short index, unsigned short *insb,
                         unsigned short value)
 {
-  register unsigned short i;
+  unsigned short i;
   for (i = 0; i < 13; i++)
     reg_bufs[index].v[i] = insb[i];
   reg_bufs[index].v[13] = value & 3;
@@ -606,7 +606,7 @@ CrixPlayer::ad_a0b0_reg (unsigned short index)
 inline void
 CrixPlayer::music_ctrl ()
 {
-  register int i;
+  int i;
   for (i = 0; i < 11; i++)
     switch_ad_bd (i);
 }
