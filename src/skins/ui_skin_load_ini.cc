@@ -38,7 +38,7 @@ typedef struct {
     bool_t valid_heading;
 } HintsLoadState;
 
-const SkinProperties skin_default_hints;
+const SkinProperties skin_default_hints = SkinProperties ();
 
 /* so we can use static addresses in the table below */
 static SkinProperties static_hints;
@@ -242,7 +242,7 @@ static void mask_handle_entry (const char * key, const char * value, void * data
     MaskLoadState * state = (MaskLoadState *) data;
     SkinMaskId id = state->current_id;
 
-    if (id == -1)
+    if (id == (SkinMaskId) -1)
         return;
 
     if (! g_ascii_strcasecmp (key, "numpoints"))

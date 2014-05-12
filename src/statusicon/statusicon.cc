@@ -47,6 +47,8 @@ static void si_smallmenu_show(gint x, gint y, guint button, guint32 time, gpoint
 static void si_smallmenu_recreate(GtkStatusIcon *);
 static void si_popup_hide(gpointer icon);
 
+static PluginHandle * get_plugin_self ();
+
 static const char * const si_defaults[] = {
  "scroll_action", "0", /* SI_CFG_SCROLL_ACTION_VOLUME */
  "volume_delta", "5",
@@ -337,8 +339,7 @@ static void si_enable(gboolean enable)
     {
         /* Prevent accidentally hiding of the interface
          * by disabling the plugin while Audacious is closed to the tray. */
-        extern GeneralPlugin _aud_plugin_self;
-        PluginHandle *si = aud_plugin_by_header(&_aud_plugin_self);
+        PluginHandle * si = get_plugin_self ();
         if (! aud_plugin_get_enabled(si) && ! aud_get_headless_mode() && ! aud_ui_is_shown())
             aud_ui_show(TRUE);
 
@@ -407,3 +408,8 @@ static const PluginPreferences si_prefs = {
 
 #define AUD_DECLARE_GENERAL
 #include <libaudcore/plugin-declare.h>
+
+static PluginHandle * get_plugin_self ()
+{
+    return aud_plugin_by_header (& _aud_plugin_self);
+}
