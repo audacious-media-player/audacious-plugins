@@ -44,8 +44,9 @@ static const PreferencesWidget cryst_widgets[] = {
 };
 
 static const PluginPreferences cryst_prefs = {
- .widgets = cryst_widgets,
- .n_widgets = ARRAY_LEN (cryst_widgets)};
+    cryst_widgets,
+    ARRAY_LEN (cryst_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Crystalizer")
 #define AUD_PLUGIN_PREFS       & cryst_prefs

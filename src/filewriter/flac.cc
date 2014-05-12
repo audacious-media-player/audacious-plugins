@@ -196,14 +196,13 @@ static int flac_format_required (int fmt)
     return FMT_S16_NE;
 }
 
-FileWriter flac_plugin =
-{
-    .init = NULL,
-    .configure = NULL,
-    .open = flac_open,
-    .write = flac_write,
-    .close = flac_close,
-    .format_required = flac_format_required,
+FileWriter flac_plugin = {
+    nullptr,  // init
+    nullptr,  // configure
+    flac_open,
+    flac_write,
+    flac_close,
+    flac_format_required,
 };
 
 #endif

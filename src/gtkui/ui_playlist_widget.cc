@@ -459,7 +459,7 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
 
 void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, String & expand)
 {
-    int w[pw_num_cols], ex[pw_num_cols];
+    int w[PW_COLS], ex[PW_COLS];
 
     for (int i = 0; i < pw_num_cols; i ++)
     {
@@ -475,7 +475,7 @@ void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, 
 void ui_playlist_widget_set_column_widths (GtkWidget * widget,
  const char * widths, const char * expand)
 {
-    int w[pw_num_cols], ex[pw_num_cols];
+    int w[PW_COLS], ex[PW_COLS];
 
     if (! str_to_int_array (widths, w, pw_num_cols) ||
      ! str_to_int_array (expand, ex, pw_num_cols))

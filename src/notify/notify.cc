@@ -84,8 +84,8 @@ static const PreferencesWidget prefs_widgets[] = {
 };
 
 static const PluginPreferences plugin_prefs = {
- .widgets = prefs_widgets,
- .n_widgets = ARRAY_LEN (prefs_widgets)
+    prefs_widgets,
+    ARRAY_LEN (prefs_widgets)
 };
 
 #define AUD_PLUGIN_NAME        N_("Desktop Notifications")

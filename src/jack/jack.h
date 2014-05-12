@@ -7,7 +7,6 @@ void jack_configure(void);
 
 typedef struct
 {
-    bool_t isTraceEnabled; /* if true we will print debug information to the console */
     int volume_left, volume_right; /* for loading the stored volume setting */
 } jackconfig;
 

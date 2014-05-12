@@ -50,12 +50,11 @@ static void chooser_get_aosd_color (GtkColorChooser * chooser, aosd_color_t * co
 
 static void chooser_set_aosd_color (GtkColorChooser * chooser, const aosd_color_t * color)
 {
-  GdkRGBA rgba =
-  {
-    .red = color->red / 65535.0,
-    .green = color->green / 65535.0,
-    .blue = color->blue / 65535.0,
-    .alpha = color->alpha / 65535.0
+  GdkRGBA rgba = {
+      color->red / 65535.0,
+      color->green / 65535.0,
+      color->blue / 65535.0,
+      color->alpha / 65535.0
   };
 
   gtk_color_chooser_set_use_alpha (chooser, TRUE);

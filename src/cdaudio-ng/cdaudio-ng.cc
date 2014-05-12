@@ -143,8 +143,9 @@ static const PreferencesWidget cdaudio_widgets[] = {
 };
 
 static const PluginPreferences cdaudio_prefs = {
- .widgets = cdaudio_widgets,
- .n_widgets = ARRAY_LEN (cdaudio_widgets)};
+    cdaudio_widgets,
+    ARRAY_LEN (cdaudio_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Audio CD Plugin")
 #define AUD_PLUGIN_ABOUT       cdaudio_about
@@ -326,9 +327,11 @@ static bool_t cdaudio_play (const char * name, VFSFile * file)
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
-    unsigned char buffer[2352 * sectors];
     int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
+
+    Index<unsigned char> buffer;
+    buffer.insert (0, 2352 * sectors);
 
     while (! aud_input_check_stop ())
     {
@@ -344,11 +347,11 @@ static bool_t cdaudio_play (const char * name, VFSFile * file)
          * other threads must be careful not to close drive handle */
         pthread_mutex_unlock (& mutex);
 
-        int ret = cdio_read_audio_sectors (pcdrom_drive->p_cdio, buffer,
-         currlsn, sectors);
+        int ret = cdio_read_audio_sectors (pcdrom_drive->p_cdio,
+         buffer.begin (), currlsn, sectors);
 
         if (ret == DRIVER_OP_SUCCESS)
-            aud_input_write_audio (buffer, 2352 * sectors);
+            aud_input_write_audio (buffer.begin (), 2352 * sectors);
 
         pthread_mutex_lock (& mutex);
 
@@ -420,15 +423,14 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
     {
         tuple.set_filename (filename);
 
-        int subtunes[n_audio_tracks];
-        int i = 0;
+        Index<int> subtunes;
 
         /* only add the audio tracks to the playlist */
         for (int trackno = firsttrackno; trackno <= lasttrackno; trackno++)
             if (cdda_track_audiop (pcdrom_drive, trackno))
-                subtunes[i ++] = trackno;
+                subtunes.append (trackno);
 
-        tuple.set_subtunes (n_audio_tracks, subtunes);
+        tuple.set_subtunes (subtunes.len (), subtunes.begin ());
     }
     else
     {

@@ -154,8 +154,9 @@ static const PreferencesWidget delete_files_widgets[] = {
 };
 
 static const PluginPreferences delete_files_prefs = {
- .widgets = delete_files_widgets,
- .n_widgets = ARRAY_LEN (delete_files_widgets)};
+    delete_files_widgets,
+    ARRAY_LEN (delete_files_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Delete Files")
 #define AUD_PLUGIN_INIT        delete_files_init

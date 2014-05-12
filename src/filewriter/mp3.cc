@@ -1203,14 +1203,13 @@ static int mp3_format_required (int fmt)
     return FMT_S16_NE;
 }
 
-FileWriter mp3_plugin =
-{
-    .init = mp3_init,
-    .configure = mp3_configure,
-    .open = mp3_open,
-    .write = mp3_write,
-    .close = mp3_close,
-    .format_required = mp3_format_required,
+FileWriter mp3_plugin = {
+    mp3_init,
+    mp3_configure,
+    mp3_open,
+    mp3_write,
+    mp3_close,
+    mp3_format_required,
 };
 
 #endif

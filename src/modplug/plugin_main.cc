@@ -150,7 +150,7 @@ static const PreferencesWidget modplug_columns[] = {
 };
 
 static const PreferencesWidget modplug_widgets[] = {
-    WidgetBox ({modplug_columns, ARRAY_LEN (modplug_columns), .horizontal = TRUE})
+    WidgetBox ({modplug_columns, ARRAY_LEN (modplug_columns), true})
 };
 
 static void modplug_settings_load ()
@@ -225,10 +225,10 @@ static void modplug_settings_apply (void)
 }
 
 static const PluginPreferences modplug_prefs = {
- .widgets = modplug_widgets,
- .n_widgets = ARRAY_LEN (modplug_widgets),
- .init = modplug_settings_load,
- .apply = modplug_settings_apply
+    modplug_widgets,
+    ARRAY_LEN (modplug_widgets),
+    modplug_settings_load,
+    modplug_settings_apply
 };
 
 #define AUD_PLUGIN_NAME        N_("ModPlug (Module Player)")

@@ -136,12 +136,11 @@ static int wav_format_required (int fmt)
     }
 }
 
-FileWriter wav_plugin =
-{
-    .init = NULL,
-    .configure = NULL,
-    .open = wav_open,
-    .write = wav_write,
-    .close = wav_close,
-    .format_required = wav_format_required,
+FileWriter wav_plugin = {
+    nullptr,  // init
+    nullptr,  // configure
+    wav_open,
+    wav_write,
+    wav_close,
+    wav_format_required,
 };

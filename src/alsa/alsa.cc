@@ -213,8 +213,7 @@ static void * pump (void * unused)
 
         if (workaround && slept)
         {
-            const struct timespec delay = {.tv_sec = 0, .tv_nsec = 600000 *
-             alsa_period};
+            const struct timespec delay = {0, 600000 * alsa_period};
             nanosleep (& delay, NULL);
         }
         else
@@ -499,8 +498,7 @@ void alsa_drain (void)
     if (alsa_config_drain_workaround)
     {
         int d = get_delay () * 1000 / alsa_rate;
-        struct timespec delay = {.tv_sec = d / 1000, .tv_nsec = d % 1000 *
-         1000000};
+        struct timespec delay = {d / 1000, d % 1000 * 1000000};
 
         pthread_mutex_unlock (& alsa_mutex);
         nanosleep (& delay, NULL);

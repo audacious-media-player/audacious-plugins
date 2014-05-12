@@ -49,8 +49,9 @@ static const PreferencesWidget bscope_widgets[] = {
 };
 
 static const PluginPreferences bscope_prefs = {
- .widgets = bscope_widgets,
- .n_widgets = ARRAY_LEN (bscope_widgets)};
+    bscope_widgets,
+    ARRAY_LEN (bscope_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Blur Scope")
 #define AUD_PLUGIN_PREFS       & bscope_prefs
@@ -219,9 +220,10 @@ static void color_set_cb (GtkWidget * chooser)
 static void /* GtkWidget */ * bscope_get_color_chooser (void)
 {
     GdkRGBA rgba = {
-     .red = ((color & 0xff0000) >> 16) / 255.0,
-     .green = ((color & 0xff00) >> 8) / 255.0,
-     .blue = (color & 0xff) / 255.0};
+        ((color & 0xff0000) >> 16) / 255.0,
+        ((color & 0xff00) >> 8) / 255.0,
+        (color & 0xff) / 255.0
+    };
 
     GtkWidget * chooser = gtk_color_button_new_with_rgba (& rgba);
     gtk_color_chooser_set_use_alpha ((GtkColorChooser *) chooser, FALSE);

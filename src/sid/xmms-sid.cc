@@ -302,17 +302,16 @@ static void xs_get_song_tuple_info(Tuple &tuple, xs_tuneinfo_t *info, int subTun
 
 static void xs_fill_subtunes(Tuple &tuple, xs_tuneinfo_t *info)
 {
-    int count, found;
-    int subtunes[info->nsubTunes];
+    Index<int> subtunes;
 
-    for (found = count = 0; count < info->nsubTunes; count++) {
+    for (int count = 0; count < info->nsubTunes; count++) {
         if (count + 1 == info->startTune || !xs_cfg.subAutoMinOnly ||
             info->subTunes[count].tuneLength < 0 ||
             info->subTunes[count].tuneLength >= xs_cfg.subAutoMinTime)
-            subtunes[found ++] = count + 1;
+            subtunes.append (count + 1);
     }
 
-    tuple.set_subtunes (found, subtunes);
+    tuple.set_subtunes (subtunes.len (), subtunes.begin ());
 }
 
 Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)

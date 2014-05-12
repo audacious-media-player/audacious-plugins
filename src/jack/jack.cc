@@ -24,22 +24,8 @@
 
 jackconfig jack_cfg;
 
-#define OUTFILE stderr
-
-#define TRACE(...)                                      \
-    if(jack_cfg.isTraceEnabled) {                       \
-        fprintf(OUTFILE, "%s:", __FUNCTION__),          \
-        fprintf(OUTFILE, __VA_ARGS__),                    \
-        fflush(OUTFILE);                                \
-    }
-
-#define ERR(...)                                        \
-    if(jack_cfg.isTraceEnabled) {                       \
-        fprintf(OUTFILE, "ERR: %s:", __FUNCTION__),     \
-        fprintf(OUTFILE, __VA_ARGS__),                    \
-        fflush(OUTFILE);                                \
-    }
-
+#define TRACE AUDDBG
+#define ERR AUDDBG
 
 static int driver = 0; /* handle to the jack output device */
 
@@ -200,14 +186,12 @@ static const ComboBoxElements mode_list[] = {
 static const PreferencesWidget jack_widgets[] = {
     WidgetCombo (N_("Connection mode:"),
         {VALUE_STRING, 0, "jack", "port_connection_mode"},
-        {mode_list, ARRAY_LEN (mode_list)}),
-    WidgetCheck (N_("Enable debug printing"),
-        {VALUE_BOOLEAN, 0, "jack", "isTraceEnabled"})
+        {mode_list, ARRAY_LEN (mode_list)})
 };
 
 static const PluginPreferences jack_prefs = {
- .widgets = jack_widgets,
- .n_widgets = ARRAY_LEN (jack_widgets)
+    jack_widgets,
+    ARRAY_LEN (jack_widgets)
 };
 
 /* Initialize necessary things */
@@ -215,7 +199,6 @@ static bool_t jack_init (void)
 {
   aud_config_set_defaults ("jack", jack_defaults);
 
-  jack_cfg.isTraceEnabled = aud_get_bool ("jack", "isTraceEnabled");
   jack_cfg.volume_left = aud_get_int ("jack", "volume_left");
   jack_cfg.volume_right = aud_get_int ("jack", "volume_right");
 

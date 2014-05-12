@@ -34,6 +34,7 @@
 #include <samplerate.h>
 
 #include <glib.h>
+#include <libaudcore/runtime.h>
 
 #include "bio2jack.h"
 
@@ -68,38 +69,38 @@
    a 'TIMER("stop\n")' at the end of any function and this does the rest
    (naturally you can place any printf-compliant text you like in the argument
    along with the associated values). */
-static struct timeval timer_now;
-#define TIMER(format,args...) gettimeofday(&timer_now,0); \
-  fprintf(OUTFILE, "%ld.%06ld: %s::%s(%d) " format, timer_now.tv_sec, timer_now.tv_usec, __FILE__, __FUNCTION__, __LINE__, ##args)
+//static struct timeval timer_now;
+//#define TIMER(format,args...) gettimeofday(&timer_now,0);
+//  fprintf(OUTFILE, "%ld.%06ld: %s::%s(%d) " format, timer_now.tv_sec, timer_now.tv_usec, __FILE__, __FUNCTION__, __LINE__, ##args)
 #else
 #define TIMER(...)
 #endif
 
 #if TRACE_ENABLE
-#define TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) " format, __FILE__, __FUNCTION__, __LINE__,##args)
+//#define TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) " format, __FILE__, __FUNCTION__, __LINE__,##args)
 #else
 #define TRACE(...)
 #endif
 
 #if DEBUG_OUTPUT
-#define DEBUG(format,args...) fprintf(OUTFILE, "%s::%s(%d) " format, __FILE__, __FUNCTION__, __LINE__,##args)
+//#define DEBUG(format,args...) fprintf(OUTFILE, "%s::%s(%d) " format, __FILE__, __FUNCTION__, __LINE__,##args)
 #else
 #define DEBUG(...)
 #endif
 
 #if TRACE_CALLBACK
-#define CALLBACK_TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) " format, __FILE__, __FUNCTION__, __LINE__,##args)
+//#define CALLBACK_TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) " format, __FILE__, __FUNCTION__, __LINE__,##args)
 #else
 #define CALLBACK_TRACE(...)
 #endif
 
 #if ENABLE_WARNINGS
-#define WARN(format,args...) fprintf(OUTFILE, "WARN: %s::%s(%d) " format, __FILE__,__FUNCTION__,__LINE__,##args)
+//#define WARN(format,args...) fprintf(OUTFILE, "WARN: %s::%s(%d) " format, __FILE__,__FUNCTION__,__LINE__,##args)
 #else
 #define WARN(...)
 #endif
 
-#define ERR(format,args...) fprintf(OUTFILE, "ERR: %s::%s(%d) " format, __FILE__,__FUNCTION__,__LINE__,##args)
+#define ERR AUDDBG
 
 #define min(a,b)   (((a) < (b)) ? (a) : (b))
 #define max(a,b)   (((a) < (b)) ? (b) : (a))

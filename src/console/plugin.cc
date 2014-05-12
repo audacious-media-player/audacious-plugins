@@ -58,8 +58,9 @@ static const PreferencesWidget console_widgets[] = {
 };
 
 static const PluginPreferences console_prefs = {
- .widgets = console_widgets,
- .n_widgets = ARRAY_LEN (console_widgets)};
+    console_widgets,
+    ARRAY_LEN (console_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Game Console Music Decoder")
 #define AUD_PLUGIN_ABOUT       console_about

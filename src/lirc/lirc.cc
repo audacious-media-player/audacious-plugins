@@ -397,8 +397,9 @@ static const PreferencesWidget widgets[] = {
 };
 
 static const PluginPreferences prefs = {
- .widgets = widgets,
- .n_widgets = ARRAY_LEN (widgets)};
+    widgets,
+    ARRAY_LEN (widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("LIRC Plugin")
 #define AUD_PLUGIN_ABOUT       about

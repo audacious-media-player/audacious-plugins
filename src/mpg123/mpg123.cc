@@ -153,7 +153,7 @@ RETRY:;
 	if ((res = mpg123_info (dec, & info)) < 0)
 		goto ERR;
 
-	float out[chan * (rate / 10)];
+	float out[8192];
 	size_t done;
 	while ((res = mpg123_read (dec, (unsigned char *) out, sizeof out, & done)) < 0)
 	{

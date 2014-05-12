@@ -301,15 +301,15 @@ static const char gio_about[] =
 static const char * const gio_schemes[] = {"ftp", "sftp", "smb", 0};
 
 static const VFSConstructor constructor = {
-    .vfs_fopen_impl = gio_fopen,
-    .vfs_fclose_impl = gio_fclose,
-    .vfs_fread_impl = gio_fread,
-    .vfs_fwrite_impl = gio_fwrite,
-    .vfs_fseek_impl = gio_fseek,
-    .vfs_ftell_impl = gio_ftell,
-    .vfs_feof_impl = gio_feof,
-    .vfs_ftruncate_impl = gio_ftruncate,
-    .vfs_fsize_impl = gio_fsize
+    gio_fopen,
+    gio_fclose,
+    gio_fread,
+    gio_fwrite,
+    gio_fseek,
+    gio_ftell,
+    gio_feof,
+    gio_ftruncate,
+    gio_fsize
 };
 
 #define AUD_PLUGIN_NAME        N_("GIO Plugin")

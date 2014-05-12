@@ -592,12 +592,13 @@ static void list_right_click (void * user, GdkEventButton * event)
 }
 
 static const AudguiListCallbacks list_callbacks = {
- .get_value = list_get_value,
- .get_selected = list_get_selected,
- .set_selected = list_set_selected,
- .select_all = list_select_all,
- .activate_row = list_activate_row,
- .right_click = list_right_click};
+    list_get_value,
+    list_get_selected,
+    list_set_selected,
+    list_select_all,
+    list_activate_row,
+    list_right_click
+};
 
 static void entry_cb (GtkEntry * entry, void * unused)
 {

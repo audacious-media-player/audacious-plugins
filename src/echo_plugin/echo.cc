@@ -35,8 +35,9 @@ static const PreferencesWidget echo_widgets[] = {
 };
 
 static const PluginPreferences echo_prefs = {
- .widgets = echo_widgets,
- .n_widgets = ARRAY_LEN (echo_widgets)};
+    echo_widgets,
+    ARRAY_LEN (echo_widgets)
+};
 
 static float *buffer = NULL;
 static int w_ofs;

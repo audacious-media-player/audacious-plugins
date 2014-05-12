@@ -156,17 +156,12 @@ static VFSFile * safe_create (const gchar * filename)
         return vfs_fopen (filename, "w");
 
     const gchar * extension = strrchr (filename, '.');
-    gint length = strlen (filename);
-    gchar scratch[length + 3];
-    gint count;
 
-    for (count = 1; count < 100; count ++)
+    for (int count = 1; count < 100; count ++)
     {
-        if (extension == NULL)
-            sprintf (scratch, "%s-%d", filename, count);
-        else
-            sprintf (scratch, "%.*s-%d%s", (gint) (extension - filename),
-             filename, count, extension);
+        StringBuf scratch = extension ?
+         str_printf ("%.*s-%d%s", (int) (extension - filename), filename, count, extension) :
+         str_printf ("%s-%d", filename, count);
 
         if (! vfs_file_test (scratch, G_FILE_TEST_EXISTS))
             return vfs_fopen (scratch, "w");

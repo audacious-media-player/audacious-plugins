@@ -284,8 +284,8 @@ static const PreferencesWidget skins_widgets[] = {
 };
 
 const PluginPreferences skins_prefs = {
-    .widgets = skins_widgets,
-    .n_widgets = ARRAY_LEN (skins_widgets)
+    skins_widgets,
+    ARRAY_LEN (skins_widgets)
 };
 
 void

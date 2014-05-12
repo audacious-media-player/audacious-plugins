@@ -1030,18 +1030,17 @@ int64_t neon_vfs_fsize_impl (VFSFile * file)
 
 static const char * const neon_schemes[] = {"http", "https", NULL};
 
-static const VFSConstructor constructor =
-{
-    .vfs_fopen_impl = neon_vfs_fopen_impl,
-    .vfs_fclose_impl = neon_vfs_fclose_impl,
-    .vfs_fread_impl = neon_vfs_fread_impl,
-    .vfs_fwrite_impl = neon_vfs_fwrite_impl,
-    .vfs_fseek_impl = neon_vfs_fseek_impl,
-    .vfs_ftell_impl = neon_vfs_ftell_impl,
-    .vfs_feof_impl = neon_vfs_feof_impl,
-    .vfs_ftruncate_impl = neon_vfs_truncate_impl,
-    .vfs_fsize_impl = neon_vfs_fsize_impl,
-    .vfs_get_metadata_impl = neon_vfs_metadata_impl
+static const VFSConstructor constructor = {
+    neon_vfs_fopen_impl,
+    neon_vfs_fclose_impl,
+    neon_vfs_fread_impl,
+    neon_vfs_fwrite_impl,
+    neon_vfs_fseek_impl,
+    neon_vfs_ftell_impl,
+    neon_vfs_feof_impl,
+    neon_vfs_truncate_impl,
+    neon_vfs_fsize_impl,
+    neon_vfs_metadata_impl
 };
 
 #define AUD_PLUGIN_NAME        N_("Neon HTTP/HTTPS Plugin")

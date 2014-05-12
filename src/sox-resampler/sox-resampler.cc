@@ -156,8 +156,9 @@ static const PreferencesWidget sox_resampler_widgets[] = {
 };
 
 static const PluginPreferences sox_resampler_prefs = {
- .widgets = sox_resampler_widgets,
- .n_widgets = ARRAY_LEN (sox_resampler_widgets)};
+    sox_resampler_widgets,
+    ARRAY_LEN (sox_resampler_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("SoX Resampler")
 #define AUD_PLUGIN_ABOUT       sox_resampler_about

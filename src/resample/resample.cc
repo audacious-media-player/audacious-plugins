@@ -226,8 +226,9 @@ static const PreferencesWidget resample_widgets[] = {
 };
 
 static const PluginPreferences resample_prefs = {
- .widgets = resample_widgets,
- .n_widgets = ARRAY_LEN (resample_widgets)};
+    resample_widgets,
+    ARRAY_LEN (resample_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Sample Rate Converter")
 #define AUD_PLUGIN_ABOUT       resample_about

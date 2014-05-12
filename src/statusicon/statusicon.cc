@@ -395,8 +395,9 @@ static const PreferencesWidget si_widgets[] = {
 };
 
 static const PluginPreferences si_prefs = {
- .widgets = si_widgets,
- .n_widgets = ARRAY_LEN (si_widgets)};
+    si_widgets,
+    ARRAY_LEN (si_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Status Icon")
 #define AUD_PLUGIN_ABOUT       si_about

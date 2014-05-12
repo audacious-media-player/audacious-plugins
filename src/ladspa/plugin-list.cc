@@ -50,10 +50,11 @@ static void select_all (void * user, int selected)
 }
 
 static const AudguiListCallbacks callbacks = {
- .get_value = get_value,
- .get_selected = get_selected,
- .set_selected = set_selected,
- .select_all = select_all};
+    get_value,
+    get_selected,
+    set_selected,
+    select_all
+};
 
 GtkWidget * create_plugin_list (void)
 {

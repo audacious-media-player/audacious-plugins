@@ -177,17 +177,16 @@ static int64_t mms_vfs_fsize_impl (VFSFile * file)
 
 static const char * const mms_schemes[] = {"mms", NULL};
 
-static const VFSConstructor constructor =
-{
-    .vfs_fopen_impl = mms_vfs_fopen_impl,
-    .vfs_fclose_impl = mms_vfs_fclose_impl,
-    .vfs_fread_impl = mms_vfs_fread_impl,
-    .vfs_fwrite_impl = mms_vfs_fwrite_impl,
-    .vfs_fseek_impl = mms_vfs_fseek_impl,
-    .vfs_ftell_impl = mms_vfs_ftell_impl,
-    .vfs_feof_impl = mms_vfs_feof_impl,
-    .vfs_ftruncate_impl = mms_vfs_truncate_impl,
-    .vfs_fsize_impl = mms_vfs_fsize_impl
+static const VFSConstructor constructor = {
+    mms_vfs_fopen_impl,
+    mms_vfs_fclose_impl,
+    mms_vfs_fread_impl,
+    mms_vfs_fwrite_impl,
+    mms_vfs_fseek_impl,
+    mms_vfs_ftell_impl,
+    mms_vfs_feof_impl,
+    mms_vfs_truncate_impl,
+    mms_vfs_fsize_impl
 };
 
 #define AUD_PLUGIN_NAME        N_("MMS Plugin")

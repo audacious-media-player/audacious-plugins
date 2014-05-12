@@ -29,8 +29,9 @@ static const PreferencesWidget stereo_widgets[] = {
 };
 
 static const PluginPreferences stereo_prefs = {
- .widgets = stereo_widgets,
- .n_widgets = ARRAY_LEN (stereo_widgets)};
+    stereo_widgets,
+    ARRAY_LEN (stereo_widgets)
+};
 
 #define AUD_PLUGIN_NAME        N_("Extra Stereo")
 #define AUD_PLUGIN_ABOUT       stereo_about

@@ -52,7 +52,7 @@ static const PreferencesWidget gtkui_widgets[] = {
 };
 
 const PluginPreferences gtkui_prefs = {
-    .widgets = gtkui_widgets,
-    .n_widgets = ARRAY_LEN (gtkui_widgets)
+    gtkui_widgets,
+    ARRAY_LEN (gtkui_widgets)
 };
 

@@ -297,13 +297,13 @@ static void save_enabled_to_config (void)
 
         snprintf (key, sizeof key, "plugin%d_controls", i);
 
-        int ccount = loaded->plugin->controls.len ();
-        double temp[ccount];
+        Index<double> temp;
+        temp.insert (0, loaded->plugin->controls.len ());
 
-        for (int ci = 0; ci < ccount; ci ++)
+        for (int ci = 0; ci < temp.len (); ci ++)
             temp[ci] = loaded->values[ci];
 
-        aud_set_str ("ladspa", key, double_array_to_str (temp, ccount));
+        aud_set_str ("ladspa", key, double_array_to_str (temp.begin (), temp.len ()));
 
         disable_plugin_locked (0);
     }
@@ -344,20 +344,20 @@ static void load_enabled_from_config (void)
 
             snprintf (key, sizeof key, "plugin%d_controls", i);
 
-            int ccount = loaded->plugin->controls.len ();
-            double temp[ccount];
-
             String controls = aud_get_str ("ladspa", key);
 
-            if (str_to_double_array (controls, temp, ccount))
+            Index<double> temp;
+            temp.insert (0, loaded->plugin->controls.len ());
+
+            if (str_to_double_array (controls, temp.begin (), temp.len ()))
             {
-                for (int ci = 0; ci < ccount; ci ++)
+                for (int ci = 0; ci < temp.len (); ci ++)
                     loaded->values[ci] = temp[ci];
             }
             else
             {
                 /* migrate from old config format */
-                for (int ci = 0; ci < ccount; ci ++)
+                for (int ci = 0; ci < temp.len (); ci ++)
                 {
                     snprintf (key, sizeof key, "plugin%d_control%d", i, ci);
                     loaded->values[ci] = aud_get_double ("ladspa", key);
