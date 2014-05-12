@@ -14,8 +14,8 @@
 #include "scrobbler.h"
 
 typedef struct {
-    gchar *paramName;
-    gchar *argument;
+    String paramName;
+    String argument;
 } API_Parameter;
 
 static CURL *curlHandle = NULL;     //global handle holding cURL options
@@ -48,39 +48,27 @@ static size_t result_callback (void *buffer, size_t size, size_t nmemb, void *us
     return len;
 }
 
-static int scrobbler_compare_API_Parameters(const void *a, const void *b) {
-    return g_strcmp0(((const API_Parameter *) a)->paramName, ((const API_Parameter *) b)->paramName);
+static int param_compare (const API_Parameter & a, const API_Parameter & b, void *)
+{
+    return g_strcmp0 (a.paramName, b.paramName);
 }
 
-static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
-    qsort(parameters, nparams, sizeof(API_Parameter), scrobbler_compare_API_Parameters);
+static char * scrobbler_get_signature (Index<API_Parameter> & params)
+{
+    params.sort (param_compare, nullptr);
 
-    char *all_params = NULL;
-    gchar *result = NULL;
-    gchar *api_sig = NULL;
-    size_t api_sig_length = strlen(SCROBBLER_SHARED_SECRET);
+    StringBuf buf = str_copy ("");
 
-    for (gint i = 0; i < nparams; i++) {
-        api_sig_length += strlen(parameters[i].paramName) + strlen(parameters[i].argument);
-    }
-    all_params = g_new0(gchar, api_sig_length);
-
-    for (int i = 0; i < nparams; i++) {
-        strcat(all_params, parameters[i].paramName);
-        strcat(all_params, parameters[i].argument);
+    for (const API_Parameter & param : params)
+    {
+        str_insert (buf, -1, param.paramName);
+        str_insert (buf, -1, param.argument);
     }
 
-    api_sig = g_strconcat(all_params, SCROBBLER_SHARED_SECRET, NULL);
-    g_free(all_params);
+    str_insert (buf, -1, SCROBBLER_SHARED_SECRET);
 
-
-    result = g_compute_checksum_for_string(G_CHECKSUM_MD5, api_sig, -1);
-    g_free(api_sig);
-    return result;
+    return g_compute_checksum_for_string (G_CHECKSUM_MD5, buf, -1);
 }
-
-
-
 
 /*
  * n_args should count with the given authentication parameters
@@ -93,61 +81,45 @@ static char *scrobbler_get_signature(int nparams, API_Parameter *parameters) {
  *
  * Returns NULL if an error occurrs
  */
-static gchar *create_message_to_lastfm (const char *method_name, int n_args, ...) {
-    //TODO: Improve this f-ugly mess.
-    gchar *result = NULL;
+static String create_message_to_lastfm (const char * method_name, int n_args, ...)
+{
+    Index<API_Parameter> params;
+    params.append ({String ("method"), String (method_name)});
 
-    //parameters to be sent to the get_signature() function
-    API_Parameter signable_params[n_args+1];
-    signable_params[0].paramName = g_strdup("method");
-    signable_params[0].argument  = g_strdup(method_name);
-
-    size_t msg_size = 2; // First '=' and final '\0'
-    msg_size = msg_size + strlen("method") + strlen(method_name);
+    StringBuf buf = str_concat ({"method=", method_name});
 
     va_list vl;
-    va_start(vl, n_args);
-    for (int i = 0; i < n_args; i++) {
+    va_start (vl, n_args);
 
-        signable_params[i+1].paramName = g_strdup(va_arg(vl, gchar *));
-        signable_params[i+1].argument  = g_strdup(va_arg(vl, gchar *));
+    for (int i = 0; i < n_args; i ++)
+    {
+        const char * name = va_arg (vl, const char *);
+        const char * arg = va_arg (vl, const char *);
 
-        msg_size += strlen( signable_params[i+1].paramName );
-        msg_size += strlen( signable_params[i+1].argument );
-        msg_size += 2; //Counting '&' and '='
-    }
-    va_end(vl);
+        params.append ({String (name), String (arg)});
 
-    gchar *aux;
-    result = g_strconcat("method=", method_name, NULL);
-    char *escaped_argument;
-
-    for (int i = 0; i < n_args; i++) {
-        escaped_argument = curl_easy_escape(curlHandle, signable_params[i+1].argument, 0);
-
-        aux = g_strdup_printf("%s&%s=%s", result, signable_params[i+1].paramName, escaped_argument);
-        g_free(result);
-        curl_free(escaped_argument);
-        result = aux;
+        char * esc = curl_easy_escape (curlHandle, arg, 0);
+        str_insert (buf, -1, "&");
+        str_insert (buf, -1, name);
+        str_insert (buf, -1, "=");
+        str_insert (buf, -1, esc);
+        curl_free (esc);
     }
 
-    gchar *api_sig = scrobbler_get_signature(n_args+1, signable_params);
+    va_end (vl);
 
-    aux = g_strdup_printf("%s&api_sig=%s", result, api_sig);
-    result = aux;
+    char * api_sig = scrobbler_get_signature (params);
+    str_insert (buf, -1, "&api_sig=");
+    str_insert (buf, -1, api_sig);
+    g_free (api_sig);
 
-    AUDDBG("FINAL message: %s.\n", result);
-    g_free(api_sig);
-    for (int i = 0; i < n_args+1; i++) {
-        g_free(signable_params[i].paramName);
-        g_free(signable_params[i].argument);
-    }
+    AUDDBG ("FINAL message: %s.\n", (const char *) buf);
 
-    return result;
+    return String (buf);
 }
 
-
-static bool_t send_message_to_lastfm(gchar *data) {
+static bool_t send_message_to_lastfm (const char * data)
+{
     AUDDBG("This message will be sent to last.fm:\n%s\n%%%%End of message%%%%\n", data);//Enter?\n", data);
     curl_easy_setopt(curlHandle, CURLOPT_POSTFIELDS, data);
     CURLcode curl_requests_result = curl_easy_perform(curlHandle);
@@ -160,19 +132,15 @@ static bool_t send_message_to_lastfm(gchar *data) {
     return TRUE;
 }
 
-
 //returns:
 // FALSE if there was a network problem
 // TRUE otherwise (request_token must be checked)
-static bool_t scrobbler_request_token() {
-    gchar *tokenmsg = create_message_to_lastfm("auth.getToken",
-                                              1,
-                                              "api_key", SCROBBLER_API_KEY
-                                             );
+static bool_t scrobbler_request_token ()
+{
+    String tokenmsg = create_message_to_lastfm ("auth.getToken", 1, "api_key", SCROBBLER_API_KEY);
 
     if (send_message_to_lastfm(tokenmsg) == FALSE) {
         AUDDBG("Could not send token request to last.fm.\n");
-        g_free(tokenmsg);
         return FALSE;
     }
 
@@ -219,26 +187,19 @@ static bool_t update_session_key() {
 //returns:
 // FALSE if there was a network problem
 // TRUE otherwise (session_key must be checked)
-static bool_t scrobbler_request_session() {
+static bool_t scrobbler_request_session ()
+{
+    String sessionmsg = create_message_to_lastfm ("auth.getSession", 2,
+     "token", (const char *) request_token, "api_key", SCROBBLER_API_KEY);
 
-    gchar *sessionmsg = create_message_to_lastfm("auth.getSession",
-                                                 2,
-                                                 "token", (const char *)request_token,
-                                                 "api_key", SCROBBLER_API_KEY);
-
-    if (send_message_to_lastfm(sessionmsg) == FALSE) {
-        g_free(sessionmsg);
+    if (send_message_to_lastfm(sessionmsg) == FALSE)
         return FALSE;
-    }
 
-    g_free(sessionmsg);
     //the token can only be sent once
     request_token = String();
 
     return update_session_key();
 }
-
-
 
 //returns:
 // FALSE if there was a network problem.
@@ -252,15 +213,12 @@ static bool_t scrobbler_test_connection() {
         return TRUE;
     }
 
+    String testmsg = create_message_to_lastfm ("user.getRecommendedArtists", 3,
+     "limit", "1", "api_key", SCROBBLER_API_KEY,
+     "sk", (const char *) session_key);
 
-    gchar *testmsg = create_message_to_lastfm("user.getRecommendedArtists",
-                                              3,
-                                              "limit", "1",
-                                              "api_key", SCROBBLER_API_KEY,
-                                              "sk", (const char *)session_key
-                                             );
     bool_t success = send_message_to_lastfm(testmsg);
-    g_free(testmsg);
+
     if (success == FALSE) {
         AUDDBG("Network problems. Will not scrobble any tracks.\n");
         scrobbling_enabled = FALSE;
@@ -421,7 +379,6 @@ static void scrobble_cached_queue() {
     gboolean success;
     gchar **lines = NULL;
     gchar **line;
-    gchar *scrobblemsg;
     GSList *lines_to_remove = NULL; //lines to remove because they were scrobbled (or ignored, and will not be retried)
     GSList *lines_to_retry = NULL; //lines to retry later because they were too old TODO: or "daily scrobble limit reached"
 
@@ -440,17 +397,14 @@ static void scrobble_cached_queue() {
             //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
             //artist  album   title   number  length  "L"     timestamp NULL
 
-            if (line[0] && line[2] && (strcmp(line[5], "L") == 0) && line[6] && (line[7] == NULL)) {
-                scrobblemsg = create_message_to_lastfm("track.scrobble",
-                                                       8,
-                                                       "artist", line[0],
-                                                       "album", line[1],
-                                                       "track", line[2],
-                                                       "trackNumber", line[3],
-                                                       "duration", line[4],
-                                                       "timestamp", line[6],
-                                                       "api_key", SCROBBLER_API_KEY,
-                                                       "sk", (const char *)session_key);
+            if (line[0] && line[2] && (strcmp(line[5], "L") == 0) && line[6] && (line[7] == NULL))
+            {
+                String scrobblemsg = create_message_to_lastfm ("track.scrobble",
+                 8, "artist", line[0], "album", line[1], "track", line[2],
+                 "trackNumber", line[3], "duration", line[4],
+                 "timestamp", line[6], "api_key", SCROBBLER_API_KEY,
+                 "sk", (const char *) session_key);
+
                 if (send_message_to_lastfm(scrobblemsg) == TRUE) {
                     String error_code;
                     String error_detail;
@@ -506,7 +460,6 @@ static void scrobble_cached_queue() {
                     scrobbling_enabled = FALSE;
                 }
 
-                g_free(scrobblemsg);
                 //TODO: Avoid spamming last.fm --- It's not as simple as just adding a wait here:
                 //If audacious is closed while we're on this loop, tracks might be re-scrobbled.
                 //This shall be doable if we only pick one track at a time from the scrobbler.log
@@ -561,18 +514,13 @@ static void send_now_playing() {
     StringBuf track_str = (track > 0) ? int_to_str (track) : str_copy ("");
     StringBuf length_str = int_to_str (length / 1000);
 
-    gchar *playingmsg = create_message_to_lastfm("track.updateNowPlaying",
-                                            7,
-                                           "artist", (const char *)artist,
-                                           "album", (const char *)album,
-                                           "track", (const char *)title,
-                                           "trackNumber", (const char *)track_str,
-                                           "duration", (const char *)length_str,
-                                           "api_key", SCROBBLER_API_KEY,
-                                           "sk", (const char *)session_key);
+    String playingmsg = create_message_to_lastfm ("track.updateNowPlaying", 7,
+     "artist", (const char *) artist, "album", (const char *) album,
+     "track", (const char *) title, "trackNumber", (const char *) track_str,
+     "duration", (const char *) length_str, "api_key", SCROBBLER_API_KEY,
+     "sk", (const char *) session_key);
 
     bool_t success = send_message_to_lastfm(playingmsg);
-    g_free(playingmsg);
 
     if (success == FALSE) {
       AUDDBG("Network problems. Could not send \"now playing\" to last.fm\n");
@@ -667,20 +615,15 @@ static bool_t treat_migrate_config() {
     gchar *checksumThis = g_strdup_printf("%s%s", (const char *)username, (const char *)password);
     gchar *authToken = g_compute_checksum_for_string(G_CHECKSUM_MD5, checksumThis, -1);
 
-    gchar *sessionmsg = create_message_to_lastfm("auth.getMobileSession",
-                                                 3,
-                                                 "authToken", authToken,
-                                                 "username", (const char *)username,
-                                                 "api_key", SCROBBLER_API_KEY);
+    String sessionmsg = create_message_to_lastfm ("auth.getMobileSession", 3,
+     "authToken", authToken, "username", (const char *) username,
+     "api_key", SCROBBLER_API_KEY);
+
     g_free(checksumThis);
     g_free(authToken);
 
-    if (send_message_to_lastfm(sessionmsg) == FALSE) {
-        g_free(sessionmsg);
+    if (send_message_to_lastfm(sessionmsg) == FALSE)
         return FALSE;
-    }
-
-    g_free(sessionmsg);
 
     if (!update_session_key())
         return FALSE;

@@ -224,6 +224,6 @@ static const PreferencesWidget config_contents[] = {
 };
 
 const PluginPreferences configuration = {
-    .widgets = config_contents,
-    .n_widgets = ARRAY_LEN(config_contents)
+    config_contents,
+    ARRAY_LEN (config_contents)
 };
