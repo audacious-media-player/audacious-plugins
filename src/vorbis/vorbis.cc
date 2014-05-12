@@ -37,10 +37,11 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
+#define WANT_AUD_BSWAP
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
-#include <libaudcore/audstrings.h>
 
 #include "vorbis.h"
 
@@ -432,15 +433,15 @@ static gboolean get_song_image (const gchar * filename, VFSFile * file,
         if (! data2 || length2 < 8)
             goto PARSE_ERR;
 
-        mime_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 4));
+        mime_length = FROM_BE32 (* (guint32 *) (data2 + 4));
         if (length2 < 8 + mime_length + 4)
             goto PARSE_ERR;
 
-        desc_length = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length));
+        desc_length = FROM_BE32 (* (guint32 *) (data2 + 8 + mime_length));
         if (length2 < 8 + mime_length + 4 + desc_length + 20)
             goto PARSE_ERR;
 
-        * size = GUINT32_FROM_BE (* (guint32 *) (data2 + 8 + mime_length + 4 + desc_length + 16));
+        * size = FROM_BE32 (* (guint32 *) (data2 + 8 + mime_length + 4 + desc_length + 16));
         if (length2 < 8 + mime_length + 4 + desc_length + 20 + (unsigned) (* size))
             goto PARSE_ERR;
 

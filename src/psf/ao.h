@@ -9,6 +9,9 @@
 
 #include <stdint.h>
 
+#define WANT_AUD_BSWAP
+#include <libaudcore/audio.h>
+
 #define AO_SUCCESS					1
 #define AO_FAIL						0
 #define AO_FAIL_DECOMPRESSION		-1

@@ -3,7 +3,8 @@
 #ifndef BLARGG_ENDIAN
 #define BLARGG_ENDIAN
 
-#include <glib.h>
+#define WANT_AUD_BSWAP
+#include <libaudcore/audio.h>
 
 #include "blargg_common.h"
 
@@ -19,21 +20,21 @@
 	#define BLARGG_CPU_RISC 1
 #endif
 
-#if G_BYTE_ORDER == G_BIG_ENDIAN
+#ifdef WORDS_BIGENDIAN
 	#define BLARGG_BIG_ENDIAN 1
 #else
 	#define BLARGG_LITTLE_ENDIAN 1
 #endif
 
-inline unsigned GET_LE16 (const void * p) { return GUINT16_FROM_LE (* (uint16_t *) p); }
-inline unsigned GET_BE16 (const void * p) { return GUINT16_FROM_BE (* (uint16_t *) p); }
-inline unsigned GET_LE32 (const void * p) { return GUINT32_FROM_LE (* (uint32_t *) p); }
-inline unsigned GET_BE32 (const void * p) { return GUINT32_FROM_BE (* (uint32_t *) p); }
+inline unsigned GET_LE16 (const void * p) { return FROM_LE16 (* (uint16_t *) p); }
+inline unsigned GET_BE16 (const void * p) { return FROM_BE16 (* (uint16_t *) p); }
+inline unsigned GET_LE32 (const void * p) { return FROM_LE32 (* (uint32_t *) p); }
+inline unsigned GET_BE32 (const void * p) { return FROM_BE32 (* (uint32_t *) p); }
 
-inline void SET_LE16 (void * p, uint16_t n) { * (uint16_t *) p = GUINT16_TO_LE (n); }
-inline void SET_BE16 (void * p, uint16_t n) { * (uint16_t *) p = GUINT16_TO_BE (n); }
-inline void SET_LE32 (void * p, uint32_t n) { * (uint32_t *) p = GUINT32_TO_LE (n); }
-inline void SET_BE32 (void * p, uint32_t n) { * (uint32_t *) p = GUINT32_TO_BE (n); }
+inline void SET_LE16 (void * p, uint16_t n) { * (uint16_t *) p = TO_LE16 (n); }
+inline void SET_BE16 (void * p, uint16_t n) { * (uint16_t *) p = TO_BE16 (n); }
+inline void SET_LE32 (void * p, uint32_t n) { * (uint32_t *) p = TO_LE32 (n); }
+inline void SET_BE32 (void * p, uint32_t n) { * (uint32_t *) p = TO_BE32 (n); }
 
 // auto-selecting versions
 

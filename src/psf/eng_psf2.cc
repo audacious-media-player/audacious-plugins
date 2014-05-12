@@ -69,7 +69,7 @@
 #define ELF32_R_SYM(val)                ((val) >> 8)
 #define ELF32_R_TYPE(val)               ((val) & 0xff)
 
-#define LE32(x) GUINT32_FROM_LE(x)
+#define LE32(x) FROM_LE32(x)
 
 static corlett_t	*c = NULL;
 

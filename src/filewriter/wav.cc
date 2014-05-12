@@ -21,6 +21,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#define WANT_AUD_BSWAP
 #include "plugins.h"
 
 #pragma pack(push) /* must be byte-aligned */
@@ -50,26 +51,26 @@ static guint64 written;
 static gint wav_open(void)
 {
     memcpy(&header.main_chunk, "RIFF", 4);
-    header.length = GUINT32_TO_LE(0);
+    header.length = TO_LE32(0);
     memcpy(&header.chunk_type, "WAVE", 4);
     memcpy(&header.sub_chunk, "fmt ", 4);
-    header.sc_len = GUINT32_TO_LE(16);
+    header.sc_len = TO_LE32(16);
     if (input.format == FMT_FLOAT)
-        header.format = GUINT16_TO_LE(3);
+        header.format = TO_LE16(3);
     else
-        header.format = GUINT16_TO_LE(1);
-    header.modus = GUINT16_TO_LE(input.channels);
-    header.sample_fq = GUINT32_TO_LE(input.frequency);
+        header.format = TO_LE16(1);
+    header.modus = TO_LE16(input.channels);
+    header.sample_fq = TO_LE32(input.frequency);
     if (input.format == FMT_S16_LE)
-        header.bit_p_spl = GUINT16_TO_LE(16);
+        header.bit_p_spl = TO_LE16(16);
     else if (input.format == FMT_S24_LE)
-        header.bit_p_spl = GUINT16_TO_LE(24);
+        header.bit_p_spl = TO_LE16(24);
     else
-        header.bit_p_spl = GUINT16_TO_LE(32);
-    header.byte_p_sec = GUINT32_TO_LE(input.frequency * header.modus * (GUINT16_FROM_LE(header.bit_p_spl) / 8));
-    header.byte_p_spl = GUINT16_TO_LE((GUINT16_FROM_LE(header.bit_p_spl) / (8 / input.channels)));
+        header.bit_p_spl = TO_LE16(32);
+    header.byte_p_sec = TO_LE32(input.frequency * header.modus * (FROM_LE16(header.bit_p_spl) / 8));
+    header.byte_p_spl = TO_LE16((FROM_LE16(header.bit_p_spl) / (8 / input.channels)));
     memcpy(&header.data_chunk, "data", 4);
-    header.data_length = GUINT32_TO_LE(0);
+    header.data_length = TO_LE32(0);
 
     if (vfs_fwrite (& header, 1, sizeof header, output_file) != sizeof header)
         return 0;
@@ -113,8 +114,8 @@ static void wav_close(void)
 {
     if (output_file)
     {
-        header.length = GUINT32_TO_LE(written + sizeof (struct wavhead) - 8);
-        header.data_length = GUINT32_TO_LE(written);
+        header.length = TO_LE32(written + sizeof (struct wavhead) - 8);
+        header.data_length = TO_LE32(written);
 
         if (vfs_fseek (output_file, 0, SEEK_SET) || vfs_fwrite (& header, 1,
          sizeof header, output_file) != sizeof header)

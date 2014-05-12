@@ -45,7 +45,7 @@
 
 #define DEBUG_LOADER	(0)
 
-#define LE32(x) GUINT32_FROM_LE(x)
+#define LE32(x) FROM_LE32(x)
 
 static corlett_t	*c = NULL;
 static char 		psfby[256];

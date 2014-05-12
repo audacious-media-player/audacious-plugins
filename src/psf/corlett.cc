@@ -86,7 +86,7 @@ The following data is optional and may be omitted:
 #include "ao.h"
 #include "corlett.h"
 
-#define LE32(x) GUINT32_FROM_LE(x)
+#define LE32(x) FROM_LE32(x)
 
 #define DECOMP_MAX_SIZE		((32 * 1024 * 1024) + 12)
 

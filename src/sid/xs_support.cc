@@ -28,13 +28,16 @@
 
 #include <glib.h>
 
+#define WANT_AUD_BSWAP
+#include <libaudcore/audio.h>
+
 uint16_t xs_fread_be16(VFSFile *f)
 {
     uint16_t val;
     if (vfs_fread (& val, 1, sizeof val, f) != sizeof val)
         return 0;
 
-    return GUINT16_FROM_BE (val);
+    return FROM_BE16 (val);
 }
 
 
@@ -44,7 +47,7 @@ uint32_t xs_fread_be32(VFSFile *f)
     if (vfs_fread (& val, 1, sizeof val, f) != sizeof val)
         return 0;
 
-    return GUINT32_FROM_BE (val);
+    return FROM_BE32 (val);
 }
 
 
