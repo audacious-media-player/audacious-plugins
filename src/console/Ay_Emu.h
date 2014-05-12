@@ -46,7 +46,6 @@ protected:
 private:
 	file_t file;
 
-	unsigned play_addr;
 	cpu_time_t play_period;
 	cpu_time_t next_play;
 	Blip_Buffer* beeper_output;

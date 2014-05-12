@@ -68,7 +68,6 @@ private:
 	void update_gain();
 
 	unsigned scc_enabled; // 0 or 0xC000
-	byte const* bank_data;
 	int bank_count;
 	void set_bank( int logical, int physical );
 	blargg_long bank_size() const { return (16 * 1024L) >> (header_.bank_mode >> 7 & 1); }
