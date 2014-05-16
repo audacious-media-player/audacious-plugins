@@ -119,15 +119,13 @@ static Tuple * get_song_tuple (const char * filename, VFSFile * file)
 
     ti = tuple_new_from_filename (filename);
 
-    /* I have no idea version of sndfile ALBUM, GENRE, and TRACKNUMBER were
-     * added in. -jlindgren */
     copy_string (sndfile, SF_STR_TITLE, ti, FIELD_TITLE);
     copy_string (sndfile, SF_STR_ARTIST, ti, FIELD_ARTIST);
-/*    copy_string (sndfile, SF_STR_ALBUM, ti, FIELD_ALBUM); */
+    copy_string (sndfile, SF_STR_ALBUM, ti, FIELD_ALBUM);
     copy_string (sndfile, SF_STR_COMMENT, ti, FIELD_COMMENT);
-/*    copy_string (sndfile, SF_STR_GENRE, ti, FIELD_GENRE); */
+    copy_string (sndfile, SF_STR_GENRE, ti, FIELD_GENRE);
     copy_int (sndfile, SF_STR_DATE, ti, FIELD_YEAR);
-/*    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, FIELD_TRACK_NUMBER); */
+    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, FIELD_TRACK_NUMBER);
 
     sf_close (sndfile);
 
