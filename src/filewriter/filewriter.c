@@ -227,7 +227,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
     if (prependnumber)
     {
         gint number = tuple_get_int(tuple, FIELD_TRACK_NUMBER);
-        if (!tuple || !number)
+        if (number < 1)
             number = pos + 1;
 
         temp = g_strdup_printf ("%d%%20%s", number, filename);

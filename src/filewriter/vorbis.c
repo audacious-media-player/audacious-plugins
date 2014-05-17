@@ -91,13 +91,13 @@ static gint vorbis_open(void)
         add_string_from_tuple (& vc, "date", tuple, FIELD_DATE);
         add_string_from_tuple (& vc, "comment", tuple, FIELD_COMMENT);
 
-        if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER)))
+        if ((scrint = tuple_get_int(tuple, FIELD_TRACK_NUMBER)) > 0)
         {
             str_itoa (scrint, tmpstr, sizeof tmpstr);
             vorbis_comment_add_tag(&vc, "tracknumber", tmpstr);
         }
 
-        if ((scrint = tuple_get_int(tuple, FIELD_YEAR)))
+        if ((scrint = tuple_get_int(tuple, FIELD_YEAR)) > 0)
         {
             str_itoa (scrint, tmpstr, sizeof tmpstr);
             vorbis_comment_add_tag(&vc, "year", tmpstr);
