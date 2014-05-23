@@ -277,10 +277,27 @@ aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
 static void
 aosd_trigger_func_pb_pauseon_cb ( gpointer unused1 , gpointer unused2 )
 {
-  char * markup = g_markup_printf_escaped ("<span font_desc='%s'>Paused</span>",
-   global_config->osd->text.fonts_name[0]);
+  gint active = aud_playlist_get_active();
+  gint pos = aud_playlist_get_position(active);
+  gint time_cur, time_tot;
+  gint time_cur_m, time_cur_s, time_tot_m, time_tot_s;
+
+  time_tot = aud_playlist_entry_get_length (active, pos, FALSE) / 1000;
+  time_cur = aud_drct_get_time() / 1000;
+  time_cur_s = time_cur % 60;
+  time_cur_m = (time_cur - time_cur_s) / 60;
+  time_tot_s = time_tot % 60;
+  time_tot_m = (time_tot - time_tot_s) / 60;
+
+  char * title = aud_playlist_entry_get_title (active, pos, FALSE);
+  char * markup = g_markup_printf_escaped
+   ("<span font_desc='%s'>%s (%i:%02i) [Paused: %i:%02i]</span>",
+   global_config->osd->text.fonts_name[0], title, time_tot_m, time_tot_s,
+   time_cur_m, time_cur_s);
+
   aosd_osd_display (markup, global_config->osd, FALSE);
   g_free (markup);
+  str_unref (title);
 }
 
 
