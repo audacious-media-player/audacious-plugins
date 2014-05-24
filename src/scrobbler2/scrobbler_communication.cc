@@ -57,7 +57,7 @@ static char * scrobbler_get_signature (Index<API_Parameter> & params)
 {
     params.sort (param_compare, nullptr);
 
-    StringBuf buf = str_copy ("");
+    StringBuf buf (0);
 
     for (const API_Parameter & param : params)
     {
@@ -511,7 +511,7 @@ static void send_now_playing() {
   int length = curr_track.get_int (FIELD_LENGTH);
 
   if (artist[0] && title[0] && length > 0) {
-    StringBuf track_str = (track > 0) ? int_to_str (track) : str_copy ("");
+    StringBuf track_str = (track > 0) ? int_to_str (track) : StringBuf (0);
     StringBuf length_str = int_to_str (length / 1000);
 
     String playingmsg = create_message_to_lastfm ("track.updateNowPlaying", 7,

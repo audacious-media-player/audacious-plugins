@@ -82,7 +82,7 @@ static gboolean queue_track_to_scrobble (gpointer data) {
 
     //artist, title and length are required for a successful scrobble
     if (artist[0] && title[0] && length > 0) {
-        StringBuf track_str = (track > 0) ? int_to_str (track) : str_copy ("");
+        StringBuf track_str = (track > 0) ? int_to_str (track) : StringBuf (0);
 
         pthread_mutex_lock(&log_access_mutex);
         FILE *f = g_fopen(queuepath, "a");
