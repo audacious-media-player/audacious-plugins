@@ -311,7 +311,7 @@ static void widget_realized (void)
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
-    s_hwnd = GDK_WINDOW_HWND (window);
+    s_hwnd = (HWND) GDK_WINDOW_HWND (window);
     s_hdc = GetDC (s_hwnd);
 
     PIXELFORMATDESCRIPTOR desc = {

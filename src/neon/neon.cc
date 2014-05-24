@@ -17,7 +17,7 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <inttypes.h>
+#include <cinttypes>
 #include <stdint.h>
 #include <string.h>
 
@@ -44,8 +44,8 @@
 #include "rb.h"
 #include "cert_verification.h"
 
-#define NEON_BUFSIZE        (128u*1024u)
-#define NEON_NETBLKSIZE     (4096u)
+#define NEON_BUFSIZE        (128*1024)
+#define NEON_NETBLKSIZE     (4096)
 #define NEON_ICY_BUFSIZE    (4096)
 #define NEON_RETRY_COUNT 6
 
