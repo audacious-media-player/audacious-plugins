@@ -34,10 +34,24 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <audacious/audtag.h>
 
-/* Define to read all frame headers when calculating file length */
-/* #define FULL_SCAN */
+static const char * const mpg123_defaults[] = {
+	"full_scan", "FALSE",
+	nullptr
+};
+
+static const PreferencesWidget mpg123_widgets[] = {
+	WidgetLabel (N_("<b>Advanced</b>")),
+	WidgetCheck (N_("Use accurate length calculation (slow)"),
+		{VALUE_BOOLEAN, 0, "mpg123", "full_scan"})
+};
+
+static const PluginPreferences mpg123_prefs = {
+	mpg123_widgets,
+	ARRAY_LEN (mpg123_widgets)
+};
 
 #define DECODE_OPTIONS (MPG123_QUIET | MPG123_GAPLESS | MPG123_SEEKBUFFER | MPG123_FUZZY)
 
@@ -59,6 +73,8 @@ static off_t replace_lseek_dummy (void * file, off_t to, int whence)
 /** plugin glue **/
 static bool_t aud_mpg123_init (void)
 {
+	aud_config_set_defaults ("mpg123", mpg123_defaults);
+
 	AUDDBG("initializing mpg123 library\n");
 	mpg123_init();
 
@@ -138,10 +154,8 @@ ERR:
 		return FALSE;
 	}
 
-#ifdef FULL_SCAN
-	if (mpg123_scan (dec) < 0)
+	if (! is_streaming && aud_get_bool ("mpg123", "full_scan") && mpg123_scan (dec) < 0)
 		goto ERR;
-#endif
 
 RETRY:;
 	long rate;
@@ -191,9 +205,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, NULL);
 
 	if ((result = mpg123_open_handle (decoder, file)) < 0
-#ifdef FULL_SCAN
-	 || (result = mpg123_scan (decoder)) < 0
-#endif
+	 || (! stream && aud_get_bool ("mpg123", "full_scan") && (result = mpg123_scan (decoder)) < 0)
 	 || (result = mpg123_getformat (decoder, & rate, & channels, & encoding)) < 0
 	 || (result = mpg123_info (decoder, & info)) < 0)
 	{
@@ -290,10 +302,8 @@ OPEN_ERROR:
 		goto cleanup;
 	}
 
-#ifdef FULL_SCAN
-	if (mpg123_scan (ctx.decoder) < 0)
+	if (! ctx.stream && aud_get_bool ("mpg123", "full_scan") && mpg123_scan (ctx.decoder) < 0)
 		goto OPEN_ERROR;
-#endif
 
 GET_FORMAT:
 	if (mpg123_getformat (ctx.decoder, & ctx.rate, & ctx.channels,
@@ -400,6 +410,7 @@ static const char *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
 #define AUD_PLUGIN_NAME        N_("MPG123 Plugin")
 #define AUD_PLUGIN_INIT        aud_mpg123_init
 #define AUD_PLUGIN_CLEANUP     aud_mpg123_deinit
+#define AUD_PLUGIN_PREFS       & mpg123_prefs
 #define AUD_INPUT_EXTS         mpg123_fmts
 #define AUD_INPUT_IS_OUR_FILE  mpg123_probe_for_fd
 #define AUD_INPUT_READ_TUPLE   mpg123_probe_for_tuple
