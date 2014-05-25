@@ -34,8 +34,9 @@
 #include <soundcard.h>
 #endif
 
-#include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
 
 #define ERROR(...) \
 do { \
@@ -45,8 +46,7 @@ do { \
 
 #define ERROR_NOISY(...) \
 do { \
-    SPRINTF(oss_error_buf, "OSS4 error: "__VA_ARGS__); \
-    aud_ui_show_error(oss_error_buf); \
+    aud_ui_show_error(str_printf("OSS4 error: " __VA_ARGS__)); \
     ERROR(__VA_ARGS__); \
 } while (0) \
 
@@ -112,12 +112,12 @@ void oss_configure(void);
 
 /* utils.c */
 int oss_convert_aud_format(int aud_format);
-char *oss_format_to_text(int format);
+const char *oss_format_to_text(int format);
 int oss_format_to_bits(int format);
 int oss_frames_to_bytes(int frames);
 int oss_bytes_to_frames(int bytes);
 int oss_calc_bitrate(void);
-char *oss_describe_error(void);
+const char *oss_describe_error(void);
 int oss_probe_for_adev(oss_sysinfo *sysinfo);
 bool_t oss_hardware_present(void);
 

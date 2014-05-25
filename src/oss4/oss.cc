@@ -100,8 +100,8 @@ static int open_device(void)
 {
     int res = -1;
     int flags = O_WRONLY;
-    char *device = aud_get_str("oss4", "device");
-    char *alt_device = aud_get_str("oss4", "alt_device");
+    String device = aud_get_str("oss4", "device");
+    String alt_device = aud_get_str("oss4", "alt_device");
 
     if (aud_get_bool("oss4", "exclusive"))
     {
@@ -115,9 +115,6 @@ static int open_device(void)
         res = open(device, flags);
     else
         res = open(DEFAULT_DSP, flags);
-
-    str_unref(device);
-    str_unref(alt_device);
 
     return res;
 }

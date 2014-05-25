@@ -21,12 +21,12 @@
 
 #include <libaudcore/audstrings.h>
 
-char *oss_format_to_text(int format)
+const char *oss_format_to_text(int format)
 {
     const struct
     {
         int format;
-        char *format_text;
+        const char *format_text;
     }
     table[] =
     {
@@ -144,12 +144,12 @@ int oss_calc_bitrate(void)
     return (oss_data->rate * oss_data->channels * oss_data->bits_per_sample) >> 3;
 }
 
-char *oss_describe_error(void)
+const char *oss_describe_error(void)
 {
     const struct
     {
         int error;
-        char *text;
+        const char *text;
     }
     table[] =
     {

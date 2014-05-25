@@ -19,10 +19,12 @@
 
 #include "oss.h"
 
-#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/preferences.h>
 
-static void combo_init(ComboBoxElements ** elements, int * n_elements)
+static Index<ComboBoxElements> oss_elements;
+
+static void combo_init()
 {
     oss_sysinfo sysinfo;
     int mixerfd;
@@ -31,12 +33,7 @@ static void combo_init(ComboBoxElements ** elements, int * n_elements)
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
     CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
-    * elements = (ComboBoxElements *) malloc((sysinfo.numaudios + 1) * sizeof(ComboBoxElements));
-    * n_elements = 1;
-    ComboBoxElements * tmp = * elements;
-
-    tmp->label = N_("1. Default device");
-    tmp->value = DEFAULT_DSP;
+    oss_elements.append({strdup(DEFAULT_DSP), strdup(N_("Default device"))});
 
     for (int i = 0; i < sysinfo.numaudios; i++)
     {
@@ -46,65 +43,53 @@ static void combo_init(ComboBoxElements ** elements, int * n_elements)
         CHECK(ioctl, mixerfd, SNDCTL_AUDIOINFO, &ainfo);
 
         if (ainfo.caps & PCM_CAP_OUTPUT)
-        {
-            tmp++;
-            (* n_elements) ++;
-            SPRINTF(str, "%d. %s", * n_elements, ainfo.name);
-            tmp->label = strdup(str);
-            tmp->value = strdup(ainfo.devnode);
-        }
-        else
-            continue;
+            oss_elements.append({strdup(ainfo.devnode), strdup(ainfo.name)});
     }
 
 FAILED:
     close(mixerfd);
 }
 
-static void combo_cleanup(ComboBoxElements * elements, int n_elements)
+const ComboBoxElements * combo_fill(int * n_elements)
 {
-    /* first elements were allocated statically */
-    for (int i = 1; i < n_elements; i++)
+    * n_elements = oss_elements.len();
+    return oss_elements.begin();
+}
+
+static void combo_cleanup()
+{
+    for (ComboBoxElements & elem : oss_elements)
     {
-        free(elements[i].value);
-        free((char *) elements[i].label);
+        free((char *)elem.value);
+        free((char *)elem.label);
     }
 
-    free(elements);
+    oss_elements.clear();
 }
 
 static const PreferencesWidget oss_widgets[] = {
- {WIDGET_COMBO_BOX, N_("Audio device:"),
-  .cfg_type = VALUE_STRING, .csect = "oss4", .cname = "device"},
- {WIDGET_CHK_BTN, N_("Use alternate device:"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "oss4", .cname = "use_alt_device"},
- {WIDGET_ENTRY,
-  .cfg_type = VALUE_STRING, .csect = "oss4", .cname = "alt_device", .child = TRUE},
- {WIDGET_CHK_BTN, N_("Save volume between sessions."),
-  .cfg_type = VALUE_BOOLEAN, .csect = "oss4", .cname = "save_volume"},
- {WIDGET_CHK_BTN, N_("Enable format conversions made by the OSS software."),
-  .cfg_type = VALUE_BOOLEAN, .csect = "oss4", .cname = "cookedmode"},
- {WIDGET_CHK_BTN, N_("Enable exclusive mode to prevent virtual mixing."),
-  .cfg_type = VALUE_BOOLEAN, .csect = "oss4", .cname = "exclusive"},
+    WidgetCombo(N_("Audio device:"),
+        {VALUE_STRING, 0, "oss4", "device"},
+        {0, 0, combo_fill}),
+    WidgetCheck(N_("Use alternate device:"),
+        {VALUE_BOOLEAN, 0, "oss4", "use_alt_device"}),
+    WidgetEntry(0, {VALUE_STRING, 0, "oss4", "alt_device"},
+        {}, WIDGET_CHILD),
+    WidgetCheck(N_("Save volume between sessions."),
+        {VALUE_BOOLEAN, 0, "oss4", "save_volume"}),
+    WidgetCheck(N_("Enable format conversions made by the OSS software."),
+        {VALUE_BOOLEAN, 0, "oss4", "cookedmode"}),
+    WidgetCheck(N_("Enable exclusive mode to prevent virtual mixing."),
+        {VALUE_BOOLEAN, 0, "oss4", "exclusive"})
 };
 
-static void prefs_init()
-{
-    combo_init((ComboBoxElements **) &oss_widgets[0].data.combo.elements,
-     &oss_widgets[0].data.combo.n_elements);
-}
-
-static void prefs_cleanup()
-{
-    combo_cleanup((ComboBoxElements *) oss_widgets[0].data.combo.elements,
-     oss_widgets[0].data.combo.n_elements);
-}
-
 static const PluginPreferences oss_prefs = {
- .widgets = oss_widgets,
- .n_widgets = ARRAY_LEN(oss_widgets),
- .init = prefs_init,
- .cleanup = prefs_cleanup};
+    oss_widgets,
+    ARRAY_LEN(oss_widgets),
+    combo_init,
+    nullptr,  // apply
+    combo_cleanup
+};
 
 static const char oss_about[] =
  N_("OSS4 Output Plugin for Audacious\n"
@@ -121,6 +106,7 @@ static const char oss_about[] =
 #define AUD_OUTPUT_WRITE       oss_write_audio
 #define AUD_OUTPUT_DRAIN       oss_drain
 #define AUD_OUTPUT_GET_FREE    oss_buffer_free
+#define AUD_OUTPUT_WAIT_FREE   nullptr
 #define AUD_OUTPUT_GET_TIME    oss_output_time
 #define AUD_OUTPUT_FLUSH       oss_flush
 #define AUD_OUTPUT_PAUSE       oss_pause
