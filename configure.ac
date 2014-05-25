@@ -479,21 +479,21 @@ fi
 
 dnl *** FFaudio
 
-AC_ARG_ENABLE(ffaudio,
-    [AS_HELP_STRING([--disable-ffaudio], [disable ffaudio plugin (default=enabled)])],
-    [enable_ffaudio=$enableval],
-    [enable_ffaudio=auto]
-)
+AC_ARG_WITH([ffmpeg],
+ AS_HELP_STRING([--with-ffmpeg=ffmpeg,libav,none], [choose between FFmpeg, libav, or neither (default=ffmpeg)]),
+ [ffmpeg_variant=$withval],
+ [ffmpeg_variant=ffmpeg])
 
-have_ffaudio=no
-if test "x$enable_ffaudio" != "xno"; then
-    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.40.0 libavformat >= 53.5.0 libavutil >= 50.42.0],
-        [have_ffaudio=yes
-         INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"],
-        [if test "x$enable_ffaudio" = "xyes"; then
-            AC_MSG_ERROR([Cannot find FFmpeg development files (libavcodec ver >= 53.40.0, libavformat ver >= 53.5.0, libavutil ver >= 50.42.0), but compilation of ffaudio plugin has been explicitly requested; please install FFmpeg dev files and run configure again])
-         fi]
-    )
+if test $ffmpeg_variant = ffmpeg ; then
+    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.40.0 libavformat >= 53.21.0 libavutil >= 51.27.0],
+     [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
+      AC_DEFINE([HAVE_FFMPEG], [1], [Define if using FFmpeg])],
+     [AC_MSG_ERROR([FFmpeg is not installed or too old (required: libavcodec 53.40.0, libavformat 53.21.0, libavutil 51.27.0).  Use --with-ffmpeg=none to disable the ffaudio plugin or --with-ffmpeg=libav to use libav instead.])])
+elif test $ffmpeg_variant = libav ; then
+    PKG_CHECK_MODULES([FFMPEG], [libavcodec >= 53.25.0 libavformat >= 53.15.0 libavutil >= 51.18.0],
+     [INPUT_PLUGINS="$INPUT_PLUGINS ffaudio"
+      AC_DEFINE([HAVE_LIBAV], [1], [Define if using libav])],
+     [AC_MSG_ERROR([libav is not installed or too old (required: libavcodec 53.25.0, libavformat 53.15.0, libavutil 51.18.0).])])
 fi
 
 dnl *** jack output plugin
@@ -1151,7 +1151,7 @@ echo "  Input Plugins"
 echo "  -------------"
 echo "  MPEG-1 Layer I/II/III (mpg123):         $have_mp3"
 echo "  MPEG-2/4 AAC (aac):                     $have_aac"
-echo "  FFaudio (ffaudio):                      $have_ffaudio"
+echo "  FFaudio (ffaudio):                      $ffmpeg_variant"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI synthesizer (amidi-plug):          $have_amidiplug"
 echo "  CD Digital Audio (cdaudio_ng):          $have_cdaudio_ng"
