@@ -154,9 +154,9 @@ static bool_t mms_vfs_feof_impl (VFSFile * file)
     MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
     if (h->mms)
-        return (mms_get_current_pos (h->mms) < mms_get_length (h->mms));
+        return (mms_get_current_pos (h->mms) < (int64_t) mms_get_length (h->mms));
     else
-        return (mmsh_get_current_pos (h->mmsh) < mmsh_get_length (h->mmsh));
+        return (mmsh_get_current_pos (h->mmsh) < (int64_t) mmsh_get_length (h->mmsh));
 }
 
 static int mms_vfs_truncate_impl (VFSFile * file, int64_t size)
