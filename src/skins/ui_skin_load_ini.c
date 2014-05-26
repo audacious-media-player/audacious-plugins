@@ -339,7 +339,7 @@ static void mask_handle_entry (const char * key, const char * value, void * data
     MaskLoadState * state = data;
     SkinMaskId id = state->current_id;
 
-    if (id == -1)
+    if (id == (SkinMaskId) -1)
         return;
 
     if (! g_ascii_strcasecmp (key, "numpoints"))

@@ -679,6 +679,7 @@ static INLINE void decode_adpcmone_P4(SChannel *ch, int m)
 	ch->adpcm_pos = m;
 }
 
+#if 0
 static INLINE void decode_adpcmone_XX(SChannel *ch, int m)
 {
 	int i, ci0;
@@ -721,6 +722,7 @@ static INLINE void decode_adpcmone_XX(SChannel *ch, int m)
 	ch->adpcm_index = ci0;
 	ch->adpcm_pos = m;
 }
+#endif
 
 #define decode_adpcmone decode_adpcmone_P4
 

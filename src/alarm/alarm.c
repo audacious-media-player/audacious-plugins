@@ -94,8 +94,6 @@ static time_t play_start;
 static alarm_thread_t stop;     /* thread id of stop loop */
 static pthread_mutex_t fader_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static GeneralPlugin alarm_plugin;
-
 /* string tokens to allow loops and shorten code */
 static char day_cb[7][7] = {"sun_cb", "mon_cb", "tue_cb",
                             "wed_cb", "thu_cb", "fri_cb", "sat_cb"};

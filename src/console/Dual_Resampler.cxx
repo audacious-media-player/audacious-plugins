@@ -18,8 +18,6 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 
 #include "blargg_source.h"
 
-unsigned const resampler_extra = 256;
-
 Dual_Resampler::Dual_Resampler() { }
 
 Dual_Resampler::~Dual_Resampler() { }

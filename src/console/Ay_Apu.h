@@ -50,7 +50,6 @@ private:
 		Blip_Buffer* output;
 	} oscs [osc_count];
 	blip_time_t last_time;
-	byte latch;
 	byte regs [reg_count];
 
 	struct {
