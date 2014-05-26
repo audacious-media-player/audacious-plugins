@@ -65,8 +65,6 @@ static GtkStatusIcon *si_create(void)
     GtkStatusIcon *icon;
     GtkIconTheme *theme;
 
-    gtk_init (NULL, NULL);
-
     theme = gtk_icon_theme_get_default();
 
     if (gtk_icon_theme_has_icon(theme, "audacious-panel"))
@@ -357,6 +355,7 @@ static void si_enable(gboolean enable)
 static gboolean si_init (void)
 {
     aud_config_set_defaults ("statusicon", si_defaults);
+    audgui_init ();
     plugin_active = TRUE;
     si_enable(TRUE);
     return TRUE;
@@ -369,6 +368,7 @@ void si_cleanup(void)
 
     plugin_active = FALSE;
     si_enable(FALSE);
+    audgui_cleanup ();
 }
 
 static const char si_about[] =
