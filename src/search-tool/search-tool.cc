@@ -50,6 +50,9 @@ struct Item
         name (name),
         folded (str_tolower_utf8 (name)),
         parent (parent) {}
+
+    Item (Item &&) = default;
+    Item & operator= (Item &&) = default;
 };
 
 struct SearchState {
