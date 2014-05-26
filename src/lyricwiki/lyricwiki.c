@@ -369,48 +369,41 @@ static void lyricwiki_playback_began(void)
 	get_lyrics_step_1();
 }
 
-static gboolean init (void)
+static void cleanup (void)
 {
-	hook_associate("title change", (HookFunction) lyricwiki_playback_began, NULL);
-	hook_associate("playback ready", (HookFunction) lyricwiki_playback_began, NULL);
-
-	build_widget();
-
-	lyricwiki_playback_began();
-	return TRUE;
-}
-
-static void cleanup(void)
-{
-	str_unref(state.filename);
-	str_unref(state.title);
-	str_unref(state.artist);
-	str_unref(state.uri);
+	str_unref (state.filename);
+	str_unref (state.title);
+	str_unref (state.artist);
+	str_unref (state.uri);
 	state.filename = NULL;
 	state.title = NULL;
 	state.artist = NULL;
 	state.uri = NULL;
 
-	hook_dissociate("title change", (HookFunction) lyricwiki_playback_began);
-	hook_dissociate("playback ready", (HookFunction) lyricwiki_playback_began);
+	hook_dissociate ("title change", (HookFunction) lyricwiki_playback_began);
+	hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
 
-	if (vbox)
-		gtk_widget_destroy (vbox);
 	textbuffer = NULL;
 }
 
-static void *get_widget(void)
+static void * get_widget (void)
 {
-	if (! vbox)
-		build_widget ();
+	build_widget ();
+
+	hook_associate ("title change", (HookFunction) lyricwiki_playback_began, NULL);
+	hook_associate ("playback ready", (HookFunction) lyricwiki_playback_began, NULL);
+
+	lyricwiki_playback_began ();
+
+	g_signal_connect (vbox, "destroy", cleanup, NULL);
+
 	return vbox;
 }
+
 
 AUD_GENERAL_PLUGIN
 (
 	.name = N_("LyricWiki Plugin"),
 	.domain = PACKAGE,
-	.init = init,
-	.cleanup = cleanup,
-	.get_widget = get_widget,
+	.get_widget = get_widget
 )
