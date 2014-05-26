@@ -352,6 +352,10 @@ static void si_enable(gboolean enable)
 
 static gboolean si_init (void)
 {
+    // libaudgui is not initialized in headless mode
+    if (aud_headless_mode ())
+        return TRUE;
+
     aud_config_set_defaults ("statusicon", si_defaults);
     plugin_active = TRUE;
     si_enable(TRUE);
