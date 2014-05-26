@@ -18,12 +18,6 @@
  * implied. In no event shall the authors be liable for any damages arising from
  */
 
-/*
- * NOTE: Using libav with this code is entirely unsupported.  Do so at your own
- * risk.  Any bugs filed against this plugin on systems using libav will be rejected
- * by us.
- */
-
 #include <glib.h>
 #include <pthread.h>
 
@@ -235,7 +229,7 @@ static void close_input_file (AVFormatContext * c)
 {
     AVIOContext * io = c->pb;
 
-#if CHECK_LIBAVFORMAT_VERSION (53, 24, 1)
+#if CHECK_LIBAVFORMAT_VERSION (53, 25, 0, 53, 17, 0)
     avformat_close_input (&c);
 #else
     av_close_input_file (c);
@@ -269,28 +263,6 @@ static bool_t find_codec (AVFormatContext * c, CodecInfo * cinfo)
     }
 
     return FALSE;
-}
-
-static gboolean
-ffaudio_codec_is_seekable(AVCodec *codec)
-{
-    /*
-     * Blacklist certain codecs from seeking, which have problems.  Codecs which have
-     * problems with seeking should have bugs reported to upstream FFmpeg.  --nenolod
-     */
-    switch (codec->id) {
-#ifndef FFAUDIO_NO_BLACKLIST
-#if CHECK_LIBAVCODEC_VERSION(54, 25, 0)
-        case AV_CODEC_ID_MUSEPACK8:
-#else
-        case CODEC_ID_MUSEPACK8:
-#endif
-            AUDDBG("codec is blacklisted from seeking\n");
-            return FALSE;
-#endif
-        default:
-            return TRUE;
-    }
 }
 
 static gboolean ffaudio_probe (const gchar * filename, VFSFile * file)
@@ -409,7 +381,6 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
     gboolean codec_opened = FALSE;
     gint out_fmt;
     gboolean planar;
-    gboolean seekable;
     gboolean error = FALSE;
 
     void *buf = NULL;
@@ -465,13 +436,12 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
     aud_input_set_bitrate(ic->bit_rate);
 
     errcount = 0;
-    seekable = ffaudio_codec_is_seekable(cinfo.codec);
 
     while (! aud_input_check_stop ())
     {
         int seek_value = aud_input_check_seek ();
 
-        if (seek_value >= 0 && seekable)
+        if (seek_value >= 0)
         {
             if (av_seek_frame (ic, -1, (gint64) seek_value * AV_TIME_BASE /
              1000, AVSEEK_FLAG_ANY) < 0)
@@ -524,7 +494,7 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
             if (seek_value >= 0)
                 break;
 
-#if CHECK_LIBAVCODEC_VERSION (55, 28, 1)
+#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
             AVFrame * frame = av_frame_alloc ();
 #else
             AVFrame * frame = avcodec_alloc_frame ();
@@ -561,10 +531,12 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
             else
                 aud_input_write_audio (frame->data[0], size);
 
-#if CHECK_LIBAVCODEC_VERSION (55, 28, 1)
+#if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
             av_frame_free (& frame);
-#else
+#elif CHECK_LIBAVCODEC_VERSION (54, 59, 100, 54, 28, 0)
             avcodec_free_frame (& frame);
+#else
+            av_free (frame);
 #endif
         }
 

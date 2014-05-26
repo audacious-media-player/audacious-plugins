@@ -26,9 +26,19 @@
 #include <libavcodec/avcodec.h>
 #include <libavutil/avutil.h>
 
-#define CHECK_LIBAVCODEC_VERSION(a, b, c) (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT (a, b, c))
-#define CHECK_LIBAVFORMAT_VERSION(a, b, c) (LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT (a, b, c))
-#define CHECK_LIBAVUTIL_VERSION(a, b, c) (LIBAVUTIL_VERSION_INT >= AV_VERSION_INT (a, b, c))
+/* FFmpeg and libav remain mostly compatible but have different version numbers.
+ * The first three numbers are the required FFmpeg version; the last three are for libav. */
+#ifdef HAVE_FFMPEG
+#define CHECK_LIBAVCODEC_VERSION(a, b, c, a2, b2, c2) (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT (a, b, c))
+#define CHECK_LIBAVFORMAT_VERSION(a, b, c, a2, b2, c2) (LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT (a, b, c))
+#define CHECK_LIBAVUTIL_VERSION(a, b, c, a2, b2, c2) (LIBAVUTIL_VERSION_INT >= AV_VERSION_INT (a, b, c))
+#elif defined HAVE_LIBAV
+#define CHECK_LIBAVCODEC_VERSION(a, b, c, a2, b2, c2) (LIBAVCODEC_VERSION_INT >= AV_VERSION_INT (a2, b2, c2))
+#define CHECK_LIBAVFORMAT_VERSION(a, b, c, a2, b2, c2) (LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT (a2, b2, c2))
+#define CHECK_LIBAVUTIL_VERSION(a, b, c, a2, b2, c2) (LIBAVUTIL_VERSION_INT >= AV_VERSION_INT (a2, b2, c2))
+#else
+#error Please define either HAVE_FFMPEG or HAVE_LIBAV
+#endif
 
 AVIOContext * io_context_new (VFSFile * file);
 void io_context_free (AVIOContext * context);
