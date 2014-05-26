@@ -365,43 +365,35 @@ static void lyricwiki_playback_began(void)
 	get_lyrics_step_1();
 }
 
-static gboolean init (void)
-{
-	hook_associate("title change", (HookFunction) lyricwiki_playback_began, NULL);
-	hook_associate("playback ready", (HookFunction) lyricwiki_playback_began, NULL);
-
-	build_widget();
-
-	lyricwiki_playback_began();
-	return TRUE;
-}
-
-static void cleanup(void)
+static void cleanup ()
 {
 	state.filename = String ();
 	state.title = String ();
 	state.artist = String ();
 	state.uri = String ();
 
-	hook_dissociate("title change", (HookFunction) lyricwiki_playback_began);
-	hook_dissociate("playback ready", (HookFunction) lyricwiki_playback_began);
+	hook_dissociate ("title change", (HookFunction) lyricwiki_playback_began);
+	hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
 
-	if (vbox)
-		gtk_widget_destroy (vbox);
 	textbuffer = NULL;
 }
 
-static void *get_widget(void)
+static void * get_widget ()
 {
-	if (! vbox)
-		build_widget ();
+	build_widget ();
+
+	hook_associate ("title change", (HookFunction) lyricwiki_playback_began, nullptr);
+	hook_associate ("playback ready", (HookFunction) lyricwiki_playback_began, nullptr);
+
+	lyricwiki_playback_began ();
+
+	g_signal_connect (vbox, "destroy", cleanup, nullptr);
+
 	return vbox;
 }
 
-#define AUD_PLUGIN_NAME        N_("LyricWiki Plugin")
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
-#define AUD_GENERAL_GET_WIDGET   get_widget
+#define AUD_PLUGIN_NAME         N_("LyricWiki Plugin")
+#define AUD_GENERAL_GET_WIDGET  get_widget
 
 #define AUD_DECLARE_GENERAL
 #include <libaudcore/plugin-declare.h>
