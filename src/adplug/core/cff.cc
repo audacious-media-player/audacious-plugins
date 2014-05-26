@@ -317,11 +317,6 @@ CcffLoader::getinstruments ()
 
 /* -------- Private Methods ------------------------------- */
 
-#ifdef _WIN32
-#pragma warning(disable:4244)
-#pragma warning(disable:4018)
-#endif
-
 /*
   Lempel-Ziv-Tyr ;-)
 */
@@ -534,8 +529,3 @@ CcffLoader::cff_unpacker::expand_dictionary (unsigned char *string)
 
   heap_length += (string[0] + 1);
 }
-
-#ifdef _WIN32
-#pragma warning(default:4244)
-#pragma warning(default:4018)
-#endif
