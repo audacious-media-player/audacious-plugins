@@ -21,3 +21,4 @@ src/mpris2/object-player.h
 *~
 *.patch
 *.diff
+*.bundle
