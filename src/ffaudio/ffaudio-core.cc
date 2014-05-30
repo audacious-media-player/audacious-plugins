@@ -139,7 +139,7 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
         AUDDBG ("Format unknown.\n");
 
     g_free (ext);
-    return * f;
+    return f ? * f : NULL;
 }
 
 static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file)
