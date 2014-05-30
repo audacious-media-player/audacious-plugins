@@ -21,8 +21,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <libmms/mms.h>
 #include <libmms/mmsh.h>
 
@@ -41,7 +39,7 @@ static void * mms_vfs_fopen_impl (const char * path, const char * mode)
 {
     AUDDBG ("Opening %s.\n", path);
 
-    MMSHandle * h = g_new0 (MMSHandle, 1);
+    MMSHandle * h = new MMSHandle ();
 
     if (! (h->mmsh = mmsh_connect (NULL, NULL, path, 128 * 1024)))
     {
@@ -50,7 +48,7 @@ static void * mms_vfs_fopen_impl (const char * path, const char * mode)
         if (! (h->mms = mms_connect (NULL, NULL, path, 128 * 1024)))
         {
             fprintf (stderr, "mms: Failed to open %s.\n", path);
-            g_free (h);
+            delete h;
             return NULL;
         }
     }
@@ -67,7 +65,7 @@ static int mms_vfs_fclose_impl (VFSFile * file)
     else
         mmsh_close (h->mmsh);
 
-    g_free (h);
+    delete h;
     return 0;
 }
 
