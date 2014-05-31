@@ -86,7 +86,7 @@ static int search_source;
 
 static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list, * stats_label;
 
-static void find_playlist (void)
+static void find_playlist ()
 {
     playlist_id = -1;
 
@@ -98,7 +98,7 @@ static void find_playlist (void)
     }
 }
 
-static int create_playlist (void)
+static int create_playlist ()
 {
     int list = aud_playlist_get_blank ();
     aud_playlist_set_title (list, _("Library"));
@@ -133,7 +133,7 @@ static void set_search_phrase (const char * phrase)
     search_terms = str_list_to_index (str_tolower_utf8 (phrase), " ");
 }
 
-static String get_path (void)
+static String get_path ()
 {
     String path1 = aud_get_str ("search-tool", "path");
     if (g_file_test (path1, G_FILE_TEST_EXISTS))
@@ -146,7 +146,7 @@ static String get_path (void)
     return String (g_get_home_dir ());
 }
 
-static void destroy_database (void)
+static void destroy_database ()
 {
     items.clear ();
     hidden_items = 0;
@@ -252,7 +252,7 @@ static int item_compare_pass1 (const Item * const & a, const Item * const & b, v
     return item_compare (a, b, nullptr);
 }
 
-static void do_search (void)
+static void do_search ()
 {
     items.clear ();
     hidden_items = 0;
@@ -335,11 +335,8 @@ static void begin_add (const char * path)
     adding = true;
 }
 
-static void show_hide_widgets (void)
+static void show_hide_widgets ()
 {
-    if (! help_label || ! wait_label || ! scrolled || ! stats_label)
-        return;
-
     if (playlist_id < 0)
     {
         gtk_widget_hide (wait_label);
@@ -366,31 +363,25 @@ static void show_hide_widgets (void)
     }
 }
 
-static int search_timeout (void * unused)
+static int search_timeout (void * unused = nullptr)
 {
     do_search ();
 
-    if (results_list)
+    audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
+    audgui_list_insert_rows (results_list, 0, items.len ());
+
+    int total = items.len () + hidden_items;
+    StringBuf stats = str_printf (dngettext (PACKAGE, "%d result",
+     "%d results", total), total);
+
+    if (hidden_items)
     {
-        audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
-        audgui_list_insert_rows (results_list, 0, items.len ());
+        str_insert (stats, -1, " ");
+        stats.combine (str_printf (dngettext (PACKAGE, "(%d hidden)",
+         "(%d hidden)", hidden_items), hidden_items));
     }
 
-    if (stats_label)
-    {
-        int total = items.len () + hidden_items;
-        StringBuf stats = str_printf (dngettext (PACKAGE, "%d result",
-         "%d results", total), total);
-
-        if (hidden_items)
-        {
-            str_insert (stats, -1, " ");
-            stats.combine (str_printf (dngettext (PACKAGE, "(%d hidden)",
-             "(%d hidden)", hidden_items), hidden_items));
-        }
-
-        gtk_label_set_text ((GtkLabel *) stats_label, stats);
-    }
+    gtk_label_set_text ((GtkLabel *) stats_label, stats);
 
     if (search_source)
     {
@@ -401,7 +392,7 @@ static int search_timeout (void * unused)
     return false;
 }
 
-static void schedule_search (void)
+static void schedule_search ()
 {
     if (search_source)
         g_source_remove (search_source);
@@ -409,20 +400,21 @@ static void schedule_search (void)
     search_source = g_timeout_add (SEARCH_DELAY, search_timeout, nullptr);
 }
 
-static void update_database (void)
+static void update_database ()
 {
     int list = get_playlist (true, true);
 
     if (list >= 0)
     {
         create_database (list);
-        schedule_search ();
+        search_timeout ();
     }
     else
+    {
         destroy_database ();
-
-    if (results_list)
         audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
+        gtk_label_set_text ((GtkLabel *) stats_label, "");
+    }
 
     show_hide_widgets ();
 }
@@ -466,7 +458,7 @@ static void playlist_update_cb (void * data, void * unused)
     }
 }
 
-static bool_t search_init (void)
+static void search_init ()
 {
     find_playlist ();
 
@@ -475,11 +467,9 @@ static bool_t search_init (void)
     hook_associate ("playlist add complete", add_complete_cb, nullptr);
     hook_associate ("playlist scan complete", scan_complete_cb, nullptr);
     hook_associate ("playlist update", playlist_update_cb, nullptr);
-
-    return true;
 }
 
-static void search_cleanup (void)
+static void search_cleanup ()
 {
     hook_dissociate ("playlist add complete", add_complete_cb);
     hook_dissociate ("playlist scan complete", scan_complete_cb);
@@ -502,7 +492,7 @@ static void search_cleanup (void)
 static void do_add (bool_t play, String & title)
 {
     if (search_source)
-        search_timeout (nullptr);
+        search_timeout ();
 
     int list = aud_playlist_by_unique_id (playlist_id);
     int n_items = items.len ();
@@ -535,7 +525,7 @@ static void do_add (bool_t play, String & title)
     aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, std::move (add), play);
 }
 
-static void action_play (void)
+static void action_play ()
 {
     int list = aud_playlist_get_temporary ();
     aud_playlist_set_active (list);
@@ -549,7 +539,7 @@ static void action_play (void)
     do_add (true, title);
 }
 
-static void action_create_playlist (void)
+static void action_create_playlist ()
 {
     aud_playlist_insert (-1);
     aud_playlist_set_active (aud_playlist_count () - 1);
@@ -561,7 +551,7 @@ static void action_create_playlist (void)
         aud_playlist_set_title (aud_playlist_count () - 1, title);
 }
 
-static void action_add_to_playlist (void)
+static void action_add_to_playlist ()
 {
     if (aud_playlist_by_unique_id (playlist_id) == aud_playlist_get_active ())
         return;
@@ -664,7 +654,7 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
     update_database ();
 }
 
-static void * search_get_widget (void)
+static void * search_get_widget ()
 {
     GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
@@ -701,7 +691,7 @@ static void * search_get_widget (void)
     audgui_list_add_column (results_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
-    stats_label = gtk_label_new (NULL);
+    stats_label = gtk_label_new ("");
     g_signal_connect (stats_label, "destroy", (GCallback) gtk_widget_destroyed, & stats_label);
     gtk_widget_set_no_show_all (stats_label, TRUE);
     gtk_box_pack_start ((GtkBox *) vbox, stats_label, FALSE, FALSE, 0);
@@ -721,6 +711,9 @@ static void * search_get_widget (void)
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_box_pack_start ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
+    search_init ();
+
+    g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, NULL);
     g_signal_connect (entry, "changed", (GCallback) entry_cb, NULL);
     g_signal_connect (entry, "activate", (GCallback) action_play, NULL);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
@@ -745,8 +738,6 @@ int search_take_message (const char * code, const void * data, int size)
 }
 
 #define AUD_PLUGIN_NAME        N_("Search Tool")
-#define AUD_PLUGIN_INIT        search_init
-#define AUD_PLUGIN_CLEANUP     search_cleanup
 #define AUD_GENERAL_GET_WIDGET   search_get_widget
 #define AUD_PLUGIN_TAKE_MESSAGE  search_take_message
 
