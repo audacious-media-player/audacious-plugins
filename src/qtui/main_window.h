@@ -46,7 +46,7 @@ private:
     QLabel * timeCounterLabel;
     QTimer * timeCounter;
     QSlider * slider;
-    void setTimeConuterLabel (int time, int length);
+    void setTimeCounterLabel (int time, int length);
     void enableSlider ();
     void disableSlider ();
     void enableTimeCounter ();

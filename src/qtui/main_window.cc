@@ -87,12 +87,12 @@ void MainWindow::timeCounterSlot ()
 
     int time   = aud_drct_get_time ();
     int length = aud_drct_get_length ();
-    setTimeConuterLabel (time, length);
+    setTimeCounterLabel (time, length);
 
     slider->setValue (time);
 }
 
-void MainWindow::setTimeConuterLabel (int time, int length)
+void MainWindow::setTimeCounterLabel (int time, int length)
 {
     QString text = QString (str_format_time (time)) + QString (" / ") + QString (str_format_time (length));
     timeCounterLabel->setText (text);
@@ -117,7 +117,7 @@ void MainWindow::enableTimeCounter ()
     int time   = aud_drct_get_time ();
     int length = aud_drct_get_length ();
 
-    setTimeConuterLabel (time, length);
+    setTimeCounterLabel (time, length);
     timeCounter->start ();
     timeCounterLabel->setDisabled (false);
 }
@@ -135,7 +135,7 @@ void MainWindow::sliderValueChanged (int value)
         return;
 
     int length = aud_drct_get_length ();
-    setTimeConuterLabel (value, length);
+    setTimeCounterLabel (value, length);
 }
 
 void MainWindow::sliderPressed ()
