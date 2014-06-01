@@ -64,6 +64,17 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     hook_associate ("playback pause",   (HookFunction) pause_cb, this);
     hook_associate ("playback unpause", (HookFunction) pause_cb, this);
     hook_associate ("playback stop",    (HookFunction) playback_stop_cb, this);
+
+    if (aud_drct_get_playing ())
+    {
+        playback_begin_cb (NULL, this);
+        if (aud_drct_get_ready ())
+            playback_ready_cb (NULL, this);
+    }
+    else
+        playback_stop_cb (NULL, this);
+
+    title_change_cb (NULL, this);
 }
 
 MainWindow::~MainWindow ()
@@ -103,7 +114,7 @@ void MainWindow::enableSlider ()
     int time = aud_drct_get_time ();
     int length = aud_drct_get_length ();
 
-    slider->setRange (time, length);
+    slider->setRange (0, length);
     slider->setValue (time);
     slider->setDisabled (false);
 }
