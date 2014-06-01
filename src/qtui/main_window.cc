@@ -100,9 +100,11 @@ void MainWindow::setTimeCounterLabel (int time, int length)
 
 void MainWindow::enableSlider ()
 {
+    int time = aud_drct_get_time ();
     int length = aud_drct_get_length ();
 
-    slider->setRange (0, length);
+    slider->setRange (time, length);
+    slider->setValue (time);
     slider->setDisabled (false);
 }
 
