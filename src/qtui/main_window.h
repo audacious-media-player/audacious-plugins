@@ -61,7 +61,9 @@ private:
 
     static void title_change_cb (void * unused, MainWindow * window)
     {
-        window->setWindowTitle (QString ("Audacious - ") + QString (aud_drct_get_title ()));
+        auto title = aud_drct_get_title ();
+        if (title)
+            window->setWindowTitle (QString ("Audacious - ") + QString (title));
     }
 
     static void playback_begin_cb (void * unused, MainWindow * window)
