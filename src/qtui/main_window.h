@@ -52,6 +52,13 @@ private:
     void enableTimeCounter ();
     void disableTimeCounter ();
 
+    static void setIcon (QAction * action, const QString & fileName)
+    {
+        QIcon icon;
+        icon.addFile (fileName, QSize (), QIcon::Normal, QIcon::Off);
+        action->setIcon (icon);
+    }
+
     static void title_change_cb (void * unused, MainWindow * window)
     {
         window->setWindowTitle (QString ("Audacious - ") + QString (aud_drct_get_title ()));
@@ -75,12 +82,10 @@ private:
 
     static void pause_cb (void * unused, MainWindow * window)
     {
-        QIcon icon;
         if (aud_drct_get_paused ())
-            icon.addFile (QStringLiteral (":/images/playback-start.png"), QSize (), QIcon::Normal, QIcon::Off);
+            setIcon (window->actionPlayPause, QStringLiteral (":/images/playback-start.png"));
         else
-            icon.addFile (QStringLiteral (":/images/playback-pause.png"), QSize (), QIcon::Normal, QIcon::Off);
-        window->actionPlayPause->setIcon (icon);
+            setIcon (window->actionPlayPause, QStringLiteral (":/images/playback-pause.png"));
     }
 
     static void playback_stop_cb (void * unused, MainWindow * window)
@@ -89,9 +94,7 @@ private:
         window->disableTimeCounter ();
         window->disableSlider ();
 
-        QIcon icon;
-        icon.addFile (QStringLiteral (":/images/playback-start.png"), QSize (), QIcon::Normal, QIcon::Off);
-        window->actionPlayPause->setIcon (icon);
+        setIcon (window->actionPlayPause, QStringLiteral (":/images/playback-start.png"));
     }
 };
 
