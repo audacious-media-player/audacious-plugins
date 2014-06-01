@@ -34,11 +34,14 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     this->setUnifiedTitleAndToolBarOnMac (true);
 
     slider = new QSlider (Qt::Horizontal);
+    slider->setDisabled (true);
 
     timeCounterLabel = new QLabel ("0:00 / 0:00");
     timeCounterLabel->setContentsMargins (5, 0, 0, 2);
+    timeCounterLabel->setDisabled (true);
 
     timeCounter = new QTimer;
+    timeCounter->setInterval (250);
 
     toolBar->insertWidget (actionAudioVolume, slider);
     toolBar->insertWidget (actionAudioVolume, timeCounterLabel);
@@ -49,6 +52,11 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     connect (actionStop,      &QAction::triggered, aud_drct_stop);
     connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
     connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
+
+    connect (timeCounter, &QTimer::timeout,         this, &MainWindow::timeCounterSlot);
+    connect (slider,      &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);
+    connect (slider,      &QSlider::sliderPressed,  this, &MainWindow::sliderPressed);
+    connect (slider,      &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
 
     hook_associate ("title change",     (HookFunction) title_change_cb, this);
     hook_associate ("playback begin",   (HookFunction) playback_begin_cb, this);
@@ -74,11 +82,69 @@ MainWindow::~MainWindow ()
 
 void MainWindow::timeCounterSlot ()
 {
+    if (slider->isSliderDown ())
+        return;
+
     int time   = aud_drct_get_time ();
     int length = aud_drct_get_length ();
+    setTimeConuterLabel (time, length);
+
+    slider->setValue (time);
+}
+
+void MainWindow::setTimeConuterLabel (int time, int length)
+{
     QString text = QString (str_format_time (time)) + QString (" / ") + QString (str_format_time (length));
     timeCounterLabel->setText (text);
+}
+
+void MainWindow::enableSlider ()
+{
+    int length = aud_drct_get_length ();
 
     slider->setRange (0, length);
-    slider->setValue (time);
+    slider->setDisabled (false);
+}
+
+void MainWindow::disableSlider ()
+{
+    slider->setRange (0, 0);
+    slider->setDisabled (true);
+}
+
+void MainWindow::enableTimeCounter ()
+{
+    int time   = aud_drct_get_time ();
+    int length = aud_drct_get_length ();
+
+    setTimeConuterLabel (time, length);
+    timeCounter->start ();
+    timeCounterLabel->setDisabled (false);
+}
+
+void MainWindow::disableTimeCounter ()
+{
+    timeCounter->stop ();
+    timeCounterLabel->setText ("0:00 / 0:00");
+    timeCounterLabel->setDisabled (true);
+}
+
+void MainWindow::sliderValueChanged (int value)
+{
+    if (! slider->isSliderDown ())
+        return;
+
+    int length = aud_drct_get_length ();
+    setTimeConuterLabel (value, length);
+}
+
+void MainWindow::sliderPressed ()
+{
+    timeCounter->stop ();
+}
+
+void MainWindow::sliderReleased ()
+{
+    aud_drct_seek (slider->value ());
+    timeCounter->start ();
 }

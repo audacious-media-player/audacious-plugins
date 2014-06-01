@@ -37,12 +37,20 @@ public:
     ~MainWindow ();
 
 public slots:
-    void timeCounterSlot();
+    void timeCounterSlot ();
+    void sliderValueChanged (int value);
+    void sliderPressed ();
+    void sliderReleased ();
 
 private:
     QLabel * timeCounterLabel;
     QTimer * timeCounter;
     QSlider * slider;
+    void setTimeConuterLabel (int time, int length);
+    void enableSlider ();
+    void disableSlider ();
+    void enableTimeCounter ();
+    void disableTimeCounter ();
 
     static void title_change_cb (void * unused, MainWindow * window)
     {
@@ -61,9 +69,8 @@ private:
         title_change_cb (NULL, window);
         pause_cb (NULL, window);
 
-        window->timeCounterSlot ();
-        connect (window->timeCounter, &QTimer::timeout, window, &MainWindow::timeCounterSlot);
-        window->timeCounter->start (250);
+        window->enableSlider ();
+        window->enableTimeCounter ();
     }
 
     static void pause_cb (void * unused, MainWindow * window)
@@ -79,9 +86,8 @@ private:
     static void playback_stop_cb (void * unused, MainWindow * window)
     {
         window->setWindowTitle ("Audacious");
-
-        window->timeCounterLabel->setText ("0:00 / 0:00");
-        window->timeCounter->stop ();
+        window->disableTimeCounter ();
+        window->disableSlider ();
 
         QIcon icon;
         icon.addFile (QStringLiteral (":/images/playback-start.png"), QSize (), QIcon::Normal, QIcon::Off);
