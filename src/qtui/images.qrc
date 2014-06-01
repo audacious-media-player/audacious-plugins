@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="/">
+    <file>images/search.png</file>
+    <file>images/audio-volume-high.png</file>
+    <file>images/audio-volume-low.png</file>
+    <file>images/audio-volume-medium.png</file>
+    <file>images/audio-volume-muted.png</file>
+    <file>images/audacious.svg</file>
+    <file>images/files-add.png</file>
+    <file>images/files-open.png</file>
+    <file>images/playback-next.png</file>
+    <file>images/playback-pause.png</file>
+    <file>images/playback-previous.png</file>
+    <file>images/playback-start.png</file>
+    <file>images/playback-stop.png</file>
+  </qresource>
+</RCC>
