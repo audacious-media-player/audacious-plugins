@@ -287,7 +287,15 @@ static void search_cb (void * key, void * _item, void * _state)
 static int item_compare (const void * _a, const void * _b)
 {
     const Item * a = _a, * b = _b;
-    return str_compare (a->name, b->name);
+
+    int val = str_compare (a->name, b->name);
+    if (val)
+        return val;
+
+    if (a->parent)
+        return b->parent ? item_compare (a->parent, b->parent) : 1;
+    else
+        return b->parent ? -1 : 0;
 }
 
 static void do_search (void)
@@ -543,6 +551,9 @@ static void search_cleanup (void)
 
 static void do_add (bool_t play, char * * title)
 {
+    if (search_source)
+        search_timeout (NULL);
+
     int list = aud_playlist_by_unique_id (playlist_id);
     int n_items = index_count (items);
     int n_selected = 0;
