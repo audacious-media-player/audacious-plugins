@@ -29,9 +29,16 @@
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
+    QIcon::setThemeName ("QtUi");
+
+    QString appDir = qApp->applicationDirPath ();
+    QStringList paths = QIcon::themeSearchPaths ();
+    paths.prepend (appDir + "/../share/audacious");
+    QIcon::setThemeSearchPaths (paths);
+
     setupUi (this);
 
-    this->setUnifiedTitleAndToolBarOnMac (true);
+    setUnifiedTitleAndToolBarOnMac (true);
 
     slider = new QSlider (Qt::Horizontal);
     slider->setDisabled (true);
@@ -43,8 +50,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     timeCounter = new QTimer;
     timeCounter->setInterval (250);
 
-    toolBar->insertWidget (actionAudioVolume, slider);
-    toolBar->insertWidget (actionAudioVolume, timeCounterLabel);
+    toolBar->insertWidget (actionRepeat, slider);
+    toolBar->insertWidget (actionRepeat, timeCounterLabel);
 
     connect (actionOpen,      &QAction::triggered, Utils::openFilesDialog);
     connect (actionAdd,       &QAction::triggered, Utils::addFilesDialog);

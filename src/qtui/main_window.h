@@ -52,13 +52,6 @@ private:
     void enableTimeCounter ();
     void disableTimeCounter ();
 
-    static void setIcon (QAction * action, const QString & fileName)
-    {
-        QIcon icon;
-        icon.addFile (fileName, QSize (), QIcon::Normal, QIcon::Off);
-        action->setIcon (icon);
-    }
-
     static void title_change_cb (void * unused, MainWindow * window)
     {
         auto title = aud_drct_get_title ();
@@ -85,9 +78,9 @@ private:
     static void pause_cb (void * unused, MainWindow * window)
     {
         if (aud_drct_get_paused ())
-            setIcon (window->actionPlayPause, QStringLiteral (":/images/playback-start.png"));
+            window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
         else
-            setIcon (window->actionPlayPause, QStringLiteral (":/images/playback-pause.png"));
+            window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
     }
 
     static void playback_stop_cb (void * unused, MainWindow * window)
@@ -96,7 +89,7 @@ private:
         window->disableTimeCounter ();
         window->disableSlider ();
 
-        setIcon (window->actionPlayPause, QStringLiteral (":/images/playback-start.png"));
+        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
     }
 };
 

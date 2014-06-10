@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>Audacious</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="images.qrc">
-    <normaloff>:/images/audacious.svg</normaloff>:/images/audacious.svg</iconset>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="leftMargin">
@@ -74,6 +70,8 @@
    <addaction name="actionStop"/>
    <addaction name="actionPrevious"/>
    <addaction name="actionNext"/>
+   <addaction name="actionRepeat"/>
+   <addaction name="actionShuffle"/>
    <addaction name="actionAudioVolume"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -82,8 +80,9 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/search.png</normaloff>:/images/search.png</iconset>
+    <iconset theme="edit-find">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Search</string>
@@ -94,8 +93,9 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/files-open.png</normaloff>:/images/files-open.png</iconset>
+    <iconset theme="document-open">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -106,8 +106,9 @@
   </action>
   <action name="actionAdd">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/files-add.png</normaloff>:/images/files-add.png</iconset>
+    <iconset theme="list-add">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Add</string>
@@ -118,8 +119,9 @@
   </action>
   <action name="actionPlayPause">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/playback-start.png</normaloff>:/images/playback-start.png</iconset>
+    <iconset theme="media-playback-start">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>PlayPause</string>
@@ -130,8 +132,9 @@
   </action>
   <action name="actionStop">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/playback-stop.png</normaloff>:/images/playback-stop.png</iconset>
+    <iconset theme="media-playback-stop">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Stop</string>
@@ -142,8 +145,9 @@
   </action>
   <action name="actionPrevious">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/playback-previous.png</normaloff>:/images/playback-previous.png</iconset>
+    <iconset theme="media-skip-backward">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Previous</string>
@@ -154,8 +158,9 @@
   </action>
   <action name="actionNext">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/playback-next.png</normaloff>:/images/playback-next.png</iconset>
+    <iconset theme="media-skip-forward">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Next</string>
@@ -164,10 +169,37 @@
     <string>Next track</string>
    </property>
   </action>
+  <action name="actionRepeat">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="media-playlist-repeat">
+     <normaloff/>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Repeat</string>
+   </property>
+  </action>
+  <action name="actionShuffle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="media-playlist-shuffle">
+     <normaloff/>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Shuffle</string>
+   </property>
+  </action>
   <action name="actionAudioVolume">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/images/audio-volume-high.png</normaloff>:/images/audio-volume-high.png</iconset>
+    <iconset theme="audio-volume-high">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>AudioVolume</string>
@@ -177,8 +209,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="images.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
