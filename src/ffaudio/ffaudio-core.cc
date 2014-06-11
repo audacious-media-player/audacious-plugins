@@ -575,6 +575,9 @@ static const gchar *ffaudio_fmts[] = {
     /* monkey's audio */
     "ape",
 
+    /* DTS */
+    "dts",
+
     /* VQF */
     "vqf",
 
