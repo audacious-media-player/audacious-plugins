@@ -1,9 +1,14 @@
 PLUGIN = qtui${PLUGIN_SUFFIX}
 
 SRCS = qtui.cc \
-       ui_main_window.h \
-       main_window.moc \
        main_window.cc \
+       main_window.moc \
+       playlist.cc \
+       playlist.moc \
+       playlist_model.cc \
+       playlist_model.moc \
+       ui_main_window.h \
+       ui_playlist.h \
        utils.cc
 
 include ../../buildsys.mk

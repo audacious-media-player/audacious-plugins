@@ -22,9 +22,11 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/playlist.h>
 
 #include "main_window.h"
 #include "main_window.moc"
+#include "playlist.h"
 #include "utils.h"
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
@@ -52,6 +54,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     toolBar->insertWidget (actionRepeat, slider);
     toolBar->insertWidget (actionRepeat, timeCounterLabel);
+
+    populatePlaylists ();
 
     connect (actionOpen,      &QAction::triggered, Utils::openFilesDialog);
     connect (actionAdd,       &QAction::triggered, Utils::addFilesDialog);
@@ -96,6 +100,8 @@ MainWindow::~MainWindow ()
     delete slider;
     delete timeCounterLabel;
     delete timeCounter;
+
+    // TODO: cleanup playlists
 }
 
 void MainWindow::timeCounterSlot ()
@@ -167,4 +173,15 @@ void MainWindow::sliderReleased ()
 {
     aud_drct_seek (slider->value ());
     timeCounter->start ();
+}
+
+void MainWindow::populatePlaylists ()
+{
+    int playlists = aud_playlist_count ();
+
+    for (int count = 0; count < playlists; count++)
+    {
+        auto playlistWidget = new Playlist (0, aud_playlist_get_unique_id (count));
+        tabWidget->addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count)));
+    }
 }

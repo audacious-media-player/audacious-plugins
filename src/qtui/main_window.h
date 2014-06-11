@@ -51,6 +51,7 @@ private:
     void disableSlider ();
     void enableTimeCounter ();
     void disableTimeCounter ();
+    void populatePlaylists ();
 
     static void title_change_cb (void * unused, MainWindow * window)
     {
