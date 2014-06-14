@@ -35,6 +35,8 @@ private:
     PlaylistModel * model;
     int playlist ();
 
+protected:
+    void keyPressEvent(QKeyEvent *e); /* override default handler */
 
 public slots:
     void doubleClicked (const QModelIndex &index);
