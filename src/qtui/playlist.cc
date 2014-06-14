@@ -60,6 +60,14 @@ void Playlist::keyPressEvent(QKeyEvent *e)
         aud_playlist_set_position (playlist (), treeView->currentIndex().row());
         aud_drct_play_playlist (playlist ());
     }
+    if (e->key() == Qt::Key_Right)
+    {
+        aud_drct_seek (aud_drct_get_time() + 5000);
+    }
+    if (e->key() == Qt::Key_Left)
+    {
+        aud_drct_seek (aud_drct_get_time() - 5000);
+    }
 }
 
 void Playlist::doubleClicked (const QModelIndex &index)
