@@ -43,6 +43,7 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     slider = new QSlider (Qt::Horizontal);
     slider->setDisabled (true);
+    slider->setFocusPolicy (Qt::NoFocus);
 
     timeCounterLabel = new QLabel ("0:00 / 0:00");
     timeCounterLabel->setContentsMargins (5, 0, 0, 2);
