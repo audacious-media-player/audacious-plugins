@@ -41,6 +41,9 @@ Playlist::Playlist (QFrame * parent, int uniqueId) : QFrame (parent)
     treeView->setModel (model);
     treeView->setUniformRowHeights (true);
     treeView->setColumnWidth (0, 25);
+    treeView->setColumnWidth (1, 300);
+    treeView->setColumnWidth (2, 150);
+    treeView->setColumnWidth (3, 200);
 
     connect(treeView, &QTreeView::doubleClicked, this, &Playlist::doubleClicked);
 }
