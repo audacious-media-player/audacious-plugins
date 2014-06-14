@@ -81,6 +81,9 @@ if test $USE_QT = yes ; then
     QT_CFLAGS="$QT_CFLAGS -fPIC"
 fi
 
+AC_SUBST(QT_CFLAGS)
+AC_SUBST(QT_LIBS)
+
 dnl Console
 dnl =======
 
