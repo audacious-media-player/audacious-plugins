@@ -28,6 +28,7 @@
 
 #include <libaudcore/drct.h>
 
+#include "playlist_tabs.h"
 #include "ui_main_window.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
@@ -50,12 +51,12 @@ private:
     QSlider * slider = nullptr;
     QMessageBox * progressDialog = nullptr;
     QMessageBox * errorDialog = nullptr;
+    PlaylistTabs * playlistTabs = nullptr;
     void setTimeCounterLabel (int time, int length);
     void enableSlider ();
     void disableSlider ();
     void enableTimeCounter ();
     void disableTimeCounter ();
-    void populatePlaylists ();
     void createProgressDialog ();
     void createErrorDialog (const QString &message);
 

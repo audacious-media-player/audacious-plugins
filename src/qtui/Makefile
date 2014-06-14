@@ -7,8 +7,11 @@ SRCS = qtui.cc \
        playlist.moc \
        playlist_model.cc \
        playlist_model.moc \
+       playlist_tabs.cc \
+       playlist_tabs.moc \
        ui_main_window.h \
        ui_playlist.h \
+       ui_playlist_tabs.h \
        utils.cc
 
 include ../../buildsys.mk
