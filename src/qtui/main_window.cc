@@ -56,6 +56,7 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     playlistTabs = new PlaylistTabs;
     mainLayout->addWidget (playlistTabs);
+    playlistTabs->setFocusPolicy(Qt::NoFocus);
 
     connect (actionOpen,      &QAction::triggered, Utils::openFilesDialog);
     connect (actionAdd,       &QAction::triggered, Utils::addFilesDialog);
