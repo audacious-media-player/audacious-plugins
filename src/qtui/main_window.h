@@ -23,6 +23,8 @@
 #include <QLabel>
 #include <QSlider>
 #include <QTimer>
+#include <QMessageBox>
+#include <QtCore>
 
 #include <libaudcore/drct.h>
 
@@ -43,15 +45,19 @@ public slots:
     void sliderReleased ();
 
 private:
-    QLabel * timeCounterLabel;
-    QTimer * timeCounter;
-    QSlider * slider;
+    QLabel * timeCounterLabel = nullptr;
+    QTimer * timeCounter = nullptr;
+    QSlider * slider = nullptr;
+    QMessageBox * progressDialog = nullptr;
+    QMessageBox * errorDialog = nullptr;
     void setTimeCounterLabel (int time, int length);
     void enableSlider ();
     void disableSlider ();
     void enableTimeCounter ();
     void disableTimeCounter ();
     void populatePlaylists ();
+    void createProgressDialog ();
+    void createErrorDialog (const QString &message);
 
     static void title_change_cb (void * unused, MainWindow * window)
     {
@@ -91,6 +97,31 @@ private:
         window->disableSlider ();
 
         window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+    }
+
+    static void show_progress_cb (void * message, MainWindow * window)
+    {
+        window->createProgressDialog ();
+        window->progressDialog->setInformativeText ((const char *) message);
+        window->progressDialog->show ();
+    }
+
+    static void show_progress_2_cb (void * message, MainWindow * window)
+    {
+        window->createProgressDialog ();
+        window->progressDialog->setText ((const char *) message);
+        window->progressDialog->show ();
+    }
+
+    static void hide_progress_cb (void * unused, MainWindow * window)
+    {
+        if (window->progressDialog)
+            window->progressDialog->hide ();
+    }
+
+    static void show_error_cb (void * message, MainWindow * window)
+    {
+        window->createErrorDialog (QString ((const char *) message));
     }
 };
 

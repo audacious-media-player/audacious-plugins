@@ -18,6 +18,7 @@
  */
 
 #include <QtGui>
+#include <QErrorMessage>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
@@ -76,6 +77,11 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     hook_associate ("playback unpause", (HookFunction) pause_cb, this);
     hook_associate ("playback stop",    (HookFunction) playback_stop_cb, this);
 
+    hook_associate ("ui show progress",   (HookFunction) show_progress_cb, this);
+    hook_associate ("ui show progress 2", (HookFunction) show_progress_2_cb, this);
+    hook_associate ("ui hide progress",   (HookFunction) hide_progress_cb, this);
+    hook_associate ("ui show error",      (HookFunction) show_error_cb, this);
+
     if (aud_drct_get_playing ())
     {
         playback_begin_cb (NULL, this);
@@ -97,9 +103,16 @@ MainWindow::~MainWindow ()
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate ("playback stop",    (HookFunction) playback_stop_cb);
 
+    hook_dissociate ("ui show progress",   (HookFunction) show_progress_cb);
+    hook_dissociate ("ui show progress 2", (HookFunction) show_progress_2_cb);
+    hook_dissociate ("ui hide progress",   (HookFunction) hide_progress_cb);
+    hook_dissociate ("ui show error",      (HookFunction) show_error_cb);
+
     delete slider;
     delete timeCounterLabel;
     delete timeCounter;
+    delete progressDialog;
+    delete errorDialog;
 
     // TODO: cleanup playlists
 }
@@ -184,4 +197,28 @@ void MainWindow::populatePlaylists ()
         auto playlistWidget = new Playlist (0, aud_playlist_get_unique_id (count));
         tabWidget->addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count)));
     }
+}
+
+void MainWindow::createProgressDialog ()
+{
+    if (! progressDialog)
+    {
+        progressDialog = new QMessageBox (this);
+        progressDialog->setIcon (QMessageBox::Information);
+        progressDialog->setText ("Working ...");
+        progressDialog->setStandardButtons (QMessageBox::NoButton);
+        progressDialog->setWindowModality (Qt::WindowModal);
+    }
+}
+
+void MainWindow::createErrorDialog (const QString &message)
+{
+    if (! errorDialog)
+    {
+        errorDialog = new QMessageBox (this);
+        errorDialog->setIcon (QMessageBox::Warning);
+        errorDialog->setWindowModality (Qt::WindowModal);
+    }
+    errorDialog->setText (message);
+    errorDialog->show ();
 }
