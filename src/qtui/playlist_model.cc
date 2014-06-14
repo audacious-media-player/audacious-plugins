@@ -50,17 +50,31 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 {
     if (role == Qt::DisplayRole)
     {
-        Tuple tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), false);
+        String title, artist, album;
+        Tuple tuple;
+
         switch (index.column ())
         {
         case 0:
-           return QString (tuple.get_str (FIELD_TITLE));
         case 1:
-           return QString (tuple.get_str (FIELD_ARTIST));
         case 2:
-           return QString (tuple.get_str (FIELD_ALBUM));
+            aud_playlist_entry_describe (playlist (), index.row (), title, artist, album, true);
+            break;
         case 3:
-           return QString (str_format_time (tuple.get_int (FIELD_LENGTH)));
+            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), false);
+            break;
+        }
+
+        switch (index.column ())
+        {
+        case 0:
+            return QString (title);
+        case 1:
+            return QString (artist);
+        case 2:
+            return QString (album);
+        case 3:
+            return QString (str_format_time (tuple.get_int (FIELD_LENGTH)));
         }
     }
     else if (role == Qt::TextAlignmentRole)
