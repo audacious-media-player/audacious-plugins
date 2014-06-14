@@ -43,45 +43,56 @@ int PlaylistModel::rowCount (const QModelIndex & parent) const
 
 int PlaylistModel::columnCount (const QModelIndex & parent) const
 {
-    return 4;
+    return 5;
 }
 
 QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 {
-    if (role == Qt::DisplayRole)
-    {
-        String title, artist, album;
-        Tuple tuple;
+    String title, artist, album;
+    Tuple tuple;
 
+    switch (role)
+    {
+    case Qt::DisplayRole:
         switch (index.column ())
         {
-        case 0:
         case 1:
         case 2:
+        case 3:
             aud_playlist_entry_describe (playlist (), index.row (), title, artist, album, true);
             break;
-        case 3:
+        case 4:
             tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), false);
             break;
         }
 
         switch (index.column ())
         {
-        case 0:
-            return QString (title);
         case 1:
-            return QString (artist);
+            return QString (title);
         case 2:
-            return QString (album);
+            return QString (artist);
         case 3:
+            return QString (album);
+        case 4:
             return QString (str_format_time (tuple.get_int (FIELD_LENGTH)));
         }
-    }
-    else if (role == Qt::TextAlignmentRole)
-    {
-        if (index.column () == 3)
+
+    case Qt::TextAlignmentRole:
+        switch (index.column ())
         {
+        case 4:
             return Qt::AlignRight;
+        }
+
+    case Qt::DecorationRole:
+
+        if (index.column () == 0 && index.row () == aud_playlist_get_position (playlist ()))
+        {
+            if (aud_playlist_get_playing () == playlist ())
+                return QIcon::fromTheme ("media-playback-start");
+            else
+                return QIcon::fromTheme ("media-playback-pause");
         }
     }
     return QVariant ();
@@ -96,10 +107,12 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
             switch (section)
             {
             case 0:
-                return QString ("Title");
+                return QString ("Playing");
             case 1:
-                return QString ("Artist");
+                return QString ("Title");
             case 2:
+                return QString ("Artist");
+            case 3:
                 return QString ("Album");
             }
          }
