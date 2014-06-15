@@ -1,5 +1,5 @@
 /*
- * playlist.h
+ * filter_input.h
  * Copyright 2014 Daniel (dmilith) Dettlaff
  *
  * Redistribution and use in source and binary forms, with or without

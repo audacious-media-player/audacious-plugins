@@ -1,5 +1,5 @@
 /*
- * playlist.cc
+ * filter_input.cc
  * Copyright 2014 Daniel (dmilith) Dettlaff
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@ FilterInput::FilterInput ()
 {
     QTextEdit ("");
     setFocusPolicy (Qt::NoFocus); /* by default we want no focus here */
-    setFixedHeight (26);
+    setFixedHeight (24);
     setFixedWidth (120);
     setTabChangesFocus (true);
     setUndoRedoEnabled (true);
