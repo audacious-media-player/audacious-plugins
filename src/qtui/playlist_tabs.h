@@ -33,6 +33,7 @@ public:
     PlaylistTabs (QTabWidget * parent = 0);
     ~PlaylistTabs ();
     Playlist * playlistWidget (int num);
+    Playlist * activePlaylistWidget ();
 
 private:
     void populatePlaylists ();

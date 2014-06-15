@@ -62,3 +62,9 @@ Playlist * PlaylistTabs::playlistWidget (int num)
 {
     return (Playlist *) widget (num);
 }
+
+Playlist * PlaylistTabs::activePlaylistWidget ()
+{
+    int num = aud_playlist_get_active ();
+    return (Playlist *) widget (num);
+}

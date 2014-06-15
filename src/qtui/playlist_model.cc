@@ -20,6 +20,7 @@
 #include <QtGui>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/tuple.h>
 
@@ -91,9 +92,12 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         if (index.column () == 0 && index.row () == aud_playlist_get_position (playlist ()))
         {
             if (aud_playlist_get_playing () == playlist ())
-                return QIcon::fromTheme ("media-playback-start");
+                if (aud_drct_get_paused ())
+                    return QIcon::fromTheme ("media-playback-pause");
+                else
+                    return QIcon::fromTheme ("media-playback-start");
             else
-                return QIcon::fromTheme ("media-playback-pause");
+                return QIcon::fromTheme ("media-playback-stop");
         }
     }
     return QVariant ();

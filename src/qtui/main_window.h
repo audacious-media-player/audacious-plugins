@@ -89,6 +89,7 @@ private:
             window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
         else
             window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
+        window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
     }
 
     static void playback_stop_cb (void * unused, MainWindow * window)
@@ -98,6 +99,7 @@ private:
         window->disableSlider ();
 
         window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+        window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
     }
 
     static void show_progress_cb (void * message, MainWindow * window)
