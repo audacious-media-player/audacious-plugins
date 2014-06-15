@@ -27,6 +27,8 @@
 #include "main_window.moc"
 #include "playlist.h"
 #include "utils.h"
+#include "filter_input.h"
+#include "filter_input.moc"
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
@@ -40,6 +42,10 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     setupUi (this);
 
     setUnifiedTitleAndToolBarOnMac (true);
+
+    filterInput = new FilterInput();
+
+    toolBar->addWidget(filterInput);
 
     slider = new QSlider (Qt::Horizontal);
     slider->setDisabled (true);
@@ -55,7 +61,7 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     toolBar->insertWidget (actionRepeat, slider);
     toolBar->insertWidget (actionRepeat, timeCounterLabel);
 
-    playlistTabs = new PlaylistTabs;
+    playlistTabs = new PlaylistTabs(0, filterInput);
     mainLayout->addWidget (playlistTabs);
     playlistTabs->setFocusPolicy(Qt::NoFocus);
 
@@ -115,6 +121,7 @@ MainWindow::~MainWindow ()
     delete progressDialog;
     delete errorDialog;
     delete playlistTabs;
+    delete filterInput;
 }
 
 void MainWindow::timeCounterSlot ()

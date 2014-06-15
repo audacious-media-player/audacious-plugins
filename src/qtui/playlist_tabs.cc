@@ -26,9 +26,10 @@
 #include "playlist_tabs.h"
 #include "playlist_tabs.moc"
 
-PlaylistTabs::PlaylistTabs (QTabWidget * parent) : QTabWidget (parent)
+PlaylistTabs::PlaylistTabs (QTabWidget * parent, FilterInput * filterEntry) : QTabWidget (parent)
 {
     setupUi (this);
+    this->filterEntry = filterEntry;
     populatePlaylists ();
 
     hook_associate ("playlist update",      (HookFunction) playlist_update_cb, this);
@@ -53,7 +54,7 @@ void PlaylistTabs::populatePlaylists ()
 
     for (int count = 0; count < playlists; count++)
     {
-        auto playlistWidget = new Playlist (0, aud_playlist_get_unique_id (count));
+        auto playlistWidget = new Playlist (0, aud_playlist_get_unique_id (count), filterEntry);
         addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count)));
     }
 }

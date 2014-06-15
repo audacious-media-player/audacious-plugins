@@ -30,6 +30,7 @@
 
 #include "playlist_tabs.h"
 #include "ui_main_window.h"
+#include "filter_input.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -49,6 +50,7 @@ private:
     QLabel * timeCounterLabel = nullptr;
     QTimer * timeCounter = nullptr;
     QSlider * slider = nullptr;
+    FilterInput * filterInput = nullptr;
     QMessageBox * progressDialog = nullptr;
     QMessageBox * errorDialog = nullptr;
     PlaylistTabs * playlistTabs = nullptr;

@@ -24,18 +24,20 @@
 
 #include "playlist.h"
 #include "ui_playlist_tabs.h"
+#include "filter_input.h"
 
 class PlaylistTabs : public QTabWidget, private Ui::PlaylistTabs
 {
     Q_OBJECT
 
 public:
-    PlaylistTabs (QTabWidget * parent = 0);
+    PlaylistTabs (QTabWidget * parent = 0, FilterInput * filterEntry = nullptr);
     ~PlaylistTabs ();
     Playlist * playlistWidget (int num);
     Playlist * activePlaylistWidget ();
 
 private:
+    FilterInput * filterEntry;
     void populatePlaylists ();
 
     static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)

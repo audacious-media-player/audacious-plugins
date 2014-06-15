@@ -22,13 +22,14 @@
 
 #include "playlist_model.h"
 #include "ui_playlist.h"
+#include "filter_input.h"
 
 class Playlist : public QFrame, private Ui::Playlist
 {
     Q_OBJECT
 
 public:
-    Playlist (QFrame * parent = 0, int uniqueId = -1);
+    Playlist (QFrame * parent = 0, int uniqueId = -1, FilterInput * filterEntry = nullptr);
     ~Playlist ();
     void scrollToCurrent ();
     void update (int type, int at, int count);
@@ -36,6 +37,8 @@ public:
 
 private:
     PlaylistModel * model;
+    QSortFilterProxyModel * proxyModel;
+    FilterInput * filterInput;
     int playlist ();
 
 protected:
@@ -43,6 +46,7 @@ protected:
 
 public slots:
     void doubleClicked (const QModelIndex &index);
+    void filterTrigger ();
 };
 
 #endif

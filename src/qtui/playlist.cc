@@ -28,16 +28,25 @@
 #include "playlist.moc"
 #include "playlist_model.h"
 
-Playlist::Playlist (QFrame * parent, int uniqueId) : QFrame (parent)
+Playlist::Playlist (QFrame * parent, int uniqueId, FilterInput * filterEntry) : QFrame (parent)
 {
     setupUi (this);
 
+    /* filter entry widget */
+    filterInput = filterEntry;
+
     model = new PlaylistModel (0, uniqueId);
+
+    /* setting up filtering model */
+    proxyModel = new QSortFilterProxyModel (this);
+    proxyModel->setSourceModel (model);
+    proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
+    connect (filterInput, &QTextEdit::textChanged, this, &Playlist::filterTrigger);
+    treeView->setModel (proxyModel);
 
     treeView->setAlternatingRowColors (true);
     treeView->setAttribute (Qt::WA_MacShowFocusRect, false);
     treeView->setIndentation (0);
-    treeView->setModel (model);
     treeView->setUniformRowHeights (true);
     treeView->setColumnWidth (0, 25);
     treeView->setColumnWidth (1, 300);
@@ -47,6 +56,11 @@ Playlist::Playlist (QFrame * parent, int uniqueId) : QFrame (parent)
     connect(treeView, &QTreeView::doubleClicked, this, &Playlist::doubleClicked);
 
     positionUpdate ();
+}
+
+void Playlist::filterTrigger ()
+{
+    proxyModel->setFilterRegExp (QRegExp (filterInput->toPlainText(), Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 Playlist::~Playlist ()
@@ -68,6 +82,15 @@ void Playlist::keyPressEvent(QKeyEvent *e)
     if (e->key() == Qt::Key_Left)
     {
         aud_drct_seek (aud_drct_get_time() - 5000);
+    }
+    if (e->modifiers() == Qt::ControlModifier and e->key() == Qt::Key_L)
+    {
+        scrollToCurrent();
+    }
+    if (e->modifiers() == Qt::ControlModifier and e->key() == Qt::Key_F)
+    {
+        filterInput->setFocusPolicy(Qt::StrongFocus);
+        filterInput->setFocus();
     }
 }
 
