@@ -72,7 +72,7 @@ void Playlist::keyPressEvent(QKeyEvent *e)
 {
     if (e->key() == Qt::Key_Enter or e->key() == Qt::Key_Return)
     {
-        aud_playlist_set_position (playlist (), treeView->currentIndex().row());
+        aud_playlist_set_position (playlist (), proxyModel->mapToSource (treeView->currentIndex ()).row ());
         aud_drct_play_playlist (playlist ());
     }
     if (e->key() == Qt::Key_Right)
@@ -96,7 +96,7 @@ void Playlist::keyPressEvent(QKeyEvent *e)
 
 void Playlist::doubleClicked (const QModelIndex &index)
 {
-    aud_playlist_set_position (playlist (), index.row ());
+    aud_playlist_set_position (playlist (), proxyModel->mapToSource (treeView->currentIndex ()).row ());
     aud_drct_play_playlist (playlist ());
 }
 
