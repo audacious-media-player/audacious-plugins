@@ -27,15 +27,19 @@ class PlaylistModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    PlaylistModel (QObject * parent = 0);
+    PlaylistModel (QObject * parent = 0, int id = -1);
     ~PlaylistModel ();
     int rowCount (const QModelIndex & parent = QModelIndex ()) const;
     int columnCount (const QModelIndex & parent = QModelIndex ()) const;
     QVariant data (const QModelIndex & index, int role = Qt::DisplayRole) const;
     QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    void setUniqueId (int id);
+    bool insertRows (int row, int count, const QModelIndex & parent = QModelIndex ());
+    bool removeRows (int row, int count, const QModelIndex & parent = QModelIndex ());
+    void updateRows (int row, int count);
+    void updateRow (int row);
     int playlist () const;
     int uniqueId;
+    int rows;
 };
 
 #endif

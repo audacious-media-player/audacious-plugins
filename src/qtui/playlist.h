@@ -30,6 +30,9 @@ class Playlist : public QFrame, private Ui::Playlist
 public:
     Playlist (QFrame * parent = 0, int uniqueId = -1);
     ~Playlist ();
+    void scrollToCurrent ();
+    void update (int type, int at, int count);
+    void positionUpdate ();
 
 private:
     PlaylistModel * model;

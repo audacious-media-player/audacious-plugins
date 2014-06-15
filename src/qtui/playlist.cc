@@ -32,8 +32,7 @@ Playlist::Playlist (QFrame * parent, int uniqueId) : QFrame (parent)
 {
     setupUi (this);
 
-    model = new PlaylistModel;
-    model->setUniqueId (uniqueId);
+    model = new PlaylistModel (0, uniqueId);
 
     treeView->setAlternatingRowColors (true);
     treeView->setAttribute (Qt::WA_MacShowFocusRect, false);
@@ -46,6 +45,8 @@ Playlist::Playlist (QFrame * parent, int uniqueId) : QFrame (parent)
     treeView->setColumnWidth (3, 200);
 
     connect(treeView, &QTreeView::doubleClicked, this, &Playlist::doubleClicked);
+
+    positionUpdate ();
 }
 
 Playlist::~Playlist ()
@@ -79,4 +80,32 @@ void Playlist::doubleClicked (const QModelIndex &index)
 int Playlist::playlist ()
 {
     return model->playlist ();
+}
+
+void Playlist::scrollToCurrent ()
+{
+    int row = aud_playlist_get_position (playlist ());
+    treeView->scrollTo (model->index (row));
+}
+
+void Playlist::update (int type, int at, int count)
+{
+    if (type == PLAYLIST_UPDATE_STRUCTURE)
+    {
+        int old_entries = model->rowCount ();
+        int entries = aud_playlist_entry_count (playlist ());
+
+        model->removeRows (at, old_entries - (entries - count));
+        model->insertRows (at, count);
+    }
+    else if (type == PLAYLIST_UPDATE_METADATA)
+        model->updateRows (at, count);
+}
+
+void Playlist::positionUpdate ()
+{
+    int row = aud_playlist_get_position (playlist ());
+    if (! aud_playlist_update_pending ())
+        model->updateRow (row);
+    scrollToCurrent ();
 }

@@ -20,6 +20,9 @@
 #ifndef PLAYLIST_TABS_H
 #define PLAYLIST_TABS_H
 
+#include <libaudcore/playlist.h>
+
+#include "playlist.h"
 #include "ui_playlist_tabs.h"
 
 class PlaylistTabs : public QTabWidget, private Ui::PlaylistTabs
@@ -29,9 +32,50 @@ class PlaylistTabs : public QTabWidget, private Ui::PlaylistTabs
 public:
     PlaylistTabs (QTabWidget * parent = 0);
     ~PlaylistTabs ();
+    Playlist * playlistWidget (int num);
 
 private:
     void populatePlaylists ();
+
+    static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
+    {
+        // int global_level = (int) (long) data;
+
+        // if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+        // TODO: Add/remove playlist tabs
+
+        int lists = aud_playlist_count ();
+
+        for (int list = 0; list < lists; list ++)
+        {
+            // if (global_level >= PLAYLIST_UPDATE_METADATA)
+            // TODO: Set playlist title
+
+            int at, count;
+            int level = aud_playlist_updated_range (list, & at, & count);
+
+            if (level)
+                tabWidget->playlistWidget (list)->update (level, at, count);
+        }
+    }
+
+    static void playlist_activate_cb (void * data, PlaylistTabs * tabWidget)
+    {
+
+    }
+
+    static void playlist_set_playing_cb (void * data, PlaylistTabs * tabWidget)
+    {
+
+    }
+
+    static void playlist_position_cb (void * data, PlaylistTabs * tabWidget)
+    {
+        int num = (int) (long) data;
+        auto playlistWidget = tabWidget->playlistWidget (num);
+        if (playlistWidget)
+            playlistWidget->positionUpdate ();
+    }
 };
 
 #endif

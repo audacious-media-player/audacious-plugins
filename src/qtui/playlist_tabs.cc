@@ -19,6 +19,7 @@
 
 #include <QtGui>
 
+#include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
@@ -29,10 +30,20 @@ PlaylistTabs::PlaylistTabs (QTabWidget * parent) : QTabWidget (parent)
 {
     setupUi (this);
     populatePlaylists ();
+
+    hook_associate ("playlist update",      (HookFunction) playlist_update_cb, this);
+    hook_associate ("playlist activate",    (HookFunction) playlist_activate_cb, this);
+    hook_associate ("playlist set playing", (HookFunction) playlist_set_playing_cb, this);
+    hook_associate ("playlist position",    (HookFunction) playlist_position_cb, this);
 }
 
 PlaylistTabs::~PlaylistTabs ()
 {
+    hook_dissociate ("playlist update",      (HookFunction) playlist_update_cb);
+    hook_dissociate ("playlist activate",    (HookFunction) playlist_activate_cb);
+    hook_dissociate ("playlist set playing", (HookFunction) playlist_set_playing_cb);
+    hook_dissociate ("playlist position",    (HookFunction) playlist_position_cb);
+
     // TODO: cleanup playlists
 }
 
@@ -45,4 +56,9 @@ void PlaylistTabs::populatePlaylists ()
         auto playlistWidget = new Playlist (0, aud_playlist_get_unique_id (count));
         addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count)));
     }
+}
+
+Playlist * PlaylistTabs::playlistWidget (int num)
+{
+    return (Playlist *) widget (num);
 }
