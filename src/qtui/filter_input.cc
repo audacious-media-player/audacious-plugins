@@ -23,7 +23,21 @@
 FilterInput::FilterInput ()
 {
     QLineEdit ("");
+    setStyleSheet (
+        "QLineEdit {"
+        "   padding: 2px 4px;"
+        "   border: 1px solid silver;"
+        "   border-radius: 10px;"
+        "   margin-right: 5px;"
+        "}"
+        "QLineEdit:focus {"
+        "   border: 1px solid gray;"
+        "}"
+    );
+    setAttribute (Qt::WA_MacShowFocusRect, false);
     setFocusPolicy (Qt::NoFocus); /* by default we want no focus here */
+    setClearButtonEnabled (true);
+    setPlaceholderText ("Search");
 }
 
 void FilterInput::keyPressEvent (QKeyEvent * e)
