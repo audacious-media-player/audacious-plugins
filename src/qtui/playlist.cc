@@ -109,7 +109,7 @@ int Playlist::playlist ()
 void Playlist::scrollToCurrent ()
 {
     int row = aud_playlist_get_position (playlist ());
-    auto index = model->index (row);
+    auto index = proxyModel->mapFromSource (model->index (row));
     treeView->setCurrentIndex (index);
     treeView->scrollTo (index);
 }
