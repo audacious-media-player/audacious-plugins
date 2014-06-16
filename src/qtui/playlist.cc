@@ -86,6 +86,21 @@ void Playlist::keyPressEvent (QKeyEvent * e)
         case Qt::Key_Space:
             aud_drct_play_pause ();
             break;
+        case Qt::Key_Z:
+            aud_drct_pl_prev ();
+            break;
+        case Qt::Key_X:
+            aud_drct_play ();
+            break;
+        case Qt::Key_C:
+            aud_drct_pause ();
+            break;
+        case Qt::Key_V:
+            aud_drct_stop ();
+            break;
+        case Qt::Key_B:
+            aud_drct_pl_next ();
+            break;
         }
         break;
     case Qt::ControlModifier:
