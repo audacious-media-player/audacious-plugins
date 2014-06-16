@@ -31,13 +31,15 @@ class PlaylistTabs : public QTabWidget, private Ui::PlaylistTabs
     Q_OBJECT
 
 public:
-    PlaylistTabs (QTabWidget * parent = 0, FilterInput * filterEntry = nullptr);
+    PlaylistTabs (QTabWidget * parent = 0);
     ~PlaylistTabs ();
     Playlist * playlistWidget (int num);
     Playlist * activePlaylistWidget ();
 
+public slots:
+    void filterTrigger (const QString &text);
+
 private:
-    FilterInput * filterEntry;
     void populatePlaylists ();
 
     static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)

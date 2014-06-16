@@ -20,9 +20,8 @@
 #include "filter_input.h"
 #include "filter_input.moc"
 
-FilterInput::FilterInput ()
+FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
 {
-    QLineEdit ("");
     setStyleSheet (
         "QLineEdit {"
         "   padding: 2px 4px;"
@@ -35,7 +34,6 @@ FilterInput::FilterInput ()
         "}"
     );
     setAttribute (Qt::WA_MacShowFocusRect, false);
-    setFocusPolicy (Qt::NoFocus); /* by default we want no focus here */
     setClearButtonEnabled (true);
     setPlaceholderText ("Search");
 }
@@ -46,7 +44,6 @@ void FilterInput::keyPressEvent (QKeyEvent * e)
     {
         e->ignore ();
         qDebug () << "Enter in filter input";
-        setFocusPolicy (Qt::NoFocus);
         focusNextChild ();
     }
     else

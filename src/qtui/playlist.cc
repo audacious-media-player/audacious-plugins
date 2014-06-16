@@ -28,18 +28,14 @@
 #include "playlist.moc"
 #include "playlist_model.h"
 
-Playlist::Playlist (QTreeView * parent, int uniqueId, FilterInput * filterEntry) : QTreeView (parent)
+Playlist::Playlist (QTreeView * parent, int uniqueId) : QTreeView (parent)
 {
-    /* filter entry widget */
-    filterInput = filterEntry;
-
     model = new PlaylistModel (0, uniqueId);
 
     /* setting up filtering model */
     proxyModel = new QSortFilterProxyModel (this);
     proxyModel->setSourceModel (model);
     proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
-    connect (filterInput, &QLineEdit::textChanged, this, &Playlist::filterTrigger);
 
     setModel (proxyModel);
     setAlternatingRowColors (true);
@@ -55,9 +51,9 @@ Playlist::Playlist (QTreeView * parent, int uniqueId, FilterInput * filterEntry)
     positionUpdate ();
 }
 
-void Playlist::filterTrigger ()
+void Playlist::setFilter (const QString &text)
 {
-    proxyModel->setFilterRegExp (QRegExp (filterInput->text (), Qt::CaseInsensitive, QRegExp::FixedString));
+    proxyModel->setFilterRegExp (QRegExp (text, Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 Playlist::~Playlist ()
@@ -109,10 +105,6 @@ void Playlist::keyPressEvent (QKeyEvent * e)
         case Qt::Key_L:
             scrollToCurrent ();
             break;
-        case Qt::Key_F:
-            filterInput->setFocusPolicy (Qt::StrongFocus);
-            filterInput->setFocus ();
-            break;
         }
         break;
     }
@@ -158,6 +150,7 @@ void Playlist::positionUpdate ()
     if (! aud_playlist_update_pending ())
     {
         model->updateRow (row);
+        setFocus ();
         scrollToCurrent ();
     }
 }

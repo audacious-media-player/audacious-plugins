@@ -40,6 +40,9 @@ public:
     MainWindow (QMainWindow * parent = 0);
     ~MainWindow ();
 
+protected:
+    void keyPressEvent (QKeyEvent * e);
+
 public slots:
     void timeCounterSlot ();
     void sliderValueChanged (int value);

@@ -60,7 +60,7 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     toolBar->insertWidget (actionRepeat, slider);
     toolBar->insertWidget (actionRepeat, timeCounterLabel);
 
-    playlistTabs = new PlaylistTabs (0, filterInput);
+    playlistTabs = new PlaylistTabs;
     playlistTabs->setFocusPolicy (Qt::NoFocus);
     mainLayout->addWidget (playlistTabs);
 
@@ -75,6 +75,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     connect (slider,      &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);
     connect (slider,      &QSlider::sliderPressed,  this, &MainWindow::sliderPressed);
     connect (slider,      &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
+
+    connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
     hook_associate ("title change",     (HookFunction) title_change_cb, this);
     hook_associate ("playback begin",   (HookFunction) playback_begin_cb, this);
@@ -216,4 +218,21 @@ void MainWindow::createErrorDialog (const QString &message)
     }
     errorDialog->setText (message);
     errorDialog->show ();
+}
+
+void MainWindow::keyPressEvent (QKeyEvent * e)
+{
+    switch (e->modifiers ())
+    {
+    case Qt::ControlModifier:
+        switch (e->key ())
+        {
+        case Qt::Key_F:
+            filterInput->setFocus ();
+            break;
+        }
+        break;
+    }
+
+    QMainWindow::keyPressEvent (e);
 }

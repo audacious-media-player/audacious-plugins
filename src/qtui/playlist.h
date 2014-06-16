@@ -31,25 +31,22 @@ class Playlist : public QTreeView
     Q_OBJECT
 
 public:
-    Playlist (QTreeView * parent = 0, int uniqueId = -1, FilterInput * filterEntry = nullptr);
+    Playlist (QTreeView * parent = 0, int uniqueId = -1);
     ~Playlist ();
     void scrollToCurrent ();
     void update (int type, int at, int count);
     void positionUpdate ();
     void playCurrentIndex ();
+    void setFilter (const QString &text);
 
 private:
     PlaylistModel * model;
     QSortFilterProxyModel * proxyModel;
-    FilterInput * filterInput;
     int playlist ();
 
 protected:
     void keyPressEvent (QKeyEvent * e); /* override default handler */
     void mouseDoubleClickEvent (QMouseEvent * event);
-
-public slots:
-    void filterTrigger ();
 };
 
 #endif
