@@ -83,6 +83,9 @@ void Playlist::keyPressEvent (QKeyEvent * e)
         case Qt::Key_Left:
             aud_drct_seek (aud_drct_get_time () - 5000);
             break;
+        case Qt::Key_Space:
+            aud_drct_play_pause ();
+            break;
         }
         break;
     case Qt::ControlModifier:
