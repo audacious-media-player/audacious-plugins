@@ -60,37 +60,38 @@ Playlist::Playlist (QFrame * parent, int uniqueId, FilterInput * filterEntry) : 
 
 void Playlist::filterTrigger ()
 {
-    proxyModel->setFilterRegExp (QRegExp (filterInput->toPlainText(), Qt::CaseInsensitive, QRegExp::FixedString));
+    proxyModel->setFilterRegExp (QRegExp (filterInput->toPlainText (), Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 Playlist::~Playlist ()
 {
     delete model;
+    delete proxyModel;
 }
 
-void Playlist::keyPressEvent(QKeyEvent *e)
+void Playlist::keyPressEvent(QKeyEvent * e)
 {
-    if (e->key() == Qt::Key_Enter or e->key() == Qt::Key_Return)
+    if (e->key () == Qt::Key_Enter or e->key () == Qt::Key_Return)
     {
         aud_playlist_set_position (playlist (), proxyModel->mapToSource (treeView->currentIndex ()).row ());
         aud_drct_play_playlist (playlist ());
     }
-    if (e->key() == Qt::Key_Right)
+    if (e->key () == Qt::Key_Right)
     {
-        aud_drct_seek (aud_drct_get_time() + 5000);
+        aud_drct_seek (aud_drct_get_time () + 5000);
     }
-    if (e->key() == Qt::Key_Left)
+    if (e->key () == Qt::Key_Left)
     {
-        aud_drct_seek (aud_drct_get_time() - 5000);
+        aud_drct_seek (aud_drct_get_time () - 5000);
     }
-    if (e->modifiers() == Qt::ControlModifier and e->key() == Qt::Key_L)
+    if (e->modifiers () == Qt::ControlModifier and e->key () == Qt::Key_L)
     {
-        scrollToCurrent();
+        scrollToCurrent ();
     }
-    if (e->modifiers() == Qt::ControlModifier and e->key() == Qt::Key_F)
+    if (e->modifiers () == Qt::ControlModifier and e->key () == Qt::Key_F)
     {
-        filterInput->setFocusPolicy(Qt::StrongFocus);
-        filterInput->setFocus();
+        filterInput->setFocusPolicy (Qt::StrongFocus);
+        filterInput->setFocus ();
     }
 }
 

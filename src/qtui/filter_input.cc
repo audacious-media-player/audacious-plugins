@@ -18,7 +18,7 @@
  */
 
 #include "filter_input.h"
-
+#include "filter_input.moc"
 
 FilterInput::FilterInput ()
 {
@@ -30,14 +30,15 @@ FilterInput::FilterInput ()
     setUndoRedoEnabled (true);
 }
 
-void FilterInput::keyPressEvent (QKeyEvent *e)
+void FilterInput::keyPressEvent (QKeyEvent * e)
 {
-    if (e->key() == Qt::Key_Enter or e->key() == Qt::Key_Return)
+    if (e->key () == Qt::Key_Enter or e->key () == Qt::Key_Return)
     {
         e->ignore ();
         qDebug () << "Enter in filter input";
         setFocusPolicy (Qt::NoFocus);
         focusNextChild ();
-    } else
+    }
+    else
         QTextEdit::keyPressEvent (e);
 }

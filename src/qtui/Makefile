@@ -14,7 +14,6 @@ SRCS = qtui.cc \
        ui_main_window.h \
        ui_playlist.h \
        ui_playlist_tabs.h \
-       filter_input.h \
        utils.cc
 
 include ../../buildsys.mk

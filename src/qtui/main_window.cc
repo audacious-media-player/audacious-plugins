@@ -23,12 +23,11 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 
+#include "filter_input.h"
 #include "main_window.h"
 #include "main_window.moc"
 #include "playlist.h"
 #include "utils.h"
-#include "filter_input.h"
-#include "filter_input.moc"
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
@@ -43,9 +42,9 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     setUnifiedTitleAndToolBarOnMac (true);
 
-    filterInput = new FilterInput();
+    filterInput = new FilterInput ();
 
-    toolBar->addWidget(filterInput);
+    toolBar->addWidget (filterInput);
 
     slider = new QSlider (Qt::Horizontal);
     slider->setDisabled (true);
@@ -61,9 +60,9 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     toolBar->insertWidget (actionRepeat, slider);
     toolBar->insertWidget (actionRepeat, timeCounterLabel);
 
-    playlistTabs = new PlaylistTabs(0, filterInput);
+    playlistTabs = new PlaylistTabs (0, filterInput);
+    playlistTabs->setFocusPolicy (Qt::NoFocus);
     mainLayout->addWidget (playlistTabs);
-    playlistTabs->setFocusPolicy(Qt::NoFocus);
 
     connect (actionOpen,      &QAction::triggered, Utils::openFilesDialog);
     connect (actionAdd,       &QAction::triggered, Utils::addFilesDialog);

@@ -31,8 +31,7 @@ public:
     FilterInput ();
 
 protected:
-    virtual void keyPressEvent(QKeyEvent *e); /* override default handler */
-
+    virtual void keyPressEvent (QKeyEvent * e); /* override default handler */
 };
 
 #endif
