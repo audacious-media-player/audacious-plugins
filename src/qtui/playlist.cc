@@ -28,10 +28,8 @@
 #include "playlist.moc"
 #include "playlist_model.h"
 
-Playlist::Playlist (QFrame * parent, int uniqueId, FilterInput * filterEntry) : QFrame (parent)
+Playlist::Playlist (QTreeView * parent, int uniqueId, FilterInput * filterEntry) : QTreeView (parent)
 {
-    setupUi (this);
-
     /* filter entry widget */
     filterInput = filterEntry;
 
@@ -42,18 +40,17 @@ Playlist::Playlist (QFrame * parent, int uniqueId, FilterInput * filterEntry) : 
     proxyModel->setSourceModel (model);
     proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
     connect (filterInput, &QTextEdit::textChanged, this, &Playlist::filterTrigger);
-    treeView->setModel (proxyModel);
 
-    treeView->setAlternatingRowColors (true);
-    treeView->setAttribute (Qt::WA_MacShowFocusRect, false);
-    treeView->setIndentation (0);
-    treeView->setUniformRowHeights (true);
-    treeView->setColumnWidth (0, 25);
-    treeView->setColumnWidth (1, 300);
-    treeView->setColumnWidth (2, 150);
-    treeView->setColumnWidth (3, 200);
-
-    connect(treeView, &QTreeView::doubleClicked, this, &Playlist::doubleClicked);
+    setModel (proxyModel);
+    setAlternatingRowColors (true);
+    setAttribute (Qt::WA_MacShowFocusRect, false);
+    setIndentation (0);
+    setUniformRowHeights (true);
+    setFrameShape (QFrame::NoFrame);
+    setColumnWidth (0, 25);
+    setColumnWidth (1, 300);
+    setColumnWidth (2, 150);
+    setColumnWidth (3, 200);
 
     positionUpdate ();
 }
@@ -69,7 +66,7 @@ Playlist::~Playlist ()
     delete proxyModel;
 }
 
-void Playlist::keyPressEvent(QKeyEvent * e)
+void Playlist::keyPressEvent (QKeyEvent * e)
 {
     if (e->key () == Qt::Key_Enter or e->key () == Qt::Key_Return)
     {
@@ -92,9 +89,11 @@ void Playlist::keyPressEvent(QKeyEvent * e)
         filterInput->setFocusPolicy (Qt::StrongFocus);
         filterInput->setFocus ();
     }
+
+     QTreeView::keyPressEvent (e);
 }
 
-void Playlist::doubleClicked (const QModelIndex &index)
+void Playlist::mouseDoubleClickEvent (QMouseEvent * event)
 {
     playCurrentIndex ();
 }
@@ -108,8 +107,8 @@ void Playlist::scrollToCurrent ()
 {
     int row = aud_playlist_get_position (playlist ());
     auto index = proxyModel->mapFromSource (model->index (row));
-    treeView->setCurrentIndex (index);
-    treeView->scrollTo (index);
+    setCurrentIndex (index);
+    scrollTo (index);
 }
 
 void Playlist::update (int type, int at, int count)
@@ -138,6 +137,6 @@ void Playlist::positionUpdate ()
 
 void Playlist::playCurrentIndex ()
 {
-    aud_playlist_set_position (playlist (), proxyModel->mapToSource (treeView->currentIndex ()).row ());
+    aud_playlist_set_position (playlist (), proxyModel->mapToSource (currentIndex ()).row ());
     aud_drct_play_playlist (playlist ());
 }

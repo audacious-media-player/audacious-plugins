@@ -20,16 +20,18 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
+#include <QtGui>
+#include <QTreeView>
+
 #include "playlist_model.h"
-#include "ui_playlist.h"
 #include "filter_input.h"
 
-class Playlist : public QFrame, private Ui::Playlist
+class Playlist : public QTreeView
 {
     Q_OBJECT
 
 public:
-    Playlist (QFrame * parent = 0, int uniqueId = -1, FilterInput * filterEntry = nullptr);
+    Playlist (QTreeView * parent = 0, int uniqueId = -1, FilterInput * filterEntry = nullptr);
     ~Playlist ();
     void scrollToCurrent ();
     void update (int type, int at, int count);
@@ -43,10 +45,10 @@ private:
     int playlist ();
 
 protected:
-    void keyPressEvent(QKeyEvent *e); /* override default handler */
+    void keyPressEvent (QKeyEvent * e); /* override default handler */
+    void mouseDoubleClickEvent (QMouseEvent * event);
 
 public slots:
-    void doubleClicked (const QModelIndex &index);
     void filterTrigger ();
 };
 
