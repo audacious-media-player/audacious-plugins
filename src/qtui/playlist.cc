@@ -85,7 +85,9 @@ int Playlist::playlist ()
 void Playlist::scrollToCurrent ()
 {
     int row = aud_playlist_get_position (playlist ());
-    treeView->scrollTo (model->index (row));
+    auto index = model->index (row);
+    treeView->setCurrentIndex (index);
+    treeView->scrollTo (index);
 }
 
 void Playlist::update (int type, int at, int count)
@@ -106,6 +108,8 @@ void Playlist::positionUpdate ()
 {
     int row = aud_playlist_get_position (playlist ());
     if (! aud_playlist_update_pending ())
+    {
         model->updateRow (row);
-    scrollToCurrent ();
+        scrollToCurrent ();
+    }
 }
