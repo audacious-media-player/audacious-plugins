@@ -34,6 +34,7 @@ public:
     void scrollToCurrent ();
     void update (int type, int at, int count);
     void positionUpdate ();
+    void playCurrentIndex ();
 
 private:
     PlaylistModel * model;
