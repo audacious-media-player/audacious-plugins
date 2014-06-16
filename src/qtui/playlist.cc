@@ -68,26 +68,35 @@ Playlist::~Playlist ()
 
 void Playlist::keyPressEvent (QKeyEvent * e)
 {
-    if (e->key () == Qt::Key_Enter or e->key () == Qt::Key_Return)
+    switch (e->modifiers ())
     {
-        playCurrentIndex ();
-    }
-    if (e->key () == Qt::Key_Right)
-    {
-        aud_drct_seek (aud_drct_get_time () + 5000);
-    }
-    if (e->key () == Qt::Key_Left)
-    {
-        aud_drct_seek (aud_drct_get_time () - 5000);
-    }
-    if (e->modifiers () == Qt::ControlModifier and e->key () == Qt::Key_L)
-    {
-        scrollToCurrent ();
-    }
-    if (e->modifiers () == Qt::ControlModifier and e->key () == Qt::Key_F)
-    {
-        filterInput->setFocusPolicy (Qt::StrongFocus);
-        filterInput->setFocus ();
+    case Qt::NoModifier:
+        switch (e->key ())
+        {
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            playCurrentIndex ();
+            break;
+        case Qt::Key_Right:
+            aud_drct_seek (aud_drct_get_time () + 5000);
+            break;
+        case Qt::Key_Left:
+            aud_drct_seek (aud_drct_get_time () - 5000);
+            break;
+        }
+        break;
+    case Qt::ControlModifier:
+        switch (e->key ())
+        {
+        case Qt::Key_L:
+            scrollToCurrent ();
+            break;
+        case Qt::Key_F:
+            filterInput->setFocusPolicy (Qt::StrongFocus);
+            filterInput->setFocus ();
+            break;
+        }
+        break;
     }
 
      QTreeView::keyPressEvent (e);
