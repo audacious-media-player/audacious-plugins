@@ -39,7 +39,7 @@ Playlist::Playlist (QTreeView * parent, int uniqueId, FilterInput * filterEntry)
     proxyModel = new QSortFilterProxyModel (this);
     proxyModel->setSourceModel (model);
     proxyModel->setFilterKeyColumn (-1); /* filter by all columns */
-    connect (filterInput, &QTextEdit::textChanged, this, &Playlist::filterTrigger);
+    connect (filterInput, &QLineEdit::textChanged, this, &Playlist::filterTrigger);
 
     setModel (proxyModel);
     setAlternatingRowColors (true);
@@ -57,7 +57,7 @@ Playlist::Playlist (QTreeView * parent, int uniqueId, FilterInput * filterEntry)
 
 void Playlist::filterTrigger ()
 {
-    proxyModel->setFilterRegExp (QRegExp (filterInput->toPlainText (), Qt::CaseInsensitive, QRegExp::FixedString));
+    proxyModel->setFilterRegExp (QRegExp (filterInput->text (), Qt::CaseInsensitive, QRegExp::FixedString));
 }
 
 Playlist::~Playlist ()

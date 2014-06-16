@@ -21,9 +21,9 @@
 #define FILTER_INPUT_WIDGET_H
 
 #include <QtGui>
-#include <QTextEdit>
+#include <QLineEdit>
 
-class FilterInput : public QTextEdit
+class FilterInput : public QLineEdit
 {
     Q_OBJECT
 

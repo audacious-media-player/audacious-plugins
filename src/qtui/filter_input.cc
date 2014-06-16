@@ -22,12 +22,8 @@
 
 FilterInput::FilterInput ()
 {
-    QTextEdit ("");
+    QLineEdit ("");
     setFocusPolicy (Qt::NoFocus); /* by default we want no focus here */
-    setFixedHeight (24);
-    setFixedWidth (120);
-    setTabChangesFocus (true);
-    setUndoRedoEnabled (true);
 }
 
 void FilterInput::keyPressEvent (QKeyEvent * e)
@@ -40,5 +36,5 @@ void FilterInput::keyPressEvent (QKeyEvent * e)
         focusNextChild ();
     }
     else
-        QTextEdit::keyPressEvent (e);
+        QLineEdit::keyPressEvent (e);
 }
