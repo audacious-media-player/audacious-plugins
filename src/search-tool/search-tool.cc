@@ -22,27 +22,38 @@
 
 #include <gtk/gtk.h>
 
-#include <libaudcore/i18n.h>
-#include <libaudcore/runtime.h>
-#include <libaudcore/playlist.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/multihash.h>
+#include <libaudcore/runtime.h>
 #include <libaudgui/list.h>
 #include <libaudgui/menu.h>
 
-#define MAX_RESULTS 100
+#define MAX_RESULTS 20
 #define SEARCH_DELAY 300
 
-enum {ARTIST, ALBUM, TITLE, FIELDS};
+enum {GENRE = 0, ARTIST, ALBUM, TITLE, FIELDS};
+
+struct Key
+{
+    int field;
+    String name;
+
+    bool operator== (const Key & b) const
+        { return field == b.field && name == b.name; }
+    unsigned hash () const
+        { return field + name.hash (); }
+};
 
 struct Item
 {
     int field;
     String name, folded;
     Item * parent;
-    SimpleHash<String, Item> children;
+    SimpleHash<Key, Item> children;
     Index<int> matches;
 
     Item (int field, const String & name, Item * parent) :
@@ -56,7 +67,7 @@ struct Item
 };
 
 struct SearchState {
-    Index<const Item *> items[FIELDS];
+    Index<const Item *> items;
     int mask;
 };
 
@@ -64,17 +75,18 @@ static int playlist_id;
 static Index<String> search_terms;
 
 static SimpleHash<String, bool> added_table;
-static SimpleHash<String, Item> database;
+static SimpleHash<Key, Item> database;
 static bool database_valid;
 static Index<const Item *> items;
+static int hidden_items;
 static Index<bool> selection;
 
 static bool_t adding;
 static int search_source;
 
-static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list;
+static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list, * stats_label;
 
-static void find_playlist (void)
+static void find_playlist ()
 {
     playlist_id = -1;
 
@@ -86,7 +98,7 @@ static void find_playlist (void)
     }
 }
 
-static int create_playlist (void)
+static int create_playlist ()
 {
     int list = aud_playlist_get_blank ();
     aud_playlist_set_title (list, _("Library"));
@@ -121,7 +133,7 @@ static void set_search_phrase (const char * phrase)
     search_terms = str_list_to_index (str_tolower_utf8 (phrase), " ");
 }
 
-static String get_path (void)
+static String get_path ()
 {
     String path1 = aud_get_str ("search-tool", "path");
     if (g_file_test (path1, G_FILE_TEST_EXISTS))
@@ -134,9 +146,10 @@ static String get_path (void)
     return String (g_get_home_dir ());
 }
 
-static void destroy_database (void)
+static void destroy_database ()
 {
     items.clear ();
+    hidden_items = 0;
     database.clear ();
     database_valid = false;
 }
@@ -149,50 +162,45 @@ static void create_database (int list)
 
     for (int e = 0; e < entries; e ++)
     {
-        String title, artist, album;
-        Item * artist_item, * album_item, * title_item;
+        String fields[FIELDS];
 
-        aud_playlist_entry_describe (list, e, title, artist, album, TRUE);
+        aud_playlist_entry_describe (list, e, fields[TITLE], fields[ARTIST], fields[ALBUM], true);
+        fields[GENRE] = aud_playlist_entry_get_tuple (list, e, true).get_str (FIELD_GENRE);
 
-        if (! title)
+        if (! fields[TITLE])
             continue;
 
-        if (! artist)
-            artist = String (_("Unknown Artist"));
-        if (! album)
-            album = String (_("Unknown Album"));
+        Item * parent = nullptr;
+        SimpleHash<Key, Item> * hash = & database;
 
-        artist_item = database.lookup (artist);
+        for (int f = 0; f < FIELDS; f ++)
+        {
+            if (fields[f])
+            {
+                Key key = {f, fields[f]};
+                Item * item = hash->lookup (key);
 
-        if (! artist_item)
-            artist_item = database.add (artist, Item (ARTIST, artist, NULL));
+                if (! item)
+                    item = hash->add (key, Item (f, fields[f], parent));
 
-        artist_item->matches.append (e);
+                item->matches.append (e);
 
-        album_item = artist_item->children.lookup (album);
-
-        if (! album_item)
-            album_item = artist_item->children.add (album, Item (ALBUM, album, artist_item));
-
-        album_item->matches.append (e);
-
-        title_item = album_item->children.lookup (title);
-
-        if (! title_item)
-            title_item = album_item->children.add (title, Item (TITLE, title, album_item));
-
-        title_item->matches.append (e);
+                /* genre is outside the normal hierarchy */
+                if (f != GENRE)
+                {
+                    parent = item;
+                    hash = & item->children;
+                }
+            }
+        }
     }
 
     database_valid = true;
 }
 
-static void search_cb (const String & key, Item & item, void * _state)
+static void search_cb (const Key & key, Item & item, void * _state)
 {
     SearchState * state = (SearchState *) _state;
-
-    if (state->items[item.field].len () > MAX_RESULTS)
-        return;
 
     int oldmask = state->mask;
     int count = search_terms.len ();
@@ -208,8 +216,9 @@ static void search_cb (const String & key, Item & item, void * _state)
             break; /* quit early if there are no children to search */
     }
 
-    if (! state->mask)
-        state->items[item.field].append (& item);
+    /* adding an item with exactly one child is redundant, so avoid it */
+    if (! state->mask && item.children.n_items () != 1)
+        state->items.append (& item);
 
     item.children.iterate (search_cb, state);
 
@@ -218,12 +227,35 @@ static void search_cb (const String & key, Item & item, void * _state)
 
 static int item_compare (const Item * const & a, const Item * const & b, void *)
 {
-    return str_compare (a->name, b->name);
+    if (a->field < b->field)
+        return -1;
+    if (a->field > b->field)
+        return 1;
+
+    int val = str_compare (a->name, b->name);
+    if (val)
+        return val;
+
+    if (a->parent)
+        return b->parent ? item_compare (a->parent, b->parent, nullptr) : 1;
+    else
+        return b->parent ? -1 : 0;
 }
 
-static void do_search (void)
+static int item_compare_pass1 (const Item * const & a, const Item * const & b, void *)
+{
+    if (a->matches.len () > b->matches.len ())
+        return -1;
+    if (a->matches.len () < b->matches.len ())
+        return 1;
+
+    return item_compare (a, b, nullptr);
+}
+
+static void do_search ()
 {
     items.clear ();
+    hidden_items = 0;
 
     if (! database_valid)
         return;
@@ -235,25 +267,24 @@ static void do_search (void)
 
     database.iterate (search_cb, & state);
 
-    int total = 0;
+    items = std::move (state.items);
 
-    for (int f = 0; f < FIELDS; f ++)
+    /* first sort by number of songs per item */
+    items.sort (item_compare_pass1, nullptr);
+
+    /* limit to items with most songs */
+    if (items.len () > MAX_RESULTS)
     {
-        int count = state.items[f].len ();
-        if (count > MAX_RESULTS - total)
-            count = MAX_RESULTS - total;
-
-        if (count)
-        {
-            state.items[f].sort (item_compare, nullptr);
-            items.move_from (state.items[f], 0, -1, count, true, false);
-            total += count;
-        }
+        hidden_items = items.len () - MAX_RESULTS;
+        items.remove (MAX_RESULTS, -1);
     }
 
+    /* sort by item type, then item name */
+    items.sort (item_compare, nullptr);
+
     selection.remove (0, -1);
-    selection.insert (0, total);
-    if (total > 0)
+    selection.insert (0, items.len ());
+    if (items.len ())
         selection[0] = true;
 }
 
@@ -264,7 +295,7 @@ static bool_t filter_cb (const char * filename, void * unused)
 
 static void begin_add (const char * path)
 {
-    int list = get_playlist (FALSE, FALSE);
+    int list = get_playlist (false, false);
 
     if (list < 0)
         list = create_playlist ();
@@ -287,11 +318,11 @@ static void begin_add (const char * path)
 
         if (g_str_has_prefix (filename, uri) && ! added_table.lookup (filename))
         {
-            aud_playlist_entry_set_selected (list, entry, FALSE);
+            aud_playlist_entry_set_selected (list, entry, false);
             added_table.add (filename, true);
         }
         else
-            aud_playlist_entry_set_selected (list, entry, TRUE);
+            aud_playlist_entry_set_selected (list, entry, true);
     }
 
     aud_playlist_delete_selected (list);
@@ -299,20 +330,18 @@ static void begin_add (const char * path)
 
     Index<PlaylistAddItem> add;
     add.append ({String (uri)});
-    aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, NULL, FALSE);
+    aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, nullptr, false);
 
-    adding = TRUE;
+    adding = true;
 }
 
-static void show_hide_widgets (void)
+static void show_hide_widgets ()
 {
-    if (! help_label || ! wait_label || ! scrolled)
-        return;
-
     if (playlist_id < 0)
     {
         gtk_widget_hide (wait_label);
         gtk_widget_hide (scrolled);
+        gtk_widget_hide (stats_label);
         gtk_widget_show (help_label);
     }
     else
@@ -323,24 +352,36 @@ static void show_hide_widgets (void)
         {
             gtk_widget_hide (wait_label);
             gtk_widget_show (scrolled);
+            gtk_widget_show (stats_label);
         }
         else
         {
             gtk_widget_hide (scrolled);
+            gtk_widget_hide (stats_label);
             gtk_widget_show (wait_label);
         }
     }
 }
 
-static int search_timeout (void * unused)
+static int search_timeout (void * unused = nullptr)
 {
     do_search ();
 
-    if (results_list)
+    audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
+    audgui_list_insert_rows (results_list, 0, items.len ());
+
+    int total = items.len () + hidden_items;
+    StringBuf stats = str_printf (dngettext (PACKAGE, "%d result",
+     "%d results", total), total);
+
+    if (hidden_items)
     {
-        audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
-        audgui_list_insert_rows (results_list, 0, items.len ());
+        str_insert (stats, -1, " ");
+        stats.combine (str_printf (dngettext (PACKAGE, "(%d hidden)",
+         "(%d hidden)", hidden_items), hidden_items));
     }
+
+    gtk_label_set_text ((GtkLabel *) stats_label, stats);
 
     if (search_source)
     {
@@ -348,31 +389,32 @@ static int search_timeout (void * unused)
         search_source = 0;
     }
 
-    return FALSE;
+    return false;
 }
 
-static void schedule_search (void)
+static void schedule_search ()
 {
     if (search_source)
         g_source_remove (search_source);
 
-    search_source = g_timeout_add (SEARCH_DELAY, search_timeout, NULL);
+    search_source = g_timeout_add (SEARCH_DELAY, search_timeout, nullptr);
 }
 
-static void update_database (void)
+static void update_database ()
 {
-    int list = get_playlist (TRUE, TRUE);
+    int list = get_playlist (true, true);
 
     if (list >= 0)
     {
         create_database (list);
-        schedule_search ();
+        search_timeout ();
     }
     else
+    {
         destroy_database ();
-
-    if (results_list)
         audgui_list_delete_rows (results_list, 0, audgui_list_row_count (results_list));
+        gtk_label_set_text ((GtkLabel *) stats_label, "");
+    }
 
     show_hide_widgets ();
 }
@@ -381,11 +423,11 @@ static void add_complete_cb (void * unused, void * unused2)
 {
     if (adding)
     {
-        int list = get_playlist (TRUE, FALSE);
+        int list = get_playlist (true, false);
 
         if (list >= 0 && ! aud_playlist_add_in_progress (list))
         {
-            adding = FALSE;
+            adding = false;
             added_table.clear ();
             aud_playlist_sort_by_scheme (list, PLAYLIST_SORT_PATH);
         }
@@ -407,7 +449,7 @@ static void playlist_update_cb (void * data, void * unused)
         update_database ();
     else
     {
-        int list = get_playlist (TRUE, TRUE);
+        int list = get_playlist (true, true);
         int at, count;
 
         if (list < 0 || aud_playlist_updated_range (list, & at, & count) >=
@@ -416,20 +458,18 @@ static void playlist_update_cb (void * data, void * unused)
     }
 }
 
-static bool_t search_init (void)
+static void search_init ()
 {
     find_playlist ();
 
     update_database ();
 
-    hook_associate ("playlist add complete", add_complete_cb, NULL);
-    hook_associate ("playlist scan complete", scan_complete_cb, NULL);
-    hook_associate ("playlist update", playlist_update_cb, NULL);
-
-    return TRUE;
+    hook_associate ("playlist add complete", add_complete_cb, nullptr);
+    hook_associate ("playlist scan complete", scan_complete_cb, nullptr);
+    hook_associate ("playlist update", playlist_update_cb, nullptr);
 }
 
-static void search_cleanup (void)
+static void search_cleanup ()
 {
     hook_dissociate ("playlist add complete", add_complete_cb);
     hook_dissociate ("playlist scan complete", scan_complete_cb);
@@ -451,6 +491,9 @@ static void search_cleanup (void)
 
 static void do_add (bool_t play, String & title)
 {
+    if (search_source)
+        search_timeout ();
+
     int list = aud_playlist_by_unique_id (playlist_id);
     int n_items = items.len ();
     int n_selected = 0;
@@ -468,7 +511,7 @@ static void do_add (bool_t play, String & title)
         {
             PlaylistAddItem & item = add.append ();
             item.filename = aud_playlist_entry_get_filename (list, entry);
-            item.tuple = aud_playlist_entry_get_tuple (list, entry, TRUE);
+            item.tuple = aud_playlist_entry_get_tuple (list, entry, true);
         }
 
         n_selected ++;
@@ -482,39 +525,39 @@ static void do_add (bool_t play, String & title)
     aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, std::move (add), play);
 }
 
-static void action_play (void)
+static void action_play ()
 {
     int list = aud_playlist_get_temporary ();
     aud_playlist_set_active (list);
 
-    if (aud_get_bool (NULL, "clear_playlist"))
+    if (aud_get_bool (nullptr, "clear_playlist"))
         aud_playlist_entry_delete (list, 0, aud_playlist_entry_count (list));
     else
         aud_playlist_queue_delete (list, 0, aud_playlist_queue_count (list));
 
     String title;
-    do_add (TRUE, title);
+    do_add (true, title);
 }
 
-static void action_create_playlist (void)
+static void action_create_playlist ()
 {
     aud_playlist_insert (-1);
     aud_playlist_set_active (aud_playlist_count () - 1);
 
     String title;
-    do_add (FALSE, title);
+    do_add (false, title);
 
     if (title)
         aud_playlist_set_title (aud_playlist_count () - 1, title);
 }
 
-static void action_add_to_playlist (void)
+static void action_add_to_playlist ()
 {
     if (aud_playlist_by_unique_id (playlist_id) == aud_playlist_get_active ())
         return;
 
     String title;
-    do_add (FALSE, title);
+    do_add (false, title);
 }
 
 static void list_get_value (void * user, int row, int column, GValue * value)
@@ -522,42 +565,35 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     g_return_if_fail (row >= 0 && row < items.len ());
 
     const Item * item = items[row];
-    char * string = NULL;
+    StringBuf string = str_concat ({item->name, "\n"});
 
-    switch (item->field)
+    if (item->field != TITLE)
     {
-        int albums;
-        char scratch[128];
-
-    case TITLE:
-        string = g_strdup_printf (_("%s\n on %s by %s"),
-         (const char *) item->name, (const char *) item->parent->name,
-         (const char *) item->parent->parent->name);
-        break;
-
-    case ARTIST:
-        albums = item->children.n_items ();
-        snprintf (scratch, sizeof scratch, dngettext (PACKAGE, "%d album",
-         "%d albums", albums), albums);
-        string = g_strdup_printf (dngettext (PACKAGE, "%s\n %s, %d song",
-         "%s\n %s, %d songs", item->matches.len ()), (const char *) item->name,
-         scratch, item->matches.len ());
-        break;
-
-    case ALBUM:
-        string = g_strdup_printf (dngettext (PACKAGE, "%s\n %d song by %s",
-         "%s\n %d songs by %s", item->matches.len ()),
-         (const char *) item->name, item->matches.len (),
-         (const char *) item->parent->name);
-        break;
+        str_insert (string, -1, " ");
+        string.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
+         item->matches.len ()), item->matches.len ()));
     }
 
-    g_value_take_string (value, string);
+    if (item->field == GENRE)
+    {
+        str_insert (string, -1, " ");
+        str_insert (string, -1, _("of this genre"));
+    }
+
+    while ((item = item->parent))
+    {
+        str_insert (string, -1, " ");
+        str_insert (string, -1, (item->field == ALBUM) ? _("on") : _("by"));
+        str_insert (string, -1, " ");
+        str_insert (string, -1, item->name);
+    }
+
+    g_value_set_string (value, string);
 }
 
 static bool_t list_get_selected (void * user, int row)
 {
-    g_return_val_if_fail (row >= 0 && row < selection.len (), FALSE);
+    g_return_val_if_fail (row >= 0 && row < selection.len (), false);
     return selection[row];
 }
 
@@ -618,7 +654,7 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
     update_database ();
 }
 
-static void * search_get_widget (void)
+static void * search_get_widget ()
 {
     GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
@@ -655,6 +691,11 @@ static void * search_get_widget (void)
     audgui_list_add_column (results_list, NULL, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
+    stats_label = gtk_label_new ("");
+    g_signal_connect (stats_label, "destroy", (GCallback) gtk_widget_destroyed, & stats_label);
+    gtk_widget_set_no_show_all (stats_label, TRUE);
+    gtk_box_pack_start ((GtkBox *) vbox, stats_label, FALSE, FALSE, 0);
+
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
@@ -670,6 +711,9 @@ static void * search_get_widget (void)
     gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
     gtk_box_pack_start ((GtkBox *) hbox, button, FALSE, FALSE, 0);
 
+    search_init ();
+
+    g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, NULL);
     g_signal_connect (entry, "changed", (GCallback) entry_cb, NULL);
     g_signal_connect (entry, "activate", (GCallback) action_play, NULL);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
@@ -694,8 +738,6 @@ int search_take_message (const char * code, const void * data, int size)
 }
 
 #define AUD_PLUGIN_NAME        N_("Search Tool")
-#define AUD_PLUGIN_INIT        search_init
-#define AUD_PLUGIN_CLEANUP     search_cleanup
 #define AUD_GENERAL_GET_WIDGET   search_get_widget
 #define AUD_PLUGIN_TAKE_MESSAGE  search_take_message
 

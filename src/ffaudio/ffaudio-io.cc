@@ -16,22 +16,20 @@
  * implied. In no event shall the authors be liable for any damages arising from
  */
 
-#include <glib.h>
-
 #include "ffaudio-stdinc.h"
 
 #define IOBUF 4096
 
-static gint read_cb (void * file, guchar * buf, gint size)
+static int read_cb (void * file, unsigned char * buf, int size)
 {
     return vfs_fread (buf, 1, size, (VFSFile *) file);
 }
 
-static gint64 seek_cb (void * file, gint64 offset, gint whence)
+static int64_t seek_cb (void * file, int64_t offset, int whence)
 {
     if (whence == AVSEEK_SIZE)
         return vfs_fsize ((VFSFile *) file);
-    if (vfs_fseek ((VFSFile *) file, offset, whence & ~(gint) AVSEEK_FORCE))
+    if (vfs_fseek ((VFSFile *) file, offset, whence & ~(int) AVSEEK_FORCE))
         return -1;
     return vfs_ftell ((VFSFile *) file);
 }

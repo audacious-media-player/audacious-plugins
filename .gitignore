@@ -11,6 +11,9 @@ src/mpris2/object-core.c
 src/mpris2/object-core.h
 src/mpris2/object-player.c
 src/mpris2/object-player.h
+src/qtui/ui_main_window.h
+src/qtui/ui_playlist.h
+src/qtui/ui_playlist_tabs.h
 .deps
 *.a
 *.dll
@@ -21,3 +24,5 @@ src/mpris2/object-player.h
 *~
 *.patch
 *.diff
+*.bundle
+*.moc
