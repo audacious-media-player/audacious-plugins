@@ -123,6 +123,8 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
                 return QString ("Album");
             case PL_COL_QUEUED:
                 return QString ("Queued");
+            case PL_COL_LENGTH:
+                return QString ("Time");
             }
          }
      }
