@@ -45,7 +45,7 @@ int PlaylistModel::rowCount (const QModelIndex & parent) const
 
 int PlaylistModel::columnCount (const QModelIndex & parent) const
 {
-    return 5;
+    return PL_COLS;
 }
 
 QVariant PlaylistModel::data (const QModelIndex &index, int role) const
@@ -58,32 +58,34 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         switch (index.column ())
         {
-        case 1:
-        case 2:
-        case 3:
+        case PL_COL_TITLE:
+        case PL_COL_ARTIST:
+        case PL_COL_ALBUM:
             aud_playlist_entry_describe (playlist (), index.row (), title, artist, album, true);
             break;
-        case 4:
+        case PL_COL_LENGTH:
             tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), false);
             break;
         }
 
         switch (index.column ())
         {
-        case 1:
+        case PL_COL_TITLE:
             return QString (title);
-        case 2:
+        case PL_COL_ARTIST:
             return QString (artist);
-        case 3:
+        case PL_COL_ALBUM:
             return QString (album);
-        case 4:
+        case PL_COL_QUEUED:
+            return getQueued (index.row ());
+        case PL_COL_LENGTH:
             return QString (str_format_time (tuple.get_int (FIELD_LENGTH)));
         }
 
     case Qt::TextAlignmentRole:
         switch (index.column ())
         {
-        case 4:
+        case PL_COL_LENGTH:
             return Qt::AlignRight;
         }
 
@@ -111,14 +113,16 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
          {
             switch (section)
             {
-            case 0:
+            case PL_COL_NOW_PLAYING:
                 return QString ("Playing");
-            case 1:
+            case PL_COL_TITLE:
                 return QString ("Title");
-            case 2:
+            case PL_COL_ARTIST:
                 return QString ("Artist");
-            case 3:
+            case PL_COL_ALBUM:
                 return QString ("Album");
+            case PL_COL_QUEUED:
+                return QString ("Queued");
             }
          }
      }
@@ -159,4 +163,13 @@ void PlaylistModel::updateRows (int row, int count)
 void PlaylistModel::updateRow (int row)
 {
     updateRows (row, 1);
+}
+
+QString PlaylistModel::getQueued (int row) const
+{
+    int at = aud_playlist_queue_find_entry (playlist (), row);
+    if (at < 0)
+        return QString ("");
+    else
+        return QString ("#%1").arg (at + 1);
 }

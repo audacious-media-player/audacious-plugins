@@ -43,10 +43,12 @@ Playlist::Playlist (QTreeView * parent, int uniqueId) : QTreeView (parent)
     setIndentation (0);
     setUniformRowHeights (true);
     setFrameShape (QFrame::NoFrame);
-    setColumnWidth (0, 25);
-    setColumnWidth (1, 300);
-    setColumnWidth (2, 150);
-    setColumnWidth (3, 200);
+    setColumnWidth (PL_COL_NOW_PLAYING, 25);
+    setColumnWidth (PL_COL_TITLE, 300);
+    setColumnWidth (PL_COL_ARTIST, 150);
+    setColumnWidth (PL_COL_ALBUM, 200);
+    setColumnWidth (PL_COL_QUEUED, 30);
+    setColumnWidth (PL_COL_LENGTH, 50);
 
     positionUpdate ();
 }
@@ -97,6 +99,9 @@ void Playlist::keyPressEvent (QKeyEvent * e)
         case Qt::Key_B:
             aud_drct_pl_next ();
             break;
+        case Qt::Key_Q:
+            toggleQueue ();
+            break;
         }
         break;
     case Qt::ControlModifier:
@@ -142,6 +147,8 @@ void Playlist::update (int type, int at, int count)
     }
     else if (type == PLAYLIST_UPDATE_METADATA)
         model->updateRows (at, count);
+
+    updateQueue ();
 }
 
 void Playlist::positionUpdate ()
@@ -149,9 +156,11 @@ void Playlist::positionUpdate ()
     int row = aud_playlist_get_position (playlist ());
     if (! aud_playlist_update_pending ())
     {
-        model->updateRow (row);
+        model->updateRow (previousEntry);
+        previousEntry = row;
         setFocus ();
         scrollToCurrent ();
+        updateQueue ();
     }
 }
 
@@ -159,4 +168,25 @@ void Playlist::playCurrentIndex ()
 {
     aud_playlist_set_position (playlist (), proxyModel->mapToSource (currentIndex ()).row ());
     aud_drct_play_playlist (playlist ());
+}
+
+void Playlist::toggleQueue ()
+{
+    int row = proxyModel->mapToSource (currentIndex ()).row ();
+    int at = aud_playlist_queue_find_entry (playlist (), row);
+
+    if (at < 0)
+        aud_playlist_queue_insert (playlist (), -1, row);
+    else
+        aud_playlist_queue_delete (playlist (), at, 1);
+    model->updateRow (row);
+}
+
+void Playlist::updateQueue ()
+{
+    for (int i = aud_playlist_queue_count (playlist ()); i --;)
+    {
+        int row = aud_playlist_queue_get_entry (playlist (), i);
+        model->updateRow (row);
+    }
 }
