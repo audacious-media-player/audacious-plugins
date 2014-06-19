@@ -47,9 +47,8 @@ Playlist::Playlist (QTreeView * parent, int uniqueId) : QTreeView (parent)
     setColumnWidth (PL_COL_TITLE, 300);
     setColumnWidth (PL_COL_ARTIST, 150);
     setColumnWidth (PL_COL_ALBUM, 200);
-    setColumnWidth (PL_COL_QUEUED, 30);
-    setColumnWidth (PL_COL_LENGTH, 50);
-
+    resizeColumnToContents(PL_COL_QUEUED);
+    resizeColumnToContents(PL_COL_LENGTH);
     positionUpdate ();
 }
 
