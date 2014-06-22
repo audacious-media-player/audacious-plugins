@@ -67,14 +67,6 @@ static void close_button_cb (GtkWidget * button, void * id)
     audgui_confirm_playlist_delete (aud_playlist_by_unique_id (GPOINTER_TO_INT (id)));
 }
 
-static void close_button_style_set (GtkWidget * button)
-{
-    int w, h;
-    gtk_icon_size_lookup_for_settings (gtk_widget_get_settings (button),
-     GTK_ICON_SIZE_MENU, & w, & h);
-    gtk_widget_set_size_request (button, w + 2, h + 2);
-}
-
 static GtkWidget * make_close_button (GtkWidget * ebox, int list)
 {
     GtkWidget * button = gtk_button_new ();
@@ -87,19 +79,22 @@ static GtkWidget * make_close_button (GtkWidget * ebox, int list)
     g_signal_connect (button, "clicked", (GCallback) close_button_cb,
      GINT_TO_POINTER (aud_playlist_get_unique_id (list)));
 
-    gtk_rc_parse_string (
-     "style \"gtkui-tab-close-button-style\" {"
-     " GtkButton::default-border = {0, 0, 0, 0}"
-     " GtkButton::default-outside-border = {0, 0, 0, 0}"
-     " GtkButton::inner-border = {0, 0, 0, 0}"
-     " GtkWidget::focus-padding = 0"
-     " GtkWidget::focus-line-width = 0"
-     " xthickness = 0"
-     " ythickness = 0 }"
-     "widget \"*.gtkui-tab-close-button\" style \"gtkui-tab-close-button-style\""
-    );
+    GtkCssProvider * provider = gtk_css_provider_new ();
+    gtk_css_provider_load_from_data (provider,
+     "#gtkui-tab-close-button {"
+     " -GtkButton-default-border: 0;"
+     " -GtkButton-default-outside-border: 0;"
+     " -GtkButton-inner-border: 0;"
+     " -GtkWidget-focus-padding: 0;"
+     " -GtkWidget-focus-line-width: 0;"
+     " margin: 0;"
+     " padding: 0; }",
+     -1, NULL);
 
-    g_signal_connect (button, "style-set", (GCallback) close_button_style_set, NULL);
+    gtk_style_context_add_provider (gtk_widget_get_style_context (button),
+     GTK_STYLE_PROVIDER (provider),
+     GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref (provider);
 
     gtk_widget_show (button);
 
@@ -256,7 +251,7 @@ void ui_playlist_notebook_create_tab(int playlist)
     ebox = gtk_event_box_new();
     gtk_event_box_set_visible_window ((GtkEventBox *) ebox, FALSE);
 
-    hbox = gtk_hbox_new (FALSE, 2);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
 
     label = gtk_label_new ("");
     set_tab_label (playlist, (GtkLabel *) label);
@@ -554,5 +549,6 @@ void apply_column_widths ()
     {
         GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) treeview, i);
         gtk_tree_view_column_set_fixed_width (col, pw_col_widths[pw_cols[i]]);
+        gtk_tree_view_column_set_expand (col, FALSE);
     }
 }

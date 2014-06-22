@@ -157,12 +157,27 @@ static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g, gf
     * b = v * (1 - s * (1 - * b));
 }
 
-static void get_color (GtkWidget * widget, int i, float * r, float * g, float * b)
+static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
 {
-    GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
-    float h, s, v;
+    static GdkRGBA c;
+    static bool_t valid = FALSE;
+    gfloat h, s, v, n;
 
-    rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h, & s, & v);
+    if (! valid)
+    {
+        /* we want a color that matches the current theme
+         * selected color of a GtkEntry should be reasonable */
+        GtkStyleContext * style = gtk_style_context_new ();
+        GtkWidgetPath * path = gtk_widget_path_new ();
+        gtk_widget_path_append_type (path, GTK_TYPE_ENTRY);
+        gtk_style_context_set_path (style, path);
+        gtk_widget_path_free (path);
+        gtk_style_context_get_background_color (style, GTK_STATE_FLAG_SELECTED, & c);
+        g_object_unref (style);
+        valid = TRUE;
+    }
+
+    rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
     {
@@ -170,8 +185,9 @@ static void get_color (GtkWidget * widget, int i, float * r, float * g, float * 
         s = 0.75;
     }
 
-    s = 1 - 0.9 * i / (bands - 1);
-    v = 0.75 + 0.25 * i / (bands - 1);
+    n = i / (gfloat) (bands - 1);
+    s = 1 - 0.9 * n;
+    v = 0.75 + 0.25 * n;
 
     hsv_to_rgb (h, s, v, r, g, b);
 }
@@ -219,7 +235,7 @@ static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
         gint x = ((width / bands) * i) + 2;
         gfloat r, g, b;
 
-        get_color (widget, i, & r, & g, & b);
+        get_color (i, & r, & g, & b);
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x + 1, height - (bars[i] * base_s), (width / bands) - 1, (bars[i] * base_s));
         cairo_fill (cr);
@@ -239,9 +255,8 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     return TRUE;
 }
 
-static gboolean draw_event (GtkWidget * widget)
+static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)
 {
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
     draw_background (widget, cr);
     draw_visualizer (widget, cr);
@@ -249,7 +264,6 @@ static gboolean draw_event (GtkWidget * widget)
     draw_grid (widget, cr);
 #endif
 
-    cairo_destroy (cr);
     return TRUE;
 }
 
@@ -265,7 +279,7 @@ static /* GtkWidget * */ gpointer get_widget(void)
     GtkWidget *area = gtk_drawing_area_new();
     spect_widget = area;
 
-    g_signal_connect(area, "expose-event", (GCallback) draw_event, NULL);
+    g_signal_connect(area, "draw", (GCallback) draw_event, NULL);
     g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
     g_signal_connect(area, "destroy", (GCallback) destroy_event, NULL);
 

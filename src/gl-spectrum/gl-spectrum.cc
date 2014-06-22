@@ -217,7 +217,7 @@ static void draw_bars (void)
     glPopMatrix ();
 }
 
-static bool_t draw_cb (GtkWidget * widget)
+static bool_t draw_cb (GtkWidget * widget, cairo_t * cr)
 {
 #ifdef GDK_WINDOWING_X11
     if (! s_context)
@@ -386,7 +386,7 @@ static /* GtkWidget * */ void * get_widget (void)
 
     s_widget = gtk_drawing_area_new ();
 
-    g_signal_connect (s_widget, "expose-event", (GCallback) draw_cb, NULL);
+    g_signal_connect (s_widget, "draw", (GCallback) draw_cb, NULL);
     g_signal_connect (s_widget, "realize", (GCallback) widget_realized, NULL);
     g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, NULL);
 

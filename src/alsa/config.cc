@@ -352,7 +352,7 @@ static GtkWidget * combo_new (const char * title, GtkListStore * list,
     GtkWidget * hbox, * label;
     GtkCellRenderer * cell;
 
-    hbox = gtk_hbox_new (FALSE, 6);
+    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
     label = gtk_label_new (title);
     gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
@@ -409,7 +409,7 @@ static const char * combo_selected_text (GtkWidget * combo, GtkListStore * list)
 
 static GtkWidget * create_vbox (void)
 {
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
     gtk_box_pack_start ((GtkBox *) vbox, combo_new (_("PCM device:"), pcm_list,
      & pcm_combo, 1), 0, 0, 0);

@@ -167,11 +167,11 @@ static void *config_status_checker () {
     GtkWidget *details_box;
     GtkWidget *additional_details_box;
 
-    config_box              = gtk_vbox_new (FALSE, 15);
-    permission_box          = gtk_hbox_new (FALSE, 0);
-    buttons_box             = gtk_vbutton_box_new ();
-    details_box             = gtk_vbox_new (FALSE, 0);
-    additional_details_box  = gtk_hbox_new (FALSE, 7);
+    config_box              = gtk_box_new(GTK_ORIENTATION_VERTICAL,  15);
+    permission_box          = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    buttons_box             = gtk_button_box_new(GTK_ORIENTATION_VERTICAL);
+    details_box             = gtk_box_new(GTK_ORIENTATION_VERTICAL,   0);
+    additional_details_box  = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 7);
 
     button                  = gtk_button_new_with_mnemonic(_("C_heck Permission"));
     revoke_button           = gtk_button_new_with_mnemonic(_("_Revoke Permission"));
@@ -183,6 +183,9 @@ static void *config_status_checker () {
     details_label_first  = gtk_label_new ("");
     url_button           = gtk_link_button_new("");
     details_label_second = gtk_label_new("");
+    gtk_widget_set_halign(details_label_first,  GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(url_button,           GTK_ALIGN_CENTER);
+    gtk_widget_set_halign(details_label_second, GTK_ALIGN_CENTER);
 
 //    gtk_label_set_use_markup(GTK_LABEL(details_label), TRUE);
 

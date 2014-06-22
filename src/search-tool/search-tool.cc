@@ -656,10 +656,11 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
 
 static void * search_get_widget ()
 {
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
     entry = gtk_entry_new ();
     gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
+    gtk_entry_set_placeholder_text ((GtkEntry *) entry, _("Search library"));
     g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
     gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
 
@@ -695,7 +696,7 @@ static void * search_get_widget ()
     gtk_widget_set_no_show_all (stats_label, TRUE);
     gtk_box_pack_start ((GtkBox *) vbox, stats_label, FALSE, FALSE, 0);
 
-    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_end ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
 
     GtkWidget * chooser = gtk_file_chooser_button_new (_("Choose Folder"),

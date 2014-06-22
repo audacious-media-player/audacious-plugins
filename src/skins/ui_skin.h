@@ -173,7 +173,7 @@ typedef struct {
     cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT];
     guint32 colors[SKIN_COLOR_COUNT];
     guint32 vis_colors[24];
-    GdkBitmap * masks[SKIN_MASK_COUNT];
+    cairo_region_t * masks[SKIN_MASK_COUNT];
     SkinProperties properties;
 } Skin;
 

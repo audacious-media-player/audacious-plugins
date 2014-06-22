@@ -223,12 +223,27 @@ static void hsv_to_rgb (float h, float s, float v, float * r, float * g,
     * b = v * (1 - s * (1 - * b));
 }
 
-static void get_color (GtkWidget * widget, int i, float * r, float * g, float * b)
+static void get_color (int i, float * r, float * g, float * b)
 {
-    GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
-    float h, s, v;
+    static GdkRGBA c;
+    static bool_t valid = FALSE;
 
-    rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h, & s, & v);
+    if (! valid)
+    {
+        /* we want a color that matches the current theme
+         * selected color of a GtkEntry should be reasonable */
+        GtkStyleContext * style = gtk_style_context_new ();
+        GtkWidgetPath * path = gtk_widget_path_new ();
+        gtk_widget_path_append_type (path, GTK_TYPE_ENTRY);
+        gtk_style_context_set_path (style, path);
+        gtk_widget_path_free (path);
+        gtk_style_context_get_background_color (style, GTK_STATE_FLAG_SELECTED, & c);
+        g_object_unref (style);
+        valid = TRUE;
+    }
+
+    float h, s, v;
+    rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
     {
@@ -242,10 +257,8 @@ static void get_color (GtkWidget * widget, int i, float * r, float * g, float * 
     hsv_to_rgb (h, s, v, r, g, b);
 }
 
-static int expose_vis_cb (GtkWidget * widget, GdkEventExpose * event)
+static bool_t draw_vis_cb (GtkWidget * widget, cairo_t * cr)
 {
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
-
     clear (widget, cr);
 
     for (int i = 0; i < VIS_BANDS; i++)
@@ -255,7 +268,7 @@ static int expose_vis_cb (GtkWidget * widget, GdkEventExpose * event)
         int m = MIN (VIS_CENTER + vis.bars[i], HEIGHT);
 
         float r, g, b;
-        get_color (widget, i, & r, & g, & b);
+        get_color (i, & r, & g, & b);
 
         cairo_set_source_rgb (cr, r, g, b);
         cairo_rectangle (cr, x, t, 6, VIS_CENTER - t);
@@ -266,7 +279,6 @@ static int expose_vis_cb (GtkWidget * widget, GdkEventExpose * event)
         cairo_fill (cr);
     }
 
-    cairo_destroy (cr);
     return TRUE;
 }
 
@@ -317,16 +329,15 @@ static void draw_title (cairo_t * cr)
          0.7, 0.7, area->last_alpha, "9", area->last_album);
 }
 
-static int expose_cb (GtkWidget * widget, GdkEventExpose * event)
+static bool_t draw_cb (GtkWidget * widget, cairo_t * cr)
 {
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
+    g_return_val_if_fail (area, FALSE);
 
     clear (widget, cr);
 
     draw_album_art (cr);
     draw_title (cr);
 
-    cairo_destroy (cr);
     return TRUE;
 }
 
@@ -475,7 +486,7 @@ void ui_infoarea_show_vis (bool_t show)
         gtk_widget_set_size_request (vis.widget, VIS_WIDTH + 2 * SPACING, HEIGHT);
         gtk_box_pack_start ((GtkBox *) area->box, vis.widget, FALSE, FALSE, 0);
 
-        g_signal_connect (vis.widget, "expose-event", (GCallback) expose_vis_cb, NULL);
+        g_signal_connect (vis.widget, "draw", (GCallback) draw_vis_cb, NULL);
         gtk_widget_show (vis.widget);
 
         aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
@@ -526,13 +537,13 @@ GtkWidget * ui_infoarea_new (void)
     g_return_val_if_fail (! area, NULL);
     area = new UIInfoArea ();
 
-    area->box = gtk_hbox_new (FALSE, 0);
+    area->box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
 
     area->main = gtk_drawing_area_new ();
     gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);
     gtk_box_pack_start ((GtkBox *) area->box, area->main, TRUE, TRUE, 0);
 
-    g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, NULL);
+    g_signal_connect (area->main, "draw", (GCallback) draw_cb, NULL);
 
     hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, NULL);
     hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, NULL);

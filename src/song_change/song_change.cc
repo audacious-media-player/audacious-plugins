@@ -387,7 +387,7 @@ static void * custom_warning (void)
     GtkWidget *bbox_hbox;
     gchar * temp;
 
-    bbox_hbox = gtk_hbox_new (FALSE, 6);
+    bbox_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
 
     cmd_warn_img = gtk_image_new_from_icon_name("dialog-warning", GTK_ICON_SIZE_MENU);
     gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_img, FALSE, FALSE, 0);

@@ -112,7 +112,7 @@ static void ui_statusbar_destroy_cb (GtkWidget * widget, void * data)
 
 GtkWidget * ui_statusbar_new (void)
 {
-    GtkWidget * hbox = gtk_hbox_new (FALSE, 3);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 3);
     GtkWidget * status = gtk_widget_new (GTK_TYPE_LABEL, "xalign", 0.0, NULL);
     GtkWidget * length = gtk_widget_new (GTK_TYPE_LABEL, "xalign", 1.0, NULL);
 

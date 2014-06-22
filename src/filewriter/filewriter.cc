@@ -376,9 +376,9 @@ static void filenamefromfilename_cb(GtkWidget *button, gpointer data)
 
 static void * file_configure (void)
 {
-        GtkWidget * configure_vbox = gtk_vbox_new (FALSE, 6);
+        GtkWidget * configure_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
-        GtkWidget * fileext_hbox = gtk_hbox_new (FALSE, 5);
+        GtkWidget * fileext_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
 
         GtkWidget * fileext_label = gtk_label_new (_("Output file format:"));
@@ -402,9 +402,9 @@ static void * file_configure (void)
         gtk_widget_set_sensitive(plugin_button, plugin->configure != NULL);
         gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, FALSE, FALSE, 0);
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
-        GtkWidget * saveplace_hbox = gtk_hbox_new (FALSE, 5);
+        GtkWidget * saveplace_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), saveplace_hbox);
 
         GtkWidget * saveplace1 = gtk_radio_button_new_with_label (NULL,
@@ -419,7 +419,7 @@ static void * file_configure (void)
 
         gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace2, FALSE, FALSE, 0);
 
-        path_hbox = gtk_hbox_new (FALSE, 5);
+        path_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), path_hbox, FALSE, FALSE, 0);
 
         GtkWidget * path_label = gtk_label_new (_("Output file folder:"));
@@ -434,9 +434,9 @@ static void * file_configure (void)
         if (save_original)
             gtk_widget_set_sensitive(path_hbox, FALSE);
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
-        filenamefrom_hbox = gtk_hbox_new (FALSE, 5);
+        filenamefrom_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
 
         filenamefrom_label = gtk_label_new(_("Get filename from:"));
@@ -461,7 +461,7 @@ static void * file_configure (void)
         if (filenamefromtags)
             gtk_widget_set_sensitive(use_suffix_toggle, FALSE);
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
         prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to filename"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);

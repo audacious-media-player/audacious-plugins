@@ -269,7 +269,7 @@ void * pw_col_create_chooser (void)
         avail.append (column);
     }
 
-    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
+    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_widget_set_size_request (hbox, -1, 160);
 
     GtkWidget * scroll = gtk_scrolled_window_new (NULL, NULL);
@@ -283,7 +283,7 @@ void * pw_col_create_chooser (void)
     audgui_list_add_column (avail_list, _("Available columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, avail_list);
 
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, FALSE, FALSE, 0);
 
     GtkWidget * button = gtk_button_new ();

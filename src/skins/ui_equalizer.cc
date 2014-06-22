@@ -71,7 +71,7 @@ Index<EqualizerPreset> equalizer_presets, equalizer_auto_presets;
 void equalizerwin_set_shape (void)
 {
     int id = aud_get_bool ("skins", "equalizer_shaded") ? SKIN_MASK_EQ_SHADE : SKIN_MASK_EQ;
-    gtk_widget_shape_combine_mask (equalizerwin, active_skin->masks[id], 0, 0);
+    gtk_widget_shape_combine_region (equalizerwin, active_skin->masks[id]);
 }
 
 static void

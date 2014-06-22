@@ -336,6 +336,10 @@ skin_view_on_cursor_changed(GtkTreeView * treeview,
 
     selection = gtk_tree_view_get_selection(treeview);
 
+    /* workaround for Gnome bug #679291 */
+    if (! selection)
+        return;
+
     if (!gtk_tree_selection_get_selected(selection, &model, &iter))
         return;
 
