@@ -166,7 +166,7 @@ skin_free(Skin * skin)
 
     for (i = 0; i < SKIN_MASK_COUNT; i++) {
         if (skin->masks[i])
-            cairo_region_destroy (skin->masks[i]);
+            g_object_unref (skin->masks[i]);
         skin->masks[i] = NULL;
     }
 

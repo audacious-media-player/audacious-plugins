@@ -141,7 +141,7 @@ static void format_time (gchar buf[7], gint time, gint length)
 void mainwin_set_shape (void)
 {
     int id = aud_get_bool ("skins", "player_shaded") ? SKIN_MASK_MAIN_SHADE : SKIN_MASK_MAIN;
-    gtk_widget_shape_combine_region (mainwin, active_skin->masks[id]);
+    gtk_widget_shape_combine_mask (mainwin, active_skin->masks[id], 0, 0);
 }
 
 static void

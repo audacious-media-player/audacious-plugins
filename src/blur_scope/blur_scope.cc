@@ -126,9 +126,11 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     return TRUE;
 }
 
-static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
+static gboolean draw_cb (GtkWidget * widget)
 {
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
     bscope_draw_to_cairo (cr);
+    cairo_destroy (cr);
     return TRUE;
 }
 
@@ -138,7 +140,7 @@ static void /* GtkWidget */ * bscope_get_widget (void)
     gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
     bscope_resize (D_WIDTH, D_HEIGHT);
 
-    g_signal_connect (area, "draw", (GCallback) draw_cb, NULL);
+    g_signal_connect (area, "expose-event", (GCallback) draw_cb, NULL);
     g_signal_connect (area, "configure-event", (GCallback) configure_event, NULL);
     g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 
@@ -208,25 +210,17 @@ static void bscope_render (const gfloat * data)
 
 static void color_set_cb (GtkWidget * chooser)
 {
-    GdkRGBA rgba;
-    gtk_color_chooser_get_rgba ((GtkColorChooser *) chooser, & rgba);
-
-    int red = round (rgba.red * 255);
-    int green = round (rgba.green * 255);
-    int blue = round (rgba.blue * 255);
-    color = (red << 16) | (green << 8) | blue;
+    GdkColor gdk_color;
+    gtk_color_button_get_color ((GtkColorButton *) chooser, & gdk_color);
+    color = ((gdk_color.red & 0xff00) << 8) | (gdk_color.green & 0xff00) | (gdk_color.blue >> 8);
 }
 
 static void /* GtkWidget */ * bscope_get_color_chooser (void)
 {
-    GdkRGBA rgba = {
-        ((color & 0xff0000) >> 16) / 255.0,
-        ((color & 0xff00) >> 8) / 255.0,
-        (color & 0xff) / 255.0
-    };
-
-    GtkWidget * chooser = gtk_color_button_new_with_rgba (& rgba);
-    gtk_color_chooser_set_use_alpha ((GtkColorChooser *) chooser, FALSE);
+    GdkColor gdk_color = {0, (guint16) ((color & 0xff0000) >> 8),
+     (guint16) (color & 0xff00), (guint16) ((color & 0xff) << 8)};
+    GtkWidget * chooser = gtk_color_button_new_with_color (& gdk_color);
+    gtk_color_button_set_use_alpha ((GtkColorButton *) chooser, FALSE);
 
     g_signal_connect (chooser, "color-set", (GCallback) color_set_cb, NULL);
 

@@ -323,18 +323,16 @@ KeyControls* add_event_controls(KeyControls* list,
     }
 
     controls->combobox = gtk_combo_box_text_new();
-    gtk_widget_set_hexpand(controls->combobox, TRUE);
     for (i=0;i<EVENT_MAX;i++)
     {
         gtk_combo_box_text_append_text((GtkComboBoxText *) controls->combobox, _(event_desc[i]));
     }
     gtk_combo_box_set_active(GTK_COMBO_BOX(controls->combobox), controls->hotkey.event);
-    gtk_grid_attach (GTK_GRID (grid), controls->combobox, 0, row, 1, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), controls->combobox, 0, 1, row, row + 1);
 
 
     controls->keytext = gtk_entry_new ();
-    gtk_widget_set_hexpand (controls->keytext, TRUE);
-    gtk_grid_attach (GTK_GRID (grid), controls->keytext, 1, row, 1, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), controls->keytext, 1, 2, row, row + 1);
     gtk_editable_set_editable(GTK_EDITABLE(controls->keytext), FALSE);
 
 
@@ -352,7 +350,7 @@ KeyControls* add_event_controls(KeyControls* list,
     controls->button = gtk_button_new();
     gtk_button_set_image (GTK_BUTTON (controls->button),
      gtk_image_new_from_icon_name ("edit-delete", GTK_ICON_SIZE_BUTTON));
-    gtk_grid_attach (GTK_GRID (grid), controls->button, 2, row, 1, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), controls->button, 2, 3, row, row + 1);
     g_signal_connect (G_OBJECT (controls->button), "clicked",
             G_CALLBACK (clear_keyboard), controls);
 
@@ -387,13 +385,13 @@ void show_configure ()
     gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
     gtk_container_set_border_width (GTK_CONTAINER (window), 5);
 
-    main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
+    main_vbox = gtk_vbox_new (FALSE, 4);
     gtk_container_add (GTK_CONTAINER (window), main_vbox);
 
     alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
     gtk_box_pack_start (GTK_BOX (main_vbox), alignment, FALSE, TRUE, 0);
     gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 4, 0, 0, 0);
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+    hbox = gtk_hbox_new (FALSE, 2);
     gtk_container_add (GTK_CONTAINER (alignment), hbox);
     image = gtk_image_new_from_icon_name ("dialog-information", GTK_ICON_SIZE_DIALOG);
     gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, TRUE, 0);
@@ -411,8 +409,8 @@ void show_configure ()
     gtk_container_add (GTK_CONTAINER (frame), alignment);
     gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 3, 3, 3, 3);
 
-    grid = gtk_grid_new ();
-    gtk_grid_set_column_spacing (GTK_GRID (grid), 2);
+    grid = gtk_table_new (0, 0, FALSE);
+    gtk_table_set_col_spacings (GTK_TABLE (grid), 2);
     gtk_container_add (GTK_CONTAINER (alignment), grid);
 
     label = gtk_label_new (NULL);
@@ -420,14 +418,14 @@ void show_configure ()
     gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
             _("<b>Action:</b>"));
-    gtk_grid_attach (GTK_GRID (grid), label, 0, 0, 1, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), label, 0, 1, 0, 1);
 
     label = gtk_label_new (NULL);
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
     gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
             _("<b>Key Binding:</b>"));
-    gtk_grid_attach (GTK_GRID (grid), label, 1, 0, 1, 1);
+    gtk_table_attach_defaults (GTK_TABLE (grid), label, 1, 2, 0, 1);
 
 
     hotkey = &(plugin_cfg->first);
@@ -466,11 +464,10 @@ void show_configure ()
     add_event_controls(current_controls, grid, i, &temphotkey);
 
 
-
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    hbox = gtk_hbox_new (FALSE, 0);
     gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, TRUE, 0);
 
-    button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+    button_box = gtk_hbutton_box_new ();
     gtk_box_pack_start (GTK_BOX (hbox), button_box, FALSE, TRUE, 0);
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_START);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
@@ -480,7 +477,7 @@ void show_configure ()
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (add_callback), first_controls);
 
-    button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+    button_box = gtk_hbutton_box_new ();
     gtk_box_pack_start (GTK_BOX (hbox), button_box, TRUE, TRUE, 0);
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_END);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
@@ -548,9 +545,9 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
             gtk_container_remove( GTK_CONTAINER(c->grid) , c->keytext);
             gtk_container_remove( GTK_CONTAINER(c->grid) , c->button);
 
-            gtk_grid_attach (GTK_GRID (c->grid), c->combobox, 0, row, 1, 1);
-            gtk_grid_attach (GTK_GRID (c->grid), c->keytext, 1, row, 1, 1);
-            gtk_grid_attach (GTK_GRID (c->grid), c->button, 2, row, 1, 1);
+            gtk_table_attach_defaults (GTK_TABLE (c->grid), c->combobox, 0, 1, row, row + 1);
+            gtk_table_attach_defaults (GTK_TABLE (c->grid), c->keytext, 1, 2, row, row + 1);
+            gtk_table_attach_defaults (GTK_TABLE (c->grid), c->button, 2, 3, row, row + 1);
 
             g_object_unref(c->combobox);
             g_object_unref(c->keytext);

@@ -175,10 +175,10 @@ static void vis_reset_cb (void)
 }
 
 static const PreferencesWidget font_table_elements[] = {
-    WidgetFonts (N_("_Player:"),
+    WidgetFonts (N_("Player:"),
         {VALUE_STRING, 0, "skins", "mainwin_font", mainwin_font_set_cb},
         {N_("Select main player window font:")}),
-    WidgetFonts (N_("_Playlist:"),
+    WidgetFonts (N_("Playlist:"),
         {VALUE_STRING, 0, "skins", "playlist_font", playlist_font_set_cb},
         {N_("Select playlist font:")})
 };

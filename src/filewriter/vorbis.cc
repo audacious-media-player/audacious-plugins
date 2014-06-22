@@ -211,12 +211,12 @@ static void vorbis_configure(void)
         gtk_container_set_border_width(GTK_CONTAINER(quality_frame), 5);
         gtk_box_pack_start(GTK_BOX(vbox), quality_frame, FALSE, FALSE, 2);
 
-        quality_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+        quality_vbox = gtk_vbox_new (FALSE, 5);
         gtk_container_set_border_width(GTK_CONTAINER(quality_vbox), 10);
         gtk_container_add(GTK_CONTAINER(quality_frame), quality_vbox);
 
         /* quality option: vbr level */
-        quality_hbox1 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+        quality_hbox1 = gtk_hbox_new (FALSE, 5);
         gtk_container_set_border_width(GTK_CONTAINER(quality_hbox1), 10);
         gtk_container_add(GTK_CONTAINER(quality_vbox), quality_hbox1);
 

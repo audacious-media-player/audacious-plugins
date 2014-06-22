@@ -54,13 +54,10 @@ void i_fileinfo_grid_add_entry (char * field_text, char * value_text,
     field = gtk_label_new (field_text);
     gtk_label_set_attributes (GTK_LABEL (field), attrlist);
     gtk_misc_set_alignment (GTK_MISC (field), 0, 0);
-    gtk_label_set_justify (GTK_LABEL (field), GTK_JUSTIFY_LEFT);
-    gtk_grid_attach (GTK_GRID (grid), field, 0, line, 1, 1);
+    gtk_table_attach (GTK_TABLE (grid), field, 0, 1, line, line + 1, GTK_FILL, GTK_FILL, 0, 0);
     value = gtk_label_new (value_text);
     gtk_misc_set_alignment (GTK_MISC (value), 0, 0);
-    gtk_label_set_justify (GTK_LABEL (value), GTK_JUSTIFY_LEFT);
-    gtk_grid_attach (GTK_GRID (grid), value, 1, line, 1, 1);
-    return;
+    gtk_table_attach (GTK_TABLE (grid), value, 1, 2, line, line + 1, GTK_FILL, GTK_FILL, 0, 0);
 }
 
 
@@ -152,7 +149,7 @@ void i_fileinfo_gui (const char * filename_uri)
     g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (gtk_widget_destroyed), &fileinfowin);
     gtk_container_set_border_width (GTK_CONTAINER (fileinfowin), 10);
 
-    fileinfowin_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
+    fileinfowin_vbox = gtk_vbox_new (FALSE, 10);
     gtk_container_add (GTK_CONTAINER (fileinfowin), fileinfowin_vbox);
 
     /* pango attributes */
@@ -164,7 +161,7 @@ void i_fileinfo_gui (const char * filename_uri)
 
     /******************
      *** TITLE LINE ***/
-    title_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
+    title_hbox = gtk_hbox_new (FALSE, 5);
     gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), title_hbox, FALSE, FALSE, 0);
 
     title_icon_pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) amidiplug_xpm_midiicon);
@@ -182,12 +179,12 @@ void i_fileinfo_gui (const char * filename_uri)
     gtk_widget_set_size_request (GTK_WIDGET (title_name_v_entry), 200, -1);
     gtk_box_pack_start (GTK_BOX (title_hbox), title_name_v_entry, TRUE, TRUE, 0);
 
-    fileinfowin_columns_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
+    fileinfowin_columns_hbox = gtk_hbox_new (FALSE, 2);
     gtk_box_pack_start (GTK_BOX (fileinfowin_vbox), fileinfowin_columns_hbox, TRUE, TRUE, 0);
 
     /*********************
      *** MIDI INFO BOX ***/
-    midiinfoboxes_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+    midiinfoboxes_vbox = gtk_vbox_new (FALSE, 2);
 
     int comments_extract = aud_get_int ("amidiplug", "ap_opts_comments_extract");
     int lyrics_extract = aud_get_int ("amidiplug", "ap_opts_lyrics_extract");
@@ -205,10 +202,10 @@ void i_fileinfo_gui (const char * filename_uri)
 
     info_frame = gtk_frame_new (NULL);
     gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame, TRUE, TRUE, 0);
-    info_grid = gtk_grid_new();
-    gtk_grid_set_row_spacing (GTK_GRID (info_grid), 4);
-    gtk_grid_set_column_spacing (GTK_GRID (info_grid), 10);
-    gtk_container_set_border_width (GTK_CONTAINER (info_grid), 3);
+    info_grid = gtk_table_new (0, 0, FALSE);
+    gtk_table_set_row_spacings (GTK_TABLE (info_grid), 2);
+    gtk_table_set_col_spacings (GTK_TABLE (info_grid), 6);
+    gtk_container_set_border_width (GTK_CONTAINER (info_grid), 6);
     gtk_container_add (GTK_CONTAINER (info_frame), info_grid);
     value_gstring = g_string_new ("");
 
@@ -245,7 +242,7 @@ void i_fileinfo_gui (const char * filename_uri)
 
     /**********************************
      *** MIDI COMMENTS/LYRICS BOXES ***/
-    miditextboxes_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+    miditextboxes_vbox = gtk_vbox_new (FALSE, 2);
     gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), miditextboxes_vbox, TRUE, TRUE, 0);
 
     text_frame_tl = gtk_label_new ("");
@@ -253,7 +250,7 @@ void i_fileinfo_gui (const char * filename_uri)
                           _("<span size=\"smaller\"> MIDI Comments and Lyrics </span>"));
     gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), text_frame_tl, FALSE, FALSE, 0);
 
-    miditextboxes_paned = gtk_paned_new (GTK_ORIENTATION_VERTICAL);
+    miditextboxes_paned = gtk_vpaned_new ();
     gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), miditextboxes_paned, TRUE, TRUE, 0);
 
     text_frame = gtk_frame_new (NULL);
@@ -336,7 +333,7 @@ void i_fileinfo_gui (const char * filename_uri)
 
     /**************
      *** FOOTER ***/
-    footer_hbbox = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+    footer_hbbox = gtk_hbutton_box_new ();
     gtk_button_box_set_layout (GTK_BUTTON_BOX (footer_hbbox), GTK_BUTTONBOX_END);
     footer_bclose = gtk_button_new_with_mnemonic (_("_Close"));
     g_signal_connect (G_OBJECT (footer_bclose), "clicked", G_CALLBACK (i_fileinfo_ev_close), fileinfowin);

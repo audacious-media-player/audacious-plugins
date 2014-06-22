@@ -498,7 +498,7 @@ static void configure_plugin (LoadedPlugin * loaded)
     {
         ControlData * control = plugin->controls[i];
 
-        GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+        GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
         if (control->is_toggle)
@@ -557,7 +557,7 @@ static void configure (void)
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) config_win);
 
-    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
     GtkWidget * label = gtk_label_new (_("Module paths:"));
@@ -575,10 +575,10 @@ static void configure (void)
     GtkWidget * entry = gtk_entry_new ();
     gtk_box_pack_start ((GtkBox *) hbox, entry, 1, 1, 0);
 
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 1, 1, 0);
 
-    GtkWidget * vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    GtkWidget * vbox2 = gtk_vbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
 
     label = gtk_label_new (_("Available plugins:"));
@@ -591,13 +591,13 @@ static void configure (void)
     plugin_list = create_plugin_list ();
     gtk_container_add ((GtkContainer *) scrolled, plugin_list);
 
-    GtkWidget * hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget * hbox2 = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
 
     GtkWidget * enable_button = gtk_button_new_with_label (_("Enable"));
     gtk_box_pack_end ((GtkBox *) hbox2, enable_button, 0, 0, 0);
 
-    vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    vbox2 = gtk_vbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
 
     label = gtk_label_new (_("Enabled plugins:"));
@@ -610,7 +610,7 @@ static void configure (void)
     loaded_list = create_loaded_list ();
     gtk_container_add ((GtkContainer *) scrolled, loaded_list);
 
-    hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    hbox2 = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
 
     GtkWidget * disable_button = gtk_button_new_with_label (_("Disable"));

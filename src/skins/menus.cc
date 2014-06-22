@@ -301,7 +301,7 @@ static void position_menu (GtkMenu * menu, int * x, int * y, bool_t * push_in, v
     get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), pos->x, pos->y, & geom);
 
     GtkRequisition request;
-    gtk_widget_get_preferred_size ((GtkWidget *) menu, NULL, & request);
+    gtk_widget_size_request ((GtkWidget *) menu, & request);
 
     if (pos->leftward)
         * x = MAX (pos->x - request.width, geom.x);

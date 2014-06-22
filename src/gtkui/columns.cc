@@ -38,10 +38,14 @@ const char * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
 
 int pw_num_cols;
 int pw_cols[PW_COLS];
+int pw_col_widths[PW_COLS];
 
 static const char * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
  "year", "album", "track", "genre", "queued", "length", "path", "filename",
  "custom", "bitrate"};
+
+static const int pw_default_widths[PW_COLS] = {10, 275, 175, 10, 175, 10, 100,
+ 10, 10, 275, 275, 275, 10};
 
 void pw_col_init (void)
 {
@@ -67,6 +71,10 @@ void pw_col_init (void)
 
         pw_cols[pw_num_cols ++] = i;
     }
+
+    String widths = aud_get_str ("gtkui", "column_widths");
+    if (! str_to_int_array (widths, pw_col_widths, PW_COLS))
+        memcpy (pw_col_widths, pw_default_widths, sizeof pw_col_widths);
 }
 
 typedef struct {
@@ -86,9 +94,6 @@ static void apply_changes (void)
 
     for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
         pw_cols[pw_num_cols] = chosen[pw_num_cols]->column;
-
-    aud_set_str ("gtkui", "column_widths", "");
-    aud_set_str ("gtkui", "column_expand", "");
 
     ui_playlist_notebook_populate ();
 }
@@ -264,7 +269,7 @@ void * pw_col_create_chooser (void)
         avail.append (column);
     }
 
-    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_widget_set_size_request (hbox, -1, 160);
 
     GtkWidget * scroll = gtk_scrolled_window_new (NULL, NULL);
@@ -278,7 +283,7 @@ void * pw_col_create_chooser (void)
     audgui_list_add_column (avail_list, _("Available columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, avail_list);
 
-    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, FALSE, FALSE, 0);
 
     GtkWidget * button = gtk_button_new ();
@@ -315,5 +320,8 @@ void pw_col_save (void)
     for (int i = 0; i < pw_num_cols; i ++)
         index.append (String (pw_col_keys[pw_cols[i]]));
 
+    save_column_widths ();
+
     aud_set_str ("gtkui", "playlist_columns", index_to_str_list (index, " "));
+    aud_set_str ("gtkui", "column_widths", int_array_to_str (pw_col_widths, PW_COLS));
 }

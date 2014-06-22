@@ -31,10 +31,6 @@ void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
  int count);
 void ui_playlist_widget_scroll (GtkWidget * widget);
 
-void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, String & expand);
-void ui_playlist_widget_set_column_widths (GtkWidget * widget,
- const char * widths, const char * expand);
-
 enum {PW_COL_NUMBER, PW_COL_TITLE, PW_COL_ARTIST, PW_COL_YEAR, PW_COL_ALBUM,
  PW_COL_TRACK, PW_COL_GENRE, PW_COL_QUEUED, PW_COL_LENGTH, PW_COL_PATH,
  PW_COL_FILENAME, PW_COL_CUSTOM, PW_COL_BITRATE, PW_COLS};
@@ -43,6 +39,7 @@ extern const char * const pw_col_names[PW_COLS];
 
 extern int pw_num_cols;
 extern int pw_cols[PW_COLS];
+extern int pw_col_widths[PW_COLS];
 
 void pw_col_init (void);
 void * pw_col_create_chooser (void);

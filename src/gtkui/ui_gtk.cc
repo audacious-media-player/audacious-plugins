@@ -744,23 +744,20 @@ static bool_t init (void)
     pw_col_init ();
 
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_has_resize_grip ((GtkWindow *) window, FALSE);
 
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), NULL);
 
     accel = gtk_accel_group_new ();
     gtk_window_add_accel_group ((GtkWindow *) window, accel);
 
-    vbox_outer = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    vbox_outer = gtk_vbox_new (FALSE, 0);
     gtk_container_add ((GtkContainer *) window, vbox_outer);
 
-    menu_box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    menu_box = gtk_hbox_new (FALSE, 0);
     gtk_box_pack_start ((GtkBox *) vbox_outer, menu_box, FALSE, FALSE, 0);
 
     toolbar = gtk_toolbar_new ();
     gtk_toolbar_set_style ((GtkToolbar *) toolbar, GTK_TOOLBAR_ICONS);
-    GtkStyleContext * context = gtk_widget_get_style_context (toolbar);
-    gtk_style_context_add_class (context, GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
     gtk_box_pack_start ((GtkBox *) vbox_outer, toolbar, FALSE, FALSE, 0);
 
     /* search button */
@@ -786,13 +783,12 @@ static bool_t init (void)
     gtk_tool_item_set_expand (boxitem1, TRUE);
     gtk_toolbar_insert ((GtkToolbar *) toolbar, boxitem1, -1);
 
-    GtkWidget * box1 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    GtkWidget * box1 = gtk_hbox_new (FALSE, 0);
     gtk_container_add ((GtkContainer *) boxitem1, box1);
 
-    slider = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, NULL);
+    slider = gtk_hscale_new (NULL);
     gtk_scale_set_draw_value(GTK_SCALE(slider), FALSE);
     gtk_widget_set_size_request(slider, 120, -1);
-    gtk_widget_set_valign (slider, GTK_ALIGN_CENTER);
     gtk_widget_set_can_focus(slider, FALSE);
     gtk_box_pack_start ((GtkBox *) box1, slider, TRUE, TRUE, 6);
 
@@ -814,7 +810,7 @@ static bool_t init (void)
     GtkToolItem * boxitem2 = gtk_tool_item_new ();
     gtk_toolbar_insert ((GtkToolbar *) toolbar, boxitem2, -1);
 
-    GtkWidget * box2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    GtkWidget * box2 = gtk_hbox_new (FALSE, 0);
     gtk_container_add ((GtkContainer *) boxitem2, box2);
 
     volume = gtk_volume_button_new();
@@ -835,7 +831,7 @@ static bool_t init (void)
     GtkWidget * layout = layout_new ();
     gtk_box_pack_start ((GtkBox *) vbox_outer, layout, TRUE, TRUE, 0);
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    vbox = gtk_vbox_new (FALSE, 6);
     layout_add_center (vbox);
 
     ui_playlist_notebook_new ();
@@ -929,13 +925,15 @@ static void cleanup (void)
 
 static void menu_position_cb (GtkMenu * menu, int * x, int * y, int * push, void * button)
 {
+    GtkAllocation alloc;
     int xorig, yorig, xwin, ywin;
 
+    gtk_widget_get_allocation ((GtkWidget *) button, & alloc);
     gdk_window_get_origin (gtk_widget_get_window (window), & xorig, & yorig);
     gtk_widget_translate_coordinates ((GtkWidget *) button, window, 0, 0, & xwin, & ywin);
 
     * x = xorig + xwin;
-    * y = yorig + ywin + gtk_widget_get_allocated_height ((GtkWidget *) button);
+    * y = yorig + ywin + alloc.height;
     * push = TRUE;
 }
 

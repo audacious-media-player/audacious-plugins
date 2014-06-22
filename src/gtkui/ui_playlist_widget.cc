@@ -39,8 +39,8 @@ static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING};
-static const bool_t pw_col_widths[PW_COLS] = {7, -1, -1, 4, -1, 2, -1, 3, 7,
- -1, -1, -1, 3};
+static const bool_t pw_col_min_widths[PW_COLS] = {7, 10, 10, 4, 10, 2, 10, 3, 7,
+ 10, 10, 10, 3};
 static const bool_t pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
  FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
 
@@ -368,7 +368,7 @@ GtkWidget * ui_playlist_widget_new (int playlist)
     {
         int n = pw_cols[i];
         audgui_list_add_column (list, pw_col_label[n] ? _(pw_col_names[n]) :
-         NULL, i, pw_col_types[n], pw_col_widths[n]);
+         NULL, i, pw_col_types[n], pw_col_min_widths[n]);
     }
 
     return list;
@@ -455,36 +455,4 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
         popup_trigger (data, row);
     else
         popup_hide (data);
-}
-
-void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, String & expand)
-{
-    int w[PW_COLS], ex[PW_COLS];
-
-    for (int i = 0; i < pw_num_cols; i ++)
-    {
-        GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) widget, i);
-        w[i] = gtk_tree_view_column_get_fixed_width (col);
-        ex[i] = gtk_tree_view_column_get_expand (col);
-    }
-
-    widths = String (int_array_to_str (w, pw_num_cols));
-    expand = String (int_array_to_str (ex, pw_num_cols));
-}
-
-void ui_playlist_widget_set_column_widths (GtkWidget * widget,
- const char * widths, const char * expand)
-{
-    int w[PW_COLS], ex[PW_COLS];
-
-    if (! str_to_int_array (widths, w, pw_num_cols) ||
-     ! str_to_int_array (expand, ex, pw_num_cols))
-        return;
-
-    for (int i = 0; i < pw_num_cols; i ++)
-    {
-        GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) widget, i);
-        gtk_tree_view_column_set_fixed_width (col, w[i]);
-        gtk_tree_view_column_set_expand (col, ex[i]);
-    }
 }

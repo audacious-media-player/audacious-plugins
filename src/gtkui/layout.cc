@@ -181,7 +181,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
 {
     g_return_val_if_fail (widget && name, NULL);
 
-    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
+    GtkWidget * vbox = gtk_vbox_new (FALSE, 2);
 
     GtkWidget * ebox = gtk_event_box_new ();
     gtk_box_pack_start ((GtkBox *) vbox, ebox, FALSE, FALSE, 0);
@@ -223,8 +223,7 @@ static bool_t restore_size_cb (RestoreSizeData * d)
 
 static GtkWidget * paned_new (bool_t vertical, bool_t after, int w, int h)
 {
-    GtkWidget * paned = gtk_paned_new (vertical ? GTK_ORIENTATION_VERTICAL :
-     GTK_ORIENTATION_HORIZONTAL);
+    GtkWidget * paned = vertical ? gtk_vpaned_new () : gtk_hpaned_new ();
 
     GtkWidget * mine = gtk_alignment_new (0, 0, 1, 1);
     GtkWidget * next = gtk_alignment_new (0, 0, 1, 1);
@@ -338,7 +337,6 @@ static void item_add (Item * item)
 
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
         gtk_container_set_border_width ((GtkContainer *) item->window, 2);
-        gtk_window_set_has_resize_grip ((GtkWindow *) item->window, FALSE);
 
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
          delete_cb, item->widget);

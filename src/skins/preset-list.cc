@@ -258,7 +258,7 @@ static GtkWidget * equalizerwin_create_list_window
 
     audgui_destroy_on_escape (* window);
 
-    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    vbox = gtk_vbox_new (FALSE, 10);
     gtk_container_add(GTK_CONTAINER(*window), vbox);
 
     scrolled_window = gtk_scrolled_window_new(NULL, NULL);
@@ -298,7 +298,7 @@ static GtkWidget * equalizerwin_create_list_window
         gtk_box_pack_start(GTK_BOX(vbox), *entry, FALSE, FALSE, 0);
     }
 
-    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
+    bbox = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
     gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
