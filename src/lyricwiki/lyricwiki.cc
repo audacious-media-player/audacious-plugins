@@ -194,75 +194,57 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
 
 static void update_lyrics_window(const char *title, const char *artist, const char *lyrics);
 
-static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
+static void get_lyrics_step_3(const char *uri, const void *buf, int64_t len, void*)
 {
-	if (!state.uri || strcmp(state.uri, (char *) requri))
-	{
-		g_free(buf);
-		str_unref((char *) requri);
-		return FALSE;
-	}
-	str_unref((char *) requri);
+	if (!state.uri || strcmp(state.uri, uri))
+		return;
 
-	if(!len)
+	if (!len)
 	{
 		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to fetch %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		 str_printf (_("Unable to fetch %s"), uri));
+		return;
 	}
 
-	char *lyrics = scrape_lyrics_from_lyricwiki_edit_page((char *) buf, len);
+	char *lyrics = scrape_lyrics_from_lyricwiki_edit_page((const char*)buf, len);
 
-	if(!lyrics)
+	if (!lyrics)
 	{
 		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to parse %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		 str_printf (_("Unable to parse %s"), uri));
+		return;
 	}
 
 	update_lyrics_window(state.title, state.artist, lyrics);
 
 	g_free(lyrics);
-	return TRUE;
 }
 
-static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
+static void get_lyrics_step_2(const char *uri1, const void *buf, int64_t len, void*)
 {
-	if (strcmp(state.uri, (char *) requri))
-	{
-		g_free(buf);
-		str_unref((char *) requri);
-		return FALSE;
-	}
-	str_unref((char *) requri);
+	if (!state.uri || strcmp(state.uri, uri1))
+		return;
 
-	if(!len)
+	if (!len)
 	{
 		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to fetch %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		 str_printf (_("Unable to fetch %s"), uri1));
+		return;
 	}
 
-	String uri = scrape_uri_from_lyricwiki_search_result((char *) buf, len);
+	String uri = scrape_uri_from_lyricwiki_search_result((const char*)buf, len);
 
-	if(!uri)
+	if (!uri)
 	{
 		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to parse %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		 str_printf (_("Unable to parse %s"), uri1));
+		return;
 	}
 
 	state.uri = uri;
 
 	update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
-	vfs_async_file_get_contents(uri, get_lyrics_step_3, str_ref(state.uri));
-
-	g_free(buf);
-	return TRUE;
+	vfs_async_file_get_contents(uri, get_lyrics_step_3, nullptr);
 }
 
 static void get_lyrics_step_1(void)
@@ -281,7 +263,7 @@ static void get_lyrics_step_1(void)
 	 (const char *) title_buf));
 
 	update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
-	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, str_ref(state.uri));
+	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, nullptr);
 }
 
 static GtkWidget *scrollview, *vbox;
