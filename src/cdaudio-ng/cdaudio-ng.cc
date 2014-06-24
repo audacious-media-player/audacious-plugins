@@ -48,6 +48,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
@@ -82,7 +83,7 @@ static int lasttrackno = -1;
 static int n_audio_tracks;
 static cdrom_drive_t *pcdrom_drive = nullptr;
 static trackinfo_t *trackinfo = nullptr;
-static int monitor_source = 0;
+static QueuedFunc monitor_source;
 
 static bool cdaudio_init (void);
 static bool cdaudio_is_our_file (const char * filename, VFSFile * file);
@@ -203,7 +204,7 @@ static void purge_all_playlists (void)
 }
 
 /* main thread only */
-static gboolean monitor (gpointer unused)
+static void monitor (void *)
 {
     pthread_mutex_lock (& mutex);
 
@@ -211,7 +212,7 @@ static gboolean monitor (gpointer unused)
     if (playing)
     {
         pthread_mutex_unlock (& mutex);
-        return true;
+        return;
     }
 
     if (trackinfo != nullptr)
@@ -220,21 +221,20 @@ static gboolean monitor (gpointer unused)
     if (trackinfo != nullptr)
     {
         pthread_mutex_unlock (& mutex);
-        return true;
+        return;
     }
 
-    monitor_source = 0;
+    monitor_source.stop ();
     pthread_mutex_unlock (& mutex);
 
     purge_all_playlists ();
-    return false;
 }
 
 /* mutex must be locked */
 static void trigger_monitor (void)
 {
-    if (! monitor_source)
-        monitor_source = g_timeout_add_seconds (1, monitor, nullptr);
+    if (! monitor_source.running ())
+        monitor_source.start (1000, monitor, nullptr);
 }
 
 /* main thread only */
@@ -827,11 +827,7 @@ static void refresh_trackinfo (bool warning)
 /* mutex must be locked */
 static void reset_trackinfo (void)
 {
-    if (monitor_source)
-    {
-        g_source_remove (monitor_source);
-        monitor_source = 0;
-    }
+    monitor_source.stop ();
 
     if (pcdrom_drive != nullptr)
     {
