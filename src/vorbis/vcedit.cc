@@ -42,21 +42,21 @@ vcedit_clear_internals(vcedit_state * state)
     if (state->vc) {
         vorbis_comment_clear(state->vc);
         g_free(state->vc);
-        state->vc = NULL;
+        state->vc = nullptr;
     }
     if (state->os) {
         ogg_stream_clear(state->os);
         g_free(state->os);
-        state->os = NULL;
+        state->os = nullptr;
     }
     if (state->oy) {
         ogg_sync_clear(state->oy);
         g_free(state->oy);
-        state->oy = NULL;
+        state->oy = nullptr;
     }
     if (state->vendor) {
         g_free(state->vendor);
-        state->vendor = NULL;
+        state->vendor = nullptr;
     }
 }
 
@@ -143,7 +143,7 @@ _fetch_next_packet(vcedit_state * s, ogg_packet * p, ogg_page * page)
 {
     int result;
     char *buffer;
-    gint64 bytes;
+    int64_t bytes;
 
     result = ogg_stream_packetout(s->os, p);
 
@@ -187,7 +187,7 @@ vcedit_open_callbacks(vcedit_state * state, void *in,
                       vcedit_write_func write_func)
 {
     char *buffer;
-    gint64 bytes, i;
+    int64_t bytes, i;
     ogg_packet *header;
     ogg_packet header_main;
     ogg_packet header_comments;
@@ -314,7 +314,7 @@ vcedit_write(vcedit_state * state, void *out)
     ogg_int64_t granpos = 0;
     int result;
     char *buffer;
-    gint64 bytes;
+    int64_t bytes;
     int needflush = 0, needout = 0;
 
     state->eosin = 0;

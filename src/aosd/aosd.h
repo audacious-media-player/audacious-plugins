@@ -24,7 +24,7 @@
 #include "aosd_common.h"
 #include <glib.h>
 
-gboolean aosd_init (void);
+bool aosd_init (void);
 void aosd_cleanup ( void );
 void aosd_configure ( void );
 

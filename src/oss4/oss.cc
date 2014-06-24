@@ -33,16 +33,16 @@ static const char * const oss_defaults[] = {
  "volume", "12850", /* 0x3232 */
  "cookedmode", "TRUE",
  "exclusive", "FALSE",
- NULL};
+ nullptr};
 
 oss_data_t *oss_data;
 static int64_t oss_time; /* microseconds */
-static bool_t oss_paused;
+static bool oss_paused;
 static int oss_paused_time;
 static int oss_delay; /* miliseconds */
-static bool_t oss_ioctl_vol = FALSE;
+static bool oss_ioctl_vol = false;
 
-bool_t oss_init(void)
+bool oss_init(void)
 {
     AUDDBG("Init.\n");
 
@@ -60,7 +60,7 @@ void oss_cleanup(void)
     free(oss_data);
 }
 
-static bool_t set_format(int format, int rate, int channels)
+static bool set_format(int format, int rate, int channels)
 {
     int param;
 
@@ -90,10 +90,10 @@ static bool_t set_format(int format, int rate, int channels)
     oss_data->channels = channels;
     oss_data->bits_per_sample = oss_format_to_bits(oss_data->format);
 
-    return TRUE;
+    return true;
 
 FAILED:
-    return FALSE;
+    return false;
 }
 
 static int open_device(void)
@@ -109,9 +109,9 @@ static int open_device(void)
         flags |= O_EXCL;
     }
 
-    if (aud_get_bool("oss4", "use_alt_device") && alt_device != NULL)
+    if (aud_get_bool("oss4", "use_alt_device") && alt_device != nullptr)
         res = open(alt_device, flags);
-    else if (device != NULL)
+    else if (device != nullptr)
         res = open(device, flags);
     else
         res = open(DEFAULT_DSP, flags);
@@ -148,10 +148,10 @@ int oss_open_audio(int aud_format, int rate, int channels)
         buf_info.bytes);
 
     oss_time = 0;
-    oss_paused = FALSE;
+    oss_paused = false;
     oss_paused_time = 0;
     oss_delay = oss_bytes_to_frames(buf_info.fragstotal * buf_info.fragsize) * 1000 / oss_data->rate;
-    oss_ioctl_vol = TRUE;
+    oss_ioctl_vol = true;
 
     AUDDBG("Internal OSS buffer size: %dms.\n", oss_delay);
 
@@ -200,7 +200,7 @@ void oss_drain(void)
 {
     AUDDBG("Drain.\n");
 
-    if (ioctl(oss_data->fd, SNDCTL_DSP_SYNC, NULL) == -1)
+    if (ioctl(oss_data->fd, SNDCTL_DSP_SYNC, nullptr) == -1)
         DESCRIBE_ERROR;
 }
 
@@ -242,24 +242,24 @@ void oss_flush(int time)
 {
     AUDDBG("Flush.\n");
 
-    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_RESET, NULL);
+    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_RESET, nullptr);
 
 FAILED:
     oss_time = (int64_t) time * 1000;
     oss_paused_time = time;
 }
 
-void oss_pause(bool_t pause)
+void oss_pause(bool pause)
 {
     AUDDBG("%sause.\n", pause ? "P" : "Unp");
 
     if (pause)
     {
         oss_paused_time = real_output_time();
-        CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SILENCE, NULL);
+        CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SILENCE, nullptr);
     }
     else
-        CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SKIP, NULL);
+        CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SKIP, nullptr);
 
 FAILED:
     oss_paused = pause;
@@ -291,7 +291,7 @@ void oss_get_volume(int *left, int *right)
 
 FAILED:
     if (errno == EINVAL)
-        oss_ioctl_vol = FALSE;
+        oss_ioctl_vol = false;
 }
 
 void oss_set_volume(int left, int right)
@@ -310,5 +310,5 @@ void oss_set_volume(int left, int right)
 
 FAILED:
     if (errno == EINVAL)
-        oss_ioctl_vol = FALSE;
+        oss_ioctl_vol = false;
 }

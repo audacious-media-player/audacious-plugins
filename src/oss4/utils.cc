@@ -187,7 +187,7 @@ int oss_probe_for_adev(oss_sysinfo *sysinfo)
     return num;
 }
 
-bool_t oss_hardware_present(void)
+bool oss_hardware_present(void)
 {
     int mixerfd;
     oss_sysinfo sysinfo;
@@ -197,9 +197,9 @@ bool_t oss_hardware_present(void)
     CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
     close(mixerfd);
-    return TRUE;
+    return true;
 
 FAILED:
     close(mixerfd);
-    return FALSE;
+    return false;
 }

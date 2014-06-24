@@ -29,22 +29,22 @@
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_graph.h"
 
-static void init_spline (const gdouble * x, const gdouble * y, gint n, gdouble * y2)
+static void init_spline (const double * x, const double * y, int n, double * y2)
 {
-    gint i, k;
-    gdouble p, qn, sig, un, *u;
+    int i, k;
+    double p, qn, sig, un, *u;
 
-    u = (gdouble *) g_malloc(n * sizeof(gdouble));
+    u = (double *) g_malloc(n * sizeof(double));
 
     y2[0] = u[0] = 0.0;
 
     for (i = 1; i < n - 1; i++) {
-        sig = ((gdouble) x[i] - x[i - 1]) / ((gdouble) x[i + 1] - x[i - 1]);
+        sig = ((double) x[i] - x[i - 1]) / ((double) x[i + 1] - x[i - 1]);
         p = sig * y2[i - 1] + 2.0;
         y2[i] = (sig - 1.0) / p;
         u[i] =
-            (((gdouble) y[i + 1] - y[i]) / (x[i + 1] - x[i])) -
-            (((gdouble) y[i] - y[i - 1]) / (x[i] - x[i - 1]));
+            (((double) y[i + 1] - y[i]) / (x[i + 1] - x[i])) -
+            (((double) y[i] - y[i - 1]) / (x[i] - x[i - 1]));
         u[i] = (6.0 * u[i] / (x[i + 1] - x[i - 1]) - sig * u[i - 1]) / p;
     }
     qn = un = 0.0;
@@ -55,11 +55,11 @@ static void init_spline (const gdouble * x, const gdouble * y, gint n, gdouble *
     g_free(u);
 }
 
-gdouble eval_spline (const gdouble * xa, const gdouble * ya, const gdouble * y2a,
- gint n, gdouble x)
+double eval_spline (const double * xa, const double * ya, const double * y2a,
+ int n, double x)
 {
-    gint klo, khi, k;
-    gdouble h, b, a;
+    int klo, khi, k;
+    double h, b, a;
 
     klo = 0;
     khi = n - 1;
@@ -79,32 +79,32 @@ gdouble eval_spline (const gdouble * xa, const gdouble * ya, const gdouble * y2a
 }
 
 DRAW_FUNC_BEGIN (eq_graph_draw)
-    static const gdouble x[10] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
+    static const double x[10] = {0, 11, 23, 35, 47, 59, 71, 83, 97, 109};
 
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 294, 0, 0, 113, 19);
-    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (NULL,
+    skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (nullptr,
      "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);
 
-    guint32 cols[19];
+    uint32_t cols[19];
     skin_get_eq_spline_colors(active_skin, cols);
 
-    gdouble bands[AUD_EQ_NBANDS];
+    double bands[AUD_EQ_NBANDS];
     aud_eq_get_bands (bands);
 
-    gdouble yf[10];
+    double yf[10];
     init_spline (x, bands, 10, yf);
 
     /* now draw a pixelated line with vector graphics ... -- jlindgren */
-    gint py = 0;
-    for (gint i = 0; i < 109; i ++)
+    int py = 0;
+    for (int i = 0; i < 109; i ++)
     {
-        gint y = 9.5 - eval_spline (x, bands, yf, 10, i) * 9 / AUD_EQ_MAX_GAIN;
+        int y = 9.5 - eval_spline (x, bands, yf, 10, i) * 9 / AUD_EQ_MAX_GAIN;
         y = CLAMP (y, 0, 18);
 
         if (!i)
             py = y;
 
-        gint ymin, ymax;
+        int ymin, ymax;
 
         if (y > py)
         {

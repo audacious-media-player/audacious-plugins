@@ -19,7 +19,7 @@ static const char * const echo_defaults[] = {
  "delay", "500",
  "feedback", "50",
  "volume", "50",
- NULL};
+ nullptr};
 
 static const PreferencesWidget echo_widgets[] = {
     WidgetLabel (N_("<b>Echo</b>")),
@@ -39,19 +39,19 @@ static const PluginPreferences echo_prefs = {
     ARRAY_LEN (echo_widgets)
 };
 
-static float *buffer = NULL;
+static float *buffer = nullptr;
 static int w_ofs;
 
-static bool_t init (void)
+static bool init (void)
 {
     aud_config_set_defaults ("echo_plugin", echo_defaults);
-    return TRUE;
+    return true;
 }
 
 static void cleanup(void)
 {
     g_free(buffer);
-    buffer = NULL;
+    buffer = nullptr;
 }
 
 static int echo_channels = 0;
@@ -61,7 +61,7 @@ static void echo_start(int *channels, int *rate)
 {
     static int old_srate, old_nch;
 
-    if (buffer == NULL)
+    if (buffer == nullptr)
         buffer = (float *) g_malloc (BUFFER_BYTES);
 
     echo_channels = *channels;
@@ -126,7 +126,7 @@ static const char echo_about[] =
 #define AUD_EFFECT_START       echo_start
 #define AUD_EFFECT_PROCESS     echo_process
 #define AUD_EFFECT_FINISH      echo_finish
-#define AUD_EFFECT_SAME_FMT    TRUE
+#define AUD_EFFECT_SAME_FMT    true
 
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>

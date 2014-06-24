@@ -30,7 +30,7 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
     callback_info* info = (callback_info*) client_data;
     int64_t read;
 
-    if (info->fd == NULL)
+    if (info->fd == nullptr)
     {
         FLACNG_ERROR("Trying to read data from an uninitialized file!\n");
         return FLAC__STREAM_DECODER_READ_STATUS_ABORT;

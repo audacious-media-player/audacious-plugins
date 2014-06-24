@@ -28,17 +28,17 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 
-static gint
-aosd_cfg_util_str_to_color ( const gchar * str , aosd_color_t * color )
+static int
+aosd_cfg_util_str_to_color ( const char * str , aosd_color_t * color )
 {
   /* color strings are in format "x,x,x,x", where x are numbers
      that represent respectively red, green, blue and alpha values (0-65535) */
-  gchar **str_values = g_strsplit( str , "," , 4 );
-  gint col_values[4] = { 0 , 0 , 0, 65535 };
-  gint i = 0;
-  while ( str_values[i] != NULL )
+  char **str_values = g_strsplit( str , "," , 4 );
+  int col_values[4] = { 0 , 0 , 0, 65535 };
+  int i = 0;
+  while ( str_values[i] != nullptr )
   {
-    col_values[i] = (gint)strtol( str_values[i] , NULL , 10 );
+    col_values[i] = (int)strtol( str_values[i] , nullptr , 10 );
     i++;
   }
   g_strfreev( str_values );
@@ -53,13 +53,13 @@ aosd_cfg_util_str_to_color ( const gchar * str , aosd_color_t * color )
 }
 
 
-static gint
-aosd_cfg_util_color_to_str ( aosd_color_t color , gchar ** str )
+static int
+aosd_cfg_util_color_to_str ( aosd_color_t color , char ** str )
 {
   /* color strings are in format "x,x,x,x", where x are numbers
      that represent respectively red, green, blue and alpha values (0-65535) */
   *str = g_strdup_printf( "%i,%i,%i,%i" , color.red , color.green , color.blue , color.alpha );
-  if ( *str != NULL )
+  if ( *str != nullptr )
     return 0;
   else
     return -1;
@@ -80,9 +80,9 @@ aosd_cfg_new ( void )
 void
 aosd_cfg_delete ( aosd_cfg_t * cfg )
 {
-  if ( cfg != NULL )
+  if ( cfg != nullptr )
   {
-    if ( cfg->osd != NULL )
+    if ( cfg->osd != nullptr )
       aosd_cfg_osd_delete( cfg->osd );
     g_free( cfg );
   }
@@ -96,7 +96,7 @@ aosd_cfg_osd_new( void )
   aosd_cfg_osd_t *cfg_osd = g_new0 (aosd_cfg_osd_t, 1);
   cfg_osd->decoration.colors = g_array_sized_new( FALSE , TRUE , sizeof(aosd_color_t) ,
                                                   aosd_deco_style_get_max_numcol() );
-  cfg_osd->trigger.active = g_array_new( FALSE , TRUE , sizeof(gint) );
+  cfg_osd->trigger.active = g_array_new( FALSE , TRUE , sizeof(int) );
   return cfg_osd;
 }
 
@@ -104,15 +104,15 @@ aosd_cfg_osd_new( void )
 void
 aosd_cfg_osd_delete ( aosd_cfg_osd_t * cfg_osd )
 {
-  if ( cfg_osd != NULL )
+  if ( cfg_osd != nullptr )
   {
-    gint i = 0;
+    int i = 0;
     /* free configuration fields */
     for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
       cfg_osd->text.fonts_name[i] = String ();
-    if ( cfg_osd->decoration.colors != NULL )
+    if ( cfg_osd->decoration.colors != nullptr )
       g_array_free( cfg_osd->decoration.colors , TRUE );
-    if ( cfg_osd->trigger.active != NULL )
+    if ( cfg_osd->trigger.active != nullptr )
       g_array_free( cfg_osd->trigger.active , TRUE );
   }
   g_free( cfg_osd );
@@ -125,7 +125,7 @@ aosd_cfg_osd_t *
 aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
 {
   aosd_cfg_osd_t *cfg_osd_copy = aosd_cfg_osd_new();
-  gint i = 0;
+  int i = 0;
   /* copy information */
   cfg_osd_copy->position.placement = cfg_osd->position.placement;
   cfg_osd_copy->position.offset_x = cfg_osd->position.offset_x;
@@ -151,7 +151,7 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
   }
   for ( i = 0 ; i < (int) cfg_osd->trigger.active->len ; i++ )
   {
-    gint trigger_id = g_array_index( cfg_osd->trigger.active , gint , i );
+    int trigger_id = g_array_index( cfg_osd->trigger.active , int , i );
     g_array_insert_val( cfg_osd_copy->trigger.active , i , trigger_id );
   }
   cfg_osd_copy->misc.transparency_mode = cfg_osd->misc.transparency_mode;
@@ -163,7 +163,7 @@ aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd )
 void
 aosd_cfg_debug ( aosd_cfg_t * cfg )
 {
-  gint i = 0;
+  int i = 0;
   GString *string = g_string_new( "" );
   g_print("\n***** debug configuration *****\n\n");
   g_print("POSITION\n");
@@ -198,7 +198,7 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
   }
   g_print("\nTRIGGER\n");
   for ( i = 0 ; i < cfg->osd->trigger.active->len ; i++ )
-    g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , gint , i ) );
+    g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , int , i ) );
   if ( string->len > 1 )
     g_string_truncate( string , string->len - 1 );
   g_print("  active: %s\n", string->str);
@@ -210,7 +210,7 @@ aosd_cfg_debug ( aosd_cfg_t * cfg )
 }
 #endif
 
-static const gchar * const aosd_defaults[] = {
+static const char * const aosd_defaults[] = {
  "position_placement", "1", /* AOSD_POSITION_PLACEMENT_TOPLEFT */
  "position_offset_x", "0",
  "position_offset_y", "0",
@@ -229,15 +229,15 @@ static const gchar * const aosd_defaults[] = {
  "decoration_color_1", "65535,65535,65535,65535",
  "trigger_active", "0",
  "transparency_mode", "0",
- NULL};
+ nullptr};
 
-gint
+int
 aosd_cfg_load ( aosd_cfg_t * cfg )
 {
   aud_config_set_defaults ("aosd", aosd_defaults);
 
-  gint i = 0;
-  gint max_numcol;
+  int i = 0;
+  int max_numcol;
   String trig_active_str;
 
   /* position */
@@ -256,7 +256,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
     String color_str;
-    gchar key_str[32];
+    char key_str[32];
 
     snprintf (key_str, sizeof key_str, "text_fonts_name_%i" , i );
     cfg->osd->text.fonts_name[i] = aud_get_str ("aosd", key_str);
@@ -282,7 +282,7 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
   max_numcol = aosd_deco_style_get_max_numcol();
   for ( i = 0 ; i < max_numcol ; i++ )
   {
-    gchar key_str[32];
+    char key_str[32];
     String color_str;
     aosd_color_t color;
     snprintf (key_str, sizeof key_str, "decoration_color_%i", i);
@@ -296,11 +296,11 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
 
   if (strcmp (trig_active_str, "x"))
   {
-    gchar **trig_active_strv = g_strsplit( trig_active_str , "," , 0 );
-    gint j = 0;
-    while ( trig_active_strv[j] != NULL )
+    char **trig_active_strv = g_strsplit( trig_active_str , "," , 0 );
+    int j = 0;
+    while ( trig_active_strv[j] != nullptr )
     {
-      gint trig_active_val = strtol( trig_active_strv[j] , NULL , 10 );
+      int trig_active_val = strtol( trig_active_strv[j] , nullptr , 10 );
       g_array_append_val( cfg->osd->trigger.active , trig_active_val );
       j++;
     }
@@ -317,11 +317,11 @@ aosd_cfg_load ( aosd_cfg_t * cfg )
 }
 
 
-gint
+int
 aosd_cfg_save ( aosd_cfg_t * cfg )
 {
-  gint i = 0;
-  gint max_numcol;
+  int i = 0;
+  int max_numcol;
   GString *string = g_string_new( "" );
 
   if ( cfg->set == FALSE )
@@ -342,8 +342,8 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
   /* text */
   for ( i = 0 ; i < AOSD_TEXT_FONTS_NUM ; i++ )
   {
-    gchar *color_str = NULL;
-    gchar key_str[32];
+    char *color_str = nullptr;
+    char key_str[32];
 
     snprintf (key_str, sizeof key_str, "text_fonts_name_%i", i);
     aud_set_str ("aosd", key_str, cfg->osd->text.fonts_name[i]);
@@ -372,8 +372,8 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
   max_numcol = aosd_deco_style_get_max_numcol();
   for ( i = 0 ; i < max_numcol ; i++ )
   {
-    gchar key_str[32];
-    gchar *color_str = NULL;
+    char key_str[32];
+    char *color_str = nullptr;
     aosd_color_t color = g_array_index( cfg->osd->decoration.colors , aosd_color_t , i );
     snprintf (key_str, sizeof key_str, "decoration_color_%i", i);
     aosd_cfg_util_color_to_str( color , &color_str );
@@ -383,7 +383,7 @@ aosd_cfg_save ( aosd_cfg_t * cfg )
 
   /* trigger */
   for ( i = 0 ; i < (int) cfg->osd->trigger.active->len ; i++ )
-    g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , gint , i ) );
+    g_string_append_printf( string , "%i," , g_array_index( cfg->osd->trigger.active , int , i ) );
   if ( string->len > 1 )
     g_string_truncate( string , string->len - 1 );
   else

@@ -10,7 +10,7 @@
 
 #define CLEAR_LINE		0		/* clear (a fired, held or pulsed) line */
 #define ASSERT_LINE     1       /* assert an interrupt immediately */
-#define HOLD_LINE       2       /* hold interrupt line until enable is TRUE */
+#define HOLD_LINE       2       /* hold interrupt line until enable is true */
 #define PULSE_LINE		3		/* pulse interrupt line for one instruction */
 
 #define MAX_REGS		64		/* maximum number of register of any CPU */
@@ -650,7 +650,7 @@ enum
 
 	CPUINFO_PTR_CPU_SPECIFIC = 0x18000,					/* R/W: CPU-specific values start here */
 
-	/* --- the following bits of info are returned as NULL-terminated strings --- */
+	/* --- the following bits of info are returned as nullptr-terminated strings --- */
 	CPUINFO_STR_FIRST = 0x20000,
 
 	CPUINFO_STR_NAME = CPUINFO_STR_FIRST,				/* R/O: name of the CPU */

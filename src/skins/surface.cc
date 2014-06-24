@@ -28,16 +28,16 @@ cairo_surface_t * surface_new (int w, int h)
     return cairo_image_surface_create (CAIRO_FORMAT_RGB24, w, h);
 }
 
-cairo_surface_t * surface_new_from_file (const gchar * name)
+cairo_surface_t * surface_new_from_file (const char * name)
 {
-    GError * error = NULL;
+    GError * error = nullptr;
     GdkPixbuf * p = gdk_pixbuf_new_from_file (name, & error);
     if (error) {
         fprintf (stderr, "Error loading %s: %s.\n", name, error->message);
         g_error_free (error);
     }
     if (! p)
-        return NULL;
+        return nullptr;
 
     cairo_surface_t * surface = surface_new (gdk_pixbuf_get_width (p),
      gdk_pixbuf_get_height (p));
@@ -51,18 +51,18 @@ cairo_surface_t * surface_new_from_file (const gchar * name)
     return surface;
 }
 
-guint32 surface_get_pixel (cairo_surface_t * s, gint x, gint y)
+uint32_t surface_get_pixel (cairo_surface_t * s, int x, int y)
 {
     if (x < 0 || x >= cairo_image_surface_get_width (s) ||
      y < 0 || y >= cairo_image_surface_get_height (s))
         return 0;
 
-    return * ((guint32 *) (cairo_image_surface_get_data (s) +
+    return * ((uint32_t *) (cairo_image_surface_get_data (s) +
      cairo_image_surface_get_stride (s) * y) + x) & 0xffffff;
 }
 
-void surface_copy_rect (cairo_surface_t * a, gint ax, gint ay, gint w, gint h,
- cairo_surface_t * b, gint bx, gint by)
+void surface_copy_rect (cairo_surface_t * a, int ax, int ay, int w, int h,
+ cairo_surface_t * b, int bx, int by)
 {
     cairo_t * cr = cairo_create (b);
     cairo_set_source_surface (cr, a, bx - ax, by - ay);

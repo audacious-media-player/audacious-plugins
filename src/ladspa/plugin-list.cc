@@ -29,21 +29,21 @@ static void get_value (void * user, int row, int column, GValue * value)
     g_value_set_string (value, plugins[row]->desc->Name);
 }
 
-static int get_selected (void * user, int row)
+static bool get_selected (void * user, int row)
 {
     g_return_val_if_fail (row >= 0 && row < plugins.len (), 0);
 
     return plugins[row]->selected;
 }
 
-static void set_selected (void * user, int row, int selected)
+static void set_selected (void * user, int row, bool selected)
 {
     g_return_if_fail (row >= 0 && row < plugins.len ());
 
     plugins[row]->selected = selected;
 }
 
-static void select_all (void * user, int selected)
+static void select_all (void * user, bool selected)
 {
     for (PluginData * plugin : plugins)
         plugin->selected = selected;
@@ -58,8 +58,8 @@ static const AudguiListCallbacks callbacks = {
 
 GtkWidget * create_plugin_list (void)
 {
-    GtkWidget * list = audgui_list_new (& callbacks, NULL, plugins.len ());
-    audgui_list_add_column (list, NULL, 0, G_TYPE_STRING, -1);
+    GtkWidget * list = audgui_list_new (& callbacks, nullptr, plugins.len ());
+    audgui_list_add_column (list, nullptr, 0, G_TYPE_STRING, -1);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list, 0);
     return list;
 }

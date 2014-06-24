@@ -45,7 +45,7 @@ static void title_change (void)
 
 static void info_change (void)
 {
-    gint bitrate = 0, samplerate = 0, channels = 0;
+    int bitrate = 0, samplerate = 0, channels = 0;
 
     if (aud_drct_get_ready ())
         aud_drct_get_info (& bitrate, & samplerate, & channels);
@@ -92,17 +92,17 @@ ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
 
 static void repeat_toggled (void * data, void * user)
 {
-    button_set_active (mainwin_repeat, aud_get_bool (NULL, "repeat"));
+    button_set_active (mainwin_repeat, aud_get_bool (nullptr, "repeat"));
 }
 
 static void shuffle_toggled (void * data, void * user)
 {
-    button_set_active (mainwin_shuffle, aud_get_bool (NULL, "shuffle"));
+    button_set_active (mainwin_shuffle, aud_get_bool (nullptr, "shuffle"));
 }
 
 static void no_advance_toggled (void * data, void * user)
 {
-    if (aud_get_bool (NULL, "no_playlist_advance"))
+    if (aud_get_bool (nullptr, "no_playlist_advance"))
         mainwin_show_status_message (_("Single mode."));
     else
         mainwin_show_status_message (_("Playlist mode."));
@@ -110,7 +110,7 @@ static void no_advance_toggled (void * data, void * user)
 
 static void stop_after_song_toggled (void * hook_data, void * user_data)
 {
-    if (aud_get_bool (NULL, "stop_after_current_song"))
+    if (aud_get_bool (nullptr, "stop_after_current_song"))
         mainwin_show_status_message (_("Stopping after song."));
 }
 
@@ -131,18 +131,18 @@ static void vis_clear_cb (void)
     ui_svis_clear_data (mainwin_svis);
 }
 
-static void render_mono_pcm (const gfloat * pcm)
+static void render_mono_pcm (const float * pcm)
 {
-    guchar data[512];
+    unsigned char data[512];
 
     if (config.vis_type != VIS_SCOPE)
         return;
 
-    for (gint i = 0; i < 75; i ++)
+    for (int i = 0; i < 75; i ++)
     {
         /* the signal is amplified by 2x */
         /* output values are in the range 0 to 16 */
-        gint val = 8 + roundf (16 * pcm[i * 512 / 75]);
+        int val = 8 + roundf (16 * pcm[i * 512 / 75]);
         data[i] = CLAMP (val, 0, 16);
     }
 
@@ -153,11 +153,11 @@ static void render_mono_pcm (const gfloat * pcm)
 }
 
 /* calculate peak dB level, where 1 is 0 dB */
-static gfloat calc_peak_level (const gfloat * pcm, gint step)
+static float calc_peak_level (const float * pcm, int step)
 {
-    gfloat peak = 0.0001; /* must be > 0, or level = -inf */
+    float peak = 0.0001; /* must be > 0, or level = -inf */
 
-    for (gint i = 0; i < 512; i ++)
+    for (int i = 0; i < 512; i ++)
     {
         peak = MAX (peak, * pcm);
         pcm += step;
@@ -166,15 +166,15 @@ static gfloat calc_peak_level (const gfloat * pcm, gint step)
     return 20 * log10 (peak);
 }
 
-static void render_multi_pcm (const gfloat * pcm, gint channels)
+static void render_multi_pcm (const float * pcm, int channels)
 {
     /* "VU meter" */
     if (config.vis_type != VIS_VOICEPRINT || ! aud_get_bool ("skins", "player_shaded"))
         return;
 
-    guchar data[512];
+    unsigned char data[512];
 
-    gint level = 38 + calc_peak_level (pcm, channels);
+    int level = 38 + calc_peak_level (pcm, channels);
     data[0] = CLAMP (level, 0, 38);
 
     if (channels >= 2)
@@ -189,11 +189,11 @@ static void render_multi_pcm (const gfloat * pcm, gint channels)
 }
 
 /* convert linear frequency graph to logarithmic one */
-static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
- int_range, guchar * graph)
+static void make_log_graph (const float * freq, int bands, int db_range, int
+ int_range, unsigned char * graph)
 {
-    static gint last_bands = 0;
-    static gfloat * xscale = NULL;
+    static int last_bands = 0;
+    static float * xscale = nullptr;
 
     /* conversion table for the x-axis */
     if (bands != last_bands)
@@ -205,13 +205,13 @@ static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
         last_bands = bands;
     }
 
-    for (gint i = 0; i < bands; i ++)
+    for (int i = 0; i < bands; i ++)
     {
         /* sum up values in freq array between xscale[i] and xscale[i + 1],
            including fractional parts */
-        gint a = ceilf (xscale[i]);
-        gint b = floorf (xscale[i + 1]);
-        gfloat sum = 0;
+        int a = ceilf (xscale[i]);
+        int b = floorf (xscale[i + 1]);
+        float sum = 0;
 
         if (b < a)
             sum += freq[b] * (xscale[i + 1] - xscale[i]);
@@ -227,10 +227,10 @@ static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
 
         /* fudge factor to make the graph have the same overall height as a
            12-band one no matter how many bands there are */
-        sum *= (gfloat) bands / 12;
+        sum *= (float) bands / 12;
 
         /* convert to dB */
-        gfloat val = 20 * log10f (sum);
+        float val = 20 * log10f (sum);
 
         /* scale (-db_range, 0.0) to (0.0, int_range) */
         val = (1 + val / db_range) * int_range;
@@ -239,11 +239,11 @@ static void make_log_graph (const gfloat * freq, gint bands, gint db_range, gint
     }
 }
 
-static void render_freq (const gfloat * freq)
+static void render_freq (const float * freq)
 {
-    bool_t shaded = aud_get_bool ("skins", "player_shaded");
+    gboolean shaded = aud_get_bool ("skins", "player_shaded");
 
-    guchar data[512];
+    unsigned char data[512];
 
     if (config.vis_type == VIS_ANALYZER)
     {
@@ -276,21 +276,21 @@ static void render_freq (const gfloat * freq)
 void
 ui_main_evlistener_init(void)
 {
-    hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, NULL);
-    hook_associate("playback begin", ui_main_evlistener_playback_begin, NULL);
-    hook_associate("playback ready", ui_main_evlistener_playback_begin, NULL);
-    hook_associate("playback stop", ui_main_evlistener_playback_stop, NULL);
-    hook_associate("playback pause", ui_main_evlistener_playback_pause, NULL);
-    hook_associate("playback unpause", ui_main_evlistener_playback_unpause, NULL);
-    hook_associate ("title change", (HookFunction) title_change, NULL);
-    hook_associate ("info change", (HookFunction) info_change, NULL);
+    hook_associate("hide seekbar", ui_main_evlistener_hide_seekbar, nullptr);
+    hook_associate("playback begin", ui_main_evlistener_playback_begin, nullptr);
+    hook_associate("playback ready", ui_main_evlistener_playback_begin, nullptr);
+    hook_associate("playback stop", ui_main_evlistener_playback_stop, nullptr);
+    hook_associate("playback pause", ui_main_evlistener_playback_pause, nullptr);
+    hook_associate("playback unpause", ui_main_evlistener_playback_unpause, nullptr);
+    hook_associate ("title change", (HookFunction) title_change, nullptr);
+    hook_associate ("info change", (HookFunction) info_change, nullptr);
 
-    hook_associate("playback seek", (HookFunction) mainwin_update_song_info, NULL);
+    hook_associate("playback seek", (HookFunction) mainwin_update_song_info, nullptr);
 
-    hook_associate ("set repeat", repeat_toggled, NULL);
-    hook_associate ("set shuffle", shuffle_toggled, NULL);
-    hook_associate ("set no_playlist_advance", no_advance_toggled, NULL);
-    hook_associate ("set stop_after_current_song", stop_after_song_toggled, NULL);
+    hook_associate ("set repeat", repeat_toggled, nullptr);
+    hook_associate ("set shuffle", shuffle_toggled, nullptr);
+    hook_associate ("set no_playlist_advance", no_advance_toggled, nullptr);
+    hook_associate ("set stop_after_current_song", stop_after_song_toggled, nullptr);
 }
 
 void

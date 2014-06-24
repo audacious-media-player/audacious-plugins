@@ -141,7 +141,7 @@ EXPORT_GCC void CALLBACK SPU2writeDMA7Mem(u32 usPSXMem,int iSize)
 
 void InterruptDMA4(void)
 {
-// taken from linuzappz NULL spu2
+// taken from linuzappz nullptr spu2
 //	spu2Rs16(CORE0_ATTR)&= ~0x30;
 //	spu2Rs16(REG__1B0) = 0;
 //	spu2Rs16(SPU2_STATX_WRDY_M)|= 0x80;
@@ -158,7 +158,7 @@ EXPORT_GCC void CALLBACK SPU2interruptDMA4(void)
 
 void InterruptDMA7(void)
 {
-// taken from linuzappz NULL spu2
+// taken from linuzappz nullptr spu2
 //	spu2Rs16(CORE1_ATTR)&= ~0x30;
 //	spu2Rs16(REG__5B0) = 0;
 //	spu2Rs16(SPU2_STATX_DREQ)|= 0x80;

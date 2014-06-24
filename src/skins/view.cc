@@ -34,7 +34,7 @@
 #include "ui_skinned_menurow.h"
 #include "ui_skinned_window.h"
 
-void view_show_player (bool_t show)
+void view_show_player (bool show)
 {
     if (show)
     {
@@ -53,17 +53,17 @@ void view_show_player (bool_t show)
     start_stop_visual (FALSE);
 }
 
-void view_set_show_playlist (bool_t show)
+void view_set_show_playlist (bool show)
 {
     aud_set_bool ("skins", "playlist_visible", show);
-    hook_call ("skins set playlist_visible", NULL);
+    hook_call ("skins set playlist_visible", nullptr);
 
     view_apply_show_playlist ();
 }
 
 void view_apply_show_playlist (void)
 {
-    bool_t show = aud_get_bool ("skins", "playlist_visible");
+    bool show = aud_get_bool ("skins", "playlist_visible");
 
     if (show && gtk_widget_get_visible (mainwin))
         gtk_window_present ((GtkWindow *) playlistwin);
@@ -73,17 +73,17 @@ void view_apply_show_playlist (void)
     button_set_active (mainwin_pl, show);
 }
 
-void view_set_show_equalizer (bool_t show)
+void view_set_show_equalizer (bool show)
 {
     aud_set_bool ("skins", "equalizer_visible", show);
-    hook_call ("skins set equalizer_visible", NULL);
+    hook_call ("skins set equalizer_visible", nullptr);
 
     view_apply_show_equalizer ();
 }
 
 void view_apply_show_equalizer (void)
 {
-    bool_t show = aud_get_bool ("skins", "equalizer_visible");
+    bool show = aud_get_bool ("skins", "equalizer_visible");
 
     if (show && gtk_widget_get_visible (mainwin))
         gtk_window_present ((GtkWindow *) equalizerwin);
@@ -93,17 +93,17 @@ void view_apply_show_equalizer (void)
     button_set_active (mainwin_eq, show);
 }
 
-void view_set_player_shaded (bool_t shaded)
+void view_set_player_shaded (bool shaded)
 {
     aud_set_bool ("skins", "player_shaded", shaded);
-    hook_call ("skins set player_shaded", NULL);
+    hook_call ("skins set player_shaded", nullptr);
 
     view_apply_player_shaded ();
 }
 
 void view_apply_player_shaded (void)
 {
-    bool_t shaded = aud_get_bool ("skins", "player_shaded");
+    bool shaded = aud_get_bool ("skins", "player_shaded");
 
     window_set_shaded (mainwin, shaded);
 
@@ -114,17 +114,17 @@ void view_apply_player_shaded (void)
     mainwin_set_shape ();
 }
 
-void view_set_playlist_shaded (bool_t shaded)
+void view_set_playlist_shaded (bool shaded)
 {
     aud_set_bool ("skins", "playlist_shaded", shaded);
-    hook_call ("skins set playlist_shaded", NULL);
+    hook_call ("skins set playlist_shaded", nullptr);
 
     view_apply_playlist_shaded ();
 }
 
 void view_apply_playlist_shaded (void)
 {
-    bool_t shaded = aud_get_bool ("skins", "playlist_shaded");
+    bool shaded = aud_get_bool ("skins", "playlist_shaded");
 
     window_set_shaded (playlistwin, shaded);
 
@@ -134,17 +134,17 @@ void view_apply_playlist_shaded (void)
     playlistwin_update ();
 }
 
-void view_set_equalizer_shaded (bool_t shaded)
+void view_set_equalizer_shaded (bool shaded)
 {
     aud_set_bool ("skins", "equalizer_shaded", shaded);
-    hook_call ("skins set equalizer_shaded", NULL);
+    hook_call ("skins set equalizer_shaded", nullptr);
 
     view_apply_equalizer_shaded ();
 }
 
 void view_apply_equalizer_shaded (void)
 {
-    bool_t shaded = aud_get_bool ("skins", "equalizer_shaded");
+    bool shaded = aud_get_bool ("skins", "equalizer_shaded");
 
     window_set_shaded (equalizerwin, shaded);
     window_set_size (equalizerwin, 275, shaded ? 14 : 116);
@@ -152,17 +152,17 @@ void view_apply_equalizer_shaded (void)
     equalizerwin_set_shape ();
 }
 
-void view_set_on_top (bool_t on_top)
+void view_set_on_top (bool on_top)
 {
     aud_set_bool ("skins", "always_on_top", on_top);
-    hook_call ("skins set always_on_top", NULL);
+    hook_call ("skins set always_on_top", nullptr);
 
     view_apply_on_top ();
 }
 
 void view_apply_on_top (void)
 {
-    bool_t on_top = aud_get_bool ("skins", "always_on_top");
+    bool on_top = aud_get_bool ("skins", "always_on_top");
 
     gtk_window_set_keep_above ((GtkWindow *) mainwin, on_top);
     gtk_window_set_keep_above ((GtkWindow *) equalizerwin, on_top);
@@ -171,17 +171,17 @@ void view_apply_on_top (void)
     ui_skinned_menurow_update (mainwin_menurow);
 }
 
-void view_set_sticky (bool_t sticky)
+void view_set_sticky (bool sticky)
 {
     aud_set_bool ("skins", "sticky", sticky);
-    hook_call ("skins set sticky", NULL);
+    hook_call ("skins set sticky", nullptr);
 
     view_apply_sticky ();
 }
 
 void view_apply_sticky (void)
 {
-    bool_t sticky = aud_get_bool ("skins", "sticky");
+    bool sticky = aud_get_bool ("skins", "sticky");
 
     if (sticky)
     {
@@ -197,10 +197,10 @@ void view_apply_sticky (void)
     }
 }
 
-void view_set_show_remaining (bool_t remaining)
+void view_set_show_remaining (bool remaining)
 {
     aud_set_bool ("skins", "show_remaining_time", remaining);
-    hook_call ("skins set show_remaining_time", NULL);
+    hook_call ("skins set show_remaining_time", nullptr);
 
     view_apply_show_remaining ();
 }

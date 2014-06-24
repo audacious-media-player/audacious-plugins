@@ -201,7 +201,7 @@ struct tables_t
 	unsigned int DR_TAB [96];                   // Decay rate table
 	unsigned int DT_TAB [8] [32];               // Detune table
 	unsigned int SL_TAB [16];                   // Substain level table
-	unsigned int NULL_RATE [32];                // Table for NULL rate
+	unsigned int NULL_RATE [32];                // Table for nullptr rate
 	int LFO_INC_TAB [8];                        // LFO step table
 
 	short ENV_TAB [2 * ENV_LENGHT + 8];         // ENV CURVE TABLE (attack & decay)

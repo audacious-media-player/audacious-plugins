@@ -42,7 +42,7 @@ static void album_update (void * unused, GtkWidget * widget)
 
 static void album_clear (void * unused, GtkWidget * widget)
 {
-    audgui_scaled_image_set (widget, NULL);
+    audgui_scaled_image_set (widget, nullptr);
 }
 
 static void album_cleanup (GtkWidget * widget)
@@ -58,16 +58,16 @@ static void * album_get_widget (void)
 {
     audgui_init ();
 
-    GtkWidget * widget = audgui_scaled_image_new (NULL);
+    GtkWidget * widget = audgui_scaled_image_new (nullptr);
     gtk_widget_set_size_request (widget, 96, 96);
 
-    g_signal_connect (widget, "destroy", (GCallback) album_cleanup, NULL);
+    g_signal_connect (widget, "destroy", (GCallback) album_cleanup, nullptr);
 
     hook_associate ("playback begin", (HookFunction) album_update, widget);
     hook_associate ("current art ready", (HookFunction) album_update, widget);
     hook_associate ("playback stop", (HookFunction) album_clear, widget);
 
-    album_update (NULL, widget);
+    album_update (nullptr, widget);
 
     return widget;
 }

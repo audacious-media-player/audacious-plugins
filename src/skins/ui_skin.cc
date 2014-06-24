@@ -50,42 +50,42 @@
 
 #define EXTENSION_TARGETS 7
 
-static const gchar *ext_targets[EXTENSION_TARGETS] =
+static const char *ext_targets[EXTENSION_TARGETS] =
 { "bmp", "xpm", "png", "svg", "gif", "jpg", "jpeg" };
 
 struct _SkinPixmapIdMapping {
     SkinPixmapId id;
-    const gchar *name;
-    const gchar *alt_name;
-    gint width, height;
+    const char *name;
+    const char *alt_name;
+    int width, height;
 };
 
 typedef struct _SkinPixmapIdMapping SkinPixmapIdMapping;
 
-static gboolean skin_load (Skin * skin, const gchar * path);
+static gboolean skin_load (Skin * skin, const char * path);
 
-Skin *active_skin = NULL;
+Skin *active_skin = nullptr;
 
 static SkinPixmapIdMapping skin_pixmap_id_map[] = {
-    {SKIN_MAIN, "main", NULL, 0, 0},
-    {SKIN_CBUTTONS, "cbuttons", NULL, 0, 0},
-    {SKIN_SHUFREP, "shufrep", NULL, 0, 0},
-    {SKIN_TEXT, "text", NULL, 0, 0},
-    {SKIN_TITLEBAR, "titlebar", NULL, 0, 0},
-    {SKIN_VOLUME, "volume", NULL, 0, 0},
+    {SKIN_MAIN, "main", nullptr, 0, 0},
+    {SKIN_CBUTTONS, "cbuttons", nullptr, 0, 0},
+    {SKIN_SHUFREP, "shufrep", nullptr, 0, 0},
+    {SKIN_TEXT, "text", nullptr, 0, 0},
+    {SKIN_TITLEBAR, "titlebar", nullptr, 0, 0},
+    {SKIN_VOLUME, "volume", nullptr, 0, 0},
     {SKIN_BALANCE, "balance", "volume", 0, 0},
-    {SKIN_MONOSTEREO, "monoster", NULL, 0, 0},
-    {SKIN_PLAYPAUSE, "playpaus", NULL, 0, 0},
+    {SKIN_MONOSTEREO, "monoster", nullptr, 0, 0},
+    {SKIN_PLAYPAUSE, "playpaus", nullptr, 0, 0},
     {SKIN_NUMBERS, "nums_ex", "numbers", 0, 0},
-    {SKIN_POSBAR, "posbar", NULL, 0, 0},
-    {SKIN_EQMAIN, "eqmain", NULL, 0, 0},
-    {SKIN_PLEDIT, "pledit", NULL, 0, 0},
-    {SKIN_EQ_EX, "eq_ex", NULL, 0, 0}
+    {SKIN_POSBAR, "posbar", nullptr, 0, 0},
+    {SKIN_EQMAIN, "eqmain", nullptr, 0, 0},
+    {SKIN_PLEDIT, "pledit", nullptr, 0, 0},
+    {SKIN_EQ_EX, "eq_ex", nullptr, 0, 0}
 };
 
-static guint skin_pixmap_id_map_size = ARRAY_LEN(skin_pixmap_id_map);
+static unsigned skin_pixmap_id_map_size = ARRAY_LEN(skin_pixmap_id_map);
 
-static const guint32 default_vis_colors[24] = {
+static const uint32_t default_vis_colors[24] = {
     COLOR (9, 34, 53),
     COLOR (10, 18, 26),
     COLOR (0, 54, 108),
@@ -112,10 +112,10 @@ static const guint32 default_vis_colors[24] = {
     COLOR (200, 200, 200)
 };
 
-gboolean active_skin_load (const gchar * path)
+gboolean active_skin_load (const char * path)
 {
     AUDDBG("%s\n", path);
-    g_return_val_if_fail(active_skin != NULL, FALSE);
+    g_return_val_if_fail(active_skin != nullptr, FALSE);
 
     if (!skin_load(active_skin, path)) {
         AUDDBG("loading failed\n");
@@ -151,41 +151,41 @@ skin_new(void)
 static void
 skin_free(Skin * skin)
 {
-    gint i;
+    int i;
 
-    g_return_if_fail(skin != NULL);
+    g_return_if_fail(skin != nullptr);
 
     for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
     {
         if (skin->pixmaps[i])
         {
             cairo_surface_destroy (skin->pixmaps[i]);
-            skin->pixmaps[i] = NULL;
+            skin->pixmaps[i] = nullptr;
         }
     }
 
     for (i = 0; i < SKIN_MASK_COUNT; i++) {
         if (skin->masks[i])
             g_object_unref (skin->masks[i]);
-        skin->masks[i] = NULL;
+        skin->masks[i] = nullptr;
     }
 
     g_free(skin->path);
-    skin->path = NULL;
+    skin->path = nullptr;
 }
 
 static void
 skin_destroy(Skin * skin)
 {
-    g_return_if_fail(skin != NULL);
+    g_return_if_fail(skin != nullptr);
     skin_free(skin);
     g_free(skin);
 }
 
 static const SkinPixmapIdMapping *
-skin_pixmap_id_lookup(guint id)
+skin_pixmap_id_lookup(unsigned id)
 {
-    guint i;
+    unsigned i;
 
     for (i = 0; i < skin_pixmap_id_map_size; i++) {
         if (id == skin_pixmap_id_map[i].id) {
@@ -193,17 +193,17 @@ skin_pixmap_id_lookup(guint id)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
-static gchar * skin_pixmap_locate (const gchar * dirname, gchar * * basenames)
+static char * skin_pixmap_locate (const char * dirname, char * * basenames)
 {
-    gchar * filename = NULL;
-    gint i;
+    char * filename = nullptr;
+    int i;
 
-    for (i = 0; basenames[i] != NULL; i ++)
+    for (i = 0; basenames[i] != nullptr; i ++)
     {
-        if ((filename = find_file_case_path (dirname, basenames[i])) != NULL)
+        if ((filename = find_file_case_path (dirname, basenames[i])) != nullptr)
             break;
     }
 
@@ -217,11 +217,11 @@ static gchar * skin_pixmap_locate (const gchar * dirname, gchar * * basenames)
  * can be found from by using the static ext_targets variable to get all
  * possible extensions that pixmap file might have.
  */
-static gchar **
+static char **
 skin_pixmap_create_basenames(const SkinPixmapIdMapping * pixmap_id_mapping)
 {
-    gchar **basenames = g_new0 (gchar *, EXTENSION_TARGETS * 2 + 1);
-    gint i, y;
+    char **basenames = g_new0 (char *, EXTENSION_TARGETS * 2 + 1);
+    int i, y;
 
     // Create list of all possible image formats that can be loaded
     for (i = 0, y = 0; i < EXTENSION_TARGETS; i++, y++)
@@ -242,13 +242,13 @@ skin_pixmap_create_basenames(const SkinPixmapIdMapping * pixmap_id_mapping)
  * Frees the data allocated by skin_pixmap_create_basenames
  */
 static void
-skin_pixmap_free_basenames(gchar ** basenames)
+skin_pixmap_free_basenames(char ** basenames)
 {
     int i;
-    for (i = 0; basenames[i] != NULL; i++)
+    for (i = 0; basenames[i] != nullptr; i++)
     {
         g_free(basenames[i]);
-        basenames[i] = NULL;
+        basenames[i] = nullptr;
     }
     g_free(basenames);
 }
@@ -256,14 +256,14 @@ skin_pixmap_free_basenames(gchar ** basenames)
 /**
  * Locates a pixmap file for skin.
  */
-static gchar *
+static char *
 skin_pixmap_locate_basenames(const Skin * skin,
                              const SkinPixmapIdMapping * pixmap_id_mapping,
-                             const gchar * path_p)
+                             const char * path_p)
 {
-    gchar *filename = NULL;
-    const gchar *path = path_p ? path_p : skin->path;
-    gchar **basenames = skin_pixmap_create_basenames(pixmap_id_mapping);
+    char *filename = nullptr;
+    const char *path = path_p ? path_p : skin->path;
+    char **basenames = skin_pixmap_create_basenames(pixmap_id_mapping);
 
     filename = skin_pixmap_locate(path, basenames);
 
@@ -278,21 +278,21 @@ skin_pixmap_locate_basenames(const Skin * skin,
 
 
 static gboolean
-skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
+skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const char * path_p)
 {
     const SkinPixmapIdMapping *pixmap_id_mapping;
-    gchar *filename;
+    char *filename;
 
-    g_return_val_if_fail(skin != NULL, FALSE);
+    g_return_val_if_fail(skin != nullptr, FALSE);
     g_return_val_if_fail(id < SKIN_PIXMAP_COUNT, FALSE);
     g_return_val_if_fail(! skin->pixmaps[id], FALSE);
 
     pixmap_id_mapping = skin_pixmap_id_lookup(id);
-    g_return_val_if_fail(pixmap_id_mapping != NULL, FALSE);
+    g_return_val_if_fail(pixmap_id_mapping != nullptr, FALSE);
 
     filename = skin_pixmap_locate_basenames(skin, pixmap_id_mapping, path_p);
 
-    if (filename == NULL)
+    if (filename == nullptr)
         return FALSE;
 
     skin->pixmaps[id] = surface_new_from_file (filename);
@@ -301,7 +301,7 @@ skin_load_pixmap_id(Skin * skin, SkinPixmapId id, const gchar * path_p)
     return skin->pixmaps[id] ? TRUE : FALSE;
 }
 
-static gint color_diff (guint32 a, guint32 b)
+static int color_diff (uint32_t a, uint32_t b)
 {
     return abs (COLOR_R (a) - COLOR_R (b)) + abs (COLOR_G (a) - COLOR_G (b)) +
      abs (COLOR_B (a) - COLOR_B (b));
@@ -317,13 +317,13 @@ static void skin_get_textcolors (Skin * skin, cairo_surface_t * s)
     /* Get a pixel from the middle of the space character */
     skin->colors[SKIN_TEXTBG] = surface_get_pixel (s, 152, 3);
 
-    gint max_d = -1;
-    for (gint y = 0; y < 6; y ++)
+    int max_d = -1;
+    for (int y = 0; y < 6; y ++)
     {
-        for (gint x = 1; x < 150; x ++)
+        for (int x = 1; x < 150; x ++)
         {
-            gint c = surface_get_pixel (s, x, y);
-            gint d = color_diff (skin->colors[SKIN_TEXTBG], c);
+            int c = surface_get_pixel (s, x, y);
+            int d = color_diff (skin->colors[SKIN_TEXTBG], c);
             if (d > max_d)
             {
                 skin->colors[SKIN_TEXTFG] = c;
@@ -334,14 +334,14 @@ static void skin_get_textcolors (Skin * skin, cairo_surface_t * s)
 }
 
 gboolean
-init_skins(const gchar * path)
+init_skins(const char * path)
 {
     active_skin = skin_new();
 
     active_skin->properties = skin_default_hints;
 
     /* create the windows if they haven't been created yet, needed for bootstrapping */
-    if (mainwin == NULL)
+    if (mainwin == nullptr)
     {
         mainwin_create();
         equalizerwin_create();
@@ -350,13 +350,13 @@ init_skins(const gchar * path)
 
     if (! path || ! active_skin_load (path))
     {
-        if (path != NULL)
+        if (path != nullptr)
             AUDDBG("Unable to load skin (%s), trying default...\n", path);
         else
             AUDDBG("Skin not defined: trying default...\n");
 
         /* can't load configured skin, retry with default */
-        gchar * def = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "Skins"
+        char * def = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "Skins"
          G_DIR_SEPARATOR_S "Default", aud_get_path (AUD_PATH_DATA_DIR));
 
         if (! active_skin_load (def))
@@ -375,17 +375,17 @@ init_skins(const gchar * path)
 void cleanup_skins()
 {
     skin_destroy(active_skin);
-    active_skin = NULL;
+    active_skin = nullptr;
 
     gtk_widget_destroy (mainwin);
-    mainwin = NULL;
+    mainwin = nullptr;
     gtk_widget_destroy (playlistwin);
-    playlistwin = NULL;
+    playlistwin = nullptr;
     gtk_widget_destroy (equalizerwin);
-    equalizerwin = NULL;
+    equalizerwin = nullptr;
 }
 
-static void skin_load_viscolor (Skin * skin, const gchar * path)
+static void skin_load_viscolor (Skin * skin, const char * path)
 {
     memcpy (skin->vis_colors, default_vis_colors, sizeof skin->vis_colors);
 
@@ -393,8 +393,8 @@ static void skin_load_viscolor (Skin * skin, const gchar * path)
     if (! file)
         return;
 
-    void * buffer = NULL;
-    vfs_file_read_all (file, & buffer, NULL);
+    void * buffer = nullptr;
+    vfs_file_read_all (file, & buffer, nullptr);
     vfs_fclose (file);
 
     char * string = (char *) buffer;
@@ -405,8 +405,8 @@ static void skin_load_viscolor (Skin * skin, const gchar * path)
         GArray * array = string_to_garray (string);
 
         if (array->len >= 3)
-            skin->vis_colors[line] = COLOR (g_array_index (array, gint, 0),
-             g_array_index (array, gint, 1), g_array_index (array, gint, 2));
+            skin->vis_colors[line] = COLOR (g_array_index (array, int, 0),
+             g_array_index (array, int, 1), g_array_index (array, int, 2));
 
         g_array_free (array, TRUE);
         string = next;
@@ -418,13 +418,13 @@ static void skin_load_viscolor (Skin * skin, const gchar * path)
 static void
 skin_numbers_generate_dash(Skin * skin)
 {
-    g_return_if_fail(skin != NULL);
+    g_return_if_fail(skin != nullptr);
 
     cairo_surface_t * old = skin->pixmaps[SKIN_NUMBERS];
     if (! old || cairo_image_surface_get_width (old) < 99)
         return;
 
-    gint h = cairo_image_surface_get_height (old);
+    int h = cairo_image_surface_get_height (old);
     cairo_surface_t * surface = surface_new (108, h);
 
     surface_copy_rect (old, 0, 0, 99, h, surface, 0, 0);
@@ -436,11 +436,11 @@ skin_numbers_generate_dash(Skin * skin)
 }
 
 static gboolean
-skin_load_pixmaps(Skin * skin, const gchar * path)
+skin_load_pixmaps(Skin * skin, const char * path)
 {
     AUDDBG("Loading pixmaps in %s\n", path);
 
-    for (gint i = 0; i < SKIN_PIXMAP_COUNT; i++)
+    for (int i = 0; i < SKIN_PIXMAP_COUNT; i++)
         if (! skin_load_pixmap_id (skin, (SkinPixmapId) i, path))
             return FALSE;
 
@@ -462,12 +462,12 @@ skin_load_pixmaps(Skin * skin, const gchar * path)
  * Checks if all pixmap files exist that skin needs.
  */
 static gboolean
-skin_check_pixmaps(const Skin * skin, const gchar * skin_path)
+skin_check_pixmaps(const Skin * skin, const char * skin_path)
 {
-    guint i;
+    unsigned i;
     for (i = 0; i < SKIN_PIXMAP_COUNT; i++)
     {
-        gchar *filename = skin_pixmap_locate_basenames(skin,
+        char *filename = skin_pixmap_locate_basenames(skin,
                                                        skin_pixmap_id_lookup(i),
                                                        skin_path);
         if (!filename)
@@ -478,15 +478,15 @@ skin_check_pixmaps(const Skin * skin, const gchar * skin_path)
 }
 
 static gboolean
-skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
+skin_load_nolock(Skin * skin, const char * path, gboolean force)
 {
-    gchar *newpath, *skin_path;
+    char *newpath, *skin_path;
     int archive = 0;
 
     AUDDBG("Attempt to load skin \"%s\"\n", path);
 
-    g_return_val_if_fail(skin != NULL, FALSE);
-    g_return_val_if_fail(path != NULL, FALSE);
+    g_return_val_if_fail(skin != nullptr, FALSE);
+    g_return_val_if_fail(path != nullptr, FALSE);
 
     if (! g_file_test (path, G_FILE_TEST_EXISTS))
         return FALSE;
@@ -540,7 +540,7 @@ skin_load_nolock(Skin * skin, const gchar * path, gboolean force)
     return TRUE;
 }
 
-void skin_install_skin (const gchar * path)
+void skin_install_skin (const char * path)
 {
 #ifdef S_IRGRP
     const mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
@@ -556,8 +556,8 @@ void skin_install_skin (const gchar * path)
     }
 
     GError * err = 0;
-    gchar * data;
-    gsize len;
+    char * data;
+    size_t len;
 
     if (! g_file_get_contents (path, & data, & len, & err))
     {
@@ -566,8 +566,8 @@ void skin_install_skin (const gchar * path)
         return;
     }
 
-    gchar * base = g_path_get_basename (path);
-    gchar * target = g_build_filename (skins_paths[SKINS_PATH_USER_SKIN_DIR], base, NULL);
+    char * base = g_path_get_basename (path);
+    char * target = g_build_filename (skins_paths[SKINS_PATH_USER_SKIN_DIR], base, nullptr);
 
     if (! g_file_set_contents (target, data, len, & err))
     {
@@ -584,11 +584,11 @@ void skin_install_skin (const gchar * path)
     g_free (target);
 }
 
-static gboolean skin_load (Skin * skin, const gchar * path)
+static gboolean skin_load (Skin * skin, const char * path)
 {
     gboolean ret;
 
-    g_return_val_if_fail(skin != NULL, FALSE);
+    g_return_val_if_fail(skin != nullptr, FALSE);
 
     if (!path)
         return FALSE;
@@ -602,7 +602,7 @@ static gboolean skin_load (Skin * skin, const gchar * path)
 
     if (skin->pixmaps[SKIN_NUMBERS])
     {
-        gint h = cairo_image_surface_get_height (skin->pixmaps[SKIN_NUMBERS]);
+        int h = cairo_image_surface_get_height (skin->pixmaps[SKIN_NUMBERS]);
         ui_skinned_number_set_size (mainwin_minus_num, 9, h);
         ui_skinned_number_set_size (mainwin_10min_num, 9, h);
         ui_skinned_number_set_size (mainwin_min_num, 9, h);
@@ -617,8 +617,8 @@ static gboolean skin_load (Skin * skin, const gchar * path)
     return TRUE;
 }
 
-void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc, gint
- xdest, gint ydest, gint width, gint height)
+void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
+ xdest, int ydest, int width, int height)
 {
     if (! active_skin->pixmaps[id])
         return;
@@ -629,19 +629,19 @@ void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc, gint
     cairo_fill (cr);
 }
 
-void skin_get_eq_spline_colors (Skin * skin, guint32 colors[19])
+void skin_get_eq_spline_colors (Skin * skin, uint32_t colors[19])
 {
     if (! skin->pixmaps[SKIN_EQMAIN])
     {
-        memset (colors, 0, sizeof (guint32) * 19);
+        memset (colors, 0, sizeof (uint32_t) * 19);
         return;
     }
 
-    for (gint i = 0; i < 19; i ++)
+    for (int i = 0; i < 19; i ++)
         colors[i] = surface_get_pixel (skin->pixmaps[SKIN_EQMAIN], 115, i + 294);
 }
 
-static void skin_draw_playlistwin_frame_top (cairo_t * cr, gint width, gint
+static void skin_draw_playlistwin_frame_top (cairo_t * cr, int width, int
  height, gboolean focus)
 {
     /* The title bar skin consists of 2 sets of 4 images, 1 set
@@ -656,7 +656,7 @@ static void skin_draw_playlistwin_frame_top (cairo_t * cr, gint width, gint
      * min allowed width = 100+25+25 = 150
      */
 
-    gint i, y, c;
+    int i, y, c;
 
     /* get y offset of the pixmap set to use */
     if (focus)
@@ -697,7 +697,7 @@ static void skin_draw_playlistwin_frame_top (cairo_t * cr, gint width, gint
     }
 }
 
-static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, gint width, gint
+static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, int width, int
  height, gboolean focus)
 {
     /* The bottom frame skin consists of 1 set of 4 images. The 4
@@ -711,7 +711,7 @@ static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, gint width, gint
      * (min allowed width = 125+150+25=300
      */
 
-    gint i, c;
+    int i, c;
 
     /* bottom left corner (menu buttons) */
     skin_draw_pixbuf (cr, SKIN_PLEDIT, 0, 72, 0, height - 38, 125, 38);
@@ -735,7 +735,7 @@ static void skin_draw_playlistwin_frame_bottom (cairo_t * cr, gint width, gint
          25, 38);
 }
 
-static void skin_draw_playlistwin_frame_sides (cairo_t * cr, gint width, gint
+static void skin_draw_playlistwin_frame_sides (cairo_t * cr, int width, int
  height, gboolean focus)
 {
     /* The side frames consist of 2 tile images. 1 for the left, 1 for
@@ -744,7 +744,7 @@ static void skin_draw_playlistwin_frame_sides (cairo_t * cr, gint width, gint
      * b. right (19,29)
      */
 
-    gint i;
+    int i;
 
     /* frame sides */
     for (i = 0; i < (height - (20 + 38)) / 29; i++) {
@@ -757,7 +757,7 @@ static void skin_draw_playlistwin_frame_sides (cairo_t * cr, gint width, gint
     }
 }
 
-void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
+void skin_draw_playlistwin_frame (cairo_t * cr, int width, int height,
  gboolean focus)
 {
     skin_draw_playlistwin_frame_top (cr, width, height, focus);
@@ -765,7 +765,7 @@ void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
     skin_draw_playlistwin_frame_sides (cr, width, height, focus);
 }
 
-void skin_draw_playlistwin_shaded (cairo_t * cr, gint width, gboolean focus)
+void skin_draw_playlistwin_shaded (cairo_t * cr, int width, gboolean focus)
 {
     /* The shade mode titlebar skin consists of 4 images:
      * a) left corner               offset (72,42) size (25,14)
@@ -774,7 +774,7 @@ void skin_draw_playlistwin_shaded (cairo_t * cr, gint width, gboolean focus)
      * d) bar tile                  offset (72,57) size (25,14)
      */
 
-    gint i;
+    int i;
 
     /* left corner */
     skin_draw_pixbuf (cr, SKIN_PLEDIT, 72, 42, 0, 0, 25, 14);
@@ -801,7 +801,7 @@ void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus)
      * d) shaded, unfocused      offset (27, 42)
      */
 
-    gint y_offset;
+    int y_offset;
 
     if (shaded) {
         if (focus)

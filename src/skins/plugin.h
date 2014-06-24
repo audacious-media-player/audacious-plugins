@@ -31,6 +31,6 @@ enum {
 
 extern char * skins_paths[];
 
-bool_t handle_window_close (void);
+gboolean handle_window_close (void);
 
 #endif

@@ -41,31 +41,31 @@
 
 typedef struct
 {
-    const gchar *to_match;
-    gchar *match;
+    const char *to_match;
+    char *match;
     gboolean found;
 } FindFileContext;
 
 #ifndef HAVE_MKDTEMP
-static void make_directory(const gchar *path, mode_t mode);
+static void make_directory(const char *path, mode_t mode);
 #endif
 
-gchar * find_file_case (const gchar * folder, const gchar * basename)
+char * find_file_case (const char * folder, const char * basename)
 {
-    static GHashTable * cache = NULL;
-    GList * list = NULL;
+    static GHashTable * cache = nullptr;
+    GList * list = nullptr;
     void * vlist;
 
-    if (cache == NULL)
+    if (cache == nullptr)
         cache = g_hash_table_new ((GHashFunc) str_calc_hash, g_str_equal);
 
-    if (g_hash_table_lookup_extended (cache, folder, NULL, & vlist))
+    if (g_hash_table_lookup_extended (cache, folder, nullptr, & vlist))
         list = (GList *) vlist;
     else
     {
-        GDir * handle = g_dir_open (folder, 0, NULL);
+        GDir * handle = g_dir_open (folder, 0, nullptr);
         if (! handle)
-            return NULL;
+            return nullptr;
 
         const char * name;
         while ((name = g_dir_read_name (handle)))
@@ -75,21 +75,21 @@ gchar * find_file_case (const gchar * folder, const gchar * basename)
         g_dir_close (handle);
     }
 
-    for (; list != NULL; list = list->next)
+    for (; list != nullptr; list = list->next)
     {
         if (! g_ascii_strcasecmp ((char *) list->data, basename))
             return g_strdup ((char *) list->data);
     }
 
-    return NULL;
+    return nullptr;
 }
 
-gchar * find_file_case_path (const gchar * folder, const gchar * basename)
+char * find_file_case_path (const char * folder, const char * basename)
 {
-    gchar * found, * path;
+    char * found, * path;
 
-    if ((found = find_file_case (folder, basename)) == NULL)
-        return NULL;
+    if ((found = find_file_case (folder, basename)) == nullptr)
+        return nullptr;
 
     path = g_strdup_printf ("%s/%s", folder, found);
     g_free (found);
@@ -100,24 +100,24 @@ VFSFile * open_local_file_nocase (const char * folder, const char * basename)
 {
     char * path = find_file_case_path (folder, basename);
     if (! path)
-        return NULL;
+        return nullptr;
 
     StringBuf uri = filename_to_uri (path);
     g_free (path);
 
     if (! uri)
-        return NULL;
+        return nullptr;
 
     VFSFile * file = vfs_fopen (uri, "r");
     return file;
 }
 
-gchar * text_parse_line (gchar * text)
+char * text_parse_line (char * text)
 {
-    gchar * newline = strchr (text, '\n');
+    char * newline = strchr (text, '\n');
 
-    if (newline == NULL)
-        return NULL;
+    if (newline == nullptr)
+        return nullptr;
 
     * newline = 0;
     return newline + 1;
@@ -133,12 +133,12 @@ typedef enum
     ARCHIVE_TBZ2
 } ArchiveType;
 
-typedef gchar *(*ArchiveExtractFunc) (const gchar *, const gchar *);
+typedef char *(*ArchiveExtractFunc) (const char *, const char *);
 
 typedef struct
 {
     ArchiveType type;
-    const gchar *ext;
+    const char *ext;
 } ArchiveExtensionType;
 
 static ArchiveExtensionType archive_extensions[] = {
@@ -149,17 +149,17 @@ static ArchiveExtensionType archive_extensions[] = {
     {ARCHIVE_TGZ, ".tgz"},
     {ARCHIVE_TBZ2, ".tar.bz2"},
     {ARCHIVE_TBZ2, ".bz2"},
-    {ARCHIVE_UNKNOWN, NULL}
+    {ARCHIVE_UNKNOWN, nullptr}
 };
 
-static gchar *archive_extract_tar(const gchar *archive, const gchar *dest);
-static gchar *archive_extract_zip(const gchar *archive, const gchar *dest);
-static gchar *archive_extract_tgz(const gchar *archive, const gchar *dest);
-static gchar *archive_extract_tbz2(const gchar *archive, const gchar *dest);
+static char *archive_extract_tar(const char *archive, const char *dest);
+static char *archive_extract_zip(const char *archive, const char *dest);
+static char *archive_extract_tgz(const char *archive, const char *dest);
+static char *archive_extract_tbz2(const char *archive, const char *dest);
 
 static ArchiveExtractFunc archive_extract_funcs[] = {
-    NULL,
-    NULL,
+    nullptr,
+    nullptr,
     archive_extract_tar,
     archive_extract_tgz,
     archive_extract_zip,
@@ -170,9 +170,9 @@ static ArchiveExtractFunc archive_extract_funcs[] = {
 /* FIXME: these functions can be generalised into a function using a
  * command lookup table */
 
-static const gchar *get_tar_command(void)
+static const char *get_tar_command(void)
 {
-    static const gchar *command = NULL;
+    static const char *command = nullptr;
 
     if (!command)
     {
@@ -183,9 +183,9 @@ static const gchar *get_tar_command(void)
     return command;
 }
 
-static const gchar *get_unzip_command(void)
+static const char *get_unzip_command(void)
 {
-    static const gchar *command = NULL;
+    static const char *command = nullptr;
 
     if (!command)
     {
@@ -197,34 +197,34 @@ static const gchar *get_unzip_command(void)
 }
 
 
-static gchar *archive_extract_tar(const gchar *archive, const gchar *dest)
+static char *archive_extract_tar(const char *archive, const char *dest)
 {
     return g_strdup_printf("%s >/dev/null xf \"%s\" -C %s", get_tar_command(),
                            archive, dest);
 }
 
-static gchar *archive_extract_zip(const gchar *archive, const gchar *dest)
+static char *archive_extract_zip(const char *archive, const char *dest)
 {
     return g_strdup_printf("%s >/dev/null -o -j \"%s\" -d %s",
                            get_unzip_command(), archive, dest);
 }
 
-static gchar *archive_extract_tgz(const gchar *archive, const gchar *dest)
+static char *archive_extract_tgz(const char *archive, const char *dest)
 {
     return g_strdup_printf("%s >/dev/null xzf \"%s\" -C %s", get_tar_command(),
                            archive, dest);
 }
 
-static gchar *archive_extract_tbz2(const gchar *archive, const gchar *dest)
+static char *archive_extract_tbz2(const char *archive, const char *dest)
 {
     return g_strdup_printf("bzip2 -dc \"%s\" | %s >/dev/null xf - -C %s",
                            archive, get_tar_command(), dest);
 }
 
 
-static ArchiveType archive_get_type(const gchar *filename)
+static ArchiveType archive_get_type(const char *filename)
 {
-    gint i = 0;
+    int i = 0;
 
     if (g_file_test(filename, G_FILE_TEST_IS_DIR))
         return ARCHIVE_DIR;
@@ -241,20 +241,20 @@ static ArchiveType archive_get_type(const gchar *filename)
     return ARCHIVE_UNKNOWN;
 }
 
-gboolean file_is_archive(const gchar *filename)
+gboolean file_is_archive(const char *filename)
 {
     return (archive_get_type(filename) > ARCHIVE_DIR);
 }
 
-gchar *archive_basename(const gchar *str)
+char *archive_basename(const char *str)
 {
-    gint i = 0;
+    int i = 0;
 
     while (archive_extensions[i].ext)
     {
         if (str_has_suffix_nocase(str, archive_extensions[i].ext))
         {
-            const gchar *end = g_strrstr(str, archive_extensions[i].ext);
+            const char *end = g_strrstr(str, archive_extensions[i].ext);
             if (end)
             {
                 return g_strndup(str, end - str);
@@ -264,7 +264,7 @@ gchar *archive_basename(const gchar *str)
         i++;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -273,13 +273,13 @@ gchar *archive_basename(const gchar *str)
  * @param string String to be escaped.
  * @return Given string with special characters escaped. Must be freed with g_free().
  */
-static gchar *
-escape_shell_chars(const gchar * string)
+static char *
+escape_shell_chars(const char * string)
 {
-    const gchar *special = "$`\"\\";    /* Characters to escape */
-    const gchar *in = string;
-    gchar *out, *escaped;
-    gint num = 0;
+    const char *special = "$`\"\\";    /* Characters to escape */
+    const char *in = string;
+    char *out, *escaped;
+    int num = 0;
 
     while (*in != '\0')
         if (strchr(special, *in++))
@@ -304,13 +304,13 @@ escape_shell_chars(const gchar * string)
    decompress_archive
 
    Decompresses the archive "filename" to a temporary directory,
-   returns the path to the temp dir, or NULL if failed,
+   returns the path to the temp dir, or nullptr if failed,
    watch out tho, doesn't actually check if the system command succeeds :-|
 */
 
-gchar *archive_decompress(const gchar *filename)
+char *archive_decompress(const char *filename)
 {
-    gchar *tmpdir, *cmd, *escaped_filename;
+    char *tmpdir, *cmd, *escaped_filename;
     ArchiveType type;
 #ifndef HAVE_MKDTEMP
 #ifdef S_IRGRP
@@ -321,16 +321,16 @@ gchar *archive_decompress(const gchar *filename)
 #endif
 
     if ((type = archive_get_type(filename)) <= ARCHIVE_DIR)
-        return NULL;
+        return nullptr;
 
 #ifdef HAVE_MKDTEMP
-    tmpdir = g_build_filename(g_get_tmp_dir(), "audacious.XXXXXXXX", NULL);
+    tmpdir = g_build_filename(g_get_tmp_dir(), "audacious.XXXXXXXX", nullptr);
     if (!mkdtemp(tmpdir))
     {
         g_free(tmpdir);
         AUDDBG("Unable to load skin: Failed to create temporary "
                "directory: %s\n", g_strerror(errno));
-        return NULL;
+        return nullptr;
     }
 #else
     tmpdir = g_strdup_printf("%s/audacious.%ld", g_get_tmp_dir(), (long)rand());
@@ -343,9 +343,9 @@ gchar *archive_decompress(const gchar *filename)
 
     if (!cmd)
     {
-        AUDDBG("extraction function is NULL!\n");
+        AUDDBG("extraction function is nullptr!\n");
         g_free(tmpdir);
-        return NULL;
+        return nullptr;
     }
 
     AUDDBG("Attempt to execute \"%s\"\n", cmd);
@@ -354,14 +354,14 @@ gchar *archive_decompress(const gchar *filename)
     {
         AUDDBG("could not execute cmd %s\n", cmd);
         g_free(cmd);
-        return NULL;
+        return nullptr;
     }
     g_free(cmd);
 
     return tmpdir;
 }
 
-static gboolean del_directory_func(const gchar *path, const gchar *basename,
+static gboolean del_directory_func(const char *path, const char *basename,
                                    void *params)
 {
     if (!strcmp(basename, ".") || !strcmp(path, ".."))
@@ -369,7 +369,7 @@ static gboolean del_directory_func(const gchar *path, const gchar *basename,
 
     if (g_file_test(path, G_FILE_TEST_IS_DIR))
     {
-        dir_foreach(path, del_directory_func, NULL, NULL);
+        dir_foreach(path, del_directory_func, nullptr, nullptr);
         g_rmdir(path);
         return FALSE;
     }
@@ -379,20 +379,20 @@ static gboolean del_directory_func(const gchar *path, const gchar *basename,
     return FALSE;
 }
 
-void del_directory(const gchar *path)
+void del_directory(const char *path)
 {
-    dir_foreach(path, del_directory_func, NULL, NULL);
+    dir_foreach(path, del_directory_func, nullptr, nullptr);
     g_rmdir(path);
 }
 
-GArray *string_to_garray(const gchar *str)
+GArray *string_to_garray(const char *str)
 {
     GArray *array;
-    gint temp;
-    const gchar *ptr = str;
-    gchar *endptr;
+    int temp;
+    const char *ptr = str;
+    char *endptr;
 
-    array = g_array_new(FALSE, TRUE, sizeof(gint));
+    array = g_array_new(FALSE, TRUE, sizeof(int));
     for (;;)
     {
         temp = strtol(ptr, &endptr, 10);
@@ -408,13 +408,13 @@ GArray *string_to_garray(const gchar *str)
     return (array);
 }
 
-gboolean dir_foreach(const gchar *path, DirForeachFunc function,
+gboolean dir_foreach(const char *path, DirForeachFunc function,
                      gpointer user_data, GError **error)
 {
-    GError *error_out = NULL;
+    GError *error_out = nullptr;
     GDir *dir;
-    const gchar *entry;
-    gchar *entry_fullpath;
+    const char *entry;
+    char *entry_fullpath;
 
     if (!(dir = g_dir_open(path, 0, &error_out)))
     {
@@ -424,7 +424,7 @@ gboolean dir_foreach(const gchar *path, DirForeachFunc function,
 
     while ((entry = g_dir_read_name(dir)))
     {
-        entry_fullpath = g_build_filename(path, entry, NULL);
+        entry_fullpath = g_build_filename(path, entry, nullptr);
 
         if ((*function) (entry_fullpath, entry, user_data))
         {
@@ -441,7 +441,7 @@ gboolean dir_foreach(const gchar *path, DirForeachFunc function,
 }
 
 #ifndef HAVE_MKDTEMP
-static void make_directory(const gchar *path, mode_t mode)
+static void make_directory(const char *path, mode_t mode)
 {
     if (g_mkdir_with_parents(path, mode) == 0)
         return;

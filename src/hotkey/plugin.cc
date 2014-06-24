@@ -55,7 +55,7 @@
 
 
 /* func defs */
-static gboolean init (void);
+static bool init (void);
 static void cleanup (void);
 
 
@@ -92,9 +92,9 @@ PluginConfig* get_config(void)
 /*
  * plugin activated
  */
-static gboolean init (void)
+static bool init (void)
 {
-    if (! gtk_init_check (NULL, NULL))
+    if (! gtk_init_check (nullptr, nullptr))
     {
         fprintf (stderr, "hotkey: GTK+ initialization failed.\n");
         return FALSE;
@@ -111,8 +111,8 @@ static gboolean init (void)
 /* handle keys */
 gboolean handle_keyevent (EVENT event)
 {
-    gint current_volume, old_volume;
-    static gint volume_static = 0;
+    int current_volume, old_volume;
+    static int volume_static = 0;
     gboolean mute;
 
     /* get current volume */
@@ -235,7 +235,7 @@ gboolean handle_keyevent (EVENT event)
     /* backward */
     if (event == EVENT_BACKWARD)
     {
-        gint time = aud_drct_get_time ();
+        int time = aud_drct_get_time ();
         if (time > 5000) time -= 5000; /* Jump 5s back */
             else time = 0;
         aud_drct_seek (time);
@@ -259,25 +259,25 @@ gboolean handle_keyevent (EVENT event)
     /* Show OSD through AOSD plugin*/
     if (event == EVENT_SHOW_AOSD)
     {
-        hook_call("aosd toggle", NULL);
+        hook_call("aosd toggle", nullptr);
         return TRUE;
     }
 
     if (event == EVENT_TOGGLE_REPEAT)
     {
-        aud_set_bool (NULL, "repeat", ! aud_get_bool (NULL, "repeat"));
+        aud_set_bool (nullptr, "repeat", ! aud_get_bool (nullptr, "repeat"));
         return TRUE;
     }
 
     if (event == EVENT_TOGGLE_SHUFFLE)
     {
-        aud_set_bool (NULL, "shuffle", ! aud_get_bool (NULL, "shuffle"));
+        aud_set_bool (nullptr, "shuffle", ! aud_get_bool (nullptr, "shuffle"));
         return TRUE;
     }
 
     if (event == EVENT_TOGGLE_STOP)
     {
-        aud_set_bool (NULL, "stop_after_current_song", ! aud_get_bool (NULL, "stop_after_current_song"));
+        aud_set_bool (nullptr, "stop_after_current_song", ! aud_get_bool (nullptr, "stop_after_current_song"));
         return TRUE;
     }
 
@@ -290,23 +290,23 @@ gboolean handle_keyevent (EVENT event)
     return FALSE;
 }
 
-void add_hotkey(HotkeyConfiguration** pphotkey, KeySym keysym, gint mask, gint type, EVENT event)
+void add_hotkey(HotkeyConfiguration** pphotkey, KeySym keysym, int mask, int type, EVENT event)
 {
     KeyCode keycode;
     HotkeyConfiguration *photkey;
     if (keysym == 0) return;
-    if (pphotkey == NULL) return;
+    if (pphotkey == nullptr) return;
     photkey = *pphotkey;
-    if (photkey == NULL) return;
+    if (photkey == nullptr) return;
     keycode = XKeysymToKeycode(GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), keysym);
     if (keycode == 0) return;
     if (photkey->key) {
         photkey->next = g_new(HotkeyConfiguration, 1);
         photkey = photkey->next;
         *pphotkey = photkey;
-        photkey->next = NULL;
+        photkey->next = nullptr;
     }
-    photkey->key = (gint)keycode;
+    photkey->key = (int)keycode;
     photkey->mask = mask;
     photkey->event = event;
     photkey->type = type;
@@ -345,7 +345,7 @@ void load_config (void)
     plugin_cfg.vol_decrement = 4;
 
     hotkey = &(plugin_cfg.first);
-    hotkey->next = NULL;
+    hotkey->next = nullptr;
     hotkey->key = 0;
     hotkey->mask = 0;
     hotkey->event = (EVENT) 0;
@@ -356,12 +356,12 @@ void load_config (void)
         load_defaults();
     else for (i=0; i<max; i++)
     {
-        gchar *text = NULL;
+        char *text = nullptr;
 
         if (hotkey->key) {
             hotkey->next = g_new(HotkeyConfiguration, 1);
             hotkey = hotkey->next;
-            hotkey->next = NULL;
+            hotkey->next = nullptr;
             hotkey->key = 0;
             hotkey->mask = 0;
             hotkey->event = (EVENT) 0;
@@ -394,7 +394,7 @@ void save_config (void)
     hotkey = &(plugin_cfg.first);
     max = 0;
     while (hotkey) {
-        gchar *text = NULL;
+        char *text = nullptr;
         if (hotkey->key) {
             text = g_strdup_printf("Hotkey_%d_key", max);
             aud_set_int ("globalHotkey", text, hotkey->key);
@@ -435,7 +435,7 @@ static void cleanup (void)
         hotkey = hotkey->next;
         g_free(old);
     }
-    plugin_cfg.first.next = NULL;
+    plugin_cfg.first.next = nullptr;
     plugin_cfg.first.key = 0;
     plugin_cfg.first.event = (EVENT) 0;
     plugin_cfg.first.mask = 0;

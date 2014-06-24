@@ -38,17 +38,17 @@
 static int get_volume(void) { return aud_get_int("sndio", "volume"); }
 static void set_volume(int vol) { aud_set_int("sndio", "volume", vol); }
 
-bool_t	sndio_init(void);
+gboolean	sndio_init(void);
 void	sndio_about(void);
 void	sndio_configure(void);
 void	sndio_get_volume(int *, int *);
 void	sndio_set_volume(int, int);
-bool_t	sndio_open(int, int, int);
+gboolean	sndio_open(int, int, int);
 void	sndio_close(void);
 int	sndio_buffer_free(void);
 void    sndio_period_wait(void);
 void	sndio_write(void *, int);
-void	sndio_pause(bool_t);
+void	sndio_pause(gboolean);
 void	sndio_flush(int);
 int	sndio_output_time(void);
 
@@ -100,9 +100,9 @@ static struct fmt_to_par {
 	{FMT_U32_LE, 32, 0, 1},	{FMT_U32_BE, 32, 0, 0}
 };
 
-static const gchar * const sndio_defaults[] = {
+static const char * const sndio_defaults[] = {
 	"volume", "100",
-	NULL,
+	nullptr,
 };
 
 static void
@@ -155,7 +155,7 @@ wait_ready(void)
 	(void)sio_revents(hdl, pfds);
 }
 
-bool_t
+gboolean
 sndio_init(void)
 {
 	aud_config_set_defaults("sndio", sndio_defaults);
@@ -166,7 +166,7 @@ sndio_init(void)
 void
 sndio_about(void)
 {
-	static GtkWidget *about = NULL;
+	static GtkWidget *about = nullptr;
 
 	audgui_simple_message(&about, GTK_MESSAGE_INFO,
 	    _("About Sndio Output Plugin"),
@@ -190,17 +190,17 @@ sndio_set_volume(int l, int r)
 	pthread_mutex_unlock(&mtx);
 }
 
-bool_t
+gboolean
 sndio_open(int fmt, int rate, int nch)
 {
 	int i;
 	struct sio_par askpar;
-	GtkWidget *dialog = NULL;
+	GtkWidget *dialog = nullptr;
 	unsigned buffer_size;
 
 	char *audiodev = aud_get_str("sndio", "audiodev");
 
-	hdl = sio_open(strlen(audiodev) > 0 ? audiodev : NULL, SIO_PLAY, 1);
+	hdl = sio_open(strlen(audiodev) > 0 ? audiodev : nullptr, SIO_PLAY, 1);
 	if (!hdl) {
 		g_warning("failed to open audio device %s", audiodev);
 		free(audiodev);
@@ -228,7 +228,7 @@ sndio_open(int fmt, int rate, int nch)
 		askpar.msb = 0;
 	askpar.pchan = nch;
 	askpar.rate = rate;
-	buffer_size = aud_get_int(NULL, "output_buffer_size");
+	buffer_size = aud_get_int(nullptr, "output_buffer_size");
 	if (buffer_size < BUFFER_SIZE_MIN)
 		buffer_size = BUFFER_SIZE_MIN;
 	askpar.appbufsz = buffer_size * rate / 1000;
@@ -254,8 +254,8 @@ sndio_open(int fmt, int rate, int nch)
 	}
 	rdpos = 0;
 	wrpos = 0;
-	sio_onmove(hdl, onmove_cb, NULL);
-	sio_onvol(hdl, onvol_cb, NULL);
+	sio_onmove(hdl, onmove_cb, nullptr);
+	sio_onvol(hdl, onvol_cb, nullptr);
 	sio_setvol(hdl, get_volume() * SIO_MAXVOL / 100);
 	if (!sio_start(hdl)) {
 		g_warning("failed to start audio device");
@@ -298,7 +298,7 @@ sndio_close(void)
 	if (!hdl)
 		return;
 	sio_close(hdl);
-	hdl = NULL;
+	hdl = nullptr;
 }
 
 int
@@ -325,7 +325,7 @@ sndio_flush(int time)
 }
 
 void
-sndio_pause(bool_t flag)
+sndio_pause(gboolean flag)
 {
 	pthread_mutex_lock(&mtx);
 	paused = flag;
@@ -415,7 +415,7 @@ sndio_configure(void)
 
 	ok = gtk_button_new_with_label(_("OK"));
 	g_signal_connect(ok, "clicked",
-	    G_CALLBACK(configure_win_ok_cb), NULL);
+	    G_CALLBACK(configure_win_ok_cb), nullptr);
 
 	gtk_widget_set_can_default(ok, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);

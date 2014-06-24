@@ -9,7 +9,7 @@
 
 struct Sms_Osc
 {
-	Blip_Buffer* outputs [4]; // NULL, right, left, center
+	Blip_Buffer* outputs [4]; // nullptr, right, left, center
 	Blip_Buffer* output;
 	int output_select;
 

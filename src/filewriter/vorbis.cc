@@ -30,7 +30,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
 
-static gint (*write_output)(void *ptr, gint length);
+static int (*write_output)(void *ptr, int length);
 
 static ogg_stream_state os;
 static ogg_page og;
@@ -41,11 +41,11 @@ static vorbis_block vb;
 static vorbis_info vi;
 static vorbis_comment vc;
 
-static const gchar * const vorbis_defaults[] = {
+static const char * const vorbis_defaults[] = {
  "base_quality", "0.5",
- NULL};
+ nullptr};
 
-static gdouble v_base_quality;
+static double v_base_quality;
 
 static void vorbis_init(write_output_callback write_output_func)
 {
@@ -58,27 +58,27 @@ static void vorbis_init(write_output_callback write_output_func)
 }
 
 static void add_string_from_tuple (vorbis_comment * vc, const char * name,
- const Tuple & tuple, gint field)
+ const Tuple & tuple, int field)
 {
     String val = tuple.get_str (field);
     if (val)
         vorbis_comment_add_tag (vc, name, val);
 }
 
-static gint vorbis_open(void)
+static int vorbis_open(void)
 {
     ogg_packet header;
     ogg_packet header_comm;
     ogg_packet header_code;
 
-    vorbis_init(NULL);
+    vorbis_init(nullptr);
 
     vorbis_info_init(&vi);
     vorbis_comment_init(&vc);
 
     if (tuple)
     {
-        gint scrint;
+        int scrint;
 
         add_string_from_tuple (& vc, "title", tuple, FIELD_TITLE);
         add_string_from_tuple (& vc, "artist", tuple, FIELD_ARTIST);
@@ -104,7 +104,7 @@ static gint vorbis_open(void)
     vorbis_analysis_init(&vd, &vi);
     vorbis_block_init(&vd, &vb);
 
-    srand(time(NULL));
+    srand(time(nullptr));
     ogg_stream_init(&os, rand());
 
     vorbis_analysis_headerout(&vd, &vc, &header, &header_comm, &header_code);
@@ -122,7 +122,7 @@ static gint vorbis_open(void)
     return 1;
 }
 
-static void vorbis_write_real (void * data, gint length)
+static void vorbis_write_real (void * data, int length)
 {
     int samples = length / sizeof (float);
     int channel, result;
@@ -158,7 +158,7 @@ static void vorbis_write_real (void * data, gint length)
     }
 }
 
-static void vorbis_write (void * data, gint length)
+static void vorbis_write (void * data, int length)
 {
     if (length > 0) /* don't signal end of file yet */
         vorbis_write_real (data, length);
@@ -166,7 +166,7 @@ static void vorbis_write (void * data, gint length)
 
 static void vorbis_close(void)
 {
-    vorbis_write_real (NULL, 0); /* signal end of file */
+    vorbis_write_real (nullptr, 0); /* signal end of file */
 
     while (ogg_stream_flush (& os, & og))
     {
@@ -182,7 +182,7 @@ static void vorbis_close(void)
 }
 
 /* configuration stuff */
-static GtkWidget *configure_win = NULL;
+static GtkWidget *configure_win = nullptr;
 static GtkWidget *quality_frame, *quality_vbox, *quality_hbox1, *quality_spin, *quality_label;
 static GtkAdjustment * quality_adj;
 
@@ -197,10 +197,10 @@ static void vorbis_configure(void)
     if (! configure_win)
     {
         configure_win = gtk_dialog_new_with_buttons
-         (_("Vorbis Encoder Configuration"), NULL, (GtkDialogFlags) 0,
-          _("_Close"), GTK_RESPONSE_CLOSE, NULL);
+         (_("Vorbis Encoder Configuration"), nullptr, (GtkDialogFlags) 0,
+          _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
 
-        g_signal_connect (configure_win, "response", (GCallback) gtk_widget_destroy, NULL);
+        g_signal_connect (configure_win, "response", (GCallback) gtk_widget_destroy, nullptr);
         g_signal_connect (configure_win, "destroy", (GCallback)
          gtk_widget_destroyed, & configure_win);
 
@@ -227,7 +227,7 @@ static void vorbis_configure(void)
         quality_adj = (GtkAdjustment *) gtk_adjustment_new (5, 0, 10, 0.1, 1, 0);
         quality_spin = gtk_spin_button_new(GTK_ADJUSTMENT(quality_adj), 1, 2);
         gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_spin, TRUE, TRUE, 0);
-        g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), NULL);
+        g_signal_connect(G_OBJECT(quality_adj), "value-changed", G_CALLBACK(quality_change), nullptr);
 
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(quality_spin), (v_base_quality * 10));
     }

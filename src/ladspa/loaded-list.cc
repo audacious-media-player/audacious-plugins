@@ -29,21 +29,21 @@ static void get_value (void * user, int row, int column, GValue * value)
     g_value_set_string (value, loadeds[row]->plugin->desc->Name);
 }
 
-static int get_selected (void * user, int row)
+static bool get_selected (void * user, int row)
 {
     g_return_val_if_fail (row >= 0 && row < loadeds.len (), 0);
 
     return loadeds[row]->selected;
 }
 
-static void set_selected (void * user, int row, int selected)
+static void set_selected (void * user, int row, bool selected)
 {
     g_return_if_fail (row >= 0 && row < loadeds.len ());
 
     loadeds[row]->selected = selected;
 }
 
-static void select_all (void * user, int selected)
+static void select_all (void * user, bool selected)
 {
     for (LoadedPlugin * loaded : loadeds)
         loaded->selected = selected;
@@ -79,7 +79,7 @@ static void shift_rows (void * user, int row, int before)
         end = before;
     }
 
-    for (gint i = begin; i < end; i ++)
+    for (int i = begin; i < end; i ++)
     {
         if (loadeds[i]->selected)
             move.append (loadeds[i]);
@@ -105,15 +105,15 @@ static const AudguiListCallbacks callbacks = {
     get_selected,
     set_selected,
     select_all,
-    NULL,  // activate_row
-    NULL,  // right_click
+    nullptr,  // activate_row
+    nullptr,  // right_click
     shift_rows
 };
 
 GtkWidget * create_loaded_list (void)
 {
-    GtkWidget * list = audgui_list_new (& callbacks, NULL, loadeds.len ());
-    audgui_list_add_column (list, NULL, 0, G_TYPE_STRING, -1);
+    GtkWidget * list = audgui_list_new (& callbacks, nullptr, loadeds.len ());
+    audgui_list_add_column (list, nullptr, 0, G_TYPE_STRING, -1);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list, 0);
     return list;
 }

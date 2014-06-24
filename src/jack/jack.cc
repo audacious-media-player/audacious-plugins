@@ -40,8 +40,8 @@ static format_info_t input;
 static format_info_t effect;
 static format_info_t output;
 
-static bool_t output_opened; /* true if we have a connection to jack */
-static bool_t paused;
+static bool output_opened; /* true if we have a connection to jack */
+static bool paused;
 
 
 /* Giacomo's note: removed the destructor from the original xmms-jack, cause
@@ -124,7 +124,7 @@ static int jack_get_output_time(void)
 }
 
 
-/* returns TRUE if we are currently playing */
+/* returns true if we are currently playing */
 /* NOTE: this was confusing at first BUT, if the device is open and there */
 /* is no more audio to be played, then the device is NOT PLAYING */
 #if 0
@@ -137,12 +137,12 @@ static int jack_playing(void)
   {
     /* If we have zero bytes stored, we are done playing */
     if(JACK_GetBytesStored(driver) == 0)
-      return_val = FALSE;
+      return_val = false;
     else
-      return_val = TRUE;
+      return_val = true;
   }
   else
-    return_val = FALSE;
+    return_val = false;
 
   TRACE("returning %d\n", return_val);
   return return_val;
@@ -175,7 +175,7 @@ static const char * const jack_defaults[] = {
  "port_connection_mode", "CONNECT_ALL",
  "volume_left", "25",
  "volume_right", "25",
- NULL};
+ nullptr};
 
 static const ComboBoxElements mode_list[] = {
  {"CONNECT_ALL", N_("Connect to all available jack ports")},
@@ -195,7 +195,7 @@ static const PluginPreferences jack_prefs = {
 };
 
 /* Initialize necessary things */
-static bool_t jack_init (void)
+static bool jack_init (void)
 {
   aud_config_set_defaults ("jack", jack_defaults);
 
@@ -212,10 +212,10 @@ static bool_t jack_init (void)
   /* set the port connection mode */
   jack_set_port_connection_mode();
 
-  output_opened = FALSE;
+  output_opened = false;
 
   /* Always return OK, as we don't know about physical devices here */
-  return TRUE;
+  return true;
 }
 
 
@@ -260,10 +260,10 @@ static void jack_close(void)
 
 
 /* Open the device up */
-static int jack_open(int fmt, int sample_rate, int num_channels)
+static bool jack_open(int fmt, int sample_rate, int num_channels)
 {
   int bits_per_sample;
-  int floating_point = FALSE;
+  int floating_point = false;
   int retval;
   unsigned long rate;
 
@@ -286,7 +286,7 @@ static int jack_open(int fmt, int sample_rate, int num_channels)
   } else if (fmt == FMT_FLOAT)
   {
     bits_per_sample = 32;
-    floating_point = TRUE;
+    floating_point = true;
   } else {
     TRACE("sample format not supported\n");
     return 0;
@@ -319,8 +319,8 @@ static int jack_open(int fmt, int sample_rate, int num_channels)
       JACK_Close(driver);
     } else
     {
-        TRACE("output_opened is TRUE and no options changed, not reopening\n");
-        paused = FALSE;
+        TRACE("output_opened is true and no options changed, not reopening\n");
+        paused = false;
         return 1;
     }
   }
@@ -346,8 +346,8 @@ static int jack_open(int fmt, int sample_rate, int num_channels)
   }
 
   jack_set_volume(jack_cfg.volume_left, jack_cfg.volume_right); /* sets the volume to stored value */
-  output_opened = TRUE;
-  paused = FALSE;
+  output_opened = true;
+  paused = false;
 
   return 1;
 }
@@ -396,7 +396,7 @@ static void jack_flush(int ms_offset_time)
 
 
 /* Pause the jack device */
-static void jack_pause (bool_t p)
+static void jack_pause (bool p)
 {
   TRACE("p == %d\n", p);
 
@@ -424,12 +424,12 @@ static const char jack_about[] =
 #define AUD_OUTPUT_SET_VOLUME  jack_set_volume
 #define AUD_OUTPUT_OPEN        jack_open
 #define AUD_OUTPUT_WRITE       jack_write
-#define AUD_OUTPUT_DRAIN       NULL
+#define AUD_OUTPUT_DRAIN       nullptr
 #define AUD_OUTPUT_CLOSE       jack_close
 #define AUD_OUTPUT_FLUSH       jack_flush
 #define AUD_OUTPUT_PAUSE       jack_pause
 #define AUD_OUTPUT_GET_FREE    audacious_jack_free
-#define AUD_OUTPUT_WAIT_FREE   NULL
+#define AUD_OUTPUT_WAIT_FREE   nullptr
 #define AUD_OUTPUT_GET_TIME    jack_get_output_time
 
 #define AUD_DECLARE_OUTPUT

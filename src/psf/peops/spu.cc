@@ -337,7 +337,7 @@ int SPUasync(u32 cycles)
               {
                // We play this block out first...
                //if(!(flags&2))                          // 1+2: do loop... otherwise: stop
-               if(flags!=3 || s_chan[ch].pLoop==NULL)  // PETE: if we don't check exactly for 3, loop hang ups will happen (DQ4, for example)
+               if(flags!=3 || s_chan[ch].pLoop==nullptr)  // PETE: if we don't check exactly for 3, loop hang ups will happen (DQ4, for example)
                 {                                      // and checking if pLoop is set avoids crashes, yeah
                  start = (u8*)-1;
                 }
@@ -468,7 +468,7 @@ int SPUasync(u32 cycles)
    {
     if(sampcount>=decayend)
     {
-	    psf2_update(NULL, 0);
+	    psf2_update(nullptr, 0);
 	    return(0);
     }
     dmul=256-(256*(sampcount-decaybegin)/(decayend-decaybegin));
@@ -596,7 +596,7 @@ void SetupStreams(void)
 void RemoveStreams(void)
 {
  free(pSpuBuffer);                                     // free mixing buffer
- pSpuBuffer=NULL;
+ pSpuBuffer=nullptr;
 
  #ifdef TIMEO
  {

@@ -1,11 +1,11 @@
 #include "convert.h"
 
-gpointer convert_output = NULL;
-static gint nch;
-static gint in_fmt;
-static gint out_fmt;
+gpointer convert_output = nullptr;
+static int nch;
+static int in_fmt;
+static int out_fmt;
 
-gboolean convert_init(gint input_fmt, gint output_fmt, gint channels)
+gboolean convert_init(int input_fmt, int output_fmt, int channels)
 {
     in_fmt = input_fmt;
     out_fmt = output_fmt;
@@ -14,10 +14,10 @@ gboolean convert_init(gint input_fmt, gint output_fmt, gint channels)
     return TRUE;
 }
 
-gint convert_process(gpointer ptr, gint length)
+int convert_process(gpointer ptr, int length)
 {
-    gint samples = length / FMT_SIZEOF (in_fmt);
-    gfloat * temp;
+    int samples = length / FMT_SIZEOF (in_fmt);
+    float * temp;
 
     convert_output = g_realloc (convert_output, FMT_SIZEOF (out_fmt) * samples);
 
@@ -41,5 +41,5 @@ gint convert_process(gpointer ptr, gint length)
 void convert_free(void)
 {
     g_free (convert_output);
-    convert_output = NULL;
+    convert_output = nullptr;
 }

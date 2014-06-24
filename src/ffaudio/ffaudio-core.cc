@@ -46,13 +46,13 @@ static SimpleHash<String, AVInputFormat *> extension_dict;
 
 static void create_extension_dict ();
 
-static gint lockmgr (void * * mutexp, enum AVLockOp op)
+static int lockmgr (void * * mutexp, enum AVLockOp op)
 {
     switch (op)
     {
     case AV_LOCK_CREATE:
         * mutexp = g_slice_new (pthread_mutex_t);
-        pthread_mutex_init ((pthread_mutex_t *) * mutexp, NULL);
+        pthread_mutex_init ((pthread_mutex_t *) * mutexp, nullptr);
         break;
     case AV_LOCK_OBTAIN:
         pthread_mutex_lock ((pthread_mutex_t *) * mutexp);
@@ -69,14 +69,14 @@ static gint lockmgr (void * * mutexp, enum AVLockOp op)
     return 0;
 }
 
-static gboolean ffaudio_init (void)
+static bool ffaudio_init (void)
 {
     av_register_all();
     av_lockmgr_register (lockmgr);
 
     create_extension_dict ();
 
-    return TRUE;
+    return true;
 }
 
 static void
@@ -84,26 +84,26 @@ ffaudio_cleanup(void)
 {
     extension_dict.clear ();
 
-    av_lockmgr_register (NULL);
+    av_lockmgr_register (nullptr);
 }
 
-static const gchar * ffaudio_strerror (gint error)
+static const char * ffaudio_strerror (int error)
 {
-    static gchar buf[256];
+    static char buf[256];
     return (! av_strerror (error, buf, sizeof buf)) ? buf : "unknown error";
 }
 
 static void create_extension_dict ()
 {
     AVInputFormat * f;
-    for (f = av_iformat_next (NULL); f; f = av_iformat_next (f))
+    for (f = av_iformat_next (nullptr); f; f = av_iformat_next (f))
     {
         if (! f->extensions)
             continue;
 
-        gchar * exts = g_ascii_strdown (f->extensions, -1);
+        char * exts = g_ascii_strdown (f->extensions, -1);
 
-        gchar * parse, * next;
+        char * parse, * next;
         for (parse = exts; parse; parse = next)
         {
             next = strchr (parse, ',');
@@ -120,15 +120,15 @@ static void create_extension_dict ()
     }
 }
 
-static AVInputFormat * get_format_by_extension (const gchar * name)
+static AVInputFormat * get_format_by_extension (const char * name)
 {
-    const gchar * ext0, * sub;
-    uri_parse (name, NULL, & ext0, & sub, NULL);
+    const char * ext0, * sub;
+    uri_parse (name, nullptr, & ext0, & sub, nullptr);
 
     if (ext0 == sub)
-        return NULL;
+        return nullptr;
 
-    gchar * ext = g_ascii_strdown (ext0 + 1, sub - ext0 - 1);
+    char * ext = g_ascii_strdown (ext0 + 1, sub - ext0 - 1);
 
     AUDDBG ("Get format by extension: %s\n", name);
     AVInputFormat * * f = extension_dict.lookup (String (ext));
@@ -139,20 +139,20 @@ static AVInputFormat * get_format_by_extension (const gchar * name)
         AUDDBG ("Format unknown.\n");
 
     g_free (ext);
-    return f ? * f : NULL;
+    return f ? * f : nullptr;
 }
 
-static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file)
+static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
 {
     AUDDBG ("Get format by content: %s\n", name);
 
-    AVInputFormat * f = NULL;
+    AVInputFormat * f = nullptr;
 
-    guchar buf[16384 + AVPROBE_PADDING_SIZE];
-    gint size = 16;
-    gint filled = 0;
-    gint target = 100;
-    gint score = 0;
+    unsigned char buf[16384 + AVPROBE_PADDING_SIZE];
+    int size = 16;
+    int filled = 0;
+    int target = 100;
+    int score = 0;
 
     while (1)
     {
@@ -163,7 +163,7 @@ static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file
         AVProbeData d = {name, buf, filled};
         score = target;
 
-        f = av_probe_input_format2 (& d, TRUE, & score);
+        f = av_probe_input_format2 (& d, true, & score);
         if (f)
             break;
 
@@ -186,33 +186,33 @@ static AVInputFormat * get_format_by_content (const gchar * name, VFSFile * file
     return f;
 }
 
-static AVInputFormat * get_format (const gchar * name, VFSFile * file)
+static AVInputFormat * get_format (const char * name, VFSFile * file)
 {
     AVInputFormat * f = get_format_by_extension (name);
     return f ? f : get_format_by_content (name, file);
 }
 
-static AVFormatContext * open_input_file (const gchar * name, VFSFile * file)
+static AVFormatContext * open_input_file (const char * name, VFSFile * file)
 {
     AVInputFormat * f = get_format (name, file);
 
     if (! f)
     {
         fprintf (stderr, "ffaudio: Unknown format for %s.\n", name);
-        return NULL;
+        return nullptr;
     }
 
     AVFormatContext * c = avformat_alloc_context ();
     AVIOContext * io = io_context_new (file);
     c->pb = io;
 
-    gint ret = avformat_open_input (& c, name, f, NULL);
+    int ret = avformat_open_input (& c, name, f, nullptr);
 
     if (ret < 0)
     {
         fprintf (stderr, "ffaudio: avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
         io_context_free (io);
-        return NULL;
+        return nullptr;
     }
 
     return c;
@@ -231,9 +231,9 @@ static void close_input_file (AVFormatContext * c)
     io_context_free (io);
 }
 
-static bool_t find_codec (AVFormatContext * c, CodecInfo * cinfo)
+static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
 {
-    avformat_find_stream_info (c, NULL);
+    avformat_find_stream_info (c, nullptr);
 
     for (unsigned i = 0; i < c->nb_streams; i++)
     {
@@ -250,39 +250,39 @@ static bool_t find_codec (AVFormatContext * c, CodecInfo * cinfo)
                 cinfo->context = stream->codec;
                 cinfo->codec = codec;
 
-                return TRUE;
+                return true;
             }
         }
     }
 
-    return FALSE;
+    return false;
 }
 
-static gboolean ffaudio_probe (const gchar * filename, VFSFile * file)
+static bool ffaudio_probe (const char * filename, VFSFile * file)
 {
     if (! file)
-        return FALSE;
+        return false;
 
-    return get_format (filename, file) ? TRUE : FALSE;
+    return get_format (filename, file) ? true : false;
 }
 
 typedef struct {
     TupleValueType ttype;   /* Tuple field value type */
-    gint field;             /* Tuple field constant */
-    const gchar *keys[5];         /* Keys to match (case-insensitive), ended by NULL */
+    int field;             /* Tuple field constant */
+    const char *keys[5];         /* Keys to match (case-insensitive), ended by nullptr */
 } ffaudio_meta_t;
 
 static const ffaudio_meta_t metaentries[] = {
- {TUPLE_STRING, FIELD_ARTIST,       {"author", "hor", "artist", NULL}},
- {TUPLE_STRING, FIELD_TITLE,        {"title", "le", NULL}},
- {TUPLE_STRING, FIELD_ALBUM,        {"album", "WM/AlbumTitle", NULL}},
- {TUPLE_STRING, FIELD_PERFORMER,    {"performer", NULL}},
- {TUPLE_STRING, FIELD_COPYRIGHT,    {"copyright", NULL}},
- {TUPLE_STRING, FIELD_GENRE,        {"genre", "WM/Genre", NULL}},
- {TUPLE_STRING, FIELD_COMMENT,      {"comment", NULL}},
- {TUPLE_STRING, FIELD_COMPOSER,     {"composer", NULL}},
- {TUPLE_INT,    FIELD_YEAR,         {"year", "WM/Year", "date", NULL}},
- {TUPLE_INT,    FIELD_TRACK_NUMBER, {"track", "WM/TrackNumber", NULL}},
+ {TUPLE_STRING, FIELD_ARTIST,       {"author", "hor", "artist", nullptr}},
+ {TUPLE_STRING, FIELD_TITLE,        {"title", "le", nullptr}},
+ {TUPLE_STRING, FIELD_ALBUM,        {"album", "WM/AlbumTitle", nullptr}},
+ {TUPLE_STRING, FIELD_PERFORMER,    {"performer", nullptr}},
+ {TUPLE_STRING, FIELD_COPYRIGHT,    {"copyright", nullptr}},
+ {TUPLE_STRING, FIELD_GENRE,        {"genre", "WM/Genre", nullptr}},
+ {TUPLE_STRING, FIELD_COMMENT,      {"comment", nullptr}},
+ {TUPLE_STRING, FIELD_COMPOSER,     {"composer", nullptr}},
+ {TUPLE_INT,    FIELD_YEAR,         {"year", "WM/Year", "date", nullptr}},
+ {TUPLE_INT,    FIELD_TRACK_NUMBER, {"track", "WM/TrackNumber", nullptr}},
 };
 
 static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
@@ -290,10 +290,10 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
     for (int i = 0; i < ARRAY_LEN (metaentries); i ++)
     {
         const ffaudio_meta_t * m = & metaentries[i];
-        AVDictionaryEntry * entry = NULL;
+        AVDictionaryEntry * entry = nullptr;
 
         for (int j = 0; ! entry && m->keys[j]; j ++)
-            entry = av_dict_get (dict, m->keys[j], NULL, 0);
+            entry = av_dict_get (dict, m->keys[j], nullptr, 0);
 
         if (entry && entry->value)
         {
@@ -305,7 +305,7 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
     }
 }
 
-static Tuple read_tuple (const gchar * filename, VFSFile * file)
+static Tuple read_tuple (const char * filename, VFSFile * file)
 {
     Tuple tuple;
     AVFormatContext * ic = open_input_file (filename, file);
@@ -337,7 +337,7 @@ static Tuple read_tuple (const gchar * filename, VFSFile * file)
 }
 
 static Tuple
-ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
+ffaudio_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     if (! fd)
         return Tuple ();
@@ -350,10 +350,10 @@ ffaudio_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return t;
 }
 
-static gboolean ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple & tuple)
+static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple & tuple)
 {
     if (! file)
-        return FALSE;
+        return false;
 
     if (str_has_suffix_nocase (vfs_get_filename (file), ".ape"))
         return tag_tuple_write(tuple, file, TAG_TYPE_APE);
@@ -361,25 +361,25 @@ static gboolean ffaudio_write_tag (const char * filename, VFSFile * file, const 
     return tag_tuple_write(tuple, file, TAG_TYPE_NONE);
 }
 
-static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
+static bool ffaudio_play (const char * filename, VFSFile * file)
 {
     AUDDBG ("Playing %s.\n", filename);
     if (! file)
-        return FALSE;
+        return false;
 
     AVPacket pkt = AVPacket();
-    gint errcount;
-    gboolean codec_opened = FALSE;
-    gint out_fmt;
-    gboolean planar;
-    gboolean error = FALSE;
+    int errcount;
+    bool codec_opened = false;
+    int out_fmt;
+    bool planar;
+    bool error = false;
 
-    void *buf = NULL;
-    gint bufsize = 0;
+    void *buf = nullptr;
+    int bufsize = 0;
 
     AVFormatContext * ic = open_input_file (filename, file);
     if (! ic)
-        return FALSE;
+        return false;
 
     CodecInfo cinfo;
 
@@ -391,22 +391,22 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
 
     AUDDBG("got codec %s for stream index %d, opening\n", cinfo.codec->name, cinfo.stream_idx);
 
-    if (avcodec_open2 (cinfo.context, cinfo.codec, NULL) < 0)
+    if (avcodec_open2 (cinfo.context, cinfo.codec, nullptr) < 0)
         goto error_exit;
 
-    codec_opened = TRUE;
+    codec_opened = true;
 
     switch (cinfo.context->sample_fmt)
     {
-        case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; planar = FALSE; break;
-        case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; planar = FALSE; break;
-        case AV_SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; planar = FALSE; break;
-        case AV_SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; planar = FALSE; break;
+        case AV_SAMPLE_FMT_U8: out_fmt = FMT_U8; planar = false; break;
+        case AV_SAMPLE_FMT_S16: out_fmt = FMT_S16_NE; planar = false; break;
+        case AV_SAMPLE_FMT_S32: out_fmt = FMT_S32_NE; planar = false; break;
+        case AV_SAMPLE_FMT_FLT: out_fmt = FMT_FLOAT; planar = false; break;
 
-        case AV_SAMPLE_FMT_U8P: out_fmt = FMT_U8; planar = TRUE; break;
-        case AV_SAMPLE_FMT_S16P: out_fmt = FMT_S16_NE; planar = TRUE; break;
-        case AV_SAMPLE_FMT_S32P: out_fmt = FMT_S32_NE; planar = TRUE; break;
-        case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = TRUE; break;
+        case AV_SAMPLE_FMT_U8P: out_fmt = FMT_U8; planar = true; break;
+        case AV_SAMPLE_FMT_S16P: out_fmt = FMT_S16_NE; planar = true; break;
+        case AV_SAMPLE_FMT_S32P: out_fmt = FMT_S32_NE; planar = true; break;
+        case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = true; break;
 
     default:
         fprintf (stderr, "ffaudio: Unsupported audio format %d\n", (int) cinfo.context->sample_fmt);
@@ -418,7 +418,7 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
 
     if (aud_input_open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels) <= 0)
     {
-        error = TRUE;
+        error = true;
         goto error_exit;
     }
 
@@ -434,7 +434,7 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
 
         if (seek_value >= 0)
         {
-            if (av_seek_frame (ic, -1, (gint64) seek_value * AV_TIME_BASE /
+            if (av_seek_frame (ic, -1, (int64_t) seek_value * AV_TIME_BASE /
              1000, AVSEEK_FLAG_ANY) < 0)
             {
                 _ERROR("error while seeking\n");
@@ -445,7 +445,7 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
         }
 
         AVPacket tmp;
-        gint ret;
+        int ret;
 
         /* Read next frame (or more) of data */
         if ((ret = av_read_frame(ic, &pkt)) < 0)
@@ -505,7 +505,7 @@ static gboolean ffaudio_play (const gchar * filename, VFSFile * file)
             if (! decoded)
                 continue;
 
-            gint size = FMT_SIZEOF (out_fmt) * cinfo.context->channels * frame->nb_samples;
+            int size = FMT_SIZEOF (out_fmt) * cinfo.context->channels * frame->nb_samples;
 
             if (planar)
             {
@@ -540,7 +540,7 @@ error_exit:
         av_free_packet(&pkt);
     if (codec_opened)
         avcodec_close(cinfo.context);
-    if (ic != NULL)
+    if (ic != nullptr)
         close_input_file(ic);
 
     g_free (buf);
@@ -556,7 +556,7 @@ static const char ffaudio_about[] =
     "William Pitcock <nenolod@nenolod.net>\n"
     "Matti Hämäläinen <ccr@tnsp.org>");
 
-static const gchar *ffaudio_fmts[] = {
+static const char *ffaudio_fmts[] = {
     /* musepack, SV7/SV8 */
     "mpc", "mp+", "mpp",
 
@@ -597,10 +597,10 @@ static const gchar *ffaudio_fmts[] = {
     "spx",
 
     /* end of table */
-    NULL
+    nullptr
 };
 
-static const char * const ffaudio_mimes[] = {"application/ogg", NULL};
+static const char * const ffaudio_mimes[] = {"application/ogg", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("FFmpeg Plugin")
 #define AUD_PLUGIN_ABOUT       ffaudio_about

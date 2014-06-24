@@ -34,7 +34,7 @@ protected:
 	blargg_err_t play_( long, sample_t* );
 private:
 	Multi_Buffer* buf;
-	Multi_Buffer* stereo_buffer; // NULL if using custom buffer
+	Multi_Buffer* stereo_buffer; // nullptr if using custom buffer
 	long clock_rate_;
 	unsigned buf_changed_count;
 	int const* voice_types;
@@ -70,7 +70,7 @@ template<int unit>
 class Rom_Data : public Rom_Data_ {
 	enum { pad_size = unit + pad_extra };
 public:
-	// Load file data, using already-loaded header 'h' if not NULL. Copy header
+	// Load file data, using already-loaded header 'h' if not nullptr. Copy header
 	// from loaded file data into *out and fill unmapped bytes with 'fill'.
 	blargg_err_t load( Data_Reader& in, int header_size, void* header_out, int fill )
 	{

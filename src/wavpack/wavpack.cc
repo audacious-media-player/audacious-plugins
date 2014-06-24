@@ -55,7 +55,7 @@ wv_get_length(void *id)
 {
     VFSFile *file = (VFSFile *) id;
 
-    if (file == NULL)
+    if (file == nullptr)
         return 0;
 
     return vfs_fsize(file);
@@ -63,7 +63,7 @@ wv_get_length(void *id)
 
 static int wv_can_seek(void *id)
 {
-    return (vfs_is_streaming((VFSFile *) id) == FALSE);
+    return (vfs_is_streaming((VFSFile *) id) == false);
 }
 
 static int32_t wv_write_bytes(void *id, void *data, int32_t bcount)
@@ -82,7 +82,7 @@ WavpackStreamReader wv_readers = {
     wv_write_bytes
 };
 
-static bool_t wv_attach (const char * filename, VFSFile * wv_input,
+static bool wv_attach (const char * filename, VFSFile * wv_input,
  VFSFile * * wvc_input, WavpackContext * * ctx, char * error, int flags)
 {
     if (flags & OPEN_WVC)
@@ -91,38 +91,38 @@ static bool_t wv_attach (const char * filename, VFSFile * wv_input,
         if (vfs_file_test (corrFilename, VFS_IS_REGULAR))
             * wvc_input = vfs_fopen (corrFilename, "r");
         else
-            * wvc_input = NULL;
+            * wvc_input = nullptr;
     }
 
     * ctx = WavpackOpenFileInputEx (& wv_readers, wv_input, * wvc_input, error, flags, 0);
-    return (* ctx != NULL);
+    return (* ctx != nullptr);
 }
 
 static void wv_deattach (VFSFile * wvc_input, WavpackContext * ctx)
 {
-    if (wvc_input != NULL)
+    if (wvc_input != nullptr)
         vfs_fclose(wvc_input);
     WavpackCloseFile(ctx);
 }
 
-static bool_t wv_play (const char * filename, VFSFile * file)
+static bool wv_play (const char * filename, VFSFile * file)
 {
-    if (file == NULL)
-        return FALSE;
+    if (file == nullptr)
+        return false;
 
-    int32_t *input = NULL;
-    void *output = NULL;
+    int32_t *input = nullptr;
+    void *output = nullptr;
     int sample_rate, num_channels, bits_per_sample;
     unsigned num_samples;
-    WavpackContext *ctx = NULL;
-    VFSFile *wvc_input = NULL;
-    bool_t error = FALSE;
+    WavpackContext *ctx = nullptr;
+    VFSFile *wvc_input = nullptr;
+    bool error = false;
 
-    if (! wv_attach (filename, file, & wvc_input, & ctx, NULL, OPEN_TAGS |
+    if (! wv_attach (filename, file, & wvc_input, & ctx, nullptr, OPEN_TAGS |
      OPEN_WVC))
     {
         fprintf (stderr, "Error opening Wavpack file '%s'.", filename);
-        error = TRUE;
+        error = true;
         goto error_exit;
     }
 
@@ -134,13 +134,13 @@ static bool_t wv_play (const char * filename, VFSFile * file)
     if (!aud_input_open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
         fprintf (stderr, "Error opening audio output.");
-        error = TRUE;
+        error = true;
         goto error_exit;
     }
 
     input = g_new(int32_t, BUFFER_SIZE * num_channels);
     output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
-    if (input == NULL || output == NULL)
+    if (input == nullptr || output == nullptr)
         goto error_exit;
 
     aud_input_set_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
@@ -225,9 +225,9 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
     Tuple tuple;
     char error[1024];
 
-    ctx = WavpackOpenFileInputEx(&wv_readers, fd, NULL, error, OPEN_TAGS, 0);
+    ctx = WavpackOpenFileInputEx(&wv_readers, fd, nullptr, error, OPEN_TAGS, 0);
 
-    if (ctx == NULL)
+    if (ctx == nullptr)
         return tuple;
 
     AUDDBG("starting probe of %p\n", (void *) fd);
@@ -249,7 +249,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
     return tuple;
 }
 
-static bool_t wv_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
+static bool wv_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
 {
     return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }
@@ -258,11 +258,11 @@ static const char wv_about[] =
  N_("Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
     "Some of the plugin code was by Miles Egan.");
 
-static const char *wv_fmts[] = { "wv", NULL };
+static const char *wv_fmts[] = { "wv", nullptr };
 
 #define AUD_PLUGIN_NAME        N_("WavPack Decoder")
 #define AUD_PLUGIN_ABOUT       wv_about
-#define AUD_INPUT_IS_OUR_FILE  NULL
+#define AUD_INPUT_IS_OUR_FILE  nullptr
 #define AUD_INPUT_PLAY         wv_play
 #define AUD_INPUT_EXTS         wv_fmts
 #define AUD_INPUT_READ_TUPLE   wv_probe_for_tuple

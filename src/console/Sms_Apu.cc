@@ -20,7 +20,7 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA */
 Sms_Osc::Sms_Osc()
 {
 	output = 0;
-	outputs [0] = 0; // always stays NULL
+	outputs [0] = 0; // always stays nullptr
 	outputs [1] = 0;
 	outputs [2] = 0;
 	outputs [3] = 0;

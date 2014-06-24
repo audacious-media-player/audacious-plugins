@@ -136,7 +136,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 	}
 	else
 	{
-		decomp_dat = NULL;
+		decomp_dat = nullptr;
 		decomp_length =  0;
 	}
 
@@ -161,7 +161,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 	(*c)->res_size = res_area;
 
 	// Return it
-	if (output != NULL && size != NULL)
+	if (output != nullptr && size != nullptr)
 	{
 		*output = decomp_dat;
 		*size = decomp_length;
@@ -185,7 +185,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 		tag_dec += 5;
 		input_len -= 5;
 
-		data = FALSE;
+		data = false;
 		num_tags = 0;
 		l = 0;
 		while (input_len && (num_tags < MAX_UNKNOWN_TAGS))
@@ -195,7 +195,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 				if ((*tag_dec == 0xA) || (*tag_dec == 0x00))
 				{
 					(*c)->tag_data[num_tags][l] = 0;
-					data = FALSE;
+					data = false;
 					num_tags++;
 					l = 0;
 				}
@@ -210,7 +210,7 @@ int corlett_decode(uint8_t *input, uint32_t input_len, uint8_t **output, uint64_
 				{
 					(*c)->tag_name[num_tags][l] = 0;
 					l = 0;
-					data = TRUE;
+					data = true;
 				}
 				else
 				{

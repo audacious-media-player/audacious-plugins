@@ -52,50 +52,50 @@ public:
 
 
 xs_sidplayfp_t::xs_sidplayfp_t(void)
-:currEng(NULL)
+:currEng(nullptr)
 {
-    buf = NULL;
+    buf = nullptr;
     bufSize = 0;
-    currTune = NULL;
-    currBuilder = NULL;
+    currTune = nullptr;
+    currBuilder = nullptr;
 }
 
 
 /* Check if we can play the given file
  */
-bool_t xs_sidplayfp_probe(VFSFile *f)
+bool xs_sidplayfp_probe(VFSFile *f)
 {
     char tmpBuf[5];
 
-    if (f == NULL) return FALSE;
+    if (f == nullptr) return false;
 
     if (vfs_fread(tmpBuf, sizeof(char), 4, f) != 4)
-        return FALSE;
+        return false;
 
     if (!strncmp(tmpBuf, "PSID", 4) || !strncmp(tmpBuf, "RSID", 4))
-        return TRUE;
+        return true;
     else
-        return FALSE;
+        return false;
 }
 
 
 /* Initialize SIDPlayFP
  */
-bool_t xs_sidplayfp_init(xs_status_t * status)
+bool xs_sidplayfp_init(xs_status_t * status)
 {
     xs_sidplayfp_t *engine;
-    assert(status != NULL);
+    assert(status != nullptr);
 
     /* Allocate internal structures */
     engine = new xs_sidplayfp_t();
     status->sidEngine = engine;
-    if (!engine) return FALSE;
+    if (!engine) return false;
 
     /* Initialize the engine */
     engine->currEng = new sidplayfp;
     if (!engine->currEng) {
         xs_error("[SIDPlayFP] Could not initialize emulation engine.\n");
-        return FALSE;
+        return false;
     }
 
     /* Get current configuration */
@@ -124,13 +124,13 @@ bool_t xs_sidplayfp_init(xs_status_t * status)
     engine->currBuilder->create(engine->currEng->info().maxsids());
     if (!engine->currBuilder->getStatus()) {
         xs_error("reSID->create() failed.\n");
-        return FALSE;
+        return false;
     }
 
     engine->currBuilder->filter(xs_cfg.emulateFilters);
     if (!engine->currBuilder->getStatus()) {
         xs_error("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
-        return FALSE;
+        return false;
     }
 
     engine->currConfig.sidEmulation = engine->currBuilder;
@@ -162,17 +162,17 @@ bool_t xs_sidplayfp_init(xs_status_t * status)
     /* Now set the emulator configuration */
     if (!engine->currEng->config(engine->currConfig)) {
         xs_error("[SIDPlayFP] Emulator engine configuration failed!\n");
-        return FALSE;
+        return false;
     }
 
     /* Create the sidtune */
     engine->currTune = new SidTune(0);
     if (!engine->currTune) {
         xs_error("[SIDPlayFP] Could not initialize SIDTune object.\n");
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 
@@ -181,54 +181,54 @@ bool_t xs_sidplayfp_init(xs_status_t * status)
 void xs_sidplayfp_close(xs_status_t * status)
 {
     xs_sidplayfp_t *engine;
-    assert(status != NULL);
+    assert(status != nullptr);
 
     engine = (xs_sidplayfp_t *) status->sidEngine;
 
     /* Free internals */
     if (engine->currBuilder) {
         delete engine->currBuilder;
-        engine->currBuilder = NULL;
+        engine->currBuilder = nullptr;
     }
 
     if (engine->currEng) {
         delete engine->currEng;
-        engine->currEng = NULL;
+        engine->currEng = nullptr;
     }
 
     if (engine->currTune) {
         delete engine->currTune;
-        engine->currTune = NULL;
+        engine->currTune = nullptr;
     }
 
     xs_sidplayfp_delete(status);
 
     delete engine;
-    status->sidEngine = NULL;
+    status->sidEngine = nullptr;
 }
 
 
 /* Initialize current song and sub-tune
  */
-bool_t xs_sidplayfp_initsong(xs_status_t * status)
+bool xs_sidplayfp_initsong(xs_status_t * status)
 {
     xs_sidplayfp_t *engine;
-    assert(status != NULL);
+    assert(status != nullptr);
 
     engine = (xs_sidplayfp_t *) status->sidEngine;
-    if (engine == NULL) return FALSE;
+    if (engine == nullptr) return false;
 
     if (!engine->currTune->selectSong(status->currSong)) {
         xs_error("[SIDPlayFP] currTune->selectSong() failed\n");
-        return FALSE;
+        return false;
     }
 
     if (!engine->currEng->load(engine->currTune)) {
         xs_error("[SIDPlayFP] currEng->load() failed\n");
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 
@@ -237,7 +237,7 @@ bool_t xs_sidplayfp_initsong(xs_status_t * status)
 unsigned xs_sidplayfp_fillbuffer(xs_status_t * status, char * audioBuffer, unsigned audioBufSize)
 {
     xs_sidplayfp_t *engine;
-    assert(status != NULL);
+    assert(status != nullptr);
 
     engine = (xs_sidplayfp_t *) status->sidEngine;
     if (!engine) return 0;
@@ -248,39 +248,39 @@ unsigned xs_sidplayfp_fillbuffer(xs_status_t * status, char * audioBuffer, unsig
 
 /* Load a given SID-tune file
  */
-bool_t xs_sidplayfp_load(xs_status_t * status, const char * pcFilename)
+bool xs_sidplayfp_load(xs_status_t * status, const char * pcFilename)
 {
     /* This is safe, since xmms-sid.c always calls us with xs_status locked */
     static int loaded_roms = 0;
 
     xs_sidplayfp_t *engine;
-    assert(status != NULL);
+    assert(status != nullptr);
 
     engine = (xs_sidplayfp_t *) status->sidEngine;
-    if (!engine) return FALSE;
+    if (!engine) return false;
 
     /* In xs_sidplayfp_init aud-vfs is not initialized yet, so try to load
        the optional rom files on the first xs_sidplayfp_load call. */
     if (!loaded_roms) {
         int64_t size = 0;
-        void *kernal = NULL, *basic = NULL, *chargen = NULL;
+        void *kernal = nullptr, *basic = nullptr, *chargen = nullptr;
 
         vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/kernal", &kernal, &size);
         if (size != 8192) {
             free(kernal);
-            kernal = NULL;
+            kernal = nullptr;
         }
 
         vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/basic", &basic, &size);
         if(size != 8192) {
             free(basic);
-            basic = NULL;
+            basic = nullptr;
         }
 
         vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/chargen", &chargen, &size);
         if(size != 4096) {
             free(chargen);
-            chargen = NULL;
+            chargen = nullptr;
         }
 
         engine->currEng->setRoms((uint8_t*)kernal, (uint8_t*)basic, (uint8_t*)chargen);
@@ -294,8 +294,8 @@ bool_t xs_sidplayfp_load(xs_status_t * status, const char * pcFilename)
     vfs_file_get_contents(pcFilename, &engine->buf, &engine->bufSize);
     if(!engine->bufSize) {
         free(engine->buf);
-        engine->buf = NULL;
-        return FALSE;
+        engine->buf = nullptr;
+        return false;
     }
 
     engine->currTune->read((uint8_t*)engine->buf, engine->bufSize);
@@ -309,13 +309,13 @@ bool_t xs_sidplayfp_load(xs_status_t * status, const char * pcFilename)
 void xs_sidplayfp_delete(xs_status_t * status)
 {
     xs_sidplayfp_t *engine;
-    assert(status != NULL);
+    assert(status != nullptr);
 
     engine = (xs_sidplayfp_t *) status->sidEngine;
-    if (engine == NULL) return;
+    if (engine == nullptr) return;
 
     free(engine->buf);
-    engine->buf = NULL;
+    engine->buf = nullptr;
     engine->bufSize = 0;
 }
 
@@ -329,7 +329,7 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename)
     xs_tuneinfo_t *result;
     const SidTuneInfo *myInfo;
     SidTune *myTune;
-    void *buf = NULL;
+    void *buf = nullptr;
     int64_t bufSize = 0;
 
     /* Load file */
@@ -338,13 +338,13 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename)
     /* Check if the tune exists and is readable */
     if (!bufSize || !(myTune = new SidTune((uint8_t*)buf, bufSize))) {
         free(buf);
-        return NULL;
+        return nullptr;
     }
     free(buf);
 
     if (!myTune->getStatus()) {
         delete myTune;
-        return NULL;
+        return nullptr;
     }
 
     /* Get general tune information */
@@ -375,7 +375,7 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename)
     return result;
 }
 
-bool_t xs_sidplayfp_updateinfo(xs_status_t *myStatus)
+bool xs_sidplayfp_updateinfo(xs_status_t *myStatus)
 {
     const SidTuneInfo *myInfo;
     SidTune *myTune;
@@ -384,12 +384,12 @@ bool_t xs_sidplayfp_updateinfo(xs_status_t *myStatus)
 
     /* Check if we have required structures initialized */
     if (!myStatus || !myStatus->tuneInfo || !myStatus->sidEngine)
-        return FALSE;
+        return false;
 
     myEngine = (xs_sidplayfp_t *) myStatus->sidEngine;
     myTune = myEngine->currTune;
     if (!myTune)
-        return FALSE;
+        return false;
 
     /* Get currently playing tune information */
     myInfo = myTune->getInfo();
@@ -433,5 +433,5 @@ bool_t xs_sidplayfp_updateinfo(xs_status_t *myStatus)
         i->subTunes[myStatus->currSong - 1].tuneSpeed = tmpSpeed;
     }
 
-    return TRUE;
+    return true;
 }

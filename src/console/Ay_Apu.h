@@ -9,7 +9,7 @@
 
 class Ay_Apu {
 public:
-	// Set buffer to generate all sound into, or disable sound if NULL
+	// Set buffer to generate all sound into, or disable sound if nullptr
 	void output( Blip_Buffer* );
 
 	// Reset sound chip
@@ -27,7 +27,7 @@ public:
 // Additional features
 
 	// Set sound output of specific oscillator to buffer, where index is
-	// 0, 1, or 2. If buffer is NULL, the specified oscillator is muted.
+	// 0, 1, or 2. If buffer is nullptr, the specified oscillator is muted.
 	enum { osc_count = 3 };
 	void osc_output( int index, Blip_Buffer* );
 

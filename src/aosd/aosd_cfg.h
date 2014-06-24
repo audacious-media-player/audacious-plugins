@@ -22,7 +22,10 @@
 #define _I_AOSD_CFG_H 1
 
 #include "aosd_common.h"
+
+#include <stdint.h>
 #include <glib.h>
+
 #include <libaudcore/objects.h>
 
 /* in this release only one user font is supported */
@@ -49,10 +52,10 @@ enum
 
 typedef struct
 {
-  guint16 red;
-  guint16 green;
-  guint16 blue;
-  guint16 alpha;
+  uint16_t red;
+  uint16_t green;
+  uint16_t blue;
+  uint16_t alpha;
 }
 aosd_color_t;
 
@@ -60,7 +63,7 @@ aosd_color_t;
 /* config portion containing osd decoration information */
 typedef struct
 {
-  gint code;
+  int code;
   GArray *colors;
 }
 aosd_cfg_osd_decoration_t;
@@ -81,9 +84,9 @@ aosd_cfg_osd_text_t;
 /* config portion containing osd animation information */
 typedef struct
 {
-  gint timing_display;
-  gint timing_fadein;
-  gint timing_fadeout;
+  int timing_display;
+  int timing_fadein;
+  int timing_fadeout;
 }
 aosd_cfg_osd_animation_t;
 
@@ -91,11 +94,11 @@ aosd_cfg_osd_animation_t;
 /* config portion containing osd position information */
 typedef struct
 {
-  gint placement;
-  gint offset_x;
-  gint offset_y;
-  gint maxsize_width;
-  gint multimon_id;
+  int placement;
+  int offset_x;
+  int offset_y;
+  int maxsize_width;
+  int multimon_id;
 }
 aosd_cfg_osd_position_t;
 
@@ -111,7 +114,7 @@ aosd_cfg_osd_trigger_t;
 /* config portion containing osd miscellaneous information */
 typedef struct
 {
-  gint transparency_mode;
+  int transparency_mode;
 }
 aosd_cfg_osd_misc_t;
 
@@ -145,7 +148,7 @@ void aosd_cfg_delete ( aosd_cfg_t * cfg );
 aosd_cfg_osd_t * aosd_cfg_osd_new( void );
 void aosd_cfg_osd_delete ( aosd_cfg_osd_t * cfg_osd );
 aosd_cfg_osd_t * aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd );
-gint aosd_cfg_load ( aosd_cfg_t * cfg );
-gint aosd_cfg_save ( aosd_cfg_t * cfg );
+int aosd_cfg_load ( aosd_cfg_t * cfg );
+int aosd_cfg_save ( aosd_cfg_t * cfg );
 
 #endif /* !_I_AOSD_CFG_H */

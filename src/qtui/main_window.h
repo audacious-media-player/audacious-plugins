@@ -76,13 +76,13 @@ private:
     {
         window->setWindowTitle ("Audacious - Buffering...");
 
-        pause_cb (NULL, window);
+        pause_cb (nullptr, window);
     }
 
     static void playback_ready_cb (void * unused, MainWindow * window)
     {
-        title_change_cb (NULL, window);
-        pause_cb (NULL, window);
+        title_change_cb (nullptr, window);
+        pause_cb (nullptr, window);
 
         window->enableSlider ();
         window->enableTimeCounter ();

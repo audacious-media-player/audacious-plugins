@@ -41,30 +41,30 @@ CmscPlayer::factory (Copl * newopl)
 
 CmscPlayer::CmscPlayer (Copl * newopl):CPlayer (newopl)
 {
-  desc = NULL;
-  msc_data = NULL;
-  raw_data = NULL;
+  desc = nullptr;
+  msc_data = nullptr;
+  raw_data = nullptr;
   nr_blocks = 0;
 }
 
 CmscPlayer::~CmscPlayer ()
 {
-  if (raw_data != NULL)
+  if (raw_data != nullptr)
     delete[]raw_data;
 
-  if (msc_data != NULL)
+  if (msc_data != nullptr)
   {
     // free compressed blocks
     for (int blk_num = 0; blk_num < nr_blocks; blk_num++)
     {
-      if (msc_data[blk_num].mb_data != NULL)
+      if (msc_data[blk_num].mb_data != nullptr)
         delete[]msc_data[blk_num].mb_data;
     }
 
     delete[]msc_data;
   }
 
-  if (desc != NULL)
+  if (desc != nullptr)
     delete[]desc;
 }
 
@@ -327,7 +327,7 @@ CmscPlayer::decode_octet (u8 * output)
 
 
     // output the octet
-    if (output != NULL)
+    if (output != nullptr)
       *output = octet;
 
     raw_data[raw_pos++] = octet;

@@ -36,7 +36,7 @@
 
 #define EXTENSION_TARGETS 7
 
-static const gchar *ext_targets[EXTENSION_TARGETS] = { "bmp", "xpm", "png", "svg",
+static const char *ext_targets[EXTENSION_TARGETS] = { "bmp", "xpm", "png", "svg",
         "gif", "jpg", "jpeg" };
 
 enum SkinViewCols {
@@ -47,28 +47,28 @@ enum SkinViewCols {
 };
 
 typedef struct {
-    gchar *name;
-    gchar *desc;
-    gchar *path;
+    char *name;
+    char *desc;
+    char *path;
     GTime *time;
 } SkinNode;
 
 static void skin_view_on_cursor_changed (GtkTreeView * treeview, void * data);
 
-static GList *skinlist = NULL;
+static GList *skinlist = nullptr;
 
-static gchar *
-get_thumbnail_filename(const gchar * path)
+static char *
+get_thumbnail_filename(const char * path)
 {
-    gchar *basename, *pngname, *thumbname;
+    char *basename, *pngname, *thumbname;
 
-    g_return_val_if_fail(path != NULL, NULL);
+    g_return_val_if_fail(path != nullptr, nullptr);
 
     basename = g_path_get_basename(path);
-    pngname = g_strconcat(basename, ".png", NULL);
+    pngname = g_strconcat(basename, ".png", nullptr);
 
     thumbname = g_build_filename(skins_paths[SKINS_PATH_SKIN_THUMB_DIR],
-                                 pngname, NULL);
+                                 pngname, nullptr);
 
     g_free(basename);
     g_free(pngname);
@@ -78,18 +78,18 @@ get_thumbnail_filename(const gchar * path)
 
 
 static GdkPixbuf *
-skin_get_preview(const gchar * path)
+skin_get_preview(const char * path)
 {
-    GdkPixbuf *preview = NULL;
-    gchar *dec_path, *preview_path;
+    GdkPixbuf *preview = nullptr;
+    char *dec_path, *preview_path;
     gboolean is_archive = FALSE;
-    gint i = 0;
-    gchar buf[60];			/* gives us lots of room */
+    int i = 0;
+    char buf[60];			/* gives us lots of room */
 
     if (file_is_archive(path))
     {
         if (!(dec_path = archive_decompress(path)))
-            return NULL;
+            return nullptr;
 
         is_archive = TRUE;
     }
@@ -102,13 +102,13 @@ skin_get_preview(const gchar * path)
     {
         sprintf(buf, "main.%s", ext_targets[i]);
 
-        if ((preview_path = find_file_case_path (dec_path, buf)) != NULL)
+        if ((preview_path = find_file_case_path (dec_path, buf)) != nullptr)
             break;
     }
 
     if (preview_path)
     {
-        preview = gdk_pixbuf_new_from_file(preview_path, NULL);
+        preview = gdk_pixbuf_new_from_file(preview_path, nullptr);
         g_free(preview_path);
     }
 
@@ -120,14 +120,14 @@ skin_get_preview(const gchar * path)
     return preview;
 }
 
-static GdkPixbuf * skin_get_thumbnail (const gchar * path)
+static GdkPixbuf * skin_get_thumbnail (const char * path)
 {
-    gchar * thumbname = get_thumbnail_filename (path);
-    GdkPixbuf * thumb = NULL;
+    char * thumbname = get_thumbnail_filename (path);
+    GdkPixbuf * thumb = nullptr;
 
     if (g_file_test (thumbname, G_FILE_TEST_EXISTS))
     {
-        thumb = gdk_pixbuf_new_from_file (thumbname, NULL);
+        thumb = gdk_pixbuf_new_from_file (thumbname, nullptr);
         if (thumb)
             goto DONE;
     }
@@ -139,7 +139,7 @@ static GdkPixbuf * skin_get_thumbnail (const gchar * path)
     audgui_pixbuf_scale_within (& thumb, 128);
 
     if (thumb)
-        gdk_pixbuf_save (thumb, thumbname, "png", NULL, NULL);
+        gdk_pixbuf_save (thumb, thumbname, "png", nullptr, nullptr);
 
 DONE:
     g_free (thumbname);
@@ -147,12 +147,12 @@ DONE:
 }
 
 static void
-skinlist_add(const gchar * filename)
+skinlist_add(const char * filename)
 {
     SkinNode *node;
-    gchar *basename;
+    char *basename;
 
-    g_return_if_fail(filename != NULL);
+    g_return_if_fail(filename != nullptr);
 
     node = g_slice_new0(SkinNode);
     node->path = g_strdup(filename);
@@ -173,7 +173,7 @@ skinlist_add(const gchar * filename)
 }
 
 static gboolean
-scan_skindir_func(const gchar * path, const gchar * basename, gpointer data)
+scan_skindir_func(const char * path, const char * basename, gpointer data)
 {
     if (g_file_test(path, G_FILE_TEST_IS_REGULAR)) {
         if (file_is_archive(path)) {
@@ -188,23 +188,23 @@ scan_skindir_func(const gchar * path, const gchar * basename, gpointer data)
 }
 
 static void
-scan_skindir(const gchar * path)
+scan_skindir(const char * path)
 {
-    GError *error = NULL;
+    GError *error = nullptr;
 
-    g_return_if_fail(path != NULL);
+    g_return_if_fail(path != nullptr);
 
     if (path[0] == '.')
         return;
 
-    if (!dir_foreach(path, scan_skindir_func, NULL, &error)) {
+    if (!dir_foreach(path, scan_skindir_func, nullptr, &error)) {
         g_warning("Failed to open directory (%s): %s", path, error->message);
         g_error_free(error);
         return;
     }
 }
 
-static gint skinlist_compare_func (const void * _a, const void * _b)
+static int skinlist_compare_func (const void * _a, const void * _b)
 {
     const SkinNode * a = (SkinNode *) _a, * b = (SkinNode *) _b;
     g_return_val_if_fail (a && a->name, 1);
@@ -215,7 +215,7 @@ static gint skinlist_compare_func (const void * _a, const void * _b)
 static void skin_free_func (void * _data)
 {
     SkinNode * data = (SkinNode *) _data;
-    g_return_if_fail(data != NULL);
+    g_return_if_fail(data != nullptr);
     g_free (data->name);
     g_free (data->path);
     g_slice_free(SkinNode, data);
@@ -228,29 +228,29 @@ skinlist_clear(void)
     if (!skinlist)
         return;
 
-    g_list_foreach(skinlist, (GFunc) skin_free_func, NULL);
+    g_list_foreach(skinlist, (GFunc) skin_free_func, nullptr);
     g_list_free(skinlist);
-    skinlist = NULL;
+    skinlist = nullptr;
 }
 
 static void
 skinlist_update(void)
 {
-    gchar *skinsdir;
+    char *skinsdir;
 
     skinlist_clear();
 
     if (g_file_test (skins_paths[SKINS_PATH_USER_SKIN_DIR], G_FILE_TEST_EXISTS))
         scan_skindir (skins_paths[SKINS_PATH_USER_SKIN_DIR]);
 
-    gchar * path = g_strdup_printf ("%s/Skins", aud_get_path (AUD_PATH_DATA_DIR));
+    char * path = g_strdup_printf ("%s/Skins", aud_get_path (AUD_PATH_DATA_DIR));
     scan_skindir (path);
     g_free (path);
 
     skinsdir = getenv("SKINSDIR");
     if (skinsdir) {
-        gchar **dir_list = g_strsplit(skinsdir, ":", 0);
-        gchar **dir;
+        char **dir_list = g_strsplit(skinsdir, ":", 0);
+        char **dir;
 
         for (dir = dir_list; *dir; dir++)
             scan_skindir(*dir);
@@ -259,23 +259,23 @@ skinlist_update(void)
 
     skinlist = g_list_sort(skinlist, skinlist_compare_func);
 
-    g_assert(skinlist != NULL);
+    g_assert(skinlist != nullptr);
 }
 
 void skin_view_update (GtkTreeView * treeview)
 {
-    GtkTreeSelection *selection = NULL;
+    GtkTreeSelection *selection = nullptr;
     GtkListStore *store;
     GtkTreeIter iter, iter_current_skin;
     gboolean have_current_skin = FALSE;
     GtkTreePath *path;
 
     GdkPixbuf *thumbnail;
-    gchar *formattedname;
-    gchar *name;
+    char *formattedname;
+    char *name;
     GList *entry;
 
-    g_signal_handlers_block_by_func (treeview, (void *) skin_view_on_cursor_changed, NULL);
+    g_signal_handlers_block_by_func (treeview, (void *) skin_view_on_cursor_changed, nullptr);
 
     store = GTK_LIST_STORE(gtk_tree_view_get_model(treeview));
 
@@ -314,11 +314,11 @@ void skin_view_update (GtkTreeView * treeview)
 
         path = gtk_tree_model_get_path(GTK_TREE_MODEL(store),
                                        &iter_current_skin);
-        gtk_tree_view_scroll_to_cell(treeview, path, NULL, TRUE, 0.5, 0.5);
+        gtk_tree_view_scroll_to_cell(treeview, path, nullptr, TRUE, 0.5, 0.5);
         gtk_tree_path_free(path);
     }
 
-    g_signal_handlers_unblock_by_func (treeview, (void *) skin_view_on_cursor_changed, NULL);
+    g_signal_handlers_unblock_by_func (treeview, (void *) skin_view_on_cursor_changed, nullptr);
 }
 
 
@@ -331,8 +331,8 @@ skin_view_on_cursor_changed(GtkTreeView * treeview,
     GtkTreeIter iter;
 
     GList *node;
-    gchar *name;
-    gchar *comp = NULL;
+    char *name;
+    char *comp = nullptr;
 
     selection = gtk_tree_view_get_selection(treeview);
 
@@ -380,16 +380,16 @@ skin_view_realize(GtkTreeView * treeview)
     renderer = gtk_cell_renderer_pixbuf_new();
     gtk_tree_view_column_pack_start(column, renderer, FALSE);
     gtk_tree_view_column_set_attributes(column, renderer, "pixbuf",
-                                        SKIN_VIEW_COL_PREVIEW, NULL);
+                                        SKIN_VIEW_COL_PREVIEW, nullptr);
 
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_column_pack_start(column, renderer, TRUE);
     gtk_tree_view_column_set_attributes(column, renderer, "markup",
-                                        SKIN_VIEW_COL_FORMATTEDNAME, NULL);
+                                        SKIN_VIEW_COL_FORMATTEDNAME, nullptr);
 
     selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(treeview));
     gtk_tree_selection_set_mode(selection, GTK_SELECTION_BROWSE);
 
     g_signal_connect(treeview, "cursor-changed",
-                     G_CALLBACK(skin_view_on_cursor_changed), NULL);
+                     G_CALLBACK(skin_view_on_cursor_changed), nullptr);
 }

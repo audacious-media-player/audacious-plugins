@@ -72,7 +72,7 @@ Ca2mLoader::load (VFSFile * fd, const CFileProvider & fp)
   char id[10];
   int i, j, k, t;
   unsigned int l;
-  unsigned char *org = NULL, *orgptr, flags = 0, numpats, version;
+  unsigned char *org = nullptr, *orgptr, flags = 0, numpats, version;
   unsigned long alength;
   unsigned short len[9], *secdata, *secptr;
   const unsigned char convfx[16] =

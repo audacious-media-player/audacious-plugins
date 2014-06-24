@@ -74,23 +74,23 @@ typedef struct
 trackinfo_t;
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static bool_t playing;
+static bool playing;
 
 /* lock mutex to read / set these variables */
 static int firsttrackno = -1;
 static int lasttrackno = -1;
 static int n_audio_tracks;
-static cdrom_drive_t *pcdrom_drive = NULL;
-static trackinfo_t *trackinfo = NULL;
+static cdrom_drive_t *pcdrom_drive = nullptr;
+static trackinfo_t *trackinfo = nullptr;
 static int monitor_source = 0;
 
-static bool_t cdaudio_init (void);
-static int cdaudio_is_our_file (const char * filename, VFSFile * file);
-static bool_t cdaudio_play (const char * name, VFSFile * file);
+static bool cdaudio_init (void);
+static bool cdaudio_is_our_file (const char * filename, VFSFile * file);
+static bool cdaudio_play (const char * name, VFSFile * file);
 static void cdaudio_cleanup (void);
 static Tuple make_tuple (const char * filename, VFSFile * file);
-static bool_t scan_cd (void);
-static void refresh_trackinfo (bool_t warning);
+static bool scan_cd (void);
+static void refresh_trackinfo (bool warning);
 static void reset_trackinfo (void);
 static int calculate_track_length (int startlsn, int endlsn);
 static int find_trackno_from_filename (const char * filename);
@@ -102,7 +102,7 @@ static const char cdaudio_about[] =
     "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
     "This was a Google Summer of Code 2007 project.");
 
-static const char * const schemes[] = {"cdda", NULL};
+static const char * const schemes[] = {"cdda", nullptr};
 
 static const char * const cdaudio_defaults[] = {
  "disc_speed", "2",
@@ -111,7 +111,7 @@ static const char * const cdaudio_defaults[] = {
  "cddbhttp", "FALSE",
  "cddbserver", "freedb.org",
  "cddbport", "8880",
- NULL};
+ nullptr};
 
 static const PreferencesWidget cdaudio_widgets[] = {
     WidgetLabel (N_("<b>Device</b>")),
@@ -156,7 +156,7 @@ static const PluginPreferences cdaudio_prefs = {
 #define AUD_INPUT_PLAY         cdaudio_play
 #define AUD_INPUT_READ_TUPLE   make_tuple
 #define AUD_INPUT_SCHEMES      schemes
-#define AUD_INPUT_SUBTUNES     TRUE
+#define AUD_INPUT_SUBTUNES     true
 
 #define AUD_DECLARE_INPUT
 #include <libaudcore/plugin-declare.h>
@@ -164,7 +164,7 @@ static const PluginPreferences cdaudio_prefs = {
 static void cdaudio_error (const char * message_format, ...)
 {
     va_list args;
-    char *msg = NULL;
+    char *msg = nullptr;
 
     va_start (args, message_format);
     msg = g_markup_vprintf_escaped (message_format, args);
@@ -183,7 +183,7 @@ static void purge_playlist (int playlist)
     {
         String filename = aud_playlist_entry_get_filename (playlist, count);
 
-        if (cdaudio_is_our_file (filename, NULL))
+        if (cdaudio_is_our_file (filename, nullptr))
         {
             aud_playlist_entry_delete (playlist, count, 1);
             count--;
@@ -203,7 +203,7 @@ static void purge_all_playlists (void)
 }
 
 /* main thread only */
-static bool_t monitor (gpointer unused)
+static gboolean monitor (gpointer unused)
 {
     pthread_mutex_lock (& mutex);
 
@@ -214,47 +214,47 @@ static bool_t monitor (gpointer unused)
         return true;
     }
 
-    if (trackinfo != NULL)
-        refresh_trackinfo (FALSE);
+    if (trackinfo != nullptr)
+        refresh_trackinfo (false);
 
-    if (trackinfo != NULL)
+    if (trackinfo != nullptr)
     {
         pthread_mutex_unlock (& mutex);
-        return TRUE;
+        return true;
     }
 
     monitor_source = 0;
     pthread_mutex_unlock (& mutex);
 
     purge_all_playlists ();
-    return FALSE;
+    return false;
 }
 
 /* mutex must be locked */
 static void trigger_monitor (void)
 {
     if (! monitor_source)
-        monitor_source = g_timeout_add_seconds (1, monitor, NULL);
+        monitor_source = g_timeout_add_seconds (1, monitor, nullptr);
 }
 
 /* main thread only */
-static bool_t cdaudio_init (void)
+static bool cdaudio_init (void)
 {
     aud_config_set_defaults ("CDDA", cdaudio_defaults);
 
     if (!cdio_init ())
     {
         cdaudio_error (_("Failed to initialize cdio subsystem."));
-        return FALSE;
+        return false;
     }
 
     libcddb_init ();
 
-    return TRUE;
+    return true;
 }
 
 /* thread safe (mutex may be locked) */
-static int cdaudio_is_our_file (const char * filename, VFSFile * file)
+static bool cdaudio_is_our_file (const char * filename, VFSFile * file)
 {
     return !strncmp (filename, "cdda://", 7);
 }
@@ -281,22 +281,22 @@ static void cdaudio_set_fullinfo (trackinfo_t * t,
 }
 
 /* play thread only */
-static bool_t cdaudio_play (const char * name, VFSFile * file)
+static bool cdaudio_play (const char * name, VFSFile * file)
 {
     pthread_mutex_lock (& mutex);
 
-    if (trackinfo == NULL)
+    if (trackinfo == nullptr)
     {
-        refresh_trackinfo (TRUE);
+        refresh_trackinfo (true);
 
-        if (trackinfo == NULL)
+        if (trackinfo == nullptr)
         {
             pthread_mutex_unlock (& mutex);
-            return FALSE;
+            return false;
         }
     }
 
-    bool_t okay = FALSE;
+    bool okay = false;
     int trackno = find_trackno_from_filename (name);
 
     if (trackno < 0)
@@ -308,22 +308,22 @@ static bool_t cdaudio_play (const char * name, VFSFile * file)
     else if (! aud_input_open_audio (FMT_S16_LE, 44100, 2))
         cdaudio_error (_("Failed to open audio output."));
     else
-        okay = TRUE;
+        okay = true;
 
     if (! okay)
     {
         pthread_mutex_unlock (& mutex);
-        return FALSE;
+        return false;
     }
 
     int startlsn = trackinfo[trackno].startlsn;
     int endlsn = trackinfo[trackno].endlsn;
 
-    playing = TRUE;
+    playing = true;
 
     aud_input_set_bitrate (1411200);
 
-    int buffer_size = aud_get_int (NULL, "output_buffer_size");
+    int buffer_size = aud_get_int (nullptr, "output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
@@ -385,10 +385,10 @@ static bool_t cdaudio_play (const char * name, VFSFile * file)
         }
     }
 
-    playing = FALSE;
+    playing = false;
 
     pthread_mutex_unlock (& mutex);
-    return TRUE;
+    return true;
 }
 
 /* main thread only */
@@ -405,7 +405,7 @@ static void cdaudio_cleanup (void)
 /* thread safe */
 static Tuple make_tuple (const char * filename, VFSFile * file)
 {
-    bool_t whole_disk = ! strcmp (filename, "cdda://");
+    bool whole_disk = ! strcmp (filename, "cdda://");
     Tuple tuple;
 
     pthread_mutex_lock (& mutex);
@@ -414,9 +414,9 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
     if (whole_disk && ! playing)
         reset_trackinfo ();
 
-    if (trackinfo == NULL)
-        refresh_trackinfo (TRUE);
-    if (trackinfo == NULL)
+    if (trackinfo == nullptr)
+        refresh_trackinfo (true);
+    if (trackinfo == nullptr)
         goto DONE;
 
     if (whole_disk)
@@ -476,22 +476,22 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
 static void open_cd (void)
 {
     AUDDBG ("Opening CD drive.\n");
-    g_return_if_fail (pcdrom_drive == NULL);
+    g_return_if_fail (pcdrom_drive == nullptr);
 
     String device = aud_get_str ("CDDA", "device");
 
     if (device[0])
     {
-        if (! (pcdrom_drive = cdda_identify (device, 1, NULL)))
+        if (! (pcdrom_drive = cdda_identify (device, 1, nullptr)))
             cdaudio_error (_("Failed to open CD device %s."), (const char *) device);
     }
     else
     {
-        char * * ppcd_drives = cdio_get_devices_with_cap (NULL, CDIO_FS_AUDIO, FALSE);
+        char * * ppcd_drives = cdio_get_devices_with_cap (nullptr, CDIO_FS_AUDIO, false);
 
         if (ppcd_drives && ppcd_drives[0])
         {
-            if (! (pcdrom_drive = cdda_identify (ppcd_drives[0], 1, NULL)))
+            if (! (pcdrom_drive = cdda_identify (ppcd_drives[0], 1, nullptr)))
                 cdaudio_error (_("Failed to open CD device %s."), ppcd_drives[0]);
         }
         else
@@ -503,11 +503,11 @@ static void open_cd (void)
 }
 
 /* mutex must be locked */
-static bool_t scan_cd (void)
+static bool scan_cd (void)
 {
     AUDDBG ("Scanning CD drive.\n");
-    g_return_val_if_fail (pcdrom_drive, FALSE);
-    g_return_val_if_fail (! trackinfo, FALSE);
+    g_return_val_if_fail (pcdrom_drive, false);
+    g_return_val_if_fail (! trackinfo, false);
 
     int trackno;
 
@@ -521,7 +521,7 @@ static bool_t scan_cd (void)
     if (cdda_open (pcdrom_drive) != 0)
     {
         cdaudio_error (_("Failed to finish initializing opened CD drive."));
-        return FALSE;
+        return false;
     }
 
     int speed = aud_get_int ("CDDA", "disc_speed");
@@ -534,7 +534,7 @@ static bool_t scan_cd (void)
     if (firsttrackno == CDIO_INVALID_TRACK || lasttrackno == CDIO_INVALID_TRACK)
     {
         cdaudio_error (_("Failed to retrieve first/last track number."));
-        return FALSE;
+        return false;
     }
     AUDDBG ("first track is %d and last track is %d\n", firsttrackno,
            lasttrackno);
@@ -559,7 +559,7 @@ static bool_t scan_cd (void)
             || trackinfo[trackno].endlsn == CDIO_INVALID_LSN)
         {
             cdaudio_error (_("Cannot read start/end LSN for track %d."), trackno);
-            return FALSE;
+            return false;
         }
 
         /* count how many tracks are audio tracks */
@@ -568,16 +568,16 @@ static bool_t scan_cd (void)
     }
 
     /* get trackinfo[0] cdtext information (the disc) */
-    cdtext_t *pcdtext = NULL;
+    cdtext_t *pcdtext = nullptr;
     if (aud_get_bool ("CDDA", "use_cdtext"))
     {
         AUDDBG ("getting cd-text information for disc\n");
 #if LIBCDIO_VERSION_NUM >= 90
         pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio);
-        if (pcdtext == NULL)
+        if (pcdtext == nullptr)
 #else
         pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, 0);
-        if (pcdtext == NULL || pcdtext->field[CDTEXT_TITLE] == NULL)
+        if (pcdtext == nullptr || pcdtext->field[CDTEXT_TITLE] == nullptr)
 #endif
         {
             AUDDBG ("no cd-text available for disc\n");
@@ -598,7 +598,7 @@ static bool_t scan_cd (void)
     }
 
     /* get track information from cdtext */
-    bool_t cdtext_was_available = FALSE;
+    bool cdtext_was_available = false;
     for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
     {
 #if LIBCDIO_VERSION_NUM < 90
@@ -606,15 +606,15 @@ static bool_t scan_cd (void)
         {
             AUDDBG ("getting cd-text information for track %d\n", trackno);
             pcdtext = cdio_get_cdtext (pcdrom_drive->p_cdio, trackno);
-            if (pcdtext == NULL || pcdtext->field[CDTEXT_PERFORMER] == NULL)
+            if (pcdtext == nullptr || pcdtext->field[CDTEXT_PERFORMER] == nullptr)
             {
                 AUDDBG ("no cd-text available for track %d\n", trackno);
-                pcdtext = NULL;
+                pcdtext = nullptr;
             }
         }
 #endif
 
-        if (pcdtext != NULL)
+        if (pcdtext != nullptr)
         {
             cdaudio_set_strinfo (&trackinfo[trackno],
 #if LIBCDIO_VERSION_NUM >= 90
@@ -626,22 +626,22 @@ static bool_t scan_cd (void)
                                  pcdtext->field[CDTEXT_TITLE],
                                  pcdtext->field[CDTEXT_GENRE]);
 #endif
-            cdtext_was_available = TRUE;
+            cdtext_was_available = true;
         }
     }
 
     if (!cdtext_was_available)
     {
         /* initialize de cddb subsystem */
-        cddb_conn_t *pcddb_conn = NULL;
-        cddb_disc_t *pcddb_disc = NULL;
-        cddb_track_t *pcddb_track = NULL;
+        cddb_conn_t *pcddb_conn = nullptr;
+        cddb_disc_t *pcddb_disc = nullptr;
+        cddb_track_t *pcddb_track = nullptr;
         lba_t lba;              /* Logical Block Address */
 
         if (aud_get_bool ("CDDA", "use_cddb"))
         {
             pcddb_conn = cddb_new ();
-            if (pcddb_conn == NULL)
+            if (pcddb_conn == nullptr)
                 cdaudio_error (_("Failed to create the cddb connection."));
             else
             {
@@ -654,12 +654,12 @@ static bool_t scan_cd (void)
                 String path = aud_get_str ("CDDA", "cddbpath");
                 int port = aud_get_int ("CDDA", "cddbport");
 
-                if (aud_get_bool (NULL, "use_proxy"))
+                if (aud_get_bool (nullptr, "use_proxy"))
                 {
-                    String prhost = aud_get_str (NULL, "proxy_host");
-                    int prport = aud_get_int (NULL, "proxy_port");
-                    String pruser = aud_get_str (NULL, "proxy_user");
-                    String prpass = aud_get_str (NULL, "proxy_pass");
+                    String prhost = aud_get_str (nullptr, "proxy_host");
+                    int prport = aud_get_int (nullptr, "proxy_port");
+                    String pruser = aud_get_str (nullptr, "proxy_user");
+                    String prpass = aud_get_str (nullptr, "proxy_pass");
 
                     cddb_http_proxy_enable (pcddb_conn);
                     cddb_set_http_proxy_server_name (pcddb_conn, prhost);
@@ -702,7 +702,7 @@ static bool_t scan_cd (void)
                 cddb_disc_calc_discid (pcddb_disc);
 
 #if DEBUG
-                guint discid = cddb_disc_get_discid (pcddb_disc);
+                unsigned discid = cddb_disc_get_discid (pcddb_disc);
                 AUDDBG ("CDDB disc id = %x\n", discid);
 #endif
 
@@ -717,7 +717,7 @@ static bool_t scan_cd (void)
                                                        (pcddb_conn)));
 
                     cddb_disc_destroy (pcddb_disc);
-                    pcddb_disc = NULL;
+                    pcddb_disc = nullptr;
                 }
                 else
                 {
@@ -726,7 +726,7 @@ static bool_t scan_cd (void)
                         AUDDBG ("no cddb info available for this disc\n");
 
                         cddb_disc_destroy (pcddb_disc);
-                        pcddb_disc = NULL;
+                        pcddb_disc = nullptr;
                     }
                     else
                     {
@@ -740,7 +740,7 @@ static bool_t scan_cd (void)
                                            cddb_error_str (cddb_errno
                                                            (pcddb_conn)));
                             cddb_disc_destroy (pcddb_disc);
-                            pcddb_disc = NULL;
+                            pcddb_disc = nullptr;
                         }
                         else
                         {
@@ -773,23 +773,23 @@ static bool_t scan_cd (void)
             }
         }
 
-        if (pcddb_disc != NULL)
+        if (pcddb_disc != nullptr)
             cddb_disc_destroy (pcddb_disc);
 
-        if (pcddb_conn != NULL)
+        if (pcddb_conn != nullptr)
             cddb_destroy (pcddb_conn);
     }
 
-    return TRUE;
+    return true;
 }
 
 /* mutex must be locked */
-static void refresh_trackinfo (bool_t warning)
+static void refresh_trackinfo (bool warning)
 {
-    if (pcdrom_drive == NULL)
+    if (pcdrom_drive == nullptr)
     {
         open_cd ();
-        if (pcdrom_drive == NULL)
+        if (pcdrom_drive == nullptr)
             return;
     }
 
@@ -812,10 +812,10 @@ static void refresh_trackinfo (bool_t warning)
         return;
     }
 
-    if (trackinfo == NULL || cdio_get_media_changed (pcdrom_drive->p_cdio))
+    if (trackinfo == nullptr || cdio_get_media_changed (pcdrom_drive->p_cdio))
     {
         g_free (trackinfo);
-        trackinfo = NULL;
+        trackinfo = nullptr;
 
         if (scan_cd ())
             trigger_monitor ();
@@ -833,14 +833,14 @@ static void reset_trackinfo (void)
         monitor_source = 0;
     }
 
-    if (pcdrom_drive != NULL)
+    if (pcdrom_drive != nullptr)
     {
         cdda_close (pcdrom_drive);
-        pcdrom_drive = NULL;
+        pcdrom_drive = nullptr;
     }
 
     g_free (trackinfo);
-    trackinfo = NULL;
+    trackinfo = nullptr;
 }
 
 /* thread safe (mutex may be locked) */

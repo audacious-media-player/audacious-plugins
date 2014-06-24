@@ -94,7 +94,7 @@ typedef struct
 extern oss_data_t *oss_data;
 
 /* oss.c */
-bool_t oss_init(void);
+bool oss_init(void);
 void oss_cleanup(void);
 int oss_open_audio(int aud_format, int rate, int channels);
 void oss_close_audio(void);
@@ -103,7 +103,7 @@ void oss_drain(void);
 int oss_buffer_free(void);
 int oss_output_time(void);
 void oss_flush(int time);
-void oss_pause(bool_t pause);
+void oss_pause(bool pause);
 void oss_get_volume(int *left, int *right);
 void oss_set_volume(int left, int right);
 
@@ -119,6 +119,6 @@ int oss_bytes_to_frames(int bytes);
 int oss_calc_bitrate(void);
 const char *oss_describe_error(void);
 int oss_probe_for_adev(oss_sysinfo *sysinfo);
-bool_t oss_hardware_present(void);
+bool oss_hardware_present(void);
 
 #endif

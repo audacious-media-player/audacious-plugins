@@ -92,14 +92,14 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     if (aud_drct_get_playing ())
     {
-        playback_begin_cb (NULL, this);
+        playback_begin_cb (nullptr, this);
         if (aud_drct_get_ready ())
-            playback_ready_cb (NULL, this);
+            playback_ready_cb (nullptr, this);
     }
     else
-        playback_stop_cb (NULL, this);
+        playback_stop_cb (nullptr, this);
 
-    title_change_cb (NULL, this);
+    title_change_cb (nullptr, this);
 }
 
 MainWindow::~MainWindow ()

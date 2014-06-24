@@ -45,20 +45,20 @@
 typedef struct
 {
   cairo_surface_t * surface;
-  gfloat alpha;
+  float alpha;
   gpointer user_data;
-  gint width;
-  gint height;
-  gint deco_code;
+  int width;
+  int height;
+  int deco_code;
 }
 GhosdFadeData;
 
 
 typedef struct
 {
-  gchar * markup_message;
+  char * markup_message;
   gboolean cfg_is_copied;
-  gfloat dalpha_in, dalpha_out, ddisplay_stay;
+  float dalpha_in, dalpha_out, ddisplay_stay;
 
   PangoContext *pango_context;
   PangoLayout *pango_layout;
@@ -70,14 +70,14 @@ typedef struct
 GhosdData;
 
 
-static gint osd_source_id = 0;
-static gint osd_status = AOSD_STATUS_HIDDEN;
+static int osd_source_id = 0;
+static int osd_status = AOSD_STATUS_HIDDEN;
 static Ghosd *osd;
 static GhosdData *osd_data;
 
 
 static void
-aosd_osd_data_alloc ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
+aosd_osd_data_alloc ( char * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
 {
   osd_data = g_new0 (GhosdData, 1);
   osd_data->markup_message = g_strdup( markup_string );
@@ -98,34 +98,34 @@ aosd_osd_data_alloc ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolea
 static void
 aosd_osd_data_free ( void )
 {
-  if ( osd_data->fade_data.surface != NULL )
+  if ( osd_data->fade_data.surface != nullptr )
   {
     cairo_surface_destroy( osd_data->fade_data.surface );
-    osd_data->fade_data.surface = NULL;
+    osd_data->fade_data.surface = nullptr;
   }
 
-  if ( osd_data->markup_message != NULL )
+  if ( osd_data->markup_message != nullptr )
   {
     g_free( osd_data->markup_message );
-    osd_data->markup_message = NULL;
+    osd_data->markup_message = nullptr;
   }
 
   if ( osd_data->cfg_is_copied == TRUE )
   {
     aosd_cfg_osd_delete( osd_data->cfg_osd );
-    osd_data->cfg_osd = NULL;
+    osd_data->cfg_osd = nullptr;
   }
 
-  if ( osd_data->pango_layout != NULL )
+  if ( osd_data->pango_layout != nullptr )
   {
     g_object_unref( osd_data->pango_layout );
-    osd_data->pango_layout = NULL;
+    osd_data->pango_layout = nullptr;
   }
 
-  if ( osd_data->pango_context != NULL )
+  if ( osd_data->pango_context != nullptr )
   {
     g_object_unref( osd_data->pango_context );
-    osd_data->pango_context = NULL;
+    osd_data->pango_context = nullptr;
   }
 
   g_free( osd_data );
@@ -135,7 +135,7 @@ aosd_osd_data_free ( void )
 static void
 aosd_osd_hide ( void )
 {
-  if ( osd != NULL )
+  if ( osd != nullptr )
   {
     ghosd_hide( osd );
     ghosd_main_iterations( osd );
@@ -149,7 +149,7 @@ aosd_fade_func ( Ghosd * gosd , cairo_t * cr , void * user_data )
 {
   GhosdFadeData *fade_data = (GhosdFadeData *) user_data;
 
-  if ( fade_data->surface == NULL )
+  if ( fade_data->surface == nullptr )
   {
     cairo_t *rendered_cr;
     fade_data->surface = cairo_surface_create_similar( cairo_get_target( cr ) ,
@@ -178,12 +178,12 @@ aosd_button_func ( Ghosd * gosd , GhosdEventButton * ev , void * user_data )
 static void
 aosd_osd_create ( void )
 {
-  gint max_width, layout_width, layout_height;
+  int max_width, layout_width, layout_height;
   PangoRectangle ink, log;
   GdkScreen *screen = gdk_screen_get_default();
-  gint pos_x = 0, pos_y = 0;
-  gint pad_left = 0 , pad_right = 0 , pad_top = 0 , pad_bottom = 0;
-  gint screen_width, screen_height;
+  int pos_x = 0, pos_y = 0;
+  int pad_left = 0 , pad_right = 0 , pad_top = 0 , pad_bottom = 0;
+  int screen_width, screen_height;
   aosd_deco_style_data_t style_data;
 
   /* calculate screen_width and screen_height */
@@ -212,7 +212,7 @@ aosd_osd_create ( void )
 
   if ( osd_data->cfg_osd->position.maxsize_width > 0 )
   {
-    gint max_width_default = screen_width - pad_left - pad_right - abs(osd_data->cfg_osd->position.offset_x);
+    int max_width_default = screen_width - pad_left - pad_right - abs(osd_data->cfg_osd->position.offset_x);
     max_width = osd_data->cfg_osd->position.maxsize_width - pad_left - pad_right;
     /* ignore user-defined max_width if it is too small or too large */
     if (( max_width < 1 ) || ( max_width > max_width_default ))
@@ -284,21 +284,21 @@ aosd_osd_create ( void )
     layout_width + pad_left + pad_right ,
     layout_height + pad_top + pad_bottom );
 
-  ghosd_set_event_button_cb( osd , aosd_button_func , NULL );
+  ghosd_set_event_button_cb( osd , aosd_button_func , nullptr );
 
   style_data.layout = osd_data->pango_layout;
   style_data.text = &(osd_data->cfg_osd->text);
   style_data.decoration = &(osd_data->cfg_osd->decoration);
-  osd_data->fade_data.surface = NULL;
+  osd_data->fade_data.surface = nullptr;
   osd_data->fade_data.user_data = &style_data;
   osd_data->fade_data.width = layout_width + pad_left + pad_right;
   osd_data->fade_data.height = layout_height + pad_top + pad_bottom;
   osd_data->fade_data.alpha = 0;
   osd_data->fade_data.deco_code = osd_data->cfg_osd->decoration.code;
-  osd_data->dalpha_in = 1.0 / ( osd_data->cfg_osd->animation.timing_fadein / (gfloat)AOSD_TIMING );
-  osd_data->dalpha_out = 1.0 / ( osd_data->cfg_osd->animation.timing_fadeout / (gfloat)AOSD_TIMING );
-  osd_data->ddisplay_stay = 1.0 / ( osd_data->cfg_osd->animation.timing_display / (gfloat)AOSD_TIMING );
-  ghosd_set_render( osd , (GhosdRenderFunc)aosd_fade_func , &(osd_data->fade_data) , NULL );
+  osd_data->dalpha_in = 1.0 / ( osd_data->cfg_osd->animation.timing_fadein / (float)AOSD_TIMING );
+  osd_data->dalpha_out = 1.0 / ( osd_data->cfg_osd->animation.timing_fadeout / (float)AOSD_TIMING );
+  osd_data->ddisplay_stay = 1.0 / ( osd_data->cfg_osd->animation.timing_display / (float)AOSD_TIMING );
+  ghosd_set_render( osd , (GhosdRenderFunc)aosd_fade_func , &(osd_data->fade_data) , nullptr );
 
   /* show the osd (with alpha 0, invisible) */
   ghosd_show( osd );
@@ -309,7 +309,7 @@ aosd_osd_create ( void )
 static gboolean
 aosd_timer_func ( gpointer none )
 {
-  static gfloat display_time = 0;
+  static float display_time = 0;
 
   switch ( osd_status )
   {
@@ -382,10 +382,10 @@ aosd_timer_func ( gpointer none )
 }
 
 
-gint
-aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
+int
+aosd_osd_display ( char * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
 {
-  if ( osd != NULL )
+  if ( osd != nullptr )
   {
     if ( osd_status == AOSD_STATUS_HIDDEN )
     {
@@ -393,7 +393,7 @@ aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean c
       aosd_osd_create();
       osd_status = AOSD_STATUS_FADEIN;
       osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
-                                          aosd_timer_func , NULL , NULL );
+                                          aosd_timer_func , nullptr , nullptr );
     }
     else
     {
@@ -407,7 +407,7 @@ aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean c
       aosd_osd_create();
       osd_status = AOSD_STATUS_FADEIN;
       osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
-                                          aosd_timer_func , NULL , NULL );
+                                          aosd_timer_func , nullptr , nullptr );
     }
     return 0;
   }
@@ -422,7 +422,7 @@ aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean c
 void
 aosd_osd_shutdown ( void )
 {
-  if ( osd != NULL )
+  if ( osd != nullptr )
   {
     if ( osd_status != AOSD_STATUS_HIDDEN ) /* osd is being displayed */
     {
@@ -442,9 +442,9 @@ aosd_osd_shutdown ( void )
 
 
 void
-aosd_osd_init ( gint transparency_mode )
+aosd_osd_init ( int transparency_mode )
 {
-  if ( osd == NULL )
+  if ( osd == nullptr )
   {
     /* create Ghosd object */
     if ( transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
@@ -465,7 +465,7 @@ aosd_osd_init ( gint transparency_mode )
       osd = ghosd_new();
 #endif
 
-    if ( osd == NULL )
+    if ( osd == nullptr )
       g_warning( "Unable to load osd object; OSD will not work properly!\n" );
   }
   return;
@@ -475,11 +475,11 @@ aosd_osd_init ( gint transparency_mode )
 void
 aosd_osd_cleanup ( void )
 {
-  if ( osd != NULL )
+  if ( osd != nullptr )
   {
     /* destroy Ghosd object */
     ghosd_destroy( osd );
-    osd = NULL;
+    osd = nullptr;
   }
   return;
 }
@@ -512,13 +512,13 @@ aosd_osd_check_composite_mgr ( void )
     /* check if xcompmgr is running; assumes there's a working 'ps'
        utility in the system; not the most elegant of the checking
        systems, but this is more than enough for its purpose */
-    gchar *soutput = NULL, *serror = NULL;
-    gint exit_status;
+    char *soutput = nullptr, *serror = nullptr;
+    int exit_status;
 
     if ( g_spawn_command_line_sync( "ps -eo comm" ,
-           &soutput , &serror , &exit_status , NULL ) == TRUE )
+           &soutput , &serror , &exit_status , nullptr ) == TRUE )
     {
-      if (( soutput != NULL ) && ( strstr( soutput , "\nxcompmgr\n" ) != NULL ))
+      if (( soutput != nullptr ) && ( strstr( soutput , "\nxcompmgr\n" ) != nullptr ))
       {
         DEBUGMSG("running xcompmgr found\n");
         have_comp_mgr = 1;

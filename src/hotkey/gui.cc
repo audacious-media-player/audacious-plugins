@@ -87,9 +87,9 @@ static const char * event_desc[EVENT_MAX] = {
 };
 
 
-static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
+static void set_keytext (GtkWidget *entry, int key, int mask, int type)
 {
-    gchar *text = NULL;
+    char *text = nullptr;
 
     if (key == 0 && mask == 0)
     {
@@ -98,7 +98,7 @@ static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
         static const char *modifier_string[] = { "Control", "Shift", "Alt", "Mod2", "Mod3", "Super", "Mod5" };
         static const unsigned int modifiers[] = { ControlMask, ShiftMask, Mod1Mask, Mod2Mask, Mod3Mask, Mod4Mask, Mod5Mask };
         const char *strings[9];
-        gchar *keytext = NULL;
+        char *keytext = nullptr;
         int i, j;
         if (type == TYPE_KEY)
         {
@@ -122,7 +122,7 @@ static void set_keytext (GtkWidget *entry, gint key, gint mask, gint type)
                  strings[i++] = modifier_string[j];
         }
         if (key != 0) strings[i++] = keytext;
-        strings[i] = NULL;
+        strings[i] = nullptr;
 
         text = g_strjoinv(" + ", (char **)strings);
         g_free(keytext);
@@ -175,8 +175,8 @@ on_entry_key_press_event(GtkWidget * widget,
         controls->hotkey.key = event->hardware_keycode;
         controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_KEY;
-        if (controls->next == NULL)
-            add_callback (NULL, (gpointer) controls);
+        if (controls->next == nullptr)
+            add_callback (nullptr, (gpointer) controls);
         else gtk_widget_grab_focus(GTK_WIDGET(controls->next->keytext));
     }
 
@@ -242,8 +242,8 @@ on_entry_button_press_event(GtkWidget * widget,
     controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_MOUSE;
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
-    if (controls->next == NULL)
-        add_callback (NULL, (gpointer) controls);
+    if (controls->next == nullptr)
+        add_callback (nullptr, (gpointer) controls);
 
     return TRUE;
 }
@@ -287,8 +287,8 @@ on_entry_scroll_event(GtkWidget * widget,
     controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_MOUSE;
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
-    if (controls->next == NULL)
-        add_callback (NULL, (gpointer) controls);
+    if (controls->next == nullptr)
+        add_callback (nullptr, (gpointer) controls);
     return TRUE;
 }
 
@@ -301,7 +301,7 @@ KeyControls* add_event_controls(KeyControls* list,
     int i;
 
     controls = (KeyControls*) g_malloc(sizeof(KeyControls));
-    controls->next = NULL;
+    controls->next = nullptr;
     controls->prev = list;
     controls->first = list->first;
     controls->grid = grid;
@@ -399,9 +399,9 @@ void show_configure ()
     gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
     gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
-    label = gtk_label_new (NULL);
+    label = gtk_label_new (nullptr);
     gtk_label_set_markup (GTK_LABEL (label), _("Hotkeys:"));
-    frame = gtk_frame_new (NULL);
+    frame = gtk_frame_new (nullptr);
     gtk_frame_set_label_widget (GTK_FRAME (frame), label);
     gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
     gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
@@ -413,14 +413,14 @@ void show_configure ()
     gtk_table_set_col_spacings (GTK_TABLE (grid), 2);
     gtk_container_add (GTK_CONTAINER (alignment), grid);
 
-    label = gtk_label_new (NULL);
+    label = gtk_label_new (nullptr);
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
     gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
             _("<b>Action:</b>"));
     gtk_table_attach_defaults (GTK_TABLE (grid), label, 0, 1, 0, 1);
 
-    label = gtk_label_new (NULL);
+    label = gtk_label_new (nullptr);
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
     gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
@@ -431,12 +431,12 @@ void show_configure ()
     hotkey = &(plugin_cfg->first);
     i = 1;
     first_controls = (KeyControls*) g_malloc(sizeof(KeyControls));
-    first_controls->next = NULL;
-    first_controls->prev = NULL;
+    first_controls->next = nullptr;
+    first_controls->prev = nullptr;
     first_controls->grid = grid;
-    first_controls->button = NULL;
-    first_controls->combobox = NULL;
-    first_controls->keytext = NULL;
+    first_controls->button = nullptr;
+    first_controls->combobox = nullptr;
+    first_controls->keytext = nullptr;
     first_controls->first = first_controls;
     first_controls->hotkey.key = 0;
     first_controls->hotkey.mask = 0;
@@ -472,7 +472,7 @@ void show_configure ()
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_START);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
 
-    button = audgui_button_new (_("_Add"), "list-add", NULL, NULL);
+    button = audgui_button_new (_("_Add"), "list-add", nullptr, nullptr);
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (add_callback), first_controls);
@@ -482,12 +482,12 @@ void show_configure ()
     gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_END);
     gtk_box_set_spacing (GTK_BOX (button_box), 4);
 
-    button = audgui_button_new (_("_Cancel"), "process-stop", NULL, NULL);
+    button = audgui_button_new (_("_Cancel"), "process-stop", nullptr, nullptr);
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
-            G_CALLBACK (cancel_callback), NULL);
+            G_CALLBACK (cancel_callback), nullptr);
 
-    button = audgui_button_new (_("_Set"), "system-run", NULL, NULL);
+    button = audgui_button_new (_("_Set"), "system-run", nullptr, nullptr);
     gtk_container_add (GTK_CONTAINER (button_box), button);
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (ok_callback), first_controls);
@@ -502,7 +502,7 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
 {
     KeyControls *controls= (KeyControls*)data;
 
-    if ((controls->next == NULL) && (controls->prev->keytext == NULL))
+    if ((controls->next == nullptr) && (controls->prev->keytext == nullptr))
     {
         controls->hotkey.key = 0;
         controls->hotkey.mask = 0;
@@ -534,7 +534,7 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
         if (controls->next)
             controls->next->prev = controls->prev;
         g_free(controls);
-        if (c) grid = c->grid; else grid = NULL;
+        if (c) grid = c->grid; else grid = nullptr;
         while (c)
         {
             g_object_ref(c->combobox);
@@ -568,10 +568,10 @@ void add_callback (GtkWidget *widget, gpointer data)
     KeyControls* controls = (KeyControls*)data;
     HotkeyConfiguration temphotkey;
     int count;
-    if (controls == NULL) return;
-    if ((controls->next == NULL)&&(controls->hotkey.event+1 == EVENT_MAX)) return;
+    if (controls == nullptr) return;
+    if ((controls->next == nullptr)&&(controls->hotkey.event+1 == EVENT_MAX)) return;
     controls = controls->first;
-    if (controls == NULL) return;
+    if (controls == nullptr) return;
     count = 1;
     while (controls->next) {
         controls = controls->next;
@@ -622,7 +622,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
         hotkey = hotkey->next;
         g_free(old);
     }
-    plugin_cfg->first.next = NULL;
+    plugin_cfg->first.next = nullptr;
     plugin_cfg->first.key = 0;
     plugin_cfg->first.event = (EVENT) 0;
     plugin_cfg->first.mask = 0;
@@ -634,7 +634,7 @@ void ok_callback (GtkWidget *widget, gpointer data)
             if (hotkey->key) {
                 hotkey->next = g_new(HotkeyConfiguration, 1);
                 hotkey = hotkey->next;
-                hotkey->next = NULL;
+                hotkey->next = nullptr;
             }
             hotkey->key = controls->hotkey.key;
             hotkey->mask = controls->hotkey.mask;

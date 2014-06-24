@@ -6,8 +6,8 @@
 
 
 //shared variables
-bool_t          permission_check_requested   = FALSE;
-bool_t          invalidate_session_requested = FALSE;
+gboolean          permission_check_requested   = FALSE;
+gboolean          invalidate_session_requested = FALSE;
 enum permission perm_result                  = PERMISSION_UNKNOWN;
 String          username;
 
@@ -38,7 +38,7 @@ static gboolean permission_checker_thread (gpointer data) {
         if (perm_result == PERMISSION_ALLOWED) {
             gtk_image_set_from_icon_name(GTK_IMAGE(permission_status_icon), "face-smile", GTK_ICON_SIZE_SMALL_TOOLBAR);
 
-            gchar *markup = g_markup_printf_escaped(_("OK. Scrobbling for user: %s"),
+            char *markup = g_markup_printf_escaped(_("OK. Scrobbling for user: %s"),
              (const char *)username);
 
             gtk_label_set_markup(GTK_LABEL(permission_status_label), markup);
@@ -55,7 +55,7 @@ static gboolean permission_checker_thread (gpointer data) {
 
             gtk_label_set_markup(GTK_LABEL(details_label_first), _("Access the following link to allow Audacious to scrobble your plays:"));
 
-            gchar *url = g_markup_printf_escaped("http://www.last.fm/api/auth/?api_key=%s&token=%s",
+            char *url = g_markup_printf_escaped("http://www.last.fm/api/auth/?api_key=%s&token=%s",
              SCROBBLER_API_KEY, (const char *)request_token);
 
             gtk_link_button_set_uri(GTK_LINK_BUTTON(url_button), url);
@@ -190,8 +190,8 @@ static void *config_status_checker () {
     additional_details_label = gtk_label_new("");
 
 
-    g_signal_connect (button,        "clicked", G_CALLBACK (permission_checker), NULL);
-    g_signal_connect (revoke_button, "clicked", G_CALLBACK (revoke_permissions), NULL);
+    g_signal_connect (button,        "clicked", G_CALLBACK (permission_checker), nullptr);
+    g_signal_connect (revoke_button, "clicked", G_CALLBACK (revoke_permissions), nullptr);
 
     gtk_box_pack_start(GTK_BOX(permission_box), buttons_box,             FALSE, FALSE, 20);
     gtk_box_pack_start(GTK_BOX(permission_box), permission_status_icon,  FALSE, FALSE, 0);

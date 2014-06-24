@@ -18,7 +18,7 @@
 static const char * fmts[] =
     { "amf", "ams", "dbm", "dbf", "dsm", "far", "mdl", "stm", "ult", "mt2",
       "mod", "s3m", "dmf", "umx", "it", "669", "xm", "mtm", "psm", "ft2",
-      NULL };
+      nullptr };
 
 static const char * const modplug_defaults[] = {
  "Bits", "16",
@@ -46,7 +46,7 @@ static const char * const modplug_defaults[] = {
  "GrabAmigaMOD", "TRUE",
  "LoopCount", "0",
 
- NULL
+ nullptr
 };
 
 static ModplugSettings modplug_settings;
@@ -211,11 +211,11 @@ static void modplug_settings_save ()
     aud_set_int (MODPLUG_CFGID, "LoopCount", modplug_settings.mLoopCount);
 }
 
-static bool_t modplug_init (void)
+static bool modplug_init (void)
 {
     modplug_settings_load ();
     InitSettings (& modplug_settings);
-    return TRUE;
+    return true;
 }
 
 static void modplug_settings_apply (void)
@@ -238,7 +238,7 @@ static const PluginPreferences modplug_prefs = {
 #define AUD_INPUT_READ_TUPLE   GetSongTuple
 #define AUD_INPUT_IS_OUR_FILE  CanPlayFileFromVFS
 #define AUD_INPUT_EXTS         fmts
-#define AUD_INPUT_SUBTUNES     TRUE
+#define AUD_INPUT_SUBTUNES     true
 
 #define AUD_DECLARE_INPUT
 #include <libaudcore/plugin-declare.h>

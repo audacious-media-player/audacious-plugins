@@ -35,8 +35,8 @@
 
 void equalizerwin_set_shape (void);
 void equalizerwin_create(void);
-void equalizerwin_set_volume_slider(gint percent);
-void equalizerwin_set_balance_slider(gint percent);
+void equalizerwin_set_volume_slider(int percent);
+void equalizerwin_set_balance_slider(int percent);
 void equalizerwin_eq_changed(void);
 
 void equalizerwin_apply_preset (const EqualizerPreset & preset);
@@ -47,7 +47,7 @@ extern GtkWidget *equalizerwin;
 
 extern Index<EqualizerPreset> equalizer_presets, equalizer_auto_presets;
 
-bool_t equalizerwin_load_preset (Index<EqualizerPreset> & list, const char * name);
+gboolean equalizerwin_load_preset (Index<EqualizerPreset> & list, const char * name);
 void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name, const char * filename);
 void equalizerwin_delete_preset (Index<EqualizerPreset> & list, const char * name, const char * filename);
 

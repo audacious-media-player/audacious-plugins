@@ -34,30 +34,30 @@
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
-static GtkWidget * spect_widget = NULL;
-static gfloat xscale[MAX_BANDS + 1];
-static gint width, height, bands;
-static gint bars[MAX_BANDS + 1];
-static gint delay[MAX_BANDS + 1];
+static GtkWidget * spect_widget = nullptr;
+static float xscale[MAX_BANDS + 1];
+static int width, height, bands;
+static int bars[MAX_BANDS + 1];
+static int delay[MAX_BANDS + 1];
 
 static void calculate_xscale (void)
 {
-    for (gint i = 0; i <= bands; i ++)
-        xscale[i] = powf (256, (gfloat) i / bands) - 0.5f;
+    for (int i = 0; i <= bands; i ++)
+        xscale[i] = powf (256, (float) i / bands) - 0.5f;
 }
 
-static void render_cb (gfloat * freq)
+static void render_cb (float * freq)
 {
     g_return_if_fail (spect_widget);
 
     if (! bands)
         return;
 
-    for (gint i = 0; i < bands; i ++)
+    for (int i = 0; i < bands; i ++)
     {
-        gint a = ceilf (xscale[i]);
-        gint b = floorf (xscale[i + 1]);
-        gfloat n = 0;
+        int a = ceilf (xscale[i]);
+        int b = floorf (xscale[i + 1]);
+        float n = 0;
 
         if (b < a)
             n += freq[b] * (xscale[i + 1] - xscale[i]);
@@ -73,10 +73,10 @@ static void render_cb (gfloat * freq)
 
         /* fudge factor to make the graph have the same overall height as a
            12-band one no matter how many bands there are */
-        n *= (gfloat) bands / 12;
+        n *= (float) bands / 12;
 
         /* 40 dB range */
-        gint x = 40 + 20 * log10f (n);
+        int x = 40 + 20 * log10f (n);
         x = CLAMP (x, 0, 40);
 
         bars[i] -= MAX (0, VIS_FALLOFF - delay[i]);
@@ -94,9 +94,9 @@ static void render_cb (gfloat * freq)
     gtk_widget_queue_draw (spect_widget);
 }
 
-static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s, gfloat * v)
+static void rgb_to_hsv (float r, float g, float b, float * h, float * s, float * v)
 {
-    gfloat max, min;
+    float max, min;
 
     max = r;
     if (g > max)
@@ -129,11 +129,11 @@ static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s, gf
     * s = (max - min) / max;
 }
 
-static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g, gfloat * b)
+static void hsv_to_rgb (float h, float s, float v, float * r, float * g, float * b)
 {
     for (; h >= 2; h -= 2)
     {
-        gfloat * p = r;
+        float * p = r;
         r = g;
         g = b;
         b = p;
@@ -197,8 +197,8 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
     GdkColor * c = (gtk_widget_get_style (area))->bg;
     GtkAllocation alloc;
     gtk_widget_get_allocation (area, & alloc);
-    gint i;
-    gfloat base_s = (height / 40);
+    int i;
+    float base_s = (height / 40);
 
     for (i = 1; i < 41; i++)
     {
@@ -212,12 +212,12 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
-    gfloat base_s = (height / 40);
+    float base_s = (height / 40);
 
-    for (gint i = 0; i < bands; i++)
+    for (int i = 0; i < bands; i++)
     {
-        gint x = ((width / bands) * i) + 2;
-        gfloat r, g, b;
+        int x = ((width / bands) * i) + 2;
+        float r, g, b;
 
         get_color (widget, i, & r, & g, & b);
         cairo_set_source_rgb (cr, r, g, b);
@@ -256,7 +256,7 @@ static gboolean draw_event (GtkWidget * widget)
 static gboolean destroy_event (void)
 {
     aud_vis_func_remove ((VisFunc) render_cb);
-    spect_widget = NULL;
+    spect_widget = nullptr;
     return TRUE;
 }
 
@@ -265,13 +265,13 @@ static /* GtkWidget * */ gpointer get_widget(void)
     GtkWidget *area = gtk_drawing_area_new();
     spect_widget = area;
 
-    g_signal_connect(area, "expose-event", (GCallback) draw_event, NULL);
-    g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
-    g_signal_connect(area, "destroy", (GCallback) destroy_event, NULL);
+    g_signal_connect(area, "expose-event", (GCallback) draw_event, nullptr);
+    g_signal_connect(area, "configure-event", (GCallback) configure_event, nullptr);
+    g_signal_connect(area, "destroy", (GCallback) destroy_event, nullptr);
 
     aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) render_cb);
 
-    GtkWidget * frame = gtk_frame_new (NULL);
+    GtkWidget * frame = gtk_frame_new (nullptr);
     gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
     gtk_container_add ((GtkContainer *) frame, area);
     return frame;
@@ -279,7 +279,7 @@ static /* GtkWidget * */ gpointer get_widget(void)
 
 #define AUD_PLUGIN_NAME        N_("Spectrum Analyzer")
 #define AUD_VIS_GET_WIDGET     get_widget
-#define AUD_VIS_CLEAR          NULL
+#define AUD_VIS_CLEAR          nullptr
 
 #define AUD_DECLARE_VIS
 #include <libaudcore/plugin-declare.h>

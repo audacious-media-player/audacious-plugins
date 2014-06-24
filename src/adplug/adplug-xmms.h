@@ -22,13 +22,13 @@
 
 #include <libaudcore/plugin.h>
 
-bool_t adplug_init (void);
+bool adplug_init (void);
 void adplug_quit (void);
 void adplug_about (void);
 void adplug_config (void);
-bool_t adplug_play (const char * filename, VFSFile * file);
+bool adplug_play (const char * filename, VFSFile * file);
 void adplug_info_box (const char * filename);
 Tuple adplug_get_tuple (const char * filename, VFSFile * file);
-bool_t adplug_is_our_fd (const char * filename, VFSFile * file);
+bool adplug_is_our_fd (const char * filename, VFSFile * file);
 
 #endif

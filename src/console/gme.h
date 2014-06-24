@@ -4,7 +4,7 @@
 #ifndef GME_H
 #define GME_H
 
-/* Error string returned by library functions, or NULL if no error (success) */
+/* Error string returned by library functions, or nullptr if no error (success) */
 typedef const char* gme_err_t;
 
 /* First parameter of most gme_ functions is a pointer to the Music_Emu */
@@ -51,7 +51,7 @@ gme_err_t gme_seek( Music_Emu*, int msec );
 sample_rate to open/load. */
 enum { gme_info_only = -1 };
 
-/* Most recent warning string, or NULL if none. Clears current warning after returning.
+/* Most recent warning string, or nullptr if none. Clears current warning after returning.
 Warning is also cleared when loading a file and starting a track. */
 const char* gme_warning( Music_Emu* );
 
@@ -144,7 +144,7 @@ void gme_enable_accuracy( Music_Emu*, int enabled );
 
 /******** Game music types ********/
 
-/* Music file type identifier. Can also hold NULL. */
+/* Music file type identifier. Can also hold nullptr. */
 typedef const struct gme_type_t_* gme_type_t;
 
 /* Emulator type constants for each supported file type */
@@ -164,7 +164,7 @@ extern const gme_type_t
 /* Type of this emulator */
 gme_type_t gme_type( Music_Emu const* );
 
-/* Pointer to array of all music types, with NULL entry at end. Allows a player linked
+/* Pointer to array of all music types, with nullptr entry at end. Allows a player linked
 to this library to support new music types without having to be updated. */
 gme_type_t const* gme_type_list();
 
@@ -195,7 +195,7 @@ gme_type_t gme_identify_extension( const char path_or_extension [] );
 Sets *type_out to type, or 0 if unrecognized or error. */
 gme_err_t gme_identify_file( const char path [], gme_type_t* type_out );
 
-/* Create new emulator and set sample rate. Returns NULL if out of memory. If you only need
+/* Create new emulator and set sample rate. Returns nullptr if out of memory. If you only need
 track information, pass gme_info_only for sample_rate. */
 Music_Emu* gme_new_emu( gme_type_t, int sample_rate );
 
@@ -221,7 +221,7 @@ You can use this for whatever you want. */
 void  gme_set_user_data( Music_Emu*, void* new_user_data );
 void* gme_user_data( Music_Emu const* );
 
-/* Register cleanup function to be called when deleting emulator, or NULL to
+/* Register cleanup function to be called when deleting emulator, or nullptr to
 clear it. Passes user_data to cleanup function. */
 typedef void (*gme_user_cleanup_t)( void* user_data );
 void gme_set_user_cleanup( Music_Emu*, gme_user_cleanup_t func );

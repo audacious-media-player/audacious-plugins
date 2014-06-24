@@ -56,9 +56,9 @@ do { \
 } while (0)
 
 /* alsa.c */
-int alsa_init (void);
+bool alsa_init (void);
 void alsa_cleanup (void);
-int alsa_open_audio (int aud_format, int rate, int channels);
+bool alsa_open_audio (int aud_format, int rate, int channels);
 void alsa_close_audio (void);
 int alsa_buffer_free (void);
 void alsa_write_audio (void * data, int length);
@@ -66,7 +66,7 @@ void alsa_period_wait (void);
 void alsa_drain (void);
 int alsa_output_time (void);
 void alsa_flush (int time);
-void alsa_pause (int pause);
+void alsa_pause (bool pause);
 void alsa_open_mixer (void);
 void alsa_close_mixer (void);
 void alsa_get_volume (int * left, int * right);

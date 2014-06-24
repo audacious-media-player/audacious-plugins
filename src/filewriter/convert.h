@@ -5,9 +5,9 @@
 
 extern gpointer convert_output;
 
-gboolean convert_init(gint input_fmt, gint output_fmt, gint channels);
+gboolean convert_init(int input_fmt, int output_fmt, int channels);
 
-gint convert_process(gpointer ptr, gint length);
+int convert_process(gpointer ptr, int length);
 
 void convert_free(void);
 

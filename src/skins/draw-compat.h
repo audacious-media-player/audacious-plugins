@@ -27,7 +27,7 @@
 static void widget_realized (GtkWidget * w)
 {
     GdkWindow * window = gtk_widget_get_window (w);
-    gdk_window_set_back_pixmap (window, NULL, FALSE);
+    gdk_window_set_back_pixmap (window, nullptr, FALSE);
 }
 
 #define DRAW_SIGNAL "expose-event"
@@ -43,8 +43,8 @@ static void widget_realized (GtkWidget * w)
     GtkStyle * style = gtk_style_new (); \
     gtk_widget_set_style (w, style); \
     g_object_unref (style); \
-    g_signal_connect (w, "realize", (GCallback) widget_realized, NULL); \
-    g_signal_connect (w, DRAW_SIGNAL, (GCallback) f, NULL); \
+    g_signal_connect (w, "realize", (GCallback) widget_realized, nullptr); \
+    g_signal_connect (w, DRAW_SIGNAL, (GCallback) f, nullptr); \
  } while (0);
 
 #endif

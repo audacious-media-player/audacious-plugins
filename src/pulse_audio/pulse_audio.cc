@@ -34,9 +34,9 @@
 
 #define ERROR(...) do {fprintf (stderr, "pulseaudio: " __VA_ARGS__); putchar ('\n');} while (0)
 
-static pa_context *context = NULL;
-static pa_stream *stream = NULL;
-static pa_threaded_mainloop *mainloop = NULL;
+static pa_context *context = nullptr;
+static pa_stream *stream = nullptr;
+static pa_threaded_mainloop *mainloop = nullptr;
 
 static pa_cvolume volume;
 static int volume_valid = 0;
@@ -48,14 +48,14 @@ static int bytes_per_second;
 
 static int connected = 0;
 
-static pa_time_event *volume_time_event = NULL;
+static pa_time_event *volume_time_event = nullptr;
 
 #define CHECK_DEAD_GOTO(label, warn) do { \
 if (!mainloop || \
     !context || pa_context_get_state(context) != PA_CONTEXT_READY || \
     !stream || pa_stream_get_state(stream) != PA_STREAM_READY) { \
         if (warn) \
-            AUDDBG("Connection died: %s", context ? pa_strerror(pa_context_errno(context)) : "NULL"); \
+            AUDDBG("Connection died: %s", context ? pa_strerror(pa_context_errno(context)) : "nullptr"); \
         goto label; \
     }  \
 } while(0);
@@ -86,7 +86,7 @@ static void subscribe_cb(struct pa_context *c, enum pa_subscription_event_type t
          t != (PA_SUBSCRIPTION_EVENT_SINK_INPUT|PA_SUBSCRIPTION_EVENT_NEW)))
         return;
 
-    if (!(o = pa_context_get_sink_input_info(c, index, info_cb, NULL))) {
+    if (!(o = pa_context_get_sink_input_info(c, index, info_cb, nullptr))) {
         AUDDBG("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(c)));
         return;
     }
@@ -185,7 +185,7 @@ fail:
 static void volume_time_cb(pa_mainloop_api *api, pa_time_event *e, const struct timeval *tv, void *userdata) {
     pa_operation *o;
 
-    if (!(o = pa_context_set_sink_input_volume(context, pa_stream_get_index(stream), &volume, NULL, NULL)))
+    if (!(o = pa_context_set_sink_input_volume(context, pa_stream_get_index(stream), &volume, nullptr, nullptr)))
         AUDDBG("pa_context_set_sink_input_volume() failed: %s", pa_strerror(pa_context_errno(context)));
     else
         pa_operation_unref(o);
@@ -193,7 +193,7 @@ static void volume_time_cb(pa_mainloop_api *api, pa_time_event *e, const struct 
     /* We don't wait for completion of this command */
 
     api->time_free(volume_time_event);
-    volume_time_event = NULL;
+    volume_time_event = nullptr;
 }
 
 static void pulse_set_volume(int l, int r) {
@@ -222,7 +222,7 @@ static void pulse_set_volume(int l, int r) {
     if (connected && !volume_time_event) {
         struct timeval tv;
         pa_mainloop_api *api = pa_threaded_mainloop_get_api(mainloop);
-        volume_time_event = api->time_new(api, pa_timeval_add(pa_gettimeofday(&tv), 100000), volume_time_cb, NULL);
+        volume_time_event = api->time_new(api, pa_timeval_add(pa_gettimeofday(&tv), 100000), volume_time_cb, nullptr);
     }
 
 fail:
@@ -230,9 +230,9 @@ fail:
         pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void pulse_pause (bool_t b)
+static void pulse_pause (bool b)
 {
-    pa_operation *o = NULL;
+    pa_operation *o = nullptr;
     int success = 0;
 
     CHECK_CONNECTED();
@@ -263,7 +263,7 @@ fail:
 
 static int pulse_free(void) {
     size_t l = 0;
-    pa_operation *o = NULL;
+    pa_operation *o = nullptr;
 
     CHECK_CONNECTED(0);
 
@@ -332,7 +332,7 @@ static int pulse_get_output_time (void)
 }
 
 static void pulse_drain(void) {
-    pa_operation *o = NULL;
+    pa_operation *o = nullptr;
     int success = 0;
 
     CHECK_CONNECTED();
@@ -361,7 +361,7 @@ fail:
 }
 
 static void pulse_flush(int time) {
-    pa_operation *o = NULL;
+    pa_operation *o = nullptr;
     int success = 0;
 
     CHECK_CONNECTED();
@@ -414,7 +414,7 @@ static void pulse_write(void* ptr, int length) {
          if (writable > fragsize)
              writable = fragsize;
 
-         if (pa_stream_write(stream, pptr, writable, NULL, PA_SEEK_RELATIVE,
+         if (pa_stream_write(stream, pptr, writable, nullptr, PA_SEEK_RELATIVE,
           (pa_seek_mode_t) 0) < 0)
          {
              AUDDBG("pa_stream_write() failed: %s", pa_strerror(pa_context_errno(context)));
@@ -439,21 +439,21 @@ static void pulse_close(void)
     if (stream) {
         pa_stream_disconnect(stream);
         pa_stream_unref(stream);
-        stream = NULL;
+        stream = nullptr;
     }
 
     if (context) {
         pa_context_disconnect(context);
         pa_context_unref(context);
-        context = NULL;
+        context = nullptr;
     }
 
     if (mainloop) {
         pa_threaded_mainloop_free(mainloop);
-        mainloop = NULL;
+        mainloop = nullptr;
     }
 
-    volume_time_event = NULL;
+    volume_time_event = nullptr;
     volume_valid = 0;
 }
 
@@ -477,7 +477,7 @@ static pa_sample_format_t to_pulse_format (int aformat)
     }
 }
 
-static int pulse_open(int fmt, int rate, int nch) {
+static bool pulse_open(int fmt, int rate, int nch) {
     pa_sample_spec ss;
 
     assert(!mainloop);
@@ -487,17 +487,17 @@ static int pulse_open(int fmt, int rate, int nch) {
 
     ss.format = to_pulse_format (fmt);
     if (ss.format == PA_SAMPLE_INVALID)
-        return FALSE;
+        return false;
 
     ss.rate = rate;
     ss.channels = nch;
 
     if (!pa_sample_spec_valid(&ss))
-        return FALSE;
+        return false;
 
     if (!(mainloop = pa_threaded_mainloop_new())) {
         ERROR ("Failed to allocate main loop");
-        return FALSE;
+        return false;
     }
 
     pa_threaded_mainloop_lock(mainloop);
@@ -507,10 +507,10 @@ static int pulse_open(int fmt, int rate, int nch) {
         goto FAIL1;
     }
 
-    pa_context_set_state_callback(context, context_state_cb, NULL);
-    pa_context_set_subscribe_callback(context, subscribe_cb, NULL);
+    pa_context_set_state_callback(context, context_state_cb, nullptr);
+    pa_context_set_subscribe_callback(context, subscribe_cb, nullptr);
 
-    if (pa_context_connect(context, NULL, (pa_context_flags_t) 0, NULL) < 0) {
+    if (pa_context_connect(context, nullptr, (pa_context_flags_t) 0, nullptr) < 0) {
         ERROR ("Failed to connect to server: %s", pa_strerror(pa_context_errno(context)));
         goto FAIL1;
     }
@@ -528,32 +528,32 @@ static int pulse_open(int fmt, int rate, int nch) {
         goto FAIL1;
     }
 
-    if (!(stream = pa_stream_new(context, "Audacious", &ss, NULL))) {
+    if (!(stream = pa_stream_new(context, "Audacious", &ss, nullptr))) {
         ERROR ("Failed to create stream: %s", pa_strerror(pa_context_errno(context)));
 
 FAIL1:
         pa_threaded_mainloop_unlock (mainloop);
         pulse_close ();
-        return FALSE;
+        return false;
     }
 
-    pa_stream_set_state_callback(stream, stream_state_cb, NULL);
-    pa_stream_set_write_callback(stream, stream_request_cb, NULL);
-    pa_stream_set_latency_update_callback(stream, stream_latency_update_cb, NULL);
+    pa_stream_set_state_callback(stream, stream_state_cb, nullptr);
+    pa_stream_set_write_callback(stream, stream_request_cb, nullptr);
+    pa_stream_set_latency_update_callback(stream, stream_latency_update_cb, nullptr);
 
     /* Connect stream with sink and default volume */
     /* Buffer struct */
 
-    int aud_buffer = aud_get_int(NULL, "output_buffer_size");
+    int aud_buffer = aud_get_int(nullptr, "output_buffer_size");
     size_t buffer_size = pa_usec_to_bytes(aud_buffer, &ss) * 1000;
     pa_buffer_attr buffer = {(uint32_t) -1, (uint32_t) buffer_size,
      (uint32_t) -1, (uint32_t) -1, (uint32_t) buffer_size};
 
-    pa_operation *o = NULL;
+    pa_operation *o = nullptr;
     int success;
 
-    if (pa_stream_connect_playback (stream, NULL, & buffer, (pa_stream_flags_t)
-     (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE), NULL, NULL) < 0)
+    if (pa_stream_connect_playback (stream, nullptr, & buffer, (pa_stream_flags_t)
+     (PA_STREAM_INTERPOLATE_TIMING | PA_STREAM_AUTO_TIMING_UPDATE), nullptr, nullptr) < 0)
     {
         ERROR ("Failed to connect stream: %s", pa_strerror(pa_context_errno(context)));
         goto FAIL2;
@@ -588,7 +588,7 @@ FAIL1:
     pa_operation_unref(o);
 
     /* Now request the initial stream info */
-    if (!(o = pa_context_get_sink_input_info(context, pa_stream_get_index(stream), info_cb, NULL))) {
+    if (!(o = pa_context_get_sink_input_info(context, pa_stream_get_index(stream), info_cb, nullptr))) {
         ERROR ("pa_context_get_sink_input_info() failed: %s", pa_strerror(pa_context_errno(context)));
         goto FAIL2;
     }
@@ -609,11 +609,11 @@ FAIL1:
     flush_time = 0;
     bytes_per_second = FMT_SIZEOF (fmt) * nch * rate;
     connected = 1;
-    volume_time_event = NULL;
+    volume_time_event = nullptr;
 
     pa_threaded_mainloop_unlock(mainloop);
 
-    return TRUE;
+    return true;
 
 FAIL2:
     if (o)
@@ -621,16 +621,16 @@ FAIL2:
 
     pa_threaded_mainloop_unlock(mainloop);
     pulse_close();
-    return FALSE;
+    return false;
 }
 
-static bool_t pulse_init (void)
+static bool pulse_init (void)
 {
     if (! pulse_open (FMT_S16_NE, 44100, 2))
-        return FALSE;
+        return false;
 
     pulse_close ();
-    return TRUE;
+    return true;
 }
 
 static const char pulse_about[] =
@@ -662,7 +662,7 @@ static const char pulse_about[] =
 #define AUD_OUTPUT_FLUSH       pulse_flush
 #define AUD_OUTPUT_PAUSE       pulse_pause
 #define AUD_OUTPUT_GET_FREE    pulse_free
-#define AUD_OUTPUT_WAIT_FREE   NULL
+#define AUD_OUTPUT_WAIT_FREE   nullptr
 #define AUD_OUTPUT_DRAIN       pulse_drain
 #define AUD_OUTPUT_GET_TIME    pulse_get_output_time
 

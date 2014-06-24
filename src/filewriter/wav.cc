@@ -28,27 +28,27 @@
 #pragma pack(1)
 struct wavhead
 {
-    guint32 main_chunk;
-    guint32 length;
-    guint32 chunk_type;
-    guint32 sub_chunk;
-    guint32 sc_len;
-    guint16 format;
-    guint16 modus;
-    guint32 sample_fq;
-    guint32 byte_p_sec;
-    guint16 byte_p_spl;
-    guint16 bit_p_spl;
-    guint32 data_chunk;
-    guint32 data_length;
+    uint32_t main_chunk;
+    uint32_t length;
+    uint32_t chunk_type;
+    uint32_t sub_chunk;
+    uint32_t sc_len;
+    uint16_t format;
+    uint16_t modus;
+    uint32_t sample_fq;
+    uint32_t byte_p_sec;
+    uint16_t byte_p_spl;
+    uint16_t bit_p_spl;
+    uint32_t data_chunk;
+    uint32_t data_length;
 };
 #pragma pack(pop)
 
 static struct wavhead header;
 
-static guint64 written;
+static uint64_t written;
 
-static gint wav_open(void)
+static int wav_open(void)
 {
     memcpy(&header.main_chunk, "RIFF", 4);
     header.length = TO_LE32(0);
@@ -97,7 +97,7 @@ static void pack24 (void * * data, int * len)
     }
 }
 
-static void wav_write (void * data, gint len)
+static void wav_write (void * data, int len)
 {
     if (input.format == FMT_S24_LE)
         pack24 (& data, & len);

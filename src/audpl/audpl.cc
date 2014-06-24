@@ -82,7 +82,7 @@ static void handle_entry (const char * key, const char * value, void * data)
     }
 }
 
-static bool_t audpl_load (const char * path, VFSFile * file, String & title,
+static bool audpl_load (const char * path, VFSFile * file, String & title,
  Index<PlaylistAddItem> & items)
 {
     LoadState state = {
@@ -96,19 +96,19 @@ static bool_t audpl_load (const char * path, VFSFile * file, String & title,
     if (state.uri)
         finish_item (& state);
 
-    return TRUE;
+    return true;
 }
 
-static bool_t audpl_save (const char * path, VFSFile * file,
+static bool audpl_save (const char * path, VFSFile * file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     if (! inifile_write_entry (file, "title", str_encode_percent (title)))
-        return FALSE;
+        return false;
 
     for (auto & item : items)
     {
         if (! inifile_write_entry (file, "uri", item.filename))
-            return FALSE;
+            return false;
 
         const Tuple & tuple = item.tuple;
 
@@ -128,7 +128,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 {
                     String str = tuple.get_str (f);
                     if (! inifile_write_entry (file, key, str_encode_percent (str)))
-                        return FALSE;
+                        return false;
 
                     keys ++;
                 }
@@ -136,7 +136,7 @@ static bool_t audpl_save (const char * path, VFSFile * file,
                 {
                     int val = tuple.get_int (f);
                     if (! inifile_write_entry (file, key, int_to_str (val)))
-                        return FALSE;
+                        return false;
 
                     keys ++;
                 }
@@ -144,14 +144,14 @@ static bool_t audpl_save (const char * path, VFSFile * file,
 
             /* distinguish between an empty tuple and no tuple at all */
             if (! keys && ! inifile_write_entry (file, "empty", "1"))
-                return FALSE;
+                return false;
         }
     }
 
-    return TRUE;
+    return true;
 }
 
-static const char * const audpl_exts[] = {"audpl", NULL};
+static const char * const audpl_exts[] = {"audpl", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("Audacious Playlists (audpl)")
 #define AUD_PLAYLIST_EXTS      audpl_exts

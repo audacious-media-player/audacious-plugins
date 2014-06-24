@@ -55,11 +55,11 @@ static void xs_sldb_node_insert(xs_sldb_t *db, sldb_node_t *node)
         node->prev = db->nodes->prev;    /* New node's prev = Previous last node */
         db->nodes->prev->next = node;    /* Previous last node's next = New node */
         db->nodes->prev = node;    /* New last node = New node */
-        node->next = NULL;    /* But next is NULL! */
+        node->next = nullptr;    /* But next is nullptr! */
     } else {
         db->nodes = node;    /* First node ... */
         node->prev = node;    /* ... it's also last */
-        node->next = NULL;    /* But next is NULL! */
+        node->next = nullptr;    /* But next is nullptr! */
     }
 }
 
@@ -108,7 +108,7 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
 {
     size_t linePos;
     int i;
-    bool_t isOK;
+    bool isOK;
     sldb_node_t *tmnode;
 
     /* Allocate new node */
@@ -127,7 +127,7 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
         if (inLine[linePos] != '=') {
             xs_error("'=' expected on column #%d.\n", (int)linePos);
             xs_sldb_node_free(tmnode);
-            return NULL;
+            return nullptr;
         } else {
             size_t tmpLen, savePos;
 
@@ -136,14 +136,14 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
             tmpLen = strlen(inLine);
 
             /* Get number of sub-tune lengths */
-            isOK = TRUE;
+            isOK = true;
             while ((linePos < tmpLen) && isOK) {
                 xs_findnext(inLine, &linePos);
 
                 if (xs_sldb_gettime(inLine, &linePos) >= 0)
                     tmnode->nlengths++;
                 else
-                    isOK = FALSE;
+                    isOK = false;
             }
 
             /* Allocate memory for lengths */
@@ -151,13 +151,13 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
                 tmnode->lengths = g_new0 (int, tmnode->nlengths);
             } else {
                 xs_sldb_node_free(tmnode);
-                return NULL;
+                return nullptr;
             }
 
             /* Read lengths in */
             i = 0;
             linePos = savePos;
-            isOK = TRUE;
+            isOK = true;
             while ((linePos < tmpLen) && (i < tmnode->nlengths) && isOK) {
                 int l;
 
@@ -167,21 +167,21 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
                 if (l >= 0)
                     tmnode->lengths[i] = l;
                 else
-                    isOK = FALSE;
+                    isOK = false;
 
                 i++;
             }
 
             if (!isOK) {
                 xs_sldb_node_free(tmnode);
-                return NULL;
+                return nullptr;
             } else
                 return tmnode;
         }
     }
 
     xs_sldb_node_free(tmnode);
-    return NULL;
+    return nullptr;
 }
 
 
@@ -196,7 +196,7 @@ int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
     assert(db);
 
     /* Try to open the file */
-    if ((inFile = fopen(dbFilename, "r")) == NULL) {
+    if ((inFile = fopen(dbFilename, "r")) == nullptr) {
         xs_error("Could not open SongLengthDB '%s'\n", dbFilename);
         return -1;
     }
@@ -204,7 +204,7 @@ int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
     /* Read and parse the data */
     lineNum = 0;
 
-    while (fgets(inLine, XS_BUF_SIZE, inFile) != NULL) {
+    while (fgets(inLine, XS_BUF_SIZE, inFile) != nullptr) {
         size_t linePos = 0;
         lineNum++;
 
@@ -221,7 +221,7 @@ int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
                     dbFilename, (int)lineNum);
             } else {
                 /* Parse and add node to db */
-                if ((tmnode = xs_sldb_read_entry(inLine)) != NULL) {
+                if ((tmnode = xs_sldb_read_entry(inLine)) != nullptr) {
                     xs_sldb_node_insert(db, tmnode);
                 } else {
                     xs_error("Invalid entry in SongLengthDB file '%s' line #%d!\n",
@@ -263,7 +263,7 @@ static int xs_sldb_cmphash(xs_md5hash_t testHash1, xs_md5hash_t testHash2)
  */
 static int xs_sldb_cmp(const void *node1, const void *node2)
 {
-    /* We assume here that we never ever get NULL-pointers or similar */
+    /* We assume here that we never ever get nullptr-pointers or similar */
     return xs_sldb_cmphash(
         (*(sldb_node_t **) node1)->md5Hash,
         (*(sldb_node_t **) node2)->md5Hash);
@@ -281,7 +281,7 @@ void xs_sldb_index(xs_sldb_t * db)
     /* Free old index */
     if (db->pindex) {
         g_free(db->pindex);
-        db->pindex = NULL;
+        db->pindex = nullptr;
     }
 
     /* Get size of db */
@@ -328,12 +328,12 @@ void xs_sldb_free(xs_sldb_t * db)
         pCurr = next;
     }
 
-    db->nodes = NULL;
+    db->nodes = nullptr;
 
     /* Free memory allocated for index */
     if (db->pindex) {
         g_free(db->pindex);
-        db->pindex = NULL;
+        db->pindex = nullptr;
     }
 
     /* Free structure */
@@ -379,7 +379,7 @@ static int xs_get_sid_hash(const char *filename, xs_md5hash_t hash)
     int index, result;
 
     /* Try to open the file */
-    if ((inFile = vfs_fopen(filename, "rb")) == NULL)
+    if ((inFile = vfs_fopen(filename, "rb")) == nullptr)
         return -1;
 
     /* Read PSID header in */
@@ -492,7 +492,7 @@ sldb_node_t *xs_sldb_get(xs_sldb_t *db, const char *filename)
 
     /* Check the database pointers */
     if (!db || !db->nodes || !db->pindex)
-        return NULL;
+        return nullptr;
 
     /* Get the hash and then look up from db */
     if (xs_get_sid_hash(filename, keyItem.md5Hash) == 0) {
@@ -503,9 +503,9 @@ sldb_node_t *xs_sldb_get(xs_sldb_t *db, const char *filename)
         if (item)
             return *item;
         else
-            return NULL;
+            return nullptr;
     } else
-        return NULL;
+        return nullptr;
 }
 
 

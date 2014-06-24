@@ -26,9 +26,9 @@
 #include <glib.h>
 
 
-gint aosd_osd_display ( gchar * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg );
+int aosd_osd_display ( char * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg );
 void aosd_osd_shutdown ( void );
-void aosd_osd_init ( gint transparency_mode ); /* to be called before any OSD usage */
+void aosd_osd_init ( int transparency_mode ); /* to be called before any OSD usage */
 void aosd_osd_cleanup ( void ); /* to be called when done with OSD usage */
 
 #ifdef HAVE_XCOMPOSITE

@@ -98,7 +98,7 @@ stall_cpu( void *instance) {
 
   armcpu->stalled = 1;
 }
-                      
+
 static void
 unstall_cpu( void *instance) {
   armcpu_t *armcpu = (armcpu_t *)instance;
@@ -120,7 +120,7 @@ static void
 remove_post_exec_fn( void *instance) {
   armcpu_t *armcpu = (armcpu_t *)instance;
 
-  armcpu->post_ex_fn = NULL;
+  armcpu->post_ex_fn = nullptr;
 }
 #endif
 
@@ -134,9 +134,9 @@ int armcpu_new( armcpu_t *armcpu, u32 id)
 {
 	armcpu->proc_ID = id;
 
-	if(id==0) 
+	if(id==0)
 		armcpu->swi_tab = ARM9_swi_tab;
-	else 
+	else
 		armcpu->swi_tab = ARM7_swi_tab;
 
 #ifdef GDB_STUB
@@ -154,13 +154,13 @@ int armcpu_new( armcpu_t *armcpu, u32 id)
 	*ctrl_iface_ret = &armcpu->ctrl_iface;
 
 	armcpu->stalled = 0;
-	armcpu->post_ex_fn = NULL;
+	armcpu->post_ex_fn = nullptr;
 #endif
 
 	armcpu_init(armcpu, 0);
 
 	return 0;
-} 
+}
 
 void armcpu_init(armcpu_t *armcpu, u32 adr)
 {
@@ -168,30 +168,30 @@ void armcpu_init(armcpu_t *armcpu, u32 adr)
 
 	armcpu->LDTBit = (armcpu->proc_ID==0); //Si ARM9 utiliser le syte v5 pour le load
 	armcpu->intVector = 0xFFFF0000 * (armcpu->proc_ID==0);
-	armcpu->waitIRQ = FALSE;
-	armcpu->wirq = FALSE;
+	armcpu->waitIRQ = false;
+	armcpu->wirq = false;
 
 #ifdef GDB_STUB
     armcpu->irq_flag = 0;
 #endif
 
 	if(armcpu->coproc[15]) free(armcpu->coproc[15]);
-	
+
    for(i = 0; i < 15; ++i)
 	{
 		armcpu->R[i] = 0;
-		armcpu->coproc[i] = NULL;
+		armcpu->coproc[i] = nullptr;
    }
-	
+
 	armcpu->CPSR.val = armcpu->SPSR.val = SYS;
-	
+
 	armcpu->R13_usr = armcpu->R14_usr = 0;
 	armcpu->R13_svc = armcpu->R14_svc = 0;
 	armcpu->R13_abt = armcpu->R14_abt = 0;
 	armcpu->R13_und = armcpu->R14_und = 0;
 	armcpu->R13_irq = armcpu->R14_irq = 0;
 	armcpu->R8_fiq = armcpu->R9_fiq = armcpu->R10_fiq = armcpu->R11_fiq = armcpu->R12_fiq = armcpu->R13_fiq = armcpu->R14_fiq = 0;
-	
+
 	armcpu->SPSR_svc.val = armcpu->SPSR_abt.val = armcpu->SPSR_und.val = armcpu->SPSR_irq.val = armcpu->SPSR_fiq.val = 0;
 
 #ifdef GDB_STUB
@@ -202,7 +202,7 @@ void armcpu_init(armcpu_t *armcpu, u32 adr)
 #endif
 
 	armcpu->next_instruction = adr;
-	
+
 	armcpu->coproc[15] = (armcp_t*)armcp15_new(armcpu);
 
 #ifndef GDB_STUB
@@ -213,7 +213,7 @@ void armcpu_init(armcpu_t *armcpu, u32 adr)
 u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
 {
         u32 oldmode = armcpu->CPSR.bits.mode;
-	
+
 	switch(oldmode)
 	{
 		case USR :
@@ -221,7 +221,7 @@ u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
 			armcpu->R13_usr = armcpu->R[13];
 			armcpu->R14_usr = armcpu->R[14];
 			break;
-			
+
 		case FIQ :
 			{
                                 u32 tmp;
@@ -240,19 +240,19 @@ u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
 			armcpu->R14_irq = armcpu->R[14];
 			armcpu->SPSR_irq = armcpu->SPSR;
 			break;
-			
+
 		case SVC :
 			armcpu->R13_svc = armcpu->R[13];
 			armcpu->R14_svc = armcpu->R[14];
 			armcpu->SPSR_svc = armcpu->SPSR;
 			break;
-		
+
 		case ABT :
 			armcpu->R13_abt = armcpu->R[13];
 			armcpu->R14_abt = armcpu->R[14];
 			armcpu->SPSR_abt = armcpu->SPSR;
 			break;
-			
+
 		case UND :
 			armcpu->R13_und = armcpu->R[13];
 			armcpu->R14_und = armcpu->R[14];
@@ -261,7 +261,7 @@ u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
 		default :
 			break;
 		}
-		
+
 		switch(mode)
 		{
 			case USR :
@@ -270,7 +270,7 @@ u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
 				armcpu->R[14] = armcpu->R14_usr;
 				//SPSR = CPSR;
 				break;
-				
+
 			case FIQ :
 				{
                                         u32 tmp;
@@ -284,35 +284,35 @@ u32 armcpu_switchMode(armcpu_t *armcpu, u8 mode)
 					armcpu->SPSR = armcpu->SPSR_fiq;
 					break;
 				}
-				
+
 			case IRQ :
 				armcpu->R[13] = armcpu->R13_irq;
 				armcpu->R[14] = armcpu->R14_irq;
 				armcpu->SPSR = armcpu->SPSR_irq;
 				break;
-				
+
 			case SVC :
 				armcpu->R[13] = armcpu->R13_svc;
 				armcpu->R[14] = armcpu->R14_svc;
 				armcpu->SPSR = armcpu->SPSR_svc;
 				break;
-				
+
 			case ABT :
 				armcpu->R[13] = armcpu->R13_abt;
 				armcpu->R[14] = armcpu->R14_abt;
 				armcpu->SPSR = armcpu->SPSR_abt;
 				break;
-				
+
           case UND :
 				armcpu->R[13] = armcpu->R13_und;
 				armcpu->R[14] = armcpu->R14_und;
 				armcpu->SPSR = armcpu->SPSR_und;
 				break;
-				
+
 				default :
 					break;
 	}
-	
+
 	armcpu->CPSR.bits.mode = mode & 0x1F;
 	return oldmode;
 }
@@ -343,7 +343,7 @@ u32 armcpu_prefetch(armcpu_t *armcpu)
 		armcpu->next_instruction += 4;
 		armcpu->R[15] = armcpu->next_instruction + 4;
 #endif
-          
+
         return MMU.MMU_WAIT32[armcpu->proc_ID][(armcpu->instruct_adr>>24)&0xF];
 	}
 
@@ -368,18 +368,18 @@ u32 armcpu_prefetch(armcpu_t *armcpu)
 
 	return MMU.MMU_WAIT16[armcpu->proc_ID][(armcpu->instruct_adr>>24)&0xF];
 }
- 
+
 
 BOOL armcpu_irqExeption(armcpu_t *armcpu)
 {
     Status_Reg tmp;
 
-	if(armcpu->CPSR.bits.I) return FALSE;
+	if(armcpu->CPSR.bits.I) return false;
 
 #ifdef GDB_STUB
 	armcpu->irq_flag = 0;
 #endif
-      
+
 	tmp = armcpu->CPSR;
 	armcpu_switchMode(armcpu, IRQ);
 
@@ -399,13 +399,13 @@ BOOL armcpu_irqExeption(armcpu_t *armcpu)
 	armcpu_prefetch(armcpu);
 #endif
 
-	return TRUE;
+	return true;
 }
 /*
 static BOOL armcpu_prefetchExeption(armcpu_t *armcpu)
 {
         Status_Reg tmp;
-	if(armcpu->CPSR.bits.I) return FALSE;
+	if(armcpu->CPSR.bits.I) return false;
         tmp = armcpu->CPSR;
 	armcpu_switchMode(armcpu, ABT);
 	armcpu->R[14] = armcpu->next_instruction + 4;
@@ -415,13 +415,13 @@ static BOOL armcpu_prefetchExeption(armcpu_t *armcpu)
 	armcpu->next_instruction = armcpu->intVector + 0xC;
 	armcpu->R[15] = armcpu->next_instruction + 8;
 	armcpu->waitIRQ = 0;
-	return TRUE;
+	return true;
 }
 */
 
 BOOL
 armcpu_flagIrq( armcpu_t *armcpu) {
-  if(armcpu->CPSR.bits.I) return FALSE;
+  if(armcpu->CPSR.bits.I) return false;
 
   armcpu->waitIRQ = 0;
 
@@ -429,7 +429,7 @@ armcpu_flagIrq( armcpu_t *armcpu) {
   armcpu->irq_flag = 1;
 #endif
 
-  return TRUE;
+  return true;
 }
 
 
@@ -461,7 +461,7 @@ u32 armcpu_exec(armcpu_t *armcpu)
 			c += arm_instructions_set[INSTRUCTION_INDEX(armcpu->instruction)](armcpu);
 		}
 #ifdef GDB_STUB
-        if ( armcpu->post_ex_fn != NULL) {
+        if ( armcpu->post_ex_fn != nullptr) {
             /* call the external post execute function */
             armcpu->post_ex_fn( armcpu->post_ex_fn_data,
                                 armcpu->instruct_adr, 0);
@@ -475,7 +475,7 @@ u32 armcpu_exec(armcpu_t *armcpu)
 	c += thumb_instructions_set[armcpu->instruction>>6](armcpu);
 
 #ifdef GDB_STUB
-    if ( armcpu->post_ex_fn != NULL) {
+    if ( armcpu->post_ex_fn != nullptr) {
         /* call the external post execute function */
         armcpu->post_ex_fn( armcpu->post_ex_fn_data, armcpu->instruct_adr, 1);
     }

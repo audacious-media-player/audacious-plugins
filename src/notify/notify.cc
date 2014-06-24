@@ -48,10 +48,10 @@ static const char plugin_about[] =
 static const char * const notify_defaults[] = {
  "actions", "TRUE",
  "resident", "FALSE",
- NULL
+ nullptr
 };
 
-static bool_t plugin_init (void)
+static bool plugin_init (void)
 {
     aud_config_set_defaults ("notify", notify_defaults);
 

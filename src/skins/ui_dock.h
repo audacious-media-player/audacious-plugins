@@ -24,13 +24,13 @@
 
 #include <gtk/gtk.h>
 
-void dock_add_window (GtkWidget * window, gint * x, gint * y, gint w, gint h,
+void dock_add_window (GtkWidget * window, int * x, int * y, int w, int h,
  gboolean main);
 void dock_remove_window (GtkWidget * window);
 
-void dock_set_size (GtkWidget * window, gint w, gint h);
+void dock_set_size (GtkWidget * window, int w, int h);
 
-void dock_move_start (GtkWidget * window, gint x, gint y);
-void dock_move (gint x, gint y);
+void dock_move_start (GtkWidget * window, int x, int y);
+void dock_move (int x, int y);
 
 #endif

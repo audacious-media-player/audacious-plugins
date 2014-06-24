@@ -148,7 +148,7 @@ int NDS_Init( void) {
      MMU_Init();
      nds.nextHBlank = 3168;
      nds.VCount = 0;
-     nds.lignerendu = FALSE;
+     nds.lignerendu = false;
 
      if (Screen_Init(GFXCORE_DUMMY) != 0)
         return -1;
@@ -197,7 +197,7 @@ BOOL NDS_SetROM(u8 * rom, u32 mask)
 {
      MMU_setRom(rom, mask);
 
-     return TRUE;
+     return true;
 }
 
 NDS_header * NDS_getROMHeader(void)
@@ -258,7 +258,7 @@ void NDS_FreeROM(void)
    MMU_unsetRom();
 //   if (MMU.bupmem.fp)
 //      fclose(MMU.bupmem.fp);
-//   MMU.bupmem.fp = NULL;
+//   MMU.bupmem.fp = nullptr;
 }
 
 
@@ -273,7 +273,7 @@ void NDS_Reset( void)
 
 	if (!header) return ;
 
-   execute = FALSE;
+   execute = false;
 
    MMU_clearMem();
 
@@ -309,7 +309,7 @@ void NDS_Reset( void)
    nds.VCount = 0;
    nds.old = 0;
    nds.diff = 0;
-   nds.lignerendu = FALSE;
+   nds.lignerendu = false;
    nds.touchX = nds.touchY = 0;
 
    MMU_write16(0, 0x04000130, 0x3FF);
@@ -388,56 +388,56 @@ static void dma_check(void)
 	{
 		T1WriteLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*0), T1ReadLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*0)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[0][0])&(1<<30)) NDS_makeARM9Int(8);
-		MMU.DMAing[0][0] = FALSE;
+		MMU.DMAing[0][0] = false;
 	}
 
 	if((MMU.DMAing[0][1])&&(MMU.DMACycle[0][1]<=nds.cycles))
 	{
 		T1WriteLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*1), T1ReadLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*1)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[0][1])&(1<<30)) NDS_makeARM9Int(9);
-		MMU.DMAing[0][1] = FALSE;
+		MMU.DMAing[0][1] = false;
 	}
 
 	if((MMU.DMAing[0][2])&&(MMU.DMACycle[0][2]<=nds.cycles))
 	{
 		T1WriteLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*2), T1ReadLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*2)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[0][2])&(1<<30)) NDS_makeARM9Int(10);
-		MMU.DMAing[0][2] = FALSE;
+		MMU.DMAing[0][2] = false;
 	}
 
 	if((MMU.DMAing[0][3])&&(MMU.DMACycle[0][3]<=nds.cycles))
 	{
 		T1WriteLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*3), T1ReadLong(ARM9Mem.ARM9_REG, 0xB8 + (0xC*3)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[0][3])&(1<<30)) NDS_makeARM9Int(11);
-		MMU.DMAing[0][3] = FALSE;
+		MMU.DMAing[0][3] = false;
 	}
 
 	if((MMU.DMAing[1][0])&&(MMU.DMACycle[1][0]<=nds.cycles))
 	{
 		T1WriteLong(MMU.ARM7_REG, 0xB8 + (0xC*0), T1ReadLong(MMU.ARM7_REG, 0xB8 + (0xC*0)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[1][0])&(1<<30)) NDS_makeARM7Int(8);
-		MMU.DMAing[1][0] = FALSE;
+		MMU.DMAing[1][0] = false;
 	}
 
 	if((MMU.DMAing[1][1])&&(MMU.DMACycle[1][1]<=nds.cycles))
 	{
 		T1WriteLong(MMU.ARM7_REG, 0xB8 + (0xC*1), T1ReadLong(MMU.ARM7_REG, 0xB8 + (0xC*1)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[1][1])&(1<<30)) NDS_makeARM7Int(9);
-		MMU.DMAing[1][1] = FALSE;
+		MMU.DMAing[1][1] = false;
 	}
 
 	if((MMU.DMAing[1][2])&&(MMU.DMACycle[1][2]<=nds.cycles))
 	{
 		T1WriteLong(MMU.ARM7_REG, 0xB8 + (0xC*2), T1ReadLong(MMU.ARM7_REG, 0xB8 + (0xC*2)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[1][2])&(1<<30)) NDS_makeARM7Int(10);
-		MMU.DMAing[1][2] = FALSE;
+		MMU.DMAing[1][2] = false;
 	}
 
 	if((MMU.DMAing[1][3])&&(MMU.DMACycle[1][3]<=nds.cycles))
 	{
 		T1WriteLong(MMU.ARM7_REG, 0xB8 + (0xC*3), T1ReadLong(MMU.ARM7_REG, 0xB8 + (0xC*3)) & 0x7FFFFFFF);
 		if((MMU.DMACrt[1][3])&(1<<30)) NDS_makeARM7Int(11);
-		MMU.DMAing[1][3] = FALSE;
+		MMU.DMAing[1][3] = false;
 	}
 
 	if((MMU.reg_IF[0]&MMU.reg_IE[0]) && (MMU.reg_IME[0]))
@@ -528,7 +528,7 @@ static void timer_check(void)
 				}
 				else
 				{
-					MMU.timerRUN[p][t] = TRUE;
+					MMU.timerRUN[p][t] = true;
 					nds.timerCycle[p][t] = nds.cycles;
 				}
 			}

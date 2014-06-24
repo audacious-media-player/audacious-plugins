@@ -23,8 +23,8 @@ Nes_Apu::Nes_Apu() :
 {
 	tempo_ = 1.0;
 	dmc.apu = this;
-	dmc.prg_reader = NULL;
-	irq_notifier_ = NULL;
+	dmc.prg_reader = nullptr;
+	irq_notifier_ = nullptr;
 
 	oscs [0] = &square1;
 	oscs [1] = &square2;
@@ -32,7 +32,7 @@ Nes_Apu::Nes_Apu() :
 	oscs [3] = &noise;
 	oscs [4] = &dmc;
 
-	output( NULL );
+	output( nullptr );
 	volume( 1.0 );
 	reset( false );
 }

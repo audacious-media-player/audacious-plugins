@@ -49,21 +49,21 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
 static const char * const lirc_defaults[] = {
  "enable_reconnect", "TRUE",
  "reconnect_timeout", "5",
- NULL};
+ nullptr};
 
 const char *plugin_name = "LIRC Plugin";
 
 int lirc_fd = -1;
-struct lirc_config *config = NULL;
-gint tracknr = 0;
-gint mute = 0;                  /* mute flag */
-gint mute_vol = 0;              /* holds volume before mute */
+struct lirc_config *config = nullptr;
+int tracknr = 0;
+int mute = 0;                  /* mute flag */
+int mute_vol = 0;              /* holds volume before mute */
 
-guint input_tag;
+unsigned input_tag;
 
 char track_no[64];
 int track_no_pos;
-gint tid;
+int tid;
 
 void init_lirc (void)
 {
@@ -74,7 +74,7 @@ void init_lirc (void)
         fprintf (stderr, _("%s: could not init LIRC support\n"), plugin_name);
         return;
     }
-    if (lirc_readconfig (NULL, &config, NULL) == -1)
+    if (lirc_readconfig (nullptr, &config, nullptr) == -1)
     {
         lirc_deinit ();
         fprintf (stderr,
@@ -87,7 +87,7 @@ void init_lirc (void)
 
     input_tag =
         g_io_add_watch (g_io_channel_unix_new (lirc_fd), G_IO_IN,
-                        lirc_input_callback, NULL);
+                        lirc_input_callback, nullptr);
 
     fcntl (lirc_fd, F_SETOWN, getpid ());
     flags = fcntl (lirc_fd, F_GETFL, 0);
@@ -98,13 +98,13 @@ void init_lirc (void)
     fflush (stdout);
 }
 
-gboolean init (void)
+bool init (void)
 {
     aud_config_set_defaults ("lirc", lirc_defaults);
     init_lirc ();
     track_no_pos = 0;
     tid = 0;
-    return TRUE;
+    return true;
 }
 
 gboolean reconnect_lirc (gpointer data)
@@ -121,7 +121,7 @@ void cleanup ()
         if (input_tag)
             g_source_remove (input_tag);
 
-        config = NULL;
+        config = nullptr;
     }
     if (lirc_fd != -1)
     {
@@ -136,26 +136,26 @@ gboolean jump_to (gpointer data)
     aud_playlist_set_position (playlist, atoi (track_no) - 1);
     track_no_pos = 0;
     tid = 0;
-    return FALSE;
+    return false;
 }
 
 static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition, void * data)
 {
     char *code;
     char *c;
-    gint playlist_time, playlist_pos, output_time, v;
+    int playlist_time, playlist_pos, output_time, v;
     int ret;
     char *ptr;
-    gint balance;
+    int balance;
 #if 0
     gboolean show_pl;
 #endif
     int n;
-    gchar *utf8_title_markup;
+    char *utf8_title_markup;
 
-    while ((ret = lirc_nextcode (&code)) == 0 && code != NULL)
+    while ((ret = lirc_nextcode (&code)) == 0 && code != nullptr)
     {
-        while ((ret = lirc_code2char (config, code, &c)) == 0 && c != NULL)
+        while ((ret = lirc_code2char (config, code, &c)) == 0 && c != nullptr)
         {
             if (g_ascii_strcasecmp ("PLAY", c) == 0)
                 aud_drct_play ();
@@ -194,9 +194,9 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 }
             }
             else if (g_ascii_strcasecmp ("SHUFFLE", c) == 0)
-                aud_set_bool (NULL, "shuffle", ! aud_get_bool (NULL, "shuffle"));
+                aud_set_bool (nullptr, "shuffle", ! aud_get_bool (nullptr, "shuffle"));
             else if (g_ascii_strcasecmp ("REPEAT", c) == 0)
-                aud_set_bool (NULL, "repeat", ! aud_get_bool (NULL, "repeat"));
+                aud_set_bool (nullptr, "repeat", ! aud_get_bool (nullptr, "repeat"));
             else if (g_ascii_strncasecmp ("FWD", c, 3) == 0)
             {
                 ptr = c + 3;
@@ -212,7 +212,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 playlist_pos = aud_playlist_get_position (playlist);
                 playlist_time =
                     aud_playlist_entry_get_length (playlist, playlist_pos,
-                                                   FALSE);
+                                                   false);
                 if (playlist_time - output_time < n)
                     output_time = playlist_time - n;
                 aud_drct_seek (output_time + n);
@@ -342,7 +342,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                         g_source_remove (tid);
                     track_no[track_no_pos++] = *c;
                     track_no[track_no_pos] = 0;
-                    tid = g_timeout_add (1500, jump_to, NULL);
+                    tid = g_timeout_add (1500, jump_to, nullptr);
                     utf8_title_markup = g_markup_printf_escaped ("%s", track_no);
                     hook_call ("aosd toggle", utf8_title_markup);
                 }
@@ -368,11 +368,11 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
             fprintf (stderr,
                      _("%s: will try reconnect every %d seconds...\n"),
                      plugin_name, reconnect_timeout);
-            g_timeout_add (1000 * reconnect_timeout, reconnect_lirc, NULL);
+            g_timeout_add (1000 * reconnect_timeout, reconnect_lirc, nullptr);
         }
     }
 
-    return TRUE;
+    return true;
 }
 
 static const char about[] =

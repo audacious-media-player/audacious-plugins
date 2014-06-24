@@ -32,7 +32,7 @@ GtkWidget * playlist_get_treeview (int playlist)
     GtkWidget *page = gtk_notebook_get_nth_page(UI_PLAYLIST_NOTEBOOK, playlist);
 
     if (!page)
-        return NULL;
+        return nullptr;
 
     return (GtkWidget *) g_object_get_data ((GObject *) page, "treeview");
 }

@@ -76,7 +76,7 @@ public:
 	// is an NSFE emulator, and you can cast to an Nsfe_Emu* if necessary.
 	gme_type_t type() const;
 
-	// Most recent warning string, or NULL if none. Clears current warning after
+	// Most recent warning string, or nullptr if none. Clears current warning after
 	// returning.
 	const char* warning();
 
@@ -94,7 +94,7 @@ public:
 	void set_user_data( void* p )       { user_data_ = p; }
 	void* user_data() const             { return user_data_; }
 
-	// Register cleanup function to be called when deleting emulator, or NULL to
+	// Register cleanup function to be called when deleting emulator, or nullptr to
 	// clear it. Passes user_data to cleanup function.
 	void set_user_cleanup( gme_user_cleanup_t func ) { user_cleanup_ = func; }
 

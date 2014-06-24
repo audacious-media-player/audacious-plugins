@@ -72,8 +72,8 @@ void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuff
 
     for (;;)
     {
-        midievent_t * event = NULL;
-        midifile_track_t * event_track = NULL;
+        midievent_t * event = nullptr;
+        midifile_track_t * event_track = nullptr;
         int i, min_tick = mf->max_tick + 1;
 
         /* search next event */
@@ -112,7 +112,7 @@ void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuff
 
 void i_fileinfo_gui (const char * filename_uri)
 {
-    static GtkWidget * fileinfowin = NULL;
+    static GtkWidget * fileinfowin = nullptr;
     GtkWidget * fileinfowin_vbox, *fileinfowin_columns_hbox;
     GtkWidget * midiinfoboxes_vbox, *miditextboxes_vbox, *miditextboxes_paned;
     GtkWidget * title_hbox, *title_icon_image, *title_name_f_label, *title_name_v_entry;
@@ -200,7 +200,7 @@ void i_fileinfo_gui (const char * filename_uri)
     gtk_label_set_markup (GTK_LABEL (info_frame_tl), _("<span size=\"smaller\"> MIDI Info </span>"));
     gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame_tl, FALSE, FALSE, 0);
 
-    info_frame = gtk_frame_new (NULL);
+    info_frame = gtk_frame_new (nullptr);
     gtk_box_pack_start (GTK_BOX (midiinfoboxes_vbox), info_frame, TRUE, TRUE, 0);
     info_grid = gtk_table_new (0, 0, FALSE);
     gtk_table_set_row_spacings (GTK_TABLE (info_grid), 2);
@@ -253,7 +253,7 @@ void i_fileinfo_gui (const char * filename_uri)
     miditextboxes_paned = gtk_vpaned_new ();
     gtk_box_pack_start (GTK_BOX (miditextboxes_vbox), miditextboxes_paned, TRUE, TRUE, 0);
 
-    text_frame = gtk_frame_new (NULL);
+    text_frame = gtk_frame_new (nullptr);
     gtk_paned_pack1 (GTK_PANED (miditextboxes_paned), text_frame, TRUE, TRUE);
     text_tv = gtk_text_view_new();
     gtk_text_view_set_editable (GTK_TEXT_VIEW (text_tv), FALSE);
@@ -262,13 +262,13 @@ void i_fileinfo_gui (const char * filename_uri)
     gtk_text_view_set_right_margin (GTK_TEXT_VIEW (text_tv), 4);
     gtk_text_view_set_left_margin (GTK_TEXT_VIEW (text_tv), 4);
     gtk_widget_set_size_request (text_tv, 300, 113);
-    text_tv_sw = gtk_scrolled_window_new (NULL, NULL);
+    text_tv_sw = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (text_tv_sw),
                                     GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
     gtk_container_add (GTK_CONTAINER (text_frame), text_tv_sw);
     gtk_container_add (GTK_CONTAINER (text_tv_sw), text_tv);
 
-    lyrics_frame = gtk_frame_new (NULL);
+    lyrics_frame = gtk_frame_new (nullptr);
     gtk_paned_pack2 (GTK_PANED (miditextboxes_paned), lyrics_frame, TRUE, TRUE);
     lyrics_tv = gtk_text_view_new();
     gtk_text_view_set_editable (GTK_TEXT_VIEW (lyrics_tv), FALSE);
@@ -277,7 +277,7 @@ void i_fileinfo_gui (const char * filename_uri)
     gtk_text_view_set_right_margin (GTK_TEXT_VIEW (lyrics_tv), 4);
     gtk_text_view_set_left_margin (GTK_TEXT_VIEW (lyrics_tv), 4);
     gtk_widget_set_size_request (lyrics_tv, 300, 113);
-    lyrics_tv_sw = gtk_scrolled_window_new (NULL, NULL);
+    lyrics_tv_sw = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (lyrics_tv_sw),
                                     GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
     gtk_container_add (GTK_CONTAINER (lyrics_frame), lyrics_tv_sw);
@@ -294,7 +294,7 @@ void i_fileinfo_gui (const char * filename_uri)
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (text_tb, "italicstyle",
-                           "style", PANGO_STYLE_ITALIC, NULL);
+                           "style", PANGO_STYLE_ITALIC, nullptr);
         /*gtk_text_view_set_justification( GTK_TEXT_VIEW(text_tv), GTK_JUSTIFY_CENTER );*/
         gtk_text_buffer_set_text (text_tb, _("* no comments available in this MIDI file *"), -1);
         gtk_text_buffer_get_iter_at_offset (text_tb, &start, 0);
@@ -306,7 +306,7 @@ void i_fileinfo_gui (const char * filename_uri)
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (lyrics_tb, "italicstyle",
-                           "style", PANGO_STYLE_ITALIC, NULL);
+                           "style", PANGO_STYLE_ITALIC, nullptr);
         /*gtk_text_view_set_justification( GTK_TEXT_VIEW(lyrics_tv), GTK_JUSTIFY_CENTER );*/
         gtk_text_buffer_set_text (lyrics_tb, _("* no lyrics available in this MIDI file *"), -1);
         gtk_text_buffer_get_iter_at_offset (lyrics_tb, &start, 0);
@@ -342,12 +342,12 @@ void i_fileinfo_gui (const char * filename_uri)
 
 
     /* utf8-ize filename and set window title */
-    filename = g_filename_from_uri (filename_uri, NULL, NULL);
+    filename = g_filename_from_uri (filename_uri, nullptr, nullptr);
 
     if (!filename)
         filename = g_strdup (filename_uri);
 
-    filename_utf8 = g_strdup (g_filename_to_utf8 (filename, -1, NULL, NULL, NULL));
+    filename_utf8 = g_strdup (g_filename_to_utf8 (filename, -1, nullptr, nullptr, nullptr));
 
     if (!filename_utf8)
     {
@@ -360,7 +360,7 @@ void i_fileinfo_gui (const char * filename_uri)
                 *chr = '?';
         }
 
-        filename_utf8 = g_strconcat (convert_str, _("  (invalid UTF-8)"), NULL);
+        filename_utf8 = g_strconcat (convert_str, _("  (invalid UTF-8)"), nullptr);
         g_free (convert_str);
     }
 

@@ -36,7 +36,7 @@
 #include "ui_playlist_widget.h"
 #include "playlist_util.h"
 
-static GtkWidget * notebook = NULL;
+static GtkWidget * notebook = nullptr;
 static int highlighted = -1;
 
 static int switch_handler = 0;
@@ -56,7 +56,7 @@ static void make_add_button (GtkWidget * notebook)
      ("list-add", GTK_ICON_SIZE_MENU));
     gtk_widget_set_can_focus (button, FALSE);
 
-    g_signal_connect (button, "clicked", (GCallback) add_button_cb, NULL);
+    g_signal_connect (button, "clicked", (GCallback) add_button_cb, nullptr);
     gtk_widget_show_all (button);
 
     gtk_notebook_set_action_widget ((GtkNotebook *) notebook, button, GTK_PACK_END);
@@ -99,7 +99,7 @@ static GtkWidget * make_close_button (GtkWidget * ebox, int list)
      "widget \"*.gtkui-tab-close-button\" style \"gtkui-tab-close-button-style\""
     );
 
-    g_signal_connect (button, "style-set", (GCallback) close_button_style_set, NULL);
+    g_signal_connect (button, "style-set", (GCallback) close_button_style_set, nullptr);
 
     gtk_widget_show (button);
 
@@ -129,7 +129,7 @@ static void tab_title_save(GtkEntry *entry, void * ebox)
     gtk_widget_show(label);
 }
 
-static bool_t tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, void * user_data)
+static gboolean tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, void * user_data)
 {
     if (event->keyval == GDK_KEY_Escape)
         tab_title_reset(widget);
@@ -137,7 +137,7 @@ static bool_t tab_key_press_cb(GtkWidget *widget, GdkEventKey *event, void * use
     return FALSE;
 }
 
-static bool_t tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, void * user_data)
+static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, void * user_data)
 {
     int id = GPOINTER_TO_INT (g_object_get_data ((GObject *) ebox, "playlist-id"));
     int playlist = aud_playlist_by_unique_id (id);
@@ -154,7 +154,7 @@ static bool_t tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, void *
     return FALSE;
 }
 
-static bool_t scroll_cb (GtkWidget * widget, GdkEventScroll * event)
+static gboolean scroll_cb (GtkWidget * widget, GdkEventScroll * event)
 {
     switch (event->direction)
     {
@@ -241,7 +241,7 @@ void ui_playlist_notebook_create_tab(int playlist)
     GtkAdjustment *vscroll;
     int position = aud_playlist_get_position (playlist);
 
-    scrollwin = gtk_scrolled_window_new(NULL, NULL);
+    scrollwin = gtk_scrolled_window_new(nullptr, nullptr);
     vscroll = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrollwin));
 
     treeview = ui_playlist_widget_new(playlist);
@@ -268,7 +268,7 @@ void ui_playlist_notebook_create_tab(int playlist)
     gtk_widget_show_all(ebox);
     gtk_widget_hide(entry);
 
-    GtkWidget * button = NULL;
+    GtkWidget * button = nullptr;
 
     if (aud_get_bool ("gtkui", "close_button_visible"))
     {
@@ -296,8 +296,8 @@ void ui_playlist_notebook_create_tab(int playlist)
         audgui_list_set_focus (treeview, position);
     }
 
-    g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), NULL);
-    g_signal_connect(ebox, "key-press-event", G_CALLBACK(tab_key_press_cb), NULL);
+    g_signal_connect(ebox, "button-press-event", G_CALLBACK(tab_button_press_cb), nullptr);
+    g_signal_connect(ebox, "key-press-event", G_CALLBACK(tab_key_press_cb), nullptr);
     g_signal_connect(entry, "activate", G_CALLBACK(tab_title_save), ebox);
     g_signal_connect_swapped (vscroll, "value-changed",
      G_CALLBACK(ui_playlist_widget_scroll), treeview);
@@ -305,12 +305,12 @@ void ui_playlist_notebook_create_tab(int playlist)
     /* we have to connect to "scroll-event" on the notebook, the tabs, AND the
      * close buttons (sigh) */
     gtk_widget_add_events (ebox, GDK_SCROLL_MASK);
-    g_signal_connect (ebox, "scroll-event", (GCallback) scroll_cb, NULL);
+    g_signal_connect (ebox, "scroll-event", (GCallback) scroll_cb, nullptr);
 
     if (button)
     {
         gtk_widget_add_events (button, GDK_SCROLL_MASK);
-        g_signal_connect (button, "scroll-event", (GCallback) scroll_cb, NULL);
+        g_signal_connect (button, "scroll-event", (GCallback) scroll_cb, nullptr);
     }
 }
 
@@ -329,10 +329,10 @@ void ui_playlist_notebook_populate(void)
 
     if (! switch_handler)
         switch_handler = g_signal_connect (notebook, "switch-page", (GCallback)
-         tab_changed, NULL);
+         tab_changed, nullptr);
     if (! reorder_handler)
         reorder_handler = g_signal_connect (notebook, "page-reordered",
-         (GCallback) tab_reordered, NULL);
+         (GCallback) tab_reordered, nullptr);
 
     gtk_widget_grab_focus (playlist_get_treeview (aud_playlist_get_active ()));
 }
@@ -353,8 +353,8 @@ void ui_playlist_notebook_empty (void)
 
 static void add_remove_pages (void)
 {
-    g_signal_handlers_block_by_func (notebook, (void *) tab_changed, NULL);
-    g_signal_handlers_block_by_func (notebook, (void *) tab_reordered, NULL);
+    g_signal_handlers_block_by_func (notebook, (void *) tab_changed, nullptr);
+    g_signal_handlers_block_by_func (notebook, (void *) tab_reordered, nullptr);
 
     save_column_widths ();
 
@@ -426,8 +426,8 @@ static void add_remove_pages (void)
 
     show_hide_playlist_tabs ();
 
-    g_signal_handlers_unblock_by_func (notebook, (void *) tab_changed, NULL);
-    g_signal_handlers_unblock_by_func (notebook, (void *) tab_reordered, NULL);
+    g_signal_handlers_unblock_by_func (notebook, (void *) tab_changed, nullptr);
+    g_signal_handlers_unblock_by_func (notebook, (void *) tab_reordered, nullptr);
 }
 
 void ui_playlist_notebook_update (void * data, void * user)
@@ -504,7 +504,7 @@ void ui_playlist_notebook_set_playing (void * data, void * user)
 
 static void destroy_cb (void)
 {
-    notebook = NULL;
+    notebook = nullptr;
     switch_handler = 0;
     reorder_handler = 0;
 }
@@ -518,8 +518,8 @@ GtkWidget * ui_playlist_notebook_new (void)
     show_hide_playlist_tabs ();
 
     gtk_widget_add_events (notebook, GDK_SCROLL_MASK);
-    g_signal_connect (notebook, "scroll-event", (GCallback) scroll_cb, NULL);
-    g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, NULL);
+    g_signal_connect (notebook, "scroll-event", (GCallback) scroll_cb, nullptr);
+    g_signal_connect (notebook, "destroy", (GCallback) destroy_cb, nullptr);
 
     return notebook;
 }

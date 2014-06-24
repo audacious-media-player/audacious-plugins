@@ -120,7 +120,7 @@ static Converter get_converter (int in, int out)
     if (in == 6 && out == 2)
         return surround_5p1_to_stereo;
 
-    return NULL;
+    return nullptr;
 }
 
 static int input_channels, output_channels;
@@ -155,12 +155,12 @@ void mixer_process (float * * data, int * samples)
 
 static const char * const mixer_defaults[] = {
  "channels", "2",
-  NULL};
+  nullptr};
 
-static bool_t mixer_init (void)
+static bool mixer_init (void)
 {
     aud_config_set_defaults ("mixer", mixer_defaults);
-    return TRUE;
+    return true;
 }
 
 static void mixer_cleanup (void)

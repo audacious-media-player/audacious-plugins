@@ -36,10 +36,10 @@
 #define D_WIDTH 64
 #define D_HEIGHT 32
 
-static gboolean bscope_init (void);
+static bool bscope_init (void);
 static void bscope_cleanup(void);
 static void bscope_clear (void);
-static void bscope_render (const gfloat * data);
+static void bscope_render (const float * data);
 static void /* GtkWidget */ * bscope_get_widget (void);
 static void /* GtkWidget */ * bscope_get_color_chooser (void);
 
@@ -64,17 +64,17 @@ static const PluginPreferences bscope_prefs = {
 #define AUD_DECLARE_VIS
 #include <libaudcore/plugin-declare.h>
 
-static GtkWidget * area = NULL;
-static gint width, height, stride, image_size;
-static guint32 * image = NULL, * corner = NULL;
+static GtkWidget * area = nullptr;
+static int width, height, stride, image_size;
+static uint32_t * image = nullptr, * corner = nullptr;
 
-static const gchar * const bscope_defaults[] = {
+static const char * const bscope_defaults[] = {
  "color", "16727935", /* 0xFF3F7F */
- NULL};
+ nullptr};
 
-static gint color;
+static int color;
 
-static gboolean bscope_init (void)
+static bool bscope_init (void)
 {
     aud_config_set_defaults ("BlurScope", bscope_defaults);
     color = aud_get_int ("BlurScope", "color");
@@ -87,23 +87,23 @@ static void bscope_cleanup (void)
     aud_set_int ("BlurScope", "color", color);
 
     g_free (image);
-    image = NULL;
+    image = nullptr;
 }
 
-static void bscope_resize (gint w, gint h)
+static void bscope_resize (int w, int h)
 {
     width = w;
     height = h;
     stride = width + 2;
     image_size = (stride << 2) * (height + 2);
-    image = (guint32 *) g_realloc (image, image_size);
+    image = (uint32_t *) g_realloc (image, image_size);
     memset (image, 0, image_size);
     corner = image + stride + 1;
 }
 
 static void bscope_draw_to_cairo (cairo_t * cr)
 {
-    cairo_surface_t * surf = cairo_image_surface_create_for_data ((guchar *)
+    cairo_surface_t * surf = cairo_image_surface_create_for_data ((unsigned char *)
      image, CAIRO_FORMAT_RGB24, width, height, stride << 2);
     cairo_set_source_surface (cr, surf, 0, 0);
     cairo_paint (cr);
@@ -140,11 +140,11 @@ static void /* GtkWidget */ * bscope_get_widget (void)
     gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
     bscope_resize (D_WIDTH, D_HEIGHT);
 
-    g_signal_connect (area, "expose-event", (GCallback) draw_cb, NULL);
-    g_signal_connect (area, "configure-event", (GCallback) configure_event, NULL);
+    g_signal_connect (area, "expose-event", (GCallback) draw_cb, nullptr);
+    g_signal_connect (area, "configure-event", (GCallback) configure_event, nullptr);
     g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 
-    GtkWidget * frame = gtk_frame_new (NULL);
+    GtkWidget * frame = gtk_frame_new (nullptr);
     gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
     gtk_container_add ((GtkContainer *) frame, area);
     return frame;
@@ -152,19 +152,19 @@ static void /* GtkWidget */ * bscope_get_widget (void)
 
 static void bscope_clear (void)
 {
-    g_return_if_fail (image != NULL);
+    g_return_if_fail (image != nullptr);
     memset (image, 0, image_size);
     bscope_draw ();
 }
 
 static void bscope_blur (void)
 {
-    for (gint y = 0; y < height; y ++)
+    for (int y = 0; y < height; y ++)
     {
-        guint32 * p = corner + stride * y;
-        guint32 * end = p + width;
-        guint32 * plast = p - stride;
-        guint32 * pnext = p + stride;
+        uint32_t * p = corner + stride * y;
+        uint32_t * end = p + width;
+        uint32_t * plast = p - stride;
+        uint32_t * pnext = p + stride;
 
         /* We do a quick and dirty average of four color values, first masking
          * off the lowest two bits.  Over a large area, this masking has the net
@@ -176,30 +176,30 @@ static void bscope_blur (void)
     }
 }
 
-static inline void draw_vert_line (gint x, gint y1, gint y2)
+static inline void draw_vert_line (int x, int y1, int y2)
 {
-    gint y, h;
+    int y, h;
 
     if (y1 < y2) {y = y1 + 1; h = y2 - y1;}
     else if (y2 < y1) {y = y2; h = y1 - y2;}
     else {y = y1; h = 1;}
 
-    guint32 * p = corner + y * stride + x;
+    uint32_t * p = corner + y * stride + x;
 
     for (; h --; p += stride)
         * p = color;
 }
 
-static void bscope_render (const gfloat * data)
+static void bscope_render (const float * data)
 {
     bscope_blur ();
 
-    gint prev_y = (0.5 + data[0]) * height;
+    int prev_y = (0.5 + data[0]) * height;
     prev_y = CLAMP (prev_y, 0, height - 1);
 
-    for (gint i = 0; i < width; i ++)
+    for (int i = 0; i < width; i ++)
     {
-        gint y = (0.5 + data[i * 512 / width]) * height;
+        int y = (0.5 + data[i * 512 / width]) * height;
         y = CLAMP (y, 0, height - 1);
         draw_vert_line (i, prev_y, y);
         prev_y = y;
@@ -217,12 +217,12 @@ static void color_set_cb (GtkWidget * chooser)
 
 static void /* GtkWidget */ * bscope_get_color_chooser (void)
 {
-    GdkColor gdk_color = {0, (guint16) ((color & 0xff0000) >> 8),
-     (guint16) (color & 0xff00), (guint16) ((color & 0xff) << 8)};
+    GdkColor gdk_color = {0, (uint16_t) ((color & 0xff0000) >> 8),
+     (uint16_t) (color & 0xff00), (uint16_t) ((color & 0xff) << 8)};
     GtkWidget * chooser = gtk_color_button_new_with_color (& gdk_color);
     gtk_color_button_set_use_alpha ((GtkColorButton *) chooser, FALSE);
 
-    g_signal_connect (chooser, "color-set", (GCallback) color_set_cb, NULL);
+    g_signal_connect (chooser, "color-set", (GCallback) color_set_cb, nullptr);
 
     return chooser;
 }

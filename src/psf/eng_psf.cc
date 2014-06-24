@@ -47,7 +47,7 @@
 
 #define LE32(x) FROM_LE32(x)
 
-static corlett_t	*c = NULL;
+static corlett_t	*c = nullptr;
 static char 		psfby[256];
 int			psf_refresh  = -1;
 
@@ -136,7 +136,7 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 		}
 		lib_raw_length = tmp_length;
 
-		if (lib_raw_file == NULL)
+		if (lib_raw_file == nullptr)
 			return AO_FAIL;
 
 		if (corlett_decode(lib_raw_file, lib_raw_length, &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
@@ -233,7 +233,7 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 			}
 			lib_raw_length = tmp_length;
 
-			if (lib_raw_file == NULL)
+			if (lib_raw_file == nullptr)
 				return AO_FAIL;
 
 			if (corlett_decode(lib_raw_file, lib_raw_length, &alib_decoded, &alib_len, &lib) != AO_SUCCESS)
@@ -292,7 +292,7 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	}
 
 	mips_init();
-	mips_reset(NULL);
+	mips_reset(nullptr);
 
 	// set the initial PC, SP, GP
 	#if DEBUG_LOADER

@@ -17,7 +17,7 @@ protected:
 	short* out;
 	enum { disabled_time = -1 };
 public:
-	Ym_Emu()                        : last_time( disabled_time ), out( NULL ) { }
+	Ym_Emu()                        : last_time( disabled_time ), out( nullptr ) { }
 	void enable( bool b )           { last_time = b ? 0 : disabled_time; }
 	bool enabled() const            { return last_time != disabled_time; }
 	void begin_frame( short* p );

@@ -35,7 +35,7 @@ typedef struct {
 } HintPair;
 
 typedef struct {
-    bool_t valid_heading;
+    gboolean valid_heading;
 } HintsLoadState;
 
 const SkinProperties skin_default_hints = SkinProperties ();
@@ -158,7 +158,7 @@ void skin_load_hints (Skin * skin, const char * path)
  */
 
 typedef struct {
-    bool_t valid_heading;
+    gboolean valid_heading;
     Skin * skin;
 } PLColorsLoadState;
 
@@ -174,7 +174,7 @@ static uint32_t convert_color_string (const char * str)
     if (* str == '#')
         str ++;
 
-    return strtol (str, NULL, 16);
+    return strtol (str, nullptr, 16);
 }
 
 static void pl_colors_handle_entry (const char * key, const char * value, void * data)
@@ -260,7 +260,7 @@ static void mask_handle_entry (const char * key, const char * value, void * data
 static GdkBitmap * skin_create_mask (const GArray * num,
  const GArray * point, int width, int height)
 {
-    GdkBitmap * bitmap = gdk_pixmap_new (NULL, width, height, 1);
+    GdkBitmap * bitmap = gdk_pixmap_new (nullptr, width, height, 1);
     cairo_t * cr = gdk_cairo_create (bitmap);
     cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 

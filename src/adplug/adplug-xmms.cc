@@ -55,13 +55,13 @@
 
 /***** Global variables *****/
 
-static bool_t audio_error = FALSE;
+static bool audio_error = false;
 
 // Configuration (and defaults)
 static struct
 {
   int freq;
-  bool_t bit16, stereo, endless;
+  bool bit16, stereo, endless;
   CPlayers players;
 } conf =
 {
@@ -74,7 +74,7 @@ static struct
   CAdPlugDatabase *db;
   unsigned int subsong, songlength;
   char * filename;
-} plr = {0, 0, 0, 0, NULL};
+} plr = {0, 0, 0, 0, nullptr};
 
 /***** Debugging *****/
 
@@ -143,7 +143,7 @@ Tuple adplug_get_tuple (const char * filename, VFSFile * fd)
 // Define sampsize macro (only usable inside play_loop()!)
 #define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
 
-static bool_t play_loop (const char * filename, VFSFile * fd)
+static bool play_loop (const char * filename, VFSFile * fd)
 /* Main playback thread. Takes the filename to play as argument. */
 {
   dbg_printf ("play_loop(\"%s\"): ", filename);
@@ -156,7 +156,7 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
   unsigned long freq = conf.freq;
 
   if (!fd)
-    return FALSE;
+    return false;
 
   // Try to load module
   dbg_printf ("factory, ");
@@ -164,7 +164,7 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
   {
     dbg_printf ("error!\n");
     // MessageBox("AdPlug :: Error", "File could not be opened!", "Ok");
-    return FALSE;
+    return false;
   }
 
   // reset to first subsong on new file
@@ -240,7 +240,7 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
   plr.p = 0;
   free (sndbuf);
   dbg_printf (".\n");
-  return TRUE;
+  return true;
 }
 
 // sampsize macro not useful anymore.
@@ -248,7 +248,7 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
 
 /***** Informational *****/
 
-int
+bool
 adplug_is_our_fd (const char * filename, VFSFile * fd)
 {
   CSilentopl tmpopl;
@@ -260,32 +260,32 @@ adplug_is_our_fd (const char * filename, VFSFile * fd)
   if (p)
   {
     delete p;
-    dbg_printf ("TRUE\n");
-    return TRUE;
+    dbg_printf ("true\n");
+    return true;
   }
 
-  dbg_printf ("FALSE\n");
-  return FALSE;
+  dbg_printf ("false\n");
+  return false;
 }
 
 /***** Player control *****/
 
-bool_t
+bool
 adplug_play (const char * filename, VFSFile * file)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
-  audio_error = FALSE;
+  audio_error = false;
 
   // open output plugin
   dbg_printf ("open, ");
   if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
   {
-    audio_error = TRUE;
-    return TRUE;
+    audio_error = true;
+    return true;
   }
 
   play_loop (filename, file);
-  return FALSE;
+  return false;
 }
 
 /***** Configuration file handling *****/
@@ -297,9 +297,9 @@ static const char * const adplug_defaults[] = {
  "Stereo", "FALSE",
  "Frequency", "44100",
  "Endless", "FALSE",
- NULL};
+ nullptr};
 
-bool_t adplug_init (void)
+bool adplug_init (void)
 {
   aud_config_set_defaults (CFG_VERSION, adplug_defaults);
 
@@ -345,7 +345,7 @@ bool_t adplug_init (void)
   CAdPlug::set_database (plr.db);
   dbg_printf (".\n");
 
-  return TRUE;
+  return true;
 }
 
 void
@@ -357,7 +357,7 @@ adplug_quit (void)
     delete plr.db;
 
   free (plr.filename);
-  plr.filename = NULL;
+  plr.filename = nullptr;
 
   aud_set_bool (CFG_VERSION, "16bit", conf.bit16);
   aud_set_bool (CFG_VERSION, "Stereo", conf.stereo);

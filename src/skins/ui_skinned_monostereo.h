@@ -31,6 +31,6 @@
 #include <gtk/gtk.h>
 
 GtkWidget * ui_skinned_monostereo_new (void);
-void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, gint nch);
+void ui_skinned_monostereo_set_num_channels(GtkWidget *widget, int nch);
 
 #endif

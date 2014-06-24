@@ -62,13 +62,13 @@ static HDC s_hdc;
 static HGLRC s_glrc;
 #endif
 
-static GtkWidget * s_widget = NULL;
+static GtkWidget * s_widget = nullptr;
 
 static int s_pos = 0;
 static float s_angle = 25, s_anglespeed = 0.05f;
 static float s_bars[NUM_BANDS][NUM_BANDS];
 
-static bool_t init (void)
+static bool init (void)
 {
     for (int i = 0; i <= NUM_BANDS; i ++)
         logscale[i] = powf (256, (float) i / NUM_BANDS) - 0.5f;
@@ -217,7 +217,7 @@ static void draw_bars (void)
     glPopMatrix ();
 }
 
-static bool_t draw_cb (GtkWidget * widget)
+static gboolean draw_cb (GtkWidget * widget)
 {
 #ifdef GDK_WINDOWING_X11
     if (! s_context)
@@ -349,33 +349,33 @@ static void widget_realized (void)
 
 static void widget_destroyed (void)
 {
-    s_widget = NULL;
+    s_widget = nullptr;
 
 #ifdef GDK_WINDOWING_X11
     if (s_context)
     {
         glXDestroyContext (s_display, s_context);
-        s_context = NULL;
+        s_context = nullptr;
     }
 
-    s_display = NULL;
+    s_display = nullptr;
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
     if (s_glrc)
     {
-        wglMakeCurrent (s_hdc, NULL);
+        wglMakeCurrent (s_hdc, nullptr);
         wglDeleteContext (s_glrc);
-        s_glrc = NULL;
+        s_glrc = nullptr;
     }
 
     if (s_hdc)
     {
         ReleaseDC (s_hwnd, s_hdc);
-        s_hdc = NULL;
+        s_hdc = nullptr;
     }
 
-    s_hwnd = NULL;
+    s_hwnd = nullptr;
 #endif
 }
 
@@ -386,9 +386,9 @@ static /* GtkWidget * */ void * get_widget (void)
 
     s_widget = gtk_drawing_area_new ();
 
-    g_signal_connect (s_widget, "expose-event", (GCallback) draw_cb, NULL);
-    g_signal_connect (s_widget, "realize", (GCallback) widget_realized, NULL);
-    g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, NULL);
+    g_signal_connect (s_widget, "expose-event", (GCallback) draw_cb, nullptr);
+    g_signal_connect (s_widget, "realize", (GCallback) widget_realized, nullptr);
+    g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, nullptr);
 
     /* Disable GTK double buffering */
     gtk_widget_set_double_buffered (s_widget, FALSE);

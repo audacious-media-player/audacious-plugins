@@ -71,7 +71,7 @@
 
 #define LE32(x) FROM_LE32(x)
 
-static corlett_t	*c = NULL;
+static corlett_t	*c = nullptr;
 
 // main RAM
 extern uint32_t psx_ram[(2*1024*1024)/4];
@@ -491,7 +491,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 		}
 		lib_raw_length = tmp_length;
 
-		if (lib_raw_file == NULL)
+		if (lib_raw_file == nullptr)
 			return AO_FAIL;
 
 		if (corlett_decode(lib_raw_file, lib_raw_length, &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
@@ -543,7 +543,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 	setlength2(lengthMS, fadeMS);
 
 	mips_init();
-	mips_reset(NULL);
+	mips_reset(nullptr);
 
 	mipsinfo.i = initialPC;
 	mips_set_info(CPUINFO_INT_PC, &mipsinfo);
@@ -574,7 +574,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 
 	psx_hw_init();
 	SPU2init();
-	SPU2open(NULL);
+	SPU2open(nullptr);
 
 	return AO_SUCCESS;
 }
@@ -587,7 +587,7 @@ int32_t psf2_execute(void)
 	{
 		for (i = 0; i < 44100 / 60; i++)
 		{
-			SPU2async(1, NULL);
+			SPU2async(1, nullptr);
 			ps2_hw_slice();
 		}
 
@@ -622,10 +622,10 @@ int32_t psf2_command(int32_t command, int32_t parameter)
 			memcpy(psx_ram, initial_ram, 2*1024*1024);
 
 			mips_init();
-			mips_reset(NULL);
+			mips_reset(nullptr);
 			psx_hw_init();
 			SPU2init();
-			SPU2open(NULL);
+			SPU2open(nullptr);
 
 			mipsinfo.i = initialPC;
 			mips_set_info(CPUINFO_INT_PC, &mipsinfo);

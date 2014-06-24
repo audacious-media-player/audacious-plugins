@@ -50,7 +50,7 @@ static const char * const resample_defaults[] = {
  "96000", "96000",
  "176400", "44100",
  "192000", "96000",
- NULL};
+ nullptr};
 
 static SRC_STATE * state;
 static int stored_channels;
@@ -58,10 +58,10 @@ static double ratio;
 static float * buffer;
 static int buffer_samples;
 
-bool_t resample_init (void)
+bool resample_init (void)
 {
     aud_config_set_defaults ("resample", resample_defaults);
-    return TRUE;
+    return true;
 }
 
 void resample_cleanup (void)
@@ -69,11 +69,11 @@ void resample_cleanup (void)
     if (state)
     {
         src_delete (state);
-        state = NULL;
+        state = nullptr;
     }
 
     g_free (buffer);
-    buffer = NULL;
+    buffer = nullptr;
     buffer_samples = 0;
 }
 
@@ -82,7 +82,7 @@ void resample_start (int * channels, int * rate)
     if (state)
     {
         src_delete (state);
-        state = NULL;
+        state = nullptr;
     }
 
     int new_rate = 0;
@@ -101,7 +101,7 @@ void resample_start (int * channels, int * rate)
     int method = aud_get_int ("resample", "method");
     int error;
 
-    if ((state = src_new (method, * channels, & error)) == NULL)
+    if ((state = src_new (method, * channels, & error)) == nullptr)
     {
         RESAMPLE_ERROR (error);
         return;
@@ -112,7 +112,7 @@ void resample_start (int * channels, int * rate)
     * rate = new_rate;
 }
 
-void do_resample (float * * data, int * samples, bool_t finish)
+void do_resample (float * * data, int * samples, bool finish)
 {
     if (! state || ! * samples)
         return;
@@ -145,7 +145,7 @@ void do_resample (float * * data, int * samples, bool_t finish)
 
 void resample_process (float * * data, int * samples)
 {
-    do_resample (data, samples, FALSE);
+    do_resample (data, samples, false);
 }
 
 void resample_flush (void)
@@ -157,7 +157,7 @@ void resample_flush (void)
 
 void resample_finish (float * * data, int * samples)
 {
-    do_resample (data, samples, TRUE);
+    do_resample (data, samples, true);
     resample_flush ();
 }
 

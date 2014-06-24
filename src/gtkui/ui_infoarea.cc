@@ -47,7 +47,7 @@ typedef struct {
     String last_title, last_artist, last_album;
     float alpha, last_alpha;
 
-    bool_t stopped;
+    gboolean stopped;
     int fade_timeout;
 
     GdkPixbuf * pb, * last_pb;
@@ -61,7 +61,7 @@ static struct {
 
 /****************************************************************************/
 
-static UIInfoArea * area = NULL;
+static UIInfoArea * area = nullptr;
 
 static void vis_render_cb (const float * freq)
 {
@@ -144,7 +144,7 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, int x, int y, int
     cairo_set_source_rgba(cr, r, g, b, a);
 
     PangoFontDescription * desc = pango_font_description_from_string (font);
-    PangoLayout * pl = gtk_widget_create_pango_layout (widget, NULL);
+    PangoLayout * pl = gtk_widget_create_pango_layout (widget, nullptr);
     pango_layout_set_text (pl, text, -1);
     pango_layout_set_font_description(pl, desc);
     pango_font_description_free(desc);
@@ -274,13 +274,13 @@ static void draw_album_art (cairo_t * cr)
 {
     g_return_if_fail (area);
 
-    if (area->pb != NULL)
+    if (area->pb != nullptr)
     {
         gdk_cairo_set_source_pixbuf (cr, area->pb, SPACING, SPACING);
         cairo_paint_with_alpha (cr, area->alpha);
     }
 
-    if (area->last_pb != NULL)
+    if (area->last_pb != nullptr)
     {
         gdk_cairo_set_source_pixbuf (cr, area->last_pb, SPACING, SPACING);
         cairo_paint_with_alpha (cr, area->last_alpha);
@@ -297,22 +297,22 @@ static void draw_title (cairo_t * cr)
     int x = ICON_SIZE + SPACING * 2;
     int width = alloc.width - x;
 
-    if (area->title != NULL)
+    if (area->title != nullptr)
         draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->alpha,
          "18", area->title);
-    if (area->last_title != NULL)
+    if (area->last_title != nullptr)
         draw_text (area->main, cr, x, SPACING, width, 1, 1, 1, area->last_alpha,
          "18", area->last_title);
-    if (area->artist != NULL)
+    if (area->artist != nullptr)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
          area->alpha, "9", area->artist);
-    if (area->last_artist != NULL)
+    if (area->last_artist != nullptr)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE / 2, width, 1, 1, 1,
          area->last_alpha, "9", area->last_artist);
-    if (area->album != NULL)
+    if (area->album != nullptr)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
          0.7, 0.7, area->alpha, "9", area->album);
-    if (area->last_album != NULL)
+    if (area->last_album != nullptr)
         draw_text (area->main, cr, x, SPACING + ICON_SIZE * 3 / 4, width, 0.7,
          0.7, 0.7, area->last_alpha, "9", area->last_album);
 }
@@ -330,10 +330,10 @@ static int expose_cb (GtkWidget * widget, GdkEventExpose * event)
     return TRUE;
 }
 
-static bool_t ui_infoarea_do_fade (void)
+static gboolean ui_infoarea_do_fade (void)
 {
     g_return_val_if_fail (area, FALSE);
-    bool_t ret = FALSE;
+    gboolean ret = FALSE;
 
     if (aud_drct_get_playing () && area->alpha < 1)
     {
@@ -411,7 +411,7 @@ static void infoarea_next (void)
     if (area->last_pb)
         g_object_unref (area->last_pb);
     area->last_pb = area->pb;
-    area->pb = NULL;
+    area->pb = nullptr;
 
     area->last_title = std::move (area->title);
     area->last_artist = std::move (area->artist);
@@ -457,7 +457,7 @@ static void realize_cb (GtkWidget * widget)
     gdk_window_ensure_native (gtk_widget_get_window (widget));
 }
 
-void ui_infoarea_show_vis (bool_t show)
+void ui_infoarea_show_vis (gboolean show)
 {
     if (! area)
         return;
@@ -470,12 +470,12 @@ void ui_infoarea_show_vis (bool_t show)
         vis.widget = gtk_drawing_area_new ();
 
         /* note: "realize" signal must be connected before adding to box */
-        g_signal_connect (vis.widget, "realize", (GCallback) realize_cb, NULL);
+        g_signal_connect (vis.widget, "realize", (GCallback) realize_cb, nullptr);
 
         gtk_widget_set_size_request (vis.widget, VIS_WIDTH + 2 * SPACING, HEIGHT);
         gtk_box_pack_start ((GtkBox *) area->box, vis.widget, FALSE, FALSE, 0);
 
-        g_signal_connect (vis.widget, "expose-event", (GCallback) expose_vis_cb, NULL);
+        g_signal_connect (vis.widget, "expose-event", (GCallback) expose_vis_cb, nullptr);
         gtk_widget_show (vis.widget);
 
         aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
@@ -518,12 +518,12 @@ static void destroy_cb (GtkWidget * widget)
         g_object_unref (area->last_pb);
 
     delete area;
-    area = NULL;
+    area = nullptr;
 }
 
 GtkWidget * ui_infoarea_new (void)
 {
-    g_return_val_if_fail (! area, NULL);
+    g_return_val_if_fail (! area, nullptr);
     area = new UIInfoArea ();
 
     area->box = gtk_hbox_new (FALSE, 0);
@@ -532,14 +532,14 @@ GtkWidget * ui_infoarea_new (void)
     gtk_widget_set_size_request (area->main, ICON_SIZE + 2 * SPACING, HEIGHT);
     gtk_box_pack_start ((GtkBox *) area->box, area->main, TRUE, TRUE, 0);
 
-    g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, NULL);
+    g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, nullptr);
 
-    hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, NULL);
-    hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, NULL);
-    hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, NULL);
-    hook_associate ("current art ready", (HookFunction) album_art_ready, NULL);
+    hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, nullptr);
+    hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, nullptr);
+    hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, nullptr);
+    hook_associate ("current art ready", (HookFunction) album_art_ready, nullptr);
 
-    g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, NULL);
+    g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, nullptr);
 
     if (aud_drct_get_playing ())
     {
@@ -555,7 +555,7 @@ GtkWidget * ui_infoarea_new (void)
         }
     }
 
-    GtkWidget * frame = gtk_frame_new (NULL);
+    GtkWidget * frame = gtk_frame_new (nullptr);
     gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
     gtk_container_add ((GtkContainer *) frame, area->box);
     return frame;

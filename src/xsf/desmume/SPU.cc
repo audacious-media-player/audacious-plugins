@@ -74,7 +74,7 @@ typedef struct
 
 static SPU_struct spu = { 0, 0, 0 };
 
-static SoundInterface_struct *SNDCore=NULL;
+static SoundInterface_struct *SNDCore=nullptr;
 extern SoundInterface_struct *SNDCoreList[];
 
 int SPU_ChangeSoundCore(int coreid, int buffersize)
@@ -103,7 +103,7 @@ int SPU_ChangeSoundCore(int coreid, int buffersize)
 		coreid = 0; // Assume we want the first one
 
 	// Go through core list and find the id
-	for (i = 0; SNDCoreList[i] != NULL; i++)
+	for (i = 0; SNDCoreList[i] != nullptr; i++)
 	{
 		if (SNDCoreList[i]->id == coreid)
 		{
@@ -113,7 +113,7 @@ int SPU_ChangeSoundCore(int coreid, int buffersize)
 		}
 	}
 
-	if (SNDCore == NULL)
+	if (SNDCore == nullptr)
 	{
 		SPU_DeInit();
 		return -1;
@@ -243,7 +243,7 @@ static void start_channel(SChannel *ch)
 			u8 *p = MMU.MMU_MEM[1][(ch->addr >> 20) & 0xff];
 			u32 ofs = MMU.MMU_MASK[1][(ch->addr >> 20) & 0xff] & ch->addr;
 			u32 size = ((ch->length + ch->loop) << 2);
-			if((p != NULL) && check_valid(ch->addr, size))
+			if((p != nullptr) && check_valid(ch->addr, size))
 			{
 				ch->buf8 = p + ofs;
 				ch->looppos = ch->loop << 2;
@@ -258,7 +258,7 @@ static void start_channel(SChannel *ch)
 			u8 *p = MMU.MMU_MEM[1][(ch->addr >> 20) & 0xff];
 			u32 ofs = MMU.MMU_MASK[1][(ch->addr >> 20) & 0xff] & ch->addr;
 			u32 size = ((ch->length + ch->loop) << 1);
-			if((p != NULL) && check_valid(ch->addr, size << 1))
+			if((p != nullptr) && check_valid(ch->addr, size << 1))
 			{
 				ch->buf16 = (s16 *)(p + ofs - (ofs & 1));
 				ch->looppos = ch->loop << 1;
@@ -273,7 +273,7 @@ static void start_channel(SChannel *ch)
 			u8 *p = MMU.MMU_MEM[1][(ch->addr >> 20) & 0xff];
 			u32 ofs = MMU.MMU_MASK[1][(ch->addr >> 20) & 0xff] & ch->addr;
 			u32 size = ((ch->length + ch->loop) << 3);
-			if((p != NULL) && check_valid(ch->addr, size >> 1))
+			if((p != nullptr) && check_valid(ch->addr, size >> 1))
 			{
 				ch->buf8 = p + ofs;
 #ifdef WORDS_BIGENDIAN

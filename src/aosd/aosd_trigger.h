@@ -27,9 +27,9 @@
 
 
 /* trigger public API */
-void aosd_trigger_get_codes_array ( gint ** , gint * );
-const gchar * aosd_trigger_get_name ( gint );
-const gchar * aosd_trigger_get_desc ( gint );
+void aosd_trigger_get_codes_array ( int ** , int * );
+const char * aosd_trigger_get_name ( int );
+const char * aosd_trigger_get_desc ( int );
 void aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger );
 void aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger );
 

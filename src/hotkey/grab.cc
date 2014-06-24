@@ -40,7 +40,7 @@
 #include "plugin.h"
 
 
-static gint grabbed = 0;
+static int grabbed = 0;
 static unsigned int numlock_mask = 0;
 static unsigned int scrolllock_mask = 0;
 static unsigned int capslock_mask = 0;
@@ -67,7 +67,7 @@ static void get_offending_modifiers (Display * dpy)
     */
     modmap = XGetModifierMapping (dpy);
 
-    if (modmap != NULL && modmap->max_keypermod > 0)
+    if (modmap != nullptr && modmap->max_keypermod > 0)
     {
         for (i = 0; i < 8 * modmap->max_keypermod; i++)
         {
@@ -376,7 +376,7 @@ gdk_filter(GdkXEvent *xevent,
 gboolean setup_filter()
 {
     gdk_window_add_filter (gdk_screen_get_root_window
-     (gdk_screen_get_default ()), gdk_filter, NULL);
+     (gdk_screen_get_default ()), gdk_filter, nullptr);
 
     return TRUE;
 }
@@ -384,5 +384,5 @@ gboolean setup_filter()
 void release_filter()
 {
     gdk_window_remove_filter (gdk_screen_get_root_window
-     (gdk_screen_get_default ()), gdk_filter, NULL);
+     (gdk_screen_get_default ()), gdk_filter, nullptr);
 }

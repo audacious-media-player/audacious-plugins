@@ -24,14 +24,14 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
+GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
  gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr));
-void window_set_size (GtkWidget * window, gint w, gint h);
+void window_set_size (GtkWidget * window, int w, int h);
 void window_set_shaded (GtkWidget * window, gboolean shaded);
 void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
- gint x, gint y);
+ int x, int y);
 void window_move_widget (GtkWidget * window, gboolean shaded, GtkWidget *
- widget, gint x, gint y);
+ widget, int x, int y);
 void window_show_all (GtkWidget * window);
 
 #endif

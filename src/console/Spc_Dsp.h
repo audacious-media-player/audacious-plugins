@@ -13,7 +13,7 @@ public:
 	// Initializes DSP and has it use the 64K RAM provided
 	void init( void* ram_64k );
 
-	// Sets destination for output samples. If out is NULL or out_size is 0,
+	// Sets destination for output samples. If out is nullptr or out_size is 0,
 	// doesn't generate any.
 	typedef short sample_t;
 	void set_output( sample_t* out, int out_size );
