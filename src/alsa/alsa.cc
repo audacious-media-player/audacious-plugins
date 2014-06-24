@@ -608,7 +608,7 @@ void alsa_open_mixer (void)
 
     alsa_mixer = nullptr;
 
-    if (alsa_config_mixer_element == nullptr)
+    if (! alsa_config_mixer_element[0])
         goto FAILED;
 
     AUDDBG ("Opening mixer card %s.\n", (const char *) alsa_config_mixer);

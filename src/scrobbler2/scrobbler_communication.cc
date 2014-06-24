@@ -435,7 +435,7 @@ static void scrobble_cached_queue() {
                         AUDDBG("SCROBBLE NOT OK. Error code: %s. Error detail: %s.\n",
                          (const char *)error_code, (const char *)error_detail);
 
-                        if (error_code == nullptr) { //net error(?) or the answer from last.fm was not well read
+                        if (! error_code) { //net error(?) or the answer from last.fm was not well read
                             //scrobble to be retried
                         }
                         else if (g_strcmp0(error_code, "11") == 0 ||

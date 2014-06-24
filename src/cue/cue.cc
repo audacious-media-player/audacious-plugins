@@ -90,7 +90,7 @@ static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
 
     for (int track = 1; track <= tracks; track ++)
     {
-        if (current == nullptr || filename == nullptr)
+        if (current == nullptr || ! filename)
             return false;
 
         if (! base_tuple_scanned)
@@ -104,7 +104,7 @@ static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
         Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : nullptr;
         String next_filename = (next != nullptr) ? String (uri_construct
          (track_get_filename (next), cue_filename)) : String ();
-        bool last_track = (next_filename == nullptr || strcmp (next_filename, filename));
+        bool last_track = (! next_filename || strcmp (next_filename, filename));
 
         Tuple tuple = base_tuple.ref ();
         tuple.set_filename (filename);

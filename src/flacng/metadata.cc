@@ -108,7 +108,7 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     String val = tuple.get_str (tuple_name);
 
-    if (val == nullptr)
+    if (! val)
         return;
 
     StringBuf str = str_printf ("%s=%s", field_name, (const char *) val);
