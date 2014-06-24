@@ -107,7 +107,7 @@ aosd_callback_list_free ( GList * list )
 static gboolean
 aosd_cb_configure_position_expose ( GtkWidget * darea ,
                                     GdkEventExpose * event ,
-                                    gpointer coord_gp )
+                                    void * coord_gp )
 {
   int coord = GPOINTER_TO_INT(coord_gp);
 
@@ -342,7 +342,7 @@ aosd_ui_configure_animation ( aosd_cfg_t * cfg , GList ** cb_list )
 
 static void
 aosd_cb_configure_text_font_shadow_toggle ( GtkToggleButton * shadow_togglebt ,
-                                            gpointer shadow_colorbt )
+                                            void * shadow_colorbt )
 {
   if ( gtk_toggle_button_get_active( shadow_togglebt ) == TRUE )
     gtk_widget_set_sensitive( GTK_WIDGET(shadow_colorbt) , TRUE );
@@ -559,7 +559,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
 
 
 static void
-aosd_cb_configure_trigger_lvchanged ( GtkTreeSelection *sel , gpointer nb )
+aosd_cb_configure_trigger_lvchanged ( GtkTreeSelection *sel , void * nb )
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
@@ -687,7 +687,7 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
 
 #ifdef HAVE_XCOMPOSITE
 static void
-aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , gpointer status_hbox )
+aosd_cb_configure_misc_transp_real_clicked ( GtkToggleButton * real_rbt , void * status_hbox )
 {
   GtkWidget *img = (GtkWidget *) g_object_get_data( G_OBJECT(status_hbox) , "img" );
   GtkWidget *label = (GtkWidget *) g_object_get_data( G_OBJECT(status_hbox) , "label" );
@@ -816,7 +816,7 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
 
 
 static void
-aosd_cb_configure_test ( gpointer cfg_win )
+aosd_cb_configure_test ( void * cfg_win )
 {
   char *markup_message = nullptr;
   aosd_cfg_t *cfg = aosd_cfg_new();
@@ -838,7 +838,7 @@ aosd_cb_configure_test ( gpointer cfg_win )
 
 
 static void
-aosd_cb_configure_cancel ( gpointer cfg_win )
+aosd_cb_configure_cancel ( void * cfg_win )
 {
   GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
   aosd_callback_list_free( cb_list );
@@ -851,7 +851,7 @@ aosd_cb_configure_cancel ( gpointer cfg_win )
 
 
 static void
-aosd_cb_configure_ok ( gpointer cfg_win )
+aosd_cb_configure_ok ( void * cfg_win )
 {
   //char *markup_message = nullptr;
   aosd_cfg_t *cfg = aosd_cfg_new();

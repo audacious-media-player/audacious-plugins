@@ -633,7 +633,7 @@ static gboolean treat_migrate_config() {
 
 
 //Scrobbling will only be enabled after the first connection test passed
-gpointer scrobbling_thread (gpointer input_data) {
+void * scrobbling_thread (void * input_data) {
 
     while (scrobbler_running) {
 

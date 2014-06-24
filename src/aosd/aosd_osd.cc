@@ -46,7 +46,7 @@ typedef struct
 {
   cairo_surface_t * surface;
   float alpha;
-  gpointer user_data;
+  void * user_data;
   int width;
   int height;
   int deco_code;
@@ -307,7 +307,7 @@ aosd_osd_create ( void )
 
 
 static gboolean
-aosd_timer_func ( gpointer none )
+aosd_timer_func ( void * none )
 {
   static float display_time = 0;
 

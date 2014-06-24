@@ -54,7 +54,7 @@ static void info_change (void)
 }
 
 static void
-ui_main_evlistener_hide_seekbar(gpointer hook_data, gpointer user_data)
+ui_main_evlistener_hide_seekbar(void * hook_data, void * user_data)
 {
     mainwin_disable_seekbar();
 }
@@ -85,7 +85,7 @@ void ui_main_evlistener_playback_begin (void * hook_data, void * user_data)
 }
 
 static void
-ui_main_evlistener_playback_stop(gpointer hook_data, gpointer user_data)
+ui_main_evlistener_playback_stop(void * hook_data, void * user_data)
 {
     mainwin_clear_song_info ();
 }
@@ -120,7 +120,7 @@ void ui_main_evlistener_playback_pause (void * hook_data, void * user_data)
 }
 
 static void
-ui_main_evlistener_playback_unpause(gpointer hook_data, gpointer user_data)
+ui_main_evlistener_playback_unpause(void * hook_data, void * user_data)
 {
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
 }

@@ -68,7 +68,7 @@ StringBuf clean_string (const char *string) {
     return temp;
 }
 
-static gboolean queue_track_to_scrobble (gpointer data) {
+static gboolean queue_track_to_scrobble (void * data) {
     AUDDBG("The playing track is going to be ENQUEUED!\n.");
 
     char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", nullptr);

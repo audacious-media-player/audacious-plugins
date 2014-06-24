@@ -52,7 +52,7 @@ void on_skin_view_drag_data_received(GtkWidget * widget,
                                 int x, int y,
                                 GtkSelectionData * selection_data,
                                 unsigned info, unsigned time,
-                                gpointer user_data);
+                                void * user_data);
 
 extern const PluginPreferences skins_prefs;
 

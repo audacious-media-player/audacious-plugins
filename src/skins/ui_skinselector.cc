@@ -173,7 +173,7 @@ skinlist_add(const char * filename)
 }
 
 static gboolean
-scan_skindir_func(const char * path, const char * basename, gpointer data)
+scan_skindir_func(const char * path, const char * basename, void * data)
 {
     if (g_file_test(path, G_FILE_TEST_IS_REGULAR)) {
         if (file_is_archive(path)) {
@@ -324,7 +324,7 @@ void skin_view_update (GtkTreeView * treeview)
 
 static void
 skin_view_on_cursor_changed(GtkTreeView * treeview,
-                            gpointer data)
+                            void * data)
 {
     GtkTreeModel *model;
     GtkTreeSelection *selection;

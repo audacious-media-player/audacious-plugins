@@ -423,7 +423,7 @@ static void alarm_configure(void)
 }
 
 /* functions for greying out the time for days */
-void on_day_def_toggled(GtkToggleButton *togglebutton, gpointer user_data, int daynum)
+void on_day_def_toggled(GtkToggleButton *togglebutton, void * user_data, int daynum)
 {
     GtkWidget *w;
 
@@ -456,44 +456,44 @@ void on_day_def_toggled(GtkToggleButton *togglebutton, gpointer user_data, int d
     }
 }
 
-void on_sun_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_sun_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 0);
 }
 
-void on_mon_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_mon_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 1);
 }
 
-void on_tue_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_tue_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 2);
 }
 
-void on_wed_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_wed_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 3);
 }
 
-void on_thu_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_thu_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 4);
 }
 
-void on_fri_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_fri_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 5);
 }
 
-void on_sat_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_sat_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 6);
 }
 
 /* END: greying things */
 
-void alarm_current_volume(GtkButton *button, gpointer data)
+void alarm_current_volume(GtkButton *button, void * data)
 {
     int vol;
     GtkAdjustment *adj;
@@ -626,7 +626,7 @@ static void *alarm_stop_thread(void *args)
     return(nullptr);
 }
 
-void alarm_stop_cancel(GtkWidget *w, gpointer data)
+void alarm_stop_cancel(GtkWidget *w, void * data)
 {
     AUDDBG("alarm_stop_cancel\n");
     if (pthread_cancel(stop.tid) == 0)

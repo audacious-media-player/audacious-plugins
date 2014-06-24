@@ -186,7 +186,7 @@ static GtkWidget *configure_win = nullptr;
 static GtkWidget *quality_frame, *quality_vbox, *quality_hbox1, *quality_spin, *quality_label;
 static GtkAdjustment * quality_adj;
 
-static void quality_change(GtkAdjustment *adjustment, gpointer user_data)
+static void quality_change(GtkAdjustment *adjustment, void * user_data)
 {
     v_base_quality = gtk_spin_button_get_value ((GtkSpinButton *) quality_spin) / 10;
     aud_set_double ("filewriter_vorbis", "base_quality", v_base_quality);

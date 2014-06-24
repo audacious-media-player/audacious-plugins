@@ -81,10 +81,10 @@ static GtkWidget * button_add, * button_sub, * button_sel, * button_misc,
  * button_list;
 
 static void playlistwin_select_search_cbt_cb(GtkWidget *called_cbt,
-                                             gpointer other_cbt);
+                                             void * other_cbt);
 static gboolean playlistwin_select_search_kp_cb(GtkWidget *entry,
                                                 GdkEventKey *event,
-                                                gpointer searchdlg_win);
+                                                void * searchdlg_win);
 
 static int resize_base_width, resize_base_height;
 static int drop_position;
@@ -439,7 +439,7 @@ playlistwin_fileinfo(void)
 static void
 playlistwin_scrolled(GtkWidget * widget,
                      GdkEventScroll * event,
-                     gpointer callback_data)
+                     void * callback_data)
 {
     switch (event->direction)
     {
@@ -457,7 +457,7 @@ playlistwin_scrolled(GtkWidget * widget,
 static gboolean
 playlistwin_press(GtkWidget * widget,
                   GdkEventButton * event,
-                  gpointer callback_data)
+                  void * callback_data)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
      event->window == gtk_widget_get_window (widget) && event->y < 14)
@@ -1089,7 +1089,7 @@ action_playlist_select_all(void)
 
 
 static void
-playlistwin_select_search_cbt_cb(GtkWidget *called_cbt, gpointer other_cbt)
+playlistwin_select_search_cbt_cb(GtkWidget *called_cbt, void * other_cbt)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(called_cbt)) == TRUE)
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(other_cbt), FALSE);
@@ -1098,7 +1098,7 @@ playlistwin_select_search_cbt_cb(GtkWidget *called_cbt, gpointer other_cbt)
 
 static gboolean
 playlistwin_select_search_kp_cb(GtkWidget *entry, GdkEventKey *event,
-                                gpointer searchdlg_win)
+                                void * searchdlg_win)
 {
     switch (event->keyval)
     {

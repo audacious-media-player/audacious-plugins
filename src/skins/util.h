@@ -31,7 +31,7 @@
 #include <libaudcore/vfs.h>
 
 typedef gboolean(*DirForeachFunc) (const char *path, const char *basename,
-                                   gpointer user_data);
+                                   void * user_data);
 
 char * find_file_case (const char * folder, const char * basename);
 char * find_file_case_path (const char * folder, const char * basename);
@@ -42,7 +42,7 @@ char * text_parse_line (char * text);
 
 void del_directory(const char *dirname);
 gboolean dir_foreach(const char *path, DirForeachFunc function,
-                     gpointer user_data, GError **error);
+                     void * user_data, GError **error);
 
 GArray *string_to_garray(const char *str);
 

@@ -319,7 +319,7 @@ static void configure_response_cb (void)
     aud_set_bool ("filewriter", "use_suffix", use_suffix);
 }
 
-static void fileext_cb(GtkWidget *combo, gpointer data)
+static void fileext_cb(GtkWidget *combo, void * data)
 {
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
     set_plugin();
@@ -329,14 +329,14 @@ static void fileext_cb(GtkWidget *combo, gpointer data)
     gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
 }
 
-static void plugin_configure_cb(GtkWidget *button, gpointer data)
+static void plugin_configure_cb(GtkWidget *button, void * data)
 {
     if (plugin->configure)
         plugin->configure();
 }
 
 
-static void saveplace_original_cb(GtkWidget *button, gpointer data)
+static void saveplace_original_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
@@ -345,7 +345,7 @@ static void saveplace_original_cb(GtkWidget *button, gpointer data)
     }
 }
 
-static void saveplace_custom_cb(GtkWidget *button, gpointer data)
+static void saveplace_custom_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
@@ -354,7 +354,7 @@ static void saveplace_custom_cb(GtkWidget *button, gpointer data)
     }
 }
 
-static void filenamefromtags_cb(GtkWidget *button, gpointer data)
+static void filenamefromtags_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
@@ -365,7 +365,7 @@ static void filenamefromtags_cb(GtkWidget *button, gpointer data)
     }
 }
 
-static void filenamefromfilename_cb(GtkWidget *button, gpointer data)
+static void filenamefromfilename_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {

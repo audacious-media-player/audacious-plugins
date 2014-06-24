@@ -59,14 +59,14 @@ int aosd_trigger_codes[] =
 
 /* prototypes of trigger functions */
 static void aosd_trigger_func_pb_start_onoff ( gboolean );
-static void aosd_trigger_func_pb_start_cb ( gpointer , gpointer );
+static void aosd_trigger_func_pb_start_cb ( void * , void * );
 static void aosd_trigger_func_pb_titlechange_onoff ( gboolean );
-static void aosd_trigger_func_pb_titlechange_cb ( gpointer , gpointer );
+static void aosd_trigger_func_pb_titlechange_cb ( void * , void * );
 static void aosd_trigger_func_pb_pauseon_onoff ( gboolean );
-static void aosd_trigger_func_pb_pauseon_cb ( gpointer , gpointer );
+static void aosd_trigger_func_pb_pauseon_cb ( void * , void * );
 static void aosd_trigger_func_pb_pauseoff_onoff ( gboolean );
-static void aosd_trigger_func_pb_pauseoff_cb ( gpointer , gpointer );
-static void aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused );
+static void aosd_trigger_func_pb_pauseoff_cb ( void * , void * );
+static void aosd_trigger_func_hook_cb ( void * markup_text , void * unused );
 
 /* map trigger codes to trigger objects */
 aosd_trigger_t aosd_triggers[] =
@@ -166,7 +166,7 @@ aosd_trigger_func_pb_start_onoff(gboolean turn_on)
 }
 
 static void
-aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
+aosd_trigger_func_pb_start_cb(void * hook_data, void * user_data)
 {
   String title = aud_drct_get_title ();
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>%s</span>",
@@ -209,7 +209,7 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
 }
 
 static void
-aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
+aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
 {
   if (aud_drct_get_playing ())
   {
@@ -272,7 +272,7 @@ aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
 }
 
 static void
-aosd_trigger_func_pb_pauseon_cb ( gpointer unused1 , gpointer unused2 )
+aosd_trigger_func_pb_pauseon_cb ( void * unused1 , void * unused2 )
 {
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>Paused</span>",
    (const char *) global_config->osd->text.fonts_name[0]);
@@ -291,7 +291,7 @@ aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
 }
 
 static void
-aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
+aosd_trigger_func_pb_pauseoff_cb ( void * unused1 , void * unused2 )
 {
   int active = aud_playlist_get_active();
   int pos = aud_playlist_get_position(active);
@@ -320,7 +320,7 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
    If param != nullptr, display the supplied text in the OSD
    If param == nullptr, display the current playing song */
 static void
-aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused )
+aosd_trigger_func_hook_cb ( void * markup_text , void * unused )
 {
   if ( markup_text != nullptr )
   {

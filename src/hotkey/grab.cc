@@ -325,7 +325,7 @@ void ungrab_keys ( )
 static GdkFilterReturn
 gdk_filter(GdkXEvent *xevent,
        GdkEvent *event,
-       gpointer data)
+       void * data)
 {
     HotkeyConfiguration *hotkey;
     hotkey = &(get_config()->first);

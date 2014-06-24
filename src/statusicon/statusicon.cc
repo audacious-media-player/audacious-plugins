@@ -43,9 +43,9 @@
 
 static void si_popup_timer_start(GtkStatusIcon *);
 static void si_popup_timer_stop(GtkStatusIcon *);
-static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, gpointer);
+static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, void *);
 static void si_smallmenu_recreate(GtkStatusIcon *);
-static void si_popup_hide(gpointer icon);
+static void si_popup_hide(void * icon);
 
 static PluginHandle * get_plugin_self ();
 
@@ -82,7 +82,7 @@ static GtkStatusIcon *si_create(void)
     return icon;
 }
 
-static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpointer user_data)
+static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, void * user_data)
 {
     if (event->type != GDK_BUTTON_PRESS)
         return FALSE;
@@ -122,7 +122,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
     return TRUE;
 }
 
-static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpointer user_data)
+static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, void * user_data)
 {
     switch (event->direction)
     {
@@ -166,7 +166,7 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
     return FALSE;
 }
 
-static gboolean si_popup_show(gpointer icon)
+static gboolean si_popup_show(void * icon)
 {
     GdkRectangle area;
     int x, y;
@@ -201,7 +201,7 @@ static gboolean si_popup_show(gpointer icon)
     return TRUE;
 }
 
-static void si_popup_hide(gpointer icon)
+static void si_popup_hide(void * icon)
 {
     if (POPUP_IS_ACTIVE)
     {
@@ -210,7 +210,7 @@ static void si_popup_hide(gpointer icon)
     }
 }
 
-static void si_popup_reshow(gpointer data, gpointer icon)
+static void si_popup_reshow(void * data, void * icon)
 {
     if (POPUP_IS_ACTIVE)
     {
@@ -235,7 +235,7 @@ static void si_popup_timer_stop(GtkStatusIcon * icon)
     g_object_set_data(G_OBJECT(icon), "timer_active", GINT_TO_POINTER(0));
 }
 
-static gboolean si_cb_tooltip(GtkStatusIcon * icon, int x, int y, gboolean keyboard_mode, GtkTooltip * tooltip, gpointer user_data)
+static gboolean si_cb_tooltip(GtkStatusIcon * icon, int x, int y, gboolean keyboard_mode, GtkTooltip * tooltip, void * user_data)
 {
     GtkWidget *menu = (GtkWidget *) g_object_get_data(G_OBJECT(icon), "smenu");
 
@@ -248,7 +248,7 @@ static gboolean si_cb_tooltip(GtkStatusIcon * icon, int x, int y, gboolean keybo
     return FALSE;
 }
 
-static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, gpointer evbox)
+static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, void * evbox)
 {
     GtkWidget *si_smenu = (GtkWidget *) g_object_get_data(G_OBJECT(evbox), "smenu");
     gtk_menu_popup(GTK_MENU(si_smenu), nullptr, nullptr, nullptr, nullptr, button, time);
@@ -287,7 +287,7 @@ static void si_smallmenu_recreate(GtkStatusIcon * icon)
     recreate_smallmenu = FALSE;
 }
 
-static void si_window_close(gpointer data, gpointer user_data)
+static void si_window_close(void * data, void * user_data)
 {
     gboolean *handle = (gboolean*) data;
 

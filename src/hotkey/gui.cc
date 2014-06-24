@@ -59,11 +59,11 @@ typedef struct _KeyControls {
 } KeyControls;
 
 
-static void clear_keyboard (GtkWidget *widget, gpointer data);
-static void add_callback (GtkWidget *widget, gpointer data);
-static void cancel_callback (GtkWidget *widget, gpointer data);
-static void destroy_callback (GtkWidget *widget, gpointer data);
-static void ok_callback (GtkWidget *widget, gpointer data);
+static void clear_keyboard (GtkWidget *widget, void * data);
+static void add_callback (GtkWidget *widget, void * data);
+static void cancel_callback (GtkWidget *widget, void * data);
+static void destroy_callback (GtkWidget *widget, void * data);
+static void ok_callback (GtkWidget *widget, void * data);
 
 
 static const char * event_desc[EVENT_MAX] = {
@@ -136,7 +136,7 @@ static void set_keytext (GtkWidget *entry, int key, int mask, int type)
 static gboolean
 on_entry_key_press_event(GtkWidget * widget,
                          GdkEventKey * event,
-                         gpointer user_data)
+                         void * user_data)
 {
     KeyControls *controls = (KeyControls*) user_data;
     int is_mod;
@@ -176,7 +176,7 @@ on_entry_key_press_event(GtkWidget * widget,
         controls->hotkey.mask = mod;
         controls->hotkey.type = TYPE_KEY;
         if (controls->next == nullptr)
-            add_callback (nullptr, (gpointer) controls);
+            add_callback (nullptr, (void *) controls);
         else gtk_widget_grab_focus(GTK_WIDGET(controls->next->keytext));
     }
 
@@ -187,7 +187,7 @@ on_entry_key_press_event(GtkWidget * widget,
 static gboolean
 on_entry_key_release_event(GtkWidget * widget,
                            GdkEventKey * event,
-                           gpointer user_data)
+                           void * user_data)
 {
     KeyControls *controls = (KeyControls*) user_data;
     if (!gtk_widget_is_focus(widget)) return FALSE;
@@ -199,7 +199,7 @@ on_entry_key_release_event(GtkWidget * widget,
 static gboolean
 on_entry_button_press_event(GtkWidget * widget,
                             GdkEventButton * event,
-                            gpointer user_data)
+                            void * user_data)
 {
     KeyControls *controls = (KeyControls*) user_data;
     int mod;
@@ -243,7 +243,7 @@ on_entry_button_press_event(GtkWidget * widget,
         controls->hotkey.type = TYPE_MOUSE;
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
     if (controls->next == nullptr)
-        add_callback (nullptr, (gpointer) controls);
+        add_callback (nullptr, (void *) controls);
 
     return TRUE;
 }
@@ -251,7 +251,7 @@ on_entry_button_press_event(GtkWidget * widget,
 static gboolean
 on_entry_scroll_event(GtkWidget * widget,
                             GdkEventScroll * event,
-                            gpointer user_data)
+                            void * user_data)
 {
     KeyControls *controls = (KeyControls*) user_data;
     int mod;
@@ -288,7 +288,7 @@ on_entry_scroll_event(GtkWidget * widget,
         controls->hotkey.type = TYPE_MOUSE;
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
     if (controls->next == nullptr)
-        add_callback (nullptr, (gpointer) controls);
+        add_callback (nullptr, (void *) controls);
     return TRUE;
 }
 
@@ -337,13 +337,13 @@ KeyControls* add_event_controls(KeyControls* list,
 
 
     set_keytext(controls->keytext, controls->hotkey.key, controls->hotkey.mask, controls->hotkey.type);
-    g_signal_connect((gpointer)controls->keytext, "key_press_event",
+    g_signal_connect((void *)controls->keytext, "key_press_event",
                          G_CALLBACK(on_entry_key_press_event), controls);
-    g_signal_connect((gpointer)controls->keytext, "key_release_event",
+    g_signal_connect((void *)controls->keytext, "key_release_event",
                          G_CALLBACK(on_entry_key_release_event), controls);
-    g_signal_connect((gpointer)controls->keytext, "button_press_event",
+    g_signal_connect((void *)controls->keytext, "button_press_event",
                          G_CALLBACK(on_entry_button_press_event), controls);
-    g_signal_connect((gpointer)controls->keytext, "scroll_event",
+    g_signal_connect((void *)controls->keytext, "scroll_event",
                          G_CALLBACK(on_entry_scroll_event), controls);
 
 
@@ -498,7 +498,7 @@ void show_configure ()
     gtk_widget_show_all (GTK_WIDGET (window));
 }
 
-static void clear_keyboard (GtkWidget *widget, gpointer data)
+static void clear_keyboard (GtkWidget *widget, void * data)
 {
     KeyControls *controls= (KeyControls*)data;
 
@@ -563,7 +563,7 @@ static void clear_keyboard (GtkWidget *widget, gpointer data)
     }
 }
 
-void add_callback (GtkWidget *widget, gpointer data)
+void add_callback (GtkWidget *widget, void * data)
 {
     KeyControls* controls = (KeyControls*)data;
     HotkeyConfiguration temphotkey;
@@ -587,7 +587,7 @@ void add_callback (GtkWidget *widget, gpointer data)
     gtk_widget_show_all (GTK_WIDGET (controls->grid));
 }
 
-void destroy_callback (GtkWidget *widget, gpointer data)
+void destroy_callback (GtkWidget *widget, void * data)
 {
     KeyControls* controls = (KeyControls*)data;
     if (is_loaded())
@@ -602,12 +602,12 @@ void destroy_callback (GtkWidget *widget, gpointer data)
     }
 }
 
-void cancel_callback (GtkWidget *widget, gpointer data)
+void cancel_callback (GtkWidget *widget, void * data)
 {
     gtk_widget_destroy (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
 }
 
-void ok_callback (GtkWidget *widget, gpointer data)
+void ok_callback (GtkWidget *widget, void * data)
 {
     KeyControls *controls = (KeyControls*)data;
     PluginConfig* plugin_cfg = get_config();

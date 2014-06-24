@@ -86,7 +86,7 @@ static void bs2b_finish (float * * data, int * samples)
     bs2b_process (data, samples);
 }
 
-static void feed_value_changed (GtkRange * range, gpointer data)
+static void feed_value_changed (GtkRange * range, void * data)
 {
     int feed_level = gtk_range_get_value (range);
     aud_set_int ("bs2b", "feed", feed_level);
@@ -98,7 +98,7 @@ static char * feed_format_value (GtkScale * scale, double value)
     return g_strdup_printf ("%.1f dB", (float) value / 10);
 }
 
-static void fcut_value_changed (GtkRange * range, gpointer data)
+static void fcut_value_changed (GtkRange * range, void * data)
 {
     int fcut_level = gtk_range_get_value (range);
     aud_set_int ("bs2b", "fcut", fcut_level);
@@ -110,7 +110,7 @@ static char * fcut_format_value (GtkScale * scale, double value)
     return g_strdup_printf ("%d Hz, %d µs", (int) value, bs2b_level_delay ((int) value));
 }
 
-static void preset_button_clicked (GtkButton * button, gpointer data)
+static void preset_button_clicked (GtkButton * button, void * data)
 {
     int clevel = GPOINTER_TO_INT (data);
     gtk_range_set_value ((GtkRange *) feed_slider, clevel >> 16);

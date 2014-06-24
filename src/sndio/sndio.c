@@ -55,7 +55,7 @@ int	sndio_output_time(void);
 void	onmove_cb(void *, int);
 void	onvol_cb(void *, unsigned);
 
-void	configure_win_ok_cb(GtkWidget *, gpointer);
+void	configure_win_ok_cb(GtkWidget *, void *);
 
 static struct sio_par par;
 static struct sio_hdl *hdl;
@@ -359,7 +359,7 @@ onvol_cb(void *addr, unsigned ctl)
 }
 
 void
-configure_win_ok_cb(GtkWidget *w, gpointer data)
+configure_win_ok_cb(GtkWidget *w, void * data)
 {
 	aud_set_str("sndio", "audiodev", gtk_entry_get_text(GTK_ENTRY(adevice_entry)));
 	gtk_widget_destroy(configure_win);

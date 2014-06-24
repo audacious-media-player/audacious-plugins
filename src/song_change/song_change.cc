@@ -27,10 +27,10 @@
 
 static bool init (void);
 static void cleanup(void);
-static void songchange_playback_begin(gpointer unused, gpointer unused2);
-static void songchange_playback_end(gpointer unused, gpointer unused2);
-static void songchange_playlist_eof(gpointer unused, gpointer unused2);
-//static void songchange_playback_ttc(gpointer, gpointer);
+static void songchange_playback_begin(void * unused, void * unused2);
+static void songchange_playback_end(void * unused, void * unused2);
+static void songchange_playlist_eof(void * unused, void * unused2);
+//static void songchange_playback_ttc(void *, void *);
 
 typedef struct
 {
@@ -282,19 +282,19 @@ static bool init (void)
     return TRUE;
 }
 
-static void songchange_playback_begin(gpointer unused, gpointer unused2)
+static void songchange_playback_begin(void * unused, void * unused2)
 {
     do_command (cmd_line);
 }
 
-static void songchange_playback_end(gpointer unused, gpointer unused2)
+static void songchange_playback_end(void * unused, void * unused2)
 {
     do_command (cmd_line_after);
 }
 
 #if 0
     static void
-songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
+songchange_playback_ttc(void * plentry_gp, void * prevs_gp)
 {
     if ( ( aud_ip_state->playing ) && ( strcmp(cmd_line_ttc,"") ) )
     {
@@ -340,7 +340,7 @@ songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
 }
 #endif
 
-static void songchange_playlist_eof(gpointer unused, gpointer unused2)
+static void songchange_playlist_eof(void * unused, void * unused2)
 {
     do_command (cmd_line_end);
 }

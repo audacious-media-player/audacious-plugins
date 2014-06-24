@@ -58,15 +58,15 @@ hotkey_marshal_VOID__STRING_STRING (GClosure     *closure,
                                     GValue       *return_value,
                                     unsigned         n_param_values,
                                     const GValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data)
+                                    void *      invocation_hint,
+                                    void *      marshal_data)
 {
-    typedef void (*GMarshalFunc_VOID__STRING_STRING) (gpointer data1,
-                                                      gpointer arg_1,
-                                                      gpointer arg_2);
+    typedef void (*GMarshalFunc_VOID__STRING_STRING) (void * data1,
+                                                      void * arg_1,
+                                                      void * arg_2);
     GMarshalFunc_VOID__STRING_STRING callback;
     GCClosure *cc = (GCClosure*) closure;
-    gpointer data1;
+    void * data1;
 
     g_return_if_fail (n_param_values == 3);
 

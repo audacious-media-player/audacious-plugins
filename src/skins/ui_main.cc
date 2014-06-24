@@ -431,7 +431,7 @@ static void mainwin_scrolled (GtkWidget * widget, GdkEventScroll * event, void *
 static gboolean
 mainwin_mouse_button_press(GtkWidget * widget,
                            GdkEventButton * event,
-                           gpointer callback_data)
+                           void * callback_data)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
      event->window == gtk_widget_get_window (widget) && event->y < 14)
@@ -526,7 +526,7 @@ mainwin_drag_data_received(GtkWidget * widget,
                            GtkSelectionData * selection_data,
                            unsigned info,
                            unsigned time,
-                           gpointer user_data)
+                           void * user_data)
 {
     g_return_if_fail(selection_data != nullptr);
 

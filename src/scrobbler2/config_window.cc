@@ -26,7 +26,7 @@ static GtkWidget *additional_details_icon;
 static GtkWidget *additional_details_label;
 
 
-static gboolean permission_checker_thread (gpointer data) {
+static gboolean permission_checker_thread (void * data) {
     if (permission_check_requested == TRUE) {
         //the answer hasn't arrived yet
         return TRUE;
@@ -103,7 +103,7 @@ static void cleanup_window() {
     gtk_label_set_label(GTK_LABEL(additional_details_label), "");
 }
 
-static void permission_checker (GtkButton *button12, gpointer data) {
+static void permission_checker (GtkButton *button12, void * data) {
     cleanup_window();
 
     gtk_image_set_from_icon_name(GTK_IMAGE(permission_status_icon), "system-run", GTK_ICON_SIZE_SMALL_TOOLBAR);
@@ -126,7 +126,7 @@ static void permission_checker (GtkButton *button12, gpointer data) {
     gdk_threads_add_timeout_seconds(1, permission_checker_thread, data);
 }
 
-static void revoke_permissions (GtkButton *revoke_button2, gpointer data) {
+static void revoke_permissions (GtkButton *revoke_button2, void * data) {
     cleanup_window();
 
     pthread_mutex_lock(&communication_mutex);

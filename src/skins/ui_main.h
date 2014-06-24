@@ -80,7 +80,7 @@ void mainwin_drag_data_received(GtkWidget * widget,
                                 GtkSelectionData * selection_data,
                                 unsigned info,
                                 unsigned time,
-                                gpointer user_data);
+                                void * user_data);
 
 gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 

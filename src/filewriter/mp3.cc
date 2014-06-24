@@ -359,7 +359,7 @@ static void mp3_close(void)
 
 /* Various Signal-Fuctions */
 
-static void algo_qual(GtkAdjustment * adjustment, gpointer user_data)
+static void algo_qual(GtkAdjustment * adjustment, void * user_data)
 {
 
     algo_quality_val =
@@ -389,14 +389,14 @@ static void bitrate_changed (GtkComboBox * combo)
 }
 
 static void compression_change(GtkAdjustment * adjustment,
-                               gpointer user_data)
+                               void * user_data)
 {
     compression_val = gtk_spin_button_get_value ((GtkSpinButton *)
      compression_spin);
 }
 
 static void encoding_toggle(GtkToggleButton * togglebutton,
-                            gpointer user_data)
+                            void * user_data)
 {
 
     enc_toggle_val = GPOINTER_TO_INT(user_data);
@@ -414,7 +414,7 @@ static void mode_changed (GtkComboBox * combo)
 }
 
 static void toggle_enforce_iso(GtkToggleButton * togglebutton,
-                               gpointer user_data)
+                               void * user_data)
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(enforce_iso_toggle))
@@ -426,7 +426,7 @@ static void toggle_enforce_iso(GtkToggleButton * togglebutton,
 }
 
 static void toggle_error_protect(GtkToggleButton * togglebutton,
-                                 gpointer user_data)
+                                 void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -437,7 +437,7 @@ static void toggle_error_protect(GtkToggleButton * togglebutton,
 
 }
 
-static void toggle_vbr(GtkToggleButton * togglebutton, gpointer user_data)
+static void toggle_vbr(GtkToggleButton * togglebutton, void * user_data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(vbr_toggle)) ==
         TRUE) {
@@ -467,7 +467,7 @@ static void toggle_vbr(GtkToggleButton * togglebutton, gpointer user_data)
 }
 
 static void vbr_abr_toggle(GtkToggleButton * togglebutton,
-                           gpointer user_data)
+                           void * user_data)
 {
     if (!strcmp((char *) user_data, "VBR")) {
         gtk_widget_set_sensitive(abr_frame, FALSE);
@@ -502,7 +502,7 @@ static void vbr_max_changed (GtkComboBox * combo)
 }
 
 static void toggle_enforce_min(GtkToggleButton * togglebutton,
-                               gpointer user_data)
+                               void * user_data)
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(enforce_min_toggle))
@@ -513,7 +513,7 @@ static void toggle_enforce_min(GtkToggleButton * togglebutton,
 
 }
 
-static void vbr_qual(GtkAdjustment * adjustment, gpointer user_data)
+static void vbr_qual(GtkAdjustment * adjustment, void * user_data)
 {
 
     vbr_quality_val =
@@ -532,7 +532,7 @@ static void abr_changed (GtkComboBox * combo)
         abr_val = 128;
 }
 
-static void toggle_xing(GtkToggleButton * togglebutton, gpointer user_data)
+static void toggle_xing(GtkToggleButton * togglebutton, void * user_data)
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(xing_header_toggle)) == TRUE)
@@ -543,7 +543,7 @@ static void toggle_xing(GtkToggleButton * togglebutton, gpointer user_data)
 }
 
 static void toggle_original(GtkToggleButton * togglebutton,
-                            gpointer user_data)
+                            void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -555,7 +555,7 @@ static void toggle_original(GtkToggleButton * togglebutton,
 }
 
 static void toggle_copyright(GtkToggleButton * togglebutton,
-                             gpointer user_data)
+                             void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -567,7 +567,7 @@ static void toggle_copyright(GtkToggleButton * togglebutton,
 }
 
 static void force_v2_toggle(GtkToggleButton * togglebutton,
-                            gpointer user_data)
+                            void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -588,7 +588,7 @@ static void force_v2_toggle(GtkToggleButton * togglebutton,
 }
 
 static void id3_only_version(GtkToggleButton * togglebutton,
-                             gpointer user_data)
+                             void * user_data)
 {
     if (!strcmp((char *) user_data, "v1") && inside != 1) {
         if (gtk_toggle_button_get_active

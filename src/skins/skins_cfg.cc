@@ -294,7 +294,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
                                 int x, int y,
                                 GtkSelectionData * selection_data,
                                 unsigned info, unsigned time,
-                                gpointer user_data)
+                                void * user_data)
 {
     const char * data = (const char *) gtk_selection_data_get_data (selection_data);
     g_return_if_fail (data);

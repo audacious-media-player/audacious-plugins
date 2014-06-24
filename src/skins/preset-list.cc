@@ -88,7 +88,7 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, const char *filename)
 }
 
 static void
-equalizerwin_save_ok(GtkWidget * widget, gpointer data)
+equalizerwin_save_ok(GtkWidget * widget, void * data)
 {
     const char *text;
 
@@ -102,7 +102,7 @@ equalizerwin_save_ok(GtkWidget * widget, gpointer data)
 
 static void
 equalizerwin_save_select(GtkTreeView *treeview, GtkTreePath *path,
-                         GtkTreeViewColumn *col, gpointer data)
+                         GtkTreeViewColumn *col, void * data)
 {
     char *text;
 
@@ -124,7 +124,7 @@ equalizerwin_save_select(GtkTreeView *treeview, GtkTreePath *path,
 }
 
 static void
-equalizerwin_load_ok(GtkWidget *widget, gpointer data)
+equalizerwin_load_ok(GtkWidget *widget, void * data)
 {
     char *text;
 
@@ -148,19 +148,19 @@ equalizerwin_load_ok(GtkWidget *widget, gpointer data)
 
 static void
 equalizerwin_load_select(GtkTreeView *treeview, GtkTreePath *path,
-                         GtkTreeViewColumn *col, gpointer data)
+                         GtkTreeViewColumn *col, void * data)
 {
     equalizerwin_load_ok(nullptr, treeview);
 }
 
 static void
-equalizerwin_delete_delete(GtkWidget *widget, gpointer data)
+equalizerwin_delete_delete(GtkWidget *widget, void * data)
 {
     equalizerwin_delete_selected_presets(GTK_TREE_VIEW(data), "eq.preset");
 }
 
 static void
-equalizerwin_save_auto_ok(GtkWidget *widget, gpointer data)
+equalizerwin_save_auto_ok(GtkWidget *widget, void * data)
 {
     const char *text;
 
@@ -174,7 +174,7 @@ equalizerwin_save_auto_ok(GtkWidget *widget, gpointer data)
 
 static void
 equalizerwin_save_auto_select(GtkTreeView *treeview, GtkTreePath *path,
-                              GtkTreeViewColumn *col, gpointer data)
+                              GtkTreeViewColumn *col, void * data)
 {
     char *text;
 
@@ -196,7 +196,7 @@ equalizerwin_save_auto_select(GtkTreeView *treeview, GtkTreePath *path,
 }
 
 static void
-equalizerwin_load_auto_ok(GtkWidget *widget, gpointer data)
+equalizerwin_load_auto_ok(GtkWidget *widget, void * data)
 {
     char *text;
 
@@ -220,13 +220,13 @@ equalizerwin_load_auto_ok(GtkWidget *widget, gpointer data)
 
 static void
 equalizerwin_load_auto_select(GtkTreeView *treeview, GtkTreePath *path,
-                              GtkTreeViewColumn *col, gpointer data)
+                              GtkTreeViewColumn *col, void * data)
 {
     equalizerwin_load_auto_ok(nullptr, treeview);
 }
 
 static void
-equalizerwin_delete_auto_delete(GtkWidget *widget, gpointer data)
+equalizerwin_delete_auto_delete(GtkWidget *widget, void * data)
 {
     equalizerwin_delete_selected_presets(GTK_TREE_VIEW(data), "eq.auto_preset");
 }

@@ -260,7 +260,7 @@ static gboolean destroy_event (void)
     return TRUE;
 }
 
-static /* GtkWidget * */ gpointer get_widget(void)
+static /* GtkWidget * */ void * get_widget(void)
 {
     GtkWidget *area = gtk_drawing_area_new();
     spect_widget = area;

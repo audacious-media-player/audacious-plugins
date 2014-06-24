@@ -106,7 +106,7 @@ GtkWidget *create_reminder_dialog (const char *reminder_msg)
     return reminder_dialog;
 }
 
-static void file_set_cb (GtkFileChooserButton *button, gpointer entry)
+static void file_set_cb (GtkFileChooserButton *button, void * entry)
 {
     char *uri = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (button));
     gtk_entry_set_text (GTK_ENTRY (entry), uri);

@@ -1,6 +1,6 @@
 #include "convert.h"
 
-gpointer convert_output = nullptr;
+void * convert_output = nullptr;
 static int nch;
 static int in_fmt;
 static int out_fmt;
@@ -14,7 +14,7 @@ gboolean convert_init(int input_fmt, int output_fmt, int channels)
     return TRUE;
 }
 
-int convert_process(gpointer ptr, int length)
+int convert_process(void * ptr, int length)
 {
     int samples = length / FMT_SIZEOF (in_fmt);
     float * temp;

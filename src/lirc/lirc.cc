@@ -107,7 +107,7 @@ bool init (void)
     return true;
 }
 
-gboolean reconnect_lirc (gpointer data)
+gboolean reconnect_lirc (void * data)
 {
     fprintf (stderr, _("%s: trying to reconnect...\n"), plugin_name);
     init ();
@@ -130,7 +130,7 @@ void cleanup ()
     }
 }
 
-gboolean jump_to (gpointer data)
+gboolean jump_to (void * data)
 {
     int playlist = aud_playlist_get_active ();
     aud_playlist_set_position (playlist, atoi (track_no) - 1);

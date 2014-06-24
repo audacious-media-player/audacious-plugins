@@ -409,7 +409,7 @@ GArray *string_to_garray(const char *str)
 }
 
 gboolean dir_foreach(const char *path, DirForeachFunc function,
-                     gpointer user_data, GError **error)
+                     void * user_data, GError **error)
 {
     GError *error_out = nullptr;
     GDir *dir;

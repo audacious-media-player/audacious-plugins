@@ -30,7 +30,7 @@ static FLAC__StreamEncoder *flac_encoder;
 static FLAC__StreamMetadata *flac_metadata;
 
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
-    const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
+    const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, void * data)
 {
     VFSFile *file = (VFSFile *) data;
 
@@ -41,7 +41,7 @@ static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *e
 }
 
 static FLAC__StreamEncoderSeekStatus flac_seek_cb(const FLAC__StreamEncoder *encoder,
-    FLAC__uint64 absolute_byte_offset, gpointer data)
+    FLAC__uint64 absolute_byte_offset, void * data)
 {
     VFSFile *file = (VFSFile *) data;
 
@@ -52,7 +52,7 @@ static FLAC__StreamEncoderSeekStatus flac_seek_cb(const FLAC__StreamEncoder *enc
 }
 
 static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *encoder,
-    FLAC__uint64 *absolute_byte_offset, gpointer data)
+    FLAC__uint64 *absolute_byte_offset, void * data)
 {
     VFSFile *file = (VFSFile *) data;
 
@@ -127,7 +127,7 @@ static int flac_open(void)
     return 1;
 }
 
-static void flac_write(gpointer data, int length)
+static void flac_write(void * data, int length)
 {
 #if 1
     FLAC__int32 *encbuffer[2];

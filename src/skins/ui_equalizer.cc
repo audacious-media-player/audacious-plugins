@@ -139,7 +139,7 @@ static void eq_presets_cb (GtkWidget * button, GdkEventButton * event)
 
 static gboolean
 equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
-                   gpointer callback_data)
+                   void * callback_data)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
      event->window == gtk_widget_get_window (widget) && event->y < 14)

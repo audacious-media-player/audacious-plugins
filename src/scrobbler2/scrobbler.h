@@ -70,7 +70,7 @@ extern Tuple now_playing_track;
 
 //scrobbler_communication.c
 extern gboolean   scrobbler_communication_init();
-extern gpointer scrobbling_thread(gpointer data);
+extern void * scrobbling_thread(void * data);
 
 
 
