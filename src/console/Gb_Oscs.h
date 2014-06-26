@@ -12,7 +12,7 @@ struct Gb_Osc
 	enum { trigger = 0x80 };
 	enum { len_enabled_mask = 0x40 };
 
-	Blip_Buffer* outputs [4]; // NULL, right, left, center
+	Blip_Buffer* outputs [4]; // nullptr, right, left, center
 	Blip_Buffer* output;
 	int output_select;
 	uint8_t* regs; // osc's 5 registers

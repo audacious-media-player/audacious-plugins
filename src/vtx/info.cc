@@ -5,7 +5,7 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
-void vtx_file_info(const gchar *filename)
+void vtx_file_info(const char *filename)
 {
   static GtkWidget *box;
   ayemu_vtx_t vtx;
@@ -17,8 +17,8 @@ void vtx_file_info(const gchar *filename)
     }
   else
     {
-      gchar head[1024];
-      gchar body[8192];
+      char head[1024];
+      char body[8192];
 
       sprintf(head, "Details about %s", filename);
 

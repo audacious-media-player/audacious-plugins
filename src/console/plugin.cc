@@ -13,7 +13,7 @@
 #include "configure.h"
 
 Tuple console_probe_for_tuple(const char *filename, VFSFile *fd);
-bool_t console_play(const char *filename, VFSFile *file);
+bool console_play(const char *filename, VFSFile *file);
 
 static const char console_about[] =
  N_("Console music decoder engine based on Game_Music_Emu 0.5.2\n"
@@ -26,7 +26,7 @@ static const char *gme_fmts[] = {
     "ay", "gbs", "gym",
     "hes", "kss", "nsf",
     "nsfe", "sap", "spc",
-    "vgm", "vgz", NULL
+    "vgm", "vgz", nullptr
 };
 
 static const PreferencesWidget console_widgets[] = {
@@ -67,11 +67,11 @@ static const PluginPreferences console_prefs = {
 #define AUD_PLUGIN_INIT        console_cfg_load
 #define AUD_PLUGIN_CLEANUP     console_cfg_save
 #define AUD_PLUGIN_PREFS       & console_prefs
-#define AUD_INPUT_IS_OUR_FILE  NULL
+#define AUD_INPUT_IS_OUR_FILE  nullptr
 #define AUD_INPUT_PLAY         console_play
 #define AUD_INPUT_EXTS         gme_fmts
 #define AUD_INPUT_READ_TUPLE   console_probe_for_tuple
-#define AUD_INPUT_SUBTUNES     TRUE
+#define AUD_INPUT_SUBTUNES     true
 
 #define AUD_DECLARE_INPUT
 #include <libaudcore/plugin-declare.h>

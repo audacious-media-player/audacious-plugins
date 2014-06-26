@@ -522,9 +522,9 @@ static void *MAINThread(int samp2run, void *data)
                dwEndChannel2[ch/24]|=(1<<(ch%24));
 
                // We play this block out first...
-               //if(!(flags&2)|| s_chan[ch].pLoop==NULL)
+               //if(!(flags&2)|| s_chan[ch].pLoop==nullptr)
                                                        // 1+2: do loop... otherwise: stop
-               if(flags!=3 || s_chan[ch].pLoop==NULL)  // PETE: if we don't check exactly for 3, loop hang ups will happen (DQ4, for example)
+               if(flags!=3 || s_chan[ch].pLoop==nullptr)  // PETE: if we don't check exactly for 3, loop hang ups will happen (DQ4, for example)
                 {                                      // and checking if pLoop is set avoids crashes, yeah
                  start = (unsigned char*)-1;
                 }
@@ -547,7 +547,7 @@ static void *MAINThread(int samp2run, void *data)
                  lastch=ch;
 //                 lastns=ns;	// changemeback
 
-                 return NULL;
+                 return nullptr;
                 }
               }
 
@@ -748,7 +748,7 @@ ENDX:   ;
     	{
 		if(sampcount>=decayend)
 		{
-			psf2_update(NULL, 0);
+			psf2_update(nullptr, 0);
 		        return(0);
 		}
 
@@ -892,7 +892,7 @@ static void SetupStreams(void)
   {
 // we don't use mutex sync... not needed, would only
 // slow us down:
-//   s_chan[i].hMutex=CreateMutex(NULL,FALSE,NULL);
+//   s_chan[i].hMutex=CreateMutex(nullptr,false,nullptr);
    s_chan[i].ADSRX.SustainLevel = 1024;                // -> init sustain
    s_chan[i].iMute=0;
    s_chan[i].iIrqDone=0;
@@ -909,7 +909,7 @@ static void SetupStreams(void)
 static void RemoveStreams(void)
 {
  free(pSpuBuffer);                                     // free mixing buffer
- pSpuBuffer=NULL;
+ pSpuBuffer=nullptr;
  free(sRVBStart[0]);                                   // free reverb buffer
  sRVBStart[0]=0;
  free(sRVBStart[1]);                                   // free reverb buffer

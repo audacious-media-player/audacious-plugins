@@ -36,7 +36,7 @@ any functions which automatically select it based on a file's extension
 or header contents. For each emulator type there is a global object with
 pointers to functions to create the emulator or a track information
 reader. The emulator type is thus a pointer to this, which conveniently
-allows for a NULL value. The user referencing this emulator type object
+allows for a nullptr value. The user referencing this emulator type object
 is what ultimately links the emulator in (unless new Foo_Emu is used in
 C++, of course).
 

@@ -26,9 +26,9 @@
 #include <gtk/gtk.h>
 
 /* yes, main window size is fixed */
-#define MAINWIN_WIDTH            (gint)275
-#define MAINWIN_HEIGHT           (gint)116
-#define MAINWIN_TITLEBAR_HEIGHT  (gint)14
+#define MAINWIN_WIDTH            (int)275
+#define MAINWIN_HEIGHT           (int)116
+#define MAINWIN_TITLEBAR_HEIGHT  (int)14
 #define MAINWIN_SHADED_WIDTH     MAINWIN_WIDTH
 #define MAINWIN_SHADED_HEIGHT    MAINWIN_TITLEBAR_HEIGHT
 
@@ -54,16 +54,16 @@ extern GtkWidget *mainwin_position, *mainwin_sposition;
 void mainwin_create(void);
 void mainwin_unhook (void);
 
-void mainwin_adjust_volume_motion(gint v);
+void mainwin_adjust_volume_motion(int v);
 void mainwin_adjust_volume_release(void);
-void mainwin_adjust_balance_motion(gint b);
+void mainwin_adjust_balance_motion(int b);
 void mainwin_adjust_balance_release(void);
-void mainwin_set_volume_slider(gint percent);
-void mainwin_set_balance_slider(gint percent);
+void mainwin_set_volume_slider(int percent);
+void mainwin_set_balance_slider(int percent);
 
 void mainwin_refresh_hints(void);
-void mainwin_set_song_title (const gchar * title);
-void mainwin_set_song_info(gint rate, gint freq, gint nch);
+void mainwin_set_song_title (const char * title);
+void mainwin_set_song_info(int rate, int freq, int nch);
 void mainwin_clear_song_info(void);
 
 void mainwin_set_shape (void);
@@ -71,16 +71,16 @@ void mainwin_set_shape (void);
 void mainwin_disable_seekbar(void);
 
 void mainwin_update_song_info (void);
-void mainwin_show_status_message (const gchar * message);
+void mainwin_show_status_message (const char * message);
 
 void mainwin_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
-                                gint x,
-                                gint y,
+                                int x,
+                                int y,
                                 GtkSelectionData * selection_data,
-                                guint info,
-                                guint time,
-                                gpointer user_data);
+                                unsigned info,
+                                unsigned time,
+                                void * user_data);
 
 gboolean change_timer_mode_cb(GtkWidget *widget, GdkEventButton *event);
 

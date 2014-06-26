@@ -31,31 +31,31 @@ void FIFOInit(FIFO * fifo)
         fifo->end = 0;
         for(i = 0; i<0x8000; ++i)
         	fifo->data[i] = 0;
-        fifo->full = FALSE;
-        fifo->empty = TRUE;
-        fifo->error = FALSE;
+        fifo->full = false;
+        fifo->empty = true;
+        fifo->error = false;
 }
 
 void FIFOAdd(FIFO * fifo, u32 v)
 {
-	if(fifo->full) 
+	if(fifo->full)
         {
-        	fifo->error = TRUE;
+        	fifo->error = true;
                 return;
         }
         fifo->data[fifo->end] = v;
         fifo->end = (fifo->end + 1)& 0x7FFF;
         fifo->full = (fifo->end == fifo->begin);
-        fifo->empty = FALSE;
+        fifo->empty = false;
 }
-       
+
 u32 FIFOValue(FIFO * fifo)
 {
         u32 v;
 
 	if(fifo->empty)
         {
-        	fifo->error = TRUE;
+        	fifo->error = true;
                 return 0;
         }
         v = fifo->data[fifo->begin];

@@ -30,10 +30,10 @@
 #include "xs_config.h"
 
 
-static xs_sldb_t *xs_sldb_db = NULL;
+static xs_sldb_t *xs_sldb_db = nullptr;
 pthread_mutex_t xs_sldb_db_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-static xs_stildb_t *xs_stildb_db = NULL;
+static xs_stildb_t *xs_stildb_db = nullptr;
 pthread_mutex_t xs_stildb_db_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
@@ -60,7 +60,7 @@ int xs_stil_init(void)
     /* Read the database */
     if (xs_stildb_read(xs_stildb_db, xs_cfg.stilDBPath) != 0) {
         xs_stildb_free(xs_stildb_db);
-        xs_stildb_db = NULL;
+        xs_stildb_db = nullptr;
         pthread_mutex_unlock(&xs_cfg_mutex);
         pthread_mutex_unlock(&xs_stildb_db_mutex);
         return -3;
@@ -79,7 +79,7 @@ void xs_stil_close(void)
 {
     pthread_mutex_lock(&xs_stildb_db_mutex);
     xs_stildb_free(xs_stildb_db);
-    xs_stildb_db = NULL;
+    xs_stildb_db = nullptr;
     pthread_mutex_unlock(&xs_stildb_db_mutex);
 }
 
@@ -110,7 +110,7 @@ stil_node_t *xs_stil_get(char *filename)
 
         result = xs_stildb_get_node(xs_stildb_db, tmpFilename);
     } else
-        result = NULL;
+        result = nullptr;
 
     pthread_mutex_unlock(&xs_stildb_db_mutex);
     pthread_mutex_unlock(&xs_cfg_mutex);
@@ -142,7 +142,7 @@ int xs_songlen_init(void)
     /* Read the database */
     if (xs_sldb_read(xs_sldb_db, xs_cfg.songlenDBPath) != 0) {
         xs_sldb_free(xs_sldb_db);
-        xs_sldb_db = NULL;
+        xs_sldb_db = nullptr;
         pthread_mutex_unlock(&xs_cfg_mutex);
         pthread_mutex_unlock(&xs_sldb_db_mutex);
         return -3;
@@ -161,7 +161,7 @@ void xs_songlen_close(void)
 {
     pthread_mutex_lock(&xs_sldb_db_mutex);
     xs_sldb_free(xs_sldb_db);
-    xs_sldb_db = NULL;
+    xs_sldb_db = nullptr;
     pthread_mutex_unlock(&xs_sldb_db_mutex);
 }
 
@@ -175,7 +175,7 @@ sldb_node_t *xs_songlen_get(const char * filename)
     if (xs_cfg.songlenDBEnable && xs_sldb_db)
         result = xs_sldb_get(xs_sldb_db, filename);
     else
-        result = NULL;
+        result = nullptr;
 
     pthread_mutex_unlock(&xs_sldb_db_mutex);
 

@@ -76,7 +76,7 @@ public:
 	void clear_echo();
 
 	// Plays for count samples and write samples to out. Discards samples if out
-	// is NULL. Count must be a multiple of 2 since output is stereo.
+	// is nullptr. Count must be a multiple of 2 since output is stereo.
 	blargg_err_t play( int count, sample_t* out );
 
 	// Skips count samples. Several times faster than play() when using fast DSP.

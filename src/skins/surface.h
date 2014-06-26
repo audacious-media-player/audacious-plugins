@@ -22,13 +22,13 @@
 #ifndef SKINS_SURFACE_H
 #define SKINS_SURFACE_H
 
-#include <glib.h>
+#include <stdint.h>
 #include <cairo.h>
 
-cairo_surface_t * surface_new (gint w, gint h);
-cairo_surface_t * surface_new_from_file (const gchar * name);
-guint32 surface_get_pixel (cairo_surface_t * s, gint x, gint y);
-void surface_copy_rect (cairo_surface_t * a, gint ax, gint ay, gint w, gint h,
- cairo_surface_t * b, gint bx, gint by);
+cairo_surface_t * surface_new (int w, int h);
+cairo_surface_t * surface_new_from_file (const char * name);
+uint32_t surface_get_pixel (cairo_surface_t * s, int x, int y);
+void surface_copy_rect (cairo_surface_t * a, int ax, int ay, int w, int h,
+ cairo_surface_t * b, int bx, int by);
 
 #endif

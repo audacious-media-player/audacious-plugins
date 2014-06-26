@@ -81,7 +81,7 @@ static Index<const Item *> items;
 static int hidden_items;
 static Index<bool> selection;
 
-static bool_t adding;
+static gboolean adding;
 static int search_source;
 
 static GtkWidget * entry, * help_label, * wait_label, * scrolled, * results_list, * stats_label;
@@ -107,7 +107,7 @@ static int create_playlist ()
     return list;
 }
 
-static int get_playlist (bool_t require_added, bool_t require_scanned)
+static int get_playlist (gboolean require_added, gboolean require_scanned)
 {
     if (playlist_id < 0)
         return -1;
@@ -288,7 +288,7 @@ static void do_search ()
         selection[0] = true;
 }
 
-static bool_t filter_cb (const char * filename, void * unused)
+static bool filter_cb (const char * filename, void * unused)
 {
     return ! added_table.lookup (String (filename));
 }
@@ -489,7 +489,7 @@ static void search_cleanup ()
     destroy_database ();
 }
 
-static void do_add (bool_t play, String & title)
+static void do_add (gboolean play, String & title)
 {
     if (search_source)
         search_timeout ();
@@ -591,19 +591,19 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     g_value_set_string (value, string);
 }
 
-static bool_t list_get_selected (void * user, int row)
+static bool list_get_selected (void * user, int row)
 {
     g_return_val_if_fail (row >= 0 && row < selection.len (), false);
     return selection[row];
 }
 
-static void list_set_selected (void * user, int row, bool_t selected)
+static void list_set_selected (void * user, int row, bool selected)
 {
     g_return_if_fail (row >= 0 && row < selection.len ());
     selection[row] = selected;
 }
 
-static void list_select_all (void * user, bool_t selected)
+static void list_select_all (void * user, bool selected)
 {
     for (bool & s : selection)
         s = selected;
@@ -626,8 +626,8 @@ static void list_right_click (void * user, GdkEventButton * event)
     };
 
     GtkWidget * menu = gtk_menu_new ();
-    audgui_menu_init (menu, items, ARRAY_LEN (items), NULL);
-    gtk_menu_popup ((GtkMenu *) menu, NULL, NULL, NULL, NULL, event->button, event->time);
+    audgui_menu_init (menu, items, ARRAY_LEN (items), nullptr);
+    gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);
 }
 
 static const AudguiListCallbacks list_callbacks = {
@@ -677,7 +677,7 @@ static void * search_get_widget ()
     gtk_widget_set_no_show_all (wait_label, TRUE);
     gtk_box_pack_start ((GtkBox *) vbox, wait_label, TRUE, FALSE, 0);
 
-    scrolled = gtk_scrolled_window_new (NULL, NULL);
+    scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     g_signal_connect (scrolled, "destroy", (GCallback) gtk_widget_destroyed, & scrolled);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
@@ -685,10 +685,10 @@ static void * search_get_widget ()
     gtk_widget_set_no_show_all (scrolled, TRUE);
     gtk_box_pack_start ((GtkBox *) vbox, scrolled, TRUE, TRUE, 0);
 
-    results_list = audgui_list_new (& list_callbacks, NULL, items.len ());
+    results_list = audgui_list_new (& list_callbacks, nullptr, items.len ());
     g_signal_connect (results_list, "destroy", (GCallback) gtk_widget_destroyed, & results_list);
     gtk_tree_view_set_headers_visible ((GtkTreeView *) results_list, FALSE);
-    audgui_list_add_column (results_list, NULL, 0, G_TYPE_STRING, -1);
+    audgui_list_add_column (results_list, nullptr, 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scrolled, results_list);
 
     stats_label = gtk_label_new ("");
@@ -713,9 +713,9 @@ static void * search_get_widget ()
 
     search_init ();
 
-    g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, NULL);
-    g_signal_connect (entry, "changed", (GCallback) entry_cb, NULL);
-    g_signal_connect (entry, "activate", (GCallback) action_play, NULL);
+    g_signal_connect (vbox, "destroy", (GCallback) search_cleanup, nullptr);
+    g_signal_connect (entry, "changed", (GCallback) entry_cb, nullptr);
+    g_signal_connect (entry, "activate", (GCallback) action_play, nullptr);
     g_signal_connect (button, "clicked", (GCallback) refresh_cb, chooser);
 
     gtk_widget_show_all (vbox);

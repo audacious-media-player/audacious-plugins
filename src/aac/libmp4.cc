@@ -21,13 +21,13 @@
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
-static const char *fmts[] = { "m4a", "mp4", NULL };
+static const char *fmts[] = { "m4a", "mp4", nullptr };
 
 int getAACTrack (mp4ff_t *);
 
 static uint32_t mp4_read_callback (void *data, void *buffer, uint32_t len)
 {
-    if (data == NULL || buffer == NULL)
+    if (data == nullptr || buffer == nullptr)
         return -1;
 
     return vfs_fread (buffer, 1, len, (VFSFile *) data);
@@ -41,21 +41,21 @@ static uint32_t mp4_seek_callback (void *data, uint64_t pos)
     return vfs_fseek ((VFSFile *) data, pos, SEEK_SET);
 }
 
-static bool_t is_mp4_aac_file (const char * filename, VFSFile * handle)
+static bool is_mp4_aac_file (const char * filename, VFSFile * handle)
 {
     mp4ff_callback_t mp4_data = {
         mp4_read_callback,
-        NULL,  // write
+        nullptr,  // write
         mp4_seek_callback,
-        NULL,  // truncate
+        nullptr,  // truncate
         handle
     };
 
     mp4ff_t *mp4_handle = mp4ff_open_read (&mp4_data);
-    bool_t success;
+    bool success;
 
-    if (mp4_handle == NULL)
-        return FALSE;
+    if (mp4_handle == nullptr)
+        return false;
 
     success = (getAACTrack (mp4_handle) != -1);
 
@@ -66,11 +66,11 @@ static bool_t is_mp4_aac_file (const char * filename, VFSFile * handle)
 static void read_and_set_string (mp4ff_t * mp4, int (*func) (const mp4ff_t *
  mp4, char * *string), Tuple & tuple, int field)
 {
-    char *string = NULL;
+    char *string = nullptr;
 
     func (mp4, &string);
 
-    if (string != NULL)
+    if (string != nullptr)
         tuple.set_str (field, string);
 
     g_free (string);
@@ -81,7 +81,7 @@ static Tuple generate_tuple (const char * filename, mp4ff_t * mp4, int track)
     Tuple tuple;
     int64_t length;
     int scale, rate, channels, bitrate;
-    char *year = NULL, *cd_track = NULL;
+    char *year = nullptr, *cd_track = nullptr;
     char scratch[32];
 
     tuple.set_filename (filename);
@@ -116,14 +116,14 @@ static Tuple generate_tuple (const char * filename, mp4ff_t * mp4, int track)
 
     mp4ff_meta_get_date (mp4, &year);
 
-    if (year != NULL)
+    if (year != nullptr)
         tuple.set_int (FIELD_YEAR, atoi (year));
 
     g_free (year);
 
     mp4ff_meta_get_track (mp4, &cd_track);
 
-    if (cd_track != NULL)
+    if (cd_track != nullptr)
         tuple.set_int (FIELD_TRACK_NUMBER, atoi (cd_track));
 
     g_free (cd_track);
@@ -135,9 +135,9 @@ static Tuple mp4_get_tuple (const char * filename, VFSFile * handle)
 {
     mp4ff_callback_t mp4cb = {
         mp4_read_callback,
-        NULL,  // write
+        nullptr,  // write
         mp4_seek_callback,
-        NULL,  // truncate
+        nullptr,  // truncate
         handle
     };
 
@@ -146,7 +146,7 @@ static Tuple mp4_get_tuple (const char * filename, VFSFile * handle)
 
     mp4 = mp4ff_open_read (&mp4cb);
 
-    if (mp4 == NULL)
+    if (mp4 == nullptr)
         return Tuple ();
 
     track = getAACTrack (mp4);
@@ -162,13 +162,13 @@ static Tuple mp4_get_tuple (const char * filename, VFSFile * handle)
     return tuple;
 }
 
-static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
+static bool my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
 {
     // We are reading an MP4 file
     int mp4track = getAACTrack (mp4file);
     NeAACDecHandle decoder;
     NeAACDecConfigurationPtr decoder_config;
-    unsigned char *buffer = NULL;
+    unsigned char *buffer = nullptr;
     unsigned bufferSize = 0;
     unsigned long samplerate = 0;
     unsigned char channels = 0;
@@ -179,7 +179,7 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
     if (mp4track < 0)
     {
         fprintf (stderr, "Unsupported Audio track type\n");
-        return TRUE;
+        return true;
     }
 
     // Open decoder
@@ -194,13 +194,13 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
     if (!buffer)
     {
         NeAACDecClose (decoder);
-        return FALSE;
+        return false;
     }
     if (NeAACDecInit2 (decoder, buffer, bufferSize, &samplerate, &channels) < 0)
     {
         NeAACDecClose (decoder);
 
-        return FALSE;
+        return false;
     }
 
     g_free (buffer);
@@ -208,14 +208,14 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
     {
         NeAACDecClose (decoder);
 
-        return FALSE;
+        return false;
     }
     numSamples = mp4ff_num_samples (mp4file, mp4track);
 
     if (!aud_input_open_audio (FMT_FLOAT, samplerate, channels))
     {
         NeAACDecClose (decoder);
-        return FALSE;
+        return false;
     }
 
     aud_input_set_tuple (generate_tuple (filename, mp4file, mp4track));
@@ -227,7 +227,7 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
         NeAACDecFrameInfo frameInfo;
         int rc;
 
-        buffer = NULL;
+        buffer = nullptr;
         bufferSize = 0;
 
         /* If we've run to the end of the file, we're done. */
@@ -238,15 +238,15 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
          sampleID++, &buffer, &bufferSize);
 
         /* If we can't read the file, we're done. */
-        if ((rc == 0) || (buffer == NULL) || (bufferSize == 0)
+        if ((rc == 0) || (buffer == nullptr) || (bufferSize == 0)
          || (bufferSize > BUFFER_SIZE))
         {
             fprintf (stderr, "MP4: read error\n");
-            sampleBuffer = NULL;
+            sampleBuffer = nullptr;
 
             NeAACDecClose (decoder);
 
-            return FALSE;
+            return false;
         }
 
         sampleBuffer = NeAACDecDecode (decoder, &frameInfo, buffer, bufferSize);
@@ -257,12 +257,12 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
             fprintf (stderr, "MP4: %s\n", NeAACDecGetErrorMessage (frameInfo.error));
             NeAACDecClose (decoder);
 
-            return FALSE;
+            return false;
         }
         if (buffer)
         {
             g_free (buffer);
-            buffer = NULL;
+            buffer = nullptr;
             bufferSize = 0;
         }
 
@@ -291,20 +291,20 @@ static bool_t my_decode_mp4 (const char * filename, mp4ff_t * mp4file)
 
     NeAACDecClose (decoder);
 
-    return TRUE;
+    return true;
 }
 
-static bool_t mp4_play (const char * filename, VFSFile * file)
+static bool mp4_play (const char * filename, VFSFile * file)
 {
     mp4ff_callback_t mp4cb = {
         mp4_read_callback,
-        NULL,  // write
+        nullptr,  // write
         mp4_seek_callback,
-        NULL,  // truncate
+        nullptr,  // truncate
         file
     };
 
-    bool_t result;
+    bool result;
 
     mp4ff_t * mp4file = mp4ff_open_read (& mp4cb);
     result = my_decode_mp4 (filename, mp4file);
@@ -313,7 +313,7 @@ static bool_t mp4_play (const char * filename, VFSFile * file)
     return result;
 }
 
-bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
+bool read_itunes_cover (const char * filename, VFSFile * file, void * *
  data, int64_t * size);
 
 #define AUD_PLUGIN_NAME        N_("AAC (MP4) Decoder")

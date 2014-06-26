@@ -44,20 +44,20 @@ enum
 
 static void amidiplug_play_loop (void);
 
-static bool_t amidiplug_play (const char * filename_uri, VFSFile * file);
+static bool amidiplug_play (const char * filename_uri, VFSFile * file);
 static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
 static void amidiplug_skipto (int playing_tick);
 
 static midifile_t midifile;
 
-static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", NULL};
+static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", nullptr};
 
 static void amidiplug_cleanup (void)
 {
     backend_cleanup ();
 }
 
-static bool_t amidiplug_init (void)
+static bool amidiplug_init (void)
 {
     static const char * const defaults[] =
     {
@@ -70,7 +70,7 @@ static bool_t amidiplug_init (void)
         "fsyn_synth_polyphony", "-1",
         "fsyn_synth_reverb", "-1",
         "fsyn_synth_chorus", "-1",
-        NULL
+        nullptr
     };
 
     aud_config_set_defaults ("amidiplug", defaults);
@@ -80,11 +80,11 @@ static bool_t amidiplug_init (void)
     return TRUE;
 }
 
-static int amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * fp)
+static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * fp)
 {
     char magic_bytes[4];
 
-    if (fp == NULL)
+    if (fp == nullptr)
         return FALSE;
 
     if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
@@ -137,7 +137,7 @@ static int s_samplerate, s_channels;
 static int s_bufsize;
 static void * s_buf;
 
-static bool_t audio_init (void)
+static gboolean audio_init (void)
 {
     int bitdepth;
 
@@ -172,7 +172,7 @@ static void audio_cleanup (void)
     g_free (s_buf);
 }
 
-static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
+static bool amidiplug_play (const char * filename_uri, VFSFile * file)
 {
     if (g_atomic_int_compare_and_exchange (& backend_settings_changed, TRUE, FALSE))
     {
@@ -235,7 +235,7 @@ static bool_t amidiplug_play (const char * filename_uri, VFSFile * file)
         AUDDBG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
 
         /* done with file */
-        midifile.file_pointer = NULL;
+        midifile.file_pointer = nullptr;
 
         /* play play play! */
         AUDDBG ("PLAY requested, starting play thread\n");
@@ -264,7 +264,7 @@ static void generate_to_tick (int tick)
 
 static void amidiplug_play_loop ()
 {
-    bool_t stopped = FALSE;
+    gboolean stopped = FALSE;
 
     backend_prepare ();
 
@@ -278,8 +278,8 @@ static void amidiplug_play_loop ()
         if (seektime >= 0)
             amidiplug_skipto ((int64_t) seektime * 1000 / midifile.avg_microsec_per_tick);
 
-        midievent_t * event = NULL;
-        midifile_track_t * event_track = NULL;
+        midievent_t * event = nullptr;
+        midifile_track_t * event_track = nullptr;
         int i, min_tick = midifile.max_tick + 1;
 
         /* search next event */
@@ -386,8 +386,8 @@ static void amidiplug_skipto (int playing_tick)
 
     for (;;)
     {
-        midievent_t * event = NULL;
-        midifile_track_t * event_track = NULL;
+        midievent_t * event = nullptr;
+        midifile_track_t * event_track = nullptr;
         int i, min_tick = midifile.max_tick + 1;
 
         /* search next event */

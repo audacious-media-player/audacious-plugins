@@ -25,10 +25,10 @@
 enum {BUTTON_TYPE_NORMAL, BUTTON_TYPE_TOGGLE, BUTTON_TYPE_SMALL};
 
 typedef struct {
-    gint type;
-    gint w, h;
-    gint nx, ny, px, py;
-    gint pnx, pny, ppx, ppy;
+    int type;
+    int w, h;
+    int nx, ny, px, py;
+    int pnx, pny, ppx, ppy;
     SkinPixmapId si1, si2;
     gboolean pressed, rpressed, active;
     ButtonCB on_press, on_release, on_rpress, on_rrelease;
@@ -133,7 +133,7 @@ static void button_destroy (GtkWidget * button)
     g_free (g_object_get_data ((GObject *) button, "buttondata"));
 }
 
-static GtkWidget * button_new_base (gint type, gint w, gint h)
+static GtkWidget * button_new_base (int type, int w, int h)
 {
     GtkWidget * button;
 
@@ -153,10 +153,10 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
         DRAW_CONNECT (button, button_draw);
 
     g_signal_connect (button, "button-press-event", (GCallback) button_press,
-     NULL);
+     nullptr);
     g_signal_connect (button, "button-release-event", (GCallback)
-     button_release, NULL);
-    g_signal_connect (button, "destroy", (GCallback) button_destroy, NULL);
+     button_release, nullptr);
+    g_signal_connect (button, "destroy", (GCallback) button_destroy, nullptr);
 
     ButtonData * data = g_new0 (ButtonData, 1);
     data->type = type;
@@ -167,12 +167,12 @@ static GtkWidget * button_new_base (gint type, gint w, gint h)
     return button;
 }
 
-GtkWidget * button_new (gint w, gint h, gint nx, gint ny, gint px, gint py,
+GtkWidget * button_new (int w, int h, int nx, int ny, int px, int py,
  SkinPixmapId si1, SkinPixmapId si2)
 {
     GtkWidget * button = button_new_base (BUTTON_TYPE_NORMAL, w, h);
     ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
-    g_return_val_if_fail (data, NULL);
+    g_return_val_if_fail (data, nullptr);
 
     data->nx = nx;
     data->ny = ny;
@@ -184,12 +184,12 @@ GtkWidget * button_new (gint w, gint h, gint nx, gint ny, gint px, gint py,
     return button;
 }
 
-GtkWidget * button_new_toggle (gint w, gint h, gint nx, gint ny, gint px, gint
- py, gint pnx, gint pny, gint ppx, gint ppy, SkinPixmapId si1, SkinPixmapId si2)
+GtkWidget * button_new_toggle (int w, int h, int nx, int ny, int px, int
+ py, int pnx, int pny, int ppx, int ppy, SkinPixmapId si1, SkinPixmapId si2)
 {
     GtkWidget * button = button_new_base (BUTTON_TYPE_TOGGLE, w, h);
     ButtonData * data = (ButtonData *) g_object_get_data ((GObject *) button, "buttondata");
-    g_return_val_if_fail (data, NULL);
+    g_return_val_if_fail (data, nullptr);
 
     data->nx = nx;
     data->ny = ny;
@@ -205,7 +205,7 @@ GtkWidget * button_new_toggle (gint w, gint h, gint nx, gint ny, gint px, gint
     return button;
 }
 
-GtkWidget * button_new_small (gint w, gint h)
+GtkWidget * button_new_small (int w, int h)
 {
     return button_new_base (BUTTON_TYPE_SMALL, w, h);
 }

@@ -23,9 +23,9 @@
 
 
 //shared variables
-bool_t scrobbler_running        = TRUE;
-bool_t migrate_config_requested = FALSE;
-bool_t now_playing_requested    = FALSE;
+gboolean scrobbler_running        = TRUE;
+gboolean migrate_config_requested = FALSE;
+gboolean now_playing_requested    = FALSE;
 Tuple now_playing_track;
 
 pthread_mutex_t communication_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -38,11 +38,11 @@ String request_token;
 //static (private) variables
 static Tuple playing_track;
 //all times are in microseconds
-static  gint64 timestamp           = 0;
-static  gint64 play_started_at     = 0;
-static  gint64 pause_started_at    = 0;
-static  gint64 time_until_scrobble = 0;
-static   guint queue_function_ID   = 0;
+static  int64_t timestamp           = 0;
+static  int64_t play_started_at     = 0;
+static  int64_t pause_started_at    = 0;
+static  int64_t time_until_scrobble = 0;
+static   unsigned queue_function_ID   = 0;
 
 static pthread_t communicator;
 
@@ -68,10 +68,10 @@ StringBuf clean_string (const char *string) {
     return temp;
 }
 
-static gboolean queue_track_to_scrobble (gpointer data) {
+static gboolean queue_track_to_scrobble (void * data) {
     AUDDBG("The playing track is going to be ENQUEUED!\n.");
 
-    char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", NULL);
+    char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", nullptr);
 
     StringBuf artist = clean_string (playing_track.get_str (FIELD_ARTIST));
     StringBuf title  = clean_string (playing_track.get_str (FIELD_TITLE));
@@ -87,7 +87,7 @@ static gboolean queue_track_to_scrobble (gpointer data) {
         pthread_mutex_lock(&log_access_mutex);
         FILE *f = g_fopen(queuepath, "a");
 
-        if (f == NULL) {
+        if (f == nullptr) {
             perror("fopen");
         } else {
             //This isn't exactly the scrobbler.log format because the header
@@ -131,7 +131,7 @@ static void ended (void *hook_data, void *user_data) {
         if (!success) {
           AUDDBG("BUG or race condition: Could not remove source.\n");
         } else {
-          queue_track_to_scrobble(NULL);
+          queue_track_to_scrobble(nullptr);
         }
       }
     }
@@ -156,7 +156,7 @@ static void ready (void *hook_data, void *user_data) {
     pthread_cond_signal(&communication_signal);
     pthread_mutex_unlock(&communication_mutex);
 
-    time_until_scrobble = (((gint64)duration_seconds)*G_USEC_PER_SEC) / 2;
+    time_until_scrobble = (((int64_t)duration_seconds)*G_USEC_PER_SEC) / 2;
     if (time_until_scrobble > 4*60*G_USEC_PER_SEC) {
         time_until_scrobble = 4*60*G_USEC_PER_SEC;
     }
@@ -164,7 +164,7 @@ static void ready (void *hook_data, void *user_data) {
     play_started_at = g_get_monotonic_time();
     playing_track = std::move (current_track);
 
-    queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, NULL);
+    queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, nullptr);
 
 }
 
@@ -192,7 +192,7 @@ static void unpaused (void *hook_data, void *user_data) {
     }
     time_until_scrobble = time_until_scrobble - (pause_started_at - play_started_at);
 
-    queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, NULL);
+    queue_function_ID = g_timeout_add_seconds(time_until_scrobble / G_USEC_PER_SEC, (GSourceFunc) queue_track_to_scrobble, nullptr);
 
     pause_started_at = 0;
     play_started_at = g_get_monotonic_time();
@@ -200,7 +200,7 @@ static void unpaused (void *hook_data, void *user_data) {
 
 
 
-static bool_t scrobbler_init (void) {
+static bool scrobbler_init (void) {
     // Initialize libXML and check potential ABI mismatches between
     // the version it was compiled for and the actual libXML in use
     LIBXML_TEST_VERSION
@@ -236,13 +236,13 @@ static bool_t scrobbler_init (void) {
       }
     }
 
-    pthread_create(&communicator, NULL, scrobbling_thread, NULL);
+    pthread_create(&communicator, nullptr, scrobbling_thread, nullptr);
 
-    hook_associate("playback stop", (HookFunction) stopped, NULL);
-    hook_associate("playback end", (HookFunction) ended, NULL);
-    hook_associate("playback ready", (HookFunction) ready, NULL);
-    hook_associate("playback pause", (HookFunction) paused, NULL);
-    hook_associate("playback unpause", (HookFunction) unpaused, NULL);
+    hook_associate("playback stop", (HookFunction) stopped, nullptr);
+    hook_associate("playback end", (HookFunction) ended, nullptr);
+    hook_associate("playback ready", (HookFunction) ready, nullptr);
+    hook_associate("playback pause", (HookFunction) paused, nullptr);
+    hook_associate("playback unpause", (HookFunction) unpaused, nullptr);
     return TRUE;
 }
 
@@ -262,7 +262,7 @@ static void scrobbler_cleanup (void) {
     pthread_cond_signal(&communication_signal);
     pthread_mutex_unlock(&communication_mutex);
 
-    pthread_join(communicator, NULL);
+    pthread_join(communicator, nullptr);
 
     request_token = String();
     session_key = String();

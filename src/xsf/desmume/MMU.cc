@@ -135,8 +135,8 @@ u8 * MMU_ARM9_MEM_MAP[256]={
 		DUP2(ARM9Mem.ARM9_BOBJ),
 		DUP8(ARM9Mem.ARM9_LCD),
 /* 7X*/	DUP16(ARM9Mem.ARM9_OAM),
-/* 8X*/	DUP16(NULL),
-/* 9X*/	DUP16(NULL),
+/* 8X*/	DUP16(nullptr),
+/* 9X*/	DUP16(nullptr),
 /* AX*/	DUP16(MMU.CART_RAM),
 /* BX*/	DUP16(MMU.UNUSED_RAM),
 /* CX*/	DUP16(MMU.UNUSED_RAM),
@@ -180,8 +180,8 @@ u8 * MMU_ARM7_MEM_MAP[256]={
 /* 5X*/	DUP16(MMU.UNUSED_RAM),
 /* 6X*/	DUP16(ARM9Mem.ARM9_ABG),
 /* 7X*/	DUP16(MMU.UNUSED_RAM),
-/* 8X*/	DUP16(NULL),
-/* 9X*/	DUP16(NULL),
+/* 8X*/	DUP16(nullptr),
+/* 9X*/	DUP16(nullptr),
 /* AX*/	DUP16(MMU.CART_RAM),
 /* BX*/	DUP16(MMU.UNUSED_RAM),
 /* CX*/	DUP16(MMU.UNUSED_RAM),
@@ -259,12 +259,12 @@ void MMU_Init(void) {
 
         mc_init(&MMU.fw, MC_TYPE_FLASH);  /* init fw device */
         mc_alloc(&MMU.fw, NDS_FW_SIZE_V1);
-        MMU.fw.fp = NULL;
+        MMU.fw.fp = nullptr;
 
         // Init Backup Memory device, this should really be done when the rom is loaded
         mc_init(&MMU.bupmem, MC_TYPE_AUTODETECT);
         mc_alloc(&MMU.bupmem, 1);
-        MMU.bupmem.fp = NULL;
+        MMU.bupmem.fp = nullptr;
 
 }
 
@@ -680,7 +680,7 @@ u16 FASTCALL MMU_read16(u32 proc, u32 adr)
 #endif
 
 			case REG_IPCFIFORECV :               /* TODO (clear): ??? */
-				execute = FALSE;
+				execute = false;
 				return 1;
 
 			case REG_IME :
@@ -704,7 +704,7 @@ u16 FASTCALL MMU_read16(u32 proc, u32 adr)
 
 			case 0x04000630 :
 				LOG("vect res\r\n");	/* TODO (clear): ??? */
-				//execute = FALSE;
+				//execute = false;
 				return 0;
                         case REG_POSTFLG :
 				return 1;
@@ -817,7 +817,7 @@ u32 FASTCALL MMU_read32(u32 proc, u32 adr)
 				u16 IPCFIFO_CNT = T1ReadWord(MMU.MMU_MEM[proc][0x40], 0x184);
 				if(IPCFIFO_CNT&0x8000)
 				{
-				//execute = FALSE;
+				//execute = false;
 				u32 fifonum = IPCFIFO+proc;
 				u32 val = FIFOValue(MMU.fifos + fifonum);
 				u32 remote = (proc+1) & 1;
@@ -1519,14 +1519,14 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 									val = 0;
 									break;
 								case 0x10 :
-									//execute = FALSE;
+									//execute = false;
 									if(SPI_CNT&(1<<11))
 									{
 										if(partie)
 										{
 											val = ((nds.touchY<<3)&0x7FF);
 											partie = 0;
-											//execute = FALSE;
+											//execute = false;
 											break;
 										}
 										val = (nds.touchY>>5);
@@ -1629,8 +1629,8 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 				if ( new_val && old_val != new_val) {
 				  /* raise an interrupt request to the CPU if needed */
 				  if ( MMU.reg_IE[proc] & MMU.reg_IF[proc]) {
-				    NDS_ARM7.wIRQ = TRUE;
-				    NDS_ARM7.waitIRQ = FALSE;
+				    NDS_ARM7.wIRQ = true;
+				    NDS_ARM7.waitIRQ = false;
 				  }
 				}
 				return;
@@ -1660,22 +1660,22 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 				if ( MMU.reg_IME[proc]) {
 				  /* raise an interrupt request to the CPU if needed */
 				  if ( MMU.reg_IE[proc] & MMU.reg_IF[proc]) {
-				    NDS_ARM7.wIRQ = TRUE;
-				    NDS_ARM7.waitIRQ = FALSE;
+				    NDS_ARM7.wIRQ = true;
+				    NDS_ARM7.waitIRQ = false;
 				  }
 				}
 				return;
 			case REG_IE + 2 :
-				execute = FALSE;
+				execute = false;
 				MMU.reg_IE[proc] = (MMU.reg_IE[proc]&0xFFFF) | (((u32)val)<<16);
 				return;
 
 			case REG_IF :
-				execute = FALSE;
+				execute = false;
 				MMU.reg_IF[proc] &= (~((u32)val));
 				return;
 			case REG_IF + 2 :
-				execute = FALSE;
+				execute = false;
 				MMU.reg_IF[proc] &= (~(((u32)val)<<16));
 				return;
 
@@ -1686,7 +1686,7 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], 0x180, (val&0xFFF0)|((IPCSYNC_remote>>8)&0xF));
 				T1WriteWord(MMU.MMU_MEM[remote][0x40], 0x180, (IPCSYNC_remote&0xFFF0)|((val>>8)&0xF));
 				MMU.reg_IF[remote] |= ((IPCSYNC_remote & (1<<14))<<2) & ((val & (1<<13))<<3);// & (MMU.reg_IME[remote] << 16);// & (MMU.reg_IE[remote] & (1<<16));//
-				//execute = FALSE;
+				//execute = false;
 				}
 				return;
                         case REG_IPCFIFOCNT :
@@ -1747,12 +1747,12 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 					break;
 				}
 				if(!(val & 0x80))
-				MMU.timerRUN[proc][((adr-2)>>2)&0x3] = FALSE;
+				MMU.timerRUN[proc][((adr-2)>>2)&0x3] = false;
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], adr & 0xFFF, val);
 				return;
                         case REG_DISPA_DISPCNT+2 :
 				{
-				//execute = FALSE;
+				//execute = false;
 				u32 v = (T1ReadLong(MMU.MMU_MEM[proc][0x40], 0) & 0xFFFF) | ((u32) val << 16);
 				GPU_setVideoProp(MainScreen.gpu, v);
 				T1WriteLong(MMU.MMU_MEM[proc][0x40], 0, v);
@@ -1775,7 +1775,7 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
                         case REG_DISPB_DISPCNT+2 :
 				if(proc == ARMCPU_ARM9)
 				{
-				//execute = FALSE;
+				//execute = false;
 				u32 v = (T1ReadLong(MMU.MMU_MEM[proc][0x40], 0x1000) & 0xFFFF) | ((u32) val << 16);
 				GPU_setVideoProp(SubScreen.gpu, v);
 				T1WriteLong(MMU.MMU_MEM[proc][0x40], 0x1000, v);
@@ -1791,12 +1791,12 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 			//case 0x020D8460 :
 			/*case 0x0235A904 :
 				LOG("ECRIRE %d %04X\r\n", proc, val);
-				execute = FALSE;*/
+				execute = false;*/
                                 case REG_DMA0CNTH :
 				{
                                 u32 v;
 
-				//if(val&0x8000) execute = FALSE;
+				//if(val&0x8000) execute = false;
 				//LOG("16 bit dma0 %04X\r\n", val);
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], 0xBA, val);
 				DMASrc[proc][0] = T1ReadLong(MMU.MMU_MEM[proc][0x40], 0xB0);
@@ -1817,7 +1817,7 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
                                 case REG_DMA1CNTH :
 				{
                                 u32 v;
-				//if(val&0x8000) execute = FALSE;
+				//if(val&0x8000) execute = false;
 				//LOG("16 bit dma1 %04X\r\n", val);
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], 0xC6, val);
 				DMASrc[proc][1] = T1ReadLong(MMU.MMU_MEM[proc][0x40], 0xBC);
@@ -1838,7 +1838,7 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
                                 case REG_DMA2CNTH :
 				{
                                 u32 v;
-				//if(val&0x8000) execute = FALSE;
+				//if(val&0x8000) execute = false;
 				//LOG("16 bit dma2 %04X\r\n", val);
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], 0xD2, val);
 				DMASrc[proc][2] = T1ReadLong(MMU.MMU_MEM[proc][0x40], 0xC8);
@@ -1859,7 +1859,7 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
                                 case REG_DMA3CNTH :
 				{
                                 u32 v;
-				//if(val&0x8000) execute = FALSE;
+				//if(val&0x8000) execute = false;
 				//LOG("16 bit dma3 %04X\r\n", val);
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], 0xDE, val);
 				DMASrc[proc][3] = T1ReadLong(MMU.MMU_MEM[proc][0x40], 0xD4);
@@ -1878,7 +1878,7 @@ void FASTCALL MMU_write16(u32 proc, u32 adr, u16 val)
 				#endif
 				}
 				return;
-                        //case REG_AUXSPICNT : execute = FALSE;
+                        //case REG_AUXSPICNT : execute = false;
 			default :
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], adr&MMU.MMU_MASK[proc][(adr>>20)&0xFF], val);
 				return;
@@ -2480,8 +2480,8 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 				if ( new_val && old_val != new_val) {
 				  /* raise an interrupt request to the CPU if needed */
 				  if ( MMU.reg_IE[proc] & MMU.reg_IF[proc]) {
-				    NDS_ARM7.wIRQ = TRUE;
-				    NDS_ARM7.waitIRQ = FALSE;
+				    NDS_ARM7.wIRQ = true;
+				    NDS_ARM7.waitIRQ = false;
 				  }
 				}
 				return;
@@ -2492,8 +2492,8 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 				if ( MMU.reg_IME[proc]) {
 				  /* raise an interrupt request to the CPU if needed */
 				  if ( MMU.reg_IE[proc] & MMU.reg_IF[proc]) {
-				    NDS_ARM7.wIRQ = TRUE;
-				    NDS_ARM7.waitIRQ = FALSE;
+				    NDS_ARM7.wIRQ = true;
+				    NDS_ARM7.waitIRQ = false;
 				  }
 				}
 				return;
@@ -2531,7 +2531,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 				}
 				if(!(val & 0x800000))
 				{
-					MMU.timerRUN[proc][(adr>>2)&0x3] = FALSE;
+					MMU.timerRUN[proc][(adr>>2)&0x3] = false;
 				}
 				T1WriteLong(MMU.MMU_MEM[proc][0x40], adr & 0xFFF, val);
 				return;
@@ -2646,7 +2646,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 				{
                                         u16 cnt;
 					u64 v = 1;
-					//execute = FALSE;
+					//execute = false;
 					T1WriteLong(MMU.MMU_MEM[proc][0x40], 0x2B8, val);
                                         cnt = T1ReadWord(MMU.MMU_MEM[proc][0x40], 0x2B0);
 					switch(cnt&1)
@@ -2686,7 +2686,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 				return;
                         case REG_IPCSYNC :
 				{
-					//execute=FALSE;
+					//execute=false;
 					u32 remote = (proc+1)&1;
 					u32 IPCSYNC_remote = T1ReadLong(MMU.MMU_MEM[remote][0x40], 0x180);
 					T1WriteLong(MMU.MMU_MEM[proc][0x40], 0x180, (val&0xFFF0)|((IPCSYNC_remote>>8)&0xF));
@@ -2715,7 +2715,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 					return;
 				}
 				T1WriteWord(MMU.MMU_MEM[proc][0x40], 0x184, val & 0xBFF4);
-				//execute = FALSE;
+				//execute = false;
 				return;
 							}
                         case REG_IPCFIFOSEND :
@@ -2723,7 +2723,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 					u16 IPCFIFO_CNT = T1ReadWord(MMU.MMU_MEM[proc][0x40], 0x184);
 					if(IPCFIFO_CNT&0x8000)
 					{
-					//if(val==43) execute = FALSE;
+					//if(val==43) execute = false;
 					u32 remote = (proc+1)&1;
 					u32 fifonum = IPCFIFO+remote;
                                         u16 IPCFIFO_CNT_remote;
@@ -2734,7 +2734,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 					T1WriteWord(MMU.MMU_MEM[proc][0x40], 0x184, IPCFIFO_CNT);
 					T1WriteWord(MMU.MMU_MEM[remote][0x40], 0x184, IPCFIFO_CNT_remote);
 					MMU.reg_IF[remote] |= ((IPCFIFO_CNT_remote & (1<<10))<<8);// & (MMU.reg_IME[remote] << 18);// & (MMU.reg_IE[remote] & 0x40000);//
-					//execute = FALSE;
+					//execute = false;
 					}
 				}
 				return;
@@ -2754,7 +2754,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 					LOG("proc %d, dma %d src %08X dst %08X start taille %d %d\r\n", proc, 0, DMASrc[proc][0], DMADst[proc][0], 0, ((MMU.DMACrt[proc][0]>>27)&7));
 				}
 				#endif
-				//execute = FALSE;
+				//execute = false;
 				return;
 			case REG_DMA1CNTL:
 				//LOG("32 bit dma1 %04X\r\n", val);
@@ -2881,7 +2881,7 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 					GPU_setBGProp(MainScreen.gpu, 0, (val&0xFFFF));
 					GPU_setBGProp(MainScreen.gpu, 1, (val>>16));
 				}
-				//if((val>>16)==0x400) execute = FALSE;
+				//if((val>>16)==0x400) execute = false;
 				T1WriteLong(ARM9Mem.ARM9_REG, 8, val);
 				return;
                         case REG_DISPA_BG2CNT :
@@ -2916,8 +2916,8 @@ void FASTCALL MMU_write32(u32 proc, u32 adr, u32 val)
 				FIFOAdd(MMU.fifos + MAIN_MEMORY_DISP_FIFO, val);
 				break;
 			}
-			//case 0x21FDFF0 :  if(val==0) execute = FALSE;
-			//case 0x21FDFB0 :  if(val==0) execute = FALSE;
+			//case 0x21FDFF0 :  if(val==0) execute = false;
+			//case 0x21FDFB0 :  if(val==0) execute = false;
 			default :
 				T1WriteLong(MMU.MMU_MEM[proc][0x40], adr & MMU.MMU_MASK[proc][(adr>>20)&0xFF], val);
 				return;
@@ -2943,7 +2943,7 @@ void FASTCALL MMU_doDMA(u32 proc, u32 num)
 	{       /* not enabled and not to be repeated */
 		MMU.DMAStartTime[proc][num] = 0;
 		MMU.DMACycle[proc][num] = 0;
-		//MMU.DMAing[proc][num] = FALSE;
+		//MMU.DMAing[proc][num] = false;
 		return;
 	}
 
@@ -2964,7 +2964,7 @@ void FASTCALL MMU_doDMA(u32 proc, u32 num)
 		taille *= 0x80;
 
 	MMU.DMACycle[proc][num] = taille + nds.cycles;
-	MMU.DMAing[proc][num] = TRUE;
+	MMU.DMAing[proc][num] = true;
 
 	DMALOG("proc %d, dma %d src %08X dst %08X start %d taille %d repeat %s %08X\r\n",
 		proc, num, src, dst, MMU.DMAStartTime[proc][num], taille,
@@ -3019,8 +3019,8 @@ INLINE void check_access(u32 adr, u32 access) {
 		/* is user mode access */
 		access ^= 1 ;
 	}
-	if (armcp15_isAccessAllowed((armcp15_t *)NDS_ARM9.coproc[15],adr,access)==FALSE) {
-		execute = FALSE ;
+	if (armcp15_isAccessAllowed((armcp15_t *)NDS_ARM9.coproc[15],adr,access)==false) {
+		execute = false ;
 	}
 }
 INLINE void check_access_write(u32 adr) {
@@ -3513,8 +3513,8 @@ struct armcpu_memory_iface arm7_base_memory_iface = {
  */
 struct armcpu_memory_iface arm9_direct_memory_iface = {
   /* the prefetch is not used */
-  NULL,
-  NULL,
+  nullptr,
+  nullptr,
 
   arm9_read8,
   arm9_read16,

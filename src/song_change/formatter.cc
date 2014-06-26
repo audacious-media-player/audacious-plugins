@@ -48,26 +48,26 @@ formatter_destroy(Formatter * formatter)
 }
 
 void
-formatter_associate(Formatter * formatter, const guchar id, const gchar *value)
+formatter_associate(Formatter * formatter, const unsigned char id, const char *value)
 {
     formatter_dissociate(formatter, id);
     formatter->values[id] = g_strdup(value);
 }
 
 void
-formatter_dissociate(Formatter * formatter, const guchar id)
+formatter_dissociate(Formatter * formatter, const unsigned char id)
 {
     if (formatter->values[id])
         g_free(formatter->values[id]);
     formatter->values[id] = 0;
 }
 
-gchar *
-formatter_format(Formatter * formatter, const gchar *format)
+char *
+formatter_format(Formatter * formatter, const char *format)
 {
-    const gchar *p;
-    gchar *q, *buffer;
-    gint len;
+    const char *p;
+    char *q, *buffer;
+    int len;
 
     for (p = format, len = 0; *p; p++)
         if (*p == '%') {

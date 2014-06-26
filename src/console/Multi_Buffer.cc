@@ -32,7 +32,7 @@ blargg_err_t Multi_Buffer::set_channel_count( int ) { return 0; }
 
 Silent_Buffer::Silent_Buffer() : Multi_Buffer( 1 ) // 0 channels would probably confuse
 {
-	// TODO: better to use empty Blip_Buffer so caller never has to check for NULL?
+	// TODO: better to use empty Blip_Buffer so caller never has to check for nullptr?
 	chan.left   = 0;
 	chan.center = 0;
 	chan.right  = 0;

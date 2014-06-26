@@ -27,8 +27,8 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * eq_slider_new (const gchar * name);
-void eq_slider_set_val (GtkWidget * widget, gfloat val);
-gfloat eq_slider_get_val (GtkWidget * widget);
+GtkWidget * eq_slider_new (const char * name);
+void eq_slider_set_val (GtkWidget * widget, float val);
+float eq_slider_get_val (GtkWidget * widget);
 
 #endif

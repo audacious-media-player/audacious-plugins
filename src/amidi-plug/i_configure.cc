@@ -30,14 +30,14 @@
 
 int backend_settings_changed = FALSE;  /* atomic */
 
-static bool_t override_gain = FALSE;
+static gboolean override_gain = FALSE;
 static float gain_setting = 0.2;
-static bool_t override_polyphony = FALSE;
+static gboolean override_polyphony = FALSE;
 static int polyphony_setting = 256;
-static bool_t override_reverb = FALSE;
-static bool_t reverb_setting = TRUE;
-static bool_t override_chorus = FALSE;
-static bool_t chorus_setting = TRUE;
+static gboolean override_reverb = FALSE;
+static gboolean reverb_setting = TRUE;
+static gboolean override_chorus = FALSE;
+static gboolean chorus_setting = TRUE;
 
 static void get_values (void)
 {

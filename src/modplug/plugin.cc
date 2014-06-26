@@ -14,14 +14,14 @@ void InitSettings (const ModplugSettings * settings)
     gModplugXMMS.SetModProps (* settings);
 }
 
-int CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
+bool CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
 {
     if(gModplugXMMS.CanPlayFileFromVFS(aFilename, VFSFile))
         return 1;
     return 0;
 }
 
-bool_t PlayFile(const char * filename, VFSFile * file)
+bool PlayFile(const char * filename, VFSFile * file)
 {
     return gModplugXMMS.PlayFile(filename);
 }

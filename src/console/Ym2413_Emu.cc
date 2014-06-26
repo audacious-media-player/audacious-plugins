@@ -1162,8 +1162,8 @@ OPLL_new (e_uint32 clk, e_uint32 rate)
   maketables (clk, rate);
 
   opll = (OPLL *) calloc (sizeof (OPLL), 1);
-  if (opll == NULL)
-    return NULL;
+  if (opll == nullptr)
+    return nullptr;
 
   for (i = 0; i < 19 * 2; i++)
     memcpy(&opll->patch[i],&null_patch,sizeof(OPLL_PATCH));
@@ -1241,7 +1241,7 @@ OPLL_forceRefresh (OPLL * opll)
 {
   e_int32 i;
 
-  if (opll == NULL)
+  if (opll == nullptr)
     return;
 
   for (i = 0; i < 9; i++)

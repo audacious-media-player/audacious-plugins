@@ -54,10 +54,10 @@ typedef enum {
 GtkWidget * ui_vis_new (void);
 void ui_vis_set_colors (void);
 void ui_vis_clear_data (GtkWidget * widget);
-void ui_vis_timeout_func (GtkWidget * widget, guchar * data);
+void ui_vis_timeout_func (GtkWidget * widget, unsigned char * data);
 
 GtkWidget * ui_svis_new (void);
 void ui_svis_clear_data (GtkWidget * widget);
-void ui_svis_timeout_func (GtkWidget * widget, guchar * data);
+void ui_svis_timeout_func (GtkWidget * widget, unsigned char * data);
 
 #endif

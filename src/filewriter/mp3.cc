@@ -34,13 +34,13 @@
 
 #define MODES 4
 enum {MODE_AUTO = 4, MODE_JOINT = 1, MODE_STEREO = 0, MODE_MONO = 3};
-static const gint modes[MODES] = {MODE_AUTO, MODE_JOINT, MODE_STEREO, MODE_MONO};
-static const gchar * const mode_names[MODES] = {N_("Auto"), N_("Joint Stereo"),
+static const int modes[MODES] = {MODE_AUTO, MODE_JOINT, MODE_STEREO, MODE_MONO};
+static const char * const mode_names[MODES] = {N_("Auto"), N_("Joint Stereo"),
  N_("Stereo"), N_("Mono")};
 
-static gint (*write_output)(void *ptr, gint length);
+static int (*write_output)(void *ptr, int length);
 
-static GtkWidget *configure_win = NULL;
+static GtkWidget *configure_win = nullptr;
 static GtkWidget *alg_quality_spin;
 static GtkWidget *alg_quality_hbox;
 static GtkAdjustment * alg_quality_adj;
@@ -73,10 +73,10 @@ static GtkWidget *enc_quality_vbox, *hbox1, *hbox2;
 static unsigned long numsamples = 0;
 static int inside;
 
-static gint available_samplerates[] =
+static int available_samplerates[] =
 { 8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000 } ;
 
-static gint available_bitrates[] =
+static int available_bitrates[] =
 { 8, 16, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320 } ;
 
 struct lameid3_t {
@@ -94,15 +94,15 @@ static lame_global_flags *gfp;
 static unsigned char encbuffer[LAME_MAXMP3BUFFER];
 static int id3v2_size;
 
-static guchar * write_buffer;
-static gint write_buffer_size;
+static unsigned char * write_buffer;
+static int write_buffer_size;
 
 static void lame_debugf(const char *format, va_list ap)
 {
     (void) vfprintf(stdout, format, ap);
 }
 
-static const gchar * const mp3_defaults[] = {
+static const char * const mp3_defaults[] = {
  "vbr_on", "0",
  "vbr_type", "0",
  "vbr_min_val", "32",
@@ -124,14 +124,14 @@ static const gchar * const mp3_defaults[] = {
  "audio_mode_val", "4", /* MODE_AUTO */
  "enforce_iso_val", "0",
  "error_protect_val", "0",
- NULL};
+ nullptr};
 
-static gint vbr_on, vbr_type, vbr_min_val, vbr_max_val, enforce_min_val,
+static int vbr_on, vbr_type, vbr_min_val, vbr_max_val, enforce_min_val,
  vbr_quality_val, abr_val, toggle_xing_val, mark_original_val,
  mark_copyright_val, force_v2_val, only_v1_val, only_v2_val, algo_quality_val,
  out_samplerate_val, bitrate_val;
-static gfloat compression_val;
-static gint enc_toggle_val, audio_mode_val, enforce_iso_val, error_protect_val;
+static float compression_val;
+static int enc_toggle_val, audio_mode_val, enforce_iso_val, error_protect_val;
 
 static void mp3_init(write_output_callback write_output_func)
 {
@@ -163,12 +163,12 @@ static void mp3_init(write_output_callback write_output_func)
         write_output=write_output_func;
 }
 
-static gint mp3_open(void)
+static int mp3_open(void)
 {
     int imp3;
 
     gfp = lame_init();
-    if (gfp == NULL)
+    if (gfp == nullptr)
         return 0;
 
     /* setup id3 data */
@@ -267,20 +267,20 @@ static gint mp3_open(void)
         id3v2_size = 0;
     }
 
-    write_buffer = NULL;
+    write_buffer = nullptr;
     write_buffer_size = 0;
 
     return 1;
 }
 
-static void mp3_write(void *ptr, gint length)
+static void mp3_write(void *ptr, int length)
 {
-    gint encoded;
+    int encoded;
 
     if (write_buffer_size == 0)
     {
         write_buffer_size = 8192;
-        write_buffer = g_renew (guchar, write_buffer, write_buffer_size);
+        write_buffer = g_renew (unsigned char, write_buffer, write_buffer_size);
     }
 
 RETRY:
@@ -294,7 +294,7 @@ RETRY:
     if (encoded == -1)
     {
         write_buffer_size *= 2;
-        write_buffer = g_renew (guchar, write_buffer, write_buffer_size);
+        write_buffer = g_renew (unsigned char, write_buffer, write_buffer_size);
         goto RETRY;
     }
 
@@ -359,7 +359,7 @@ static void mp3_close(void)
 
 /* Various Signal-Fuctions */
 
-static void algo_qual(GtkAdjustment * adjustment, gpointer user_data)
+static void algo_qual(GtkAdjustment * adjustment, void * user_data)
 {
 
     algo_quality_val =
@@ -370,7 +370,7 @@ static void algo_qual(GtkAdjustment * adjustment, gpointer user_data)
 
 static void samplerate_changed (GtkComboBox * combo)
 {
-    gint i = gtk_combo_box_get_active (combo) - 1;
+    int i = gtk_combo_box_get_active (combo) - 1;
 
     if (i >= 0 && i < ARRAY_LEN (available_samplerates))
         out_samplerate_val = available_samplerates[i];
@@ -380,7 +380,7 @@ static void samplerate_changed (GtkComboBox * combo)
 
 static void bitrate_changed (GtkComboBox * combo)
 {
-    gint i = gtk_combo_box_get_active (combo);
+    int i = gtk_combo_box_get_active (combo);
 
     if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         bitrate_val = available_bitrates[i];
@@ -389,14 +389,14 @@ static void bitrate_changed (GtkComboBox * combo)
 }
 
 static void compression_change(GtkAdjustment * adjustment,
-                               gpointer user_data)
+                               void * user_data)
 {
     compression_val = gtk_spin_button_get_value ((GtkSpinButton *)
      compression_spin);
 }
 
 static void encoding_toggle(GtkToggleButton * togglebutton,
-                            gpointer user_data)
+                            void * user_data)
 {
 
     enc_toggle_val = GPOINTER_TO_INT(user_data);
@@ -405,7 +405,7 @@ static void encoding_toggle(GtkToggleButton * togglebutton,
 
 static void mode_changed (GtkComboBox * combo)
 {
-    gint i = gtk_combo_box_get_active (combo);
+    int i = gtk_combo_box_get_active (combo);
 
     if (i >= 0 && i < MODES)
         audio_mode_val = modes[i];
@@ -414,7 +414,7 @@ static void mode_changed (GtkComboBox * combo)
 }
 
 static void toggle_enforce_iso(GtkToggleButton * togglebutton,
-                               gpointer user_data)
+                               void * user_data)
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(enforce_iso_toggle))
@@ -426,7 +426,7 @@ static void toggle_enforce_iso(GtkToggleButton * togglebutton,
 }
 
 static void toggle_error_protect(GtkToggleButton * togglebutton,
-                                 gpointer user_data)
+                                 void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -437,7 +437,7 @@ static void toggle_error_protect(GtkToggleButton * togglebutton,
 
 }
 
-static void toggle_vbr(GtkToggleButton * togglebutton, gpointer user_data)
+static void toggle_vbr(GtkToggleButton * togglebutton, void * user_data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(vbr_toggle)) ==
         TRUE) {
@@ -467,7 +467,7 @@ static void toggle_vbr(GtkToggleButton * togglebutton, gpointer user_data)
 }
 
 static void vbr_abr_toggle(GtkToggleButton * togglebutton,
-                           gpointer user_data)
+                           void * user_data)
 {
     if (!strcmp((char *) user_data, "VBR")) {
         gtk_widget_set_sensitive(abr_frame, FALSE);
@@ -483,7 +483,7 @@ static void vbr_abr_toggle(GtkToggleButton * togglebutton,
 
 static void vbr_min_changed (GtkComboBox * combo)
 {
-    gint i = gtk_combo_box_get_active (combo);
+    int i = gtk_combo_box_get_active (combo);
 
     if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         vbr_min_val = available_bitrates[i];
@@ -493,7 +493,7 @@ static void vbr_min_changed (GtkComboBox * combo)
 
 static void vbr_max_changed (GtkComboBox * combo)
 {
-    gint i = gtk_combo_box_get_active (combo);
+    int i = gtk_combo_box_get_active (combo);
 
     if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         vbr_max_val = available_bitrates[i];
@@ -502,7 +502,7 @@ static void vbr_max_changed (GtkComboBox * combo)
 }
 
 static void toggle_enforce_min(GtkToggleButton * togglebutton,
-                               gpointer user_data)
+                               void * user_data)
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(enforce_min_toggle))
@@ -513,7 +513,7 @@ static void toggle_enforce_min(GtkToggleButton * togglebutton,
 
 }
 
-static void vbr_qual(GtkAdjustment * adjustment, gpointer user_data)
+static void vbr_qual(GtkAdjustment * adjustment, void * user_data)
 {
 
     vbr_quality_val =
@@ -524,7 +524,7 @@ static void vbr_qual(GtkAdjustment * adjustment, gpointer user_data)
 
 static void abr_changed (GtkComboBox * combo)
 {
-    gint i = gtk_combo_box_get_active (combo);
+    int i = gtk_combo_box_get_active (combo);
 
     if (i >= 0 && i < ARRAY_LEN (available_bitrates))
         abr_val = available_bitrates[i];
@@ -532,7 +532,7 @@ static void abr_changed (GtkComboBox * combo)
         abr_val = 128;
 }
 
-static void toggle_xing(GtkToggleButton * togglebutton, gpointer user_data)
+static void toggle_xing(GtkToggleButton * togglebutton, void * user_data)
 {
 
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(xing_header_toggle)) == TRUE)
@@ -543,7 +543,7 @@ static void toggle_xing(GtkToggleButton * togglebutton, gpointer user_data)
 }
 
 static void toggle_original(GtkToggleButton * togglebutton,
-                            gpointer user_data)
+                            void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -555,7 +555,7 @@ static void toggle_original(GtkToggleButton * togglebutton,
 }
 
 static void toggle_copyright(GtkToggleButton * togglebutton,
-                             gpointer user_data)
+                             void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -567,7 +567,7 @@ static void toggle_copyright(GtkToggleButton * togglebutton,
 }
 
 static void force_v2_toggle(GtkToggleButton * togglebutton,
-                            gpointer user_data)
+                            void * user_data)
 {
 
     if (gtk_toggle_button_get_active
@@ -588,7 +588,7 @@ static void force_v2_toggle(GtkToggleButton * togglebutton,
 }
 
 static void id3_only_version(GtkToggleButton * togglebutton,
-                             gpointer user_data)
+                             void * user_data)
 {
     if (!strcmp((char *) user_data, "v1") && inside != 1) {
         if (gtk_toggle_button_get_active
@@ -670,10 +670,10 @@ static void mp3_configure(void)
     if (! configure_win)
     {
         configure_win = gtk_dialog_new_with_buttons (_("MP3 Configuration"),
-         NULL, (GtkDialogFlags) 0, _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"),
-         GTK_RESPONSE_OK, NULL);
+         nullptr, (GtkDialogFlags) 0, _("_Cancel"), GTK_RESPONSE_CANCEL, _("_OK"),
+         GTK_RESPONSE_OK, nullptr);
 
-        g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, NULL);
+        g_signal_connect (configure_win, "response", (GCallback) configure_response_cb, nullptr);
         g_signal_connect (configure_win, "destroy", (GCallback)
          gtk_widget_destroyed, & configure_win);
 
@@ -711,7 +711,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(alg_quality_hbox), alg_quality_spin,
                            TRUE, TRUE, 0);
         g_signal_connect (alg_quality_adj, "value-changed", (GCallback)
-         algo_qual, NULL);
+         algo_qual, nullptr);
 
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(alg_quality_spin),
                                   algo_quality_val);
@@ -743,7 +743,7 @@ static void mp3_configure(void)
         }
 
         gtk_box_pack_start ((GtkBox *) samplerate_hbox, combo, FALSE, FALSE, 0);
-        g_signal_connect (combo, "changed", (GCallback) samplerate_changed, NULL);
+        g_signal_connect (combo, "changed", (GCallback) samplerate_changed, nullptr);
 
         samplerate_label = gtk_label_new(_("(Hz)"));
         gtk_misc_set_alignment(GTK_MISC(samplerate_label), 0, 0.5);
@@ -770,7 +770,7 @@ static void mp3_configure(void)
         gtk_container_add(GTK_CONTAINER(enc_quality_vbox), hbox1);
 
         // radio 1
-        enc_radio1 = gtk_radio_button_new(NULL);
+        enc_radio1 = gtk_radio_button_new(nullptr);
         if (enc_toggle_val == 0)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(enc_radio1), TRUE);
         gtk_box_pack_start(GTK_BOX(hbox1), enc_radio1, FALSE, FALSE, 0);
@@ -793,7 +793,7 @@ static void mp3_configure(void)
         }
 
         gtk_box_pack_start ((GtkBox *) hbox1, combo, FALSE, FALSE, 0);
-        g_signal_connect (combo, "changed", (GCallback) bitrate_changed, NULL);
+        g_signal_connect (combo, "changed", (GCallback) bitrate_changed, nullptr);
 
         // hbox2 for compression ratio
         hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
@@ -819,7 +819,7 @@ static void mp3_configure(void)
         gtk_box_pack_end(GTK_BOX(hbox2), compression_spin, FALSE, FALSE, 0);
 
         g_signal_connect (compression_adj, "value-changed", (GCallback)
-         compression_change, NULL);
+         compression_change, nullptr);
 
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(compression_spin),
                                   compression_val);
@@ -853,7 +853,7 @@ static void mp3_configure(void)
         }
 
         gtk_box_pack_start ((GtkBox *) mode_hbox, combo, FALSE, FALSE, 0);
-        g_signal_connect (combo, "changed", (GCallback) mode_changed, NULL);
+        g_signal_connect (combo, "changed", (GCallback) mode_changed, nullptr);
 
         /* Misc */
 
@@ -872,7 +872,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(misc_vbox), enforce_iso_toggle, TRUE,
                            TRUE, 2);
         g_signal_connect (enforce_iso_toggle, "toggled", (GCallback)
-         toggle_enforce_iso, NULL);
+         toggle_enforce_iso, nullptr);
 
         if (enforce_iso_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -883,7 +883,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(misc_vbox), error_protection_toggle,
                            TRUE, TRUE, 2);
         g_signal_connect (error_protection_toggle, "toggled", (GCallback)
-         toggle_error_protect, NULL);
+         toggle_error_protect, nullptr);
 
         if (error_protect_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -902,7 +902,7 @@ static void mp3_configure(void)
 
         vbr_toggle = gtk_check_button_new_with_label(_("Enable VBR/ABR"));
         gtk_box_pack_start(GTK_BOX(vbr_vbox), vbr_toggle, FALSE, FALSE, 2);
-        g_signal_connect (vbr_toggle, "toggled", (GCallback) toggle_vbr, NULL);
+        g_signal_connect (vbr_toggle, "toggled", (GCallback) toggle_vbr, nullptr);
 
         vbr_options_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
         gtk_container_add(GTK_CONTAINER(vbr_vbox), vbr_options_vbox);
@@ -919,7 +919,7 @@ static void mp3_configure(void)
         gtk_container_set_border_width(GTK_CONTAINER(vbr_type_hbox), 5);
         gtk_container_add(GTK_CONTAINER(vbr_type_frame), vbr_type_hbox);
 
-        vbr_type_radio1 = gtk_radio_button_new_with_label(NULL, "VBR");
+        vbr_type_radio1 = gtk_radio_button_new_with_label(nullptr, "VBR");
         gtk_box_pack_start(GTK_BOX(vbr_type_hbox), vbr_type_radio1, TRUE,
                            TRUE, 2);
         if (vbr_type == 0)
@@ -977,7 +977,7 @@ static void mp3_configure(void)
 
         gtk_box_pack_start ((GtkBox *) vbr_options_hbox1, combo, FALSE, FALSE,
          0);
-        g_signal_connect (combo, "changed", (GCallback) vbr_min_changed, NULL);
+        g_signal_connect (combo, "changed", (GCallback) vbr_min_changed, nullptr);
 
         vbr_options_hbox2 = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_set_border_width(GTK_CONTAINER(vbr_options_hbox2),
@@ -1003,7 +1003,7 @@ static void mp3_configure(void)
 
         gtk_box_pack_start ((GtkBox *) vbr_options_hbox2, combo, FALSE, FALSE,
          0);
-        g_signal_connect (combo, "changed", (GCallback) vbr_max_changed, NULL);
+        g_signal_connect (combo, "changed", (GCallback) vbr_max_changed, nullptr);
 
         enforce_min_toggle =
             gtk_check_button_new_with_label
@@ -1011,7 +1011,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(vbr_options_vbox2), enforce_min_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (enforce_min_toggle, "toggled", (GCallback)
-         toggle_enforce_min, NULL);
+         toggle_enforce_min, nullptr);
 
         if (enforce_min_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -1046,7 +1046,7 @@ static void mp3_configure(void)
 
         gtk_box_pack_start ((GtkBox *) abr_hbox, combo, FALSE, FALSE,
          0);
-        g_signal_connect (combo, "changed", (GCallback) abr_changed, NULL);
+        g_signal_connect (combo, "changed", (GCallback) abr_changed, nullptr);
 
         /* Quality Level */
 
@@ -1067,7 +1067,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox3), vbr_quality_spin,
                            TRUE, TRUE, 0);
         g_signal_connect (vbr_quality_adj, "value-changed", (GCallback)
-         vbr_qual, NULL);
+         vbr_qual, nullptr);
 
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(vbr_quality_spin),
                                   vbr_quality_val);
@@ -1079,7 +1079,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(vbr_options_vbox), xing_header_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (xing_header_toggle, "toggled", (GCallback)
-         toggle_xing, NULL);
+         toggle_xing, nullptr);
 
         if (toggle_xing_val == 0)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -1113,7 +1113,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(tags_frames_hbox),
                            tags_copyright_toggle, FALSE, FALSE, 2);
         g_signal_connect (tags_copyright_toggle, "toggled", (GCallback)
-         toggle_copyright, NULL);
+         toggle_copyright, nullptr);
 
         if (mark_copyright_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -1124,7 +1124,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(tags_frames_hbox), tags_original_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (tags_original_toggle, "toggled", (GCallback)
-         toggle_original, NULL);
+         toggle_original, nullptr);
 
         if (mark_original_val == 1)
             gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON
@@ -1147,7 +1147,7 @@ static void mp3_configure(void)
         gtk_box_pack_start(GTK_BOX(tags_id3_vbox), tags_force_id3v2_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (tags_force_id3v2_toggle, "toggled", (GCallback)
-         force_v2_toggle, NULL);
+         force_v2_toggle, nullptr);
 
         tags_id3_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(tags_id3_vbox), tags_id3_hbox);

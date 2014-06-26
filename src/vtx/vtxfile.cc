@@ -111,9 +111,9 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
   int error = 0;
   int32_t int_regdata_size;
 
-  vtx->regdata = NULL;
+  vtx->regdata = nullptr;
 
-  if ((vtx->fp = vfs_fopen (filename, "rb")) == NULL) {
+  if ((vtx->fp = vfs_fopen (filename, "rb")) == nullptr) {
     fprintf(stderr, "ayemu_vtx_open: Cannot open file %s: %s\n", filename, strerror(errno));
     return 0;
   }
@@ -154,14 +154,14 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
 
   if (error) {
     vfs_fclose(vtx->fp);
-    vtx->fp = NULL;
+    vtx->fp = nullptr;
   }
   return !error;
 }
 
 /** Read and encode lha data from .vtx file
  *
- * Return value: pointer to unpacked data or NULL
+ * Return value: pointer to unpacked data or nullptr
  * Note: you must call ayemu_vtx_open() first.
  */
 char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
@@ -171,9 +171,9 @@ char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
   size_t buf_alloc;
   int c;
 
-  if (vtx->fp == NULL) {
+  if (vtx->fp == nullptr) {
     fprintf(stderr, "ayemu_vtx_load_data: tune file not open yet (do you call ayemu_vtx_open first?)\n");
-    return NULL;
+    return nullptr;
   }
   packed_size = 0;
   buf_alloc = 4096;
@@ -183,20 +183,20 @@ char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
     if (buf_alloc < packed_size) {
       buf_alloc *= 2;
       packed_data = (char *) realloc (packed_data, buf_alloc);
-      if (packed_data == NULL) {
+      if (packed_data == nullptr) {
 	fprintf (stderr, "ayemu_vtx_load_data: Packed data out of memory!\n");
 	vfs_fclose (vtx->fp);
-	return NULL;
+	return nullptr;
       }
     }
     packed_data[packed_size++] = c;
   }
   vfs_fclose (vtx->fp);
-  vtx->fp = NULL;
-  if ((vtx->regdata = (char *) malloc (vtx->hdr.regdata_size)) == NULL) {
+  vtx->fp = nullptr;
+  if ((vtx->regdata = (char *) malloc (vtx->hdr.regdata_size)) == nullptr) {
     fprintf (stderr, "ayemu_vtx_load_data: Can allocate %d bytes for unpack register data\n", (int)(vtx->hdr.regdata_size));
     free (packed_data);
-    return NULL;
+    return nullptr;
   }
   lh5_decode ((unsigned char *)packed_data, (unsigned char *)(vtx->regdata), vtx->hdr.regdata_size, packed_size);
   free (packed_data);
@@ -241,7 +241,7 @@ static void append_char(char *buf, const int sz, const char c)
   buf[pos] = '\0';
 }
 
-/** Print formated file name. If fmt is NULL the default format %a - %t will used
+/** Print formated file name. If fmt is nullptr the default format %a - %t will used
  *
  * %% the % sign
  * %a author of song
@@ -260,7 +260,7 @@ void ayemu_vtx_sprintname (const ayemu_vtx_t *vtx, char *const buf, const int sz
 {
   static const char *stereo_types[] = { "MONO", "ABC", "ACB", "BAC", "BCA", "CAB", "CBA" };
 
-  if (fmt == NULL)
+  if (fmt == nullptr)
     fmt = "%a - %t";
 
   buf[0] = '\0';
@@ -319,11 +319,11 @@ void ayemu_vtx_free (ayemu_vtx_t *vtx)
 {
   if (vtx->fp) {
     vfs_fclose(vtx->fp);
-    vtx->fp = NULL;
+    vtx->fp = nullptr;
   }
 
   if (vtx->regdata) {
     free(vtx->regdata);
-    vtx->regdata = NULL;
+    vtx->regdata = nullptr;
   }
 }

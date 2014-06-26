@@ -40,7 +40,7 @@
 #include "ui_vis.h"
 #include "util.h"
 
-static const gchar * const skins_defaults[] = {
+static const char * const skins_defaults[] = {
  /* general */
  "autoscroll_songname", "TRUE",
  "mainwin_font", "Sans Bold 9",
@@ -76,14 +76,14 @@ static const gchar * const skins_defaults[] = {
  "playlist_width", "275",
  "playlist_height", "232",
  "sticky", "FALSE",
- NULL};
+ nullptr};
 
 skins_cfg_t config;
 
 static GtkWidget * skin_view;
 
 typedef struct skins_cfg_boolent_t {
-    const gchar * name;
+    const char * name;
     gboolean * ptr;
 } skins_cfg_boolent;
 
@@ -97,8 +97,8 @@ static const skins_cfg_boolent skins_boolents[] = {
  {"analyzer_peaks", & config.analyzer_peaks}};
 
 typedef struct skins_cfg_nument_t {
-    const gchar * name;
-    gint * ptr;
+    const char * name;
+    int * ptr;
 } skins_cfg_nument;
 
 static const skins_cfg_nument skins_numents[] = {
@@ -123,27 +123,27 @@ static const skins_cfg_nument skins_numents[] = {
  {"playlist_height", & config.playlist_height}};
 
 typedef struct skins_cfg_strent_t {
-    const gchar * name;
-    gchar * * ptr;
+    const char * name;
+    char * * ptr;
 } skins_cfg_strent;
 
 void skins_cfg_load (void)
 {
     aud_config_set_defaults ("skins", skins_defaults);
 
-    for (gint i = 0; i < ARRAY_LEN (skins_boolents); i ++)
+    for (int i = 0; i < ARRAY_LEN (skins_boolents); i ++)
         * skins_boolents[i].ptr = aud_get_bool ("skins", skins_boolents[i].name);
 
-    for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
+    for (int i = 0; i < ARRAY_LEN (skins_numents); i ++)
         * skins_numents[i].ptr = aud_get_int ("skins", skins_numents[i].name);
 }
 
 void skins_cfg_save (void)
 {
-    for (gint i = 0; i < ARRAY_LEN (skins_boolents); i ++)
+    for (int i = 0; i < ARRAY_LEN (skins_boolents); i ++)
         aud_set_bool ("skins", skins_boolents[i].name, * skins_boolents[i].ptr);
 
-    for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
+    for (int i = 0; i < ARRAY_LEN (skins_numents); i ++)
         aud_set_int ("skins", skins_numents[i].name, * skins_numents[i].ptr);
 }
 
@@ -151,7 +151,7 @@ static void
 mainwin_font_set_cb()
 {
     String font = aud_get_str ("skins", "mainwin_font");
-    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL : (const char *) font);
+    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? nullptr : (const char *) font);
 }
 
 static void
@@ -291,15 +291,15 @@ const PluginPreferences skins_prefs = {
 void
 on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
-                                gint x, gint y,
+                                int x, int y,
                                 GtkSelectionData * selection_data,
-                                guint info, guint time,
-                                gpointer user_data)
+                                unsigned info, unsigned time,
+                                void * user_data)
 {
-    const gchar * data = (const gchar *) gtk_selection_data_get_data (selection_data);
+    const char * data = (const char *) gtk_selection_data_get_data (selection_data);
     g_return_if_fail (data);
 
-    const gchar * end = strchr (data, '\r');
+    const char * end = strchr (data, '\r');
     if (! end) end = strchr (data, '\n');
     if (! end) end = data + strlen (data);
 
@@ -326,7 +326,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
 
 static void * create_skin_view (void)
 {
-    GtkWidget * scrolled = gtk_scrolled_window_new (NULL, NULL);
+    GtkWidget * scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
      GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
@@ -340,7 +340,7 @@ static void * create_skin_view (void)
     drag_dest_set (skin_view);
 
     g_signal_connect (skin_view, "drag-data-received",
-     (GCallback) on_skin_view_drag_data_received, NULL);
+     (GCallback) on_skin_view_drag_data_received, nullptr);
     g_signal_connect (skin_view, "destroy", (GCallback) gtk_widget_destroyed, & skin_view);
 
     return scrolled;

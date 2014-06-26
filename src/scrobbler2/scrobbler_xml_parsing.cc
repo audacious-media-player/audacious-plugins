@@ -3,25 +3,25 @@
 #include "scrobbler.h"
 
 //static (private) variables
-static xmlDocPtr doc = NULL;
-static xmlXPathContextPtr context = NULL;
+static xmlDocPtr doc = nullptr;
+static xmlXPathContextPtr context = nullptr;
 
-static bool_t prepare_data () {
+static gboolean prepare_data () {
     received_data[received_data_size] = '\0';
     AUDDBG("Data received from last.fm:\n%s\n%%%%End of data%%%%\n", received_data);
 
     doc = xmlParseMemory(received_data, received_data_size+1);
     received_data_size = 0;
-    if (doc == NULL) {
+    if (doc == nullptr) {
         AUDDBG("Document not parsed successfully.\n");
         return FALSE;
     }
 
     context = xmlXPathNewContext(doc);
-    if (context == NULL) {
+    if (context == nullptr) {
         AUDDBG("Error in xmlXPathNewContext\n");
         xmlFreeDoc(doc);
-        doc = NULL;
+        doc = nullptr;
         return FALSE;
     }
     return TRUE;
@@ -30,22 +30,22 @@ static bool_t prepare_data () {
 static void clean_data() {
     xmlXPathFreeContext(context);
     xmlFreeDoc(doc);
-    context = NULL;
-    doc = NULL;
+    context = nullptr;
+    doc = nullptr;
 }
 
 
 //returns:
-// NULL if an error occurs or the attribute was not found
+// nullptr if an error occurs or the attribute was not found
 // the attribute's value if it was found
 static String get_attribute_value (const char *node_expression, const char *attribute) {
-    if (doc == NULL || context == NULL) {
+    if (doc == nullptr || context == nullptr) {
         AUDDBG("Response from last.fm not parsed successfully. Did you call prepare_data?\n");
         return String();
     }
 
     xmlXPathObjectPtr statusObj = xmlXPathEvalExpression((xmlChar *) node_expression, context);
-    if (statusObj == NULL) {
+    if (statusObj == nullptr) {
         AUDDBG ("Error in xmlXPathEvalExpression.\n");
         return String();
     }
@@ -69,15 +69,15 @@ static String get_attribute_value (const char *node_expression, const char *attr
 }
 
 //returns:
-// NULL if an error occurs or the node was not found
+// nullptr if an error occurs or the node was not found
 static String get_node_string (const char *node_expression) {
-    if (doc == NULL || context == NULL) {
+    if (doc == nullptr || context == nullptr) {
         AUDDBG("Response from last.fm not parsed successfully. Did you call prepare_data?\n");
         return String();
     }
 
     xmlXPathObjectPtr statusObj = xmlXPathEvalExpression((xmlChar *) node_expression, context);
-    if (statusObj == NULL) {
+    if (statusObj == nullptr) {
         AUDDBG ("Error in xmlXPathEvalExpression.\n");
         return String();
     }
@@ -102,7 +102,7 @@ static String get_node_string (const char *node_expression) {
 
 
 //returns:
-// NULL if an error occurs
+// nullptr if an error occurs
 // "true" if the the command succeeded
 // "false" if an error occurred. error_code and error_detail should be checked in this case
 static String check_status (String &error_code, String &error_detail) {
@@ -139,14 +139,14 @@ static String check_status (String &error_code, String &error_detail) {
  *    * with ignored = FALSE if it was scrobbled OK
  *  * FALSE if the scrobble was unsuccessful
  *    * error_code_out and error_detail_out must be checked:
- *      * They are NULL if an API communication error occur
+ *      * They are nullptr if an API communication error occur
  */
-bool_t read_scrobble_result(String &error_code, String &error_detail,
- bool_t *ignored, String &ignored_code) {
+gboolean read_scrobble_result(String &error_code, String &error_detail,
+ gboolean *ignored, String &ignored_code) {
 
     *ignored = FALSE;
 
-    bool_t result = TRUE;
+    gboolean result = TRUE;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
@@ -156,7 +156,7 @@ bool_t read_scrobble_result(String &error_code, String &error_detail,
     String status = check_status(error_code, error_detail);
 
     if (!status) {
-        AUDDBG("Status was NULL. Invalid API answer.\n");
+        AUDDBG("Status was nullptr. Invalid API answer.\n");
         clean_data();
         return FALSE;
     }
@@ -187,9 +187,9 @@ bool_t read_scrobble_result(String &error_code, String &error_detail,
 
 //returns
 //FALSE if there was an error with the connection
-bool_t read_authentication_test_result (String &error_code, String &error_detail) {
+gboolean read_authentication_test_result (String &error_code, String &error_detail) {
 
-    bool_t result = TRUE;
+    gboolean result = TRUE;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
@@ -199,7 +199,7 @@ bool_t read_authentication_test_result (String &error_code, String &error_detail
     String status = check_status(error_code, error_detail);
 
     if (!status) {
-        AUDDBG("Status was NULL. Invalid API answer.\n");
+        AUDDBG("Status was nullptr. Invalid API answer.\n");
         clean_data();
         return FALSE;
     }
@@ -221,9 +221,9 @@ bool_t read_authentication_test_result (String &error_code, String &error_detail
 
 
 
-bool_t read_token (String &error_code, String &error_detail) {
+gboolean read_token (String &error_code, String &error_detail) {
 
-    bool_t result = TRUE;
+    gboolean result = TRUE;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
@@ -233,7 +233,7 @@ bool_t read_token (String &error_code, String &error_detail) {
     String status = check_status(error_code, error_detail);
 
     if (!status) {
-        AUDDBG("Status was NULL. Invalid API answer.\n");
+        AUDDBG("Status was nullptr. Invalid API answer.\n");
         clean_data();
         return FALSE;
     }
@@ -261,9 +261,9 @@ bool_t read_token (String &error_code, String &error_detail) {
 
 
 
-bool_t read_session_key(String &error_code, String &error_detail) {
+gboolean read_session_key(String &error_code, String &error_detail) {
 
-    bool_t result = TRUE;
+    gboolean result = TRUE;
 
     if (!prepare_data()) {
         AUDDBG("Could not read received data from last.fm. What's up?\n");
@@ -273,7 +273,7 @@ bool_t read_session_key(String &error_code, String &error_detail) {
     String status = check_status(error_code, error_detail);
 
     if (!status) {
-        AUDDBG("Status was NULL or empty. Invalid API answer.\n");
+        AUDDBG("Status was nullptr or empty. Invalid API answer.\n");
         clean_data();
         return FALSE;
     }

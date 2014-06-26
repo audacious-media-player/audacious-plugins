@@ -189,14 +189,14 @@ static void do_compress (float * * data, int * samples, char finish)
     * samples = output_filled;
 }
 
-int compressor_init (void)
+bool compressor_init (void)
 {
     compressor_config_load ();
 
-    buffer = NULL;
-    output = NULL;
+    buffer = nullptr;
+    output = nullptr;
     output_size = 0;
-    peaks = NULL;
+    peaks = nullptr;
 
     return 1;
 }

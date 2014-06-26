@@ -43,7 +43,7 @@ struct reader_status
 {
     pthread_mutex_t mutex;
     pthread_cond_t cond;
-    bool_t reading;
+    bool reading;
     neon_reader_t status;
 };
 
@@ -63,17 +63,17 @@ struct neon_handle
     struct ringbuf rb;                  /* Ringbuffer for our data */
     unsigned char redircount;                  /* Redirect count for the opened URL */
     long pos;                           /* Current position in the stream (number of last byte delivered to the player) */
-    gulong content_start;               /* Start position in the stream */
+    unsigned long content_start;               /* Start position in the stream */
     long content_length;                /* Total content length, counting from content_start, if known. -1 if unknown */
-    bool_t can_ranges;                /* TRUE if the webserver advertised accept-range: bytes */
-    gulong icy_metaint;                 /* Interval in which the server will send metadata announcements. 0 if no announcments */
-    gulong icy_metaleft;                /* Bytes left until the next metadata block */
+    bool can_ranges;                /* TRUE if the webserver advertised accept-range: bytes */
+    unsigned long icy_metaint;                 /* Interval in which the server will send metadata announcements. 0 if no announcments */
+    unsigned long icy_metaleft;                /* Bytes left until the next metadata block */
     struct icy_metadata icy_metadata;   /* Current ICY metadata */
     ne_session * session;
     ne_request * request;
     pthread_t reader;
     struct reader_status reader_status;
-    bool_t eof;
+    bool eof;
 };
 
 #endif

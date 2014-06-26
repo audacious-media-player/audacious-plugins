@@ -77,7 +77,7 @@ int xs_pstrcat(char **result, const char *str)
     char * old = * result;
 
     if (old)
-        * result = g_strconcat (old, str, NULL);
+        * result = g_strconcat (old, str, nullptr);
     else
         * result = g_strdup (str);
 

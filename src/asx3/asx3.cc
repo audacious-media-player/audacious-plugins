@@ -50,7 +50,7 @@ static const char * get_content (const xmlNode * node)
     if (child && child->type == XML_TEXT_NODE && child->content)
         return (const char *) child->content;
 
-    return NULL;
+    return nullptr;
 }
 
 static const char * get_prop_nocase (const xmlNode * node, const char * name)
@@ -65,15 +65,15 @@ static const char * get_prop_nocase (const xmlNode * node, const char * name)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
-static bool_t check_root (const xmlNode * root)
+static bool check_root (const xmlNode * root)
 {
     if (xmlStrcasecmp (root->name, (const xmlChar *) "asx"))
     {
         fprintf(stderr, "asx3: Not an ASX file\n");
-        return FALSE;
+        return false;
     }
 
     const char * version = get_prop_nocase (root, "version");
@@ -81,16 +81,16 @@ static bool_t check_root (const xmlNode * root)
     if (! version)
     {
         fprintf (stderr, "asx3: Unknown ASX version\n");
-        return FALSE;
+        return false;
     }
 
     if (strcmp (version, "3.0"))
     {
         fprintf(stderr, "asx3: Unsupported ASX version (%s)\n", version);
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }
 
 static void parse_entry (const xmlNode * entry, Index<PlaylistAddItem> & items)
@@ -106,19 +106,19 @@ static void parse_entry (const xmlNode * entry, Index<PlaylistAddItem> & items)
     }
 }
 
-static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
+static bool playlist_load_asx3 (const char * filename, VFSFile * file,
  String & title, Index<PlaylistAddItem> & items)
 {
-    xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, NULL, XML_PARSE_RECOVER);
+    xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, nullptr, XML_PARSE_RECOVER);
     if (! doc)
-        return FALSE;
+        return false;
 
     xmlNode * root = xmlDocGetRootElement (doc);
 
     if (! root || ! check_root (root))
     {
         xmlFreeDoc(doc);
-        return FALSE;
+        return false;
     }
 
     for (xmlNode * node = root->xmlChildrenNode; node; node = node->next)
@@ -133,45 +133,45 @@ static bool_t playlist_load_asx3 (const char * filename, VFSFile * file,
     }
 
     xmlFreeDoc(doc);
-    return TRUE;
+    return true;
 }
 
-static bool_t playlist_save_asx3 (const char * filename, VFSFile * file,
+static bool playlist_save_asx3 (const char * filename, VFSFile * file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlNewDoc ((const xmlChar *) "1.0");
     doc->charset = XML_CHAR_ENCODING_UTF8;
     doc->encoding = xmlStrdup ((const xmlChar *) "UTF-8");
 
-    xmlNode * root = xmlNewNode (NULL, (const xmlChar *) "asx");
+    xmlNode * root = xmlNewNode (nullptr, (const xmlChar *) "asx");
     xmlSetProp (root, (const xmlChar *) "version", (const xmlChar *) "3.0");
     xmlDocSetRootElement (doc, root);
 
     if (title)
-        xmlNewTextChild (root, NULL, (const xmlChar *) "title", (const xmlChar *) title);
+        xmlNewTextChild (root, nullptr, (const xmlChar *) "title", (const xmlChar *) title);
 
     for (auto & item : items)
     {
-        xmlNode * entry = xmlNewNode (NULL, (const xmlChar *) "entry");
-        xmlNode * ref = xmlNewNode (NULL, (const xmlChar *) "ref");
+        xmlNode * entry = xmlNewNode (nullptr, (const xmlChar *) "entry");
+        xmlNode * ref = xmlNewNode (nullptr, (const xmlChar *) "ref");
         xmlSetProp (ref, (const xmlChar *) "href", (const xmlChar *) (const char *) item.filename);
         xmlAddChild (entry, ref);
         xmlAddChild (root, entry);
     }
 
-    xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, NULL, XML_SAVE_FORMAT);
+    xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, nullptr, XML_SAVE_FORMAT);
 
     if (! save || xmlSaveDoc (save, doc) < 0 || xmlSaveClose (save) < 0)
     {
         xmlFreeDoc(doc);
-        return FALSE;
+        return false;
     }
 
     xmlFreeDoc (doc);
-    return TRUE;
+    return true;
 }
 
-static const char * const asx3_exts[] = {"asx", NULL};
+static const char * const asx3_exts[] = {"asx", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("ASXv3 Playlists")
 #define AUD_PLAYLIST_EXTS      asx3_exts

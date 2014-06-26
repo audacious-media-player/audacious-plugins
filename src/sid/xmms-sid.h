@@ -45,7 +45,7 @@
  */
 typedef struct {
     int tuneSpeed, tuneLength;
-    bool_t tunePlayed;
+    bool tunePlayed;
 } xs_subtuneinfo_t;
 
 typedef struct {

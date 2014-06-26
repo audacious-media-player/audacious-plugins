@@ -356,7 +356,7 @@ typedef struct _LADSPA_PortRangeHint {
 /* Plugin Handles:
 
    This plugin handle indicates a particular instance of the plugin
-   concerned. It is valid to compare this to NULL (0 for C++) but
+   concerned. It is valid to compare this to nullptr (0 for C++) but
    otherwise the host should not attempt to interpret it. The plugin
    may use it to reference internal instance data. */
 
@@ -393,7 +393,7 @@ typedef struct _LADSPA_Descriptor {
   const char * Name;
 
   /* This member points to the null-terminated string indicating the
-     maker of the plugin. This can be an empty string but not NULL. */
+     maker of the plugin. This can be an empty string but not nullptr. */
   const char * Maker;
 
   /* This member points to the null-terminated string indicating any
@@ -429,7 +429,7 @@ typedef struct _LADSPA_Descriptor {
      handle is returned indicating the new plugin instance. The
      instantiation function accepts a sample rate as a parameter. The
      plugin descriptor from which this instantiate function was found
-     must also be passed. This function must return NULL if
+     must also be passed. This function must return nullptr if
      instantiation fails.
 
      Note that instance initialisation should generally occur in
@@ -475,7 +475,7 @@ typedef struct _LADSPA_Descriptor {
      information dependent on the history of the plugin instance
      except for any data locations provided by connect_port() and any
      gain set by set_run_adding_gain(). If there is nothing for
-     activate() to do then the plugin writer may provide a NULL rather
+     activate() to do then the plugin writer may provide a nullptr rather
      than an empty function.
 
      When present, hosts must call this function once before run() (or
@@ -516,7 +516,7 @@ typedef struct _LADSPA_Descriptor {
      addition.
 
      run_adding() is optional. When it is not provided by a plugin,
-     this function pointer must be set to NULL. When it is provided,
+     this function pointer must be set to nullptr. When it is provided,
      the function set_run_adding_gain() must be provided also. */
   void (*run_adding)(LADSPA_Handle Instance,
                      unsigned long SampleCount);
@@ -529,13 +529,13 @@ typedef struct _LADSPA_Descriptor {
 
      This function should be provided by the plugin if and only if the
      run_adding() function is provided. When it is absent this
-     function pointer must be set to NULL. */
+     function pointer must be set to nullptr. */
   void (*set_run_adding_gain)(LADSPA_Handle Instance,
                               LADSPA_Data   Gain);
 
   /* This is the counterpart to activate() (see above). If there is
      nothing for deactivate() to do then the plugin writer may provide
-     a NULL rather than an empty function.
+     a nullptr rather than an empty function.
 
      Hosts must deactivate all activated units after they have been
      run() (or run_adding()) for the last time. This call should be
@@ -583,8 +583,8 @@ typedef struct _LADSPA_Descriptor {
 
    Plugin types are accessed by index (not ID) using values from 0
    upwards. Out of range indexes must result in this function
-   returning NULL, so the plugin count can be determined by checking
-   for the least index that results in NULL being returned. */
+   returning nullptr, so the plugin count can be determined by checking
+   for the least index that results in nullptr being returned. */
 
 const LADSPA_Descriptor * ladspa_descriptor(unsigned long Index);
 

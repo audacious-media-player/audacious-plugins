@@ -60,7 +60,7 @@ DRAW_FUNC_BEGIN (menurow_draw)
     }
 DRAW_FUNC_END
 
-static MenuRowItem menurow_find_selected (gint x, gint y)
+static MenuRowItem menurow_find_selected (int x, int y)
 {
     if (x >= 0 && x < 8)
     {
@@ -134,11 +134,11 @@ GtkWidget * ui_skinned_menurow_new (void)
 
     DRAW_CONNECT (wid, menurow_draw);
     g_signal_connect (wid, "button-press-event", (GCallback)
-     menurow_button_press, NULL);
+     menurow_button_press, nullptr);
     g_signal_connect (wid, "button-release-event", (GCallback)
-     menurow_button_release, NULL);
+     menurow_button_release, nullptr);
     g_signal_connect (wid, "motion-notify-event", (GCallback)
-     menurow_motion_notify, NULL);
+     menurow_motion_notify, nullptr);
 
     return wid;
 }

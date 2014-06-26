@@ -42,10 +42,10 @@ static void strip_char (char * text, char c)
 
 static char * read_win_text (VFSFile * file)
 {
-    void * raw = NULL;
-    vfs_file_read_all (file, & raw, NULL);
+    void * raw = nullptr;
+    vfs_file_read_all (file, & raw, nullptr);
     if (! raw)
-        return NULL;
+        return nullptr;
 
     strip_char ((char *) raw, '\r');
     return (char *) raw;
@@ -55,18 +55,18 @@ static char * split_line (char * line)
 {
     char * feed = strchr (line, '\n');
     if (! feed)
-        return NULL;
+        return nullptr;
 
     * feed = 0;
     return feed + 1;
 }
 
-static bool_t playlist_load_m3u (const char * path, VFSFile * file,
+static bool playlist_load_m3u (const char * path, VFSFile * file,
  String & title, Index<PlaylistAddItem> & items)
 {
     char * text = read_win_text (file);
     if (! text)
-        return FALSE;
+        return false;
 
     char * parse = text;
 
@@ -88,19 +88,19 @@ static bool_t playlist_load_m3u (const char * path, VFSFile * file,
     }
 
     g_free (text);
-    return TRUE;
+    return true;
 }
 
-static bool_t playlist_save_m3u (const char * path, VFSFile * file,
+static bool playlist_save_m3u (const char * path, VFSFile * file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     for (auto & item : items)
         vfs_fprintf (file, "%s\n", (const char *) item.filename);
 
-    return TRUE;
+    return true;
 }
 
-static const char * const m3u_exts[] = {"m3u", "m3u8", NULL};
+static const char * const m3u_exts[] = {"m3u", "m3u8", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("M3U Playlists")
 #define AUD_PLAYLIST_EXTS      m3u_exts

@@ -3,6 +3,6 @@
 
 GtkWidget* create_alarm_dialog (void);
 GtkWidget* create_config_dialog (void);
-GtkWidget* create_reminder_dialog (const gchar *reminder_msg);
+GtkWidget* create_reminder_dialog (const char *reminder_msg);
 
 #endif

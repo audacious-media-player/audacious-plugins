@@ -220,7 +220,7 @@ static void i_soundfont_load (void)
         char ** sffiles = g_strsplit (soundfont_file, ";", 0);
         int i = 0;
 
-        while (sffiles[i] != NULL)
+        while (sffiles[i] != nullptr)
         {
             int sf_id = 0;
             DEBUGMSG ("loading soundfont %s\n", sffiles[i]);

@@ -17,4 +17,4 @@ int32_t spx_execute(void);
 int   spx_seek(uint32_t);
 int32_t spx_stop(void);
 
-extern bool_t stop_flag;
+extern bool stop_flag;

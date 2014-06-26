@@ -16,13 +16,13 @@ class Nes_Buffer;
 
 class Nes_Apu {
 public:
-	// Set buffer to generate all sound into, or disable sound if NULL
+	// Set buffer to generate all sound into, or disable sound if nullptr
 	void output( Blip_Buffer* );
 
 	// Set memory reader callback used by DMC oscillator to fetch samples.
 	// When callback is invoked, 'user_data' is passed unchanged as the
 	// first parameter.
-	void dmc_reader( int (*callback)( void* user_data, nes_addr_t ), void* user_data = NULL );
+	void dmc_reader( int (*callback)( void* user_data, nes_addr_t ), void* user_data = nullptr );
 
 	// All time values are the number of CPU clock cycles relative to the
 	// beginning of the current time frame. Before resetting the CPU clock
@@ -63,7 +63,7 @@ public:
 	// Set treble equalization (see notes.txt)
 	void treble_eq( const blip_eq_t& );
 
-	// Set sound output of specific oscillator to buffer. If buffer is NULL,
+	// Set sound output of specific oscillator to buffer. If buffer is nullptr,
 	// the specified oscillator is muted and emulation accuracy is reduced.
 	// The oscillators are indexed as follows: 0) Square 1, 1) Square 2,
 	// 2) Triangle, 3) Noise, 4) DMC.
@@ -71,9 +71,9 @@ public:
 	void osc_output( int index, Blip_Buffer* buffer );
 
 	// Set IRQ time callback that is invoked when the time of earliest IRQ
-	// may have changed, or NULL to disable. When callback is invoked,
+	// may have changed, or nullptr to disable. When callback is invoked,
 	// 'user_data' is passed unchanged as the first parameter.
-	void irq_notifier( void (*callback)( void* user_data ), void* user_data = NULL );
+	void irq_notifier( void (*callback)( void* user_data ), void* user_data = nullptr );
 
 	// Get time that APU-generated IRQ will occur if no further register reads
 	// or writes occur. If IRQ is already pending, returns irq_waiting. If no
@@ -83,9 +83,9 @@ public:
 	nes_time_t earliest_irq( nes_time_t ) const;
 
 	// Count number of DMC reads that would occur if 'run_until( t )' were executed.
-	// If last_read is not NULL, set *last_read to the earliest time that
+	// If last_read is not nullptr, set *last_read to the earliest time that
 	// 'count_dmc_reads( time )' would result in the same result.
-	int count_dmc_reads( nes_time_t t, nes_time_t* last_read = NULL ) const;
+	int count_dmc_reads( nes_time_t t, nes_time_t* last_read = nullptr ) const;
 
 	// Time when next DMC memory read will occur
 	nes_time_t next_dmc_read_time() const;

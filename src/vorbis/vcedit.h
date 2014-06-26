@@ -15,8 +15,8 @@
 #include <vorbis/codec.h>
 #include <libaudcore/plugin.h>
 
-typedef gint64 (*vcedit_read_func)(void *, gint64, gint64, void *);
-typedef gint64 (*vcedit_write_func)(const void *, gint64, gint64, void *);
+typedef int64_t (*vcedit_read_func)(void *, int64_t, int64_t, void *);
+typedef int64_t (*vcedit_write_func)(const void *, int64_t, int64_t, void *);
 
 typedef struct {
 	ogg_sync_state	 *oy;

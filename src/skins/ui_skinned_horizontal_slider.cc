@@ -30,13 +30,13 @@
 #include "ui_skinned_horizontal_slider.h"
 
 typedef struct {
-    gint min, max, pos;
+    int min, max, pos;
     gboolean pressed;
     SkinPixmapId si;
-    gint w, h;
-    gint fx, fy;
-    gint kw, kh;
-    gint knx, kny, kpx, kpy;
+    int w, h;
+    int fx, fy;
+    int kw, kh;
+    int knx, kny, kpx, kpy;
     void (* on_motion) (void);
     void (* on_release) (void);
 } HSliderData;
@@ -123,8 +123,8 @@ static void hslider_destroy (GtkWidget * hslider)
     g_free (g_object_get_data ((GObject *) hslider, "hsliderdata"));
 }
 
-GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
- gint fx, gint fy, gint kw, gint kh, gint knx, gint kny, gint kpx, gint kpy)
+GtkWidget * hslider_new (int min, int max, SkinPixmapId si, int w, int h,
+ int fx, int fy, int kw, int kh, int knx, int kny, int kpx, int kpy)
 {
     GtkWidget * hslider = gtk_drawing_area_new ();
     gtk_widget_set_size_request (hslider, w, h);
@@ -134,12 +134,12 @@ GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
     DRAW_CONNECT (hslider, hslider_draw);
 
     g_signal_connect (hslider, "button-press-event", (GCallback)
-     hslider_button_press, NULL);
+     hslider_button_press, nullptr);
     g_signal_connect (hslider, "button-release-event", (GCallback)
-     hslider_button_release, NULL);
+     hslider_button_release, nullptr);
     g_signal_connect (hslider, "motion-notify-event", (GCallback)
-     hslider_motion_notify, NULL);
-    g_signal_connect (hslider, "destroy", (GCallback) hslider_destroy, NULL);
+     hslider_motion_notify, nullptr);
+    g_signal_connect (hslider, "destroy", (GCallback) hslider_destroy, nullptr);
 
     HSliderData * data = g_new0 (HSliderData, 1);
     data->min = min;
@@ -161,7 +161,7 @@ GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
     return hslider;
 }
 
-void hslider_set_frame (GtkWidget * hslider, gint fx, gint fy)
+void hslider_set_frame (GtkWidget * hslider, int fx, int fy)
 {
     HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);
@@ -171,7 +171,7 @@ void hslider_set_frame (GtkWidget * hslider, gint fx, gint fy)
     gtk_widget_queue_draw (hslider);
 }
 
-void hslider_set_knob (GtkWidget * hslider, gint knx, gint kny, gint kpx, gint
+void hslider_set_knob (GtkWidget * hslider, int knx, int kny, int kpx, int
  kpy)
 {
     HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
@@ -184,7 +184,7 @@ void hslider_set_knob (GtkWidget * hslider, gint knx, gint kny, gint kpx, gint
     gtk_widget_queue_draw (hslider);
 }
 
-gint hslider_get_pos (GtkWidget * hslider)
+int hslider_get_pos (GtkWidget * hslider)
 {
     HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_val_if_fail (data, 0);
@@ -192,7 +192,7 @@ gint hslider_get_pos (GtkWidget * hslider)
     return data->pos;
 }
 
-void hslider_set_pos (GtkWidget * hslider, gint pos)
+void hslider_set_pos (GtkWidget * hslider, int pos)
 {
     HSliderData * data = (HSliderData *) g_object_get_data ((GObject *) hslider, "hsliderdata");
     g_return_if_fail (data);

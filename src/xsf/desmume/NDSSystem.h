@@ -197,7 +197,7 @@ NDS_exec(s32 nb, BOOL force);
             if(T1ReadWord(ARM9Mem.ARM9_REG, 4) & 0x10)
             {
                  MMU.reg_IF[0] |= 2;// & (MMU.reg_IME[0] << 1);// (MMU.reg_IE[0] & (1<<1));
-                 NDS_ARM9.wIRQ = TRUE;
+                 NDS_ARM9.wIRQ = true;
             }
        }
 
@@ -206,7 +206,7 @@ NDS_exec(s32 nb, BOOL force);
             if(T1ReadWord(MMU.ARM7_REG, 4) & 0x10)
             {
                  MMU.reg_IF[1] |= 2;// & (MMU.reg_IME[1] << 1);// (MMU.reg_IE[1] & (1<<1));
-                 NDS_ARM7.wIRQ = TRUE;
+                 NDS_ARM7.wIRQ = true;
             }
        }
 
@@ -215,8 +215,8 @@ NDS_exec(s32 nb, BOOL force);
             if(T1ReadWord(ARM9Mem.ARM9_REG, 4) & 0x8)
             {
                  MMU.reg_IF[0] |= 1;// & (MMU.reg_IME[0]);// (MMU.reg_IE[0] & 1);
-                 NDS_ARM9.wIRQ = TRUE;
-                      //execute = FALSE;
+                 NDS_ARM9.wIRQ = true;
+                      //execute = false;
                       /*logcount++;*/
             }
        }
@@ -225,8 +225,8 @@ NDS_exec(s32 nb, BOOL force);
        {
             if(T1ReadWord(MMU.ARM7_REG, 4) & 0x8)
                  MMU.reg_IF[1] |= 1;// & (MMU.reg_IME[1]);// (MMU.reg_IE[1] & 1);
-                 NDS_ARM7.wIRQ = TRUE;
-                 //execute = FALSE;
+                 NDS_ARM7.wIRQ = true;
+                 //execute = false;
        }
 
        static INLINE void NDS_swapScreen(void)

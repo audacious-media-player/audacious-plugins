@@ -28,12 +28,12 @@
 
 typedef void (* ButtonCB) (GtkWidget * button, GdkEventButton * event);
 
-GtkWidget * button_new (gint w, gint h, gint nx, gint ny, gint px,
- gint py, SkinPixmapId si1, SkinPixmapId si2);
-GtkWidget * button_new_toggle (gint w, gint h, gint nx, gint ny,
- gint px, gint py, gint pnx, gint pny, gint ppx, gint ppy, SkinPixmapId si1,
+GtkWidget * button_new (int w, int h, int nx, int ny, int px,
+ int py, SkinPixmapId si1, SkinPixmapId si2);
+GtkWidget * button_new_toggle (int w, int h, int nx, int ny,
+ int px, int py, int pnx, int pny, int ppx, int ppy, SkinPixmapId si1,
  SkinPixmapId si2);
-GtkWidget * button_new_small (gint w, gint h);
+GtkWidget * button_new_small (int w, int h);
 
 void button_on_press (GtkWidget * button, ButtonCB callback);
 void button_on_release (GtkWidget * button, ButtonCB callback);

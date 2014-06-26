@@ -34,7 +34,7 @@ static void show_cb (void)
 
 static void osd_setup (NotifyNotification *notification)
 {
-    bool_t resident = aud_get_bool ("notify", "resident");
+    gboolean resident = aud_get_bool ("notify", "resident");
 
     notify_notification_set_hint (notification, "desktop-entry",
      g_variant_new_string ("audacious"));
@@ -56,24 +56,24 @@ void osd_setup_buttons (NotifyNotification *notification)
         return;
 
     notify_notification_add_action (notification, "default", _("Show"),
-     NOTIFY_ACTION_CALLBACK (show_cb), NULL, NULL);
+     NOTIFY_ACTION_CALLBACK (show_cb), nullptr, nullptr);
 
-    bool_t playing = aud_drct_get_playing ();
-    bool_t paused = aud_drct_get_paused ();
+    gboolean playing = aud_drct_get_playing ();
+    gboolean paused = aud_drct_get_paused ();
 
     if (playing && ! paused)
         notify_notification_add_action (notification, "media-playback-pause",
-         _("Pause"), NOTIFY_ACTION_CALLBACK (aud_drct_pause), NULL, NULL);
+         _("Pause"), NOTIFY_ACTION_CALLBACK (aud_drct_pause), nullptr, nullptr);
     else
         notify_notification_add_action (notification, "media-playback-start",
-         _("Play"), NOTIFY_ACTION_CALLBACK (aud_drct_play), NULL, NULL);
+         _("Play"), NOTIFY_ACTION_CALLBACK (aud_drct_play), nullptr, nullptr);
 
     if (playing)
         notify_notification_add_action (notification, "media-skip-forward",
-         _("Next"), NOTIFY_ACTION_CALLBACK (aud_drct_pl_next), NULL, NULL);
+         _("Next"), NOTIFY_ACTION_CALLBACK (aud_drct_pl_next), nullptr, nullptr);
 }
 
-static NotifyNotification * notification = NULL;
+static NotifyNotification * notification = nullptr;
 
 void osd_show (const char * title, const char * _message, const char * icon,
  GdkPixbuf * pixbuf)
@@ -81,7 +81,7 @@ void osd_show (const char * title, const char * _message, const char * icon,
     char * message = g_markup_escape_text (_message, -1);
 
     if (pixbuf)
-        icon = NULL;
+        icon = nullptr;
 
     if (notification)
         notify_notification_update (notification, title, message, icon);
@@ -95,7 +95,7 @@ void osd_show (const char * title, const char * _message, const char * icon,
         notify_notification_set_image_from_pixbuf (notification, pixbuf);
 
     osd_setup_buttons (notification);
-    notify_notification_show (notification, NULL);
+    notify_notification_show (notification, nullptr);
 
     g_free (message);
 }
@@ -105,7 +105,7 @@ void osd_hide (void)
     if (! notification)
         return;
 
-    notify_notification_close (notification, NULL);
+    notify_notification_close (notification, nullptr);
     g_object_unref (notification);
-    notification = NULL;
+    notification = nullptr;
 }

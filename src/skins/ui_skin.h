@@ -26,12 +26,13 @@
 #ifndef SKIN_H
 #define SKIN_H
 
+#include <stdint.h>
 #include <gtk/gtk.h>
 
-#define COLOR(r,g,b) (((guint32) (r) << 16) | ((guint32) (g) << 8) | (guint32) (b))
-#define COLOR_R(c) ((gint) (((c) & 0xff0000) >> 16))
-#define COLOR_G(c) ((gint) (((c) & 0xff00) >> 8))
-#define COLOR_B(c) ((gint) ((c) & 0xff))
+#define COLOR(r,g,b) (((uint32_t) (r) << 16) | ((uint32_t) (g) << 8) | (uint32_t) (b))
+#define COLOR_R(c) ((int) (((c) & 0xff0000) >> 16))
+#define COLOR_G(c) ((int) (((c) & 0xff00) >> 8))
+#define COLOR_B(c) ((int) ((c) & 0xff))
 
 typedef enum {
     SKIN_MAIN = 0,
@@ -169,29 +170,29 @@ struct SkinProperties {
 extern const SkinProperties skin_default_hints;
 
 typedef struct {
-    gchar *path;
+    char *path;
     cairo_surface_t * pixmaps[SKIN_PIXMAP_COUNT];
-    guint32 colors[SKIN_COLOR_COUNT];
-    guint32 vis_colors[24];
+    uint32_t colors[SKIN_COLOR_COUNT];
+    uint32_t vis_colors[24];
     cairo_region_t * masks[SKIN_MASK_COUNT];
     SkinProperties properties;
 } Skin;
 
 extern Skin * active_skin;
 
-gboolean init_skins(const gchar * path);
+gboolean init_skins(const char * path);
 void cleanup_skins(void);
 
-gboolean active_skin_load(const gchar * path);
+gboolean active_skin_load(const char * path);
 
-void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, gint xsrc, gint ysrc,
- gint xdest, gint ydest, gint width, gint height);
+void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc,
+ int xdest, int ydest, int width, int height);
 
-void skin_get_eq_spline_colors(Skin * skin, guint32 colors[19]);
-void skin_install_skin(const gchar * path);
+void skin_get_eq_spline_colors(Skin * skin, uint32_t colors[19]);
+void skin_install_skin(const char * path);
 
-void skin_draw_playlistwin_shaded (cairo_t * cr, gint width, gboolean focus);
-void skin_draw_playlistwin_frame (cairo_t * cr, gint width, gint height,
+void skin_draw_playlistwin_shaded (cairo_t * cr, int width, gboolean focus);
+void skin_draw_playlistwin_frame (cairo_t * cr, int width, int height,
  gboolean focus);
 void skin_draw_mainwin_titlebar (cairo_t * cr, gboolean shaded, gboolean focus);
 
@@ -200,7 +201,7 @@ void skin_load_hints (Skin * skin, const char * path);
 void skin_load_pl_colors (Skin * skin, const char * path);
 void skin_load_masks (Skin * skin, const char * path);
 
-static inline void set_cairo_color (cairo_t * cr, guint32 c)
+static inline void set_cairo_color (cairo_t * cr, uint32_t c)
 {
     cairo_set_source_rgb (cr, COLOR_R(c) / 255.0, COLOR_G(c) / 255.0, COLOR_B(c)
      / 255.0);

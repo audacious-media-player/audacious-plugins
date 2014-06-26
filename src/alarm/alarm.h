@@ -28,7 +28,7 @@ typedef struct AlarmDay {
 
 
 typedef struct Fader {
-  guint start, end;
+  unsigned start, end;
 } fader;
 
 

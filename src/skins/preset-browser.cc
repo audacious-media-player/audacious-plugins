@@ -46,16 +46,16 @@ static void browser_response (GtkWidget * dialog, int response, void * data)
     gtk_widget_destroy (dialog);
 }
 
-static void show_preset_browser (const char * title, bool_t save,
+static void show_preset_browser (const char * title, gboolean save,
  const char * default_filename, FilebrowserCallback callback)
 {
     if (preset_browser)
         gtk_widget_destroy (preset_browser);
 
-    preset_browser = gtk_file_chooser_dialog_new (title, NULL, save ?
+    preset_browser = gtk_file_chooser_dialog_new (title, nullptr, save ?
      GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN, _("Cancel"),
      GTK_RESPONSE_CANCEL, save ? _("Save") : _("Load"), GTK_RESPONSE_ACCEPT,
-     NULL);
+     nullptr);
 
     if (default_filename)
         gtk_file_chooser_set_current_name ((GtkFileChooser *) preset_browser, default_filename);
@@ -78,7 +78,7 @@ static void do_load_file (const char * filename)
 
 void eq_preset_load_file (void)
 {
-    show_preset_browser (_("Load Preset File"), FALSE, NULL, do_load_file);
+    show_preset_browser (_("Load Preset File"), FALSE, nullptr, do_load_file);
 }
 
 static void do_load_eqf (const char * filename)
@@ -97,7 +97,7 @@ static void do_load_eqf (const char * filename)
 
 void eq_preset_load_eqf (void)
 {
-    show_preset_browser (_("Load EQF File"), FALSE, NULL, do_load_eqf);
+    show_preset_browser (_("Load EQF File"), FALSE, nullptr, do_load_eqf);
 }
 
 static void do_save_file (const char * filename)
@@ -133,7 +133,7 @@ static void do_save_eqf (const char * filename)
 
 void eq_preset_save_eqf (void)
 {
-    show_preset_browser (_("Save EQF File"), TRUE, NULL, do_save_eqf);
+    show_preset_browser (_("Save EQF File"), TRUE, nullptr, do_save_eqf);
 }
 
 static void do_import_winamp (const char * filename)
@@ -149,7 +149,7 @@ static void do_import_winamp (const char * filename)
 
 void eq_preset_import_winamp (void)
 {
-    show_preset_browser (_("Import Winamp Presets"), FALSE, NULL, do_import_winamp);
+    show_preset_browser (_("Import Winamp Presets"), FALSE, nullptr, do_import_winamp);
 }
 
 void eq_preset_browser_cleanup (void)

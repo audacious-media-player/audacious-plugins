@@ -2848,7 +2848,7 @@ CadlPlayer::update ()
   _driver->callback ();
 
   for (int i = 0; i < 10; i++)
-    if (_driver->_channels[i].dataptr != NULL)
+    if (_driver->_channels[i].dataptr != nullptr)
       songend = false;
 
   return !songend;

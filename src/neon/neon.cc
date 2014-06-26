@@ -50,7 +50,7 @@
 #define NEON_ICY_BUFSIZE    (4096)
 #define NEON_RETRY_COUNT 6
 
-static bool_t neon_plugin_init (void)
+static bool neon_plugin_init (void)
 {
     int ret = ne_sock_init ();
 
@@ -72,8 +72,8 @@ static struct neon_handle * handle_init (void)
 {
     struct neon_handle * h = g_new0 (struct neon_handle, 1);
 
-    pthread_mutex_init (& h->reader_status.mutex, NULL);
-    pthread_cond_init (& h->reader_status.cond, NULL);
+    pthread_mutex_init (& h->reader_status.mutex, nullptr);
+    pthread_cond_init (& h->reader_status.cond, nullptr);
     h->reader_status.reading = FALSE;
     h->reader_status.status = NEON_READER_INIT;
 
@@ -102,7 +102,7 @@ static void handle_free (struct neon_handle * h)
     g_free (h);
 }
 
-static bool_t neon_strcmp (const char * str, const char * cmp)
+static bool neon_strcmp (const char * str, const char * cmp)
 {
     return ! g_ascii_strncasecmp (str, cmp, strlen (cmp));
 }
@@ -221,7 +221,7 @@ static void kill_reader (struct neon_handle * h)
     pthread_mutex_unlock (& h->reader_status.mutex);
 
     _DEBUG ("Waiting for reader thread to die...");
-    pthread_join (h->reader, NULL);
+    pthread_join (h->reader, nullptr);
     _DEBUG ("Reader thread has died");
 }
 
@@ -259,7 +259,7 @@ static void handle_headers (struct neon_handle * h)
 {
     const char * name;
     const char * value;
-    void * cursor = NULL;
+    void * cursor = nullptr;
 
     _DEBUG ("Header responses:");
 
@@ -333,10 +333,10 @@ static void handle_headers (struct neon_handle * h)
 static int neon_proxy_auth_cb (void * userdata, const char * realm, int attempt,
  char * username, char * password)
 {
-    String value = aud_get_str (NULL, "proxy_user");
+    String value = aud_get_str (nullptr, "proxy_user");
     g_strlcpy (username, value, NE_ABUFSIZ);
 
-    value = aud_get_str (NULL, "proxy_pass");
+    value = aud_get_str (nullptr, "proxy_pass");
     g_strlcpy (password, value, NE_ABUFSIZ);
 
     return attempt;
@@ -417,7 +417,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
         handle->redircount += 1;
         rediruri = (ne_uri *) ne_redirect_location (handle->session);
         ne_request_destroy (handle->request);
-        handle->request = NULL;
+        handle->request = nullptr;
 
         if (! rediruri)
         {
@@ -437,7 +437,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
         _ERROR ("<%p> neon error string: %s", (void *) handle, ne_get_error (handle->session));
 
     ne_request_destroy (handle->request);
-    handle->request = NULL;
+    handle->request = nullptr;
     return -1;
 }
 
@@ -447,13 +447,13 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
     String proxy_host;
     int proxy_port = 0;
 
-    bool_t use_proxy = aud_get_bool (NULL, "use_proxy");
-    bool_t use_proxy_auth = aud_get_bool (NULL, "use_proxy_auth");
+    bool use_proxy = aud_get_bool (nullptr, "use_proxy");
+    bool use_proxy_auth = aud_get_bool (nullptr, "use_proxy_auth");
 
     if (use_proxy)
     {
-        proxy_host = aud_get_str (NULL, "proxy_host");
-        proxy_port = aud_get_int (NULL, "proxy_port");
+        proxy_host = aud_get_str (nullptr, "proxy_host");
+        proxy_port = aud_get_int (nullptr, "proxy_port");
     }
 
     handle->redircount = 0;
@@ -516,13 +516,13 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
         if (ret == -1)
         {
             ne_session_destroy (handle->session);
-            handle->session = NULL;
+            handle->session = nullptr;
             return -1;
         }
 
         _DEBUG ("<%p> Following redirect...", handle);
         ne_session_destroy (handle->session);
-        handle->session = NULL;
+        handle->session = nullptr;
     }
 
     /* If we get here, our redirect count exceeded */
@@ -557,7 +557,7 @@ static FillBufferResult fill_buffer (struct neon_handle * h)
     {
         _ERROR ("<%p> Error while reading from the network", (void *) h);
         ne_request_destroy (h->request);
-        h->request = NULL;
+        h->request = nullptr;
         return FILL_BUFFER_ERROR;
     }
 
@@ -594,7 +594,7 @@ static void * reader_thread (void * data)
                         "Terminating reader thread", (void *) h);
                 h->reader_status.status = NEON_READER_ERROR;
                 pthread_mutex_unlock (& h->reader_status.mutex);
-                return NULL;
+                return nullptr;
             }
             else if (ret == FILL_BUFFER_EOF)
             {
@@ -602,7 +602,7 @@ static void * reader_thread (void * data)
                         "Terminating reader thread", (void *) h);
                 h->reader_status.status = NEON_READER_EOF;
                 pthread_mutex_unlock (& h->reader_status.mutex);
-                return NULL;
+                return nullptr;
             }
         }
         else
@@ -617,7 +617,7 @@ static void * reader_thread (void * data)
     h->reader_status.status = NEON_READER_TERM;
     pthread_mutex_unlock (& h->reader_status.mutex);
 
-    return NULL;
+    return nullptr;
 }
 
 void * neon_vfs_fopen_impl (const char * path, const char * mode)
@@ -632,7 +632,7 @@ void * neon_vfs_fopen_impl (const char * path, const char * mode)
     {
         _ERROR ("<%p> Could not open URL", (void *) handle);
         handle_free (handle);
-        return NULL;
+        return nullptr;
     }
 
     return handle;
@@ -708,7 +708,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
             {
                 h->reader_status.reading = TRUE;
                 _DEBUG ("<%p> Starting reader thread", h);
-                pthread_create (& h->reader, NULL, reader_thread, h);
+                pthread_create (& h->reader, nullptr, reader_thread, h);
                 h->reader_status.status = NEON_READER_RUN;
             }
             else if (ret == FILL_BUFFER_EOF)
@@ -882,7 +882,7 @@ int64_t neon_vfs_ftell_impl (VFSFile * file)
     return h->pos;
 }
 
-bool_t neon_vfs_feof_impl (VFSFile * file)
+bool neon_vfs_feof_impl (VFSFile * file)
 {
     struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
@@ -971,13 +971,13 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
     if (h->request)
     {
         ne_request_destroy (h->request);
-        h->request = NULL;
+        h->request = nullptr;
     }
 
     if (h->session)
     {
         ne_session_destroy (h->session);
-        h->session = NULL;
+        h->session = nullptr;
     }
 
     reset_rb (& h->rb);
@@ -1029,7 +1029,7 @@ int64_t neon_vfs_fsize_impl (VFSFile * file)
     return h->content_start + h->content_length;
 }
 
-static const char * const neon_schemes[] = {"http", "https", NULL};
+static const char * const neon_schemes[] = {"http", "https", nullptr};
 
 static const VFSConstructor constructor = {
     neon_vfs_fopen_impl,

@@ -56,7 +56,7 @@ static void libxml_error_handler(void *ctx, const char *msg, ...)
 static char *scrape_lyrics_from_lyricwiki_edit_page(const char *buf, int64_t len)
 {
 	xmlDocPtr doc;
-	gchar *ret = NULL;
+	char *ret = nullptr;
 
 	/*
 	 * temporarily set our error-handling functor to our suppression function,
@@ -67,22 +67,22 @@ static char *scrape_lyrics_from_lyricwiki_edit_page(const char *buf, int64_t len
 	 * the previous error functor, so we just have to set it back to default after
 	 * parsing and hope for the best.
 	 */
-	xmlSetGenericErrorFunc(NULL, libxml_error_handler);
-	doc = htmlReadMemory(buf, (int) len, NULL, "utf-8", (HTML_PARSE_RECOVER | HTML_PARSE_NONET));
-	xmlSetGenericErrorFunc(NULL, NULL);
+	xmlSetGenericErrorFunc(nullptr, libxml_error_handler);
+	doc = htmlReadMemory(buf, (int) len, nullptr, "utf-8", (HTML_PARSE_RECOVER | HTML_PARSE_NONET));
+	xmlSetGenericErrorFunc(nullptr, nullptr);
 
-	if (doc != NULL)
+	if (doc != nullptr)
 	{
-		xmlXPathContextPtr xpath_ctx = NULL;
-		xmlXPathObjectPtr xpath_obj = NULL;
-		xmlNodePtr node = NULL;
+		xmlXPathContextPtr xpath_ctx = nullptr;
+		xmlXPathObjectPtr xpath_obj = nullptr;
+		xmlNodePtr node = nullptr;
 
 		xpath_ctx = xmlXPathNewContext(doc);
-		if (xpath_ctx == NULL)
+		if (xpath_ctx == nullptr)
 			goto give_up;
 
 		xpath_obj = xmlXPathEvalExpression((xmlChar *) "//*[@id=\"wpTextbox1\"]", xpath_ctx);
-		if (xpath_obj == NULL)
+		if (xpath_obj == nullptr)
 			goto give_up;
 
 		if (!xpath_obj->nodesetval->nodeMax)
@@ -90,17 +90,17 @@ static char *scrape_lyrics_from_lyricwiki_edit_page(const char *buf, int64_t len
 
 		node = xpath_obj->nodesetval->nodeTab[0];
 give_up:
-		if (xpath_obj != NULL)
+		if (xpath_obj != nullptr)
 			xmlXPathFreeObject(xpath_obj);
 
-		if (xpath_ctx != NULL)
+		if (xpath_ctx != nullptr)
 			xmlXPathFreeContext(xpath_ctx);
 
-		if (node != NULL)
+		if (node != nullptr)
 		{
 			xmlChar *lyric = xmlNodeGetContent(node);
 
-			if (lyric != NULL)
+			if (lyric != nullptr)
 			{
 				GMatchInfo *match_info;
 				GRegex *reg;
@@ -108,8 +108,8 @@ give_up:
 				reg = g_regex_new
 				 ("<(lyrics?)>[[:space:]]*(.*?)[[:space:]]*</\\1>",
 				 (GRegexCompileFlags) (G_REGEX_MULTILINE | G_REGEX_DOTALL),
-				 (GRegexMatchFlags) 0, NULL);
-				g_regex_match(reg, (gchar *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
+				 (GRegexMatchFlags) 0, nullptr);
+				g_regex_match(reg, (char *) lyric, G_REGEX_MATCH_NEWLINE_ANY, &match_info);
 
 				ret = g_match_info_fetch(match_info, 2);
 				if (!g_utf8_collate(ret, "<!-- PUT LYRICS HERE (and delete this entire line) -->"))
@@ -143,8 +143,8 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
 
 	reg = g_regex_new ("<(lyrics?)>.*</\\1>", (GRegexCompileFlags)
 	 (G_REGEX_MULTILINE | G_REGEX_DOTALL | G_REGEX_UNGREEDY),
-	 (GRegexMatchFlags) 0, NULL);
-	gchar *newbuf = g_regex_replace_literal(reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, NULL);
+	 (GRegexMatchFlags) 0, nullptr);
+	char *newbuf = g_regex_replace_literal(reg, buf, len, 0, "", G_REGEX_MATCH_NEWLINE_ANY, nullptr);
 	g_regex_unref(reg);
 
 	/*
@@ -156,11 +156,11 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
 	 * the previous error functor, so we just have to set it back to default after
 	 * parsing and hope for the best.
 	 */
-	xmlSetGenericErrorFunc(NULL, libxml_error_handler);
+	xmlSetGenericErrorFunc(nullptr, libxml_error_handler);
 	doc = xmlParseMemory(newbuf, strlen(newbuf));
-	xmlSetGenericErrorFunc(NULL, NULL);
+	xmlSetGenericErrorFunc(nullptr, nullptr);
 
-	if (doc != NULL)
+	if (doc != nullptr)
 	{
 		xmlNodePtr root, cur;
 
@@ -171,10 +171,10 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
 			if (xmlStrEqual(cur->name, (xmlChar *) "url"))
 			{
 				xmlChar *lyric;
-				gchar *basename;
+				char *basename;
 
 				lyric = xmlNodeGetContent(cur);
-				basename = g_path_get_basename((gchar *) lyric);
+				basename = g_path_get_basename((char *) lyric);
 
 				uri = String (str_printf ("http://lyrics.wikia.com/index.php?"
 				 "action=edit&title=%s", basename));
@@ -194,82 +194,64 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
 
 static void update_lyrics_window(const char *title, const char *artist, const char *lyrics);
 
-static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
+static void get_lyrics_step_3(const char *uri, const void *buf, int64_t len, void*)
 {
-	if (!state.uri || strcmp(state.uri, (char *) requri))
-	{
-		g_free(buf);
-		str_unref((char *) requri);
-		return FALSE;
-	}
-	str_unref((char *) requri);
+	if (!state.uri || strcmp(state.uri, uri))
+		return;
 
-	if(!len)
+	if (!len)
 	{
-		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to fetch %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		update_lyrics_window (_("Error"), nullptr,
+		 str_printf (_("Unable to fetch %s"), uri));
+		return;
 	}
 
-	char *lyrics = scrape_lyrics_from_lyricwiki_edit_page((char *) buf, len);
+	char *lyrics = scrape_lyrics_from_lyricwiki_edit_page((const char*)buf, len);
 
-	if(!lyrics)
+	if (!lyrics)
 	{
-		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to parse %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		update_lyrics_window (_("Error"), nullptr,
+		 str_printf (_("Unable to parse %s"), uri));
+		return;
 	}
 
 	update_lyrics_window(state.title, state.artist, lyrics);
 
 	g_free(lyrics);
-	return TRUE;
 }
 
-static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
+static void get_lyrics_step_2(const char *uri1, const void *buf, int64_t len, void*)
 {
-	if (strcmp(state.uri, (char *) requri))
-	{
-		g_free(buf);
-		str_unref((char *) requri);
-		return FALSE;
-	}
-	str_unref((char *) requri);
+	if (!state.uri || strcmp(state.uri, uri1))
+		return;
 
-	if(!len)
+	if (!len)
 	{
-		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to fetch %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		update_lyrics_window (_("Error"), nullptr,
+		 str_printf (_("Unable to fetch %s"), uri1));
+		return;
 	}
 
-	String uri = scrape_uri_from_lyricwiki_search_result((char *) buf, len);
+	String uri = scrape_uri_from_lyricwiki_search_result((const char*)buf, len);
 
-	if(!uri)
+	if (!uri)
 	{
-		update_lyrics_window (_("Error"), NULL,
-		 str_printf (_("Unable to parse %s"), (const char *) state.uri));
-		g_free(buf);
-		return FALSE;
+		update_lyrics_window (_("Error"), nullptr,
+		 str_printf (_("Unable to parse %s"), uri1));
+		return;
 	}
 
 	state.uri = uri;
 
 	update_lyrics_window(state.title, state.artist, _("Looking for lyrics ..."));
-	vfs_async_file_get_contents(uri, get_lyrics_step_3, str_ref(state.uri));
-
-	g_free(buf);
-	return TRUE;
+	vfs_async_file_get_contents(uri, get_lyrics_step_3, nullptr);
 }
 
 static void get_lyrics_step_1(void)
 {
 	if(!state.artist || !state.title)
 	{
-		update_lyrics_window(_("Error"), NULL, _("Missing song metadata"));
+		update_lyrics_window(_("Error"), nullptr, _("Missing song metadata"));
 		return;
 	}
 
@@ -281,7 +263,7 @@ static void get_lyrics_step_1(void)
 	 (const char *) title_buf));
 
 	update_lyrics_window(state.title, state.artist, _("Connecting to lyrics.wikia.com ..."));
-	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, str_ref(state.uri));
+	vfs_async_file_get_contents(state.uri, get_lyrics_step_2, nullptr);
 }
 
 static GtkWidget *scrollview, *vbox;
@@ -298,7 +280,7 @@ static GtkWidget *build_widget(void)
 	gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(textview), GTK_WRAP_WORD);
 	textbuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
 
-	scrollview = gtk_scrolled_window_new(NULL, NULL);
+	scrollview = gtk_scrolled_window_new(nullptr, nullptr);
 	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollview), GTK_SHADOW_IN);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollview), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
@@ -311,9 +293,9 @@ static GtkWidget *build_widget(void)
 	gtk_widget_show(scrollview);
 	gtk_widget_show(vbox);
 
-	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "weight_bold", "weight", PANGO_WEIGHT_BOLD, NULL);
-	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, NULL);
-	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, NULL);
+	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "weight_bold", "weight", PANGO_WEIGHT_BOLD, nullptr);
+	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "size_x_large", "scale", PANGO_SCALE_X_LARGE, nullptr);
+	gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(textbuffer), "style_italic", "style", PANGO_STYLE_ITALIC, nullptr);
 
 	g_signal_connect (vbox, "destroy", (GCallback) gtk_widget_destroyed, & vbox);
 	return vbox;
@@ -323,7 +305,7 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 {
 	GtkTextIter iter;
 
-	if (textbuffer == NULL)
+	if (textbuffer == nullptr)
 		return;
 
 	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(textbuffer), "", -1);
@@ -331,13 +313,13 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(textbuffer), &iter);
 
 	gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer), &iter,
-			title, -1, "weight_bold", "size_x_large", NULL);
+			title, -1, "weight_bold", "size_x_large", nullptr);
 
-	if (artist != NULL)
+	if (artist != nullptr)
 	{
 		gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n", -1);
 		gtk_text_buffer_insert_with_tags_by_name(GTK_TEXT_BUFFER(textbuffer),
-				&iter, artist, -1, "style_italic", NULL);
+				&iter, artist, -1, "style_italic", nullptr);
 	}
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(textbuffer), &iter, "\n\n", -1);
@@ -375,7 +357,7 @@ static void cleanup ()
 	hook_dissociate ("title change", (HookFunction) lyricwiki_playback_began);
 	hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
 
-	textbuffer = NULL;
+	textbuffer = nullptr;
 }
 
 static void * get_widget ()

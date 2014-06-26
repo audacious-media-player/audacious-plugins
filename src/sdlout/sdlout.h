@@ -21,18 +21,18 @@
 #define AUDACIOUS_SDLOUT_H
 
 /* sdlout.c */
-int sdlout_init (void);
+bool sdlout_init (void);
 void sdlout_cleanup (void);
 void sdlout_get_volume (int * left, int * right);
 void sdlout_set_volume (int left, int right);
-int sdlout_open_audio (int format, int rate, int chan);
+bool sdlout_open_audio (int format, int rate, int chan);
 void sdlout_close_audio (void);
 int sdlout_buffer_free (void);
 void sdlout_period_wait (void);
 void sdlout_write_audio (void * data, int len);
 void sdlout_drain (void);
 int sdlout_output_time (void);
-void sdlout_pause (int pause);
+void sdlout_pause (bool pause);
 void sdlout_flush (int time);
 
 #endif

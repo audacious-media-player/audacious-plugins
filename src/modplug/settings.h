@@ -9,24 +9,24 @@ typedef struct {
     int mResamplingMode;
     int mFrequency;
 
-    bool_t mReverb;
+    bool mReverb;
     int mReverbDepth;
     int mReverbDelay;
 
-    bool_t mMegabass;
+    bool mMegabass;
     int mBassAmount;
     int mBassRange;
 
-    bool_t mSurround;
+    bool mSurround;
     int mSurroundDepth;
     int mSurroundDelay;
 
-    bool_t mPreamp;
+    bool mPreamp;
     float mPreampLevel;
 
-    bool_t mOversamp;
-    bool_t mNoiseReduction;
-    bool_t mGrabAmigaMOD;
+    bool mOversamp;
+    bool mNoiseReduction;
+    bool mGrabAmigaMOD;
     int mLoopCount;
 } ModplugSettings;
 

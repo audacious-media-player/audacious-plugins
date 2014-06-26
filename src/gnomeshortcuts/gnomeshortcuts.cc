@@ -29,13 +29,13 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 
-static gboolean init (void);
+static bool init (void);
 static void cleanup (void);
 void gnome_remote_init();
 void gnome_remote_uninit();
 
-static gboolean loaded = FALSE;
-static DBusGProxy *media_player_keys_proxy = NULL;
+static bool loaded = false;
+static DBusGProxy *media_player_keys_proxy = nullptr;
 
 static const char about[] =
  N_("Gnome Shortcut Plugin\n"
@@ -56,17 +56,17 @@ static const char about[] =
 static void
 hotkey_marshal_VOID__STRING_STRING (GClosure     *closure,
                                     GValue       *return_value,
-                                    guint         n_param_values,
+                                    unsigned         n_param_values,
                                     const GValue *param_values,
-                                    gpointer      invocation_hint,
-                                    gpointer      marshal_data)
+                                    void *      invocation_hint,
+                                    void *      marshal_data)
 {
-    typedef void (*GMarshalFunc_VOID__STRING_STRING) (gpointer data1,
-                                                      gpointer arg_1,
-                                                      gpointer arg_2);
+    typedef void (*GMarshalFunc_VOID__STRING_STRING) (void * data1,
+                                                      void * arg_1,
+                                                      void * arg_2);
     GMarshalFunc_VOID__STRING_STRING callback;
     GCClosure *cc = (GCClosure*) closure;
-    gpointer data1;
+    void * data1;
 
     g_return_if_fail (n_param_values == 3);
 
@@ -84,12 +84,12 @@ hotkey_marshal_VOID__STRING_STRING (GClosure     *closure,
 }
 
 static void
-on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const gchar *key)
+on_media_player_key_pressed (DBusGProxy *proxy, const char *application, const char *key)
 {
     if (strcmp ("Audacious", application) == 0) {
-        gint current_volume /* , old_volume */ ;
-        static gint volume_static = 0;
-        gboolean mute;
+        int current_volume /* , old_volume */ ;
+        static int volume_static = 0;
+        bool mute;
 
         /* get current volume */
         aud_drct_get_volume_main (&current_volume);
@@ -97,10 +97,10 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
         if (current_volume)
         {
             /* volume is not mute */
-            mute = FALSE;
+            mute = false;
         } else {
             /* volume is mute */
-            mute = TRUE;
+            mute = true;
         }
 
         /* mute the playback */
@@ -110,10 +110,10 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
             {
                 volume_static = current_volume;
                 aud_drct_set_volume_main (0);
-                mute = TRUE;
+                mute = true;
             } else {
                 aud_drct_set_volume_main (volume_static);
-                mute = FALSE;
+                mute = false;
             }
             return;
         }
@@ -125,7 +125,7 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
             {
                 current_volume = old_volume;
                 old_volume = 0;
-                mute = FALSE;
+                mute = false;
             }
 
             if ((current_volume -= plugin_cfg.vol_decrement) < 0)
@@ -140,7 +140,7 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
             }
 
             old_volume = current_volume;
-            return TRUE;
+            return true;
         }*/
 
         /* increase volume */
@@ -150,7 +150,7 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
             {
                 current_volume = old_volume;
                 old_volume = 0;
-                mute = FALSE;
+                mute = false;
             }
 
             if ((current_volume += plugin_cfg.vol_increment) > 100)
@@ -165,7 +165,7 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
             }
 
             old_volume = current_volume;
-            return TRUE;
+            return true;
         }*/
 
         /* play or pause */
@@ -200,32 +200,32 @@ on_media_player_key_pressed (DBusGProxy *proxy, const gchar *application, const 
 
 void gnome_remote_uninit ()
 {
-    GError *error = NULL;
-    if (media_player_keys_proxy == NULL) return;
+    GError *error = nullptr;
+    if (media_player_keys_proxy == nullptr) return;
 
     dbus_g_proxy_disconnect_signal (media_player_keys_proxy, "MediaPlayerKeyPressed",
-     G_CALLBACK (on_media_player_key_pressed), NULL);
+     G_CALLBACK (on_media_player_key_pressed), nullptr);
 
     dbus_g_proxy_call (media_player_keys_proxy,
      "ReleaseMediaPlayerKeys", &error,
      G_TYPE_STRING, "Audacious",
      G_TYPE_INVALID, G_TYPE_INVALID);
-    if (error != NULL) {
+    if (error != nullptr) {
         g_warning ("Could not release media player keys: %s", error->message);
         g_error_free (error);
     }
     g_object_unref(media_player_keys_proxy);
-    media_player_keys_proxy = NULL;
+    media_player_keys_proxy = nullptr;
 }
 
 void gnome_remote_init ()
 {
     DBusGConnection *bus;
-    GError *error = NULL;
+    GError *error = nullptr;
     dbus_g_thread_init();
 
     bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-    if ((bus == NULL) && error) {
+    if ((bus == nullptr) && error) {
         g_warning ("Error connecting to DBus: %s", error->message);
         g_error_free (error);
     } else {
@@ -233,7 +233,7 @@ void gnome_remote_init ()
          "org.gnome.SettingsDaemon",
          "/org/gnome/SettingsDaemon/MediaKeys",
          "org.gnome.SettingsDaemon.MediaKeys");
-        if (media_player_keys_proxy == NULL) return;
+        if (media_player_keys_proxy == nullptr) return;
 
         dbus_g_proxy_call (media_player_keys_proxy,
          "GrabMediaPlayerKeys", &error,
@@ -241,16 +241,16 @@ void gnome_remote_init ()
          G_TYPE_UINT, 0,
          G_TYPE_INVALID,
          G_TYPE_INVALID);
-        if (error != NULL) {
+        if (error != nullptr) {
             g_error_free (error);
-            error = NULL;
+            error = nullptr;
             g_object_unref(media_player_keys_proxy);
-            media_player_keys_proxy = NULL;
+            media_player_keys_proxy = nullptr;
              media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
              "org.gnome.SettingsDaemon",
              "/org/gnome/SettingsDaemon",
              "org.gnome.SettingsDaemon");
-            if (media_player_keys_proxy == NULL) return;
+            if (media_player_keys_proxy == nullptr) return;
 
             dbus_g_proxy_call (media_player_keys_proxy,
              "GrabMediaPlayerKeys", &error,
@@ -258,11 +258,11 @@ void gnome_remote_init ()
              G_TYPE_UINT, 0,
              G_TYPE_INVALID,
              G_TYPE_INVALID);
-            if (error != NULL) {
+            if (error != nullptr) {
                 g_warning ("Could not grab media player keys: %s", error->message);
                 g_error_free (error);
                 g_object_unref(media_player_keys_proxy);
-                media_player_keys_proxy = NULL;
+                media_player_keys_proxy = nullptr;
                 return;
             }
         }
@@ -274,20 +274,20 @@ void gnome_remote_init ()
          G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INVALID);
 
         dbus_g_proxy_connect_signal (media_player_keys_proxy, "MediaPlayerKeyPressed",
-         G_CALLBACK (on_media_player_key_pressed), NULL, NULL);
+         G_CALLBACK (on_media_player_key_pressed), nullptr, nullptr);
     }
 }
 
-static gboolean init (void)
+static bool init (void)
 {
     gnome_remote_init();
-    loaded = TRUE;
-    return TRUE;
+    loaded = true;
+    return true;
 }
 
 static void cleanup (void)
 {
     if (!loaded) return;
     gnome_remote_uninit();
-    loaded = FALSE;
+    loaded = false;
 }

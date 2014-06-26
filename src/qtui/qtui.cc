@@ -27,7 +27,7 @@
 
 static MainWindow * window;
 
-static bool_t init ()
+static bool init ()
 {
     return true;
 }
@@ -50,7 +50,7 @@ static void run ()
     delete window;
 }
 
-static void show (bool_t show)
+static void show (bool show)
 {
 
 }

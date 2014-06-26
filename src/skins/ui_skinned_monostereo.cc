@@ -29,7 +29,7 @@
 #include "ui_skin.h"
 #include "ui_skinned_monostereo.h"
 
-static gint monostereo_num_channels;
+static int monostereo_num_channels;
 
 DRAW_FUNC_BEGIN (monostereo_draw)
     switch (monostereo_num_channels)
@@ -58,7 +58,7 @@ GtkWidget * ui_skinned_monostereo_new (void)
     return monostereo;
 }
 
-void ui_skinned_monostereo_set_num_channels (GtkWidget * monostereo, gint nch)
+void ui_skinned_monostereo_set_num_channels (GtkWidget * monostereo, int nch)
 {
     monostereo_num_channels = nch;
     gtk_widget_queue_draw (monostereo);

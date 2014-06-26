@@ -96,7 +96,7 @@ static void window_destroy (GtkWidget * window)
     g_free (data);
 }
 
-GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
+GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
  gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr))
 {
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -111,10 +111,10 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 
     DRAW_CONNECT (window, window_draw);
-    g_signal_connect (window, "button-press-event", (GCallback) window_button_press, NULL);
-    g_signal_connect (window, "button-release-event", (GCallback) window_button_release, NULL);
-    g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, NULL);
-    g_signal_connect (window, "destroy", (GCallback) window_destroy, NULL);
+    g_signal_connect (window, "button-press-event", (GCallback) window_button_press, nullptr);
+    g_signal_connect (window, "button-release-event", (GCallback) window_button_release, nullptr);
+    g_signal_connect (window, "motion-notify-event", (GCallback) window_motion, nullptr);
+    g_signal_connect (window, "destroy", (GCallback) window_destroy, nullptr);
 
     WindowData * data = g_new0 (WindowData, 1);
     g_object_set_data ((GObject *) window, "windowdata", data);
@@ -137,7 +137,7 @@ GtkWidget * window_new (gint * x, gint * y, gint w, gint h, gboolean main,
     return window;
 }
 
-void window_set_size (GtkWidget * window, gint w, gint h)
+void window_set_size (GtkWidget * window, int w, int h)
 {
     gtk_widget_set_size_request (window, w, h);
     gtk_window_resize ((GtkWindow *) window, w, h);
@@ -167,7 +167,7 @@ void window_set_shaded (GtkWidget * window, gboolean shaded)
 }
 
 void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
- gint x, gint y)
+ int x, int y)
 {
     WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
@@ -177,7 +177,7 @@ void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
 }
 
 void window_move_widget (GtkWidget * window, gboolean shaded, GtkWidget *
- widget, gint x, gint y)
+ widget, int x, int y)
 {
     WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);

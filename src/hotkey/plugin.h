@@ -40,8 +40,8 @@ typedef struct _HotkeyConfiguration {
 } HotkeyConfiguration;
 
 typedef struct {
-    gint vol_increment;
-    gint vol_decrement;
+    int vol_increment;
+    int vol_decrement;
 
     /* keyboard */
     HotkeyConfiguration first;

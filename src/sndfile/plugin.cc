@@ -114,7 +114,7 @@ static Tuple get_song_tuple (const char * filename, VFSFile * file)
 
     sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, file);
 
-    if (sndfile == NULL)
+    if (sndfile == nullptr)
         return ti;
 
     ti.set_filename (filename);
@@ -268,10 +268,10 @@ static Tuple get_song_tuple (const char * filename, VFSFile * file)
             subformat = "16 bit differential PCM";
             break;
         default:
-            subformat = NULL;
+            subformat = nullptr;
     }
 
-    if (subformat != NULL)
+    if (subformat != nullptr)
         ti.set_format (str_printf ("%s (%s)", format, subformat),
          sfinfo.channels, sfinfo.samplerate, 0);
     else
@@ -280,22 +280,22 @@ static Tuple get_song_tuple (const char * filename, VFSFile * file)
     return ti;
 }
 
-static bool_t play_start (const char * filename, VFSFile * file)
+static bool play_start (const char * filename, VFSFile * file)
 {
-    if (file == NULL)
-        return FALSE;
+    if (file == nullptr)
+        return false;
 
     SF_INFO sfinfo;
     SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo,
      file);
-    if (sndfile == NULL)
-        return FALSE;
+    if (sndfile == nullptr)
+        return false;
 
     if (! aud_input_open_audio (FMT_FLOAT, sfinfo.samplerate,
      sfinfo.channels))
     {
         sf_close (sndfile);
-        return FALSE;
+        return false;
     }
 
     int size = sfinfo.channels * (sfinfo.samplerate / 50);
@@ -317,10 +317,10 @@ static bool_t play_start (const char * filename, VFSFile * file)
     sf_close (sndfile);
     g_free (buffer);
 
-    return TRUE;
+    return true;
 }
 
-static int
+static bool
 is_our_file_from_vfs(const char *filename, VFSFile *fin)
 {
     SNDFILE *tmp_sndfile;
@@ -330,13 +330,13 @@ is_our_file_from_vfs(const char *filename, VFSFile *fin)
     tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, fin);
 
     if (!tmp_sndfile)
-        return FALSE;
+        return false;
 
-    /* It can so close file and return TRUE. */
+    /* It can so close file and return true. */
     sf_close (tmp_sndfile);
-    tmp_sndfile = NULL;
+    tmp_sndfile = nullptr;
 
-    return TRUE;
+    return true;
 }
 
 const char plugin_about[] =
@@ -355,7 +355,7 @@ const char plugin_about[] =
     "along with this program; if not, write to the Free Software "
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.");
 
-static const char *sndfile_fmts[] = { "aiff", "au", "raw", "wav", NULL };
+static const char *sndfile_fmts[] = { "aiff", "au", "raw", "wav", nullptr };
 
 #define AUD_PLUGIN_NAME        N_("Sndfile Plugin")
 #define AUD_PLUGIN_ABOUT       plugin_about

@@ -40,9 +40,9 @@
 #include "ui_skin.h"
 #include "view.h"
 
-gchar * skins_paths[SKINS_PATH_COUNT];
+char * skins_paths[SKINS_PATH_COUNT];
 
-static gboolean skins_init (void);
+static bool skins_init (void);
 static void skins_cleanup (void);
 
 #define AUD_PLUGIN_NAME     N_("Winamp Classic Interface")
@@ -68,14 +68,14 @@ static void skins_cleanup (void);
 #define AUD_DECLARE_IFACE
 #include <libaudcore/plugin-declare.h>
 
-static gint update_source;
+static int update_source;
 
 static void skins_free_paths(void) {
     int i;
 
     for (i = 0; i < SKINS_PATH_COUNT; i++)  {
         g_free(skins_paths[i]);
-        skins_paths[i] = NULL;
+        skins_paths[i] = nullptr;
     }
 }
 
@@ -83,17 +83,17 @@ static void skins_init_paths() {
     char *xdg_data_home;
     char *xdg_cache_home;
 
-    xdg_data_home = (getenv("XDG_DATA_HOME") == NULL
-        ? g_build_filename(g_get_home_dir(), ".local", "share", NULL)
+    xdg_data_home = (getenv("XDG_DATA_HOME") == nullptr
+        ? g_build_filename(g_get_home_dir(), ".local", "share", nullptr)
         : g_strdup(getenv("XDG_DATA_HOME")));
-    xdg_cache_home = (getenv("XDG_CACHE_HOME") == NULL
-        ? g_build_filename(g_get_home_dir(), ".cache", NULL)
+    xdg_cache_home = (getenv("XDG_CACHE_HOME") == nullptr
+        ? g_build_filename(g_get_home_dir(), ".cache", nullptr)
         : g_strdup(getenv("XDG_CACHE_HOME")));
 
     skins_paths[SKINS_PATH_USER_SKIN_DIR] =
-        g_build_filename(xdg_data_home, "audacious", "Skins", NULL);
+        g_build_filename(xdg_data_home, "audacious", "Skins", nullptr);
     skins_paths[SKINS_PATH_SKIN_THUMB_DIR] =
-        g_build_filename(xdg_cache_home, "audacious", "thumbs", NULL);
+        g_build_filename(xdg_cache_home, "audacious", "thumbs", nullptr);
 
     g_free(xdg_data_home);
     g_free(xdg_cache_home);
@@ -105,7 +105,7 @@ static gboolean update_cb (void * unused)
     return TRUE;
 }
 
-static gboolean skins_init (void)
+static bool skins_init (void)
 {
     audgui_init ();
 
@@ -121,14 +121,14 @@ static gboolean skins_init (void)
 
     if (aud_drct_get_playing ())
     {
-        ui_main_evlistener_playback_begin (NULL, NULL);
+        ui_main_evlistener_playback_begin (nullptr, nullptr);
         if (aud_drct_get_paused ())
-            ui_main_evlistener_playback_pause (NULL, NULL);
+            ui_main_evlistener_playback_pause (nullptr, nullptr);
     }
     else
         mainwin_update_song_info ();
 
-    update_source = g_timeout_add (250, update_cb, NULL);
+    update_source = g_timeout_add (250, update_cb, nullptr);
 
     create_plugin_windows ();
 
@@ -156,9 +156,9 @@ static void skins_cleanup (void)
     audgui_cleanup ();
 }
 
-bool_t handle_window_close (void)
+gboolean handle_window_close (void)
 {
-    bool_t handled = FALSE;
+    gboolean handled = FALSE;
     hook_call ("window close", & handled);
 
     if (! handled)

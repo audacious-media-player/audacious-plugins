@@ -64,11 +64,11 @@ static const AudguiMenuItem main_items[] = {
     MenuCommand (N_("Open Files ..."), "document-open", 'l', NO_MOD, action_play_file),
     MenuCommand (N_("Open URL ..."), "folder-remote", 'l', CTRL, action_play_location),
     MenuSep (),
-    MenuSub (N_("Playback"), NULL, get_menu_playback),
-    MenuSub (N_("Playlist"), NULL, get_menu_playlist),
-    MenuSub (N_("View"), NULL, get_menu_view),
+    MenuSub (N_("Playback"), nullptr, get_menu_playback),
+    MenuSub (N_("Playlist"), nullptr, get_menu_playlist),
+    MenuSub (N_("View"), nullptr, get_menu_view),
     MenuSep (),
-    MenuSub (N_("Services"), NULL, get_plugin_menu_main),
+    MenuSub (N_("Services"), nullptr, get_plugin_menu_main),
     MenuSep (),
     MenuCommand (N_("About ..."), "help-about", NO_KEY, audgui_show_about_window),
     MenuCommand (N_("Settings ..."), "preferences-system", 'p', CTRL, audgui_show_prefs_window),
@@ -78,10 +78,10 @@ static const AudguiMenuItem main_items[] = {
 static const AudguiMenuItem playback_items[] = {
     MenuCommand (N_("Song Info ..."), "dialog-information", 'i', NO_MOD, audgui_infowin_show_current),
     MenuSep (),
-    MenuToggle (N_("Repeat"), NULL, 'r', NO_MOD, NULL, "repeat", NULL, "set repeat"),
-    MenuToggle (N_("Shuffle"), NULL, 's', NO_MOD, NULL, "shuffle", NULL, "set shuffle"),
-    MenuToggle (N_("No Playlist Advance"), NULL, 'n', CTRL, NULL, "no_playlist_advance", NULL, "set no_playlist_advance"),
-    MenuToggle (N_("Stop After This Song"), NULL, 'm', CTRL, NULL, "stop_after_current_song", NULL, "set stop_after_current_song"),
+    MenuToggle (N_("Repeat"), nullptr, 'r', NO_MOD, nullptr, "repeat", nullptr, "set repeat"),
+    MenuToggle (N_("Shuffle"), nullptr, 's', NO_MOD, nullptr, "shuffle", nullptr, "set shuffle"),
+    MenuToggle (N_("No Playlist Advance"), nullptr, 'n', CTRL, nullptr, "no_playlist_advance", nullptr, "set no_playlist_advance"),
+    MenuToggle (N_("Stop After This Song"), nullptr, 'm', CTRL, nullptr, "stop_after_current_song", nullptr, "set stop_after_current_song"),
     MenuSep (),
     MenuCommand (N_("Play"), "media-playback-start", 'x', NO_MOD, aud_drct_play),
     MenuCommand (N_("Pause"), "media-playback-pause", 'c', NO_MOD, aud_drct_pause),
@@ -89,8 +89,8 @@ static const AudguiMenuItem playback_items[] = {
     MenuCommand (N_("Previous"), "media-skip-backward", 'z', NO_MOD, aud_drct_pl_prev),
     MenuCommand (N_("Next"), "media-skip-forward", 'b', NO_MOD, aud_drct_pl_next),
     MenuSep (),
-    MenuCommand (N_("Set A-B Repeat"), NULL, 'a', NO_MOD, action_ab_set),
-    MenuCommand (N_("Clear A-B Repeat"), NULL, 'a', SHIFT, action_ab_clear),
+    MenuCommand (N_("Set A-B Repeat"), nullptr, 'a', NO_MOD, action_ab_set),
+    MenuCommand (N_("Clear A-B Repeat"), nullptr, 'a', SHIFT, action_ab_clear),
     MenuSep (),
     MenuCommand (N_("Jump to Song ..."), "go-jump", 'j', NO_MOD, audgui_jump_to_track),
     MenuCommand (N_("Jump to Time ..."), "go-jump", 'j', CTRL, audgui_jump_to_time)
@@ -110,40 +110,40 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("Export Playlist ..."), "document-save", 's', SHIFT, audgui_export_playlist),
     MenuSep (),
     MenuCommand (N_("Playlist Manager ..."), "audio-x-generic", 'p', NO_MOD, audgui_playlist_manager),
-    MenuCommand (N_("Queue Manager ..."), NULL, 'u', CTRL, audgui_queue_manager_show),
+    MenuCommand (N_("Queue Manager ..."), nullptr, 'u', CTRL, audgui_queue_manager_show),
     MenuSep (),
     MenuCommand (N_("Refresh Playlist"), "view-refresh", GDK_KEY_F5, NO_MOD, action_playlist_refresh_list)
 };
 
 static const AudguiMenuItem view_items[] = {
-    MenuToggle (N_("Show Playlist Editor"), NULL, 'e', ALT, "skins", "playlist_visible", view_apply_show_playlist, "skins set playlist_visible"),
-    MenuToggle (N_("Show Equalizer"), NULL, 'g', ALT, "skins", "equalizer_visible", view_apply_show_equalizer, "skins set equalizer_visible"),
+    MenuToggle (N_("Show Playlist Editor"), nullptr, 'e', ALT, "skins", "playlist_visible", view_apply_show_playlist, "skins set playlist_visible"),
+    MenuToggle (N_("Show Equalizer"), nullptr, 'g', ALT, "skins", "equalizer_visible", view_apply_show_equalizer, "skins set equalizer_visible"),
     MenuSep (),
-    MenuToggle (N_("Show Remaining Time"), NULL, 'r', CTRL, "skins", "show_remaining_time", view_apply_show_remaining, "skins set show_remaining_time"),
+    MenuToggle (N_("Show Remaining Time"), nullptr, 'r', CTRL, "skins", "show_remaining_time", view_apply_show_remaining, "skins set show_remaining_time"),
     MenuSep (),
-    MenuToggle (N_("Always on Top"), NULL, 'o', CTRL, "skins", "always_on_top", view_apply_on_top, "skins set always_on_top"),
-    MenuToggle (N_("On All Workspaces"), NULL, 's', CTRL, "skins", "sticky", view_apply_sticky, "skins set sticky"),
+    MenuToggle (N_("Always on Top"), nullptr, 'o', CTRL, "skins", "always_on_top", view_apply_on_top, "skins set always_on_top"),
+    MenuToggle (N_("On All Workspaces"), nullptr, 's', CTRL, "skins", "sticky", view_apply_sticky, "skins set sticky"),
     MenuSep (),
-    MenuToggle (N_("Roll Up Player"), NULL, 'w', CTRL, "skins", "player_shaded", view_apply_player_shaded, "skins set player_shaded"),
-    MenuToggle (N_("Roll Up Playlist Editor"), NULL, 'w', SHIFT_CTRL, "skins", "playlist_shaded", view_apply_playlist_shaded, "skins set playlist_shaded"),
-    MenuToggle (N_("Roll Up Equalizer"), NULL, 'w', CTRL_ALT, "skins", "equalizer_shaded", view_apply_equalizer_shaded, "skins set equalizer_shaded")
+    MenuToggle (N_("Roll Up Player"), nullptr, 'w', CTRL, "skins", "player_shaded", view_apply_player_shaded, "skins set player_shaded"),
+    MenuToggle (N_("Roll Up Playlist Editor"), nullptr, 'w', SHIFT_CTRL, "skins", "playlist_shaded", view_apply_playlist_shaded, "skins set playlist_shaded"),
+    MenuToggle (N_("Roll Up Equalizer"), nullptr, 'w', CTRL_ALT, "skins", "equalizer_shaded", view_apply_equalizer_shaded, "skins set equalizer_shaded")
 };
 
 static const AudguiMenuItem playlist_add_items[] = {
-    MenuSub (N_("Services"), NULL, get_plugin_menu_playlist_add),
+    MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist_add),
     MenuSep (),
     MenuCommand (N_("Add URL ..."), "folder-remote", 'h', CTRL, action_playlist_add_url),
     MenuCommand (N_("Add Files ..."), "list-add", 'f', NO_MOD, action_playlist_add_files)
 };
 
 static const AudguiMenuItem dupe_items[] = {
-    MenuCommand (N_("By Title"), NULL, NO_KEY, action_playlist_remove_dupes_by_title),
-    MenuCommand (N_("By Filename"), NULL, NO_KEY, action_playlist_remove_dupes_by_filename),
-    MenuCommand (N_("By File Path"), NULL, NO_KEY, action_playlist_remove_dupes_by_full_path)
+    MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_remove_dupes_by_title),
+    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_remove_dupes_by_filename),
+    MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_remove_dupes_by_full_path)
 };
 
 static const AudguiMenuItem playlist_remove_items[] = {
-    MenuSub (N_("Services"), NULL, get_plugin_menu_playlist_remove),
+    MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist_remove),
     MenuSep (),
     MenuCommand (N_("Remove All"), "edit-delete", NO_KEY, action_playlist_remove_all),
     MenuCommand (N_("Clear Queue"), "edit-clear", 'q', SHIFT, action_playlist_clear_queue),
@@ -158,33 +158,33 @@ static const AudguiMenuItem playlist_remove_items[] = {
 static const AudguiMenuItem playlist_select_items[] = {
     MenuCommand (N_("Search and Select"), "edit-find", 'f', CTRL, action_playlist_search_and_select),
     MenuSep (),
-    MenuCommand (N_("Invert Selection"), NULL, NO_KEY, action_playlist_invert_selection),
-    MenuCommand (N_("Select None"), NULL, 'a', SHIFT_CTRL, action_playlist_select_none),
+    MenuCommand (N_("Invert Selection"), nullptr, NO_KEY, action_playlist_invert_selection),
+    MenuCommand (N_("Select None"), nullptr, 'a', SHIFT_CTRL, action_playlist_select_none),
     MenuCommand (N_("Select All"), "edit-select-all", 'a', CTRL, action_playlist_select_all),
 };
 
 static const AudguiMenuItem sort_items[] = {
-    MenuCommand (N_("By Title"), NULL, NO_KEY, action_playlist_sort_by_title),
-    MenuCommand (N_("By Album"), NULL, NO_KEY, action_playlist_sort_by_album),
-    MenuCommand (N_("By Artist"), NULL, NO_KEY, action_playlist_sort_by_artist),
-    MenuCommand (N_("By Filename"), NULL, NO_KEY, action_playlist_sort_by_filename),
-    MenuCommand (N_("By File Path"), NULL, NO_KEY, action_playlist_sort_by_full_path),
-    MenuCommand (N_("By Release Date"), NULL, NO_KEY, action_playlist_sort_by_date),
-    MenuCommand (N_("By Track Number"), NULL, NO_KEY, action_playlist_sort_by_track_number)
+    MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_by_title),
+    MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_by_album),
+    MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_by_artist),
+    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_by_filename),
+    MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_by_full_path),
+    MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_by_date),
+    MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_by_track_number)
 };
 
 static const AudguiMenuItem sort_selected_items[] = {
-    MenuCommand (N_("By Title"), NULL, NO_KEY, action_playlist_sort_selected_by_title),
-    MenuCommand (N_("By Album"), NULL, NO_KEY, action_playlist_sort_selected_by_album),
-    MenuCommand (N_("By Artist"), NULL, NO_KEY, action_playlist_sort_selected_by_artist),
-    MenuCommand (N_("By Filename"), NULL, NO_KEY, action_playlist_sort_selected_by_filename),
-    MenuCommand (N_("By File Path"), NULL, NO_KEY, action_playlist_sort_selected_by_full_path),
-    MenuCommand (N_("By Release Date"), NULL, NO_KEY, action_playlist_sort_selected_by_date),
-    MenuCommand (N_("By Track Number"), NULL, NO_KEY, action_playlist_sort_selected_by_track_number)
+    MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_selected_by_title),
+    MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_selected_by_album),
+    MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_artist),
+    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_selected_by_filename),
+    MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_selected_by_full_path),
+    MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_selected_by_date),
+    MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_selected_by_track_number)
 };
 
 static const AudguiMenuItem playlist_sort_items[] = {
-    MenuCommand (N_("Randomize List"), NULL, 'r', SHIFT_CTRL, action_playlist_randomize_list),
+    MenuCommand (N_("Randomize List"), nullptr, 'r', SHIFT_CTRL, action_playlist_randomize_list),
     MenuCommand (N_("Reverse List"), "view-sort-descending", NO_KEY, action_playlist_reverse_list),
     MenuSep (),
     MenuSub (N_("Sort Selected"), "view-sort-ascending", sort_selected_items, ARRAY_LEN (sort_selected_items)),
@@ -198,26 +198,26 @@ static const AudguiMenuItem playlist_context_items[] = {
     MenuCommand (N_("Copy"), "edit-copy", 'c', CTRL, action_playlist_copy),
     MenuCommand (N_("Paste"), "edit-paste", 'v', CTRL, action_playlist_paste),
     MenuSep (),
-    MenuCommand (N_("Queue/Unqueue"), NULL, 'q', NO_MOD, action_queue_toggle),
+    MenuCommand (N_("Queue/Unqueue"), nullptr, 'q', NO_MOD, action_queue_toggle),
     MenuSep (),
-    MenuSub (N_("Services"), NULL, get_plugin_menu_playlist)
+    MenuSub (N_("Services"), nullptr, get_plugin_menu_playlist)
 };
 
 static const AudguiMenuItem eq_preset_items[] = {
     MenuCommand (N_("Load Preset ..."), "document-open", NO_KEY, eq_preset_load),
-    MenuCommand (N_("Load Auto Preset ..."), NULL, NO_KEY, eq_preset_load_auto),
-    MenuCommand (N_("Load Default"), NULL, NO_KEY, eq_preset_load_default),
-    MenuCommand (N_("Load Preset File ..."), NULL, NO_KEY, eq_preset_load_file),
-    MenuCommand (N_("Load EQF File ..."), NULL, NO_KEY, eq_preset_load_eqf),
+    MenuCommand (N_("Load Auto Preset ..."), nullptr, NO_KEY, eq_preset_load_auto),
+    MenuCommand (N_("Load Default"), nullptr, NO_KEY, eq_preset_load_default),
+    MenuCommand (N_("Load Preset File ..."), nullptr, NO_KEY, eq_preset_load_file),
+    MenuCommand (N_("Load EQF File ..."), nullptr, NO_KEY, eq_preset_load_eqf),
     MenuSep (),
     MenuCommand (N_("Save Preset ..."), "document-save", NO_KEY, eq_preset_save),
-    MenuCommand (N_("Save Auto Preset ..."), NULL, NO_KEY, eq_preset_save_auto),
-    MenuCommand (N_("Save Default"), NULL, NO_KEY, eq_preset_save_default),
-    MenuCommand (N_("Save Preset File ..."), NULL, NO_KEY, eq_preset_save_file),
-    MenuCommand (N_("Save EQF File ..."), NULL, NO_KEY, eq_preset_save_eqf),
+    MenuCommand (N_("Save Auto Preset ..."), nullptr, NO_KEY, eq_preset_save_auto),
+    MenuCommand (N_("Save Default"), nullptr, NO_KEY, eq_preset_save_default),
+    MenuCommand (N_("Save Preset File ..."), nullptr, NO_KEY, eq_preset_save_file),
+    MenuCommand (N_("Save EQF File ..."), nullptr, NO_KEY, eq_preset_save_eqf),
     MenuSep (),
     MenuCommand (N_("Delete Preset ..."), "edit-delete", NO_KEY, eq_preset_delete),
-    MenuCommand (N_("Delete Auto Preset ..."), NULL, NO_KEY, eq_preset_delete_auto),
+    MenuCommand (N_("Delete Auto Preset ..."), nullptr, NO_KEY, eq_preset_delete_auto),
     MenuSep (),
     MenuCommand (N_("Import Winamp Presets ..."), "document-open", NO_KEY, eq_preset_import_winamp),
     MenuSep (),
@@ -261,7 +261,7 @@ void menu_cleanup (void)
     }
 
     g_object_unref (accel);
-    accel = NULL;
+    accel = nullptr;
 }
 
 GtkAccelGroup * menu_get_accel_group (void)
@@ -269,7 +269,7 @@ GtkAccelGroup * menu_get_accel_group (void)
     return accel;
 }
 
-static void get_monitor_geometry (GdkScreen * screen, gint x, gint y, GdkRectangle * geom)
+static void get_monitor_geometry (GdkScreen * screen, int x, int y, GdkRectangle * geom)
 {
     int monitors = gdk_screen_get_n_monitors (screen);
 
@@ -290,10 +290,10 @@ static void get_monitor_geometry (GdkScreen * screen, gint x, gint y, GdkRectang
 
 typedef struct {
     int x, y;
-    bool_t leftward, upward;
+    gboolean leftward, upward;
 } MenuPosition;
 
-static void position_menu (GtkMenu * menu, int * x, int * y, bool_t * push_in, void * data)
+static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in, void * data)
 {
     const MenuPosition * pos = (MenuPosition *) data;
 
@@ -314,9 +314,9 @@ static void position_menu (GtkMenu * menu, int * x, int * y, bool_t * push_in, v
         * y = MIN (pos->y, geom.y + geom.height - request.height);
 }
 
-void menu_popup (int id, int x, int y, bool_t leftward, bool_t upward,
+void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward,
  int button, int time)
 {
     const MenuPosition pos = {x, y, leftward, upward};
-    gtk_menu_popup ((GtkMenu *) menus[id], NULL, NULL, position_menu, (void *) & pos, button, time);
+    gtk_menu_popup ((GtkMenu *) menus[id], nullptr, nullptr, position_menu, (void *) & pos, button, time);
 }

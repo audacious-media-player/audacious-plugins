@@ -240,7 +240,7 @@ extern BOOL execute;
 static u32 FASTCALL  OP_UND(armcpu_t *cpu)
 {
 	LOG("Undefined instruction: %08X\n", cpu->instruction);
-	execute = FALSE;
+	execute = false;
 	return 1;
 }
 
@@ -5861,7 +5861,7 @@ static u32 FASTCALL  OP_LDRBT_M_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
      oldmode = armcpu_switchMode(cpu, SYS);
 
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_M_IMM_OFF_POSTIND\n");
 
 
@@ -5887,7 +5887,7 @@ static u32 FASTCALL  OP_LDRBT_P_LSL_IMM_OFF_POSTIND(armcpu_t *cpu)
      if(cpu->CPSR.bits.mode==USR)
           return 2;
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_P_LSL_IMM_OFF_POSTIND");
 
 
@@ -5915,7 +5915,7 @@ static u32 FASTCALL  OP_LDRBT_M_LSL_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
 
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_M_LSL_IMM_OFF_POSTIND");
 
 
@@ -5943,7 +5943,7 @@ static u32 FASTCALL  OP_LDRBT_P_LSR_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
 
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_P_LSR_IMM_OFF_POSTIND");
 
 
@@ -5971,7 +5971,7 @@ static u32 FASTCALL  OP_LDRBT_M_LSR_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
 
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_M_LSR_IMM_OFF_POSTIND");
 
 
@@ -5999,7 +5999,7 @@ static u32 FASTCALL  OP_LDRBT_P_ASR_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
 
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_P_ASR_IMM_OFF_POSTIND");
 
 
@@ -6027,7 +6027,7 @@ static u32 FASTCALL  OP_LDRBT_M_ASR_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
 
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_M_ASR_IMM_OFF_POSTIND");
 
 
@@ -6055,7 +6055,7 @@ static u32 FASTCALL  OP_LDRBT_P_ROR_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
 
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_P_ROR_IMM_OFF_POSTIND");
 
 
@@ -6083,7 +6083,7 @@ static u32 FASTCALL  OP_LDRBT_M_ROR_IMM_OFF_POSTIND(armcpu_t *cpu)
           return 2;
 
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDRBT_M_ROR_IMM_OFF_POSTIND");
 
 
@@ -6769,7 +6769,7 @@ static u32 FASTCALL  OP_LDMIB2(armcpu_t *cpu)
      u32 start = cpu->R[REG_POS(i,16)];
      u32 * registres;
      u32 * waitState;
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDMIB2");
 
      if(BIT15(i)==0)
@@ -6828,7 +6828,7 @@ static u32 FASTCALL  OP_LDMDA2(armcpu_t *cpu)
      u32 * waitState;
 
      u32 start = cpu->R[REG_POS(i,16)];
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_LDMDA2");
 
      if(BIT15(i)==0)
@@ -6953,7 +6953,7 @@ static u32 FASTCALL  OP_LDMIA2_W(armcpu_t *cpu)
      u32 * waitState;
      u32 tmp;
      Status_Reg SPSR;
-//     execute = FALSE;
+//     execute = false;
      if(BIT15(i)==0)
      {
           if(cpu->CPSR.bits.mode==USR)
@@ -7068,7 +7068,7 @@ static u32 FASTCALL  OP_LDMDA2_W(armcpu_t *cpu)
      u32 * registres;
      u32 * waitState;
      Status_Reg SPSR;
-//     execute = FALSE;
+//     execute = false;
      if(BIT15(i)==0)
      {
           if(cpu->CPSR.bits.mode==USR)
@@ -7128,7 +7128,7 @@ static u32 FASTCALL  OP_LDMDB2_W(armcpu_t *cpu)
      u32 * registres;
      u32 * waitState;
      Status_Reg SPSR;
-//     execute = FALSE;
+//     execute = false;
      if(BIT15(i)==0)
      {
           if(cpu->CPSR.bits.mode==USR)
@@ -7339,7 +7339,7 @@ static u32 FASTCALL  OP_STMIA2(armcpu_t *cpu)
      start = cpu->R[REG_POS(i,16)];
      oldmode = armcpu_switchMode(cpu, SYS);
 
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_STMIA2");
 
      for(b=0; b<16; ++b)
@@ -7370,7 +7370,7 @@ static u32 FASTCALL  OP_STMIB2(armcpu_t *cpu)
      start = cpu->R[REG_POS(i,16)];
      oldmode = armcpu_switchMode(cpu, SYS);
 
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_STMIB2");
 
      for(b=0; b<16; ++b)
@@ -7401,7 +7401,7 @@ static u32 FASTCALL  OP_STMDA2(armcpu_t *cpu)
      start = cpu->R[REG_POS(i,16)];
      oldmode = armcpu_switchMode(cpu, SYS);
 
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_STMDA2");
 
      for(b=0; b<16; ++b)
@@ -7459,7 +7459,7 @@ static u32 FASTCALL  OP_STMIA2_W(armcpu_t *cpu)
      start = cpu->R[REG_POS(i,16)];
      oldmode = armcpu_switchMode(cpu, SYS);
 
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_STMIA2_W");
 
      for(b=0; b<16; ++b)
@@ -7519,7 +7519,7 @@ static u32 FASTCALL  OP_STMDA2_W(armcpu_t *cpu)
      c = 0;
      start = cpu->R[REG_POS(i,16)];
      oldmode = armcpu_switchMode(cpu, SYS);
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_STMDA2_W");
 
      for(b=0; b<16; ++b)
@@ -7553,7 +7553,7 @@ static u32 FASTCALL  OP_STMDB2_W(armcpu_t *cpu)
      start = cpu->R[REG_POS(i,16)];
      oldmode = armcpu_switchMode(cpu, SYS);
 
-     //execute = FALSE;
+     //execute = false;
 	 LOG("Untested opcode: OP_STMDB2_W");
 
      for(b=0; b<16; ++b)
@@ -7782,7 +7782,7 @@ static u32 FASTCALL  OP_MCR(armcpu_t *cpu)
 
      if(!cpu->coproc[cpnum])
      {
-          execute = FALSE;
+          execute = false;
           return 2;
      }
 
@@ -7800,7 +7800,7 @@ static u32 FASTCALL  OP_MRC(armcpu_t *cpu)
 
      if(!cpu->coproc[cpnum])
      {
-          execute = FALSE;
+          execute = false;
           return 2;
      }
 
@@ -7837,7 +7837,7 @@ static u32 FASTCALL  OP_SWI(armcpu_t *cpu)
 //----------------BKPT-------------------------
 static u32 FASTCALL OP_BKPT(armcpu_t *cpu)
 {
-     execute = FALSE;
+     execute = false;
      return 4;
 }
 
@@ -7845,7 +7845,7 @@ static u32 FASTCALL OP_BKPT(armcpu_t *cpu)
 
 static u32 FASTCALL  OP_CDP(armcpu_t *cpu)
 {
-     execute = FALSE;
+     execute = false;
      return 4;
 }
 

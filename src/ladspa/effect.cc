@@ -193,9 +193,9 @@ void shutdown_plugin_locked (LoadedPlugin * loaded)
     loaded->instances.clear ();
 
     g_free (loaded->in_bufs);
-    loaded->in_bufs = NULL;
+    loaded->in_bufs = nullptr;
     g_free (loaded->out_bufs);
-    loaded->out_bufs = NULL;
+    loaded->out_bufs = nullptr;
 }
 
 void ladspa_start (int * channels, int * rate)

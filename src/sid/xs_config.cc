@@ -47,31 +47,31 @@ void xs_init_configuration(void)
     xs_cfg.audioChannels = XS_CHN_STEREO;
     xs_cfg.audioFrequency = XS_AUDIO_FREQ;
 
-    xs_cfg.mos8580 = FALSE;
-    xs_cfg.forceModel = FALSE;
+    xs_cfg.mos8580 = false;
+    xs_cfg.forceModel = false;
 
     /* Filter values */
-    xs_cfg.emulateFilters = TRUE;
+    xs_cfg.emulateFilters = true;
 
     xs_cfg.clockSpeed = XS_CLOCK_PAL;
-    xs_cfg.forceSpeed = FALSE;
+    xs_cfg.forceSpeed = false;
 
-    xs_cfg.playMaxTimeEnable = FALSE;
-    xs_cfg.playMaxTimeUnknown = FALSE;
+    xs_cfg.playMaxTimeEnable = false;
+    xs_cfg.playMaxTimeUnknown = false;
     xs_cfg.playMaxTime = 150;
 
-    xs_cfg.playMinTimeEnable = FALSE;
+    xs_cfg.playMinTimeEnable = false;
     xs_cfg.playMinTime = 15;
 
-    xs_cfg.songlenDBEnable = FALSE;
+    xs_cfg.songlenDBEnable = false;
     xs_pstrcpy(&xs_cfg.songlenDBPath, "~/C64Music/DOCUMENTS/Songlengths.txt");
 
-    xs_cfg.stilDBEnable = FALSE;
+    xs_cfg.stilDBEnable = false;
     xs_pstrcpy(&xs_cfg.stilDBPath, "~/C64Music/DOCUMENTS/STIL.txt");
     xs_pstrcpy(&xs_cfg.hvscPath, "~/C64Music");
 
-    xs_cfg.subAutoEnable = TRUE;
-    xs_cfg.subAutoMinOnly = TRUE;
+    xs_cfg.subAutoEnable = true;
+    xs_cfg.subAutoMinOnly = true;
     xs_cfg.subAutoMinTime = 15;
 
     /* Unlock the configuration */

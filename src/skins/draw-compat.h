@@ -27,7 +27,7 @@
 static void widget_realized (GtkWidget * w)
 {
     GdkWindow * window = gtk_widget_get_window (w);
-    gdk_window_set_background_pattern (window, NULL);
+    gdk_window_set_background_pattern (window, nullptr);
 }
 
 #define DRAW_SIGNAL "draw"
@@ -36,8 +36,8 @@ static void widget_realized (GtkWidget * w)
 #define DRAW_FUNC_END return FALSE; }
 
 #define DRAW_CONNECT(w,f) do { \
-    g_signal_connect (w, "realize", (GCallback) widget_realized, NULL); \
-    g_signal_connect (w, DRAW_SIGNAL, (GCallback) f, NULL); \
+    g_signal_connect (w, "realize", (GCallback) widget_realized, nullptr); \
+    g_signal_connect (w, DRAW_SIGNAL, (GCallback) f, nullptr); \
  } while (0);
 
 #endif

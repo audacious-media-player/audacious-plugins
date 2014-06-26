@@ -14,7 +14,7 @@
 #include "tagget.h"
 #include "vio2sf.h"
 
-volatile BOOL execute = FALSE;
+volatile BOOL execute = false;
 
 static struct
 {
@@ -620,7 +620,7 @@ static SoundInterface_struct VIO2SFSNDIF =
 SoundInterface_struct *SNDCoreList[] = {
 	&VIO2SFSNDIF,
 	&SNDDummy,
-	NULL
+	nullptr
 };
 
 #ifdef GDB_STUB
@@ -651,7 +651,7 @@ int xsf_start(void *pfile, unsigned bytes)
 
 	SPU_ChangeSoundCore(VIO2SFSNDIFID, 737);
 
-	execute = FALSE;
+	execute = false;
 
 	MMU_unsetRom();
 	if (loaderwork.rom)
@@ -661,7 +661,7 @@ int xsf_start(void *pfile, unsigned bytes)
 
 	NDS_Reset();
 
-	execute = TRUE;
+	execute = true;
 
 	if (loaderwork.state)
 	{
@@ -753,7 +753,7 @@ int xsf_start(void *pfile, unsigned bytes)
 		for (i=0; i<frames; i++)
 			NDS_exec_frame(0, 0);
 	}
-	execute = TRUE;
+	execute = true;
 	sndifwork.xfs_load = 1;
 	return XSF_TRUE;
 }

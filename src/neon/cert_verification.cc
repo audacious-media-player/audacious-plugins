@@ -96,7 +96,7 @@ struct DerData
 /**
  * Returns the tag number of DER data.
  */
-static bool_t der_read_tag_number (unsigned char * in_buffer,
+static bool der_read_tag_number (unsigned char * in_buffer,
  const unsigned char * in_bufferEnd, unsigned char * * out_lengthStart,
  enum AsnType * out_type)
 {
@@ -121,7 +121,7 @@ static bool_t der_read_tag_number (unsigned char * in_buffer,
  * Returns pointers that point to the content of DER data value when identifier
  * is not present.
  */
-static bool_t der_read_content_length (unsigned char * in_buffer,
+static bool der_read_content_length (unsigned char * in_buffer,
  const unsigned char * in_bufferEnd, unsigned char * * out_start,
  unsigned char * * out_end, unsigned char * * out_nextStart)
 {
@@ -191,10 +191,10 @@ static bool_t der_read_content_length (unsigned char * in_buffer,
 /**
  * Returns pointers that point to the content of DER data value.
  */
-static bool_t der_read_content (struct DerData * data, struct DerData * content)
+static bool der_read_content (struct DerData * data, struct DerData * content)
 {
-    unsigned char * lengthStart = NULL;
-    bool_t typeOk = der_read_tag_number (data->start, data->bufferEnd,
+    unsigned char * lengthStart = nullptr;
+    bool typeOk = der_read_tag_number (data->start, data->bufferEnd,
      & lengthStart, & content->type);
 
     if (! typeOk)
@@ -208,18 +208,18 @@ static bool_t der_read_content (struct DerData * data, struct DerData * content)
 /**
  * Returns pointers that point to next DER data value.
  */
-static bool_t der_read_next (struct DerData * currentContent, struct DerData * nextContent)
+static bool der_read_next (struct DerData * currentContent, struct DerData * nextContent)
 {
     nextContent->start = currentContent->nextStart;
 
-    unsigned char * lengthStart = NULL;
-    bool_t typeOk = der_read_tag_number (currentContent->start,
+    unsigned char * lengthStart = nullptr;
+    bool typeOk = der_read_tag_number (currentContent->start,
      currentContent->bufferEnd, & lengthStart, & nextContent->type);
 
     if (! typeOk)
         return FALSE;
 
-    unsigned char * nextContentStart = NULL;
+    unsigned char * nextContentStart = nullptr;
     return der_read_content_length (lengthStart, currentContent->bufferEnd,
      & nextContentStart, & nextContent->end, & nextContent->nextStart);
 }
@@ -233,14 +233,14 @@ static bool_t der_read_next (struct DerData * currentContent, struct DerData * n
  *
  * @return TRUE if given certificate could be parsed by this, FALSE otherwise.
  */
-static bool_t cert_get_hash (const ne_ssl_certificate * cert, uint32_t * out_hash)
+static bool cert_get_hash (const ne_ssl_certificate * cert, uint32_t * out_hash)
 {
     char * certPem = ne_ssl_cert_export (cert);
-    g_return_val_if_fail (certPem != NULL, 1);
+    g_return_val_if_fail (certPem != nullptr, 1);
     size_t derLength = 0;
     unsigned char * certDer = g_base64_decode (certPem, &derLength);
     g_free (certPem);
-    g_return_val_if_fail (certDer != NULL, 1);
+    g_return_val_if_fail (certDer != nullptr, 1);
 
     struct DerData data = {0};
     struct DerData content = {0};
@@ -303,11 +303,11 @@ static bool_t cert_get_hash (const ne_ssl_certificate * cert, uint32_t * out_has
  * Goes up in certificate signer chain of certificate and compares if any one
  * of them is same as given signer.
  */
-static bool_t is_signer_of_cert (const ne_ssl_certificate * signer, const ne_ssl_certificate * cert)
+static bool is_signer_of_cert (const ne_ssl_certificate * signer, const ne_ssl_certificate * cert)
 {
     const ne_ssl_certificate * certSigner = cert;
 
-    while (certSigner != NULL)
+    while (certSigner != nullptr)
     {
         if (ne_ssl_cert_cmp (signer, certSigner) == 0)
             return TRUE;
@@ -321,13 +321,13 @@ static bool_t is_signer_of_cert (const ne_ssl_certificate * signer, const ne_ssl
 /**
  * Checks if given file includes certificate that has signed given certificate.
  */
-static bool_t file_is_signer_of_cert (const char * filename, const ne_ssl_certificate * cert)
+static bool file_is_signer_of_cert (const char * filename, const ne_ssl_certificate * cert)
 {
     ne_ssl_certificate * signer = ne_ssl_cert_read (filename);
 
-    if (signer != NULL)
+    if (signer != nullptr)
     {
-        bool_t signOk = is_signer_of_cert (signer, cert);
+        bool signOk = is_signer_of_cert (signer, cert);
         ne_ssl_cert_free (signer);
 
         if (signOk)
@@ -340,7 +340,7 @@ static bool_t file_is_signer_of_cert (const char * filename, const ne_ssl_certif
 /**
  * Checks if directory includes a file that can be signer of given certificate.
  */
-static bool_t validate_directory_certs (const char * directory,
+static bool validate_directory_certs (const char * directory,
  const ne_ssl_certificate * serverCert, uint32_t certHash)
 {
     // Search certificate names in ascending order and assume that all names
@@ -352,9 +352,9 @@ static bool_t validate_directory_certs (const char * directory,
         // Construct certificate name.
         char certFilename[20] = {0};
         snprintf (certFilename, sizeof certFilename, "%08x.%d", certHash, certId);
-        char * certPath = g_build_filename (directory, certFilename, NULL);
+        char * certPath = g_build_filename (directory, certFilename, nullptr);
 
-        bool_t signOk = file_is_signer_of_cert (certPath, serverCert);
+        bool signOk = file_is_signer_of_cert (certPath, serverCert);
         g_free (certPath);
 
         if (signOk)
@@ -376,7 +376,7 @@ int neon_vfs_verify_environment_ssl_certs (void * userdata, int failures,
     // First check the certificate file, if we have one.
     const char * sslCertFile = g_getenv ("SSL_CERT_FILE");
 
-    if (sslCertFile != NULL)
+    if (sslCertFile != nullptr)
     {
         if (file_is_signer_of_cert (sslCertFile, serverCert))
             return failures & ~NE_SSL_UNTRUSTED;
@@ -385,7 +385,7 @@ int neon_vfs_verify_environment_ssl_certs (void * userdata, int failures,
     // check if we have list of directories where certificates can be.
     const char * sslCertDirPaths = g_getenv ("SSL_CERT_DIR");
 
-    if (sslCertDirPaths == NULL)
+    if (sslCertDirPaths == nullptr)
         return failures;
 
     uint32_t certHash = 0;

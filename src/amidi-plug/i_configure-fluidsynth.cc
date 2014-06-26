@@ -53,11 +53,11 @@ void i_configure_ev_sflist_add (void * sfont_lv)
                                     GTK_WINDOW (parent_window),
                                     GTK_FILE_CHOOSER_ACTION_OPEN,
                                     _("_Cancel"), GTK_RESPONSE_CANCEL,
-                                    _("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+                                    _("_Open"), GTK_RESPONSE_ACCEPT, nullptr);
 
-        if (gtk_tree_selection_get_selected (listsel, NULL, &itersel))
+        if (gtk_tree_selection_get_selected (listsel, nullptr, &itersel))
         {
-            char * selfilename = NULL, *selfiledir = NULL;
+            char * selfilename = nullptr, *selfiledir = nullptr;
             GtkTreeModel * store = gtk_tree_view_get_model (GTK_TREE_VIEW (sfont_lv));
             gtk_tree_model_get (GTK_TREE_MODEL (store), &itersel, LISTSFONT_FILENAME_COLUMN, &selfilename, -1);
             selfiledir = g_path_get_dirname (selfilename);
@@ -149,7 +149,7 @@ void i_configure_ev_sflist_commit (void * sfont_lv)
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter) == TRUE)
     {
-        bool_t iter_is_valid = FALSE;
+        gboolean iter_is_valid = FALSE;
 
         do
         {
@@ -198,7 +198,7 @@ void * create_soundfont_list (void)
             GtkTreeIter iter;
             int i = 0;
 
-            while (sffiles[i] != NULL)
+            while (sffiles[i] != nullptr)
             {
                 int filesize = -1;
                 GStatBuf finfo;
@@ -223,18 +223,18 @@ void * create_soundfont_list (void)
         soundfont_file_lv_text_rndr = gtk_cell_renderer_text_new();
         soundfont_file_lv_fname_col = gtk_tree_view_column_new_with_attributes (
                                           _("Filename"), soundfont_file_lv_text_rndr, "text",
-                                          LISTSFONT_FILENAME_COLUMN, NULL);
+                                          LISTSFONT_FILENAME_COLUMN, nullptr);
         gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (soundfont_file_lv_fname_col), TRUE);
         soundfont_file_lv_fsize_col = gtk_tree_view_column_new_with_attributes (
                                           _("Size (bytes)"), soundfont_file_lv_text_rndr, "text",
-                                          LISTSFONT_FILESIZE_COLUMN, NULL);
+                                          LISTSFONT_FILESIZE_COLUMN, nullptr);
         gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (soundfont_file_lv_fsize_col), FALSE);
         gtk_tree_view_append_column (GTK_TREE_VIEW (soundfont_file_lv), soundfont_file_lv_fname_col);
         gtk_tree_view_append_column (GTK_TREE_VIEW (soundfont_file_lv), soundfont_file_lv_fsize_col);
         soundfont_file_lv_sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (soundfont_file_lv));
         gtk_tree_selection_set_mode (GTK_TREE_SELECTION (soundfont_file_lv_sel), GTK_SELECTION_SINGLE);
 
-        soundfont_file_lv_sw = gtk_scrolled_window_new (NULL, NULL);
+        soundfont_file_lv_sw = gtk_scrolled_window_new (nullptr, nullptr);
         gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) soundfont_file_lv_sw, GTK_SHADOW_IN);
         gtk_scrolled_window_set_policy ((GtkScrolledWindow *) soundfont_file_lv_sw,
                                          GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);

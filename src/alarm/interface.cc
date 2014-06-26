@@ -27,7 +27,7 @@
     #define gtk_widget_set_margin_right(w, m) gtk_widget_set_margin_end(w, m)
 #endif
 
-const gchar *help[] =
+const char *help[] =
 {
    N_("Time\n"
     "  Alarm at:\n"
@@ -74,19 +74,19 @@ const gchar *help[] =
     "    Type the reminder in the box and turn on the\n"
     "    toggle button if you want it to be shown."),
 
-    NULL
+    nullptr
 };
 
 GtkWidget *create_alarm_dialog (void)
 {
     GtkWidget *alarm_dialog;
 
-    alarm_dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
+    alarm_dialog = gtk_message_dialog_new (nullptr, GTK_DIALOG_DESTROY_WITH_PARENT,
      GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, _("This is your wakeup call."));
     gtk_window_set_title (GTK_WINDOW (alarm_dialog), _("Alarm"));
 
     g_signal_connect (alarm_dialog, "response",
-     G_CALLBACK (alarm_stop_cancel), NULL);
+     G_CALLBACK (alarm_stop_cancel), nullptr);
     g_signal_connect_swapped (alarm_dialog, "response",
      G_CALLBACK (gtk_widget_destroy), alarm_dialog);
 
@@ -95,11 +95,11 @@ GtkWidget *create_alarm_dialog (void)
     return alarm_dialog;
 }
 
-GtkWidget *create_reminder_dialog (const gchar *reminder_msg)
+GtkWidget *create_reminder_dialog (const char *reminder_msg)
 {
     GtkWidget *reminder_dialog;
 
-    reminder_dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_DESTROY_WITH_PARENT,
+    reminder_dialog = gtk_message_dialog_new (nullptr, GTK_DIALOG_DESTROY_WITH_PARENT,
      GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, _("Your reminder for today is..."));
     gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (reminder_dialog), "%s", reminder_msg);
     gtk_window_set_title (GTK_WINDOW (reminder_dialog), _("Reminder"));
@@ -110,14 +110,14 @@ GtkWidget *create_reminder_dialog (const gchar *reminder_msg)
     return reminder_dialog;
 }
 
-static void file_set_cb (GtkFileChooserButton *button, gpointer entry)
+static void file_set_cb (GtkFileChooserButton *button, void * entry)
 {
-    gchar *uri = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (button));
+    char *uri = gtk_file_chooser_get_uri (GTK_FILE_CHOOSER (button));
     gtk_entry_set_text (GTK_ENTRY (entry), uri);
     g_free (uri);
 }
 
-static void config_dialog_response (GtkWidget *dialog, gint response)
+static void config_dialog_response (GtkWidget *dialog, int response)
 {
     if (response == GTK_RESPONSE_OK)
         alarm_save ();
@@ -137,23 +137,23 @@ GtkWidget *create_config_dialog (void)
     GtkWidget *stop_checkb, *stop_h_spin, *stop_m_spin;
 
     /* Page 2 */
-    gint i, j;
+    int i, j;
     GtkWidget *checkbutton;
     GtkWidget *widget[21];
 
-    const gchar *weekdays[] = { _("Monday"), _("Tuesday"), _("Wednesday"),
+    const char *weekdays[] = { _("Monday"), _("Tuesday"), _("Wednesday"),
                                 _("Thursday"), _("Friday"), _("Saturday"), _("Sunday") };
 
-    const gchar *day_cb[] = { "mon_cb", "tue_cb", "wed_cb", "thu_cb",
+    const char *day_cb[] = { "mon_cb", "tue_cb", "wed_cb", "thu_cb",
                               "fri_cb", "sat_cb", "sun_cb" };
 
-    const gchar *day_def[] = { "mon_def", "tue_def", "wed_def", "thu_def",
+    const char *day_def[] = { "mon_def", "tue_def", "wed_def", "thu_def",
                                "fri_def", "sat_def", "sun_def", };
 
-    const gchar *day_h[] = { "mon_h", "tue_h", "wed_h", "thu_h",
+    const char *day_h[] = { "mon_h", "tue_h", "wed_h", "thu_h",
                              "fri_h", "sat_h", "sun_h" };
 
-    const gchar *day_m[] = { "mon_m", "tue_m", "wed_m", "thu_m",
+    const char *day_m[] = { "mon_m", "tue_m", "wed_m", "thu_m",
                              "fri_m", "sat_m", "sun_m" };
 
     const GCallback cb_def[] = { G_CALLBACK (on_mon_def_toggled), G_CALLBACK (on_tue_def_toggled),
@@ -172,13 +172,13 @@ GtkWidget *create_config_dialog (void)
     /* Page 5 */
     GtkWidget *view, *scrolled_window;
     GtkTextBuffer *text_buffer;
-    gchar *help_text;
+    char *help_text;
 
 
     /* General */
-    config_dialog = gtk_dialog_new_with_buttons (_("Alarm Settings"), NULL,
+    config_dialog = gtk_dialog_new_with_buttons (_("Alarm Settings"), nullptr,
      (GtkDialogFlags) 0, _("_OK"), GTK_RESPONSE_OK, _("_Cancel"),
-     GTK_RESPONSE_CANCEL, NULL);
+     GTK_RESPONSE_CANCEL, nullptr);
     gtk_dialog_set_default_response (GTK_DIALOG (config_dialog), GTK_RESPONSE_OK);
     content_area = gtk_dialog_get_content_area (GTK_DIALOG (config_dialog));
     notebook = gtk_notebook_new ();
@@ -284,7 +284,7 @@ GtkWidget *create_config_dialog (void)
         g_object_set_data (G_OBJECT (config_dialog), day_def[i], checkbutton);
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton), TRUE);
         gtk_widget_set_valign (checkbutton, GTK_ALIGN_CENTER);
-        g_signal_connect (checkbutton, "toggled", G_CALLBACK (cb_def[i]), NULL);
+        g_signal_connect (checkbutton, "toggled", G_CALLBACK (cb_def[i]), nullptr);
         gtk_grid_attach (GTK_GRID (grid), checkbutton, 1, i + 1, 1, 1);
     }
 
@@ -375,7 +375,7 @@ GtkWidget *create_config_dialog (void)
     current_button = gtk_button_new_with_label (_("Current"));
     gtk_widget_set_margin_top (current_button, 10);
     gtk_widget_set_halign (current_button, GTK_ALIGN_END);
-    g_signal_connect (current_button, "clicked", G_CALLBACK (alarm_current_volume), NULL);
+    g_signal_connect (current_button, "clicked", G_CALLBACK (alarm_current_volume), nullptr);
     gtk_container_add (GTK_CONTAINER (vbox2), current_button);
 
     gtk_container_add (GTK_CONTAINER (frame), vbox2);
@@ -439,18 +439,20 @@ GtkWidget *create_config_dialog (void)
     gtk_text_view_set_editable (GTK_TEXT_VIEW (view), FALSE);
     gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (view), FALSE);
     text_buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
-    help_text = g_strconcat (_(help[0]), _(help[1]), _(help[2]), NULL);
+    help_text = g_strconcat (_(help[0]), _(help[1]), _(help[2]), nullptr);
     gtk_text_buffer_set_text (text_buffer, help_text, -1);
     g_free (help_text);
-    scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-    gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 5);
+    scrolled_window = gtk_scrolled_window_new (nullptr, nullptr);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
+     GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+    gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 6);
     gtk_container_add (GTK_CONTAINER (scrolled_window), view);
     gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (scrolled_window));
 
     label = gtk_label_new (_("Help"));
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), frame, label);
 
-    g_signal_connect (config_dialog, "response", G_CALLBACK (config_dialog_response), NULL);
+    g_signal_connect (config_dialog, "response", G_CALLBACK (config_dialog_response), nullptr);
 
     gtk_widget_show_all (config_dialog);
 

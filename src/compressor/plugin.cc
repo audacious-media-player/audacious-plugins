@@ -29,7 +29,7 @@
 static const char * const compressor_defaults[] = {
  "center", "0.5",
  "range", "0.5",
- NULL};
+ nullptr};
 
 static const PreferencesWidget compressor_widgets[] = {
     WidgetLabel (N_("<b>Compression</b>")),
@@ -65,7 +65,7 @@ static const char compressor_about[] =
 #define AUD_EFFECT_FLUSH       compressor_flush
 #define AUD_EFFECT_FINISH      compressor_finish
 #define AUD_EFFECT_ADJ_DELAY   compressor_adjust_delay
-#define AUD_EFFECT_SAME_FMT    TRUE
+#define AUD_EFFECT_SAME_FMT    true
 
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>

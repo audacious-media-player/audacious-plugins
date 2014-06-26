@@ -41,7 +41,7 @@
 static const char * const sox_resampler_defaults[] = {
  "quality", "4", /* SOXR_HQ */
  "rate", "44100",
- NULL};
+ nullptr};
 
 static soxr_t soxr;
 static soxr_error_t error;
@@ -50,10 +50,10 @@ static double ratio;
 static float * buffer;
 static size_t buffer_samples;
 
-bool_t sox_resampler_init (void)
+bool sox_resampler_init (void)
 {
     aud_config_set_defaults ("soxr", sox_resampler_defaults);
-    return TRUE;
+    return true;
 }
 
 void sox_resampler_cleanup (void)
@@ -61,7 +61,7 @@ void sox_resampler_cleanup (void)
     soxr_delete (soxr);
     soxr = 0;
     g_free (buffer);
-    buffer = NULL;
+    buffer = nullptr;
     buffer_samples = 0;
 }
 
@@ -78,7 +78,7 @@ void sox_resampler_start (int * channels, int * rate)
 
     soxr_quality_spec_t q = soxr_quality_spec(aud_get_int ("soxr", "quality"), 0);
 
-    soxr = soxr_create((double) * rate, (double) new_rate, * channels, & error, NULL, & q, NULL);
+    soxr = soxr_create((double) * rate, (double) new_rate, * channels, & error, nullptr, & q, nullptr);
 
     if (error)
     {
@@ -104,7 +104,7 @@ void do_resample (float * * data, int * samples)
 
     size_t samples_done;
 
-    error = soxr_process(soxr, * data, * samples / stored_channels, NULL,
+    error = soxr_process(soxr, * data, * samples / stored_channels, nullptr,
         buffer, buffer_samples / stored_channels, & samples_done);
 
     if (error)
@@ -124,7 +124,7 @@ void sox_resampler_process (float * * data, int * samples)
 
 void sox_resampler_flush (void)
 {
-    if (soxr && (error = soxr_process(soxr, NULL, 0, NULL, NULL, 0, NULL)))
+    if (soxr && (error = soxr_process(soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
         RESAMPLER_ERROR (error);
 }
 

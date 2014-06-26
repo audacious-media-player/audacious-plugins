@@ -30,7 +30,7 @@ static FLAC__StreamEncoder *flac_encoder;
 static FLAC__StreamMetadata *flac_metadata;
 
 static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *encoder,
-    const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, gpointer data)
+    const FLAC__byte buffer[], size_t bytes, unsigned samples, unsigned current_frame, void * data)
 {
     VFSFile *file = (VFSFile *) data;
 
@@ -41,7 +41,7 @@ static FLAC__StreamEncoderWriteStatus flac_write_cb(const FLAC__StreamEncoder *e
 }
 
 static FLAC__StreamEncoderSeekStatus flac_seek_cb(const FLAC__StreamEncoder *encoder,
-    FLAC__uint64 absolute_byte_offset, gpointer data)
+    FLAC__uint64 absolute_byte_offset, void * data)
 {
     VFSFile *file = (VFSFile *) data;
 
@@ -52,7 +52,7 @@ static FLAC__StreamEncoderSeekStatus flac_seek_cb(const FLAC__StreamEncoder *enc
 }
 
 static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *encoder,
-    FLAC__uint64 *absolute_byte_offset, gpointer data)
+    FLAC__uint64 *absolute_byte_offset, void * data)
 {
     VFSFile *file = (VFSFile *) data;
 
@@ -98,7 +98,7 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
     g_free (temp);
 }
 
-static gint flac_open(void)
+static int flac_open(void)
 {
     flac_encoder = FLAC__stream_encoder_new();
 
@@ -122,12 +122,12 @@ static gint flac_open(void)
     }
 
     FLAC__stream_encoder_init_stream(flac_encoder, flac_write_cb, flac_seek_cb,
-     flac_tell_cb, NULL, output_file);
+     flac_tell_cb, nullptr, output_file);
 
     return 1;
 }
 
-static void flac_write(gpointer data, gint length)
+static void flac_write(void * data, int length)
 {
 #if 1
     FLAC__int32 *encbuffer[2];
@@ -160,7 +160,7 @@ static void flac_write(gpointer data, gint length)
     g_free(encbuffer[1]);
 #else
     FLAC__int32 *encbuffer;
-    gint16 *tmpdata = data;
+    int16_t *tmpdata = data;
     int i;
 
     encbuffer = g_new0(FLAC__int32, length);
@@ -181,13 +181,13 @@ static void flac_close(void)
     {
         FLAC__stream_encoder_finish(flac_encoder);
         FLAC__stream_encoder_delete(flac_encoder);
-        flac_encoder = NULL;
+        flac_encoder = nullptr;
     }
 
     if (flac_metadata)
     {
         FLAC__metadata_object_delete(flac_metadata);
-        flac_metadata = NULL;
+        flac_metadata = nullptr;
     }
 }
 

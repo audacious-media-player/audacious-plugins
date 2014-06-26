@@ -2988,10 +2988,10 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 
 				if (a1)
 				{
-					printf("IOP: Unhandled strtol with non-NULL second parm\n");
+					printf("IOP: Unhandled strtol with non-nullptr second parm\n");
 				}
 
-				mipsinfo.i = strtol(mname, NULL, a2);
+				mipsinfo.i = strtol(mname, nullptr, a2);
 				mips_set_info(CPUINFO_INT_REGISTER + MIPS_R2, &mipsinfo);
 				break;
 
@@ -3400,7 +3400,7 @@ void psx_iop_call(uint32_t pc, uint32_t callnum)
 				printf("IOP: close(%d) (PC=%08x)\n", a0, mipsinfo.i);
 				#endif
 				free(filedata[a0]);
-				filedata[a0] = (uint8_t *)NULL;
+				filedata[a0] = (uint8_t *)nullptr;
 				filepos[a0] = 0;
 				filesize[a0] = 0;
 				filestat[a0] = 0;

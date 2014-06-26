@@ -37,7 +37,7 @@ static int64_t seek_cb (void * file, int64_t offset, int whence)
 AVIOContext * io_context_new (VFSFile * file)
 {
     void * buf = av_malloc (IOBUF);
-    return avio_alloc_context ((unsigned char *) buf, IOBUF, 0, file, read_cb, NULL, seek_cb);
+    return avio_alloc_context ((unsigned char *) buf, IOBUF, 0, file, read_cb, nullptr, seek_cb);
 }
 
 void io_context_free (AVIOContext * io)

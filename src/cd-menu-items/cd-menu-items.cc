@@ -28,17 +28,17 @@
 #define N_ITEMS 2
 #define N_MENUS 3
 
-static const gchar * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
-static const gint menus[N_MENUS] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_ADD, AUD_MENU_PLAYLIST};
+static const char * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
+static const int menus[N_MENUS] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_ADD, AUD_MENU_PLAYLIST};
 
 static void cd_play (void) {aud_drct_pl_open ("cdda://"); }
 static void cd_add (void) {aud_drct_pl_add ("cdda://", -1); }
 static void (* funcs[N_ITEMS]) (void) = {cd_play, cd_add};
 
-static gboolean cd_init (void)
+static bool cd_init (void)
 {
-    for (gint m = 0; m < N_MENUS; m ++)
-        for (gint i = 0; i < N_ITEMS; i ++)
+    for (int m = 0; m < N_MENUS; m ++)
+        for (int i = 0; i < N_ITEMS; i ++)
             aud_plugin_menu_add (menus[m], funcs[i], _(titles[i]), "media-optical");
 
     return TRUE;
@@ -46,8 +46,8 @@ static gboolean cd_init (void)
 
 void cd_cleanup (void)
 {
-    for (gint m = 0; m < N_MENUS; m ++)
-        for (gint i = 0; i < N_ITEMS; i ++)
+    for (int m = 0; m < N_MENUS; m ++)
+        for (int i = 0; i < N_ITEMS; i ++)
             aud_plugin_menu_remove (menus[m], funcs[i]);
 }
 

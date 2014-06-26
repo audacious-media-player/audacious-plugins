@@ -28,16 +28,16 @@
 
 #include <bs2b.h>
 
-static t_bs2bdp bs2b = NULL;
+static t_bs2bdp bs2b = nullptr;
 static int bs2b_channels;
 static GtkWidget * feed_slider, * fcut_slider;
 
 static const char * const bs2b_defaults[] = {
  "feed", "45",
  "fcut", "700",
- NULL};
+ nullptr};
 
-bool_t init (void)
+bool init (void)
 {
     aud_config_set_defaults ("bs2b", bs2b_defaults);
     bs2b = bs2b_open ();
@@ -57,7 +57,7 @@ static void cleanup (void)
         return;
 
     bs2b_close (bs2b);
-    bs2b = NULL;
+    bs2b = nullptr;
 }
 
 static void bs2b_start (int * channels, int * rate)
@@ -86,7 +86,7 @@ static void bs2b_finish (float * * data, int * samples)
     bs2b_process (data, samples);
 }
 
-static void feed_value_changed (GtkRange * range, gpointer data)
+static void feed_value_changed (GtkRange * range, void * data)
 {
     int feed_level = gtk_range_get_value (range);
     aud_set_int ("bs2b", "feed", feed_level);
@@ -98,7 +98,7 @@ static char * feed_format_value (GtkScale * scale, double value)
     return g_strdup_printf ("%.1f dB", (float) value / 10);
 }
 
-static void fcut_value_changed (GtkRange * range, gpointer data)
+static void fcut_value_changed (GtkRange * range, void * data)
 {
     int fcut_level = gtk_range_get_value (range);
     aud_set_int ("bs2b", "fcut", fcut_level);
@@ -110,7 +110,7 @@ static char * fcut_format_value (GtkScale * scale, double value)
     return g_strdup_printf ("%d Hz, %d µs", (int) value, bs2b_level_delay ((int) value));
 }
 
-static void preset_button_clicked (GtkButton * button, gpointer data)
+static void preset_button_clicked (GtkButton * button, void * data)
 {
     int clevel = GPOINTER_TO_INT (data);
     gtk_range_set_value ((GtkRange *) feed_slider, clevel >> 16);
@@ -145,8 +145,8 @@ static void * create_config_widget (void)
     gtk_range_set_value ((GtkRange *) feed_slider, feed_level);
     gtk_widget_set_size_request (feed_slider, 200, -1);
     gtk_box_pack_start ((GtkBox *) hbox, feed_slider, FALSE, FALSE, 0);
-    g_signal_connect (feed_slider, "value-changed", (GCallback) feed_value_changed, NULL);
-    g_signal_connect (feed_slider, "format-value", (GCallback) feed_format_value, NULL);
+    g_signal_connect (feed_slider, "value-changed", (GCallback) feed_value_changed, nullptr);
+    g_signal_connect (feed_slider, "format-value", (GCallback) feed_format_value, nullptr);
 
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
@@ -157,8 +157,8 @@ static void * create_config_widget (void)
     gtk_range_set_value ((GtkRange *) fcut_slider, fcut_level);
     gtk_widget_set_size_request (fcut_slider, 200, -1);
     gtk_box_pack_start ((GtkBox *) hbox, fcut_slider, FALSE, FALSE, 0);
-    g_signal_connect (fcut_slider, "value-changed", (GCallback) fcut_value_changed, NULL);
-    g_signal_connect (fcut_slider, "format-value", (GCallback) fcut_format_value, NULL);
+    g_signal_connect (fcut_slider, "value-changed", (GCallback) fcut_value_changed, nullptr);
+    g_signal_connect (fcut_slider, "format-value", (GCallback) fcut_format_value, nullptr);
 
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);

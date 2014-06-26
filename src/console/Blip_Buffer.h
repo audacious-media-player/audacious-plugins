@@ -25,7 +25,7 @@ public:
 	typedef const char* blargg_err_t;
 
 	// Set output sample rate and buffer length in milliseconds (1/1000 sec, defaults
-	// to 1/4 second), then clear buffer. Returns NULL on success, otherwise if there
+	// to 1/4 second), then clear buffer. Returns nullptr on success, otherwise if there
 	// isn't enough memory, returns error without affecting current buffer setup.
 	blargg_err_t set_sample_rate( long samples_per_sec, int msec_length = 1000 / 4 );
 

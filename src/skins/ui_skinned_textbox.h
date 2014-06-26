@@ -30,12 +30,12 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * textbox_new (gint width, const gchar * text, const gchar * font,
+GtkWidget * textbox_new (int width, const char * text, const char * font,
  gboolean scroll);
-void textbox_set_width (GtkWidget * textbox, gint width);
-const gchar * textbox_get_text (GtkWidget * textbox);
-void textbox_set_text (GtkWidget * textbox, const gchar * text);
-void textbox_set_font (GtkWidget * textbox, const gchar * font);
+void textbox_set_width (GtkWidget * textbox, int width);
+const char * textbox_get_text (GtkWidget * textbox);
+void textbox_set_text (GtkWidget * textbox, const char * text);
+void textbox_set_font (GtkWidget * textbox, const char * font);
 void textbox_set_scroll (GtkWidget * textbox, gboolean scroll);
 
 void textbox_update_all (void);

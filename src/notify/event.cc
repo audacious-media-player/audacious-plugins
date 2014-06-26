@@ -31,7 +31,7 @@
 #include "osd.h"
 
 static String last_title, last_message;
-static GdkPixbuf * last_pixbuf = NULL;
+static GdkPixbuf * last_pixbuf = nullptr;
 
 static void clear_cache (void)
 {
@@ -41,11 +41,11 @@ static void clear_cache (void)
     if (last_pixbuf)
     {
         g_object_unref (last_pixbuf);
-        last_pixbuf = NULL;
+        last_pixbuf = nullptr;
     }
 }
 
-static bool_t get_album_art (void)
+static gboolean get_album_art (void)
 {
     if (last_pixbuf)
         return FALSE;
@@ -60,7 +60,7 @@ static bool_t get_album_art (void)
 
 static void show_stopped (void)
 {
-    osd_show (_("Stopped"), _("Audacious is not playing."), "audacious", NULL);
+    osd_show (_("Stopped"), _("Audacious is not playing."), "audacious", nullptr);
 }
 
 static void show_playing (void)
@@ -138,15 +138,15 @@ void event_init (void)
     else
         playback_stopped ();
 
-    hook_associate ("playback begin", (HookFunction) clear_cache, NULL);
-    hook_associate ("playback ready", (HookFunction) playback_update, NULL);
-    hook_associate ("playlist update", (HookFunction) playback_update, NULL);
-    hook_associate ("current art ready", (HookFunction) art_ready, NULL);
-    hook_associate ("playback pause", (HookFunction) playback_paused, NULL);
-    hook_associate ("playback unpause", (HookFunction) playback_paused, NULL);
-    hook_associate ("playback stop", (HookFunction) playback_stopped, NULL);
+    hook_associate ("playback begin", (HookFunction) clear_cache, nullptr);
+    hook_associate ("playback ready", (HookFunction) playback_update, nullptr);
+    hook_associate ("playlist update", (HookFunction) playback_update, nullptr);
+    hook_associate ("current art ready", (HookFunction) art_ready, nullptr);
+    hook_associate ("playback pause", (HookFunction) playback_paused, nullptr);
+    hook_associate ("playback unpause", (HookFunction) playback_paused, nullptr);
+    hook_associate ("playback stop", (HookFunction) playback_stopped, nullptr);
 
-    hook_associate ("aosd toggle", (HookFunction) force_show, NULL);
+    hook_associate ("aosd toggle", (HookFunction) force_show, nullptr);
 }
 
 void event_uninit (void)

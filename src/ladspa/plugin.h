@@ -79,10 +79,10 @@ void disable_plugin_locked (int i);
 
 void shutdown_plugin_locked (LoadedPlugin * loaded);
 
-void ladspa_start (gint * channels, gint * rate);
-void ladspa_process (gfloat * * data, gint * samples);
+void ladspa_start (int * channels, int * rate);
+void ladspa_process (float * * data, int * samples);
 void ladspa_flush (void);
-void ladspa_finish (gfloat * * data, gint * samples);
+void ladspa_finish (float * * data, int * samples);
 
 /* plugin-list.c */
 
