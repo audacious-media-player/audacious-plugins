@@ -660,6 +660,7 @@ static void * search_get_widget ()
 
     entry = gtk_entry_new ();
     gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
+    (void) _("Search library");  // translated string is used in GTK3 branch
     g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
     gtk_box_pack_start ((GtkBox *) vbox, entry, FALSE, FALSE, 0);
 
