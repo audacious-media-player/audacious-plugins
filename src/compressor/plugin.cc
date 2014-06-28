@@ -34,10 +34,10 @@ static const char * const compressor_defaults[] = {
 static const PreferencesWidget compressor_widgets[] = {
     WidgetLabel (N_("<b>Compression</b>")),
     WidgetSpin (N_("Center volume:"),
-        {VALUE_FLOAT, 0, "compressor", "center"},
+        WidgetFloat ("compressor", "center"),
         {0.1, 1, 0.1}),
     WidgetSpin (N_("Dynamic range:"),
-        {VALUE_FLOAT, 0, "compressor", "range"},
+        WidgetFloat ("compressor", "range"),
         {0.0, 3.0, 0.1})
 };
 

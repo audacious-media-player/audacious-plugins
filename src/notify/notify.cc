@@ -78,9 +78,9 @@ static void plugin_reinit (void)
 
 static const PreferencesWidget prefs_widgets[] = {
     WidgetCheck (N_("Show playback controls"),
-        {VALUE_BOOLEAN, 0, "notify", "actions", plugin_reinit}),
+        WidgetBool ("notify", "actions", plugin_reinit)),
     WidgetCheck (N_("Always show notification"),
-        {VALUE_BOOLEAN, 0, "notify", "resident", plugin_reinit})
+        WidgetBool ("notify", "resident", plugin_reinit))
 };
 
 static const PluginPreferences plugin_prefs = {

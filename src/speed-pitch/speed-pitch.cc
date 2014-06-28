@@ -227,10 +227,10 @@ static const char * const speed_defaults[] = {
 static const PreferencesWidget speed_widgets[] = {
     WidgetLabel (N_("<b>Speed and Pitch</b>")),
     WidgetSpin (N_("Speed:"),
-        {VALUE_FLOAT, 0, CFGSECT, "speed"},
+        WidgetFloat (CFGSECT, "speed"),
         {MINSPEED, MAXSPEED, 0.05}),
     WidgetSpin (N_("Pitch:"),
-        {VALUE_FLOAT, 0, CFGSECT, "pitch"},
+        WidgetFloat (CFGSECT, "pitch"),
         {MINPITCH, MAXPITCH, 0.05})
 };
 

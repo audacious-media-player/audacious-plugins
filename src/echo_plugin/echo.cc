@@ -24,13 +24,13 @@ static const char * const echo_defaults[] = {
 static const PreferencesWidget echo_widgets[] = {
     WidgetLabel (N_("<b>Echo</b>")),
     WidgetSpin (N_("Delay:"),
-        {VALUE_INT, 0, "echo_plugin", "delay"},
+        WidgetInt ("echo_plugin", "delay"),
         {0, MAX_DELAY, 10, N_("ms")}),
     WidgetSpin (N_("Feedback:"),
-        {VALUE_INT, 0, "echo_plugin", "feedback"},
+        WidgetInt ("echo_plugin", "feedback"),
         {0, 100, 1, "%"}),
     WidgetSpin (N_("Volume:"),
-        {VALUE_INT, 0, "echo_plugin", "volume"},
+        WidgetInt ("echo_plugin", "volume"),
         {0, 100, 1, "%"})
 };
 

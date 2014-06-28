@@ -45,7 +45,7 @@ static const char * const mpg123_defaults[] = {
 static const PreferencesWidget mpg123_widgets[] = {
 	WidgetLabel (N_("<b>Advanced</b>")),
 	WidgetCheck (N_("Use accurate length calculation (slow)"),
-		{VALUE_BOOLEAN, 0, "mpg123", "full_scan"})
+		WidgetBool ("mpg123", "full_scan"))
 };
 
 static const PluginPreferences mpg123_prefs = {

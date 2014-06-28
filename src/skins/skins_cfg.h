@@ -30,16 +30,16 @@ typedef struct {
     int equalizer_x, equalizer_y;
     int playlist_x, playlist_y;
     int playlist_width, playlist_height;
-    gboolean autoscroll;
-    gboolean analyzer_peaks;
-    gboolean twoway_scroll;
+    bool autoscroll;
+    bool analyzer_peaks;
+    bool twoway_scroll;
     int vis_type;
     int analyzer_mode, analyzer_type;
     int scope_mode;
     int voiceprint_mode;
     int vu_mode;
     int analyzer_falloff, peaks_falloff;
-    gboolean mainwin_use_bitmapfont;
+    bool mainwin_use_bitmapfont;
 } skins_cfg_t;
 
 extern skins_cfg_t config;

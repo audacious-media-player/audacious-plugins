@@ -24,7 +24,7 @@ static const char * const stereo_defaults[] = {
 static const PreferencesWidget stereo_widgets[] = {
     WidgetLabel (N_("<b>Extra Stereo</b>")),
     WidgetSpin (N_("Intensity:"),
-        {VALUE_FLOAT, 0, "extra_stereo", "intensity"},
+        WidgetFloat ("extra_stereo", "intensity"),
         {0, 10, 0.1})
 };
 
