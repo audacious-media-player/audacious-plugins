@@ -389,9 +389,9 @@ static const char about[] =
 static const PreferencesWidget widgets[] = {
     WidgetLabel (N_("<b>Connection</b>")),
     WidgetCheck (N_("Reconnect to LIRC server"),
-        {VALUE_BOOLEAN, 0, "lirc", "enable_reconnect"}),
+        WidgetBool ("lirc", "enable_reconnect")),
     WidgetSpin (N_("Wait before reconnecting:"),
-        {VALUE_INT, 0, "lirc", "reconnect_timeout"},
+        WidgetInt ("lirc", "reconnect_timeout"),
         {1, 120, 1, N_("seconds")},
         WIDGET_CHILD)
 };

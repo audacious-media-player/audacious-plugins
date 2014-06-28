@@ -84,7 +84,7 @@ static GtkWidget * skin_view;
 
 typedef struct skins_cfg_boolent_t {
     const char * name;
-    gboolean * ptr;
+    bool * ptr;
 } skins_cfg_boolent;
 
 static const skins_cfg_boolent skins_boolents[] = {
@@ -121,11 +121,6 @@ static const skins_cfg_nument skins_numents[] = {
  {"playlist_y", & config.playlist_y},
  {"playlist_width", & config.playlist_width},
  {"playlist_height", & config.playlist_height}};
-
-typedef struct skins_cfg_strent_t {
-    const char * name;
-    char * * ptr;
-} skins_cfg_strent;
 
 void skins_cfg_load (void)
 {
@@ -176,10 +171,10 @@ static void vis_reset_cb (void)
 
 static const PreferencesWidget font_table_elements[] = {
     WidgetFonts (N_("Player:"),
-        {VALUE_STRING, 0, "skins", "mainwin_font", mainwin_font_set_cb},
+        WidgetString ("skins", "mainwin_font", mainwin_font_set_cb),
         {N_("Select main player window font:")}),
     WidgetFonts (N_("Playlist:"),
-        {VALUE_STRING, 0, "skins", "playlist_font", playlist_font_set_cb},
+        WidgetString ("skins", "playlist_font", playlist_font_set_cb),
         {N_("Select playlist font:")})
 };
 
@@ -192,11 +187,11 @@ static const PreferencesWidget skins_widgets_general[] = {
     WidgetTable ({font_table_elements, ARRAY_LEN (font_table_elements)},
         WIDGET_CHILD),
     WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),
-        {VALUE_BOOLEAN, & config.mainwin_use_bitmapfont, 0, 0, mainwin_font_set_cb}),
+        WidgetBool (config.mainwin_use_bitmapfont, mainwin_font_set_cb)),
     WidgetCheck (N_("Scroll song title"),
-        {VALUE_BOOLEAN, & config.autoscroll, 0, 0, autoscroll_set_cb}),
+        WidgetBool (config.autoscroll, autoscroll_set_cb)),
     WidgetCheck (N_("Scroll song title in both directions"),
-        {VALUE_BOOLEAN, & config.twoway_scroll, 0, 0, autoscroll_set_cb})
+        WidgetBool (config.twoway_scroll, autoscroll_set_cb))
 };
 
 static ComboBoxElements vis_mode_elements[] = {
@@ -245,32 +240,32 @@ static ComboBoxElements vu_mode_elements[] = {
 static const PreferencesWidget skins_widgets_vis[] = {
     WidgetLabel (N_("<b>Type</b>")),
     WidgetCombo (N_("Visualization type:"),
-        {VALUE_INT, & config.vis_type, 0, 0, vis_reset_cb},
+        WidgetInt (config.vis_type, vis_reset_cb),
         {vis_mode_elements, ARRAY_LEN (vis_mode_elements)}),
     WidgetLabel (N_("<b>Analyzer</b>")),
     WidgetCheck (N_("Show peaks"),
-        {VALUE_BOOLEAN, & config.analyzer_peaks, 0, 0, vis_reset_cb}),
+        WidgetBool (config.analyzer_peaks, vis_reset_cb)),
     WidgetCombo (N_("Coloring:"),
-        {VALUE_INT, & config.analyzer_mode, 0, 0, vis_reset_cb},
+        WidgetInt (config.analyzer_mode, vis_reset_cb),
         {analyzer_mode_elements, ARRAY_LEN (analyzer_mode_elements)}),
     WidgetCombo (N_("Style:"),
-        {VALUE_INT, & config.analyzer_type, 0, 0, vis_reset_cb},
+        WidgetInt (config.analyzer_type, vis_reset_cb),
         {analyzer_type_elements, ARRAY_LEN (analyzer_type_elements)}),
     WidgetCombo (N_("Falloff:"),
-        {VALUE_INT, & config.analyzer_falloff, 0, 0, vis_reset_cb},
+        WidgetInt (config.analyzer_falloff, vis_reset_cb),
         {falloff_elements, ARRAY_LEN (falloff_elements)}),
     WidgetCombo (N_("Peak falloff:"),
-        {VALUE_INT, & config.peaks_falloff, 0, 0, vis_reset_cb},
+        WidgetInt (config.peaks_falloff, vis_reset_cb),
         {falloff_elements, ARRAY_LEN (falloff_elements)}),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
     WidgetCombo (N_("Scope Style:"),
-        {VALUE_INT, & config.scope_mode, 0, 0, vis_reset_cb},
+        WidgetInt (config.scope_mode, vis_reset_cb),
         {scope_mode_elements, ARRAY_LEN (scope_mode_elements)}),
     WidgetCombo (N_("Voiceprint Coloring:"),
-        {VALUE_INT, & config.voiceprint_mode, 0, 0, vis_reset_cb},
+        WidgetInt (config.voiceprint_mode, vis_reset_cb),
         {voiceprint_mode_elements, ARRAY_LEN (voiceprint_mode_elements)}),
     WidgetCombo (N_("VU Meter Style:"),
-        {VALUE_INT, & config.vu_mode, 0, 0, vis_reset_cb},
+        WidgetInt (config.vu_mode, vis_reset_cb),
         {vu_mode_elements, ARRAY_LEN (vu_mode_elements)})
 };
 

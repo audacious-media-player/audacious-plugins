@@ -34,21 +34,21 @@ static void redisplay_playlists (void)
 static const PreferencesWidget gtkui_widgets[] = {
     WidgetLabel (N_("<b>Playlist Tabs</b>")),
     WidgetCheck (N_("Always show tabs"),
-        {VALUE_BOOLEAN, 0, "gtkui", "playlist_tabs_visible", show_hide_playlist_tabs}),
+        WidgetBool ("gtkui", "playlist_tabs_visible", show_hide_playlist_tabs)),
     WidgetCheck (N_("Show entry counts"),
-        {VALUE_BOOLEAN, 0, "gtkui", "entry_count_visible", redisplay_playlists}),
+        WidgetBool ("gtkui", "entry_count_visible", redisplay_playlists)),
     WidgetCheck (N_("Show close buttons"),
-        {VALUE_BOOLEAN, 0, "gtkui", "close_button_visible", redisplay_playlists}),
+        WidgetBool ("gtkui", "close_button_visible", redisplay_playlists)),
     WidgetLabel (N_("<b>Playlist Columns</b>")),
     WidgetCustom (pw_col_create_chooser),
     WidgetCheck (N_("Show column headers"),
-        {VALUE_BOOLEAN, 0, "gtkui", "playlist_headers", redisplay_playlists}),
+        WidgetBool ("gtkui", "playlist_headers", redisplay_playlists)),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
     WidgetSpin (N_("Arrow keys seek by:"),
-        {VALUE_FLOAT, 0, "gtkui", "step_size", update_step_size},
+        WidgetFloat ("gtkui", "step_size", update_step_size),
         {0.1, 60, 0.1, N_("seconds")}),
     WidgetCheck (N_("Scroll on song change"),
-        {VALUE_BOOLEAN, 0, "gtkui", "autoscroll"})
+        WidgetBool ("gtkui", "autoscroll"))
 };
 
 const PluginPreferences gtkui_prefs = {

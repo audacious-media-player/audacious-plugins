@@ -176,7 +176,7 @@ static const char mixer_about[] =
 static const PreferencesWidget mixer_widgets[] = {
     WidgetLabel (N_("<b>Channel Mixer</b>")),
     WidgetSpin (N_("Output channels:"),
-        {VALUE_INT, 0, "mixer", "channels"},
+        WidgetInt ("mixer", "channels"),
         {1, AUD_MAX_CHANNELS, 1})
 };
 

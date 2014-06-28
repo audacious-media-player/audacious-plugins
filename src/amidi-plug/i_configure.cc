@@ -30,14 +30,14 @@
 
 int backend_settings_changed = FALSE;  /* atomic */
 
-static gboolean override_gain = FALSE;
-static float gain_setting = 0.2;
-static gboolean override_polyphony = FALSE;
+static bool override_gain = FALSE;
+static double gain_setting = 0.2;
+static bool override_polyphony = FALSE;
 static int polyphony_setting = 256;
-static gboolean override_reverb = FALSE;
-static gboolean reverb_setting = TRUE;
-static gboolean override_chorus = FALSE;
-static gboolean chorus_setting = TRUE;
+static bool override_reverb = FALSE;
+static bool reverb_setting = TRUE;
+static bool override_chorus = FALSE;
+static bool chorus_setting = TRUE;
 
 static void get_values (void)
 {
@@ -94,33 +94,33 @@ static void backend_change (void)
 
 static const PreferencesWidget gain_widgets[] = {
     WidgetCheck (N_("Override default gain:"),
-        {VALUE_BOOLEAN, & override_gain, 0, 0, backend_change}),
-    WidgetSpin (0, {VALUE_FLOAT, & gain_setting, 0, 0, backend_change},
+        WidgetBool (override_gain, backend_change)),
+    WidgetSpin (0, WidgetFloat (gain_setting, backend_change),
         {0, 10, 0.1},
         WIDGET_CHILD)
 };
 
 static const PreferencesWidget polyphony_widgets[] = {
     WidgetCheck (N_("Override default polyphony:"),
-        {VALUE_BOOLEAN, & override_polyphony, 0, 0, backend_change}),
-    WidgetSpin (0, {VALUE_INT, & polyphony_setting, 0, 0, backend_change},
+        WidgetBool (override_polyphony, backend_change)),
+    WidgetSpin (0, WidgetInt (polyphony_setting, backend_change),
         {16, 4096, 1},
         WIDGET_CHILD)
 };
 
 static const PreferencesWidget reverb_widgets[] = {
     WidgetCheck (N_("Override default reverb:"),
-        {VALUE_BOOLEAN, & override_reverb, 0, 0, backend_change}),
+        WidgetBool (override_reverb, backend_change)),
     WidgetCheck (N_("On"),
-        {VALUE_BOOLEAN, & reverb_setting, 0, 0, backend_change},
+        WidgetBool (reverb_setting, backend_change),
         WIDGET_CHILD)
 };
 
 static const PreferencesWidget chorus_widgets[] = {
     WidgetCheck (N_("Override default chorus:"),
-        {VALUE_BOOLEAN, & override_chorus, 0, 0, backend_change}),
+        WidgetBool (override_chorus, backend_change)),
     WidgetCheck (N_("On"),
-        {VALUE_BOOLEAN, & chorus_setting, 0, 0, backend_change},
+        WidgetBool (chorus_setting, backend_change),
         WIDGET_CHILD)
 };
 
@@ -129,16 +129,16 @@ static const PreferencesWidget amidiplug_widgets[] = {
     /* global settings */
     WidgetLabel (N_("<b>Playback</b>")),
     WidgetSpin (N_("Transpose:"),
-        {VALUE_INT, 0, "amidiplug", "ap_opts_transpose_value"},
+        WidgetInt ("amidiplug", "ap_opts_transpose_value"),
         {-20, 20, 1}),
     WidgetSpin (N_("Drum shift:"),
-        {VALUE_INT, 0, "amidiplug", "ap_opts_drumshift_value"},
+        WidgetInt ("amidiplug", "ap_opts_drumshift_value"),
         {0, 127, 1}),
     WidgetLabel (N_("<b>Advanced</b>")),
     WidgetCheck (N_("Extract comments from MIDI file"),
-        {VALUE_BOOLEAN, 0, "amidiplug", "ap_opts_comments_extract"}),
+        WidgetBool ("amidiplug", "ap_opts_comments_extract")),
     WidgetCheck (N_("Extract lyrics from MIDI file"),
-        {VALUE_BOOLEAN, 0, "amidiplug", "ap_opts_lyrics_extract"}),
+        WidgetBool ("amidiplug", "ap_opts_lyrics_extract")),
 
     /* backend settings */
     WidgetLabel (N_("<b>SoundFont</b>")),
@@ -149,7 +149,7 @@ static const PreferencesWidget amidiplug_widgets[] = {
     WidgetBox ({reverb_widgets, ARRAY_LEN (reverb_widgets), TRUE}),
     WidgetBox ({chorus_widgets, ARRAY_LEN (chorus_widgets), TRUE}),
     WidgetSpin (N_("Sampling rate:"),
-        {VALUE_INT, 0, "amidiplug", "fsyn_synth_samplerate", backend_change},
+        WidgetInt ("amidiplug", "fsyn_synth_samplerate", backend_change),
         {22050, 96000, 1})
 };
 

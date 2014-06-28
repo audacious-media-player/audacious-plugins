@@ -185,7 +185,7 @@ static const ComboBoxElements mode_list[] = {
 
 static const PreferencesWidget jack_widgets[] = {
     WidgetCombo (N_("Connection mode:"),
-        {VALUE_STRING, 0, "jack", "port_connection_mode"},
+        WidgetString ("jack", "port_connection_mode"),
         {mode_list, ARRAY_LEN (mode_list)})
 };
 

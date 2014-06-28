@@ -32,29 +32,29 @@ static const char *gme_fmts[] = {
 static const PreferencesWidget console_widgets[] = {
     WidgetLabel (N_("<b>Playback</b>")),
     WidgetSpin (N_("Bass:"),
-        {VALUE_INT, & audcfg.bass},
+        WidgetInt (audcfg.bass),
         {-100, 100, 1}),
     WidgetSpin (N_("Treble:"),
-        {VALUE_INT, & audcfg.treble},
+        WidgetInt (audcfg.treble),
         {-100, 100, 1}),
     WidgetSpin (N_("Echo:"),
-        {VALUE_INT, & audcfg.echo},
+        WidgetInt (audcfg.echo),
         {0, 100, 1}),
     WidgetSpin (N_("Default song length:"),
-        {VALUE_INT, & audcfg.loop_length},
+        WidgetInt (audcfg.loop_length),
         {-100, 100, 1, N_("seconds")}),
     WidgetLabel (N_("<b>Resampling</b>")),
     WidgetCheck (N_("Enable audio resampling"),
-        {VALUE_BOOLEAN, & audcfg.resample}),
+        WidgetBool (audcfg.resample)),
     WidgetSpin (N_("Resampling rate:"),
-        {VALUE_INT, & audcfg.resample_rate},
+        WidgetInt (audcfg.resample_rate),
         {11025, 96000, 100, N_("Hz")},
         WIDGET_CHILD),
     WidgetLabel (N_("<b>SPC</b>")),
     WidgetCheck (N_("Ignore length from SPC tags"),
-        {VALUE_BOOLEAN, & audcfg.ignore_spc_length}),
+        WidgetBool (audcfg.ignore_spc_length)),
     WidgetCheck (N_("Increase reverb"),
-        {VALUE_BOOLEAN, & audcfg.inc_spc_reverb})
+        WidgetBool (audcfg.inc_spc_reverb))
 };
 
 static const PluginPreferences console_prefs = {

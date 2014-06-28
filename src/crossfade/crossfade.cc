@@ -260,7 +260,7 @@ static const char crossfade_about[] =
 static const PreferencesWidget crossfade_widgets[] = {
     WidgetLabel (N_("<b>Crossfade</b>")),
     WidgetSpin (N_("Overlap:"),
-        {VALUE_INT, 0, "crossfade", "length"},
+        WidgetInt ("crossfade", "length"),
         {1, 10, 1, N_("seconds")})
 };
 

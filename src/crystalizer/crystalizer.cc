@@ -39,7 +39,7 @@ static const char * const cryst_defaults[] = {
 static const PreferencesWidget cryst_widgets[] = {
     WidgetLabel (N_("<b>Crystalizer</b>")),
     WidgetSpin (N_("Intensity:"),
-        {VALUE_FLOAT, 0, "crystalizer", "intensity"},
+        WidgetFloat ("crystalizer", "intensity"),
         {0, 10, 0.1})
 };
 

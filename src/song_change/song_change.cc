@@ -237,23 +237,24 @@ static void cleanup(void)
     signal(SIGCHLD, SIG_DFL);
 }
 
-static void save_and_close(char * cmd, char * cmd_after, char * cmd_end, char * cmd_ttc)
+static void save_and_close (const String & cmd, const String & cmd_after,
+ const String & cmd_end, const String & cmd_ttc)
 {
     aud_set_str("song_change", "cmd_line", cmd);
     aud_set_str("song_change", "cmd_line_after", cmd_after);
     aud_set_str("song_change", "cmd_line_end", cmd_end);
     aud_set_str("song_change", "cmd_line_ttc", cmd_ttc);
 
-    cmd_line = String (cmd);
-    cmd_line_after = String (cmd_after);
-    cmd_line_end = String (cmd_end);
-    cmd_line_ttc = String (cmd_ttc);
+    cmd_line = cmd;
+    cmd_line_after = cmd_after;
+    cmd_line_end = cmd_end;
+    cmd_line_ttc = cmd_ttc;
 }
 
-static int check_command(char *command)
+static int check_command(const char *command)
 {
     const char *dangerous = "fns";
-    char *c;
+    const char *c;
     int qu = 0;
 
     for (c = command; *c != '\0'; c++)
@@ -346,24 +347,18 @@ static void songchange_playlist_eof(void * unused, void * unused2)
 }
 
 typedef struct {
-    char * cmd;
-    char * cmd_after;
-    char * cmd_end;
-    char * cmd_ttc;
+    String cmd;
+    String cmd_after;
+    String cmd_end;
+    String cmd_ttc;
 } SongChangeConfig;
 
-static SongChangeConfig config = {nullptr};
+static SongChangeConfig config;
 
 static void configure_ok_cb()
 {
-    char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
-    cmd = g_strdup(config.cmd);
-    cmd_after = g_strdup(config.cmd_after);
-    cmd_end = g_strdup(config.cmd_end);
-    cmd_ttc = g_strdup(config.cmd_ttc);
-
-    if (check_command(cmd) < 0 || check_command(cmd_after) < 0 ||
-            check_command(cmd_end) < 0 || check_command(cmd_ttc) < 0)
+    if (check_command(config.cmd) < 0 || check_command(config.cmd_after) < 0 ||
+     check_command(config.cmd_end) < 0 || check_command(config.cmd_ttc) < 0)
     {
         gtk_widget_show(cmd_warn_img);
         gtk_widget_show(cmd_warn_label);
@@ -372,13 +367,8 @@ static void configure_ok_cb()
     {
         gtk_widget_hide(cmd_warn_img);
         gtk_widget_hide(cmd_warn_label);
-        save_and_close(cmd, cmd_after, cmd_end, cmd_ttc);
+        save_and_close(config.cmd, config.cmd_after, config.cmd_end, config.cmd_ttc);
     }
-
-    g_free(cmd);
-    g_free(cmd_after);
-    g_free(cmd_end);
-    g_free(cmd_ttc);
 }
 
 /* static GtkWidget * custom_warning (void) */
@@ -406,19 +396,19 @@ static const PreferencesWidget settings[] = {
     WidgetLabel (N_("<b>Commands</b>")),
 
     WidgetLabel (N_("Command to run when starting a new song:")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd, 0, 0, configure_ok_cb}),
+    WidgetEntry (0, WidgetString (config.cmd, configure_ok_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run at the end of a song:")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd_after, 0, 0, configure_ok_cb}),
+    WidgetEntry (0, WidgetString (config.cmd_after, configure_ok_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run at the end of the playlist:")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd_end, 0, 0, configure_ok_cb}),
+    WidgetEntry (0, WidgetString (config.cmd_end, configure_ok_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run when song title changes (for network streams):")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd_ttc, 0, 0, configure_ok_cb}),
+    WidgetEntry (0, WidgetString (config.cmd_ttc, configure_ok_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("You can use the following format strings which "
@@ -443,25 +433,18 @@ static void configure_init(void)
 {
     read_config();
 
-    config.cmd = g_strdup(cmd_line);
-    config.cmd_after = g_strdup(cmd_line_after);
-    config.cmd_end = g_strdup(cmd_line_end);
-    config.cmd_ttc = g_strdup(cmd_line_ttc);
+    config.cmd = cmd_line;
+    config.cmd_after = cmd_line_after;
+    config.cmd_end = cmd_line_end;
+    config.cmd_ttc = cmd_line_ttc;
 }
 
 static void configure_cleanup(void)
 {
-    g_free(config.cmd);
-    config.cmd = nullptr;
-
-    g_free(config.cmd_after);
-    config.cmd_after = nullptr;
-
-    g_free(config.cmd_end);
-    config.cmd_end = nullptr;
-
-    g_free(config.cmd_ttc);
-    config.cmd_ttc = nullptr;
+    config.cmd = String ();
+    config.cmd_after = String ();
+    config.cmd_end = String ();
+    config.cmd_ttc = String ();
 }
 
 static const PluginPreferences preferences = {

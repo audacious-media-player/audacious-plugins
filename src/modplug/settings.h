@@ -22,7 +22,7 @@ typedef struct {
     int mSurroundDelay;
 
     bool mPreamp;
-    float mPreampLevel;
+    double mPreampLevel;
 
     bool mOversamp;
     bool mNoiseReduction;

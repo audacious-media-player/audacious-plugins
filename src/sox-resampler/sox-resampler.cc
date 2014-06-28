@@ -148,10 +148,10 @@ static const ComboBoxElements method_list[] = {
 
 static const PreferencesWidget sox_resampler_widgets[] = {
     WidgetCombo (N_("Quality:"),
-        {VALUE_STRING, 0, "soxr", "quality"},
+        WidgetString ("soxr", "quality"),
         {method_list, ARRAY_LEN (method_list)}),
     WidgetSpin (N_("Rate:"),
-        {VALUE_INT, 0, "soxr", "rate"},
+        WidgetInt ("soxr", "rate"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")})
 };
 

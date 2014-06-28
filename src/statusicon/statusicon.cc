@@ -381,18 +381,18 @@ static const char si_about[] =
 static const PreferencesWidget si_widgets[] = {
     WidgetLabel (N_("<b>Mouse Scroll Action</b>")),
     WidgetRadio (N_("Change volume"),
-        {VALUE_INT, 0, "statusicon", "scroll_action"},
+        WidgetInt ("statusicon", "scroll_action"),
         {SI_CFG_SCROLL_ACTION_VOLUME}),
     WidgetRadio (N_("Change playing song"),
-        {VALUE_INT, 0, "statusicon", "scroll_action"},
+        WidgetInt ("statusicon", "scroll_action"),
         {SI_CFG_SCROLL_ACTION_SKIP}),
     WidgetLabel (N_("<b>Other Settings</b>")),
     WidgetCheck (N_("Disable the popup window"),
-        {VALUE_BOOLEAN, 0, "statusicon", "disable_popup"}),
+        WidgetBool ("statusicon", "disable_popup")),
     WidgetCheck (N_("Close to the system tray"),
-        {VALUE_BOOLEAN, 0, "statusicon", "close_to_tray"}),
+        WidgetBool ("statusicon", "close_to_tray")),
     WidgetCheck (N_("Advance in playlist when scrolling upward"),
-        {VALUE_BOOLEAN, 0, "statusicon", "reverse_scroll"})
+        WidgetBool ("statusicon", "reverse_scroll"))
 };
 
 static const PluginPreferences si_prefs = {
