@@ -21,8 +21,6 @@
 #ifndef PLUGIN_SKINS_H
 #define PLUGIN_SKINS_H
 
-#include <libaudcore/core.h>
-
 enum {
     SKINS_PATH_USER_SKIN_DIR,
     SKINS_PATH_SKIN_THUMB_DIR,

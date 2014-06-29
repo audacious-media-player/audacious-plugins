@@ -9,8 +9,6 @@
 #ifndef AUD_CONSOLE_CONFIGURE_H
 #define AUD_CONSOLE_CONFIGURE_H 1
 
-#include <libaudcore/core.h>
-
 typedef struct {
 	int loop_length;           /* length of tracks that lack timing information */
 	bool resample;          /* whether or not to resample */

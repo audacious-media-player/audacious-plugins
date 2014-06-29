@@ -25,6 +25,8 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <libaudcore/objects.h>
+
 #include "draw-compat.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
@@ -56,7 +58,7 @@ DRAW_FUNC_END
 
 static void pl_slider_set_pos (int y)
 {
-    y = CLAMP (y, 0, pl_slider_height - 19);
+    y = aud::clamp (y, 0, pl_slider_height - 19);
 
     int rows, first;
     ui_skinned_playlist_row_info (pl_slider_list, & rows, & first);

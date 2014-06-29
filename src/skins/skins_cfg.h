@@ -23,7 +23,7 @@
 
 #include <gtk/gtk.h>
 
-#include <libaudcore/core.h>
+struct PluginPreferences;
 
 typedef struct {
     int player_x, player_y;

@@ -186,13 +186,10 @@ static const ComboBoxElements mode_list[] = {
 static const PreferencesWidget jack_widgets[] = {
     WidgetCombo (N_("Connection mode:"),
         WidgetString ("jack", "port_connection_mode"),
-        {mode_list, ARRAY_LEN (mode_list)})
+        {{mode_list}})
 };
 
-static const PluginPreferences jack_prefs = {
-    jack_widgets,
-    ARRAY_LEN (jack_widgets)
-};
+static const PluginPreferences jack_prefs = {{jack_widgets}};
 
 /* Initialize necessary things */
 static bool jack_init (void)

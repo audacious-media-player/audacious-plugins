@@ -198,7 +198,7 @@ DRAW_FUNC_BEGIN (playlist_draw)
 
             PangoRectangle rect;
             pango_layout_get_pixel_extents (layout, nullptr, & rect);
-            width = MAX (width, rect.width);
+            width = aud::max (width, rect.width);
 
             cairo_move_to (cr, left, data->offset + data->row_height * (i -
              data->first));
@@ -227,7 +227,7 @@ DRAW_FUNC_BEGIN (playlist_draw)
 
         PangoRectangle rect;
         pango_layout_get_pixel_extents (layout, nullptr, & rect);
-        width = MAX (width, rect.width);
+        width = aud::max (width, rect.width);
 
         cairo_move_to (cr, data->width - right - rect.width, data->offset +
          data->row_height * (i - data->first));
@@ -260,7 +260,7 @@ DRAW_FUNC_BEGIN (playlist_draw)
 
             PangoRectangle rect;
             pango_layout_get_pixel_extents (layout, nullptr, & rect);
-            width = MAX (width, rect.width);
+            width = aud::max (width, rect.width);
 
             cairo_move_to (cr, data->width - right - rect.width, data->offset +
              data->row_height * (i - data->first));
@@ -402,7 +402,7 @@ void ui_skinned_playlist_set_font (GtkWidget * list, const char * font)
     pango_layout_get_pixel_extents (layout, nullptr, & rect);
 
     /* make sure row_height is non-zero; we divide by it */
-    data->row_height = MAX (rect.height, 1);
+    data->row_height = aud::max (rect.height, 1);
 
     g_object_unref (layout);
 

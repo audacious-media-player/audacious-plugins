@@ -130,7 +130,7 @@ static void hints_handle_entry (const char * key, const char * value, void * dat
         return;
 
     HintPair * pair = (HintPair *) bsearch (key, hint_pairs,
-     ARRAY_LEN (hint_pairs), sizeof (HintPair), hint_pair_compare);
+     aud::n_elems (hint_pairs), sizeof (HintPair), hint_pair_compare);
 
     if (pair)
         * pair->value_ptr = atoi (value);
@@ -288,10 +288,10 @@ static GdkBitmap * skin_create_mask (const GArray * num,
                 int x = g_array_index (point, int, j + k * 2);
                 int y = g_array_index (point, int, j + k * 2 + 1);
 
-                xmin = MIN (xmin, x);
-                ymin = MIN (ymin, y);
-                xmax = MAX (xmax, x);
-                ymax = MAX (ymax, y);
+                xmin = aud::min (xmin, x);
+                ymin = aud::min (ymin, y);
+                xmax = aud::max (xmax, x);
+                ymax = aud::max (ymax, y);
             }
 
             if (xmax > xmin && ymax > ymin)

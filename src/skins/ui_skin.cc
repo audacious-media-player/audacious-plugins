@@ -83,8 +83,6 @@ static SkinPixmapIdMapping skin_pixmap_id_map[] = {
     {SKIN_EQ_EX, "eq_ex", nullptr, 0, 0}
 };
 
-static unsigned skin_pixmap_id_map_size = ARRAY_LEN(skin_pixmap_id_map);
-
 static const uint32_t default_vis_colors[24] = {
     COLOR (9, 34, 53),
     COLOR (10, 18, 26),
@@ -185,12 +183,10 @@ skin_destroy(Skin * skin)
 static const SkinPixmapIdMapping *
 skin_pixmap_id_lookup(unsigned id)
 {
-    unsigned i;
-
-    for (i = 0; i < skin_pixmap_id_map_size; i++) {
-        if (id == skin_pixmap_id_map[i].id) {
-            return &skin_pixmap_id_map[i];
-        }
+    for (auto & info : skin_pixmap_id_map)
+    {
+        if (info.id == id)
+            return & info;
     }
 
     return nullptr;

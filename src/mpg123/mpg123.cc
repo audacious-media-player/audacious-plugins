@@ -48,10 +48,7 @@ static const PreferencesWidget mpg123_widgets[] = {
 		WidgetBool ("mpg123", "full_scan"))
 };
 
-static const PluginPreferences mpg123_prefs = {
-	mpg123_widgets,
-	ARRAY_LEN (mpg123_widgets)
-};
+static const PluginPreferences mpg123_prefs = {{mpg123_widgets}};
 
 #define DECODE_OPTIONS (MPG123_QUIET | MPG123_GAPLESS | MPG123_SEEKBUFFER | MPG123_FUZZY)
 
@@ -90,13 +87,10 @@ aud_mpg123_deinit(void)
 
 static void set_format (mpg123_handle * dec)
 {
-	static const int rates[] = {8000, 11025, 12000, 16000, 22050, 24000, 32000,
-	 44100, 48000};
-
 	mpg123_format_none (dec);
-	for (int i = 0; i < ARRAY_LEN (rates); i ++)
-		mpg123_format (dec, rates[i], MPG123_MONO | MPG123_STEREO,
-		 MPG123_ENC_FLOAT_32);
+
+    for (int rate : {8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000})
+        mpg123_format (dec, rate, MPG123_MONO | MPG123_STEREO, MPG123_ENC_FLOAT_32);
 }
 
 static void make_format_string (const struct mpg123_frameinfo * info, char *

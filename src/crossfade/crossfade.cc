@@ -134,7 +134,7 @@ static void add_data (float * data, int length)
 
         if (prebuffer_filled < full)
         {
-            int copy = MIN (length, full - prebuffer_filled);
+            int copy = aud::min (length, full - prebuffer_filled);
             float a = (float) prebuffer_filled / full;
             float b = (float) (prebuffer_filled + copy) / full;
 
@@ -158,7 +158,7 @@ static void add_data (float * data, int length)
 
         if (prebuffer_filled < buffer_filled)
         {
-            int copy = MIN (length, buffer_filled - prebuffer_filled);
+            int copy = aud::min (length, buffer_filled - prebuffer_filled);
 
             mix (buffer + prebuffer_filled, data, copy);
             prebuffer_filled += copy;
@@ -264,10 +264,7 @@ static const PreferencesWidget crossfade_widgets[] = {
         {1, 10, 1, N_("seconds")})
 };
 
-static const PluginPreferences crossfade_prefs = {
-    crossfade_widgets,
-    ARRAY_LEN (crossfade_widgets)
-};
+static const PluginPreferences crossfade_prefs = {{crossfade_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Crossfade")
 #define AUD_PLUGIN_ABOUT       crossfade_about

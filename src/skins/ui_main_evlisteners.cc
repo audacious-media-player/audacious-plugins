@@ -143,7 +143,7 @@ static void render_mono_pcm (const float * pcm)
         /* the signal is amplified by 2x */
         /* output values are in the range 0 to 16 */
         int val = 8 + roundf (16 * pcm[i * 512 / 75]);
-        data[i] = CLAMP (val, 0, 16);
+        data[i] = aud::clamp (val, 0, 16);
     }
 
     if (aud_get_bool ("skins", "player_shaded"))
@@ -159,7 +159,7 @@ static float calc_peak_level (const float * pcm, int step)
 
     for (int i = 0; i < 512; i ++)
     {
-        peak = MAX (peak, * pcm);
+        peak = aud::max (peak, * pcm);
         pcm += step;
     }
 
@@ -175,12 +175,12 @@ static void render_multi_pcm (const float * pcm, int channels)
     unsigned char data[512];
 
     int level = 38 + calc_peak_level (pcm, channels);
-    data[0] = CLAMP (level, 0, 38);
+    data[0] = aud::clamp (level, 0, 38);
 
     if (channels >= 2)
     {
         level = 38 + calc_peak_level (pcm + 1, channels);
-        data[1] = CLAMP (level, 0, 38);
+        data[1] = aud::clamp (level, 0, 38);
     }
     else
         data[1] = data[0];
@@ -235,7 +235,7 @@ static void make_log_graph (const float * freq, int bands, int db_range, int
         /* scale (-db_range, 0.0) to (0.0, int_range) */
         val = (1 + val / db_range) * int_range;
 
-        graph[i] = CLAMP (val, 0, int_range);
+        graph[i] = aud::clamp ((int) val, 0, int_range);
     }
 }
 

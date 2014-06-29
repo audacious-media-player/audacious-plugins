@@ -71,12 +71,11 @@ static void update_metadata (void * data, GObject * object)
         length = aud_playlist_entry_get_length (playlist, entry, TRUE);
     }
 
-    if (str_equal (title, last_title) && str_equal (artist, last_artist) &&
-     str_equal (album, last_album) && str_equal (file, last_file) && length ==
-     last_length && ! recheck_image)
+    if (title == last_title && artist == last_artist && album == last_album
+     && file == last_file && length == last_length && ! recheck_image)
         return;
 
-    if (! str_equal (file, last_file) || recheck_image)
+    if (file != last_file || recheck_image)
     {
         if (image_file)
             aud_art_unref (last_file);

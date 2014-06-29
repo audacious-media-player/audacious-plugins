@@ -149,7 +149,7 @@ static const AudguiMenuItem playlist_remove_items[] = {
     MenuCommand (N_("Clear Queue"), "edit-clear", 'q', SHIFT, action_playlist_clear_queue),
     MenuSep (),
     MenuCommand (N_("Remove Unavailable Files"), "dialog-warning", NO_KEY, action_playlist_remove_unavailable),
-    MenuSub (N_("Remove Duplicates"), "edit-copy", dupe_items, ARRAY_LEN (dupe_items)),
+    MenuSub (N_("Remove Duplicates"), "edit-copy", {dupe_items}),
     MenuSep (),
     MenuCommand (N_("Remove Unselected"), "list-remove", NO_KEY, action_playlist_remove_unselected),
     MenuCommand (N_("Remove Selected"), "list-remove", GDK_KEY_Delete, NO_MOD, action_playlist_remove_selected)
@@ -187,8 +187,8 @@ static const AudguiMenuItem playlist_sort_items[] = {
     MenuCommand (N_("Randomize List"), nullptr, 'r', SHIFT_CTRL, action_playlist_randomize_list),
     MenuCommand (N_("Reverse List"), "view-sort-descending", NO_KEY, action_playlist_reverse_list),
     MenuSep (),
-    MenuSub (N_("Sort Selected"), "view-sort-ascending", sort_selected_items, ARRAY_LEN (sort_selected_items)),
-    MenuSub (N_("Sort List"), "view-sort-ascending", sort_items, ARRAY_LEN (sort_items))
+    MenuSub (N_("Sort Selected"), "view-sort-ascending", {sort_selected_items}),
+    MenuSub (N_("Sort List"), "view-sort-ascending", {sort_items})
 };
 
 static const AudguiMenuItem playlist_context_items[] = {
@@ -226,20 +226,17 @@ static const AudguiMenuItem eq_preset_items[] = {
 
 void menu_init (void)
 {
-    static const struct {
-        const AudguiMenuItem * items;
-        int n_items;
-    } table[] = {
-        {main_items, ARRAY_LEN (main_items)},
-        {playback_items, ARRAY_LEN (playback_items)},
-        {playlist_items, ARRAY_LEN (playlist_items)},
-        {view_items, ARRAY_LEN (view_items)},
-        {playlist_add_items, ARRAY_LEN (playlist_add_items)},
-        {playlist_remove_items, ARRAY_LEN (playlist_remove_items)},
-        {playlist_select_items, ARRAY_LEN (playlist_select_items)},
-        {playlist_sort_items, ARRAY_LEN (playlist_sort_items)},
-        {playlist_context_items, ARRAY_LEN (playlist_context_items)},
-        {eq_preset_items, ARRAY_LEN (eq_preset_items)}
+    static const ArrayRef<const AudguiMenuItem> table[] = {
+        {main_items},
+        {playback_items},
+        {playlist_items},
+        {view_items},
+        {playlist_add_items},
+        {playlist_remove_items},
+        {playlist_select_items},
+        {playlist_sort_items},
+        {playlist_context_items},
+        {eq_preset_items}
     };
 
     accel = gtk_accel_group_new ();
@@ -247,7 +244,7 @@ void menu_init (void)
     for (int i = UI_MENUS; i --; )
     {
         menus[i] = gtk_menu_new ();
-        audgui_menu_init (menus[i], table[i].items, table[i].n_items, accel);
+        audgui_menu_init (menus[i], table[i], accel);
         g_signal_connect (menus[i], "destroy", (GCallback) gtk_widget_destroyed, & menus[i]);
     }
 }
@@ -304,14 +301,14 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
     gtk_widget_size_request ((GtkWidget *) menu, & request);
 
     if (pos->leftward)
-        * x = MAX (pos->x - request.width, geom.x);
+        * x = aud::max (pos->x - request.width, geom.x);
     else
-        * x = MIN (pos->x, geom.x + geom.width - request.width);
+        * x = aud::min (pos->x, geom.x + geom.width - request.width);
 
     if (pos->upward)
-        * y = MAX (pos->y - request.height, geom.y);
+        * y = aud::max (pos->y - request.height, geom.y);
     else
-        * y = MIN (pos->y, geom.y + geom.height - request.height);
+        * y = aud::min (pos->y, geom.y + geom.height - request.height);
 }
 
 void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward,

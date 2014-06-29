@@ -266,13 +266,11 @@ static bool ffaudio_probe (const char * filename, VFSFile * file)
     return get_format (filename, file) ? true : false;
 }
 
-typedef struct {
+static const struct {
     TupleValueType ttype;   /* Tuple field value type */
     int field;             /* Tuple field constant */
     const char *keys[5];         /* Keys to match (case-insensitive), ended by nullptr */
-} ffaudio_meta_t;
-
-static const ffaudio_meta_t metaentries[] = {
+} metaentries[] = {
  {TUPLE_STRING, FIELD_ARTIST,       {"author", "hor", "artist", nullptr}},
  {TUPLE_STRING, FIELD_TITLE,        {"title", "le", nullptr}},
  {TUPLE_STRING, FIELD_ALBUM,        {"album", "WM/AlbumTitle", nullptr}},
@@ -287,20 +285,19 @@ static const ffaudio_meta_t metaentries[] = {
 
 static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
 {
-    for (int i = 0; i < ARRAY_LEN (metaentries); i ++)
+    for (auto & meta : metaentries)
     {
-        const ffaudio_meta_t * m = & metaentries[i];
         AVDictionaryEntry * entry = nullptr;
 
-        for (int j = 0; ! entry && m->keys[j]; j ++)
-            entry = av_dict_get (dict, m->keys[j], nullptr, 0);
+        for (int j = 0; ! entry && meta.keys[j]; j ++)
+            entry = av_dict_get (dict, meta.keys[j], nullptr, 0);
 
         if (entry && entry->value)
         {
-            if (m->ttype == TUPLE_STRING)
-                tuple.set_str (m->field, entry->value);
-            else if (m->ttype == TUPLE_INT)
-                tuple.set_int (m->field, atoi (entry->value));
+            if (meta.ttype == TUPLE_STRING)
+                tuple.set_str (meta.field, entry->value);
+            else if (meta.ttype == TUPLE_INT)
+                tuple.set_int (meta.field, atoi (entry->value));
         }
     }
 }

@@ -284,12 +284,11 @@ static void guess_mixer_element (void)
 {
     mixer_element_list_fill ();
 
-    static const char * guesses[] = {"Master", "PCM", "Wave"};
-    for (int count = 0; count < ARRAY_LEN (guesses); count ++)
+    for (const char * guess : {"Master", "PCM", "Wave"})
     {
-        if (list_has_member (mixer_element_list, guesses[count]))
+        if (list_has_member (mixer_element_list, guess))
         {
-            alsa_config_mixer_element = String (guesses[count]);
+            alsa_config_mixer_element = String (guess);
             return;
         }
     }

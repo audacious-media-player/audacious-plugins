@@ -93,7 +93,7 @@ static void playback_update (void)
     else
         message = String ("");
 
-    if (str_equal (title, last_title) && str_equal (message, last_message))
+    if (title == last_title && message == last_message)
         return;
 
     last_title = title;

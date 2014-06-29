@@ -89,9 +89,9 @@ static void vis_render_cb (const float * freq)
 
         /* 40 dB range */
         int x = 40 + 20 * log10f (n);
-        x = CLAMP (x, 0, 40);
+        x = aud::clamp (x, 0, 40);
 
-        vis.bars[i] -= MAX (0, VIS_FALLOFF - vis.delay[i]);
+        vis.bars[i] -= aud::max (0, VIS_FALLOFF - vis.delay[i]);
 
         if (vis.delay[i])
             vis.delay[i] --;
@@ -252,7 +252,7 @@ static int expose_vis_cb (GtkWidget * widget, GdkEventExpose * event)
     {
         int x = SPACING + 8 * i;
         int t = VIS_CENTER - vis.bars[i];
-        int m = MIN (VIS_CENTER + vis.bars[i], HEIGHT);
+        int m = aud::min (VIS_CENTER + vis.bars[i], HEIGHT);
 
         float r, g, b;
         get_color (widget, i, & r, & g, & b);

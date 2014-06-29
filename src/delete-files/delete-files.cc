@@ -132,8 +132,8 @@ static bool delete_files_init (void)
 {
     aud_config_set_defaults ("delete_files", delete_files_defaults);
 
-    for (int i = 0; i < ARRAY_LEN (menus); i ++)
-        aud_plugin_menu_add (menus[i], start_delete, _("Delete Selected Files"), "edit-delete");
+    for (int menu : menus)
+        aud_plugin_menu_add (menu, start_delete, _("Delete Selected Files"), "edit-delete");
 
     return TRUE;
 }
@@ -143,8 +143,8 @@ static void delete_files_cleanup (void)
     if (dialog)
         gtk_widget_destroy (dialog);
 
-    for (int i = 0; i < ARRAY_LEN (menus); i ++)
-        aud_plugin_menu_remove (menus[i], start_delete);
+    for (int menu : menus)
+        aud_plugin_menu_remove (menu, start_delete);
 }
 
 static const PreferencesWidget delete_files_widgets[] = {
@@ -153,10 +153,7 @@ static const PreferencesWidget delete_files_widgets[] = {
         WidgetBool ("delete_files", "use_trash"))
 };
 
-static const PluginPreferences delete_files_prefs = {
-    delete_files_widgets,
-    ARRAY_LEN (delete_files_widgets)
-};
+static const PluginPreferences delete_files_prefs = {{delete_files_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Delete Files")
 #define AUD_PLUGIN_INIT        delete_files_init

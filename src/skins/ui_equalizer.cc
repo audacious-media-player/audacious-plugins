@@ -230,7 +230,7 @@ static void eqwin_balance_motion_cb (void)
 {
     eqwin_balance_set_knob ();
     int pos = hslider_get_pos (equalizerwin_balance);
-    pos = MIN(pos, 38);         /* The skin uses a even number of pixels
+    pos = aud::min(pos, 38);         /* The skin uses a even number of pixels
                                    for the balance-slider *sigh* */
     int b;
     if (pos > 19)

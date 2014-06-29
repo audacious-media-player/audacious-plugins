@@ -143,10 +143,7 @@ static const PreferencesWidget cdaudio_widgets[] = {
         WIDGET_CHILD)
 };
 
-static const PluginPreferences cdaudio_prefs = {
-    cdaudio_widgets,
-    ARRAY_LEN (cdaudio_widgets)
-};
+static const PluginPreferences cdaudio_prefs = {{cdaudio_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Audio CD Plugin")
 #define AUD_PLUGIN_ABOUT       cdaudio_about
@@ -325,8 +322,8 @@ static bool cdaudio_play (const char * name, VFSFile * file)
 
     int buffer_size = aud_get_int (nullptr, "output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");
-    speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
-    int sectors = CLAMP (buffer_size / 2, 50, 250) * speed * 75 / 1000;
+    speed = aud::clamp (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
+    int sectors = aud::clamp (buffer_size / 2, 50, 250) * speed * 75 / 1000;
     int currlsn = startlsn;
     int retry_count = 0, skip_count = 0;
 
@@ -339,7 +336,7 @@ static bool cdaudio_play (const char * name, VFSFile * file)
         if (seek_time >= 0)
             currlsn = startlsn + (seek_time * 75 / 1000);
 
-        sectors = MIN (sectors, endlsn + 1 - currlsn);
+        sectors = aud::min (sectors, endlsn + 1 - currlsn);
         if (sectors < 1)
             break;
 
@@ -374,7 +371,7 @@ static bool cdaudio_play (const char * name, VFSFile * file)
         else if (skip_count < MAX_SKIPS)
         {
             /* maybe the disk is scratched; try skipping ahead */
-            currlsn = MIN (currlsn + 75, endlsn + 1);
+            currlsn = aud::min (currlsn + 75, endlsn + 1);
             skip_count ++;
         }
         else
@@ -525,7 +522,7 @@ static bool scan_cd (void)
     }
 
     int speed = aud_get_int ("CDDA", "disc_speed");
-    speed = CLAMP (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
+    speed = aud::clamp (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     if (cdda_speed_set (pcdrom_drive, speed) != DRIVER_OP_SUCCESS)
         warn ("Cannot set drive speed.\n");
 

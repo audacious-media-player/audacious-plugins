@@ -213,7 +213,7 @@ int oss_buffer_free(void)
 
     CHECK(ioctl, oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
 
-    return MAX(0, buf_info.fragments - 1) * buf_info.fragsize;
+    return aud::max(0, buf_info.fragments - 1) * buf_info.fragsize;
 
 FAILED:
     return 0;

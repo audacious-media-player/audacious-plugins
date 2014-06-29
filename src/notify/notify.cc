@@ -83,10 +83,7 @@ static const PreferencesWidget prefs_widgets[] = {
         WidgetBool ("notify", "resident", plugin_reinit))
 };
 
-static const PluginPreferences plugin_prefs = {
-    prefs_widgets,
-    ARRAY_LEN (prefs_widgets)
-};
+static const PluginPreferences plugin_prefs = {{prefs_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Desktop Notifications")
 #define AUD_PLUGIN_ABOUT       plugin_about

@@ -33,10 +33,7 @@ static const PreferencesWidget alsa_widgets[] = {
     WidgetCustom (alsa_create_config_widget)
 };
 
-static const PluginPreferences alsa_prefs = {
-    alsa_widgets,
-    ARRAY_LEN (alsa_widgets)
-};
+static const PluginPreferences alsa_prefs = {{alsa_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("ALSA Output")
 #define AUD_PLUGIN_ABOUT       alsa_about

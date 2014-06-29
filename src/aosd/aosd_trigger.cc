@@ -109,7 +109,7 @@ aosd_trigger_get_codes_array ( int ** array , int * array_size )
 const char *
 aosd_trigger_get_name ( int trig_code )
 {
-  if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+  if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
     return aosd_triggers[trig_code].name;
   return nullptr;
 }
@@ -118,7 +118,7 @@ aosd_trigger_get_name ( int trig_code )
 const char *
 aosd_trigger_get_desc ( int trig_code )
 {
-  if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+  if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
     return aosd_triggers[trig_code].desc;
   return nullptr;
 }
@@ -131,7 +131,7 @@ aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
   for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
   {
     int trig_code = g_array_index( cfg_trigger->active , int , i );
-    if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+    if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
       aosd_triggers[trig_code].onoff_func (TRUE);
   }
   /* When called, this hook will display the text of the user pointer
@@ -148,7 +148,7 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
   for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
   {
     int trig_code = g_array_index( cfg_trigger->active , int , i );
-    if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+    if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
       aosd_triggers[trig_code].onoff_func (FALSE);
   }
 }

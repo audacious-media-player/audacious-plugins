@@ -448,8 +448,7 @@ static void configure_cleanup(void)
 }
 
 static const PluginPreferences preferences = {
-    settings,
-    ARRAY_LEN (settings),
+    {settings},
     configure_init,
     nullptr,  // apply
     configure_cleanup,

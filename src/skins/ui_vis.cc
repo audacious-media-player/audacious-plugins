@@ -25,6 +25,7 @@
  */
 
 #include <string.h>
+#include <libaudcore/objects.h>
 
 #include "draw-compat.h"
 #include "skins_cfg.h"
@@ -74,14 +75,14 @@ void ui_vis_set_colors (void)
 
     for (int x = 0; x < 256; x ++)
     {
-        unsigned char r = MIN (x, 127) * 2;
-        unsigned char g = CLAMP (x - 64, 0, 127) * 2;
-        unsigned char b = MAX (x - 128, 0) * 2;
+        unsigned char r = aud::min (x, 127) * 2;
+        unsigned char g = aud::clamp (x - 64, 0, 127) * 2;
+        unsigned char b = aud::max (x - 128, 0) * 2;
         vis_voice_color_fire[x] = COLOR (r, g, b);
     }
 
     for (int x = 0; x < 256; x ++)
-        vis_voice_color_ice[x] = COLOR (x / 2, x, MIN (x * 2, 255));
+        vis_voice_color_ice[x] = COLOR (x / 2, x, aud::min (x * 2, 255));
 
     uint32_t * set = pattern_fill;
     uint32_t * end = set + 76;
@@ -120,7 +121,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
                 continue;
 
             int h = vis.data[bars ? (x >> 2) : x];
-            h = CLAMP (h, 0, 16);
+            h = aud::clamp (h, 0, 16);
             RGB_SEEK (x, 16 - h);
 
             switch (config.analyzer_mode)
@@ -142,7 +143,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
             if (config.analyzer_peaks)
             {
                 int h = vis.peak[bars ? (x >> 2) : x];
-                h = CLAMP (h, 0, 16);
+                h = aud::clamp (h, 0, 16);
 
                 if (h)
                 {
@@ -187,7 +188,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         case SCOPE_DOT:
             for (int x = 0; x < 75; x ++)
             {
-                int h = CLAMP (vis.data[x], 0, 15);
+                int h = aud::clamp ((int) vis.data[x], 0, 15);
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (vis_scope_colors[h]);
             }
@@ -195,8 +196,8 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         case SCOPE_LINE:
             for (int x = 0; x < 74; x++)
             {
-                int h = CLAMP (vis.data[x], 0, 15);
-                int h2 = CLAMP (vis.data[x + 1], 0, 15);
+                int h = aud::clamp ((int) vis.data[x], 0, 15);
+                int h2 = aud::clamp ((int) vis.data[x + 1], 0, 15);
 
                 if (h < h2) h2 --;
                 else if (h > h2) {int temp = h; h = h2 + 1; h2 = temp;}
@@ -207,7 +208,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
                     RGB_SET_INDEX_Y (vis_scope_colors[y]);
             }
 
-            int h = CLAMP (vis.data[74], 0, 15);
+            int h = aud::clamp ((int) vis.data[74], 0, 15);
             RGB_SEEK (74, h);
             RGB_SET_INDEX (vis_scope_colors[h]);
             break;
@@ -215,7 +216,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         default: /* SCOPE_SOLID */
             for (int x = 0; x < 75; x++)
             {
-                int h = CLAMP (vis.data[x], 0, 15);
+                int h = aud::clamp ((int) vis.data[x], 0, 15);
                 int h2;
 
                 if (h < 8) h2 = 8;

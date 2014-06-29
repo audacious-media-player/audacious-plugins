@@ -25,6 +25,7 @@
  */
 
 #include <string.h>
+#include <libaudcore/objects.h>
 
 #include "draw-compat.h"
 #include "skins_cfg.h"
@@ -67,7 +68,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
                 continue;
 
             int h = svis.data[bars ? (x / 3) : x];
-            h = CLAMP (h, 0, 5);
+            h = aud::clamp (h, 0, 5);
             RGB_SEEK (x, 5 - h);
 
             for (int y = 0; y < h; y ++)
@@ -86,7 +87,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
                     continue;
 
                 int h = (svis.data[y / 3] * 8 + 19) / 38;
-                h = CLAMP (h, 0, 8);
+                h = aud::clamp (h, 0, 8);
                 RGB_SEEK (0, y);
 
                 for (int x = 0; x < h; x ++)
@@ -105,7 +106,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
                     continue;
 
                 int h = svis.data[y / 3];
-                h = CLAMP (h, 0, 38);
+                h = aud::clamp (h, 0, 38);
                 RGB_SEEK (0, y);
 
                 for (int x = 0; x < h; x ++)
@@ -127,7 +128,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
         case SCOPE_DOT:
             for (int x = 0; x < 38; x ++)
             {
-                int h = scale[CLAMP (svis.data[2 * x], 0, 16)];
+                int h = scale[aud::clamp (svis.data[2 * x], 0, 16)];
                 RGB_SEEK (x, h);
                 RGB_SET_INDEX (svis_scope_colors[h]);
             }
@@ -136,8 +137,8 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
         {
             for (int x = 0; x < 37; x++)
             {
-                int h = scale[CLAMP (svis.data[2 * x], 0, 16)];
-                int h2 = scale[CLAMP (svis.data[2 * (x + 1)], 0, 16)];
+                int h = scale[aud::clamp (svis.data[2 * x], 0, 16)];
+                int h2 = scale[aud::clamp (svis.data[2 * (x + 1)], 0, 16)];
 
                 if (h < h2) h2 --;
                 else if (h > h2) {int temp = h; h = h2 + 1; h2 = temp;}
@@ -147,7 +148,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
                     RGB_SET_INDEX_Y (svis_scope_colors[y]);
             }
 
-            int h = scale[CLAMP (svis.data[74], 0, 16)];
+            int h = scale[aud::clamp (svis.data[74], 0, 16)];
             RGB_SEEK (37, h);
             RGB_SET_INDEX (svis_scope_colors[h]);
             break;
@@ -155,7 +156,7 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
         default: /* SCOPE_SOLID */
             for (int x = 0; x < 38; x++)
             {
-                int h = scale[CLAMP (svis.data[2 * x], 0, 16)];
+                int h = scale[aud::clamp (svis.data[2 * x], 0, 16)];
                 int h2;
 
                 if (h < 2) h2 = 2;

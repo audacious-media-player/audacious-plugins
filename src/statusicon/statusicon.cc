@@ -274,7 +274,7 @@ static GtkWidget *si_smallmenu_create(void)
     };
 
     GtkWidget *si_smenu = gtk_menu_new();
-    audgui_menu_init (si_smenu, items, ARRAY_LEN (items), nullptr);
+    audgui_menu_init (si_smenu, {items}, nullptr);
     return si_smenu;
 }
 
@@ -395,10 +395,7 @@ static const PreferencesWidget si_widgets[] = {
         WidgetBool ("statusicon", "reverse_scroll"))
 };
 
-static const PluginPreferences si_prefs = {
-    si_widgets,
-    ARRAY_LEN (si_widgets)
-};
+static const PluginPreferences si_prefs = {{si_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Status Icon")
 #define AUD_PLUGIN_ABOUT       si_about

@@ -45,8 +45,6 @@
 #include <time.h>
 #include <unistd.h>
 
-#include <glib.h>
-
 #include <alsa/asoundlib.h>
 
 #include <libaudcore/plugin.h>
@@ -76,7 +74,7 @@ static pthread_cond_t alsa_cond = PTHREAD_COND_INITIALIZER;
 static snd_pcm_format_t alsa_format;
 static int alsa_channels, alsa_rate;
 
-static void * alsa_buffer;
+static unsigned char * alsa_buffer;
 static int alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
 static int alsa_period; /* milliseconds */
 
@@ -86,7 +84,7 @@ static int alsa_paused_delay; /* frames */
 
 static int poll_pipe[2];
 static int poll_count;
-static struct pollfd * poll_handles;
+static pollfd * poll_handles;
 
 static char pump_quit;
 static pthread_t pump_thread;
@@ -111,7 +109,7 @@ static char poll_setup (void)
     }
 
     poll_count = 1 + snd_pcm_poll_descriptors_count (alsa_handle);
-    poll_handles = g_new (struct pollfd, poll_count);
+    poll_handles = new pollfd[poll_count];
     poll_handles[0].fd = poll_pipe[0];
     poll_handles[0].events = POLLIN;
     poll_count = 1 + snd_pcm_poll_descriptors (alsa_handle, poll_handles + 1,
@@ -147,7 +145,7 @@ static void poll_cleanup (void)
 {
     close (poll_pipe[0]);
     close (poll_pipe[1]);
-    g_free (poll_handles);
+    delete[] poll_handles;
 }
 
 static void * pump (void * unused)
@@ -177,12 +175,12 @@ static void * pump (void * unused)
         slept = 0;
 
         length = snd_pcm_frames_to_bytes (alsa_handle, length);
-        length = MIN (length, alsa_buffer_data_length);
-        length = MIN (length, alsa_buffer_length - alsa_buffer_data_start);
+        length = aud::min (length, alsa_buffer_data_length);
+        length = aud::min (length, alsa_buffer_length - alsa_buffer_data_start);
         length = snd_pcm_bytes_to_frames (alsa_handle, length);
 
         int written;
-        CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle, (char *)
+        CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle,
          alsa_buffer + alsa_buffer_data_start, length);
 
         failed = 0;
@@ -293,7 +291,7 @@ void alsa_cleanup (void)
 
 static snd_pcm_format_t convert_aud_format (int aud_format)
 {
-    const struct
+    static const struct
     {
         int aud_format;
         snd_pcm_format_t format;
@@ -317,10 +315,10 @@ static snd_pcm_format_t convert_aud_format (int aud_format)
         {FMT_U32_BE, SND_PCM_FORMAT_U32_BE},
     };
 
-    for (int count = 0; count < ARRAY_LEN (table); count ++)
+    for (auto & conv : table)
     {
-        if (table[count].aud_format == aud_format)
-            return table[count].format;
+        if (conv.aud_format == aud_format)
+            return conv.format;
     }
 
     return SND_PCM_FORMAT_UNKNOWN;
@@ -357,7 +355,7 @@ bool alsa_open_audio (int aud_format, int rate, int channels)
     alsa_rate = rate;
 
     total_buffer = aud_get_int (nullptr, "output_buffer_size");
-    useconds = 1000 * MIN (1000, total_buffer / 2);
+    useconds = 1000 * aud::min (1000, total_buffer / 2);
     direction = 0;
     CHECK_NOISY (snd_pcm_hw_params_set_buffer_time_near, alsa_handle, params,
      & useconds, & direction);
@@ -371,13 +369,13 @@ bool alsa_open_audio (int aud_format, int rate, int channels)
 
     CHECK_NOISY (snd_pcm_hw_params, alsa_handle, params);
 
-    soft_buffer = MAX (total_buffer / 2, total_buffer - hard_buffer);
+    soft_buffer = aud::max (total_buffer / 2, total_buffer - hard_buffer);
     AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
      hard_buffer, soft_buffer, alsa_period);
 
     alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (int64_t)
      soft_buffer * rate / 1000);
-    alsa_buffer = g_malloc (alsa_buffer_length);
+    alsa_buffer = new unsigned char[alsa_buffer_length];
     alsa_buffer_data_start = 0;
     alsa_buffer_data_length = 0;
 
@@ -416,7 +414,7 @@ void alsa_close_audio (void)
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    g_free (alsa_buffer);
+    delete[] alsa_buffer;
     poll_cleanup ();
     snd_pcm_close (alsa_handle);
     alsa_handle = nullptr;
@@ -445,11 +443,11 @@ void alsa_write_audio (void * data, int length)
     {
         int part = alsa_buffer_length - start;
 
-        memcpy ((char *) alsa_buffer + start, data, part);
+        memcpy (alsa_buffer + start, data, part);
         memcpy (alsa_buffer, (char *) data + part, length - part);
     }
     else
-        memcpy ((char *) alsa_buffer + start, data, length);
+        memcpy (alsa_buffer + start, data, length);
 
     alsa_buffer_data_length += length;
     alsa_written += snd_pcm_bytes_to_frames (alsa_handle, length);
@@ -710,11 +708,11 @@ void alsa_set_volume (int left, int right)
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
     {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_MONO, MAX (left, right));
+         SND_MIXER_SCHN_MONO, aud::max (left, right));
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
             CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-             SND_MIXER_SCHN_MONO, MAX (left, right) != 0);
+             SND_MIXER_SCHN_MONO, aud::max (left, right) != 0);
     }
     else
     {
@@ -727,7 +725,7 @@ void alsa_set_volume (int left, int right)
         {
             if (snd_mixer_selem_has_playback_switch_joined (alsa_mixer_element))
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-                 SND_MIXER_SCHN_FRONT_LEFT, MAX (left, right) != 0);
+                 SND_MIXER_SCHN_FRONT_LEFT, aud::max (left, right) != 0);
             else
             {
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,

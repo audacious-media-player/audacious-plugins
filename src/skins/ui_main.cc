@@ -579,7 +579,7 @@ static gboolean seek_timeout (void * rewind)
     else
         position = seek_start + held / SEEK_SPEED;
 
-    position = CLAMP (position, 0, 219);
+    position = aud::clamp (position, 0, 219);
     hslider_set_pos (mainwin_position, position);
     mainwin_position_motion_cb ();
 
@@ -815,7 +815,7 @@ static void mainwin_set_volume_diff (int diff)
     int vol;
 
     aud_drct_get_volume_main (& vol);
-    vol = CLAMP (vol + diff, 0, 100);
+    vol = aud::clamp (vol + diff, 0, 100);
     mainwin_adjust_volume_motion(vol);
     mainwin_set_volume_slider(vol);
     equalizerwin_set_volume_slider(vol);

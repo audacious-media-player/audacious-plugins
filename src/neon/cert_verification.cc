@@ -28,8 +28,6 @@
 #include <ne_ssl.h>
 #include <ne_session.h>
 
-#include <libaudcore/core.h>
-
 #include "cert_verification.h"
 
 // Certificate validation handling.

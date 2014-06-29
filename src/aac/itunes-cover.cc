@@ -18,8 +18,17 @@
 
 #include <libaudcore/vfs.h>
 
-static const char * const hier[] = {"moov", "udta", "meta", "ilst", "covr", "data"};
-static const int skip[] = {0, 0, 4, 0, 0, 8};
+static const struct {
+    const char * id;
+    int skip;
+} hierarchy[] = {
+    {"moov", 0},
+    {"udta", 0},
+    {"meta", 4},
+    {"ilst", 0},
+    {"covr", 0},
+    {"data", 8}
+};
 
 bool read_itunes_cover (const char * filename, VFSFile * file, void * *
  data, int64_t * size)
@@ -46,7 +55,7 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * *
 
     /* Descend into frame hierarchy. */
 
-    for (int h = 0; h < ARRAY_LEN (hier); h ++)
+    for (auto & frame : hierarchy)
     {
         while (1)
         {
@@ -55,7 +64,7 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * *
             if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8
              || at + bsize > stop)
                 return false;
-            if (! strncmp ((char *) b + 4, hier[h], 4))
+            if (! strncmp ((char *) b + 4, frame.id, 4))
                 break;
             if (vfs_fseek (file, bsize - 8, SEEK_CUR))
                 return false;
@@ -68,11 +77,11 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * *
 
         /* Skip leading bytes in some frames. */
 
-        if (skip[h])
+        if (frame.skip)
         {
-            if (vfs_fseek (file, skip[h], SEEK_CUR))
+            if (vfs_fseek (file, frame.skip, SEEK_CUR))
                 return false;
-            at += skip[h];
+            at += frame.skip;
         }
     }
 

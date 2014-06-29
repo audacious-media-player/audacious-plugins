@@ -2,7 +2,6 @@
 #define XS_CONFIG_H
 
 #include <pthread.h>
-#include <libaudcore/core.h>
 
 /* Configuration structure
  */

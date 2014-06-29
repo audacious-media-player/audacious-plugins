@@ -1,8 +1,6 @@
 #ifndef _JACK_H
 #define _JACK_H
 
-#include <libaudcore/core.h>
-
 void jack_configure(void);
 
 typedef struct

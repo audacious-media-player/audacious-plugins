@@ -66,8 +66,8 @@ struct neon_handle
     unsigned long content_start;               /* Start position in the stream */
     long content_length;                /* Total content length, counting from content_start, if known. -1 if unknown */
     bool can_ranges;                /* TRUE if the webserver advertised accept-range: bytes */
-    unsigned long icy_metaint;                 /* Interval in which the server will send metadata announcements. 0 if no announcments */
-    unsigned long icy_metaleft;                /* Bytes left until the next metadata block */
+    int64_t icy_metaint;                 /* Interval in which the server will send metadata announcements. 0 if no announcments */
+    int64_t icy_metaleft;                /* Bytes left until the next metadata block */
     struct icy_metadata icy_metadata;   /* Current ICY metadata */
     ne_session * session;
     ne_request * request;

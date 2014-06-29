@@ -41,10 +41,7 @@ static const PreferencesWidget compressor_widgets[] = {
         {0.0, 3.0, 0.1})
 };
 
-static const PluginPreferences compressor_prefs = {
-    compressor_widgets,
-    ARRAY_LEN (compressor_widgets)
-};
+static const PluginPreferences compressor_prefs = {{compressor_widgets}};
 
 void compressor_config_load (void)
 {

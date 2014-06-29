@@ -71,7 +71,7 @@ void sox_resampler_start (int * channels, int * rate)
     soxr = 0;
 
     int new_rate = aud_get_int ("soxr", "rate");
-    new_rate = CLAMP (new_rate, MIN_RATE, MAX_RATE);
+    new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
 
     if (new_rate == * rate)
         return;
@@ -149,16 +149,13 @@ static const ComboBoxElements method_list[] = {
 static const PreferencesWidget sox_resampler_widgets[] = {
     WidgetCombo (N_("Quality:"),
         WidgetString ("soxr", "quality"),
-        {method_list, ARRAY_LEN (method_list)}),
+        {{method_list}}),
     WidgetSpin (N_("Rate:"),
         WidgetInt ("soxr", "rate"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")})
 };
 
-static const PluginPreferences sox_resampler_prefs = {
-    sox_resampler_widgets,
-    ARRAY_LEN (sox_resampler_widgets)
-};
+static const PluginPreferences sox_resampler_prefs = {{sox_resampler_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("SoX Resampler")
 #define AUD_PLUGIN_ABOUT       sox_resampler_about
