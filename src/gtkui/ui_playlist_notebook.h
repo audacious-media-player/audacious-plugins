@@ -37,7 +37,4 @@ void ui_playlist_notebook_position (void * data, void * user);
 void start_rename_playlist (int playlist);
 void show_hide_playlist_tabs (void);
 
-void save_column_widths ();
-void apply_column_widths ();
-
 #endif
