@@ -243,7 +243,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
     WavpackCloseFile(ctx);
 
     if (! vfs_fseek (fd, 0, SEEK_SET))
-        audtag::tuple_read (tuple, fd);
+        tag_tuple_read (tuple, fd);
 
     AUDDBG("returning tuple for file %p\n", (void *) fd);
     return tuple;
@@ -251,7 +251,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
 
 static bool wv_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
 {
-    return audtag::tuple_write(tuple, handle, TAG_TYPE_APE);
+    return tag_tuple_write(tuple, handle, TAG_TYPE_APE);
 }
 
 static const char wv_about[] =

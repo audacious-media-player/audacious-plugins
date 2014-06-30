@@ -342,7 +342,7 @@ ffaudio_probe_for_tuple(const char *filename, VFSFile *fd)
     Tuple t = read_tuple (filename, fd);
 
     if (t && ! vfs_fseek (fd, 0, SEEK_SET))
-        audtag::tuple_read (t, fd);
+        tag_tuple_read (t, fd);
 
     return t;
 }
@@ -353,9 +353,9 @@ static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tupl
         return false;
 
     if (str_has_suffix_nocase (vfs_get_filename (file), ".ape"))
-        return audtag::tuple_write(tuple, file, TAG_TYPE_APE);
+        return tag_tuple_write(tuple, file, TAG_TYPE_APE);
 
-    return audtag::tuple_write(tuple, file, TAG_TYPE_NONE);
+    return tag_tuple_write(tuple, file, TAG_TYPE_NONE);
 }
 
 static bool ffaudio_play (const char * filename, VFSFile * file)

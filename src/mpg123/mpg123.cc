@@ -232,7 +232,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	mpg123_delete (decoder);
 
 	if (! stream && ! vfs_fseek (file, 0, SEEK_SET))
-		audtag::tuple_read (tuple, file);
+		tag_tuple_read (tuple, file);
 
 	if (stream)
 		tag_update_stream_metadata (tuple, file);
@@ -386,7 +386,7 @@ static bool mpg123_write_tag (const char * filename, VFSFile * handle, const Tup
 	if (! handle)
 		return false;
 
-	return audtag::tuple_write (tuple, handle, TAG_TYPE_ID3V2);
+	return tag_tuple_write (tuple, handle, TAG_TYPE_ID3V2);
 }
 
 static bool mpg123_get_image (const char * filename, VFSFile * handle,
@@ -395,7 +395,7 @@ static bool mpg123_get_image (const char * filename, VFSFile * handle,
 	if (! handle || vfs_is_streaming (handle))
 		return false;
 
-	return audtag::image_read (handle, data, length);
+	return tag_image_read (handle, data, length);
 }
 
 /** plugin description header **/
