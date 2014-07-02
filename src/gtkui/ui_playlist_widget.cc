@@ -308,18 +308,18 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
 
     if (n_keys)
     {
-        String s[3];
+        String strings[3];
         aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
-         s[0], s[1], s[2], FALSE);
+         strings[0], strings[1], strings[2], FALSE);
 
-        for (int i = 0; i < ARRAY_LEN (s); i ++)
+        for (const String & s : strings)
         {
-            if (! s[i])
+            if (! s)
                 continue;
 
             for (int j = 0; j < n_keys;)
             {
-                if (strstr_nocase_utf8 (s[i], keys[j]))
+                if (strstr_nocase_utf8 (s, keys[j]))
                 {
                     keys.remove (j, 1);
                     n_keys --;

@@ -93,7 +93,7 @@ void resample_start (int * channels, int * rate)
     if (! new_rate)
         new_rate = aud_get_int ("resample", "default-rate");
 
-    new_rate = CLAMP (new_rate, MIN_RATE, MAX_RATE);
+    new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
 
     if (new_rate == * rate)
         return;
@@ -176,7 +176,7 @@ static const PreferencesWidget resample_widgets[] = {
     WidgetLabel (N_("<b>Conversion</b>")),
     WidgetCombo (N_("Method:"),
         WidgetString ("resample", "method"),
-        {method_list, ARRAY_LEN (method_list)}),
+        {{method_list}}),
     WidgetSpin (N_("Rate:"),
         WidgetInt ("resample", "default-rate"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}),
@@ -225,10 +225,7 @@ static const PreferencesWidget resample_widgets[] = {
         WIDGET_CHILD)
 };
 
-static const PluginPreferences resample_prefs = {
-    resample_widgets,
-    ARRAY_LEN (resample_widgets)
-};
+static const PluginPreferences resample_prefs = {{resample_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Sample Rate Converter")
 #define AUD_PLUGIN_ABOUT       resample_about

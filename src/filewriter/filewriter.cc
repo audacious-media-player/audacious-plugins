@@ -499,8 +499,7 @@ static const PreferencesWidget file_widgets[] = {
 };
 
 static const PluginPreferences file_prefs = {
-    file_widgets,
-    ARRAY_LEN (file_widgets),
+    {file_widgets},
     nullptr,  // init
     configure_response_cb
 };

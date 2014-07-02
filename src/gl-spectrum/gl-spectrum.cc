@@ -124,7 +124,7 @@ static void make_log_graph (const float * freq, float * graph)
         /* scale (-DB_RANGE, 0.0) to (0.0, 1.0) */
         val = 1 + val / DB_RANGE;
 
-        graph[i] = CLAMP (val, 0, 1);
+        graph[i] = aud::clamp (val, 0.0f, 1.0f);
     }
 }
 

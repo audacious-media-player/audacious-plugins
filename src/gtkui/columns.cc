@@ -320,8 +320,6 @@ void pw_col_save (void)
     for (int i = 0; i < pw_num_cols; i ++)
         index.append (String (pw_col_keys[pw_cols[i]]));
 
-    save_column_widths ();
-
     aud_set_str ("gtkui", "playlist_columns", index_to_str_list (index, " "));
     aud_set_str ("gtkui", "column_widths", int_array_to_str (pw_col_widths, PW_COLS));
 }

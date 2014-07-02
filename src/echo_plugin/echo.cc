@@ -34,10 +34,7 @@ static const PreferencesWidget echo_widgets[] = {
         {0, 100, 1, "%"})
 };
 
-static const PluginPreferences echo_prefs = {
-    echo_widgets,
-    ARRAY_LEN (echo_widgets)
-};
+static const PluginPreferences echo_prefs = {{echo_widgets}};
 
 static float *buffer = nullptr;
 static int w_ofs;

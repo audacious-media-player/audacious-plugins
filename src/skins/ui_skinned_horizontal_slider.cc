@@ -25,6 +25,8 @@
  * Audacious or using our public API to be a derived work.
  */
 
+#include <libaudcore/objects.h>
+
 #include "draw-compat.h"
 #include "ui_skin.h"
 #include "ui_skinned_horizontal_slider.h"
@@ -66,7 +68,7 @@ static gboolean hslider_button_press (GtkWidget * hslider, GdkEventButton *
 
     data->pressed = TRUE;
     data->pos = event->x - data->kw / 2;
-    data->pos = CLAMP (data->pos, data->min, data->max);
+    data->pos = aud::clamp (data->pos, data->min, data->max);
 
     if (data->on_motion)
         data->on_motion ();
@@ -89,7 +91,7 @@ static gboolean hslider_button_release (GtkWidget * hslider, GdkEventButton *
 
     data->pressed = FALSE;
     data->pos = event->x - data->kw / 2;
-    data->pos = CLAMP (data->pos, data->min, data->max);
+    data->pos = aud::clamp (data->pos, data->min, data->max);
 
     if (data->on_release)
         data->on_release ();
@@ -109,7 +111,7 @@ static gboolean hslider_motion_notify (GtkWidget * hslider, GdkEventMotion *
 
     data->pressed = TRUE;
     data->pos = event->x - data->kw / 2;
-    data->pos = CLAMP (data->pos, data->min, data->max);
+    data->pos = aud::clamp (data->pos, data->min, data->max);
 
     if (data->on_motion)
         data->on_motion ();
@@ -200,7 +202,7 @@ void hslider_set_pos (GtkWidget * hslider, int pos)
     if (data->pressed)
         return;
 
-    data->pos = CLAMP (pos, data->min, data->max);
+    data->pos = aud::clamp (pos, data->min, data->max);
     gtk_widget_queue_draw (hslider);
 }
 

@@ -23,7 +23,7 @@
 #ifndef XMMS_SID_H
 #define XMMS_SID_H
 
-#include <libaudcore/core.h>
+#include <libaudcore/objects.h>
 
 /*
  * Some constants and defines
@@ -49,7 +49,7 @@ typedef struct {
 } xs_subtuneinfo_t;
 
 typedef struct {
-    char *sidFilename, *sidName, *sidComposer, *sidCopyright, *sidFormat;
+    String sidFilename, sidName, sidComposer, sidCopyright, sidFormat;
     int loadAddr, initAddr, playAddr, dataFileLen, sidModel;
     int nsubTunes, startTune;
     xs_subtuneinfo_t *subTunes;

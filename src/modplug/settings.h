@@ -1,8 +1,6 @@
 #ifndef MODPLUG_SETTINGS_H
 #define MODPLUG_SETTINGS_H
 
-#include <libaudcore/core.h>
-
 typedef struct {
     int mBits;
     int mChannels;

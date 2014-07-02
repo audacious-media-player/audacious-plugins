@@ -23,7 +23,6 @@
 #define SKINS_MENUS_H
 
 #include <gtk/gtk.h>
-#include <libaudcore/core.h>
 
 enum
 {

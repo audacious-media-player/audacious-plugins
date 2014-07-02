@@ -92,16 +92,16 @@ static const PreferencesWidget preamp_fields[] = {
 static const PreferencesWidget effects_widgets[] = {
     WidgetLabel (N_("<b>Reverb</b>")),
     WidgetCheck (N_("Enable"), WidgetBool (modplug_settings.mReverb)),
-    WidgetTable ({reverb_fields, ARRAY_LEN (reverb_fields)}, WIDGET_CHILD),
+    WidgetTable ({{reverb_fields}}, WIDGET_CHILD),
     WidgetLabel (N_("<b>Bass Boost</b>")),
     WidgetCheck (N_("Enable"), WidgetBool (modplug_settings.mMegabass)),
-    WidgetTable ({bass_fields, ARRAY_LEN (bass_fields)}, WIDGET_CHILD),
+    WidgetTable ({{bass_fields}}, WIDGET_CHILD),
     WidgetLabel (N_("<b>Surround</b>")),
     WidgetCheck (N_("Enable"), WidgetBool (modplug_settings.mSurround)),
-    WidgetTable ({surround_fields, ARRAY_LEN (surround_fields)}, WIDGET_CHILD),
+    WidgetTable ({{surround_fields}}, WIDGET_CHILD),
     WidgetLabel (N_("<b>Preamp</b>")),
     WidgetCheck (N_("Enable"), WidgetBool (modplug_settings.mPreamp)),
-    WidgetTable ({preamp_fields, ARRAY_LEN (preamp_fields)}, WIDGET_CHILD)
+    WidgetTable ({{preamp_fields}}, WIDGET_CHILD)
 };
 
 static const PreferencesWidget misc_widgets[] = {
@@ -115,15 +115,15 @@ static const PreferencesWidget misc_widgets[] = {
 };
 
 static const PreferencesWidget modplug_columns[] = {
-    WidgetBox ({quality_widgets, ARRAY_LEN (quality_widgets)}),
+    WidgetBox ({{quality_widgets}}),
     WidgetSeparator (),
-    WidgetBox ({effects_widgets, ARRAY_LEN (effects_widgets)}),
+    WidgetBox ({{effects_widgets}}),
     WidgetSeparator (),
-    WidgetBox ({misc_widgets, ARRAY_LEN (misc_widgets)})
+    WidgetBox ({{misc_widgets}})
 };
 
 static const PreferencesWidget modplug_widgets[] = {
-    WidgetBox ({modplug_columns, ARRAY_LEN (modplug_columns), true})
+    WidgetBox ({{modplug_columns}, true})
 };
 
 static void modplug_settings_load ()
@@ -198,8 +198,7 @@ static void modplug_settings_apply (void)
 }
 
 static const PluginPreferences modplug_prefs = {
-    modplug_widgets,
-    ARRAY_LEN (modplug_widgets),
+    {modplug_widgets},
     modplug_settings_load,
     modplug_settings_apply
 };

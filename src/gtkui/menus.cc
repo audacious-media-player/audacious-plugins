@@ -24,6 +24,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -200,9 +201,9 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("_Play This Playlist"), "media-playback-start", GDK_KEY_Return, SHIFT, pl_play),
     MenuCommand (N_("_Refresh"), "view-refresh", GDK_KEY_F5, (GdkModifierType) 0, pl_refresh),
     MenuSep (),
-    MenuSub (N_("_Sort"), "view-sort-ascending", sort_items, ARRAY_LEN (sort_items)),
-    MenuSub (N_("Sort Se_lected"), "view-sort-ascending", sort_selected_items, ARRAY_LEN (sort_selected_items)),
-    MenuSub (N_("Remove _Duplicates"), "edit-copy", dupe_items, ARRAY_LEN (dupe_items)),
+    MenuSub (N_("_Sort"), "view-sort-ascending", {sort_items}),
+    MenuSub (N_("Sort Se_lected"), "view-sort-ascending", {sort_selected_items}),
+    MenuSub (N_("Remove _Duplicates"), "edit-copy", {dupe_items}),
     MenuCommand (N_("Remove _Unavailable Files"), "dialog-warning", NONE, pl_remove_failed),
     MenuSep (),
     MenuCommand (N_("_New"), "document-new", 't', CTRL, pl_new),
@@ -237,12 +238,12 @@ static const AudguiMenuItem view_items[] = {
 };
 
 static const AudguiMenuItem main_items[] = {
-    MenuSub (N_("_File"), nullptr, file_items, ARRAY_LEN (file_items)),
-    MenuSub (N_("_Playback"), nullptr, playback_items, ARRAY_LEN (playback_items)),
-    MenuSub (N_("P_laylist"), nullptr, playlist_items, ARRAY_LEN (playlist_items)),
+    MenuSub (N_("_File"), nullptr, {file_items}),
+    MenuSub (N_("_Playback"), nullptr, {playback_items}),
+    MenuSub (N_("P_laylist"), nullptr, {playlist_items}),
     MenuSub (N_("_Services"), nullptr, get_services_main),
-    MenuSub (N_("_Output"), nullptr, output_items, ARRAY_LEN (output_items)),
-    MenuSub (N_("_View"), nullptr, view_items, ARRAY_LEN (view_items))
+    MenuSub (N_("_Output"), nullptr, {output_items}),
+    MenuSub (N_("_View"), nullptr, {view_items})
 };
 
 static const AudguiMenuItem rclick_items[] = {
@@ -268,27 +269,27 @@ static const AudguiMenuItem tab_items[] = {
 GtkWidget * make_menu_bar (GtkAccelGroup * accel)
 {
     GtkWidget * bar = gtk_menu_bar_new ();
-    audgui_menu_init (bar, main_items, ARRAY_LEN (main_items), accel);
+    audgui_menu_init (bar, {main_items}, accel);
     return bar;
 }
 
 GtkWidget * make_menu_main (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    audgui_menu_init (shell, main_items, ARRAY_LEN (main_items), accel);
+    audgui_menu_init (shell, {main_items}, accel);
     return shell;
 }
 
 GtkWidget * make_menu_rclick (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    audgui_menu_init (shell, rclick_items, ARRAY_LEN (rclick_items), accel);
+    audgui_menu_init (shell, {rclick_items}, accel);
     return shell;
 }
 
 GtkWidget * make_menu_tab (GtkAccelGroup * accel)
 {
     GtkWidget * shell = gtk_menu_new ();
-    audgui_menu_init (shell, tab_items, ARRAY_LEN (tab_items), accel);
+    audgui_menu_init (shell, {tab_items}, accel);
     return shell;
 }

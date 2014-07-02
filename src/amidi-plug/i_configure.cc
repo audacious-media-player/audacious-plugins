@@ -144,18 +144,17 @@ static const PreferencesWidget amidiplug_widgets[] = {
     WidgetLabel (N_("<b>SoundFont</b>")),
     WidgetCustom (create_soundfont_list),
     WidgetLabel (N_("<b>Synthesizer</b>")),
-    WidgetBox ({gain_widgets, ARRAY_LEN (gain_widgets), TRUE}),
-    WidgetBox ({polyphony_widgets, ARRAY_LEN (polyphony_widgets), TRUE}),
-    WidgetBox ({reverb_widgets, ARRAY_LEN (reverb_widgets), TRUE}),
-    WidgetBox ({chorus_widgets, ARRAY_LEN (chorus_widgets), TRUE}),
+    WidgetBox ({{gain_widgets}, TRUE}),
+    WidgetBox ({{polyphony_widgets}, TRUE}),
+    WidgetBox ({{reverb_widgets}, TRUE}),
+    WidgetBox ({{chorus_widgets}, TRUE}),
     WidgetSpin (N_("Sampling rate:"),
         WidgetInt ("amidiplug", "fsyn_synth_samplerate", backend_change),
         {22050, 96000, 1})
 };
 
 const PluginPreferences amidiplug_prefs = {
-    amidiplug_widgets,
-    ARRAY_LEN (amidiplug_widgets),
+    {amidiplug_widgets},
     get_values
 };
 

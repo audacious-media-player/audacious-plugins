@@ -77,9 +77,9 @@ static void render_cb (float * freq)
 
         /* 40 dB range */
         int x = 40 + 20 * log10f (n);
-        x = CLAMP (x, 0, 40);
+        x = aud::clamp (x, 0, 40);
 
-        bars[i] -= MAX (0, VIS_FALLOFF - delay[i]);
+        bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 
         if (delay[i])
             delay[i]--;
@@ -249,7 +249,7 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     gtk_widget_queue_draw(widget);
 
     bands = width / 10;
-    bands = CLAMP(bands, 12, MAX_BANDS);
+    bands = aud::clamp(bands, 12, MAX_BANDS);
     calculate_xscale ();
 
     return TRUE;

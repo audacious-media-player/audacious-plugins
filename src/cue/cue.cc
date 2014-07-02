@@ -31,12 +31,10 @@ extern "C" {
 #include <libaudcore/plugin.h>
 #include <libaudcore/probe.h>
 
-typedef struct {
+static const struct {
     int tuple_type;
     int pti;
-} TuplePTIMap;
-
-TuplePTIMap pti_map[] = {
+} pti_map[] = {
     { FIELD_ARTIST, PTI_PERFORMER },
     { FIELD_TITLE, PTI_TITLE },
 };
@@ -125,8 +123,8 @@ static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
             tuple.set_int (FIELD_SEGMENT_END, begin + length);
         }
 
-        for (int i = 0; i < ARRAY_LEN (pti_map); i ++)
-            tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type, pti_map[i].pti);
+        for (auto & pti : pti_map)
+            tuple_attach_cdtext (tuple, current, pti.tuple_type, pti.pti);
 
         items.append ({filename, std::move (tuple)});
 

@@ -51,8 +51,4 @@ static const PreferencesWidget gtkui_widgets[] = {
         WidgetBool ("gtkui", "autoscroll"))
 };
 
-const PluginPreferences gtkui_prefs = {
-    gtkui_widgets,
-    ARRAY_LEN (gtkui_widgets)
-};
-
+const PluginPreferences gtkui_prefs = {{gtkui_widgets}};

@@ -99,7 +99,7 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
     for (int i = 0; i < 109; i ++)
     {
         int y = 9.5 - eval_spline (x, bands, yf, 10, i) * 9 / AUD_EQ_MAX_GAIN;
-        y = CLAMP (y, 0, 18);
+        y = aud::clamp (y, 0, 18);
 
         if (!i)
             py = y;

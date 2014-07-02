@@ -23,7 +23,6 @@
  */
 
 #include <libaudcore/i18n.h>
-#include <libaudcore/core.h>
 
 #include "draw-compat.h"
 #include "ui_equalizer.h"
@@ -57,7 +56,7 @@ DRAW_FUNC_END
 
 static void eq_slider_moved (EqSliderData * data, int pos)
 {
-    data->pos = CLAMP (pos, 0, 50);
+    data->pos = aud::clamp (pos, 0, 50);
     if (data->pos == 24 || data->pos == 26)
         data->pos = 25;
 
@@ -142,7 +141,7 @@ void eq_slider_set_val (GtkWidget * slider, float val)
 
     data->val = val;
     data->pos = 25 - (int) (val * 25 / AUD_EQ_MAX_GAIN);
-    data->pos = CLAMP (data->pos, 0, 50);
+    data->pos = aud::clamp (data->pos, 0, 50);
 
     gtk_widget_queue_draw (slider);
 }

@@ -116,7 +116,6 @@ static void xspf_add_file (xmlNode * track, const char * filename,
                 xmlFree(str);
             } else {
                 /* Rest of the nodes are handled here */
-                int i;
                 bool isMeta;
                 xmlChar *findName;
 
@@ -128,17 +127,17 @@ static void xspf_add_file (xmlNode * track, const char * filename,
                     findName = xmlStrdup(nptr->name);
                 }
 
-                for (i = 0; i < ARRAY_LEN (xspf_entries); i++)
-                if ((xspf_entries[i].isMeta == isMeta) &&
-                    !xmlStrcmp(findName, (xmlChar *)xspf_entries[i].xspfName)) {
+                for (const xspf_entry_t & entry : xspf_entries)
+                if ((entry.isMeta == isMeta) &&
+                    !xmlStrcmp(findName, (xmlChar *)entry.xspfName)) {
                     xmlChar *str = xmlNodeGetContent(nptr);
-                    switch (xspf_entries[i].type) {
+                    switch (entry.type) {
                         case TUPLE_STRING:
-                            tuple.set_str (xspf_entries[i].tupleField, (char *)str);
+                            tuple.set_str (entry.tupleField, (char *)str);
                             break;
 
                         case TUPLE_INT:
-                            tuple.set_int (xspf_entries[i].tupleField, atol((char *)str));
+                            tuple.set_int (entry.tupleField, atol((char *)str));
                             break;
 
                         default:
@@ -374,26 +373,26 @@ static bool xspf_playlist_save (const char * filename, VFSFile * file,
 
         if (tuple)
         {
-            int i;
-            for (i = 0; i < ARRAY_LEN (xspf_entries); i++) {
-                const xspf_entry_t *xs = &xspf_entries[i];
-                bool isOK = (tuple.get_value_type (xs->tupleField) == xs->type);
+            for (const xspf_entry_t & entry : xspf_entries)
+            {
+                bool isOK = (tuple.get_value_type (entry.tupleField) == entry.type);
 
-                switch (xs->type) {
+                switch (entry.type) {
                     case TUPLE_STRING:
-                        scratch = tuple.get_str (xs->tupleField);
+                        scratch = tuple.get_str (entry.tupleField);
                         if (! scratch)
                             isOK = false;
                         break;
                     case TUPLE_INT:
-                        scratchi = tuple.get_int (xs->tupleField);
+                        scratchi = tuple.get_int (entry.tupleField);
                         break;
                     default:
                         break;
                 }
 
                 if (isOK)
-                    xspf_add_node(track, xs->type, xs->isMeta, xs->xspfName, scratch, scratchi);
+                    xspf_add_node (track, entry.type, entry.isMeta,
+                     entry.xspfName, scratch, scratchi);
             }
         }
     }

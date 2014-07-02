@@ -49,7 +49,7 @@ static const GtkTargetEntry drop_types[] = {
 static inline void drag_dest_set (GtkWidget * widget)
 {
     gtk_drag_dest_set (widget, (GtkDestDefaults) (GTK_DEST_DEFAULT_MOTION |
-     GTK_DEST_DEFAULT_DROP), drop_types, ARRAY_LEN (drop_types),
+     GTK_DEST_DEFAULT_DROP), drop_types, aud::n_elems (drop_types),
      (GdkDragAction) (GDK_ACTION_COPY | GDK_ACTION_MOVE));
 }
 

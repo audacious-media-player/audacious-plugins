@@ -185,7 +185,7 @@ sndio_set_volume(int l, int r)
 {
 	/* Ignore balance control, so use unattenuated channel. */
 	pthread_mutex_lock(&mtx);
-	set_volume(MAX(l, r));
+	set_volume(aud::max(l, r));
 	volume_pending = 1;
 	pthread_mutex_unlock(&mtx);
 }
@@ -211,7 +211,7 @@ sndio_open(int fmt, int rate, int nch)
 
 	sio_initpar(&askpar);
 	for (i = 0; ; i++) {
-		if (i == ARRAY_LEN(fmt_to_par)) {
+		if (i == aud::n_elems(fmt_to_par)) {
 			g_warning("unknown format %d requested", fmt);
 			sndio_close();
 			return 0;

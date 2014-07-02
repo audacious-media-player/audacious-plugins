@@ -164,7 +164,7 @@ static void speed_process (float * * data, int * samples)
     int src = 0;
     int dst = 0;
 
-    while (src + MAX (width, instep) <= in.len)
+    while (src + aud::max (width, instep) <= in.len)
     {
         bufgrow (& out, dst + width);
         out.len = dst + width;
@@ -183,7 +183,7 @@ static void speed_process (float * * data, int * samples)
     /* Trim silence from the beginning of the output buffer. */
     if (trim > 0)
     {
-        int cut = MIN (trim, dst);
+        int cut = aud::min (trim, dst);
         bufcut (& out, cut);
         dst -= cut;
         trim -= cut;
@@ -234,10 +234,7 @@ static const PreferencesWidget speed_widgets[] = {
         {MINPITCH, MAXPITCH, 0.05})
 };
 
-static const PluginPreferences speed_prefs = {
-    speed_widgets,
-    ARRAY_LEN (speed_widgets)
-};
+static const PluginPreferences speed_prefs = {{speed_widgets}};
 
 static bool speed_init (void)
 {

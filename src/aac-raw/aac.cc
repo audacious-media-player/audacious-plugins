@@ -320,7 +320,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
     if (tuple)
     {
         bitrate = tuple.get_int (FIELD_BITRATE);
-        bitrate = 1000 * MAX (0, bitrate);
+        bitrate = 1000 * aud::max (0, bitrate);
     }
 
     if ((decoder = NeAACDecOpen ()) == nullptr)

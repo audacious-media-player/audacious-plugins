@@ -26,6 +26,7 @@
  */
 
 #include <string.h>
+#include <libaudcore/objects.h>
 
 #include "draw-compat.h"
 #include "skins_cfg.h"
@@ -114,7 +115,7 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
 
     gtk_widget_set_size_request (textbox, data->width, rect.height);
 
-    data->buf_width = MAX (rect.width, data->width);
+    data->buf_width = aud::max (rect.width, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
      data->buf_width, rect.height);
 
@@ -189,7 +190,7 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
     g_return_if_fail (utf32);
 
-    data->buf_width = MAX (cw * len, data->width);
+    data->buf_width = aud::max (cw * (int) len, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
      data->buf_width, ch);
 

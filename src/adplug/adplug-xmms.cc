@@ -224,7 +224,7 @@ static bool play_loop (const char * filename, VFSFile * fd)
         toadd += freq;
         playing = plr.p->update ();
       }
-      i = MIN (towrite, (long) (toadd / plr.p->getrefresh () + 4) & ~3);
+      i = std::min (towrite, (long) (toadd / plr.p->getrefresh () + 4) & ~3);
       opl.update ((short *) sndbufpos, i);
       sndbufpos += i * sampsize;
       towrite -= i;

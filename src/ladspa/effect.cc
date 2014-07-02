@@ -101,7 +101,7 @@ static void run_plugin (LoadedPlugin * loaded, float * data, int samples)
 
     while (samples / ladspa_channels > 0)
     {
-        int frames = MIN (samples / ladspa_channels, LADSPA_BUFLEN);
+        int frames = aud::min (samples / ladspa_channels, LADSPA_BUFLEN);
 
         for (int i = 0; i < instances; i ++)
         {

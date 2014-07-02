@@ -223,7 +223,4 @@ static const PreferencesWidget config_contents[] = {
     WidgetCustom (config_status_checker)
 };
 
-const PluginPreferences configuration = {
-    config_contents,
-    ARRAY_LEN (config_contents)
-};
+const PluginPreferences configuration = {{config_contents}};

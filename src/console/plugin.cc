@@ -57,10 +57,7 @@ static const PreferencesWidget console_widgets[] = {
         WidgetBool (audcfg.inc_spc_reverb))
 };
 
-static const PluginPreferences console_prefs = {
-    console_widgets,
-    ARRAY_LEN (console_widgets)
-};
+static const PluginPreferences console_prefs = {{console_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Game Console Music Decoder")
 #define AUD_PLUGIN_ABOUT       console_about

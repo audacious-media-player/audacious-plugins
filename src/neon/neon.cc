@@ -541,7 +541,7 @@ typedef enum
 static FillBufferResult fill_buffer (struct neon_handle * h)
 {
     int bsize = free_rb (& h->rb);
-    int to_read = MIN (bsize, NEON_NETBLKSIZE);
+    int to_read = aud::min (bsize, NEON_NETBLKSIZE);
 
     char buffer[NEON_NETBLKSIZE];
 
@@ -781,7 +781,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
         return 0;
     }
 
-    int belem = used_rb (& h->rb) / size;
+    int64_t belem = used_rb (& h->rb) / size;
 
     if (h->icy_metaint)
     {
@@ -818,10 +818,10 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
 
         /* The maximum number of bytes we can deliver is determined
          * by the number of bytes left until the next metadata announcement */
-        belem = MIN (used_rb (& h->rb), h->icy_metaleft) / size;
+        belem = aud::min ((int64_t) used_rb (& h->rb), h->icy_metaleft) / size;
     }
 
-    nmemb = MIN (belem, nmemb);
+    nmemb = aud::min (belem, nmemb);
     read_rb (& h->rb, ptr, nmemb * size);
 
     /* Signal the network thread to continue reading */

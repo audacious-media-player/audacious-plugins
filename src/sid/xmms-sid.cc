@@ -168,7 +168,7 @@ bool xs_play_file(const char *filename, VFSFile *file)
     /* Initialize song */
     if (!xs_sidplayfp_initsong(&xs_status)) {
         xs_error("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
-            tmpTune->sidFilename, xs_status.currSong);
+            (const char *) tmpTune->sidFilename, xs_status.currSong);
         pthread_mutex_unlock(&xs_status_mutex);
         goto xs_err_exit;
     }

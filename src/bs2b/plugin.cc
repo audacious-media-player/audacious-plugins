@@ -181,10 +181,7 @@ static const PreferencesWidget bs2b_widgets[] = {
     WidgetCustom (create_config_widget)
 };
 
-static const PluginPreferences bs2b_prefs = {
-    bs2b_widgets,
-    ARRAY_LEN (bs2b_widgets)
-};
+static const PluginPreferences bs2b_prefs = {{bs2b_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Bauer Stereophonic-to-Binaural (BS2B)")
 #define AUD_PLUGIN_INIT        init

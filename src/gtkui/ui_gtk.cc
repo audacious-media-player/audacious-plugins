@@ -300,7 +300,7 @@ static gboolean time_counter_cb (void)
 static void do_seek (int time)
 {
     int length = aud_drct_get_length ();
-    time = CLAMP (time, 0, length);
+    time = aud::clamp (time, 0, length);
 
     set_slider (time);
     set_time_label (time, length);
@@ -320,7 +320,7 @@ static gboolean ui_slider_change_value_cb (GtkRange * range,
  GtkScrollType scroll, double value)
 {
     int length = aud_drct_get_length ();
-    int time = CLAMP ((int) value, 0, length);
+    int time = aud::clamp ((int) value, 0, length);
 
     set_time_label (time, length);
 

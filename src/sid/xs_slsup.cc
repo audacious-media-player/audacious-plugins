@@ -196,16 +196,16 @@ xs_tuneinfo_t *xs_tuneinfo_new(const char * filename,
     int i;
 
     /* Allocate structure */
-    result = g_new0 (xs_tuneinfo_t, 1);
+    result = new xs_tuneinfo_t ();
 
-    result->sidFilename = str_get (filename);
+    result->sidFilename = String (filename);
 
     /* Allocate space for subtune information */
     result->subTunes = g_new0 (xs_subtuneinfo_t, nsubTunes + 1);
 
-    result->sidName = str_get (sidName);
-    result->sidComposer = str_get (sidComposer);
-    result->sidCopyright = str_get (sidCopyright);
+    result->sidName = String (sidName);
+    result->sidComposer = String (sidComposer);
+    result->sidCopyright = String (sidCopyright);
 
     result->nsubTunes = nsubTunes;
     result->startTune = startTune;
@@ -214,7 +214,7 @@ xs_tuneinfo_t *xs_tuneinfo_new(const char * filename,
     result->initAddr = initAddr;
     result->playAddr = playAddr;
     result->dataFileLen = dataFileLen;
-    result->sidFormat = str_get (sidFormat);
+    result->sidFormat = String (sidFormat);
 
     result->sidModel = sidModel;
 
@@ -242,10 +242,6 @@ void xs_tuneinfo_free(xs_tuneinfo_t * tune)
     if (!tune) return;
 
     g_free(tune->subTunes);
-    str_unref (tune->sidFilename);
-    str_unref (tune->sidName);
-    str_unref (tune->sidComposer);
-    str_unref (tune->sidCopyright);
-    str_unref (tune->sidFormat);
-    g_free(tune);
+
+    delete tune;
 }

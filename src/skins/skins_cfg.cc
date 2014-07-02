@@ -82,64 +82,64 @@ skins_cfg_t config;
 
 static GtkWidget * skin_view;
 
-typedef struct skins_cfg_boolent_t {
+static const struct skins_cfg_boolent_t {
     const char * name;
     bool * ptr;
-} skins_cfg_boolent;
+} skins_boolents[] =
+{
+    /* general */
+    {"autoscroll_songname", & config.autoscroll},
+    {"mainwin_use_bitmapfont", & config.mainwin_use_bitmapfont},
+    {"twoway_scroll", & config.twoway_scroll},
 
-static const skins_cfg_boolent skins_boolents[] = {
- /* general */
- {"autoscroll_songname", & config.autoscroll},
- {"mainwin_use_bitmapfont", & config.mainwin_use_bitmapfont},
- {"twoway_scroll", & config.twoway_scroll},
+    /* visualizer */
+    {"analyzer_peaks", & config.analyzer_peaks}
+};
 
- /* visualizer */
- {"analyzer_peaks", & config.analyzer_peaks}};
-
-typedef struct skins_cfg_nument_t {
+static const struct {
     const char * name;
     int * ptr;
-} skins_cfg_nument;
+} skins_numents[] =
+{
+    /* visualizer */
+    {"analyzer_falloff", & config.analyzer_falloff},
+    {"analyzer_mode", & config.analyzer_mode},
+    {"analyzer_type", & config.analyzer_type},
+    {"peaks_falloff", & config.peaks_falloff},
+    {"scope_mode", & config.scope_mode},
+    {"vis_type", & config.vis_type},
+    {"voiceprint_mode", & config.voiceprint_mode},
+    {"vu_mode", & config.vu_mode},
 
-static const skins_cfg_nument skins_numents[] = {
- /* visualizer */
- {"analyzer_falloff", & config.analyzer_falloff},
- {"analyzer_mode", & config.analyzer_mode},
- {"analyzer_type", & config.analyzer_type},
- {"peaks_falloff", & config.peaks_falloff},
- {"scope_mode", & config.scope_mode},
- {"vis_type", & config.vis_type},
- {"voiceprint_mode", & config.voiceprint_mode},
- {"vu_mode", & config.vu_mode},
-
- /* windows */
- {"equalizer_x", & config.equalizer_x},
- {"equalizer_y", & config.equalizer_y},
- {"player_x", & config.player_x},
- {"player_y", & config.player_y},
- {"playlist_x", & config.playlist_x},
- {"playlist_y", & config.playlist_y},
- {"playlist_width", & config.playlist_width},
- {"playlist_height", & config.playlist_height}};
+    /* windows */
+    {"equalizer_x", & config.equalizer_x},
+    {"equalizer_y", & config.equalizer_y},
+    {"player_x", & config.player_x},
+    {"player_y", & config.player_y},
+    {"playlist_x", & config.playlist_x},
+    {"playlist_y", & config.playlist_y},
+    {"playlist_width", & config.playlist_width},
+    {"playlist_height", & config.playlist_height}
+};
 
 void skins_cfg_load (void)
 {
     aud_config_set_defaults ("skins", skins_defaults);
 
-    for (int i = 0; i < ARRAY_LEN (skins_boolents); i ++)
-        * skins_boolents[i].ptr = aud_get_bool ("skins", skins_boolents[i].name);
+    for (auto & boolent : skins_boolents)
+        * boolent.ptr = aud_get_bool ("skins", boolent.name);
 
-    for (int i = 0; i < ARRAY_LEN (skins_numents); i ++)
-        * skins_numents[i].ptr = aud_get_int ("skins", skins_numents[i].name);
+    for (auto & nument : skins_numents)
+        * nument.ptr = aud_get_int ("skins", nument.name);
 }
 
 void skins_cfg_save (void)
 {
-    for (int i = 0; i < ARRAY_LEN (skins_boolents); i ++)
-        aud_set_bool ("skins", skins_boolents[i].name, * skins_boolents[i].ptr);
+    for (auto & boolent : skins_boolents)
+        aud_set_bool ("skins", boolent.name, * boolent.ptr);
 
-    for (int i = 0; i < ARRAY_LEN (skins_numents); i ++)
-        aud_set_int ("skins", skins_numents[i].name, * skins_numents[i].ptr);
+    for (auto & nument : skins_numents)
+        aud_set_int ("skins", nument.name, * nument.ptr);
 }
 
 static void
@@ -184,7 +184,7 @@ static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
     WidgetCustom (create_skin_view),
     WidgetLabel (N_("<b>Fonts</b>")),
-    WidgetTable ({font_table_elements, ARRAY_LEN (font_table_elements)},
+    WidgetTable ({{font_table_elements}},
         WIDGET_CHILD),
     WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),
         WidgetBool (config.mainwin_use_bitmapfont, mainwin_font_set_cb)),
@@ -241,47 +241,44 @@ static const PreferencesWidget skins_widgets_vis[] = {
     WidgetLabel (N_("<b>Type</b>")),
     WidgetCombo (N_("Visualization type:"),
         WidgetInt (config.vis_type, vis_reset_cb),
-        {vis_mode_elements, ARRAY_LEN (vis_mode_elements)}),
+        {{vis_mode_elements}}),
     WidgetLabel (N_("<b>Analyzer</b>")),
     WidgetCheck (N_("Show peaks"),
         WidgetBool (config.analyzer_peaks, vis_reset_cb)),
     WidgetCombo (N_("Coloring:"),
         WidgetInt (config.analyzer_mode, vis_reset_cb),
-        {analyzer_mode_elements, ARRAY_LEN (analyzer_mode_elements)}),
+        {{analyzer_mode_elements}}),
     WidgetCombo (N_("Style:"),
         WidgetInt (config.analyzer_type, vis_reset_cb),
-        {analyzer_type_elements, ARRAY_LEN (analyzer_type_elements)}),
+        {{analyzer_type_elements}}),
     WidgetCombo (N_("Falloff:"),
         WidgetInt (config.analyzer_falloff, vis_reset_cb),
-        {falloff_elements, ARRAY_LEN (falloff_elements)}),
+        {{falloff_elements}}),
     WidgetCombo (N_("Peak falloff:"),
         WidgetInt (config.peaks_falloff, vis_reset_cb),
-        {falloff_elements, ARRAY_LEN (falloff_elements)}),
+        {{falloff_elements}}),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
     WidgetCombo (N_("Scope Style:"),
         WidgetInt (config.scope_mode, vis_reset_cb),
-        {scope_mode_elements, ARRAY_LEN (scope_mode_elements)}),
+        {{scope_mode_elements}}),
     WidgetCombo (N_("Voiceprint Coloring:"),
         WidgetInt (config.voiceprint_mode, vis_reset_cb),
-        {voiceprint_mode_elements, ARRAY_LEN (voiceprint_mode_elements)}),
+        {{voiceprint_mode_elements}}),
     WidgetCombo (N_("VU Meter Style:"),
         WidgetInt (config.vu_mode, vis_reset_cb),
-        {vu_mode_elements, ARRAY_LEN (vu_mode_elements)})
+        {{vu_mode_elements}})
 };
 
 static const NotebookTab skins_notebook_tabs[] = {
-    {N_("General"), skins_widgets_general, ARRAY_LEN (skins_widgets_general)},
-    {N_("Visualization"), skins_widgets_vis, ARRAY_LEN (skins_widgets_vis)}
+    {N_("General"), {skins_widgets_general}},
+    {N_("Visualization"), {skins_widgets_vis}}
 };
 
 static const PreferencesWidget skins_widgets[] = {
-    WidgetNotebook ({skins_notebook_tabs, ARRAY_LEN (skins_notebook_tabs)})
+    WidgetNotebook ({{skins_notebook_tabs}})
 };
 
-const PluginPreferences skins_prefs = {
-    skins_widgets,
-    ARRAY_LEN (skins_widgets)
-};
+const PluginPreferences skins_prefs = {{skins_widgets}};
 
 void
 on_skin_view_drag_data_received(GtkWidget * widget,

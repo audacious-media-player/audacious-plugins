@@ -34,8 +34,6 @@
 #define CHUNKS 5
 #define DECAY 0.3
 
-#define MIN(a,b) ((a) < (b) ? (a) : (b))
-
 static float * buffer, * output, * peaks;
 static int output_size;
 static int chunk_size, buffer_size;
@@ -47,7 +45,7 @@ static int current_channels, current_rate;
 static void buffer_append (float * * data, int * length)
 {
     int offset = (chunk_size * ring_at + buffer_filled) % buffer_size;
-    int writable = MIN (* length, buffer_size - buffer_filled);
+    int writable = aud::min (* length, buffer_size - buffer_filled);
 
     if (writable <= buffer_size - offset)
         memcpy (buffer + offset, * data, sizeof (float) * writable);
@@ -167,7 +165,7 @@ static void do_compress (float * * data, int * samples, char finish)
     if (finish)
     {
         int offset = chunk_size * ring_at;
-        int first = MIN (buffer_filled, buffer_size - offset);
+        int first = aud::min (buffer_filled, buffer_size - offset);
         int second = buffer_filled - first;
 
         if (current_peak == 0.0)

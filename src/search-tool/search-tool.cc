@@ -626,7 +626,7 @@ static void list_right_click (void * user, GdkEventButton * event)
     };
 
     GtkWidget * menu = gtk_menu_new ();
-    audgui_menu_init (menu, items, ARRAY_LEN (items), nullptr);
+    audgui_menu_init (menu, {items}, nullptr);
     gtk_menu_popup ((GtkMenu *) menu, nullptr, nullptr, nullptr, nullptr, event->button, event->time);
 }
 

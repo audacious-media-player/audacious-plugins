@@ -301,7 +301,7 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
 {
     AUDDBG ("Found key %s <%s>\n", key, value);
 
-    const struct {
+    static const struct {
         const char * key;
         int field;
     } tfields[] = {
@@ -311,11 +311,11 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
      {"COMMENT", FIELD_COMMENT},
      {"GENRE", FIELD_GENRE}};
 
-    for (int i = 0; i < ARRAY_LEN (tfields); i ++)
+    for (auto & tfield : tfields)
     {
-        if (! g_ascii_strcasecmp (key, tfields[i].key))
+        if (! g_ascii_strcasecmp (key, tfield.key))
         {
-            add_text (tuple, tfields[i].field, value);
+            add_text (tuple, tfield.field, value);
             return;
         }
     }

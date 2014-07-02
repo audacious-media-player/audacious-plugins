@@ -25,8 +25,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#include <glib.h>
-
 #include <SDL.h>
 #include <SDL_audio.h>
 
@@ -102,7 +100,7 @@ void sdlout_set_volume (int left, int right)
 
 static void apply_mono_volume (unsigned char * data, int len)
 {
-    int vol = MAX (vol_left, vol_right);
+    int vol = aud::max (vol_left, vol_right);
     int factor = (vol == 0) ? 0 : powf (10, (float) VOLUME_RANGE * (vol - 100)
      / 100 / 20) * 65536;
 
@@ -139,7 +137,7 @@ static void callback (void * user, unsigned char * buf, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
-    int copy = MIN (len, buffer_data_len);
+    int copy = aud::min (len, buffer_data_len);
     int part = buffer_size - buffer_data_start;
 
     if (copy <= part)
@@ -188,7 +186,7 @@ bool sdlout_open_audio (int format, int rate, int chan)
     sdlout_rate = rate;
 
     buffer_size = 2 * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
-    buffer = g_new (unsigned char, buffer_size);
+    buffer = new unsigned char[buffer_size];
     buffer_data_start = 0;
     buffer_data_len = 0;
 
@@ -207,7 +205,7 @@ bool sdlout_open_audio (int format, int rate, int chan)
     if (SDL_OpenAudio (& spec, nullptr) < 0)
     {
         sdlout_error ("Failed to open audio stream: %s.\n", SDL_GetError ());
-        g_free (buffer);
+        delete[] buffer;
         buffer = nullptr;
         return 0;
     }
@@ -219,7 +217,7 @@ void sdlout_close_audio (void)
 {
     AUDDBG ("Closing audio.\n");
     SDL_CloseAudio ();
-    g_free (buffer);
+    delete[] buffer;
     buffer = nullptr;
 }
 

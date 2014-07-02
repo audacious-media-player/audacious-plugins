@@ -84,8 +84,7 @@ static const PreferencesWidget oss_widgets[] = {
 };
 
 static const PluginPreferences oss_prefs = {
-    oss_widgets,
-    ARRAY_LEN(oss_widgets),
+    {oss_widgets},
     combo_init,
     nullptr,  // apply
     combo_cleanup

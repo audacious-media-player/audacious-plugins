@@ -180,10 +180,7 @@ static const PreferencesWidget mixer_widgets[] = {
         {1, AUD_MAX_CHANNELS, 1})
 };
 
-static const PluginPreferences mixer_prefs = {
-    mixer_widgets,
-    ARRAY_LEN (mixer_widgets)
-};
+static const PluginPreferences mixer_prefs = {{mixer_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Channel Mixer")
 #define AUD_PLUGIN_ABOUT       mixer_about

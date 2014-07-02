@@ -40,7 +40,7 @@ enum {DOCK_LEFT, DOCK_RIGHT, DOCK_TOP, DOCK_BOTTOM, DOCKS};
  gtk_widget_destroyed, & (w))
 
 typedef struct {
-    char * name;
+    String name;
     PluginHandle * plugin;
     GtkWidget * widget, * vbox, * paned, * window;
     int dock, x, y, w, h;
@@ -55,8 +55,8 @@ static GtkWidget * menu = nullptr;
 
 static Item * item_new (const char * name)
 {
-    Item * item = g_slice_new (Item);
-    item->name = str_get (name);
+    Item * item = new Item ();
+    item->name = String (name);
     item->plugin = nullptr;
     item->widget = item->vbox = item->paned = item->window = nullptr;
     item->dock = item->x = item->y = -1;
@@ -587,8 +587,7 @@ void layout_cleanup (void)
     {
         Item * item = (Item *) node->data;
         g_return_if_fail (! item->widget && ! item->vbox && ! item->window);
-        str_unref (item->name);
-        g_slice_free (Item, item);
+        delete item;
     }
 
     g_list_free (items);

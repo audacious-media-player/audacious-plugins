@@ -48,10 +48,7 @@ static const PreferencesWidget bscope_widgets[] = {
     WidgetCustom (bscope_get_color_chooser)
 };
 
-static const PluginPreferences bscope_prefs = {
-    bscope_widgets,
-    ARRAY_LEN (bscope_widgets)
-};
+static const PluginPreferences bscope_prefs = {{bscope_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Blur Scope")
 #define AUD_PLUGIN_PREFS       & bscope_prefs
@@ -193,12 +190,12 @@ static void bscope_render (const float * data)
     bscope_blur ();
 
     int prev_y = (0.5 + data[0]) * height;
-    prev_y = CLAMP (prev_y, 0, height - 1);
+    prev_y = aud::clamp (prev_y, 0, height - 1);
 
     for (int i = 0; i < width; i ++)
     {
         int y = (0.5 + data[i * 512 / width]) * height;
-        y = CLAMP (y, 0, height - 1);
+        y = aud::clamp (y, 0, height - 1);
         draw_vert_line (i, prev_y, y);
         prev_y = y;
     }
