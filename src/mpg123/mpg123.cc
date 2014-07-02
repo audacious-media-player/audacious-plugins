@@ -386,7 +386,7 @@ static bool mpg123_write_tag (const char * filename, VFSFile * handle, const Tup
 	if (! handle)
 		return false;
 
-	return audtag::tuple_write (tuple, handle, TAG_TYPE_ID3V2);
+    return audtag::tuple_write (tuple, handle, audtag::TagType::ID3v2);
 }
 
 static bool mpg123_get_image (const char * filename, VFSFile * handle,

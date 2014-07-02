@@ -251,7 +251,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
 
 static bool wv_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
 {
-    return audtag::tuple_write(tuple, handle, TAG_TYPE_APE);
+    return audtag::tuple_write(tuple, handle, audtag::TagType::APE);
 }
 
 static const char wv_about[] =

@@ -353,9 +353,9 @@ static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tupl
         return false;
 
     if (str_has_suffix_nocase (vfs_get_filename (file), ".ape"))
-        return audtag::tuple_write(tuple, file, TAG_TYPE_APE);
+        return audtag::tuple_write(tuple, file, audtag::TagType::APE);
 
-    return audtag::tuple_write(tuple, file, TAG_TYPE_NONE);
+    return audtag::tuple_write(tuple, file, audtag::TagType::None);
 }
 
 static bool ffaudio_play (const char * filename, VFSFile * file)
