@@ -149,7 +149,8 @@ mainwin_menubtn_cb(void)
 {
     int x, y;
     gtk_window_get_position(GTK_WINDOW(mainwin), &x, &y);
-    menu_popup (UI_MENU_MAIN, x + 6, y + MAINWIN_SHADED_HEIGHT, FALSE, FALSE, 1, GDK_CURRENT_TIME);
+    menu_popup (UI_MENU_MAIN, x + 6 * config.scale,
+     y + MAINWIN_SHADED_HEIGHT * config.scale, FALSE, FALSE, 1, GDK_CURRENT_TIME);
 }
 
 static void mainwin_minimize_cb (void)
@@ -255,6 +256,9 @@ static void setup_widget (GtkWidget * widget, int x, int y, gboolean show)
         /* use get_size_request(), not get_preferred_size() */
         /* get_preferred_size() will return 0x0 for hidden widgets */
         gtk_widget_get_size_request (widget, & width, & height);
+
+        width /= config.scale;
+        height /= config.scale;
 
         /* hide widgets that are outside the window boundary */
         if (x < 0 || x + width > active_skin->properties.mainwin_width ||
@@ -434,7 +438,8 @@ mainwin_mouse_button_press(GtkWidget * widget,
                            void * callback_data)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
-     event->window == gtk_widget_get_window (widget) && event->y < 14)
+     event->window == gtk_widget_get_window (widget)&&
+     event->y < 14 * config.scale)
     {
         mainwin_shade_toggle ();
         return TRUE;
@@ -828,18 +833,22 @@ static void mainwin_set_volume_diff (int diff)
 
 void mainwin_mr_change (MenuRowItem i)
 {
-    switch (i) {
+    switch (i)
+    {
         case MENUROW_OPTIONS:
-            mainwin_lock_info_text(_("Options Menu"));
+            mainwin_lock_info_text (_("Options Menu"));
             break;
         case MENUROW_ALWAYS:
             if (aud_get_bool ("skins", "always_on_top"))
-                mainwin_lock_info_text(_("Disable 'Always On Top'"));
+                mainwin_lock_info_text (_("Disable 'Always On Top'"));
             else
-                mainwin_lock_info_text(_("Enable 'Always On Top'"));
+                mainwin_lock_info_text (_("Enable 'Always On Top'"));
             break;
         case MENUROW_FILEINFOBOX:
-            mainwin_lock_info_text(_("File Info Box"));
+            mainwin_lock_info_text (_("File Info Box"));
+            break;
+        case MENUROW_SCALE:
+            mainwin_lock_info_text (_("Double Size"));
             break;
         default:
             break;
@@ -857,6 +866,9 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
             break;
         case MENUROW_FILEINFOBOX:
             audgui_infowin_show_current ();
+            break;
+        case MENUROW_SCALE:
+            view_set_double_size (! aud_get_bool ("skins", "double_size"));
             break;
         default:
             break;

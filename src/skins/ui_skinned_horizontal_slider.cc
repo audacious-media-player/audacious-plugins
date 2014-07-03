@@ -28,6 +28,7 @@
 #include <libaudcore/objects.h>
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_horizontal_slider.h"
 
@@ -67,7 +68,7 @@ static gboolean hslider_button_press (GtkWidget * hslider, GdkEventButton *
         return FALSE;
 
     data->pressed = TRUE;
-    data->pos = event->x - data->kw / 2;
+    data->pos = event->x / config.scale - data->kw / 2;
     data->pos = aud::clamp (data->pos, data->min, data->max);
 
     if (data->on_motion)
@@ -90,7 +91,7 @@ static gboolean hslider_button_release (GtkWidget * hslider, GdkEventButton *
         return TRUE;
 
     data->pressed = FALSE;
-    data->pos = event->x - data->kw / 2;
+    data->pos = event->x / config.scale - data->kw / 2;
     data->pos = aud::clamp (data->pos, data->min, data->max);
 
     if (data->on_release)
@@ -110,7 +111,7 @@ static gboolean hslider_motion_notify (GtkWidget * hslider, GdkEventMotion *
         return TRUE;
 
     data->pressed = TRUE;
-    data->pos = event->x - data->kw / 2;
+    data->pos = event->x / config.scale - data->kw / 2;
     data->pos = aud::clamp (data->pos, data->min, data->max);
 
     if (data->on_motion)
@@ -129,7 +130,7 @@ GtkWidget * hslider_new (int min, int max, SkinPixmapId si, int w, int h,
  int fx, int fy, int kw, int kh, int knx, int kny, int kpx, int kpy)
 {
     GtkWidget * hslider = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (hslider, w, h);
+    gtk_widget_set_size_request (hslider, w * config.scale, h * config.scale);
     gtk_widget_add_events (hslider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 

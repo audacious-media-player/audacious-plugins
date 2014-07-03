@@ -26,6 +26,7 @@
  */
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_monostereo.h"
 
@@ -53,7 +54,7 @@ DRAW_FUNC_END
 GtkWidget * ui_skinned_monostereo_new (void)
 {
     GtkWidget * monostereo = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (monostereo, 56, 12);
+    gtk_widget_set_size_request (monostereo, 56 * config.scale, 12 * config.scale);
     DRAW_CONNECT (monostereo, monostereo_draw);
     return monostereo;
 }

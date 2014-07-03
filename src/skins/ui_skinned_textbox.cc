@@ -55,13 +55,13 @@ DRAW_FUNC_BEGIN (textbox_draw)
 
     if (data->scrolling)
     {
-        cairo_set_source_surface (cr, data->buf, -data->offset, 0);
+        cairo_set_source_surface (cr, data->buf, -data->offset * config.scale, 0);
         cairo_paint (cr);
 
         if (-data->offset + data->buf_width < data->width)
         {
-            cairo_set_source_surface (cr, data->buf, -data->offset +
-             data->buf_width, 0);
+            cairo_set_source_surface (cr, data->buf, (-data->offset +
+             data->buf_width) * config.scale, 0);
             cairo_paint (cr);
         }
     }
@@ -113,11 +113,14 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     PangoRectangle rect;
     pango_layout_get_pixel_extents (layout, & rect, nullptr);
 
-    gtk_widget_set_size_request (textbox, data->width, rect.height);
+    rect.width = aud::max (rect.width, 1);
+    rect.height = aud::max (rect.height, 1);
 
-    data->buf_width = aud::max (rect.width, data->width);
+    gtk_widget_set_size_request (textbox, data->width * config.scale, rect.height);
+
+    data->buf_width = aud::max ((rect.width + config.scale - 1) / config.scale, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width, rect.height);
+     data->buf_width * config.scale, rect.height);
 
     cairo_t * cr = cairo_create (data->buf);
 
@@ -184,7 +187,7 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
     int cw = active_skin->properties.textbox_bitmap_font_width;
     int ch = active_skin->properties.textbox_bitmap_font_height;
 
-    gtk_widget_set_size_request (textbox, data->width, ch);
+    gtk_widget_set_size_request (textbox, data->width * config.scale, ch * config.scale);
 
     long len;
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
@@ -192,7 +195,7 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
     data->buf_width = aud::max (cw * (int) len, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width, ch);
+     data->buf_width * config.scale, ch * config.scale);
 
     cairo_t * cr = cairo_create (data->buf);
 

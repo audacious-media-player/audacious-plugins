@@ -26,6 +26,7 @@
  */
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
 
@@ -76,6 +77,6 @@ void ui_skinned_playstatus_set_size (GtkWidget * playstatus, int width, int
     playstatus_width = width;
     playstatus_height = height;
 
-    gtk_widget_set_size_request (playstatus, width, height);
+    gtk_widget_set_size_request (playstatus, width * config.scale, height * config.scale);
     gtk_widget_queue_draw (playstatus);
 }

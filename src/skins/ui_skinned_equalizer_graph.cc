@@ -26,6 +26,7 @@
 #include <libaudcore/runtime.h>
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_equalizer_graph.h"
 
@@ -85,6 +86,8 @@ DRAW_FUNC_BEGIN (eq_graph_draw)
     skin_draw_pixbuf (cr, SKIN_EQMAIN, 0, 314, 0, 9 + (aud_get_double (nullptr,
      "equalizer_preamp") * 9 + AUD_EQ_MAX_GAIN / 2) / AUD_EQ_MAX_GAIN, 113, 1);
 
+    cairo_scale (cr, config.scale, config.scale);
+
     uint32_t cols[19];
     skin_get_eq_spline_colors(active_skin, cols);
 
@@ -133,7 +136,7 @@ DRAW_FUNC_END
 GtkWidget * eq_graph_new (void)
 {
     GtkWidget * graph = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (graph, 113, 19);
+    gtk_widget_set_size_request (graph, 113 * config.scale, 19 * config.scale);
     DRAW_CONNECT (graph, eq_graph_draw);
     return graph;
 }

@@ -62,6 +62,7 @@ static const char * const skins_defaults[] = {
 
  /* windows */
  "always_on_top", "FALSE",
+ "double_size", "FALSE",
  "equalizer_shaded", "FALSE",
  "equalizer_visible", "FALSE",
  "equalizer_x", "20",
@@ -131,6 +132,8 @@ void skins_cfg_load (void)
 
     for (auto & nument : skins_numents)
         * nument.ptr = aud_get_int ("skins", nument.name);
+
+    config.scale = aud_get_bool ("skins", "double_size") ? 2 : 1;
 }
 
 void skins_cfg_save (void)

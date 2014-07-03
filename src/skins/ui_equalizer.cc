@@ -142,7 +142,8 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
                    void * callback_data)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
-     event->window == gtk_widget_get_window (widget) && event->y < 14)
+     event->window == gtk_widget_get_window (widget) &&
+     event->y < 14 * config.scale)
     {
         equalizerwin_shade_toggle ();
         return TRUE;
