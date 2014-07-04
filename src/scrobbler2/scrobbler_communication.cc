@@ -374,7 +374,7 @@ static void save_line_to_remove(GSList **lines_to_remove, int linenumber) {
 
 static void scrobble_cached_queue() {
 
-    char *queuepath = g_build_filename(aud_get_path(AUD_PATH_USER_DIR),"scrobbler.log", nullptr);
+    char *queuepath = g_build_filename(aud_get_path(AudPath::UserDir),"scrobbler.log", nullptr);
     char *contents = nullptr;
     gboolean success;
     char **lines = nullptr;

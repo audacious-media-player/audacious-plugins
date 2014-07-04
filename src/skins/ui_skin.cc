@@ -353,7 +353,7 @@ init_skins(const char * path)
 
         /* can't load configured skin, retry with default */
         char * def = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "Skins"
-         G_DIR_SEPARATOR_S "Default", aud_get_path (AUD_PATH_DATA_DIR));
+         G_DIR_SEPARATOR_S "Default", aud_get_path (AudPath::DataDir));
 
         if (! active_skin_load (def))
         {

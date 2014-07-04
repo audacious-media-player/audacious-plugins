@@ -435,7 +435,7 @@ static void pcm_changed (GtkComboBox * combo, void * unused)
 
     alsa_config_pcm = String (pcm);
 
-    aud_output_reset (OUTPUT_RESET_SOFT);
+    aud_output_reset (OutputReset::ReopenStream);
 }
 
 static void mixer_changed (GtkComboBox * combo, void * unused)

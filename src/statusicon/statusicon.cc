@@ -74,7 +74,7 @@ static GtkStatusIcon *si_create(void)
     else
     {
         char * path = g_strdup_printf ("%s/images/audacious.png",
-         aud_get_path (AUD_PATH_DATA_DIR));
+         aud_get_path (AudPath::DataDir));
         icon = gtk_status_icon_new_from_file (path);
         g_free (path);
     }

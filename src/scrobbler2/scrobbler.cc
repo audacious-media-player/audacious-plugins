@@ -71,7 +71,7 @@ StringBuf clean_string (const char *string) {
 static gboolean queue_track_to_scrobble (void * data) {
     AUDDBG("The playing track is going to be ENQUEUED!\n.");
 
-    char *queuepath = g_strconcat(aud_get_path(AUD_PATH_USER_DIR),"/scrobbler.log", nullptr);
+    char *queuepath = g_strconcat(aud_get_path(AudPath::UserDir),"/scrobbler.log", nullptr);
 
     StringBuf artist = clean_string (playing_track.get_str (FIELD_ARTIST));
     StringBuf title  = clean_string (playing_track.get_str (FIELD_TITLE));
