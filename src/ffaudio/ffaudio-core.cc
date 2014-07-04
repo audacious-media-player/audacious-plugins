@@ -260,9 +260,6 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
 
 static bool ffaudio_probe (const char * filename, VFSFile * file)
 {
-    if (! file)
-        return false;
-
     return get_format (filename, file) ? true : false;
 }
 
@@ -336,9 +333,6 @@ static Tuple read_tuple (const char * filename, VFSFile * file)
 static Tuple
 ffaudio_probe_for_tuple(const char *filename, VFSFile *fd)
 {
-    if (! fd)
-        return Tuple ();
-
     Tuple t = read_tuple (filename, fd);
 
     if (t && ! vfs_fseek (fd, 0, SEEK_SET))
@@ -349,20 +343,24 @@ ffaudio_probe_for_tuple(const char *filename, VFSFile *fd)
 
 static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple & tuple)
 {
-    if (! file)
-        return false;
+    if (str_has_suffix_nocase (filename, ".ape"))
+        return audtag::tuple_write (tuple, file, audtag::TagType::APE);
 
-    if (str_has_suffix_nocase (vfs_get_filename (file), ".ape"))
-        return audtag::tuple_write(tuple, file, audtag::TagType::APE);
+    return audtag::tuple_write (tuple, file, audtag::TagType::None);
+}
 
-    return audtag::tuple_write(tuple, file, audtag::TagType::None);
+static bool ffaudio_read_image (const char * filename, VFSFile * file,
+ void * * data, int64_t * size)
+{
+    if (str_has_suffix_nocase (filename, ".m4a") || str_has_suffix_nocase (filename, ".mp4"))
+        return read_itunes_cover (filename, file, data, size);
+    
+    return false;
 }
 
 static bool ffaudio_play (const char * filename, VFSFile * file)
 {
     AUDDBG ("Playing %s.\n", filename);
-    if (! file)
-        return false;
 
     AVPacket pkt = AVPacket();
     int errcount;
@@ -578,8 +576,8 @@ static const char *ffaudio_fmts[] = {
     /* VQF */
     "vqf",
 
-    /* Apple Lossless */
-    "m4a",
+    /* MPEG-4 */
+    "m4a", "mp4",
 
     /* WAV (there are some WAV formats sndfile can't handle) */
     "wav",
@@ -609,6 +607,7 @@ static const char * const ffaudio_mimes[] = {"application/ogg", nullptr};
 #define AUD_INPUT_READ_TUPLE   ffaudio_probe_for_tuple
 #define AUD_INPUT_PLAY         ffaudio_play
 #define AUD_INPUT_WRITE_TUPLE  ffaudio_write_tag
+#define AUD_INPUT_READ_IMAGE   ffaudio_read_image
 
 /* lowest priority fallback */
 #define AUD_INPUT_PRIORITY     10

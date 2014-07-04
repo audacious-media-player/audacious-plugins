@@ -1,6 +1,6 @@
 PLUGIN = ffaudio${PLUGIN_SUFFIX}
 
-SRCS = ffaudio-core.cc ffaudio-io.cc
+SRCS = ffaudio-core.cc ffaudio-io.cc itunes-cover.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

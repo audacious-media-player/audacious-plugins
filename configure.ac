@@ -445,7 +445,7 @@ if test "x$enable_aac" != "xno"; then
                     [have_aac=yes
                      AC_SUBST(FAAD_CFLAGS)
                      AC_SUBST(FAAD_LIBS)
-                     INPUT_PLUGINS="$INPUT_PLUGINS aac aac-raw"])],
+                     INPUT_PLUGINS="$INPUT_PLUGINS aac-raw"])],
                 [], [#include <neaacdec.h>])],
             [], [#include <neaacdec.h>])]
     )
