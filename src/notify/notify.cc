@@ -53,14 +53,17 @@ static const char * const notify_defaults[] = {
 
 static bool plugin_init (void)
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     aud_config_set_defaults ("notify", notify_defaults);
 
     if (! notify_init ("Audacious"))
-        return FALSE;
+        return false;
 
     audgui_init ();
     event_init ();
-    return TRUE;
+    return true;
 }
 
 static void plugin_cleanup (void)

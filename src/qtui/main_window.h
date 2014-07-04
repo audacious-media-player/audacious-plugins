@@ -41,6 +41,7 @@ public:
     ~MainWindow ();
 
 protected:
+    void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
 
 public slots:

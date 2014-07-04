@@ -22,6 +22,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/runtime.h>
 
 #include "filter_input.h"
 #include "main_window.h"
@@ -218,6 +219,12 @@ void MainWindow::createErrorDialog (const QString &message)
     }
     errorDialog->setText (message);
     errorDialog->show ();
+}
+
+void MainWindow::closeEvent (QCloseEvent * e)
+{
+    aud_quit ();
+    e->ignore ();
 }
 
 void MainWindow::keyPressEvent (QKeyEvent * e)
