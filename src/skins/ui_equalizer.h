@@ -44,6 +44,7 @@ void equalizerwin_update_preset (EqualizerPreset & preset);
 void equalizerwin_import_presets (Index<EqualizerPreset> && presets);
 
 extern GtkWidget *equalizerwin;
+extern GtkWidget *equalizerwin_graph;
 
 extern Index<EqualizerPreset> equalizer_presets, equalizer_auto_presets;
 
