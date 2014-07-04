@@ -610,6 +610,10 @@ static gboolean skin_load (Skin * skin, const char * path)
         ui_skinned_playstatus_set_size (mainwin_playstatus, 11,
          cairo_image_surface_get_height (skin->pixmaps[SKIN_PLAYPAUSE]));
 
+    // hide the equalizer graph if we have a short eqmain.bmp
+    gtk_widget_set_visible (equalizerwin_graph,
+     cairo_image_surface_get_height (skin->pixmaps[SKIN_EQMAIN]) >= 315);
+
     return TRUE;
 }
 
@@ -619,10 +623,13 @@ void skin_draw_pixbuf (cairo_t * cr, SkinPixmapId id, int xsrc, int ysrc, int
     if (! active_skin->pixmaps[id])
         return;
 
-    cairo_set_source_surface (cr, active_skin->pixmaps[id], xdest - xsrc,
-     ydest - ysrc);
+    cairo_save (cr);
+    cairo_scale (cr, config.scale, config.scale);
+    cairo_set_source_surface (cr, active_skin->pixmaps[id], xdest - xsrc, ydest - ysrc);
+    cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
     cairo_rectangle (cr, xdest, ydest, width, height);
     cairo_fill (cr);
+    cairo_restore (cr);
 }
 
 void skin_get_eq_spline_colors (Skin * skin, uint32_t colors[19])

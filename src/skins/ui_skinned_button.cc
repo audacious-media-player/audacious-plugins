@@ -20,6 +20,7 @@
  */
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skinned_button.h"
 
 enum {BUTTON_TYPE_NORMAL, BUTTON_TYPE_TOGGLE, BUTTON_TYPE_SMALL};
@@ -145,7 +146,7 @@ static GtkWidget * button_new_base (int type, int w, int h)
     else
         button = gtk_drawing_area_new ();
 
-    gtk_widget_set_size_request (button, w, h);
+    gtk_widget_set_size_request (button, w * config.scale, h * config.scale);
     gtk_widget_add_events (button, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_LEAVE_NOTIFY_MASK);
 

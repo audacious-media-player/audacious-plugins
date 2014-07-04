@@ -42,7 +42,8 @@ typedef struct {
     PangoFontDescription * font;
     cairo_surface_t * buf;
     int buf_width;
-    gboolean may_scroll, scrolling, backward;
+    bool may_scroll, two_way;
+    bool scrolling, backward;
     int scroll_source;
     int offset, delay;
 } TextboxData;
@@ -55,13 +56,13 @@ DRAW_FUNC_BEGIN (textbox_draw)
 
     if (data->scrolling)
     {
-        cairo_set_source_surface (cr, data->buf, -data->offset, 0);
+        cairo_set_source_surface (cr, data->buf, -data->offset * config.scale, 0);
         cairo_paint (cr);
 
         if (-data->offset + data->buf_width < data->width)
         {
-            cairo_set_source_surface (cr, data->buf, -data->offset +
-             data->buf_width, 0);
+            cairo_set_source_surface (cr, data->buf, (-data->offset +
+             data->buf_width) * config.scale, 0);
             cairo_paint (cr);
         }
     }
@@ -83,19 +84,19 @@ static gboolean textbox_scroll (GtkWidget * textbox)
         return TRUE;
     }
 
-    if (config.twoway_scroll && data->backward)
+    if (data->two_way && data->backward)
         data->offset --;
     else
         data->offset ++;
 
-    if (config.twoway_scroll && (data->backward ? (data->offset <= 0) :
+    if (data->two_way && (data->backward ? (data->offset <= 0) :
      (data->offset + data->width >= data->buf_width)))
     {
         data->backward = ! data->backward;
         data->delay = 0;
     }
 
-    if (! config.twoway_scroll && data->offset >= data->buf_width)
+    if (! data->two_way && data->offset >= data->buf_width)
         data->offset = 0;
 
     gtk_widget_queue_draw (textbox);
@@ -110,21 +111,26 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     PangoLayout * layout = gtk_widget_create_pango_layout (textbox, text);
     pango_layout_set_font_description (layout, data->font);
 
-    PangoRectangle rect;
-    pango_layout_get_pixel_extents (layout, & rect, nullptr);
+    PangoRectangle ink, logical;
+    pango_layout_get_pixel_extents (layout, & ink, & logical);
 
-    gtk_widget_set_size_request (textbox, data->width, rect.height);
+    /* use logical width so as not to trim off the trailing space of the " --- " */
+    /* use ink height since vertical space is quite limited */
+    logical.width = aud::max (logical.width, 1);
+    ink.height = aud::max (ink.height, 1);
 
-    data->buf_width = aud::max (rect.width, data->width);
+    gtk_widget_set_size_request (textbox, data->width * config.scale, ink.height);
+
+    data->buf_width = aud::max ((logical.width + config.scale - 1) / config.scale, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width, rect.height);
+     data->buf_width * config.scale, ink.height);
 
     cairo_t * cr = cairo_create (data->buf);
 
     set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
-    cairo_move_to (cr, -rect.x, -rect.y);
+    cairo_move_to (cr, -logical.x, -ink.y);
     set_cairo_color (cr, active_skin->colors[SKIN_TEXTFG]);
     pango_cairo_show_layout (cr, layout);
 
@@ -184,7 +190,7 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
     int cw = active_skin->properties.textbox_bitmap_font_width;
     int ch = active_skin->properties.textbox_bitmap_font_height;
 
-    gtk_widget_set_size_request (textbox, data->width, ch);
+    gtk_widget_set_size_request (textbox, data->width * config.scale, ch * config.scale);
 
     long len;
     gunichar * utf32 = g_utf8_to_ucs4 (text, -1, nullptr, & len, nullptr);
@@ -192,7 +198,7 @@ static void textbox_render_bitmap (GtkWidget * textbox, TextboxData * data,
 
     data->buf_width = aud::max (cw * (int) len, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width, ch);
+     data->buf_width * config.scale, ch * config.scale);
 
     cairo_t * cr = cairo_create (data->buf);
 
@@ -245,7 +251,7 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
     {
         data->scrolling = TRUE;
 
-        if (! config.twoway_scroll)
+        if (! data->two_way)
         {
             if (data->buf)
             {
@@ -340,10 +346,11 @@ void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
     TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
-    if (data->may_scroll == scroll)
+    if (data->may_scroll == scroll && data->two_way == config.twoway_scroll)
         return;
 
     data->may_scroll = scroll;
+    data->two_way = config.twoway_scroll;
     textbox_render (textbox, data);
 }
 
@@ -380,6 +387,7 @@ GtkWidget * textbox_new (int width, const char * text, const char * font,
     data->width = width;
     data->text = g_strdup (text);
     data->may_scroll = scroll;
+    data->two_way = config.twoway_scroll;
     g_object_set_data ((GObject *) textbox, "textboxdata", data);
 
     if (font)

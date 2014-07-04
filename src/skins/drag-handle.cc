@@ -20,6 +20,7 @@
  */
 
 #include "drag-handle.h"
+#include "skins_cfg.h"
 
 typedef struct {
     gboolean held;
@@ -68,8 +69,8 @@ static gboolean handle_motion (GtkWidget * handle, GdkEventMotion * event)
         return TRUE;
 
     if (data->drag)
-        data->drag (event->x_root - data->x_origin, event->y_root -
-         data->y_origin);
+        data->drag ((event->x_root - data->x_origin) / config.scale,
+         (event->y_root - data->y_origin) / config.scale);
 
     return TRUE;
 }
@@ -84,7 +85,7 @@ GtkWidget * drag_handle_new (int w, int h, void (* press) (void), void
 {
     GtkWidget * handle = gtk_event_box_new ();
     gtk_event_box_set_visible_window ((GtkEventBox *) handle, FALSE);
-    gtk_widget_set_size_request (handle, w, h);
+    gtk_widget_set_size_request (handle, w * config.scale, h * config.scale);
     gtk_widget_add_events (handle, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 

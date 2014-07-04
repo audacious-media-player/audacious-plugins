@@ -22,6 +22,7 @@
 
 #include <libaudcore/inifile.h>
 
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "util.h"
 
@@ -260,6 +261,9 @@ static void mask_handle_entry (const char * key, const char * value, void * data
 static cairo_region_t * skin_create_mask (const GArray * num,
  const GArray * point, int width, int height)
 {
+    width *= config.scale;
+    height *= config.scale;
+
     if (! num || ! point)
     {
         cairo_rectangle_int_t rect = {0, 0, width, height};
@@ -280,8 +284,8 @@ static cairo_region_t * skin_create_mask (const GArray * num,
 
         for (int k = 0; k < n_points; k ++)
         {
-            int x = g_array_index (point, int, j + k * 2);
-            int y = g_array_index (point, int, j + k * 2 + 1);
+            int x = g_array_index (point, int, j + k * 2) * config.scale;
+            int y = g_array_index (point, int, j + k * 2 + 1) * config.scale;
 
             xmin = aud::min (xmin, x);
             ymin = aud::min (ymin, y);

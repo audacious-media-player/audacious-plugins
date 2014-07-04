@@ -24,6 +24,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/hook.h>
 
+#include "plugin.h"
 #include "plugin-window.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
@@ -150,6 +151,20 @@ void view_apply_equalizer_shaded (void)
     window_set_size (equalizerwin, 275, shaded ? 14 : 116);
 
     equalizerwin_set_shape ();
+}
+
+void view_set_double_size (bool double_size)
+{
+    aud_set_bool ("skins", "double_size", double_size);
+    hook_call ("skins set double_size", nullptr);
+
+    view_apply_double_size ();
+}
+
+void view_apply_double_size (void)
+{
+    config.scale = aud_get_bool ("skins", "double_size") ? 2 : 1;
+    skins_restart ();
 }
 
 void view_set_on_top (bool on_top)

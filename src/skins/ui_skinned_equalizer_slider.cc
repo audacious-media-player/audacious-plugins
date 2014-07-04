@@ -25,6 +25,7 @@
 #include <libaudcore/i18n.h>
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
 #include "ui_skin.h"
@@ -80,7 +81,7 @@ static gboolean eq_slider_button_press (GtkWidget * slider, GdkEventButton *
 
     data->pressed = TRUE;
 
-    eq_slider_moved (data, event->y - 5);
+    eq_slider_moved (data, event->y / config.scale - 5);
     gtk_widget_queue_draw (slider);
     return TRUE;
 }
@@ -99,7 +100,7 @@ static gboolean eq_slider_button_release (GtkWidget * slider, GdkEventButton *
 
     data->pressed = FALSE;
 
-    eq_slider_moved (data, event->y - 5);
+    eq_slider_moved (data, event->y / config.scale - 5);
     gtk_widget_queue_draw (slider);
     return TRUE;
 }
@@ -112,7 +113,7 @@ static gboolean eq_slider_motion (GtkWidget * slider, GdkEventMotion * event)
     if (! data->pressed)
         return TRUE;
 
-    eq_slider_moved (data, event->y - 5);
+    eq_slider_moved (data, event->y / config.scale - 5);
     gtk_widget_queue_draw (slider);
     return TRUE;
 }
@@ -166,7 +167,7 @@ static void eq_slider_destroy (GtkWidget * slider)
 GtkWidget * eq_slider_new (const char * name)
 {
     GtkWidget * slider = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (slider, 14, 63);
+    gtk_widget_set_size_request (slider, 14 * config.scale, 63 * config.scale);
     gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK | GDK_SCROLL_MASK);
 

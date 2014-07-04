@@ -22,6 +22,7 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
@@ -105,15 +106,8 @@ static gboolean update_cb (void * unused)
     return TRUE;
 }
 
-static bool skins_init (void)
+static void skins_init_main (void)
 {
-    audgui_init ();
-
-    skins_init_paths();
-    skins_cfg_load();
-
-    menu_init ();
-
     init_skins (aud_get_str ("skins", "skin"));
 
     view_apply_on_top ();
@@ -129,31 +123,56 @@ static bool skins_init (void)
         mainwin_update_song_info ();
 
     update_source = g_timeout_add (250, update_cb, nullptr);
+}
+
+static bool skins_init (void)
+{
+    audgui_init ();
+
+    skins_cfg_load ();
+    skins_init_paths ();
+
+    menu_init ();
+    skins_init_main ();
 
     create_plugin_windows ();
 
     return TRUE;
 }
 
-static void skins_cleanup (void)
+static void skins_cleanup_main (void)
 {
-    destroy_plugin_windows ();
-
     mainwin_unhook ();
     playlistwin_unhook ();
     g_source_remove (update_source);
 
-    skins_cfg_save();
-
-    cleanup_skins();
-    skins_free_paths();
+    cleanup_skins ();
 
     eq_preset_browser_cleanup ();
     eq_preset_list_cleanup ();
+}
 
+static void skins_cleanup (void)
+{
+    skins_cfg_save ();
+
+    destroy_plugin_windows ();
+
+    skins_cleanup_main ();
     menu_cleanup ();
 
+    skins_free_paths();
+
     audgui_cleanup ();
+}
+
+void skins_restart (void)
+{
+    skins_cleanup_main ();
+    skins_init_main ();
+
+    if (aud_ui_is_shown ())
+        view_show_player (true);
 }
 
 gboolean handle_window_close (void)

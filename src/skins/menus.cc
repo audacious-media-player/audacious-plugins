@@ -126,7 +126,9 @@ static const AudguiMenuItem view_items[] = {
     MenuSep (),
     MenuToggle (N_("Roll Up Player"), nullptr, 'w', CTRL, "skins", "player_shaded", view_apply_player_shaded, "skins set player_shaded"),
     MenuToggle (N_("Roll Up Playlist Editor"), nullptr, 'w', SHIFT_CTRL, "skins", "playlist_shaded", view_apply_playlist_shaded, "skins set playlist_shaded"),
-    MenuToggle (N_("Roll Up Equalizer"), nullptr, 'w', CTRL_ALT, "skins", "equalizer_shaded", view_apply_equalizer_shaded, "skins set equalizer_shaded")
+    MenuToggle (N_("Roll Up Equalizer"), nullptr, 'w', CTRL_ALT, "skins", "equalizer_shaded", view_apply_equalizer_shaded, "skins set equalizer_shaded"),
+    MenuSep (),
+    MenuToggle (N_("Double Size"), nullptr, 'd', CTRL, "skins", "double_size", view_apply_double_size, "skins set double_size")
 };
 
 static const AudguiMenuItem playlist_add_items[] = {

@@ -20,6 +20,7 @@
  */
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_dock.h"
 #include "ui_skinned_window.h"
 
@@ -99,6 +100,9 @@ static void window_destroy (GtkWidget * window)
 GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
  gboolean shaded, void (* draw) (GtkWidget * window, cairo_t * cr))
 {
+    w *= config.scale;
+    h *= config.scale;
+
     GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_decorated ((GtkWindow *) window, FALSE);
     gtk_window_set_resizable ((GtkWindow *) window, FALSE);
@@ -139,6 +143,9 @@ GtkWidget * window_new (int * x, int * y, int w, int h, gboolean main,
 
 void window_set_size (GtkWidget * window, int w, int h)
 {
+    w *= config.scale;
+    h *= config.scale;
+
     gtk_widget_set_size_request (window, w, h);
     gtk_window_resize ((GtkWindow *) window, w, h);
     dock_set_size (window, w, h);
@@ -169,6 +176,9 @@ void window_set_shaded (GtkWidget * window, gboolean shaded)
 void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
  int x, int y)
 {
+    x *= config.scale;
+    y *= config.scale;
+
     WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 
@@ -179,6 +189,9 @@ void window_put_widget (GtkWidget * window, gboolean shaded, GtkWidget * widget,
 void window_move_widget (GtkWidget * window, gboolean shaded, GtkWidget *
  widget, int x, int y)
 {
+    x *= config.scale;
+    y *= config.scale;
+
     WindowData * data = (WindowData *) g_object_get_data ((GObject *) window, "windowdata");
     g_return_if_fail (data);
 

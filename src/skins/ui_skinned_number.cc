@@ -26,6 +26,7 @@
  */
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_number.h"
 
@@ -49,7 +50,7 @@ static void number_destroy (GtkWidget * number)
 GtkWidget * ui_skinned_number_new (void)
 {
     GtkWidget * number = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (number, 9, 13);
+    gtk_widget_set_size_request (number, 9 * config.scale, 13 * config.scale);
 
     gtk_widget_add_events (number, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
@@ -87,6 +88,6 @@ void ui_skinned_number_set_size (GtkWidget * number, int width, int height)
     data->w = width;
     data->h = height;
 
-    gtk_widget_set_size_request (number, width, height);
+    gtk_widget_set_size_request (number, width * config.scale, height * config.scale);
     gtk_widget_queue_draw (number);
 }

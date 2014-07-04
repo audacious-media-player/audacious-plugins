@@ -335,7 +335,7 @@ static void playlist_destroy (GtkWidget * list)
 GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font)
 {
     GtkWidget * list = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (list, width, height);
+    gtk_widget_set_size_request (list, width * config.scale, height * config.scale);
     gtk_widget_add_events (list, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_LEAVE_NOTIFY_MASK | GDK_POINTER_MOTION_MASK);
 
@@ -351,8 +351,8 @@ GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font)
     g_signal_connect (list, "destroy", (GCallback) playlist_destroy, nullptr);
 
     PlaylistData * data = g_new0 (PlaylistData, 1);
-    data->width = width;
-    data->height = height;
+    data->width = width * config.scale;
+    data->height = height * config.scale;
     data->hover = -1;
     data->popup_pos = -1;
     g_object_set_data ((GObject *) list, "playlistdata", data);
@@ -375,10 +375,10 @@ void ui_skinned_playlist_resize (GtkWidget * list, int width, int height)
     PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_if_fail (data);
 
-    gtk_widget_set_size_request (list, width, height);
+    gtk_widget_set_size_request (list, width * config.scale, height * config.scale);
 
-    data->width = width;
-    data->height = height;
+    data->width = width * config.scale;
+    data->height = height * config.scale;
 
     calc_layout (data);
     gtk_widget_queue_draw (list);

@@ -252,7 +252,7 @@ static Tuple aac_get_tuple (const char * filename, VFSFile * handle)
             tuple.set_int (FIELD_BITRATE, bitrate);
     }
 
-    tag_update_stream_metadata (tuple, handle);
+    tuple.fetch_stream_info (handle);
 
     return tuple;
 }
@@ -382,7 +382,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
     /* == CHECK FOR METADATA == */
 
-    if (tuple && tag_update_stream_metadata (tuple, file))
+    if (tuple && tuple.fetch_stream_info (file))
         aud_input_set_tuple (tuple.ref ());
 
     /* == START PLAYBACK == */
@@ -415,7 +415,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
         /* == CHECK FOR METADATA == */
 
-        if (tuple && tag_update_stream_metadata (tuple, file))
+        if (tuple && tuple.fetch_stream_info (file))
             aud_input_set_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */

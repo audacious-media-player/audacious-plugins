@@ -56,7 +56,7 @@ static void equalizerwin_set_band (int band, float value);
 static void position_cb (void * data, void * user_data);
 
 GtkWidget *equalizerwin;
-static GtkWidget *equalizerwin_graph;
+GtkWidget *equalizerwin_graph;
 
 static GtkWidget *equalizerwin_on, *equalizerwin_auto;
 
@@ -142,7 +142,8 @@ equalizerwin_press(GtkWidget * widget, GdkEventButton * event,
                    void * callback_data)
 {
     if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
-     event->window == gtk_widget_get_window (widget) && event->y < 14)
+     event->window == gtk_widget_get_window (widget) &&
+     event->y < 14 * config.scale)
     {
         equalizerwin_shade_toggle ();
         return TRUE;
@@ -282,6 +283,7 @@ equalizerwin_create_widgets(void)
     button_on_release (equalizerwin_shaded_shade, (ButtonCB) equalizerwin_shade_toggle);
 
     equalizerwin_graph = eq_graph_new ();
+    gtk_widget_set_no_show_all (equalizerwin_graph, TRUE);  // shown or hidden in skin_load()
     window_put_widget (equalizerwin, FALSE, equalizerwin_graph, 86, 17);
 
     equalizerwin_preamp = eq_slider_new (_("Preamp"));

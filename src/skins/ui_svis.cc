@@ -175,7 +175,9 @@ DRAW_FUNC_BEGIN (ui_svis_draw)
 DRAW:;
     cairo_surface_t * surf = cairo_image_surface_create_for_data
      ((unsigned char *) rgb, CAIRO_FORMAT_RGB24, 38, 5, 4 * 38);
+    cairo_scale (cr, config.scale, config.scale);
     cairo_set_source_surface (cr, surf, 0, 0);
+    cairo_pattern_set_filter (cairo_get_source (cr), CAIRO_FILTER_NEAREST);
     cairo_paint (cr);
     cairo_surface_destroy (surf);
 DRAW_FUNC_END
@@ -183,7 +185,7 @@ DRAW_FUNC_END
 GtkWidget * ui_svis_new (void)
 {
     GtkWidget * wid = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (wid, 38, 5);
+    gtk_widget_set_size_request (wid, 38 * config.scale, 5 * config.scale);
     gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK);
     DRAW_CONNECT (wid, ui_svis_draw);
     return wid;

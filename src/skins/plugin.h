@@ -21,6 +21,8 @@
 #ifndef PLUGIN_SKINS_H
 #define PLUGIN_SKINS_H
 
+#include <glib.h>
+
 enum {
     SKINS_PATH_USER_SKIN_DIR,
     SKINS_PATH_SKIN_THUMB_DIR,
@@ -28,6 +30,8 @@ enum {
 };
 
 extern char * skins_paths[];
+
+void skins_restart (void);
 
 gboolean handle_window_close (void);
 

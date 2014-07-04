@@ -235,7 +235,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 		audtag::tuple_read (tuple, file);
 
 	if (stream)
-		tag_update_stream_metadata (tuple, file);
+		tuple.fetch_stream_info (file);
 
 	return tuple;
 }
@@ -350,7 +350,7 @@ GET_FORMAT:
 			bitrate_updated = aud_input_written_time ();
 		}
 
-		if (ctx.tu && tag_update_stream_metadata (ctx.tu, file))
+		if (ctx.tu && ctx.tu.fetch_stream_info (file))
 			aud_input_set_tuple (ctx.tu.ref ());
 
 		if (! outbuf_size && (ret = mpg123_read (ctx.decoder,

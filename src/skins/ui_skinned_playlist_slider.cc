@@ -28,6 +28,7 @@
 #include <libaudcore/objects.h>
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_playlist.h"
 #include "ui_skin.h"
 #include "ui_skinned_playlist.h"
@@ -76,7 +77,7 @@ static gboolean pl_slider_button_press (GtkWidget * slider, GdkEventButton *
         return FALSE;
 
     pl_slider_pressed = TRUE;
-    pl_slider_set_pos (event->y - 9);
+    pl_slider_set_pos (event->y / config.scale - 9);
 
     gtk_widget_queue_draw (slider);
     return TRUE;
@@ -92,7 +93,7 @@ static gboolean pl_slider_button_release (GtkWidget * slider, GdkEventButton *
         return TRUE;
 
     pl_slider_pressed = FALSE;
-    pl_slider_set_pos (event->y - 9);
+    pl_slider_set_pos (event->y / config.scale - 9);
 
     gtk_widget_queue_draw (slider);
     return TRUE;
@@ -103,7 +104,7 @@ static gboolean pl_slider_motion (GtkWidget * slider, GdkEventMotion * event)
     if (! pl_slider_pressed)
         return TRUE;
 
-    pl_slider_set_pos (event->y - 9);
+    pl_slider_set_pos (event->y / config.scale - 9);
 
     gtk_widget_queue_draw (slider);
     return TRUE;
@@ -112,7 +113,7 @@ static gboolean pl_slider_motion (GtkWidget * slider, GdkEventMotion * event)
 GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * list, int height)
 {
     GtkWidget * slider = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (slider, 8, height);
+    gtk_widget_set_size_request (slider, 8 * config.scale, height * config.scale);
     gtk_widget_add_events (slider, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK | GDK_POINTER_MOTION_MASK);
 
@@ -133,7 +134,7 @@ GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * list, int height)
 void ui_skinned_playlist_slider_resize (GtkWidget * slider, int height)
 {
     pl_slider_height = height;
-    gtk_widget_set_size_request (slider, 8, height);
+    gtk_widget_set_size_request (slider, 8 * config.scale, height * config.scale);
     gtk_widget_queue_draw (slider);
 }
 
