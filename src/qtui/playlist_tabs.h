@@ -42,7 +42,7 @@ public slots:
 private:
     void populatePlaylists ();
     void maybeCreateTab (int count_, int uniq_id);
-    void cullDestroyedPlaylists ();
+    void cullPlaylists ();
 
     static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
     {
@@ -55,9 +55,6 @@ private:
 
         for (int list = 0; list < lists; list ++)
         {
-            // if (global_level >= PLAYLIST_UPDATE_METADATA)
-            // TODO: Set playlist title
-
             int at, count;
             int level = aud_playlist_updated_range (list, & at, & count);
 

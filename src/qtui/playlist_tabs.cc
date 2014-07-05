@@ -63,7 +63,7 @@ void PlaylistTabs::maybeCreateTab (int count_, int uniq_id)
     addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count_)));
 }
 
-void PlaylistTabs::cullDestroyedPlaylists ()
+void PlaylistTabs::cullPlaylists ()
 {
     int tabs = count ();
 
@@ -76,6 +76,8 @@ void PlaylistTabs::cullDestroyedPlaylists ()
              removeTab(i);
              delete playlistWidget;
          }
+         else
+             setTabText(i, QString (aud_playlist_get_title (playlistWidget->playlist())));
     }
 }
 
@@ -86,7 +88,7 @@ void PlaylistTabs::populatePlaylists ()
     for (int count = 0; count < playlists; count++)
         maybeCreateTab(count, aud_playlist_get_unique_id (count));
 
-    cullDestroyedPlaylists();
+    cullPlaylists();
 }
 
 Playlist * PlaylistTabs::playlistWidget (int num)
