@@ -41,7 +41,8 @@ typedef struct {
     PangoFontDescription * font;
     cairo_surface_t * buf;
     gint buf_width;
-    gboolean may_scroll, scrolling, backward;
+    gboolean may_scroll, two_way;
+    gboolean scrolling, backward;
     gint scroll_source;
     gint offset, delay;
 } TextboxData;
@@ -82,19 +83,19 @@ static gboolean textbox_scroll (GtkWidget * textbox)
         return TRUE;
     }
 
-    if (config.twoway_scroll && data->backward)
+    if (data->two_way && data->backward)
         data->offset --;
     else
         data->offset ++;
 
-    if (config.twoway_scroll && (data->backward ? (data->offset <= 0) :
+    if (data->two_way && (data->backward ? (data->offset <= 0) :
      (data->offset + data->width >= data->buf_width)))
     {
         data->backward = ! data->backward;
         data->delay = 0;
     }
 
-    if (! config.twoway_scroll && data->offset >= data->buf_width)
+    if (! data->two_way && data->offset >= data->buf_width)
         data->offset = 0;
 
     gtk_widget_queue_draw (textbox);
@@ -109,21 +110,26 @@ static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
     PangoLayout * layout = gtk_widget_create_pango_layout (textbox, text);
     pango_layout_set_font_description (layout, data->font);
 
-    PangoRectangle rect;
-    pango_layout_get_pixel_extents (layout, & rect, NULL);
+    PangoRectangle ink, logical;
+    pango_layout_get_pixel_extents (layout, & ink, & logical);
 
-    gtk_widget_set_size_request (textbox, data->width, rect.height);
+    /* use logical width so as not to trim off the trailing space of the " --- " */
+    /* use ink height since vertical space is quite limited */
+    logical.width = MAX (logical.width, 1);
+    ink.height = MAX (ink.height, 1);
 
-    data->buf_width = MAX (rect.width, data->width);
+    gtk_widget_set_size_request (textbox, data->width, ink.height);
+
+    data->buf_width = MAX (logical.width, data->width);
     data->buf = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-     data->buf_width, rect.height);
+     data->buf_width, ink.height);
 
     cairo_t * cr = cairo_create (data->buf);
 
     set_cairo_color (cr, active_skin->colors[SKIN_TEXTBG]);
     cairo_paint (cr);
 
-    cairo_move_to (cr, -rect.x, -rect.y);
+    cairo_move_to (cr, -logical.x, -ink.y);
     set_cairo_color (cr, active_skin->colors[SKIN_TEXTFG]);
     pango_cairo_show_layout (cr, layout);
 
@@ -244,7 +250,7 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
     {
         data->scrolling = TRUE;
 
-        if (! config.twoway_scroll)
+        if (! data->two_way)
         {
             if (data->buf)
             {
@@ -339,10 +345,11 @@ void textbox_set_scroll (GtkWidget * textbox, gboolean scroll)
     TextboxData * data = g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_if_fail (data);
 
-    if (data->may_scroll == scroll)
+    if (data->may_scroll == scroll && data->two_way == config.twoway_scroll)
         return;
 
     data->may_scroll = scroll;
+    data->two_way = config.twoway_scroll;
     textbox_render (textbox, data);
 }
 
@@ -379,6 +386,7 @@ GtkWidget * textbox_new (gint width, const gchar * text, const gchar * font,
     data->width = width;
     data->text = g_strdup (text);
     data->may_scroll = scroll;
+    data->two_way = config.twoway_scroll;
     g_object_set_data ((GObject *) textbox, "textboxdata", data);
 
     if (font)
