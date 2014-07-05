@@ -228,7 +228,7 @@ static bool_t get_lyrics_step_3(void *buf, int64_t len, void *requri)
 
 static bool_t get_lyrics_step_2(void *buf, int64_t len, void *requri)
 {
-	if (strcmp(state.uri, requri))
+	if (!state.uri || strcmp(state.uri, requri))
 	{
 		g_free(buf);
 		str_unref(requri);
