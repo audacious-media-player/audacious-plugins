@@ -67,6 +67,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     updateToggles ();
 
+    connect (actionQuit, &QAction::triggered, aud_quit);
+
     connect (actionRepeat, &QAction::toggled, [=] (bool checked)
     {
         aud_set_bool (nullptr, "repeat", checked);

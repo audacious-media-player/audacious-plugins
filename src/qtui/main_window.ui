@@ -85,6 +85,9 @@
     <addaction name="actionOpenURL"/>
     <addaction name="actionAddFiles"/>
     <addaction name="actionAddURL"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuPlayback">
     <property name="title">
@@ -349,6 +352,16 @@
   <action name="actionClearRepeatPoints">
    <property name="text">
     <string>Clear Repeat Points</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About Audacious</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
    </property>
   </action>
  </widget>
