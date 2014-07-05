@@ -65,6 +65,7 @@ private:
     void disableTimeCounter ();
     void createProgressDialog ();
     void createErrorDialog (const QString &message);
+    void updateToggles ();
 
     static void title_change_cb (void * unused, MainWindow * window)
     {
@@ -89,12 +90,24 @@ private:
         window->enableTimeCounter ();
     }
 
+    static void action_play_pause_set_play (MainWindow * window)
+    {
+        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+        window->actionPlayPause->setText ("Play");
+    }
+
+    static void action_play_pause_set_pause (MainWindow * window)
+    {
+        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
+        window->actionPlayPause->setText ("Pause");
+    }
+
     static void pause_cb (void * unused, MainWindow * window)
     {
         if (aud_drct_get_paused ())
-            window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+            action_play_pause_set_play (window);
         else
-            window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
+            action_play_pause_set_pause (window);
         window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
     }
 
@@ -104,8 +117,13 @@ private:
         window->disableTimeCounter ();
         window->disableSlider ();
 
-        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+        action_play_pause_set_play (window);
         window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    }
+
+    static void update_toggles_cb (void * unused, MainWindow * window)
+    {
+        window->updateToggles ();
     }
 
     static void show_progress_cb (void * message, MainWindow * window)

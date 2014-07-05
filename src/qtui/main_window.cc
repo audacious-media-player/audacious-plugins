@@ -65,8 +65,30 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     playlistTabs->setFocusPolicy (Qt::NoFocus);
     mainLayout->addWidget (playlistTabs);
 
-    connect (actionOpen,      &QAction::triggered, Utils::openFilesDialog);
-    connect (actionAdd,       &QAction::triggered, Utils::addFilesDialog);
+    updateToggles ();
+
+    connect (actionRepeat, &QAction::toggled, [=] (bool checked)
+    {
+        aud_set_bool (nullptr, "repeat", checked);
+    });
+
+    connect (actionShuffle, &QAction::triggered, [=] (bool checked)
+    {
+        aud_set_bool (nullptr, "shuffle", checked);
+    });
+
+    connect (actionNoPlaylistAdvance, &QAction::triggered, [=] (bool checked)
+    {
+        aud_set_bool (nullptr, "no_playlist_advance", checked);
+    });
+
+    connect (actionStopAfterThisSong, &QAction::triggered, [=] (bool checked)
+    {
+        aud_set_bool (nullptr, "stop_after_current_song", checked);
+    });
+
+    connect (actionOpenFiles, &QAction::triggered, Utils::openFilesDialog);
+    connect (actionAddFiles,  &QAction::triggered, Utils::addFilesDialog);
     connect (actionPlayPause, &QAction::triggered, aud_drct_play_pause);
     connect (actionStop,      &QAction::triggered, aud_drct_stop);
     connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
@@ -85,6 +107,11 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     hook_associate ("playback pause",   (HookFunction) pause_cb, this);
     hook_associate ("playback unpause", (HookFunction) pause_cb, this);
     hook_associate ("playback stop",    (HookFunction) playback_stop_cb, this);
+
+    hook_associate ("set repeat",                  (HookFunction) update_toggles_cb, this);
+    hook_associate ("set shuffle",                 (HookFunction) update_toggles_cb, this);
+    hook_associate ("set no_playlist_advance",     (HookFunction) update_toggles_cb, this);
+    hook_associate ("set stop_after_current_song", (HookFunction) update_toggles_cb, this);
 
     hook_associate ("ui show progress",   (HookFunction) show_progress_cb, this);
     hook_associate ("ui show progress 2", (HookFunction) show_progress_2_cb, this);
@@ -242,4 +269,12 @@ void MainWindow::keyPressEvent (QKeyEvent * e)
     }
 
     QMainWindow::keyPressEvent (e);
+}
+
+void MainWindow::updateToggles ()
+{
+    actionRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
+    actionShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
+    actionNoPlaylistAdvance->setChecked (aud_get_bool (nullptr, "no_playlist_advance"));
+    actionStopAfterThisSong->setChecked (aud_get_bool (nullptr, "stop_after_current_song"));
 }
