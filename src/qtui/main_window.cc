@@ -144,6 +144,11 @@ MainWindow::~MainWindow ()
     hook_dissociate ("ui hide progress",   (HookFunction) hide_progress_cb);
     hook_dissociate ("ui show error",      (HookFunction) show_error_cb);
 
+    hook_dissociate ("set repeat",                  (HookFunction) update_toggles_cb);
+    hook_dissociate ("set shuffle",                 (HookFunction) update_toggles_cb);
+    hook_dissociate ("set no_playlist_advance",     (HookFunction) update_toggles_cb);
+    hook_dissociate ("set stop_after_current_song", (HookFunction) update_toggles_cb);
+
     delete slider;
     delete timeCounterLabel;
     delete timeCounter;
