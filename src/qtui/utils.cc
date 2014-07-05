@@ -34,7 +34,7 @@ namespace Utils
     void openFilesDialog (bool add = false)
     {
         QFileDialog dialog (0, add ? "Add Files" : "Open Files", QString (aud_get_str ("audgui", "filesel_path")));
-        dialog.setFileMode (QFileDialog::ExistingFiles);
+        dialog.setFileMode (QFileDialog::AnyFile);
 
         QObject::connect (&dialog, &QFileDialog::directoryEntered, directoryEntered);
 
