@@ -85,6 +85,9 @@
     <addaction name="actionOpenURL"/>
     <addaction name="actionAddFiles"/>
     <addaction name="actionAddURL"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuPlayback">
     <property name="title">
@@ -111,6 +114,55 @@
     <property name="title">
      <string>Playlist</string>
     </property>
+    <widget class="QMenu" name="menuSort">
+     <property name="title">
+      <string>Sort</string>
+     </property>
+     <addaction name="actionSortTrackNumber"/>
+     <addaction name="actionSortTitle"/>
+     <addaction name="actionSortArtist"/>
+     <addaction name="actionSortAlbum"/>
+     <addaction name="actionSortDate"/>
+     <addaction name="actionSortLength"/>
+     <addaction name="actionSortPath"/>
+     <addaction name="actionSortCustomTitle"/>
+     <addaction name="separator"/>
+     <addaction name="actionPlaylistReverse"/>
+     <addaction name="actionPlaylistRandomize"/>
+    </widget>
+    <widget class="QMenu" name="menuSort_Selected">
+     <property name="title">
+      <string>Sort Selected</string>
+     </property>
+     <addaction name="actionSortSelectedTrackNumber"/>
+     <addaction name="actionSortSelectedTitle"/>
+     <addaction name="actionSortSelectedArtist"/>
+     <addaction name="actionSortSelectedAlbum"/>
+     <addaction name="actionSortSelectedDate"/>
+     <addaction name="actionSortSelectedLength"/>
+     <addaction name="actionSortSelectedPath"/>
+     <addaction name="actionSortSelectedCustomTitle"/>
+     <addaction name="separator"/>
+     <addaction name="actionSelectedReverse"/>
+     <addaction name="actionSelectedRandomize"/>
+    </widget>
+    <addaction name="actionPlayCurrentPlaylist"/>
+    <addaction name="actionPlaylistRefresh"/>
+    <addaction name="separator"/>
+    <addaction name="menuSort"/>
+    <addaction name="menuSort_Selected"/>
+    <addaction name="actionPlaylistRemoveDuplicates"/>
+    <addaction name="actionPlaylistRemoveUnavailableFiles"/>
+    <addaction name="separator"/>
+    <addaction name="actionPlaylistNew"/>
+    <addaction name="actionPlaylistRename"/>
+    <addaction name="actionPlaylistRemove"/>
+    <addaction name="separator"/>
+    <addaction name="actionPlaylistImport"/>
+    <addaction name="actionPlaylistExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionPlaylistManager"/>
+    <addaction name="actionQueueManager"/>
    </widget>
    <widget class="QMenu" name="menuServices">
     <property name="title">
@@ -349,6 +401,192 @@
   <action name="actionClearRepeatPoints">
    <property name="text">
     <string>Clear Repeat Points</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About Audacious</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionPlayCurrentPlaylist">
+   <property name="text">
+    <string>Play This Playlist</string>
+   </property>
+   <property name="shortcut">
+    <string>Return</string>
+   </property>
+  </action>
+  <action name="actionPlaylistRefresh">
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionPlaylistRemoveDuplicates">
+   <property name="text">
+    <string>Remove Duplicates</string>
+   </property>
+  </action>
+  <action name="actionPlaylistRemoveUnavailableFiles">
+   <property name="text">
+    <string>Remove Unavailable Files</string>
+   </property>
+  </action>
+  <action name="actionPlaylistNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionPlaylistRename">
+   <property name="text">
+    <string>Rename...</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="actionPlaylistRemove">
+   <property name="text">
+    <string>Remove</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionPlaylistImport">
+   <property name="text">
+    <string>Import...</string>
+   </property>
+  </action>
+  <action name="actionPlaylistExport">
+   <property name="text">
+    <string>Export...</string>
+   </property>
+  </action>
+  <action name="actionPlaylistManager">
+   <property name="text">
+    <string>Playlist Manager</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionQueueManager">
+   <property name="text">
+    <string>Queue Manager</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="actionSortTrackNumber">
+   <property name="text">
+    <string>By Track Number</string>
+   </property>
+  </action>
+  <action name="actionSortTitle">
+   <property name="text">
+    <string>By Title</string>
+   </property>
+  </action>
+  <action name="actionSortArtist">
+   <property name="text">
+    <string>By Artist</string>
+   </property>
+  </action>
+  <action name="actionSortAlbum">
+   <property name="text">
+    <string>By Album</string>
+   </property>
+  </action>
+  <action name="actionSortDate">
+   <property name="text">
+    <string>By Release Date</string>
+   </property>
+  </action>
+  <action name="actionSortLength">
+   <property name="text">
+    <string>By Length</string>
+   </property>
+  </action>
+  <action name="actionSortPath">
+   <property name="text">
+    <string>By File Path</string>
+   </property>
+  </action>
+  <action name="actionSortCustomTitle">
+   <property name="text">
+    <string>By Custom Title</string>
+   </property>
+  </action>
+  <action name="actionPlaylistReverse">
+   <property name="text">
+    <string>Reverse Order</string>
+   </property>
+  </action>
+  <action name="actionPlaylistRandomize">
+   <property name="text">
+    <string>Random Order</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedTrackNumber">
+   <property name="text">
+    <string>By Track Number</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedTitle">
+   <property name="text">
+    <string>By Title</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedArtist">
+   <property name="text">
+    <string>By Artist</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedAlbum">
+   <property name="text">
+    <string>By Album</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedDate">
+   <property name="text">
+    <string>By Release Date</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedLength">
+   <property name="text">
+    <string>By Length</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedPath">
+   <property name="text">
+    <string>By File Path</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedCustomTitle">
+   <property name="text">
+    <string>By Custom Title</string>
+   </property>
+  </action>
+  <action name="actionSelectedReverse">
+   <property name="text">
+    <string>Reverse Order</string>
+   </property>
+  </action>
+  <action name="actionSelectedRandomize">
+   <property name="text">
+    <string>Random Order</string>
    </property>
   </action>
  </widget>

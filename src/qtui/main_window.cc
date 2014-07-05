@@ -27,6 +27,7 @@
 #include "filter_input.h"
 #include "main_window.h"
 #include "main_window.moc"
+#include "main_window_actions.h"
 #include "playlist.h"
 #include "utils.h"
 
@@ -65,7 +66,11 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     playlistTabs->setFocusPolicy (Qt::NoFocus);
     mainLayout->addWidget (playlistTabs);
 
+    createStatusBar ();
+
     updateToggles ();
+
+    connect (actionQuit, &QAction::triggered, aud_quit);
 
     connect (actionRepeat, &QAction::toggled, [=] (bool checked)
     {
@@ -100,6 +105,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     connect (slider,      &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
+
+    setupActions ();
 
     hook_associate ("title change",     (HookFunction) title_change_cb, this);
     hook_associate ("playback begin",   (HookFunction) playback_begin_cb, this);
@@ -144,6 +151,17 @@ MainWindow::~MainWindow ()
     hook_dissociate ("ui hide progress",   (HookFunction) hide_progress_cb);
     hook_dissociate ("ui show error",      (HookFunction) show_error_cb);
 
+    hook_dissociate ("set repeat",                  (HookFunction) update_toggles_cb);
+    hook_dissociate ("set shuffle",                 (HookFunction) update_toggles_cb);
+    hook_dissociate ("set no_playlist_advance",     (HookFunction) update_toggles_cb);
+    hook_dissociate ("set stop_after_current_song", (HookFunction) update_toggles_cb);
+
+    hook_dissociate ("playlist activate", (HookFunction) update_playlist_length_cb);
+    hook_dissociate ("playlist update",   (HookFunction) update_playlist_length_cb);
+
+    hook_dissociate ("playback ready", (HookFunction) update_codec_info_cb);
+    hook_dissociate ("info change",    (HookFunction) update_codec_info_cb);
+
     delete slider;
     delete timeCounterLabel;
     delete timeCounter;
@@ -151,6 +169,8 @@ MainWindow::~MainWindow ()
     delete errorDialog;
     delete playlistTabs;
     delete filterInput;
+    delete playlistLengthLabel;
+    delete codecInfoLabel;
 }
 
 void MainWindow::timeCounterSlot ()
@@ -277,4 +297,23 @@ void MainWindow::updateToggles ()
     actionShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
     actionNoPlaylistAdvance->setChecked (aud_get_bool (nullptr, "no_playlist_advance"));
     actionStopAfterThisSong->setChecked (aud_get_bool (nullptr, "stop_after_current_song"));
+}
+
+void MainWindow::createStatusBar ()
+{
+    QStatusBar * bar = QMainWindow::statusBar();
+
+    playlistLengthLabel = new QLabel ("0:00 / 0:00");
+    playlistLengthLabel->setAlignment(Qt::AlignRight);
+
+    codecInfoLabel = new QLabel ("");
+
+    bar->addPermanentWidget(playlistLengthLabel);
+    bar->addWidget(codecInfoLabel);
+
+    hook_associate ("playlist activate", (HookFunction) update_playlist_length_cb, playlistLengthLabel);
+    hook_associate ("playlist update", (HookFunction) update_playlist_length_cb, playlistLengthLabel);
+
+    hook_associate ("playback ready", (HookFunction) update_codec_info_cb, codecInfoLabel);
+    hook_associate ("info change", (HookFunction) update_codec_info_cb, codecInfoLabel);
 }

@@ -27,10 +27,10 @@
 #include "playlist_model.h"
 #include "playlist_model.moc"
 
-PlaylistModel::PlaylistModel (QObject * parent, int id) : QAbstractListModel (parent)
+PlaylistModel::PlaylistModel (QObject * parent, int id) : QAbstractListModel (parent),
+    m_uniqueId (id)
 {
-    uniqueId = id;
-    rows = aud_playlist_entry_count (playlist ());
+    m_rows = aud_playlist_entry_count (playlist ());
 }
 
 PlaylistModel::~PlaylistModel ()
@@ -40,7 +40,7 @@ PlaylistModel::~PlaylistModel ()
 
 int PlaylistModel::rowCount (const QModelIndex & parent) const
 {
-   return rows;
+    return m_rows;
 }
 
 int PlaylistModel::columnCount (const QModelIndex & parent) const
@@ -133,14 +133,19 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
 
 int PlaylistModel::playlist () const
 {
-    return aud_playlist_by_unique_id (uniqueId);
+    return aud_playlist_by_unique_id (m_uniqueId);
+}
+
+int PlaylistModel::uniqueId () const
+{
+    return m_uniqueId;
 }
 
 bool PlaylistModel::insertRows (int row, int count, const QModelIndex & parent)
 {
     int last = row + count - 1;
     beginInsertRows (parent, row, last);
-    rows = aud_playlist_entry_count (playlist ());
+    m_rows = aud_playlist_entry_count (playlist ());
     endInsertRows ();
     return true;
 }
@@ -149,7 +154,7 @@ bool PlaylistModel::removeRows (int row, int count, const QModelIndex & parent)
 {
     int last = row + count - 1;
     beginRemoveRows (parent, row, last);
-    rows = aud_playlist_entry_count (playlist ());
+    m_rows = aud_playlist_entry_count (playlist ());
     endRemoveRows ();
     return true;
 }
