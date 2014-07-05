@@ -27,6 +27,7 @@
 #include "filter_input.h"
 #include "main_window.h"
 #include "main_window.moc"
+#include "main_window_actions.h"
 #include "playlist.h"
 #include "utils.h"
 
@@ -102,6 +103,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     connect (slider,      &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
+
+    setupActions ();
 
     hook_associate ("title change",     (HookFunction) title_change_cb, this);
     hook_associate ("playback begin",   (HookFunction) playback_begin_cb, this);

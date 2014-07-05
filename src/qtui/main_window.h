@@ -66,6 +66,7 @@ private:
     void createProgressDialog ();
     void createErrorDialog (const QString &message);
     void updateToggles ();
+    void setupActions ();
 
     static void title_change_cb (void * unused, MainWindow * window)
     {
