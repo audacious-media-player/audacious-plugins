@@ -141,7 +141,6 @@ static void draw_text (GtkWidget * widget, cairo_t * cr, int x, int y, int
  const char * text)
 {
     cairo_move_to(cr, x, y);
-    cairo_set_operator(cr, CAIRO_OPERATOR_ATOP);
     cairo_set_source_rgba(cr, r, g, b, a);
 
     PangoFontDescription * desc = pango_font_description_from_string (font);
