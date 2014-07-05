@@ -231,7 +231,7 @@ static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
     gfloat base_s = (height / 40);
 
-    for (gint i = 0; i <= bands; i++)
+    for (gint i = 0; i < bands; i++)
     {
         gint x = ((width / bands) * i) + 2;
         gfloat r, g, b;
