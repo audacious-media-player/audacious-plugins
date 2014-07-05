@@ -1134,6 +1134,17 @@ if test "x$enable_search_tool" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS search-tool"
 fi
 
+dnl Mac Media Keys
+dnl ============
+
+AC_ARG_ENABLE(mac_media_keys,
+ [AS_HELP_STRING([--enable-mac-media-keys], [enable Mac Media Keys])],
+ [enable_mac_media_keys=$enableval], [enable_mac_media_keys="no"])
+
+if test "x$enable_mac_media_keys" != "xno"; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS mac-media-keys"
+fi
+
 dnl *** End of all plugin checks ***
 
 plugindir=`pkg-config audacious --variable=plugin_dir`
@@ -1244,6 +1255,7 @@ echo "  Global Hotkey Plugin:                   $have_hotkey"
 echo "  Gnome Shortcuts Plugin:                 $have_gnomeshortcuts"
 echo "  Scrobbler 2.0:                          $have_scrobbler2"
 echo "  LyricWiki viewer:                       $have_lyricwiki"
+echo "  Mac Media Keys:                         $enable_mac_media_keys"
 echo
 echo "  Effect"
 echo "  ------"
