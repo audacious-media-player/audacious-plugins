@@ -40,11 +40,12 @@ public:
     void setFilter (const QString &text);
     void toggleQueue ();
     void updateQueue ();
+    int playlist () const;
+    int uniqueId () const;
 
 private:
     PlaylistModel * model;
     QSortFilterProxyModel * proxyModel;
-    int playlist ();
     int previousEntry = -1;
 
 protected:
