@@ -148,23 +148,16 @@ if test "x$enable_psf" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS psf"
 fi
 
-dnl *** MP3
+dnl MP3 (enabled by default)
+dnl ========================
 
 AC_ARG_ENABLE(mp3,
- [AS_HELP_STRING([--disable-mp3], [disable MP3 plugin (default=enabled)])],
- [enable_mp3=$enableval], [enable_mp3=auto])
+ [AS_HELP_STRING([--disable-mp3], [disable MP3 support (default=enabled)])],
+ [enable_mp3=$enableval], [enable_mp3=yes])
 
-have_mp3=no
-if test "x$enable_mp3" != "xno"; then
-    PKG_CHECK_MODULES(MPG123, [libmpg123 >= 1.12],
-     [have_mp3=yes
-      INPUT_PLUGINS="$INPUT_PLUGINS mpg123"],
-     [if test "x$enable_mp3" = "xyes"; then
-          AC_MSG_ERROR([Cannot find libmpg123 development files (ver >= 1.12), but compilation of MP3 plugin has been explicitly requested; please install libmpg123 dev files and run configure again])
-      fi]
-    )
-else
-    AC_MSG_RESULT([*** libmpg123 not found; MP3 plugin disabled])
+if test $enable_mp3 = yes ; then
+    PKG_CHECK_MODULES(MPG123, [libmpg123 >= 1.12])
+    INPUT_PLUGINS="$INPUT_PLUGINS mpg123"
 fi
 
 dnl *** Global Hotkey general plugin (only built on X11)
@@ -363,45 +356,30 @@ else
     AC_MSG_RESULT([*** AdPlug plugin disabled per user request ***])
 fi
 
-dnl Ogg Vorbis
-dnl ==========
+dnl Ogg Vorbis (enabled by default)
+dnl ===============================
+
 dnl This test is reused later to enable/disable Vorbis support in filewriter.
 
 AC_ARG_ENABLE(vorbis,
- [AS_HELP_STRING([--disable-vorbis], [disable Ogg Vorbis decoding and encoding])],
- [enable_vorbis=$enableval], [enable_vorbis=auto])
+ [AS_HELP_STRING([--disable-vorbis], [disable Ogg Vorbis support (default=enabled)])],
+ [enable_vorbis=$enableval], [enable_vorbis=yes])
 
-have_vorbis=no
-if test "x$enable_vorbis" != "xno"; then
-    PKG_CHECK_MODULES(VORBIS, [ogg >= 1.0 vorbis >= 1.0 vorbisenc >= 1.0 vorbisfile >= 1.0],
-        [have_vorbis=yes
-         INPUT_PLUGINS="$INPUT_PLUGINS vorbis"],
-        [if test "x$enable_vorbis" = "xyes"; then
-            AC_MSG_ERROR([Cannot find ogg, vorbis, vorbisenc or vorbisfile development files (ver >= 1.0), but compilation of Ogg Vorbis decoding and encoding has been explicitly requested; please install ogg, vorbis, vorbisenc and vorbisfile dev files and run configure again])
-         fi]
-    )
+if test $enable_vorbis = yes ; then
+    PKG_CHECK_MODULES(VORBIS, [ogg >= 1.0 vorbis >= 1.0 vorbisenc >= 1.0 vorbisfile >= 1.0])
+    INPUT_PLUGINS="$INPUT_PLUGINS vorbis"
 fi
 
-dnl FLAC
-dnl ====
+dnl FLAC (enabled by default)
+dnl =========================
 
 AC_ARG_ENABLE(flacng,
-    [AS_HELP_STRING([--disable-flacng], [disable flac input plugin (default=enabled)])],
-    [enable_flacng=$enableval],
-    [enable_flacng=auto]
-)
+ [AS_HELP_STRING([--disable-flacng], [disable FLAC support (default=enabled)])],
+ [enable_flacng=$enableval], [enable_flacng=yes])
 
-have_flacng=no
-if test "x$enable_flacng" != "xno"; then
-    PKG_CHECK_MODULES(LIBFLAC, [flac >= 1.2.1],
-        [have_flacng=yes
-         INPUT_PLUGINS="$INPUT_PLUGINS flacng"],
-        [if test "x$enable_flacng" = "xyes"; then
-            AC_MSG_ERROR([Cannot find libFLAC development files (ver >= 1.2.1), but compilation of FLACng plugin has been explicitly requested; please install libFLAC dev files and run configure again])
-         fi]
-    )
-else
-    AC_MSG_RESULT([*** FLACng plugin disabled per user request ***])
+if test $enable_flacng = yes ; then
+    PKG_CHECK_MODULES(LIBFLAC, [flac >= 1.2.1])
+    INPUT_PLUGINS="$INPUT_PLUGINS flacng"
 fi
 
 dnl *** WavPack 4.31 support
@@ -425,34 +403,23 @@ else
     AC_MSG_RESULT([*** WavPack plugin disabled per user request ***])
 fi
 
-dnl *** AAC
+dnl AAC (enabled by default)
+dnl ========================
 
 AC_ARG_ENABLE(aac,
-    [AS_HELP_STRING([--disable-aac], [disable aac plugin (default=enabled)])],
-    [enable_aac=$enableval],
-    [enable_aac=auto]
-)
+ [AS_HELP_STRING([--disable-aac], [disable AAC support (default=enabled)])],
+ [enable_aac=$enableval], [enable_aac=yes])
 
-have_aac=no
-if test "x$enable_aac" != "xno"; then
-    FAAD_LIBS="-lfaad"
+if test $enable_aac = yes ; then
+    AC_CHECK_HEADER([faad.h])
+    AC_CHECK_LIB([faad], [NeAACDecInit2])
+
     FAAD_CFLAGS=
+    FAAD_LIBS="-lfaad"
+    AC_SUBST(FAAD_CFLAGS)
+    AC_SUBST(FAAD_LIBS)
 
-    AC_CHECK_HEADER([faad.h],
-        [AC_CHECK_DECL([FAAD2_VERSION],
-            [AC_CHECK_DECL([NeAACDecInit2],
-                [AC_CHECK_LIB([faad],[NeAACDecInit2],
-                    [have_aac=yes
-                     AC_SUBST(FAAD_CFLAGS)
-                     AC_SUBST(FAAD_LIBS)
-                     INPUT_PLUGINS="$INPUT_PLUGINS aac-raw"])],
-                [], [#include <neaacdec.h>])],
-            [], [#include <neaacdec.h>])]
-    )
-
-    if test "x$enable_aac" = "xyes" -a "x$have_aac" != "xyes"; then
-        AC_MSG_ERROR([Cannot find faad development files, but compilation of aac plugin has been explicitly requested; please install faad dev files and run configure again])
-    fi
+    INPUT_PLUGINS="$INPUT_PLUGINS aac-raw"
 fi
 
 dnl *** sndfile
@@ -695,6 +662,13 @@ if test "x$enable_sndio" != "xno"; then
     fi
 fi
 
+dnl Check for at least one output plugin (not including filewriter)
+dnl ===============================================================
+
+if test "x$OUTPUT_PLUGINS" = "x" ; then
+    AC_MSG_ERROR([No output plugin was enabled.  Please install the necessary packages for your system and run configure again.])
+fi
+
 dnl amidi-plug
 dnl ==========
 
@@ -706,7 +680,7 @@ have_amidiplug=no
 if test "x$enable_amidiplug" != "xno"; then
     PKG_CHECK_MODULES(FLUIDSYNTH, [fluidsynth >= 1.0.6],
         [have_amidiplug=yes
-         OUTPUT_PLUGINS="$OUTPUT_PLUGINS amidi-plug"],
+         INPUT_PLUGINS="$INPUT_PLUGINS amidi-plug"],
         [if test "x$enable_amidiplug" = "xyes"; then
             AC_MSG_ERROR([Cannot find FluidSynth development files (ver >= 1.0.6), but compilation of amidi-plug input plugin has been explicitly requested; please install FluidSynth dev files and run configure again])
          fi])
@@ -761,25 +735,16 @@ if test "x$enable_scrobbler2" != "xno"; then
     )
 fi
 
-dnl *** neon http plugin ***
+dnl neon HTTP support (enabled by default)
+dnl ======================================
 
 AC_ARG_ENABLE(neon,
-[AS_HELP_STRING([--disable-neon], [disable neon HTTP support (default=enabled)])],
-[enable_neon=$enableval],
-[enable_neon=auto])
+ [AS_HELP_STRING([--disable-neon], [disable neon HTTP support (default=enabled)])],
+ [enable_neon=$enableval], [enable_neon=yes])
 
-have_neon=no
-if test "x$enable_neon" != "xno"; then
-    PKG_CHECK_MODULES(NEON, [neon >= 0.26],
-        [have_neon=yes
-         TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon"
-         AC_CHECK_LIB([neon], [ne_set_connect_timeout], [AC_DEFINE(HAVE_NE_SET_CONNECT_TIMEOUT, 1, [Whether we have ne_set_connect_timeout])], [], [$NEON_LIBS])
-         AC_SUBST([NEON_LIBS])
-         AC_SUBST([NEON_CFLAGS])],
-        [if test "x$enable_neon" = "xyes"; then
-            AC_MSG_ERROR([Cannot find neon development files (ver >= 0.26), but compilation of neon HTTP support has been explicitly requested; please install neon dev files and run configure again])
-         fi]
-    )
+if test $enable_neon = yes ; then
+    PKG_CHECK_MODULES(NEON, [neon >= 0.27])
+    TRANSPORT_PLUGINS="$TRANSPORT_PLUGINS neon"
 fi
 
 dnl MMS
@@ -861,7 +826,7 @@ fi
 dnl Vorbis support reuses test done for Vorbis input plugin.
 
 have_vorbisenc=no
-if test "x$have_filewriter" = "xyes" -a "x$have_vorbis" = "xyes"; then
+if test "x$have_filewriter" = "xyes" -a "x$enable_vorbis" = "xyes"; then
     have_vorbisenc=yes
     AC_DEFINE(FILEWRITER_VORBIS, 1, [Define if Vorbis output part should be built])
     FILEWRITER_CFLAGS="$FILEWRITER_CFLAGS $VORBIS_CFLAGS"
@@ -1219,16 +1184,16 @@ echo "    -> FileWriter FLAC output part:       $have_writer_flac"
 echo
 echo "  Input Plugins"
 echo "  -------------"
-echo "  MPEG-1 Layer I/II/III (mpg123):         $have_mp3"
-echo "  MPEG-2/4 AAC (aac):                     $have_aac"
+echo "  MPEG-1 Layer I/II/III (mpg123):         $enable_mp3"
+echo "  MPEG-2/4 AAC (aac):                     $enable_aac"
 echo "  FFaudio (ffaudio):                      $ffmpeg_variant"
 echo "  Module decoder (modplug):               $have_modplug"
 echo "  MIDI synthesizer (amidi-plug):          $have_amidiplug"
 echo "  CD Digital Audio (cdaudio_ng):          $have_cdaudio_ng"
 echo "  sndfile extensions:                     $have_sndfile"
 echo "  Tone Generator:                         yes"
-echo "  Ogg Vorbis (vorbis):                    $have_vorbis"
-echo "  Free Lossless Audio Codec (flacng):     $have_flacng"
+echo "  Ogg Vorbis (vorbis):                    $enable_vorbis"
+echo "  Free Lossless Audio Codec (flacng):     $enable_flacng"
 echo "  Commodore 64 audio (SID):               $have_sidplay"
 echo "  Game music (spc, nsf & gbs):            $have_console"
 echo "  PlayStation (psf/psf2) audio:           $enable_psf"
@@ -1279,7 +1244,7 @@ echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
 echo
 echo "  Transport"
 echo "  ---------"
-echo "  neon-based http/https:                  $have_neon"
+echo "  neon-based http/https:                  $enable_neon"
 echo "  libmms-based mms:                       $have_mms"
 echo "  GIO:                                    yes"
 echo
