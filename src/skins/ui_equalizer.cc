@@ -339,6 +339,7 @@ equalizerwin_create_window(void)
     /* this will hide only mainwin. it's annoying! yaz */
     gtk_window_set_transient_for(GTK_WINDOW(equalizerwin),
                                  GTK_WINDOW(mainwin));
+    gtk_window_set_skip_pager_hint(GTK_WINDOW(equalizerwin), TRUE);
     gtk_window_set_skip_taskbar_hint(GTK_WINDOW(equalizerwin), TRUE);
 
     gtk_widget_set_app_paintable(equalizerwin, TRUE);
