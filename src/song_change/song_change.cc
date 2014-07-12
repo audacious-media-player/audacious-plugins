@@ -337,19 +337,19 @@ static const PreferencesWidget settings[] = {
 
     WidgetLabel (N_("Command to run when starting a new song:")),
     WidgetEntry (0, WidgetString (config.cmd, edit_cb)),
-    WidgetSeparator (),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("Command to run at the end of a song:")),
     WidgetEntry (0, WidgetString (config.cmd_after, edit_cb)),
-    WidgetSeparator (),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("Command to run at the end of the playlist:")),
     WidgetEntry (0, WidgetString (config.cmd_end, edit_cb)),
-    WidgetSeparator (),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("Command to run when song title changes (for network streams):")),
     WidgetEntry (0, WidgetString (config.cmd_ttc, edit_cb)),
-    WidgetSeparator (),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("You can use the following format strings which "
                     "will be substituted before calling the command "
