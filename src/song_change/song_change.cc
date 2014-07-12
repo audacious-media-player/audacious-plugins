@@ -221,20 +221,6 @@ static void cleanup(void)
     signal(SIGCHLD, SIG_DFL);
 }
 
-static void save_and_close (const String & cmd, const String & cmd_after,
- const String & cmd_end, const String & cmd_ttc)
-{
-    aud_set_str("song_change", "cmd_line", cmd);
-    aud_set_str("song_change", "cmd_line_after", cmd_after);
-    aud_set_str("song_change", "cmd_line_end", cmd_end);
-    aud_set_str("song_change", "cmd_line_ttc", cmd_ttc);
-
-    cmd_line = cmd;
-    cmd_line_after = cmd_after;
-    cmd_line_end = cmd_end;
-    cmd_line_ttc = cmd_ttc;
-}
-
 static int check_command(const char *command)
 {
     const char *dangerous = "fns";
@@ -292,7 +278,7 @@ typedef struct {
 
 static SongChangeConfig config;
 
-static void configure_ok_cb()
+static void edit_cb()
 {
     if (check_command(config.cmd) < 0 || check_command(config.cmd_after) < 0 ||
      check_command(config.cmd_end) < 0 || check_command(config.cmd_ttc) < 0)
@@ -304,8 +290,20 @@ static void configure_ok_cb()
     {
         gtk_widget_hide(cmd_warn_img);
         gtk_widget_hide(cmd_warn_label);
-        save_and_close(config.cmd, config.cmd_after, config.cmd_end, config.cmd_ttc);
     }
+}
+
+static void configure_ok_cb()
+{
+    aud_set_str("song_change", "cmd_line", config.cmd);
+    aud_set_str("song_change", "cmd_line_after", config.cmd_after);
+    aud_set_str("song_change", "cmd_line_end", config.cmd_end);
+    aud_set_str("song_change", "cmd_line_ttc", config.cmd_ttc);
+
+    cmd_line = config.cmd;
+    cmd_line_after = config.cmd_after;
+    cmd_line_end = config.cmd_end;
+    cmd_line_ttc = config.cmd_ttc;
 }
 
 /* static GtkWidget * custom_warning (void) */
@@ -326,6 +324,11 @@ static void * custom_warning (void)
     gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_label, FALSE, FALSE, 0);
     g_free(temp);
 
+    gtk_widget_set_no_show_all(cmd_warn_img, TRUE);
+    gtk_widget_set_no_show_all(cmd_warn_label, TRUE);
+
+    edit_cb();
+
     return bbox_hbox;
 }
 
@@ -333,19 +336,19 @@ static const PreferencesWidget settings[] = {
     WidgetLabel (N_("<b>Commands</b>")),
 
     WidgetLabel (N_("Command to run when starting a new song:")),
-    WidgetEntry (0, WidgetString (config.cmd)),
+    WidgetEntry (0, WidgetString (config.cmd, edit_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run at the end of a song:")),
-    WidgetEntry (0, WidgetString (config.cmd_after)),
+    WidgetEntry (0, WidgetString (config.cmd_after, edit_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run at the end of the playlist:")),
-    WidgetEntry (0, WidgetString (config.cmd_end)),
+    WidgetEntry (0, WidgetString (config.cmd_end, edit_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run when song title changes (for network streams):")),
-    WidgetEntry (0, WidgetString (config.cmd_ttc)),
+    WidgetEntry (0, WidgetString (config.cmd_ttc, edit_cb)),
     WidgetSeparator (),
 
     WidgetLabel (N_("You can use the following format strings which "
