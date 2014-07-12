@@ -723,6 +723,7 @@ playlistwin_create_window(void)
 
     gtk_window_set_transient_for(GTK_WINDOW(playlistwin),
                                  GTK_WINDOW(mainwin));
+    gtk_window_set_skip_pager_hint(GTK_WINDOW(playlistwin), TRUE);
     gtk_window_set_skip_taskbar_hint(GTK_WINDOW(playlistwin), TRUE);
 
     gtk_widget_add_events(playlistwin, GDK_POINTER_MOTION_MASK |
