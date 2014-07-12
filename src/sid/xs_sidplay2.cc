@@ -428,6 +428,7 @@ bool_t xs_sidplayfp_updateinfo(xs_status_t *myStatus)
                 tmpSpeed = myInfo->songSpeed();
                 break;
             }
+            break;
         default:
             tmpSpeed = myInfo->clockSpeed();
             break;
