@@ -32,15 +32,7 @@ static void cleanup(void);
 static void songchange_playback_begin(gpointer unused, gpointer unused2);
 static void songchange_playback_end(gpointer unused, gpointer unused2);
 static void songchange_playlist_eof(gpointer unused, gpointer unused2);
-//static void songchange_playback_ttc(gpointer, gpointer);
-
-typedef struct
-{
-    gchar *title;
-    gchar *filename;
-}
-songchange_playback_ttc_prevs_t;
-static songchange_playback_ttc_prevs_t *ttc_prevs = NULL;
+static void songchange_playback_ttc(gpointer unused, gpointer unused2);
 
 static char *cmd_line = NULL;
 static char *cmd_line_after = NULL;
@@ -252,15 +244,7 @@ static void cleanup(void)
     hook_dissociate("playback begin", songchange_playback_begin);
     hook_dissociate("playback end", songchange_playback_end);
     hook_dissociate("playlist end reached", songchange_playlist_eof);
-    // hook_dissociate( "playlist set info" , songchange_playback_ttc);
-
-    if ( ttc_prevs != NULL )
-    {
-        if ( ttc_prevs->title != NULL ) g_free( ttc_prevs->title );
-        if ( ttc_prevs->filename != NULL ) g_free( ttc_prevs->filename );
-        g_free( ttc_prevs );
-        ttc_prevs = NULL;
-    }
+    hook_dissociate("title change", songchange_playback_ttc);
 
     str_unref(cmd_line);
     str_unref(cmd_line_after);
@@ -316,11 +300,7 @@ static gboolean init (void)
     hook_associate("playback begin", songchange_playback_begin, NULL);
     hook_associate("playback end", songchange_playback_end, NULL);
     hook_associate("playlist end reached", songchange_playlist_eof, NULL);
-
-    ttc_prevs = g_malloc0(sizeof(songchange_playback_ttc_prevs_t));
-    ttc_prevs->title = NULL;
-    ttc_prevs->filename = NULL;
-    // hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
+    hook_associate("title change", songchange_playback_ttc, NULL);
 
     return TRUE;
 }
@@ -335,53 +315,10 @@ static void songchange_playback_end(gpointer unused, gpointer unused2)
     do_command (cmd_line_after);
 }
 
-#if 0
-    static void
-songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
+static void songchange_playback_ttc(gpointer unused, gpointer unused2)
 {
-    if ( ( aud_ip_state->playing ) && ( strcmp(cmd_line_ttc,"") ) )
-    {
-        songchange_playback_ttc_prevs_t *prevs = prevs_gp;
-        PlaylistEntry *pl_entry = plentry_gp;
-
-        /* same filename but title changed, useful to detect http stream song changes */
-
-        if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
-        {
-            if ( ( pl_entry->filename != NULL ) && ( !strcmp(pl_entry->filename,prevs->filename) ) )
-            {
-                if ( ( pl_entry->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
-                {
-                    int pos = aud_drct_pl_get_pos();
-                    char *current_file = aud_drct_pl_get_file(pos);
-                    do_command(cmd_line_ttc, current_file, pos);
-                    g_free(current_file);
-                    g_free(prevs->title);
-                    prevs->title = g_strdup(pl_entry->title);
-                }
-            }
-            else
-            {
-                g_free(prevs->filename);
-                prevs->filename = g_strdup(pl_entry->filename);
-                /* if filename changes, reset title as well */
-                if ( prevs->title != NULL )
-                    g_free(prevs->title);
-                prevs->title = g_strdup(pl_entry->title);
-            }
-        }
-        else
-        {
-            if ( prevs->title != NULL )
-                g_free(prevs->title);
-            prevs->title = g_strdup(pl_entry->title);
-            if ( prevs->filename != NULL )
-                g_free(prevs->filename);
-            prevs->filename = g_strdup(pl_entry->filename);
-        }
-    }
+    do_command (cmd_line_ttc);
 }
-#endif
 
 static void songchange_playlist_eof(gpointer unused, gpointer unused2)
 {
