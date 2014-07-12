@@ -58,7 +58,7 @@ static bool_t xs_stildb_node_realloc(stil_node_t *node, int nsubTunes)
             clearIndex = node->nsubTunes + 1;
             clearLength = (nsubTunes - clearIndex + 1);
         }
-        memset(&(node->subTunes[clearIndex]), 0, clearLength * sizeof(stil_subnode_t **));
+        memset(&(node->subTunes[clearIndex]), 0, clearLength * sizeof(stil_subnode_t *));
 
         node->nsubTunes = nsubTunes;
     }
