@@ -229,8 +229,6 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
-    gfloat base_s = (height / 40);
-
     for (gint i = 0; i < bands; i++)
     {
         gint x = ((width / bands) * i) + 2;
@@ -238,7 +236,8 @@ static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 
         get_color (i, & r, & g, & b);
         cairo_set_source_rgb (cr, r, g, b);
-        cairo_rectangle (cr, x + 1, height - (bars[i] * base_s), (width / bands) - 1, (bars[i] * base_s));
+        cairo_rectangle (cr, x + 1, height - (bars[i] * height / 40),
+         (width / bands) - 1, (bars[i] * height / 40));
         cairo_fill (cr);
     }
 }
