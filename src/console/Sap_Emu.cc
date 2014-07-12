@@ -205,6 +205,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		{
 			out->stereo = true;
 		}
+		else if ( !strncmp( "NTSC", tag, tag_len ) )
+		{
+			out->ntsc = true;
+		}
 		else if ( !strncmp( "FASTPLAY", tag, tag_len ) )
 		{
 			out->fastplay = from_dec( in, line_end );
@@ -340,7 +344,7 @@ void Sap_Emu::cpu_jsr( sap_addr_t addr )
 void Sap_Emu::run_routine( sap_addr_t addr )
 {
 	cpu_jsr( addr );
-	cpu::run( 312 * base_scanline_period * 60 );
+	cpu::run( ( info.ntsc ? 262 : 312 ) * base_scanline_period * 60 );
 	check( r.pc == idle_addr );
 }
 
