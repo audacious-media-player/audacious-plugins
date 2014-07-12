@@ -98,6 +98,41 @@ static void parse_string( byte const* in, byte const* end, int len, char* out )
 	memcpy( out, start, len );
 }
 
+static byte const* parse_int_( byte const* in, int* out )
+{
+	int n = 0;
+	while ( 1 )
+	{
+		unsigned d = from_dec( in, in + 1 );
+		if ( d > 9 )
+			break;
+		in++;
+		n = n * 10 + d;
+		*out = n;
+	}
+	return in;
+}
+
+static byte const* parse_time( byte const* in, int* out )
+{
+	*out = -1;
+	int n = -1;
+	in = parse_int_( in, &n );
+	if ( n >= 0 )
+	{
+		*out = n;
+		if ( *in == ':' )
+		{
+			n = -1;
+			in = parse_int_( in + 1, &n );
+			if ( n >= 0 )
+				*out = *out * 60 + n;
+		}
+	}
+	*out = *out * 1000;
+	return in;
+}
+
 static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out )
 {
 	out->track_count   = 1;
@@ -188,6 +223,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		{
 			parse_string( in, line_end, sizeof out->copyright, out->copyright );
 		}
+		else if ( !strncmp( "TIME", tag, tag_len ) )
+		{
+			parse_time( in, &out->length );
+		}
 
 		in = line_end + 2;
 	}
@@ -204,6 +243,7 @@ static void copy_sap_fields( Sap_Emu::info_t const& in, track_info_t* out )
 	Gme_File::copy_field_( out->song,      in.name );
 	Gme_File::copy_field_( out->author,    in.author );
 	Gme_File::copy_field_( out->copyright, in.copyright );
+	out->length = in.length;
 }
 
 blargg_err_t Sap_Emu::track_info_( track_info_t* out, int ) const
