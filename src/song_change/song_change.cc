@@ -333,19 +333,19 @@ static const PreferencesWidget settings[] = {
     WidgetLabel (N_("<b>Commands</b>")),
 
     WidgetLabel (N_("Command to run when starting a new song:")),
-    WidgetEntry (0, WidgetString (config.cmd, configure_ok_cb)),
+    WidgetEntry (0, WidgetString (config.cmd)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run at the end of a song:")),
-    WidgetEntry (0, WidgetString (config.cmd_after, configure_ok_cb)),
+    WidgetEntry (0, WidgetString (config.cmd_after)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run at the end of the playlist:")),
-    WidgetEntry (0, WidgetString (config.cmd_end, configure_ok_cb)),
+    WidgetEntry (0, WidgetString (config.cmd_end)),
     WidgetSeparator (),
 
     WidgetLabel (N_("Command to run when song title changes (for network streams):")),
-    WidgetEntry (0, WidgetString (config.cmd_ttc, configure_ok_cb)),
+    WidgetEntry (0, WidgetString (config.cmd_ttc)),
     WidgetSeparator (),
 
     WidgetLabel (N_("You can use the following format strings which "
@@ -368,8 +368,6 @@ static const PreferencesWidget settings[] = {
 
 static void configure_init(void)
 {
-    read_config();
-
     config.cmd = cmd_line;
     config.cmd_after = cmd_line_after;
     config.cmd_end = cmd_line_end;
@@ -387,7 +385,7 @@ static void configure_cleanup(void)
 static const PluginPreferences preferences = {
     {settings},
     configure_init,
-    nullptr,  // apply
+    configure_ok_cb,
     configure_cleanup,
 };
 
