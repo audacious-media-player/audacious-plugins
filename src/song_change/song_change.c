@@ -259,24 +259,6 @@ static void cleanup(void)
     signal(SIGCHLD, SIG_DFL);
 }
 
-static void save_and_close(gchar * cmd, gchar * cmd_after, gchar * cmd_end, gchar * cmd_ttc)
-{
-    aud_set_str("song_change", "cmd_line", cmd);
-    aud_set_str("song_change", "cmd_line_after", cmd_after);
-    aud_set_str("song_change", "cmd_line_end", cmd_end);
-    aud_set_str("song_change", "cmd_line_ttc", cmd_ttc);
-
-    str_unref(cmd_line);
-    str_unref(cmd_line_after);
-    str_unref(cmd_line_end);
-    str_unref(cmd_line_ttc);
-
-    cmd_line = str_get(cmd);
-    cmd_line_after = str_get(cmd_after);
-    cmd_line_end = str_get(cmd_end);
-    cmd_line_ttc = str_get(cmd_ttc);
-}
-
 static int check_command(char *command)
 {
     const char *dangerous = "fns";
@@ -334,16 +316,10 @@ typedef struct {
 
 static SongChangeConfig config = {NULL};
 
-static void configure_ok_cb()
+static void edit_cb(void)
 {
-    char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
-    cmd = g_strdup(config.cmd);
-    cmd_after = g_strdup(config.cmd_after);
-    cmd_end = g_strdup(config.cmd_end);
-    cmd_ttc = g_strdup(config.cmd_ttc);
-
-    if (check_command(cmd) < 0 || check_command(cmd_after) < 0 ||
-            check_command(cmd_end) < 0 || check_command(cmd_ttc) < 0)
+    if (check_command(config.cmd) < 0 || check_command(config.cmd_after) < 0 ||
+     check_command(config.cmd_end) < 0 || check_command(config.cmd_ttc) < 0)
     {
         gtk_widget_show(cmd_warn_img);
         gtk_widget_show(cmd_warn_label);
@@ -352,38 +328,50 @@ static void configure_ok_cb()
     {
         gtk_widget_hide(cmd_warn_img);
         gtk_widget_hide(cmd_warn_label);
-        save_and_close(cmd, cmd_after, cmd_end, cmd_ttc);
     }
+}
 
-    g_free(cmd);
-    g_free(cmd_after);
-    g_free(cmd_end);
-    g_free(cmd_ttc);
+static void configure_ok_cb(void)
+{
+    aud_set_str("song_change", "cmd_line", config.cmd);
+    aud_set_str("song_change", "cmd_line_after", config.cmd_after);
+    aud_set_str("song_change", "cmd_line_end", config.cmd_end);
+    aud_set_str("song_change", "cmd_line_ttc", config.cmd_ttc);
+
+    str_unref(cmd_line);
+    str_unref(cmd_line_after);
+    str_unref(cmd_line_end);
+    str_unref(cmd_line_ttc);
+
+    cmd_line = str_get(config.cmd);
+    cmd_line_after = str_get(config.cmd_after);
+    cmd_line_end = str_get(config.cmd_end);
+    cmd_line_ttc = str_get(config.cmd_ttc);
 }
 
 static const PreferencesWidget elements[] = {
     {WIDGET_LABEL, N_("Command to run when Audacious starts a new song."),
         .data = {.label = {.single_line = TRUE}}},
     {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd, .callback = configure_ok_cb},
+        .cfg = & config.cmd, .callback = edit_cb},
     {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
     {WIDGET_LABEL, N_("Command to run toward the end of a song."),
         .data = {.label = {.single_line = TRUE}}},
     {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd_after, .callback = configure_ok_cb},
+        .cfg = & config.cmd_after, .callback = edit_cb},
     {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
     {WIDGET_LABEL, N_("Command to run when Audacious reaches the end of the "
             "playlist."), .data = {.label = {.single_line = TRUE}}},
     {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd_end, .callback = configure_ok_cb},
+        .cfg = & config.cmd_end, .callback = edit_cb},
     {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
     {WIDGET_LABEL, N_("Command to run when title changes for a song (i.e. "
             "network streams titles)."), .data = {.label = {.single_line = TRUE}}},
     {WIDGET_ENTRY, N_("Command:"), .cfg_type = VALUE_STRING,
-        .cfg = & config.cmd_ttc, .callback = configure_ok_cb},
+        .cfg = & config.cmd_ttc, .callback = edit_cb},
     {WIDGET_SEPARATOR, .data = {.separator = {TRUE}}},
 
     {WIDGET_LABEL, N_("You can use the following format strings which\n"
@@ -420,6 +408,11 @@ static void * custom_warning (void)
     gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_label, FALSE, FALSE, 0);
     g_free(temp);
 
+    gtk_widget_set_no_show_all(cmd_warn_img, TRUE);
+    gtk_widget_set_no_show_all(cmd_warn_label, TRUE);
+
+    edit_cb();
+
     return bbox_hbox;
 }
 
@@ -454,5 +447,6 @@ static const PluginPreferences preferences = {
     .widgets = settings,
     .n_widgets = ARRAY_LEN (settings),
     .init = configure_init,
+    .apply = configure_ok_cb,
     .cleanup = configure_cleanup,
 };
