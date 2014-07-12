@@ -429,8 +429,6 @@ static const PreferencesWidget settings[] = {
 
 static void configure_init(void)
 {
-    read_config();
-
     config.cmd = g_strdup(cmd_line);
     config.cmd_after = g_strdup(cmd_line_after);
     config.cmd_end = g_strdup(cmd_line_end);
