@@ -394,7 +394,7 @@ if test $enable_aac = yes ; then
     AC_SUBST(FAAD_CFLAGS)
     AC_SUBST(FAAD_LIBS)
 
-    INPUT_PLUGINS="$INPUT_PLUGINS aac-raw"
+    INPUT_PLUGINS="$INPUT_PLUGINS aac aac-raw"
 fi
 
 dnl *** sndfile
