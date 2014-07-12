@@ -190,12 +190,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		{
 			switch ( out->type = *in )
 			{
+			case 'D':
 			case 'C':
 			case 'B':
 				break;
-
-			case 'D':
-				return "Digimusic not supported";
 
 			default:
 				return "Unsupported player type";
@@ -350,6 +348,9 @@ void Sap_Emu::run_routine( sap_addr_t addr )
 
 inline void Sap_Emu::call_init( int track )
 {
+	uint8_t sp;
+	uint16_t code_base;
+
 	switch ( info.type )
 	{
 	case 'B':
@@ -365,6 +366,39 @@ inline void Sap_Emu::call_init( int track )
 		r.a = 0;
 		r.x = track;
 		run_routine( info.play_addr + 3 );
+		break;
+
+	case 'D':
+		r.a = track;
+		r.x = 0;
+		r.y = 0;
+		r.sp = 0xFF;
+		run_routine( info.init_addr );
+
+		sp = r.sp;
+
+		mem.ram [0x100 + sp] = r.pc >> 8;
+		sp = (sp - 1) & 0xFF;
+		mem.ram [0x100 + sp] = ( r.pc & 0xFF );
+		r.sp = (sp - 1) & 0xFF;
+
+		code_base = 0xd200;
+		mem.ram [code_base] = 0x08;
+		mem.ram [code_base + 1] = 0x48;
+		mem.ram [code_base + 2] = 0x8a;
+		mem.ram [code_base + 3] = 0x48;
+		mem.ram [code_base + 4] = 0x98;
+		mem.ram [code_base + 5] = 0x48;
+		mem.ram [code_base + 6] = 0x20;
+		mem.ram [code_base + 7] = code_base & 0xFF;
+		mem.ram [code_base + 8] = (code_base >> 8);
+		mem.ram [code_base + 9] = 0x68;
+		mem.ram [code_base + 10] = 0xa8;
+		mem.ram [code_base + 11] = 0x68;
+		mem.ram [code_base + 12] = 0xaa;
+		mem.ram [code_base + 13] = 0x68;
+		mem.ram [code_base + 14] = 0x40;
+		info.play_addr = code_base;
 		break;
 	}
 }
@@ -441,6 +475,9 @@ inline void Sap_Emu::call_play()
 {
 	switch ( info.type )
 	{
+	case 'D':
+		cpu_jsr( info.play_addr );
+		break;
 	case 'B':
 		cpu_jsr( info.play_addr );
 		break;
