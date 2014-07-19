@@ -16,7 +16,7 @@
 
 #include <glib.h>
 
-#include <libaudcore/vfs.h>
+#include "ffaudio-stdinc.h"
 
 static const struct {
     const char * id;
@@ -30,8 +30,7 @@ static const struct {
     {"data", 8}
 };
 
-bool read_itunes_cover (const char * filename, VFSFile * file, void * *
- data, int64_t * size)
+bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, int64_t * size)
 {
     unsigned char b[8];
     int bsize;
@@ -61,8 +60,7 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * *
         {
             if (vfs_fread (b, 1, 8, file) != 8)
                 return false;
-            if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8
-             || at + bsize > stop)
+            if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8 || at + bsize > stop)
                 return false;
             if (! strncmp ((char *) b + 4, frame.id, 4))
                 break;

@@ -127,9 +127,14 @@ void Playlist::mouseDoubleClickEvent (QMouseEvent * event)
     playCurrentIndex ();
 }
 
-int Playlist::playlist ()
+int Playlist::playlist () const
 {
     return model->playlist ();
+}
+
+int Playlist::uniqueId () const
+{
+    return model->uniqueId ();
 }
 
 void Playlist::scrollToCurrent ()

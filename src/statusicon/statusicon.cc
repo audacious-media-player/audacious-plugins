@@ -74,7 +74,7 @@ static GtkStatusIcon *si_create(void)
     else
     {
         char * path = g_strdup_printf ("%s/images/audacious.png",
-         aud_get_path (AUD_PATH_DATA_DIR));
+         aud_get_path (AudPath::DataDir));
         icon = gtk_status_icon_new_from_file (path);
         g_free (path);
     }
@@ -354,11 +354,14 @@ static void si_enable(gboolean enable)
 
 static bool si_init (void)
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     aud_config_set_defaults ("statusicon", si_defaults);
     audgui_init ();
     plugin_active = TRUE;
     si_enable(TRUE);
-    return TRUE;
+    return true;
 }
 
 void si_cleanup(void)

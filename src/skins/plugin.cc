@@ -127,6 +127,9 @@ static void skins_init_main (void)
 
 static bool skins_init (void)
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     audgui_init ();
 
     skins_cfg_load ();
@@ -137,7 +140,7 @@ static bool skins_init (void)
 
     create_plugin_windows ();
 
-    return TRUE;
+    return true;
 }
 
 static void skins_cleanup_main (void)

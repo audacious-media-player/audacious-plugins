@@ -49,8 +49,9 @@ public:
     void updateRow (int row);
     QString getQueued (int row) const;
     int playlist () const;
-    int uniqueId;
-    int rows;
+    int uniqueId () const;
+    int m_uniqueId;
+    int m_rows;
 };
 
 #endif

@@ -66,11 +66,23 @@ if test "x$GCC" = "xyes"; then
     CFLAGS="$CFLAGS -std=gnu99 -ffast-math -Wall -pipe"
     if test "x$HAVE_DARWIN" = "xyes"; then
         CXXFLAGS="$CXXFLAGS -stdlib=libc++ -std=gnu++11 -ffast-math -Wall -pipe"
-        LDFLAGS="$LDFLAGS -lc++"
+        LDFLAGS="$LDFLAGS -lc++ -stdlib=libc++"
     else
         CXXFLAGS="$CXXFLAGS -std=gnu++11 -ffast-math -Wall -pipe"
     fi
     AUD_CHECK_CFLAGS(-Wtype-limits)
+fi
+
+dnl On Mac, check for Objective-C and -C++ compilers
+dnl ================================================
+
+if test "x$HAVE_DARWIN" = "xyes"; then
+    AC_PROG_OBJC
+    AC_PROG_OBJCPP
+    AC_PROG_OBJCXX
+    AC_PROG_OBJCXXCPP
+
+    OBJCXXFLAGS="$OBJCXXFLAGS -stdlib=libc++ -std=c++11"
 fi
 
 dnl Enable "-Wl,-z,defs" only on Linux

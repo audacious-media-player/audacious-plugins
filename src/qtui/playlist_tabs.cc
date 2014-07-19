@@ -48,15 +48,47 @@ PlaylistTabs::~PlaylistTabs ()
     // TODO: cleanup playlists
 }
 
+void PlaylistTabs::maybeCreateTab (int count_, int uniq_id)
+{
+    int tabs = count ();
+
+    for (int i = 0; i < tabs; i++)
+    {
+        Playlist * playlistWidget = (Playlist *) widget (i);
+        if (uniq_id == playlistWidget->uniqueId())
+            return;
+    }
+
+    auto playlistWidget = new Playlist (0, uniq_id);
+    addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count_)));
+}
+
+void PlaylistTabs::cullPlaylists ()
+{
+    int tabs = count ();
+
+    for (int i = 0; i < tabs; i++)
+    {
+         Playlist * playlistWidget = (Playlist *) widget (i);
+
+         if (playlistWidget->playlist() < 0)
+         {
+             removeTab(i);
+             delete playlistWidget;
+         }
+         else
+             setTabText(i, QString (aud_playlist_get_title (playlistWidget->playlist())));
+    }
+}
+
 void PlaylistTabs::populatePlaylists ()
 {
     int playlists = aud_playlist_count ();
 
     for (int count = 0; count < playlists; count++)
-    {
-        auto playlistWidget = new Playlist (0, aud_playlist_get_unique_id (count));
-        addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count)));
-    }
+        maybeCreateTab(count, aud_playlist_get_unique_id (count));
+
+    cullPlaylists();
 }
 
 Playlist * PlaylistTabs::playlistWidget (int num)

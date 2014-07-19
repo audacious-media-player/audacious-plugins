@@ -41,21 +41,20 @@ public slots:
 
 private:
     void populatePlaylists ();
+    void maybeCreateTab (int count_, int uniq_id);
+    void cullPlaylists ();
 
     static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
     {
-        // int global_level = (int) (long) data;
+        int global_level = (int) (long) data;
 
-        // if (global_level == PLAYLIST_UPDATE_STRUCTURE)
-        // TODO: Add/remove playlist tabs
+        if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+            tabWidget->populatePlaylists();
 
         int lists = aud_playlist_count ();
 
         for (int list = 0; list < lists; list ++)
         {
-            // if (global_level >= PLAYLIST_UPDATE_METADATA)
-            // TODO: Set playlist title
-
             int at, count;
             int level = aud_playlist_updated_range (list, & at, & count);
 

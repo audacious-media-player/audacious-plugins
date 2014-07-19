@@ -735,6 +735,9 @@ static void remove_dock_plugins (void)
 
 static bool init (void)
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     audgui_init ();
 
     search_tool = aud_plugin_lookup_basename ("search-tool");
@@ -885,7 +888,7 @@ static bool init (void)
 
     add_dock_plugins ();
 
-    return TRUE;
+    return true;
 }
 
 static void cleanup (void)

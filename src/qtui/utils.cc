@@ -21,14 +21,26 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/index.h>
+#include <libaudcore/runtime.h>
 #include <libaudcore/tuple.h>
 
 namespace Utils
 {
+    static void directoryEntered (const QString & path)
+    {
+        aud_set_str ("audgui", "filesel_path", path.toUtf8 ().constData ());
+    }
+
     void openFilesDialog (bool add = false)
     {
-        QFileDialog dialog;
+        QFileDialog dialog (0, add ? "Add Files" : "Open Files", QString (aud_get_str ("audgui", "filesel_path")));
         dialog.setFileMode (QFileDialog::AnyFile);
+
+        QObject::connect (&dialog, &QFileDialog::directoryEntered, directoryEntered);
+
+        if (add)
+            dialog.setLabelText (QFileDialog::Accept, "Add");
+
         if (dialog.exec ())
         {
             Index<PlaylistAddItem> files;

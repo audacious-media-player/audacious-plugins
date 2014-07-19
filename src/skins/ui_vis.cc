@@ -179,7 +179,6 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
         break;
     }
     case VIS_SCOPE:
-    {
         if (! vis.active)
             goto DRAW;
 
@@ -194,6 +193,7 @@ DRAW_FUNC_BEGIN (ui_vis_draw)
             }
             break;
         case SCOPE_LINE:
+        {
             for (int x = 0; x < 74; x++)
             {
                 int h = aud::clamp ((int) vis.data[x], 0, 15);
