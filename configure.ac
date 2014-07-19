@@ -945,7 +945,7 @@ dnl ============
 
 AC_ARG_ENABLE(qtui,
  [AS_HELP_STRING([--enable-qtui], [enable Qt interface (qtui)])],
- [enable_qtui=$enableval], [enable_qtui="no"])
+ [enable_qtui=$enableval], [enable_qtui=$USE_QT])
 
 if test "x$enable_qtui" != "xno"; then
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui"
