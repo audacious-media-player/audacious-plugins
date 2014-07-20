@@ -38,6 +38,7 @@ public:
 
 public slots:
     void filterTrigger (const QString &text);
+    void currentChangedTrigger (int idx);
 
 private:
     void populatePlaylists ();
