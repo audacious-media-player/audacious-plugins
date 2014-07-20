@@ -3,22 +3,29 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# 周嘉韡 <btchina@live.com>, 2013
 # Chasye <chasye@gmail.com>, 2010
 # yinsigan <ganweiliang886@gmail.com>, 2012
 # JeffBai <jeffbaichina@members.fsf.org>, 2014
-# michaeljayt <michaeljayt@gmail.com>, 2013
+# JeffBai <jeffbaichina@members.fsf.org>, 2014
 # Luke <runningwaterpro@gmail.com>, 2012
-# sd542927172 <sd542927172@live.cn>, 2013
-# min zhang <zm1990s@gmail.com>, 2014
-# min zhang <zm1990s@gmail.com>, 2013
-# 4679kun <btchina@live.com>, 2013
+# Michael Jay Tong <michaeljayt@gmail.com>, 2013
+# Michael Jay Tong <michaeljayt@gmail.com>, 2013
+# zhangmin <zm1990s@gmail.com>, 2013-2014
+# Luke <runningwaterpro@gmail.com>, 2012
+# shan dong <sd542927172@live.cn>, 2013
+# shan dong <sd542927172@live.cn>, 2013
+# yinsigan <ganweiliang886@gmail.com>, 2012
+# zhangmin <zm1990s@gmail.com>, 2014
+# zhangmin <zm1990s@gmail.com>, 2013
+# 周嘉韡 <btchina@live.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
-"PO-Revision-Date: 2014-04-12 08:18+0000\n"
-"Last-Translator: min zhang <zm1990s@gmail.com>\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"PO-Revision-Date: 2014-04-21 21:09+0000\n"
+"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/"
 "audacious/language/zh_CN/)\n"
 "Language: zh_CN\n"
@@ -56,11 +63,11 @@ msgstr "连续的"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib 播放器)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr "设置闹钟"
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -70,7 +77,7 @@ msgstr ""
 "\n"
 "最初由 Adam Feakin 和 Daniel Stodden 编写。"
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "闹钟"
 
@@ -818,7 +825,7 @@ msgstr "预置:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer 立体双声(BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "频谱分析器"
 
@@ -1223,7 +1230,7 @@ msgstr ""
 msgid "Echo"
 msgstr "回响"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1240,7 +1247,7 @@ msgstr ""
 "Matti Hämäläinen <ccr@tnsp.org>\n"
 "编写"
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg 插件"
 
@@ -1630,7 +1637,7 @@ msgstr "无面板"
 msgid "Disable"
 msgstr "禁用"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "搜索工具"
 
@@ -1667,7 +1674,7 @@ msgid "_Quit"
 msgstr "退出(_Q)"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "播放(_P)"
 
@@ -2321,7 +2328,7 @@ msgstr "缺少歌曲元信息"
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "正在连接到 lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki 插件"
 
@@ -2498,7 +2505,7 @@ msgstr "MPG123 插件"
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 服务器"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS 插件"
 
@@ -2851,7 +2858,7 @@ msgstr "未知艺术家"
 msgid "Unknown Album"
 msgstr "未知专辑"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
@@ -2860,13 +2867,13 @@ msgstr ""
 "%s\n"
 "位于 %s 中的 %s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d 张专辑"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2878,7 +2885,7 @@ msgstr[0] ""
 "%s\n"
 "%s, %d 首歌曲"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2888,29 +2895,29 @@ msgid_plural ""
 " %d songs by %s"
 msgstr[0] ""
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "创建播放列表"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "添加到播放列表"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
 msgstr "搜索库"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr "要将您的音乐库导入Audacious，选择一个文件夹，然后点击“刷新”图标。"
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "请稍等...."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "选择文件夹"
 
@@ -3458,51 +3465,51 @@ msgstr "常规"
 msgid "Visualization"
 msgstr "可视化效果"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "前置放大"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 赫兹"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 赫兹"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 赫兹"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 赫兹"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "200 赫兹"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1000 赫兹"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2000 赫兹"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4000 赫兹"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8000 赫兹"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16000 赫兹"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "Audacious均衡器"
 
@@ -3588,39 +3595,39 @@ msgstr ""
 "按部分字段搜索播放列表中的条目。各个字段都可以使用正则表达式，而且是不分大小"
 "字的。如果你不知道何为正则表达式，简单的输入部分你想搜索的文字亦可。"
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "标题："
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "专辑："
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "艺术家："
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "文件名"
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr "搜索前清空之前的结果"
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr "自动为区配条目切换队列"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
 msgstr "用匹配的条目创建新的播放列表"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
 msgstr "Audacious播放列表编辑器"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d of %d)"
@@ -3638,7 +3645,7 @@ msgstr "未打包的Winamp 2.x主题"
 msgid "Could not create directory (%s): %s\n"
 msgstr "无法创建目录(%s)：%s\n"
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3678,7 +3685,7 @@ msgstr ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr "Sndfile 插件"
 
@@ -3722,33 +3729,33 @@ msgstr "(空代表默认)"
 msgid "OK"
 msgstr "确定"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
 msgstr "歌曲改变"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "歌曲开始播放时执行指令。"
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "指令："
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr "歌曲即将完成时执行指令。"
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "当Audacious播放到列表结尾时执行指令。"
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr "歌曲的标题改变时执行指令(如：网络媒体的标题)。"
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3782,7 +3789,7 @@ msgstr ""
 "%b: 专辑\n"
 "%T: 音轨标题"
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3790,7 +3797,7 @@ msgstr ""
 "<span size='small'>传递到Shell的参数一定要用引号包围，否则会是一件相当危险的"
 "事。</span>"
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "指令"
 
@@ -3852,7 +3859,7 @@ msgstr "速度和音调"
 msgid "Se_ttings ..."
 msgstr "设置 (&T)"
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3869,35 +3876,35 @@ msgstr ""
 "\n"
 "此插件提供一个状态图标，放置于系统托盘位置。"
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>鼠标滚轮动作</b>"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
 msgstr "调整音量"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:386
 msgid "Change playing song"
 msgstr "改变歌曲"
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
 msgstr "<b>其他设置</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr "禁用弹出窗口"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr "关闭系统托盘"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr "向上卷动时显示在播放列表顶部"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr "状态图标"
 

@@ -7,25 +7,25 @@
 # Andika Triwidada <andika@gmail.com>, 2012
 # Ardjuna <Asyura.x@gmail.com>, 2013
 # Ardjuna <Asyura.x@gmail.com>, 2012
-# mijortsa <astrojim.blankon@gmail.com>, 2012
+# abd azis ws <astrojim.blankon@gmail.com>, 2012
 #  <bu0ncu3@yahoo.com>, 2012
-# mascatur <satyafree@gmail.com>, 2013
+# Catur Susetyo <satyafree@gmail.com>, 2013
 #  <kokabiel9@gmail.com>, 2012
 # martadinata666 <martadinata666@gmail.com>, 2012
-# Mohamad Hasan Al Banna, 2012-2013
+# Hasan Al Banna, 2012-2013
 #  <pri_yess@yahoo.com>, 2012
-# Rahman Yusri Aftian <aftian@yahoo.com>, 2012-2013
-# operamaniac <rizkiaulia.r@gmail.com>, 2013
+# Rahman Yusri Aftian <aftian@yahoo.com>, 2012-2014
+# Rizki Aulia Rachman <rizkiaulia.r@gmail.com>, 2013
 # xunilresu <xunilresu@gmail.com>, 2012
 #  <yudi.al@gmail.com>, 2012
 #  <yustrizal24@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"PO-Revision-Date: 2014-07-10 01:38+0000\n"
+"Last-Translator: Rahman Yusri Aftian <aftian@yahoo.com>\n"
 "Language-Team: Indonesian (Indonesia) (http://www.transifex.com/projects/p/"
 "audacious/language/id_ID/)\n"
 "Language: id_ID\n"
@@ -63,18 +63,21 @@ msgstr ""
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (Pemutar AdLib)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr ""
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
+"Sebuah plugin yang dapat digunakan untuk mulai bermain pada waktu tertentu\n"
+"\n"
+"Awalnya ditulis oleh Adam Feakin dan Daniel Stodden."
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "Alarm"
 
@@ -183,12 +186,12 @@ msgstr "Pengaturan Alarm "
 
 #: src/alarm/interface.c:180 src/filewriter/mp3.c:690
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
-msgstr ""
+msgstr "_Batal"
 
 #: src/alarm/interface.c:188 src/alarm/interface.c:252
 #: src/alarm/interface.c:267
@@ -392,7 +395,7 @@ msgstr "AMIDI-Plug - pilih berkas SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
-msgstr ""
+msgstr "Bu_ka"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
@@ -503,7 +506,7 @@ msgstr ""
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (On-Screen Display)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
@@ -691,11 +694,11 @@ msgstr "OSD Audacious - Konfigurasi"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
-msgstr ""
+msgstr "_Tes"
 
 #: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
 msgid "_Set"
-msgstr ""
+msgstr "_Set"
 
 #: src/aosd/aosd_ui.c:940
 msgid "Position"
@@ -727,7 +730,7 @@ msgstr ""
 
 #: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "Daftar Putar ASXv1/ASXv2 "
 
 #: src/audpl/audpl.c:186
 msgid "Audacious Playlists (audpl)"
@@ -735,7 +738,7 @@ msgstr "Daftar Putar Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
-msgstr ""
+msgstr "<b>Warna</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
@@ -757,7 +760,7 @@ msgstr ""
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr ""
 
@@ -824,7 +827,7 @@ msgstr ""
 #: src/cdaudio-ng/cdaudio-ng.c:300
 #, c-format
 msgid "Invalid URI %s."
-msgstr ""
+msgstr "URI Tidak Valid %s."
 
 #: src/cdaudio-ng/cdaudio-ng.c:302
 #, c-format
@@ -984,7 +987,7 @@ msgstr "Hz"
 
 #: src/console/plugin.c:49
 msgid "<b>SPC</b>"
-msgstr ""
+msgstr "<b>SPC</b>"
 
 #: src/console/plugin.c:50
 msgid "Ignore length from SPC tags"
@@ -1066,7 +1069,7 @@ msgstr ""
 
 #: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
-msgstr ""
+msgstr "Pindah ke Tong Sampah"
 
 #: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
@@ -1085,11 +1088,11 @@ msgstr "Batal"
 
 #: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
-msgstr ""
+msgstr "Hapus Berkas"
 
 #: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Hapus Berkas Dipilih"
 
 #: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
@@ -1106,7 +1109,7 @@ msgstr "<b>Echo</b>"
 #: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:88
 #: src/modplug/plugin_main.c:102
 msgid "Delay:"
-msgstr ""
+msgstr "Penundaan"
 
 #: src/echo_plugin/echo.c:29 src/modplug/plugin_main.c:89
 #: src/modplug/plugin_main.c:103
@@ -1119,7 +1122,7 @@ msgstr ""
 
 #: src/echo_plugin/echo.c:33 src/modplug/plugin_main.c:107
 msgid "Volume:"
-msgstr ""
+msgstr "Volume"
 
 #: src/echo_plugin/echo.c:116
 msgid ""
@@ -1133,7 +1136,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Echo"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1143,7 +1146,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "Pengaya FFmpeg"
 
@@ -1471,11 +1474,11 @@ msgstr "Bitrate"
 
 #: src/gtkui/columns.c:286
 msgid "Available columns"
-msgstr ""
+msgstr "Kolom tersedia"
 
 #: src/gtkui/columns.c:312
 msgid "Displayed columns"
-msgstr ""
+msgstr "Tampilan kolom"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
@@ -1501,7 +1504,7 @@ msgstr "Tidak didok"
 msgid "Disable"
 msgstr "Nonaktifkan"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "Alat Pencari"
 
@@ -1523,7 +1526,7 @@ msgstr "Tambah U_RL..."
 
 #: src/gtkui/menus.c:132
 msgid "Search _Library"
-msgstr ""
+msgstr "Cari _Pustaka"
 
 #: src/gtkui/menus.c:134
 msgid "A_bout ..."
@@ -1531,14 +1534,14 @@ msgstr "Te_ntang..."
 
 #: src/gtkui/menus.c:135
 msgid "_Settings ..."
-msgstr ""
+msgstr "_Pengaturan...."
 
 #: src/gtkui/menus.c:136 src/statusicon/statusicon.c:270
 msgid "_Quit"
 msgstr "_Keluar"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "_Putar"
 
@@ -1680,7 +1683,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:256
 msgid "Remo_ve"
-msgstr ""
+msgstr "Hap_us"
 
 #: src/gtkui/menus.c:204
 msgid "_Import ..."
@@ -1736,7 +1739,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:231
 msgid "_Visualizations ..."
-msgstr ""
+msgstr "_Visualisasi"
 
 #: src/gtkui/menus.c:234
 msgid "_File"
@@ -1893,7 +1896,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Loncat ke berkas"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -1964,7 +1967,7 @@ msgstr "<b>Kunci Pengikat:</b>"
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
-msgstr ""
+msgstr "T_ambah"
 
 #: src/hotkey/plugin.c:67
 msgid ""
@@ -1995,11 +1998,11 @@ msgstr ""
 
 #: src/jack/jack.c:198
 msgid "Don't connect to any port"
-msgstr ""
+msgstr "Jangan sambung ke semua port"
 
 #: src/jack/jack.c:202
 msgid "Connection mode:"
-msgstr ""
+msgstr "Mode Sambungan"
 
 #: src/jack/jack.c:205
 msgid "Enable debug printing"
@@ -2166,13 +2169,13 @@ msgstr ""
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Menyambungkan ke lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr ""
 
 #: src/m3u/m3u.c:116
 msgid "M3U Playlists"
-msgstr ""
+msgstr "Daftar Putar M3U"
 
 #: src/metronom/metronom.c:127
 #, c-format
@@ -2221,19 +2224,19 @@ msgstr "Pengaya MMS"
 
 #: src/modplug/plugin_main.c:55
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Resolusi</b>"
 
 #: src/modplug/plugin_main.c:56
 msgid "8-bit"
-msgstr ""
+msgstr "8-bit"
 
 #: src/modplug/plugin_main.c:58
 msgid "16-bit"
-msgstr ""
+msgstr "16-bit"
 
 #: src/modplug/plugin_main.c:60
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Cennel</b>"
 
 #: src/modplug/plugin_main.c:66
 msgid "Nearest (fastest)"
@@ -2336,7 +2339,7 @@ msgstr "Pengaya MPG123"
 msgid "MPRIS 2 Server"
 msgstr "Server MPRIS 2"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Pengaya Neon HTTP/HTTPS"
 
@@ -2606,7 +2609,7 @@ msgstr ""
 
 #: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Scrobbler 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:727
 msgid ""
@@ -2626,7 +2629,7 @@ msgstr ""
 
 #: src/search-tool/search-tool.c:104 src/search-tool/search-tool.c:114
 msgid "Library"
-msgstr ""
+msgstr "Pustaka"
 
 #: src/search-tool/search-tool.c:211
 msgid "Unknown Artist"
@@ -2636,20 +2639,22 @@ msgstr "Artis Tidak Diketahui"
 msgid "Unknown Album"
 msgstr "Album Tidak Diketahui"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+" di %s oleh %s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d album"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2658,8 +2663,10 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s\n"
+" %s, %d lagu-lagu"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2669,39 +2676,39 @@ msgid_plural ""
 " %d songs by %s"
 msgstr[0] ""
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "_Buat Daftar Putar"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "_Tambah ke Daftar Putar"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
-msgstr ""
+msgstr "Cari pustaka"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "Mohon tunggu ..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "Pilih Folder"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
-msgstr ""
+msgstr "Buka Berkas ..."
 
 #: src/skins/menus.c:57
 msgid "Open URL ..."
-msgstr ""
+msgstr "Buka URL...."
 
 #: src/skins/menus.c:59
 msgid "Playback"
@@ -2718,23 +2725,23 @@ msgstr "Lihat"
 #: src/skins/menus.c:63 src/skins/menus.c:133 src/skins/menus.c:146
 #: src/skins/menus.c:203
 msgid "Services"
-msgstr ""
+msgstr "Servis"
 
 #: src/skins/menus.c:65
 msgid "About ..."
-msgstr ""
+msgstr "Tentang"
 
 #: src/skins/menus.c:66
 msgid "Settings ..."
-msgstr ""
+msgstr "Pengaturan"
 
 #: src/skins/menus.c:67
 msgid "Quit"
-msgstr ""
+msgstr "Keluar"
 
 #: src/skins/menus.c:71 src/skins/menus.c:195
 msgid "Song Info ..."
-msgstr ""
+msgstr "Info Lagu"
 
 #: src/skins/menus.c:73
 msgid "Repeat"
@@ -2750,7 +2757,7 @@ msgstr "Tidak ada kemajuan Playlist"
 
 #: src/skins/menus.c:76
 msgid "Stop After This Song"
-msgstr ""
+msgstr "Stop Setelah Lagu Ini"
 
 #: src/skins/menus.c:81
 msgid "Previous"
@@ -2766,15 +2773,15 @@ msgstr ""
 
 #: src/skins/menus.c:87
 msgid "Jump to Song ..."
-msgstr ""
+msgstr "Lompat ke Lagu ..."
 
 #: src/skins/menus.c:88
 msgid "Jump to Time ..."
-msgstr ""
+msgstr "Lompat ke Waktu ..."
 
 #: src/skins/menus.c:92
 msgid "Play This Playlist"
-msgstr ""
+msgstr "Putar Daftar Putar Ini"
 
 #: src/skins/menus.c:94
 msgid "New Playlist"
@@ -2782,31 +2789,31 @@ msgstr "Daftar Lagu Baru"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
-msgstr ""
+msgstr "Ganti Nama Daftar Putar ..."
 
 #: src/skins/menus.c:96
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Hapus Daftar Putar"
 
 #: src/skins/menus.c:98
 msgid "Previous Playlist"
-msgstr ""
+msgstr "Daftar Putar Sebelumnya"
 
 #: src/skins/menus.c:99
 msgid "Next Playlist"
-msgstr ""
+msgstr "Daftar Putar Selanjutnya"
 
 #: src/skins/menus.c:101
 msgid "Import Playlist ..."
-msgstr ""
+msgstr "Impor Daftar Putar ..."
 
 #: src/skins/menus.c:102
 msgid "Export Playlist ..."
-msgstr ""
+msgstr "Ekspor Daftar Putar ..."
 
 #: src/skins/menus.c:104
 msgid "Playlist Manager ..."
-msgstr ""
+msgstr "Manager Daftar Putar ..."
 
 #: src/skins/menus.c:105
 msgid "Queue Manager ..."
@@ -2814,7 +2821,7 @@ msgstr ""
 
 #: src/skins/menus.c:107
 msgid "Refresh Playlist"
-msgstr ""
+msgstr "Segarkan Daftar Putar"
 
 #: src/skins/menus.c:111
 msgid "Show Playlist Editor"
@@ -2850,11 +2857,11 @@ msgstr ""
 
 #: src/skins/menus.c:135
 msgid "Add URL ..."
-msgstr ""
+msgstr "Tambah URL"
 
 #: src/skins/menus.c:136
 msgid "Add Files ..."
-msgstr ""
+msgstr "Tambah Berkas ..."
 
 #: src/skins/menus.c:140 src/skins/menus.c:167 src/skins/menus.c:177
 msgid "By Title"
@@ -2866,7 +2873,7 @@ msgstr "Dari Nama berkas"
 
 #: src/skins/menus.c:142 src/skins/menus.c:171 src/skins/menus.c:181
 msgid "By File Path"
-msgstr ""
+msgstr "Oleh Path Berkas"
 
 #: src/skins/menus.c:148
 msgid "Remove All"
@@ -2918,7 +2925,7 @@ msgstr "Dari Artis"
 
 #: src/skins/menus.c:172 src/skins/menus.c:182
 msgid "By Release Date"
-msgstr ""
+msgstr "Oleh Tanggal Rilis"
 
 #: src/skins/menus.c:173 src/skins/menus.c:183
 msgid "By Track Number"
@@ -2994,7 +3001,7 @@ msgstr ""
 
 #: src/skins/menus.c:217
 msgid "Save EQF File ..."
-msgstr ""
+msgstr "Simpan Berkas EQF ..."
 
 #: src/skins/menus.c:219
 msgid "Delete Preset ..."
@@ -3006,7 +3013,7 @@ msgstr ""
 
 #: src/skins/menus.c:222
 msgid "Import Winamp Presets ..."
-msgstr ""
+msgstr "Impor Preset-preset Winamp ..."
 
 #: src/skins/menus.c:224
 msgid "Reset to Zero"
@@ -3060,7 +3067,7 @@ msgstr ""
 
 #: src/skins/preset-list.c:371
 msgid "Save preset"
-msgstr ""
+msgstr "Simpan preset"
 
 #: src/skins/preset-list.c:386
 msgid "Save auto-preset"
@@ -3068,7 +3075,7 @@ msgstr ""
 
 #: src/skins/preset-list.c:413
 msgid "Delete preset"
-msgstr ""
+msgstr "Hapus preset"
 
 #: src/skins/preset-list.c:429
 msgid "Delete auto-preset"
@@ -3092,11 +3099,11 @@ msgstr "Pilih huruf daftar putar"
 
 #: src/skins/skins_cfg.c:191
 msgid "<b>Skin</b>"
-msgstr ""
+msgstr "<b>Kulit</b>"
 
 #: src/skins/skins_cfg.c:193
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Fonts</b>"
 
 #: src/skins/skins_cfg.c:196
 msgid "Use bitmap fonts (supports ASCII only)"
@@ -3173,7 +3180,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:232
 msgid "Line"
-msgstr ""
+msgstr "Garis"
 
 #: src/skins/skins_cfg.c:233
 msgid "Solid"
@@ -3189,7 +3196,7 @@ msgstr "Halus"
 
 #: src/skins/skins_cfg.c:248
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Tipe</b>"
 
 #: src/skins/skins_cfg.c:249
 msgid "Visualization type:"
@@ -3209,7 +3216,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:258
 msgid "Style:"
-msgstr ""
+msgstr "Gaya"
 
 #: src/skins/skins_cfg.c:261
 msgid "Falloff:"
@@ -3239,58 +3246,58 @@ msgstr "Umum"
 msgid "Visualization"
 msgstr "Visualisasi"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "Preamp"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "Audacious Equalizer"
 
 #: src/skins/ui_main.c:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr ""
+msgstr "Berusaha untuk %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:707
 #, c-format
@@ -3353,11 +3360,11 @@ msgstr "Berhenti setelah lagu"
 
 #: src/skins/ui_playlist.c:222
 msgid "Search entries in active playlist"
-msgstr ""
+msgstr "Cari catatan di daftar putar aktif"
 
 #: src/skins/ui_playlist.c:224
 msgid "Search"
-msgstr ""
+msgstr "Cari"
 
 #: src/skins/ui_playlist.c:229
 msgid ""
@@ -3366,58 +3373,62 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
+"Pilih entri dalam daftar putar dengan mengisi satu atau lebih bidang. Fields "
+"menggunakan ekspresi reguler sintaks, case-insensitive. Jika Anda tidak tahu "
+"bagaimana ekspresi reguler bekerja, cukup memasukkan sebagian literal dari "
+"apa yang Anda cari."
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "Judul: "
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "Album: "
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "Artis: "
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "Nama berkas: "
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
-msgstr ""
+msgstr "Buat daftar putar baru dengan mencocokan entri"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
-msgstr ""
+msgstr "Audacious Daftar Putar Editor"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d of %d)"
 
 #: src/skins/ui_skinselector.c:163
 msgid "Archived Winamp 2.x skin"
-msgstr ""
+msgstr "Arsipkan Kulit Winamp 2.x "
 
 #: src/skins/ui_skinselector.c:168
 msgid "Unarchived Winamp 2.x skin"
-msgstr ""
+msgstr "Jangan Arsipkan Kulit Winam 2.x "
 
 #: src/skins/util.c:450
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr ""
+msgstr "Tidak dapat membuat folder (%s): %s\n"
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3439,7 +3450,7 @@ msgid ""
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr ""
 
@@ -3477,33 +3488,33 @@ msgstr ""
 msgid "OK"
 msgstr "OK"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
-msgstr ""
+msgstr "Ubah Lagu"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "Perintah saat Audacious memainkan lagu baru."
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "Perintah:"
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr ""
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Perintah saat Audacious mencapai akhir daftar lagu."
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3522,13 +3533,13 @@ msgid ""
 "%T: Track title"
 msgstr ""
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "Perintah"
 
@@ -3543,23 +3554,23 @@ msgstr ""
 
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
-msgstr ""
+msgstr "Cepat"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
-msgstr ""
+msgstr "Rendah"
 
 #: src/sox-resampler/sox-resampler.c:146
 msgid "High"
-msgstr ""
+msgstr "Tinggi"
 
 #: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
-msgstr ""
+msgstr "Sangat Tinggi"
 
 #: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
-msgstr ""
+msgstr "Kualitas"
 
 #: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"
@@ -3571,21 +3582,21 @@ msgstr ""
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr ""
+msgstr "Kecepatan"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr ""
+msgstr "Nada"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Kecepatan dan Nada"
 
 #: src/statusicon/statusicon.c:269
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "Se_ttings ..."
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3596,35 +3607,35 @@ msgid ""
 "the system tray area of the window manager."
 msgstr ""
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr ""
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
-msgstr ""
-
-#: src/statusicon/statusicon.c:382
-msgid "Change playing song"
-msgstr ""
-
-#: src/statusicon/statusicon.c:385
-msgid "<b>Other Settings</b>"
-msgstr ""
+msgstr "Ubah volume"
 
 #: src/statusicon/statusicon.c:386
+msgid "Change playing song"
+msgstr "Ubah lagu yang sedang diputar"
+
+#: src/statusicon/statusicon.c:389
+msgid "<b>Other Settings</b>"
+msgstr "<b>Pengaturan Lain</b>"
+
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr "Ikon Status"
 
@@ -3731,3 +3742,12 @@ msgstr "Dekoder 2SF"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 kHz:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 kHz:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 kHz:"

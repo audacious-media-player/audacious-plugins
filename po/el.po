@@ -8,9 +8,9 @@
 # Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2012-2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
 "PO-Revision-Date: 2014-04-11 16:24+0000\n"
 "Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/audacious/language/"
@@ -50,18 +50,18 @@ msgstr ""
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (Αναπαραγωγή AdLib)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr ""
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "Ξυπνητήρι"
 
@@ -738,7 +738,7 @@ msgstr "Προεπιλογές:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr ""
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Αναλυτής Φάσματος"
 
@@ -1135,7 +1135,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Ηχώ"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1145,7 +1145,7 @@ msgid ""
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "Πρόσθετο FFmpeg"
 
@@ -1503,7 +1503,7 @@ msgstr ""
 msgid "Disable"
 msgstr "Απενεργοποίηση"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "Εργαλέιο Αναζήτησης"
 
@@ -1540,7 +1540,7 @@ msgid "_Quit"
 msgstr "_Έξοδος"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "_Αναπαραγωγή"
 
@@ -2160,7 +2160,7 @@ msgstr ""
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Σύνδεση με lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr "Πρόσθετο LyricsWiki"
 
@@ -2330,7 +2330,7 @@ msgstr "Πρόσθετο MPG123"
 msgid "MPRIS 2 Server"
 msgstr "Εξυπηρετητής MPRIS 2"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Πρόσθετο Neon HTTP/HTTPS"
 
@@ -2632,7 +2632,7 @@ msgstr "Άγνωστος Καλλιτέχνης"
 msgid "Unknown Album"
 msgstr "Άγνωστο Άλμπουμ"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
@@ -2641,14 +2641,14 @@ msgstr ""
 "%s\n"
 " στο %s του %s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d δίσκος"
 msgstr[1] "%d δίσκοι"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2663,7 +2663,7 @@ msgstr[1] ""
 "%s\n"
 " %s, %d τραγούδια"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2678,19 +2678,19 @@ msgstr[1] ""
 "%s\n"
 " %d τραγούδια από %s"
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "_Δημιουργία Λίστας Αναπαραγωγής"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "_Προσθήκη στη Λίστα Αναπαραγωγής"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
 msgstr "Αναζήτηση βιοθήκης"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2698,11 +2698,11 @@ msgstr ""
 "Για να εισάγεται τη συλλογή μουσικής σας στο Audacious, διαλέξτε έναν φάκελο "
 "και κάνετε κλικ στο εικονίδιο «ανανέωση»."
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "Παρακαλώ περιμένετε ..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "Επιλογή Φακέλου"
 
@@ -3250,51 +3250,51 @@ msgstr "Γενικά"
 msgid "Visualization"
 msgstr "Οπτικοποίηση"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "Προενίσχυση"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "Ισοσταθμιτής Audacious"
 
@@ -3378,39 +3378,39 @@ msgid ""
 "for."
 msgstr ""
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "Τίτλος: "
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "Δίσκος: "
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "Καλλιτέχνης: "
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "Όνομα αρχείου: "
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr ""
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
 msgstr ""
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
 msgstr ""
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d από %d)"
@@ -3428,7 +3428,7 @@ msgstr ""
 msgid "Could not create directory (%s): %s\n"
 msgstr ""
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3450,7 +3450,7 @@ msgid ""
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr "Πρόσθετο Sndfile"
 
@@ -3488,35 +3488,35 @@ msgstr ""
 msgid "OK"
 msgstr "Εντάξει"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
 msgstr "Αλλαγή Τραγουδιού"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "Εντολή για εκτέλεση όταν το Audacious αρχίζει νέο τραγούδι."
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "Εντολή:"
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr "Εντολή για εκτέλεση πλησιάζωντας το τέλος ενός τραγουδιού."
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
 "Εντολή για εκτέλεση όταν το Audacious φτάνει το τέλος της λίστας "
 "αναπαραγωγής."
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3535,13 +3535,13 @@ msgid ""
 "%T: Track title"
 msgstr ""
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "Εντολές"
 
@@ -3598,7 +3598,7 @@ msgstr "Ταχύτητα και Χροιά:"
 msgid "Se_ttings ..."
 msgstr ""
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3609,35 +3609,35 @@ msgid ""
 "the system tray area of the window manager."
 msgstr ""
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr ""
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
 msgstr "Αλλαγή έντασης"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:386
 msgid "Change playing song"
 msgstr ""
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
 msgstr "<b>Άλλες Ρυθμίσεις</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr ""
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr ""
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr ""
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr ""
 

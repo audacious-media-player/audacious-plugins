@@ -3,20 +3,21 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# natird <dritan86@gmail.com>, 2012
-# uǝsıɯoʎ(読み専) <hallconnen2+transifex@gmail.com>, 2013
-# uǝsıɯoʎ(読み専) <hallconnen2+transifex@gmail.com>, 2012
-# Shuuji TAKAHASHI <shuuji3@gmail.com>, 2012-2014
+# natird zoto <dritan86@gmail.com>, 2012
+# ABE Tsunehiko <hallconnen2+transifex@gmail.com>, 2013
+# ABE Tsunehiko <hallconnen2+transifex@gmail.com>, 2012
+# Mika Kobayashi, 2014
+# Shuuji Takahashi <shuuji3@gmail.com>, 2012-2014
 # Warui-chan  <>, 2012
-# uǝsıɯoʎ(読み専) <hallconnen2+transifex@gmail.com>, 2012
-# uǝsıɯoʎ(読み専) <hallconnen2+transifex@gmail.com>, 2013
+# ABE Tsunehiko <hallconnen2+transifex@gmail.com>, 2012
+# ABE Tsunehiko <hallconnen2+transifex@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"PO-Revision-Date: 2014-04-30 05:46+0000\n"
+"Last-Translator: Mika Kobayashi\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/audacious/"
 "language/ja/)\n"
 "Language: ja\n"
@@ -54,11 +55,11 @@ msgstr "シーケンス"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib プレイヤー)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr "アラームをセット"
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -68,7 +69,7 @@ msgstr ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "アラーム"
 
@@ -94,6 +95,23 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"時刻\n"
+" アラーム時刻:\n"
+"  アラームが鳴る時刻。\n"
+"\n"
+" 静かになるまでの時間:\n"
+"  この時間が過ぎるとアラームが止まります。\n"
+"  (目覚ましダイアログを閉じなかった場合)\n"
+"\n"
+"曜日\n"
+" 曜日:\n"
+"  アラームを有効にする曜日を指定します。\n"
+"\n"
+" 時刻:\n"
+"  その曜日のアラームを鳴らす時刻を指定するか、\n"
+"  ボタンにチェックしてデフォルトを指定します。\n"
+"\n"
+"\n"
 
 #: src/alarm/interface.c:49
 msgid ""
@@ -241,7 +259,7 @@ msgstr "アラームが鳴る曜日を選んでください"
 
 #: src/alarm/interface.c:264
 msgid "Day"
-msgstr "日"
+msgstr "曜日"
 
 #: src/alarm/interface.c:282 src/bs2b/plugin.c:168 src/skins/preset-list.c:439
 #: src/skins/preset-list.c:445
@@ -250,7 +268,7 @@ msgstr "デフォルト"
 
 #: src/alarm/interface.c:312
 msgid "Days"
-msgstr "日"
+msgstr "曜日"
 
 #: src/alarm/interface.c:321
 msgid "Fading"
@@ -369,7 +387,7 @@ msgstr "デフォルトのリバーブを上書き:"
 
 #: src/amidi-plug/i_configure.c:110 src/amidi-plug/i_configure.c:116
 msgid "On"
-msgstr ""
+msgstr "オン"
 
 #: src/amidi-plug/i_configure.c:114
 msgid "Override default chorus:"
@@ -389,7 +407,7 @@ msgstr "ドラムシフト: "
 
 #: src/amidi-plug/i_configure.c:127
 msgid "<b>Advanced</b>"
-msgstr ""
+msgstr "<b>高度</b>"
 
 #: src/amidi-plug/i_configure.c:128
 msgid "Extract comments from MIDI file"
@@ -544,6 +562,13 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"作者 Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Evan Martin 作の Ghosd ライブラリに一部を基づく:\n"
+"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
@@ -800,7 +825,7 @@ msgstr "プリセット:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "バウアー ステレオ-バイノーラル変換 (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "スペクトラムアナライザ"
 
@@ -1206,7 +1231,7 @@ msgstr ""
 msgid "Echo"
 msgstr "エコー"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1222,7 +1247,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg プラグイン"
 
@@ -1612,7 +1637,7 @@ msgstr "ドッキングを解く"
 msgid "Disable"
 msgstr "無効"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "検索ツール"
 
@@ -1649,7 +1674,7 @@ msgid "_Quit"
 msgstr "終了(_Q)"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "再生(_P)"
 
@@ -1907,7 +1932,7 @@ msgstr "常にタブを表示する"
 
 #: src/gtkui/settings.c:39
 msgid "Show entry counts"
-msgstr ""
+msgstr "項目総数を表示"
 
 #: src/gtkui/settings.c:42
 msgid "Show close buttons"
@@ -1928,7 +1953,7 @@ msgstr "<b>その他</b>"
 
 #: src/gtkui/settings.c:51
 msgid "Arrow keys seek by:"
-msgstr ""
+msgstr "矢印キーでシークする時間:"
 
 #: src/gtkui/settings.c:54
 msgid "Scroll on song change"
@@ -2310,7 +2335,7 @@ msgstr "曲のメタデータが見つかりません"
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "lyrics.wikia.com に接続しています ..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki プラグイン"
 
@@ -2377,7 +2402,7 @@ msgstr "MMS プラグイン"
 
 #: src/modplug/plugin_main.c:55
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>解像度</b>"
 
 #: src/modplug/plugin_main.c:56
 msgid "8-bit"
@@ -2393,19 +2418,19 @@ msgstr "<b>チャンネル</b>"
 
 #: src/modplug/plugin_main.c:66
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "近傍 (最高速)"
 
 #: src/modplug/plugin_main.c:68
 msgid "Linear (fast)"
-msgstr ""
+msgstr "リニア (高速)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Spline (good)"
-msgstr ""
+msgstr "スプライン曲線 (高品質)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Polyphase (best)"
-msgstr ""
+msgstr "ポリフェーズ (最高品質)"
 
 #: src/modplug/plugin_main.c:74
 msgid "<b>Sampling rate</b>"
@@ -2434,7 +2459,7 @@ msgstr "レベル:"
 
 #: src/modplug/plugin_main.c:95
 msgid "Cutoff:"
-msgstr ""
+msgstr "カットオフ:"
 
 #: src/modplug/plugin_main.c:112
 msgid "<b>Reverb</b>"
@@ -2454,7 +2479,7 @@ msgstr "<b>プリアンプ</b>"
 
 #: src/modplug/plugin_main.c:132
 msgid "Oversample"
-msgstr ""
+msgstr "オーバーサンプリング"
 
 #: src/modplug/plugin_main.c:134
 msgid "Noise reduction"
@@ -2462,7 +2487,7 @@ msgstr "ノイズリダクション"
 
 #: src/modplug/plugin_main.c:136
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Amiga MODを再生する"
 
 #: src/modplug/plugin_main.c:138
 msgid "<b>Repeat</b>"
@@ -2492,7 +2517,7 @@ msgstr "MPG123 プラグイン"
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 サーバ"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS プラグイン"
 
@@ -2523,6 +2548,25 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Desktop Notifications Plugin for Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"このプログラムはフリーソフトウェアです。あなたはこれを、フリーソフ トウェア財"
+"団によって発行されたGNU一般公衆利用許諾書(バージョン3か、それ以降のバージョン"
+"のうちどれか)が定める条件の下で再頒布または改変することができます。\n"
+"\n"
+"このプログラムは有用であることを願って頒布されますが、*全くの無保証 *です。商"
+"業可能性の保証や特定目的への適合性は、言外に示されたものも含め、全く存在しま"
+"せん。詳しくはGNU一般公衆利用許諾書をご覧ください。\n"
+"\n"
+"あなたはこのプログラムと共に、GNU一般公衆利用許諾書のコピーを一部受け取ってい"
+"るはずです。もし受け取っていなければ、<http://www.gnu.org/licenses/> をご覧く"
+"ださい。\n"
+"\n"
+"（このGPLの翻訳は非公式なもので、フリーソフトウェアファウンデーションによって"
+"法的効力があると承認されたものではありません。何が許可されているか厳密に確認"
+"するためには、(英語で書かれた)オリジナルのGPLを参照してください。）"
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
@@ -2737,8 +2781,7 @@ msgstr ""
 #: src/scrobbler2/config_window.c:64
 msgid "Keep this window open and click 'Check Permission' again.\n"
 msgstr ""
-"このウィンドウを開いたまま、もう一度「パーミッションを確認する」をクリックし"
-"てください。\n"
+"このウィンドウを開いたまま、もう一度「認証確認」をクリックしてください。\n"
 
 #: src/scrobbler2/config_window.c:67 src/scrobbler2/config_window.c:78
 msgid ""
@@ -2762,11 +2805,11 @@ msgstr "チェックしています..."
 
 #: src/scrobbler2/config_window.c:174
 msgid "C_heck Permission"
-msgstr "パーミッションを確認する(_H)"
+msgstr "認証確認(_H)"
 
 #: src/scrobbler2/config_window.c:175
 msgid "_Revoke Permission"
-msgstr ""
+msgstr "認証取消(_R)"
 
 #: src/scrobbler2/config_window.c:222
 msgid ""
@@ -2833,7 +2876,7 @@ msgstr "不明なアーティスト"
 msgid "Unknown Album"
 msgstr "不明なアルバム"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
@@ -2842,13 +2885,13 @@ msgstr ""
 "%s\\n\n"
 "アルバム: %s アーティスト: %s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d albums"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2860,7 +2903,7 @@ msgstr[0] ""
 "%s\n"
 " %s, %d songs"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2872,19 +2915,19 @@ msgstr[0] ""
 "%s\n"
 " %d songs by %s"
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "プレイリストを作成(_C)"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "プレイリストに追加(_A)"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
 msgstr "ライブラリを検索"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2892,11 +2935,11 @@ msgstr ""
 "音楽ライブラリを Audacious へインポートするには、フォルダを選択し、\"再読み込"
 "み\" アイコンをクリックしてください。"
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "お待ちください..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "フォルダを選択"
 
@@ -3043,15 +3086,15 @@ msgstr "全ワークスペースに配置する"
 
 #: src/skins/menus.c:124
 msgid "Roll Up Player"
-msgstr ""
+msgstr "プレイヤーをたたむ"
 
 #: src/skins/menus.c:126
 msgid "Roll Up Playlist Editor"
-msgstr ""
+msgstr "プレイリストエディターをたたむ"
 
 #: src/skins/menus.c:128
 msgid "Roll Up Equalizer"
-msgstr ""
+msgstr "イコライザーをたたむ"
 
 #: src/skins/menus.c:135
 msgid "Add URL ..."
@@ -3215,7 +3258,7 @@ msgstr "Winamp プリセットのインポート"
 
 #: src/skins/menus.c:224
 msgid "Reset to Zero"
-msgstr ""
+msgstr "ゼロにリセット"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
@@ -3233,23 +3276,23 @@ msgstr "読み込み"
 
 #: src/skins/preset-browser.c:82
 msgid "Load Preset File"
-msgstr ""
+msgstr "プリセットファイルを読込む"
 
 #: src/skins/preset-browser.c:106
 msgid "Load EQF File"
-msgstr ""
+msgstr "EQF ファイルをロード"
 
 #: src/skins/preset-browser.c:122
 msgid "Save Preset File"
-msgstr ""
+msgstr "プリセットファイルを保存"
 
 #: src/skins/preset-browser.c:144
 msgid "Save EQF File"
-msgstr ""
+msgstr "EQF ファイルを保存"
 
 #: src/skins/preset-browser.c:162
 msgid "Import Winamp Presets"
-msgstr ""
+msgstr "Winamp のプリセットをインポート"
 
 #: src/skins/preset-list.c:289
 msgid "Presets"
@@ -3309,7 +3352,7 @@ msgstr "ビットマップフォントを使用する (ASCII のみ対応)"
 
 #: src/skins/skins_cfg.c:198
 msgid "Scroll song title"
-msgstr ""
+msgstr "曲のタイトルをスクロール"
 
 #: src/skins/skins_cfg.c:200
 msgid "Scroll song title in both directions"
@@ -3325,7 +3368,7 @@ msgstr "スコープ"
 
 #: src/skins/skins_cfg.c:207
 msgid "Voiceprint / VU meter"
-msgstr ""
+msgstr "声紋 / VU メーター"
 
 #: src/skins/skins_cfg.c:208
 msgid "Off"
@@ -3342,7 +3385,7 @@ msgstr "ファイア"
 
 #: src/skins/skins_cfg.c:214
 msgid "Vertical lines"
-msgstr ""
+msgstr "垂直線"
 
 #: src/skins/skins_cfg.c:218
 msgid "Lines"
@@ -3374,15 +3417,15 @@ msgstr "最も早い"
 
 #: src/skins/skins_cfg.c:231
 msgid "Dots"
-msgstr ""
+msgstr "点"
 
 #: src/skins/skins_cfg.c:232
 msgid "Line"
-msgstr ""
+msgstr "線"
 
 #: src/skins/skins_cfg.c:233
 msgid "Solid"
-msgstr ""
+msgstr "ソリッド"
 
 #: src/skins/skins_cfg.c:239
 msgid "Ice"
@@ -3398,7 +3441,7 @@ msgstr "<b>タイプ</b>"
 
 #: src/skins/skins_cfg.c:249
 msgid "Visualization type:"
-msgstr ""
+msgstr "視覚化タイプ:"
 
 #: src/skins/skins_cfg.c:252
 msgid "<b>Analyzer</b>"
@@ -3406,35 +3449,35 @@ msgstr "<b>アナライザ</b>"
 
 #: src/skins/skins_cfg.c:253
 msgid "Show peaks"
-msgstr ""
+msgstr "ピークを表示"
 
 #: src/skins/skins_cfg.c:255
 msgid "Coloring:"
-msgstr ""
+msgstr "色付け:"
 
 #: src/skins/skins_cfg.c:258
 msgid "Style:"
-msgstr ""
+msgstr "スタイル:"
 
 #: src/skins/skins_cfg.c:261
 msgid "Falloff:"
-msgstr ""
+msgstr "降下速度:"
 
 #: src/skins/skins_cfg.c:264
 msgid "Peak falloff:"
-msgstr ""
+msgstr "ピークの降下速度:"
 
 #: src/skins/skins_cfg.c:268
 msgid "Scope Style:"
-msgstr ""
+msgstr "スコープのスタイル:"
 
 #: src/skins/skins_cfg.c:271
 msgid "Voiceprint Coloring:"
-msgstr ""
+msgstr "声紋の色付け:"
 
 #: src/skins/skins_cfg.c:274
 msgid "VU Meter Style:"
-msgstr ""
+msgstr "VU メーターのスタイル:"
 
 #: src/skins/skins_cfg.c:280
 msgid "General"
@@ -3444,51 +3487,51 @@ msgstr "一般"
 msgid "Visualization"
 msgstr "視覚化"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "プリアンプ"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "Audacious イコライザ"
 
@@ -3575,39 +3618,39 @@ msgstr ""
 "表現が使え、大文字と小文字を区別しません。正規表現の動作がわからない場合は、"
 "検索したい文字をそのまま入力してください。"
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "タイトル: "
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "アルバム名: "
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "アーティスト: "
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "ファイル名: "
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr "検索前に前回の選択をクリアする"
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr "マッチしたエントリのキューを自動的にトグルする"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
 msgstr "マッチしたエントリで新しいプレイリストを作成する"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
 msgstr "Audacious プレイリストエディタ"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d / %d)"
@@ -3625,7 +3668,7 @@ msgstr "Unarchived Winamp 2.x スキン"
 msgid "Could not create directory (%s): %s\n"
 msgstr "ディレクトリ (%s) を作成できませんでした: %s\n"
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3665,7 +3708,7 @@ msgstr ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr "Sndfile プラグイン"
 
@@ -3709,35 +3752,35 @@ msgstr "(空の場合、デフォルトに設定します)"
 msgid "OK"
 msgstr "OK"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
 msgstr "楽曲の変更通知"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "新しい曲を再生したときに実行するコマンド"
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "コマンド:"
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr "曲の再生が終わったときに実行するコマンド"
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "プレイリストの最後に到達したときに実行するコマンド"
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "曲のタイトルが変わったときに実行するコマンド (ネットワークストリームのタイト"
 "ルなど)"
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3771,7 +3814,7 @@ msgstr ""
 "%b: アルバム\n"
 "%T: トラック名"
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3779,7 +3822,7 @@ msgstr ""
 "<span size='small'>シェルに渡されるパラメータはクォートでくくってください。そ"
 "うしない場合、セキュリティ上の危険があります。</span>"
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "コマンド"
 
@@ -3791,30 +3834,35 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"SoX Resampler Plugin for Audacious\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"Sample Rate Converter Plugin を基にした:\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
-msgstr ""
+msgstr "高速"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
-msgstr ""
+msgstr "低品質"
 
 #: src/sox-resampler/sox-resampler.c:146
 msgid "High"
-msgstr ""
+msgstr "高品質"
 
 #: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
-msgstr ""
+msgstr "最高品質"
 
 #: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
-msgstr ""
+msgstr "品質:"
 
 #: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"
-msgstr ""
+msgstr "SoX Resampler"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
@@ -3836,7 +3884,7 @@ msgstr "テンポとピッチ"
 msgid "Se_ttings ..."
 msgstr "設定 (_T)"
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3854,35 +3902,35 @@ msgstr ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>マウススクロールアクション</b>"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
 msgstr "音量の変更"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:386
 msgid "Change playing song"
 msgstr "再生曲の変更"
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
 msgstr "<b>その他の設定</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr "ポップアップウィンドウを無効にする"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr "システムトレイに収納する"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr "上にスクロールしたらプレイリストを進める"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr "ステータスアイコン"
 
@@ -3988,10 +4036,9 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
-"Sashnov Alexander <sashnov@ngs.ru> による Vortex ファイル形式プレイヤで"
-"す。\\n\n"
-"Roman Sherbakov <v_soft@microfor.ru> の in_vtx.dll を基にしています。\\n\n"
-"Audacious の実装は、Pavel Vymetalek <pvymetalek@seznam.cz> が行いました。"
+"Sashnov Alexander <sashnov@ngs.ru> による Vortex ファイル形式プレイヤです。\n"
+"Roman Sherbakov <v_soft@microfor.ru> の in_vtx.dll を基にしています。\n"
+"Audacious への実装は、Pavel Vymetalek <pvymetalek@seznam.cz> が行いました。"
 
 #: src/vtx/vtx.c:173
 msgid "VTX Decoder"
@@ -4026,3 +4073,12 @@ msgstr "2SF デコーダ"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "共有可能な XML プレイリスト (XSPF)"
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 kHz:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 kHz:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 kHz:"

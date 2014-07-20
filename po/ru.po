@@ -5,6 +5,7 @@
 # Translators:
 # Alexander Orlov <alxorlov@pochta.ru>, 2007
 # dane <alpi_bel@mail.ru>, 2014
+# Andrei Stepanov, 2014
 # Someonefree <drag-sasha@mail.ru>, 2013-2014
 # arinov <i.arinov@iht.kz>, 2014
 # iavojd <iavojd@gmail.com>, 2013
@@ -16,25 +17,25 @@
 # Maxim Musatov <m1kc@yandex.ru>, 2012
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012-2013
 # NaiLi (aka jamesjames) Rootaerc <theism@mail.ru>, 2012
-# NEKURIM <kvadrocu7@gmail.com>, 2013
+# Алексей <kvadrocu7@gmail.com>, 2013
 # Rax Garfield <admin@dvizho.ks.ua>, 2012
 #   <sejava@mail.ru>, 2012
-# senyalutyi <senyalutyi@ya.ru>, 2013
-# senyalutyi <senyalutyi@ya.ru>, 2013
+# Senya <senyalutyi@ya.ru>, 2013
+# Senya <senyalutyi@ya.ru>, 2013
 # serg0 <sergo@bk.ru>, 2010
 # Sergey V. Mironov <serg0@ulx.ru>, 2009
 # serg0 <sergo@bk.ru>, 2010
 # Someonefree <drag-sasha@mail.ru>, 2013
 # StreamThreaedr <kvantarium@gmail.com>, 2012
 # Victor Ponomarev <victor.a.ponomarev@gmail.com>, 2013
-# NEKURIM <kvadrocu7@gmail.com>, 2013
+# Алексей <kvadrocu7@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"PO-Revision-Date: 2014-04-23 10:22+0000\n"
+"Last-Translator: Andrei Stepanov\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/audacious/"
 "language/ru/)\n"
 "Language: ru\n"
@@ -73,11 +74,11 @@ msgstr "последовательный"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (проигрыватель AdLib)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr "Установить Будильник,,,,"
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -87,7 +88,7 @@ msgstr ""
 "определенное время.\n"
 "Изначально написан Adam Feakin и Daniel Stodden."
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "Будильник"
 
@@ -323,7 +324,7 @@ msgstr "включить"
 
 #: src/alarm/interface.c:402
 msgid "Playlist (optional)"
-msgstr "Список воспроизведения (необязательно)"
+msgstr "Плейлист (необязательно)"
 
 #: src/alarm/interface.c:409
 msgid "Select a playlist"
@@ -846,7 +847,7 @@ msgstr "Заготовки:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Стереофонический в бинауральный по Бауэру (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Анализатор спектра"
 
@@ -1255,7 +1256,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Эхо"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1271,7 +1272,7 @@ msgstr ""
 "            William Pitcock <nenolod@nenolod.net>,\n"
 "            Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "Плагин FFmpeg"
 
@@ -1663,7 +1664,7 @@ msgstr "Открепить"
 msgid "Disable"
 msgstr "Отключить"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "Поиск"
 
@@ -1700,7 +1701,7 @@ msgid "_Quit"
 msgstr "_Выход"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "_Воспроизведение"
 
@@ -1734,7 +1735,7 @@ msgstr "Н_е передвигаться по списку"
 
 #: src/gtkui/menus.c:149
 msgid "Stop A_fter This Song"
-msgstr "Остановка после етой песни"
+msgstr "Остановка после этой песни"
 
 #: src/gtkui/menus.c:152 src/gtkui/menus.c:242
 msgid "Song _Info ..."
@@ -2364,7 +2365,7 @@ msgstr "Метаданные песни отсутствуют"
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Устанавливаю соединение с lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr "Плагин LyricWiki"
 
@@ -2541,7 +2542,7 @@ msgstr "Плагин MPG123"
 msgid "MPRIS 2 Server"
 msgstr "Сервер MPRIS 2"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Плагин Neon HTTP/HTTPS"
 
@@ -2897,7 +2898,7 @@ msgstr "Неизвестный исполнитель"
 msgid "Unknown Album"
 msgstr "Неизвестный альбом"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
@@ -2906,7 +2907,7 @@ msgstr ""
 "%s\n"
 "от %s до %s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
@@ -2914,7 +2915,7 @@ msgstr[0] "%d альбом"
 msgstr[1] "%d альбомы"
 msgstr[2] "%d альбомы"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2932,7 +2933,7 @@ msgstr[2] ""
 "%s\n"
 " %s, %d песни"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2950,19 +2951,19 @@ msgstr[2] ""
 "%s\n"
 " %d песни до %s"
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "_Создать список воспроизведения"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "_Добавить в список воспроизведения"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
 msgstr "Поиск в библиотеке"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2970,11 +2971,11 @@ msgstr ""
 "Для импорта музыки в библиотеку Audacious выберите каталог, затем нажмите "
 "иконку \"обновить\"."
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "Пожалуйста, подождите ..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "Выберите каталог"
 
@@ -2992,7 +2993,7 @@ msgstr "Воспроизведение"
 
 #: src/skins/menus.c:60
 msgid "Playlist"
-msgstr "Список воспроизведения"
+msgstr "Плейлист"
 
 #: src/skins/menus.c:61
 msgid "View"
@@ -3065,7 +3066,7 @@ msgstr "Новый список воспроизведения"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
-msgstr "Переименовать список воспроизведения"
+msgstr "Переименовать список"
 
 #: src/skins/menus.c:96
 msgid "Remove Playlist"
@@ -3367,11 +3368,11 @@ msgstr "Выберите шрифт основного окна проигрыв
 
 #: src/skins/skins_cfg.c:184
 msgid "_Playlist:"
-msgstr "Список воспроизведения:"
+msgstr "Плейлист:"
 
 #: src/skins/skins_cfg.c:186
 msgid "Select playlist font:"
-msgstr "Выберите шрифт списка воспроизведения:"
+msgstr "Выберите шрифт плейлиста:"
 
 #: src/skins/skins_cfg.c:191
 msgid "<b>Skin</b>"
@@ -3522,51 +3523,51 @@ msgstr "Основной"
 msgid "Visualization"
 msgstr "Визуализация"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "Предусиление"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 Гц"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 Гц"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 Гц"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 Гц"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "500 Гц"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1 кГц"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2 кГц"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4 кГц"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8 кГц"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16 кГц"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "Эквалайзер Audacious"
 
@@ -3654,39 +3655,39 @@ msgstr ""
 "регистру. Если вы не знаете, как работают регулярные выражения, просто "
 "вставьте часть букв из слова, которые хотите найти."
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "Название: "
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "Альбом: "
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "Исполнитель: "
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "Имя файла: "
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr "Очистить предыдущий выбор до начала поиска"
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr "Автоматически переключать поочерёдно на соответствующим записям"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
 msgstr "Создать новый список воспроизведения с соответствующими записями"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
 msgstr "Редактор списков воспроизведения Audacious"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d из %d)"
@@ -3704,7 +3705,7 @@ msgstr "Не архивированная тема Winamp 2.x"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Невозможно создать каталог (%s): %s\n"
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3744,7 +3745,7 @@ msgstr ""
 "программой; если этого не произошло, напишите во Free Software Foundation, "
 "Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr "Плагин Sndfile"
 
@@ -3788,36 +3789,36 @@ msgstr "(пусто означает «по умолчанию»)"
 msgid "OK"
 msgstr "ОК"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
 msgstr "Смена дорожки"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "Команда, запускаемая Audacious в начале воспроизведения новой дорожки"
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "Команда:"
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr "Команда, запускаемая после окончания дорожки"
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
 "Команда, запускаемая Audacious при достижении конца списка воспроизведения"
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Команда, запускаемая при изменении названия дорожки (например, при "
 "воспроизведении из сети)"
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3842,7 +3843,7 @@ msgstr ""
 "%t: Playlist position (%02d) %p: Currently playing (1 or 0) %a: Artist %b: "
 "Album %T: Track title"
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3850,7 +3851,7 @@ msgstr ""
 "<span size='small'>Параметры, передаваемые оболочке, должны быть заключены в "
 "кавычки. В противном случае возможны проблемы с безопасностью</span>"
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "Команды"
 
@@ -3912,7 +3913,7 @@ msgstr "Скорость и высота"
 msgid "Se_ttings ..."
 msgstr "Настройки ..."
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3930,35 +3931,35 @@ msgstr ""
 "Этот модуль отображает значок программы\n"
 "в системном лотке"
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Действие прокрутки мыши</b>"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
 msgstr "Изменить громкость"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:386
 msgid "Change playing song"
 msgstr "Сменить текущую дорожку"
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
 msgstr "<b>Другие настройки</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr "Отключить всплывающее окно"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr "Закрыть в системный трей"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr "Продвигаться по списку воспроизведения при прокрутке колёсика"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr "Иконка статуса"
 
@@ -4095,3 +4096,12 @@ msgstr "Декодер 2SF"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XSPF"
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 кГц:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 кГц:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 кГц:"

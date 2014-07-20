@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Jaergenoth <jstuomisto@gmail.com>, 2013
-# Jaergenoth <jstuomisto@gmail.com>, 2013
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2014
+# J. S. Tuomisto <jstuomisto@gmail.com>, 2013
+# J. S. Tuomisto <jstuomisto@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"PO-Revision-Date: 2014-04-24 18:26+0000\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (http://www.transifex.com/projects/p/audacious/"
 "language/fi/)\n"
 "Language: fi\n"
@@ -34,11 +35,11 @@ msgstr "surround"
 
 #: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
-msgstr ""
+msgstr "AAC (MP4) -dekooderi"
 
 #: src/aac-raw/aac.c:476
 msgid "AAC (Raw) Decoder"
-msgstr ""
+msgstr "AAC (Raw) -dekooderi"
 
 #: src/adplug/adplug-xmms.cc:137 src/modplug/modplugbmp.cxx:348
 #: src/psf/plugin.c:122 src/vtx/vtx.c:62 src/xsf/plugin.c:80
@@ -49,11 +50,11 @@ msgstr "sarjoitettu"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib-soitin)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr ""
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -63,7 +64,7 @@ msgstr ""
 "\n"
 "Alkuperäiset kehittäjät Adam Feakin ja Daniel Stodden."
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "Herätyskello"
 
@@ -217,12 +218,12 @@ msgstr "Herätyskellon asetukset"
 
 #: src/alarm/interface.c:180 src/filewriter/mp3.c:690
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
-msgstr ""
+msgstr "_Peru"
 
 #: src/alarm/interface.c:188 src/alarm/interface.c:252
 #: src/alarm/interface.c:267
@@ -431,7 +432,7 @@ msgstr "AMIDI-liitännäinen - valitse SoundFont-tiedosto"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
-msgstr ""
+msgstr "_Avaa"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
@@ -748,7 +749,7 @@ msgstr "Audacious OSD - asetukset"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
-msgstr ""
+msgstr "_Testaa"
 
 #: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
 msgid "_Set"
@@ -780,7 +781,7 @@ msgstr "Muut"
 
 #: src/asx3/asx3.c:179
 msgid "ASXv3 Playlists"
-msgstr ""
+msgstr "ASXv3-soittolistat"
 
 #: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
@@ -814,7 +815,7 @@ msgstr "Esiasetukset:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Spektrianalysaattori"
 
@@ -916,7 +917,7 @@ msgstr "Ääni CD"
 #: src/cdaudio-ng/cdaudio-ng.c:458
 #, c-format
 msgid "Track %d"
-msgstr ""
+msgstr "Kappale %d"
 
 #: src/cdaudio-ng/cdaudio-ng.c:485 src/cdaudio-ng/cdaudio-ng.c:494
 #, c-format
@@ -1133,24 +1134,24 @@ msgstr ""
 #: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr ""
+msgstr "Virhe poistaessa kohdetta %s: %s."
 
 #: src/delete-files/delete-files.c:98
 #, c-format
 msgid "Error deleting %s: not a local file."
-msgstr ""
+msgstr "Virhe poistaessa kohdetta %s: ei paikallinen tiedosto."
 
 #: src/delete-files/delete-files.c:119
 msgid "Do you want to move the selected files to the trash?"
-msgstr ""
+msgstr "Haluatko siirtää valitut tiedostot roskakoriin?"
 
 #: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
-msgstr ""
+msgstr "Siirrä roskakoriin"
 
 #: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Haluatko poistaa seuraavat tiedostot pysyvästi?"
 
 #: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
@@ -1165,19 +1166,19 @@ msgstr "Peruuta"
 
 #: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
-msgstr ""
+msgstr "Poista tiedostot"
 
 #: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Poista valitut tiedostot"
 
 #: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
-msgstr ""
+msgstr "<b>Poistamistapa</b>"
 
 #: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
-msgstr ""
+msgstr "Siirrä roskakoriin pysyvän poistamisen sijaan"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
@@ -1217,7 +1218,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Kaikuefekti"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1233,7 +1234,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg-liitännäinen"
 
@@ -1615,7 +1616,7 @@ msgstr "Poista telakointi"
 msgid "Disable"
 msgstr "Poista käytöstä"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "Etsintätyökalu"
 
@@ -1645,14 +1646,14 @@ msgstr "_Tietoja..."
 
 #: src/gtkui/menus.c:135
 msgid "_Settings ..."
-msgstr ""
+msgstr "_Asetukset..."
 
 #: src/gtkui/menus.c:136 src/statusicon/statusicon.c:270
 msgid "_Quit"
 msgstr "_Sulje"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "_Toista"
 
@@ -1794,7 +1795,7 @@ msgstr "Nimeä _uudelleen..."
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:256
 msgid "Remo_ve"
-msgstr ""
+msgstr "_Poista"
 
 #: src/gtkui/menus.c:204
 msgid "_Import ..."
@@ -1902,11 +1903,11 @@ msgstr "_Nimeä uudelleen..."
 
 #: src/gtkui/settings.c:35
 msgid "<b>Playlist Tabs</b>"
-msgstr ""
+msgstr "<b>Soittolistan välilehdet</b>"
 
 #: src/gtkui/settings.c:36
 msgid "Always show tabs"
-msgstr ""
+msgstr "Näytä aina välilehdet"
 
 #: src/gtkui/settings.c:39
 msgid "Show entry counts"
@@ -1914,7 +1915,7 @@ msgstr ""
 
 #: src/gtkui/settings.c:42
 msgid "Show close buttons"
-msgstr ""
+msgstr "Näytä sulkemispainikkeet"
 
 #: src/gtkui/settings.c:45
 msgid "<b>Playlist Columns</b>"
@@ -2079,7 +2080,7 @@ msgstr "<b>Näppäinsidos:</b>"
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
-msgstr ""
+msgstr "_Lisää"
 
 #: src/hotkey/plugin.c:67
 msgid ""
@@ -2313,7 +2314,7 @@ msgstr "Kappaleen metatiedot puuttuvat"
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Yhdistetään lyrics.wikia.com..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki-liitännäinen"
 
@@ -2490,7 +2491,7 @@ msgstr "MPG123-liitännäinen"
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 -palvelin"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS -liitännäinen"
 
@@ -2846,7 +2847,7 @@ msgstr "Tuntematon esittäjä"
 msgid "Unknown Album"
 msgstr "Tuntematon albumi"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
@@ -2855,14 +2856,14 @@ msgstr ""
 "%s\n"
 " albumilla %s esittäjältä %s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d albumi"
 msgstr[1] "%d albumia"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2877,7 +2878,7 @@ msgstr[1] ""
 "%s\n"
 " %s, %d kappaletta"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2892,19 +2893,19 @@ msgstr[1] ""
 "%s\n"
 " %d kappaletta esittäjältä %s"
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "_Luo soittolista"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "L_isää soittolistalle"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
 msgstr "Etsi kirjastosta"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2912,21 +2913,21 @@ msgstr ""
 "Tuodaksesi musiikkikirjastosi Audacioukseen, valitse kansio ja paina sen "
 "jälkeen päivitys painiketta."
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "Odota..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "Valitse kansio"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
-msgstr ""
+msgstr "Avaa tiedostoja..."
 
 #: src/skins/menus.c:57
 msgid "Open URL ..."
-msgstr ""
+msgstr "Avaa URL..."
 
 #: src/skins/menus.c:59
 msgid "Playback"
@@ -2943,23 +2944,23 @@ msgstr "Näkymä"
 #: src/skins/menus.c:63 src/skins/menus.c:133 src/skins/menus.c:146
 #: src/skins/menus.c:203
 msgid "Services"
-msgstr ""
+msgstr "Palvelut"
 
 #: src/skins/menus.c:65
 msgid "About ..."
-msgstr ""
+msgstr "Tietoja..."
 
 #: src/skins/menus.c:66
 msgid "Settings ..."
-msgstr ""
+msgstr "Asetukset..."
 
 #: src/skins/menus.c:67
 msgid "Quit"
-msgstr ""
+msgstr "Lopeta"
 
 #: src/skins/menus.c:71 src/skins/menus.c:195
 msgid "Song Info ..."
-msgstr ""
+msgstr "Kappaleen tiedot..."
 
 #: src/skins/menus.c:73
 msgid "Repeat"
@@ -2975,7 +2976,7 @@ msgstr "Älä etene soittolistalla"
 
 #: src/skins/menus.c:76
 msgid "Stop After This Song"
-msgstr ""
+msgstr "Lopeta tämän kappaleen jälkeen"
 
 #: src/skins/menus.c:81
 msgid "Previous"
@@ -2991,15 +2992,15 @@ msgstr ""
 
 #: src/skins/menus.c:87
 msgid "Jump to Song ..."
-msgstr ""
+msgstr "Siirry kappaleeseen..."
 
 #: src/skins/menus.c:88
 msgid "Jump to Time ..."
-msgstr ""
+msgstr "Siirry kohtaan..."
 
 #: src/skins/menus.c:92
 msgid "Play This Playlist"
-msgstr ""
+msgstr "Toista tämä soittolista"
 
 #: src/skins/menus.c:94
 msgid "New Playlist"
@@ -3007,39 +3008,39 @@ msgstr "Uusi soittolista"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
-msgstr ""
+msgstr "Nimeä uudelleen soittolista..."
 
 #: src/skins/menus.c:96
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Poista soittolista"
 
 #: src/skins/menus.c:98
 msgid "Previous Playlist"
-msgstr ""
+msgstr "Edellinen soittolista"
 
 #: src/skins/menus.c:99
 msgid "Next Playlist"
-msgstr ""
+msgstr "Seuraava soittolista"
 
 #: src/skins/menus.c:101
 msgid "Import Playlist ..."
-msgstr ""
+msgstr "Tuo soittolista..."
 
 #: src/skins/menus.c:102
 msgid "Export Playlist ..."
-msgstr ""
+msgstr "Vie soittolista..."
 
 #: src/skins/menus.c:104
 msgid "Playlist Manager ..."
-msgstr ""
+msgstr "Soittolistan hallinta..."
 
 #: src/skins/menus.c:105
 msgid "Queue Manager ..."
-msgstr ""
+msgstr "Jonohallinta..."
 
 #: src/skins/menus.c:107
 msgid "Refresh Playlist"
-msgstr ""
+msgstr "Päivitä soittolista"
 
 #: src/skins/menus.c:111
 msgid "Show Playlist Editor"
@@ -3051,7 +3052,7 @@ msgstr "Näytä taajuuskorjain"
 
 #: src/skins/menus.c:116
 msgid "Show Remaining Time"
-msgstr ""
+msgstr "Näytä jäljellä oleva aika"
 
 #: src/skins/menus.c:119
 msgid "Always on Top"
@@ -3059,7 +3060,7 @@ msgstr "Aina päällimmäisenä"
 
 #: src/skins/menus.c:121
 msgid "On All Workspaces"
-msgstr ""
+msgstr "Kaikissa työtiloissa"
 
 #: src/skins/menus.c:124
 msgid "Roll Up Player"
@@ -3075,11 +3076,11 @@ msgstr ""
 
 #: src/skins/menus.c:135
 msgid "Add URL ..."
-msgstr ""
+msgstr "Lisää URL..."
 
 #: src/skins/menus.c:136
 msgid "Add Files ..."
-msgstr ""
+msgstr "Lisää tiedostoja..."
 
 #: src/skins/menus.c:140 src/skins/menus.c:167 src/skins/menus.c:177
 msgid "By Title"
@@ -3183,7 +3184,7 @@ msgstr ""
 
 #: src/skins/menus.c:207
 msgid "Load Preset ..."
-msgstr ""
+msgstr "Lataa esiasetus..."
 
 #: src/skins/menus.c:208
 msgid "Load Auto Preset ..."
@@ -3191,19 +3192,19 @@ msgstr ""
 
 #: src/skins/menus.c:209
 msgid "Load Default"
-msgstr ""
+msgstr "Lataa oletus"
 
 #: src/skins/menus.c:210
 msgid "Load Preset File ..."
-msgstr ""
+msgstr "Lataa esiasetustiedosto..."
 
 #: src/skins/menus.c:211
 msgid "Load EQF File ..."
-msgstr ""
+msgstr "Lataa EQF-tiedosto..."
 
 #: src/skins/menus.c:213
 msgid "Save Preset ..."
-msgstr ""
+msgstr "Tallenna esiasetus..."
 
 #: src/skins/menus.c:214
 msgid "Save Auto Preset ..."
@@ -3211,19 +3212,19 @@ msgstr ""
 
 #: src/skins/menus.c:215
 msgid "Save Default"
-msgstr ""
+msgstr "Tallenna oletus"
 
 #: src/skins/menus.c:216
 msgid "Save Preset File ..."
-msgstr ""
+msgstr "Tallenna esiasetustiedosto..."
 
 #: src/skins/menus.c:217
 msgid "Save EQF File ..."
-msgstr ""
+msgstr "Tallenna EQF-tiedosto..."
 
 #: src/skins/menus.c:219
 msgid "Delete Preset ..."
-msgstr ""
+msgstr "Poista esiasetus..."
 
 #: src/skins/menus.c:220
 msgid "Delete Auto Preset ..."
@@ -3231,7 +3232,7 @@ msgstr ""
 
 #: src/skins/menus.c:222
 msgid "Import Winamp Presets ..."
-msgstr ""
+msgstr "Tuo Winamp-esiasetukset..."
 
 #: src/skins/menus.c:224
 msgid "Reset to Zero"
@@ -3253,23 +3254,23 @@ msgstr "Lataa"
 
 #: src/skins/preset-browser.c:82
 msgid "Load Preset File"
-msgstr ""
+msgstr "Lataa esiasetustiedosto"
 
 #: src/skins/preset-browser.c:106
 msgid "Load EQF File"
-msgstr ""
+msgstr "Lataa EQF-tiedosto"
 
 #: src/skins/preset-browser.c:122
 msgid "Save Preset File"
-msgstr ""
+msgstr "Tallenna esiasetustiedosto"
 
 #: src/skins/preset-browser.c:144
 msgid "Save EQF File"
-msgstr ""
+msgstr "Tallenna EQF-tiedosto"
 
 #: src/skins/preset-browser.c:162
 msgid "Import Winamp Presets"
-msgstr ""
+msgstr "Tuo Winamp-esiasetukset"
 
 #: src/skins/preset-list.c:289
 msgid "Presets"
@@ -3321,7 +3322,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:193
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Fontit</b>"
 
 #: src/skins/skins_cfg.c:196
 msgid "Use bitmap fonts (supports ASCII only)"
@@ -3414,7 +3415,7 @@ msgstr "Tasainen"
 
 #: src/skins/skins_cfg.c:248
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Tyyppi</b>"
 
 #: src/skins/skins_cfg.c:249
 msgid "Visualization type:"
@@ -3430,11 +3431,11 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:255
 msgid "Coloring:"
-msgstr ""
+msgstr "Väritys:"
 
 #: src/skins/skins_cfg.c:258
 msgid "Style:"
-msgstr ""
+msgstr "Tyyli:"
 
 #: src/skins/skins_cfg.c:261
 msgid "Falloff:"
@@ -3464,51 +3465,51 @@ msgstr "Yleiset"
 msgid "Visualization"
 msgstr "Visualisaatio"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "Esivahvistus"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "Audaciouksen taajuuskorjain"
 
@@ -3582,7 +3583,7 @@ msgstr "Etsi kappaleita aktiivisesta soittolistasta"
 
 #: src/skins/ui_playlist.c:224
 msgid "Search"
-msgstr ""
+msgstr "Etsi"
 
 #: src/skins/ui_playlist.c:229
 msgid ""
@@ -3596,39 +3597,39 @@ msgstr ""
 "merkitystä. Jos et tiedä kuinka säännöllisiä lausekkeita käytetään, kirjoita "
 "kenttään suoraan se mitä haluat etsiä."
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "Nimi:"
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "Albumi:"
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "Esittäjä:"
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "Tiedostonimi:"
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr "Tyhjennä aiempi valinta ennen hakemista"
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr "Lisää tai poista automaattisesti täsmäävät kappaleet jonosta"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
 msgstr "Luo uusi soittolista täsmäävistä kappaleista"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
 msgstr "Audaciouksen soittolistan muokkain"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d / %d)"
@@ -3646,7 +3647,7 @@ msgstr "Pakkaamaton Winamp 2.x skini"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Ei voitu luoda kansiota (%s): %s\n"
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3686,7 +3687,7 @@ msgstr ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr "Sndfile-liitännäinen"
 
@@ -3730,34 +3731,34 @@ msgstr "(tyhjä tarkoittaa oletusta)"
 msgid "OK"
 msgstr "OK"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
 msgstr "Kappaleen vaihtuminen"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "Komento joka ajetaan kun kappaleen toisto alkaa."
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "Komento:"
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr "Komento joka ajetaan kun kappale lähestyy loppua."
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Komento joka ajetaan kun päästään soittolistan loppuun."
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Komento joka ajetaan kun kappaleen nimi vaihtuu (esim. internet-virrat)."
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3791,7 +3792,7 @@ msgstr ""
 "%b: albumi\n"
 "%T: kappaleen nimi"
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3800,7 +3801,7 @@ msgstr ""
 "lainausmerkkien sisään. Lainausmerkkien käyttämättä jättäminen on "
 "tietoturvariski.</span>"
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "Komennot"
 
@@ -3860,9 +3861,9 @@ msgstr "Nopeus ja sävelkorkeus"
 
 #: src/statusicon/statusicon.c:269
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "Ase_tukset..."
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3879,35 +3880,35 @@ msgstr ""
 "\n"
 "Tämä liitännäinen tarjoaa järjestelmäpalkkiin sijoitettavan ikonin."
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Hiiren rullan vieritystoiminto</b>"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
 msgstr "Muuta äänenvoimakkuutta"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:386
 msgid "Change playing song"
 msgstr "Vaihda kappaletta"
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
 msgstr "<b>Muut asetukset</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr "Poista ponnahdusikkuna käytöstä"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr "Sulje järjestelmäpalkkiin"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr "Etene soittolistassa kun vieritetään ylöspäin"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr "Tilaikoni"
 
@@ -4045,3 +4046,12 @@ msgstr "2SF-dekooderi"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML jaettavat soittolistat (XSPF)"
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 kHz:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 kHz:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 kHz:"

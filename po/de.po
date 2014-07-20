@@ -3,18 +3,18 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Cooligan <ppt23@lkj.hopto.org>, 2012
+# Chris <ppt23@lkj.hopto.org>, 2012
 # Maximilian Vesper <maximilian@mail.com>, 2013
 # mschwendt <mschwendt@fedoraproject.org>, 2012
 # mschwendt <mschwendt@fedoraproject.org>, 2012
-# Cooligan <ppt23@lkj.hopto.org>, 2012
+# Chris <ppt23@lkj.hopto.org>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
 "PO-Revision-Date: 2014-04-11 16:27+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/audacious/"
 "language/de/)\n"
 "Language: de\n"
@@ -52,11 +52,11 @@ msgstr "Sequenziell"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib-Spieler)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr "Alarm setzen ..."
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -67,7 +67,7 @@ msgstr ""
 "\n"
 "Ursprünglich geschrieben von Adam Feakin und Daniel Stodden."
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "Alarm"
 
@@ -828,7 +828,7 @@ msgstr "Voreinstellungen:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer Stereofonisch-zu-Binaural (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "Spektrumanalysator"
 
@@ -1233,7 +1233,7 @@ msgstr ""
 msgid "Echo"
 msgstr "Echo"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1249,7 +1249,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg Plugin"
 
@@ -1638,7 +1638,7 @@ msgstr "Abdocken"
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "Suchwerkzeug"
 
@@ -1675,7 +1675,7 @@ msgid "_Quit"
 msgstr "_Beenden"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "_Wiedergabe"
 
@@ -2336,7 +2336,7 @@ msgstr "Fehlende Titel-Metadaten"
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "Verbinde zu lyrics.wikia.com ..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki Plugin"
 
@@ -2513,7 +2513,7 @@ msgstr "MPG123 Plugin"
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 Server"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS Plugin"
 
@@ -2873,7 +2873,7 @@ msgstr "Unbekannter Künstler"
 msgid "Unknown Album"
 msgstr "Unbekannes Album"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
@@ -2882,14 +2882,14 @@ msgstr ""
 "%s\n"
 " aus %s von %s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "%d Album"
 msgstr[1] "%d Alben"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2904,7 +2904,7 @@ msgstr[1] ""
 "%s\n"
 " %s, %d Titel"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2919,19 +2919,19 @@ msgstr[1] ""
 "%s\n"
 " %d Titel von %s"
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "Wiedergabeliste _erstellen"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "Zur Wiedergabeliste _hinzufügen"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
 msgstr "Durchsuche Sammlung"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2939,11 +2939,11 @@ msgstr ""
 "Wählen Sie einen Ordner und klicken Sie auf »Aktualisieren«, um Ihre "
 "Musiksammlung in Audacious zu importieren."
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "Ordner auswählen"
 
@@ -3491,51 +3491,51 @@ msgstr "Allgemein"
 msgid "Visualization"
 msgstr "Visualisierung"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "Vorverstaerkung"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "Audacious Equalizer"
 
@@ -3624,39 +3624,39 @@ msgstr ""
 "Ausdrücke funktionieren, geben Sie einfach nur einen Teilbegriff für Ihre "
 "Suche ein."
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "Titel: "
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "Album: "
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "Künstler: "
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "Dateiname: "
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr "Vorherige Auswahl vor dem Suchen löschen"
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr "Automatisch zwischen passenden Einträgen wechseln"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
 msgstr "Erstelle neue Wiedergabeliste mit passenden Einträgen"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
 msgstr "Audacious Wiedergabeliste"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d von %d)"
@@ -3674,7 +3674,7 @@ msgstr "Nicht archivierter Winamp 2.x-Skin"
 msgid "Could not create directory (%s): %s\n"
 msgstr "Konnte Ordner nicht erstellen (»%s«): %s\n"
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3714,7 +3714,7 @@ msgstr ""
 "Programm erhalten haben. Falls nicht, schreiben Sie an die Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110, USA."
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr "Sndfile Plugin"
 
@@ -3758,35 +3758,35 @@ msgstr "(Leer bedeutet Standard)"
 msgid "OK"
 msgstr "OK"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
 msgstr "Titelwechsel"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "Auszuführender Befehl, wenn Audacious einen neuen Titel startet."
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "Befehl:"
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr "Auszuführender Befehl am Ende eines Titels."
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "Auszuführender Befehl am Ende der Wiedergabeliste."
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
 "Auszuführender Befehl, wenn sich der Titel eines Lieds ändert (z.B. bei "
 "Netzwerkstreams)."
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3821,7 +3821,7 @@ msgstr ""
 "%b: Album\n"
 "%T: Titelname"
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3829,7 +3829,7 @@ msgstr ""
 "<span size='small'>Parameter sollten zwischen Anführungszeichen stehen, "
 "ansonsten besteht ein Sicherheitsrisiko.</span>"
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "Befehle"
 
@@ -3891,7 +3891,7 @@ msgstr "Geschwindigkeit und Tonhöhe"
 msgid "Se_ttings ..."
 msgstr "_Einstellungen ..."
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3909,35 +3909,35 @@ msgstr ""
 "Dieses Plugin stellt ein Status-Icon bereit, welches\n"
 "in der Taskleiste des Fenstermanagers angezeigt wird."
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>Maus-Scroll-Aktion</b>"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
 msgstr "Lautstärke ändern"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:386
 msgid "Change playing song"
 msgstr "Aktiven Titel ändern"
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
 msgstr "<b>Andere Einstellungen</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr "PopUp-Fenster deaktivieren"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr "In die Taskleiste minimieren"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr "Durch Hochscrollen in Wiedergabeliste fortschreiten"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr "Status-Icon"
 

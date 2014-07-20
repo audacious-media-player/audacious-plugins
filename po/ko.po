@@ -4,21 +4,21 @@
 #
 # Translators:
 # 		ChoSeongWoo <syn333@gmail.com>, 2008
-# Darkcircle <darkcircle.0426@gmail.com>, 2013
-# Darkcircle <darkcircle.0426@gmail.com>, 2012-2013
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2013
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2013
 #       Jaegeum Choe <baedaron@hananet.net>, 2001
 #       Man-Yong Lee <yong@linuxkorea.co.kr>, 2000
 #       Sang-Jin Hwang <accel@accellinux.org>, 1999
-# Darkcircle <darkcircle.0426@gmail.com>, 2012
-# Darkcircle <darkcircle.0426@gmail.com>, 2012
-# Darkcircle <darkcircle.0426@gmail.com>, 2012-2014
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012
+# Seong-ho Cho <darkcircle.0426@gmail.com>, 2012-2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-04-21 23:02+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"PO-Revision-Date: 2014-05-11 15:24+0000\n"
+"Last-Translator: Seong-ho Cho <darkcircle.0426@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/audacious/"
 "language/ko/)\n"
 "Language: ko\n"
@@ -56,11 +56,11 @@ msgstr "순차"
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib 재생기)"
 
-#: src/alarm/alarm.c:778
+#: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
 msgstr "알림 설정..."
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.c:804
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -70,7 +70,7 @@ msgstr ""
 "\n"
 "초기에 Adam Feakin과 Daniel Stodden이 작성했습니다."
 
-#: src/alarm/alarm.c:811 src/alarm/interface.c:86
+#: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
 msgstr "알림"
 
@@ -565,6 +565,13 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"오데이셔스 OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Giacomo Lozito <james@develia.org>가 작성\n"
+"\n"
+"Evan Martin's Ghosd 라이브러리 일부를 기반으로 함:\n"
+"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
@@ -821,7 +828,7 @@ msgstr "설정 목록:"
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
 msgstr "스펙트럼 분석기"
 
@@ -1223,7 +1230,7 @@ msgstr ""
 msgid "Echo"
 msgstr "울림"
 
-#: src/ffaudio/ffaudio-core.c:589
+#: src/ffaudio/ffaudio-core.c:561
 msgid ""
 "Multi-format audio decoding plugin for Audacious using\n"
 "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
@@ -1239,7 +1246,7 @@ msgstr ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/ffaudio/ffaudio-core.c:641
+#: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg 플러그인"
 
@@ -1626,7 +1633,7 @@ msgstr "떼어내기"
 msgid "Disable"
 msgstr "비활성화"
 
-#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:786
+#: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
 msgstr "검색 도구"
 
@@ -1663,7 +1670,7 @@ msgid "_Quit"
 msgstr "끝내기(_Q)"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674 src/statusicon/statusicon.c:264
+#: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
 msgstr "재생(_P)"
 
@@ -1942,7 +1949,7 @@ msgstr "<b>기타</b>"
 
 #: src/gtkui/settings.c:51
 msgid "Arrow keys seek by:"
-msgstr ""
+msgstr "화살표 키로 탐색:"
 
 #: src/gtkui/settings.c:54
 msgid "Scroll on song change"
@@ -2321,7 +2328,7 @@ msgstr "곡 메타데이터가 빠졌습니다"
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "lyrics.wikia.com에 연결 중..."
 
-#: src/lyricwiki/lyricwiki.c:411
+#: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
 msgstr "LyricWiki 플러그인"
 
@@ -2498,7 +2505,7 @@ msgstr "MPG123 플러그인"
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 서버"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP/HTTPS 플러그인"
 
@@ -2847,7 +2854,7 @@ msgstr "알 수 없는 음악가"
 msgid "Unknown Album"
 msgstr "알 수 없는 앨범"
 
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.c:636
 #, c-format
 msgid ""
 "%s\n"
@@ -2856,13 +2863,13 @@ msgstr ""
 "%3$s의\n"
 "%2$s에 있는 %1$s"
 
-#: src/search-tool/search-tool.c:631
+#: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
 msgstr[0] "앨범 %d개"
 
-#: src/search-tool/search-tool.c:633
+#: src/search-tool/search-tool.c:644
 #, c-format
 msgid ""
 "%s\n"
@@ -2874,7 +2881,7 @@ msgstr[0] ""
 "%s\n"
 " %s, 곡 %d개"
 
-#: src/search-tool/search-tool.c:639
+#: src/search-tool/search-tool.c:650
 #, c-format
 msgid ""
 "%s\n"
@@ -2886,19 +2893,19 @@ msgstr[0] ""
 "%1$s\n"
 "%3$s의 곡 %2$d개\t"
 
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
 msgstr "재생 목록 만들기(_C)"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
 msgstr "재생 목록 추가하기(_A)"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.c:724
 msgid "Search library"
 msgstr "라이브러리 검색"
 
-#: src/search-tool/search-tool.c:717
+#: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
@@ -2906,11 +2913,11 @@ msgstr ""
 "음악 라이브러리를 오데이셔스로 가져오려면 폴더를 선택하고 \"새로고침\"아이콘"
 "을 누르십시오."
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
 msgstr "기다려 주십시오 ..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
 msgstr "폴더 선택"
 
@@ -3458,51 +3465,51 @@ msgstr "일반"
 msgid "Visualization"
 msgstr "시각화"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.c:290
 msgid "Preamp"
 msgstr "프리앰프"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.c:295
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.c:296
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
 msgstr "오데이셔스 이퀄라이저"
 
@@ -3589,39 +3596,39 @@ msgstr ""
 "규표현식 문법을 사용합니다. 정규표현식이 어떻게 동작하는지 모르신다면 검색할 "
 "문장 일부를 넣으시면 됩니다."
 
-#: src/skins/ui_playlist.c:237
+#: src/skins/ui_playlist.c:238
 msgid "Title: "
 msgstr "제목:"
 
-#: src/skins/ui_playlist.c:245
+#: src/skins/ui_playlist.c:246
 msgid "Album: "
 msgstr "앨범:"
 
-#: src/skins/ui_playlist.c:253
+#: src/skins/ui_playlist.c:254
 msgid "Artist: "
 msgstr "음악가:"
 
-#: src/skins/ui_playlist.c:261
+#: src/skins/ui_playlist.c:262
 msgid "Filename: "
 msgstr "파일 이름:"
 
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
 msgstr "검색하기 전에 이전 선택항목 지우기"
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
 msgstr "일치하는 항목에 대해 자동으로 대기 목록을 전환하기"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
 msgstr "일치하는 항목에 대해 새 재생 목록 만들기"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
 msgstr "오데이셔스 재생 목록 편집기"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%1$s (%3$d중 %2$d)"
@@ -3639,7 +3646,7 @@ msgstr "압축하지 않은 Winamp 2.x 스킨"
 msgid "Could not create directory (%s): %s\n"
 msgstr "(%s) 디렉터리를 만들 수 없습니다: %s\n"
 
-#: src/sndfile/plugin.c:350
+#: src/sndfile/plugin.c:348
 msgid ""
 "Based on the xmms_sndfile plugin:\n"
 "Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
@@ -3678,7 +3685,7 @@ msgstr ""
 "이 없다면 자유 소프트웨어 재단에 요청하십시오. 51 Franklin Street, Fifth "
 "Floor, Boston, MA 02110-1301, USA."
 
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
 msgstr "Sndfile 플러그인"
 
@@ -3722,33 +3729,33 @@ msgstr "(빈 값은 기본 값을 의미)"
 msgid "OK"
 msgstr "확인"
 
-#: src/song_change/song_change.c:54
+#: src/song_change/song_change.c:46
 msgid "Song Change"
 msgstr "곡 바꾸기"
 
-#: src/song_change/song_change.c:428
+#: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
 msgstr "오데이셔스가 새 곡 재생을 시작할 때 실행할 명령입니다."
 
-#: src/song_change/song_change.c:430 src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442 src/song_change/song_change.c:448
+#: src/song_change/song_change.c:355 src/song_change/song_change.c:361
+#: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
 msgstr "명령:"
 
-#: src/song_change/song_change.c:434
+#: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
 msgstr "곡의 끝 부분에 다다랐을때 실행할 명령입니다."
 
-#: src/song_change/song_change.c:440
+#: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr "재생 목록의 끝에 도달했을 때 실행할 명령입니다."
 
-#: src/song_change/song_change.c:446
+#: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr "곡의 제목(예: 네트워크 스트림 제목)을 바꿀 때 실행할 명령입니다."
 
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.c:377
 msgid ""
 "You can use the following format strings which\n"
 "will be substituted before calling the command\n"
@@ -3782,7 +3789,7 @@ msgstr ""
 "%b: 앨범\n"
 "%T: 트랙 제목"
 
-#: src/song_change/song_change.c:479
+#: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
@@ -3790,7 +3797,7 @@ msgstr ""
 "<span size='small'>쉘에 전달하는 인자는 따옴표로 감싸야 합니다. 그렇게 하지 "
 "않으면 보안 문제가 생깁니다.</span>"
 
-#: src/song_change/song_change.c:490
+#: src/song_change/song_change.c:420
 msgid "Commands"
 msgstr "명령"
 
@@ -3852,7 +3859,7 @@ msgstr "속도와 피치"
 msgid "Se_ttings ..."
 msgstr "설정(_T)..."
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.c:375
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3870,35 +3877,35 @@ msgstr ""
 "이 플러그인은 창 관리자의 시스템 표시줄 영역에\n"
 "뜨는 상태 아이콘을 제공합니다."
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>마우스 스크롤 동작</b>"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.c:383
 msgid "Change volume"
 msgstr "음량 조절하기"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.c:386
 msgid "Change playing song"
 msgstr "재생중인 곡 바꾸기"
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
 msgstr "<b>기타 설정</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
 msgstr "풍선 도움말 창 비활성화"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
 msgstr "시스템 트레이로 전환"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
 msgstr "재생목록을 위로 스크롤 할 때 미리 알림"
 
-#: src/statusicon/statusicon.c:399
+#: src/statusicon/statusicon.c:403
 msgid "Status Icon"
 msgstr "상태 아이콘"
 
@@ -4037,3 +4044,12 @@ msgstr "2SF 디코더"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML 공유 가능 재생 목록(XSPF)"
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 kHz:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 kHz:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 kHz:"
