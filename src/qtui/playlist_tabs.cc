@@ -36,6 +36,8 @@ PlaylistTabs::PlaylistTabs (QTabWidget * parent) : QTabWidget (parent)
     hook_associate ("playlist activate",    (HookFunction) playlist_activate_cb, this);
     hook_associate ("playlist set playing", (HookFunction) playlist_set_playing_cb, this);
     hook_associate ("playlist position",    (HookFunction) playlist_position_cb, this);
+
+    connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
 }
 
 PlaylistTabs::~PlaylistTabs ()
@@ -105,4 +107,9 @@ Playlist * PlaylistTabs::activePlaylistWidget ()
 void PlaylistTabs::filterTrigger (const QString &text)
 {
     activePlaylistWidget ()->setFilter (text);
+}
+
+void PlaylistTabs::currentChangedTrigger (int idx)
+{
+    aud_playlist_set_active (idx);
 }
