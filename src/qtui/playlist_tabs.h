@@ -26,6 +26,8 @@
 #include "ui_playlist_tabs.h"
 #include "filter_input.h"
 
+class PlaylistTabBar;
+
 class PlaylistTabs : public QTabWidget, private Ui::PlaylistTabs
 {
     Q_OBJECT
@@ -36,11 +38,20 @@ public:
     Playlist * playlistWidget (int num);
     Playlist * activePlaylistWidget ();
 
+    void editTab (int idx) const;
+
 public slots:
     void filterTrigger (const QString &text);
     void currentChangedTrigger (int idx);
+    void tabEditedTrigger ();
+
+protected:
+    bool eventFilter (QObject * obj, QEvent *e);
 
 private:
+    QLineEdit *m_lineedit;
+    PlaylistTabBar *m_tabbar;
+
     void populatePlaylists ();
     void maybeCreateTab (int count_, int uniq_id);
     void cullPlaylists ();
@@ -81,6 +92,17 @@ private:
         if (playlistWidget)
             playlistWidget->positionUpdate ();
     }
+};
+
+class PlaylistTabBar : public QTabBar
+{
+    Q_OBJECT
+
+public:
+    PlaylistTabBar (QWidget * parent = 0);
+
+protected:
+    void mouseDoubleClickEvent (QMouseEvent *e);
 };
 
 #endif
