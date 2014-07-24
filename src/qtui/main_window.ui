@@ -173,6 +173,12 @@
     <property name="title">
      <string>Output</string>
     </property>
+    <addaction name="actionVolumeUp"/>
+    <addaction name="actionVolumeDown"/>
+    <addaction name="separator"/>
+    <addaction name="actionEqualizer"/>
+    <addaction name="separator"/>
+    <addaction name="actionEffects"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -587,6 +593,26 @@
   <action name="actionSelectedRandomize">
    <property name="text">
     <string>Random Order</string>
+   </property>
+  </action>
+  <action name="actionVolumeUp">
+   <property name="text">
+    <string>Volume Up</string>
+   </property>
+  </action>
+  <action name="actionVolumeDown">
+   <property name="text">
+    <string>Volume Down</string>
+   </property>
+  </action>
+  <action name="actionEqualizer">
+   <property name="text">
+    <string>Equalizer</string>
+   </property>
+  </action>
+  <action name="actionEffects">
+   <property name="text">
+    <string>Effects ...</string>
    </property>
   </action>
  </widget>
