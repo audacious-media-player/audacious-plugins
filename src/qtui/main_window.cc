@@ -25,6 +25,8 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/interface.h>
 
+#include <libaudqt/libaudqt.h>
+
 #include "filter_input.h"
 #include "main_window.h"
 #include "main_window.moc"
@@ -101,6 +103,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     connect (actionStop,      &QAction::triggered, aud_drct_stop);
     connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
     connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
+
+    connect (actionEqualizer, &QAction::triggered, audqt::equalizer_show);
 
     connect (timeCounter, &QTimer::timeout,         this, &MainWindow::timeCounterSlot);
     connect (slider,      &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);
