@@ -24,6 +24,8 @@
 #include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 
+#include <libaudqt/libaudqt.h>
+
 #include "main_window.h"
 
 static int dummy_argc = 0;
@@ -72,6 +74,9 @@ static void quit ()
 
 #define AUD_IFACE_SHOW      show
 #define AUD_IFACE_QUIT      quit
+
+#define AUD_IFACE_SHOW_ABOUT         audqt::aboutwindow_show
+#define AUD_IFACE_HIDE_ABOUT         audqt::aboutwindow_hide
 
 #define AUD_DECLARE_IFACE
 #include <libaudcore/plugin-declare.h>

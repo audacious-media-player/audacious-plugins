@@ -23,6 +23,7 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/interface.h>
 
 #include "filter_input.h"
 #include "main_window.h"
@@ -69,6 +70,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     createStatusBar ();
 
     updateToggles ();
+
+    connect (actionAbout, &QAction::triggered, aud_ui_show_about_window);
 
     connect (actionQuit, &QAction::triggered, aud_quit);
 

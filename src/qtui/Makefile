@@ -59,7 +59,7 @@ LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${QT_CFLAGS}
-LIBS += ${QT_LIBS}
+LIBS += ${QT_LIBS} -laudqt
 
 %.moc: %.h
 	moc $< -o $@
