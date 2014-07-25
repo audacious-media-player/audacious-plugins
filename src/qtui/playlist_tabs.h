@@ -101,6 +101,9 @@ class PlaylistTabBar : public QTabBar
 public:
     PlaylistTabBar (QWidget * parent = 0);
 
+public slots:
+    void handleCloseRequest (int idx);
+
 protected:
     void mouseDoubleClickEvent (QMouseEvent *e);
 };

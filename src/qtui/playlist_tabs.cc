@@ -23,6 +23,8 @@
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 
+#include <libaudqt/libaudqt.h>
+
 #include "playlist.h"
 #include "playlist_tabs.h"
 #include "playlist_tabs.moc"
@@ -183,7 +185,10 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
 
 PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
 {
-    setDocumentMode(true);
+    setDocumentMode (true);
+    setTabsClosable (true);
+
+    connect (this, &QTabBar::tabCloseRequested, this, &PlaylistTabBar::handleCloseRequest);
 }
 
 void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent *e)
@@ -195,4 +200,15 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent *e)
         return;
 
     p->editTab (idx);
+}
+
+void PlaylistTabBar::handleCloseRequest (int idx)
+{
+    PlaylistTabs *p = (PlaylistTabs *) parent ();
+    Playlist *pl = (Playlist *) p->widget (idx);
+
+    if (! pl)
+        return;
+
+    audqt::playlist_confirm_delete (pl->playlist ());
 }
