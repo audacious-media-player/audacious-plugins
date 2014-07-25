@@ -23,12 +23,11 @@
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
-#include "ui_playlist_tabs.h"
 #include "filter_input.h"
 
 class PlaylistTabBar;
 
-class PlaylistTabs : public QTabWidget, private Ui::PlaylistTabs
+class PlaylistTabs : public QTabWidget
 {
     Q_OBJECT
 
@@ -100,6 +99,9 @@ class PlaylistTabBar : public QTabBar
 
 public:
     PlaylistTabBar (QWidget * parent = 0);
+
+public slots:
+    void handleCloseRequest (int idx);
 
 protected:
     void mouseDoubleClickEvent (QMouseEvent *e);
