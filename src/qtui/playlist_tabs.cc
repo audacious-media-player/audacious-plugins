@@ -90,7 +90,7 @@ void PlaylistTabs::cullPlaylists ()
     {
          Playlist * playlistWidget = (Playlist *) widget (i);
 
-         if (playlistWidget->playlist() < 0)
+         if (playlistWidget == nullptr || playlistWidget->playlist() < 0)
          {
              removeTab(i);
              delete playlistWidget;
