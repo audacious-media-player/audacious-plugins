@@ -27,6 +27,10 @@ void MainWindow::setupActions ()
         aud_playlist_set_active (aud_playlist_count () - 1);
     });
 
+    connect(actionPlaylistRemove, &QAction::triggered, [=] () {
+        audqt::playlist_confirm_delete (aud_playlist_get_active ());
+    });
+
     connect(actionPlaylistReverse, &QAction::triggered, [=] () { aud_playlist_reverse (aud_playlist_get_active ()); });
     connect(actionPlaylistRandomize, &QAction::triggered, [=] () { aud_playlist_randomize (aud_playlist_get_active ()); });
 
