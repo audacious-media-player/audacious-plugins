@@ -23,12 +23,11 @@
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
-#include "ui_playlist_tabs.h"
 #include "filter_input.h"
 
 class PlaylistTabBar;
 
-class PlaylistTabs : public QTabWidget, private Ui::PlaylistTabs
+class PlaylistTabs : public QTabWidget
 {
     Q_OBJECT
 

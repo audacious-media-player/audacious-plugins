@@ -31,7 +31,6 @@
 
 PlaylistTabs::PlaylistTabs (QTabWidget * parent) : QTabWidget (parent)
 {
-    setupUi (this);
     installEventFilter (this);
 
     // set up tab bar
