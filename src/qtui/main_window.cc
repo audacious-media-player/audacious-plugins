@@ -32,7 +32,6 @@
 #include "main_window.moc"
 #include "main_window_actions.h"
 #include "playlist.h"
-#include "utils.h"
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
@@ -97,8 +96,13 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
         aud_set_bool (nullptr, "stop_after_current_song", checked);
     });
 
-    connect (actionOpenFiles, &QAction::triggered, Utils::openFilesDialog);
-    connect (actionAddFiles,  &QAction::triggered, Utils::addFilesDialog);
+    connect (actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
+
+    connect (actionAddFiles,  &QAction::triggered, [=] ()
+    {
+        audqt::fileopener_show (true);
+    });
+
     connect (actionPlayPause, &QAction::triggered, aud_drct_play_pause);
     connect (actionStop,      &QAction::triggered, aud_drct_stop);
     connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);

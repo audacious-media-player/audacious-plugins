@@ -12,8 +12,7 @@ SRCS = qtui.cc \
        filter_input.cc \
        filter_input.moc \
        ui_main_window.h \
-       ui_playlist_tabs.h \
-       utils.cc
+       ui_playlist_tabs.h
 
 include ../../buildsys.mk
 include ../../extra.mk
