@@ -48,6 +48,7 @@ static const char plugin_about[] =
 static const char * const notify_defaults[] = {
  "actions", "TRUE",
  "resident", "FALSE",
+ "album", "TRUE",
  nullptr
 };
 
@@ -83,7 +84,9 @@ static const PreferencesWidget prefs_widgets[] = {
     WidgetCheck (N_("Show playback controls"),
         WidgetBool ("notify", "actions", plugin_reinit)),
     WidgetCheck (N_("Always show notification"),
-        WidgetBool ("notify", "resident", plugin_reinit))
+        WidgetBool ("notify", "resident", plugin_reinit)),
+    WidgetCheck (N_("Include album name in notification"),
+        WidgetBool ("notify", "album", plugin_reinit))
 };
 
 static const PluginPreferences plugin_prefs = {{prefs_widgets}};

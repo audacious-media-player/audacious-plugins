@@ -83,7 +83,7 @@ static void playback_update (void)
     String message;
     if (artist)
     {
-        if (album)
+        if (album && aud_get_bool ("notify", "album"))
             message = String (str_printf ("%s\n%s", (const char *) artist, (const char *) album));
         else
             message = artist;
