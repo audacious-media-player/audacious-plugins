@@ -35,7 +35,6 @@ static void show_cb (void)
 static void osd_setup (NotifyNotification *notification)
 {
     gboolean resident = aud_get_bool ("notify", "resident");
-    gboolean album = aud_get_bool ("notify", "album");
 
     notify_notification_set_hint (notification, "desktop-entry",
      g_variant_new_string ("audacious"));
