@@ -43,7 +43,6 @@ static void osd_setup (NotifyNotification *notification)
     notify_notification_set_hint (notification, "action-icons", g_variant_new_boolean (TRUE));
     notify_notification_set_hint (notification, "resident", g_variant_new_boolean (resident));
     notify_notification_set_hint (notification, "transient", g_variant_new_boolean (! resident));
-    notify_notification_set_hint (notification, "album", g_variant_new_boolean (album));
 
     notify_notification_set_urgency (notification, NOTIFY_URGENCY_LOW);
     notify_notification_set_timeout (notification, resident ?
