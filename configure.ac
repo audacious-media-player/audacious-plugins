@@ -66,24 +66,6 @@ VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
 
-dnl Qt support
-dnl ==========
-
-AC_ARG_ENABLE(qt,
- AS_HELP_STRING(--enable-qt, [Enable Qt support (default=disabled)]),
- USE_QT=$enableval, USE_QT=no)
-
-if test $USE_QT = yes ; then
-    PKG_CHECK_MODULES([QT], [Qt5Core Qt5Gui Qt5Widgets])
-    AC_DEFINE(USE_QT, 1, [Define if Qt support enabled])
-
-    # needed if Qt was built with -reduce-relocations
-    QT_CFLAGS="$QT_CFLAGS -fPIC"
-fi
-
-AC_SUBST(QT_CFLAGS)
-AC_SUBST(QT_LIBS)
-
 dnl Console
 dnl =======
 
