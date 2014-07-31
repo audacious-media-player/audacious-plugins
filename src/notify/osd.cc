@@ -35,6 +35,7 @@ static void show_cb (void)
 static void osd_setup (NotifyNotification *notification)
 {
     gboolean resident = aud_get_bool ("notify", "resident");
+    gboolean album = aud_get_bool ("notify", "album");
 
     notify_notification_set_hint (notification, "desktop-entry",
      g_variant_new_string ("audacious"));
@@ -42,6 +43,7 @@ static void osd_setup (NotifyNotification *notification)
     notify_notification_set_hint (notification, "action-icons", g_variant_new_boolean (TRUE));
     notify_notification_set_hint (notification, "resident", g_variant_new_boolean (resident));
     notify_notification_set_hint (notification, "transient", g_variant_new_boolean (! resident));
+    notify_notification_set_hint (notification, "album", g_variant_new_boolean (album));
 
     notify_notification_set_urgency (notification, NOTIFY_URGENCY_LOW);
     notify_notification_set_timeout (notification, resident ?
