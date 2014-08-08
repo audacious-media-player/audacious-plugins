@@ -393,7 +393,7 @@ AC_ARG_ENABLE(aac,
  [enable_aac=$enableval], [enable_aac=yes])
 
 if test $enable_aac = yes ; then
-    AC_CHECK_HEADER([faad.h])
+    AC_CHECK_HEADER([neaacdec.h])
     AC_CHECK_LIB([faad], [NeAACDecInit2])
 
     FAAD_CFLAGS=
