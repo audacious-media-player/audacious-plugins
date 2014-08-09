@@ -83,6 +83,8 @@ void Playlist::keyPressEvent (QKeyEvent * e)
         case Qt::Key_Space:
             aud_drct_play_pause ();
             break;
+        case Qt::Key_Delete:
+            deleteCurrentIndex ();
         case Qt::Key_Z:
             aud_drct_pl_prev ();
             return;
@@ -178,6 +180,11 @@ void Playlist::playCurrentIndex ()
 {
     aud_playlist_set_position (playlist (), proxyModel->mapToSource (currentIndex ()).row ());
     aud_drct_play_playlist (playlist ());
+}
+
+void Playlist::deleteCurrentIndex ()
+{
+    aud_playlist_entry_delete (playlist (), proxyModel->mapToSource (currentIndex ()).row (), 1);
 }
 
 void Playlist::toggleQueue ()
