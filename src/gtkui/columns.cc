@@ -38,10 +38,14 @@ const char * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
 
 int pw_num_cols;
 int pw_cols[PW_COLS];
+int pw_col_widths[PW_COLS];
 
 static const char * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
  "year", "album", "track", "genre", "queued", "length", "path", "filename",
  "custom", "bitrate"};
+
+static const int pw_default_widths[PW_COLS] = {10, 275, 175, 10, 175, 10, 100,
+ 10, 10, 275, 275, 275, 10};
 
 void pw_col_init (void)
 {
@@ -67,14 +71,18 @@ void pw_col_init (void)
 
         pw_cols[pw_num_cols ++] = i;
     }
+
+    String widths = aud_get_str ("gtkui", "column_widths");
+    if (! str_to_int_array (widths, pw_col_widths, PW_COLS))
+        memcpy (pw_col_widths, pw_default_widths, sizeof pw_col_widths);
 }
 
 typedef struct {
     int column;
-    bool_t selected;
+    gboolean selected;
 } Column;
 
-static GtkWidget * chosen_list = NULL, * avail_list = NULL;
+static GtkWidget * chosen_list = nullptr, * avail_list = nullptr;
 static Index<Column *> chosen, avail;
 
 static void apply_changes (void)
@@ -87,9 +95,6 @@ static void apply_changes (void)
     for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
         pw_cols[pw_num_cols] = chosen[pw_num_cols]->column;
 
-    aud_set_str ("gtkui", "column_widths", "");
-    aud_set_str ("gtkui", "column_expand", "");
-
     ui_playlist_notebook_populate ();
 }
 
@@ -101,21 +106,21 @@ static void get_value (void * user, int row, int column, GValue * value)
     g_value_set_string (value, _(pw_col_names[c->column]));
 }
 
-static bool_t get_selected (void * user, int row)
+static bool get_selected (void * user, int row)
 {
     auto & index = * (Index<Column *> *) user;
     g_return_val_if_fail (row >= 0 && row < index.len (), FALSE);
     return index[row]->selected;
 }
 
-static void set_selected (void * user, int row, bool_t selected)
+static void set_selected (void * user, int row, bool selected)
 {
     auto & index = * (Index<Column *> *) user;
     g_return_if_fail (row >= 0 && row < index.len ());
     index[row]->selected = selected;
 }
 
-static void select_all (void * user, bool_t selected)
+static void select_all (void * user, bool selected)
 {
     auto & index = * (Index<Column *> *) user;
     int rows = index.len ();
@@ -179,8 +184,8 @@ static const AudguiListCallbacks callbacks = {
     get_selected,
     set_selected,
     select_all,
-    NULL,  // activate_row
-    NULL,  // right_click
+    nullptr,  // activate_row
+    nullptr,  // right_click
     shift_rows
 };
 
@@ -226,8 +231,8 @@ static void transfer (Index<Column *> * source)
 
 static void destroy_cb (void)
 {
-    chosen_list = NULL;
-    avail_list = NULL;
+    chosen_list = nullptr;
+    avail_list = nullptr;
 
     for (Column * column : chosen)
         g_slice_free (Column, column);
@@ -240,7 +245,7 @@ static void destroy_cb (void)
 
 void * pw_col_create_chooser (void)
 {
-    bool_t added[PW_COLS];
+    gboolean added[PW_COLS];
     memset (added, 0, sizeof added);
 
     for (int i = 0; i < pw_num_cols; i ++)
@@ -264,10 +269,10 @@ void * pw_col_create_chooser (void)
         avail.append (column);
     }
 
-    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_widget_set_size_request (hbox, -1, 160);
 
-    GtkWidget * scroll = gtk_scrolled_window_new (NULL, NULL);
+    GtkWidget * scroll = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scroll,
      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scroll,
@@ -278,7 +283,7 @@ void * pw_col_create_chooser (void)
     audgui_list_add_column (avail_list, _("Available columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, avail_list);
 
-    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox, FALSE, FALSE, 0);
 
     GtkWidget * button = gtk_button_new ();
@@ -293,7 +298,7 @@ void * pw_col_create_chooser (void)
     gtk_box_pack_start ((GtkBox *) vbox, button, TRUE, FALSE, 0);
     g_signal_connect_swapped (button, "clicked", (GCallback) transfer, & chosen);
 
-    scroll = gtk_scrolled_window_new (NULL, NULL);
+    scroll = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scroll,
      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scroll,
@@ -304,7 +309,7 @@ void * pw_col_create_chooser (void)
     audgui_list_add_column (chosen_list, _("Displayed columns"), 0, G_TYPE_STRING, -1);
     gtk_container_add ((GtkContainer *) scroll, chosen_list);
 
-    g_signal_connect (hbox, "destroy", (GCallback) destroy_cb, NULL);
+    g_signal_connect (hbox, "destroy", (GCallback) destroy_cb, nullptr);
 
     return hbox;
 }
@@ -316,4 +321,5 @@ void pw_col_save (void)
         index.append (String (pw_col_keys[pw_cols[i]]));
 
     aud_set_str ("gtkui", "playlist_columns", index_to_str_list (index, " "));
+    aud_set_str ("gtkui", "column_widths", int_array_to_str (pw_col_widths, PW_COLS));
 }

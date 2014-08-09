@@ -26,12 +26,13 @@
  */
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_number.h"
 
 typedef struct {
-    gint w, h;
-    gint num;
+    int w, h;
+    int num;
 } NumberData;
 
 DRAW_FUNC_BEGIN (number_draw)
@@ -49,13 +50,13 @@ static void number_destroy (GtkWidget * number)
 GtkWidget * ui_skinned_number_new (void)
 {
     GtkWidget * number = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (number, 9, 13);
+    gtk_widget_set_size_request (number, 9 * config.scale, 13 * config.scale);
 
     gtk_widget_add_events (number, GDK_BUTTON_PRESS_MASK |
      GDK_BUTTON_RELEASE_MASK);
 
     DRAW_CONNECT (number, number_draw);
-    g_signal_connect (number, "destroy", (GCallback) number_destroy, NULL);
+    g_signal_connect (number, "destroy", (GCallback) number_destroy, nullptr);
 
     NumberData * data = g_new0 (NumberData, 1);
     data->w = 9;
@@ -65,12 +66,12 @@ GtkWidget * ui_skinned_number_new (void)
     return number;
 }
 
-void ui_skinned_number_set (GtkWidget * number, gchar c)
+void ui_skinned_number_set (GtkWidget * number, char c)
 {
     NumberData * data = (NumberData *) g_object_get_data ((GObject *) number, "numberdata");
     g_return_if_fail (data);
 
-    gint value = (c >= '0' && c <= '9') ? c - '0' : (c == '-') ? 11 : 10;
+    int value = (c >= '0' && c <= '9') ? c - '0' : (c == '-') ? 11 : 10;
 
     if (data->num == value)
         return;
@@ -79,7 +80,7 @@ void ui_skinned_number_set (GtkWidget * number, gchar c)
     gtk_widget_queue_draw (number);
 }
 
-void ui_skinned_number_set_size (GtkWidget * number, gint width, gint height)
+void ui_skinned_number_set_size (GtkWidget * number, int width, int height)
 {
     NumberData * data = (NumberData *) g_object_get_data ((GObject *) number, "numberdata");
     g_return_if_fail (data);
@@ -87,6 +88,6 @@ void ui_skinned_number_set_size (GtkWidget * number, gint width, gint height)
     data->w = width;
     data->h = height;
 
-    gtk_widget_set_size_request (number, width, height);
+    gtk_widget_set_size_request (number, width * config.scale, height * config.scale);
     gtk_widget_queue_draw (number);
 }

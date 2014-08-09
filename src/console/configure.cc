@@ -25,9 +25,9 @@ static const char * const console_defaults[] = {
  "ignore_spc_length", "FALSE",
  "echo", "0",
  "inc_spc_reverb", "FALSE",
- NULL};
+ nullptr};
 
-bool_t console_cfg_load (void)
+bool console_cfg_load (void)
 {
     aud_config_set_defaults (CON_CFGID, console_defaults);
 
@@ -40,7 +40,7 @@ bool_t console_cfg_load (void)
     audcfg.echo = aud_get_int (CON_CFGID, "echo");
     audcfg.inc_spc_reverb = aud_get_bool (CON_CFGID, "inc_spc_reverb");
 
-    return TRUE;
+    return true;
 }
 
 void console_cfg_save (void)

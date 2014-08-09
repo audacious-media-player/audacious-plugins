@@ -39,16 +39,16 @@ static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
  G_TYPE_STRING};
-static const bool_t pw_col_widths[PW_COLS] = {7, -1, -1, 4, -1, 2, -1, 3, 7,
- -1, -1, -1, 3};
-static const bool_t pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
+static const gboolean pw_col_min_widths[PW_COLS] = {7, 10, 10, 4, 10, 2, 10, 3, 7,
+ 10, 10, 10, 3};
+static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
  FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
 
 typedef struct {
     int list;
     GList * queue;
     int popup_source, popup_pos;
-    bool_t popup_shown;
+    gboolean popup_shown;
 } PlaylistWidgetData;
 
 static void set_int_from_tuple (GValue * value, const Tuple & tuple, int field)
@@ -158,19 +158,19 @@ static void get_value (void * user, int row, int column, GValue * value)
     }
 }
 
-static bool_t get_selected (void * user, int row)
+static bool get_selected (void * user, int row)
 {
     return aud_playlist_entry_get_selected (((PlaylistWidgetData *) user)->list,
      row);
 }
 
-static void set_selected (void * user, int row, bool_t selected)
+static void set_selected (void * user, int row, bool selected)
 {
     aud_playlist_entry_set_selected (((PlaylistWidgetData *) user)->list, row,
      selected);
 }
 
-static void select_all (void * user, bool_t selected)
+static void select_all (void * user, bool selected)
 {
     aud_playlist_select_all (((PlaylistWidgetData *) user)->list, selected);
 }
@@ -206,7 +206,7 @@ static void shift_rows (void * user, int row, int before)
     aud_playlist_shift (list, row, before - row);
 }
 
-static bool_t popup_show (PlaylistWidgetData * data)
+static gboolean popup_show (PlaylistWidgetData * data)
 {
     audgui_infopopup_show (data->list, data->popup_pos);
     data->popup_shown = TRUE;
@@ -238,7 +238,7 @@ static void popup_trigger (PlaylistWidgetData * data, int pos)
     popup_hide (data);
 
     data->popup_pos = pos;
-    data->popup_source = g_timeout_add (aud_get_int (NULL, "filepopup_delay") *
+    data->popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
      100, (GSourceFunc) popup_show, data);
 }
 
@@ -252,7 +252,7 @@ static void mouse_motion (void * user, GdkEventMotion * event, int row)
         return;
     }
 
-    if (aud_get_bool (NULL, "show_filepopup_for_tuple") && data->popup_pos != row)
+    if (aud_get_bool (nullptr, "show_filepopup_for_tuple") && data->popup_pos != row)
         popup_trigger (data, row);
 }
 
@@ -292,7 +292,7 @@ static const AudguiListCallbacks callbacks = {
     focus_change
 };
 
-static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
+static gboolean search_cb (GtkTreeModel * model, int column, const char * search,
  GtkTreeIter * iter, void * user)
 {
     GtkTreePath * path = gtk_tree_model_get_path (model, iter);
@@ -304,22 +304,22 @@ static bool_t search_cb (GtkTreeModel * model, int column, const char * search,
     Index<String> keys = str_list_to_index (search, " ");
     int n_keys = keys.len ();
 
-    bool_t matched = FALSE;
+    gboolean matched = FALSE;
 
     if (n_keys)
     {
-        String s[3];
+        String strings[3];
         aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
-         s[0], s[1], s[2], FALSE);
+         strings[0], strings[1], strings[2], FALSE);
 
-        for (int i = 0; i < ARRAY_LEN (s); i ++)
+        for (const String & s : strings)
         {
-            if (! s[i])
+            if (! s)
                 continue;
 
             for (int j = 0; j < n_keys;)
             {
-                if (strstr_nocase_utf8 (s[i], keys[j]))
+                if (strstr_nocase_utf8 (s, keys[j]))
                 {
                     keys.remove (j, 1);
                     n_keys --;
@@ -345,7 +345,7 @@ GtkWidget * ui_playlist_widget_new (int playlist)
 {
     PlaylistWidgetData * data = g_slice_new (PlaylistWidgetData);
     data->list = playlist;
-    data->queue = NULL;
+    data->queue = nullptr;
     data->popup_source = 0;
     data->popup_pos = -1;
     data->popup_shown = FALSE;
@@ -356,7 +356,7 @@ GtkWidget * ui_playlist_widget_new (int playlist)
     gtk_tree_view_set_headers_visible ((GtkTreeView *) list,
      aud_get_bool ("gtkui", "playlist_headers"));
     gtk_tree_view_set_search_equal_func ((GtkTreeView *) list, search_cb, data,
-     NULL);
+     nullptr);
     g_signal_connect_swapped (list, "destroy", (GCallback) destroy_cb, data);
 
     /* Disable type-to-search because it blocks CTRL-V, causing URI's to be
@@ -368,7 +368,7 @@ GtkWidget * ui_playlist_widget_new (int playlist)
     {
         int n = pw_cols[i];
         audgui_list_add_column (list, pw_col_label[n] ? _(pw_col_names[n]) :
-         NULL, i, pw_col_types[n], pw_col_widths[n]);
+         nullptr, i, pw_col_types[n], pw_col_min_widths[n]);
     }
 
     return list;
@@ -394,7 +394,7 @@ static void update_queue (GtkWidget * widget, PlaylistWidgetData * data)
         audgui_list_update_rows (widget, GPOINTER_TO_INT (node->data), 1);
 
     g_list_free (data->queue);
-    data->queue = NULL;
+    data->queue = nullptr;
 
     for (int i = aud_playlist_queue_count (data->list); i --; )
         data->queue = g_list_prepend (data->queue, GINT_TO_POINTER
@@ -455,36 +455,4 @@ void ui_playlist_widget_scroll (GtkWidget * widget)
         popup_trigger (data, row);
     else
         popup_hide (data);
-}
-
-void ui_playlist_widget_get_column_widths (GtkWidget * widget, String & widths, String & expand)
-{
-    int w[PW_COLS], ex[PW_COLS];
-
-    for (int i = 0; i < pw_num_cols; i ++)
-    {
-        GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) widget, i);
-        w[i] = gtk_tree_view_column_get_fixed_width (col);
-        ex[i] = gtk_tree_view_column_get_expand (col);
-    }
-
-    widths = String (int_array_to_str (w, pw_num_cols));
-    expand = String (int_array_to_str (ex, pw_num_cols));
-}
-
-void ui_playlist_widget_set_column_widths (GtkWidget * widget,
- const char * widths, const char * expand)
-{
-    int w[PW_COLS], ex[PW_COLS];
-
-    if (! str_to_int_array (widths, w, pw_num_cols) ||
-     ! str_to_int_array (expand, ex, pw_num_cols))
-        return;
-
-    for (int i = 0; i < pw_num_cols; i ++)
-    {
-        GtkTreeViewColumn * col = gtk_tree_view_get_column ((GtkTreeView *) widget, i);
-        gtk_tree_view_column_set_fixed_width (col, w[i]);
-        gtk_tree_view_column_set_expand (col, ex[i]);
-    }
 }

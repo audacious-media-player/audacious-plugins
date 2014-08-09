@@ -48,19 +48,23 @@ static const char plugin_about[] =
 static const char * const notify_defaults[] = {
  "actions", "TRUE",
  "resident", "FALSE",
- NULL
+ "album", "TRUE",
+ nullptr
 };
 
-static bool_t plugin_init (void)
+static bool plugin_init (void)
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     aud_config_set_defaults ("notify", notify_defaults);
 
     if (! notify_init ("Audacious"))
-        return FALSE;
+        return false;
 
     audgui_init ();
     event_init ();
-    return TRUE;
+    return true;
 }
 
 static void plugin_cleanup (void)
@@ -78,15 +82,14 @@ static void plugin_reinit (void)
 
 static const PreferencesWidget prefs_widgets[] = {
     WidgetCheck (N_("Show playback controls"),
-        {VALUE_BOOLEAN, 0, "notify", "actions", plugin_reinit}),
+        WidgetBool ("notify", "actions", plugin_reinit)),
     WidgetCheck (N_("Always show notification"),
-        {VALUE_BOOLEAN, 0, "notify", "resident", plugin_reinit})
+        WidgetBool ("notify", "resident", plugin_reinit)),
+    WidgetCheck (N_("Include album name in notification"),
+        WidgetBool ("notify", "album", plugin_reinit))
 };
 
-static const PluginPreferences plugin_prefs = {
-    prefs_widgets,
-    ARRAY_LEN (prefs_widgets)
-};
+static const PluginPreferences plugin_prefs = {{prefs_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Desktop Notifications")
 #define AUD_PLUGIN_ABOUT       plugin_about

@@ -24,7 +24,7 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * drag_handle_new (gint w, gint h, void (* press) (void), void
- (* drag) (gint x, gint y));
+GtkWidget * drag_handle_new (int w, int h, void (* press) (void), void
+ (* drag) (int x, int y));
 
 #endif

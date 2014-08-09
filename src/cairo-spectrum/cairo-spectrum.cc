@@ -34,30 +34,30 @@
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
-static GtkWidget * spect_widget = NULL;
-static gfloat xscale[MAX_BANDS + 1];
-static gint width, height, bands;
-static gint bars[MAX_BANDS + 1];
-static gint delay[MAX_BANDS + 1];
+static GtkWidget * spect_widget = nullptr;
+static float xscale[MAX_BANDS + 1];
+static int width, height, bands;
+static int bars[MAX_BANDS + 1];
+static int delay[MAX_BANDS + 1];
 
 static void calculate_xscale (void)
 {
-    for (gint i = 0; i <= bands; i ++)
-        xscale[i] = powf (256, (gfloat) i / bands) - 0.5f;
+    for (int i = 0; i <= bands; i ++)
+        xscale[i] = powf (256, (float) i / bands) - 0.5f;
 }
 
-static void render_cb (gfloat * freq)
+static void render_cb (float * freq)
 {
     g_return_if_fail (spect_widget);
 
     if (! bands)
         return;
 
-    for (gint i = 0; i < bands; i ++)
+    for (int i = 0; i < bands; i ++)
     {
-        gint a = ceilf (xscale[i]);
-        gint b = floorf (xscale[i + 1]);
-        gfloat n = 0;
+        int a = ceilf (xscale[i]);
+        int b = floorf (xscale[i + 1]);
+        float n = 0;
 
         if (b < a)
             n += freq[b] * (xscale[i + 1] - xscale[i]);
@@ -73,13 +73,13 @@ static void render_cb (gfloat * freq)
 
         /* fudge factor to make the graph have the same overall height as a
            12-band one no matter how many bands there are */
-        n *= (gfloat) bands / 12;
+        n *= (float) bands / 12;
 
         /* 40 dB range */
-        gint x = 40 + 20 * log10f (n);
-        x = CLAMP (x, 0, 40);
+        int x = 40 + 20 * log10f (n);
+        x = aud::clamp (x, 0, 40);
 
-        bars[i] -= MAX (0, VIS_FALLOFF - delay[i]);
+        bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 
         if (delay[i])
             delay[i]--;
@@ -94,9 +94,9 @@ static void render_cb (gfloat * freq)
     gtk_widget_queue_draw (spect_widget);
 }
 
-static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s, gfloat * v)
+static void rgb_to_hsv (float r, float g, float b, float * h, float * s, float * v)
 {
-    gfloat max, min;
+    float max, min;
 
     max = r;
     if (g > max)
@@ -129,11 +129,11 @@ static void rgb_to_hsv (gfloat r, gfloat g, gfloat b, gfloat * h, gfloat * s, gf
     * s = (max - min) / max;
 }
 
-static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g, gfloat * b)
+static void hsv_to_rgb (float h, float s, float v, float * r, float * g, float * b)
 {
     for (; h >= 2; h -= 2)
     {
-        gfloat * p = r;
+        float * p = r;
         r = g;
         g = b;
         b = p;
@@ -157,27 +157,12 @@ static void hsv_to_rgb (gfloat h, gfloat s, gfloat v, gfloat * r, gfloat * g, gf
     * b = v * (1 - s * (1 - * b));
 }
 
-static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
+static void get_color (GtkWidget * widget, int i, float * r, float * g, float * b)
 {
-    static GdkRGBA c;
-    static bool_t valid = FALSE;
-    gfloat h, s, v, n;
+    GdkColor * c = (gtk_widget_get_style (widget))->base + GTK_STATE_SELECTED;
+    float h, s, v;
 
-    if (! valid)
-    {
-        /* we want a color that matches the current theme
-         * selected color of a GtkEntry should be reasonable */
-        GtkStyleContext * style = gtk_style_context_new ();
-        GtkWidgetPath * path = gtk_widget_path_new ();
-        gtk_widget_path_append_type (path, GTK_TYPE_ENTRY);
-        gtk_style_context_set_path (style, path);
-        gtk_widget_path_free (path);
-        gtk_style_context_get_background_color (style, GTK_STATE_FLAG_SELECTED, & c);
-        g_object_unref (style);
-        valid = TRUE;
-    }
-
-    rgb_to_hsv (c.red, c.green, c.blue, & h, & s, & v);
+    rgb_to_hsv (c->red / 65535.0, c->green / 65535.0, c->blue / 65535.0, & h, & s, & v);
 
     if (s < 0.1) /* monochrome theme? use blue instead */
     {
@@ -185,9 +170,8 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
         s = 0.75;
     }
 
-    n = i / (gfloat) (bands - 1);
-    s = 1 - 0.9 * n;
-    v = 0.75 + 0.25 * n;
+    s = 1 - 0.9 * i / (bands - 1);
+    v = 0.75 + 0.25 * i / (bands - 1);
 
     hsv_to_rgb (h, s, v, r, g, b);
 }
@@ -213,8 +197,8 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
     GdkColor * c = (gtk_widget_get_style (area))->bg;
     GtkAllocation alloc;
     gtk_widget_get_allocation (area, & alloc);
-    gint i;
-    gfloat base_s = (height / 40);
+    int i;
+    float base_s = (height / 40);
 
     for (i = 1; i < 41; i++)
     {
@@ -228,16 +212,15 @@ static void draw_grid (GtkWidget * area, cairo_t * cr)
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
-    gfloat base_s = (height / 40);
-
-    for (gint i = 0; i <= bands; i++)
+    for (int i = 0; i < bands; i++)
     {
-        gint x = ((width / bands) * i) + 2;
-        gfloat r, g, b;
+        int x = ((width / bands) * i) + 2;
+        float r, g, b;
 
-        get_color (i, & r, & g, & b);
+        get_color (widget, i, & r, & g, & b);
         cairo_set_source_rgb (cr, r, g, b);
-        cairo_rectangle (cr, x + 1, height - (bars[i] * base_s), (width / bands) - 1, (bars[i] * base_s));
+        cairo_rectangle (cr, x + 1, height - (bars[i] * height / 40),
+         (width / bands) - 1, (bars[i] * height / 40));
         cairo_fill (cr);
     }
 }
@@ -249,14 +232,15 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
     gtk_widget_queue_draw(widget);
 
     bands = width / 10;
-    bands = CLAMP(bands, 12, MAX_BANDS);
+    bands = aud::clamp(bands, 12, MAX_BANDS);
     calculate_xscale ();
 
     return TRUE;
 }
 
-static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)
+static gboolean draw_event (GtkWidget * widget)
 {
+    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
 
     draw_background (widget, cr);
     draw_visualizer (widget, cr);
@@ -264,28 +248,29 @@ static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)
     draw_grid (widget, cr);
 #endif
 
+    cairo_destroy (cr);
     return TRUE;
 }
 
 static gboolean destroy_event (void)
 {
     aud_vis_func_remove ((VisFunc) render_cb);
-    spect_widget = NULL;
+    spect_widget = nullptr;
     return TRUE;
 }
 
-static /* GtkWidget * */ gpointer get_widget(void)
+static /* GtkWidget * */ void * get_widget(void)
 {
     GtkWidget *area = gtk_drawing_area_new();
     spect_widget = area;
 
-    g_signal_connect(area, "draw", (GCallback) draw_event, NULL);
-    g_signal_connect(area, "configure-event", (GCallback) configure_event, NULL);
-    g_signal_connect(area, "destroy", (GCallback) destroy_event, NULL);
+    g_signal_connect(area, "expose-event", (GCallback) draw_event, nullptr);
+    g_signal_connect(area, "configure-event", (GCallback) configure_event, nullptr);
+    g_signal_connect(area, "destroy", (GCallback) destroy_event, nullptr);
 
     aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) render_cb);
 
-    GtkWidget * frame = gtk_frame_new (NULL);
+    GtkWidget * frame = gtk_frame_new (nullptr);
     gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
     gtk_container_add ((GtkContainer *) frame, area);
     return frame;
@@ -293,7 +278,7 @@ static /* GtkWidget * */ gpointer get_widget(void)
 
 #define AUD_PLUGIN_NAME        N_("Spectrum Analyzer")
 #define AUD_VIS_GET_WIDGET     get_widget
-#define AUD_VIS_CLEAR          NULL
+#define AUD_VIS_CLEAR          nullptr
 
 #define AUD_DECLARE_VIS
 #include <libaudcore/plugin-declare.h>

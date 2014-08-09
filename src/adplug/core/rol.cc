@@ -68,7 +68,7 @@ CPlayer *CrolPlayer::factory(Copl *newopl)
 //---------------------------------------------------------
 CrolPlayer::CrolPlayer(Copl *newopl)
 :  CPlayer         ( newopl )
-  ,rol_header      ( NULL )
+  ,rol_header      ( nullptr )
   ,mNextTempoEvent ( 0 )
   ,mCurrTick       ( 0 )
   ,mTimeOfLastNote ( 0 )

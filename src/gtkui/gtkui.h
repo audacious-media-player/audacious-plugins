@@ -21,9 +21,9 @@
 #define GTKUI_H
 
 #include <stdint.h>
-
 #include <gtk/gtk.h>
-#include <libaudcore/core.h>
+
+struct PluginPreferences;
 
 /* menus.c */
 GtkWidget * make_menu_bar (GtkAccelGroup * accel);

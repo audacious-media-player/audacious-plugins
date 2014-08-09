@@ -46,9 +46,9 @@ static void xs_get_song_tuple_info(Tuple &pResult, xs_tuneinfo_t *pInfo, int sub
 /*
  * Initialization functions
  */
-bool_t xs_init(void)
+bool xs_init(void)
 {
-    bool_t success;
+    bool success;
 
     /* Initialize and get configuration */
     xs_init_configuration();
@@ -76,7 +76,7 @@ bool_t xs_init(void)
     pthread_mutex_unlock(&xs_cfg_mutex);
 
     if (! success)
-        return FALSE;
+        return false;
 
     /* Initialize song-length database */
     xs_songlen_close();
@@ -90,7 +90,7 @@ bool_t xs_init(void)
         xs_error("Error initializing STIL database!\n");
     }
 
-    return TRUE;
+    return true;
 }
 
 
@@ -100,7 +100,7 @@ bool_t xs_init(void)
 void xs_close(void)
 {
     xs_tuneinfo_free(xs_status.tuneInfo);
-    xs_status.tuneInfo = NULL;
+    xs_status.tuneInfo = nullptr;
 
     xs_sidplayfp_delete (& xs_status);
     xs_sidplayfp_close (& xs_status);
@@ -113,14 +113,14 @@ void xs_close(void)
 /*
  * Start playing the given file
  */
-bool_t xs_play_file(const char *filename, VFSFile *file)
+bool xs_play_file(const char *filename, VFSFile *file)
 {
     xs_tuneinfo_t *tmpTune;
     int audioBufSize, bufRemaining, tmpLength, subTune = -1;
-    char *audioBuffer = NULL, *oversampleBuffer = NULL;
+    char *audioBuffer = nullptr, *oversampleBuffer = nullptr;
     Tuple tmpTuple;
 
-    uri_parse (filename, NULL, NULL, NULL, & subTune);
+    uri_parse (filename, nullptr, nullptr, nullptr, & subTune);
 
     /* Get tune information */
     pthread_mutex_lock(&xs_status_mutex);
@@ -128,7 +128,7 @@ bool_t xs_play_file(const char *filename, VFSFile *file)
     if (! (xs_status.tuneInfo = xs_sidplayfp_getinfo (filename)))
     {
         pthread_mutex_unlock(&xs_status_mutex);
-        return FALSE;
+        return false;
     }
 
     /* Initialize the tune */
@@ -136,11 +136,11 @@ bool_t xs_play_file(const char *filename, VFSFile *file)
     {
         pthread_mutex_unlock(&xs_status_mutex);
         xs_tuneinfo_free(xs_status.tuneInfo);
-        xs_status.tuneInfo = NULL;
-        return FALSE;
+        xs_status.tuneInfo = nullptr;
+        return false;
     }
 
-    bool_t error = FALSE;
+    bool error = false;
 
     /* Set general status information */
     tmpTune = xs_status.tuneInfo;
@@ -168,7 +168,7 @@ bool_t xs_play_file(const char *filename, VFSFile *file)
     /* Initialize song */
     if (!xs_sidplayfp_initsong(&xs_status)) {
         xs_error("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
-            tmpTune->sidFilename, xs_status.currSong);
+            (const char *) tmpTune->sidFilename, xs_status.currSong);
         pthread_mutex_unlock(&xs_status_mutex);
         goto xs_err_exit;
     }
@@ -232,14 +232,14 @@ DONE:
     /* Free tune information */
     xs_sidplayfp_delete(&xs_status);
     xs_tuneinfo_free(xs_status.tuneInfo);
-    xs_status.tuneInfo = NULL;
+    xs_status.tuneInfo = nullptr;
     pthread_mutex_unlock(&xs_status_mutex);
 
     /* Exit the playing thread */
     return ! error;
 
 xs_err_exit:
-    error = TRUE;
+    error = true;
     goto DONE;
 }
 
@@ -336,7 +336,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     info = xs_sidplayfp_getinfo (filename);
     pthread_mutex_unlock(&xs_status_mutex);
 
-    if (info == NULL)
+    if (info == nullptr)
         return tuple;
 
     xs_get_song_tuple_info(tuple, info, tune);
@@ -352,17 +352,17 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
 /*
  * Plugin header
  */
-static const char *xs_sid_fmts[] = { "sid", "psid", NULL };
+static const char *xs_sid_fmts[] = { "sid", "psid", nullptr };
 
 #define AUD_PLUGIN_NAME        "SID Player"
 #define AUD_PLUGIN_INIT        xs_init
 #define AUD_PLUGIN_CLEANUP     xs_close
-#define AUD_INPUT_IS_OUR_FILE  NULL
+#define AUD_INPUT_IS_OUR_FILE  nullptr
 #define AUD_INPUT_PLAY         xs_play_file
 #define AUD_INPUT_READ_TUPLE   xs_probe_for_tuple
 
 #define AUD_INPUT_EXTS         xs_sid_fmts
-#define AUD_INPUT_SUBTUNES     TRUE
+#define AUD_INPUT_SUBTUNES     true
 
 /* medium priority (slow to initialize) */
 #define AUD_INPUT_PRIORITY     5

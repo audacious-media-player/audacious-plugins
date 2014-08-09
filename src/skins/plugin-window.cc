@@ -32,13 +32,13 @@
 
 static GList * windows;
 
-static bool_t delete_cb (GtkWidget * window, GdkEvent * event, PluginHandle * plugin)
+static gboolean delete_cb (GtkWidget * window, GdkEvent * event, PluginHandle * plugin)
 {
     aud_plugin_enable (plugin, FALSE);
     return TRUE;
 }
 
-static bool_t add_dock_plugin (PluginHandle * plugin, void * unused)
+static bool add_dock_plugin (PluginHandle * plugin, void * unused)
 {
     GtkWidget * widget = (GtkWidget *) aud_plugin_get_widget (plugin);
 
@@ -47,7 +47,6 @@ static bool_t add_dock_plugin (PluginHandle * plugin, void * unused)
         GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
         gtk_window_set_title ((GtkWindow *) window, aud_plugin_get_name (plugin));
         gtk_window_set_default_size ((GtkWindow *) window, 300, 200);
-        gtk_window_set_has_resize_grip ((GtkWindow *) window, FALSE);
         gtk_container_add ((GtkContainer *) window, widget);
 
         g_object_set_data ((GObject *) window, "skins-plugin-id", plugin);
@@ -67,7 +66,7 @@ static int find_cb (GtkWidget * window, PluginHandle * plugin)
     return (g_object_get_data ((GObject *) window, "skins-plugin-id") != plugin);
 }
 
-static bool_t remove_dock_plugin (PluginHandle * plugin, void * unused)
+static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
 {
     GList * node = g_list_find_custom (windows, plugin, (GCompareFunc) find_cb);
 
@@ -82,27 +81,27 @@ static bool_t remove_dock_plugin (PluginHandle * plugin, void * unused)
 
 void create_plugin_windows (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, add_dock_plugin, NULL);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, add_dock_plugin, NULL);
+    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, add_dock_plugin, nullptr);
+    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, add_dock_plugin, nullptr);
 
-    hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, NULL);
-    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, NULL);
+    hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
+    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
 }
 
 void show_plugin_windows (void)
 {
-    g_list_foreach (windows, (GFunc) gtk_widget_show_all, NULL);
+    g_list_foreach (windows, (GFunc) gtk_widget_show_all, nullptr);
 }
 
 void hide_plugin_windows (void)
 {
-    g_list_foreach (windows, (GFunc) gtk_widget_hide, NULL);
+    g_list_foreach (windows, (GFunc) gtk_widget_hide, nullptr);
 }
 
 void destroy_plugin_windows (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, remove_dock_plugin, NULL);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, remove_dock_plugin, NULL);
+    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, remove_dock_plugin, nullptr);
+    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, remove_dock_plugin, nullptr);
 
     hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);

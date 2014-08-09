@@ -43,17 +43,17 @@ static const char aosd_about[] =
 #define AUD_DECLARE_GENERAL
 #include <libaudcore/plugin-declare.h>
 
-aosd_cfg_t * global_config = NULL;
+aosd_cfg_t * global_config = nullptr;
 gboolean plugin_is_active = FALSE;
 
 
 /* ***************** */
 /* plug-in functions */
 
-gboolean aosd_init (void)
+bool aosd_init (void)
 {
   plugin_is_active = TRUE;
-  g_log_set_handler( NULL , G_LOG_LEVEL_WARNING , g_log_default_handler , NULL );
+  g_log_set_handler( nullptr , G_LOG_LEVEL_WARNING , g_log_default_handler , nullptr );
 
   global_config = aosd_cfg_new();
   aosd_cfg_load( global_config );
@@ -76,10 +76,10 @@ aosd_cleanup ( void )
     aosd_osd_shutdown();
     aosd_osd_cleanup();
 
-    if ( global_config != NULL )
+    if ( global_config != nullptr )
     {
       aosd_cfg_delete( global_config );
-      global_config = NULL;
+      global_config = nullptr;
     }
 
     plugin_is_active = FALSE;

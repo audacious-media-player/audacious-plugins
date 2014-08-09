@@ -30,13 +30,13 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * hslider_new (gint min, gint max, SkinPixmapId si, gint w, gint h,
- gint fx, gint fy, gint kw, gint kh, gint knx, gint kny, gint kpx, gint kpy);
-void hslider_set_frame (GtkWidget * hslider, gint fx, gint fy);
-void hslider_set_knob (GtkWidget * hslider, gint knx, gint kny, gint kpx, gint
+GtkWidget * hslider_new (int min, int max, SkinPixmapId si, int w, int h,
+ int fx, int fy, int kw, int kh, int knx, int kny, int kpx, int kpy);
+void hslider_set_frame (GtkWidget * hslider, int fx, int fy);
+void hslider_set_knob (GtkWidget * hslider, int knx, int kny, int kpx, int
  kpy);
-gint hslider_get_pos (GtkWidget * hslider);
-void hslider_set_pos (GtkWidget * hslider, gint pos);
+int hslider_get_pos (GtkWidget * hslider);
+void hslider_set_pos (GtkWidget * hslider, int pos);
 gboolean hslider_get_pressed (GtkWidget * hslider);
 void hslider_set_pressed (GtkWidget * hslider, gboolean pressed);
 void hslider_on_motion (GtkWidget * hslider, void (* callback) (void));

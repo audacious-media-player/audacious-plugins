@@ -22,6 +22,16 @@
 
 #include <QAbstractTableModel>
 
+enum {
+    PL_COL_NOW_PLAYING,
+    PL_COL_TITLE,
+    PL_COL_ARTIST,
+    PL_COL_ALBUM,
+    PL_COL_QUEUED,
+    PL_COL_LENGTH,
+    PL_COLS
+};
+
 class PlaylistModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -37,9 +47,11 @@ public:
     bool removeRows (int row, int count, const QModelIndex & parent = QModelIndex ());
     void updateRows (int row, int count);
     void updateRow (int row);
+    QString getQueued (int row) const;
     int playlist () const;
-    int uniqueId;
-    int rows;
+    int uniqueId () const;
+    int m_uniqueId;
+    int m_rows;
 };
 
 #endif

@@ -311,8 +311,8 @@ int Nes_Dmc::count_reads( nes_time_t time, nes_time_t* last_read ) const
 	{
 		*last_read = first_read + (count - 1) * (period * 8) + 1;
 		check( *last_read <= time );
-		check( count == count_reads( *last_read, NULL ) );
-		check( count - 1 == count_reads( *last_read - 1, NULL ) );
+		check( count == count_reads( *last_read, nullptr ) );
+		check( count - 1 == count_reads( *last_read - 1, nullptr ) );
 	}
 
 	return count;

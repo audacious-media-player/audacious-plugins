@@ -31,7 +31,7 @@ static blargg_err_t log_err(blargg_err_t err)
 static void log_warning(Music_Emu * emu)
 {
     const char *str = emu->warning();
-    if (str != NULL)
+    if (str != nullptr)
         fprintf (stderr, "console: %s\n", str);
 }
 
@@ -47,7 +47,7 @@ public:
     gme_type_t m_type;
 
     // Parses path and identifies file type
-    ConsoleFileHandler(const char* path, VFSFile *fd = NULL);
+    ConsoleFileHandler(const char* path, VFSFile *fd = nullptr);
 
     // Creates emulator and returns 0. If this wasn't a music file or
     // emulator couldn't be created, returns 1.
@@ -64,18 +64,18 @@ private:
 
 ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
 {
-    m_emu   = NULL;
+    m_emu   = nullptr;
     m_type  = 0;
     m_track = -1;
 
     const char * sub;
-    uri_parse (path, NULL, NULL, & sub, & m_track);
+    uri_parse (path, nullptr, nullptr, & sub, & m_track);
     m_path = String (str_copy (path, sub - path));
 
     m_track -= 1;
 
     // open vfs
-    if (fd != NULL)
+    if (fd != nullptr)
         vfs_in.reset(fd);
     else if (log_err(vfs_in.open(m_path)))
         return;
@@ -108,7 +108,7 @@ int ConsoleFileHandler::load(int sample_rate)
         return 1;
 
     m_emu = gme_new_emu(m_type, sample_rate);
-    if (m_emu == NULL)
+    if (m_emu == nullptr)
     {
         log_err("Out of memory allocating emulator engine. Fatal error.");
         return 1;
@@ -129,7 +129,7 @@ int ConsoleFileHandler::load(int sample_rate)
     // load .m3u from same directory( replace/add extension with ".m3u")
     char *m3u_path = g_strdup(m_path);
     char *ext = strrchr(m3u_path, '.');
-    if (ext == NULL)
+    if (ext == nullptr)
     {
         ext = g_strdup_printf("%s.m3u", m3u_path);
         g_free(m3u_path);
@@ -166,7 +166,7 @@ static Tuple get_track_ti(const char *path, const track_info_t *info, const int 
         tuple.set_int (FIELD_SUBSONG_NUM, info->track_count);
     }
     else
-        tuple.set_subtunes (info->track_count, NULL);
+        tuple.set_subtunes (info->track_count, nullptr);
 
     int length = info->length;
     if (length <= 0)
@@ -197,7 +197,7 @@ Tuple console_probe_for_tuple(const char *filename, VFSFile *fd)
     return Tuple ();
 }
 
-bool_t console_play(const char *filename, VFSFile *file)
+bool console_play(const char *filename, VFSFile *file)
 {
     int length, sample_rate;
     track_info_t info;
@@ -205,7 +205,7 @@ bool_t console_play(const char *filename, VFSFile *file)
     // identify file
     ConsoleFileHandler fh(filename);
     if (!fh.m_type)
-        return FALSE;
+        return false;
 
     if (fh.m_track < 0)
         fh.m_track = 0;
@@ -221,7 +221,7 @@ bool_t console_play(const char *filename, VFSFile *file)
 
     // create emulator and load file
     if (fh.load(sample_rate))
-        return FALSE;
+        return false;
 
     // stereo echo depth
     gme_set_stereo_depth(fh.m_emu, 1.0 / 100 * audcfg.echo);
@@ -259,12 +259,12 @@ bool_t console_play(const char *filename, VFSFile *file)
 
     // start track
     if (log_err(fh.m_emu->start_track(fh.m_track)))
-        return FALSE;
+        return false;
 
     log_warning(fh.m_emu);
 
     if (!aud_input_open_audio(FMT_S16_NE, sample_rate, 2))
-        return FALSE;
+        return false;
 
     // set fade time
     if (length <= 0)
@@ -292,5 +292,5 @@ bool_t console_play(const char *filename, VFSFile *file)
             break;
     }
 
-    return TRUE;
+    return true;
 }

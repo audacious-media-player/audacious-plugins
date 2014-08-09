@@ -7,7 +7,7 @@ static const char * fmts[] =
       "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
       "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
       "sng", "wlf", "xad", "xsm",
-      NULL };
+      nullptr };
 
 #define AUD_PLUGIN_NAME        N_("AdPlug (AdLib Player)")
 #define AUD_PLUGIN_INIT        adplug_init

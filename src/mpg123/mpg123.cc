@@ -45,13 +45,10 @@ static const char * const mpg123_defaults[] = {
 static const PreferencesWidget mpg123_widgets[] = {
 	WidgetLabel (N_("<b>Advanced</b>")),
 	WidgetCheck (N_("Use accurate length calculation (slow)"),
-		{VALUE_BOOLEAN, 0, "mpg123", "full_scan"})
+		WidgetBool ("mpg123", "full_scan"))
 };
 
-static const PluginPreferences mpg123_prefs = {
-	mpg123_widgets,
-	ARRAY_LEN (mpg123_widgets)
-};
+static const PluginPreferences mpg123_prefs = {{mpg123_widgets}};
 
 #define DECODE_OPTIONS (MPG123_QUIET | MPG123_GAPLESS | MPG123_SEEKBUFFER | MPG123_FUZZY)
 
@@ -71,14 +68,14 @@ static off_t replace_lseek_dummy (void * file, off_t to, int whence)
 }
 
 /** plugin glue **/
-static bool_t aud_mpg123_init (void)
+static bool aud_mpg123_init (void)
 {
 	aud_config_set_defaults ("mpg123", mpg123_defaults);
 
 	AUDDBG("initializing mpg123 library\n");
 	mpg123_init();
 
-	return TRUE;
+	return true;
 }
 
 static void
@@ -90,13 +87,10 @@ aud_mpg123_deinit(void)
 
 static void set_format (mpg123_handle * dec)
 {
-	static const int rates[] = {8000, 11025, 12000, 16000, 22050, 24000, 32000,
-	 44100, 48000};
-
 	mpg123_format_none (dec);
-	for (int i = 0; i < ARRAY_LEN (rates); i ++)
-		mpg123_format (dec, rates[i], MPG123_MONO | MPG123_STEREO,
-		 MPG123_ENC_FLOAT_32);
+
+    for (int rate : {8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000})
+        mpg123_format (dec, rate, MPG123_MONO | MPG123_STEREO, MPG123_ENC_FLOAT_32);
 }
 
 static void make_format_string (const struct mpg123_frameinfo * info, char *
@@ -106,18 +100,18 @@ static void make_format_string (const struct mpg123_frameinfo * info, char *
 	snprintf (buf, bsize, "MPEG-%s layer %d", vers[info->version], info->layer);
 }
 
-static bool_t mpg123_probe_for_fd (const char * fname, VFSFile * file)
+static bool mpg123_probe_for_fd (const char * fname, VFSFile * file)
 {
 	if (! file)
-		return FALSE;
+		return false;
 
 	/* MPG123 likes to grab WMA streams, so blacklist anything that starts with
 	 * mms://.  If there are mms:// streams out there carrying MP3, they will
 	 * just have to play in ffaudio.  --jlindgren */
 	if (! strncmp (fname, "mms://", 6))
-		return FALSE;
+		return false;
 
-	bool_t is_streaming = vfs_is_streaming (file);
+	bool is_streaming = vfs_is_streaming (file);
 
 	/* Some MP3s begin with enormous ID3 tags, which fill up the whole probe
 	 * buffer and thus hide any MP3 content.  As a workaround, assume that an
@@ -126,22 +120,22 @@ static bool_t mpg123_probe_for_fd (const char * fname, VFSFile * file)
 	{
 		char id3buf[3];
 		if (vfs_fread (id3buf, 1, 3, file) != 3)
-			return FALSE;
+			return false;
 
 		if (! memcmp (id3buf, "ID3", 3))
-			return TRUE;
+			return true;
 
 		if (vfs_fseek (file, 0, SEEK_SET) < 0)
-			return FALSE;
+			return false;
 	}
 
-	mpg123_handle * dec = mpg123_new (NULL, NULL);
+	mpg123_handle * dec = mpg123_new (nullptr, nullptr);
 	mpg123_param (dec, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
 
 	if (is_streaming)
-		mpg123_replace_reader_handle (dec, replace_read, replace_lseek_dummy, NULL);
+		mpg123_replace_reader_handle (dec, replace_read, replace_lseek_dummy, nullptr);
 	else
-		mpg123_replace_reader_handle (dec, replace_read, replace_lseek, NULL);
+		mpg123_replace_reader_handle (dec, replace_read, replace_lseek, nullptr);
 
 	set_format (dec);
 
@@ -151,7 +145,7 @@ static bool_t mpg123_probe_for_fd (const char * fname, VFSFile * file)
 ERR:
 		AUDDBG ("Probe error: %s\n", mpg123_plain_strerror (res));
 		mpg123_delete (dec);
-		return FALSE;
+		return false;
 	}
 
 	if (! is_streaming && aud_get_bool ("mpg123", "full_scan") && mpg123_scan (dec) < 0)
@@ -181,7 +175,7 @@ RETRY:;
 	AUDDBG ("Accepted as %s: %s.\n", str, fname);
 
 	mpg123_delete (dec);
-	return TRUE;
+	return true;
 }
 
 static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
@@ -189,8 +183,8 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	if (! file)
 		return Tuple ();
 
-	bool_t stream = vfs_is_streaming (file);
-	mpg123_handle * decoder = mpg123_new (NULL, NULL);
+	bool stream = vfs_is_streaming (file);
+	mpg123_handle * decoder = mpg123_new (nullptr, nullptr);
 	int result;
 	long rate;
 	int channels, encoding;
@@ -200,9 +194,9 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	mpg123_param (decoder, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
 
 	if (stream)
-		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek_dummy, NULL);
+		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek_dummy, nullptr);
 	else
-		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, NULL);
+		mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, nullptr);
 
 	if ((result = mpg123_open_handle (decoder, file)) < 0
 	 || (! stream && aud_get_bool ("mpg123", "full_scan") && (result = mpg123_scan (decoder)) < 0)
@@ -238,10 +232,10 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	mpg123_delete (decoder);
 
 	if (! stream && ! vfs_fseek (file, 0, SEEK_SET))
-		tag_tuple_read (tuple, file);
+		audtag::tuple_read (tuple, file);
 
 	if (stream)
-		tag_update_stream_metadata (tuple, file);
+		tuple.fetch_stream_info (file);
 
 	return tuple;
 }
@@ -252,7 +246,7 @@ typedef struct {
 	long rate;
 	int channels;
 	int encoding;
-	bool_t stream;
+	bool stream;
 	Tuple tu;
 } MPG123PlaybackContext;
 
@@ -261,9 +255,9 @@ static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
 	fprintf (stderr, "mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
 }
 
-static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
+static bool mpg123_playback_worker (const char * filename, VFSFile * file)
 {
-	bool_t error = FALSE;
+	bool error = false;
 	MPG123PlaybackContext ctx;
 	int ret;
 	int bitrate = 0, bitrate_sum = 0, bitrate_count = 0;
@@ -281,13 +275,13 @@ static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
 	ctx.stream = vfs_is_streaming (file);
 	ctx.tu = ctx.stream ? aud_input_get_tuple () : Tuple ();
 
-	ctx.decoder = mpg123_new (NULL, NULL);
+	ctx.decoder = mpg123_new (nullptr, nullptr);
 	mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
 
 	if (ctx.stream)
-		mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek_dummy, NULL);
+		mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek_dummy, nullptr);
 	else
-		mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek, NULL);
+		mpg123_replace_reader_handle (ctx.decoder, replace_read, replace_lseek, nullptr);
 
 	set_format (ctx.decoder);
 
@@ -298,7 +292,7 @@ static bool_t mpg123_playback_worker (const char * filename, VFSFile * file)
 	{
 OPEN_ERROR:
 		print_mpg123_error (filename, ctx.decoder);
-		error = TRUE;
+		error = true;
 		goto cleanup;
 	}
 
@@ -326,7 +320,7 @@ GET_FORMAT:
 
 	if (! aud_input_open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
 	{
-		error = TRUE;
+		error = true;
 		goto cleanup;
 	}
 
@@ -356,7 +350,7 @@ GET_FORMAT:
 			bitrate_updated = aud_input_written_time ();
 		}
 
-		if (ctx.tu && tag_update_stream_metadata (ctx.tu, file))
+		if (ctx.tu && ctx.tu.fetch_stream_info (file))
 			aud_input_set_tuple (ctx.tu.ref ());
 
 		if (! outbuf_size && (ret = mpg123_read (ctx.decoder,
@@ -369,7 +363,7 @@ GET_FORMAT:
 
 			if (++ error_count >= 10)
 			{
-				error = TRUE;
+				error = true;
 				break;
 			}
 		}
@@ -387,25 +381,25 @@ cleanup:
 	return ! error;
 }
 
-static bool_t mpg123_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
+static bool mpg123_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
 {
 	if (! handle)
-		return FALSE;
+		return false;
 
-	return tag_tuple_write (tuple, handle, TAG_TYPE_ID3V2);
+    return audtag::tuple_write (tuple, handle, audtag::TagType::ID3v2);
 }
 
-static bool_t mpg123_get_image (const char * filename, VFSFile * handle,
+static bool mpg123_get_image (const char * filename, VFSFile * handle,
  void * * data, int64_t * length)
 {
 	if (! handle || vfs_is_streaming (handle))
-		return FALSE;
+		return false;
 
-	return tag_image_read (handle, data, length);
+	return audtag::image_read (handle, data, length);
 }
 
 /** plugin description header **/
-static const char *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", NULL };
+static const char *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", nullptr };
 
 #define AUD_PLUGIN_NAME        N_("MPG123 Plugin")
 #define AUD_PLUGIN_INIT        aud_mpg123_init

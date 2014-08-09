@@ -23,23 +23,24 @@
 
 #include <gtk/gtk.h>
 
-#include <libaudcore/core.h>
+struct PluginPreferences;
 
 typedef struct {
-    gint player_x, player_y;
-    gint equalizer_x, equalizer_y;
-    gint playlist_x, playlist_y;
-    gint playlist_width, playlist_height;
-    gboolean autoscroll;
-    gboolean analyzer_peaks;
-    gboolean twoway_scroll;
-    gint vis_type;
-    gint analyzer_mode, analyzer_type;
-    gint scope_mode;
-    gint voiceprint_mode;
-    gint vu_mode;
-    gint analyzer_falloff, peaks_falloff;
-    gboolean mainwin_use_bitmapfont;
+    int player_x, player_y;
+    int equalizer_x, equalizer_y;
+    int playlist_x, playlist_y;
+    int playlist_width, playlist_height;
+    int scale;
+    bool autoscroll;
+    bool analyzer_peaks;
+    bool twoway_scroll;
+    int vis_type;
+    int analyzer_mode, analyzer_type;
+    int scope_mode;
+    int voiceprint_mode;
+    int vu_mode;
+    int analyzer_falloff, peaks_falloff;
+    bool mainwin_use_bitmapfont;
 } skins_cfg_t;
 
 extern skins_cfg_t config;
@@ -49,10 +50,10 @@ void skins_cfg_save();
 
 void on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
-                                gint x, gint y,
+                                int x, int y,
                                 GtkSelectionData * selection_data,
-                                guint info, guint time,
-                                gpointer user_data);
+                                unsigned info, unsigned time,
+                                void * user_data);
 
 extern const PluginPreferences skins_prefs;
 

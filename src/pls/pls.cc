@@ -32,7 +32,7 @@
 
 typedef struct {
     const char * filename;
-    bool_t valid_heading;
+    bool valid_heading;
     Index<PlaylistAddItem> & items;
 } PLSLoadState;
 
@@ -55,12 +55,12 @@ void pls_handle_entry (const char * key, const char * value, void * data)
         state->items.append ({String (uri)});
 }
 
-static bool_t playlist_load_pls (const char * filename, VFSFile * file,
+static bool playlist_load_pls (const char * filename, VFSFile * file,
  String & title, Index<PlaylistAddItem> & items)
 {
     PLSLoadState state = {
         filename,
-        FALSE,
+        false,
         items
     };
 
@@ -69,7 +69,7 @@ static bool_t playlist_load_pls (const char * filename, VFSFile * file,
     return (items.len () > 0);
 }
 
-static bool_t playlist_save_pls (const char * filename, VFSFile * file,
+static bool playlist_save_pls (const char * filename, VFSFile * file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     int entries = items.len ();
@@ -84,10 +84,10 @@ static bool_t playlist_save_pls (const char * filename, VFSFile * file,
         vfs_fprintf (file, "File%d=%s\n", 1 + count, local ? local : uri);
     }
 
-    return TRUE;
+    return true;
 }
 
-static const char * const pls_exts[] = {"pls", NULL};
+static const char * const pls_exts[] = {"pls", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("PLS Playlists")
 #define AUD_PLAYLIST_EXTS      pls_exts

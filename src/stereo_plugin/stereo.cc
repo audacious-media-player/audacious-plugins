@@ -7,7 +7,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-static bool_t init (void);
+static bool init (void);
 
 static void stereo_start (int * channels, int * rate);
 static void stereo_process (float * * data, int * samples);
@@ -19,19 +19,16 @@ static const char stereo_about[] =
 
 static const char * const stereo_defaults[] = {
  "intensity", "2.5",
- NULL};
+ nullptr};
 
 static const PreferencesWidget stereo_widgets[] = {
     WidgetLabel (N_("<b>Extra Stereo</b>")),
     WidgetSpin (N_("Intensity:"),
-        {VALUE_FLOAT, 0, "extra_stereo", "intensity"},
+        WidgetFloat ("extra_stereo", "intensity"),
         {0, 10, 0.1})
 };
 
-static const PluginPreferences stereo_prefs = {
-    stereo_widgets,
-    ARRAY_LEN (stereo_widgets)
-};
+static const PluginPreferences stereo_prefs = {{stereo_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Extra Stereo")
 #define AUD_PLUGIN_ABOUT       stereo_about
@@ -40,15 +37,15 @@ static const PluginPreferences stereo_prefs = {
 #define AUD_EFFECT_START       stereo_start
 #define AUD_EFFECT_PROCESS     stereo_process
 #define AUD_EFFECT_FINISH      stereo_finish
-#define AUD_EFFECT_SAME_FMT    TRUE
+#define AUD_EFFECT_SAME_FMT    true
 
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>
 
-static bool_t init (void)
+static bool init (void)
 {
     aud_config_set_defaults ("extra_stereo", stereo_defaults);
-    return TRUE;
+    return true;
 }
 
 static int stereo_channels;

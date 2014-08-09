@@ -52,7 +52,7 @@ void reset_info(callback_info *info)
     info->write_pointer = info->output_buffer;
 }
 
-bool_t read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
+bool read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
 {
     FLAC__StreamDecoderState ret;
 
@@ -62,7 +62,7 @@ bool_t read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
     if (FLAC__stream_decoder_reset(decoder) == false)
     {
         FLACNG_ERROR("Could not reset the decoder!\n");
-        return FALSE;
+        return false;
     }
 
     /* Try to decode the metadata */
@@ -72,8 +72,8 @@ bool_t read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
         AUDDBG("Could not read the metadata: %s(%d)!\n",
             FLAC__StreamDecoderStateString[ret], ret);
         reset_info(info);
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }

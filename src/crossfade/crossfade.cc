@@ -39,14 +39,14 @@ enum
 
 static const char * const crossfade_defaults[] = {
  "length", "3",
- NULL};
+ nullptr};
 
 static char state = STATE_OFF;
 static int current_channels = 0, current_rate = 0;
-static float * buffer = NULL;
+static float * buffer = nullptr;
 static int buffer_size = 0, buffer_filled = 0;
 static int prebuffer_filled = 0;
-static float * output = NULL;
+static float * output = nullptr;
 static int output_size = 0;
 
 static void reset (void)
@@ -55,19 +55,19 @@ static void reset (void)
     current_channels = 0;
     current_rate = 0;
     g_free (buffer);
-    buffer = NULL;
+    buffer = nullptr;
     buffer_size = 0;
     buffer_filled = 0;
     prebuffer_filled = 0;
     g_free (output);
-    output = NULL;
+    output = nullptr;
     output_size = 0;
 }
 
-static bool_t crossfade_init (void)
+static bool crossfade_init (void)
 {
     aud_config_set_defaults ("crossfade", crossfade_defaults);
-    return TRUE;
+    return true;
 }
 
 static void crossfade_cleanup (void)
@@ -134,7 +134,7 @@ static void add_data (float * data, int length)
 
         if (prebuffer_filled < full)
         {
-            int copy = MIN (length, full - prebuffer_filled);
+            int copy = aud::min (length, full - prebuffer_filled);
             float a = (float) prebuffer_filled / full;
             float b = (float) (prebuffer_filled + copy) / full;
 
@@ -158,7 +158,7 @@ static void add_data (float * data, int length)
 
         if (prebuffer_filled < buffer_filled)
         {
-            int copy = MIN (length, buffer_filled - prebuffer_filled);
+            int copy = aud::min (length, buffer_filled - prebuffer_filled);
 
             mix (buffer + prebuffer_filled, data, copy);
             prebuffer_filled += copy;
@@ -197,7 +197,7 @@ static void return_data (float * * data, int * length)
     /* only return if we have at least 1/2 second -- this reduces memmove's */
     if (state != STATE_RUNNING || copy < current_channels * (current_rate / 2))
     {
-        * data = NULL;
+        * data = nullptr;
         * length = 0;
         return;
     }
@@ -260,14 +260,11 @@ static const char crossfade_about[] =
 static const PreferencesWidget crossfade_widgets[] = {
     WidgetLabel (N_("<b>Crossfade</b>")),
     WidgetSpin (N_("Overlap:"),
-        {VALUE_INT, 0, "crossfade", "length"},
+        WidgetInt ("crossfade", "length"),
         {1, 10, 1, N_("seconds")})
 };
 
-static const PluginPreferences crossfade_prefs = {
-    crossfade_widgets,
-    ARRAY_LEN (crossfade_widgets)
-};
+static const PluginPreferences crossfade_prefs = {{crossfade_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Crossfade")
 #define AUD_PLUGIN_ABOUT       crossfade_about
@@ -280,7 +277,7 @@ static const PluginPreferences crossfade_prefs = {
 #define AUD_EFFECT_FINISH      crossfade_finish
 #define AUD_EFFECT_ADJ_DELAY   crossfade_adjust_delay
 #define AUD_EFFECT_ORDER       5  /* must be after resample and mixer */
-#define AUD_EFFECT_SAME_FMT    TRUE
+#define AUD_EFFECT_SAME_FMT    true
 
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>

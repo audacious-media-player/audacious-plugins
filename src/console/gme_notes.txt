@@ -84,7 +84,7 @@ Error handling
 --------------
 Functions which can fail have a return type of gme_err_t, which is a
 pointer to an error string (const char*). If a function is successful it
-returns NULL. Errors that you can easily avoid are checked with debug
+returns nullptr. Errors that you can easily avoid are checked with debug
 assertions; gme_err_t return values are only used for genuine run-time
 errors that can't be easily predicted in advance (out of memory, I/O
 errors, incompatible file data). Your code should check all error
@@ -93,7 +93,7 @@ values.
 To improve usability for C programmers, C++ programmers unfamiliar with
 exceptions, and compatibility with older C++ compilers, the library does
 *not* throw any C++ exceptions and uses malloc() instead of the standard
-operator new. This means that you *must* check for NULL when creating a
+operator new. This means that you *must* check for nullptr when creating a
 library object with the new operator.
 
 When loading a music file in the wrong emulator or trying to load a
@@ -244,7 +244,7 @@ load_file() with the path of a file:
 		// code that reads 'count' bytes into 'out' buffer
 		// and return 0 if no error
 	}
-	
+
 	gme_load_custom( music_emu, my_read, file_size, my_data );
 
 * If you must load the file data into memory yourself, you can have the
@@ -259,11 +259,11 @@ performance reasons, use Remaining_Reader:
 
 	Std_File_Reader in;
 	in.open( file_path );
-	
+
 	char header [4];
 	in.read( &header, sizeof header );
 	...
-	
+
 	Remaining_Reader rem( &header, sizeof header, &in );
 	music_emu->load( rem );
 

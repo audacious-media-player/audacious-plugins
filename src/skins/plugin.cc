@@ -22,6 +22,7 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
@@ -40,9 +41,9 @@
 #include "ui_skin.h"
 #include "view.h"
 
-gchar * skins_paths[SKINS_PATH_COUNT];
+char * skins_paths[SKINS_PATH_COUNT];
 
-static gboolean skins_init (void);
+static bool skins_init (void);
 static void skins_cleanup (void);
 
 #define AUD_PLUGIN_NAME     N_("Winamp Classic Interface")
@@ -68,14 +69,14 @@ static void skins_cleanup (void);
 #define AUD_DECLARE_IFACE
 #include <libaudcore/plugin-declare.h>
 
-static gint update_source;
+static int update_source;
 
 static void skins_free_paths(void) {
     int i;
 
     for (i = 0; i < SKINS_PATH_COUNT; i++)  {
         g_free(skins_paths[i]);
-        skins_paths[i] = NULL;
+        skins_paths[i] = nullptr;
     }
 }
 
@@ -83,17 +84,17 @@ static void skins_init_paths() {
     char *xdg_data_home;
     char *xdg_cache_home;
 
-    xdg_data_home = (getenv("XDG_DATA_HOME") == NULL
-        ? g_build_filename(g_get_home_dir(), ".local", "share", NULL)
+    xdg_data_home = (getenv("XDG_DATA_HOME") == nullptr
+        ? g_build_filename(g_get_home_dir(), ".local", "share", nullptr)
         : g_strdup(getenv("XDG_DATA_HOME")));
-    xdg_cache_home = (getenv("XDG_CACHE_HOME") == NULL
-        ? g_build_filename(g_get_home_dir(), ".cache", NULL)
+    xdg_cache_home = (getenv("XDG_CACHE_HOME") == nullptr
+        ? g_build_filename(g_get_home_dir(), ".cache", nullptr)
         : g_strdup(getenv("XDG_CACHE_HOME")));
 
     skins_paths[SKINS_PATH_USER_SKIN_DIR] =
-        g_build_filename(xdg_data_home, "audacious", "Skins", NULL);
+        g_build_filename(xdg_data_home, "audacious", "Skins", nullptr);
     skins_paths[SKINS_PATH_SKIN_THUMB_DIR] =
-        g_build_filename(xdg_cache_home, "audacious", "thumbs", NULL);
+        g_build_filename(xdg_cache_home, "audacious", "thumbs", nullptr);
 
     g_free(xdg_data_home);
     g_free(xdg_cache_home);
@@ -105,15 +106,8 @@ static gboolean update_cb (void * unused)
     return TRUE;
 }
 
-static gboolean skins_init (void)
+static void skins_init_main (void)
 {
-    audgui_init ();
-
-    skins_init_paths();
-    skins_cfg_load();
-
-    menu_init ();
-
     init_skins (aud_get_str ("skins", "skin"));
 
     view_apply_on_top ();
@@ -121,44 +115,72 @@ static gboolean skins_init (void)
 
     if (aud_drct_get_playing ())
     {
-        ui_main_evlistener_playback_begin (NULL, NULL);
+        ui_main_evlistener_playback_begin (nullptr, nullptr);
         if (aud_drct_get_paused ())
-            ui_main_evlistener_playback_pause (NULL, NULL);
+            ui_main_evlistener_playback_pause (nullptr, nullptr);
     }
     else
         mainwin_update_song_info ();
 
-    update_source = g_timeout_add (250, update_cb, NULL);
+    update_source = g_timeout_add (250, update_cb, nullptr);
+}
+
+static bool skins_init (void)
+{
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
+    audgui_init ();
+
+    skins_cfg_load ();
+    skins_init_paths ();
+
+    menu_init ();
+    skins_init_main ();
 
     create_plugin_windows ();
 
-    return TRUE;
+    return true;
 }
 
-static void skins_cleanup (void)
+static void skins_cleanup_main (void)
 {
-    destroy_plugin_windows ();
-
     mainwin_unhook ();
     playlistwin_unhook ();
     g_source_remove (update_source);
 
-    skins_cfg_save();
-
-    cleanup_skins();
-    skins_free_paths();
+    cleanup_skins ();
 
     eq_preset_browser_cleanup ();
     eq_preset_list_cleanup ();
+}
 
+static void skins_cleanup (void)
+{
+    skins_cfg_save ();
+
+    destroy_plugin_windows ();
+
+    skins_cleanup_main ();
     menu_cleanup ();
+
+    skins_free_paths();
 
     audgui_cleanup ();
 }
 
-bool_t handle_window_close (void)
+void skins_restart (void)
 {
-    bool_t handled = FALSE;
+    skins_cleanup_main ();
+    skins_init_main ();
+
+    if (aud_ui_is_shown ())
+        view_show_player (true);
+}
+
+gboolean handle_window_close (void)
+{
+    gboolean handled = FALSE;
     hook_call ("window close", & handled);
 
     if (! handled)

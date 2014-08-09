@@ -53,16 +53,16 @@ enum {
 
 typedef struct {
     GtkWidget * window;
-    gint * x, * y;
-    gint w, h;
+    int * x, * y;
+    int w, h;
     gboolean main;
     gboolean docked;
 } DockWindow;
 
 static GSList * windows;
-static gint last_x, last_y;
+static int last_x, last_y;
 
-static inline gint least_abs (gint a, gint b)
+static inline int least_abs (int a, int b)
 {
     return (abs (a) < abs (b)) ? a : b;
 }
@@ -76,10 +76,10 @@ static DockWindow * find_window (GSList * list, GtkWidget * window)
             return dw;
     }
 
-    return NULL;
+    return nullptr;
 }
 
-void dock_add_window (GtkWidget * window, gint * x, gint * y, gint w, gint h,
+void dock_add_window (GtkWidget * window, int * x, int * y, int w, int h,
  gboolean main)
 {
     DockWindow * dw = g_slice_new0 (DockWindow);
@@ -120,7 +120,7 @@ static void clear_docked (void)
     }
 }
 
-static gboolean is_docked (DockWindow * dw, DockWindow * base, gint type)
+static gboolean is_docked (DockWindow * dw, DockWindow * base, int type)
 {
     if ((type & DOCK_TYPE_LEFT) && * dw->x + dw->w == * base->x)
         return TRUE;
@@ -134,7 +134,7 @@ static gboolean is_docked (DockWindow * dw, DockWindow * base, gint type)
     return FALSE;
 }
 
-static void find_docked (DockWindow * base, gint type)
+static void find_docked (DockWindow * base, int type)
 {
     for (GSList * node = windows; node; node = node->next)
     {
@@ -157,7 +157,7 @@ static void invert_docked (void)
     }
 }
 
-void dock_set_size (GtkWidget * window, gint w, gint h)
+void dock_set_size (GtkWidget * window, int w, int h)
 {
     DockWindow * base = find_window (windows, window);
     g_return_if_fail (base);
@@ -250,7 +250,7 @@ void dock_set_size (GtkWidget * window, gint w, gint h)
     base->h = h;
 }
 
-void dock_move_start (GtkWidget * window, gint x, gint y)
+void dock_move_start (GtkWidget * window, int x, int y)
 {
     DockWindow * dw = find_window (windows, window);
     g_return_if_fail (dw);
@@ -268,9 +268,9 @@ void dock_move_start (GtkWidget * window, gint x, gint y)
         find_docked (dw, DOCK_TYPE_ANY);
 }
 
-void dock_move (gint x, gint y)
+void dock_move (int x, int y)
 {
-    gint hori, vert;
+    int hori, vert;
 
     if (x == last_x && y == last_y)
         return;
@@ -303,9 +303,9 @@ void dock_move (gint x, gint y)
     vert = SNAP_DISTANCE + 1;
 
     GdkScreen * screen = gdk_screen_get_default ();
-    gint monitors = gdk_screen_get_n_monitors (screen);
+    int monitors = gdk_screen_get_n_monitors (screen);
 
-    for (gint m = 0; m < monitors; m ++)
+    for (int m = 0; m < monitors; m ++)
     {
         GdkRectangle rect;
         gdk_screen_get_monitor_geometry (screen, m, & rect);

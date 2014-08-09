@@ -4,6 +4,7 @@
 #include "blargg_source.h"
 
 #define CPU_WRITE( cpu, addr, data, time )  STATIC_CAST(Sap_Emu&,*cpu).cpu_write( addr, data )
+#define CPU_READ( cpu, addr, time )         STATIC_CAST(Sap_Emu&,*cpu).cpu_read( addr )
 
 void Sap_Emu::cpu_write( sap_addr_t addr, int data )
 {
@@ -12,15 +13,22 @@ void Sap_Emu::cpu_write( sap_addr_t addr, int data )
 		cpu_write_( addr, data );
 }
 
-#ifdef NDEBUG
-	#define CPU_READ( cpu, addr, time )     READ_LOW( addr )
-#else
-	#define CPU_READ( cpu, addr, time )     STATIC_CAST(Sap_Emu&,*cpu).cpu_read( addr )
-
 	int Sap_Emu::cpu_read( sap_addr_t addr )
 	{
-		if ( (addr & 0xF900) == 0xD000 )
+		switch ( (addr & 0xFF1F) )
+		{
+		case 0xD000:
 			debug_printf( "Unmapped read $%04X\n", addr );
+			break;
+		case 0xD014:
+			return info.ntsc ? 0xf : 1;
+		case 0xD40B:
+		case 0xD41B:
+			if ( time() > ( info.ntsc ? 262 : 312 ) * 114 )
+				return 0;
+			return time() / 228;
+		default:
+			break;
+		}
 		return mem.ram [addr];
 	}
-#endif

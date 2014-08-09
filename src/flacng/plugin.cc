@@ -31,22 +31,22 @@
 static FLAC__StreamDecoder *decoder;
 static callback_info *info;
 
-static bool_t flac_init (void)
+static bool flac_init (void)
 {
     FLAC__StreamDecoderInitStatus ret;
 
     /* Callback structure and decoder for main decoding loop */
 
-    if ((info = init_callback_info()) == NULL)
+    if ((info = init_callback_info()) == nullptr)
     {
         FLACNG_ERROR("Could not initialize the main callback structure!\n");
-        return FALSE;
+        return false;
     }
 
-    if ((decoder = FLAC__stream_decoder_new()) == NULL)
+    if ((decoder = FLAC__stream_decoder_new()) == nullptr)
     {
         FLACNG_ERROR("Could not create the main FLAC decoder instance!\n");
-        return FALSE;
+        return false;
     }
 
     if (FLAC__STREAM_DECODER_INIT_STATUS_OK != (ret = FLAC__stream_decoder_init_stream(
@@ -63,11 +63,11 @@ static bool_t flac_init (void)
     {
         FLACNG_ERROR("Could not initialize the main FLAC decoder: %s(%d)\n",
             FLAC__StreamDecoderInitStatusString[ret], ret);
-        return FALSE;
+        return false;
     }
 
     AUDDBG("Plugin initialized.\n");
-    return TRUE;
+    return true;
 }
 
 static void flac_cleanup(void)
@@ -76,16 +76,16 @@ static void flac_cleanup(void)
     clean_callback_info(info);
 }
 
-bool_t flac_is_our_fd(const char *filename, VFSFile *fd)
+bool flac_is_our_fd(const char *filename, VFSFile *fd)
 {
     AUDDBG("Probe for FLAC.\n");
 
     if (!fd)
-        return FALSE;
+        return false;
 
     char buf[4];
     if (vfs_fread (buf, 1, sizeof buf, fd) != sizeof buf)
-        return FALSE;
+        return false;
 
     return ! strncmp (buf, "fLaC", sizeof buf);
 }
@@ -120,20 +120,20 @@ static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
     }
 }
 
-static bool_t flac_play (const char * filename, VFSFile * file)
+static bool flac_play (const char * filename, VFSFile * file)
 {
     if (!file)
-        return FALSE;
+        return false;
 
-    void * play_buffer = NULL;
-    bool_t error = FALSE;
+    void * play_buffer = nullptr;
+    bool error = false;
 
     info->fd = file;
 
-    if (read_metadata(decoder, info) == FALSE)
+    if (read_metadata(decoder, info) == false)
     {
         FLACNG_ERROR("Could not prepare file for playing!\n");
-        error = TRUE;
+        error = true;
         goto ERR_NO_CLOSE;
     }
 
@@ -142,7 +142,7 @@ static bool_t flac_play (const char * filename, VFSFile * file)
     if (! aud_input_open_audio (SAMPLE_FMT (info->bits_per_sample),
         info->sample_rate, info->channels))
     {
-        error = TRUE;
+        error = true;
         goto ERR_NO_CLOSE;
     }
 
@@ -159,10 +159,10 @@ static bool_t flac_play (const char * filename, VFSFile * file)
              seek_value * info->sample_rate / 1000);
 
         /* Try to decode a single frame of audio */
-        if (FLAC__stream_decoder_process_single(decoder) == FALSE)
+        if (FLAC__stream_decoder_process_single(decoder) == false)
         {
             FLACNG_ERROR("Error while decoding!\n");
-            error = TRUE;
+            error = true;
             break;
         }
 
@@ -176,7 +176,7 @@ ERR_NO_CLOSE:
     g_free (play_buffer);
     reset_info(info);
 
-    if (FLAC__stream_decoder_flush(decoder) == FALSE)
+    if (FLAC__stream_decoder_flush(decoder) == false)
         FLACNG_ERROR("Could not flush decoder state!\n");
 
     return ! error;
@@ -187,7 +187,7 @@ static const char flac_about[] =
     "Ralf Ertzinger <ralf@skytale.net>\n\n"
     "http://www.skytale.net/projects/bmp-flac2/");
 
-static const char *flac_fmts[] = { "flac", "fla", NULL };
+static const char *flac_fmts[] = { "flac", "fla", nullptr };
 
 #define AUD_PLUGIN_NAME        N_("FLAC Decoder")
 #define AUD_PLUGIN_ABOUT       flac_about

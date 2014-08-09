@@ -26,7 +26,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-static FILE *log = NULL;
+static FILE *log = nullptr;
 
 void AdPlug_LogFile(const char *filename)
 {

@@ -26,10 +26,11 @@
  */
 
 #include "draw-compat.h"
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "ui_skinned_playstatus.h"
 
-static gint playstatus_width, playstatus_height;
+static int playstatus_width, playstatus_height;
 static PStatus playstatus_status;
 
 DRAW_FUNC_BEGIN (playstatus_draw)
@@ -70,12 +71,12 @@ void ui_skinned_playstatus_set_status (GtkWidget * playstatus, PStatus status)
     gtk_widget_queue_draw (playstatus);
 }
 
-void ui_skinned_playstatus_set_size (GtkWidget * playstatus, gint width, gint
+void ui_skinned_playstatus_set_size (GtkWidget * playstatus, int width, int
  height)
 {
     playstatus_width = width;
     playstatus_height = height;
 
-    gtk_widget_set_size_request (playstatus, width, height);
+    gtk_widget_set_size_request (playstatus, width * config.scale, height * config.scale);
     gtk_widget_queue_draw (playstatus);
 }

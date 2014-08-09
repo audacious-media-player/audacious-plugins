@@ -43,9 +43,9 @@
 
 static void si_popup_timer_start(GtkStatusIcon *);
 static void si_popup_timer_stop(GtkStatusIcon *);
-static void si_smallmenu_show(gint x, gint y, guint button, guint32 time, gpointer);
+static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, void *);
 static void si_smallmenu_recreate(GtkStatusIcon *);
-static void si_popup_hide(gpointer icon);
+static void si_popup_hide(void * icon);
 
 static PluginHandle * get_plugin_self ();
 
@@ -55,7 +55,7 @@ static const char * const si_defaults[] = {
  "disable_popup", "FALSE",
  "close_to_tray", "FALSE",
  "reverse_scroll", "FALSE",
- NULL};
+ nullptr};
 
 static gboolean plugin_active = FALSE;
 static gboolean recreate_smallmenu = FALSE;
@@ -73,8 +73,8 @@ static GtkStatusIcon *si_create(void)
         icon = gtk_status_icon_new_from_icon_name("audacious");
     else
     {
-        gchar * path = g_strdup_printf ("%s/images/audacious.png",
-         aud_get_path (AUD_PATH_DATA_DIR));
+        char * path = g_strdup_printf ("%s/images/audacious.png",
+         aud_get_path (AudPath::DataDir));
         icon = gtk_status_icon_new_from_file (path);
         g_free (path);
     }
@@ -82,7 +82,7 @@ static GtkStatusIcon *si_create(void)
     return icon;
 }
 
-static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpointer user_data)
+static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, void * user_data)
 {
     if (event->type != GDK_BUTTON_PRESS)
         return FALSE;
@@ -122,7 +122,7 @@ static gboolean si_cb_btpress(GtkStatusIcon * icon, GdkEventButton * event, gpoi
     return TRUE;
 }
 
-static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpointer user_data)
+static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, void * user_data)
 {
     switch (event->direction)
     {
@@ -166,14 +166,14 @@ static gboolean si_cb_btscroll(GtkStatusIcon * icon, GdkEventScroll * event, gpo
     return FALSE;
 }
 
-static gboolean si_popup_show(gpointer icon)
+static gboolean si_popup_show(void * icon)
 {
     GdkRectangle area;
-    gint x, y;
-    static gint count = 0;
+    int x, y;
+    static int count = 0;
 
-    audgui_get_mouse_coords (NULL, & x, & y);
-    gtk_status_icon_get_geometry ((GtkStatusIcon *) icon, NULL, & area, NULL);
+    audgui_get_mouse_coords (nullptr, & x, & y);
+    gtk_status_icon_get_geometry ((GtkStatusIcon *) icon, nullptr, & area, nullptr);
 
     if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
     {
@@ -201,7 +201,7 @@ static gboolean si_popup_show(gpointer icon)
     return TRUE;
 }
 
-static void si_popup_hide(gpointer icon)
+static void si_popup_hide(void * icon)
 {
     if (POPUP_IS_ACTIVE)
     {
@@ -210,7 +210,7 @@ static void si_popup_hide(gpointer icon)
     }
 }
 
-static void si_popup_reshow(gpointer data, gpointer icon)
+static void si_popup_reshow(void * data, void * icon)
 {
     if (POPUP_IS_ACTIVE)
     {
@@ -221,7 +221,7 @@ static void si_popup_reshow(gpointer data, gpointer icon)
 
 static void si_popup_timer_start(GtkStatusIcon * icon)
 {
-    gint timer_id = g_timeout_add(100, si_popup_show, icon);
+    int timer_id = g_timeout_add(100, si_popup_show, icon);
     g_object_set_data(G_OBJECT(icon), "timer_id", GINT_TO_POINTER(timer_id));
     g_object_set_data(G_OBJECT(icon), "timer_active", GINT_TO_POINTER(1));
 }
@@ -235,7 +235,7 @@ static void si_popup_timer_stop(GtkStatusIcon * icon)
     g_object_set_data(G_OBJECT(icon), "timer_active", GINT_TO_POINTER(0));
 }
 
-static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean keyboard_mode, GtkTooltip * tooltip, gpointer user_data)
+static gboolean si_cb_tooltip(GtkStatusIcon * icon, int x, int y, gboolean keyboard_mode, GtkTooltip * tooltip, void * user_data)
 {
     GtkWidget *menu = (GtkWidget *) g_object_get_data(G_OBJECT(icon), "smenu");
 
@@ -248,10 +248,10 @@ static gboolean si_cb_tooltip(GtkStatusIcon * icon, gint x, gint y, gboolean key
     return FALSE;
 }
 
-static void si_smallmenu_show(gint x, gint y, guint button, guint32 time, gpointer evbox)
+static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, void * evbox)
 {
     GtkWidget *si_smenu = (GtkWidget *) g_object_get_data(G_OBJECT(evbox), "smenu");
-    gtk_menu_popup(GTK_MENU(si_smenu), NULL, NULL, NULL, NULL, button, time);
+    gtk_menu_popup(GTK_MENU(si_smenu), nullptr, nullptr, nullptr, nullptr, button, time);
 }
 
 static void open_files (void)
@@ -274,7 +274,7 @@ static GtkWidget *si_smallmenu_create(void)
     };
 
     GtkWidget *si_smenu = gtk_menu_new();
-    audgui_menu_init (si_smenu, items, ARRAY_LEN (items), NULL);
+    audgui_menu_init (si_smenu, {items}, nullptr);
     return si_smenu;
 }
 
@@ -287,7 +287,7 @@ static void si_smallmenu_recreate(GtkStatusIcon * icon)
     recreate_smallmenu = FALSE;
 }
 
-static void si_window_close(gpointer data, gpointer user_data)
+static void si_window_close(void * data, void * user_data)
 {
     gboolean *handle = (gboolean*) data;
 
@@ -300,7 +300,7 @@ static void si_window_close(gpointer data, gpointer user_data)
 
 static void si_enable(gboolean enable)
 {
-    static GtkStatusIcon *si_applet = NULL;
+    static GtkStatusIcon *si_applet = nullptr;
 
     if (enable && ! si_applet)
     {
@@ -308,7 +308,7 @@ static void si_enable(gboolean enable)
 
         si_applet = si_create();
 
-        if (si_applet == NULL)
+        if (si_applet == nullptr)
         {
             g_warning("StatusIcon plugin: unable to create a status icon.\n");
             return;
@@ -318,9 +318,9 @@ static void si_enable(gboolean enable)
         g_object_set_data(G_OBJECT(si_applet), "timer_active", GINT_TO_POINTER(0));
         g_object_set_data(G_OBJECT(si_applet), "popup_active", GINT_TO_POINTER(0));
 
-        g_signal_connect(G_OBJECT(si_applet), "button-press-event", G_CALLBACK(si_cb_btpress), NULL);
-        g_signal_connect(G_OBJECT(si_applet), "scroll-event", G_CALLBACK(si_cb_btscroll), NULL);
-        g_signal_connect(G_OBJECT(si_applet), "query-tooltip", G_CALLBACK(si_cb_tooltip), NULL);
+        g_signal_connect(G_OBJECT(si_applet), "button-press-event", G_CALLBACK(si_cb_btpress), nullptr);
+        g_signal_connect(G_OBJECT(si_applet), "scroll-event", G_CALLBACK(si_cb_btscroll), nullptr);
+        g_signal_connect(G_OBJECT(si_applet), "query-tooltip", G_CALLBACK(si_cb_tooltip), nullptr);
 
         gtk_status_icon_set_has_tooltip(si_applet, TRUE);
         gtk_status_icon_set_visible(si_applet, TRUE);
@@ -330,7 +330,7 @@ static void si_enable(gboolean enable)
         g_object_set_data(G_OBJECT(si_applet), "smenu", si_smenu);
 
         hook_associate("title change", si_popup_reshow, si_applet);
-        hook_associate("window close", si_window_close, NULL);
+        hook_associate("window close", si_window_close, nullptr);
     }
 
     if (! enable && si_applet)
@@ -345,20 +345,23 @@ static void si_enable(gboolean enable)
         si_popup_timer_stop(si_applet);   /* just in case the timer is active */
         gtk_widget_destroy(si_smenu);
         g_object_unref(si_applet);
-        si_applet = NULL;
+        si_applet = nullptr;
 
         hook_dissociate("title change", si_popup_reshow);
         hook_dissociate("window close", si_window_close);
     }
 }
 
-static gboolean si_init (void)
+static bool si_init (void)
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     aud_config_set_defaults ("statusicon", si_defaults);
     audgui_init ();
     plugin_active = TRUE;
     si_enable(TRUE);
-    return TRUE;
+    return true;
 }
 
 void si_cleanup(void)
@@ -381,24 +384,21 @@ static const char si_about[] =
 static const PreferencesWidget si_widgets[] = {
     WidgetLabel (N_("<b>Mouse Scroll Action</b>")),
     WidgetRadio (N_("Change volume"),
-        {VALUE_INT, 0, "statusicon", "scroll_action"},
+        WidgetInt ("statusicon", "scroll_action"),
         {SI_CFG_SCROLL_ACTION_VOLUME}),
     WidgetRadio (N_("Change playing song"),
-        {VALUE_INT, 0, "statusicon", "scroll_action"},
+        WidgetInt ("statusicon", "scroll_action"),
         {SI_CFG_SCROLL_ACTION_SKIP}),
     WidgetLabel (N_("<b>Other Settings</b>")),
     WidgetCheck (N_("Disable the popup window"),
-        {VALUE_BOOLEAN, 0, "statusicon", "disable_popup"}),
+        WidgetBool ("statusicon", "disable_popup")),
     WidgetCheck (N_("Close to the system tray"),
-        {VALUE_BOOLEAN, 0, "statusicon", "close_to_tray"}),
+        WidgetBool ("statusicon", "close_to_tray")),
     WidgetCheck (N_("Advance in playlist when scrolling upward"),
-        {VALUE_BOOLEAN, 0, "statusicon", "reverse_scroll"})
+        WidgetBool ("statusicon", "reverse_scroll"))
 };
 
-static const PluginPreferences si_prefs = {
-    si_widgets,
-    ARRAY_LEN (si_widgets)
-};
+static const PluginPreferences si_prefs = {{si_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Status Icon")
 #define AUD_PLUGIN_ABOUT       si_about

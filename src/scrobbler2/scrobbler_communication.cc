@@ -18,12 +18,12 @@ typedef struct {
     String argument;
 } API_Parameter;
 
-static CURL *curlHandle = NULL;     //global handle holding cURL options
+static CURL *curlHandle = nullptr;     //global handle holding cURL options
 
-bool_t scrobbling_enabled = TRUE;
+gboolean scrobbling_enabled = TRUE;
 
 //shared variables
-gchar *received_data = NULL;   //Holds the result of the last request made to last.fm
+char *received_data = nullptr;   //Holds the result of the last request made to last.fm
 size_t received_data_size = 0; //Holds the size of the received_data buffer
 
 
@@ -33,9 +33,9 @@ static size_t result_callback (void *buffer, size_t size, size_t nmemb, void *us
 
     const size_t len = size*nmemb;
 
-    gchar *temp_data = g_renew(char, received_data, received_data_size + len + 1);
+    char *temp_data = g_renew(char, received_data, received_data_size + len + 1);
 
-    if (temp_data == NULL) {
+    if (temp_data == nullptr) {
       return 0;
     } else {
       received_data = temp_data;
@@ -76,10 +76,10 @@ static char * scrobbler_get_signature (Index<API_Parameter> & params)
  * api_sig (checksum) is always included, be it necessary or not
  * Example usage:
  *   create_message_to_lastfm("track.scrobble", 5
- *        "artist", "Artist Name", "track", "Track Name", "timestamp", time(NULL),
+ *        "artist", "Artist Name", "track", "Track Name", "timestamp", time(nullptr),
  *        "api_key", SCROBBLER_API_KEY, "sk", session_key);
  *
- * Returns NULL if an error occurrs
+ * Returns nullptr if an error occurrs
  */
 static String create_message_to_lastfm (const char * method_name, int n_args, ...)
 {
@@ -118,7 +118,7 @@ static String create_message_to_lastfm (const char * method_name, int n_args, ..
     return String (buf);
 }
 
-static bool_t send_message_to_lastfm (const char * data)
+static gboolean send_message_to_lastfm (const char * data)
 {
     AUDDBG("This message will be sent to last.fm:\n%s\n%%%%End of message%%%%\n", data);//Enter?\n", data);
     curl_easy_setopt(curlHandle, CURLOPT_POSTFIELDS, data);
@@ -135,7 +135,7 @@ static bool_t send_message_to_lastfm (const char * data)
 //returns:
 // FALSE if there was a network problem
 // TRUE otherwise (request_token must be checked)
-static bool_t scrobbler_request_token ()
+static gboolean scrobbler_request_token ()
 {
     String tokenmsg = create_message_to_lastfm ("auth.getToken", 1, "api_key", SCROBBLER_API_KEY);
 
@@ -144,13 +144,13 @@ static bool_t scrobbler_request_token ()
         return FALSE;
     }
 
-    bool_t success = TRUE;
+    gboolean success = TRUE;
     String error_code;
     String error_detail;
 
     if (read_token(error_code, error_detail) == FALSE) {
         success = FALSE;
-        if (error_code != NULL && g_strcmp0(error_code, "8")) {
+        if (error_code != nullptr && g_strcmp0(error_code, "8")) {
             //error code 8: There was an error granting the request token. Please try again later
             request_token = String();
         }
@@ -160,13 +160,13 @@ static bool_t scrobbler_request_token ()
 }
 
 
-static bool_t update_session_key() {
-    bool_t result = TRUE;
+static gboolean update_session_key() {
+    gboolean result = TRUE;
     String error_code;
     String error_detail;
 
     if (read_session_key(error_code, error_detail) == FALSE) {
-        if (error_code != NULL && (
+        if (error_code != nullptr && (
                 g_strcmp0(error_code,  "4") == 0 || //invalid token
                 g_strcmp0(error_code, "14") == 0 || //token not authorized
                 g_strcmp0(error_code, "15") == 0    //token expired
@@ -187,7 +187,7 @@ static bool_t update_session_key() {
 //returns:
 // FALSE if there was a network problem
 // TRUE otherwise (session_key must be checked)
-static bool_t scrobbler_request_session ()
+static gboolean scrobbler_request_session ()
 {
     String sessionmsg = create_message_to_lastfm ("auth.getSession", 2,
      "token", (const char *) request_token, "api_key", SCROBBLER_API_KEY);
@@ -205,8 +205,8 @@ static bool_t scrobbler_request_session ()
 // FALSE if there was a network problem.
 // TRUE otherwise (scrobbling_enabled must be checked)
 //sets scrobbling_enabled to TRUE if the session is OK
-//sets session_key to NULL if it is invalid
-static bool_t scrobbler_test_connection() {
+//sets session_key to nullptr if it is invalid
+static gboolean scrobbler_test_connection() {
 
     if (!session_key || !session_key[0]) {
         scrobbling_enabled = FALSE;
@@ -217,7 +217,7 @@ static bool_t scrobbler_test_connection() {
      "limit", "1", "api_key", SCROBBLER_API_KEY,
      "sk", (const char *) session_key);
 
-    bool_t success = send_message_to_lastfm(testmsg);
+    gboolean success = send_message_to_lastfm(testmsg);
 
     if (success == FALSE) {
         AUDDBG("Network problems. Will not scrobble any tracks.\n");
@@ -234,7 +234,7 @@ static bool_t scrobbler_test_connection() {
     if (read_authentication_test_result(error_code, error_detail) == FALSE) {
         AUDDBG("Error code: %s. Detail: %s.\n", (const char *)error_code,
          (const char *)error_detail);
-        if (error_code != NULL && (
+        if (error_code != nullptr && (
                 g_strcmp0(error_code, "4") == 0 || //error code 4: Authentication Failed - You do not have permissions to access the service
                 g_strcmp0(error_code, "9") == 0    //error code 9: Invalid session key - Please re-authenticate
             )) {
@@ -257,7 +257,7 @@ static bool_t scrobbler_test_connection() {
 }
 
 //called from scrobbler_init() @ scrobbler.c
-bool_t scrobbler_communication_init() {
+gboolean scrobbler_communication_init() {
     CURLcode curl_requests_result = curl_global_init(CURL_GLOBAL_DEFAULT);
     if (curl_requests_result != CURLE_OK) {
         AUDDBG("Could not initialize libCURL: %s.\n", curl_easy_strerror(curl_requests_result));
@@ -265,7 +265,7 @@ bool_t scrobbler_communication_init() {
     }
 
     curlHandle = curl_easy_init();
-    if (curlHandle == NULL) {
+    if (curlHandle == nullptr) {
         AUDDBG("Could not initialize libCURL.\n");
         return FALSE;
     }
@@ -285,11 +285,11 @@ bool_t scrobbler_communication_init() {
     return TRUE;
 }
 
-static void set_timestamp_to_current(gchar **line) {
+static void set_timestamp_to_current(char **line) {
     //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
-    //artist  album   title   number  length  "L"     timestamp NULL
+    //artist  album   title   number  length  "L"     timestamp nullptr
 
-    gchar **splitted_line = g_strsplit(*line, "\t", 0);
+    char **splitted_line = g_strsplit(*line, "\t", 0);
     g_free(splitted_line[6]);
     splitted_line[6] = g_strdup_printf("%" G_GINT64_FORMAT, g_get_real_time() / G_USEC_PER_SEC);
     AUDDBG("splitted line's timestamp is now: %s.\n", splitted_line[6]);
@@ -297,39 +297,39 @@ static void set_timestamp_to_current(gchar **line) {
     (*line) = g_strjoinv("\t", splitted_line);
 }
 
-static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList **lines_to_retry_ptr, gchar *queuepath) {
+static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList **lines_to_retry_ptr, char *queuepath) {
     GSList *lines_to_remove = *lines_to_remove_ptr;
     GSList *lines_to_retry = *lines_to_retry_ptr;
-    gchar *contents = NULL;
-    gchar **lines = NULL;
-    gchar **finallines = g_new (char *, 1);
+    char *contents = nullptr;
+    char **lines = nullptr;
+    char **finallines = g_new (char *, 1);
     int n_finallines;
 
-    if (lines_to_remove != NULL) {
+    if (lines_to_remove != nullptr) {
         lines_to_remove = g_slist_reverse(lines_to_remove);
     }
-    if (lines_to_retry != NULL) {
+    if (lines_to_retry != nullptr) {
         lines_to_retry = g_slist_reverse(lines_to_retry);
     }
 
 
     pthread_mutex_lock(&log_access_mutex);
 
-    gboolean success = g_file_get_contents(queuepath, &contents, NULL, NULL);
+    gboolean success = g_file_get_contents(queuepath, &contents, nullptr, nullptr);
     if (!success) {
         AUDDBG("Could not read scrobbler.log contents.\n");
     } else {
         lines = g_strsplit(contents, "\n", 0);
 
         n_finallines = 0;
-        for (int i = 0 ; lines[i] != NULL && strlen(lines[i]) > 0; i++) {
-            if (lines_to_remove != NULL && *((int *) (lines_to_remove->data)) == i) {
+        for (int i = 0 ; lines[i] != nullptr && strlen(lines[i]) > 0; i++) {
+            if (lines_to_remove != nullptr && *((int *) (lines_to_remove->data)) == i) {
                 //this line is to remove
                 lines_to_remove = g_slist_next(lines_to_remove);
             } else {
                 //keep this line
                 AUDDBG("Going to keep line %i\n", i);
-                if (lines_to_retry != NULL && *((int *) (lines_to_retry->data)) == i) {
+                if (lines_to_retry != nullptr && *((int *) (lines_to_retry->data)) == i) {
                   lines_to_retry = g_slist_next(lines_to_retry);
                   //this line will be retried with a zero timestamp
                   AUDDBG("Going to zero this line.\n");
@@ -348,10 +348,10 @@ static void delete_lines_from_scrobble_log (GSList **lines_to_remove_ptr, GSList
 
         finallines = g_renew (char *, finallines, n_finallines + 2);
         finallines[n_finallines] = g_strdup("");
-        finallines[n_finallines+1] = NULL;
+        finallines[n_finallines+1] = nullptr;
         g_free(contents);
         contents = g_strjoinv("\n", finallines);
-        success = g_file_set_contents(queuepath, contents, -1, NULL);
+        success = g_file_set_contents(queuepath, contents, -1, nullptr);
         if (!success) {
             AUDDBG("Could not write to scrobbler.log!\n");
         }
@@ -374,16 +374,16 @@ static void save_line_to_remove(GSList **lines_to_remove, int linenumber) {
 
 static void scrobble_cached_queue() {
 
-    gchar *queuepath = g_build_filename(aud_get_path(AUD_PATH_USER_DIR),"scrobbler.log", NULL);
-    gchar *contents = NULL;
+    char *queuepath = g_build_filename(aud_get_path(AudPath::UserDir),"scrobbler.log", nullptr);
+    char *contents = nullptr;
     gboolean success;
-    gchar **lines = NULL;
-    gchar **line;
-    GSList *lines_to_remove = NULL; //lines to remove because they were scrobbled (or ignored, and will not be retried)
-    GSList *lines_to_retry = NULL; //lines to retry later because they were too old TODO: or "daily scrobble limit reached"
+    char **lines = nullptr;
+    char **line;
+    GSList *lines_to_remove = nullptr; //lines to remove because they were scrobbled (or ignored, and will not be retried)
+    GSList *lines_to_retry = nullptr; //lines to retry later because they were too old TODO: or "daily scrobble limit reached"
 
     pthread_mutex_lock(&log_access_mutex);
-    success = g_file_get_contents(queuepath, &contents, NULL, NULL);
+    success = g_file_get_contents(queuepath, &contents, nullptr, nullptr);
     pthread_mutex_unlock(&log_access_mutex);
     if (!success) {
         AUDDBG("Couldn't access the queue file.\n");
@@ -391,13 +391,13 @@ static void scrobble_cached_queue() {
 
         lines = g_strsplit(contents, "\n", 0);
 
-        for (int i = 0; lines[i] != NULL && strlen(lines[i]) > 0 && scrobbling_enabled; i++) {
+        for (int i = 0; lines[i] != nullptr && strlen(lines[i]) > 0 && scrobbling_enabled; i++) {
             line = g_strsplit(lines[i], "\t", 0);
 
             //line[0] line[1] line[2] line[3] line[4] line[5] line[6]   line[7]
-            //artist  album   title   number  length  "L"     timestamp NULL
+            //artist  album   title   number  length  "L"     timestamp nullptr
 
-            if (line[0] && line[2] && (strcmp(line[5], "L") == 0) && line[6] && (line[7] == NULL))
+            if (line[0] && line[2] && (strcmp(line[5], "L") == 0) && line[6] && (line[7] == nullptr))
             {
                 String scrobblemsg = create_message_to_lastfm ("track.scrobble",
                  8, "artist", line[0], "album", line[1], "track", line[2],
@@ -408,7 +408,7 @@ static void scrobble_cached_queue() {
                 if (send_message_to_lastfm(scrobblemsg) == TRUE) {
                     String error_code;
                     String error_detail;
-                    bool_t ignored = FALSE;
+                    gboolean ignored = FALSE;
                     String ignored_code;
 
                     if (read_scrobble_result(error_code, error_detail, &ignored, ignored_code) == TRUE) {
@@ -435,7 +435,7 @@ static void scrobble_cached_queue() {
                         AUDDBG("SCROBBLE NOT OK. Error code: %s. Error detail: %s.\n",
                          (const char *)error_code, (const char *)error_detail);
 
-                        if (error_code == NULL) { //net error(?) or the answer from last.fm was not well read
+                        if (! error_code) { //net error(?) or the answer from last.fm was not well read
                             //scrobble to be retried
                         }
                         else if (g_strcmp0(error_code, "11") == 0 ||
@@ -473,10 +473,10 @@ static void scrobble_cached_queue() {
 
         delete_lines_from_scrobble_log(&lines_to_remove, &lines_to_retry, queuepath);
 
-        if (lines_to_remove != NULL) {
+        if (lines_to_remove != nullptr) {
             g_slist_free_full(lines_to_remove, g_free);
         }
-        if (lines_to_retry != NULL) {
+        if (lines_to_retry != nullptr) {
             g_slist_free_full(lines_to_retry, g_free);
         }
 
@@ -492,7 +492,7 @@ static void send_now_playing() {
 
   String error_code;
   String error_detail;
-  bool_t ignored = FALSE;
+  gboolean ignored = FALSE;
   String ignored_code;
   /*
    * now_playing_track can be set to something else while we this method is
@@ -520,7 +520,7 @@ static void send_now_playing() {
      "duration", (const char *) length_str, "api_key", SCROBBLER_API_KEY,
      "sk", (const char *) session_key);
 
-    bool_t success = send_message_to_lastfm(playingmsg);
+    gboolean success = send_message_to_lastfm(playingmsg);
 
     if (success == FALSE) {
       AUDDBG("Network problems. Could not send \"now playing\" to last.fm\n");
@@ -597,7 +597,7 @@ static void treat_permission_check_request() {
                 }
             }
         }
-    } //session_key == NULL || strlen(session_key) == 0
+    } //session_key == nullptr || strlen(session_key) == 0
 }
 
 // This is a sister function of scrobbler_request_session, using the getMobileSession
@@ -605,15 +605,15 @@ static void treat_permission_check_request() {
 //returns:
 // FALSE if there was a network problem OR a session_key was not obtained
 // TRUE if a new session_key was obtained
-static bool_t treat_migrate_config() {
+static gboolean treat_migrate_config() {
 
     String password = aud_get_str("audioscrobbler","password");
     String username = aud_get_str("audioscrobbler","username");
     if (!password[0] || !username[0])
         return FALSE;
 
-    gchar *checksumThis = g_strdup_printf("%s%s", (const char *)username, (const char *)password);
-    gchar *authToken = g_compute_checksum_for_string(G_CHECKSUM_MD5, checksumThis, -1);
+    char *checksumThis = g_strdup_printf("%s%s", (const char *)username, (const char *)password);
+    char *authToken = g_compute_checksum_for_string(G_CHECKSUM_MD5, checksumThis, -1);
 
     String sessionmsg = create_message_to_lastfm ("auth.getMobileSession", 3,
      "authToken", authToken, "username", (const char *) username,
@@ -633,7 +633,7 @@ static bool_t treat_migrate_config() {
 
 
 //Scrobbling will only be enabled after the first connection test passed
-gpointer scrobbling_thread (gpointer input_data) {
+void * scrobbling_thread (void * input_data) {
 
     while (scrobbler_running) {
 
@@ -679,7 +679,7 @@ gpointer scrobbling_thread (gpointer input_data) {
                     struct timeval curtime;
                     struct timespec timeout;
                     pthread_mutex_lock(&communication_mutex);
-                    gettimeofday(&curtime, NULL);
+                    gettimeofday(&curtime, nullptr);
                     timeout.tv_sec = curtime.tv_sec + 7;
                     timeout.tv_nsec = curtime.tv_usec * 1000;
                     pthread_cond_timedwait(&communication_signal, &communication_mutex, &timeout);
@@ -691,13 +691,13 @@ gpointer scrobbling_thread (gpointer input_data) {
 
     //reset all vars to their initial values
     g_free(received_data);
-    received_data = NULL;
+    received_data = nullptr;
     received_data_size = 0;
 
     curl_easy_cleanup(curlHandle);
-    curlHandle = NULL;
+    curlHandle = nullptr;
 
     scrobbling_enabled = TRUE;
-    return NULL;
+    return nullptr;
 }
 

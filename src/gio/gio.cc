@@ -217,7 +217,7 @@ static int gio_fseek (VFSFile * file, int64_t offset, int whence)
         return -1;
     }
 
-    g_seekable_seek (data->seekable, offset, gwhence, NULL, & error);
+    g_seekable_seek (data->seekable, offset, gwhence, nullptr, & error);
     CHECK_ERROR ("seek within", vfs_get_filename (file));
 
     return 0;
@@ -243,7 +243,7 @@ static int gio_ungetc (int c, VFSFile * file)
     return (! gio_fseek (file, -1, SEEK_CUR)) ? c : -1;
 }
 
-static bool_t gio_feof (VFSFile * file)
+static bool gio_feof (VFSFile * file)
 {
     int test = gio_getc (file);
 
@@ -259,7 +259,7 @@ static int gio_ftruncate (VFSFile * file, int64_t length)
     FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
-    g_seekable_truncate (data->seekable, length, NULL, & error);
+    g_seekable_truncate (data->seekable, length, nullptr, & error);
     CHECK_ERROR ("truncate", vfs_get_filename (file));
 
     return 0;

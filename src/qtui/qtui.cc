@@ -22,42 +22,49 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
+#include <libaudcore/runtime.h>
+
+#include <libaudqt/libaudqt.h>
 
 #include "main_window.h"
 
+static int dummy_argc = 0;
+static QApplication * qapp;
 static MainWindow * window;
 
-static bool_t init ()
+static bool init ()
 {
+    if (aud_get_mainloop_type () != MainloopType::Qt)
+        return false;
+
+    qapp = new QApplication (dummy_argc, 0);
+    window = new MainWindow;
+
     return true;
 }
 
 static void cleanup ()
 {
+    delete window;
+    window = nullptr;
 
+    delete qapp;
+    qapp = nullptr;
 }
 
 static void run ()
 {
-    int dummy_argc = 0;
-    QApplication qapp (dummy_argc, 0);
-
-    window = new MainWindow;
-    window->show ();
-
-    qapp.exec ();
-
-    delete window;
+    qapp->exec ();
 }
 
-static void show (bool_t show)
+static void show (bool show)
 {
-
+    window->setVisible (show);
 }
 
 static void quit ()
 {
-    qApp->quit();
+    qapp->quit();
 }
 
 #define AUD_PLUGIN_NAME     N_("Qt Interface")
@@ -67,6 +74,9 @@ static void quit ()
 
 #define AUD_IFACE_SHOW      show
 #define AUD_IFACE_QUIT      quit
+
+#define AUD_IFACE_SHOW_ABOUT         audqt::aboutwindow_show
+#define AUD_IFACE_HIDE_ABOUT         audqt::aboutwindow_hide
 
 #define AUD_DECLARE_IFACE
 #include <libaudcore/plugin-declare.h>

@@ -22,6 +22,7 @@
 
 #include <libaudcore/inifile.h>
 
+#include "skins_cfg.h"
 #include "ui_skin.h"
 #include "util.h"
 
@@ -35,7 +36,7 @@ typedef struct {
 } HintPair;
 
 typedef struct {
-    bool_t valid_heading;
+    gboolean valid_heading;
 } HintsLoadState;
 
 const SkinProperties skin_default_hints = SkinProperties ();
@@ -130,7 +131,7 @@ static void hints_handle_entry (const char * key, const char * value, void * dat
         return;
 
     HintPair * pair = (HintPair *) bsearch (key, hint_pairs,
-     ARRAY_LEN (hint_pairs), sizeof (HintPair), hint_pair_compare);
+     aud::n_elems (hint_pairs), sizeof (HintPair), hint_pair_compare);
 
     if (pair)
         * pair->value_ptr = atoi (value);
@@ -158,7 +159,7 @@ void skin_load_hints (Skin * skin, const char * path)
  */
 
 typedef struct {
-    bool_t valid_heading;
+    gboolean valid_heading;
     Skin * skin;
 } PLColorsLoadState;
 
@@ -174,7 +175,7 @@ static uint32_t convert_color_string (const char * str)
     if (* str == '#')
         str ++;
 
-    return strtol (str, NULL, 16);
+    return strtol (str, nullptr, 16);
 }
 
 static void pl_colors_handle_entry (const char * key, const char * value, void * data)
@@ -257,55 +258,61 @@ static void mask_handle_entry (const char * key, const char * value, void * data
     }
 }
 
-static cairo_region_t * skin_create_mask (const GArray * num,
+static GdkBitmap * skin_create_mask (const GArray * num,
  const GArray * point, int width, int height)
 {
-    if (! num || ! point)
-    {
-        cairo_rectangle_int_t rect = {0, 0, width, height};
-        return cairo_region_create_rectangle (& rect);
-    }
+    width *= config.scale;
+    height *= config.scale;
 
-    cairo_region_t * mask = cairo_region_create ();
+    GdkBitmap * bitmap = gdk_pixmap_new (nullptr, width, height, 1);
+    cairo_t * cr = gdk_cairo_create (bitmap);
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+
+    cairo_set_source_rgba (cr, 0, 0, 0, 0);
+    cairo_rectangle (cr, 0, 0, width, height);
+    cairo_fill (cr);
+
+    cairo_set_source_rgba (cr, 0, 0, 0, 1);
+
     gboolean created_mask = FALSE;
 
-    unsigned j = 0;
-    for (unsigned i = 0; i < num->len; i ++)
+    if (num && point)
     {
-        int n_points = g_array_index (num, int, i);
-        if (n_points <= 0 || j + 2 * n_points > point->len)
-            break;
-
-        int xmin = width, ymin = height, xmax = 0, ymax = 0;
-
-        for (int k = 0; k < n_points; k ++)
+        unsigned j = 0;
+        for (unsigned i = 0; i < num->len; i ++)
         {
-            int x = g_array_index (point, int, j + k * 2);
-            int y = g_array_index (point, int, j + k * 2 + 1);
+            int n_points = g_array_index (num, int, i);
+            if (n_points <= 0 || j + 2 * n_points > point->len)
+                break;
 
-            xmin = MIN (xmin, x);
-            ymin = MIN (ymin, y);
-            xmax = MAX (xmax, x);
-            ymax = MAX (ymax, y);
+            int xmin = width, ymin = height, xmax = 0, ymax = 0;
+
+            for (int k = 0; k < n_points; k ++)
+            {
+                int x = g_array_index (point, int, j + k * 2) * config.scale;
+                int y = g_array_index (point, int, j + k * 2 + 1) * config.scale;
+
+                xmin = aud::min (xmin, x);
+                ymin = aud::min (ymin, y);
+                xmax = aud::max (xmax, x);
+                ymax = aud::max (ymax, y);
+            }
+
+            if (xmax > xmin && ymax > ymin)
+                cairo_rectangle (cr, xmin, ymin, xmax - xmin, ymax - ymin);
+
+            created_mask = TRUE;
+            j += n_points * 2;
         }
-
-        if (xmax > xmin && ymax > ymin)
-        {
-            cairo_rectangle_int_t rect = {xmin, ymin, xmax - xmin, ymax - ymin};
-            cairo_region_union_rectangle (mask, & rect);
-        }
-
-        created_mask = TRUE;
-        j += n_points * 2;
     }
 
     if (! created_mask)
-    {
-        cairo_rectangle_int_t rect = {0, 0, width, height};
-        cairo_region_union_rectangle (mask, & rect);
-    }
+        cairo_rectangle (cr, 0, 0, width, height);
 
-    return mask;
+    cairo_fill (cr);
+
+    cairo_destroy (cr);
+    return bitmap;
 }
 
 void skin_load_masks (Skin * skin, const char * path)

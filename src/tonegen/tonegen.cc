@@ -35,26 +35,26 @@
 #define PI              3.14159265358979323846
 #endif
 
-static gboolean tone_is_our_fd(const gchar *filename, VFSFile *fd)
+static bool tone_is_our_fd(const char *filename, VFSFile *fd)
 {
     if (!strncmp(filename, "tone://", 7))
-        return TRUE;
-    return FALSE;
+        return true;
+    return false;
 }
 
-static GArray *tone_filename_parse(const gchar * filename)
+static GArray *tone_filename_parse(const char * filename)
 {
-    GArray *frequencies = g_array_new(FALSE, FALSE, sizeof(double));
-    gchar **strings, **ptr;
+    GArray *frequencies = g_array_new(false, false, sizeof(double));
+    char **strings, **ptr;
 
     if (strncmp(filename, "tone://", 7))
-        return NULL;
+        return nullptr;
 
     strings = g_strsplit(filename + 7, ";", 100);
 
-    for (ptr = strings; *ptr != NULL; ptr++)
+    for (ptr = strings; *ptr != nullptr; ptr++)
     {
-        gdouble freq = strtod(*ptr, NULL);
+        double freq = strtod(*ptr, nullptr);
         if (freq >= MIN_FREQ && freq <= MAX_FREQ)
             g_array_append_val(frequencies, freq);
     }
@@ -62,31 +62,31 @@ static GArray *tone_filename_parse(const gchar * filename)
 
     if (frequencies->len == 0)
     {
-        g_array_free(frequencies, TRUE);
-        frequencies = NULL;
+        g_array_free(frequencies, true);
+        frequencies = nullptr;
     }
 
     return frequencies;
 }
 
-static gchar *tone_title(const gchar * filename)
+static char *tone_title(const char * filename)
 {
     GArray *freqs;
-    gchar *title;
-    gsize i;
+    char *title;
+    size_t i;
 
     freqs = tone_filename_parse(filename);
-    if (freqs == NULL)
-        return NULL;
+    if (freqs == nullptr)
+        return nullptr;
 
     title = g_strdup_printf(_("%s %.1f Hz"), _("Tone Generator: "), g_array_index(freqs, double, 0));
     for (i = 1; i < freqs->len; i++)
     {
-        gchar *old_title = title;
+        char *old_title = title;
         title = g_strdup_printf("%s;%.1f Hz", old_title, g_array_index(freqs, double, i));
         g_free(old_title);
     }
-    g_array_free(freqs, TRUE);
+    g_array_free(freqs, true);
 
     return title;
 }
@@ -97,21 +97,21 @@ struct tone_t
     unsigned period, t;
 };
 
-static gboolean tone_play(const gchar *filename, VFSFile *file)
+static bool tone_play(const char *filename, VFSFile *file)
 {
     GArray *frequencies;
-    gfloat data[BUF_SAMPLES];
-    gsize i;
-    gboolean error = FALSE;
-    tone_t *tone = NULL;
+    float data[BUF_SAMPLES];
+    size_t i;
+    bool error = false;
+    tone_t *tone = nullptr;
 
     frequencies = tone_filename_parse(filename);
-    if (frequencies == NULL)
-        return FALSE;
+    if (frequencies == nullptr)
+        return false;
 
     if (aud_input_open_audio(FMT_FLOAT, OUTPUT_FREQ, 1) == 0)
     {
-        error = TRUE;
+        error = true;
         goto error_exit;
     }
 
@@ -120,7 +120,7 @@ static gboolean tone_play(const gchar *filename, VFSFile *file)
     tone = g_new(tone_t, frequencies->len);
     for (i = 0; i < frequencies->len; i++)
     {
-        gdouble f = g_array_index(frequencies, gdouble, i);
+        double f = g_array_index(frequencies, double, i);
         tone[i].wd = 2 * PI * f / OUTPUT_FREQ;
         tone[i].period = (G_MAXINT * 2U / OUTPUT_FREQ) * (OUTPUT_FREQ / f);
         tone[i].t = 0;
@@ -130,7 +130,7 @@ static gboolean tone_play(const gchar *filename, VFSFile *file)
     {
         for (i = 0; i < BUF_SAMPLES; i++)
         {
-            gsize j;
+            size_t j;
             double sum_sines;
 
             for (sum_sines = 0, j = 0; j < frequencies->len; j++)
@@ -141,26 +141,26 @@ static gboolean tone_play(const gchar *filename, VFSFile *file)
                 tone[j].t++;
             }
             /* dithering can cause a little bit of clipping */
-            data[i] = (sum_sines * 0.999 / (gdouble) frequencies->len);
+            data[i] = (sum_sines * 0.999 / (double) frequencies->len);
         }
 
         aud_input_write_audio(data, BUF_BYTES);
     }
 
 error_exit:
-    g_array_free(frequencies, TRUE);
+    g_array_free(frequencies, true);
     g_free(tone);
 
     return !error;
 }
 
-static Tuple tone_probe_for_tuple(const gchar *filename, VFSFile *fd)
+static Tuple tone_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     Tuple tuple;
     tuple.set_filename (filename);
-    gchar *tmp;
+    char *tmp;
 
-    if ((tmp = tone_title(filename)) != NULL)
+    if ((tmp = tone_title(filename)) != nullptr)
     {
         tuple.set_str (FIELD_TITLE, tmp);
         g_free(tmp);
@@ -175,7 +175,7 @@ static const char tone_about[] =
     "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
     "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone");
 
-static const gchar * const schemes[] = {"tone", NULL};
+static const char * const schemes[] = {"tone", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("Tone Generator")
 #define AUD_PLUGIN_ABOUT       tone_about

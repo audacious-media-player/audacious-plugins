@@ -1,4 +1,4 @@
-/*  
+/*
 	Copyright (C) 2006-2007 shash
 
     This file is part of DeSmuME
@@ -187,7 +187,7 @@ void	Matrix::Set	(float a11, float a21, float a31, float a41,
 
 void MatrixStackInit (MatrixStack *stack)
 {
-	stack->matrix	= NULL;
+	stack->matrix	= nullptr;
 	stack->position	= 0;
 	stack->size		= 0;
 }
@@ -198,7 +198,7 @@ void MatrixStackSetMaxSize (MatrixStack *stack, int size)
 
 	stack->size = size;
 
-	if (stack->matrix == NULL)
+	if (stack->matrix == nullptr)
 	{
 		stack->matrix = (float*) malloc (stack->size*16*sizeof(float));
 	}
@@ -223,7 +223,7 @@ void MatrixStackSetStackPosition (MatrixStack *stack, int pos)
 
 	if (stack->position < 0)
 		stack->position = 0;
-	else if (stack->position > stack->size)	
+	else if (stack->position > stack->size)
 		stack->position = stack->size;
 }
 

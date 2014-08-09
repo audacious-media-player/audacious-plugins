@@ -34,10 +34,10 @@
 */
 typedef struct
 {
-  const gchar * name;
-  const gchar * desc;
+  const char * name;
+  const char * desc;
   void (*onoff_func)( gboolean );
-  void (*callback_func)( gpointer , gpointer );
+  void (*callback_func)( void * , void * );
 }
 aosd_trigger_t;
 

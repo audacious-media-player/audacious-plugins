@@ -72,14 +72,14 @@ double tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
     {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0}
 };
 
-static bool_t metronom_is_our_fd(const char * filename, VFSFile *fd)
+static bool metronom_is_our_fd(const char * filename, VFSFile *fd)
 {
     if (!strncmp(filename, "tact://", 7))
-        return TRUE;
-    return FALSE;
+        return true;
+    return false;
 }
 
-static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, String & str)
+static bool metronom_get_cp(const char *filename, metronom_t *pmetronom, String & str)
 {
     int count;
 
@@ -87,10 +87,10 @@ static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, Strin
         &pmetronom->bpm, &pmetronom->num, &pmetronom->den);
 
     if (count != 1 && count != 3)
-        return FALSE;
+        return false;
 
     if (pmetronom->bpm < MIN_BPM || pmetronom->bpm > MAX_BPM)
-        return FALSE;
+        return false;
 
     if (count == 1)
     {
@@ -100,21 +100,21 @@ static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, Strin
     }
     else
     {
-        bool_t flag;
+        bool flag;
         int id;
 
         if (pmetronom->num == 0 || pmetronom->den == 0)
-            return FALSE;
+            return false;
 
-        flag = FALSE;
+        flag = false;
         for (id = 0; id < TACT_ID_MAX && !flag; id++)
         {
             if (pmetronom->num == tact_id[id][0] && pmetronom->den == tact_id[id][1])
-                flag = TRUE;
+                flag = true;
         }
 
         if (!flag)
-            return FALSE;
+            return false;
         else
             pmetronom->id = id;
     }
@@ -125,10 +125,10 @@ static bool_t metronom_get_cp(const char *filename, metronom_t *pmetronom, Strin
         str = String (str_printf (_("Tact generator: %d bpm %d/%d"),
          pmetronom->bpm, pmetronom->num, pmetronom->den));
 
-    return TRUE;
+    return true;
 }
 
-static bool_t metronom_play (const char * filename, VFSFile * file)
+static bool metronom_play (const char * filename, VFSFile * file)
 {
     metronom_t pmetronom;
     int16_t data[BUF_SAMPLES];
@@ -141,12 +141,12 @@ static bool_t metronom_play (const char * filename, VFSFile * file)
     String desc;
 
     if (aud_input_open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
-        return FALSE;
+        return false;
 
     if (!metronom_get_cp(filename, &pmetronom, desc))
     {
         fprintf (stderr, "Invalid metronom tact parameters in URI %s", filename);
-        return FALSE;
+        return false;
     }
 
     aud_input_set_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
@@ -195,7 +195,7 @@ static bool_t metronom_play (const char * filename, VFSFile * file)
         aud_input_write_audio(data, BUF_BYTES);
     }
 
-    return TRUE;
+    return true;
 }
 
 static Tuple metronom_probe_for_tuple(const char * filename, VFSFile *fd)
@@ -217,7 +217,7 @@ static const char metronom_about[] =
     "e.g. tact://77 to play 77 beats per minute\n"
     "or tact://60*3/4 to play 60 bpm in 3/4 tacts");
 
-static const char * const schemes[] = {"tact", NULL};
+static const char * const schemes[] = {"tact", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("Tact Generator")
 #define AUD_PLUGIN_ABOUT       metronom_about

@@ -23,7 +23,7 @@
 
 const char *oss_format_to_text(int format)
 {
-    const struct
+    static const struct
     {
         int format;
         const char *format_text;
@@ -45,14 +45,10 @@ const char *oss_format_to_text(int format)
         {AFMT_S32_BE, "AFMT_S32_BE"},
     };
 
-    int count;
-
-    for (count = 0; count < ARRAY_LEN(table); count++)
+    for (auto & conv : table)
     {
-        if (table[count].format == format)
-        {
-            return table[count].format_text;
-        }
+        if (conv.format == format)
+            return conv.format_text;
     }
 
     return "FMT_UNKNOWN";
@@ -84,7 +80,7 @@ int oss_convert_aud_format(int aud_format)
 
     int count;
 
-    for (count = 0; count < ARRAY_LEN(table); count++)
+    for (count = 0; count < aud::n_elems(table); count++)
     {
         if (table[count].aud_format == aud_format)
         {
@@ -166,7 +162,7 @@ const char *oss_describe_error(void)
     };
 
     int count;
-    for (count = 0; count < ARRAY_LEN(table); count++)
+    for (count = 0; count < aud::n_elems(table); count++)
     {
         if (table[count].error == errno)
             return table[count].text;
@@ -187,7 +183,7 @@ int oss_probe_for_adev(oss_sysinfo *sysinfo)
     return num;
 }
 
-bool_t oss_hardware_present(void)
+bool oss_hardware_present(void)
 {
     int mixerfd;
     oss_sysinfo sysinfo;
@@ -197,9 +193,9 @@ bool_t oss_hardware_present(void)
     CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
     close(mixerfd);
-    return TRUE;
+    return true;
 
 FAILED:
     close(mixerfd);
-    return FALSE;
+    return false;
 }

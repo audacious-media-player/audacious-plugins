@@ -31,12 +31,10 @@ extern "C" {
 #include <libaudcore/plugin.h>
 #include <libaudcore/probe.h>
 
-typedef struct {
+static const struct {
     int tuple_type;
     int pti;
-} TuplePTIMap;
-
-TuplePTIMap pti_map[] = {
+} pti_map[] = {
     { FIELD_ARTIST, PTI_PERFORMER },
     { FIELD_TITLE, PTI_TITLE },
 };
@@ -48,63 +46,63 @@ tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
     const char *text;
 
     cdtext = track_get_cdtext(track);
-    if (cdtext == NULL)
+    if (cdtext == nullptr)
         return;
 
     text = cdtext_get(pti, cdtext);
-    if (text == NULL)
+    if (text == nullptr)
         return;
 
     tuple.set_str (tuple_type, text);
 }
 
-static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
+static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
  String & title, Index<PlaylistAddItem> & items)
 {
-    void * buffer = NULL;
-    vfs_file_read_all (file, & buffer, NULL);
+    void * buffer = nullptr;
+    vfs_file_read_all (file, & buffer, nullptr);
     if (! buffer)
-        return FALSE;
+        return false;
 
     Cd * cd = cue_parse_string ((char *) buffer);
     g_free (buffer);
-    if (cd == NULL)
-        return FALSE;
+    if (cd == nullptr)
+        return false;
 
     int tracks = cd_get_ntrack (cd);
     if (tracks == 0)
-        return FALSE;
+        return false;
 
     Track * current = cd_get_track (cd, 1);
-    if (current == NULL)
-        return FALSE;
+    if (current == nullptr)
+        return false;
 
     char * track_filename = track_get_filename (current);
-    if (track_filename == NULL)
-        return FALSE;
+    if (track_filename == nullptr)
+        return false;
 
     String filename = String (uri_construct (track_filename, cue_filename));
 
     Tuple base_tuple;
-    bool_t base_tuple_scanned = FALSE;
+    bool base_tuple_scanned = false;
 
     for (int track = 1; track <= tracks; track ++)
     {
-        if (current == NULL || filename == NULL)
-            return FALSE;
+        if (current == nullptr || ! filename)
+            return false;
 
         if (! base_tuple_scanned)
         {
-            base_tuple_scanned = TRUE;
-            PluginHandle * decoder = aud_file_find_decoder (filename, FALSE);
-            if (decoder != NULL)
+            base_tuple_scanned = true;
+            PluginHandle * decoder = aud_file_find_decoder (filename, false);
+            if (decoder != nullptr)
                 base_tuple = aud_file_read_tuple (filename, decoder);
         }
 
-        Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : NULL;
-        String next_filename = (next != NULL) ? String (uri_construct
+        Track * next = (track + 1 <= tracks) ? cd_get_track (cd, track + 1) : nullptr;
+        String next_filename = (next != nullptr) ? String (uri_construct
          (track_get_filename (next), cue_filename)) : String ();
-        bool_t last_track = (next_filename == NULL || strcmp (next_filename, filename));
+        bool last_track = (! next_filename || strcmp (next_filename, filename));
 
         Tuple tuple = base_tuple.ref ();
         tuple.set_filename (filename);
@@ -125,8 +123,8 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
             tuple.set_int (FIELD_SEGMENT_END, begin + length);
         }
 
-        for (int i = 0; i < ARRAY_LEN (pti_map); i ++)
-            tuple_attach_cdtext (tuple, current, pti_map[i].tuple_type, pti_map[i].pti);
+        for (auto & pti : pti_map)
+            tuple_attach_cdtext (tuple, current, pti.tuple_type, pti.pti);
 
         items.append ({filename, std::move (tuple)});
 
@@ -136,14 +134,14 @@ static bool_t playlist_load_cue (const char * cue_filename, VFSFile * file,
         if (last_track)
         {
             base_tuple = Tuple ();
-            base_tuple_scanned = FALSE;
+            base_tuple_scanned = false;
         }
     }
 
-    return TRUE;
+    return true;
 }
 
-static const char * const cue_exts[] = {"cue", NULL};
+static const char * const cue_exts[] = {"cue", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("Cue Sheet Plugin")
 #define AUD_PLAYLIST_EXTS      cue_exts

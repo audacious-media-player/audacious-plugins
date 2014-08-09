@@ -27,25 +27,25 @@
 #include "ayemu.h"
 
 #define SNDBUFSIZE 1024
-static gchar sndbuf[SNDBUFSIZE];
-static gint freq = 44100;
-static gint chans = 2;
-static gint bits = 16;
+static char sndbuf[SNDBUFSIZE];
+static int freq = 44100;
+static int chans = 2;
+static int bits = 16;
 
 ayemu_ay_t ay;
 ayemu_vtx_t vtx;
 
-static const gchar *vtx_fmts[] = { "vtx", NULL };
+static const char *vtx_fmts[] = { "vtx", nullptr };
 
-gint vtx_is_our_fd(const gchar * filename, VFSFile * fp)
+bool vtx_is_our_fd(const char * filename, VFSFile * fp)
 {
-    gchar buf[2];
+    char buf[2];
     if (vfs_fread(buf, 1, 2, fp) < 2)
         return FALSE;
     return (!g_ascii_strncasecmp(buf, "ay", 2) || !g_ascii_strncasecmp(buf, "ym", 2));
 }
 
-Tuple vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
+Tuple vtx_get_song_tuple_from_vtx(const char * filename, ayemu_vtx_t * in)
 {
     Tuple tuple;
     tuple.set_filename (filename);
@@ -66,7 +66,7 @@ Tuple vtx_get_song_tuple_from_vtx(const gchar * filename, ayemu_vtx_t * in)
     return tuple;
 }
 
-Tuple vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
+Tuple vtx_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     ayemu_vtx_t tmp;
 
@@ -80,15 +80,15 @@ Tuple vtx_probe_for_tuple(const gchar *filename, VFSFile *fd)
     return Tuple ();
 }
 
-static gboolean vtx_play(const gchar * filename, VFSFile * file)
+static bool vtx_play(const char * filename, VFSFile * file)
 {
     gboolean eof = FALSE;
     void *stream;               /* pointer to current position in sound buffer */
-    guchar regs[14];
-    gint need;
-    gint left;                   /* how many sound frames can play with current AY register frame */
-    gint donow;
-    gint rate;
+    unsigned char regs[14];
+    int need;
+    int left;                   /* how many sound frames can play with current AY register frame */
+    int donow;
+    int rate;
 
     left = 0;
     rate = chans * (bits / 8);
@@ -107,9 +107,9 @@ static gboolean vtx_play(const gchar * filename, VFSFile * file)
     }
 
     ayemu_init(&ay);
-    ayemu_set_chip_type(&ay, vtx.hdr.chiptype, NULL);
+    ayemu_set_chip_type(&ay, vtx.hdr.chiptype, nullptr);
     ayemu_set_chip_freq(&ay, vtx.hdr.chipFreq);
-    ayemu_set_stereo(&ay, (ayemu_stereo_t) vtx.hdr.stereo, NULL);
+    ayemu_set_stereo(&ay, (ayemu_stereo_t) vtx.hdr.stereo, nullptr);
 
     if (aud_input_open_audio(FMT_S16_NE, freq, chans) == 0)
     {

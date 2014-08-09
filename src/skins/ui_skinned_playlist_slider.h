@@ -30,8 +30,8 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * list, gint height);
-void ui_skinned_playlist_slider_resize (GtkWidget * slider, gint height);
+GtkWidget * ui_skinned_playlist_slider_new (GtkWidget * list, int height);
+void ui_skinned_playlist_slider_resize (GtkWidget * slider, int height);
 void ui_skinned_playlist_slider_update (GtkWidget * slider);
 
 #endif

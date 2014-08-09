@@ -61,8 +61,8 @@ GPU * GPU_Init(u8 l)
 {
      GPU * g;
 
-     if ((g = (GPU *) malloc(sizeof(GPU))) == NULL)
-        return NULL;
+     if ((g = (GPU *) malloc(sizeof(GPU))) == nullptr)
+        return nullptr;
 
      GPU_Reset(g, l);
      return g;

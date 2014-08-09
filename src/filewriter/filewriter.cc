@@ -52,8 +52,8 @@ enum fileext_t
     FILEEXT_MAX
 };
 
-static gint fileext;
-static const gchar *fileext_str[FILEEXT_MAX] =
+static int fileext;
+static const char *fileext_str[FILEEXT_MAX] =
 {
     "wav",
 #ifdef FILEWRITER_MP3
@@ -74,7 +74,7 @@ static gboolean save_original;
 static GtkWidget *filenamefrom_hbox, *filenamefrom_label;
 static gboolean filenamefromtags;
 
-static GtkWidget *use_suffix_toggle = NULL;
+static GtkWidget *use_suffix_toggle = nullptr;
 static gboolean use_suffix;
 
 static GtkWidget *prependnumber_toggle;
@@ -82,10 +82,10 @@ static gboolean prependnumber;
 
 static String file_path;
 
-VFSFile *output_file = NULL;
+VFSFile *output_file = nullptr;
 Tuple tuple;
 
-static gint64 samples_written;
+static int64_t samples_written;
 
 FileWriter *plugins[FILEEXT_MAX] = {
     &wav_plugin,
@@ -108,20 +108,20 @@ static void set_plugin(void)
     plugin = plugins[fileext];
 }
 
-static gint file_write_output (void * data, gint length)
+static int file_write_output (void * data, int length)
 {
     return vfs_fwrite (data, 1, length, output_file);
 }
 
-static const gchar * const filewriter_defaults[] = {
+static const char * const filewriter_defaults[] = {
  "fileext", "0", /* WAV */
  "filenamefromtags", "TRUE",
  "prependnumber", "FALSE",
  "save_original", "TRUE",
  "use_suffix", "FALSE",
- NULL};
+ nullptr};
 
-static gboolean file_init (void)
+static bool file_init (void)
 {
     aud_config_set_defaults ("filewriter", filewriter_defaults);
 
@@ -135,7 +135,7 @@ static gboolean file_init (void)
     if (! file_path[0])
     {
         file_path = String (filename_to_uri (g_get_home_dir ()));
-        g_return_val_if_fail (file_path != NULL, FALSE);
+        g_return_val_if_fail (file_path != nullptr, FALSE);
     }
 
     set_plugin();
@@ -150,12 +150,12 @@ static void file_cleanup (void)
     file_path = String ();
 }
 
-static VFSFile * safe_create (const gchar * filename)
+static VFSFile * safe_create (const char * filename)
 {
     if (! vfs_file_test (filename, G_FILE_TEST_EXISTS))
         return vfs_fopen (filename, "w");
 
-    const gchar * extension = strrchr (filename, '.');
+    const char * extension = strrchr (filename, '.');
 
     for (int count = 1; count < 100; count ++)
     {
@@ -167,16 +167,16 @@ static VFSFile * safe_create (const gchar * filename)
             return vfs_fopen (scratch, "w");
     }
 
-    return NULL;
+    return nullptr;
 }
 
-static gint file_open(gint fmt, gint rate, gint nch)
+static bool file_open(int fmt, int rate, int nch)
 {
-    gchar *filename = NULL, *temp = NULL;
-    gchar * directory;
-    gint pos;
-    gint rv;
-    gint playlist;
+    char *filename = nullptr, *temp = nullptr;
+    char * directory;
+    int pos;
+    int rv;
+    int playlist;
 
     input.format = fmt;
     input.frequency = rate;
@@ -203,17 +203,17 @@ static gint file_open(gint fmt, gint rate, gint nch)
         String path = aud_playlist_entry_get_filename (playlist, pos);
 
         const char * original = strrchr (path, '/');
-        g_return_val_if_fail (original != NULL, 0);
+        g_return_val_if_fail (original != nullptr, 0);
         filename = g_strdup (original + 1);
 
         if (!use_suffix)
-            if ((temp = strrchr(filename, '.')) != NULL)
+            if ((temp = strrchr(filename, '.')) != nullptr)
                 *temp = '\0';
     }
 
     if (prependnumber)
     {
-        gint number = tuple.get_int (FIELD_TRACK_NUMBER);
+        int number = tuple.get_int (FIELD_TRACK_NUMBER);
         if (number < 0)
             number = pos + 1;
 
@@ -226,7 +226,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
     {
         directory = g_strdup (aud_playlist_entry_get_filename (playlist, pos));
         temp = strrchr (directory, '/');
-        g_return_val_if_fail (temp != NULL, 0);
+        g_return_val_if_fail (temp != nullptr, 0);
         temp[1] = 0;
     }
     else
@@ -246,7 +246,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
     output_file = safe_create (filename);
     g_free (filename);
 
-    if (output_file == NULL)
+    if (output_file == nullptr)
         return 0;
 
     convert_init (fmt, plugin->format_required (fmt), nch);
@@ -258,7 +258,7 @@ static gint file_open(gint fmt, gint rate, gint nch)
     return rv;
 }
 
-static void file_write(void *ptr, gint length)
+static void file_write(void *ptr, int length)
 {
     int len = convert_process (ptr, length);
 
@@ -276,23 +276,23 @@ static void file_close(void)
     plugin->close();
     convert_free();
 
-    if (output_file != NULL)
+    if (output_file != nullptr)
         vfs_fclose(output_file);
-    output_file = NULL;
+    output_file = nullptr;
 
     tuple = Tuple ();
 }
 
-static void file_flush(gint time)
+static void file_flush(int time)
 {
-    samples_written = time * (gint64) input.channels * input.frequency / 1000;
+    samples_written = time * (int64_t) input.channels * input.frequency / 1000;
 }
 
-static void file_pause (gboolean p)
+static void file_pause (bool p)
 {
 }
 
-static gint file_get_time (void)
+static int file_get_time (void)
 {
     return samples_written * 1000 / (input.channels * input.frequency);
 }
@@ -319,24 +319,24 @@ static void configure_response_cb (void)
     aud_set_bool ("filewriter", "use_suffix", use_suffix);
 }
 
-static void fileext_cb(GtkWidget *combo, gpointer data)
+static void fileext_cb(GtkWidget *combo, void * data)
 {
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
     set_plugin();
     if (plugin->init)
         plugin->init(&file_write_output);
 
-    gtk_widget_set_sensitive(plugin_button, plugin->configure != NULL);
+    gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
 }
 
-static void plugin_configure_cb(GtkWidget *button, gpointer data)
+static void plugin_configure_cb(GtkWidget *button, void * data)
 {
     if (plugin->configure)
         plugin->configure();
 }
 
 
-static void saveplace_original_cb(GtkWidget *button, gpointer data)
+static void saveplace_original_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
@@ -345,7 +345,7 @@ static void saveplace_original_cb(GtkWidget *button, gpointer data)
     }
 }
 
-static void saveplace_custom_cb(GtkWidget *button, gpointer data)
+static void saveplace_custom_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
@@ -354,7 +354,7 @@ static void saveplace_custom_cb(GtkWidget *button, gpointer data)
     }
 }
 
-static void filenamefromtags_cb(GtkWidget *button, gpointer data)
+static void filenamefromtags_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
@@ -365,7 +365,7 @@ static void filenamefromtags_cb(GtkWidget *button, gpointer data)
     }
 }
 
-static void filenamefromfilename_cb(GtkWidget *button, gpointer data)
+static void filenamefromfilename_cb(GtkWidget *button, void * data)
 {
     if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)))
     {
@@ -376,9 +376,9 @@ static void filenamefromfilename_cb(GtkWidget *button, gpointer data)
 
 static void * file_configure (void)
 {
-        GtkWidget * configure_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+        GtkWidget * configure_vbox = gtk_vbox_new (FALSE, 6);
 
-        GtkWidget * fileext_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
+        GtkWidget * fileext_hbox = gtk_hbox_new (FALSE, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), fileext_hbox, FALSE, FALSE, 0);
 
         GtkWidget * fileext_label = gtk_label_new (_("Output file format:"));
@@ -399,15 +399,15 @@ static void * file_configure (void)
         gtk_combo_box_set_active(GTK_COMBO_BOX(fileext_combo), fileext);
 
         plugin_button = gtk_button_new_with_label(_("Configure"));
-        gtk_widget_set_sensitive(plugin_button, plugin->configure != NULL);
+        gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
         gtk_box_pack_end(GTK_BOX(fileext_hbox), plugin_button, FALSE, FALSE, 0);
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
-        GtkWidget * saveplace_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 5);
+        GtkWidget * saveplace_hbox = gtk_hbox_new (FALSE, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), saveplace_hbox);
 
-        GtkWidget * saveplace1 = gtk_radio_button_new_with_label (NULL,
+        GtkWidget * saveplace1 = gtk_radio_button_new_with_label (nullptr,
          _("Save into original directory"));
         gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace1, FALSE, FALSE, 0);
 
@@ -419,7 +419,7 @@ static void * file_configure (void)
 
         gtk_box_pack_start ((GtkBox *) saveplace_hbox, saveplace2, FALSE, FALSE, 0);
 
-        path_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+        path_hbox = gtk_hbox_new (FALSE, 5);
         gtk_box_pack_start(GTK_BOX(configure_vbox), path_hbox, FALSE, FALSE, 0);
 
         GtkWidget * path_label = gtk_label_new (_("Output file folder:"));
@@ -434,16 +434,16 @@ static void * file_configure (void)
         if (save_original)
             gtk_widget_set_sensitive(path_hbox, FALSE);
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
-        filenamefrom_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+        filenamefrom_hbox = gtk_hbox_new (FALSE, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
 
         filenamefrom_label = gtk_label_new(_("Get filename from:"));
         gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_label, FALSE, FALSE, 0);
 
         GtkWidget * filenamefrom_toggle1 = gtk_radio_button_new_with_label
-         (NULL, _("original file tags"));
+         (nullptr, _("original file tags"));
         gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle1, FALSE, FALSE, 0);
 
         GtkWidget * filenamefrom_toggle2 =
@@ -461,19 +461,19 @@ static void * file_configure (void)
         if (filenamefromtags)
             gtk_widget_set_sensitive(use_suffix_toggle, FALSE);
 
-        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
         prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to filename"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);
         gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, FALSE, FALSE, 0);
 
-        g_signal_connect (fileext_combo, "changed", (GCallback) fileext_cb, NULL);
-        g_signal_connect (plugin_button, "clicked", (GCallback) plugin_configure_cb, NULL);
-        g_signal_connect (saveplace1, "toggled", (GCallback) saveplace_original_cb, NULL);
-        g_signal_connect (saveplace2, "toggled", (GCallback) saveplace_custom_cb, NULL);
-        g_signal_connect (filenamefrom_toggle1, "toggled", (GCallback) filenamefromtags_cb, NULL);
+        g_signal_connect (fileext_combo, "changed", (GCallback) fileext_cb, nullptr);
+        g_signal_connect (plugin_button, "clicked", (GCallback) plugin_configure_cb, nullptr);
+        g_signal_connect (saveplace1, "toggled", (GCallback) saveplace_original_cb, nullptr);
+        g_signal_connect (saveplace2, "toggled", (GCallback) saveplace_custom_cb, nullptr);
+        g_signal_connect (filenamefrom_toggle1, "toggled", (GCallback) filenamefromtags_cb, nullptr);
         g_signal_connect (filenamefrom_toggle2, "toggled",
-         (GCallback) filenamefromfilename_cb, NULL);
+         (GCallback) filenamefromfilename_cb, nullptr);
 
         return configure_vbox;
 }
@@ -499,9 +499,8 @@ static const PreferencesWidget file_widgets[] = {
 };
 
 static const PluginPreferences file_prefs = {
-    file_widgets,
-    ARRAY_LEN (file_widgets),
-    NULL,  // init
+    {file_widgets},
+    nullptr,  // init
     configure_response_cb
 };
 
@@ -513,8 +512,8 @@ static const PluginPreferences file_prefs = {
 #define AUD_OUTPUT_PRIORITY    0
 #define AUD_OUTPUT_OPEN        file_open
 #define AUD_OUTPUT_CLOSE       file_close
-#define AUD_OUTPUT_GET_FREE    NULL
-#define AUD_OUTPUT_WAIT_FREE   NULL
+#define AUD_OUTPUT_GET_FREE    nullptr
+#define AUD_OUTPUT_WAIT_FREE   nullptr
 #define AUD_OUTPUT_WRITE       file_write
 #define AUD_OUTPUT_DRAIN       file_drain
 #define AUD_OUTPUT_GET_TIME    file_get_time

@@ -53,10 +53,10 @@ void mc_init(memory_chip_t *mc, int type)
         mc->com = 0;
         mc->addr = 0;
         mc->addr_shift = 0;
-        mc->data = NULL;
+        mc->data = nullptr;
         mc->size = 0;
-        mc->write_enable = FALSE;
-        mc->writeable_buffer = FALSE;
+        mc->write_enable = false;
+        mc->writeable_buffer = false;
         mc->type = type;
         mc->autodetectsize = 0;
 
@@ -82,9 +82,9 @@ u8 *mc_alloc(memory_chip_t *mc, u32 size)
 	buffer = (u8 *) malloc(size);
 
 	mc->data = buffer;
-	if(!buffer) { return NULL; }
+	if(!buffer) { return nullptr; }
 	mc->size = size;
-	mc->writeable_buffer = TRUE;
+	mc->writeable_buffer = true;
 
 	return buffer;
 }

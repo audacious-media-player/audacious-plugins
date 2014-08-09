@@ -52,7 +52,7 @@ static void voice_finish(float **d, int *samples)
 #define AUD_EFFECT_START       voice_start
 #define AUD_EFFECT_PROCESS     voice_process
 #define AUD_EFFECT_FINISH      voice_finish
-#define AUD_EFFECT_SAME_FMT    TRUE
+#define AUD_EFFECT_SAME_FMT    true
 
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>

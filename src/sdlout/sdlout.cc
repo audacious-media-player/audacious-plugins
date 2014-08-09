@@ -25,8 +25,6 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#include <glib.h>
-
 #include <SDL.h>
 #include <SDL_audio.h>
 
@@ -46,7 +44,7 @@
 static const char * const sdl_defaults[] = {
  "vol_left", "100",
  "vol_right", "100",
- NULL};
+ nullptr};
 
 static pthread_mutex_t sdlout_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t sdlout_cond = PTHREAD_COND_INITIALIZER;
@@ -64,7 +62,7 @@ static char prebuffer_flag, paused_flag;
 static int block_delay;
 static struct timeval block_time;
 
-int sdlout_init (void)
+bool sdlout_init (void)
 {
     aud_config_set_defaults ("sdlout", sdl_defaults);
 
@@ -102,7 +100,7 @@ void sdlout_set_volume (int left, int right)
 
 static void apply_mono_volume (unsigned char * data, int len)
 {
-    int vol = MAX (vol_left, vol_right);
+    int vol = aud::max (vol_left, vol_right);
     int factor = (vol == 0) ? 0 : powf (10, (float) VOLUME_RANGE * (vol - 100)
      / 100 / 20) * 65536;
 
@@ -139,7 +137,7 @@ static void callback (void * user, unsigned char * buf, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
-    int copy = MIN (len, buffer_data_len);
+    int copy = aud::min (len, buffer_data_len);
     int part = buffer_size - buffer_data_start;
 
     if (copy <= part)
@@ -168,13 +166,13 @@ static void callback (void * user, unsigned char * buf, int len)
      * data just written.  We save the block size and the current time for
      * estimating the delay later on. */
     block_delay = copy / (2 * sdlout_chan) * 1000 / sdlout_rate;
-    gettimeofday (& block_time, NULL);
+    gettimeofday (& block_time, nullptr);
 
     pthread_cond_broadcast (& sdlout_cond);
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-int sdlout_open_audio (int format, int rate, int chan)
+bool sdlout_open_audio (int format, int rate, int chan)
 {
     if (format != FMT_S16_NE)
     {
@@ -187,8 +185,8 @@ int sdlout_open_audio (int format, int rate, int chan)
     sdlout_chan = chan;
     sdlout_rate = rate;
 
-    buffer_size = 2 * chan * (aud_get_int (NULL, "output_buffer_size") * rate / 1000);
-    buffer = g_new (unsigned char, buffer_size);
+    buffer_size = 2 * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
+    buffer = new unsigned char[buffer_size];
     buffer_data_start = 0;
     buffer_data_len = 0;
 
@@ -204,11 +202,11 @@ int sdlout_open_audio (int format, int rate, int chan)
     spec.samples = 4096;
     spec.callback = callback;
 
-    if (SDL_OpenAudio (& spec, NULL) < 0)
+    if (SDL_OpenAudio (& spec, nullptr) < 0)
     {
         sdlout_error ("Failed to open audio stream: %s.\n", SDL_GetError ());
-        g_free (buffer);
-        buffer = NULL;
+        delete[] buffer;
+        buffer = nullptr;
         return 0;
     }
 
@@ -219,8 +217,8 @@ void sdlout_close_audio (void)
 {
     AUDDBG ("Closing audio.\n");
     SDL_CloseAudio ();
-    g_free (buffer);
-    buffer = NULL;
+    delete[] buffer;
+    buffer = nullptr;
 }
 
 int sdlout_buffer_free (void)
@@ -304,7 +302,7 @@ int sdlout_output_time (void)
     if (! prebuffer_flag && ! paused_flag && block_delay)
     {
         struct timeval cur;
-        gettimeofday (& cur, NULL);
+        gettimeofday (& cur, nullptr);
 
         int elapsed = 1000 * (cur.tv_sec - block_time.tv_sec) + (cur.tv_usec -
          block_time.tv_usec) / 1000;
@@ -317,7 +315,7 @@ int sdlout_output_time (void)
     return out;
 }
 
-void sdlout_pause (int pause)
+void sdlout_pause (bool pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& sdlout_mutex);

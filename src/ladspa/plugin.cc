@@ -34,9 +34,9 @@
 
 #include "plugin.h"
 
-static const gchar * const ladspa_defaults[] = {
+static const char * const ladspa_defaults[] = {
  "plugin_count", "0",
- NULL};
+ nullptr};
 
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 String module_path;
@@ -50,7 +50,7 @@ GtkWidget * loaded_list;
 
 static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
 {
-    g_return_val_if_fail (desc->PortNames[port], NULL);
+    g_return_val_if_fail (desc->PortNames[port], nullptr);
     const LADSPA_PortRangeHint * hint = & desc->PortRangeHints[port];
 
     ControlData * control = new ControlData ();
@@ -115,8 +115,8 @@ static void free_control (ControlData * control)
 static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * desc)
 {
     const char * slash = strrchr (path, G_DIR_SEPARATOR);
-    g_return_val_if_fail (slash && slash[1], NULL);
-    g_return_val_if_fail (desc->Label && desc->Name, NULL);
+    g_return_val_if_fail (slash && slash[1], nullptr);
+    g_return_val_if_fail (desc->Label && desc->Name, nullptr);
 
     PluginData * plugin = new PluginData ();
     plugin->path = g_strdup (slash + 1);
@@ -162,7 +162,7 @@ static GModule * open_module (const char * path)
     if (! handle)
     {
         fprintf (stderr, "ladspa: Failed to open module %s: %s\n", path, g_module_error ());
-        return NULL;
+        return nullptr;
     }
 
     void * sym;
@@ -170,7 +170,7 @@ static GModule * open_module (const char * path)
     {
         fprintf (stderr, "ladspa: Not a valid LADSPA module: %s\n", path);
         g_module_close (handle);
-        return NULL;
+        return nullptr;
     }
 
     LADSPA_Descriptor_Function descfun = (LADSPA_Descriptor_Function) sym;
@@ -188,7 +188,7 @@ static GModule * open_module (const char * path)
 
 static void open_modules_for_path (const char * path)
 {
-    GDir * folder = g_dir_open (path, 0, NULL);
+    GDir * folder = g_dir_open (path, 0, nullptr);
     if (! folder)
     {
         fprintf (stderr, "ladspa: Failed to read folder %s: %s\n", path, strerror (errno));
@@ -275,7 +275,7 @@ static PluginData * find_plugin (const char * path, const char * label)
             return plugin;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 static void save_enabled_to_config (void)
@@ -368,7 +368,7 @@ static void load_enabled_from_config (void)
     }
 }
 
-static int init (void)
+static bool init (void)
 {
     pthread_mutex_lock (& mutex);
 
@@ -488,7 +488,7 @@ static void configure_plugin (LoadedPlugin * loaded)
     snprintf (buf, sizeof buf, _("%s Settings"), plugin->desc->Name);
     loaded->settings_win = gtk_dialog_new_with_buttons (buf, (GtkWindow *)
      config_win, GTK_DIALOG_DESTROY_WITH_PARENT, _("_Close"),
-     GTK_RESPONSE_CLOSE, NULL);
+     GTK_RESPONSE_CLOSE, nullptr);
     gtk_window_set_resizable ((GtkWindow *) loaded->settings_win, 0);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded->settings_win);
@@ -498,7 +498,7 @@ static void configure_plugin (LoadedPlugin * loaded)
     {
         ControlData * control = plugin->controls[i];
 
-        GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+        GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
         if (control->is_toggle)
@@ -523,7 +523,7 @@ static void configure_plugin (LoadedPlugin * loaded)
         }
     }
 
-    g_signal_connect (loaded->settings_win, "response", (GCallback) gtk_widget_destroy, NULL);
+    g_signal_connect (loaded->settings_win, "response", (GCallback) gtk_widget_destroy, nullptr);
     g_signal_connect (loaded->settings_win, "destroy", (GCallback)
      gtk_widget_destroyed, & loaded->settings_win);
 
@@ -551,13 +551,13 @@ static void configure (void)
         return;
     }
 
-    config_win = gtk_dialog_new_with_buttons (_("LADSPA Host Settings"), NULL,
-     (GtkDialogFlags) 0, _("_Close"), GTK_RESPONSE_CLOSE, NULL);
+    config_win = gtk_dialog_new_with_buttons (_("LADSPA Host Settings"), nullptr,
+     (GtkDialogFlags) 0, _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
     gtk_window_set_default_size ((GtkWindow *) config_win, 480, 360);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) config_win);
 
-    GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
     GtkWidget * label = gtk_label_new (_("Module paths:"));
@@ -575,42 +575,42 @@ static void configure (void)
     GtkWidget * entry = gtk_entry_new ();
     gtk_box_pack_start ((GtkBox *) hbox, entry, 1, 1, 0);
 
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    hbox = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 1, 1, 0);
 
-    GtkWidget * vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    GtkWidget * vbox2 = gtk_vbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
 
     label = gtk_label_new (_("Available plugins:"));
     gtk_box_pack_start ((GtkBox *) vbox2, label, 0, 0, 0);
 
-    GtkWidget * scrolled = gtk_scrolled_window_new (NULL, NULL);
+    GtkWidget * scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
     gtk_box_pack_start ((GtkBox *) vbox2, scrolled, 1, 1, 0);
 
     plugin_list = create_plugin_list ();
     gtk_container_add ((GtkContainer *) scrolled, plugin_list);
 
-    GtkWidget * hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget * hbox2 = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
 
     GtkWidget * enable_button = gtk_button_new_with_label (_("Enable"));
     gtk_box_pack_end ((GtkBox *) hbox2, enable_button, 0, 0, 0);
 
-    vbox2 = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+    vbox2 = gtk_vbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) hbox, vbox2, 1, 1, 0);
 
     label = gtk_label_new (_("Enabled plugins:"));
     gtk_box_pack_start ((GtkBox *) vbox2, label, 0, 0, 0);
 
-    scrolled = gtk_scrolled_window_new (NULL, NULL);
+    scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
     gtk_box_pack_start ((GtkBox *) vbox2, scrolled, 1, 1, 0);
 
     loaded_list = create_loaded_list ();
     gtk_container_add ((GtkContainer *) scrolled, loaded_list);
 
-    hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+    hbox2 = gtk_hbox_new (FALSE, 6);
     gtk_box_pack_start ((GtkBox *) vbox2, hbox2, 0, 0, 0);
 
     GtkWidget * disable_button = gtk_button_new_with_label (_("Disable"));
@@ -622,14 +622,14 @@ static void configure (void)
     if (module_path)
         gtk_entry_set_text ((GtkEntry *) entry, module_path);
 
-    g_signal_connect (config_win, "response", (GCallback) gtk_widget_destroy, NULL);
+    g_signal_connect (config_win, "response", (GCallback) gtk_widget_destroy, nullptr);
     g_signal_connect (config_win, "destroy", (GCallback) gtk_widget_destroyed, & config_win);
-    g_signal_connect (entry, "activate", (GCallback) set_module_path, NULL);
+    g_signal_connect (entry, "activate", (GCallback) set_module_path, nullptr);
     g_signal_connect (plugin_list, "destroy", (GCallback) gtk_widget_destroyed, & plugin_list);
-    g_signal_connect (enable_button, "clicked", (GCallback) enable_selected, NULL);
+    g_signal_connect (enable_button, "clicked", (GCallback) enable_selected, nullptr);
     g_signal_connect (loaded_list, "destroy", (GCallback) gtk_widget_destroyed, & loaded_list);
-    g_signal_connect (disable_button, "clicked", (GCallback) disable_selected, NULL);
-    g_signal_connect (settings_button, "clicked", (GCallback) configure_selected, NULL);
+    g_signal_connect (disable_button, "clicked", (GCallback) disable_selected, nullptr);
+    g_signal_connect (settings_button, "clicked", (GCallback) configure_selected, nullptr);
 
     gtk_widget_show_all (config_win);
 }

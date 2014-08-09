@@ -69,23 +69,22 @@ static void combo_cleanup()
 
 static const PreferencesWidget oss_widgets[] = {
     WidgetCombo(N_("Audio device:"),
-        {VALUE_STRING, 0, "oss4", "device"},
+        WidgetString ("oss4", "device"),
         {0, 0, combo_fill}),
     WidgetCheck(N_("Use alternate device:"),
-        {VALUE_BOOLEAN, 0, "oss4", "use_alt_device"}),
-    WidgetEntry(0, {VALUE_STRING, 0, "oss4", "alt_device"},
+        WidgetBool ("oss4", "use_alt_device")),
+    WidgetEntry(0, WidgetString ("oss4", "alt_device"),
         {}, WIDGET_CHILD),
     WidgetCheck(N_("Save volume between sessions."),
-        {VALUE_BOOLEAN, 0, "oss4", "save_volume"}),
+        WidgetBool ("oss4", "save_volume")),
     WidgetCheck(N_("Enable format conversions made by the OSS software."),
-        {VALUE_BOOLEAN, 0, "oss4", "cookedmode"}),
+        WidgetBool ("oss4", "cookedmode")),
     WidgetCheck(N_("Enable exclusive mode to prevent virtual mixing."),
-        {VALUE_BOOLEAN, 0, "oss4", "exclusive"})
+        WidgetBool ("oss4", "exclusive"))
 };
 
 static const PluginPreferences oss_prefs = {
-    oss_widgets,
-    ARRAY_LEN(oss_widgets),
+    {oss_widgets},
     combo_init,
     nullptr,  // apply
     combo_cleanup

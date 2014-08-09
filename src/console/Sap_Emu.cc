@@ -98,6 +98,41 @@ static void parse_string( byte const* in, byte const* end, int len, char* out )
 	memcpy( out, start, len );
 }
 
+static byte const* parse_int_( byte const* in, int* out )
+{
+	int n = 0;
+	while ( 1 )
+	{
+		unsigned d = from_dec( in, in + 1 );
+		if ( d > 9 )
+			break;
+		in++;
+		n = n * 10 + d;
+		*out = n;
+	}
+	return in;
+}
+
+static byte const* parse_time( byte const* in, int* out )
+{
+	*out = -1;
+	int n = -1;
+	in = parse_int_( in, &n );
+	if ( n >= 0 )
+	{
+		*out = n;
+		if ( *in == ':' )
+		{
+			n = -1;
+			in = parse_int_( in + 1, &n );
+			if ( n >= 0 )
+				*out = *out * 60 + n;
+		}
+	}
+	*out = *out * 1000;
+	return in;
+}
+
 static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out )
 {
 	out->track_count   = 1;
@@ -155,12 +190,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		{
 			switch ( out->type = *in )
 			{
+			case 'D':
 			case 'C':
 			case 'B':
 				break;
-
-			case 'D':
-				return "Digimusic not supported";
 
 			default:
 				return "Unsupported player type";
@@ -169,6 +202,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		else if ( !strncmp( "STEREO", tag, tag_len ) )
 		{
 			out->stereo = true;
+		}
+		else if ( !strncmp( "NTSC", tag, tag_len ) )
+		{
+			out->ntsc = true;
 		}
 		else if ( !strncmp( "FASTPLAY", tag, tag_len ) )
 		{
@@ -188,6 +225,10 @@ static blargg_err_t parse_info( byte const* in, long size, Sap_Emu::info_t* out 
 		{
 			parse_string( in, line_end, sizeof out->copyright, out->copyright );
 		}
+		else if ( !strncmp( "TIME", tag, tag_len ) )
+		{
+			parse_time( in, &out->length );
+		}
 
 		in = line_end + 2;
 	}
@@ -204,6 +245,7 @@ static void copy_sap_fields( Sap_Emu::info_t const& in, track_info_t* out )
 	Gme_File::copy_field_( out->song,      in.name );
 	Gme_File::copy_field_( out->author,    in.author );
 	Gme_File::copy_field_( out->copyright, in.copyright );
+	out->length = in.length;
 }
 
 blargg_err_t Sap_Emu::track_info_( track_info_t* out, int ) const
@@ -300,12 +342,15 @@ void Sap_Emu::cpu_jsr( sap_addr_t addr )
 void Sap_Emu::run_routine( sap_addr_t addr )
 {
 	cpu_jsr( addr );
-	cpu::run( 312 * base_scanline_period * 60 );
+	cpu::run( ( info.ntsc ? 262 : 312 ) * base_scanline_period * 60 );
 	check( r.pc == idle_addr );
 }
 
 inline void Sap_Emu::call_init( int track )
 {
+	uint8_t sp;
+	uint16_t code_base;
+
 	switch ( info.type )
 	{
 	case 'B':
@@ -321,6 +366,39 @@ inline void Sap_Emu::call_init( int track )
 		r.a = 0;
 		r.x = track;
 		run_routine( info.play_addr + 3 );
+		break;
+
+	case 'D':
+		r.a = track;
+		r.x = 0;
+		r.y = 0;
+		r.sp = 0xFF;
+		run_routine( info.init_addr );
+
+		sp = r.sp;
+
+		mem.ram [0x100 + sp] = r.pc >> 8;
+		sp = (sp - 1) & 0xFF;
+		mem.ram [0x100 + sp] = ( r.pc & 0xFF );
+		r.sp = (sp - 1) & 0xFF;
+
+		code_base = 0xd200;
+		mem.ram [code_base] = 0x08;
+		mem.ram [code_base + 1] = 0x48;
+		mem.ram [code_base + 2] = 0x8a;
+		mem.ram [code_base + 3] = 0x48;
+		mem.ram [code_base + 4] = 0x98;
+		mem.ram [code_base + 5] = 0x48;
+		mem.ram [code_base + 6] = 0x20;
+		mem.ram [code_base + 7] = code_base & 0xFF;
+		mem.ram [code_base + 8] = (code_base >> 8);
+		mem.ram [code_base + 9] = 0x68;
+		mem.ram [code_base + 10] = 0xa8;
+		mem.ram [code_base + 11] = 0x68;
+		mem.ram [code_base + 12] = 0xaa;
+		mem.ram [code_base + 13] = 0x68;
+		mem.ram [code_base + 14] = 0x40;
+		info.play_addr = code_base;
 		break;
 	}
 }
@@ -397,6 +475,9 @@ inline void Sap_Emu::call_play()
 {
 	switch ( info.type )
 	{
+	case 'D':
+		cpu_jsr( info.play_addr );
+		break;
 	case 'B':
 		cpu_jsr( info.play_addr );
 		break;

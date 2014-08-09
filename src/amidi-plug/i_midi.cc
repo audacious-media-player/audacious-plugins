@@ -137,8 +137,8 @@ midievent_t * i_midi_file_new_event (midifile_track_t * track, int sysex_length)
     midievent_t * event;
 
     event = g_new (midievent_t, 1);
-    event->sysex = sysex_length ? g_new (unsigned char, sysex_length) : NULL;
-    event->next = NULL;
+    event->sysex = sysex_length ? g_new (unsigned char, sysex_length) : nullptr;
+    event->next = nullptr;
 
     /* append at the end of the track's linked list */
     if (track->current_event)
@@ -566,11 +566,11 @@ int i_midi_file_parse_riff (midifile_t * mf)
 /* midifile init */
 void i_midi_init (midifile_t * mf)
 {
-    mf->file_pointer = NULL;
-    mf->file_name = NULL;
+    mf->file_pointer = nullptr;
+    mf->file_name = nullptr;
     mf->file_offset = 0;
     mf->num_tracks = 0;
-    mf->tracks = NULL;
+    mf->tracks = nullptr;
     mf->max_tick = 0;
     mf->smpte_timing = 0;
     mf->format = 0;
@@ -587,7 +587,7 @@ void i_midi_init (midifile_t * mf)
 void i_midi_free (midifile_t * mf)
 {
     g_free (mf->file_name);
-    mf->file_name = NULL;
+    mf->file_name = nullptr;
 
     if (mf->tracks)
     {
@@ -597,7 +597,7 @@ void i_midi_free (midifile_t * mf)
         for (i = 0 ; i < mf->num_tracks ; ++i)
         {
             midievent_t * event = mf->tracks[i].first_event;
-            midievent_t * event_tmp = NULL;
+            midievent_t * event_tmp = nullptr;
 
             while (event)
             {
@@ -615,7 +615,7 @@ void i_midi_free (midifile_t * mf)
 
         /* free track array */
         g_free (mf->tracks);
-        mf->tracks = NULL;
+        mf->tracks = nullptr;
     }
 }
 
@@ -698,8 +698,8 @@ void i_midi_setget_length (midifile_t * mf)
 
     for (;;)
     {
-        midievent_t * event = NULL;
-        midifile_track_t * event_track = NULL;
+        midievent_t * event = nullptr;
+        midifile_track_t * event_track = nullptr;
         int i, min_tick = mf->max_tick + 1;
 
         /* search next event */
@@ -759,7 +759,7 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
 {
     int i = 0, last_tick = 0;
     unsigned weighted_avg_tempo = 0;
-    bool_t is_monotempo = TRUE;
+    gboolean is_monotempo = TRUE;
     int last_tempo = mf->current_tempo;
 
     /* initialize current position in each track */
@@ -773,8 +773,8 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
 
     for (;;)
     {
-        midievent_t * event = NULL;
-        midifile_track_t * event_track = NULL;
+        midievent_t * event = nullptr;
+        midifile_track_t * event_track = nullptr;
         int i, min_tick = mf->max_tick + 1;
 
         /* search next event */

@@ -62,7 +62,7 @@ static int outstep, width;
 static double * cosine;
 static Buffer in, out;
 static int trim, written;
-static bool_t ending;
+static bool ending;
 
 static void bufgrow (Buffer * b, int len)
 {
@@ -115,7 +115,7 @@ static void speed_flush (void)
 
     trim = width / 2;
     written = 0;
-    ending = FALSE;
+    ending = false;
 }
 
 static void speed_start (int * chans, int * rate)
@@ -126,7 +126,7 @@ static void speed_start (int * chans, int * rate)
     if (srcstate)
         src_delete (srcstate);
 
-    srcstate = src_new (SRC_LINEAR, curchans, NULL);
+    srcstate = src_new (SRC_LINEAR, curchans, nullptr);
 
     /* Calculate the width of the cosine window and the spacing interval for
      * output. */
@@ -164,7 +164,7 @@ static void speed_process (float * * data, int * samples)
     int src = 0;
     int dst = 0;
 
-    while (src + MAX (width, instep) <= in.len)
+    while (src + aud::max (width, instep) <= in.len)
     {
         bufgrow (& out, dst + width);
         out.len = dst + width;
@@ -183,7 +183,7 @@ static void speed_process (float * * data, int * samples)
     /* Trim silence from the beginning of the output buffer. */
     if (trim > 0)
     {
-        int cut = MIN (trim, dst);
+        int cut = aud::min (trim, dst);
         bufcut (& out, cut);
         dst -= cut;
         trim -= cut;
@@ -207,7 +207,7 @@ static void speed_finish (float * * data, int * samples)
      * handle it properly. */
     if (! ending)
     {
-        ending = TRUE;
+        ending = true;
         speed_process (data, samples);
     }
 }
@@ -222,27 +222,24 @@ static int speed_adjust_delay (int delay)
 static const char * const speed_defaults[] = {
  "speed", "1",
  "pitch", "1",
- NULL};
+ nullptr};
 
 static const PreferencesWidget speed_widgets[] = {
     WidgetLabel (N_("<b>Speed and Pitch</b>")),
     WidgetSpin (N_("Speed:"),
-        {VALUE_FLOAT, 0, CFGSECT, "speed"},
+        WidgetFloat (CFGSECT, "speed"),
         {MINSPEED, MAXSPEED, 0.05}),
     WidgetSpin (N_("Pitch:"),
-        {VALUE_FLOAT, 0, CFGSECT, "pitch"},
+        WidgetFloat (CFGSECT, "pitch"),
         {MINPITCH, MAXPITCH, 0.05})
 };
 
-static const PluginPreferences speed_prefs = {
-    speed_widgets,
-    ARRAY_LEN (speed_widgets)
-};
+static const PluginPreferences speed_prefs = {{speed_widgets}};
 
-static bool_t speed_init (void)
+static bool speed_init (void)
 {
     aud_config_set_defaults (CFGSECT, speed_defaults);
-    return TRUE;
+    return true;
 }
 
 static void speed_cleanup (void)
@@ -250,17 +247,17 @@ static void speed_cleanup (void)
     if (srcstate)
         src_delete (srcstate);
 
-    srcstate = NULL;
+    srcstate = nullptr;
 
     g_free (cosine);
-    cosine = NULL;
+    cosine = nullptr;
 
     g_free (in.mem);
-    in.mem = NULL;
+    in.mem = nullptr;
     in.size = 0;
 
     g_free (out.mem);
-    out.mem = NULL;
+    out.mem = nullptr;
     out.size = 0;
 }
 
@@ -273,7 +270,7 @@ static void speed_cleanup (void)
 #define AUD_EFFECT_FLUSH       speed_flush
 #define AUD_EFFECT_FINISH      speed_finish
 #define AUD_EFFECT_ADJ_DELAY   speed_adjust_delay
-#define AUD_EFFECT_SAME_FMT    TRUE
+#define AUD_EFFECT_SAME_FMT    true
 
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>

@@ -40,7 +40,7 @@
 #include "ui_vis.h"
 #include "util.h"
 
-static const gchar * const skins_defaults[] = {
+static const char * const skins_defaults[] = {
  /* general */
  "autoscroll_songname", "TRUE",
  "mainwin_font", "Sans Bold 9",
@@ -62,6 +62,7 @@ static const gchar * const skins_defaults[] = {
 
  /* windows */
  "always_on_top", "FALSE",
+ "double_size", "FALSE",
  "equalizer_shaded", "FALSE",
  "equalizer_visible", "FALSE",
  "equalizer_x", "20",
@@ -76,82 +77,79 @@ static const gchar * const skins_defaults[] = {
  "playlist_width", "275",
  "playlist_height", "232",
  "sticky", "FALSE",
- NULL};
+ nullptr};
 
 skins_cfg_t config;
 
 static GtkWidget * skin_view;
 
-typedef struct skins_cfg_boolent_t {
-    const gchar * name;
-    gboolean * ptr;
-} skins_cfg_boolent;
+static const struct skins_cfg_boolent_t {
+    const char * name;
+    bool * ptr;
+} skins_boolents[] =
+{
+    /* general */
+    {"autoscroll_songname", & config.autoscroll},
+    {"mainwin_use_bitmapfont", & config.mainwin_use_bitmapfont},
+    {"twoway_scroll", & config.twoway_scroll},
 
-static const skins_cfg_boolent skins_boolents[] = {
- /* general */
- {"autoscroll_songname", & config.autoscroll},
- {"mainwin_use_bitmapfont", & config.mainwin_use_bitmapfont},
- {"twoway_scroll", & config.twoway_scroll},
+    /* visualizer */
+    {"analyzer_peaks", & config.analyzer_peaks}
+};
 
- /* visualizer */
- {"analyzer_peaks", & config.analyzer_peaks}};
+static const struct {
+    const char * name;
+    int * ptr;
+} skins_numents[] =
+{
+    /* visualizer */
+    {"analyzer_falloff", & config.analyzer_falloff},
+    {"analyzer_mode", & config.analyzer_mode},
+    {"analyzer_type", & config.analyzer_type},
+    {"peaks_falloff", & config.peaks_falloff},
+    {"scope_mode", & config.scope_mode},
+    {"vis_type", & config.vis_type},
+    {"voiceprint_mode", & config.voiceprint_mode},
+    {"vu_mode", & config.vu_mode},
 
-typedef struct skins_cfg_nument_t {
-    const gchar * name;
-    gint * ptr;
-} skins_cfg_nument;
-
-static const skins_cfg_nument skins_numents[] = {
- /* visualizer */
- {"analyzer_falloff", & config.analyzer_falloff},
- {"analyzer_mode", & config.analyzer_mode},
- {"analyzer_type", & config.analyzer_type},
- {"peaks_falloff", & config.peaks_falloff},
- {"scope_mode", & config.scope_mode},
- {"vis_type", & config.vis_type},
- {"voiceprint_mode", & config.voiceprint_mode},
- {"vu_mode", & config.vu_mode},
-
- /* windows */
- {"equalizer_x", & config.equalizer_x},
- {"equalizer_y", & config.equalizer_y},
- {"player_x", & config.player_x},
- {"player_y", & config.player_y},
- {"playlist_x", & config.playlist_x},
- {"playlist_y", & config.playlist_y},
- {"playlist_width", & config.playlist_width},
- {"playlist_height", & config.playlist_height}};
-
-typedef struct skins_cfg_strent_t {
-    const gchar * name;
-    gchar * * ptr;
-} skins_cfg_strent;
+    /* windows */
+    {"equalizer_x", & config.equalizer_x},
+    {"equalizer_y", & config.equalizer_y},
+    {"player_x", & config.player_x},
+    {"player_y", & config.player_y},
+    {"playlist_x", & config.playlist_x},
+    {"playlist_y", & config.playlist_y},
+    {"playlist_width", & config.playlist_width},
+    {"playlist_height", & config.playlist_height}
+};
 
 void skins_cfg_load (void)
 {
     aud_config_set_defaults ("skins", skins_defaults);
 
-    for (gint i = 0; i < ARRAY_LEN (skins_boolents); i ++)
-        * skins_boolents[i].ptr = aud_get_bool ("skins", skins_boolents[i].name);
+    for (auto & boolent : skins_boolents)
+        * boolent.ptr = aud_get_bool ("skins", boolent.name);
 
-    for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
-        * skins_numents[i].ptr = aud_get_int ("skins", skins_numents[i].name);
+    for (auto & nument : skins_numents)
+        * nument.ptr = aud_get_int ("skins", nument.name);
+
+    config.scale = aud_get_bool ("skins", "double_size") ? 2 : 1;
 }
 
 void skins_cfg_save (void)
 {
-    for (gint i = 0; i < ARRAY_LEN (skins_boolents); i ++)
-        aud_set_bool ("skins", skins_boolents[i].name, * skins_boolents[i].ptr);
+    for (auto & boolent : skins_boolents)
+        aud_set_bool ("skins", boolent.name, * boolent.ptr);
 
-    for (gint i = 0; i < ARRAY_LEN (skins_numents); i ++)
-        aud_set_int ("skins", skins_numents[i].name, * skins_numents[i].ptr);
+    for (auto & nument : skins_numents)
+        aud_set_int ("skins", nument.name, * nument.ptr);
 }
 
 static void
 mainwin_font_set_cb()
 {
     String font = aud_get_str ("skins", "mainwin_font");
-    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? NULL : (const char *) font);
+    textbox_set_font (mainwin_info, config.mainwin_use_bitmapfont ? nullptr : (const char *) font);
 }
 
 static void
@@ -175,11 +173,11 @@ static void vis_reset_cb (void)
 }
 
 static const PreferencesWidget font_table_elements[] = {
-    WidgetFonts (N_("_Player:"),
-        {VALUE_STRING, 0, "skins", "mainwin_font", mainwin_font_set_cb},
+    WidgetFonts (N_("Player:"),
+        WidgetString ("skins", "mainwin_font", mainwin_font_set_cb),
         {N_("Select main player window font:")}),
-    WidgetFonts (N_("_Playlist:"),
-        {VALUE_STRING, 0, "skins", "playlist_font", playlist_font_set_cb},
+    WidgetFonts (N_("Playlist:"),
+        WidgetString ("skins", "playlist_font", playlist_font_set_cb),
         {N_("Select playlist font:")})
 };
 
@@ -189,14 +187,14 @@ static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
     WidgetCustom (create_skin_view),
     WidgetLabel (N_("<b>Fonts</b>")),
-    WidgetTable ({font_table_elements, ARRAY_LEN (font_table_elements)},
+    WidgetTable ({{font_table_elements}},
         WIDGET_CHILD),
     WidgetCheck (N_("Use bitmap fonts (supports ASCII only)"),
-        {VALUE_BOOLEAN, & config.mainwin_use_bitmapfont, 0, 0, mainwin_font_set_cb}),
+        WidgetBool (config.mainwin_use_bitmapfont, mainwin_font_set_cb)),
     WidgetCheck (N_("Scroll song title"),
-        {VALUE_BOOLEAN, & config.autoscroll, 0, 0, autoscroll_set_cb}),
+        WidgetBool (config.autoscroll, autoscroll_set_cb)),
     WidgetCheck (N_("Scroll song title in both directions"),
-        {VALUE_BOOLEAN, & config.twoway_scroll, 0, 0, autoscroll_set_cb})
+        WidgetBool (config.twoway_scroll, autoscroll_set_cb))
 };
 
 static ComboBoxElements vis_mode_elements[] = {
@@ -245,61 +243,58 @@ static ComboBoxElements vu_mode_elements[] = {
 static const PreferencesWidget skins_widgets_vis[] = {
     WidgetLabel (N_("<b>Type</b>")),
     WidgetCombo (N_("Visualization type:"),
-        {VALUE_INT, & config.vis_type, 0, 0, vis_reset_cb},
-        {vis_mode_elements, ARRAY_LEN (vis_mode_elements)}),
+        WidgetInt (config.vis_type, vis_reset_cb),
+        {{vis_mode_elements}}),
     WidgetLabel (N_("<b>Analyzer</b>")),
     WidgetCheck (N_("Show peaks"),
-        {VALUE_BOOLEAN, & config.analyzer_peaks, 0, 0, vis_reset_cb}),
+        WidgetBool (config.analyzer_peaks, vis_reset_cb)),
     WidgetCombo (N_("Coloring:"),
-        {VALUE_INT, & config.analyzer_mode, 0, 0, vis_reset_cb},
-        {analyzer_mode_elements, ARRAY_LEN (analyzer_mode_elements)}),
+        WidgetInt (config.analyzer_mode, vis_reset_cb),
+        {{analyzer_mode_elements}}),
     WidgetCombo (N_("Style:"),
-        {VALUE_INT, & config.analyzer_type, 0, 0, vis_reset_cb},
-        {analyzer_type_elements, ARRAY_LEN (analyzer_type_elements)}),
+        WidgetInt (config.analyzer_type, vis_reset_cb),
+        {{analyzer_type_elements}}),
     WidgetCombo (N_("Falloff:"),
-        {VALUE_INT, & config.analyzer_falloff, 0, 0, vis_reset_cb},
-        {falloff_elements, ARRAY_LEN (falloff_elements)}),
+        WidgetInt (config.analyzer_falloff, vis_reset_cb),
+        {{falloff_elements}}),
     WidgetCombo (N_("Peak falloff:"),
-        {VALUE_INT, & config.peaks_falloff, 0, 0, vis_reset_cb},
-        {falloff_elements, ARRAY_LEN (falloff_elements)}),
+        WidgetInt (config.peaks_falloff, vis_reset_cb),
+        {{falloff_elements}}),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
     WidgetCombo (N_("Scope Style:"),
-        {VALUE_INT, & config.scope_mode, 0, 0, vis_reset_cb},
-        {scope_mode_elements, ARRAY_LEN (scope_mode_elements)}),
+        WidgetInt (config.scope_mode, vis_reset_cb),
+        {{scope_mode_elements}}),
     WidgetCombo (N_("Voiceprint Coloring:"),
-        {VALUE_INT, & config.voiceprint_mode, 0, 0, vis_reset_cb},
-        {voiceprint_mode_elements, ARRAY_LEN (voiceprint_mode_elements)}),
+        WidgetInt (config.voiceprint_mode, vis_reset_cb),
+        {{voiceprint_mode_elements}}),
     WidgetCombo (N_("VU Meter Style:"),
-        {VALUE_INT, & config.vu_mode, 0, 0, vis_reset_cb},
-        {vu_mode_elements, ARRAY_LEN (vu_mode_elements)})
+        WidgetInt (config.vu_mode, vis_reset_cb),
+        {{vu_mode_elements}})
 };
 
 static const NotebookTab skins_notebook_tabs[] = {
-    {N_("General"), skins_widgets_general, ARRAY_LEN (skins_widgets_general)},
-    {N_("Visualization"), skins_widgets_vis, ARRAY_LEN (skins_widgets_vis)}
+    {N_("General"), {skins_widgets_general}},
+    {N_("Visualization"), {skins_widgets_vis}}
 };
 
 static const PreferencesWidget skins_widgets[] = {
-    WidgetNotebook ({skins_notebook_tabs, ARRAY_LEN (skins_notebook_tabs)})
+    WidgetNotebook ({{skins_notebook_tabs}})
 };
 
-const PluginPreferences skins_prefs = {
-    skins_widgets,
-    ARRAY_LEN (skins_widgets)
-};
+const PluginPreferences skins_prefs = {{skins_widgets}};
 
 void
 on_skin_view_drag_data_received(GtkWidget * widget,
                                 GdkDragContext * context,
-                                gint x, gint y,
+                                int x, int y,
                                 GtkSelectionData * selection_data,
-                                guint info, guint time,
-                                gpointer user_data)
+                                unsigned info, unsigned time,
+                                void * user_data)
 {
-    const gchar * data = (const gchar *) gtk_selection_data_get_data (selection_data);
+    const char * data = (const char *) gtk_selection_data_get_data (selection_data);
     g_return_if_fail (data);
 
-    const gchar * end = strchr (data, '\r');
+    const char * end = strchr (data, '\r');
     if (! end) end = strchr (data, '\n');
     if (! end) end = data + strlen (data);
 
@@ -326,7 +321,7 @@ on_skin_view_drag_data_received(GtkWidget * widget,
 
 static void * create_skin_view (void)
 {
-    GtkWidget * scrolled = gtk_scrolled_window_new (NULL, NULL);
+    GtkWidget * scrolled = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy ((GtkScrolledWindow *) scrolled,
      GTK_POLICY_NEVER, GTK_POLICY_ALWAYS);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled, GTK_SHADOW_IN);
@@ -340,7 +335,7 @@ static void * create_skin_view (void)
     drag_dest_set (skin_view);
 
     g_signal_connect (skin_view, "drag-data-received",
-     (GCallback) on_skin_view_drag_data_received, NULL);
+     (GCallback) on_skin_view_drag_data_received, nullptr);
     g_signal_connect (skin_view, "destroy", (GCallback) gtk_widget_destroyed, & skin_view);
 
     return scrolled;

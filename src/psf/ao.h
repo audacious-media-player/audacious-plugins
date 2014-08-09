@@ -19,12 +19,12 @@
 #define MAX_DISP_INFO_LENGTH		256
 #define AUDIO_RATE					(44100)
 
-#ifndef TRUE
-#define TRUE 1
+#ifndef true
+#define true 1
 #endif
 
-#ifndef FALSE
-#define FALSE 0
+#ifndef false
+#define false 0
 #endif
 
 enum

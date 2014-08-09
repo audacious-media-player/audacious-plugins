@@ -34,19 +34,19 @@
 
 #include "ui_equalizer.h"
 
-static GtkWidget *equalizerwin_load_window = NULL;
-static GtkWidget *equalizerwin_load_auto_window = NULL;
-static GtkWidget *equalizerwin_save_window = NULL;
-static GtkWidget *equalizerwin_save_entry = NULL;
-static GtkWidget *equalizerwin_save_auto_window = NULL;
-static GtkWidget *equalizerwin_save_auto_entry = NULL;
-static GtkWidget *equalizerwin_delete_window = NULL;
-static GtkWidget *equalizerwin_delete_auto_window = NULL;
+static GtkWidget *equalizerwin_load_window = nullptr;
+static GtkWidget *equalizerwin_load_auto_window = nullptr;
+static GtkWidget *equalizerwin_save_window = nullptr;
+static GtkWidget *equalizerwin_save_entry = nullptr;
+static GtkWidget *equalizerwin_save_auto_window = nullptr;
+static GtkWidget *equalizerwin_save_auto_entry = nullptr;
+static GtkWidget *equalizerwin_delete_window = nullptr;
+static GtkWidget *equalizerwin_delete_auto_window = nullptr;
 
 static void
-equalizerwin_delete_selected_presets(GtkTreeView *view, const gchar *filename)
+equalizerwin_delete_selected_presets(GtkTreeView *view, const char *filename)
 {
-    gchar *text;
+    char *text;
 
     GtkTreeSelection *selection = gtk_tree_view_get_selection(view);
     GtkTreeModel *model = gtk_tree_view_get_model(view);
@@ -60,7 +60,7 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, const gchar *filename)
      */
 
     GList *list = gtk_tree_selection_get_selected_rows(selection, &model);
-    GList *rrefs = NULL;
+    GList *rrefs = nullptr;
     GList *litr;
 
     for (litr = list; litr; litr = litr->next)
@@ -88,9 +88,9 @@ equalizerwin_delete_selected_presets(GtkTreeView *view, const gchar *filename)
 }
 
 static void
-equalizerwin_save_ok(GtkWidget * widget, gpointer data)
+equalizerwin_save_ok(GtkWidget * widget, void * data)
 {
-    const gchar *text;
+    const char *text;
 
     text = gtk_entry_get_text(GTK_ENTRY(equalizerwin_save_entry));
 
@@ -102,9 +102,9 @@ equalizerwin_save_ok(GtkWidget * widget, gpointer data)
 
 static void
 equalizerwin_save_select(GtkTreeView *treeview, GtkTreePath *path,
-                         GtkTreeViewColumn *col, gpointer data)
+                         GtkTreeViewColumn *col, void * data)
 {
-    gchar *text;
+    char *text;
 
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
     GtkTreeModel *model;
@@ -116,7 +116,7 @@ equalizerwin_save_select(GtkTreeView *treeview, GtkTreePath *path,
         {
             gtk_tree_model_get(model, &iter, 0, &text, -1);
             gtk_entry_set_text(GTK_ENTRY(equalizerwin_save_entry), text);
-            equalizerwin_save_ok(NULL, NULL);
+            equalizerwin_save_ok(nullptr, nullptr);
 
             g_free(text);
         }
@@ -124,9 +124,9 @@ equalizerwin_save_select(GtkTreeView *treeview, GtkTreePath *path,
 }
 
 static void
-equalizerwin_load_ok(GtkWidget *widget, gpointer data)
+equalizerwin_load_ok(GtkWidget *widget, void * data)
 {
-    gchar *text;
+    char *text;
 
     GtkTreeView* view = GTK_TREE_VIEW(data);
     GtkTreeSelection *selection = gtk_tree_view_get_selection(view);
@@ -148,21 +148,21 @@ equalizerwin_load_ok(GtkWidget *widget, gpointer data)
 
 static void
 equalizerwin_load_select(GtkTreeView *treeview, GtkTreePath *path,
-                         GtkTreeViewColumn *col, gpointer data)
+                         GtkTreeViewColumn *col, void * data)
 {
-    equalizerwin_load_ok(NULL, treeview);
+    equalizerwin_load_ok(nullptr, treeview);
 }
 
 static void
-equalizerwin_delete_delete(GtkWidget *widget, gpointer data)
+equalizerwin_delete_delete(GtkWidget *widget, void * data)
 {
     equalizerwin_delete_selected_presets(GTK_TREE_VIEW(data), "eq.preset");
 }
 
 static void
-equalizerwin_save_auto_ok(GtkWidget *widget, gpointer data)
+equalizerwin_save_auto_ok(GtkWidget *widget, void * data)
 {
-    const gchar *text;
+    const char *text;
 
     text = gtk_entry_get_text(GTK_ENTRY(equalizerwin_save_auto_entry));
 
@@ -174,9 +174,9 @@ equalizerwin_save_auto_ok(GtkWidget *widget, gpointer data)
 
 static void
 equalizerwin_save_auto_select(GtkTreeView *treeview, GtkTreePath *path,
-                              GtkTreeViewColumn *col, gpointer data)
+                              GtkTreeViewColumn *col, void * data)
 {
-    gchar *text;
+    char *text;
 
     GtkTreeSelection *selection = gtk_tree_view_get_selection(treeview);
     GtkTreeModel *model;
@@ -188,7 +188,7 @@ equalizerwin_save_auto_select(GtkTreeView *treeview, GtkTreePath *path,
         {
             gtk_tree_model_get(model, &iter, 0, &text, -1);
             gtk_entry_set_text(GTK_ENTRY(equalizerwin_save_auto_entry), text);
-            equalizerwin_save_auto_ok(NULL, NULL);
+            equalizerwin_save_auto_ok(nullptr, nullptr);
 
             g_free(text);
         }
@@ -196,9 +196,9 @@ equalizerwin_save_auto_select(GtkTreeView *treeview, GtkTreePath *path,
 }
 
 static void
-equalizerwin_load_auto_ok(GtkWidget *widget, gpointer data)
+equalizerwin_load_auto_ok(GtkWidget *widget, void * data)
 {
-    gchar *text;
+    char *text;
 
     GtkTreeView *view = GTK_TREE_VIEW(data);
     GtkTreeSelection *selection = gtk_tree_view_get_selection(view);
@@ -220,13 +220,13 @@ equalizerwin_load_auto_ok(GtkWidget *widget, gpointer data)
 
 static void
 equalizerwin_load_auto_select(GtkTreeView *treeview, GtkTreePath *path,
-                              GtkTreeViewColumn *col, gpointer data)
+                              GtkTreeViewColumn *col, void * data)
 {
-    equalizerwin_load_auto_ok(NULL, treeview);
+    equalizerwin_load_auto_ok(nullptr, treeview);
 }
 
 static void
-equalizerwin_delete_auto_delete(GtkWidget *widget, gpointer data)
+equalizerwin_delete_auto_delete(GtkWidget *widget, void * data)
 {
     equalizerwin_delete_selected_presets(GTK_TREE_VIEW(data), "eq.auto_preset");
 }
@@ -258,10 +258,10 @@ static GtkWidget * equalizerwin_create_list_window
 
     audgui_destroy_on_escape (* window);
 
-    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    vbox = gtk_vbox_new (FALSE, 10);
     gtk_container_add(GTK_CONTAINER(*window), vbox);
 
-    scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+    scrolled_window = gtk_scrolled_window_new(nullptr, nullptr);
     gtk_scrolled_window_set_shadow_type ((GtkScrolledWindow *) scrolled_window, GTK_SHADOW_IN);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
@@ -282,7 +282,7 @@ static GtkWidget * equalizerwin_create_list_window
     renderer = gtk_cell_renderer_text_new();
     gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1,
                                                 _("Presets"), renderer,
-                                                "text", 0, NULL);
+                                                "text", 0, nullptr);
     gtk_tree_view_set_model(GTK_TREE_VIEW(view), model);
     g_object_unref(model);
 
@@ -294,16 +294,16 @@ static GtkWidget * equalizerwin_create_list_window
 
     if (entry) {
         *entry = gtk_entry_new();
-        g_signal_connect(*entry, "activate", action_func, NULL);
+        g_signal_connect(*entry, "activate", action_func, nullptr);
         gtk_box_pack_start(GTK_BOX(vbox), *entry, FALSE, FALSE, 0);
     }
 
-    bbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
+    bbox = gtk_hbutton_box_new();
     gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
     gtk_box_set_spacing(GTK_BOX(bbox), 5);
     gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-    button_cancel = audgui_button_new (_("Cancel"), "process-stop", NULL, NULL);
+    button_cancel = audgui_button_new (_("Cancel"), "process-stop", nullptr, nullptr);
     g_signal_connect_swapped (button_cancel, "clicked", (GCallback)
      gtk_widget_destroy, * window);
     gtk_box_pack_start(GTK_BOX(bbox), button_cancel, TRUE, TRUE, 0);
@@ -312,7 +312,7 @@ static GtkWidget * equalizerwin_create_list_window
     gtk_widget_set_can_default (button_action, TRUE);
 
     if (select_row_func)
-        g_signal_connect(view, "row-activated", G_CALLBACK(select_row_func), NULL);
+        g_signal_connect(view, "row-activated", G_CALLBACK(select_row_func), nullptr);
 
     gtk_box_pack_start(GTK_BOX(bbox), button_action, TRUE, TRUE, 0);
 
@@ -333,8 +333,8 @@ void eq_preset_load (void)
     equalizerwin_create_list_window(equalizer_presets,
                                     _("Load preset"),
                                     &equalizerwin_load_window,
-                                    GTK_SELECTION_SINGLE, NULL,
-                                    audgui_button_new (_("Load"), "document-open", NULL, NULL),
+                                    GTK_SELECTION_SINGLE, nullptr,
+                                    audgui_button_new (_("Load"), "document-open", nullptr, nullptr),
                                     G_CALLBACK(equalizerwin_load_ok),
                                     G_CALLBACK(equalizerwin_load_select));
 }
@@ -349,8 +349,8 @@ void eq_preset_load_auto (void)
     equalizerwin_create_list_window(equalizer_auto_presets,
                                     _("Load auto-preset"),
                                     &equalizerwin_load_auto_window,
-                                    GTK_SELECTION_SINGLE, NULL,
-                                    audgui_button_new (_("Load"), "document-open", NULL, NULL),
+                                    GTK_SELECTION_SINGLE, nullptr,
+                                    audgui_button_new (_("Load"), "document-open", nullptr, nullptr),
                                     G_CALLBACK(equalizerwin_load_auto_ok),
                                     G_CALLBACK(equalizerwin_load_auto_select));
 }
@@ -367,7 +367,7 @@ void eq_preset_save (void)
                                     &equalizerwin_save_window,
                                     GTK_SELECTION_SINGLE,
                                     &equalizerwin_save_entry,
-                                    audgui_button_new (_("Save"), "document-save", NULL, NULL),
+                                    audgui_button_new (_("Save"), "document-save", nullptr, nullptr),
                                     G_CALLBACK(equalizerwin_save_ok),
                                     G_CALLBACK(equalizerwin_save_select));
 }
@@ -382,13 +382,13 @@ void eq_preset_save_auto (void)
                                         &equalizerwin_save_auto_window,
                                         GTK_SELECTION_SINGLE,
                                         &equalizerwin_save_auto_entry,
-                                        audgui_button_new (_("Save"), "document-save", NULL, NULL),
+                                        audgui_button_new (_("Save"), "document-save", nullptr, nullptr),
                                         G_CALLBACK(equalizerwin_save_auto_ok),
                                         G_CALLBACK(equalizerwin_save_auto_select));
 
     String name = aud_drct_get_filename ();
 
-    if (name != NULL)
+    if (name != nullptr)
     {
         char * base = g_path_get_basename (name);
         gtk_entry_set_text ((GtkEntry *) equalizerwin_save_auto_entry, base);
@@ -406,10 +406,10 @@ void eq_preset_delete (void)
     equalizerwin_create_list_window(equalizer_presets,
                                     _("Delete preset"),
                                     &equalizerwin_delete_window,
-                                    GTK_SELECTION_MULTIPLE, NULL,
-                                    audgui_button_new (_("Delete"), "edit-delete", NULL, NULL),
+                                    GTK_SELECTION_MULTIPLE, nullptr,
+                                    audgui_button_new (_("Delete"), "edit-delete", nullptr, nullptr),
                                     G_CALLBACK(equalizerwin_delete_delete),
-                                    NULL);
+                                    nullptr);
 }
 
 void eq_preset_delete_auto (void)
@@ -422,10 +422,10 @@ void eq_preset_delete_auto (void)
     equalizerwin_create_list_window(equalizer_auto_presets,
                                     _("Delete auto-preset"),
                                     &equalizerwin_delete_auto_window,
-                                    GTK_SELECTION_MULTIPLE, NULL,
-                                    audgui_button_new (_("Delete"), "edit-delete", NULL, NULL),
+                                    GTK_SELECTION_MULTIPLE, nullptr,
+                                    audgui_button_new (_("Delete"), "edit-delete", nullptr, nullptr),
                                     G_CALLBACK(equalizerwin_delete_auto_delete),
-                                    NULL);
+                                    nullptr);
 }
 
 void eq_preset_load_default (void)

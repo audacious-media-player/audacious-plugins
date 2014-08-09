@@ -29,7 +29,7 @@ armcp15_t *armcp15_new(armcpu_t * c)
 {
 	int i;
 	armcp15_t *armcp15 = (armcp15_t*)malloc(sizeof(armcp15_t));
-	if(!armcp15) return NULL;
+	if(!armcp15) return nullptr;
 
 	armcp15->cpu = c;
 	armcp15->IDCode = 0x41049460;
@@ -219,51 +219,51 @@ void armcp15_maskPrecalc(armcp15_t *armcp15)
 INLINE BOOL armcp15_isAccessAllowed(armcp15_t *armcp15,u32 address,u32 access)
 {
 	int i ;
-	if (!(armcp15->ctrl & 1)) return TRUE ;        /* protection checking is not enabled */
+	if (!(armcp15->ctrl & 1)) return true ;        /* protection checking is not enabled */
 	for (i=0;i<8;i++) {
 		switch (access) {
 		case CP15_ACCESS_WRITEUSR:
-			if ((address & armcp15->regionWriteMask_USR[i]) == armcp15->regionWriteSet_USR[i]) return TRUE ;
+			if ((address & armcp15->regionWriteMask_USR[i]) == armcp15->regionWriteSet_USR[i]) return true ;
 			break ;
 		case CP15_ACCESS_WRITESYS:
-			if ((address & armcp15->regionWriteMask_SYS[i]) == armcp15->regionWriteSet_SYS[i]) return TRUE ;
+			if ((address & armcp15->regionWriteMask_SYS[i]) == armcp15->regionWriteSet_SYS[i]) return true ;
 			break ;
 		case CP15_ACCESS_READUSR:
-			if ((address & armcp15->regionReadMask_USR[i]) == armcp15->regionReadSet_USR[i]) return TRUE ;
+			if ((address & armcp15->regionReadMask_USR[i]) == armcp15->regionReadSet_USR[i]) return true ;
 			break ;
 		case CP15_ACCESS_READSYS:
-			if ((address & armcp15->regionReadMask_SYS[i]) == armcp15->regionReadSet_SYS[i]) return TRUE ;
+			if ((address & armcp15->regionReadMask_SYS[i]) == armcp15->regionReadSet_SYS[i]) return true ;
 			break ;
 		case CP15_ACCESS_EXECUSR:
-			if ((address & armcp15->regionExecuteMask_USR[i]) == armcp15->regionExecuteSet_USR[i]) return TRUE ;
+			if ((address & armcp15->regionExecuteMask_USR[i]) == armcp15->regionExecuteSet_USR[i]) return true ;
 			break ;
 		case CP15_ACCESS_EXECSYS:
-			if ((address & armcp15->regionExecuteMask_SYS[i]) == armcp15->regionExecuteSet_SYS[i]) return TRUE ;
+			if ((address & armcp15->regionExecuteMask_SYS[i]) == armcp15->regionExecuteSet_SYS[i]) return true ;
 			break ;
 		}
 	}
 	/* when protections are enabled, but no region allows access, deny access */
-	return FALSE ;
+	return false ;
 }
 
 BOOL armcp15_dataProcess(armcp15_t *armcp15, u8 CRd, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
 {
-   return FALSE;
+   return false;
 }
 
 BOOL armcp15_load(armcp15_t *armcp15, u8 CRd, u8 adr)
 {
-   return FALSE;
+   return false;
 }
 
 BOOL armcp15_store(armcp15_t *armcp15, u8 CRd, u8 adr)
 {
-   return FALSE;
+   return false;
 }
 
 BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
 {
-	if(armcp15->cpu->CPSR.bits.mode == USR) return FALSE;
+	if(armcp15->cpu->CPSR.bits.mode == USR) return false;
 
 	switch(CRn)
 	{
@@ -274,23 +274,23 @@ BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1,
 			{
 				case 1 :
 					*R = armcp15->cacheType;
-					return TRUE;
+					return true;
 				case 2 :
 					*R = armcp15->TCMSize;
-					return TRUE;
+					return true;
 				default :
 					*R = armcp15->IDCode;
-					return TRUE;
+					return true;
 			}
 			}
-			return FALSE;
+			return false;
 		case 1 :
 			if((opcode1==0) && (opcode2==0) && (CRm==0))
 			{
 				*R = armcp15->ctrl;
-				return TRUE;
+				return true;
 			}
-			return FALSE;
+			return false;
 
 		case 2 :
 			if((opcode1==0) && (CRm==0))
@@ -299,22 +299,22 @@ BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1,
 				{
 					case 0 :
 						*R = armcp15->DCConfig;
-					return TRUE;
+					return true;
 					case 1 :
 						*R = armcp15->ICConfig;
-					return TRUE;
+					return true;
 					default :
-					return FALSE;
+					return false;
 				}
 			}
-			return FALSE;
+			return false;
 		case 3 :
 			if((opcode1==0) && (opcode2==0) && (CRm==0))
 			{
 				*R = armcp15->writeBuffCtrl;
-				return TRUE;
+				return true;
 			}
-			return FALSE;
+			return false;
 		case 5 :
 			if((opcode1==0) && (CRm==0))
 			{
@@ -322,15 +322,15 @@ BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1,
 				{
 					case 2 :
 						*R = armcp15->DaccessPerm;
-					    return TRUE;
+					    return true;
 					case 3 :
 						*R = armcp15->IaccessPerm;
-					return TRUE;
+					return true;
 					default :
-					return FALSE;
+					return false;
 				}
 			}
-			return FALSE;
+			return false;
 		case 6 :
 			if((opcode1==0) && (opcode2==0))
 			{
@@ -338,33 +338,33 @@ BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1,
 				{
 					case 0 :
 						*R = armcp15->protectBaseSize0;
-					return TRUE;
+					return true;
 					case 1 :
 						*R = armcp15->protectBaseSize1;
-					return TRUE;
+					return true;
 					case 2 :
 						*R = armcp15->protectBaseSize2;
-					return TRUE;
+					return true;
 					case 3 :
 						*R = armcp15->protectBaseSize3;
-					return TRUE;
+					return true;
 					case 4 :
 						*R = armcp15->protectBaseSize4;
-					return TRUE;
+					return true;
 					case 5 :
 						*R = armcp15->protectBaseSize5;
-					return TRUE;
+					return true;
 					case 6 :
 						*R = armcp15->protectBaseSize6;
-					return TRUE;
+					return true;
 					case 7 :
 						*R = armcp15->protectBaseSize7;
-					return TRUE;
+					return true;
 					default :
-					return FALSE;
+					return false;
 				}
 			}
-			return FALSE;
+			return false;
 		case 9 :
 			if(opcode1==0)
 			{
@@ -375,30 +375,30 @@ BOOL armcp15_moveCP2ARM(armcp15_t *armcp15, u32 * R, u8 CRn, u8 CRm, u8 opcode1,
 						{
 							case 0 :
 							*R = armcp15->DcacheLock;
-							return TRUE;
+							return true;
 							case 1 :
 							*R = armcp15->IcacheLock;
-							return TRUE;
+							return true;
 							default :
-								return FALSE;
+								return false;
 						}
 					case 1 :
 						switch(opcode2)
 						{
 						case 0 :
 						*R = armcp15->DTCMRegion;
-						return TRUE;
+						return true;
 						case 1 :
 						*R = armcp15->ITCMRegion;
-						return TRUE;
+						return true;
 						default :
-							return FALSE;
+							return false;
 						}
 				}
 			}
-		return FALSE;
+		return false;
 		default :
-			return FALSE;
+			return false;
 	}
 }
 
@@ -433,7 +433,7 @@ u32 CP15wait4IRQ(armcpu_t *cpu)
 
 BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1, u8 opcode2)
 {
-	if(armcp15->cpu->CPSR.bits.mode == USR) return FALSE;
+	if(armcp15->cpu->CPSR.bits.mode == USR) return false;
 
 	switch(CRn)
 	{
@@ -452,9 +452,9 @@ BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1,
 			{
 				log::ajouter("outch !!!!!!!");
 			}*/
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 		case 2 :
 		if((opcode1==0) && (CRm==0))
 		{
@@ -462,22 +462,22 @@ BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1,
 			{
 				case 0 :
 					armcp15->DCConfig = val;
-					return TRUE;
+					return true;
 				case 1 :
 					armcp15->ICConfig = val;
-					return TRUE;
+					return true;
 				default :
-					return FALSE;
+					return false;
 			}
 		}
-		return FALSE;
+		return false;
 		case 3 :
 		if((opcode1==0) && (opcode2==0) && (CRm==0))
 		{
 			armcp15->writeBuffCtrl = val;
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 		if((opcode1==0) && (CRm==0))
 		{
 			switch(opcode2)
@@ -485,16 +485,16 @@ BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1,
 				case 2 :
 					armcp15->DaccessPerm = val;
 					armcp15_maskPrecalc(armcp15);
- 					return TRUE;
+ 					return true;
 				case 3 :
 					armcp15->IaccessPerm = val;
 					armcp15_maskPrecalc(armcp15);
-					return TRUE;
+					return true;
 				default :
-					return FALSE;
+					return false;
 			}
 		}
-		return FALSE;
+		return false;
 		case 6 :
 		if((opcode1==0) && (opcode2==0))
 		{
@@ -503,47 +503,47 @@ BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1,
 				case 0 :
 					armcp15->protectBaseSize0 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				case 1 :
 					armcp15->protectBaseSize1 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				case 2 :
 					armcp15->protectBaseSize2 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				case 3 :
 					armcp15->protectBaseSize3 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				case 4 :
 					armcp15->protectBaseSize4 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				case 5 :
 					armcp15->protectBaseSize5 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				case 6 :
 					armcp15->protectBaseSize6 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				case 7 :
 					armcp15->protectBaseSize7 = val;
 					armcp15_maskPrecalc(armcp15) ;
-					return TRUE;
+					return true;
 				default :
-					return FALSE;
+					return false;
 			}
 		}
-		return FALSE;
+		return false;
 		case 7 :
 		if((CRm==0)&&(opcode1==0)&&((opcode2==4)))
 		{
 			CP15wait4IRQ(armcp15->cpu);
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 		case 9 :
 		if(opcode1==0)
 		{
@@ -554,12 +554,12 @@ BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1,
 				{
 					case 0 :
 						armcp15->DcacheLock = val;
-						return TRUE;
+						return true;
 					case 1 :
 						armcp15->IcacheLock = val;
-						return TRUE;
+						return true;
 					default :
-						return FALSE;
+						return false;
 			}
 			case 1 :
 			switch(opcode2)
@@ -569,20 +569,20 @@ BOOL armcp15_moveARM2CP(armcp15_t *armcp15, u32 val, u8 CRn, u8 CRm, u8 opcode1,
 					MMU.DTCMRegion = val & 0x0FFFFFFC0;
 					/*sprintf(logbuf, "%08X", val);
 					log::ajouter(logbuf);*/
-					return TRUE;
+					return true;
 				case 1 :
 					armcp15->ITCMRegion = val;
 					/* ITCM base is not writeable! */
 					MMU.ITCMRegion = 0;
-					return TRUE;
+					return true;
 				default :
-					return FALSE;
+					return false;
 				}
 			}
 		}
-		return FALSE;
+		return false;
 		default :
-			return FALSE;
+			return false;
 	}
 }
 

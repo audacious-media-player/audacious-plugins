@@ -48,7 +48,7 @@
 /* -------------------- for debug --------------------- */
 /* #define OPL_OUTPUT_LOG */
 #ifdef OPL_OUTPUT_LOG
-static FILE *opl_dbg_fp = NULL;
+static FILE *opl_dbg_fp = nullptr;
 static FM_OPL *opl_dbg_opl[16];
 static int opl_dbg_maxchip,opl_dbg_chip;
 #endif
@@ -214,7 +214,7 @@ static INT32 RATE_0[16]=
 static int num_lock = 0;
 
 /* work table */
-static void *cur_chip = NULL;	/* current chip point */
+static void *cur_chip = nullptr;	/* current chip point */
 /* currenct chip state */
 /* static OPLSAMPLE  *bufL,*bufR; */
 static OPL_CH *S_CH;
@@ -620,20 +620,20 @@ static int OPLOpenTable( void )
 	double pom;
 
 	/* allocate dynamic tables */
-	if( (TL_TABLE = (INT32*)malloc(TL_MAX*2*sizeof(INT32))) == NULL)
+	if( (TL_TABLE = (INT32*)malloc(TL_MAX*2*sizeof(INT32))) == nullptr)
 		return 0;
-	if( (SIN_TABLE = (INT32**)malloc(SIN_ENT*4 *sizeof(INT32 *))) == NULL)
+	if( (SIN_TABLE = (INT32**)malloc(SIN_ENT*4 *sizeof(INT32 *))) == nullptr)
 	{
 		free(TL_TABLE);
 		return 0;
 	}
-	if( (AMS_TABLE = (INT32*)malloc(AMS_ENT*2 *sizeof(INT32))) == NULL)
+	if( (AMS_TABLE = (INT32*)malloc(AMS_ENT*2 *sizeof(INT32))) == nullptr)
 	{
 		free(TL_TABLE);
 		free(SIN_TABLE);
 		return 0;
 	}
-	if( (VIB_TABLE = (INT32*)malloc(VIB_ENT*2 *sizeof(INT32))) == NULL)
+	if( (VIB_TABLE = (INT32*)malloc(VIB_ENT*2 *sizeof(INT32))) == nullptr)
 	{
 		free(TL_TABLE);
 		free(SIN_TABLE);
@@ -1015,7 +1015,7 @@ static int OPL_LockTable(void)
 	num_lock++;
 	if(num_lock>1) return 0;
 	/* first time */
-	cur_chip = NULL;
+	cur_chip = nullptr;
 	/* allocate total level table (128kb space) */
 	if( !OPLOpenTable() )
 	{
@@ -1030,7 +1030,7 @@ static void OPL_UnLockTable(void)
 	if(num_lock) num_lock--;
 	if(num_lock) return;
 	/* last time */
-	cur_chip = NULL;
+	cur_chip = nullptr;
 	OPLCloseTable();
 }
 
@@ -1214,7 +1214,7 @@ FM_OPL *OPLCreate(int type, int clock, int rate)
 	int state_size;
 	int max_ch = 9; /* normaly 9 channels */
 
-	if( OPL_LockTable() ==-1) return NULL;
+	if( OPL_LockTable() ==-1) return nullptr;
 	/* allocate OPL state space */
 	state_size  = sizeof(FM_OPL);
 	state_size += sizeof(OPL_CH)*max_ch;
@@ -1223,7 +1223,7 @@ FM_OPL *OPLCreate(int type, int clock, int rate)
 #endif
 	/* allocate memory block */
 	ptr = (char*)malloc(state_size);
-	if(ptr==NULL) return NULL;
+	if(ptr==nullptr) return nullptr;
 	/* clear */
 	memset(ptr,0,state_size);
 	OPL        = (FM_OPL *)ptr; ptr+=sizeof(FM_OPL);
@@ -1268,7 +1268,7 @@ void OPLDestroy(FM_OPL *OPL)
 	if(opl_dbg_fp)
 	{
 		fclose(opl_dbg_fp);
-		opl_dbg_fp = NULL;
+		opl_dbg_fp = nullptr;
 	}
 #endif
 	OPL_UnLockTable();

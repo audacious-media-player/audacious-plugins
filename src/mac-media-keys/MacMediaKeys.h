@@ -1,5 +1,5 @@
 /*
- * utils.h
+ * MacMediaKeys.h
  * Copyright 2014 Michał Lipski
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,13 +17,24 @@
  * the use of this software.
  */
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef MAC_MEDIA_KEYS_H
+#define MAC_MEDIA_KEYS_H
 
-namespace Utils
+#import "SPMediaKeyTap.h"
+
+@interface SPMediaKeyTapAppDelegate : NSObject <NSApplicationDelegate>
+@end
+
+class MacMediaKeys
 {
-    void openFilesDialog (bool add = false);
-    void addFilesDialog ();
-}
+public:
+    MacMediaKeys ();
+    ~MacMediaKeys ();
+    SPMediaKeyTapAppDelegate * delegate;
+    SPMediaKeyTap * keyTap;
+
+private:
+    void run ();
+};
 
 #endif

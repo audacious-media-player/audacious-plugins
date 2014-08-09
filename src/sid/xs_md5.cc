@@ -21,5 +21,5 @@ void xs_md5_finish (xs_md5state_t * state, xs_md5hash_t hash)
     size_t length = XS_MD5HASH_LENGTH;
     g_checksum_get_digest ((GChecksum *) state->priv, hash, & length);
     g_checksum_free ((GChecksum *) state->priv);
-    state->priv = NULL;
+    state->priv = nullptr;
 }

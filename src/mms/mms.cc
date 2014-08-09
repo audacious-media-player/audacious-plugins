@@ -41,15 +41,15 @@ static void * mms_vfs_fopen_impl (const char * path, const char * mode)
 
     MMSHandle * h = new MMSHandle ();
 
-    if (! (h->mmsh = mmsh_connect (NULL, NULL, path, 128 * 1024)))
+    if (! (h->mmsh = mmsh_connect (nullptr, nullptr, path, 128 * 1024)))
     {
         AUDDBG ("Failed to connect with MMSH protocol; trying MMS.\n");
 
-        if (! (h->mms = mms_connect (NULL, NULL, path, 128 * 1024)))
+        if (! (h->mms = mms_connect (nullptr, nullptr, path, 128 * 1024)))
         {
             fprintf (stderr, "mms: Failed to open %s.\n", path);
             delete h;
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -80,9 +80,9 @@ static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSF
         int64_t readsize;
 
         if (h->mms)
-            readsize = mms_read (NULL, h->mms, (char *) buf + bytes_read, bytes_total - bytes_read);
+            readsize = mms_read (nullptr, h->mms, (char *) buf + bytes_read, bytes_total - bytes_read);
         else
-            readsize = mmsh_read (NULL, h->mmsh, (char *) buf + bytes_read, bytes_total - bytes_read);
+            readsize = mmsh_read (nullptr, h->mmsh, (char *) buf + bytes_read, bytes_total - bytes_read);
 
         if (readsize < 0)
             fprintf (stderr, "mms: Read failed.\n");
@@ -124,9 +124,9 @@ static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
     int64_t ret;
 
     if (h->mms)
-        ret = mms_seek (NULL, h->mms, offset, SEEK_SET);
+        ret = mms_seek (nullptr, h->mms, offset, SEEK_SET);
     else
-        ret = mmsh_seek (NULL, h->mmsh, offset, SEEK_SET);
+        ret = mmsh_seek (nullptr, h->mmsh, offset, SEEK_SET);
 
     if (ret < 0 || ret != offset)
     {
@@ -147,7 +147,7 @@ static int64_t mms_vfs_ftell_impl (VFSFile * file)
         return mmsh_get_current_pos (h->mmsh);
 }
 
-static bool_t mms_vfs_feof_impl (VFSFile * file)
+static bool mms_vfs_feof_impl (VFSFile * file)
 {
     MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
@@ -173,7 +173,7 @@ static int64_t mms_vfs_fsize_impl (VFSFile * file)
         return mmsh_get_length (h->mmsh);
 }
 
-static const char * const mms_schemes[] = {"mms", NULL};
+static const char * const mms_schemes[] = {"mms", nullptr};
 
 static const VFSConstructor constructor = {
     mms_vfs_fopen_impl,

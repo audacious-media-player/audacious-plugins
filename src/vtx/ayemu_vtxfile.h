@@ -65,7 +65,7 @@ typedef struct
 EXTERN int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename);
 
 /** Read and encode lha data from .vtx file.
- * \return Return pointer to unpacked data or NULL.
+ * \return Return pointer to unpacked data or nullptr.
  */
 EXTERN char *ayemu_vtx_load_data (ayemu_vtx_t *vtx);
 
@@ -74,7 +74,7 @@ EXTERN char *ayemu_vtx_load_data (ayemu_vtx_t *vtx);
  */
 EXTERN int ayemu_vtx_get_next_frame (ayemu_vtx_t *vtx, char *regs);
 
-/** Print formated file name. If fmt is NULL the default format %a - %t will used
+/** Print formated file name. If fmt is nullptr the default format %a - %t will used
  * \return none.
  */
 EXTERN void ayemu_vtx_sprintname (const ayemu_vtx_t *vtx, char *buf, const int sz, const char *fmt);

@@ -19,7 +19,7 @@
 
 void compressor_config_load (void);
 
-int compressor_init (void);
+bool compressor_init (void);
 void compressor_cleanup (void);
 void compressor_start (int * channels, int * rate);
 void compressor_process (float * * data, int * samples);

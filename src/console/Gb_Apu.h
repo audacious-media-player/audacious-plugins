@@ -19,12 +19,12 @@ public:
 	// buffers for stereo output (using Stereo_Buffer to do the mixing).
 
 	// Assign all oscillator outputs to specified buffer(s). If buffer
-	// is NULL, silences all oscillators.
+	// is nullptr, silences all oscillators.
 	void output( Blip_Buffer* mono );
 	void output( Blip_Buffer* center, Blip_Buffer* left, Blip_Buffer* right );
 
 	// Assign single oscillator output to buffer(s). Valid indicies are 0 to 3,
-	// which refer to Square 1, Square 2, Wave, and Noise. If buffer is NULL,
+	// which refer to Square 1, Square 2, Wave, and Noise. If buffer is nullptr,
 	// silences oscillator.
 	enum { osc_count = 4 };
 	void osc_output( int index, Blip_Buffer* mono );

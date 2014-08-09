@@ -2,7 +2,6 @@
 #define XS_CONFIG_H
 
 #include <pthread.h>
-#include <libaudcore/core.h>
 
 /* Configuration structure
  */
@@ -35,30 +34,30 @@ extern struct xs_cfg_t {
     int     audioFrequency;
 
     /* Emulation settings */
-    bool_t  mos8580;            /* TRUE = 8580, FALSE = 6581 */
-    bool_t  forceModel;
+    bool  mos8580;            /* true = 8580, false = 6581 */
+    bool  forceModel;
     int     clockSpeed;         /* PAL (50Hz) or NTSC (60Hz) */
-    bool_t  forceSpeed;         /* TRUE = force to given clockspeed */
+    bool  forceSpeed;         /* true = force to given clockspeed */
 
-    bool_t  emulateFilters;
+    bool  emulateFilters;
 
     /* Playing settings */
-    bool_t  playMaxTimeEnable,
+    bool  playMaxTimeEnable,
             playMaxTimeUnknown; /* Use max-time only when song-length is unknown */
     int     playMaxTime;        /* MAX playtime in seconds */
 
-    bool_t  playMinTimeEnable;
+    bool  playMinTimeEnable;
     int     playMinTime;        /* MIN playtime in seconds */
 
-    bool_t  songlenDBEnable;
+    bool  songlenDBEnable;
     char    *songlenDBPath;     /* Path to Songlengths.txt */
 
     /* Miscellaneous settings */
-    bool_t  stilDBEnable;
+    bool  stilDBEnable;
     char    *stilDBPath;        /* Path to STIL.txt */
     char    *hvscPath;          /* Path-prefix for HVSC */
 
-    bool_t  subAutoEnable,
+    bool  subAutoEnable,
             subAutoMinOnly;
     int     subAutoMinTime;
 } xs_cfg;

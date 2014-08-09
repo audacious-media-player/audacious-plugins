@@ -45,7 +45,7 @@
 #include "interface.h"
 #include "callbacks.h"
 
-static const gchar * const alarm_defaults[] = {
+static const char * const alarm_defaults[] = {
  /* general */
  "alarm_h", "6",
  "alarm_m", "30",
@@ -80,7 +80,7 @@ static const gchar * const alarm_defaults[] = {
  "sat_flags", "2",
  "sat_h", "6",
  "sat_m", "30",
- NULL};
+ nullptr};
 
 typedef struct
 {
@@ -88,7 +88,7 @@ typedef struct
     volatile gboolean  is_valid;
 } alarm_thread_t;
 
-static gint timeout_source;
+static int timeout_source;
 static time_t play_start;
 
 static alarm_thread_t stop;     /* thread id of stop loop */
@@ -142,24 +142,24 @@ static struct
 }
 alarm_conf;
 
-static gint alarm_h, alarm_m;
+static int alarm_h, alarm_m;
 
 static gboolean stop_on;
-static gint stop_h, stop_m;
+static int stop_h, stop_m;
 
-static gint volume, quietvol;
+static int volume, quietvol;
 
-static gint fading;
+static int fading;
 
 static gboolean cmd_on;
 
-static GtkWidget *config_dialog = NULL;
-static GtkWidget *alarm_dialog = NULL;
+static GtkWidget *config_dialog = nullptr;
+static GtkWidget *alarm_dialog = nullptr;
 
-static GtkWidget *lookup_widget(GtkWidget *w, const gchar *name)
+static GtkWidget *lookup_widget(GtkWidget *w, const char *name)
 {
     GtkWidget * widget = (GtkWidget *) g_object_get_data ((GObject *) w, name);
-    g_return_val_if_fail(widget != NULL, NULL);
+    g_return_val_if_fail(widget != nullptr, nullptr);
 
     return widget;
 }
@@ -423,13 +423,13 @@ static void alarm_configure(void)
 }
 
 /* functions for greying out the time for days */
-void on_day_def_toggled(GtkToggleButton *togglebutton, gpointer user_data, int daynum)
+void on_day_def_toggled(GtkToggleButton *togglebutton, void * user_data, int daynum)
 {
     GtkWidget *w;
 
     /* change the time shown too */
     w = lookup_widget(config_dialog, day_h[daynum]);
-    if(w == NULL)
+    if(w == nullptr)
         return;
 
     if(gtk_toggle_button_get_active(togglebutton) == TRUE)
@@ -456,46 +456,46 @@ void on_day_def_toggled(GtkToggleButton *togglebutton, gpointer user_data, int d
     }
 }
 
-void on_sun_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_sun_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 0);
 }
 
-void on_mon_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_mon_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 1);
 }
 
-void on_tue_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_tue_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 2);
 }
 
-void on_wed_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_wed_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 3);
 }
 
-void on_thu_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_thu_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 4);
 }
 
-void on_fri_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_fri_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 5);
 }
 
-void on_sat_def_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+void on_sat_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 {
     on_day_def_toggled(togglebutton, user_data, 6);
 }
 
 /* END: greying things */
 
-void alarm_current_volume(GtkButton *button, gpointer data)
+void alarm_current_volume(GtkButton *button, void * data)
 {
-    gint vol;
+    int vol;
     GtkAdjustment *adj;
 
     AUDDBG("on_current_button_clicked\n");
@@ -503,7 +503,7 @@ void alarm_current_volume(GtkButton *button, gpointer data)
     aud_drct_get_volume_main(&vol);
 
     adj = gtk_range_get_adjustment(alarm_conf.volume);
-    gtk_adjustment_set_value(adj, (gfloat)vol);
+    gtk_adjustment_set_value(adj, (float)vol);
 }
 
 /*
@@ -541,8 +541,8 @@ static inline alarm_thread_t alarm_thread_create(void *(*start_routine)(void *),
 static void *alarm_fade(void *arg)
 {
     fader *vols = (fader *)arg;
-    gint v;
-    gint inc, diff, adiff;
+    int v;
+    int inc, diff, adiff;
 
     /* lock */
     pthread_mutex_lock(&fader_lock);
@@ -565,29 +565,29 @@ static void *alarm_fade(void *arg)
     else
         inc = 1;
 
-    aud_drct_set_volume_main((gint)vols->start);
+    aud_drct_set_volume_main((int)vols->start);
 
     for (int i = 0; i < adiff; i ++)
     {
-        threadsleep((gfloat)fading / (gfloat)adiff);
+        threadsleep((float)fading / (float)adiff);
         aud_drct_get_volume_main(&v);
         aud_drct_set_volume_main(v + inc);
     }
     /* Setting the volume to the end volume sort of defeats the point if having
      * the code in there to allow other apps to control volume too :)
      */
-    //aud_drct_set_volume_main((gint)vols->end);
+    //aud_drct_set_volume_main((int)vols->end);
 
     /* and */
     pthread_mutex_unlock(&fader_lock);
 
-    AUDDBG("volume = %f%%\n", (gdouble)vols->end);
+    AUDDBG("volume = %f%%\n", (double)vols->end);
     return 0;
 }
 
 static void *alarm_stop_thread(void *args)
 {
-    gint currvol;
+    int currvol;
     fader fade_vols;
     alarm_thread_t f;
 
@@ -613,7 +613,7 @@ static void *alarm_stop_thread(void *args)
     /* The fader thread locks the fader_mutex now */
     f = alarm_thread_create(alarm_fade, &fade_vols, 0);
 
-    pthread_join(f.tid, NULL);
+    pthread_join(f.tid, nullptr);
     aud_drct_stop();
 
     /* might as well set the volume to something higher than zero so we
@@ -623,10 +623,10 @@ static void *alarm_stop_thread(void *args)
     aud_drct_set_volume_main(currvol);
 
     AUDDBG("alarm_stop done\n");
-    return(NULL);
+    return(nullptr);
 }
 
-void alarm_stop_cancel(GtkWidget *w, gpointer data)
+void alarm_stop_cancel(GtkWidget *w, void * data)
 {
     AUDDBG("alarm_stop_cancel\n");
     if (pthread_cancel(stop.tid) == 0)
@@ -638,10 +638,10 @@ static gboolean alarm_timeout (void * unused)
 {
     struct tm *currtime;
     time_t timenow;
-    guint today;
+    unsigned today;
 
     AUDDBG("Getting time\n");
-    timenow = time(NULL);
+    timenow = time(nullptr);
     currtime = localtime(&timenow);
     today = currtime->tm_wday;
     AUDDBG("Today is %d\n", today);
@@ -682,7 +682,7 @@ static gboolean alarm_timeout (void * unused)
             AUDDBG("Executing %s failed\n", (const char *) cmdstr);
     }
 
-    bool_t started = FALSE;
+    gboolean started = FALSE;
 
     String playlist = aud_get_str ("alarm", "playlist");
     if (playlist[0])
@@ -699,7 +699,7 @@ static gboolean alarm_timeout (void * unused)
         aud_drct_set_volume_main(quietvol);
 
         /* start playing */
-        play_start = time(NULL);
+        play_start = time(nullptr);
 
         if (! started)
             aud_drct_play ();
@@ -719,7 +719,7 @@ static gboolean alarm_timeout (void * unused)
         aud_drct_set_volume_main(volume);
 
         /* start playing */
-        play_start = time(NULL);
+        play_start = time(nullptr);
         aud_drct_play();
     }
 
@@ -745,7 +745,7 @@ static gboolean alarm_timeout (void * unused)
         alarm_dialog = create_alarm_dialog();
 
         AUDDBG("now starting stop thread\n");
-        stop = alarm_thread_create(alarm_stop_thread, NULL, 0);
+        stop = alarm_thread_create(alarm_stop_thread, nullptr, 0);
         AUDDBG("Created wakeup dialog and started stop thread\n");
     }
 
@@ -757,13 +757,13 @@ static gboolean alarm_timeout (void * unused)
  * opens the config file and reads the value, creates a new
  * config in memory if the file doesnt exist and sets default vals
  */
-static gboolean alarm_init (void)
+static bool alarm_init (void)
 {
     AUDDBG("alarm_init\n");
 
     alarm_read_config();
 
-    timeout_source = g_timeout_add_seconds (10, alarm_timeout, NULL);
+    timeout_source = g_timeout_add_seconds (10, alarm_timeout, nullptr);
 
     aud_plugin_menu_add (AUD_MENU_MAIN, alarm_configure, _("Set Alarm ..."), "appointment-new");
 

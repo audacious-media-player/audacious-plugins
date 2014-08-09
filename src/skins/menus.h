@@ -23,7 +23,6 @@
 #define SKINS_MENUS_H
 
 #include <gtk/gtk.h>
-#include <libaudcore/core.h>
 
 enum
 {
@@ -44,6 +43,6 @@ void menu_init ();
 void menu_cleanup ();
 
 GtkAccelGroup * menu_get_accel_group (void);
-void menu_popup (int id, int x, int y, bool_t leftward, bool_t upward, int button, int time);
+void menu_popup (int id, int x, int y, gboolean leftward, gboolean upward, int button, int time);
 
 #endif /* SKINS_MENUS_H */

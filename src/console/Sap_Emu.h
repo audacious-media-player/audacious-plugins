@@ -24,7 +24,9 @@ public:
 		int  type;
 		int  track_count;
 		int  fastplay;
+		int  length;
 		bool stereo;
+		bool ntsc;
 		char author    [256];
 		char name      [256];
 		char copyright [ 32];

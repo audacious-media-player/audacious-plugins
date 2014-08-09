@@ -39,7 +39,7 @@
 #include "vorbis.h"
 #include "vcedit.h"
 
-static gboolean write_and_pivot_files(vcedit_state * state);
+static bool write_and_pivot_files(vcedit_state * state);
 
 typedef SimpleHash<String, String> Dictionary;
 
@@ -49,14 +49,14 @@ static Dictionary dictionary_from_vorbis_comment (vorbis_comment * vc)
 
     for (int i = 0; i < vc->comments; i ++)
     {
-        gchar **frags;
+        char **frags;
 
         AUDDBG("%s\n", vc->user_comments[i]);
         frags = g_strsplit(vc->user_comments[i], "=", 2);
 
         if (frags[0] && frags[1])
         {
-            gchar * key = g_ascii_strdown (frags[0], -1);
+            char * key = g_ascii_strdown (frags[0], -1);
             dict.add (String (key), String (frags[1]));
             g_free (key);
         }
@@ -100,20 +100,20 @@ static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
         dict.remove (String (key));
 }
 
-gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple & tuple)
+bool vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple & tuple)
 {
 
     vcedit_state *state;
     vorbis_comment *comment;
-    gboolean ret;
+    bool ret;
 
-    if(!tuple || !fd) return FALSE;
+    if(!tuple || !fd) return false;
 
     state = vcedit_new_state();
 
     if(vcedit_open(state, fd) < 0) {
         vcedit_clear(state);
-        return FALSE;
+        return false;
     }
 
     comment = vcedit_comments(state);
@@ -139,13 +139,13 @@ gboolean vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tu
 
 #define COPY_BUF 65536
 
-gboolean copy_vfs (VFSFile * in, VFSFile * out)
+bool copy_vfs (VFSFile * in, VFSFile * out)
 {
     if (vfs_fseek (in, 0, SEEK_SET) < 0 || vfs_fseek (out, 0, SEEK_SET) < 0)
-        return FALSE;
+        return false;
 
     char * buffer = g_new (char, COPY_BUF);
-    gint64 size = 0, readed;
+    int64_t size = 0, readed;
 
     while ((readed = vfs_fread (buffer, 1, COPY_BUF, in)) > 0)
     {
@@ -159,41 +159,41 @@ gboolean copy_vfs (VFSFile * in, VFSFile * out)
         goto FAILED;
 
     g_free (buffer);
-    return TRUE;
+    return true;
 
 FAILED:
     g_free (buffer);
-    return FALSE;
+    return false;
 }
 
 #undef COPY_BUF
 
-gboolean write_and_pivot_files (vcedit_state * state)
+bool write_and_pivot_files (vcedit_state * state)
 {
-    gchar * temp;
+    char * temp;
     GError * error;
-    gint handle = g_file_open_tmp (NULL, & temp, & error);
+    int handle = g_file_open_tmp (nullptr, & temp, & error);
 
     if (handle < 0)
     {
         fprintf (stderr, "Failed to create temp file: %s.\n", error->message);
         g_error_free (error);
-        return FALSE;
+        return false;
     }
 
     close (handle);
 
     StringBuf temp_uri = filename_to_uri (temp);
-    g_return_val_if_fail (temp_uri, FALSE);
+    g_return_val_if_fail (temp_uri, false);
     VFSFile * temp_vfs = vfs_fopen (temp_uri, "r+");
-    g_return_val_if_fail (temp_vfs, FALSE);
+    g_return_val_if_fail (temp_vfs, false);
 
     if (vcedit_write (state, temp_vfs) < 0)
     {
         fprintf (stderr, "Tag update failed: %s.\n", state->lasterror);
         vfs_fclose (temp_vfs);
         g_free (temp);
-        return FALSE;
+        return false;
     }
 
     if (! copy_vfs (temp_vfs, (VFSFile *) state->in))
@@ -202,7 +202,7 @@ gboolean write_and_pivot_files (vcedit_state * state)
          "been deleted: %s.\n", temp);
         vfs_fclose (temp_vfs);
         g_free (temp);
-        return FALSE;
+        return false;
     }
 
     vfs_fclose (temp_vfs);
@@ -211,5 +211,5 @@ gboolean write_and_pivot_files (vcedit_state * state)
         fprintf (stderr, "Failed to delete temp file: %s.\n", temp);
 
     g_free (temp);
-    return TRUE;
+    return true;
 }

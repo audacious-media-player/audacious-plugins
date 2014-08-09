@@ -53,7 +53,7 @@ typedef struct {
 } PSFEngineFunctors;
 
 static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
-    {NULL, NULL, NULL, NULL},
+    {nullptr, nullptr, nullptr, nullptr},
     {psf_start, psf_stop, psf_seek, psf_execute},
     {psf2_start, psf2_stop, psf2_seek, psf2_execute},
     {spx_start, spx_stop, psf_seek, spx_execute},
@@ -62,7 +62,7 @@ static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
 static PSFEngineFunctors *f;
 static String dirpath;
 
-bool_t stop_flag = FALSE;
+bool stop_flag = false;
 
 static PSFEngine psf_probe(uint8_t *buffer)
 {
@@ -108,7 +108,7 @@ Tuple psf2_tuple(const char *filename, VFSFile *file)
 	if (!buf)
 		return t;
 
-	if (corlett_decode((uint8_t *) buf, sz, NULL, NULL, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *) buf, sz, nullptr, nullptr, &c) != AO_SUCCESS)
 		return t;
 
 	t.set_filename (filename);
@@ -127,16 +127,16 @@ Tuple psf2_tuple(const char *filename, VFSFile *file)
 	return t;
 }
 
-static bool_t psf2_play(const char * filename, VFSFile * file)
+static bool psf2_play(const char * filename, VFSFile * file)
 {
 	void *buffer;
 	int64_t size;
 	PSFEngine eng;
-	bool_t error = FALSE;
+	bool error = false;
 
 	const char * slash = strrchr (filename, '/');
 	if (! slash)
-		return FALSE;
+		return false;
 
 	dirpath = String (str_copy (filename, slash + 1 - filename));
 
@@ -146,26 +146,26 @@ static bool_t psf2_play(const char * filename, VFSFile * file)
 	if (eng == ENG_NONE || eng == ENG_COUNT)
 	{
 		free(buffer);
-		return FALSE;
+		return false;
 	}
 
 	f = &psf_functor_map[eng];
 	if (f->start((uint8_t *) buffer, size) != AO_SUCCESS)
 	{
 		free(buffer);
-		return FALSE;
+		return false;
 	}
 
 	aud_input_open_audio(FMT_S16_NE, 44100, 2);
 
 	aud_input_set_bitrate(44100*2*2*8);
 
-	stop_flag = FALSE;
+	stop_flag = false;
 
 	f->execute();
 	f->stop();
 
-	f = NULL;
+	f = nullptr;
 	dirpath = String ();
 	free(buffer);
 
@@ -176,7 +176,7 @@ void psf2_update(unsigned char *buffer, long count)
 {
 	if (! buffer || aud_input_check_stop ())
 	{
-		stop_flag = TRUE;
+		stop_flag = true;
 		return;
 	}
 
@@ -191,16 +191,16 @@ void psf2_update(unsigned char *buffer, long count)
 	aud_input_write_audio (buffer, count);
 }
 
-int psf2_is_our_fd(const char *filename, VFSFile *file)
+bool psf2_is_our_fd(const char *filename, VFSFile *file)
 {
 	uint8_t magic[4];
 	if (vfs_fread(magic, 1, 4, file) < 4)
-		return FALSE;
+		return false;
 
 	return (psf_probe(magic) != ENG_NONE);
 }
 
-static const char *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", NULL };
+static const char *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", nullptr };
 
 #define AUD_PLUGIN_NAME        N_("OpenPSF PSF1/PSF2 Decoder")
 #define AUD_INPUT_PLAY         psf2_play

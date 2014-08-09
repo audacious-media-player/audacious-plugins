@@ -31,7 +31,7 @@
 #include <libaudcore/i18n.h>
 
 struct format_info {
-    gint format;
+    int format;
     int frequency;
     int channels;
 };
@@ -39,17 +39,17 @@ struct format_info {
 extern struct format_info input;
 
 extern VFSFile *output_file;
-extern guint64 offset;
+extern uint64_t offset;
 extern Tuple tuple;
 
-typedef gint (*write_output_callback)(void *ptr, gint length);
+typedef int (*write_output_callback)(void *ptr, int length);
 
 typedef struct _FileWriter
 {
     void (*init)(write_output_callback write_output_func);
     void (*configure)(void);
-    gint (*open)(void);
-    void (*write)(void *ptr, gint length);
+    int (*open)(void);
+    void (*write)(void *ptr, int length);
     void (*close)(void);
     int (*format_required)(int fmt);
 } FileWriter;

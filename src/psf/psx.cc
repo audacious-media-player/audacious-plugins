@@ -2945,7 +2945,7 @@ void mips_get_info(uint32_t state, union cpuinfo *info)
 		case CPUINFO_PTR_RESET:							info->reset = mips_reset;				break;
 		case CPUINFO_PTR_EXIT:							info->exit = mips_exit;					break;
 		case CPUINFO_PTR_EXECUTE:						info->execute = mips_execute;			break;
-		case CPUINFO_PTR_BURN:							info->burn = NULL;						break;
+		case CPUINFO_PTR_BURN:							info->burn = nullptr;						break;
 		case CPUINFO_PTR_DISASSEMBLE:					info->disassemble = mips_dasm;			break;
 		case CPUINFO_PTR_IRQ_CALLBACK:					info->irqcallback = mipscpu.irq_callback; break;
 		case CPUINFO_PTR_INSTRUCTION_COUNTER:			info->icount = &mips_ICount;			break;
@@ -2994,7 +2994,7 @@ void psxcpu_get_info(uint32_t state, union cpuinfo *info)
 {
 	switch (state)
 	{
-		/* --- the following bits of info are returned as NULL-terminated strings --- */
+		/* --- the following bits of info are returned as nullptr-terminated strings --- */
 //		case CPUINFO_STR_NAME:							strcpy(info->s = cpuintrf_temp_str(), "PSX CPU"); break;
 
 		default:

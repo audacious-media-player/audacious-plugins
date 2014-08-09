@@ -49,7 +49,7 @@ enum
 #define AOSD_TRIGGER_CODES_ARRAY_SIZE 4
 
 /* trigger codes array */
-gint aosd_trigger_codes[] =
+int aosd_trigger_codes[] =
 {
   AOSD_TRIGGER_PB_START,
   AOSD_TRIGGER_PB_TITLECHANGE,
@@ -59,14 +59,14 @@ gint aosd_trigger_codes[] =
 
 /* prototypes of trigger functions */
 static void aosd_trigger_func_pb_start_onoff ( gboolean );
-static void aosd_trigger_func_pb_start_cb ( gpointer , gpointer );
+static void aosd_trigger_func_pb_start_cb ( void * , void * );
 static void aosd_trigger_func_pb_titlechange_onoff ( gboolean );
-static void aosd_trigger_func_pb_titlechange_cb ( gpointer , gpointer );
+static void aosd_trigger_func_pb_titlechange_cb ( void * , void * );
 static void aosd_trigger_func_pb_pauseon_onoff ( gboolean );
-static void aosd_trigger_func_pb_pauseon_cb ( gpointer , gpointer );
+static void aosd_trigger_func_pb_pauseon_cb ( void * , void * );
 static void aosd_trigger_func_pb_pauseoff_onoff ( gboolean );
-static void aosd_trigger_func_pb_pauseoff_cb ( gpointer , gpointer );
-static void aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused );
+static void aosd_trigger_func_pb_pauseoff_cb ( void * , void * );
+static void aosd_trigger_func_hook_cb ( void * markup_text , void * unused );
 
 /* map trigger codes to trigger objects */
 aosd_trigger_t aosd_triggers[] =
@@ -99,56 +99,56 @@ aosd_trigger_t aosd_triggers[] =
 /* TRIGGER API */
 
 void
-aosd_trigger_get_codes_array ( gint ** array , gint * array_size )
+aosd_trigger_get_codes_array ( int ** array , int * array_size )
 {
   *array = aosd_trigger_codes;
   *array_size = AOSD_TRIGGER_CODES_ARRAY_SIZE;
 }
 
 
-const gchar *
-aosd_trigger_get_name ( gint trig_code )
+const char *
+aosd_trigger_get_name ( int trig_code )
 {
-  if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+  if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
     return aosd_triggers[trig_code].name;
-  return NULL;
+  return nullptr;
 }
 
 
-const gchar *
-aosd_trigger_get_desc ( gint trig_code )
+const char *
+aosd_trigger_get_desc ( int trig_code )
 {
-  if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+  if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
     return aosd_triggers[trig_code].desc;
-  return NULL;
+  return nullptr;
 }
 
 
 void
 aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
 {
-  gint i = 0;
+  int i = 0;
   for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
   {
-    gint trig_code = g_array_index( cfg_trigger->active , gint , i );
-    if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+    int trig_code = g_array_index( cfg_trigger->active , int , i );
+    if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
       aosd_triggers[trig_code].onoff_func (TRUE);
   }
   /* When called, this hook will display the text of the user pointer
-     or the current playing song, if NULL */
-  hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , NULL );
+     or the current playing song, if nullptr */
+  hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , nullptr );
 }
 
 
 void
 aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 {
-  gint i = 0;
+  int i = 0;
   hook_dissociate( "aosd toggle" , aosd_trigger_func_hook_cb );
   for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
   {
-    gint trig_code = g_array_index( cfg_trigger->active , gint , i );
-    if (trig_code >= 0 && trig_code < ARRAY_LEN (aosd_triggers))
+    int trig_code = g_array_index( cfg_trigger->active , int , i );
+    if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
       aosd_triggers[trig_code].onoff_func (FALSE);
   }
 }
@@ -160,13 +160,13 @@ static void
 aosd_trigger_func_pb_start_onoff(gboolean turn_on)
 {
   if (turn_on == TRUE)
-    hook_associate("playback begin", aosd_trigger_func_pb_start_cb, NULL);
+    hook_associate("playback begin", aosd_trigger_func_pb_start_cb, nullptr);
   else
     hook_dissociate("playback begin", aosd_trigger_func_pb_start_cb);
 }
 
 static void
-aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
+aosd_trigger_func_pb_start_cb(void * hook_data, void * user_data)
 {
   String title = aud_drct_get_title ();
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>%s</span>",
@@ -178,54 +178,54 @@ aosd_trigger_func_pb_start_cb(gpointer hook_data, gpointer user_data)
 
 typedef struct
 {
-  gchar *title;
-  gchar *filename;
+  char *title;
+  char *filename;
 }
 aosd_pb_titlechange_prevs_t;
 
 static void
 aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
 {
-  static aosd_pb_titlechange_prevs_t *prevs = NULL;
+  static aosd_pb_titlechange_prevs_t *prevs = nullptr;
 
   if ( turn_on == TRUE )
   {
     prevs = g_new0 (aosd_pb_titlechange_prevs_t, 1);
-    prevs->title = NULL;
-    prevs->filename = NULL;
+    prevs->title = nullptr;
+    prevs->filename = nullptr;
     hook_associate( "title change" , aosd_trigger_func_pb_titlechange_cb , prevs );
   }
   else
   {
     hook_dissociate( "title change" , aosd_trigger_func_pb_titlechange_cb );
-    if ( prevs != NULL )
+    if ( prevs != nullptr )
     {
-      if ( prevs->title != NULL ) g_free( prevs->title );
-      if ( prevs->filename != NULL ) g_free( prevs->filename );
+      if ( prevs->title != nullptr ) g_free( prevs->title );
+      if ( prevs->filename != nullptr ) g_free( prevs->filename );
       g_free( prevs );
-      prevs = NULL;
+      prevs = nullptr;
     }
   }
 }
 
 static void
-aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
+aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
 {
   if (aud_drct_get_playing ())
   {
     aosd_pb_titlechange_prevs_t *prevs = (aosd_pb_titlechange_prevs_t *) prevs_gp;
-    gint playlist = aud_playlist_get_playing();
-    gint pl_entry = aud_playlist_get_position(playlist);
+    int playlist = aud_playlist_get_playing();
+    int pl_entry = aud_playlist_get_position(playlist);
     String pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
     String pl_entry_title = aud_playlist_entry_get_title (playlist, pl_entry, FALSE);
 
     /* same filename but title changed, useful to detect http stream song changes */
 
-    if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
+    if ( ( prevs->title != nullptr ) && ( prevs->filename != nullptr ) )
     {
-      if ( ( pl_entry_filename != NULL ) && ( !strcmp(pl_entry_filename,prevs->filename) ) )
+      if ( ( pl_entry_filename != nullptr ) && ( !strcmp(pl_entry_filename,prevs->filename) ) )
       {
-        if ( ( pl_entry_title != NULL ) && ( strcmp(pl_entry_title,prevs->title) ) )
+        if ( ( pl_entry_title != nullptr ) && ( strcmp(pl_entry_title,prevs->title) ) )
         {
           /* string formatting is done here a.t.m. - TODO - improve this area */
           char * markup = g_markup_printf_escaped
@@ -245,17 +245,17 @@ aosd_trigger_func_pb_titlechange_cb ( gpointer plentry_gp , gpointer prevs_gp )
         g_free(prevs->filename);
         prevs->filename = g_strdup(pl_entry_filename);
         /* if filename changes, reset title as well */
-        if ( prevs->title != NULL )
+        if ( prevs->title != nullptr )
           g_free(prevs->title);
         prevs->title = g_strdup(pl_entry_title);
       }
     }
     else
     {
-      if ( prevs->title != NULL )
+      if ( prevs->title != nullptr )
         g_free(prevs->title);
       prevs->title = g_strdup(pl_entry_title);
-      if ( prevs->filename != NULL )
+      if ( prevs->filename != nullptr )
         g_free(prevs->filename);
       prevs->filename = g_strdup(pl_entry_filename);
     }
@@ -266,13 +266,13 @@ static void
 aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , NULL );
+    hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , nullptr );
   else
     hook_dissociate( "playback pause" , aosd_trigger_func_pb_pauseon_cb );
 }
 
 static void
-aosd_trigger_func_pb_pauseon_cb ( gpointer unused1 , gpointer unused2 )
+aosd_trigger_func_pb_pauseon_cb ( void * unused1 , void * unused2 )
 {
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>Paused</span>",
    (const char *) global_config->osd->text.fonts_name[0]);
@@ -285,18 +285,18 @@ static void
 aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
 {
   if ( turn_on == TRUE )
-    hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , NULL );
+    hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , nullptr );
   else
     hook_dissociate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb );
 }
 
 static void
-aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
+aosd_trigger_func_pb_pauseoff_cb ( void * unused1 , void * unused2 )
 {
-  gint active = aud_playlist_get_active();
-  gint pos = aud_playlist_get_position(active);
-  gint time_cur, time_tot;
-  gint time_cur_m, time_cur_s, time_tot_m, time_tot_s;
+  int active = aud_playlist_get_active();
+  int pos = aud_playlist_get_position(active);
+  int time_cur, time_tot;
+  int time_cur_m, time_cur_s, time_tot_m, time_tot_s;
 
   time_tot = aud_playlist_entry_get_length (active, pos, FALSE) / 1000;
   time_cur = aud_drct_get_time() / 1000;
@@ -317,17 +317,17 @@ aosd_trigger_func_pb_pauseoff_cb ( gpointer unused1 , gpointer unused2 )
 
 
 /* Call with hook_call("aosd toggle", param);
-   If param != NULL, display the supplied text in the OSD
-   If param == NULL, display the current playing song */
+   If param != nullptr, display the supplied text in the OSD
+   If param == nullptr, display the current playing song */
 static void
-aosd_trigger_func_hook_cb ( gpointer markup_text , gpointer unused )
+aosd_trigger_func_hook_cb ( void * markup_text , void * unused )
 {
-  if ( markup_text != NULL )
+  if ( markup_text != nullptr )
   {
     /* Display text from caller */
     aosd_osd_display ((char *) markup_text, global_config->osd, FALSE);
   } else {
     /* Display currently playing song */
-    aosd_trigger_func_pb_start_cb (NULL, NULL);
+    aosd_trigger_func_pb_start_cb (nullptr, nullptr);
   }
 }

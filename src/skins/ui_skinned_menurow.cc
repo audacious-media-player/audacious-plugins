@@ -53,14 +53,12 @@ DRAW_FUNC_BEGIN (menurow_draw)
     {
         if (aud_get_bool ("skins", "always_on_top"))
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 312, 54, 0, 10, 8, 8);
-#if 0
-        if (config.scaled)
+        if (aud_get_bool ("skins", "double_size"))
             skin_draw_pixbuf (cr, SKIN_TITLEBAR, 328, 70, 0, 26, 8, 8);
-#endif
     }
 DRAW_FUNC_END
 
-static MenuRowItem menurow_find_selected (gint x, gint y)
+static MenuRowItem menurow_find_selected (int x, int y)
 {
     if (x >= 0 && x < 8)
     {
@@ -85,7 +83,7 @@ static gboolean menurow_button_press (GtkWidget * widget, GdkEventButton * event
         return FALSE;
 
     mr.pushed = TRUE;
-    mr.selected = menurow_find_selected (event->x, event->y);
+    mr.selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
 
     mainwin_mr_change (mr.selected);
 
@@ -117,7 +115,7 @@ static gboolean menurow_motion_notify (GtkWidget * widget, GdkEventMotion *
     if (! mr.pushed)
         return TRUE;
 
-    mr.selected = menurow_find_selected (event->x, event->y);
+    mr.selected = menurow_find_selected (event->x / config.scale, event->y / config.scale);
 
     mainwin_mr_change (mr.selected);
 
@@ -128,17 +126,17 @@ static gboolean menurow_motion_notify (GtkWidget * widget, GdkEventMotion *
 GtkWidget * ui_skinned_menurow_new (void)
 {
     GtkWidget * wid = gtk_drawing_area_new ();
-    gtk_widget_set_size_request (wid, 8, 43);
+    gtk_widget_set_size_request (wid, 8 * config.scale, 43 * config.scale);
     gtk_widget_add_events (wid, GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
      | GDK_POINTER_MOTION_MASK);
 
     DRAW_CONNECT (wid, menurow_draw);
     g_signal_connect (wid, "button-press-event", (GCallback)
-     menurow_button_press, NULL);
+     menurow_button_press, nullptr);
     g_signal_connect (wid, "button-release-event", (GCallback)
-     menurow_button_release, NULL);
+     menurow_button_release, nullptr);
     g_signal_connect (wid, "motion-notify-event", (GCallback)
-     menurow_motion_notify, NULL);
+     menurow_motion_notify, nullptr);
 
     return wid;
 }

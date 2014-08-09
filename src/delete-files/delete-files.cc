@@ -37,14 +37,14 @@
 
 static const int menus[] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST, AUD_MENU_PLAYLIST_REMOVE};
 
-static GtkWidget * dialog = NULL;
+static GtkWidget * dialog = nullptr;
 
 static void move_to_trash (const char * filename)
 {
     GFile * gfile = g_file_new_for_path (filename);
-    GError * gerror = NULL;
+    GError * gerror = nullptr;
 
-    if (! g_file_trash (gfile, NULL, & gerror))
+    if (! g_file_trash (gfile, nullptr, & gerror))
     {
         aud_ui_show_error (str_printf (_("Error moving %s to trash: %s."),
          filename, gerror->message));
@@ -107,16 +107,16 @@ static void start_delete (void)
     {
         message = _("Do you want to move the selected files to the trash?");
         button1 = audgui_button_new (_("Move to Trash"), "user-trash",
-         (AudguiCallback) confirm_delete, NULL);
+         (AudguiCallback) confirm_delete, nullptr);
     }
     else
     {
         message = _("Do you want to permanently delete the selected files?");
         button1 = audgui_button_new (_("Delete"), "edit-delete",
-         (AudguiCallback) confirm_delete, NULL);
+         (AudguiCallback) confirm_delete, nullptr);
     }
 
-    button2 = audgui_button_new (_("Cancel"), "process-stop", NULL, NULL);
+    button2 = audgui_button_new (_("Cancel"), "process-stop", nullptr, nullptr);
     dialog = audgui_dialog_new (GTK_MESSAGE_QUESTION, _("Delete Files"),
      message, button1, button2);
 
@@ -126,14 +126,14 @@ static void start_delete (void)
 
 static const char * const delete_files_defaults[] = {
  "use_trash", "TRUE",
- NULL};
+ nullptr};
 
-static bool_t delete_files_init (void)
+static bool delete_files_init (void)
 {
     aud_config_set_defaults ("delete_files", delete_files_defaults);
 
-    for (int i = 0; i < ARRAY_LEN (menus); i ++)
-        aud_plugin_menu_add (menus[i], start_delete, _("Delete Selected Files"), "edit-delete");
+    for (int menu : menus)
+        aud_plugin_menu_add (menu, start_delete, _("Delete Selected Files"), "edit-delete");
 
     return TRUE;
 }
@@ -143,20 +143,17 @@ static void delete_files_cleanup (void)
     if (dialog)
         gtk_widget_destroy (dialog);
 
-    for (int i = 0; i < ARRAY_LEN (menus); i ++)
-        aud_plugin_menu_remove (menus[i], start_delete);
+    for (int menu : menus)
+        aud_plugin_menu_remove (menu, start_delete);
 }
 
 static const PreferencesWidget delete_files_widgets[] = {
     WidgetLabel (N_("<b>Delete Method</b>")),
     WidgetCheck (N_("Move to trash instead of deleting immediately"),
-        {VALUE_BOOLEAN, 0, "delete_files", "use_trash"})
+        WidgetBool ("delete_files", "use_trash"))
 };
 
-static const PluginPreferences delete_files_prefs = {
-    delete_files_widgets,
-    ARRAY_LEN (delete_files_widgets)
-};
+static const PluginPreferences delete_files_prefs = {{delete_files_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Delete Files")
 #define AUD_PLUGIN_INIT        delete_files_init

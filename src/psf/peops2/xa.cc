@@ -40,10 +40,10 @@
 
 xa_decode_t   * xapGlobal=0;
 
-unsigned long * XAFeed  = NULL;
-unsigned long * XAPlay  = NULL;
-unsigned long * XAStart = NULL;
-unsigned long * XAEnd   = NULL;
+unsigned long * XAFeed  = nullptr;
+unsigned long * XAPlay  = nullptr;
+unsigned long * XAStart = nullptr;
+unsigned long * XAEnd   = nullptr;
 
 unsigned long   XARepeat  = 0;
 unsigned long   XALastVal = 0;

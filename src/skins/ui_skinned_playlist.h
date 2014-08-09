@@ -30,16 +30,16 @@
 
 #include <gtk/gtk.h>
 
-GtkWidget * ui_skinned_playlist_new (gint width, gint height, const gchar * font);
+GtkWidget * ui_skinned_playlist_new (int width, int height, const char * font);
 void ui_skinned_playlist_set_slider (GtkWidget * list, GtkWidget * slider);
-void ui_skinned_playlist_resize (GtkWidget * list, gint w, gint h);
-void ui_skinned_playlist_set_font (GtkWidget * list, const gchar * font);
+void ui_skinned_playlist_resize (GtkWidget * list, int w, int h);
+void ui_skinned_playlist_set_font (GtkWidget * list, const char * font);
 void ui_skinned_playlist_update (GtkWidget * list);
 gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event);
-void ui_skinned_playlist_row_info (GtkWidget * list, gint * rows, gint * first);
-void ui_skinned_playlist_scroll_to (GtkWidget * list, gint row);
-void ui_skinned_playlist_set_focused (GtkWidget * list, gint row);
-void ui_skinned_playlist_hover (GtkWidget * list, gint x, gint y);
-gint ui_skinned_playlist_hover_end (GtkWidget * list);
+void ui_skinned_playlist_row_info (GtkWidget * list, int * rows, int * first);
+void ui_skinned_playlist_scroll_to (GtkWidget * list, int row);
+void ui_skinned_playlist_set_focused (GtkWidget * list, int row);
+void ui_skinned_playlist_hover (GtkWidget * list, int x, int y);
+int ui_skinned_playlist_hover_end (GtkWidget * list);
 
 #endif

@@ -25,20 +25,12 @@
 
 #include "formatter.h"
 
-static gboolean init (void);
+static bool init (void);
 static void cleanup(void);
-static void songchange_playback_begin(gpointer unused, gpointer unused2);
-static void songchange_playback_end(gpointer unused, gpointer unused2);
-static void songchange_playlist_eof(gpointer unused, gpointer unused2);
-//static void songchange_playback_ttc(gpointer, gpointer);
-
-typedef struct
-{
-    gchar *title;
-    gchar *filename;
-}
-songchange_playback_ttc_prevs_t;
-static songchange_playback_ttc_prevs_t *ttc_prevs = NULL;
+static void songchange_playback_begin(void *, void *);
+static void songchange_playback_end(void *, void *);
+static void songchange_playlist_eof(void *, void *);
+static void songchange_playback_ttc(void *, void *);
 
 static String cmd_line;
 static String cmd_line_after;
@@ -53,12 +45,12 @@ static GtkWidget *cmd_warn_label, *cmd_warn_img;
  * @param string String to be escaped.
  * @return Given string with special characters escaped. Must be freed with g_free().
  */
-static gchar *escape_shell_chars(const gchar * string)
+static char *escape_shell_chars(const char * string)
 {
-    const gchar *special = "$`\"\\";    /* Characters to escape */
-    const gchar *in = string;
-    gchar *out, *escaped;
-    gint num = 0;
+    const char *special = "$`\"\\";    /* Characters to escape */
+    const char *in = string;
+    char *out, *escaped;
+    int num = 0;
 
     while (*in != '\0')
         if (strchr(special, *in++))
@@ -81,12 +73,12 @@ static gchar *escape_shell_chars(const gchar * string)
 
 static void bury_child(int signal)
 {
-    waitpid(-1, NULL, WNOHANG);
+    waitpid(-1, nullptr, WNOHANG);
 }
 
 static void execute_command(char *cmd)
 {
-    const char *argv[4] = {"/bin/sh", "-c", NULL, NULL};
+    const char *argv[4] = {"/bin/sh", "-c", nullptr, nullptr};
     int i;
     argv[2] = cmd;
     signal(SIGCHLD, bury_child);
@@ -121,7 +113,7 @@ static void do_command (const char * cmd)
     int playlist = aud_playlist_get_playing ();
     int pos = aud_playlist_get_position (playlist);
 
-    char *shstring = NULL, *temp;
+    char *shstring = nullptr, *temp;
     gboolean playing;
     Formatter *formatter;
 
@@ -219,15 +211,7 @@ static void cleanup(void)
     hook_dissociate("playback begin", songchange_playback_begin);
     hook_dissociate("playback end", songchange_playback_end);
     hook_dissociate("playlist end reached", songchange_playlist_eof);
-    // hook_dissociate( "playlist set info" , songchange_playback_ttc);
-
-    if ( ttc_prevs != NULL )
-    {
-        if ( ttc_prevs->title != NULL ) g_free( ttc_prevs->title );
-        if ( ttc_prevs->filename != NULL ) g_free( ttc_prevs->filename );
-        g_free( ttc_prevs );
-        ttc_prevs = NULL;
-    }
+    hook_dissociate("title change", songchange_playback_ttc);
 
     cmd_line = String ();
     cmd_line_after = String ();
@@ -237,23 +221,10 @@ static void cleanup(void)
     signal(SIGCHLD, SIG_DFL);
 }
 
-static void save_and_close(gchar * cmd, gchar * cmd_after, gchar * cmd_end, gchar * cmd_ttc)
-{
-    aud_set_str("song_change", "cmd_line", cmd);
-    aud_set_str("song_change", "cmd_line_after", cmd_after);
-    aud_set_str("song_change", "cmd_line_end", cmd_end);
-    aud_set_str("song_change", "cmd_line_ttc", cmd_ttc);
-
-    cmd_line = String (cmd);
-    cmd_line_after = String (cmd_after);
-    cmd_line_end = String (cmd_end);
-    cmd_line_ttc = String (cmd_ttc);
-}
-
-static int check_command(char *command)
+static int check_command(const char *command)
 {
     const char *dangerous = "fns";
-    char *c;
+    const char *c;
     int qu = 0;
 
     for (c = command; *c != '\0'; c++)
@@ -266,104 +237,51 @@ static int check_command(char *command)
     return 0;
 }
 
-static gboolean init (void)
+static bool init (void)
 {
     read_config();
 
-    hook_associate("playback begin", songchange_playback_begin, NULL);
-    hook_associate("playback end", songchange_playback_end, NULL);
-    hook_associate("playlist end reached", songchange_playlist_eof, NULL);
-
-    ttc_prevs = g_new0(songchange_playback_ttc_prevs_t, 1);
-    ttc_prevs->title = NULL;
-    ttc_prevs->filename = NULL;
-    // hook_associate( "playlist set info" , songchange_playback_ttc , ttc_prevs );
+    hook_associate("playback begin", songchange_playback_begin, nullptr);
+    hook_associate("playback end", songchange_playback_end, nullptr);
+    hook_associate("playlist end reached", songchange_playlist_eof, nullptr);
+    hook_associate("title change", songchange_playback_ttc, nullptr);
 
     return TRUE;
 }
 
-static void songchange_playback_begin(gpointer unused, gpointer unused2)
+static void songchange_playback_begin(void *, void *)
 {
     do_command (cmd_line);
 }
 
-static void songchange_playback_end(gpointer unused, gpointer unused2)
+static void songchange_playback_end(void *, void *)
 {
     do_command (cmd_line_after);
 }
 
-#if 0
-    static void
-songchange_playback_ttc(gpointer plentry_gp, gpointer prevs_gp)
+static void songchange_playback_ttc(void *, void *)
 {
-    if ( ( aud_ip_state->playing ) && ( strcmp(cmd_line_ttc,"") ) )
-    {
-        songchange_playback_ttc_prevs_t *prevs = prevs_gp;
-        PlaylistEntry *pl_entry = plentry_gp;
-
-        /* same filename but title changed, useful to detect http stream song changes */
-
-        if ( ( prevs->title != NULL ) && ( prevs->filename != NULL ) )
-        {
-            if ( ( pl_entry->filename != NULL ) && ( !strcmp(pl_entry->filename,prevs->filename) ) )
-            {
-                if ( ( pl_entry->title != NULL ) && ( strcmp(pl_entry->title,prevs->title) ) )
-                {
-                    int pos = aud_drct_pl_get_pos();
-                    char *current_file = aud_drct_pl_get_file(pos);
-                    do_command(cmd_line_ttc, current_file, pos);
-                    g_free(current_file);
-                    g_free(prevs->title);
-                    prevs->title = g_strdup(pl_entry->title);
-                }
-            }
-            else
-            {
-                g_free(prevs->filename);
-                prevs->filename = g_strdup(pl_entry->filename);
-                /* if filename changes, reset title as well */
-                if ( prevs->title != NULL )
-                    g_free(prevs->title);
-                prevs->title = g_strdup(pl_entry->title);
-            }
-        }
-        else
-        {
-            if ( prevs->title != NULL )
-                g_free(prevs->title);
-            prevs->title = g_strdup(pl_entry->title);
-            if ( prevs->filename != NULL )
-                g_free(prevs->filename);
-            prevs->filename = g_strdup(pl_entry->filename);
-        }
-    }
+    do_command (cmd_line_ttc);
 }
-#endif
 
-static void songchange_playlist_eof(gpointer unused, gpointer unused2)
+static void songchange_playlist_eof(void *, void *)
 {
     do_command (cmd_line_end);
 }
 
 typedef struct {
-    gchar * cmd;
-    gchar * cmd_after;
-    gchar * cmd_end;
-    gchar * cmd_ttc;
+    String cmd;
+    String cmd_after;
+    String cmd_end;
+    String cmd_ttc;
 } SongChangeConfig;
 
-static SongChangeConfig config = {NULL};
+static SongChangeConfig config;
 
-static void configure_ok_cb()
+static void edit_cb()
 {
-    char *cmd, *cmd_after, *cmd_end, *cmd_ttc;
-    cmd = g_strdup(config.cmd);
-    cmd_after = g_strdup(config.cmd_after);
-    cmd_end = g_strdup(config.cmd_end);
-    cmd_ttc = g_strdup(config.cmd_ttc);
-
-    if (check_command(cmd) < 0 || check_command(cmd_after) < 0 ||
-            check_command(cmd_end) < 0 || check_command(cmd_ttc) < 0)
+    if (check_command(config.cmd) < 0 || check_command(config.cmd_after) < 0 ||
+     check_command(config.cmd_end) < 0 || check_command(config.cmd_ttc) < 0)
     {
         gtk_widget_show(cmd_warn_img);
         gtk_widget_show(cmd_warn_label);
@@ -372,22 +290,29 @@ static void configure_ok_cb()
     {
         gtk_widget_hide(cmd_warn_img);
         gtk_widget_hide(cmd_warn_label);
-        save_and_close(cmd, cmd_after, cmd_end, cmd_ttc);
     }
+}
 
-    g_free(cmd);
-    g_free(cmd_after);
-    g_free(cmd_end);
-    g_free(cmd_ttc);
+static void configure_ok_cb()
+{
+    aud_set_str("song_change", "cmd_line", config.cmd);
+    aud_set_str("song_change", "cmd_line_after", config.cmd_after);
+    aud_set_str("song_change", "cmd_line_end", config.cmd_end);
+    aud_set_str("song_change", "cmd_line_ttc", config.cmd_ttc);
+
+    cmd_line = config.cmd;
+    cmd_line_after = config.cmd_after;
+    cmd_line_end = config.cmd_end;
+    cmd_line_ttc = config.cmd_ttc;
 }
 
 /* static GtkWidget * custom_warning (void) */
 static void * custom_warning (void)
 {
     GtkWidget *bbox_hbox;
-    gchar * temp;
+    char * temp;
 
-    bbox_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+    bbox_hbox = gtk_hbox_new (FALSE, 6);
 
     cmd_warn_img = gtk_image_new_from_icon_name("dialog-warning", GTK_ICON_SIZE_MENU);
     gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_img, FALSE, FALSE, 0);
@@ -399,6 +324,11 @@ static void * custom_warning (void)
     gtk_box_pack_start(GTK_BOX(bbox_hbox), cmd_warn_label, FALSE, FALSE, 0);
     g_free(temp);
 
+    gtk_widget_set_no_show_all(cmd_warn_img, TRUE);
+    gtk_widget_set_no_show_all(cmd_warn_label, TRUE);
+
+    edit_cb();
+
     return bbox_hbox;
 }
 
@@ -406,20 +336,20 @@ static const PreferencesWidget settings[] = {
     WidgetLabel (N_("<b>Commands</b>")),
 
     WidgetLabel (N_("Command to run when starting a new song:")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd, 0, 0, configure_ok_cb}),
-    WidgetSeparator (),
+    WidgetEntry (0, WidgetString (config.cmd, edit_cb)),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("Command to run at the end of a song:")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd_after, 0, 0, configure_ok_cb}),
-    WidgetSeparator (),
+    WidgetEntry (0, WidgetString (config.cmd_after, edit_cb)),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("Command to run at the end of the playlist:")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd_end, 0, 0, configure_ok_cb}),
-    WidgetSeparator (),
+    WidgetEntry (0, WidgetString (config.cmd_end, edit_cb)),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("Command to run when song title changes (for network streams):")),
-    WidgetEntry (0, {VALUE_STRING, & config.cmd_ttc, 0, 0, configure_ok_cb}),
-    WidgetSeparator (),
+    WidgetEntry (0, WidgetString (config.cmd_ttc, edit_cb)),
+    WidgetSeparator ({true}),
 
     WidgetLabel (N_("You can use the following format strings which "
                     "will be substituted before calling the command "
@@ -441,34 +371,24 @@ static const PreferencesWidget settings[] = {
 
 static void configure_init(void)
 {
-    read_config();
-
-    config.cmd = g_strdup(cmd_line);
-    config.cmd_after = g_strdup(cmd_line_after);
-    config.cmd_end = g_strdup(cmd_line_end);
-    config.cmd_ttc = g_strdup(cmd_line_ttc);
+    config.cmd = cmd_line;
+    config.cmd_after = cmd_line_after;
+    config.cmd_end = cmd_line_end;
+    config.cmd_ttc = cmd_line_ttc;
 }
 
 static void configure_cleanup(void)
 {
-    g_free(config.cmd);
-    config.cmd = NULL;
-
-    g_free(config.cmd_after);
-    config.cmd_after = NULL;
-
-    g_free(config.cmd_end);
-    config.cmd_end = NULL;
-
-    g_free(config.cmd_ttc);
-    config.cmd_ttc = NULL;
+    config.cmd = String ();
+    config.cmd_after = String ();
+    config.cmd_end = String ();
+    config.cmd_ttc = String ();
 }
 
 static const PluginPreferences preferences = {
-    settings,
-    ARRAY_LEN (settings),
+    {settings},
     configure_init,
-    NULL,  // apply
+    configure_ok_cb,
     configure_cleanup,
 };
 

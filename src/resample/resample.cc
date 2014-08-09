@@ -50,7 +50,7 @@ static const char * const resample_defaults[] = {
  "96000", "96000",
  "176400", "44100",
  "192000", "96000",
- NULL};
+ nullptr};
 
 static SRC_STATE * state;
 static int stored_channels;
@@ -58,10 +58,10 @@ static double ratio;
 static float * buffer;
 static int buffer_samples;
 
-bool_t resample_init (void)
+bool resample_init (void)
 {
     aud_config_set_defaults ("resample", resample_defaults);
-    return TRUE;
+    return true;
 }
 
 void resample_cleanup (void)
@@ -69,11 +69,11 @@ void resample_cleanup (void)
     if (state)
     {
         src_delete (state);
-        state = NULL;
+        state = nullptr;
     }
 
     g_free (buffer);
-    buffer = NULL;
+    buffer = nullptr;
     buffer_samples = 0;
 }
 
@@ -82,7 +82,7 @@ void resample_start (int * channels, int * rate)
     if (state)
     {
         src_delete (state);
-        state = NULL;
+        state = nullptr;
     }
 
     int new_rate = 0;
@@ -93,7 +93,7 @@ void resample_start (int * channels, int * rate)
     if (! new_rate)
         new_rate = aud_get_int ("resample", "default-rate");
 
-    new_rate = CLAMP (new_rate, MIN_RATE, MAX_RATE);
+    new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
 
     if (new_rate == * rate)
         return;
@@ -101,7 +101,7 @@ void resample_start (int * channels, int * rate)
     int method = aud_get_int ("resample", "method");
     int error;
 
-    if ((state = src_new (method, * channels, & error)) == NULL)
+    if ((state = src_new (method, * channels, & error)) == nullptr)
     {
         RESAMPLE_ERROR (error);
         return;
@@ -112,7 +112,7 @@ void resample_start (int * channels, int * rate)
     * rate = new_rate;
 }
 
-void do_resample (float * * data, int * samples, bool_t finish)
+void do_resample (float * * data, int * samples, bool finish)
 {
     if (! state || ! * samples)
         return;
@@ -145,7 +145,7 @@ void do_resample (float * * data, int * samples, bool_t finish)
 
 void resample_process (float * * data, int * samples)
 {
-    do_resample (data, samples, FALSE);
+    do_resample (data, samples, false);
 }
 
 void resample_flush (void)
@@ -157,7 +157,7 @@ void resample_flush (void)
 
 void resample_finish (float * * data, int * samples)
 {
-    do_resample (data, samples, TRUE);
+    do_resample (data, samples, true);
     resample_flush ();
 }
 
@@ -175,60 +175,57 @@ static const ComboBoxElements method_list[] = {
 static const PreferencesWidget resample_widgets[] = {
     WidgetLabel (N_("<b>Conversion</b>")),
     WidgetCombo (N_("Method:"),
-        {VALUE_STRING, 0, "resample", "method"},
-        {method_list, ARRAY_LEN (method_list)}),
+        WidgetString ("resample", "method"),
+        {{method_list}}),
     WidgetSpin (N_("Rate:"),
-        {VALUE_INT, 0, "resample", "default-rate"},
+        WidgetInt ("resample", "default-rate"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")}),
     WidgetLabel (N_("<b>Rate Mappings</b>")),
     WidgetCheck (N_("Use rate mappings"),
-        {VALUE_BOOLEAN, 0, "resample", "use-mappings"}),
+        WidgetBool ("resample", "use-mappings")),
     WidgetSpin (N_("8 kHz:"),
-        {VALUE_INT, 0, "resample", "8000"},
+        WidgetInt ("resample", "8000"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("16 kHz:"),
-        {VALUE_INT, 0, "resample", "16000"},
+        WidgetInt ("resample", "16000"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("22.05 kHz:"),
-        {VALUE_INT, 0, "resample", "22050"},
+        WidgetInt ("resample", "22050"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("32.0 kHz:"),
-        {VALUE_INT, 0, "resample", "32000"},
+        WidgetInt ("resample", "32000"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("44.1 kHz:"),
-        {VALUE_INT, 0, "resample", "44100"},
+        WidgetInt ("resample", "44100"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("48 kHz:"),
-        {VALUE_INT, 0, "resample", "48000"},
+        WidgetInt ("resample", "48000"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("88.2 kHz:"),
-        {VALUE_INT, 0, "resample", "88200"},
+        WidgetInt ("resample", "88200"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("96 kHz:"),
-        {VALUE_INT, 0, "resample", "96000"},
+        WidgetInt ("resample", "96000"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("176.4 kHz:"),
-        {VALUE_INT, 0, "resample", "176400"},
+        WidgetInt ("resample", "176400"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD),
     WidgetSpin (N_("192 kHz:"),
-        {VALUE_INT, 0, "resample", "192000"},
+        WidgetInt ("resample", "192000"),
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")},
         WIDGET_CHILD)
 };
 
-static const PluginPreferences resample_prefs = {
-    resample_widgets,
-    ARRAY_LEN (resample_widgets)
-};
+static const PluginPreferences resample_prefs = {{resample_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Sample Rate Converter")
 #define AUD_PLUGIN_ABOUT       resample_about

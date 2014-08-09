@@ -175,8 +175,8 @@ int ayemu_set_chip_type(ayemu_ay_t *ay, ayemu_chip_t type, int *custom_table)
 if (!check_magic(ay))
 		return 0;
 
-  if (!(type == AYEMU_AY_CUSTOM || type == AYEMU_YM_CUSTOM) && custom_table != NULL) {
-    ayemu_err = "For non-custom chip type 'custom_table' param must be NULL";
+  if (!(type == AYEMU_AY_CUSTOM || type == AYEMU_YM_CUSTOM) && custom_table != nullptr) {
+    ayemu_err = "For non-custom chip type 'custom_table' param must be nullptr";
     return 0;
   }
 
@@ -261,7 +261,7 @@ int ayemu_set_sound_format (ayemu_ay_t *ay, int freq, int chans, int bits)
  * Factor's value must be from (-100) to 100.
  * \arg ay - pointer to ayemu_t structure
  * \arg stereo_type - type of stereo
- * \arg custom_eq - NULL or pointer to custom table of mixer layout.
+ * \arg custom_eq - nullptr or pointer to custom table of mixer layout.
  * \retval 1 if OK, 0 if error occures.
  */
 int ayemu_set_stereo(ayemu_ay_t *ay, ayemu_stereo_t stereo_type, int *custom_eq)
@@ -272,8 +272,8 @@ int ayemu_set_stereo(ayemu_ay_t *ay, ayemu_stereo_t stereo_type, int *custom_eq)
   if (!check_magic(ay))
     return 0;
 
-  if (stereo_type != AYEMU_STEREO_CUSTOM && custom_eq != NULL) {
-    ayemu_err = "Stereo type not custom, 'custom_eq' parametr must be NULL";
+  if (stereo_type != AYEMU_STEREO_CUSTOM && custom_eq != nullptr) {
+    ayemu_err = "Stereo type not custom, 'custom_eq' parametr must be nullptr";
     return 0;
   }
 
@@ -362,9 +362,9 @@ static void prepare_generation(ayemu_ay_t *ay)
 
   if (!bEnvGenInit) gen_env ();
 
-  if (ay->default_chip_flag) ayemu_set_chip_type(ay, AYEMU_AY, NULL);
+  if (ay->default_chip_flag) ayemu_set_chip_type(ay, AYEMU_AY, nullptr);
 
-  if (ay->default_stereo_flag) ayemu_set_stereo(ay, AYEMU_ABC, NULL);
+  if (ay->default_stereo_flag) ayemu_set_stereo(ay, AYEMU_ABC, nullptr);
 
   if (ay->default_sound_format_flag) ayemu_set_sound_format(ay, 44100, 2, 16);
 

@@ -296,5 +296,5 @@ void lh5_decode(unsigned char *inp, unsigned char *outp, unsigned long original_
   }
 
   if (buffer) free (buffer);
-  buffer = NULL;
+  buffer = nullptr;
 }

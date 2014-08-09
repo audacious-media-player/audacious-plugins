@@ -35,7 +35,7 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
 {
     int64_t read;
 
-    if (handle == NULL)
+    if (handle == nullptr)
     {
         FLACNG_ERROR("Trying to read data from an uninitialized file!\n");
         return -1;
@@ -99,7 +99,7 @@ static FLAC__IOCallbacks io_callbacks = {
     seek_cb,
     tell_cb,
     eof_cb,
-    NULL
+    nullptr
 };
 
 static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
@@ -108,7 +108,7 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
     FLAC__StreamMetadata_VorbisComment_Entry entry;
     String val = tuple.get_str (tuple_name);
 
-    if (val == NULL)
+    if (! val)
         return;
 
     StringBuf str = str_printf ("%s=%s", field_name, (const char *) val);
@@ -134,7 +134,7 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
 }
 
-bool_t flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple &tuple)
+bool flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple &tuple)
 {
     AUDDBG("Update song tuple.\n");
 
@@ -175,29 +175,29 @@ bool_t flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple &tu
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_sort_padding(chain);
 
-    if (!FLAC__metadata_chain_write_with_callbacks(chain, TRUE, fd, io_callbacks))
+    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, fd, io_callbacks))
         goto ERR;
 
     FLAC__metadata_chain_delete(chain);
-    return TRUE;
+    return true;
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
     FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
-    return FALSE;
+    return false;
 }
 
-bool_t flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length)
+bool flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length)
 {
     AUDDBG("Probe for song image.\n");
 
     FLAC__Metadata_Iterator *iter;
     FLAC__Metadata_Chain *chain;
-    FLAC__StreamMetadata *metadata = NULL;
+    FLAC__StreamMetadata *metadata = nullptr;
     FLAC__Metadata_ChainStatus status;
-    bool_t has_image = FALSE;
+    bool has_image = false;
 
     chain = FLAC__metadata_chain_new();
 
@@ -223,7 +223,7 @@ bool_t flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *l
             * data = g_malloc (metadata->data.picture.data_length);
             * length = metadata->data.picture.data_length;
             memcpy (* data, metadata->data.picture.data, * length);
-            has_image = TRUE;
+            has_image = true;
         }
     }
 
@@ -237,7 +237,7 @@ ERR:
     FLAC__metadata_chain_delete(chain);
 
     FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
-    return FALSE;
+    return false;
 }
 
 static void parse_gain_text(const char *text, int *value, int *unit)
@@ -301,7 +301,7 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
 {
     AUDDBG ("Found key %s <%s>\n", key, value);
 
-    const struct {
+    static const struct {
         const char * key;
         int field;
     } tfields[] = {
@@ -311,11 +311,11 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
      {"COMMENT", FIELD_COMMENT},
      {"GENRE", FIELD_GENRE}};
 
-    for (int i = 0; i < ARRAY_LEN (tfields); i ++)
+    for (auto & tfield : tfields)
     {
-        if (! g_ascii_strcasecmp (key, tfields[i].key))
+        if (! g_ascii_strcasecmp (key, tfield.key))
         {
-            add_text (tuple, tfields[i].field, value);
+            add_text (tuple, tfield.field, value);
             return;
         }
     }
@@ -341,7 +341,7 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile *fd)
     Tuple tuple;
     FLAC__Metadata_Iterator *iter;
     FLAC__Metadata_Chain *chain;
-    FLAC__StreamMetadata *metadata = NULL;
+    FLAC__StreamMetadata *metadata = nullptr;
     FLAC__Metadata_ChainStatus status;
     FLAC__StreamMetadata_VorbisComment_Entry *entry;
     char *key;

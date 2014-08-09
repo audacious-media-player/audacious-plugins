@@ -30,7 +30,7 @@
 
 typedef struct {
     const char * filename;
-    bool_t valid_heading;
+    bool valid_heading;
     Index<PlaylistAddItem> & items;
 } ASXLoadState;
 
@@ -58,12 +58,12 @@ void asx_handle_entry (const char * key, const char * value, void * data)
         state->items.append ({String (uri)});
 }
 
-static bool_t playlist_load_asx (const char * filename, VFSFile * file,
+static bool playlist_load_asx (const char * filename, VFSFile * file,
  String & title, Index<PlaylistAddItem> & items)
 {
     ASXLoadState state = {
         filename,
-        FALSE,
+        false,
         items
     };
 
@@ -72,7 +72,7 @@ static bool_t playlist_load_asx (const char * filename, VFSFile * file,
     return (items.len () > 0);
 }
 
-static const char * const asx_exts[] = {"asx", NULL};
+static const char * const asx_exts[] = {"asx", nullptr};
 
 #define AUD_PLUGIN_NAME        N_("ASXv1/ASXv2 Playlists")
 #define AUD_PLAYLIST_EXTS      asx_exts

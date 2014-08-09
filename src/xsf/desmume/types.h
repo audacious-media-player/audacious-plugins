@@ -124,12 +124,12 @@ typedef int desmume_BOOL;
 #define BOOL desmume_BOOL
 #endif
 
-#ifndef TRUE
-#define TRUE 1
+#ifndef true
+#define true 1
 #endif
 
-#ifndef FALSE
-#define FALSE 0
+#ifndef false
+#define false 0
 #endif
 
 #ifdef __GNUC__

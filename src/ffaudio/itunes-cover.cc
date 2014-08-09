@@ -16,49 +16,56 @@
 
 #include <glib.h>
 
-#include <libaudcore/vfs.h>
+#include "ffaudio-stdinc.h"
 
-static const char * const hier[] = {"moov", "udta", "meta", "ilst", "covr", "data"};
-static const int skip[] = {0, 0, 4, 0, 0, 8};
+static const struct {
+    const char * id;
+    int skip;
+} hierarchy[] = {
+    {"moov", 0},
+    {"udta", 0},
+    {"meta", 4},
+    {"ilst", 0},
+    {"covr", 0},
+    {"data", 8}
+};
 
-bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
- data, int64_t * size)
+bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, int64_t * size)
 {
     unsigned char b[8];
     int bsize;
 
-    * data = NULL;
+    * data = nullptr;
     * size = 0;
 
     /* Check for ftyp frame. */
 
     if (vfs_fread (b, 1, 8, file) != 8)
-        return FALSE;
+        return false;
     if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8)
-        return FALSE;
+        return false;
     if (strncmp ((char *) b + 4, "ftyp", 4))
-        return FALSE;
+        return false;
     if (vfs_fseek (file, bsize - 8, SEEK_CUR))
-        return FALSE;
+        return false;
 
     int64_t stop = INT64_MAX;
     int64_t at = bsize;
 
     /* Descend into frame hierarchy. */
 
-    for (int h = 0; h < ARRAY_LEN (hier); h ++)
+    for (auto & frame : hierarchy)
     {
         while (1)
         {
             if (vfs_fread (b, 1, 8, file) != 8)
-                return FALSE;
-            if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8
-             || at + bsize > stop)
-                return FALSE;
-            if (! strncmp ((char *) b + 4, hier[h], 4))
+                return false;
+            if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8 || at + bsize > stop)
+                return false;
+            if (! strncmp ((char *) b + 4, frame.id, 4))
                 break;
             if (vfs_fseek (file, bsize - 8, SEEK_CUR))
-                return FALSE;
+                return false;
 
             at += bsize;
         }
@@ -68,11 +75,11 @@ bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
 
         /* Skip leading bytes in some frames. */
 
-        if (skip[h])
+        if (frame.skip)
         {
-            if (vfs_fseek (file, skip[h], SEEK_CUR))
-                return FALSE;
-            at += skip[h];
+            if (vfs_fseek (file, frame.skip, SEEK_CUR))
+                return false;
+            at += frame.skip;
         }
     }
 
@@ -84,10 +91,10 @@ bool_t read_itunes_cover (const char * filename, VFSFile * file, void * *
     if (vfs_fread (* data, 1, stop - at, file) != stop - at)
     {
         g_free (* data);
-        * data = NULL;
+        * data = nullptr;
         * size = 0;
-        return FALSE;
+        return false;
     }
 
-    return TRUE;
+    return true;
 }

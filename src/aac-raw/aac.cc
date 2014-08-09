@@ -17,7 +17,7 @@
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
 
-static const char *fmts[] = { "aac", NULL };
+static const char *fmts[] = { "aac", nullptr };
 
 /*
  * These routines are derived from MPlayer.
@@ -78,7 +78,7 @@ static int find_aac_header (unsigned char * data, int length, int * size)
     return -1;
 }
 
-static bool_t parse_aac_stream (const char * filename, VFSFile * stream)
+static bool parse_aac_stream (const char * filename, VFSFile * stream)
 {
     unsigned char data[8192];
     int offset, found, inner, size;
@@ -88,7 +88,7 @@ static bool_t parse_aac_stream (const char * filename, VFSFile * stream)
     if (vfs_fread (data, 1, sizeof data, stream) != sizeof data)
     {
         PROBE_DEBUG ("Read failed.\n");
-        return FALSE;
+        return false;
     }
 
     offset = 0;
@@ -100,14 +100,14 @@ static bool_t parse_aac_stream (const char * filename, VFSFile * stream)
         if (!(inner == 0 || (found == 0 && inner > 0)))
         {
             PROBE_DEBUG ("Only %d ADTS headers.\n", found);
-            return FALSE;
+            return false;
         }
 
         offset += inner + size;
     }
 
     PROBE_DEBUG ("Accepted.\n");
-    return TRUE;
+    return true;
 }
 
 /* Quick search for an ADTS or ADIF header in the first <len> bytes of <buf>.
@@ -133,13 +133,13 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
 {
     NeAACDecHandle decoder;
     NeAACDecFrameInfo frame;
-    bool_t initted = FALSE;
+    bool initted = false;
     int size = vfs_fsize (handle);
     unsigned char buffer[BUFFER_SIZE];
     int offset = 0, filled = 0;
     int found, bytes_used = 0, time_used = 0;
 
-    decoder = NULL;             /* avoid bogus uninitialized variable warning */
+    decoder = nullptr;             /* avoid bogus uninitialized variable warning */
 
     *length = -1;
     *bitrate = -1;
@@ -200,10 +200,10 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
 
             *samplerate = r;
             *channels = ch;
-            initted = TRUE;
+            initted = true;
         }
 
-        if (NeAACDecDecode (decoder, &frame, buffer + offset, filled) == NULL)
+        if (NeAACDecDecode (decoder, &frame, buffer + offset, filled) == nullptr)
         {
             PROBE_DEBUG ("Decode failed.\n");
             goto DONE;
@@ -252,7 +252,7 @@ static Tuple aac_get_tuple (const char * filename, VFSFile * handle)
             tuple.set_int (FIELD_BITRATE, bitrate);
     }
 
-    tag_update_stream_metadata (tuple, handle);
+    tuple.fetch_stream_info (handle);
 
     return tuple;
 }
@@ -307,7 +307,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
     }
 }
 
-static bool_t my_decode_aac (const char * filename, VFSFile * file)
+static bool my_decode_aac (const char * filename, VFSFile * file)
 {
     NeAACDecHandle decoder = 0;
     NeAACDecConfigurationPtr decoder_config;
@@ -320,13 +320,13 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
     if (tuple)
     {
         bitrate = tuple.get_int (FIELD_BITRATE);
-        bitrate = 1000 * MAX (0, bitrate);
+        bitrate = 1000 * aud::max (0, bitrate);
     }
 
-    if ((decoder = NeAACDecOpen ()) == NULL)
+    if ((decoder = NeAACDecOpen ()) == nullptr)
     {
         fprintf (stderr, "AAC: Open Decoder Error\n");
-        return FALSE;
+        return false;
     }
 
     decoder_config = NeAACDecGetCurrentConfiguration (decoder);
@@ -382,7 +382,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
     /* == CHECK FOR METADATA == */
 
-    if (tuple && tag_update_stream_metadata (tuple, file))
+    if (tuple && tuple.fetch_stream_info (file))
         aud_input_set_tuple (tuple.ref ());
 
     /* == START PLAYBACK == */
@@ -415,7 +415,7 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
 
         /* == CHECK FOR METADATA == */
 
-        if (tuple && tag_update_stream_metadata (tuple, file))
+        if (tuple && tuple.fetch_stream_info (file))
             aud_input_set_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */
@@ -452,11 +452,11 @@ static bool_t my_decode_aac (const char * filename, VFSFile * file)
     }
 
     NeAACDecClose (decoder);
-    return TRUE;
+    return true;
 
 ERR_CLOSE_DECODER:
     NeAACDecClose (decoder);
-    return FALSE;
+    return false;
 }
 
 #define AUD_PLUGIN_NAME        N_("AAC (Raw) Decoder")

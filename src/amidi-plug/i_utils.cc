@@ -29,18 +29,18 @@
 
 void i_about_gui (void)
 {
-    static GtkWidget * aboutwin = NULL;
+    static GtkWidget * aboutwin = nullptr;
     GtkWidget * logo_image;
     GdkPixbuf * logo_pixbuf;
 
-    if (aboutwin != NULL)
+    if (aboutwin != nullptr)
         return;
 
-    aboutwin = gtk_dialog_new_with_buttons (_("About AMIDI-Plug"), NULL, (GtkDialogFlags) 0,
-                                            _("_Close"), GTK_RESPONSE_CLOSE, NULL);
+    aboutwin = gtk_dialog_new_with_buttons (_("About AMIDI-Plug"), nullptr, (GtkDialogFlags) 0,
+                                            _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
     gtk_window_set_resizable (GTK_WINDOW (aboutwin), FALSE);
 
-    g_signal_connect (aboutwin, "response", (GCallback) gtk_widget_destroy, NULL);
+    g_signal_connect (aboutwin, "response", (GCallback) gtk_widget_destroy, nullptr);
     g_signal_connect (G_OBJECT (aboutwin), "destroy", G_CALLBACK (gtk_widget_destroyed), &aboutwin);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) aboutwin);
@@ -50,7 +50,7 @@ void i_about_gui (void)
     gtk_box_pack_start ((GtkBox *) vbox, logo_image, FALSE, FALSE, 0);
     g_object_unref (logo_pixbuf);
 
-    char * text = g_strjoin (NULL, _("AMIDI-Plug"),
+    char * text = g_strjoin (nullptr, _("AMIDI-Plug"),
                              _("\nmodular MIDI music player\n"
                                 "http://www.develia.org/projects.php?p=amidiplug\n\n"
                                 "written by Giacomo Lozito\n"
@@ -63,7 +63,7 @@ void i_about_gui (void)
                                 "Alfredo Spadafina\n"
                                 "for the nice midi keyboard logo\n\n"
                                 "Tony Vroon\n"
-                                "for the good help with alpha testing"), NULL);
+                                "for the good help with alpha testing"), nullptr);
 
     GtkWidget * label = gtk_label_new (text);
     gtk_box_pack_start ((GtkBox *) vbox, label, FALSE, FALSE, 0);

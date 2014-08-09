@@ -37,8 +37,8 @@ extern enum permission {
     PERMISSION_NONET
 } perm_result;
 
-extern bool_t scrobbler_running;
-extern bool_t scrobbling_enabled;
+extern gboolean scrobbler_running;
+extern gboolean scrobbling_enabled;
 
 
 //used to tell the scrobbling thread that there's something to do:
@@ -55,28 +55,28 @@ extern pthread_mutex_t log_access_mutex;
  */
 
 //TRUE when a permission check is being requested
-extern bool_t permission_check_requested;
-extern bool_t invalidate_session_requested;
+extern gboolean permission_check_requested;
+extern gboolean invalidate_session_requested;
 
 //Migrate the settings from the old scrobbler
-extern bool_t migrate_config_requested;
+extern gboolean migrate_config_requested;
 
 //Send "now playing"
-extern bool_t now_playing_requested;
+extern gboolean now_playing_requested;
 extern Tuple now_playing_track;
 
 
 
 
 //scrobbler_communication.c
-extern bool_t   scrobbler_communication_init();
-extern gpointer scrobbling_thread(gpointer data);
+extern gboolean   scrobbler_communication_init();
+extern void * scrobbling_thread(void * data);
 
 
 
 /* Internal stuff */
 //Data sent to the XML parser
-extern gchar *received_data;
+extern char *received_data;
 extern size_t received_data_size;
 
 //Data filled by the XML parser
@@ -85,10 +85,10 @@ extern String session_key;
 extern String username;
 
 //scrobbler_xml_parsing.c
-extern bool_t read_authentication_test_result(String &error_code, String &error_detail);
-extern bool_t read_token(String &error_code, String &error_detail);
-extern bool_t read_session_key(String &error_code, String &error_detail);
-extern bool_t read_scrobble_result(String &error_code, String &error_detail, bool_t *ignored, String &ignored_code);
+extern gboolean read_authentication_test_result(String &error_code, String &error_detail);
+extern gboolean read_token(String &error_code, String &error_detail);
+extern gboolean read_session_key(String &error_code, String &error_detail);
+extern gboolean read_scrobble_result(String &error_code, String &error_detail, gboolean *ignored, String &ignored_code);
 
 //scrobbler.c
 extern StringBuf clean_string(const char *string);

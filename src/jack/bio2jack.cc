@@ -159,7 +159,7 @@ typedef struct jack_driver_s
 
   jack_client_t *client;        /* pointer to jack client */
 
-  char **jack_port_name;        /* user given strings for the port names, can be NULL */
+  char **jack_port_name;        /* user given strings for the port names, can be nullptr */
   unsigned int jack_port_name_count;    /* the number of port names given */
 
   unsigned long jack_output_port_flags; /* flags to be passed to jack when opening the output ports */
@@ -503,17 +503,17 @@ ensure_buffer_size(char **buffer, unsigned long *cur_size,
 {
   DEBUG("current size = %lu, needed size = %lu\n", *cur_size, needed_size);
   if(*cur_size >= needed_size)
-    return TRUE;
+    return true;
   DEBUG("reallocing\n");
   char *tmp = (char *) realloc(*buffer, needed_size);
   if(tmp)
   {
     *cur_size = needed_size;
     *buffer = tmp;
-    return TRUE;
+    return true;
   }
   DEBUG("reallocing failed\n");
-  return FALSE;
+  return false;
 }
 
 /******************************************************************
@@ -569,7 +569,7 @@ JACK_callback(nframes_t nframes, void *arg)
          jackFramesAvailable, inputFramesAvailable);
 
 #if JACK_CLOSE_HACK
-      if(drv->in_use == FALSE)
+      if(drv->in_use == false)
       {
         /* output silence if nothing is being outputted */
         for(unsigned i = 0; i < drv->num_output_channels; i++)
@@ -930,12 +930,12 @@ JACK_shutdown(void *arg)
   getDriver(drv->deviceID);
 
   drv->client = 0;              /* reset client */
-  drv->jackd_died = TRUE;
+  drv->jackd_died = true;
 
   TRACE("jack shutdown, setting client to 0 and jackd_died to true, closing device\n");
 
 #if JACK_CLOSE_HACK
-  JACK_CloseDevice(drv, TRUE);
+  JACK_CloseDevice(drv, true);
 #else
   JACK_CloseDevice(drv);
 #endif
@@ -986,7 +986,7 @@ JACK_OpenDevice(jack_driver_t * drv)
       return ERR_OPENING_JACK;
 
     TRACE("using existing client\n");
-    drv->in_use = TRUE;
+    drv->in_use = true;
     return ERR_SUCCESS;
   }
 #endif
@@ -1001,11 +1001,11 @@ JACK_OpenDevice(jack_driver_t * drv)
 
   /* try to become a client of the JACK server */
   TRACE("client name '%s'\n", our_client_name);
-  if((drv->client = jack_client_open(our_client_name, JackNoStartServer, NULL)) == 0)
+  if((drv->client = jack_client_open(our_client_name, JackNoStartServer, nullptr)) == 0)
   {
     /* try once more */
     TRACE("trying once more to jack_client_new");
-    if((drv->client = jack_client_open(our_client_name, JackNoStartServer, NULL)) == 0)
+    if((drv->client = jack_client_open(our_client_name, JackNoStartServer, nullptr)) == 0)
     {
       ERR("jack server not running?\n");
       g_free(our_client_name);
@@ -1074,7 +1074,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   }
 
 #if JACK_CLOSE_HACK
-  drv->in_use = TRUE;
+  drv->in_use = true;
 #endif
 
   /* tell the JACK server that we are ready to roll */
@@ -1094,15 +1094,15 @@ JACK_OpenDevice(jack_driver_t * drv)
     {
       if(drv->jack_port_name_count == 0)
       {
-        TRACE("jack_get_ports() passing in NULL/NULL\n");
-        ports = jack_get_ports(drv->client, NULL, NULL,
+        TRACE("jack_get_ports() passing in nullptr/nullptr\n");
+        ports = jack_get_ports(drv->client, nullptr, nullptr,
                                drv->jack_output_port_flags);
       }
       else
       {
         TRACE("jack_get_ports() passing in port of '%s'\n",
               drv->jack_port_name[0]);
-        ports = jack_get_ports(drv->client, drv->jack_port_name[0], NULL,
+        ports = jack_get_ports(drv->client, drv->jack_port_name[0], nullptr,
                                drv->jack_output_port_flags);
       }
 
@@ -1123,7 +1123,7 @@ JACK_OpenDevice(jack_driver_t * drv)
         TRACE("ERR: jack_get_ports() failed to find ports with jack port flags of 0x%lX'\n",
               drv->jack_output_port_flags);
 #if JACK_CLOSE_HACK
-        JACK_CloseDevice(drv, TRUE);
+        JACK_CloseDevice(drv, true);
 #else
         JACK_CloseDevice(drv);
 #endif
@@ -1185,7 +1185,7 @@ JACK_OpenDevice(jack_driver_t * drv)
       {
         TRACE("jack_get_ports() portname %d of '%s\n", i,
               drv->jack_port_name[i]);
-        ports = jack_get_ports(drv->client, drv->jack_port_name[i], NULL,
+        ports = jack_get_ports(drv->client, drv->jack_port_name[i], nullptr,
                                drv->jack_output_port_flags);
 
         if(!ports)
@@ -1217,14 +1217,14 @@ JACK_OpenDevice(jack_driver_t * drv)
     {
       if(drv->jack_port_name_count == 0)
       {
-        TRACE("jack_get_ports() passing in NULL/NULL\n");
-        ports = jack_get_ports(drv->client, NULL, NULL, drv->jack_input_port_flags);
+        TRACE("jack_get_ports() passing in nullptr/nullptr\n");
+        ports = jack_get_ports(drv->client, nullptr, nullptr, drv->jack_input_port_flags);
       }
       else
       {
         TRACE("jack_get_ports() passing in port of '%s'\n",
               drv->jack_port_name[0]);
-        ports = jack_get_ports(drv->client, drv->jack_port_name[0], NULL,
+        ports = jack_get_ports(drv->client, drv->jack_port_name[0], nullptr,
                                drv->jack_input_port_flags);
       }
 
@@ -1245,7 +1245,7 @@ JACK_OpenDevice(jack_driver_t * drv)
         TRACE("ERR: jack_get_ports() failed to find ports with jack port flags of 0x%lX'\n",
               drv->jack_input_port_flags);
 #if JACK_CLOSE_HACK
-        JACK_CloseDevice(drv, TRUE);
+        JACK_CloseDevice(drv, true);
 #else
         JACK_CloseDevice(drv);
 #endif
@@ -1302,7 +1302,7 @@ JACK_OpenDevice(jack_driver_t * drv)
       {
         TRACE("jack_get_ports() portname %d of '%s\n", i,
               drv->jack_port_name[i]);
-        ports = jack_get_ports(drv->client, drv->jack_port_name[i], NULL,
+        ports = jack_get_ports(drv->client, drv->jack_port_name[i], nullptr,
                                drv->jack_input_port_flags);
 
         if(!ports)
@@ -1331,7 +1331,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   {
     TRACE("failed, closing and returning error\n");
 #if JACK_CLOSE_HACK
-    JACK_CloseDevice(drv, TRUE);
+    JACK_CloseDevice(drv, true);
 #else
     JACK_CloseDevice(drv);
 #endif
@@ -1340,7 +1340,7 @@ JACK_OpenDevice(jack_driver_t * drv)
 
   TRACE("success\n");
 
-  drv->jackd_died = FALSE;      /* clear out this flag so we don't keep attempting to restart things */
+  drv->jackd_died = false;      /* clear out this flag so we don't keep attempting to restart things */
   drv->state = PLAYING;         /* clients seem to behave much better with this on from the start, especially when recording */
 
   return ERR_SUCCESS;           /* return success */
@@ -1351,7 +1351,7 @@ JACK_OpenDevice(jack_driver_t * drv)
  *		JACK_CloseDevice
  *
  *	Close the connection to the server cleanly.
- *  If close_client is TRUE we close the client for this device instead of
+ *  If close_client is true we close the client for this device instead of
  *    just marking the device as in_use(JACK_CLOSE_HACK only)
  */
 #if JACK_CLOSE_HACK
@@ -1397,8 +1397,8 @@ JACK_CloseDevice(jack_driver_t * drv)
 #if JACK_CLOSE_HACK
   } else
   {
-    TRACE("setting in_use to FALSE\n");
-    drv->in_use = FALSE;
+    TRACE("setting in_use to false\n");
+    drv->in_use = false;
 
     if(!drv->client)
     {
@@ -1442,7 +1442,7 @@ JACK_Reset(int deviceID)
  * open the audio device for writing to
  *
  * deviceID is set to the opened device
- * if client is non-zero and in_use is FALSE then just set in_use to TRUE
+ * if client is non-zero and in_use is false then just set in_use to true
  *
  * return value is zero upon success, non-zero upon failure
  *
@@ -1457,13 +1457,13 @@ JACK_Open(int *deviceID, unsigned int bits_per_channel, int floating_point,
   return JACK_OpenEx(deviceID, bits_per_channel,
                      floating_point, rate,
                      0, channels,
-                     NULL, 0, JackPortIsPhysical);
+                     nullptr, 0, JackPortIsPhysical);
 }
 
 /*
  * see JACK_Open() for comments
  * NOTE: jack_port_name has three ways of being used:
- *       - NULL - finds all ports with the given flags
+ *       - nullptr - finds all ports with the given flags
  *       - A single regex string used to retrieve all port names
  *       - A series of port names, one for each output channel
  *
@@ -1588,13 +1588,13 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
       }
     } else
     {
-      drv->jack_port_name = NULL;
-      TRACE("jack_port_name = NULL\n");
+      drv->jack_port_name = nullptr;
+      TRACE("jack_port_name = nullptr\n");
     }
   }
 
   /* initialize some variables */
-  drv->in_use = FALSE;
+  drv->in_use = false;
 
   JACK_ResetFromDriver(drv);    /* flushes all queued buffers, sets status to STOPPED and resets some variables */
 
@@ -1677,7 +1677,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
           *rate, drv->jack_sample_rate);
     *rate = drv->jack_sample_rate;
 #if JACK_CLOSE_HACK
-    JACK_CloseDevice(drv, TRUE);
+    JACK_CloseDevice(drv, true);
 #else
     JACK_CloseDevice(drv);
 #endif
@@ -1686,7 +1686,7 @@ JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
     return ERR_RATE_MISMATCH;
   }
 
-  drv->allocated = TRUE;        /* record that we opened this device */
+  drv->allocated = true;        /* record that we opened this device */
 
   DEBUG("sizeof(sample_t) == %d\n", sizeof(sample_t));
 
@@ -1707,7 +1707,7 @@ JACK_Close(int deviceID)
   TRACE("deviceID(%d)\n", deviceID);
 
 #if JACK_CLOSE_HACK
-  JACK_CloseDevice(drv, TRUE);
+  JACK_CloseDevice(drv, true);
 #else
   JACK_CloseDevice(drv);
 #endif
@@ -1742,7 +1742,7 @@ JACK_Close(int deviceID)
   if(drv->input_src) src_delete(drv->input_src);
   drv->input_src = 0;
 
-  drv->allocated = FALSE;       /* release this device */
+  drv->allocated = false;       /* release this device */
 
   pthread_mutex_unlock(&device_mutex);
 
@@ -2513,12 +2513,12 @@ JACK_CleanupDriver(jack_driver_t * drv)
   TRACE("\n");
   /* things that need to be reset both in JACK_Init & JACK_CloseDevice */
   drv->client = 0;
-  drv->in_use = FALSE;
+  drv->in_use = false;
   drv->state = CLOSED;
   drv->jack_sample_rate = 0;
   drv->output_sample_rate_ratio = 1.0;
   drv->input_sample_rate_ratio = 1.0;
-  drv->jackd_died = FALSE;
+  drv->jackd_died = false;
   gettimeofday(&drv->previousTime, 0);  /* record the current time */
   gettimeofday(&drv->last_reconnect_attempt, 0);
 }
@@ -2547,7 +2547,7 @@ JACK_Init(void)
   {
     drv = &outDev[x];
 
-    pthread_mutex_init(&drv->mutex, NULL);
+    pthread_mutex_init(&drv->mutex, nullptr);
 
     getDriver(x);
 
@@ -2564,7 +2564,7 @@ JACK_Init(void)
   }
 
   client_name = 0;              /* initialize the name to null */
-  do_sample_rate_conversion = TRUE;     /* default to on */
+  do_sample_rate_conversion = true;     /* default to on */
   JACK_SetClientName("bio2jack");
 
   pthread_mutex_unlock(&device_mutex);
@@ -2616,7 +2616,7 @@ JACK_GetJackBufferedBytes(int deviceID)
   return return_val;
 }
 
-/* value = TRUE, perform sample rate conversion */
+/* value = true, perform sample rate conversion */
 void
 JACK_DoSampleRateConversion(bool value)
 {

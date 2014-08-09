@@ -249,7 +249,7 @@ struct gme_info_t_ : gme_info_t
 
 BLARGG_EXPORT gme_err_t gme_track_info( Music_Emu const* me, gme_info_t** out, int track )
 {
-	*out = NULL;
+	*out = nullptr;
 
 	gme_info_t_* info = BLARGG_NEW gme_info_t_;
 	CHECK_ALLOC( info );

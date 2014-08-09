@@ -53,15 +53,15 @@ aosd_deco_style_data_t;
 */
 typedef struct
 {
-  const gchar * desc;
+  const char * desc;
   void (*render_func)( Ghosd * , cairo_t * , aosd_deco_style_data_t * );
-  gint colors_num;
+  int colors_num;
   struct
   {
-    gint top;
-    gint bottom;
-    gint left;
-    gint right;
+    int top;
+    int bottom;
+    int left;
+    int right;
   }
   padding;
 }

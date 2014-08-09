@@ -199,7 +199,7 @@ void ModplugXMMS::PlayLoop()
     if (mBuffer)
     {
         delete [] mBuffer;
-        mBuffer = NULL;
+        mBuffer = nullptr;
     }
 }
 

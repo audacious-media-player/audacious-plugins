@@ -21,7 +21,7 @@
 #ifndef PLUGIN_SKINS_H
 #define PLUGIN_SKINS_H
 
-#include <libaudcore/core.h>
+#include <glib.h>
 
 enum {
     SKINS_PATH_USER_SKIN_DIR,
@@ -31,6 +31,8 @@ enum {
 
 extern char * skins_paths[];
 
-bool_t handle_window_close (void);
+void skins_restart (void);
+
+gboolean handle_window_close (void);
 
 #endif

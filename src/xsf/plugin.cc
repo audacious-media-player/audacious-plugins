@@ -66,7 +66,7 @@ Tuple xsf_tuple(const char *filename, VFSFile *fd)
 	if (!buf)
 		return t;
 
-	if (corlett_decode((uint8_t *) buf, sz, NULL, NULL, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *) buf, sz, nullptr, nullptr, &c) != AO_SUCCESS)
 		return t;
 
 	t.set_filename (filename);
@@ -96,7 +96,7 @@ static int xsf_get_length(const char *filename)
 	if (!buf)
 		return -1;
 
-	if (corlett_decode((uint8_t *) buf, size, NULL, NULL, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *) buf, size, nullptr, nullptr, &c) != AO_SUCCESS)
 	{
 		free(buf);
 		return -1;
@@ -110,7 +110,7 @@ static int xsf_get_length(const char *filename)
 	return length;
 }
 
-static bool_t xsf_play(const char * filename, VFSFile * file)
+static bool xsf_play(const char * filename, VFSFile * file)
 {
 	void *buffer;
 	int64_t size;
@@ -118,11 +118,11 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 	int16_t samples[44100*2];
 	int seglen = 44100 / 60;
 	float pos;
-	bool_t error = FALSE;
+	bool error = false;
 
 	const char * slash = strrchr (filename, '/');
 	if (! slash)
-		return FALSE;
+		return false;
 
 	dirpath = String (str_copy (filename, slash + 1 - filename));
 
@@ -130,13 +130,13 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 
 	if (xsf_start(buffer, size) != AO_SUCCESS)
 	{
-		error = TRUE;
+		error = true;
 		goto ERR_NO_CLOSE;
 	}
 
 	if (!aud_input_open_audio(FMT_S16_NE, 44100, 2))
 	{
-		error = TRUE;
+		error = true;
 		goto ERR_NO_CLOSE;
 	}
 
@@ -173,7 +173,7 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 				}
 			   	else
 				{
-					error = TRUE;
+					error = true;
 					goto CLEANUP;
 				}
 			}
@@ -196,11 +196,11 @@ ERR_NO_CLOSE:
 	return !error;
 }
 
-int xsf_is_our_fd(const char *filename, VFSFile *file)
+bool xsf_is_our_fd(const char *filename, VFSFile *file)
 {
 	char magic[4];
 	if (vfs_fread(magic, 1, 4, file) < 4)
-		return FALSE;
+		return false;
 
 	if (!memcmp(magic, "PSF$", 4))
 		return 1;
@@ -208,7 +208,7 @@ int xsf_is_our_fd(const char *filename, VFSFile *file)
 	return 0;
 }
 
-static const char *xsf_fmts[] = { "2sf", "mini2sf", NULL };
+static const char *xsf_fmts[] = { "2sf", "mini2sf", nullptr };
 
 #define AUD_PLUGIN_NAME        N_("2SF Decoder")
 #define AUD_INPUT_PLAY         xsf_play

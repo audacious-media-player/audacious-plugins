@@ -120,7 +120,7 @@ static Converter get_converter (int in, int out)
     if (in == 6 && out == 2)
         return surround_5p1_to_stereo;
 
-    return NULL;
+    return nullptr;
 }
 
 static int input_channels, output_channels;
@@ -155,12 +155,12 @@ void mixer_process (float * * data, int * samples)
 
 static const char * const mixer_defaults[] = {
  "channels", "2",
-  NULL};
+  nullptr};
 
-static bool_t mixer_init (void)
+static bool mixer_init (void)
 {
     aud_config_set_defaults ("mixer", mixer_defaults);
-    return TRUE;
+    return true;
 }
 
 static void mixer_cleanup (void)
@@ -176,14 +176,11 @@ static const char mixer_about[] =
 static const PreferencesWidget mixer_widgets[] = {
     WidgetLabel (N_("<b>Channel Mixer</b>")),
     WidgetSpin (N_("Output channels:"),
-        {VALUE_INT, 0, "mixer", "channels"},
+        WidgetInt ("mixer", "channels"),
         {1, AUD_MAX_CHANNELS, 1})
 };
 
-static const PluginPreferences mixer_prefs = {
-    mixer_widgets,
-    ARRAY_LEN (mixer_widgets)
-};
+static const PluginPreferences mixer_prefs = {{mixer_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Channel Mixer")
 #define AUD_PLUGIN_ABOUT       mixer_about
