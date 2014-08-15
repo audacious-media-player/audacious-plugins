@@ -393,8 +393,12 @@ AC_ARG_ENABLE(aac,
  [enable_aac=$enableval], [enable_aac=yes])
 
 if test $enable_aac = yes ; then
-    AC_CHECK_HEADER([neaacdec.h])
-    AC_CHECK_LIB([faad], [NeAACDecInit2])
+    AC_CHECK_HEADER([neaacdec.h], [have_aac=yes], [have_aac=no])
+    AC_CHECK_LIB([faad], [NeAACDecInit2], [have_aac=$have_aac], [have_aac=no])
+
+    if test $have_aac != yes ; then
+        AC_MSG_ERROR([Please install libfaad, or use --disable-aac to disable AAC support.])
+    fi
 
     FAAD_CFLAGS=
     FAAD_LIBS="-lfaad"
