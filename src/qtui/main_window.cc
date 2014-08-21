@@ -73,6 +73,7 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     updateToggles ();
 
     connect (actionAbout, &QAction::triggered, aud_ui_show_about_window);
+    connect (actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
 
     connect (actionQuit, &QAction::triggered, aud_quit);
 

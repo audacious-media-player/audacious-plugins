@@ -87,6 +87,7 @@
     <addaction name="actionAddURL"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionPreferences"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuPlayback">
@@ -412,6 +413,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About Audacious</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
    </property>
   </action>
   <action name="actionQuit">
