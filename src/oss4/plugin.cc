@@ -50,10 +50,9 @@ FAILED:
     close(mixerfd);
 }
 
-const ComboBoxElements * combo_fill(int * n_elements)
+ArrayRef<const ComboBoxElements> combo_fill()
 {
-    * n_elements = oss_elements.len();
-    return oss_elements.begin();
+    return {oss_elements.begin(), oss_elements.len()};
 }
 
 static void combo_cleanup()
@@ -70,7 +69,7 @@ static void combo_cleanup()
 static const PreferencesWidget oss_widgets[] = {
     WidgetCombo(N_("Audio device:"),
         WidgetString ("oss4", "device"),
-        {0, 0, combo_fill}),
+        {0, combo_fill}),
     WidgetCheck(N_("Use alternate device:"),
         WidgetBool ("oss4", "use_alt_device")),
     WidgetEntry(0, WidgetString ("oss4", "alt_device"),
