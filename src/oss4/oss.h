@@ -96,7 +96,7 @@ extern oss_data_t *oss_data;
 /* oss.c */
 bool oss_init(void);
 void oss_cleanup(void);
-int oss_open_audio(int aud_format, int rate, int channels);
+bool oss_open_audio(int aud_format, int rate, int channels);
 void oss_close_audio(void);
 void oss_write_audio(void *data, int length);
 void oss_drain(void);
