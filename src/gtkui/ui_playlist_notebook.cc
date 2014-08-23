@@ -217,6 +217,11 @@ static gboolean scroll_cb (GtkWidget * widget, GdkEventScroll * event)
     }
 }
 
+static gboolean scroll_ignore_cb ()
+{
+    return TRUE;
+}
+
 static void tab_changed (GtkNotebook * notebook, GtkWidget * page, int
  page_num, void * unused)
 {
@@ -285,6 +290,9 @@ void ui_playlist_notebook_create_tab(int playlist)
 
     scrollwin = gtk_scrolled_window_new(nullptr, nullptr);
     vscroll = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrollwin));
+
+    /* do not allow scroll events to propagate up to the notebook */
+    g_signal_connect_after (scrollwin, "scroll-event", (GCallback) scroll_ignore_cb, nullptr);
 
     treeview = ui_playlist_widget_new (playlist);
 
