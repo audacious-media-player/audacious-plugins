@@ -58,6 +58,8 @@ void MainWindow::setupActions ()
     /* plugin menus */
     QMenuBar * mb = this->menuBar();
     mb->addAction (audqt::menu_get_by_id (AUD_MENU_MAIN)->menuAction ());
+
+    connect(actionEffects, &QAction::triggered, [=] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); });
 }
 
 #endif
