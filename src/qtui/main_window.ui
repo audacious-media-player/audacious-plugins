@@ -68,7 +68,7 @@
    <addaction name="actionAudioVolume"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QMenuBar" name="menuBar">
+  <widget class="QMenuBar" name="aud_menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -165,11 +165,6 @@
     <addaction name="actionPlaylistManager"/>
     <addaction name="actionQueueManager"/>
    </widget>
-   <widget class="QMenu" name="menuServices">
-    <property name="title">
-     <string>Services</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuOutput">
     <property name="title">
      <string>Output</string>
@@ -189,7 +184,6 @@
    <addaction name="menuFile"/>
    <addaction name="menuPlayback"/>
    <addaction name="menuPlaylist"/>
-   <addaction name="menuServices"/>
    <addaction name="menuOutput"/>
    <addaction name="menuView"/>
   </widget>
