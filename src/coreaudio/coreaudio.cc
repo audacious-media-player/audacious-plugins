@@ -70,6 +70,27 @@ static AudioComponentInstance output_instance;
 
 static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
 
+struct AudioUnitFormatDescriptionMap {
+    int aud_format;
+    unsigned int mBitsPerChannel;
+    unsigned int mFormatFlags;
+};
+static struct AudioUnitFormatDescriptionMap AUFormatMap[] = {
+    {FMT_S16_LE, 16, kAudioFormatFlagIsSignedInteger},
+    {FMT_S16_BE, 16, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
+    {FMT_U16_LE, 16, 0},
+    {FMT_U16_BE, 16, kAudioFormatFlagIsBigEndian},
+    {FMT_S24_LE, 24, kAudioFormatFlagIsSignedInteger},
+    {FMT_S24_BE, 24, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
+    {FMT_U24_LE, 24, 0},
+    {FMT_U24_BE, 24, kAudioFormatFlagIsBigEndian},
+    {FMT_S32_LE, 32, kAudioFormatFlagIsSignedInteger},
+    {FMT_S32_BE, 32, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
+    {FMT_U32_LE, 32, 0},
+    {FMT_U32_BE, 32, kAudioFormatFlagIsBigEndian},
+    {FMT_FLOAT, 32, kAudioFormatFlagIsFloat},
+};
+
 bool init (void)
 {
     aud_config_set_defaults ("coreaudio", sdl_defaults);
@@ -212,9 +233,20 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
 
 bool open_audio (int format, int rate_, int chan_)
 {
-    if (format != FMT_S16_NE)
+    struct AudioUnitFormatDescriptionMap * m = nullptr;
+
+    for (struct AudioUnitFormatDescriptionMap it : AUFormatMap)
     {
-        error ("Only signed 16-bit, native endian audio is supported.\n");
+        if (it.aud_format == format)
+        {
+            m = & it;
+            break;
+        }
+    }
+
+    if (! m)
+    {
+        error ("The requested audio format %d is unsupported.\n", format);
         return 0;
     }
 
@@ -241,12 +273,18 @@ bool open_audio (int format, int rate_, int chan_)
     AudioStreamBasicDescription streamFormat;
     streamFormat.mSampleRate = rate;
     streamFormat.mFormatID = kAudioFormatLinearPCM;
-    streamFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian;
+    streamFormat.mFormatFlags = m->mFormatFlags;
     streamFormat.mFramesPerPacket = 1;
     streamFormat.mChannelsPerFrame = chan;
-    streamFormat.mBitsPerChannel = 16;
-    streamFormat.mBytesPerPacket = chan * 2;
-    streamFormat.mBytesPerFrame = chan * 2;
+    streamFormat.mBitsPerChannel = m->mBitsPerChannel;
+    streamFormat.mBytesPerPacket = chan * (m->mBitsPerChannel / 8);
+    streamFormat.mBytesPerFrame = chan * (m->mBitsPerChannel / 8);
+
+    AUDDBG("Stream format:\n");
+    AUDDBG(" Channels: %d\n", streamFormat.mChannelsPerFrame);
+    AUDDBG(" Sample rate: %f\n", streamFormat.mSampleRate);
+    AUDDBG(" Bits per channel: %d\n", streamFormat.mBitsPerChannel);
+    AUDDBG(" Bytes per frame: %d\n", streamFormat.mBytesPerFrame);
 
     if (AudioUnitSetProperty (output_instance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat)))
     {
