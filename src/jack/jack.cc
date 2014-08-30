@@ -177,10 +177,10 @@ static const char * const jack_defaults[] = {
  "volume_right", "25",
  nullptr};
 
-static const ComboBoxElements mode_list[] = {
- {"CONNECT_ALL", N_("Connect to all available jack ports")},
- {"CONNECT_OUTPUT", N_("Connect only the output ports")},
- {"CONNECT_NONE", N_("Don't connect to any port")},
+static const ComboItem mode_list[] = {
+    ComboItem (N_("Connect to all available jack ports"), "CONNECT_ALL"),
+    ComboItem (N_("Connect only the output ports"), "CONNECT_OUTPUT"),
+    ComboItem (N_("Don't connect to any port"), "CONNECT_NONE")
 };
 
 static const PreferencesWidget jack_widgets[] = {

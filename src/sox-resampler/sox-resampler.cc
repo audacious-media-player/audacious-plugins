@@ -38,8 +38,10 @@
 
 #define RESAMPLER_ERROR(e) fprintf (stderr, "sox-resampler: %s\n", e)
 
+const char default_quality[] = {'0' + SOXR_HQ, 0};
+
 static const char * const sox_resampler_defaults[] = {
- "quality", "4", /* SOXR_HQ */
+ "quality", default_quality,
  "rate", "44100",
  nullptr};
 
@@ -139,16 +141,17 @@ static const char sox_resampler_about[] =
     "Based on Sample Rate Converter Plugin:\n"
     "Copyright 2010-2012 John Lindgren");
 
-static const ComboBoxElements method_list[] = {
- {"0", N_("Quick")}, /* SOXR_QQ */
- {"1", N_("Low")}, /* SOXR_QL */
- {"2", N_("Medium")}, /* SOXR_QM */
- {"4", N_("High")}, /* SOXR_QH */
- {"6", N_("Very High")}}; /* SOXR_VHQ */
+static const ComboItem method_list[] = {
+    ComboItem (N_("Quick"), SOXR_QQ),
+    ComboItem (N_("Low"), SOXR_LQ),
+    ComboItem (N_("Medium"), SOXR_MQ),
+    ComboItem (N_("High"), SOXR_HQ),
+    ComboItem (N_("Very High"), SOXR_VHQ)
+};
 
 static const PreferencesWidget sox_resampler_widgets[] = {
     WidgetCombo (N_("Quality:"),
-        WidgetString ("soxr", "quality"),
+        WidgetInt ("soxr", "quality"),
         {{method_list}}),
     WidgetSpin (N_("Rate:"),
         WidgetInt ("soxr", "rate"),

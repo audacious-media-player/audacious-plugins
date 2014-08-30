@@ -22,7 +22,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/preferences.h>
 
-static Index<ComboBoxElements> oss_elements;
+static Index<ComboItem> oss_elements;
 
 static void combo_init()
 {
@@ -33,7 +33,7 @@ static void combo_init()
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
     CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
-    oss_elements.append({strdup(DEFAULT_DSP), strdup(N_("Default device"))});
+    oss_elements.append(ComboItem(strdup(N_("Default device")), strdup(DEFAULT_DSP)));
 
     for (int i = 0; i < sysinfo.numaudios; i++)
     {
@@ -43,24 +43,24 @@ static void combo_init()
         CHECK(ioctl, mixerfd, SNDCTL_AUDIOINFO, &ainfo);
 
         if (ainfo.caps & PCM_CAP_OUTPUT)
-            oss_elements.append({strdup(ainfo.devnode), strdup(ainfo.name)});
+            oss_elements.append(ComboItem(strdup(ainfo.name), strdup(ainfo.devnode)));
     }
 
 FAILED:
     close(mixerfd);
 }
 
-ArrayRef<const ComboBoxElements> combo_fill()
+ArrayRef<const ComboItem> combo_fill()
 {
     return {oss_elements.begin(), oss_elements.len()};
 }
 
 static void combo_cleanup()
 {
-    for (ComboBoxElements & elem : oss_elements)
+    for (ComboItem & elem : oss_elements)
     {
-        free((char *)elem.value);
         free((char *)elem.label);
+        free((char *)elem.str);
     }
 
     oss_elements.clear();

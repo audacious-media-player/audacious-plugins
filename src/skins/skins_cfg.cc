@@ -197,47 +197,47 @@ static const PreferencesWidget skins_widgets_general[] = {
         WidgetBool (config.twoway_scroll, autoscroll_set_cb))
 };
 
-static ComboBoxElements vis_mode_elements[] = {
-    {GINT_TO_POINTER (VIS_ANALYZER), N_("Analyzer")},
-    {GINT_TO_POINTER (VIS_SCOPE), N_("Scope")},
-    {GINT_TO_POINTER (VIS_VOICEPRINT), N_("Voiceprint / VU meter")},
-    {GINT_TO_POINTER (VIS_OFF), N_("Off")}
+static ComboItem vis_mode_elements[] = {
+    ComboItem (N_("Analyzer"), VIS_ANALYZER),
+    ComboItem (N_("Scope"), VIS_SCOPE),
+    ComboItem (N_("Voiceprint / VU meter"), VIS_VOICEPRINT),
+    ComboItem (N_("Off"), VIS_OFF)
 };
 
-static ComboBoxElements analyzer_mode_elements[] = {
-    {GINT_TO_POINTER (ANALYZER_NORMAL), N_("Normal")},
-    {GINT_TO_POINTER (ANALYZER_FIRE), N_("Fire")},
-    {GINT_TO_POINTER (ANALYZER_VLINES), N_("Vertical lines")}
+static ComboItem analyzer_mode_elements[] = {
+    ComboItem (N_("Normal"), ANALYZER_NORMAL),
+    ComboItem (N_("Fire"), ANALYZER_FIRE),
+    ComboItem (N_("Vertical lines"), ANALYZER_VLINES)
 };
 
-static ComboBoxElements analyzer_type_elements[] = {
-    {GINT_TO_POINTER (ANALYZER_LINES), N_("Lines")},
-    {GINT_TO_POINTER (ANALYZER_BARS), N_("Bars")}
+static ComboItem analyzer_type_elements[] = {
+    ComboItem (N_("Lines"), ANALYZER_LINES),
+    ComboItem (N_("Bars"), ANALYZER_BARS)
 };
 
-static ComboBoxElements falloff_elements[] = {
-    {GINT_TO_POINTER (FALLOFF_SLOWEST), N_("Slowest")},
-    {GINT_TO_POINTER (FALLOFF_SLOW), N_("Slow")},
-    {GINT_TO_POINTER (FALLOFF_MEDIUM), N_("Medium")},
-    {GINT_TO_POINTER (FALLOFF_FAST), N_("Fast")},
-    {GINT_TO_POINTER (FALLOFF_FASTEST), N_("Fastest")}
+static ComboItem falloff_elements[] = {
+    ComboItem (N_("Slowest"), FALLOFF_SLOWEST),
+    ComboItem (N_("Slow"), FALLOFF_SLOW),
+    ComboItem (N_("Medium"), FALLOFF_MEDIUM),
+    ComboItem (N_("Fast"), FALLOFF_FAST),
+    ComboItem (N_("Fastest"), FALLOFF_FASTEST)
 };
 
-static ComboBoxElements scope_mode_elements[] = {
-    {GINT_TO_POINTER (SCOPE_DOT), N_("Dots")},
-    {GINT_TO_POINTER (SCOPE_LINE), N_("Line")},
-    {GINT_TO_POINTER (SCOPE_SOLID), N_("Solid")}
+static ComboItem scope_mode_elements[] = {
+    ComboItem (N_("Dots"), SCOPE_DOT),
+    ComboItem (N_("Line"), SCOPE_LINE),
+    ComboItem (N_("Solid"), SCOPE_SOLID)
 };
 
-static ComboBoxElements voiceprint_mode_elements[] = {
-    {GINT_TO_POINTER (VOICEPRINT_NORMAL), N_("Normal")},
-    {GINT_TO_POINTER (VOICEPRINT_FIRE), N_("Fire")},
-    {GINT_TO_POINTER (VOICEPRINT_ICE), N_("Ice")}
+static ComboItem voiceprint_mode_elements[] = {
+    ComboItem (N_("Normal"), VOICEPRINT_NORMAL),
+    ComboItem (N_("Fire"), VOICEPRINT_FIRE),
+    ComboItem (N_("Ice"), VOICEPRINT_ICE)
 };
 
-static ComboBoxElements vu_mode_elements[] = {
-    {GINT_TO_POINTER (VU_NORMAL), N_("Normal")},
-    {GINT_TO_POINTER (VU_SMOOTH), N_("Smooth")}
+static ComboItem vu_mode_elements[] = {
+    ComboItem (N_("Normal"), VU_NORMAL),
+    ComboItem (N_("Smooth"), VU_SMOOTH)
 };
 
 static const PreferencesWidget skins_widgets_vis[] = {
