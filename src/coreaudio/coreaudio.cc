@@ -151,6 +151,7 @@ void set_volume (int left, int right)
     aud_set_int ("coreaudio", "vol_right", right);
 }
 
+#ifdef XXX_NOTYET
 static void apply_mono_volume (unsigned char * data, int len)
 {
     int vol = aud::max (vol_left, vol_right);
@@ -185,6 +186,7 @@ static void apply_stereo_volume (unsigned char * data, int len)
         i ++;
     }
 }
+#endif
 
 static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData)
 {
@@ -211,10 +213,12 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
 
     buffer_data_len -= copy;
 
+#ifdef XXX_NOTYET
     if (chan == 2)
         apply_stereo_volume (buf, copy);
     else
         apply_mono_volume (buf, copy);
+#endif
 
     if (copy < len)
         memset (buf + copy, 0, len - copy);
