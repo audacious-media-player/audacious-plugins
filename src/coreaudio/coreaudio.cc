@@ -57,7 +57,7 @@ static volatile int vol_left, vol_right;
 static int chan, rate;
 
 static unsigned char * buffer;
-static int buffer_size, buffer_data_start, buffer_data_len;
+static int buffer_size, buffer_data_start, buffer_data_len, buffer_bytes_per_channel;
 
 static int64_t frames_written;
 static char prebuffer_flag, paused_flag;
@@ -222,7 +222,7 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
     /* At this moment, we know that there is a delay of (at least) the block of
      * data just written.  We save the block size and the current time for
      * estimating the delay later on. */
-    block_delay = copy / (2 * chan) * 1000 / rate;
+    block_delay = copy / (buffer_bytes_per_channel * chan) * 1000 / rate;
     gettimeofday (& block_time, nullptr);
 
     pthread_cond_broadcast (& cond);
@@ -255,7 +255,8 @@ bool open_audio (int format, int rate_, int chan_)
     chan = chan_;
     rate = rate_;
 
-    buffer_size = 2 * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
+    buffer_bytes_per_channel = (m->mBitsPerChannel / 8);
+    buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
     buffer = new unsigned char[buffer_size];
     buffer_data_start = 0;
     buffer_data_len = 0;
@@ -277,8 +278,8 @@ bool open_audio (int format, int rate_, int chan_)
     streamFormat.mFramesPerPacket = 1;
     streamFormat.mChannelsPerFrame = chan;
     streamFormat.mBitsPerChannel = m->mBitsPerChannel;
-    streamFormat.mBytesPerPacket = chan * (m->mBitsPerChannel / 8);
-    streamFormat.mBytesPerFrame = chan * (m->mBitsPerChannel / 8);
+    streamFormat.mBytesPerPacket = chan * buffer_bytes_per_channel;
+    streamFormat.mBytesPerFrame = chan * buffer_bytes_per_channel;
 
     AUDDBG("Stream format:\n");
     AUDDBG(" Channels: %d\n", streamFormat.mChannelsPerFrame);
@@ -362,7 +363,7 @@ void write_audio (void * data, int len)
     }
 
     buffer_data_len += len;
-    frames_written += len / (2 * chan);
+    frames_written += len / (buffer_bytes_per_channel * chan);
 
     pthread_mutex_unlock (& mutex);
 }
@@ -384,7 +385,7 @@ int output_time (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int out = (int64_t) (frames_written - buffer_data_len / (2 * chan))
+    int out = (int64_t) (frames_written - buffer_data_len / (buffer_bytes_per_channel * chan))
      * 1000 / rate;
 
     /* Estimate the additional delay of the last block written. */
