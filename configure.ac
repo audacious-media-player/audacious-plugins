@@ -95,6 +95,24 @@ if test "x$enable_xsf" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS xsf"
 fi
 
+dnl CoreAudio
+dnl =========
+
+AC_ARG_ENABLE(coreaudio,
+    [AS_HELP_STRING([--disable-coreaudio], [disable CoreAudio output plugin (default=enabled)])],
+    [enable_coreaudio=$enableval],
+    [enable_coreaudio=auto]
+)
+
+have_coreaudio=no
+if test "x$enable_coreaudio" != "xno"; then
+    if "x$HAVE_DARWIN" != "xno"; then
+        have_coreaudio=yes
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS coreaudio"
+    fi
+else
+    AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
+fi
 
 dnl PulseAudio
 dnl ==========
@@ -1160,6 +1178,7 @@ echo "  --------------"
 echo "  Open Sound System (oss4):               $have_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  Sndio (sndio):                          $have_sndio"
+echo "  CoreAudio (coreaudio):                  $have_coreaudio"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  Simple DirectMedia Layer (sdlout):      $have_sdlout"
