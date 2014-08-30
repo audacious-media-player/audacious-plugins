@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009-2012 John Lindgren
+ * Copyright 2009-2014 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -24,6 +24,7 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/preferences.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 
@@ -74,6 +75,7 @@ void alsa_set_volume (int left, int right);
 
 /* config.c */
 void alsa_init_config ();
-void * alsa_create_config_widget ();
+
+extern const PluginPreferences alsa_prefs;
 
 #endif

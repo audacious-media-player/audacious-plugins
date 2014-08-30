@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009-2012 John Lindgren
+ * Copyright 2009-2014 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -19,7 +19,6 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
-#include <libaudcore/preferences.h>
 
 #include "alsa.h"
 
@@ -28,12 +27,6 @@ static const char alsa_about[] =
     "Copyright 2009-2012 John Lindgren\n\n"
     "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
     "code served as a reference when the ALSA manual was not enough.");
-
-static const PreferencesWidget alsa_widgets[] = {
-    WidgetCustomGTK (alsa_create_config_widget)
-};
-
-static const PluginPreferences alsa_prefs = {{alsa_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("ALSA Output")
 #define AUD_PLUGIN_ABOUT       alsa_about
