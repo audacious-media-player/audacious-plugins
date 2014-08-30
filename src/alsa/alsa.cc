@@ -334,11 +334,11 @@ bool alsa_open_audio (int aud_format, int rate, int channels)
 
     assert (alsa_handle == nullptr);
 
+    String pcm = aud_get_str ("alsa", "pcm");
     snd_pcm_format_t format = convert_aud_format (aud_format);
     AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
-     (const char *) alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
-    CHECK_NOISY (snd_pcm_open, & alsa_handle, alsa_config_pcm,
-     SND_PCM_STREAM_PLAYBACK, 0);
+     (const char *) pcm, snd_pcm_format_name (format), channels, rate);
+    CHECK_NOISY (snd_pcm_open, & alsa_handle, pcm, SND_PCM_STREAM_PLAYBACK, 0);
 
     snd_pcm_hw_params_t * params;
     snd_pcm_hw_params_alloca (& params);
@@ -493,35 +493,15 @@ void alsa_drain (void)
 
     pump_stop ();
 
-    if (alsa_config_drain_workaround)
-    {
-        int d = get_delay () * 1000 / alsa_rate;
-        struct timespec delay = {d / 1000, d % 1000 * 1000000};
+    int d = get_delay () * 1000 / alsa_rate;
+    struct timespec delay = {d / 1000, d % 1000 * 1000000};
 
-        pthread_mutex_unlock (& alsa_mutex);
-        nanosleep (& delay, nullptr);
-        pthread_mutex_lock (& alsa_mutex);
-    }
-    else
-    {
-        while (1)
-        {
-            int state;
-            CHECK_VAL (state, snd_pcm_state, alsa_handle);
-
-            if (state != SND_PCM_STATE_RUNNING && state !=
-             SND_PCM_STATE_DRAINING)
-                break;
-
-            pthread_mutex_unlock (& alsa_mutex);
-            poll_sleep ();
-            pthread_mutex_lock (& alsa_mutex);
-        }
-    }
+    pthread_mutex_unlock (& alsa_mutex);
+    nanosleep (& delay, nullptr);
+    pthread_mutex_lock (& alsa_mutex);
 
     pump_start ();
 
-FAILED:
     pthread_mutex_unlock (& alsa_mutex);
     return;
 }
@@ -602,21 +582,23 @@ FAILED:
 
 void alsa_open_mixer (void)
 {
-    snd_mixer_selem_id_t * selem_id;
-
     alsa_mixer = nullptr;
 
-    if (! alsa_config_mixer_element[0])
+    String mixer = aud_get_str ("alsa", "mixer");
+    String mixer_element = aud_get_str ("alsa", "mixer-element");
+
+    if (! mixer_element[0])
         goto FAILED;
 
-    AUDDBG ("Opening mixer card %s.\n", (const char *) alsa_config_mixer);
+    AUDDBG ("Opening mixer card %s.\n", (const char *) mixer);
     CHECK_NOISY (snd_mixer_open, & alsa_mixer, 0);
-    CHECK_NOISY (snd_mixer_attach, alsa_mixer, alsa_config_mixer);
+    CHECK_NOISY (snd_mixer_attach, alsa_mixer, mixer);
     CHECK_NOISY (snd_mixer_selem_register, alsa_mixer, nullptr, nullptr);
     CHECK_NOISY (snd_mixer_load, alsa_mixer);
 
+    snd_mixer_selem_id_t * selem_id;
     snd_mixer_selem_id_alloca (& selem_id);
-    snd_mixer_selem_id_set_name (selem_id, alsa_config_mixer_element);
+    snd_mixer_selem_id_set_name (selem_id, mixer_element);
     alsa_mixer_element = snd_mixer_find_selem (alsa_mixer, selem_id);
 
     if (alsa_mixer_element == nullptr)

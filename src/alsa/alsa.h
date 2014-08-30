@@ -73,10 +73,6 @@ void alsa_get_volume (int * left, int * right);
 void alsa_set_volume (int left, int right);
 
 /* config.c */
-extern String alsa_config_pcm, alsa_config_mixer, alsa_config_mixer_element;
-extern int alsa_config_drop_workaround, alsa_config_drain_workaround,
- alsa_config_delay_workaround;
-
 void alsa_config_load (void);
 void alsa_config_save (void);
 void * alsa_create_config_widget (void);
