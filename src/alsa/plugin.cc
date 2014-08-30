@@ -30,7 +30,7 @@ static const char alsa_about[] =
     "code served as a reference when the ALSA manual was not enough.");
 
 static const PreferencesWidget alsa_widgets[] = {
-    WidgetCustom (alsa_create_config_widget)
+    WidgetCustomGTK (alsa_create_config_widget)
 };
 
 static const PluginPreferences alsa_prefs = {{alsa_widgets}};

@@ -495,7 +495,7 @@ static const char file_about[] =
     "USA.");
 
 static const PreferencesWidget file_widgets[] = {
-    WidgetCustom (file_configure)
+    WidgetCustomGTK (file_configure)
 };
 
 static const PluginPreferences file_prefs = {

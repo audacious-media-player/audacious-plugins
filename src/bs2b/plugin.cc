@@ -178,7 +178,7 @@ static void * create_config_widget (void)
 }
 
 static const PreferencesWidget bs2b_widgets[] = {
-    WidgetCustom (create_config_widget)
+    WidgetCustomGTK (create_config_widget)
 };
 
 static const PluginPreferences bs2b_prefs = {{bs2b_widgets}};

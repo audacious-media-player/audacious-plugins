@@ -45,7 +45,7 @@ static void /* GtkWidget */ * bscope_get_color_chooser (void);
 
 static const PreferencesWidget bscope_widgets[] = {
     WidgetLabel (N_("<b>Color</b>")),
-    WidgetCustom (bscope_get_color_chooser)
+    WidgetCustomGTK (bscope_get_color_chooser)
 };
 
 static const PluginPreferences bscope_prefs = {{bscope_widgets}};

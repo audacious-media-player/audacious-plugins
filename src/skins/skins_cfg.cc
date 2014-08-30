@@ -185,7 +185,7 @@ static void * create_skin_view (void);
 
 static const PreferencesWidget skins_widgets_general[] = {
     WidgetLabel (N_("<b>Skin</b>")),
-    WidgetCustom (create_skin_view),
+    WidgetCustomGTK (create_skin_view),
     WidgetLabel (N_("<b>Fonts</b>")),
     WidgetTable ({{font_table_elements}},
         WIDGET_CHILD),

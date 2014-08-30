@@ -217,7 +217,7 @@ static void *config_status_checker () {
 
 static const PreferencesWidget config_contents[] = {
     WidgetLabel (N_("You need to allow Audacious to scrobble tracks to your Last.fm account.\n")),
-    WidgetCustom (config_status_checker)
+    WidgetCustomGTK (config_status_checker)
 };
 
 const PluginPreferences configuration = {{config_contents}};

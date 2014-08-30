@@ -40,7 +40,7 @@ static const PreferencesWidget gtkui_widgets[] = {
     WidgetCheck (N_("Show close buttons"),
         WidgetBool ("gtkui", "close_button_visible", redisplay_playlists)),
     WidgetLabel (N_("<b>Playlist Columns</b>")),
-    WidgetCustom (pw_col_create_chooser),
+    WidgetCustomGTK (pw_col_create_chooser),
     WidgetCheck (N_("Show column headers"),
         WidgetBool ("gtkui", "playlist_headers", redisplay_playlists)),
     WidgetLabel (N_("<b>Miscellaneous</b>")),
