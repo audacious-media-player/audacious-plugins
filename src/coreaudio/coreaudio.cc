@@ -80,10 +80,12 @@ static struct AudioUnitFormatDescriptionMap AUFormatMap[] = {
     {FMT_S16_BE, 16, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
     {FMT_U16_LE, 16, 0},
     {FMT_U16_BE, 16, kAudioFormatFlagIsBigEndian},
+#ifdef XXX_NOTYET
     {FMT_S24_LE, 24, kAudioFormatFlagIsSignedInteger},
     {FMT_S24_BE, 24, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
     {FMT_U24_LE, 24, 0},
     {FMT_U24_BE, 24, kAudioFormatFlagIsBigEndian},
+#endif
     {FMT_S32_LE, 32, kAudioFormatFlagIsSignedInteger},
     {FMT_S32_BE, 32, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
     {FMT_U32_LE, 32, 0},
