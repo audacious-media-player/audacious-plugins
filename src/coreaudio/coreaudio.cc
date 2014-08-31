@@ -150,6 +150,8 @@ void set_volume (int left, int right)
 
     aud_set_int ("coreaudio", "vol_left", left);
     aud_set_int ("coreaudio", "vol_right", right);
+
+    AudioUnitSetParameter (output_instance, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, (float) ((vol_left + vol_right) / 200.), 0);
 }
 
 #ifdef XXX_NOTYET
