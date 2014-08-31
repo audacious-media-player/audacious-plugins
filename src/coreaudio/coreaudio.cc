@@ -73,24 +73,23 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
 struct AudioUnitFormatDescriptionMap {
     int aud_format;
     unsigned int mBitsPerChannel;
+    unsigned int mBytesPerChannel;
     unsigned int mFormatFlags;
 };
 static struct AudioUnitFormatDescriptionMap AUFormatMap[] = {
-    {FMT_S16_LE, 16, kAudioFormatFlagIsSignedInteger},
-    {FMT_S16_BE, 16, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
-    {FMT_U16_LE, 16, 0},
-    {FMT_U16_BE, 16, kAudioFormatFlagIsBigEndian},
-#ifdef XXX_NOTYET
-    {FMT_S24_LE, 24, kAudioFormatFlagIsSignedInteger},
-    {FMT_S24_BE, 24, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
-    {FMT_U24_LE, 24, 0},
-    {FMT_U24_BE, 24, kAudioFormatFlagIsBigEndian},
-#endif
-    {FMT_S32_LE, 32, kAudioFormatFlagIsSignedInteger},
-    {FMT_S32_BE, 32, kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
-    {FMT_U32_LE, 32, 0},
-    {FMT_U32_BE, 32, kAudioFormatFlagIsBigEndian},
-    {FMT_FLOAT, 32, kAudioFormatFlagIsFloat},
+    {FMT_S16_LE, 16, sizeof (int16_t), kAudioFormatFlagIsSignedInteger},
+    {FMT_S16_BE, 16, sizeof (int16_t), kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
+    {FMT_U16_LE, 16, sizeof (int16_t), 0},
+    {FMT_U16_BE, 16, sizeof (int16_t), kAudioFormatFlagIsBigEndian},
+    {FMT_S24_LE, 24, sizeof (int32_t), kAudioFormatFlagIsSignedInteger},
+    {FMT_S24_BE, 24, sizeof (int32_t), kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
+    {FMT_U24_LE, 24, sizeof (int32_t), 0},
+    {FMT_U24_BE, 24, sizeof (int32_t), kAudioFormatFlagIsBigEndian},
+    {FMT_S32_LE, 32, sizeof (int32_t), kAudioFormatFlagIsSignedInteger},
+    {FMT_S32_BE, 32, sizeof (int32_t), kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsBigEndian},
+    {FMT_U32_LE, 32, sizeof (int32_t), 0},
+    {FMT_U32_BE, 32, sizeof (int32_t), kAudioFormatFlagIsBigEndian},
+    {FMT_FLOAT,  32, sizeof (float),   kAudioFormatFlagIsFloat},
 };
 
 bool init (void)
@@ -261,7 +260,7 @@ bool open_audio (int format, int rate_, int chan_)
     chan = chan_;
     rate = rate_;
 
-    buffer_bytes_per_channel = (m->mBitsPerChannel / 8);
+    buffer_bytes_per_channel = m->mBytesPerChannel;
     buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
     buffer = new unsigned char[buffer_size];
     buffer_data_start = 0;
