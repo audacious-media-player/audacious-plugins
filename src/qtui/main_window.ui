@@ -65,7 +65,6 @@
    <addaction name="actionNext"/>
    <addaction name="actionRepeat"/>
    <addaction name="actionShuffle"/>
-   <addaction name="actionAudioVolume"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="aud_menuBar">
@@ -326,19 +325,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionAudioVolume">
-   <property name="icon">
-    <iconset theme="audio-volume-high">
-     <normaloff/>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>AudioVolume</string>
-   </property>
-   <property name="toolTip">
-    <string>Audio Volume</string>
    </property>
   </action>
   <action name="actionOpenURL">
