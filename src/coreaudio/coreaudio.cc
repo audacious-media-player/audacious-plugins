@@ -145,51 +145,21 @@ void get_volume (int * left, int * right)
 
 void set_volume (int left, int right)
 {
+    int vol_max;
+    float factor;
+
     vol_left = left;
     vol_right = right;
+
+    vol_max = aud::max (vol_left, vol_right);
 
     aud_set_int ("coreaudio", "vol_left", left);
     aud_set_int ("coreaudio", "vol_right", right);
 
-    AudioUnitSetParameter (output_instance, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, (float) ((vol_left + vol_right) / 200.), 0);
+    factor = (vol_max == 0) ? 0.0 : powf (10, (float) VOLUME_RANGE * (vol_max - 100) / 100 / 20);
+
+    AudioUnitSetParameter (output_instance, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, factor, 0);
 }
-
-#ifdef XXX_NOTYET
-static void apply_mono_volume (unsigned char * data, int len)
-{
-    int vol = aud::max (vol_left, vol_right);
-    int factor = (vol == 0) ? 0 : powf (10, (float) VOLUME_RANGE * (vol - 100)
-     / 100 / 20) * 65536;
-
-    int16_t * i = (int16_t *) data;
-    int16_t * end = (int16_t *) (data + len);
-
-    while (i < end)
-    {
-        * i = ((int) * i * factor) >> 16;
-        i ++;
-    }
-}
-
-static void apply_stereo_volume (unsigned char * data, int len)
-{
-    int factor_left = (vol_left == 0) ? 0 : powf (10, (float) VOLUME_RANGE *
-     (vol_left - 100) / 100 / 20) * 65536;
-    int factor_right = (vol_right == 0) ? 0 : powf (10, (float) VOLUME_RANGE *
-     (vol_right - 100) / 100 / 20) * 65536;
-
-    int16_t * i = (int16_t *) data;
-    int16_t * end = (int16_t *) (data + len);
-
-    while (i < end)
-    {
-        * i = ((int) * i * factor_left) >> 16;
-        i ++;
-        * i = ((int) * i * factor_right) >> 16;
-        i ++;
-    }
-}
-#endif
 
 static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData)
 {
@@ -215,13 +185,6 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
     }
 
     buffer_data_len -= copy;
-
-#ifdef XXX_NOTYET
-    if (chan == 2)
-        apply_stereo_volume (buf, copy);
-    else
-        apply_mono_volume (buf, copy);
-#endif
 
     if (copy < len)
         memset (buf + copy, 0, len - copy);
