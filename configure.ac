@@ -106,7 +106,7 @@ AC_ARG_ENABLE(coreaudio,
 
 have_coreaudio=no
 if test "x$enable_coreaudio" != "xno"; then
-    if "x$HAVE_DARWIN" != "xno"; then
+    if test "x$HAVE_DARWIN" != "xno"; then
         have_coreaudio=yes
         OUTPUT_PLUGINS="$OUTPUT_PLUGINS coreaudio"
     fi
