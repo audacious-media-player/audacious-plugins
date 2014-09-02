@@ -85,6 +85,7 @@ void Playlist::keyPressEvent (QKeyEvent * e)
             break;
         case Qt::Key_Delete:
             deleteCurrentIndex ();
+            break;
         case Qt::Key_Z:
             aud_drct_pl_prev ();
             return;
