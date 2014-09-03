@@ -329,7 +329,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
 
     /* Get information from URL */
     tuple.set_filename (filename);
-    tune = tuple.get_int (FIELD_SUBSONG_NUM);
+    tune = tuple.get_int (FIELD_SUBSONG_ID);
 
     /* Get tune information from emulation engine */
     pthread_mutex_lock(&xs_status_mutex);
@@ -341,7 +341,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
 
     xs_get_song_tuple_info(tuple, info, tune);
 
-    if (xs_cfg.subAutoEnable && info->nsubTunes > 1 && ! tune)
+    if (xs_cfg.subAutoEnable && info->nsubTunes > 1 && tune < 0)
         xs_fill_subtunes(tuple, info);
 
     xs_tuneinfo_free(info);
