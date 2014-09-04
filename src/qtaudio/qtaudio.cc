@@ -236,7 +236,7 @@ int output_time (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int out = (int64_t) (frames_written - buffer_data_len / (buffer_bytes_per_channel * chan))
+    int out = (int64_t) (frames_written - (output_instance->bufferSize () - output_instance->bytesFree ()) / (buffer_bytes_per_channel * chan))
      * 1000 / rate;
 
     /* Estimate the additional delay of the last block written. */
