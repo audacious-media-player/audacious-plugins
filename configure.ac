@@ -95,6 +95,23 @@ if test "x$enable_xsf" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS xsf"
 fi
 
+dnl QtAudio
+dnl =======
+
+AC_ARG_ENABLE(qtaudio,
+    [AS_HELP_STRING([--disable-qtaudio], [disable QtMultimedia output plugin (default=enabled)])],
+    [enable_qtaudio=$enableval],
+    [enable_qtaudio=$USE_QT])
+
+have_qtaudio=no
+if test "x$enable_qtaudio" != "xno"; then
+    PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [
+        have_qtaudio=yes
+        QTMULTIMEDIA_CFLAGS="$QTMULTIMEDIA_CFLAGS -fPIC"
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS qtaudio"
+    ])
+fi
+
 dnl CoreAudio
 dnl =========
 
@@ -1182,6 +1199,7 @@ echo "  CoreAudio (coreaudio):                  $have_coreaudio"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  Simple DirectMedia Layer (sdlout):      $have_sdlout"
+echo "  Qt Multimedia (qtaudio):                $have_qtaudio"
 echo "  FileWriter:                             $have_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
