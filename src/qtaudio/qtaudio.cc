@@ -57,8 +57,7 @@ static volatile int vol_left, vol_right;
 
 static int chan, rate;
 
-static unsigned char * buffer;
-static int buffer_size, buffer_data_start, buffer_data_len, buffer_bytes_per_channel;
+static int buffer_size, buffer_bytes_per_channel;
 
 static int64_t frames_written;
 static char prebuffer_flag, paused_flag;
@@ -154,9 +153,6 @@ bool open_audio (int format, int rate_, int chan_)
 
     buffer_bytes_per_channel = (m->sample_size / 8);
     buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
-    buffer = new unsigned char[buffer_size];
-    buffer_data_start = 0;
-    buffer_data_len = 0;
 
     frames_written = 0;
     prebuffer_flag = 1;
@@ -212,7 +208,6 @@ void write_audio (void * data, int len)
 
     buffer_instance->write ((char *) data, len);
 
-    buffer_data_len += len;
     frames_written += len / (buffer_bytes_per_channel * chan);
 
     if (len)
@@ -276,9 +271,6 @@ void flush (int time)
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& mutex);
-
-    buffer_data_start = 0;
-    buffer_data_len = 0;
 
     frames_written = (int64_t) time * rate / 1000;
     prebuffer_flag = 1;
