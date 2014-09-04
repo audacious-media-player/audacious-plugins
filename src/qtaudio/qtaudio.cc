@@ -80,6 +80,12 @@ static struct FormatDescriptionMap FormatMap[] = {
     {FMT_S16_BE, 16, QAudioFormat::SignedInt, QAudioFormat::BigEndian},
     {FMT_U16_LE, 16, QAudioFormat::UnSignedInt, QAudioFormat::LittleEndian},
     {FMT_U16_BE, 16, QAudioFormat::UnSignedInt, QAudioFormat::BigEndian},
+#ifdef XXX_NOTYET
+    {FMT_S24_LE, 24, QAudioFormat::SignedInt, QAudioFormat::LittleEndian},
+    {FMT_S24_BE, 24, QAudioFormat::SignedInt, QAudioFormat::BigEndian},
+    {FMT_U24_LE, 24, QAudioFormat::UnSignedInt, QAudioFormat::LittleEndian},
+    {FMT_U24_BE, 24, QAudioFormat::UnSignedInt, QAudioFormat::BigEndian},
+#endif
     {FMT_S32_LE, 32, QAudioFormat::SignedInt, QAudioFormat::LittleEndian},
     {FMT_S32_BE, 32, QAudioFormat::SignedInt, QAudioFormat::BigEndian},
     {FMT_U32_LE, 32, QAudioFormat::UnSignedInt, QAudioFormat::LittleEndian},
@@ -151,7 +157,7 @@ bool open_audio (int format, int rate_, int chan_)
     chan = chan_;
     rate = rate_;
 
-    buffer_bytes_per_channel = (m->sample_size / 8);
+    buffer_bytes_per_channel = (m->sample_size / 8) + ((m->sample_size % 16) / 8);
     buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
 
     frames_written = 0;
