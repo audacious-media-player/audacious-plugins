@@ -23,9 +23,6 @@
 
 #include <QtMultimedia>
 
-#include <CoreAudio/CoreAudio.h>
-#include <AudioUnit/AudioUnit.h>
-
 /* coreaudio.cc */
 namespace qtaudio {
 
