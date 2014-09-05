@@ -101,15 +101,17 @@ dnl =======
 AC_ARG_ENABLE(qtaudio,
     [AS_HELP_STRING([--disable-qtaudio], [disable QtMultimedia output plugin (default=enabled)])],
     [enable_qtaudio=$enableval],
-    [enable_qtaudio=$USE_QT])
+    [enable_qtaudio=auto])
 
 have_qtaudio=no
 if test "x$enable_qtaudio" != "xno"; then
-    PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [
-        have_qtaudio=yes
+    PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [have_qtaudio=yes], [have_qtaudio=no])
+    if test "x$have_qtaudio" = "xyes"; then
         QTMULTIMEDIA_CFLAGS="$QTMULTIMEDIA_CFLAGS -fPIC"
         OUTPUT_PLUGINS="$OUTPUT_PLUGINS qtaudio"
-    ])
+    elif test "x$enable_qtaudio" = "xyes"; then
+        AC_MSG_ERROR([QtAudio output plugin requested but QtMultimedia not found!])
+    fi
 fi
 
 dnl CoreAudio
