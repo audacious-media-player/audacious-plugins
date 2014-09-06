@@ -38,13 +38,11 @@ pthread_mutex_t xs_stildb_db_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 /* STIL-database handling
+ * Note: assumes xs_cfg_mutex locked
  */
 int xs_stil_init(void)
 {
-    pthread_mutex_lock(&xs_cfg_mutex);
-
     if (!xs_cfg.stilDBPath) {
-        pthread_mutex_unlock(&xs_cfg_mutex);
         return -1;
     }
 
@@ -61,7 +59,6 @@ int xs_stil_init(void)
     if (xs_stildb_read(xs_stildb_db, xs_cfg.stilDBPath) != 0) {
         xs_stildb_free(xs_stildb_db);
         xs_stildb_db = nullptr;
-        pthread_mutex_unlock(&xs_cfg_mutex);
         pthread_mutex_unlock(&xs_stildb_db_mutex);
         return -3;
     }
@@ -120,13 +117,11 @@ stil_node_t *xs_stil_get(char *filename)
 
 
 /* Song length database handling glue
+ * Note: assumes xs_cfg_mutex locked
  */
 int xs_songlen_init(void)
 {
-    pthread_mutex_lock(&xs_cfg_mutex);
-
     if (!xs_cfg.songlenDBPath) {
-        pthread_mutex_unlock(&xs_cfg_mutex);
         return -1;
     }
 
@@ -143,7 +138,6 @@ int xs_songlen_init(void)
     if (xs_sldb_read(xs_sldb_db, xs_cfg.songlenDBPath) != 0) {
         xs_sldb_free(xs_sldb_db);
         xs_sldb_db = nullptr;
-        pthread_mutex_unlock(&xs_cfg_mutex);
         pthread_mutex_unlock(&xs_sldb_db_mutex);
         return -3;
     }
@@ -151,7 +145,6 @@ int xs_songlen_init(void)
     /* Create index */
     xs_sldb_index (xs_sldb_db);
 
-    pthread_mutex_unlock(&xs_cfg_mutex);
     pthread_mutex_unlock(&xs_sldb_db_mutex);
     return 0;
 }

@@ -142,7 +142,7 @@ static void XS_STILDB_ERR(int linenum, char *line, const char *fmt, ...)
 
 int xs_stildb_read(xs_stildb_t *db, char *filename)
 {
-    FILE *f;
+    VFSFile *f;
     char line[XS_BUF_SIZE + 16];    /* Since we add some chars here and there */
     stil_node_t *node;
     bool multi;
@@ -150,7 +150,7 @@ int xs_stildb_read(xs_stildb_t *db, char *filename)
     assert(db != nullptr);
 
     /* Try to open the file */
-    if ((f = fopen(filename, "r")) == nullptr) {
+    if ((f = vfs_fopen(filename, "r")) == nullptr) {
         xs_error("Could not open STILDB '%s'\n", filename);
         return -1;
     }
@@ -161,7 +161,7 @@ int xs_stildb_read(xs_stildb_t *db, char *filename)
     node = nullptr;
     subEntry = 0;
 
-    while (fgets(line, XS_BUF_SIZE, f) != nullptr) {
+    while (vfs_fgets(line, XS_BUF_SIZE, f) != nullptr) {
         size_t linePos = 0, eolPos = 0;
         line[XS_BUF_SIZE] = 0;
         xs_findeol(line, &eolPos);
@@ -283,7 +283,7 @@ int xs_stildb_read(xs_stildb_t *db, char *filename)
         xs_stildb_node_insert(db, node);
 
     /* Close the file */
-    fclose(f);
+    vfs_fclose(f);
 
     return 0;
 }

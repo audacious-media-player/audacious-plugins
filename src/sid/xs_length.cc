@@ -189,14 +189,14 @@ sldb_node_t * xs_sldb_read_entry(char *inLine)
  */
 int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
 {
-    FILE *inFile;
+    VFSFile *inFile;
     char inLine[XS_BUF_SIZE];
     size_t lineNum;
     sldb_node_t *tmnode;
     assert(db);
 
     /* Try to open the file */
-    if ((inFile = fopen(dbFilename, "r")) == nullptr) {
+    if ((inFile = vfs_fopen(dbFilename, "r")) == nullptr) {
         xs_error("Could not open SongLengthDB '%s'\n", dbFilename);
         return -1;
     }
@@ -204,7 +204,7 @@ int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
     /* Read and parse the data */
     lineNum = 0;
 
-    while (fgets(inLine, XS_BUF_SIZE, inFile) != nullptr) {
+    while (vfs_fgets(inLine, XS_BUF_SIZE, inFile) != nullptr) {
         size_t linePos = 0;
         lineNum++;
 
@@ -236,7 +236,7 @@ int xs_sldb_read(xs_sldb_t *db, const char *dbFilename)
     }
 
     /* Close the file */
-    fclose(inFile);
+    vfs_fclose(inFile);
 
     return 0;
 }

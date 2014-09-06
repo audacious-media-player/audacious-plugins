@@ -75,22 +75,7 @@ bool xs_init(void)
     pthread_mutex_unlock(&xs_status_mutex);
     pthread_mutex_unlock(&xs_cfg_mutex);
 
-    if (! success)
-        return false;
-
-    /* Initialize song-length database */
-    xs_songlen_close();
-    if (xs_cfg.songlenDBEnable && (xs_songlen_init() != 0)) {
-        xs_error("Error initializing song-length database!\n");
-    }
-
-    /* Initialize STIL database */
-    xs_stil_close();
-    if (xs_cfg.stilDBEnable && (xs_stil_init() != 0)) {
-        xs_error("Error initializing STIL database!\n");
-    }
-
-    return true;
+    return success;
 }
 
 
@@ -106,7 +91,7 @@ void xs_close(void)
     xs_sidplayfp_close (& xs_status);
 
     xs_songlen_close();
-    xs_stil_close();
+//    xs_stil_close();
 }
 
 
@@ -119,6 +104,8 @@ bool xs_play_file(const char *filename, VFSFile *file)
     int audioBufSize, bufRemaining, tmpLength, subTune = -1;
     char *audioBuffer = nullptr, *oversampleBuffer = nullptr;
     Tuple tmpTuple;
+
+    xs_init_databases_for(filename);
 
     uri_parse (filename, nullptr, nullptr, nullptr, & subTune);
 
@@ -319,6 +306,8 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     Tuple tuple;
     xs_tuneinfo_t *info;
     int tune = -1;
+
+    xs_init_databases_for(filename);
 
     pthread_mutex_lock(&xs_status_mutex);
     if (!xs_sidplayfp_probe(fd)) {

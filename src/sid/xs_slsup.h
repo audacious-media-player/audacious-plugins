@@ -5,7 +5,7 @@
 #include "xs_stil.h"
 #include "xs_length.h"
 
-int xs_stil_init(void);
+int xs_stil_init(const char *db_filename);
 void xs_stil_close(void);
 stil_node_t *xs_stil_get(char *filename);
 
