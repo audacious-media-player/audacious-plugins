@@ -26,7 +26,6 @@
 
 #include "xs_config.h"
 #include "xs_sidplay2.h"
-#include "xs_slsup.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -120,6 +119,8 @@ bool xs_sidplayfp_init()
         xs_cfg.clockSpeed = XS_CLOCK_PAL;
         break;
     }
+
+    state.currConfig.forceC64Model = xs_cfg.forceSpeed;
 
     /* Configure rest of the emulation */
     if (xs_cfg.mos8580)
@@ -238,7 +239,7 @@ bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
 }
 
 
-xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename, const void *buf, int64_t bufSize)
+bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *buf, int64_t bufSize)
 {
     static pthread_mutex_t db_mutex = PTHREAD_MUTEX_INITIALIZER;
     static int got_db = -1;
@@ -248,57 +249,74 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename, const void *buf, in
     SidTune myTune((const uint8_t*)buf, bufSize);
 
     if (!myTune.getStatus())
-        return nullptr;
+        return false;
 
     /* Get general tune information */
     const SidTuneInfo *myInfo = myTune.getInfo();
 
     /* Allocate tuneinfo structure and set information */
-    xs_tuneinfo_t *result = xs_tuneinfo_new(sidFilename,
-        myInfo->songs(), myInfo->startSong(),
-        myInfo->infoString(0), myInfo->infoString(1), myInfo->infoString(2),
-        myInfo->loadAddr(), myInfo->initAddr(), myInfo->playAddr(),
-        myInfo->dataFileLen(), myInfo->formatString(), myInfo->sidModel1());
+    ti.sidFilename = String (filename);
+
+    ti.sidName = String (myInfo->infoString(0));
+    ti.sidComposer = String (myInfo->infoString(1));
+    ti.sidCopyright = String (myInfo->infoString(2));
+
+    ti.nsubTunes = myInfo->songs();
+    ti.startTune = myInfo->startSong();
+
+    ti.loadAddr = myInfo->loadAddr();
+    ti.initAddr = myInfo->initAddr();
+    ti.playAddr = myInfo->playAddr();
+    ti.dataFileLen = myInfo->dataFileLen();
+    ti.sidFormat = String (myInfo->formatString());
+
+    ti.sidModel = myInfo->sidModel1();
+
+    /* Allocate space for subtune information */
+    ti.subTunes.insert(0, ti.nsubTunes);
+
+    /* Fill in sub-tune information */
+    for (int i = 0; i < ti.nsubTunes; i++)
+    {
+        ti.subTunes[i].tuneLength = -1;
+        ti.subTunes[i].tuneSpeed = -1;
+    }
 
     pthread_mutex_lock(&db_mutex);
 
-    for (int i = 0; i < result->nsubTunes; i++) {
-        if (result->subTunes[i].tuneLength >= 0)
-            continue;
+    if (got_db == -1)
+        got_db = database.open(SIDDATADIR "sidplayfp/Songlengths.txt");
 
-        if (got_db == -1)
-            got_db = database.open(SIDDATADIR "sidplayfp/Songlengths.txt");
-
-        if (got_db) {
+    if (got_db)
+    {
+        for (int i = 0; i < ti.nsubTunes; i++)
+        {
             myTune.selectSong(i + 1);
-            result->subTunes[i].tuneLength = database.length(myTune);
+            ti.subTunes[i].tuneLength = database.length(myTune);
         }
     }
 
     pthread_mutex_unlock(&db_mutex);
 
-    return result;
+    return true;
 }
 
-bool xs_sidplayfp_updateinfo(xs_tuneinfo_t *i, int subtune)
+bool xs_sidplayfp_updateinfo(xs_tuneinfo_t &ti, int subtune)
 {
-    const SidTuneInfo *myInfo;
-    SidTune *myTune;
-
     /* Check if we have required structures initialized */
-    myTune = state.currTune;
+    SidTune *myTune = state.currTune;
     if (!myTune)
         return false;
 
     /* Get currently playing tune information */
-    myInfo = myTune->getInfo();
+    const SidTuneInfo *myInfo = myTune->getInfo();
 
     /* NOTICE! Here we assume that libSIDPlay[12] headers define
      * SIDTUNE_SIDMODEL_* similarly to our enums in xs_config.h ...
      */
-    i->sidModel = myInfo->sidModel1();
+    ti.sidModel = myInfo->sidModel1();
 
-    if ((subtune > 0) && (subtune <= i->nsubTunes)) {
+    if ((subtune > 0) && (subtune <= ti.nsubTunes)) {
         int tmpSpeed = -1;
 
         switch (myInfo->clockSpeed()) {
@@ -329,7 +347,7 @@ bool xs_sidplayfp_updateinfo(xs_tuneinfo_t *i, int subtune)
             break;
         }
 
-        i->subTunes[subtune - 1].tuneSpeed = tmpSpeed;
+        ti.subTunes[subtune - 1].tuneSpeed = tmpSpeed;
     }
 
     return true;

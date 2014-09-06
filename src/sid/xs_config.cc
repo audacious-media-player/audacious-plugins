@@ -21,27 +21,20 @@
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#include "xmms-sid.h"
 #include "xs_config.h"
 
-#include <stdio.h>
 #include <string.h>
-
-#include "xmms-sid.h"
-#include "xs_slsup.h"
 
 /*
  * Configuration specific stuff
  */
-pthread_mutex_t xs_cfg_mutex = PTHREAD_MUTEX_INITIALIZER;
 struct xs_cfg_t xs_cfg;
 
 /* Reset/initialize the configuration
  */
 void xs_init_configuration(void)
 {
-    /* Lock configuration mutex */
-    pthread_mutex_lock(&xs_cfg_mutex);
-
     memset(&xs_cfg, 0, sizeof(xs_cfg));
 
     /* Initialize values with sensible defaults */
@@ -67,7 +60,4 @@ void xs_init_configuration(void)
     xs_cfg.subAutoEnable = true;
     xs_cfg.subAutoMinOnly = true;
     xs_cfg.subAutoMinTime = 15;
-
-    /* Unlock the configuration */
-    pthread_mutex_unlock(&xs_cfg_mutex);
 }

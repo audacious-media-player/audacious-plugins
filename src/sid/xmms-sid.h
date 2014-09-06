@@ -23,6 +23,7 @@
 #ifndef XMMS_SID_H
 #define XMMS_SID_H
 
+#include <libaudcore/index.h>
 #include <libaudcore/objects.h>
 
 /*
@@ -45,14 +46,13 @@
  */
 typedef struct {
     int tuneSpeed, tuneLength;
-    bool tunePlayed;
 } xs_subtuneinfo_t;
 
 typedef struct {
     String sidFilename, sidName, sidComposer, sidCopyright, sidFormat;
     int loadAddr, initAddr, playAddr, dataFileLen, sidModel;
     int nsubTunes, startTune;
-    xs_subtuneinfo_t *subTunes;
+    Index<xs_subtuneinfo_t> subTunes;
 } xs_tuneinfo_t;
 
 /* Plugin function prototypes

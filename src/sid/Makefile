@@ -2,7 +2,6 @@ PLUGIN = sid${PLUGIN_SUFFIX}
 
 SRCS = xs_config.cc	\
        xs_sidplay2.cc	\
-       xs_slsup.cc	\
        xmms-sid.cc
 
 include ../../buildsys.mk
