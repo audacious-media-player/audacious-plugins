@@ -39,9 +39,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     QIcon::setThemeName ("QtUi");
 
-    QString appDir = qApp->applicationDirPath ();
     QStringList paths = QIcon::themeSearchPaths ();
-    paths.prepend (appDir + "/../share/audacious");
+    paths.prepend (aud_get_path (AudPath::DataDir));
     QIcon::setThemeSearchPaths (paths);
 
     setupUi (this);
