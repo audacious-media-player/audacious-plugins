@@ -51,20 +51,18 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     toolBar->addWidget (new audqt::VolumeButton (this));
 
-    filterInput = new FilterInput ();
-
+    filterInput = new FilterInput (this);
     toolBar->addWidget (filterInput);
 
-    slider = new QSlider (Qt::Horizontal);
+    slider = new QSlider (Qt::Horizontal, this);
     slider->setDisabled (true);
     slider->setFocusPolicy (Qt::NoFocus);
 
-    timeCounterLabel = new QLabel ("0:00 / 0:00");
+    timeCounterLabel = new QLabel ("0:00 / 0:00", this);
     timeCounterLabel->setContentsMargins (5, 0, 0, 2);
     timeCounterLabel->setDisabled (true);
 
-    timeCounter = new QTimer;
-    timeCounter->setInterval (250);
+    timeCounter.setInterval (250);
 
     toolBar->insertWidget (actionRepeat, slider);
     toolBar->insertWidget (actionRepeat, timeCounterLabel);
@@ -112,10 +110,10 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     connect (actionEqualizer, &QAction::triggered, audqt::equalizer_show);
 
-    connect (timeCounter, &QTimer::timeout,         this, &MainWindow::timeCounterSlot);
-    connect (slider,      &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);
-    connect (slider,      &QSlider::sliderPressed,  this, &MainWindow::sliderPressed);
-    connect (slider,      &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
+    connect (&timeCounter, &QTimer::timeout,         this, &MainWindow::timeCounterSlot);
+    connect (slider,       &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);
+    connect (slider,       &QSlider::sliderPressed,  this, &MainWindow::sliderPressed);
+    connect (slider,       &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
@@ -174,15 +172,6 @@ MainWindow::~MainWindow ()
 
     hook_dissociate ("playback ready", (HookFunction) update_codec_info_cb);
     hook_dissociate ("info change",    (HookFunction) update_codec_info_cb);
-
-    delete slider;
-    delete timeCounterLabel;
-    delete timeCounter;
-    delete progressDialog;
-    delete errorDialog;
-    delete filterInput;
-    delete playlistLengthLabel;
-    delete codecInfoLabel;
 }
 
 void MainWindow::timeCounterSlot ()
@@ -225,13 +214,13 @@ void MainWindow::enableTimeCounter ()
     int length = aud_drct_get_length ();
 
     setTimeCounterLabel (time, length);
-    timeCounter->start ();
+    timeCounter.start ();
     timeCounterLabel->setDisabled (false);
 }
 
 void MainWindow::disableTimeCounter ()
 {
-    timeCounter->stop ();
+    timeCounter.stop ();
     timeCounterLabel->setText ("0:00 / 0:00");
     timeCounterLabel->setDisabled (true);
 }
@@ -247,13 +236,13 @@ void MainWindow::sliderValueChanged (int value)
 
 void MainWindow::sliderPressed ()
 {
-    timeCounter->stop ();
+    timeCounter.stop ();
 }
 
 void MainWindow::sliderReleased ()
 {
     aud_drct_seek (slider->value ());
-    timeCounter->start ();
+    timeCounter.start ();
 }
 
 void MainWindow::createProgressDialog ()
@@ -315,10 +304,10 @@ void MainWindow::createStatusBar ()
 {
     QStatusBar * bar = QMainWindow::statusBar();
 
-    playlistLengthLabel = new QLabel ("0:00 / 0:00");
+    playlistLengthLabel = new QLabel ("0:00 / 0:00", this);
     playlistLengthLabel->setAlignment(Qt::AlignRight);
 
-    codecInfoLabel = new QLabel ("");
+    codecInfoLabel = new QLabel ("", this);
 
     bar->addPermanentWidget(playlistLengthLabel);
     bar->addWidget(codecInfoLabel);

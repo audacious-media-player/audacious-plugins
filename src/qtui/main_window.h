@@ -55,14 +55,16 @@ public slots:
     void sliderReleased ();
 
 private:
+    QTimer timeCounter;
+
     QLabel * codecInfoLabel = nullptr;
     QLabel * playlistLengthLabel = nullptr;
     QLabel * timeCounterLabel = nullptr;
-    QTimer * timeCounter = nullptr;
     QSlider * slider = nullptr;
     FilterInput * filterInput = nullptr;
     QMessageBox * progressDialog = nullptr;
     QMessageBox * errorDialog = nullptr;
+
     void setTimeCounterLabel (int time, int length);
     void enableSlider ();
     void disableSlider ();
