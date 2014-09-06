@@ -35,8 +35,6 @@
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
-    int lvol, rvol;
-
 #if defined(HAVE_MSWINDOWS) || defined(HAVE_DARWIN)
     QIcon::setThemeName ("QtUi");
 
@@ -51,16 +49,7 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     setUnifiedTitleAndToolBarOnMac (true);
 
-    volumeButton = new audqt::VolumeButton (this, 0, 100);
-
-    aud_drct_get_volume (&lvol, &rvol);
-    volumeButton->setValue ((lvol + rvol) / 2);
-
-    connect (volumeButton, &audqt::VolumeButton::valueChanged, [] (int value) {
-        aud_drct_set_volume (value, value);
-    });
-
-    toolBar->addWidget (volumeButton);
+    toolBar->addWidget (new audqt::VolumeButton (this));
 
     filterInput = new FilterInput ();
 
