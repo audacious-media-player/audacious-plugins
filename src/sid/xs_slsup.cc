@@ -23,7 +23,6 @@
 
 #include "xs_slsup.h"
 
-#include <glib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -47,7 +46,7 @@ xs_tuneinfo_t *xs_tuneinfo_new(const char * filename,
     result->sidFilename = String (filename);
 
     /* Allocate space for subtune information */
-    result->subTunes = g_new0 (xs_subtuneinfo_t, nsubTunes + 1);
+    result->subTunes = new xs_subtuneinfo_t[nsubTunes + 1]();
 
     result->sidName = String (sidName);
     result->sidComposer = String (sidComposer);
@@ -80,7 +79,7 @@ void xs_tuneinfo_free(xs_tuneinfo_t * tune)
 {
     if (!tune) return;
 
-    g_free(tune->subTunes);
+    delete[] tune->subTunes;
 
     delete tune;
 }

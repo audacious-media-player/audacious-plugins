@@ -26,6 +26,7 @@
 
 #include "xs_config.h"
 #include "xs_sidplay2.h"
+#include "xs_slsup.h"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -38,13 +39,13 @@
 #include <sidplayfp/SidTuneInfo.h>
 #include <sidplayfp/builders/residfp.h>
 
+#include <libaudcore/vfs.h>
+
 struct SidState {
     sidplayfp *currEng;
     sidbuilder *currBuilder;
     SidConfig currConfig;
     SidTune *currTune;
-    void *buf;
-    int64_t bufSize;
 };
 
 static SidState state;
@@ -52,14 +53,12 @@ static SidState state;
 
 /* Check if we can play the given file
  */
-bool xs_sidplayfp_probe(VFSFile *f)
+bool xs_sidplayfp_probe(const void *buf, int64_t bufSize)
 {
-    char tmpBuf[4];
-
-    if (vfs_fread(tmpBuf, sizeof(char), 4, f) != 4)
+    if (bufSize < 4)
         return false;
 
-    return !strncmp(tmpBuf, "PSID", 4) || !strncmp(tmpBuf, "RSID", 4);
+    return !memcmp(buf, "PSID", 4) || !memcmp(buf, "RSID", 4);
 }
 
 
@@ -166,8 +165,6 @@ void xs_sidplayfp_close()
         delete state.currTune;
         state.currTune = nullptr;
     }
-
-    xs_sidplayfp_delete();
 }
 
 
@@ -199,7 +196,7 @@ unsigned xs_sidplayfp_fillbuffer(char * audioBuffer, unsigned audioBufSize)
 
 /* Load a given SID-tune file
  */
-bool xs_sidplayfp_load(const char * pcFilename)
+bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
 {
     static int loaded_roms = 0;
 
@@ -235,61 +232,29 @@ bool xs_sidplayfp_load(const char * pcFilename)
     }
 
     /* Try to get the tune */
-    vfs_file_get_contents(pcFilename, &state.buf, &state.bufSize);
-    if(!state.bufSize) {
-        free(state.buf);
-        state.buf = nullptr;
-        return false;
-    }
-
-    state.currTune->read((uint8_t*)state.buf, state.bufSize);
+    state.currTune->read((const uint8_t*)buf, bufSize);
 
     return state.currTune->getStatus();
 }
 
 
-/* Delete INTERNAL information
- */
-void xs_sidplayfp_delete()
-{
-    free(state.buf);
-    state.buf = nullptr;
-    state.bufSize = 0;
-}
-
-
-xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename)
+xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename, const void *buf, int64_t bufSize)
 {
     static pthread_mutex_t db_mutex = PTHREAD_MUTEX_INITIALIZER;
     static int got_db = -1;
     static SidDatabase database;
 
-    xs_tuneinfo_t *result;
-    const SidTuneInfo *myInfo;
-    SidTune *myTune;
-    void *buf = nullptr;
-    int64_t bufSize = 0;
-
-    /* Load file */
-    vfs_file_get_contents(sidFilename, &buf, &bufSize);
-
     /* Check if the tune exists and is readable */
-    if (!bufSize || !(myTune = new SidTune((uint8_t*)buf, bufSize))) {
-        free(buf);
-        return nullptr;
-    }
-    free(buf);
+    SidTune myTune((const uint8_t*)buf, bufSize);
 
-    if (!myTune->getStatus()) {
-        delete myTune;
+    if (!myTune.getStatus())
         return nullptr;
-    }
 
     /* Get general tune information */
-    myInfo = myTune->getInfo();
+    const SidTuneInfo *myInfo = myTune.getInfo();
 
     /* Allocate tuneinfo structure and set information */
-    result = xs_tuneinfo_new(sidFilename,
+    xs_tuneinfo_t *result = xs_tuneinfo_new(sidFilename,
         myInfo->songs(), myInfo->startSong(),
         myInfo->infoString(0), myInfo->infoString(1), myInfo->infoString(2),
         myInfo->loadAddr(), myInfo->initAddr(), myInfo->playAddr(),
@@ -305,14 +270,12 @@ xs_tuneinfo_t* xs_sidplayfp_getinfo(const char *sidFilename)
             got_db = database.open(SIDDATADIR "sidplayfp/Songlengths.txt");
 
         if (got_db) {
-            myTune->selectSong(i + 1);
-            result->subTunes[i].tuneLength = database.length(*myTune);
+            myTune.selectSong(i + 1);
+            result->subTunes[i].tuneLength = database.length(myTune);
         }
     }
 
     pthread_mutex_unlock(&db_mutex);
-
-    delete myTune;
 
     return result;
 }

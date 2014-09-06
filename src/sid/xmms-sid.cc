@@ -26,16 +26,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 
 #include "xs_config.h"
 #include "xs_sidplay2.h"
+#include "xs_slsup.h"
 
 static void xs_get_song_tuple_info(Tuple &pResult, xs_tuneinfo_t *pInfo, int subTune);
+
+class FileBuffer
+{
+public:
+    void *data;
+    int64_t size;
+
+    FileBuffer(VFSFile *file) :
+        data(nullptr),
+        size(0)
+    {
+        vfs_file_read_all(file, &data, &size);
+    }
+
+    ~FileBuffer()
+        { free(data); }
+};
 
 /*
  * Initialization functions
@@ -58,7 +74,6 @@ bool xs_init(void)
  */
 void xs_close(void)
 {
-    xs_sidplayfp_delete();
     xs_sidplayfp_close();
 }
 
@@ -70,17 +85,22 @@ bool xs_play_file(const char *filename, VFSFile *file)
 {
     xs_tuneinfo_t *info;
     int audioBufSize, bufRemaining, tmpLength, subTune = -1;
-    char *audioBuffer = nullptr, *oversampleBuffer = nullptr;
+    char *audioBuffer = nullptr;
     Tuple tmpTuple;
 
     uri_parse (filename, nullptr, nullptr, nullptr, & subTune);
 
+    /* Load file */
+    FileBuffer buf(file);
+    if (!xs_sidplayfp_probe(buf.data, buf.size))
+        return false;
+
     /* Get tune information */
-    if (!(info = xs_sidplayfp_getinfo(filename)))
+    if (!(info = xs_sidplayfp_getinfo(filename, buf.data, buf.size)))
         return false;
 
     /* Initialize the tune */
-    if (! xs_sidplayfp_load(filename))
+    if (!xs_sidplayfp_load(buf.data, buf.size))
     {
         xs_tuneinfo_free(info);
         return false;
@@ -98,7 +118,7 @@ bool xs_play_file(const char *filename, VFSFile *file)
     audioBufSize = xs_cfg.audioFrequency * channels * FMT_SIZEOF (FMT_S16_NE);
     if (audioBufSize < 512) audioBufSize = 512;
 
-    audioBuffer = g_new (char, audioBufSize);
+    audioBuffer = new char[audioBufSize];
 
     /* Check minimum playtime */
     tmpLength = info->subTunes[subTune - 1].tuneLength;
@@ -157,11 +177,9 @@ bool xs_play_file(const char *filename, VFSFile *file)
     }
 
 DONE:
-    g_free(audioBuffer);
-    g_free(oversampleBuffer);
+    delete[] audioBuffer;
 
     /* Free tune information */
-    xs_sidplayfp_delete();
     xs_tuneinfo_free(info);
 
     /* Exit the playing thread */
@@ -249,7 +267,8 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     xs_tuneinfo_t *info;
     int tune = -1;
 
-    if (!xs_sidplayfp_probe(fd))
+    FileBuffer buf(fd);
+    if (!xs_sidplayfp_probe(buf.data, buf.size))
         return tuple;
 
     /* Get information from URL */
@@ -257,7 +276,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     tune = tuple.get_int (FIELD_SUBSONG_ID);
 
     /* Get tune information from emulation engine */
-    if (!(info = xs_sidplayfp_getinfo (filename)))
+    if (!(info = xs_sidplayfp_getinfo(filename, buf.data, buf.size)))
         return tuple;
 
     xs_get_song_tuple_info(tuple, info, tune);
