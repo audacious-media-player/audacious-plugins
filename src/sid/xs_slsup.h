@@ -2,16 +2,6 @@
 #define XS_SLSUP_H
 
 #include "xmms-sid.h"
-#include "xs_stil.h"
-#include "xs_length.h"
-
-int xs_stil_init(const char *db_filename);
-void xs_stil_close(void);
-stil_node_t *xs_stil_get(char *filename);
-
-int xs_songlen_init(void);
-void xs_songlen_close(void);
-sldb_node_t *xs_songlen_get(const char *filename);
 
 xs_tuneinfo_t *xs_tuneinfo_new(const char *pcFilename, int nsubTunes,
  int startTune, const char *sidName, const char *sidComposer,

@@ -60,9 +60,6 @@ void xs_close(void)
 {
     xs_sidplayfp_delete();
     xs_sidplayfp_close();
-
-    xs_songlen_close();
-//    xs_stil_close();
 }
 
 
@@ -75,8 +72,6 @@ bool xs_play_file(const char *filename, VFSFile *file)
     int audioBufSize, bufRemaining, tmpLength, subTune = -1;
     char *audioBuffer = nullptr, *oversampleBuffer = nullptr;
     Tuple tmpTuple;
-
-    xs_init_databases_for(filename);
 
     uri_parse (filename, nullptr, nullptr, nullptr, & subTune);
 
@@ -253,8 +248,6 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     Tuple tuple;
     xs_tuneinfo_t *info;
     int tune = -1;
-
-    xs_init_databases_for(filename);
 
     if (!xs_sidplayfp_probe(fd))
         return tuple;

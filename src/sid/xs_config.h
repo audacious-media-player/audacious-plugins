@@ -68,6 +68,5 @@ extern pthread_mutex_t xs_cfg_mutex;
 /* Functions
  */
 void xs_init_configuration(void);
-void xs_init_databases_for(const char *filename);
 
 #endif    /* XS_CONFIG_H */

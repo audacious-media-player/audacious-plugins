@@ -1,8 +1,9 @@
 #ifndef XS_SIDPLAYFP_H
 #define XS_SIDPLAYFP_H
 
-#include "xs_support.h"
 #include "xs_slsup.h"
+
+#include <libaudcore/vfs.h>
 
 bool xs_sidplayfp_probe(VFSFile *);
 void xs_sidplayfp_close();

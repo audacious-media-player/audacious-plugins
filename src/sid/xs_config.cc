@@ -30,7 +30,6 @@
 
 #include "xmms-sid.h"
 #include "xs_slsup.h"
-#include "xs_support.h"
 
 /*
  * Configuration specific stuff
@@ -72,35 +71,5 @@ void xs_init_configuration(void)
     xs_cfg.subAutoMinTime = 15;
 
     /* Unlock the configuration */
-    pthread_mutex_unlock(&xs_cfg_mutex);
-}
-
-/* Attempt to guess database locations based on the first song filename
- */
-void xs_init_databases_for(const char *filename)
-{
-    const char *key;
-
-    pthread_mutex_lock(&xs_cfg_mutex);
-
-    if (xs_cfg.hvscPath || !(key = strstr(filename, "/C64Music/")))
-        goto unlock;
-
-    xs_cfg.songlenDBEnable = true;
-    xs_cfg.stilDBEnable = true;
-
-    xs_cfg.hvscPath = g_strndup(filename, key + strlen("/C64Music") - filename);
-    xs_cfg.songlenDBPath = g_strconcat(xs_cfg.hvscPath, "/DOCUMENTS/Songlengths.txt", nullptr);
-    xs_cfg.stilDBPath = g_strconcat(xs_cfg.hvscPath, "/DOCUMENTS/STIL.txt", nullptr);
-
-    /* Initialize song-length database */
-    if (xs_songlen_init() != 0)
-        xs_error("Error initializing song-length database!\n");
-
-    /* Initialize STIL database */
-//    if (xs_stil_init() != 0)
-//        xs_error("Error initializing STIL database!\n");
-
-unlock:
     pthread_mutex_unlock(&xs_cfg_mutex);
 }

@@ -1,10 +1,6 @@
 PLUGIN = sid${PLUGIN_SUFFIX}
 
-SRCS = xs_support.cc	\
-       xs_config.cc	\
-       xs_length.cc	\
-       xs_md5.cc \
-       xs_stil.cc	\
+SRCS = xs_config.cc	\
        xs_sidplay2.cc	\
        xs_slsup.cc	\
        xmms-sid.cc
