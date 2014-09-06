@@ -80,10 +80,6 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     toolBar->insertWidget (actionRepeat, slider);
     toolBar->insertWidget (actionRepeat, timeCounterLabel);
 
-    playlistTabs = new PlaylistTabs;
-    playlistTabs->setFocusPolicy (Qt::NoFocus);
-    mainLayout->addWidget (playlistTabs);
-
     createStatusBar ();
 
     updateToggles ();
@@ -195,7 +191,6 @@ MainWindow::~MainWindow ()
     delete timeCounter;
     delete progressDialog;
     delete errorDialog;
-    delete playlistTabs;
     delete filterInput;
     delete playlistLengthLabel;
     delete codecInfoLabel;

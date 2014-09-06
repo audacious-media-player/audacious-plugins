@@ -29,7 +29,7 @@
 #include "playlist_tabs.h"
 #include "playlist_tabs.moc"
 
-PlaylistTabs::PlaylistTabs (QTabWidget * parent) : QTabWidget (parent)
+PlaylistTabs::PlaylistTabs (QWidget * parent) : QTabWidget (parent)
 {
     installEventFilter (this);
 

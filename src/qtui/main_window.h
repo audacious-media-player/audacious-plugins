@@ -64,7 +64,6 @@ private:
     audqt::VolumeButton * volumeButton = nullptr;
     QMessageBox * progressDialog = nullptr;
     QMessageBox * errorDialog = nullptr;
-    PlaylistTabs * playlistTabs = nullptr;
     void setTimeCounterLabel (int time, int length);
     void enableSlider ();
     void disableSlider ();

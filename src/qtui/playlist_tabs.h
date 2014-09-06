@@ -32,7 +32,7 @@ class PlaylistTabs : public QTabWidget
     Q_OBJECT
 
 public:
-    PlaylistTabs (QTabWidget * parent = 0);
+    PlaylistTabs (QWidget * parent = 0);
     ~PlaylistTabs ();
     Playlist * playlistWidget (int num);
     Playlist * activePlaylistWidget ();
