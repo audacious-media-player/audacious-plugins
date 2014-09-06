@@ -43,6 +43,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     QStringList paths = QIcon::themeSearchPaths ();
     paths.prepend (aud_get_path (AudPath::DataDir));
     QIcon::setThemeSearchPaths (paths);
+#else
+    QApplication::setWindowIcon (QIcon::fromTheme ("audacious"));
 #endif
 
     setupUi (this);
