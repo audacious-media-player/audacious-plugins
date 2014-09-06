@@ -56,7 +56,7 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     aud_drct_get_volume (&lvol, &rvol);
     volumeButton->setValue ((lvol + rvol) / 2);
 
-    connect (volumeButton, &audqt::VolumeButton::valueChanged, [=] (int value) {
+    connect (volumeButton, &audqt::VolumeButton::valueChanged, [] (int value) {
         aud_drct_set_volume (value, value);
     });
 
@@ -93,29 +93,29 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     connect (actionQuit, &QAction::triggered, aud_quit);
 
-    connect (actionRepeat, &QAction::toggled, [=] (bool checked)
+    connect (actionRepeat, &QAction::toggled, [] (bool checked)
     {
         aud_set_bool (nullptr, "repeat", checked);
     });
 
-    connect (actionShuffle, &QAction::triggered, [=] (bool checked)
+    connect (actionShuffle, &QAction::triggered, [] (bool checked)
     {
         aud_set_bool (nullptr, "shuffle", checked);
     });
 
-    connect (actionNoPlaylistAdvance, &QAction::triggered, [=] (bool checked)
+    connect (actionNoPlaylistAdvance, &QAction::triggered, [] (bool checked)
     {
         aud_set_bool (nullptr, "no_playlist_advance", checked);
     });
 
-    connect (actionStopAfterThisSong, &QAction::triggered, [=] (bool checked)
+    connect (actionStopAfterThisSong, &QAction::triggered, [] (bool checked)
     {
         aud_set_bool (nullptr, "stop_after_current_song", checked);
     });
 
     connect (actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
 
-    connect (actionAddFiles,  &QAction::triggered, [=] ()
+    connect (actionAddFiles,  &QAction::triggered, [] ()
     {
         audqt::fileopener_show (true);
     });
