@@ -37,11 +37,13 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
     int lvol, rvol;
 
+#if defined(HAVE_MSWINDOWS) || defined(HAVE_DARWIN)
     QIcon::setThemeName ("QtUi");
 
     QStringList paths = QIcon::themeSearchPaths ();
     paths.prepend (aud_get_path (AudPath::DataDir));
     QIcon::setThemeSearchPaths (paths);
+#endif
 
     setupUi (this);
 
