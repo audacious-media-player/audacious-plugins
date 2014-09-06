@@ -75,6 +75,19 @@ void xs_close(void)
 
 
 /*
+ * Check whether this is a SID file
+ */
+bool xs_is_our_file(const char *filename, VFSFile *file)
+{
+    char buf[4];
+    if (vfs_fread(buf, 1, 4, file) != 4)
+        return false;
+
+    return xs_sidplayfp_probe(buf, 4);
+}
+
+
+/*
  * Start playing the given file
  */
 bool xs_play_file(const char *filename, VFSFile *file)
@@ -274,7 +287,7 @@ static const char *xs_sid_fmts[] = { "sid", "psid", nullptr };
 #define AUD_PLUGIN_NAME        "SID Player"
 #define AUD_PLUGIN_INIT        xs_init
 #define AUD_PLUGIN_CLEANUP     xs_close
-#define AUD_INPUT_IS_OUR_FILE  nullptr
+#define AUD_INPUT_IS_OUR_FILE  xs_is_our_file
 #define AUD_INPUT_PLAY         xs_play_file
 #define AUD_INPUT_READ_TUPLE   xs_probe_for_tuple
 

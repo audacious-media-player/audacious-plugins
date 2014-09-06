@@ -30,17 +30,9 @@
  * Some constants and defines
  */
 
-/* Size for some small buffers (always static variables) */
-#define XS_BUF_SIZE             (2048)
-
 /* Default audio rendering frequency in Hz
  */
 #define XS_AUDIO_FREQ           (44100)
-
-/* Size of data buffer used for SID-tune MD5 hash calculation.
- * If this is too small, the computed hash will be incorrect.
- * Largest SID files I've seen are ~70kB. */
-#define XS_SIDBUF_SIZE          (128*1024)
 
 /* Plugin-wide typedefs
  */
@@ -57,7 +49,6 @@ typedef struct {
 
 /* Plugin function prototypes
  */
-#define xs_verror(fmt, args) vfprintf(stderr, fmt, args)
 #define xs_error(...) fprintf(stderr, __VA_ARGS__)
 
 #endif /* XMMS_SID_H */

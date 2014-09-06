@@ -24,8 +24,6 @@
 #include "xmms-sid.h"
 #include "xs_config.h"
 
-#include <string.h>
-
 /*
  * Configuration specific stuff
  */
@@ -35,8 +33,6 @@ struct xs_cfg_t xs_cfg;
  */
 void xs_init_configuration(void)
 {
-    memset(&xs_cfg, 0, sizeof(xs_cfg));
-
     /* Initialize values with sensible defaults */
     xs_cfg.audioChannels = XS_CHN_STEREO;
     xs_cfg.audioFrequency = XS_AUDIO_FREQ;

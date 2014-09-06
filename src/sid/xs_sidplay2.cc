@@ -27,8 +27,6 @@
 #include "xs_config.h"
 #include "xs_sidplay2.h"
 
-#include <assert.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include <sidplayfp/sidplayfp.h>
@@ -43,7 +41,6 @@
 struct SidState {
     sidplayfp *currEng;
     sidbuilder *currBuilder;
-    SidConfig currConfig;
     SidTune *currTune;
 };
 
@@ -69,22 +66,22 @@ bool xs_sidplayfp_init()
     state.currEng = new sidplayfp;
 
     /* Get current configuration */
-    state.currConfig = state.currEng->config();
+    SidConfig config = state.currEng->config();
 
     /* Configure channels and stuff */
     switch (xs_cfg.audioChannels)
     {
     case XS_CHN_STEREO:
-        state.currConfig.playback = SidConfig::STEREO;
+        config.playback = SidConfig::STEREO;
         break;
 
     case XS_CHN_MONO:
-        state.currConfig.playback = SidConfig::MONO;
+        config.playback = SidConfig::MONO;
         break;
     }
 
     /* Audio parameters sanity checking and setup */
-    state.currConfig.frequency = xs_cfg.audioFrequency;
+    config.frequency = xs_cfg.audioFrequency;
 
     /* Initialize builder object */
     state.currBuilder = new ReSIDfpBuilder("ReSIDfp builder");
@@ -102,12 +99,12 @@ bool xs_sidplayfp_init()
         return false;
     }
 
-    state.currConfig.sidEmulation = state.currBuilder;
+    config.sidEmulation = state.currBuilder;
 
     /* Clockspeed settings */
     switch (xs_cfg.clockSpeed) {
     case XS_CLOCK_NTSC:
-        state.currConfig.defaultC64Model = SidConfig::NTSC;
+        config.defaultC64Model = SidConfig::NTSC;
         break;
 
     default:
@@ -115,33 +112,29 @@ bool xs_sidplayfp_init()
             xs_cfg.clockSpeed);
 
     case XS_CLOCK_PAL:
-        state.currConfig.defaultC64Model = SidConfig::PAL;
+        config.defaultC64Model = SidConfig::PAL;
         xs_cfg.clockSpeed = XS_CLOCK_PAL;
         break;
     }
 
-    state.currConfig.forceC64Model = xs_cfg.forceSpeed;
+    config.forceC64Model = xs_cfg.forceSpeed;
 
     /* Configure rest of the emulation */
     if (xs_cfg.mos8580)
-        state.currConfig.defaultSidModel = SidConfig::MOS8580;
+        config.defaultSidModel = SidConfig::MOS8580;
     else
-        state.currConfig.defaultSidModel = SidConfig::MOS6581;
+        config.defaultSidModel = SidConfig::MOS6581;
 
-    state.currConfig.forceSidModel = xs_cfg.forceModel;
+    config.forceSidModel = xs_cfg.forceModel;
 
     /* Now set the emulator configuration */
-    if (!state.currEng->config(state.currConfig)) {
+    if (!state.currEng->config(config)) {
         xs_error("[SIDPlayFP] Emulator engine configuration failed!\n");
         return false;
     }
 
     /* Create the sidtune */
     state.currTune = new SidTune(0);
-    if (!state.currTune) {
-        xs_error("[SIDPlayFP] Could not initialize SIDTune object.\n");
-        return false;
-    }
 
     return true;
 }
@@ -199,7 +192,7 @@ unsigned xs_sidplayfp_fillbuffer(char * audioBuffer, unsigned audioBufSize)
  */
 bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
 {
-    static int loaded_roms = 0;
+    static bool loaded_roms = false;
 
     /* In xs_sidplayfp_init aud-vfs is not initialized yet, so try to load
        the optional rom files on the first xs_sidplayfp_load call. */
@@ -229,7 +222,7 @@ bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
         free(kernal);
         free(basic);
         free(chargen);
-        loaded_roms = 1;
+        loaded_roms = true;
     }
 
     /* Try to get the tune */
@@ -303,13 +296,8 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *b
 
 bool xs_sidplayfp_updateinfo(xs_tuneinfo_t &ti, int subtune)
 {
-    /* Check if we have required structures initialized */
-    SidTune *myTune = state.currTune;
-    if (!myTune)
-        return false;
-
     /* Get currently playing tune information */
-    const SidTuneInfo *myInfo = myTune->getInfo();
+    const SidTuneInfo *myInfo = state.currTune->getInfo();
 
     /* NOTICE! Here we assume that libSIDPlay[12] headers define
      * SIDTUNE_SIDMODEL_* similarly to our enums in xs_config.h ...
