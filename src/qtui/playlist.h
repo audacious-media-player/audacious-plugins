@@ -37,6 +37,7 @@ public:
     void update (int type, int at, int count);
     void positionUpdate ();
     void playCurrentIndex ();
+    void deleteCurrentSelection ();
     void setFilter (const QString &text);
     void toggleQueue ();
     void updateQueue ();

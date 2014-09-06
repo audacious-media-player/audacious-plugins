@@ -65,10 +65,9 @@
    <addaction name="actionNext"/>
    <addaction name="actionRepeat"/>
    <addaction name="actionShuffle"/>
-   <addaction name="actionAudioVolume"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QMenuBar" name="menuBar">
+  <widget class="QMenuBar" name="aud_menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -87,6 +86,7 @@
     <addaction name="actionAddURL"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionPreferences"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuPlayback">
@@ -164,15 +164,16 @@
     <addaction name="actionPlaylistManager"/>
     <addaction name="actionQueueManager"/>
    </widget>
-   <widget class="QMenu" name="menuServices">
-    <property name="title">
-     <string>Services</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuOutput">
     <property name="title">
      <string>Output</string>
     </property>
+    <addaction name="actionVolumeUp"/>
+    <addaction name="actionVolumeDown"/>
+    <addaction name="separator"/>
+    <addaction name="actionEqualizer"/>
+    <addaction name="separator"/>
+    <addaction name="actionEffects"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -182,7 +183,6 @@
    <addaction name="menuFile"/>
    <addaction name="menuPlayback"/>
    <addaction name="menuPlaylist"/>
-   <addaction name="menuServices"/>
    <addaction name="menuOutput"/>
    <addaction name="menuView"/>
   </widget>
@@ -327,19 +327,6 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionAudioVolume">
-   <property name="icon">
-    <iconset theme="audio-volume-high">
-     <normaloff/>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>AudioVolume</string>
-   </property>
-   <property name="toolTip">
-    <string>Audio Volume</string>
-   </property>
-  </action>
   <action name="actionOpenURL">
    <property name="text">
     <string>Open URL</string>
@@ -406,6 +393,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About Audacious</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
    </property>
   </action>
   <action name="actionQuit">
@@ -587,6 +579,26 @@
   <action name="actionSelectedRandomize">
    <property name="text">
     <string>Random Order</string>
+   </property>
+  </action>
+  <action name="actionVolumeUp">
+   <property name="text">
+    <string>Volume Up</string>
+   </property>
+  </action>
+  <action name="actionVolumeDown">
+   <property name="text">
+    <string>Volume Down</string>
+   </property>
+  </action>
+  <action name="actionEqualizer">
+   <property name="text">
+    <string>Equalizer</string>
+   </property>
+  </action>
+  <action name="actionEffects">
+   <property name="text">
+    <string>Effects ...</string>
    </property>
   </action>
  </widget>

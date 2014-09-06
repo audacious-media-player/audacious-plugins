@@ -1,18 +1,17 @@
 #ifndef XS_SIDPLAYFP_H
 #define XS_SIDPLAYFP_H
 
-#include "xs_player.h"
-#include "xs_support.h"
-#include "xs_slsup.h"
+#include "xmms-sid.h"
 
-bool    xs_sidplayfp_probe(VFSFile *);
-void        xs_sidplayfp_close(xs_status_t *);
-bool    xs_sidplayfp_init(xs_status_t *);
-bool    xs_sidplayfp_initsong(xs_status_t *);
-unsigned        xs_sidplayfp_fillbuffer(xs_status_t *, char *, unsigned);
-bool    xs_sidplayfp_load(xs_status_t *, const char *);
-void        xs_sidplayfp_delete(xs_status_t *);
-xs_tuneinfo_t*    xs_sidplayfp_getinfo(const char *);
-bool    xs_sidplayfp_updateinfo(xs_status_t *);
+#include <stdint.h>
+
+bool xs_sidplayfp_probe(const void *buf, int64_t bufSize);
+void xs_sidplayfp_close();
+bool xs_sidplayfp_init();
+bool xs_sidplayfp_initsong(int subtune);
+unsigned xs_sidplayfp_fillbuffer(char *, unsigned);
+bool xs_sidplayfp_load(const void *buf, int64_t bufSize);
+bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *buf, int64_t bufSize);
+bool xs_sidplayfp_updateinfo(xs_tuneinfo_t &ti, int subtune);
 
 #endif /* XS_SIDPLAYFP_H */

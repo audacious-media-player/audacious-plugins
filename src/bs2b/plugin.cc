@@ -19,8 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtk/gtk.h>
-
+#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
@@ -30,7 +29,6 @@
 
 static t_bs2bdp bs2b = nullptr;
 static int bs2b_channels;
-static GtkWidget * feed_slider, * fcut_slider;
 
 static const char * const bs2b_defaults[] = {
  "feed", "45",
@@ -43,12 +41,12 @@ bool init (void)
     bs2b = bs2b_open ();
 
     if (! bs2b)
-        return FALSE;
+        return false;
 
     bs2b_set_level_feed (bs2b, aud_get_int ("bs2b", "feed"));
     bs2b_set_level_fcut (bs2b, aud_get_int ("bs2b", "fcut"));
 
-    return TRUE;
+    return true;
 }
 
 static void cleanup (void)
@@ -86,99 +84,52 @@ static void bs2b_finish (float * * data, int * samples)
     bs2b_process (data, samples);
 }
 
-static void feed_value_changed (GtkRange * range, void * data)
+static void feed_value_changed ()
 {
-    int feed_level = gtk_range_get_value (range);
-    aud_set_int ("bs2b", "feed", feed_level);
-    bs2b_set_level_feed (bs2b, feed_level);
+    bs2b_set_level_feed (bs2b, aud_get_int ("bs2b", "feed"));
 }
 
-static char * feed_format_value (GtkScale * scale, double value)
+static void fcut_value_changed ()
 {
-    return g_strdup_printf ("%.1f dB", (float) value / 10);
+    bs2b_set_level_fcut (bs2b, aud_get_int ("bs2b", "fcut"));
 }
 
-static void fcut_value_changed (GtkRange * range, void * data)
+static void set_preset (uint32_t preset)
 {
-    int fcut_level = gtk_range_get_value (range);
-    aud_set_int ("bs2b", "fcut", fcut_level);
-    bs2b_set_level_fcut (bs2b, fcut_level);
+    int feed = preset >> 16;
+    int fcut = preset & 0xffff;
+
+    aud_set_int ("bs2b", "feed", feed);
+    aud_set_int ("bs2b", "fcut", fcut);
+
+    bs2b_set_level_feed (bs2b, feed);
+    bs2b_set_level_fcut (bs2b, fcut);
+
+    hook_call ("bs2b preset loaded", nullptr);
 }
 
-static char * fcut_format_value (GtkScale * scale, double value)
-{
-    return g_strdup_printf ("%d Hz, %d µs", (int) value, bs2b_level_delay ((int) value));
-}
+static void set_default_preset ()
+    { set_preset (BS2B_DEFAULT_CLEVEL); }
+static void set_cmoy_preset ()
+    { set_preset (BS2B_CMOY_CLEVEL); }
+static void set_jmeier_preset ()
+    { set_preset (BS2B_JMEIER_CLEVEL); }
 
-static void preset_button_clicked (GtkButton * button, void * data)
-{
-    int clevel = GPOINTER_TO_INT (data);
-    gtk_range_set_value ((GtkRange *) feed_slider, clevel >> 16);
-    gtk_range_set_value ((GtkRange *) fcut_slider, clevel & 0xffff);
-}
-
-static GtkWidget * preset_button (const char * label, int clevel)
-{
-    GtkWidget * button = gtk_button_new_with_label (label);
-    gtk_button_set_relief ((GtkButton *) button, GTK_RELIEF_NONE);
-    g_signal_connect (button, "clicked", (GCallback)
-     preset_button_clicked, GINT_TO_POINTER (clevel));
-
-    return button;
-}
-
-static void * create_config_widget (void)
-{
-    int feed_level = aud_get_int ("bs2b", "feed");
-    int fcut_level = aud_get_int ("bs2b", "fcut");
-
-    GtkWidget * vbox, * hbox, * button;
-
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
-
-    gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Feed level:")), TRUE, FALSE, 0);
-
-    feed_slider = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, BS2B_MINFEED, BS2B_MAXFEED, 1.0);
-    gtk_range_set_value ((GtkRange *) feed_slider, feed_level);
-    gtk_widget_set_size_request (feed_slider, 200, -1);
-    gtk_box_pack_start ((GtkBox *) hbox, feed_slider, FALSE, FALSE, 0);
-    g_signal_connect (feed_slider, "value-changed", (GCallback) feed_value_changed, nullptr);
-    g_signal_connect (feed_slider, "format-value", (GCallback) feed_format_value, nullptr);
-
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
-
-    gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Cut frequency:")), TRUE, FALSE, 0);
-
-    fcut_slider = gtk_scale_new_with_range (GTK_ORIENTATION_HORIZONTAL, BS2B_MINFCUT, BS2B_MAXFCUT, 1.0);
-    gtk_range_set_value ((GtkRange *) fcut_slider, fcut_level);
-    gtk_widget_set_size_request (fcut_slider, 200, -1);
-    gtk_box_pack_start ((GtkBox *) hbox, fcut_slider, FALSE, FALSE, 0);
-    g_signal_connect (fcut_slider, "value-changed", (GCallback) fcut_value_changed, nullptr);
-    g_signal_connect (fcut_slider, "format-value", (GCallback) fcut_format_value, nullptr);
-
-    hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-    gtk_box_pack_start ((GtkBox *) vbox, hbox, FALSE, FALSE, 0);
-
-    gtk_box_pack_start ((GtkBox *) hbox, gtk_label_new (_("Presets:")), TRUE, FALSE, 0);
-
-    button = preset_button (_("Default"), BS2B_DEFAULT_CLEVEL);
-    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
-
-    button = preset_button ("C. Moy", BS2B_CMOY_CLEVEL);
-    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
-
-    button = preset_button ("J. Meier", BS2B_JMEIER_CLEVEL);
-    gtk_box_pack_start ((GtkBox *) hbox, button, TRUE, FALSE, 0);
-
-    return vbox;
-}
+static const PreferencesWidget preset_widgets[] = {
+    WidgetLabel (N_("Presets:")),
+    WidgetButton (N_("Default"), {set_default_preset}),
+    WidgetButton ("C. Moy", {set_cmoy_preset}),
+    WidgetButton ("J. Meier", {set_jmeier_preset})
+};
 
 static const PreferencesWidget bs2b_widgets[] = {
-    WidgetCustom (create_config_widget)
+    WidgetSpin (N_("Feed level:"),
+        WidgetInt ("bs2b", "feed", feed_value_changed, "bs2b preset loaded"),
+        {BS2B_MINFEED, BS2B_MAXFEED, 1, N_("x1/10 dB")}),
+    WidgetSpin (N_("Cut frequency:"),
+        WidgetInt ("bs2b", "fcut", fcut_value_changed, "bs2b preset loaded"),
+        {BS2B_MINFCUT, BS2B_MAXFCUT, 1, N_("Hz")}),
+    WidgetBox ({{preset_widgets}, true})
 };
 
 static const PluginPreferences bs2b_prefs = {{bs2b_widgets}};
@@ -190,7 +141,7 @@ static const PluginPreferences bs2b_prefs = {{bs2b_widgets}};
 #define AUD_EFFECT_START       bs2b_start
 #define AUD_EFFECT_PROCESS     bs2b_process
 #define AUD_EFFECT_FINISH      bs2b_finish
-#define AUD_EFFECT_SAME_FMT    TRUE
+#define AUD_EFFECT_SAME_FMT    true
 
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>

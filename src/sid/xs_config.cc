@@ -21,28 +21,18 @@
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#include "xs_config.h"
-
-#include <string.h>
-
 #include "xmms-sid.h"
-#include "xs_support.h"
+#include "xs_config.h"
 
 /*
  * Configuration specific stuff
  */
-pthread_mutex_t xs_cfg_mutex = PTHREAD_MUTEX_INITIALIZER;
 struct xs_cfg_t xs_cfg;
 
 /* Reset/initialize the configuration
  */
 void xs_init_configuration(void)
 {
-    /* Lock configuration mutex */
-    pthread_mutex_lock(&xs_cfg_mutex);
-
-    memset(&xs_cfg, 0, sizeof(xs_cfg));
-
     /* Initialize values with sensible defaults */
     xs_cfg.audioChannels = XS_CHN_STEREO;
     xs_cfg.audioFrequency = XS_AUDIO_FREQ;
@@ -63,17 +53,7 @@ void xs_init_configuration(void)
     xs_cfg.playMinTimeEnable = false;
     xs_cfg.playMinTime = 15;
 
-    xs_cfg.songlenDBEnable = false;
-    xs_pstrcpy(&xs_cfg.songlenDBPath, "~/C64Music/DOCUMENTS/Songlengths.txt");
-
-    xs_cfg.stilDBEnable = false;
-    xs_pstrcpy(&xs_cfg.stilDBPath, "~/C64Music/DOCUMENTS/STIL.txt");
-    xs_pstrcpy(&xs_cfg.hvscPath, "~/C64Music");
-
     xs_cfg.subAutoEnable = true;
     xs_cfg.subAutoMinOnly = true;
     xs_cfg.subAutoMinTime = 15;
-
-    /* Unlock the configuration */
-    pthread_mutex_unlock(&xs_cfg_mutex);
 }

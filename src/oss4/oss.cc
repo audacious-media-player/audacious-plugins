@@ -125,7 +125,7 @@ static void close_device(void)
     oss_data->fd = -1;
 }
 
-int oss_open_audio(int aud_format, int rate, int channels)
+bool oss_open_audio(int aud_format, int rate, int channels)
 {
     AUDDBG("Opening audio.\n");
 
@@ -162,11 +162,11 @@ int oss_open_audio(int aud_format, int rate, int channels)
         oss_set_volume(vol_left, vol_right);
     }
 
-    return 1;
+    return true;
 
 FAILED:
     close_device();
-    return 0;
+    return false;
 }
 
 void oss_close_audio(void)

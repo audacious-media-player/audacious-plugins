@@ -11,9 +11,7 @@ SRCS = qtui.cc \
        playlist_tabs.moc \
        filter_input.cc \
        filter_input.moc \
-       ui_main_window.h \
-       ui_playlist_tabs.h \
-       utils.cc
+       ui_main_window.h
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -59,7 +57,7 @@ LD = ${CXX}
 
 CFLAGS += ${PLUGIN_CFLAGS}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../.. ${QT_CFLAGS}
-LIBS += ${QT_LIBS}
+LIBS += ${QT_LIBS} -laudqt
 
 %.moc: %.h
 	moc $< -o $@

@@ -36,8 +36,10 @@
 
 #define RESAMPLE_ERROR(e) fprintf (stderr, "resample: %s\n", src_strerror (e))
 
+static const char default_method[] = {'0' + SRC_SINC_FASTEST, 0};
+
 static const char * const resample_defaults[] = {
- "method", "2", /* SRC_SINC_FASTEST */
+ "method", default_method,
  "default-rate", "44100",
  "use-mappings", "FALSE",
  "8000", "48000",
@@ -165,17 +167,18 @@ static const char resample_about[] =
  N_("Sample Rate Converter Plugin for Audacious\n"
     "Copyright 2010-2012 John Lindgren");
 
-static const ComboBoxElements method_list[] = {
- {"3", N_("Skip/repeat samples")}, /* SRC_ZERO_ORDER_HOLD */
- {"4", N_("Linear interpolation")}, /* SRC_LINEAR */
- {"2", N_("Fast sinc interpolation")}, /* SRC_SINC_FASTEST */
- {"1", N_("Medium sinc interpolation")}, /* SRC_SINC_MEDIUM_QUALITY */
- {"0", N_("Best sinc interpolation")}}; /* SRC_SINC_BEST_QUALITY */
+static const ComboItem method_list[] = {
+    ComboItem(N_("Skip/repeat samples"), SRC_ZERO_ORDER_HOLD),
+    ComboItem(N_("Linear interpolation"), SRC_LINEAR),
+    ComboItem(N_("Fast sinc interpolation"), SRC_SINC_FASTEST),
+    ComboItem(N_("Medium sinc interpolation"), SRC_SINC_MEDIUM_QUALITY),
+    ComboItem(N_("Best sinc interpolation"), SRC_SINC_BEST_QUALITY)
+};
 
 static const PreferencesWidget resample_widgets[] = {
     WidgetLabel (N_("<b>Conversion</b>")),
     WidgetCombo (N_("Method:"),
-        WidgetString ("resample", "method"),
+        WidgetInt ("resample", "method"),
         {{method_list}}),
     WidgetSpin (N_("Rate:"),
         WidgetInt ("resample", "default-rate"),

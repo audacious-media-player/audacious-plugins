@@ -9,14 +9,14 @@
  */
 
 #define __STDC_LIMIT_MACROS
+#include "ffaudio-stdinc.h"
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #include <glib.h>
-
-#include "ffaudio-stdinc.h"
 
 static const struct {
     const char * id;

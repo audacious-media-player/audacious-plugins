@@ -307,6 +307,10 @@ void mpris2_cleanup (void)
 
 bool mpris2_init (void)
 {
+#if ! GLIB_CHECK_VERSION (2, 36, 0)
+    g_type_init ();
+#endif
+
     GError * error = nullptr;
     GDBusConnection * bus = g_bus_get_sync (G_BUS_TYPE_SESSION, nullptr, & error);
 

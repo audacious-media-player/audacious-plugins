@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009-2012 John Lindgren
+ * Copyright 2009-2014 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -24,6 +24,7 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/preferences.h>
 
 #define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
 
@@ -56,29 +57,25 @@ do { \
 } while (0)
 
 /* alsa.c */
-bool alsa_init (void);
-void alsa_cleanup (void);
+bool alsa_init ();
+void alsa_cleanup ();
 bool alsa_open_audio (int aud_format, int rate, int channels);
-void alsa_close_audio (void);
-int alsa_buffer_free (void);
+void alsa_close_audio ();
+int alsa_buffer_free ();
 void alsa_write_audio (void * data, int length);
-void alsa_period_wait (void);
-void alsa_drain (void);
-int alsa_output_time (void);
+void alsa_period_wait ();
+void alsa_drain ();
+int alsa_output_time ();
 void alsa_flush (int time);
 void alsa_pause (bool pause);
-void alsa_open_mixer (void);
-void alsa_close_mixer (void);
+void alsa_open_mixer ();
+void alsa_close_mixer ();
 void alsa_get_volume (int * left, int * right);
 void alsa_set_volume (int left, int right);
 
 /* config.c */
-extern String alsa_config_pcm, alsa_config_mixer, alsa_config_mixer_element;
-extern int alsa_config_drop_workaround, alsa_config_drain_workaround,
- alsa_config_delay_workaround;
+void alsa_init_config ();
 
-void alsa_config_load (void);
-void alsa_config_save (void);
-void * alsa_create_config_widget (void);
+extern const PluginPreferences alsa_prefs;
 
 #endif

@@ -66,24 +66,6 @@ VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
 
-dnl Qt support
-dnl ==========
-
-AC_ARG_ENABLE(qt,
- AS_HELP_STRING(--enable-qt, [Enable Qt support (default=disabled)]),
- USE_QT=$enableval, USE_QT=no)
-
-if test $USE_QT = yes ; then
-    PKG_CHECK_MODULES([QT], [Qt5Core Qt5Gui Qt5Widgets])
-    AC_DEFINE(USE_QT, 1, [Define if Qt support enabled])
-
-    # needed if Qt was built with -reduce-relocations
-    QT_CFLAGS="$QT_CFLAGS -fPIC"
-fi
-
-AC_SUBST(QT_CFLAGS)
-AC_SUBST(QT_LIBS)
-
 dnl Console
 dnl =======
 
@@ -113,6 +95,43 @@ if test "x$enable_xsf" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS xsf"
 fi
 
+dnl QtAudio
+dnl =======
+
+AC_ARG_ENABLE(qtaudio,
+    [AS_HELP_STRING([--disable-qtaudio], [disable QtMultimedia output plugin (default=enabled)])],
+    [enable_qtaudio=$enableval],
+    [enable_qtaudio=auto])
+
+have_qtaudio=no
+if test "x$enable_qtaudio" != "xno"; then
+    PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [have_qtaudio=yes], [have_qtaudio=no])
+    if test "x$have_qtaudio" = "xyes"; then
+        QTMULTIMEDIA_CFLAGS="$QTMULTIMEDIA_CFLAGS -fPIC"
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS qtaudio"
+    elif test "x$enable_qtaudio" = "xyes"; then
+        AC_MSG_ERROR([QtAudio output plugin requested but QtMultimedia not found!])
+    fi
+fi
+
+dnl CoreAudio
+dnl =========
+
+AC_ARG_ENABLE(coreaudio,
+    [AS_HELP_STRING([--disable-coreaudio], [disable CoreAudio output plugin (default=enabled)])],
+    [enable_coreaudio=$enableval],
+    [enable_coreaudio=auto]
+)
+
+have_coreaudio=no
+if test "x$enable_coreaudio" != "xno"; then
+    if test "x$HAVE_DARWIN" != "xno"; then
+        have_coreaudio=yes
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS coreaudio"
+    fi
+else
+    AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
+fi
 
 dnl PulseAudio
 dnl ==========
@@ -411,8 +430,12 @@ AC_ARG_ENABLE(aac,
  [enable_aac=$enableval], [enable_aac=yes])
 
 if test $enable_aac = yes ; then
-    AC_CHECK_HEADER([faad.h])
-    AC_CHECK_LIB([faad], [NeAACDecInit2])
+    AC_CHECK_HEADER([neaacdec.h], [have_aac=yes], [have_aac=no])
+    AC_CHECK_LIB([faad], [NeAACDecInit2], [have_aac=$have_aac], [have_aac=no])
+
+    if test $have_aac != yes ; then
+        AC_MSG_ERROR([Please install libfaad, or use --disable-aac to disable AAC support.])
+    fi
 
     FAAD_CFLAGS=
     FAAD_LIBS="-lfaad"
@@ -1174,9 +1197,11 @@ echo "  --------------"
 echo "  Open Sound System (oss4):               $have_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  Sndio (sndio):                          $have_sndio"
+echo "  CoreAudio (coreaudio):                  $have_coreaudio"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  Simple DirectMedia Layer (sdlout):      $have_sdlout"
+echo "  Qt Multimedia (qtaudio):                $have_qtaudio"
 echo "  FileWriter:                             $have_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"

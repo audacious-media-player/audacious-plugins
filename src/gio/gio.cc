@@ -51,6 +51,10 @@ typedef struct {
 
 static void * gio_fopen (const char * filename, const char * mode)
 {
+#if ! GLIB_CHECK_VERSION (2, 36, 0)
+    g_type_init ();
+#endif
+
     GError * error = 0;
 
     FileData * data = g_new0 (FileData, 1);

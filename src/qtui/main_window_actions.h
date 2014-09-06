@@ -27,6 +27,10 @@ void MainWindow::setupActions ()
         aud_playlist_set_active (aud_playlist_count () - 1);
     });
 
+    connect(actionPlaylistRemove, &QAction::triggered, [=] () {
+        audqt::playlist_confirm_delete (aud_playlist_get_active ());
+    });
+
     connect(actionPlaylistReverse, &QAction::triggered, [=] () { aud_playlist_reverse (aud_playlist_get_active ()); });
     connect(actionPlaylistRandomize, &QAction::triggered, [=] () { aud_playlist_randomize (aud_playlist_get_active ()); });
 
@@ -50,6 +54,12 @@ void MainWindow::setupActions ()
 
     connect(actionSelectedReverse, &QAction::triggered, [=] () { aud_playlist_reverse_selected (aud_playlist_get_active ()); });
     connect(actionSelectedRandomize, &QAction::triggered, [=] () { aud_playlist_randomize_selected (aud_playlist_get_active ()); });
+
+    /* plugin menus */
+    QMenuBar * mb = this->menuBar();
+    mb->addAction (audqt::menu_get_by_id (AUD_MENU_MAIN)->menuAction ());
+
+    connect(actionEffects, &QAction::triggered, [=] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); });
 }
 
 #endif

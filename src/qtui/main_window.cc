@@ -23,16 +23,20 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/interface.h>
+
+#include <libaudqt/libaudqt.h>
 
 #include "filter_input.h"
 #include "main_window.h"
 #include "main_window.moc"
 #include "main_window_actions.h"
 #include "playlist.h"
-#include "utils.h"
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
+    int lvol, rvol;
+
     QIcon::setThemeName ("QtUi");
 
     QString appDir = qApp->applicationDirPath ();
@@ -43,6 +47,17 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     setupUi (this);
 
     setUnifiedTitleAndToolBarOnMac (true);
+
+    volumeButton = new audqt::VolumeButton (this, 0, 100);
+
+    aud_drct_get_volume (&lvol, &rvol);
+    volumeButton->setValue ((lvol + rvol) / 2);
+
+    connect (volumeButton, &audqt::VolumeButton::valueChanged, [=] (int value) {
+        aud_drct_set_volume (value, value);
+    });
+
+    toolBar->addWidget (volumeButton);
 
     filterInput = new FilterInput ();
 
@@ -70,6 +85,9 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 
     updateToggles ();
 
+    connect (actionAbout, &QAction::triggered, aud_ui_show_about_window);
+    connect (actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
+
     connect (actionQuit, &QAction::triggered, aud_quit);
 
     connect (actionRepeat, &QAction::toggled, [=] (bool checked)
@@ -92,12 +110,19 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
         aud_set_bool (nullptr, "stop_after_current_song", checked);
     });
 
-    connect (actionOpenFiles, &QAction::triggered, Utils::openFilesDialog);
-    connect (actionAddFiles,  &QAction::triggered, Utils::addFilesDialog);
+    connect (actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
+
+    connect (actionAddFiles,  &QAction::triggered, [=] ()
+    {
+        audqt::fileopener_show (true);
+    });
+
     connect (actionPlayPause, &QAction::triggered, aud_drct_play_pause);
     connect (actionStop,      &QAction::triggered, aud_drct_stop);
     connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
     connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
+
+    connect (actionEqualizer, &QAction::triggered, audqt::equalizer_show);
 
     connect (timeCounter, &QTimer::timeout,         this, &MainWindow::timeCounterSlot);
     connect (slider,      &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);

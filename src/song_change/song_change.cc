@@ -366,7 +366,7 @@ static const PreferencesWidget settings[] = {
                     "%b: Album\n"
                     "%T: Track title")),
 
-    WidgetCustom (custom_warning)
+    WidgetCustomGTK (custom_warning)
 };
 
 static void configure_init(void)

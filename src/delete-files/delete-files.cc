@@ -130,6 +130,10 @@ static const char * const delete_files_defaults[] = {
 
 static bool delete_files_init (void)
 {
+#if ! GLIB_CHECK_VERSION (2, 36, 0)
+    g_type_init ();
+#endif
+
     aud_config_set_defaults ("delete_files", delete_files_defaults);
 
     for (int menu : menus)

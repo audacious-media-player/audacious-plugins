@@ -61,6 +61,7 @@ private:
     QTimer * timeCounter = nullptr;
     QSlider * slider = nullptr;
     FilterInput * filterInput = nullptr;
+    audqt::VolumeButton * volumeButton = nullptr;
     QMessageBox * progressDialog = nullptr;
     QMessageBox * errorDialog = nullptr;
     PlaylistTabs * playlistTabs = nullptr;

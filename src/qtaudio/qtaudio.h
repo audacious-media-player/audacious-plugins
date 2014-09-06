@@ -1,6 +1,7 @@
 /*
- * utils.h
- * Copyright 2014 Michał Lipski
+ * CoreAudio Output Plugin for Audacious
+ * Copyright 2010 John Lindgren
+ * Copyright 2014 William Pitcock
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,13 +18,27 @@
  * the use of this software.
  */
 
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef AUDACIOUS_COREAUDIO_H
+#define AUDACIOUS_COREAUDIO_H
 
-namespace Utils
-{
-    void openFilesDialog (bool add = false);
-    void addFilesDialog ();
-}
+#include <QtMultimedia>
+
+/* coreaudio.cc */
+namespace qtaudio {
+
+bool init (void);
+void cleanup (void);
+void get_volume (int * left, int * right);
+void set_volume (int left, int right);
+bool open_audio (int format, int rate, int chan);
+void close_audio (void);
+int buffer_free (void);
+void write_audio (void * data, int len);
+void drain (void);
+int output_time (void);
+void pause (bool pause);
+void flush (int time);
+
+};
 
 #endif

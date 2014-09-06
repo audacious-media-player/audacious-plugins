@@ -31,7 +31,9 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/runtime.h>
 
 #include "ao.h"
 #include "corlett.h"
@@ -39,6 +41,37 @@
 
 /* xsf_get_lib: called to load secondary files */
 static String dirpath;
+
+struct Settings
+{
+    bool ignore_length;
+} xsf_cfg;
+
+#define CFG_ID "xsf"
+#define DEFAULT_IGNORE_LENGTH "0"
+
+static const char* const defaults[] =
+{
+    "ignore_length", DEFAULT_IGNORE_LENGTH,
+    NULL
+};
+
+void xsf_cfg_load()
+{
+    aud_config_set_defaults(CFG_ID, defaults);
+    xsf_cfg.ignore_length = aud_get_bool(CFG_ID, "ignore_length");
+}
+
+void xsf_cfg_save()
+{
+    aud_set_bool(CFG_ID, "ignore_length", xsf_cfg.ignore_length);
+}
+
+bool xsf_init()
+{
+    xsf_cfg_load();
+    return true;
+}
 
 int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
 {
@@ -102,7 +135,7 @@ static int xsf_get_length(const char *filename)
 		return -1;
 	}
 
-	int length = c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
+	int length = (c->inf_length && !xsf_cfg.ignore_length) ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 
 	free(c);
 	free(buf);
@@ -182,7 +215,7 @@ static bool xsf_play(const char * filename, VFSFile * file)
 		xsf_gen(samples, seglen);
 		aud_input_write_audio((uint8_t *)samples, seglen * 4);
 
-		if (aud_input_written_time() >= length)
+		if (aud_input_written_time() >= length && !xsf_cfg.ignore_length)
 			goto CLEANUP;
 	}
 
@@ -210,7 +243,21 @@ bool xsf_is_our_fd(const char *filename, VFSFile *file)
 
 static const char *xsf_fmts[] = { "2sf", "mini2sf", nullptr };
 
+static const PreferencesWidget xsf_widgets[] = {
+    WidgetLabel(N_("<b>XSF Config</b>")),
+    WidgetCheck(N_("Ignore length from file:"), WidgetBool(xsf_cfg.ignore_length)),
+};
+
+static const PluginPreferences xsf_prefs = {
+    {xsf_widgets},
+    xsf_cfg_load,
+    xsf_cfg_save
+};
+
 #define AUD_PLUGIN_NAME        N_("2SF Decoder")
+#define AUD_PLUGIN_INIT        xsf_init
+#define AUD_PLUGIN_CLEANUP     xsf_cfg_save
+#define AUD_PLUGIN_PREFS       & xsf_prefs
 #define AUD_INPUT_PLAY         xsf_play
 #define AUD_INPUT_READ_TUPLE   xsf_tuple
 #define AUD_INPUT_IS_OUR_FILE  xsf_is_our_fd
