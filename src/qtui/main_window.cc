@@ -33,7 +33,7 @@ MainWindow::MainWindow () :
     m_dialogs (this),
     filterInput (new FilterInput (this))
 {
-#if defined(HAVE_MSWINDOWS) || defined(HAVE_DARWIN)
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
 
     QStringList paths = QIcon::themeSearchPaths ();
