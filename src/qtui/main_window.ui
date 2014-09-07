@@ -70,7 +70,7 @@
    <addaction name="actionRepeat"/>
    <addaction name="actionShuffle"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="StatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="aud_menuBar">
    <property name="geometry">
     <rect>
@@ -615,6 +615,11 @@
    <extends>QTabWidget</extends>
    <header>playlist_tabs.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StatusBar</class>
+   <extends>QStatusBar</extends>
+   <header>status_bar.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

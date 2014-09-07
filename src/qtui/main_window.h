@@ -21,14 +21,9 @@
 #define MAIN_WINDOW_H
 
 #include "ui_main_window.h"
-
-#include <QLabel>
-#include <QMessageBox>
-
 #include "dialog_windows.h"
 
 class FilterInput;
-class TimeSlider;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -38,18 +33,13 @@ public:
 
 private:
     DialogWindows m_dialogs;
-
-    QLabel * codecInfoLabel = nullptr;
-    QLabel * playlistLengthLabel = nullptr;
-    TimeSlider * slider = nullptr;
-    FilterInput * filterInput = nullptr;
+    FilterInput * filterInput;
 
     void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
 
     void updateToggles ();
     void setupActions ();
-    void createStatusBar ();
 
     void action_play_pause_set_play ();
     void action_play_pause_set_pause ();
@@ -60,8 +50,6 @@ private:
     static void pause_cb (void *, MainWindow * window);
     static void playback_stop_cb (void *, MainWindow * window);
     static void update_toggles_cb (void *, MainWindow * window);
-    static void update_playlist_length_cb (void *, QLabel * label);
-    static void update_codec_info_cb (void *, QLabel * label);
 };
 
 #endif
