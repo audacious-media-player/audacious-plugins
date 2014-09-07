@@ -32,13 +32,14 @@
 PlaylistTabs::PlaylistTabs (QWidget * parent) : QTabWidget (parent)
 {
     installEventFilter (this);
+    setFocusPolicy (Qt::NoFocus);
 
     // set up tab bar
     m_tabbar = new PlaylistTabBar (this);
     setTabBar (m_tabbar);
 
     // set up playlist rename editor
-    m_lineedit = new QLineEdit;
+    m_lineedit = new QLineEdit (this);
     m_lineedit->setWindowFlags (Qt::Window | Qt::ToolTip);
     m_lineedit->setFocusProxy (this);
     m_lineedit->installEventFilter (this);
@@ -57,9 +58,6 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) : QTabWidget (parent)
 
 PlaylistTabs::~PlaylistTabs ()
 {
-    delete m_tabbar;
-    delete m_lineedit;
-
     hook_dissociate ("playlist update",      (HookFunction) playlist_update_cb);
     hook_dissociate ("playlist activate",    (HookFunction) playlist_activate_cb);
     hook_dissociate ("playlist set playing", (HookFunction) playlist_set_playing_cb);
