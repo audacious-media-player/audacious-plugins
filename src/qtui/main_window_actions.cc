@@ -1,6 +1,6 @@
 /*
  * main_window_actions.cc
- * Copyright 2014 William Pitcock <nenolod@dereferenced.org>
+ * Copyright 2014 Michał Lipski and William Pitcock
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -19,11 +19,37 @@
 
 #include "main_window.h"
 
+#include <libaudcore/drct.h>
 #include <libaudcore/interface.h>
+
 #include <libaudqt/libaudqt.h>
 
 void MainWindow::setupActions ()
 {
+    connect (actionAbout, &QAction::triggered, aud_ui_show_about_window);
+    connect (actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
+    connect (actionQuit, &QAction::triggered, aud_quit);
+
+    connect (actionRepeat, &QAction::toggled, [] (bool checked)
+        { aud_set_bool (nullptr, "repeat", checked); });
+    connect (actionShuffle, &QAction::triggered, [] (bool checked)
+        { aud_set_bool (nullptr, "shuffle", checked); });
+    connect (actionNoPlaylistAdvance, &QAction::triggered, [] (bool checked)
+        { aud_set_bool (nullptr, "no_playlist_advance", checked); });
+    connect (actionStopAfterThisSong, &QAction::triggered, [] (bool checked)
+        { aud_set_bool (nullptr, "stop_after_current_song", checked); });
+
+    connect (actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
+    connect (actionAddFiles,  &QAction::triggered, [] ()
+        { audqt::fileopener_show (true); });
+
+    connect (actionPlayPause, &QAction::triggered, aud_drct_play_pause);
+    connect (actionStop,      &QAction::triggered, aud_drct_stop);
+    connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
+    connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
+
+    connect (actionEqualizer, &QAction::triggered, audqt::equalizer_show);
+
     connect(actionPlaylistNew, &QAction::triggered, [] () {
         aud_playlist_insert (-1);
         aud_playlist_set_active (aud_playlist_count () - 1);
