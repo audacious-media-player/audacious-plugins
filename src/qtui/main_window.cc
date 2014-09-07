@@ -32,6 +32,7 @@
 #include "main_window.moc"
 #include "main_window_actions.h"
 #include "playlist.h"
+#include "time_slider.h"
 
 MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
 {
@@ -54,18 +55,9 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     filterInput = new FilterInput (this);
     toolBar->addWidget (filterInput);
 
-    slider = new QSlider (Qt::Horizontal, this);
-    slider->setDisabled (true);
-    slider->setFocusPolicy (Qt::NoFocus);
-
-    timeCounterLabel = new QLabel ("0:00 / 0:00", this);
-    timeCounterLabel->setContentsMargins (5, 0, 0, 2);
-    timeCounterLabel->setDisabled (true);
-
-    timeCounter.setInterval (250);
-
+    slider = new TimeSlider (this);
     toolBar->insertWidget (actionRepeat, slider);
-    toolBar->insertWidget (actionRepeat, timeCounterLabel);
+    toolBar->insertWidget (actionRepeat, slider->label ());
 
     createStatusBar ();
 
@@ -109,11 +101,6 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
 
     connect (actionEqualizer, &QAction::triggered, audqt::equalizer_show);
-
-    connect (&timeCounter, &QTimer::timeout,         this, &MainWindow::timeCounterSlot);
-    connect (slider,       &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);
-    connect (slider,       &QSlider::sliderPressed,  this, &MainWindow::sliderPressed);
-    connect (slider,       &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
@@ -172,77 +159,6 @@ MainWindow::~MainWindow ()
 
     hook_dissociate ("playback ready", (HookFunction) update_codec_info_cb);
     hook_dissociate ("info change",    (HookFunction) update_codec_info_cb);
-}
-
-void MainWindow::timeCounterSlot ()
-{
-    if (slider->isSliderDown ())
-        return;
-
-    int time   = aud_drct_get_time ();
-    int length = aud_drct_get_length ();
-    setTimeCounterLabel (time, length);
-
-    slider->setValue (time);
-}
-
-void MainWindow::setTimeCounterLabel (int time, int length)
-{
-    QString text = QString (str_format_time (time)) + QString (" / ") + QString (str_format_time (length));
-    timeCounterLabel->setText (text);
-}
-
-void MainWindow::enableSlider ()
-{
-    int time = aud_drct_get_time ();
-    int length = aud_drct_get_length ();
-
-    slider->setRange (0, length);
-    slider->setValue (time);
-    slider->setDisabled (false);
-}
-
-void MainWindow::disableSlider ()
-{
-    slider->setRange (0, 0);
-    slider->setDisabled (true);
-}
-
-void MainWindow::enableTimeCounter ()
-{
-    int time   = aud_drct_get_time ();
-    int length = aud_drct_get_length ();
-
-    setTimeCounterLabel (time, length);
-    timeCounter.start ();
-    timeCounterLabel->setDisabled (false);
-}
-
-void MainWindow::disableTimeCounter ()
-{
-    timeCounter.stop ();
-    timeCounterLabel->setText ("0:00 / 0:00");
-    timeCounterLabel->setDisabled (true);
-}
-
-void MainWindow::sliderValueChanged (int value)
-{
-    if (! slider->isSliderDown ())
-        return;
-
-    int length = aud_drct_get_length ();
-    setTimeCounterLabel (value, length);
-}
-
-void MainWindow::sliderPressed ()
-{
-    timeCounter.stop ();
-}
-
-void MainWindow::sliderReleased ()
-{
-    aud_drct_seek (slider->value ());
-    timeCounter.start ();
 }
 
 void MainWindow::createProgressDialog ()

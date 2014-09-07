@@ -11,6 +11,7 @@ SRCS = qtui.cc \
        playlist_tabs.moc \
        filter_input.cc \
        filter_input.moc \
+       time_slider.cc \
        ui_main_window.h
 
 include ../../buildsys.mk
