@@ -114,7 +114,7 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
             switch (section)
             {
             case PL_COL_NOW_PLAYING:
-                return QString ("Playing");
+                return QString ();
             case PL_COL_TITLE:
                 return QString ("Title");
             case PL_COL_ARTIST:
