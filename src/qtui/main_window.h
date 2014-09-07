@@ -23,6 +23,8 @@
 #include "ui_main_window.h"
 #include "dialog_windows.h"
 
+#include <QTimer>
+
 class FilterInput;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
@@ -35,6 +37,8 @@ private:
     DialogWindows m_dialogs;
     FilterInput * filterInput;
 
+    QTimer buffering_timer;
+
     void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
 
@@ -43,6 +47,8 @@ private:
 
     void action_play_pause_set_play ();
     void action_play_pause_set_pause ();
+
+    void show_buffering ();
 
     static void title_change_cb (void *, MainWindow * window);
     static void playback_begin_cb (void *, MainWindow * window);

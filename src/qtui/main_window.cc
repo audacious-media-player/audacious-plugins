@@ -72,6 +72,9 @@ MainWindow::MainWindow () :
     hook_associate ("set no_playlist_advance",     (HookFunction) update_toggles_cb, this);
     hook_associate ("set stop_after_current_song", (HookFunction) update_toggles_cb, this);
 
+    buffering_timer.setSingleShot (true);
+    connect (& buffering_timer, & QTimer::timeout, this, & MainWindow::show_buffering);
+
     if (aud_drct_get_playing ())
     {
         playback_begin_cb (nullptr, this);
@@ -142,17 +145,23 @@ void MainWindow::action_play_pause_set_pause ()
     actionPlayPause->setText ("Pause");
 }
 
+void MainWindow::show_buffering ()
+{
+    if (aud_drct_get_playing () && ! aud_drct_get_ready ())
+        setWindowTitle (_("Buffering ..."));
+}
+
 void MainWindow::title_change_cb (void *, MainWindow * window)
 {
     auto title = aud_drct_get_title ();
     if (title)
-        window->setWindowTitle (QString ("Audacious - ") + QString (title));
+        window->setWindowTitle (QString (title) + QString (" - Audacious"));
 }
 
 void MainWindow::playback_begin_cb (void *, MainWindow * window)
 {
-    window->setWindowTitle ("Audacious - Buffering...");
     pause_cb (nullptr, window);
+    window->buffering_timer.start (250);
 }
 
 void MainWindow::playback_ready_cb (void *, MainWindow * window)
