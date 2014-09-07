@@ -25,28 +25,28 @@
 #include <QLabel>
 #include <QMessageBox>
 
+#include "dialog_windows.h"
+
 class FilterInput;
 class TimeSlider;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
 public:
-    MainWindow (QMainWindow * parent = 0);
+    MainWindow ();
     ~MainWindow ();
 
 private:
-    void closeEvent (QCloseEvent * e);
-    void keyPressEvent (QKeyEvent * e);
+    DialogWindows m_dialogs;
 
     QLabel * codecInfoLabel = nullptr;
     QLabel * playlistLengthLabel = nullptr;
     TimeSlider * slider = nullptr;
     FilterInput * filterInput = nullptr;
-    QMessageBox * progressDialog = nullptr;
-    QMessageBox * errorDialog = nullptr;
 
-    void createProgressDialog ();
-    void createErrorDialog (const QString &message);
+    void closeEvent (QCloseEvent * e);
+    void keyPressEvent (QKeyEvent * e);
+
     void updateToggles ();
     void setupActions ();
     void createStatusBar ();
@@ -60,10 +60,6 @@ private:
     static void pause_cb (void *, MainWindow * window);
     static void playback_stop_cb (void *, MainWindow * window);
     static void update_toggles_cb (void *, MainWindow * window);
-    static void show_progress_cb (void * message, MainWindow * window);
-    static void show_progress_2_cb (void * message, MainWindow * window);
-    static void hide_progress_cb (void *, MainWindow * window);
-    static void show_error_cb (void * message, MainWindow * window);
     static void update_playlist_length_cb (void *, QLabel * label);
     static void update_codec_info_cb (void *, QLabel * label);
 };

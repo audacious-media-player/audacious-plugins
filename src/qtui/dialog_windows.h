@@ -1,6 +1,6 @@
 /*
- * time_slider.h
- * Copyright 2014 John Lindgren
+ * dialog_windows.h
+ * Copyright 2014 John Lindgren and Michał Lipski
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,36 +17,30 @@
  * the use of this software.
  */
 
-#ifndef TIME_SLIDER_H
-#define TIME_SLIDER_H
+#ifndef DIALOG_WINDOWS_H
+#define DIALOG_WINDOWS_H
 
-#include <QLabel>
-#include <QSlider>
-#include <QTimer>
+class QMessageBox;
+class QWidget;
 
-class TimeSlider : public QSlider
+class DialogWindows
 {
 public:
-    TimeSlider (QWidget * parent);
-    ~TimeSlider ();
-
-    QLabel * label ()
-        { return m_label; }
+    DialogWindows (QWidget * parent);
+    ~DialogWindows ();
 
 private:
-    void set_label (int time, int length);
+    QWidget * m_parent;
+    QMessageBox * m_progress = nullptr;
+    QMessageBox * m_error = nullptr;
 
-    void start_stop ();
-    void update ();
-    void moved (int value);
-    void pressed ();
-    void released ();
+    void create_progress ();
+    void create_error (const char * message);
 
-    static void start_stop_hook (void *, void * me)
-        { ((TimeSlider *) me)->start_stop (); }
-
-    QTimer m_timer;
-    QLabel * m_label;
+    static void show_progress (void * message, void * data);
+    static void show_progress_2 (void * message, void * data);
+    static void hide_progress (void *, void * data);
+    static void show_error (void * message, void * data);
 };
 
-#endif // TIME_SLIDER_H
+#endif // DIALOG_WINDOWS_H

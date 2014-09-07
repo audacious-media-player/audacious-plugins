@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-#include <QtGui>
+#include "main_window.h"
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
@@ -28,11 +28,11 @@
 #include <libaudqt/libaudqt.h>
 
 #include "filter_input.h"
-#include "main_window.h"
 #include "playlist.h"
 #include "time_slider.h"
 
-MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
+MainWindow::MainWindow () :
+    m_dialogs (this)
 {
 #if defined(HAVE_MSWINDOWS) || defined(HAVE_DARWIN)
     QIcon::setThemeName ("QtUi");
@@ -116,11 +116,6 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     hook_associate ("set no_playlist_advance",     (HookFunction) update_toggles_cb, this);
     hook_associate ("set stop_after_current_song", (HookFunction) update_toggles_cb, this);
 
-    hook_associate ("ui show progress",   (HookFunction) show_progress_cb, this);
-    hook_associate ("ui show progress 2", (HookFunction) show_progress_2_cb, this);
-    hook_associate ("ui hide progress",   (HookFunction) hide_progress_cb, this);
-    hook_associate ("ui show error",      (HookFunction) show_error_cb, this);
-
     if (aud_drct_get_playing ())
     {
         playback_begin_cb (nullptr, this);
@@ -142,11 +137,6 @@ MainWindow::~MainWindow ()
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate ("playback stop",    (HookFunction) playback_stop_cb);
 
-    hook_dissociate ("ui show progress",   (HookFunction) show_progress_cb);
-    hook_dissociate ("ui show progress 2", (HookFunction) show_progress_2_cb);
-    hook_dissociate ("ui hide progress",   (HookFunction) hide_progress_cb);
-    hook_dissociate ("ui show error",      (HookFunction) show_error_cb);
-
     hook_dissociate ("set repeat",                  (HookFunction) update_toggles_cb);
     hook_dissociate ("set shuffle",                 (HookFunction) update_toggles_cb);
     hook_dissociate ("set no_playlist_advance",     (HookFunction) update_toggles_cb);
@@ -157,30 +147,6 @@ MainWindow::~MainWindow ()
 
     hook_dissociate ("playback ready", (HookFunction) update_codec_info_cb);
     hook_dissociate ("info change",    (HookFunction) update_codec_info_cb);
-}
-
-void MainWindow::createProgressDialog ()
-{
-    if (! progressDialog)
-    {
-        progressDialog = new QMessageBox (this);
-        progressDialog->setIcon (QMessageBox::Information);
-        progressDialog->setText ("Working ...");
-        progressDialog->setStandardButtons (QMessageBox::NoButton);
-        progressDialog->setWindowModality (Qt::WindowModal);
-    }
-}
-
-void MainWindow::createErrorDialog (const QString &message)
-{
-    if (! errorDialog)
-    {
-        errorDialog = new QMessageBox (this);
-        errorDialog->setIcon (QMessageBox::Warning);
-        errorDialog->setWindowModality (Qt::WindowModal);
-    }
-    errorDialog->setText (message);
-    errorDialog->show ();
 }
 
 void MainWindow::closeEvent (QCloseEvent * e)
@@ -285,31 +251,6 @@ void MainWindow::playback_stop_cb (void *, MainWindow * window)
 void MainWindow::update_toggles_cb (void *, MainWindow * window)
 {
     window->updateToggles ();
-}
-
-void MainWindow::show_progress_cb (void * message, MainWindow * window)
-{
-    window->createProgressDialog ();
-    window->progressDialog->setInformativeText ((const char *) message);
-    window->progressDialog->show ();
-}
-
-void MainWindow::show_progress_2_cb (void * message, MainWindow * window)
-{
-    window->createProgressDialog ();
-    window->progressDialog->setText ((const char *) message);
-    window->progressDialog->show ();
-}
-
-void MainWindow::hide_progress_cb (void *, MainWindow * window)
-{
-    if (window->progressDialog)
-        window->progressDialog->hide ();
-}
-
-void MainWindow::show_error_cb (void * message, MainWindow * window)
-{
-    window->createErrorDialog (QString ((const char *) message));
 }
 
 void MainWindow::update_playlist_length_cb (void *, QLabel * label)
