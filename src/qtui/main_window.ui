@@ -29,40 +29,6 @@
     </property>
    </layout>
   </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="contextMenuPolicy">
-    <enum>Qt::PreventContextMenu</enum>
-   </property>
-   <property name="movable">
-    <bool>false</bool>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>22</width>
-     <height>22</height>
-    </size>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonIconOnly</enum>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionSearch"/>
-   <addaction name="separator"/>
-   <addaction name="actionOpenFiles"/>
-   <addaction name="actionAddFiles"/>
-   <addaction name="separator"/>
-   <addaction name="actionPlayPause"/>
-   <addaction name="actionStop"/>
-   <addaction name="actionPrevious"/>
-   <addaction name="actionNext"/>
-   <addaction name="actionRepeat"/>
-   <addaction name="actionShuffle"/>
-  </widget>
   <widget class="QMenuBar" name="aud_menuBar">
    <property name="geometry">
     <rect>

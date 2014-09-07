@@ -30,6 +30,7 @@
 #include "time_slider.h"
 #include "status_bar.h"
 #include "playlist_tabs.h"
+#include "tool_bar.h"
 
 MainWindow::MainWindow () :
     m_dialogs (this),
@@ -47,14 +48,30 @@ MainWindow::MainWindow () :
 
     setupUi (this);
 
-    setUnifiedTitleAndToolBarOnMac (true);
-
-    toolBar->addWidget (new audqt::VolumeButton (this));
-    toolBar->addWidget (filterInput);
-
     auto slider = new TimeSlider (this);
-    toolBar->insertWidget (actionRepeat, slider);
-    toolBar->insertWidget (actionRepeat, slider->label ());
+
+    static ToolBarItem items[] = {
+        {.icon_name = "document-open", .name = "Open Files", .tooltip_text = "Open Files", .callback = [] () { audqt::fileopener_show(false); }},
+        {.icon_name = "list-add", .name = "Add Files", .tooltip_text = "Add Files", .callback = [] () { audqt::fileopener_show(true); }},
+        {.sep = true},
+        {.icon_name = "media-playback-play", .name = "Play", .tooltip_text = "Play", .set_ptr = (void **) & actionPlayPause},
+        {.icon_name = "media-playback-stop", .name = "Stop", .tooltip_text = "Stop", .callback = aud_drct_stop},
+        {.icon_name = "media-skip-backward", .name = "Previous", .tooltip_text = "Previous", .callback = aud_drct_pl_prev},
+        {.icon_name = "media-skip-forward", .name = "Next", .tooltip_text = "Next", .callback = aud_drct_pl_next},
+        {.sep = true},
+        {.item = slider},
+        {.item = slider->label ()},
+        {.sep = true},
+        {.icon_name = "media-playlist-repeat", .name = "Repeat", .tooltip_text = "Repeat", .checkable = true, .set_ptr = (void **) & actionRepeat},
+        {.icon_name = "media-playlist-shuffle", .name = "Shuffle", .tooltip_text = "Shuffle", .checkable = true, .set_ptr = (void **) & actionShuffle},
+        {.item = new audqt::VolumeButton (this)},
+        {.item = filterInput},
+    };
+
+    toolBar = new ToolBar (this, items, sizeof (items) / sizeof (ToolBarItem));
+    addToolBar (Qt::TopToolBarArea, toolBar);
+
+    setUnifiedTitleAndToolBarOnMac (true);
 
     updateToggles ();
 

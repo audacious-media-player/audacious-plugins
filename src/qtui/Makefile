@@ -13,6 +13,7 @@ SRCS = qtui.cc \
        filter_input.cc \
        filter_input.moc \
        status_bar.cc \
+       tool_bar.cc \
        time_slider.cc \
        ui_main_window.h
 

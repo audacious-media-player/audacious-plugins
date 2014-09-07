@@ -23,6 +23,7 @@
 #include "ui_main_window.h"
 #include "dialog_windows.h"
 #include "playlist_tabs.h"
+#include "tool_bar.h"
 
 #include <QTimer>
 
@@ -38,6 +39,7 @@ private:
     DialogWindows m_dialogs;
     FilterInput * filterInput;
     PlaylistTabs * playlistTabs;
+    ToolBar * toolBar;
 
     QTimer buffering_timer;
 
