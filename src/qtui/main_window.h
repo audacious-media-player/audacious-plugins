@@ -20,35 +20,24 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include "ui_main_window.h"
+
 #include <QLabel>
 #include <QMessageBox>
-#include <QtCore>
 
-#include <libaudcore/audstrings.h>
-#include <libaudcore/drct.h>
-#include <libaudcore/i18n.h>
-
-#include "playlist_tabs.h"
-#include "ui_main_window.h"
-#include "filter_input.h"
-
-#define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
-
+class FilterInput;
 class TimeSlider;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
-    Q_OBJECT
-
 public:
     MainWindow (QMainWindow * parent = 0);
     ~MainWindow ();
 
-protected:
+private:
     void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
 
-private:
     QLabel * codecInfoLabel = nullptr;
     QLabel * playlistLengthLabel = nullptr;
     TimeSlider * slider = nullptr;
@@ -62,146 +51,21 @@ private:
     void setupActions ();
     void createStatusBar ();
 
-    static void title_change_cb (void *, MainWindow * window)
-    {
-        auto title = aud_drct_get_title ();
-        if (title)
-            window->setWindowTitle (QString ("Audacious - ") + QString (title));
-    }
+    void action_play_pause_set_play ();
+    void action_play_pause_set_pause ();
 
-    static void playback_begin_cb (void *, MainWindow * window)
-    {
-        window->setWindowTitle ("Audacious - Buffering...");
-        pause_cb (nullptr, window);
-    }
-
-    static void playback_ready_cb (void *, MainWindow * window)
-    {
-        title_change_cb (nullptr, window);
-        pause_cb (nullptr, window);
-    }
-
-    static void action_play_pause_set_play (MainWindow * window)
-    {
-        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
-        window->actionPlayPause->setText ("Play");
-    }
-
-    static void action_play_pause_set_pause (MainWindow * window)
-    {
-        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
-        window->actionPlayPause->setText ("Pause");
-    }
-
-    static void pause_cb (void *, MainWindow * window)
-    {
-        if (aud_drct_get_paused ())
-            action_play_pause_set_play (window);
-        else
-            action_play_pause_set_pause (window);
-        window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
-    }
-
-    static void playback_stop_cb (void *, MainWindow * window)
-    {
-        window->setWindowTitle ("Audacious");
-
-        action_play_pause_set_play (window);
-        window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
-
-        window->codecInfoLabel->setText ("");
-    }
-
-    static void update_toggles_cb (void *, MainWindow * window)
-    {
-        window->updateToggles ();
-    }
-
-    static void show_progress_cb (void * message, MainWindow * window)
-    {
-        window->createProgressDialog ();
-        window->progressDialog->setInformativeText ((const char *) message);
-        window->progressDialog->show ();
-    }
-
-    static void show_progress_2_cb (void * message, MainWindow * window)
-    {
-        window->createProgressDialog ();
-        window->progressDialog->setText ((const char *) message);
-        window->progressDialog->show ();
-    }
-
-    static void hide_progress_cb (void *, MainWindow * window)
-    {
-        if (window->progressDialog)
-            window->progressDialog->hide ();
-    }
-
-    static void show_error_cb (void * message, MainWindow * window)
-    {
-        window->createErrorDialog (QString ((const char *) message));
-    }
-
-    static void update_playlist_length_cb (void *, QLabel * label)
-    {
-        int playlist = aud_playlist_get_active ();
-
-        StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
-        StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
-
-        label->setText (QString (str_concat ({s1, " / ", s2})));
-    }
-
-    static void update_codec_info_cb (void *, QLabel * label)
-    {
-        /* may be called asynchronously */
-        if (! aud_drct_get_playing ())
-            return;
-
-        int playlist = aud_playlist_get_playing ();
-        Tuple tuple = aud_playlist_entry_get_tuple (playlist,
-         aud_playlist_get_position (playlist), false);
-        String codec = tuple.get_str (FIELD_CODEC);
-
-        int bitrate, samplerate, channels;
-        aud_drct_get_info (& bitrate, & samplerate, & channels);
-
-        char buf[256];
-        buf[0] = 0;
-
-        if (codec)
-        {
-            APPEND (buf, "%s", (const char *) codec);
-            if (channels > 0 || samplerate > 0 || bitrate > 0)
-                APPEND (buf, ", ");
-        }
-
-        if (channels > 0)
-        {
-            if (channels == 1)
-                APPEND (buf, _("mono"));
-            else if (channels == 2)
-                APPEND (buf, _("stereo"));
-            else
-                APPEND (buf, ngettext ("%d channel", "%d channels", channels),
-                 channels);
-
-            if (samplerate > 0 || bitrate > 0)
-                APPEND (buf, ", ");
-        }
-
-        if (samplerate > 0)
-        {
-            APPEND (buf, "%d kHz", samplerate / 1000);
-            if (bitrate > 0)
-                APPEND (buf, ", ");
-        }
-
-        if (bitrate > 0)
-            APPEND (buf, _("%d kbps"), bitrate / 1000);
-
-        label->setText (buf);
-    }
+    static void title_change_cb (void *, MainWindow * window);
+    static void playback_begin_cb (void *, MainWindow * window);
+    static void playback_ready_cb (void *, MainWindow * window);
+    static void pause_cb (void *, MainWindow * window);
+    static void playback_stop_cb (void *, MainWindow * window);
+    static void update_toggles_cb (void *, MainWindow * window);
+    static void show_progress_cb (void * message, MainWindow * window);
+    static void show_progress_2_cb (void * message, MainWindow * window);
+    static void hide_progress_cb (void *, MainWindow * window);
+    static void show_error_cb (void * message, MainWindow * window);
+    static void update_playlist_length_cb (void *, QLabel * label);
+    static void update_codec_info_cb (void *, QLabel * label);
 };
 
 #endif

@@ -29,8 +29,6 @@
 
 #include "filter_input.h"
 #include "main_window.h"
-#include "main_window.moc"
-#include "main_window_actions.h"
 #include "playlist.h"
 #include "time_slider.h"
 
@@ -233,4 +231,146 @@ void MainWindow::createStatusBar ()
 
     hook_associate ("playback ready", (HookFunction) update_codec_info_cb, codecInfoLabel);
     hook_associate ("info change", (HookFunction) update_codec_info_cb, codecInfoLabel);
+}
+
+void MainWindow::action_play_pause_set_play ()
+{
+    actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+    actionPlayPause->setText ("Play");
+}
+
+void MainWindow::action_play_pause_set_pause ()
+{
+    actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
+    actionPlayPause->setText ("Pause");
+}
+
+void MainWindow::title_change_cb (void *, MainWindow * window)
+{
+    auto title = aud_drct_get_title ();
+    if (title)
+        window->setWindowTitle (QString ("Audacious - ") + QString (title));
+}
+
+void MainWindow::playback_begin_cb (void *, MainWindow * window)
+{
+    window->setWindowTitle ("Audacious - Buffering...");
+    pause_cb (nullptr, window);
+}
+
+void MainWindow::playback_ready_cb (void *, MainWindow * window)
+{
+    title_change_cb (nullptr, window);
+    pause_cb (nullptr, window);
+}
+
+void MainWindow::pause_cb (void *, MainWindow * window)
+{
+    if (aud_drct_get_paused ())
+        window->action_play_pause_set_play ();
+    else
+        window->action_play_pause_set_pause ();
+
+    window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+}
+
+void MainWindow::playback_stop_cb (void *, MainWindow * window)
+{
+    window->setWindowTitle ("Audacious");
+    window->action_play_pause_set_play ();
+    window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    window->codecInfoLabel->setText ("");
+}
+
+void MainWindow::update_toggles_cb (void *, MainWindow * window)
+{
+    window->updateToggles ();
+}
+
+void MainWindow::show_progress_cb (void * message, MainWindow * window)
+{
+    window->createProgressDialog ();
+    window->progressDialog->setInformativeText ((const char *) message);
+    window->progressDialog->show ();
+}
+
+void MainWindow::show_progress_2_cb (void * message, MainWindow * window)
+{
+    window->createProgressDialog ();
+    window->progressDialog->setText ((const char *) message);
+    window->progressDialog->show ();
+}
+
+void MainWindow::hide_progress_cb (void *, MainWindow * window)
+{
+    if (window->progressDialog)
+        window->progressDialog->hide ();
+}
+
+void MainWindow::show_error_cb (void * message, MainWindow * window)
+{
+    window->createErrorDialog (QString ((const char *) message));
+}
+
+void MainWindow::update_playlist_length_cb (void *, QLabel * label)
+{
+    int playlist = aud_playlist_get_active ();
+
+    StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
+    StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
+
+    label->setText (QString (str_concat ({s1, " / ", s2})));
+}
+
+#define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
+
+void MainWindow::update_codec_info_cb (void *, QLabel * label)
+{
+    /* may be called asynchronously */
+    if (! aud_drct_get_playing ())
+        return;
+
+    int playlist = aud_playlist_get_playing ();
+    Tuple tuple = aud_playlist_entry_get_tuple (playlist,
+     aud_playlist_get_position (playlist), false);
+    String codec = tuple.get_str (FIELD_CODEC);
+
+    int bitrate, samplerate, channels;
+    aud_drct_get_info (& bitrate, & samplerate, & channels);
+
+    char buf[256];
+    buf[0] = 0;
+
+    if (codec)
+    {
+        APPEND (buf, "%s", (const char *) codec);
+        if (channels > 0 || samplerate > 0 || bitrate > 0)
+            APPEND (buf, ", ");
+    }
+
+    if (channels > 0)
+    {
+        if (channels == 1)
+            APPEND (buf, _("mono"));
+        else if (channels == 2)
+            APPEND (buf, _("stereo"));
+        else
+            APPEND (buf, ngettext ("%d channel", "%d channels", channels),
+             channels);
+
+        if (samplerate > 0 || bitrate > 0)
+            APPEND (buf, ", ");
+    }
+
+    if (samplerate > 0)
+    {
+        APPEND (buf, "%d kHz", samplerate / 1000);
+        if (bitrate > 0)
+            APPEND (buf, ", ");
+    }
+
+    if (bitrate > 0)
+        APPEND (buf, _("%d kbps"), bitrate / 1000);
+
+    label->setText (buf);
 }

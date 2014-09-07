@@ -1,5 +1,5 @@
 /*
- * main_window_actions.h
+ * main_window_actions.cc
  * Copyright 2014 William Pitcock <nenolod@dereferenced.org>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,8 +17,10 @@
  * the use of this software.
  */
 
-#ifndef MAIN_WINDOW_ACTIONS_H
-#define MAIN_WINDOW_ACTIONS_H
+#include "main_window.h"
+
+#include <libaudcore/interface.h>
+#include <libaudqt/libaudqt.h>
 
 void MainWindow::setupActions ()
 {
@@ -61,5 +63,3 @@ void MainWindow::setupActions ()
 
     connect(actionEffects, &QAction::triggered, [] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); });
 }
-
-#endif
