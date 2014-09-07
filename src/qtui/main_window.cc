@@ -28,6 +28,8 @@
 #include "filter_input.h"
 #include "playlist.h"
 #include "time_slider.h"
+#include "status_bar.h"
+#include "playlist_tabs.h"
 
 MainWindow::MainWindow () :
     m_dialogs (this),
@@ -55,6 +57,12 @@ MainWindow::MainWindow () :
     toolBar->insertWidget (actionRepeat, slider->label ());
 
     updateToggles ();
+
+    auto statusBar = new StatusBar (this);
+    setStatusBar (statusBar);
+
+    playlistTabs = new PlaylistTabs (this);
+    mainLayout->addWidget (playlistTabs);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
