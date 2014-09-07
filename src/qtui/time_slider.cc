@@ -28,7 +28,7 @@ TimeSlider::TimeSlider (QWidget * parent) :
     m_label (new QLabel (parent))
 {
     setFocusPolicy (Qt::NoFocus);
-    setSizePolicy (QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+    setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Fixed);
 
     m_label->setContentsMargins (4, 0, 4, 0);
     m_label->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
