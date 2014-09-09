@@ -39,6 +39,6 @@ int output_time (void);
 void pause (bool pause);
 void flush (int time);
 
-};
+}
 
 #endif
