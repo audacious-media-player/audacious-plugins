@@ -51,21 +51,21 @@ MainWindow::MainWindow () :
     auto slider = new TimeSlider (this);
 
     static ToolBarItem items[] = {
-        {.icon_name = "document-open", .name = "Open Files", .tooltip_text = "Open Files", .callback = [] () { audqt::fileopener_show(false); }},
-        {.icon_name = "list-add", .name = "Add Files", .tooltip_text = "Add Files", .callback = [] () { audqt::fileopener_show(true); }},
-        {.sep = true},
-        {.icon_name = "media-playback-play", .name = "Play", .tooltip_text = "Play", .set_ptr = (void **) & actionPlayPause},
-        {.icon_name = "media-playback-stop", .name = "Stop", .tooltip_text = "Stop", .callback = aud_drct_stop},
-        {.icon_name = "media-skip-backward", .name = "Previous", .tooltip_text = "Previous", .callback = aud_drct_pl_prev},
-        {.icon_name = "media-skip-forward", .name = "Next", .tooltip_text = "Next", .callback = aud_drct_pl_next},
-        {.sep = true},
-        {.item = slider},
-        {.item = slider->label ()},
-        {.sep = true},
-        {.icon_name = "media-playlist-repeat", .name = "Repeat", .tooltip_text = "Repeat", .checkable = true, .set_ptr = (void **) & actionRepeat},
-        {.icon_name = "media-playlist-shuffle", .name = "Shuffle", .tooltip_text = "Shuffle", .checkable = true, .set_ptr = (void **) & actionShuffle},
-        {.item = new audqt::VolumeButton (this)},
-        {.item = filterInput},
+        ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"), [] () { audqt::fileopener_show(false); }),
+        ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"), [] () { audqt::fileopener_show(true); }),
+        ToolBarSeparator (),
+        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), nullptr, false, (void **) & actionPlayPause),
+        ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop),
+        ToolBarAction ("media-skip-backward", N_("Previous"), N_("Previous"), aud_drct_pl_prev),
+        ToolBarAction ("media-skip-forward", N_("Next"), N_("Next"), aud_drct_pl_next),
+        ToolBarSeparator (),
+        ToolBarCustom (slider),
+        ToolBarCustom (slider->label ()),
+        ToolBarSeparator (),
+        ToolBarAction ("media-playlist-repeat", N_("Repeat"), N_("Repeat"), nullptr, false, (void **) & actionRepeat),
+        ToolBarAction ("media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"), nullptr, false, (void **) & actionShuffle),
+        ToolBarCustom (new audqt::VolumeButton (this)),
+        ToolBarCustom (filterInput),
     };
 
     toolBar = new ToolBar (this, items, sizeof (items) / sizeof (ToolBarItem));

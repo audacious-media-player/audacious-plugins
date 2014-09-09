@@ -29,7 +29,7 @@ struct ToolBarItem
     const char * tooltip_text;
 
     QWidget * (* construct) (void);
-    std::function <void ()> callback;
+    void (* callback) ();
 
     QObject * item;
 
@@ -49,5 +49,18 @@ private:
     ToolBarItem * m_items;
     size_t m_count;
 };
+
+constexpr ToolBarItem ToolBarAction (const char * icon_name = nullptr, const char * name = nullptr, const char * tooltip_text = nullptr,
+                                     void (* callback) () = nullptr, bool checkable = false, void ** set_ptr = nullptr)
+    { return { icon_name, name, tooltip_text, nullptr, callback, nullptr, false, checkable, set_ptr }; }
+
+constexpr ToolBarItem ToolBarConstructor (QWidget * (*construct) (void))
+    { return { nullptr, nullptr, nullptr, construct }; }
+
+constexpr ToolBarItem ToolBarCustom (QWidget * item)
+    { return { nullptr, nullptr, nullptr, nullptr, nullptr, item }; }
+
+constexpr ToolBarItem ToolBarSeparator ()
+    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true }; }
 
 #endif
