@@ -22,7 +22,7 @@
 
 FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
 {
-#ifdef HAVE_DARWIN
+#ifdef Q_OS_MAC
     setStyleSheet (
         "QLineEdit {"
         "   padding: 2px 4px;"
