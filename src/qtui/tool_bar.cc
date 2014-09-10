@@ -51,10 +51,13 @@ ToolBar::ToolBar (QWidget * parent, ToolBarItem * items, size_t count)
                 a->setToolTip (audqt::translate_str (m_items[i].tooltip_text));
 
             if (m_items[i].callback)
-                QObject::connect (a, &QAction::triggered, [=] () { m_items[i].callback (); });
+                connect (a, &QAction::triggered, m_items[i].callback);
 
-            if (m_items[i].checkable)
+            if (m_items[i].toggled)
+            {
                 a->setCheckable (true);
+                connect (a, &QAction::toggled, m_items[i].toggled);
+            }
 
             addAction (a);
 

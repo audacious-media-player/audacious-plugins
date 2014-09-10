@@ -54,7 +54,7 @@ MainWindow::MainWindow () :
         ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"), [] () { audqt::fileopener_show(false); }),
         ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"), [] () { audqt::fileopener_show(true); }),
         ToolBarSeparator (),
-        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), nullptr, false, (void **) & actionPlayPause),
+        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, (void **) & toolButtonPlayPause),
         ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop),
         ToolBarAction ("media-skip-backward", N_("Previous"), N_("Previous"), aud_drct_pl_prev),
         ToolBarAction ("media-skip-forward", N_("Next"), N_("Next"), aud_drct_pl_next),
@@ -62,8 +62,10 @@ MainWindow::MainWindow () :
         ToolBarCustom (slider),
         ToolBarCustom (slider->label ()),
         ToolBarSeparator (),
-        ToolBarAction ("media-playlist-repeat", N_("Repeat"), N_("Repeat"), nullptr, false, (void **) & actionRepeat),
-        ToolBarAction ("media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"), nullptr, false, (void **) & actionShuffle),
+        ToolBarAction ("media-playlist-repeat", N_("Repeat"), N_("Repeat"),
+            [] (bool on) { aud_set_bool (nullptr, "repeat", on); }, (void **) & toolButtonRepeat),
+        ToolBarAction ("media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"),
+            [] (bool on) { aud_set_bool (nullptr, "shuffle", on); }, (void **) & toolButtonShuffle),
         ToolBarCustom (new audqt::VolumeButton (this)),
         ToolBarCustom (filterInput),
     };
@@ -154,20 +156,22 @@ void MainWindow::updateToggles ()
 {
     actionRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
     actionShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
+    toolButtonRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
+    toolButtonShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
     actionNoPlaylistAdvance->setChecked (aud_get_bool (nullptr, "no_playlist_advance"));
     actionStopAfterThisSong->setChecked (aud_get_bool (nullptr, "stop_after_current_song"));
 }
 
 void MainWindow::action_play_pause_set_play ()
 {
-    actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
-    actionPlayPause->setText ("Play");
+    toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+    toolButtonPlayPause->setText ("Play");
 }
 
 void MainWindow::action_play_pause_set_pause ()
 {
-    actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
-    actionPlayPause->setText ("Pause");
+    toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
+    toolButtonPlayPause->setText ("Pause");
 }
 
 void MainWindow::show_buffering ()

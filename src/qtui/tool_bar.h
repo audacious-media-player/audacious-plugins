@@ -30,11 +30,11 @@ struct ToolBarItem
 
     QWidget * (* construct) (void);
     void (* callback) ();
+    void (* toggled) (bool on);
 
     QObject * item;
 
     bool sep;
-    bool checkable;
 
     void ** set_ptr;
 };
@@ -50,17 +50,21 @@ private:
     size_t m_count;
 };
 
-constexpr ToolBarItem ToolBarAction (const char * icon_name = nullptr, const char * name = nullptr, const char * tooltip_text = nullptr,
-                                     void (* callback) () = nullptr, bool checkable = false, void ** set_ptr = nullptr)
-    { return { icon_name, name, tooltip_text, nullptr, callback, nullptr, false, checkable, set_ptr }; }
+constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name, const char * tooltip_text,
+                                     void (* callback) (), void ** set_ptr = nullptr)
+    { return { icon_name, name, tooltip_text, nullptr, callback, nullptr, nullptr, false, set_ptr }; }
+
+constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name, const char * tooltip_text,
+                                     void (* toggled) (bool), void ** set_ptr = nullptr)
+    { return { icon_name, name, tooltip_text, nullptr, nullptr, toggled, nullptr, false, set_ptr }; }
 
 constexpr ToolBarItem ToolBarConstructor (QWidget * (*construct) (void))
     { return { nullptr, nullptr, nullptr, construct }; }
 
 constexpr ToolBarItem ToolBarCustom (QWidget * item)
-    { return { nullptr, nullptr, nullptr, nullptr, nullptr, item }; }
+    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, item }; }
 
 constexpr ToolBarItem ToolBarSeparator ()
-    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true }; }
+    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true }; }
 
 #endif

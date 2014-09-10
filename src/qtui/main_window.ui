@@ -58,7 +58,8 @@
     <property name="title">
      <string>Playback</string>
     </property>
-    <addaction name="actionPlayPause"/>
+    <addaction name="actionPlay"/>
+    <addaction name="actionPause"/>
     <addaction name="actionStop"/>
     <addaction name="actionNext"/>
     <addaction name="actionPrevious"/>
@@ -196,20 +197,20 @@
     <string>Ctrl+Shift+O</string>
    </property>
   </action>
-  <action name="actionPlayPause">
+  <action name="actionPlay">
    <property name="icon">
     <iconset theme="media-playback-start">
      <normaloff/>
     </iconset>
    </property>
    <property name="text">
-    <string>Play / Pause</string>
+    <string>Play</string>
    </property>
    <property name="toolTip">
-    <string>Play / Pause</string>
+    <string>Start playback</string>
    </property>
    <property name="shortcut">
-    <string>Space</string>
+    <string>Ctrl+Return</string>
    </property>
   </action>
   <action name="actionStop">
@@ -241,7 +242,7 @@
     <string>Previous track</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Left</string>
+    <string>Alt+Up</string>
    </property>
   </action>
   <action name="actionNext">
@@ -257,7 +258,7 @@
     <string>Next track</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Right</string>
+    <string>Alt+Down</string>
    </property>
   </action>
   <action name="actionRepeat">
@@ -564,6 +565,20 @@
   <action name="actionEffects">
    <property name="text">
     <string>Effects ...</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="icon">
+    <iconset theme="media-playback-pause"/>
+   </property>
+   <property name="text">
+    <string>Pause</string>
+   </property>
+   <property name="toolTip">
+    <string>Pause playback</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+,</string>
    </property>
   </action>
  </widget>

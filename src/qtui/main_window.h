@@ -41,6 +41,10 @@ private:
     PlaylistTabs * playlistTabs;
     ToolBar * toolBar;
 
+    QAction * toolButtonPlayPause;
+    QAction * toolButtonRepeat;
+    QAction * toolButtonShuffle;
+
     QTimer buffering_timer;
 
     void closeEvent (QCloseEvent * e);

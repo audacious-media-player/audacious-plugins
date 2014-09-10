@@ -43,7 +43,8 @@ void MainWindow::setupActions ()
     connect (actionAddFiles,  &QAction::triggered, [] ()
         { audqt::fileopener_show (true); });
 
-    connect (actionPlayPause, &QAction::triggered, aud_drct_play_pause);
+    connect (actionPlay,      &QAction::triggered, aud_drct_play);
+    connect (actionPause,     &QAction::triggered, aud_drct_pause);
     connect (actionStop,      &QAction::triggered, aud_drct_stop);
     connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
     connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
