@@ -84,6 +84,9 @@
      <property name="title">
       <string>Sort</string>
      </property>
+     <property name="icon">
+      <iconset theme="view-sort-ascending"/>
+     </property>
      <addaction name="actionSortTrackNumber"/>
      <addaction name="actionSortTitle"/>
      <addaction name="actionSortArtist"/>
@@ -99,6 +102,9 @@
     <widget class="QMenu" name="menuSort_Selected">
      <property name="title">
       <string>Sort Selected</string>
+     </property>
+     <property name="icon">
+      <iconset theme="view-sort-ascending"/>
      </property>
      <addaction name="actionSortSelectedTrackNumber"/>
      <addaction name="actionSortSelectedTitle"/>
@@ -152,22 +158,6 @@
    <addaction name="menuOutput"/>
    <addaction name="menuView"/>
   </widget>
-  <action name="actionSearch">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset theme="edit-find">
-     <normaloff/>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>Search</string>
-   </property>
-   <property name="toolTip">
-    <string>Search Tool</string>
-   </property>
-  </action>
   <action name="actionOpenFiles">
    <property name="icon">
     <iconset theme="document-open">
@@ -294,19 +284,25 @@
    </property>
   </action>
   <action name="actionOpenURL">
+   <property name="icon">
+    <iconset theme="folder-remote"/>
+   </property>
    <property name="text">
     <string>Open URL</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+U</string>
+    <string>Ctrl+L</string>
    </property>
   </action>
   <action name="actionAddURL">
+   <property name="icon">
+    <iconset theme="folder-remote"/>
+   </property>
    <property name="text">
     <string>Add URL</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+U</string>
+    <string>Ctrl+Shift+L</string>
    </property>
   </action>
   <action name="actionNoPlaylistAdvance">
@@ -317,7 +313,7 @@
     <string>No Playlist Advance</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+N</string>
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionStopAfterThisSong">
@@ -328,50 +324,86 @@
     <string>Stop After This Song</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+    <string>Ctrl+M</string>
    </property>
   </action>
   <action name="actionSongInfo">
+   <property name="icon">
+    <iconset theme="dialog-information"/>
+   </property>
    <property name="text">
     <string>Song Info</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="actionJumpToTime">
+   <property name="icon">
+    <iconset theme="go-jump"/>
+   </property>
    <property name="text">
     <string>Jump To Time</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
    </property>
   </action>
   <action name="actionSetRepeatPointA">
    <property name="text">
     <string>Set Repeat Point A</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
   </action>
   <action name="actionSetRepeatPointB">
    <property name="text">
     <string>Set Repeat Point B</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
    </property>
   </action>
   <action name="actionClearRepeatPoints">
    <property name="text">
     <string>Clear Repeat Points</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset theme="help-about"/>
+   </property>
    <property name="text">
     <string>About Audacious</string>
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset theme="preferences-system"/>
+   </property>
    <property name="text">
     <string>Preferences</string>
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset theme="application-exit"/>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionPlayCurrentPlaylist">
+   <property name="icon">
+    <iconset theme="media-playback-start"/>
+   </property>
    <property name="text">
     <string>Play This Playlist</string>
    </property>
@@ -380,6 +412,9 @@
    </property>
   </action>
   <action name="actionPlaylistRefresh">
+   <property name="icon">
+    <iconset theme="view-refresh"/>
+   </property>
    <property name="text">
     <string>Refresh</string>
    </property>
@@ -388,16 +423,25 @@
    </property>
   </action>
   <action name="actionPlaylistRemoveDuplicates">
+   <property name="icon">
+    <iconset theme="edit-copy"/>
+   </property>
    <property name="text">
     <string>Remove Duplicates</string>
    </property>
   </action>
   <action name="actionPlaylistRemoveUnavailableFiles">
+   <property name="icon">
+    <iconset theme="dialog-warning"/>
+   </property>
    <property name="text">
     <string>Remove Unavailable Files</string>
    </property>
   </action>
   <action name="actionPlaylistNew">
+   <property name="icon">
+    <iconset theme="document-new"/>
+   </property>
    <property name="text">
     <string>New</string>
    </property>
@@ -406,6 +450,9 @@
    </property>
   </action>
   <action name="actionPlaylistRename">
+   <property name="icon">
+    <iconset theme="insert-text"/>
+   </property>
    <property name="text">
     <string>Rename...</string>
    </property>
@@ -414,6 +461,9 @@
    </property>
   </action>
   <action name="actionPlaylistRemove">
+   <property name="icon">
+    <iconset theme="edit-delete"/>
+   </property>
    <property name="text">
     <string>Remove</string>
    </property>
@@ -422,16 +472,25 @@
    </property>
   </action>
   <action name="actionPlaylistImport">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
     <string>Import...</string>
    </property>
   </action>
   <action name="actionPlaylistExport">
+   <property name="icon">
+    <iconset theme="document-save"/>
+   </property>
    <property name="text">
     <string>Export...</string>
    </property>
   </action>
   <action name="actionPlaylistManager">
+   <property name="icon">
+    <iconset theme="audio-x-generic"/>
+   </property>
    <property name="text">
     <string>Playlist Manager</string>
    </property>
@@ -488,6 +547,9 @@
    </property>
   </action>
   <action name="actionPlaylistReverse">
+   <property name="icon">
+    <iconset theme="view-sort-descending"/>
+   </property>
    <property name="text">
     <string>Reverse Order</string>
    </property>
@@ -538,6 +600,9 @@
    </property>
   </action>
   <action name="actionSelectedReverse">
+   <property name="icon">
+    <iconset theme="view-sort-descending"/>
+   </property>
    <property name="text">
     <string>Reverse Order</string>
    </property>
@@ -548,18 +613,36 @@
    </property>
   </action>
   <action name="actionVolumeUp">
+   <property name="icon">
+    <iconset theme="audio-volume-high"/>
+   </property>
    <property name="text">
     <string>Volume Up</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl++</string>
+   </property>
   </action>
   <action name="actionVolumeDown">
+   <property name="icon">
+    <iconset theme="audio-volume-low"/>
+   </property>
    <property name="text">
     <string>Volume Down</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
   </action>
   <action name="actionEqualizer">
+   <property name="icon">
+    <iconset theme="multimedia-volume-control"/>
+   </property>
    <property name="text">
     <string>Equalizer</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
   <action name="actionEffects">
