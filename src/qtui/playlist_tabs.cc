@@ -42,7 +42,6 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) : QTabWidget (parent)
     m_lineedit = new QLineEdit (this);
     m_lineedit->setWindowFlags (Qt::Window | Qt::ToolTip);
     m_lineedit->setFocusProxy (this);
-    m_lineedit->installEventFilter (this);
 
     connect (m_lineedit, &QLineEdit::editingFinished, this, &PlaylistTabs::tabEditedTrigger);
 
@@ -138,7 +137,9 @@ void PlaylistTabs::tabEditedTrigger ()
         return;
 
     m_lineedit->hide ();
-    setTabText(idx, m_lineedit->text ());
+    setTabText (idx, m_lineedit->text ());
+
+    aud_playlist_set_title (idx, m_lineedit->text ().toLocal8Bit ());
 }
 
 void PlaylistTabs::editTab (int idx) const
@@ -151,6 +152,7 @@ void PlaylistTabs::editTab (int idx) const
     m_lineedit->setText (tabText (idx));
     m_lineedit->selectAll ();
     m_lineedit->show ();
+    m_lineedit->setFocus ();
 }
 
 bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
@@ -159,12 +161,13 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
     {
         QMouseEvent *me = (QMouseEvent *) e;
 
-        if (m_tabbar->geometry ().contains (me->globalPos ()))
+        if (! m_tabbar->geometry ().contains (me->globalPos ()))
         {
-            AUDDBG("out of bounds?\n");
             m_lineedit->hide ();
             return true;
         }
+        else
+            QApplication::sendEvent (m_lineedit, me);
     }
     else if (e->type() == QEvent::KeyPress)
     {
@@ -175,6 +178,8 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
             m_lineedit->hide ();
             return true;
         }
+        else if (m_lineedit->isVisible())
+            QApplication::sendEvent (m_lineedit, ke);
     }
 
     return QTabWidget::eventFilter(obj, e);
