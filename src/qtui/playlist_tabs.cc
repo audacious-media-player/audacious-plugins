@@ -166,8 +166,11 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
             m_lineedit->hide ();
             return true;
         }
-        else
+        else if (m_lineedit->isVisible ())
+        {
             QApplication::sendEvent (m_lineedit, me);
+            return true;
+        }
     }
     else if (e->type() == QEvent::KeyPress)
     {
@@ -178,8 +181,11 @@ bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
             m_lineedit->hide ();
             return true;
         }
-        else if (m_lineedit->isVisible())
+        else if (m_lineedit->isVisible ())
+        {
             QApplication::sendEvent (m_lineedit, ke);
+            return true;
+        }
     }
 
     return QTabWidget::eventFilter(obj, e);
