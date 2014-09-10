@@ -23,59 +23,40 @@
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
 
-ToolBar::ToolBar (QWidget * parent, ToolBarItem * items, size_t count)
-    : QToolBar (parent), m_items (items), m_count (count)
+ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
+    : QToolBar (parent)
 {
     setContextMenuPolicy (Qt::PreventContextMenu);
     setMovable (false);
     setIconSize (QSize (22, 22));
 
-    for (int i = 0; i < m_count; i++)
+    for (const ToolBarItem & item : items)
     {
-        /* if item is preexisting, then that means it is a widget. */
-        if (m_items[i].item)
-            addWidget ((QWidget *) m_items[i].item);
-        else if (m_items[i].sep)
+        if (item.widget)
+            addWidget (item.widget);
+        else if (item.sep)
             addSeparator ();
-        else if (m_items[i].construct)
+        else if (item.icon_name)
         {
-            m_items[i].item = m_items[i].construct ();
-            if (m_items[i].item)
-                addWidget ((QWidget *) m_items[i].item);
-        }
-        else if (m_items[i].icon_name)
-        {
-            QAction * a = new QAction (QIcon::fromTheme (m_items[i].icon_name), audqt::translate_str (m_items[i].name), nullptr);
+            QAction * a = new QAction (QIcon::fromTheme (item.icon_name),
+             audqt::translate_str (item.name), this);
 
-            if (m_items[i].tooltip_text)
-                a->setToolTip (audqt::translate_str (m_items[i].tooltip_text));
+            if (item.tooltip_text)
+                a->setToolTip (audqt::translate_str (item.tooltip_text));
 
-            if (m_items[i].callback)
-                connect (a, &QAction::triggered, m_items[i].callback);
+            if (item.callback)
+                connect (a, &QAction::triggered, item.callback);
 
-            if (m_items[i].toggled)
+            if (item.toggled)
             {
                 a->setCheckable (true);
-                connect (a, &QAction::toggled, m_items[i].toggled);
+                connect (a, &QAction::toggled, item.toggled);
             }
 
             addAction (a);
 
-            m_items[i].item = a;
+            if (item.action_ptr)
+                * item.action_ptr = a;
         }
-
-        if (m_items[i].set_ptr)
-            * m_items[i].set_ptr = m_items[i].item;
-    }
-}
-
-ToolBar::~ToolBar ()
-{
-    for (int i = 0; i < m_count; i++)
-    {
-        if (m_items[i].construct)
-            delete (QWidget *) m_items[i].item;
-        else if (m_items[i].icon_name)
-            delete (QAction *) m_items[i].item;
     }
 }

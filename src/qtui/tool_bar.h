@@ -22,49 +22,42 @@
 
 #include <QToolBar>
 
+#include <libaudcore/objects.h>
+
 struct ToolBarItem
 {
     const char * icon_name;
     const char * name;
     const char * tooltip_text;
 
-    QWidget * (* construct) (void);
     void (* callback) ();
     void (* toggled) (bool on);
 
-    QObject * item;
+    QWidget * widget;
 
     bool sep;
 
-    void ** set_ptr;
+    QAction * * action_ptr;
 };
 
 class ToolBar : public QToolBar
 {
 public:
-    ToolBar (QWidget * parent, ToolBarItem * items, size_t count);
-    ~ToolBar ();
-
-private:
-    ToolBarItem * m_items;
-    size_t m_count;
+    ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items);
 };
 
 constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name, const char * tooltip_text,
-                                     void (* callback) (), void ** set_ptr = nullptr)
-    { return { icon_name, name, tooltip_text, nullptr, callback, nullptr, nullptr, false, set_ptr }; }
+                                     void (* callback) (), QAction * * action_ptr = nullptr)
+    { return { icon_name, name, tooltip_text, callback, nullptr, nullptr, false, action_ptr }; }
 
 constexpr ToolBarItem ToolBarAction (const char * icon_name, const char * name, const char * tooltip_text,
-                                     void (* toggled) (bool), void ** set_ptr = nullptr)
-    { return { icon_name, name, tooltip_text, nullptr, nullptr, toggled, nullptr, false, set_ptr }; }
-
-constexpr ToolBarItem ToolBarConstructor (QWidget * (*construct) (void))
-    { return { nullptr, nullptr, nullptr, construct }; }
+                                     void (* toggled) (bool), QAction * * action_ptr = nullptr)
+    { return { icon_name, name, tooltip_text, nullptr, toggled, nullptr, false, action_ptr }; }
 
 constexpr ToolBarItem ToolBarCustom (QWidget * item)
-    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, item }; }
+    { return { nullptr, nullptr, nullptr, nullptr, nullptr, item }; }
 
 constexpr ToolBarItem ToolBarSeparator ()
-    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true }; }
+    { return { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true }; }
 
 #endif

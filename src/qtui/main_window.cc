@@ -54,7 +54,7 @@ MainWindow::MainWindow () :
         ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"), [] () { audqt::fileopener_show(false); }),
         ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"), [] () { audqt::fileopener_show(true); }),
         ToolBarSeparator (),
-        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, (void **) & toolButtonPlayPause),
+        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, & toolButtonPlayPause),
         ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop),
         ToolBarAction ("media-skip-backward", N_("Previous"), N_("Previous"), aud_drct_pl_prev),
         ToolBarAction ("media-skip-forward", N_("Next"), N_("Next"), aud_drct_pl_next),
@@ -63,14 +63,14 @@ MainWindow::MainWindow () :
         ToolBarCustom (slider->label ()),
         ToolBarSeparator (),
         ToolBarAction ("media-playlist-repeat", N_("Repeat"), N_("Repeat"),
-            [] (bool on) { aud_set_bool (nullptr, "repeat", on); }, (void **) & toolButtonRepeat),
+            [] (bool on) { aud_set_bool (nullptr, "repeat", on); }, & toolButtonRepeat),
         ToolBarAction ("media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"),
-            [] (bool on) { aud_set_bool (nullptr, "shuffle", on); }, (void **) & toolButtonShuffle),
+            [] (bool on) { aud_set_bool (nullptr, "shuffle", on); }, & toolButtonShuffle),
         ToolBarCustom (new audqt::VolumeButton (this)),
         ToolBarCustom (filterInput),
     };
 
-    toolBar = new ToolBar (this, items, sizeof (items) / sizeof (ToolBarItem));
+    toolBar = new ToolBar (this, items);
     addToolBar (Qt::TopToolBarArea, toolBar);
 
     setUnifiedTitleAndToolBarOnMac (true);
