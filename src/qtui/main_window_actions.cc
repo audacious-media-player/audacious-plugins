@@ -21,6 +21,7 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/playlist.h>
 
 #include <libaudqt/libaudqt.h>
 

@@ -34,7 +34,8 @@
 
 MainWindow::MainWindow () :
     m_dialogs (this),
-    filterInput (new FilterInput (this))
+    filterInput (new FilterInput (this)),
+    playlistTabs (new PlaylistTabs (this))
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
@@ -50,7 +51,7 @@ MainWindow::MainWindow () :
 
     auto slider = new TimeSlider (this);
 
-    static ToolBarItem items[] = {
+    const ToolBarItem items[] = {
         ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"), [] () { audqt::fileopener_show(false); }),
         ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"), [] () { audqt::fileopener_show(true); }),
         ToolBarSeparator (),
@@ -70,17 +71,14 @@ MainWindow::MainWindow () :
         ToolBarCustom (filterInput),
     };
 
-    toolBar = new ToolBar (this, items);
-    addToolBar (Qt::TopToolBarArea, toolBar);
+    addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
 
     setUnifiedTitleAndToolBarOnMac (true);
 
     updateToggles ();
 
-    auto statusBar = new StatusBar (this);
-    setStatusBar (statusBar);
+    setStatusBar (new StatusBar (this));
 
-    playlistTabs = new PlaylistTabs (this);
     mainLayout->addWidget (playlistTabs);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
