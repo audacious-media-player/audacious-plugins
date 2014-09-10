@@ -36,6 +36,7 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) : QTabWidget (parent)
 
     // set up tab bar
     m_tabbar = new PlaylistTabBar (this);
+    m_tabbar->setFocusProxy (this);
     setTabBar (m_tabbar);
 
     // set up playlist rename editor
