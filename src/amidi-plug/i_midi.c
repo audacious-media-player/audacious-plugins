@@ -363,49 +363,39 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
 
                 case 0x01: /* text comments */
                 {
-                    if (aud_get_int ("amidiplug", "ap_opts_comments_extract") > 0)
-                    {
-                        int ic = 0;
+                    int ic = 0;
 
-                        if (len < 1)
-                            ERRMSG_MIDITRACK();
+                    if (len < 0)
+                        ERRMSG_MIDITRACK();
 
-                        event = i_midi_file_new_event (track, 0);
-                        event->type = SND_SEQ_EVENT_META_TEXT;
-                        event->tick = tick;
-                        event->data.metat = g_malloc (len + 1);
+                    event = i_midi_file_new_event (track, 0);
+                    event->type = SND_SEQ_EVENT_META_TEXT;
+                    event->tick = tick;
+                    event->data.metat = g_malloc (len + 1);
 
-                        for (ic = 0 ; ic < len ; ic++)
-                            event->data.metat[ic] = i_midi_file_read_byte (mf);
+                    for (ic = 0 ; ic < len ; ic++)
+                        event->data.metat[ic] = i_midi_file_read_byte (mf);
 
-                        event->data.metat[len] = '\0';
-                    }
-                    else
-                        i_midi_file_skip_bytes (mf,len);
+                    event->data.metat[len] = '\0';
                 }
                 break;
 
                 case 0x05: /* lyrics */
                 {
-                    if (aud_get_int ("amidiplug", "ap_opts_lyrics_extract"))
-                    {
-                        int ic = 0;
+                    int ic = 0;
 
-                        if (len < 1)
-                            ERRMSG_MIDITRACK();
+                    if (len < 0)
+                        ERRMSG_MIDITRACK();
 
-                        event = i_midi_file_new_event (track, 0);
-                        event->type = SND_SEQ_EVENT_META_LYRIC;
-                        event->tick = tick;
-                        event->data.metat = g_malloc (len + 1);
+                    event = i_midi_file_new_event (track, 0);
+                    event->type = SND_SEQ_EVENT_META_LYRIC;
+                    event->tick = tick;
+                    event->data.metat = g_malloc (len + 1);
 
-                        for (ic = 0 ; ic < len ; ic++)
-                            event->data.metat[ic] = i_midi_file_read_byte (mf);
+                    for (ic = 0 ; ic < len ; ic++)
+                        event->data.metat[ic] = i_midi_file_read_byte (mf);
 
-                        event->data.metat[len] = '\0';
-                    }
-                    else
-                        i_midi_file_skip_bytes (mf,len);
+                    event->data.metat[len] = '\0';
                 }
                 break;
 

@@ -26,6 +26,7 @@
 
 #include <audacious/i18n.h>
 #include <audacious/misc.h>
+#include <libaudcore/audstrings.h>
 
 #include "i_configure.h"
 /* this is needed to retrieve information */
@@ -101,12 +102,18 @@ void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuff
 
         switch (event->type)
         {
+            char * utf8;
+
         case SND_SEQ_EVENT_META_TEXT:
-            gtk_text_buffer_insert_at_cursor (text_tb, event->data.metat, strlen (event->data.metat));
+            utf8 = str_to_utf8 (event->data.metat, -1);
+            gtk_text_buffer_insert_at_cursor (text_tb, utf8, -1);
+            str_unref (utf8);
             break;
 
         case SND_SEQ_EVENT_META_LYRIC:
-            gtk_text_buffer_insert_at_cursor (lyrics_tb, event->data.metat, strlen (event->data.metat));
+            utf8 = str_to_utf8 (event->data.metat, -1);
+            gtk_text_buffer_insert_at_cursor (lyrics_tb, utf8, -1);
+            str_unref (utf8);
             break;
         }
     }
@@ -147,6 +154,7 @@ void i_fileinfo_gui (const char * filename_uri)
     /*****************************************************/
 
     fileinfowin = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_default_size (GTK_WINDOW (fileinfowin), 500, 400);
     gtk_window_set_type_hint (GTK_WINDOW (fileinfowin), GDK_WINDOW_TYPE_HINT_DIALOG);
     g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (i_fileinfo_ev_destroy), mf);
     g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (gtk_widget_destroyed), &fileinfowin);
@@ -188,16 +196,7 @@ void i_fileinfo_gui (const char * filename_uri)
     /*********************
      *** MIDI INFO BOX ***/
     midiinfoboxes_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 2);
-
-    int comments_extract = aud_get_int ("amidiplug", "ap_opts_comments_extract");
-    int lyrics_extract = aud_get_int ("amidiplug", "ap_opts_lyrics_extract");
-
-    /* pick the entire space if both comments and lyrics boxes are not displayed,
-       pick only required space if at least one of them is displayed */
-    if (! comments_extract && ! lyrics_extract)
-        gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, TRUE, TRUE, 0);
-    else
-        gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, FALSE, FALSE, 0);
 
     info_frame_tl = gtk_label_new ("");
     gtk_label_set_markup (GTK_LABEL (info_frame_tl), _("<span size=\"smaller\"> MIDI Info </span>"));
@@ -289,11 +288,9 @@ void i_fileinfo_gui (const char * filename_uri)
     text_tb = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_tv));
     lyrics_tb = gtk_text_view_get_buffer (GTK_TEXT_VIEW (lyrics_tv));
 
-    /* call the buffer fill routine if at least one between comments and lyrics is enabled */
-    if (comments_extract || lyrics_extract)
-        i_fileinfo_text_fill (mf, text_tb, lyrics_tb);
+    i_fileinfo_text_fill (mf, text_tb, lyrics_tb);
 
-    if (comments_extract && ! gtk_text_buffer_get_char_count (text_tb))
+    if (! gtk_text_buffer_get_char_count (text_tb))
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (text_tb, "italicstyle",
@@ -305,7 +302,7 @@ void i_fileinfo_gui (const char * filename_uri)
         gtk_text_buffer_apply_tag (text_tb, tag, &start, &end);
     }
 
-    if (lyrics_extract && ! gtk_text_buffer_get_char_count (lyrics_tb))
+    if (! gtk_text_buffer_get_char_count (lyrics_tb))
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (lyrics_tb, "italicstyle",
@@ -315,23 +312,6 @@ void i_fileinfo_gui (const char * filename_uri)
         gtk_text_buffer_get_iter_at_offset (lyrics_tb, &start, 0);
         gtk_text_buffer_get_iter_at_offset (lyrics_tb, &end, -1);
         gtk_text_buffer_apply_tag (lyrics_tb, tag, &start, &end);
-    }
-
-    /* hide boxes for disabled options (comments and/or lyrics) */
-    if (! comments_extract && ! lyrics_extract)
-    {
-        gtk_widget_set_no_show_all (miditextboxes_vbox, TRUE);
-        gtk_widget_hide (miditextboxes_vbox);
-    }
-    else if (! comments_extract)
-    {
-        gtk_widget_set_no_show_all (text_frame, TRUE);
-        gtk_widget_hide (text_frame);
-    }
-    else if (! lyrics_extract)
-    {
-        gtk_widget_set_no_show_all (lyrics_frame, TRUE);
-        gtk_widget_hide (lyrics_frame);
     }
 
     /**************

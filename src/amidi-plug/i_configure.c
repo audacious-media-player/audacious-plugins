@@ -124,11 +124,6 @@ static const PreferencesWidget amidiplug_widgets[] = {
   .cfg_type = VALUE_INT, .csect = "amidiplug", .cname = "ap_opts_transpose_value"},
  {WIDGET_SPIN_BTN, N_("Drum shift:"), .data = {.spin_btn = {0, 127, 1}},
   .cfg_type = VALUE_INT, .csect = "amidiplug", .cname = "ap_opts_drumshift_value"},
- {WIDGET_LABEL, N_("<b>Advanced</b>")},
- {WIDGET_CHK_BTN, N_("Extract comments from MIDI file"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "amidiplug", .cname = "ap_opts_comments_extract"},
- {WIDGET_CHK_BTN, N_("Extract lyrics from MIDI file"),
-  .cfg_type = VALUE_BOOLEAN, .csect = "amidiplug", .cname = "ap_opts_lyrics_extract"},
 
  /* backend settings */
  {WIDGET_LABEL, N_("<b>SoundFont</b>")},
