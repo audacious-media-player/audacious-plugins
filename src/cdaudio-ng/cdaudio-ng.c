@@ -587,9 +587,9 @@ static void scan_cd (void)
         {
             cdaudio_set_strinfo (&trackinfo[0],
 #if LIBCDIO_VERSION_NUM >= 90
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_PERFORMER, 0),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_TITLE, 0),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_GENRE, 0));
+                                 cdtext_get_const(pcdtext, CDTEXT_FIELD_PERFORMER, 0),
+                                 cdtext_get_const(pcdtext, CDTEXT_FIELD_TITLE, 0),
+                                 cdtext_get_const(pcdtext, CDTEXT_FIELD_GENRE, 0));
 #else
                                  pcdtext->field[CDTEXT_PERFORMER],
                                  pcdtext->field[CDTEXT_TITLE],
@@ -619,9 +619,9 @@ static void scan_cd (void)
         {
             cdaudio_set_strinfo (&trackinfo[trackno],
 #if LIBCDIO_VERSION_NUM >= 90
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_PERFORMER, trackno),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_TITLE, trackno),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_GENRE, trackno));
+                                 cdtext_get_const(pcdtext, CDTEXT_FIELD_PERFORMER, trackno),
+                                 cdtext_get_const(pcdtext, CDTEXT_FIELD_TITLE, trackno),
+                                 cdtext_get_const(pcdtext, CDTEXT_FIELD_GENRE, trackno));
 #else
                                  pcdtext->field[CDTEXT_PERFORMER],
                                  pcdtext->field[CDTEXT_TITLE],
