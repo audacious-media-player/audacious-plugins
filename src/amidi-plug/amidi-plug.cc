@@ -22,8 +22,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
@@ -42,13 +40,11 @@ enum
     AMIDIPLUG_ERR
 };
 
-static void amidiplug_play_loop (void);
+static void amidiplug_play_loop (midifile_t & midifile);
 
 static bool amidiplug_play (const char * filename_uri, VFSFile * file);
 static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
-static void amidiplug_skipto (int playing_tick);
-
-static midifile_t midifile;
+static void amidiplug_skipto (midifile_t & midifile, int playing_tick);
 
 static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", nullptr};
 
@@ -63,8 +59,6 @@ static bool amidiplug_init (void)
     {
         "ap_opts_transpose_value", "0",
         "ap_opts_drumshift_value", "0",
-        "ap_opts_lyrics_extract", "0",
-        "ap_opts_comments_extract", "0",
         "fsyn_synth_samplerate", "44100",
         "fsyn_synth_gain", "-1",
         "fsyn_synth_polyphony", "-1",
@@ -77,7 +71,7 @@ static bool amidiplug_init (void)
 
     backend_init ();
 
-    return TRUE;
+    return true;
 }
 
 static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * fp)
@@ -85,15 +79,15 @@ static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile *
     char magic_bytes[4];
 
     if (fp == nullptr)
-        return FALSE;
+        return false;
 
     if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
-        return FALSE;
+        return false;
 
     if (!strncmp (magic_bytes, "MThd", 4))
     {
         AUDDBG ("MIDI found, %s is a standard midi file\n", filename_uri);
-        return TRUE;
+        return true;
     }
 
     if (!strncmp (magic_bytes, "RIFF", 4))
@@ -101,19 +95,19 @@ static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile *
         /* skip the four bytes after RIFF,
            then read the next four */
         if (vfs_fseek (fp, 4, VFS_SEEK_CUR) != 0)
-            return FALSE;
+            return false;
 
         if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
-            return FALSE;
+            return false;
 
         if (!strncmp (magic_bytes, "RMID", 4))
         {
             AUDDBG ("MIDI found, %s is a riff midi file\n", filename_uri);
-            return TRUE;
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
 static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file)
@@ -124,10 +118,8 @@ static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file
 
     midifile_t mf;
 
-    if (i_midi_parse_from_filename (filename_uri, &mf))
+    if (mf.parse_from_filename (filename_uri))
         tuple.set_int (FIELD_LENGTH, mf.length / 1000);
-
-    i_midi_free (&mf);
 
     return tuple;
 }
@@ -135,21 +127,21 @@ static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file
 
 static int s_samplerate, s_channels;
 static int s_bufsize;
-static void * s_buf;
+static int16_t * s_buf;
 
-static gboolean audio_init (void)
+static bool audio_init (void)
 {
     int bitdepth;
 
     backend_audio_info (& s_channels, & bitdepth, & s_samplerate);
 
     if (bitdepth != 16 || ! aud_input_open_audio (FMT_S16_NE, s_samplerate, s_channels))
-        return FALSE;
+        return false;
 
     s_bufsize = 2 * s_channels * (s_samplerate / 4);
-    s_buf = g_malloc (s_bufsize);
+    s_buf = new int16_t[s_bufsize / 2];
 
-    return TRUE;
+    return true;
 }
 
 static void audio_generate (double seconds)
@@ -169,12 +161,12 @@ static void audio_generate (double seconds)
 
 static void audio_cleanup (void)
 {
-    g_free (s_buf);
+    delete[] s_buf;
 }
 
 static bool amidiplug_play (const char * filename_uri, VFSFile * file)
 {
-    if (g_atomic_int_compare_and_exchange (& backend_settings_changed, TRUE, FALSE))
+    if (__sync_bool_compare_and_swap (& backend_settings_changed, true, false))
     {
         AUDDBG ("Settings changed, reinitializing backend\n");
         backend_cleanup ();
@@ -182,23 +174,23 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
     }
 
     if (! audio_init ())
-        return FALSE;
+        return false;
 
     AUDDBG ("PLAY requested, midifile init\n");
     /* midifile init */
-    i_midi_init (&midifile);
+    midifile_t midifile;
 
     AUDDBG ("PLAY requested, opening file: %s\n", filename_uri);
     midifile.file_pointer = file;
-    midifile.file_name = g_strdup (filename_uri);
+    midifile.file_name = String (filename_uri);
 
-    switch (i_midi_file_read_id (&midifile))
+    switch (midifile.read_id ())
     {
     case MAKE_ID ('R', 'I', 'F', 'F') :
         AUDDBG ("PLAY requested, RIFF chunk found, processing...\n");
 
         /* read riff chunk */
-        if (!i_midi_file_parse_riff (&midifile))
+        if (! midifile.parse_riff ())
         {
             AUDERR ("%s: invalid file format (riff parser)\n", filename_uri);
             goto ERR;
@@ -209,7 +201,7 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
     case MAKE_ID ('M', 'T', 'h', 'd') :
         AUDDBG ("PLAY requested, MThd chunk found, processing...\n");
 
-        if (!i_midi_file_parse_smf (&midifile, 1))
+        if (! midifile.parse_smf (1))
         {
             AUDERR ("%s: invalid file format (smf parser)\n", filename_uri);
             goto ERR;
@@ -224,14 +216,14 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
         AUDDBG ("PLAY requested, setting ppq and tempo...\n");
 
         /* fill midifile.ppq and midifile.tempo using time_division */
-        if (!i_midi_setget_tempo (&midifile))
+        if (! midifile.setget_tempo ())
         {
             AUDERR ("%s: invalid values while setting ppq and tempo\n", filename_uri);
             goto ERR;
         }
 
         /* fill midifile.length, keeping in count tempo-changes */
-        i_midi_setget_length (&midifile);
+        midifile.setget_length ();
         AUDDBG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
 
         /* done with file */
@@ -239,7 +231,7 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
 
         /* play play play! */
         AUDDBG ("PLAY requested, starting play thread\n");
-        amidiplug_play_loop ();
+        amidiplug_play_loop (midifile);
         break;
 
     default:
@@ -248,51 +240,50 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
     }
 
     audio_cleanup ();
-    return TRUE;
+    return true;
 
 ERR:
     audio_cleanup ();
-    return FALSE;
+    return false;
 }
 
-static void generate_to_tick (int tick)
+static void generate_to_tick (midifile_t & midifile, int tick)
 {
     double ticksecs = (double) midifile.current_tempo / midifile.ppq / 1000000;
     audio_generate (ticksecs * (tick - midifile.playing_tick));
     midifile.playing_tick = tick;
 }
 
-static void amidiplug_play_loop ()
+static void amidiplug_play_loop (midifile_t & midifile)
 {
-    gboolean stopped = FALSE;
+    bool stopped = false;
 
     backend_prepare ();
 
     /* initialize current position in each track */
-    for (int j = 0; j < midifile.num_tracks; ++j)
-        midifile.tracks[j].current_event = midifile.tracks[j].first_event;
+    for (midifile_track_t & track : midifile.tracks)
+        track.current_event = track.events.head ();
 
     while (! (stopped = aud_input_check_stop ()))
     {
         int seektime = aud_input_check_seek ();
         if (seektime >= 0)
-            amidiplug_skipto ((int64_t) seektime * 1000 / midifile.avg_microsec_per_tick);
+            amidiplug_skipto (midifile, (int64_t) seektime * 1000 / midifile.avg_microsec_per_tick);
 
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int i, min_tick = midifile.max_tick + 1;
+        int min_tick = midifile.max_tick + 1;
 
         /* search next event */
-        for (i = 0; i < midifile.num_tracks; ++i)
+        for (midifile_track_t & track : midifile.tracks)
         {
-            midifile_track_t * track = &midifile.tracks[i];
-            midievent_t * e2 = track->current_event;
+            midievent_t * e2 = track.current_event;
 
             if ((e2) && (e2->tick < min_tick))
             {
                 min_tick = e2->tick;
                 event = e2;
-                event_track = track;
+                event_track = & track;
             }
         }
 
@@ -300,10 +291,10 @@ static void amidiplug_play_loop ()
             break; /* end of song reached */
 
         /* advance pointer to next event */
-        event_track->current_event = event->next;
+        event_track->current_event = event_track->events.next (event);
 
         if (event->tick > midifile.playing_tick)
-            generate_to_tick (event->tick);
+            generate_to_tick (midifile, event->tick);
 
         switch (event->type)
         {
@@ -342,8 +333,8 @@ static void amidiplug_play_loop ()
         case SND_SEQ_EVENT_TEMPO:
             seq_event_tempo (event);
             AUDDBG ("PLAY thread, processing tempo event with value %i on tick %i\n",
-                      event->data.tempo, event->tick);
-            midifile.current_tempo = event->data.tempo;
+                      event->tempo, event->tick);
+            midifile.current_tempo = event->tempo;
             break;
 
         case SND_SEQ_EVENT_META_TEXT:
@@ -361,18 +352,16 @@ static void amidiplug_play_loop ()
     }
 
     if (! stopped)
-        generate_to_tick (midifile.max_tick);
+        generate_to_tick (midifile, midifile.max_tick);
 
     backend_reset ();
-
-    i_midi_free (& midifile);
 }
 
 
 /* amidigplug_skipto: re-do all events that influence the playing of our
    midi file; re-do them using a time-tick of 0, so they are processed
    istantaneously and proceed this way until the playing_tick is reached */
-static void amidiplug_skipto (int playing_tick)
+static void amidiplug_skipto (midifile_t & midifile, int playing_tick)
 {
     backend_reset ();
 
@@ -381,26 +370,25 @@ static void amidiplug_skipto (int playing_tick)
         playing_tick = midifile.max_tick - 1;
 
     /* initialize current position in each track */
-    for (int i = 0; i < midifile.num_tracks; ++i)
-        midifile.tracks[i].current_event = midifile.tracks[i].first_event;
+    for (midifile_track_t & track : midifile.tracks)
+        track.current_event = track.events.head ();
 
     for (;;)
     {
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int i, min_tick = midifile.max_tick + 1;
+        int min_tick = midifile.max_tick + 1;
 
         /* search next event */
-        for (i = 0; i < midifile.num_tracks; ++i)
+        for (midifile_track_t & track : midifile.tracks)
         {
-            midifile_track_t * track = &midifile.tracks[i];
-            midievent_t * e2 = track->current_event;
+            midievent_t * e2 = track.current_event;
 
             if ((e2) && (e2->tick < min_tick))
             {
                 min_tick = e2->tick;
                 event = e2;
-                event_track = track;
+                event_track = & track;
             }
         }
 
@@ -419,7 +407,7 @@ static void amidiplug_skipto (int playing_tick)
         }
 
         /* advance pointer to next event */
-        event_track->current_event = event->next;
+        event_track->current_event = event_track->events.next (event);
 
         switch (event->type)
         {
@@ -452,7 +440,7 @@ static void amidiplug_skipto (int playing_tick)
 
         case SND_SEQ_EVENT_TEMPO:
             seq_event_tempo (event);
-            midifile.current_tempo = event->data.tempo;
+            midifile.current_tempo = event->tempo;
             break;
         }
     }

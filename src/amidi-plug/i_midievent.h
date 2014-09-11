@@ -21,22 +21,18 @@
 #ifndef _I_MIDIEVENT_H
 #define _I_MIDIEVENT_H 1
 
-struct midievent_s
+#include <libaudcore/list.h>
+#include <libaudcore/objects.h>
+
+struct midievent_t : public ListNode
 {
-    struct midievent_s * next;		/* linked list */
     unsigned char type;				/* SND_SEQ_EVENT_xxx */
     unsigned char port;				/* port index */
     int tick;
-    union
-    {
-        unsigned char d[3];			/* channel and data bytes */
-        int tempo;
-        unsigned length;			/* length of sysex data */
-        char * metat;			/* meta-event text */
-    } data;
-    unsigned char * sysex;
-};
 
-typedef struct midievent_s midievent_t;
+    unsigned char d[3];			/* channel and data bytes */
+    int tempo;
+    String metat;			/* meta-event text */
+};
 
 #endif /* !_I_MIDIEVENT_H */

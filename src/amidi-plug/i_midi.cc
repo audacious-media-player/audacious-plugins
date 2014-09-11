@@ -26,63 +26,63 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
+#include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 
 #include "i_configure.h"
 
 #define WARNANDBREAK(...) { AUDERR (__VA_ARGS__); break; }
 
-#define ERRMSG_MIDITRACK() { AUDERR ("%s: invalid MIDI data (offset %#x)", mf->file_name, mf->file_offset); return 0; }
+#define ERRMSG_MIDITRACK() { AUDERR ("%s: invalid MIDI data (offset %#x)", \
+    (const char *) file_name, file_offset); return false; }
 
 
 /* skip a certain number of bytes */
-void i_midi_file_skip_bytes (midifile_t * mf, int bytes)
+void midifile_t::skip_bytes (int bytes)
 {
     while (bytes > 0)
     {
-        i_midi_file_read_byte (mf);
+        read_byte ();
         --bytes;
     }
 }
 
 
 /* reads a single byte */
-int i_midi_file_read_byte (midifile_t * mf)
+int midifile_t::read_byte ()
 {
-    ++mf->file_offset;
-    return vfs_getc (mf->file_pointer);
+    ++file_offset;
+    return vfs_getc (file_pointer);
 }
 
 
 /* reads a little-endian 32-bit integer */
-int i_midi_file_read_32_le (midifile_t * mf)
+int midifile_t::read_32_le ()
 {
     int value;
-    value = i_midi_file_read_byte (mf);
-    value |= i_midi_file_read_byte (mf) << 8;
-    value |= i_midi_file_read_byte (mf) << 16;
-    value |= i_midi_file_read_byte (mf) << 24;
-    return !vfs_feof (mf->file_pointer) ? value : -1;
+    value = read_byte ();
+    value |= read_byte () << 8;
+    value |= read_byte () << 16;
+    value |= read_byte () << 24;
+    return !vfs_feof (file_pointer) ? value : -1;
 }
 
 
 /* reads a 4-character identifier */
-int i_midi_file_read_id (midifile_t * mf)
+int midifile_t::read_id ()
 {
-    return i_midi_file_read_32_le (mf);
+    return read_32_le ();
 }
 
 
 /* reads a fixed-size big-endian number */
-int i_midi_file_read_int (midifile_t * mf, int bytes)
+int midifile_t::read_int (int bytes)
 {
     int c, value = 0;
 
     do
     {
-        c = i_midi_file_read_byte (mf);
+        c = read_byte ();
 
         if (c < 0) return -1;
 
@@ -95,26 +95,26 @@ int i_midi_file_read_int (midifile_t * mf, int bytes)
 
 
 /* reads a variable-length number */
-int i_midi_file_read_var (midifile_t * mf)
+int midifile_t::read_var ()
 {
     int value, c;
 
-    c = i_midi_file_read_byte (mf);
+    c = read_byte ();
     value = c & 0x7f;
 
     if (c & 0x80)
     {
-        c = i_midi_file_read_byte (mf);
+        c = read_byte ();
         value = (value << 7) | (c & 0x7f);
 
         if (c & 0x80)
         {
-            c = i_midi_file_read_byte (mf);
+            c = read_byte ();
             value = (value << 7) | (c & 0x7f);
 
             if (c & 0x80)
             {
-                c = i_midi_file_read_byte (mf);
+                c = read_byte ();
                 value = (value << 7) | c;
 
                 if (c & 0x80)
@@ -127,50 +127,28 @@ int i_midi_file_read_var (midifile_t * mf)
 }
 
 
-/* allocates a new event */
-midievent_t * i_midi_file_new_event (midifile_track_t * track, int sysex_length)
-{
-    midievent_t * event;
-
-    event = g_new (midievent_t, 1);
-    event->sysex = sysex_length ? g_new (unsigned char, sysex_length) : nullptr;
-    event->next = nullptr;
-
-    /* append at the end of the track's linked list */
-    if (track->current_event)
-        track->current_event->next = event;
-    else
-        track->first_event = event;
-
-    track->current_event = event;
-
-    return event;
-}
-
-
 /* reads one complete track from the file */
-int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
-                            int track_end, int port_count)
+bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_count)
 {
     int tick = 0;
     unsigned char last_cmd = 0;
     unsigned char port = 0;
 
     /* the current file position is after the track ID and length */
-    while (mf->file_offset < track_end)
+    while (file_offset < track_end)
     {
         unsigned char cmd;
         midievent_t * event;
         int delta_ticks, len, c;
 
-        delta_ticks = i_midi_file_read_var (mf);
+        delta_ticks = read_var ();
 
         if (delta_ticks < 0)
             break;
 
         tick += delta_ticks;
 
-        c = i_midi_file_read_byte (mf);
+        c = read_byte ();
 
         if (c < 0)
             break;
@@ -186,10 +164,10 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
         else
         {
             /* running status */
-            if (vfs_ungetc (c, mf->file_pointer) < 0)
+            if (vfs_ungetc (c, file_pointer) < 0)
                 break;
 
-            mf->file_offset--;
+            file_offset--;
             cmd = last_cmd;
 
             if (!cmd)
@@ -215,59 +193,59 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
         case 0x9:
         case 0xa:
         {
-            event = i_midi_file_new_event (track, 0);
+            event = track.add_event ();
             event->type = cmd_type[cmd >> 4];
             event->port = port;
             event->tick = tick;
-            event->data.d[0] = cmd & 0x0f;
+            event->d[0] = cmd & 0x0f;
 
             /* if this note is not in standard drum channel (10), apply transpose */
-            if (event->data.d[0] != 9)
+            if (event->d[0] != 9)
             {
                 int transpose = aud_get_int ("amidiplug", "ap_opts_transpose_value");
-                int data_tr = (i_midi_file_read_byte (mf) & 0x7f) + transpose;
+                int data_tr = (read_byte () & 0x7f) + transpose;
 
                 if (data_tr > 127) data_tr = 127;
                 else if (data_tr < 0) data_tr = 0;
 
-                event->data.d[1] = (unsigned char) data_tr;
+                event->d[1] = (unsigned char) data_tr;
             }
             else /* this note is in standard drum channel (10), apply drum shift */
             {
                 int drumshift = aud_get_int ("amidiplug", "ap_opts_drumshift_value");
-                int data_ds = (i_midi_file_read_byte (mf) & 0x7f) + drumshift; /* always > 0 */
+                int data_ds = (read_byte () & 0x7f) + drumshift; /* always > 0 */
 
                 if (data_ds > 127) data_ds -= 127;
 
-                event->data.d[1] = (unsigned char) data_ds;
+                event->d[1] = (unsigned char) data_ds;
             }
 
-            event->data.d[2] = i_midi_file_read_byte (mf) & 0x7f;
+            event->d[2] = read_byte () & 0x7f;
         }
         break;
 
         case 0xb: /* channel msg with 2 parameter bytes */
         case 0xe:
         {
-            event = i_midi_file_new_event (track, 0);
+            event = track.add_event ();
             event->type = cmd_type[cmd >> 4];
             event->port = port;
             event->tick = tick;
-            event->data.d[0] = cmd & 0x0f;
-            event->data.d[1] = i_midi_file_read_byte (mf) & 0x7f;
-            event->data.d[2] = i_midi_file_read_byte (mf) & 0x7f;
+            event->d[0] = cmd & 0x0f;
+            event->d[1] = read_byte () & 0x7f;
+            event->d[2] = read_byte () & 0x7f;
         }
         break;
 
         case 0xc: /* channel msg with 1 parameter byte */
         case 0xd:
         {
-            event = i_midi_file_new_event (track, 0);
+            event = track.add_event ();
             event->type = cmd_type[cmd >> 4];
             event->port = port;
             event->tick = tick;
-            event->data.d[0] = cmd & 0x0f;
-            event->data.d[1] = i_midi_file_read_byte (mf) & 0x7f;
+            event->d[0] = cmd & 0x0f;
+            event->d[1] = read_byte () & 0x7f;
         }
         break;
 
@@ -278,39 +256,20 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
             case 0xf0: /* sysex */
             case 0xf7: /* continued sysex, or escaped commands */
             {
-                len = i_midi_file_read_var (mf);
+                len = read_var ();
 
                 if (len < 0)
                     ERRMSG_MIDITRACK();
 
-                if (cmd == 0xf0)
-                    ++len;
-
-                event = i_midi_file_new_event (track, len);
-                event->type = SND_SEQ_EVENT_SYSEX;
-                event->port = port;
-                event->tick = tick;
-                event->data.length = len;
-
-                if (cmd == 0xf0)
-                {
-                    event->sysex[0] = 0xf0;
-                    c = 1;
-                }
-                else
-                {
-                    c = 0;
-                }
-
-                for (; c < len; ++c)
-                    event->sysex[c] = i_midi_file_read_byte (mf);
+                /* skip sysex */
+                skip_bytes (len);
             }
             break;
 
             case 0xff: /* meta event */
             {
-                c = i_midi_file_read_byte (mf);
-                len = i_midi_file_read_var (mf);
+                c = read_byte ();
+                len = read_var ();
 
                 if (len < 0)
                     ERRMSG_MIDITRACK();
@@ -322,16 +281,16 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
                     if (len < 1)
                         ERRMSG_MIDITRACK();
 
-                    port = i_midi_file_read_byte (mf) % port_count;
-                    i_midi_file_skip_bytes (mf, (len - 1));
+                    port = read_byte () % port_count;
+                    skip_bytes (len - 1);
                 }
                 break;
 
                 case 0x2f: /* end of track */
                 {
-                    track->end_tick = tick;
-                    i_midi_file_skip_bytes (mf, (track_end - mf->file_offset));
-                    return 1;
+                    track.end_tick = tick;
+                    skip_bytes (track_end - file_offset);
+                    return true;
                 }
 
                 case 0x51: /* tempo */
@@ -339,76 +298,62 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
                     if (len < 3)
                         ERRMSG_MIDITRACK();
 
-                    if (mf->smpte_timing)
+                    if (smpte_timing)
                     {
                         /* SMPTE timing doesn't change */
-                        i_midi_file_skip_bytes (mf,len);
+                        skip_bytes (len);
                     }
                     else
                     {
-                        event = i_midi_file_new_event (track, 0);
+                        event = track.add_event ();
                         event->type = SND_SEQ_EVENT_TEMPO;
                         event->port = port;
                         event->tick = tick;
-                        event->data.tempo = i_midi_file_read_byte (mf) << 16;
-                        event->data.tempo |= i_midi_file_read_byte (mf) << 8;
-                        event->data.tempo |= i_midi_file_read_byte (mf);
-                        i_midi_file_skip_bytes (mf, (len - 3));
+                        event->tempo = read_byte () << 16;
+                        event->tempo |= read_byte () << 8;
+                        event->tempo |= read_byte ();
+                        skip_bytes (len - 3);
                     }
                 }
                 break;
 
                 case 0x01: /* text comments */
                 {
-                    if (aud_get_int ("amidiplug", "ap_opts_comments_extract") > 0)
-                    {
-                        int ic = 0;
+                    if (len < 0)
+                        ERRMSG_MIDITRACK();
 
-                        if (len < 1)
-                            ERRMSG_MIDITRACK();
+                    event = track.add_event ();
+                    event->type = SND_SEQ_EVENT_META_TEXT;
+                    event->tick = tick;
 
-                        event = i_midi_file_new_event (track, 0);
-                        event->type = SND_SEQ_EVENT_META_TEXT;
-                        event->tick = tick;
-                        event->data.metat = g_new (char, len + 1);
+                    StringBuf buf (len);
+                    for (int i = 0; i < len; i ++)
+                        buf[i] = read_byte ();
 
-                        for (ic = 0 ; ic < len ; ic++)
-                            event->data.metat[ic] = i_midi_file_read_byte (mf);
-
-                        event->data.metat[len] = '\0';
-                    }
-                    else
-                        i_midi_file_skip_bytes (mf,len);
+                    event->metat = String (str_to_utf8 (buf));
                 }
                 break;
 
                 case 0x05: /* lyrics */
                 {
-                    if (aud_get_int ("amidiplug", "ap_opts_lyrics_extract"))
-                    {
-                        int ic = 0;
+                    if (len < 0)
+                        ERRMSG_MIDITRACK();
 
-                        if (len < 1)
-                            ERRMSG_MIDITRACK();
+                    event = track.add_event ();
+                    event->type = SND_SEQ_EVENT_META_LYRIC;
+                    event->tick = tick;
 
-                        event = i_midi_file_new_event (track, 0);
-                        event->type = SND_SEQ_EVENT_META_LYRIC;
-                        event->tick = tick;
-                        event->data.metat = g_new (char, len + 1);
+                    StringBuf buf (len);
+                    for (int i = 0; i < len; i ++)
+                        buf[i] = read_byte ();
 
-                        for (ic = 0 ; ic < len ; ic++)
-                            event->data.metat[ic] = i_midi_file_read_byte (mf);
-
-                        event->data.metat[len] = '\0';
-                    }
-                    else
-                        i_midi_file_skip_bytes (mf,len);
+                    event->metat = String (str_to_utf8 (buf));
                 }
                 break;
 
                 default: /* ignore all other meta events */
                 {
-                    i_midi_file_skip_bytes (mf,len);
+                    skip_bytes (len);
                 }
                 break;
                 }
@@ -432,260 +377,200 @@ int i_midi_file_read_track (midifile_t * mf, midifile_track_t * track,
 
 /* read a MIDI file in Standard MIDI Format */
 /* return values: 0 = error, 1 = ok */
-int i_midi_file_parse_smf (midifile_t * mf, int port_count)
+bool midifile_t::parse_smf (int port_count)
 {
-    int header_len, i;
+    int header_len;
 
     /* the curren position is immediately after the "MThd" id */
-    header_len = i_midi_file_read_int (mf,4);
+    header_len = read_int (4);
 
     if (header_len < 6)
     {
-        AUDERR ("%s: invalid file format\n", mf->file_name);
-        return 0;
+        AUDERR ("%s: invalid file format\n", (const char *) file_name);
+        return false;
     }
 
-    mf->format = i_midi_file_read_int (mf,2);
+    format = read_int (2);
 
-    if ((mf->format != 0) && (mf->format != 1))
+    if (format != 0 && format != 1)
     {
-        AUDERR ("%s: type %d format is not supported\n", mf->file_name, mf->format);
-        return 0;
+        AUDERR ("%s: type %d format is not supported\n", (const char *) file_name, format);
+        return false;
     }
 
-    mf->num_tracks = i_midi_file_read_int (mf,2);
+    int num_tracks = read_int (2);
 
-    if ((mf->num_tracks < 1) || (mf->num_tracks > 1000))
+    if (num_tracks < 1 || num_tracks > 1000)
     {
-        AUDERR ("%s: invalid number of tracks (%d)\n", mf->file_name, mf->num_tracks);
-        mf->num_tracks = 0;
-        return 0;
+        AUDERR ("%s: invalid number of tracks (%d)\n", (const char *) file_name, num_tracks);
+        num_tracks = 0;
+        return false;
     }
 
-    mf->tracks = g_new0 (midifile_track_t, mf->num_tracks);
+    tracks.insert (0, num_tracks);
 
-    mf->time_division = i_midi_file_read_int (mf,2);
+    time_division = read_int (2);
 
-    if (mf->time_division < 0)
+    if (time_division < 0)
     {
-        AUDERR ("%s: invalid file format\n", mf->file_name);
-        return 0;
+        AUDERR ("%s: invalid file format\n", (const char *) file_name);
+        return false;
     }
 
-    mf->smpte_timing = !! (mf->time_division & 0x8000);
+    smpte_timing = !! (time_division & 0x8000);
 
     /* read tracks */
-    for (i = 0 ; i < mf->num_tracks ; ++i)
+    for (midifile_track_t & track : tracks)
     {
         int len;
 
         /* search for MTrk chunk */
         for (;;)
         {
-            int id = i_midi_file_read_id (mf);
-            len = i_midi_file_read_int (mf,4);
+            int id = read_id ();
+            len = read_int (4);
 
-            if (vfs_feof (mf->file_pointer))
+            if (vfs_feof (file_pointer))
             {
-                AUDERR ("%s: unexpected end of file\n", mf->file_name);
-                return 0;
+                AUDERR ("%s: unexpected end of file\n", (const char *) file_name);
+                return false;
             }
 
-            if ((len < 0) || (len >= 0x10000000))
+            if (len < 0 || len >= 0x10000000)
             {
-                AUDERR ("%s: invalid chunk length %d\n", mf->file_name, len);
-                return 0;
+                AUDERR ("%s: invalid chunk length %d\n", (const char *) file_name, len);
+                return false;
             }
 
             if (id == MAKE_ID ('M', 'T', 'r', 'k'))
                 break;
 
-            i_midi_file_skip_bytes (mf,len);
+            skip_bytes (len);
         }
 
-        if (!i_midi_file_read_track (mf, &mf->tracks[i], mf->file_offset + len, port_count))
-            return 0;
+        if (! read_track (track, file_offset + len, port_count))
+            return false;
     }
 
     /* calculate the max_tick for the entire file */
-    mf->max_tick = 0;
+    max_tick = 0;
 
-    for (i = 0 ; i < mf->num_tracks ; ++i)
+    for (midifile_track_t & track : tracks)
     {
-        if (mf->tracks[i].end_tick > mf->max_tick)
-            mf->max_tick = mf->tracks[i].end_tick;
+        if (track.end_tick > max_tick)
+            max_tick = track.end_tick;
     }
 
     /* ok, success */
-    return 1;
+    return true;
 }
 
 
 /* read a MIDI file enclosed in RIFF format */
 /* return values: 0 = error, 1 = ok */
-int i_midi_file_parse_riff (midifile_t * mf)
+bool midifile_t::parse_riff ()
 {
     /* skip file length (4 bytes) */
-    i_midi_file_skip_bytes (mf,4);
+    skip_bytes (4);
 
     /* check file type ("RMID" = RIFF MIDI) */
-    if (i_midi_file_read_id (mf) != MAKE_ID ('R', 'M', 'I', 'D'))
-        return 0;
+    if (read_id () != MAKE_ID ('R', 'M', 'I', 'D'))
+        return false;
 
     /* search for "data" chunk */
     for (;;)
     {
-        int id = i_midi_file_read_id (mf);
-        int len = i_midi_file_read_32_le (mf);
+        int id = read_id ();
+        int len = read_32_le ();
 
-        if (vfs_feof (mf->file_pointer))
-            return 0;
+        if (vfs_feof (file_pointer))
+            return false;
 
         if (id == MAKE_ID ('d', 'a', 't', 'a'))
             break;
 
         if (len < 0)
-            return 0;
+            return false;
 
-        i_midi_file_skip_bytes (mf, ((len + 1) & ~1));
+        skip_bytes ((len + 1) & ~1);
     }
 
     /* the "data" chunk must contain data in SMF format */
-    if (i_midi_file_read_id (mf) != MAKE_ID ('M', 'T', 'h', 'd'))
-        return 0;
+    if (read_id () != MAKE_ID ('M', 'T', 'h', 'd'))
+        return false;
 
     /* ok, success */
-    return 1;
-}
-
-
-/* midifile init */
-void i_midi_init (midifile_t * mf)
-{
-    mf->file_pointer = nullptr;
-    mf->file_name = nullptr;
-    mf->file_offset = 0;
-    mf->num_tracks = 0;
-    mf->tracks = nullptr;
-    mf->max_tick = 0;
-    mf->smpte_timing = 0;
-    mf->format = 0;
-    mf->time_division = 0;
-    mf->ppq = 0;
-    mf->current_tempo = 0;
-    mf->playing_tick = 0;
-    mf->avg_microsec_per_tick = 0;
-    mf->length = 0;
-    return;
-}
-
-
-void i_midi_free (midifile_t * mf)
-{
-    g_free (mf->file_name);
-    mf->file_name = nullptr;
-
-    if (mf->tracks)
-    {
-        int i;
-
-        /* free event list for each track */
-        for (i = 0 ; i < mf->num_tracks ; ++i)
-        {
-            midievent_t * event = mf->tracks[i].first_event;
-            midievent_t * event_tmp = nullptr;
-
-            while (event)
-            {
-                event_tmp = event;
-                event = event->next;
-
-                if ((event_tmp->type == SND_SEQ_EVENT_META_TEXT) ||
-                        (event_tmp->type == SND_SEQ_EVENT_META_LYRIC))
-                    g_free (event_tmp->data.metat);
-
-                g_free (event_tmp->sysex);
-                g_free (event_tmp);
-            }
-        }
-
-        /* free track array */
-        g_free (mf->tracks);
-        mf->tracks = nullptr;
-    }
+    return true;
 }
 
 
 /* queue set tempo */
-int i_midi_setget_tempo (midifile_t * mf)
+bool midifile_t::setget_tempo ()
 {
-    int smpte_timing, i = 0;
-    int time_division = mf->time_division;
-
     /* interpret and set tempo */
-    smpte_timing = !! (time_division & 0x8000);
+    bool smpte_timing = !! (time_division & 0x8000);
 
     if (!smpte_timing)
     {
         /* time_division is ticks per quarter */
-        mf->current_tempo = 500000;
-        mf->ppq = time_division;
+        current_tempo = 500000;
+        ppq = time_division;
     }
     else
     {
         /* upper byte is negative frames per second */
-        i = 0x80 - ((time_division >> 8) & 0x7f);
+        int fps = 0x80 - ((time_division >> 8) & 0x7f);
         /* lower byte is ticks per frame */
-        time_division &= 0xff;
+        int tpf = time_division & 0xff;
 
         /* now pretend that we have quarter-note based timing */
-        switch (i)
+        switch (fps)
         {
         case 24:
-            mf->current_tempo = 500000;
-            mf->ppq = 12 * time_division;
+            current_tempo = 500000;
+            ppq = 12 * tpf;
             break;
 
         case 25:
-            mf->current_tempo = 400000;
-            mf->ppq = 10 * time_division;
+            current_tempo = 400000;
+            ppq = 10 * tpf;
             break;
 
         case 29: /* 30 drop-frame */
-            mf->current_tempo = 100000000;
-            mf->ppq = 2997 * time_division;
+            current_tempo = 100000000;
+            ppq = 2997 * tpf;
             break;
 
         case 30:
-            mf->current_tempo = 500000;
-            mf->ppq = 15 * time_division;
+            current_tempo = 500000;
+            ppq = 15 * tpf;
             break;
 
         default:
-            AUDERR ("Invalid number of SMPTE frames per second (%d)\n", i);
-            return 0;
+            AUDERR ("Invalid number of SMPTE frames per second (%d)\n", fps);
+            return false;
         }
     }
 
-    AUDDBG ("MIDI tempo set -> time division: %i\n", mf->time_division);
-    AUDDBG ("MIDI tempo set -> tempo: %i\n", mf->current_tempo);
-    AUDDBG ("MIDI tempo set -> ppq: %i\n", mf->ppq);
-    return 1;
+    AUDDBG ("MIDI tempo set -> time division: %i\n", time_division);
+    AUDDBG ("MIDI tempo set -> tempo: %i\n", current_tempo);
+    AUDDBG ("MIDI tempo set -> ppq: %i\n", ppq);
+    return true;
 }
 
 
 /* this will set the midi length in microseconds
    COMMENT: this will also reset current position in each track! */
-void i_midi_setget_length (midifile_t * mf)
+void midifile_t::setget_length ()
 {
     int64_t length_microsec = 0;
-    int last_tick = 0, i = 0;
+    int last_tick = 0;
     /* get the first microsec_per_tick ratio */
-    int microsec_per_tick = (int) (mf->current_tempo / mf->ppq);
+    int microsec_per_tick = (int) (current_tempo / ppq);
 
     /* initialize current position in each track */
-    for (i = 0; i < mf->num_tracks; ++i)
-        mf->tracks[i].current_event = mf->tracks[i].first_event;
+    for (midifile_track_t & track : tracks)
+        track.current_event = track.events.head ();
 
     /* search for tempo events in each track; in fact, since the program
        currently supports type 0 and type 1 MIDI files, we should find
@@ -696,53 +581,52 @@ void i_midi_setget_length (midifile_t * mf)
     {
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int i, min_tick = mf->max_tick + 1;
+        int min_tick = max_tick + 1;
 
         /* search next event */
-        for (i = 0 ; i < mf->num_tracks ; ++i)
+        for (midifile_track_t & track : tracks)
         {
-            midifile_track_t * track = &mf->tracks[i];
-            midievent_t * e2 = track->current_event;
+            midievent_t * e2 = track.current_event;
 
             if (e2 && e2->tick < min_tick)
             {
                 min_tick = e2->tick;
                 event = e2;
-                event_track = track;
+                event_track = & track;
             }
         }
 
         if (!event)
         {
             /* calculate the remaining length */
-            length_microsec += (microsec_per_tick * (mf->max_tick - last_tick));
+            length_microsec += (microsec_per_tick * (max_tick - last_tick));
             break; /* end of song reached */
         }
 
         /* advance pointer to next event */
-        event_track->current_event = event->next;
+        event_track->current_event = event_track->events.next (event);
 
         /* check if this is a tempo event */
         if (event->type == SND_SEQ_EVENT_TEMPO)
         {
             AUDDBG ("LENGTH calc: tempo event (%i) encountered during calc on tick %i\n",
-                      event->data.tempo, event->tick);
+                      event->tempo, event->tick);
             /* increment length_microsec with the amount of microsec before tempo change */
             length_microsec += (microsec_per_tick * (event->tick - last_tick));
             /* now update last_tick and the microsec_per_tick ratio */
             last_tick = event->tick;
-            microsec_per_tick = (int) (event->data.tempo / mf->ppq);
+            microsec_per_tick = (int) (event->tempo / ppq);
         }
     }
 
     /* IMPORTANT
-       this couple of important values is set by i_midi_set_length */
-    mf->length = length_microsec;
+       this couple of important values is set by midifile_t::set_length */
+    length = length_microsec;
 
-    if (mf->max_tick)
-        mf->avg_microsec_per_tick = (int) (length_microsec / mf->max_tick);
+    if (max_tick)
+        avg_microsec_per_tick = (int) (length_microsec / max_tick);
     else
-        mf->avg_microsec_per_tick = 1;  /* dummy - protect against div-by-zero */
+        avg_microsec_per_tick = 1;  /* dummy - protect against div-by-zero */
 
     return;
 }
@@ -751,16 +635,16 @@ void i_midi_setget_length (midifile_t * mf)
 /* this will get the weighted average bpm of the midi file;
    if the file has a variable bpm, 'bpm' is set to -1;
    COMMENT: this will also reset current position in each track! */
-void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
+void midifile_t::get_bpm (int * bpm, int * wavg_bpm)
 {
-    int i = 0, last_tick = 0;
+    int last_tick = 0;
     unsigned weighted_avg_tempo = 0;
-    gboolean is_monotempo = TRUE;
-    int last_tempo = mf->current_tempo;
+    bool is_monotempo = true;
+    int last_tempo = current_tempo;
 
     /* initialize current position in each track */
-    for (i = 0 ; i < mf->num_tracks ; ++i)
-        mf->tracks[i].current_event = mf->tracks[i].first_event;
+    for (midifile_track_t & track : tracks)
+        track.current_event = track.events.head ();
 
     /* search for tempo events in each track; in fact, since the program
        currently supports type 0 and type 1 MIDI files, we should find
@@ -771,47 +655,46 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
     {
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int i, min_tick = mf->max_tick + 1;
+        int min_tick = max_tick + 1;
 
         /* search next event */
-        for (i = 0 ; i < mf->num_tracks ; ++i)
+        for (midifile_track_t & track : tracks)
         {
-            midifile_track_t * track = &mf->tracks[i];
-            midievent_t * e2 = track->current_event;
+            midievent_t * e2 = track.current_event;
 
             if (e2 && e2->tick < min_tick)
             {
                 min_tick = e2->tick;
                 event = e2;
-                event_track = track;
+                event_track = & track;
             }
         }
 
         if (!event)
         {
             /* calculate the remaining length */
-            weighted_avg_tempo += (unsigned) (last_tempo * ((float) (mf->max_tick - last_tick) / (float) mf->max_tick));
+            weighted_avg_tempo += (unsigned) (last_tempo * ((float) (max_tick - last_tick) / (float) max_tick));
             break; /* end of song reached */
         }
 
         /* advance pointer to next event */
-        event_track->current_event = event->next;
+        event_track->current_event = event_track->events.next (event);
 
         /* check if this is a tempo event */
         if (event->type == SND_SEQ_EVENT_TEMPO)
         {
             /* check if this is a tempo change (real change, tempo should be
                different) in the midi file (and it shouldn't be at tick 0); */
-            if ((is_monotempo) && (event->tick > 0) && (event->data.tempo != last_tempo))
-                is_monotempo = FALSE;
+            if (is_monotempo && event->tick > 0 && event->tempo != last_tempo)
+                is_monotempo = false;
 
             AUDDBG ("BPM calc: tempo event (%i) encountered during calc on tick %i\n",
-                      event->data.tempo, event->tick);
+                      event->tempo, event->tick);
             /* add the previous tempo change multiplied for its weight (the tick interval for the tempo )  */
-            weighted_avg_tempo += (unsigned) (last_tempo * ((float) (event->tick - last_tick) / (float) mf->max_tick));
+            weighted_avg_tempo += (unsigned) (last_tempo * ((float) (event->tick - last_tick) / (float) max_tick));
             /* now update last_tick and the microsec_per_tick ratio */
             last_tick = event->tick;
-            last_tempo = event->data.tempo;
+            last_tempo = event->tempo;
         }
     }
 
@@ -825,34 +708,31 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
         *bpm = *wavg_bpm; /* the song has fixed bpm */
     else
         *bpm = -1; /* the song has variable bpm */
-
-    return;
 }
 
 
 /* helper function that parses a midi file; returns 1 on success, 0 otherwise */
-int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
+bool midifile_t::parse_from_filename (const char * filename)
 {
-    i_midi_init (mf);
     AUDDBG ("PARSE_FROM_FILENAME requested, opening file: %s\n", filename);
-    mf->file_pointer = vfs_fopen (filename, "rb");
+    file_pointer = vfs_fopen (filename, "rb");
 
-    if (!mf->file_pointer)
+    if (!file_pointer)
     {
         AUDERR ("Cannot open %s\n", filename);
-        return 0;
+        return false;
     }
 
-    mf->file_name = g_strdup (filename);
+    file_name = String (filename);
 
-    switch (i_midi_file_read_id (mf))
+    switch (read_id ())
     {
     case MAKE_ID ('R', 'I', 'F', 'F') :
     {
         AUDDBG ("PARSE_FROM_FILENAME requested, RIFF chunk found, processing...\n");
 
         /* read riff chunk */
-        if (!i_midi_file_parse_riff (mf))
+        if (!parse_riff ())
             WARNANDBREAK ("%s: invalid file format (riff parser)\n", filename);
 
         /* if that was read correctly, go ahead and read smf data */
@@ -863,22 +743,22 @@ int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
         AUDDBG ("PARSE_FROM_FILENAME requested, MThd chunk found, processing...\n");
 
         /* we don't care about port count here, pass 1 */
-        if (!i_midi_file_parse_smf (mf, 1))
+        if (!parse_smf (1))
             WARNANDBREAK ("%s: invalid file format (smf parser)\n", filename);
 
-        if (mf->time_division < 1)
-            WARNANDBREAK ("%s: invalid time division (%i)\n", filename, mf->time_division);
+        if (time_division < 1)
+            WARNANDBREAK ("%s: invalid time division (%i)\n", filename, time_division);
 
-        /* fill mf->ppq and mf->tempo using time_division */
-        if (!i_midi_setget_tempo (mf))
+        /* fill ppq and tempo using time_division */
+        if (!setget_tempo ())
             WARNANDBREAK ("%s: invalid values while setting ppq and tempo\n", filename);
 
-        /* fill mf->length, keeping in count tempo-changes */
-        i_midi_setget_length (mf);
+        /* fill length, keeping in count tempo-changes */
+        setget_length ();
 
         /* ok, mf has been filled with information; successfully return */
-        vfs_fclose (mf->file_pointer);
-        return 1;
+        vfs_fclose (file_pointer);
+        return true;
     }
 
     default:
@@ -889,6 +769,6 @@ int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
     }
 
     /* something failed */
-    vfs_fclose (mf->file_pointer);
-    return 0;
+    vfs_fclose (file_pointer);
+    return false;
 }

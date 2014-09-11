@@ -22,9 +22,10 @@
 #include <string.h>
 
 #include <fluidsynth.h>
-#include <glib.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/index.h>
 #include <libaudcore/runtime.h>
 
 #include "../i_backend.h"
@@ -36,7 +37,7 @@ typedef struct
     fluid_settings_t * settings;
     fluid_synth_t * synth;
 
-    GArray * soundfont_ids;
+    Index<int> soundfont_ids;
 }
 sequencer_client_t;
 
@@ -48,7 +49,6 @@ static void i_soundfont_load (void);
 
 void backend_init (void)
 {
-    sc.soundfont_ids = g_array_new (FALSE, FALSE, sizeof (int));
     sc.settings = new_fluid_settings();
 
     fluid_settings_setnum (sc.settings, "synth.sample-rate",
@@ -82,10 +82,10 @@ void backend_init (void)
 void backend_cleanup (void)
 {
     /* unload soundfonts */
-    for (unsigned i = 0; i < sc.soundfont_ids->len; i ++)
-        fluid_synth_sfunload (sc.synth, g_array_index (sc.soundfont_ids, int, i), 0);
+    for (int id : sc.soundfont_ids)
+        fluid_synth_sfunload (sc.synth, id, 0);
 
-    g_array_free (sc.soundfont_ids, TRUE);
+    sc.soundfont_ids.clear ();
     delete_fluid_synth (sc.synth);
     delete_fluid_settings (sc.settings);
 }
@@ -94,7 +94,7 @@ void backend_cleanup (void)
 void backend_prepare (void)
 {
     /* soundfont loader, check if we should load soundfont on first midifile play */
-    if (! sc.soundfont_ids->len)
+    if (! sc.soundfont_ids.len ())
         i_soundfont_load();
 }
 
@@ -107,17 +107,17 @@ void backend_reset (void)
 void seq_event_noteon (midievent_t * event)
 {
     fluid_synth_noteon (sc.synth,
-                        event->data.d[0],
-                        event->data.d[1],
-                        event->data.d[2]);
+                        event->d[0],
+                        event->d[1],
+                        event->d[2]);
 }
 
 
 void seq_event_noteoff (midievent_t * event)
 {
     fluid_synth_noteoff (sc.synth,
-                         event->data.d[0],
-                         event->data.d[1]);
+                         event->d[0],
+                         event->d[1]);
 }
 
 
@@ -131,17 +131,17 @@ void seq_event_keypress (midievent_t * event)
 void seq_event_controller (midievent_t * event)
 {
     fluid_synth_cc (sc.synth,
-                    event->data.d[0],
-                    event->data.d[1],
-                    event->data.d[2]);
+                    event->d[0],
+                    event->d[1],
+                    event->d[2]);
 }
 
 
 void seq_event_pgmchange (midievent_t * event)
 {
     fluid_synth_program_change (sc.synth,
-                                event->data.d[0],
-                                event->data.d[1]);
+                                event->d[0],
+                                event->d[1]);
 }
 
 
@@ -154,9 +154,9 @@ void seq_event_chanpress (midievent_t * event)
 
 void seq_event_pitchbend (midievent_t * event)
 {
-    int pb_value = (( (event->data.d[2]) & 0x7f) << 7) | ((event->data.d[1]) & 0x7f);
+    int pb_value = (( (event->d[2]) & 0x7f) << 7) | ((event->d[1]) & 0x7f);
     fluid_synth_pitch_bend (sc.synth,
-                            event->data.d[0],
+                            event->d[0],
                             pb_value);
 }
 
@@ -214,34 +214,24 @@ static void i_soundfont_load (void)
 
     if (soundfont_file[0])
     {
-        char ** sffiles = g_strsplit (soundfont_file, ";", 0);
-        int i = 0;
+        Index<String> sffiles = str_list_to_index (soundfont_file, ";");
 
-        while (sffiles[i] != nullptr)
+        for (const char * sffile : sffiles)
         {
-            int sf_id = 0;
-            AUDDBG ("loading soundfont %s\n", sffiles[i]);
-            sf_id = fluid_synth_sfload (sc.synth, sffiles[i], 0);
+            AUDDBG ("loading soundfont %s\n", sffile);
+            int sf_id = fluid_synth_sfload (sc.synth, sffile, 0);
 
             if (sf_id == -1)
-            {
-                g_warning ("unable to load SoundFont file %s\n", sffiles[i]);
-            }
+                AUDWARN ("unable to load SoundFont file %s\n", sffile);
             else
             {
-                AUDDBG ("soundfont %s successfully loaded\n", sffiles[i]);
-                g_array_append_val (sc.soundfont_ids, sf_id);
+                AUDDBG ("soundfont %s successfully loaded\n", sffile);
+                sc.soundfont_ids.append (sf_id);
             }
-
-            i++;
         }
-
-        g_strfreev (sffiles);
 
         fluid_synth_system_reset (sc.synth);
     }
     else
-    {
-        g_warning ("FluidSynth backend was selected, but no SoundFont has been specified\n");
-    }
+        AUDWARN ("FluidSynth backend was selected, but no SoundFont has been specified\n");
 }

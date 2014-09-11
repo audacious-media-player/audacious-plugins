@@ -23,7 +23,7 @@
 
 #include <libaudcore/preferences.h>
 
-extern int backend_settings_changed;  /* atomic */
+extern bool backend_settings_changed;  /* atomic */
 
 extern const PluginPreferences amidiplug_prefs;
 

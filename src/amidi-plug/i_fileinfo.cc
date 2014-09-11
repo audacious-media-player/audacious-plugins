@@ -34,13 +34,6 @@
 #include "amidi-plug.midiicon.xpm"
 
 
-void i_fileinfo_ev_destroy (GtkWidget * win, void * mf)
-{
-    i_midi_free ((midifile_t *) mf);
-    g_free (mf);
-}
-
-
 void i_fileinfo_ev_close (GtkWidget * button, void * fileinfowin)
 {
     gtk_widget_destroy (GTK_WIDGET (fileinfowin));
@@ -64,29 +57,26 @@ void i_fileinfo_grid_add_entry (char * field_text, char * value_text,
 /* COMMENT: this will also reset current position in each track! */
 void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuffer * lyrics_tb)
 {
-    int l = 0;
-
     /* initialize current position in each track */
-    for (l = 0; l < mf->num_tracks; ++l)
-        mf->tracks[l].current_event = mf->tracks[l].first_event;
+    for (midifile_track_t & track : mf->tracks)
+        track.current_event = track.events.head ();
 
     for (;;)
     {
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int i, min_tick = mf->max_tick + 1;
+        int min_tick = mf->max_tick + 1;
 
         /* search next event */
-        for (i = 0 ; i < mf->num_tracks ; ++i)
+        for (midifile_track_t & track : mf->tracks)
         {
-            midifile_track_t * track = &mf->tracks[i];
-            midievent_t * e2 = track->current_event;
+            midievent_t * e2 = track.current_event;
 
-            if ((e2) && (e2->tick < min_tick))
+            if (e2 && e2->tick < min_tick)
             {
                 min_tick = e2->tick;
                 event = e2;
-                event_track = track;
+                event_track = & track;
             }
         }
 
@@ -94,16 +84,16 @@ void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuff
             break; /* end of song reached */
 
         /* advance pointer to next event */
-        event_track->current_event = event->next;
+        event_track->current_event = event_track->events.next (event);
 
         switch (event->type)
         {
         case SND_SEQ_EVENT_META_TEXT:
-            gtk_text_buffer_insert_at_cursor (text_tb, event->data.metat, strlen (event->data.metat));
+            gtk_text_buffer_insert_at_cursor (text_tb, event->metat, -1);
             break;
 
         case SND_SEQ_EVENT_META_LYRIC:
-            gtk_text_buffer_insert_at_cursor (lyrics_tb, event->data.metat, strlen (event->data.metat));
+            gtk_text_buffer_insert_at_cursor (lyrics_tb, event->metat, -1);
             break;
         }
     }
@@ -127,25 +117,24 @@ void i_fileinfo_gui (const char * filename_uri)
     GString * value_gstring;
     char * title, *filename, *filename_utf8;
     int bpm = 0, wavg_bpm = 0;
-    midifile_t * mf;
 
     if (fileinfowin)
         return;
 
-    mf = g_new (midifile_t, 1);
+    midifile_t mf;
 
     /****************** midifile parser ******************/
-    if (!i_midi_parse_from_filename (filename_uri, mf))
+    if (! mf.parse_from_filename (filename_uri))
         return;
 
     /* midifile is filled with information at this point,
        bpm information is needed too */
-    i_midi_get_bpm (mf, &bpm, &wavg_bpm);
+    mf.get_bpm (& bpm, & wavg_bpm);
     /*****************************************************/
 
     fileinfowin = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_default_size (GTK_WINDOW (fileinfowin), 500, 400);
     gtk_window_set_type_hint (GTK_WINDOW (fileinfowin), GDK_WINDOW_TYPE_HINT_DIALOG);
-    g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (i_fileinfo_ev_destroy), mf);
     g_signal_connect (G_OBJECT (fileinfowin), "destroy", G_CALLBACK (gtk_widget_destroyed), &fileinfowin);
     gtk_container_set_border_width (GTK_CONTAINER (fileinfowin), 10);
 
@@ -185,16 +174,7 @@ void i_fileinfo_gui (const char * filename_uri)
     /*********************
      *** MIDI INFO BOX ***/
     midiinfoboxes_vbox = gtk_vbox_new (FALSE, 2);
-
-    int comments_extract = aud_get_int ("amidiplug", "ap_opts_comments_extract");
-    int lyrics_extract = aud_get_int ("amidiplug", "ap_opts_lyrics_extract");
-
-    /* pick the entire space if both comments and lyrics boxes are not displayed,
-       pick only required space if at least one of them is displayed */
-    if (! comments_extract && ! lyrics_extract)
-        gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, TRUE, TRUE, 0);
-    else
-        gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, FALSE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX (fileinfowin_columns_hbox), midiinfoboxes_vbox, FALSE, FALSE, 0);
 
     info_frame_tl = gtk_label_new ("");
     gtk_label_set_markup (GTK_LABEL (info_frame_tl), _("<span size=\"smaller\"> MIDI Info </span>"));
@@ -210,13 +190,13 @@ void i_fileinfo_gui (const char * filename_uri)
     value_gstring = g_string_new ("");
 
     /* midi format */
-    g_string_printf (value_gstring, "type %i", mf->format);
+    g_string_printf (value_gstring, "type %i", mf.format);
     i_fileinfo_grid_add_entry (_("Format:"), value_gstring->str, info_grid, 0, pangoattrlist);
     /* midi length */
-    g_string_printf (value_gstring, "%i", (int) (mf->length / 1000));
+    g_string_printf (value_gstring, "%i", (int) (mf.length / 1000));
     i_fileinfo_grid_add_entry (_("Length (msec):"), value_gstring->str, info_grid, 1, pangoattrlist);
     /* midi num of tracks */
-    g_string_printf (value_gstring, "%i", mf->num_tracks);
+    g_string_printf (value_gstring, "%i", mf.tracks.len ());
     i_fileinfo_grid_add_entry (_("No. of Tracks:"), value_gstring->str, info_grid, 2, pangoattrlist);
 
     /* midi bpm */
@@ -235,7 +215,7 @@ void i_fileinfo_gui (const char * filename_uri)
 
     i_fileinfo_grid_add_entry (_("BPM (wavg):"), value_gstring->str, info_grid, 4, pangoattrlist);
     /* midi time division */
-    g_string_printf (value_gstring, "%i", mf->time_division);
+    g_string_printf (value_gstring, "%i", mf.time_division);
     i_fileinfo_grid_add_entry (_("Time Div:"), value_gstring->str, info_grid, 5, pangoattrlist);
 
     g_string_free (value_gstring, TRUE);
@@ -286,11 +266,9 @@ void i_fileinfo_gui (const char * filename_uri)
     text_tb = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_tv));
     lyrics_tb = gtk_text_view_get_buffer (GTK_TEXT_VIEW (lyrics_tv));
 
-    /* call the buffer fill routine if at least one between comments and lyrics is enabled */
-    if (comments_extract || lyrics_extract)
-        i_fileinfo_text_fill (mf, text_tb, lyrics_tb);
+    i_fileinfo_text_fill (& mf, text_tb, lyrics_tb);
 
-    if (comments_extract && ! gtk_text_buffer_get_char_count (text_tb))
+    if (! gtk_text_buffer_get_char_count (text_tb))
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (text_tb, "italicstyle",
@@ -302,7 +280,7 @@ void i_fileinfo_gui (const char * filename_uri)
         gtk_text_buffer_apply_tag (text_tb, tag, &start, &end);
     }
 
-    if (lyrics_extract && ! gtk_text_buffer_get_char_count (lyrics_tb))
+    if (! gtk_text_buffer_get_char_count (lyrics_tb))
     {
         GtkTextIter start, end;
         GtkTextTag * tag = gtk_text_buffer_create_tag (lyrics_tb, "italicstyle",
@@ -312,23 +290,6 @@ void i_fileinfo_gui (const char * filename_uri)
         gtk_text_buffer_get_iter_at_offset (lyrics_tb, &start, 0);
         gtk_text_buffer_get_iter_at_offset (lyrics_tb, &end, -1);
         gtk_text_buffer_apply_tag (lyrics_tb, tag, &start, &end);
-    }
-
-    /* hide boxes for disabled options (comments and/or lyrics) */
-    if (! comments_extract && ! lyrics_extract)
-    {
-        gtk_widget_set_no_show_all (miditextboxes_vbox, TRUE);
-        gtk_widget_hide (miditextboxes_vbox);
-    }
-    else if (! comments_extract)
-    {
-        gtk_widget_set_no_show_all (text_frame, TRUE);
-        gtk_widget_hide (text_frame);
-    }
-    else if (! lyrics_extract)
-    {
-        gtk_widget_set_no_show_all (lyrics_frame, TRUE);
-        gtk_widget_hide (lyrics_frame);
     }
 
     /**************
