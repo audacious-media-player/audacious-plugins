@@ -20,8 +20,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 extern "C" {
 #include <libcue/libcue.h>
 }
@@ -65,7 +63,7 @@ static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
         return false;
 
     Cd * cd = cue_parse_string ((char *) buffer);
-    g_free (buffer);
+    free (buffer);
     if (cd == nullptr)
         return false;
 

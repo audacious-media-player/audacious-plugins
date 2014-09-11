@@ -20,8 +20,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
@@ -37,14 +35,14 @@ void asx_handle_heading (const char * heading, void * data)
 {
     ASXLoadState * state = (ASXLoadState *) data;
 
-    state->valid_heading = ! g_ascii_strcasecmp (heading, "reference");
+    state->valid_heading = ! strcmp_nocase (heading, "reference");
 }
 
 void asx_handle_entry (const char * key, const char * value, void * data)
 {
     ASXLoadState * state = (ASXLoadState *) data;
 
-    if (! state->valid_heading || g_ascii_strncasecmp (key, "ref", 3))
+    if (! state->valid_heading || ! str_has_prefix_nocase (key, "ref"))
         return;
 
     StringBuf uri = uri_construct (value, state->filename);

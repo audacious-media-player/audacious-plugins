@@ -19,8 +19,6 @@
 
 #include <string.h>
 
-#include <glib.h>
-
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
