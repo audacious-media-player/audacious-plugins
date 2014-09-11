@@ -22,9 +22,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include "players.h"
+
+#include <libaudcore/audstrings.h>
 
 /***** CPlayerDesc *****/
 
@@ -100,7 +100,7 @@ const CPlayerDesc *CPlayers::lookup_extension(const std::string &extension) cons
 
   for(i = begin(); i != end(); i++)
     for(j = 0; (*i)->get_extension(j); j++)
-      if(!g_ascii_strcasecmp(extension.c_str(), (*i)->get_extension(j)))
+      if(!strcmp_nocase(extension.c_str(), (*i)->get_extension(j)))
 	return *i;
 
   return 0;

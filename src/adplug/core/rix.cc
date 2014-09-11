@@ -23,10 +23,10 @@
 #include <cstdlib>
 #include <string.h>
 
-#include <glib.h>
-
 #include "rix.h"
 #include "debug.h"
+
+#include <libaudcore/audstrings.h>
 
 const unsigned char
 CrixPlayer::adflag[] =
@@ -93,8 +93,7 @@ CrixPlayer::load (VFSFile * fd, const CFileProvider & fp)
   unsigned long i = 0;
   std::string filename (vfs_get_filename (fd));
 
-  if (g_ascii_strcasecmp (filename.substr (filename.length () - 4, 4).c_str (), ".mkf")
-      == 0)
+  if (str_has_suffix_nocase (filename.c_str (), ".mkf"))
   {
     flag_mkf = 1;
     f->seek (0);
