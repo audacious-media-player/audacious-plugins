@@ -266,7 +266,7 @@ skin_pixmap_locate_basenames(const Skin * skin,
     skin_pixmap_free_basenames(basenames);
 
     if (! filename)
-        fprintf (stderr, "Skin does not contain a \"%s\" pixmap.\n",
+        AUDERR ("Skin does not contain a \"%s\" pixmap.\n",
          pixmap_id_mapping->name);
 
     return filename;
@@ -546,7 +546,7 @@ void skin_install_skin (const char * path)
 
     if (g_mkdir_with_parents (skins_paths[SKINS_PATH_USER_SKIN_DIR], mode) < 0)
     {
-        fprintf (stderr, "Failed to create %s: %s\n",
+        AUDERR ("Failed to create %s: %s\n",
          skins_paths[SKINS_PATH_USER_SKIN_DIR], strerror (errno));
         return;
     }
@@ -557,7 +557,7 @@ void skin_install_skin (const char * path)
 
     if (! g_file_get_contents (path, & data, & len, & err))
     {
-        fprintf (stderr, "Failed to read %s: %s\n", path, err->message);
+        AUDERR ("Failed to read %s: %s\n", path, err->message);
         g_error_free (err);
         return;
     }
@@ -567,7 +567,7 @@ void skin_install_skin (const char * path)
 
     if (! g_file_set_contents (target, data, len, & err))
     {
-        fprintf (stderr, "Failed to write %s: %s\n", path, err->message);
+        AUDERR ("Failed to write %s: %s\n", path, err->message);
         g_error_free (err);
         g_free (data);
         g_free (base);

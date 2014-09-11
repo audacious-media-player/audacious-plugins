@@ -21,13 +21,6 @@
 #ifndef _I_AOSD_COMMON_H
 #define _I_AOSD_COMMON_H 1
 
-#ifdef DEBUG
-#include <stdio.h>
-#define DEBUGMSG(...) { fprintf(stderr, "statusicon(%s:%s:%d): ", __FILE__, __FUNCTION__, (int) __LINE__); fprintf(stderr, __VA_ARGS__); }
-#else
-#define DEBUGMSG(...)
-#endif /* DEBUG */
-
 #define AOSD_VERSION_PLUGIN "0.1beta5"
 
 #endif /* !_I_AOSD_COMMON_H */

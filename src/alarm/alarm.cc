@@ -26,7 +26,6 @@
 #endif
 
 #include <string.h>
-#include <stdio.h>
 
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>

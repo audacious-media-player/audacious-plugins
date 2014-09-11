@@ -18,7 +18,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdio.h>
 #include <glib.h>
 #include <string.h>
 #include <gtk/gtk.h>

@@ -13,6 +13,7 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "configure.h"
 #include "Music_Emu.h"
@@ -21,18 +22,18 @@
 static const int fade_threshold = 10 * 1000;
 static const int fade_length    = 8 * 1000;
 
-static blargg_err_t log_err(blargg_err_t err)
+static bool log_err(blargg_err_t err)
 {
     if (err)
-        fprintf (stderr, "console: %s\n", err);
-    return err;
+        AUDERR("%s\n", err);
+    return !!err;
 }
 
 static void log_warning(Music_Emu * emu)
 {
     const char *str = emu->warning();
-    if (str != nullptr)
-        fprintf (stderr, "console: %s\n", str);
+    if (str)
+        AUDWARN("%s\n", str);
 }
 
 /* Handles URL parsing, file opening and identification, and file

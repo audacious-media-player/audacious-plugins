@@ -24,6 +24,8 @@
 #define WANT_AUD_BSWAP
 #include "plugins.h"
 
+#include <libaudcore/runtime.h>
+
 #pragma pack(push) /* must be byte-aligned */
 #pragma pack(1)
 struct wavhead
@@ -104,7 +106,7 @@ static void wav_write (void * data, int len)
 
     written += len;
     if (vfs_fwrite (data, 1, len, output_file) != len)
-        fprintf (stderr, "Error while writing to .wav output file.\n");
+        AUDERR ("Error while writing to .wav output file.\n");
 
     if (input.format == FMT_S24_LE)
         g_free (data);
@@ -117,9 +119,9 @@ static void wav_close(void)
         header.length = TO_LE32(written + sizeof (struct wavhead) - 8);
         header.data_length = TO_LE32(written);
 
-        if (vfs_fseek (output_file, 0, SEEK_SET) || vfs_fwrite (& header, 1,
+        if (vfs_fseek (output_file, 0, VFS_SEEK_SET) || vfs_fwrite (& header, 1,
          sizeof header, output_file) != sizeof header)
-            fprintf (stderr, "Error while writing to .wav output file.\n");
+            AUDERR ("Error while writing to .wav output file.\n");
     }
 }
 

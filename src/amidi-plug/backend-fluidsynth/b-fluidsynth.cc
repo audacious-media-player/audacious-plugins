@@ -31,9 +31,6 @@
 #include "../i_configure.h"
 #include "../i_midievent.h"
 
-/* #define DEBUGMSG(...) fprintf (stderr, __VA_ARGS__) */
-#define DEBUGMSG(...)
-
 typedef struct
 {
     fluid_settings_t * settings;
@@ -127,7 +124,7 @@ void seq_event_noteoff (midievent_t * event)
 void seq_event_keypress (midievent_t * event)
 {
     /* KEY PRESSURE events are not handled by FluidSynth sequencer? */
-    DEBUGMSG ("KEYPRESS EVENT with FluidSynth backend (unhandled)\n");
+    AUDDBG ("KEYPRESS EVENT with FluidSynth backend (unhandled)\n");
 }
 
 
@@ -151,7 +148,7 @@ void seq_event_pgmchange (midievent_t * event)
 void seq_event_chanpress (midievent_t * event)
 {
     /* CHANNEL PRESSURE events are not handled by FluidSynth sequencer? */
-    DEBUGMSG ("CHANPRESS EVENT with FluidSynth backend (unhandled)\n");
+    AUDDBG ("CHANPRESS EVENT with FluidSynth backend (unhandled)\n");
 }
 
 
@@ -166,7 +163,7 @@ void seq_event_pitchbend (midievent_t * event)
 
 void seq_event_sysex (midievent_t * event)
 {
-    DEBUGMSG ("SYSEX EVENT with FluidSynth backend (unhandled)\n");
+    AUDDBG ("SYSEX EVENT with FluidSynth backend (unhandled)\n");
 }
 
 
@@ -223,7 +220,7 @@ static void i_soundfont_load (void)
         while (sffiles[i] != nullptr)
         {
             int sf_id = 0;
-            DEBUGMSG ("loading soundfont %s\n", sffiles[i]);
+            AUDDBG ("loading soundfont %s\n", sffiles[i]);
             sf_id = fluid_synth_sfload (sc.synth, sffiles[i], 0);
 
             if (sf_id == -1)
@@ -232,7 +229,7 @@ static void i_soundfont_load (void)
             }
             else
             {
-                DEBUGMSG ("soundfont %s successfully loaded\n", sffiles[i]);
+                AUDDBG ("soundfont %s successfully loaded\n", sffiles[i]);
                 g_array_append_val (sc.soundfont_ids, sf_id);
             }
 

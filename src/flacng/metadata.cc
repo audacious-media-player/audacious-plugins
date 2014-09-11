@@ -20,11 +20,11 @@
  */
 
 #include <limits.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <glib.h>
 
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
@@ -37,7 +37,7 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
 
     if (handle == nullptr)
     {
-        FLACNG_ERROR("Trying to read data from an uninitialized file!\n");
+        AUDERR("Trying to read data from an uninitialized file!\n");
         return -1;
     }
 
@@ -46,7 +46,7 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
     switch (read)
     {
         case -1:
-            FLACNG_ERROR("Error while reading from stream!\n");
+            AUDERR("Error while reading from stream!\n");
             return -1;
 
         case 0:
@@ -65,9 +65,9 @@ static size_t write_cb(const void *ptr, size_t size, size_t nmemb, FLAC__IOHandl
 
 static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 {
-    if (vfs_fseek((VFSFile*) handle, offset, whence) != 0)
+    if (vfs_fseek((VFSFile*) handle, offset, to_vfs_seek_type (whence)) != 0)
     {
-        FLACNG_ERROR("Could not seek to %ld!\n", (long)offset);
+        AUDERR("Could not seek to %ld!\n", (long)offset);
         return -1;
     }
 
@@ -80,7 +80,7 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 
     if ((offset = vfs_ftell((VFSFile*) handle)) < 0)
     {
-        FLACNG_ERROR("Could not tell current position!\n");
+        AUDERR("Could not tell current position!\n");
         return -1;
     }
 
@@ -185,7 +185,7 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return false;
 }
 
@@ -236,7 +236,7 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return false;
 }
 
@@ -397,7 +397,7 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile *fd)
                 /* Calculate the stream length (milliseconds) */
                 if (metadata->data.stream_info.sample_rate == 0)
                 {
-                    FLACNG_ERROR("Invalid sample rate for stream!\n");
+                    AUDERR("Invalid sample rate for stream!\n");
                     tuple.set_int (FIELD_LENGTH, -1);
                 }
                 else
@@ -435,6 +435,6 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return tuple;
 }

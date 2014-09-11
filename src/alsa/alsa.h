@@ -20,13 +20,12 @@
 #ifndef AUDACIOUS_ALSA_H
 #define AUDACIOUS_ALSA_H
 
-#include <stdio.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/preferences.h>
+#include <libaudcore/runtime.h>
 
-#define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
+#define ERROR AUDERR
 
 #define ERROR_NOISY(...) do { \
     aud_ui_show_error (str_printf ("ALSA error: " __VA_ARGS__)); \

@@ -46,7 +46,7 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, in
         return false;
     if (strncmp ((char *) b + 4, "ftyp", 4))
         return false;
-    if (vfs_fseek (file, bsize - 8, SEEK_CUR))
+    if (vfs_fseek (file, bsize - 8, VFS_SEEK_CUR))
         return false;
 
     int64_t stop = INT64_MAX;
@@ -64,7 +64,7 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, in
                 return false;
             if (! strncmp ((char *) b + 4, frame.id, 4))
                 break;
-            if (vfs_fseek (file, bsize - 8, SEEK_CUR))
+            if (vfs_fseek (file, bsize - 8, VFS_SEEK_CUR))
                 return false;
 
             at += bsize;
@@ -77,7 +77,7 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, in
 
         if (frame.skip)
         {
-            if (vfs_fseek (file, frame.skip, SEEK_CUR))
+            if (vfs_fseek (file, frame.skip, VFS_SEEK_CUR))
                 return false;
             at += frame.skip;
         }

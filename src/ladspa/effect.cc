@@ -18,10 +18,11 @@
  */
 
 #include <assert.h>
-#include <stdio.h>
 
 #include "ladspa.h"
 #include "plugin.h"
+
+#include <libaudcore/runtime.h>
 
 static int ladspa_channels, ladspa_rate;
 
@@ -39,13 +40,13 @@ static void start_plugin (LoadedPlugin * loaded)
 
     if (ports == 0 || ports != plugin->out_ports->len)
     {
-        fprintf (stderr, "Plugin has unusable port configuration: %s\n", desc->Name);
+        AUDERR ("Plugin has unusable port configuration: %s\n", desc->Name);
         return;
     }
 
     if (ladspa_channels % ports != 0)
     {
-        fprintf (stderr, "Plugin cannot be used with %d channels: %s\n",
+        AUDERR ("Plugin cannot be used with %d channels: %s\n",
          ladspa_channels, desc->Name);
         return;
     }

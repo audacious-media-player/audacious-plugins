@@ -20,7 +20,6 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 
 #include <glib.h>
@@ -35,8 +34,6 @@
 #define MIN_RATE 8000
 #define MAX_RATE 192000
 #define RATE_STEP 50
-
-#define RESAMPLER_ERROR(e) fprintf (stderr, "sox-resampler: %s\n", e)
 
 const char default_quality[] = {'0' + SOXR_HQ, 0};
 
@@ -84,7 +81,7 @@ void sox_resampler_start (int * channels, int * rate)
 
     if (error)
     {
-        RESAMPLER_ERROR (error);
+        AUDERR (error);
         return;
     }
 
@@ -111,7 +108,7 @@ void do_resample (float * * data, int * samples)
 
     if (error)
     {
-        RESAMPLER_ERROR (error);
+        AUDERR (error);
         return;
     }
 
@@ -127,7 +124,7 @@ void sox_resampler_process (float * * data, int * samples)
 void sox_resampler_flush (void)
 {
     if (soxr && (error = soxr_process(soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
-        RESAMPLER_ERROR (error);
+        AUDERR (error);
 }
 
 void sox_resampler_finish (float * * data, int * samples)

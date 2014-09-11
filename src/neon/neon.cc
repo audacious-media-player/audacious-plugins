@@ -24,10 +24,6 @@
 
 #include <glib.h>
 
-#ifdef DEBUG
-#define NEON_DEBUG
-#endif
-
 #include "neon.h"
 
 #include <libaudcore/i18n.h>
@@ -41,7 +37,6 @@
 #include <ne_request.h>
 #include <ne_auth.h>
 
-#include "debug.h"
 #include "rb.h"
 #include "cert_verification.h"
 
@@ -56,7 +51,7 @@ static bool neon_plugin_init (void)
 
     if (ret != 0)
     {
-        _ERROR ("Could not initialize neon library: %d\n", ret);
+        AUDERR ("Could not initialize neon library: %d\n", ret);
         return FALSE;
     }
 
@@ -111,14 +106,14 @@ static void add_icy (struct icy_metadata * m, char * name, char * value)
 {
     if (neon_strcmp (name, "StreamTitle"))
     {
-        _DEBUG ("Found StreamTitle: %s", value);
+        AUDDBG ("Found StreamTitle: %s\n", value);
         g_free (m->stream_title);
         m->stream_title = g_strdup (value);
     }
 
     if (neon_strcmp (name, "StreamUrl"))
     {
-        _DEBUG ("Found StreamUrl: %s", value);
+        AUDDBG ("Found StreamUrl: %s\n", value);
         g_free (m->stream_url);
         m->stream_url = g_strdup (value);
     }
@@ -158,7 +153,7 @@ static void parse_icy (struct icy_metadata * m, char * metadata, size_t len)
                 /* End of tag name. */
                 p[0] = 0;
                 g_strlcpy (name, tstart, NEON_ICY_BUFSIZE);
-                _DEBUG ("Found tag name: %s", name);
+                AUDDBG ("Found tag name: %s\n", name);
                 state = STATE_WAIT_VALUE;
             }
 
@@ -185,7 +180,7 @@ static void parse_icy (struct icy_metadata * m, char * metadata, size_t len)
                 /* End of value */
                 p[0] = 0;
                 g_strlcpy (value, tstart, NEON_ICY_BUFSIZE);
-                _DEBUG ("Found tag value: %s", value);
+                AUDDBG ("Found tag value: %s\n", value);
                 add_icy (m, name, value);
                 state = STATE_WAIT_NAME;
             }
@@ -214,15 +209,15 @@ static void parse_icy (struct icy_metadata * m, char * metadata, size_t len)
 
 static void kill_reader (struct neon_handle * h)
 {
-    _DEBUG ("Signaling reader thread to terminate");
+    AUDDBG ("Signaling reader thread to terminate\n");
     pthread_mutex_lock (& h->reader_status.mutex);
     h->reader_status.reading = FALSE;
     pthread_cond_broadcast (& h->reader_status.cond);
     pthread_mutex_unlock (& h->reader_status.mutex);
 
-    _DEBUG ("Waiting for reader thread to die...");
+    AUDDBG ("Waiting for reader thread to die...\n");
     pthread_join (h->reader, nullptr);
-    _DEBUG ("Reader thread has died");
+    AUDDBG ("Reader thread has died\n");
 }
 
 static int server_auth_callback (void * userdata, const char * realm,
@@ -232,7 +227,7 @@ static int server_auth_callback (void * userdata, const char * realm,
 
     if (! h->purl->userinfo || ! h->purl->userinfo[0])
     {
-        _ERROR ("Authentication required, but no credentials set");
+        AUDERR ("Authentication required, but no credentials set\n");
         return 1;
     }
 
@@ -240,7 +235,7 @@ static int server_auth_callback (void * userdata, const char * realm,
 
     if (strlen (authtok[1]) > NE_ABUFSIZ - 1 || strlen (authtok[0]) > NE_ABUFSIZ - 1)
     {
-        _ERROR ("Username/Password too long");
+        AUDERR ("Username/Password too long\n");
         g_strfreev (authtok);
         return 1;
     }
@@ -248,7 +243,7 @@ static int server_auth_callback (void * userdata, const char * realm,
     g_strlcpy (username, authtok[0], NE_ABUFSIZ);
     g_strlcpy (password, authtok[1], NE_ABUFSIZ);
 
-    _DEBUG ("Authenticating: Username: %s, Password: %s", username, password);
+    AUDDBG ("Authenticating: Username: %s, Password: %s\n", username, password);
 
     g_strfreev (authtok);
 
@@ -261,18 +256,18 @@ static void handle_headers (struct neon_handle * h)
     const char * value;
     void * cursor = nullptr;
 
-    _DEBUG ("Header responses:");
+    AUDDBG ("Header responses:\n");
 
     while ((cursor = ne_response_header_iterate (h->request, cursor, & name, & value)))
     {
-        _DEBUG ("HEADER: %s: %s", name, value);
+        AUDDBG ("HEADER: %s: %s\n", name, value);
 
         if (neon_strcmp (name, "accept-ranges"))
         {
             /* The server advertises range capability. we need "bytes" */
             if (strstr (value, "bytes"))
             {
-                _DEBUG ("server can_ranges");
+                AUDDBG ("server can_ranges\n");
                 h->can_ranges = TRUE;
             }
         }
@@ -285,16 +280,16 @@ static void handle_headers (struct neon_handle * h)
             if (value[0] && ! endptr[0] && len >= 0)
             {
                 /* Valid data. */
-                _DEBUG ("Content length as advertised by server: %ld", len);
+                AUDDBG ("Content length as advertised by server: %ld\n", len);
                 h->content_length = len;
             }
             else
-                _ERROR ("Invalid content length header: %s", value);
+                AUDERR ("Invalid content length header: %s\n", value);
         }
         else if (neon_strcmp (name, "content-type"))
         {
             /* The server sent us a content type. Save it for later */
-            _DEBUG ("Content-Type: %s", value);
+            AUDDBG ("Content-Type: %s\n", value);
             g_free (h->icy_metadata.stream_contenttype);
             h->icy_metadata.stream_contenttype = g_strdup (value);
         }
@@ -307,24 +302,24 @@ static void handle_headers (struct neon_handle * h)
             if (value[0] && ! endptr[0] && len > 0)
             {
                 /* Valid data */
-                _DEBUG ("ICY MetaInt as advertised by server: %ld", len);
+                AUDDBG ("ICY MetaInt as advertised by server: %ld\n", len);
                 h->icy_metaint = len;
                 h->icy_metaleft = len;
             }
             else
-                _ERROR ("Invalid ICY MetaInt header: %s", value);
+                AUDERR ("Invalid ICY MetaInt header: %s\n", value);
         }
         else if (neon_strcmp (name, "icy-name"))
         {
             /* The server sent us a ICY name. Save it for later */
-            _DEBUG ("ICY stream name: %s", value);
+            AUDDBG ("ICY stream name: %s\n", value);
             g_free (h->icy_metadata.stream_name);
             h->icy_metadata.stream_name = g_strdup (value);
         }
         else if (neon_strcmp (name, "icy-br"))
         {
             /* The server sent us a bitrate. We might want to use it. */
-            _DEBUG ("ICY bitrate: %d", atoi (value));
+            AUDDBG ("ICY bitrate: %d\n", atoi (value));
             h->icy_metadata.stream_bitrate = atoi (value);
         }
     }
@@ -362,10 +357,10 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
     ne_print_request_header (handle->request, "Icy-MetaData", "1");
 
     /* Try to connect to the server. */
-    _DEBUG ("<%p> Connecting...", handle);
+    AUDDBG ("<%p> Connecting...\n", handle);
     ret = ne_begin_request (handle->request);
     status = ne_get_status (handle->request);
-    _DEBUG ("<%p> Return: %d, Status: %d", handle, ret, status->code);
+    AUDDBG ("<%p> Return: %d, Status: %d\n", handle, ret, status->code);
 
     if (ret == NE_OK)
     {
@@ -373,7 +368,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
         {
         case 401:
             /* Authorization required. Reconnect to authenticate */
-            _DEBUG ("Reconnecting due to 401");
+            AUDDBG ("Reconnecting due to 401\n");
             ne_end_request (handle->request);
             ret = ne_begin_request (handle->request);
             break;
@@ -389,7 +384,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
 
         case 407:
             /* Proxy auth required. Reconnect to authenticate */
-            _DEBUG ("Reconnecting due to 407");
+            AUDDBG ("Reconnecting due to 407\n");
             ne_end_request (handle->request);
             ret = ne_begin_request (handle->request);
             break;
@@ -402,7 +397,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
         if (status->code > 199 && status->code < 300)
         {
             /* URL opened OK */
-            _DEBUG ("<%p> URL opened OK", handle);
+            AUDDBG ("<%p> URL opened OK\n", handle);
             handle->content_start = startbyte;
             handle->pos = startbyte;
             handle_headers (handle);
@@ -413,7 +408,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
 
     case NE_REDIRECT:
         /* We hit a redirect. Handle it. */
-        _DEBUG ("<%p> Redirect encountered", handle);
+        AUDDBG ("<%p> Redirect encountered\n", handle);
         handle->redircount += 1;
         rediruri = (ne_uri *) ne_redirect_location (handle->session);
         ne_request_destroy (handle->request);
@@ -421,7 +416,7 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
 
         if (! rediruri)
         {
-            _ERROR ("<%p> Could not parse redirect response", (void *) handle);
+            AUDERR ("<%p> Could not parse redirect response\n", (void *) handle);
             return -1;
         }
 
@@ -431,10 +426,10 @@ static int open_request (struct neon_handle * handle, uint64_t startbyte)
     }
 
     /* Something went wrong. */
-    _ERROR ("<%p> Could not open URL: %d (%d)", (void *) handle, ret, status->code);
+    AUDERR ("<%p> Could not open URL: %d (%d)\n", (void *) handle, ret, status->code);
 
     if (ret)
-        _ERROR ("<%p> neon error string: %s", (void *) handle, ne_get_error (handle->session));
+        AUDERR ("<%p> neon error string: %s\n", (void *) handle, ne_get_error (handle->session));
 
     ne_request_destroy (handle->request);
     handle->request = nullptr;
@@ -458,11 +453,11 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
 
     handle->redircount = 0;
 
-    _DEBUG ("<%p> Parsing URL", handle);
+    AUDDBG ("<%p> Parsing URL\n", handle);
 
     if (ne_uri_parse (handle->url, handle->purl) != 0)
     {
-        _ERROR ("<%p> Could not parse URL '%s'", (void *) handle, handle->url);
+        AUDERR ("<%p> Could not parse URL '%s'\n", (void *) handle, handle->url);
         return -1;
     }
 
@@ -471,7 +466,7 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
         if (! handle->purl->port)
             handle->purl->port = ne_uri_defaultport (handle->purl->scheme);
 
-        _DEBUG ("<%p> Creating session to %s://%s:%d", handle,
+        AUDDBG ("<%p> Creating session to %s://%s:%d\n", handle,
          handle->purl->scheme, handle->purl->host, handle->purl->port);
         handle->session = ne_session_create (handle->purl->scheme,
          handle->purl->host, handle->purl->port);
@@ -485,12 +480,12 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
 
         if (use_proxy)
         {
-            _DEBUG ("<%p> Using proxy: %s:%d", handle, proxy_host, proxy_port);
+            AUDDBG ("<%p> Using proxy: %s:%d\n", handle, (const char *) proxy_host, proxy_port);
             ne_session_proxy (handle->session, proxy_host, proxy_port);
 
             if (use_proxy_auth)
             {
-                _DEBUG ("<%p> Using proxy authentication", handle);
+                AUDDBG ("<%p> Using proxy authentication\n", handle);
                 ne_add_proxy_auth (handle->session, NE_AUTH_BASIC,
                  neon_proxy_auth_cb, (void *) handle);
             }
@@ -503,7 +498,7 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
              neon_vfs_verify_environment_ssl_certs, handle->session);
         }
 
-        _DEBUG ("<%p> Creating request", handle);
+        AUDDBG ("<%p> Creating request\n", handle);
         ret = open_request (handle, startbyte);
 
         if (! ret)
@@ -516,13 +511,13 @@ static int open_handle (struct neon_handle * handle, uint64_t startbyte)
             return -1;
         }
 
-        _DEBUG ("<%p> Following redirect...", handle);
+        AUDDBG ("<%p> Following redirect...\n", handle);
         ne_session_destroy (handle->session);
         handle->session = nullptr;
     }
 
     /* If we get here, our redirect count exceeded */
-    _ERROR ("<%p> Redirect count exceeded for URL %s", (void *) handle, handle->url);
+    AUDERR ("<%p> Redirect count exceeded for URL %s\n", (void *) handle, handle->url);
 
     return 1;
 }
@@ -545,19 +540,19 @@ static FillBufferResult fill_buffer (struct neon_handle * h)
 
     if (! bsize)
     {
-        _DEBUG ("<%p> End of file encountered", h);
+        AUDDBG ("<%p> End of file encountered\n", h);
         return FILL_BUFFER_EOF;
     }
 
     if (bsize < 0)
     {
-        _ERROR ("<%p> Error while reading from the network", (void *) h);
+        AUDERR ("<%p> Error while reading from the network\n", (void *) h);
         ne_request_destroy (h->request);
         h->request = nullptr;
         return FILL_BUFFER_ERROR;
     }
 
-    _DEBUG ("<%p> Read %d bytes of %d", h, bsize, to_read);
+    AUDDBG ("<%p> Read %d bytes of %d\n", h, bsize, to_read);
 
     write_rb (& h->rb, buffer, bsize);
 
@@ -586,16 +581,16 @@ static void * reader_thread (void * data)
 
             if (ret == FILL_BUFFER_ERROR)
             {
-                _ERROR ("<%p> Error while reading from the network. "
-                        "Terminating reader thread", (void *) h);
+                AUDERR ("<%p> Error while reading from the network. "
+                        "Terminating reader thread\n", (void *) h);
                 h->reader_status.status = NEON_READER_ERROR;
                 pthread_mutex_unlock (& h->reader_status.mutex);
                 return nullptr;
             }
             else if (ret == FILL_BUFFER_EOF)
             {
-                _DEBUG ("<%p> EOF encountered while reading from the network. "
-                        "Terminating reader thread", (void *) h);
+                AUDDBG ("<%p> EOF encountered while reading from the network. "
+                        "Terminating reader thread\n", (void *) h);
                 h->reader_status.status = NEON_READER_EOF;
                 pthread_mutex_unlock (& h->reader_status.mutex);
                 return nullptr;
@@ -609,7 +604,7 @@ static void * reader_thread (void * data)
         }
     }
 
-    _DEBUG ("<%p> Reader thread terminating gracefully", h);
+    AUDDBG ("<%p> Reader thread terminating gracefully\n", h);
     h->reader_status.status = NEON_READER_TERM;
     pthread_mutex_unlock (& h->reader_status.mutex);
 
@@ -620,13 +615,13 @@ void * neon_vfs_fopen_impl (const char * path, const char * mode)
 {
     struct neon_handle * handle = handle_init ();
 
-    _DEBUG ("<%p> Trying to open '%s' with neon", (void *) handle, path);
+    AUDDBG ("<%p> Trying to open '%s' with neon\n", (void *) handle, path);
 
     handle->url = g_strdup (path);
 
     if (open_handle (handle, 0) != 0)
     {
-        _ERROR ("<%p> Could not open URL", (void *) handle);
+        AUDERR ("<%p> Could not open URL\n", (void *) handle);
         handle_free (handle);
         return nullptr;
     }
@@ -657,7 +652,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
 
     if (! h->request)
     {
-        _ERROR ("<%p> No request to read from, seek gone wrong?", (void *) h);
+        AUDERR ("<%p> No request to read from, seek gone wrong?\n", (void *) h);
         return 0;
     }
 
@@ -686,12 +681,12 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
             /* There is no reader thread yet. Read the first bytes from
              * the network ourselves, and then fire up the reader thread
              * to keep the buffer filled up. */
-            _DEBUG ("<%p> Doing initial buffer fill", h);
+            AUDDBG ("<%p> Doing initial buffer fill\n", h);
             FillBufferResult ret = fill_buffer (h);
 
             if (ret == FILL_BUFFER_ERROR)
             {
-                _ERROR ("<%p> Error while reading from the network", (void *) h);
+                AUDERR ("<%p> Error while reading from the network\n", (void *) h);
                 return 0;
             }
 
@@ -703,13 +698,13 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
             if (ret == FILL_BUFFER_SUCCESS)
             {
                 h->reader_status.reading = TRUE;
-                _DEBUG ("<%p> Starting reader thread", h);
+                AUDDBG ("<%p> Starting reader thread\n", h);
                 pthread_create (& h->reader, nullptr, reader_thread, h);
                 h->reader_status.status = NEON_READER_RUN;
             }
             else if (ret == FILL_BUFFER_EOF)
             {
-                _DEBUG ("<%p> No reader thread needed (stream has reached EOF during fill)", h);
+                AUDDBG ("<%p> No reader thread needed (stream has reached EOF during fill)\n", h);
                 h->reader_status.reading = FALSE;
                 h->reader_status.status = NEON_READER_EOF;
             }
@@ -732,7 +727,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
         case NEON_READER_ERROR:
             /* A reader error happened. Log it, and treat it like an EOF
              * condition, by falling through to the NEON_READER_EOF codepath. */
-            _DEBUG ("<%p> NEON_READER_ERROR happened. Terminating reader thread and marking EOF.", h);
+            AUDDBG ("<%p> NEON_READER_ERROR happened. Terminating reader thread and marking EOF.\n", h);
             h->reader_status.status = NEON_READER_EOF;
             pthread_mutex_unlock (& h->reader_status.mutex);
 
@@ -746,7 +741,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
              * If not, terminate the reader thread and return 0. */
             if (! used_rb_locked (& h->rb))
             {
-                _DEBUG ("<%p> Reached end of stream", h);
+                AUDDBG ("<%p> Reached end of stream\n", h);
                 pthread_mutex_unlock (& h->reader_status.mutex);
 
                 if (h->reader_status.reading)
@@ -773,7 +768,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
     if (! used_rb (& h->rb))
     {
         /* The buffer is still empty, we can deliver no data! */
-        _ERROR ("<%p> Buffer still underrun, fatal.", (void *) h);
+        AUDERR ("<%p> Buffer still underrun, fatal.\n", (void *) h);
         return 0;
     }
 
@@ -791,15 +786,15 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
             /*  We need enough data in the buffer to
              * a) Read the complete ICY metadata block
              * b) deliver at least one byte to the reader */
-            _DEBUG ("<%p> Expecting %d bytes of ICY metadata", h, (icy_metalen*16));
+            AUDDBG ("<%p> Expecting %d bytes of ICY metadata\n", h, (icy_metalen*16));
 
             if (free_rb (& h->rb) - icy_metalen * 16 < size)
             {
                 /* There is not enough data. We do not have much choice at this point,
                  * so we'll deliver the metadata as normal data to the reader and
                  * hope for the best. */
-                _ERROR ("<%p> Buffer underrun when reading metadata. Expect "
-                 "audio degradation", (void *) h);
+                AUDERR ("<%p> Buffer underrun when reading metadata. Expect "
+                 "audio degradation\n", (void *) h);
                 h->icy_metaleft = h->icy_metaint + icy_metalen * 16;
             }
             else
@@ -827,7 +822,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
     {
         if (! free_rb_locked (& h->rb))
         {
-            _DEBUG ("<%p> stream EOF reached and buffer empty", h);
+            AUDDBG ("<%p> stream EOF reached and buffer empty\n", h);
             h->eof = TRUE;
         }
     }
@@ -848,7 +843,7 @@ int64_t neon_vfs_fread_impl (void * buffer, int64_t size, int64_t count, VFSFile
 {
     size_t total = 0, part;
 
-    _DEBUG ("<%p> fread %d x %d", (void *) handle, (int) size, (int) count);
+    AUDDBG ("<%p> fread %d x %d\n", (void *) handle, (int) size, (int) count);
 
     while (count > 0 && (part = neon_fread_real (buffer, size, count, handle)) > 0)
     {
@@ -857,14 +852,14 @@ int64_t neon_vfs_fread_impl (void * buffer, int64_t size, int64_t count, VFSFile
         count -= part;
     }
 
-    _DEBUG ("<%p> fread = %d", (void *) handle, (int) total);
+    AUDDBG ("<%p> fread = %d\n", (void *) handle, (int) total);
 
     return total;
 }
 
 int64_t neon_vfs_fwrite_impl (const void * ptr, int64_t size, int64_t nmemb, VFSFile * file)
 {
-    _ERROR ("<%p> NOT IMPLEMENTED", (void *) vfs_get_handle (file));
+    AUDERR ("<%p> NOT IMPLEMENTED\n", (void *) vfs_get_handle (file));
 
     return 0;
 }
@@ -873,7 +868,7 @@ int64_t neon_vfs_ftell_impl (VFSFile * file)
 {
     struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
-    _DEBUG ("<%p> Current file position: %ld", h, h->pos);
+    AUDDBG ("<%p> Current file position: %ld\n", h, h->pos);
 
     return h->pos;
 }
@@ -882,30 +877,30 @@ bool neon_vfs_feof_impl (VFSFile * file)
 {
     struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
-    _DEBUG ("<%p> EOF status: %s", h, h->eof ? "TRUE" : "FALSE");
+    AUDDBG ("<%p> EOF status: %s\n", h, h->eof ? "TRUE" : "FALSE");
 
     return h->eof;
 }
 
 int neon_vfs_truncate_impl (VFSFile * file, int64_t size)
 {
-    _ERROR ("<%p> NOT IMPLEMENTED", (void *) vfs_get_handle (file));
+    AUDERR ("<%p> NOT IMPLEMENTED\n", (void *) vfs_get_handle (file));
 
     return 0;
 }
 
-int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
+int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, VFSSeekType whence)
 {
     struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
-    _DEBUG ("<%p> Seek requested: offset %ld, whence %d", h, offset, whence);
+    AUDDBG ("<%p> Seek requested: offset %ld, whence %d\n", h, offset, whence);
 
     /* To seek to a non-zero offset, two things must be satisfied:
      * - the server must advertise a content-length
      * - the server must advertise accept-ranges: bytes */
-    if ((whence != SEEK_SET || offset) && (h->content_length < 0 || ! h->can_ranges))
+    if ((whence != VFS_SEEK_SET || offset) && (h->content_length < 0 || ! h->can_ranges))
     {
-        _DEBUG ("<%p> Can not seek due to server restrictions", h);
+        AUDDBG ("<%p> Can not seek due to server restrictions\n", h);
         return -1;
     }
 
@@ -914,15 +909,15 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 
     switch (whence)
     {
-    case SEEK_SET:
+    case VFS_SEEK_SET:
         newpos = offset;
         break;
 
-    case SEEK_CUR:
+    case VFS_SEEK_CUR:
         newpos = h->pos + offset;
         break;
 
-    case SEEK_END:
+    case VFS_SEEK_END:
         if (offset == 0)
         {
             h->pos = content_length;
@@ -934,21 +929,21 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
         break;
 
     default:
-        _ERROR ("<%p> Invalid whence specified", (void *) h);
+        AUDERR ("<%p> Invalid whence specified\n", (void *) h);
         return -1;
     }
 
-    _DEBUG ("<%p> Position to seek to: %ld, current: %ld", h, newpos, h->pos);
+    AUDDBG ("<%p> Position to seek to: %ld, current: %ld\n", h, newpos, h->pos);
 
     if (newpos < 0)
     {
-        _ERROR ("<%p> Can not seek before start of stream", (void *) h);
+        AUDERR ("<%p> Can not seek before start of stream\n", (void *) h);
         return -1;
     }
 
     if (newpos && newpos >= content_length)
     {
-        _ERROR ("<%p> Can not seek beyond end of stream (%ld >= %ld)",
+        AUDERR ("<%p> Can not seek beyond end of stream (%ld >= %ld)\n",
          (void *) h, (long) newpos, (long) content_length);
         return -1;
     }
@@ -980,7 +975,7 @@ int neon_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 
     if (open_handle (h, newpos) != 0)
     {
-        _ERROR ("<%p> Error while creating new request!", (void *) h);
+        AUDERR ("<%p> Error while creating new request!\n", (void *) h);
         return -1;
     }
 
@@ -995,7 +990,7 @@ String neon_vfs_metadata_impl (VFSFile * file, const char * field)
 {
     struct neon_handle * h = (neon_handle *) vfs_get_handle (file);
 
-    _DEBUG ("<%p> Field name: %s", h, field);
+    AUDDBG ("<%p> Field name: %s\n", h, field);
 
     if (! strcmp (field, "track-name") && h->icy_metadata.stream_title)
         return String (str_to_utf8 (h->icy_metadata.stream_title));
@@ -1018,7 +1013,7 @@ int64_t neon_vfs_fsize_impl (VFSFile * file)
 
     if (h->content_length < 0)
     {
-        _DEBUG ("<%p> Unknown content length", h);
+        AUDDBG ("<%p> Unknown content length\n", h);
         return -1;
     }
 

@@ -23,7 +23,6 @@
 
 #include "i_midi.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -33,12 +32,9 @@
 
 #include "i_configure.h"
 
-/* #define DEBUGMSG(...) fprintf (stderr, __VA_ARGS__) */
-#define DEBUGMSG(...)
+#define WARNANDBREAK(...) { AUDERR (__VA_ARGS__); break; }
 
-#define WARNANDBREAK(...) { fprintf (stderr, __VA_ARGS__); break; }
-
-#define ERRMSG_MIDITRACK() { fprintf(stderr, "%s: invalid MIDI data (offset %#x)", mf->file_name, mf->file_offset ); return 0; }
+#define ERRMSG_MIDITRACK() { AUDERR ("%s: invalid MIDI data (offset %#x)", mf->file_name, mf->file_offset); return 0; }
 
 
 /* skip a certain number of bytes */
@@ -88,7 +84,7 @@ int i_midi_file_read_int (midifile_t * mf, int bytes)
     {
         c = i_midi_file_read_byte (mf);
 
-        if (c == EOF) return -1;
+        if (c < 0) return -1;
 
         value = (value << 8) | c;
     }
@@ -445,7 +441,7 @@ int i_midi_file_parse_smf (midifile_t * mf, int port_count)
 
     if (header_len < 6)
     {
-        fprintf (stderr, "%s: invalid file format\n", mf->file_name);
+        AUDERR ("%s: invalid file format\n", mf->file_name);
         return 0;
     }
 
@@ -453,7 +449,7 @@ int i_midi_file_parse_smf (midifile_t * mf, int port_count)
 
     if ((mf->format != 0) && (mf->format != 1))
     {
-        fprintf (stderr, "%s: type %d format is not supported\n", mf->file_name, mf->format);
+        AUDERR ("%s: type %d format is not supported\n", mf->file_name, mf->format);
         return 0;
     }
 
@@ -461,7 +457,7 @@ int i_midi_file_parse_smf (midifile_t * mf, int port_count)
 
     if ((mf->num_tracks < 1) || (mf->num_tracks > 1000))
     {
-        fprintf (stderr, "%s: invalid number of tracks (%d)\n", mf->file_name, mf->num_tracks);
+        AUDERR ("%s: invalid number of tracks (%d)\n", mf->file_name, mf->num_tracks);
         mf->num_tracks = 0;
         return 0;
     }
@@ -472,7 +468,7 @@ int i_midi_file_parse_smf (midifile_t * mf, int port_count)
 
     if (mf->time_division < 0)
     {
-        fprintf (stderr, "%s: invalid file format\n", mf->file_name);
+        AUDERR ("%s: invalid file format\n", mf->file_name);
         return 0;
     }
 
@@ -491,13 +487,13 @@ int i_midi_file_parse_smf (midifile_t * mf, int port_count)
 
             if (vfs_feof (mf->file_pointer))
             {
-                fprintf (stderr, "%s: unexpected end of file\n", mf->file_name);
+                AUDERR ("%s: unexpected end of file\n", mf->file_name);
                 return 0;
             }
 
             if ((len < 0) || (len >= 0x10000000))
             {
-                fprintf (stderr, "%s: invalid chunk length %d\n", mf->file_name, len);
+                AUDERR ("%s: invalid chunk length %d\n", mf->file_name, len);
                 return 0;
             }
 
@@ -666,14 +662,14 @@ int i_midi_setget_tempo (midifile_t * mf)
             break;
 
         default:
-            fprintf (stderr, "Invalid number of SMPTE frames per second (%d)\n", i);
+            AUDERR ("Invalid number of SMPTE frames per second (%d)\n", i);
             return 0;
         }
     }
 
-    DEBUGMSG ("MIDI tempo set -> time division: %i\n", midifile.time_division);
-    DEBUGMSG ("MIDI tempo set -> tempo: %i\n", midifile.current_tempo);
-    DEBUGMSG ("MIDI tempo set -> ppq: %i\n", midifile.ppq);
+    AUDDBG ("MIDI tempo set -> time division: %i\n", mf->time_division);
+    AUDDBG ("MIDI tempo set -> tempo: %i\n", mf->current_tempo);
+    AUDDBG ("MIDI tempo set -> ppq: %i\n", mf->ppq);
     return 1;
 }
 
@@ -694,7 +690,7 @@ void i_midi_setget_length (midifile_t * mf)
     /* search for tempo events in each track; in fact, since the program
        currently supports type 0 and type 1 MIDI files, we should find
        tempo events only in one track */
-    DEBUGMSG ("LENGTH calc: starting calc loop\n");
+    AUDDBG ("LENGTH calc: starting calc loop\n");
 
     for (;;)
     {
@@ -729,7 +725,7 @@ void i_midi_setget_length (midifile_t * mf)
         /* check if this is a tempo event */
         if (event->type == SND_SEQ_EVENT_TEMPO)
         {
-            DEBUGMSG ("LENGTH calc: tempo event (%i) encountered during calc on tick %i\n",
+            AUDDBG ("LENGTH calc: tempo event (%i) encountered during calc on tick %i\n",
                       event->data.tempo, event->tick);
             /* increment length_microsec with the amount of microsec before tempo change */
             length_microsec += (microsec_per_tick * (event->tick - last_tick));
@@ -769,7 +765,7 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
     /* search for tempo events in each track; in fact, since the program
        currently supports type 0 and type 1 MIDI files, we should find
        tempo events only in one track */
-    DEBUGMSG ("BPM calc: starting calc loop\n");
+    AUDDBG ("BPM calc: starting calc loop\n");
 
     for (;;)
     {
@@ -809,7 +805,7 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
             if ((is_monotempo) && (event->tick > 0) && (event->data.tempo != last_tempo))
                 is_monotempo = FALSE;
 
-            DEBUGMSG ("BPM calc: tempo event (%i) encountered during calc on tick %i\n",
+            AUDDBG ("BPM calc: tempo event (%i) encountered during calc on tick %i\n",
                       event->data.tempo, event->tick);
             /* add the previous tempo change multiplied for its weight (the tick interval for the tempo )  */
             weighted_avg_tempo += (unsigned) (last_tempo * ((float) (event->tick - last_tick) / (float) mf->max_tick));
@@ -819,11 +815,11 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
         }
     }
 
-    DEBUGMSG ("BPM calc: weighted average tempo: %i\n", weighted_avg_tempo);
+    AUDDBG ("BPM calc: weighted average tempo: %i\n", weighted_avg_tempo);
 
     *wavg_bpm = (int) (60000000 / weighted_avg_tempo);
 
-    DEBUGMSG ("BPM calc: weighted average bpm: %i\n", *wavg_bpm);
+    AUDDBG ("BPM calc: weighted average bpm: %i\n", *wavg_bpm);
 
     if (is_monotempo)
         *bpm = *wavg_bpm; /* the song has fixed bpm */
@@ -838,12 +834,12 @@ void i_midi_get_bpm (midifile_t * mf, int * bpm, int * wavg_bpm)
 int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
 {
     i_midi_init (mf);
-    DEBUGMSG ("PARSE_FROM_FILENAME requested, opening file: %s\n", filename);
+    AUDDBG ("PARSE_FROM_FILENAME requested, opening file: %s\n", filename);
     mf->file_pointer = vfs_fopen (filename, "rb");
 
     if (!mf->file_pointer)
     {
-        fprintf (stderr, "Cannot open %s\n", filename);
+        AUDERR ("Cannot open %s\n", filename);
         return 0;
     }
 
@@ -853,7 +849,7 @@ int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
     {
     case MAKE_ID ('R', 'I', 'F', 'F') :
     {
-        DEBUGMSG ("PARSE_FROM_FILENAME requested, RIFF chunk found, processing...\n");
+        AUDDBG ("PARSE_FROM_FILENAME requested, RIFF chunk found, processing...\n");
 
         /* read riff chunk */
         if (!i_midi_file_parse_riff (mf))
@@ -864,7 +860,7 @@ int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
 
     case MAKE_ID ('M', 'T', 'h', 'd') :
     {
-        DEBUGMSG ("PARSE_FROM_FILENAME requested, MThd chunk found, processing...\n");
+        AUDDBG ("PARSE_FROM_FILENAME requested, MThd chunk found, processing...\n");
 
         /* we don't care about port count here, pass 1 */
         if (!i_midi_file_parse_smf (mf, 1))
@@ -887,7 +883,7 @@ int i_midi_parse_from_filename (const char * filename, midifile_t * mf)
 
     default:
     {
-        fprintf (stderr, "%s is not a Standard MIDI File\n", filename);
+        AUDERR ("%s is not a Standard MIDI File\n", filename);
         break;
     }
     }

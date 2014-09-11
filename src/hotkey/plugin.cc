@@ -33,7 +33,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 
 #include <X11/XF86keysym.h>
@@ -96,7 +95,7 @@ static bool init (void)
 {
     if (! gtk_init_check (nullptr, nullptr))
     {
-        fprintf (stderr, "hotkey: GTK+ initialization failed.\n");
+        AUDERR ("GTK+ initialization failed.\n");
         return FALSE;
     }
 

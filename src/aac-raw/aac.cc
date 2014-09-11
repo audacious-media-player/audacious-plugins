@@ -1,14 +1,14 @@
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <neaacdec.h>
 
 #include <audacious/audtag.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
-#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
@@ -147,7 +147,7 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
     *channels = -1;
 
     /* look for a representative bitrate in the middle of the file */
-    if (size > 0 && vfs_fseek (handle, size / 2, SEEK_SET))
+    if (size > 0 && vfs_fseek (handle, size / 2, VFS_SEEK_SET))
         goto DONE;
 
     for (found = 0; found < 32; found++)
@@ -265,13 +265,13 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
     int64_t total = vfs_fsize (file);
     if (total < 0)
     {
-        fprintf (stderr, "aac: File is not seekable.\n");
+        AUDERR ("File is not seekable.\n");
         return;
     }
 
     /* == SEEK == */
 
-    if (vfs_fseek (file, total * time / len, SEEK_SET))
+    if (vfs_fseek (file, total * time / len, VFS_SEEK_SET))
         return;
 
     * buflen = vfs_fread (buf, 1, size, file);
@@ -282,7 +282,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
 
     if (used == * buflen)
     {
-        fprintf (stderr, "aac: No valid frame header found.\n");
+        AUDERR ("No valid frame header found.\n");
         * buflen = 0;
         return;
     }
@@ -325,7 +325,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
     if ((decoder = NeAACDecOpen ()) == nullptr)
     {
-        fprintf (stderr, "AAC: Open Decoder Error\n");
+        AUDERR ("Open Decoder Error\n");
         return false;
     }
 
@@ -344,9 +344,9 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
     if (buflen >= 10 && ! strncmp ((char *) buf, "ID3", 3))
     {
         if (vfs_fseek (file, 10 + (buf[6] << 21) + (buf[7] << 14) + (buf[8] <<
-         7) + buf[9], SEEK_SET))
+         7) + buf[9], VFS_SEEK_SET))
         {
-            fprintf (stderr, "aac: Failed to seek past ID3v2 tag.\n");
+            AUDERR ("Failed to seek past ID3v2 tag.\n");
             goto ERR_CLOSE_DECODER;
         }
 
@@ -360,7 +360,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
     if (used == buflen)
     {
-        fprintf (stderr, "aac: No valid frame header found.\n");
+        AUDERR ("No valid frame header found.\n");
         goto ERR_CLOSE_DECODER;
     }
 
@@ -425,7 +425,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
         if (info.error)
         {
-            fprintf (stderr, "aac: %s.\n", NeAACDecGetErrorMessage (info.error));
+            AUDERR ("%s.\n", NeAACDecGetErrorMessage (info.error));
 
             if (buflen)
             {

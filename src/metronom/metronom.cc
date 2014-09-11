@@ -19,10 +19,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
-#include <libaudcore/audstrings.h>
+#include <libaudcore/runtime.h>
 
 #define MIN_BPM         1
 #define MAX_BPM         512
@@ -145,7 +146,7 @@ static bool metronom_play (const char * filename, VFSFile * file)
 
     if (!metronom_get_cp(filename, &pmetronom, desc))
     {
-        fprintf (stderr, "Invalid metronom tact parameters in URI %s", filename);
+        AUDERR ("Invalid metronom tact parameters in URI %s", filename);
         return false;
     }
 

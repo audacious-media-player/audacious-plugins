@@ -16,6 +16,7 @@
  * implied. In no event shall the authors be liable for any damages arising from
  */
 
+#define WANT_VFS_STDIO_COMPAT
 #include "ffaudio-stdinc.h"
 
 #define IOBUF 4096
@@ -29,7 +30,7 @@ static int64_t seek_cb (void * file, int64_t offset, int whence)
 {
     if (whence == AVSEEK_SIZE)
         return vfs_fsize ((VFSFile *) file);
-    if (vfs_fseek ((VFSFile *) file, offset, whence & ~(int) AVSEEK_FORCE))
+    if (vfs_fseek ((VFSFile *) file, offset, to_vfs_seek_type (whence & ~(int) AVSEEK_FORCE)))
         return -1;
     return vfs_ftell ((VFSFile *) file);
 }

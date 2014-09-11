@@ -5,6 +5,7 @@
 
 #include <wavpack/wavpack.h>
 
+#define WANT_VFS_STDIO_COMPAT
 #include <audacious/audtag.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
@@ -35,13 +36,13 @@ wv_get_pos(void *id)
 static int
 wv_set_pos_abs(void *id, uint32_t pos)
 {
-    return vfs_fseek((VFSFile *) id, pos, SEEK_SET);
+    return vfs_fseek((VFSFile *) id, pos, VFS_SEEK_SET);
 }
 
 static int
 wv_set_pos_rel(void *id, int32_t delta, int mode)
 {
-    return vfs_fseek((VFSFile *) id, delta, mode);
+    return vfs_fseek((VFSFile *) id, delta, to_vfs_seek_type(mode));
 }
 
 static int
@@ -121,7 +122,7 @@ static bool wv_play (const char * filename, VFSFile * file)
     if (! wv_attach (filename, file, & wvc_input, & ctx, nullptr, OPEN_TAGS |
      OPEN_WVC))
     {
-        fprintf (stderr, "Error opening Wavpack file '%s'.", filename);
+        AUDERR ("Error opening Wavpack file '%s'.", filename);
         error = true;
         goto error_exit;
     }
@@ -133,7 +134,7 @@ static bool wv_play (const char * filename, VFSFile * file)
 
     if (!aud_input_open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
-        fprintf (stderr, "Error opening audio output.");
+        AUDERR ("Error opening audio output.");
         error = true;
         goto error_exit;
     }
@@ -161,7 +162,7 @@ static bool wv_play (const char * filename, VFSFile * file)
 
         if (ret < 0)
         {
-            fprintf (stderr, "Error decoding file.\n");
+            AUDERR ("Error decoding file.\n");
             break;
         }
         else
@@ -242,7 +243,7 @@ wv_probe_for_tuple(const char * filename, VFSFile * fd)
 
     WavpackCloseFile(ctx);
 
-    if (! vfs_fseek (fd, 0, SEEK_SET))
+    if (! vfs_fseek (fd, 0, VFS_SEEK_SET))
         audtag::tuple_read (tuple, fd);
 
     AUDDBG("returning tuple for file %p\n", (void *) fd);

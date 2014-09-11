@@ -216,7 +216,7 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
 
           delete p;
 
-          if (vfs_fseek (fd, 0, SEEK_SET) < 0)
+          if (vfs_fseek (fd, 0, VFS_SEEK_SET) < 0)
             return 0;
         }
       }

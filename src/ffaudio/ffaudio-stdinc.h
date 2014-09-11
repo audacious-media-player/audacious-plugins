@@ -19,8 +19,6 @@
 #ifndef __FFAUDIO_STDINC_H__GUARD
 #define __FFAUDIO_STDINC_H__GUARD
 
-#define _ERROR(...) printf ("ffaudio: " __VA_ARGS__)
-
 #define __STDC_CONSTANT_MACROS
 #include <libaudcore/plugin.h>
 

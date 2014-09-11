@@ -18,7 +18,6 @@
  */
 
 #define __STDC_LIMIT_MACROS
-#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +26,8 @@
 
 #include <ne_ssl.h>
 #include <ne_session.h>
+
+#include <libaudcore/audstrings.h>
 
 #include "cert_verification.h"
 
@@ -348,9 +349,8 @@ static bool validate_directory_certs (const char * directory,
     while (certId < MAX_CERT_CHECKS)
     {
         // Construct certificate name.
-        char certFilename[20] = {0};
-        snprintf (certFilename, sizeof certFilename, "%08x.%d", certHash, certId);
-        char * certPath = g_build_filename (directory, certFilename, nullptr);
+        StringBuf certFilename = str_printf ("%08x.%d", certHash, certId);
+        char * certPath = g_build_filename (directory, (const char *) certFilename, nullptr);
 
         bool signOk = file_is_signer_of_cert (certPath, serverCert);
         g_free (certPath);

@@ -45,7 +45,7 @@ static FLAC__StreamEncoderSeekStatus flac_seek_cb(const FLAC__StreamEncoder *enc
 {
     VFSFile *file = (VFSFile *) data;
 
-    if (vfs_fseek(file, absolute_byte_offset, SEEK_SET) < 0)
+    if (vfs_fseek(file, absolute_byte_offset, VFS_SEEK_SET) < 0)
         return FLAC__STREAM_ENCODER_SEEK_STATUS_ERROR;
 
     return FLAC__STREAM_ENCODER_SEEK_STATUS_OK;

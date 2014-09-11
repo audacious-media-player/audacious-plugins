@@ -141,7 +141,7 @@ bool vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple 
 
 bool copy_vfs (VFSFile * in, VFSFile * out)
 {
-    if (vfs_fseek (in, 0, SEEK_SET) < 0 || vfs_fseek (out, 0, SEEK_SET) < 0)
+    if (vfs_fseek (in, 0, VFS_SEEK_SET) < 0 || vfs_fseek (out, 0, VFS_SEEK_SET) < 0)
         return false;
 
     char * buffer = g_new (char, COPY_BUF);
@@ -176,7 +176,7 @@ bool write_and_pivot_files (vcedit_state * state)
 
     if (handle < 0)
     {
-        fprintf (stderr, "Failed to create temp file: %s.\n", error->message);
+        AUDERR ("Failed to create temp file: %s.\n", error->message);
         g_error_free (error);
         return false;
     }
@@ -190,7 +190,7 @@ bool write_and_pivot_files (vcedit_state * state)
 
     if (vcedit_write (state, temp_vfs) < 0)
     {
-        fprintf (stderr, "Tag update failed: %s.\n", state->lasterror);
+        AUDERR ("Tag update failed: %s.\n", state->lasterror);
         vfs_fclose (temp_vfs);
         g_free (temp);
         return false;
@@ -198,7 +198,7 @@ bool write_and_pivot_files (vcedit_state * state)
 
     if (! copy_vfs (temp_vfs, (VFSFile *) state->in))
     {
-        fprintf (stderr, "Failed to copy temp file.  The temp file has not "
+        AUDERR ("Failed to copy temp file.  The temp file has not "
          "been deleted: %s.\n", temp);
         vfs_fclose (temp_vfs);
         g_free (temp);
@@ -208,7 +208,7 @@ bool write_and_pivot_files (vcedit_state * state)
     vfs_fclose (temp_vfs);
 
     if (g_unlink (temp) < 0)
-        fprintf (stderr, "Failed to delete temp file: %s.\n", temp);
+        AUDERR ("Failed to delete temp file: %s.\n", temp);
 
     g_free (temp);
     return true;

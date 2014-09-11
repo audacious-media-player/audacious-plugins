@@ -39,13 +39,13 @@ static bool flac_init (void)
 
     if ((info = init_callback_info()) == nullptr)
     {
-        FLACNG_ERROR("Could not initialize the main callback structure!\n");
+        AUDERR("Could not initialize the main callback structure!\n");
         return false;
     }
 
     if ((decoder = FLAC__stream_decoder_new()) == nullptr)
     {
-        FLACNG_ERROR("Could not create the main FLAC decoder instance!\n");
+        AUDERR("Could not create the main FLAC decoder instance!\n");
         return false;
     }
 
@@ -61,7 +61,7 @@ static bool flac_init (void)
         error_callback,
         info)))
     {
-        FLACNG_ERROR("Could not initialize the main FLAC decoder: %s(%d)\n",
+        AUDERR("Could not initialize the main FLAC decoder: %s(%d)\n",
             FLAC__StreamDecoderInitStatusString[ret], ret);
         return false;
     }
@@ -116,7 +116,7 @@ static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
             break;
 
         default:
-            FLACNG_ERROR("Can not convert to %u bps\n", res);
+            AUDERR("Can not convert to %u bps\n", res);
     }
 }
 
@@ -132,7 +132,7 @@ static bool flac_play (const char * filename, VFSFile * file)
 
     if (read_metadata(decoder, info) == false)
     {
-        FLACNG_ERROR("Could not prepare file for playing!\n");
+        AUDERR("Could not prepare file for playing!\n");
         error = true;
         goto ERR_NO_CLOSE;
     }
@@ -161,7 +161,7 @@ static bool flac_play (const char * filename, VFSFile * file)
         /* Try to decode a single frame of audio */
         if (FLAC__stream_decoder_process_single(decoder) == false)
         {
-            FLACNG_ERROR("Error while decoding!\n");
+            AUDERR("Error while decoding!\n");
             error = true;
             break;
         }
@@ -177,7 +177,7 @@ ERR_NO_CLOSE:
     reset_info(info);
 
     if (FLAC__stream_decoder_flush(decoder) == false)
-        FLACNG_ERROR("Could not flush decoder state!\n");
+        AUDERR("Could not flush decoder state!\n");
 
     return ! error;
 }

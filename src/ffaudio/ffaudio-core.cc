@@ -180,7 +180,7 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
     else
         AUDDBG ("Format unknown.\n");
 
-    if (vfs_fseek (file, 0, SEEK_SET) < 0)
+    if (vfs_fseek (file, 0, VFS_SEEK_SET) < 0)
         ; /* ignore errors here */
 
     return f;
@@ -198,7 +198,7 @@ static AVFormatContext * open_input_file (const char * name, VFSFile * file)
 
     if (! f)
     {
-        fprintf (stderr, "ffaudio: Unknown format for %s.\n", name);
+        AUDERR ("Unknown format for %s.\n", name);
         return nullptr;
     }
 
@@ -210,7 +210,7 @@ static AVFormatContext * open_input_file (const char * name, VFSFile * file)
 
     if (ret < 0)
     {
-        fprintf (stderr, "ffaudio: avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
+        AUDERR ("avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
         io_context_free (io);
         return nullptr;
     }
@@ -335,7 +335,7 @@ ffaudio_probe_for_tuple(const char *filename, VFSFile *fd)
 {
     Tuple t = read_tuple (filename, fd);
 
-    if (t && ! vfs_fseek (fd, 0, SEEK_SET))
+    if (t && ! vfs_fseek (fd, 0, VFS_SEEK_SET))
         audtag::tuple_read (t, fd);
 
     return t;
@@ -380,7 +380,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
 
     if (! find_codec (ic, & cinfo))
     {
-        fprintf (stderr, "ffaudio: No codec found for %s.\n", filename);
+        AUDERR ("No codec found for %s.\n", filename);
         goto error_exit;
     }
 
@@ -404,7 +404,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
         case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = true; break;
 
     default:
-        fprintf (stderr, "ffaudio: Unsupported audio format %d\n", (int) cinfo.context->sample_fmt);
+        AUDERR ("Unsupported audio format %d\n", (int) cinfo.context->sample_fmt);
         goto error_exit;
     }
 
@@ -432,7 +432,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
             if (av_seek_frame (ic, -1, (int64_t) seek_value * AV_TIME_BASE /
              1000, AVSEEK_FLAG_ANY) < 0)
             {
-                _ERROR("error while seeking\n");
+                AUDERR ("error while seeking\n");
             } else
                 errcount = 0;
 
@@ -454,7 +454,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
             {
                 if (++errcount > 4)
                 {
-                    _ERROR("av_read_frame error %d, giving up.\n", ret);
+                    AUDERR ("av_read_frame error %d, giving up.\n", ret);
                     break;
                 } else
                     continue;
@@ -490,7 +490,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
 
             if (len < 0)
             {
-                fprintf (stderr, "ffaudio: decode_audio() failed, code %d\n", len);
+                AUDERR ("decode_audio() failed, code %d\n", len);
                 break;
             }
 

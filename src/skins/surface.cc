@@ -23,6 +23,8 @@
 
 #include "surface.h"
 
+#include <libaudcore/runtime.h>
+
 cairo_surface_t * surface_new (int w, int h)
 {
     return cairo_image_surface_create (CAIRO_FORMAT_RGB24, w, h);
@@ -33,7 +35,7 @@ cairo_surface_t * surface_new_from_file (const char * name)
     GError * error = nullptr;
     GdkPixbuf * p = gdk_pixbuf_new_from_file (name, & error);
     if (error) {
-        fprintf (stderr, "Error loading %s: %s.\n", name, error->message);
+        AUDERR ("Error loading %s: %s.\n", name, error->message);
         g_error_free (error);
     }
     if (! p)

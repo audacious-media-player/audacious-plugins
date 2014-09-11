@@ -32,7 +32,7 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
 
     if (info->fd == nullptr)
     {
-        FLACNG_ERROR("Trying to read data from an uninitialized file!\n");
+        AUDERR("Trying to read data from an uninitialized file!\n");
         return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
     }
 
@@ -45,7 +45,7 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
     switch (read)
     {
         case -1:
-            FLACNG_ERROR("Error while reading from stream!\n");
+            AUDERR("Error while reading from stream!\n");
             return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
 
         case 0:
@@ -61,9 +61,9 @@ FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    if (vfs_fseek(info->fd, offset, SEEK_SET) != 0)
+    if (vfs_fseek(info->fd, offset, VFS_SEEK_SET) != 0)
     {
-        FLACNG_ERROR("Could not seek to %ld!\n", (long)offset);
+        AUDERR("Could not seek to %ld!\n", (long)offset);
         return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
     }
 
@@ -77,7 +77,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
     int64_t result = vfs_ftell(info->fd);
     if (result < 0)
     {
-        FLACNG_ERROR("Could not tell current position!\n");
+        AUDERR("Could not tell current position!\n");
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
 
@@ -142,7 +142,7 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
 
 void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
 {
-    FLACNG_ERROR("FLAC decoder error callback was called: %d\n", status);
+    AUDERR("FLAC decoder error callback was called: %d\n", status);
 }
 
 void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)

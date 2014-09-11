@@ -18,7 +18,6 @@
  */
 
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -199,7 +198,7 @@ FAILED:
     return 0;
 }
 
-static int gio_fseek (VFSFile * file, int64_t offset, int whence)
+static int gio_fseek (VFSFile * file, int64_t offset, VFSSeekType whence)
 {
     FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
@@ -207,13 +206,13 @@ static int gio_fseek (VFSFile * file, int64_t offset, int whence)
 
     switch (whence)
     {
-    case SEEK_SET:
+    case VFS_SEEK_SET:
         gwhence = G_SEEK_SET;
         break;
-    case SEEK_CUR:
+    case VFS_SEEK_CUR:
         gwhence = G_SEEK_CUR;
         break;
-    case SEEK_END:
+    case VFS_SEEK_END:
         gwhence = G_SEEK_END;
         break;
     default:
@@ -244,7 +243,7 @@ static int gio_getc (VFSFile * file)
 
 static int gio_ungetc (int c, VFSFile * file)
 {
-    return (! gio_fseek (file, -1, SEEK_CUR)) ? c : -1;
+    return (! gio_fseek (file, -1, VFS_SEEK_CUR)) ? c : -1;
 }
 
 static bool gio_feof (VFSFile * file)

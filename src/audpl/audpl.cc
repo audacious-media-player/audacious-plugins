@@ -18,6 +18,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>

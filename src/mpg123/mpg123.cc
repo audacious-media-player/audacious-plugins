@@ -29,6 +29,7 @@
 # define MPG123_IODBG(...)	do { } while (0)
 #endif
 
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
@@ -59,7 +60,10 @@ static ssize_t replace_read (void * file, void * buffer, size_t length)
 
 static off_t replace_lseek (void * file, off_t to, int whence)
 {
-	return (! vfs_fseek ((VFSFile *) file, to, whence)) ? vfs_ftell ((VFSFile *) file) : -1;
+	if (vfs_fseek ((VFSFile *) file, to, to_vfs_seek_type (whence)) < 0)
+		return -1;
+
+	return vfs_ftell ((VFSFile *) file);
 }
 
 static off_t replace_lseek_dummy (void * file, off_t to, int whence)
@@ -89,8 +93,8 @@ static void set_format (mpg123_handle * dec)
 {
 	mpg123_format_none (dec);
 
-    for (int rate : {8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000})
-        mpg123_format (dec, rate, MPG123_MONO | MPG123_STEREO, MPG123_ENC_FLOAT_32);
+	for (int rate : {8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000})
+		mpg123_format (dec, rate, MPG123_MONO | MPG123_STEREO, MPG123_ENC_FLOAT_32);
 }
 
 static void make_format_string (const struct mpg123_frameinfo * info, char *
@@ -125,7 +129,7 @@ static bool mpg123_probe_for_fd (const char * fname, VFSFile * file)
 		if (! memcmp (id3buf, "ID3", 3))
 			return true;
 
-		if (vfs_fseek (file, 0, SEEK_SET) < 0)
+		if (vfs_fseek (file, 0, VFS_SEEK_SET) < 0)
 			return false;
 	}
 
@@ -203,7 +207,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 	 || (result = mpg123_getformat (decoder, & rate, & channels, & encoding)) < 0
 	 || (result = mpg123_info (decoder, & info)) < 0)
 	{
-		fprintf (stderr, "mpg123 probe error for %s: %s\n", filename, mpg123_plain_strerror (result));
+		AUDERR ("mpg123 probe error for %s: %s\n", filename, mpg123_plain_strerror (result));
 		mpg123_delete (decoder);
 		return Tuple ();
 	}
@@ -231,7 +235,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 
 	mpg123_delete (decoder);
 
-	if (! stream && ! vfs_fseek (file, 0, SEEK_SET))
+	if (! stream && ! vfs_fseek (file, 0, VFS_SEEK_SET))
 		audtag::tuple_read (tuple, file);
 
 	if (stream)
@@ -252,7 +256,7 @@ typedef struct {
 
 static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
 {
-	fprintf (stderr, "mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
+	AUDERR ("mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
 }
 
 static bool mpg123_playback_worker (const char * filename, VFSFile * file)
@@ -386,7 +390,7 @@ static bool mpg123_write_tag (const char * filename, VFSFile * handle, const Tup
 	if (! handle)
 		return false;
 
-    return audtag::tuple_write (tuple, handle, audtag::TagType::ID3v2);
+	return audtag::tuple_write (tuple, handle, audtag::TagType::ID3v2);
 }
 
 static bool mpg123_get_image (const char * filename, VFSFile * handle,

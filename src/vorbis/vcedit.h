@@ -10,7 +10,6 @@
 #ifndef __VCEDIT_H
 #define __VCEDIT_H
 
-#include <stdio.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 #include <libaudcore/plugin.h>

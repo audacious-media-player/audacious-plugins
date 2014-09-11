@@ -19,7 +19,6 @@
 
 #include <errno.h>
 #include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -161,14 +160,14 @@ static GModule * open_module (const char * path)
     GModule * handle = g_module_open (path, G_MODULE_BIND_LOCAL);
     if (! handle)
     {
-        fprintf (stderr, "ladspa: Failed to open module %s: %s\n", path, g_module_error ());
+        AUDERR ("Failed to open module %s: %s\n", path, g_module_error ());
         return nullptr;
     }
 
     void * sym;
     if (! g_module_symbol (handle, "ladspa_descriptor", & sym))
     {
-        fprintf (stderr, "ladspa: Not a valid LADSPA module: %s\n", path);
+        AUDERR ("Not a valid LADSPA module: %s\n", path);
         g_module_close (handle);
         return nullptr;
     }
@@ -191,7 +190,7 @@ static void open_modules_for_path (const char * path)
     GDir * folder = g_dir_open (path, 0, nullptr);
     if (! folder)
     {
-        fprintf (stderr, "ladspa: Failed to read folder %s: %s\n", path, strerror (errno));
+        AUDERR ("Failed to read folder %s: %s\n", path, strerror (errno));
         return;
     }
 

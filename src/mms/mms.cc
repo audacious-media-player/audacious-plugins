@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -47,7 +46,7 @@ static void * mms_vfs_fopen_impl (const char * path, const char * mode)
 
         if (! (h->mms = mms_connect (nullptr, nullptr, path, 128 * 1024)))
         {
-            fprintf (stderr, "mms: Failed to open %s.\n", path);
+            AUDERR ("Failed to open %s.\n", path);
             delete h;
             return nullptr;
         }
@@ -85,7 +84,7 @@ static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSF
             readsize = mmsh_read (nullptr, h->mmsh, (char *) buf + bytes_read, bytes_total - bytes_read);
 
         if (readsize < 0)
-            fprintf (stderr, "mms: Read failed.\n");
+            AUDERR ("Read failed.\n");
 
         if (readsize <= 0)
             break;
@@ -98,22 +97,22 @@ static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSF
 
 static int64_t mms_vfs_fwrite_impl (const void * data, int64_t size, int64_t count, VFSFile * file)
 {
-    fprintf (stderr, "mms: Writing is not supported.\n");
+    AUDERR ("Writing is not supported.\n");
     return 0;
 }
 
-static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
+static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, VFSSeekType whence)
 {
     MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
 
-    if (whence == SEEK_CUR)
+    if (whence == VFS_SEEK_CUR)
     {
         if (h->mms)
             offset += mms_get_current_pos (h->mms);
         else
             offset += mmsh_get_current_pos (h->mmsh);
     }
-    else if (whence == SEEK_END)
+    else if (whence == VFS_SEEK_END)
     {
         if (h->mms)
             offset += mms_get_length (h->mms);
@@ -130,7 +129,7 @@ static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
 
     if (ret < 0 || ret != offset)
     {
-        fprintf (stderr, "mms: Seek failed.\n");
+        AUDERR ("Seek failed.\n");
         return -1;
     }
 
@@ -159,7 +158,7 @@ static bool mms_vfs_feof_impl (VFSFile * file)
 
 static int mms_vfs_truncate_impl (VFSFile * file, int64_t size)
 {
-    fprintf (stderr, "mms: Truncating is not supported.\n");
+    AUDERR ("Truncating is not supported.\n");
     return -1;
 }
 

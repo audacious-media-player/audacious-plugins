@@ -152,7 +152,7 @@ static void file_cleanup (void)
 
 static VFSFile * safe_create (const char * filename)
 {
-    if (! vfs_file_test (filename, G_FILE_TEST_EXISTS))
+    if (! vfs_file_test (filename, VFS_EXISTS))
         return vfs_fopen (filename, "w");
 
     const char * extension = strrchr (filename, '.');
@@ -163,7 +163,7 @@ static VFSFile * safe_create (const char * filename)
          str_printf ("%.*s-%d%s", (int) (extension - filename), filename, count, extension) :
          str_printf ("%s-%d", filename, count);
 
-        if (! vfs_file_test (scratch, G_FILE_TEST_EXISTS))
+        if (! vfs_file_test (scratch, VFS_EXISTS))
             return vfs_fopen (scratch, "w");
     }
 

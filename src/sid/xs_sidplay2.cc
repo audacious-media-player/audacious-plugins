@@ -36,6 +36,7 @@
 #include <sidplayfp/SidTuneInfo.h>
 #include <sidplayfp/builders/residfp.h>
 
+#include <libaudcore/runtime.h>
 #include <libaudcore/vfs.h>
 
 struct SidState {
@@ -89,13 +90,13 @@ bool xs_sidplayfp_init()
     /* Builder object created, initialize it */
     state.currBuilder->create(state.currEng->info().maxsids());
     if (!state.currBuilder->getStatus()) {
-        xs_error("reSID->create() failed.\n");
+        AUDERR("reSID->create() failed.\n");
         return false;
     }
 
     state.currBuilder->filter(xs_cfg.emulateFilters);
     if (!state.currBuilder->getStatus()) {
-        xs_error("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
+        AUDERR("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
         return false;
     }
 
@@ -108,7 +109,7 @@ bool xs_sidplayfp_init()
         break;
 
     default:
-        xs_error("[SIDPlayFP] Invalid clockSpeed=%d, falling back to PAL.\n",
+        AUDERR("[SIDPlayFP] Invalid clockSpeed=%d, falling back to PAL.\n",
             xs_cfg.clockSpeed);
 
     case XS_CLOCK_PAL:
@@ -129,7 +130,7 @@ bool xs_sidplayfp_init()
 
     /* Now set the emulator configuration */
     if (!state.currEng->config(config)) {
-        xs_error("[SIDPlayFP] Emulator engine configuration failed!\n");
+        AUDERR("[SIDPlayFP] Emulator engine configuration failed!\n");
         return false;
     }
 
@@ -167,12 +168,12 @@ void xs_sidplayfp_close()
 bool xs_sidplayfp_initsong(int subtune)
 {
     if (!state.currTune->selectSong(subtune)) {
-        xs_error("[SIDPlayFP] currTune->selectSong() failed\n");
+        AUDERR("[SIDPlayFP] currTune->selectSong() failed\n");
         return false;
     }
 
     if (!state.currEng->load(state.currTune)) {
-        xs_error("[SIDPlayFP] currEng->load() failed\n");
+        AUDERR("[SIDPlayFP] currEng->load() failed\n");
         return false;
     }
 

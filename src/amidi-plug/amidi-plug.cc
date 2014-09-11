@@ -100,7 +100,7 @@ static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile *
     {
         /* skip the four bytes after RIFF,
            then read the next four */
-        if (vfs_fseek (fp, 4, SEEK_CUR) != 0)
+        if (vfs_fseek (fp, 4, VFS_SEEK_CUR) != 0)
             return FALSE;
 
         if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
@@ -200,7 +200,7 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
         /* read riff chunk */
         if (!i_midi_file_parse_riff (&midifile))
         {
-            fprintf (stderr, "%s: invalid file format (riff parser)\n", filename_uri);
+            AUDERR ("%s: invalid file format (riff parser)\n", filename_uri);
             goto ERR;
         }
 
@@ -211,13 +211,13 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
 
         if (!i_midi_file_parse_smf (&midifile, 1))
         {
-            fprintf (stderr, "%s: invalid file format (smf parser)\n", filename_uri);
+            AUDERR ("%s: invalid file format (smf parser)\n", filename_uri);
             goto ERR;
         }
 
         if (midifile.time_division < 1)
         {
-            fprintf (stderr, "%s: invalid time division (%i)\n", filename_uri, midifile.time_division);
+            AUDERR ("%s: invalid time division (%i)\n", filename_uri, midifile.time_division);
             goto ERR;
         }
 
@@ -226,7 +226,7 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
         /* fill midifile.ppq and midifile.tempo using time_division */
         if (!i_midi_setget_tempo (&midifile))
         {
-            fprintf (stderr, "%s: invalid values while setting ppq and tempo\n", filename_uri);
+            AUDERR ("%s: invalid values while setting ppq and tempo\n", filename_uri);
             goto ERR;
         }
 
@@ -243,7 +243,7 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
         break;
 
     default:
-        fprintf (stderr, "%s is not a Standard MIDI File\n", filename_uri);
+        AUDERR ("%s is not a Standard MIDI File\n", filename_uri);
         goto ERR;
     }
 

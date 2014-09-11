@@ -22,13 +22,13 @@
 */
 
 #include <assert.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "xs_config.h"
 #include "xs_sidplay2.h"
@@ -122,7 +122,7 @@ bool xs_play_file(const char *filename, VFSFile *file)
 
     /* Initialize song */
     if (!xs_sidplayfp_initsong(subTune)) {
-        xs_error("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
+        AUDERR("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
             (const char *) info.sidFilename, subTune);
         return false;
     }
@@ -130,7 +130,7 @@ bool xs_play_file(const char *filename, VFSFile *file)
     /* Open the audio output */
     if (!aud_input_open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels))
     {
-        xs_error("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
+        AUDERR("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
             FMT_S16_NE,
             xs_cfg.audioFrequency,
             xs_cfg.audioChannels);

@@ -23,7 +23,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdio.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -37,12 +36,9 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
-#define ERROR(...) \
-do { \
-    fprintf(stderr, "OSS4 %s:%d [%s]: ", __FILE__, __LINE__, __FUNCTION__); \
-    fprintf(stderr, __VA_ARGS__); \
-} while (0)
+#define ERROR AUDERR
 
 #define ERROR_NOISY(...) \
 do { \

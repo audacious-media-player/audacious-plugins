@@ -61,7 +61,7 @@ bool read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
     /* Reset the decoder */
     if (FLAC__stream_decoder_reset(decoder) == false)
     {
-        FLACNG_ERROR("Could not reset the decoder!\n");
+        AUDERR("Could not reset the decoder!\n");
         return false;
     }
 

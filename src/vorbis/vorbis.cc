@@ -25,9 +25,6 @@
  *
  */
 
-/*#define AUD_DEBUG
-#define DEBUG*/
-
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,10 +35,12 @@
 #include <vorbis/vorbisfile.h>
 
 #define WANT_AUD_BSWAP
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "vorbis.h"
 
@@ -52,7 +51,7 @@ static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 
 static int ovcb_seek (void * file, ogg_int64_t offset, int whence)
 {
-    return vfs_fseek ((VFSFile *) file, offset, whence);
+    return vfs_fseek ((VFSFile *) file, offset, to_vfs_seek_type (whence));
 }
 
 static int ovcb_close (void * file)
@@ -209,38 +208,28 @@ vorbis_update_replaygain(OggVorbis_File *vf, ReplayGainInfo *rg_info)
 
     if (vf == nullptr || rg_info == nullptr || (comment = ov_comment(vf, -1)) == nullptr)
     {
-#ifdef DEBUG
-        printf ("No replay gain info.\n");
-#endif
+        AUDDBG ("No replay gain info.\n");
         return false;
     }
 
     rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
     rg_info->album_gain = (rg_gain != nullptr) ? atof_no_locale (rg_gain) : 0.0;
-#ifdef DEBUG
-    printf ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
-#endif
+    AUDDBG ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
 
     rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
     rg_info->track_gain = (rg_gain != nullptr) ? atof_no_locale (rg_gain) : 0.0;
-#ifdef DEBUG
-    printf ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
-#endif
+    AUDDBG ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
 
     rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
     rg_info->album_peak = rg_peak != nullptr ? atof_no_locale (rg_peak) : 0.0;
-#ifdef DEBUG
-    printf ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
-#endif
+    AUDDBG ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
 
     rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
     if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
     rg_info->track_peak = rg_peak != nullptr ? atof_no_locale (rg_peak) : 0.0;
-#ifdef DEBUG
-    printf ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
-#endif
+    AUDDBG ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
 
     return true;
 }
@@ -316,7 +305,7 @@ static bool vorbis_play (const char * filename, VFSFile * file)
 
         if (seek_value >= 0 && ov_time_seek (& vf, (double) seek_value / 1000) < 0)
         {
-            fprintf (stderr, "vorbis: seek failed\n");
+            AUDERR ("seek failed\n");
             error = true;
             break;
         }
@@ -452,7 +441,7 @@ static bool get_song_image (const char * filename, VFSFile * file,
         return true;
 
     PARSE_ERR:
-        fprintf (stderr, "vorbis: Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
+        AUDERR ("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
         g_free (data2);
     }
 
@@ -463,7 +452,7 @@ static bool get_song_image (const char * filename, VFSFile * file,
 
         if (! data2 || ! length2)
         {
-            fprintf (stderr, "vorbis: Error parsing COVERART in %s.\n", filename);
+            AUDERR ("Error parsing COVERART in %s.\n", filename);
             g_free (data2);
             goto ERR;
         }

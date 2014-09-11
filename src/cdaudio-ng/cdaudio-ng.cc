@@ -62,8 +62,6 @@
 #define MAX_RETRIES 10
 #define MAX_SKIPS 10
 
-#define warn(...) fprintf(stderr, "cdaudio-ng: " __VA_ARGS__)
-
 typedef struct
 {
     char performer[DEF_STRING_LEN];
@@ -435,13 +433,13 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
 
         if (trackno < firsttrackno || trackno > lasttrackno)
         {
-            warn ("Track %d not found.\n", trackno);
+            AUDERR ("Track %d not found.\n", trackno);
             goto DONE;
         }
 
         if (!cdda_track_audiop (pcdrom_drive, trackno))
         {
-            warn ("Track %d is a data track.\n", trackno);
+            AUDERR ("Track %d is a data track.\n", trackno);
             goto DONE;
         }
 
@@ -524,7 +522,7 @@ static bool scan_cd (void)
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = aud::clamp (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     if (cdda_speed_set (pcdrom_drive, speed) != DRIVER_OP_SUCCESS)
-        warn ("Cannot set drive speed.\n");
+        AUDERR ("Cannot set drive speed.\n");
 
     firsttrackno = cdio_get_first_track_num (pcdrom_drive->p_cdio);
     lasttrackno = cdio_get_last_track_num (pcdrom_drive->p_cdio);
@@ -698,10 +696,8 @@ static bool scan_cd (void)
 
                 cddb_disc_calc_discid (pcddb_disc);
 
-#if DEBUG
                 unsigned discid = cddb_disc_get_discid (pcddb_disc);
                 AUDDBG ("CDDB disc id = %x\n", discid);
-#endif
 
                 int matches;
                 if ((matches = cddb_query (pcddb_conn, pcddb_disc)) == -1)

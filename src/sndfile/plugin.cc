@@ -45,6 +45,7 @@
 
 #include <sndfile.h>
 
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
@@ -61,7 +62,7 @@ sf_get_filelen (void *user_data)
 static sf_count_t
 sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
-    return vfs_fseek ((VFSFile *) user_data, offset, whence);
+    return vfs_fseek ((VFSFile *) user_data, offset, to_vfs_seek_type (whence));
 }
 
 static sf_count_t

@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 
 #include <glib.h>
@@ -34,7 +33,7 @@
 #define MAX_RATE 192000
 #define RATE_STEP 50
 
-#define RESAMPLE_ERROR(e) fprintf (stderr, "resample: %s\n", src_strerror (e))
+#define RESAMPLE_ERROR(e) AUDERR ("%s\n", src_strerror (e))
 
 static const char default_method[] = {'0' + SRC_SINC_FASTEST, 0};
 

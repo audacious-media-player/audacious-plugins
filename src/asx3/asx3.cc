@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <string.h>
 
 #include <glib.h>
@@ -28,6 +27,7 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 static int read_cb (void * file, char * buf, int len)
 {
@@ -72,7 +72,7 @@ static bool check_root (const xmlNode * root)
 {
     if (xmlStrcasecmp (root->name, (const xmlChar *) "asx"))
     {
-        fprintf(stderr, "asx3: Not an ASX file\n");
+        AUDERR ("Not an ASX file\n");
         return false;
     }
 
@@ -80,13 +80,13 @@ static bool check_root (const xmlNode * root)
 
     if (! version)
     {
-        fprintf (stderr, "asx3: Unknown ASX version\n");
+        AUDERR ("Unknown ASX version\n");
         return false;
     }
 
     if (strcmp (version, "3.0"))
     {
-        fprintf(stderr, "asx3: Unsupported ASX version (%s)\n", version);
+        AUDERR ("Unsupported ASX version (%s)\n", version);
         return false;
     }
 

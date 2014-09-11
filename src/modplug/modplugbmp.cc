@@ -59,14 +59,14 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
     if (!memcmp(magic, PSM_MAGIC, 4))
         return true;
 
-    if (vfs_fseek(file, 44, SEEK_SET))
+    if (vfs_fseek(file, 44, VFS_SEEK_SET))
         return false;
     if (vfs_fread(magic, 1, 4, file) < 4)
         return false;
     if (!memcmp(magic, S3M_MAGIC, 4))
         return true;
 
-    if (vfs_fseek(file, 1080, SEEK_SET))
+    if (vfs_fseek(file, 1080, VFS_SEEK_SET))
         return false;
     if (vfs_fread(magic, 1, 4, file) < 4)
         return false;

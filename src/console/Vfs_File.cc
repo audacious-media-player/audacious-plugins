@@ -53,7 +53,7 @@ long Vfs_File_Reader::tell() const
 
 Vfs_File_Reader::error_t Vfs_File_Reader::seek( long n )
 {
-	if (vfs_fseek (p->file, n, SEEK_SET) < 0)
+	if (vfs_fseek (p->file, n, VFS_SEEK_SET) < 0)
 		return eof_error;
 	return 0;
 }

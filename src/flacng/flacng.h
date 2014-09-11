@@ -26,10 +26,6 @@
 #include <libaudcore/tuple.h>
 #include <libaudcore/vfs.h>
 
-#define FLACNG_ERROR(...) do { \
-    printf("flacng: " __VA_ARGS__); \
-} while (0)
-
 #define BUFFER_SIZE_SAMP (FLAC__MAX_BLOCK_SIZE * FLAC__MAX_CHANNELS)
 #define BUFFER_SIZE_BYTE (BUFFER_SIZE_SAMP * (FLAC__MAX_BITS_PER_SAMPLE/8))
 
