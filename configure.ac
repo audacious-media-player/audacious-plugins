@@ -64,7 +64,8 @@ EFFECT_PLUGINS="compressor crossfade crystalizer mixer stereo_plugin voice_remov
 GENERAL_PLUGINS=""
 VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
-TRANSPORT_PLUGINS="gio"
+#TRANSPORT_PLUGINS="gio" XXX FIXME
+TRANSPORT_PLUGINS=""
 
 dnl Console
 dnl =======
@@ -777,6 +778,8 @@ AC_ARG_ENABLE(mms,
 [AS_HELP_STRING([--disable-mms], [disable mms support. (default=enabled)])],
 [enable_mms=$enableval],
 [enable_mms=auto])
+
+enable_mms=no # XXX FIXME
 
 have_mms=no
 if test "x$enable_mms" != "xno"; then
