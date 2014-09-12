@@ -64,7 +64,7 @@ EFFECT_PLUGINS="compressor crossfade crystalizer mixer stereo_plugin voice_remov
 GENERAL_PLUGINS=""
 VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
-#TRANSPORT_PLUGINS="gio" XXX FIXME
+TRANSPORT_PLUGINS="gio"
 TRANSPORT_PLUGINS=""
 
 dnl Console
