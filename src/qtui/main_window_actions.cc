@@ -44,6 +44,8 @@ void MainWindow::setupActions ()
     connect (actionAddFiles,  &QAction::triggered, [] ()
         { audqt::fileopener_show (true); });
 
+    connect (actionLogInspector, &QAction::triggered, audqt::log_inspector_show);
+
     connect (actionPlay,      &QAction::triggered, aud_drct_play);
     connect (actionPause,     &QAction::triggered, aud_drct_pause);
     connect (actionStop,      &QAction::triggered, aud_drct_stop);

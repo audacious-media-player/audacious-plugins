@@ -52,6 +52,8 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
     <addaction name="actionPreferences"/>
+    <addaction name="actionLogInspector"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuPlayback">
@@ -185,6 +187,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="actionLogInspector">
+   <property name="text">
+    <string>Log Inspector ...</string>
    </property>
   </action>
   <action name="actionPlay">
