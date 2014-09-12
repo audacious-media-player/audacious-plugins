@@ -69,12 +69,46 @@ static int lockmgr (void * * mutexp, enum AVLockOp op)
     return 0;
 }
 
+static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list va)
+{
+    audlog::Level level = audlog::Debug;
+    char message [2048];
+
+    switch (av_level)
+    {
+    case AV_LOG_QUIET:
+        return;
+    case AV_LOG_PANIC:
+    case AV_LOG_FATAL:
+    case AV_LOG_ERROR:
+        level = audlog::Error;
+        break;
+    case AV_LOG_WARNING:
+        level = audlog::Warning;
+        break;
+    case AV_LOG_INFO:
+        level = audlog::Info;
+        break;
+    default:
+        break;
+    }
+
+    AVClass * avc = avcl ? * (AVClass * *) avcl : nullptr;
+
+    vsnprintf (message, sizeof message, fmt, va);
+
+    audlog::log (level, __FILE__, __LINE__, avc ? avc->item_name(avcl) : __FUNCTION__,
+                 "<%p> %s", avcl, message);
+}
+
 static bool ffaudio_init (void)
 {
     av_register_all();
     av_lockmgr_register (lockmgr);
 
     create_extension_dict ();
+
+    av_log_set_callback (ffaudio_log_cb);
 
     return true;
 }
