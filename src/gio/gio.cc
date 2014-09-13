@@ -34,6 +34,8 @@ public:
     GIOFile (const char * filename, const char * mode);
     ~GIOFile ();
 
+    class OpenError {};
+
 protected:
     int64_t fread_impl (void * ptr, int64_t size, int64_t nmemb);
     int64_t fwrite_impl (const void * buf, int64_t size, int64_t nitems);
@@ -129,8 +131,11 @@ GIOFile::GIOFile (const char * url, const char * mode) :
         break;
     }
 
-FAILED:
     return;
+
+FAILED:
+    g_object_unref (m_file);
+    throw OpenError ();
 }
 
 GIOFile::~GIOFile ()
@@ -157,8 +162,7 @@ GIOFile::~GIOFile ()
     }
 
 FAILED:
-    if (m_file)
-        g_object_unref (m_file);
+    g_object_unref (m_file);
 }
 
 static VFSFile * gio_fopen_impl (const char * filename, const char * mode)
@@ -167,7 +171,9 @@ static VFSFile * gio_fopen_impl (const char * filename, const char * mode)
     g_type_init ();
 #endif
 
-    return new GIOFile (filename, mode);
+    try { return new GIOFile (filename, mode); }
+    catch (GIOFile::OpenError)
+        { return nullptr; }
 }
 
 int64_t GIOFile::fread_impl (void * buf, int64_t size, int64_t nitems)
