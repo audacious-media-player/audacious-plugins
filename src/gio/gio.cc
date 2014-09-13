@@ -309,10 +309,7 @@ int GIOFile::fflush_impl ()
     GError * error = nullptr;
 
     if (! m_ostream)
-    {
-        AUDERR ("Cannot flush %s: not open for writing.\n", filename ());
-        return -1;
-    }
+        return 0;  /* no-op */
 
     result = g_output_stream_flush (m_ostream, nullptr, & error);
     CHECK_ERROR ("flush", filename ());
