@@ -52,11 +52,11 @@ protected:
     int fflush_impl ();
 
 private:
-    GFile * m_file;
-    GIOStream * m_iostream;
-    GInputStream * m_istream;
-    GOutputStream * m_ostream;
-    GSeekable * m_seekable;
+    GFile * m_file = nullptr;
+    GIOStream * m_iostream = nullptr;
+    GInputStream * m_istream = nullptr;
+    GOutputStream * m_ostream = nullptr;
+    GSeekable * m_seekable = nullptr;
 };
 
 #define CHECK_ERROR(op, name) do { \
