@@ -232,6 +232,7 @@ enum snd_seq_event_type
 struct midifile_track_t
 {
     List<midievent_t> events;           /* list of all events in this track */
+    int start_tick;                     /* start of this track */
     int end_tick;			/* length of this track */
     midievent_t * current_event;	/* used while loading and playing */
 
@@ -256,6 +257,7 @@ struct midifile_t
     Index<midifile_track_t> tracks;
 
     unsigned short format = 0;
+    int start_tick = 0;
     int max_tick = 0;
     int smpte_timing = 0;
 
@@ -263,7 +265,6 @@ struct midifile_t
     int ppq = 0;
     int current_tempo = 0;
 
-    int playing_tick = 0;
     int avg_microsec_per_tick = 0;
     int64_t length = 0;
 

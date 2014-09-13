@@ -134,6 +134,9 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
     unsigned char last_cmd = 0;
     unsigned char port = 0;
 
+    track.start_tick = -1;
+    track.end_tick = -1;
+
     /* the current file position is after the track ID and length */
     while (file_offset < track_end)
     {
@@ -221,6 +224,11 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
             }
 
             event->d[2] = read_byte () & 0x7f;
+
+            if (event->type == SND_SEQ_EVENT_NOTEON && track.start_tick < 0)
+                track.start_tick = tick;
+            if (track.start_tick >= 0 && tick >= track.start_tick)
+                track.end_tick = tick;
         }
         break;
 
@@ -234,6 +242,9 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
             event->d[0] = cmd & 0x0f;
             event->d[1] = read_byte () & 0x7f;
             event->d[2] = read_byte () & 0x7f;
+
+            if (track.start_tick >= 0 && tick >= track.start_tick)
+                track.end_tick = tick;
         }
         break;
 
@@ -246,6 +257,9 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
             event->tick = tick;
             event->d[0] = cmd & 0x0f;
             event->d[1] = read_byte () & 0x7f;
+
+            if (track.start_tick >= 0 && tick >= track.start_tick)
+                track.end_tick = tick;
         }
         break;
 
@@ -288,7 +302,11 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
 
                 case 0x2f: /* end of track */
                 {
-                    track.end_tick = tick;
+                    if (! aud_get_bool ("amidiplug", "skip_leading"))
+                        track.start_tick = 0;
+                    if (! aud_get_bool ("amidiplug", "skip_trailing"))
+                        track.end_tick = tick;
+
                     skip_bytes (track_end - file_offset);
                     return true;
                 }
@@ -453,13 +471,19 @@ bool midifile_t::parse_smf (int port_count)
     }
 
     /* calculate the max_tick for the entire file */
+    start_tick = -1;
     max_tick = 0;
 
     for (midifile_track_t & track : tracks)
     {
+        if (track.start_tick >= 0 && (start_tick < 0 || track.start_tick < start_tick))
+            start_tick = track.start_tick;
         if (track.end_tick > max_tick)
             max_tick = track.end_tick;
     }
+
+    if (start_tick < 0)
+        start_tick = 0;
 
     /* ok, success */
     return true;
@@ -564,7 +588,7 @@ bool midifile_t::setget_tempo ()
 void midifile_t::setget_length ()
 {
     int64_t length_microsec = 0;
-    int last_tick = 0;
+    int last_tick = start_tick;
     /* get the first microsec_per_tick ratio */
     int microsec_per_tick = (int) (current_tempo / ppq);
 
@@ -609,12 +633,13 @@ void midifile_t::setget_length ()
         /* check if this is a tempo event */
         if (event->type == SND_SEQ_EVENT_TEMPO)
         {
-            AUDDBG ("LENGTH calc: tempo event (%i) encountered during calc on tick %i\n",
-                      event->tempo, event->tick);
+            int tick = aud::max (event->tick, start_tick);
+            AUDDBG ("LENGTH calc: tempo event (%i) on tick %i\n", event->tempo, tick);
+
             /* increment length_microsec with the amount of microsec before tempo change */
-            length_microsec += (microsec_per_tick * (event->tick - last_tick));
+            length_microsec += (microsec_per_tick * (tick - last_tick));
             /* now update last_tick and the microsec_per_tick ratio */
-            last_tick = event->tick;
+            last_tick = tick;
             microsec_per_tick = (int) (event->tempo / ppq);
         }
     }
@@ -623,10 +648,10 @@ void midifile_t::setget_length ()
        this couple of important values is set by midifile_t::set_length */
     length = length_microsec;
 
-    if (max_tick)
-        avg_microsec_per_tick = (int) (length_microsec / max_tick);
+    if (max_tick > start_tick)
+        avg_microsec_per_tick = (int) (length_microsec / (max_tick - start_tick));
     else
-        avg_microsec_per_tick = 1;  /* dummy - protect against div-by-zero */
+        avg_microsec_per_tick = 0;
 
     return;
 }
@@ -637,7 +662,7 @@ void midifile_t::setget_length ()
    COMMENT: this will also reset current position in each track! */
 void midifile_t::get_bpm (int * bpm, int * wavg_bpm)
 {
-    int last_tick = 0;
+    int last_tick = start_tick;
     unsigned weighted_avg_tempo = 0;
     bool is_monotempo = true;
     int last_tempo = current_tempo;
@@ -673,7 +698,10 @@ void midifile_t::get_bpm (int * bpm, int * wavg_bpm)
         if (!event)
         {
             /* calculate the remaining length */
-            weighted_avg_tempo += (unsigned) (last_tempo * ((float) (max_tick - last_tick) / (float) max_tick));
+            if (max_tick > start_tick)
+                weighted_avg_tempo += (unsigned) (last_tempo *
+                 ((float) (max_tick - last_tick) / (float) (max_tick - start_tick)));
+
             break; /* end of song reached */
         }
 
@@ -683,24 +711,31 @@ void midifile_t::get_bpm (int * bpm, int * wavg_bpm)
         /* check if this is a tempo event */
         if (event->type == SND_SEQ_EVENT_TEMPO)
         {
+            int tick = aud::max (event->tick, start_tick);
+            AUDDBG ("BPM calc: tempo event (%i) on tick %i\n", event->tempo, tick);
+
             /* check if this is a tempo change (real change, tempo should be
                different) in the midi file (and it shouldn't be at tick 0); */
-            if (is_monotempo && event->tick > 0 && event->tempo != last_tempo)
+            if (is_monotempo && tick > start_tick && event->tempo != last_tempo)
                 is_monotempo = false;
 
-            AUDDBG ("BPM calc: tempo event (%i) encountered during calc on tick %i\n",
-                      event->tempo, event->tick);
             /* add the previous tempo change multiplied for its weight (the tick interval for the tempo )  */
-            weighted_avg_tempo += (unsigned) (last_tempo * ((float) (event->tick - last_tick) / (float) max_tick));
+            if (max_tick > start_tick)
+                weighted_avg_tempo += (unsigned) (last_tempo *
+                 ((float) (tick - last_tick) / (float) (max_tick - start_tick)));
+
             /* now update last_tick and the microsec_per_tick ratio */
-            last_tick = event->tick;
+            last_tick = tick;
             last_tempo = event->tempo;
         }
     }
 
     AUDDBG ("BPM calc: weighted average tempo: %i\n", weighted_avg_tempo);
 
-    *wavg_bpm = (int) (60000000 / weighted_avg_tempo);
+    if (weighted_avg_tempo > 0)
+        *wavg_bpm = (int) (60000000 / weighted_avg_tempo);
+    else
+        *wavg_bpm = 0;
 
     AUDDBG ("BPM calc: weighted average bpm: %i\n", *wavg_bpm);
 

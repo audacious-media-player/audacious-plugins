@@ -132,6 +132,10 @@ static const PreferencesWidget amidiplug_widgets[] = {
     WidgetSpin (N_("Drum shift:"),
         WidgetInt ("amidiplug", "ap_opts_drumshift_value"),
         {0, 127, 1}),
+    WidgetCheck (N_("Skip leading silence"),
+        WidgetBool ("amidiplug", "skip_leading")),
+    WidgetCheck (N_("Skip trailing silence"),
+        WidgetBool ("amidiplug", "skip_trailing")),
 
     /* backend settings */
     WidgetLabel (N_("<b>SoundFont</b>")),

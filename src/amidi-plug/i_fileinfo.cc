@@ -20,6 +20,7 @@
 
 #include "i_fileinfo.h"
 
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <gtk/gtk.h>
@@ -65,7 +66,7 @@ void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuff
     {
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int min_tick = mf->max_tick + 1;
+        int min_tick = INT_MAX;  /* meta-events may go past max_tick */
 
         /* search next event */
         for (midifile_track_t & track : mf->tracks)

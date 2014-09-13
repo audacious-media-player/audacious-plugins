@@ -44,7 +44,7 @@ static void amidiplug_play_loop (midifile_t & midifile);
 
 static bool amidiplug_play (const char * filename_uri, VFSFile * file);
 static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
-static void amidiplug_skipto (midifile_t & midifile, int playing_tick);
+static int amidiplug_skipto (midifile_t & midifile, int seektime);
 
 static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", nullptr};
 
@@ -64,6 +64,8 @@ static bool amidiplug_init (void)
         "fsyn_synth_polyphony", "-1",
         "fsyn_synth_reverb", "-1",
         "fsyn_synth_chorus", "-1",
+        "skip_leading", "FALSE",
+        "skip_trailing", "FALSE",
         nullptr
     };
 
@@ -247,15 +249,15 @@ ERR:
     return false;
 }
 
-static void generate_to_tick (midifile_t & midifile, int tick)
+static void generate_ticks (midifile_t & midifile, int num_ticks)
 {
     double ticksecs = (double) midifile.current_tempo / midifile.ppq / 1000000;
-    audio_generate (ticksecs * (tick - midifile.playing_tick));
-    midifile.playing_tick = tick;
+    audio_generate (ticksecs * num_ticks);
 }
 
 static void amidiplug_play_loop (midifile_t & midifile)
 {
+    int tick = midifile.start_tick;
     bool stopped = false;
 
     backend_prepare ();
@@ -268,7 +270,7 @@ static void amidiplug_play_loop (midifile_t & midifile)
     {
         int seektime = aud_input_check_seek ();
         if (seektime >= 0)
-            amidiplug_skipto (midifile, (int64_t) seektime * 1000 / midifile.avg_microsec_per_tick);
+            tick = amidiplug_skipto (midifile, seektime);
 
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
@@ -293,8 +295,11 @@ static void amidiplug_play_loop (midifile_t & midifile)
         /* advance pointer to next event */
         event_track->current_event = event_track->events.next (event);
 
-        if (event->tick > midifile.playing_tick)
-            generate_to_tick (midifile, event->tick);
+        if (event->tick > tick)
+        {
+            generate_ticks (midifile, event->tick - tick);
+            tick = event->tick;
+        }
 
         switch (event->type)
         {
@@ -352,7 +357,7 @@ static void amidiplug_play_loop (midifile_t & midifile)
     }
 
     if (! stopped)
-        generate_to_tick (midifile, midifile.max_tick);
+        generate_ticks (midifile, midifile.max_tick - tick);
 
     backend_reset ();
 }
@@ -361,13 +366,13 @@ static void amidiplug_play_loop (midifile_t & midifile)
 /* amidigplug_skipto: re-do all events that influence the playing of our
    midi file; re-do them using a time-tick of 0, so they are processed
    istantaneously and proceed this way until the playing_tick is reached */
-static void amidiplug_skipto (midifile_t & midifile, int playing_tick)
+static int amidiplug_skipto (midifile_t & midifile, int seektime)
 {
     backend_reset ();
 
-    /* this check is always made, for safety*/
-    if (playing_tick >= midifile.max_tick)
-        playing_tick = midifile.max_tick - 1;
+    int tick = midifile.start_tick;
+    if (midifile.avg_microsec_per_tick > 0)
+        tick += (int64_t) seektime * 1000 / midifile.avg_microsec_per_tick;
 
     /* initialize current position in each track */
     for (midifile_track_t & track : midifile.tracks)
@@ -400,7 +405,7 @@ static void amidiplug_skipto (midifile_t & midifile, int playing_tick)
         }
 
         /* reached the requested tick, job done */
-        if (event->tick >= playing_tick)
+        if (event->tick >= tick)
         {
             AUDDBG ("SKIPTO request, reached the requested tick, exiting from skipto loop\n");
             break;
@@ -445,7 +450,7 @@ static void amidiplug_skipto (midifile_t & midifile, int playing_tick)
         }
     }
 
-    midifile.playing_tick = playing_tick;
+    return tick;
 }
 
 #define AUD_PLUGIN_NAME        N_("AMIDI-Plug (MIDI Player)")
