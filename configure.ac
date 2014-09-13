@@ -778,8 +778,6 @@ AC_ARG_ENABLE(mms,
 [enable_mms=$enableval],
 [enable_mms=auto])
 
-enable_mms=no # XXX FIXME
-
 have_mms=no
 if test "x$enable_mms" != "xno"; then
     PKG_CHECK_MODULES(MMS, [libmms >= 0.3],
