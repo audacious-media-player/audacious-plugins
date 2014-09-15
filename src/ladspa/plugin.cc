@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <algorithm>
+
 #include <gmodule.h>
 #include <gtk/gtk.h>
 
@@ -40,119 +42,89 @@ static const char * const ladspa_defaults[] = {
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 String module_path;
 Index<GModule *> modules;
-Index<PluginData *> plugins;
-Index<LoadedPlugin *> loadeds;
+Index<SmartPtr<PluginData>> plugins;
+Index<SmartPtr<LoadedPlugin>> loadeds;
 
 GtkWidget * config_win;
 GtkWidget * plugin_list;
 GtkWidget * loaded_list;
 
-static ControlData * parse_control (const LADSPA_Descriptor * desc, int port)
+static ControlData parse_control (const LADSPA_Descriptor & desc, int port)
 {
-    g_return_val_if_fail (desc->PortNames[port], nullptr);
-    const LADSPA_PortRangeHint * hint = & desc->PortRangeHints[port];
+    const LADSPA_PortRangeHint & hint = desc.PortRangeHints[port];
 
-    ControlData * control = new ControlData ();
-    control->port = port;
-    control->name = g_strdup (desc->PortNames[port]);
-    control->is_toggle = LADSPA_IS_HINT_TOGGLED (hint->HintDescriptor) ? 1 : 0;
+    ControlData control;
+    control.port = port;
+    control.name = String (desc.PortNames[port]);
+    control.is_toggle = LADSPA_IS_HINT_TOGGLED (hint.HintDescriptor) ? 1 : 0;
 
-    control->min = LADSPA_IS_HINT_BOUNDED_BELOW (hint->HintDescriptor) ? hint->LowerBound :
-     LADSPA_IS_HINT_BOUNDED_ABOVE (hint->HintDescriptor) ? hint->UpperBound - 100 : -100;
-    control->max = LADSPA_IS_HINT_BOUNDED_ABOVE (hint->HintDescriptor) ? hint->UpperBound :
-     LADSPA_IS_HINT_BOUNDED_BELOW (hint->HintDescriptor) ? hint->LowerBound + 100 : 100;
+    control.min = LADSPA_IS_HINT_BOUNDED_BELOW (hint.HintDescriptor) ? hint.LowerBound :
+     LADSPA_IS_HINT_BOUNDED_ABOVE (hint.HintDescriptor) ? hint.UpperBound - 100 : -100;
+    control.max = LADSPA_IS_HINT_BOUNDED_ABOVE (hint.HintDescriptor) ? hint.UpperBound :
+     LADSPA_IS_HINT_BOUNDED_BELOW (hint.HintDescriptor) ? hint.LowerBound + 100 : 100;
 
-    if (LADSPA_IS_HINT_SAMPLE_RATE (hint->HintDescriptor))
+    if (LADSPA_IS_HINT_SAMPLE_RATE (hint.HintDescriptor))
     {
-        control->min *= 96000;
-        control->max *= 96000;
+        control.min *= 96000;
+        control.max *= 96000;
     }
 
-    if (LADSPA_IS_HINT_DEFAULT_0 (hint->HintDescriptor))
-        control->def = 0;
-    else if (LADSPA_IS_HINT_DEFAULT_1 (hint->HintDescriptor))
-        control->def = 1;
-    else if (LADSPA_IS_HINT_DEFAULT_100 (hint->HintDescriptor))
-        control->def = 100;
-    else if (LADSPA_IS_HINT_DEFAULT_440 (hint->HintDescriptor))
-        control->def = 440;
-    else if (LADSPA_IS_HINT_DEFAULT_MINIMUM (hint->HintDescriptor))
-        control->def = control->min;
-    else if (LADSPA_IS_HINT_DEFAULT_MAXIMUM (hint->HintDescriptor))
-        control->def = control->max;
-    else if (LADSPA_IS_HINT_DEFAULT_LOW (hint->HintDescriptor))
+    if (LADSPA_IS_HINT_DEFAULT_0 (hint.HintDescriptor))
+        control.def = 0;
+    else if (LADSPA_IS_HINT_DEFAULT_1 (hint.HintDescriptor))
+        control.def = 1;
+    else if (LADSPA_IS_HINT_DEFAULT_100 (hint.HintDescriptor))
+        control.def = 100;
+    else if (LADSPA_IS_HINT_DEFAULT_440 (hint.HintDescriptor))
+        control.def = 440;
+    else if (LADSPA_IS_HINT_DEFAULT_MINIMUM (hint.HintDescriptor))
+        control.def = control.min;
+    else if (LADSPA_IS_HINT_DEFAULT_MAXIMUM (hint.HintDescriptor))
+        control.def = control.max;
+    else if (LADSPA_IS_HINT_DEFAULT_LOW (hint.HintDescriptor))
     {
-        if (LADSPA_IS_HINT_LOGARITHMIC (hint->HintDescriptor))
-            control->def = expf (0.75 * logf (control->min) + 0.25 * logf (control->max));
+        if (LADSPA_IS_HINT_LOGARITHMIC (hint.HintDescriptor))
+            control.def = expf (0.75 * logf (control.min) + 0.25 * logf (control.max));
         else
-            control->def = 0.75 * control->min + 0.25 * control->max;
+            control.def = 0.75 * control.min + 0.25 * control.max;
     }
-    else if (LADSPA_IS_HINT_DEFAULT_HIGH (hint->HintDescriptor))
+    else if (LADSPA_IS_HINT_DEFAULT_HIGH (hint.HintDescriptor))
     {
-        if (LADSPA_IS_HINT_LOGARITHMIC (hint->HintDescriptor))
-            control->def = expf (0.25 * logf (control->min) + 0.75 * logf (control->max));
+        if (LADSPA_IS_HINT_LOGARITHMIC (hint.HintDescriptor))
+            control.def = expf (0.25 * logf (control.min) + 0.75 * logf (control.max));
         else
-            control->def = 0.25 * control->min + 0.75 * control->max;
+            control.def = 0.25 * control.min + 0.75 * control.max;
     }
     else
     {
-        if (LADSPA_IS_HINT_LOGARITHMIC (hint->HintDescriptor))
-            control->def = expf (0.5 * logf (control->min) + 0.5 * logf (control->max));
+        if (LADSPA_IS_HINT_LOGARITHMIC (hint.HintDescriptor))
+            control.def = expf (0.5 * logf (control.min) + 0.5 * logf (control.max));
         else
-            control->def = 0.5 * control->min + 0.5 * control->max;
+            control.def = 0.5 * control.min + 0.5 * control.max;
     }
 
     return control;
 }
 
-static void free_control (ControlData * control)
-{
-    g_free (control->name);
-    delete control;
-}
-
-static PluginData * open_plugin (const char * path, const LADSPA_Descriptor * desc)
+static void open_plugin (const char * path, const LADSPA_Descriptor & desc)
 {
     const char * slash = strrchr (path, G_DIR_SEPARATOR);
-    g_return_val_if_fail (slash && slash[1], nullptr);
-    g_return_val_if_fail (desc->Label && desc->Name, nullptr);
+    g_return_if_fail (slash && slash[1]);
+    g_return_if_fail (desc.Label && desc.Name);
 
-    PluginData * plugin = new PluginData ();
-    plugin->path = g_strdup (slash + 1);
-    plugin->desc = desc;
-    plugin->in_ports = g_array_new (0, 0, sizeof (int));
-    plugin->out_ports = g_array_new (0, 0, sizeof (int));
-    plugin->selected = 0;
+    PluginData & plugin = * plugins.append (SmartNew<PluginData> (slash + 1, desc));
 
-    for (unsigned i = 0; i < desc->PortCount; i ++)
+    for (unsigned i = 0; i < desc.PortCount; i ++)
     {
-        if (LADSPA_IS_PORT_CONTROL (desc->PortDescriptors[i]))
-        {
-            ControlData * control = parse_control (desc, i);
-            if (control)
-                plugin->controls.append (control);
-        }
-        else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
-         LADSPA_IS_PORT_INPUT (desc->PortDescriptors[i]))
-            g_array_append_val (plugin->in_ports, i);
-        else if (LADSPA_IS_PORT_AUDIO (desc->PortDescriptors[i]) &&
-         LADSPA_IS_PORT_OUTPUT (desc->PortDescriptors[i]))
-            g_array_append_val (plugin->out_ports, i);
+        if (LADSPA_IS_PORT_CONTROL (desc.PortDescriptors[i]))
+            plugin.controls.append (parse_control (desc, i));
+        else if (LADSPA_IS_PORT_AUDIO (desc.PortDescriptors[i]) &&
+         LADSPA_IS_PORT_INPUT (desc.PortDescriptors[i]))
+            plugin.in_ports.append (i);
+        else if (LADSPA_IS_PORT_AUDIO (desc.PortDescriptors[i]) &&
+         LADSPA_IS_PORT_OUTPUT (desc.PortDescriptors[i]))
+            plugin.out_ports.append (i);
     }
-
-    return plugin;
-}
-
-static void close_plugin (PluginData * plugin)
-{
-    g_free (plugin->path);
-
-    for (ControlData * control : plugin->controls)
-        free_control (control);
-
-    g_array_free (plugin->in_ports, 1);
-    g_array_free (plugin->out_ports, 1);
-    delete plugin;
 }
 
 static GModule * open_module (const char * path)
@@ -176,11 +148,7 @@ static GModule * open_module (const char * path)
 
     const LADSPA_Descriptor * desc;
     for (int i = 0; (desc = descfun (i)); i ++)
-    {
-        PluginData * plugin = open_plugin (path, desc);
-        if (plugin)
-            plugins.append (plugin);
-    }
+        open_plugin (path, * desc);
 
     return handle;
 }
@@ -230,48 +198,36 @@ static void open_modules (void)
 
 static void close_modules (void)
 {
-    for (PluginData * plugin : plugins)
-        close_plugin (plugin);
+    plugins.clear ();
+
     for (GModule * module : modules)
         g_module_close (module);
 }
 
-LoadedPlugin * enable_plugin_locked (PluginData * plugin)
+LoadedPlugin & enable_plugin_locked (PluginData & plugin)
 {
-    LoadedPlugin * loaded = new LoadedPlugin ();
-    loaded->plugin = plugin;
+    LoadedPlugin & loaded = * loadeds.append (SmartNew<LoadedPlugin> (plugin));
 
-    int count = plugin->controls.len ();
-    loaded->values = g_new (float, count);
+    for (auto & control : plugin.controls)
+        loaded.values.append (control.def);
 
-    for (int i = 0; i < count; i ++)
-        loaded->values[i] = plugin->controls[i]->def;
-
-    loadeds.append (loaded);
     return loaded;
 }
 
-void disable_plugin_locked (int i)
+void disable_plugin_locked (LoadedPlugin & loaded)
 {
-    g_return_if_fail (i >= 0 && i < loadeds.len ());
-    LoadedPlugin * loaded = loadeds[i];
-
-    if (loaded->settings_win)
-        gtk_widget_destroy (loaded->settings_win);
+    if (loaded.settings_win)
+        gtk_widget_destroy (loaded.settings_win);
 
     shutdown_plugin_locked (loaded);
-
-    g_free (loaded->values);
-    delete loaded;
-    loadeds.remove (i, 1);
 }
 
 static PluginData * find_plugin (const char * path, const char * label)
 {
-    for (PluginData * plugin : plugins)
+    for (auto & plugin : plugins)
     {
-        if (! strcmp (plugin->path, path) && ! strcmp (plugin->desc->Label, label))
-            return plugin;
+        if (! strcmp (plugin->path, path) && ! strcmp (plugin->desc.Label, label))
+            return plugin.get ();
     }
 
     return nullptr;
@@ -285,40 +241,28 @@ static void save_enabled_to_config (void)
 
     for (int i = 0; i < count; i ++)
     {
-        LoadedPlugin * loaded = loadeds[0];
-        char key[32];
+        LoadedPlugin & loaded = * loadeds[i];
 
-        snprintf (key, sizeof key, "plugin%d_path", i);
-        aud_set_str ("ladspa", key, loaded->plugin->path);
-
-        snprintf (key, sizeof key, "plugin%d_label", i);
-        aud_set_str ("ladspa", key, loaded->plugin->desc->Label);
-
-        snprintf (key, sizeof key, "plugin%d_controls", i);
+        aud_set_str ("ladspa", str_printf ("plugin%d_path", i), loaded.plugin.path);
+        aud_set_str ("ladspa", str_printf ("plugin%d_label", i), loaded.plugin.desc.Label);
 
         Index<double> temp;
-        temp.insert (0, loaded->plugin->controls.len ());
+        temp.insert (0, loaded.values.len ());
+        std::copy (loaded.values.begin (), loaded.values.end (), temp.begin ());
 
-        for (int ci = 0; ci < temp.len (); ci ++)
-            temp[ci] = loaded->values[ci];
+        aud_set_str ("ladspa", str_printf ("plugin%d_controls", i),
+         double_array_to_str (temp.begin (), temp.len ()));
 
-        aud_set_str ("ladspa", key, double_array_to_str (temp.begin (), temp.len ()));
-
-        disable_plugin_locked (0);
+        disable_plugin_locked (loaded);
     }
+
+    loadeds.clear ();
 
     for (int i = count; i < old_count; i ++)
     {
-        char key[32];
-
-        snprintf (key, sizeof key, "plugin%d_path", i);
-        aud_set_str ("ladspa", key, "");
-
-        snprintf (key, sizeof key, "plugin%d_label", i);
-        aud_set_str ("ladspa", key, "");
-
-        snprintf (key, sizeof key, "plugin%d_controls", i);
-        aud_set_str ("ladspa", key, "");
+        aud_set_str ("ladspa", str_printf ("plugin%d_path", i), "");
+        aud_set_str ("ladspa", str_printf ("plugin%d_label", i), "");
+        aud_set_str ("ladspa", str_printf ("plugin%d_controls", i), "");
     }
 }
 
@@ -328,40 +272,30 @@ static void load_enabled_from_config (void)
 
     for (int i = 0; i < count; i ++)
     {
-        char key[32];
-
-        snprintf (key, sizeof key, "plugin%d_path", i);
-        String path = aud_get_str ("ladspa", key);
-
-        snprintf (key, sizeof key, "plugin%d_label", i);
-        String label = aud_get_str ("ladspa", key);
+        String path = aud_get_str ("ladspa", str_printf ("plugin%d_path", i));
+        String label = aud_get_str ("ladspa", str_printf ("plugin%d_label", i));
 
         PluginData * plugin = find_plugin (path, label);
-        if (plugin)
+        if (! plugin)
+            continue;
+
+        LoadedPlugin & loaded = enable_plugin_locked (* plugin);
+
+        String controls = aud_get_str ("ladspa", str_printf ("plugin%d_controls", i));
+
+        Index<double> temp;
+        temp.insert (0, loaded.values.len ());
+
+        if (str_to_double_array (controls, temp.begin (), temp.len ()))
+            std::copy (temp.begin (), temp.end (), loaded.values.begin ());
+        else
         {
-            LoadedPlugin * loaded = enable_plugin_locked (plugin);
-
-            snprintf (key, sizeof key, "plugin%d_controls", i);
-
-            String controls = aud_get_str ("ladspa", key);
-
-            Index<double> temp;
-            temp.insert (0, loaded->plugin->controls.len ());
-
-            if (str_to_double_array (controls, temp.begin (), temp.len ()))
+            /* migrate from old config format */
+            for (int ci = 0; ci < temp.len (); ci ++)
             {
-                for (int ci = 0; ci < temp.len (); ci ++)
-                    loaded->values[ci] = temp[ci];
-            }
-            else
-            {
-                /* migrate from old config format */
-                for (int ci = 0; ci < temp.len (); ci ++)
-                {
-                    snprintf (key, sizeof key, "plugin%d_control%d", i, ci);
-                    loaded->values[ci] = aud_get_double ("ladspa", key);
-                    aud_set_str ("ladspa", key, "");
-                }
+                StringBuf key = str_printf ("plugin%d_control%d", i, ci);
+                loaded.values[ci] = aud_get_double ("ladspa", key);
+                aud_set_str ("ladspa", key, "");
             }
         }
     }
@@ -426,10 +360,10 @@ static void enable_selected (void)
 {
     pthread_mutex_lock (& mutex);
 
-    for (PluginData * plugin : plugins)
+    for (auto & plugin : plugins)
     {
         if (plugin->selected)
-            enable_plugin_locked (plugin);
+            enable_plugin_locked (* plugin);
     }
 
     pthread_mutex_unlock (& mutex);
@@ -442,15 +376,15 @@ static void disable_selected (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int count = loadeds.len ();
-    int offset = 0;
-    for (int i = 0; i < count; i ++)
+    for (int i = 0; i < loadeds.len (); i ++)
     {
-        if (loadeds[i - offset]->selected)
+        if (loadeds[i]->selected)
         {
-            disable_plugin_locked (i - offset);
-            offset ++;
+            disable_plugin_locked (* loadeds[i]);
+            loadeds.remove (i, 1);
         }
+        else
+            i ++;
     }
 
     pthread_mutex_unlock (& mutex);
@@ -473,70 +407,68 @@ static void control_changed (GtkSpinButton * spin, float * value)
     pthread_mutex_unlock (& mutex);
 }
 
-static void configure_plugin (LoadedPlugin * loaded)
+static void configure_plugin (LoadedPlugin & loaded)
 {
-    if (loaded->settings_win)
+    if (loaded.settings_win)
     {
-        gtk_window_present ((GtkWindow *) loaded->settings_win);
+        gtk_window_present ((GtkWindow *) loaded.settings_win);
         return;
     }
 
-    PluginData * plugin = loaded->plugin;
-    char buf[200];
+    PluginData & plugin = loaded.plugin;
 
-    snprintf (buf, sizeof buf, _("%s Settings"), plugin->desc->Name);
-    loaded->settings_win = gtk_dialog_new_with_buttons (buf, (GtkWindow *)
+    StringBuf title = str_printf (_("%s Settings"), plugin.desc.Name);
+    loaded.settings_win = gtk_dialog_new_with_buttons (title, (GtkWindow *)
      config_win, GTK_DIALOG_DESTROY_WITH_PARENT, _("_Close"),
      GTK_RESPONSE_CLOSE, nullptr);
-    gtk_window_set_resizable ((GtkWindow *) loaded->settings_win, 0);
+    gtk_window_set_resizable ((GtkWindow *) loaded.settings_win, 0);
 
-    GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded->settings_win);
+    GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded.settings_win);
 
-    int count = plugin->controls.len ();
+    int count = plugin.controls.len ();
     for (int i = 0; i < count; i ++)
     {
-        ControlData * control = plugin->controls[i];
+        ControlData & control = plugin.controls[i];
 
         GtkWidget * hbox = gtk_hbox_new (FALSE, 6);
         gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
 
-        if (control->is_toggle)
+        if (control.is_toggle)
         {
-            GtkWidget * toggle = gtk_check_button_new_with_label (control->name);
-            gtk_toggle_button_set_active ((GtkToggleButton *) toggle, (loaded->values[i] > 0) ? 1 : 0);
+            GtkWidget * toggle = gtk_check_button_new_with_label (control.name);
+            gtk_toggle_button_set_active ((GtkToggleButton *) toggle, (loaded.values[i] > 0) ? 1 : 0);
             gtk_box_pack_start ((GtkBox *) hbox, toggle, 0, 0, 0);
 
-            g_signal_connect (toggle, "toggled", (GCallback) control_toggled, & loaded->values[i]);
+            g_signal_connect (toggle, "toggled", (GCallback) control_toggled, & loaded.values[i]);
         }
         else
         {
-            snprintf (buf, sizeof buf, "%s:", control->name);
-            GtkWidget * label = gtk_label_new (buf);
+            GtkWidget * label = gtk_label_new (str_printf ("%s:", (const char *) control.name));
             gtk_box_pack_start ((GtkBox *) hbox, label, 0, 0, 0);
 
-            GtkWidget * spin = gtk_spin_button_new_with_range (control->min, control->max, 0.01);
-            gtk_spin_button_set_value ((GtkSpinButton *) spin, loaded->values[i]);
+            GtkWidget * spin = gtk_spin_button_new_with_range (control.min, control.max, 0.01);
+            gtk_spin_button_set_value ((GtkSpinButton *) spin, loaded.values[i]);
             gtk_box_pack_start ((GtkBox *) hbox, spin, 0, 0, 0);
 
-            g_signal_connect (spin, "value-changed", (GCallback) control_changed, & loaded->values[i]);
+            g_signal_connect (spin, "value-changed", (GCallback) control_changed, & loaded.values[i]);
         }
     }
 
-    g_signal_connect (loaded->settings_win, "response", (GCallback) gtk_widget_destroy, nullptr);
-    g_signal_connect (loaded->settings_win, "destroy", (GCallback)
-     gtk_widget_destroyed, & loaded->settings_win);
+    g_signal_connect (loaded.settings_win, "response", (GCallback) gtk_widget_destroy, nullptr);
+    g_signal_connect (loaded.settings_win, "destroy", (GCallback)
+     gtk_widget_destroyed, & loaded.settings_win);
 
-    gtk_widget_show_all (loaded->settings_win);
+    gtk_widget_show_all (loaded.settings_win);
 }
 
 static void configure_selected (void)
 {
     pthread_mutex_lock (& mutex);
 
-    for (LoadedPlugin * loaded : loadeds)
+    for (auto & loaded : loadeds)
     {
         if (loaded->selected)
-            configure_plugin (loaded);
+            configure_plugin (* loaded);
     }
 
     pthread_mutex_unlock (& mutex);

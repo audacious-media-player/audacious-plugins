@@ -51,7 +51,7 @@ void pls_handle_entry (const char * key, const char * value, void * data)
 
     StringBuf uri = uri_construct (value, state->filename);
     if (uri)
-        state->items.append ({String (uri)});
+        state->items.append (String (uri));
 }
 
 static bool playlist_load_pls (const char * filename, VFSFile * file,

@@ -80,7 +80,7 @@ static uint32_t initialPC, initialSP;
 static uint32_t loadAddr, lengthMS, fadeMS;
 
 static uint8_t *filesys[MAX_FS];
-static uint8_t *lib_raw_file;
+static Index<char> lib_raw_file;
 static uint32_t fssize[MAX_FS];
 static int num_fs;
 
@@ -449,7 +449,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 {
 	uint8_t *file, *lib_decoded;
 	uint32_t irx_len;
-	uint64_t file_len, lib_raw_length, lib_len;
+	uint64_t file_len, lib_len;
 	uint8_t *buf;
 	union cpuinfo mipsinfo;
 	corlett_t *lib;
@@ -480,25 +480,18 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 	// Get the library file, if any
 	if (c->lib[0] != 0)
 	{
-		uint64_t tmp_length;
-
 		#if DEBUG_LOADER
 		printf("Loading library: %s\n", c->lib);
 		#endif
-		if (ao_get_lib(c->lib, &lib_raw_file, &tmp_length) != AO_SUCCESS)
-		{
-			return AO_FAIL;
-		}
-		lib_raw_length = tmp_length;
 
-		if (lib_raw_file == nullptr)
+		lib_raw_file = ao_get_lib(c->lib);
+
+		if (!lib_raw_file.len())
 			return AO_FAIL;
 
-		if (corlett_decode(lib_raw_file, lib_raw_length, &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
-		{
-			free(lib_raw_file);
+		if (corlett_decode((uint8_t *)lib_raw_file.begin(), lib_raw_file.len(),
+		 &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
 			return AO_FAIL;
-		}
 
 		#if DEBUG_LOADER
 		printf("Lib FS section: size %x bytes\n", lib->res_size);
@@ -600,10 +593,7 @@ int32_t psf2_execute(void)
 int32_t psf2_stop(void)
 {
 	SPU2close();
-	if (c->lib[0] != 0)
-	{
-		free(lib_raw_file);
-	}
+	lib_raw_file.clear();
 	free(c);
 
 	return AO_SUCCESS;

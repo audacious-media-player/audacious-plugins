@@ -19,14 +19,10 @@
  */
 
 #include <string.h>
-#include <stdlib.h>
 
-#include <glib.h>
-
-#include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
 
 static void strip_char (char * text, char c)
 {
@@ -40,15 +36,15 @@ static void strip_char (char * text, char c)
     * set = 0;
 }
 
-static char * read_win_text (VFSFile * file)
+static Index<char> read_win_text (VFSFile * file)
 {
-    void * raw = nullptr;
-    vfs_file_read_all (file, & raw, nullptr);
-    if (! raw)
-        return nullptr;
+    Index<char> raw = vfs_file_read_all (file);
+    if (! raw.len ())
+        return raw;
 
-    strip_char ((char *) raw, '\r');
-    return (char *) raw;
+    raw.append (0);  /* null-terminated */
+    strip_char (raw.begin (), '\r');
+    return raw;
 }
 
 static char * split_line (char * line)
@@ -64,11 +60,11 @@ static char * split_line (char * line)
 static bool playlist_load_m3u (const char * path, VFSFile * file,
  String & title, Index<PlaylistAddItem> & items)
 {
-    char * text = read_win_text (file);
-    if (! text)
+    Index<char> text = read_win_text (file);
+    if (! text.len ())
         return false;
 
-    char * parse = text;
+    char * parse = text.begin ();
 
     while (parse)
     {
@@ -81,13 +77,12 @@ static bool playlist_load_m3u (const char * path, VFSFile * file,
         {
             StringBuf s = uri_construct (parse, path);
             if (s)
-                items.append ({String (s)});
+                items.append (String (s));
         }
 
         parse = next;
     }
 
-    g_free (text);
     return true;
 }
 

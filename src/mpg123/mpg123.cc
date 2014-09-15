@@ -106,9 +106,6 @@ static void make_format_string (const struct mpg123_frameinfo * info, char *
 
 static bool mpg123_probe_for_fd (const char * fname, VFSFile * file)
 {
-    if (! file)
-        return false;
-
     /* MPG123 likes to grab WMA streams, so blacklist anything that starts with
      * mms://.  If there are mms:// streams out there carrying MP3, they will
      * just have to play in ffaudio.  --jlindgren */
@@ -184,9 +181,6 @@ RETRY:;
 
 static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 {
-    if (! file)
-        return Tuple ();
-
     bool stream = vfs_is_streaming (file);
     mpg123_handle * decoder = mpg123_new (nullptr, nullptr);
     int result;
@@ -387,19 +381,18 @@ cleanup:
 
 static bool mpg123_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
 {
-    if (! handle)
+    if (vfs_is_streaming (handle))
         return false;
 
     return audtag::tuple_write (tuple, handle, audtag::TagType::ID3v2);
 }
 
-static bool mpg123_get_image (const char * filename, VFSFile * handle,
- void * * data, int64_t * length)
+static Index<char> mpg123_get_image (const char * filename, VFSFile * handle)
 {
-    if (! handle || vfs_is_streaming (handle))
-        return false;
+    if (vfs_is_streaming (handle))
+        return Index<char> ();
 
-    return audtag::image_read (handle, data, length);
+    return audtag::image_read (handle);
 }
 
 /** plugin description header **/

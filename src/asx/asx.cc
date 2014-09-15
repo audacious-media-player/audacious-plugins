@@ -50,9 +50,9 @@ void asx_handle_entry (const char * key, const char * value, void * data)
         return;
 
     if (! strncmp ("http://", uri, 7))
-        state->items.append ({String (str_printf ("mms://%s", uri + 7))});
+        state->items.append (String (str_printf ("mms://%s", uri + 7)));
     else
-        state->items.append ({String (uri)});
+        state->items.append (String (uri));
 }
 
 static bool playlist_load_asx (const char * filename, VFSFile * file,

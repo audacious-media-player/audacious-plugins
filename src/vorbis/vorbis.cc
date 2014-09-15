@@ -398,14 +398,15 @@ static Tuple get_song_tuple (const char * filename, VFSFile * file)
     return tuple;
 }
 
-static bool get_song_image (const char * filename, VFSFile * file,
- void * * data, int64_t * size)
+static Index<char> get_song_image (const char * filename, VFSFile * file)
 {
+    Index<char> data;
+
     OggVorbis_File vfile;
 
     if (ov_open_callbacks (file, & vfile, nullptr, 0, vfs_is_streaming (file) ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
-        return false;
+        return data;
 
     vorbis_comment * comment = ov_comment (& vfile, -1);
     if (! comment)
@@ -415,7 +416,7 @@ static bool get_song_image (const char * filename, VFSFile * file,
 
     if ((s = vorbis_comment_query (comment, "METADATA_BLOCK_PICTURE", 0)))
     {
-        unsigned mime_length, desc_length;
+        unsigned mime_length, desc_length, length;
 
         size_t length2;
         unsigned char * data2 = g_base64_decode (s, & length2);
@@ -430,15 +431,15 @@ static bool get_song_image (const char * filename, VFSFile * file,
         if (length2 < 8 + mime_length + 4 + desc_length + 20)
             goto PARSE_ERR;
 
-        * size = FROM_BE32 (* (uint32_t *) (data2 + 8 + mime_length + 4 + desc_length + 16));
-        if (length2 < 8 + mime_length + 4 + desc_length + 20 + (unsigned) (* size))
+        length = FROM_BE32 (* (uint32_t *) (data2 + 8 + mime_length + 4 + desc_length + 16));
+        if (length2 < 8 + mime_length + 4 + desc_length + 20 + length)
             goto PARSE_ERR;
 
-        * data = g_memdup ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, * size);
+        data.insert ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, 0, length);
 
         g_free (data2);
         ov_clear (& vfile);
-        return true;
+        return data;
 
     PARSE_ERR:
         AUDERR ("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
@@ -457,16 +458,16 @@ static bool get_song_image (const char * filename, VFSFile * file,
             goto ERR;
         }
 
-        * data = data2;
-        * size = length2;
+        data.insert ((const char *) data2, 0, length2);
 
+        g_free (data2);
         ov_clear (& vfile);
-        return true;
+        return data;
     }
 
 ERR:
     ov_clear (& vfile);
-    return false;
+    return data;
 }
 
 static const char vorbis_about[] =

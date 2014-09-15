@@ -188,9 +188,10 @@ static void copy_selected_to_new (int playlist)
     {
         if (aud_playlist_entry_get_selected (playlist, entry))
         {
-            PlaylistAddItem & item = items.append ();
-            item.filename = aud_playlist_entry_get_filename (playlist, entry);
-            item.tuple = aud_playlist_entry_get_tuple (playlist, entry, TRUE);
+            items.append (
+                aud_playlist_entry_get_filename (playlist, entry),
+                aud_playlist_entry_get_tuple (playlist, entry, TRUE)
+            );
         }
     }
 

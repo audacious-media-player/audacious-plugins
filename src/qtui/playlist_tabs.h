@@ -57,9 +57,7 @@ private:
 
     static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
     {
-        int global_level = (int) (long) data;
-
-        if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+        if (data == PLAYLIST_UPDATE_STRUCTURE)
             tabWidget->populatePlaylists();
 
         int lists = aud_playlist_count ();
@@ -67,7 +65,7 @@ private:
         for (int list = 0; list < lists; list ++)
         {
             int at, count;
-            int level = aud_playlist_updated_range (list, & at, & count);
+            PlaylistUpdateLevel level = aud_playlist_updated_range (list, & at, & count);
 
             if (level)
                 tabWidget->playlistWidget (list)->update (level, at, count);

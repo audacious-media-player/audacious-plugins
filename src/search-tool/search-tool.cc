@@ -329,7 +329,7 @@ static void begin_add (const char * path)
     aud_playlist_remove_failed (list);
 
     Index<PlaylistAddItem> add;
-    add.append ({String (uri)});
+    add.append (String (uri));
     aud_playlist_entry_insert_filtered (list, -1, std::move (add), filter_cb, nullptr, false);
 
     adding = true;
@@ -509,9 +509,10 @@ static void do_add (gboolean play, String & title)
 
         for (int entry : item->matches)
         {
-            PlaylistAddItem & item = add.append ();
-            item.filename = aud_playlist_entry_get_filename (list, entry);
-            item.tuple = aud_playlist_entry_get_tuple (list, entry, true);
+            add.append (
+                aud_playlist_entry_get_filename (list, entry),
+                aud_playlist_entry_get_tuple (list, entry, true)
+            );
         }
 
         n_selected ++;

@@ -26,7 +26,7 @@ static void get_value (void * user, int row, int column, GValue * value)
     g_return_if_fail (row >= 0 && row < plugins.len ());
     g_return_if_fail (column == 0);
 
-    g_value_set_string (value, plugins[row]->desc->Name);
+    g_value_set_string (value, plugins[row]->desc.Name);
 }
 
 static bool get_selected (void * user, int row)
@@ -45,7 +45,7 @@ static void set_selected (void * user, int row, bool selected)
 
 static void select_all (void * user, bool selected)
 {
-    for (PluginData * plugin : plugins)
+    for (auto & plugin : plugins)
         plugin->selected = selected;
 }
 

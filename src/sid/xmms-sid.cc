@@ -35,23 +35,6 @@
 
 static void xs_get_song_tuple_info(Tuple &pResult, const xs_tuneinfo_t &info, int subTune);
 
-class FileBuffer
-{
-public:
-    void *data;
-    int64_t size;
-
-    FileBuffer(VFSFile *file) :
-        data(nullptr),
-        size(0)
-    {
-        vfs_file_read_all(file, &data, &size);
-    }
-
-    ~FileBuffer()
-        { free(data); }
-};
-
 /*
  * Initialization functions
  */
@@ -93,17 +76,17 @@ bool xs_is_our_file(const char *filename, VFSFile *file)
 bool xs_play_file(const char *filename, VFSFile *file)
 {
     /* Load file */
-    FileBuffer buf(file);
-    if (!xs_sidplayfp_probe(buf.data, buf.size))
+    Index<char> buf = vfs_file_read_all(file);
+    if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return false;
 
     /* Get tune information */
     xs_tuneinfo_t info;
-    if (!xs_sidplayfp_getinfo(info, filename, buf.data, buf.size))
+    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
         return false;
 
     /* Initialize the tune */
-    if (!xs_sidplayfp_load(buf.data, buf.size))
+    if (!xs_sidplayfp_load(buf.begin(), buf.len()))
         return false;
 
     /* Set general status information */
@@ -259,8 +242,8 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     xs_tuneinfo_t info;
     int tune = -1;
 
-    FileBuffer buf(fd);
-    if (!xs_sidplayfp_probe(buf.data, buf.size))
+    Index<char> buf = vfs_file_read_all(fd);
+    if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return tuple;
 
     /* Get information from URL */
@@ -268,7 +251,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     tune = tuple.get_int (FIELD_SUBSONG_ID);
 
     /* Get tune information from emulation engine */
-    if (!xs_sidplayfp_getinfo(info, filename, buf.data, buf.size))
+    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
         return tuple;
 
     xs_get_song_tuple_info(tuple, info, tune);

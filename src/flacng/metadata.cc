@@ -189,7 +189,7 @@ ERR:
     return false;
 }
 
-bool flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length)
+Index<char> flac_get_image(const char *filename, VFSFile *fd)
 {
     AUDDBG("Probe for song image.\n");
 
@@ -197,7 +197,8 @@ bool flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *len
     FLAC__Metadata_Chain *chain;
     FLAC__StreamMetadata *metadata = nullptr;
     FLAC__Metadata_ChainStatus status;
-    bool has_image = false;
+
+    Index<char> data;
 
     chain = FLAC__metadata_chain_new();
 
@@ -219,25 +220,22 @@ bool flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *len
         if (metadata->data.picture.type == FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER)
         {
             AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
-
-            * data = g_malloc (metadata->data.picture.data_length);
-            * length = metadata->data.picture.data_length;
-            memcpy (* data, metadata->data.picture.data, * length);
-            has_image = true;
+            data.insert ((const char *) metadata->data.picture.data, 0,
+             metadata->data.picture.data_length);
         }
     }
 
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_delete(chain);
 
-    return has_image;
+    return data;
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
     AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
-    return false;
+    return data;
 }
 
 static void parse_gain_text(const char *text, int *value, int *unit)

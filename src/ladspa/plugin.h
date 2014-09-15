@@ -30,30 +30,39 @@
 
 #define LADSPA_BUFLEN 1024
 
-typedef struct {
+struct ControlData {
     int port;
-    char * name;
-    char is_toggle;
+    String name;
+    bool is_toggle;
     float min, max, def;
-} ControlData;
+};
 
-typedef struct {
-    char * path;
-    const LADSPA_Descriptor * desc;
-    Index<ControlData *> controls;
-    GArray * in_ports, * out_ports; /* (int) */
-    char selected;
-} PluginData;
+struct PluginData
+{
+    String path;
+    const LADSPA_Descriptor & desc;
+    Index<ControlData> controls;
+    Index<int> in_ports, out_ports;
+    bool selected = false;
 
-typedef struct {
-    PluginData * plugin;
-    float * values;
-    char selected;
-    char active;
+    PluginData (const char * path, const LADSPA_Descriptor & desc) :
+        path (path),
+        desc (desc) {}
+};
+
+struct LoadedPlugin
+{
+    PluginData & plugin;
+    Index<float> values;
+    bool selected = false;
+    bool active = false;
     Index<LADSPA_Handle> instances;
-    float * * in_bufs, * * out_bufs;
-    GtkWidget * settings_win;
-} LoadedPlugin;
+    Index<Index<float>> in_bufs, out_bufs;
+    GtkWidget * settings_win = nullptr;
+
+    LoadedPlugin (PluginData & plugin) :
+        plugin (plugin) {}
+};
 
 /* plugin.c */
 
@@ -64,20 +73,20 @@ typedef struct {
 extern pthread_mutex_t mutex;
 extern String module_path;
 extern Index<GModule *> modules;
-extern Index<PluginData *> plugins;
-extern Index<LoadedPlugin *> loadeds;
+extern Index<SmartPtr<PluginData>> plugins;
+extern Index<SmartPtr<LoadedPlugin>> loadeds;
 
 extern GtkWidget * about_win;
 extern GtkWidget * config_win;
 extern GtkWidget * plugin_list;
 extern GtkWidget * loaded_list;
 
-LoadedPlugin * enable_plugin_locked (PluginData * plugin);
-void disable_plugin_locked (int i);
+LoadedPlugin & enable_plugin_locked (PluginData & plugin);
+void disable_plugin_locked (LoadedPlugin & loaded);
 
 /* effect.c */
 
-void shutdown_plugin_locked (LoadedPlugin * loaded);
+void shutdown_plugin_locked (LoadedPlugin & loaded);
 
 void ladspa_start (int * channels, int * rate);
 void ladspa_process (float * * data, int * samples);

@@ -479,22 +479,20 @@ static void add_remove_pages (void)
 
 void ui_playlist_notebook_update (void * data, void * user)
 {
-    int global_level = GPOINTER_TO_INT (data);
-
-    if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+    if (data == PLAYLIST_UPDATE_STRUCTURE)
         add_remove_pages ();
 
     int lists = aud_playlist_count ();
 
     for (int list = 0; list < lists; list ++)
     {
-        if (global_level >= PLAYLIST_UPDATE_METADATA)
+        if (data >= PLAYLIST_UPDATE_METADATA)
             set_tab_label (list, get_tab_label (list));
 
         GtkWidget * treeview = playlist_get_treeview (list);
 
         int at, count;
-        int level = aud_playlist_updated_range (list, & at, & count);
+        PlaylistUpdateLevel level = aud_playlist_updated_range (list, & at, & count);
 
         if (level)
             ui_playlist_widget_update (treeview, level, at, count);

@@ -157,7 +157,7 @@ static void xspf_add_file (xmlNode * track, const char * filename,
         if (tuple)
             tuple.set_filename (location);
 
-        items.append ({location, std::move (tuple)});
+        items.append (location, std::move (tuple));
     }
 }
 

@@ -383,13 +383,12 @@ static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tupl
     return audtag::tuple_write (tuple, file, audtag::TagType::None);
 }
 
-static bool ffaudio_read_image (const char * filename, VFSFile * file,
- void * * data, int64_t * size)
+static Index<char> ffaudio_read_image (const char * filename, VFSFile * file)
 {
     if (str_has_suffix_nocase (filename, ".m4a") || str_has_suffix_nocase (filename, ".mp4"))
-        return read_itunes_cover (filename, file, data, size);
+        return read_itunes_cover (filename, file);
     
-    return false;
+    return Index<char> ();
 }
 
 static bool ffaudio_play (const char * filename, VFSFile * file)

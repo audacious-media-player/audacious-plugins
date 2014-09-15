@@ -73,33 +73,23 @@ bool xsf_init()
     return true;
 }
 
-int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
+Index<char> xsf_get_lib(char *filename)
 {
-	void *filebuf;
-	int64_t size;
-
-	StringBuf path = filename_build ({dirpath, filename});
-	vfs_file_get_contents(path, &filebuf, &size);
-
-	*buffer = filebuf;
-	*length = (uint64_t)size;
-
-	return AO_SUCCESS;
+	StringBuf path = filename_build({dirpath, filename});
+	return vfs_file_get_contents(path);
 }
 
 Tuple xsf_tuple(const char *filename, VFSFile *fd)
 {
 	Tuple t;
 	corlett_t *c;
-	void *buf;
-	int64_t sz;
 
-	vfs_file_get_contents (filename, & buf, & sz);
+	Index<char> buf = vfs_file_read_all(fd);
 
-	if (!buf)
+	if (!buf.len())
 		return t;
 
-	if (corlett_decode((uint8_t *) buf, sz, nullptr, nullptr, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
 		return t;
 
 	t.set_filename (filename);
@@ -113,41 +103,27 @@ Tuple xsf_tuple(const char *filename, VFSFile *fd)
 	t.set_str (FIELD_CODEC, "GBA/Nintendo DS Audio");
 
 	free(c);
-	free(buf);
 
 	return t;
 }
 
-static int xsf_get_length(const char *filename)
+static int xsf_get_length(const Index<char> &buf)
 {
 	corlett_t *c;
-	void *buf;
-	int64_t size;
 
-	vfs_file_get_contents(filename, &buf, &size);
-
-	if (!buf)
+	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
 		return -1;
-
-	if (corlett_decode((uint8_t *) buf, size, nullptr, nullptr, &c) != AO_SUCCESS)
-	{
-		free(buf);
-		return -1;
-	}
 
 	int length = (c->inf_length && !xsf_cfg.ignore_length) ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 
 	free(c);
-	free(buf);
 
 	return length;
 }
 
 static bool xsf_play(const char * filename, VFSFile * file)
 {
-	void *buffer;
-	int64_t size;
-	int length = xsf_get_length(filename);
+	int length = -1;
 	int16_t samples[44100*2];
 	int seglen = 44100 / 60;
 	float pos;
@@ -159,9 +135,17 @@ static bool xsf_play(const char * filename, VFSFile * file)
 
 	dirpath = String (str_copy (filename, slash + 1 - filename));
 
-	vfs_file_get_contents (filename, & buffer, & size);
+	Index<char> buf = vfs_file_read_all(file);
 
-	if (xsf_start(buffer, size) != AO_SUCCESS)
+	if (!buf.len())
+	{
+		error = true;
+		goto ERR_NO_CLOSE;
+	}
+
+	length = xsf_get_length(buf);
+
+	if (xsf_start(buf.begin(), buf.len()) != AO_SUCCESS)
 	{
 		error = true;
 		goto ERR_NO_CLOSE;
@@ -195,7 +179,7 @@ static bool xsf_play(const char * filename, VFSFile * file)
 			{
 				xsf_term();
 
-				if (xsf_start(buffer, size) == AO_SUCCESS)
+				if (xsf_start(buf.begin(), buf.len()) == AO_SUCCESS)
 				{
 					pos = 0;
 					while (pos < seek_value)
@@ -224,7 +208,6 @@ CLEANUP:
 
 ERR_NO_CLOSE:
 	dirpath = String ();
-	free(buffer);
 
 	return !error;
 }

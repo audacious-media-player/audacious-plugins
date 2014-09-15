@@ -34,7 +34,7 @@ typedef struct {
 
 static void finish_item (LoadState * state)
 {
-    state->items.append ({std::move (state->uri), std::move (state->tuple)});
+    state->items.append (std::move (state->uri), std::move (state->tuple));
 }
 
 static void handle_heading (const char * heading, void * data)

@@ -148,9 +148,9 @@ void Playlist::scrollToCurrent ()
     scrollTo (index);
 }
 
-void Playlist::update (int type, int at, int count)
+void Playlist::update (void * level, int at, int count)
 {
-    if (type == PLAYLIST_UPDATE_STRUCTURE)
+    if (level == PLAYLIST_UPDATE_STRUCTURE)
     {
         int old_entries = model->rowCount ();
         int entries = aud_playlist_entry_count (playlist ());
@@ -158,7 +158,7 @@ void Playlist::update (int type, int at, int count)
         model->removeRows (at, old_entries - (entries - count));
         model->insertRows (at, count);
     }
-    else if (type == PLAYLIST_UPDATE_METADATA)
+    else if (level == PLAYLIST_UPDATE_METADATA)
         model->updateRows (at, count);
 
     updateQueue ();

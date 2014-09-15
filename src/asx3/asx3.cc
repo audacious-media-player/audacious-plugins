@@ -99,7 +99,7 @@ static void parse_entry (const xmlNode * entry, Index<PlaylistAddItem> & items)
         {
             const char * uri = get_prop_nocase (node, "href");
             if (uri)
-                items.append ({String (uri)});
+                items.append (String (uri));
         }
     }
 }

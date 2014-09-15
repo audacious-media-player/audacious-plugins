@@ -27,8 +27,7 @@
 GtkWidget * ui_playlist_widget_new (int playlist);
 int ui_playlist_widget_get_playlist (GtkWidget * widget);
 void ui_playlist_widget_set_playlist (GtkWidget * widget, int playlist);
-void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
- int count);
+void ui_playlist_widget_update (GtkWidget * widget, void * level, int at, int count);
 void ui_playlist_widget_scroll (GtkWidget * widget);
 
 enum {PW_COL_NUMBER, PW_COL_TITLE, PW_COL_ARTIST, PW_COL_YEAR, PW_COL_ALBUM,

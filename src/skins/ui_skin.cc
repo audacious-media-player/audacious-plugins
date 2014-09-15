@@ -389,11 +389,12 @@ static void skin_load_viscolor (Skin * skin, const char * path)
     if (! file)
         return;
 
-    void * buffer = nullptr;
-    vfs_file_read_all (file, & buffer, nullptr);
+    Index<char> buffer = vfs_file_read_all (file);
+    buffer.append (0);  /* null-terminated */
+
     vfs_fclose (file);
 
-    char * string = (char *) buffer;
+    char * string = buffer.begin ();
 
     for (int line = 0; string && line < 24; line ++)
     {
@@ -407,8 +408,6 @@ static void skin_load_viscolor (Skin * skin, const char * path)
         g_array_free (array, TRUE);
         string = next;
     }
-
-    g_free (buffer);
 }
 
 static void

@@ -45,6 +45,6 @@ extern "C" {
 AVIOContext * io_context_new (VFSFile * file);
 void io_context_free (AVIOContext * context);
 
-bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, int64_t * size);
+Index<char> read_itunes_cover (const char * filename, VFSFile * file);
 
 #endif

@@ -70,9 +70,9 @@ extern void setlength(int32_t stop, int32_t fade);
 
 int32_t psf_start(uint8_t *buffer, uint32_t length)
 {
-	uint8_t *file, *lib_decoded, *lib_raw_file, *alib_decoded;
+	uint8_t *file, *lib_decoded, *alib_decoded;
 	uint32_t offset, plength, PC, SP, GP, lengthMS, fadeMS;
-	uint64_t file_len, lib_len, lib_raw_length, alib_len;
+	uint64_t file_len, lib_len, alib_len;
 	corlett_t *lib;
 	int i;
 	union cpuinfo mipsinfo;
@@ -125,28 +125,17 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	// Get the library file, if any
 	if (c->lib[0] != 0)
 	{
-		uint64_t tmp_length;
-
 		#if DEBUG_LOADER
 		printf("Loading library: %s\n", c->lib);
 		#endif
-		if (ao_get_lib(c->lib, &lib_raw_file, &tmp_length) != AO_SUCCESS)
-		{
-			return AO_FAIL;
-		}
-		lib_raw_length = tmp_length;
 
-		if (lib_raw_file == nullptr)
+		Index<char> buf = ao_get_lib(c->lib);
+
+		if (!buf.len())
 			return AO_FAIL;
 
-		if (corlett_decode(lib_raw_file, lib_raw_length, &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
-		{
-			free(lib_raw_file);
+		if (corlett_decode((uint8_t *)buf.begin(), buf.len(), &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
 			return AO_FAIL;
-		}
-
-		// Free up raw file
-		free(lib_raw_file);
 
 		if (strncmp((char *)lib_decoded, "PS-X EXE", 8))
 		{
@@ -221,29 +210,17 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	{
 		if (c->libaux[i][0] != 0)
 		{
-			uint64_t tmp_length;
-
 			#if DEBUG_LOADER
 			printf("Loading aux library: %s\n", c->libaux[i]);
 			#endif
 
-			if (ao_get_lib(c->libaux[i], &lib_raw_file, &tmp_length) != AO_SUCCESS)
-			{
-				return AO_FAIL;
-			}
-			lib_raw_length = tmp_length;
+			Index<char> buf = ao_get_lib(c->libaux[i]);
 
-			if (lib_raw_file == nullptr)
+			if (!buf.len())
 				return AO_FAIL;
 
-			if (corlett_decode(lib_raw_file, lib_raw_length, &alib_decoded, &alib_len, &lib) != AO_SUCCESS)
-			{
-				free(lib_raw_file);
+			if (corlett_decode((uint8_t *)buf.begin(), buf.len(), &alib_decoded, &alib_len, &lib) != AO_SUCCESS)
 				return AO_FAIL;
-			}
-
-			// Free up raw file
-			free(lib_raw_file);
 
 			if (strncmp((char *)alib_decoded, "PS-X EXE", 8))
 			{

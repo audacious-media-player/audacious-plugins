@@ -193,19 +193,19 @@ static String scrape_uri_from_lyricwiki_search_result(const char *buf, int64_t l
 
 static void update_lyrics_window(const char *title, const char *artist, const char *lyrics);
 
-static void get_lyrics_step_3(const char *uri, const void *buf, int64_t len, void*)
+static void get_lyrics_step_3(const char *uri, const Index<char> &buf, void*)
 {
     if (!state.uri || strcmp(state.uri, uri))
         return;
 
-    if (!len)
+    if (!buf.len())
     {
         update_lyrics_window (_("Error"), nullptr,
          str_printf (_("Unable to fetch %s"), uri));
         return;
     }
 
-    char *lyrics = scrape_lyrics_from_lyricwiki_edit_page((const char*)buf, len);
+    char *lyrics = scrape_lyrics_from_lyricwiki_edit_page(buf.begin(), buf.len());
 
     if (!lyrics)
     {
@@ -219,19 +219,19 @@ static void get_lyrics_step_3(const char *uri, const void *buf, int64_t len, voi
     g_free(lyrics);
 }
 
-static void get_lyrics_step_2(const char *uri1, const void *buf, int64_t len, void*)
+static void get_lyrics_step_2(const char *uri1, const Index<char> &buf, void*)
 {
     if (!state.uri || strcmp(state.uri, uri1))
         return;
 
-    if (!len)
+    if (!buf.len())
     {
         update_lyrics_window (_("Error"), nullptr,
          str_printf (_("Unable to fetch %s"), uri1));
         return;
     }
 
-    String uri = scrape_uri_from_lyricwiki_search_result((const char*)buf, len);
+    String uri = scrape_uri_from_lyricwiki_search_result(buf.begin(), buf.len());
 
     if (!uri)
     {

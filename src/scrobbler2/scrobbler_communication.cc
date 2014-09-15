@@ -84,7 +84,7 @@ static char * scrobbler_get_signature (Index<API_Parameter> & params)
 static String create_message_to_lastfm (const char * method_name, int n_args, ...)
 {
     Index<API_Parameter> params;
-    params.append ({String ("method"), String (method_name)});
+    params.append (String ("method"), String (method_name));
 
     StringBuf buf = str_concat ({"method=", method_name});
 
@@ -96,7 +96,7 @@ static String create_message_to_lastfm (const char * method_name, int n_args, ..
         const char * name = va_arg (vl, const char *);
         const char * arg = va_arg (vl, const char *);
 
-        params.append ({String (name), String (arg)});
+        params.append (String (name), String (arg));
 
         char * esc = curl_easy_escape (curlHandle, arg, 0);
         str_insert (buf, -1, "&");

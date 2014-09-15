@@ -418,8 +418,7 @@ void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name,
 
     if (p < 0)
     {
-        EqualizerPreset & preset = list.append ();
-        preset.name = String (name);
+        list.append (String (name));
         p = list.len () - 1;
     }
 
