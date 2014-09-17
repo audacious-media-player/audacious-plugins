@@ -42,8 +42,8 @@ enum
 
 static void amidiplug_play_loop (midifile_t & midifile);
 
-static bool amidiplug_play (const char * filename_uri, VFSFile * file);
-static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
+static bool amidiplug_play (const char * filename_uri, VFSFile & file);
+static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile & file);
 static int amidiplug_skipto (midifile_t & midifile, int seektime);
 
 static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", nullptr};
@@ -76,14 +76,11 @@ static bool amidiplug_init (void)
     return true;
 }
 
-static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * fp)
+static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile & fp)
 {
     char magic_bytes[4];
 
-    if (fp == nullptr)
-        return false;
-
-    if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
+    if (fp.fread (magic_bytes, 1, 4) != 4)
         return false;
 
     if (!strncmp (magic_bytes, "MThd", 4))
@@ -96,10 +93,10 @@ static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile *
     {
         /* skip the four bytes after RIFF,
            then read the next four */
-        if (vfs_fseek (fp, 4, VFS_SEEK_CUR) != 0)
+        if (fp.fseek (4, VFS_SEEK_CUR) != 0)
             return false;
 
-        if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
+        if (fp.fread (magic_bytes, 1, 4) != 4)
             return false;
 
         if (!strncmp (magic_bytes, "RMID", 4))
@@ -112,7 +109,7 @@ static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile *
     return false;
 }
 
-static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file)
+static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile & file)
 {
     /* song title, get it from the filename */
     Tuple tuple;
@@ -166,7 +163,7 @@ static void audio_cleanup (void)
     delete[] s_buf;
 }
 
-static bool amidiplug_play (const char * filename_uri, VFSFile * file)
+static bool amidiplug_play (const char * filename_uri, VFSFile & file)
 {
     if (__sync_bool_compare_and_swap (& backend_settings_changed, true, false))
     {
@@ -183,7 +180,7 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
     midifile_t midifile;
 
     AUDDBG ("PLAY requested, opening file: %s\n", filename_uri);
-    midifile.file_pointer = file;
+    midifile.file_data = file.read_all ();
     midifile.file_name = String (filename_uri);
 
     switch (midifile.read_id ())
@@ -229,7 +226,7 @@ static bool amidiplug_play (const char * filename_uri, VFSFile * file)
         AUDDBG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
 
         /* done with file */
-        midifile.file_pointer = nullptr;
+        midifile.file_data.clear ();
 
         /* play play play! */
         AUDDBG ("PLAY requested, starting play thread\n");

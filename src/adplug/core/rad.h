@@ -30,7 +30,7 @@ public:
 		: CmodPlayer(newopl)
 	{ *desc = '\0'; };
 
-	bool load(VFSFile *fd, const CFileProvider &fp);
+	bool load(VFSFile &fd, const CFileProvider &fp);
 	float getrefresh();
 
 	std::string gettype()

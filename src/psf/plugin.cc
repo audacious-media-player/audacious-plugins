@@ -87,16 +87,16 @@ static PSFEngine psf_probe(const char *buf, int len)
 /* ao_get_lib: called to load secondary files */
 Index<char> ao_get_lib(char *filename)
 {
-	StringBuf path = filename_build({dirpath, filename});
-	return vfs_file_get_contents(path);
+	VFSFile file(filename_build({dirpath, filename}), "r");
+	return file ? file.read_all() : Index<char>();
 }
 
-Tuple psf2_tuple(const char *filename, VFSFile *file)
+Tuple psf2_tuple(const char *filename, VFSFile &file)
 {
 	Tuple t;
 	corlett_t *c;
 
-	Index<char> buf = vfs_file_read_all(file);
+	Index<char> buf = file.read_all ();
 
 	if (!buf.len())
 		return t;
@@ -119,7 +119,7 @@ Tuple psf2_tuple(const char *filename, VFSFile *file)
 	return t;
 }
 
-static bool psf2_play(const char * filename, VFSFile * file)
+static bool psf2_play(const char * filename, VFSFile & file)
 {
 	bool error = false;
 
@@ -129,7 +129,7 @@ static bool psf2_play(const char * filename, VFSFile * file)
 
 	dirpath = String (str_copy (filename, slash + 1 - filename));
 
-	Index<char> buf = vfs_file_read_all (file);
+	Index<char> buf = file.read_all ();
 
 	PSFEngine eng = psf_probe(buf.begin(), buf.len());
 	if (eng == ENG_NONE || eng == ENG_COUNT)
@@ -180,10 +180,10 @@ void psf2_update(unsigned char *buffer, long count)
 	aud_input_write_audio (buffer, count);
 }
 
-bool psf2_is_our_fd(const char *filename, VFSFile *file)
+bool psf2_is_our_fd(const char *filename, VFSFile &file)
 {
 	char magic[4];
-	if (vfs_fread(magic, 1, 4, file) < 4)
+	if (file.fread (magic, 1, 4) < 4)
 		return false;
 
 	return (psf_probe(magic, 4) != ENG_NONE);

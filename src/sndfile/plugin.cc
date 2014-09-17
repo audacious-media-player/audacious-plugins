@@ -56,31 +56,31 @@
 static sf_count_t
 sf_get_filelen (void *user_data)
 {
-    return vfs_fsize ((VFSFile *) user_data);
+    return ((VFSFile *) user_data)->fsize ();
 }
 
 static sf_count_t
 sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
-    return vfs_fseek ((VFSFile *) user_data, offset, to_vfs_seek_type (whence));
+    return ((VFSFile *) user_data)->fseek (offset, to_vfs_seek_type (whence));
 }
 
 static sf_count_t
 sf_vread (void *ptr, sf_count_t count, void *user_data)
 {
-    return vfs_fread (ptr, 1, count, (VFSFile *) user_data);
+    return ((VFSFile *) user_data)->fread (ptr, 1, count);
 }
 
 static sf_count_t
 sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
 {
-    return vfs_fwrite (ptr, 1, count, (VFSFile *) user_data);
+    return ((VFSFile *) user_data)->fwrite (ptr, 1, count);
 }
 
 static sf_count_t
 sf_tell (void *user_data)
 {
-    return vfs_ftell ((VFSFile *) user_data);
+    return ((VFSFile *) user_data)->ftell ();
 }
 
 static SF_VIRTUAL_IO sf_virtual_io =
@@ -106,14 +106,14 @@ static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, int tup_id)
         tup.set_int (tup_id, atoi (str));
 }
 
-static Tuple get_song_tuple (const char * filename, VFSFile * file)
+static Tuple get_song_tuple (const char * filename, VFSFile & file)
 {
     SNDFILE *sndfile;
     SF_INFO sfinfo;
     const char *format, *subformat;
     Tuple ti;
 
-    sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, file);
+    sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, & file);
 
     if (sndfile == nullptr)
         return ti;
@@ -281,14 +281,10 @@ static Tuple get_song_tuple (const char * filename, VFSFile * file)
     return ti;
 }
 
-static bool play_start (const char * filename, VFSFile * file)
+static bool play_start (const char * filename, VFSFile & file)
 {
-    if (file == nullptr)
-        return false;
-
     SF_INFO sfinfo;
-    SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo,
-     file);
+    SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, & file);
     if (sndfile == nullptr)
         return false;
 
@@ -322,13 +318,13 @@ static bool play_start (const char * filename, VFSFile * file)
 }
 
 static bool
-is_our_file_from_vfs(const char *filename, VFSFile *fin)
+is_our_file_from_vfs(const char *filename, VFSFile &fin)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
 
     /* Have to open the file to see if libsndfile can handle it. */
-    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, fin);
+    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, &fin);
 
     if (!tmp_sndfile)
         return false;

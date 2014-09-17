@@ -81,10 +81,10 @@ static Index<trackinfo_t> trackinfo;
 static QueuedFunc monitor_source;
 
 static bool cdaudio_init (void);
-static bool cdaudio_is_our_file (const char * filename, VFSFile * file);
-static bool cdaudio_play (const char * name, VFSFile * file);
+static bool cdaudio_is_our_file (const char * filename, VFSFile & file);
+static bool cdaudio_play (const char * name, VFSFile & file);
 static void cdaudio_cleanup (void);
-static Tuple make_tuple (const char * filename, VFSFile * file);
+static Tuple make_tuple (const char * filename, VFSFile & file);
 static bool scan_cd (void);
 static void refresh_trackinfo (bool warning);
 static void reset_trackinfo (void);
@@ -173,7 +173,7 @@ static void purge_playlist (int playlist)
     {
         String filename = aud_playlist_entry_get_filename (playlist, count);
 
-        if (cdaudio_is_our_file (filename, nullptr))
+        if (! strncmp (filename, "cdda://", 7))
         {
             aud_playlist_entry_delete (playlist, count, 1);
             count--;
@@ -243,13 +243,13 @@ static bool cdaudio_init (void)
 }
 
 /* thread safe (mutex may be locked) */
-static bool cdaudio_is_our_file (const char * filename, VFSFile * file)
+static bool cdaudio_is_our_file (const char * filename, VFSFile & file)
 {
     return !strncmp (filename, "cdda://", 7);
 }
 
 /* play thread only */
-static bool cdaudio_play (const char * name, VFSFile * file)
+static bool cdaudio_play (const char * name, VFSFile & file)
 {
     pthread_mutex_lock (& mutex);
 
@@ -371,7 +371,7 @@ static void cdaudio_cleanup (void)
 }
 
 /* thread safe */
-static Tuple make_tuple (const char * filename, VFSFile * file)
+static Tuple make_tuple (const char * filename, VFSFile & file)
 {
     bool whole_disk = ! strcmp (filename, "cdda://");
     Tuple tuple;

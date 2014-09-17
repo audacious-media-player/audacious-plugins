@@ -1,7 +1,6 @@
 #ifndef _AYEMU_vtxfile_h
 #define _AYEMU_vtxfile_h
 
-#include <glib.h>
 #include <inttypes.h>
 #include <libaudcore/plugin.h>
 #include "ayemu_8912.h"
@@ -50,7 +49,7 @@ struct VTXFileHeader
  */
 typedef struct
 {
-  VFSFile *fp;			/**< opening .vtx file pointer */
+  VFSFile fp;			/**< opening .vtx file pointer */
   struct VTXFileHeader hdr;  	/**< VTX header data */
   char *regdata;		/**< unpacked song data */
   int pos;			/**< current data frame offset */

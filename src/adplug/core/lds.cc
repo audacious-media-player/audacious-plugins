@@ -91,12 +91,12 @@ CldsPlayer::~CldsPlayer ()
 }
 
 bool
-CldsPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CldsPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f;
   unsigned int i, j;
   SoundBank *sb;
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
 
   // file validation section (actually just an extension check)
   f = fp.open (fd);

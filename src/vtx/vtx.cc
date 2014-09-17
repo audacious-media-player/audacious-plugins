@@ -18,10 +18,11 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "vtx.h"
 #include "ayemu.h"
@@ -37,12 +38,12 @@ ayemu_vtx_t vtx;
 
 static const char *vtx_fmts[] = { "vtx", nullptr };
 
-bool vtx_is_our_fd(const char * filename, VFSFile * fp)
+bool vtx_is_our_fd(const char * filename, VFSFile & fp)
 {
     char buf[2];
-    if (vfs_fread(buf, 1, 2, fp) < 2)
-        return FALSE;
-    return (!g_ascii_strncasecmp(buf, "ay", 2) || !g_ascii_strncasecmp(buf, "ym", 2));
+    if (fp.fread (buf, 1, 2) < 2)
+        return false;
+    return (!strcmp_nocase(buf, "ay", 2) || !strcmp_nocase(buf, "ym", 2));
 }
 
 Tuple vtx_get_song_tuple_from_vtx(const char * filename, ayemu_vtx_t * in)
@@ -66,7 +67,7 @@ Tuple vtx_get_song_tuple_from_vtx(const char * filename, ayemu_vtx_t * in)
     return tuple;
 }
 
-Tuple vtx_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple vtx_probe_for_tuple(const char *filename, VFSFile &fd)
 {
     ayemu_vtx_t tmp;
 
@@ -80,9 +81,9 @@ Tuple vtx_probe_for_tuple(const char *filename, VFSFile *fd)
     return Tuple ();
 }
 
-static bool vtx_play(const char * filename, VFSFile * file)
+static bool vtx_play(const char * filename, VFSFile & file)
 {
-    gboolean eof = FALSE;
+    bool eof = false;
     void *stream;               /* pointer to current position in sound buffer */
     unsigned char regs[14];
     int need;
@@ -97,13 +98,13 @@ static bool vtx_play(const char * filename, VFSFile * file)
 
     if (!ayemu_vtx_open(&vtx, filename))
     {
-        g_print("libvtx: Error read vtx header from %s\n", filename);
-        return FALSE;
+        AUDERR("Error read vtx header from %s\n", filename);
+        return false;
     }
     else if (!ayemu_vtx_load_data(&vtx))
     {
-        g_print("libvtx: Error read vtx data from %s\n", filename);
-        return FALSE;
+        AUDERR("Error read vtx data from %s\n", filename);
+        return false;
     }
 
     ayemu_init(&ay);
@@ -112,10 +113,7 @@ static bool vtx_play(const char * filename, VFSFile * file)
     ayemu_set_stereo(&ay, (ayemu_stereo_t) vtx.hdr.stereo, nullptr);
 
     if (aud_input_open_audio(FMT_S16_NE, freq, chans) == 0)
-    {
-        g_print("libvtx: output audio error!\n");
-        return FALSE;
-    }
+        return false;
 
     aud_input_set_bitrate(14 * 50 * 8);
 
@@ -143,7 +141,7 @@ static bool vtx_play(const char * filename, VFSFile * file)
                 {
                     donow = need;
                     memset(stream, 0, donow * rate);
-                    eof = TRUE;
+                    eof = true;
                 }
                 else
                 {
@@ -159,7 +157,7 @@ static bool vtx_play(const char * filename, VFSFile * file)
 
     ayemu_vtx_free(&vtx);
 
-    return TRUE;
+    return true;
 }
 
 static const char vtx_about[] =

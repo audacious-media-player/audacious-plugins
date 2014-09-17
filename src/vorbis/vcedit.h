@@ -14,9 +14,6 @@
 #include <vorbis/codec.h>
 #include <libaudcore/plugin.h>
 
-typedef int64_t (*vcedit_read_func)(void *, int64_t, int64_t, void *);
-typedef int64_t (*vcedit_write_func)(const void *, int64_t, int64_t, void *);
-
 typedef struct {
 	ogg_sync_state	 *oy;
 	ogg_stream_state *os;
@@ -24,10 +21,7 @@ typedef struct {
 	vorbis_comment	 *vc;
 	vorbis_info       vi;
 
-	vcedit_read_func  read;
-	vcedit_write_func write;
-
-	void		 *in;
+	VFSFile		 *in;
 	long		  serial;
 	unsigned char	 *mainbuf;
 	unsigned char	 *bookbuf;
@@ -43,11 +37,8 @@ typedef struct {
 extern vcedit_state *vcedit_new_state(void);
 extern void vcedit_clear(vcedit_state *state);
 extern vorbis_comment *vcedit_comments(vcedit_state *state);
-extern int vcedit_open(vcedit_state *state, VFSFile *in);
-extern int vcedit_open_callbacks(vcedit_state *state, void *in,
-                                 vcedit_read_func read_func,
-                                 vcedit_write_func write_func);
-extern int vcedit_write(vcedit_state *state, void *out);
+extern int vcedit_open(vcedit_state *state, VFSFile &in);
+extern int vcedit_write(vcedit_state *state, VFSFile &out);
 extern const char *vcedit_error(vcedit_state *state);
 
 #endif /* __VCEDIT_H */

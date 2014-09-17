@@ -46,7 +46,7 @@ public:
     ModplugXMMS();
     ~ModplugXMMS();
 
-    bool CanPlayFileFromVFS(const std::string& aFilename, VFSFile *file);
+    bool CanPlayFileFromVFS(const std::string& aFilename, VFSFile &file);
 
     bool PlayFile(const std::string& aFilename);
 

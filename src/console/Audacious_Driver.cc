@@ -181,9 +181,9 @@ static Tuple get_track_ti(const char *path, const track_info_t *info, const int 
     return tuple;
 }
 
-Tuple console_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple console_probe_for_tuple(const char *filename, VFSFile &fd)
 {
-    ConsoleFileHandler fh(filename, fd);
+    ConsoleFileHandler fh(filename, &fd);
 
     if (!fh.m_type)
         return Tuple ();
@@ -198,7 +198,7 @@ Tuple console_probe_for_tuple(const char *filename, VFSFile *fd)
     return Tuple ();
 }
 
-bool console_play(const char *filename, VFSFile *file)
+bool console_play(const char *filename, VFSFile &file)
 {
     int length, sample_rate;
     track_info_t info;

@@ -76,15 +76,12 @@ static void flac_cleanup(void)
     clean_callback_info(info);
 }
 
-bool flac_is_our_fd(const char *filename, VFSFile *fd)
+bool flac_is_our_fd(const char *filename, VFSFile &fd)
 {
     AUDDBG("Probe for FLAC.\n");
 
-    if (!fd)
-        return false;
-
     char buf[4];
-    if (vfs_fread (buf, 1, sizeof buf, fd) != sizeof buf)
+    if (fd.fread (buf, 1, sizeof buf) != sizeof buf)
         return false;
 
     return ! strncmp (buf, "fLaC", sizeof buf);
@@ -120,15 +117,12 @@ static void squeeze_audio(int32_t* src, void* dst, unsigned count, unsigned res)
     }
 }
 
-static bool flac_play (const char * filename, VFSFile * file)
+static bool flac_play (const char * filename, VFSFile & file)
 {
-    if (!file)
-        return false;
-
     void * play_buffer = nullptr;
     bool error = false;
 
-    info->fd = file;
+    info->fd = & file;
 
     if (read_metadata(decoder, info) == false)
     {

@@ -33,7 +33,7 @@ public:
 		: CmodPlayer(newopl)
 	{ };
 
-	bool load(VFSFile *fd, const CFileProvider &fp);
+	bool load(VFSFile &fd, const CFileProvider &fp);
 	float getrefresh();
 
 	std::string gettype()
@@ -82,4 +82,3 @@ private:
 	unsigned char *obuf, *buf;
 };
 #endif
-

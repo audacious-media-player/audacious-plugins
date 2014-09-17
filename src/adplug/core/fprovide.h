@@ -32,7 +32,7 @@ public:
     {
     }
 
-  virtual binistream *open(VFSFile *) const = 0;
+  virtual binistream *open(VFSFile &) const = 0;
   virtual void close(binistream *) const = 0;
 
   static bool extension(const std::string &filename,
@@ -43,7 +43,7 @@ public:
 class CProvider_Filesystem: public CFileProvider
 {
 public:
-  virtual binistream *open(VFSFile *) const;
+  virtual binistream *open(VFSFile &) const;
   virtual void close(binistream *f) const;
 };
 

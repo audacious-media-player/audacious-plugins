@@ -29,7 +29,7 @@ class CldsPlayer: public CPlayer
   CldsPlayer(Copl *newopl);
   virtual ~CldsPlayer();
 
-  bool load(VFSFile *fd, const CFileProvider &fp);
+  bool load(VFSFile &fd, const CFileProvider &fp);
   virtual bool update();
   virtual void rewind(int subsong = -1);
   float getrefresh() { return 70.0f; }

@@ -437,10 +437,12 @@ void equalizerwin_delete_preset (Index<EqualizerPreset> & list, const char * nam
     aud_eq_write_presets (list, filename);
 }
 
-static gboolean equalizerwin_read_aud_preset (const char * file)
+static gboolean equalizerwin_read_aud_preset (const char * filename)
 {
     EqualizerPreset preset;
-    if (! aud_load_preset_file (preset, file))
+
+    VFSFile file (filename, "r");
+    if (! file || ! aud_load_preset_file (preset, file))
         return FALSE;
 
     equalizerwin_apply_preset (preset);

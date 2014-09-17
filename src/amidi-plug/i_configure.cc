@@ -154,4 +154,3 @@ const PluginPreferences amidiplug_prefs = {
     {amidiplug_widgets},
     get_values
 };
-

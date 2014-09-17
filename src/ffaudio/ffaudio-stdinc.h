@@ -42,9 +42,9 @@ extern "C" {
 #error Please define either HAVE_FFMPEG or HAVE_LIBAV
 #endif
 
-AVIOContext * io_context_new (VFSFile * file);
+AVIOContext * io_context_new (VFSFile & file);
 void io_context_free (AVIOContext * context);
 
-Index<char> read_itunes_cover (const char * filename, VFSFile * file);
+Index<char> read_itunes_cover (const char * filename, VFSFile & file);
 
 #endif

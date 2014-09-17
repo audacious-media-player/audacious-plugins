@@ -385,14 +385,12 @@ static void skin_load_viscolor (Skin * skin, const char * path)
 {
     memcpy (skin->vis_colors, default_vis_colors, sizeof skin->vis_colors);
 
-    VFSFile * file = open_local_file_nocase (path, "viscolor.txt");
+    VFSFile file = open_local_file_nocase (path, "viscolor.txt");
     if (! file)
         return;
 
-    Index<char> buffer = vfs_file_read_all (file);
+    Index<char> buffer = file.read_all ();
     buffer.append (0);  /* null-terminated */
-
-    vfs_fclose (file);
 
     char * string = buffer.begin ();
 

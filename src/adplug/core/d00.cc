@@ -56,7 +56,7 @@ Cd00Player::factory (Copl * newopl)
 }
 
 bool
-Cd00Player::load (VFSFile * fd, const CFileProvider & fp)
+Cd00Player::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)
@@ -66,7 +66,7 @@ Cd00Player::load (VFSFile * fd, const CFileProvider & fp)
   unsigned long filesize;
   int i, ver1 = 0;
   char *str;
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
 
   // file validation section
   checkhead = new d00header;

@@ -88,7 +88,7 @@ class CcmfPlayer: public CPlayer
 		CcmfPlayer(Copl *newopl);
 		~CcmfPlayer();
 
-		bool load(VFSFile *fd, const CFileProvider &fp);
+		bool load(VFSFile &fd, const CFileProvider &fp);
 		bool update();
 		void rewind(int subsong);
 		float getrefresh();

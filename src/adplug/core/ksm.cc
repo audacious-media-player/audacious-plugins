@@ -44,11 +44,11 @@ CksmPlayer::factory (Copl * newopl)
 }
 
 bool
-CksmPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CksmPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f;
   int i;
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
   char *fn = new char[filename.length () + 9];
 
   // file validation section
@@ -68,7 +68,7 @@ CksmPlayer::load (VFSFile * fd, const CFileProvider & fp)
       break;
   strcpy (fn + i + 1, "insts.dat");
   AdPlug_LogWrite ("Instruments file: \"%s\"\n", fn);
-  VFSFile *instfd = vfs_fopen (fn, "rb");
+  VFSFile instfd (fn, "rb");
   f = fp.open (instfd);
   delete[]fn;
   if (!f)
@@ -79,7 +79,6 @@ CksmPlayer::load (VFSFile * fd, const CFileProvider & fp)
   }
   loadinsts (f);
   fp.close (f);
-  vfs_fclose (instfd);
 
   f = fp.open (fd);
   if (!f)

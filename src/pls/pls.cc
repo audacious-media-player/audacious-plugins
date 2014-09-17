@@ -54,7 +54,7 @@ void pls_handle_entry (const char * key, const char * value, void * data)
         state->items.append (String (uri));
 }
 
-static bool playlist_load_pls (const char * filename, VFSFile * file,
+static bool playlist_load_pls (const char * filename, VFSFile & file,
  String & title, Index<PlaylistAddItem> & items)
 {
     PLSLoadState state = {
@@ -68,19 +68,22 @@ static bool playlist_load_pls (const char * filename, VFSFile * file,
     return (items.len () > 0);
 }
 
-static bool playlist_save_pls (const char * filename, VFSFile * file,
+static bool playlist_save_pls (const char * filename, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     int entries = items.len ();
 
-    vfs_fprintf (file, "[playlist]\n");
-    vfs_fprintf (file, "NumberOfEntries=%d\n", entries);
+    StringBuf header = str_printf ("[playlist]\nNumberOfEntries=%d\n", entries);
+    if (file.fwrite (header, 1, header.len ()) != header.len ())
+        return false;
 
     for (int count = 0; count < entries; count ++)
     {
         const char * uri = items[count].filename;
         StringBuf local = uri_to_filename (uri);
-        vfs_fprintf (file, "File%d=%s\n", 1 + count, local ? local : uri);
+        StringBuf line = str_printf ("File%d=%s\n", 1 + count, local ? local : uri);
+        if (file.fwrite (line, 1, line.len ()) != line.len ())
+            return false;
     }
 
     return true;

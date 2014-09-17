@@ -29,12 +29,12 @@
 
 static int read_cb (void * file, char * buf, int len)
 {
-    return vfs_fread (buf, 1, len, (VFSFile *) file);
+    return ((VFSFile *) file)->fread (buf, 1, len);
 }
 
 static int write_cb (void * file, const char * buf, int len)
 {
-    return vfs_fwrite (buf, 1, len, (VFSFile *) file);
+    return ((VFSFile *) file)->fwrite (buf, 1, len);
 }
 
 static int close_cb (void * file)
@@ -104,10 +104,10 @@ static void parse_entry (const xmlNode * entry, Index<PlaylistAddItem> & items)
     }
 }
 
-static bool playlist_load_asx3 (const char * filename, VFSFile * file,
+static bool playlist_load_asx3 (const char * filename, VFSFile & file,
  String & title, Index<PlaylistAddItem> & items)
 {
-    xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, nullptr, XML_PARSE_RECOVER);
+    xmlDoc * doc = xmlReadIO (read_cb, close_cb, & file, filename, nullptr, XML_PARSE_RECOVER);
     if (! doc)
         return false;
 
@@ -134,7 +134,7 @@ static bool playlist_load_asx3 (const char * filename, VFSFile * file,
     return true;
 }
 
-static bool playlist_save_asx3 (const char * filename, VFSFile * file,
+static bool playlist_save_asx3 (const char * filename, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlNewDoc ((const xmlChar *) "1.0");
@@ -157,7 +157,7 @@ static bool playlist_save_asx3 (const char * filename, VFSFile * file,
         xmlAddChild (root, entry);
     }
 
-    xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, nullptr, XML_SAVE_FORMAT);
+    xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, & file, nullptr, XML_SAVE_FORMAT);
 
     if (! save || xmlSaveDoc (save, doc) < 0 || xmlSaveClose (save) < 0)
     {

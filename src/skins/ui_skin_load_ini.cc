@@ -143,13 +143,10 @@ void skin_load_hints (Skin * skin, const char * path)
 
     HintsLoadState state = {false};
 
-    VFSFile * file = open_local_file_nocase (path, "skin.hints");
+    VFSFile file = open_local_file_nocase (path, "skin.hints");
 
     if (file)
-    {
         inifile_parse (file, hints_handle_heading, hints_handle_entry, & state);
-        vfs_fclose (file);
-    }
 
     skin->properties = static_hints;
 }
@@ -202,13 +199,12 @@ void skin_load_pl_colors (Skin * skin, const char * path)
     skin->colors[SKIN_PLEDIT_NORMALBG] = 0x0a120a;
     skin->colors[SKIN_PLEDIT_SELECTEDBG] = 0x0a124a;
 
-    VFSFile * file = open_local_file_nocase (path, "pledit.txt");
+    VFSFile file = open_local_file_nocase (path, "pledit.txt");
 
     if (file)
     {
         PLColorsLoadState state = {false, skin};
         inifile_parse (file, pl_colors_handle_heading, pl_colors_handle_entry, & state);
-        vfs_fclose (file);
     }
 }
 
@@ -326,13 +322,10 @@ void skin_load_masks (Skin * skin, const char * path)
 
     MaskLoadState state = {(SkinMaskId) -1, {0}, {0}};
 
-    VFSFile * file = open_local_file_nocase (path, "region.txt");
+    VFSFile file = open_local_file_nocase (path, "region.txt");
 
     if (file)
-    {
         inifile_parse (file, mask_handle_heading, mask_handle_entry, & state);
-        vfs_fclose (file);
-    }
 
     for (int id = 0; id < SKIN_MASK_COUNT; id ++)
     {

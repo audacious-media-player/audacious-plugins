@@ -176,7 +176,7 @@ static AVInputFormat * get_format_by_extension (const char * name)
     return f ? * f : nullptr;
 }
 
-static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
+static AVInputFormat * get_format_by_content (const char * name, VFSFile & file)
 {
     AUDDBG ("Get format by content: %s\n", name);
 
@@ -191,7 +191,7 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
     while (1)
     {
         if (filled < size)
-            filled += vfs_fread (buf + filled, 1, size - filled, file);
+            filled += file.fread (buf + filled, 1, size - filled);
 
         memset (buf + filled, 0, AVPROBE_PADDING_SIZE);
         AVProbeData d = {name, buf, filled};
@@ -214,19 +214,19 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
     else
         AUDDBG ("Format unknown.\n");
 
-    if (vfs_fseek (file, 0, VFS_SEEK_SET) < 0)
+    if (file.fseek (0, VFS_SEEK_SET) < 0)
         ; /* ignore errors here */
 
     return f;
 }
 
-static AVInputFormat * get_format (const char * name, VFSFile * file)
+static AVInputFormat * get_format (const char * name, VFSFile & file)
 {
     AVInputFormat * f = get_format_by_extension (name);
     return f ? f : get_format_by_content (name, file);
 }
 
-static AVFormatContext * open_input_file (const char * name, VFSFile * file)
+static AVFormatContext * open_input_file (const char * name, VFSFile & file)
 {
     AVInputFormat * f = get_format (name, file);
 
@@ -292,7 +292,7 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
     return false;
 }
 
-static bool ffaudio_probe (const char * filename, VFSFile * file)
+static bool ffaudio_probe (const char * filename, VFSFile & file)
 {
     return get_format (filename, file) ? true : false;
 }
@@ -333,7 +333,7 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
     }
 }
 
-static Tuple read_tuple (const char * filename, VFSFile * file)
+static Tuple read_tuple (const char * filename, VFSFile & file)
 {
     Tuple tuple;
     AVFormatContext * ic = open_input_file (filename, file);
@@ -365,17 +365,17 @@ static Tuple read_tuple (const char * filename, VFSFile * file)
 }
 
 static Tuple
-ffaudio_probe_for_tuple(const char *filename, VFSFile *fd)
+ffaudio_probe_for_tuple(const char *filename, VFSFile &fd)
 {
     Tuple t = read_tuple (filename, fd);
 
-    if (t && ! vfs_fseek (fd, 0, VFS_SEEK_SET))
+    if (t && ! fd.fseek (0, VFS_SEEK_SET))
         audtag::tuple_read (t, fd);
 
     return t;
 }
 
-static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple & tuple)
+static bool ffaudio_write_tag (const char * filename, VFSFile & file, const Tuple & tuple)
 {
     if (str_has_suffix_nocase (filename, ".ape"))
         return audtag::tuple_write (tuple, file, audtag::TagType::APE);
@@ -383,7 +383,7 @@ static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tupl
     return audtag::tuple_write (tuple, file, audtag::TagType::None);
 }
 
-static Index<char> ffaudio_read_image (const char * filename, VFSFile * file)
+static Index<char> ffaudio_read_image (const char * filename, VFSFile & file)
 {
     if (str_has_suffix_nocase (filename, ".m4a") || str_has_suffix_nocase (filename, ".mp4"))
         return read_itunes_cover (filename, file);
@@ -391,7 +391,7 @@ static Index<char> ffaudio_read_image (const char * filename, VFSFile * file)
     return Index<char> ();
 }
 
-static bool ffaudio_play (const char * filename, VFSFile * file)
+static bool ffaudio_play (const char * filename, VFSFile & file)
 {
     AUDDBG ("Playing %s.\n", filename);
 

@@ -30,16 +30,10 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
     callback_info* info = (callback_info*) client_data;
     int64_t read;
 
-    if (info->fd == nullptr)
-    {
-        AUDERR("Trying to read data from an uninitialized file!\n");
-        return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
-    }
-
     if (*bytes == 0)
         return FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
 
-    read = vfs_fread(buffer, 1, *bytes, info->fd);
+    read = info->fd->fread (buffer, 1, *bytes);
     *bytes = read;
 
     switch (read)
@@ -61,7 +55,7 @@ FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    if (vfs_fseek(info->fd, offset, VFS_SEEK_SET) != 0)
+    if (info->fd->fseek (offset, VFS_SEEK_SET) != 0)
     {
         AUDERR("Could not seek to %ld!\n", (long)offset);
         return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
@@ -74,7 +68,7 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    int64_t result = vfs_ftell(info->fd);
+    int64_t result = info->fd->ftell ();
     if (result < 0)
     {
         AUDERR("Could not tell current position!\n");
@@ -91,14 +85,14 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
-    return vfs_feof(info->fd);
+    return info->fd->feof ();
 }
 
 FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *length, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
 
-    int64_t result = vfs_fsize(info->fd);
+    int64_t result = info->fd->fsize ();
     if (result < 0)
     {
         /*
@@ -164,7 +158,7 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
         info->sample_rate = metadata->data.stream_info.sample_rate;
         AUDDBG("sample_rate=%d\n", metadata->data.stream_info.sample_rate);
 
-        size = vfs_fsize(info->fd);
+        size = info->fd->fsize ();
 
         if (size == -1 || info->total_samples == 0)
             info->bitrate = 0;

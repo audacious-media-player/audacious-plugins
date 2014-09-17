@@ -37,14 +37,14 @@ ModplugXMMS::~ModplugXMMS()
     delete mSoundFile;
 }
 
-bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
+bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile &file)
 {
     string lExt;
     uint32_t lPos;
     const int magicSize = 32;
     char magic[magicSize];
 
-    if (vfs_fread(magic, 1, magicSize, file) < magicSize)
+    if (file.fread (magic, 1, magicSize) < magicSize)
         return false;
     if (!memcmp(magic, UMX_MAGIC, 4))
         return true;
@@ -59,16 +59,16 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile *file)
     if (!memcmp(magic, PSM_MAGIC, 4))
         return true;
 
-    if (vfs_fseek(file, 44, VFS_SEEK_SET))
+    if (file.fseek (44, VFS_SEEK_SET))
         return false;
-    if (vfs_fread(magic, 1, 4, file) < 4)
+    if (file.fread (magic, 1, 4) < 4)
         return false;
     if (!memcmp(magic, S3M_MAGIC, 4))
         return true;
 
-    if (vfs_fseek(file, 1080, VFS_SEEK_SET))
+    if (file.fseek (1080, VFS_SEEK_SET))
         return false;
-    if (vfs_fread(magic, 1, 4, file) < 4)
+    if (file.fread (magic, 1, 4) < 4)
         return false;
 
     // Check for Fast Tracker multichannel modules (xCHN, xxCH)

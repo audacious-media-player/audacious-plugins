@@ -60,10 +60,10 @@ void xs_close(void)
 /*
  * Check whether this is a SID file
  */
-bool xs_is_our_file(const char *filename, VFSFile *file)
+bool xs_is_our_file(const char *filename, VFSFile &file)
 {
     char buf[4];
-    if (vfs_fread(buf, 1, 4, file) != 4)
+    if (file.fread (buf, 1, 4) != 4)
         return false;
 
     return xs_sidplayfp_probe(buf, 4);
@@ -73,10 +73,10 @@ bool xs_is_our_file(const char *filename, VFSFile *file)
 /*
  * Start playing the given file
  */
-bool xs_play_file(const char *filename, VFSFile *file)
+bool xs_play_file(const char *filename, VFSFile &file)
 {
     /* Load file */
-    Index<char> buf = vfs_file_read_all(file);
+    Index<char> buf = file.read_all ();
     if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return false;
 
@@ -236,13 +236,13 @@ static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
     tuple.set_subtunes (subtunes.len (), subtunes.begin ());
 }
 
-Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
 {
     Tuple tuple;
     xs_tuneinfo_t info;
     int tune = -1;
 
-    Index<char> buf = vfs_file_read_all(fd);
+    Index<char> buf = fd.read_all ();
     if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return tuple;
 

@@ -13,7 +13,7 @@
 
 class arch_Raw: public Archive
 {
-    VFSFile *mFileDesc;
+    VFSFile mFileDesc;
 
 public:
     arch_Raw(const std::string& aFileName);

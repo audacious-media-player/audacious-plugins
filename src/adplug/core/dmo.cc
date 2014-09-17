@@ -51,11 +51,11 @@ CdmoLoader::factory (Copl * newopl)
 }
 
 bool
-CdmoLoader::load (VFSFile * fd, const CFileProvider & fp)
+CdmoLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   int i, j;
   binistream *f;
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
 
   // check header
   dmo_unpacker *unpacker = new dmo_unpacker;

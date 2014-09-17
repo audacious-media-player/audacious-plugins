@@ -2,6 +2,7 @@
 #include "vtx.h"
 
 #include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
@@ -12,7 +13,7 @@ void vtx_file_info(const char *filename)
 
   if (!ayemu_vtx_open(&vtx, filename))
     {
-      fprintf(stderr, "Can't open file %s\n", filename);
+      AUDERR("Can't open file %s\n", filename);
       return;
     }
   else

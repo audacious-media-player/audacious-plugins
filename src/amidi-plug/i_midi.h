@@ -250,9 +250,10 @@ struct midifile_track_t
 
 struct midifile_t
 {
-    VFSFile * file_pointer = nullptr;
     String file_name;
+    Index<char> file_data;
     int file_offset = 0;
+    bool file_eof = false;
 
     Index<midifile_track_t> tracks;
 

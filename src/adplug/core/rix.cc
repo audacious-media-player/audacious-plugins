@@ -85,13 +85,13 @@ CrixPlayer::~CrixPlayer ()
 }
 
 bool
-CrixPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CrixPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)
     return false;
   unsigned long i = 0;
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
 
   if (str_has_suffix_nocase (filename.c_str (), ".mkf"))
   {

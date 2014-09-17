@@ -37,7 +37,7 @@ public:
 /***** Operational methods *****/
 	void seek(unsigned long ms);
 
-	virtual bool load(VFSFile *fd,	// loads file
+	virtual bool load(VFSFile &fd,	// loads file
 			  const CFileProvider &fp = CProvider_Filesystem()) = 0;
 	virtual bool update() = 0;			// executes replay code for 1 tick
 	virtual void rewind(int subsong = -1) = 0;	// rewinds to specified subsong

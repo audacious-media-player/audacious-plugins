@@ -12,8 +12,8 @@
 
 #include "configure.h"
 
-Tuple console_probe_for_tuple(const char *filename, VFSFile *fd);
-bool console_play(const char *filename, VFSFile *file);
+Tuple console_probe_for_tuple(const char *filename, VFSFile &fd);
+bool console_play(const char *filename, VFSFile &file);
 
 static const char console_about[] =
  N_("Console music decoder engine based on Game_Music_Emu 0.5.2\n"

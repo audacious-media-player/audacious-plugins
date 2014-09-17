@@ -83,7 +83,7 @@ static void handle_entry (const char * key, const char * value, void * data)
     }
 }
 
-static bool audpl_load (const char * path, VFSFile * file, String & title,
+static bool audpl_load (const char * path, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
     LoadState state = {
@@ -100,7 +100,7 @@ static bool audpl_load (const char * path, VFSFile * file, String & title,
     return true;
 }
 
-static bool audpl_save (const char * path, VFSFile * file,
+static bool audpl_save (const char * path, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     if (! inifile_write_entry (file, "title", str_encode_percent (title)))

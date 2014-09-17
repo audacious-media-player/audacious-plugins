@@ -36,9 +36,9 @@ static void strip_char (char * text, char c)
     * set = 0;
 }
 
-static Index<char> read_win_text (VFSFile * file)
+static Index<char> read_win_text (VFSFile & file)
 {
-    Index<char> raw = vfs_file_read_all (file);
+    Index<char> raw = file.read_all ();
     if (! raw.len ())
         return raw;
 
@@ -57,7 +57,7 @@ static char * split_line (char * line)
     return feed + 1;
 }
 
-static bool playlist_load_m3u (const char * path, VFSFile * file,
+static bool playlist_load_m3u (const char * path, VFSFile & file,
  String & title, Index<PlaylistAddItem> & items)
 {
     Index<char> text = read_win_text (file);
@@ -86,11 +86,15 @@ static bool playlist_load_m3u (const char * path, VFSFile * file,
     return true;
 }
 
-static bool playlist_save_m3u (const char * path, VFSFile * file,
+static bool playlist_save_m3u (const char * path, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     for (auto & item : items)
-        vfs_fprintf (file, "%s\n", (const char *) item.filename);
+    {
+        StringBuf line = str_concat ({item.filename, "\n"});
+        if (file.fwrite (line, 1, line.len ()) != line.len ())
+            return false;
+    }
 
     return true;
 }

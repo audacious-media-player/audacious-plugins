@@ -48,9 +48,11 @@ unsigned long CFileProvider::filesize(binistream *f)
 
 /***** CProvider_Filesystem *****/
 
-binistream *CProvider_Filesystem::open(VFSFile *fd) const
+binistream *CProvider_Filesystem::open(VFSFile &fd) const
 {
-  vfsistream *f = new vfsistream(fd);
+  if(!fd) return 0;
+
+  vfsistream *f = new vfsistream(&fd);
 
   if(!f) return 0;
   if(f->error()) { delete f; return 0; }

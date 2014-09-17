@@ -55,15 +55,15 @@ static const PluginPreferences mpg123_prefs = {{mpg123_widgets}};
 
 static ssize_t replace_read (void * file, void * buffer, size_t length)
 {
-    return vfs_fread (buffer, 1, length, (VFSFile *) file);
+    return ((VFSFile *) file)->fread (buffer, 1, length);
 }
 
 static off_t replace_lseek (void * file, off_t to, int whence)
 {
-    if (vfs_fseek ((VFSFile *) file, to, to_vfs_seek_type (whence)) < 0)
+    if (((VFSFile *) file)->fseek (to, to_vfs_seek_type (whence)) < 0)
         return -1;
 
-    return vfs_ftell ((VFSFile *) file);
+    return ((VFSFile *) file)->ftell ();
 }
 
 static off_t replace_lseek_dummy (void * file, off_t to, int whence)
@@ -104,7 +104,7 @@ static void make_format_string (const struct mpg123_frameinfo * info, char *
     snprintf (buf, bsize, "MPEG-%s layer %d", vers[info->version], info->layer);
 }
 
-static bool mpg123_probe_for_fd (const char * fname, VFSFile * file)
+static bool mpg123_probe_for_fd (const char * fname, VFSFile & file)
 {
     /* MPG123 likes to grab WMA streams, so blacklist anything that starts with
      * mms://.  If there are mms:// streams out there carrying MP3, they will
@@ -112,7 +112,7 @@ static bool mpg123_probe_for_fd (const char * fname, VFSFile * file)
     if (! strncmp (fname, "mms://", 6))
         return false;
 
-    bool is_streaming = vfs_is_streaming (file);
+    bool is_streaming = (file.fsize () < 0);
 
     /* Some MP3s begin with enormous ID3 tags, which fill up the whole probe
      * buffer and thus hide any MP3 content.  As a workaround, assume that an
@@ -120,13 +120,13 @@ static bool mpg123_probe_for_fd (const char * fname, VFSFile * file)
     if (! is_streaming)
     {
         char id3buf[3];
-        if (vfs_fread (id3buf, 1, 3, file) != 3)
+        if (file.fread (id3buf, 1, 3) != 3)
             return false;
 
         if (! memcmp (id3buf, "ID3", 3))
             return true;
 
-        if (vfs_fseek (file, 0, VFS_SEEK_SET) < 0)
+        if (file.fseek (0, VFS_SEEK_SET) < 0)
             return false;
     }
 
@@ -141,7 +141,7 @@ static bool mpg123_probe_for_fd (const char * fname, VFSFile * file)
     set_format (dec);
 
     int res;
-    if ((res = mpg123_open_handle (dec, file)) < 0)
+    if ((res = mpg123_open_handle (dec, & file)) < 0)
     {
 ERR:
         AUDDBG ("Probe error: %s\n", mpg123_plain_strerror (res));
@@ -179,9 +179,9 @@ RETRY:;
     return true;
 }
 
-static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
+static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile & file)
 {
-    bool stream = vfs_is_streaming (file);
+    bool stream = (file.fsize () < 0);
     mpg123_handle * decoder = mpg123_new (nullptr, nullptr);
     int result;
     long rate;
@@ -196,7 +196,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
     else
         mpg123_replace_reader_handle (decoder, replace_read, replace_lseek, nullptr);
 
-    if ((result = mpg123_open_handle (decoder, file)) < 0
+    if ((result = mpg123_open_handle (decoder, & file)) < 0
      || (! stream && aud_get_bool ("mpg123", "full_scan") && (result = mpg123_scan (decoder)) < 0)
      || (result = mpg123_getformat (decoder, & rate, & channels, & encoding)) < 0
      || (result = mpg123_info (decoder, & info)) < 0)
@@ -217,7 +217,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 
     if (! stream)
     {
-        int64_t size = vfs_fsize (file);
+        int64_t size = file.fsize ();
         int64_t samples = mpg123_length (decoder);
         int length = (samples > 0 && rate > 0) ? samples * 1000 / rate : 0;
 
@@ -229,7 +229,7 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 
     mpg123_delete (decoder);
 
-    if (! stream && ! vfs_fseek (file, 0, VFS_SEEK_SET))
+    if (! stream && ! file.fseek (0, VFS_SEEK_SET))
         audtag::tuple_read (tuple, file);
 
     if (stream)
@@ -239,7 +239,6 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile * file)
 }
 
 typedef struct {
-    VFSFile *fd;
     mpg123_handle *decoder;
     long rate;
     int channels;
@@ -253,7 +252,7 @@ static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
     AUDERR ("mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
 }
 
-static bool mpg123_playback_worker (const char * filename, VFSFile * file)
+static bool mpg123_playback_worker (const char * filename, VFSFile & file)
 {
     bool error = false;
     MPG123PlaybackContext ctx;
@@ -267,10 +266,9 @@ static bool mpg123_playback_worker (const char * filename, VFSFile * file)
     memset(&fi, 0, sizeof(struct mpg123_frameinfo));
 
     AUDDBG("playback worker started for %s\n", filename);
-    ctx.fd = file;
 
     AUDDBG ("Checking for streaming ...\n");
-    ctx.stream = vfs_is_streaming (file);
+    ctx.stream = (file.fsize () < 0);
     ctx.tu = ctx.stream ? aud_input_get_tuple () : Tuple ();
 
     ctx.decoder = mpg123_new (nullptr, nullptr);
@@ -286,7 +284,7 @@ static bool mpg123_playback_worker (const char * filename, VFSFile * file)
     float outbuf[8192];
     size_t outbuf_size = 0;
 
-    if (mpg123_open_handle (ctx.decoder, file) < 0)
+    if (mpg123_open_handle (ctx.decoder, & file) < 0)
     {
 OPEN_ERROR:
         print_mpg123_error (filename, ctx.decoder);
@@ -379,17 +377,17 @@ cleanup:
     return ! error;
 }
 
-static bool mpg123_write_tag (const char * filename, VFSFile * handle, const Tuple & tuple)
+static bool mpg123_write_tag (const char * filename, VFSFile & handle, const Tuple & tuple)
 {
-    if (vfs_is_streaming (handle))
+    if (handle.fsize () < 0)  // stream?
         return false;
 
     return audtag::tuple_write (tuple, handle, audtag::TagType::ID3v2);
 }
 
-static Index<char> mpg123_get_image (const char * filename, VFSFile * handle)
+static Index<char> mpg123_get_image (const char * filename, VFSFile & handle)
 {
-    if (vfs_is_streaming (handle))
+    if (handle.fsize () < 0)  // stream?
         return Index<char> ();
 
     return audtag::image_read (handle);

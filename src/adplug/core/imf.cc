@@ -55,7 +55,7 @@ CimfPlayer::factory (Copl * newopl)
 }
 
 bool
-CimfPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CimfPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)
@@ -73,7 +73,7 @@ CimfPlayer::load (VFSFile * fd, const CFileProvider & fp)
 
     if (strncmp (header, "ADLIB", 5) || version != 1)
     {
-      if (!fp.extension (vfs_get_filename (fd), ".imf") && !fp.extension (vfs_get_filename (fd), ".wlf"))
+      if (!fp.extension (fd.filename (), ".imf") && !fp.extension (fd.filename (), ".wlf"))
       {
         // It's no IMF file at all
         fp.close (f);
@@ -138,7 +138,7 @@ CimfPlayer::load (VFSFile * fd, const CFileProvider & fp)
     }
   }
 
-  rate = getrate (vfs_get_filename (fd), fp, f);
+  rate = getrate (fd.filename (), fp, f);
   fp.close (f);
   rewind (0);
   return true;

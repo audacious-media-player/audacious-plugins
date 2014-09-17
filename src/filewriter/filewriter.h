@@ -37,7 +37,7 @@ struct format_info {
 
 extern struct format_info input;
 
-extern VFSFile *output_file;
+extern VFSFile output_file;
 extern uint64_t offset;
 extern Tuple tuple;
 

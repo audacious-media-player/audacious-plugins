@@ -68,7 +68,7 @@ Cs3mPlayer::Cs3mPlayer (Copl * newopl):CPlayer (newopl)
 }
 
 bool
-Cs3mPlayer::load (VFSFile * fd, const CFileProvider & fp)
+Cs3mPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

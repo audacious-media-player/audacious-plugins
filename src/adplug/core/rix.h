@@ -30,7 +30,7 @@ class CrixPlayer: public CPlayer
   CrixPlayer(Copl *newopl);
   ~CrixPlayer();
 
-  bool load(VFSFile *fd, const CFileProvider &fp);
+  bool load(VFSFile &fd, const CFileProvider &fp);
   bool update();
   void rewind(int subsong);
   float getrefresh();

@@ -33,7 +33,7 @@ CradLoader::factory (Copl * newopl)
 }
 
 bool
-CradLoader::load (VFSFile * fd, const CFileProvider & fp)
+CradLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

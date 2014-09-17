@@ -33,7 +33,7 @@ class CdroPlayer: public CPlayer
 	delete [] data;
     }
 
-  bool load(VFSFile *fd, const CFileProvider &fp);
+  bool load(VFSFile &fd, const CFileProvider &fp);
   bool update();
   void rewind(int subsong);
   float getrefresh();

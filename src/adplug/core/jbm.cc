@@ -63,10 +63,10 @@ CPlayer *CjbmPlayer::factory(Copl *newopl)
   return new CjbmPlayer(newopl);
 }
 
-bool CjbmPlayer::load(VFSFile * fd, const CFileProvider & fp)
+bool CjbmPlayer::load(VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
   int		filelen = fp.filesize(f);
   int		i;
 

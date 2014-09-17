@@ -107,7 +107,7 @@ CcmfPlayer::~CcmfPlayer()
 	if (this->pInstruments) delete[] pInstruments;
 }
 
-bool CcmfPlayer::load(VFSFile * fd, const CFileProvider &fp)
+bool CcmfPlayer::load(VFSFile & fd, const CFileProvider &fp)
 {
 	binistream *f = fp.open(fd);
 	if(!f) return false;

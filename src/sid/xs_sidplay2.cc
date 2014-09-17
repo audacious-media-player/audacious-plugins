@@ -198,12 +198,19 @@ bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
     /* In xs_sidplayfp_init aud-vfs is not initialized yet, so try to load
        the optional rom files on the first xs_sidplayfp_load call. */
     if (!loaded_roms) {
-        Index<char> kernal = vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/kernal");
-        Index<char> basic = vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/basic");
-        Index<char> chargen = vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/chargen");
+        VFSFile kernal_file("file://" SIDDATADIR "sidplayfp/kernal", "r");
+        VFSFile basic_file("file://" SIDDATADIR "sidplayfp/basic", "r");
+        VFSFile chargen_file("file://" SIDDATADIR "sidplayfp/chargen", "r");
 
-        if (kernal.len() == 8192 && basic.len() == 8192 && chargen.len() == 4096)
-            state.currEng->setRoms((uint8_t*)kernal.begin(), (uint8_t*)basic.begin(), (uint8_t*)chargen.begin());
+        if (kernal_file && basic_file && chargen_file)
+        {
+            Index<char> kernal = kernal_file.read_all();
+            Index<char> basic = basic_file.read_all();
+            Index<char> chargen = chargen_file.read_all();
+
+            if (kernal.len() == 8192 && basic.len() == 8192 && chargen.len() == 4096)
+                state.currEng->setRoms((uint8_t*)kernal.begin(), (uint8_t*)basic.begin(), (uint8_t*)chargen.begin());
+        }
 
         loaded_roms = true;
     }

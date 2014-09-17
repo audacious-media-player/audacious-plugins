@@ -54,10 +54,10 @@ tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
     tuple.set_str (tuple_type, text);
 }
 
-static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
+static bool playlist_load_cue (const char * cue_filename, VFSFile & file,
  String & title, Index<PlaylistAddItem> & items)
 {
-    Index<char> buffer = vfs_file_read_all (file);
+    Index<char> buffer = file.read_all ();
     if (! buffer.len ())
         return false;
 

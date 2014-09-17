@@ -73,7 +73,7 @@ double tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
     {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0}
 };
 
-static bool metronom_is_our_fd(const char * filename, VFSFile *fd)
+static bool metronom_is_our_fd(const char * filename, VFSFile &fd)
 {
     if (!strncmp(filename, "tact://", 7))
         return true;
@@ -129,7 +129,7 @@ static bool metronom_get_cp(const char *filename, metronom_t *pmetronom, String 
     return true;
 }
 
-static bool metronom_play (const char * filename, VFSFile * file)
+static bool metronom_play (const char * filename, VFSFile & file)
 {
     metronom_t pmetronom;
     int16_t data[BUF_SAMPLES];
@@ -199,7 +199,7 @@ static bool metronom_play (const char * filename, VFSFile * file)
     return true;
 }
 
-static Tuple metronom_probe_for_tuple(const char * filename, VFSFile *fd)
+static Tuple metronom_probe_for_tuple(const char * filename, VFSFile &fd)
 {
     Tuple tuple;
     metronom_t metronom;

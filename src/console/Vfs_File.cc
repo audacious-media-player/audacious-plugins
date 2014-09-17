@@ -30,30 +30,36 @@ void Vfs_File_Reader::reset (/* VFSFile * */ void * file)
 Vfs_File_Reader::error_t Vfs_File_Reader::open( const char* path )
 {
 	close();
-	p->file = p->owned_file = vfs_fopen (path, "r");
-	if (! p->file)
+	auto file = new VFSFile (path, "r");
+
+	if (! * file)
+	{
+		delete file;
 		return "Couldn't open file";
+	}
+
+	p->file = p->owned_file = file;
 	return 0;
 }
 
 long Vfs_File_Reader::size() const
 {
-	return vfs_fsize (p->file);
+	return p->file->fsize ();
 }
 
 long Vfs_File_Reader::read_avail (void * buf, long size)
 {
-	return (long) vfs_fread (buf, 1, size, p->file);
+	return (long) p->file->fread (buf, 1, size);
 }
 
 long Vfs_File_Reader::tell() const
 {
-	return vfs_ftell (p->file);
+	return p->file->ftell ();
 }
 
 Vfs_File_Reader::error_t Vfs_File_Reader::seek( long n )
 {
-	if (vfs_fseek (p->file, n, VFS_SEEK_SET) < 0)
+	if (p->file->fseek (n, VFS_SEEK_SET) < 0)
 		return eof_error;
 	return 0;
 }
@@ -63,7 +69,7 @@ void Vfs_File_Reader::close()
 	p->file = 0;
 	if (p->owned_file)
 	{
-		vfs_fclose (p->owned_file);
+		delete p->owned_file;
 		p->owned_file = 0;
 	}
 }

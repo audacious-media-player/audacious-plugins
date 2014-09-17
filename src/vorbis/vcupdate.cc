@@ -100,7 +100,7 @@ static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
         dict.remove (String (key));
 }
 
-bool vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple & tuple)
+bool vorbis_update_song_tuple (const char * filename, VFSFile & fd, const Tuple & tuple)
 {
 
     vcedit_state *state;
@@ -139,23 +139,23 @@ bool vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple 
 
 #define COPY_BUF 65536
 
-bool copy_vfs (VFSFile * in, VFSFile * out)
+bool copy_vfs (VFSFile & in, VFSFile & out)
 {
-    if (vfs_fseek (in, 0, VFS_SEEK_SET) < 0 || vfs_fseek (out, 0, VFS_SEEK_SET) < 0)
+    if (in.fseek (0, VFS_SEEK_SET) < 0 || out.fseek (0, VFS_SEEK_SET) < 0)
         return false;
 
     char * buffer = g_new (char, COPY_BUF);
     int64_t size = 0, readed;
 
-    while ((readed = vfs_fread (buffer, 1, COPY_BUF, in)) > 0)
+    while ((readed = in.fread (buffer, 1, COPY_BUF)) > 0)
     {
-        if (vfs_fwrite (buffer, 1, readed, out) != readed)
+        if (out.fwrite (buffer, 1, readed) != readed)
             goto FAILED;
 
         size += readed;
     }
 
-    if (vfs_ftruncate (out, size) < 0)
+    if (out.ftruncate (size) < 0)
         goto FAILED;
 
     g_free (buffer);
@@ -185,27 +185,25 @@ bool write_and_pivot_files (vcedit_state * state)
 
     StringBuf temp_uri = filename_to_uri (temp);
     g_return_val_if_fail (temp_uri, false);
-    VFSFile * temp_vfs = vfs_fopen (temp_uri, "r+");
+    VFSFile temp_vfs (temp_uri, "r+");
     g_return_val_if_fail (temp_vfs, false);
 
     if (vcedit_write (state, temp_vfs) < 0)
     {
         AUDERR ("Tag update failed: %s.\n", state->lasterror);
-        vfs_fclose (temp_vfs);
         g_free (temp);
         return false;
     }
 
-    if (! copy_vfs (temp_vfs, (VFSFile *) state->in))
+    if (! copy_vfs (temp_vfs, * state->in))
     {
         AUDERR ("Failed to copy temp file.  The temp file has not "
          "been deleted: %s.\n", temp);
-        vfs_fclose (temp_vfs);
         g_free (temp);
         return false;
     }
 
-    vfs_fclose (temp_vfs);
+    temp_vfs = VFSFile ();
 
     if (g_unlink (temp) < 0)
         AUDERR ("Failed to delete temp file: %s.\n", temp);

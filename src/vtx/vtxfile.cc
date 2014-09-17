@@ -1,13 +1,12 @@
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <assert.h>
 #include <ctype.h>
 #include <inttypes.h>
 
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "ayemu.h"
 
@@ -18,11 +17,11 @@ extern void lh5_decode(unsigned char *inp,unsigned char *outp,unsigned long orig
 /* Read 8-bit integer from file.
  * Return 1 if error occurs
  */
-static int read_byte(VFSFile *fp, int *p)
+static int read_byte(VFSFile &fp, int *p)
 {
-  int c;
-  if ((c = vfs_getc(fp)) == EOF) {
-    perror("libayemu: read_byte()");
+  unsigned char c;
+  if (fp.fread(&c, 1, 1) != 1) {
+    AUDERR("read_byte() error\n");
     return 1;
   }
   *p = c;
@@ -32,69 +31,43 @@ static int read_byte(VFSFile *fp, int *p)
 /* Read 16-bit integer from file.
  * Return 1 if error occurs
  */
-static int read_word16(VFSFile *fp, int *p)
+static int read_word16(VFSFile &fp, int *p)
 {
-  int c;
-  if ((c = vfs_getc(fp)) == EOF) {
-    perror("libayemu: read_word16()");
+  unsigned char c[2];
+  if (fp.fread(&c, 2, 2) != 2) {
+    AUDERR("read_word16() error\n");
     return 1;
   }
-  *p = c;
-
-  if ((c = vfs_getc(fp)) == EOF) {
-    perror("libayemu: read_word16()");
-    return 1;
-  }
-  *p += c << 8;
-
+  *p = c[0] | (c[1] << 8);
   return 0;
 }
 
 /* read 32-bit integer from file.
  *  Returns 1 if error occurs
  */
-static int read_word32(VFSFile *fp, int32_t *p)
+static int read_word32(VFSFile &fp, int32_t *p)
 {
-  int c;
-
-  if ((c = vfs_getc(fp)) == EOF) {
-    perror("libayemu: read_word32()");
+  unsigned char c[4];
+  if (fp.fread(&c, 4, 4) != 4) {
+    AUDERR("read_word32() error\n");
     return 1;
   }
-  *p = c;
-
-  if ((c = vfs_getc(fp)) == EOF) {
-    perror("libayemu: read_word32()");
-    return 1;
-  }
-  *p += c << 8;
-
-  if ((c = vfs_getc(fp)) == EOF) {
-    perror("libayemu: read_word32()");
-    return 1;
-  }
-  *p += c << 16;
-
-  if ((c = vfs_getc(fp)) == EOF) {
-    perror("libayemu: read_word32()");
-    return 1;
-  }
-  *p += c << 24;
-
+  *p = c[0] | (c[1] << 8) | (c[2] << 16) | (c[3] << 24);
   return 0;
 }
 
 /* read_NTstring: reads null-terminated string from file.
  *  Return 1 if error occures.
  */
-static int read_NTstring(VFSFile *fp, char s[])
+static int read_NTstring(VFSFile &fp, char s[])
 {
-  int i, c;
-  for (i = 0 ; i < AYEMU_VTX_NTSTRING_MAX && (c = vfs_getc(fp)) != EOF && c ; i++)
+  int i, n = 0;
+  unsigned char c;
+  for (i = 0 ; i < AYEMU_VTX_NTSTRING_MAX && (n = fp.fread(&c, 1, 1)) == 1 && c ; i++)
     s[i] = c;
   s[i] = '\0';
-  if (c == EOF) {
-    fprintf(stderr, "libayemu: read_NTstring(): uninspected end of file!\n");
+  if (n != 1) {
+    AUDERR("unexpected end of file!\n");
     return 1;
   }
   return 0;
@@ -113,13 +86,13 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
 
   vtx->regdata = nullptr;
 
-  if ((vtx->fp = vfs_fopen (filename, "rb")) == nullptr) {
-    fprintf(stderr, "ayemu_vtx_open: Cannot open file %s: %s\n", filename, strerror(errno));
+  if (! (vtx->fp = VFSFile (filename, "rb"))) {
+    AUDERR ("Cannot open file %s\n", filename);
     return 0;
   }
 
-  if (vfs_fread(buf, 2, 1, vtx->fp) != 1) {
-    fprintf(stderr,"ayemu_vtx_open: Can't read from %s: %s\n", filename, strerror(errno));
+  if (vtx->fp.fread (buf, 2, 1) != 1) {
+    AUDERR ("Can't read from %s\n", filename);
     error = 1;
   }
 
@@ -131,7 +104,7 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
   else if (strncmp (buf, "ym", 2) == 0)
     vtx->hdr.chiptype = AYEMU_YM;
   else {
-    fprintf (stderr, "File %s is _not_ VORTEX format!\nIt not begins from AY or YM.\n", filename);
+    AUDERR ("File %s is _not_ VORTEX format!\nIt not begins from AY or YM.\n", filename);
     error = 1;
   }
 
@@ -152,10 +125,9 @@ int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename)
   if (!error) error = read_NTstring(vtx->fp, vtx->hdr.tracker);
   if (!error) error = read_NTstring (vtx->fp, vtx->hdr.comment);
 
-  if (error) {
-    vfs_fclose(vtx->fp);
-    vtx->fp = nullptr;
-  }
+  if (error)
+    vtx->fp = VFSFile ();
+
   return !error;
 }
 
@@ -169,35 +141,23 @@ char *ayemu_vtx_load_data (ayemu_vtx_t *vtx)
   char *packed_data;
   size_t packed_size;
   size_t buf_alloc;
-  int c;
+  unsigned char c;
 
-  if (vtx->fp == nullptr) {
-    fprintf(stderr, "ayemu_vtx_load_data: tune file not open yet (do you call ayemu_vtx_open first?)\n");
-    return nullptr;
-  }
   packed_size = 0;
   buf_alloc = 4096;
   packed_data = (char *) malloc (buf_alloc);
   /* read packed AY register data to end of file. */
-  while ((c = vfs_getc (vtx->fp)) != EOF) {
+  while (vtx->fp.fread (&c, 1, 1) == 1) {
     if (buf_alloc < packed_size) {
       buf_alloc *= 2;
       packed_data = (char *) realloc (packed_data, buf_alloc);
-      if (packed_data == nullptr) {
-	fprintf (stderr, "ayemu_vtx_load_data: Packed data out of memory!\n");
-	vfs_fclose (vtx->fp);
-	return nullptr;
-      }
+      if (packed_data == nullptr)
+        throw std::bad_alloc ();
     }
     packed_data[packed_size++] = c;
   }
-  vfs_fclose (vtx->fp);
-  vtx->fp = nullptr;
-  if ((vtx->regdata = (char *) malloc (vtx->hdr.regdata_size)) == nullptr) {
-    fprintf (stderr, "ayemu_vtx_load_data: Can allocate %d bytes for unpack register data\n", (int)(vtx->hdr.regdata_size));
-    free (packed_data);
-    return nullptr;
-  }
+  if ((vtx->regdata = (char *) malloc (vtx->hdr.regdata_size)) == nullptr)
+    throw std::bad_alloc ();
   lh5_decode ((unsigned char *)packed_data, (unsigned char *)(vtx->regdata), vtx->hdr.regdata_size, packed_size);
   free (packed_data);
   vtx->pos = 0;
@@ -317,10 +277,7 @@ void ayemu_vtx_sprintname (const ayemu_vtx_t *vtx, char *const buf, const int sz
  */
 void ayemu_vtx_free (ayemu_vtx_t *vtx)
 {
-  if (vtx->fp) {
-    vfs_fclose(vtx->fp);
-    vtx->fp = nullptr;
-  }
+  vtx->fp = VFSFile ();
 
   if (vtx->regdata) {
     free(vtx->regdata);

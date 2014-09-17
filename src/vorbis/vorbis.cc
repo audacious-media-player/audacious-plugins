@@ -46,12 +46,12 @@
 
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
-    return vfs_fread (buffer, size, count, (VFSFile *) file);
+    return ((VFSFile *) file)->fread (buffer, size, count);
 }
 
 static int ovcb_seek (void * file, ogg_int64_t offset, int whence)
 {
-    return vfs_fseek ((VFSFile *) file, offset, to_vfs_seek_type (whence));
+    return ((VFSFile *) file)->fseek (offset, to_vfs_seek_type (whence));
 }
 
 static int ovcb_close (void * file)
@@ -61,7 +61,7 @@ static int ovcb_close (void * file)
 
 static long ovcb_tell (void * file)
 {
-    return vfs_ftell ((VFSFile *) file);
+    return ((VFSFile *) file)->ftell ();
 }
 
 ov_callbacks vorbis_callbacks = {
@@ -78,7 +78,7 @@ ov_callbacks vorbis_callbacks_stream = {
     nullptr
 };
 
-static bool vorbis_check_fd (const char * filename, VFSFile * file)
+static bool vorbis_check_fd (const char * filename, VFSFile & file)
 {
     ogg_sync_state oy = {0};
     ogg_stream_state os = {0};
@@ -99,7 +99,7 @@ static bool vorbis_check_fd (const char * filename, VFSFile * file)
             break;
 
         void * buffer = ogg_sync_buffer (& oy, 2048);
-        bytes = vfs_fread (buffer, 1, 2048, file);
+        bytes = file.fread (buffer, 1, 2048);
 
         if (bytes <= 0)
             goto end;
@@ -131,7 +131,7 @@ set_tuple_str(Tuple &tuple, const int nfield,
 }
 
 static Tuple
-get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename)
+get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename, bool stream)
 {
     Tuple tuple;
     int length = -1;
@@ -139,7 +139,7 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename)
 
     tuple.set_filename(filename);
 
-    if (! vfs_is_streaming ((VFSFile *) vorbisfile->datasource))
+    if (! stream)
         length = ov_time_total (vorbisfile, -1) * 1000;
 
     /* associate with tuple */
@@ -249,11 +249,8 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 #define PCM_FRAMES 1024
 #define PCM_BUFSIZE (PCM_FRAMES * 2)
 
-static bool vorbis_play (const char * filename, VFSFile * file)
+static bool vorbis_play (const char * filename, VFSFile & file)
 {
-    if (file == nullptr)
-        return false;
-
     vorbis_info *vi;
     OggVorbis_File vf;
     int last_section = -1;
@@ -264,9 +261,10 @@ static bool vorbis_play (const char * filename, VFSFile * file)
 
     memset(&vf, 0, sizeof(vf));
 
+    bool stream = (file.fsize () < 0);
     bool error = false;
 
-    if (ov_open_callbacks (file, & vf, nullptr, 0, vfs_is_streaming (file) ?
+    if (ov_open_callbacks (& file, & vf, nullptr, 0, stream ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
     {
         error = true;
@@ -330,8 +328,7 @@ static bool vorbis_play (const char * filename, VFSFile * file)
                 g_free (title);
                 title = g_strdup (new_title);
 
-                aud_input_set_tuple (get_tuple_for_vorbisfile (& vf,
-                 filename));
+                aud_input_set_tuple (get_tuple_for_vorbisfile (& vf, filename, stream));
             }
         }
 
@@ -380,31 +377,35 @@ play_cleanup:
     return ! error;
 }
 
-static Tuple get_song_tuple (const char * filename, VFSFile * file)
+static Tuple get_song_tuple (const char * filename, VFSFile & file)
 {
     OggVorbis_File vfile;          /* avoid thread interaction */
+
+    bool stream = (file.fsize () < 0);
 
     /*
      * The open function performs full stream detection and
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks (file, & vfile, nullptr, 0, vfs_is_streaming (file) ?
+    if (ov_open_callbacks (& file, & vfile, nullptr, 0, stream ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
         return Tuple ();
 
-    Tuple tuple = get_tuple_for_vorbisfile(&vfile, filename);
+    Tuple tuple = get_tuple_for_vorbisfile(&vfile, filename, stream);
     ov_clear(&vfile);
     return tuple;
 }
 
-static Index<char> get_song_image (const char * filename, VFSFile * file)
+static Index<char> get_song_image (const char * filename, VFSFile & file)
 {
     Index<char> data;
 
     OggVorbis_File vfile;
 
-    if (ov_open_callbacks (file, & vfile, nullptr, 0, vfs_is_streaming (file) ?
+    bool stream = (file.fsize () < 0);
+
+    if (ov_open_callbacks (& file, & vfile, nullptr, 0, stream ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
         return data;
 

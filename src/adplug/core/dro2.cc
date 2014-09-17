@@ -42,7 +42,7 @@ Cdro2Player::~Cdro2Player()
 	if (this->piConvTable) delete[] this->piConvTable;
 }
 
-bool Cdro2Player::load(VFSFile * fd, const CFileProvider & fp)
+bool Cdro2Player::load(VFSFile & fd, const CFileProvider & fp)
 {
 	binistream *f = fp.open(fd);
 	if (!f) return false;

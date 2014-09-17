@@ -55,7 +55,7 @@ void asx_handle_entry (const char * key, const char * value, void * data)
         state->items.append (String (uri));
 }
 
-static bool playlist_load_asx (const char * filename, VFSFile * file,
+static bool playlist_load_asx (const char * filename, VFSFile & file,
  String & title, Index<PlaylistAddItem> & items)
 {
     ASXLoadState state = {

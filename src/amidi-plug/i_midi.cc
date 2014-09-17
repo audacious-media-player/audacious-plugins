@@ -51,8 +51,13 @@ void midifile_t::skip_bytes (int bytes)
 /* reads a single byte */
 int midifile_t::read_byte ()
 {
-    ++file_offset;
-    return vfs_getc (file_pointer);
+    if (file_offset >= file_data.len ())
+    {
+        file_eof = true;
+        return -1;
+    }
+
+    return (unsigned char) file_data[file_offset ++];
 }
 
 
@@ -64,7 +69,7 @@ int midifile_t::read_32_le ()
     value |= read_byte () << 8;
     value |= read_byte () << 16;
     value |= read_byte () << 24;
-    return !vfs_feof (file_pointer) ? value : -1;
+    return !file_eof ? value : -1;
 }
 
 
@@ -167,9 +172,6 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
         else
         {
             /* running status */
-            if (vfs_ungetc (c, file_pointer) < 0)
-                break;
-
             file_offset--;
             cmd = last_cmd;
 
@@ -448,7 +450,7 @@ bool midifile_t::parse_smf (int port_count)
             int id = read_id ();
             len = read_int (4);
 
-            if (vfs_feof (file_pointer))
+            if (file_eof)
             {
                 AUDERR ("%s: unexpected end of file\n", (const char *) file_name);
                 return false;
@@ -507,7 +509,7 @@ bool midifile_t::parse_riff ()
         int id = read_id ();
         int len = read_32_le ();
 
-        if (vfs_feof (file_pointer))
+        if (file_eof)
             return false;
 
         if (id == MAKE_ID ('d', 'a', 't', 'a'))
@@ -750,15 +752,16 @@ void midifile_t::get_bpm (int * bpm, int * wavg_bpm)
 bool midifile_t::parse_from_filename (const char * filename)
 {
     AUDDBG ("PARSE_FROM_FILENAME requested, opening file: %s\n", filename);
-    file_pointer = vfs_fopen (filename, "rb");
 
-    if (!file_pointer)
+    VFSFile file (filename, "rb");
+    if (! file)
     {
         AUDERR ("Cannot open %s\n", filename);
         return false;
     }
 
     file_name = String (filename);
+    file_data = file.read_all ();
 
     switch (read_id ())
     {
@@ -792,7 +795,6 @@ bool midifile_t::parse_from_filename (const char * filename)
         setget_length ();
 
         /* ok, mf has been filled with information; successfully return */
-        vfs_fclose (file_pointer);
         return true;
     }
 
@@ -804,6 +806,5 @@ bool midifile_t::parse_from_filename (const char * filename)
     }
 
     /* something failed */
-    vfs_fclose (file_pointer);
     return false;
 }
