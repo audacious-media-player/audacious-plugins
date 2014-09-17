@@ -29,31 +29,33 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
-class GIOFile : public VFSFile {
+class GIOFile : public VFSImpl
+{
 public:
     GIOFile (const char * filename, const char * mode);
     ~GIOFile ();
 
-    class OpenError {};
+    class OpenError {};  // exception
 
 protected:
-    int64_t fread_impl (void * ptr, int64_t size, int64_t nmemb);
-    int64_t fwrite_impl (const void * buf, int64_t size, int64_t nitems);
+    int64_t fread (void * ptr, int64_t size, int64_t nmemb);
+    int64_t fwrite (const void * buf, int64_t size, int64_t nitems);
 
-    int fseek_impl (int64_t offset, VFSSeekType whence);
-    int64_t ftell_impl ();
+    int fseek (int64_t offset, VFSSeekType whence);
+    int64_t ftell ();
 
-    int getc_impl ();
-    int ungetc_impl (int c);
+    int getc ();
+    int ungetc (int c);
 
-    bool feof_impl ();
+    bool feof ();
 
-    int ftruncate_impl (int64_t length);
-    int64_t fsize_impl ();
+    int ftruncate (int64_t length);
+    int64_t fsize ();
 
-    int fflush_impl ();
+    int fflush ();
 
 private:
+    String m_filename;
     GFile * m_file = nullptr;
     GIOStream * m_iostream = nullptr;
     GInputStream * m_istream = nullptr;
@@ -63,18 +65,18 @@ private:
 
 #define CHECK_ERROR(op, name) do { \
     if (error) { \
-        AUDERR ("Cannot %s %s: %s.\n", op, name, error->message); \
+        AUDERR ("Cannot %s %s: %s.\n", op, (const char *) name, error->message); \
         g_error_free (error); \
         goto FAILED; \
     } \
 } while (0)
 
-GIOFile::GIOFile (const char * url, const char * mode) :
-    VFSFile (url)
+GIOFile::GIOFile (const char * filename, const char * mode) :
+    m_filename (filename)
 {
     GError * error = nullptr;
 
-    m_file = g_file_new_for_uri (filename ());
+    m_file = g_file_new_for_uri (filename);
 
     switch (mode[0])
     {
@@ -82,7 +84,7 @@ GIOFile::GIOFile (const char * url, const char * mode) :
         if (strchr (mode, '+'))
         {
             m_iostream = (GIOStream *) g_file_open_readwrite (m_file, 0, & error);
-            CHECK_ERROR ("open", filename ());
+            CHECK_ERROR ("open", filename);
             m_istream = g_io_stream_get_input_stream (m_iostream);
             m_ostream = g_io_stream_get_output_stream (m_iostream);
             m_seekable = (GSeekable *) m_iostream;
@@ -90,7 +92,7 @@ GIOFile::GIOFile (const char * url, const char * mode) :
         else
         {
             m_istream = (GInputStream *) g_file_read (m_file, 0, & error);
-            CHECK_ERROR ("open", filename ());
+            CHECK_ERROR ("open", filename);
             m_seekable = (GSeekable *) m_istream;
         }
         break;
@@ -99,7 +101,7 @@ GIOFile::GIOFile (const char * url, const char * mode) :
         {
             m_iostream = (GIOStream *) g_file_replace_readwrite (m_file,
              0, 0, (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename ());
+            CHECK_ERROR ("open", filename);
             m_istream = g_io_stream_get_input_stream (m_iostream);
             m_ostream = g_io_stream_get_output_stream (m_iostream);
             m_seekable = (GSeekable *) m_iostream;
@@ -108,26 +110,26 @@ GIOFile::GIOFile (const char * url, const char * mode) :
         {
             m_ostream = (GOutputStream *) g_file_replace (m_file, 0, 0,
              (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename ());
+            CHECK_ERROR ("open", filename);
             m_seekable = (GSeekable *) m_ostream;
         }
         break;
     case 'a':
         if (strchr (mode, '+'))
         {
-            AUDERR ("Cannot open %s: GIO does not support read-and-append mode.\n", filename ());
+            AUDERR ("Cannot open %s: GIO does not support read-and-append mode.\n", filename);
             goto FAILED;
         }
         else
         {
             m_ostream = (GOutputStream *) g_file_append_to (m_file,
              (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename ());
+            CHECK_ERROR ("open", filename);
             m_seekable = (GSeekable *) m_ostream;
         }
         break;
     default:
-        AUDERR ("Cannot open %s: invalid mode.\n", filename ());
+        AUDERR ("Cannot open %s: invalid mode.\n", filename);
         break;
     }
 
@@ -146,26 +148,26 @@ GIOFile::~GIOFile ()
     {
         g_io_stream_close (m_iostream, 0, & error);
         g_object_unref (m_iostream);
-        CHECK_ERROR ("close", filename ());
+        CHECK_ERROR ("close", m_filename);
     }
     else if (m_istream)
     {
         g_input_stream_close (m_istream, 0, & error);
         g_object_unref (m_istream);
-        CHECK_ERROR ("close", filename ());
+        CHECK_ERROR ("close", m_filename);
     }
     else if (m_ostream)
     {
         g_output_stream_close (m_ostream, 0, & error);
         g_object_unref (m_ostream);
-        CHECK_ERROR ("close", filename ());
+        CHECK_ERROR ("close", m_filename);
     }
 
 FAILED:
     g_object_unref (m_file);
 }
 
-static VFSFile * gio_fopen_impl (const char * filename, const char * mode)
+static VFSImpl * gio_fopen (const char * filename, const char * mode)
 {
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
@@ -176,18 +178,18 @@ static VFSFile * gio_fopen_impl (const char * filename, const char * mode)
         { return nullptr; }
 }
 
-int64_t GIOFile::fread_impl (void * buf, int64_t size, int64_t nitems)
+int64_t GIOFile::fread (void * buf, int64_t size, int64_t nitems)
 {
     GError * error = 0;
 
     if (! m_istream)
     {
-        AUDERR ("Cannot read from %s: not open for reading.\n", filename ());
+        AUDERR ("Cannot read from %s: not open for reading.\n", (const char *) m_filename);
         return 0;
     }
 
     int64_t readed = g_input_stream_read (m_istream, buf, size * nitems, 0, & error);
-    CHECK_ERROR ("read from", filename ());
+    CHECK_ERROR ("read from", m_filename);
 
     return (size > 0) ? readed / size : 0;
 
@@ -195,18 +197,18 @@ FAILED:
     return 0;
 }
 
-int64_t GIOFile::fwrite_impl (const void * buf, int64_t size, int64_t nitems)
+int64_t GIOFile::fwrite (const void * buf, int64_t size, int64_t nitems)
 {
     GError * error = 0;
 
     if (! m_ostream)
     {
-        AUDERR ("Cannot write to %s: not open for writing.\n", filename ());
+        AUDERR ("Cannot write to %s: not open for writing.\n", (const char *) m_filename);
         return 0;
     }
 
     int64_t written = g_output_stream_write (m_ostream, buf, size * nitems, 0, & error);
-    CHECK_ERROR ("write to", filename ());
+    CHECK_ERROR ("write to", m_filename);
 
     return (size > 0) ? written / size : 0;
 
@@ -214,7 +216,7 @@ FAILED:
     return 0;
 }
 
-int GIOFile::fseek_impl (int64_t offset, VFSSeekType whence)
+int GIOFile::fseek (int64_t offset, VFSSeekType whence)
 {
     GError * error = 0;
     GSeekType gwhence;
@@ -231,12 +233,12 @@ int GIOFile::fseek_impl (int64_t offset, VFSSeekType whence)
         gwhence = G_SEEK_END;
         break;
     default:
-        AUDERR ("Cannot seek within %s: invalid whence.\n", filename ());
+        AUDERR ("Cannot seek within %s: invalid whence.\n", (const char *) m_filename);
         return -1;
     }
 
     g_seekable_seek (m_seekable, offset, gwhence, nullptr, & error);
-    CHECK_ERROR ("seek within", filename ());
+    CHECK_ERROR ("seek within", m_filename);
 
     return 0;
 
@@ -244,39 +246,39 @@ FAILED:
     return -1;
 }
 
-int64_t GIOFile::ftell_impl ()
+int64_t GIOFile::ftell ()
 {
     return g_seekable_tell (m_seekable);
 }
 
-int GIOFile::getc_impl ()
+int GIOFile::getc ()
 {
     unsigned char c;
-    return (fread_impl (& c, 1, 1) == 1) ? c : -1;
+    return (fread (& c, 1, 1) == 1) ? c : -1;
 }
 
-int GIOFile::ungetc_impl (int c)
+int GIOFile::ungetc (int c)
 {
-    return (! fseek_impl (-1, VFS_SEEK_CUR)) ? c : -1;
+    return (! fseek (-1, VFS_SEEK_CUR)) ? c : -1;
 }
 
-bool GIOFile::feof_impl ()
+bool GIOFile::feof ()
 {
-    int test = getc_impl ();
+    int test = getc ();
 
     if (test < 0)
         return TRUE;
 
-    ungetc_impl (test);
+    ungetc (test);
     return FALSE;
 }
 
-int GIOFile::ftruncate_impl (int64_t length)
+int GIOFile::ftruncate (int64_t length)
 {
     GError * error = 0;
 
     g_seekable_truncate (m_seekable, length, nullptr, & error);
-    CHECK_ERROR ("truncate", filename ());
+    CHECK_ERROR ("truncate", m_filename);
 
     return 0;
 
@@ -284,7 +286,7 @@ FAILED:
     return -1;
 }
 
-int64_t GIOFile::fsize_impl ()
+int64_t GIOFile::fsize ()
 {
     GError * error = 0;
     int64_t size;
@@ -298,7 +300,7 @@ int64_t GIOFile::fsize_impl ()
 
     GFileInfo * info = g_file_query_info (m_file,
      G_FILE_ATTRIBUTE_STANDARD_SIZE, (GFileQueryInfoFlags) 0, 0, & error);
-    CHECK_ERROR ("get size of", filename ());
+    CHECK_ERROR ("get size of", m_filename);
 
     size = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
 
@@ -309,7 +311,7 @@ FAILED:
     return -1;
 }
 
-int GIOFile::fflush_impl ()
+int GIOFile::fflush ()
 {
     int result;
     GError * error = nullptr;
@@ -318,7 +320,7 @@ int GIOFile::fflush_impl ()
         return 0;  /* no-op */
 
     result = g_output_stream_flush (m_ostream, nullptr, & error);
-    CHECK_ERROR ("flush", filename ());
+    CHECK_ERROR ("flush", m_filename);
 
     return result;
 
@@ -335,7 +337,7 @@ static const char * const gio_schemes[] = {"ftp", "sftp", "smb", 0};
 #define AUD_PLUGIN_NAME        N_("GIO Plugin")
 #define AUD_PLUGIN_ABOUT       gio_about
 #define AUD_TRANSPORT_SCHEMES  gio_schemes
-#define AUD_TRANSPORT_FOPEN    gio_fopen_impl
+#define AUD_TRANSPORT_FOPEN    gio_fopen
 
 #define AUD_DECLARE_TRANSPORT
 #include <libaudcore/plugin-declare.h>

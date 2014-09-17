@@ -108,7 +108,7 @@ static void neon_plugin_fini (void)
     ne_sock_exit ();
 }
 
-class NeonFile : public VFSFile
+class NeonFile : public VFSImpl
 {
 public:
     NeonFile (const char * url);
@@ -117,18 +117,18 @@ public:
     int open_handle (uint64_t startbyte);
 
 protected:
-    int64_t fread_impl (void * ptr, int64_t size, int64_t nmemb);
-    int fseek_impl (int64_t offset, VFSSeekType whence);
+    int64_t fread (void * ptr, int64_t size, int64_t nmemb);
+    int fseek (int64_t offset, VFSSeekType whence);
 
-    int64_t ftell_impl ();
-    int64_t fsize_impl ();
-    bool feof_impl ();
+    int64_t ftell ();
+    int64_t fsize ();
+    bool feof ();
 
-    int64_t fwrite_impl (const void * ptr, int64_t size, int64_t nmemb);
-    int ftruncate_impl (int64_t length);
-    int fflush_impl ();
+    int64_t fwrite (const void * ptr, int64_t size, int64_t nmemb);
+    int ftruncate (int64_t length);
+    int fflush ();
 
-    String get_metadata_impl (const char * field);
+    String get_metadata (const char * field);
 
 private:
     String m_url;               /* The URL, as passed to us */
@@ -170,7 +170,6 @@ private:
 };
 
 NeonFile::NeonFile (const char * url) :
-    VFSFile (url),
     m_url (url)
 {
     init_rb_with_lock (& m_rb, NEON_BUFSIZE, & m_reader_status.mutex);
@@ -686,7 +685,7 @@ void NeonFile::reader ()
     pthread_mutex_unlock (& m_reader_status.mutex);
 }
 
-VFSFile * neon_fopen_impl (const char * path, const char * mode)
+VFSImpl * neon_fopen (const char * path, const char * mode)
 {
     NeonFile * file = new NeonFile (path);
 
@@ -893,7 +892,7 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
 
 /* try_fread will do only a partial read if the buffer underruns, so we
  * must call it repeatedly until we have read the full request. */
-int64_t NeonFile::fread_impl (void * buffer, int64_t size, int64_t count)
+int64_t NeonFile::fread (void * buffer, int64_t size, int64_t count)
 {
     size_t total = 0, part;
 
@@ -911,40 +910,40 @@ int64_t NeonFile::fread_impl (void * buffer, int64_t size, int64_t count)
     return total;
 }
 
-int64_t NeonFile::fwrite_impl (const void * ptr, int64_t size, int64_t nmemb)
+int64_t NeonFile::fwrite (const void * ptr, int64_t size, int64_t nmemb)
 {
     AUDERR ("<%p> NOT IMPLEMENTED\n", this);
 
     return 0;
 }
 
-int64_t NeonFile::ftell_impl ()
+int64_t NeonFile::ftell ()
 {
     AUDDBG ("<%p> Current file position: %ld\n", this, m_pos);
 
     return m_pos;
 }
 
-bool NeonFile::feof_impl ()
+bool NeonFile::feof ()
 {
     AUDDBG ("<%p> EOF status: %s\n", this, m_eof ? "true" : "false");
 
     return m_eof;
 }
 
-int NeonFile::ftruncate_impl (int64_t size)
+int NeonFile::ftruncate (int64_t size)
 {
     AUDERR ("<%p> NOT IMPLEMENTED\n", this);
 
     return 0;
 }
 
-int NeonFile::fflush_impl ()
+int NeonFile::fflush ()
 {
     return 0; /* no-op */
 }
 
-int NeonFile::fseek_impl (int64_t offset, VFSSeekType whence)
+int NeonFile::fseek (int64_t offset, VFSSeekType whence)
 {
     AUDDBG ("<%p> Seek requested: offset %ld, whence %d\n", this, offset, whence);
 
@@ -1039,7 +1038,7 @@ int NeonFile::fseek_impl (int64_t offset, VFSSeekType whence)
     return 0;
 }
 
-String NeonFile::get_metadata_impl (const char * field)
+String NeonFile::get_metadata (const char * field)
 {
     AUDDBG ("<%p> Field name: %s\n", this, field);
 
@@ -1058,7 +1057,7 @@ String NeonFile::get_metadata_impl (const char * field)
     return String ();
 }
 
-int64_t NeonFile::fsize_impl ()
+int64_t NeonFile::fsize ()
 {
     if (m_content_length < 0)
     {
@@ -1075,7 +1074,7 @@ static const char * const neon_schemes[] = {"http", "https", nullptr};
 #define AUD_TRANSPORT_SCHEMES  neon_schemes
 #define AUD_PLUGIN_INIT        neon_plugin_init
 #define AUD_PLUGIN_CLEANUP     neon_plugin_fini
-#define AUD_TRANSPORT_FOPEN    neon_fopen_impl
+#define AUD_TRANSPORT_FOPEN    neon_fopen
 
 #define AUD_DECLARE_TRANSPORT
 #include <libaudcore/plugin-declare.h>
