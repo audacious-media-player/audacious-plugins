@@ -37,7 +37,7 @@ public:
     Playlist * playlistWidget (int num);
     Playlist * activePlaylistWidget ();
 
-    void editTab (int idx) const;
+    void editTab (int idx);
 
 public slots:
     void filterTrigger (const QString &text);
@@ -48,12 +48,12 @@ protected:
     bool eventFilter (QObject * obj, QEvent *e);
 
 private:
-    QLineEdit *m_lineedit;
     PlaylistTabBar *m_tabbar;
 
     void populatePlaylists ();
     void maybeCreateTab (int count_, int uniq_id);
     void cullPlaylists ();
+    void cancelRename ();
 
     static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
     {
