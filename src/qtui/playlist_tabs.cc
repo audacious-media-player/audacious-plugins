@@ -134,7 +134,7 @@ void PlaylistTabs::tabEditedTrigger ()
         return;
 
     QString title = edit->text ();
-    m_tabbar->setTabButton (idx, QTabBar::LeftSide, nullptr);
+    m_tabbar->setTabButton (idx, QTabBar::LeftSide, m_leftbtn);
     setTabText (idx, title);
 
     aud_playlist_set_title (idx, title.toUtf8 ());
@@ -145,6 +145,8 @@ void PlaylistTabs::editTab (int idx)
     QLineEdit * edit = new QLineEdit (tabText (idx));
 
     connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
+
+    m_leftbtn = m_tabbar->tabButton (idx, QTabBar::LeftSide);
 
     setTabText (idx, QString ());
     m_tabbar->setTabButton (idx, QTabBar::LeftSide, edit);

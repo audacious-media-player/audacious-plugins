@@ -48,6 +48,7 @@ protected:
     bool eventFilter (QObject * obj, QEvent *e);
 
 private:
+    QWidget *m_leftbtn;
     PlaylistTabBar *m_tabbar;
 
     void populatePlaylists ();
