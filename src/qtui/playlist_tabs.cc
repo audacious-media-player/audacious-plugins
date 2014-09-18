@@ -29,12 +29,14 @@
 #include "playlist_tabs.h"
 #include "playlist_tabs.moc"
 
-PlaylistTabs::PlaylistTabs (QWidget * parent) : QTabWidget (parent)
+PlaylistTabs::PlaylistTabs (QWidget * parent) :
+    QTabWidget (parent),
+    m_leftbtn (nullptr),
+    m_tabbar (new PlaylistTabBar (this))
 {
     installEventFilter (this);
 
     // set up tab bar
-    m_tabbar = new PlaylistTabBar (this);
     m_tabbar->setFocusPolicy (Qt::NoFocus);
     setTabBar (m_tabbar);
 
@@ -123,21 +125,41 @@ void PlaylistTabs::currentChangedTrigger (int idx)
     aud_playlist_set_active (idx);
 }
 
+QLineEdit * PlaylistTabs::getTabEdit (int idx)
+{
+    return dynamic_cast<QLineEdit *> (m_tabbar->tabButton (idx, QTabBar::LeftSide));
+}
+
+void PlaylistTabs::setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp)
+{
+    QWidget * old = m_tabbar->tabButton (idx, QTabBar::LeftSide);
+    m_tabbar->setTabButton (idx, QTabBar::LeftSide, button);
+    setTabText (idx, text);
+
+    if (oldp)
+        * oldp = old;
+    else
+    {
+        old->setParent (nullptr);
+        old->deleteLater ();
+    }
+}
+
 void PlaylistTabs::tabEditedTrigger ()
 {
     int idx = currentIndex ();
     if (idx < 0)
         return;
 
-    auto edit = dynamic_cast<QLineEdit *> (m_tabbar->tabButton (idx, QTabBar::LeftSide));
+    QLineEdit * edit = getTabEdit (idx);
     if (! edit)
         return;
 
     QString title = edit->text ();
-    m_tabbar->setTabButton (idx, QTabBar::LeftSide, m_leftbtn);
-    setTabText (idx, title);
-
     aud_playlist_set_title (idx, title.toUtf8 ());
+
+    setupTab (idx, m_leftbtn, title, nullptr);
+    m_leftbtn = nullptr;
 }
 
 void PlaylistTabs::editTab (int idx)
@@ -146,10 +168,7 @@ void PlaylistTabs::editTab (int idx)
 
     connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
 
-    m_leftbtn = m_tabbar->tabButton (idx, QTabBar::LeftSide);
-
-    setTabText (idx, QString ());
-    m_tabbar->setTabButton (idx, QTabBar::LeftSide, edit);
+    setupTab (idx, edit, QString (), & m_leftbtn);
 
     edit->selectAll ();
     edit->setFocus ();
@@ -175,12 +194,12 @@ void PlaylistTabs::cancelRename ()
 {
     for (int i = 0; i < count (); i ++)
     {
-        auto edit = dynamic_cast<QLineEdit *> (m_tabbar->tabButton (i, QTabBar::LeftSide));
+        QLineEdit * edit = getTabEdit (i);
         if (! edit)
             continue;
 
-        m_tabbar->setTabButton (i, QTabBar::LeftSide, nullptr);
-        setTabText (i, (const char *) aud_playlist_get_title (i));
+        setupTab (i, m_leftbtn, (const char *) aud_playlist_get_title (i), nullptr);
+        m_leftbtn = nullptr;
     }
 }
 

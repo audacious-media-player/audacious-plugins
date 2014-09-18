@@ -51,6 +51,9 @@ private:
     QWidget *m_leftbtn;
     PlaylistTabBar *m_tabbar;
 
+    QLineEdit * getTabEdit (int idx);
+    void setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp);
+
     void populatePlaylists ();
     void maybeCreateTab (int count_, int uniq_id);
     void cullPlaylists ();
