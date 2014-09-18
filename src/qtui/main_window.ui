@@ -415,7 +415,7 @@
     <string>Play This Playlist</string>
    </property>
    <property name="shortcut">
-    <string>Return</string>
+    <string>Ctrl+Shift+Return</string>
    </property>
   </action>
   <action name="actionPlaylistRefresh">
