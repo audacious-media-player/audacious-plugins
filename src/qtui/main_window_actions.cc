@@ -87,6 +87,8 @@ void MainWindow::setupActions ()
     connect(actionSelectedReverse, &QAction::triggered, [] () { aud_playlist_reverse_selected (aud_playlist_get_active ()); });
     connect(actionSelectedRandomize, &QAction::triggered, [] () { aud_playlist_randomize_selected (aud_playlist_get_active ()); });
 
+    connect(actionSongInfo, &QAction::triggered, audqt::infowin_show_current);
+
     /* plugin menus */
     QMenuBar * mb = this->menuBar();
     mb->addAction (audqt::menu_get_by_id (AUD_MENU_MAIN)->menuAction ());
