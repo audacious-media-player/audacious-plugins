@@ -81,8 +81,17 @@ static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
 
 void create_plugin_windows (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, add_dock_plugin, nullptr);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, add_dock_plugin, nullptr);
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin (plugin, nullptr);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin (plugin, nullptr);
+    }
 
     hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
     hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
@@ -100,8 +109,17 @@ void hide_plugin_windows (void)
 
 void destroy_plugin_windows (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, remove_dock_plugin, nullptr);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, remove_dock_plugin, nullptr);
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin (plugin, nullptr);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin (plugin, nullptr);
+    }
 
     hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);

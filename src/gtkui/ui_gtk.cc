@@ -650,11 +650,11 @@ static void toggle_search_tool (GtkToggleToolButton * button)
     aud_plugin_enable (search_tool, gtk_toggle_tool_button_get_active (button));
 }
 
-static bool search_tool_toggled (PluginHandle * plugin, void * unused)
+static bool search_tool_toggled (PluginHandle * plugin, void *)
 {
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) search_button,
      aud_plugin_get_enabled (plugin));
-    return TRUE;
+    return true;
 }
 
 static void config_save (void)
@@ -717,8 +717,17 @@ static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
 
 static void add_dock_plugins (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, add_dock_plugin, nullptr);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, add_dock_plugin, nullptr);
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin (plugin, nullptr);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin (plugin, nullptr);
+    }
 
     hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
     hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
@@ -726,8 +735,17 @@ static void add_dock_plugins (void)
 
 static void remove_dock_plugins (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, remove_dock_plugin, nullptr);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, remove_dock_plugin, nullptr);
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin (plugin, nullptr);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin (plugin, nullptr);
+    }
 
     hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
