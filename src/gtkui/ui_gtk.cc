@@ -64,9 +64,54 @@ static const char * const gtkui_defaults[] = {
  nullptr
 };
 
+class GtkUI : public IfacePlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("GTK Interface"),
+        PACKAGE,
+        nullptr,
+        & gtkui_prefs
+    };
+
+    GtkUI () : IfacePlugin (info) {}
+
+    bool init ();
+    void cleanup ();
+    void show (bool show);
+
+    void run ()
+        { gtk_main (); }
+    void quit ()
+        { gtk_main_quit (); }
+
+    void show_about_window ()
+        { audgui_show_about_window (); }
+    void hide_about_window ()
+        { audgui_hide_about_window (); }
+    void show_filebrowser (bool open)
+        { audgui_run_filebrowser (open); }
+    void hide_filebrowser ()
+        { audgui_hide_filebrowser (); }
+    void show_jump_to_song ()
+        { audgui_jump_to_track (); }
+    void hide_jump_to_song ()
+        { audgui_jump_to_track_hide (); }
+    void show_prefs_window ()
+        { audgui_show_prefs_window (); }
+    void hide_prefs_window ()
+        { audgui_hide_prefs_window (); }
+    void plugin_menu_add (int id, void func (), const char * name, const char * icon)
+        { audgui_plugin_menu_add (id, func, name, icon); }
+    void plugin_menu_remove (int id, void func ())
+        { audgui_plugin_menu_remove (id, func); }
+};
+
+GtkUI aud_plugin_instance;
+
 static PluginHandle * search_tool;
 
-static GtkWidget *volume;
+static GtkWidget * volume;
 static gboolean volume_slider_is_moving = FALSE;
 static unsigned update_volume_timeout_source = 0;
 static unsigned long volume_change_handler_id;
@@ -84,33 +129,6 @@ static gboolean slider_is_moving = FALSE;
 static int slider_seek_time = -1;
 static unsigned delayed_title_change_source = 0;
 static unsigned update_song_timeout_source = 0;
-
-static bool ui_init (void);
-static void ui_cleanup (void);
-static void ui_show (bool show);
-
-#define AUD_PLUGIN_NAME     N_("GTK Interface")
-#define AUD_PLUGIN_PREFS    & gtkui_prefs
-#define AUD_PLUGIN_INIT     ui_init
-#define AUD_PLUGIN_CLEANUP  ui_cleanup
-
-#define AUD_IFACE_SHOW  ui_show
-#define AUD_IFACE_RUN   gtk_main
-#define AUD_IFACE_QUIT  gtk_main_quit
-
-#define AUD_IFACE_SHOW_ABOUT         audgui_show_about_window
-#define AUD_IFACE_HIDE_ABOUT         audgui_hide_about_window
-#define AUD_IFACE_SHOW_FILEBROWSER   audgui_run_filebrowser
-#define AUD_IFACE_HIDE_FILEBROWSER   audgui_hide_filebrowser
-#define AUD_IFACE_SHOW_JUMP_TO_SONG  audgui_jump_to_track
-#define AUD_IFACE_HIDE_JUMP_TO_SONG  audgui_jump_to_track_hide
-#define AUD_IFACE_SHOW_SETTINGS      audgui_show_prefs_window
-#define AUD_IFACE_HIDE_SETTINGS      audgui_hide_prefs_window
-#define AUD_IFACE_MENU_ADD           audgui_plugin_menu_add
-#define AUD_IFACE_MENU_REMOVE        audgui_plugin_menu_remove
-
-#define AUD_DECLARE_IFACE
-#include <libaudcore/plugin-declare.h>
 
 static void save_window_size (void)
 {
@@ -212,7 +230,7 @@ static gboolean title_change_cb (void)
     return FALSE;
 }
 
-static void ui_show (bool show)
+void GtkUI::show (bool show)
 {
     if (show)
     {
@@ -748,7 +766,7 @@ static void remove_dock_plugins (void)
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
 }
 
-static bool ui_init (void)
+bool GtkUI::init ()
 {
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
@@ -900,7 +918,7 @@ static bool ui_init (void)
     return true;
 }
 
-static void ui_cleanup (void)
+void GtkUI::cleanup ()
 {
     remove_dock_plugins ();
 
