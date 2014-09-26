@@ -25,22 +25,41 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
-typedef struct {
-    const char * filename;
-    bool valid_heading;
-    Index<PlaylistAddItem> & items;
-} ASXLoadState;
+static const char * const asx_exts[] = {"asx"};
 
-void asx_handle_heading (const char * heading, void * data)
+class ASXLoader : public PlaylistPlugin
 {
-    ASXLoadState * state = (ASXLoadState *) data;
+public:
+    static constexpr PluginInfo info = {N_("ASXv1/ASXv2 Playlists"), PACKAGE};
+
+    ASXLoader () : PlaylistPlugin (info, asx_exts, false) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+
+private:
+    struct State {
+        const char * filename;
+        bool valid_heading;
+        Index<PlaylistAddItem> & items;
+    };
+
+    static void handle_heading (const char * heading, void * data);
+    static void handle_entry (const char * key, const char * value, void * data);
+};
+
+ASXLoader aud_plugin_instance;
+
+void ASXLoader::handle_heading (const char * heading, void * data)
+{
+    auto state = (State *) data;
 
     state->valid_heading = ! strcmp_nocase (heading, "reference");
 }
 
-void asx_handle_entry (const char * key, const char * value, void * data)
+void ASXLoader::handle_entry (const char * key, const char * value, void * data)
 {
-    ASXLoadState * state = (ASXLoadState *) data;
+    auto state = (State *) data;
 
     if (! state->valid_heading || ! str_has_prefix_nocase (key, "ref"))
         return;
@@ -55,25 +74,16 @@ void asx_handle_entry (const char * key, const char * value, void * data)
         state->items.append (String (uri));
 }
 
-static bool playlist_load_asx (const char * filename, VFSFile & file,
- String & title, Index<PlaylistAddItem> & items)
+bool ASXLoader::load (const char * filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
-    ASXLoadState state = {
+    State state = {
         filename,
         false,
         items
     };
 
-    inifile_parse (file, asx_handle_heading, asx_handle_entry, & state);
+    inifile_parse (file, handle_heading, handle_entry, & state);
 
     return (items.len () > 0);
 }
-
-static const char * const asx_exts[] = {"asx", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("ASXv1/ASXv2 Playlists")
-#define AUD_PLAYLIST_EXTS      asx_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_asx
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

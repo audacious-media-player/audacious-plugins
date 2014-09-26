@@ -24,6 +24,23 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
+static const char * const m3u_exts[] = {"m3u", "m3u8"};
+
+class M3ULoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("M3U Playlists"), PACKAGE};
+
+    M3ULoader () : PlaylistPlugin (info, m3u_exts, true) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+    bool save (const char * filename, VFSFile & file, const char * title,
+     const Index<PlaylistAddItem> & items);
+};
+
+M3ULoader aud_plugin_instance;
+
 static void strip_char (char * text, char c)
 {
     char * set = text;
@@ -57,8 +74,8 @@ static char * split_line (char * line)
     return feed + 1;
 }
 
-static bool playlist_load_m3u (const char * path, VFSFile & file,
- String & title, Index<PlaylistAddItem> & items)
+bool M3ULoader::load (const char * path, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
     Index<char> text = read_win_text (file);
     if (! text.len ())
@@ -86,8 +103,8 @@ static bool playlist_load_m3u (const char * path, VFSFile & file,
     return true;
 }
 
-static bool playlist_save_m3u (const char * path, VFSFile & file,
- const char * title, const Index<PlaylistAddItem> & items)
+bool M3ULoader::save (const char * path, VFSFile & file, const char * title,
+ const Index<PlaylistAddItem> & items)
 {
     for (auto & item : items)
     {
@@ -98,13 +115,3 @@ static bool playlist_save_m3u (const char * path, VFSFile & file,
 
     return true;
 }
-
-static const char * const m3u_exts[] = {"m3u", "m3u8", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("M3U Playlists")
-#define AUD_PLAYLIST_EXTS      m3u_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_m3u
-#define AUD_PLAYLIST_SAVE      playlist_save_m3u
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

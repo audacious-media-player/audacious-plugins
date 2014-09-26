@@ -25,24 +25,46 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
-typedef struct {
-    String & title;
-    Index<PlaylistAddItem> & items;
-    String uri;
-    Tuple tuple;
-} LoadState;
+static const char * const audpl_exts[] = {"audpl"};
 
-static void finish_item (LoadState * state)
+class AudPlaylistLoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("Audacious Playlists (audpl)"), PACKAGE};
+
+    AudPlaylistLoader () : PlaylistPlugin (info, audpl_exts, true) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+    bool save (const char * filename, VFSFile & file, const char * title,
+     const Index<PlaylistAddItem> & items);
+
+private:
+    struct LoadState {
+        String & title;
+        Index<PlaylistAddItem> & items;
+        String uri;
+        Tuple tuple;
+    };
+
+    static void finish_item (LoadState * state);
+    static void handle_heading (const char * heading, void * data);
+    static void handle_entry (const char * key, const char * value, void * data);
+};
+
+AudPlaylistLoader aud_plugin_instance;
+
+void AudPlaylistLoader::finish_item (LoadState * state)
 {
     state->items.append (std::move (state->uri), std::move (state->tuple));
 }
 
-static void handle_heading (const char * heading, void * data)
+void AudPlaylistLoader::handle_heading (const char * heading, void * data)
 {
     /* no headings */
 }
 
-static void handle_entry (const char * key, const char * value, void * data)
+void AudPlaylistLoader::handle_entry (const char * key, const char * value, void * data)
 {
     LoadState * state = (LoadState *) data;
 
@@ -83,7 +105,7 @@ static void handle_entry (const char * key, const char * value, void * data)
     }
 }
 
-static bool audpl_load (const char * path, VFSFile & file, String & title,
+bool AudPlaylistLoader::load (const char * path, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
     LoadState state = {
@@ -100,7 +122,7 @@ static bool audpl_load (const char * path, VFSFile & file, String & title,
     return true;
 }
 
-static bool audpl_save (const char * path, VFSFile & file,
+bool AudPlaylistLoader::save (const char * path, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     if (! inifile_write_entry (file, "title", str_encode_percent (title)))
@@ -151,13 +173,3 @@ static bool audpl_save (const char * path, VFSFile & file,
 
     return true;
 }
-
-static const char * const audpl_exts[] = {"audpl", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Audacious Playlists (audpl)")
-#define AUD_PLAYLIST_EXTS      audpl_exts
-#define AUD_PLAYLIST_LOAD      audpl_load
-#define AUD_PLAYLIST_SAVE      audpl_save
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

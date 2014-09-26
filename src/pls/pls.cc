@@ -22,31 +22,50 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
-typedef struct {
-    const char * filename;
-    bool valid_heading;
-    Index<PlaylistAddItem> & items;
-} PLSLoadState;
+static const char * const pls_exts[] = {"pls"};
 
-void pls_handle_heading (const char * heading, void * data)
+class PLSLoader : public PlaylistPlugin
 {
-    PLSLoadState * state = (PLSLoadState *) data;
+public:
+    static constexpr PluginInfo info = {N_("PLS Playlists"), PACKAGE};
 
-    state->valid_heading = ! g_ascii_strcasecmp (heading, "playlist");
+    PLSLoader () : PlaylistPlugin (info, pls_exts, true) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+    bool save (const char * filename, VFSFile & file, const char * title,
+     const Index<PlaylistAddItem> & items);
+
+private:
+    struct LoadState {
+        const char * filename;
+        bool valid_heading;
+        Index<PlaylistAddItem> & items;
+    };
+
+    static void handle_heading (const char * heading, void * data);
+    static void handle_entry (const char * key, const char * value, void * data);
+};
+
+PLSLoader aud_plugin_instance;
+
+void PLSLoader::handle_heading (const char * heading, void * data)
+{
+    LoadState * state = (LoadState *) data;
+
+    state->valid_heading = ! strcmp_nocase (heading, "playlist");
 }
 
-void pls_handle_entry (const char * key, const char * value, void * data)
+void PLSLoader::handle_entry (const char * key, const char * value, void * data)
 {
-    PLSLoadState * state = (PLSLoadState *) data;
+    LoadState * state = (LoadState *) data;
 
-    if (! state->valid_heading || g_ascii_strncasecmp (key, "file", 4))
+    if (! state->valid_heading || strcmp_nocase (key, "file", 4))
         return;
 
     StringBuf uri = uri_construct (value, state->filename);
@@ -54,22 +73,22 @@ void pls_handle_entry (const char * key, const char * value, void * data)
         state->items.append (String (uri));
 }
 
-static bool playlist_load_pls (const char * filename, VFSFile & file,
- String & title, Index<PlaylistAddItem> & items)
+bool PLSLoader::load (const char * filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
-    PLSLoadState state = {
+    LoadState state = {
         filename,
         false,
         items
     };
 
-    inifile_parse (file, pls_handle_heading, pls_handle_entry, & state);
+    inifile_parse (file, handle_heading, handle_entry, & state);
 
     return (items.len () > 0);
 }
 
-static bool playlist_save_pls (const char * filename, VFSFile & file,
- const char * title, const Index<PlaylistAddItem> & items)
+bool PLSLoader::save (const char * filename, VFSFile & file, const char * title,
+ const Index<PlaylistAddItem> & items)
 {
     int entries = items.len ();
 
@@ -88,13 +107,3 @@ static bool playlist_save_pls (const char * filename, VFSFile & file,
 
     return true;
 }
-
-static const char * const pls_exts[] = {"pls", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("PLS Playlists")
-#define AUD_PLAYLIST_EXTS      pls_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_pls
-#define AUD_PLAYLIST_SAVE      playlist_save_pls
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

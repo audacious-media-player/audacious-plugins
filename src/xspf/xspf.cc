@@ -81,6 +81,23 @@ static const xspf_entry_t xspf_entries[] = {
     { FIELD_GAIN_PEAK_UNIT, "gain-peak-unit", TUPLE_INT,  true},
 };
 
+static const char * const xspf_exts[] = {"xspf"};
+
+class XSPFLoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("XML Shareable Playlists (XSPF)"), PACKAGE};
+
+    XSPFLoader () : PlaylistPlugin (info, xspf_exts, true) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+    bool save (const char * filename, VFSFile & file, const char * title,
+     const Index<PlaylistAddItem> & items);
+};
+
+XSPFLoader aud_plugin_instance;
+
 static void xspf_add_file (xmlNode * track, const char * filename,
  const char * base, Index<PlaylistAddItem> & items)
 {
@@ -189,8 +206,8 @@ static int close_cb (void * file)
     return 0;
 }
 
-static bool xspf_playlist_load (const char * filename, VFSFile & file,
- String & title, Index<PlaylistAddItem> & items)
+bool XSPFLoader::load (const char * filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlReadIO (read_cb, close_cb, & file, filename, nullptr, XML_PARSE_RECOVER);
     if (! doc)
@@ -332,7 +349,7 @@ static void xspf_add_node(xmlNodePtr node, TupleValueType type,
 }
 
 
-static bool xspf_playlist_save (const char * filename, VFSFile & file,
+bool XSPFLoader::save (const char * filename, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     xmlDocPtr doc;
@@ -410,13 +427,3 @@ ERR:
     xmlFreeDoc (doc);
     return false;
 }
-
-static const char * const xspf_exts[] = {"xspf", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("XML Shareable Playlists (XSPF)")
-#define AUD_PLAYLIST_EXTS      xspf_exts
-#define AUD_PLAYLIST_LOAD      xspf_playlist_load
-#define AUD_PLAYLIST_SAVE      xspf_playlist_save
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

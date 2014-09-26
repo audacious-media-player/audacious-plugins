@@ -29,6 +29,21 @@ extern "C" {
 #include <libaudcore/plugin.h>
 #include <libaudcore/probe.h>
 
+static const char * const cue_exts[] = {"cue"};
+
+class CueLoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("Cue Sheet Plugin"), PACKAGE};
+
+    CueLoader () : PlaylistPlugin (info, cue_exts, false) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+};
+
+CueLoader aud_plugin_instance;
+
 static const struct {
     int tuple_type;
     int pti;
@@ -54,8 +69,8 @@ tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
     tuple.set_str (tuple_type, text);
 }
 
-static bool playlist_load_cue (const char * cue_filename, VFSFile & file,
- String & title, Index<PlaylistAddItem> & items)
+bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
     Index<char> buffer = file.read_all ();
     if (! buffer.len ())
@@ -138,12 +153,3 @@ static bool playlist_load_cue (const char * cue_filename, VFSFile & file,
 
     return true;
 }
-
-static const char * const cue_exts[] = {"cue", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Cue Sheet Plugin")
-#define AUD_PLAYLIST_EXTS      cue_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_cue
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>
