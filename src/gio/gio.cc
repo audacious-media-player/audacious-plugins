@@ -332,12 +332,8 @@ static const char gio_about[] =
  N_("GIO Plugin for Audacious\n"
     "Copyright 2009-2012 John Lindgren");
 
-static const char * const gio_schemes[] = {"ftp", "sftp", "smb", 0};
+static const char * const gio_schemes[] = {"ftp", "sftp", "smb"};
 
-#define AUD_PLUGIN_NAME        N_("GIO Plugin")
-#define AUD_PLUGIN_ABOUT       gio_about
-#define AUD_TRANSPORT_SCHEMES  gio_schemes
-#define AUD_TRANSPORT_FOPEN    gio_fopen
+constexpr PluginInfo gio_info = {N_("GIO Plugin"), PACKAGE, gio_about};
 
-#define AUD_DECLARE_TRANSPORT
-#include <libaudcore/plugin-declare.h>
+TransportPlugin aud_plugin_instance (gio_info, gio_schemes, gio_fopen);

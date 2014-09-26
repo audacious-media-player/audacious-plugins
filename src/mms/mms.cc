@@ -180,11 +180,8 @@ int MMSFile::fflush ()
     return 0;
 }
 
-static const char * const mms_schemes[] = {"mms", nullptr};
+static const char * const mms_schemes[] = {"mms"};
 
-#define AUD_PLUGIN_NAME        N_("MMS Plugin")
-#define AUD_TRANSPORT_SCHEMES  mms_schemes
-#define AUD_TRANSPORT_FOPEN    mms_fopen
+constexpr PluginInfo mms_info = {N_("MMS Plugin"), PACKAGE};
 
-#define AUD_DECLARE_TRANSPORT
-#include <libaudcore/plugin-declare.h>
+TransportPlugin aud_plugin_instance (mms_info, mms_schemes, mms_fopen);

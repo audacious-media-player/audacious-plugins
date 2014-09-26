@@ -90,7 +90,25 @@ struct icy_metadata
     int stream_bitrate = 0;
 };
 
-static bool neon_plugin_init (void)
+static const char * const neon_schemes[] = {"http", "https"};
+
+class NeonTransport : public TransportPlugin
+{
+private:
+    static VFSImpl * fopen (const char * path, const char * mode);
+
+public:
+    static constexpr PluginInfo info = {N_("Neon HTTP/HTTPS Plugin"), PACKAGE};
+
+    NeonTransport () : TransportPlugin (info, neon_schemes, fopen) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+NeonTransport aud_plugin_instance;
+
+bool NeonTransport::init ()
 {
     int ret = ne_sock_init ();
 
@@ -103,7 +121,7 @@ static bool neon_plugin_init (void)
     return true;
 }
 
-static void neon_plugin_fini (void)
+void NeonTransport::cleanup ()
 {
     ne_sock_exit ();
 }
@@ -685,7 +703,7 @@ void NeonFile::reader ()
     pthread_mutex_unlock (& m_reader_status.mutex);
 }
 
-VFSImpl * neon_fopen (const char * path, const char * mode)
+VFSImpl * NeonTransport::fopen (const char * path, const char * mode)
 {
     NeonFile * file = new NeonFile (path);
 
@@ -1067,14 +1085,3 @@ int64_t NeonFile::fsize ()
 
     return m_content_start + m_content_length;
 }
-
-static const char * const neon_schemes[] = {"http", "https", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Neon HTTP/HTTPS Plugin")
-#define AUD_TRANSPORT_SCHEMES  neon_schemes
-#define AUD_PLUGIN_INIT        neon_plugin_init
-#define AUD_PLUGIN_CLEANUP     neon_plugin_fini
-#define AUD_TRANSPORT_FOPEN    neon_fopen
-
-#define AUD_DECLARE_TRANSPORT
-#include <libaudcore/plugin-declare.h>
