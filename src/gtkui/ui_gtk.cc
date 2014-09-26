@@ -85,14 +85,14 @@ static int slider_seek_time = -1;
 static unsigned delayed_title_change_source = 0;
 static unsigned update_song_timeout_source = 0;
 
-static bool init (void);
-static void cleanup (void);
+static bool ui_init (void);
+static void ui_cleanup (void);
 static void ui_show (bool show);
 
 #define AUD_PLUGIN_NAME     N_("GTK Interface")
 #define AUD_PLUGIN_PREFS    & gtkui_prefs
-#define AUD_PLUGIN_INIT     init
-#define AUD_PLUGIN_CLEANUP  cleanup
+#define AUD_PLUGIN_INIT     ui_init
+#define AUD_PLUGIN_CLEANUP  ui_cleanup
 
 #define AUD_IFACE_SHOW  ui_show
 #define AUD_IFACE_RUN   gtk_main
@@ -349,8 +349,7 @@ static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton *
 
 static gboolean ui_volume_value_changed_cb(GtkButton * button, double volume, void * user_data)
 {
-    aud_drct_set_volume((int) volume, (int) volume);
-
+    aud_drct_set_volume_main (volume);
     return TRUE;
 }
 
@@ -366,12 +365,10 @@ static void ui_volume_released_cb(GtkButton *button, void * user_data)
 
 static gboolean ui_volume_slider_update(void * data)
 {
-    int volume;
-
     if (volume_slider_is_moving || data == nullptr)
         return TRUE;
 
-    aud_drct_get_volume_main(&volume);
+    int volume = aud_drct_get_volume_main ();
 
     if (volume == (int) gtk_scale_button_get_value(GTK_SCALE_BUTTON(data)))
         return TRUE;
@@ -702,7 +699,7 @@ static void ui_hooks_disassociate(void)
 
 static bool add_dock_plugin (PluginHandle * plugin, void * unused)
 {
-    GtkWidget * widget = (GtkWidget *) aud_plugin_get_widget (plugin);
+    GtkWidget * widget = (GtkWidget *) aud_plugin_get_gtk_widget (plugin);
     if (widget)
         layout_add (plugin, widget);
 
@@ -751,7 +748,7 @@ static void remove_dock_plugins (void)
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
 }
 
-static bool init (void)
+static bool ui_init (void)
 {
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
@@ -840,9 +837,7 @@ static bool init (void)
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     gtk_widget_set_can_focus(volume, FALSE);
 
-    int lvol = 0, rvol = 0;
-    aud_drct_get_volume(&lvol, &rvol);
-    gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
+    gtk_scale_button_set_value ((GtkScaleButton *) volume, aud_drct_get_volume_main ());
 
     gtk_box_pack_start ((GtkBox *) box2, volume, FALSE, FALSE, 0);
 
@@ -905,7 +900,7 @@ static bool init (void)
     return true;
 }
 
-static void cleanup (void)
+static void ui_cleanup (void)
 {
     remove_dock_plugins ();
 

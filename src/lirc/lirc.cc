@@ -232,7 +232,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_main (&v);
+                v = aud_drct_get_volume_main ();
                 if (v > (100 - n))
                     v = 100 - n;
                 aud_drct_set_volume_main (v + n);
@@ -246,7 +246,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_main (&v);
+                v = aud_drct_get_volume_main ();
                 if (v < n)
                     v = n;
                 aud_drct_set_volume_main (v - n);
@@ -262,7 +262,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     mute = 1;
                     /* store the master volume so
                        we can restore it on unmute. */
-                    aud_drct_get_volume_main (&mute_vol);
+                    mute_vol = aud_drct_get_volume_main ();
                     aud_drct_set_volume_main (0);
                 }
                 else
@@ -280,7 +280,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_balance (&balance);
+                balance = aud_drct_get_volume_balance ();
                 balance -= n;
                 if (balance < -100)
                     balance = -100;
@@ -295,7 +295,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_balance (&balance);
+                balance = aud_drct_get_volume_balance ();
                 balance += n;
                 if (balance > 100)
                     balance = 100;

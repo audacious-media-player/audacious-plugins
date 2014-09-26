@@ -54,8 +54,8 @@
 
 
 /* func defs */
-static bool init (void);
-static void cleanup (void);
+static bool hotkey_init (void);
+static void hotkey_cleanup (void);
 
 
 /* global vars */
@@ -75,9 +75,9 @@ static const char about[] =
 
 #define AUD_PLUGIN_NAME        N_("Global Hotkeys")
 #define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_INIT        hotkey_init
 #define AUD_PLUGIN_CONFIGWIN   show_configure
-#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_CLEANUP     hotkey_cleanup
 
 #define AUD_DECLARE_GENERAL
 #include <libaudcore/plugin-declare.h>
@@ -91,7 +91,7 @@ PluginConfig* get_config(void)
 /*
  * plugin activated
  */
-static bool init (void)
+static bool hotkey_init (void)
 {
     if (! gtk_init_check (nullptr, nullptr))
     {
@@ -115,7 +115,7 @@ gboolean handle_keyevent (EVENT event)
     gboolean mute;
 
     /* get current volume */
-    aud_drct_get_volume_main (&current_volume);
+    current_volume = aud_drct_get_volume_main ();
     old_volume = current_volume;
     if (current_volume)
     {
@@ -419,7 +419,7 @@ void save_config (void)
     aud_set_int ("globalHotkey", "NumHotkeys", max);
 }
 
-static void cleanup (void)
+static void hotkey_cleanup (void)
 {
     HotkeyConfiguration* hotkey;
     if (!loaded) return;

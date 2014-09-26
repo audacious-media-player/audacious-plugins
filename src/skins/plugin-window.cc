@@ -40,7 +40,7 @@ static gboolean delete_cb (GtkWidget * window, GdkEvent * event, PluginHandle * 
 
 static bool add_dock_plugin (PluginHandle * plugin, void * unused)
 {
-    GtkWidget * widget = (GtkWidget *) aud_plugin_get_widget (plugin);
+    GtkWidget * widget = (GtkWidget *) aud_plugin_get_gtk_widget (plugin);
 
     if (widget)
     {

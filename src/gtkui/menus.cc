@@ -115,19 +115,8 @@ static void pl_tab_close (void)
 static GtkWidget * get_services_main (void) {return audgui_get_plugin_menu (AUD_MENU_MAIN); }
 static GtkWidget * get_services_pl (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST); }
 
-static void volume_up (void)
-{
-    int vol = 0;
-    aud_drct_get_volume_main (& vol);
-    aud_drct_set_volume_main (vol + 5);
-}
-
-static void volume_down (void)
-{
-    int vol = 0;
-    aud_drct_get_volume_main (& vol);
-    aud_drct_set_volume_main (vol - 5);
-}
+static void volume_up (void) {aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
+static void volume_down (void) {aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
 
 static const AudguiMenuItem file_items[] = {
     MenuCommand (N_("_Open Files ..."), "document-open", 'o', CTRL, open_files),

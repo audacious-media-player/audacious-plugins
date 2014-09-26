@@ -7,7 +7,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-static bool init (void);
+static bool stereo_init (void);
 
 static void stereo_start (int * channels, int * rate);
 static void stereo_process (float * * data, int * samples);
@@ -33,7 +33,7 @@ static const PluginPreferences stereo_prefs = {{stereo_widgets}};
 #define AUD_PLUGIN_NAME        N_("Extra Stereo")
 #define AUD_PLUGIN_ABOUT       stereo_about
 #define AUD_PLUGIN_PREFS       & stereo_prefs
-#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_INIT        stereo_init
 #define AUD_EFFECT_START       stereo_start
 #define AUD_EFFECT_PROCESS     stereo_process
 #define AUD_EFFECT_FINISH      stereo_finish
@@ -42,7 +42,7 @@ static const PluginPreferences stereo_prefs = {{stereo_widgets}};
 #define AUD_DECLARE_EFFECT
 #include <libaudcore/plugin-declare.h>
 
-static bool init (void)
+static bool stereo_init (void)
 {
     aud_config_set_defaults ("extra_stereo", stereo_defaults);
     return true;

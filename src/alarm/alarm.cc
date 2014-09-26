@@ -494,15 +494,12 @@ void on_sat_def_toggled(GtkToggleButton *togglebutton, void * user_data)
 
 void alarm_current_volume(GtkButton *button, void * data)
 {
-    int vol;
     GtkAdjustment *adj;
 
     AUDDBG("on_current_button_clicked\n");
 
-    aud_drct_get_volume_main(&vol);
-
     adj = gtk_range_get_adjustment(alarm_conf.volume);
-    gtk_adjustment_set_value(adj, (float)vol);
+    gtk_adjustment_set_value(adj, aud_drct_get_volume_main());
 }
 
 /*
@@ -540,7 +537,6 @@ static inline alarm_thread_t alarm_thread_create(void *(*start_routine)(void *),
 static void *alarm_fade(void *arg)
 {
     fader *vols = (fader *)arg;
-    int v;
     int inc, diff, adiff;
 
     /* lock */
@@ -569,8 +565,7 @@ static void *alarm_fade(void *arg)
     for (int i = 0; i < adiff; i ++)
     {
         threadsleep((float)fading / (float)adiff);
-        aud_drct_get_volume_main(&v);
-        aud_drct_set_volume_main(v + inc);
+        aud_drct_set_volume_main(aud_drct_get_volume_main() + inc);
     }
     /* Setting the volume to the end volume sort of defeats the point if having
      * the code in there to allow other apps to control volume too :)
@@ -603,7 +598,7 @@ static void *alarm_stop_thread(void *args)
     if (alarm_dialog)
         gtk_widget_destroy(alarm_dialog);
 
-    aud_drct_get_volume_main(&currvol),
+    currvol = aud_drct_get_volume_main(),
 
     /* fade back to zero */
     fade_vols.start = currvol;

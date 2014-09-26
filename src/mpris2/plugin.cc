@@ -170,7 +170,7 @@ static gboolean update (GObject * object)
     if (aud_drct_get_playing () && aud_drct_get_ready ())
         pos = (int64_t) aud_drct_get_time () * 1000;
 
-    aud_drct_get_volume_main (& vol);
+    vol = aud_drct_get_volume_main ();
 
     g_signal_handlers_block_by_func (object, (void *) volume_changed, nullptr);
     g_object_set (object, "position", pos, "volume", (double) vol / 100, nullptr);

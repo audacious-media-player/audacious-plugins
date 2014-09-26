@@ -301,7 +301,7 @@ static void load_enabled_from_config (void)
     }
 }
 
-static bool init (void)
+static bool ladspa_init (void)
 {
     pthread_mutex_lock (& mutex);
 
@@ -316,7 +316,7 @@ static bool init (void)
     return 1;
 }
 
-static void cleanup (void)
+static void ladspa_cleanup (void)
 {
     if (config_win)
         gtk_widget_destroy (config_win);
@@ -571,8 +571,8 @@ static const char about[] =
 
 #define AUD_PLUGIN_NAME        N_("LADSPA Host")
 #define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_INIT        ladspa_init
+#define AUD_PLUGIN_CLEANUP     ladspa_cleanup
 #define AUD_PLUGIN_CONFIGWIN   configure
 #define AUD_EFFECT_START       ladspa_start
 #define AUD_EFFECT_PROCESS     ladspa_process

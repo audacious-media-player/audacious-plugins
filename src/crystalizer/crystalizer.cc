@@ -26,7 +26,7 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-static bool init (void);
+static bool cryst_init (void);
 static void cryst_start (int * channels, int * rate);
 static void cryst_process (float * * data, int * samples);
 static void cryst_flush ();
@@ -47,7 +47,7 @@ static const PluginPreferences cryst_prefs = {{cryst_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Crystalizer")
 #define AUD_PLUGIN_PREFS       & cryst_prefs
-#define AUD_PLUGIN_INIT        init
+#define AUD_PLUGIN_INIT        cryst_init
 #define AUD_EFFECT_START       cryst_start
 #define AUD_EFFECT_PROCESS     cryst_process
 #define AUD_EFFECT_FLUSH       cryst_flush
@@ -60,7 +60,7 @@ static const PluginPreferences cryst_prefs = {{cryst_widgets}};
 static int cryst_channels;
 static float * cryst_prev;
 
-static bool init (void)
+static bool cryst_init (void)
 {
     aud_config_set_defaults ("crystalizer", cryst_defaults);
     return true;

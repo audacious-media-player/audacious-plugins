@@ -29,7 +29,5 @@
 
 void si_volume_change(int value)
 {
-    int vl, vr;
-    aud_drct_get_volume(&vl, &vr);
-    aud_drct_set_volume(aud::clamp(vl + value, 0, 100), aud::clamp(vr + value, 0, 100));
+    aud_drct_set_volume_main(aud_drct_get_volume_main() + value);
 }

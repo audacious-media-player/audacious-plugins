@@ -817,9 +817,8 @@ static void mainwin_balance_release_cb (void)
 
 static void mainwin_set_volume_diff (int diff)
 {
-    int vol;
+    int vol = aud_drct_get_volume_main ();
 
-    aud_drct_get_volume_main (& vol);
     vol = aud::clamp (vol + diff, 0, 100);
     mainwin_adjust_volume_motion(vol);
     mainwin_set_volume_slider(vol);
@@ -1196,10 +1195,9 @@ mainwin_create(void)
 
 static void mainwin_update_volume (void)
 {
-    int volume, balance;
+    int volume = aud_drct_get_volume_main ();
+    int balance = aud_drct_get_volume_balance ();
 
-    aud_drct_get_volume_main (& volume);
-    aud_drct_get_volume_balance (& balance);
     mainwin_set_volume_slider (volume);
     mainwin_set_balance_slider (balance);
     equalizerwin_set_volume_slider (volume);
