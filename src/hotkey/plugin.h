@@ -52,7 +52,6 @@ typedef struct {
 void load_config (void);
 void save_config (void);
 PluginConfig* get_config(void);
-gboolean is_loaded (void);
 gboolean handle_keyevent(EVENT event);
 
 #endif

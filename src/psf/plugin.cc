@@ -106,7 +106,7 @@ Tuple psf2_tuple(const char *filename, VFSFile &file)
 
 	t.set_filename (filename);
 
-	t.set_int (FIELD_LENGTH, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
+	t.set_int (FIELD_LENGTH, psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade));
 	t.set_str (FIELD_ARTIST, c->inf_artist);
 	t.set_str (FIELD_ALBUM, c->inf_game);
 	t.set_str (FIELD_TITLE, c->inf_title);

@@ -94,7 +94,7 @@ Tuple xsf_tuple(const char *filename, VFSFile &fd)
 
 	t.set_filename (filename);
 
-	t.set_int (FIELD_LENGTH, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
+	t.set_int (FIELD_LENGTH, psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade));
 	t.set_str (FIELD_ARTIST, c->inf_artist);
 	t.set_str (FIELD_ALBUM, c->inf_game);
 	t.set_str (FIELD_TITLE, c->inf_title);
@@ -114,7 +114,7 @@ static int xsf_get_length(const Index<char> &buf)
 	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
 		return -1;
 
-	int length = (c->inf_length && !xsf_cfg.ignore_length) ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
+	int length = (!xsf_cfg.ignore_length) ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 
 	free(c);
 

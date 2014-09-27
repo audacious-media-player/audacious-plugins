@@ -393,8 +393,8 @@ static const PluginPreferences preferences = {
 
 #define AUD_PLUGIN_NAME        N_("Song Change")
 #define AUD_PLUGIN_PREFS       & preferences
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_INIT        ::init
+#define AUD_PLUGIN_CLEANUP     ::cleanup
 
 #define AUD_DECLARE_GENERAL
 #include <libaudcore/plugin-declare.h>
