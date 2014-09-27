@@ -53,7 +53,7 @@ private:
     mmsh_t * m_mmsh;
 };
 
-static VFSImpl * mms_fopen (const char * path, const char * mode)
+static VFSImpl * mms_fopen (const char * path, const char * mode, String & error)
 {
     mms_t * mms = nullptr;
     mmsh_t * mmsh = nullptr;
@@ -65,6 +65,7 @@ static VFSImpl * mms_fopen (const char * path, const char * mode)
         if (! (mms = mms_connect (nullptr, nullptr, path, 128 * 1024)))
         {
             AUDERR ("Failed to open %s.\n", path);
+            error = String (_("Error connecting to MMS server"));
             return nullptr;
         }
     }

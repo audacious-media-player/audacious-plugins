@@ -35,7 +35,10 @@ public:
     GIOFile (const char * filename, const char * mode);
     ~GIOFile ();
 
-    class OpenError {};  // exception
+    // exception
+    struct OpenError {
+        String error;
+    };
 
 protected:
     int64_t fread (void * ptr, int64_t size, int64_t nmemb);
@@ -71,10 +74,20 @@ private:
     } \
 } while (0)
 
+#define CHECK_AND_SAVE_ERROR(op, name) do { \
+    if (error) { \
+        AUDERR ("Cannot %s %s: %s.\n", op, (const char *) name, error->message); \
+        errorstr = String (error->message); \
+        g_error_free (error); \
+        goto FAILED; \
+    } \
+} while (0)
+
 GIOFile::GIOFile (const char * filename, const char * mode) :
     m_filename (filename)
 {
     GError * error = nullptr;
+    String errorstr;
 
     m_file = g_file_new_for_uri (filename);
 
@@ -84,7 +97,7 @@ GIOFile::GIOFile (const char * filename, const char * mode) :
         if (strchr (mode, '+'))
         {
             m_iostream = (GIOStream *) g_file_open_readwrite (m_file, 0, & error);
-            CHECK_ERROR ("open", filename);
+            CHECK_AND_SAVE_ERROR ("open", filename);
             m_istream = g_io_stream_get_input_stream (m_iostream);
             m_ostream = g_io_stream_get_output_stream (m_iostream);
             m_seekable = (GSeekable *) m_iostream;
@@ -92,7 +105,7 @@ GIOFile::GIOFile (const char * filename, const char * mode) :
         else
         {
             m_istream = (GInputStream *) g_file_read (m_file, 0, & error);
-            CHECK_ERROR ("open", filename);
+            CHECK_AND_SAVE_ERROR ("open", filename);
             m_seekable = (GSeekable *) m_istream;
         }
         break;
@@ -101,7 +114,7 @@ GIOFile::GIOFile (const char * filename, const char * mode) :
         {
             m_iostream = (GIOStream *) g_file_replace_readwrite (m_file,
              0, 0, (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename);
+            CHECK_AND_SAVE_ERROR ("open", filename);
             m_istream = g_io_stream_get_input_stream (m_iostream);
             m_ostream = g_io_stream_get_output_stream (m_iostream);
             m_seekable = (GSeekable *) m_iostream;
@@ -110,7 +123,7 @@ GIOFile::GIOFile (const char * filename, const char * mode) :
         {
             m_ostream = (GOutputStream *) g_file_replace (m_file, 0, 0,
              (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename);
+            CHECK_AND_SAVE_ERROR ("open", filename);
             m_seekable = (GSeekable *) m_ostream;
         }
         break;
@@ -118,26 +131,28 @@ GIOFile::GIOFile (const char * filename, const char * mode) :
         if (strchr (mode, '+'))
         {
             AUDERR ("Cannot open %s: GIO does not support read-and-append mode.\n", filename);
+            errorstr = String (_("Read-and-append mode not supported"));
             goto FAILED;
         }
         else
         {
             m_ostream = (GOutputStream *) g_file_append_to (m_file,
              (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename);
+            CHECK_AND_SAVE_ERROR ("open", filename);
             m_seekable = (GSeekable *) m_ostream;
         }
         break;
     default:
         AUDERR ("Cannot open %s: invalid mode.\n", filename);
-        break;
+        errorstr = String (_("Invalid open mode"));
+        goto FAILED;
     }
 
     return;
 
 FAILED:
     g_object_unref (m_file);
-    throw OpenError ();
+    throw OpenError {errorstr};
 }
 
 GIOFile::~GIOFile ()
@@ -167,15 +182,18 @@ FAILED:
     g_object_unref (m_file);
 }
 
-static VFSImpl * gio_fopen (const char * filename, const char * mode)
+static VFSImpl * gio_fopen (const char * filename, const char * mode, String & error)
 {
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
 #endif
 
     try { return new GIOFile (filename, mode); }
-    catch (GIOFile::OpenError)
-        { return nullptr; }
+    catch (GIOFile::OpenError & ex)
+    {
+        error = std::move (ex.error);
+        return nullptr;
+    }
 }
 
 int64_t GIOFile::fread (void * buf, int64_t size, int64_t nitems)

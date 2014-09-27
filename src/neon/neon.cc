@@ -95,7 +95,7 @@ static const char * const neon_schemes[] = {"http", "https"};
 class NeonTransport : public TransportPlugin
 {
 private:
-    static VFSImpl * fopen (const char * path, const char * mode);
+    static VFSImpl * fopen (const char * path, const char * mode, String & error);
 
 public:
     static constexpr PluginInfo info = {N_("Neon HTTP/HTTPS Plugin"), PACKAGE};
@@ -132,7 +132,7 @@ public:
     NeonFile (const char * url);
     ~NeonFile ();
 
-    int open_handle (uint64_t startbyte);
+    int open_handle (uint64_t startbyte, String * error = nullptr);
 
 protected:
     int64_t fread (void * ptr, int64_t size, int64_t nmemb);
@@ -174,7 +174,7 @@ private:
     void kill_reader ();
     int server_auth (const char * realm, int attempt, char * username, char * password);
     void handle_headers ();
-    int open_request (uint64_t startbyte);
+    int open_request (uint64_t startbyte, String * error);
     FillBufferResult fill_buffer ();
     void reader ();
     int64_t try_fread (void * ptr, int64_t size, int64_t nmemb);
@@ -440,7 +440,7 @@ static int neon_proxy_auth_cb (void * userdata, const char * realm, int attempt,
     return attempt;
 }
 
-int NeonFile::open_request (uint64_t startbyte)
+int NeonFile::open_request (uint64_t startbyte, String * error)
 {
     int ret;
     const ne_status * status;
@@ -519,6 +519,9 @@ int NeonFile::open_request (uint64_t startbyte)
 
         if (! rediruri)
         {
+            if (error)
+                * error = String (_("Error parsing redirect"));
+
             AUDERR ("<%p> Could not parse redirect response\n", this);
             return -1;
         }
@@ -529,17 +532,21 @@ int NeonFile::open_request (uint64_t startbyte)
     }
 
     /* Something went wrong. */
+    const char * ne_error = ne_get_error (m_session);
+    if (error)
+        * error = String (ne_error ? ne_error : _("Unknown HTTP error"));
+
     AUDERR ("<%p> Could not open URL: %d (%d)\n", this, ret, status->code);
 
-    if (ret)
-        AUDERR ("<%p> neon error string: %s\n", this, ne_get_error (m_session));
+    if (ne_error)
+        AUDERR ("<%p> neon error string: %s\n", this, ne_error);
 
     ne_request_destroy (m_request);
     m_request = nullptr;
     return -1;
 }
 
-int NeonFile::open_handle (uint64_t startbyte)
+int NeonFile::open_handle (uint64_t startbyte, String * error)
 {
     int ret;
     String proxy_host;
@@ -560,6 +567,9 @@ int NeonFile::open_handle (uint64_t startbyte)
 
     if (ne_uri_parse (m_url, & m_purl) != 0)
     {
+        if (error)
+            * error = String (_("Error parsing URL"));
+
         AUDERR ("<%p> Could not parse URL '%s'\n", this, (const char *) m_url);
         return -1;
     }
@@ -602,7 +612,7 @@ int NeonFile::open_handle (uint64_t startbyte)
         }
 
         AUDDBG ("<%p> Creating request\n", this);
-        ret = open_request (startbyte);
+        ret = open_request (startbyte, error);
 
         if (! ret)
             return 0;
@@ -620,8 +630,10 @@ int NeonFile::open_handle (uint64_t startbyte)
     }
 
     /* If we get here, our redirect count exceeded */
-    AUDERR ("<%p> Redirect count exceeded for URL %s\n", this, (const char *) m_url);
+    if (error)
+        * error = String (_("Too many redirects"));
 
+    AUDERR ("<%p> Redirect count exceeded for URL %s\n", this, (const char *) m_url);
     return 1;
 }
 
@@ -703,13 +715,13 @@ void NeonFile::reader ()
     pthread_mutex_unlock (& m_reader_status.mutex);
 }
 
-VFSImpl * NeonTransport::fopen (const char * path, const char * mode)
+VFSImpl * NeonTransport::fopen (const char * path, const char * mode, String & error)
 {
     NeonFile * file = new NeonFile (path);
 
     AUDDBG ("<%p> Trying to open '%s' with neon\n", file, path);
 
-    if (file->open_handle (0) != 0)
+    if (file->open_handle (0, & error) != 0)
     {
         AUDERR ("<%p> Could not open URL\n", file);
         delete file;
