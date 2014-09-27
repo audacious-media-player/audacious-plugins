@@ -590,10 +590,9 @@ void add_callback (GtkWidget *widget, void * data)
 void destroy_callback (GtkWidget *widget, void * data)
 {
     KeyControls* controls = (KeyControls*)data;
-    if (is_loaded())
-    {
-        grab_keys ();
-    }
+
+    grab_keys ();
+
     while (controls) {
         KeyControls *old;
         old = controls;

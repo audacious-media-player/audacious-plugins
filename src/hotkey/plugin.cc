@@ -60,7 +60,6 @@ static void hotkey_cleanup (void);
 
 /* global vars */
 static PluginConfig plugin_cfg;
-static gboolean loaded = FALSE;
 
 static const char about[] =
  N_("Global Hotkey Plugin\n"
@@ -93,18 +92,20 @@ PluginConfig* get_config(void)
  */
 static bool hotkey_init (void)
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     if (! gtk_init_check (nullptr, nullptr))
     {
         AUDERR ("GTK+ initialization failed.\n");
-        return FALSE;
+        return false;
     }
 
     setup_filter();
     load_config ( );
     grab_keys ( );
 
-    loaded = TRUE;
-    return TRUE;
+    return true;
 }
 
 /* handle keys */
@@ -422,7 +423,6 @@ void save_config (void)
 static void hotkey_cleanup (void)
 {
     HotkeyConfiguration* hotkey;
-    if (!loaded) return;
     ungrab_keys ();
     release_filter();
     hotkey = &(plugin_cfg.first);
@@ -438,10 +438,4 @@ static void hotkey_cleanup (void)
     plugin_cfg.first.key = 0;
     plugin_cfg.first.event = (EVENT) 0;
     plugin_cfg.first.mask = 0;
-    loaded = FALSE;
-}
-
-gboolean is_loaded (void)
-{
-    return loaded;
 }
