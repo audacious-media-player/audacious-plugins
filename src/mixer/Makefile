@@ -7,6 +7,7 @@ include ../../extra.mk
 
 plugindir := ${plugindir}/${EFFECT_PLUGIN_DIR}
 
+LD = ${CXX}
 CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
 LIBS += ${GLIB_LIBS}

@@ -29,12 +29,9 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 
-static bool init (void);
-static void cleanup (void);
-void gnome_remote_init();
+bool gnome_remote_init();
 void gnome_remote_uninit();
 
-static bool loaded = false;
 static DBusGProxy *media_player_keys_proxy = nullptr;
 
 static const char about[] =
@@ -44,8 +41,8 @@ static const char about[] =
 
 #define AUD_PLUGIN_NAME        N_("Gnome Shortcuts")
 #define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_INIT        gnome_remote_init
+#define AUD_PLUGIN_CLEANUP     gnome_remote_uninit
 
 #define AUD_DECLARE_GENERAL
 #include <libaudcore/plugin-declare.h>
@@ -92,7 +89,7 @@ on_media_player_key_pressed (DBusGProxy *proxy, const char *application, const c
         bool mute;
 
         /* get current volume */
-        aud_drct_get_volume_main (&current_volume);
+        current_volume = aud_drct_get_volume_main ();
         /* old_volume = current_volume; */
         if (current_volume)
         {
@@ -218,7 +215,7 @@ void gnome_remote_uninit ()
     media_player_keys_proxy = nullptr;
 }
 
-void gnome_remote_init ()
+bool gnome_remote_init ()
 {
     DBusGConnection *bus;
     GError *error = nullptr;
@@ -228,12 +225,14 @@ void gnome_remote_init ()
     if ((bus == nullptr) && error) {
         g_warning ("Error connecting to DBus: %s", error->message);
         g_error_free (error);
+        return false;
     } else {
         media_player_keys_proxy = dbus_g_proxy_new_for_name (bus,
          "org.gnome.SettingsDaemon",
          "/org/gnome/SettingsDaemon/MediaKeys",
          "org.gnome.SettingsDaemon.MediaKeys");
-        if (media_player_keys_proxy == nullptr) return;
+        if (media_player_keys_proxy == nullptr)
+            return false;
 
         dbus_g_proxy_call (media_player_keys_proxy,
          "GrabMediaPlayerKeys", &error,
@@ -250,7 +249,8 @@ void gnome_remote_init ()
              "org.gnome.SettingsDaemon",
              "/org/gnome/SettingsDaemon",
              "org.gnome.SettingsDaemon");
-            if (media_player_keys_proxy == nullptr) return;
+            if (media_player_keys_proxy == nullptr)
+                return false;
 
             dbus_g_proxy_call (media_player_keys_proxy,
              "GrabMediaPlayerKeys", &error,
@@ -263,7 +263,7 @@ void gnome_remote_init ()
                 g_error_free (error);
                 g_object_unref(media_player_keys_proxy);
                 media_player_keys_proxy = nullptr;
-                return;
+                return false;
             }
         }
 
@@ -275,19 +275,7 @@ void gnome_remote_init ()
 
         dbus_g_proxy_connect_signal (media_player_keys_proxy, "MediaPlayerKeyPressed",
          G_CALLBACK (on_media_player_key_pressed), nullptr, nullptr);
+
+        return true;
     }
-}
-
-static bool init (void)
-{
-    gnome_remote_init();
-    loaded = true;
-    return true;
-}
-
-static void cleanup (void)
-{
-    if (!loaded) return;
-    gnome_remote_uninit();
-    loaded = false;
 }

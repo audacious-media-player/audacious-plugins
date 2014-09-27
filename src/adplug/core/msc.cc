@@ -69,7 +69,7 @@ CmscPlayer::~CmscPlayer ()
 }
 
 bool
-CmscPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CmscPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *bf;
   msc_header hdr;

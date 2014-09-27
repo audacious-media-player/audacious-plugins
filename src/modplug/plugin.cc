@@ -14,19 +14,19 @@ void InitSettings (const ModplugSettings * settings)
     gModplugXMMS.SetModProps (* settings);
 }
 
-bool CanPlayFileFromVFS(const char* aFilename, VFSFile *VFSFile)
+bool CanPlayFileFromVFS(const char* aFilename, VFSFile &VFSFile)
 {
     if(gModplugXMMS.CanPlayFileFromVFS(aFilename, VFSFile))
         return 1;
     return 0;
 }
 
-bool PlayFile(const char * filename, VFSFile * file)
+bool PlayFile(const char * filename, VFSFile & file)
 {
     return gModplugXMMS.PlayFile(filename);
 }
 
-Tuple GetSongTuple(const char* aFilename, VFSFile *fd)
+Tuple GetSongTuple(const char* aFilename, VFSFile &fd)
 {
     return gModplugXMMS.GetSongTuple(aFilename);
 }

@@ -29,21 +29,16 @@
 #include "playlist_tabs.h"
 #include "playlist_tabs.moc"
 
-PlaylistTabs::PlaylistTabs (QTabWidget * parent) : QTabWidget (parent)
+PlaylistTabs::PlaylistTabs (QWidget * parent) :
+    QTabWidget (parent),
+    m_leftbtn (nullptr),
+    m_tabbar (new PlaylistTabBar (this))
 {
     installEventFilter (this);
 
     // set up tab bar
-    m_tabbar = new PlaylistTabBar (this);
+    m_tabbar->setFocusPolicy (Qt::NoFocus);
     setTabBar (m_tabbar);
-
-    // set up playlist rename editor
-    m_lineedit = new QLineEdit;
-    m_lineedit->setWindowFlags (Qt::Window | Qt::ToolTip);
-    m_lineedit->setFocusProxy (this);
-    m_lineedit->installEventFilter (this);
-
-    connect (m_lineedit, &QLineEdit::editingFinished, this, &PlaylistTabs::tabEditedTrigger);
 
     populatePlaylists ();
 
@@ -57,9 +52,6 @@ PlaylistTabs::PlaylistTabs (QTabWidget * parent) : QTabWidget (parent)
 
 PlaylistTabs::~PlaylistTabs ()
 {
-    delete m_tabbar;
-    delete m_lineedit;
-
     hook_dissociate ("playlist update",      (HookFunction) playlist_update_cb);
     hook_dissociate ("playlist activate",    (HookFunction) playlist_activate_cb);
     hook_dissociate ("playlist set playing", (HookFunction) playlist_set_playing_cb);
@@ -129,57 +121,86 @@ void PlaylistTabs::filterTrigger (const QString &text)
 
 void PlaylistTabs::currentChangedTrigger (int idx)
 {
+    cancelRename ();
     aud_playlist_set_active (idx);
+}
+
+QLineEdit * PlaylistTabs::getTabEdit (int idx)
+{
+    return dynamic_cast<QLineEdit *> (m_tabbar->tabButton (idx, QTabBar::LeftSide));
+}
+
+void PlaylistTabs::setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp)
+{
+    QWidget * old = m_tabbar->tabButton (idx, QTabBar::LeftSide);
+    m_tabbar->setTabButton (idx, QTabBar::LeftSide, button);
+    setTabText (idx, text);
+
+    if (oldp)
+        * oldp = old;
+    else
+    {
+        old->setParent (nullptr);
+        old->deleteLater ();
+    }
 }
 
 void PlaylistTabs::tabEditedTrigger ()
 {
     int idx = currentIndex ();
-
     if (idx < 0)
         return;
 
-    m_lineedit->hide ();
-    setTabText(idx, m_lineedit->text ());
+    QLineEdit * edit = getTabEdit (idx);
+    if (! edit)
+        return;
+
+    QString title = edit->text ();
+    aud_playlist_set_title (idx, title.toUtf8 ());
+
+    setupTab (idx, m_leftbtn, title, nullptr);
+    m_leftbtn = nullptr;
 }
 
-void PlaylistTabs::editTab (int idx) const
+void PlaylistTabs::editTab (int idx)
 {
-    QRect rect = m_tabbar->tabRect (idx);
+    QLineEdit * edit = new QLineEdit (tabText (idx));
 
-    // set up the editor
-    m_lineedit->setFixedSize (rect.size());
-    m_lineedit->move (mapToGlobal (rect.topLeft ()));
-    m_lineedit->setText (tabText (idx));
-    m_lineedit->selectAll ();
-    m_lineedit->show ();
+    connect (edit, & QLineEdit::returnPressed, this, & PlaylistTabs::tabEditedTrigger);
+
+    setupTab (idx, edit, QString (), & m_leftbtn);
+
+    edit->selectAll ();
+    edit->setFocus ();
 }
 
 bool PlaylistTabs::eventFilter (QObject * obj, QEvent * e)
 {
-    if (e->type() == QEvent::MouseButtonPress)
-    {
-        QMouseEvent *me = (QMouseEvent *) e;
-
-        if (m_tabbar->geometry ().contains (me->globalPos ()))
-        {
-            AUDDBG("out of bounds?\n");
-            m_lineedit->hide ();
-            return true;
-        }
-    }
-    else if (e->type() == QEvent::KeyPress)
+    if (e->type() == QEvent::KeyPress)
     {
         QKeyEvent *ke = (QKeyEvent *) e;
 
         if (ke->key() == Qt::Key_Escape)
         {
-            m_lineedit->hide ();
+            cancelRename ();
             return true;
         }
     }
 
     return QTabWidget::eventFilter(obj, e);
+}
+
+void PlaylistTabs::cancelRename ()
+{
+    for (int i = 0; i < count (); i ++)
+    {
+        QLineEdit * edit = getTabEdit (i);
+        if (! edit)
+            continue;
+
+        setupTab (i, m_leftbtn, (const char *) aud_playlist_get_title (i), nullptr);
+        m_leftbtn = nullptr;
+    }
 }
 
 PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)

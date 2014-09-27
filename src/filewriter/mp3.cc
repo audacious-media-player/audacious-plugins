@@ -99,7 +99,7 @@ static int write_buffer_size;
 
 static void lame_debugf(const char *format, va_list ap)
 {
-    (void) vfprintf(stdout, format, ap);
+    (void) vprintf(format, ap);
 }
 
 static const char * const mp3_defaults[] = {
@@ -324,7 +324,7 @@ static void mp3_close(void)
         /* update v2 tag */
         imp3 = lame_get_id3v2_tag(gfp, encbuffer, sizeof(encbuffer));
         if (imp3 > 0) {
-            if (vfs_fseek(output_file, 0, SEEK_SET) != 0) {
+            if (output_file.fseek (0, VFS_SEEK_SET) != 0) {
                 AUDDBG("can't rewind\n");
             }
             else {
@@ -334,7 +334,7 @@ static void mp3_close(void)
 
         /* update lame tag */
         if (id3v2_size) {
-            if (vfs_fseek(output_file, id3v2_size, SEEK_SET) != 0) {
+            if (output_file.fseek (id3v2_size, VFS_SEEK_SET) != 0) {
                 AUDDBG("fatal error: can't update LAME-tag frame!\n");
             }
             else {

@@ -26,7 +26,7 @@ static void get_value (void * user, int row, int column, GValue * value)
     g_return_if_fail (row >= 0 && row < loadeds.len ());
     g_return_if_fail (column == 0);
 
-    g_value_set_string (value, loadeds[row]->plugin->desc->Name);
+    g_value_set_string (value, loadeds[row]->plugin.desc.Name);
 }
 
 static bool get_selected (void * user, int row)
@@ -45,7 +45,7 @@ static void set_selected (void * user, int row, bool selected)
 
 static void select_all (void * user, bool selected)
 {
-    for (LoadedPlugin * loaded : loadeds)
+    for (auto & loaded : loadeds)
         loaded->selected = selected;
 }
 
@@ -60,8 +60,8 @@ static void shift_rows (void * user, int row, int before)
 
     pthread_mutex_lock (& mutex);
 
-    Index<LoadedPlugin *> move;
-    Index<LoadedPlugin *> others;
+    Index<SmartPtr<LoadedPlugin>> move;
+    Index<SmartPtr<LoadedPlugin>> others;
 
     int begin, end;
     if (before < row)
@@ -82,9 +82,9 @@ static void shift_rows (void * user, int row, int before)
     for (int i = begin; i < end; i ++)
     {
         if (loadeds[i]->selected)
-            move.append (loadeds[i]);
+            move.append (std::move (loadeds[i]));
         else
-            others.append (loadeds[i]);
+            others.append (std::move (loadeds[i]));
     }
 
     if (before < row)

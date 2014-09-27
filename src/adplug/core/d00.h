@@ -35,7 +35,7 @@ class Cd00Player: public CPlayer
 	~Cd00Player()
 	{ if(filedata) delete [] filedata; };
 
-	bool load(VFSFile *fd, const CFileProvider &fp);
+	bool load(VFSFile &fd, const CFileProvider &fp);
 	bool update();
 	void rewind(int subsong);
 	float getrefresh();

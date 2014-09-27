@@ -3,9 +3,12 @@
    (m) Roman Scherbakov
 */
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>   /* memmove */
 #include <limits.h>
+
+#include <new>  /* for std::bad_alloc */
+
+#include <libaudcore/runtime.h>
 
 static unsigned short bitbuf;
 
@@ -47,7 +50,7 @@ static int j;  /* remaining bytes to copy */
 
 static void error(const char *msg)
 {
-  fprintf(stderr, "libayemu: lh5dec.c: %s\n", msg);
+  AUDERR("%s\n", msg);
   exit(EXIT_FAILURE);
 }
 
@@ -280,7 +283,7 @@ void lh5_decode(unsigned char *inp, unsigned char *outp, unsigned long original_
   out_buf = outp;
 
   buffer = (unsigned char *) malloc(DICSIZ);
-  if (!buffer) error ("Out of memory");
+  if (!buffer) throw std::bad_alloc();
 
   bitbuf = 0;  subbitbuf = 0;  bitcount = 0;
   fillbuf(BITBUFSIZ);

@@ -64,7 +64,7 @@ Ca2mLoader::factory (Copl * newopl)
 }
 
 bool
-Ca2mLoader::load (VFSFile * fd, const CFileProvider & fp)
+Ca2mLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

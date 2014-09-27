@@ -389,13 +389,14 @@ typedef struct _reg_dispx {
 
 
 
-
+#ifndef __cplusplus
 #ifndef min
 #define min(a,b) (((a)<(b))?(a):(b))
 #endif
 
 #ifndef max
 #define max(a,b) (((a)>(b))?(a):(b))
+#endif
 #endif
 
 typedef BOOL (*fun_gl_Begin) (int screen);

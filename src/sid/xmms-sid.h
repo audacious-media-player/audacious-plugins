@@ -47,8 +47,4 @@ typedef struct {
     Index<xs_subtuneinfo_t> subTunes;
 } xs_tuneinfo_t;
 
-/* Plugin function prototypes
- */
-#define xs_error(...) fprintf(stderr, __VA_ARGS__)
-
 #endif /* XMMS_SID_H */

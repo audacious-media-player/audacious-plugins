@@ -19,7 +19,6 @@
 /* NOTE: All functions that take a jack_driver_t* do NOT lock the device, in order to get a */
 /*       jack_driver_t* you must call getDriver() which will pthread_mutex_lock() */
 
-#include <stdio.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
@@ -34,9 +33,14 @@
 #include <samplerate.h>
 
 #include <glib.h>
+
+#include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 
 #include "bio2jack.h"
+
+using aud::min;
+using aud::max;
 
 /* enable/disable TRACING through the JACK_Callback() function */
 /* this can sometimes be too much information */
@@ -57,11 +61,9 @@
 /* set to 1 to enable tracing of getDriver() and releaseDriver() */
 #define TRACE_getReleaseDevice  0
 
-#define ENABLE_WARNINGS         0
-
 #define DEFAULT_RB_SIZE         4096
 
-#define OUTFILE stderr
+#define OUTFILE STDERR_FILENO
 
 #if TIMER_ENABLE
 /* This seemingly construct makes timing arbitrary functions really easy
@@ -94,16 +96,8 @@
 #define CALLBACK_TRACE(...)
 #endif
 
-#if ENABLE_WARNINGS
-//#define WARN(format,args...) fprintf(OUTFILE, "WARN: %s::%s(%d) " format, __FILE__,__FUNCTION__,__LINE__,##args)
-#else
-#define WARN(...)
-#endif
-
-#define ERR AUDDBG
-
-#define min(a,b)   (((a) < (b)) ? (a) : (b))
-#define max(a,b)   (((a) < (b)) ? (b) : (a))
+#define WARN AUDWARN
+#define ERR AUDERR
 
 #define MAX_OUTPUT_PORTS  10
 #define MAX_INPUT_PORTS   10
@@ -596,7 +590,7 @@ JACK_callback(nframes_t nframes, void *arg)
         long bytes_needed_write = nframes * drv->bytes_per_jack_output_frame;
 
         /* make a very good guess at how many raw bytes we'll need to satisfy jack's request after conversion */
-        long bytes_needed_read = min(inputBytesAvailable,
+        long bytes_needed_read = min((double) inputBytesAvailable,
                                      (double) (bytes_needed_write +
                                                drv->
                                                output_sample_rate_ratio
@@ -1049,8 +1043,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   TRACE("creating output ports\n");
   for(unsigned i = 0; i < drv->num_output_channels; i++)
   {
-    char portname[32];
-    sprintf(portname, "out_%d", i);
+    StringBuf portname = str_printf ("out_%d", i);
     TRACE("port %d is named '%s'\n", i, portname);
     /* NOTE: Yes, this is supposed to be JackPortIsOutput since this is an output */
     /* port FROM bio2jack */
@@ -1063,8 +1056,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   TRACE("creating input ports\n");
   for(unsigned i = 0; i < drv->num_input_channels; i++)
   {
-    char portname[32];
-    sprintf(portname, "in_%d", i);
+    StringBuf portname = str_printf (portname, "in_%d", i);
     TRACE("port %d is named '%s'\n", i, portname);
     /* NOTE: Yes, this is supposed to be JackPortIsInput since this is an input */
     /* port TO bio2jack */

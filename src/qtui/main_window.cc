@@ -17,117 +17,69 @@
  * the use of this software.
  */
 
-#include <QtGui>
+#include "main_window.h"
 
-#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/interface.h>
 
 #include <libaudqt/libaudqt.h>
 
 #include "filter_input.h"
-#include "main_window.h"
-#include "main_window.moc"
-#include "main_window_actions.h"
 #include "playlist.h"
+#include "time_slider.h"
+#include "status_bar.h"
+#include "playlist_tabs.h"
+#include "tool_bar.h"
 
-MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
+MainWindow::MainWindow () :
+    m_dialogs (this),
+    filterInput (new FilterInput (this)),
+    playlistTabs (new PlaylistTabs (this))
 {
-    int lvol, rvol;
-
+#if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
 
-    QString appDir = qApp->applicationDirPath ();
     QStringList paths = QIcon::themeSearchPaths ();
-    paths.prepend (appDir + "/../share/audacious");
+    paths.prepend (aud_get_path (AudPath::DataDir));
     QIcon::setThemeSearchPaths (paths);
+#else
+    QApplication::setWindowIcon (QIcon::fromTheme ("audacious"));
+#endif
 
     setupUi (this);
 
+    auto slider = new TimeSlider (this);
+
+    const ToolBarItem items[] = {
+        ToolBarAction ("document-open", N_("Open Files"), N_("Open Files"), [] () { audqt::fileopener_show(false); }),
+        ToolBarAction ("list-add", N_("Add Files"), N_("Add Files"), [] () { audqt::fileopener_show(true); }),
+        ToolBarSeparator (),
+        ToolBarAction ("media-playback-play", N_("Play"), N_("Play"), aud_drct_play_pause, & toolButtonPlayPause),
+        ToolBarAction ("media-playback-stop", N_("Stop"), N_("Stop"), aud_drct_stop),
+        ToolBarAction ("media-skip-backward", N_("Previous"), N_("Previous"), aud_drct_pl_prev),
+        ToolBarAction ("media-skip-forward", N_("Next"), N_("Next"), aud_drct_pl_next),
+        ToolBarSeparator (),
+        ToolBarCustom (slider),
+        ToolBarCustom (slider->label ()),
+        ToolBarSeparator (),
+        ToolBarAction ("media-playlist-repeat", N_("Repeat"), N_("Repeat"),
+            [] (bool on) { aud_set_bool (nullptr, "repeat", on); }, & toolButtonRepeat),
+        ToolBarAction ("media-playlist-shuffle", N_("Shuffle"), N_("Shuffle"),
+            [] (bool on) { aud_set_bool (nullptr, "shuffle", on); }, & toolButtonShuffle),
+        ToolBarCustom (new audqt::VolumeButton (this)),
+        ToolBarCustom (filterInput),
+    };
+
+    addToolBar (Qt::TopToolBarArea, new ToolBar (this, items));
+
     setUnifiedTitleAndToolBarOnMac (true);
-
-    volumeButton = new audqt::VolumeButton (this, 0, 100);
-
-    aud_drct_get_volume (&lvol, &rvol);
-    volumeButton->setValue ((lvol + rvol) / 2);
-
-    connect (volumeButton, &audqt::VolumeButton::valueChanged, [=] (int value) {
-        aud_drct_set_volume (value, value);
-    });
-
-    toolBar->addWidget (volumeButton);
-
-    filterInput = new FilterInput ();
-
-    toolBar->addWidget (filterInput);
-
-    slider = new QSlider (Qt::Horizontal);
-    slider->setDisabled (true);
-    slider->setFocusPolicy (Qt::NoFocus);
-
-    timeCounterLabel = new QLabel ("0:00 / 0:00");
-    timeCounterLabel->setContentsMargins (5, 0, 0, 2);
-    timeCounterLabel->setDisabled (true);
-
-    timeCounter = new QTimer;
-    timeCounter->setInterval (250);
-
-    toolBar->insertWidget (actionRepeat, slider);
-    toolBar->insertWidget (actionRepeat, timeCounterLabel);
-
-    playlistTabs = new PlaylistTabs;
-    playlistTabs->setFocusPolicy (Qt::NoFocus);
-    mainLayout->addWidget (playlistTabs);
-
-    createStatusBar ();
 
     updateToggles ();
 
-    connect (actionAbout, &QAction::triggered, aud_ui_show_about_window);
-    connect (actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
+    setStatusBar (new StatusBar (this));
 
-    connect (actionQuit, &QAction::triggered, aud_quit);
-
-    connect (actionRepeat, &QAction::toggled, [=] (bool checked)
-    {
-        aud_set_bool (nullptr, "repeat", checked);
-    });
-
-    connect (actionShuffle, &QAction::triggered, [=] (bool checked)
-    {
-        aud_set_bool (nullptr, "shuffle", checked);
-    });
-
-    connect (actionNoPlaylistAdvance, &QAction::triggered, [=] (bool checked)
-    {
-        aud_set_bool (nullptr, "no_playlist_advance", checked);
-    });
-
-    connect (actionStopAfterThisSong, &QAction::triggered, [=] (bool checked)
-    {
-        aud_set_bool (nullptr, "stop_after_current_song", checked);
-    });
-
-    connect (actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
-
-    connect (actionAddFiles,  &QAction::triggered, [=] ()
-    {
-        audqt::fileopener_show (true);
-    });
-
-    connect (actionPlayPause, &QAction::triggered, aud_drct_play_pause);
-    connect (actionStop,      &QAction::triggered, aud_drct_stop);
-    connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
-    connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
-
-    connect (actionEqualizer, &QAction::triggered, audqt::equalizer_show);
-
-    connect (timeCounter, &QTimer::timeout,         this, &MainWindow::timeCounterSlot);
-    connect (slider,      &QSlider::valueChanged,   this, &MainWindow::sliderValueChanged);
-    connect (slider,      &QSlider::sliderPressed,  this, &MainWindow::sliderPressed);
-    connect (slider,      &QSlider::sliderReleased, this, &MainWindow::sliderReleased);
+    mainLayout->addWidget (playlistTabs);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
@@ -145,10 +97,8 @@ MainWindow::MainWindow (QMainWindow * parent) : QMainWindow (parent)
     hook_associate ("set no_playlist_advance",     (HookFunction) update_toggles_cb, this);
     hook_associate ("set stop_after_current_song", (HookFunction) update_toggles_cb, this);
 
-    hook_associate ("ui show progress",   (HookFunction) show_progress_cb, this);
-    hook_associate ("ui show progress 2", (HookFunction) show_progress_2_cb, this);
-    hook_associate ("ui hide progress",   (HookFunction) hide_progress_cb, this);
-    hook_associate ("ui show error",      (HookFunction) show_error_cb, this);
+    buffering_timer.setSingleShot (true);
+    connect (& buffering_timer, & QTimer::timeout, this, & MainWindow::show_buffering);
 
     if (aud_drct_get_playing ())
     {
@@ -171,126 +121,10 @@ MainWindow::~MainWindow ()
     hook_dissociate ("playback unpause", (HookFunction) pause_cb);
     hook_dissociate ("playback stop",    (HookFunction) playback_stop_cb);
 
-    hook_dissociate ("ui show progress",   (HookFunction) show_progress_cb);
-    hook_dissociate ("ui show progress 2", (HookFunction) show_progress_2_cb);
-    hook_dissociate ("ui hide progress",   (HookFunction) hide_progress_cb);
-    hook_dissociate ("ui show error",      (HookFunction) show_error_cb);
-
     hook_dissociate ("set repeat",                  (HookFunction) update_toggles_cb);
     hook_dissociate ("set shuffle",                 (HookFunction) update_toggles_cb);
     hook_dissociate ("set no_playlist_advance",     (HookFunction) update_toggles_cb);
     hook_dissociate ("set stop_after_current_song", (HookFunction) update_toggles_cb);
-
-    hook_dissociate ("playlist activate", (HookFunction) update_playlist_length_cb);
-    hook_dissociate ("playlist update",   (HookFunction) update_playlist_length_cb);
-
-    hook_dissociate ("playback ready", (HookFunction) update_codec_info_cb);
-    hook_dissociate ("info change",    (HookFunction) update_codec_info_cb);
-
-    delete slider;
-    delete timeCounterLabel;
-    delete timeCounter;
-    delete progressDialog;
-    delete errorDialog;
-    delete playlistTabs;
-    delete filterInput;
-    delete playlistLengthLabel;
-    delete codecInfoLabel;
-}
-
-void MainWindow::timeCounterSlot ()
-{
-    if (slider->isSliderDown ())
-        return;
-
-    int time   = aud_drct_get_time ();
-    int length = aud_drct_get_length ();
-    setTimeCounterLabel (time, length);
-
-    slider->setValue (time);
-}
-
-void MainWindow::setTimeCounterLabel (int time, int length)
-{
-    QString text = QString (str_format_time (time)) + QString (" / ") + QString (str_format_time (length));
-    timeCounterLabel->setText (text);
-}
-
-void MainWindow::enableSlider ()
-{
-    int time = aud_drct_get_time ();
-    int length = aud_drct_get_length ();
-
-    slider->setRange (0, length);
-    slider->setValue (time);
-    slider->setDisabled (false);
-}
-
-void MainWindow::disableSlider ()
-{
-    slider->setRange (0, 0);
-    slider->setDisabled (true);
-}
-
-void MainWindow::enableTimeCounter ()
-{
-    int time   = aud_drct_get_time ();
-    int length = aud_drct_get_length ();
-
-    setTimeCounterLabel (time, length);
-    timeCounter->start ();
-    timeCounterLabel->setDisabled (false);
-}
-
-void MainWindow::disableTimeCounter ()
-{
-    timeCounter->stop ();
-    timeCounterLabel->setText ("0:00 / 0:00");
-    timeCounterLabel->setDisabled (true);
-}
-
-void MainWindow::sliderValueChanged (int value)
-{
-    if (! slider->isSliderDown ())
-        return;
-
-    int length = aud_drct_get_length ();
-    setTimeCounterLabel (value, length);
-}
-
-void MainWindow::sliderPressed ()
-{
-    timeCounter->stop ();
-}
-
-void MainWindow::sliderReleased ()
-{
-    aud_drct_seek (slider->value ());
-    timeCounter->start ();
-}
-
-void MainWindow::createProgressDialog ()
-{
-    if (! progressDialog)
-    {
-        progressDialog = new QMessageBox (this);
-        progressDialog->setIcon (QMessageBox::Information);
-        progressDialog->setText ("Working ...");
-        progressDialog->setStandardButtons (QMessageBox::NoButton);
-        progressDialog->setWindowModality (Qt::WindowModal);
-    }
-}
-
-void MainWindow::createErrorDialog (const QString &message)
-{
-    if (! errorDialog)
-    {
-        errorDialog = new QMessageBox (this);
-        errorDialog->setIcon (QMessageBox::Warning);
-        errorDialog->setWindowModality (Qt::WindowModal);
-    }
-    errorDialog->setText (message);
-    errorDialog->show ();
 }
 
 void MainWindow::closeEvent (QCloseEvent * e)
@@ -320,25 +154,67 @@ void MainWindow::updateToggles ()
 {
     actionRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
     actionShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
+    toolButtonRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
+    toolButtonShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
     actionNoPlaylistAdvance->setChecked (aud_get_bool (nullptr, "no_playlist_advance"));
     actionStopAfterThisSong->setChecked (aud_get_bool (nullptr, "stop_after_current_song"));
 }
 
-void MainWindow::createStatusBar ()
+void MainWindow::action_play_pause_set_play ()
 {
-    QStatusBar * bar = QMainWindow::statusBar();
+    toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
+    toolButtonPlayPause->setText ("Play");
+}
 
-    playlistLengthLabel = new QLabel ("0:00 / 0:00");
-    playlistLengthLabel->setAlignment(Qt::AlignRight);
+void MainWindow::action_play_pause_set_pause ()
+{
+    toolButtonPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
+    toolButtonPlayPause->setText ("Pause");
+}
 
-    codecInfoLabel = new QLabel ("");
+void MainWindow::show_buffering ()
+{
+    if (aud_drct_get_playing () && ! aud_drct_get_ready ())
+        setWindowTitle (_("Buffering ..."));
+}
 
-    bar->addPermanentWidget(playlistLengthLabel);
-    bar->addWidget(codecInfoLabel);
+void MainWindow::title_change_cb (void *, MainWindow * window)
+{
+    auto title = aud_drct_get_title ();
+    if (title)
+        window->setWindowTitle (QString (title) + QString (" - Audacious"));
+}
 
-    hook_associate ("playlist activate", (HookFunction) update_playlist_length_cb, playlistLengthLabel);
-    hook_associate ("playlist update", (HookFunction) update_playlist_length_cb, playlistLengthLabel);
+void MainWindow::playback_begin_cb (void *, MainWindow * window)
+{
+    pause_cb (nullptr, window);
+    window->buffering_timer.start (250);
+}
 
-    hook_associate ("playback ready", (HookFunction) update_codec_info_cb, codecInfoLabel);
-    hook_associate ("info change", (HookFunction) update_codec_info_cb, codecInfoLabel);
+void MainWindow::playback_ready_cb (void *, MainWindow * window)
+{
+    title_change_cb (nullptr, window);
+    pause_cb (nullptr, window);
+}
+
+void MainWindow::pause_cb (void *, MainWindow * window)
+{
+    if (aud_drct_get_paused ())
+        window->action_play_pause_set_play ();
+    else
+        window->action_play_pause_set_pause ();
+
+    window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+}
+
+void MainWindow::playback_stop_cb (void *, MainWindow * window)
+{
+    window->setWindowTitle ("Audacious");
+    window->action_play_pause_set_play ();
+    window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+}
+
+void MainWindow::update_toggles_cb (void *, MainWindow * window)
+{
+    window->updateToggles ();
 }

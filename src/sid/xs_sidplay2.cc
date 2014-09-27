@@ -36,6 +36,7 @@
 #include <sidplayfp/SidTuneInfo.h>
 #include <sidplayfp/builders/residfp.h>
 
+#include <libaudcore/runtime.h>
 #include <libaudcore/vfs.h>
 
 struct SidState {
@@ -89,13 +90,13 @@ bool xs_sidplayfp_init()
     /* Builder object created, initialize it */
     state.currBuilder->create(state.currEng->info().maxsids());
     if (!state.currBuilder->getStatus()) {
-        xs_error("reSID->create() failed.\n");
+        AUDERR("reSID->create() failed.\n");
         return false;
     }
 
     state.currBuilder->filter(xs_cfg.emulateFilters);
     if (!state.currBuilder->getStatus()) {
-        xs_error("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
+        AUDERR("reSID->filter(%d) failed.\n", xs_cfg.emulateFilters);
         return false;
     }
 
@@ -108,7 +109,7 @@ bool xs_sidplayfp_init()
         break;
 
     default:
-        xs_error("[SIDPlayFP] Invalid clockSpeed=%d, falling back to PAL.\n",
+        AUDERR("[SIDPlayFP] Invalid clockSpeed=%d, falling back to PAL.\n",
             xs_cfg.clockSpeed);
 
     case XS_CLOCK_PAL:
@@ -129,7 +130,7 @@ bool xs_sidplayfp_init()
 
     /* Now set the emulator configuration */
     if (!state.currEng->config(config)) {
-        xs_error("[SIDPlayFP] Emulator engine configuration failed!\n");
+        AUDERR("[SIDPlayFP] Emulator engine configuration failed!\n");
         return false;
     }
 
@@ -167,12 +168,12 @@ void xs_sidplayfp_close()
 bool xs_sidplayfp_initsong(int subtune)
 {
     if (!state.currTune->selectSong(subtune)) {
-        xs_error("[SIDPlayFP] currTune->selectSong() failed\n");
+        AUDERR("[SIDPlayFP] currTune->selectSong() failed\n");
         return false;
     }
 
     if (!state.currEng->load(state.currTune)) {
-        xs_error("[SIDPlayFP] currEng->load() failed\n");
+        AUDERR("[SIDPlayFP] currEng->load() failed\n");
         return false;
     }
 
@@ -197,31 +198,20 @@ bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
     /* In xs_sidplayfp_init aud-vfs is not initialized yet, so try to load
        the optional rom files on the first xs_sidplayfp_load call. */
     if (!loaded_roms) {
-        int64_t size = 0;
-        void *kernal = nullptr, *basic = nullptr, *chargen = nullptr;
+        VFSFile kernal_file("file://" SIDDATADIR "sidplayfp/kernal", "r");
+        VFSFile basic_file("file://" SIDDATADIR "sidplayfp/basic", "r");
+        VFSFile chargen_file("file://" SIDDATADIR "sidplayfp/chargen", "r");
 
-        vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/kernal", &kernal, &size);
-        if (size != 8192) {
-            free(kernal);
-            kernal = nullptr;
+        if (kernal_file && basic_file && chargen_file)
+        {
+            Index<char> kernal = kernal_file.read_all();
+            Index<char> basic = basic_file.read_all();
+            Index<char> chargen = chargen_file.read_all();
+
+            if (kernal.len() == 8192 && basic.len() == 8192 && chargen.len() == 4096)
+                state.currEng->setRoms((uint8_t*)kernal.begin(), (uint8_t*)basic.begin(), (uint8_t*)chargen.begin());
         }
 
-        vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/basic", &basic, &size);
-        if(size != 8192) {
-            free(basic);
-            basic = nullptr;
-        }
-
-        vfs_file_get_contents("file://" SIDDATADIR "sidplayfp/chargen", &chargen, &size);
-        if(size != 4096) {
-            free(chargen);
-            chargen = nullptr;
-        }
-
-        state.currEng->setRoms((uint8_t*)kernal, (uint8_t*)basic, (uint8_t*)chargen);
-        free(kernal);
-        free(basic);
-        free(chargen);
         loaded_roms = true;
     }
 

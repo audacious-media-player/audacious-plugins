@@ -22,6 +22,7 @@
 #include "aosd_style.h"
 #include "aosd_style_private.h"
 #include "aosd_cfg.h"
+
 #include <glib.h>
 #include <X11/Xlib.h>
 #include <cairo/cairo.h>
@@ -30,6 +31,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+
+#include <libaudcore/runtime.h>
+
 #include "ghosd.h"
 
 
@@ -504,7 +508,7 @@ aosd_osd_check_composite_mgr ( void )
 
   if ( have_comp_mgr != 0 )
   {
-    DEBUGMSG("running composite manager found\n");
+    AUDDBG("running composite manager found\n");
     return have_comp_mgr;
   }
   else
@@ -520,12 +524,12 @@ aosd_osd_check_composite_mgr ( void )
     {
       if (( soutput != nullptr ) && ( strstr( soutput , "\nxcompmgr\n" ) != nullptr ))
       {
-        DEBUGMSG("running xcompmgr found\n");
+        AUDDBG("running xcompmgr found\n");
         have_comp_mgr = 1;
       }
       else
       {
-        DEBUGMSG("running xcompmgr not found\n");
+        AUDDBG("running xcompmgr not found\n");
         have_comp_mgr = 0;
       }
     }

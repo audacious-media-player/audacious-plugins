@@ -32,12 +32,12 @@ class PlaylistTabs : public QTabWidget
     Q_OBJECT
 
 public:
-    PlaylistTabs (QTabWidget * parent = 0);
+    PlaylistTabs (QWidget * parent = 0);
     ~PlaylistTabs ();
     Playlist * playlistWidget (int num);
     Playlist * activePlaylistWidget ();
 
-    void editTab (int idx) const;
+    void editTab (int idx);
 
 public slots:
     void filterTrigger (const QString &text);
@@ -48,18 +48,20 @@ protected:
     bool eventFilter (QObject * obj, QEvent *e);
 
 private:
-    QLineEdit *m_lineedit;
+    QWidget *m_leftbtn;
     PlaylistTabBar *m_tabbar;
+
+    QLineEdit * getTabEdit (int idx);
+    void setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp);
 
     void populatePlaylists ();
     void maybeCreateTab (int count_, int uniq_id);
     void cullPlaylists ();
+    void cancelRename ();
 
     static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
     {
-        int global_level = (int) (long) data;
-
-        if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+        if (data == PLAYLIST_UPDATE_STRUCTURE)
             tabWidget->populatePlaylists();
 
         int lists = aud_playlist_count ();
@@ -67,7 +69,7 @@ private:
         for (int list = 0; list < lists; list ++)
         {
             int at, count;
-            int level = aud_playlist_updated_range (list, & at, & count);
+            PlaylistUpdateLevel level = aud_playlist_updated_range (list, & at, & count);
 
             if (level)
                 tabWidget->playlistWidget (list)->update (level, at, count);

@@ -44,7 +44,7 @@ CadtrackLoader::factory (Copl * newopl)
 }
 
 bool
-CadtrackLoader::load (VFSFile * fd, const CFileProvider & fp)
+CadtrackLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)
@@ -55,7 +55,7 @@ CadtrackLoader::load (VFSFile * fd, const CFileProvider & fp)
   unsigned char chp, octave, pnote = 0;
   int i, j;
   AdTrackInst myinst;
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
 
   // file validation
   if (!fp.extension (filename, ".sng") || fp.filesize (f) != 36000)
@@ -70,12 +70,11 @@ CadtrackLoader::load (VFSFile * fd, const CFileProvider & fp)
   AdPlug_LogWrite ("CadtrackLoader::load(,\"%s\"): Checking for \"%s\"...\n",
                    filename.c_str (), instfilename.c_str ());
 
-  VFSFile *instfd = vfs_fopen (instfilename.c_str (), "rb");
+  VFSFile instfd (instfilename.c_str (), "rb");
   instf = fp.open (instfd);
   if (!instf || fp.filesize (instf) != 468)
   {
     fp.close (f);
-    vfs_fclose (instfd);
     return false;
   }
 

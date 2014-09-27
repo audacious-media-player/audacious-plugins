@@ -261,19 +261,20 @@ static void mouse_leave (void * user, GdkEventMotion * event, int row)
     popup_hide ((PlaylistWidgetData *) user);
 }
 
-static void get_data (void * user, void * * data, int * length)
+static Index<char> get_data (void * user)
 {
-    char * text = audgui_urilist_create_from_selected
-     (((PlaylistWidgetData *) user)->list);
-    g_return_if_fail (text);
-    * data = text;
-    * length = strlen (text);
+    int playlist = ((PlaylistWidgetData *) user)->list;
+    StringBuf text = audgui_urilist_create_from_selected (playlist);
+
+    Index<char> data;
+    data.insert (text, 0, text.len ());
+    return data;
 }
 
-static void receive_data (void * user, int row, const void * data, int length)
+static void receive_data (void * user, int row, const char * data, int length)
 {
-    audgui_urilist_insert (((PlaylistWidgetData *) user)->list, row,
-     str_copy ((const char *) data, length));
+    int playlist = ((PlaylistWidgetData *) user)->list;
+    audgui_urilist_insert (playlist, row, str_copy (data, length));
 }
 
 static const AudguiListCallbacks callbacks = {
@@ -302,11 +303,10 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
     gtk_tree_path_free (path);
 
     Index<String> keys = str_list_to_index (search, " ");
-    int n_keys = keys.len ();
 
-    gboolean matched = FALSE;
+    bool matched = false;
 
-    if (n_keys)
+    if (keys.len ())
     {
         String strings[3];
         aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
@@ -317,19 +317,13 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
             if (! s)
                 continue;
 
-            for (int j = 0; j < n_keys;)
-            {
-                if (strstr_nocase_utf8 (s, keys[j]))
-                {
-                    keys.remove (j, 1);
-                    n_keys --;
-                }
-                else
-                    j ++;
-            }
+            auto is_match = [&] (const String & key)
+                { return (bool) strstr_nocase_utf8 (s, key); };
+
+            keys.remove_if (is_match);
         }
 
-        matched = ! n_keys;
+        matched = ! keys.len ();
     }
 
     return ! matched;
@@ -404,13 +398,12 @@ static void update_queue (GtkWidget * widget, PlaylistWidgetData * data)
         audgui_list_update_rows (widget, GPOINTER_TO_INT (node->data), 1);
 }
 
-void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
- int count)
+void ui_playlist_widget_update (GtkWidget * widget, void * level, int at, int count)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    if (type == PLAYLIST_UPDATE_STRUCTURE)
+    if (level == PLAYLIST_UPDATE_STRUCTURE)
     {
         int old_entries = audgui_list_row_count (widget);
         int entries = aud_playlist_entry_count (data->list);
@@ -426,7 +419,7 @@ void ui_playlist_widget_update (GtkWidget * widget, int type, int at,
 
         ui_playlist_widget_scroll (widget);
     }
-    else if (type == PLAYLIST_UPDATE_METADATA)
+    else if (level == PLAYLIST_UPDATE_METADATA)
         audgui_list_update_rows (widget, at, count);
 
     audgui_list_update_selection (widget, at, count);

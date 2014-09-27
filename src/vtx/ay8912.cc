@@ -1,10 +1,9 @@
 /* AY/YM emulator implementation. */
 
-#include <stdio.h>
 #include <inttypes.h>
 #include "ayemu.h"
 
-#define debuglog stderr;
+#include <libaudcore/runtime.h>
 
 const char *ayemu_err;
 
@@ -77,7 +76,7 @@ static int check_magic(ayemu_ay_t *ay)
 {
   if (ay->magic == MAGIC1)
     return 1;
-  fprintf(stderr, "libayemu: passed pointer %p to uninitialized ayemu_ay_t structure\n", (void *) ay);
+  AUDERR("passed pointer %p to uninitialized ayemu_ay_t structure\n", (void *) ay);
   return 0;
 }
 
@@ -307,7 +306,7 @@ int ayemu_set_stereo(ayemu_ay_t *ay, ayemu_stereo_t stereo_type, int *custom_eq)
 
 #define WARN_IF_REGISTER_GREAT_THAN(r,m) \
 if (*(regs + r) > m) \
-   fprintf(stderr, "ayemu_set_regs: warning: possible bad register data- R%d > %d\n", r, m)
+   AUDWARN("possible bad register data- R%d > %d\n", r, m)
 
 
 /** Assign values for AY registers.

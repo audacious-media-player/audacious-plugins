@@ -33,7 +33,7 @@ public:
 		: ChscPlayer(newopl)
 	{};
 
-	bool load(VFSFile *fd, const CFileProvider &fp);
+	bool load(VFSFile &fd, const CFileProvider &fp);
 };
 
 #endif

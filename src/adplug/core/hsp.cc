@@ -30,14 +30,14 @@ ChspLoader::factory (Copl * newopl)
 }
 
 bool
-ChspLoader::load (VFSFile * fd, const CFileProvider & fp)
+ChspLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)
     return false;
   unsigned long i, j, orgsize, filesize;
   unsigned char *cmp, *org;
-  std::string filename (vfs_get_filename (fd));
+  std::string filename (fd.filename ());
 
   // file validation section
   if (!fp.extension (filename, ".hsp"))

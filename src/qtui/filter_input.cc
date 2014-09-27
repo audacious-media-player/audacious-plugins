@@ -22,6 +22,7 @@
 
 FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
 {
+#ifdef Q_OS_MAC
     setStyleSheet (
         "QLineEdit {"
         "   padding: 2px 4px;"
@@ -33,6 +34,8 @@ FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
         "   border: 1px solid gray;"
         "}"
     );
+#endif
+
     setAttribute (Qt::WA_MacShowFocusRect, false);
     setClearButtonEnabled (true);
     setPlaceholderText ("Search");

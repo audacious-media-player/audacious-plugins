@@ -26,9 +26,9 @@
 #include <vector>
 #include <string>
 
-#include <glib.h>
-
 #include "player.h"
+
+#include <libaudcore/audstrings.h>
 
 class CrolPlayer: public CPlayer
 {
@@ -39,7 +39,7 @@ public:
 
     ~CrolPlayer();
 
-    bool  load      (VFSFile *fd, const CFileProvider &fp);
+    bool  load      (VFSFile &fd, const CFileProvider &fp);
     bool  update    ();
     void  rewind    (int subsong);	// rewinds to specified subsong
     float getrefresh();			// returns needed timer refresh rate
@@ -271,7 +271,7 @@ private:
     private:
         bool keyLess( const char *const lhs, const char *const rhs ) const
         {
-            return g_ascii_strcasecmp(lhs, rhs) < 0;
+            return strcmp_nocase(lhs, rhs) < 0;
         }
     };
 

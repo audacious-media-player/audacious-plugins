@@ -1,8 +1,9 @@
 PLUGIN = qtui${PLUGIN_SUFFIX}
 
 SRCS = qtui.cc \
+       dialog_windows.cc \
        main_window.cc \
-       main_window.moc \
+       main_window_actions.cc \
        playlist.cc \
        playlist.moc \
        playlist_model.cc \
@@ -11,6 +12,9 @@ SRCS = qtui.cc \
        playlist_tabs.moc \
        filter_input.cc \
        filter_input.moc \
+       status_bar.cc \
+       tool_bar.cc \
+       time_slider.cc \
        ui_main_window.h
 
 include ../../buildsys.mk
@@ -18,6 +22,16 @@ include ../../extra.mk
 
 # These overrides variables in buildsys.mk and so must come after it.
 PACKAGE_NAME = audacious
+
+CUSTOM_ICONS=no
+ifeq ($(HAVE_MSWINDOWS),yes)
+CUSTOM_ICONS=yes
+endif
+ifeq ($(HAVE_DARWIN),yes)
+CUSTOM_ICONS=yes
+endif
+
+ifeq ($(CUSTOM_ICONS),yes)
 DATA = QtUi/16/audio-volume-high.png \
        QtUi/16/audio-volume-low.png \
        QtUi/16/audio-volume-medium.png \
@@ -50,6 +64,7 @@ DATA = QtUi/16/audio-volume-high.png \
        QtUi/22/media-skip-forward.png \
        QtUi/AUTHORS \
        QtUi/index.theme
+endif
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 

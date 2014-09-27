@@ -42,7 +42,7 @@ class Cu6mPlayer: public CPlayer
         if(song_data) { delete[] song_data; song_data = 0; }
     };
 
-	bool load(VFSFile *fd, const CFileProvider &fp);
+	bool load(VFSFile &fd, const CFileProvider &fp);
 	bool update();
 	void rewind(int subsong);
 	float getrefresh();
@@ -165,4 +165,3 @@ class Cu6mPlayer: public CPlayer
     void output_root(unsigned char root, unsigned char *destination, long& position);
     void get_string(int codeword, MyDict& dictionary, std::stack<unsigned char>& root_stack);
 };
-

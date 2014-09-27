@@ -18,10 +18,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses>.
  */
 
-#include <pthread.h>
-#include <string.h>
-#include <stdlib.h>
+#include <assert.h>
 #include <errno.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <string.h>
 
 /* prevent libcdio from redefining PACKAGE, VERSION, etc. */
 #define EXTERNAL_LIBCDIO_CONFIG_H
@@ -41,8 +42,6 @@
 
 #include <cddb/cddb.h>
 
-#include <glib.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
@@ -54,21 +53,17 @@
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 
-#define DEF_STRING_LEN 256
-
 #define MIN_DISC_SPEED 2
 #define MAX_DISC_SPEED 24
 
 #define MAX_RETRIES 10
 #define MAX_SKIPS 10
 
-#define warn(...) fprintf(stderr, "cdaudio-ng: " __VA_ARGS__)
-
 typedef struct
 {
-    char performer[DEF_STRING_LEN];
-    char name[DEF_STRING_LEN];
-    char genre[DEF_STRING_LEN];
+    String performer;
+    String name;
+    String genre;
     int startlsn;
     int endlsn;
 }
@@ -82,14 +77,14 @@ static int firsttrackno = -1;
 static int lasttrackno = -1;
 static int n_audio_tracks;
 static cdrom_drive_t *pcdrom_drive = nullptr;
-static trackinfo_t *trackinfo = nullptr;
+static Index<trackinfo_t> trackinfo;
 static QueuedFunc monitor_source;
 
 static bool cdaudio_init (void);
-static bool cdaudio_is_our_file (const char * filename, VFSFile * file);
-static bool cdaudio_play (const char * name, VFSFile * file);
+static bool cdaudio_is_our_file (const char * filename, VFSFile & file);
+static bool cdaudio_play (const char * name, VFSFile & file);
 static void cdaudio_cleanup (void);
-static Tuple make_tuple (const char * filename, VFSFile * file);
+static Tuple make_tuple (const char * filename, VFSFile & file);
 static bool scan_cd (void);
 static void refresh_trackinfo (bool warning);
 static void reset_trackinfo (void);
@@ -162,14 +157,11 @@ static const PluginPreferences cdaudio_prefs = {{cdaudio_widgets}};
 static void cdaudio_error (const char * message_format, ...)
 {
     va_list args;
-    char *msg = nullptr;
-
     va_start (args, message_format);
-    msg = g_markup_vprintf_escaped (message_format, args);
+    StringBuf msg = str_vprintf (message_format, args);
     va_end (args);
 
     aud_ui_show_error (msg);
-    g_free (msg);
 }
 
 /* main thread only */
@@ -181,7 +173,7 @@ static void purge_playlist (int playlist)
     {
         String filename = aud_playlist_entry_get_filename (playlist, count);
 
-        if (cdaudio_is_our_file (filename, nullptr))
+        if (! strncmp (filename, "cdda://", 7))
         {
             aud_playlist_entry_delete (playlist, count, 1);
             count--;
@@ -212,10 +204,10 @@ static void monitor (void *)
         return;
     }
 
-    if (trackinfo != nullptr)
+    if (trackinfo.len ())
         refresh_trackinfo (false);
 
-    if (trackinfo != nullptr)
+    if (trackinfo.len ())
     {
         pthread_mutex_unlock (& mutex);
         return;
@@ -251,42 +243,21 @@ static bool cdaudio_init (void)
 }
 
 /* thread safe (mutex may be locked) */
-static bool cdaudio_is_our_file (const char * filename, VFSFile * file)
+static bool cdaudio_is_our_file (const char * filename, VFSFile & file)
 {
     return !strncmp (filename, "cdda://", 7);
 }
 
-/* thread safe (mutex may be locked) */
-static void cdaudio_set_strinfo (trackinfo_t * t,
-                                 const char * performer, const char * name,
-                                 const char * genre)
-{
-    g_strlcpy (t->performer, performer ? performer : "", DEF_STRING_LEN);
-    g_strlcpy (t->name, name ? name : "", DEF_STRING_LEN);
-    g_strlcpy (t->genre, genre ? genre : "", DEF_STRING_LEN);
-}
-
-/* thread safe (mutex may be locked) */
-static void cdaudio_set_fullinfo (trackinfo_t * t,
-                                  const lsn_t startlsn, const lsn_t endlsn,
-                                  const char * performer, const char * name,
-                                  const char * genre)
-{
-    t->startlsn = startlsn;
-    t->endlsn = endlsn;
-    cdaudio_set_strinfo (t, performer, name, genre);
-}
-
 /* play thread only */
-static bool cdaudio_play (const char * name, VFSFile * file)
+static bool cdaudio_play (const char * name, VFSFile & file)
 {
     pthread_mutex_lock (& mutex);
 
-    if (trackinfo == nullptr)
+    if (! trackinfo.len ())
     {
         refresh_trackinfo (true);
 
-        if (trackinfo == nullptr)
+        if (! trackinfo.len ())
         {
             pthread_mutex_unlock (& mutex);
             return false;
@@ -400,7 +371,7 @@ static void cdaudio_cleanup (void)
 }
 
 /* thread safe */
-static Tuple make_tuple (const char * filename, VFSFile * file)
+static Tuple make_tuple (const char * filename, VFSFile & file)
 {
     bool whole_disk = ! strcmp (filename, "cdda://");
     Tuple tuple;
@@ -411,9 +382,9 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
     if (whole_disk && ! playing)
         reset_trackinfo ();
 
-    if (trackinfo == nullptr)
+    if (! trackinfo.len ())
         refresh_trackinfo (true);
-    if (trackinfo == nullptr)
+    if (! trackinfo.len ())
         goto DONE;
 
     if (whole_disk)
@@ -435,13 +406,13 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
 
         if (trackno < firsttrackno || trackno > lasttrackno)
         {
-            warn ("Track %d not found.\n", trackno);
+            AUDERR ("Track %d not found.\n", trackno);
             goto DONE;
         }
 
         if (!cdda_track_audiop (pcdrom_drive, trackno))
         {
-            warn ("Track %d is a data track.\n", trackno);
+            AUDERR ("Track %d is a data track.\n", trackno);
             goto DONE;
         }
 
@@ -451,16 +422,16 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
         tuple.set_int (FIELD_LENGTH, calculate_track_length
          (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 
-        if (trackinfo[trackno].name[0])
+        if (trackinfo[trackno].name)
             tuple.set_str (FIELD_TITLE, trackinfo[trackno].name);
         else
             tuple.set_str (FIELD_TITLE, str_printf (_("Track %d"), trackno));
 
-        if (trackinfo[trackno].performer[0])
+        if (trackinfo[trackno].performer)
             tuple.set_str (FIELD_ARTIST, trackinfo[trackno].performer);
-        if (trackinfo[0].name[0])
+        if (trackinfo[0].name)
             tuple.set_str (FIELD_ALBUM, trackinfo[0].name);
-        if (trackinfo[trackno].genre[0])
+        if (trackinfo[trackno].genre)
             tuple.set_str (FIELD_GENRE, trackinfo[trackno].genre);
     }
 
@@ -473,7 +444,7 @@ static Tuple make_tuple (const char * filename, VFSFile * file)
 static void open_cd (void)
 {
     AUDDBG ("Opening CD drive.\n");
-    g_return_if_fail (pcdrom_drive == nullptr);
+    assert (pcdrom_drive == nullptr);
 
     String device = aud_get_str ("CDDA", "device");
 
@@ -503,8 +474,8 @@ static void open_cd (void)
 static bool scan_cd (void)
 {
     AUDDBG ("Scanning CD drive.\n");
-    g_return_val_if_fail (pcdrom_drive, false);
-    g_return_val_if_fail (! trackinfo, false);
+    assert (pcdrom_drive);
+    assert (! trackinfo.len ());
 
     int trackno;
 
@@ -524,7 +495,7 @@ static bool scan_cd (void)
     int speed = aud_get_int ("CDDA", "disc_speed");
     speed = aud::clamp (speed, MIN_DISC_SPEED, MAX_DISC_SPEED);
     if (cdda_speed_set (pcdrom_drive, speed) != DRIVER_OP_SUCCESS)
-        warn ("Cannot set drive speed.\n");
+        AUDERR ("Cannot set drive speed.\n");
 
     firsttrackno = cdio_get_first_track_num (pcdrom_drive->p_cdio);
     lasttrackno = cdio_get_last_track_num (pcdrom_drive->p_cdio);
@@ -536,21 +507,17 @@ static bool scan_cd (void)
     AUDDBG ("first track is %d and last track is %d\n", firsttrackno,
            lasttrackno);
 
-    trackinfo = (trackinfo_t *) g_new (trackinfo_t, (lasttrackno + 1));
+    trackinfo.insert (0, lasttrackno + 1);
 
-    cdaudio_set_fullinfo (&trackinfo[0],
-                          cdda_track_firstsector (pcdrom_drive, 0),
-                          cdda_track_lastsector (pcdrom_drive, lasttrackno),
-                          "", "", "");
+    trackinfo[0].startlsn = cdda_track_firstsector (pcdrom_drive, 0);
+    trackinfo[0].endlsn = cdda_track_lastsector (pcdrom_drive, lasttrackno);
 
     n_audio_tracks = 0;
 
     for (trackno = firsttrackno; trackno <= lasttrackno; trackno++)
     {
-        cdaudio_set_fullinfo (&trackinfo[trackno],
-                              cdda_track_firstsector (pcdrom_drive, trackno),
-                              cdda_track_lastsector (pcdrom_drive, trackno),
-                              "", "", "");
+        trackinfo[trackno].startlsn = cdda_track_firstsector (pcdrom_drive, trackno);
+        trackinfo[trackno].endlsn = cdda_track_lastsector (pcdrom_drive, trackno);
 
         if (trackinfo[trackno].startlsn == CDIO_INVALID_LSN
             || trackinfo[trackno].endlsn == CDIO_INVALID_LSN)
@@ -581,15 +548,14 @@ static bool scan_cd (void)
         }
         else
         {
-            cdaudio_set_strinfo (&trackinfo[0],
 #if LIBCDIO_VERSION_NUM >= 90
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_PERFORMER, 0),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_TITLE, 0),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_GENRE, 0));
+            trackinfo[0].performer = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_PERFORMER, 0));
+            trackinfo[0].name = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_TITLE, 0));
+            trackinfo[0].genre = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_GENRE, 0));
 #else
-                                 pcdtext->field[CDTEXT_PERFORMER],
-                                 pcdtext->field[CDTEXT_TITLE],
-                                 pcdtext->field[CDTEXT_GENRE]);
+            trackinfo[0].performer = String (pcdtext->field[CDTEXT_PERFORMER]);
+            trackinfo[0].name = String (pcdtext->field[CDTEXT_TITLE]);
+            trackinfo[0].genre = String (pcdtext->field[CDTEXT_GENRE]);
 #endif
         }
     }
@@ -613,15 +579,14 @@ static bool scan_cd (void)
 
         if (pcdtext != nullptr)
         {
-            cdaudio_set_strinfo (&trackinfo[trackno],
 #if LIBCDIO_VERSION_NUM >= 90
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_PERFORMER, trackno),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_TITLE, trackno),
-                                 cdtext_get(pcdtext, CDTEXT_FIELD_GENRE, trackno));
+            trackinfo[trackno].performer = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_PERFORMER, trackno));
+            trackinfo[trackno].name = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_TITLE, trackno));
+            trackinfo[trackno].genre = String (cdtext_get_const (pcdtext, CDTEXT_FIELD_GENRE, trackno));
 #else
-                                 pcdtext->field[CDTEXT_PERFORMER],
-                                 pcdtext->field[CDTEXT_TITLE],
-                                 pcdtext->field[CDTEXT_GENRE]);
+            trackinfo[trackno].performer = String (pcdtext->field[CDTEXT_PERFORMER]);
+            trackinfo[trackno].name = String (pcdtext->field[CDTEXT_TITLE]);
+            trackinfo[trackno].genre = String (pcdtext->field[CDTEXT_GENRE]);
 #endif
             cdtext_was_available = true;
         }
@@ -698,10 +663,8 @@ static bool scan_cd (void)
 
                 cddb_disc_calc_discid (pcddb_disc);
 
-#if DEBUG
                 unsigned discid = cddb_disc_get_discid (pcddb_disc);
                 AUDDBG ("CDDB disc id = %x\n", discid);
-#endif
 
                 int matches;
                 if ((matches = cddb_query (pcddb_conn, pcddb_disc)) == -1)
@@ -741,13 +704,9 @@ static bool scan_cd (void)
                         }
                         else
                         {
-                            cdaudio_set_strinfo (&trackinfo[0],
-                                                 cddb_disc_get_artist
-                                                 (pcddb_disc),
-                                                 cddb_disc_get_title
-                                                 (pcddb_disc),
-                                                 cddb_disc_get_genre
-                                                 (pcddb_disc));
+                            trackinfo[0].performer = String (cddb_disc_get_artist (pcddb_disc));
+                            trackinfo[0].name = String (cddb_disc_get_title (pcddb_disc));
+                            trackinfo[0].genre = String (cddb_disc_get_genre (pcddb_disc));
 
                             int trackno;
                             for (trackno = firsttrackno; trackno <= lasttrackno;
@@ -756,13 +715,10 @@ static bool scan_cd (void)
                                 cddb_track_t *pcddb_track =
                                     cddb_disc_get_track (pcddb_disc,
                                                          trackno - 1);
-                                cdaudio_set_strinfo (&trackinfo[trackno],
-                                                     cddb_track_get_artist
-                                                     (pcddb_track),
-                                                     cddb_track_get_title
-                                                     (pcddb_track),
-                                                     cddb_disc_get_genre
-                                                     (pcddb_disc));
+
+                                trackinfo[trackno].performer = String (cddb_track_get_artist (pcddb_track));
+                                trackinfo[trackno].name = String (cddb_track_get_title (pcddb_track));
+                                trackinfo[trackno].genre = String (cddb_disc_get_genre (pcddb_disc));
                             }
                         }
                     }
@@ -809,10 +765,9 @@ static void refresh_trackinfo (bool warning)
         return;
     }
 
-    if (trackinfo == nullptr || cdio_get_media_changed (pcdrom_drive->p_cdio))
+    if (! trackinfo.len () || cdio_get_media_changed (pcdrom_drive->p_cdio))
     {
-        g_free (trackinfo);
-        trackinfo = nullptr;
+        trackinfo.clear ();
 
         if (scan_cd ())
             trigger_monitor ();
@@ -832,8 +787,7 @@ static void reset_trackinfo (void)
         pcdrom_drive = nullptr;
     }
 
-    g_free (trackinfo);
-    trackinfo = nullptr;
+    trackinfo.clear ();
 }
 
 /* thread safe (mutex may be locked) */

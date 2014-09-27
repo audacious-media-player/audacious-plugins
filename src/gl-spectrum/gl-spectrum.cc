@@ -141,7 +141,7 @@ static void render_freq (const float * freq)
         gtk_widget_queue_draw (s_widget);
 }
 
-static void clear (void)
+static void clear_window (void)
 {
     memset (s_bars, 0, sizeof s_bars);
 
@@ -408,7 +408,7 @@ static const char about_text[] =
 #define AUD_PLUGIN_ABOUT       about_text
 #define AUD_PLUGIN_INIT        init
 #define AUD_VIS_RENDER_FREQ    render_freq
-#define AUD_VIS_CLEAR          clear
+#define AUD_VIS_CLEAR          clear_window
 #define AUD_VIS_GET_WIDGET     get_widget
 
 #define AUD_DECLARE_VIS

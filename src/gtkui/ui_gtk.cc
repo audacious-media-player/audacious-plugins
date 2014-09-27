@@ -64,9 +64,54 @@ static const char * const gtkui_defaults[] = {
  nullptr
 };
 
+class GtkUI : public IfacePlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("GTK Interface"),
+        PACKAGE,
+        nullptr,
+        & gtkui_prefs
+    };
+
+    constexpr GtkUI () : IfacePlugin (info) {}
+
+    bool init ();
+    void cleanup ();
+    void show (bool show);
+
+    void run ()
+        { gtk_main (); }
+    void quit ()
+        { gtk_main_quit (); }
+
+    void show_about_window ()
+        { audgui_show_about_window (); }
+    void hide_about_window ()
+        { audgui_hide_about_window (); }
+    void show_filebrowser (bool open)
+        { audgui_run_filebrowser (open); }
+    void hide_filebrowser ()
+        { audgui_hide_filebrowser (); }
+    void show_jump_to_song ()
+        { audgui_jump_to_track (); }
+    void hide_jump_to_song ()
+        { audgui_jump_to_track_hide (); }
+    void show_prefs_window ()
+        { audgui_show_prefs_window (); }
+    void hide_prefs_window ()
+        { audgui_hide_prefs_window (); }
+    void plugin_menu_add (int id, void func (), const char * name, const char * icon)
+        { audgui_plugin_menu_add (id, func, name, icon); }
+    void plugin_menu_remove (int id, void func ())
+        { audgui_plugin_menu_remove (id, func); }
+};
+
+GtkUI aud_plugin_instance;
+
 static PluginHandle * search_tool;
 
-static GtkWidget *volume;
+static GtkWidget * volume;
 static gboolean volume_slider_is_moving = FALSE;
 static unsigned update_volume_timeout_source = 0;
 static unsigned long volume_change_handler_id;
@@ -84,33 +129,6 @@ static gboolean slider_is_moving = FALSE;
 static int slider_seek_time = -1;
 static unsigned delayed_title_change_source = 0;
 static unsigned update_song_timeout_source = 0;
-
-static bool init (void);
-static void cleanup (void);
-static void ui_show (bool show);
-
-#define AUD_PLUGIN_NAME     N_("GTK Interface")
-#define AUD_PLUGIN_PREFS    & gtkui_prefs
-#define AUD_PLUGIN_INIT     init
-#define AUD_PLUGIN_CLEANUP  cleanup
-
-#define AUD_IFACE_SHOW  ui_show
-#define AUD_IFACE_RUN   gtk_main
-#define AUD_IFACE_QUIT  gtk_main_quit
-
-#define AUD_IFACE_SHOW_ABOUT         audgui_show_about_window
-#define AUD_IFACE_HIDE_ABOUT         audgui_hide_about_window
-#define AUD_IFACE_SHOW_FILEBROWSER   audgui_run_filebrowser
-#define AUD_IFACE_HIDE_FILEBROWSER   audgui_hide_filebrowser
-#define AUD_IFACE_SHOW_JUMP_TO_SONG  audgui_jump_to_track
-#define AUD_IFACE_HIDE_JUMP_TO_SONG  audgui_jump_to_track_hide
-#define AUD_IFACE_SHOW_SETTINGS      audgui_show_prefs_window
-#define AUD_IFACE_HIDE_SETTINGS      audgui_hide_prefs_window
-#define AUD_IFACE_MENU_ADD           audgui_plugin_menu_add
-#define AUD_IFACE_MENU_REMOVE        audgui_plugin_menu_remove
-
-#define AUD_DECLARE_IFACE
-#include <libaudcore/plugin-declare.h>
 
 static void save_window_size (void)
 {
@@ -212,7 +230,7 @@ static gboolean title_change_cb (void)
     return FALSE;
 }
 
-static void ui_show (bool show)
+void GtkUI::show (bool show)
 {
     if (show)
     {
@@ -349,8 +367,7 @@ static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton *
 
 static gboolean ui_volume_value_changed_cb(GtkButton * button, double volume, void * user_data)
 {
-    aud_drct_set_volume((int) volume, (int) volume);
-
+    aud_drct_set_volume_main (volume);
     return TRUE;
 }
 
@@ -366,12 +383,10 @@ static void ui_volume_released_cb(GtkButton *button, void * user_data)
 
 static gboolean ui_volume_slider_update(void * data)
 {
-    int volume;
-
     if (volume_slider_is_moving || data == nullptr)
         return TRUE;
 
-    aud_drct_get_volume_main(&volume);
+    int volume = aud_drct_get_volume_main ();
 
     if (volume == (int) gtk_scale_button_get_value(GTK_SCALE_BUTTON(data)))
         return TRUE;
@@ -650,11 +665,11 @@ static void toggle_search_tool (GtkToggleToolButton * button)
     aud_plugin_enable (search_tool, gtk_toggle_tool_button_get_active (button));
 }
 
-static bool search_tool_toggled (PluginHandle * plugin, void * unused)
+static bool search_tool_toggled (PluginHandle * plugin, void *)
 {
     gtk_toggle_tool_button_set_active ((GtkToggleToolButton *) search_button,
      aud_plugin_get_enabled (plugin));
-    return TRUE;
+    return true;
 }
 
 static void config_save (void)
@@ -702,7 +717,7 @@ static void ui_hooks_disassociate(void)
 
 static bool add_dock_plugin (PluginHandle * plugin, void * unused)
 {
-    GtkWidget * widget = (GtkWidget *) aud_plugin_get_widget (plugin);
+    GtkWidget * widget = (GtkWidget *) aud_plugin_get_gtk_widget (plugin);
     if (widget)
         layout_add (plugin, widget);
 
@@ -717,8 +732,17 @@ static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
 
 static void add_dock_plugins (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, add_dock_plugin, nullptr);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, add_dock_plugin, nullptr);
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin (plugin, nullptr);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin (plugin, nullptr);
+    }
 
     hook_associate ("dock plugin enabled", (HookFunction) add_dock_plugin, nullptr);
     hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin, nullptr);
@@ -726,14 +750,23 @@ static void add_dock_plugins (void)
 
 static void remove_dock_plugins (void)
 {
-    aud_plugin_for_enabled (PLUGIN_TYPE_GENERAL, remove_dock_plugin, nullptr);
-    aud_plugin_for_enabled (PLUGIN_TYPE_VIS, remove_dock_plugin, nullptr);
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin (plugin, nullptr);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin (plugin, nullptr);
+    }
 
     hook_dissociate ("dock plugin enabled", (HookFunction) add_dock_plugin);
     hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin);
 }
 
-static bool init (void)
+bool GtkUI::init ()
 {
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
@@ -826,9 +859,7 @@ static bool init (void)
     gtk_scale_button_set_adjustment(GTK_SCALE_BUTTON(volume), GTK_ADJUSTMENT(gtk_adjustment_new(0, 0, 100, 1, 5, 0)));
     gtk_widget_set_can_focus(volume, FALSE);
 
-    int lvol = 0, rvol = 0;
-    aud_drct_get_volume(&lvol, &rvol);
-    gtk_scale_button_set_value(GTK_SCALE_BUTTON(volume), (lvol + rvol) / 2);
+    gtk_scale_button_set_value ((GtkScaleButton *) volume, aud_drct_get_volume_main ());
 
     gtk_box_pack_start ((GtkBox *) box2, volume, FALSE, FALSE, 0);
 
@@ -891,7 +922,7 @@ static bool init (void)
     return true;
 }
 
-static void cleanup (void)
+void GtkUI::cleanup ()
 {
     remove_dock_plugins ();
 

@@ -69,12 +69,46 @@ static int lockmgr (void * * mutexp, enum AVLockOp op)
     return 0;
 }
 
+static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list va)
+{
+    audlog::Level level = audlog::Debug;
+    char message [2048];
+
+    switch (av_level)
+    {
+    case AV_LOG_QUIET:
+        return;
+    case AV_LOG_PANIC:
+    case AV_LOG_FATAL:
+    case AV_LOG_ERROR:
+        level = audlog::Error;
+        break;
+    case AV_LOG_WARNING:
+        level = audlog::Warning;
+        break;
+    case AV_LOG_INFO:
+        level = audlog::Info;
+        break;
+    default:
+        break;
+    }
+
+    AVClass * avc = avcl ? * (AVClass * *) avcl : nullptr;
+
+    vsnprintf (message, sizeof message, fmt, va);
+
+    audlog::log (level, __FILE__, __LINE__, avc ? avc->item_name(avcl) : __FUNCTION__,
+                 "<%p> %s", avcl, message);
+}
+
 static bool ffaudio_init (void)
 {
     av_register_all();
     av_lockmgr_register (lockmgr);
 
     create_extension_dict ();
+
+    av_log_set_callback (ffaudio_log_cb);
 
     return true;
 }
@@ -142,7 +176,7 @@ static AVInputFormat * get_format_by_extension (const char * name)
     return f ? * f : nullptr;
 }
 
-static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
+static AVInputFormat * get_format_by_content (const char * name, VFSFile & file)
 {
     AUDDBG ("Get format by content: %s\n", name);
 
@@ -157,7 +191,7 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
     while (1)
     {
         if (filled < size)
-            filled += vfs_fread (buf + filled, 1, size - filled, file);
+            filled += file.fread (buf + filled, 1, size - filled);
 
         memset (buf + filled, 0, AVPROBE_PADDING_SIZE);
         AVProbeData d = {name, buf, filled};
@@ -180,25 +214,25 @@ static AVInputFormat * get_format_by_content (const char * name, VFSFile * file)
     else
         AUDDBG ("Format unknown.\n");
 
-    if (vfs_fseek (file, 0, SEEK_SET) < 0)
+    if (file.fseek (0, VFS_SEEK_SET) < 0)
         ; /* ignore errors here */
 
     return f;
 }
 
-static AVInputFormat * get_format (const char * name, VFSFile * file)
+static AVInputFormat * get_format (const char * name, VFSFile & file)
 {
     AVInputFormat * f = get_format_by_extension (name);
     return f ? f : get_format_by_content (name, file);
 }
 
-static AVFormatContext * open_input_file (const char * name, VFSFile * file)
+static AVFormatContext * open_input_file (const char * name, VFSFile & file)
 {
     AVInputFormat * f = get_format (name, file);
 
     if (! f)
     {
-        fprintf (stderr, "ffaudio: Unknown format for %s.\n", name);
+        AUDERR ("Unknown format for %s.\n", name);
         return nullptr;
     }
 
@@ -210,7 +244,7 @@ static AVFormatContext * open_input_file (const char * name, VFSFile * file)
 
     if (ret < 0)
     {
-        fprintf (stderr, "ffaudio: avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
+        AUDERR ("avformat_open_input failed for %s: %s.\n", name, ffaudio_strerror (ret));
         io_context_free (io);
         return nullptr;
     }
@@ -258,7 +292,7 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
     return false;
 }
 
-static bool ffaudio_probe (const char * filename, VFSFile * file)
+static bool ffaudio_probe (const char * filename, VFSFile & file)
 {
     return get_format (filename, file) ? true : false;
 }
@@ -299,7 +333,7 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
     }
 }
 
-static Tuple read_tuple (const char * filename, VFSFile * file)
+static Tuple read_tuple (const char * filename, VFSFile & file)
 {
     Tuple tuple;
     AVFormatContext * ic = open_input_file (filename, file);
@@ -331,17 +365,17 @@ static Tuple read_tuple (const char * filename, VFSFile * file)
 }
 
 static Tuple
-ffaudio_probe_for_tuple(const char *filename, VFSFile *fd)
+ffaudio_probe_for_tuple(const char *filename, VFSFile &fd)
 {
     Tuple t = read_tuple (filename, fd);
 
-    if (t && ! vfs_fseek (fd, 0, SEEK_SET))
+    if (t && ! fd.fseek (0, VFS_SEEK_SET))
         audtag::tuple_read (t, fd);
 
     return t;
 }
 
-static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tuple & tuple)
+static bool ffaudio_write_tag (const char * filename, VFSFile & file, const Tuple & tuple)
 {
     if (str_has_suffix_nocase (filename, ".ape"))
         return audtag::tuple_write (tuple, file, audtag::TagType::APE);
@@ -349,16 +383,15 @@ static bool ffaudio_write_tag (const char * filename, VFSFile * file, const Tupl
     return audtag::tuple_write (tuple, file, audtag::TagType::None);
 }
 
-static bool ffaudio_read_image (const char * filename, VFSFile * file,
- void * * data, int64_t * size)
+static Index<char> ffaudio_read_image (const char * filename, VFSFile & file)
 {
     if (str_has_suffix_nocase (filename, ".m4a") || str_has_suffix_nocase (filename, ".mp4"))
-        return read_itunes_cover (filename, file, data, size);
+        return read_itunes_cover (filename, file);
     
-    return false;
+    return Index<char> ();
 }
 
-static bool ffaudio_play (const char * filename, VFSFile * file)
+static bool ffaudio_play (const char * filename, VFSFile & file)
 {
     AUDDBG ("Playing %s.\n", filename);
 
@@ -380,7 +413,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
 
     if (! find_codec (ic, & cinfo))
     {
-        fprintf (stderr, "ffaudio: No codec found for %s.\n", filename);
+        AUDERR ("No codec found for %s.\n", filename);
         goto error_exit;
     }
 
@@ -404,7 +437,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
         case AV_SAMPLE_FMT_FLTP: out_fmt = FMT_FLOAT; planar = true; break;
 
     default:
-        fprintf (stderr, "ffaudio: Unsupported audio format %d\n", (int) cinfo.context->sample_fmt);
+        AUDERR ("Unsupported audio format %d\n", (int) cinfo.context->sample_fmt);
         goto error_exit;
     }
 
@@ -432,7 +465,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
             if (av_seek_frame (ic, -1, (int64_t) seek_value * AV_TIME_BASE /
              1000, AVSEEK_FLAG_ANY) < 0)
             {
-                _ERROR("error while seeking\n");
+                AUDERR ("error while seeking\n");
             } else
                 errcount = 0;
 
@@ -454,7 +487,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
             {
                 if (++errcount > 4)
                 {
-                    _ERROR("av_read_frame error %d, giving up.\n", ret);
+                    AUDERR ("av_read_frame error %d, giving up.\n", ret);
                     break;
                 } else
                     continue;
@@ -490,7 +523,7 @@ static bool ffaudio_play (const char * filename, VFSFile * file)
 
             if (len < 0)
             {
-                fprintf (stderr, "ffaudio: decode_audio() failed, code %d\n", len);
+                AUDERR ("decode_audio() failed, code %d\n", len);
                 break;
             }
 

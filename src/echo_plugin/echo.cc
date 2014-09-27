@@ -39,13 +39,13 @@ static const PluginPreferences echo_prefs = {{echo_widgets}};
 static float *buffer = nullptr;
 static int w_ofs;
 
-static bool init (void)
+static bool echo_init (void)
 {
     aud_config_set_defaults ("echo_plugin", echo_defaults);
     return true;
 }
 
-static void cleanup(void)
+static void echo_cleanup (void)
 {
     g_free(buffer);
     buffer = nullptr;
@@ -118,8 +118,8 @@ static const char echo_about[] =
 #define AUD_PLUGIN_NAME        N_("Echo")
 #define AUD_PLUGIN_ABOUT       echo_about
 #define AUD_PLUGIN_PREFS       & echo_prefs
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_INIT        echo_init
+#define AUD_PLUGIN_CLEANUP     echo_cleanup
 #define AUD_EFFECT_START       echo_start
 #define AUD_EFFECT_PROCESS     echo_process
 #define AUD_EFFECT_FINISH      echo_finish

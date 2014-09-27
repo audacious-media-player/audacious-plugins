@@ -142,13 +142,12 @@ FAILED:
 
 static void pcm_found (const char * name, const char * description)
 {
-    NameDescPair & pair = pcm_list.append ();
-    pair.name = String (name);
-    pair.desc = String (str_concat ({name, " – ", description}));
+    NameDescPair & pair = pcm_list.append (
+        String (name),
+        String (str_concat ({name, " – ", description}))
+    );
 
-    ComboItem & item = pcm_combo_items.append ();
-    item.label = pair.desc;
-    item.str = pair.name;
+    pcm_combo_items.append (pair.desc, pair.name);
 }
 
 static void pcm_card_found (int card, const char * description)
@@ -165,13 +164,12 @@ static void pcm_list_fill ()
 
 static void mixer_found (const char * name, const char * description)
 {
-    NameDescPair & pair = mixer_list.append ();
-    pair.name = String (name);
-    pair.desc = String (str_concat ({name, " – ", description}));
+    NameDescPair & pair = mixer_list.append (
+        String (name),
+        String (str_concat ({name, " – ", description}))
+    );
 
-    ComboItem & item = mixer_combo_items.append ();
-    item.label = pair.desc;
-    item.str = pair.name;
+    mixer_combo_items.append (pair.desc, pair.name);
 }
 
 static void mixer_card_found (int card, const char * description)
@@ -208,12 +206,8 @@ FAILED:
 
 static void element_found (const char * name)
 {
-    element_list.append (String (name));
-    String & str = element_list.end ()[-1];
-
-    ComboItem & item = element_combo_items.append ();
-    item.label = str;
-    item.str = str;
+    String & str = element_list.append (String (name));
+    element_combo_items.append (str, str);
 }
 
 static void element_list_fill ()

@@ -34,7 +34,7 @@ public:
     Playlist (QTreeView * parent = 0, int uniqueId = -1);
     ~Playlist ();
     void scrollToCurrent ();
-    void update (int type, int at, int count);
+    void update (void * level, int at, int count);
     void positionUpdate ();
     void playCurrentIndex ();
     void deleteCurrentSelection ();

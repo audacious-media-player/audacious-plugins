@@ -45,7 +45,7 @@ CdroPlayer::CdroPlayer (Copl * newopl):CPlayer (newopl), data (0)
 }
 
 bool
-CdroPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CdroPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

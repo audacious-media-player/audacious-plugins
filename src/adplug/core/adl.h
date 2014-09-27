@@ -36,7 +36,7 @@ class CadlPlayer: public CPlayer
   CadlPlayer(Copl *newopl);
   ~CadlPlayer();
 
-  bool load(VFSFile *fd, const CFileProvider &fp);
+  bool load(VFSFile &fd, const CFileProvider &fp);
   bool update();
   void rewind(int subsong = -1);
 

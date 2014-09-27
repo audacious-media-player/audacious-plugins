@@ -30,7 +30,7 @@ CsngPlayer::factory (Copl * newopl)
 }
 
 bool
-CsngPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CsngPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

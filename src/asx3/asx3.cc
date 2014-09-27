@@ -17,10 +17,7 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <string.h>
-
-#include <glib.h>
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -28,15 +25,33 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
+
+static const char * const asx3_exts[] = {"asx"};
+
+class ASX3Loader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("ASXv3 Playlists"), PACKAGE};
+
+    constexpr ASX3Loader () : PlaylistPlugin (info, asx3_exts, true) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+    bool save (const char * filename, VFSFile & file, const char * title,
+     const Index<PlaylistAddItem> & items);
+};
+
+ASX3Loader aud_plugin_instance;
 
 static int read_cb (void * file, char * buf, int len)
 {
-    return vfs_fread (buf, 1, len, (VFSFile *) file);
+    return ((VFSFile *) file)->fread (buf, 1, len);
 }
 
 static int write_cb (void * file, const char * buf, int len)
 {
-    return vfs_fwrite (buf, 1, len, (VFSFile *) file);
+    return ((VFSFile *) file)->fwrite (buf, 1, len);
 }
 
 static int close_cb (void * file)
@@ -72,7 +87,7 @@ static bool check_root (const xmlNode * root)
 {
     if (xmlStrcasecmp (root->name, (const xmlChar *) "asx"))
     {
-        fprintf(stderr, "asx3: Not an ASX file\n");
+        AUDERR ("Not an ASX file\n");
         return false;
     }
 
@@ -80,13 +95,13 @@ static bool check_root (const xmlNode * root)
 
     if (! version)
     {
-        fprintf (stderr, "asx3: Unknown ASX version\n");
+        AUDERR ("Unknown ASX version\n");
         return false;
     }
 
     if (strcmp (version, "3.0"))
     {
-        fprintf(stderr, "asx3: Unsupported ASX version (%s)\n", version);
+        AUDERR ("Unsupported ASX version (%s)\n", version);
         return false;
     }
 
@@ -101,15 +116,15 @@ static void parse_entry (const xmlNode * entry, Index<PlaylistAddItem> & items)
         {
             const char * uri = get_prop_nocase (node, "href");
             if (uri)
-                items.append ({String (uri)});
+                items.append (String (uri));
         }
     }
 }
 
-static bool playlist_load_asx3 (const char * filename, VFSFile * file,
- String & title, Index<PlaylistAddItem> & items)
+bool ASX3Loader::load (const char * filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
-    xmlDoc * doc = xmlReadIO (read_cb, close_cb, file, filename, nullptr, XML_PARSE_RECOVER);
+    xmlDoc * doc = xmlReadIO (read_cb, close_cb, & file, filename, nullptr, XML_PARSE_RECOVER);
     if (! doc)
         return false;
 
@@ -136,7 +151,7 @@ static bool playlist_load_asx3 (const char * filename, VFSFile * file,
     return true;
 }
 
-static bool playlist_save_asx3 (const char * filename, VFSFile * file,
+bool ASX3Loader::save (const char * filename, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     xmlDoc * doc = xmlNewDoc ((const xmlChar *) "1.0");
@@ -159,7 +174,7 @@ static bool playlist_save_asx3 (const char * filename, VFSFile * file,
         xmlAddChild (root, entry);
     }
 
-    xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, file, nullptr, XML_SAVE_FORMAT);
+    xmlSaveCtxt * save = xmlSaveToIO (write_cb, close_cb, & file, nullptr, XML_SAVE_FORMAT);
 
     if (! save || xmlSaveDoc (save, doc) < 0 || xmlSaveClose (save) < 0)
     {
@@ -170,13 +185,3 @@ static bool playlist_save_asx3 (const char * filename, VFSFile * file,
     xmlFreeDoc (doc);
     return true;
 }
-
-static const char * const asx3_exts[] = {"asx", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("ASXv3 Playlists")
-#define AUD_PLAYLIST_EXTS      asx3_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_asx3
-#define AUD_PLAYLIST_SAVE      playlist_save_asx3
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

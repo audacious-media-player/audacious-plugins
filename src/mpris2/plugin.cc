@@ -19,7 +19,6 @@
 
 #include <math.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
@@ -171,7 +170,7 @@ static gboolean update (GObject * object)
     if (aud_drct_get_playing () && aud_drct_get_ready ())
         pos = (int64_t) aud_drct_get_time () * 1000;
 
-    aud_drct_get_volume_main (& vol);
+    vol = aud_drct_get_volume_main ();
 
     g_signal_handlers_block_by_func (object, (void *) volume_changed, nullptr);
     g_object_set (object, "position", pos, "volume", (double) vol / 100, nullptr);
@@ -316,7 +315,7 @@ bool mpris2_init (void)
 
     if (! bus)
     {
-        fprintf (stderr, "mpris2: %s\n", error->message);
+        AUDERR ("%s\n", error->message);
         g_error_free (error);
         return FALSE;
     }
@@ -384,7 +383,7 @@ bool mpris2_init (void)
      object_player, bus, "/org/mpris/MediaPlayer2", & error))
     {
         mpris2_cleanup ();
-        fprintf (stderr, "mpris2: %s\n", error->message);
+        AUDERR ("%s\n", error->message);
         g_error_free (error);
         return FALSE;
     }

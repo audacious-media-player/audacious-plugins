@@ -19,7 +19,6 @@
 
 /* TODO: implement more surround converters */
 
-#include <stdio.h>
 #include <stdlib.h>
 
 #include <glib.h>
@@ -135,7 +134,7 @@ void mixer_start (int * channels, int * rate)
 
     if (! get_converter (input_channels, output_channels))
     {
-        fprintf (stderr, "Converting %d to %d channels is not implemented.\n",
+        AUDERR ("Converting %d to %d channels is not implemented.\n",
          input_channels, output_channels);
         return;
     }

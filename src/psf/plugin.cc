@@ -64,51 +64,44 @@ static String dirpath;
 
 bool stop_flag = false;
 
-static PSFEngine psf_probe(uint8_t *buffer)
+static PSFEngine psf_probe(const char *buf, int len)
 {
-	if (!memcmp(buffer, "PSF\x01", 4))
+	if (len < 4)
+		return ENG_NONE;
+
+	if (!memcmp(buf, "PSF\x01", 4))
 		return ENG_PSF1;
 
-	if (!memcmp(buffer, "PSF\x02", 4))
+	if (!memcmp(buf, "PSF\x02", 4))
 		return ENG_PSF2;
 
-	if (!memcmp(buffer, "SPU", 3))
+	if (!memcmp(buf, "SPU", 3))
 		return ENG_SPX;
 
-	if (!memcmp(buffer, "SPX", 3))
+	if (!memcmp(buf, "SPX", 3))
 		return ENG_SPX;
 
 	return ENG_NONE;
 }
 
 /* ao_get_lib: called to load secondary files */
-int ao_get_lib(char *filename, uint8_t **buffer, uint64_t *length)
+Index<char> ao_get_lib(char *filename)
 {
-	void *filebuf;
-	int64_t size;
-
-	StringBuf path = filename_build ({dirpath, filename});
-	vfs_file_get_contents(path, &filebuf, &size);
-
-	*buffer = (uint8_t *) filebuf;
-	*length = (uint64_t)size;
-
-	return AO_SUCCESS;
+	VFSFile file(filename_build({dirpath, filename}), "r");
+	return file ? file.read_all() : Index<char>();
 }
 
-Tuple psf2_tuple(const char *filename, VFSFile *file)
+Tuple psf2_tuple(const char *filename, VFSFile &file)
 {
 	Tuple t;
 	corlett_t *c;
-	void *buf;
-	int64_t sz;
 
-	vfs_file_get_contents (filename, & buf, & sz);
+	Index<char> buf = file.read_all ();
 
-	if (!buf)
+	if (!buf.len())
 		return t;
 
-	if (corlett_decode((uint8_t *) buf, sz, nullptr, nullptr, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
 		return t;
 
 	t.set_filename (filename);
@@ -122,16 +115,12 @@ Tuple psf2_tuple(const char *filename, VFSFile *file)
 	t.set_str (FIELD_CODEC, "PlayStation 1/2 Audio");
 
 	free(c);
-	free(buf);
 
 	return t;
 }
 
-static bool psf2_play(const char * filename, VFSFile * file)
+static bool psf2_play(const char * filename, VFSFile & file)
 {
-	void *buffer;
-	int64_t size;
-	PSFEngine eng;
 	bool error = false;
 
 	const char * slash = strrchr (filename, '/');
@@ -140,20 +129,20 @@ static bool psf2_play(const char * filename, VFSFile * file)
 
 	dirpath = String (str_copy (filename, slash + 1 - filename));
 
-	vfs_file_get_contents (filename, & buffer, & size);
+	Index<char> buf = file.read_all ();
 
-	eng = psf_probe((uint8_t *) buffer);
+	PSFEngine eng = psf_probe(buf.begin(), buf.len());
 	if (eng == ENG_NONE || eng == ENG_COUNT)
 	{
-		free(buffer);
-		return false;
+		error = true;
+		goto cleanup;
 	}
 
 	f = &psf_functor_map[eng];
-	if (f->start((uint8_t *) buffer, size) != AO_SUCCESS)
+	if (f->start((uint8_t *)buf.begin(), buf.len()) != AO_SUCCESS)
 	{
-		free(buffer);
-		return false;
+		error = true;
+		goto cleanup;
 	}
 
 	aud_input_open_audio(FMT_S16_NE, 44100, 2);
@@ -165,9 +154,9 @@ static bool psf2_play(const char * filename, VFSFile * file)
 	f->execute();
 	f->stop();
 
+cleanup:
 	f = nullptr;
 	dirpath = String ();
-	free(buffer);
 
 	return ! error;
 }
@@ -191,13 +180,13 @@ void psf2_update(unsigned char *buffer, long count)
 	aud_input_write_audio (buffer, count);
 }
 
-bool psf2_is_our_fd(const char *filename, VFSFile *file)
+bool psf2_is_our_fd(const char *filename, VFSFile &file)
 {
-	uint8_t magic[4];
-	if (vfs_fread(magic, 1, 4, file) < 4)
+	char magic[4];
+	if (file.fread (magic, 1, 4) < 4)
 		return false;
 
-	return (psf_probe(magic) != ENG_NONE);
+	return (psf_probe(magic, 4) != ENG_NONE);
 }
 
 static const char *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", nullptr };

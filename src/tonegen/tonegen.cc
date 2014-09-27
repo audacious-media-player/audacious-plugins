@@ -35,7 +35,7 @@
 #define PI              3.14159265358979323846
 #endif
 
-static bool tone_is_our_fd(const char *filename, VFSFile *fd)
+static bool tone_is_our_fd(const char *filename, VFSFile &fd)
 {
     if (!strncmp(filename, "tone://", 7))
         return true;
@@ -97,7 +97,7 @@ struct tone_t
     unsigned period, t;
 };
 
-static bool tone_play(const char *filename, VFSFile *file)
+static bool tone_play(const char *filename, VFSFile &file)
 {
     GArray *frequencies;
     float data[BUF_SAMPLES];
@@ -154,7 +154,7 @@ error_exit:
     return !error;
 }
 
-static Tuple tone_probe_for_tuple(const char *filename, VFSFile *fd)
+static Tuple tone_probe_for_tuple(const char *filename, VFSFile &fd)
 {
     Tuple tuple;
     tuple.set_filename (filename);

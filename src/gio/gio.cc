@@ -18,7 +18,6 @@
  */
 
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -28,150 +27,187 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
-typedef struct {
-    GFile * file;
-    GIOStream * iostream;
-    GInputStream * istream;
-    GOutputStream * ostream;
-    GSeekable * seekable;
-} FileData;
+class GIOFile : public VFSImpl
+{
+public:
+    GIOFile (const char * filename, const char * mode);
+    ~GIOFile ();
 
-#define gio_error(...) do { \
-    aud_ui_show_error (str_printf (__VA_ARGS__)); \
-} while (0)
+    // exception
+    struct OpenError {
+        String error;
+    };
+
+protected:
+    int64_t fread (void * ptr, int64_t size, int64_t nmemb);
+    int64_t fwrite (const void * buf, int64_t size, int64_t nitems);
+
+    int fseek (int64_t offset, VFSSeekType whence);
+    int64_t ftell ();
+
+    int getc ();
+    int ungetc (int c);
+
+    bool feof ();
+
+    int ftruncate (int64_t length);
+    int64_t fsize ();
+
+    int fflush ();
+
+private:
+    String m_filename;
+    GFile * m_file = nullptr;
+    GIOStream * m_iostream = nullptr;
+    GInputStream * m_istream = nullptr;
+    GOutputStream * m_ostream = nullptr;
+    GSeekable * m_seekable = nullptr;
+};
 
 #define CHECK_ERROR(op, name) do { \
     if (error) { \
-        gio_error ("Cannot %s %s: %s.", op, name, error->message); \
+        AUDERR ("Cannot %s %s: %s.\n", op, (const char *) name, error->message); \
         g_error_free (error); \
         goto FAILED; \
     } \
 } while (0)
 
-static void * gio_fopen (const char * filename, const char * mode)
+#define CHECK_AND_SAVE_ERROR(op, name) do { \
+    if (error) { \
+        AUDERR ("Cannot %s %s: %s.\n", op, (const char *) name, error->message); \
+        errorstr = String (error->message); \
+        g_error_free (error); \
+        goto FAILED; \
+    } \
+} while (0)
+
+GIOFile::GIOFile (const char * filename, const char * mode) :
+    m_filename (filename)
 {
-#if ! GLIB_CHECK_VERSION (2, 36, 0)
-    g_type_init ();
-#endif
+    GError * error = nullptr;
+    String errorstr;
 
-    GError * error = 0;
-
-    FileData * data = g_new0 (FileData, 1);
-
-    data->file = g_file_new_for_uri (filename);
+    m_file = g_file_new_for_uri (filename);
 
     switch (mode[0])
     {
     case 'r':
         if (strchr (mode, '+'))
         {
-            data->iostream = (GIOStream *) g_file_open_readwrite (data->file, 0, & error);
-            CHECK_ERROR ("open", filename);
-            data->istream = g_io_stream_get_input_stream (data->iostream);
-            data->ostream = g_io_stream_get_output_stream (data->iostream);
-            data->seekable = (GSeekable *) data->iostream;
+            m_iostream = (GIOStream *) g_file_open_readwrite (m_file, 0, & error);
+            CHECK_AND_SAVE_ERROR ("open", filename);
+            m_istream = g_io_stream_get_input_stream (m_iostream);
+            m_ostream = g_io_stream_get_output_stream (m_iostream);
+            m_seekable = (GSeekable *) m_iostream;
         }
         else
         {
-            data->istream = (GInputStream *) g_file_read (data->file, 0, & error);
-            CHECK_ERROR ("open", filename);
-            data->seekable = (GSeekable *) data->istream;
+            m_istream = (GInputStream *) g_file_read (m_file, 0, & error);
+            CHECK_AND_SAVE_ERROR ("open", filename);
+            m_seekable = (GSeekable *) m_istream;
         }
         break;
     case 'w':
         if (strchr (mode, '+'))
         {
-            data->iostream = (GIOStream *) g_file_replace_readwrite (data->file,
+            m_iostream = (GIOStream *) g_file_replace_readwrite (m_file,
              0, 0, (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename);
-            data->istream = g_io_stream_get_input_stream (data->iostream);
-            data->ostream = g_io_stream_get_output_stream (data->iostream);
-            data->seekable = (GSeekable *) data->iostream;
+            CHECK_AND_SAVE_ERROR ("open", filename);
+            m_istream = g_io_stream_get_input_stream (m_iostream);
+            m_ostream = g_io_stream_get_output_stream (m_iostream);
+            m_seekable = (GSeekable *) m_iostream;
         }
         else
         {
-            data->ostream = (GOutputStream *) g_file_replace (data->file, 0, 0,
+            m_ostream = (GOutputStream *) g_file_replace (m_file, 0, 0,
              (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename);
-            data->seekable = (GSeekable *) data->ostream;
+            CHECK_AND_SAVE_ERROR ("open", filename);
+            m_seekable = (GSeekable *) m_ostream;
         }
         break;
     case 'a':
         if (strchr (mode, '+'))
         {
-            gio_error ("Cannot open %s: GIO does not support read-and-append mode.", filename);
+            AUDERR ("Cannot open %s: GIO does not support read-and-append mode.\n", filename);
+            errorstr = String (_("Read-and-append mode not supported"));
             goto FAILED;
         }
         else
         {
-            data->ostream = (GOutputStream *) g_file_append_to (data->file,
+            m_ostream = (GOutputStream *) g_file_append_to (m_file,
              (GFileCreateFlags) 0, 0, & error);
-            CHECK_ERROR ("open", filename);
-            data->seekable = (GSeekable *) data->ostream;
+            CHECK_AND_SAVE_ERROR ("open", filename);
+            m_seekable = (GSeekable *) m_ostream;
         }
         break;
     default:
-        gio_error ("Cannot open %s: invalid mode.", filename);
+        AUDERR ("Cannot open %s: invalid mode.\n", filename);
+        errorstr = String (_("Invalid open mode"));
         goto FAILED;
     }
 
-    return data;
+    return;
 
 FAILED:
-    g_free (data);
-    return 0;
+    g_object_unref (m_file);
+    throw OpenError {errorstr};
 }
 
-static int gio_fclose (VFSFile * file)
+GIOFile::~GIOFile ()
 {
-    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
-    if (data->iostream)
+    if (m_iostream)
     {
-        g_io_stream_close (data->iostream, 0, & error);
-        g_object_unref (data->iostream);
-        CHECK_ERROR ("close", vfs_get_filename (file));
+        g_io_stream_close (m_iostream, 0, & error);
+        g_object_unref (m_iostream);
+        CHECK_ERROR ("close", m_filename);
     }
-    else if (data->istream)
+    else if (m_istream)
     {
-        g_input_stream_close (data->istream, 0, & error);
-        g_object_unref (data->istream);
-        CHECK_ERROR ("close", vfs_get_filename (file));
+        g_input_stream_close (m_istream, 0, & error);
+        g_object_unref (m_istream);
+        CHECK_ERROR ("close", m_filename);
     }
-    else if (data->ostream)
+    else if (m_ostream)
     {
-        g_output_stream_close (data->ostream, 0, & error);
-        g_object_unref (data->ostream);
-        CHECK_ERROR ("close", vfs_get_filename (file));
+        g_output_stream_close (m_ostream, 0, & error);
+        g_object_unref (m_ostream);
+        CHECK_ERROR ("close", m_filename);
     }
-
-    if (data->file)
-        g_object_unref (data->file);
-
-    return 0;
 
 FAILED:
-    if (data->file)
-        g_object_unref (data->file);
-
-    return -1;
+    g_object_unref (m_file);
 }
 
-static int64_t gio_fread (void * buf, int64_t size, int64_t nitems, VFSFile * file)
+static VFSImpl * gio_fopen (const char * filename, const char * mode, String & error)
 {
-    FileData * data = (FileData *) vfs_get_handle (file);
+#if ! GLIB_CHECK_VERSION (2, 36, 0)
+    g_type_init ();
+#endif
+
+    try { return new GIOFile (filename, mode); }
+    catch (GIOFile::OpenError & ex)
+    {
+        error = std::move (ex.error);
+        return nullptr;
+    }
+}
+
+int64_t GIOFile::fread (void * buf, int64_t size, int64_t nitems)
+{
     GError * error = 0;
 
-    if (! data->istream)
+    if (! m_istream)
     {
-        gio_error ("Cannot read from %s: not open for reading.", vfs_get_filename (file));
+        AUDERR ("Cannot read from %s: not open for reading.\n", (const char *) m_filename);
         return 0;
     }
 
-    int64_t readed = g_input_stream_read (data->istream, buf, size * nitems, 0, & error);
-    CHECK_ERROR ("read from", vfs_get_filename (file));
+    int64_t readed = g_input_stream_read (m_istream, buf, size * nitems, 0, & error);
+    CHECK_ERROR ("read from", m_filename);
 
     return (size > 0) ? readed / size : 0;
 
@@ -179,19 +215,18 @@ FAILED:
     return 0;
 }
 
-static int64_t gio_fwrite (const void * buf, int64_t size, int64_t nitems, VFSFile * file)
+int64_t GIOFile::fwrite (const void * buf, int64_t size, int64_t nitems)
 {
-    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
-    if (! data->ostream)
+    if (! m_ostream)
     {
-        gio_error ("Cannot write to %s: not open for writing.", vfs_get_filename (file));
+        AUDERR ("Cannot write to %s: not open for writing.\n", (const char *) m_filename);
         return 0;
     }
 
-    int64_t written = g_output_stream_write (data->ostream, buf, size * nitems, 0, & error);
-    CHECK_ERROR ("write to", vfs_get_filename (file));
+    int64_t written = g_output_stream_write (m_ostream, buf, size * nitems, 0, & error);
+    CHECK_ERROR ("write to", m_filename);
 
     return (size > 0) ? written / size : 0;
 
@@ -199,30 +234,29 @@ FAILED:
     return 0;
 }
 
-static int gio_fseek (VFSFile * file, int64_t offset, int whence)
+int GIOFile::fseek (int64_t offset, VFSSeekType whence)
 {
-    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
     GSeekType gwhence;
 
     switch (whence)
     {
-    case SEEK_SET:
+    case VFS_SEEK_SET:
         gwhence = G_SEEK_SET;
         break;
-    case SEEK_CUR:
+    case VFS_SEEK_CUR:
         gwhence = G_SEEK_CUR;
         break;
-    case SEEK_END:
+    case VFS_SEEK_END:
         gwhence = G_SEEK_END;
         break;
     default:
-        gio_error ("Cannot seek within %s: invalid whence.", vfs_get_filename (file));
+        AUDERR ("Cannot seek within %s: invalid whence.\n", (const char *) m_filename);
         return -1;
     }
 
-    g_seekable_seek (data->seekable, offset, gwhence, nullptr, & error);
-    CHECK_ERROR ("seek within", vfs_get_filename (file));
+    g_seekable_seek (m_seekable, offset, gwhence, nullptr, & error);
+    CHECK_ERROR ("seek within", m_filename);
 
     return 0;
 
@@ -230,41 +264,39 @@ FAILED:
     return -1;
 }
 
-static int64_t gio_ftell (VFSFile * file)
+int64_t GIOFile::ftell ()
 {
-    FileData * data = (FileData *) vfs_get_handle (file);
-    return g_seekable_tell (data->seekable);
+    return g_seekable_tell (m_seekable);
 }
 
-static int gio_getc (VFSFile * file)
+int GIOFile::getc ()
 {
     unsigned char c;
-    return (gio_fread (& c, 1, 1, file) == 1) ? c : -1;
+    return (fread (& c, 1, 1) == 1) ? c : -1;
 }
 
-static int gio_ungetc (int c, VFSFile * file)
+int GIOFile::ungetc (int c)
 {
-    return (! gio_fseek (file, -1, SEEK_CUR)) ? c : -1;
+    return (! fseek (-1, VFS_SEEK_CUR)) ? c : -1;
 }
 
-static bool gio_feof (VFSFile * file)
+bool GIOFile::feof ()
 {
-    int test = gio_getc (file);
+    int test = getc ();
 
     if (test < 0)
         return TRUE;
 
-    gio_ungetc (test, file);
+    ungetc (test);
     return FALSE;
 }
 
-static int gio_ftruncate (VFSFile * file, int64_t length)
+int GIOFile::ftruncate (int64_t length)
 {
-    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
 
-    g_seekable_truncate (data->seekable, length, nullptr, & error);
-    CHECK_ERROR ("truncate", vfs_get_filename (file));
+    g_seekable_truncate (m_seekable, length, nullptr, & error);
+    CHECK_ERROR ("truncate", m_filename);
 
     return 0;
 
@@ -272,9 +304,8 @@ FAILED:
     return -1;
 }
 
-static int64_t gio_fsize (VFSFile * file)
+int64_t GIOFile::fsize ()
 {
-    FileData * data = (FileData *) vfs_get_handle (file);
     GError * error = 0;
     int64_t size;
 
@@ -282,12 +313,12 @@ static int64_t gio_fsize (VFSFile * file)
      *  1) File size is known and file is seekable.
      *  2) File size is unknown and file is not seekable.
      * Therefore, we return -1 for size if file is not seekable. */
-    if (! g_seekable_can_seek (data->seekable))
+    if (! g_seekable_can_seek (m_seekable))
         return -1;
 
-    GFileInfo * info = g_file_query_info (data->file,
+    GFileInfo * info = g_file_query_info (m_file,
      G_FILE_ATTRIBUTE_STANDARD_SIZE, (GFileQueryInfoFlags) 0, 0, & error);
-    CHECK_ERROR ("get size of", vfs_get_filename (file));
+    CHECK_ERROR ("get size of", m_filename);
 
     size = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE);
 
@@ -298,28 +329,29 @@ FAILED:
     return -1;
 }
 
+int GIOFile::fflush ()
+{
+    int result;
+    GError * error = nullptr;
+
+    if (! m_ostream)
+        return 0;  /* no-op */
+
+    result = g_output_stream_flush (m_ostream, nullptr, & error);
+    CHECK_ERROR ("flush", m_filename);
+
+    return result;
+
+FAILED:
+    return -1;
+}
+
 static const char gio_about[] =
  N_("GIO Plugin for Audacious\n"
     "Copyright 2009-2012 John Lindgren");
 
-static const char * const gio_schemes[] = {"ftp", "sftp", "smb", 0};
+static const char * const gio_schemes[] = {"ftp", "sftp", "smb"};
 
-static const VFSConstructor constructor = {
-    gio_fopen,
-    gio_fclose,
-    gio_fread,
-    gio_fwrite,
-    gio_fseek,
-    gio_ftell,
-    gio_feof,
-    gio_ftruncate,
-    gio_fsize
-};
+constexpr PluginInfo gio_info = {N_("GIO Plugin"), PACKAGE, gio_about};
 
-#define AUD_PLUGIN_NAME        N_("GIO Plugin")
-#define AUD_PLUGIN_ABOUT       gio_about
-#define AUD_TRANSPORT_SCHEMES  gio_schemes
-#define AUD_TRANSPORT_VTABLE   & constructor
-
-#define AUD_DECLARE_TRANSPORT
-#include <libaudcore/plugin-declare.h>
+TransportPlugin aud_plugin_instance (gio_info, gio_schemes, gio_fopen);

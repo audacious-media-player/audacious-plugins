@@ -189,7 +189,7 @@ CAdPlugDatabase *
   CAdPlug::database = 0;
 
 CPlayer *
-CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
+CAdPlug::factory (VFSFile & fd, Copl * opl, const CPlayers & pl,
                   const CFileProvider & fp)
 {
   CPlayer *p;
@@ -201,7 +201,7 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
   {
     for (j = 0; (*i)->get_extension (j); j++)
     {
-      if (fp.extension (vfs_get_filename (fd), (*i)->get_extension (j)))
+      if (fp.extension (fd.filename (), (*i)->get_extension (j)))
       {
         AdPlug_LogWrite ("Trying direct hit: %s\n", (*i)->filetype.c_str ());
 
@@ -216,7 +216,7 @@ CAdPlug::factory (VFSFile * fd, Copl * opl, const CPlayers & pl,
 
           delete p;
 
-          if (vfs_fseek (fd, 0, SEEK_SET) < 0)
+          if (fd.fseek (0, VFS_SEEK_SET) < 0)
             return 0;
         }
       }

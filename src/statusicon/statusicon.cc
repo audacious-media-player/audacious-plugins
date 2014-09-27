@@ -411,5 +411,5 @@ static const PluginPreferences si_prefs = {{si_widgets}};
 
 static PluginHandle * get_plugin_self ()
 {
-    return aud_plugin_by_header (& _aud_plugin_self);
+    return aud_plugin_by_header (& aud_plugin_instance);
 }

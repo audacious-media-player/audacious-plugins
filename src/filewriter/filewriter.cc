@@ -82,7 +82,7 @@ static gboolean prependnumber;
 
 static String file_path;
 
-VFSFile *output_file = nullptr;
+VFSFile output_file;
 Tuple tuple;
 
 static int64_t samples_written;
@@ -110,7 +110,7 @@ static void set_plugin(void)
 
 static int file_write_output (void * data, int length)
 {
-    return vfs_fwrite (data, 1, length, output_file);
+    return output_file.fwrite (data, 1, length);
 }
 
 static const char * const filewriter_defaults[] = {
@@ -150,10 +150,10 @@ static void file_cleanup (void)
     file_path = String ();
 }
 
-static VFSFile * safe_create (const char * filename)
+static VFSFile safe_create (const char * filename)
 {
-    if (! vfs_file_test (filename, G_FILE_TEST_EXISTS))
-        return vfs_fopen (filename, "w");
+    if (! VFSFile::test_file (filename, VFS_EXISTS))
+        return VFSFile (filename, "w");
 
     const char * extension = strrchr (filename, '.');
 
@@ -163,11 +163,11 @@ static VFSFile * safe_create (const char * filename)
          str_printf ("%.*s-%d%s", (int) (extension - filename), filename, count, extension) :
          str_printf ("%s-%d", filename, count);
 
-        if (! vfs_file_test (scratch, G_FILE_TEST_EXISTS))
-            return vfs_fopen (scratch, "w");
+        if (! VFSFile::test_file (scratch, VFS_EXISTS))
+            return VFSFile (scratch, "w");
     }
 
-    return nullptr;
+    return VFSFile ();
 }
 
 static bool file_open(int fmt, int rate, int nch)
@@ -246,7 +246,7 @@ static bool file_open(int fmt, int rate, int nch)
     output_file = safe_create (filename);
     g_free (filename);
 
-    if (output_file == nullptr)
+    if (! output_file)
         return 0;
 
     convert_init (fmt, plugin->format_required (fmt), nch);
@@ -276,10 +276,7 @@ static void file_close(void)
     plugin->close();
     convert_free();
 
-    if (output_file != nullptr)
-        vfs_fclose(output_file);
-    output_file = nullptr;
-
+    output_file = VFSFile ();
     tuple = Tuple ();
 }
 

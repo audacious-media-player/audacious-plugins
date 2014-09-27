@@ -188,9 +188,10 @@ static void copy_selected_to_new (int playlist)
     {
         if (aud_playlist_entry_get_selected (playlist, entry))
         {
-            PlaylistAddItem & item = items.append ();
-            item.filename = aud_playlist_entry_get_filename (playlist, entry);
-            item.tuple = aud_playlist_entry_get_tuple (playlist, entry, TRUE);
+            items.append (
+                aud_playlist_entry_get_filename (playlist, entry),
+                aud_playlist_entry_get_tuple (playlist, entry, TRUE)
+            );
         }
     }
 
@@ -985,13 +986,12 @@ void action_playlist_remove_unselected (void)
 void action_playlist_copy (void)
 {
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    char * list = audgui_urilist_create_from_selected (active_playlist);
+    StringBuf list = audgui_urilist_create_from_selected (active_playlist);
 
     if (list == nullptr)
         return;
 
     gtk_clipboard_set_text (clip, list, -1);
-    g_free (list);
 }
 
 void action_playlist_cut (void)

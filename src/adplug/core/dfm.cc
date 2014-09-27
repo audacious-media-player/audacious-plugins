@@ -32,7 +32,7 @@ CdfmLoader::factory (Copl * newopl)
 }
 
 bool
-CdfmLoader::load (VFSFile * fd, const CFileProvider & fp)
+CdfmLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

@@ -26,7 +26,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
@@ -51,8 +50,6 @@ static const char * const lirc_defaults[] = {
  "reconnect_timeout", "5",
  nullptr};
 
-const char *plugin_name = "LIRC Plugin";
-
 int lirc_fd = -1;
 struct lirc_config *config = nullptr;
 int tracknr = 0;
@@ -71,17 +68,13 @@ void init_lirc (void)
 
     if ((lirc_fd = lirc_init ((char *) "audacious", 1)) == -1)
     {
-        fprintf (stderr, _("%s: could not init LIRC support\n"), plugin_name);
+        AUDERR ("could not init LIRC support\n");
         return;
     }
     if (lirc_readconfig (nullptr, &config, nullptr) == -1)
     {
         lirc_deinit ();
-        fprintf (stderr,
-                 _("%s: could not read LIRC config file\n"
-                   "%s: please read the documentation of LIRC\n"
-                   "%s: how to create a proper config file\n"),
-                 plugin_name, plugin_name, plugin_name);
+        AUDERR ("could not read LIRC config file\n");
         return;
     }
 
@@ -95,7 +88,6 @@ void init_lirc (void)
     {
         fcntl (lirc_fd, F_SETFL, flags | O_NONBLOCK);
     }
-    fflush (stdout);
 }
 
 bool init (void)
@@ -109,7 +101,7 @@ bool init (void)
 
 gboolean reconnect_lirc (void * data)
 {
-    fprintf (stderr, _("%s: trying to reconnect...\n"), plugin_name);
+    AUDERR ("trying to reconnect...\n");
     init ();
     return (lirc_fd == -1);
 }
@@ -240,7 +232,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_main (&v);
+                v = aud_drct_get_volume_main ();
                 if (v > (100 - n))
                     v = 100 - n;
                 aud_drct_set_volume_main (v + n);
@@ -254,7 +246,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_main (&v);
+                v = aud_drct_get_volume_main ();
                 if (v < n)
                     v = n;
                 aud_drct_set_volume_main (v - n);
@@ -270,7 +262,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     mute = 1;
                     /* store the master volume so
                        we can restore it on unmute. */
-                    aud_drct_get_volume_main (&mute_vol);
+                    mute_vol = aud_drct_get_volume_main ();
                     aud_drct_set_volume_main (0);
                 }
                 else
@@ -288,7 +280,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_balance (&balance);
+                balance = aud_drct_get_volume_balance ();
                 balance -= n;
                 if (balance < -100)
                     balance = -100;
@@ -303,7 +295,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_balance (&balance);
+                balance = aud_drct_get_volume_balance ();
                 balance += n;
                 if (balance > 100)
                     balance = 100;
@@ -349,8 +341,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
             }
             else
             {
-                fprintf (stderr, _("%s: unknown command \"%s\"\n"),
-                         plugin_name, c);
+                AUDERR ("unknown command \"%s\"\n", c);
             }
         }
         g_free (code);
@@ -360,14 +351,12 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
     if (ret == -1)
     {
         /* something went badly wrong */
-        fprintf (stderr, _("%s: disconnected from LIRC\n"), plugin_name);
+        AUDERR ("disconnected from LIRC\n");
         cleanup ();
         if (aud_get_bool ("lirc", "enable_reconnect"))
         {
             int reconnect_timeout = aud_get_int ("lirc", "reconnect_timeout");
-            fprintf (stderr,
-                     _("%s: will try reconnect every %d seconds...\n"),
-                     plugin_name, reconnect_timeout);
+            AUDERR ("will try reconnect every %d seconds...\n", reconnect_timeout);
             g_timeout_add (1000 * reconnect_timeout, reconnect_lirc, nullptr);
         }
     }

@@ -21,14 +21,6 @@
 
 #include <jack/jack.h>
 
-#ifndef true
-#define true 1
-#endif
-
-#ifndef false
-#define false 0
-#endif
-
 #define ERR_SUCCESS                           0
 #define ERR_OPENING_JACK                      1
 #define ERR_RATE_MISMATCH                     2

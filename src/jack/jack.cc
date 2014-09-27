@@ -8,7 +8,6 @@
 
 #include <dlfcn.h>
 #include <limits.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <libaudcore/i18n.h>

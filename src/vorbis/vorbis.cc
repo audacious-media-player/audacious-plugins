@@ -25,9 +25,6 @@
  *
  */
 
-/*#define AUD_DEBUG
-#define DEBUG*/
-
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,21 +35,23 @@
 #include <vorbis/vorbisfile.h>
 
 #define WANT_AUD_BSWAP
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "vorbis.h"
 
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
-    return vfs_fread (buffer, size, count, (VFSFile *) file);
+    return ((VFSFile *) file)->fread (buffer, size, count);
 }
 
 static int ovcb_seek (void * file, ogg_int64_t offset, int whence)
 {
-    return vfs_fseek ((VFSFile *) file, offset, whence);
+    return ((VFSFile *) file)->fseek (offset, to_vfs_seek_type (whence));
 }
 
 static int ovcb_close (void * file)
@@ -62,7 +61,7 @@ static int ovcb_close (void * file)
 
 static long ovcb_tell (void * file)
 {
-    return vfs_ftell ((VFSFile *) file);
+    return ((VFSFile *) file)->ftell ();
 }
 
 ov_callbacks vorbis_callbacks = {
@@ -79,7 +78,7 @@ ov_callbacks vorbis_callbacks_stream = {
     nullptr
 };
 
-static bool vorbis_check_fd (const char * filename, VFSFile * file)
+static bool vorbis_check_fd (const char * filename, VFSFile & file)
 {
     ogg_sync_state oy = {0};
     ogg_stream_state os = {0};
@@ -100,7 +99,7 @@ static bool vorbis_check_fd (const char * filename, VFSFile * file)
             break;
 
         void * buffer = ogg_sync_buffer (& oy, 2048);
-        bytes = vfs_fread (buffer, 1, 2048, file);
+        bytes = file.fread (buffer, 1, 2048);
 
         if (bytes <= 0)
             goto end;
@@ -132,7 +131,7 @@ set_tuple_str(Tuple &tuple, const int nfield,
 }
 
 static Tuple
-get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename)
+get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename, bool stream)
 {
     Tuple tuple;
     int length = -1;
@@ -140,7 +139,7 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename)
 
     tuple.set_filename(filename);
 
-    if (! vfs_is_streaming ((VFSFile *) vorbisfile->datasource))
+    if (! stream)
         length = ov_time_total (vorbisfile, -1) * 1000;
 
     /* associate with tuple */
@@ -209,38 +208,28 @@ vorbis_update_replaygain(OggVorbis_File *vf, ReplayGainInfo *rg_info)
 
     if (vf == nullptr || rg_info == nullptr || (comment = ov_comment(vf, -1)) == nullptr)
     {
-#ifdef DEBUG
-        printf ("No replay gain info.\n");
-#endif
+        AUDDBG ("No replay gain info.\n");
         return false;
     }
 
     rg_gain = vorbis_comment_query(comment, "replaygain_album_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_audiophile", 0);    /* Old */
     rg_info->album_gain = (rg_gain != nullptr) ? atof_no_locale (rg_gain) : 0.0;
-#ifdef DEBUG
-    printf ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
-#endif
+    AUDDBG ("Album gain: %s (%f)\n", rg_gain, rg_info->album_gain);
 
     rg_gain = vorbis_comment_query(comment, "replaygain_track_gain", 0);
     if (!rg_gain) rg_gain = vorbis_comment_query(comment, "rg_radio", 0);    /* Old */
     rg_info->track_gain = (rg_gain != nullptr) ? atof_no_locale (rg_gain) : 0.0;
-#ifdef DEBUG
-    printf ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
-#endif
+    AUDDBG ("Track gain: %s (%f)\n", rg_gain, rg_info->track_gain);
 
     rg_peak = vorbis_comment_query(comment, "replaygain_album_peak", 0);
     rg_info->album_peak = rg_peak != nullptr ? atof_no_locale (rg_peak) : 0.0;
-#ifdef DEBUG
-    printf ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
-#endif
+    AUDDBG ("Album peak: %s (%f)\n", rg_peak, rg_info->album_peak);
 
     rg_peak = vorbis_comment_query(comment, "replaygain_track_peak", 0);
     if (!rg_peak) rg_peak = vorbis_comment_query(comment, "rg_peak", 0);  /* Old */
     rg_info->track_peak = rg_peak != nullptr ? atof_no_locale (rg_peak) : 0.0;
-#ifdef DEBUG
-    printf ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
-#endif
+    AUDDBG ("Track peak: %s (%f)\n", rg_peak, rg_info->track_peak);
 
     return true;
 }
@@ -260,11 +249,8 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 #define PCM_FRAMES 1024
 #define PCM_BUFSIZE (PCM_FRAMES * 2)
 
-static bool vorbis_play (const char * filename, VFSFile * file)
+static bool vorbis_play (const char * filename, VFSFile & file)
 {
-    if (file == nullptr)
-        return false;
-
     vorbis_info *vi;
     OggVorbis_File vf;
     int last_section = -1;
@@ -275,9 +261,10 @@ static bool vorbis_play (const char * filename, VFSFile * file)
 
     memset(&vf, 0, sizeof(vf));
 
+    bool stream = (file.fsize () < 0);
     bool error = false;
 
-    if (ov_open_callbacks (file, & vf, nullptr, 0, vfs_is_streaming (file) ?
+    if (ov_open_callbacks (& file, & vf, nullptr, 0, stream ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
     {
         error = true;
@@ -316,7 +303,7 @@ static bool vorbis_play (const char * filename, VFSFile * file)
 
         if (seek_value >= 0 && ov_time_seek (& vf, (double) seek_value / 1000) < 0)
         {
-            fprintf (stderr, "vorbis: seek failed\n");
+            AUDERR ("seek failed\n");
             error = true;
             break;
         }
@@ -341,8 +328,7 @@ static bool vorbis_play (const char * filename, VFSFile * file)
                 g_free (title);
                 title = g_strdup (new_title);
 
-                aud_input_set_tuple (get_tuple_for_vorbisfile (& vf,
-                 filename));
+                aud_input_set_tuple (get_tuple_for_vorbisfile (& vf, filename, stream));
             }
         }
 
@@ -391,32 +377,37 @@ play_cleanup:
     return ! error;
 }
 
-static Tuple get_song_tuple (const char * filename, VFSFile * file)
+static Tuple get_song_tuple (const char * filename, VFSFile & file)
 {
     OggVorbis_File vfile;          /* avoid thread interaction */
+
+    bool stream = (file.fsize () < 0);
 
     /*
      * The open function performs full stream detection and
      * machine initialization.  If it returns zero, the stream
      * *is* Vorbis and we're fully ready to decode.
      */
-    if (ov_open_callbacks (file, & vfile, nullptr, 0, vfs_is_streaming (file) ?
+    if (ov_open_callbacks (& file, & vfile, nullptr, 0, stream ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
         return Tuple ();
 
-    Tuple tuple = get_tuple_for_vorbisfile(&vfile, filename);
+    Tuple tuple = get_tuple_for_vorbisfile(&vfile, filename, stream);
     ov_clear(&vfile);
     return tuple;
 }
 
-static bool get_song_image (const char * filename, VFSFile * file,
- void * * data, int64_t * size)
+static Index<char> get_song_image (const char * filename, VFSFile & file)
 {
+    Index<char> data;
+
     OggVorbis_File vfile;
 
-    if (ov_open_callbacks (file, & vfile, nullptr, 0, vfs_is_streaming (file) ?
+    bool stream = (file.fsize () < 0);
+
+    if (ov_open_callbacks (& file, & vfile, nullptr, 0, stream ?
      vorbis_callbacks_stream : vorbis_callbacks) < 0)
-        return false;
+        return data;
 
     vorbis_comment * comment = ov_comment (& vfile, -1);
     if (! comment)
@@ -426,7 +417,7 @@ static bool get_song_image (const char * filename, VFSFile * file,
 
     if ((s = vorbis_comment_query (comment, "METADATA_BLOCK_PICTURE", 0)))
     {
-        unsigned mime_length, desc_length;
+        unsigned mime_length, desc_length, length;
 
         size_t length2;
         unsigned char * data2 = g_base64_decode (s, & length2);
@@ -441,18 +432,18 @@ static bool get_song_image (const char * filename, VFSFile * file,
         if (length2 < 8 + mime_length + 4 + desc_length + 20)
             goto PARSE_ERR;
 
-        * size = FROM_BE32 (* (uint32_t *) (data2 + 8 + mime_length + 4 + desc_length + 16));
-        if (length2 < 8 + mime_length + 4 + desc_length + 20 + (unsigned) (* size))
+        length = FROM_BE32 (* (uint32_t *) (data2 + 8 + mime_length + 4 + desc_length + 16));
+        if (length2 < 8 + mime_length + 4 + desc_length + 20 + length)
             goto PARSE_ERR;
 
-        * data = g_memdup ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, * size);
+        data.insert ((char *) data2 + 8 + mime_length + 4 + desc_length + 20, 0, length);
 
         g_free (data2);
         ov_clear (& vfile);
-        return true;
+        return data;
 
     PARSE_ERR:
-        fprintf (stderr, "vorbis: Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
+        AUDERR ("Error parsing METADATA_BLOCK_PICTURE in %s.\n", filename);
         g_free (data2);
     }
 
@@ -463,21 +454,21 @@ static bool get_song_image (const char * filename, VFSFile * file,
 
         if (! data2 || ! length2)
         {
-            fprintf (stderr, "vorbis: Error parsing COVERART in %s.\n", filename);
+            AUDERR ("Error parsing COVERART in %s.\n", filename);
             g_free (data2);
             goto ERR;
         }
 
-        * data = data2;
-        * size = length2;
+        data.insert ((const char *) data2, 0, length2);
 
+        g_free (data2);
         ov_clear (& vfile);
-        return true;
+        return data;
     }
 
 ERR:
     ov_clear (& vfile);
-    return false;
+    return data;
 }
 
 static const char vorbis_about[] =

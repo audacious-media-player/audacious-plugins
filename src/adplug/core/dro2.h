@@ -41,7 +41,7 @@ class Cdro2Player: public CPlayer
 		Cdro2Player(Copl *newopl);
 		~Cdro2Player();
 
-		bool load(VFSFile *fd, const CFileProvider &fp);
+		bool load(VFSFile &fd, const CFileProvider &fp);
 		bool update();
 		void rewind(int subsong);
 		float getrefresh();

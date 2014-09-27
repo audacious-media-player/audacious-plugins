@@ -22,35 +22,18 @@
 */
 
 #include <assert.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
 #include "xs_config.h"
 #include "xs_sidplay2.h"
 
 static void xs_get_song_tuple_info(Tuple &pResult, const xs_tuneinfo_t &info, int subTune);
-
-class FileBuffer
-{
-public:
-    void *data;
-    int64_t size;
-
-    FileBuffer(VFSFile *file) :
-        data(nullptr),
-        size(0)
-    {
-        vfs_file_read_all(file, &data, &size);
-    }
-
-    ~FileBuffer()
-        { free(data); }
-};
 
 /*
  * Initialization functions
@@ -77,10 +60,10 @@ void xs_close(void)
 /*
  * Check whether this is a SID file
  */
-bool xs_is_our_file(const char *filename, VFSFile *file)
+bool xs_is_our_file(const char *filename, VFSFile &file)
 {
     char buf[4];
-    if (vfs_fread(buf, 1, 4, file) != 4)
+    if (file.fread (buf, 1, 4) != 4)
         return false;
 
     return xs_sidplayfp_probe(buf, 4);
@@ -90,20 +73,20 @@ bool xs_is_our_file(const char *filename, VFSFile *file)
 /*
  * Start playing the given file
  */
-bool xs_play_file(const char *filename, VFSFile *file)
+bool xs_play_file(const char *filename, VFSFile &file)
 {
     /* Load file */
-    FileBuffer buf(file);
-    if (!xs_sidplayfp_probe(buf.data, buf.size))
+    Index<char> buf = file.read_all ();
+    if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return false;
 
     /* Get tune information */
     xs_tuneinfo_t info;
-    if (!xs_sidplayfp_getinfo(info, filename, buf.data, buf.size))
+    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
         return false;
 
     /* Initialize the tune */
-    if (!xs_sidplayfp_load(buf.data, buf.size))
+    if (!xs_sidplayfp_load(buf.begin(), buf.len()))
         return false;
 
     /* Set general status information */
@@ -122,7 +105,7 @@ bool xs_play_file(const char *filename, VFSFile *file)
 
     /* Initialize song */
     if (!xs_sidplayfp_initsong(subTune)) {
-        xs_error("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
+        AUDERR("Couldn't initialize SID-tune '%s' (sub-tune #%i)!\n",
             (const char *) info.sidFilename, subTune);
         return false;
     }
@@ -130,7 +113,7 @@ bool xs_play_file(const char *filename, VFSFile *file)
     /* Open the audio output */
     if (!aud_input_open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels))
     {
-        xs_error("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
+        AUDERR("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
             FMT_S16_NE,
             xs_cfg.audioFrequency,
             xs_cfg.audioChannels);
@@ -253,14 +236,14 @@ static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
     tuple.set_subtunes (subtunes.len (), subtunes.begin ());
 }
 
-Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
 {
     Tuple tuple;
     xs_tuneinfo_t info;
     int tune = -1;
 
-    FileBuffer buf(fd);
-    if (!xs_sidplayfp_probe(buf.data, buf.size))
+    Index<char> buf = fd.read_all ();
+    if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return tuple;
 
     /* Get information from URL */
@@ -268,7 +251,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile *fd)
     tune = tuple.get_int (FIELD_SUBSONG_ID);
 
     /* Get tune information from emulation engine */
-    if (!xs_sidplayfp_getinfo(info, filename, buf.data, buf.size))
+    if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))
         return tuple;
 
     xs_get_song_tuple_info(tuple, info, tune);

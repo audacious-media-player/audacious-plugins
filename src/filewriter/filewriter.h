@@ -24,7 +24,6 @@
 #define FILEWRITER_H
 
 #include <gtk/gtk.h>
-#include <stdio.h>
 #include <string.h>
 
 #include <libaudcore/plugin.h>
@@ -38,7 +37,7 @@ struct format_info {
 
 extern struct format_info input;
 
-extern VFSFile *output_file;
+extern VFSFile output_file;
 extern uint64_t offset;
 extern Tuple tuple;
 

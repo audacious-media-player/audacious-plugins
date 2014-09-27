@@ -20,24 +20,22 @@
 
 #include "i_configure.h"
 
-#include <glib.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/preferences.h>
 
 #include "i_configure-fluidsynth.h"
 
-int backend_settings_changed = FALSE;  /* atomic */
+bool backend_settings_changed = false;  /* atomic */
 
-static bool override_gain = FALSE;
+static bool override_gain = false;
 static double gain_setting = 0.2;
-static bool override_polyphony = FALSE;
+static bool override_polyphony = false;
 static int polyphony_setting = 256;
-static bool override_reverb = FALSE;
-static bool reverb_setting = TRUE;
-static bool override_chorus = FALSE;
-static bool chorus_setting = TRUE;
+static bool override_reverb = false;
+static bool reverb_setting = true;
+static bool override_chorus = false;
+static bool chorus_setting = true;
 
 static void get_values (void)
 {
@@ -48,25 +46,25 @@ static void get_values (void)
 
     if (gain != -1)
     {
-        override_gain = TRUE;
+        override_gain = true;
         gain_setting = gain / 10.0;
     }
 
     if (polyphony != -1)
     {
-        override_polyphony = TRUE;
+        override_polyphony = true;
         polyphony_setting = polyphony;
     }
 
     if (reverb != -1)
     {
-        override_reverb = TRUE;
+        override_reverb = true;
         reverb_setting = reverb;
     }
 
     if (chorus != -1)
     {
-        override_chorus = TRUE;
+        override_chorus = true;
         chorus_setting = chorus;
     }
 }
@@ -89,7 +87,7 @@ static void backend_change (void)
     set_values ();
 
     /* reset backend at beginning of next song to apply changes */
-    g_atomic_int_set (& backend_settings_changed, TRUE);
+    __sync_bool_compare_and_swap (& backend_settings_changed, false, true);
 }
 
 static const PreferencesWidget gain_widgets[] = {
@@ -134,20 +132,19 @@ static const PreferencesWidget amidiplug_widgets[] = {
     WidgetSpin (N_("Drum shift:"),
         WidgetInt ("amidiplug", "ap_opts_drumshift_value"),
         {0, 127, 1}),
-    WidgetLabel (N_("<b>Advanced</b>")),
-    WidgetCheck (N_("Extract comments from MIDI file"),
-        WidgetBool ("amidiplug", "ap_opts_comments_extract")),
-    WidgetCheck (N_("Extract lyrics from MIDI file"),
-        WidgetBool ("amidiplug", "ap_opts_lyrics_extract")),
+    WidgetCheck (N_("Skip leading silence"),
+        WidgetBool ("amidiplug", "skip_leading")),
+    WidgetCheck (N_("Skip trailing silence"),
+        WidgetBool ("amidiplug", "skip_trailing")),
 
     /* backend settings */
     WidgetLabel (N_("<b>SoundFont</b>")),
     WidgetCustomGTK (create_soundfont_list),
     WidgetLabel (N_("<b>Synthesizer</b>")),
-    WidgetBox ({{gain_widgets}, TRUE}),
-    WidgetBox ({{polyphony_widgets}, TRUE}),
-    WidgetBox ({{reverb_widgets}, TRUE}),
-    WidgetBox ({{chorus_widgets}, TRUE}),
+    WidgetBox ({{gain_widgets}, true}),
+    WidgetBox ({{polyphony_widgets}, true}),
+    WidgetBox ({{reverb_widgets}, true}),
+    WidgetBox ({{chorus_widgets}, true}),
     WidgetSpin (N_("Sampling rate:"),
         WidgetInt ("amidiplug", "fsyn_synth_samplerate", backend_change),
         {22050, 96000, 1})
@@ -157,4 +154,3 @@ const PluginPreferences amidiplug_prefs = {
     {amidiplug_widgets},
     get_values
 };
-

@@ -13,85 +13,77 @@
 
 class vfsistream : public binistream {
 private:
-	VFSFile *fd; bool own;
+	VFSFile *fd = nullptr;
+	VFSFile own;
 
 public:
-	vfsistream(VFSFile *fd = 0) { this->fd = fd; this->own = false; };
+	vfsistream(VFSFile *fd = nullptr) :
+		fd(fd) {}
 
 	void open(const char *file) {
-		if ((this->fd = vfs_fopen(file, "r")))
-			this->own = true;
+		if ((own = VFSFile(file, "r")))
+			fd = &own;
 		else
 			err |= NotFound;
-	};
+	}
 
-	void open(std::string &file) { open(file.c_str()); };
+	void open(std::string &file) { open(file.c_str()); }
 
-	vfsistream(const char *file) { this->fd = 0; this->own = false; open(file); };
-	vfsistream(std::string &file) {	this->fd = 0; this->own = false; open(file); };
+	vfsistream(const char *file) { open(file); }
+	vfsistream(std::string &file) {	open(file); }
 
-	~vfsistream() {
-		if (this->own)
-			vfs_fclose(this->fd);
-		this->fd = 0; this->own = false;
-	};
-
-	Byte getByte(void) {
-		int c = vfs_getc(this->fd);
-		if (c < 0)
+	Byte getByte() {
+		Byte b = (Byte)-1;
+		if (fd->fread(&b, 1, 1) != 1)
 			err |= Eof;
-		return (Byte) c;
-	};
+		return b;
+	}
 
 	void seek(long pos, Offset offs = Set) {
-		int wh = (offs == Add) ? SEEK_CUR : (offs == End) ? SEEK_END : SEEK_SET;
-		if (vfs_fseek(this->fd, pos, wh))
+		VFSSeekType wh = (offs == Add) ? VFS_SEEK_CUR : (offs == End) ? VFS_SEEK_END : VFS_SEEK_SET;
+		if (fd->fseek (pos, wh))
 			err |= Eof;
 	}
 
-	long pos(void) {
-		return vfs_ftell(this->fd);
+	long pos() {
+		return fd->ftell ();
 	}
 };
 
 class vfsostream : public binostream {
 private:
-	VFSFile *fd; bool own;
+	VFSFile *fd = nullptr;
+	VFSFile own;
 
 public:
-	vfsostream(VFSFile *fd = 0) { this->fd = fd; this->own = false; };
+	vfsostream(VFSFile *fd = nullptr) :
+		fd(fd) {}
 
 	void open(const char *file) {
-		if ((this->fd = vfs_fopen(file, "w")))
-			this->own = true;
+		if ((own = VFSFile(file, "w")))
+			fd = &own;
 		else
 			err |= Denied;
-	};
+	}
 
-	void open(std::string &file) { open(file.c_str()); };
+	void open(std::string &file) { open(file.c_str()); }
 
-	vfsostream(const char *file) { this->fd = 0; this->own = false; open(file); };
-	vfsostream(std::string &file) {	this->fd = 0; this->own = false; open(file); };
-
-	~vfsostream() {
-		if (this->own)
-			vfs_fclose(this->fd);
-		this->fd = 0; this->own = false;
-	};
+	vfsostream(const char *file) { open(file); }
+	vfsostream(std::string &file) {	open(file); }
 
 	void putByte(Byte b) {
-		if (vfs_fwrite(&b, 1, 1, this->fd) != 1)
+		if (fd->fwrite (&b, 1, 1) != 1)
 			err |= Fatal;
-	};
+	}
 
 	void seek(long pos, Offset offs = Set) {
-		int wh = (offs == Add) ? SEEK_CUR : (offs == End) ? SEEK_END : SEEK_SET;
-		if (vfs_fseek(this->fd, pos, wh))
+		VFSSeekType wh = (offs == Add) ? VFS_SEEK_CUR : (offs == End) ? VFS_SEEK_END : VFS_SEEK_SET;
+		if (fd->fseek (pos, wh))
 			err |= Fatal;
 	}
 
 	long pos(void) {
-		return vfs_ftell(this->fd);
+		return fd->ftell ();
 	}
 };
 

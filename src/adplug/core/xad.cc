@@ -39,7 +39,7 @@ CxadPlayer::~CxadPlayer ()
 }
 
 bool
-CxadPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CxadPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

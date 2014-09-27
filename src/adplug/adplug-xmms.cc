@@ -102,14 +102,14 @@ dbg_printf (const char *fmt, ...)
 #endif
 
 static CPlayer *
-factory (VFSFile * fd, Copl * newopl)
+factory (VFSFile & fd, Copl * newopl)
 {
   return CAdPlug::factory (fd, newopl, conf.players);
 }
 
 /***** Main player (!! threaded !!) *****/
 
-Tuple adplug_get_tuple (const char * filename, VFSFile * fd)
+Tuple adplug_get_tuple (const char * filename, VFSFile & fd)
 {
   Tuple tuple;
   CSilentopl tmpopl;
@@ -143,7 +143,7 @@ Tuple adplug_get_tuple (const char * filename, VFSFile * fd)
 // Define sampsize macro (only usable inside play_loop()!)
 #define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
 
-static bool play_loop (const char * filename, VFSFile * fd)
+static bool play_loop (const char * filename, VFSFile & fd)
 /* Main playback thread. Takes the filename to play as argument. */
 {
   dbg_printf ("play_loop(\"%s\"): ", filename);
@@ -249,7 +249,7 @@ static bool play_loop (const char * filename, VFSFile * fd)
 /***** Informational *****/
 
 bool
-adplug_is_our_fd (const char * filename, VFSFile * fd)
+adplug_is_our_fd (const char * filename, VFSFile & fd)
 {
   CSilentopl tmpopl;
 
@@ -271,7 +271,7 @@ adplug_is_our_fd (const char * filename, VFSFile * fd)
 /***** Player control *****/
 
 bool
-adplug_play (const char * filename, VFSFile * file)
+adplug_play (const char * filename, VFSFile & file)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
   audio_error = false;
@@ -335,7 +335,7 @@ bool adplug_init (void)
       std::string userdb;
       userdb = std::string ("file://") + homedir + "/" ADPLUG_CONFDIR "/" + ADPLUGDB_FILE;
 
-      if (vfs_file_test (userdb.c_str (), VFS_EXISTS))
+      if (VFSFile::test_file (userdb.c_str (), VFS_EXISTS))
       {
         plr.db->load (userdb);    // load user's database
         dbg_printf (" (userdb=\"%s\")", userdb.c_str());

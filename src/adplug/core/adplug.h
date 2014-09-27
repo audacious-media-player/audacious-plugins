@@ -37,7 +37,7 @@ class CAdPlug
 public:
   static const CPlayers& getPlayers();
 
-  static CPlayer *factory(VFSFile *fd, Copl *opl,
+  static CPlayer *factory(VFSFile &fd, Copl *opl,
                           const CPlayers &pl = getPlayers(),
 			  const CFileProvider &fp = CProvider_Filesystem());
 

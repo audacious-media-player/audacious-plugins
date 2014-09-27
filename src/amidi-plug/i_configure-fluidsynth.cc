@@ -172,7 +172,7 @@ void i_configure_ev_sflist_commit (void * sfont_lv)
     g_string_free (sflist_string, TRUE);
 
     /* reset backend at beginning of next song to apply changes */
-    g_atomic_int_set (& backend_settings_changed, TRUE);
+    __sync_bool_compare_and_swap (& backend_settings_changed, false, true);
 }
 
 

@@ -32,7 +32,7 @@ CrawPlayer::factory (Copl * newopl)
 }
 
 bool
-CrawPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CrawPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

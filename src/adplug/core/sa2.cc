@@ -33,7 +33,7 @@ Csa2Loader::factory (Copl * newopl)
 }
 
 bool
-Csa2Loader::load (VFSFile * fd, const CFileProvider & fp)
+Csa2Loader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)
@@ -190,7 +190,7 @@ Csa2Loader::load (VFSFile * fd, const CFileProvider & fp)
 
   AdPlug_LogWrite ("Csa2Loader::load(\"%s\"): sat_type = %x, nop = %d, "
                    "length = %d, restartpos = %d, activechan = %x, bpm = %d\n",
-                   vfs_get_filename (fd), sat_type, nop, length, restartpos, activechan,
+                   fd.filename (), sat_type, nop, length, restartpos, activechan,
                    bpm);
 
   // track data

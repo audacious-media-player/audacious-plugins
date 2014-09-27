@@ -35,7 +35,7 @@ static const char * const bs2b_defaults[] = {
  "fcut", "700",
  nullptr};
 
-bool init (void)
+bool bs2b_init (void)
 {
     aud_config_set_defaults ("bs2b", bs2b_defaults);
     bs2b = bs2b_open ();
@@ -49,7 +49,7 @@ bool init (void)
     return true;
 }
 
-static void cleanup (void)
+static void bs2b_cleanup (void)
 {
     if (! bs2b)
         return;
@@ -135,8 +135,8 @@ static const PreferencesWidget bs2b_widgets[] = {
 static const PluginPreferences bs2b_prefs = {{bs2b_widgets}};
 
 #define AUD_PLUGIN_NAME        N_("Bauer Stereophonic-to-Binaural (BS2B)")
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
+#define AUD_PLUGIN_INIT        bs2b_init
+#define AUD_PLUGIN_CLEANUP     bs2b_cleanup
 #define AUD_PLUGIN_PREFS       & bs2b_prefs
 #define AUD_EFFECT_START       bs2b_start
 #define AUD_EFFECT_PROCESS     bs2b_process

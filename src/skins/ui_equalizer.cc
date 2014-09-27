@@ -418,8 +418,7 @@ void equalizerwin_save_preset (Index<EqualizerPreset> & list, const char * name,
 
     if (p < 0)
     {
-        EqualizerPreset & preset = list.append ();
-        preset.name = String (name);
+        list.append (String (name));
         p = list.len () - 1;
     }
 
@@ -438,10 +437,12 @@ void equalizerwin_delete_preset (Index<EqualizerPreset> & list, const char * nam
     aud_eq_write_presets (list, filename);
 }
 
-static gboolean equalizerwin_read_aud_preset (const char * file)
+static gboolean equalizerwin_read_aud_preset (const char * filename)
 {
     EqualizerPreset preset;
-    if (! aud_load_preset_file (preset, file))
+
+    VFSFile file (filename, "r");
+    if (! file || ! aud_load_preset_file (preset, file))
         return FALSE;
 
     equalizerwin_apply_preset (preset);
