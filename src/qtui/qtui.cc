@@ -23,9 +23,12 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
+#include <libaudqt/libaudqt.h>
+#include <libaudqt/iface.h>
+
 #include "main_window.h"
 
-class QtUI : public IfacePlugin
+class QtUI : public audqt::QtIfacePlugin
 {
 private:
     int dummy_argc = 0;
@@ -33,7 +36,7 @@ private:
     MainWindow * window;
 
 public:
-    QtUI () : IfacePlugin ({N_("Qt Interface"), PACKAGE}) {}
+    QtUI () : audqt::QtIfacePlugin ({N_("Qt Interface"), PACKAGE}) {}
 
     bool init ()
     {
@@ -69,18 +72,6 @@ public:
     {
         qapp->quit();
     }
-
-    // TODO
-    void show_about_window () {}
-    void hide_about_window () {}
-    void show_filebrowser (bool open) {}
-    void hide_filebrowser () {}
-    void show_jump_to_song () {}
-    void hide_jump_to_song () {}
-    void show_prefs_window () {}
-    void hide_prefs_window () {}
-    void plugin_menu_add (int id, void func (), const char * name, const char * icon) {}
-    void plugin_menu_remove (int id, void func ()) {}
 };
 
 QtUI aud_plugin_instance;
