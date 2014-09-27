@@ -36,11 +36,6 @@
 #define D_WIDTH 64
 #define D_HEIGHT 32
 
-static bool bscope_init (void);
-static void bscope_cleanup(void);
-static void bscope_clear (void);
-static void bscope_render (const float * data);
-static void /* GtkWidget */ * bscope_get_widget (void);
 static void /* GtkWidget */ * bscope_get_color_chooser (void);
 
 static const PreferencesWidget bscope_widgets[] = {
@@ -50,44 +45,66 @@ static const PreferencesWidget bscope_widgets[] = {
 
 static const PluginPreferences bscope_prefs = {{bscope_widgets}};
 
-#define AUD_PLUGIN_NAME        N_("Blur Scope")
-#define AUD_PLUGIN_PREFS       & bscope_prefs
-#define AUD_PLUGIN_INIT        bscope_init
-#define AUD_PLUGIN_CLEANUP     bscope_cleanup
-#define AUD_VIS_CLEAR          bscope_clear
-#define AUD_VIS_RENDER_MONO    bscope_render
-#define AUD_VIS_GET_WIDGET     bscope_get_widget
-
-#define AUD_DECLARE_VIS
-#include <libaudcore/plugin-declare.h>
-
-static GtkWidget * area = nullptr;
-static int width, height, stride, image_size;
-static uint32_t * image = nullptr, * corner = nullptr;
-
 static const char * const bscope_defaults[] = {
  "color", "16727935", /* 0xFF3F7F */
  nullptr};
 
-static int color;
+static int bscope_color;
 
-static bool bscope_init (void)
+class BlurScope : public VisPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Blur Scope"),
+        PACKAGE,
+        nullptr,
+        & bscope_prefs
+    };
+
+    BlurScope () : VisPlugin (info, AUD_VIS_TYPE_MONO_PCM) {}
+
+    bool init ();
+    void cleanup ();
+
+    void * get_gtk_widget ();
+
+    void clear ();
+    void render_mono_pcm (const float * pcm);
+
+private:
+    void resize (int w, int h);
+    void draw ();
+
+    void blur ();
+    void draw_vert_line (int x, int y1, int y2);
+
+    static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event, void * user);
+    static gboolean expose_event (GtkWidget * widget, GdkEventExpose * event, void * user);
+
+    GtkWidget * area = nullptr;
+    int width, height, stride, image_size;
+    uint32_t * image = nullptr, * corner = nullptr;
+};
+
+BlurScope aud_plugin_instance;
+
+bool BlurScope::init ()
 {
     aud_config_set_defaults ("BlurScope", bscope_defaults);
-    color = aud_get_int ("BlurScope", "color");
+    bscope_color = aud_get_int ("BlurScope", "color");
 
     return TRUE;
 }
 
-static void bscope_cleanup (void)
+void BlurScope::cleanup ()
 {
-    aud_set_int ("BlurScope", "color", color);
+    aud_set_int ("BlurScope", "color", bscope_color);
 
     g_free (image);
     image = nullptr;
 }
 
-static void bscope_resize (int w, int h)
+void BlurScope::resize (int w, int h)
 {
     width = w;
     height = h;
@@ -98,47 +115,40 @@ static void bscope_resize (int w, int h)
     corner = image + stride + 1;
 }
 
-static void bscope_draw_to_cairo (cairo_t * cr)
-{
-    cairo_surface_t * surf = cairo_image_surface_create_for_data ((unsigned char *)
-     image, CAIRO_FORMAT_RGB24, width, height, stride << 2);
-    cairo_set_source_surface (cr, surf, 0, 0);
-    cairo_paint (cr);
-    cairo_surface_destroy (surf);
-}
-
-static void bscope_draw (void)
+void BlurScope::draw ()
 {
     if (! area || ! gtk_widget_get_window (area))
         return;
 
     cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (area));
-    bscope_draw_to_cairo (cr);
+    cairo_surface_t * surf = cairo_image_surface_create_for_data
+     ((unsigned char *) image, CAIRO_FORMAT_RGB24, width, height, stride << 2);
+    cairo_set_source_surface (cr, surf, 0, 0);
+    cairo_paint (cr);
+    cairo_surface_destroy (surf);
     cairo_destroy (cr);
 }
 
-static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
+gboolean BlurScope::configure_event (GtkWidget * widget, GdkEventConfigure * event, void * user)
 {
-    bscope_resize (event->width, event->height);
+    ((BlurScope *) user)->resize (event->width, event->height);
     return TRUE;
 }
 
-static gboolean draw_cb (GtkWidget * widget)
+gboolean BlurScope::expose_event (GtkWidget * widget, GdkEventExpose * event, void * user)
 {
-    cairo_t * cr = gdk_cairo_create (gtk_widget_get_window (widget));
-    bscope_draw_to_cairo (cr);
-    cairo_destroy (cr);
+    ((BlurScope *) user)->draw ();
     return TRUE;
 }
 
-static void /* GtkWidget */ * bscope_get_widget (void)
+void * BlurScope::get_gtk_widget ()
 {
     area = gtk_drawing_area_new ();
     gtk_widget_set_size_request (area, D_WIDTH, D_HEIGHT);
-    bscope_resize (D_WIDTH, D_HEIGHT);
+    resize (D_WIDTH, D_HEIGHT);
 
-    g_signal_connect (area, "expose-event", (GCallback) draw_cb, nullptr);
-    g_signal_connect (area, "configure-event", (GCallback) configure_event, nullptr);
+    g_signal_connect (area, "expose-event", (GCallback) expose_event, this);
+    g_signal_connect (area, "configure-event", (GCallback) configure_event, this);
     g_signal_connect (area, "destroy", (GCallback) gtk_widget_destroyed, & area);
 
     GtkWidget * frame = gtk_frame_new (nullptr);
@@ -147,14 +157,13 @@ static void /* GtkWidget */ * bscope_get_widget (void)
     return frame;
 }
 
-static void bscope_clear (void)
+void BlurScope::clear ()
 {
-    g_return_if_fail (image != nullptr);
     memset (image, 0, image_size);
-    bscope_draw ();
+    draw ();
 }
 
-static void bscope_blur (void)
+void BlurScope::blur ()
 {
     for (int y = 0; y < height; y ++)
     {
@@ -173,7 +182,7 @@ static void bscope_blur (void)
     }
 }
 
-static inline void draw_vert_line (int x, int y1, int y2)
+void BlurScope::draw_vert_line (int x, int y1, int y2)
 {
     int y, h;
 
@@ -184,38 +193,38 @@ static inline void draw_vert_line (int x, int y1, int y2)
     uint32_t * p = corner + y * stride + x;
 
     for (; h --; p += stride)
-        * p = color;
+        * p = bscope_color;
 }
 
-static void bscope_render (const float * data)
+void BlurScope::render_mono_pcm (const float * pcm)
 {
-    bscope_blur ();
+    blur ();
 
-    int prev_y = (0.5 + data[0]) * height;
+    int prev_y = (0.5 + pcm[0]) * height;
     prev_y = aud::clamp (prev_y, 0, height - 1);
 
     for (int i = 0; i < width; i ++)
     {
-        int y = (0.5 + data[i * 512 / width]) * height;
+        int y = (0.5 + pcm[i * 512 / width]) * height;
         y = aud::clamp (y, 0, height - 1);
         draw_vert_line (i, prev_y, y);
         prev_y = y;
     }
 
-    bscope_draw ();
+    draw ();
 }
 
 static void color_set_cb (GtkWidget * chooser)
 {
     GdkColor gdk_color;
     gtk_color_button_get_color ((GtkColorButton *) chooser, & gdk_color);
-    color = ((gdk_color.red & 0xff00) << 8) | (gdk_color.green & 0xff00) | (gdk_color.blue >> 8);
+    bscope_color = ((gdk_color.red & 0xff00) << 8) | (gdk_color.green & 0xff00) | (gdk_color.blue >> 8);
 }
 
 static void /* GtkWidget */ * bscope_get_color_chooser (void)
 {
-    GdkColor gdk_color = {0, (uint16_t) ((color & 0xff0000) >> 8),
-     (uint16_t) (color & 0xff00), (uint16_t) ((color & 0xff) << 8)};
+    GdkColor gdk_color = {0, (uint16_t) ((bscope_color & 0xff0000) >> 8),
+     (uint16_t) (bscope_color & 0xff00), (uint16_t) ((bscope_color & 0xff) << 8)};
     GtkWidget * chooser = gtk_color_button_new_with_color (& gdk_color);
     gtk_color_button_set_use_alpha ((GtkColorButton *) chooser, FALSE);
 
