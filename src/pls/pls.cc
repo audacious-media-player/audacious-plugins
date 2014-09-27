@@ -32,7 +32,7 @@ static const char * const pls_exts[] = {"pls"};
 class PLSLoader : public PlaylistPlugin
 {
 public:
-    static constexpr PluginInfo info = {N_("PLS Playlists"), PACKAGE};
+    const PluginInfo info = {N_("PLS Playlists"), PACKAGE};
 
     PLSLoader () : PlaylistPlugin (info, pls_exts, true) {}
 

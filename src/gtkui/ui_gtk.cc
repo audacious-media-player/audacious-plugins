@@ -67,7 +67,7 @@ static const char * const gtkui_defaults[] = {
 class GtkUI : public IfacePlugin
 {
 public:
-    static constexpr PluginInfo info = {
+    const PluginInfo info = {
         N_("GTK Interface"),
         PACKAGE,
         nullptr,

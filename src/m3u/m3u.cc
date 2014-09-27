@@ -29,7 +29,7 @@ static const char * const m3u_exts[] = {"m3u", "m3u8"};
 class M3ULoader : public PlaylistPlugin
 {
 public:
-    static constexpr PluginInfo info = {N_("M3U Playlists"), PACKAGE};
+    const PluginInfo info = {N_("M3U Playlists"), PACKAGE};
 
     M3ULoader () : PlaylistPlugin (info, m3u_exts, true) {}
 

@@ -30,7 +30,7 @@ static const char * const audpl_exts[] = {"audpl"};
 class AudPlaylistLoader : public PlaylistPlugin
 {
 public:
-    static constexpr PluginInfo info = {N_("Audacious Playlists (audpl)"), PACKAGE};
+    const PluginInfo info = {N_("Audacious Playlists (audpl)"), PACKAGE};
 
     AudPlaylistLoader () : PlaylistPlugin (info, audpl_exts, true) {}
 
