@@ -303,11 +303,10 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
     gtk_tree_path_free (path);
 
     Index<String> keys = str_list_to_index (search, " ");
-    int n_keys = keys.len ();
 
-    gboolean matched = FALSE;
+    bool matched = false;
 
-    if (n_keys)
+    if (keys.len ())
     {
         String strings[3];
         aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
@@ -318,19 +317,13 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
             if (! s)
                 continue;
 
-            for (int j = 0; j < n_keys;)
-            {
-                if (strstr_nocase_utf8 (s, keys[j]))
-                {
-                    keys.remove (j, 1);
-                    n_keys --;
-                }
-                else
-                    j ++;
-            }
+            auto is_match = [&] (const String & key)
+                { return (bool) strstr_nocase_utf8 (s, key); };
+
+            keys.remove_if (is_match);
         }
 
-        matched = ! n_keys;
+        matched = ! keys.len ();
     }
 
     return ! matched;
