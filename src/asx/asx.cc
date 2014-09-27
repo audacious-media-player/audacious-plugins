@@ -30,7 +30,7 @@ static const char * const asx_exts[] = {"asx"};
 class ASXLoader : public PlaylistPlugin
 {
 public:
-    const PluginInfo info = {N_("ASXv1/ASXv2 Playlists"), PACKAGE};
+    static constexpr PluginInfo info = {N_("ASXv1/ASXv2 Playlists"), PACKAGE};
 
     ASXLoader () : PlaylistPlugin (info, asx_exts, false) {}
 

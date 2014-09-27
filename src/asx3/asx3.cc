@@ -32,7 +32,7 @@ static const char * const asx3_exts[] = {"asx"};
 class ASX3Loader : public PlaylistPlugin
 {
 public:
-    const PluginInfo info = {N_("ASXv3 Playlists"), PACKAGE};
+    static constexpr PluginInfo info = {N_("ASXv3 Playlists"), PACKAGE};
 
     ASX3Loader () : PlaylistPlugin (info, asx3_exts, true) {}
 

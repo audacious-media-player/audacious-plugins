@@ -54,7 +54,7 @@ static int bscope_color;
 class BlurScope : public VisPlugin
 {
 public:
-    const PluginInfo info = {
+    static constexpr PluginInfo info = {
         N_("Blur Scope"),
         PACKAGE,
         nullptr,

@@ -44,7 +44,7 @@
 class SkinnedUI : public IfacePlugin
 {
 public:
-    const PluginInfo info = {
+    static constexpr PluginInfo info = {
         N_("Winamp Classic Interface"),
         PACKAGE,
         nullptr,

@@ -34,7 +34,7 @@ static const char * const cue_exts[] = {"cue"};
 class CueLoader : public PlaylistPlugin
 {
 public:
-    const PluginInfo info = {N_("Cue Sheet Plugin"), PACKAGE};
+    static constexpr PluginInfo info = {N_("Cue Sheet Plugin"), PACKAGE};
 
     CueLoader () : PlaylistPlugin (info, cue_exts, false) {}
 

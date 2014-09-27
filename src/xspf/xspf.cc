@@ -86,7 +86,7 @@ static const char * const xspf_exts[] = {"xspf"};
 class XSPFLoader : public PlaylistPlugin
 {
 public:
-    const PluginInfo info = {N_("XML Shareable Playlists (XSPF)"), PACKAGE};
+    static constexpr PluginInfo info = {N_("XML Shareable Playlists (XSPF)"), PACKAGE};
 
     XSPFLoader () : PlaylistPlugin (info, xspf_exts, true) {}
 
