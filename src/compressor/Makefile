@@ -1,6 +1,6 @@
 PLUGIN = compressor${PLUGIN_SUFFIX}
 
-SRCS = compressor.cc plugin.cc
+SRCS = compressor.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
