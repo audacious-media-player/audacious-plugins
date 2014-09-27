@@ -1056,7 +1056,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   TRACE("creating input ports\n");
   for(unsigned i = 0; i < drv->num_input_channels; i++)
   {
-    StringBuf portname = str_printf (portname, "in_%d", i);
+    StringBuf portname = str_printf ("in_%d", i);
     TRACE("port %d is named '%s'\n", i, portname);
     /* NOTE: Yes, this is supposed to be JackPortIsInput since this is an input */
     /* port TO bio2jack */

@@ -406,8 +406,8 @@ static const char about_text[] =
 
 #define AUD_PLUGIN_NAME        N_("OpenGL Spectrum Analyzer")
 #define AUD_PLUGIN_ABOUT       about_text
-#define AUD_PLUGIN_INIT        init
-#define AUD_VIS_RENDER_FREQ    render_freq
+#define AUD_PLUGIN_INIT        ::init
+#define AUD_VIS_RENDER_FREQ    ::render_freq
 #define AUD_VIS_CLEAR          clear_window
 #define AUD_VIS_GET_WIDGET     get_widget
 
