@@ -74,7 +74,7 @@ public:
         & gtkui_prefs
     };
 
-    GtkUI () : IfacePlugin (info) {}
+    constexpr GtkUI () : IfacePlugin (info) {}
 
     bool init ();
     void cleanup ();

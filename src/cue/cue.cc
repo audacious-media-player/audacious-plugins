@@ -36,7 +36,7 @@ class CueLoader : public PlaylistPlugin
 public:
     static constexpr PluginInfo info = {N_("Cue Sheet Plugin"), PACKAGE};
 
-    CueLoader () : PlaylistPlugin (info, cue_exts, false) {}
+    constexpr CueLoader () : PlaylistPlugin (info, cue_exts, false) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
      Index<PlaylistAddItem> & items);

@@ -31,7 +31,7 @@ class M3ULoader : public PlaylistPlugin
 public:
     static constexpr PluginInfo info = {N_("M3U Playlists"), PACKAGE};
 
-    M3ULoader () : PlaylistPlugin (info, m3u_exts, true) {}
+    constexpr M3ULoader () : PlaylistPlugin (info, m3u_exts, true) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
      Index<PlaylistAddItem> & items);

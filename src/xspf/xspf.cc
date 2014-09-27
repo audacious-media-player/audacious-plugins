@@ -88,7 +88,7 @@ class XSPFLoader : public PlaylistPlugin
 public:
     static constexpr PluginInfo info = {N_("XML Shareable Playlists (XSPF)"), PACKAGE};
 
-    XSPFLoader () : PlaylistPlugin (info, xspf_exts, true) {}
+    constexpr XSPFLoader () : PlaylistPlugin (info, xspf_exts, true) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
      Index<PlaylistAddItem> & items);

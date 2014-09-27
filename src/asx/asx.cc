@@ -32,7 +32,7 @@ class ASXLoader : public PlaylistPlugin
 public:
     static constexpr PluginInfo info = {N_("ASXv1/ASXv2 Playlists"), PACKAGE};
 
-    ASXLoader () : PlaylistPlugin (info, asx_exts, false) {}
+    constexpr ASXLoader () : PlaylistPlugin (info, asx_exts, false) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
      Index<PlaylistAddItem> & items);

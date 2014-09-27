@@ -32,7 +32,7 @@ class AudPlaylistLoader : public PlaylistPlugin
 public:
     static constexpr PluginInfo info = {N_("Audacious Playlists (audpl)"), PACKAGE};
 
-    AudPlaylistLoader () : PlaylistPlugin (info, audpl_exts, true) {}
+    constexpr AudPlaylistLoader () : PlaylistPlugin (info, audpl_exts, true) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
      Index<PlaylistAddItem> & items);

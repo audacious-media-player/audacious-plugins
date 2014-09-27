@@ -51,7 +51,7 @@ public:
         & skins_prefs
     };
 
-    SkinnedUI () : IfacePlugin (info) {}
+    constexpr SkinnedUI () : IfacePlugin (info) {}
 
     bool init ();
     void cleanup ();

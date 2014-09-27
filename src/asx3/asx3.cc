@@ -34,7 +34,7 @@ class ASX3Loader : public PlaylistPlugin
 public:
     static constexpr PluginInfo info = {N_("ASXv3 Playlists"), PACKAGE};
 
-    ASX3Loader () : PlaylistPlugin (info, asx3_exts, true) {}
+    constexpr ASX3Loader () : PlaylistPlugin (info, asx3_exts, true) {}
 
     bool load (const char * filename, VFSFile & file, String & title,
      Index<PlaylistAddItem> & items);

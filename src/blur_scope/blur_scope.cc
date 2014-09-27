@@ -61,7 +61,7 @@ public:
         & bscope_prefs
     };
 
-    BlurScope () : VisPlugin (info, AUD_VIS_TYPE_MONO_PCM) {}
+    constexpr BlurScope () : VisPlugin (info, AUD_VIS_TYPE_MONO_PCM) {}
 
     bool init ();
     void cleanup ();
@@ -82,7 +82,7 @@ private:
     static gboolean expose_event (GtkWidget * widget, GdkEventExpose * event, void * user);
 
     GtkWidget * area = nullptr;
-    int width, height, stride, image_size;
+    int width = 0, height = 0, stride = 0, image_size = 0;
     uint32_t * image = nullptr, * corner = nullptr;
 };
 

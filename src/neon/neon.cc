@@ -100,7 +100,7 @@ private:
 public:
     static constexpr PluginInfo info = {N_("Neon HTTP/HTTPS Plugin"), PACKAGE};
 
-    NeonTransport () : TransportPlugin (info, neon_schemes, fopen) {}
+    constexpr NeonTransport () : TransportPlugin (info, neon_schemes, fopen) {}
 
     bool init ();
     void cleanup ();
