@@ -77,7 +77,7 @@ public:
     void process (float * * data, int * samples);
     void flush ();
     void finish (float * * data, int * samples);
-    virtual int adjust_delay (int delay);
+    int adjust_delay (int delay);
 };
 
 static float * buffer, * output, * peaks;
@@ -234,7 +234,7 @@ bool Compressor::init ()
     output_size = 0;
     peaks = nullptr;
 
-    return 1;
+    return true;
 }
 
 void Compressor::cleanup ()

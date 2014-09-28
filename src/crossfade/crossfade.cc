@@ -41,6 +41,42 @@ static const char * const crossfade_defaults[] = {
  "length", "3",
  nullptr};
 
+static const char crossfade_about[] =
+ N_("Crossfade Plugin for Audacious\n"
+    "Copyright 2010-2012 John Lindgren");
+
+static const PreferencesWidget crossfade_widgets[] = {
+    WidgetLabel (N_("<b>Crossfade</b>")),
+    WidgetSpin (N_("Overlap:"),
+        WidgetInt ("crossfade", "length"),
+        {1, 10, 1, N_("seconds")})
+};
+
+static const PluginPreferences crossfade_prefs = {{crossfade_widgets}};
+
+class Crossfade : public EffectPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Crossfade"),
+        PACKAGE,
+        crossfade_about,
+        & crossfade_prefs
+    };
+
+    /* order #5: must be after resample and mixer */
+    Crossfade () : EffectPlugin (info, 5, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int * channels, int * rate);
+    void process (float * * data, int * samples);
+    void flush ();
+    void finish (float * * data, int * samples);
+    int adjust_delay (int delay);
+};
+
 static char state = STATE_OFF;
 static int current_channels = 0, current_rate = 0;
 static float * buffer = nullptr;
@@ -64,18 +100,18 @@ static void reset (void)
     output_size = 0;
 }
 
-static bool crossfade_init (void)
+bool Crossfade::init (void)
 {
     aud_config_set_defaults ("crossfade", crossfade_defaults);
     return true;
 }
 
-static void crossfade_cleanup (void)
+void Crossfade::cleanup (void)
 {
     reset ();
 }
 
-static void crossfade_start (int * channels, int * rate)
+void Crossfade::start (int * channels, int * rate)
 {
     if (state != STATE_BETWEEN)
         reset ();
@@ -210,13 +246,13 @@ static void return_data (float * * data, int * length)
     * length = copy;
 }
 
-static void crossfade_process (float * * data, int * samples)
+void Crossfade::process (float * * data, int * samples)
 {
     add_data (* data, * samples);
     return_data (data, samples);
 }
 
-static void crossfade_flush (void)
+void Crossfade::flush (void)
 {
     if (state == STATE_PREBUFFER || state == STATE_RUNNING)
     {
@@ -225,7 +261,7 @@ static void crossfade_flush (void)
     }
 }
 
-static void crossfade_finish (float * * data, int * samples)
+void Crossfade::finish (float * * data, int * samples)
 {
     if (state == STATE_BETWEEN) /* second call, end of last song */
     {
@@ -248,36 +284,7 @@ static void crossfade_finish (float * * data, int * samples)
     }
 }
 
-static int crossfade_adjust_delay (int delay)
+int Crossfade::adjust_delay (int delay)
 {
-    return delay + (int64_t) (buffer_filled / current_channels) * 1000 / current_rate;
+    return delay + aud::rescale<int64_t> (buffer_filled / current_channels, current_rate, 1000);
 }
-
-static const char crossfade_about[] =
- N_("Crossfade Plugin for Audacious\n"
-    "Copyright 2010-2012 John Lindgren");
-
-static const PreferencesWidget crossfade_widgets[] = {
-    WidgetLabel (N_("<b>Crossfade</b>")),
-    WidgetSpin (N_("Overlap:"),
-        WidgetInt ("crossfade", "length"),
-        {1, 10, 1, N_("seconds")})
-};
-
-static const PluginPreferences crossfade_prefs = {{crossfade_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Crossfade")
-#define AUD_PLUGIN_ABOUT       crossfade_about
-#define AUD_PLUGIN_PREFS       & crossfade_prefs
-#define AUD_PLUGIN_INIT        crossfade_init
-#define AUD_PLUGIN_CLEANUP     crossfade_cleanup
-#define AUD_EFFECT_START       crossfade_start
-#define AUD_EFFECT_PROCESS     crossfade_process
-#define AUD_EFFECT_FLUSH       crossfade_flush
-#define AUD_EFFECT_FINISH      crossfade_finish
-#define AUD_EFFECT_ADJ_DELAY   crossfade_adjust_delay
-#define AUD_EFFECT_ORDER       5  /* must be after resample and mixer */
-#define AUD_EFFECT_SAME_FMT    true
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
