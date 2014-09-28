@@ -26,12 +26,6 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-static bool cryst_init (void);
-static void cryst_start (int * channels, int * rate);
-static void cryst_process (float * * data, int * samples);
-static void cryst_flush ();
-static void cryst_finish (float * * data, int * samples);
-
 static const char * const cryst_defaults[] = {
  "intensity", "1",
  nullptr};
@@ -45,35 +39,49 @@ static const PreferencesWidget cryst_widgets[] = {
 
 static const PluginPreferences cryst_prefs = {{cryst_widgets}};
 
-#define AUD_PLUGIN_NAME        N_("Crystalizer")
-#define AUD_PLUGIN_PREFS       & cryst_prefs
-#define AUD_PLUGIN_INIT        cryst_init
-#define AUD_EFFECT_START       cryst_start
-#define AUD_EFFECT_PROCESS     cryst_process
-#define AUD_EFFECT_FLUSH       cryst_flush
-#define AUD_EFFECT_FINISH      cryst_finish
-#define AUD_EFFECT_SAME_FMT    true
+class Crystalizer : public EffectPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Crystalizer"),
+        PACKAGE,
+        nullptr,
+        & cryst_prefs
+    };
 
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+    Crystalizer () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int * channels, int * rate);
+    void process (float * * data, int * samples);
+    void flush ();
+};
 
 static int cryst_channels;
 static float * cryst_prev;
 
-static bool cryst_init (void)
+bool Crystalizer::init ()
 {
     aud_config_set_defaults ("crystalizer", cryst_defaults);
     return true;
 }
 
-static void cryst_start (int * channels, int * rate)
+void Crystalizer::cleanup ()
+{
+    free (cryst_prev);
+    cryst_prev = nullptr;
+}
+
+void Crystalizer::start (int * channels, int * rate)
 {
     cryst_channels = * channels;
     cryst_prev = (float *) realloc (cryst_prev, sizeof (float) * cryst_channels);
     memset (cryst_prev, 0, sizeof (float) * cryst_channels);
 }
 
-static void cryst_process (float * * data, int * samples)
+void Crystalizer::process (float * * data, int * samples)
 {
     float value = aud_get_double ("crystalizer", "intensity");
     float * f = * data;
@@ -92,12 +100,7 @@ static void cryst_process (float * * data, int * samples)
     }
 }
 
-static void cryst_flush ()
+void Crystalizer::flush ()
 {
     memset (cryst_prev, 0, sizeof (float) * cryst_channels);
-}
-
-static void cryst_finish (float * * data, int * samples)
-{
-    cryst_process (data, samples);
 }
