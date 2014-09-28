@@ -15,6 +15,11 @@
 #define BUFFER_SHORTS (BUFFER_SAMPLES * AUD_MAX_CHANNELS)
 #define BUFFER_BYTES (BUFFER_SHORTS * BYTES_PS)
 
+static const char echo_about[] =
+ N_("Echo Plugin\n"
+    "By Johan Levin, 1999\n\n"
+    "Surround echo by Carl van Schaik, 1999");
+
 static const char * const echo_defaults[] = {
  "delay", "500",
  "feedback", "50",
@@ -36,16 +41,35 @@ static const PreferencesWidget echo_widgets[] = {
 
 static const PluginPreferences echo_prefs = {{echo_widgets}};
 
+class EchoPlugin : public EffectPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Echo"),
+        PACKAGE,
+        echo_about,
+        & echo_prefs
+    };
+
+    EchoPlugin () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int * channels, int * rate);
+    void process (float * * data, int * samples);
+};
+
 static float *buffer = nullptr;
 static int w_ofs;
 
-static bool echo_init (void)
+bool EchoPlugin::init ()
 {
     aud_config_set_defaults ("echo_plugin", echo_defaults);
     return true;
 }
 
-static void echo_cleanup (void)
+void EchoPlugin::cleanup ()
 {
     g_free(buffer);
     buffer = nullptr;
@@ -54,7 +78,7 @@ static void echo_cleanup (void)
 static int echo_channels = 0;
 static int echo_rate = 0;
 
-static void echo_start(int *channels, int *rate)
+void EchoPlugin::start (int * channels, int * rate)
 {
     static int old_srate, old_nch;
 
@@ -73,7 +97,7 @@ static void echo_start(int *channels, int *rate)
     }
 }
 
-static void echo_process(float **d, int *samples)
+void EchoPlugin::process (float * * d, int * samples)
 {
     int delay = aud_get_int ("echo_plugin", "delay");
     int feedback = aud_get_int ("echo_plugin", "feedback");
@@ -104,26 +128,3 @@ static void echo_process(float **d, int *samples)
             w_ofs -= BUFFER_SHORTS;
     }
 }
-
-static void echo_finish(float **d, int *samples)
-{
-    echo_process(d, samples);
-}
-
-static const char echo_about[] =
- N_("Echo Plugin\n"
-    "By Johan Levin, 1999\n\n"
-    "Surround echo by Carl van Schaik, 1999");
-
-#define AUD_PLUGIN_NAME        N_("Echo")
-#define AUD_PLUGIN_ABOUT       echo_about
-#define AUD_PLUGIN_PREFS       & echo_prefs
-#define AUD_PLUGIN_INIT        echo_init
-#define AUD_PLUGIN_CLEANUP     echo_cleanup
-#define AUD_EFFECT_START       echo_start
-#define AUD_EFFECT_PROCESS     echo_process
-#define AUD_EFFECT_FINISH      echo_finish
-#define AUD_EFFECT_SAME_FMT    true
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
