@@ -39,7 +39,7 @@ public:
         & bs2b_prefs
     };
 
-    BS2BPlugin () : EffectPlugin (info, 0, true) {}
+    constexpr BS2BPlugin () : EffectPlugin (info, 0, true) {}
 
     bool init ();
     void cleanup ();
@@ -47,6 +47,8 @@ public:
     void start (int * channels, int * rate);
     void process (float * * data, int * samples);
 };
+
+BS2BPlugin aud_plugin_instance;
 
 static t_bs2bdp bs2b = nullptr;
 static int bs2b_channels;

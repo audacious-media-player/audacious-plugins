@@ -49,7 +49,7 @@ public:
         & cryst_prefs
     };
 
-    Crystalizer () : EffectPlugin (info, 0, true) {}
+    constexpr Crystalizer () : EffectPlugin (info, 0, true) {}
 
     bool init ();
     void cleanup ();
@@ -58,6 +58,8 @@ public:
     void process (float * * data, int * samples);
     void flush ();
 };
+
+Crystalizer aud_plugin_instance;
 
 static int cryst_channels;
 static float * cryst_prev;

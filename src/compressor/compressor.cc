@@ -68,7 +68,7 @@ public:
         & compressor_prefs
     };
 
-    Compressor () : EffectPlugin (info, 0, true) {}
+    constexpr Compressor () : EffectPlugin (info, 0, true) {}
 
     bool init ();
     void cleanup ();
@@ -79,6 +79,8 @@ public:
     void finish (float * * data, int * samples);
     int adjust_delay (int delay);
 };
+
+Compressor aud_plugin_instance;
 
 static float * buffer, * output, * peaks;
 static int output_size;

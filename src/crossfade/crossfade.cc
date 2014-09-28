@@ -65,7 +65,7 @@ public:
     };
 
     /* order #5: must be after resample and mixer */
-    Crossfade () : EffectPlugin (info, 5, true) {}
+    constexpr Crossfade () : EffectPlugin (info, 5, true) {}
 
     bool init ();
     void cleanup ();
@@ -76,6 +76,8 @@ public:
     void finish (float * * data, int * samples);
     int adjust_delay (int delay);
 };
+
+Crossfade aud_plugin_instance;
 
 static char state = STATE_OFF;
 static int current_channels = 0, current_rate = 0;

@@ -51,7 +51,7 @@ public:
         & echo_prefs
     };
 
-    EchoPlugin () : EffectPlugin (info, 0, true) {}
+    constexpr EchoPlugin () : EffectPlugin (info, 0, true) {}
 
     bool init ();
     void cleanup ();
@@ -59,6 +59,8 @@ public:
     void start (int * channels, int * rate);
     void process (float * * data, int * samples);
 };
+
+EchoPlugin aud_plugin_instance;
 
 static float *buffer = nullptr;
 static int w_ofs;
