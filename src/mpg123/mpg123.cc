@@ -23,6 +23,10 @@
 
 #include <mpg123.h>
 
+// mpg123.h redefines EXPORT
+#undef EXPORT
+#include "config.h"
+
 #ifdef DEBUG_MPG123_IO
 # define MPG123_IODBG(...)  AUDDBG(__VA_ARGS__)
 #else

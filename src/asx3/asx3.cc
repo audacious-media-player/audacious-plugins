@@ -42,7 +42,7 @@ public:
      const Index<PlaylistAddItem> & items);
 };
 
-ASX3Loader aud_plugin_instance;
+EXPORT ASX3Loader aud_plugin_instance;
 
 static int read_cb (void * file, char * buf, int len)
 {

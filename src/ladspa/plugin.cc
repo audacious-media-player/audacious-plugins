@@ -557,4 +557,4 @@ static const PreferencesWidget ladspa_widgets[] = {
 
 const PluginPreferences ladspa_prefs = {{ladspa_widgets}};
 
-LADSPAHost aud_plugin_instance;
+EXPORT LADSPAHost aud_plugin_instance;

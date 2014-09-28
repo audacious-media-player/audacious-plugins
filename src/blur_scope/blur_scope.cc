@@ -86,7 +86,7 @@ private:
     uint32_t * image = nullptr, * corner = nullptr;
 };
 
-BlurScope aud_plugin_instance;
+EXPORT BlurScope aud_plugin_instance;
 
 bool BlurScope::init ()
 {

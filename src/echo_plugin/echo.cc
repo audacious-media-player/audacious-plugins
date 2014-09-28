@@ -60,7 +60,7 @@ public:
     void process (float * * data, int * samples);
 };
 
-EchoPlugin aud_plugin_instance;
+EXPORT EchoPlugin aud_plugin_instance;
 
 static float *buffer = nullptr;
 static int w_ofs;

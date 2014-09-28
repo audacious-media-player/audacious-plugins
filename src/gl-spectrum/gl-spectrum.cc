@@ -74,7 +74,7 @@ public:
     void render_freq (const float * freq);
 };
 
-GLSpectrum aud_plugin_instance;
+EXPORT GLSpectrum aud_plugin_instance;
 
 static float logscale[NUM_BANDS + 1];
 static float colors[NUM_BANDS][NUM_BANDS][3];

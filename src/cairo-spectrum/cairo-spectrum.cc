@@ -52,7 +52,7 @@ public:
     void render_freq (const float * freq);
 };
 
-CairoSpectrum aud_plugin_instance;
+EXPORT CairoSpectrum aud_plugin_instance;
 
 static GtkWidget * spect_widget = nullptr;
 static float xscale[MAX_BANDS + 1];

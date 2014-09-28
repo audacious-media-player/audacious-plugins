@@ -96,7 +96,7 @@ public:
      const Index<PlaylistAddItem> & items);
 };
 
-XSPFLoader aud_plugin_instance;
+EXPORT XSPFLoader aud_plugin_instance;
 
 static void xspf_add_file (xmlNode * track, const char * filename,
  const char * base, Index<PlaylistAddItem> & items)

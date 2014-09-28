@@ -106,7 +106,7 @@ public:
     void cleanup ();
 };
 
-NeonTransport aud_plugin_instance;
+EXPORT NeonTransport aud_plugin_instance;
 
 bool NeonTransport::init ()
 {

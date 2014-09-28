@@ -77,7 +77,7 @@ public:
     int adjust_delay (int delay);
 };
 
-Crossfade aud_plugin_instance;
+EXPORT Crossfade aud_plugin_instance;
 
 static char state = STATE_OFF;
 static int current_channels = 0, current_rate = 0;

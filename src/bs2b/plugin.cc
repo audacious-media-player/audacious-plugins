@@ -48,7 +48,7 @@ public:
     void process (float * * data, int * samples);
 };
 
-BS2BPlugin aud_plugin_instance;
+EXPORT BS2BPlugin aud_plugin_instance;
 
 static t_bs2bdp bs2b = nullptr;
 static int bs2b_channels;

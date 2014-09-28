@@ -39,7 +39,7 @@ public:
      const Index<PlaylistAddItem> & items);
 };
 
-M3ULoader aud_plugin_instance;
+EXPORT M3ULoader aud_plugin_instance;
 
 static void strip_char (char * text, char c)
 {

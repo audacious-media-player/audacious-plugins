@@ -74,4 +74,4 @@ public:
     }
 };
 
-QtUI aud_plugin_instance;
+EXPORT QtUI aud_plugin_instance;

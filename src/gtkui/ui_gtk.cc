@@ -107,7 +107,7 @@ public:
         { audgui_plugin_menu_remove (id, func); }
 };
 
-GtkUI aud_plugin_instance;
+EXPORT GtkUI aud_plugin_instance;
 
 static PluginHandle * search_tool;
 

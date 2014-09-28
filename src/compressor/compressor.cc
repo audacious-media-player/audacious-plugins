@@ -80,7 +80,7 @@ public:
     int adjust_delay (int delay);
 };
 
-Compressor aud_plugin_instance;
+EXPORT Compressor aud_plugin_instance;
 
 static float * buffer, * output, * peaks;
 static int output_size;

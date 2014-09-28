@@ -59,7 +59,7 @@ public:
     void flush ();
 };
 
-Crystalizer aud_plugin_instance;
+EXPORT Crystalizer aud_plugin_instance;
 
 static int cryst_channels;
 static float * cryst_prev;
