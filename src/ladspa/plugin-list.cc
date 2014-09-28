@@ -56,7 +56,7 @@ static const AudguiListCallbacks callbacks = {
     select_all
 };
 
-GtkWidget * create_plugin_list (void)
+GtkWidget * create_plugin_list ()
 {
     GtkWidget * list = audgui_list_new (& callbacks, nullptr, plugins.len ());
     audgui_list_add_column (list, nullptr, 0, G_TYPE_STRING, -1);

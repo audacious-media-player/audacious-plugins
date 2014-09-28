@@ -110,7 +110,7 @@ static const AudguiListCallbacks callbacks = {
     shift_rows
 };
 
-GtkWidget * create_loaded_list (void)
+GtkWidget * create_loaded_list ()
 {
     GtkWidget * list = audgui_list_new (& callbacks, nullptr, loadeds.len ());
     audgui_list_add_column (list, nullptr, 0, G_TYPE_STRING, -1);

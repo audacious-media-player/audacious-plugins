@@ -28,8 +28,6 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/i18n.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 
@@ -45,7 +43,6 @@ Index<GModule *> modules;
 Index<SmartPtr<PluginData>> plugins;
 Index<SmartPtr<LoadedPlugin>> loadeds;
 
-GtkWidget * config_win;
 GtkWidget * plugin_list;
 GtkWidget * loaded_list;
 
@@ -301,7 +298,7 @@ static void load_enabled_from_config ()
     }
 }
 
-static bool ladspa_init ()
+bool LADSPAHost::init ()
 {
     pthread_mutex_lock (& mutex);
 
@@ -313,14 +310,11 @@ static bool ladspa_init ()
     load_enabled_from_config ();
 
     pthread_mutex_unlock (& mutex);
-    return 1;
+    return true;
 }
 
-static void ladspa_cleanup ()
+void LADSPAHost::cleanup ()
 {
-    if (config_win)
-        gtk_widget_destroy (config_win);
-
     pthread_mutex_lock (& mutex);
 
     aud_set_str ("ladspa", "module_path", module_path);
@@ -418,9 +412,8 @@ static void configure_plugin (LoadedPlugin & loaded)
     PluginData & plugin = loaded.plugin;
 
     StringBuf title = str_printf (_("%s Settings"), plugin.desc.Name);
-    loaded.settings_win = gtk_dialog_new_with_buttons (title, (GtkWindow *)
-     config_win, GTK_DIALOG_DESTROY_WITH_PARENT, _("_Close"),
-     GTK_RESPONSE_CLOSE, nullptr);
+    loaded.settings_win = gtk_dialog_new_with_buttons (title, nullptr,
+     (GtkDialogFlags) 0, _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
     gtk_window_set_resizable ((GtkWindow *) loaded.settings_win, 0);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded.settings_win);
@@ -554,7 +547,7 @@ static void * make_config_widget ()
     return vbox;
 }
 
-static const char about[] =
+const char ladspa_about[] =
  N_("LADSPA Host for Audacious\n"
     "Copyright 2011 John Lindgren");
 
@@ -562,18 +555,6 @@ static const PreferencesWidget ladspa_widgets[] = {
     WidgetCustomGTK (make_config_widget)
 };
 
-static const PluginPreferences ladspa_prefs = {{ladspa_widgets}};
+const PluginPreferences ladspa_prefs = {{ladspa_widgets}};
 
-#define AUD_PLUGIN_NAME        N_("LADSPA Host")
-#define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_INIT        ladspa_init
-#define AUD_PLUGIN_CLEANUP     ladspa_cleanup
-#define AUD_PLUGIN_PREFS       & ladspa_prefs
-#define AUD_EFFECT_START       ladspa_start
-#define AUD_EFFECT_PROCESS     ladspa_process
-#define AUD_EFFECT_FLUSH       ladspa_flush
-#define AUD_EFFECT_FINISH      ladspa_finish
-#define AUD_EFFECT_SAME_FMT    1
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+LADSPAHost aud_plugin_instance;

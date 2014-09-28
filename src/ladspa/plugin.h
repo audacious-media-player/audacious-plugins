@@ -23,8 +23,8 @@
 #include <pthread.h>
 #include <gtk/gtk.h>
 
-#include <libaudcore/index.h>
-#include <libaudcore/objects.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
 
 #include "ladspa.h"
 
@@ -64,6 +64,30 @@ struct LoadedPlugin
         plugin (plugin) {}
 };
 
+extern const char ladspa_about[];
+extern const PluginPreferences ladspa_prefs;
+
+class LADSPAHost : public EffectPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("LADSPA Host"),
+        PACKAGE,
+        ladspa_about,
+        & ladspa_prefs
+    };
+
+    constexpr LADSPAHost () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int * channels, int * rate);
+    void process (float * * data, int * samples);
+    void flush ();
+    void finish (float * * data, int * samples);
+};
+
 /* plugin.c */
 
 /* The mutex needs to be locked when the main thread is writing to the data
@@ -76,8 +100,6 @@ extern Index<GModule *> modules;
 extern Index<SmartPtr<PluginData>> plugins;
 extern Index<SmartPtr<LoadedPlugin>> loadeds;
 
-extern GtkWidget * about_win;
-extern GtkWidget * config_win;
 extern GtkWidget * plugin_list;
 extern GtkWidget * loaded_list;
 
@@ -88,19 +110,14 @@ void disable_plugin_locked (LoadedPlugin & loaded);
 
 void shutdown_plugin_locked (LoadedPlugin & loaded);
 
-void ladspa_start (int * channels, int * rate);
-void ladspa_process (float * * data, int * samples);
-void ladspa_flush (void);
-void ladspa_finish (float * * data, int * samples);
-
 /* plugin-list.c */
 
-GtkWidget * create_plugin_list (void);
+GtkWidget * create_plugin_list ();
 void update_plugin_list (GtkWidget * list);
 
 /* loaded-list.c */
 
-GtkWidget * create_loaded_list (void);
+GtkWidget * create_loaded_list ();
 void update_loaded_list (GtkWidget * list);
 
 #endif
