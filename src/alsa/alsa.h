@@ -22,8 +22,9 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
-#include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+
+struct PluginPreferences;
 
 #define ERROR AUDERR
 

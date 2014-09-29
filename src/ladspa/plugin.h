@@ -30,6 +30,8 @@
 
 #define LADSPA_BUFLEN 1024
 
+struct PreferencesWidget;
+
 struct ControlData {
     int port;
     String name;
@@ -64,17 +66,19 @@ struct LoadedPlugin
         plugin (plugin) {}
 };
 
-extern const char ladspa_about[];
-extern const PluginPreferences ladspa_prefs;
-
 class LADSPAHost : public EffectPlugin
 {
 public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
     static constexpr PluginInfo info = {
         N_("LADSPA Host"),
         PACKAGE,
-        ladspa_about,
-        & ladspa_prefs
+        about,
+        & prefs
     };
 
     constexpr LADSPAHost () : EffectPlugin (info, 0, true) {}

@@ -21,14 +21,30 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
+class VoiceRemoval : public EffectPlugin
+{
+public:
+	static constexpr PluginInfo info = {
+		N_("Voice Removal"),
+		PACKAGE
+	};
+
+	constexpr VoiceRemoval () : EffectPlugin (info, 0, true) {}
+
+	void start (int * channels, int * rate);
+	void process (float * * data, int * samples);
+};
+
+EXPORT VoiceRemoval aud_plugin_instance;
+
 static int voice_channels;
 
-static void voice_start(int *channels, int *rate)
+void VoiceRemoval::start (int * channels, int * rate)
 {
 	voice_channels = *channels;
 }
 
-static void voice_process(float **d, int *samples)
+void VoiceRemoval::process (float * * d, int * samples)
 {
 	float *f = *d, *end;
 	end = *d + *samples;
@@ -42,17 +58,3 @@ static void voice_process(float **d, int *samples)
 		f[1] = f[0];
 	}
 }
-
-static void voice_finish(float **d, int *samples)
-{
-	voice_process(d, samples);
-}
-
-#define AUD_PLUGIN_NAME        N_("Voice Removal")
-#define AUD_EFFECT_START       voice_start
-#define AUD_EFFECT_PROCESS     voice_process
-#define AUD_EFFECT_FINISH      voice_finish
-#define AUD_EFFECT_SAME_FMT    true
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>

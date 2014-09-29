@@ -27,16 +27,18 @@
 
 #include <bs2b.h>
 
-extern const PluginPreferences bs2b_prefs;
-
 class BS2BPlugin : public EffectPlugin
 {
 public:
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
     static constexpr PluginInfo info = {
         N_("Bauer Stereophonic-to-Binaural (BS2B)"),
         PACKAGE,
         nullptr,
-        & bs2b_prefs
+        & prefs
     };
 
     constexpr BS2BPlugin () : EffectPlugin (info, 0, true) {}
@@ -53,14 +55,14 @@ EXPORT BS2BPlugin aud_plugin_instance;
 static t_bs2bdp bs2b = nullptr;
 static int bs2b_channels;
 
-static const char * const bs2b_defaults[] = {
+const char * const BS2BPlugin::defaults[] = {
  "feed", "45",
  "fcut", "700",
  nullptr};
 
 bool BS2BPlugin::init ()
 {
-    aud_config_set_defaults ("bs2b", bs2b_defaults);
+    aud_config_set_defaults ("bs2b", defaults);
     bs2b = bs2b_open ();
 
     if (! bs2b)
@@ -128,7 +130,7 @@ static const PreferencesWidget preset_widgets[] = {
     WidgetButton ("J. Meier", {set_jmeier_preset})
 };
 
-static const PreferencesWidget bs2b_widgets[] = {
+const PreferencesWidget BS2BPlugin::widgets[] = {
     WidgetSpin (N_("Feed level:"),
         WidgetInt ("bs2b", "feed", feed_value_changed, "bs2b preset loaded"),
         {BS2B_MINFEED, BS2B_MAXFEED, 1, N_("x1/10 dB")}),
@@ -138,4 +140,4 @@ static const PreferencesWidget bs2b_widgets[] = {
     WidgetBox ({{preset_widgets}, true})
 };
 
-const PluginPreferences bs2b_prefs = {{bs2b_widgets}};
+const PluginPreferences BS2BPlugin::prefs = {{BS2BPlugin::widgets}};

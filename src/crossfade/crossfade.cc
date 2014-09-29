@@ -87,7 +87,7 @@ static int prebuffer_filled = 0;
 static float * output = nullptr;
 static int output_size = 0;
 
-static void reset (void)
+static void reset ()
 {
     state = STATE_OFF;
     current_channels = 0;
@@ -102,13 +102,13 @@ static void reset (void)
     output_size = 0;
 }
 
-bool Crossfade::init (void)
+bool Crossfade::init ()
 {
     aud_config_set_defaults ("crossfade", crossfade_defaults);
     return true;
 }
 
-void Crossfade::cleanup (void)
+void Crossfade::cleanup ()
 {
     reset ();
 }
@@ -254,7 +254,7 @@ void Crossfade::process (float * * data, int * samples)
     return_data (data, samples);
 }
 
-void Crossfade::flush (void)
+void Crossfade::flush ()
 {
     if (state == STATE_PREBUFFER || state == STATE_RUNNING)
     {

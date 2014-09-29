@@ -21,6 +21,7 @@
 
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 
 #include "alsa.h"

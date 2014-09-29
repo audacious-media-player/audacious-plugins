@@ -51,6 +51,34 @@
 #define BYTES(frames) ((frames) * curchans * sizeof (float))
 #define OFFSET(buf,frames) ((buf) + (frames) * curchans)
 
+class SpeedPitch : public EffectPlugin
+{
+public:
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Speed and Pitch"),
+        PACKAGE,
+        nullptr,
+        & prefs
+    };
+
+    constexpr SpeedPitch () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int * channels, int * rate);
+    void process (float * * data, int * samples);
+    void flush ();
+    void finish (float * * data, int * samples);
+    int adjust_delay (int delay);
+};
+
+EXPORT SpeedPitch aud_plugin_instance;
+
 typedef struct {
     float * mem;
     int size, len;
@@ -103,7 +131,7 @@ static void bufadd (Buffer * b, float * data, int len, double ratio)
     b->len = oldlen + d.output_frames_gen;
 }
 
-static void speed_flush (void)
+void SpeedPitch::flush ()
 {
     src_reset (srcstate);
 
@@ -118,7 +146,7 @@ static void speed_flush (void)
     ending = false;
 }
 
-static void speed_start (int * chans, int * rate)
+void SpeedPitch::start (int * chans, int * rate)
 {
     curchans = * chans;
     currate = * rate;
@@ -139,10 +167,10 @@ static void speed_start (int * chans, int * rate)
     for (int i = 0; i < width; i ++)
         cosine[i] = (1.0 - cos (2.0 * M_PI * i / width)) / OVERLAP;
 
-    speed_flush ();
+    flush ();
 }
 
-static void speed_process (float * * data, int * samples)
+void SpeedPitch::process (float * * data, int * samples)
 {
     double pitch = aud_get_double (CFGSECT, "pitch");
     double speed = aud_get_double (CFGSECT, "speed");
@@ -201,30 +229,30 @@ static void speed_process (float * * data, int * samples)
     written = dst;
 }
 
-static void speed_finish (float * * data, int * samples)
+void SpeedPitch::finish (float * * data, int * samples)
 {
     /* Ignore the second "end of playlist" call since we are not in a state to
      * handle it properly. */
     if (! ending)
     {
         ending = true;
-        speed_process (data, samples);
+        process (data, samples);
     }
 }
 
-static int speed_adjust_delay (int delay)
+int SpeedPitch::adjust_delay (int delay)
 {
     /* Not sample-accurate, but should be a decent estimate. */
     double speed = aud_get_double (CFGSECT, "speed");
     return delay * speed + width * 1000 / currate;
 }
 
-static const char * const speed_defaults[] = {
+const char * const SpeedPitch::defaults[] = {
  "speed", "1",
  "pitch", "1",
  nullptr};
 
-static const PreferencesWidget speed_widgets[] = {
+const PreferencesWidget SpeedPitch::widgets[] = {
     WidgetLabel (N_("<b>Speed and Pitch</b>")),
     WidgetSpin (N_("Speed:"),
         WidgetFloat (CFGSECT, "speed"),
@@ -234,15 +262,15 @@ static const PreferencesWidget speed_widgets[] = {
         {MINPITCH, MAXPITCH, 0.05})
 };
 
-static const PluginPreferences speed_prefs = {{speed_widgets}};
+const PluginPreferences SpeedPitch::prefs = {{SpeedPitch::widgets}};
 
-static bool speed_init (void)
+bool SpeedPitch::init ()
 {
-    aud_config_set_defaults (CFGSECT, speed_defaults);
+    aud_config_set_defaults (CFGSECT, defaults);
     return true;
 }
 
-static void speed_cleanup (void)
+void SpeedPitch::cleanup ()
 {
     if (srcstate)
         src_delete (srcstate);
@@ -260,17 +288,3 @@ static void speed_cleanup (void)
     out.mem = nullptr;
     out.size = 0;
 }
-
-#define AUD_PLUGIN_NAME        N_("Speed and Pitch")
-#define AUD_PLUGIN_PREFS       & speed_prefs
-#define AUD_PLUGIN_INIT        speed_init
-#define AUD_PLUGIN_CLEANUP     speed_cleanup
-#define AUD_EFFECT_START       speed_start
-#define AUD_EFFECT_PROCESS     speed_process
-#define AUD_EFFECT_FLUSH       speed_flush
-#define AUD_EFFECT_FINISH      speed_finish
-#define AUD_EFFECT_ADJ_DELAY   speed_adjust_delay
-#define AUD_EFFECT_SAME_FMT    true
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>

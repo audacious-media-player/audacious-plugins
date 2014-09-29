@@ -33,7 +33,7 @@
 
 #include "plugin.h"
 
-static const char * const ladspa_defaults[] = {
+const char * const LADSPAHost::defaults[] = {
  "plugin_count", "0",
  nullptr};
 
@@ -302,7 +302,7 @@ bool LADSPAHost::init ()
 {
     pthread_mutex_lock (& mutex);
 
-    aud_config_set_defaults ("ladspa", ladspa_defaults);
+    aud_config_set_defaults ("ladspa", defaults);
 
     module_path = aud_get_str ("ladspa", "module_path");
 
@@ -547,14 +547,14 @@ static void * make_config_widget ()
     return vbox;
 }
 
-const char ladspa_about[] =
+const char LADSPAHost::about[] =
  N_("LADSPA Host for Audacious\n"
     "Copyright 2011 John Lindgren");
 
-static const PreferencesWidget ladspa_widgets[] = {
+const PreferencesWidget LADSPAHost::widgets[] = {
     WidgetCustomGTK (make_config_widget)
 };
 
-const PluginPreferences ladspa_prefs = {{ladspa_widgets}};
+const PluginPreferences LADSPAHost::prefs = {{LADSPAHost::widgets}};
 
 EXPORT LADSPAHost aud_plugin_instance;

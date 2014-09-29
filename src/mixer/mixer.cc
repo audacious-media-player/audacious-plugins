@@ -28,6 +28,33 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
+class ChannelMixer : public EffectPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Channel Mixer"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    /* order #2: must be before crossfade */
+    constexpr ChannelMixer () : EffectPlugin (info, 2, false) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int * channels, int * rate);
+    void process (float * * data, int * samples);
+};
+
+EXPORT ChannelMixer aud_plugin_instance;
+
 typedef void (* Converter) (float * * data, int * samples);
 
 static float * mixer_buf;
@@ -124,7 +151,7 @@ static Converter get_converter (int in, int out)
 
 static int input_channels, output_channels;
 
-void mixer_start (int * channels, int * rate)
+void ChannelMixer::start (int * channels, int * rate)
 {
     input_channels = * channels;
     output_channels = aud_get_int ("mixer", "channels");
@@ -142,7 +169,7 @@ void mixer_start (int * channels, int * rate)
     * channels = output_channels;
 }
 
-void mixer_process (float * * data, int * samples)
+void ChannelMixer::process (float * * data, int * samples)
 {
     if (input_channels == output_channels)
         return;
@@ -152,44 +179,31 @@ void mixer_process (float * * data, int * samples)
         converter (data, samples);
 }
 
-static const char * const mixer_defaults[] = {
+const char * const ChannelMixer::defaults[] = {
  "channels", "2",
   nullptr};
 
-static bool mixer_init (void)
+bool ChannelMixer::init ()
 {
-    aud_config_set_defaults ("mixer", mixer_defaults);
+    aud_config_set_defaults ("mixer", defaults);
     return true;
 }
 
-static void mixer_cleanup (void)
+void ChannelMixer::cleanup ()
 {
     g_free (mixer_buf);
     mixer_buf = 0;
 }
 
-static const char mixer_about[] =
+const char ChannelMixer::about[] =
  N_("Channel Mixer Plugin for Audacious\n"
     "Copyright 2011-2012 John Lindgren and Michał Lipski");
 
-static const PreferencesWidget mixer_widgets[] = {
+const PreferencesWidget ChannelMixer::widgets[] = {
     WidgetLabel (N_("<b>Channel Mixer</b>")),
     WidgetSpin (N_("Output channels:"),
         WidgetInt ("mixer", "channels"),
         {1, AUD_MAX_CHANNELS, 1})
 };
 
-static const PluginPreferences mixer_prefs = {{mixer_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Channel Mixer")
-#define AUD_PLUGIN_ABOUT       mixer_about
-#define AUD_PLUGIN_PREFS       & mixer_prefs
-#define AUD_PLUGIN_INIT        mixer_init
-#define AUD_PLUGIN_CLEANUP     mixer_cleanup
-#define AUD_EFFECT_START       mixer_start
-#define AUD_EFFECT_PROCESS     mixer_process
-#define AUD_EFFECT_FINISH      mixer_process
-#define AUD_EFFECT_ORDER       2  /* must be before crossfade */
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences ChannelMixer::prefs = {{ChannelMixer::widgets}};
