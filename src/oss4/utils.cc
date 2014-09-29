@@ -149,12 +149,12 @@ int oss_bytes_to_frames(int bytes)
     return bytes * 8 / oss_data->channels / oss_data->bits_per_sample;
 }
 
-int oss_calc_bitrate(void)
+int oss_calc_bitrate()
 {
     return (oss_data->rate * oss_data->channels * oss_data->bits_per_sample) >> 3;
 }
 
-const char *oss_describe_error(void)
+const char *oss_describe_error()
 {
     const struct
     {
@@ -199,7 +199,7 @@ int oss_probe_for_adev(oss_sysinfo *sysinfo)
 }
 #endif
 
-bool oss_hardware_present(void)
+bool oss_hardware_present()
 {
     int mixerfd;
 

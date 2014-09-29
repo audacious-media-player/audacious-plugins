@@ -25,6 +25,8 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 
+#include <poll.h>
+
 static const char * const oss_defaults[] = {
  "device", DEFAULT_DSP,
  "use_alt_device", "FALSE",
@@ -42,7 +44,10 @@ static int oss_paused_time;
 static int oss_delay; /* miliseconds */
 static bool oss_ioctl_vol = false;
 
-bool oss_init(void)
+static int poll_pipe[2];
+static pollfd poll_handles[2];
+
+bool oss_init()
 {
     AUDDBG("Init.\n");
 
@@ -53,7 +58,7 @@ bool oss_init(void)
     return oss_hardware_present();
 }
 
-void oss_cleanup(void)
+void oss_cleanup()
 {
     AUDDBG("Cleanup.\n");
 
@@ -98,7 +103,7 @@ FAILED:
     return false;
 }
 
-static int open_device(void)
+static int open_device()
 {
     int res = -1;
     int flags = O_WRONLY;
@@ -121,10 +126,63 @@ static int open_device(void)
     return res;
 }
 
-static void close_device(void)
+static void close_device()
 {
     close(oss_data->fd);
     oss_data->fd = -1;
+}
+
+static bool poll_setup()
+{
+    if (pipe(poll_pipe))
+    {
+        AUDERR("Failed to create pipe: %s.\n", strerror(errno));
+        return false;
+    }
+
+    if (fcntl(poll_pipe[0], F_SETFL, O_NONBLOCK))
+    {
+        AUDERR("Failed to set O_NONBLOCK on pipe: %s.\n", strerror(errno));
+        close(poll_pipe[0]);
+        close(poll_pipe[1]);
+        return false;
+    }
+
+    poll_handles[0].fd = poll_pipe[0];
+    poll_handles[0].events = POLLIN;
+    poll_handles[1].fd = oss_data->fd;
+    poll_handles[1].events = POLLOUT;
+
+    return true;
+}
+
+static void poll_sleep()
+{
+    if (poll(poll_handles, 2, -1) < 0)
+    {
+        AUDERR("Failed to poll: %s.\n", strerror(errno));
+        return;
+    }
+
+    if (poll_handles[0].revents & POLLIN)
+    {
+        char c;
+        while (read (poll_pipe[0], &c, 1) == 1)
+            ;
+    }
+}
+
+static void poll_wake()
+{
+    const char c = 0;
+    if (write (poll_pipe[1], &c, 1) < 0)
+        AUDERR("Failed to write to pipe: %s.\n", strerror(errno));
+}
+
+static void poll_cleanup()
+{
+    close (poll_pipe[0]);
+    close (poll_pipe[1]);
 }
 
 bool oss_open_audio(int aud_format, int rate, int channels)
@@ -136,6 +194,9 @@ bool oss_open_audio(int aud_format, int rate, int channels)
     audio_buf_info buf_info;
 
     CHECK_NOISY(oss_data->fd = open_device);
+
+    if (!poll_setup())
+        goto CLOSE;
 
     format = oss_convert_aud_format(aud_format);
 
@@ -168,14 +229,17 @@ bool oss_open_audio(int aud_format, int rate, int channels)
     return true;
 
 FAILED:
+    poll_cleanup();
+CLOSE:
     close_device();
     return false;
 }
 
-void oss_close_audio(void)
+void oss_close_audio()
 {
     AUDDBG ("Closing audio.\n");
 
+    poll_cleanup();
     close_device();
 }
 
@@ -199,7 +263,12 @@ void oss_write_audio(void *data, int length)
     }
 }
 
-void oss_drain(void)
+void oss_period_wait()
+{
+    poll_sleep();
+}
+
+void oss_drain()
 {
     AUDDBG("Drain.\n");
 
@@ -207,7 +276,7 @@ void oss_drain(void)
         DESCRIBE_ERROR;
 }
 
-int oss_buffer_free(void)
+int oss_buffer_free()
 {
     audio_buf_info buf_info;
 
@@ -217,7 +286,7 @@ int oss_buffer_free(void)
     memset(&buf_info, 0, sizeof buf_info);
     CHECK(ioctl, oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
 
-    return aud::max(0, buf_info.fragments - 1) * buf_info.fragsize;
+    return buf_info.bytes;
 
 FAILED:
     return 0;
@@ -231,7 +300,7 @@ static int real_output_time()
     return time;
 }
 
-int oss_output_time(void)
+int oss_output_time()
 {
     int time = 0;
 
@@ -251,6 +320,8 @@ void oss_flush(int time)
 FAILED:
     oss_time = (int64_t) time * 1000;
     oss_paused_time = time;
+
+    poll_wake();
 }
 
 void oss_pause(bool pause)

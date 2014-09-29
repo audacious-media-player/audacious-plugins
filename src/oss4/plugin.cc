@@ -117,7 +117,7 @@ static const char oss_about[] =
 #define AUD_OUTPUT_WRITE       oss_write_audio
 #define AUD_OUTPUT_DRAIN       oss_drain
 #define AUD_OUTPUT_GET_FREE    oss_buffer_free
-#define AUD_OUTPUT_WAIT_FREE   nullptr
+#define AUD_OUTPUT_WAIT_FREE   oss_period_wait
 #define AUD_OUTPUT_GET_TIME    oss_output_time
 #define AUD_OUTPUT_FLUSH       oss_flush
 #define AUD_OUTPUT_PAUSE       oss_pause

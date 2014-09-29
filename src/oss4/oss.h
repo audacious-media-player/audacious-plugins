@@ -90,21 +90,22 @@ typedef struct
 extern oss_data_t *oss_data;
 
 /* oss.c */
-bool oss_init(void);
-void oss_cleanup(void);
+bool oss_init();
+void oss_cleanup();
 bool oss_open_audio(int aud_format, int rate, int channels);
-void oss_close_audio(void);
+void oss_close_audio();
 void oss_write_audio(void *data, int length);
-void oss_drain(void);
-int oss_buffer_free(void);
-int oss_output_time(void);
+void oss_period_wait();
+void oss_drain();
+int oss_buffer_free();
+int oss_output_time();
 void oss_flush(int time);
 void oss_pause(bool pause);
 void oss_get_volume(int *left, int *right);
 void oss_set_volume(int left, int right);
 
 /* configure.c */
-void oss_configure(void);
+void oss_configure();
 
 /* utils.c */
 int oss_convert_aud_format(int aud_format);
@@ -112,13 +113,13 @@ const char *oss_format_to_text(int format);
 int oss_format_to_bits(int format);
 int oss_frames_to_bytes(int frames);
 int oss_bytes_to_frames(int bytes);
-int oss_calc_bitrate(void);
-const char *oss_describe_error(void);
+int oss_calc_bitrate();
+const char *oss_describe_error();
 
 #ifdef SNDCTL_SYSINFO
 int oss_probe_for_adev(oss_sysinfo *sysinfo);
 #endif
 
-bool oss_hardware_present(void);
+bool oss_hardware_present();
 
 #endif
