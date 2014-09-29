@@ -114,7 +114,11 @@ int oss_frames_to_bytes(int frames);
 int oss_bytes_to_frames(int bytes);
 int oss_calc_bitrate(void);
 const char *oss_describe_error(void);
+
+#ifdef SNDCTL_SYSINFO
 int oss_probe_for_adev(oss_sysinfo *sysinfo);
+#endif
+
 bool oss_hardware_present(void);
 
 #endif

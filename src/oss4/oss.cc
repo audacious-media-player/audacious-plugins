@@ -66,9 +66,11 @@ static bool set_format(int format, int rate, int channels)
 
     AUDDBG("Audio format: %s, sample rate: %dHz, number of channels: %d.\n", oss_format_to_text(format), rate, channels);
 
+#ifdef SNDCTL_DSP_COOKEDMODE
     /* Enable/disable format conversions made by the OSS software */
     param = aud_get_bool("oss4", "cookedmode");
     CHECK(ioctl, oss_data->fd, SNDCTL_DSP_COOKEDMODE, &param);
+#endif
 
     AUDDBG("%s format conversions made by the OSS software.\n", param ? "Enabled" : "Disabled");
 
@@ -140,6 +142,7 @@ bool oss_open_audio(int aud_format, int rate, int channels)
     if (!set_format(format, rate, channels))
         goto FAILED;
 
+    memset(&buf_info, 0, sizeof buf_info);
     CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
 
     AUDDBG("Buffer information, fragstotal: %d, fragsize: %d, bytes: %d.\n",
@@ -211,6 +214,7 @@ int oss_buffer_free(void)
     if (oss_paused)
         return 0;
 
+    memset(&buf_info, 0, sizeof buf_info);
     CHECK(ioctl, oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
 
     return aud::max(0, buf_info.fragments - 1) * buf_info.fragsize;
@@ -253,6 +257,7 @@ void oss_pause(bool pause)
 {
     AUDDBG("%sause.\n", pause ? "P" : "Unp");
 
+#ifdef SNDCTL_DSP_SILENCE
     if (pause)
     {
         oss_paused_time = real_output_time();
@@ -262,6 +267,7 @@ void oss_pause(bool pause)
         CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SKIP, nullptr);
 
 FAILED:
+#endif
     oss_paused = pause;
 }
 
@@ -269,7 +275,8 @@ void oss_get_volume(int *left, int *right)
 {
     *left = *right = 0;
 
-    int vol;
+#ifdef SNDCTL_DSP_GETPLAYVOL
+    int vol = 0;
 
     if (oss_data->fd == -1 || !oss_ioctl_vol)
     {
@@ -292,10 +299,12 @@ void oss_get_volume(int *left, int *right)
 FAILED:
     if (errno == EINVAL)
         oss_ioctl_vol = false;
+#endif
 }
 
 void oss_set_volume(int left, int right)
 {
+#ifdef SNDCTL_DSP_SETPLAYVOL
     int vol = (right << 8) | left;
 
     if (aud_get_int("oss4", "save_volume"))
@@ -311,4 +320,5 @@ void oss_set_volume(int left, int right)
 FAILED:
     if (errno == EINVAL)
         oss_ioctl_vol = false;
+#endif
 }

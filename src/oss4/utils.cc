@@ -39,10 +39,14 @@ const char *oss_format_to_text(int format)
         {AFMT_S16_BE, "AFMT_S16_BE"},
         {AFMT_U16_LE, "AFMT_U16_LE"},
         {AFMT_U16_BE, "AFMT_U16_BE"},
+#ifdef AFMT_S24_LE
         {AFMT_S24_LE, "AFMT_S24_LE"},
         {AFMT_S24_BE, "AFMT_S24_BE"},
+#endif
+#ifdef AFMT_S32_LE
         {AFMT_S32_LE, "AFMT_S32_LE"},
         {AFMT_S32_BE, "AFMT_S32_BE"},
+#endif
     };
 
     for (auto & conv : table)
@@ -72,10 +76,14 @@ int oss_convert_aud_format(int aud_format)
         {FMT_S16_BE, AFMT_S16_BE},
         {FMT_U16_LE, AFMT_U16_LE},
         {FMT_U16_BE, AFMT_U16_BE},
+#ifdef AFMT_S24_LE
         {FMT_S24_LE, AFMT_S24_LE},
         {FMT_S24_BE, AFMT_S24_BE},
+#endif
+#ifdef AFMT_S32_LE
         {FMT_S32_LE, AFMT_S32_LE},
         {FMT_S32_BE, AFMT_S32_BE},
+#endif
     };
 
     int count;
@@ -107,12 +115,18 @@ int oss_format_to_bits(int format)
         case AFMT_U16_BE:
             bits = 16;
             break;
+#ifdef AFMT_S24_LE
         case AFMT_S24_LE:
         case AFMT_S24_BE:
+            bits = 32;
+            break;
+#endif
+#ifdef AFMT_S32_LE
         case AFMT_S32_LE:
         case AFMT_S32_BE:
             bits = 32;
             break;
+#endif
 #ifdef AFMT_FLOAT
         case AFMT_FLOAT:
             bits = sizeof(float) * 8;
@@ -171,6 +185,7 @@ const char *oss_describe_error(void)
     return strerror(errno);
 }
 
+#ifdef SNDCTL_SYSINFO
 int oss_probe_for_adev(oss_sysinfo *sysinfo)
 {
     int num;
@@ -182,15 +197,20 @@ int oss_probe_for_adev(oss_sysinfo *sysinfo)
 
     return num;
 }
+#endif
 
 bool oss_hardware_present(void)
 {
     int mixerfd;
-    oss_sysinfo sysinfo;
 
     CHECK_NOISY(mixerfd = open, DEFAULT_MIXER, O_RDWR, 0);
+
+#ifdef SNDCTL_SYSINFO
+    oss_sysinfo sysinfo;
+    memset(&sysinfo, 0, sizeof sysinfo);
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
     CHECK_NOISY(oss_probe_for_adev, &sysinfo);
+#endif
 
     close(mixerfd);
     return true;

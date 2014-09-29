@@ -554,7 +554,7 @@ dnl OSS output
 dnl ==========
 
 AC_ARG_ENABLE(oss4,
- [AS_HELP_STRING([--disable-oss4],[disable OSS4 output plugin])],
+ [AS_HELP_STRING([--disable-oss4], [disable OSS4 output plugin])],
  [enable_oss4=$enableval], [enable_oss4=auto])
 
 OSS_CFLAGS=
@@ -567,28 +567,17 @@ if test "x$enable_oss4" != "xno" ; then
 
     OLD_CPPFLAGS="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
-    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h])
-    AC_MSG_CHECKING(for OSS4)
+    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h], [have_oss4=yes])
+    CPPFLAGS="$OLD_CPPFLAGS"
 
-    AC_EGREP_CPP(yes,
-     [#ifdef HAVE_SYS_SOUNDCARD_H
-      #include <sys/soundcard.h>
-      #elif defined HAVE_SOUNDCARD_H
-      #include <soundcard.h>
-      #endif
-      #if OSS_VERSION >= 0x40000 || SOUND_VERSION >= 0x40000
-          yes
-      #endif],
-     [have_oss4=yes
-      OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
-      AC_SUBST(OSS_CFLAGS)],
-     [if test "x$enable_oss4" = "xyes"; then
-        AC_MSG_ERROR([Cannot find OSS4 development files, but compilation of OSS4 output plugin has been explicitly requested; please install OSS4 dev files and run configure again])
-      fi]
-    )
+    if test "x$have_oss4" = "xyes" ; then
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
+        AC_SUBST(OSS_CFLAGS)
+    elif test "x$enable_oss4" = "xyes" ; then
+        AC_MSG_ERROR([OSS4 output was enabled but soundcard.h was not found])
+    fi
 
     AC_MSG_RESULT([$have_oss4])
-    CPPFLAGS="$OLD_CPPFLAGS"
 fi
 
 dnl *** ALSA output plugin

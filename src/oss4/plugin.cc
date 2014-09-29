@@ -26,18 +26,22 @@ static Index<ComboItem> oss_elements;
 
 static void combo_init()
 {
-    oss_sysinfo sysinfo;
     int mixerfd;
 
     CHECK_NOISY(mixerfd = open, DEFAULT_MIXER, O_RDWR);
-    CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
-    CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
     oss_elements.append(ComboItem(strdup(N_("Default device")), strdup(DEFAULT_DSP)));
+
+#ifdef SNDCTL_SYSINFO
+    oss_sysinfo sysinfo;
+    memset(&sysinfo, 0, sizeof sysinfo);
+    CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
+    CHECK_NOISY(oss_probe_for_adev, &sysinfo);
 
     for (int i = 0; i < sysinfo.numaudios; i++)
     {
         oss_audioinfo ainfo;
+        memset(&ainfo, 0, sizeof ainfo);
         ainfo.dev = i;
 
         CHECK(ioctl, mixerfd, SNDCTL_AUDIOINFO, &ainfo);
@@ -45,6 +49,7 @@ static void combo_init()
         if (ainfo.caps & PCM_CAP_OUTPUT)
             oss_elements.append(ComboItem(strdup(ainfo.name), strdup(ainfo.devnode)));
     }
+#endif
 
 FAILED:
     close(mixerfd);
@@ -95,8 +100,16 @@ static const char oss_about[] =
     "I would like to thank people on #audacious, especially Tony Vroon and "
     "John Lindgren and of course the authors of the previous OSS plugin.");
 
+// OSS4 is preferred over ALSA (priority 5).
+// ALSA is preferred over OSS3.
+#ifdef SNDCTL_SYSINFO
 #define AUD_PLUGIN_NAME        N_("OSS4 Output")
-#define AUD_OUTPUT_PRIORITY    5
+#define AUD_OUTPUT_PRIORITY    6
+#else
+#define AUD_PLUGIN_NAME        N_("OSS3 Output")
+#define AUD_OUTPUT_PRIORITY    4
+#endif
+
 #define AUD_PLUGIN_INIT        oss_init
 #define AUD_PLUGIN_CLEANUP     oss_cleanup
 #define AUD_OUTPUT_OPEN        oss_open_audio
