@@ -21,6 +21,7 @@
 
 #include <string.h>
 
+#undef EXPORT
 #include <mpg123.h>
 
 // mpg123.h redefines EXPORT
