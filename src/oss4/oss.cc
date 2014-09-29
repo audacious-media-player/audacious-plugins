@@ -355,12 +355,12 @@ void oss_pause(bool pause)
 {
     AUDDBG("%sause.\n", pause ? "P" : "Unp");
 
+    if (pause)
+        oss_paused_time = real_output_time();
+
 #ifdef SNDCTL_DSP_SILENCE
     if (pause)
-    {
-        oss_paused_time = real_output_time();
         CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SILENCE, nullptr);
-    }
     else
         CHECK(ioctl, oss_data->fd, SNDCTL_DSP_SKIP, nullptr);
 
