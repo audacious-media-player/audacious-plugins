@@ -102,6 +102,32 @@ FAILED:
     return false;
 }
 
+static int log2(int x)
+{
+    int y = 0;
+
+    while((x >>= 1))
+        y++;
+
+    return y;
+}
+
+static bool set_buffer()
+{
+    int milliseconds = aud_get_int(nullptr, "output_buffer_size");
+    int bytes = oss_frames_to_bytes(aud::rescale(milliseconds, 1000, oss_data->rate));
+    int fragorder = aud::clamp(log2(bytes / 4), 9, 15);
+    int numfrags = aud::clamp(aud::rdiv(bytes, 1 << fragorder), 4, 32767);
+
+    int param = (numfrags << 16) | fragorder;
+    CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_SETFRAGMENT, &param);
+
+    return true;
+
+FAILED:
+    return false;
+}
+
 static int open_device()
 {
     int res = -1;
@@ -202,10 +228,13 @@ bool oss_open_audio(int aud_format, int rate, int channels)
     if (!set_format(format, rate, channels))
         goto FAILED;
 
+    if (!set_buffer())
+        goto FAILED;
+
     memset(&buf_info, 0, sizeof buf_info);
     CHECK_NOISY(ioctl, oss_data->fd, SNDCTL_DSP_GETOSPACE, &buf_info);
 
-    AUDDBG("Buffer information, fragstotal: %d, fragsize: %d, bytes: %d.\n",
+    AUDINFO("Buffer information, fragstotal: %d, fragsize: %d, bytes: %d.\n",
         buf_info.fragstotal,
         buf_info.fragsize,
         buf_info.bytes);
