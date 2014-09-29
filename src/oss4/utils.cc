@@ -129,7 +129,7 @@ int oss_format_to_bytes(int format)
 #endif
 #ifdef AFMT_FLOAT
         case AFMT_FLOAT:
-            bits = sizeof(float);
+            bytes = sizeof(float);
             break;
 #endif
     }
