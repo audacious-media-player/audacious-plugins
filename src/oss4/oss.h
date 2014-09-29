@@ -84,7 +84,7 @@ typedef struct
     int format;
     int rate;
     int channels;
-    int bits_per_sample;
+    int bytes_per_sample;
 } oss_data_t;
 
 extern oss_data_t *oss_data;
@@ -110,10 +110,9 @@ void oss_configure();
 /* utils.c */
 int oss_convert_aud_format(int aud_format);
 const char *oss_format_to_text(int format);
-int oss_format_to_bits(int format);
+int oss_format_to_bytes(int format);
 int oss_frames_to_bytes(int frames);
 int oss_bytes_to_frames(int bytes);
-int oss_calc_bitrate();
 const char *oss_describe_error();
 
 #ifdef SNDCTL_SYSINFO

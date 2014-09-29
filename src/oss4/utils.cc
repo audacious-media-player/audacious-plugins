@@ -99,59 +99,52 @@ int oss_convert_aud_format(int aud_format)
     return -1;
 }
 
-int oss_format_to_bits(int format)
+int oss_format_to_bytes(int format)
 {
-    char bits;
+    int bytes = 1;
 
     switch (format)
     {
         case AFMT_U8:
         case AFMT_S8:
-            bits = 8;
+            bytes = 1;
             break;
         case AFMT_S16_LE:
         case AFMT_S16_BE:
         case AFMT_U16_LE:
         case AFMT_U16_BE:
-            bits = 16;
+            bytes = 2;
             break;
 #ifdef AFMT_S24_LE
         case AFMT_S24_LE:
         case AFMT_S24_BE:
-            bits = 32;
+            bytes = 4;
             break;
 #endif
 #ifdef AFMT_S32_LE
         case AFMT_S32_LE:
         case AFMT_S32_BE:
-            bits = 32;
+            bytes = 4;
             break;
 #endif
 #ifdef AFMT_FLOAT
         case AFMT_FLOAT:
-            bits = sizeof(float) * 8;
+            bits = sizeof(float);
             break;
 #endif
-        default:
-            bits = 8;
     }
 
-    return bits;
+    return bytes;
 }
 
 int oss_frames_to_bytes(int frames)
 {
-    return frames * oss_data->bits_per_sample * oss_data->channels / 8;
+    return frames * (oss_data->bytes_per_sample * oss_data->channels);
 }
 
 int oss_bytes_to_frames(int bytes)
 {
-    return bytes * 8 / oss_data->channels / oss_data->bits_per_sample;
-}
-
-int oss_calc_bitrate()
-{
-    return (oss_data->rate * oss_data->channels * oss_data->bits_per_sample) >> 3;
+    return bytes / (oss_data->bytes_per_sample * oss_data->channels);
 }
 
 const char *oss_describe_error()

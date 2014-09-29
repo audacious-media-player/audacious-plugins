@@ -38,10 +38,9 @@ static const char * const oss_defaults[] = {
  nullptr};
 
 oss_data_t *oss_data;
-static int64_t oss_time; /* microseconds */
+static int64_t oss_frames_written;
 static bool oss_paused;
 static int oss_paused_time;
-static int oss_delay; /* miliseconds */
 static bool oss_ioctl_vol = false;
 
 static int poll_pipe[2];
@@ -95,7 +94,7 @@ static bool set_format(int format, int rate, int channels)
     oss_data->format = format;
     oss_data->rate = rate;
     oss_data->channels = channels;
-    oss_data->bits_per_sample = oss_format_to_bits(oss_data->format);
+    oss_data->bytes_per_sample = oss_format_to_bytes(oss_data->format);
 
     return true;
 
@@ -211,13 +210,10 @@ bool oss_open_audio(int aud_format, int rate, int channels)
         buf_info.fragsize,
         buf_info.bytes);
 
-    oss_time = 0;
+    oss_frames_written = 0;
     oss_paused = false;
     oss_paused_time = 0;
-    oss_delay = oss_bytes_to_frames(buf_info.fragstotal * buf_info.fragsize) * 1000 / oss_data->rate;
     oss_ioctl_vol = true;
-
-    AUDDBG("Internal OSS buffer size: %dms.\n", oss_delay);
 
     if (aud_get_bool("oss4", "save_volume"))
     {
@@ -259,7 +255,7 @@ void oss_write_audio(void *data, int length)
 
         length -= written;
         start += written;
-        oss_time += (int64_t) oss_bytes_to_frames(written) * 1000000 / oss_data->rate;
+        oss_frames_written += oss_bytes_to_frames(written);
     }
 }
 
@@ -294,10 +290,12 @@ FAILED:
 
 static int real_output_time()
 {
-    int  time = 0;
+    int delay_bytes = 0;
+    CHECK(ioctl, oss_data->fd, SNDCTL_DSP_GETODELAY, &delay_bytes);
 
-    time = (oss_time - (int64_t) (oss_delay * 1000)) / 1000;
-    return time;
+FAILED:
+    int64_t frames_played = oss_frames_written - oss_bytes_to_frames(delay_bytes);
+    return aud::rescale<int64_t>(frames_played, oss_data->rate, 1000);
 }
 
 int oss_output_time()
@@ -318,7 +316,7 @@ void oss_flush(int time)
     CHECK(ioctl, oss_data->fd, SNDCTL_DSP_RESET, nullptr);
 
 FAILED:
-    oss_time = (int64_t) time * 1000;
+    oss_frames_written = aud::rescale<int64_t>(time, 1000, oss_data->rate);
     oss_paused_time = time;
 
     poll_wake();
