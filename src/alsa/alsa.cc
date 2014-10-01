@@ -47,9 +47,6 @@
 
 #include <alsa/asoundlib.h>
 
-#include <libaudcore/plugin.h>
-#include <libaudcore/runtime.h>
-
 #include "alsa.h"
 
 #define CHECK_VAL_RECOVER(value, function, ...) \
@@ -79,25 +76,25 @@ static int alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
 static int alsa_period; /* milliseconds */
 
 static int64_t alsa_written; /* frames */
-static char alsa_prebuffer, alsa_paused;
+static bool alsa_prebuffer, alsa_paused;
 static int alsa_paused_delay; /* frames */
 
 static int poll_pipe[2];
 static int poll_count;
 static pollfd * poll_handles;
 
-static char pump_quit;
+static bool pump_quit;
 static pthread_t pump_thread;
 
 static snd_mixer_t * alsa_mixer;
 static snd_mixer_elem_t * alsa_mixer_element;
 
-static char poll_setup ()
+static bool poll_setup ()
 {
     if (pipe (poll_pipe))
     {
         ERROR ("Failed to create pipe: %s.\n", strerror (errno));
-        return 0;
+        return false;
     }
 
     if (fcntl (poll_pipe[0], F_SETFL, O_NONBLOCK))
@@ -105,7 +102,7 @@ static char poll_setup ()
         ERROR ("Failed to set O_NONBLOCK on pipe: %s.\n", strerror (errno));
         close (poll_pipe[0]);
         close (poll_pipe[1]);
-        return 0;
+        return false;
     }
 
     poll_count = 1 + snd_pcm_poll_descriptors_count (alsa_handle);
@@ -115,7 +112,7 @@ static char poll_setup ()
     poll_count = 1 + snd_pcm_poll_descriptors (alsa_handle, poll_handles + 1,
      poll_count - 1);
 
-    return 1;
+    return true;
 }
 
 static void poll_sleep ()
@@ -148,13 +145,13 @@ static void poll_cleanup ()
     delete[] poll_handles;
 }
 
-static void * pump (void * unused)
+static void * pump (void *)
 {
     pthread_mutex_lock (& alsa_mutex);
     pthread_cond_broadcast (& alsa_cond); /* signal thread started */
 
-    char failed = 0;
-    char workaround = 0;
+    bool failed = 0;
+    bool workaround = 0;
     int slept = 0;
 
     while (! pump_quit)
@@ -183,7 +180,7 @@ static void * pump (void * unused)
         CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle,
          alsa_buffer + alsa_buffer_data_start, length);
 
-        failed = 0;
+        failed = false;
 
         written = snd_pcm_frames_to_bytes (alsa_handle, written);
         alsa_buffer_data_start += written;
@@ -206,7 +203,7 @@ static void * pump (void * unused)
         if (slept > 4)
         {
             AUDDBG ("Activating timer workaround.\n");
-            workaround = 1;
+            workaround = true;
         }
 
         if (workaround && slept)
@@ -227,7 +224,7 @@ static void * pump (void * unused)
         if (failed)
             break;
 
-        failed = 1;
+        failed = true;
         CHECK (snd_pcm_prepare, alsa_handle);
     }
 
@@ -245,13 +242,13 @@ static void pump_start ()
 static void pump_stop ()
 {
     AUDDBG ("Stopping pump.\n");
-    pump_quit = 1;
+    pump_quit = true;
     pthread_cond_broadcast (& alsa_cond);
     poll_wake ();
     pthread_mutex_unlock (& alsa_mutex);
     pthread_join (pump_thread, nullptr);
     pthread_mutex_lock (& alsa_mutex);
-    pump_quit = 0;
+    pump_quit = false;
 }
 
 static void start_playback ()
@@ -260,7 +257,7 @@ static void start_playback ()
     CHECK (snd_pcm_prepare, alsa_handle);
 
 FAILED:
-    alsa_prebuffer = 0;
+    alsa_prebuffer = false;
     pthread_cond_broadcast (& alsa_cond);
 }
 
@@ -274,18 +271,18 @@ FAILED:
     return delay;
 }
 
-bool alsa_init ()
+bool ALSAPlugin::init ()
 {
     AUDDBG ("Initialize.\n");
-    alsa_init_config ();
-    alsa_open_mixer ();
+    init_config ();
+    open_mixer ();
     return true;
 }
 
-void alsa_cleanup ()
+void ALSAPlugin::cleanup ()
 {
     AUDDBG ("Cleanup.\n");
-    alsa_close_mixer ();
+    close_mixer ();
 }
 
 static snd_pcm_format_t convert_aud_format (int aud_format)
@@ -323,7 +320,7 @@ static snd_pcm_format_t convert_aud_format (int aud_format)
     return SND_PCM_FORMAT_UNKNOWN;
 }
 
-bool alsa_open_audio (int aud_format, int rate, int channels)
+bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
 {
     int total_buffer, hard_buffer, soft_buffer;
     unsigned useconds;
@@ -379,8 +376,8 @@ bool alsa_open_audio (int aud_format, int rate, int channels)
     alsa_buffer_data_length = 0;
 
     alsa_written = 0;
-    alsa_prebuffer = 1;
-    alsa_paused = 0;
+    alsa_prebuffer = true;
+    alsa_paused = false;
     alsa_paused_delay = 0;
 
     if (! poll_setup ())
@@ -389,7 +386,7 @@ bool alsa_open_audio (int aud_format, int rate, int channels)
     pump_start ();
 
     pthread_mutex_unlock (& alsa_mutex);
-    return 1;
+    return true;
 
 FAILED:
     if (alsa_handle)
@@ -399,10 +396,10 @@ FAILED:
     }
 
     pthread_mutex_unlock (& alsa_mutex);
-    return 0;
+    return false;
 }
 
-void alsa_close_audio ()
+void ALSAPlugin::close_audio ()
 {
     AUDDBG ("Closing audio.\n");
     pthread_mutex_lock (& alsa_mutex);
@@ -421,7 +418,7 @@ FAILED:
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-int alsa_buffer_free ()
+int ALSAPlugin::buffer_free ()
 {
     pthread_mutex_lock (& alsa_mutex);
     int avail = alsa_buffer_length - alsa_buffer_data_length;
@@ -429,7 +426,7 @@ int alsa_buffer_free ()
     return avail;
 }
 
-void alsa_write_audio (void * data, int length)
+void ALSAPlugin::write_audio (void * data, int length)
 {
     pthread_mutex_lock (& alsa_mutex);
 
@@ -457,7 +454,7 @@ void alsa_write_audio (void * data, int length)
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-void alsa_period_wait ()
+void ALSAPlugin::period_wait ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
@@ -477,7 +474,7 @@ void alsa_period_wait ()
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-void alsa_drain ()
+void ALSAPlugin::drain ()
 {
     AUDDBG ("Drain.\n");
     pthread_mutex_lock (& alsa_mutex);
@@ -505,7 +502,7 @@ void alsa_drain ()
     return;
 }
 
-int alsa_output_time ()
+int ALSAPlugin::output_time ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
@@ -523,7 +520,7 @@ int alsa_output_time ()
     return time;
 }
 
-void alsa_flush (int time)
+void ALSAPlugin::flush (int time)
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& alsa_mutex);
@@ -536,7 +533,7 @@ FAILED:
     alsa_buffer_data_length = 0;
 
     alsa_written = (int64_t) time * alsa_rate / 1000;
-    alsa_prebuffer = 1;
+    alsa_prebuffer = true;
     alsa_paused_delay = 0;
 
     pthread_cond_broadcast (& alsa_cond); /* interrupt period wait */
@@ -546,7 +543,7 @@ FAILED:
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-void alsa_pause (bool pause)
+void ALSAPlugin::pause (bool pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& alsa_mutex);
@@ -579,7 +576,7 @@ FAILED:
     goto DONE;
 }
 
-void alsa_open_mixer ()
+void ALSAPlugin::open_mixer ()
 {
     alsa_mixer = nullptr;
 
@@ -617,17 +614,17 @@ FAILED:
     }
 }
 
-void alsa_close_mixer ()
+void ALSAPlugin::close_mixer ()
 {
     if (alsa_mixer)
         snd_mixer_close (alsa_mixer);
 }
 
-void alsa_get_volume (int * left, int * right)
+StereoVolume ALSAPlugin::get_volume ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    long left_l = 0, right_l = 0;
+    long left = 0, right = 0;
 
     if (! alsa_mixer)
         goto FAILED;
@@ -637,8 +634,8 @@ void alsa_get_volume (int * left, int * right)
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
     {
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_MONO, & left_l);
-        right_l = left_l;
+         SND_MIXER_SCHN_MONO, & left);
+        right = left;
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
         {
@@ -647,15 +644,15 @@ void alsa_get_volume (int * left, int * right)
              SND_MIXER_SCHN_MONO, & on);
 
             if (! on)
-                left_l = right_l = 0;
+                left = right = 0;
         }
     }
     else
     {
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_LEFT, & left_l);
+         SND_MIXER_SCHN_FRONT_LEFT, & left);
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_RIGHT, & right_l);
+         SND_MIXER_SCHN_FRONT_RIGHT, & right);
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
         {
@@ -666,20 +663,18 @@ void alsa_get_volume (int * left, int * right)
              SND_MIXER_SCHN_FRONT_RIGHT, & right_on);
 
             if (! left_on)
-                left_l = 0;
+                left = 0;
             if (! right_on)
-                right_l = 0;
+                right = 0;
         }
     }
 
 FAILED:
     pthread_mutex_unlock (& alsa_mutex);
-
-    * left = left_l;
-    * right = right_l;
+    return {(int) left, (int) right};
 }
 
-void alsa_set_volume (int left, int right)
+void ALSAPlugin::set_volume (StereoVolume v)
 {
     pthread_mutex_lock (& alsa_mutex);
 
@@ -689,30 +684,30 @@ void alsa_set_volume (int left, int right)
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
     {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_MONO, aud::max (left, right));
+         SND_MIXER_SCHN_MONO, aud::max (v.left, v.right));
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
             CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-             SND_MIXER_SCHN_MONO, aud::max (left, right) != 0);
+             SND_MIXER_SCHN_MONO, aud::max (v.left, v.right) != 0);
     }
     else
     {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_LEFT, left);
+         SND_MIXER_SCHN_FRONT_LEFT, v.left);
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_RIGHT, right);
+         SND_MIXER_SCHN_FRONT_RIGHT, v.right);
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
         {
             if (snd_mixer_selem_has_playback_switch_joined (alsa_mixer_element))
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-                 SND_MIXER_SCHN_FRONT_LEFT, aud::max (left, right) != 0);
+                 SND_MIXER_SCHN_FRONT_LEFT, aud::max (v.left, v.right) != 0);
             else
             {
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-                 SND_MIXER_SCHN_FRONT_LEFT, left != 0);
+                 SND_MIXER_SCHN_FRONT_LEFT, v.left != 0);
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-                 SND_MIXER_SCHN_FRONT_RIGHT, right != 0);
+                 SND_MIXER_SCHN_FRONT_RIGHT, v.right != 0);
             }
         }
     }

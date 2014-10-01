@@ -21,10 +21,10 @@
 #define AUDACIOUS_ALSA_H
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
-
-struct PluginPreferences;
 
 #define ERROR AUDERR
 
@@ -56,26 +56,52 @@ do { \
     } \
 } while (0)
 
-/* alsa.c */
-bool alsa_init ();
-void alsa_cleanup ();
-bool alsa_open_audio (int aud_format, int rate, int channels);
-void alsa_close_audio ();
-int alsa_buffer_free ();
-void alsa_write_audio (void * data, int length);
-void alsa_period_wait ();
-void alsa_drain ();
-int alsa_output_time ();
-void alsa_flush (int time);
-void alsa_pause (bool pause);
-void alsa_open_mixer ();
-void alsa_close_mixer ();
-void alsa_get_volume (int * left, int * right);
-void alsa_set_volume (int left, int right);
+struct PreferencesWidget;
 
-/* config.c */
-void alsa_init_config ();
+class ALSAPlugin : public OutputPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
-extern const PluginPreferences alsa_prefs;
+    static constexpr PluginInfo info = {
+        N_("ALSA Output"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr ALSAPlugin () : OutputPlugin (info, 5) {}
+
+    bool init ();
+    void cleanup ();
+
+    StereoVolume get_volume ();
+    void set_volume (StereoVolume v);
+
+    bool open_audio (int aud_format, int rate, int chans);
+    void close_audio ();
+
+    int buffer_free ();
+    void period_wait ();
+    void write_audio (void * data, int size);
+    void drain ();
+
+    int output_time ();
+
+    void pause (bool p);
+    void flush (int time);
+
+private:
+    static void open_mixer ();
+    static void close_mixer ();
+
+    static void init_config ();
+    static void pcm_changed ();
+    static void mixer_changed ();
+    static void element_changed ();
+};
 
 #endif
