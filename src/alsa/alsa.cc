@@ -49,6 +49,8 @@
 
 #include "alsa.h"
 
+ALSAPlugin aud_plugin_instance;
+
 #define CHECK_VAL_RECOVER(value, function, ...) \
 do { \
     (value) = function (__VA_ARGS__); \
