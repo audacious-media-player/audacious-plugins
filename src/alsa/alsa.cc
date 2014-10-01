@@ -49,7 +49,7 @@
 
 #include "alsa.h"
 
-ALSAPlugin aud_plugin_instance;
+EXPORT ALSAPlugin aud_plugin_instance;
 
 #define CHECK_VAL_RECOVER(value, function, ...) \
 do { \
