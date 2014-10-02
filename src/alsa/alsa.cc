@@ -46,6 +46,7 @@
 #include <unistd.h>
 
 #include <alsa/asoundlib.h>
+#include <libaudcore/ringbuf.h>
 
 #include "alsa.h"
 
@@ -73,8 +74,7 @@ static pthread_cond_t alsa_cond = PTHREAD_COND_INITIALIZER;
 static snd_pcm_format_t alsa_format;
 static int alsa_channels, alsa_rate;
 
-static unsigned char * alsa_buffer;
-static int alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
+static RingBuf<char> alsa_buffer;
 static int alsa_period; /* milliseconds */
 
 static int64_t alsa_written; /* frames */
@@ -152,81 +152,68 @@ static void * pump (void *)
     pthread_mutex_lock (& alsa_mutex);
     pthread_cond_broadcast (& alsa_cond); /* signal thread started */
 
-    bool failed = 0;
-    bool workaround = 0;
-    int slept = 0;
+    bool failed_once = false;
+    bool use_timed_wait = false;
+    int wakeups_since_write = 0;
 
     while (! pump_quit)
     {
-        if (alsa_prebuffer || alsa_paused || ! snd_pcm_bytes_to_frames
-         (alsa_handle, alsa_buffer_data_length))
+        int writable = snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.linear ());
+
+        if (alsa_prebuffer || alsa_paused || ! writable)
         {
             pthread_cond_wait (& alsa_cond, & alsa_mutex);
             continue;
         }
 
-        int length;
-        CHECK_VAL_RECOVER (length, snd_pcm_avail_update, alsa_handle);
+        int avail;
+        CHECK_VAL_RECOVER (avail, snd_pcm_avail_update, alsa_handle);
 
-        if (! length)
-            goto WAIT;
-
-        slept = 0;
-
-        length = snd_pcm_frames_to_bytes (alsa_handle, length);
-        length = aud::min (length, alsa_buffer_data_length);
-        length = aud::min (length, alsa_buffer_length - alsa_buffer_data_start);
-        length = snd_pcm_bytes_to_frames (alsa_handle, length);
-
-        int written;
-        CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle,
-         alsa_buffer + alsa_buffer_data_start, length);
-
-        failed = false;
-
-        written = snd_pcm_frames_to_bytes (alsa_handle, written);
-        alsa_buffer_data_start += written;
-        alsa_buffer_data_length -= written;
-
-        pthread_cond_broadcast (& alsa_cond); /* signal write complete */
-
-        if (alsa_buffer_data_start == alsa_buffer_length)
+        if (avail)
         {
-            alsa_buffer_data_start = 0;
-            continue;
+            wakeups_since_write = 0;
+
+            int written;
+            CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle,
+             & alsa_buffer[0], aud::min (writable, avail));
+
+            failed_once = false;
+
+            alsa_buffer.discard (snd_pcm_frames_to_bytes (alsa_handle, written));
+
+            pthread_cond_broadcast (& alsa_cond); /* signal write complete */
+
+            if (writable < avail)
+                continue;
         }
 
-        if (! snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer_data_length))
-            continue;
-
-    WAIT:
         pthread_mutex_unlock (& alsa_mutex);
 
-        if (slept > 4)
+        if (wakeups_since_write > 4)
         {
             AUDDBG ("Activating timer workaround.\n");
-            workaround = true;
+            use_timed_wait = true;
         }
 
-        if (workaround && slept)
+        if (use_timed_wait && wakeups_since_write)
         {
-            const struct timespec delay = {0, 600000 * alsa_period};
+            timespec delay = {0, 600000 * alsa_period};
             nanosleep (& delay, nullptr);
         }
         else
         {
             poll_sleep ();
-            slept ++;
+            wakeups_since_write ++;
         }
 
         pthread_mutex_lock (& alsa_mutex);
         continue;
 
     FAILED:
-        if (failed)
+        if (failed_once)
             break;
 
-        failed = true;
+        failed_once = true;
         CHECK (snd_pcm_prepare, alsa_handle);
     }
 
@@ -266,7 +253,6 @@ FAILED:
 static int get_delay ()
 {
     snd_pcm_sframes_t delay = 0;
-
     CHECK_RECOVER (snd_pcm_delay, alsa_handle, & delay);
 
 FAILED:
@@ -324,7 +310,7 @@ static snd_pcm_format_t convert_aud_format (int aud_format)
 
 bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
 {
-    int total_buffer, hard_buffer, soft_buffer;
+    int total_buffer, hard_buffer, soft_buffer, buffer_frames;
     unsigned useconds;
     int direction;
 
@@ -371,11 +357,8 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
     AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
      hard_buffer, soft_buffer, alsa_period);
 
-    alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (int64_t)
-     soft_buffer * rate / 1000);
-    alsa_buffer = new unsigned char[alsa_buffer_length];
-    alsa_buffer_data_start = 0;
-    alsa_buffer_data_length = 0;
+    buffer_frames = aud::rescale<int64_t> (soft_buffer, 1000, rate);
+    alsa_buffer.init (snd_pcm_frames_to_bytes (alsa_handle, buffer_frames));
 
     alsa_written = 0;
     alsa_prebuffer = true;
@@ -412,7 +395,7 @@ void ALSAPlugin::close_audio ()
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    delete[] alsa_buffer;
+    alsa_buffer.destroy ();
     poll_cleanup ();
     snd_pcm_close (alsa_handle);
     alsa_handle = nullptr;
@@ -423,31 +406,19 @@ FAILED:
 int ALSAPlugin::buffer_free ()
 {
     pthread_mutex_lock (& alsa_mutex);
-    int avail = alsa_buffer_length - alsa_buffer_data_length;
+    int space = alsa_buffer.space ();
     pthread_mutex_unlock (& alsa_mutex);
-    return avail;
+    return space;
 }
 
 void ALSAPlugin::write_audio (void * data, int length)
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    int start = (alsa_buffer_data_start + alsa_buffer_data_length) %
-     alsa_buffer_length;
+    assert (length <= alsa_buffer.space ());
 
-    assert (length <= alsa_buffer_length - alsa_buffer_data_length);
+    alsa_buffer.copy_in ((const char *) data, length);
 
-    if (length > alsa_buffer_length - start)
-    {
-        int part = alsa_buffer_length - start;
-
-        memcpy (alsa_buffer + start, data, part);
-        memcpy (alsa_buffer, (char *) data + part, length - part);
-    }
-    else
-        memcpy (alsa_buffer + start, data, length);
-
-    alsa_buffer_data_length += length;
     alsa_written += snd_pcm_bytes_to_frames (alsa_handle, length);
 
     if (! alsa_paused)
@@ -460,7 +431,7 @@ void ALSAPlugin::period_wait ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    while (alsa_buffer_data_length == alsa_buffer_length)
+    while (! alsa_buffer.space ())
     {
         if (! alsa_paused)
         {
@@ -486,13 +457,13 @@ void ALSAPlugin::drain ()
     if (alsa_prebuffer)
         start_playback ();
 
-    while (snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer_data_length))
+    while (snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ()))
         pthread_cond_wait (& alsa_cond, & alsa_mutex);
 
     pump_stop ();
 
     int d = get_delay () * 1000 / alsa_rate;
-    struct timespec delay = {d / 1000, d % 1000 * 1000000};
+    timespec delay = {d / 1000, d % 1000 * 1000000};
 
     pthread_mutex_unlock (& alsa_mutex);
     nanosleep (& delay, nullptr);
@@ -501,22 +472,20 @@ void ALSAPlugin::drain ()
     pump_start ();
 
     pthread_mutex_unlock (& alsa_mutex);
-    return;
 }
 
 int ALSAPlugin::output_time ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    int64_t frames = alsa_written - snd_pcm_bytes_to_frames (alsa_handle,
-     alsa_buffer_data_length);
+    int64_t frames = alsa_written - snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ());
 
     if (alsa_prebuffer || alsa_paused)
         frames -= alsa_paused_delay;
     else
         frames -= get_delay ();
 
-    int time = frames * 1000 / alsa_rate;
+    int time = aud::rescale<int64_t> (frames, alsa_rate, 1000);
 
     pthread_mutex_unlock (& alsa_mutex);
     return time;
@@ -531,10 +500,9 @@ void ALSAPlugin::flush (int time)
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    alsa_buffer_data_start = 0;
-    alsa_buffer_data_length = 0;
+    alsa_buffer.discard ();
 
-    alsa_written = (int64_t) time * alsa_rate / 1000;
+    alsa_written = aud::rescale<int64_t> (time, 1000, alsa_rate);
     alsa_prebuffer = true;
     alsa_paused_delay = 0;
 
