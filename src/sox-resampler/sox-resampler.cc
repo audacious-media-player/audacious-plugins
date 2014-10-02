@@ -21,9 +21,6 @@
  */
 
 #include <stdlib.h>
-
-#include <glib.h>
-
 #include <soxr.h>
 
 #include <libaudcore/i18n.h>
@@ -74,8 +71,7 @@ static soxr_t soxr;
 static soxr_error_t error;
 static int stored_channels;
 static double ratio;
-static float * buffer;
-static size_t buffer_samples;
+static Index<float> buffer;
 
 bool SoXResampler::init ()
 {
@@ -87,9 +83,7 @@ void SoXResampler::cleanup ()
 {
     soxr_delete (soxr);
     soxr = 0;
-    g_free (buffer);
-    buffer = nullptr;
-    buffer_samples = 0;
+    buffer.clear ();
 }
 
 void SoXResampler::start (int * channels, int * rate)
@@ -123,16 +117,14 @@ void SoXResampler::process (float * * data, int * samples)
     if (! soxr)
          return;
 
-    if (buffer_samples < (unsigned) (* samples * ratio) + 256)
-    {
-        buffer_samples = (unsigned) (* samples * ratio) + 256;
-        buffer = g_renew (float, buffer, buffer_samples);
-    }
+    int buffer_samples = (int) (* samples * ratio) + 256;
+    if (buffer.len () < buffer_samples)
+        buffer.insert (-1, buffer_samples - buffer.len ());
 
     size_t samples_done;
 
     error = soxr_process(soxr, * data, * samples / stored_channels, nullptr,
-        buffer, buffer_samples / stored_channels, & samples_done);
+        buffer.begin (), buffer_samples / stored_channels, & samples_done);
 
     if (error)
     {
@@ -140,7 +132,7 @@ void SoXResampler::process (float * * data, int * samples)
         return;
     }
 
-    * data = buffer;
+    * data = buffer.begin ();
     * samples = samples_done * stored_channels;
 }
 
