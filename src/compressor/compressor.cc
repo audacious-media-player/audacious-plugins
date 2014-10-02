@@ -1,6 +1,6 @@
 /*
  * Dynamic Range Compression Plugin for Audacious
- * Copyright 2010-2012 John Lindgren
+ * Copyright 2010-2014 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -22,11 +22,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
+#include <libaudcore/ringbuf.h>
 #include <libaudcore/runtime.h>
 
 /* Response time adjustments.  Maybe this should be adjustable? */
@@ -56,7 +55,7 @@ static const PluginPreferences compressor_prefs = {{compressor_widgets}};
 
 static const char compressor_about[] =
  N_("Dynamic Range Compression Plugin for Audacious\n"
-    "Copyright 2010-2012 John Lindgren");
+    "Copyright 2010-2014 John Lindgren");
 
 class Compressor : public EffectPlugin
 {
@@ -82,33 +81,16 @@ public:
 
 EXPORT Compressor aud_plugin_instance;
 
-static float * buffer, * output, * peaks;
-static int output_size;
-static int chunk_size, buffer_size;
-static int ring_at, buffer_filled, peaks_filled;
+/* The read pointer of the ring buffer is kept aligned to the chunk size at all
+ * times.  To preserve the alignment, each read from the buffer must either (a)
+ * read a multiple of the chunk size or (b) empty the buffer completely.  Writes
+ * to the buffer need not be aligned to the chunk size. */
+
+static RingBuf<float> buffer, peaks;
+static Index<float> output;
+static int chunk_size;
 static float current_peak;
-static int output_filled;
 static int current_channels, current_rate;
-
-static void buffer_append (float * * data, int * length)
-{
-    int offset = (chunk_size * ring_at + buffer_filled) % buffer_size;
-    int writable = aud::min (* length, buffer_size - buffer_filled);
-
-    if (writable <= buffer_size - offset)
-        memcpy (buffer + offset, * data, sizeof (float) * writable);
-    else
-    {
-        int part = buffer_size - offset;
-
-        memcpy (buffer + offset, * data, part);
-        memcpy (buffer, (* data) + part, writable - part);
-    }
-
-    buffer_filled += writable;
-    * data += writable;
-    * length -= writable;
-}
 
 /* I used to find the maximum sample and take that as the peak, but that doesn't
  * work well on badly clipped tracks.  Now, I use the highly sophisticated
@@ -118,16 +100,13 @@ static void buffer_append (float * * data, int * length)
 
 static float calc_peak (float * data, int length)
 {
-    if (! length)
-        return 0;
-
     float sum = 0;
 
     float * end = data + length;
     while (data < end)
         sum += fabsf (* data ++);
 
-    return sum / length * 6;
+    return aud::max (0.01f, sum / length * 6);
 }
 
 static void do_ramp (float * data, int length, float peak_a, float peak_b)
@@ -144,137 +123,110 @@ static void do_ramp (float * data, int length, float peak_a, float peak_b)
     }
 }
 
-static void output_append (float * data, int length)
-{
-    if (output_size < output_filled + length)
-    {
-        output_size = output_filled + length;
-        output = g_renew (float, output, output_size);
-    }
-
-    memcpy (output + output_filled, data, sizeof (float) * length);
-    output_filled += length;
-}
-
-static void reset ()
-{
-    ring_at = 0;
-    buffer_filled = 0;
-    peaks_filled = 0;
-    current_peak = 0.0;
-}
-
-#define IN_RING(i) ((ring_at + i) % CHUNKS)
-#define GET_PEAK(i) peaks[IN_RING (i)]
-
-static void do_compress (float * * data, int * samples, bool finish)
-{
-    output_filled = 0;
-
-    while (1)
-    {
-        buffer_append (data, samples);
-
-        if (buffer_filled < buffer_size)
-            break;
-
-        for (; peaks_filled < CHUNKS; peaks_filled ++)
-            GET_PEAK (peaks_filled) = calc_peak (buffer + chunk_size * IN_RING
-             (peaks_filled), chunk_size);
-
-        if (current_peak == 0.0f)
-            current_peak = aud::max (0.01f, calc_peak (peaks, CHUNKS));
-
-        float new_peak = aud::max (0.01f, GET_PEAK (0));
-        new_peak = aud::max (new_peak, current_peak * (1.0f - DECAY));
-
-        for (int count = 1; count < CHUNKS; count ++)
-            new_peak = aud::max (new_peak, current_peak + (GET_PEAK (count) -
-             current_peak) / count);
-
-        do_ramp (buffer + chunk_size * ring_at, chunk_size, current_peak, new_peak);
-
-        output_append (buffer + chunk_size * ring_at, chunk_size);
-
-        ring_at = IN_RING (1);
-        buffer_filled -= chunk_size;
-        peaks_filled --;
-        current_peak = new_peak;
-    }
-
-    if (finish)
-    {
-        int offset = chunk_size * ring_at;
-        int first = aud::min (buffer_filled, buffer_size - offset);
-        int second = buffer_filled - first;
-
-        if (current_peak == 0.0f)
-        {
-            current_peak = aud::max (0.01f, calc_peak (buffer + offset, first));
-            current_peak = aud::max (current_peak, calc_peak (buffer, second));
-        }
-
-        do_ramp (buffer + offset, first, current_peak, current_peak);
-        do_ramp (buffer, second, current_peak, current_peak);
-
-        output_append (buffer + offset, first);
-        output_append (buffer, second);
-
-        reset ();
-    }
-
-    * data = output;
-    * samples = output_filled;
-}
-
 bool Compressor::init ()
 {
     aud_config_set_defaults ("compressor", compressor_defaults);
-
-    buffer = nullptr;
-    output = nullptr;
-    output_size = 0;
-    peaks = nullptr;
-
     return true;
 }
 
 void Compressor::cleanup ()
 {
-    g_free (buffer);
-    g_free (output);
-    g_free (peaks);
+    buffer.destroy ();
+    peaks.destroy ();
+    output.clear ();
 }
 
 void Compressor::start (int * channels, int * rate)
 {
-    chunk_size = (* channels) * (int) ((* rate) * CHUNK_TIME);
-    buffer_size = chunk_size * CHUNKS;
-    buffer = g_renew (float, buffer, buffer_size);
-    peaks = g_renew (float, peaks, CHUNKS);
-
     current_channels = * channels;
     current_rate = * rate;
 
-    reset ();
+    chunk_size = (* channels) * (int) ((* rate) * CHUNK_TIME);
+
+    buffer.init (chunk_size * CHUNKS);
+    peaks.init (CHUNKS);
+
+    current_peak = 0.0f;
 }
 
 void Compressor::process (float * * data, int * samples)
 {
-    do_compress (data, samples, false);
+    output.remove (0, -1);
+
+    while (1)
+    {
+        int writable = aud::min (* samples, buffer.space ());
+
+        buffer.copy_in (* data, writable);
+
+        * data += writable;
+        * samples -= writable;
+
+        if (buffer.space ())
+            break;
+
+        while (peaks.len () < CHUNKS)
+            peaks.push (calc_peak (& buffer[chunk_size * peaks.len ()], chunk_size));
+
+        if (current_peak == 0.0f)
+        {
+            for (int i = 0; i < CHUNKS; i ++)
+                current_peak = aud::max (current_peak, peaks[i]);
+        }
+
+        float new_peak = aud::max (peaks[0], current_peak * (1.0f - DECAY));
+
+        for (int count = 1; count < CHUNKS; count ++)
+            new_peak = aud::max (new_peak, current_peak + (peaks[count] - current_peak) / count);
+
+        do_ramp (& buffer[0], chunk_size, current_peak, new_peak);
+
+        output.insert (& buffer[0], -1, chunk_size);
+        buffer.discard (chunk_size);
+
+        current_peak = new_peak;
+        peaks.pop ();
+    }
+
+    * data = output.begin ();
+    * samples = output.len ();
 }
 
 void Compressor::flush ()
 {
-    reset ();
+    buffer.discard ();
+    peaks.discard ();
+
+    current_peak = 0.0f;
 }
 
 void Compressor::finish (float * * data, int * samples)
 {
-    do_compress (data, samples, true);
+    output.remove (0, -1);
+
+    peaks.discard ();
+
+    while (buffer.len ())
+    {
+        int writable = buffer.linear ();
+
+        if (current_peak != 0.0f)
+            do_ramp (& buffer[0], writable, current_peak, current_peak);
+
+        output.insert (& buffer[0], -1, writable);
+        buffer.discard (writable);
+    }
+
+    if (current_peak != 0.0f)
+        do_ramp (* data, * samples, current_peak, current_peak);
+
+    output.insert (* data, -1, * samples);
+
+    * data = output.begin ();
+    * samples = output.len ();
 }
 
 int Compressor::adjust_delay (int delay)
 {
-    return delay + aud::rescale<int64_t> (buffer_filled / current_channels, current_rate, 1000);
+    return delay + aud::rescale<int64_t> (buffer.len () / current_channels, current_rate, 1000);
 }
