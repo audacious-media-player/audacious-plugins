@@ -32,6 +32,45 @@
 #include "plugins.h"
 #include "convert.h"
 
+class FileWriter : public OutputPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("FileWriter Plugin"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr FileWriter () : OutputPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    StereoVolume get_volume () { return {0, 0}; }
+    void set_volume (StereoVolume v) {}
+
+    bool open_audio (int fmt, int rate, int nch);
+    void close_audio ();
+
+    int buffer_free () { return 4 * 44100; }
+    void period_wait () {}
+    void write_audio (void * ptr, int length);
+    void drain () {}
+
+    int output_time ();
+
+    void pause (bool pause) {}
+    void flush (int time);
+};
+
+EXPORT FileWriter aud_plugin_instance;
+
 struct format_info input;
 
 static GtkWidget * path_hbox, * path_dirbrowser;
@@ -67,7 +106,7 @@ static const char *fileext_str[FILEEXT_MAX] =
 #endif
 };
 
-static FileWriter *plugin;
+static FileWriterImpl *plugin;
 
 static gboolean save_original;
 
@@ -87,7 +126,7 @@ Tuple tuple;
 
 static int64_t samples_written;
 
-FileWriter *plugins[FILEEXT_MAX] = {
+FileWriterImpl *plugins[FILEEXT_MAX] = {
     &wav_plugin,
 #ifdef FILEWRITER_MP3
     &mp3_plugin,
@@ -113,7 +152,7 @@ static int file_write_output (void * data, int length)
     return output_file.fwrite (data, 1, length);
 }
 
-static const char * const filewriter_defaults[] = {
+const char * const FileWriter::defaults[] = {
  "fileext", "0", /* WAV */
  "filenamefromtags", "TRUE",
  "prependnumber", "FALSE",
@@ -121,9 +160,9 @@ static const char * const filewriter_defaults[] = {
  "use_suffix", "FALSE",
  nullptr};
 
-static bool file_init (void)
+bool FileWriter::init ()
 {
-    aud_config_set_defaults ("filewriter", filewriter_defaults);
+    aud_config_set_defaults ("filewriter", defaults);
 
     fileext = aud_get_int ("filewriter", "fileext");
     filenamefromtags = aud_get_bool ("filewriter", "filenamefromtags");
@@ -135,17 +174,17 @@ static bool file_init (void)
     if (! file_path[0])
     {
         file_path = String (filename_to_uri (g_get_home_dir ()));
-        g_return_val_if_fail (file_path != nullptr, FALSE);
+        g_return_val_if_fail (file_path != nullptr, false);
     }
 
     set_plugin();
     if (plugin->init)
         plugin->init(&file_write_output);
 
-    return TRUE;
+    return true;
 }
 
-static void file_cleanup (void)
+void FileWriter::cleanup ()
 {
     file_path = String ();
 }
@@ -170,7 +209,7 @@ static VFSFile safe_create (const char * filename)
     return VFSFile ();
 }
 
-static bool file_open(int fmt, int rate, int nch)
+bool FileWriter::open_audio (int fmt, int rate, int nch)
 {
     char *filename = nullptr, *temp = nullptr;
     char * directory;
@@ -258,7 +297,7 @@ static bool file_open(int fmt, int rate, int nch)
     return rv;
 }
 
-static void file_write(void *ptr, int length)
+void FileWriter::write_audio (void * ptr, int length)
 {
     int len = convert_process (ptr, length);
 
@@ -267,11 +306,7 @@ static void file_write(void *ptr, int length)
     samples_written += length / FMT_SIZEOF (input.format);
 }
 
-static void file_drain (void)
-{
-}
-
-static void file_close(void)
+void FileWriter::close_audio ()
 {
     plugin->close();
     convert_free();
@@ -280,16 +315,12 @@ static void file_close(void)
     tuple = Tuple ();
 }
 
-static void file_flush(int time)
+void FileWriter::flush (int time)
 {
     samples_written = time * (int64_t) input.channels * input.frequency / 1000;
 }
 
-static void file_pause (bool p)
-{
-}
-
-static int file_get_time (void)
+int FileWriter::output_time ()
 {
     return samples_written * 1000 / (input.channels * input.frequency);
 }
@@ -475,7 +506,7 @@ static void * file_configure (void)
         return configure_vbox;
 }
 
-static const char file_about[] =
+const char FileWriter::about[] =
  N_("This program is free software; you can redistribute it and/or modify\n"
     "it under the terms of the GNU General Public License as published by\n"
     "the Free Software Foundation; either version 2 of the License, or\n"
@@ -491,32 +522,12 @@ static const char file_about[] =
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
     "USA.");
 
-static const PreferencesWidget file_widgets[] = {
+const PreferencesWidget FileWriter::widgets[] = {
     WidgetCustomGTK (file_configure)
 };
 
-static const PluginPreferences file_prefs = {
-    {file_widgets},
+const PluginPreferences FileWriter::prefs = {
+    {widgets},
     nullptr,  // init
     configure_response_cb
 };
-
-#define AUD_PLUGIN_NAME        N_("FileWriter Plugin")
-#define AUD_PLUGIN_ABOUT       file_about
-#define AUD_PLUGIN_INIT        file_init
-#define AUD_PLUGIN_CLEANUP     file_cleanup
-#define AUD_PLUGIN_PREFS       & file_prefs
-#define AUD_OUTPUT_PRIORITY    0
-#define AUD_OUTPUT_OPEN        file_open
-#define AUD_OUTPUT_CLOSE       file_close
-#define AUD_OUTPUT_GET_FREE    nullptr
-#define AUD_OUTPUT_WAIT_FREE   nullptr
-#define AUD_OUTPUT_WRITE       file_write
-#define AUD_OUTPUT_DRAIN       file_drain
-#define AUD_OUTPUT_GET_TIME    file_get_time
-#define AUD_OUTPUT_PAUSE       file_pause
-#define AUD_OUTPUT_FLUSH       file_flush
-#define AUD_OUTPUT_REOPEN      TRUE
-
-#define AUD_DECLARE_OUTPUT
-#include <libaudcore/plugin-declare.h>

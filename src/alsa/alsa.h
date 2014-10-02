@@ -91,7 +91,7 @@ public:
 
     int output_time ();
 
-    void pause (bool p);
+    void pause (bool pause);
     void flush (int time);
 
 private:

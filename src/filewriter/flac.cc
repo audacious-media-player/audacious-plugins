@@ -196,7 +196,7 @@ static int flac_format_required (int fmt)
     return FMT_S16_NE;
 }
 
-FileWriter flac_plugin = {
+FileWriterImpl flac_plugin = {
     nullptr,  // init
     nullptr,  // configure
     flac_open,
