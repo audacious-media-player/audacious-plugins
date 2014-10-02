@@ -28,11 +28,10 @@
 #include <SDL_audio.h>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
-
-#include "sdlout.h"
 
 #define VOLUME_RANGE 40 /* decibels */
 
@@ -40,7 +39,47 @@
     aud_ui_show_error (str_printf ("SDL error: " __VA_ARGS__)); \
 } while (0)
 
-static const char * const sdl_defaults[] = {
+class SDLOutput : public OutputPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+
+    static constexpr PluginInfo info = {
+        N_("SDL Output"),
+        PACKAGE,
+        about
+    };
+
+    constexpr SDLOutput () : OutputPlugin (info, 1) {}
+
+    bool init ();
+    void cleanup ();
+
+    StereoVolume get_volume ();
+    void set_volume (StereoVolume v);
+
+    bool open_audio (int aud_format, int rate, int chans);
+    void close_audio ();
+
+    int buffer_free ();
+    void period_wait ();
+    void write_audio (void * data, int size);
+    void drain ();
+
+    int output_time ();
+
+    void pause (bool pause);
+    void flush (int time);
+};
+
+EXPORT SDLOutput aud_plugin_instance;
+
+const char SDLOutput::about[] =
+ N_("SDL Output Plugin for Audacious\n"
+    "Copyright 2010 John Lindgren");
+
+const char * const SDLOutput::defaults[] = {
  "vol_left", "100",
  "vol_right", "100",
  nullptr};
@@ -56,14 +95,14 @@ static unsigned char * buffer;
 static int buffer_size, buffer_data_start, buffer_data_len;
 
 static int64_t frames_written;
-static char prebuffer_flag, paused_flag;
+static bool prebuffer_flag, paused_flag;
 
 static int block_delay;
 static struct timeval block_time;
 
-bool sdlout_init (void)
+bool SDLOutput::init ()
 {
-    aud_config_set_defaults ("sdlout", sdl_defaults);
+    aud_config_set_defaults ("sdlout", defaults);
 
     vol_left = aud_get_int ("sdlout", "vol_left");
     vol_right = aud_get_int ("sdlout", "vol_right");
@@ -77,24 +116,23 @@ bool sdlout_init (void)
     return 1;
 }
 
-void sdlout_cleanup (void)
+void SDLOutput::cleanup ()
 {
     SDL_Quit ();
 }
 
-void sdlout_get_volume (int * left, int * right)
+StereoVolume SDLOutput::get_volume ()
 {
-    * left = vol_left;
-    * right = vol_right;
+    return {vol_left, vol_right};
 }
 
-void sdlout_set_volume (int left, int right)
+void SDLOutput::set_volume (StereoVolume v)
 {
-    vol_left = left;
-    vol_right = right;
+    vol_left = v.left;
+    vol_right = v.right;
 
-    aud_set_int ("sdlout", "vol_left", left);
-    aud_set_int ("sdlout", "vol_right", right);
+    aud_set_int ("sdlout", "vol_left", v.left);
+    aud_set_int ("sdlout", "vol_right", v.right);
 }
 
 static void apply_mono_volume (unsigned char * data, int len)
@@ -171,12 +209,12 @@ static void callback (void * user, unsigned char * buf, int len)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-bool sdlout_open_audio (int format, int rate, int chan)
+bool SDLOutput::open_audio (int format, int rate, int chan)
 {
     if (format != FMT_S16_NE)
     {
         sdlout_error ("Only signed 16-bit, native endian audio is supported.\n");
-        return 0;
+        return false;
     }
 
     AUDDBG ("Opening audio for %d channels, %d Hz.\n", chan, rate);
@@ -190,8 +228,8 @@ bool sdlout_open_audio (int format, int rate, int chan)
     buffer_data_len = 0;
 
     frames_written = 0;
-    prebuffer_flag = 1;
-    paused_flag = 0;
+    prebuffer_flag = true;
+    paused_flag = false;
 
     SDL_AudioSpec spec = {0};
 
@@ -206,13 +244,13 @@ bool sdlout_open_audio (int format, int rate, int chan)
         sdlout_error ("Failed to open audio stream: %s.\n", SDL_GetError ());
         delete[] buffer;
         buffer = nullptr;
-        return 0;
+        return false;
     }
 
-    return 1;
+    return true;
 }
 
-void sdlout_close_audio (void)
+void SDLOutput::close_audio ()
 {
     AUDDBG ("Closing audio.\n");
     SDL_CloseAudio ();
@@ -220,7 +258,7 @@ void sdlout_close_audio (void)
     buffer = nullptr;
 }
 
-int sdlout_buffer_free (void)
+int SDLOutput::buffer_free ()
 {
     pthread_mutex_lock (& sdlout_mutex);
     int space = buffer_size - buffer_data_len;
@@ -228,18 +266,18 @@ int sdlout_buffer_free (void)
     return space;
 }
 
-static void check_started (void)
+static void check_started ()
 {
     if (! prebuffer_flag)
         return;
 
     AUDDBG ("Starting playback.\n");
-    prebuffer_flag = 0;
+    prebuffer_flag = false;
     block_delay = 0;
     SDL_PauseAudio (0);
 }
 
-void sdlout_period_wait (void)
+void SDLOutput::period_wait ()
 {
     pthread_mutex_lock (& sdlout_mutex);
 
@@ -254,7 +292,7 @@ void sdlout_period_wait (void)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void sdlout_write_audio (void * data, int len)
+void SDLOutput::write_audio (void * data, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
@@ -277,7 +315,7 @@ void sdlout_write_audio (void * data, int len)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void sdlout_drain (void)
+void SDLOutput::drain ()
 {
     AUDDBG ("Draining.\n");
     pthread_mutex_lock (& sdlout_mutex);
@@ -290,7 +328,7 @@ void sdlout_drain (void)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-int sdlout_output_time (void)
+int SDLOutput::output_time ()
 {
     pthread_mutex_lock (& sdlout_mutex);
 
@@ -314,7 +352,7 @@ int sdlout_output_time (void)
     return out;
 }
 
-void sdlout_pause (bool pause)
+void SDLOutput::pause (bool pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& sdlout_mutex);
@@ -328,7 +366,7 @@ void sdlout_pause (bool pause)
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void sdlout_flush (int time)
+void SDLOutput::flush (int time)
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& sdlout_mutex);
@@ -337,7 +375,7 @@ void sdlout_flush (int time)
     buffer_data_len = 0;
 
     frames_written = (int64_t) time * sdlout_rate / 1000;
-    prebuffer_flag = 1;
+    prebuffer_flag = true;
 
     pthread_cond_broadcast (& sdlout_cond); /* wake up period wait */
     pthread_mutex_unlock (& sdlout_mutex);
