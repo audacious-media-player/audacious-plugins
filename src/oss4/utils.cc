@@ -137,16 +137,6 @@ int oss_format_to_bytes(int format)
     return bytes;
 }
 
-int oss_frames_to_bytes(int frames)
-{
-    return frames * (oss_data->bytes_per_sample * oss_data->channels);
-}
-
-int oss_bytes_to_frames(int bytes)
-{
-    return bytes / (oss_data->bytes_per_sample * oss_data->channels);
-}
-
 const char *oss_describe_error()
 {
     const struct

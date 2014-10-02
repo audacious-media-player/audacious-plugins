@@ -78,41 +78,79 @@ do { \
 #define DEFAULT_MIXER "/dev/mixer"
 #define DEFAULT_DSP "/dev/dsp"
 
-typedef struct
+struct PreferencesWidget;
+
+class OSSPlugin : public OutputPlugin
 {
-    int fd;
-    int format;
-    int rate;
-    int channels;
-    int bytes_per_sample;
-} oss_data_t;
+public:
+    static const char about[];
+    static const char *const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
-extern oss_data_t *oss_data;
+    static constexpr PluginInfo info = {
+#ifdef SNDCTL_SYSINFO
+        N_("OSS4 Output"),
+#else
+        N_("OSS3 Output"),
+#endif
+        PACKAGE,
+        about,
+        &prefs
+    };
 
-/* oss.c */
-bool oss_init();
-void oss_cleanup();
-bool oss_open_audio(int aud_format, int rate, int channels);
-void oss_close_audio();
-void oss_write_audio(void *data, int length);
-void oss_period_wait();
-void oss_drain();
-int oss_buffer_free();
-int oss_output_time();
-void oss_flush(int time);
-void oss_pause(bool pause);
-void oss_get_volume(int *left, int *right);
-void oss_set_volume(int left, int right);
+    // OSS4 is preferred over ALSA (priority 5).
+    // ALSA is preferred over OSS3.
+#ifdef SNDCTL_SYSINFO
+    constexpr OSSPlugin() : OutputPlugin(info, 6) {}
+#else
+    constexpr OSSPlugin() : OutputPlugin(info, 4) {}
+#endif
 
-/* configure.c */
-void oss_configure();
+    bool init();
+
+    StereoVolume get_volume();
+    void set_volume(StereoVolume v);
+
+    bool open_audio(int aud_format, int rate, int chans);
+    void close_audio();
+
+    int buffer_free();
+    void period_wait();
+    void write_audio(void *data, int size);
+    void drain();
+
+    int output_time();
+
+    void pause(bool pause);
+    void flush(int time);
+
+private:
+    bool set_format(int format, int rate, int channels);
+    bool set_buffer();
+    int real_output_time();
+
+    int frames_to_bytes(int frames) const
+        { return frames * (m_bytes_per_sample * m_channels); }
+    int bytes_to_frames(int bytes) const
+        { return bytes / (m_bytes_per_sample * m_channels); }
+
+    int m_fd = -1;
+    int m_format = 0;
+    int m_rate = 0;
+    int m_channels = 0;
+    int m_bytes_per_sample = 0;
+
+    int64_t m_frames_written = 0;
+    bool m_paused = false;
+    int m_paused_time = 0;
+    bool m_ioctl_vol = false;
+};
 
 /* utils.c */
 int oss_convert_aud_format(int aud_format);
 const char *oss_format_to_text(int format);
 int oss_format_to_bytes(int format);
-int oss_frames_to_bytes(int frames);
-int oss_bytes_to_frames(int bytes);
 const char *oss_describe_error();
 
 #ifdef SNDCTL_SYSINFO
