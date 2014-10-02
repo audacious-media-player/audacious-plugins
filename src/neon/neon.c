@@ -799,7 +799,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
              * b) deliver at least one byte to the reader */
             _DEBUG ("<%p> Expecting %d bytes of ICY metadata", h, (icy_metalen*16));
 
-            if (free_rb (& h->rb) - icy_metalen * 16 < size)
+            if (used_rb (& h->rb) - icy_metalen * 16 < size)
             {
                 /* There is not enough data. We do not have much choice at this point,
                  * so we'll deliver the metadata as normal data to the reader and
@@ -831,7 +831,7 @@ static int64_t neon_fread_real (void * ptr, int64_t size, int64_t nmemb, VFSFile
 
     if (h->reader_status.status == NEON_READER_EOF)
     {
-        if (! free_rb_locked (& h->rb))
+        if (! used_rb_locked (& h->rb))
         {
             _DEBUG ("<%p> stream EOF reached and buffer empty", h);
             h->eof = TRUE;
