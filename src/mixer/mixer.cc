@@ -21,8 +21,6 @@
 
 #include <stdlib.h>
 
-#include <glib.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
@@ -57,15 +55,17 @@ EXPORT ChannelMixer aud_plugin_instance;
 
 typedef void (* Converter) (float * * data, int * samples);
 
-static float * mixer_buf;
+static Index<float> mixer_buf;
 
 static void mono_to_stereo (float * * data, int * samples)
 {
     int frames = * samples;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
+    mixer_buf.enlarge (2 * frames);
 
-    * data = mixer_buf;
+    float * get = * data;
+    float * set = mixer_buf.begin ();
+
+    * data = set;
     * samples = 2 * frames;
 
     while (frames --)
@@ -79,10 +79,12 @@ static void mono_to_stereo (float * * data, int * samples)
 static void stereo_to_mono (float * * data, int * samples)
 {
     int frames = * samples / 2;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, frames);
+    mixer_buf.enlarge (frames);
 
-    * data = mixer_buf;
+    float * get = * data;
+    float * set = mixer_buf.begin ();
+
+    * data = set;
     * samples = frames;
 
     while (frames --)
@@ -96,10 +98,12 @@ static void stereo_to_mono (float * * data, int * samples)
 static void quadro_to_stereo (float * * data, int * samples)
 {
     int frames = * samples / 4;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
+    mixer_buf.enlarge (2 * frames);
 
-    * data = mixer_buf;
+    float * get = * data;
+    float * set = mixer_buf.begin ();
+
+    * data = set;
     * samples = 2 * frames;
 
     while (frames --)
@@ -116,10 +120,12 @@ static void quadro_to_stereo (float * * data, int * samples)
 static void surround_5p1_to_stereo (float * * data, int * samples)
 {
     int frames = * samples / 6;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
+    mixer_buf.enlarge (2 * frames);
 
-    * data = mixer_buf;
+    float * get = * data;
+    float * set = mixer_buf.begin ();
+
+    * data = set;
     * samples = 2 * frames;
 
     while (frames --)
@@ -191,8 +197,7 @@ bool ChannelMixer::init ()
 
 void ChannelMixer::cleanup ()
 {
-    g_free (mixer_buf);
-    mixer_buf = 0;
+    mixer_buf.clear ();
 }
 
 const char ChannelMixer::about[] =

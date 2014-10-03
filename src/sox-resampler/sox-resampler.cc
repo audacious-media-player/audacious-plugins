@@ -117,14 +117,11 @@ void SoXResampler::process (float * * data, int * samples)
     if (! soxr)
          return;
 
-    int buffer_samples = (int) (* samples * ratio) + 256;
-    if (buffer.len () < buffer_samples)
-        buffer.insert (-1, buffer_samples - buffer.len ());
+    buffer.enlarge ((int) (* samples * ratio) + 256);
 
     size_t samples_done;
-
-    error = soxr_process(soxr, * data, * samples / stored_channels, nullptr,
-        buffer.begin (), buffer_samples / stored_channels, & samples_done);
+    error = soxr_process (soxr, * data, * samples / stored_channels, nullptr,
+     buffer.begin (), buffer.len () / stored_channels, & samples_done);
 
     if (error)
     {
