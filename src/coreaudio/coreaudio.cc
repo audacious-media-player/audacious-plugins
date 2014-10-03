@@ -33,6 +33,7 @@
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/ringbuf.h>
 
 #include "coreaudio.h"
 
@@ -56,8 +57,8 @@ static volatile int vol_left, vol_right;
 
 static int chan, rate;
 
-static unsigned char * buffer;
-static int buffer_size, buffer_data_start, buffer_data_len, buffer_bytes_per_channel;
+static RingBuf<unsigned char> buffer;
+static int buffer_bytes_per_channel;
 
 static int64_t frames_written;
 static char prebuffer_flag, paused_flag;
@@ -169,23 +170,9 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
     unsigned char * buf = (unsigned char *) ioData->mBuffers[0].mData;
     ioData->mBuffers[0].mNumberChannels = chan;
 
-    int copy = aud::min (len, buffer_data_len);
-    int part = buffer_size - buffer_data_start;
+    int copy = aud::min (len, buffer.len ());
 
-    if (copy <= part)
-    {
-        memcpy (buf, buffer + buffer_data_start, copy);
-        buffer_data_start += copy;
-    }
-    else
-    {
-        memcpy (buf, buffer + buffer_data_start, part);
-        memcpy (buf + part, buffer, copy - part);
-        buffer_data_start = copy - part;
-    }
-
-    buffer_data_len -= copy;
-
+    buffer.move_out (buf, copy);
     if (copy < len)
         memset (buf + copy, 0, len - copy);
 
@@ -226,10 +213,9 @@ bool open_audio (int format, int rate_, int chan_)
     rate = rate_;
 
     buffer_bytes_per_channel = m->mBytesPerChannel;
-    buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
-    buffer = new unsigned char[buffer_size];
-    buffer_data_start = 0;
-    buffer_data_len = 0;
+
+    int buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
+    buffer.init (buffer_size);
 
     frames_written = 0;
     prebuffer_flag = 1;
@@ -260,12 +246,14 @@ bool open_audio (int format, int rate_, int chan_)
     if (AudioUnitSetProperty (output_instance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat)))
     {
         error ("Failed to set audio unit input property.\n");
+        buffer.destroy ();
         return 0;
     }
 
     if (AudioOutputUnitStart (output_instance))
     {
         error ("Unable to start audio unit.\n");
+        buffer.destroy ();
         return 0;
     }
 
@@ -278,14 +266,13 @@ void close_audio (void)
 
     AudioOutputUnitStop (output_instance);
 
-    delete[] buffer;
-    buffer = nullptr;
+    buffer.destroy ();
 }
 
 int buffer_free (void)
 {
     pthread_mutex_lock (& mutex);
-    int space = buffer_size - buffer_data_len;
+    int space = buffer.space ();
     pthread_mutex_unlock (& mutex);
     return space;
 }
@@ -304,7 +291,7 @@ void period_wait (void)
 {
     pthread_mutex_lock (& mutex);
 
-    while (buffer_data_len == buffer_size)
+    while (! buffer.space ())
     {
         if (! paused_flag)
             check_started ();
@@ -319,20 +306,10 @@ void write_audio (void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
-    assert (len <= buffer_size - buffer_data_len);
+    assert (len <= buffer.space ());
 
-    int start = (buffer_data_start + buffer_data_len) % buffer_size;
+    buffer.copy_in ((const unsigned char *) data, len);
 
-    if (len <= buffer_size - start)
-        memcpy (buffer + start, data, len);
-    else
-    {
-        int part = buffer_size - start;
-        memcpy (buffer + start, data, part);
-        memcpy (buffer, (char *) data + part, len - part);
-    }
-
-    buffer_data_len += len;
     frames_written += len / (buffer_bytes_per_channel * chan);
 
     pthread_mutex_unlock (& mutex);
@@ -345,7 +322,7 @@ void drain (void)
 
     check_started ();
 
-    while (buffer_data_len)
+    while (buffer.len ())
         pthread_cond_wait (& cond, & mutex);
 
     pthread_mutex_unlock (& mutex);
@@ -355,7 +332,7 @@ int output_time (void)
 {
     pthread_mutex_lock (& mutex);
 
-    int out = (int64_t) (frames_written - buffer_data_len / (buffer_bytes_per_channel * chan))
+    int out = (int64_t) (frames_written - buffer.len () / (buffer_bytes_per_channel * chan))
      * 1000 / rate;
 
     /* Estimate the additional delay of the last block written. */
@@ -402,10 +379,9 @@ void flush (int time)
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& mutex);
 
-    buffer_data_start = 0;
-    buffer_data_len = 0;
+    buffer.discard ();
 
-    frames_written = (int64_t) time * rate / 1000;
+    frames_written = aud::rescale<int64_t> (time, 1000, rate);
     prebuffer_flag = 1;
 
     pthread_cond_broadcast (& cond); /* wake up period wait */
