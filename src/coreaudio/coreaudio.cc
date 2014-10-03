@@ -41,16 +41,8 @@
 
 class CoreAudioPlugin : public OutputPlugin {
 public:
-    static constexpr const char about[] =
-        N_("CoreAudio Output Plugin for Audacious\n"
-           "Copyright 2014 William Pitcock\n\n"
-           "Based on SDL Output Plugin for Audacious\n"
-           "Copyright 2010 John Lindgren");
-
-    static constexpr const char * const defaults[] = {
-       "vol_left", "100",
-       "vol_right", "100",
-       nullptr};
+    static const char about[];
+    static const char * const defaults[];
 
     static constexpr PluginInfo info = {
         N_("CoreAudio output"),
@@ -59,7 +51,7 @@ public:
         nullptr
     };
 
-    CoreAudioPlugin () : OutputPlugin (info, 5) {}
+    constexpr CoreAudioPlugin () : OutputPlugin (info, 5) {}
 
     bool init ();
     void cleanup ();
@@ -83,26 +75,6 @@ public:
 protected:
     static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
     void check_started ();
-
-private:
-    RingBuf <unsigned char> buffer;
-    int vol_left = 0, vol_right = 0;
-    int chan = 0;
-    int rate = 0;
-    int buffer_bytes_per_channel = 0;
-
-    int64_t frames_written = 0;
-    bool prebuffer_flag = false;
-    bool paused_flag = false;
-
-    int block_delay = 0;
-    struct timeval block_time = {0, 0};
-
-    AudioComponent output_comp = nullptr;
-    AudioComponentInstance output_instance = nullptr;
-
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-    pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 };
 
 EXPORT CoreAudioPlugin aud_plugin_instance;
@@ -134,6 +106,36 @@ static struct AudioUnitFormatDescriptionMap AUFormatMap[] = {
     {FMT_U32_BE, 32, sizeof (int32_t), kAudioFormatFlagIsBigEndian},
     {FMT_FLOAT,  32, sizeof (float),   kAudioFormatFlagIsFloat},
 };
+
+static RingBuf <unsigned char> buffer;
+static int vol_left = 0, vol_right = 0;
+static int chan = 0;
+static int rate = 0;
+static int buffer_bytes_per_channel = 0;
+
+static int64_t frames_written = 0;
+static bool prebuffer_flag = false;
+static bool paused_flag = false;
+
+static int block_delay = 0;
+static struct timeval block_time = {0, 0};
+
+static AudioComponent output_comp = nullptr;
+static AudioComponentInstance output_instance = nullptr;
+
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+
+const char CoreAudioPlugin::about[] =
+    N_("CoreAudio Output Plugin for Audacious\n"
+       "Copyright 2014 William Pitcock\n\n"
+       "Based on SDL Output Plugin for Audacious\n"
+       "Copyright 2010 John Lindgren");
+
+const char * const CoreAudioPlugin::defaults[] = {
+    "vol_left", "100",
+    "vol_right", "100",
+    nullptr};
 
 bool CoreAudioPlugin::init (void)
 {
@@ -205,28 +207,26 @@ void CoreAudioPlugin::set_volume (StereoVolume vol)
 
 OSStatus CoreAudioPlugin::callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData)
 {
-    CoreAudioPlugin * ctx = static_cast<CoreAudioPlugin *> (inRefCon);
-
-    pthread_mutex_lock (& ctx->mutex);
+    pthread_mutex_lock (& mutex);
 
     int len = ioData->mBuffers[0].mDataByteSize;
     unsigned char * buf = (unsigned char *) ioData->mBuffers[0].mData;
-    ioData->mBuffers[0].mNumberChannels = ctx->chan;
+    ioData->mBuffers[0].mNumberChannels = chan;
 
-    int copy = aud::min (len, ctx->buffer.len ());
+    int copy = aud::min (len, buffer.len ());
 
-    ctx->buffer.move_out (buf, copy);
+    buffer.move_out (buf, copy);
     if (copy < len)
         memset (buf + copy, 0, len - copy);
 
     /* At this moment, we know that there is a delay of (at least) the block of
      * data just written.  We save the block size and the current time for
      * estimating the delay later on. */
-    ctx->block_delay = copy / (ctx->buffer_bytes_per_channel * ctx->chan) * 1000 / ctx->rate;
-    gettimeofday (& ctx->block_time, nullptr);
+    block_delay = copy / (buffer_bytes_per_channel * chan) * 1000 / rate;
+    gettimeofday (& block_time, nullptr);
 
-    pthread_cond_broadcast (& ctx->cond);
-    pthread_mutex_unlock (& ctx->mutex);
+    pthread_cond_broadcast (& cond);
+    pthread_mutex_unlock (& mutex);
 
     return 0;
 }
