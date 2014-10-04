@@ -258,7 +258,7 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_)
     buffer_bytes_per_channel = m->mBytesPerChannel;
 
     int buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
-    buffer.init (buffer_size);
+    buffer.alloc (buffer_size);
 
     frames_written = 0;
     prebuffer_flag = 1;
