@@ -358,7 +358,7 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
      hard_buffer, soft_buffer, alsa_period);
 
     buffer_frames = aud::rescale<int64_t> (soft_buffer, 1000, rate);
-    alsa_buffer.init (snd_pcm_frames_to_bytes (alsa_handle, buffer_frames));
+    alsa_buffer.alloc (snd_pcm_frames_to_bytes (alsa_handle, buffer_frames));
 
     alsa_written = 0;
     alsa_prebuffer = true;

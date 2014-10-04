@@ -190,7 +190,7 @@ private:
 NeonFile::NeonFile (const char * url) :
     m_url (url)
 {
-    m_rb.init (NEON_BUFSIZE);
+    m_rb.alloc (NEON_BUFSIZE);
 }
 
 NeonFile::~NeonFile ()

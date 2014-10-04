@@ -143,10 +143,10 @@ void Compressor::start (int * channels, int * rate)
 
     chunk_size = (* channels) * (int) ((* rate) * CHUNK_TIME);
 
-    buffer.init (chunk_size * CHUNKS);
-    peaks.init (CHUNKS);
+    buffer.alloc (chunk_size * CHUNKS);
+    peaks.alloc (CHUNKS);
 
-    current_peak = 0.0f;
+    flush ();
 }
 
 void Compressor::process (float * * data, int * samples)
