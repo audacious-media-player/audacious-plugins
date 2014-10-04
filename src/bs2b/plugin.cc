@@ -46,8 +46,8 @@ public:
     bool init ();
     void cleanup ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
 };
 
 EXPORT BS2BPlugin aud_plugin_instance;
@@ -80,16 +80,18 @@ void BS2BPlugin::cleanup ()
     bs2b = nullptr;
 }
 
-void BS2BPlugin::start (int * channels, int * rate)
+void BS2BPlugin::start (int & channels, int & rate)
 {
-    bs2b_channels = * channels;
-    bs2b_set_srate (bs2b, * rate);
+    bs2b_channels = channels;
+    bs2b_set_srate (bs2b, rate);
 }
 
-void BS2BPlugin::process (float * * data, int * samples)
+Index<float> & BS2BPlugin::process (Index<float> & data)
 {
     if (bs2b_channels == 2)
-        bs2b_cross_feed_f (bs2b, * data, (* samples) / 2);
+        bs2b_cross_feed_f (bs2b, data.begin (), data.len () / 2);
+
+    return data;
 }
 
 static void feed_value_changed ()

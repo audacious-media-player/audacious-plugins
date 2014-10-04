@@ -26,8 +26,8 @@ public:
 
     bool init ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
 };
 
 EXPORT ExtraStereo aud_plugin_instance;
@@ -57,26 +57,28 @@ bool ExtraStereo::init ()
 
 static int stereo_channels;
 
-void ExtraStereo::start (int * channels, int * rate)
+void ExtraStereo::start (int & channels, int & rate)
 {
-    stereo_channels = * channels;
+    stereo_channels = channels;
 }
 
-void ExtraStereo::process (float * * data, int * samples)
+Index<float> & ExtraStereo::process(Index<float> & data)
 {
     float value = aud_get_double ("extra_stereo", "intensity");
     float * f, * end;
     float center;
 
-    if (stereo_channels != 2 || samples == 0)
-        return;
+    if (stereo_channels != 2)
+        return data;
 
-    end = (* data) + (* samples);
+    end = data.end ();
 
-    for (f = * data; f < end; f += 2)
+    for (f = data.begin (); f < end; f += 2)
     {
         center = (f[0] + f[1]) / 2;
         f[0] = center + (f[0] - center) * value;
         f[1] = center + (f[1] - center) * value;
     }
+
+    return data;
 }

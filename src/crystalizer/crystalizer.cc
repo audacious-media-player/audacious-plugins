@@ -18,9 +18,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdlib.h>
-#include <string.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
@@ -54,15 +51,15 @@ public:
     bool init ();
     void cleanup ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
     void flush ();
 };
 
 EXPORT Crystalizer aud_plugin_instance;
 
 static int cryst_channels;
-static float * cryst_prev;
+static Index<float> cryst_prev;
 
 bool Crystalizer::init ()
 {
@@ -72,37 +69,36 @@ bool Crystalizer::init ()
 
 void Crystalizer::cleanup ()
 {
-    free (cryst_prev);
-    cryst_prev = nullptr;
+    cryst_prev.clear ();
 }
 
-void Crystalizer::start (int * channels, int * rate)
+void Crystalizer::start (int & channels, int & rate)
 {
-    cryst_channels = * channels;
-    cryst_prev = (float *) realloc (cryst_prev, sizeof (float) * cryst_channels);
-    memset (cryst_prev, 0, sizeof (float) * cryst_channels);
+    cryst_channels = channels;
+    cryst_prev.resize (cryst_channels);
+    cryst_prev.erase (0, cryst_channels);
 }
 
-void Crystalizer::process (float * * data, int * samples)
+Index<float> & Crystalizer::process (Index<float> & data)
 {
     float value = aud_get_double ("crystalizer", "intensity");
-    float * f = * data;
-    float * end = f + (* samples);
-    int channel;
+    float * f = data.begin ();
+    float * end = data.end ();
 
     while (f < end)
     {
-        for (channel = 0; channel < cryst_channels; channel ++)
+        for (int channel = 0; channel < cryst_channels; channel ++)
         {
             float current = * f;
-
             * f ++ = current + (current - cryst_prev[channel]) * value;
             cryst_prev[channel] = current;
         }
     }
+
+    return data;
 }
 
 void Crystalizer::flush ()
 {
-    memset (cryst_prev, 0, sizeof (float) * cryst_channels);
+    cryst_prev.erase (0, cryst_channels);
 }
