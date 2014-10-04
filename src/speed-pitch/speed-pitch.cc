@@ -18,11 +18,6 @@
  */
 
 #include <math.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <glib.h>
-
 #include <samplerate.h>
 
 #include <libaudcore/i18n.h>
@@ -34,10 +29,7 @@
  * into pieces, spaced at a time interval A, using a cosine-shaped window
  * function.  The pieces are then reassembled by adding them together again,
  * spaced at another time interval B.  By varying the ratio A:B, we change the
- * speed of the audio.  To get better results at the two ends of a song, we add
- * a short period of silence (half the width of the cosine window, to be exact)
- * to each end of the input signal beforehand and afterwards trim the same
- * amount from each end of the output signal. */
+ * speed of the audio. */
 
 #define FREQ    10
 #define OVERLAP  3
@@ -47,9 +39,6 @@
 #define MAXSPEED 2.0
 #define MINPITCH 0.5
 #define MAXPITCH 2.0
-
-#define BYTES(frames) ((frames) * curchans * sizeof (float))
-#define OFFSET(buf,frames) ((buf) + (frames) * curchans)
 
 class SpeedPitch : public EffectPlugin
 {
@@ -70,86 +59,67 @@ public:
     bool init ();
     void cleanup ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
     void flush ();
-    void finish (float * * data, int * samples);
     int adjust_delay (int delay);
+
+    Index<float> & process (Index<float> & samples)
+        { return process (samples, false); }
+    Index<float> & finish (Index<float> & samples)
+        { return process (samples, true); }
+
+private:
+    Index<float> & process (Index<float> & samples, bool ending);
 };
 
 EXPORT SpeedPitch aud_plugin_instance;
 
-typedef struct {
-    float * mem;
-    int size, len;
-} Buffer;
-
 static int curchans, currate;
 static SRC_STATE * srcstate;
 static int outstep, width;
-static double * cosine;
-static Buffer in, out;
-static int trim, written;
-static bool ending;
+static Index<float> cosine;
+static Index<float> in, out;
+static int src, dst;
 
-static void bufgrow (Buffer * b, int len)
+static void add_data (Index<float> & b, Index<float> & data, float ratio)
 {
-    if (len > b->size)
-    {
-        b->mem = (float *) g_realloc (b->mem, BYTES (len));
-        b->size = len;
-    }
+    int oldlen = b.len ();
+    int inframes = data.len () / curchans;
+    int maxframes = (int) (inframes * ratio) + 256;
+    b.resize (oldlen + maxframes * curchans);
 
-    if (len > b->len)
-    {
-        memset (OFFSET (b->mem, b->len), 0, BYTES (len - b->len));
-        b->len = len;
-    }
-}
+    SRC_DATA d = SRC_DATA ();
 
-static void bufcut (Buffer * b, int len)
-{
-    memmove (b->mem, OFFSET (b->mem, len), BYTES (b->len - len));
-    b->len -= len;
-}
-
-static void bufadd (Buffer * b, float * data, int len, double ratio)
-{
-    int oldlen = b->len;
-    int max = len * ratio + 100;
-    bufgrow (b, oldlen + max);
-
-    SRC_DATA d;
-
-    d.data_in = data;
-    d.input_frames = len;
-    d.data_out = OFFSET (b->mem, oldlen);
-    d.output_frames = max;
+    d.data_in = data.begin ();
+    d.input_frames = inframes;
+    d.data_out = & b[oldlen];
+    d.output_frames = maxframes;
     d.src_ratio = ratio;
 
     src_process (srcstate, & d);
-    b->len = oldlen + d.output_frames_gen;
+    b.resize (oldlen + d.output_frames_gen * curchans);
 }
 
 void SpeedPitch::flush ()
 {
     src_reset (srcstate);
 
-    in.len = 0;
-    out.len = 0;
+    in.resize (0);
+    out.resize (0);
 
-    /* Add silence to the beginning of the input signal. */
-    bufgrow (& in, width / 2);
+    /* The source and destination pointers give the center of the next cosine
+     * window to be copied, relative to the current input and output buffers. */
+    src = dst = 0;
 
-    trim = width / 2;
-    written = 0;
-    ending = false;
+    /* The output buffer always extends right of the destination pointer by half
+     * the width of a cosine window. */
+    out.insert (0, width / 2);
 }
 
-void SpeedPitch::start (int * chans, int * rate)
+void SpeedPitch::start (int & chans, int & rate)
 {
-    curchans = * chans;
-    currate = * rate;
+    curchans = chans;
+    currate = rate;
 
     if (srcstate)
         src_delete (srcstate);
@@ -157,94 +127,76 @@ void SpeedPitch::start (int * chans, int * rate)
     srcstate = src_new (SRC_LINEAR, curchans, nullptr);
 
     /* Calculate the width of the cosine window and the spacing interval for
-     * output. */
-    outstep = currate / FREQ;
+     * output.  Make them both even numbers for convenience.  Note that the
+     * cosine window is applied without deinterleaving the audio samples. */
+    outstep = ((currate / FREQ) & ~1) * curchans;
     width = outstep * OVERLAP;
 
     /* Generate the cosine window, scaled vertically to compensate for the
      * overlap of the reassembled pieces of audio. */
-    cosine = g_renew (double, cosine, width);
+    cosine.resize (width);
     for (int i = 0; i < width; i ++)
         cosine[i] = (1.0 - cos (2.0 * M_PI * i / width)) / OVERLAP;
 
     flush ();
 }
 
-void SpeedPitch::process (float * * data, int * samples)
+Index<float> & SpeedPitch::process (Index<float> & data, bool ending)
 {
-    double pitch = aud_get_double (CFGSECT, "pitch");
-    double speed = aud_get_double (CFGSECT, "speed");
-
-    /* Remove audio that has already been played from the output buffer. */
-    bufcut (& out, written);
+    const float * cosine_center = & cosine[width / 2];
+    float pitch = aud_get_double (CFGSECT, "pitch");
+    float speed = aud_get_double (CFGSECT, "speed");
 
     /* Copy the passed audio to the input buffer, scaled to adjust pitch. */
-    bufadd (& in, * data, * samples / curchans, 1.0 / pitch);
-
-    /* If we are ending, add silence to the end of the input signal. */
-    if (ending)
-        bufgrow (& in, in.len + width / 2);
+    add_data (in, data, 1.0 / pitch);
 
     /* Calculate the spacing interval for input. */
-    int instep = round (outstep * speed / pitch);
+    int instep = (int) round ((outstep / curchans) * speed / pitch) * curchans;
 
-    /* Run the speed change algorithm. */
-    int src = 0;
-    int dst = 0;
+    /* Stop copying half a window's width before the end of the input buffer (or
+     * right up to the end of the buffer if the song is ending). */
+    int stop = in.len () - (ending ? 0 : width / 2);
 
-    while (src + aud::max (width, instep) <= in.len)
+    while (src <= stop)
     {
-        bufgrow (& out, dst + width);
-        out.len = dst + width;
+        /* Truncate the window to avoid overflows if necessary. */
+        int begin = aud::max (-(width / 2), aud::max (-src, -dst));
+        int end = aud::min (width / 2, aud::min (in.len () - src, out.len () - dst));
 
-        for (int i = 0; i < width; i ++)
-        for (int c = 0; c < curchans; c ++)
-            OFFSET (out.mem, dst + i)[c] += OFFSET (in.mem, src + i)[c] * cosine[i];
+        for (int i = begin; i < end; i ++)
+            out[dst + i] += in[src + i] * cosine_center[i];
 
         src += instep;
         dst += outstep;
+
+        out.insert (-1, outstep);
     }
 
-    /* Remove processed audio from the input buffer. */
-    bufcut (& in, src);
+    /* Discard input up to half a window's width before the source pointer (or
+     * right up to the previous source pointer if the song is ending. */
+    int seek = aud::clamp (0, src - (ending ? instep : width / 2), in.len ());
+    in.remove (0, seek);
+    src -= seek;
 
-    /* Trim silence from the beginning of the output buffer. */
-    if (trim > 0)
-    {
-        int cut = aud::min (trim, dst);
-        bufcut (& out, cut);
-        dst -= cut;
-        trim -= cut;
-    }
+    data.resize (0);
 
-    /* If we are ending, return all of the output buffer except the silence that
-     * we trim from the end of it. */
-    if (ending)
-        dst = out.len - width / 2;
+    /* Return output up to half a window's width before the destination pointer
+     * (or right up to the previous destination pointer if the song is ending). */
+    int ret = aud::clamp (0, dst - (ending ? outstep : width / 2), out.len ());
+    data.move_from (out, 0, 0, ret, true, true);
+    dst -= ret;
 
-    /* Return processed audio in the output buffer and mark it to be removed on
-     * the next call. */
-    * data = out.mem;
-    * samples = dst * curchans;
-    written = dst;
-}
-
-void SpeedPitch::finish (float * * data, int * samples)
-{
-    /* Ignore the second "end of playlist" call since we are not in a state to
-     * handle it properly. */
-    if (! ending)
-    {
-        ending = true;
-        process (data, samples);
-    }
+    return data;
 }
 
 int SpeedPitch::adjust_delay (int delay)
 {
-    /* Not sample-accurate, but should be a decent estimate. */
-    double speed = aud_get_double (CFGSECT, "speed");
-    return delay * speed + width * 1000 / currate;
+    float samples_to_ms = 1000.0 / (curchans * currate);
+    float speed = aud_get_double (CFGSECT, "speed");
+    int in_samples = in.len () - src;
+    int out_samples = dst;
+
+    return (delay + in_samples * samples_to_ms) * speed + out_samples * samples_to_ms;
 }
 
 const char * const SpeedPitch::defaults[] = {
@@ -277,14 +229,7 @@ void SpeedPitch::cleanup ()
 
     srcstate = nullptr;
 
-    g_free (cosine);
-    cosine = nullptr;
-
-    g_free (in.mem);
-    in.mem = nullptr;
-    in.size = 0;
-
-    g_free (out.mem);
-    out.mem = nullptr;
-    out.size = 0;
+    cosine.clear ();
+    in.clear ();
+    out.clear ();
 }
