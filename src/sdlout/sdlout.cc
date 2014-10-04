@@ -17,11 +17,9 @@
  * the use of this software.
  */
 
-#include <assert.h>
 #include <math.h>
 #include <pthread.h>
-#include <stdint.h>
-#include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
 
 #include <SDL.h>
@@ -31,6 +29,7 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/ringbuf.h>
 #include <libaudcore/runtime.h>
 
 #define VOLUME_RANGE 40 /* decibels */
@@ -91,8 +90,7 @@ static volatile int vol_left, vol_right;
 
 static int sdlout_chan, sdlout_rate;
 
-static unsigned char * buffer;
-static int buffer_size, buffer_data_start, buffer_data_len;
+static RingBuf<unsigned char> buffer;
 
 static int64_t frames_written;
 static bool prebuffer_flag, paused_flag;
@@ -110,10 +108,10 @@ bool SDLOutput::init ()
     if (SDL_Init (SDL_INIT_AUDIO) < 0)
     {
         AUDERR ("Failed to init SDL: %s.\n", SDL_GetError ());
-        return 0;
+        return false;
     }
 
-    return 1;
+    return true;
 }
 
 void SDLOutput::cleanup ()
@@ -174,22 +172,8 @@ static void callback (void * user, unsigned char * buf, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
-    int copy = aud::min (len, buffer_data_len);
-    int part = buffer_size - buffer_data_start;
-
-    if (copy <= part)
-    {
-        memcpy (buf, buffer + buffer_data_start, copy);
-        buffer_data_start += copy;
-    }
-    else
-    {
-        memcpy (buf, buffer + buffer_data_start, part);
-        memcpy (buf + part, buffer, copy - part);
-        buffer_data_start = copy - part;
-    }
-
-    buffer_data_len -= copy;
+    int copy = aud::min (len, buffer.len ());
+    buffer.move_out (buf, copy);
 
     if (sdlout_chan == 2)
         apply_stereo_volume (buf, copy);
@@ -202,7 +186,7 @@ static void callback (void * user, unsigned char * buf, int len)
     /* At this moment, we know that there is a delay of (at least) the block of
      * data just written.  We save the block size and the current time for
      * estimating the delay later on. */
-    block_delay = copy / (2 * sdlout_chan) * 1000 / sdlout_rate;
+    block_delay = aud::rescale (copy / (2 * sdlout_chan), sdlout_rate, 1000);
     gettimeofday (& block_time, nullptr);
 
     pthread_cond_broadcast (& sdlout_cond);
@@ -222,10 +206,8 @@ bool SDLOutput::open_audio (int format, int rate, int chan)
     sdlout_chan = chan;
     sdlout_rate = rate;
 
-    buffer_size = 2 * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
-    buffer = new unsigned char[buffer_size];
-    buffer_data_start = 0;
-    buffer_data_len = 0;
+    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    buffer.alloc (2 * chan * aud::rescale (buffer_ms, 1000, rate));
 
     frames_written = 0;
     prebuffer_flag = true;
@@ -242,8 +224,7 @@ bool SDLOutput::open_audio (int format, int rate, int chan)
     if (SDL_OpenAudio (& spec, nullptr) < 0)
     {
         sdlout_error ("Failed to open audio stream: %s.\n", SDL_GetError ());
-        delete[] buffer;
-        buffer = nullptr;
+        buffer.destroy ();
         return false;
     }
 
@@ -254,14 +235,13 @@ void SDLOutput::close_audio ()
 {
     AUDDBG ("Closing audio.\n");
     SDL_CloseAudio ();
-    delete[] buffer;
-    buffer = nullptr;
+    buffer.destroy ();
 }
 
 int SDLOutput::buffer_free ()
 {
     pthread_mutex_lock (& sdlout_mutex);
-    int space = buffer_size - buffer_data_len;
+    int space = buffer.space ();
     pthread_mutex_unlock (& sdlout_mutex);
     return space;
 }
@@ -281,7 +261,7 @@ void SDLOutput::period_wait ()
 {
     pthread_mutex_lock (& sdlout_mutex);
 
-    while (buffer_data_len == buffer_size)
+    while (! buffer.space ())
     {
         if (! paused_flag)
             check_started ();
@@ -296,20 +276,7 @@ void SDLOutput::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
-    assert (len <= buffer_size - buffer_data_len);
-
-    int start = (buffer_data_start + buffer_data_len) % buffer_size;
-
-    if (len <= buffer_size - start)
-        memcpy (buffer + start, data, len);
-    else
-    {
-        int part = buffer_size - start;
-        memcpy (buffer + start, data, part);
-        memcpy (buffer, (const char *) data + part, len - part);
-    }
-
-    buffer_data_len += len;
+    buffer.copy_in ((const unsigned char *) data, len);
     frames_written += len / (2 * sdlout_chan);
 
     pthread_mutex_unlock (& sdlout_mutex);
@@ -322,7 +289,7 @@ void SDLOutput::drain ()
 
     check_started ();
 
-    while (buffer_data_len)
+    while (buffer.len ())
         pthread_cond_wait (& sdlout_cond, & sdlout_mutex);
 
     pthread_mutex_unlock (& sdlout_mutex);
@@ -332,8 +299,8 @@ int SDLOutput::output_time ()
 {
     pthread_mutex_lock (& sdlout_mutex);
 
-    int out = (int64_t) (frames_written - buffer_data_len / (2 * sdlout_chan))
-     * 1000 / sdlout_rate;
+    int64_t frames_out = frames_written - buffer.len () / (2 * sdlout_chan);
+    int time_out = aud::rescale<int64_t> (frames_out, sdlout_rate, 1000);
 
     /* Estimate the additional delay of the last block written. */
     if (! prebuffer_flag && ! paused_flag && block_delay)
@@ -345,11 +312,11 @@ int SDLOutput::output_time ()
          block_time.tv_usec) / 1000;
 
         if (elapsed < block_delay)
-            out -= block_delay - elapsed;
+            time_out -= block_delay - elapsed;
     }
 
     pthread_mutex_unlock (& sdlout_mutex);
-    return out;
+    return time_out;
 }
 
 void SDLOutput::pause (bool pause)
@@ -371,10 +338,9 @@ void SDLOutput::flush (int time)
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& sdlout_mutex);
 
-    buffer_data_start = 0;
-    buffer_data_len = 0;
+    buffer.discard ();
 
-    frames_written = (int64_t) time * sdlout_rate / 1000;
+    frames_written = aud::rescale<int64_t> (time, 1000, sdlout_rate);
     prebuffer_flag = true;
 
     pthread_cond_broadcast (& sdlout_cond); /* wake up period wait */
