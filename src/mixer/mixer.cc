@@ -47,26 +47,23 @@ public:
     bool init ();
     void cleanup ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
 };
 
 EXPORT ChannelMixer aud_plugin_instance;
 
-typedef void (* Converter) (float * * data, int * samples);
+typedef Index<float> & (* Converter) (Index<float> & data);
 
 static Index<float> mixer_buf;
 
-static void mono_to_stereo (float * * data, int * samples)
+static Index<float> & mono_to_stereo (Index<float> & data)
 {
-    int frames = * samples;
-    mixer_buf.enlarge (2 * frames);
+    int frames = data.len ();
+    mixer_buf.resize (2 * frames);
 
-    float * get = * data;
+    float * get = data.begin ();
     float * set = mixer_buf.begin ();
-
-    * data = set;
-    * samples = 2 * frames;
 
     while (frames --)
     {
@@ -74,18 +71,17 @@ static void mono_to_stereo (float * * data, int * samples)
         * set ++ = val;
         * set ++ = val;
     }
+
+    return mixer_buf;
 }
 
-static void stereo_to_mono (float * * data, int * samples)
+static Index<float> & stereo_to_mono (Index<float> & data)
 {
-    int frames = * samples / 2;
-    mixer_buf.enlarge (frames);
+    int frames = data.len () / 2;
+    mixer_buf.resize (frames);
 
-    float * get = * data;
+    float * get = data.begin ();
     float * set = mixer_buf.begin ();
-
-    * data = set;
-    * samples = frames;
 
     while (frames --)
     {
@@ -93,18 +89,17 @@ static void stereo_to_mono (float * * data, int * samples)
         val += * get ++;
         * set ++ = val / 2;
     }
+
+    return mixer_buf;
 }
 
-static void quadro_to_stereo (float * * data, int * samples)
+static Index<float> & quadro_to_stereo (Index<float> & data)
 {
-    int frames = * samples / 4;
-    mixer_buf.enlarge (2 * frames);
+    int frames = data.len () / 4;
+    mixer_buf.resize (2 * frames);
 
-    float * get = * data;
+    float * get = data.begin ();
     float * set = mixer_buf.begin ();
-
-    * data = set;
-    * samples = 2 * frames;
 
     while (frames --)
     {
@@ -115,18 +110,17 @@ static void quadro_to_stereo (float * * data, int * samples)
         * set ++ = front_left + (back_left * 0.7);
         * set ++ = front_right + (back_right * 0.7);
     }
+
+    return mixer_buf;
 }
 
-static void surround_5p1_to_stereo (float * * data, int * samples)
+static Index<float> & surround_5p1_to_stereo (Index<float> & data)
 {
-    int frames = * samples / 6;
-    mixer_buf.enlarge (2 * frames);
+    int frames = data.len () / 6;
+    mixer_buf.resize (2 * frames);
 
-    float * get = * data;
+    float * get = data.begin ();
     float * set = mixer_buf.begin ();
-
-    * data = set;
-    * samples = 2 * frames;
 
     while (frames --)
     {
@@ -139,6 +133,8 @@ static void surround_5p1_to_stereo (float * * data, int * samples)
         * set ++ = front_left + (center * 0.5) + (lfe * 0.5) + (rear_left * 0.5);
         * set ++ = front_right + (center * 0.5) + (lfe * 0.5) + (rear_right * 0.5);
     }
+
+    return mixer_buf;
 }
 
 static Converter get_converter (int in, int out)
@@ -157,9 +153,9 @@ static Converter get_converter (int in, int out)
 
 static int input_channels, output_channels;
 
-void ChannelMixer::start (int * channels, int * rate)
+void ChannelMixer::start (int & channels, int & rate)
 {
-    input_channels = * channels;
+    input_channels = channels;
     output_channels = aud_get_int ("mixer", "channels");
 
     if (input_channels == output_channels)
@@ -172,17 +168,19 @@ void ChannelMixer::start (int * channels, int * rate)
         return;
     }
 
-    * channels = output_channels;
+    channels = output_channels;
 }
 
-void ChannelMixer::process (float * * data, int * samples)
+Index<float> & ChannelMixer::process (Index<float> & data)
 {
     if (input_channels == output_channels)
-        return;
+        return data;
 
     Converter converter = get_converter (input_channels, output_channels);
     if (converter)
-        converter (data, samples);
+        return converter (data);
+
+    return data;
 }
 
 const char * const ChannelMixer::defaults[] = {

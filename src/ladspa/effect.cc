@@ -185,30 +185,31 @@ void shutdown_plugin_locked (LoadedPlugin & loaded)
     loaded.out_bufs.clear ();
 }
 
-void LADSPAHost::start (int * channels, int * rate)
+void LADSPAHost::start (int & channels, int & rate)
 {
     pthread_mutex_lock (& mutex);
 
     for (auto & loaded : loadeds)
         shutdown_plugin_locked (* loaded);
 
-    ladspa_channels = * channels;
-    ladspa_rate = * rate;
+    ladspa_channels = channels;
+    ladspa_rate = rate;
 
     pthread_mutex_unlock (& mutex);
 }
 
-void LADSPAHost::process (float * * data, int * samples)
+Index<float> & LADSPAHost::process (Index<float> & data)
 {
     pthread_mutex_lock (& mutex);
 
     for (auto & loaded : loadeds)
     {
         start_plugin (* loaded);
-        run_plugin (* loaded, * data, * samples);
+        run_plugin (* loaded, data.begin (), data.len ());
     }
 
     pthread_mutex_unlock (& mutex);
+    return data;
 }
 
 void LADSPAHost::flush (void)
@@ -221,16 +222,17 @@ void LADSPAHost::flush (void)
     pthread_mutex_unlock (& mutex);
 }
 
-void LADSPAHost::finish (float * * data, int * samples)
+Index<float> & LADSPAHost::finish (Index<float> & data)
 {
     pthread_mutex_lock (& mutex);
 
     for (auto & loaded : loadeds)
     {
         start_plugin (* loaded);
-        run_plugin (* loaded, * data, * samples);
+        run_plugin (* loaded, data.begin (), data.len ());
         shutdown_plugin_locked (* loaded);
     }
 
     pthread_mutex_unlock (& mutex);
+    return data;
 }

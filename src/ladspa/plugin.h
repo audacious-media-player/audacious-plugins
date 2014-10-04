@@ -86,10 +86,10 @@ public:
     bool init ();
     void cleanup ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
     void flush ();
-    void finish (float * * data, int * samples);
+    Index<float> & finish (Index<float> & data);
 };
 
 /* plugin.c */
