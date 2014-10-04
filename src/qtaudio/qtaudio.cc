@@ -208,11 +208,11 @@ int buffer_free (void)
     return space;
 }
 
-void write_audio (void * data, int len)
+void write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
-    buffer_instance->write ((char *) data, len);
+    buffer_instance->write ((const char *) data, len);
 
     frames_written += len / (buffer_bytes_per_channel * chan);
 

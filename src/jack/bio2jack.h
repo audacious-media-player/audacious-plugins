@@ -57,7 +57,7 @@ int  JACK_OpenEx(int *deviceID, unsigned int bits_per_channel,
                  unsigned long jack_port_flags);
 int  JACK_Close(int deviceID); /* return 0 for success */
 void JACK_Reset(int deviceID); /* free all buffered data and reset several values in the device */
-long JACK_Write(int deviceID, unsigned char *data, unsigned long bytes); /* returns the number of bytes written */
+long JACK_Write(int deviceID, const unsigned char *data, unsigned long bytes); /* returns the number of bytes written */
 long JACK_Read(int deviceID, unsigned char *data, unsigned long bytes); /* returns the number of bytes read */
 
 /* state setting values */

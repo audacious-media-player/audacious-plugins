@@ -14,7 +14,7 @@ gboolean convert_init(int input_fmt, int output_fmt, int channels)
     return TRUE;
 }
 
-int convert_process(void * ptr, int length)
+int convert_process (const void * ptr, int length)
 {
     int samples = length / FMT_SIZEOF (in_fmt);
     float * temp;
@@ -24,7 +24,7 @@ int convert_process(void * ptr, int length)
     if (in_fmt == out_fmt)
         memcpy (convert_output, ptr, FMT_SIZEOF (in_fmt) * samples);
     else if (in_fmt == FMT_FLOAT)
-        audio_to_int ((float *) ptr, convert_output, out_fmt, samples);
+        audio_to_int ((const float *) ptr, convert_output, out_fmt, samples);
     else if (out_fmt == FMT_FLOAT)
         audio_from_int (ptr, in_fmt, (float *) convert_output, samples);
     else

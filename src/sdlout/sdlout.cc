@@ -64,7 +64,7 @@ public:
 
     int buffer_free ();
     void period_wait ();
-    void write_audio (void * data, int size);
+    void write_audio (const void * data, int size);
     void drain ();
 
     int output_time ();
@@ -292,7 +292,7 @@ void SDLOutput::period_wait ()
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void SDLOutput::write_audio (void * data, int len)
+void SDLOutput::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
@@ -306,7 +306,7 @@ void SDLOutput::write_audio (void * data, int len)
     {
         int part = buffer_size - start;
         memcpy (buffer + start, data, part);
-        memcpy (buffer, (char *) data + part, len - part);
+        memcpy (buffer, (const char *) data + part, len - part);
     }
 
     buffer_data_len += len;

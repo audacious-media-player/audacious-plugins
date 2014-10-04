@@ -117,7 +117,7 @@ public:
 
     int buffer_free();
     void period_wait();
-    void write_audio(void *data, int size);
+    void write_audio(const void *data, int size);
     void drain();
 
     int output_time();

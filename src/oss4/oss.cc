@@ -253,13 +253,13 @@ void OSSPlugin::close_audio()
     close_device(m_fd);
 }
 
-void OSSPlugin::write_audio(void *data, int length)
+void OSSPlugin::write_audio(const void *data, int length)
 {
     int written = 0, start = 0;
 
     while (length > 0)
     {
-        written = write(m_fd, (char *) data + start, length);
+        written = write(m_fd, (const char *)data + start, length);
 
         if (written < 0)
         {

@@ -389,7 +389,7 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void pulse_write(void* ptr, int length) {
+static void pulse_write(const void* ptr, int length) {
     int writeoffs, remain, writable;
 
     CHECK_CONNECTED();

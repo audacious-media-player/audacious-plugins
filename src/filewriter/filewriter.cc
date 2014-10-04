@@ -60,7 +60,7 @@ public:
 
     int buffer_free () { return 4 * 44100; }
     void period_wait () {}
-    void write_audio (void * ptr, int length);
+    void write_audio (const void * ptr, int length);
     void drain () {}
 
     int output_time ();
@@ -297,7 +297,7 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
     return rv;
 }
 
-void FileWriter::write_audio (void * ptr, int length)
+void FileWriter::write_audio (const void * ptr, int length)
 {
     int len = convert_process (ptr, length);
 

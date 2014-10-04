@@ -350,19 +350,18 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
 
 
 /* write some audio out to the device */
-static void jack_write(void * ptr, int length)
+static void jack_write(const void *ptr, int length)
 {
   long written;
 
   TRACE("starting length of %d\n", length);
 
   /* loop until we have written all the data out to the jack device */
-  /* this is due to xmms' audio driver api */
-  char *buf = (char*)ptr;
+  auto buf = (const unsigned char *)ptr;
   while(length > 0)
   {
     TRACE("writing %d bytes\n", length);
-    written = JACK_Write(driver, (unsigned char*)buf, length);
+    written = JACK_Write(driver, buf, length);
     length-=written;
     buf+=written;
   }

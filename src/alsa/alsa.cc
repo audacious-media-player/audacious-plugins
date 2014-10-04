@@ -411,7 +411,7 @@ int ALSAPlugin::buffer_free ()
     return space;
 }
 
-void ALSAPlugin::write_audio (void * data, int length)
+void ALSAPlugin::write_audio (const void * data, int length)
 {
     pthread_mutex_lock (& alsa_mutex);
 

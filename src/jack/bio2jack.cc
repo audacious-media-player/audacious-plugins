@@ -1750,7 +1750,7 @@ JACK_Close(int deviceID)
 /* Return value is the number of bytes written */
 /* NOTE: this function takes the length of data to be written bytes */
 long
-JACK_Write(int deviceID, unsigned char *data, unsigned long bytes)
+JACK_Write(int deviceID, const unsigned char *data, unsigned long bytes)
 {
   jack_driver_t *drv = getDriver(deviceID);
 
