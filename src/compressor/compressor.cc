@@ -72,10 +72,10 @@ public:
     bool init ();
     void cleanup ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
     void flush ();
-    void finish (float * * data, int * samples);
+    Index<float> & finish (Index<float> & data);
     int adjust_delay (int delay);
 };
 
@@ -136,12 +136,12 @@ void Compressor::cleanup ()
     output.clear ();
 }
 
-void Compressor::start (int * channels, int * rate)
+void Compressor::start (int & channels, int & rate)
 {
-    current_channels = * channels;
-    current_rate = * rate;
+    current_channels = channels;
+    current_rate = rate;
 
-    chunk_size = (* channels) * (int) ((* rate) * CHUNK_TIME);
+    chunk_size = channels * (int) (rate * CHUNK_TIME);
 
     buffer.alloc (chunk_size * CHUNKS);
     peaks.alloc (CHUNKS);
@@ -149,18 +149,21 @@ void Compressor::start (int * channels, int * rate)
     flush ();
 }
 
-void Compressor::process (float * * data, int * samples)
+Index<float> & Compressor::process (Index<float> & data)
 {
-    output.remove (0, -1);
+    output.resize (0);
+
+    int offset = 0;
+    int remain = data.len ();
 
     while (1)
     {
-        int writable = aud::min (* samples, buffer.space ());
+        int writable = aud::min (remain, buffer.space ());
 
-        buffer.copy_in (* data, writable);
+        buffer.copy_in (& data[offset], writable);
 
-        * data += writable;
-        * samples -= writable;
+        offset += writable;
+        remain -= writable;
 
         if (buffer.space ())
             break;
@@ -181,15 +184,13 @@ void Compressor::process (float * * data, int * samples)
 
         do_ramp (& buffer[0], chunk_size, current_peak, new_peak);
 
-        output.insert (& buffer[0], -1, chunk_size);
-        buffer.discard (chunk_size);
+        buffer.move_out (output, -1, chunk_size);
 
         current_peak = new_peak;
         peaks.pop ();
     }
 
-    * data = output.begin ();
-    * samples = output.len ();
+    return output;
 }
 
 void Compressor::flush ()
@@ -200,9 +201,9 @@ void Compressor::flush ()
     current_peak = 0.0f;
 }
 
-void Compressor::finish (float * * data, int * samples)
+Index<float> & Compressor::finish (Index<float> & data)
 {
-    output.remove (0, -1);
+    output.resize (0);
 
     peaks.discard ();
 
@@ -213,17 +214,15 @@ void Compressor::finish (float * * data, int * samples)
         if (current_peak != 0.0f)
             do_ramp (& buffer[0], writable, current_peak, current_peak);
 
-        output.insert (& buffer[0], -1, writable);
-        buffer.discard (writable);
+        buffer.move_out (output, -1, writable);
     }
 
     if (current_peak != 0.0f)
-        do_ramp (* data, * samples, current_peak, current_peak);
+        do_ramp (data.begin (), data.len (), current_peak, current_peak);
 
-    output.insert (* data, -1, * samples);
+    output.insert (data.begin (), -1, data.len ());
 
-    * data = output.begin ();
-    * samples = output.len ();
+    return output;
 }
 
 int Compressor::adjust_delay (int delay)
