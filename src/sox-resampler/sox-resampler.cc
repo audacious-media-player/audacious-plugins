@@ -55,8 +55,8 @@ public:
     bool init ();
     void cleanup ();
 
-    void start (int * channels, int * rate);
-    void process (float * * data, int * samples);
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
     void flush ();
 };
 
@@ -86,7 +86,7 @@ void SoXResampler::cleanup ()
     buffer.clear ();
 }
 
-void SoXResampler::start (int * channels, int * rate)
+void SoXResampler::start (int & channels, int & rate)
 {
     soxr_delete (soxr);
     soxr = 0;
@@ -94,12 +94,12 @@ void SoXResampler::start (int * channels, int * rate)
     int new_rate = aud_get_int ("soxr", "rate");
     new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
 
-    if (new_rate == * rate)
+    if (new_rate == rate)
         return;
 
     soxr_quality_spec_t q = soxr_quality_spec(aud_get_int ("soxr", "quality"), 0);
 
-    soxr = soxr_create((double) * rate, (double) new_rate, * channels, & error, nullptr, & q, nullptr);
+    soxr = soxr_create(rate, new_rate, channels, & error, nullptr, & q, nullptr);
 
     if (error)
     {
@@ -107,30 +107,31 @@ void SoXResampler::start (int * channels, int * rate)
         return;
     }
 
-    stored_channels = * channels;
-    ratio = (double) new_rate / * rate;
-    * rate = new_rate;
+    stored_channels = channels;
+    ratio = (double) new_rate / rate;
+    rate = new_rate;
 }
 
-void SoXResampler::process (float * * data, int * samples)
+Index<float> & SoXResampler::process (Index<float> & data)
 {
     if (! soxr)
-         return;
+         return data;
 
-    buffer.enlarge ((int) (* samples * ratio) + 256);
+    buffer.resize ((int) (data.len () * ratio) + 256);
 
     size_t samples_done;
-    error = soxr_process (soxr, * data, * samples / stored_channels, nullptr,
-     buffer.begin (), buffer.len () / stored_channels, & samples_done);
+    error = soxr_process (soxr, data.begin (), data.len () / stored_channels,
+     nullptr, buffer.begin (), buffer.len () / stored_channels, & samples_done);
 
     if (error)
     {
         AUDERR (error);
-        return;
+        return data;
     }
 
-    * data = buffer.begin ();
-    * samples = samples_done * stored_channels;
+    buffer.resize (samples_done * stored_channels);
+
+    return buffer;
 }
 
 void SoXResampler::flush ()
