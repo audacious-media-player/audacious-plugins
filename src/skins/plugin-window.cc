@@ -25,10 +25,12 @@
 
 #include <gtk/gtk.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/runtime.h>
 
 static GList * windows;
 
@@ -46,7 +48,6 @@ static bool add_dock_plugin (PluginHandle * plugin, void * unused)
     {
         GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
         gtk_window_set_title ((GtkWindow *) window, aud_plugin_get_name (plugin));
-        gtk_window_set_default_size ((GtkWindow *) window, 300, 200);
         gtk_container_add ((GtkContainer *) window, widget);
 
         g_object_set_data ((GObject *) window, "skins-plugin-id", plugin);
@@ -54,11 +55,39 @@ static bool add_dock_plugin (PluginHandle * plugin, void * unused)
 
         windows = g_list_prepend (windows, window);
 
+        const char * basename = aud_plugin_get_basename (plugin);
+        String pos_str = aud_get_str ("skins-layout", basename);
+        int pos[4];
+
+        if (pos_str && str_to_int_array (pos_str, pos, aud::n_elems (pos)))
+        {
+            gtk_window_set_default_size ((GtkWindow *) window, pos[2], pos[3]);
+            gtk_window_move ((GtkWindow *) window, pos[0], pos[1]);
+        }
+        else
+            gtk_window_set_default_size ((GtkWindow *) window, 300, 200);
+
         if (aud_ui_is_shown ())
             gtk_widget_show_all (window);
     }
 
     return TRUE;
+}
+
+static void save_window_size (GtkWidget * window)
+{
+    auto plugin = (PluginHandle *) g_object_get_data ((GObject *) window, "skins-plugin-id");
+
+    if (! plugin || ! gtk_widget_get_visible (window))
+        return;
+
+    int pos[4];
+    gtk_window_get_position ((GtkWindow *) window, & pos[0], & pos[1]);
+    gtk_window_get_size ((GtkWindow *) window, & pos[2], & pos[3]);
+
+    const char * basename = aud_plugin_get_basename (plugin);
+    StringBuf pos_str = int_array_to_str (pos, aud::n_elems (pos));
+    aud_set_str ("skins-layout", basename, pos_str);
 }
 
 static int find_cb (GtkWidget * window, PluginHandle * plugin)
@@ -72,6 +101,7 @@ static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
 
     if (node)
     {
+        save_window_size ((GtkWidget *) node->data);
         gtk_widget_destroy ((GtkWidget *) node->data);
         windows = g_list_delete_link (windows, node);
     }
@@ -104,6 +134,7 @@ void show_plugin_windows (void)
 
 void hide_plugin_windows (void)
 {
+    g_list_foreach (windows, (GFunc) save_window_size, nullptr);
     g_list_foreach (windows, (GFunc) gtk_widget_hide, nullptr);
 }
 
