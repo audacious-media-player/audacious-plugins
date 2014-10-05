@@ -60,7 +60,7 @@ dnl ======================
 
 INPUT_PLUGINS="tonegen metronom"
 OUTPUT_PLUGINS=""
-EFFECT_PLUGINS="compressor crossfade crystalizer mixer stereo_plugin voice_removal echo_plugin"
+EFFECT_PLUGINS="compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS=""
 VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
@@ -1247,6 +1247,7 @@ echo "  LADSPA Host:                            $enable_ladspa"
 echo "  Voice Removal:                          yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $have_resample"
+echo "  Silence Removal:                        yes"
 echo "  Speed and Pitch:                        $have_speedpitch"
 echo "  SoX Resampler:                          $have_soxr"
 echo

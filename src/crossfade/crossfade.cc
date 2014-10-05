@@ -57,7 +57,10 @@ static const PreferencesWidget crossfade_widgets[] = {
     WidgetSpin (N_("Overlap:"),
         WidgetFloat ("crossfade", "manual_length"),
         {0.1, 3.0, 0.1, N_("seconds")},
-        WIDGET_CHILD)
+        WIDGET_CHILD),
+    WidgetLabel (N_("<b>Tip</b>")),
+    WidgetLabel (N_("For better crossfading, enable\n"
+                    "the Silence Removal effect."))
 };
 
 static const PluginPreferences crossfade_prefs = {{crossfade_widgets}};
