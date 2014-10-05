@@ -66,6 +66,15 @@ VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
 
+if test "x$USE_GTK" = "xyes" ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
+fi
+
+if test "x$USE_QT" = "xyes" ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS qtui"
+fi
+
 dnl Console
 dnl =======
 
@@ -254,17 +263,6 @@ if test "x$enable_songchange" != "xno"; then
             AC_MSG_ERROR([Cannot find sys/wait.h header, but compilation of song change plugin has been explicitly requested])
          fi]
     )
-fi
-
-dnl Status Icon
-dnl ===========
-
-AC_ARG_ENABLE(statusicon,
- [AS_HELP_STRING([--disable-statusicon], [disable X11 Status Icon plugin (default=enabled)])],
- [have_statusicon=$enableval], [have_statusicon="yes"])
-
-if test "x$have_statusicon" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
 fi
 
 dnl *** Audacious OSD plugin (pangocairo-based)
@@ -941,39 +939,6 @@ if test "x$enable_soxr" != "xno"; then
     )
 fi
 
-dnl GTK Interface
-dnl =============
-
-AC_ARG_ENABLE(gtkui,
- [AS_HELP_STRING([--disable-gtkui], [disable GTK interface (gtkui)])],
- [enable_gtkui=$enableval], [enable_gtkui="yes"])
-
-if test "x$enable_gtkui" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui"
-fi
-
-dnl Qt Interface
-dnl ============
-
-AC_ARG_ENABLE(qtui,
- [AS_HELP_STRING([--enable-qtui], [enable Qt interface (qtui)])],
- [enable_qtui=$enableval], [enable_qtui=$USE_QT])
-
-if test "x$enable_qtui" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS qtui"
-fi
-
-dnl Winamp Classic Interface
-dnl =============
-
-AC_ARG_ENABLE(skins,
- [AS_HELP_STRING([--disable-skins], [disable Winamp Classic interface (skins)])],
- [enable_skins=$enableval], [enable_skins="yes"])
-
-if test "x$enable_skins" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS skins"
-fi
-
 dnl LyricWiki
 dnl =========
 
@@ -1065,50 +1030,6 @@ AC_ARG_ENABLE(cairo_spectrum,
 
 if test "x$enable_cairo_spectrum" != "xno"; then
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS cairo-spectrum"
-fi
-
-dnl Alarm
-dnl =============
-
-AC_ARG_ENABLE(alarm,
- [AS_HELP_STRING([--disable-alarm], [disable Alarm])],
- [enable_alarm=$enableval], [enable_alarm="yes"])
-
-if test "x$enable_alarm" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm"
-fi
-
-dnl Album Art
-dnl =============
-
-AC_ARG_ENABLE(albumart,
- [AS_HELP_STRING([--disable-albumart], [disable Album Art])],
- [enable_albumart=$enableval], [enable_albumart="yes"])
-
-if test "x$enable_albumart" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart"
-fi
-
-dnl Delete Files
-dnl =============
-
-AC_ARG_ENABLE(delete_files,
- [AS_HELP_STRING([--disable-delete-files], [disable Delete Files])],
- [enable_delete_files=$enableval], [enable_delete_files="yes"])
-
-if test "x$enable_delete_files" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS delete-files"
-fi
-
-dnl Search Tool
-dnl =============
-
-AC_ARG_ENABLE(search_tool,
- [AS_HELP_STRING([--disable-search-tool], [disable Search Tool])],
- [enable_search_tool=$enableval], [enable_search_tool="yes"])
-
-if test "x$enable_search_tool" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS search-tool"
 fi
 
 dnl Mac Media Keys
@@ -1219,14 +1140,14 @@ echo "  VTX Decoder:                            $enable_vtx"
 echo
 echo "  General"
 echo "  -------"
-echo "  Alarm:                                  $enable_alarm"
-echo "  Album Art:                              $enable_albumart"
-echo "  Delete from Filesystem:                 $enable_delete_files"
+echo "  Alarm:                                  $USE_GTK"
+echo "  Album Art:                              $USE_GTK"
+echo "  Delete from Filesystem:                 $USE_GTK"
 echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
-echo "  Search Tool:                            $enable_search_tool"
+echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
-echo "  Status Icon:                            $have_statusicon"
+echo "  Status Icon:                            $USE_GTK"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
@@ -1275,7 +1196,7 @@ echo "  CUE playlist format (cue):              $have_cue"
 echo
 echo "  Interfaces"
 echo "  ----------"
-echo "  GTK (gtkui):                            $enable_gtkui"
-echo "  Qt (qtui):                              $enable_qtui"
-echo "  Winamp Classic (skins):                 $enable_skins"
+echo "  GTK (gtkui):                            $USE_GTK"
+echo "  Qt (qtui):                              $USE_QT"
+echo "  Winamp Classic (skins):                 $USE_GTK"
 echo
