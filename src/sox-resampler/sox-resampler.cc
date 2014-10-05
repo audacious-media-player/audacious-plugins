@@ -57,7 +57,7 @@ public:
 
     void start (int & channels, int & rate);
     Index<float> & process (Index<float> & data);
-    void flush ();
+    bool flush (bool force);
 };
 
 EXPORT SoXResampler aud_plugin_instance;
@@ -134,10 +134,12 @@ Index<float> & SoXResampler::process (Index<float> & data)
     return buffer;
 }
 
-void SoXResampler::flush ()
+bool SoXResampler::flush (bool force)
 {
     if (soxr && (error = soxr_process(soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
         AUDERR (error);
+
+    return true;
 }
 
 const char SoXResampler::about[] =

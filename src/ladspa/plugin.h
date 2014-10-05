@@ -88,8 +88,8 @@ public:
 
     void start (int & channels, int & rate);
     Index<float> & process (Index<float> & data);
-    void flush ();
-    Index<float> & finish (Index<float> & data);
+    bool flush (bool force);
+    Index<float> & finish (Index<float> & data, bool end_of_playlist);
 };
 
 /* plugin.c */

@@ -212,7 +212,7 @@ Index<float> & LADSPAHost::process (Index<float> & data)
     return data;
 }
 
-void LADSPAHost::flush (void)
+bool LADSPAHost::flush (bool force)
 {
     pthread_mutex_lock (& mutex);
 
@@ -220,9 +220,10 @@ void LADSPAHost::flush (void)
         flush_plugin (* loaded);
 
     pthread_mutex_unlock (& mutex);
+    return true;
 }
 
-Index<float> & LADSPAHost::finish (Index<float> & data)
+Index<float> & LADSPAHost::finish (Index<float> & data, bool end_of_playlist)
 {
     pthread_mutex_lock (& mutex);
 
@@ -230,7 +231,9 @@ Index<float> & LADSPAHost::finish (Index<float> & data)
     {
         start_plugin (* loaded);
         run_plugin (* loaded, data.begin (), data.len ());
-        shutdown_plugin_locked (* loaded);
+
+        if (end_of_playlist)
+            shutdown_plugin_locked (* loaded);
     }
 
     pthread_mutex_unlock (& mutex);

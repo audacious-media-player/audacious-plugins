@@ -53,11 +53,11 @@ public:
     void cleanup ();
 
     void start (int & channels, int & rate);
-    void flush ();
+    bool flush (bool force);
 
     Index<float> & process (Index<float> & data)
         { return resample (data, false); }
-    Index<float> & finish (Index<float> & data)
+    Index<float> & finish (Index<float> & data, bool end_of_playlist)
         { return resample (data, true); }
 
 private:
@@ -167,16 +167,18 @@ Index<float> & Resampler::resample (Index<float> & data, bool finish)
     buffer.resize (stored_channels * d.output_frames_gen);
 
     if (finish)
-        flush ();
+        flush (true);
 
     return buffer;
 }
 
-void Resampler::flush ()
+bool Resampler::flush (bool force)
 {
     int error;
     if (state && (error = src_reset (state)))
         RESAMPLE_ERROR (error);
+
+    return true;
 }
 
 const char Resampler::about[] =

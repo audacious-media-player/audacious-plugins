@@ -53,7 +53,7 @@ public:
 
     void start (int & channels, int & rate);
     Index<float> & process (Index<float> & data);
-    void flush ();
+    bool flush (bool force);
 };
 
 EXPORT Crystalizer aud_plugin_instance;
@@ -98,7 +98,8 @@ Index<float> & Crystalizer::process (Index<float> & data)
     return data;
 }
 
-void Crystalizer::flush ()
+bool Crystalizer::flush (bool force)
 {
     cryst_prev.erase (0, cryst_channels);
+    return true;
 }

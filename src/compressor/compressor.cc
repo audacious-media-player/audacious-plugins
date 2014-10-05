@@ -74,8 +74,8 @@ public:
 
     void start (int & channels, int & rate);
     Index<float> & process (Index<float> & data);
-    void flush ();
-    Index<float> & finish (Index<float> & data);
+    bool flush (bool force);
+    Index<float> & finish (Index<float> & data, bool end_of_playlist);
     int adjust_delay (int delay);
 };
 
@@ -146,7 +146,7 @@ void Compressor::start (int & channels, int & rate)
     buffer.alloc (chunk_size * CHUNKS);
     peaks.alloc (CHUNKS);
 
-    flush ();
+    flush (true);
 }
 
 Index<float> & Compressor::process (Index<float> & data)
@@ -193,15 +193,16 @@ Index<float> & Compressor::process (Index<float> & data)
     return output;
 }
 
-void Compressor::flush ()
+bool Compressor::flush (bool force)
 {
     buffer.discard ();
     peaks.discard ();
 
     current_peak = 0.0f;
+    return true;
 }
 
-Index<float> & Compressor::finish (Index<float> & data)
+Index<float> & Compressor::finish (Index<float> & data, bool end_of_playlist)
 {
     output.resize (0);
 

@@ -60,7 +60,7 @@ public:
     void cleanup ();
 
     void start (int & channels, int & rate);
-    void flush ();
+    bool flush (bool force);
     int adjust_delay (int delay);
 
     Index<float> & process (Index<float> & samples)
@@ -100,7 +100,7 @@ static void add_data (Index<float> & b, Index<float> & data, float ratio)
     b.resize (oldlen + d.output_frames_gen * curchans);
 }
 
-void SpeedPitch::flush ()
+bool SpeedPitch::flush (bool force)
 {
     src_reset (srcstate);
 
@@ -114,6 +114,8 @@ void SpeedPitch::flush ()
     /* The output buffer always extends right of the destination pointer by half
      * the width of a cosine window. */
     out.insert (0, width / 2);
+
+    return true;
 }
 
 void SpeedPitch::start (int & chans, int & rate)
@@ -138,7 +140,7 @@ void SpeedPitch::start (int & chans, int & rate)
     for (int i = 0; i < width; i ++)
         cosine[i] = (1.0 - cos (2.0 * M_PI * i / width)) / OVERLAP;
 
-    flush ();
+    flush (true);
 }
 
 Index<float> & SpeedPitch::process (Index<float> & data, bool ending)
