@@ -118,7 +118,7 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 	int length = xsf_get_length(filename);
 	int16_t samples[44100*2];
 	int seglen = 44100 / 60;
-	float pos;
+	float pos = 0.0;
 	bool_t error = FALSE;
 
 	const char * slash = strrchr (filename, '/');
@@ -150,23 +150,21 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 
 		if (seek_value >= 0)
 		{
-			if (seek_value > aud_input_written_time ())
+			if (seek_value > pos)
 			{
-				pos = aud_input_written_time ();
-
 				while (pos < seek_value)
 				{
 					xsf_gen(samples, seglen);
 					pos += 16.666;
 				}
 			}
-			else if (seek_value < aud_input_written_time ())
+			else if (seek_value < pos)
 			{
 				xsf_term();
 
 				if (xsf_start(buffer, size) == AO_SUCCESS)
 				{
-					pos = 0;
+					pos = 0.0;
 					while (pos < seek_value)
 					{
 						xsf_gen(samples, seglen);
@@ -182,6 +180,8 @@ static bool_t xsf_play(const char * filename, VFSFile * file)
 		}
 
 		xsf_gen(samples, seglen);
+		pos += 16.666;
+
 		aud_input_write_audio((uint8_t *)samples, seglen * 4);
 
 		if (aud_input_written_time() >= length)
