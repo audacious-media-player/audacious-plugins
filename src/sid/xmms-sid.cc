@@ -130,32 +130,40 @@ bool xs_play_file(const char *filename, VFSFile &file)
     aud_input_set_tuple (std::move (tmpTuple));
 
     /* Allocate audio buffer */
-    int audioBufSize = xs_cfg.audioFrequency * xs_cfg.audioChannels * FMT_SIZEOF (FMT_S16_NE);
+    int audioBufSize = xs_cfg.audioFrequency * xs_cfg.audioChannels * 2;
     if (audioBufSize < 512)
         audioBufSize = 512;
 
     char *audioBuffer = new char[audioBufSize];
+    int64_t bytes_played = 0;
 
     while (! aud_input_check_stop ())
     {
+        if (aud_input_check_seek () >= 0)
+            AUDWARN ("Seeking is not implemented, ignoring.\n");
+
         int bufRemaining = xs_sidplayfp_fillbuffer(audioBuffer, audioBufSize);
 
         aud_input_write_audio (audioBuffer, bufRemaining);
+        bytes_played += bufRemaining;
 
         /* Check if we have played enough */
+        int time_played = aud::rescale<int64_t> (bytes_played,
+         xs_cfg.audioFrequency * xs_cfg.audioChannels * 2, 1000);
+
         if (xs_cfg.playMaxTimeEnable) {
             if (xs_cfg.playMaxTimeUnknown) {
                 if (tmpLength < 0 &&
-                    aud_input_written_time() >= xs_cfg.playMaxTime * 1000)
+                    time_played >= xs_cfg.playMaxTime * 1000)
                     break;
             } else {
-                if (aud_input_written_time() >= xs_cfg.playMaxTime * 1000)
+                if (time_played >= xs_cfg.playMaxTime * 1000)
                     break;
             }
         }
 
         if (tmpLength >= 0) {
-            if (aud_input_written_time() >= tmpLength * 1000)
+            if (time_played >= tmpLength * 1000)
                 break;
         }
     }
