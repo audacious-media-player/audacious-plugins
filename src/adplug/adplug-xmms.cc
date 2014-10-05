@@ -281,11 +281,11 @@ adplug_play (const char * filename, VFSFile & file)
   if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
   {
     audio_error = true;
-    return true;
+    return false;
   }
 
   play_loop (filename, file);
-  return false;
+  return true;
 }
 
 /***** Configuration file handling *****/
