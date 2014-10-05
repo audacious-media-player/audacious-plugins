@@ -41,7 +41,6 @@
 
 #include "cert_verification.h"
 
-#define NEON_BUFSIZE        (128*1024)
 #define NEON_NETBLKSIZE     (4096)
 #define NEON_ICY_BUFSIZE    (4096)
 #define NEON_RETRY_COUNT 6
@@ -190,7 +189,8 @@ private:
 NeonFile::NeonFile (const char * url) :
     m_url (url)
 {
-    m_rb.alloc (NEON_BUFSIZE);
+    int buffer_kb = aud_get_int (nullptr, "net_buffer_kb");
+    m_rb.alloc (1024 * aud::clamp (buffer_kb, 16, 1024));
 }
 
 NeonFile::~NeonFile ()
