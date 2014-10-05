@@ -263,7 +263,6 @@ static bool mpg123_playback_worker (const char * filename, VFSFile & file)
     MPG123PlaybackContext ctx;
     int ret;
     int bitrate = 0, bitrate_sum = 0, bitrate_count = 0;
-    int bitrate_updated = -1000; /* >= a second away from any position */
     struct mpg123_frameinfo fi;
     int error_count = 0;
 
@@ -341,14 +340,12 @@ GET_FORMAT:
         bitrate_sum += fi.bitrate;
         bitrate_count ++;
 
-        if (bitrate_sum / bitrate_count != bitrate && abs
-         (aud_input_written_time () - bitrate_updated) >= 1000)
+        if (bitrate_sum / bitrate_count != bitrate && bitrate_count >= 16)
         {
             aud_input_set_bitrate (bitrate_sum / bitrate_count * 1000);
             bitrate = bitrate_sum / bitrate_count;
             bitrate_sum = 0;
             bitrate_count = 0;
-            bitrate_updated = aud_input_written_time ();
         }
 
         if (ctx.tu && ctx.tu.fetch_stream_info (file))
