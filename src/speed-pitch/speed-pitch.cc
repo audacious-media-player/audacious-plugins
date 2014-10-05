@@ -65,7 +65,7 @@ public:
 
     Index<float> & process (Index<float> & samples)
         { return process (samples, false); }
-    Index<float> & finish (Index<float> & samples)
+    Index<float> & finish (Index<float> & samples, bool end_of_playlist)
         { return process (samples, true); }
 
 private:
