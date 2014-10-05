@@ -190,6 +190,8 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
   dbg_printf ("rewind, ");
   plr.p->rewind (plr.subsong);
 
+  int time = 0;
+
   // main playback loop
   dbg_printf ("loop.\n");
   while ((playing || conf.endless))
@@ -202,8 +204,6 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
     // seek requested ?
     if (seek != -1)
     {
-      int time = aud_input_written_time ();
-
       // backward seek ?
       if (seek < time)
       {
@@ -225,6 +225,8 @@ static bool_t play_loop (const char * filename, VFSFile * fd)
       {
         toadd += freq;
         playing = plr.p->update ();
+        if (playing)
+          time += (int) (1000 / plr.p->getrefresh ());
       }
       i = MIN (towrite, (long) (toadd / plr.p->getrefresh () + 4) & ~3);
       opl.update ((short *) sndbufpos, i);
