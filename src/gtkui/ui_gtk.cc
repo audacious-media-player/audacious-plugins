@@ -715,19 +715,16 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
-static bool add_dock_plugin (PluginHandle * plugin, void * unused)
+static void add_dock_plugin (PluginHandle * plugin, void * unused)
 {
     GtkWidget * widget = (GtkWidget *) aud_plugin_get_gtk_widget (plugin);
     if (widget)
         layout_add (plugin, widget);
-
-    return TRUE;
 }
 
-static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
+static void remove_dock_plugin (PluginHandle * plugin, void * unused)
 {
     layout_remove (plugin);
-    return TRUE;
 }
 
 static void add_dock_plugins (void)
@@ -1095,8 +1092,16 @@ void activate_search_tool (void)
     if (! search_tool)
         return;
 
-    if (! aud_plugin_get_enabled (search_tool))
-        aud_plugin_enable (search_tool, TRUE);
+    aud_plugin_enable (search_tool, true);
+    layout_focus (search_tool);
+}
 
-    aud_plugin_send_message (search_tool, "grab focus", nullptr, 0);
+void activate_playlist_manager (void)
+{
+    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager");
+    if (! manager)
+        return;
+
+    aud_plugin_enable (manager, true);
+    layout_focus (manager);
 }

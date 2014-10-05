@@ -31,10 +31,11 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 
 #include "actions-mainwin.h"
@@ -42,6 +43,7 @@
 #include "dnd.h"
 #include "menus.h"
 #include "plugin.h"
+#include "plugin-window.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -1274,6 +1276,26 @@ void action_play_file (void)
 void action_play_location (void)
 {
     audgui_show_add_url_window (TRUE);
+}
+
+void action_playlist_manager (void)
+{
+    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager");
+    if (manager)
+    {
+        aud_plugin_enable (manager, true);
+        focus_plugin_window (manager);
+    }
+}
+
+void action_search_tool (void)
+{
+    PluginHandle * search = aud_plugin_lookup_basename ("search-tool");
+    if (search)
+    {
+        aud_plugin_enable (search, true);
+        focus_plugin_window (search);
+    }
 }
 
 void action_ab_set (void)

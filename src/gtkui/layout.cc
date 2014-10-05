@@ -534,6 +534,23 @@ void layout_remove (PluginHandle * plugin)
     item_remove ((Item *) node->data);
 }
 
+void layout_focus (PluginHandle * plugin)
+{
+    g_return_if_fail (layout && center && plugin);
+
+    GList * node = g_list_find_custom (items, plugin, (GCompareFunc) item_by_plugin);
+    if (! node)
+        return;
+
+    Item * item = (Item *) node->data;
+    g_return_if_fail (item);
+
+    if (item->window)
+        gtk_window_present ((GtkWindow *) item->window);
+
+    aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
+}
+
 void layout_save (void)
 {
     int i = 0;

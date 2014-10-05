@@ -202,7 +202,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("_Import ..."), "document-open", NONE, audgui_import_playlist),
     MenuCommand (N_("_Export ..."), "document-save", NONE, audgui_export_playlist),
     MenuSep (),
-    MenuCommand (N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, audgui_playlist_manager),
+    MenuCommand (N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, activate_playlist_manager),
     MenuCommand (N_("_Queue Manager ..."), nullptr, 'u', CTRL, audgui_queue_manager_show)
 };
 

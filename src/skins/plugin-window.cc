@@ -23,6 +23,7 @@
 
 #include "plugin-window.h"
 
+#include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
@@ -36,11 +37,20 @@ static GList * windows;
 
 static gboolean delete_cb (GtkWidget * window, GdkEvent * event, PluginHandle * plugin)
 {
-    aud_plugin_enable (plugin, FALSE);
-    return TRUE;
+    aud_plugin_enable (plugin, false);
+    return true;
 }
 
-static bool add_dock_plugin (PluginHandle * plugin, void * unused)
+static gboolean escape_cb (GtkWidget * widget, GdkEventKey * event, PluginHandle * plugin)
+{
+    if (event->keyval != GDK_KEY_Escape)
+        return false;
+
+    aud_plugin_enable (plugin, false);
+    return true;
+}
+
+static void add_dock_plugin (PluginHandle * plugin, void * unused)
 {
     GtkWidget * widget = (GtkWidget *) aud_plugin_get_gtk_widget (plugin);
 
@@ -52,6 +62,7 @@ static bool add_dock_plugin (PluginHandle * plugin, void * unused)
 
         g_object_set_data ((GObject *) window, "skins-plugin-id", plugin);
         g_signal_connect (window, "delete-event", (GCallback) delete_cb, plugin);
+        g_signal_connect (widget, "key-press-event", (GCallback) escape_cb, plugin);
 
         windows = g_list_prepend (windows, window);
 
@@ -70,8 +81,6 @@ static bool add_dock_plugin (PluginHandle * plugin, void * unused)
         if (aud_ui_is_shown ())
             gtk_widget_show_all (window);
     }
-
-    return TRUE;
 }
 
 static void save_window_size (GtkWidget * window)
@@ -95,7 +104,7 @@ static int find_cb (GtkWidget * window, PluginHandle * plugin)
     return (g_object_get_data ((GObject *) window, "skins-plugin-id") != plugin);
 }
 
-static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
+static void remove_dock_plugin (PluginHandle * plugin, void * unused)
 {
     GList * node = g_list_find_custom (windows, plugin, (GCompareFunc) find_cb);
 
@@ -105,8 +114,6 @@ static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
         gtk_widget_destroy ((GtkWidget *) node->data);
         windows = g_list_delete_link (windows, node);
     }
-
-    return TRUE;
 }
 
 void create_plugin_windows (void)
@@ -130,6 +137,15 @@ void create_plugin_windows (void)
 void show_plugin_windows (void)
 {
     g_list_foreach (windows, (GFunc) gtk_widget_show_all, nullptr);
+}
+
+void focus_plugin_window (PluginHandle * plugin)
+{
+    GList * node = g_list_find_custom (windows, plugin, (GCompareFunc) find_cb);
+    if (node)
+        gtk_window_present ((GtkWindow *) node->data);
+
+    aud_plugin_send_message (plugin, "grab focus", nullptr, 0);
 }
 
 void hide_plugin_windows (void)
