@@ -29,6 +29,8 @@
 #include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 
+#include <string.h>
+
 class PlaylistManager : public GeneralPlugin
 {
 public:
@@ -40,9 +42,12 @@ public:
     constexpr PlaylistManager () : GeneralPlugin (info, false) {}
 
     void * get_gtk_widget ();
+    int take_message (const char * code, const void * data, int size);
 };
 
 EXPORT PlaylistManager aud_plugin_instance;
+
+static GtkWidget * focus_widget;
 
 static void activate_row (void * user, int row);
 
@@ -212,6 +217,8 @@ static void destroy_cb (GtkWidget * window)
     hook_dissociate ("playlist update", update_hook);
     hook_dissociate ("playlist activate", activate_hook);
     hook_dissociate ("playlist set playing", position_hook);
+
+    focus_widget = nullptr;
 }
 
 void * PlaylistManager::get_gtk_widget ()
@@ -250,7 +257,22 @@ void * PlaylistManager::get_gtk_widget ()
     gtk_box_pack_end ((GtkBox *) playman_button_hbox, rename_button, false, false, 0);
     gtk_box_pack_start ((GtkBox *) playman_vbox, playman_button_hbox, false, false, 0);
 
+    focus_widget = playman_pl_lv;
+
     g_signal_connect (playman_vbox, "destroy", (GCallback) destroy_cb, nullptr);
 
     return playman_vbox;
+}
+
+int PlaylistManager::take_message (const char * code, const void * data, int size)
+{
+    if (! strcmp (code, "grab focus"))
+    {
+        if (focus_widget)
+            gtk_widget_grab_focus (focus_widget);
+
+        return 0;
+    }
+
+    return -1;
 }

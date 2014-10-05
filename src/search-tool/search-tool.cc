@@ -17,9 +17,7 @@
  * the use of this software.
  */
 
-#include <errno.h>
 #include <string.h>
-
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
@@ -735,7 +733,7 @@ int search_take_message (const char * code, const void * data, int size)
         return 0;
     }
 
-    return EINVAL;
+    return -1;
 }
 
 #define AUD_PLUGIN_NAME        N_("Search Tool")
