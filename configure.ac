@@ -67,7 +67,7 @@ CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files playlist-manager search-tool statusicon"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
 fi
 
@@ -1145,6 +1145,7 @@ echo "  Album Art:                              $USE_GTK"
 echo "  Delete from Filesystem:                 $USE_GTK"
 echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
+echo "  Playlist Manager:                       $USE_GTK"
 echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
 echo "  Status Icon:                            $USE_GTK"

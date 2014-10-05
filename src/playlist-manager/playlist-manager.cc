@@ -1,6 +1,6 @@
 /*
- * ui_playlist_manager.c
- * Copyright 2006-2012 Giacomo Lozito, John Lindgren, and Thomas Lange
+ * Playlist Manager Plugin for Audacious
+ * Copyright 2006-2014 Giacomo Lozito, John Lindgren, and Thomas Lange
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -17,20 +17,32 @@
  * the use of this software.
  */
 
-#include <string.h>
-#include <gtk/gtk.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
-#include "internal.h"
-#include "libaudgui.h"
-#include "libaudgui-gtk.h"
-#include "list.h"
+#include <libaudgui/libaudgui.h>
+#include <libaudgui/libaudgui-gtk.h>
+#include <libaudgui/list.h>
+
+class PlaylistManager : public GeneralPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Playlist Manager"),
+        PACKAGE
+    };
+
+    constexpr PlaylistManager () : GeneralPlugin (info, false) {}
+
+    void * get_gtk_widget ();
+};
+
+EXPORT PlaylistManager aud_plugin_instance;
 
 static void activate_row (void * user, int row);
 
@@ -89,9 +101,6 @@ static void activate_row (void * user, int row)
 {
     aud_playlist_set_active (row);
     aud_drct_play_playlist (row);
-
-    if (aud_get_bool ("audgui", "playlist_manager_close_on_activate"))
-        audgui_hide_unique_window (AUDGUI_PLAYLIST_MANAGER_WINDOW);
 }
 
 static void shift_rows (void * user, int row, int before)
@@ -198,12 +207,6 @@ static void position_hook (void * data, void * list_)
         audgui_list_set_highlight (list, aud_playlist_get_playing ());
 }
 
-static void close_on_activate_cb (GtkToggleButton * toggle)
-{
-    aud_set_bool ("audgui", "playlist_manager_close_on_activate",
-     gtk_toggle_button_get_active (toggle));
-}
-
 static void destroy_cb (GtkWidget * window)
 {
     hook_dissociate ("playlist update", update_hook);
@@ -211,19 +214,9 @@ static void destroy_cb (GtkWidget * window)
     hook_dissociate ("playlist set playing", position_hook);
 }
 
-static GtkWidget * create_playlist_manager (void)
+void * PlaylistManager::get_gtk_widget ()
 {
-    GtkWidget * playman_win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_type_hint ((GtkWindow *) playman_win, GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_title ((GtkWindow *) playman_win, _("Playlist Manager"));
-    gtk_container_set_border_width ((GtkContainer *) playman_win, 6);
-    gtk_widget_set_size_request (playman_win, 400, 250);
-
-    g_signal_connect (playman_win, "destroy", (GCallback) destroy_cb, nullptr);
-    audgui_destroy_on_escape (playman_win);
-
     GtkWidget * playman_vbox = gtk_vbox_new (false, 6);
-    gtk_container_add ((GtkContainer *) playman_win, playman_vbox);
 
     /* ListView */
     GtkWidget * playman_pl_lv = audgui_list_new (& callbacks, nullptr, aud_playlist_count ());
@@ -257,21 +250,7 @@ static GtkWidget * create_playlist_manager (void)
     gtk_box_pack_end ((GtkBox *) playman_button_hbox, rename_button, false, false, 0);
     gtk_box_pack_start ((GtkBox *) playman_vbox, playman_button_hbox, false, false, 0);
 
-    /* CheckButton */
-    GtkWidget * hbox = gtk_hbox_new (false, 6);
-    gtk_box_pack_start ((GtkBox *) playman_vbox, hbox, false, false, 0);
-    GtkWidget * check_button = gtk_check_button_new_with_mnemonic
-     (_("_Close dialog on activating playlist"));
-    gtk_box_pack_start ((GtkBox *) hbox, check_button, false, false, 0);
-    gtk_toggle_button_set_active ((GtkToggleButton *) check_button, aud_get_bool
-     ("audgui", "playlist_manager_close_on_activate"));
-    g_signal_connect (check_button, "toggled", (GCallback) close_on_activate_cb, nullptr);
+    g_signal_connect (playman_vbox, "destroy", (GCallback) destroy_cb, nullptr);
 
-    return playman_win;
-}
-
-EXPORT void audgui_playlist_manager (void)
-{
-    if (! audgui_reshow_unique_window (AUDGUI_PLAYLIST_MANAGER_WINDOW))
-        audgui_show_unique_window (AUDGUI_PLAYLIST_MANAGER_WINDOW, create_playlist_manager ());
+    return playman_vbox;
 }
