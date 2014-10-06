@@ -65,7 +65,7 @@ public:
     int buffer_free ();
     void period_wait ();
 
-    void write_audio (void * data, int len);
+    void write_audio (const void * data, int len);
     void drain ();
 
     int output_time ();
@@ -345,7 +345,7 @@ void CoreAudioPlugin::period_wait ()
     pthread_mutex_unlock (& mutex);
 }
 
-void CoreAudioPlugin::write_audio (void * data, int len)
+void CoreAudioPlugin::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
