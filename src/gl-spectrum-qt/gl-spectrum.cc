@@ -176,10 +176,12 @@ void GLSpectrum::render_freq (const float * freq)
 
 void GLSpectrum::clear ()
 {
+#ifdef XXX_NOTYET
     memset (s_bars, 0, sizeof s_bars);
 
     if (s_widget)
         s_widget->updateGL ();
+#endif
 }
 
 static void draw_rectangle (float x1, float y1, float z1, float x2, float y2,
@@ -257,6 +259,7 @@ GLSpectrumWidget::GLSpectrumWidget (QWidget * parent) : QGLWidget (parent)
 
 GLSpectrumWidget::~GLSpectrumWidget ()
 {
+    s_widget = nullptr;
 }
 
 void GLSpectrumWidget::paintGL ()
