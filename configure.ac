@@ -72,7 +72,7 @@ if test "x$USE_GTK" = "xyes" ; then
 fi
 
 if test "x$USE_QT" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt"
     GENERAL_PLUGINS="$GENERAL_PLUGINS qtui"
 fi
 
