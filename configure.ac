@@ -988,6 +988,25 @@ fi
 
 AC_SUBST(GL_LIBS)
 
+dnl Qt OpenGL Spectrum Analyzer
+dnl ===========================
+
+AC_ARG_ENABLE(qtglspectrum,
+    [AS_HELP_STRING([--disable-qtglspectrum], [disable Qt OpenGL Spectrum Analyzer (default=enabled)])],
+    [enable_qtglspectrum=$enableval],
+    [enable_qtglspectrum=auto])
+
+have_qtglspectrum=no
+if test "x$enable_qtglspectrum" != "xno"; then
+    PKG_CHECK_MODULES(QTOPENGL, [Qt5OpenGL], [have_qtglspectrum=yes], [have_qtglspectrum=no])
+    if test "x$have_qtglspectrum" = "xyes"; then
+        QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
+        VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum-qt"
+    elif test "x$enable_qtglspectrum" = "xyes"; then
+        AC_MSG_ERROR([Qt OpenGL Spectrum Analyzer plugin requested but QtOpenGL not found!])
+    fi
+fi
+
 dnl VTX Decoder
 dnl =============
 
@@ -1177,7 +1196,8 @@ echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             $enable_blur_scope"
 echo "  Cairo Spectrum Analyzer:                $enable_cairo_spectrum"
-echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
+echo "  GTK+ OpenGL Spectrum Analyzer:          $have_glspectrum"
+echo "  Qt OpenGL Spectrum Analyzer:            $have_qtglspectrum"
 echo
 echo "  Transport"
 echo "  ---------"
