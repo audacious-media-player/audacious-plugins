@@ -60,6 +60,9 @@ private:
 
     void show_buffering ();
 
+    void add_dock_plugins ();
+    void remove_dock_plugins ();
+
     static void title_change_cb (void *, MainWindow * window);
     static void playback_begin_cb (void *, MainWindow * window);
     static void playback_ready_cb (void *, MainWindow * window);
