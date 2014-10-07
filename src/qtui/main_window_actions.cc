@@ -17,13 +17,18 @@
  * the use of this software.
  */
 
-#include "main_window.h"
-
+#include <libaudcore/drct.h>
+#include <libaudcore/hook.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
 
 #include <libaudqt/libaudqt.h>
+
+#include "main_window.h"
 
 void MainWindow::setupActions ()
 {

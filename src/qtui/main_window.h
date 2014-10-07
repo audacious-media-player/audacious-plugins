@@ -20,6 +20,8 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include <libaudcore/index.h>
+
 #include "ui_main_window.h"
 #include "dialog_windows.h"
 
@@ -27,6 +29,8 @@
 
 class FilterInput;
 class PlaylistTabs;
+
+struct DockWidget;
 
 class MainWindow : public QMainWindow, private Ui::MainWindow
 {
@@ -62,6 +66,11 @@ private:
     static void pause_cb (void *, MainWindow * window);
     static void playback_stop_cb (void *, MainWindow * window);
     static void update_toggles_cb (void *, MainWindow * window);
+
+    static void add_dock_plugin_cb (PluginHandle * plugin, MainWindow * window);
+    static void remove_dock_plugin_cb (PluginHandle * plugin, MainWindow * window);
+
+    Index <DockWidget *> dock_widgets;
 };
 
 #endif
