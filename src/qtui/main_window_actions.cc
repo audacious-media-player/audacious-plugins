@@ -89,6 +89,8 @@ void MainWindow::setupActions ()
 
     connect(actionSongInfo, &QAction::triggered, audqt::infowin_show_current);
 
+    connect(actionQueueManager, &QAction::triggered, audqt::queue_manager_show);
+
     /* plugin menus */
     QMenuBar * mb = this->menuBar();
     mb->addAction (audqt::menu_get_by_id (AUD_MENU_MAIN)->menuAction ());
