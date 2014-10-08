@@ -35,6 +35,7 @@
 #include <libaudcore/runtime.h>
 #include <libaudcore/ringbuf.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/preferences.h>
 
 #include <CoreAudio/CoreAudio.h>
 #include <AudioUnit/AudioUnit.h>
@@ -43,12 +44,14 @@ class CoreAudioPlugin : public OutputPlugin {
 public:
     static const char about[];
     static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
     static constexpr PluginInfo info = {
         N_("CoreAudio output"),
         PACKAGE,
         about,
-        nullptr
+        & prefs,
     };
 
     constexpr CoreAudioPlugin () : OutputPlugin (info, 5) {}
@@ -126,6 +129,8 @@ static AudioComponentInstance output_instance = nullptr;
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
+static bool is_exclusive = false;
+
 const char CoreAudioPlugin::about[] =
     N_("CoreAudio Output Plugin for Audacious\n"
        "Copyright 2014 William Pitcock\n\n"
@@ -135,7 +140,20 @@ const char CoreAudioPlugin::about[] =
 const char * const CoreAudioPlugin::defaults[] = {
     "vol_left", "100",
     "vol_right", "100",
+    "exclusive_mode", "FALSE",
     nullptr};
+
+const PreferencesWidget CoreAudioPlugin::widgets[] = {
+    WidgetCheck (N_("Use exclusive mode"),
+        WidgetBool ("coreaudio", "exclusive_mode")),
+};
+
+const PluginPreferences CoreAudioPlugin::prefs = {
+    {widgets},
+    nullptr,
+    nullptr,
+    nullptr
+};
 
 bool CoreAudioPlugin::init (void)
 {
@@ -293,6 +311,27 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_)
         return 0;
     }
 
+    bool exclusive = aud_get_bool ("coreaudio", "exclusive_mode");
+    if (exclusive)
+    {
+        UInt32 hog_mode = 1;
+
+        AudioObjectPropertyAddress prop;
+
+        prop.mSelector = kAudioDevicePropertyHogMode;
+        prop.mScope    = kAudioObjectPropertyScopeGlobal;
+        prop.mElement  = kAudioObjectPropertyElementMaster;
+
+        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, NULL, sizeof hog_mode, & hog_mode);
+        if (err != noErr)
+        {
+            AUDWARN ("Failed to open device for exclusive mode, continuing anyway... [%d]\n", err);
+            is_exclusive = false;
+        }
+        else
+            is_exclusive = true;
+    }
+
     if (AudioOutputUnitStart (output_instance))
     {
         error ("Unable to start audio unit.\n");
@@ -308,6 +347,23 @@ void CoreAudioPlugin::close_audio ()
     AUDDBG ("Closing audio.\n");
 
     AudioOutputUnitStop (output_instance);
+
+    if (is_exclusive)
+    {
+        UInt32 hog_mode = 1;
+
+        AudioObjectPropertyAddress prop;
+
+        prop.mSelector = kAudioDevicePropertyHogMode;
+        prop.mScope    = kAudioObjectPropertyScopeGlobal;
+        prop.mElement  = kAudioObjectPropertyElementMaster;
+
+        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, NULL, sizeof hog_mode, & hog_mode);
+        if (err != noErr)
+            AUDWARN ("Failed to release device from exclusive mode, continuing anyway...");
+
+        is_exclusive = false;
+    }
 
     buffer.destroy ();
 }
