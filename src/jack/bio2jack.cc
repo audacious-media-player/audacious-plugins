@@ -55,9 +55,6 @@ using aud::max;
 /* set to 1 to enable the function timers */
 #define TIMER_ENABLE            0
 
-/* set to 1 to enable tracing of getDriver() and releaseDriver() */
-#define TRACE_getReleaseDevice  0
-
 #define DEFAULT_RB_SIZE         4096
 
 #define OUTFILE STDERR_FILENO
@@ -88,7 +85,7 @@ using aud::max;
 #endif
 
 #if TRACE_CALLBACK
-//#define CALLBACK_TRACE(format,args...) fprintf(OUTFILE, "%s::%s(%d) " format, __FILE__, __FUNCTION__, __LINE__,##args)
+#define CALLBACK_TRACE AUDDBG
 #else
 #define CALLBACK_TRACE(...)
 #endif
@@ -104,9 +101,6 @@ using aud::max;
 
 typedef struct jack_driver_s
 {
-  bool allocated;                       /* whether or not this device has been allocated */
-
-  int deviceID;                         /* id of this device */
   int clientCtr;                        /* to prevent overlapping client ids */
   long jack_sample_rate;                /* jack samples(frames) per second */
 
@@ -170,14 +164,8 @@ static enum JACK_PORT_CONNECTION_MODE port_connection_mode = CONNECT_ALL;
 typedef jack_default_audio_sample_t sample_t;
 typedef jack_nframes_t nframes_t;
 
-/* allocate devices for output */
-/* if you increase this past 10, you might want to update 'out_client_name = ... ' in JACK_OpenDevice */
-#define MAX_OUTDEVICES 10
-static jack_driver_t outDev[MAX_OUTDEVICES];
-
-static pthread_mutex_t device_mutex = PTHREAD_MUTEX_INITIALIZER;        /* this is to lock the entire outDev array
-                                                                           to make managing it in a threaded
-                                                                           environment sane */
+/* output device */
+static jack_driver_t outDev;
 
 #if JACK_CLOSE_HACK
 static void JACK_CloseDevice(jack_driver_t * drv, bool close_client);
@@ -212,29 +200,9 @@ TimeValDifference(struct timeval *start, struct timeval *end)
 /* */
 /* also attempt to reconnect to jack since this function is called from */
 /* most other bio2jack functions it provides a good point to attempt reconnection */
-/* */
-/* Ok, I know this looks complicated and it kind of is. The point is that when you're
-   trying to trace mutexes it's more important to know *who* called us than just that
-   we were called.  This uses from pre-processor trickery so that the fprintf is actually
-   placed in the function making the getDriver call.  Thus, the __FUNCTION__ and __LINE__
-   macros will actually reference our caller, rather than getDriver.  The reason the
-   fprintf call is passes as a parameter is because this macro has to still return a
-   jack_driver_t* and we want to log both before *and* after the getDriver call for
-   easier detection of blocked calls.
- */
-#if TRACE_getReleaseDevice
-#define getDriver(x) _getDriver(x,fprintf(OUTFILE, "%s::%s(%d) getting driver %d\n", __FILE__, __FUNCTION__, __LINE__,x)); TRACE("got driver %d\n",x);
 jack_driver_t *
-_getDriver(int deviceID, int ignored)
+getDriver(jack_driver_t *drv)
 {
-  fflush(OUTFILE);
-#else
-jack_driver_t *
-getDriver(int deviceID)
-{
-#endif
-  jack_driver_t *drv = &outDev[deviceID];
-
   pthread_mutex_lock(&drv->mutex);
 
   /* should we try to restart the jack server? */
@@ -254,53 +222,10 @@ getDriver(int deviceID)
   return drv;
 }
 
-#if TRACE_getReleaseDevice
-#define tryGetDriver(x) _tryGetDriver(x,fprintf(OUTFILE, "%s::%s(%d) trying to get driver %d\n", __FILE__, __FUNCTION__, __LINE__,x)); TRACE("got driver %d\n",x);
-jack_driver_t *
-_tryGetDriver(int deviceID, int ignored)
-{
-  fflush(OUTFILE);
-#else
-jack_driver_t *
-tryGetDriver(int deviceID)
-{
-#endif
-  jack_driver_t *drv = &outDev[deviceID];
-
-  int err;
-  if((err = pthread_mutex_trylock(&drv->mutex)) == 0)
-    return drv;
-
-  if(err == EBUSY)
-  {
-    TRACE("driver %d is busy\n",deviceID);
-    return 0;
-  }
-
-  ERR("lock returned an error\n");
-  return 0;
-}
-
-
 /* release a device's mutex */
-/* */
-/* This macro is similar to the one for getDriver above, only simpler since we only
-   really need to know when the lock was release for the sake of debugging.
-*/
-#if TRACE_getReleaseDevice
-#define releaseDriver(x) TRACE("releasing driver %d\n",x->deviceID); _releaseDriver(x);
 void
-_releaseDriver(jack_driver_t * drv)
-#else
-void
-releaseDriver(jack_driver_t * drv)
-#endif
+releaseDriver(jack_driver_t *drv)
 {
-  /*
-     #if TRACE_getReleaseDevice
-     TRACE("deviceID == %d\n", drv->deviceID);
-     #endif
-   */
   pthread_mutex_unlock(&drv->mutex);
 }
 
@@ -639,7 +564,7 @@ JACK_shutdown(void *arg)
 
   TRACE("\n");
 
-  getDriver(drv->deviceID);
+  getDriver(drv);
 
   drv->client = 0;              /* reset client */
   drv->jackd_died = true;
@@ -706,11 +631,11 @@ JACK_OpenDevice(jack_driver_t * drv)
   jack_set_error_function(JACK_Error);
 
   /* build the client name */
-  StringBuf our_client_name = str_printf("%s_%d_%d%02d", "audacious-jack",
-   getpid(), drv->deviceID, drv->clientCtr++);
+  StringBuf our_client_name = str_printf("%s_%d_%02d", "audacious-jack",
+   getpid(), drv->clientCtr++);
 
   /* try to become a client of the JACK server */
-  TRACE("client name '%s'\n", our_client_name);
+  TRACE("client name '%s'\n", (const char *) our_client_name);
   if((drv->client = jack_client_open(our_client_name, JackNoStartServer, nullptr)) == 0)
   {
     /* try once more */
@@ -940,7 +865,7 @@ JACK_CloseDevice(jack_driver_t * drv)
 static void
 JACK_ResetFromDriver(jack_driver_t * drv)
 {
-  TRACE("resetting drv->deviceID(%d)\n", drv->deviceID);
+  TRACE("resetting drv\n");
 
   /* NOTE: we use the RESET state so we don't need to worry about clearing out */
   /* variables that the callback modifies while the callback is running */
@@ -950,10 +875,10 @@ JACK_ResetFromDriver(jack_driver_t * drv)
 
 /* Clear out any buffered data, stop playing, zero out some variables */
 void
-JACK_Reset(int deviceID)
+JACK_Reset()
 {
-  jack_driver_t *drv = getDriver(deviceID);
-  TRACE("resetting deviceID(%d)\n", deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
+  TRACE("resetting\n");
   JACK_ResetFromDriver(drv);
   releaseDriver(drv);
 }
@@ -962,21 +887,17 @@ JACK_Reset(int deviceID)
 /*
  * open the audio device for writing to
  *
- * deviceID is set to the opened device
- * if client is non-zero and in_use is false then just set in_use to true
- *
  * return value is zero upon success, non-zero upon failure
  *
  * if ERR_RATE_MISMATCH (*rate) will be updated with the jack servers rate
  */
 int
-JACK_Open(int *deviceID, unsigned int bits_per_channel,
+JACK_Open(unsigned int bits_per_channel,
           int floating_point, unsigned long *rate,
           unsigned int output_channels)
 {
   jack_driver_t *drv = 0;
   int sample_format = SAMPLE_FMT_INTEGER;
-  unsigned int i;
   int retval;
 
   if(output_channels < 1)
@@ -1012,28 +933,7 @@ JACK_Open(int *deviceID, unsigned int bits_per_channel,
     }
   }
 
-  /* Lock the device_mutex and find one that's not allocated already.
-     We'll keep this lock until we've either made use of it, or given up. */
-  pthread_mutex_lock(&device_mutex);
-
-  for(i = 0; i < MAX_OUTDEVICES; i++)
-  {
-    if(!outDev[i].allocated)
-    {
-      drv = &outDev[i];
-      break;
-    }
-  }
-
-  if(!drv)
-  {
-    ERR("no more devices available\n");
-    pthread_mutex_unlock(&device_mutex);
-    return ERR_OPENING_JACK;
-  }
-
-  /* We found an unallocated device, now lock it for extra saftey */
-  getDriver(drv->deviceID);
+  drv = getDriver(&outDev);
 
   TRACE("bits_per_channel=%d rate=%ld, output_channels=%d\n",
      bits_per_channel, *rate, output_channels);
@@ -1043,7 +943,6 @@ JACK_Open(int *deviceID, unsigned int bits_per_channel,
     ERR("output_channels == %u, MAX_OUTPUT_PORTS == %u\n", output_channels,
         MAX_OUTPUT_PORTS);
     releaseDriver(drv);
-    pthread_mutex_unlock(&device_mutex);
     return ERR_TOO_MANY_OUTPUT_CHANNELS;
   }
 
@@ -1079,7 +978,6 @@ JACK_Open(int *deviceID, unsigned int bits_per_channel,
   {
     TRACE("error opening jack device\n");
     releaseDriver(drv);
-    pthread_mutex_unlock(&device_mutex);
     return retval;
   }
   else
@@ -1098,17 +996,12 @@ JACK_Open(int *deviceID, unsigned int bits_per_channel,
     JACK_CloseDevice(drv);
 #endif
     releaseDriver(drv);
-    pthread_mutex_unlock(&device_mutex);
     return ERR_RATE_MISMATCH;
   }
 
-  drv->allocated = true;        /* record that we opened this device */
-
   DEBUG("sizeof(sample_t) == %d\n", sizeof(sample_t));
 
-  *deviceID = drv->deviceID;    /* set the deviceID for the caller */
   releaseDriver(drv);
-  pthread_mutex_unlock(&device_mutex);
   return ERR_SUCCESS;           /* success */
 }
 
@@ -1116,11 +1009,11 @@ JACK_Open(int *deviceID, unsigned int bits_per_channel,
 //FIXME: add error handling in here at some point...
 /* NOTE: return 0 for success, non-zero for failure */
 int
-JACK_Close(int deviceID)
+JACK_Close()
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
 
-  TRACE("deviceID(%d)\n", deviceID);
+  TRACE("close\n");
 
 #if JACK_CLOSE_HACK
   JACK_CloseDevice(drv, true);
@@ -1130,18 +1023,12 @@ JACK_Close(int deviceID)
 
   JACK_ResetFromDriver(drv);    /* reset this device to a normal starting state */
 
-  pthread_mutex_lock(&device_mutex);
-
   /* free buffer memory */
   drv->callback_buffer2.clear();
   drv->rw_buffer1.clear();
 
   if(drv->pPlayPtr) jack_ringbuffer_free(drv->pPlayPtr);
   drv->pPlayPtr = 0;
-
-  drv->allocated = false;       /* release this device */
-
-  pthread_mutex_unlock(&device_mutex);
 
   releaseDriver(drv);
 
@@ -1155,15 +1042,15 @@ JACK_Close(int deviceID)
 /* Return value is the number of bytes written */
 /* NOTE: this function takes the length of data to be written bytes */
 long
-JACK_Write(int deviceID, const unsigned char *data, unsigned long bytes)
+JACK_Write(const unsigned char *data, unsigned long bytes)
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
 
   long frames_free, frames;
 
   TIMER("start\n");
 
-  TRACE("deviceID(%d), bytes == %ld\n", deviceID, bytes);
+  TRACE("bytes == %ld\n", bytes);
 
   /* check and see that we have enough space for this audio */
   frames_free =
@@ -1263,10 +1150,10 @@ JACK_SetVolumeForChannelFromDriver(jack_driver_t * drv,
 
 /* return ERR_SUCCESS for success */
 int
-JACK_SetVolumeForChannel(int deviceID, unsigned int channel,
+JACK_SetVolumeForChannel(unsigned int channel,
                          unsigned int volume)
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
   int retval = JACK_SetVolumeForChannelFromDriver(drv, channel, volume);
   releaseDriver(drv);
   return retval;
@@ -1275,10 +1162,10 @@ JACK_SetVolumeForChannel(int deviceID, unsigned int channel,
 /* Return the current volume in the inputted pointers */
 /* NOTE: we check for null pointers being passed in just in case */
 void
-JACK_GetVolumeForChannel(int deviceID, unsigned int channel,
+JACK_GetVolumeForChannel(unsigned int channel,
                          unsigned int *volume)
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
 
   /* ensure that we have the channel we are getting volume for */
   if(channel > (drv->num_output_channels - 1))
@@ -1294,8 +1181,8 @@ JACK_GetVolumeForChannel(int deviceID, unsigned int channel,
 #if VERBOSE_OUTPUT
   if(volume)
   {
-    TRACE("deviceID(%d), returning volume of %d for channel %d\n",
-          deviceID, *volume, channel);
+    TRACE("returning volume of %d for channel %d\n",
+          *volume, channel);
   }
   else
   {
@@ -1309,9 +1196,9 @@ JACK_GetVolumeForChannel(int deviceID, unsigned int channel,
 
 /* Controls the state of the playback(playing, paused, ...) */
 int
-JACK_SetState(int deviceID, enum status_enum state)
+JACK_SetState(enum status_enum state)
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
 
   switch (state)
   {
@@ -1336,15 +1223,15 @@ JACK_SetState(int deviceID, enum status_enum state)
 
 /* Retrieve the current state of the device */
 enum status_enum
-JACK_GetState(int deviceID)
+JACK_GetState()
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
   enum status_enum return_val;
 
   return_val = drv->state;
   releaseDriver(drv);
 
-  TRACE("deviceID(%d), returning current state of %s\n", deviceID,
+  TRACE("returning current state of %s\n",
         DEBUGSTATE(return_val));
   return return_val;
 }
@@ -1358,7 +1245,7 @@ JACK_GetOutputBytesPerSecondFromDriver(jack_driver_t * drv)
   return_val = drv->bytes_per_output_frame * drv->client_sample_rate;
 
 #if VERBOSE_OUTPUT
-  TRACE("deviceID(%d), return_val = %ld\n", drv->deviceID, return_val);
+  TRACE("return_val = %ld\n", return_val);
 #endif
 
   return return_val;
@@ -1388,15 +1275,15 @@ JACK_GetBytesFreeSpaceFromDriver(jack_driver_t * drv)
 
 /* Return the number of bytes we can write to the device */
 unsigned long
-JACK_GetBytesFreeSpace(int deviceID)
+JACK_GetBytesFreeSpace()
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
   unsigned long return_val;
 
   return_val = JACK_GetBytesFreeSpaceFromDriver(drv);
   releaseDriver(drv);
 
-  TRACE("deviceID(%d), retval == %ld\n", deviceID, return_val);
+  TRACE("retval == %ld\n", return_val);
 
   return return_val;
 }
@@ -1459,7 +1346,7 @@ JACK_GetPositionFromDriver(jack_driver_t * drv)
       return_val = 0;
     }
 
-  TRACE("drv->deviceID(%d), type(%s), return_val = %ld\n", drv->deviceID,
+  TRACE("drv(%d), type(%s), return_val = %ld\n", drv,
         type_str, return_val);
 
   return return_val;
@@ -1469,9 +1356,9 @@ JACK_GetPositionFromDriver(jack_driver_t * drv)
 /* in milliseconds */
 /* NOTE: this is position relative to input bytes, output bytes may differ greatly due to input vs. output channel count */
 long
-JACK_GetPosition(int deviceID)
+JACK_GetPosition()
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
   long retval = JACK_GetPositionFromDriver(drv);
   releaseDriver(drv);
   TRACE("retval == %ld\n", retval);
@@ -1500,8 +1387,8 @@ JACK_SetPositionFromDriver(jack_driver_t * drv, long value)
   /* they will at this instant get the correct position */
   drv->position_byte_offset = value - drv->client_bytes;
 
-  TRACE("deviceID(%d) input_value of %ld %s, new value of %ld, setting position_byte_offset to %ld\n",
-        drv->deviceID, input_value, "ms",
+  TRACE("input_value of %ld %s, new value of %ld, setting position_byte_offset to %ld\n",
+        input_value, "ms",
         value, drv->position_byte_offset);
 }
 
@@ -1511,13 +1398,13 @@ JACK_SetPositionFromDriver(jack_driver_t * drv, long value)
 //   and there is no need to send this as a message, we don't modify any
 //   internal variables
 void
-JACK_SetPosition(int deviceID, long value)
+JACK_SetPosition(long value)
 {
-  jack_driver_t *drv = getDriver(deviceID);
+  jack_driver_t *drv = getDriver(&outDev);
   JACK_SetPositionFromDriver(drv, value);
   releaseDriver(drv);
 
-  TRACE("deviceID(%d) value of %ld\n", drv->deviceID, value);
+  TRACE("value of %ld\n", value);
 }
 
 void
@@ -1538,8 +1425,8 @@ JACK_CleanupDriver(jack_driver_t * drv)
 void
 JACK_Init(void)
 {
-  jack_driver_t *drv;
-  int x, y;
+  jack_driver_t *drv = &outDev;
+  int y;
 
   if(init_done)
   {
@@ -1551,29 +1438,19 @@ JACK_Init(void)
 
   TRACE("\n");
 
-  pthread_mutex_lock(&device_mutex);
-
-  /* initialize the device structures */
-  for(x = 0; x < MAX_OUTDEVICES; x++)
-  {
-    drv = &outDev[x];
-
+  /* initialize the device structure */
     pthread_mutex_init(&drv->mutex, nullptr);
 
-    getDriver(x);
+    getDriver(drv);
 
     memset(drv, 0, sizeof(jack_driver_t));
-    drv->deviceID = x;
 
-    for(y = 0; y < MAX_OUTPUT_PORTS; y++)       /* make all volume 25% as a default */
-      drv->volume[y] = 25;
+    for(y = 0; y < MAX_OUTPUT_PORTS; y++)       /* make all volume 100% as a default */
+      drv->volume[y] = 100;
 
     JACK_CleanupDriver(drv);
     JACK_ResetFromDriver(drv);
     releaseDriver(drv);
-  }
-
-  pthread_mutex_unlock(&device_mutex);
 
   TRACE("finished\n");
 }

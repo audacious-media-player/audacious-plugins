@@ -34,26 +34,26 @@ enum status_enum { PLAYING, PAUSED, STOPPED, CLOSED, RESET };
 /**********************/
 /* External functions */
 void JACK_Init(void); /* call this before any other bio2jack calls */
-int  JACK_Open(int *deviceID, unsigned int bits_per_channel, int floating_point,
+int  JACK_Open(unsigned int bits_per_channel, int floating_point,
                unsigned long *rate, unsigned int output_channels);
-int  JACK_Close(int deviceID); /* return 0 for success */
-void JACK_Reset(int deviceID); /* free all buffered data and reset several values in the device */
-long JACK_Write(int deviceID, const unsigned char *data, unsigned long bytes); /* returns the number of bytes written */
+int  JACK_Close(); /* return 0 for success */
+void JACK_Reset(); /* free all buffered data and reset several values in the device */
+long JACK_Write(const unsigned char *data, unsigned long bytes); /* returns the number of bytes written */
 
 /* state setting values */
 /* set/get the played value based on a millisecond input value */
-long JACK_GetPosition(int deviceID);
-void JACK_SetPosition(int deviceID, long value);
+long JACK_GetPosition();
+void JACK_SetPosition(long value);
 
-int JACK_SetState(int deviceID, enum status_enum state); /* playing, paused, stopped */
-enum status_enum JACK_GetState(int deviceID);
+int JACK_SetState(enum status_enum state); /* playing, paused, stopped */
+enum status_enum JACK_GetState();
 
 /* Properties of the jack driver */
 
-int  JACK_SetVolumeForChannel(int deviceID, unsigned int channel, unsigned int volume);
-void JACK_GetVolumeForChannel(int deviceID, unsigned int channel, unsigned int *volume);
+int  JACK_SetVolumeForChannel(unsigned int channel, unsigned int volume);
+void JACK_GetVolumeForChannel(unsigned int channel, unsigned int *volume);
 
-unsigned long JACK_GetBytesFreeSpace(int deviceID);       /* bytes of free space in the output buffer */
+unsigned long JACK_GetBytesFreeSpace();       /* bytes of free space in the output buffer */
 
 enum JACK_PORT_CONNECTION_MODE
 {

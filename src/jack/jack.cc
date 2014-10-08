@@ -28,8 +28,6 @@ jackconfig jack_cfg;
 #define TRACE AUDDBG
 #define ERR AUDDBG
 
-static int driver = 0; /* handle to the jack output device */
-
 typedef struct format_info {
   int format;
   long    frequency;
@@ -51,7 +49,7 @@ static void jack_cleanup(void)
   int errval;
   TRACE("cleanup\n");
 
-  if((errval = JACK_Close(driver)))
+  if((errval = JACK_Close()))
     ERR("error closing device, errval of %d\n", errval);
 
   return;
@@ -70,11 +68,11 @@ static void jack_set_volume(int l, int r)
   }
 
   if(output.channels > 0) {
-      JACK_SetVolumeForChannel(driver, 0, l);
+      JACK_SetVolumeForChannel(0, l);
       jack_cfg.volume_left = l;
   }
   if(output.channels > 1) {
-      JACK_SetVolumeForChannel(driver, 1, r);
+      JACK_SetVolumeForChannel(1, r);
       jack_cfg.volume_right = r;
   }
 }
@@ -87,12 +85,12 @@ static void jack_get_volume(int *l, int *r)
 
   if(output.channels > 0)
   {
-      JACK_GetVolumeForChannel(driver, 0, &_l);
+      JACK_GetVolumeForChannel(0, &_l);
       (*l) = _l;
   }
   if(output.channels > 1)
   {
-      JACK_GetVolumeForChannel(driver, 1, &_r);
+      JACK_GetVolumeForChannel(1, &_r);
       (*r) = _r;
   }
 
@@ -112,10 +110,10 @@ static int jack_get_output_time(void)
   int return_val;
 
   /* don't try to get any values if the device is still closed */
-  if(JACK_GetState(driver) == CLOSED)
+  if(JACK_GetState() == CLOSED)
     return_val = 0;
   else
-    return_val = JACK_GetPosition(driver); /* get played position in terms of milliseconds */
+    return_val = JACK_GetPosition(); /* get played position in terms of milliseconds */
 
   TRACE("returning %d milliseconds\n", return_val);
   return return_val;
@@ -131,10 +129,10 @@ static int jack_playing(void)
   int return_val;
 
   /* If we are playing see if we ACTUALLY have something to play */
-  if(JACK_GetState(driver) == PLAYING)
+  if(JACK_GetState() == PLAYING)
   {
     /* If we have zero bytes stored, we are done playing */
-    if(JACK_GetBytesStored(driver) == 0)
+    if(JACK_GetBytesStored() == 0)
       return_val = false;
     else
       return_val = true;
@@ -213,7 +211,7 @@ static bool jack_init (void)
 /* Return the amount of data that can be written to the device */
 static int audacious_jack_free(void)
 {
-  unsigned long return_val = JACK_GetBytesFreeSpace(driver);
+  unsigned long return_val = JACK_GetBytesFreeSpace();
 
   if(return_val > INT_MAX)
   {
@@ -233,7 +231,7 @@ static void jack_close(void)
   aud_set_int ("jack", "volume_left", jack_cfg.volume_left);
   aud_set_int ("jack", "volume_right", jack_cfg.volume_right);
 
-  JACK_Reset(driver); /* flush buffers, reset position and set state to STOPPED */
+  JACK_Reset(); /* flush buffers, reset position and set state to STOPPED */
   TRACE("resetting driver, not closing now, destructor will close for us\n");
 }
 
@@ -283,7 +281,7 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
       TRACE("output.frequency is %ld, jack_open called with %d\n", output.frequency, sample_rate);
       TRACE("output.format is %d, jack_open called with %d\n", output.format, fmt);
       jack_close();
-      JACK_Close(driver);
+      JACK_Close();
     } else
     {
         TRACE("output_opened is true and no options changed, not reopening\n");
@@ -298,7 +296,7 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
   output.format    = fmt;
 
   rate = output.frequency;
-  retval = JACK_Open(&driver, bits_per_sample, floating_point, &rate, output.channels);
+  retval = JACK_Open(bits_per_sample, floating_point, &rate, output.channels);
   output.frequency = rate; /* avoid compile warning as output.frequency differs in type
                               from what JACK_Open() wants for the type of the rate parameter */
   if(retval == ERR_RATE_MISMATCH)
@@ -332,7 +330,7 @@ static void jack_write(const void *ptr, int length)
   while(length > 0)
   {
     TRACE("writing %d bytes\n", length);
-    written = JACK_Write(driver, buf, length);
+    written = JACK_Write(buf, length);
     length-=written;
     buf+=written;
   }
@@ -349,15 +347,15 @@ static void jack_flush(int ms_offset_time)
 {
   TRACE("setting values for ms_offset_time of %d\n", ms_offset_time);
 
-  JACK_Reset(driver); /* flush buffers and set state to STOPPED */
+  JACK_Reset(); /* flush buffers and set state to STOPPED */
 
   /* update the internal driver values to correspond to the input time given */
-  JACK_SetPosition(driver, ms_offset_time);
+  JACK_SetPosition(ms_offset_time);
 
   if (paused)
-    JACK_SetState(driver, PAUSED);
+    JACK_SetState(PAUSED);
   else
-    JACK_SetState(driver, PLAYING);
+    JACK_SetState(PLAYING);
 }
 
 
@@ -371,9 +369,9 @@ static void jack_pause (bool p)
   /* pause the device if p is non-zero, unpause the device if p is zero and */
   /* we are currently paused */
   if(p)
-    JACK_SetState(driver, PAUSED);
-  else if(JACK_GetState(driver) == PAUSED)
-    JACK_SetState(driver, PLAYING);
+    JACK_SetState(PAUSED);
+  else if(JACK_GetState() == PAUSED)
+    JACK_SetState(PLAYING);
 }
 
 static const char jack_about[] =
