@@ -10,7 +10,9 @@
 #include <limits.h>
 #include <string.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
@@ -32,11 +34,8 @@ typedef struct format_info {
   int format;
   long    frequency;
   int     channels;
-  long    bps;
 } format_info_t;
 
-static format_info_t input;
-static format_info_t effect;
 static format_info_t output;
 
 static bool output_opened; /* true if we have a connection to jack */
@@ -116,7 +115,7 @@ static int jack_get_output_time(void)
   if(JACK_GetState(driver) == CLOSED)
     return_val = 0;
   else
-    return_val = JACK_GetPosition(driver, MILLISECONDS, PLAYED); /* get played position in terms of milliseconds */
+    return_val = JACK_GetPosition(driver); /* get played position in terms of milliseconds */
 
   TRACE("returning %d milliseconds\n", return_val);
   return return_val;
@@ -201,10 +200,6 @@ static bool jack_init (void)
   TRACE("initializing\n");
   JACK_Init(); /* initialize the driver */
 
-  /* set the bio2jack name so users will see xmms-jack in their */
-  /* jack client list */
-  JACK_SetClientName("audacious-jack");
-
   /* set the port connection mode */
   jack_set_port_connection_mode();
 
@@ -219,18 +214,6 @@ static bool jack_init (void)
 static int audacious_jack_free(void)
 {
   unsigned long return_val = JACK_GetBytesFreeSpace(driver);
-  unsigned long tmp;
-
-  /* adjust for frequency differences, otherwise xmms could send us */
-  /* as much data as we have free, then we go to convert this to */
-  /* the output frequency and won't have enough space, so adjust */
-  /* by the ratio of the two */
-  if(effect.frequency != output.frequency)
-  {
-    tmp = return_val;
-    return_val = (return_val * effect.frequency) / output.frequency;
-    TRACE("adjusting from %lu to %lu free bytes to compensate for frequency differences\n", tmp, return_val);
-  }
 
   if(return_val > INT_MAX)
   {
@@ -284,33 +267,21 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
     bits_per_sample = 32;
     floating_point = true;
   } else {
-    TRACE("sample format not supported\n");
+    aud_ui_show_error (str_printf (_("JACK error: Unsupported sample format (%d).)"), fmt));
     return 0;
   }
-
-  /* record some useful information */
-  input.format    = fmt;
-  input.frequency = sample_rate;
-  input.bps       = bits_per_sample * sample_rate * num_channels;
-  input.channels  = num_channels;
-
-  /* setup the effect as matching the input format */
-  effect.format    = input.format;
-  effect.frequency = input.frequency;
-  effect.channels  = input.channels;
-  effect.bps       = input.bps;
 
   /* if we are already opened then don't open again */
   if(output_opened)
   {
     /* if something has changed we should close and re-open the connect to jack */
-    if((output.channels != input.channels) ||
-       (output.frequency != input.frequency) ||
-       (output.format != input.format))
+    if((output.channels != num_channels) ||
+       (output.frequency != sample_rate) ||
+       (output.format != fmt))
     {
-      TRACE("output.channels is %d, jack_open called with %d channels\n", output.channels, input.channels);
-      TRACE("output.frequency is %ld, jack_open called with %ld\n", output.frequency, input.frequency);
-      TRACE("output.format is %d, jack_open called with %d\n", output.format, input.format);
+      TRACE("output.channels is %d, jack_open called with %d channels\n", output.channels, num_channels);
+      TRACE("output.frequency is %ld, jack_open called with %d\n", output.frequency, sample_rate);
+      TRACE("output.format is %d, jack_open called with %d\n", output.format, fmt);
       jack_close();
       JACK_Close(driver);
     } else
@@ -322,10 +293,9 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
   }
 
   /* try to open the jack device with the requested rate at first */
-  output.frequency = input.frequency;
-  output.bps       = input.bps;
-  output.channels  = input.channels;
-  output.format    = input.format;
+  output.frequency = sample_rate;
+  output.channels  = num_channels;
+  output.format    = fmt;
 
   rate = output.frequency;
   retval = JACK_Open(&driver, bits_per_sample, floating_point, &rate, output.channels);
@@ -333,11 +303,12 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
                               from what JACK_Open() wants for the type of the rate parameter */
   if(retval == ERR_RATE_MISMATCH)
   {
-    TRACE("set the resampling rate properly");
+    aud_ui_show_error (str_printf (_("JACK error: Sample rate is not %d Hz.\n"
+     "Please enable the Sample Rate Converter effect."), (int) rate));
     return 0;
   } else if(retval != ERR_SUCCESS)
   {
-    TRACE("failed to open jack with JACK_Open(), error %d\n", retval);
+    aud_ui_show_error (str_printf (_("JACK error: %d."), retval));
     return 0;
   }
 
@@ -381,7 +352,7 @@ static void jack_flush(int ms_offset_time)
   JACK_Reset(driver); /* flush buffers and set state to STOPPED */
 
   /* update the internal driver values to correspond to the input time given */
-  JACK_SetPosition(driver, MILLISECONDS, ms_offset_time);
+  JACK_SetPosition(driver, ms_offset_time);
 
   if (paused)
     JACK_SetState(driver, PAUSED);
