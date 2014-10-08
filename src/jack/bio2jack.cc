@@ -31,8 +31,6 @@
 #include <pthread.h>
 #include <sys/time.h>
 
-#include <glib.h>
-
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 
@@ -126,11 +124,8 @@ typedef struct jack_driver_s
   long clientBytesInJack;       /* number of INPUT bytes(from the client of bio2jack) we wrote to jack(not necessary the number of bytes we wrote to jack) */
   long jack_buffer_size;        /* size of the buffer jack will pass in to the process callback */
 
-  unsigned long callback_buffer2_size;  /* number of bytes in the buffer allocated for processing data in JACK_Callback */
-  char *callback_buffer2;
-
-  unsigned long rw_buffer1_size;        /* number of bytes in the buffer allocated for processing data in JACK_(Read|Write) */
-  char *rw_buffer1;
+  Index<char> callback_buffer2;  /* buffer for processing data in JACK_Callback */
+  Index<char> rw_buffer1;        /* number of bytes in the buffer allocated for processing data in JACK_Write */
 
   struct timeval previousTime;  /* time of last JACK_Callback() write to jack, allows for MS accurate bytes played  */
 
@@ -457,25 +452,6 @@ sample_silence_float(sample_t * dst, unsigned long nsamples)
   }
 }
 
-static bool inline
-ensure_buffer_size(char **buffer, unsigned long *cur_size,
-                   unsigned long needed_size)
-{
-  DEBUG("current size = %lu, needed size = %lu\n", *cur_size, needed_size);
-  if(*cur_size >= needed_size)
-    return true;
-  DEBUG("reallocing\n");
-  char *tmp = (char *) realloc(*buffer, needed_size);
-  if(tmp)
-  {
-    *cur_size = needed_size;
-    *buffer = tmp;
-    return true;
-  }
-  DEBUG("reallocing failed\n");
-  return false;
-}
-
 /******************************************************************
  *    JACK_callback
  *
@@ -534,21 +510,14 @@ JACK_callback(nframes_t nframes, void *arg)
 
       /* make sure our buffer is large enough for the data we are writing */
       /* ie. callback_buffer2_size < (bytes we already wrote + bytes we are going to write in this loop) */
-      if(!ensure_buffer_size
-         (&drv->callback_buffer2, &drv->callback_buffer2_size,
-          jackBytesAvailable))
-      {
-        ERR("allocated %lu bytes, need %lu bytes\n",
-            drv->callback_buffer2_size, (unsigned long)jackBytesAvailable);
-        return -1;
-      }
+      drv->callback_buffer2.resize(jackBytesAvailable);
 
         /* read as much data from the buffer as is available */
         if(jackFramesAvailable && inputBytesAvailable > 0)
         {
           /* write as many bytes as we have space remaining, or as much as we have data to write */
           numFramesToWrite = min(jackFramesAvailable, inputFramesAvailable);
-          jack_ringbuffer_read(drv->pPlayPtr, drv->callback_buffer2,
+          jack_ringbuffer_read(drv->pPlayPtr, drv->callback_buffer2.begin(),
                                jackBytesAvailable);
           /* add on what we wrote */
           read = numFramesToWrite * drv->bytes_per_output_frame;
@@ -574,7 +543,8 @@ JACK_callback(nframes_t nframes, void *arg)
           /* apply volume */
           for(unsigned i = 0; i < drv->num_output_channels; i++)
           {
-                  float_volume_effect((sample_t *) drv->callback_buffer2 + i, (nframes - jackFramesAvailable),
+                  float_volume_effect((sample_t *) drv->callback_buffer2.begin() + i,
+                                      (nframes - jackFramesAvailable),
                                       ((float) drv->volume[i] / 100.0),
                                       drv->num_output_channels);
           }
@@ -584,7 +554,7 @@ JACK_callback(nframes_t nframes, void *arg)
           for(unsigned i = 0; i < drv->num_output_channels; i++)
           {
               demux(out_buffer[i],
-                    (sample_t *) drv->callback_buffer2 + i,
+                    (sample_t *) drv->callback_buffer2.begin() + i,
                     (nframes - jackFramesAvailable), drv->num_output_channels);
           }
     }
@@ -714,7 +684,6 @@ static int
 JACK_OpenDevice(jack_driver_t * drv)
 {
   const char **ports;
-  char *our_client_name = 0;
   int failed = 0;
 
   TRACE("creating jack client and setting up callbacks\n");
@@ -736,10 +705,9 @@ JACK_OpenDevice(jack_driver_t * drv)
   /* set up an error handler */
   jack_set_error_function(JACK_Error);
 
-
   /* build the client name */
-  our_client_name = g_strdup_printf("%s_%d_%d%02d", "audacious-jack", getpid(),
-                                    drv->deviceID, drv->clientCtr++);
+  StringBuf our_client_name = str_printf("%s_%d_%d%02d", "audacious-jack",
+   getpid(), drv->deviceID, drv->clientCtr++);
 
   /* try to become a client of the JACK server */
   TRACE("client name '%s'\n", our_client_name);
@@ -750,12 +718,9 @@ JACK_OpenDevice(jack_driver_t * drv)
     if((drv->client = jack_client_open(our_client_name, JackNoStartServer, nullptr)) == 0)
     {
       ERR("jack server not running?\n");
-      g_free(our_client_name);
       return ERR_OPENING_JACK;
     }
   }
-
-  g_free(our_client_name);
 
   TRACE("setting up jack callbacks\n");
 
@@ -888,7 +853,7 @@ JACK_OpenDevice(jack_driver_t * drv)
           }
       }
 
-      g_free(ports);              /* free the returned array of ports */
+      jack_free(ports);              /* free the returned array of ports */
   }                             /* if( drv->num_output_channels > 0 ) */
 
 
@@ -1168,13 +1133,8 @@ JACK_Close(int deviceID)
   pthread_mutex_lock(&device_mutex);
 
   /* free buffer memory */
-  drv->callback_buffer2_size = 0;
-  if(drv->callback_buffer2) g_free(drv->callback_buffer2);
-  drv->callback_buffer2 = 0;
-
-  drv->rw_buffer1_size = 0;
-  if(drv->rw_buffer1) g_free(drv->rw_buffer1);
-  drv->rw_buffer1 = 0;
+  drv->callback_buffer2.clear();
+  drv->rw_buffer1.clear();
 
   if(drv->pPlayPtr) jack_ringbuffer_free(drv->pPlayPtr);
   drv->pPlayPtr = 0;
@@ -1233,12 +1193,8 @@ JACK_Write(int deviceID, const unsigned char *data, unsigned long bytes)
 
   frames = min(frames, frames_free);
   long jack_bytes = frames * drv->bytes_per_jack_output_frame;
-  if(!ensure_buffer_size(&drv->rw_buffer1, &drv->rw_buffer1_size, jack_bytes))
-  {
-    ERR("couldn't allocate enough space for the buffer\n");
-    releaseDriver(drv);
-    return 0;
-  }
+  drv->rw_buffer1.resize(jack_bytes);
+
   /* adjust bytes to be how many client bytes we're actually writing */
   bytes = frames * drv->bytes_per_output_frame;
 
@@ -1247,22 +1203,22 @@ JACK_Write(int deviceID, const unsigned char *data, unsigned long bytes)
   switch (drv->bits_per_channel)
   {
   case 8:
-    sample_move_char_float((sample_t *) drv->rw_buffer1, (unsigned char *) data,
+    sample_move_char_float((sample_t *) drv->rw_buffer1.begin(), (unsigned char *) data,
                            frames * drv->num_output_channels);
     break;
   case 16:
-    sample_move_short_float((sample_t *) drv->rw_buffer1, (short *) data,
+    sample_move_short_float((sample_t *) drv->rw_buffer1.begin(), (short *) data,
                             frames * drv->num_output_channels);
     break;
   case 32:
     if (drv->sample_format == SAMPLE_FMT_FLOAT)
-      sample_move_float_float((sample_t *) drv->rw_buffer1, (float *) data,
+      sample_move_float_float((sample_t *) drv->rw_buffer1.begin(), (float *) data,
                             frames * drv->num_output_channels);
     else if (drv->sample_format == SAMPLE_FMT_PACKED_24B)
-      sample_move_int24_float((sample_t *) drv->rw_buffer1, (int32_t *) data,
+      sample_move_int24_float((sample_t *) drv->rw_buffer1.begin(), (int32_t *) data,
 			      frames * drv->num_output_channels);
     else
-      sample_move_int32_float((sample_t *) drv->rw_buffer1, (int32_t *) data,
+      sample_move_int32_float((sample_t *) drv->rw_buffer1.begin(), (int32_t *) data,
 			      frames * drv->num_output_channels);
     break;
   }
@@ -1271,7 +1227,7 @@ JACK_Write(int deviceID, const unsigned char *data, unsigned long bytes)
         jack_ringbuffer_read_space(drv->pPlayPtr),
         jack_ringbuffer_write_space(drv->pPlayPtr));
 
-  jack_ringbuffer_write(drv->pPlayPtr, drv->rw_buffer1, jack_bytes);
+  jack_ringbuffer_write(drv->pPlayPtr, drv->rw_buffer1.begin(), jack_bytes);
   DEBUG("wrote %lu bytes, %lu jack_bytes\n", bytes, jack_bytes);
 
   DEBUG("ringbuffer read space = %d, write space = %d\n",
