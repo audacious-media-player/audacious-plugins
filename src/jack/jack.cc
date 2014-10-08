@@ -8,6 +8,7 @@
 
 #include <dlfcn.h>
 #include <limits.h>
+#include <pthread.h>
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
@@ -37,14 +38,17 @@ typedef struct format_info {
 static format_info_t output;
 
 static bool output_opened; /* true if we have a connection to jack */
-static bool paused;
+static bool paused, flushed;
+
+static pthread_mutex_t free_space_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t free_space_cond = PTHREAD_COND_INITIALIZER;
 
 
 /* Giacomo's note: removed the destructor from the original xmms-jack, cause
    destructors + thread join + NPTL currently leads to problems; solved this
    by adding a cleanup function callback for output plugins in Audacious, this
    is used to close the JACK connection and to perform a correct shutdown */
-static void jack_cleanup(void)
+static void jack_cleanup()
 {
   int errval;
   TRACE("cleanup\n");
@@ -105,7 +109,7 @@ static void jack_get_volume(int *l, int *r)
 
 /* Return the current number of milliseconds of audio data that has */
 /* been played out of the audio device, not including the buffer */
-static int jack_get_output_time(void)
+static int jack_get_output_time()
 {
   int return_val;
 
@@ -124,7 +128,7 @@ static int jack_get_output_time(void)
 /* NOTE: this was confusing at first BUT, if the device is open and there */
 /* is no more audio to be played, then the device is NOT PLAYING */
 #if 0
-static int jack_playing(void)
+static int jack_playing()
 {
   int return_val;
 
@@ -188,7 +192,7 @@ static const PreferencesWidget jack_widgets[] = {
 static const PluginPreferences jack_prefs = {{jack_widgets}};
 
 /* Initialize necessary things */
-static bool jack_init (void)
+static bool jack_init ()
 {
   aud_config_set_defaults ("jack", jack_defaults);
 
@@ -209,7 +213,7 @@ static bool jack_init (void)
 
 
 /* Return the amount of data that can be written to the device */
-static int audacious_jack_free(void)
+static int audacious_jack_free()
 {
   unsigned long return_val = JACK_GetBytesFreeSpace();
 
@@ -225,8 +229,29 @@ static int audacious_jack_free(void)
 }
 
 
+/* Called when more space is available in the buffer */
+static void jack_free_space_notify()
+{
+  pthread_mutex_lock(&free_space_mutex);
+  pthread_cond_broadcast(&free_space_cond);
+  pthread_mutex_unlock(&free_space_mutex);
+}
+
+
+/* Sleeps until more space is available in the buffer */
+static void jack_period_wait()
+{
+  pthread_mutex_lock(&free_space_mutex);
+
+  while(!flushed && !JACK_GetBytesFreeSpace())
+    pthread_cond_wait(&free_space_cond, &free_space_mutex);
+
+  pthread_mutex_unlock(&free_space_mutex);
+}
+
+
 /* Close the device */
-static void jack_close(void)
+static void jack_close()
 {
   aud_set_int ("jack", "volume_left", jack_cfg.volume_left);
   aud_set_int ("jack", "volume_right", jack_cfg.volume_right);
@@ -296,7 +321,8 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
   output.format    = fmt;
 
   rate = output.frequency;
-  retval = JACK_Open(bits_per_sample, floating_point, &rate, output.channels);
+  retval = JACK_Open(bits_per_sample, floating_point, &rate, output.channels,
+   jack_free_space_notify);
   output.frequency = rate; /* avoid compile warning as output.frequency differs in type
                               from what JACK_Open() wants for the type of the rate parameter */
   if(retval == ERR_RATE_MISMATCH)
@@ -313,6 +339,7 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
   jack_set_volume(jack_cfg.volume_left, jack_cfg.volume_right); /* sets the volume to stored value */
   output_opened = true;
   paused = false;
+  flushed = true;
 
   return 1;
 }
@@ -335,6 +362,10 @@ static void jack_write(const void *ptr, int length)
     buf+=written;
   }
   TRACE("finished\n");
+
+  pthread_mutex_lock(&free_space_mutex);
+  flushed = false;
+  pthread_mutex_unlock(&free_space_mutex);
 }
 
 
@@ -356,6 +387,12 @@ static void jack_flush(int ms_offset_time)
     JACK_SetState(PAUSED);
   else
     JACK_SetState(PLAYING);
+
+  /* wake up period_wait() */
+  pthread_mutex_lock(&free_space_mutex);
+  flushed = true;
+  pthread_cond_broadcast(&free_space_cond);
+  pthread_mutex_unlock(&free_space_mutex);
 }
 
 
@@ -393,7 +430,7 @@ static const char jack_about[] =
 #define AUD_OUTPUT_FLUSH       jack_flush
 #define AUD_OUTPUT_PAUSE       jack_pause
 #define AUD_OUTPUT_GET_FREE    audacious_jack_free
-#define AUD_OUTPUT_WAIT_FREE   nullptr
+#define AUD_OUTPUT_WAIT_FREE   jack_period_wait
 #define AUD_OUTPUT_GET_TIME    jack_get_output_time
 
 #define AUD_DECLARE_OUTPUT

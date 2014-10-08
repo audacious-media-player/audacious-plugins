@@ -33,9 +33,10 @@ enum status_enum { PLAYING, PAUSED, STOPPED, CLOSED, RESET };
 
 /**********************/
 /* External functions */
-void JACK_Init(void); /* call this before any other bio2jack calls */
+void JACK_Init(); /* call this before any other bio2jack calls */
 int  JACK_Open(unsigned int bits_per_channel, int floating_point,
-               unsigned long *rate, unsigned int output_channels);
+               unsigned long *rate, unsigned int output_channels,
+               void (*free_space_notify)());
 int  JACK_Close(); /* return 0 for success */
 void JACK_Reset(); /* free all buffered data and reset several values in the device */
 long JACK_Write(const unsigned char *data, unsigned long bytes); /* returns the number of bytes written */

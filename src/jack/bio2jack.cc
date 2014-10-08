@@ -147,6 +147,8 @@ typedef struct jack_driver_s
 
   pthread_mutex_t mutex;        /* mutex to lock this specific device */
 
+  void (*free_space_notify)();  /* called when there is free space in the buffer */
+
   /* variables used for trying to restart the connection to jack */
   bool jackd_died;              /* true if jackd has died and we should try to restart it */
   struct timeval last_reconnect_attempt;
@@ -513,6 +515,9 @@ JACK_callback(nframes_t nframes, void *arg)
       drv->state = STOPPED;     /* transition to STOPPED */
     }
   }
+
+  if (drv->free_space_notify)
+    drv->free_space_notify();
 
   CALLBACK_TRACE("done\n");
   TIMER("finish\n");
@@ -894,7 +899,8 @@ JACK_Reset()
 int
 JACK_Open(unsigned int bits_per_channel,
           int floating_point, unsigned long *rate,
-          unsigned int output_channels)
+          unsigned int output_channels,
+          void (*free_space_notify)())
 {
   jack_driver_t *drv = 0;
   int sample_format = SAMPLE_FMT_INTEGER;
@@ -972,6 +978,8 @@ JACK_Open(unsigned int bits_per_channel,
   DEBUG("bytes_per_jack_output_frame == %ld\n",
         drv->bytes_per_jack_output_frame);
 
+  drv->free_space_notify = free_space_notify;
+
   /* go and open up the device */
   retval = JACK_OpenDevice(drv);
   if(retval != ERR_SUCCESS)
@@ -1029,6 +1037,8 @@ JACK_Close()
 
   if(drv->pPlayPtr) jack_ringbuffer_free(drv->pPlayPtr);
   drv->pPlayPtr = 0;
+
+  drv->free_space_notify = nullptr;
 
   releaseDriver(drv);
 
@@ -1423,7 +1433,7 @@ JACK_CleanupDriver(jack_driver_t * drv)
 
 /* Initialize the jack porting library to a clean state */
 void
-JACK_Init(void)
+JACK_Init()
 {
   jack_driver_t *drv = &outDev;
   int y;
