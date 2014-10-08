@@ -350,7 +350,7 @@ void CoreAudioPlugin::close_audio ()
 
     if (is_exclusive)
     {
-        UInt32 hog_mode = 1;
+        UInt32 hog_mode = 0;
 
         AudioObjectPropertyAddress prop;
 
