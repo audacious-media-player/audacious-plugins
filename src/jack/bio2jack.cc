@@ -31,6 +31,9 @@
 #include <pthread.h>
 #include <sys/time.h>
 
+#include <type_traits>
+
+#include <libaudcore/audio.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 
@@ -38,6 +41,9 @@
 
 using aud::min;
 using aud::max;
+
+static_assert(std::is_same<jack_default_audio_sample_t, float>::value,
+ "JACK must be compiled to use float samples");
 
 /* enable/disable TRACING through the JACK_Callback() function */
 /* this can sometimes be too much information */
@@ -95,10 +101,6 @@ using aud::max;
 
 #define MAX_OUTPUT_PORTS  10
 
-#define SAMPLE_FMT_INTEGER 0 /* Regular integer samples */
-#define SAMPLE_FMT_PACKED_24B 1 /* 24 bit samples packed to 32 bit values */
-#define SAMPLE_FMT_FLOAT 2 /* 32 bit floating point samples */
-
 typedef struct jack_driver_s
 {
   int clientCtr;                        /* to prevent overlapping client ids */
@@ -108,18 +110,12 @@ typedef struct jack_driver_s
 
   unsigned long num_output_channels;    /* number of output channels(1 is mono, 2 stereo etc..) */
 
-  unsigned long bits_per_channel;       /* number of bits per channel (8, 16, 24 or 32 supported) */
-  int sample_format;                    /* special sample format or SAMPLE_FMT_INTEGER for signed native-endian integers using all bits_per_channel bit  */
-
-  unsigned long bytes_per_output_frame; /* (num_output_channels * bits_per_channel) / 8 */
-
-  unsigned long bytes_per_jack_output_frame;    /* (num_output_channels * bits_per_channel) / 8 */
+  unsigned long bytes_per_output_frame; /* sizeof(float) * num_output_channels */
 
   long clientBytesInJack;       /* number of INPUT bytes(from the client of bio2jack) we wrote to jack(not necessary the number of bytes we wrote to jack) */
   long jack_buffer_size;        /* size of the buffer jack will pass in to the process callback */
 
   Index<char> callback_buffer2;  /* buffer for processing data in JACK_Callback */
-  Index<char> rw_buffer1;        /* number of bytes in the buffer allocated for processing data in JACK_Write */
 
   struct timeval previousTime;  /* time of last JACK_Callback() write to jack, allows for MS accurate bytes played  */
 
@@ -138,7 +134,7 @@ typedef struct jack_driver_s
 
   enum status_enum state;       /* one of PLAYING, PAUSED, STOPPED, CLOSED, RESET etc */
 
-  unsigned int volume[MAX_OUTPUT_PORTS];        /* percentage of sample value to preserve, 100 would be no attenuation */
+  float volume[MAX_OUTPUT_PORTS];  /* volume factor, 1.0 would be no attenuation */
 
   long position_byte_offset;    /* an offset that we will apply to returned position queries to achieve */
                                 /* the position that the user of the driver desires set */
@@ -163,7 +159,6 @@ static enum JACK_PORT_CONNECTION_MODE port_connection_mode = CONNECT_ALL;
 /* this works around the issue where jack doesn't always close devices by the time the close function call returns */
 #define JACK_CLOSE_HACK 1
 
-typedef jack_default_audio_sample_t sample_t;
 typedef jack_nframes_t nframes_t;
 
 /* output device */
@@ -250,135 +245,6 @@ DEBUGSTATE(enum status_enum state)
     return "unknown state";
 }
 
-#define SAMPLE_MAX_24BIT  8388608.0f
-#define SAMPLE_MAX_16BIT  32768.0f
-#define SAMPLE_MAX_8BIT   255.0f
-
-/* floating point volume routine */
-/* volume should be a value between 0.0 and 1.0 */
-static void
-float_volume_effect(sample_t * buf, unsigned long nsamples, float volume,
-                    int skip)
-{
-  if(volume < 0)
-    volume = 0;
-  if(volume > 1.0)
-    volume = 1.0;
-
-  while(nsamples--)
-  {
-    *buf = (*buf) * volume;
-    buf += skip;
-  }
-}
-
-/* place one channel into a multi-channel stream */
-static inline void
-mux(sample_t * dst, sample_t * src, unsigned long nsamples,
-    unsigned long dst_skip)
-{
-  /* ALERT: signed sign-extension portability !!! */
-  while(nsamples--)
-  {
-    *dst = *src;
-    dst += dst_skip;
-    src++;
-  }
-}
-
-/* pull one channel out of a multi-channel stream */
-static void
-demux(sample_t * dst, sample_t * src, unsigned long nsamples,
-      unsigned long src_skip)
-{
-  /* ALERT: signed sign-extension portability !!! */
-  while(nsamples--)
-  {
-    *dst = *src;
-    dst++;
-    src += src_skip;
-  }
-}
-
-/* copy floating point samples */
-static inline void
-sample_move_float_float(sample_t * dst, float * src, unsigned long nsamples)
-{
-  unsigned long i;
-  for(i = 0; i < nsamples; i++)
-    dst[i] = (sample_t) (src[i]);
-}
-
-/* convert from 32 bit samples to floating point */
-static inline void
-sample_move_int32_float(sample_t * dst, int32_t * src, unsigned long nsamples)
-{
-  unsigned long i;
-  for(i = 0; i < nsamples; i++)
-    dst[i] = (sample_t) (src[i] >> 8) / SAMPLE_MAX_24BIT;
-}
-
-/* convert from 24 bit samples packed into 32 bits to floating point */
-static inline void
-sample_move_int24_float(sample_t * dst, int32_t * src, unsigned long nsamples)
-{
-  unsigned long i;
-  for(i = 0; i < nsamples; i++)
-    dst[i] = (sample_t) (src[i]) / SAMPLE_MAX_24BIT;
-}
-
-/* convert from 16 bit to floating point */
-static inline void
-sample_move_short_float(sample_t * dst, short *src, unsigned long nsamples)
-{
-  /* ALERT: signed sign-extension portability !!! */
-  unsigned long i;
-  for(i = 0; i < nsamples; i++)
-    dst[i] = (sample_t) (src[i]) / SAMPLE_MAX_16BIT;
-}
-
-/* convert from floating point to 16 bit */
-static inline void
-sample_move_float_short(short *dst, sample_t * src, unsigned long nsamples)
-{
-  /* ALERT: signed sign-extension portability !!! */
-  unsigned long i;
-  for(i = 0; i < nsamples; i++)
-    dst[i] = (short) ((src[i]) * SAMPLE_MAX_16BIT);
-}
-
-/* convert from 8 bit to floating point */
-static inline void
-sample_move_char_float(sample_t * dst, unsigned char *src, unsigned long nsamples)
-{
-  /* ALERT: signed sign-extension portability !!! */
-  unsigned long i;
-  for(i = 0; i < nsamples; i++)
-    dst[i] = (sample_t) (src[i]) / SAMPLE_MAX_8BIT;
-}
-
-/* convert from floating point to 8 bit */
-static inline void
-sample_move_float_char(unsigned char *dst, sample_t * src, unsigned long nsamples)
-{
-  /* ALERT: signed sign-extension portability !!! */
-  unsigned long i;
-  for(i = 0; i < nsamples; i++)
-    dst[i] = (char) ((src[i]) * SAMPLE_MAX_8BIT);
-}
-
-/* fill dst buffer with nsamples worth of silence */
-static void inline
-sample_silence_float(sample_t * dst, unsigned long nsamples)
-{
-  /* ALERT: signed sign-extension portability !!! */
-  while(nsamples--)
-  {
-    *dst = 0;
-    dst++;
-  }
-}
-
 /******************************************************************
  *    JACK_callback
  *
@@ -394,16 +260,16 @@ JACK_callback(nframes_t nframes, void *arg)
   TIMER("start\n");
   gettimeofday(&drv->previousTime, 0);  /* record the current time */
 
-  CALLBACK_TRACE("nframes %ld, sizeof(sample_t) == %d\n", (long) nframes,
-                 sizeof(sample_t));
+  CALLBACK_TRACE("nframes %ld, sizeof(float) == %d\n", (long) nframes,
+                 sizeof(float));
 
   if(!drv->client)
     ERR("client is closed, this is weird...\n");
 
-  sample_t *out_buffer[MAX_OUTPUT_PORTS];
+  float *out_buffer[MAX_OUTPUT_PORTS];
   /* retrieve the buffers for the output ports */
   for(unsigned i = 0; i < drv->num_output_channels; i++)
-    out_buffer[i] = (sample_t *) jack_port_get_buffer(drv->output_port[i], nframes);
+    out_buffer[i] = (float *) jack_port_get_buffer(drv->output_port[i], nframes);
 
   /* handle playing state */
   if(drv->state == PLAYING)
@@ -416,8 +282,8 @@ JACK_callback(nframes_t nframes, void *arg)
       size_t inputBytesAvailable = jack_ringbuffer_read_space(drv->pPlayPtr);
       unsigned long inputFramesAvailable;       /* frames we have available */
 
-      inputFramesAvailable = inputBytesAvailable / drv->bytes_per_jack_output_frame;
-      size_t jackBytesAvailable = jackFramesAvailable * drv->bytes_per_jack_output_frame;
+      inputFramesAvailable = inputBytesAvailable / drv->bytes_per_output_frame;
+      size_t jackBytesAvailable = jackFramesAvailable * drv->bytes_per_output_frame;
 
       long read = 0;
 
@@ -429,7 +295,7 @@ JACK_callback(nframes_t nframes, void *arg)
       {
         /* output silence if nothing is being outputted */
         for(unsigned i = 0; i < drv->num_output_channels; i++)
-          sample_silence_float(out_buffer[i], nframes);
+          memset(out_buffer[i], 0, sizeof(float) * nframes);
 
         return -1;
       }
@@ -462,28 +328,16 @@ JACK_callback(nframes_t nframes, void *arg)
       {
         WARN("buffer underrun of %ld frames\n", jackFramesAvailable);
         for(unsigned i = 0; i < drv->num_output_channels; i++)
-          sample_silence_float(out_buffer[i] +
-                               (nframes - jackFramesAvailable),
-                               jackFramesAvailable);
+          memset(out_buffer[i] + (nframes - jackFramesAvailable), 0,
+                 sizeof(float) * jackFramesAvailable);
       }
 
-          /* apply volume */
-          for(unsigned i = 0; i < drv->num_output_channels; i++)
-          {
-                  float_volume_effect((sample_t *) drv->callback_buffer2.begin() + i,
-                                      (nframes - jackFramesAvailable),
-                                      ((float) drv->volume[i] / 100.0),
-                                      drv->num_output_channels);
-          }
+      audio_amplify ((float *) drv->callback_buffer2.begin(),
+       drv->num_output_channels, nframes - jackFramesAvailable, drv->volume);
 
-          /* demux the stream: we skip over the number of samples we have output channels as the channel data */
-          /* is encoded like chan1,chan2,chan3,chan1,chan2,chan3... */
-          for(unsigned i = 0; i < drv->num_output_channels; i++)
-          {
-              demux(out_buffer[i],
-                    (sample_t *) drv->callback_buffer2.begin() + i,
-                    (nframes - jackFramesAvailable), drv->num_output_channels);
-          }
+      audio_deinterlace (drv->callback_buffer2.begin(), FMT_FLOAT,
+       drv->num_output_channels, (void * const *) out_buffer,
+       nframes - jackFramesAvailable);
     }
   }
   else if(drv->state == PAUSED  ||
@@ -494,7 +348,7 @@ JACK_callback(nframes_t nframes, void *arg)
 
     /* output silence if nothing is being outputted */
     for(unsigned i = 0; i < drv->num_output_channels; i++)
-      sample_silence_float(out_buffer[i], nframes);
+      memset(out_buffer[i], 0, sizeof(float) * nframes);
 
     /* if we were told to reset then zero out some variables */
     /* and transition to STOPPED */
@@ -897,13 +751,11 @@ JACK_Reset()
  * if ERR_RATE_MISMATCH (*rate) will be updated with the jack servers rate
  */
 int
-JACK_Open(unsigned int bits_per_channel,
-          int floating_point, unsigned long *rate,
+JACK_Open(unsigned long *rate,
           unsigned int output_channels,
           void (*free_space_notify)())
 {
   jack_driver_t *drv = 0;
-  int sample_format = SAMPLE_FMT_INTEGER;
   int retval;
 
   if(output_channels < 1)
@@ -912,37 +764,9 @@ JACK_Open(unsigned int bits_per_channel,
     return ERR_OPENING_JACK;
   }
 
-  switch (bits_per_channel)
-  {
-  case 8:
-  case 16:
-  case 32:
-    break;
-  case 24:
-    bits_per_channel = 32;
-    sample_format = SAMPLE_FMT_PACKED_24B;
-    break;
-  default:
-    ERR("invalid bits_per_channel\n");
-    return ERR_OPENING_JACK;
-  }
-
-  if (floating_point)
-  {
-    if (bits_per_channel != 32) {
-      ERR("bits_per_channel must be 32 for floating point\n");
-      return ERR_OPENING_JACK;
-    }
-    else
-    {
-      sample_format = SAMPLE_FMT_FLOAT;
-    }
-  }
-
   drv = getDriver(&outDev);
 
-  TRACE("bits_per_channel=%d rate=%ld, output_channels=%d\n",
-     bits_per_channel, *rate, output_channels);
+  TRACE("rate=%ld, output_channels=%d\n", *rate, output_channels);
 
   if(output_channels > MAX_OUTPUT_PORTS)
   {
@@ -961,22 +785,17 @@ JACK_Open(unsigned int bits_per_channel,
 
   /* drv->jack_sample_rate is set by JACK_OpenDevice() */
   drv->client_sample_rate = *rate;
-  drv->bits_per_channel = bits_per_channel;
-  drv->sample_format = sample_format;
   drv->num_output_channels = output_channels;
-  drv->bytes_per_output_frame = (drv->bits_per_channel * drv->num_output_channels) / 8;
-  drv->bytes_per_jack_output_frame = sizeof(sample_t) * drv->num_output_channels;
+  drv->bytes_per_output_frame = sizeof(float) * drv->num_output_channels;
 
   if(drv->num_output_channels > 0)
   {
     drv->pPlayPtr = jack_ringbuffer_create(drv->num_output_channels *
-                                           drv->bytes_per_jack_output_frame *
+                                           drv->bytes_per_output_frame *
                                            DEFAULT_RB_SIZE);
   }
 
   DEBUG("bytes_per_output_frame == %ld\n", drv->bytes_per_output_frame);
-  DEBUG("bytes_per_jack_output_frame == %ld\n",
-        drv->bytes_per_jack_output_frame);
 
   drv->free_space_notify = free_space_notify;
 
@@ -1007,7 +826,7 @@ JACK_Open(unsigned int bits_per_channel,
     return ERR_RATE_MISMATCH;
   }
 
-  DEBUG("sizeof(sample_t) == %d\n", sizeof(sample_t));
+  DEBUG("sizeof(float) == %d\n", sizeof(float));
 
   releaseDriver(drv);
   return ERR_SUCCESS;           /* success */
@@ -1033,7 +852,6 @@ JACK_Close()
 
   /* free buffer memory */
   drv->callback_buffer2.clear();
-  drv->rw_buffer1.clear();
 
   if(drv->pPlayPtr) jack_ringbuffer_free(drv->pPlayPtr);
   drv->pPlayPtr = 0;
@@ -1052,7 +870,7 @@ JACK_Close()
 /* Return value is the number of bytes written */
 /* NOTE: this function takes the length of data to be written bytes */
 long
-JACK_Write(const unsigned char *data, unsigned long bytes)
+JACK_Write(const char *data, unsigned long bytes)
 {
   jack_driver_t *drv = getDriver(&outDev);
 
@@ -1065,7 +883,7 @@ JACK_Write(const unsigned char *data, unsigned long bytes)
   /* check and see that we have enough space for this audio */
   frames_free =
     jack_ringbuffer_write_space(drv->pPlayPtr) /
-    drv->bytes_per_jack_output_frame;
+    drv->bytes_per_output_frame;
   frames = bytes / drv->bytes_per_output_frame;
   TRACE("frames free == %ld, bytes = %lu\n", frames_free, bytes);
 
@@ -1089,43 +907,16 @@ JACK_Write(const unsigned char *data, unsigned long bytes)
   }
 
   frames = min(frames, frames_free);
-  long jack_bytes = frames * drv->bytes_per_jack_output_frame;
-  drv->rw_buffer1.resize(jack_bytes);
 
   /* adjust bytes to be how many client bytes we're actually writing */
   bytes = frames * drv->bytes_per_output_frame;
-
-  /* convert from client samples to jack samples
-     we have to tell it how many samples there are, which is frames * channels */
-  switch (drv->bits_per_channel)
-  {
-  case 8:
-    sample_move_char_float((sample_t *) drv->rw_buffer1.begin(), (unsigned char *) data,
-                           frames * drv->num_output_channels);
-    break;
-  case 16:
-    sample_move_short_float((sample_t *) drv->rw_buffer1.begin(), (short *) data,
-                            frames * drv->num_output_channels);
-    break;
-  case 32:
-    if (drv->sample_format == SAMPLE_FMT_FLOAT)
-      sample_move_float_float((sample_t *) drv->rw_buffer1.begin(), (float *) data,
-                            frames * drv->num_output_channels);
-    else if (drv->sample_format == SAMPLE_FMT_PACKED_24B)
-      sample_move_int24_float((sample_t *) drv->rw_buffer1.begin(), (int32_t *) data,
-			      frames * drv->num_output_channels);
-    else
-      sample_move_int32_float((sample_t *) drv->rw_buffer1.begin(), (int32_t *) data,
-			      frames * drv->num_output_channels);
-    break;
-  }
 
   DEBUG("ringbuffer read space = %d, write space = %d\n",
         jack_ringbuffer_read_space(drv->pPlayPtr),
         jack_ringbuffer_write_space(drv->pPlayPtr));
 
-  jack_ringbuffer_write(drv->pPlayPtr, drv->rw_buffer1.begin(), jack_bytes);
-  DEBUG("wrote %lu bytes, %lu jack_bytes\n", bytes, jack_bytes);
+  jack_ringbuffer_write(drv->pPlayPtr, data, bytes);
+  DEBUG("wrote %lu bytes\n", bytes);
 
   DEBUG("ringbuffer read space = %d, write space = %d\n",
         jack_ringbuffer_read_space(drv->pPlayPtr),
@@ -1146,15 +937,11 @@ static int
 JACK_SetVolumeForChannelFromDriver(jack_driver_t * drv,
                                    unsigned int channel, unsigned int volume)
 {
-  /* TODO?: maybe we should have different volume levels for input & output */
   /* ensure that we have the channel we are setting volume for */
   if(channel > (drv->num_output_channels - 1))
     return 1;
 
-  if(volume > 100)
-    volume = 100;               /* check for values in excess of max */
-
-  drv->volume[channel] = volume;
+  drv->volume[channel] = volume / 100.0;
   return ERR_SUCCESS;
 }
 
@@ -1186,7 +973,7 @@ JACK_GetVolumeForChannel(unsigned int channel,
   }
 
   if(volume)
-    *volume = drv->volume[channel];
+    *volume = lround(drv->volume[channel] * 100.0);
 
 #if VERBOSE_OUTPUT
   if(volume)
@@ -1264,23 +1051,15 @@ JACK_GetOutputBytesPerSecondFromDriver(jack_driver_t * drv)
 static unsigned long
 JACK_GetBytesFreeSpaceFromDriver(jack_driver_t * drv)
 {
-  if(drv->pPlayPtr == 0 || drv->bytes_per_jack_output_frame == 0)
+  if(drv->pPlayPtr == 0 || drv->bytes_per_output_frame == 0)
     return 0;
 
-  /* leave at least one frame in the buffer at all times to prevent underruns */
   long return_val = jack_ringbuffer_write_space(drv->pPlayPtr) - drv->jack_buffer_size;
   if(return_val <= 0)
-  {
     return_val = 0;
-  } else
-  {
-    /* adjust from jack bytes to client bytes */
-    return_val =
-      return_val / drv->bytes_per_jack_output_frame *
-      drv->bytes_per_output_frame;
-  }
 
-  return return_val;
+  /* do not return partial frames since JACK_Write will not write them */
+  return return_val - return_val % drv->bytes_per_output_frame;
 }
 
 /* Return the number of bytes we can write to the device */
@@ -1456,7 +1235,7 @@ JACK_Init()
     memset(drv, 0, sizeof(jack_driver_t));
 
     for(y = 0; y < MAX_OUTPUT_PORTS; y++)       /* make all volume 100% as a default */
-      drv->volume[y] = 100;
+      drv->volume[y] = 1.0;
 
     JACK_CleanupDriver(drv);
     JACK_ResetFromDriver(drv);

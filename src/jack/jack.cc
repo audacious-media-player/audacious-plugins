@@ -30,7 +30,6 @@ jackconfig jack_cfg;
 #define ERR AUDDBG
 
 typedef struct format_info {
-  int format;
   long    frequency;
   int     channels;
 } format_info_t;
@@ -264,34 +263,17 @@ static void jack_close()
 /* Open the device up */
 static bool jack_open(int fmt, int sample_rate, int num_channels)
 {
-  int bits_per_sample;
-  int floating_point = false;
   int retval;
   unsigned long rate;
 
   TRACE("fmt == %d, sample_rate == %d, num_channels == %d\n",
     fmt, sample_rate, num_channels);
 
-  if((fmt == FMT_U8) || (fmt == FMT_S8))
+  if(fmt != FMT_FLOAT)
   {
-    bits_per_sample = 8;
-  } else if(fmt == FMT_S16_NE)
-  {
-    bits_per_sample = 16;
-  } else if (fmt == FMT_S24_NE)
-  {
-    /* interpreted by bio2jack as 24 bit values packed to 32 bit samples */
-    bits_per_sample = 24;
-  } else if (fmt == FMT_S32_NE)
-  {
-    bits_per_sample = 32;
-  } else if (fmt == FMT_FLOAT)
-  {
-    bits_per_sample = 32;
-    floating_point = true;
-  } else {
-    aud_ui_show_error (str_printf (_("JACK error: Unsupported sample format (%d).)"), fmt));
-    return 0;
+    aud_ui_show_error(_("JACK error: You must change the output sample format "
+     "to floating-point."));
+    return false;
   }
 
   /* if we are already opened then don't open again */
@@ -299,12 +281,10 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
   {
     /* if something has changed we should close and re-open the connect to jack */
     if((output.channels != num_channels) ||
-       (output.frequency != sample_rate) ||
-       (output.format != fmt))
+       (output.frequency != sample_rate))
     {
       TRACE("output.channels is %d, jack_open called with %d channels\n", output.channels, num_channels);
       TRACE("output.frequency is %ld, jack_open called with %d\n", output.frequency, sample_rate);
-      TRACE("output.format is %d, jack_open called with %d\n", output.format, fmt);
       jack_close();
       JACK_Close();
     } else
@@ -318,11 +298,9 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
   /* try to open the jack device with the requested rate at first */
   output.frequency = sample_rate;
   output.channels  = num_channels;
-  output.format    = fmt;
 
   rate = output.frequency;
-  retval = JACK_Open(bits_per_sample, floating_point, &rate, output.channels,
-   jack_free_space_notify);
+  retval = JACK_Open(&rate, output.channels, jack_free_space_notify);
   output.frequency = rate; /* avoid compile warning as output.frequency differs in type
                               from what JACK_Open() wants for the type of the rate parameter */
   if(retval == ERR_RATE_MISMATCH)
@@ -353,7 +331,7 @@ static void jack_write(const void *ptr, int length)
   TRACE("starting length of %d\n", length);
 
   /* loop until we have written all the data out to the jack device */
-  auto buf = (const unsigned char *)ptr;
+  auto buf = (const char *)ptr;
   while(length > 0)
   {
     TRACE("writing %d bytes\n", length);
