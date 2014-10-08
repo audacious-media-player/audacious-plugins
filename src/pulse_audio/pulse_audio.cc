@@ -31,21 +31,51 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 
+class PulseOutput : public OutputPlugin
+{
+public:
+    static const char about[];
+
+    static constexpr PluginInfo info = {
+        N_("PulseAudio Output"),
+        PACKAGE,
+        about
+    };
+
+    constexpr PulseOutput () : OutputPlugin (info, 8) {}
+
+    bool init ();
+
+    StereoVolume get_volume ();
+    void set_volume (StereoVolume v);
+
+    bool open_audio (int fmt, int rate, int nch);
+    void close_audio ();
+
+    int buffer_free ();
+    void period_wait ();
+    void write_audio (const void * ptr, int length);
+    void drain ();
+
+    int output_time ();
+
+    void pause (bool pause);
+    void flush (int time);
+};
+
+EXPORT PulseOutput aud_plugin_instance;
+
 static pa_context *context = nullptr;
 static pa_stream *stream = nullptr;
 static pa_threaded_mainloop *mainloop = nullptr;
 
 static pa_cvolume volume;
-static int volume_valid = 0;
+static bool volume_valid = false;
 
-static int do_trigger = 0;
 static int64_t written;
-static int flush_time;
 static int bytes_per_second;
 
-static int connected = 0;
-
-static pa_time_event *volume_time_event = nullptr;
+static bool connected = false;
 
 #define CHECK_DEAD_GOTO(label, warn) do { \
 if (!mainloop || \
@@ -69,7 +99,7 @@ static void info_cb(struct pa_context *c, const struct pa_sink_input_info *i, in
         return;
 
     volume = i->volume;
-    volume_valid = 1;
+    volume_valid = true;
 }
 
 static void subscribe_cb(struct pa_context *c, enum pa_subscription_event_type t, uint32_t index, void *userdata) {
@@ -156,44 +186,32 @@ static void stream_latency_update_cb(pa_stream *s, void *userdata) {
     pa_threaded_mainloop_signal(mainloop, 0);
 }
 
-static void pulse_get_volume (int * l, int * r)
+StereoVolume PulseOutput::get_volume ()
 {
-    * l = * r = 0;
+    StereoVolume v = {0, 0};
 
     if (! connected || ! volume_valid)
-        return;
+        return v;
 
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 1);
 
     if (volume.channels == 2)
     {
-        * l = (volume.values[0] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
-        * r = (volume.values[1] * 100 + PA_VOLUME_NORM / 2) / PA_VOLUME_NORM;
+        v.left = aud::rescale<int> (volume.values[0], PA_VOLUME_NORM, 100);
+        v.right = aud::rescale<int> (volume.values[1], PA_VOLUME_NORM, 100);
     }
     else
-        * l = * r = (pa_cvolume_avg (& volume) * 100 + PA_VOLUME_NORM / 2) /
-         PA_VOLUME_NORM;
+        v.left = v.right = aud::rescale<int> (pa_cvolume_avg (& volume), PA_VOLUME_NORM, 100);
 
 fail:
     pa_threaded_mainloop_unlock (mainloop);
+    return v;
 }
 
-static void volume_time_cb(pa_mainloop_api *api, pa_time_event *e, const struct timeval *tv, void *userdata) {
-    pa_operation *o;
-
-    if (!(o = pa_context_set_sink_input_volume(context, pa_stream_get_index(stream), &volume, nullptr, nullptr)))
-        AUDDBG("pa_context_set_sink_input_volume() failed: %s\n", pa_strerror(pa_context_errno(context)));
-    else
-        pa_operation_unref(o);
-
-    /* We don't wait for completion of this command */
-
-    api->time_free(volume_time_event);
-    volume_time_event = nullptr;
-}
-
-static void pulse_set_volume(int l, int r) {
+void PulseOutput::set_volume (StereoVolume v)
+{
+    pa_operation * o;
 
     if (! connected)
         return;
@@ -201,33 +219,32 @@ static void pulse_set_volume(int l, int r) {
     pa_threaded_mainloop_lock (mainloop);
     CHECK_DEAD_GOTO (fail, 1);
 
-    /* sanitize output volumes. */
-    l = aud::clamp (l, 0, 100);
-    r = aud::clamp (r, 0, 100);
-
-    if (!volume_valid || volume.channels !=  1) {
-        volume.values[0] = ((pa_volume_t) l * PA_VOLUME_NORM + 50) / 100;
-        volume.values[1] = ((pa_volume_t) r * PA_VOLUME_NORM + 50) / 100;
+    if (! volume_valid || volume.channels != 1)
+    {
+        volume.values[0] = aud::rescale<int> (v.left, 100, PA_VOLUME_NORM);
+        volume.values[1] = aud::rescale<int> (v.right, 100, PA_VOLUME_NORM);
         volume.channels = 2;
-    } else {
-        volume.values[0] = ((pa_volume_t) aud::max (l, r) * PA_VOLUME_NORM + 50) / 100;
+    }
+    else
+    {
+        volume.values[0] = aud::rescale<int> (aud::max (v.left, v.right), 100, PA_VOLUME_NORM);
         volume.channels = 1;
     }
 
-    volume_valid = 1;
+    volume_valid = true;
 
-    if (connected && !volume_time_event) {
-        struct timeval tv;
-        pa_mainloop_api *api = pa_threaded_mainloop_get_api(mainloop);
-        volume_time_event = api->time_new(api, pa_timeval_add(pa_gettimeofday(&tv), 100000), volume_time_cb, nullptr);
-    }
+    if (! (o = pa_context_set_sink_input_volume (context, pa_stream_get_index
+     (stream), & volume, nullptr, nullptr)))
+        AUDDBG ("pa_context_set_sink_input_volume() failed: %s\n", pa_strerror
+         (pa_context_errno (context)));
+    else
+        pa_operation_unref(o);
 
 fail:
-    if (connected)
-        pa_threaded_mainloop_unlock(mainloop);
+    pa_threaded_mainloop_unlock (mainloop);
 }
 
-static void pulse_pause (bool b)
+void PulseOutput::pause (bool pause)
 {
     pa_operation *o = nullptr;
     int success = 0;
@@ -237,7 +254,7 @@ static void pulse_pause (bool b)
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
 
-    if (!(o = pa_stream_cork(stream, b, stream_success_cb, &success))) {
+    if (!(o = pa_stream_cork(stream, pause, stream_success_cb, &success))) {
         AUDDBG("pa_stream_cork() failed: %s\n", pa_strerror(pa_context_errno(context)));
         goto fail;
     }
@@ -258,9 +275,9 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-static int pulse_free(void) {
+int PulseOutput::buffer_free ()
+{
     size_t l = 0;
-    pa_operation *o = nullptr;
 
     CHECK_CONNECTED(0);
 
@@ -273,36 +290,13 @@ static int pulse_free(void) {
         goto fail;
     }
 
-    /* If this function is called twice with no pulse_write() call in
-     * between this means we should trigger the playback */
-    if (do_trigger) {
-        int success = 0;
-
-        if (!(o = pa_stream_trigger(stream, stream_success_cb, &success))) {
-            AUDDBG("pa_stream_trigger() failed: %s\n", pa_strerror(pa_context_errno(context)));
-            goto fail;
-        }
-
-        while (pa_operation_get_state(o) != PA_OPERATION_DONE) {
-            CHECK_DEAD_GOTO(fail, 1);
-            pa_threaded_mainloop_wait(mainloop);
-        }
-
-        if (!success)
-            AUDDBG("pa_stream_trigger() failed: %s\n", pa_strerror(pa_context_errno(context)));
-    }
-
 fail:
-    if (o)
-        pa_operation_unref(o);
-
     pa_threaded_mainloop_unlock(mainloop);
 
-    do_trigger = !!l;
     return (int) l;
 }
 
-static int pulse_get_output_time (void)
+int PulseOutput::output_time ()
 {
     int time = 0;
 
@@ -310,25 +304,20 @@ static int pulse_get_output_time (void)
 
     pa_threaded_mainloop_lock(mainloop);
 
-    time = written * (int64_t) 1000 / bytes_per_second;
+    time = aud::rescale<int64_t> (written, bytes_per_second, 1000);
 
     pa_usec_t usec;
     int neg;
     if (pa_stream_get_latency (stream, & usec, & neg) == PA_OK)
         time -= usec / 1000;
 
-    /* fix for AUDPLUG-308: pa_stream_get_latency() still returns positive even
-     * immediately after a flush; fix the result so that we don't return less
-     * than the flush time */
-    if (time < flush_time)
-        time = flush_time;
-
     pa_threaded_mainloop_unlock(mainloop);
 
     return time;
 }
 
-static void pulse_drain(void) {
+void PulseOutput::drain ()
+{
     pa_operation *o = nullptr;
     int success = 0;
 
@@ -357,7 +346,8 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void pulse_flush(int time) {
+void PulseOutput::flush (int time)
+{
     pa_operation *o = nullptr;
     int success = 0;
 
@@ -366,8 +356,7 @@ static void pulse_flush(int time) {
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
 
-    written = time * (int64_t) bytes_per_second / 1000;
-    flush_time = time;
+    written = aud::rescale<int64_t> (time, 1000, bytes_per_second);
 
     if (!(o = pa_stream_flush(stream, stream_success_cb, &success))) {
         AUDDBG("pa_stream_flush() failed: %s\n", pa_strerror(pa_context_errno(context)));
@@ -389,46 +378,73 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void pulse_write(const void* ptr, int length) {
-    int writeoffs, remain, writable;
+void PulseOutput::period_wait ()
+{
+    pa_operation * o = nullptr;
+    int success = 0;
+
+    CHECK_CONNECTED ();
+
+    pa_threaded_mainloop_lock (mainloop);
+    CHECK_DEAD_GOTO (fail, 1);
+
+    if (! (o = pa_stream_trigger (stream, stream_success_cb, & success)))
+    {
+        AUDDBG ("pa_stream_trigger() failed: %s\n", pa_strerror (pa_context_errno (context)));
+        goto fail;
+    }
+
+    while (pa_operation_get_state (o) != PA_OPERATION_DONE)
+    {
+        CHECK_DEAD_GOTO (fail, 1);
+        pa_threaded_mainloop_wait (mainloop);
+    }
+
+    if (! success)
+        AUDDBG ("pa_stream_trigger() failed: %s\n", pa_strerror (pa_context_errno (context)));
+
+    while (! pa_stream_writable_size (stream))
+    {
+        CHECK_DEAD_GOTO (fail, 1);
+        pa_threaded_mainloop_wait (mainloop);
+    }
+
+fail:
+    if (o)
+        pa_operation_unref(o);
+
+    pa_threaded_mainloop_unlock (mainloop);
+}
+
+void PulseOutput::write_audio (const void * ptr, int length)
+{
+    int writable;
 
     CHECK_CONNECTED();
 
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
 
-    /* break large fragments into smaller fragments. --nenolod */
-    for (writeoffs = 0, remain = length;
-         writeoffs < length;
-         writeoffs += writable, remain -= writable)
+    writable = aud::min ((size_t) length, pa_stream_writable_size (stream));
+
+    if (writable < length)
+        AUDWARN ("Buffer overflow, expect skipping.\n");
+
+    if (pa_stream_write (stream, ptr, writable, nullptr, 0, PA_SEEK_RELATIVE) < 0)
     {
-         void * pptr = (char *) ptr + writeoffs;
-
-         writable = length - writeoffs;
-         int fragsize = pa_stream_writable_size(stream);
-
-         /* don't write more than what PA is willing to handle right now. */
-         if (writable > fragsize)
-             writable = fragsize;
-
-         if (pa_stream_write(stream, pptr, writable, nullptr, PA_SEEK_RELATIVE,
-          (pa_seek_mode_t) 0) < 0)
-         {
-             AUDDBG("pa_stream_write() failed: %s\n", pa_strerror(pa_context_errno(context)));
-             goto fail;
-         }
+        AUDDBG ("pa_stream_write() failed: %s\n", pa_strerror (pa_context_errno (context)));
+        goto fail;
     }
 
-    do_trigger = 0;
     written += length;
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-static void pulse_close(void)
+void PulseOutput::close_audio ()
 {
-    connected = 0;
+    connected = false;
 
     if (mainloop)
         pa_threaded_mainloop_stop(mainloop);
@@ -450,8 +466,7 @@ static void pulse_close(void)
         mainloop = nullptr;
     }
 
-    volume_time_event = nullptr;
-    volume_valid = 0;
+    volume_valid = false;
 }
 
 static pa_sample_format_t to_pulse_format (int aformat)
@@ -474,7 +489,8 @@ static pa_sample_format_t to_pulse_format (int aformat)
     }
 }
 
-static bool pulse_open(int fmt, int rate, int nch) {
+bool PulseOutput::open_audio (int fmt, int rate, int nch)
+{
     pa_sample_spec ss;
 
     assert(!mainloop);
@@ -530,7 +546,7 @@ static bool pulse_open(int fmt, int rate, int nch) {
 
 FAIL1:
         pa_threaded_mainloop_unlock (mainloop);
-        pulse_close ();
+        close_audio ();
         return false;
     }
 
@@ -601,12 +617,9 @@ FAIL1:
     }
     pa_operation_unref(o);
 
-    do_trigger = 0;
     written = 0;
-    flush_time = 0;
     bytes_per_second = FMT_SIZEOF (fmt) * nch * rate;
-    connected = 1;
-    volume_time_event = nullptr;
+    connected = true;
 
     pa_threaded_mainloop_unlock(mainloop);
 
@@ -617,20 +630,20 @@ FAIL2:
         pa_operation_unref(o);
 
     pa_threaded_mainloop_unlock(mainloop);
-    pulse_close();
+    close_audio ();
     return false;
 }
 
-static bool pulse_init (void)
+bool PulseOutput::init ()
 {
-    if (! pulse_open (FMT_S16_NE, 44100, 2))
+    if (! open_audio (FMT_S16_NE, 44100, 2))
         return false;
 
-    pulse_close ();
+    close_audio ();
     return true;
 }
 
-static const char pulse_about[] =
+const char PulseOutput::about[] =
  N_("Audacious PulseAudio Output Plugin\n\n"
     "This program is free software; you can redistribute it and/or modify\n"
     "it under the terms of the GNU General Public License as published by\n"
@@ -646,22 +659,3 @@ static const char pulse_about[] =
     "along with this program; if not, write to the Free Software\n"
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
     "USA.");
-
-#define AUD_PLUGIN_NAME        N_("PulseAudio Output")
-#define AUD_PLUGIN_ABOUT       pulse_about
-#define AUD_OUTPUT_PRIORITY    8
-#define AUD_PLUGIN_INIT        pulse_init
-#define AUD_OUTPUT_GET_VOLUME  pulse_get_volume
-#define AUD_OUTPUT_SET_VOLUME  pulse_set_volume
-#define AUD_OUTPUT_OPEN        pulse_open
-#define AUD_OUTPUT_WRITE       pulse_write
-#define AUD_OUTPUT_CLOSE       pulse_close
-#define AUD_OUTPUT_FLUSH       pulse_flush
-#define AUD_OUTPUT_PAUSE       pulse_pause
-#define AUD_OUTPUT_GET_FREE    pulse_free
-#define AUD_OUTPUT_WAIT_FREE   nullptr
-#define AUD_OUTPUT_DRAIN       pulse_drain
-#define AUD_OUTPUT_GET_TIME    pulse_get_output_time
-
-#define AUD_DECLARE_OUTPUT
-#include <libaudcore/plugin-declare.h>
