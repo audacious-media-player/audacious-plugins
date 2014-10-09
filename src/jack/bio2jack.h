@@ -34,7 +34,7 @@ enum status_enum { PLAYING, PAUSED, STOPPED, CLOSED, RESET };
 /**********************/
 /* External functions */
 void JACK_Init(); /* call this before any other bio2jack calls */
-int  JACK_Open(unsigned long *rate, unsigned int output_channels,
+int  JACK_Open(int * rate, int output_channels,
                void (*free_space_notify)());
 int  JACK_Close(); /* return 0 for success */
 void JACK_Reset(); /* free all buffered data and reset several values in the device */
@@ -50,8 +50,7 @@ enum status_enum JACK_GetState();
 
 /* Properties of the jack driver */
 
-int  JACK_SetVolumeForChannel(unsigned int channel, unsigned int volume);
-void JACK_GetVolumeForChannel(unsigned int channel, unsigned int *volume);
+void JACK_SetVolumeForChannel(int channel, int volume);
 
 unsigned long JACK_GetBytesFreeSpace();       /* bytes of free space in the output buffer */
 

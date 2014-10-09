@@ -6,8 +6,6 @@
  *    This code maps xmms calls into the jack translation library
  */
 
-#include <dlfcn.h>
-#include <limits.h>
 #include <pthread.h>
 #include <string.h>
 
@@ -19,90 +17,35 @@
 #include <libaudcore/preferences.h>
 
 #include "bio2jack.h" /* includes for the bio2jack library */
-#include "jack.h"
 
 /* set to 1 for verbose output */
 #define VERBOSE_OUTPUT          0
 
-jackconfig jack_cfg;
-
 #define TRACE AUDDBG
 #define ERR AUDDBG
 
-typedef struct format_info {
-  long    frequency;
-  int     channels;
-} format_info_t;
-
-static format_info_t output;
-
-static bool output_opened; /* true if we have a connection to jack */
 static bool paused, flushed;
 
 static pthread_mutex_t free_space_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t free_space_cond = PTHREAD_COND_INITIALIZER;
 
 
-/* Giacomo's note: removed the destructor from the original xmms-jack, cause
-   destructors + thread join + NPTL currently leads to problems; solved this
-   by adding a cleanup function callback for output plugins in Audacious, this
-   is used to close the JACK connection and to perform a correct shutdown */
-static void jack_cleanup()
-{
-  int errval;
-  TRACE("cleanup\n");
-
-  if((errval = JACK_Close()))
-    ERR("error closing device, errval of %d\n", errval);
-
-  return;
-}
-
-
 /* Set the volume */
-static void jack_set_volume(int l, int r)
+static void jack_set_volume (int l, int r)
 {
-  if(output.channels == 1)
-  {
-    TRACE("l(%d)\n", l);
-  } else if(output.channels > 1)
-  {
-    TRACE("l(%d), r(%d)\n", l, r);
-  }
+    aud_set_int ("jack", "volume_left", l);
+    aud_set_int ("jack", "volume_right", r);
 
-  if(output.channels > 0) {
-      JACK_SetVolumeForChannel(0, l);
-      jack_cfg.volume_left = l;
-  }
-  if(output.channels > 1) {
-      JACK_SetVolumeForChannel(1, r);
-      jack_cfg.volume_right = r;
-  }
+    JACK_SetVolumeForChannel (0, l);
+    JACK_SetVolumeForChannel (1, r);
 }
 
 
 /* Get the current volume setting */
-static void jack_get_volume(int *l, int *r)
+static void jack_get_volume (int * l, int * r)
 {
-  unsigned int _l, _r;
-
-  if(output.channels > 0)
-  {
-      JACK_GetVolumeForChannel(0, &_l);
-      (*l) = _l;
-  }
-  if(output.channels > 1)
-  {
-      JACK_GetVolumeForChannel(1, &_r);
-      (*r) = _r;
-  }
-
-#if VERBOSE_OUTPUT
-  if(output.channels == 1)
-      TRACE("l(%d)\n", *l);
-  else if(output.channels > 1)
-      TRACE("l(%d), r(%d)\n", *l, *r);
-#endif
+    * l = aud_get_int ("jack", "volume_left");
+    * r = aud_get_int ("jack", "volume_right");
 }
 
 
@@ -122,31 +65,6 @@ static int jack_get_output_time()
   return return_val;
 }
 
-
-/* returns true if we are currently playing */
-/* NOTE: this was confusing at first BUT, if the device is open and there */
-/* is no more audio to be played, then the device is NOT PLAYING */
-#if 0
-static int jack_playing()
-{
-  int return_val;
-
-  /* If we are playing see if we ACTUALLY have something to play */
-  if(JACK_GetState() == PLAYING)
-  {
-    /* If we have zero bytes stored, we are done playing */
-    if(JACK_GetBytesStored() == 0)
-      return_val = false;
-    else
-      return_val = true;
-  }
-  else
-    return_val = false;
-
-  TRACE("returning %d\n", return_val);
-  return return_val;
-}
-#endif
 
 void jack_set_port_connection_mode()
 {
@@ -195,16 +113,11 @@ static bool jack_init ()
 {
   aud_config_set_defaults ("jack", jack_defaults);
 
-  jack_cfg.volume_left = aud_get_int ("jack", "volume_left");
-  jack_cfg.volume_right = aud_get_int ("jack", "volume_right");
-
   TRACE("initializing\n");
   JACK_Init(); /* initialize the driver */
 
   /* set the port connection mode */
   jack_set_port_connection_mode();
-
-  output_opened = false;
 
   /* Always return OK, as we don't know about physical devices here */
   return true;
@@ -214,16 +127,8 @@ static bool jack_init ()
 /* Return the amount of data that can be written to the device */
 static int audacious_jack_free()
 {
-  unsigned long return_val = JACK_GetBytesFreeSpace();
-
-  if(return_val > INT_MAX)
-  {
-      TRACE("Warning: return_val > INT_MAX\n");
-      return_val = INT_MAX;
-  }
-
+  int return_val = JACK_GetBytesFreeSpace();
   TRACE("free space of %lu bytes\n", return_val);
-
   return return_val;
 }
 
@@ -252,11 +157,11 @@ static void jack_period_wait()
 /* Close the device */
 static void jack_close()
 {
-  aud_set_int ("jack", "volume_left", jack_cfg.volume_left);
-  aud_set_int ("jack", "volume_right", jack_cfg.volume_right);
+  int errval;
+  TRACE("close\n");
 
-  JACK_Reset(); /* flush buffers, reset position and set state to STOPPED */
-  TRACE("resetting driver, not closing now, destructor will close for us\n");
+  if((errval = JACK_Close()))
+    ERR("error closing device, errval of %d\n", errval);
 }
 
 
@@ -264,7 +169,6 @@ static void jack_close()
 static bool jack_open(int fmt, int sample_rate, int num_channels)
 {
   int retval;
-  unsigned long rate;
 
   TRACE("fmt == %d, sample_rate == %d, num_channels == %d\n",
     fmt, sample_rate, num_channels);
@@ -276,50 +180,27 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
     return false;
   }
 
-  /* if we are already opened then don't open again */
-  if(output_opened)
-  {
-    /* if something has changed we should close and re-open the connect to jack */
-    if((output.channels != num_channels) ||
-       (output.frequency != sample_rate))
-    {
-      TRACE("output.channels is %d, jack_open called with %d channels\n", output.channels, num_channels);
-      TRACE("output.frequency is %ld, jack_open called with %d\n", output.frequency, sample_rate);
-      jack_close();
-      JACK_Close();
-    } else
-    {
-        TRACE("output_opened is true and no options changed, not reopening\n");
-        paused = false;
-        return 1;
-    }
-  }
-
   /* try to open the jack device with the requested rate at first */
-  output.frequency = sample_rate;
-  output.channels  = num_channels;
+  retval = JACK_Open(&sample_rate, num_channels, jack_free_space_notify);
 
-  rate = output.frequency;
-  retval = JACK_Open(&rate, output.channels, jack_free_space_notify);
-  output.frequency = rate; /* avoid compile warning as output.frequency differs in type
-                              from what JACK_Open() wants for the type of the rate parameter */
   if(retval == ERR_RATE_MISMATCH)
   {
     aud_ui_show_error (str_printf (_("JACK error: Sample rate is not %d Hz.\n"
-     "Please enable the Sample Rate Converter effect."), (int) rate));
-    return 0;
+     "Please enable the Sample Rate Converter effect."), sample_rate));
+    return false;
   } else if(retval != ERR_SUCCESS)
   {
     aud_ui_show_error (str_printf (_("JACK error: %d."), retval));
-    return 0;
+    return false;
   }
 
-  jack_set_volume(jack_cfg.volume_left, jack_cfg.volume_right); /* sets the volume to stored value */
-  output_opened = true;
+  /* set the volume to stored value */
+  jack_set_volume (aud_get_int ("jack", "volume_left"), aud_get_int ("jack", "volume_right"));
+
   paused = false;
   flushed = true;
 
-  return 1;
+  return true;
 }
 
 
@@ -397,7 +278,6 @@ static const char jack_about[] =
 #define AUD_PLUGIN_NAME        N_("JACK Output")
 #define AUD_PLUGIN_ABOUT       jack_about
 #define AUD_PLUGIN_INIT        jack_init
-#define AUD_PLUGIN_CLEANUP     jack_cleanup
 #define AUD_PLUGIN_PREFS       & jack_prefs
 #define AUD_OUTPUT_GET_VOLUME  jack_get_volume
 #define AUD_OUTPUT_SET_VOLUME  jack_set_volume

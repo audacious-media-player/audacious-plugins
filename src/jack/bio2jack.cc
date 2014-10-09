@@ -104,13 +104,10 @@ static_assert(std::is_same<jack_default_audio_sample_t, float>::value,
 typedef struct jack_driver_s
 {
   int clientCtr;                        /* to prevent overlapping client ids */
-  long jack_sample_rate;                /* jack samples(frames) per second */
-
-  long client_sample_rate;              /* client samples(frames) per second */
-
-  unsigned long num_output_channels;    /* number of output channels(1 is mono, 2 stereo etc..) */
-
-  unsigned long bytes_per_output_frame; /* sizeof(float) * num_output_channels */
+  int jack_sample_rate;                 /* jack samples(frames) per second */
+  int client_sample_rate;               /* client samples(frames) per second */
+  int num_output_channels;              /* number of output channels(1 is mono, 2 stereo etc..) */
+  int bytes_per_output_frame;           /* sizeof(float) * num_output_channels */
 
   long clientBytesInJack;       /* number of INPUT bytes(from the client of bio2jack) we wrote to jack(not necessary the number of bytes we wrote to jack) */
   long jack_buffer_size;        /* size of the buffer jack will pass in to the process callback */
@@ -268,7 +265,7 @@ JACK_callback(nframes_t nframes, void *arg)
 
   float *out_buffer[MAX_OUTPUT_PORTS];
   /* retrieve the buffers for the output ports */
-  for(unsigned i = 0; i < drv->num_output_channels; i++)
+  for(int i = 0; i < drv->num_output_channels; i++)
     out_buffer[i] = (float *) jack_port_get_buffer(drv->output_port[i], nframes);
 
   /* handle playing state */
@@ -294,7 +291,7 @@ JACK_callback(nframes_t nframes, void *arg)
       if(drv->in_use == false)
       {
         /* output silence if nothing is being outputted */
-        for(unsigned i = 0; i < drv->num_output_channels; i++)
+        for(int i = 0; i < drv->num_output_channels; i++)
           memset(out_buffer[i], 0, sizeof(float) * nframes);
 
         return -1;
@@ -327,7 +324,7 @@ JACK_callback(nframes_t nframes, void *arg)
       if(jackFramesAvailable)
       {
         WARN("buffer underrun of %ld frames\n", jackFramesAvailable);
-        for(unsigned i = 0; i < drv->num_output_channels; i++)
+        for(int i = 0; i < drv->num_output_channels; i++)
           memset(out_buffer[i] + (nframes - jackFramesAvailable), 0,
                  sizeof(float) * jackFramesAvailable);
       }
@@ -347,7 +344,7 @@ JACK_callback(nframes_t nframes, void *arg)
     CALLBACK_TRACE("%s, outputting silence\n", DEBUGSTATE(drv->state));
 
     /* output silence if nothing is being outputted */
-    for(unsigned i = 0; i < drv->num_output_channels; i++)
+    for(int i = 0; i < drv->num_output_channels; i++)
       memset(out_buffer[i], 0, sizeof(float) * nframes);
 
     /* if we were told to reset then zero out some variables */
@@ -535,7 +532,7 @@ JACK_OpenDevice(jack_driver_t * drv)
 
   /* create the output ports */
   TRACE("creating output ports\n");
-  for(unsigned i = 0; i < drv->num_output_channels; i++)
+  for(int i = 0; i < drv->num_output_channels; i++)
   {
     StringBuf portname = str_printf ("out_%d", i);
     TRACE("port %d is named '%s'\n", i, (const char *) portname);
@@ -567,10 +564,10 @@ JACK_OpenDevice(jack_driver_t * drv)
                                drv->jack_output_port_flags);
 
       /* display a trace of the output ports we found */
-      unsigned num_ports = 0;
+      int num_ports = 0;
       if(ports)
       {
-        for(unsigned i = 0; ports[i]; i++)
+        for(int i = 0; ports[i]; i++)
         {
           TRACE("ports[%d] = '%s'\n", i, ports[i]);
           num_ports++;
@@ -592,7 +589,7 @@ JACK_OpenDevice(jack_driver_t * drv)
 
       /* connect a port for each output channel. Note: you can't do this before
          the client is activated (this may change in the future). */
-      for(unsigned i = 0; i < drv->num_output_channels; i++)
+      for(int i = 0; i < drv->num_output_channels; i++)
       {
         TRACE("jack_connect() to port %d('%p')\n", i, drv->output_port[i]);
         if(jack_connect(drv->client, jack_port_name(drv->output_port[i]), ports[i]))
@@ -611,7 +608,7 @@ JACK_OpenDevice(jack_driver_t * drv)
              This effectively eliminates the need for sample_move_d16_d16() */
           if(drv->num_output_channels < num_ports)
           {
-              for(unsigned i = drv->num_output_channels; ports[i]; i++)
+              for(int i = drv->num_output_channels; ports[i]; i++)
               {
                   int n = i % drv->num_output_channels;
                   TRACE("jack_connect() to port %d('%p')\n", i, drv->output_port[n]);
@@ -624,7 +621,7 @@ JACK_OpenDevice(jack_driver_t * drv)
           }
           else if(drv->num_output_channels > num_ports)
           {
-              for(unsigned i = num_ports; i < drv->num_output_channels; i++)
+              for(int i = num_ports; i < drv->num_output_channels; i++)
               {
                   int n = i % num_ports;
                   TRACE("jack_connect() to port %d('%p')\n", i, drv->output_port[n]);
@@ -751,8 +748,8 @@ JACK_Reset()
  * if ERR_RATE_MISMATCH (*rate) will be updated with the jack servers rate
  */
 int
-JACK_Open(unsigned long *rate,
-          unsigned int output_channels,
+JACK_Open(int *rate,
+          int output_channels,
           void (*free_space_notify)())
 {
   jack_driver_t *drv = 0;
@@ -812,9 +809,9 @@ JACK_Open(unsigned long *rate,
     TRACE("succeeded opening jack device\n");
   }
 
-  if((long) (*rate) != drv->jack_sample_rate)
+  if(*rate != drv->jack_sample_rate)
   {
-    TRACE("rate of %ld doesn't match jack sample rate of %ld, returning error\n",
+    TRACE("rate of %d doesn't match jack sample rate of %d, returning error\n",
           *rate, drv->jack_sample_rate);
     *rate = drv->jack_sample_rate;
 #if JACK_CLOSE_HACK
@@ -932,61 +929,21 @@ JACK_Write(const char *data, unsigned long bytes)
   return bytes;                 /* return the number of bytes we wrote out */
 }
 
-/* return ERR_SUCCESS for success */
-static int
+static void
 JACK_SetVolumeForChannelFromDriver(jack_driver_t * drv,
-                                   unsigned int channel, unsigned int volume)
+                                   int channel, int volume)
 {
   /* ensure that we have the channel we are setting volume for */
-  if(channel > (drv->num_output_channels - 1))
-    return 1;
-
-  drv->volume[channel] = volume / 100.0;
-  return ERR_SUCCESS;
+  if(channel >= 0 && channel < drv->num_output_channels)
+    drv->volume[channel] = volume / 100.0;
 }
 
 /* return ERR_SUCCESS for success */
-int
-JACK_SetVolumeForChannel(unsigned int channel,
-                         unsigned int volume)
-{
-  jack_driver_t *drv = getDriver(&outDev);
-  int retval = JACK_SetVolumeForChannelFromDriver(drv, channel, volume);
-  releaseDriver(drv);
-  return retval;
-}
-
-/* Return the current volume in the inputted pointers */
-/* NOTE: we check for null pointers being passed in just in case */
 void
-JACK_GetVolumeForChannel(unsigned int channel,
-                         unsigned int *volume)
+JACK_SetVolumeForChannel(int channel, int volume)
 {
   jack_driver_t *drv = getDriver(&outDev);
-
-  /* ensure that we have the channel we are getting volume for */
-  if(channel > (drv->num_output_channels - 1))
-  {
-    ERR("asking for channel index %u but we only have %lu channels\n", channel, drv->num_output_channels);
-    releaseDriver(drv);
-    return;
-  }
-
-  if(volume)
-    *volume = lround(drv->volume[channel] * 100.0);
-
-#if VERBOSE_OUTPUT
-  if(volume)
-  {
-    TRACE("returning volume of %d for channel %d\n",
-          *volume, channel);
-  }
-  else
-  {
-    TRACE("volume is null, can't dereference it\n");
-  }
-#endif
-
+  JACK_SetVolumeForChannelFromDriver(drv, channel, volume);
   releaseDriver(drv);
 }
 
