@@ -103,44 +103,16 @@ int JACKOutput::output_time()
 }
 
 
-void jack_set_port_connection_mode()
-{
-  /* setup the port connection mode that determines how bio2jack will connect ports */
-  String mode_str = aud_get_str ("jack", "port_connection_mode");
-  enum JACK_PORT_CONNECTION_MODE mode;
-
-  if(strcmp(mode_str, "CONNECT_ALL") == 0)
-      mode = CONNECT_ALL;
-  else if(strcmp(mode_str, "CONNECT_OUTPUT") == 0)
-      mode = CONNECT_OUTPUT;
-  else if(strcmp(mode_str, "CONNECT_NONE") == 0)
-      mode = CONNECT_NONE;
-  else
-  {
-      TRACE("Defaulting to CONNECT_ALL");
-      mode = CONNECT_ALL;
-  }
-
-  JACK_SetPortConnectionMode(mode);
-}
-
 const char * const JACKOutput::defaults[] = {
-    "port_connection_mode", "CONNECT_ALL",
+    "auto_connect", "TRUE",
     "volume_left", "100",
     "volume_right", "100",
     nullptr
 };
 
-static const ComboItem mode_list[] = {
-    ComboItem (N_("Connect to all available jack ports"), "CONNECT_ALL"),
-    ComboItem (N_("Connect only the output ports"), "CONNECT_OUTPUT"),
-    ComboItem (N_("Don't connect to any port"), "CONNECT_NONE")
-};
-
 const PreferencesWidget JACKOutput::widgets[] = {
-    WidgetCombo (N_("Connection mode:"),
-        WidgetString ("jack", "port_connection_mode"),
-        {{mode_list}})
+    WidgetCheck (N_("Automatically connect to output ports"),
+        WidgetBool ("jack", "auto_connect"))
 };
 
 const PluginPreferences JACKOutput::prefs = {{JACKOutput::widgets}};
@@ -152,9 +124,6 @@ bool JACKOutput::init ()
 
   TRACE("initializing\n");
   JACK_Init(); /* initialize the driver */
-
-  /* set the port connection mode */
-  jack_set_port_connection_mode();
 
   /* Always return OK, as we don't know about physical devices here */
   return true;

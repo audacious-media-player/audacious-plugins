@@ -23,18 +23,13 @@
 
 enum status_enum { PLAYING, PAUSED, STOPPED, CLOSED, RESET };
 
-#define PLAYED          1 /* played out of the speakers(estimated value but should be close */
-
-/**********************/
-/* External functions */
-void JACK_Init(); /* call this before any other bio2jack calls */
+void JACK_Init();
 bool JACK_Open(int rate, int output_channels,
                void (*free_space_notify)());
 void JACK_Close();
 void JACK_Reset(); /* free all buffered data and reset several values in the device */
 long JACK_Write(const char * data, unsigned long bytes); /* returns the number of bytes written */
 
-/* state setting values */
 /* set/get the played value based on a millisecond input value */
 long JACK_GetPosition();
 void JACK_SetPosition(long value);
@@ -42,21 +37,8 @@ void JACK_SetPosition(long value);
 int JACK_SetState(enum status_enum state); /* playing, paused, stopped */
 enum status_enum JACK_GetState();
 
-/* Properties of the jack driver */
-
 void JACK_SetVolumeForChannel(int channel, int volume);
 
 size_t JACK_GetBytesFreeSpace();       /* bytes of free space in the output buffer */
-
-enum JACK_PORT_CONNECTION_MODE
-{
-    CONNECT_ALL,    /* connect to all avaliable ports */
-    CONNECT_OUTPUT, /* connect only to the ports we need for output */
-    CONNECT_NONE    /* don't connect to any ports */
-};
-
-/* set the mode for port connections */
-/* defaults to CONNECT_ALL */
-void JACK_SetPortConnectionMode(enum JACK_PORT_CONNECTION_MODE mode);
 
 #endif /* #ifndef JACK_OUT_H */

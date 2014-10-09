@@ -145,9 +145,7 @@ typedef struct jack_driver_s
 } jack_driver_t;
 
 
-static bool init_done = 0;      /* just to prevent clients from calling JACK_Init twice, that would be very bad */
-
-static enum JACK_PORT_CONNECTION_MODE port_connection_mode = CONNECT_ALL;
+static bool init_done = false;  /* just to prevent clients from calling JACK_Init twice, that would be very bad */
 
 typedef jack_nframes_t nframes_t;
 
@@ -488,9 +486,8 @@ JACK_OpenDevice(jack_driver_t * drv, String & error)
     return false;
   }
 
-  /* if we have output channels and the port connection mode isn't CONNECT_NONE */
-  /* then we should connect up some ports */
-  if((drv->num_output_channels > 0) && (port_connection_mode != CONNECT_NONE))
+  /* should we connect up some ports? */
+  if(aud_get_bool("jack", "auto_connect"))
   {
         TRACE("jack_get_ports() passing in nullptr/nullptr\n");
         ports = jack_get_ports(drv->client, nullptr, nullptr,
@@ -523,44 +520,9 @@ JACK_OpenDevice(jack_driver_t * drv, String & error)
         if(jack_connect(drv->client, jack_port_name(drv->output_port[i]), ports[i]))
         {
           error = String(str_printf(_("jack_connect failed for port %d "
-           "(%s).\n"), i, jack_port_name(drv->output_port[i])));
+           "(%s).\n"), i, ports[i]));
           failed = true;
         }
-      }
-
-      /* only if we are in CONNECT_ALL mode should we keep connecting ports up beyond */
-      /* the minimum number of ports required for each output channel coming into bio2jack */
-      if(port_connection_mode == CONNECT_ALL)
-      {
-          /* It's much cheaper and easier to let JACK do the processing required to
-             connect 2 channels to 4 or 4 channels to 2 or any other combinations.
-             This effectively eliminates the need for sample_move_d16_d16() */
-          if(drv->num_output_channels < num_ports)
-          {
-              for(int i = drv->num_output_channels; ports[i]; i++)
-              {
-                  int n = i % drv->num_output_channels;
-                  TRACE("jack_connect() to port %d('%p')\n", i, drv->output_port[n]);
-                  if(jack_connect(drv->client, jack_port_name(drv->output_port[n]), ports[i]))
-                  {
-                      // non fatal
-                      ERR("cannot connect to output port %d('%s')\n", n, ports[i]);
-                  }
-              }
-          }
-          else if(drv->num_output_channels > num_ports)
-          {
-              for(int i = num_ports; i < drv->num_output_channels; i++)
-              {
-                  int n = i % num_ports;
-                  TRACE("jack_connect() to port %d('%p')\n", i, drv->output_port[n]);
-                  if(jack_connect(drv->client, jack_port_name(drv->output_port[i]), ports[n]))
-                  {
-                      // non fatal
-                      ERR("cannot connect to output port %d('%s')\n", i, ports[n]);
-                  }
-              }
-          }
       }
 
       jack_free(ports);              /* free the returned array of ports */
@@ -1022,7 +984,7 @@ JACK_Init()
     return;
   }
 
-  init_done = 1;
+  init_done = true;
 
   TRACE("\n");
 
@@ -1041,10 +1003,4 @@ JACK_Init()
     releaseDriver(drv);
 
   TRACE("finished\n");
-}
-
-void
-JACK_SetPortConnectionMode(enum JACK_PORT_CONNECTION_MODE mode)
-{
-    port_connection_mode = mode;
 }
