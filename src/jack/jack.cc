@@ -24,6 +24,44 @@
 #define TRACE AUDDBG
 #define ERR AUDDBG
 
+class JACKOutput : public OutputPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("JACK Output"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr JACKOutput () : OutputPlugin (info, 0) {}
+
+    bool init ();
+
+    StereoVolume get_volume ();
+    void set_volume (StereoVolume v);
+
+    bool open_audio (int fmt, int sample_rate, int num_channels);
+    void close_audio ();
+
+    int buffer_free ();
+    void period_wait ();
+    void write_audio (const void * ptr, int size);
+    void drain () {} // TODO
+
+    int output_time ();
+
+    void pause (bool pause);
+    void flush (int time);
+};
+
+EXPORT JACKOutput aud_plugin_instance;
+
 static bool paused, flushed;
 
 static pthread_mutex_t free_space_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -31,27 +69,26 @@ static pthread_cond_t free_space_cond = PTHREAD_COND_INITIALIZER;
 
 
 /* Set the volume */
-static void jack_set_volume (int l, int r)
+void JACKOutput::set_volume (StereoVolume v)
 {
-    aud_set_int ("jack", "volume_left", l);
-    aud_set_int ("jack", "volume_right", r);
+    aud_set_int ("jack", "volume_left", v.left);
+    aud_set_int ("jack", "volume_right", v.right);
 
-    JACK_SetVolumeForChannel (0, l);
-    JACK_SetVolumeForChannel (1, r);
+    JACK_SetVolumeForChannel (0, v.left);
+    JACK_SetVolumeForChannel (1, v.right);
 }
 
 
 /* Get the current volume setting */
-static void jack_get_volume (int * l, int * r)
+StereoVolume JACKOutput::get_volume ()
 {
-    * l = aud_get_int ("jack", "volume_left");
-    * r = aud_get_int ("jack", "volume_right");
+    return {aud_get_int ("jack", "volume_left"), aud_get_int ("jack", "volume_right")};
 }
 
 
 /* Return the current number of milliseconds of audio data that has */
 /* been played out of the audio device, not including the buffer */
-static int jack_get_output_time()
+int JACKOutput::output_time()
 {
   int return_val;
 
@@ -87,12 +124,12 @@ void jack_set_port_connection_mode()
   JACK_SetPortConnectionMode(mode);
 }
 
-static const char * const jack_defaults[] = {
- "isTraceEnabled", "FALSE",
- "port_connection_mode", "CONNECT_ALL",
- "volume_left", "25",
- "volume_right", "25",
- nullptr};
+const char * const JACKOutput::defaults[] = {
+    "port_connection_mode", "CONNECT_ALL",
+    "volume_left", "100",
+    "volume_right", "100",
+    nullptr
+};
 
 static const ComboItem mode_list[] = {
     ComboItem (N_("Connect to all available jack ports"), "CONNECT_ALL"),
@@ -100,18 +137,18 @@ static const ComboItem mode_list[] = {
     ComboItem (N_("Don't connect to any port"), "CONNECT_NONE")
 };
 
-static const PreferencesWidget jack_widgets[] = {
+const PreferencesWidget JACKOutput::widgets[] = {
     WidgetCombo (N_("Connection mode:"),
         WidgetString ("jack", "port_connection_mode"),
         {{mode_list}})
 };
 
-static const PluginPreferences jack_prefs = {{jack_widgets}};
+const PluginPreferences JACKOutput::prefs = {{JACKOutput::widgets}};
 
 /* Initialize necessary things */
-static bool jack_init ()
+bool JACKOutput::init ()
 {
-  aud_config_set_defaults ("jack", jack_defaults);
+  aud_config_set_defaults ("jack", defaults);
 
   TRACE("initializing\n");
   JACK_Init(); /* initialize the driver */
@@ -125,7 +162,7 @@ static bool jack_init ()
 
 
 /* Return the amount of data that can be written to the device */
-static int audacious_jack_free()
+int JACKOutput::buffer_free()
 {
   int return_val = JACK_GetBytesFreeSpace();
   TRACE("free space of %lu bytes\n", return_val);
@@ -143,7 +180,7 @@ static void jack_free_space_notify()
 
 
 /* Sleeps until more space is available in the buffer */
-static void jack_period_wait()
+void JACKOutput::period_wait()
 {
   pthread_mutex_lock(&free_space_mutex);
 
@@ -155,7 +192,7 @@ static void jack_period_wait()
 
 
 /* Close the device */
-static void jack_close()
+void JACKOutput::close_audio()
 {
   TRACE("close\n");
   JACK_Close();
@@ -163,7 +200,7 @@ static void jack_close()
 
 
 /* Open the device up */
-static bool jack_open(int fmt, int sample_rate, int num_channels)
+bool JACKOutput::open_audio(int fmt, int sample_rate, int num_channels)
 {
   TRACE("fmt == %d, sample_rate == %d, num_channels == %d\n",
     fmt, sample_rate, num_channels);
@@ -180,7 +217,7 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
     return false;
 
   /* set the volume to stored value */
-  jack_set_volume (aud_get_int ("jack", "volume_left"), aud_get_int ("jack", "volume_right"));
+  set_volume(get_volume());
 
   paused = false;
   flushed = true;
@@ -190,7 +227,7 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
 
 
 /* write some audio out to the device */
-static void jack_write(const void *ptr, int length)
+void JACKOutput::write_audio(const void *ptr, int length)
 {
   long written;
 
@@ -218,7 +255,7 @@ static void jack_write(const void *ptr, int length)
 /* the number of milliseconds of offset passed in */
 /* This is done so the driver itself keeps track of */
 /* current playing position of the mp3 */
-static void jack_flush(int ms_offset_time)
+void JACKOutput::flush(int ms_offset_time)
 {
   TRACE("setting values for ms_offset_time of %d\n", ms_offset_time);
 
@@ -241,7 +278,7 @@ static void jack_flush(int ms_offset_time)
 
 
 /* Pause the jack device */
-static void jack_pause (bool p)
+void JACKOutput::pause (bool p)
 {
   TRACE("p == %d\n", p);
 
@@ -255,26 +292,7 @@ static void jack_pause (bool p)
     JACK_SetState(PLAYING);
 }
 
-static const char jack_about[] =
+const char JACKOutput::about[] =
  N_("Based on xmms-jack, by Chris Morgan:\n"
     "http://xmms-jack.sourceforge.net/\n\n"
     "Ported to Audacious by Giacomo Lozito");
-
-#define AUD_PLUGIN_NAME        N_("JACK Output")
-#define AUD_PLUGIN_ABOUT       jack_about
-#define AUD_PLUGIN_INIT        jack_init
-#define AUD_PLUGIN_PREFS       & jack_prefs
-#define AUD_OUTPUT_GET_VOLUME  jack_get_volume
-#define AUD_OUTPUT_SET_VOLUME  jack_set_volume
-#define AUD_OUTPUT_OPEN        jack_open
-#define AUD_OUTPUT_WRITE       jack_write
-#define AUD_OUTPUT_DRAIN       nullptr
-#define AUD_OUTPUT_CLOSE       jack_close
-#define AUD_OUTPUT_FLUSH       jack_flush
-#define AUD_OUTPUT_PAUSE       jack_pause
-#define AUD_OUTPUT_GET_FREE    audacious_jack_free
-#define AUD_OUTPUT_WAIT_FREE   jack_period_wait
-#define AUD_OUTPUT_GET_TIME    jack_get_output_time
-
-#define AUD_DECLARE_OUTPUT
-#include <libaudcore/plugin-declare.h>
