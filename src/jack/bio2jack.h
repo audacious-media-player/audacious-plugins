@@ -37,8 +37,6 @@ void JACK_SetPosition(long value);
 int JACK_SetState(enum status_enum state); /* playing, paused, stopped */
 enum status_enum JACK_GetState();
 
-void JACK_SetVolumeForChannel(int channel, int volume);
-
 size_t JACK_GetBytesFreeSpace();       /* bytes of free space in the output buffer */
 
 #endif /* #ifndef JACK_OUT_H */

@@ -130,8 +130,6 @@ typedef struct jack_driver_s
 
   enum status_enum state;       /* one of PLAYING, PAUSED, STOPPED, CLOSED, RESET etc */
 
-  float volume[AUD_MAX_CHANNELS];  /* volume factor, 1.0 would be no attenuation */
-
   long position_byte_offset;    /* an offset that we will apply to returned position queries to achieve */
                                 /* the position that the user of the driver desires set */
 
@@ -301,8 +299,9 @@ JACK_callback(nframes_t nframes, void *arg)
                  sizeof(float) * jackFramesAvailable);
       }
 
+      StereoVolume v = {aud_get_int ("jack", "volume_left"), aud_get_int ("jack", "volume_right")};
       audio_amplify ((float *) drv->callback_buffer2.begin(),
-       drv->num_output_channels, nframes - jackFramesAvailable, drv->volume);
+       drv->num_output_channels, nframes - jackFramesAvailable, v);
 
       audio_deinterlace (drv->callback_buffer2.begin(), FMT_FLOAT,
        drv->num_output_channels, (void * const *) out_buffer,
@@ -739,24 +738,6 @@ JACK_Write(const char *data, unsigned long bytes)
   return bytes;                 /* return the number of bytes we wrote out */
 }
 
-static void
-JACK_SetVolumeForChannelFromDriver(jack_driver_t * drv,
-                                   int channel, int volume)
-{
-  /* ensure that we have the channel we are setting volume for */
-  if(channel >= 0 && channel < drv->num_output_channels)
-    drv->volume[channel] = volume / 100.0;
-}
-
-/* return ERR_SUCCESS for success */
-void
-JACK_SetVolumeForChannel(int channel, int volume)
-{
-  jack_driver_t *drv = getDriver(&outDev);
-  JACK_SetVolumeForChannelFromDriver(drv, channel, volume);
-  releaseDriver(drv);
-}
-
 
 /* Controls the state of the playback(playing, paused, ...) */
 int
@@ -976,7 +957,6 @@ void
 JACK_Init()
 {
   jack_driver_t *drv = &outDev;
-  int y;
 
   if(init_done)
   {
@@ -994,9 +974,6 @@ JACK_Init()
     getDriver(drv);
 
     memset(drv, 0, sizeof(jack_driver_t));
-
-    for(y = 0; y < AUD_MAX_CHANNELS; y++)       /* make all volume 100% as a default */
-      drv->volume[y] = 1.0;
 
     JACK_CleanupDriver(drv);
     JACK_ResetFromDriver(drv);

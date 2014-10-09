@@ -73,9 +73,6 @@ void JACKOutput::set_volume (StereoVolume v)
 {
     aud_set_int ("jack", "volume_left", v.left);
     aud_set_int ("jack", "volume_right", v.right);
-
-    JACK_SetVolumeForChannel (0, v.left);
-    JACK_SetVolumeForChannel (1, v.right);
 }
 
 
@@ -184,9 +181,6 @@ bool JACKOutput::open_audio(int fmt, int sample_rate, int num_channels)
   /* try to open the jack device */
   if(!JACK_Open(sample_rate, num_channels, jack_free_space_notify))
     return false;
-
-  /* set the volume to stored value */
-  set_volume(get_volume());
 
   paused = false;
   flushed = true;
