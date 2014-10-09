@@ -19,6 +19,7 @@
 /* NOTE: All functions that take a jack_driver_t* do NOT lock the device, in order to get a */
 /*       jack_driver_t* you must call getDriver() which will pthread_mutex_lock() */
 
+#include <assert.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
@@ -136,8 +137,6 @@ typedef struct jack_driver_s
   long position_byte_offset;    /* an offset that we will apply to returned position queries to achieve */
                                 /* the position that the user of the driver desires set */
 
-  bool in_use;                  /* true if this device is currently in use */
-
   pthread_mutex_t mutex;        /* mutex to lock this specific device */
 
   void (*free_space_notify)();  /* called when there is free space in the buffer */
@@ -152,24 +151,14 @@ static bool init_done = 0;      /* just to prevent clients from calling JACK_Ini
 
 static enum JACK_PORT_CONNECTION_MODE port_connection_mode = CONNECT_ALL;
 
-/* enable/disable code that allows us to close a device without actually closing the jack device */
-/* this works around the issue where jack doesn't always close devices by the time the close function call returns */
-#define JACK_CLOSE_HACK 1
-
 typedef jack_nframes_t nframes_t;
 
 /* output device */
 static jack_driver_t outDev;
 
-#if JACK_CLOSE_HACK
-static void JACK_CloseDevice(jack_driver_t * drv, bool close_client);
-#else
-static void JACK_CloseDevice(jack_driver_t * drv);
-#endif
-
-
 /* Prototypes */
 static int JACK_OpenDevice(jack_driver_t * drv);
+static void JACK_CloseDevice(jack_driver_t * drv);
 static unsigned long JACK_GetBytesFreeSpaceFromDriver(jack_driver_t * drv);
 static void JACK_ResetFromDriver(jack_driver_t * drv);
 static long JACK_GetPositionFromDriver(jack_driver_t * drv);
@@ -260,9 +249,6 @@ JACK_callback(nframes_t nframes, void *arg)
   CALLBACK_TRACE("nframes %ld, sizeof(float) == %d\n", (long) nframes,
                  sizeof(float));
 
-  if(!drv->client)
-    ERR("client is closed, this is weird...\n");
-
   float *out_buffer[MAX_OUTPUT_PORTS];
   /* retrieve the buffers for the output ports */
   for(int i = 0; i < drv->num_output_channels; i++)
@@ -286,17 +272,6 @@ JACK_callback(nframes_t nframes, void *arg)
 
       CALLBACK_TRACE("playing... jackFramesAvailable = %ld inputFramesAvailable = %ld\n",
          jackFramesAvailable, inputFramesAvailable);
-
-#if JACK_CLOSE_HACK
-      if(drv->in_use == false)
-      {
-        /* output silence if nothing is being outputted */
-        for(int i = 0; i < drv->num_output_channels; i++)
-          memset(out_buffer[i], 0, sizeof(float) * nframes);
-
-        return -1;
-      }
-#endif
 
       /* make sure our buffer is large enough for the data we are writing */
       /* ie. callback_buffer2_size < (bytes we already wrote + bytes we are going to write in this loop) */
@@ -427,11 +402,7 @@ JACK_shutdown(void *arg)
 
   TRACE("jack shutdown, setting client to 0 and jackd_died to true, closing device\n");
 
-#if JACK_CLOSE_HACK
-  JACK_CloseDevice(drv, true);
-#else
   JACK_CloseDevice(drv);
-#endif
 
   TRACE("trying to reconnect right now\n");
   /* lets see if we can't reestablish the connection */
@@ -468,20 +439,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   int failed = 0;
 
   TRACE("creating jack client and setting up callbacks\n");
-
-#if JACK_CLOSE_HACK
-  /* see if this device is already open */
-  if(drv->client)
-  {
-    /* if this device is already in use then it is bad for us to be in here */
-    if(drv->in_use)
-      return ERR_OPENING_JACK;
-
-    TRACE("using existing client\n");
-    drv->in_use = true;
-    return ERR_SUCCESS;
-  }
-#endif
+  assert(!drv->client);
 
   /* set up an error handler */
   jack_set_error_function(JACK_Error);
@@ -494,13 +452,8 @@ JACK_OpenDevice(jack_driver_t * drv)
   TRACE("client name '%s'\n", (const char *) our_client_name);
   if((drv->client = jack_client_open(our_client_name, JackNoStartServer, nullptr)) == 0)
   {
-    /* try once more */
-    TRACE("trying once more to jack_client_new");
-    if((drv->client = jack_client_open(our_client_name, JackNoStartServer, nullptr)) == 0)
-    {
       ERR("jack server not running?\n");
       return ERR_OPENING_JACK;
-    }
   }
 
   TRACE("setting up jack callbacks\n");
@@ -543,10 +496,6 @@ JACK_OpenDevice(jack_driver_t * drv)
                                              JackPortIsOutput, 0);
   }
 
-#if JACK_CLOSE_HACK
-  drv->in_use = true;
-#endif
-
   /* tell the JACK server that we are ready to roll */
   TRACE("calling jack_activate()\n");
   if(jack_activate(drv->client))
@@ -579,11 +528,7 @@ JACK_OpenDevice(jack_driver_t * drv)
       {
         TRACE("ERR: jack_get_ports() failed to find ports with jack port flags of 0x%lX'\n",
               drv->jack_output_port_flags);
-#if JACK_CLOSE_HACK
-        JACK_CloseDevice(drv, true);
-#else
         JACK_CloseDevice(drv);
-#endif
         return ERR_PORT_NOT_FOUND;
       }
 
@@ -642,11 +587,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   if(failed)
   {
     TRACE("failed, closing and returning error\n");
-#if JACK_CLOSE_HACK
-    JACK_CloseDevice(drv, true);
-#else
     JACK_CloseDevice(drv);
-#endif
     return ERR_OPENING_JACK;
   }
 
@@ -663,22 +604,10 @@ JACK_OpenDevice(jack_driver_t * drv)
  *		JACK_CloseDevice
  *
  *	Close the connection to the server cleanly.
- *  If close_client is true we close the client for this device instead of
- *    just marking the device as in_use(JACK_CLOSE_HACK only)
  */
-#if JACK_CLOSE_HACK
-static void
-JACK_CloseDevice(jack_driver_t * drv, bool close_client)
-#else
 static void
 JACK_CloseDevice(jack_driver_t * drv)
-#endif
 {
-#if JACK_CLOSE_HACK
-  if(close_client)
-  {
-#endif
-
     TRACE("closing the jack client thread\n");
     if(drv->client)
     {
@@ -695,22 +624,7 @@ JACK_CloseDevice(jack_driver_t * drv)
     JACK_CleanupDriver(drv);
 
     JACK_ResetFromDriver(drv);
-
-#if JACK_CLOSE_HACK
-  } else
-  {
-    TRACE("setting in_use to false\n");
-    drv->in_use = false;
-
-    if(!drv->client)
-    {
-      TRACE("critical error, closing a device that has no client\n");
-    }
-  }
-#endif
 }
-
-
 
 
 /**************************************/
@@ -775,9 +689,6 @@ JACK_Open(int *rate,
 
   drv->jack_output_port_flags = JackPortIsPhysical | JackPortIsInput;      /* port must be input(ie we can put data into it), so mask this in */
 
-  /* initialize some variables */
-  drv->in_use = false;
-
   JACK_ResetFromDriver(drv);    /* flushes all queued buffers, sets status to STOPPED and resets some variables */
 
   /* drv->jack_sample_rate is set by JACK_OpenDevice() */
@@ -814,11 +725,7 @@ JACK_Open(int *rate,
     TRACE("rate of %d doesn't match jack sample rate of %d, returning error\n",
           *rate, drv->jack_sample_rate);
     *rate = drv->jack_sample_rate;
-#if JACK_CLOSE_HACK
-    JACK_CloseDevice(drv, true);
-#else
     JACK_CloseDevice(drv);
-#endif
     releaseDriver(drv);
     return ERR_RATE_MISMATCH;
   }
@@ -839,11 +746,7 @@ JACK_Close()
 
   TRACE("close\n");
 
-#if JACK_CLOSE_HACK
-  JACK_CloseDevice(drv, true);
-#else
   JACK_CloseDevice(drv);
-#endif
 
   JACK_ResetFromDriver(drv);    /* reset this device to a normal starting state */
 
@@ -1159,7 +1062,6 @@ JACK_CleanupDriver(jack_driver_t * drv)
   TRACE("\n");
   /* things that need to be reset both in JACK_Init & JACK_CloseDevice */
   drv->client = 0;
-  drv->in_use = false;
   drv->state = CLOSED;
   drv->jack_sample_rate = 0;
   drv->jackd_died = false;
