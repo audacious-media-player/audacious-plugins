@@ -519,7 +519,7 @@ if test "x$enable_jack" != "xno"; then
     )
 
     if test "x$have_jack" = "xyes"; then
-        OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack"
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack-ng"
     elif test "x$enable_jack" = "xyes"; then
         AC_MSG_ERROR([Cannot find JACK (ver >= 0.120.1 but < 1.0 or >= 1.9.7) development files, but compilation of JACK output plugin has been explicitly requested; please install JACK dev files and run configure again])
     fi
