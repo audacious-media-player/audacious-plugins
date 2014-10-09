@@ -36,6 +36,8 @@
 
 #include <libaudcore/audio.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/interface.h>
 #include <libaudcore/runtime.h>
 
 #include "bio2jack.h"
@@ -100,18 +102,16 @@ static_assert(std::is_same<jack_default_audio_sample_t, float>::value,
 #define WARN AUDWARN
 #define ERR AUDERR
 
-#define MAX_OUTPUT_PORTS  10
-
 typedef struct jack_driver_s
 {
   int clientCtr;                        /* to prevent overlapping client ids */
   int jack_sample_rate;                 /* jack samples(frames) per second */
+  bool sample_rate_changed;
   int client_sample_rate;               /* client samples(frames) per second */
   int num_output_channels;              /* number of output channels(1 is mono, 2 stereo etc..) */
   int bytes_per_output_frame;           /* sizeof(float) * num_output_channels */
 
   long clientBytesInJack;       /* number of INPUT bytes(from the client of bio2jack) we wrote to jack(not necessary the number of bytes we wrote to jack) */
-  long jack_buffer_size;        /* size of the buffer jack will pass in to the process callback */
 
   Index<char> callback_buffer2;  /* buffer for processing data in JACK_Callback */
 
@@ -122,17 +122,15 @@ typedef struct jack_driver_s
 
   unsigned long client_bytes;   /* total bytes written by the client of bio2jack via JACK_Write() */
 
-  jack_port_t *output_port[MAX_OUTPUT_PORTS];   /* output ports */
+  jack_port_t *output_port[AUD_MAX_CHANNELS];   /* output ports */
 
   jack_client_t *client;        /* pointer to jack client */
-
-  unsigned long jack_output_port_flags; /* flags to be passed to jack when opening the output ports */
 
   jack_ringbuffer_t *pPlayPtr;  /* the playback ringbuffer */
 
   enum status_enum state;       /* one of PLAYING, PAUSED, STOPPED, CLOSED, RESET etc */
 
-  float volume[MAX_OUTPUT_PORTS];  /* volume factor, 1.0 would be no attenuation */
+  float volume[AUD_MAX_CHANNELS];  /* volume factor, 1.0 would be no attenuation */
 
   long position_byte_offset;    /* an offset that we will apply to returned position queries to achieve */
                                 /* the position that the user of the driver desires set */
@@ -157,9 +155,9 @@ typedef jack_nframes_t nframes_t;
 static jack_driver_t outDev;
 
 /* Prototypes */
-static int JACK_OpenDevice(jack_driver_t * drv);
+static bool JACK_OpenDevice(jack_driver_t * drv, String & error);
 static void JACK_CloseDevice(jack_driver_t * drv);
-static unsigned long JACK_GetBytesFreeSpaceFromDriver(jack_driver_t * drv);
+static size_t JACK_GetBytesFreeSpaceFromDriver(jack_driver_t * drv);
 static void JACK_ResetFromDriver(jack_driver_t * drv);
 static long JACK_GetPositionFromDriver(jack_driver_t * drv);
 static void JACK_CleanupDriver(jack_driver_t * drv);
@@ -197,7 +195,8 @@ getDriver(jack_driver_t *drv)
     /* wait 250ms before trying again */
     if(TimeValDifference(&drv->last_reconnect_attempt, &now) >= 250)
     {
-      JACK_OpenDevice(drv);
+      String ignored_error;
+      JACK_OpenDevice(drv, ignored_error);
       drv->last_reconnect_attempt = now;
     }
   }
@@ -249,13 +248,13 @@ JACK_callback(nframes_t nframes, void *arg)
   CALLBACK_TRACE("nframes %ld, sizeof(float) == %d\n", (long) nframes,
                  sizeof(float));
 
-  float *out_buffer[MAX_OUTPUT_PORTS];
+  float *out_buffer[AUD_MAX_CHANNELS];
   /* retrieve the buffers for the output ports */
   for(int i = 0; i < drv->num_output_channels; i++)
     out_buffer[i] = (float *) jack_port_get_buffer(drv->output_port[i], nframes);
 
   /* handle playing state */
-  if(drv->state == PLAYING)
+  if(drv->state == PLAYING && drv->client_sample_rate == drv->jack_sample_rate)
   {
     /* handle playback data, if any */
     if(drv->num_output_channels > 0)
@@ -312,10 +311,16 @@ JACK_callback(nframes_t nframes, void *arg)
        nframes - jackFramesAvailable);
     }
   }
-  else if(drv->state == PAUSED  ||
-          drv->state == STOPPED ||
-          drv->state == CLOSED  || drv->state == RESET)
+  else
   {
+    if(drv->sample_rate_changed && drv->client_sample_rate != drv->jack_sample_rate)
+      aud_ui_show_error(str_printf(_("The JACK server expects a sample rate of "
+       "%d Hz, but Audacious is playing at %d Hz.  Please use the Sample Rate "
+       "Converter effect to correct the mismatch."), drv->jack_sample_rate,
+       drv->client_sample_rate));
+
+    drv->sample_rate_changed = false;
+
     CALLBACK_TRACE("%s, outputting silence\n", DEBUGSTATE(drv->state));
 
     /* output silence if nothing is being outputted */
@@ -353,23 +358,6 @@ JACK_callback(nframes_t nframes, void *arg)
 
 
 /******************************************************************
- *             JACK_bufsize
- *
- *             Called whenever the jack server changes the the max number
- *             of frames passed to JACK_callback
- */
-static int
-JACK_bufsize(nframes_t nframes, void *arg)
-{
-  jack_driver_t *drv = (jack_driver_t *) arg;
-  TRACE("the maximum buffer size is now %lu frames\n", (long) nframes);
-
-  drv->jack_buffer_size = nframes;
-
-  return 0;
-}
-
-/******************************************************************
  *		JACK_srate
  */
 int
@@ -377,7 +365,8 @@ JACK_srate(nframes_t nframes, void *arg)
 {
   jack_driver_t *drv = (jack_driver_t *) arg;
 
-  drv->jack_sample_rate = (long) nframes;
+  drv->jack_sample_rate = nframes;
+  drv->sample_rate_changed = true;
 
   TRACE("the sample rate is now %lu/sec\n", (long) nframes);
   return 0;
@@ -406,10 +395,9 @@ JACK_shutdown(void *arg)
 
   TRACE("trying to reconnect right now\n");
   /* lets see if we can't reestablish the connection */
-  if(JACK_OpenDevice(drv) != ERR_SUCCESS)
-  {
-    ERR("unable to reconnect with jack\n");
-  }
+  String error;
+  if(!JACK_OpenDevice(drv, error))
+    aud_ui_show_error(error);
 
   releaseDriver(drv);
 }
@@ -432,11 +420,11 @@ JACK_Error(const char *desc)
  *
  *  RETURNS: ERR_SUCCESS upon success
  */
-static int
-JACK_OpenDevice(jack_driver_t * drv)
+static bool
+JACK_OpenDevice(jack_driver_t * drv, String & error)
 {
   const char **ports;
-  int failed = 0;
+  bool failed = false;
 
   TRACE("creating jack client and setting up callbacks\n");
   assert(!drv->client);
@@ -452,8 +440,8 @@ JACK_OpenDevice(jack_driver_t * drv)
   TRACE("client name '%s'\n", (const char *) our_client_name);
   if((drv->client = jack_client_open(our_client_name, JackNoStartServer, nullptr)) == 0)
   {
-      ERR("jack server not running?\n");
-      return ERR_OPENING_JACK;
+    error = String(_("jack_client_open failed; is the JACK server running?"));
+    return false;
   }
 
   TRACE("setting up jack callbacks\n");
@@ -461,9 +449,6 @@ JACK_OpenDevice(jack_driver_t * drv)
   /* JACK server to call `JACK_callback()' whenever
      there is work to be done. */
   jack_set_process_callback(drv->client, JACK_callback, drv);
-
-  /* setup a buffer size callback */
-  jack_set_buffer_size_callback(drv->client, JACK_bufsize, drv);
 
   /* tell the JACK server to call `srate()' whenever
      the sample rate of the system changes. */
@@ -478,10 +463,9 @@ JACK_OpenDevice(jack_driver_t * drv)
      (see below), you should rely on your own sample rate
      callback (see above) for this value. */
   drv->jack_sample_rate = jack_get_sample_rate(drv->client);
+  drv->sample_rate_changed = true;
   TRACE("client sample rate: %lu, jack sample rate: %lu\n",
         drv->client_sample_rate, drv->jack_sample_rate);
-
-  drv->jack_buffer_size = jack_get_buffer_size(drv->client);
 
   /* create the output ports */
   TRACE("creating output ports\n");
@@ -500,8 +484,8 @@ JACK_OpenDevice(jack_driver_t * drv)
   TRACE("calling jack_activate()\n");
   if(jack_activate(drv->client))
   {
-    ERR("cannot activate client\n");
-    return ERR_OPENING_JACK;
+    error = String(_("jack_activate failed."));
+    return false;
   }
 
   /* if we have output channels and the port connection mode isn't CONNECT_NONE */
@@ -510,7 +494,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   {
         TRACE("jack_get_ports() passing in nullptr/nullptr\n");
         ports = jack_get_ports(drv->client, nullptr, nullptr,
-                               drv->jack_output_port_flags);
+                               JackPortIsPhysical | JackPortIsInput);
 
       /* display a trace of the output ports we found */
       int num_ports = 0;
@@ -526,10 +510,9 @@ JACK_OpenDevice(jack_driver_t * drv)
       /* ensure that we found enough ports */
       if(!ports || (num_ports < drv->num_output_channels))
       {
-        TRACE("ERR: jack_get_ports() failed to find ports with jack port flags of 0x%lX'\n",
-              drv->jack_output_port_flags);
+        error = String(_("jack_get_ports did not find enough output ports."));
         JACK_CloseDevice(drv);
-        return ERR_PORT_NOT_FOUND;
+        return false;
       }
 
       /* connect a port for each output channel. Note: you can't do this before
@@ -539,8 +522,9 @@ JACK_OpenDevice(jack_driver_t * drv)
         TRACE("jack_connect() to port %d('%p')\n", i, drv->output_port[i]);
         if(jack_connect(drv->client, jack_port_name(drv->output_port[i]), ports[i]))
         {
-          ERR("cannot connect to output port %d('%s')\n", i, ports[i]);
-          failed = 1;
+          error = String(str_printf(_("jack_connect failed for port %d "
+           "(%s).\n"), i, jack_port_name(drv->output_port[i])));
+          failed = true;
         }
       }
 
@@ -588,7 +572,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   {
     TRACE("failed, closing and returning error\n");
     JACK_CloseDevice(drv);
-    return ERR_OPENING_JACK;
+    return false;
   }
 
   TRACE("success\n");
@@ -596,7 +580,7 @@ JACK_OpenDevice(jack_driver_t * drv)
   drv->jackd_died = false;      /* clear out this flag so we don't keep attempting to restart things */
   drv->state = PLAYING;         /* clients seem to behave much better with this on from the start, especially when recording */
 
-  return ERR_SUCCESS;           /* return success */
+  return true;
 }
 
 
@@ -658,89 +642,52 @@ JACK_Reset()
  * open the audio device for writing to
  *
  * return value is zero upon success, non-zero upon failure
- *
- * if ERR_RATE_MISMATCH (*rate) will be updated with the jack servers rate
  */
-int
-JACK_Open(int *rate,
-          int output_channels,
+bool
+JACK_Open(int rate, int output_channels,
           void (*free_space_notify)())
 {
   jack_driver_t *drv = 0;
-  int retval;
 
-  if(output_channels < 1)
-  {
-    ERR("no output channels, nothing to do\n");
-    return ERR_OPENING_JACK;
-  }
+  assert(output_channels > 0 && output_channels <= AUD_MAX_CHANNELS);
 
   drv = getDriver(&outDev);
 
-  TRACE("rate=%ld, output_channels=%d\n", *rate, output_channels);
-
-  if(output_channels > MAX_OUTPUT_PORTS)
-  {
-    ERR("output_channels == %u, MAX_OUTPUT_PORTS == %u\n", output_channels,
-        MAX_OUTPUT_PORTS);
-    releaseDriver(drv);
-    return ERR_TOO_MANY_OUTPUT_CHANNELS;
-  }
-
-  drv->jack_output_port_flags = JackPortIsPhysical | JackPortIsInput;      /* port must be input(ie we can put data into it), so mask this in */
+  TRACE("rate=%ld, output_channels=%d\n", rate, output_channels);
 
   JACK_ResetFromDriver(drv);    /* flushes all queued buffers, sets status to STOPPED and resets some variables */
 
   /* drv->jack_sample_rate is set by JACK_OpenDevice() */
-  drv->client_sample_rate = *rate;
+  drv->client_sample_rate = rate;
   drv->num_output_channels = output_channels;
   drv->bytes_per_output_frame = sizeof(float) * drv->num_output_channels;
 
-  if(drv->num_output_channels > 0)
-  {
     drv->pPlayPtr = jack_ringbuffer_create(drv->num_output_channels *
                                            drv->bytes_per_output_frame *
                                            DEFAULT_RB_SIZE);
-  }
 
   DEBUG("bytes_per_output_frame == %ld\n", drv->bytes_per_output_frame);
 
   drv->free_space_notify = free_space_notify;
 
   /* go and open up the device */
-  retval = JACK_OpenDevice(drv);
-  if(retval != ERR_SUCCESS)
+  String error;
+  if(!JACK_OpenDevice(drv, error))
   {
-    TRACE("error opening jack device\n");
+    aud_ui_show_error(error);
     releaseDriver(drv);
-    return retval;
-  }
-  else
-  {
-    TRACE("succeeded opening jack device\n");
+    return false;
   }
 
-  if(*rate != drv->jack_sample_rate)
-  {
-    TRACE("rate of %d doesn't match jack sample rate of %d, returning error\n",
-          *rate, drv->jack_sample_rate);
-    *rate = drv->jack_sample_rate;
-    JACK_CloseDevice(drv);
-    releaseDriver(drv);
-    return ERR_RATE_MISMATCH;
-  }
-
+  TRACE("succeeded opening jack device\n");
   DEBUG("sizeof(float) == %d\n", sizeof(float));
 
   releaseDriver(drv);
-  return ERR_SUCCESS;           /* success */
+  return true;
 }
 
 /* Close the jack device */
-//FIXME: add error handling in here at some point...
-/* NOTE: return 0 for success, non-zero for failure */
-int
-JACK_Close()
+void JACK_Close()
 {
   jack_driver_t *drv = getDriver(&outDev);
 
@@ -759,8 +706,6 @@ JACK_Close()
   drv->free_space_notify = nullptr;
 
   releaseDriver(drv);
-
-  return 0;
 }
 
 /* If we haven't already taken in the max allowed data then create a wave header */
@@ -908,31 +853,26 @@ JACK_GetOutputBytesPerSecondFromDriver(jack_driver_t * drv)
   return return_val;
 }
 
-static unsigned long
+static size_t
 JACK_GetBytesFreeSpaceFromDriver(jack_driver_t * drv)
 {
   if(drv->pPlayPtr == 0 || drv->bytes_per_output_frame == 0)
     return 0;
 
-  long return_val = jack_ringbuffer_write_space(drv->pPlayPtr) - drv->jack_buffer_size;
-  if(return_val <= 0)
-    return_val = 0;
+  size_t return_val = jack_ringbuffer_write_space(drv->pPlayPtr);
 
   /* do not return partial frames since JACK_Write will not write them */
   return return_val - return_val % drv->bytes_per_output_frame;
 }
 
 /* Return the number of bytes we can write to the device */
-unsigned long
-JACK_GetBytesFreeSpace()
+size_t JACK_GetBytesFreeSpace()
 {
   jack_driver_t *drv = getDriver(&outDev);
-  unsigned long return_val;
-
-  return_val = JACK_GetBytesFreeSpaceFromDriver(drv);
+  size_t return_val = JACK_GetBytesFreeSpaceFromDriver(drv);
   releaseDriver(drv);
 
-  TRACE("retval == %ld\n", return_val);
+  TRACE("retval == %zd\n", return_val);
 
   return return_val;
 }
@@ -1064,7 +1004,7 @@ JACK_CleanupDriver(jack_driver_t * drv)
   drv->client = 0;
   drv->state = CLOSED;
   drv->jack_sample_rate = 0;
-  drv->jackd_died = false;
+  drv->clientBytesInJack = 0;
   gettimeofday(&drv->previousTime, 0);  /* record the current time */
   gettimeofday(&drv->last_reconnect_attempt, 0);
 }
@@ -1093,7 +1033,7 @@ JACK_Init()
 
     memset(drv, 0, sizeof(jack_driver_t));
 
-    for(y = 0; y < MAX_OUTPUT_PORTS; y++)       /* make all volume 100% as a default */
+    for(y = 0; y < AUD_MAX_CHANNELS; y++)       /* make all volume 100% as a default */
       drv->volume[y] = 1.0;
 
     JACK_CleanupDriver(drv);

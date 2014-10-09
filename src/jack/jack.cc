@@ -157,19 +157,14 @@ static void jack_period_wait()
 /* Close the device */
 static void jack_close()
 {
-  int errval;
   TRACE("close\n");
-
-  if((errval = JACK_Close()))
-    ERR("error closing device, errval of %d\n", errval);
+  JACK_Close();
 }
 
 
 /* Open the device up */
 static bool jack_open(int fmt, int sample_rate, int num_channels)
 {
-  int retval;
-
   TRACE("fmt == %d, sample_rate == %d, num_channels == %d\n",
     fmt, sample_rate, num_channels);
 
@@ -180,19 +175,9 @@ static bool jack_open(int fmt, int sample_rate, int num_channels)
     return false;
   }
 
-  /* try to open the jack device with the requested rate at first */
-  retval = JACK_Open(&sample_rate, num_channels, jack_free_space_notify);
-
-  if(retval == ERR_RATE_MISMATCH)
-  {
-    aud_ui_show_error (str_printf (_("JACK error: Sample rate is not %d Hz.\n"
-     "Please enable the Sample Rate Converter effect."), sample_rate));
+  /* try to open the jack device */
+  if(!JACK_Open(sample_rate, num_channels, jack_free_space_notify))
     return false;
-  } else if(retval != ERR_SUCCESS)
-  {
-    aud_ui_show_error (str_printf (_("JACK error: %d."), retval));
-    return false;
-  }
 
   /* set the volume to stored value */
   jack_set_volume (aud_get_int ("jack", "volume_left"), aud_get_int ("jack", "volume_right"));

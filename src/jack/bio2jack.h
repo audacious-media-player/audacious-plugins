@@ -21,12 +21,6 @@
 
 #include <jack/jack.h>
 
-#define ERR_SUCCESS                           0
-#define ERR_OPENING_JACK                      1
-#define ERR_RATE_MISMATCH                     2
-#define ERR_TOO_MANY_OUTPUT_CHANNELS          5
-#define ERR_PORT_NOT_FOUND                    7
-
 enum status_enum { PLAYING, PAUSED, STOPPED, CLOSED, RESET };
 
 #define PLAYED          1 /* played out of the speakers(estimated value but should be close */
@@ -34,9 +28,9 @@ enum status_enum { PLAYING, PAUSED, STOPPED, CLOSED, RESET };
 /**********************/
 /* External functions */
 void JACK_Init(); /* call this before any other bio2jack calls */
-int  JACK_Open(int * rate, int output_channels,
+bool JACK_Open(int rate, int output_channels,
                void (*free_space_notify)());
-int  JACK_Close(); /* return 0 for success */
+void JACK_Close();
 void JACK_Reset(); /* free all buffered data and reset several values in the device */
 long JACK_Write(const char * data, unsigned long bytes); /* returns the number of bytes written */
 
@@ -52,7 +46,7 @@ enum status_enum JACK_GetState();
 
 void JACK_SetVolumeForChannel(int channel, int volume);
 
-unsigned long JACK_GetBytesFreeSpace();       /* bytes of free space in the output buffer */
+size_t JACK_GetBytesFreeSpace();       /* bytes of free space in the output buffer */
 
 enum JACK_PORT_CONNECTION_MODE
 {
