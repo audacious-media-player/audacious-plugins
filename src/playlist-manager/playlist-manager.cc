@@ -18,7 +18,6 @@
  */
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
@@ -105,7 +104,7 @@ static void select_all (void * user, bool selected)
 static void activate_row (void * user, int row)
 {
     aud_playlist_set_active (row);
-    aud_drct_play_playlist (row);
+    aud_playlist_play (row);
 }
 
 static void shift_rows (void * user, int row, int before)
