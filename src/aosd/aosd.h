@@ -26,6 +26,5 @@
 
 bool aosd_init (void);
 void aosd_cleanup ( void );
-void aosd_configure ( void );
 
 #endif /* !_I_AOSD_H */

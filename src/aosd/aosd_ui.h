@@ -21,10 +21,8 @@
 #ifndef _I_AOSD_UI_H
 #define _I_AOSD_UI_H 1
 
-#include "aosd_common.h"
-#include "aosd_cfg.h"
-#include <glib.h>
+struct PluginPreferences;
 
-void aosd_ui_configure ( aosd_cfg_t * );
+extern const PluginPreferences aosd_prefs;
 
 #endif /* !_I_AOSD_UI_H */

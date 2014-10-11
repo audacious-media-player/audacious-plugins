@@ -3,8 +3,6 @@
 
 #include <gtk/gtk.h>
 
-void alarm_save (void);
-
 void alarm_current_volume (GtkButton *button, void * data);
 
 void alarm_stop_cancel (GtkWidget *widget, void * data);

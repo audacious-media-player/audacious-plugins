@@ -37,7 +37,7 @@ static const char aosd_about[] =
 #define AUD_PLUGIN_NAME        N_("AOSD (On-Screen Display)")
 #define AUD_PLUGIN_ABOUT       aosd_about
 #define AUD_PLUGIN_INIT        aosd_init
-#define AUD_PLUGIN_CONFIGWIN   aosd_configure
+#define AUD_PLUGIN_PREFS       & aosd_prefs
 #define AUD_PLUGIN_CLEANUP     aosd_cleanup
 
 #define AUD_DECLARE_GENERAL
@@ -84,18 +84,4 @@ aosd_cleanup ( void )
 
     plugin_is_active = FALSE;
   }
-}
-
-
-void
-aosd_configure ( void )
-{
-  /* create a new configuration object */
-  aosd_cfg_t *cfg = aosd_cfg_new();
-  /* fill it with information from config file */
-  aosd_cfg_load( cfg );
-  /* call the configuration UI */
-  aosd_ui_configure( cfg );
-  /* delete configuration object */
-  aosd_cfg_delete( cfg );
 }

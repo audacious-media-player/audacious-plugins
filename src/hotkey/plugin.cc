@@ -75,7 +75,7 @@ static const char about[] =
 #define AUD_PLUGIN_NAME        N_("Global Hotkeys")
 #define AUD_PLUGIN_ABOUT       about
 #define AUD_PLUGIN_INIT        hotkey_init
-#define AUD_PLUGIN_CONFIGWIN   show_configure
+#define AUD_PLUGIN_PREFS       & hotkey_prefs
 #define AUD_PLUGIN_CLEANUP     hotkey_cleanup
 
 #define AUD_DECLARE_GENERAL

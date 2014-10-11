@@ -23,7 +23,7 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/i18n.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <libaudcore/preferences.h>
 
 #include "aosd_ui.h"
 #include "aosd_style.h"
@@ -72,6 +72,8 @@ typedef struct
   GtkWidget * widget;
 }
 aosd_ui_cb_t;
+
+static GList * aosd_cb_list;
 
 static void
 aosd_callback_list_add ( GList ** list , GtkWidget * widget , aosd_ui_cb_func_t func )
@@ -817,12 +819,11 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
 
 
 static void
-aosd_cb_configure_test ( void * cfg_win )
+aosd_cb_configure_test ( void )
 {
   char *markup_message = nullptr;
   aosd_cfg_t *cfg = aosd_cfg_new();
-  GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
-  aosd_callback_list_run( cb_list , cfg );
+  aosd_callback_list_run( aosd_cb_list , cfg );
   cfg->set = TRUE;
 
   markup_message = g_markup_printf_escaped
@@ -839,25 +840,28 @@ aosd_cb_configure_test ( void * cfg_win )
 
 
 static void
-aosd_cb_configure_cancel ( void * cfg_win )
+aosd_cb_configure_cancel ( void )
 {
-  GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
-  aosd_callback_list_free( cb_list );
+  aosd_callback_list_free( aosd_cb_list );
+  aosd_cb_list = nullptr;
+
   aosd_osd_shutdown(); /* stop any displayed osd */
   aosd_osd_cleanup(); /* just in case it's active */
   if ( plugin_is_active == TRUE )
     aosd_osd_init( global_config->osd->misc.transparency_mode );
-  gtk_widget_destroy( GTK_WIDGET(cfg_win) );
 }
 
 
 static void
-aosd_cb_configure_ok ( void * cfg_win )
+aosd_cb_configure_ok ( void )
 {
   //char *markup_message = nullptr;
   aosd_cfg_t *cfg = aosd_cfg_new();
-  GList *cb_list = (GList *) g_object_get_data( G_OBJECT(cfg_win) , "cblist" );
-  aosd_callback_list_run( cb_list , cfg );
+
+  aosd_callback_list_run( aosd_cb_list , cfg );
+  aosd_callback_list_free( aosd_cb_list );
+  aosd_cb_list = nullptr;
+
   cfg->set = TRUE;
   aosd_osd_shutdown(); /* stop any displayed osd */
   aosd_osd_cleanup(); /* just in case it's active */
@@ -877,101 +881,73 @@ aosd_cb_configure_ok ( void * cfg_win )
     /* plugin is not active */
     aosd_cfg_save( cfg ); /* save the new configuration on config file */
   }
-  aosd_callback_list_free( cb_list );
-  gtk_widget_destroy( GTK_WIDGET(cfg_win) );
 }
 
 
-void
-aosd_ui_configure ( aosd_cfg_t * cfg )
+static void *
+aosd_ui_configure ( void )
 {
-  static GtkWidget *cfg_win = nullptr;
-  GtkWidget *cfg_vbox;
   GtkWidget *cfg_nb;
-  GtkWidget *cfg_bbar_hbbox;
-  GtkWidget *cfg_bbar_bt_ok, *cfg_bbar_bt_test, *cfg_bbar_bt_cancel;
   GtkWidget *cfg_position_widget;
   GtkWidget *cfg_animation_widget;
   GtkWidget *cfg_text_widget;
   GtkWidget *cfg_decoration_widget;
   GtkWidget *cfg_trigger_widget;
-  GdkGeometry cfg_win_hints;
-  GList *cb_list = nullptr; /* list of custom callbacks */
 
-  if ( cfg_win != nullptr )
-    gtk_window_present( GTK_WINDOW(cfg_win) );
-
-  cfg_win = gtk_window_new( GTK_WINDOW_TOPLEVEL );
-  gtk_window_set_type_hint( GTK_WINDOW(cfg_win), GDK_WINDOW_TYPE_HINT_DIALOG );
-  gtk_window_set_title( GTK_WINDOW(cfg_win) , _("Audacious OSD - configuration") );
-  gtk_container_set_border_width( GTK_CONTAINER(cfg_win), 10 );
-  g_signal_connect( G_OBJECT(cfg_win) , "destroy" ,
-                    G_CALLBACK(gtk_widget_destroyed) , &cfg_win );
-  cfg_win_hints.min_width = -1;
-  cfg_win_hints.min_height = 350;
-  gtk_window_set_geometry_hints( GTK_WINDOW(cfg_win) , GTK_WIDGET(cfg_win) ,
-                                 &cfg_win_hints , GDK_HINT_MIN_SIZE );
-
-  cfg_vbox = gtk_box_new( GTK_ORIENTATION_VERTICAL , FALSE );
-  gtk_container_add( GTK_CONTAINER(cfg_win) , cfg_vbox );
+  /* create a new configuration object */
+  aosd_cfg_t *cfg = aosd_cfg_new();
+  /* fill it with information from config file */
+  aosd_cfg_load( cfg );
 
   cfg_nb = gtk_notebook_new();
   gtk_notebook_set_tab_pos( GTK_NOTEBOOK(cfg_nb) , GTK_POS_TOP );
-  gtk_box_pack_start( GTK_BOX(cfg_vbox) , cfg_nb , TRUE , TRUE , 0 );
-
-  gtk_box_pack_start( GTK_BOX(cfg_vbox) , gtk_separator_new(GTK_ORIENTATION_HORIZONTAL) , FALSE , FALSE , 4 );
-
-  cfg_bbar_hbbox = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-  gtk_button_box_set_layout( GTK_BUTTON_BOX(cfg_bbar_hbbox) , GTK_BUTTONBOX_START );
-  gtk_box_pack_start( GTK_BOX(cfg_vbox) , cfg_bbar_hbbox , FALSE , FALSE , 0 );
-  cfg_bbar_bt_test = audgui_button_new (_("_Test"), "media-playback-start", nullptr, nullptr);
-  gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_test );
-  gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_test , FALSE );
-  cfg_bbar_bt_cancel = audgui_button_new (_("_Cancel"), "process-stop", nullptr, nullptr);
-  gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_cancel );
-  gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_cancel , TRUE );
-  cfg_bbar_bt_ok = audgui_button_new (_("_Set"), "system-run", nullptr, nullptr);
-  gtk_container_add( GTK_CONTAINER(cfg_bbar_hbbox) , cfg_bbar_bt_ok );
-  gtk_button_box_set_child_secondary( GTK_BUTTON_BOX(cfg_bbar_hbbox) , cfg_bbar_bt_ok , TRUE );
 
   /* add POSITION page */
-  cfg_position_widget = aosd_ui_configure_position( cfg , &cb_list );
+  cfg_position_widget = aosd_ui_configure_position( cfg , &aosd_cb_list );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_position_widget , gtk_label_new( _("Position") ) );
 
   /* add ANIMATION page */
-  cfg_animation_widget = aosd_ui_configure_animation( cfg , &cb_list );
+  cfg_animation_widget = aosd_ui_configure_animation( cfg , &aosd_cb_list );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_animation_widget , gtk_label_new( _("Animation") ) );
 
   /* add TEXT page */
-  cfg_text_widget = aosd_ui_configure_text( cfg , &cb_list );
+  cfg_text_widget = aosd_ui_configure_text( cfg , &aosd_cb_list );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_text_widget , gtk_label_new( _("Text") ) );
 
   /* add DECORATION page */
-  cfg_decoration_widget = aosd_ui_configure_decoration( cfg , &cb_list );
+  cfg_decoration_widget = aosd_ui_configure_decoration( cfg , &aosd_cb_list );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_decoration_widget , gtk_label_new( _("Decoration") ) );
 
   /* add TRIGGER page */
-  cfg_trigger_widget = aosd_ui_configure_trigger( cfg , &cb_list );
+  cfg_trigger_widget = aosd_ui_configure_trigger( cfg , &aosd_cb_list );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_trigger_widget , gtk_label_new( _("Trigger") ) );
 
   /* add MISC page */
-  cfg_trigger_widget = aosd_ui_configure_misc( cfg , &cb_list );
+  cfg_trigger_widget = aosd_ui_configure_misc( cfg , &aosd_cb_list );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_trigger_widget , gtk_label_new( _("Misc") ) );
 
-  g_object_set_data( G_OBJECT(cfg_win) , "cblist" , cb_list );
+  /* delete configuration object */
+  aosd_cfg_delete( cfg );
 
-  g_signal_connect_swapped( G_OBJECT(cfg_bbar_bt_test) , "clicked" ,
-                            G_CALLBACK(aosd_cb_configure_test) , cfg_win );
-  g_signal_connect_swapped( G_OBJECT(cfg_bbar_bt_cancel) , "clicked" ,
-                            G_CALLBACK(aosd_cb_configure_cancel) , cfg_win );
-  g_signal_connect_swapped( G_OBJECT(cfg_bbar_bt_ok) , "clicked" ,
-                            G_CALLBACK(aosd_cb_configure_ok) , cfg_win );
-
-  gtk_widget_show_all( cfg_win );
+  return cfg_nb;
 }
+
+
+static const PreferencesWidget aosd_widgets[] = {
+    WidgetCustomGTK (aosd_ui_configure),
+    WidgetSeparator ({true}),
+    WidgetButton (N_("Test"), {aosd_cb_configure_test, "media-playback-start"})
+};
+
+const PluginPreferences aosd_prefs = {
+    {aosd_widgets},
+    nullptr,  // init
+    aosd_cb_configure_ok,
+    aosd_cb_configure_cancel
+};

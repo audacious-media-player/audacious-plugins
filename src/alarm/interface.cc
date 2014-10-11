@@ -117,18 +117,10 @@ static void file_set_cb (GtkFileChooserButton *button, void * entry)
     g_free (uri);
 }
 
-static void config_dialog_response (GtkWidget *dialog, int response)
-{
-    if (response == GTK_RESPONSE_OK)
-        alarm_save ();
-
-    gtk_widget_destroy (dialog);
-}
-
-GtkWidget *create_config_dialog (void)
+GtkWidget *create_config_notebook (void)
 {
     /* General */
-    GtkWidget *config_dialog, *content_area, *notebook;
+    GtkWidget *notebook;
     GtkWidget *vbox, *hbox, *label, *frame, *grid;
     GtkAdjustment *adjustment;
 
@@ -176,13 +168,7 @@ GtkWidget *create_config_dialog (void)
 
 
     /* General */
-    config_dialog = gtk_dialog_new_with_buttons (_("Alarm Settings"), nullptr,
-     (GtkDialogFlags) 0, _("_OK"), GTK_RESPONSE_OK, _("_Cancel"),
-     GTK_RESPONSE_CANCEL, nullptr);
-    gtk_dialog_set_default_response (GTK_DIALOG (config_dialog), GTK_RESPONSE_OK);
-    content_area = gtk_dialog_get_content_area (GTK_DIALOG (config_dialog));
     notebook = gtk_notebook_new ();
-    gtk_box_pack_start (GTK_BOX (content_area), notebook, TRUE, TRUE, 0);
 
 
     /* Page 1 */
@@ -199,7 +185,7 @@ GtkWidget *create_config_dialog (void)
 
     adjustment = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
     alarm_h_spin = gtk_spin_button_new (adjustment, 1, 0);
-    g_object_set_data (G_OBJECT (config_dialog), "alarm_h_spin", alarm_h_spin);
+    g_object_set_data (G_OBJECT (notebook), "alarm_h_spin", alarm_h_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_h_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_h_spin), TRUE);
     gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_h_spin), TRUE);
@@ -210,7 +196,7 @@ GtkWidget *create_config_dialog (void)
 
     adjustment = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
     alarm_m_spin = gtk_spin_button_new (adjustment, 1, 0);
-    g_object_set_data (G_OBJECT (config_dialog), "alarm_m_spin", alarm_m_spin);
+    g_object_set_data (G_OBJECT (notebook), "alarm_m_spin", alarm_m_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (alarm_m_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (alarm_m_spin), TRUE);
     gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (alarm_m_spin), TRUE);
@@ -221,14 +207,14 @@ GtkWidget *create_config_dialog (void)
     gtk_grid_attach (GTK_GRID (grid), label, 4, 0, 1, 1);
 
     stop_checkb = gtk_check_button_new_with_label (_("Quiet after:"));
-    g_object_set_data (G_OBJECT (config_dialog), "stop_checkb", stop_checkb);
+    g_object_set_data (G_OBJECT (notebook), "stop_checkb", stop_checkb);
     gtk_widget_set_margin_right (stop_checkb, 10);
     gtk_widget_set_valign (stop_checkb, GTK_ALIGN_CENTER);
     gtk_grid_attach (GTK_GRID (grid), stop_checkb, 0, 1, 1, 1);
 
     adjustment = gtk_adjustment_new (0, 0, 100, 1, 10, 0);
     stop_h_spin = gtk_spin_button_new (adjustment, 1, 0);
-    g_object_set_data (G_OBJECT (config_dialog), "stop_h_spin", stop_h_spin);
+    g_object_set_data (G_OBJECT (notebook), "stop_h_spin", stop_h_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_h_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_h_spin), TRUE);
     gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (stop_h_spin), TRUE);
@@ -240,7 +226,7 @@ GtkWidget *create_config_dialog (void)
 
     adjustment = gtk_adjustment_new (0, 0, 59, 1, 10, 0);
     stop_m_spin = gtk_spin_button_new (adjustment, 1, 0);
-    g_object_set_data (G_OBJECT (config_dialog), "stop_m_spin", stop_m_spin);
+    g_object_set_data (G_OBJECT (notebook), "stop_m_spin", stop_m_spin);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (stop_m_spin), GTK_UPDATE_IF_VALID);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (stop_m_spin), TRUE);
     gtk_spin_button_set_wrap (GTK_SPIN_BUTTON (stop_m_spin), TRUE);
@@ -271,7 +257,7 @@ GtkWidget *create_config_dialog (void)
     for (i = 0; i < 7; i ++)
     {
         widget[i] = gtk_check_button_new_with_label (weekdays[i]);
-        g_object_set_data (G_OBJECT (config_dialog), day_cb[i], widget[i]);
+        g_object_set_data (G_OBJECT (notebook), day_cb[i], widget[i]);
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget[i]), TRUE);
         gtk_widget_set_valign (widget[i], GTK_ALIGN_CENTER);
         gtk_grid_attach (GTK_GRID (grid), widget[i], 0, i + 1, 1, 1);
@@ -281,7 +267,7 @@ GtkWidget *create_config_dialog (void)
     for (i = 0; i < 7; i ++)
     {
         checkbutton = gtk_check_button_new_with_label (_("Default"));
-        g_object_set_data (G_OBJECT (config_dialog), day_def[i], checkbutton);
+        g_object_set_data (G_OBJECT (notebook), day_def[i], checkbutton);
         gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton), TRUE);
         gtk_widget_set_valign (checkbutton, GTK_ALIGN_CENTER);
         g_signal_connect (checkbutton, "toggled", G_CALLBACK (cb_def[i]), nullptr);
@@ -292,7 +278,7 @@ GtkWidget *create_config_dialog (void)
     {
         adjustment = gtk_adjustment_new (6, 0, 23, 1, 10, 0);
         widget[i] = gtk_spin_button_new (adjustment, 1, 0);
-        g_object_set_data (G_OBJECT (config_dialog), day_h[j], widget[i]);
+        g_object_set_data (G_OBJECT (notebook), day_h[j], widget[i]);
         gtk_grid_attach (GTK_GRID (grid), widget[i], 2, j + 1, 1, 1);
     }
 
@@ -306,7 +292,7 @@ GtkWidget *create_config_dialog (void)
     {
         adjustment = gtk_adjustment_new (30, 0, 59, 1, 10, 0);
         widget[i] = gtk_spin_button_new (adjustment, 1, 0);
-        g_object_set_data (G_OBJECT (config_dialog), day_m[j], widget[i]);
+        g_object_set_data (G_OBJECT (notebook), day_m[j], widget[i]);
         gtk_grid_attach (GTK_GRID (grid), widget[i], 4, j + 1, 1, 1);
     }
 
@@ -324,7 +310,7 @@ GtkWidget *create_config_dialog (void)
     gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
     adjustment = gtk_adjustment_new (120, 0, 3600, 1, 10, 0);
     fading_spin = gtk_spin_button_new (adjustment, 1, 0);
-    g_object_set_data (G_OBJECT (config_dialog), "fading_spin", fading_spin);
+    g_object_set_data (G_OBJECT (notebook), "fading_spin", fading_spin);
     gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (fading_spin), TRUE);
     gtk_spin_button_set_update_policy (GTK_SPIN_BUTTON (fading_spin), GTK_UPDATE_IF_VALID);
     label = gtk_label_new (_("seconds"));
@@ -345,7 +331,7 @@ GtkWidget *create_config_dialog (void)
     gtk_container_add (GTK_CONTAINER (vbox2), label);
 
     quiet_vol_scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, gtk_adjustment_new (20, 0, 100, 1, 5, 0));
-    g_object_set_data (G_OBJECT (config_dialog), "quiet_vol_scale", quiet_vol_scale);
+    g_object_set_data (G_OBJECT (notebook), "quiet_vol_scale", quiet_vol_scale);
     gtk_scale_set_value_pos (GTK_SCALE (quiet_vol_scale), GTK_POS_RIGHT);
     gtk_scale_set_digits (GTK_SCALE (quiet_vol_scale), 0);
     label = gtk_label_new ("%");
@@ -363,7 +349,7 @@ GtkWidget *create_config_dialog (void)
     gtk_container_add (GTK_CONTAINER (vbox2), label);
 
     vol_scale = gtk_scale_new (GTK_ORIENTATION_HORIZONTAL, gtk_adjustment_new (80, 0, 100, 1, 5, 0));
-    g_object_set_data (G_OBJECT (config_dialog), "vol_scale", vol_scale);
+    g_object_set_data (G_OBJECT (notebook), "vol_scale", vol_scale);
     gtk_scale_set_value_pos (GTK_SCALE (vol_scale), GTK_POS_RIGHT);
     gtk_scale_set_digits (GTK_SCALE (vol_scale), 0);
     label = gtk_label_new ("%");
@@ -392,9 +378,9 @@ GtkWidget *create_config_dialog (void)
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
     cmd_entry = gtk_entry_new ();
-    g_object_set_data (G_OBJECT (config_dialog), "cmd_entry", cmd_entry);
+    g_object_set_data (G_OBJECT (notebook), "cmd_entry", cmd_entry);
     cmd_checkb = gtk_check_button_new_with_label (_("enable"));
-    g_object_set_data (G_OBJECT (config_dialog), "cmd_checkb", cmd_checkb);
+    g_object_set_data (G_OBJECT (notebook), "cmd_checkb", cmd_checkb);
     gtk_box_pack_start (GTK_BOX (hbox), cmd_entry, TRUE, TRUE, 0);
     gtk_container_add (GTK_CONTAINER (hbox), cmd_checkb);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
@@ -405,7 +391,7 @@ GtkWidget *create_config_dialog (void)
     gtk_container_set_border_width (GTK_CONTAINER (frame), 10);
     gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
     playlist_entry = gtk_entry_new ();
-    g_object_set_data (G_OBJECT (config_dialog), "playlist", playlist_entry);
+    g_object_set_data (G_OBJECT (notebook), "playlist", playlist_entry);
 
     file_chooser_button = gtk_file_chooser_button_new (_("Select a playlist"), GTK_FILE_CHOOSER_ACTION_OPEN);
     gtk_widget_set_valign (file_chooser_button, GTK_ALIGN_CENTER);
@@ -421,8 +407,8 @@ GtkWidget *create_config_dialog (void)
     gtk_container_set_border_width (GTK_CONTAINER (hbox), 8);
     reminder_text = gtk_entry_new ();
     reminder_checkb = gtk_check_button_new_with_label (_("enable"));
-    g_object_set_data (G_OBJECT (config_dialog), "reminder_text", reminder_text);
-    g_object_set_data (G_OBJECT (config_dialog), "reminder_cb", reminder_checkb);
+    g_object_set_data (G_OBJECT (notebook), "reminder_text", reminder_text);
+    g_object_set_data (G_OBJECT (notebook), "reminder_cb", reminder_checkb);
     gtk_box_pack_start (GTK_BOX (hbox), reminder_text, TRUE, TRUE, 0);
     gtk_container_add (GTK_CONTAINER (hbox), reminder_checkb);
     gtk_container_add (GTK_CONTAINER (frame), hbox);
@@ -452,9 +438,5 @@ GtkWidget *create_config_dialog (void)
     label = gtk_label_new (_("Help"));
     gtk_notebook_append_page (GTK_NOTEBOOK (notebook), frame, label);
 
-    g_signal_connect (config_dialog, "response", G_CALLBACK (config_dialog_response), nullptr);
-
-    gtk_widget_show_all (config_dialog);
-
-    return config_dialog;
+    return notebook;
 }

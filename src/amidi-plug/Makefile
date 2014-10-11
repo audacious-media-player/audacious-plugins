@@ -5,7 +5,6 @@ SRCS = amidi-plug.cc		\
        i_midi.cc			\
        i_configure.cc		\
        i_configure-fluidsynth.cc	\
-       i_utils.cc		\
        i_fileinfo.cc
 
 include ../../buildsys.mk

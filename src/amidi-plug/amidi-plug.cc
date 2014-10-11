@@ -31,7 +31,6 @@
 #include "i_configure.h"
 #include "i_fileinfo.h"
 #include "i_midi.h"
-#include "i_utils.h"
 
 enum
 {
@@ -450,9 +449,25 @@ static int amidiplug_skipto (midifile_t & midifile, int seektime)
     return tick;
 }
 
+static const char amidiplug_about[] =
+ N_("AMIDI-Plug\n"
+    "modular MIDI music player\n"
+    "http://www.develia.org/projects.php?p=amidiplug\n\n"
+    "written by Giacomo Lozito\n"
+    "<james@develia.org>\n\n"
+    "special thanks to...\n\n"
+    "Clemens Ladisch and Jaroslav Kysela\n"
+    "for their cool programs aplaymidi and amixer; those\n"
+    "were really useful, along with alsa-lib docs, in order\n"
+    "to learn more about the ALSA API\n\n"
+    "Alfredo Spadafina\n"
+    "for the nice midi keyboard logo\n\n"
+    "Tony Vroon\n"
+    "for the good help with alpha testing");
+
 #define AUD_PLUGIN_NAME        N_("AMIDI-Plug (MIDI Player)")
 #define AUD_PLUGIN_INIT        amidiplug_init
-#define AUD_PLUGIN_ABOUTWIN    i_about_gui
+#define AUD_PLUGIN_ABOUT       amidiplug_about
 #define AUD_PLUGIN_PREFS       & amidiplug_prefs
 #define AUD_INPUT_PLAY         amidiplug_play
 #define AUD_PLUGIN_CLEANUP     amidiplug_cleanup
