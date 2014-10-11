@@ -67,7 +67,7 @@ CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
 
 if test "x$USE_GTK" = "xyes" ; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files playlist-manager search-tool"
     GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
 fi
 
@@ -1162,7 +1162,6 @@ echo "  MPRIS 2 Server:                         $have_mpris2"
 echo "  Playlist Manager:                       $USE_GTK"
 echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
-echo "  Status Icon:                            $USE_GTK"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
