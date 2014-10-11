@@ -33,14 +33,14 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <libaudcore/i18n.h>
+#include <libaudcore/preferences.h>
+
+#include <libaudgui/libaudgui-gtk.h>
+
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms-compat.h>
-
-#include <libaudcore/plugin.h>
-#include <libaudcore/i18n.h>
-#include <libaudgui/libaudgui.h>
-#include <libaudgui/libaudgui-gtk.h>
 
 #include <X11/XKBlib.h>
 
@@ -58,12 +58,13 @@ typedef struct _KeyControls {
     struct _KeyControls *next, *prev, *first;
 } KeyControls;
 
+static KeyControls *first_controls;
+
 
 static void clear_keyboard (GtkWidget *widget, void * data);
 static void add_callback (GtkWidget *widget, void * data);
-static void cancel_callback (GtkWidget *widget, void * data);
-static void destroy_callback (GtkWidget *widget, void * data);
-static void ok_callback (GtkWidget *widget, void * data);
+static void destroy_callback ();
+static void ok_callback ();
 
 
 static const char * event_desc[EVENT_MAX] = {
@@ -358,10 +359,9 @@ KeyControls* add_event_controls(KeyControls* list,
     return controls;
 }
 
-void show_configure ()
+void *make_config_widget ()
 {
-    KeyControls *first_controls, *current_controls;
-    GtkWidget *window;
+    KeyControls *current_controls;
     GtkWidget *main_vbox, *hbox;
     GtkWidget *alignment;
     GtkWidget *frame;
@@ -379,14 +379,7 @@ void show_configure ()
 
     ungrab_keys();
 
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title (GTK_WINDOW (window), _("Global Hotkey Plugin Configuration"));
-    gtk_window_set_type_hint (GTK_WINDOW (window), GDK_WINDOW_TYPE_HINT_DIALOG);
-    gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
-    gtk_container_set_border_width (GTK_CONTAINER (window), 5);
-
     main_vbox = gtk_vbox_new (FALSE, 4);
-    gtk_container_add (GTK_CONTAINER (window), main_vbox);
 
     alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
     gtk_box_pack_start (GTK_BOX (main_vbox), alignment, FALSE, TRUE, 0);
@@ -477,25 +470,7 @@ void show_configure ()
     g_signal_connect (G_OBJECT (button), "clicked",
             G_CALLBACK (add_callback), first_controls);
 
-    button_box = gtk_hbutton_box_new ();
-    gtk_box_pack_start (GTK_BOX (hbox), button_box, TRUE, TRUE, 0);
-    gtk_button_box_set_layout (GTK_BUTTON_BOX (button_box), GTK_BUTTONBOX_END);
-    gtk_box_set_spacing (GTK_BOX (button_box), 4);
-
-    button = audgui_button_new (_("_Cancel"), "process-stop", nullptr, nullptr);
-    gtk_container_add (GTK_CONTAINER (button_box), button);
-    g_signal_connect (G_OBJECT (button), "clicked",
-            G_CALLBACK (cancel_callback), nullptr);
-
-    button = audgui_button_new (_("_Set"), "system-run", nullptr, nullptr);
-    gtk_container_add (GTK_CONTAINER (button_box), button);
-    g_signal_connect (G_OBJECT (button), "clicked",
-            G_CALLBACK (ok_callback), first_controls);
-
-    g_signal_connect (G_OBJECT (window), "destroy",
-        G_CALLBACK (destroy_callback), first_controls);
-
-    gtk_widget_show_all (GTK_WIDGET (window));
+    return main_vbox;
 }
 
 static void clear_keyboard (GtkWidget *widget, void * data)
@@ -587,9 +562,9 @@ void add_callback (GtkWidget *widget, void * data)
     gtk_widget_show_all (GTK_WIDGET (controls->grid));
 }
 
-void destroy_callback (GtkWidget *widget, void * data)
+void destroy_callback ()
 {
-    KeyControls* controls = (KeyControls*)data;
+    KeyControls* controls = first_controls;
 
     grab_keys ();
 
@@ -599,16 +574,13 @@ void destroy_callback (GtkWidget *widget, void * data)
         controls = controls->next;
         g_free(old);
     }
+
+    first_controls = nullptr;
 }
 
-void cancel_callback (GtkWidget *widget, void * data)
+void ok_callback ()
 {
-    gtk_widget_destroy (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
-}
-
-void ok_callback (GtkWidget *widget, void * data)
-{
-    KeyControls *controls = (KeyControls*)data;
+    KeyControls *controls = first_controls;
     PluginConfig* plugin_cfg = get_config();
     HotkeyConfiguration *hotkey;
 
@@ -644,6 +616,16 @@ void ok_callback (GtkWidget *widget, void * data)
     }
 
     save_config ( );
-
-    gtk_widget_destroy (gtk_widget_get_toplevel (GTK_WIDGET (widget)));
 }
+
+
+static const PreferencesWidget hotkey_widgets[] = {
+    WidgetCustomGTK (make_config_widget)
+};
+
+const PluginPreferences hotkey_prefs = {
+    {hotkey_widgets},
+    nullptr,  // init
+    ok_callback,
+    destroy_callback
+};
