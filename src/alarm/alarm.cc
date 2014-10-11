@@ -37,7 +37,11 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
+
+#include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "alarm.h"
@@ -152,7 +156,7 @@ static int fading;
 
 static gboolean cmd_on;
 
-static GtkWidget *config_dialog = nullptr;
+static GtkWidget *config_notebook = nullptr;
 static GtkWidget *alarm_dialog = nullptr;
 
 static GtkWidget *lookup_widget(GtkWidget *w, const char *name)
@@ -167,7 +171,7 @@ static GtkWidget *lookup_widget(GtkWidget *w, const char *name)
  * the callback function that is called when the save button is
  * pressed saves configuration to ~/.bmp/alarmconfig
  */
-void alarm_save(void)
+static void alarm_save(void)
 {
     int daynum = 0;  // used to identify day number
 
@@ -285,50 +289,44 @@ static void alarm_read_config(void)
 /*
  * displays the configuration window and opens the config file.
  */
-static void alarm_configure(void)
+void *alarm_make_config_widget(void)
 {
     int daynum = 0;  // used to loop days
     GtkWidget *w;
-
-    if (config_dialog)
-    {
-        gtk_window_present(GTK_WINDOW(config_dialog));
-        return;
-    }
 
     alarm_read_config();
 
     /*
      * Create the widgets
      */
-    config_dialog = create_config_dialog();
+    config_notebook = create_config_notebook();
 
-    w = lookup_widget(config_dialog, "alarm_h_spin");
+    w = lookup_widget(config_notebook, "alarm_h_spin");
     alarm_conf.alarm_h = GTK_SPIN_BUTTON(w);
     gtk_spin_button_set_value(alarm_conf.alarm_h, alarm_h);
 
-    w = lookup_widget(config_dialog, "alarm_m_spin");
+    w = lookup_widget(config_notebook, "alarm_m_spin");
     alarm_conf.alarm_m =  GTK_SPIN_BUTTON(w);
     gtk_spin_button_set_value(alarm_conf.alarm_m, alarm_m);
 
-    w = lookup_widget(config_dialog, "stop_h_spin");
+    w = lookup_widget(config_notebook, "stop_h_spin");
     alarm_conf.stop_h = GTK_SPIN_BUTTON(w);
     gtk_spin_button_set_value(alarm_conf.stop_h, stop_h);
 
-    w = lookup_widget(config_dialog, "stop_m_spin");
+    w = lookup_widget(config_notebook, "stop_m_spin");
     alarm_conf.stop_m = GTK_SPIN_BUTTON(w);
     gtk_spin_button_set_value(alarm_conf.stop_m, stop_m);
 
-    w = lookup_widget(config_dialog, "stop_checkb");
+    w = lookup_widget(config_notebook, "stop_checkb");
     alarm_conf.stop_on = GTK_TOGGLE_BUTTON(w);
     gtk_toggle_button_set_active(alarm_conf.stop_on, stop_on);
 
-    w = lookup_widget(config_dialog, "vol_scale");
+    w = lookup_widget(config_notebook, "vol_scale");
     alarm_conf.volume = GTK_RANGE(w);
     gtk_range_set_adjustment(alarm_conf.volume,
      GTK_ADJUSTMENT(gtk_adjustment_new(volume, 0, 100, 1, 5, 0)));
 
-    w = lookup_widget(config_dialog, "quiet_vol_scale");
+    w = lookup_widget(config_notebook, "quiet_vol_scale");
     alarm_conf.quietvol = GTK_RANGE(w);
     gtk_range_set_adjustment(alarm_conf.quietvol,
      GTK_ADJUSTMENT(gtk_adjustment_new(quietvol, 0, 100, 1, 5, 0)));
@@ -336,12 +334,12 @@ static void alarm_configure(void)
     /* days of week */
     for(; daynum < 7; daynum++)
     {
-        w = lookup_widget(config_dialog, day_cb[daynum]);
+        w = lookup_widget(config_notebook, day_cb[daynum]);
         alarm_conf.day[daynum].cb = GTK_CHECK_BUTTON(w);
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(alarm_conf.day[daynum].cb),
          !(alarm_conf.day[daynum].flags & ALARM_OFF));
 
-        w = lookup_widget(config_dialog, day_def[daynum]);
+        w = lookup_widget(config_notebook, day_def[daynum]);
         alarm_conf.day[daynum].cb_def = GTK_CHECK_BUTTON(w);
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(alarm_conf.day[daynum].cb_def),
          alarm_conf.day[daynum].flags & ALARM_DEFAULT);
@@ -360,11 +358,11 @@ static void alarm_configure(void)
 */
         if(alarm_conf.day[daynum].flags & ALARM_DEFAULT)
         {
-            w = lookup_widget(config_dialog, day_h[daynum]);
+            w = lookup_widget(config_notebook, day_h[daynum]);
             alarm_conf.day[daynum].spin_hr = GTK_SPIN_BUTTON(w);
             gtk_spin_button_set_value(alarm_conf.day[daynum].spin_hr, alarm_conf.default_hour);
 
-            w = lookup_widget(config_dialog, day_m[daynum]);
+            w = lookup_widget(config_notebook, day_m[daynum]);
             alarm_conf.day[daynum].spin_min = GTK_SPIN_BUTTON(w);
             gtk_spin_button_set_value(alarm_conf.day[daynum].spin_min, alarm_conf.default_min);
 
@@ -373,11 +371,11 @@ static void alarm_configure(void)
         }
         else
         {
-            w = lookup_widget(config_dialog, day_h[daynum]);
+            w = lookup_widget(config_notebook, day_h[daynum]);
             alarm_conf.day[daynum].spin_hr = GTK_SPIN_BUTTON(w);
             gtk_spin_button_set_value(alarm_conf.day[daynum].spin_hr, alarm_conf.day[daynum].hour);
 
-            w = lookup_widget(config_dialog, day_m[daynum]);
+            w = lookup_widget(config_notebook, day_m[daynum]);
             alarm_conf.day[daynum].spin_min = GTK_SPIN_BUTTON(w);
             gtk_spin_button_set_value(alarm_conf.day[daynum].spin_min, alarm_conf.day[daynum].min);
 
@@ -388,37 +386,36 @@ static void alarm_configure(void)
 
    /* END: days of week */
 
-    w = lookup_widget(config_dialog,"fading_spin");
+    w = lookup_widget(config_notebook,"fading_spin");
     alarm_conf.fading = GTK_SPIN_BUTTON(w);
     gtk_spin_button_set_value(alarm_conf.fading, fading);
 
     String cmdstr = aud_get_str ("alarm", "cmdstr");
-    w = lookup_widget(config_dialog, "cmd_entry");
+    w = lookup_widget(config_notebook, "cmd_entry");
     alarm_conf.cmdstr = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.cmdstr, cmdstr);
 
-    w = lookup_widget(config_dialog, "cmd_checkb");
+    w = lookup_widget(config_notebook, "cmd_checkb");
     alarm_conf.cmd_on = GTK_TOGGLE_BUTTON(w);
     gtk_toggle_button_set_active(alarm_conf.cmd_on, cmd_on);
 
     String playlist = aud_get_str ("alarm", "playlist");
-    w = lookup_widget(config_dialog, "playlist");
+    w = lookup_widget(config_notebook, "playlist");
     alarm_conf.playlist = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.playlist, playlist);
 
     String reminder_msg = aud_get_str ("alarm", "reminder_msg");
-    w = lookup_widget(config_dialog, "reminder_text");
+    w = lookup_widget(config_notebook, "reminder_text");
     alarm_conf.reminder = GTK_ENTRY(w);
     gtk_entry_set_text(alarm_conf.reminder, reminder_msg);
 
-    w = lookup_widget(config_dialog, "reminder_cb");
+    w = lookup_widget(config_notebook, "reminder_cb");
     alarm_conf.reminder_cb = GTK_TOGGLE_BUTTON(w);
     gtk_toggle_button_set_active(alarm_conf.reminder_cb, alarm_conf.reminder_on);
 
-    g_signal_connect (config_dialog, "destroy", (GCallback) gtk_widget_destroyed,
-     & config_dialog);
-
     AUDDBG("END alarm_configure\n");
+
+    return config_notebook;
 }
 
 /* functions for greying out the time for days */
@@ -427,7 +424,7 @@ void on_day_def_toggled(GtkToggleButton *togglebutton, void * user_data, int day
     GtkWidget *w;
 
     /* change the time shown too */
-    w = lookup_widget(config_dialog, day_h[daynum]);
+    w = lookup_widget(config_notebook, day_h[daynum]);
     if(w == nullptr)
         return;
 
@@ -442,7 +439,7 @@ void on_day_def_toggled(GtkToggleButton *togglebutton, void * user_data, int day
         gtk_widget_set_sensitive(w, TRUE);
     }
 
-    w = lookup_widget(config_dialog, day_m[daynum]);
+    w = lookup_widget(config_notebook, day_m[daynum]);
     if(gtk_toggle_button_get_active(togglebutton) == TRUE)
     {
         gtk_spin_button_set_value(GTK_SPIN_BUTTON(w), alarm_conf.default_min);
@@ -746,6 +743,8 @@ static gboolean alarm_timeout (void * unused)
     return TRUE;
 }
 
+static void alarm_configure (void);
+
 /*
  * initialization
  * opens the config file and reads the value, creates a new
@@ -790,11 +789,27 @@ static const char alarm_about[] =
  N_("A plugin that can be used to start playing at a certain time.\n\n"
     "Originally written by Adam Feakin and Daniel Stodden.");
 
+static const PreferencesWidget alarm_widgets[] = {
+    WidgetCustomGTK (alarm_make_config_widget)
+};
+
+static const PluginPreferences alarm_prefs = {
+    {alarm_widgets},
+    nullptr,  // init
+    alarm_save,
+    nullptr  // cleanup
+};
+
 #define AUD_PLUGIN_NAME        N_("Alarm")
 #define AUD_PLUGIN_ABOUT       alarm_about
 #define AUD_PLUGIN_INIT        alarm_init
-#define AUD_PLUGIN_CONFIGWIN   alarm_configure
+#define AUD_PLUGIN_PREFS       & alarm_prefs
 #define AUD_PLUGIN_CLEANUP     alarm_cleanup
 
 #define AUD_DECLARE_GENERAL
 #include <libaudcore/plugin-declare.h>
+
+static void alarm_configure (void)
+{
+    audgui_show_plugin_prefs (aud_plugin_by_header (& aud_plugin_instance));
+}
