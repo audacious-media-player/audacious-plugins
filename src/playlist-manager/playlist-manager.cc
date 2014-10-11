@@ -222,7 +222,7 @@ static void destroy_cb (GtkWidget * window)
 
 void * PlaylistManager::get_gtk_widget ()
 {
-    GtkWidget * playman_vbox = gtk_vbox_new (false, 6);
+    GtkWidget * playman_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
     /* ListView */
     GtkWidget * playman_pl_lv = audgui_list_new (& callbacks, nullptr, aud_playlist_count ());
@@ -244,7 +244,7 @@ void * PlaylistManager::get_gtk_widget ()
     gtk_box_pack_start ((GtkBox *) playman_vbox, playman_pl_lv_sw, true, true, 0);
 
     /* ButtonBox */
-    GtkWidget * playman_button_hbox = gtk_hbox_new (false, 6);
+    GtkWidget * playman_button_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     GtkWidget * new_button = audgui_button_new (_("_New"), "document-new", new_cb, nullptr);
     GtkWidget * delete_button = audgui_button_new (_("_Remove"), "edit-delete", delete_cb, nullptr);
     GtkWidget * rename_button = audgui_button_new (_("Ren_ame"), "insert-text", rename_cb, nullptr);

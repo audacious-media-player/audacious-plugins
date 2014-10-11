@@ -791,7 +791,6 @@ bool GtkUI::init ()
     pw_col_init ();
 
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_has_resize_grip ((GtkWindow *) window, FALSE);
 
     g_signal_connect(G_OBJECT(window), "delete-event", G_CALLBACK(window_delete), nullptr);
 

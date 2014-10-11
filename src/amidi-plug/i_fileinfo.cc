@@ -47,11 +47,11 @@ void i_fileinfo_grid_add_entry (char * field_text, char * value_text,
     GtkWidget * field, *value;
     field = gtk_label_new (field_text);
     gtk_label_set_attributes (GTK_LABEL (field), attrlist);
-    gtk_misc_set_alignment (GTK_MISC (field), 0, 0);
+    gtk_widget_set_halign (field, GTK_ALIGN_START);
     gtk_label_set_justify (GTK_LABEL (field), GTK_JUSTIFY_LEFT);
     gtk_grid_attach (GTK_GRID (grid), field, 0, line, 1, 1);
     value = gtk_label_new (value_text);
-    gtk_misc_set_alignment (GTK_MISC (value), 0, 0);
+    gtk_widget_set_halign (value, GTK_ALIGN_START);
     gtk_label_set_justify (GTK_LABEL (value), GTK_JUSTIFY_LEFT);
     gtk_grid_attach (GTK_GRID (grid), value, 1, line, 1, 1);
     return;
@@ -160,7 +160,6 @@ void i_fileinfo_gui (const char * filename_uri)
     title_icon_pixbuf = gdk_pixbuf_new_from_xpm_data ((const char **) amidiplug_xpm_midiicon);
     title_icon_image = gtk_image_new_from_pixbuf (title_icon_pixbuf);
     g_object_unref (title_icon_pixbuf);
-    gtk_misc_set_alignment (GTK_MISC (title_icon_image), 0, 0);
     gtk_box_pack_start (GTK_BOX (title_hbox), title_icon_image, FALSE, FALSE, 0);
 
     title_name_f_label = gtk_label_new (_("Name:"));

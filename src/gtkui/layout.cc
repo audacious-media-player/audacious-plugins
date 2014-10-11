@@ -91,8 +91,9 @@ static int item_by_name (Item * item, const char * name)
 GtkWidget * layout_new (void)
 {
     g_return_val_if_fail (! layout, nullptr);
-    layout = gtk_alignment_new (0, 0, 1, 1);
-    gtk_alignment_set_padding ((GtkAlignment *) layout, 3, 3, 3, 3);
+    layout = gtk_frame_new (NULL);
+    gtk_frame_set_shadow_type ((GtkFrame *) layout, GTK_SHADOW_NONE);
+    gtk_container_set_border_width ((GtkContainer *) layout, 3);
     NULL_ON_DESTROY (layout);
     return layout;
 }
@@ -192,7 +193,7 @@ static GtkWidget * vbox_new (GtkWidget * widget, const char * name)
     char * markup = g_markup_printf_escaped ("<small><b>%s</b></small>", name);
     gtk_label_set_markup ((GtkLabel *) label, markup);
     g_free (markup);
-    gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
+    gtk_widget_set_halign (label, GTK_ALIGN_START);
     gtk_container_add ((GtkContainer *) ebox, label);
 
     gtk_box_pack_start ((GtkBox *) vbox, widget, TRUE, TRUE, 0);
@@ -226,8 +227,10 @@ static GtkWidget * paned_new (gboolean vertical, gboolean after, int w, int h)
     GtkWidget * paned = gtk_paned_new (vertical ? GTK_ORIENTATION_VERTICAL :
      GTK_ORIENTATION_HORIZONTAL);
 
-    GtkWidget * mine = gtk_alignment_new (0, 0, 1, 1);
-    GtkWidget * next = gtk_alignment_new (0, 0, 1, 1);
+    GtkWidget * mine = gtk_frame_new (NULL);
+    GtkWidget * next = gtk_frame_new (NULL);
+    gtk_frame_set_shadow_type ((GtkFrame *) mine, GTK_SHADOW_NONE);
+    gtk_frame_set_shadow_type ((GtkFrame *) next, GTK_SHADOW_NONE);
     gtk_paned_pack1 ((GtkPaned *) paned, after ? next : mine, after, FALSE);
     gtk_paned_pack2 ((GtkPaned *) paned, after ? mine : next, ! after, FALSE);
 
@@ -338,7 +341,6 @@ static void item_add (Item * item)
 
         gtk_window_set_title ((GtkWindow *) item->window, item->name);
         gtk_container_set_border_width ((GtkContainer *) item->window, 2);
-        gtk_window_set_has_resize_grip ((GtkWindow *) item->window, FALSE);
 
         g_signal_connect_swapped (item->window, "delete-event", (GCallback)
          delete_cb, item->widget);

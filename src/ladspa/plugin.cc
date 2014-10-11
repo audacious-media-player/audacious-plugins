@@ -33,6 +33,10 @@
 
 #include "plugin.h"
 
+#if GTK_CHECK_VERSION (3, 12, 0)
+#define gtk_widget_set_margin_left gtk_widget_set_margin_start
+#endif
+
 const char * const LADSPAHost::defaults[] = {
  "plugin_count", "0",
  nullptr};
@@ -469,7 +473,7 @@ static void configure_selected ()
 
 static void * make_config_widget ()
 {
-    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    GtkWidget * vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
     gtk_widget_set_size_request (vbox, 480, 360);
 
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
@@ -483,8 +487,8 @@ static void * make_config_widget ()
      _("<small>Separate multiple paths with a colon.\n"
      "These paths are searched in addition to LADSPA_PATH.\n"
      "After adding new paths, press Enter to scan for new plugins.</small>"));
-    gtk_misc_set_padding ((GtkMisc *) label, 12, 6);
-    gtk_misc_set_alignment ((GtkMisc *) label, 0, 0);
+    gtk_widget_set_margin_left (label, 12);
+    gtk_widget_set_halign (label, GTK_ALIGN_START);
     gtk_box_pack_start ((GtkBox *) vbox, label, 0, 0, 0);
 
     GtkWidget * entry = gtk_entry_new ();

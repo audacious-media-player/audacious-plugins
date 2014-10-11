@@ -58,7 +58,6 @@ static void add_dock_plugin (PluginHandle * plugin, void * unused)
     {
         GtkWidget * window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
         gtk_window_set_title ((GtkWindow *) window, aud_plugin_get_name (plugin));
-        gtk_window_set_has_resize_grip ((GtkWindow *) window, FALSE);
         gtk_container_add ((GtkContainer *) window, widget);
 
         g_object_set_data ((GObject *) window, "skins-plugin-id", plugin);

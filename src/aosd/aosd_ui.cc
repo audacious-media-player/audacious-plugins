@@ -221,21 +221,21 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_grid_set_row_spacing( GTK_GRID(pos_offset_grid) , 4 );
   gtk_grid_set_column_spacing( GTK_GRID(pos_offset_grid) , 4 );
   pos_offset_x_label = gtk_label_new( _( "Relative X offset:" ) );
-  gtk_misc_set_alignment( GTK_MISC(pos_offset_x_label) , 0 , 0.5 );
+  gtk_widget_set_halign( pos_offset_x_label , GTK_ALIGN_START );
   gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_x_label , 0 , 0 , 1 , 1 );
   pos_offset_x_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_x_spinbt) , cfg->osd->position.offset_x );
   gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_x_spinbt , 1 , 0 , 1 , 1 );
   g_object_set_data( G_OBJECT(pos_offset_grid) , "offx" , pos_offset_x_spinbt );
   pos_offset_y_label = gtk_label_new( _( "Relative Y offset:" ) );
-  gtk_misc_set_alignment( GTK_MISC(pos_offset_y_label) , 0 , 0.5 );
+  gtk_widget_set_halign( pos_offset_y_label , GTK_ALIGN_START );
   gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_y_label , 0 , 1 , 1 , 1 );
   pos_offset_y_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_y_spinbt) , cfg->osd->position.offset_y );
   gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_offset_y_spinbt , 1 , 1 , 1 , 1 );
   g_object_set_data( G_OBJECT(pos_offset_grid) , "offy" , pos_offset_y_spinbt );
   pos_maxsize_width_label = gtk_label_new( _("Max OSD width:") );
-  gtk_misc_set_alignment( GTK_MISC(pos_maxsize_width_label) , 0 , 0.5 );
+  gtk_widget_set_halign( pos_maxsize_width_label , GTK_ALIGN_START );
   gtk_grid_attach( GTK_GRID(pos_offset_grid) , pos_maxsize_width_label , 0 , 2 , 1 , 1 );
   pos_maxsize_width_spinbt = gtk_spin_button_new_with_range( 0 , 99999 , 1 );
   g_object_set_data( G_OBJECT(pos_offset_grid) , "maxsize_width" , pos_maxsize_width_spinbt );
@@ -642,7 +642,7 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
     label = gtk_label_new( _(aosd_trigger_get_desc( trigger_code_array[i] )) );
     gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
     gtk_label_set_max_width_chars( GTK_LABEL(label), 40 );
-    gtk_misc_set_alignment( GTK_MISC(label) , 0.0 , 0.0 );
+    gtk_widget_set_halign( label , GTK_ALIGN_START );
     checkbt = gtk_check_button_new_with_label( _("Enable trigger") );
     if ( aosd_cb_configure_trigger_findinarr( cfg->osd->trigger.active , trigger_code_array[i] ) )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , TRUE );
@@ -772,9 +772,8 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_box_pack_start( GTK_BOX(mis_transp_vbox) , mis_transp_status_frame , TRUE , TRUE , 0 );
 
   mis_transp_status_img = gtk_image_new();
-  gtk_misc_set_alignment( GTK_MISC(mis_transp_status_img) , 0.5 , 0 );
   mis_transp_status_label = gtk_label_new( "" );
-  gtk_misc_set_alignment( GTK_MISC(mis_transp_status_label) , 0 , 0.5 );
+  gtk_widget_set_halign( mis_transp_status_label , GTK_ALIGN_START );
   gtk_label_set_line_wrap( GTK_LABEL(mis_transp_status_label) , TRUE );
   gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_img , FALSE , FALSE , 0 );
   gtk_box_pack_start( GTK_BOX(mis_transp_status_hbox) , mis_transp_status_label , TRUE , TRUE , 0 );

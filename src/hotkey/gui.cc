@@ -365,7 +365,6 @@ void show_configure ()
     KeyControls *first_controls, *current_controls;
     GtkWidget *window;
     GtkWidget *main_vbox, *hbox;
-    GtkWidget *alignment;
     GtkWidget *frame;
     GtkWidget *label;
     GtkWidget *image;
@@ -390,16 +389,13 @@ void show_configure ()
     main_vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 4);
     gtk_container_add (GTK_CONTAINER (window), main_vbox);
 
-    alignment = gtk_alignment_new (0.5, 0.5, 1, 1);
-    gtk_box_pack_start (GTK_BOX (main_vbox), alignment, FALSE, TRUE, 0);
-    gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 4, 0, 0, 0);
     hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
-    gtk_container_add (GTK_CONTAINER (alignment), hbox);
+    gtk_box_pack_start (GTK_BOX (main_vbox), hbox, FALSE, TRUE, 0);
     image = gtk_image_new_from_icon_name ("dialog-information", GTK_ICON_SIZE_DIALOG);
     gtk_box_pack_start (GTK_BOX (hbox), image, FALSE, TRUE, 0);
     label = gtk_label_new (_("Press a key combination inside a text field.\nYou can also bind mouse buttons."));
     gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 0);
-    gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+    gtk_widget_set_halign (label, GTK_ALIGN_START);
 
     label = gtk_label_new (nullptr);
     gtk_label_set_markup (GTK_LABEL (label), _("Hotkeys:"));
@@ -407,24 +403,20 @@ void show_configure ()
     gtk_frame_set_label_widget (GTK_FRAME (frame), label);
     gtk_box_pack_start (GTK_BOX (main_vbox), frame, TRUE, TRUE, 0);
     gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_ETCHED_IN);
-    alignment = gtk_alignment_new (0, 0, 1, 0);
-    gtk_container_add (GTK_CONTAINER (frame), alignment);
-    gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 3, 3, 3, 3);
 
     grid = gtk_grid_new ();
+    gtk_container_set_border_width (GTK_CONTAINER (grid), 3);
     gtk_grid_set_column_spacing (GTK_GRID (grid), 2);
-    gtk_container_add (GTK_CONTAINER (alignment), grid);
+    gtk_container_add (GTK_CONTAINER (frame), grid);
 
     label = gtk_label_new (nullptr);
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
             _("<b>Action:</b>"));
     gtk_grid_attach (GTK_GRID (grid), label, 0, 0, 1, 1);
 
     label = gtk_label_new (nullptr);
     gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.5);
     gtk_label_set_markup (GTK_LABEL (label),
             _("<b>Key Binding:</b>"));
     gtk_grid_attach (GTK_GRID (grid), label, 1, 0, 1, 1);

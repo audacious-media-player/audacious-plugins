@@ -218,7 +218,6 @@ void * create_soundfont_list (void)
 
         soundfont_file_hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);
         soundfont_file_lv = gtk_tree_view_new_with_model (GTK_TREE_MODEL (soundfont_file_store));
-        gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (soundfont_file_lv), TRUE);
         g_object_unref (soundfont_file_store);
         soundfont_file_lv_text_rndr = gtk_cell_renderer_text_new();
         soundfont_file_lv_fname_col = gtk_tree_view_column_new_with_attributes (

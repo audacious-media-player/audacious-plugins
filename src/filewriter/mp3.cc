@@ -746,7 +746,7 @@ static void mp3_configure(void)
         g_signal_connect (combo, "changed", (GCallback) samplerate_changed, nullptr);
 
         samplerate_label = gtk_label_new(_("(Hz)"));
-        gtk_misc_set_alignment(GTK_MISC(samplerate_label), 0, 0.5);
+        gtk_widget_set_halign(samplerate_label, GTK_ALIGN_START);
         gtk_box_pack_start(GTK_BOX(samplerate_hbox), samplerate_label,
                            FALSE, FALSE, 0);
 
@@ -960,7 +960,7 @@ static void mp3_configure(void)
                           vbr_options_hbox1);
 
         vbr_min_label = gtk_label_new(_("Minimum bitrate (kbps):"));
-        gtk_misc_set_alignment(GTK_MISC(vbr_min_label), 0, 0.5);
+        gtk_widget_set_halign(vbr_min_label, GTK_ALIGN_START);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox1), vbr_min_label, TRUE,
                            TRUE, 0);
 
@@ -986,7 +986,7 @@ static void mp3_configure(void)
                           vbr_options_hbox2);
 
         vbr_max_label = gtk_label_new(_("Maximum bitrate (kbps):"));
-        gtk_misc_set_alignment(GTK_MISC(vbr_max_label), 0, 0.5);
+        gtk_widget_set_halign(vbr_max_label, GTK_ALIGN_START);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox2), vbr_max_label, TRUE,
                            TRUE, 0);
 
@@ -1030,7 +1030,7 @@ static void mp3_configure(void)
         gtk_container_add(GTK_CONTAINER(abr_frame), abr_hbox);
 
         abr_label = gtk_label_new(_("Average bitrate (kbps):"));
-        gtk_misc_set_alignment(GTK_MISC(abr_label), 0, 0.5);
+        gtk_widget_set_halign(abr_label, GTK_ALIGN_START);
         gtk_box_pack_start(GTK_BOX(abr_hbox), abr_label, TRUE, TRUE, 0);
 
         combo = gtk_combo_box_text_new ();
@@ -1057,7 +1057,7 @@ static void mp3_configure(void)
                           vbr_options_hbox3);
 
         vbr_quality_label = gtk_label_new(_("VBR quality level:"));
-        gtk_misc_set_alignment(GTK_MISC(vbr_quality_label), 0, 0.5);
+        gtk_widget_set_halign(vbr_quality_label, GTK_ALIGN_START);
         gtk_box_pack_start(GTK_BOX(vbr_options_hbox3), vbr_quality_label,
                            TRUE, TRUE, 0);
 

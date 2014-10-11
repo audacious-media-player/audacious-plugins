@@ -221,7 +221,7 @@ static void vorbis_configure(void)
         gtk_container_add(GTK_CONTAINER(quality_vbox), quality_hbox1);
 
         quality_label = gtk_label_new(_("Quality level (0 - 10):"));
-        gtk_misc_set_alignment(GTK_MISC(quality_label), 0, 0.5);
+        gtk_widget_set_halign(quality_label, GTK_ALIGN_START);
         gtk_box_pack_start(GTK_BOX(quality_hbox1), quality_label, TRUE, TRUE, 0);
 
         quality_adj = (GtkAdjustment *) gtk_adjustment_new (5, 0, 10, 0.1, 1, 0);
