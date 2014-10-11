@@ -352,12 +352,26 @@ static gboolean ui_slider_change_value_cb (GtkRange * range,
 
 static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, void * user_data)
 {
+    gboolean primary_warps = FALSE;
+    g_object_get (gtk_widget_get_settings (widget),
+     "gtk-primary-button-warps-slider", & primary_warps, nullptr);
+
+    if (event->button == 1 && ! primary_warps)
+        event->button = 2;
+
     slider_is_moving = TRUE;
     return FALSE;
 }
 
 static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, void * user_data)
 {
+    gboolean primary_warps = FALSE;
+    g_object_get (gtk_widget_get_settings (widget),
+     "gtk-primary-button-warps-slider", & primary_warps, nullptr);
+
+    if (event->button == 1 && ! primary_warps)
+        event->button = 2;
+
     if (slider_seek_time != -1)
         do_seek (slider_seek_time);
 
