@@ -33,42 +33,60 @@
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/ringbuf.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/preferences.h>
 
-#include "coreaudio.h"
+#include <CoreAudio/CoreAudio.h>
+#include <AudioUnit/AudioUnit.h>
 
-namespace coreaudio {
+class CoreAudioPlugin : public OutputPlugin {
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("CoreAudio output"),
+        PACKAGE,
+        about,
+        & prefs,
+    };
+
+    constexpr CoreAudioPlugin () : OutputPlugin (info, 5) {}
+
+    bool init ();
+    void cleanup ();
+
+    StereoVolume get_volume ();
+    void set_volume (StereoVolume vol);
+
+    bool open_audio (int format, int rate_, int chan_);
+    void close_audio ();
+
+    int buffer_free ();
+    void period_wait ();
+
+    void write_audio (const void * data, int len);
+    void drain ();
+
+    int output_time ();
+    void pause (bool paused);
+    void flush (int time);
+
+protected:
+    static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
+    void check_started ();
+};
+
+EXPORT CoreAudioPlugin aud_plugin_instance;
 
 #define VOLUME_RANGE 40 /* decibels */
 
 #define error(...) do { \
     aud_ui_show_error (str_printf ("CoreAudio error: " __VA_ARGS__)); \
 } while (0)
-
-static const char * const sdl_defaults[] = {
- "vol_left", "100",
- "vol_right", "100",
- nullptr};
-
-static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-
-static volatile int vol_left, vol_right;
-
-static int chan, rate;
-
-static unsigned char * buffer;
-static int buffer_size, buffer_data_start, buffer_data_len, buffer_bytes_per_channel;
-
-static int64_t frames_written;
-static char prebuffer_flag, paused_flag;
-
-static int block_delay;
-static struct timeval block_time;
-
-static AudioComponent output_comp;
-static AudioComponentInstance output_instance;
-
-static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
 
 struct AudioUnitFormatDescriptionMap {
     int aud_format;
@@ -92,9 +110,54 @@ static struct AudioUnitFormatDescriptionMap AUFormatMap[] = {
     {FMT_FLOAT,  32, sizeof (float),   kAudioFormatFlagIsFloat},
 };
 
-bool init (void)
+static RingBuf <unsigned char> buffer;
+static int vol_left = 0, vol_right = 0;
+static int chan = 0;
+static int rate = 0;
+static int buffer_bytes_per_channel = 0;
+
+static int64_t frames_written = 0;
+static bool prebuffer_flag = false;
+static bool paused_flag = false;
+
+static int block_delay = 0;
+static struct timeval block_time = {0, 0};
+
+static AudioComponent output_comp = nullptr;
+static AudioComponentInstance output_instance = nullptr;
+
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+
+static bool is_exclusive = false;
+
+const char CoreAudioPlugin::about[] =
+    N_("CoreAudio Output Plugin for Audacious\n"
+       "Copyright 2014 William Pitcock\n\n"
+       "Based on SDL Output Plugin for Audacious\n"
+       "Copyright 2010 John Lindgren");
+
+const char * const CoreAudioPlugin::defaults[] = {
+    "vol_left", "100",
+    "vol_right", "100",
+    "exclusive_mode", "FALSE",
+    nullptr};
+
+const PreferencesWidget CoreAudioPlugin::widgets[] = {
+    WidgetCheck (N_("Use exclusive mode"),
+        WidgetBool ("coreaudio", "exclusive_mode")),
+};
+
+const PluginPreferences CoreAudioPlugin::prefs = {
+    {widgets},
+    nullptr,
+    nullptr,
+    nullptr
+};
+
+bool CoreAudioPlugin::init (void)
 {
-    aud_config_set_defaults ("coreaudio", sdl_defaults);
+    aud_config_set_defaults ("coreaudio", defaults);
 
     vol_left = aud_get_int ("coreaudio", "vol_left");
     vol_right = aud_get_int ("coreaudio", "vol_right");
@@ -122,7 +185,7 @@ bool init (void)
 
     AURenderCallbackStruct input;
     input.inputProc = callback;
-    input.inputProcRefCon = NULL;
+    input.inputProcRefCon = this;
 
     if (AudioUnitSetProperty (output_instance, kAudioUnitProperty_SetRenderCallback, kAudioUnitScope_Input, 0, & input, sizeof input))
     {
@@ -133,35 +196,34 @@ bool init (void)
     return 1;
 }
 
-void cleanup (void)
+void CoreAudioPlugin::cleanup (void)
 {
 }
 
-void get_volume (int * left, int * right)
+StereoVolume CoreAudioPlugin::get_volume ()
 {
-    * left = vol_left;
-    * right = vol_right;
+    return {vol_left, vol_right};
 }
 
-void set_volume (int left, int right)
+void CoreAudioPlugin::set_volume (StereoVolume vol)
 {
     int vol_max;
     float factor;
 
-    vol_left = left;
-    vol_right = right;
+    vol_left = vol.left;
+    vol_right = vol.right;
 
     vol_max = aud::max (vol_left, vol_right);
 
-    aud_set_int ("coreaudio", "vol_left", left);
-    aud_set_int ("coreaudio", "vol_right", right);
+    aud_set_int ("coreaudio", "vol_left", vol_left);
+    aud_set_int ("coreaudio", "vol_right", vol_right);
 
     factor = (vol_max == 0) ? 0.0 : powf (10, (float) VOLUME_RANGE * (vol_max - 100) / 100 / 20);
 
     AudioUnitSetParameter (output_instance, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, factor, 0);
 }
 
-static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData)
+OSStatus CoreAudioPlugin::callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData)
 {
     pthread_mutex_lock (& mutex);
 
@@ -169,23 +231,9 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
     unsigned char * buf = (unsigned char *) ioData->mBuffers[0].mData;
     ioData->mBuffers[0].mNumberChannels = chan;
 
-    int copy = aud::min (len, buffer_data_len);
-    int part = buffer_size - buffer_data_start;
+    int copy = aud::min (len, buffer.len ());
 
-    if (copy <= part)
-    {
-        memcpy (buf, buffer + buffer_data_start, copy);
-        buffer_data_start += copy;
-    }
-    else
-    {
-        memcpy (buf, buffer + buffer_data_start, part);
-        memcpy (buf + part, buffer, copy - part);
-        buffer_data_start = copy - part;
-    }
-
-    buffer_data_len -= copy;
-
+    buffer.move_out (buf, copy);
     if (copy < len)
         memset (buf + copy, 0, len - copy);
 
@@ -201,7 +249,7 @@ static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFl
     return 0;
 }
 
-bool open_audio (int format, int rate_, int chan_)
+bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_)
 {
     struct AudioUnitFormatDescriptionMap * m = nullptr;
 
@@ -226,10 +274,9 @@ bool open_audio (int format, int rate_, int chan_)
     rate = rate_;
 
     buffer_bytes_per_channel = m->mBytesPerChannel;
-    buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
-    buffer = new unsigned char[buffer_size];
-    buffer_data_start = 0;
-    buffer_data_len = 0;
+
+    int buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
+    buffer.alloc (buffer_size);
 
     frames_written = 0;
     prebuffer_flag = 1;
@@ -260,37 +307,76 @@ bool open_audio (int format, int rate_, int chan_)
     if (AudioUnitSetProperty (output_instance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, 0, &streamFormat, sizeof(streamFormat)))
     {
         error ("Failed to set audio unit input property.\n");
+        buffer.destroy ();
         return 0;
+    }
+
+    bool exclusive = aud_get_bool ("coreaudio", "exclusive_mode");
+    if (exclusive)
+    {
+        UInt32 hog_mode = 1;
+
+        AudioObjectPropertyAddress prop;
+
+        prop.mSelector = kAudioDevicePropertyHogMode;
+        prop.mScope    = kAudioObjectPropertyScopeGlobal;
+        prop.mElement  = kAudioObjectPropertyElementMaster;
+
+        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, NULL, sizeof hog_mode, & hog_mode);
+        if (err != noErr)
+        {
+            AUDWARN ("Failed to open device for exclusive mode, continuing anyway... [%d]\n", err);
+            is_exclusive = false;
+        }
+        else
+            is_exclusive = true;
     }
 
     if (AudioOutputUnitStart (output_instance))
     {
         error ("Unable to start audio unit.\n");
+        buffer.destroy ();
         return 0;
     }
 
     return 1;
 }
 
-void close_audio (void)
+void CoreAudioPlugin::close_audio ()
 {
     AUDDBG ("Closing audio.\n");
 
     AudioOutputUnitStop (output_instance);
 
-    delete[] buffer;
-    buffer = nullptr;
+    if (is_exclusive)
+    {
+        UInt32 hog_mode = 0;
+
+        AudioObjectPropertyAddress prop;
+
+        prop.mSelector = kAudioDevicePropertyHogMode;
+        prop.mScope    = kAudioObjectPropertyScopeGlobal;
+        prop.mElement  = kAudioObjectPropertyElementMaster;
+
+        OSStatus err = AudioObjectSetPropertyData (kAudioObjectSystemObject, & prop, 0, NULL, sizeof hog_mode, & hog_mode);
+        if (err != noErr)
+            AUDWARN ("Failed to release device from exclusive mode, continuing anyway...");
+
+        is_exclusive = false;
+    }
+
+    buffer.destroy ();
 }
 
-int buffer_free (void)
+int CoreAudioPlugin::buffer_free ()
 {
     pthread_mutex_lock (& mutex);
-    int space = buffer_size - buffer_data_len;
+    int space = buffer.space ();
     pthread_mutex_unlock (& mutex);
     return space;
 }
 
-static void check_started (void)
+void CoreAudioPlugin::check_started ()
 {
     if (! prebuffer_flag)
         return;
@@ -300,11 +386,11 @@ static void check_started (void)
     block_delay = 0;
 }
 
-void period_wait (void)
+void CoreAudioPlugin::period_wait ()
 {
     pthread_mutex_lock (& mutex);
 
-    while (buffer_data_len == buffer_size)
+    while (! buffer.space ())
     {
         if (! paused_flag)
             check_started ();
@@ -315,47 +401,37 @@ void period_wait (void)
     pthread_mutex_unlock (& mutex);
 }
 
-void write_audio (void * data, int len)
+void CoreAudioPlugin::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
-    assert (len <= buffer_size - buffer_data_len);
+    assert (len <= buffer.space ());
 
-    int start = (buffer_data_start + buffer_data_len) % buffer_size;
+    buffer.copy_in ((const unsigned char *) data, len);
 
-    if (len <= buffer_size - start)
-        memcpy (buffer + start, data, len);
-    else
-    {
-        int part = buffer_size - start;
-        memcpy (buffer + start, data, part);
-        memcpy (buffer, (char *) data + part, len - part);
-    }
-
-    buffer_data_len += len;
     frames_written += len / (buffer_bytes_per_channel * chan);
 
     pthread_mutex_unlock (& mutex);
 }
 
-void drain (void)
+void CoreAudioPlugin::drain ()
 {
     AUDDBG ("Draining.\n");
     pthread_mutex_lock (& mutex);
 
     check_started ();
 
-    while (buffer_data_len)
+    while (buffer.len ())
         pthread_cond_wait (& cond, & mutex);
 
     pthread_mutex_unlock (& mutex);
 }
 
-int output_time (void)
+int CoreAudioPlugin::output_time ()
 {
     pthread_mutex_lock (& mutex);
 
-    int out = (int64_t) (frames_written - buffer_data_len / (buffer_bytes_per_channel * chan))
+    int out = (int64_t) (frames_written - buffer.len () / (buffer_bytes_per_channel * chan))
      * 1000 / rate;
 
     /* Estimate the additional delay of the last block written. */
@@ -375,7 +451,7 @@ int output_time (void)
     return out;
 }
 
-void pause (bool pause)
+void CoreAudioPlugin::pause (bool pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& mutex);
@@ -397,19 +473,16 @@ void pause (bool pause)
     pthread_mutex_unlock (& mutex);
 }
 
-void flush (int time)
+void CoreAudioPlugin::flush (int time)
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& mutex);
 
-    buffer_data_start = 0;
-    buffer_data_len = 0;
+    buffer.discard ();
 
-    frames_written = (int64_t) time * rate / 1000;
+    frames_written = aud::rescale<int64_t> (time, 1000, rate);
     prebuffer_flag = 1;
 
     pthread_cond_broadcast (& cond); /* wake up period wait */
     pthread_mutex_unlock (& mutex);
-}
-
 }

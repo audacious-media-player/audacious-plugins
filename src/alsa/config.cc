@@ -20,10 +20,15 @@
 #include <alsa/asoundlib.h>
 
 #include <libaudcore/hook.h>
-#include <libaudcore/i18n.h>
-#include <libaudcore/runtime.h>
+#include <libaudcore/preferences.h>
 
 #include "alsa.h"
+
+const char ALSAPlugin::about[] =
+ N_("ALSA Output Plugin for Audacious\n"
+    "Copyright 2009-2012 John Lindgren\n\n"
+    "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+    "code served as a reference when the ALSA manual was not enough.");
 
 struct NameDescPair {
     String name, desc;
@@ -232,14 +237,15 @@ static void guess_element ()
     ERROR_NOISY ("No suitable mixer element found.\n");
 }
 
-static const char * const alsa_defaults[] = {
- "pcm", "default",
- "mixer", "default",
- nullptr};
+const char * const ALSAPlugin::defaults[] = {
+    "pcm", "default",
+    "mixer", "default",
+    nullptr
+};
 
-void alsa_init_config ()
+void ALSAPlugin::init_config ()
 {
-    aud_config_set_defaults ("alsa", alsa_defaults);
+    aud_config_set_defaults ("alsa", defaults);
 
     String element = aud_get_str ("alsa", "mixer-element");
 
@@ -253,12 +259,12 @@ void alsa_init_config ()
     }
 }
 
-static void pcm_changed ()
+void ALSAPlugin::pcm_changed ()
 {
     aud_output_reset (OutputReset::ReopenStream);
 }
 
-static void mixer_changed ()
+void ALSAPlugin::mixer_changed ()
 {
     element_list.clear ();
     element_combo_items.clear ();
@@ -268,14 +274,14 @@ static void mixer_changed ()
 
     hook_call ("alsa mixer changed", nullptr);
 
-    alsa_close_mixer ();
-    alsa_open_mixer ();
+    close_mixer ();
+    open_mixer ();
 }
 
-static void element_changed ()
+void ALSAPlugin::element_changed ()
 {
-    alsa_close_mixer ();
-    alsa_open_mixer ();
+    close_mixer ();
+    open_mixer ();
 }
 
 static ArrayRef<const ComboItem> pcm_combo_fill ()
@@ -285,7 +291,7 @@ static ArrayRef<const ComboItem> mixer_combo_fill ()
 static ArrayRef<const ComboItem> element_combo_fill ()
     { return {element_combo_items.begin (), element_combo_items.len ()}; }
 
-static const PreferencesWidget alsa_widgets[] = {
+const PreferencesWidget ALSAPlugin::widgets[] = {
     WidgetCombo (N_("PCM device:"),
         WidgetString ("alsa", "pcm", pcm_changed),
         {nullptr, pcm_combo_fill}),
@@ -315,8 +321,8 @@ static void alsa_prefs_cleanup ()
     element_combo_items.clear ();
 }
 
-const PluginPreferences alsa_prefs = {
-    {alsa_widgets},
+const PluginPreferences ALSAPlugin::prefs = {
+    {widgets},
     alsa_prefs_init,
     nullptr,  // apply
     alsa_prefs_cleanup

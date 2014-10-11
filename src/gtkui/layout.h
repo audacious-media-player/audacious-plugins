@@ -30,5 +30,6 @@ GtkWidget * layout_new (void);
 void layout_add_center (GtkWidget * widget);
 void layout_add (PluginHandle * plugin, GtkWidget * widget);
 void layout_remove (PluginHandle * plugin);
+void layout_focus (PluginHandle * plugin);
 
 #endif

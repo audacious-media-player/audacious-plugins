@@ -180,7 +180,7 @@ void Playlist::positionUpdate ()
 void Playlist::playCurrentIndex ()
 {
     aud_playlist_set_position (playlist (), proxyModel->mapToSource (currentIndex ()).row ());
-    aud_drct_play_playlist (playlist ());
+    aud_playlist_play (playlist ());
 }
 
 void Playlist::deleteCurrentSelection ()

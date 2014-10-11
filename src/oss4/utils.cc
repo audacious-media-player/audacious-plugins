@@ -39,10 +39,14 @@ const char *oss_format_to_text(int format)
         {AFMT_S16_BE, "AFMT_S16_BE"},
         {AFMT_U16_LE, "AFMT_U16_LE"},
         {AFMT_U16_BE, "AFMT_U16_BE"},
+#ifdef AFMT_S24_LE
         {AFMT_S24_LE, "AFMT_S24_LE"},
         {AFMT_S24_BE, "AFMT_S24_BE"},
+#endif
+#ifdef AFMT_S32_LE
         {AFMT_S32_LE, "AFMT_S32_LE"},
         {AFMT_S32_BE, "AFMT_S32_BE"},
+#endif
     };
 
     for (auto & conv : table)
@@ -72,10 +76,14 @@ int oss_convert_aud_format(int aud_format)
         {FMT_S16_BE, AFMT_S16_BE},
         {FMT_U16_LE, AFMT_U16_LE},
         {FMT_U16_BE, AFMT_U16_BE},
+#ifdef AFMT_S24_LE
         {FMT_S24_LE, AFMT_S24_LE},
         {FMT_S24_BE, AFMT_S24_BE},
+#endif
+#ifdef AFMT_S32_LE
         {FMT_S32_LE, AFMT_S32_LE},
         {FMT_S32_BE, AFMT_S32_BE},
+#endif
     };
 
     int count;
@@ -91,56 +99,45 @@ int oss_convert_aud_format(int aud_format)
     return -1;
 }
 
-int oss_format_to_bits(int format)
+int oss_format_to_bytes(int format)
 {
-    char bits;
+    int bytes = 1;
 
     switch (format)
     {
         case AFMT_U8:
         case AFMT_S8:
-            bits = 8;
+            bytes = 1;
             break;
         case AFMT_S16_LE:
         case AFMT_S16_BE:
         case AFMT_U16_LE:
         case AFMT_U16_BE:
-            bits = 16;
+            bytes = 2;
             break;
+#ifdef AFMT_S24_LE
         case AFMT_S24_LE:
         case AFMT_S24_BE:
-        case AFMT_S32_LE:
-        case AFMT_S32_BE:
-            bits = 32;
-            break;
-#ifdef AFMT_FLOAT
-        case AFMT_FLOAT:
-            bits = sizeof(float) * 8;
+            bytes = 4;
             break;
 #endif
-        default:
-            bits = 8;
+#ifdef AFMT_S32_LE
+        case AFMT_S32_LE:
+        case AFMT_S32_BE:
+            bytes = 4;
+            break;
+#endif
+#ifdef AFMT_FLOAT
+        case AFMT_FLOAT:
+            bytes = sizeof(float);
+            break;
+#endif
     }
 
-    return bits;
+    return bytes;
 }
 
-int oss_frames_to_bytes(int frames)
-{
-    return frames * oss_data->bits_per_sample * oss_data->channels / 8;
-}
-
-int oss_bytes_to_frames(int bytes)
-{
-    return bytes * 8 / oss_data->channels / oss_data->bits_per_sample;
-}
-
-int oss_calc_bitrate(void)
-{
-    return (oss_data->rate * oss_data->channels * oss_data->bits_per_sample) >> 3;
-}
-
-const char *oss_describe_error(void)
+const char *oss_describe_error()
 {
     const struct
     {
@@ -171,6 +168,7 @@ const char *oss_describe_error(void)
     return strerror(errno);
 }
 
+#ifdef SNDCTL_SYSINFO
 int oss_probe_for_adev(oss_sysinfo *sysinfo)
 {
     int num;
@@ -182,15 +180,20 @@ int oss_probe_for_adev(oss_sysinfo *sysinfo)
 
     return num;
 }
+#endif
 
-bool oss_hardware_present(void)
+bool oss_hardware_present()
 {
     int mixerfd;
-    oss_sysinfo sysinfo;
 
     CHECK_NOISY(mixerfd = open, DEFAULT_MIXER, O_RDWR, 0);
+
+#ifdef SNDCTL_SYSINFO
+    oss_sysinfo sysinfo;
+    memset(&sysinfo, 0, sizeof sysinfo);
     CHECK(ioctl, mixerfd, SNDCTL_SYSINFO, &sysinfo);
     CHECK_NOISY(oss_probe_for_adev, &sysinfo);
+#endif
 
     close(mixerfd);
     return true;

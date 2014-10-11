@@ -240,7 +240,7 @@ static int vorbis_format_required (int fmt)
     return FMT_FLOAT;
 }
 
-FileWriter vorbis_plugin = {
+FileWriterImpl vorbis_plugin = {
     vorbis_init,
     vorbis_configure,
     vorbis_open,

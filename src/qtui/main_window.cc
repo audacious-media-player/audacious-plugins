@@ -17,14 +17,15 @@
  * the use of this software.
  */
 
-#include "main_window.h"
-
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
 
 #include <libaudqt/libaudqt.h>
 
+#include "main_window.h"
 #include "filter_input.h"
 #include "playlist.h"
 #include "time_slider.h"
@@ -97,6 +98,8 @@ MainWindow::MainWindow () :
     hook_associate ("set no_playlist_advance",     (HookFunction) update_toggles_cb, this);
     hook_associate ("set stop_after_current_song", (HookFunction) update_toggles_cb, this);
 
+    add_dock_plugins ();
+
     buffering_timer.setSingleShot (true);
     connect (& buffering_timer, & QTimer::timeout, this, & MainWindow::show_buffering);
 
@@ -125,6 +128,8 @@ MainWindow::~MainWindow ()
     hook_dissociate ("set shuffle",                 (HookFunction) update_toggles_cb);
     hook_dissociate ("set no_playlist_advance",     (HookFunction) update_toggles_cb);
     hook_dissociate ("set stop_after_current_song", (HookFunction) update_toggles_cb);
+
+    remove_dock_plugins ();
 }
 
 void MainWindow::closeEvent (QCloseEvent * e)
@@ -217,4 +222,84 @@ void MainWindow::playback_stop_cb (void *, MainWindow * window)
 void MainWindow::update_toggles_cb (void *, MainWindow * window)
 {
     window->updateToggles ();
+}
+
+struct DockWidget {
+    QDockWidget * w;
+    PluginHandle * pl;
+};
+
+void MainWindow::add_dock_plugin_cb (PluginHandle * plugin, MainWindow * window)
+{
+    QWidget * widget = (QWidget *) aud_plugin_get_qt_widget (plugin);
+
+    if (widget)
+    {
+        widget->resize (320, 240);
+
+        DockWidget * dw = new DockWidget;
+
+        dw->w = new QDockWidget;
+        dw->w->setWindowTitle (aud_plugin_get_name (plugin));
+        dw->w->setWidget (widget);
+        dw->pl = plugin;
+
+        window->addDockWidget (Qt::LeftDockWidgetArea, dw->w);
+
+        window->dock_widgets.append (dw);
+    }
+}
+
+void MainWindow::remove_dock_plugin_cb (PluginHandle * plugin, MainWindow * window)
+{
+    for (auto dw : window->dock_widgets)
+    {
+        if (dw->pl == plugin)
+        {
+            int pos = window->dock_widgets.find (dw);
+
+            window->dock_widgets.remove (pos, 1);
+
+            window->removeDockWidget (dw->w);
+            delete dw->w;
+
+            delete dw;
+        }
+    }
+}
+
+void MainWindow::add_dock_plugins ()
+{
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin_cb (plugin, this);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            add_dock_plugin_cb (plugin, this);
+    }
+
+    hook_associate ("dock plugin enabled",  (HookFunction) add_dock_plugin_cb, this);
+    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin_cb, this);
+}
+
+void MainWindow::remove_dock_plugins ()
+{
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin_cb (plugin, this);
+    }
+
+    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    {
+        if (aud_plugin_get_enabled (plugin))
+            remove_dock_plugin_cb (plugin, this);
+    }
+
+    hook_dissociate ("dock plugin enabled",  (HookFunction) add_dock_plugin_cb);
+    hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin_cb);
 }

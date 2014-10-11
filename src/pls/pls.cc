@@ -52,7 +52,7 @@ private:
     static void handle_entry (const char * key, const char * value, void * data);
 };
 
-PLSLoader aud_plugin_instance;
+EXPORT PLSLoader aud_plugin_instance;
 
 void PLSLoader::handle_heading (const char * heading, void * data)
 {

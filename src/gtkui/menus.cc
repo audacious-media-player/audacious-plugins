@@ -80,7 +80,7 @@ static void pl_new (void)
     aud_playlist_set_active (aud_playlist_count () - 1);
 }
 
-static void pl_play (void) {aud_drct_play_playlist (aud_playlist_get_active ()); }
+static void pl_play (void) {aud_playlist_play (aud_playlist_get_active ()); }
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
 static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
@@ -95,7 +95,7 @@ static void pl_tab_play (void)
 {
     int playlist = aud_playlist_by_unique_id (menu_tab_playlist_id);
     if (playlist >= 0)
-        aud_drct_play_playlist (playlist);
+        aud_playlist_play (playlist);
 }
 
 static void pl_tab_rename (void)
@@ -202,7 +202,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("_Import ..."), "document-open", NONE, audgui_import_playlist),
     MenuCommand (N_("_Export ..."), "document-save", NONE, audgui_export_playlist),
     MenuSep (),
-    MenuCommand (N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, audgui_playlist_manager),
+    MenuCommand (N_("Playlist _Manager ..."), "audio-x-generic", 'p', CTRL, activate_playlist_manager),
     MenuCommand (N_("_Queue Manager ..."), nullptr, 'u', CTRL, audgui_queue_manager_show)
 };
 

@@ -21,9 +21,6 @@
  */
 
 #include <stdlib.h>
-
-#include <glib.h>
-
 #include <soxr.h>
 
 #include <libaudcore/i18n.h>
@@ -37,7 +34,35 @@
 
 const char default_quality[] = {'0' + SOXR_HQ, 0};
 
-static const char * const sox_resampler_defaults[] = {
+class SoXResampler : public EffectPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("SoX Resampler"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    /* order #2: must be before crossfade */
+    constexpr SoXResampler () : EffectPlugin (info, 2, false) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
+    bool flush (bool force);
+};
+
+EXPORT SoXResampler aud_plugin_instance;
+
+const char * const SoXResampler::defaults[] = {
  "quality", default_quality,
  "rate", "44100",
  nullptr};
@@ -46,25 +71,22 @@ static soxr_t soxr;
 static soxr_error_t error;
 static int stored_channels;
 static double ratio;
-static float * buffer;
-static size_t buffer_samples;
+static Index<float> buffer;
 
-bool sox_resampler_init (void)
+bool SoXResampler::init ()
 {
-    aud_config_set_defaults ("soxr", sox_resampler_defaults);
+    aud_config_set_defaults ("soxr", defaults);
     return true;
 }
 
-void sox_resampler_cleanup (void)
+void SoXResampler::cleanup ()
 {
     soxr_delete (soxr);
     soxr = 0;
-    g_free (buffer);
-    buffer = nullptr;
-    buffer_samples = 0;
+    buffer.clear ();
 }
 
-void sox_resampler_start (int * channels, int * rate)
+void SoXResampler::start (int & channels, int & rate)
 {
     soxr_delete (soxr);
     soxr = 0;
@@ -72,12 +94,12 @@ void sox_resampler_start (int * channels, int * rate)
     int new_rate = aud_get_int ("soxr", "rate");
     new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
 
-    if (new_rate == * rate)
+    if (new_rate == rate)
         return;
 
     soxr_quality_spec_t q = soxr_quality_spec(aud_get_int ("soxr", "quality"), 0);
 
-    soxr = soxr_create((double) * rate, (double) new_rate, * channels, & error, nullptr, & q, nullptr);
+    soxr = soxr_create(rate, new_rate, channels, & error, nullptr, & q, nullptr);
 
     if (error)
     {
@@ -85,54 +107,42 @@ void sox_resampler_start (int * channels, int * rate)
         return;
     }
 
-    stored_channels = * channels;
-    ratio = (double) new_rate / * rate;
-    * rate = new_rate;
+    stored_channels = channels;
+    ratio = (double) new_rate / rate;
+    rate = new_rate;
 }
 
-void do_resample (float * * data, int * samples)
+Index<float> & SoXResampler::process (Index<float> & data)
 {
     if (! soxr)
-         return;
+         return data;
 
-    if (buffer_samples < (unsigned) (* samples * ratio) + 256)
-    {
-        buffer_samples = (unsigned) (* samples * ratio) + 256;
-        buffer = g_renew (float, buffer, buffer_samples);
-    }
+    buffer.resize ((int) (data.len () * ratio) + 256);
 
     size_t samples_done;
-
-    error = soxr_process(soxr, * data, * samples / stored_channels, nullptr,
-        buffer, buffer_samples / stored_channels, & samples_done);
+    error = soxr_process (soxr, data.begin (), data.len () / stored_channels,
+     nullptr, buffer.begin (), buffer.len () / stored_channels, & samples_done);
 
     if (error)
     {
         AUDERR (error);
-        return;
+        return data;
     }
 
-    * data = buffer;
-    * samples = samples_done * stored_channels;
+    buffer.resize (samples_done * stored_channels);
+
+    return buffer;
 }
 
-void sox_resampler_process (float * * data, int * samples)
-{
-    do_resample (data, samples);
-}
-
-void sox_resampler_flush (void)
+bool SoXResampler::flush (bool force)
 {
     if (soxr && (error = soxr_process(soxr, nullptr, 0, nullptr, nullptr, 0, nullptr)))
         AUDERR (error);
+
+    return true;
 }
 
-void sox_resampler_finish (float * * data, int * samples)
-{
-    do_resample (data, samples);
-}
-
-static const char sox_resampler_about[] =
+const char SoXResampler::about[] =
  N_("SoX Resampler Plugin for Audacious\n"
     "Copyright 2013 Michał Lipski\n\n"
     "Based on Sample Rate Converter Plugin:\n"
@@ -146,7 +156,7 @@ static const ComboItem method_list[] = {
     ComboItem (N_("Very High"), SOXR_VHQ)
 };
 
-static const PreferencesWidget sox_resampler_widgets[] = {
+const PreferencesWidget SoXResampler::widgets[] = {
     WidgetCombo (N_("Quality:"),
         WidgetInt ("soxr", "quality"),
         {{method_list}}),
@@ -155,18 +165,4 @@ static const PreferencesWidget sox_resampler_widgets[] = {
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")})
 };
 
-static const PluginPreferences sox_resampler_prefs = {{sox_resampler_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("SoX Resampler")
-#define AUD_PLUGIN_ABOUT       sox_resampler_about
-#define AUD_PLUGIN_PREFS       & sox_resampler_prefs
-#define AUD_PLUGIN_INIT        sox_resampler_init
-#define AUD_PLUGIN_CLEANUP     sox_resampler_cleanup
-#define AUD_EFFECT_START       sox_resampler_start
-#define AUD_EFFECT_PROCESS     sox_resampler_process
-#define AUD_EFFECT_FLUSH       sox_resampler_flush
-#define AUD_EFFECT_FINISH      sox_resampler_finish
-#define AUD_EFFECT_ORDER       2  /* must be before crossfade */
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences SoXResampler::prefs = {{SoXResampler::widgets}};

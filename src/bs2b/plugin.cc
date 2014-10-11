@@ -27,17 +27,42 @@
 
 #include <bs2b.h>
 
+class BS2BPlugin : public EffectPlugin
+{
+public:
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Bauer Stereophonic-to-Binaural (BS2B)"),
+        PACKAGE,
+        nullptr,
+        & prefs
+    };
+
+    constexpr BS2BPlugin () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
+};
+
+EXPORT BS2BPlugin aud_plugin_instance;
+
 static t_bs2bdp bs2b = nullptr;
 static int bs2b_channels;
 
-static const char * const bs2b_defaults[] = {
+const char * const BS2BPlugin::defaults[] = {
  "feed", "45",
  "fcut", "700",
  nullptr};
 
-bool bs2b_init (void)
+bool BS2BPlugin::init ()
 {
-    aud_config_set_defaults ("bs2b", bs2b_defaults);
+    aud_config_set_defaults ("bs2b", defaults);
     bs2b = bs2b_open ();
 
     if (! bs2b)
@@ -49,39 +74,24 @@ bool bs2b_init (void)
     return true;
 }
 
-static void bs2b_cleanup (void)
+void BS2BPlugin::cleanup ()
 {
-    if (! bs2b)
-        return;
-
     bs2b_close (bs2b);
     bs2b = nullptr;
 }
 
-static void bs2b_start (int * channels, int * rate)
+void BS2BPlugin::start (int & channels, int & rate)
 {
-    if (! bs2b)
-        return;
-
-    bs2b_channels = * channels;
-
-    if (* channels != 2)
-        return;
-
-    bs2b_set_srate (bs2b, * rate);
+    bs2b_channels = channels;
+    bs2b_set_srate (bs2b, rate);
 }
 
-static void bs2b_process (float * * data, int * samples)
+Index<float> & BS2BPlugin::process (Index<float> & data)
 {
-    if (! bs2b || bs2b_channels != 2)
-        return;
+    if (bs2b_channels == 2)
+        bs2b_cross_feed_f (bs2b, data.begin (), data.len () / 2);
 
-    bs2b_cross_feed_f (bs2b, * data, (* samples) / 2);
-}
-
-static void bs2b_finish (float * * data, int * samples)
-{
-    bs2b_process (data, samples);
+    return data;
 }
 
 static void feed_value_changed ()
@@ -122,7 +132,7 @@ static const PreferencesWidget preset_widgets[] = {
     WidgetButton ("J. Meier", {set_jmeier_preset})
 };
 
-static const PreferencesWidget bs2b_widgets[] = {
+const PreferencesWidget BS2BPlugin::widgets[] = {
     WidgetSpin (N_("Feed level:"),
         WidgetInt ("bs2b", "feed", feed_value_changed, "bs2b preset loaded"),
         {BS2B_MINFEED, BS2B_MAXFEED, 1, N_("x1/10 dB")}),
@@ -132,16 +142,4 @@ static const PreferencesWidget bs2b_widgets[] = {
     WidgetBox ({{preset_widgets}, true})
 };
 
-static const PluginPreferences bs2b_prefs = {{bs2b_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Bauer Stereophonic-to-Binaural (BS2B)")
-#define AUD_PLUGIN_INIT        bs2b_init
-#define AUD_PLUGIN_CLEANUP     bs2b_cleanup
-#define AUD_PLUGIN_PREFS       & bs2b_prefs
-#define AUD_EFFECT_START       bs2b_start
-#define AUD_EFFECT_PROCESS     bs2b_process
-#define AUD_EFFECT_FINISH      bs2b_finish
-#define AUD_EFFECT_SAME_FMT    true
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences BS2BPlugin::prefs = {{BS2BPlugin::widgets}};

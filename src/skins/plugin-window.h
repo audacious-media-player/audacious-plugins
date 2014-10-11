@@ -22,8 +22,11 @@
 #ifndef SKINS_PLUGIN_WINDOW_H
 #define SKINS_PLUGIN_WINDOW_H
 
+class PluginHandle;
+
 void create_plugin_windows (void);
 void show_plugin_windows (void);
+void focus_plugin_window (PluginHandle * plugin);
 void hide_plugin_windows (void);
 void destroy_plugin_windows (void);
 

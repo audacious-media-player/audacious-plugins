@@ -1,7 +1,6 @@
 PLUGIN = coreaudio${PLUGIN_SUFFIX}
 
-SRCS = coreaudio.cc \
-       plugin.cc \
+SRCS = coreaudio.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

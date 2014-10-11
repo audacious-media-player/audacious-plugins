@@ -55,8 +55,6 @@
 
 /***** Global variables *****/
 
-static bool audio_error = false;
-
 // Configuration (and defaults)
 static struct
 {
@@ -188,6 +186,8 @@ static bool play_loop (const char * filename, VFSFile & fd)
   dbg_printf ("rewind, ");
   plr.p->rewind (plr.subsong);
 
+  int time = 0;
+
   // main playback loop
   dbg_printf ("loop.\n");
   while ((playing || conf.endless))
@@ -200,8 +200,6 @@ static bool play_loop (const char * filename, VFSFile & fd)
     // seek requested ?
     if (seek != -1)
     {
-      int time = aud_input_written_time ();
-
       // backward seek ?
       if (seek < time)
       {
@@ -223,6 +221,8 @@ static bool play_loop (const char * filename, VFSFile & fd)
       {
         toadd += freq;
         playing = plr.p->update ();
+        if (playing)
+          time += (int) (1000 / plr.p->getrefresh ());
       }
       i = std::min (towrite, (long) (toadd / plr.p->getrefresh () + 4) & ~3);
       opl.update ((short *) sndbufpos, i);
@@ -274,18 +274,14 @@ bool
 adplug_play (const char * filename, VFSFile & file)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
-  audio_error = false;
 
   // open output plugin
   dbg_printf ("open, ");
   if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
-  {
-    audio_error = true;
-    return true;
-  }
+    return false;
 
   play_loop (filename, file);
-  return false;
+  return true;
 }
 
 /***** Configuration file handling *****/

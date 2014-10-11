@@ -7,74 +7,78 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-static bool stereo_init (void);
+class ExtraStereo : public EffectPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
-static void stereo_start (int * channels, int * rate);
-static void stereo_process (float * * data, int * samples);
-static void stereo_finish (float * * data, int * samples);
+    static constexpr PluginInfo info = {
+        N_("Extra Stereo"),
+        PACKAGE,
+        about,
+        & prefs
+    };
 
-static const char stereo_about[] =
+    constexpr ExtraStereo () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
+};
+
+EXPORT ExtraStereo aud_plugin_instance;
+
+const char ExtraStereo::about[] =
  N_("Extra Stereo Plugin\n\n"
     "By Johan Levin, 1999");
 
-static const char * const stereo_defaults[] = {
+const char * const ExtraStereo::defaults[] = {
  "intensity", "2.5",
  nullptr};
 
-static const PreferencesWidget stereo_widgets[] = {
+const PreferencesWidget ExtraStereo::widgets[] = {
     WidgetLabel (N_("<b>Extra Stereo</b>")),
     WidgetSpin (N_("Intensity:"),
         WidgetFloat ("extra_stereo", "intensity"),
         {0, 10, 0.1})
 };
 
-static const PluginPreferences stereo_prefs = {{stereo_widgets}};
+const PluginPreferences ExtraStereo::prefs = {{ExtraStereo::widgets}};
 
-#define AUD_PLUGIN_NAME        N_("Extra Stereo")
-#define AUD_PLUGIN_ABOUT       stereo_about
-#define AUD_PLUGIN_PREFS       & stereo_prefs
-#define AUD_PLUGIN_INIT        stereo_init
-#define AUD_EFFECT_START       stereo_start
-#define AUD_EFFECT_PROCESS     stereo_process
-#define AUD_EFFECT_FINISH      stereo_finish
-#define AUD_EFFECT_SAME_FMT    true
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
-
-static bool stereo_init (void)
+bool ExtraStereo::init ()
 {
-    aud_config_set_defaults ("extra_stereo", stereo_defaults);
+    aud_config_set_defaults ("extra_stereo", defaults);
     return true;
 }
 
 static int stereo_channels;
 
-static void stereo_start (int * channels, int * rate)
+void ExtraStereo::start (int & channels, int & rate)
 {
-    stereo_channels = * channels;
+    stereo_channels = channels;
 }
 
-static void stereo_process (float * * data, int * samples)
+Index<float> & ExtraStereo::process(Index<float> & data)
 {
     float value = aud_get_double ("extra_stereo", "intensity");
     float * f, * end;
     float center;
 
-    if (stereo_channels != 2 || samples == 0)
-        return;
+    if (stereo_channels != 2)
+        return data;
 
-    end = (* data) + (* samples);
+    end = data.end ();
 
-    for (f = * data; f < end; f += 2)
+    for (f = data.begin (); f < end; f += 2)
     {
         center = (f[0] + f[1]) / 2;
         f[0] = center + (f[0] - center) * value;
         f[1] = center + (f[1] - center) * value;
     }
-}
 
-static void stereo_finish (float * * data, int * samples)
-{
-    stereo_process (data, samples);
+    return data;
 }

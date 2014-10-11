@@ -63,6 +63,7 @@ static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plu
 static const AudguiMenuItem main_items[] = {
     MenuCommand (N_("Open Files ..."), "document-open", 'l', NO_MOD, action_play_file),
     MenuCommand (N_("Open URL ..."), "folder-remote", 'l', CTRL, action_play_location),
+    MenuCommand (N_("Search Library"), "edit-find", 'y', NO_MOD, action_search_tool),
     MenuSep (),
     MenuSub (N_("Playback"), nullptr, get_menu_playback),
     MenuSub (N_("Playlist"), nullptr, get_menu_playlist),
@@ -109,7 +110,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("Import Playlist ..."), "document-open", 'o', NO_MOD, audgui_import_playlist),
     MenuCommand (N_("Export Playlist ..."), "document-save", 's', SHIFT, audgui_export_playlist),
     MenuSep (),
-    MenuCommand (N_("Playlist Manager ..."), "audio-x-generic", 'p', NO_MOD, audgui_playlist_manager),
+    MenuCommand (N_("Playlist Manager ..."), "audio-x-generic", 'p', NO_MOD, action_playlist_manager),
     MenuCommand (N_("Queue Manager ..."), nullptr, 'u', CTRL, audgui_queue_manager_show),
     MenuSep (),
     MenuCommand (N_("Refresh Playlist"), "view-refresh", GDK_KEY_F5, NO_MOD, action_playlist_refresh_list)

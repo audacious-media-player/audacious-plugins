@@ -86,7 +86,7 @@ public:
         { audgui_plugin_menu_remove (id, func); }
 };
 
-SkinnedUI aud_plugin_instance;
+EXPORT SkinnedUI aud_plugin_instance;
 
 char * skins_paths[SKINS_PATH_COUNT];
 

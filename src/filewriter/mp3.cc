@@ -1203,7 +1203,7 @@ static int mp3_format_required (int fmt)
     return FMT_S16_NE;
 }
 
-FileWriter mp3_plugin = {
+FileWriterImpl mp3_plugin = {
     mp3_init,
     mp3_configure,
     mp3_open,

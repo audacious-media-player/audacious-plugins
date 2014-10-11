@@ -8,6 +8,6 @@ include ../../extra.mk
 plugindir := ${plugindir}/${EFFECT_PLUGIN_DIR}
 
 LD = ${CXX}
-CPPFLAGS += ${PLUGIN_CPPFLAGS} ${GLIB_CFLAGS} -I../..
+CPPFLAGS += ${PLUGIN_CPPFLAGS} -I../..
 CFLAGS += ${PLUGIN_CFLAGS}
-LIBS += -lm ${GLIB_LIBS} -lsamplerate
+LIBS += -lm -lsamplerate

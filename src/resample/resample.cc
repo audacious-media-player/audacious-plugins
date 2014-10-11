@@ -17,10 +17,6 @@
  * the use of this software.
  */
 
-#include <stdlib.h>
-
-#include <glib.h>
-
 #include <samplerate.h>
 
 #include <libaudcore/i18n.h>
@@ -35,9 +31,44 @@
 
 #define RESAMPLE_ERROR(e) AUDERR ("%s\n", src_strerror (e))
 
+class Resampler : public EffectPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Sample Rate Converter"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    /* order #2: must be before crossfade */
+    constexpr Resampler () : EffectPlugin (info, 2, false) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int & channels, int & rate);
+    bool flush (bool force);
+
+    Index<float> & process (Index<float> & data)
+        { return resample (data, false); }
+    Index<float> & finish (Index<float> & data, bool end_of_playlist)
+        { return resample (data, true); }
+
+private:
+    Index<float> & resample (Index<float> & data, bool finish);
+};
+
+EXPORT Resampler aud_plugin_instance;
+
 static const char default_method[] = {'0' + SRC_SINC_FASTEST, 0};
 
-static const char * const resample_defaults[] = {
+const char * const Resampler::defaults[] = {
  "method", default_method,
  "default-rate", "44100",
  "use-mappings", "FALSE",
@@ -48,24 +79,23 @@ static const char * const resample_defaults[] = {
  "44100", "44100",
  "48000", "48000",
  "88200", "44100",
- "96000", "96000",
+ "96000", "48000",
  "176400", "44100",
- "192000", "96000",
+ "192000", "48000",
  nullptr};
 
 static SRC_STATE * state;
 static int stored_channels;
 static double ratio;
-static float * buffer;
-static int buffer_samples;
+static Index<float> buffer;
 
-bool resample_init (void)
+bool Resampler::init ()
 {
-    aud_config_set_defaults ("resample", resample_defaults);
+    aud_config_set_defaults ("resample", defaults);
     return true;
 }
 
-void resample_cleanup (void)
+void Resampler::cleanup ()
 {
     if (state)
     {
@@ -73,12 +103,10 @@ void resample_cleanup (void)
         state = nullptr;
     }
 
-    g_free (buffer);
-    buffer = nullptr;
-    buffer_samples = 0;
+    buffer.clear ();
 }
 
-void resample_start (int * channels, int * rate)
+void Resampler::start (int & channels, int & rate)
 {
     if (state)
     {
@@ -89,47 +117,43 @@ void resample_start (int * channels, int * rate)
     int new_rate = 0;
 
     if (aud_get_bool ("resample", "use-mappings"))
-        new_rate = aud_get_int ("resample", int_to_str (* rate));
+        new_rate = aud_get_int ("resample", int_to_str (rate));
 
     if (! new_rate)
         new_rate = aud_get_int ("resample", "default-rate");
 
     new_rate = aud::clamp (new_rate, MIN_RATE, MAX_RATE);
 
-    if (new_rate == * rate)
+    if (new_rate == rate)
         return;
 
     int method = aud_get_int ("resample", "method");
     int error;
 
-    if ((state = src_new (method, * channels, & error)) == nullptr)
+    if ((state = src_new (method, channels, & error)) == nullptr)
     {
         RESAMPLE_ERROR (error);
         return;
     }
 
-    stored_channels = * channels;
-    ratio = (double) new_rate / * rate;
-    * rate = new_rate;
+    stored_channels = channels;
+    ratio = (double) new_rate / rate;
+    rate = new_rate;
 }
 
-void do_resample (float * * data, int * samples, bool finish)
+Index<float> & Resampler::resample (Index<float> & data, bool finish)
 {
-    if (! state || ! * samples)
-        return;
+    if (! state || ! data.len ())
+        return data;
 
-    if (buffer_samples < (int) (* samples * ratio) + 256)
-    {
-        buffer_samples = (int) (* samples * ratio) + 256;
-        buffer = g_renew (float, buffer, buffer_samples);
-    }
+    buffer.resize ((int) (data.len () * ratio) + 256);
 
-    SRC_DATA d = {0};
+    SRC_DATA d = SRC_DATA ();
 
-    d.data_in = * data;
-    d.input_frames = * samples / stored_channels;
-    d.data_out = buffer;
-    d.output_frames = buffer_samples / stored_channels;
+    d.data_in = data.begin ();
+    d.input_frames = data.len () / stored_channels;
+    d.data_out = buffer.begin ();
+    d.output_frames = buffer.len () / stored_channels;
     d.src_ratio = ratio;
     d.end_of_input = finish;
 
@@ -137,32 +161,27 @@ void do_resample (float * * data, int * samples, bool finish)
     if ((error = src_process (state, & d)))
     {
         RESAMPLE_ERROR (error);
-        return;
+        return data;
     }
 
-    * data = buffer;
-    * samples = stored_channels * d.output_frames_gen;
+    buffer.resize (stored_channels * d.output_frames_gen);
+
+    if (finish)
+        flush (true);
+
+    return buffer;
 }
 
-void resample_process (float * * data, int * samples)
-{
-    do_resample (data, samples, false);
-}
-
-void resample_flush (void)
+bool Resampler::flush (bool force)
 {
     int error;
     if (state && (error = src_reset (state)))
         RESAMPLE_ERROR (error);
+
+    return true;
 }
 
-void resample_finish (float * * data, int * samples)
-{
-    do_resample (data, samples, true);
-    resample_flush ();
-}
-
-static const char resample_about[] =
+const char Resampler::about[] =
  N_("Sample Rate Converter Plugin for Audacious\n"
     "Copyright 2010-2012 John Lindgren");
 
@@ -174,7 +193,7 @@ static const ComboItem method_list[] = {
     ComboItem(N_("Best sinc interpolation"), SRC_SINC_BEST_QUALITY)
 };
 
-static const PreferencesWidget resample_widgets[] = {
+const PreferencesWidget Resampler::widgets[] = {
     WidgetLabel (N_("<b>Conversion</b>")),
     WidgetCombo (N_("Method:"),
         WidgetInt ("resample", "method"),
@@ -227,18 +246,4 @@ static const PreferencesWidget resample_widgets[] = {
         WIDGET_CHILD)
 };
 
-static const PluginPreferences resample_prefs = {{resample_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Sample Rate Converter")
-#define AUD_PLUGIN_ABOUT       resample_about
-#define AUD_PLUGIN_PREFS       & resample_prefs
-#define AUD_PLUGIN_INIT        resample_init
-#define AUD_PLUGIN_CLEANUP     resample_cleanup
-#define AUD_EFFECT_START       resample_start
-#define AUD_EFFECT_PROCESS     resample_process
-#define AUD_EFFECT_FLUSH       resample_flush
-#define AUD_EFFECT_FINISH      resample_finish
-#define AUD_EFFECT_ORDER       2  /* must be before crossfade */
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences Resampler::prefs = {{Resampler::widgets}};

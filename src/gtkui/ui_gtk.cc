@@ -107,7 +107,7 @@ public:
         { audgui_plugin_menu_remove (id, func); }
 };
 
-GtkUI aud_plugin_instance;
+EXPORT GtkUI aud_plugin_instance;
 
 static PluginHandle * search_tool;
 
@@ -352,12 +352,26 @@ static gboolean ui_slider_change_value_cb (GtkRange * range,
 
 static gboolean ui_slider_button_press_cb(GtkWidget * widget, GdkEventButton * event, void * user_data)
 {
+    gboolean primary_warps = FALSE;
+    g_object_get (gtk_widget_get_settings (widget),
+     "gtk-primary-button-warps-slider", & primary_warps, nullptr);
+
+    if (event->button == 1 && ! primary_warps)
+        event->button = 2;
+
     slider_is_moving = TRUE;
     return FALSE;
 }
 
 static gboolean ui_slider_button_release_cb(GtkWidget * widget, GdkEventButton * event, void * user_data)
 {
+    gboolean primary_warps = FALSE;
+    g_object_get (gtk_widget_get_settings (widget),
+     "gtk-primary-button-warps-slider", & primary_warps, nullptr);
+
+    if (event->button == 1 && ! primary_warps)
+        event->button = 2;
+
     if (slider_seek_time != -1)
         do_seek (slider_seek_time);
 
@@ -715,19 +729,16 @@ static void ui_hooks_disassociate(void)
     hook_dissociate ("config save", (HookFunction) config_save);
 }
 
-static bool add_dock_plugin (PluginHandle * plugin, void * unused)
+static void add_dock_plugin (PluginHandle * plugin, void * unused)
 {
     GtkWidget * widget = (GtkWidget *) aud_plugin_get_gtk_widget (plugin);
     if (widget)
         layout_add (plugin, widget);
-
-    return TRUE;
 }
 
-static bool remove_dock_plugin (PluginHandle * plugin, void * unused)
+static void remove_dock_plugin (PluginHandle * plugin, void * unused)
 {
     layout_remove (plugin);
-    return TRUE;
 }
 
 static void add_dock_plugins (void)
@@ -1097,8 +1108,16 @@ void activate_search_tool (void)
     if (! search_tool)
         return;
 
-    if (! aud_plugin_get_enabled (search_tool))
-        aud_plugin_enable (search_tool, TRUE);
+    aud_plugin_enable (search_tool, true);
+    layout_focus (search_tool);
+}
 
-    aud_plugin_send_message (search_tool, "grab focus", nullptr, 0);
+void activate_playlist_manager (void)
+{
+    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager");
+    if (! manager)
+        return;
+
+    aud_plugin_enable (manager, true);
+    layout_focus (manager);
 }

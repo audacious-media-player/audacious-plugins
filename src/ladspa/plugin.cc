@@ -27,15 +27,13 @@
 #include <gmodule.h>
 #include <gtk/gtk.h>
 
-#include <libaudcore/i18n.h>
-#include <libaudcore/runtime.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
-#include <libaudgui/libaudgui-gtk.h>
+#include <libaudcore/preferences.h>
+#include <libaudcore/runtime.h>
 
 #include "plugin.h"
 
-static const char * const ladspa_defaults[] = {
+const char * const LADSPAHost::defaults[] = {
  "plugin_count", "0",
  nullptr};
 
@@ -45,7 +43,6 @@ Index<GModule *> modules;
 Index<SmartPtr<PluginData>> plugins;
 Index<SmartPtr<LoadedPlugin>> loadeds;
 
-GtkWidget * config_win;
 GtkWidget * plugin_list;
 GtkWidget * loaded_list;
 
@@ -190,13 +187,13 @@ static void open_modules_for_paths (const char * paths)
     g_strfreev (split);
 }
 
-static void open_modules (void)
+static void open_modules ()
 {
     open_modules_for_paths (getenv ("LADSPA_PATH"));
     open_modules_for_paths (module_path);
 }
 
-static void close_modules (void)
+static void close_modules ()
 {
     plugins.clear ();
 
@@ -233,7 +230,7 @@ static PluginData * find_plugin (const char * path, const char * label)
     return nullptr;
 }
 
-static void save_enabled_to_config (void)
+static void save_enabled_to_config ()
 {
     int count = loadeds.len ();
     int old_count = aud_get_int ("ladspa", "plugin_count");
@@ -266,7 +263,7 @@ static void save_enabled_to_config (void)
     }
 }
 
-static void load_enabled_from_config (void)
+static void load_enabled_from_config ()
 {
     int count = aud_get_int ("ladspa", "plugin_count");
 
@@ -301,11 +298,11 @@ static void load_enabled_from_config (void)
     }
 }
 
-static bool ladspa_init (void)
+bool LADSPAHost::init ()
 {
     pthread_mutex_lock (& mutex);
 
-    aud_config_set_defaults ("ladspa", ladspa_defaults);
+    aud_config_set_defaults ("ladspa", defaults);
 
     module_path = aud_get_str ("ladspa", "module_path");
 
@@ -313,14 +310,11 @@ static bool ladspa_init (void)
     load_enabled_from_config ();
 
     pthread_mutex_unlock (& mutex);
-    return 1;
+    return true;
 }
 
-static void ladspa_cleanup (void)
+void LADSPAHost::cleanup ()
 {
-    if (config_win)
-        gtk_widget_destroy (config_win);
-
     pthread_mutex_lock (& mutex);
 
     aud_set_str ("ladspa", "module_path", module_path);
@@ -356,7 +350,7 @@ static void set_module_path (GtkEntry * entry)
         update_loaded_list (loaded_list);
 }
 
-static void enable_selected (void)
+static void enable_selected ()
 {
     pthread_mutex_lock (& mutex);
 
@@ -372,7 +366,7 @@ static void enable_selected (void)
         update_loaded_list (loaded_list);
 }
 
-static void disable_selected (void)
+static void disable_selected ()
 {
     pthread_mutex_lock (& mutex);
 
@@ -418,9 +412,8 @@ static void configure_plugin (LoadedPlugin & loaded)
     PluginData & plugin = loaded.plugin;
 
     StringBuf title = str_printf (_("%s Settings"), plugin.desc.Name);
-    loaded.settings_win = gtk_dialog_new_with_buttons (title, (GtkWindow *)
-     config_win, GTK_DIALOG_DESTROY_WITH_PARENT, _("_Close"),
-     GTK_RESPONSE_CLOSE, nullptr);
+    loaded.settings_win = gtk_dialog_new_with_buttons (title, nullptr,
+     (GtkDialogFlags) 0, _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
     gtk_window_set_resizable ((GtkWindow *) loaded.settings_win, 0);
 
     GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) loaded.settings_win);
@@ -461,7 +454,7 @@ static void configure_plugin (LoadedPlugin & loaded)
     gtk_widget_show_all (loaded.settings_win);
 }
 
-static void configure_selected (void)
+static void configure_selected ()
 {
     pthread_mutex_lock (& mutex);
 
@@ -474,19 +467,10 @@ static void configure_selected (void)
     pthread_mutex_unlock (& mutex);
 }
 
-static void configure (void)
+static void * make_config_widget ()
 {
-    if (config_win)
-    {
-        gtk_window_present ((GtkWindow *) config_win);
-        return;
-    }
-
-    config_win = gtk_dialog_new_with_buttons (_("LADSPA Host Settings"), nullptr,
-     (GtkDialogFlags) 0, _("_Close"), GTK_RESPONSE_CLOSE, nullptr);
-    gtk_window_set_default_size ((GtkWindow *) config_win, 480, 360);
-
-    GtkWidget * vbox = gtk_dialog_get_content_area ((GtkDialog *) config_win);
+    GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
+    gtk_widget_set_size_request (vbox, 480, 360);
 
     GtkWidget * hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
     gtk_box_pack_start ((GtkBox *) vbox, hbox, 0, 0, 0);
@@ -553,8 +537,6 @@ static void configure (void)
     if (module_path)
         gtk_entry_set_text ((GtkEntry *) entry, module_path);
 
-    g_signal_connect (config_win, "response", (GCallback) gtk_widget_destroy, nullptr);
-    g_signal_connect (config_win, "destroy", (GCallback) gtk_widget_destroyed, & config_win);
     g_signal_connect (entry, "activate", (GCallback) set_module_path, nullptr);
     g_signal_connect (plugin_list, "destroy", (GCallback) gtk_widget_destroyed, & plugin_list);
     g_signal_connect (enable_button, "clicked", (GCallback) enable_selected, nullptr);
@@ -562,23 +544,17 @@ static void configure (void)
     g_signal_connect (disable_button, "clicked", (GCallback) disable_selected, nullptr);
     g_signal_connect (settings_button, "clicked", (GCallback) configure_selected, nullptr);
 
-    gtk_widget_show_all (config_win);
+    return vbox;
 }
 
-static const char about[] =
+const char LADSPAHost::about[] =
  N_("LADSPA Host for Audacious\n"
     "Copyright 2011 John Lindgren");
 
-#define AUD_PLUGIN_NAME        N_("LADSPA Host")
-#define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_INIT        ladspa_init
-#define AUD_PLUGIN_CLEANUP     ladspa_cleanup
-#define AUD_PLUGIN_CONFIGWIN   configure
-#define AUD_EFFECT_START       ladspa_start
-#define AUD_EFFECT_PROCESS     ladspa_process
-#define AUD_EFFECT_FLUSH       ladspa_flush
-#define AUD_EFFECT_FINISH      ladspa_finish
-#define AUD_EFFECT_SAME_FMT    1
+const PreferencesWidget LADSPAHost::widgets[] = {
+    WidgetCustomGTK (make_config_widget)
+};
 
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences LADSPAHost::prefs = {{LADSPAHost::widgets}};
+
+EXPORT LADSPAHost aud_plugin_instance;

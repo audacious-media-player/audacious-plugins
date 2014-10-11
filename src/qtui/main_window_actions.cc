@@ -17,13 +17,18 @@
  * the use of this software.
  */
 
-#include "main_window.h"
-
+#include <libaudcore/drct.h>
+#include <libaudcore/hook.h>
+#include <libaudcore/runtime.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/playlist.h>
 
 #include <libaudqt/libaudqt.h>
+
+#include "main_window.h"
 
 void MainWindow::setupActions ()
 {
@@ -88,6 +93,8 @@ void MainWindow::setupActions ()
     connect(actionSelectedRandomize, &QAction::triggered, [] () { aud_playlist_randomize_selected (aud_playlist_get_active ()); });
 
     connect(actionSongInfo, &QAction::triggered, audqt::infowin_show_current);
+
+    connect(actionQueueManager, &QAction::triggered, audqt::queue_manager_show);
 
     /* plugin menus */
     QMenuBar * mb = this->menuBar();

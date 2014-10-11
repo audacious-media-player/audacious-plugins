@@ -43,7 +43,7 @@ extern Tuple tuple;
 
 typedef int (*write_output_callback)(void *ptr, int length);
 
-typedef struct _FileWriter
+struct FileWriterImpl
 {
     void (*init)(write_output_callback write_output_func);
     void (*configure)(void);
@@ -51,6 +51,6 @@ typedef struct _FileWriter
     void (*write)(void *ptr, int length);
     void (*close)(void);
     int (*format_required)(int fmt);
-} FileWriter;
+};
 
 #endif

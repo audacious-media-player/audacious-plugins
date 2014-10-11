@@ -42,7 +42,7 @@ public:
      Index<PlaylistAddItem> & items);
 };
 
-CueLoader aud_plugin_instance;
+EXPORT CueLoader aud_plugin_instance;
 
 static const struct {
     int tuple_type;

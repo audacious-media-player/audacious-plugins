@@ -33,7 +33,7 @@ void set_volume (int left, int right);
 bool open_audio (int format, int rate, int chan);
 void close_audio (void);
 int buffer_free (void);
-void write_audio (void * data, int len);
+void write_audio (const void * data, int len);
 void drain (void);
 int output_time (void);
 void pause (bool pause);

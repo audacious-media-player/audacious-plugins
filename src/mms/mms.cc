@@ -185,4 +185,4 @@ static const char * const mms_schemes[] = {"mms"};
 
 constexpr PluginInfo mms_info = {N_("MMS Plugin"), PACKAGE};
 
-TransportPlugin aud_plugin_instance (mms_info, mms_schemes, mms_fopen);
+EXPORT TransportPlugin aud_plugin_instance (mms_info, mms_schemes, mms_fopen);

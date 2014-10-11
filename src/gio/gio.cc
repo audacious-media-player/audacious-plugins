@@ -354,4 +354,4 @@ static const char * const gio_schemes[] = {"ftp", "sftp", "smb"};
 
 constexpr PluginInfo gio_info = {N_("GIO Plugin"), PACKAGE, gio_about};
 
-TransportPlugin aud_plugin_instance (gio_info, gio_schemes, gio_fopen);
+EXPORT TransportPlugin aud_plugin_instance (gio_info, gio_schemes, gio_fopen);

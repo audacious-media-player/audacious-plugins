@@ -22,7 +22,6 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
@@ -184,7 +183,7 @@ static void activate_row (void * user, int row)
 {
     int list = ((PlaylistWidgetData *) user)->list;
     aud_playlist_set_position (list, row);
-    aud_drct_play_playlist (list);
+    aud_playlist_play (list);
 }
 
 static void right_click (void * user, GdkEventButton * event)

@@ -25,10 +25,11 @@
 
 #include <glib.h>
 
-#include <libaudcore/i18n.h>
-#include <libaudcore/runtime.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/ringbuf.h>
+#include <libaudcore/runtime.h>
 
 #include <ne_auth.h>
 #include <ne_session.h>
@@ -38,10 +39,8 @@
 #include <ne_uri.h>
 #include <ne_utils.h>
 
-#include "rb.h"
 #include "cert_verification.h"
 
-#define NEON_BUFSIZE        (128*1024)
 #define NEON_NETBLKSIZE     (4096)
 #define NEON_ICY_BUFSIZE    (4096)
 #define NEON_RETRY_COUNT 6
@@ -106,7 +105,7 @@ public:
     void cleanup ();
 };
 
-NeonTransport aud_plugin_instance;
+EXPORT NeonTransport aud_plugin_instance;
 
 bool NeonTransport::init ()
 {
@@ -162,7 +161,7 @@ private:
 
     bool m_eof = false;
 
-    ringbuf m_rb = ringbuf ();    /* Ringbuffer for our data */
+    RingBuf<char> m_rb;           /* Ringbuffer for our data */
     icy_metadata m_icy_metadata;  /* Current ICY metadata */
 
     ne_session * m_session = nullptr;
@@ -190,7 +189,8 @@ private:
 NeonFile::NeonFile (const char * url) :
     m_url (url)
 {
-    init_rb_with_lock (& m_rb, NEON_BUFSIZE, & m_reader_status.mutex);
+    int buffer_kb = aud_get_int (nullptr, "net_buffer_kb");
+    m_rb.alloc (1024 * aud::clamp (buffer_kb, 16, 1024));
 }
 
 NeonFile::~NeonFile ()
@@ -204,7 +204,6 @@ NeonFile::~NeonFile ()
         ne_session_destroy (m_session);
 
     ne_uri_free (& m_purl);
-    destroy_rb (& m_rb);
 }
 
 static bool neon_strcmp (const char * str, const char * cmp)
@@ -639,12 +638,14 @@ int NeonFile::open_handle (uint64_t startbyte, String * error)
 
 FillBufferResult NeonFile::fill_buffer ()
 {
-    int bsize = free_rb (& m_rb);
-    int to_read = aud::min (bsize, NEON_NETBLKSIZE);
-
     char buffer[NEON_NETBLKSIZE];
+    int to_read;
 
-    bsize = ne_read_response_block (m_request, buffer, to_read);
+    pthread_mutex_lock (& m_reader_status.mutex);
+    to_read = aud::min (m_rb.space (), NEON_NETBLKSIZE);
+    pthread_mutex_unlock (& m_reader_status.mutex);
+
+    int bsize = ne_read_response_block (m_request, buffer, to_read);
 
     if (! bsize)
     {
@@ -662,7 +663,9 @@ FillBufferResult NeonFile::fill_buffer ()
 
     AUDDBG ("<%p> Read %d bytes of %d\n", this, bsize, to_read);
 
-    write_rb (& m_rb, buffer, bsize);
+    pthread_mutex_lock (& m_reader_status.mutex);
+    m_rb.copy_in (buffer, bsize);
+    pthread_mutex_unlock (& m_reader_status.mutex);
 
     return FILL_BUFFER_SUCCESS;
 }
@@ -674,7 +677,7 @@ void NeonFile::reader ()
     while (m_reader_status.reading)
     {
         /* Hit the network only if we have more than NEON_NETBLKSIZE of free buffer */
-        if (NEON_NETBLKSIZE < free_rb_locked (& m_rb))
+        if (m_rb.space () > NEON_NETBLKSIZE)
         {
             pthread_mutex_unlock (& m_reader_status.mutex);
 
@@ -747,7 +750,7 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
 
     for (int retries = 0; retries < NEON_RETRY_COUNT; retries ++)
     {
-        if (used_rb_locked (& m_rb) / size > 0 || ! m_reader_status.reading ||
+        if (m_rb.len () / size > 0 || ! m_reader_status.reading ||
          m_reader_status.status != NEON_READER_RUN)
             break;
 
@@ -822,7 +825,7 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
         case NEON_READER_EOF:
             /* If there still is data in the buffer, carry on.
              * If not, terminate the reader thread and return 0. */
-            if (! used_rb_locked (& m_rb))
+            if (! m_rb.len ())
             {
                 AUDDBG ("<%p> Reached end of stream\n", this);
                 pthread_mutex_unlock (& m_reader_status.mutex);
@@ -848,14 +851,17 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
     }
 
     /* Deliver data from the buffer */
-    if (! used_rb (& m_rb))
+    pthread_mutex_lock (& m_reader_status.mutex);
+
+    if (! m_rb.len ())
     {
         /* The buffer is still empty, we can deliver no data! */
         AUDERR ("<%p> Buffer still underrun, fatal.\n", this);
+        pthread_mutex_unlock (& m_reader_status.mutex);
         return 0;
     }
 
-    int64_t belem = used_rb (& m_rb) / size;
+    int64_t belem = m_rb.len () / size;
 
     if (m_icy_metaint)
     {
@@ -863,15 +869,15 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
         {
             /* The next data in the buffer is a ICY metadata announcement.
              * Get the length byte */
-            unsigned char icy_metalen;
-            read_rb (& m_rb, & icy_metalen, 1);
+            unsigned char icy_metalen = m_rb.head ();
+            m_rb.pop ();
 
             /*  We need enough data in the buffer to
              * a) Read the complete ICY metadata block
              * b) deliver at least one byte to the reader */
             AUDDBG ("<%p> Expecting %d bytes of ICY metadata\n", this, (icy_metalen*16));
 
-            if (free_rb (& m_rb) - icy_metalen * 16 < size)
+            if (m_rb.len () < icy_metalen * 16 + size)
             {
                 /* There is not enough data. We do not have much choice at this point,
                  * so we'll deliver the metadata as normal data to the reader and
@@ -884,7 +890,7 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
             {
                 /* Grab the metadata from the buffer and send it to the parser */
                 char icy_metadata[NEON_ICY_BUFSIZE];
-                read_rb (& m_rb, icy_metadata, icy_metalen * 16);
+                m_rb.move_out (icy_metadata, icy_metalen * 16);
                 parse_icy (& m_icy_metadata, icy_metadata, icy_metalen * 16);
                 m_icy_metaleft = m_icy_metaint;
             }
@@ -892,18 +898,16 @@ int64_t NeonFile::try_fread (void * ptr, int64_t size, int64_t nmemb)
 
         /* The maximum number of bytes we can deliver is determined
          * by the number of bytes left until the next metadata announcement */
-        belem = aud::min ((int64_t) used_rb (& m_rb), m_icy_metaleft) / size;
+        belem = aud::min ((int64_t) m_rb.len (), m_icy_metaleft) / size;
     }
 
     nmemb = aud::min (belem, nmemb);
-    read_rb (& m_rb, ptr, nmemb * size);
+    m_rb.move_out ((char *) ptr, nmemb * size);
 
     /* Signal the network thread to continue reading */
-    pthread_mutex_lock (& m_reader_status.mutex);
-
     if (m_reader_status.status == NEON_READER_EOF)
     {
-        if (! free_rb_locked (& m_rb))
+        if (! m_rb.len ())
         {
             AUDDBG ("<%p> stream EOF reached and buffer empty\n", this);
             m_eof = true;
@@ -1053,7 +1057,7 @@ int NeonFile::fseek (int64_t offset, VFSSeekType whence)
         m_session = nullptr;
     }
 
-    reset_rb (& m_rb);
+    m_rb.discard ();
 
     if (open_handle (newpos) != 0)
     {

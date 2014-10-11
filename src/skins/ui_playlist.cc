@@ -1027,7 +1027,7 @@ action_playlist_add_url(void)
 
 void action_playlist_play (void)
 {
-    aud_drct_play_playlist (aud_playlist_get_active ());
+    aud_playlist_play (aud_playlist_get_active ());
 }
 
 void action_playlist_new (void)

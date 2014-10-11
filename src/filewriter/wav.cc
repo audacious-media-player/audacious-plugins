@@ -139,7 +139,7 @@ static int wav_format_required (int fmt)
     }
 }
 
-FileWriter wav_plugin = {
+FileWriterImpl wav_plugin = {
     nullptr,  // init
     nullptr,  // configure
     wav_open,

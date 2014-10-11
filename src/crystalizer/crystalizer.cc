@@ -18,19 +18,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <stdlib.h>
-#include <string.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
-
-static bool cryst_init (void);
-static void cryst_start (int * channels, int * rate);
-static void cryst_process (float * * data, int * samples);
-static void cryst_flush ();
-static void cryst_finish (float * * data, int * samples);
 
 static const char * const cryst_defaults[] = {
  "intensity", "1",
@@ -45,59 +36,70 @@ static const PreferencesWidget cryst_widgets[] = {
 
 static const PluginPreferences cryst_prefs = {{cryst_widgets}};
 
-#define AUD_PLUGIN_NAME        N_("Crystalizer")
-#define AUD_PLUGIN_PREFS       & cryst_prefs
-#define AUD_PLUGIN_INIT        cryst_init
-#define AUD_EFFECT_START       cryst_start
-#define AUD_EFFECT_PROCESS     cryst_process
-#define AUD_EFFECT_FLUSH       cryst_flush
-#define AUD_EFFECT_FINISH      cryst_finish
-#define AUD_EFFECT_SAME_FMT    true
+class Crystalizer : public EffectPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Crystalizer"),
+        PACKAGE,
+        nullptr,
+        & cryst_prefs
+    };
 
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+    constexpr Crystalizer () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
+    bool flush (bool force);
+};
+
+EXPORT Crystalizer aud_plugin_instance;
 
 static int cryst_channels;
-static float * cryst_prev;
+static Index<float> cryst_prev;
 
-static bool cryst_init (void)
+bool Crystalizer::init ()
 {
     aud_config_set_defaults ("crystalizer", cryst_defaults);
     return true;
 }
 
-static void cryst_start (int * channels, int * rate)
+void Crystalizer::cleanup ()
 {
-    cryst_channels = * channels;
-    cryst_prev = (float *) realloc (cryst_prev, sizeof (float) * cryst_channels);
-    memset (cryst_prev, 0, sizeof (float) * cryst_channels);
+    cryst_prev.clear ();
 }
 
-static void cryst_process (float * * data, int * samples)
+void Crystalizer::start (int & channels, int & rate)
+{
+    cryst_channels = channels;
+    cryst_prev.resize (cryst_channels);
+    cryst_prev.erase (0, cryst_channels);
+}
+
+Index<float> & Crystalizer::process (Index<float> & data)
 {
     float value = aud_get_double ("crystalizer", "intensity");
-    float * f = * data;
-    float * end = f + (* samples);
-    int channel;
+    float * f = data.begin ();
+    float * end = data.end ();
 
     while (f < end)
     {
-        for (channel = 0; channel < cryst_channels; channel ++)
+        for (int channel = 0; channel < cryst_channels; channel ++)
         {
             float current = * f;
-
             * f ++ = current + (current - cryst_prev[channel]) * value;
             cryst_prev[channel] = current;
         }
     }
+
+    return data;
 }
 
-static void cryst_flush ()
+bool Crystalizer::flush (bool force)
 {
-    memset (cryst_prev, 0, sizeof (float) * cryst_channels);
-}
-
-static void cryst_finish (float * * data, int * samples)
-{
-    cryst_process (data, samples);
+    cryst_prev.erase (0, cryst_channels);
+    return true;
 }

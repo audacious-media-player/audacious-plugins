@@ -48,7 +48,7 @@ private:
     static void handle_entry (const char * key, const char * value, void * data);
 };
 
-ASXLoader aud_plugin_instance;
+EXPORT ASXLoader aud_plugin_instance;
 
 void ASXLoader::handle_heading (const char * heading, void * data)
 {

@@ -52,7 +52,7 @@ private:
     static void handle_entry (const char * key, const char * value, void * data);
 };
 
-AudPlaylistLoader aud_plugin_instance;
+EXPORT AudPlaylistLoader aud_plugin_instance;
 
 void AudPlaylistLoader::finish_item (LoadState * state)
 {
