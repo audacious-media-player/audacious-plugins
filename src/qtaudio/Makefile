@@ -1,7 +1,6 @@
 PLUGIN = qtaudio${PLUGIN_SUFFIX}
 
-SRCS = qtaudio.cc \
-       plugin.cc \
+SRCS = qtaudio.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
