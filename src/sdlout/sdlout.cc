@@ -329,7 +329,6 @@ void SDLOutput::pause (bool pause)
     if (! prebuffer_flag)
         SDL_PauseAudio (pause);
 
-    pthread_cond_broadcast (& sdlout_cond); /* wake up period wait */
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
