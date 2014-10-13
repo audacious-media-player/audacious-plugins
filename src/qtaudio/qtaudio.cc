@@ -227,7 +227,7 @@ void QtAudio::period_wait ()
 {
     pthread_mutex_lock (& mutex);
 
-    while (! output_instance->bytesFree ())
+    while (output_instance->bytesFree () < output_instance->periodSize ())
         pthread_cond_timedwait (& cond, & mutex, & fifty_ms);
 
     pthread_mutex_unlock (& mutex);
