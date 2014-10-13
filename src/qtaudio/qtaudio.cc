@@ -57,7 +57,7 @@ public:
     StereoVolume get_volume ();
     void set_volume (StereoVolume v);
 
-    bool open_audio (int aud_format, int rate, int chans);
+    bool open_audio (int aud_format, int rate, int chan);
     void close_audio ();
 
     int buffer_free ();
@@ -89,11 +89,7 @@ static const timespec fifty_ms = {0, 50000000};
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
-static int chan, rate;
-
-static int buffer_size, buffer_bytes_per_channel;
-
-static int64_t frames_written;
+static int start_time;
 
 static QAudioOutput * output_instance = nullptr;
 static QIODevice * buffer_instance = nullptr;
@@ -143,7 +139,7 @@ void QtAudio::set_volume (StereoVolume v)
     }
 }
 
-bool QtAudio::open_audio (int format, int rate_, int chan_)
+bool QtAudio::open_audio (int format, int rate, int chan)
 {
     struct FormatDescriptionMap * m = nullptr;
 
@@ -162,15 +158,12 @@ bool QtAudio::open_audio (int format, int rate_, int chan_)
         return false;
     }
 
-    AUDDBG ("Opening audio for %d channels, %d Hz.\n", chan_, rate_);
+    AUDDBG ("Opening audio for %d channels, %d Hz.\n", chan, rate);
 
-    chan = chan_;
-    rate = rate_;
+    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_size = FMT_SIZEOF (format) * chan * aud::rescale (buffer_ms, 1000, rate);
 
-    buffer_bytes_per_channel = (m->sample_size / 8) + ((m->sample_size % 16) / 8);
-    buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
-
-    frames_written = 0;
+    start_time = 0;
 
     QAudioFormat fmt;
     fmt.setSampleRate (rate);
@@ -232,8 +225,6 @@ void QtAudio::write_audio (const void * data, int len)
 
     buffer_instance->write ((const char *) data, len);
 
-    frames_written += len / (buffer_bytes_per_channel * chan);
-
     pthread_mutex_unlock (& mutex);
 }
 
@@ -252,11 +243,10 @@ int QtAudio::output_time ()
 {
     pthread_mutex_lock (& mutex);
 
-    int out = (int64_t) (frames_written - (output_instance->bufferSize () - output_instance->bytesFree ()) / (buffer_bytes_per_channel * chan))
-     * 1000 / rate;
+    int time = start_time + output_instance->processedUSecs () / 1000;
 
     pthread_mutex_unlock (& mutex);
-    return out;
+    return time;
 }
 
 void QtAudio::pause (bool pause)
@@ -278,7 +268,7 @@ void QtAudio::flush (int time)
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& mutex);
 
-    frames_written = (int64_t) time * rate / 1000;
+    start_time = time;
 
     output_instance->reset ();
     buffer_instance = output_instance->start ();
