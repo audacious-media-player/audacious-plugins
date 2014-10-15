@@ -383,7 +383,7 @@ sndio_configure(void)
 
 	gtk_window_set_title(GTK_WINDOW(configure_win), _("sndio device"));
 	gtk_window_set_resizable(GTK_WINDOW(configure_win), FALSE);
-	gtk_window_set_position(GTK_WINDOW(configure_win), GTK_WIN_POS_MOUSE);
+	gtk_window_set_type_hint(GTK_WINDOW(configure_win), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -422,8 +422,8 @@ sndio_configure(void)
 	gtk_widget_grab_default(ok);
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	g_signal_connect(cancel, "clicked",
-	    G_CALLBACK(gtk_widget_destroy), &configure_win);
+	g_signal_connect_swapped(cancel, "clicked",
+	    G_CALLBACK(gtk_widget_destroy), configure_win);
 
 	gtk_widget_set_can_default(cancel, TRUE);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
