@@ -870,6 +870,11 @@ void action_playlist_sort_by_artist (void)
     aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_ARTIST);
 }
 
+void action_playlist_sort_by_album_artist (void)
+{
+    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM_ARTIST);
+}
+
 void action_playlist_sort_by_full_path (void)
 {
     aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_PATH);
@@ -903,6 +908,11 @@ void action_playlist_sort_selected_by_album (void)
 void action_playlist_sort_selected_by_artist (void)
 {
     aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_ARTIST);
+}
+
+void action_playlist_sort_selected_by_album_artist (void)
+{
+    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM_ARTIST);
 }
 
 void action_playlist_sort_selected_by_full_path (void)
