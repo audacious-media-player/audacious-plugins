@@ -10,9 +10,9 @@
 # Miguel Anxo Bouzada <mbouzada@gmail.com>, 2012,2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"POT-Creation-Date: 2014-10-15 21:40+0200\n"
 "PO-Revision-Date: 2014-05-27 17:33+0000\n"
 "Last-Translator: antiparvos <marcoslansgarza@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/projects/p/audacious/"
@@ -371,7 +371,7 @@ msgstr ""
 msgid "ALSA Output"
 msgstr "Saída ALSA"
 
-#: src/amidi-plug/amidi-plug.c:466
+#: src/amidi-plug/amidi-plug.c:464
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "Engadido AMIDI (Reprodutor MIDI)"
 
@@ -407,27 +407,15 @@ msgstr "Transposición:"
 msgid "Drum shift:"
 msgstr "Cambio de batería:"
 
-#: src/amidi-plug/i_configure.c:127
-msgid "<b>Advanced</b>"
-msgstr "<b>Avanzado</b>"
-
-#: src/amidi-plug/i_configure.c:128
-msgid "Extract comments from MIDI file"
-msgstr "Extraer comentarios desde o ficheiro MIDI"
-
-#: src/amidi-plug/i_configure.c:130
-msgid "Extract lyrics from MIDI file"
-msgstr "Extraer letras desde o ficheiro MIDI"
-
-#: src/amidi-plug/i_configure.c:134
+#: src/amidi-plug/i_configure.c:129
 msgid "<b>SoundFont</b>"
 msgstr "<b>Fonte de son</b>"
 
-#: src/amidi-plug/i_configure.c:136
+#: src/amidi-plug/i_configure.c:131
 msgid "<b>Synthesizer</b>"
 msgstr "<b>Sintetizador</b>"
 
-#: src/amidi-plug/i_configure.c:141
+#: src/amidi-plug/i_configure.c:136
 msgid "Sampling rate:"
 msgstr "Taxa da mostraxe:"
 
@@ -447,60 +435,60 @@ msgstr "Nome de ficheiro"
 msgid "Size (bytes)"
 msgstr "Tamaño (bytes)"
 
-#: src/amidi-plug/i_fileinfo.c:176
+#: src/amidi-plug/i_fileinfo.c:184
 msgid "Name:"
 msgstr "Nome:"
 
-#: src/amidi-plug/i_fileinfo.c:203
+#: src/amidi-plug/i_fileinfo.c:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> Información MIDI </span>"
 
-#: src/amidi-plug/i_fileinfo.c:217
+#: src/amidi-plug/i_fileinfo.c:216
 msgid "Format:"
 msgstr "Formato:"
 
-#: src/amidi-plug/i_fileinfo.c:220
+#: src/amidi-plug/i_fileinfo.c:219
 msgid "Length (msec):"
 msgstr "Duración (mseg.):"
 
-#: src/amidi-plug/i_fileinfo.c:223
+#: src/amidi-plug/i_fileinfo.c:222
 msgid "No. of Tracks:"
 msgstr "Num. de pistas"
 
-#: src/amidi-plug/i_fileinfo.c:229
+#: src/amidi-plug/i_fileinfo.c:228
 msgid "variable"
 msgstr "variábel"
 
-#: src/amidi-plug/i_fileinfo.c:231
+#: src/amidi-plug/i_fileinfo.c:230
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidi-plug/i_fileinfo.c:239
+#: src/amidi-plug/i_fileinfo.c:238
 msgid "BPM (wavg):"
 msgstr "BPM (wavg):"
 
-#: src/amidi-plug/i_fileinfo.c:242
+#: src/amidi-plug/i_fileinfo.c:241
 msgid "Time Div:"
 msgstr "Div. tempo:"
 
-#: src/amidi-plug/i_fileinfo.c:253
+#: src/amidi-plug/i_fileinfo.c:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\\\"smaller\\\"> Comentarios e letras MIDI </span>"
 
-#: src/amidi-plug/i_fileinfo.c:302
+#: src/amidi-plug/i_fileinfo.c:299
 msgid "* no comments available in this MIDI file *"
 msgstr "* non hai comentarios dispoñíbeis neste ficheiro MIDI *"
 
-#: src/amidi-plug/i_fileinfo.c:314
+#: src/amidi-plug/i_fileinfo.c:311
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* non hai letras dispoñíbeis neste ficheiro MIDI *"
 
-#: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
+#: src/amidi-plug/i_fileinfo.c:321 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
 msgstr "_Pechar"
 
-#: src/amidi-plug/i_fileinfo.c:366
+#: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
 msgstr "  (UTF-8 incorrecto)"
 
@@ -4084,6 +4072,15 @@ msgstr "Descodificador 2SF"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "Lista de reprodución XML compartíbel (XSPF)"
+
+#~ msgid "<b>Advanced</b>"
+#~ msgstr "<b>Avanzado</b>"
+
+#~ msgid "Extract comments from MIDI file"
+#~ msgstr "Extraer comentarios desde o ficheiro MIDI"
+
+#~ msgid "Extract lyrics from MIDI file"
+#~ msgstr "Extraer letras desde o ficheiro MIDI"
 
 #~ msgid "32.0 kHz:"
 #~ msgstr "32.0 kHz:"

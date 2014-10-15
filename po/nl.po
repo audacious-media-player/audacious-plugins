@@ -1,19 +1,23 @@
-# English (United Kingdom) translation for Audacious Plugins
+# Dutch translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Andi Chandler <andi@gowling.com>, 2013
+# Bjorn Roesbeke <inbox@bjornroesbeke.be>, 2013
+# Dennis Klomp <c_klomp@epu-forum.net>, 2012
+# Farioko <fabianbakkum@hotmail.com>, 2014
+# Freek1A <fjvluijt@hotmail.com>, 2012
+# shured <shured1@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2014-10-15 21:40+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/"
-"audacious/language/en_GB/)\n"
-"Language: en_GB\n"
+"PO-Revision-Date: 2014-08-24 12:22+0000\n"
+"Last-Translator: shured <shured1@gmail.com>\n"
+"Language-Team: Dutch (http://www.transifex.com/projects/p/audacious/language/"
+"nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,24 +37,24 @@ msgstr "surround"
 
 #: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
-msgstr ""
+msgstr "AAC (MP4) Decoder"
 
 #: src/aac-raw/aac.c:476
 msgid "AAC (Raw) Decoder"
-msgstr ""
+msgstr "AAC (Raw) Decoder"
 
 #: src/adplug/adplug-xmms.cc:137 src/modplug/modplugbmp.cxx:348
 #: src/psf/plugin.c:122 src/vtx/vtx.c:62 src/xsf/plugin.c:80
 msgid "sequenced"
-msgstr ""
+msgstr "gesequentieerd"
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (AdLib Player)"
 
 #: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
-msgstr ""
+msgstr "Alarm instellen ..."
 
 #: src/alarm/alarm.c:804
 msgid ""
@@ -58,6 +62,10 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
+"Een invoegtoepassing die gebruikt kan worden om het afspelen te starten op "
+"een bepaald tijdstip.\n"
+"\n"
+"Origineel geschreven door Adam Feakin en Daniel Stodden."
 
 #: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
@@ -85,6 +93,26 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"Tijd\n"
+"Alarm op:\n"
+"De tijd voor het alarm start.\n"
+"\n"
+"Stil na:\n"
+"Stop alarm na zolang.\n"
+"(als het opsta venster nog gesloten is)\n"
+"\n"
+"\n"
+"Dagen\n"
+"Dag:\n"
+"Selecteer de dagen voor wanneer het \n"
+"alarm actief moet zijn.\n"
+"\n"
+"Tijd:\n"
+"Kies de tijd voor het alarm elke dag,\n"
+"of klik op de pin knop om de standaardwaarde\n"
+"te gebruiken.\n"
+"\n"
+"\n"
 
 #: src/alarm/interface.c:49
 msgid ""
@@ -107,6 +135,22 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 msgstr ""
+"Volume\n"
+"Vervaging:\n"
+"Vervaag het volume op het gekozen tijdstip.\n"
+"\n"
+"Start op:\n"
+"Start vervaging vanaf dit volume.\n"
+"\n"
+"Uiteindelijk:\n"
+"Stop met het vervagen wanneer,\n"
+"de tijd op 0 staat en start met afspelen.\n"
+"\n"
+"\n"
+"Opties:\n"
+"Overige commando's:\n"
+"Voer dit commando uit wanneer het\n"
+"alarm wordt geactiveerd.\n"
 
 #: src/alarm/interface.c:66
 msgid ""
@@ -121,68 +165,79 @@ msgid ""
 "    Type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown."
 msgstr ""
+"Afspeellijst:\n"
+"Laad deze afspeellijst. Als er\n"
+"geen afspeellijst gespecificeerd\n"
+"is, zal de huidige worden gebruikt.\n"
+"De URL van een mp3/ogg stream\n"
+"kan hier ook ingevoerd worden.\n"
+"\n"
+"Herinnering:\n"
+"Laat een herinnering zien wanneer het alarm afgaat.\n"
+"Schrijf een herinnering in dit vakje en activeer de\n"
+"pin knop als je het wilt laten weergeven."
 
 #: src/alarm/interface.c:85
 msgid "This is your wakeup call."
-msgstr "This is your wakeup call."
+msgstr "Dit is uw opstaan melding"
 
 #: src/alarm/interface.c:103
 msgid "Your reminder for today is..."
-msgstr ""
+msgstr "Uw herinnering voor vandaag is..."
 
 #: src/alarm/interface.c:105 src/alarm/interface.c:417
 msgid "Reminder"
-msgstr "Reminder"
+msgstr "Herinnering"
 
 #: src/alarm/interface.c:144
 msgid "Monday"
-msgstr "Monday"
+msgstr "Maandag"
 
 #: src/alarm/interface.c:144
 msgid "Tuesday"
-msgstr "Tuesday"
+msgstr "Dinsdag"
 
 #: src/alarm/interface.c:144
 msgid "Wednesday"
-msgstr "Wednesday"
+msgstr "Woensdag"
 
 #: src/alarm/interface.c:145
 msgid "Thursday"
-msgstr "Thursday"
+msgstr "Donderdag"
 
 #: src/alarm/interface.c:145
 msgid "Friday"
-msgstr "Friday"
+msgstr "Vrijdag"
 
 #: src/alarm/interface.c:145
 msgid "Saturday"
-msgstr "Saturday"
+msgstr "Zaterdag"
 
 #: src/alarm/interface.c:145
 msgid "Sunday"
-msgstr "Sunday"
+msgstr "Zondag"
 
 #: src/alarm/interface.c:179
 msgid "Alarm Settings"
-msgstr "Alarm Settings"
+msgstr "Alarm Instellingen"
 
 #: src/alarm/interface.c:180 src/filewriter/mp3.c:690
 msgid "_OK"
-msgstr ""
+msgstr "_Ok"
 
 #: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
-msgstr ""
+msgstr "_Sluiten"
 
 #: src/alarm/interface.c:188 src/alarm/interface.c:252
 #: src/alarm/interface.c:267
 msgid "Time"
-msgstr "Time"
+msgstr "Tijd"
 
 #: src/alarm/interface.c:195
 msgid "Alarm at (default):"
-msgstr "Alarm at (default):"
+msgstr "Alarm (op standaard)"
 
 #: src/alarm/interface.c:218
 msgid "h"
@@ -190,41 +245,41 @@ msgstr "h"
 
 #: src/alarm/interface.c:222
 msgid "Quiet after:"
-msgstr "Quiet after:"
+msgstr "Stil na:"
 
 #: src/alarm/interface.c:236
 msgid "hours"
-msgstr "hours"
+msgstr "uren"
 
 #: src/alarm/interface.c:248
 msgid "minutes"
-msgstr "minutes"
+msgstr "minuten"
 
 #: src/alarm/interface.c:257
 msgid "Choose the days for the alarm to come on"
-msgstr "Choose the days for the alarm to come on"
+msgstr "Kies de dag voor het alarm om aan te gaan"
 
 #: src/alarm/interface.c:264
 msgid "Day"
-msgstr "Day"
+msgstr "Dag"
 
 #: src/alarm/interface.c:282 src/bs2b/plugin.c:168 src/skins/preset-list.c:439
 #: src/skins/preset-list.c:445
 msgid "Default"
-msgstr "Default"
+msgstr "Standaard"
 
 #: src/alarm/interface.c:312
 msgid "Days"
-msgstr "Days"
+msgstr "Dagen"
 
 #: src/alarm/interface.c:321
 msgid "Fading"
-msgstr "Fading"
+msgstr "Vervagen"
 
 #: src/alarm/interface.c:329 src/console/plugin.c:41
 #: src/crossfade/crossfade.c:263 src/gtkui/settings.c:53 src/lirc/lirc.c:395
 msgid "seconds"
-msgstr "seconds"
+msgstr "Seconden"
 
 #: src/alarm/interface.c:336 src/alarm/interface.c:383
 msgid "Volume"
@@ -232,39 +287,39 @@ msgstr "Volume"
 
 #: src/alarm/interface.c:341
 msgid "Start at"
-msgstr "Start at"
+msgstr "Start bij"
 
 #: src/alarm/interface.c:359
 msgid "Final"
-msgstr "Final"
+msgstr "Laatste"
 
 #: src/alarm/interface.c:374
 msgid "Current"
-msgstr "Current"
+msgstr "Huidige"
 
 #: src/alarm/interface.c:389
 msgid "Additional Command"
-msgstr "Additional Command"
+msgstr "Extra Opdracht"
 
 #: src/alarm/interface.c:395 src/alarm/interface.c:422
 msgid "enable"
-msgstr "enable"
+msgstr "Aan"
 
 #: src/alarm/interface.c:402
 msgid "Playlist (optional)"
-msgstr "Playlist (optional)"
+msgstr "Afspeellijst (Hoeft niet)"
 
 #: src/alarm/interface.c:409
 msgid "Select a playlist"
-msgstr ""
+msgstr "Selecteer een afspeellijst"
 
 #: src/alarm/interface.c:430
 msgid "Options"
-msgstr "Options"
+msgstr "Opties"
 
 #: src/alarm/interface.c:435
 msgid "What do these options mean?"
-msgstr "What do these options mean?"
+msgstr "Wat betekenen deze opties"
 
 #: src/alarm/interface.c:449
 msgid "Help"
@@ -272,23 +327,23 @@ msgstr "Help"
 
 #: src/albumart/albumart.c:72
 msgid "Album Art"
-msgstr ""
+msgstr "Albumhoes"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "Default PCM device"
+msgstr "Standaard PCM apparaat"
 
 #: src/alsa/config.c:239
 msgid "Default mixer device"
-msgstr "Default mixer device"
+msgstr "Standaard mixer apparaat"
 
 #: src/alsa/config.c:428
 msgid "PCM device:"
-msgstr "PCM device:"
+msgstr "PCM apparaat:"
 
 #: src/alsa/config.c:430
 msgid "Mixer device:"
-msgstr "Mixer device:"
+msgstr "Mixer apparaat:"
 
 #: src/alsa/config.c:432
 msgid "Mixer element:"
@@ -296,7 +351,7 @@ msgstr "Mixer element:"
 
 #: src/alsa/config.c:435
 msgid "Work around drain hangup"
-msgstr "Work around drain hangup"
+msgstr ""
 
 #: src/alsa/plugin.c:27
 msgid ""
@@ -306,14 +361,20 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
+"ALSA Uitvoer Invoegtoepassing voor Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"Met dank aan William Pitcock, schrijver van de ALSA Uitvoer Plugin NG,\n"
+"van wie zijn code werd gebruikt als handleiding wanneer de ALSA handleiding "
+"niet genoeg was."
 
 #: src/alsa/plugin.c:41
 msgid "ALSA Output"
-msgstr ""
+msgstr "ALSA Uitvoer"
 
 #: src/amidi-plug/amidi-plug.c:464
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (MIDI Speler)"
 
 #: src/amidi-plug/i_configure.c:96
 msgid "Override default gain:"
@@ -329,7 +390,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.c:110 src/amidi-plug/i_configure.c:116
 msgid "On"
-msgstr ""
+msgstr "Aan"
 
 #: src/amidi-plug/i_configure.c:114
 msgid "Override default chorus:"
@@ -361,35 +422,35 @@ msgstr ""
 
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - select SoundFont file"
+msgstr "AMIDI-Plug - SoundFont bestand selecteren"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
-msgstr ""
+msgstr "_Open"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
-msgstr "Filename"
+msgstr "Bestandsnaam"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:231
 msgid "Size (bytes)"
-msgstr "Size (bytes)"
+msgstr "Groote (bytes)"
 
 #: src/amidi-plug/i_fileinfo.c:184
 msgid "Name:"
-msgstr "Name:"
+msgstr "Naam:"
 
 #: src/amidi-plug/i_fileinfo.c:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"smaller\"> MIDI Info </span>"
+msgstr "<span size=\"smaller\"> MIDI Info <span>"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "Format:"
-msgstr "Format:"
+msgstr "A"
 
 #: src/amidi-plug/i_fileinfo.c:219
 msgid "Length (msec):"
-msgstr "Length (msec):"
+msgstr "Lengte (msec):"
 
 #: src/amidi-plug/i_fileinfo.c:222
 msgid "No. of Tracks:"
@@ -397,7 +458,7 @@ msgstr ""
 
 #: src/amidi-plug/i_fileinfo.c:228
 msgid "variable"
-msgstr "variable"
+msgstr "variabel"
 
 #: src/amidi-plug/i_fileinfo.c:230
 msgid "BPM:"
@@ -413,32 +474,32 @@ msgstr "Time Div:"
 
 #: src/amidi-plug/i_fileinfo.c:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
+msgstr "<span size=\"smaller\"> MIDI Commentaar en songtekst </span>"
 
 #: src/amidi-plug/i_fileinfo.c:299
 msgid "* no comments available in this MIDI file *"
-msgstr "* no comments available in this MIDI file *"
+msgstr "* geen commentaar beschikbaar in dit MIDI bestand *"
 
 #: src/amidi-plug/i_fileinfo.c:311
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* no lyrics available in this MIDI file *"
+msgstr "* geen songtekst beschikbaar in dit MIDI bestand *"
 
 #: src/amidi-plug/i_fileinfo.c:321 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
-msgstr "_Close"
+msgstr "_Sluit"
 
 #: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
-msgstr "  (invalid UTF-8)"
+msgstr "  (onjuist UTF-8)"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
-msgstr ""
+msgstr "Over de AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
-msgstr ""
+msgstr "AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:54
 msgid ""
@@ -476,35 +537,35 @@ msgstr ""
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (On-Screen Display)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "Rectangle"
+msgstr "Vierkant"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "Rounded Rectangle"
+msgstr "Vierkant met afgeronde hoeken"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "Concave Rectangle"
+msgstr "Concave vierkant"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "None"
+msgstr "Geen"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "Playback Start"
+msgstr "Start Afspelen"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Triggers OSD when a playlist entry is played."
+msgstr "OSD starten wanneer een afspeellijst regel word afgespeeld."
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "Title Change"
+msgstr "Titel verandering"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -512,53 +573,50 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Triggers OSD when, during playback, the song title changes but the filename "
-"is the same. This is mostly useful to display title changes in Internet "
-"streams."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "Pause On"
+msgstr "Pause Aan"
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "Triggers OSD when playback is paused."
+msgstr ""
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "Pause Off"
+msgstr "Pause Uit"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Triggers OSD when playback is unpaused."
+msgstr ""
 
 #: src/aosd/aosd_ui.c:192
 msgid "Placement"
-msgstr "Placement"
+msgstr "Plaatsing"
 
 #: src/aosd/aosd_ui.c:224
 msgid "Relative X offset:"
-msgstr "Relative X offset:"
+msgstr "Relatieve X verplaatsing:"
 
 #: src/aosd/aosd_ui.c:231
 msgid "Relative Y offset:"
-msgstr "Relative Y offset:"
+msgstr "Relatieve Y verplaatsing:"
 
 #: src/aosd/aosd_ui.c:238
 msgid "Max OSD width:"
-msgstr "Max OSD width:"
+msgstr "Max OSD breedte:"
 
 #: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
-msgstr "Multi-Monitor options"
+msgstr "Multi-Monitor opties"
 
 #: src/aosd/aosd_ui.c:253
 msgid "Display OSD using:"
-msgstr "Display OSD using:"
+msgstr "Toon OSD op:"
 
 #: src/aosd/aosd_ui.c:255
 msgid "all monitors"
-msgstr "all monitors"
+msgstr "alle monitors"
 
 #: src/aosd/aosd_ui.c:258
 #, c-format
@@ -571,7 +629,7 @@ msgstr "Timing (ms)"
 
 #: src/aosd/aosd_ui.c:315
 msgid "Display:"
-msgstr "Display:"
+msgstr "Weergeven:"
 
 #: src/aosd/aosd_ui.c:320
 msgid "Fade in:"
@@ -579,45 +637,45 @@ msgstr "Fade in:"
 
 #: src/aosd/aosd_ui.c:325
 msgid "Fade out:"
-msgstr "Fade out:"
+msgstr "Fade uit:"
 
 #: src/aosd/aosd_ui.c:390
 msgid "Fonts"
-msgstr "Fonts"
+msgstr "Lettertypen"
 
 #: src/aosd/aosd_ui.c:397
 #, c-format
 msgid "Font %i:"
-msgstr "Font %i:"
+msgstr "Lettertype %i:"
 
 #: src/aosd/aosd_ui.c:412
 msgid "Shadow"
-msgstr "Shadow"
+msgstr "Schaduw"
 
 #: src/aosd/aosd_ui.c:518
 msgid "Render Style"
-msgstr "Render Style"
+msgstr "Weergavestijl"
 
 #: src/aosd/aosd_ui.c:534
 msgid "Colors"
-msgstr "Colours"
+msgstr "Kleuren"
 
 #: src/aosd/aosd_ui.c:545
 #, c-format
 msgid "Color %i:"
-msgstr "Colour %i:"
+msgstr "Kleur %i:"
 
 #: src/aosd/aosd_ui.c:648
 msgid "Enable trigger"
-msgstr "Enable trigger"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:675
 msgid "Event"
-msgstr "Event"
+msgstr "Gebeurtenis"
 
 #: src/aosd/aosd_ui.c:703
 msgid "Composite manager detected"
-msgstr "Composite manager detected"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:710
 msgid ""
@@ -625,33 +683,30 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD will not work properly"
 
 #: src/aosd/aosd_ui.c:718
 msgid "Composite manager not required for fake transparency"
-msgstr "Composite manager not required for fake transparency"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:754
 msgid "Transparency"
-msgstr "Transparency"
+msgstr "Doorzichtigheid"
 
 #: src/aosd/aosd_ui.c:760
 msgid "Fake transparency"
-msgstr "Fake transparency"
+msgstr "Valse doorzichtigheid"
 
 #: src/aosd/aosd_ui.c:762
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Real transparency (requires X Composite Ext.)"
+msgstr "Echte doorzichtigheid (vereist X Composiet uitbreiding)"
 
 #: src/aosd/aosd_ui.c:804
 msgid "Composite extension not loaded"
-msgstr "Composite extension not loaded"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:812
 msgid "Composite extension not available"
-msgstr "Composite extension not available"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:831
 #, c-format
@@ -660,11 +715,11 @@ msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
 #: src/aosd/aosd_ui.c:906
 msgid "Audacious OSD - configuration"
-msgstr "Audacious OSD - configuration"
+msgstr "Audacious OSD - configuratie"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
-msgstr ""
+msgstr "_Test"
 
 #: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
 msgid "_Set"
@@ -672,27 +727,27 @@ msgstr ""
 
 #: src/aosd/aosd_ui.c:940
 msgid "Position"
-msgstr "Position"
+msgstr "Positie"
 
 #: src/aosd/aosd_ui.c:945
 msgid "Animation"
-msgstr "Animation"
+msgstr "Animatie"
 
 #: src/aosd/aosd_ui.c:950
 msgid "Text"
-msgstr "Text"
+msgstr "Tekst"
 
 #: src/aosd/aosd_ui.c:955
 msgid "Decoration"
-msgstr "Decoration"
+msgstr "Decoratie"
 
 #: src/aosd/aosd_ui.c:960
 msgid "Trigger"
-msgstr "Trigger"
+msgstr ""
 
 #: src/aosd/aosd_ui.c:965
 msgid "Misc"
-msgstr "Misc"
+msgstr "Divers"
 
 #: src/asx3/asx3.c:179
 msgid "ASXv3 Playlists"
@@ -704,11 +759,11 @@ msgstr ""
 
 #: src/audpl/audpl.c:186
 msgid "Audacious Playlists (audpl)"
-msgstr ""
+msgstr "Audacious Afspeellijsten (audpl)"
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
-msgstr ""
+msgstr "<b>Kleur</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
@@ -724,7 +779,7 @@ msgstr ""
 
 #: src/bs2b/plugin.c:166
 msgid "Presets:"
-msgstr ""
+msgstr "Presets:"
 
 #: src/bs2b/plugin.c:189
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
@@ -752,7 +807,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:120
 msgid "Read speed:"
-msgstr ""
+msgstr "Lees snelheid:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Override device:"
@@ -760,23 +815,23 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "<b>Metadata</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Use CD-Text"
-msgstr ""
+msgstr "Gebruik CD-Tekst"
 
 #: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CDDB"
-msgstr ""
+msgstr "Gebruik CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use HTTP instead of CDDBP"
-msgstr "Use HTTP instead of CDDBP"
+msgstr "Gebruik HTTP in plaats van CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Server:"
-msgstr ""
+msgstr "Server:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Path:"
@@ -784,38 +839,38 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Port:"
-msgstr ""
+msgstr "Poort:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Audio CD Plugin"
-msgstr ""
+msgstr "Audio CD Plugin"
 
 #: src/cdaudio-ng/cdaudio-ng.c:244
 msgid "Failed to initialize cdio subsystem."
-msgstr ""
+msgstr "Fout bij initialiseren cdio subsysteem."
 
 #: src/cdaudio-ng/cdaudio-ng.c:300
 #, c-format
 msgid "Invalid URI %s."
-msgstr ""
+msgstr "Ongeldige URI %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:302
 #, c-format
 msgid "Track %d not found."
-msgstr ""
+msgstr "Track %d niet gevonden."
 
 #: src/cdaudio-ng/cdaudio-ng.c:304
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "Track %d is alleen data."
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 msgid "Failed to open audio output."
-msgstr ""
+msgstr "Fout bij open audio uitvoer."
 
 #: src/cdaudio-ng/cdaudio-ng.c:378
 msgid "Error reading audio CD."
-msgstr ""
+msgstr "Fout bij lezen audio CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:449
 msgid "Audio CD"
@@ -824,7 +879,7 @@ msgstr "Audio CD"
 #: src/cdaudio-ng/cdaudio-ng.c:458
 #, c-format
 msgid "Track %d"
-msgstr ""
+msgstr "Track %d"
 
 #: src/cdaudio-ng/cdaudio-ng.c:485 src/cdaudio-ng/cdaudio-ng.c:494
 #, c-format
@@ -833,7 +888,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:497
 msgid "No audio capable CD drive found."
-msgstr ""
+msgstr "Geen CD speler met audio mogelijkheid gevonden."
 
 #: src/cdaudio-ng/cdaudio-ng.c:524
 msgid "Failed to finish initializing opened CD drive."
@@ -850,7 +905,7 @@ msgstr ""
 
 #: src/cdaudio-ng/cdaudio-ng.c:646
 msgid "Failed to create the cddb connection."
-msgstr ""
+msgstr "Fout bij verbinden met de cddb"
 
 #: src/cdaudio-ng/cdaudio-ng.c:721
 msgid "Failed to query the CDDB server"
@@ -864,39 +919,39 @@ msgstr ""
 #: src/cdaudio-ng/cdaudio-ng.c:747
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr ""
+msgstr "Fout bij lezen van cddb info: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:818
 msgid "Drive is empty."
-msgstr "Drive is empty."
+msgstr "Schijfstation is leeg."
 
 #: src/cdaudio-ng/cdaudio-ng.c:820
 msgid "Unsupported disk type."
-msgstr "Unsupported disk type."
+msgstr "Niet-ondersteund schijftype."
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Play CD"
-msgstr "Play CD"
+msgstr "CD afspelen"
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Add CD"
-msgstr "Add CD"
+msgstr "CD toevoegen"
 
 #: src/cd-menu-items/cd-menu-items.c:56
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Audio CD Menu Items"
 
 #: src/compressor/plugin.c:35
 msgid "<b>Compression</b>"
-msgstr ""
+msgstr "<b>Compressie</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr "Centre volume:"
+msgstr ""
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
-msgstr "Dynamic range:"
+msgstr "Dynamisch bereik:"
 
 #: src/compressor/plugin.c:53
 msgid ""
@@ -920,7 +975,7 @@ msgstr ""
 
 #: src/console/plugin.c:34
 msgid "Bass:"
-msgstr "Bass:"
+msgstr "Bas:"
 
 #: src/console/plugin.c:36
 msgid "Treble:"
@@ -928,11 +983,11 @@ msgstr "Treble:"
 
 #: src/console/plugin.c:38
 msgid "Echo:"
-msgstr ""
+msgstr "Echo:"
 
 #: src/console/plugin.c:40
 msgid "Default song length:"
-msgstr "Default song length:"
+msgstr ""
 
 #: src/console/plugin.c:43 src/modplug/plugin_main.c:65
 msgid "<b>Resampling</b>"
@@ -940,11 +995,11 @@ msgstr ""
 
 #: src/console/plugin.c:44
 msgid "Enable audio resampling"
-msgstr "Enable audio resampling"
+msgstr ""
 
 #: src/console/plugin.c:46
 msgid "Resampling rate:"
-msgstr "Resampling rate:"
+msgstr ""
 
 #: src/console/plugin.c:47 src/modplug/plugin_main.c:96
 #: src/resample/resample.c:182 src/resample/resample.c:188
@@ -961,15 +1016,15 @@ msgstr ""
 
 #: src/console/plugin.c:50
 msgid "Ignore length from SPC tags"
-msgstr "Ignore length from SPC tags"
+msgstr "Negeer lengte van SPC tags"
 
 #: src/console/plugin.c:52
 msgid "Increase reverb"
-msgstr "Increase reverb"
+msgstr ""
 
 #: src/console/plugin.c:61
 msgid "Game Console Music Decoder"
-msgstr "Game Console Music Decoder"
+msgstr ""
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -989,6 +1044,8 @@ msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Crossfade Plugin voor Audacious\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
@@ -1008,7 +1065,7 @@ msgstr ""
 
 #: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
 msgid "Intensity:"
-msgstr ""
+msgstr "Intensiteit:"
 
 #: src/crystalizer/crystalizer.c:51
 msgid "Crystalizer"
@@ -1021,12 +1078,12 @@ msgstr ""
 #: src/delete-files/delete-files.c:48
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr ""
+msgstr "Fout bij verplaatsen %s naar de prullenbak: %s."
 
 #: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr ""
+msgstr "Fout bij verwijderen %s: %s."
 
 #: src/delete-files/delete-files.c:98
 #, c-format
@@ -1039,7 +1096,7 @@ msgstr ""
 
 #: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
-msgstr ""
+msgstr "Verplaats naar Prullenbak"
 
 #: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
@@ -1048,51 +1105,51 @@ msgstr ""
 #: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
-msgstr ""
+msgstr "Verwijder"
 
 #: src/delete-files/delete-files.c:130 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Annuleren"
 
 #: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
-msgstr ""
+msgstr "Verwijder Bestanden"
 
 #: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Verwijder Geselcteerde Bestanden"
 
 #: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
-msgstr ""
+msgstr "<b>Verwijder Methode</b>"
 
 #: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
-msgstr ""
+msgstr "Verplaats naar de prullenbak ipv onmiddellijk verwijderen"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr ""
+msgstr "<b>Echo</b>"
 
 #: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:88
 #: src/modplug/plugin_main.c:102
 msgid "Delay:"
-msgstr ""
+msgstr "Vertraging:"
 
 #: src/echo_plugin/echo.c:29 src/modplug/plugin_main.c:89
 #: src/modplug/plugin_main.c:103
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr ""
+msgstr "Terugkoppeling:"
 
 #: src/echo_plugin/echo.c:33 src/modplug/plugin_main.c:107
 msgid "Volume:"
-msgstr ""
+msgstr "Volume:"
 
 #: src/echo_plugin/echo.c:116
 msgid ""
@@ -1104,7 +1161,7 @@ msgstr ""
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Echo"
 
 #: src/ffaudio/ffaudio-core.c:561
 msgid ""
@@ -1118,51 +1175,51 @@ msgstr ""
 
 #: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "FFmpeg Plugin"
 
 #: src/filewriter/filewriter.c:404
 msgid "Output file format:"
-msgstr "Output file format:"
+msgstr "Uitvoer bestandsformaat:"
 
 #: src/filewriter/filewriter.c:421
 msgid "Configure"
-msgstr "Configure"
+msgstr "Configureer"
 
 #: src/filewriter/filewriter.c:431
 msgid "Save into original directory"
-msgstr "Save into original directory"
+msgstr "Opslaan in oorspronkelijke map"
 
 #: src/filewriter/filewriter.c:435
 msgid "Save into custom directory"
-msgstr "Save into custom directory"
+msgstr "Opslaan in aangepaste map"
 
 #: src/filewriter/filewriter.c:445
 msgid "Output file folder:"
-msgstr "Output file folder:"
+msgstr "Bestandsuitvoer map:"
 
 #: src/filewriter/filewriter.c:449
 msgid "Pick a folder"
-msgstr "Pick a folder"
+msgstr "Kies een map"
 
 #: src/filewriter/filewriter.c:462
 msgid "Get filename from:"
-msgstr "Get filename from:"
+msgstr "Verkrijg bestandsnaam van:"
 
 #: src/filewriter/filewriter.c:466
 msgid "original file tags"
-msgstr "original file tags"
+msgstr ""
 
 #: src/filewriter/filewriter.c:471
 msgid "original filename"
-msgstr "original filename"
+msgstr "oorspronkelijke bestandsnaam"
 
 #: src/filewriter/filewriter.c:477
 msgid "Don't strip file name extension"
-msgstr "Do not strip file name extension"
+msgstr "Bestandsnaam extensie niet weghalen"
 
 #: src/filewriter/filewriter.c:486
 msgid "Prepend track number to filename"
-msgstr "Prepend track number to filename"
+msgstr "Lied nummer vooraan aan de bestandsnaam toevoegen"
 
 #: src/filewriter/filewriter.c:502
 msgid ""
@@ -1184,7 +1241,7 @@ msgstr ""
 
 #: src/filewriter/filewriter.c:527
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "FileWriter Plugin"
 
 #: src/filewriter/mp3.c:38 src/filewriter/mp3.c:749
 msgid "Auto"
@@ -1192,7 +1249,7 @@ msgstr "Auto"
 
 #: src/filewriter/mp3.c:38
 msgid "Joint Stereo"
-msgstr "Joint Stereo"
+msgstr "Samengevoegd stereo"
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:63
 #: src/mpg123/mpg123.c:210
@@ -1206,15 +1263,15 @@ msgstr "Mono"
 
 #: src/filewriter/mp3.c:689
 msgid "MP3 Configuration"
-msgstr "MP3 Configuration"
+msgstr "MP3 Configuratie"
 
 #: src/filewriter/mp3.c:713
 msgid "Algorithm Quality:"
-msgstr "Algorithm Quality:"
+msgstr "Algoritme kwaliteit:"
 
 #: src/filewriter/mp3.c:738
 msgid "Output Samplerate:"
-msgstr "Output Sample rate:"
+msgstr ""
 
 #: src/filewriter/mp3.c:766
 msgid "(Hz)"
@@ -1222,7 +1279,7 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:773
 msgid "Bitrate / Compression ratio:"
-msgstr "Bitrate / Compression ratio:"
+msgstr ""
 
 #: src/filewriter/mp3.c:797
 msgid "Bitrate (kbps):"
@@ -1230,31 +1287,31 @@ msgstr "Bitrate (kbps):"
 
 #: src/filewriter/mp3.c:830
 msgid "Compression ratio:"
-msgstr "Compression ratio:"
+msgstr ""
 
 #: src/filewriter/mp3.c:854
 msgid "Audio Mode:"
-msgstr "Audio Mode:"
+msgstr "Audio Modus:"
 
 #: src/filewriter/mp3.c:879
 msgid "Misc:"
-msgstr "Misc:"
+msgstr "Diversen:"
 
 #: src/filewriter/mp3.c:890
 msgid "Enforce strict ISO complience"
-msgstr "Enforce strict ISO compliance"
+msgstr ""
 
 #: src/filewriter/mp3.c:901
 msgid "Error protection"
-msgstr "Error protection"
+msgstr ""
 
 #: src/filewriter/mp3.c:913 src/filewriter/vorbis.c:220
 msgid "Quality"
-msgstr "Quality"
+msgstr "Kwaliteit"
 
 #: src/filewriter/mp3.c:922
 msgid "Enable VBR/ABR"
-msgstr "Enable VBR/ABR"
+msgstr "VBR/ABR inschakelen"
 
 #: src/filewriter/mp3.c:932
 msgid "Type:"
@@ -1262,35 +1319,35 @@ msgstr "Type:"
 
 #: src/filewriter/mp3.c:965
 msgid "VBR Options:"
-msgstr "VBR Options:"
+msgstr "VBR Opties:"
 
 #: src/filewriter/mp3.c:981
 msgid "Minimum bitrate (kbps):"
-msgstr "Minimum bitrate (kbps):"
+msgstr "Minimale bitrate (kbps):"
 
 #: src/filewriter/mp3.c:1008
 msgid "Maximum bitrate (kbps):"
-msgstr "Maximum bitrate (kbps):"
+msgstr "Maximale bitrate (kbps):"
 
 #: src/filewriter/mp3.c:1031
 msgid "Strictly enforce minimum bitrate"
-msgstr "Strictly enforce minimum bitrate"
+msgstr ""
 
 #: src/filewriter/mp3.c:1043
 msgid "ABR Options:"
-msgstr "ABR Options:"
+msgstr "ABR Opties:"
 
 #: src/filewriter/mp3.c:1053
 msgid "Average bitrate (kbps):"
-msgstr "Average bitrate (kbps):"
+msgstr "Gemiddelde bitrate (kbps):"
 
 #: src/filewriter/mp3.c:1081
 msgid "VBR quality level:"
-msgstr "VBR quality level:"
+msgstr "VBR kwaliteitsniveau:"
 
 #: src/filewriter/mp3.c:1100
 msgid "Don't write Xing VBR header"
-msgstr "Don't write Xing VBR header"
+msgstr "Schrijf Xing VBR header niet"
 
 #: src/filewriter/mp3.c:1113
 msgid "VBR/ABR"
@@ -1302,27 +1359,27 @@ msgstr ""
 
 #: src/filewriter/mp3.c:1134
 msgid "Mark as copyright"
-msgstr "Mark as copyright"
+msgstr ""
 
 #: src/filewriter/mp3.c:1145
 msgid "Mark as original"
-msgstr "Mark as original"
+msgstr "Markeer als origineel"
 
 #: src/filewriter/mp3.c:1157
 msgid "ID3 params:"
-msgstr "ID3 params:"
+msgstr "ID3 parameters:"
 
 #: src/filewriter/mp3.c:1168
 msgid "Force addition of version 2 tag"
-msgstr "Force addition of version 2 tag"
+msgstr "Forceer het toevoegen van een versie 2 tag"
 
 #: src/filewriter/mp3.c:1178
 msgid "Only add v1 tag"
-msgstr "Only add v1 tag"
+msgstr "Alleen v1 tag toevoegen"
 
 #: src/filewriter/mp3.c:1185
 msgid "Only add v2 tag"
-msgstr "Only add v2 tag"
+msgstr "Alleen v2 tag toevoegen"
 
 #: src/filewriter/mp3.c:1206
 msgid "Tags"
@@ -1330,15 +1387,15 @@ msgstr "Tags"
 
 #: src/filewriter/vorbis.c:210
 msgid "Vorbis Encoder Configuration"
-msgstr "Vorbis Encoder Configuration"
+msgstr "Vorbis Encoder Configuratie"
 
 #: src/filewriter/vorbis.c:233
 msgid "Quality level (0 - 10):"
-msgstr "Quality level (0 - 10):"
+msgstr "Kwaliteitsniveau (0 - 10):"
 
 #: src/flacng/metadata.c:359 src/wavpack/wavpack.c:212
 msgid "lossless"
-msgstr ""
+msgstr "lossless"
 
 #: src/flacng/plugin.c:187
 msgid ""
@@ -1347,20 +1404,26 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
+"Originele code door\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:195
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "FLAC Decoder"
 
 #: src/gio/gio.c:295
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
+"GIO Plugin voor Audicious\n"
+"Copyright 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:314
 msgid "GIO Plugin"
-msgstr ""
+msgstr "GIO Plugin"
 
 #: src/gl-spectrum/gl-spectrum.c:400
 msgid ""
@@ -1376,7 +1439,7 @@ msgstr ""
 
 #: src/gl-spectrum/gl-spectrum.c:409
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
+msgstr "OpenGL Spectrum Analyseerder"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -1392,19 +1455,19 @@ msgstr ""
 
 #: src/gtkui/columns.c:34
 msgid "Entry number"
-msgstr "Entry number"
+msgstr ""
 
 #: src/gtkui/columns.c:34
 msgid "Title"
-msgstr "Title"
+msgstr "Titel"
 
 #: src/gtkui/columns.c:35
 msgid "Artist"
-msgstr "Artist"
+msgstr "Artiest"
 
 #: src/gtkui/columns.c:35
 msgid "Year"
-msgstr "Year"
+msgstr "Jaar"
 
 #: src/gtkui/columns.c:35
 msgid "Album"
@@ -1412,31 +1475,31 @@ msgstr "Album"
 
 #: src/gtkui/columns.c:35
 msgid "Track"
-msgstr "Track"
+msgstr "Nummer"
 
 #: src/gtkui/columns.c:35
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: src/gtkui/columns.c:36
 msgid "Queue position"
-msgstr "Queue position"
+msgstr "Positie in wachtrij"
 
 #: src/gtkui/columns.c:36
 msgid "Length"
-msgstr "Length"
+msgstr "Lengte"
 
 #: src/gtkui/columns.c:36
 msgid "File path"
-msgstr "File path"
+msgstr "Bestandspad"
 
 #: src/gtkui/columns.c:36
 msgid "File name"
-msgstr "File name"
+msgstr "Bestandsnaam"
 
 #: src/gtkui/columns.c:37
 msgid "Custom title"
-msgstr "Custom title"
+msgstr "Aangepaste titel"
 
 #: src/gtkui/columns.c:37
 msgid "Bitrate"
@@ -1452,27 +1515,27 @@ msgstr ""
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
-msgstr "Dock at Left"
+msgstr "Vastkoppelen aan linkerzijde"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Right"
-msgstr "Dock at Right"
+msgstr "Vastkoppelen aan rechterzijde"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Top"
-msgstr "Dock at Top"
+msgstr "Vastkoppelen aan bovenkant"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Bottom"
-msgstr "Dock at Bottom"
+msgstr "Vastkoppelen aan onderkant"
 
 #: src/gtkui/layout.c:120
 msgid "Undock"
-msgstr "Undock"
+msgstr "Loskoppelen"
 
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
-msgstr "Disable"
+msgstr "Uitschakelen"
 
 #: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
@@ -1480,7 +1543,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
-msgstr "_Open Files ..."
+msgstr "_Open bestanden ..."
 
 #: src/gtkui/menus.c:128
 msgid "Open _URL ..."
@@ -1492,7 +1555,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:130
 msgid "Add U_RL ..."
-msgstr "Add U_RL ..."
+msgstr "U_RL toevoegen ..."
 
 #: src/gtkui/menus.c:132
 msgid "Search _Library"
@@ -1500,24 +1563,24 @@ msgstr ""
 
 #: src/gtkui/menus.c:134
 msgid "A_bout ..."
-msgstr "A_bout ..."
+msgstr ""
 
 #: src/gtkui/menus.c:135
 msgid "_Settings ..."
-msgstr ""
+msgstr "In_stellingen ..."
 
 #: src/gtkui/menus.c:136 src/statusicon/statusicon.c:270
 msgid "_Quit"
-msgstr "_Quit"
+msgstr "_Afsluiten"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
 #: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
-msgstr "_Play"
+msgstr ""
 
 #: src/gtkui/menus.c:140 src/statusicon/statusicon.c:265
 msgid "Paus_e"
-msgstr "Paus_e"
+msgstr ""
 
 #: src/gtkui/menus.c:141 src/statusicon/statusicon.c:266
 msgid "_Stop"
@@ -1525,23 +1588,23 @@ msgstr "_Stop"
 
 #: src/gtkui/menus.c:142 src/statusicon/statusicon.c:263
 msgid "Pre_vious"
-msgstr "Pre_vious"
+msgstr "Vo_rige"
 
 #: src/gtkui/menus.c:143 src/statusicon/statusicon.c:267
 msgid "_Next"
-msgstr "_Next"
+msgstr "_Volgende"
 
 #: src/gtkui/menus.c:145
 msgid "_Repeat"
-msgstr "_Repeat"
+msgstr "_Herhaal"
 
 #: src/gtkui/menus.c:146
 msgid "S_huffle"
-msgstr "S_huffle"
+msgstr ""
 
 #: src/gtkui/menus.c:147
 msgid "N_o Playlist Advance"
-msgstr "N_o Playlist Advance"
+msgstr ""
 
 #: src/gtkui/menus.c:149
 msgid "Stop A_fter This Song"
@@ -1549,15 +1612,15 @@ msgstr ""
 
 #: src/gtkui/menus.c:152 src/gtkui/menus.c:242
 msgid "Song _Info ..."
-msgstr "Song _Info ..."
+msgstr ""
 
 #: src/gtkui/menus.c:153
 msgid "Jump to _Time ..."
-msgstr "Jump to _Time ..."
+msgstr "Spring naar _Tijd ..."
 
 #: src/gtkui/menus.c:154
 msgid "_Jump to Song ..."
-msgstr "_Jump to Song ..."
+msgstr ""
 
 #: src/gtkui/menus.c:156
 msgid "Set Repeat Point _A"
@@ -1573,7 +1636,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:161 src/gtkui/menus.c:167 src/gtkui/menus.c:180
 msgid "By _Title"
-msgstr "By _Title"
+msgstr "Volgens _Titel"
 
 #: src/gtkui/menus.c:162
 msgid "By _Filename"
@@ -1585,11 +1648,11 @@ msgstr ""
 
 #: src/gtkui/menus.c:166 src/gtkui/menus.c:179
 msgid "By Track _Number"
-msgstr "By Track _Number"
+msgstr "Volgens _Nummer"
 
 #: src/gtkui/menus.c:168 src/gtkui/menus.c:181
 msgid "By _Artist"
-msgstr "By _Artist"
+msgstr "Volgens _Artiest"
 
 #: src/gtkui/menus.c:169 src/gtkui/menus.c:182
 msgid "By Al_bum"
@@ -1597,7 +1660,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:170 src/gtkui/menus.c:183
 msgid "By Release _Date"
-msgstr "By Release _Date"
+msgstr "Volgens uitgave_datum"
 
 #: src/gtkui/menus.c:171 src/gtkui/menus.c:184
 msgid "By _Length"
@@ -1605,19 +1668,19 @@ msgstr ""
 
 #: src/gtkui/menus.c:172 src/gtkui/menus.c:185
 msgid "By _File Path"
-msgstr "By _File Path"
+msgstr "Volgens _Bestandspad"
 
 #: src/gtkui/menus.c:173 src/gtkui/menus.c:186
 msgid "By _Custom Title"
-msgstr "By _Custom Title"
+msgstr "Volgens _Aangepaste titel"
 
 #: src/gtkui/menus.c:175 src/gtkui/menus.c:188
 msgid "R_everse Order"
-msgstr "R_everse Order"
+msgstr "R_angschikking omkeren"
 
 #: src/gtkui/menus.c:176 src/gtkui/menus.c:189
 msgid "_Random Order"
-msgstr "_Random Order"
+msgstr "_Willekeurige volgorde"
 
 #: src/gtkui/menus.c:192
 msgid "_Play This Playlist"
@@ -1625,11 +1688,11 @@ msgstr ""
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:244
 msgid "_Refresh"
-msgstr "_Refresh"
+msgstr "_Vernieuw"
 
 #: src/gtkui/menus.c:195
 msgid "_Sort"
-msgstr "_Sort"
+msgstr "_Sorteer"
 
 #: src/gtkui/menus.c:196
 msgid "Sort Se_lected"
@@ -1645,7 +1708,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:200
 msgid "_New"
-msgstr "_New"
+msgstr "_Nieuw"
 
 #: src/gtkui/menus.c:201
 msgid "Ren_ame ..."
@@ -1653,15 +1716,15 @@ msgstr ""
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:256
 msgid "Remo_ve"
-msgstr ""
+msgstr "_Verwijder"
 
 #: src/gtkui/menus.c:204
 msgid "_Import ..."
-msgstr "_Import ..."
+msgstr "_Importeer ..."
 
 #: src/gtkui/menus.c:205
 msgid "_Export ..."
-msgstr "_Export ..."
+msgstr "_Exporteer ..."
 
 #: src/gtkui/menus.c:207
 msgid "Playlist _Manager ..."
@@ -1669,31 +1732,31 @@ msgstr ""
 
 #: src/gtkui/menus.c:208
 msgid "_Queue Manager ..."
-msgstr "_Queue Manager ..."
+msgstr ""
 
 #: src/gtkui/menus.c:211
 msgid "Volume _Up"
-msgstr "Volume _Up"
+msgstr "Volume _Hoger"
 
 #: src/gtkui/menus.c:212
 msgid "Volume _Down"
-msgstr "Volume _Down"
+msgstr "Volume _Lager"
 
 #: src/gtkui/menus.c:214
 msgid "_Equalizer"
-msgstr "_Equaliser"
+msgstr "_Equalizer"
 
 #: src/gtkui/menus.c:216
 msgid "E_ffects ..."
-msgstr ""
+msgstr "E_ffecten ..."
 
 #: src/gtkui/menus.c:219
 msgid "Show _Menu Bar"
-msgstr "Show _Menu Bar"
+msgstr "Toon _Menubalk"
 
 #: src/gtkui/menus.c:221
 msgid "Show I_nfo Bar"
-msgstr "Show I_nfo Bar"
+msgstr "Show I_nfobalk"
 
 #: src/gtkui/menus.c:223
 msgid "Show Info Bar Vis_ualization"
@@ -1701,7 +1764,7 @@ msgstr ""
 
 #: src/gtkui/menus.c:225
 msgid "Show _Status Bar"
-msgstr "Show _Status Bar"
+msgstr "Toon _Statusbalk"
 
 #: src/gtkui/menus.c:228
 msgid "Show _Remaining Time"
@@ -1713,51 +1776,51 @@ msgstr ""
 
 #: src/gtkui/menus.c:234
 msgid "_File"
-msgstr "_File"
+msgstr "_Bestand"
 
 #: src/gtkui/menus.c:235
 msgid "_Playback"
-msgstr "_Playback"
+msgstr ""
 
 #: src/gtkui/menus.c:236
 msgid "P_laylist"
-msgstr "P_laylist"
+msgstr "Spee_llijst"
 
 #: src/gtkui/menus.c:237 src/gtkui/menus.c:251
 msgid "_Services"
-msgstr "_Services"
+msgstr ""
 
 #: src/gtkui/menus.c:238
 msgid "_Output"
-msgstr "_Output"
+msgstr "_Uitvoer"
 
 #: src/gtkui/menus.c:239
 msgid "_View"
-msgstr "_View"
+msgstr "_Bekijk"
 
 #: src/gtkui/menus.c:243
 msgid "_Queue/Unqueue"
-msgstr "_Queue/Unqueue"
+msgstr "In/uit _wachtrij"
 
 #: src/gtkui/menus.c:246
 msgid "Cu_t"
-msgstr "Cu_t"
+msgstr ""
 
 #: src/gtkui/menus.c:247
 msgid "_Copy"
-msgstr "_Copy"
+msgstr "_Kopieer"
 
 #: src/gtkui/menus.c:248
 msgid "_Paste"
-msgstr "_Paste"
+msgstr "_Plak"
 
 #: src/gtkui/menus.c:249
 msgid "Select _All"
-msgstr "Select _All"
+msgstr "Selecteer _Alles"
 
 #: src/gtkui/menus.c:255
 msgid "_Rename ..."
-msgstr ""
+msgstr "He_rnoem ..."
 
 #: src/gtkui/settings.c:35
 msgid "<b>Playlist Tabs</b>"
@@ -1817,8 +1880,8 @@ msgstr "Audacious"
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d kanaal"
+msgstr[1] "%d kanalen"
 
 #: src/gtkui/ui_statusbar.c:101
 #, c-format
@@ -1827,15 +1890,15 @@ msgstr "%d kbps"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr ""
+msgstr "Vorig liedje"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/menus.c:78
 msgid "Play"
-msgstr "Play"
+msgstr "Afspelen"
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
-msgstr "Pause/Resume"
+msgstr "Pauzeer/Hervat"
 
 #: src/hotkey/gui.c:73 src/skins/menus.c:80
 msgid "Stop"
@@ -1843,31 +1906,31 @@ msgstr "Stop"
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr ""
+msgstr "Volgend liedje"
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "Vijf seconden naar voren"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "Vijf seconden terug"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "Mute"
+msgstr "Dempen"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Volume Harder"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Volume zachter"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Spring naar bestand"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -1879,11 +1942,11 @@ msgstr "Show On-Screen-Display"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr ""
+msgstr "Herhaal Aan/Uit"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr ""
+msgstr "Shuffle Aan/Uit"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
@@ -1895,7 +1958,7 @@ msgstr ""
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
-msgstr "(none)"
+msgstr "(geen)"
 
 #: src/hotkey/gui.c:233
 msgid ""
@@ -1904,38 +1967,32 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
-"\n"
-"Do you want to continue?"
 
 #: src/hotkey/gui.c:235
 msgid "Binding mouse buttons"
-msgstr "Binding mouse buttons"
+msgstr ""
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Global Hotkey Plugin Configuration"
+msgstr ""
 
 #: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Press a key combination inside a text field.\n"
-"You can also bind mouse buttons."
 
 #: src/hotkey/gui.c:405
 msgid "Hotkeys:"
-msgstr "Hotkeys:"
+msgstr "Sneltoetsen:"
 
 #: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
-msgstr "<b>Action:</b>"
+msgstr "<b>Actie:</b>"
 
 #: src/hotkey/gui.c:429
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Key Binding:</b>"
+msgstr ""
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
@@ -1958,7 +2015,7 @@ msgstr ""
 
 #: src/hotkey/plugin.c:79
 msgid "Global Hotkeys"
-msgstr ""
+msgstr "Globale Sneltoetsen"
 
 #: src/jack/jack.c:196
 msgid "Connect to all available jack ports"
@@ -1990,20 +2047,20 @@ msgstr ""
 
 #: src/jack/jack.c:438
 msgid "JACK Output"
-msgstr ""
+msgstr "JACK Uitvoer"
 
 #: src/ladspa/plugin.c:519
 #, c-format
 msgid "%s Settings"
-msgstr "%s Settings"
+msgstr "%s Instellingen"
 
 #: src/ladspa/plugin.c:587
 msgid "LADSPA Host Settings"
-msgstr "LADSPA Host Settings"
+msgstr "LADSPA Host Instellingen"
 
 #: src/ladspa/plugin.c:596
 msgid "Module paths:"
-msgstr "Module paths:"
+msgstr "Module paden:"
 
 #: src/ladspa/plugin.c:601
 msgid ""
@@ -2011,37 +2068,36 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Separate multiple paths with a colon.\n"
-"These paths are searched in addition to LADSPA_PATH.\n"
-"After adding new paths, press Enter to scan for new plugins.</small>"
 
 #: src/ladspa/plugin.c:617
 msgid "Available plugins:"
-msgstr "Available plugins:"
+msgstr "Beschikbare plugins:"
 
 #: src/ladspa/plugin.c:630 src/modplug/plugin_main.c:113
 #: src/modplug/plugin_main.c:117 src/modplug/plugin_main.c:121
 #: src/modplug/plugin_main.c:125
 msgid "Enable"
-msgstr "Enable"
+msgstr "Inschakelen"
 
 #: src/ladspa/plugin.c:636
 msgid "Enabled plugins:"
-msgstr "Enabled plugins:"
+msgstr "Ingeschakelde plugins:"
 
 #: src/ladspa/plugin.c:652
 msgid "Settings"
-msgstr "Settings"
+msgstr "Instellingen"
 
 #: src/ladspa/plugin.c:671
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
+"LADSPA Host voor Audacious\n"
+"Copyright 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:676
 msgid "LADSPA Host"
-msgstr ""
+msgstr "LADSPA Host"
 
 #: src/lirc/lirc.c:74
 #, c-format
@@ -2094,7 +2150,7 @@ msgstr ""
 
 #: src/lirc/lirc.c:390
 msgid "<b>Connection</b>"
-msgstr ""
+msgstr "<b>Verbinding</b>"
 
 #: src/lirc/lirc.c:391
 msgid "Reconnect to LIRC server"
@@ -2106,11 +2162,11 @@ msgstr ""
 
 #: src/lirc/lirc.c:403
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "LIRC Plugin"
 
 #: src/lyricwiki/lyricwiki.c:117
 msgid "No lyrics available"
-msgstr ""
+msgstr "Geen song-tekst beschikbaar"
 
 #: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
 #, c-format
@@ -2121,7 +2177,7 @@ msgstr ""
 #: src/lyricwiki/lyricwiki.c:242 src/lyricwiki/lyricwiki.c:252
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Error"
-msgstr "Error"
+msgstr "Fout"
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
@@ -2130,33 +2186,33 @@ msgstr ""
 
 #: src/lyricwiki/lyricwiki.c:260
 msgid "Looking for lyrics ..."
-msgstr ""
+msgstr "Zoeken naar teksten ..."
 
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Ontbrekende metadata"
 
 #: src/lyricwiki/lyricwiki.c:284
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
+msgstr "Verbinden met lyrics.wikia.com ..."
 
 #: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "LyricWiki Plugin"
 
 #: src/m3u/m3u.c:116
 msgid "M3U Playlists"
-msgstr ""
+msgstr "M3U Afspeellijsten"
 
 #: src/metronom/metronom.c:127
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Tact generator: %d bpm"
+msgstr ""
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Tact generator: %d bpm %d/%d"
+msgstr ""
 
 #: src/metronom/metronom.c:218
 msgid ""
@@ -2179,11 +2235,11 @@ msgstr ""
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr ""
+msgstr "<b>Kanalen Mixer</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
-msgstr "Output channels:"
+msgstr "Uitvoerkanalen:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
@@ -2191,23 +2247,23 @@ msgstr ""
 
 #: src/mms/mms.c:195
 msgid "MMS Plugin"
-msgstr ""
+msgstr "MMS Plugin"
 
 #: src/modplug/plugin_main.c:55
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Resolutie</b>"
 
 #: src/modplug/plugin_main.c:56
 msgid "8-bit"
-msgstr ""
+msgstr "8-bit"
 
 #: src/modplug/plugin_main.c:58
 msgid "16-bit"
-msgstr ""
+msgstr "16-bit"
 
 #: src/modplug/plugin_main.c:60
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Kanalen</b>"
 
 #: src/modplug/plugin_main.c:66
 msgid "Nearest (fastest)"
@@ -2231,24 +2287,24 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:75
 msgid "22 kHz"
-msgstr ""
+msgstr "22 kHz"
 
 #: src/modplug/plugin_main.c:77
 msgid "44 kHz"
-msgstr ""
+msgstr "44 kHz"
 
 #: src/modplug/plugin_main.c:79
 msgid "48 kHz"
-msgstr ""
+msgstr "48 kHz"
 
 #: src/modplug/plugin_main.c:81
 msgid "96 kHz"
-msgstr ""
+msgstr "96 kHz"
 
 #: src/modplug/plugin_main.c:86 src/modplug/plugin_main.c:93
 #: src/modplug/plugin_main.c:100
 msgid "Level:"
-msgstr ""
+msgstr "Level:"
 
 #: src/modplug/plugin_main.c:95
 msgid "Cutoff:"
@@ -2264,7 +2320,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:120
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Surround</b>"
 
 #: src/modplug/plugin_main.c:124
 msgid "<b>Preamp</b>"
@@ -2280,15 +2336,15 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:136
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Speel Amiga MOD's"
 
 #: src/modplug/plugin_main.c:138
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Herhaal</b>"
 
 #: src/modplug/plugin_main.c:139
 msgid "Repeat count:"
-msgstr ""
+msgstr "Herhaal teller:"
 
 #: src/modplug/plugin_main.c:141
 msgid "To repeat forever, set the repeat count to -1."
@@ -2296,7 +2352,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:236
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlus (Module Player)"
 
 #: src/mpg123/mpg123.c:210
 msgid "Surround"
@@ -2304,23 +2360,23 @@ msgstr "Surround"
 
 #: src/mpg123/mpg123.c:412
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "MPG123 Plugin"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "MPRIS 2 Server"
 
 #: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Neon HTTP/HTTPS Plugin"
 
 #: src/notify/event.c:65
 msgid "Stopped"
-msgstr "Stopped"
+msgstr "Gestopt"
 
 #: src/notify/event.c:65
 msgid "Audacious is not playing."
-msgstr "Audacious is not playing."
+msgstr "Audacious is niets aan het afspelen."
 
 #: src/notify/notify.c:33
 msgid ""
@@ -2348,11 +2404,11 @@ msgstr ""
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "Laat altijd de notificaties zien"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Desktop Notificaties"
 
 #: src/notify/osd.c:57
 msgid "Show"
@@ -2360,31 +2416,31 @@ msgstr ""
 
 #: src/notify/osd.c:65 src/skins/menus.c:79
 msgid "Pause"
-msgstr ""
+msgstr "Pauze"
 
 #: src/notify/osd.c:72 src/skins/menus.c:82
 msgid "Next"
-msgstr ""
+msgstr "Volgende"
 
 #: src/oss4/plugin.c:38
 msgid "1. Default device"
-msgstr "1. Default device"
+msgstr "1. Standaard apparaat"
 
 #: src/oss4/plugin.c:77 src/sndio/sndio.c:393
 msgid "Audio device:"
-msgstr "Audio device:"
+msgstr "Audio apparaat:"
 
 #: src/oss4/plugin.c:79
 msgid "Use alternate device:"
-msgstr "Use alternate device:"
+msgstr "Gebruik alternatief apparaat:"
 
 #: src/oss4/plugin.c:83
 msgid "Save volume between sessions."
-msgstr ""
+msgstr "Bewaar het volume tussen twee sessies."
 
 #: src/oss4/plugin.c:85
 msgid "Enable format conversions made by the OSS software."
-msgstr "Enable format conversions made by the OSS software."
+msgstr ""
 
 #: src/oss4/plugin.c:87
 msgid "Enable exclusive mode to prevent virtual mixing."
@@ -2398,18 +2454,23 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
+"OSS4 Output Plugin voor Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"Ik wil graag de mensen op #audacious bedanken. Speciaal Tony Vroon en John "
+"Lindgren en natuurlijk de auteurs van de vorige OSS plugin."
 
 #: src/oss4/plugin.c:117
 msgid "OSS4 Output"
-msgstr ""
+msgstr "OSS4 Uitvoer"
 
 #: src/pls/pls.c:102
 msgid "PLS Playlists"
-msgstr ""
+msgstr "PLS Afspeellijsten"
 
 #: src/psf/plugin.c:209
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "OpenPSF PSF1/PSF2 Decoder"
 
 #: src/pulse_audio/pulse_audio.c:644
 msgid ""
@@ -2433,7 +2494,7 @@ msgstr ""
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "PulseAudio Uitvoer"
 
 #: src/resample/resample.c:165
 msgid ""
@@ -2463,11 +2524,11 @@ msgstr ""
 
 #: src/resample/resample.c:176
 msgid "<b>Conversion</b>"
-msgstr ""
+msgstr "<b>Conversie</b>"
 
 #: src/resample/resample.c:177
 msgid "Method:"
-msgstr "Method:"
+msgstr "Methode:"
 
 #: src/resample/resample.c:180 src/sox-resampler/sox-resampler.c:153
 msgid "Rate:"
@@ -2483,31 +2544,31 @@ msgstr ""
 
 #: src/resample/resample.c:186
 msgid "8 kHz:"
-msgstr ""
+msgstr "8 kHz:"
 
 #: src/resample/resample.c:189
 msgid "16 kHz:"
-msgstr ""
+msgstr "16 kHz:"
 
 #: src/resample/resample.c:192
 msgid "22.05 kHz:"
-msgstr ""
+msgstr "22.05 kHz:"
 
 #: src/resample/resample.c:195
 msgid "44.1 kHz:"
-msgstr ""
+msgstr "44.1 kHz:"
 
 #: src/resample/resample.c:198
 msgid "48 kHz:"
-msgstr ""
+msgstr "48 kHz:"
 
 #: src/resample/resample.c:201
 msgid "96 kHz:"
-msgstr ""
+msgstr "96 kHz:"
 
 #: src/resample/resample.c:204
 msgid "192 kHz:"
-msgstr ""
+msgstr "192 kHz:"
 
 #: src/resample/resample.c:214
 msgid "Sample Rate Converter"
@@ -2516,11 +2577,11 @@ msgstr ""
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "OK. Scrobbling voor gebruiker: %s"
 
 #: src/scrobbler2/config_window.c:53
 msgid "Permission Denied"
-msgstr ""
+msgstr "Toegang Geweigerd"
 
 #: src/scrobbler2/config_window.c:55
 msgid "Access the following link to allow Audacious to scrobble your plays:"
@@ -2538,11 +2599,12 @@ msgstr ""
 
 #: src/scrobbler2/config_window.c:75
 msgid "Network Problem."
-msgstr ""
+msgstr "Netwerk Probleem."
 
 #: src/scrobbler2/config_window.c:76
 msgid "There was a problem contacting Last.fm. Please try again later."
 msgstr ""
+"Er is een probleem om met Last.fm te verbinden. Probeer het later nog eens."
 
 #: src/scrobbler2/config_window.c:108
 msgid "Checking..."
@@ -2580,7 +2642,7 @@ msgstr ""
 
 #: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Scrobbler 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:727
 msgid ""
@@ -2593,22 +2655,24 @@ msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"SDL Output Plugin voor Audacious\n"
+"Copyright 2010 John Lindgren"
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
-msgstr ""
+msgstr "SDL Uitvoer"
 
 #: src/search-tool/search-tool.c:104 src/search-tool/search-tool.c:114
 msgid "Library"
-msgstr ""
+msgstr "Bibliotheek"
 
 #: src/search-tool/search-tool.c:211
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Onbekende Artiest"
 
 #: src/search-tool/search-tool.c:213
 msgid "Unknown Album"
-msgstr ""
+msgstr "Onbekend Album"
 
 #: src/search-tool/search-tool.c:636
 #, c-format
@@ -2621,8 +2685,8 @@ msgstr ""
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d album"
+msgstr[1] "%d albums"
 
 #: src/search-tool/search-tool.c:644
 #, c-format
@@ -2633,7 +2697,11 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
+"%s\n"
+"%s, %d liedje"
 msgstr[1] ""
+"%s\n"
+"%s, %d liedjes"
 
 #: src/search-tool/search-tool.c:650
 #, c-format
@@ -2644,15 +2712,19 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
+"%s\n"
+"%d liedje door %s"
 msgstr[1] ""
+"%s\n"
+"%d liedjes door %s"
 
 #: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
-msgstr ""
+msgstr "_Creëer Afspeellijst"
 
 #: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
-msgstr ""
+msgstr "Voeg toe _Aan Afspeellijst"
 
 #: src/search-tool/search-tool.c:724
 msgid "Search library"
@@ -2666,27 +2738,27 @@ msgstr ""
 
 #: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
-msgstr ""
+msgstr "Aub wachten ..."
 
 #: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
-msgstr ""
+msgstr "Kies Map"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
-msgstr ""
+msgstr "Open Bestanden ..."
 
 #: src/skins/menus.c:57
 msgid "Open URL ..."
-msgstr ""
+msgstr "Open URL ..."
 
 #: src/skins/menus.c:59
 msgid "Playback"
-msgstr "Playback"
+msgstr ""
 
 #: src/skins/menus.c:60
 msgid "Playlist"
-msgstr ""
+msgstr "Speellijst"
 
 #: src/skins/menus.c:61
 msgid "View"
@@ -2699,11 +2771,11 @@ msgstr ""
 
 #: src/skins/menus.c:65
 msgid "About ..."
-msgstr ""
+msgstr "Over ..."
 
 #: src/skins/menus.c:66
 msgid "Settings ..."
-msgstr ""
+msgstr "Instellingen ..."
 
 #: src/skins/menus.c:67
 msgid "Quit"
@@ -2715,7 +2787,7 @@ msgstr ""
 
 #: src/skins/menus.c:73
 msgid "Repeat"
-msgstr "Repeat"
+msgstr "Herhaal"
 
 #: src/skins/menus.c:74
 msgid "Shuffle"
@@ -2723,63 +2795,63 @@ msgstr "Shuffle"
 
 #: src/skins/menus.c:75
 msgid "No Playlist Advance"
-msgstr "No Playlist Advance"
+msgstr ""
 
 #: src/skins/menus.c:76
 msgid "Stop After This Song"
-msgstr ""
+msgstr "Stop Na Dit Liedje"
 
 #: src/skins/menus.c:81
 msgid "Previous"
-msgstr ""
+msgstr "Vorige"
 
 #: src/skins/menus.c:84
 msgid "Set A-B Repeat"
-msgstr ""
+msgstr "Set A-B Herhaling"
 
 #: src/skins/menus.c:85
 msgid "Clear A-B Repeat"
-msgstr ""
+msgstr "Wis A-B Herhaling"
 
 #: src/skins/menus.c:87
 msgid "Jump to Song ..."
-msgstr ""
+msgstr "Spring naar Liedje ..."
 
 #: src/skins/menus.c:88
 msgid "Jump to Time ..."
-msgstr ""
+msgstr "Spring naar Tijd ..."
 
 #: src/skins/menus.c:92
 msgid "Play This Playlist"
-msgstr ""
+msgstr "Speel Deze Afspeellijst Af"
 
 #: src/skins/menus.c:94
 msgid "New Playlist"
-msgstr ""
+msgstr "Nieuwe afspeellijst"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
-msgstr ""
+msgstr "Hernoem Afspeellijst ..."
 
 #: src/skins/menus.c:96
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Verwijder Afspeellijst"
 
 #: src/skins/menus.c:98
 msgid "Previous Playlist"
-msgstr ""
+msgstr "Vorige Afspeellijst"
 
 #: src/skins/menus.c:99
 msgid "Next Playlist"
-msgstr ""
+msgstr "Volgende Afspeellijst"
 
 #: src/skins/menus.c:101
 msgid "Import Playlist ..."
-msgstr ""
+msgstr "Importeer Afspeellijst ..."
 
 #: src/skins/menus.c:102
 msgid "Export Playlist ..."
-msgstr ""
+msgstr "Exporteer Afspeellijst ..."
 
 #: src/skins/menus.c:104
 msgid "Playlist Manager ..."
@@ -2795,11 +2867,11 @@ msgstr ""
 
 #: src/skins/menus.c:111
 msgid "Show Playlist Editor"
-msgstr "Show Playlist Editor"
+msgstr ""
 
 #: src/skins/menus.c:113
 msgid "Show Equalizer"
-msgstr "Show Equaliser"
+msgstr "Toon Equalizer"
 
 #: src/skins/menus.c:116
 msgid "Show Remaining Time"
@@ -2807,7 +2879,7 @@ msgstr ""
 
 #: src/skins/menus.c:119
 msgid "Always on Top"
-msgstr ""
+msgstr "Altijd bovenaan"
 
 #: src/skins/menus.c:121
 msgid "On All Workspaces"
@@ -2827,19 +2899,19 @@ msgstr ""
 
 #: src/skins/menus.c:135
 msgid "Add URL ..."
-msgstr ""
+msgstr "URL Toevoegen ..."
 
 #: src/skins/menus.c:136
 msgid "Add Files ..."
-msgstr ""
+msgstr "Bestanden Toevoegen ..."
 
 #: src/skins/menus.c:140 src/skins/menus.c:167 src/skins/menus.c:177
 msgid "By Title"
-msgstr ""
+msgstr "Volgens titel"
 
 #: src/skins/menus.c:141 src/skins/menus.c:170 src/skins/menus.c:180
 msgid "By Filename"
-msgstr ""
+msgstr "Volgens bestandsnaam"
 
 #: src/skins/menus.c:142 src/skins/menus.c:171 src/skins/menus.c:181
 msgid "By File Path"
@@ -2847,51 +2919,51 @@ msgstr ""
 
 #: src/skins/menus.c:148
 msgid "Remove All"
-msgstr ""
+msgstr "Verwijder Alles"
 
 #: src/skins/menus.c:149
 msgid "Clear Queue"
-msgstr ""
+msgstr "Wachtrij leegmaken"
 
 #: src/skins/menus.c:151
 msgid "Remove Unavailable Files"
-msgstr ""
+msgstr "Verwijder onbeschikbare bestanden"
 
 #: src/skins/menus.c:152
 msgid "Remove Duplicates"
-msgstr ""
+msgstr "Verwijder duplicaten"
 
 #: src/skins/menus.c:154
 msgid "Remove Unselected"
-msgstr ""
+msgstr "Verwijder niet geselecteerde"
 
 #: src/skins/menus.c:155
 msgid "Remove Selected"
-msgstr ""
+msgstr "Verwijder geselecteerde"
 
 #: src/skins/menus.c:159
 msgid "Search and Select"
-msgstr ""
+msgstr "Zoek en selecteer"
 
 #: src/skins/menus.c:161
 msgid "Invert Selection"
-msgstr ""
+msgstr "Selectie omkeren"
 
 #: src/skins/menus.c:162
 msgid "Select None"
-msgstr ""
+msgstr "Selecteer geen enkele"
 
 #: src/skins/menus.c:163
 msgid "Select All"
-msgstr ""
+msgstr "Selecteer alles"
 
 #: src/skins/menus.c:168 src/skins/menus.c:178
 msgid "By Album"
-msgstr ""
+msgstr "Volgens album"
 
 #: src/skins/menus.c:169 src/skins/menus.c:179
 msgid "By Artist"
-msgstr ""
+msgstr "Volgens artiest"
 
 #: src/skins/menus.c:172 src/skins/menus.c:182
 msgid "By Release Date"
@@ -2899,35 +2971,35 @@ msgstr ""
 
 #: src/skins/menus.c:173 src/skins/menus.c:183
 msgid "By Track Number"
-msgstr ""
+msgstr "Volgens nummer"
 
 #: src/skins/menus.c:187
 msgid "Randomize List"
-msgstr ""
+msgstr "Herschik lijst in willekeurige volgorde"
 
 #: src/skins/menus.c:188
 msgid "Reverse List"
-msgstr ""
+msgstr "Lijst omkeren"
 
 #: src/skins/menus.c:190
 msgid "Sort Selected"
-msgstr ""
+msgstr "Sorteer het geselecteerde"
 
 #: src/skins/menus.c:191
 msgid "Sort List"
-msgstr ""
+msgstr "Sorteer lijst"
 
 #: src/skins/menus.c:197
 msgid "Cut"
-msgstr ""
+msgstr "Knip"
 
 #: src/skins/menus.c:198
 msgid "Copy"
-msgstr ""
+msgstr "Kopieer"
 
 #: src/skins/menus.c:199
 msgid "Paste"
-msgstr ""
+msgstr "Plak"
 
 #: src/skins/menus.c:201
 msgid "Queue/Unqueue"
@@ -2935,7 +3007,7 @@ msgstr ""
 
 #: src/skins/menus.c:207
 msgid "Load Preset ..."
-msgstr ""
+msgstr "Laad Presets ..."
 
 #: src/skins/menus.c:208
 msgid "Load Auto Preset ..."
@@ -2943,19 +3015,19 @@ msgstr ""
 
 #: src/skins/menus.c:209
 msgid "Load Default"
-msgstr ""
+msgstr "Laad Standaard"
 
 #: src/skins/menus.c:210
 msgid "Load Preset File ..."
-msgstr ""
+msgstr "Laad Presets Bestand"
 
 #: src/skins/menus.c:211
 msgid "Load EQF File ..."
-msgstr ""
+msgstr "Laad EQF Bestand"
 
 #: src/skins/menus.c:213
 msgid "Save Preset ..."
-msgstr ""
+msgstr "Bewaar Presets ..."
 
 #: src/skins/menus.c:214
 msgid "Save Auto Preset ..."
@@ -2963,19 +3035,19 @@ msgstr ""
 
 #: src/skins/menus.c:215
 msgid "Save Default"
-msgstr ""
+msgstr "Bewaar Standaard"
 
 #: src/skins/menus.c:216
 msgid "Save Preset File ..."
-msgstr ""
+msgstr "Bewaar Presets Bestand ..."
 
 #: src/skins/menus.c:217
 msgid "Save EQF File ..."
-msgstr ""
+msgstr "Bewaar EQF Bestand ..."
 
 #: src/skins/menus.c:219
 msgid "Delete Preset ..."
-msgstr ""
+msgstr "Verwijder Preset ..."
 
 #: src/skins/menus.c:220
 msgid "Delete Auto Preset ..."
@@ -2983,45 +3055,45 @@ msgstr ""
 
 #: src/skins/menus.c:222
 msgid "Import Winamp Presets ..."
-msgstr ""
+msgstr "Importeer Winaps Presets ..."
 
 #: src/skins/menus.c:224
 msgid "Reset to Zero"
-msgstr ""
+msgstr "Terug naar Nul"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr ""
+msgstr "Winamp Klassieke Interface"
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:375
 #: src/skins/preset-list.c:390
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:342
 #: src/skins/preset-list.c:358
 msgid "Load"
-msgstr ""
+msgstr "Laad"
 
 #: src/skins/preset-browser.c:82
 msgid "Load Preset File"
-msgstr ""
+msgstr "Laad Presets Bestand"
 
 #: src/skins/preset-browser.c:106
 msgid "Load EQF File"
-msgstr ""
+msgstr "Laad EQF Bestand"
 
 #: src/skins/preset-browser.c:122
 msgid "Save Preset File"
-msgstr ""
+msgstr "Bewaar Presets Bestand"
 
 #: src/skins/preset-browser.c:144
 msgid "Save EQF File"
-msgstr ""
+msgstr "Bewaar EQF Bestand"
 
 #: src/skins/preset-browser.c:162
 msgid "Import Winamp Presets"
-msgstr ""
+msgstr "Importeer Winamp Instellingen"
 
 #: src/skins/preset-list.c:289
 msgid "Presets"
@@ -3029,7 +3101,7 @@ msgstr "Presets"
 
 #: src/skins/preset-list.c:339
 msgid "Load preset"
-msgstr ""
+msgstr "Laad Presets"
 
 #: src/skins/preset-list.c:355
 msgid "Load auto-preset"
@@ -3037,7 +3109,7 @@ msgstr ""
 
 #: src/skins/preset-list.c:371
 msgid "Save preset"
-msgstr ""
+msgstr "Bewaar Presets"
 
 #: src/skins/preset-list.c:386
 msgid "Save auto-preset"
@@ -3045,7 +3117,7 @@ msgstr ""
 
 #: src/skins/preset-list.c:413
 msgid "Delete preset"
-msgstr ""
+msgstr "Verwijder preset"
 
 #: src/skins/preset-list.c:429
 msgid "Delete auto-preset"
@@ -3053,19 +3125,19 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:181
 msgid "_Player:"
-msgstr "_Player:"
+msgstr "_Speler:"
 
 #: src/skins/skins_cfg.c:183
 msgid "Select main player window font:"
-msgstr "Select main player window font:"
+msgstr ""
 
 #: src/skins/skins_cfg.c:184
 msgid "_Playlist:"
-msgstr "_Playlist:"
+msgstr "_Speellijst:"
 
 #: src/skins/skins_cfg.c:186
 msgid "Select playlist font:"
-msgstr "Select playlist font:"
+msgstr "Selecteer lettertype van de speellijst:"
 
 #: src/skins/skins_cfg.c:191
 msgid "<b>Skin</b>"
@@ -3073,27 +3145,27 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:193
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Lettertypes</b>"
 
 #: src/skins/skins_cfg.c:196
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Use bitmap fonts (supports ASCII only)"
+msgstr "Gebruik bitmap lettertypen (ondersteunt alleen ASCII)"
 
 #: src/skins/skins_cfg.c:198
 msgid "Scroll song title"
-msgstr ""
+msgstr "Scrol titel "
 
 #: src/skins/skins_cfg.c:200
 msgid "Scroll song title in both directions"
-msgstr "Scroll song title in both directions"
+msgstr "Scrol titel in beide kanten"
 
 #: src/skins/skins_cfg.c:205
 msgid "Analyzer"
-msgstr ""
+msgstr "Analyzer"
 
 #: src/skins/skins_cfg.c:206
 msgid "Scope"
-msgstr ""
+msgstr "Scope"
 
 #: src/skins/skins_cfg.c:207
 msgid "Voiceprint / VU meter"
@@ -3101,64 +3173,64 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:208
 msgid "Off"
-msgstr ""
+msgstr "Uit"
 
 #: src/skins/skins_cfg.c:212 src/skins/skins_cfg.c:237
 #: src/skins/skins_cfg.c:243
 msgid "Normal"
-msgstr ""
+msgstr "Normaal"
 
 #: src/skins/skins_cfg.c:213 src/skins/skins_cfg.c:238
 msgid "Fire"
-msgstr ""
+msgstr "Vuur"
 
 #: src/skins/skins_cfg.c:214
 msgid "Vertical lines"
-msgstr ""
+msgstr "Verticale Strepen"
 
 #: src/skins/skins_cfg.c:218
 msgid "Lines"
-msgstr ""
+msgstr "Lijnen"
 
 #: src/skins/skins_cfg.c:219
 msgid "Bars"
-msgstr ""
+msgstr "Horizontale Strepen"
 
 #: src/skins/skins_cfg.c:223
 msgid "Slowest"
-msgstr ""
+msgstr "Traagst"
 
 #: src/skins/skins_cfg.c:224
 msgid "Slow"
-msgstr ""
+msgstr "Traag"
 
 #: src/skins/skins_cfg.c:225 src/sox-resampler/sox-resampler.c:145
 msgid "Medium"
-msgstr ""
+msgstr "Matig"
 
 #: src/skins/skins_cfg.c:226
 msgid "Fast"
-msgstr ""
+msgstr "Snel"
 
 #: src/skins/skins_cfg.c:227
 msgid "Fastest"
-msgstr ""
+msgstr "Snelst"
 
 #: src/skins/skins_cfg.c:231
 msgid "Dots"
-msgstr ""
+msgstr "Punten"
 
 #: src/skins/skins_cfg.c:232
 msgid "Line"
-msgstr ""
+msgstr "Lijn"
 
 #: src/skins/skins_cfg.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Solide"
 
 #: src/skins/skins_cfg.c:239
 msgid "Ice"
-msgstr ""
+msgstr "IJs"
 
 #: src/skins/skins_cfg.c:244
 msgid "Smooth"
@@ -3166,7 +3238,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:248
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Type</b>"
 
 #: src/skins/skins_cfg.c:249
 msgid "Visualization type:"
@@ -3174,11 +3246,11 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:252
 msgid "<b>Analyzer</b>"
-msgstr ""
+msgstr "<b>Analyzer</b>"
 
 #: src/skins/skins_cfg.c:253
 msgid "Show peaks"
-msgstr ""
+msgstr "Laat pieken zien"
 
 #: src/skins/skins_cfg.c:255
 msgid "Coloring:"
@@ -3186,7 +3258,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:258
 msgid "Style:"
-msgstr ""
+msgstr "Stijl:"
 
 #: src/skins/skins_cfg.c:261
 msgid "Falloff:"
@@ -3198,7 +3270,7 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:268
 msgid "Scope Style:"
-msgstr ""
+msgstr "Scope Stijl:"
 
 #: src/skins/skins_cfg.c:271
 msgid "Voiceprint Coloring:"
@@ -3206,19 +3278,19 @@ msgstr ""
 
 #: src/skins/skins_cfg.c:274
 msgid "VU Meter Style:"
-msgstr ""
+msgstr "VU Meter Stijl:"
 
 #: src/skins/skins_cfg.c:280
 msgid "General"
-msgstr "General"
+msgstr "Algemeen"
 
 #: src/skins/skins_cfg.c:281
 msgid "Visualization"
-msgstr ""
+msgstr "Visualisatie "
 
 #: src/skins/ui_equalizer.c:290
 msgid "Preamp"
-msgstr "Preamp"
+msgstr "Voorversterker"
 
 #: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
@@ -3262,12 +3334,12 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
-msgstr "Audacious Equaliser"
+msgstr "Audacious Equalizer"
 
 #: src/skins/ui_main.c:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Seek to %d:%-2.2d / %d:%-2.2d"
+msgstr ""
 
 #: src/skins/ui_main.c:707
 #, c-format
@@ -3277,32 +3349,32 @@ msgstr "Volume: %d%%"
 #: src/skins/ui_main.c:730
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Balance: %d%% left"
+msgstr "Balans: %d%% links"
 
 #: src/skins/ui_main.c:732
 msgid "Balance: center"
-msgstr "Balance: centre"
+msgstr "Balans: gecentreerd"
 
 #: src/skins/ui_main.c:734
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Balance: %d%% right"
+msgstr "Balans: %d%% rechts"
 
 #: src/skins/ui_main.c:833
 msgid "Options Menu"
-msgstr "Options Menu"
+msgstr "Opties menu"
 
 #: src/skins/ui_main.c:837
 msgid "Disable 'Always On Top'"
-msgstr "Disable 'Always On Top'"
+msgstr "'Altijd bovenaan' uitschakelen"
 
 #: src/skins/ui_main.c:839
 msgid "Enable 'Always On Top'"
-msgstr "Enable 'Always On Top'"
+msgstr "'Altijd bovenaan' inschakelen"
 
 #: src/skins/ui_main.c:842
 msgid "File Info Box"
-msgstr "File Info Box"
+msgstr ""
 
 #: src/skins/ui_main.c:1281
 msgid "Repeat point A set."
@@ -3318,15 +3390,15 @@ msgstr ""
 
 #: src/skins/ui_main_evlisteners.c:109
 msgid "Single mode."
-msgstr "Single mode."
+msgstr ""
 
 #: src/skins/ui_main_evlisteners.c:111
 msgid "Playlist mode."
-msgstr "Playlist mode."
+msgstr "Speellijst modus."
 
 #: src/skins/ui_main_evlisteners.c:117
 msgid "Stopping after song."
-msgstr "Stopping after song."
+msgstr ""
 
 #: src/skins/ui_playlist.c:222
 msgid "Search entries in active playlist"
@@ -3346,19 +3418,19 @@ msgstr ""
 
 #: src/skins/ui_playlist.c:238
 msgid "Title: "
-msgstr ""
+msgstr "Titel:"
 
 #: src/skins/ui_playlist.c:246
 msgid "Album: "
-msgstr ""
+msgstr "Album:"
 
 #: src/skins/ui_playlist.c:254
 msgid "Artist: "
-msgstr ""
+msgstr "Artiest"
 
 #: src/skins/ui_playlist.c:262
 msgid "Filename: "
-msgstr ""
+msgstr "Bestandsnaam:"
 
 #: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
@@ -3379,7 +3451,7 @@ msgstr ""
 #: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
-msgstr ""
+msgstr "%s (%d van %d)"
 
 #: src/skins/ui_skinselector.c:163
 msgid "Archived Winamp 2.x skin"
@@ -3418,11 +3490,11 @@ msgstr ""
 
 #: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
-msgstr ""
+msgstr "Sndfile Plugin"
 
 #: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "Over de Sndio Output Plugin"
 
 #: src/sndio/sndio.c:173
 msgid ""
@@ -3448,7 +3520,7 @@ msgstr ""
 
 #: src/sndio/sndio.c:400
 msgid "(empty means default)"
-msgstr ""
+msgstr "(leeg betekent standaard)"
 
 #: src/sndio/sndio.c:416
 msgid "OK"
@@ -3517,50 +3589,55 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"SoX Resampler Plugin voor Audacious\n"
+"Copyright 2013 Michał Lipski\n"
+"\n"
+"Gebaseerd op de Sample Rate Converter Plugin:\n"
+"Copyright 2010-2012 John Lindgren"
 
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
-msgstr ""
+msgstr "Snel"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
-msgstr ""
+msgstr "Laag"
 
 #: src/sox-resampler/sox-resampler.c:146
 msgid "High"
-msgstr ""
+msgstr "Hoog"
 
 #: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
-msgstr ""
+msgstr "Erg Hoog"
 
 #: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
-msgstr ""
+msgstr "Kwaliteit:"
 
 #: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"
-msgstr ""
+msgstr "SoX Resampler"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Snelheid en Pitch</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr ""
+msgstr "Snelheid:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr ""
+msgstr "Pitch:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Snelheid en Pitch"
 
 #: src/statusicon/statusicon.c:269
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "Ins_tellingen"
 
 #: src/statusicon/statusicon.c:375
 msgid ""
@@ -3579,7 +3656,7 @@ msgstr ""
 
 #: src/statusicon/statusicon.c:383
 msgid "Change volume"
-msgstr ""
+msgstr "Verander Volume"
 
 #: src/statusicon/statusicon.c:386
 msgid "Change playing song"
@@ -3587,7 +3664,7 @@ msgstr ""
 
 #: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
-msgstr ""
+msgstr "<b>Ander Instellingen</b>"
 
 #: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
@@ -3603,7 +3680,7 @@ msgstr ""
 
 #: src/statusicon/statusicon.c:403
 msgid "Status Icon"
-msgstr ""
+msgstr "Status Icoon"
 
 #: src/stereo_plugin/stereo.c:17
 msgid ""
@@ -3611,23 +3688,26 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
+"Extra Stereo Plugin\n"
+"\n"
+"Door Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
-msgstr ""
+msgstr "<b>Extra Stereo"
 
 #: src/stereo_plugin/stereo.c:36
 msgid "Extra Stereo"
-msgstr ""
+msgstr "Extra Stereo"
 
 #: src/tonegen/tonegen.c:83
 #, c-format
 msgid "%s %.1f Hz"
-msgstr ""
+msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:83
 msgid "Tone Generator: "
-msgstr ""
+msgstr "Toon Generator:"
 
 #: src/tonegen/tonegen.c:174
 msgid ""
@@ -3640,7 +3720,7 @@ msgstr ""
 
 #: src/tonegen/tonegen.c:183
 msgid "Tone Generator"
-msgstr ""
+msgstr "Toon Generator"
 
 #: src/voice_removal/voice_removal.c:53
 msgid "Voice Removal"
@@ -3669,7 +3749,7 @@ msgstr ""
 
 #: src/vorbis/vorbis.c:504
 msgid "Ogg Vorbis Decoder"
-msgstr ""
+msgstr "Ogg Vorbis Decoder"
 
 #: src/vtx/vtx.c:167
 msgid ""
@@ -3680,7 +3760,7 @@ msgstr ""
 
 #: src/vtx/vtx.c:173
 msgid "VTX Decoder"
-msgstr ""
+msgstr "VTX Decoder"
 
 #: src/wavpack/wavpack.c:214
 msgid "lossy (hybrid)"
@@ -3696,15 +3776,27 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
+"Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Enkele regels code van de plugin zijn door Miles Egan."
 
 #: src/wavpack/wavpack.c:272
 msgid "WavPack Decoder"
-msgstr ""
+msgstr "WavPack Decoder"
 
 #: src/xsf/plugin.c:217
 msgid "2SF Decoder"
-msgstr ""
+msgstr "2SF Decoder"
 
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr ""
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32,0 kHz:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 kHz:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 kHz:"

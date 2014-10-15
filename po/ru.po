@@ -31,9 +31,9 @@
 # Алексей <kvadrocu7@gmail.com>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins\n"
+"Project-Id-Version: Audacious Plugins Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-07-20 16:06+0200\n"
+"POT-Creation-Date: 2014-10-15 21:40+0200\n"
 "PO-Revision-Date: 2014-04-23 10:22+0000\n"
 "Last-Translator: Andrei Stepanov\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/audacious/"
@@ -388,7 +388,7 @@ msgstr ""
 msgid "ALSA Output"
 msgstr "Вывод ALSA"
 
-#: src/amidi-plug/amidi-plug.c:466
+#: src/amidi-plug/amidi-plug.c:464
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "Плагин AMIDI (проигрыватель MIDI)"
 
@@ -424,27 +424,15 @@ msgstr "Транспонирование: "
 msgid "Drum shift:"
 msgstr "Смещение ударных: "
 
-#: src/amidi-plug/i_configure.c:127
-msgid "<b>Advanced</b>"
-msgstr "<b>Расширенные</b>"
-
-#: src/amidi-plug/i_configure.c:128
-msgid "Extract comments from MIDI file"
-msgstr "Считывать комментарии из MIDI-файлов"
-
-#: src/amidi-plug/i_configure.c:130
-msgid "Extract lyrics from MIDI file"
-msgstr "Считывать тексты из MIDI-файлов"
-
-#: src/amidi-plug/i_configure.c:134
+#: src/amidi-plug/i_configure.c:129
 msgid "<b>SoundFont</b>"
 msgstr "<b>Шрифт</b>"
 
-#: src/amidi-plug/i_configure.c:136
+#: src/amidi-plug/i_configure.c:131
 msgid "<b>Synthesizer</b>"
 msgstr "<b>Синтезатор</b>"
 
-#: src/amidi-plug/i_configure.c:141
+#: src/amidi-plug/i_configure.c:136
 msgid "Sampling rate:"
 msgstr "Частота дискретизации:"
 
@@ -464,60 +452,60 @@ msgstr "Имя файла"
 msgid "Size (bytes)"
 msgstr "Размер (байт)"
 
-#: src/amidi-plug/i_fileinfo.c:176
+#: src/amidi-plug/i_fileinfo.c:184
 msgid "Name:"
 msgstr "Имя:"
 
-#: src/amidi-plug/i_fileinfo.c:203
+#: src/amidi-plug/i_fileinfo.c:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\">Информация MIDI </span>"
 
-#: src/amidi-plug/i_fileinfo.c:217
+#: src/amidi-plug/i_fileinfo.c:216
 msgid "Format:"
 msgstr "Формат:"
 
-#: src/amidi-plug/i_fileinfo.c:220
+#: src/amidi-plug/i_fileinfo.c:219
 msgid "Length (msec):"
 msgstr "Длительность (мс):"
 
-#: src/amidi-plug/i_fileinfo.c:223
+#: src/amidi-plug/i_fileinfo.c:222
 msgid "No. of Tracks:"
 msgstr "Количество дорожек:"
 
-#: src/amidi-plug/i_fileinfo.c:229
+#: src/amidi-plug/i_fileinfo.c:228
 msgid "variable"
 msgstr "переменный"
 
-#: src/amidi-plug/i_fileinfo.c:231
+#: src/amidi-plug/i_fileinfo.c:230
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidi-plug/i_fileinfo.c:239
+#: src/amidi-plug/i_fileinfo.c:238
 msgid "BPM (wavg):"
 msgstr "BPM (wavg):"
 
-#: src/amidi-plug/i_fileinfo.c:242
+#: src/amidi-plug/i_fileinfo.c:241
 msgid "Time Div:"
 msgstr "Time Div:"
 
-#: src/amidi-plug/i_fileinfo.c:253
+#: src/amidi-plug/i_fileinfo.c:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\">Комментарии и тексты MIDI </span>"
 
-#: src/amidi-plug/i_fileinfo.c:302
+#: src/amidi-plug/i_fileinfo.c:299
 msgid "* no comments available in this MIDI file *"
 msgstr "* в этом MIDI-файле нет комментариев *"
 
-#: src/amidi-plug/i_fileinfo.c:314
+#: src/amidi-plug/i_fileinfo.c:311
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* в этом MIDI-файле нет текстов *"
 
-#: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
+#: src/amidi-plug/i_fileinfo.c:321 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
 msgstr "Закрыть"
 
-#: src/amidi-plug/i_fileinfo.c:366
+#: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
 msgstr "  (неверный UTF-8)"
 
@@ -4096,6 +4084,15 @@ msgstr "Декодер 2SF"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XSPF"
+
+#~ msgid "<b>Advanced</b>"
+#~ msgstr "<b>Расширенные</b>"
+
+#~ msgid "Extract comments from MIDI file"
+#~ msgstr "Считывать комментарии из MIDI-файлов"
+
+#~ msgid "Extract lyrics from MIDI file"
+#~ msgstr "Считывать тексты из MIDI-файлов"
 
 #~ msgid "32.0 kHz:"
 #~ msgstr "32.0 кГц:"

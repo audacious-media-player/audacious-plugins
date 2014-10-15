@@ -11,14 +11,14 @@
 # Petr Pisar <petr.pisar@atlas.cz>, 2007-2012
 # Petr Šimáček <petr.simacek@gmail.com>, 2012
 # Petr Šimáček <petr.simacek@gmail.com>, 2012
-# Petr Šimáček <petr.simacek@gmail.com>, 2013
+# Petr Šimáček <petr.simacek@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-07-20 16:06+0200\n"
-"PO-Revision-Date: 2014-05-17 15:02+0000\n"
-"Last-Translator: fri\n"
+"POT-Creation-Date: 2014-10-15 21:40+0200\n"
+"PO-Revision-Date: 2014-09-11 08:23+0000\n"
+"Last-Translator: Petr Šimáček <petr.simacek@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/audacious/language/"
 "cs/)\n"
 "Language: cs\n"
@@ -41,11 +41,11 @@ msgstr "prostorový zvuk"
 
 #: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
-msgstr ""
+msgstr "AAC (MP4) dekodér"
 
 #: src/aac-raw/aac.c:476
 msgid "AAC (Raw) Decoder"
-msgstr ""
+msgstr "AAC (Raw) dekodér"
 
 #: src/adplug/adplug-xmms.cc:137 src/modplug/modplugbmp.cxx:348
 #: src/psf/plugin.c:122 src/vtx/vtx.c:62 src/xsf/plugin.c:80
@@ -58,7 +58,7 @@ msgstr "AdPlug (AdLib přehrávač)"
 
 #: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
-msgstr ""
+msgstr "Nastavit budík"
 
 #: src/alarm/alarm.c:804
 msgid ""
@@ -179,12 +179,12 @@ msgstr "Nastavení budíku"
 
 #: src/alarm/interface.c:180 src/filewriter/mp3.c:690
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
-msgstr ""
+msgstr "_Zrušit"
 
 #: src/alarm/interface.c:188 src/alarm/interface.c:252
 #: src/alarm/interface.c:267
@@ -327,13 +327,13 @@ msgstr ""
 msgid "ALSA Output"
 msgstr "ALSA výstup:"
 
-#: src/amidi-plug/amidi-plug.c:466
+#: src/amidi-plug/amidi-plug.c:464
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI přehrávač)"
 
 #: src/amidi-plug/i_configure.c:96
 msgid "Override default gain:"
-msgstr ""
+msgstr "Přepsat výchozí gain:"
 
 #: src/amidi-plug/i_configure.c:102
 msgid "Override default polyphony:"
@@ -345,7 +345,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.c:110 src/amidi-plug/i_configure.c:116
 msgid "On"
-msgstr ""
+msgstr "On"
 
 #: src/amidi-plug/i_configure.c:114
 msgid "Override default chorus:"
@@ -353,7 +353,7 @@ msgstr ""
 
 #: src/amidi-plug/i_configure.c:122 src/console/plugin.c:33
 msgid "<b>Playback</b>"
-msgstr ""
+msgstr "<b>Playback</b>"
 
 #: src/amidi-plug/i_configure.c:123
 msgid "Transpose:"
@@ -363,29 +363,17 @@ msgstr ""
 msgid "Drum shift:"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:127
-msgid "<b>Advanced</b>"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:128
-msgid "Extract comments from MIDI file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:130
-msgid "Extract lyrics from MIDI file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:134
+#: src/amidi-plug/i_configure.c:129
 msgid "<b>SoundFont</b>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:136
+#: src/amidi-plug/i_configure.c:131
 msgid "<b>Synthesizer</b>"
-msgstr ""
+msgstr "<b>Synthesizer</b>"
 
-#: src/amidi-plug/i_configure.c:141
+#: src/amidi-plug/i_configure.c:136
 msgid "Sampling rate:"
-msgstr ""
+msgstr "Vzorkovací frekvence:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
@@ -393,7 +381,7 @@ msgstr "AMIDI-Plug – vyberte soundfontový soubor"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
-msgstr ""
+msgstr "_Otevřít"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
@@ -403,60 +391,60 @@ msgstr "Jméno souboru"
 msgid "Size (bytes)"
 msgstr "Velikost (v bajtech):"
 
-#: src/amidi-plug/i_fileinfo.c:176
+#: src/amidi-plug/i_fileinfo.c:184
 msgid "Name:"
 msgstr "Jméno:"
 
-#: src/amidi-plug/i_fileinfo.c:203
+#: src/amidi-plug/i_fileinfo.c:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"small\"> Podrobnosti o MIDI </span>"
 
-#: src/amidi-plug/i_fileinfo.c:217
+#: src/amidi-plug/i_fileinfo.c:216
 msgid "Format:"
 msgstr "Formát:"
 
-#: src/amidi-plug/i_fileinfo.c:220
+#: src/amidi-plug/i_fileinfo.c:219
 msgid "Length (msec):"
 msgstr "Délka (ms):"
 
-#: src/amidi-plug/i_fileinfo.c:223
+#: src/amidi-plug/i_fileinfo.c:222
 msgid "No. of Tracks:"
 msgstr "č. skladby"
 
-#: src/amidi-plug/i_fileinfo.c:229
+#: src/amidi-plug/i_fileinfo.c:228
 msgid "variable"
 msgstr "proměnlivé"
 
-#: src/amidi-plug/i_fileinfo.c:231
+#: src/amidi-plug/i_fileinfo.c:230
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidi-plug/i_fileinfo.c:239
+#: src/amidi-plug/i_fileinfo.c:238
 msgid "BPM (wavg):"
 msgstr "BPM (váž.):"
 
-#: src/amidi-plug/i_fileinfo.c:242
+#: src/amidi-plug/i_fileinfo.c:241
 msgid "Time Div:"
 msgstr "Čas. pom.:"
 
-#: src/amidi-plug/i_fileinfo.c:253
+#: src/amidi-plug/i_fileinfo.c:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"small\"> Komentáře a text MIDI skladby </span>"
 
-#: src/amidi-plug/i_fileinfo.c:302
+#: src/amidi-plug/i_fileinfo.c:299
 msgid "* no comments available in this MIDI file *"
 msgstr "* v MIDI souboru se nenachází žádné komentáře *"
 
-#: src/amidi-plug/i_fileinfo.c:314
+#: src/amidi-plug/i_fileinfo.c:311
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* v MIDI souboru se nenachází text skladby *"
 
-#: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
+#: src/amidi-plug/i_fileinfo.c:321 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
 msgstr "_Zavřít"
 
-#: src/amidi-plug/i_fileinfo.c:366
+#: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
 msgstr "  (neplatné UTF8)"
 
@@ -692,11 +680,11 @@ msgstr "OSD pro Audacious – nastavení"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
-msgstr ""
+msgstr "_Test"
 
 #: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
 msgid "_Set"
-msgstr ""
+msgstr "_Nastavit"
 
 #: src/aosd/aosd_ui.c:940
 msgid "Position"
@@ -956,7 +944,7 @@ msgstr "Výšky:"
 
 #: src/console/plugin.c:38
 msgid "Echo:"
-msgstr ""
+msgstr "Ozvěna:"
 
 #: src/console/plugin.c:40
 msgid "Default song length:"
@@ -1074,11 +1062,11 @@ msgstr ""
 
 #: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
-msgstr ""
+msgstr "Přesunout do koše"
 
 #: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Opravdu chcete trvale odstranit vybrané soubory?"
 
 #: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
@@ -1093,11 +1081,11 @@ msgstr "Zrušit"
 
 #: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
-msgstr ""
+msgstr "Smazat soubory"
 
 #: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Smazat vybrané soubory"
 
 #: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
@@ -1754,7 +1742,7 @@ msgstr "_Ekvalizér"
 
 #: src/gtkui/menus.c:216
 msgid "E_ffects ..."
-msgstr ""
+msgstr "E_fekty ..."
 
 #: src/gtkui/menus.c:219
 msgid "Show _Menu Bar"
@@ -1778,7 +1766,7 @@ msgstr "Ukázat _zbývající čas"
 
 #: src/gtkui/menus.c:231
 msgid "_Visualizations ..."
-msgstr ""
+msgstr "_Vizualizace"
 
 #: src/gtkui/menus.c:234
 msgid "_File"
@@ -1834,7 +1822,7 @@ msgstr ""
 
 #: src/gtkui/settings.c:36
 msgid "Always show tabs"
-msgstr ""
+msgstr "Vždy zobrazovat panely"
 
 #: src/gtkui/settings.c:39
 msgid "Show entry counts"
@@ -2008,7 +1996,7 @@ msgstr "<b>Navázání kláves:</b>"
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
-msgstr ""
+msgstr "_Přidat"
 
 #: src/hotkey/plugin.c:67
 msgid ""
@@ -2043,11 +2031,11 @@ msgstr ""
 
 #: src/jack/jack.c:202
 msgid "Connection mode:"
-msgstr ""
+msgstr "Režim připojení:"
 
 #: src/jack/jack.c:205
 msgid "Enable debug printing"
-msgstr ""
+msgstr "Povolit ladící výpisy"
 
 #: src/jack/jack.c:432
 msgid ""
@@ -3842,3 +3830,12 @@ msgstr "2SF Dekodér"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Shareable Playlists (XSPF)"
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 kHz:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 kHz:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 kHz:"

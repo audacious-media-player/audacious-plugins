@@ -1,23 +1,24 @@
-# English (United Kingdom) translation for Audacious Plugins
+# Malay translation for Audacious Plugins
 # Copyright (C) Audacious translators
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
-# Andi Chandler <andi@gowling.com>, 2013
+# abuyop <abuyop@gmail.com>, 2014
+# Mick The KN <f.seedsss@gmail.com>, 2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
 "POT-Creation-Date: 2014-10-15 21:40+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
-"Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/"
-"audacious/language/en_GB/)\n"
-"Language: en_GB\n"
+"PO-Revision-Date: 2014-09-02 13:22+0000\n"
+"Last-Translator: abuyop <abuyop@gmail.com>\n"
+"Language-Team: Malay (http://www.transifex.com/projects/p/audacious/language/"
+"ms/)\n"
+"Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/aac/libmp4.c:98 src/gtkui/ui_statusbar.c:82
 msgid "mono"
@@ -29,28 +30,28 @@ msgstr "stereo"
 
 #: src/aac/libmp4.c:98
 msgid "surround"
-msgstr "surround"
+msgstr "sekeliling"
 
 #: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
-msgstr ""
+msgstr "Penyahkod AAC (MP4)"
 
 #: src/aac-raw/aac.c:476
 msgid "AAC (Raw) Decoder"
-msgstr ""
+msgstr "Penyahkod AAC (Raw)"
 
 #: src/adplug/adplug-xmms.cc:137 src/modplug/modplugbmp.cxx:348
 #: src/psf/plugin.c:122 src/vtx/vtx.c:62 src/xsf/plugin.c:80
 msgid "sequenced"
-msgstr ""
+msgstr "berjujukan"
 
 #: src/adplug/plugin.c:14
 msgid "AdPlug (AdLib Player)"
-msgstr ""
+msgstr "AdPlug (Pemain AdLib)"
 
 #: src/alarm/alarm.c:776
 msgid "Set Alarm ..."
-msgstr ""
+msgstr "Tetapkan Penggera ..."
 
 #: src/alarm/alarm.c:804
 msgid ""
@@ -58,10 +59,14 @@ msgid ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 msgstr ""
+"Pemalam yang boleh digunakan untuk mula memainkan pada\n"
+"masa tertentu.\n"
+"\n"
+"Asalnya ditulis oleh Adam Feakin dan Daniel Stodden."
 
 #: src/alarm/alarm.c:809 src/alarm/interface.c:86
 msgid "Alarm"
-msgstr "Alarm"
+msgstr "Penggera"
 
 #: src/alarm/interface.c:32
 msgid ""
@@ -85,6 +90,25 @@ msgid ""
 "\n"
 "\n"
 msgstr ""
+"Masa\n"
+"  Penggera pada:\n"
+"    Masa untuk penggera bergerak.\n"
+"\n"
+"  Senyap selepas:\n"
+"    Hentikan penggera selepas amaum masa ini.\n"
+"       (jika dialog bangun tidak ditutup)\n"
+"\n"
+"\n"
+"Hari\n"
+"  Hari:\n"
+"    Pilih hari untuk penggera diaktifkan.\n"
+"\n"
+"  Masa:\n"
+"    Pilih masa untuk penggera pada setiap hari,\n"
+"    atau pilih butang togol untuk guna masa\n"
+"    lalai.\n"
+"\n"
+"\n"
 
 #: src/alarm/interface.c:49
 msgid ""
@@ -107,6 +131,24 @@ msgid ""
 "    Run this command at the alarm time.\n"
 "\n"
 msgstr ""
+"Volum\n"
+"  Pelenyapan:\n"
+"    Lenyapkan volum mengikut volum pilihan\n"
+"    untuk amaun masa ini.\n"
+"\n"
+"  Mula pada:\n"
+"    Mula melenyap dari volum ini.\n"
+"\n"
+"  Akhir:\n"
+"    Volum berhenti melenyap.  Jika masa melenyap\n"
+"    adalah 0 maka tetapkan volum pada ini dan mula\n"
+"    main.\n"
+"\n"
+"\n"
+"Pilihan:\n"
+"  Perintah Tambahan:\n"
+"    Jalankan perintah ini pada masa penggera.\n"
+"\n"
 
 #: src/alarm/interface.c:66
 msgid ""
@@ -121,68 +163,78 @@ msgid ""
 "    Type the reminder in the box and turn on the\n"
 "    toggle button if you want it to be shown."
 msgstr ""
+"  Senarai Main:\n"
+"    Muatkan senarai main ini. Jika tiada senarai main\n"
+"    diberi, yang semasa akan digunakan.\n"
+"    URL bagi strim mp3/ogg juga boleh digunakan\n"
+"    di sini.\n"
+"\n"
+"  Peringatan:\n"
+"    Papar peringatan bila penggera dimatikan.\n"
+"    Taip peringatan dalam kotak dan hidupkan\n"
+"    butang togol jika anda mahu ia ditunjukkan."
 
 #: src/alarm/interface.c:85
 msgid "This is your wakeup call."
-msgstr "This is your wakeup call."
+msgstr "Ini adalah panggilan bangun tidur anda."
 
 #: src/alarm/interface.c:103
 msgid "Your reminder for today is..."
-msgstr ""
+msgstr "Peringatan untuk hari ini ialah..."
 
 #: src/alarm/interface.c:105 src/alarm/interface.c:417
 msgid "Reminder"
-msgstr "Reminder"
+msgstr "Peringatan"
 
 #: src/alarm/interface.c:144
 msgid "Monday"
-msgstr "Monday"
+msgstr "Isnin"
 
 #: src/alarm/interface.c:144
 msgid "Tuesday"
-msgstr "Tuesday"
+msgstr "Selasa"
 
 #: src/alarm/interface.c:144
 msgid "Wednesday"
-msgstr "Wednesday"
+msgstr "Rabu"
 
 #: src/alarm/interface.c:145
 msgid "Thursday"
-msgstr "Thursday"
+msgstr "Khamis"
 
 #: src/alarm/interface.c:145
 msgid "Friday"
-msgstr "Friday"
+msgstr "Jumaat"
 
 #: src/alarm/interface.c:145
 msgid "Saturday"
-msgstr "Saturday"
+msgstr "Sabtu"
 
 #: src/alarm/interface.c:145
 msgid "Sunday"
-msgstr "Sunday"
+msgstr "Ahad"
 
 #: src/alarm/interface.c:179
 msgid "Alarm Settings"
-msgstr "Alarm Settings"
+msgstr "Tetapan Penggera"
 
 #: src/alarm/interface.c:180 src/filewriter/mp3.c:690
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: src/alarm/interface.c:180 src/amidi-plug/i_configure-fluidsynth.c:55
 #: src/aosd/aosd_ui.c:930 src/filewriter/mp3.c:690 src/hotkey/gui.c:486
 msgid "_Cancel"
-msgstr ""
+msgstr "_Batal"
 
 #: src/alarm/interface.c:188 src/alarm/interface.c:252
 #: src/alarm/interface.c:267
 msgid "Time"
-msgstr "Time"
+msgstr "Masa"
 
 #: src/alarm/interface.c:195
 msgid "Alarm at (default):"
-msgstr "Alarm at (default):"
+msgstr "Penggera pada (lalai):"
 
 #: src/alarm/interface.c:218
 msgid "h"
@@ -190,113 +242,113 @@ msgstr "h"
 
 #: src/alarm/interface.c:222
 msgid "Quiet after:"
-msgstr "Quiet after:"
+msgstr "Tenang selepas:"
 
 #: src/alarm/interface.c:236
 msgid "hours"
-msgstr "hours"
+msgstr "jam"
 
 #: src/alarm/interface.c:248
 msgid "minutes"
-msgstr "minutes"
+msgstr "minit"
 
 #: src/alarm/interface.c:257
 msgid "Choose the days for the alarm to come on"
-msgstr "Choose the days for the alarm to come on"
+msgstr "Pilih hari bagi penggera beraktif"
 
 #: src/alarm/interface.c:264
 msgid "Day"
-msgstr "Day"
+msgstr "Hari"
 
 #: src/alarm/interface.c:282 src/bs2b/plugin.c:168 src/skins/preset-list.c:439
 #: src/skins/preset-list.c:445
 msgid "Default"
-msgstr "Default"
+msgstr "Lalai"
 
 #: src/alarm/interface.c:312
 msgid "Days"
-msgstr "Days"
+msgstr "Hari"
 
 #: src/alarm/interface.c:321
 msgid "Fading"
-msgstr "Fading"
+msgstr "Pudar"
 
 #: src/alarm/interface.c:329 src/console/plugin.c:41
 #: src/crossfade/crossfade.c:263 src/gtkui/settings.c:53 src/lirc/lirc.c:395
 msgid "seconds"
-msgstr "seconds"
+msgstr "Saat"
 
 #: src/alarm/interface.c:336 src/alarm/interface.c:383
 msgid "Volume"
-msgstr "Volume"
+msgstr "Volum"
 
 #: src/alarm/interface.c:341
 msgid "Start at"
-msgstr "Start at"
+msgstr "Bermula pada"
 
 #: src/alarm/interface.c:359
 msgid "Final"
-msgstr "Final"
+msgstr "Terakhir"
 
 #: src/alarm/interface.c:374
 msgid "Current"
-msgstr "Current"
+msgstr "Semasa"
 
 #: src/alarm/interface.c:389
 msgid "Additional Command"
-msgstr "Additional Command"
+msgstr "Perintah Tambahan"
 
 #: src/alarm/interface.c:395 src/alarm/interface.c:422
 msgid "enable"
-msgstr "enable"
+msgstr "Aktif"
 
 #: src/alarm/interface.c:402
 msgid "Playlist (optional)"
-msgstr "Playlist (optional)"
+msgstr "Senarai Main (pilihan)"
 
 #: src/alarm/interface.c:409
 msgid "Select a playlist"
-msgstr ""
+msgstr "Pilih satu senarai main"
 
 #: src/alarm/interface.c:430
 msgid "Options"
-msgstr "Options"
+msgstr "Pilihan"
 
 #: src/alarm/interface.c:435
 msgid "What do these options mean?"
-msgstr "What do these options mean?"
+msgstr "Apa pilihan ini bermakna?"
 
 #: src/alarm/interface.c:449
 msgid "Help"
-msgstr "Help"
+msgstr "Bantuan"
 
 #: src/albumart/albumart.c:72
 msgid "Album Art"
-msgstr ""
+msgstr "Seni Album"
 
 #: src/alsa/config.c:210
 msgid "Default PCM device"
-msgstr "Default PCM device"
+msgstr "Lalai peranti PCM"
 
 #: src/alsa/config.c:239
 msgid "Default mixer device"
-msgstr "Default mixer device"
+msgstr "Lalai campuran peranti"
 
 #: src/alsa/config.c:428
 msgid "PCM device:"
-msgstr "PCM device:"
+msgstr "peranti PCM:"
 
 #: src/alsa/config.c:430
 msgid "Mixer device:"
-msgstr "Mixer device:"
+msgstr "Peranti campuran:"
 
 #: src/alsa/config.c:432
 msgid "Mixer element:"
-msgstr "Mixer element:"
+msgstr "Elemen campuran:"
 
 #: src/alsa/config.c:435
 msgid "Work around drain hangup"
-msgstr "Work around drain hangup"
+msgstr "Kerja sekitar mengalir hangup"
 
 #: src/alsa/plugin.c:27
 msgid ""
@@ -306,82 +358,87 @@ msgid ""
 "My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
 "code served as a reference when the ALSA manual was not enough."
 msgstr ""
+"Pemalam Output ALSA untuk Audacious\n"
+"Hakcipta 2009-2012 John Lindgren\n"
+"\n"
+"Terima kasih buat William Pitcock, pengarang Pemalam Output ALSA NG, yang "
+"mana kodnya dirujuk bila panduan ALSA tidak mencukupi."
 
 #: src/alsa/plugin.c:41
 msgid "ALSA Output"
-msgstr ""
+msgstr "Output ALSA"
 
 #: src/amidi-plug/amidi-plug.c:464
 msgid "AMIDI-Plug (MIDI Player)"
-msgstr ""
+msgstr "AMIDI-Plug (Pemain MIDI)"
 
 #: src/amidi-plug/i_configure.c:96
 msgid "Override default gain:"
-msgstr ""
+msgstr "Batalkan gandaan lalai:"
 
 #: src/amidi-plug/i_configure.c:102
 msgid "Override default polyphony:"
-msgstr ""
+msgstr "Batalkan polifoni lalai:"
 
 #: src/amidi-plug/i_configure.c:108
 msgid "Override default reverb:"
-msgstr ""
+msgstr "Batalkan reverb lalai:"
 
 #: src/amidi-plug/i_configure.c:110 src/amidi-plug/i_configure.c:116
 msgid "On"
-msgstr ""
+msgstr "Hidup"
 
 #: src/amidi-plug/i_configure.c:114
 msgid "Override default chorus:"
-msgstr ""
+msgstr "Batalkan korus lalai:"
 
 #: src/amidi-plug/i_configure.c:122 src/console/plugin.c:33
 msgid "<b>Playback</b>"
-msgstr ""
+msgstr "<b>Main Balik</b>"
 
 #: src/amidi-plug/i_configure.c:123
 msgid "Transpose:"
-msgstr ""
+msgstr "Transsposisi:"
 
 #: src/amidi-plug/i_configure.c:125
 msgid "Drum shift:"
-msgstr ""
+msgstr "Anjak dram:"
 
 #: src/amidi-plug/i_configure.c:129
 msgid "<b>SoundFont</b>"
-msgstr ""
+msgstr "<b>SoundFont</b>"
 
 #: src/amidi-plug/i_configure.c:131
 msgid "<b>Synthesizer</b>"
-msgstr ""
+msgstr "<b>Pensintesis</b>"
 
 #: src/amidi-plug/i_configure.c:136
 msgid "Sampling rate:"
-msgstr ""
+msgstr "Kadar persampelan:"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:52
 msgid "AMIDI-Plug - select SoundFont file"
-msgstr "AMIDI-Plug - select SoundFont file"
+msgstr "AMIDI-Plug - pilih fail SoundFont"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:56
 msgid "_Open"
-msgstr ""
+msgstr "_Buka"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:227
 msgid "Filename"
-msgstr "Filename"
+msgstr "Nama fail"
 
 #: src/amidi-plug/i_configure-fluidsynth.c:231
 msgid "Size (bytes)"
-msgstr "Size (bytes)"
+msgstr "Saiz (bait)"
 
 #: src/amidi-plug/i_fileinfo.c:184
 msgid "Name:"
-msgstr "Name:"
+msgstr "Nama:"
 
 #: src/amidi-plug/i_fileinfo.c:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
-msgstr "<span size=\"smaller\"> MIDI Info </span>"
+msgstr "<span size=\"smaller\"> Maklumat MIDI </span>"
 
 #: src/amidi-plug/i_fileinfo.c:216
 msgid "Format:"
@@ -389,15 +446,15 @@ msgstr "Format:"
 
 #: src/amidi-plug/i_fileinfo.c:219
 msgid "Length (msec):"
-msgstr "Length (msec):"
+msgstr "Panjang (msaat):"
 
 #: src/amidi-plug/i_fileinfo.c:222
 msgid "No. of Tracks:"
-msgstr ""
+msgstr "Nombor Trek:"
 
 #: src/amidi-plug/i_fileinfo.c:228
 msgid "variable"
-msgstr "variable"
+msgstr "pembolehubah"
 
 #: src/amidi-plug/i_fileinfo.c:230
 msgid "BPM:"
@@ -409,36 +466,36 @@ msgstr "BPM (wavg):"
 
 #: src/amidi-plug/i_fileinfo.c:241
 msgid "Time Div:"
-msgstr "Time Div:"
+msgstr "Masa Div:"
 
 #: src/amidi-plug/i_fileinfo.c:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
-msgstr "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
+msgstr "<span size=\"smaller\"> Ulasan dan Lirik MIDI </span>"
 
 #: src/amidi-plug/i_fileinfo.c:299
 msgid "* no comments available in this MIDI file *"
-msgstr "* no comments available in this MIDI file *"
+msgstr "* tiada ulasan tersedi dalam fail MIDI ini *"
 
 #: src/amidi-plug/i_fileinfo.c:311
 msgid "* no lyrics available in this MIDI file *"
-msgstr "* no lyrics available in this MIDI file *"
+msgstr "* tiada lirik didapati dalam fail MIDI ini *"
 
 #: src/amidi-plug/i_fileinfo.c:321 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
-msgstr "_Close"
+msgstr "T_utup"
 
 #: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
-msgstr "  (invalid UTF-8)"
+msgstr "(UTF-8 tidak sah)"
 
 #: src/amidi-plug/i_utils.c:39
 msgid "About AMIDI-Plug"
-msgstr ""
+msgstr "Perihal AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:53
 msgid "AMIDI-Plug"
-msgstr ""
+msgstr "AMIDI-Plug"
 
 #: src/amidi-plug/i_utils.c:54
 msgid ""
@@ -462,6 +519,26 @@ msgid ""
 "Tony Vroon\n"
 "for the good help with alpha testing"
 msgstr ""
+"\n"
+"Pemain muzik MIDI modular\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"ditulis oleh Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"terima kasih buat...\n"
+"\n"
+"Clemens Ladisch dan Jaroslav Kysela\n"
+"atas program hebat mereka aplaymidi dan amixer; \n"
+"yang mana sangat berguna, berserta dengan\n"
+"dokumentasi alsa-lib, untuk dapat mengetahui\n"
+"lebih lanjut mengenai ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"atas logo papan kekunci midi yang menarik\n"
+"\n"
+"Tony Vroon\n"
+"kerana membantu pengujian alfa"
 
 #: src/aosd/aosd.c:30
 msgid ""
@@ -473,38 +550,45 @@ msgid ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 msgstr ""
+"Audacious OSD\n"
+"http://www.develia.org/projects.php?p=audacious#aosd\n"
+"\n"
+"Ditulis oleh Giacomo Lozito <james@develia.org>\n"
+"\n"
+"Berdasarkan bahagian dalam  pustaka Ghosd Evan Martin:\n"
+"http://neugierig.org/software/ghosd/"
 
 #: src/aosd/aosd.c:38
 msgid "AOSD (On-Screen Display)"
-msgstr ""
+msgstr "AOSD (Paparan Atas-Skrin)"
 
 #: src/aosd/aosd_style.c:75
 msgid "Rectangle"
-msgstr "Rectangle"
+msgstr "Segiempat Tepat"
 
 #: src/aosd/aosd_style.c:79
 msgid "Rounded Rectangle"
-msgstr "Rounded Rectangle"
+msgstr "Bulatan Segiempat Tepat"
 
 #: src/aosd/aosd_style.c:83
 msgid "Concave Rectangle"
-msgstr "Concave Rectangle"
+msgstr "Cekung Segiempat Tepat"
 
 #: src/aosd/aosd_style.c:87
 msgid "None"
-msgstr "None"
+msgstr "Tiada"
 
 #: src/aosd/aosd_trigger.c:74
 msgid "Playback Start"
-msgstr "Playback Start"
+msgstr "Mulakan Main Semula"
 
 #: src/aosd/aosd_trigger.c:75
 msgid "Triggers OSD when a playlist entry is played."
-msgstr "Triggers OSD when a playlist entry is played."
+msgstr "Mencetus OSD apabila kemasukan senarai main dimainkan."
 
 #: src/aosd/aosd_trigger.c:79
 msgid "Title Change"
-msgstr "Title Change"
+msgstr "Tukar Tajuk"
 
 #: src/aosd/aosd_trigger.c:80
 msgid ""
@@ -512,53 +596,53 @@ msgid ""
 "is the same. This is mostly useful to display title changes in internet "
 "streams."
 msgstr ""
-"Triggers OSD when, during playback, the song title changes but the filename "
-"is the same. This is mostly useful to display title changes in Internet "
-"streams."
+"Mencetus OSD apabila, semasa main semula, perubahan tajuk lagu tetapi nama "
+"fail yang sama. Ini adalah kebanyakannya berguna untuk memaparkan perubahan "
+"tajuk dalam strim internet."
 
 #: src/aosd/aosd_trigger.c:86
 msgid "Pause On"
-msgstr "Pause On"
+msgstr "Aktifkan Jeda"
 
 #: src/aosd/aosd_trigger.c:87
 msgid "Triggers OSD when playback is paused."
-msgstr "Triggers OSD when playback is paused."
+msgstr "Mencetus OSD apabila main dijeda."
 
 #: src/aosd/aosd_trigger.c:91
 msgid "Pause Off"
-msgstr "Pause Off"
+msgstr "Matikan Jeda"
 
 #: src/aosd/aosd_trigger.c:92
 msgid "Triggers OSD when playback is unpaused."
-msgstr "Triggers OSD when playback is unpaused."
+msgstr "Mencetus OSD apabila main tidak dijeda"
 
 #: src/aosd/aosd_ui.c:192
 msgid "Placement"
-msgstr "Placement"
+msgstr "Penempatan"
 
 #: src/aosd/aosd_ui.c:224
 msgid "Relative X offset:"
-msgstr "Relative X offset:"
+msgstr "X relatif diimbangi:"
 
 #: src/aosd/aosd_ui.c:231
 msgid "Relative Y offset:"
-msgstr "Relative Y offset:"
+msgstr "Y relatif diimbangi:"
 
 #: src/aosd/aosd_ui.c:238
 msgid "Max OSD width:"
-msgstr "Max OSD width:"
+msgstr "Max lebar OSD:"
 
 #: src/aosd/aosd_ui.c:249
 msgid "Multi-Monitor options"
-msgstr "Multi-Monitor options"
+msgstr "pilihan Pelbagai-Monitor"
 
 #: src/aosd/aosd_ui.c:253
 msgid "Display OSD using:"
-msgstr "Display OSD using:"
+msgstr "Paparkan OSD digunakan:"
 
 #: src/aosd/aosd_ui.c:255
 msgid "all monitors"
-msgstr "all monitors"
+msgstr "semua monitor"
 
 #: src/aosd/aosd_ui.c:258
 #, c-format
@@ -567,23 +651,23 @@ msgstr "monitor %i"
 
 #: src/aosd/aosd_ui.c:310
 msgid "Timing (ms)"
-msgstr "Timing (ms)"
+msgstr "Masa (ms)"
 
 #: src/aosd/aosd_ui.c:315
 msgid "Display:"
-msgstr "Display:"
+msgstr "Paparan:"
 
 #: src/aosd/aosd_ui.c:320
 msgid "Fade in:"
-msgstr "Fade in:"
+msgstr "Pudar dalam:"
 
 #: src/aosd/aosd_ui.c:325
 msgid "Fade out:"
-msgstr "Fade out:"
+msgstr "Pudar luar:"
 
 #: src/aosd/aosd_ui.c:390
 msgid "Fonts"
-msgstr "Fonts"
+msgstr "Font"
 
 #: src/aosd/aosd_ui.c:397
 #, c-format
@@ -592,32 +676,32 @@ msgstr "Font %i:"
 
 #: src/aosd/aosd_ui.c:412
 msgid "Shadow"
-msgstr "Shadow"
+msgstr "Bayang"
 
 #: src/aosd/aosd_ui.c:518
 msgid "Render Style"
-msgstr "Render Style"
+msgstr "Realisasi Gaya"
 
 #: src/aosd/aosd_ui.c:534
 msgid "Colors"
-msgstr "Colours"
+msgstr "Warna"
 
 #: src/aosd/aosd_ui.c:545
 #, c-format
 msgid "Color %i:"
-msgstr "Colour %i:"
+msgstr "Warna %i:"
 
 #: src/aosd/aosd_ui.c:648
 msgid "Enable trigger"
-msgstr "Enable trigger"
+msgstr "Aktifkan pencetus"
 
 #: src/aosd/aosd_ui.c:675
 msgid "Event"
-msgstr "Event"
+msgstr "Acara"
 
 #: src/aosd/aosd_ui.c:703
 msgid "Composite manager detected"
-msgstr "Composite manager detected"
+msgstr "Pengurus komposit dikesan"
 
 #: src/aosd/aosd_ui.c:710
 msgid ""
@@ -625,33 +709,33 @@ msgid ""
 "unless you know that you have one running, please activate a composite "
 "manager otherwise the OSD won't work properly"
 msgstr ""
-"Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite "
-"manager otherwise the OSD will not work properly"
+"Pengurus komposit tidak dikesan\n"
+"melainkan anda tahu bahawa anda mempunyai satu berjalan, sila mengaktifkan "
+"pengurus komposit sebaliknya OSD tidak akan berfungsi dengan betul"
 
 #: src/aosd/aosd_ui.c:718
 msgid "Composite manager not required for fake transparency"
-msgstr "Composite manager not required for fake transparency"
+msgstr "Komposit pengurus tidak diperlukan untuk ketelusan palsu"
 
 #: src/aosd/aosd_ui.c:754
 msgid "Transparency"
-msgstr "Transparency"
+msgstr "Ketelusan"
 
 #: src/aosd/aosd_ui.c:760
 msgid "Fake transparency"
-msgstr "Fake transparency"
+msgstr "Ketelusan palsu"
 
 #: src/aosd/aosd_ui.c:762
 msgid "Real transparency (requires X Composite Ext.)"
-msgstr "Real transparency (requires X Composite Ext.)"
+msgstr "Ketelusan sebenar (minta X Composite Ext.)"
 
 #: src/aosd/aosd_ui.c:804
 msgid "Composite extension not loaded"
-msgstr "Composite extension not loaded"
+msgstr "Lanjutan komposit tidak dimuatkan"
 
 #: src/aosd/aosd_ui.c:812
 msgid "Composite extension not available"
-msgstr "Composite extension not available"
+msgstr "Sambungan komposit tidak tersedia"
 
 #: src/aosd/aosd_ui.c:831
 #, c-format
@@ -660,79 +744,79 @@ msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
 #: src/aosd/aosd_ui.c:906
 msgid "Audacious OSD - configuration"
-msgstr "Audacious OSD - configuration"
+msgstr "OSD Audacious - konfigurasi"
 
 #: src/aosd/aosd_ui.c:927
 msgid "_Test"
-msgstr ""
+msgstr "U_ji"
 
 #: src/aosd/aosd_ui.c:933 src/hotkey/gui.c:491
 msgid "_Set"
-msgstr ""
+msgstr "_Tetapkan"
 
 #: src/aosd/aosd_ui.c:940
 msgid "Position"
-msgstr "Position"
+msgstr "Kedudukan"
 
 #: src/aosd/aosd_ui.c:945
 msgid "Animation"
-msgstr "Animation"
+msgstr "Animasi"
 
 #: src/aosd/aosd_ui.c:950
 msgid "Text"
-msgstr "Text"
+msgstr "Teks"
 
 #: src/aosd/aosd_ui.c:955
 msgid "Decoration"
-msgstr "Decoration"
+msgstr "Hiasan"
 
 #: src/aosd/aosd_ui.c:960
 msgid "Trigger"
-msgstr "Trigger"
+msgstr "Pemicu"
 
 #: src/aosd/aosd_ui.c:965
 msgid "Misc"
-msgstr "Misc"
+msgstr "Pelbagai"
 
 #: src/asx3/asx3.c:179
 msgid "ASXv3 Playlists"
-msgstr ""
+msgstr "Senarai Main ASXv3"
 
 #: src/asx/asx.c:83
 msgid "ASXv1/ASXv2 Playlists"
-msgstr ""
+msgstr "Senarai Main ASXv1/ASXv2"
 
 #: src/audpl/audpl.c:186
 msgid "Audacious Playlists (audpl)"
-msgstr ""
+msgstr "Senarai Main Audacious (audpl)"
 
 #: src/blur_scope/blur_scope.c:47
 msgid "<b>Color</b>"
-msgstr ""
+msgstr "<b>Warna</b>"
 
 #: src/blur_scope/blur_scope.c:56
 msgid "Blur Scope"
-msgstr ""
+msgstr "Skop Kabur"
 
 #: src/bs2b/plugin.c:142
 msgid "Feed level:"
-msgstr ""
+msgstr "Aras suapan:"
 
 #: src/bs2b/plugin.c:154
 msgid "Cut frequency:"
-msgstr ""
+msgstr "Frekuensi kerat:"
 
 #: src/bs2b/plugin.c:166
 msgid "Presets:"
-msgstr ""
+msgstr "Praset:"
 
 #: src/bs2b/plugin.c:189
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
-msgstr ""
+msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
 #: src/cairo-spectrum/cairo-spectrum.c:296
 msgid "Spectrum Analyzer"
-msgstr ""
+msgstr "Penganalisis Spektrum"
 
 #: src/cdaudio-ng/cdaudio-ng.c:101
 msgid ""
@@ -745,168 +829,178 @@ msgid ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 msgstr ""
+"Hakcipta (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> dan lain-lain.\n"
+"\n"
+"Terima kasih buat pembangun libcdio <http://www.gnu.org/software/libcdio/>\n"
+"dan pembangun libcddb <http://libcddb.sourceforge.net/>.\n"
+"\n"
+"Dan juga terima kasih kepada Tony Vroon atas pementoran dan panduan.\n"
+"\n"
+"Ini merupakan projek Google Summer of Code 2007."
 
 #: src/cdaudio-ng/cdaudio-ng.c:119
 msgid "<b>Device</b>"
-msgstr ""
+msgstr "<b>Peranti</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:120
 msgid "Read speed:"
-msgstr ""
+msgstr "Kelajuan baca:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:123
 msgid "Override device:"
-msgstr ""
+msgstr "Batalkan peranti:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:125
 msgid "<b>Metadata</b>"
-msgstr ""
+msgstr "<b>Data meta</b>"
 
 #: src/cdaudio-ng/cdaudio-ng.c:126
 msgid "Use CD-Text"
-msgstr ""
+msgstr "Guna Teks-CD"
 
 #: src/cdaudio-ng/cdaudio-ng.c:128
 msgid "Use CDDB"
-msgstr ""
+msgstr "Guna CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:130
 msgid "Use HTTP instead of CDDBP"
-msgstr "Use HTTP instead of CDDBP"
+msgstr "Guna HTTP selain dari CDDBP"
 
 #: src/cdaudio-ng/cdaudio-ng.c:132
 msgid "Server:"
-msgstr ""
+msgstr "Pelayan:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:134
 msgid "Path:"
-msgstr ""
+msgstr "Laluan:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:136
 msgid "Port:"
-msgstr ""
+msgstr "Port:"
 
 #: src/cdaudio-ng/cdaudio-ng.c:146
 msgid "Audio CD Plugin"
-msgstr ""
+msgstr "Pemalam CD Audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:244
 msgid "Failed to initialize cdio subsystem."
-msgstr ""
+msgstr "Gagal mengawalkan subsistem cdio."
 
 #: src/cdaudio-ng/cdaudio-ng.c:300
 #, c-format
 msgid "Invalid URI %s."
-msgstr ""
+msgstr "URI %s tidak sah."
 
 #: src/cdaudio-ng/cdaudio-ng.c:302
 #, c-format
 msgid "Track %d not found."
-msgstr ""
+msgstr "Trek %d tidak ditemui."
 
 #: src/cdaudio-ng/cdaudio-ng.c:304
 #, c-format
 msgid "Track %d is a data track."
-msgstr ""
+msgstr "Trek %d adalah trek data."
 
 #: src/cdaudio-ng/cdaudio-ng.c:306
 msgid "Failed to open audio output."
-msgstr ""
+msgstr "Gagal membuka output audio."
 
 #: src/cdaudio-ng/cdaudio-ng.c:378
 msgid "Error reading audio CD."
-msgstr ""
+msgstr "Ralat membaca CD audio."
 
 #: src/cdaudio-ng/cdaudio-ng.c:449
 msgid "Audio CD"
-msgstr "Audio CD"
+msgstr "CD Audio"
 
 #: src/cdaudio-ng/cdaudio-ng.c:458
 #, c-format
 msgid "Track %d"
-msgstr ""
+msgstr "Trek %d"
 
 #: src/cdaudio-ng/cdaudio-ng.c:485 src/cdaudio-ng/cdaudio-ng.c:494
 #, c-format
 msgid "Failed to open CD device %s."
-msgstr ""
+msgstr "Gagal membuka peranti CD %s."
 
 #: src/cdaudio-ng/cdaudio-ng.c:497
 msgid "No audio capable CD drive found."
-msgstr ""
+msgstr "Tiada pemacu CD upaya audio ditemui."
 
 #: src/cdaudio-ng/cdaudio-ng.c:524
 msgid "Failed to finish initializing opened CD drive."
-msgstr ""
+msgstr "Gagal menyelesaikan pengawalan pemacu CD dibuka."
 
 #: src/cdaudio-ng/cdaudio-ng.c:537
 msgid "Failed to retrieve first/last track number."
-msgstr ""
+msgstr "Gagal mendapatkan nombor trek pertama/terakhir."
 
 #: src/cdaudio-ng/cdaudio-ng.c:562
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
-msgstr ""
+msgstr "Tidak dapat baca/tamatkan LSN untuk trek %d."
 
 #: src/cdaudio-ng/cdaudio-ng.c:646
 msgid "Failed to create the cddb connection."
-msgstr ""
+msgstr "Gagal mencipta sambungan cddb."
 
 #: src/cdaudio-ng/cdaudio-ng.c:721
 msgid "Failed to query the CDDB server"
-msgstr ""
+msgstr "Gagal menanya pelayan CDDB"
 
 #: src/cdaudio-ng/cdaudio-ng.c:723
 #, c-format
 msgid "Failed to query the CDDB server: %s"
-msgstr ""
+msgstr "Gagal menanya pelayan CDDB: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:747
 #, c-format
 msgid "Failed to read the cddb info: %s"
-msgstr ""
+msgstr "Gagal membaca maklumat cddb: %s"
 
 #: src/cdaudio-ng/cdaudio-ng.c:818
 msgid "Drive is empty."
-msgstr "Drive is empty."
+msgstr "Pemacu kosong."
 
 #: src/cdaudio-ng/cdaudio-ng.c:820
 msgid "Unsupported disk type."
-msgstr "Unsupported disk type."
+msgstr "Jenis cakera tidak disokong."
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Play CD"
-msgstr "Play CD"
+msgstr "Main CD"
 
 #: src/cd-menu-items/cd-menu-items.c:31
 msgid "Add CD"
-msgstr "Add CD"
+msgstr "Tambah CD"
 
 #: src/cd-menu-items/cd-menu-items.c:56
 msgid "Audio CD Menu Items"
-msgstr ""
+msgstr "Item Menu CD Audio"
 
 #: src/compressor/plugin.c:35
 msgid "<b>Compression</b>"
-msgstr ""
+msgstr "<b>Pemampatan</b>"
 
 #: src/compressor/plugin.c:36
 msgid "Center volume:"
-msgstr "Centre volume:"
+msgstr "Volum tengah:"
 
 #: src/compressor/plugin.c:39
 msgid "Dynamic range:"
-msgstr "Dynamic range:"
+msgstr "Julat dinamik:"
 
 #: src/compressor/plugin.c:53
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Pemalam Pemampatan Julat Dinamik untuk Audacious\n"
+"Hakcipta 2010-2012 John Lindgren"
 
 #: src/compressor/plugin.c:58
 msgid "Dynamic Range Compressor"
-msgstr ""
+msgstr "Pemampat Jula Dinamik"
 
 #: src/console/plugin.c:19
 msgid ""
@@ -917,34 +1011,40 @@ msgid ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 msgstr ""
+"Enjin penyahkod muzik konsol berasaskan pada Game_Music_Emu 0.5.2\n"
+"Format disokong: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
+"\n"
+"Pemalam Audacious oleh:\n"
+"William Pitcock <nenolod@dereferenced.org>\n"
+"Shay Green <gblargg@gmail.com>"
 
 #: src/console/plugin.c:34
 msgid "Bass:"
-msgstr "Bass:"
+msgstr "Bes:"
 
 #: src/console/plugin.c:36
 msgid "Treble:"
-msgstr "Treble:"
+msgstr "Trebel:"
 
 #: src/console/plugin.c:38
 msgid "Echo:"
-msgstr ""
+msgstr "Gema:"
 
 #: src/console/plugin.c:40
 msgid "Default song length:"
-msgstr "Default song length:"
+msgstr "Panjang lagu lalai:"
 
 #: src/console/plugin.c:43 src/modplug/plugin_main.c:65
 msgid "<b>Resampling</b>"
-msgstr ""
+msgstr "<b>Persampelan Semula</b>"
 
 #: src/console/plugin.c:44
 msgid "Enable audio resampling"
-msgstr "Enable audio resampling"
+msgstr "Benarkan persampelan semula audio"
 
 #: src/console/plugin.c:46
 msgid "Resampling rate:"
-msgstr "Resampling rate:"
+msgstr "Kadar persampelan semula:"
 
 #: src/console/plugin.c:47 src/modplug/plugin_main.c:96
 #: src/resample/resample.c:182 src/resample/resample.c:188
@@ -957,19 +1057,19 @@ msgstr "Hz"
 
 #: src/console/plugin.c:49
 msgid "<b>SPC</b>"
-msgstr ""
+msgstr "<b>SPC</b>"
 
 #: src/console/plugin.c:50
 msgid "Ignore length from SPC tags"
-msgstr "Ignore length from SPC tags"
+msgstr "Abai panjang dari tag SPC"
 
 #: src/console/plugin.c:52
 msgid "Increase reverb"
-msgstr "Increase reverb"
+msgstr "Tingkatkan reverb"
 
 #: src/console/plugin.c:61
 msgid "Game Console Music Decoder"
-msgstr "Game Console Music Decoder"
+msgstr "Penyahkod Muzik Konsol Permainan"
 
 #: src/crossfade/crossfade.c:83
 msgid ""
@@ -977,122 +1077,130 @@ msgid ""
 "You can use the Channel Mixer to convert the songs to the same number of "
 "channels."
 msgstr ""
+"Peresapan silang gagal kerana lagu mempunyai bilangan saluran berbeza. Anda "
+"boleh guna Pengadun Saluran untuk tukarkan lagu ke bilangan saluran yang "
+"sama."
 
 #: src/crossfade/crossfade.c:90
 msgid ""
 "Crossfading failed because the songs had different sample rates.  You can "
 "use the Sample Rate Converter to convert the songs to the same sample rate."
 msgstr ""
+"Peresapan silang gagal keran lagu mempunyai kadar sampel yang berlainan. "
+"Anda boleh guna Penukar Kadar Sampel untuk tukarkan lagu menjadi kadar "
+"sampel yang sama."
 
 #: src/crossfade/crossfade.c:256
 msgid ""
 "Crossfade Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Pemalam Resap Silang untuk Audacious\n"
+"Hakcipta 2010-2012 John Lindgren"
 
 #: src/crossfade/crossfade.c:260
 msgid "<b>Crossfade</b>"
-msgstr ""
+msgstr "<b>Resap Silang</b>"
 
 #: src/crossfade/crossfade.c:261
 msgid "Overlap:"
-msgstr ""
+msgstr "Tindih:"
 
 #: src/crossfade/crossfade.c:271
 msgid "Crossfade"
-msgstr ""
+msgstr "Resap Silang"
 
 #: src/crystalizer/crystalizer.c:40
 msgid "<b>Crystalizer</b>"
-msgstr ""
+msgstr "<b>Crystalizer</b>"
 
 #: src/crystalizer/crystalizer.c:41 src/stereo_plugin/stereo.c:26
 msgid "Intensity:"
-msgstr ""
+msgstr "Keamatan:"
 
 #: src/crystalizer/crystalizer.c:51
 msgid "Crystalizer"
-msgstr ""
+msgstr "Crystalizer"
 
 #: src/cue/cue.c:155
 msgid "Cue Sheet Plugin"
-msgstr ""
+msgstr "Pemalam Lembaran Isyarat"
 
 #: src/delete-files/delete-files.c:48
 #, c-format
 msgid "Error moving %s to trash: %s."
-msgstr ""
+msgstr "Ralat mengalih %s ke tong sampah: %s."
 
 #: src/delete-files/delete-files.c:60
 #, c-format
 msgid "Error deleting %s: %s."
-msgstr ""
+msgstr "Ralat memadam %s: %s."
 
 #: src/delete-files/delete-files.c:98
 #, c-format
 msgid "Error deleting %s: not a local file."
-msgstr ""
+msgstr "Ralat memadam %s: bukan fail setempat."
 
 #: src/delete-files/delete-files.c:119
 msgid "Do you want to move the selected files to the trash?"
-msgstr ""
+msgstr "Anda mahu alih fail terpilih ke tong sampah?"
 
 #: src/delete-files/delete-files.c:120
 msgid "Move to Trash"
-msgstr ""
+msgstr "Alih ke Tong Sampah"
 
 #: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Anda mahu padam fail terpilih secara kekal?"
 
 #: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #: src/delete-files/delete-files.c:130 src/skins/preset-browser.c:56
 #: src/skins/preset-list.c:311 src/skins/ui_playlist.c:224
 #: src/sndio/sndio.c:424
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Batal"
 
 #: src/delete-files/delete-files.c:131 src/delete-files/delete-files.c:172
 msgid "Delete Files"
-msgstr ""
+msgstr "Padam Fail"
 
 #: src/delete-files/delete-files.c:147
 msgid "Delete Selected Files"
-msgstr ""
+msgstr "Padam Fail Terpilih"
 
 #: src/delete-files/delete-files.c:162
 msgid "<b>Delete Method</b>"
-msgstr ""
+msgstr "<b>Kaedah Padam</b>"
 
 #: src/delete-files/delete-files.c:163
 msgid "Move to trash instead of deleting immediately"
-msgstr ""
+msgstr "Alih ke tong sampah selain dari memadam serta-merta"
 
 #: src/echo_plugin/echo.c:26
 msgid "<b>Echo</b>"
-msgstr ""
+msgstr "<b>Gema</b>"
 
 #: src/echo_plugin/echo.c:27 src/modplug/plugin_main.c:88
 #: src/modplug/plugin_main.c:102
 msgid "Delay:"
-msgstr ""
+msgstr "Lengah:"
 
 #: src/echo_plugin/echo.c:29 src/modplug/plugin_main.c:89
 #: src/modplug/plugin_main.c:103
 msgid "ms"
-msgstr ""
+msgstr "ms"
 
 #: src/echo_plugin/echo.c:30
 msgid "Feedback:"
-msgstr ""
+msgstr "Maklumbalas:"
 
 #: src/echo_plugin/echo.c:33 src/modplug/plugin_main.c:107
 msgid "Volume:"
-msgstr ""
+msgstr "Volum:"
 
 #: src/echo_plugin/echo.c:116
 msgid ""
@@ -1101,10 +1209,14 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik, 1999"
 msgstr ""
+"Pemalam Gema\n"
+"Oleh Johan Levin, 1999\n"
+"\n"
+"Gema keliling oleh Carl van Schaik, 1999"
 
 #: src/echo_plugin/echo.c:122
 msgid "Echo"
-msgstr ""
+msgstr "Gema"
 
 #: src/ffaudio/ffaudio-core.c:561
 msgid ""
@@ -1115,54 +1227,60 @@ msgid ""
 "William Pitcock <nenolod@nenolod.net>\n"
 "Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
+"Pemalam penyahkodan audio format-berbilang menggunakan\n"
+"bingkai kerja multimedia FFmpeg (http://www.ffmpeg.org/)\n"
+"\n"
+"Pemalam Audacious oleh:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 
 #: src/ffaudio/ffaudio-core.c:613
 msgid "FFmpeg Plugin"
-msgstr ""
+msgstr "Pemalam FFmpeg"
 
 #: src/filewriter/filewriter.c:404
 msgid "Output file format:"
-msgstr "Output file format:"
+msgstr "Format fail output:"
 
 #: src/filewriter/filewriter.c:421
 msgid "Configure"
-msgstr "Configure"
+msgstr "Konfigur"
 
 #: src/filewriter/filewriter.c:431
 msgid "Save into original directory"
-msgstr "Save into original directory"
+msgstr "Simpan ke dalam direktori asal"
 
 #: src/filewriter/filewriter.c:435
 msgid "Save into custom directory"
-msgstr "Save into custom directory"
+msgstr "Simpan ke dalam direktori suai"
 
 #: src/filewriter/filewriter.c:445
 msgid "Output file folder:"
-msgstr "Output file folder:"
+msgstr "Folder fail output:"
 
 #: src/filewriter/filewriter.c:449
 msgid "Pick a folder"
-msgstr "Pick a folder"
+msgstr "Ambil satu folder"
 
 #: src/filewriter/filewriter.c:462
 msgid "Get filename from:"
-msgstr "Get filename from:"
+msgstr "Dapatkan nama fail dari:"
 
 #: src/filewriter/filewriter.c:466
 msgid "original file tags"
-msgstr "original file tags"
+msgstr "tag fail asal"
 
 #: src/filewriter/filewriter.c:471
 msgid "original filename"
-msgstr "original filename"
+msgstr "nama fail asal"
 
 #: src/filewriter/filewriter.c:477
 msgid "Don't strip file name extension"
-msgstr "Do not strip file name extension"
+msgstr "Jangan tanggalkan sambungan nama fail"
 
 #: src/filewriter/filewriter.c:486
 msgid "Prepend track number to filename"
-msgstr "Prepend track number to filename"
+msgstr "Tambah nombor trek ke nama fail"
 
 #: src/filewriter/filewriter.c:502
 msgid ""
@@ -1181,10 +1299,23 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Program adalah perisian bebas; anda boleh mengedarkannya dan/atau "
+"mengubahsuainya dibawah terma Pelesenan Awam Am GNU yang diterbitkan oleh "
+"Free Software Foundation; sama ada versi 2 dari lesen, atau (mengikut "
+"pilihan anda) mana-mana versi terkini.\n"
+"\n"
+"Program ini diedarkan dengan harapan ianya akan berguna, TANPA SEBARANG "
+"JAMINAN; termasuk juga KESESUAIAN UNTUK DIPASARKAN, JAMINAN KUALITI, atau "
+"JAMINAN ATAS APA JUA SEBAB. Sila lihat GNU General Public License untuk "
+"maklumat lanjut.\n"
+"\n"
+"Anda seharusnya menerima satu salinan Lesen Awam Am GNU bersama-sama dengan "
+"Gwibber; jika tidak, laporkannya ke Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/filewriter/filewriter.c:527
 msgid "FileWriter Plugin"
-msgstr ""
+msgstr "Pemalam FileWriter"
 
 #: src/filewriter/mp3.c:38 src/filewriter/mp3.c:749
 msgid "Auto"
@@ -1192,7 +1323,7 @@ msgstr "Auto"
 
 #: src/filewriter/mp3.c:38
 msgid "Joint Stereo"
-msgstr "Joint Stereo"
+msgstr "Stereo Gabung"
 
 #: src/filewriter/mp3.c:39 src/modplug/plugin_main.c:63
 #: src/mpg123/mpg123.c:210
@@ -1206,15 +1337,15 @@ msgstr "Mono"
 
 #: src/filewriter/mp3.c:689
 msgid "MP3 Configuration"
-msgstr "MP3 Configuration"
+msgstr "Konfigurasi MP3"
 
 #: src/filewriter/mp3.c:713
 msgid "Algorithm Quality:"
-msgstr "Algorithm Quality:"
+msgstr "Kualiti Algoritma:"
 
 #: src/filewriter/mp3.c:738
 msgid "Output Samplerate:"
-msgstr "Output Sample rate:"
+msgstr "Kadar Sampel Output:"
 
 #: src/filewriter/mp3.c:766
 msgid "(Hz)"
@@ -1222,75 +1353,75 @@ msgstr "(Hz)"
 
 #: src/filewriter/mp3.c:773
 msgid "Bitrate / Compression ratio:"
-msgstr "Bitrate / Compression ratio:"
+msgstr "Nisbah Kadar Bit / Pemampatan:"
 
 #: src/filewriter/mp3.c:797
 msgid "Bitrate (kbps):"
-msgstr "Bitrate (kbps):"
+msgstr "Kadar bit (kbps):"
 
 #: src/filewriter/mp3.c:830
 msgid "Compression ratio:"
-msgstr "Compression ratio:"
+msgstr "Nisbah pemampatan:"
 
 #: src/filewriter/mp3.c:854
 msgid "Audio Mode:"
-msgstr "Audio Mode:"
+msgstr "Mod Audio:"
 
 #: src/filewriter/mp3.c:879
 msgid "Misc:"
-msgstr "Misc:"
+msgstr "Pelbagai:"
 
 #: src/filewriter/mp3.c:890
 msgid "Enforce strict ISO complience"
-msgstr "Enforce strict ISO compliance"
+msgstr "Paksa turutan ketat ISO"
 
 #: src/filewriter/mp3.c:901
 msgid "Error protection"
-msgstr "Error protection"
+msgstr "Pelindungan ralat"
 
 #: src/filewriter/mp3.c:913 src/filewriter/vorbis.c:220
 msgid "Quality"
-msgstr "Quality"
+msgstr "Kualiti"
 
 #: src/filewriter/mp3.c:922
 msgid "Enable VBR/ABR"
-msgstr "Enable VBR/ABR"
+msgstr "Benarkan VBR/ABR"
 
 #: src/filewriter/mp3.c:932
 msgid "Type:"
-msgstr "Type:"
+msgstr "Jenis:"
 
 #: src/filewriter/mp3.c:965
 msgid "VBR Options:"
-msgstr "VBR Options:"
+msgstr "Pilihan VBR:"
 
 #: src/filewriter/mp3.c:981
 msgid "Minimum bitrate (kbps):"
-msgstr "Minimum bitrate (kbps):"
+msgstr "Kadar bit minimum (kbps):"
 
 #: src/filewriter/mp3.c:1008
 msgid "Maximum bitrate (kbps):"
-msgstr "Maximum bitrate (kbps):"
+msgstr "Kadar bit maksimum (kbps):"
 
 #: src/filewriter/mp3.c:1031
 msgid "Strictly enforce minimum bitrate"
-msgstr "Strictly enforce minimum bitrate"
+msgstr "Paksa kadar bit minimum betul-betul"
 
 #: src/filewriter/mp3.c:1043
 msgid "ABR Options:"
-msgstr "ABR Options:"
+msgstr "Pilihan ABR:"
 
 #: src/filewriter/mp3.c:1053
 msgid "Average bitrate (kbps):"
-msgstr "Average bitrate (kbps):"
+msgstr "Kadar bit purata (kbps):"
 
 #: src/filewriter/mp3.c:1081
 msgid "VBR quality level:"
-msgstr "VBR quality level:"
+msgstr "Aras kualiti VBR:"
 
 #: src/filewriter/mp3.c:1100
 msgid "Don't write Xing VBR header"
-msgstr "Don't write Xing VBR header"
+msgstr "Jangan tulis pengepala VBR Xing"
 
 #: src/filewriter/mp3.c:1113
 msgid "VBR/ABR"
@@ -1298,47 +1429,47 @@ msgstr "VBR/ABR"
 
 #: src/filewriter/mp3.c:1122
 msgid "Frame parameters:"
-msgstr ""
+msgstr "Parameter bingkai:"
 
 #: src/filewriter/mp3.c:1134
 msgid "Mark as copyright"
-msgstr "Mark as copyright"
+msgstr "Tanda sebagai hakcipta"
 
 #: src/filewriter/mp3.c:1145
 msgid "Mark as original"
-msgstr "Mark as original"
+msgstr "Tanda sebagai asal"
 
 #: src/filewriter/mp3.c:1157
 msgid "ID3 params:"
-msgstr "ID3 params:"
+msgstr "Param ID3:"
 
 #: src/filewriter/mp3.c:1168
 msgid "Force addition of version 2 tag"
-msgstr "Force addition of version 2 tag"
+msgstr "Paksa penambahan tag versi 2"
 
 #: src/filewriter/mp3.c:1178
 msgid "Only add v1 tag"
-msgstr "Only add v1 tag"
+msgstr "Hanya tambah tag v1"
 
 #: src/filewriter/mp3.c:1185
 msgid "Only add v2 tag"
-msgstr "Only add v2 tag"
+msgstr "Hanya tambah tag v2"
 
 #: src/filewriter/mp3.c:1206
 msgid "Tags"
-msgstr "Tags"
+msgstr "Tag"
 
 #: src/filewriter/vorbis.c:210
 msgid "Vorbis Encoder Configuration"
-msgstr "Vorbis Encoder Configuration"
+msgstr "Konfigurasi Pengekod Vorbis"
 
 #: src/filewriter/vorbis.c:233
 msgid "Quality level (0 - 10):"
-msgstr "Quality level (0 - 10):"
+msgstr "Aras kualiti (0 - 10):"
 
 #: src/flacng/metadata.c:359 src/wavpack/wavpack.c:212
 msgid "lossless"
-msgstr ""
+msgstr "tak hilang"
 
 #: src/flacng/plugin.c:187
 msgid ""
@@ -1347,20 +1478,26 @@ msgid ""
 "\n"
 "http://www.skytale.net/projects/bmp-flac2/"
 msgstr ""
+"Kod asal oleh\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
 
 #: src/flacng/plugin.c:195
 msgid "FLAC Decoder"
-msgstr ""
+msgstr "Penyahkod FLAC"
 
 #: src/gio/gio.c:295
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 msgstr ""
+"Pemalam GIO untuk Audacious\n"
+"Hakcipta 2009-2012 John Lindgren"
 
 #: src/gio/gio.c:314
 msgid "GIO Plugin"
-msgstr ""
+msgstr "Pemalam GIO"
 
 #: src/gl-spectrum/gl-spectrum.c:400
 msgid ""
@@ -1373,10 +1510,18 @@ msgid ""
 "\n"
 "License: GPLv2+"
 msgstr ""
+"Penganalisis Spektrum OpenGL untuk Audacious\n"
+"Hakcipta 2013 Christophe Budé, John Lindgren, dan Carlo Bramini\n"
+"\n"
+"Berdasarkan pada pemalam XMMS:\n"
+"Hakcipta 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, dan "
+"4Front Technologies\n"
+"\n"
+"Lesen: GPLv2+"
 
 #: src/gl-spectrum/gl-spectrum.c:409
 msgid "OpenGL Spectrum Analyzer"
-msgstr ""
+msgstr "Penganalisis Spektrum OpenGL"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:41
 msgid ""
@@ -1385,26 +1530,30 @@ msgid ""
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
+"Pemalam Pintasan Gnome\n"
+"Membolehkan anda kawal pemain dengan pintasan Gnome.\n"
+"\n"
+"Hakcipta (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
 #: src/gnomeshortcuts/gnomeshortcuts.c:47
 msgid "Gnome Shortcuts"
-msgstr ""
+msgstr "Pintasan Gnome"
 
 #: src/gtkui/columns.c:34
 msgid "Entry number"
-msgstr "Entry number"
+msgstr "Nombor masukan"
 
 #: src/gtkui/columns.c:34
 msgid "Title"
-msgstr "Title"
+msgstr "Tajuk"
 
 #: src/gtkui/columns.c:35
 msgid "Artist"
-msgstr "Artist"
+msgstr "Artis"
 
 #: src/gtkui/columns.c:35
 msgid "Year"
-msgstr "Year"
+msgstr "Tahun"
 
 #: src/gtkui/columns.c:35
 msgid "Album"
@@ -1412,248 +1561,248 @@ msgstr "Album"
 
 #: src/gtkui/columns.c:35
 msgid "Track"
-msgstr "Track"
+msgstr "Trek"
 
 #: src/gtkui/columns.c:35
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: src/gtkui/columns.c:36
 msgid "Queue position"
-msgstr "Queue position"
+msgstr "Kedudukan baris gilir"
 
 #: src/gtkui/columns.c:36
 msgid "Length"
-msgstr "Length"
+msgstr "Panjang"
 
 #: src/gtkui/columns.c:36
 msgid "File path"
-msgstr "File path"
+msgstr "Laluan fail"
 
 #: src/gtkui/columns.c:36
 msgid "File name"
-msgstr "File name"
+msgstr "Nama fail"
 
 #: src/gtkui/columns.c:37
 msgid "Custom title"
-msgstr "Custom title"
+msgstr "Tajuk suai"
 
 #: src/gtkui/columns.c:37
 msgid "Bitrate"
-msgstr "Bitrate"
+msgstr "Kadar bit"
 
 #: src/gtkui/columns.c:286
 msgid "Available columns"
-msgstr ""
+msgstr "Lajur tersedia"
 
 #: src/gtkui/columns.c:312
 msgid "Displayed columns"
-msgstr ""
+msgstr "Lajur dipapar"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Left"
-msgstr "Dock at Left"
+msgstr "Labuh di Kiri"
 
 #: src/gtkui/layout.c:119
 msgid "Dock at Right"
-msgstr "Dock at Right"
+msgstr "Labuh di Kanan"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Top"
-msgstr "Dock at Top"
+msgstr "Labuh di Atas"
 
 #: src/gtkui/layout.c:120
 msgid "Dock at Bottom"
-msgstr "Dock at Bottom"
+msgstr "Labuh di Bawah"
 
 #: src/gtkui/layout.c:120
 msgid "Undock"
-msgstr "Undock"
+msgstr "Tanggalkan"
 
 #: src/gtkui/layout.c:120 src/ladspa/plugin.c:649
 msgid "Disable"
-msgstr "Disable"
+msgstr "Lumpuhkan"
 
 #: src/gtkui/layout.c:226 src/search-tool/search-tool.c:797
 msgid "Search Tool"
-msgstr ""
+msgstr "Alat Gelintar"
 
 #: src/gtkui/menus.c:127 src/statusicon/statusicon.c:262
 msgid "_Open Files ..."
-msgstr "_Open Files ..."
+msgstr "_Buka Fail ..."
 
 #: src/gtkui/menus.c:128
 msgid "Open _URL ..."
-msgstr "Open _URL ..."
+msgstr "Buka _URL ..."
 
 #: src/gtkui/menus.c:129
 msgid "_Add Files ..."
-msgstr ""
+msgstr "T_ambah Fail ..."
 
 #: src/gtkui/menus.c:130
 msgid "Add U_RL ..."
-msgstr "Add U_RL ..."
+msgstr "Tambah U_RL ..."
 
 #: src/gtkui/menus.c:132
 msgid "Search _Library"
-msgstr ""
+msgstr "Gelintar _Pustaka"
 
 #: src/gtkui/menus.c:134
 msgid "A_bout ..."
-msgstr "A_bout ..."
+msgstr "Per_ihal ..."
 
 #: src/gtkui/menus.c:135
 msgid "_Settings ..."
-msgstr ""
+msgstr "T_etapan ..."
 
 #: src/gtkui/menus.c:136 src/statusicon/statusicon.c:270
 msgid "_Quit"
-msgstr "_Quit"
+msgstr "_Keluar"
 
 #: src/gtkui/menus.c:139 src/gtkui/menus.c:254
 #: src/search-tool/search-tool.c:685 src/statusicon/statusicon.c:264
 msgid "_Play"
-msgstr "_Play"
+msgstr "_Main"
 
 #: src/gtkui/menus.c:140 src/statusicon/statusicon.c:265
 msgid "Paus_e"
-msgstr "Paus_e"
+msgstr "_Jeda"
 
 #: src/gtkui/menus.c:141 src/statusicon/statusicon.c:266
 msgid "_Stop"
-msgstr "_Stop"
+msgstr "_Henti"
 
 #: src/gtkui/menus.c:142 src/statusicon/statusicon.c:263
 msgid "Pre_vious"
-msgstr "Pre_vious"
+msgstr "Ter_dahulu"
 
 #: src/gtkui/menus.c:143 src/statusicon/statusicon.c:267
 msgid "_Next"
-msgstr "_Next"
+msgstr "Ber_ikutnya"
 
 #: src/gtkui/menus.c:145
 msgid "_Repeat"
-msgstr "_Repeat"
+msgstr "_Ulang"
 
 #: src/gtkui/menus.c:146
 msgid "S_huffle"
-msgstr "S_huffle"
+msgstr "K_ocok"
 
 #: src/gtkui/menus.c:147
 msgid "N_o Playlist Advance"
-msgstr "N_o Playlist Advance"
+msgstr "T_iada Senarai Main Pendahuluan"
 
 #: src/gtkui/menus.c:149
 msgid "Stop A_fter This Song"
-msgstr ""
+msgstr "Henti Se_lepas Lagu Ini"
 
 #: src/gtkui/menus.c:152 src/gtkui/menus.c:242
 msgid "Song _Info ..."
-msgstr "Song _Info ..."
+msgstr "Mak_lumat Lagu ..."
 
 #: src/gtkui/menus.c:153
 msgid "Jump to _Time ..."
-msgstr "Jump to _Time ..."
+msgstr "Lompat ke Ma_sa ..."
 
 #: src/gtkui/menus.c:154
 msgid "_Jump to Song ..."
-msgstr "_Jump to Song ..."
+msgstr "L_ompat ke Lagu ..."
 
 #: src/gtkui/menus.c:156
 msgid "Set Repeat Point _A"
-msgstr ""
+msgstr "Tetapkan Titik Ulang _A"
 
 #: src/gtkui/menus.c:157
 msgid "Set Repeat Point _B"
-msgstr ""
+msgstr "Tetapkan Titik Ulang _B"
 
 #: src/gtkui/menus.c:158
 msgid "_Clear Repeat Points"
-msgstr ""
+msgstr "_Kosongkan Titik Ulang"
 
 #: src/gtkui/menus.c:161 src/gtkui/menus.c:167 src/gtkui/menus.c:180
 msgid "By _Title"
-msgstr "By _Title"
+msgstr "Mengikut _Tajuk"
 
 #: src/gtkui/menus.c:162
 msgid "By _Filename"
-msgstr ""
+msgstr "Mengikut Nama _Fail"
 
 #: src/gtkui/menus.c:163
 msgid "By File _Path"
-msgstr ""
+msgstr "Mengikut _Laluan Fail"
 
 #: src/gtkui/menus.c:166 src/gtkui/menus.c:179
 msgid "By Track _Number"
-msgstr "By Track _Number"
+msgstr "Mengikut _Nombor Trek"
 
 #: src/gtkui/menus.c:168 src/gtkui/menus.c:181
 msgid "By _Artist"
-msgstr "By _Artist"
+msgstr "Mengikut _Artis"
 
 #: src/gtkui/menus.c:169 src/gtkui/menus.c:182
 msgid "By Al_bum"
-msgstr ""
+msgstr "Mengikut Al_bum"
 
 #: src/gtkui/menus.c:170 src/gtkui/menus.c:183
 msgid "By Release _Date"
-msgstr "By Release _Date"
+msgstr "Mengikut Tarik_h Keluaran"
 
 #: src/gtkui/menus.c:171 src/gtkui/menus.c:184
 msgid "By _Length"
-msgstr ""
+msgstr "Mengikut Pan_jang"
 
 #: src/gtkui/menus.c:172 src/gtkui/menus.c:185
 msgid "By _File Path"
-msgstr "By _File Path"
+msgstr "Mengikut Laluan _Fail"
 
 #: src/gtkui/menus.c:173 src/gtkui/menus.c:186
 msgid "By _Custom Title"
-msgstr "By _Custom Title"
+msgstr "Mengikut Tajuk _Suai"
 
 #: src/gtkui/menus.c:175 src/gtkui/menus.c:188
 msgid "R_everse Order"
-msgstr "R_everse Order"
+msgstr "Tertib S_ongsang"
 
 #: src/gtkui/menus.c:176 src/gtkui/menus.c:189
 msgid "_Random Order"
-msgstr "_Random Order"
+msgstr "Tertib _Rawak"
 
 #: src/gtkui/menus.c:192
 msgid "_Play This Playlist"
-msgstr ""
+msgstr "_Main Senarai Main Ini"
 
 #: src/gtkui/menus.c:193 src/gtkui/menus.c:244
 msgid "_Refresh"
-msgstr "_Refresh"
+msgstr "Se_gar Semula"
 
 #: src/gtkui/menus.c:195
 msgid "_Sort"
-msgstr "_Sort"
+msgstr "_Isih"
 
 #: src/gtkui/menus.c:196
 msgid "Sort Se_lected"
-msgstr ""
+msgstr "Isih T_erpilih"
 
 #: src/gtkui/menus.c:197
 msgid "Remove _Duplicates"
-msgstr ""
+msgstr "Buang Pen_dua"
 
 #: src/gtkui/menus.c:198
 msgid "Remove _Unavailable Files"
-msgstr ""
+msgstr "Buang Fail Yang _Tiada"
 
 #: src/gtkui/menus.c:200
 msgid "_New"
-msgstr "_New"
+msgstr "_Baharu"
 
 #: src/gtkui/menus.c:201
 msgid "Ren_ame ..."
-msgstr ""
+msgstr "N_ama Semula ..."
 
 #: src/gtkui/menus.c:202 src/gtkui/menus.c:256
 msgid "Remo_ve"
-msgstr ""
+msgstr "B_uang"
 
 #: src/gtkui/menus.c:204
 msgid "_Import ..."
@@ -1661,71 +1810,71 @@ msgstr "_Import ..."
 
 #: src/gtkui/menus.c:205
 msgid "_Export ..."
-msgstr "_Export ..."
+msgstr "_Eksport ..."
 
 #: src/gtkui/menus.c:207
 msgid "Playlist _Manager ..."
-msgstr ""
+msgstr "Pen_gurus Senarai Main ..."
 
 #: src/gtkui/menus.c:208
 msgid "_Queue Manager ..."
-msgstr "_Queue Manager ..."
+msgstr "Pengurus Baris _Gilir ..."
 
 #: src/gtkui/menus.c:211
 msgid "Volume _Up"
-msgstr "Volume _Up"
+msgstr "Volum _Naik"
 
 #: src/gtkui/menus.c:212
 msgid "Volume _Down"
-msgstr "Volume _Down"
+msgstr "Volum _Turun"
 
 #: src/gtkui/menus.c:214
 msgid "_Equalizer"
-msgstr "_Equaliser"
+msgstr "Pen_yama"
 
 #: src/gtkui/menus.c:216
 msgid "E_ffects ..."
-msgstr ""
+msgstr "K_esan ..."
 
 #: src/gtkui/menus.c:219
 msgid "Show _Menu Bar"
-msgstr "Show _Menu Bar"
+msgstr "Tunjuk Palang _Menu"
 
 #: src/gtkui/menus.c:221
 msgid "Show I_nfo Bar"
-msgstr "Show I_nfo Bar"
+msgstr "Tunjuk Palang Ma_klumat"
 
 #: src/gtkui/menus.c:223
 msgid "Show Info Bar Vis_ualization"
-msgstr ""
+msgstr "Tunjuk Peng_visualan Palang Maklumat"
 
 #: src/gtkui/menus.c:225
 msgid "Show _Status Bar"
-msgstr "Show _Status Bar"
+msgstr "Tunjuk Palang _Status"
 
 #: src/gtkui/menus.c:228
 msgid "Show _Remaining Time"
-msgstr ""
+msgstr "Tunjuk Masa _Berbaki"
 
 #: src/gtkui/menus.c:231
 msgid "_Visualizations ..."
-msgstr ""
+msgstr "Pe_ngvisualan ..."
 
 #: src/gtkui/menus.c:234
 msgid "_File"
-msgstr "_File"
+msgstr "_Fail"
 
 #: src/gtkui/menus.c:235
 msgid "_Playback"
-msgstr "_Playback"
+msgstr "_Main Balik"
 
 #: src/gtkui/menus.c:236
 msgid "P_laylist"
-msgstr "P_laylist"
+msgstr "Se_narai Main"
 
 #: src/gtkui/menus.c:237 src/gtkui/menus.c:251
 msgid "_Services"
-msgstr "_Services"
+msgstr "Perk_hidmatan"
 
 #: src/gtkui/menus.c:238
 msgid "_Output"
@@ -1733,72 +1882,72 @@ msgstr "_Output"
 
 #: src/gtkui/menus.c:239
 msgid "_View"
-msgstr "_View"
+msgstr "_Lihat"
 
 #: src/gtkui/menus.c:243
 msgid "_Queue/Unqueue"
-msgstr "_Queue/Unqueue"
+msgstr "_Baris Gilir/Nyahbaris Gilir"
 
 #: src/gtkui/menus.c:246
 msgid "Cu_t"
-msgstr "Cu_t"
+msgstr "Po_tong"
 
 #: src/gtkui/menus.c:247
 msgid "_Copy"
-msgstr "_Copy"
+msgstr "Sa_lin"
 
 #: src/gtkui/menus.c:248
 msgid "_Paste"
-msgstr "_Paste"
+msgstr "Tam_pal"
 
 #: src/gtkui/menus.c:249
 msgid "Select _All"
-msgstr "Select _All"
+msgstr "Pilih Semu_a"
 
 #: src/gtkui/menus.c:255
 msgid "_Rename ..."
-msgstr ""
+msgstr "_Nama Semula ..."
 
 #: src/gtkui/settings.c:35
 msgid "<b>Playlist Tabs</b>"
-msgstr ""
+msgstr "<b>Tab Senarai Main</b>"
 
 #: src/gtkui/settings.c:36
 msgid "Always show tabs"
-msgstr ""
+msgstr "Sentiasa tunjuk tab"
 
 #: src/gtkui/settings.c:39
 msgid "Show entry counts"
-msgstr ""
+msgstr "Tunjuk kiraan masukan"
 
 #: src/gtkui/settings.c:42
 msgid "Show close buttons"
-msgstr ""
+msgstr "Tunjuk butang tutup"
 
 #: src/gtkui/settings.c:45
 msgid "<b>Playlist Columns</b>"
-msgstr ""
+msgstr "<b>Lajur Senarai Main</b>"
 
 #: src/gtkui/settings.c:47
 msgid "Show column headers"
-msgstr ""
+msgstr "Tunjuk pengepala lajur"
 
 #: src/gtkui/settings.c:50 src/modplug/plugin_main.c:131
 #: src/skins/skins_cfg.c:267
 msgid "<b>Miscellaneous</b>"
-msgstr ""
+msgstr "<b>Pelbagai</b>"
 
 #: src/gtkui/settings.c:51
 msgid "Arrow keys seek by:"
-msgstr ""
+msgstr "Kekunci anak panah jangkau:"
 
 #: src/gtkui/settings.c:54
 msgid "Scroll on song change"
-msgstr ""
+msgstr "Tatal bila lagu berubah"
 
 #: src/gtkui/ui_gtk.c:94
 msgid "GTK Interface"
-msgstr "GTK Interface"
+msgstr "Antaramuka GTK"
 
 #: src/gtkui/ui_gtk.c:192 src/skins/ui_main.c:233
 #, c-format
@@ -1807,7 +1956,7 @@ msgstr "%s - Audacious"
 
 #: src/gtkui/ui_gtk.c:197
 msgid "Buffering ..."
-msgstr ""
+msgstr "Menimbal ..."
 
 #: src/gtkui/ui_gtk.c:200 src/skins/ui_main.c:235 src/skins/ui_main.c:1143
 msgid "Audacious"
@@ -1817,8 +1966,7 @@ msgstr "Audacious"
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d saluran"
 
 #: src/gtkui/ui_statusbar.c:101
 #, c-format
@@ -1827,75 +1975,75 @@ msgstr "%d kbps"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr ""
+msgstr "Trek terdahulu"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/menus.c:78
 msgid "Play"
-msgstr "Play"
+msgstr "Main"
 
 #: src/hotkey/gui.c:72
 msgid "Pause/Resume"
-msgstr "Pause/Resume"
+msgstr "Jeda/Sambung Semula"
 
 #: src/hotkey/gui.c:73 src/skins/menus.c:80
 msgid "Stop"
-msgstr "Stop"
+msgstr "Henti"
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr ""
+msgstr "Trek berikutnya"
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "Maju 5 saat"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "Undur 5 saat"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
-msgstr "Mute"
+msgstr "Senyap"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Volum naik"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Volum turun"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Lompat ke fail"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
-msgstr ""
+msgstr "Togol tetingkap pemain"
 
 #: src/hotkey/gui.c:82
 msgid "Show On-Screen-Display"
-msgstr "Show On-Screen-Display"
+msgstr "Tunjuk Paparan-Atas-Skrin"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr ""
+msgstr "Togol ulang"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr ""
+msgstr "Togol kocok"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
-msgstr ""
+msgstr "Togol henti selepas semasa"
 
 #: src/hotkey/gui.c:86
 msgid "Raise player window(s)"
-msgstr ""
+msgstr "Naik tetingkap pemain"
 
 #: src/hotkey/gui.c:96
 msgid "(none)"
-msgstr "(none)"
+msgstr "(tiada)"
 
 #: src/hotkey/gui.c:233
 msgid ""
@@ -1904,42 +2052,41 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
-"It is not recommended to bind the primary mouse buttons without "
-"modificators.\n"
+"Anda tidak disarankan mengikat butang tetikus utama dan pengubahsuai.\n"
 "\n"
-"Do you want to continue?"
+"Anda mahu teruskan?"
 
 #: src/hotkey/gui.c:235
 msgid "Binding mouse buttons"
-msgstr "Binding mouse buttons"
+msgstr "Pengikatan butang tetikus"
 
 #: src/hotkey/gui.c:385
 msgid "Global Hotkey Plugin Configuration"
-msgstr "Global Hotkey Plugin Configuration"
+msgstr "Konfigurasi Pemalam Kekunci Panas Sejagat"
 
 #: src/hotkey/gui.c:400
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
 msgstr ""
-"Press a key combination inside a text field.\n"
-"You can also bind mouse buttons."
+"Tekan gabungan kekunci di dalam medan teks.\n"
+"Anda juga boleh mengikat butang tetikus."
 
 #: src/hotkey/gui.c:405
 msgid "Hotkeys:"
-msgstr "Hotkeys:"
+msgstr "Kekunci Panas:"
 
 #: src/hotkey/gui.c:422
 msgid "<b>Action:</b>"
-msgstr "<b>Action:</b>"
+msgstr "<b>Tindakan:</b>"
 
 #: src/hotkey/gui.c:429
 msgid "<b>Key Binding:</b>"
-msgstr "<b>Key Binding:</b>"
+msgstr "<b>Pengikatan Kekunci:</b>"
 
 #: src/hotkey/gui.c:476
 msgid "_Add"
-msgstr ""
+msgstr "T_ambah"
 
 #: src/hotkey/plugin.c:67
 msgid ""
@@ -1955,30 +2102,41 @@ msgid ""
 " Jonathan A. Davis <davis@jdhouse.org>,\n"
 " Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
+"Pemalam Kekunci Panas Sejagat\n"
+"Kawal pemain dengan gabungan kekunci sejagat atau kekunci multimedia.\n"
+"\n"
+"Hakcopta (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Penyumbang terlibat:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
 #: src/hotkey/plugin.c:79
 msgid "Global Hotkeys"
-msgstr ""
+msgstr "Kekunci Panas Sejagat"
 
 #: src/jack/jack.c:196
 msgid "Connect to all available jack ports"
-msgstr ""
+msgstr "Sambung ke semua port jek yang tersedia"
 
 #: src/jack/jack.c:197
 msgid "Connect only the output ports"
-msgstr ""
+msgstr "Hanya sambung ke port output"
 
 #: src/jack/jack.c:198
 msgid "Don't connect to any port"
-msgstr ""
+msgstr "Jangan sambung ke mana-mana port"
 
 #: src/jack/jack.c:202
 msgid "Connection mode:"
-msgstr ""
+msgstr "Mod sambungan:"
 
 #: src/jack/jack.c:205
 msgid "Enable debug printing"
-msgstr ""
+msgstr "Benarkan percetakan nyahpepijat"
 
 #: src/jack/jack.c:432
 msgid ""
@@ -1987,23 +2145,27 @@ msgid ""
 "\n"
 "Ported to Audacious by Giacomo Lozito"
 msgstr ""
+"Berdasarkan pada xmms-jack, oleh Chris Morgan:\n"
+"http://xmms-jack.sourceforge.net/\n"
+"\n"
+"Dialih ke Audacious oleh Giacomo Lozito"
 
 #: src/jack/jack.c:438
 msgid "JACK Output"
-msgstr ""
+msgstr "Output JEK"
 
 #: src/ladspa/plugin.c:519
 #, c-format
 msgid "%s Settings"
-msgstr "%s Settings"
+msgstr "Tetapan %s"
 
 #: src/ladspa/plugin.c:587
 msgid "LADSPA Host Settings"
-msgstr "LADSPA Host Settings"
+msgstr "Tetapan Hos LADSPA"
 
 #: src/ladspa/plugin.c:596
 msgid "Module paths:"
-msgstr "Module paths:"
+msgstr "Laluan Modul:"
 
 #: src/ladspa/plugin.c:601
 msgid ""
@@ -2011,42 +2173,45 @@ msgid ""
 "These paths are searched in addition to LADSPA_PATH.\n"
 "After adding new paths, press Enter to scan for new plugins.</small>"
 msgstr ""
-"<small>Separate multiple paths with a colon.\n"
-"These paths are searched in addition to LADSPA_PATH.\n"
-"After adding new paths, press Enter to scan for new plugins.</small>"
+"<small>Pisah laluan berbilang dengan tanda titk bertindih.\n"
+"Laluan ini digelintar sebagai tambahan ke LADSPA_PATH.\n"
+"Selepas menambah laluan baharu, tekan Enter untuk imbas pemalam baharu.</"
+"small>"
 
 #: src/ladspa/plugin.c:617
 msgid "Available plugins:"
-msgstr "Available plugins:"
+msgstr "Pemalam tersedia:"
 
 #: src/ladspa/plugin.c:630 src/modplug/plugin_main.c:113
 #: src/modplug/plugin_main.c:117 src/modplug/plugin_main.c:121
 #: src/modplug/plugin_main.c:125
 msgid "Enable"
-msgstr "Enable"
+msgstr "Benarkan"
 
 #: src/ladspa/plugin.c:636
 msgid "Enabled plugins:"
-msgstr "Enabled plugins:"
+msgstr "Pemalam dibenarkan:"
 
 #: src/ladspa/plugin.c:652
 msgid "Settings"
-msgstr "Settings"
+msgstr "Tetapan"
 
 #: src/ladspa/plugin.c:671
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 msgstr ""
+"Hos LADSPA untuk Audacious\n"
+"Hakcipta 2011 John Lindgren"
 
 #: src/ladspa/plugin.c:676
 msgid "LADSPA Host"
-msgstr ""
+msgstr "Hos LADSPA"
 
 #: src/lirc/lirc.c:74
 #, c-format
 msgid "%s: could not init LIRC support\n"
-msgstr ""
+msgstr "%s: tidak dapat awalkan sokongan LIRC\n"
 
 #: src/lirc/lirc.c:81
 #, c-format
@@ -2055,26 +2220,29 @@ msgid ""
 "%s: please read the documentation of LIRC\n"
 "%s: how to create a proper config file\n"
 msgstr ""
+"%s: tidak dapat baca fail konfig LIRC\n"
+"%s: sila baca dokumentasi LIRC\n"
+"%s: bagaimana hendak cipta fail konfig yang baik\n"
 
 #: src/lirc/lirc.c:112
 #, c-format
 msgid "%s: trying to reconnect...\n"
-msgstr ""
+msgstr "%s: cuba menyambung semula...\n"
 
 #: src/lirc/lirc.c:352
 #, c-format
 msgid "%s: unknown command \"%s\"\n"
-msgstr ""
+msgstr "%s: perintah \"%s\" tidak diketahui\n"
 
 #: src/lirc/lirc.c:363
 #, c-format
 msgid "%s: disconnected from LIRC\n"
-msgstr ""
+msgstr "%s: terputus dari LIRC\n"
 
 #: src/lirc/lirc.c:369
 #, c-format
 msgid "%s: will try reconnect every %d seconds...\n"
-msgstr ""
+msgstr "%s: akan cuba sambung semula setiap %d saat...\n"
 
 #: src/lirc/lirc.c:379
 msgid ""
@@ -2091,72 +2259,85 @@ msgid ""
 "\n"
 "For more information about LIRC, see http://lirc.org."
 msgstr ""
+"Pemalam ringkas untuk mengawal Audacious menggunakan daemon kawalan jauh "
+"LIRC\n"
+"\n"
+"Diadaptasi untuk Audacious oleh:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Berdasarkan pada pemalam LIRC XMMS oleh:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"Untuk maklumat lanjut mengenai LIRC, sila rujuk http://lirc.org."
 
 #: src/lirc/lirc.c:390
 msgid "<b>Connection</b>"
-msgstr ""
+msgstr "<b>Sambungan</b>"
 
 #: src/lirc/lirc.c:391
 msgid "Reconnect to LIRC server"
-msgstr ""
+msgstr "Sambung semula ke pelayan LIRC"
 
 #: src/lirc/lirc.c:393
 msgid "Wait before reconnecting:"
-msgstr ""
+msgstr "Tunggu sebelum disambung semula:"
 
 #: src/lirc/lirc.c:403
 msgid "LIRC Plugin"
-msgstr ""
+msgstr "Pemalam LIRC"
 
 #: src/lyricwiki/lyricwiki.c:117
 msgid "No lyrics available"
-msgstr ""
+msgstr "Tiada lirik tersedia"
 
 #: src/lyricwiki/lyricwiki.c:207 src/lyricwiki/lyricwiki.c:241
 #, c-format
 msgid "Unable to fetch %s"
-msgstr ""
+msgstr "Tidak boleh dapatkan %s"
 
 #: src/lyricwiki/lyricwiki.c:208 src/lyricwiki/lyricwiki.c:218
 #: src/lyricwiki/lyricwiki.c:242 src/lyricwiki/lyricwiki.c:252
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Error"
-msgstr "Error"
+msgstr "Ralat"
 
 #: src/lyricwiki/lyricwiki.c:217 src/lyricwiki/lyricwiki.c:251
 #, c-format
 msgid "Unable to parse %s"
-msgstr ""
+msgstr "Tidak boleh hurai %s"
 
 #: src/lyricwiki/lyricwiki.c:260
 msgid "Looking for lyrics ..."
-msgstr ""
+msgstr "Mencari lirik ..."
 
 #: src/lyricwiki/lyricwiki.c:271
 msgid "Missing song metadata"
-msgstr ""
+msgstr "Data meta lagu hilang"
 
 #: src/lyricwiki/lyricwiki.c:284
 msgid "Connecting to lyrics.wikia.com ..."
-msgstr ""
+msgstr "Menyambung ke lyrics.wikia.com ..."
 
 #: src/lyricwiki/lyricwiki.c:406
 msgid "LyricWiki Plugin"
-msgstr ""
+msgstr "Pemalam LyricWiki"
 
 #: src/m3u/m3u.c:116
 msgid "M3U Playlists"
-msgstr ""
+msgstr "Senarai Main M3U"
 
 #: src/metronom/metronom.c:127
 #, c-format
 msgid "Tact generator: %d bpm"
-msgstr "Tact generator: %d bpm"
+msgstr "Penjana rentak: %d bpm"
 
 #: src/metronom/metronom.c:129
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
-msgstr "Tact generator: %d bpm %d/%d"
+msgstr "Penjana rentak: %d bpm %d/%d"
 
 #: src/metronom/metronom.c:218
 msgid ""
@@ -2166,161 +2347,168 @@ msgid ""
 "e.g. tact://77 to play 77 beats per minute\n"
 "or tact://60*3/4 to play 60 bpm in 3/4 tacts"
 msgstr ""
+"Penjana Rentak oleh Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
+"\n"
+"Untuk gunakanya, tambah URL: tact://beats*num/den\n"
+"cth. tact://77 untuk main 77 beat per minit\n"
+"atau tact://60*3/4 untuk main 60 bpm dalam tempo 3/4 rentak"
 
 #: src/metronom/metronom.c:227
 msgid "Tact Generator"
-msgstr ""
+msgstr "Penjana Rentak"
 
 #: src/mixer/mixer.c:171
 msgid ""
 "Channel Mixer Plugin for Audacious\n"
 "Copyright 2011-2012 John Lindgren and Michał Lipski"
 msgstr ""
+"Pemalam Pengadun Saluran untuk Audacious\n"
+"Hakcipta 2011-2012 John Lindgren dan Michał Lipski"
 
 #: src/mixer/mixer.c:175
 msgid "<b>Channel Mixer</b>"
-msgstr ""
+msgstr "<b>Pengadun Saluran</b>"
 
 #: src/mixer/mixer.c:176
 msgid "Output channels:"
-msgstr "Output channels:"
+msgstr "Saluran output:"
 
 #: src/mixer/mixer.c:186
 msgid "Channel Mixer"
-msgstr ""
+msgstr "Pengadun Saluran"
 
 #: src/mms/mms.c:195
 msgid "MMS Plugin"
-msgstr ""
+msgstr "Pemalam MMS"
 
 #: src/modplug/plugin_main.c:55
 msgid "<b>Resolution</b>"
-msgstr ""
+msgstr "<b>Resolusi</b>"
 
 #: src/modplug/plugin_main.c:56
 msgid "8-bit"
-msgstr ""
+msgstr "8-bit"
 
 #: src/modplug/plugin_main.c:58
 msgid "16-bit"
-msgstr ""
+msgstr "16-bit"
 
 #: src/modplug/plugin_main.c:60
 msgid "<b>Channels</b>"
-msgstr ""
+msgstr "<b>Saluran</b>"
 
 #: src/modplug/plugin_main.c:66
 msgid "Nearest (fastest)"
-msgstr ""
+msgstr "Terdekat (terpantas)"
 
 #: src/modplug/plugin_main.c:68
 msgid "Linear (fast)"
-msgstr ""
+msgstr "Linear (pantas)"
 
 #: src/modplug/plugin_main.c:70
 msgid "Spline (good)"
-msgstr ""
+msgstr "Spline (baik)"
 
 #: src/modplug/plugin_main.c:72
 msgid "Polyphase (best)"
-msgstr ""
+msgstr "Polifasa (terbaik)"
 
 #: src/modplug/plugin_main.c:74
 msgid "<b>Sampling rate</b>"
-msgstr ""
+msgstr "<b>Kadar persampelan</b>"
 
 #: src/modplug/plugin_main.c:75
 msgid "22 kHz"
-msgstr ""
+msgstr "22 kHz"
 
 #: src/modplug/plugin_main.c:77
 msgid "44 kHz"
-msgstr ""
+msgstr "44 kHz"
 
 #: src/modplug/plugin_main.c:79
 msgid "48 kHz"
-msgstr ""
+msgstr "48 kHz"
 
 #: src/modplug/plugin_main.c:81
 msgid "96 kHz"
-msgstr ""
+msgstr "96 kHz"
 
 #: src/modplug/plugin_main.c:86 src/modplug/plugin_main.c:93
 #: src/modplug/plugin_main.c:100
 msgid "Level:"
-msgstr ""
+msgstr "Aras:"
 
 #: src/modplug/plugin_main.c:95
 msgid "Cutoff:"
-msgstr ""
+msgstr "Pangkas:"
 
 #: src/modplug/plugin_main.c:112
 msgid "<b>Reverb</b>"
-msgstr ""
+msgstr "<b>Reverb</b>"
 
 #: src/modplug/plugin_main.c:116
 msgid "<b>Bass Boost</b>"
-msgstr ""
+msgstr "<b>Galak Bes</b>"
 
 #: src/modplug/plugin_main.c:120
 msgid "<b>Surround</b>"
-msgstr ""
+msgstr "<b>Keliling</b>"
 
 #: src/modplug/plugin_main.c:124
 msgid "<b>Preamp</b>"
-msgstr ""
+msgstr "<b>Praamp</b>"
 
 #: src/modplug/plugin_main.c:132
 msgid "Oversample"
-msgstr ""
+msgstr "Oversampel"
 
 #: src/modplug/plugin_main.c:134
 msgid "Noise reduction"
-msgstr ""
+msgstr "Pengurangan hingar"
 
 #: src/modplug/plugin_main.c:136
 msgid "Play Amiga MODs"
-msgstr ""
+msgstr "Main MOD Amiga"
 
 #: src/modplug/plugin_main.c:138
 msgid "<b>Repeat</b>"
-msgstr ""
+msgstr "<b>Ulang</b>"
 
 #: src/modplug/plugin_main.c:139
 msgid "Repeat count:"
-msgstr ""
+msgstr "Kiraan ulang:"
 
 #: src/modplug/plugin_main.c:141
 msgid "To repeat forever, set the repeat count to -1."
-msgstr ""
+msgstr "Untuk ulang selamanya, tetapkan kiraan ulang menjadi -1."
 
 #: src/modplug/plugin_main.c:236
 msgid "ModPlug (Module Player)"
-msgstr ""
+msgstr "ModPlug (Pemain Modul)"
 
 #: src/mpg123/mpg123.c:210
 msgid "Surround"
-msgstr "Surround"
+msgstr "Keliling"
 
 #: src/mpg123/mpg123.c:412
 msgid "MPG123 Plugin"
-msgstr ""
+msgstr "Pemalam MPG123"
 
 #: src/mpris2/plugin.c:403
 msgid "MPRIS 2 Server"
-msgstr ""
+msgstr "Pelayan MPRIS 2"
 
 #: src/neon/neon.c:1052
 msgid "Neon HTTP/HTTPS Plugin"
-msgstr ""
+msgstr "Pemalam Neon HTTP/HTTPS"
 
 #: src/notify/event.c:65
 msgid "Stopped"
-msgstr "Stopped"
+msgstr "Dihentikan"
 
 #: src/notify/event.c:65
 msgid "Audacious is not playing."
-msgstr "Audacious is not playing."
+msgstr "Audacioud tidak dimainkan."
 
 #: src/notify/notify.c:33
 msgid ""
@@ -2341,54 +2529,70 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Pemalam Pemberitahuan Desktop untuk Audacious\n"
+"Hakcipta (C) 2010 Maximilian Bogner\n"
+"Hakcipta (C) 2011-2013 John Lindgren dan Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"Pemalam adalah perisian bebas; anda boleh mengedarkannya dan/atau "
+"mengubahsuainya dibawah terma Pelesenan Awam Am GNU yang diterbitkan oleh "
+"Free Software Foundation, sama ada versi 3 lesen, atau (mengikut pilihan "
+"anda) mana-mana versi terkini.\n"
+"\n"
+"Pemalam ini diedarkan dengan harapan ianya akan berguna, TANPA SEBARANG "
+"JAMINAN; termasuk juga KESESUAIAN UNTUK DIPASARKAN, JAMINAN KUALITI, atau "
+"JAMINAN ATAS APA JUA SEBAB. Sila lihat GNU General Public License untuk "
+"maklumat lanjut.\n"
+"\n"
+"Anda seharusnya menerima satu salinan Lesen Awam Am GNU bersama-sama dengan "
+"pengurus skrip Nautilus; jika tidak, rujuk <http://www.gnu.org/licenses/>."
 
 #: src/notify/notify.c:77
 msgid "Show playback controls"
-msgstr ""
+msgstr "Tunjuk kawalan main balik"
 
 #: src/notify/notify.c:80
 msgid "Always show notification"
-msgstr ""
+msgstr "Sentiasa tunjuk pemberitahuan"
 
 #: src/notify/notify.c:92
 msgid "Desktop Notifications"
-msgstr ""
+msgstr "Pemberitahuan Desktop"
 
 #: src/notify/osd.c:57
 msgid "Show"
-msgstr ""
+msgstr "Tunjuk"
 
 #: src/notify/osd.c:65 src/skins/menus.c:79
 msgid "Pause"
-msgstr ""
+msgstr "Jeda"
 
 #: src/notify/osd.c:72 src/skins/menus.c:82
 msgid "Next"
-msgstr ""
+msgstr "Berikutnya"
 
 #: src/oss4/plugin.c:38
 msgid "1. Default device"
-msgstr "1. Default device"
+msgstr "1. Peranti lalai"
 
 #: src/oss4/plugin.c:77 src/sndio/sndio.c:393
 msgid "Audio device:"
-msgstr "Audio device:"
+msgstr "Peranti audio:"
 
 #: src/oss4/plugin.c:79
 msgid "Use alternate device:"
-msgstr "Use alternate device:"
+msgstr "Guna peranti alternatif:"
 
 #: src/oss4/plugin.c:83
 msgid "Save volume between sessions."
-msgstr ""
+msgstr "Simpan volum diantara sesi."
 
 #: src/oss4/plugin.c:85
 msgid "Enable format conversions made by the OSS software."
-msgstr "Enable format conversions made by the OSS software."
+msgstr "Benarkan penukaran format yang dibuat oleh perisian OSS."
 
 #: src/oss4/plugin.c:87
 msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr ""
+msgstr "Benarkan mod ekslusif untuk menghindari pengadunan maya."
 
 #: src/oss4/plugin.c:110
 msgid ""
@@ -2398,18 +2602,23 @@ msgid ""
 "I would like to thank people on #audacious, especially Tony Vroon and John "
 "Lindgren and of course the authors of the previous OSS plugin."
 msgstr ""
+"Pemalam Output OSS4 untuk Audacious\n"
+"Hakcipta 2010-2012 Michał Lipski\n"
+"\n"
+"Terima kasih buat individu di #audacious, terutamanya Tony Vroon dan John "
+"Lindgren serta bekas pengarang pemalam OSS."
 
 #: src/oss4/plugin.c:117
 msgid "OSS4 Output"
-msgstr ""
+msgstr "Output OSS4"
 
 #: src/pls/pls.c:102
 msgid "PLS Playlists"
-msgstr ""
+msgstr "Senarai Main PLS"
 
 #: src/psf/plugin.c:209
 msgid "OpenPSF PSF1/PSF2 Decoder"
-msgstr ""
+msgstr "Penyahkod OpenPSF PSF1/PSF2"
 
 #: src/pulse_audio/pulse_audio.c:644
 msgid ""
@@ -2430,142 +2639,164 @@ msgid ""
 "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
 "USA."
 msgstr ""
+"Pemalam Output Audacious PulseAudio\n"
+"\n"
+"Program ini adalah perisian bebas; anda boleh mengedarkannya dan/atau\n"
+"mengubahsuainya dibawah terma Pelesenan Awam Am GNU yang\n"
+"diterbitkan oleh Free Software Foundation; sama ada versi 2 dari lesen, \n"
+"atau (mengikut pilihan anda) mana-mana versi terkini\n"
+"\n"
+"Program ini diedarkan dengan harapan ianya akan berguna, TANPA \n"
+"SEBARANG JAMINAN; termasuk juga KESESUAIAN UNTUK DIPASARKAN,\n"
+"JAMINAN KUALITI, atau JAMINAN ATAS APA JUA SEBAB. Sila lihat GNU\n"
+"General Public License untuk maklumat lanjut.\n"
+"\n"
+"Anda seharusnya menerima satu salinan Lesen Awam Am GNU \n"
+"bersama-sama dengan Gwibber; jika tidak, laporkannya ke Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
 
 #: src/pulse_audio/pulse_audio.c:662
 msgid "PulseAudio Output"
-msgstr ""
+msgstr "Output PulseAudio"
 
 #: src/resample/resample.c:165
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Pemalam Penukar Kadar Sampel untuk Audacious\n"
+"Hakcipta 2010-2012 John Lindgren"
 
 #: src/resample/resample.c:169
 msgid "Skip/repeat samples"
-msgstr ""
+msgstr "Langkau/ulang sampel"
 
 #: src/resample/resample.c:170
 msgid "Linear interpolation"
-msgstr ""
+msgstr "Interpolasi linear"
 
 #: src/resample/resample.c:171
 msgid "Fast sinc interpolation"
-msgstr ""
+msgstr "Interpolasi sinc pantas"
 
 #: src/resample/resample.c:172
 msgid "Medium sinc interpolation"
-msgstr ""
+msgstr "Interpolasi sinc sederhana"
 
 #: src/resample/resample.c:173
 msgid "Best sinc interpolation"
-msgstr ""
+msgstr "Interpolasi sinc terbaik"
 
 #: src/resample/resample.c:176
 msgid "<b>Conversion</b>"
-msgstr ""
+msgstr "<b>Penukaran</b>"
 
 #: src/resample/resample.c:177
 msgid "Method:"
-msgstr "Method:"
+msgstr "Kaedah:"
 
 #: src/resample/resample.c:180 src/sox-resampler/sox-resampler.c:153
 msgid "Rate:"
-msgstr ""
+msgstr "Kadar:"
 
 #: src/resample/resample.c:183
 msgid "<b>Rate Mappings</b>"
-msgstr ""
+msgstr "<b>Pemetaan Kadar</b>"
 
 #: src/resample/resample.c:184
 msgid "Use rate mappings"
-msgstr ""
+msgstr "Guna pemetaan kadar"
 
 #: src/resample/resample.c:186
 msgid "8 kHz:"
-msgstr ""
+msgstr "8 kHz:"
 
 #: src/resample/resample.c:189
 msgid "16 kHz:"
-msgstr ""
+msgstr "16 kHz:"
 
 #: src/resample/resample.c:192
 msgid "22.05 kHz:"
-msgstr ""
+msgstr "22.05 kHz:"
 
 #: src/resample/resample.c:195
 msgid "44.1 kHz:"
-msgstr ""
+msgstr "44.1 kHz:"
 
 #: src/resample/resample.c:198
 msgid "48 kHz:"
-msgstr ""
+msgstr "48 kHz:"
 
 #: src/resample/resample.c:201
 msgid "96 kHz:"
-msgstr ""
+msgstr "96 kHz:"
 
 #: src/resample/resample.c:204
 msgid "192 kHz:"
-msgstr ""
+msgstr "192 kHz:"
 
 #: src/resample/resample.c:214
 msgid "Sample Rate Converter"
-msgstr ""
+msgstr "Penukar Kadar Sampel"
 
 #: src/scrobbler2/config_window.c:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
-msgstr ""
+msgstr "OK. Scrobble untuk pengguna: %s"
 
 #: src/scrobbler2/config_window.c:53
 msgid "Permission Denied"
-msgstr ""
+msgstr "Keizinan Dinafikan"
 
 #: src/scrobbler2/config_window.c:55
 msgid "Access the following link to allow Audacious to scrobble your plays:"
-msgstr ""
+msgstr "Capai pautan berikut untuk membolehkan Audacious scrobble lagu anda:"
 
 #: src/scrobbler2/config_window.c:64
 msgid "Keep this window open and click 'Check Permission' again.\n"
-msgstr ""
+msgstr "Kekalkan tetingkap ini dibuka dan klik 'Semak Keizinan' lagi.\n"
 
 #: src/scrobbler2/config_window.c:67 src/scrobbler2/config_window.c:78
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
 msgstr ""
+"Jangan risau. Scrobble anda disimpan dalam komputer anda.\n"
+"Ia akan diserah sebaik sahaja Audacious dibenarkan membuatnya."
 
 #: src/scrobbler2/config_window.c:75
 msgid "Network Problem."
-msgstr ""
+msgstr "Masalah Rangkaian."
 
 #: src/scrobbler2/config_window.c:76
 msgid "There was a problem contacting Last.fm. Please try again later."
-msgstr ""
+msgstr "Terdapat masalah menghubungi Last.fm. Sila cuba lagi kemudian."
 
 #: src/scrobbler2/config_window.c:108
 msgid "Checking..."
-msgstr ""
+msgstr "Memeriksa..."
 
 #: src/scrobbler2/config_window.c:174
 msgid "C_heck Permission"
-msgstr ""
+msgstr "S_emak Keizinan"
 
 #: src/scrobbler2/config_window.c:175
 msgid "_Revoke Permission"
-msgstr ""
+msgstr "_Batalkan Keizinan"
 
 #: src/scrobbler2/config_window.c:222
 msgid ""
 "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
-msgstr ""
+msgstr "Anda perlu benarkan Audacious scrobble trek ke akaun Last.fm anda.\n"
 
 #: src/scrobbler2/scrobbler.c:220
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
 msgstr ""
+"Pemalam Scrobbler tidak dapat dimulakan.\n"
+"Terdapat masalah dengan pemasangan anda."
 
 #: src/scrobbler2/scrobbler.c:296
 msgid ""
@@ -2577,38 +2808,48 @@ msgid ""
 "project.\n"
 "\n"
 msgstr ""
+"Pemalam Audacious Scrobbler 2.0 oleh Pitxyoki,\n"
+"\n"
+"hakcipta © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
+"\n"
+"Terima kasih buat John Lindgren kerana membantu saya memulakan projek ini.\n"
+"\n"
 
 #: src/scrobbler2/scrobbler.c:302
 msgid "Scrobbler 2.0"
-msgstr ""
+msgstr "Scrobbler 2.0"
 
 #: src/scrobbler2/scrobbler_communication.c:727
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
 msgstr ""
+"Audacious kini menggunakan versi dipertingkat Scrobbler Last.fm.\n"
+"Sila semak Keutamaan untuk pemalam Scrobbler."
 
 #: src/sdlout/plugin.c:26
 msgid ""
 "SDL Output Plugin for Audacious\n"
 "Copyright 2010 John Lindgren"
 msgstr ""
+"Pemalam Output SDL untuk Audacious\n"
+"Hakcipta 2010 John Lindgren"
 
 #: src/sdlout/plugin.c:31
 msgid "SDL Output"
-msgstr ""
+msgstr "Output SDL"
 
 #: src/search-tool/search-tool.c:104 src/search-tool/search-tool.c:114
 msgid "Library"
-msgstr ""
+msgstr "Pustaka"
 
 #: src/search-tool/search-tool.c:211
 msgid "Unknown Artist"
-msgstr ""
+msgstr "Artis Tidak Diketahui"
 
 #: src/search-tool/search-tool.c:213
 msgid "Unknown Album"
-msgstr ""
+msgstr "Album Tidak Diketahui"
 
 #: src/search-tool/search-tool.c:636
 #, c-format
@@ -2616,13 +2857,14 @@ msgid ""
 "%s\n"
 " on %s by %s"
 msgstr ""
+"%s\n"
+"pada %s oleh %s"
 
 #: src/search-tool/search-tool.c:642
 #, c-format
 msgid "%d album"
 msgid_plural "%d albums"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%d album"
 
 #: src/search-tool/search-tool.c:644
 #, c-format
@@ -2633,7 +2875,8 @@ msgid_plural ""
 "%s\n"
 " %s, %d songs"
 msgstr[0] ""
-msgstr[1] ""
+"%s\n"
+" %s, %d lagu"
 
 #: src/search-tool/search-tool.c:650
 #, c-format
@@ -2644,581 +2887,584 @@ msgid_plural ""
 "%s\n"
 " %d songs by %s"
 msgstr[0] ""
-msgstr[1] ""
+"%s\n"
+" %d lagu oleh %s"
 
 #: src/search-tool/search-tool.c:686
 msgid "_Create Playlist"
-msgstr ""
+msgstr "_Cipta Senarai Main"
 
 #: src/search-tool/search-tool.c:687
 msgid "_Add to Playlist"
-msgstr ""
+msgstr "T_ambah ke Senarai Main"
 
 #: src/search-tool/search-tool.c:724
 msgid "Search library"
-msgstr ""
+msgstr "Gelintar pustaka"
 
 #: src/search-tool/search-tool.c:728
 msgid ""
 "To import your music library into Audacious, choose a folder and then click "
 "the \"refresh\" icon."
 msgstr ""
+"Untuk mengimport pustaka muzik anda ke dalam Audacious, pilih satu folder "
+"dan kemudian klik pada ikon \"segar semula\"."
 
 #: src/search-tool/search-tool.c:736
 msgid "Please wait ..."
-msgstr ""
+msgstr "Tunggu sebentar ..."
 
 #: src/search-tool/search-tool.c:758
 msgid "Choose Folder"
-msgstr ""
+msgstr "Pilih Folder"
 
 #: src/skins/menus.c:56
 msgid "Open Files ..."
-msgstr ""
+msgstr "Buka Fail ..."
 
 #: src/skins/menus.c:57
 msgid "Open URL ..."
-msgstr ""
+msgstr "Buka URL ..."
 
 #: src/skins/menus.c:59
 msgid "Playback"
-msgstr "Playback"
+msgstr "Main Balik"
 
 #: src/skins/menus.c:60
 msgid "Playlist"
-msgstr ""
+msgstr "Senarai Main"
 
 #: src/skins/menus.c:61
 msgid "View"
-msgstr ""
+msgstr "Lihat"
 
 #: src/skins/menus.c:63 src/skins/menus.c:133 src/skins/menus.c:146
 #: src/skins/menus.c:203
 msgid "Services"
-msgstr ""
+msgstr "Perkhidmatan"
 
 #: src/skins/menus.c:65
 msgid "About ..."
-msgstr ""
+msgstr "Perihal ..."
 
 #: src/skins/menus.c:66
 msgid "Settings ..."
-msgstr ""
+msgstr "Tetapan ..."
 
 #: src/skins/menus.c:67
 msgid "Quit"
-msgstr ""
+msgstr "Keluar"
 
 #: src/skins/menus.c:71 src/skins/menus.c:195
 msgid "Song Info ..."
-msgstr ""
+msgstr "Maklumat Lagu ..."
 
 #: src/skins/menus.c:73
 msgid "Repeat"
-msgstr "Repeat"
+msgstr "Ulang"
 
 #: src/skins/menus.c:74
 msgid "Shuffle"
-msgstr "Shuffle"
+msgstr "Kocok"
 
 #: src/skins/menus.c:75
 msgid "No Playlist Advance"
-msgstr "No Playlist Advance"
+msgstr "Tiada Senarai Main Pendahuluan"
 
 #: src/skins/menus.c:76
 msgid "Stop After This Song"
-msgstr ""
+msgstr "Henti Selepas Lagu Ini"
 
 #: src/skins/menus.c:81
 msgid "Previous"
-msgstr ""
+msgstr "Terdahulu"
 
 #: src/skins/menus.c:84
 msgid "Set A-B Repeat"
-msgstr ""
+msgstr "Tetapkan Ulang A-B"
 
 #: src/skins/menus.c:85
 msgid "Clear A-B Repeat"
-msgstr ""
+msgstr "Kosongkan Ulang A-B"
 
 #: src/skins/menus.c:87
 msgid "Jump to Song ..."
-msgstr ""
+msgstr "Lompat ke Lagu ..."
 
 #: src/skins/menus.c:88
 msgid "Jump to Time ..."
-msgstr ""
+msgstr "Lompat ke Masa ..."
 
 #: src/skins/menus.c:92
 msgid "Play This Playlist"
-msgstr ""
+msgstr "Main Senarai Main Ini"
 
 #: src/skins/menus.c:94
 msgid "New Playlist"
-msgstr ""
+msgstr "Senarai Main Baharu"
 
 #: src/skins/menus.c:95
 msgid "Rename Playlist ..."
-msgstr ""
+msgstr "Nama Semula Senarai Main ..."
 
 #: src/skins/menus.c:96
 msgid "Remove Playlist"
-msgstr ""
+msgstr "Buang Senarai Main"
 
 #: src/skins/menus.c:98
 msgid "Previous Playlist"
-msgstr ""
+msgstr "Senarai Main Terdahulu"
 
 #: src/skins/menus.c:99
 msgid "Next Playlist"
-msgstr ""
+msgstr "Senarai Main Berikutnya"
 
 #: src/skins/menus.c:101
 msgid "Import Playlist ..."
-msgstr ""
+msgstr "Import Senarai Main ..."
 
 #: src/skins/menus.c:102
 msgid "Export Playlist ..."
-msgstr ""
+msgstr "Eksport Senarai Main ..."
 
 #: src/skins/menus.c:104
 msgid "Playlist Manager ..."
-msgstr ""
+msgstr "Pengurus Senarai Main ..."
 
 #: src/skins/menus.c:105
 msgid "Queue Manager ..."
-msgstr ""
+msgstr "Pengurus Baris Gilir ..."
 
 #: src/skins/menus.c:107
 msgid "Refresh Playlist"
-msgstr ""
+msgstr "Segar Semula Senarai Main"
 
 #: src/skins/menus.c:111
 msgid "Show Playlist Editor"
-msgstr "Show Playlist Editor"
+msgstr "Tunjuk Penyunting Senarai Main"
 
 #: src/skins/menus.c:113
 msgid "Show Equalizer"
-msgstr "Show Equaliser"
+msgstr "Tunjuk Penyama"
 
 #: src/skins/menus.c:116
 msgid "Show Remaining Time"
-msgstr ""
+msgstr "Tunjuk Masa Berbaki"
 
 #: src/skins/menus.c:119
 msgid "Always on Top"
-msgstr ""
+msgstr "Sentiasa di Atas"
 
 #: src/skins/menus.c:121
 msgid "On All Workspaces"
-msgstr ""
+msgstr "Pada Semua Ruang Kerja"
 
 #: src/skins/menus.c:124
 msgid "Roll Up Player"
-msgstr ""
+msgstr "Gulung Pemain"
 
 #: src/skins/menus.c:126
 msgid "Roll Up Playlist Editor"
-msgstr ""
+msgstr "Gulung Penyunting Senarai Main"
 
 #: src/skins/menus.c:128
 msgid "Roll Up Equalizer"
-msgstr ""
+msgstr "Gulung Penyama"
 
 #: src/skins/menus.c:135
 msgid "Add URL ..."
-msgstr ""
+msgstr "Tambah URL ..."
 
 #: src/skins/menus.c:136
 msgid "Add Files ..."
-msgstr ""
+msgstr "Tambah Fail ..."
 
 #: src/skins/menus.c:140 src/skins/menus.c:167 src/skins/menus.c:177
 msgid "By Title"
-msgstr ""
+msgstr "Mengikut Tajuk"
 
 #: src/skins/menus.c:141 src/skins/menus.c:170 src/skins/menus.c:180
 msgid "By Filename"
-msgstr ""
+msgstr "Mengikut Nama Fail"
 
 #: src/skins/menus.c:142 src/skins/menus.c:171 src/skins/menus.c:181
 msgid "By File Path"
-msgstr ""
+msgstr "Mengikut Laluan Fail"
 
 #: src/skins/menus.c:148
 msgid "Remove All"
-msgstr ""
+msgstr "Buang Semua"
 
 #: src/skins/menus.c:149
 msgid "Clear Queue"
-msgstr ""
+msgstr "Kosongkan Baris Gilir"
 
 #: src/skins/menus.c:151
 msgid "Remove Unavailable Files"
-msgstr ""
+msgstr "Buang Fail Tidak Tersedia"
 
 #: src/skins/menus.c:152
 msgid "Remove Duplicates"
-msgstr ""
+msgstr "Buang Pendua"
 
 #: src/skins/menus.c:154
 msgid "Remove Unselected"
-msgstr ""
+msgstr "Buang Dinyahpilih"
 
 #: src/skins/menus.c:155
 msgid "Remove Selected"
-msgstr ""
+msgstr "Buang Terpilih"
 
 #: src/skins/menus.c:159
 msgid "Search and Select"
-msgstr ""
+msgstr "Gelintar dan Pilih"
 
 #: src/skins/menus.c:161
 msgid "Invert Selection"
-msgstr ""
+msgstr "Songsangkan Pemilihan"
 
 #: src/skins/menus.c:162
 msgid "Select None"
-msgstr ""
+msgstr "Pilih Tiada"
 
 #: src/skins/menus.c:163
 msgid "Select All"
-msgstr ""
+msgstr "Pilih Semua"
 
 #: src/skins/menus.c:168 src/skins/menus.c:178
 msgid "By Album"
-msgstr ""
+msgstr "Mengikut Album"
 
 #: src/skins/menus.c:169 src/skins/menus.c:179
 msgid "By Artist"
-msgstr ""
+msgstr "Mengikut Artis"
 
 #: src/skins/menus.c:172 src/skins/menus.c:182
 msgid "By Release Date"
-msgstr ""
+msgstr "Mengikut Tarikh Keluaran"
 
 #: src/skins/menus.c:173 src/skins/menus.c:183
 msgid "By Track Number"
-msgstr ""
+msgstr "Mengikut Nombor Trek"
 
 #: src/skins/menus.c:187
 msgid "Randomize List"
-msgstr ""
+msgstr "Rawakkan Senarai"
 
 #: src/skins/menus.c:188
 msgid "Reverse List"
-msgstr ""
+msgstr "Songsangkan Senarai"
 
 #: src/skins/menus.c:190
 msgid "Sort Selected"
-msgstr ""
+msgstr "Isih Terpilih"
 
 #: src/skins/menus.c:191
 msgid "Sort List"
-msgstr ""
+msgstr "Isih Senarai"
 
 #: src/skins/menus.c:197
 msgid "Cut"
-msgstr ""
+msgstr "Potong"
 
 #: src/skins/menus.c:198
 msgid "Copy"
-msgstr ""
+msgstr "Salin"
 
 #: src/skins/menus.c:199
 msgid "Paste"
-msgstr ""
+msgstr "Tampal"
 
 #: src/skins/menus.c:201
 msgid "Queue/Unqueue"
-msgstr ""
+msgstr "Baris Gilir/Nyahbaris Gilir"
 
 #: src/skins/menus.c:207
 msgid "Load Preset ..."
-msgstr ""
+msgstr "Muat Praset ..."
 
 #: src/skins/menus.c:208
 msgid "Load Auto Preset ..."
-msgstr ""
+msgstr "Muat Auto Praset ..."
 
 #: src/skins/menus.c:209
 msgid "Load Default"
-msgstr ""
+msgstr "Muat Lalai"
 
 #: src/skins/menus.c:210
 msgid "Load Preset File ..."
-msgstr ""
+msgstr "Muat Fail Praset ..."
 
 #: src/skins/menus.c:211
 msgid "Load EQF File ..."
-msgstr ""
+msgstr "Muat Fail EQF ..."
 
 #: src/skins/menus.c:213
 msgid "Save Preset ..."
-msgstr ""
+msgstr "Simpan Praset ..."
 
 #: src/skins/menus.c:214
 msgid "Save Auto Preset ..."
-msgstr ""
+msgstr "Simpan Auto Praset ..."
 
 #: src/skins/menus.c:215
 msgid "Save Default"
-msgstr ""
+msgstr "Simpan Lalai"
 
 #: src/skins/menus.c:216
 msgid "Save Preset File ..."
-msgstr ""
+msgstr "Simpan Fail Praset ..."
 
 #: src/skins/menus.c:217
 msgid "Save EQF File ..."
-msgstr ""
+msgstr "Simpan Fail EQF ..."
 
 #: src/skins/menus.c:219
 msgid "Delete Preset ..."
-msgstr ""
+msgstr "Padam Praset ..."
 
 #: src/skins/menus.c:220
 msgid "Delete Auto Preset ..."
-msgstr ""
+msgstr "Padam Auto Praset ..."
 
 #: src/skins/menus.c:222
 msgid "Import Winamp Presets ..."
-msgstr ""
+msgstr "Import Praset Winamp ..."
 
 #: src/skins/menus.c:224
 msgid "Reset to Zero"
-msgstr ""
+msgstr "Tetap Semula ke Sifar"
 
 #: src/skins/plugin.c:49
 msgid "Winamp Classic Interface"
-msgstr ""
+msgstr "Antaramuka Klasik Winamp"
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:375
 #: src/skins/preset-list.c:390
 msgid "Save"
-msgstr ""
+msgstr "Simpan"
 
 #: src/skins/preset-browser.c:57 src/skins/preset-list.c:342
 #: src/skins/preset-list.c:358
 msgid "Load"
-msgstr ""
+msgstr "Muat"
 
 #: src/skins/preset-browser.c:82
 msgid "Load Preset File"
-msgstr ""
+msgstr "Muat Fail Praset"
 
 #: src/skins/preset-browser.c:106
 msgid "Load EQF File"
-msgstr ""
+msgstr "Muat Fail EQF"
 
 #: src/skins/preset-browser.c:122
 msgid "Save Preset File"
-msgstr ""
+msgstr "Simpan Fail Praset"
 
 #: src/skins/preset-browser.c:144
 msgid "Save EQF File"
-msgstr ""
+msgstr "Simpan Fail EQF"
 
 #: src/skins/preset-browser.c:162
 msgid "Import Winamp Presets"
-msgstr ""
+msgstr "Import Praset Winamp"
 
 #: src/skins/preset-list.c:289
 msgid "Presets"
-msgstr "Presets"
+msgstr "Praset"
 
 #: src/skins/preset-list.c:339
 msgid "Load preset"
-msgstr ""
+msgstr "Muat praset"
 
 #: src/skins/preset-list.c:355
 msgid "Load auto-preset"
-msgstr ""
+msgstr "Muat auto-praset"
 
 #: src/skins/preset-list.c:371
 msgid "Save preset"
-msgstr ""
+msgstr "Simpan praset"
 
 #: src/skins/preset-list.c:386
 msgid "Save auto-preset"
-msgstr ""
+msgstr "Simpan auto-praset"
 
 #: src/skins/preset-list.c:413
 msgid "Delete preset"
-msgstr ""
+msgstr "Padam praset"
 
 #: src/skins/preset-list.c:429
 msgid "Delete auto-preset"
-msgstr ""
+msgstr "Padam auto-praset"
 
 #: src/skins/skins_cfg.c:181
 msgid "_Player:"
-msgstr "_Player:"
+msgstr "_Pemain:"
 
 #: src/skins/skins_cfg.c:183
 msgid "Select main player window font:"
-msgstr "Select main player window font:"
+msgstr "Pilih fon tetingkap pemain utama:"
 
 #: src/skins/skins_cfg.c:184
 msgid "_Playlist:"
-msgstr "_Playlist:"
+msgstr "_Senarai Main:"
 
 #: src/skins/skins_cfg.c:186
 msgid "Select playlist font:"
-msgstr "Select playlist font:"
+msgstr "Pilih fon senarai main:"
 
 #: src/skins/skins_cfg.c:191
 msgid "<b>Skin</b>"
-msgstr ""
+msgstr "<b>Kulit</b>"
 
 #: src/skins/skins_cfg.c:193
 msgid "<b>Fonts</b>"
-msgstr ""
+msgstr "<b>Fon</b>"
 
 #: src/skins/skins_cfg.c:196
 msgid "Use bitmap fonts (supports ASCII only)"
-msgstr "Use bitmap fonts (supports ASCII only)"
+msgstr "Guna fon peta bit (sokong ASCII sahaja)"
 
 #: src/skins/skins_cfg.c:198
 msgid "Scroll song title"
-msgstr ""
+msgstr "Tatal tajuk lagu"
 
 #: src/skins/skins_cfg.c:200
 msgid "Scroll song title in both directions"
-msgstr "Scroll song title in both directions"
+msgstr "Tatal tajuk lagu dalam kedua-dua arah"
 
 #: src/skins/skins_cfg.c:205
 msgid "Analyzer"
-msgstr ""
+msgstr "Penganalisis"
 
 #: src/skins/skins_cfg.c:206
 msgid "Scope"
-msgstr ""
+msgstr "Skop"
 
 #: src/skins/skins_cfg.c:207
 msgid "Voiceprint / VU meter"
-msgstr ""
+msgstr "Voiceprint / VU meter"
 
 #: src/skins/skins_cfg.c:208
 msgid "Off"
-msgstr ""
+msgstr "Mati"
 
 #: src/skins/skins_cfg.c:212 src/skins/skins_cfg.c:237
 #: src/skins/skins_cfg.c:243
 msgid "Normal"
-msgstr ""
+msgstr "Biasa"
 
 #: src/skins/skins_cfg.c:213 src/skins/skins_cfg.c:238
 msgid "Fire"
-msgstr ""
+msgstr "Api"
 
 #: src/skins/skins_cfg.c:214
 msgid "Vertical lines"
-msgstr ""
+msgstr "Garis menegak"
 
 #: src/skins/skins_cfg.c:218
 msgid "Lines"
-msgstr ""
+msgstr "Garis"
 
 #: src/skins/skins_cfg.c:219
 msgid "Bars"
-msgstr ""
+msgstr "Palang"
 
 #: src/skins/skins_cfg.c:223
 msgid "Slowest"
-msgstr ""
+msgstr "Paling lambat"
 
 #: src/skins/skins_cfg.c:224
 msgid "Slow"
-msgstr ""
+msgstr "Lambat"
 
 #: src/skins/skins_cfg.c:225 src/sox-resampler/sox-resampler.c:145
 msgid "Medium"
-msgstr ""
+msgstr "Sederhana"
 
 #: src/skins/skins_cfg.c:226
 msgid "Fast"
-msgstr ""
+msgstr "Pantas"
 
 #: src/skins/skins_cfg.c:227
 msgid "Fastest"
-msgstr ""
+msgstr "Paling pantas"
 
 #: src/skins/skins_cfg.c:231
 msgid "Dots"
-msgstr ""
+msgstr "Titik"
 
 #: src/skins/skins_cfg.c:232
 msgid "Line"
-msgstr ""
+msgstr "Garis"
 
 #: src/skins/skins_cfg.c:233
 msgid "Solid"
-msgstr ""
+msgstr "Tegar"
 
 #: src/skins/skins_cfg.c:239
 msgid "Ice"
-msgstr ""
+msgstr "Ais"
 
 #: src/skins/skins_cfg.c:244
 msgid "Smooth"
-msgstr ""
+msgstr "Licin"
 
 #: src/skins/skins_cfg.c:248
 msgid "<b>Type</b>"
-msgstr ""
+msgstr "<b>Jenis</b>"
 
 #: src/skins/skins_cfg.c:249
 msgid "Visualization type:"
-msgstr ""
+msgstr "Jenis pengvisualan:"
 
 #: src/skins/skins_cfg.c:252
 msgid "<b>Analyzer</b>"
-msgstr ""
+msgstr "<b>Penganalisis</b>"
 
 #: src/skins/skins_cfg.c:253
 msgid "Show peaks"
-msgstr ""
+msgstr "Tunjuk puncak"
 
 #: src/skins/skins_cfg.c:255
 msgid "Coloring:"
-msgstr ""
+msgstr "Pewarnaan:"
 
 #: src/skins/skins_cfg.c:258
 msgid "Style:"
-msgstr ""
+msgstr "Gaya:"
 
 #: src/skins/skins_cfg.c:261
 msgid "Falloff:"
-msgstr ""
+msgstr "Jatuhan:"
 
 #: src/skins/skins_cfg.c:264
 msgid "Peak falloff:"
-msgstr ""
+msgstr "Jatuhan puncak:"
 
 #: src/skins/skins_cfg.c:268
 msgid "Scope Style:"
-msgstr ""
+msgstr "Gaya Skop:"
 
 #: src/skins/skins_cfg.c:271
 msgid "Voiceprint Coloring:"
-msgstr ""
+msgstr "Pewarnaan Voiceprint:"
 
 #: src/skins/skins_cfg.c:274
 msgid "VU Meter Style:"
-msgstr ""
+msgstr "Gaya Meter VU:"
 
 #: src/skins/skins_cfg.c:280
 msgid "General"
-msgstr "General"
+msgstr "Am"
 
 #: src/skins/skins_cfg.c:281
 msgid "Visualization"
-msgstr ""
+msgstr "Pengvisualan"
 
 #: src/skins/ui_equalizer.c:290
 msgid "Preamp"
-msgstr "Preamp"
+msgstr "Praamp"
 
 #: src/skins/ui_equalizer.c:294
 msgid "31 Hz"
@@ -3262,79 +3508,79 @@ msgstr "16 kHz"
 
 #: src/skins/ui_equalizer.c:338
 msgid "Audacious Equalizer"
-msgstr "Audacious Equaliser"
+msgstr "Penyama Audacious"
 
 #: src/skins/ui_main.c:686
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
-msgstr "Seek to %d:%-2.2d / %d:%-2.2d"
+msgstr "Jangkau ke %d:%-2.2d / %d:%-2.2d"
 
 #: src/skins/ui_main.c:707
 #, c-format
 msgid "Volume: %d%%"
-msgstr "Volume: %d%%"
+msgstr "Volum: %d%%"
 
 #: src/skins/ui_main.c:730
 #, c-format
 msgid "Balance: %d%% left"
-msgstr "Balance: %d%% left"
+msgstr "Imbangan: %d%% kiri"
 
 #: src/skins/ui_main.c:732
 msgid "Balance: center"
-msgstr "Balance: centre"
+msgstr "Imbangan: tengah"
 
 #: src/skins/ui_main.c:734
 #, c-format
 msgid "Balance: %d%% right"
-msgstr "Balance: %d%% right"
+msgstr "Imbangan: %d%% kanan"
 
 #: src/skins/ui_main.c:833
 msgid "Options Menu"
-msgstr "Options Menu"
+msgstr "Menu Pilihan"
 
 #: src/skins/ui_main.c:837
 msgid "Disable 'Always On Top'"
-msgstr "Disable 'Always On Top'"
+msgstr "Lumpuhkan 'Sentiasa Di Atas'"
 
 #: src/skins/ui_main.c:839
 msgid "Enable 'Always On Top'"
-msgstr "Enable 'Always On Top'"
+msgstr "Benarkan 'Sentiasa Di Atas'"
 
 #: src/skins/ui_main.c:842
 msgid "File Info Box"
-msgstr "File Info Box"
+msgstr "Kotak Maklumat Fail"
 
 #: src/skins/ui_main.c:1281
 msgid "Repeat point A set."
-msgstr ""
+msgstr "Ulang titik A ditetapkan."
 
 #: src/skins/ui_main.c:1286
 msgid "Repeat point B set."
-msgstr ""
+msgstr "Ulang titik B ditetapkan"
 
 #: src/skins/ui_main.c:1295
 msgid "Repeat points cleared."
-msgstr ""
+msgstr "Ulang titik dikosongkan."
 
 #: src/skins/ui_main_evlisteners.c:109
 msgid "Single mode."
-msgstr "Single mode."
+msgstr "Mod tunggal."
 
 #: src/skins/ui_main_evlisteners.c:111
 msgid "Playlist mode."
-msgstr "Playlist mode."
+msgstr "Mod senarai main."
 
 #: src/skins/ui_main_evlisteners.c:117
 msgid "Stopping after song."
-msgstr "Stopping after song."
+msgstr "Dihentikan selepas lagu."
 
 #: src/skins/ui_playlist.c:222
 msgid "Search entries in active playlist"
-msgstr ""
+msgstr "Gelintar masukan dalam senarai main aktif"
 
 #: src/skins/ui_playlist.c:224
 msgid "Search"
-msgstr ""
+msgstr "Gelintar"
 
 #: src/skins/ui_playlist.c:229
 msgid ""
@@ -3343,56 +3589,60 @@ msgid ""
 "expressions work, simply insert a literal portion of what you're searching "
 "for."
 msgstr ""
+"Pilih masukan dalam senarai main dengan mengisi satu atau lebih medan. Medan "
+"guna sintaks ungkapan nalar, tidak-sensitif-kata. Jika anda tidak tahu "
+"bagaimana ungkapan nalar berfungsi, hanya masukkan bahagian harfiah apa yang "
+"anda gelintar."
 
 #: src/skins/ui_playlist.c:238
 msgid "Title: "
-msgstr ""
+msgstr "Tajuk:"
 
 #: src/skins/ui_playlist.c:246
 msgid "Album: "
-msgstr ""
+msgstr "Album:"
 
 #: src/skins/ui_playlist.c:254
 msgid "Artist: "
-msgstr ""
+msgstr "Artis:"
 
 #: src/skins/ui_playlist.c:262
 msgid "Filename: "
-msgstr ""
+msgstr "Nama fail:"
 
 #: src/skins/ui_playlist.c:271
 msgid "Clear previous selection before searching"
-msgstr ""
+msgstr "Kosongkan pemilihan terdahulu sebelum menggelintar"
 
 #: src/skins/ui_playlist.c:274
 msgid "Automatically toggle queue for matching entries"
-msgstr ""
+msgstr "Togol baris gilir secara automatik untuk pemadanan masukan"
 
 #: src/skins/ui_playlist.c:277
 msgid "Create a new playlist with matching entries"
-msgstr ""
+msgstr "Cipta senarai main baharu dengan masukan sepadan"
 
 #: src/skins/ui_playlist.c:722
 msgid "Audacious Playlist Editor"
-msgstr ""
+msgstr "Penyunting Senarai Main Audacious"
 
 #: src/skins/ui_playlist.c:757
 #, c-format
 msgid "%s (%d of %d)"
-msgstr ""
+msgstr "%s (%d dar %d)"
 
 #: src/skins/ui_skinselector.c:163
 msgid "Archived Winamp 2.x skin"
-msgstr ""
+msgstr "Kulit Winamp 2.x berarkib"
 
 #: src/skins/ui_skinselector.c:168
 msgid "Unarchived Winamp 2.x skin"
-msgstr ""
+msgstr "Kulit Winamp 2.x tidak berarkib"
 
 #: src/skins/util.c:450
 #, c-format
 msgid "Could not create directory (%s): %s\n"
-msgstr ""
+msgstr "Tidak dapat mencipta direktori (%s): %s\n"
 
 #: src/sndfile/plugin.c:348
 msgid ""
@@ -3415,14 +3665,32 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Berdasarkan pada pemalam xmms_sndfile:\n"
+"Hakcipta (C) 2000, 2002 Erik de Castro Lopo\n"
+"\n"
+"Diadaptasi untuk Audacious oleh Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"Program ini adalah perisian bebas; anda boleh mengedarkannya dan/atau "
+"mengubahsuainya dibawah terma Pelesenan Awam Am GNU yang diterbitkan oleh "
+"Free Software Foundation; sama ada versi 2 dari lesen, atau (mengikut "
+"pilihan anda) mana-mana versi terkini.\n"
+"\n"
+"Program ini diedarkan dengan harapan ianya akan berguna, TANPA SEBARANG "
+"JAMINAN; termasuk juga KESESUAIAN UNTUK DIPASARKAN, JAMINAN KUALITI, atau "
+"JAMINAN ATAS APA JUA SEBAB. Sila lihat GNU General Public License untuk "
+"maklumat lanjut.\n"
+"\n"
+"Anda seharusnya menerima satu salinan Lesen Awam Am GNU bersama-sama dengan "
+"program; jika tidak, laporkannya ke Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: src/sndfile/plugin.c:367
 msgid "Sndfile Plugin"
-msgstr ""
+msgstr "Pemalam Sndfile"
 
 #: src/sndio/sndio.c:172
 msgid "About Sndio Output Plugin"
-msgstr ""
+msgstr "Perihal Pemalam Output Sndio"
 
 #: src/sndio/sndio.c:173
 msgid ""
@@ -3430,10 +3698,13 @@ msgid ""
 "\n"
 "Written by Thomas Pfaff <tpfaff@tp76.info>\n"
 msgstr ""
+"Pemalam Output Sndio\n"
+"\n"
+"Ditulis oleh Thomas Pfaff <tpfaff@tp76.info>\n"
 
 #: src/sndio/sndio.c:248
 msgid "Unsupported format"
-msgstr ""
+msgstr "Format tidak disokong"
 
 #: src/sndio/sndio.c:249
 msgid ""
@@ -3441,14 +3712,17 @@ msgid ""
 "\n"
 "Please try again with the sndiod(1) server running."
 msgstr ""
+"Format tidak disokong oleh peranti audio telah dipinta.\n"
+"\n"
+"Sila cuba lagi dengan pelayan sndiod(1) berjalan."
 
 #: src/sndio/sndio.c:384
 msgid "sndio device"
-msgstr ""
+msgstr "peranti sndio"
 
 #: src/sndio/sndio.c:400
 msgid "(empty means default)"
-msgstr ""
+msgstr "(kosong bermaksud lalai)"
 
 #: src/sndio/sndio.c:416
 msgid "OK"
@@ -3456,29 +3730,32 @@ msgstr "OK"
 
 #: src/song_change/song_change.c:46
 msgid "Song Change"
-msgstr ""
+msgstr "Lagu Berubah"
 
 #: src/song_change/song_change.c:353
 msgid "Command to run when Audacious starts a new song."
-msgstr ""
+msgstr "Perintah untuk dijalankan bila Audacious mulakan lagu baharu."
 
 #: src/song_change/song_change.c:355 src/song_change/song_change.c:361
 #: src/song_change/song_change.c:367 src/song_change/song_change.c:373
 msgid "Command:"
-msgstr ""
+msgstr "Perintah:"
 
 #: src/song_change/song_change.c:359
 msgid "Command to run toward the end of a song."
-msgstr ""
+msgstr "Perintah untuk jalankan dipenghujung lagu."
 
 #: src/song_change/song_change.c:365
 msgid "Command to run when Audacious reaches the end of the playlist."
 msgstr ""
+"Perintah untuk dijalankan bila Audacious mencapai penghujung senarai main."
 
 #: src/song_change/song_change.c:371
 msgid ""
 "Command to run when title changes for a song (i.e. network streams titles)."
 msgstr ""
+"Perintah untuk dijalankan bila tajuk berubah bagi lagu (iaitu tajuk strim "
+"rangkaian)."
 
 #: src/song_change/song_change.c:377
 msgid ""
@@ -3498,16 +3775,34 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
+"Anda boleh guna rentetan format berikut yang\n"
+"akan diganti sebelum memanggil perintah\n"
+"(bukan semua berguna untuk perintah penghujung-\n"
+"senarai-main):\n"
+"\n"
+"%F: Frekuensi (dalam hertz)\n"
+"%c: Bilangan saluran\n"
+"%f: Nama fail (laluan penuh)\n"
+"%l: Panjang (dalam milisaat)\n"
+"%n atau %s: Nama lagu\n"
+"%r: Kadar (dalam bit per saat)\n"
+"%t: Kedudukan senarai main (%02d)\n"
+"%p: Sedang dimainkan (1 atau 0)\n"
+"%a: Artis\n"
+"%b: Album\n"
+"%T: Tajuk trek"
 
 #: src/song_change/song_change.c:404
 msgid ""
 "<span size='small'>Parameters passed to the shell should be encapsulated in "
 "quotes. Doing otherwise is a security risk.</span>"
 msgstr ""
+"<span size='small'>Parameter dilepasi ke shell seharusnya dikurungkan dalam "
+"petikan. Jika dibuat sebaliknya mengundang risiko keselamatan.</span>"
 
 #: src/song_change/song_change.c:420
 msgid "Commands"
-msgstr ""
+msgstr "Perintah"
 
 #: src/sox-resampler/sox-resampler.c:137
 msgid ""
@@ -3517,50 +3812,57 @@ msgid ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 msgstr ""
+"Pemlam Pensampel Semula SoX \n"
+"untuk Audacious\n"
+"Hakcipta 2013 Michał Lipski\n"
+"\n"
+"Berdasarkan pada Pemalam Penukar\n"
+"Kadar Sampel:\n"
+"Hakcipta 2010-2012 John Lindgren"
 
 #: src/sox-resampler/sox-resampler.c:143
 msgid "Quick"
-msgstr ""
+msgstr "Pantas"
 
 #: src/sox-resampler/sox-resampler.c:144
 msgid "Low"
-msgstr ""
+msgstr "Rendah"
 
 #: src/sox-resampler/sox-resampler.c:146
 msgid "High"
-msgstr ""
+msgstr "Tinggi"
 
 #: src/sox-resampler/sox-resampler.c:147
 msgid "Very High"
-msgstr ""
+msgstr "Sangat Tinggi"
 
 #: src/sox-resampler/sox-resampler.c:150
 msgid "Quality:"
-msgstr ""
+msgstr "Kualiti:"
 
 #: src/sox-resampler/sox-resampler.c:164
 msgid "SoX Resampler"
-msgstr ""
+msgstr "Pensampel Semula SoX"
 
 #: src/speed-pitch/speed-pitch.c:227
 msgid "<b>Speed and Pitch</b>"
-msgstr ""
+msgstr "<b>Kelajuan dan Pic</b>"
 
 #: src/speed-pitch/speed-pitch.c:228
 msgid "Speed:"
-msgstr ""
+msgstr "Kelajuan:"
 
 #: src/speed-pitch/speed-pitch.c:231
 msgid "Pitch:"
-msgstr ""
+msgstr "Pic:"
 
 #: src/speed-pitch/speed-pitch.c:266
 msgid "Speed and Pitch"
-msgstr ""
+msgstr "Kelajuan dan Pic"
 
 #: src/statusicon/statusicon.c:269
 msgid "Se_ttings ..."
-msgstr ""
+msgstr "_Tetapan ..."
 
 #: src/statusicon/statusicon.c:375
 msgid ""
@@ -3572,38 +3874,45 @@ msgid ""
 "This plugin provides a status icon, placed in\n"
 "the system tray area of the window manager."
 msgstr ""
+"Pemalam Ikon Status\n"
+"\n"
+"Hakcipta 2005-2007 Giacomo Lozito <james@develia.org>\n"
+"Hakcipta 2010 Michał Lipski <tallica@o2.pl>\n"
+"\n"
+"Pemalam ini menyediakan ikon status, terletak di\n"
+"dalam kawasan talam sistem pengurus tetingkap."
 
 #: src/statusicon/statusicon.c:382
 msgid "<b>Mouse Scroll Action</b>"
-msgstr ""
+msgstr "<b>Tindakan Tatal Tetikus</b>"
 
 #: src/statusicon/statusicon.c:383
 msgid "Change volume"
-msgstr ""
+msgstr "Ubah volum"
 
 #: src/statusicon/statusicon.c:386
 msgid "Change playing song"
-msgstr ""
+msgstr "Ubah lagu dimainkan"
 
 #: src/statusicon/statusicon.c:389
 msgid "<b>Other Settings</b>"
-msgstr ""
+msgstr "<b>Tetapan Lain</b>"
 
 #: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
-msgstr ""
+msgstr "Lumpuhkan tetingkap timbul"
 
 #: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
-msgstr ""
+msgstr "Tutup talam sistem"
 
 #: src/statusicon/statusicon.c:394
 msgid "Advance in playlist when scrolling upward"
-msgstr ""
+msgstr "Dahulukan dalam senarai main bila menatal ke atas"
 
 #: src/statusicon/statusicon.c:403
 msgid "Status Icon"
-msgstr ""
+msgstr "Ikon Status"
 
 #: src/stereo_plugin/stereo.c:17
 msgid ""
@@ -3611,23 +3920,26 @@ msgid ""
 "\n"
 "By Johan Levin, 1999"
 msgstr ""
+"Pemalam Stereo Extra\n"
+"\n"
+"Oleh Johan Levin, 1999"
 
 #: src/stereo_plugin/stereo.c:25
 msgid "<b>Extra Stereo</b>"
-msgstr ""
+msgstr "<b>Stereo Ekstra</b>"
 
 #: src/stereo_plugin/stereo.c:36
 msgid "Extra Stereo"
-msgstr ""
+msgstr "Stereo Ekstra"
 
 #: src/tonegen/tonegen.c:83
 #, c-format
 msgid "%s %.1f Hz"
-msgstr ""
+msgstr "%s %.1f Hz"
 
 #: src/tonegen/tonegen.c:83
 msgid "Tone Generator: "
-msgstr ""
+msgstr "Penjana Nada:"
 
 #: src/tonegen/tonegen.c:174
 msgid ""
@@ -3637,14 +3949,19 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone"
 msgstr ""
+"Penjana nada sin oleh Håvard Kvålen <havardk@xmms.org>\n"
+"Diubahsuai oleh Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"Untuk guna ia, tambah URL: tone://frequency1;frequency2;frequency3;...\n"
+"cth. tone://2000;2005 untuk mainkan nada 2000 Hz dan nada 2005 Hz"
 
 #: src/tonegen/tonegen.c:183
 msgid "Tone Generator"
-msgstr ""
+msgstr "Penjana Nada"
 
 #: src/voice_removal/voice_removal.c:53
 msgid "Voice Removal"
-msgstr ""
+msgstr "Pembuangan Suara"
 
 #: src/vorbis/vorbis.c:484
 msgid ""
@@ -3666,10 +3983,27 @@ msgid ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 msgstr ""
+"Penyahkod Ogg Vorbis Audacious\n"
+"\n"
+"Berdasarkan pada Pemalam Ogg Vorbis Xiph.org Foundation:\n"
+"http://www.xiph.org/\n"
+"\n"
+"Kod asal oleh:\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"\n"
+"Penyumbang:\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Håvard Kvålen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
+"Eugene Zagidullin <e.asphyx@gmail.com>"
 
 #: src/vorbis/vorbis.c:504
 msgid "Ogg Vorbis Decoder"
-msgstr ""
+msgstr "Penyahkod Ogg Vorbis"
 
 #: src/vtx/vtx.c:167
 msgid ""
@@ -3677,18 +4011,21 @@ msgid ""
 "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
 "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 msgstr ""
+"Pemain format fail Vortex oleh Sashnov Alexander <sashnov@ngs.ru>\n"
+"Berdasarkan pada in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Pemalam Audacious oleh Pavel Vymetalek <pvymetalek@seznam.cz>"
 
 #: src/vtx/vtx.c:173
 msgid "VTX Decoder"
-msgstr ""
+msgstr "Penyahkod VTX"
 
 #: src/wavpack/wavpack.c:214
 msgid "lossy (hybrid)"
-msgstr ""
+msgstr "hilang (hidbrid)"
 
 #: src/wavpack/wavpack.c:216
 msgid "lossy"
-msgstr ""
+msgstr "hilang"
 
 #: src/wavpack/wavpack.c:265
 msgid ""
@@ -3696,15 +4033,36 @@ msgid ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 msgstr ""
+"Hakcipta 2006 William Pitcock <nenolod@nenolod.net>\n"
+"\n"
+"Sebahagian kod pemalam oleh Miles Egan."
 
 #: src/wavpack/wavpack.c:272
 msgid "WavPack Decoder"
-msgstr ""
+msgstr "Penyahkod WavPack"
 
 #: src/xsf/plugin.c:217
 msgid "2SF Decoder"
-msgstr ""
+msgstr "Penyahkod 2SF"
 
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
-msgstr ""
+msgstr "Senarai Main Boleh Kongsi XML (XSPF)"
+
+#~ msgid "<b>Advanced</b>"
+#~ msgstr "<b>Lanjutan</b>"
+
+#~ msgid "Extract comments from MIDI file"
+#~ msgstr "Ekstrak ulasan dari fail MIDI"
+
+#~ msgid "Extract lyrics from MIDI file"
+#~ msgstr "Ekstrak lirik dari fail MIDI"
+
+#~ msgid "32.0 kHz:"
+#~ msgstr "32.0 kHz:"
+
+#~ msgid "88.2 kHz:"
+#~ msgstr "88.2 kHz:"
+
+#~ msgid "176.4 kHz:"
+#~ msgstr "176.4 kHz:"

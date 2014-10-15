@@ -85,6 +85,9 @@ lt.po)
 lv.po)
     LANGUAGE="Latvian"
     ;;
+ms.po)
+    LANGUAGE="Malay"
+    ;;
 nl.po)
     LANGUAGE="Dutch"
     ;;
@@ -118,8 +121,8 @@ sr.po)
 sr_RS.po)
     LANGUAGE="Serbian (Serbia)"
     ;;
-sr@latin.po)
-    LANGUAGE="Serbian (Latin)"
+sv.po)
+    LANGUAGE="Swedish"
     ;;
 ta.po)
     LANGUAGE="Tamil"

@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# Gergely Békési <bekesi.gergely@gmail.com>, 2014
 # Péter Polonkai <polesz@nedudu.hu>, 2010
 # Péter Polonkai <polesz@nedudu.hu>, 2011-2012
 msgid ""
 msgstr ""
-"Project-Id-Version: Audacious Plugins Plugins Plugins\n"
+"Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-07-20 16:06+0200\n"
-"PO-Revision-Date: 2014-04-11 16:24+0000\n"
-"Last-Translator: Radioactiveman <thomas-lange2@gmx.de>\n"
+"POT-Creation-Date: 2014-10-15 21:40+0200\n"
+"PO-Revision-Date: 2014-10-13 20:13+0000\n"
+"Last-Translator: Gergely Békési <bekesi.gergely@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/projects/p/audacious/"
 "language/hu/)\n"
 "Language: hu\n"
@@ -34,7 +35,7 @@ msgstr "térhatású"
 
 #: src/aac/libmp4.c:313
 msgid "AAC (MP4) Decoder"
-msgstr ""
+msgstr "AAC (MP4) Dekóder"
 
 #: src/aac-raw/aac.c:476
 msgid "AAC (Raw) Decoder"
@@ -312,7 +313,7 @@ msgstr ""
 msgid "ALSA Output"
 msgstr "ALSA kimenet"
 
-#: src/amidi-plug/amidi-plug.c:466
+#: src/amidi-plug/amidi-plug.c:464
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI Lejátszó)"
 
@@ -348,27 +349,15 @@ msgstr ""
 msgid "Drum shift:"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:127
-msgid "<b>Advanced</b>"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:128
-msgid "Extract comments from MIDI file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:130
-msgid "Extract lyrics from MIDI file"
-msgstr ""
-
-#: src/amidi-plug/i_configure.c:134
+#: src/amidi-plug/i_configure.c:129
 msgid "<b>SoundFont</b>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:136
+#: src/amidi-plug/i_configure.c:131
 msgid "<b>Synthesizer</b>"
 msgstr ""
 
-#: src/amidi-plug/i_configure.c:141
+#: src/amidi-plug/i_configure.c:136
 msgid "Sampling rate:"
 msgstr ""
 
@@ -388,60 +377,60 @@ msgstr "Fájlnév"
 msgid "Size (bytes)"
 msgstr "Méret (byte)"
 
-#: src/amidi-plug/i_fileinfo.c:176
+#: src/amidi-plug/i_fileinfo.c:184
 msgid "Name:"
 msgstr "Név"
 
-#: src/amidi-plug/i_fileinfo.c:203
+#: src/amidi-plug/i_fileinfo.c:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI Információ </span>"
 
-#: src/amidi-plug/i_fileinfo.c:217
+#: src/amidi-plug/i_fileinfo.c:216
 msgid "Format:"
 msgstr "Formátum:"
 
-#: src/amidi-plug/i_fileinfo.c:220
+#: src/amidi-plug/i_fileinfo.c:219
 msgid "Length (msec):"
 msgstr "Hossz (msec):"
 
-#: src/amidi-plug/i_fileinfo.c:223
+#: src/amidi-plug/i_fileinfo.c:222
 msgid "No. of Tracks:"
 msgstr "Sáv sorszáma:"
 
-#: src/amidi-plug/i_fileinfo.c:229
+#: src/amidi-plug/i_fileinfo.c:228
 msgid "variable"
 msgstr "változó"
 
-#: src/amidi-plug/i_fileinfo.c:231
+#: src/amidi-plug/i_fileinfo.c:230
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidi-plug/i_fileinfo.c:239
+#: src/amidi-plug/i_fileinfo.c:238
 msgid "BPM (wavg):"
 msgstr "BPM (wavg):"
 
-#: src/amidi-plug/i_fileinfo.c:242
+#: src/amidi-plug/i_fileinfo.c:241
 msgid "Time Div:"
 msgstr "Kezdeti idő"
 
-#: src/amidi-plug/i_fileinfo.c:253
+#: src/amidi-plug/i_fileinfo.c:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI Megjegyzések és Dalszövegek </span>"
 
-#: src/amidi-plug/i_fileinfo.c:302
+#: src/amidi-plug/i_fileinfo.c:299
 msgid "* no comments available in this MIDI file *"
 msgstr "* nem található megjegyzés ehhez a MIDI fájlhoz *"
 
-#: src/amidi-plug/i_fileinfo.c:314
+#: src/amidi-plug/i_fileinfo.c:311
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* nem található dalszöveg ehhez a MIDI fájlhoz *"
 
-#: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
+#: src/amidi-plug/i_fileinfo.c:321 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
 msgstr "_Bezár"
 
-#: src/amidi-plug/i_fileinfo.c:366
+#: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
 msgstr "  (érvénytelen UTF-8)"
 
@@ -1053,7 +1042,7 @@ msgstr ""
 
 #: src/delete-files/delete-files.c:125
 msgid "Do you want to permanently delete the selected files?"
-msgstr ""
+msgstr "Véglegesen törli a kiválasztott fájlokat?"
 
 #: src/delete-files/delete-files.c:126 src/skins/preset-list.c:416
 #: src/skins/preset-list.c:432
@@ -1847,7 +1836,7 @@ msgstr "%d kbps"
 
 #: src/hotkey/gui.c:70
 msgid "Previous track"
-msgstr ""
+msgstr "Előző szám"
 
 #: src/hotkey/gui.c:71 src/notify/osd.c:68 src/skins/menus.c:78
 msgid "Play"
@@ -1863,15 +1852,15 @@ msgstr "Leállít"
 
 #: src/hotkey/gui.c:74
 msgid "Next track"
-msgstr ""
+msgstr "Következő szám"
 
 #: src/hotkey/gui.c:75
 msgid "Forward 5 seconds"
-msgstr ""
+msgstr "5 mp előre"
 
 #: src/hotkey/gui.c:76
 msgid "Rewind 5 seconds"
-msgstr ""
+msgstr "5 mp vissza"
 
 #: src/hotkey/gui.c:77
 msgid "Mute"
@@ -1879,15 +1868,15 @@ msgstr "Némítás"
 
 #: src/hotkey/gui.c:78
 msgid "Volume up"
-msgstr ""
+msgstr "Hangerő növelése"
 
 #: src/hotkey/gui.c:79
 msgid "Volume down"
-msgstr ""
+msgstr "Hangerő csökkentése"
 
 #: src/hotkey/gui.c:80
 msgid "Jump to file"
-msgstr ""
+msgstr "Ugrás fájlhoz"
 
 #: src/hotkey/gui.c:81
 msgid "Toggle player window(s)"
@@ -1899,15 +1888,15 @@ msgstr "On-Screen-Display mutatása"
 
 #: src/hotkey/gui.c:83
 msgid "Toggle repeat"
-msgstr ""
+msgstr "Ismétlés bekapcsolása"
 
 #: src/hotkey/gui.c:84
 msgid "Toggle shuffle"
-msgstr ""
+msgstr "Véletlenszerű lejátszás be"
 
 #: src/hotkey/gui.c:85
 msgid "Toggle stop after current"
-msgstr ""
+msgstr "Játszott szám után állj"
 
 #: src/hotkey/gui.c:86
 msgid "Raise player window(s)"
@@ -2013,7 +2002,7 @@ msgstr "%s Beállítások"
 
 #: src/ladspa/plugin.c:587
 msgid "LADSPA Host Settings"
-msgstr ""
+msgstr "LADSPA Hoszt beállítások"
 
 #: src/ladspa/plugin.c:596
 msgid "Module paths:"
@@ -2210,11 +2199,11 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:56
 msgid "8-bit"
-msgstr ""
+msgstr "8-bit"
 
 #: src/modplug/plugin_main.c:58
 msgid "16-bit"
-msgstr ""
+msgstr "16 bit"
 
 #: src/modplug/plugin_main.c:60
 msgid "<b>Channels</b>"
@@ -2242,7 +2231,7 @@ msgstr ""
 
 #: src/modplug/plugin_main.c:75
 msgid "22 kHz"
-msgstr ""
+msgstr "22 kHz"
 
 #: src/modplug/plugin_main.c:77
 msgid "44 kHz"

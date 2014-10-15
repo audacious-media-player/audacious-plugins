@@ -4,6 +4,7 @@
 #
 # Translators:
 # Chris <ppt23@lkj.hopto.org>, 2012
+# Chris <ppt23@lkj.hopto.org>, 2012
 # Maximilian Vesper <maximilian@mail.com>, 2013
 # mschwendt <mschwendt@fedoraproject.org>, 2012
 # mschwendt <mschwendt@fedoraproject.org>, 2012
@@ -12,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-07-20 16:06+0200\n"
-"PO-Revision-Date: 2014-04-11 16:27+0000\n"
+"POT-Creation-Date: 2014-10-15 21:40+0200\n"
+"PO-Revision-Date: 2014-09-02 19:17+0000\n"
 "Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/audacious/"
 "language/de/)\n"
@@ -371,7 +372,7 @@ msgstr ""
 msgid "ALSA Output"
 msgstr "ALSA Ausgabe"
 
-#: src/amidi-plug/amidi-plug.c:466
+#: src/amidi-plug/amidi-plug.c:464
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI-Spieler)"
 
@@ -407,27 +408,15 @@ msgstr "Transponieren:"
 msgid "Drum shift:"
 msgstr "Drum-Shift:"
 
-#: src/amidi-plug/i_configure.c:127
-msgid "<b>Advanced</b>"
-msgstr "<b>Erweitert</b>"
-
-#: src/amidi-plug/i_configure.c:128
-msgid "Extract comments from MIDI file"
-msgstr "Kommentare aus MIDI-Datei extrahieren"
-
-#: src/amidi-plug/i_configure.c:130
-msgid "Extract lyrics from MIDI file"
-msgstr "Liedtexte aus MIDI-Datei extrahieren"
-
-#: src/amidi-plug/i_configure.c:134
+#: src/amidi-plug/i_configure.c:129
 msgid "<b>SoundFont</b>"
 msgstr "<b>SoundFont</b>"
 
-#: src/amidi-plug/i_configure.c:136
+#: src/amidi-plug/i_configure.c:131
 msgid "<b>Synthesizer</b>"
 msgstr "<b>Synthesizer</b>"
 
-#: src/amidi-plug/i_configure.c:141
+#: src/amidi-plug/i_configure.c:136
 msgid "Sampling rate:"
 msgstr "Resampling-Frequenz:"
 
@@ -447,60 +436,60 @@ msgstr "Dateiname"
 msgid "Size (bytes)"
 msgstr "Größe (Bytes)"
 
-#: src/amidi-plug/i_fileinfo.c:176
+#: src/amidi-plug/i_fileinfo.c:184
 msgid "Name:"
 msgstr "Name:"
 
-#: src/amidi-plug/i_fileinfo.c:203
+#: src/amidi-plug/i_fileinfo.c:202
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI Info </span>"
 
-#: src/amidi-plug/i_fileinfo.c:217
+#: src/amidi-plug/i_fileinfo.c:216
 msgid "Format:"
 msgstr "Format:"
 
-#: src/amidi-plug/i_fileinfo.c:220
+#: src/amidi-plug/i_fileinfo.c:219
 msgid "Length (msec):"
 msgstr "Länge (ms):"
 
-#: src/amidi-plug/i_fileinfo.c:223
+#: src/amidi-plug/i_fileinfo.c:222
 msgid "No. of Tracks:"
 msgstr "Anzahl an Titeln:"
 
-#: src/amidi-plug/i_fileinfo.c:229
+#: src/amidi-plug/i_fileinfo.c:228
 msgid "variable"
 msgstr "variabel"
 
-#: src/amidi-plug/i_fileinfo.c:231
+#: src/amidi-plug/i_fileinfo.c:230
 msgid "BPM:"
 msgstr "BPM:"
 
-#: src/amidi-plug/i_fileinfo.c:239
+#: src/amidi-plug/i_fileinfo.c:238
 msgid "BPM (wavg):"
 msgstr "BPM (Wavg):"
 
-#: src/amidi-plug/i_fileinfo.c:242
+#: src/amidi-plug/i_fileinfo.c:241
 msgid "Time Div:"
 msgstr "Zeitmultiplex:"
 
-#: src/amidi-plug/i_fileinfo.c:253
+#: src/amidi-plug/i_fileinfo.c:252
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI Kommentare und Liedtexte </span>"
 
-#: src/amidi-plug/i_fileinfo.c:302
+#: src/amidi-plug/i_fileinfo.c:299
 msgid "* no comments available in this MIDI file *"
 msgstr "* keine Kommentare in dieser MIDI-Datei verfügbar *"
 
-#: src/amidi-plug/i_fileinfo.c:314
+#: src/amidi-plug/i_fileinfo.c:311
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* keine Liedtexte in dieser MIDI-Datei verfügbar *"
 
-#: src/amidi-plug/i_fileinfo.c:341 src/amidi-plug/i_utils.c:40
+#: src/amidi-plug/i_fileinfo.c:321 src/amidi-plug/i_utils.c:40
 #: src/filewriter/vorbis.c:210 src/ladspa/plugin.c:521 src/ladspa/plugin.c:588
 msgid "_Close"
 msgstr "S_chließen"
 
-#: src/amidi-plug/i_fileinfo.c:366
+#: src/amidi-plug/i_fileinfo.c:346
 msgid "  (invalid UTF-8)"
 msgstr "  (ungültiges UTF-8)"
 
@@ -3927,7 +3916,7 @@ msgstr "<b>Andere Einstellungen</b>"
 
 #: src/statusicon/statusicon.c:390
 msgid "Disable the popup window"
-msgstr "PopUp-Fenster deaktivieren"
+msgstr "Popup-Fenster deaktivieren"
 
 #: src/statusicon/statusicon.c:392
 msgid "Close to the system tray"
@@ -4076,12 +4065,3 @@ msgstr "2SF Dekodierer"
 #: src/xspf/xspf.c:438
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML Wiedergabelisten (XSPF)"
-
-#~ msgid "32.0 kHz:"
-#~ msgstr "32.0 kHz:"
-
-#~ msgid "88.2 kHz:"
-#~ msgstr "88.2 kHz:"
-
-#~ msgid "176.4 kHz:"
-#~ msgstr "176.4 kHz:"
