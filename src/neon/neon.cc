@@ -93,16 +93,15 @@ static const char * const neon_schemes[] = {"http", "https"};
 
 class NeonTransport : public TransportPlugin
 {
-private:
-    static VFSImpl * fopen (const char * path, const char * mode, String & error);
-
 public:
     static constexpr PluginInfo info = {N_("Neon HTTP/HTTPS Plugin"), PACKAGE};
 
-    constexpr NeonTransport () : TransportPlugin (info, neon_schemes, fopen) {}
+    constexpr NeonTransport () : TransportPlugin (info, neon_schemes) {}
 
     bool init ();
     void cleanup ();
+
+    VFSImpl * fopen (const char * path, const char * mode, String & error);
 };
 
 EXPORT NeonTransport aud_plugin_instance;

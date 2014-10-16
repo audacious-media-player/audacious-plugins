@@ -29,6 +29,25 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
+
+static const char gio_about[] =
+ N_("GIO Plugin for Audacious\n"
+    "Copyright 2009-2012 John Lindgren");
+
+static const char * const gio_schemes[] = {"ftp", "sftp", "smb"};
+
+class GIOTransport : public TransportPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("GIO Plugin"), PACKAGE, gio_about};
+
+    constexpr GIOTransport () : TransportPlugin (info, gio_schemes) {}
+
+    VFSImpl * fopen (const char * path, const char * mode, String & error);
+};
+
+EXPORT GIOTransport aud_plugin_instance;
+
 class GIOFile : public VFSImpl
 {
 public:
@@ -182,7 +201,7 @@ FAILED:
     g_object_unref (m_file);
 }
 
-static VFSImpl * gio_fopen (const char * filename, const char * mode, String & error)
+VFSImpl * GIOTransport::fopen (const char * filename, const char * mode, String & error)
 {
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
@@ -345,13 +364,3 @@ int GIOFile::fflush ()
 FAILED:
     return -1;
 }
-
-static const char gio_about[] =
- N_("GIO Plugin for Audacious\n"
-    "Copyright 2009-2012 John Lindgren");
-
-static const char * const gio_schemes[] = {"ftp", "sftp", "smb"};
-
-constexpr PluginInfo gio_info = {N_("GIO Plugin"), PACKAGE, gio_about};
-
-EXPORT TransportPlugin aud_plugin_instance (gio_info, gio_schemes, gio_fopen);
