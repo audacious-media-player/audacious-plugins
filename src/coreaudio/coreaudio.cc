@@ -21,7 +21,6 @@
  * the use of this software.
  */
 
-#include <assert.h>
 #include <math.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -65,10 +64,8 @@ public:
     bool open_audio (int format, int rate_, int chan_);
     void close_audio ();
 
-    int buffer_free ();
     void period_wait ();
-
-    void write_audio (const void * data, int len);
+    int write_audio (const void * data, int len);
     void drain ();
 
     int output_time ();
@@ -368,14 +365,6 @@ void CoreAudioPlugin::close_audio ()
     buffer.destroy ();
 }
 
-int CoreAudioPlugin::buffer_free ()
-{
-    pthread_mutex_lock (& mutex);
-    int space = buffer.space ();
-    pthread_mutex_unlock (& mutex);
-    return space;
-}
-
 void CoreAudioPlugin::check_started ()
 {
     if (! prebuffer_flag)
@@ -401,17 +390,17 @@ void CoreAudioPlugin::period_wait ()
     pthread_mutex_unlock (& mutex);
 }
 
-void CoreAudioPlugin::write_audio (const void * data, int len)
+int CoreAudioPlugin::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
-    assert (len <= buffer.space ());
-
+    len = aud::min (len, buffer.space ());
     buffer.copy_in ((const unsigned char *) data, len);
 
     frames_written += len / (buffer_bytes_per_channel * chan);
 
     pthread_mutex_unlock (& mutex);
+    return len;
 }
 
 void CoreAudioPlugin::drain ()

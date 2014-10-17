@@ -61,9 +61,8 @@ public:
     bool open_audio (int aud_format, int rate, int chans);
     void close_audio ();
 
-    int buffer_free ();
     void period_wait ();
-    void write_audio (const void * data, int size);
+    int write_audio (const void * data, int size);
     void drain ();
 
     int output_time ();
@@ -238,14 +237,6 @@ void SDLOutput::close_audio ()
     buffer.destroy ();
 }
 
-int SDLOutput::buffer_free ()
-{
-    pthread_mutex_lock (& sdlout_mutex);
-    int space = buffer.space ();
-    pthread_mutex_unlock (& sdlout_mutex);
-    return space;
-}
-
 static void check_started ()
 {
     if (! prebuffer_flag)
@@ -272,14 +263,17 @@ void SDLOutput::period_wait ()
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void SDLOutput::write_audio (const void * data, int len)
+int SDLOutput::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
+    len = aud::min (len, buffer.space ());
     buffer.copy_in ((const unsigned char *) data, len);
+
     frames_written += len / (2 * sdlout_chan);
 
     pthread_mutex_unlock (& sdlout_mutex);
+    return len;
 }
 
 void SDLOutput::drain ()

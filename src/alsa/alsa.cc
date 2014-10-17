@@ -403,20 +403,11 @@ FAILED:
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-int ALSAPlugin::buffer_free ()
-{
-    pthread_mutex_lock (& alsa_mutex);
-    int space = alsa_buffer.space ();
-    pthread_mutex_unlock (& alsa_mutex);
-    return space;
-}
-
-void ALSAPlugin::write_audio (const void * data, int length)
+int ALSAPlugin::write_audio (const void * data, int length)
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    assert (length <= alsa_buffer.space ());
-
+    length = aud::min (length, alsa_buffer.space ());
     alsa_buffer.copy_in ((const char *) data, length);
 
     alsa_written += snd_pcm_bytes_to_frames (alsa_handle, length);
@@ -425,6 +416,7 @@ void ALSAPlugin::write_audio (const void * data, int length)
         pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);
+    return length;
 }
 
 void ALSAPlugin::period_wait ()

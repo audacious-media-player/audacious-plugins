@@ -58,9 +58,8 @@ public:
     bool open_audio (int fmt, int rate, int nch);
     void close_audio ();
 
-    int buffer_free () { return 4 * 44100; }
     void period_wait () {}
-    void write_audio (const void * ptr, int length);
+    int write_audio (const void * ptr, int length);
     void drain () {}
 
     int output_time ();
@@ -297,13 +296,15 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
     return rv;
 }
 
-void FileWriter::write_audio (const void * ptr, int length)
+int FileWriter::write_audio (const void * ptr, int length)
 {
     int len = convert_process (ptr, length);
 
     plugin->write(convert_output, len);
 
     samples_written += length / FMT_SIZEOF (input.format);
+
+    return length;
 }
 
 void FileWriter::close_audio ()

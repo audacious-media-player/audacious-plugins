@@ -61,9 +61,8 @@ public:
     bool open_audio (int aud_format, int rate, int chan);
     void close_audio ();
 
-    int buffer_free ();
     void period_wait ();
-    void write_audio (const void * data, int size);
+    int write_audio (const void * data, int size);
     void drain ();
 
     int output_time ();
@@ -213,16 +212,6 @@ void QtAudio::close_audio ()
     output_instance = nullptr;
 }
 
-int QtAudio::buffer_free ()
-{
-    pthread_mutex_lock (& mutex);
-
-    int space = output_instance->bytesFree ();
-
-    pthread_mutex_unlock (& mutex);
-    return space;
-}
-
 void QtAudio::period_wait ()
 {
     pthread_mutex_lock (& mutex);
@@ -233,14 +222,16 @@ void QtAudio::period_wait ()
     pthread_mutex_unlock (& mutex);
 }
 
-void QtAudio::write_audio (const void * data, int len)
+int QtAudio::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
+    len = aud::min (len, output_instance->bytesFree ());
     buffer_instance->write ((const char *) data, len);
     bytes_written += len;
 
     pthread_mutex_unlock (& mutex);
+    return len;
 }
 
 void QtAudio::drain ()

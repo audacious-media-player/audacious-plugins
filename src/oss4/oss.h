@@ -115,9 +115,8 @@ public:
     bool open_audio(int aud_format, int rate, int chans);
     void close_audio();
 
-    int buffer_free();
     void period_wait();
-    void write_audio(const void *data, int size);
+    int write_audio(const void *data, int size);
     void drain();
 
     int output_time();

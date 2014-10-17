@@ -121,7 +121,7 @@ FAILED:
 static int open_device()
 {
     int res = -1;
-    int flags = O_WRONLY;
+    int flags = O_WRONLY | O_NONBLOCK;
     String device = aud_get_str("oss4", "device");
     String alt_device = aud_get_str("oss4", "alt_device");
 
@@ -253,24 +253,24 @@ void OSSPlugin::close_audio()
     close_device(m_fd);
 }
 
-void OSSPlugin::write_audio(const void *data, int length)
+int OSSPlugin::write_audio(const void *data, int length)
 {
-    int written = 0, start = 0;
+    if (m_paused)
+        return 0;
 
-    while (length > 0)
+    int written = write(m_fd, data, length);
+
+    if (written < 0)
     {
-        written = write(m_fd, (const char *)data + start, length);
-
-        if (written < 0)
-        {
+        if (errno != EAGAIN)
             DESCRIBE_ERROR;
-            return;
-        }
 
-        length -= written;
-        start += written;
-        m_frames_written += bytes_to_frames(written);
+        return 0;
     }
+
+    m_frames_written += bytes_to_frames(written);
+
+    return written;
 }
 
 void OSSPlugin::period_wait()
@@ -284,22 +284,6 @@ void OSSPlugin::drain()
 
     if (ioctl(m_fd, SNDCTL_DSP_SYNC, nullptr) == -1)
         DESCRIBE_ERROR;
-}
-
-int OSSPlugin::buffer_free()
-{
-    audio_buf_info buf_info;
-
-    if (m_paused)
-        return 0;
-
-    memset(&buf_info, 0, sizeof buf_info);
-    CHECK(ioctl, m_fd, SNDCTL_DSP_GETOSPACE, &buf_info);
-
-    return buf_info.bytes;
-
-FAILED:
-    return 0;
 }
 
 int OSSPlugin::real_output_time()

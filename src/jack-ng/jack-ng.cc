@@ -62,9 +62,8 @@ public:
     bool open_audio (int format, int rate, int channels);
     void close_audio ();
 
-    int buffer_free ();
     void period_wait ();
-    void write_audio (const void * data, int size);
+    int write_audio (const void * data, int size);
     void drain ();
 
     int output_time ();
@@ -311,14 +310,6 @@ silence:
     pthread_mutex_unlock (& m_mutex);
 }
 
-int JACKOutput::buffer_free ()
-{
-    pthread_mutex_lock (& m_mutex);
-    int samples = m_buffer.space ();
-    pthread_mutex_unlock (& m_mutex);
-    return samples * sizeof (float);
-}
-
 void JACKOutput::period_wait ()
 {
     pthread_mutex_lock (& m_mutex);
@@ -332,12 +323,14 @@ void JACKOutput::period_wait ()
     pthread_mutex_unlock (& m_mutex);
 }
 
-void JACKOutput::write_audio (const void * data, int size)
+int JACKOutput::write_audio (const void * data, int size)
 {
     pthread_mutex_lock (& m_mutex);
 
     int samples = size / sizeof (float);
     assert (samples % m_channels == 0);
+
+    samples = aud::min (samples, m_buffer.space ());
 
     m_buffer.copy_in ((const float *) data, samples);
     m_frames_written += samples / m_channels;
@@ -346,6 +339,7 @@ void JACKOutput::write_audio (const void * data, int size)
         m_prebuffer = false;
 
     pthread_mutex_unlock (& m_mutex);
+    return samples * sizeof (float);
 }
 
 void JACKOutput::drain ()
