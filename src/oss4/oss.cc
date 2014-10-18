@@ -228,9 +228,7 @@ bool OSSPlugin::open_audio(int aud_format, int rate, int channels)
         buf_info.fragsize,
         buf_info.bytes);
 
-    m_frames_written = 0;
     m_paused = false;
-    m_paused_time = 0;
     m_ioctl_vol = true;
 
     if (aud_get_bool("oss4", "save_volume"))
@@ -268,8 +266,6 @@ int OSSPlugin::write_audio(const void *data, int length)
         return 0;
     }
 
-    m_frames_written += bytes_to_frames(written);
-
     return written;
 }
 
@@ -286,46 +282,28 @@ void OSSPlugin::drain()
         DESCRIBE_ERROR;
 }
 
-int OSSPlugin::real_output_time()
+int OSSPlugin::get_delay()
 {
     int delay_bytes = 0;
     CHECK(ioctl, m_fd, SNDCTL_DSP_GETODELAY, &delay_bytes);
 
 FAILED:
-    int64_t frames_played = m_frames_written - bytes_to_frames(delay_bytes);
-    return aud::rescale<int64_t>(frames_played, m_rate, 1000);
+    return aud::rescale<int64_t>(bytes_to_frames(delay_bytes), m_rate, 1000);
 }
 
-int OSSPlugin::output_time()
-{
-    int time = 0;
-
-    if (m_paused)
-        time = m_paused_time;
-    else
-        time = real_output_time();
-    return time;
-}
-
-void OSSPlugin::flush(int time)
+void OSSPlugin::flush()
 {
     AUDDBG("Flush.\n");
 
     CHECK(ioctl, m_fd, SNDCTL_DSP_RESET, nullptr);
 
 FAILED:
-    m_frames_written = aud::rescale<int64_t>(time, 1000, m_rate);
-    m_paused_time = time;
-
     poll_wake();
 }
 
 void OSSPlugin::pause(bool pause)
 {
     AUDDBG("%sause.\n", pause ? "P" : "Unp");
-
-    if (pause)
-        m_paused_time = real_output_time();
 
 #ifdef SNDCTL_DSP_SILENCE
     if (pause)

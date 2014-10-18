@@ -88,10 +88,10 @@ public:
     int write_audio (const void * data, int size);
     void drain ();
 
-    int output_time ();
+    int get_delay ();
 
     void pause (bool pause);
-    void flush (int time);
+    void flush ();
 
 private:
     static void open_mixer ();

@@ -65,10 +65,10 @@ public:
     int write_audio (const void * data, int size);
     void drain ();
 
-    int output_time ();
+    int get_delay ();
 
     void pause (bool pause);
-    void flush (int time);
+    void flush ();
 };
 
 EXPORT QtAudio aud_plugin_instance;
@@ -91,9 +91,7 @@ static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
 static int bytes_per_sec;
 static bool paused;
-static int start_time;
-static int64_t bytes_written;
-static int last_time, delay_estimate;
+static int last_buffered, delay_estimate;
 static timeval last_system_time;
 
 static QAudioOutput * output_instance = nullptr;
@@ -171,9 +169,7 @@ bool QtAudio::open_audio (int format, int rate, int chan)
     int buffer_size = FMT_SIZEOF (format) * chan * aud::rescale (buffer_ms, 1000, rate);
 
     paused = false;
-    start_time = 0;
-    bytes_written = 0;
-    last_time = 0;
+    last_buffered = 0;
     delay_estimate = 0;
 
     gettimeofday (& last_system_time, nullptr);
@@ -228,7 +224,7 @@ int QtAudio::write_audio (const void * data, int len)
 
     len = aud::min (len, output_instance->bytesFree ());
     buffer_instance->write ((const char *) data, len);
-    bytes_written += len;
+    last_buffered += len;
 
     pthread_mutex_unlock (& mutex);
     return len;
@@ -245,7 +241,7 @@ void QtAudio::drain ()
     pthread_mutex_unlock (& mutex);
 }
 
-int QtAudio::output_time ()
+int QtAudio::get_delay ()
 {
     auto timediff = [] (const timeval & a, const timeval & b) -> int64_t
         { return 1000 * (int64_t) (b.tv_sec - a.tv_sec) + (b.tv_usec - a.tv_usec) / 1000; };
@@ -253,22 +249,23 @@ int QtAudio::output_time ()
     pthread_mutex_lock (& mutex);
 
     int buffered = output_instance->bufferSize () - output_instance->bytesFree ();
-    int time = start_time + aud::rescale<int64_t> (bytes_written - buffered, bytes_per_sec, 1000);
+    int delay = aud::rescale (buffered, bytes_per_sec, 1000);
 
     timeval now;
     gettimeofday (& now, nullptr);
 
-    if (time == last_time && ! paused)
-        time += aud::min (-delay_estimate + timediff (last_system_time, now), (int64_t) 0);
+    if (buffered == last_buffered && ! paused)
+        delay += aud::max (delay_estimate - timediff (last_system_time, now), (int64_t) 0);
     else
     {
-        delay_estimate = time - last_time;
-        std::swap (last_time, time);
+        delay_estimate = aud::rescale (last_buffered - buffered, bytes_per_sec, 1000);
+        delay += delay_estimate;
+        last_buffered = buffered;
         last_system_time = now;
     }
 
     pthread_mutex_unlock (& mutex);
-    return time;
+    return delay;
 }
 
 void QtAudio::pause (bool pause)
@@ -286,14 +283,12 @@ void QtAudio::pause (bool pause)
     pthread_mutex_unlock (& mutex);
 }
 
-void QtAudio::flush (int time)
+void QtAudio::flush ()
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& mutex);
 
-    start_time = time;
-    bytes_written = 0;
-    last_time = time;
+    last_buffered = 0;
     delay_estimate = 0;
 
     gettimeofday (& last_system_time, nullptr);

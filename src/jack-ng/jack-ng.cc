@@ -66,10 +66,10 @@ public:
     int write_audio (const void * data, int size);
     void drain ();
 
-    int output_time ();
+    int get_delay ();
 
     void pause (bool pause);
-    void flush (int time);
+    void flush ();
 
 private:
     bool connect_ports (int channels);
@@ -82,7 +82,6 @@ private:
 
     int m_rate = 0, m_channels = 0;
     bool m_paused = false, m_prebuffer = false;
-    int64_t m_frames_written = 0;
 
     int m_last_write_frames = 0;
     timeval m_last_write_time = timeval ();
@@ -212,7 +211,6 @@ bool JACKOutput::open_audio (int format, int rate, int channels)
     m_channels = channels;
     m_paused = false;
     m_prebuffer = true;
-    m_frames_written = 0;
 
     m_last_write_frames = 0;
     m_last_write_time = timeval ();
@@ -333,7 +331,6 @@ int JACKOutput::write_audio (const void * data, int size)
     samples = aud::min (samples, m_buffer.space ());
 
     m_buffer.copy_in ((const float *) data, samples);
-    m_frames_written += samples / m_channels;
 
     if (m_buffer.len () >= m_buffer.size () / 4)
         m_prebuffer = false;
@@ -354,15 +351,14 @@ void JACKOutput::drain ()
     pthread_mutex_unlock (& m_mutex);
 }
 
-int JACKOutput::output_time ()
+int JACKOutput::get_delay ()
 {
     auto timediff = [] (const timeval & a, const timeval & b) -> int64_t
         { return 1000 * (int64_t) (b.tv_sec - a.tv_sec) + (b.tv_usec - a.tv_usec) / 1000; };
 
     pthread_mutex_lock (& m_mutex);
 
-    int64_t frames = m_frames_written - m_buffer.len () / m_channels;
-    int time = aud::rescale<int64_t> (frames, m_rate, 1000);
+    int delay = aud::rescale (m_buffer.len (), m_channels * m_rate, 1000);
 
     if (m_last_write_frames)
     {
@@ -370,14 +366,11 @@ int JACKOutput::output_time ()
         gettimeofday (& now, nullptr);
 
         int written = aud::rescale (m_last_write_frames, m_rate, 1000);
-        int64_t elapsed = timediff (m_last_write_time, now);
-
-        if (elapsed < written)
-            time -= written - (int) elapsed;
+        delay += aud::max (written - timediff (m_last_write_time, now), (int64_t) 0);
     }
 
     pthread_mutex_unlock (& m_mutex);
-    return time;
+    return delay;
 }
 
 void JACKOutput::pause (bool pause)
@@ -387,14 +380,13 @@ void JACKOutput::pause (bool pause)
     pthread_mutex_unlock (& m_mutex);
 }
 
-void JACKOutput::flush (int time)
+void JACKOutput::flush ()
 {
     pthread_mutex_lock (& m_mutex);
 
     m_buffer.discard ();
 
     m_prebuffer = true;
-    m_frames_written = aud::rescale<int64_t> (time, 1000, m_rate);
 
     m_last_write_frames = 0;
     m_last_write_time = timeval ();

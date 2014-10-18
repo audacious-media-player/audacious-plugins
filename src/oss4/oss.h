@@ -119,15 +119,14 @@ public:
     int write_audio(const void *data, int size);
     void drain();
 
-    int output_time();
+    int get_delay();
 
     void pause(bool pause);
-    void flush(int time);
+    void flush();
 
 private:
     bool set_format(int format, int rate, int channels);
     bool set_buffer();
-    int real_output_time();
 
     int frames_to_bytes(int frames) const
         { return frames * (m_bytes_per_sample * m_channels); }
@@ -140,9 +139,7 @@ private:
     int m_channels = 0;
     int m_bytes_per_sample = 0;
 
-    int64_t m_frames_written = 0;
     bool m_paused = false;
-    int m_paused_time = 0;
     bool m_ioctl_vol = false;
 };
 
