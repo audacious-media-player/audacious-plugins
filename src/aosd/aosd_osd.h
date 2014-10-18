@@ -21,12 +21,9 @@
 #ifndef _I_AOSD_OSD_H
 #define _I_AOSD_OSD_H 1
 
-#include "aosd_common.h"
 #include "aosd_cfg.h"
-#include <glib.h>
 
-
-int aosd_osd_display ( char * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg );
+int aosd_osd_display ( char * markup_string , aosd_cfg_t * cfg_osd , bool copy_cfg );
 void aosd_osd_shutdown ( void );
 void aosd_osd_init ( int transparency_mode ); /* to be called before any OSD usage */
 void aosd_osd_cleanup ( void ); /* to be called when done with OSD usage */

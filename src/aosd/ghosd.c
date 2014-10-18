@@ -8,8 +8,6 @@
  * - added/changed some other stuff
  */
 
-#include "aosd_common.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <cairo/cairo-xlib-xrender.h>

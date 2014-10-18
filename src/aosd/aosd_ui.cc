@@ -23,17 +23,14 @@
 #include <gtk/gtk.h>
 
 #include <libaudcore/i18n.h>
+#include <libaudcore/index.h>
 #include <libaudcore/preferences.h>
 
-#include "aosd_ui.h"
+#include "aosd.h"
 #include "aosd_style.h"
 #include "aosd_trigger.h"
 #include "aosd_cfg.h"
 #include "aosd_osd.h"
-#include "aosd_common.h"
-
-extern aosd_cfg_t * global_config;
-extern gboolean plugin_is_active;
 
 
 static void chooser_get_aosd_color (GtkColorButton * chooser, aosd_color_t * color)
@@ -50,7 +47,7 @@ static void chooser_get_aosd_color (GtkColorButton * chooser, aosd_color_t * col
 
 static void chooser_set_aosd_color (GtkColorButton * chooser, const aosd_color_t * color)
 {
-  GdkColor gdk_color = {0, color->red, color->green, color->blue};
+  GdkColor gdk_color = {0, (uint16_t) color->red, (uint16_t) color->green, (uint16_t) color->blue};
 
   gtk_color_button_set_color (chooser, & gdk_color);
   gtk_color_button_set_use_alpha (chooser, TRUE);
@@ -64,43 +61,18 @@ typedef void (*aosd_ui_cb_func_t)( GtkWidget * , aosd_cfg_t * );
 
 typedef struct
 {
-  aosd_ui_cb_func_t func;
   GtkWidget * widget;
+  aosd_ui_cb_func_t func;
 }
 aosd_ui_cb_t;
 
-static GList * aosd_cb_list;
+static Index<aosd_ui_cb_t> aosd_cb_list;
 
 static void
-aosd_callback_list_add ( GList ** list , GtkWidget * widget , aosd_ui_cb_func_t func )
+aosd_callback_list_run ( aosd_cfg_t * cfg )
 {
-  aosd_ui_cb_t *cb = g_new (aosd_ui_cb_t, 1);
-  cb->widget = widget;
-  cb->func = func;
-  *list = g_list_append( *list , cb );
-}
-
-static void
-aosd_callback_list_run ( GList * list , aosd_cfg_t * cfg )
-{
-  while ( list != nullptr )
-  {
-    aosd_ui_cb_t *cb = (aosd_ui_cb_t*)list->data;
-    cb->func( cb->widget , cfg );
-    list = g_list_next( list );
-  }
-}
-
-static void
-aosd_callback_list_free ( GList * list )
-{
-  GList *list_top = list;
-  while ( list != nullptr )
-  {
-    g_free( (aosd_ui_cb_t*)list->data );
-    list = g_list_next( list );
-  }
-  g_list_free( list_top );
+  for (const aosd_ui_cb_t & cb : aosd_cb_list)
+    cb.func (cb.widget, cfg);
 }
 /*************************************************************/
 
@@ -134,7 +106,7 @@ aosd_cb_configure_position_placement_commit ( GtkWidget * grid , aosd_cfg_t * cf
     GtkWidget *placbt = (GtkWidget *) list_iter->data;
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(placbt) ) == TRUE )
     {
-      cfg->osd->position.placement = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(placbt),"value"));
+      cfg->position.placement = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(placbt),"value"));
       break;
     }
     list_iter = g_list_next( list_iter );
@@ -147,9 +119,9 @@ aosd_cb_configure_position_placement_commit ( GtkWidget * grid , aosd_cfg_t * cf
 static void
 aosd_cb_configure_position_offset_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
 {
-  cfg->osd->position.offset_x = gtk_spin_button_get_value_as_int(
+  cfg->position.offset_x = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"offx")) );
-  cfg->osd->position.offset_y = gtk_spin_button_get_value_as_int(
+  cfg->position.offset_y = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"offy")) );
 }
 
@@ -157,7 +129,7 @@ aosd_cb_configure_position_offset_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
 static void
 aosd_cb_configure_position_maxsize_commit ( GtkWidget * grid , aosd_cfg_t * cfg )
 {
-  cfg->osd->position.maxsize_width = gtk_spin_button_get_value_as_int(
+  cfg->position.maxsize_width = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(grid),"maxsize_width")) );
 }
 
@@ -166,12 +138,12 @@ static void
 aosd_cb_configure_position_multimon_commit ( GtkWidget * combo , aosd_cfg_t * cfg )
 {
   int active = gtk_combo_box_get_active( GTK_COMBO_BOX(combo) );
-  cfg->osd->position.multimon_id = ( active > -1 ) ? (active - 1) : -1;
+  cfg->position.multimon_id = ( active > -1 ) ? (active - 1) : -1;
 }
 
 
 static GtkWidget *
-aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
+aosd_ui_configure_position ( aosd_cfg_t * cfg )
 {
   GtkWidget *pos_vbox;
   GtkWidget *pos_placement_frame, *pos_placement_hbox, *pos_placement_grid;
@@ -210,11 +182,11 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_table_attach_defaults( GTK_TABLE(pos_placement_grid) , pos_placement_bt[i] ,
                                (i % 3) , (i % 3) + 1 , (i / 3) , (i / 3) + 1 );
     g_object_set_data( G_OBJECT(pos_placement_bt[i]) , "value" , GINT_TO_POINTER(i+1) );
-    if ( cfg->osd->position.placement == (i+1) )
+    if ( cfg->position.placement == (i+1) )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(pos_placement_bt[i]) , TRUE );
   }
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_placement_grid , FALSE , FALSE , 0 );
-  aosd_callback_list_add( cb_list , pos_placement_grid , aosd_cb_configure_position_placement_commit );
+  aosd_cb_list.append( pos_placement_grid , aosd_cb_configure_position_placement_commit );
 
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , gtk_vseparator_new() , FALSE , FALSE , 6 );
 
@@ -225,14 +197,14 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_misc_set_alignment( GTK_MISC(pos_offset_x_label) , 0 , 0.5 );
   gtk_table_attach_defaults( GTK_TABLE(pos_offset_grid) , pos_offset_x_label , 0 , 1 , 0 , 1 );
   pos_offset_x_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_x_spinbt) , cfg->osd->position.offset_x );
+  gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_x_spinbt) , cfg->position.offset_x );
   gtk_table_attach_defaults( GTK_TABLE(pos_offset_grid) , pos_offset_x_spinbt , 1 , 2 , 0 , 1 );
   g_object_set_data( G_OBJECT(pos_offset_grid) , "offx" , pos_offset_x_spinbt );
   pos_offset_y_label = gtk_label_new( _( "Relative Y offset:" ) );
   gtk_misc_set_alignment( GTK_MISC(pos_offset_y_label) , 0 , 0.5 );
   gtk_table_attach_defaults( GTK_TABLE(pos_offset_grid) , pos_offset_y_label , 0 , 1 , 1 , 2 );
   pos_offset_y_spinbt = gtk_spin_button_new_with_range( -9999 , 9999 , 1 );
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_y_spinbt) , cfg->osd->position.offset_y );
+  gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_offset_y_spinbt) , cfg->position.offset_y );
   gtk_table_attach_defaults( GTK_TABLE(pos_offset_grid) , pos_offset_y_spinbt , 1 , 2 , 1 , 2 );
   g_object_set_data( G_OBJECT(pos_offset_grid) , "offy" , pos_offset_y_spinbt );
   pos_maxsize_width_label = gtk_label_new( _("Max OSD width:") );
@@ -240,11 +212,11 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_table_attach_defaults( GTK_TABLE(pos_offset_grid) , pos_maxsize_width_label , 0 , 1 , 2 , 3 );
   pos_maxsize_width_spinbt = gtk_spin_button_new_with_range( 0 , 99999 , 1 );
   g_object_set_data( G_OBJECT(pos_offset_grid) , "maxsize_width" , pos_maxsize_width_spinbt );
-  gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_maxsize_width_spinbt) , cfg->osd->position.maxsize_width );
+  gtk_spin_button_set_value( GTK_SPIN_BUTTON(pos_maxsize_width_spinbt) , cfg->position.maxsize_width );
   gtk_table_attach_defaults( GTK_TABLE(pos_offset_grid) , pos_maxsize_width_spinbt , 1 , 2 , 2 , 3 );
   gtk_box_pack_start( GTK_BOX(pos_placement_hbox) , pos_offset_grid , FALSE , FALSE , 0 );
-  aosd_callback_list_add( cb_list , pos_offset_grid , aosd_cb_configure_position_offset_commit );
-  aosd_callback_list_add( cb_list , pos_offset_grid , aosd_cb_configure_position_maxsize_commit );
+  aosd_cb_list.append( pos_offset_grid , aosd_cb_configure_position_offset_commit );
+  aosd_cb_list.append( pos_offset_grid , aosd_cb_configure_position_maxsize_commit );
 
   pos_multimon_frame = gtk_frame_new( _("Multi-Monitor options") );
   pos_multimon_hbox = gtk_hbox_new( FALSE , 4 );
@@ -259,8 +231,8 @@ aosd_ui_configure_position ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_combo_box_text_append_text ((GtkComboBoxText *) pos_multimon_combobox, mon_str);
     g_free( mon_str );
   }
-  gtk_combo_box_set_active( GTK_COMBO_BOX(pos_multimon_combobox) , (cfg->osd->position.multimon_id + 1) );
-  aosd_callback_list_add( cb_list , pos_multimon_combobox , aosd_cb_configure_position_multimon_commit );
+  gtk_combo_box_set_active( GTK_COMBO_BOX(pos_multimon_combobox) , (cfg->position.multimon_id + 1) );
+  aosd_cb_list.append( pos_multimon_combobox , aosd_cb_configure_position_multimon_commit );
   gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_label , FALSE , FALSE , 0 );
   gtk_box_pack_start( GTK_BOX(pos_multimon_hbox) , pos_multimon_combobox , FALSE , FALSE , 0 );
   gtk_box_pack_start( GTK_BOX(pos_vbox) , pos_multimon_frame , FALSE , FALSE , 0 );
@@ -286,17 +258,17 @@ aosd_ui_configure_animation_timing ( char * label_string )
 static void
 aosd_cb_configure_animation_timing_commit ( GtkWidget * timing_hbox , aosd_cfg_t * cfg )
 {
-  cfg->osd->animation.timing_display = gtk_spin_button_get_value_as_int(
+  cfg->animation.timing_display = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(timing_hbox),"display")) );
-  cfg->osd->animation.timing_fadein = gtk_spin_button_get_value_as_int(
+  cfg->animation.timing_fadein = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(timing_hbox),"fadein")) );
-  cfg->osd->animation.timing_fadeout = gtk_spin_button_get_value_as_int(
+  cfg->animation.timing_fadeout = gtk_spin_button_get_value_as_int(
     GTK_SPIN_BUTTON(g_object_get_data(G_OBJECT(timing_hbox),"fadeout")) );
 }
 
 
 static GtkWidget *
-aosd_ui_configure_animation ( aosd_cfg_t * cfg , GList ** cb_list )
+aosd_ui_configure_animation ( aosd_cfg_t * cfg )
 {
   GtkWidget *ani_vbox;
   GtkWidget *ani_timing_frame, *ani_timing_hbox;
@@ -314,17 +286,17 @@ aosd_ui_configure_animation ( aosd_cfg_t * cfg , GList ** cb_list )
 
   ani_timing_stay_widget = aosd_ui_configure_animation_timing( _("Display:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
-    G_OBJECT(ani_timing_stay_widget),"spinbt")) , cfg->osd->animation.timing_display );
+    G_OBJECT(ani_timing_stay_widget),"spinbt")) , cfg->animation.timing_display );
   gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_stay_widget , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , gtk_vseparator_new() , FALSE , FALSE , 4 );
   ani_timing_fadein_widget = aosd_ui_configure_animation_timing( _("Fade in:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
-    G_OBJECT(ani_timing_fadein_widget),"spinbt")) , cfg->osd->animation.timing_fadein );
+    G_OBJECT(ani_timing_fadein_widget),"spinbt")) , cfg->animation.timing_fadein );
   gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_fadein_widget , TRUE , TRUE , 0 );
   gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , gtk_vseparator_new() , FALSE , FALSE , 4 );
   ani_timing_fadeout_widget = aosd_ui_configure_animation_timing( _("Fade out:") );
   gtk_spin_button_set_value( GTK_SPIN_BUTTON(g_object_get_data(
-    G_OBJECT(ani_timing_fadeout_widget),"spinbt")) , cfg->osd->animation.timing_fadeout );
+    G_OBJECT(ani_timing_fadeout_widget),"spinbt")) , cfg->animation.timing_fadeout );
   gtk_box_pack_start( GTK_BOX(ani_timing_hbox) , ani_timing_fadeout_widget , TRUE , TRUE , 0 );
   g_object_set_data( G_OBJECT(ani_timing_hbox) , "display" ,
     g_object_get_data(G_OBJECT(ani_timing_stay_widget),"spinbt") );
@@ -336,7 +308,7 @@ aosd_ui_configure_animation ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_size_group_add_widget( sizegroup , ani_timing_stay_widget );
   gtk_size_group_add_widget( sizegroup , ani_timing_fadein_widget );
   gtk_size_group_add_widget( sizegroup , ani_timing_fadeout_widget );
-  aosd_callback_list_add( cb_list , ani_timing_hbox , aosd_cb_configure_animation_timing_commit );
+  aosd_cb_list.append( ani_timing_hbox , aosd_cb_configure_animation_timing_commit );
 
   return ani_vbox;
 }
@@ -359,22 +331,22 @@ aosd_cb_configure_text_font_commit ( GtkWidget * fontbt , aosd_cfg_t * cfg )
   int fontnum = GPOINTER_TO_INT(g_object_get_data( G_OBJECT(fontbt) , "fontnum" ));
   GtkColorButton * chooser;
 
-  cfg->osd->text.fonts_name[fontnum] =
+  cfg->text.fonts_name[fontnum] =
    String (gtk_font_button_get_font_name (GTK_FONT_BUTTON (fontbt)));
 
-  cfg->osd->text.fonts_draw_shadow[fontnum] = gtk_toggle_button_get_active(
+  cfg->text.fonts_draw_shadow[fontnum] = gtk_toggle_button_get_active(
     GTK_TOGGLE_BUTTON(g_object_get_data(G_OBJECT(fontbt),"use_shadow")) );
 
   chooser = (GtkColorButton *) g_object_get_data ((GObject *) fontbt, "color");
-  chooser_get_aosd_color (chooser, & cfg->osd->text.fonts_color[fontnum]);
+  chooser_get_aosd_color (chooser, & cfg->text.fonts_color[fontnum]);
 
   chooser = (GtkColorButton *) g_object_get_data ((GObject *) fontbt, "shadow_color");
-  chooser_get_aosd_color (chooser, & cfg->osd->text.fonts_shadow_color[fontnum]);
+  chooser_get_aosd_color (chooser, & cfg->text.fonts_shadow_color[fontnum]);
 }
 
 
 static GtkWidget *
-aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
+aosd_ui_configure_text ( aosd_cfg_t * cfg )
 {
   GtkWidget *tex_vbox;
   GtkWidget *tex_font_grid, *tex_font_frame;
@@ -401,25 +373,25 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
     gtk_font_button_set_show_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , TRUE );
     gtk_font_button_set_use_font( GTK_FONT_BUTTON(tex_font_fontbt[i]) , FALSE );
     gtk_font_button_set_use_size( GTK_FONT_BUTTON(tex_font_fontbt[i]) , FALSE );
-    gtk_font_button_set_font_name( GTK_FONT_BUTTON(tex_font_fontbt[i]) , cfg->osd->text.fonts_name[i] );
+    gtk_font_button_set_font_name( GTK_FONT_BUTTON(tex_font_fontbt[i]) , cfg->text.fonts_name[i] );
 
     tex_font_colorbt[i] = gtk_color_button_new ();
     chooser_set_aosd_color ((GtkColorButton *) tex_font_colorbt[i],
-     & cfg->osd->text.fonts_color[i]);
+     & cfg->text.fonts_color[i]);
 
     tex_font_shadow_togglebt[i] = gtk_toggle_button_new_with_label( _("Shadow") );
     gtk_toggle_button_set_mode( GTK_TOGGLE_BUTTON(tex_font_shadow_togglebt[i]) , FALSE );
 
     tex_font_shadow_colorbt[i] = gtk_color_button_new ();
     chooser_set_aosd_color ((GtkColorButton *) tex_font_shadow_colorbt[i],
-     & cfg->osd->text.fonts_shadow_color[i]);
+     & cfg->text.fonts_shadow_color[i]);
 
     gtk_widget_set_sensitive( tex_font_shadow_colorbt[i] , FALSE );
     g_signal_connect( G_OBJECT(tex_font_shadow_togglebt[i]) , "toggled" ,
                       G_CALLBACK(aosd_cb_configure_text_font_shadow_toggle) ,
                       tex_font_shadow_colorbt[i] );
     gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(tex_font_shadow_togglebt[i]) ,
-      cfg->osd->text.fonts_draw_shadow[i] );
+      cfg->text.fonts_draw_shadow[i] );
     gtk_table_attach_defaults( GTK_TABLE(tex_font_grid) , tex_font_label[i] , 0 , 1 , i , i + 1 );
     gtk_table_attach_defaults( GTK_TABLE(tex_font_grid) , tex_font_fontbt[i] , 1 , 2 , i , i + 1 );
     gtk_table_attach_defaults( GTK_TABLE(tex_font_grid) , tex_font_colorbt[i] , 2 , 3 , i , i + 1 );
@@ -429,7 +401,7 @@ aosd_ui_configure_text ( aosd_cfg_t * cfg , GList ** cb_list )
     g_object_set_data( G_OBJECT(tex_font_fontbt[i]) , "color" , tex_font_colorbt[i] );
     g_object_set_data( G_OBJECT(tex_font_fontbt[i]) , "use_shadow" , tex_font_shadow_togglebt[i] );
     g_object_set_data( G_OBJECT(tex_font_fontbt[i]) , "shadow_color" , tex_font_shadow_colorbt[i] );
-    aosd_callback_list_add( cb_list , tex_font_fontbt[i] , aosd_cb_configure_text_font_commit );
+    aosd_cb_list.append( tex_font_fontbt[i] , aosd_cb_configure_text_font_commit );
   }
   gtk_container_add( GTK_CONTAINER(tex_font_frame) , tex_font_grid );
   gtk_box_pack_start( GTK_BOX(tex_vbox) , tex_font_frame , FALSE , FALSE , 0 );
@@ -449,7 +421,7 @@ aosd_cb_configure_decoration_style_commit ( GtkWidget * lv , aosd_cfg_t * cfg )
   {
     int deco_code = 0;
     gtk_tree_model_get( model , &iter , 1 , &deco_code , -1 );
-    cfg->osd->decoration.code = deco_code;
+    cfg->decoration.code = deco_code;
   }
 }
 
@@ -461,12 +433,12 @@ aosd_cb_configure_decoration_color_commit ( GtkWidget * colorbt , aosd_cfg_t * c
   chooser_get_aosd_color ((GtkColorButton *) colorbt, & color);
 
   int colnum = GPOINTER_TO_INT( g_object_get_data( G_OBJECT(colorbt) , "colnum" ) );
-  g_array_insert_val( cfg->osd->decoration.colors , colnum , color );
+  cfg->decoration.colors[colnum] = color;
 }
 
 
 static GtkWidget *
-aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
+aosd_ui_configure_decoration ( aosd_cfg_t * cfg )
 {
   GtkWidget *dec_hbox;
   GtkWidget *dec_rstyle_lv, *dec_rstyle_lv_frame, *dec_rstyle_lv_sw;
@@ -477,7 +449,6 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkTreeIter iter, iter_sel;
   GtkWidget *dec_rstyle_hbox;
   GtkWidget *dec_rstyleopts_frame, *dec_rstyleopts_grid;
-  int *deco_code_array, deco_code_array_size;
   int colors_max_num = 0, i = 0;
 
   dec_hbox = gtk_hbox_new( FALSE , 4 );
@@ -491,17 +462,16 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
      ---------------------------------------------
   */
   dec_rstyle_store = gtk_list_store_new( 3 , G_TYPE_STRING , G_TYPE_INT , G_TYPE_INT );
-  aosd_deco_style_get_codes_array ( &deco_code_array , &deco_code_array_size );
-  for ( i = 0 ; i < deco_code_array_size ; i++ )
+  for ( i = 0 ; i < AOSD_NUM_DECO_STYLES ; i++ )
   {
-    int colors_num = aosd_deco_style_get_numcol( deco_code_array[i] );
+    int colors_num = aosd_deco_style_get_numcol( i );
     if ( colors_num > colors_max_num )
       colors_max_num = colors_num;
     gtk_list_store_append( dec_rstyle_store , &iter );
     gtk_list_store_set( dec_rstyle_store , &iter ,
-      0 , _(aosd_deco_style_get_desc( deco_code_array[i] )) ,
-      1 , deco_code_array[i] , 2 , colors_num , -1 );
-    if ( deco_code_array[i] == cfg->osd->decoration.code )
+      0 , _(aosd_deco_style_get_desc( i )) ,
+      1 , i , 2 , colors_num , -1 );
+    if ( i == cfg->decoration.code )
       iter_sel = iter;
   }
 
@@ -523,7 +493,7 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
 
   gtk_tree_selection_select_iter( dec_rstyle_lv_sel , &iter_sel );
   gtk_box_pack_start( GTK_BOX(dec_hbox) , dec_rstyle_lv_frame , FALSE , FALSE , 0 );
-  aosd_callback_list_add( cb_list , dec_rstyle_lv , aosd_cb_configure_decoration_style_commit );
+  aosd_cb_list.append( dec_rstyle_lv , aosd_cb_configure_decoration_style_commit );
 
   dec_rstyle_hbox = gtk_vbox_new( FALSE , 4 );
   gtk_box_pack_start( GTK_BOX(dec_hbox) , dec_rstyle_hbox , TRUE , TRUE , 0 );
@@ -545,14 +515,13 @@ aosd_ui_configure_decoration ( aosd_cfg_t * cfg , GList ** cb_list )
     g_free( label_str );
 
     GtkWidget * colorbt = gtk_color_button_new ();
-    chooser_set_aosd_color ((GtkColorButton *) colorbt,
-     & g_array_index (cfg->osd->decoration.colors, aosd_color_t, i));
+    chooser_set_aosd_color ((GtkColorButton *) colorbt, & cfg->decoration.colors[i]);
 
     gtk_box_pack_start( GTK_BOX(hbox) , label , FALSE , FALSE , 0 );
     gtk_box_pack_start( GTK_BOX(hbox) , colorbt , FALSE , FALSE , 0 );
     gtk_table_attach_defaults( GTK_TABLE(dec_rstyleopts_grid) , hbox , (i % 3) , (i % 3) + 1, (i / 3) , (i / 3) + 1);
     g_object_set_data( G_OBJECT(colorbt) , "colnum" , GINT_TO_POINTER(i) );
-    aosd_callback_list_add( cb_list , colorbt , aosd_cb_configure_decoration_color_commit );
+    aosd_cb_list.append( colorbt , aosd_cb_configure_decoration_color_commit );
   }
   gtk_box_pack_start( GTK_BOX(dec_rstyle_hbox) , dec_rstyleopts_frame , FALSE , FALSE , 0 );
 
@@ -575,32 +544,19 @@ aosd_cb_configure_trigger_lvchanged ( GtkTreeSelection *sel , void * nb )
 }
 
 
-static gboolean
-aosd_cb_configure_trigger_findinarr ( GArray * array , int value )
-{
-  int i = 0;
-  for ( i = 0 ; i < (int) array->len ; i++ )
-  {
-    if ( g_array_index( array , int , i ) == value )
-      return TRUE;
-  }
-  return FALSE;
-}
-
-
 static void
 aosd_cb_configure_trigger_commit ( GtkWidget * cbt , aosd_cfg_t * cfg )
 {
   if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(cbt) ) == TRUE )
   {
     int value = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(cbt),"code"));
-    g_array_append_val( cfg->osd->trigger.active , value );
+    cfg->trigger.enabled[value] = true;
   }
 }
 
 
 static GtkWidget *
-aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
+aosd_ui_configure_trigger ( aosd_cfg_t * cfg )
 {
   GtkWidget *tri_hbox;
   GtkWidget *tri_event_lv, *tri_event_lv_frame, *tri_event_lv_sw;
@@ -609,7 +565,6 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
   GtkTreeViewColumn *tri_event_lv_col_desc;
   GtkTreeSelection *tri_event_lv_sel;
   GtkTreeIter iter;
-  int *trigger_code_array, trigger_code_array_size;
   GtkWidget *tri_event_nb;
   int i = 0;
 
@@ -629,22 +584,21 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
      ---------------------------------------------
   */
   tri_event_store = gtk_list_store_new( 3 , G_TYPE_STRING , G_TYPE_INT , G_TYPE_INT );
-  aosd_trigger_get_codes_array ( &trigger_code_array , &trigger_code_array_size );
-  for ( i = 0 ; i < trigger_code_array_size ; i ++ )
+  for ( i = 0 ; i < AOSD_NUM_TRIGGERS ; i ++ )
   {
     GtkWidget *frame, *vbox, *label, *checkbt;
     gtk_list_store_append( tri_event_store , &iter );
     gtk_list_store_set( tri_event_store , &iter ,
-      0 , _(aosd_trigger_get_name( trigger_code_array[i] )) ,
-      1 , trigger_code_array[i] , 2 , i , -1 );
+      0 , _(aosd_trigger_get_name( i )) ,
+      1 , i , 2 , i , -1 );
     vbox = gtk_vbox_new( FALSE , 0 );
     gtk_container_set_border_width( GTK_CONTAINER(vbox) , 6 );
-    label = gtk_label_new( _(aosd_trigger_get_desc( trigger_code_array[i] )) );
+    label = gtk_label_new( _(aosd_trigger_get_desc( i )) );
     gtk_label_set_line_wrap( GTK_LABEL(label) , TRUE );
     gtk_label_set_max_width_chars( GTK_LABEL(label), 40 );
     gtk_misc_set_alignment( GTK_MISC(label) , 0.0 , 0.0 );
     checkbt = gtk_check_button_new_with_label( _("Enable trigger") );
-    if ( aosd_cb_configure_trigger_findinarr( cfg->osd->trigger.active , trigger_code_array[i] ) )
+    if ( cfg->trigger.enabled[i] )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , TRUE );
     else
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(checkbt) , FALSE );
@@ -654,8 +608,8 @@ aosd_ui_configure_trigger ( aosd_cfg_t * cfg , GList ** cb_list )
     frame = gtk_frame_new( nullptr );
     gtk_container_add( GTK_CONTAINER(frame) , vbox );
     gtk_notebook_append_page( GTK_NOTEBOOK(tri_event_nb) , frame , nullptr );
-    g_object_set_data( G_OBJECT(checkbt) , "code" , GINT_TO_POINTER(trigger_code_array[i]) );
-    aosd_callback_list_add( cb_list , checkbt , aosd_cb_configure_trigger_commit );
+    g_object_set_data( G_OBJECT(checkbt) , "code" , GINT_TO_POINTER(i) );
+    aosd_cb_list.append( checkbt , aosd_cb_configure_trigger_commit );
   }
 
   tri_event_lv_frame = gtk_frame_new( nullptr );
@@ -728,7 +682,7 @@ aosd_cb_configure_misc_transp_commit ( GtkWidget * mis_transp_vbox , aosd_cfg_t 
   {
     if ( gtk_toggle_button_get_active( GTK_TOGGLE_BUTTON(child_list->data) ) )
     {
-      cfg->osd->misc.transparency_mode = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(child_list->data),"val"));
+      cfg->misc.transparency_mode = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(child_list->data),"val"));
       break;
     }
     child_list = g_list_next(child_list);
@@ -737,7 +691,7 @@ aosd_cb_configure_misc_transp_commit ( GtkWidget * mis_transp_vbox , aosd_cfg_t 
 
 
 static GtkWidget *
-aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
+aosd_ui_configure_misc ( aosd_cfg_t * cfg )
 {
   GtkWidget *mis_vbox;
   GtkWidget *mis_transp_frame, *mis_transp_vbox;
@@ -788,7 +742,7 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   /* check if the composite extension is loaded */
   if ( aosd_osd_check_composite_ext() )
   {
-    if ( cfg->osd->misc.transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
+    if ( cfg->misc.transparency_mode == AOSD_MISC_TRANSPARENCY_FAKE )
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_fake_rbt) , TRUE );
     else
       gtk_toggle_button_set_active( GTK_TOGGLE_BUTTON(mis_transp_real_rbt) , TRUE );
@@ -811,7 +765,7 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
   gtk_widget_set_sensitive( GTK_WIDGET(mis_transp_status_hbox) , FALSE );
 #endif
 
-  aosd_callback_list_add( cb_list , mis_transp_vbox , aosd_cb_configure_misc_transp_commit );
+  aosd_cb_list.append( mis_transp_vbox , aosd_cb_configure_misc_transp_commit );
 
   return mis_vbox;
 }
@@ -820,66 +774,49 @@ aosd_ui_configure_misc ( aosd_cfg_t * cfg , GList ** cb_list )
 static void
 aosd_cb_configure_test ( void )
 {
-  char *markup_message = nullptr;
-  aosd_cfg_t *cfg = aosd_cfg_new();
-  aosd_callback_list_run( aosd_cb_list , cfg );
-  cfg->set = TRUE;
+  aosd_cfg_t cfg = aosd_cfg_t ();
+  aosd_callback_list_run (& cfg);
 
-  markup_message = g_markup_printf_escaped
+  char * markup_message = g_markup_printf_escaped
    (_("<span font_desc='%s'>Audacious OSD</span>"),
-   (const char *) cfg->osd->text.fonts_name[0]);
+   (const char *) cfg.text.fonts_name[0]);
 
-  aosd_osd_shutdown(); /* stop any displayed osd */
-  aosd_osd_cleanup(); /* just in case it's active */
-  aosd_osd_init( cfg->osd->misc.transparency_mode );
-  aosd_osd_display( markup_message , cfg->osd , TRUE );
-  g_free( markup_message );
-  aosd_cfg_delete( cfg );
+  aosd_osd_shutdown (); /* stop any displayed osd */
+  aosd_osd_cleanup (); /* just in case it's active */
+  aosd_osd_init (cfg.misc.transparency_mode);
+  aosd_osd_display (markup_message, & cfg, true);
+
+  g_free (markup_message);
 }
 
 
 static void
 aosd_cb_configure_cancel ( void )
 {
-  aosd_callback_list_free( aosd_cb_list );
-  aosd_cb_list = nullptr;
+  aosd_cb_list.clear ();
 
-  aosd_osd_shutdown(); /* stop any displayed osd */
-  aosd_osd_cleanup(); /* just in case it's active */
-  if ( plugin_is_active == TRUE )
-    aosd_osd_init( global_config->osd->misc.transparency_mode );
+  aosd_osd_shutdown (); /* stop any displayed osd */
+  aosd_osd_cleanup (); /* just in case it's active */
+  aosd_osd_init (global_config.misc.transparency_mode);
 }
 
 
 static void
 aosd_cb_configure_ok ( void )
 {
-  //char *markup_message = nullptr;
-  aosd_cfg_t *cfg = aosd_cfg_new();
+  aosd_cfg_t cfg = aosd_cfg_t ();
 
-  aosd_callback_list_run( aosd_cb_list , cfg );
-  aosd_callback_list_free( aosd_cb_list );
-  aosd_cb_list = nullptr;
+  aosd_callback_list_run (& cfg);
+  aosd_cb_list.clear ();
 
-  cfg->set = TRUE;
-  aosd_osd_shutdown(); /* stop any displayed osd */
-  aosd_osd_cleanup(); /* just in case it's active */
+  aosd_osd_shutdown (); /* stop any displayed osd */
+  aosd_osd_cleanup (); /* just in case it's active */
 
-  if ( global_config != nullptr )
-  {
-    /* plugin is active */
-    aosd_trigger_stop( &global_config->osd->trigger ); /* stop triggers */
-    aosd_cfg_delete( global_config ); /* delete old global_config */
-    global_config = cfg; /* put the new one */
-    aosd_cfg_save( cfg ); /* save the new configuration on config file */
-    aosd_osd_init( cfg->osd->misc.transparency_mode ); /* restart osd */
-    aosd_trigger_start( &cfg->osd->trigger ); /* restart triggers */
-  }
-  else
-  {
-    /* plugin is not active */
-    aosd_cfg_save( cfg ); /* save the new configuration on config file */
-  }
+  aosd_trigger_stop (global_config.trigger); /* stop triggers */
+  global_config = cfg; /* put the new config */
+  aosd_cfg_save (cfg); /* save the new configuration on config file */
+  aosd_osd_init (cfg.misc.transparency_mode); /* restart osd */
+  aosd_trigger_start (cfg.trigger); /* restart triggers */
 }
 
 
@@ -894,7 +831,7 @@ aosd_ui_configure ( void )
   GtkWidget *cfg_trigger_widget;
 
   /* create a new configuration object */
-  aosd_cfg_t *cfg = aosd_cfg_new();
+  aosd_cfg_t cfg = aosd_cfg_t();
   /* fill it with information from config file */
   aosd_cfg_load( cfg );
 
@@ -902,50 +839,47 @@ aosd_ui_configure ( void )
   gtk_notebook_set_tab_pos( GTK_NOTEBOOK(cfg_nb) , GTK_POS_TOP );
 
   /* add POSITION page */
-  cfg_position_widget = aosd_ui_configure_position( cfg , &aosd_cb_list );
+  cfg_position_widget = aosd_ui_configure_position( &cfg );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_position_widget , gtk_label_new( _("Position") ) );
 
   /* add ANIMATION page */
-  cfg_animation_widget = aosd_ui_configure_animation( cfg , &aosd_cb_list );
+  cfg_animation_widget = aosd_ui_configure_animation( &cfg );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_animation_widget , gtk_label_new( _("Animation") ) );
 
   /* add TEXT page */
-  cfg_text_widget = aosd_ui_configure_text( cfg , &aosd_cb_list );
+  cfg_text_widget = aosd_ui_configure_text( &cfg );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_text_widget , gtk_label_new( _("Text") ) );
 
   /* add DECORATION page */
-  cfg_decoration_widget = aosd_ui_configure_decoration( cfg , &aosd_cb_list );
+  cfg_decoration_widget = aosd_ui_configure_decoration( &cfg );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_decoration_widget , gtk_label_new( _("Decoration") ) );
 
   /* add TRIGGER page */
-  cfg_trigger_widget = aosd_ui_configure_trigger( cfg , &aosd_cb_list );
+  cfg_trigger_widget = aosd_ui_configure_trigger( &cfg );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_trigger_widget , gtk_label_new( _("Trigger") ) );
 
   /* add MISC page */
-  cfg_trigger_widget = aosd_ui_configure_misc( cfg , &aosd_cb_list );
+  cfg_trigger_widget = aosd_ui_configure_misc( &cfg );
   gtk_notebook_append_page( GTK_NOTEBOOK(cfg_nb) ,
     cfg_trigger_widget , gtk_label_new( _("Misc") ) );
-
-  /* delete configuration object */
-  aosd_cfg_delete( cfg );
 
   return cfg_nb;
 }
 
 
-static const PreferencesWidget aosd_widgets[] = {
+const PreferencesWidget AOSD::widgets[] = {
     WidgetCustomGTK (aosd_ui_configure),
     WidgetSeparator ({true}),
     WidgetButton (N_("Test"), {aosd_cb_configure_test, "media-playback-start"})
 };
 
-const PluginPreferences aosd_prefs = {
-    {aosd_widgets},
+const PluginPreferences AOSD::prefs = {
+    {AOSD::widgets},
     nullptr,  // init
     aosd_cb_configure_ok,
     aosd_cb_configure_cancel

@@ -21,9 +21,7 @@
 #ifndef _I_AOSD_STYLE_PRIVATE_H
 #define _I_AOSD_STYLE_PRIVATE_H 1
 
-#include "aosd_common.h"
 #include "aosd_cfg.h"
-#include <glib.h>
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>
 #include "ghosd.h"
@@ -48,7 +46,7 @@ aosd_deco_style_data_t;
    ----------------------------------------------------------
    desc           description
    render_func    render function used to draw the decoration
-   colors_num     number of user-definable colors
+   colors_num     number of user-definable colors (no more than AOSD_DECO_STYLE_MAX_COLORS)
    padding        drawable space available around the text
 */
 typedef struct
@@ -66,6 +64,5 @@ typedef struct
   padding;
 }
 aosd_deco_style_t;
-
 
 #endif /* !_I_AOSD_STYLE_PRIVATE_H */
