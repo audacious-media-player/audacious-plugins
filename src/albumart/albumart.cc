@@ -24,6 +24,21 @@
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+class AlbumArtPlugin : public GeneralPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Album Art"),
+        PACKAGE
+    };
+
+    constexpr AlbumArtPlugin () : GeneralPlugin (info, false) {}
+
+    void * get_gtk_widget ();
+};
+
+EXPORT AlbumArtPlugin aud_plugin_instance;
+
 static void album_update (void * unused, GtkWidget * widget)
 {
     if (! aud_drct_get_playing ())
@@ -54,7 +69,7 @@ static void album_cleanup (GtkWidget * widget)
     audgui_cleanup ();
 }
 
-static void * album_get_widget (void)
+void * AlbumArtPlugin::get_gtk_widget ()
 {
     audgui_init ();
 
@@ -71,9 +86,3 @@ static void * album_get_widget (void)
 
     return widget;
 }
-
-#define AUD_PLUGIN_NAME        N_("Album Art")
-#define AUD_GENERAL_GET_WIDGET   album_get_widget
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
