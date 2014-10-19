@@ -58,7 +58,7 @@ public:
     static const char about[];
 
     static constexpr PluginInfo info = {
-        N_("Alarm"),
+        N_("Global Hotkeys"),
         PACKAGE,
         about,
         & hotkey_prefs
