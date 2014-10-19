@@ -209,4 +209,4 @@ const PreferencesWidget ChannelMixer::widgets[] = {
         {1, AUD_MAX_CHANNELS, 1})
 };
 
-const PluginPreferences ChannelMixer::prefs = {{ChannelMixer::widgets}};
+const PluginPreferences ChannelMixer::prefs = {{widgets}};

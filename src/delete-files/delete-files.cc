@@ -179,4 +179,4 @@ const PreferencesWidget DeleteFiles::widgets[] = {
         WidgetBool ("delete_files", "use_trash"))
 };
 
-const PluginPreferences DeleteFiles::prefs = {{DeleteFiles::widgets}};
+const PluginPreferences DeleteFiles::prefs = {{widgets}};

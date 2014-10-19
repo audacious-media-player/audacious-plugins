@@ -815,7 +815,7 @@ const PreferencesWidget AlarmPlugin::widgets[] = {
 };
 
 const PluginPreferences AlarmPlugin::prefs = {
-    {AlarmPlugin::widgets},
+    {widgets},
     nullptr,  // init
     alarm_save,
     nullptr  // cleanup

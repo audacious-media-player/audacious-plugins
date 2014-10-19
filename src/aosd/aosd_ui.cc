@@ -879,7 +879,7 @@ const PreferencesWidget AOSD::widgets[] = {
 };
 
 const PluginPreferences AOSD::prefs = {
-    {AOSD::widgets},
+    {widgets},
     nullptr,  // init
     aosd_cb_configure_ok,
     aosd_cb_configure_cancel

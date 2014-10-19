@@ -70,7 +70,7 @@ const PreferencesWidget SilenceRemoval::widgets[] = {
         {-60, -20, 1, N_("dB")})
 };
 
-const PluginPreferences SilenceRemoval::prefs = {{SilenceRemoval::widgets}};
+const PluginPreferences SilenceRemoval::prefs = {{widgets}};
 
 static RingBuf<float> buffer;
 static Index<float> output;

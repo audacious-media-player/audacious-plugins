@@ -555,6 +555,6 @@ const PreferencesWidget LADSPAHost::widgets[] = {
     WidgetCustomGTK (make_config_widget)
 };
 
-const PluginPreferences LADSPAHost::prefs = {{LADSPAHost::widgets}};
+const PluginPreferences LADSPAHost::prefs = {{widgets}};
 
 EXPORT LADSPAHost aud_plugin_instance;

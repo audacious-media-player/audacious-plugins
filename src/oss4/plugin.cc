@@ -90,7 +90,7 @@ const PreferencesWidget OSSPlugin::widgets[] = {
 };
 
 const PluginPreferences OSSPlugin::prefs = {
-    {OSSPlugin::widgets},
+    {widgets},
     combo_init,
     nullptr,  // apply
     combo_cleanup

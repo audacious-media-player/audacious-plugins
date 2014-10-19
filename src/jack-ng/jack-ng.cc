@@ -110,7 +110,7 @@ const PreferencesWidget JACKOutput::widgets[] = {
         WidgetBool ("jack", "auto_connect"))
 };
 
-const PluginPreferences JACKOutput::prefs = {{JACKOutput::widgets}};
+const PluginPreferences JACKOutput::prefs = {{widgets}};
 
 bool JACKOutput::init ()
 {

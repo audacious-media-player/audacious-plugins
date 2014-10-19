@@ -142,4 +142,4 @@ const PreferencesWidget BS2BPlugin::widgets[] = {
     WidgetBox ({{preset_widgets}, true})
 };
 
-const PluginPreferences BS2BPlugin::prefs = {{BS2BPlugin::widgets}};
+const PluginPreferences BS2BPlugin::prefs = {{widgets}};

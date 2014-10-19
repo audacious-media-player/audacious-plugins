@@ -165,4 +165,4 @@ const PreferencesWidget SoXResampler::widgets[] = {
         {MIN_RATE, MAX_RATE, RATE_STEP, N_("Hz")})
 };
 
-const PluginPreferences SoXResampler::prefs = {{SoXResampler::widgets}};
+const PluginPreferences SoXResampler::prefs = {{widgets}};

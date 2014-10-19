@@ -35,6 +35,21 @@
 #include <libaudcore/hook.h>
 #include <libaudcore/vfs_async.h>
 
+class LyricWiki : public GeneralPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("LyricWiki Plugin"),
+        PACKAGE
+    };
+
+    constexpr LyricWiki () : GeneralPlugin (info, false) {}
+
+    void * get_gtk_widget ();
+};
+
+EXPORT LyricWiki aud_plugin_instance;
+
 typedef struct {
     String filename; /* of song file */
     String title, artist;
@@ -346,7 +361,7 @@ static void lyricwiki_playback_began(void)
     get_lyrics_step_1();
 }
 
-static void cleanup ()
+static void destroy_cb ()
 {
     state.filename = String ();
     state.title = String ();
@@ -359,7 +374,7 @@ static void cleanup ()
     textbuffer = nullptr;
 }
 
-static void * get_widget ()
+void * LyricWiki::get_gtk_widget ()
 {
     build_widget ();
 
@@ -368,13 +383,7 @@ static void * get_widget ()
 
     lyricwiki_playback_began ();
 
-    g_signal_connect (vbox, "destroy", cleanup, nullptr);
+    g_signal_connect (vbox, "destroy", destroy_cb, nullptr);
 
     return vbox;
 }
-
-#define AUD_PLUGIN_NAME         N_("LyricWiki Plugin")
-#define AUD_GENERAL_GET_WIDGET  get_widget
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>

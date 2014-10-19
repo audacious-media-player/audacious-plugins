@@ -101,7 +101,7 @@ const PreferencesWidget SndioPlugin::widgets[] = {
         WidgetBool ("sndio", "save_volume"))
 };
 
-const PluginPreferences SndioPlugin::prefs = {{SndioPlugin::widgets}};
+const PluginPreferences SndioPlugin::prefs = {{widgets}};
 
 bool SndioPlugin::init ()
 {

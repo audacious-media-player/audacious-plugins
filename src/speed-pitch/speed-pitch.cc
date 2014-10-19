@@ -216,7 +216,7 @@ const PreferencesWidget SpeedPitch::widgets[] = {
         {MINPITCH, MAXPITCH, 0.05})
 };
 
-const PluginPreferences SpeedPitch::prefs = {{SpeedPitch::widgets}};
+const PluginPreferences SpeedPitch::prefs = {{widgets}};
 
 bool SpeedPitch::init ()
 {
