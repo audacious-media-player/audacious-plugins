@@ -48,16 +48,16 @@ static const char gl_about[] =
     "and 4Front Technologies\n\n"
     "License: GPLv2+");
 
-class GLSpectrum : public VisPlugin
+class GLSpectrumQt : public VisPlugin
 {
 public:
     static constexpr PluginInfo info = {
-        N_("OpenGL Spectrum Analyzer"),
+        N_("OpenGL Spectrum Analyzer (Qt)"),
         PACKAGE,
         gl_about
     };
 
-    constexpr GLSpectrum () : VisPlugin (info, AUD_VIS_TYPE_FREQ) {}
+    constexpr GLSpectrumQt () : VisPlugin (info, AUD_VIS_TYPE_FREQ) {}
 
     bool init ();
 
@@ -67,7 +67,7 @@ public:
     void render_freq (const float * freq);
 };
 
-EXPORT GLSpectrum aud_plugin_instance;
+EXPORT GLSpectrumQt aud_plugin_instance;
 
 static float logscale[NUM_BANDS + 1];
 static float colors[NUM_BANDS][NUM_BANDS][3];
@@ -101,7 +101,7 @@ private:
 
 GLSpectrumWidget * s_widget = nullptr;
 
-bool GLSpectrum::init ()
+bool GLSpectrumQt::init ()
 {
     for (int i = 0; i <= NUM_BANDS; i ++)
         logscale[i] = powf (256, (float) i / NUM_BANDS) - 0.5f;
@@ -161,7 +161,7 @@ static void make_log_graph (const float * freq, float * graph)
     }
 }
 
-void GLSpectrum::render_freq (const float * freq)
+void GLSpectrumQt::render_freq (const float * freq)
 {
     make_log_graph (freq, s_bars[s_pos]);
     s_pos = (s_pos + 1) % NUM_BANDS;
@@ -174,7 +174,7 @@ void GLSpectrum::render_freq (const float * freq)
         s_widget->updateGL ();
 }
 
-void GLSpectrum::clear ()
+void GLSpectrumQt::clear ()
 {
 #ifdef XXX_NOTYET
     memset (s_bars, 0, sizeof s_bars);
@@ -296,7 +296,7 @@ void GLSpectrumWidget::resizeGL (int w, int h)
     glViewport (0, 0, w, h);
 }
 
-void * GLSpectrum::get_qt_widget ()
+void * GLSpectrumQt::get_qt_widget ()
 {
     if (s_widget)
         return s_widget;

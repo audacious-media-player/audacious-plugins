@@ -45,18 +45,18 @@ typedef struct {
 
 static LyricsState state;
 
-class LyricWiki : public GeneralPlugin {
+class LyricWikiQt : public GeneralPlugin {
 public:
     static constexpr PluginInfo info = {
-        N_("LyricWiki Plugin"),
+        N_("LyricWiki Plugin (Qt)"),
         PACKAGE
     };
 
-    constexpr LyricWiki() : GeneralPlugin (info, false) {}
+    constexpr LyricWikiQt() : GeneralPlugin (info, false) {}
     void * get_qt_widget ();
 };
 
-EXPORT LyricWiki aud_plugin_instance;
+EXPORT LyricWikiQt aud_plugin_instance;
 
 /*
  * Suppress libxml warnings, because lyricwiki does not generate anything near
@@ -336,7 +336,7 @@ static void lw_cleanup (QObject * object = nullptr)
     textedit = nullptr;
 }
 
-void * LyricWiki::get_qt_widget ()
+void * LyricWikiQt::get_qt_widget ()
 {
     textedit = new QTextEdit;
     textedit->setReadOnly (true);
