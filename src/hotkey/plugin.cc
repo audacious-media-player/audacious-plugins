@@ -52,16 +52,30 @@
 #include "gui.h"
 #include "grab.h"
 
+class GlobalHotkeys : public GeneralPlugin
+{
+public:
+    static const char about[];
 
-/* func defs */
-static bool hotkey_init (void);
-static void hotkey_cleanup (void);
+    static constexpr PluginInfo info = {
+        N_("Alarm"),
+        PACKAGE,
+        about,
+        & hotkey_prefs
+    };
 
+    constexpr GlobalHotkeys () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT GlobalHotkeys aud_plugin_instance;
 
 /* global vars */
 static PluginConfig plugin_cfg;
 
-static const char about[] =
+const char GlobalHotkeys::about[] =
  N_("Global Hotkey Plugin\n"
     "Control the player with global key combinations or multimedia keys.\n\n"
     "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
@@ -72,15 +86,6 @@ static const char about[] =
     " Jonathan A. Davis <davis@jdhouse.org>,\n"
     " Jeremy Tan <nsx@nsx.homeip.net>");
 
-#define AUD_PLUGIN_NAME        N_("Global Hotkeys")
-#define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_INIT        hotkey_init
-#define AUD_PLUGIN_PREFS       & hotkey_prefs
-#define AUD_PLUGIN_CLEANUP     hotkey_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
-
 PluginConfig* get_config(void)
 {
     return &plugin_cfg;
@@ -90,7 +95,7 @@ PluginConfig* get_config(void)
 /*
  * plugin activated
  */
-static bool hotkey_init (void)
+bool GlobalHotkeys::init ()
 {
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
@@ -420,7 +425,7 @@ void save_config (void)
     aud_set_int ("globalHotkey", "NumHotkeys", max);
 }
 
-static void hotkey_cleanup (void)
+void GlobalHotkeys::cleanup ()
 {
     HotkeyConfiguration* hotkey;
     ungrab_keys ();
