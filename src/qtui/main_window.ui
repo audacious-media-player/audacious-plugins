@@ -93,6 +93,7 @@
      <addaction name="actionSortTitle"/>
      <addaction name="actionSortArtist"/>
      <addaction name="actionSortAlbum"/>
+     <addaction name="actionSortAlbumArtist"/>
      <addaction name="actionSortDate"/>
      <addaction name="actionSortLength"/>
      <addaction name="actionSortPath"/>
@@ -112,6 +113,7 @@
      <addaction name="actionSortSelectedTitle"/>
      <addaction name="actionSortSelectedArtist"/>
      <addaction name="actionSortSelectedAlbum"/>
+     <addaction name="actionSortSelectedAlbumArtist"/>
      <addaction name="actionSortSelectedDate"/>
      <addaction name="actionSortSelectedLength"/>
      <addaction name="actionSortSelectedPath"/>
@@ -533,6 +535,11 @@
     <string>By Album</string>
    </property>
   </action>
+  <action name="actionSortAlbumArtist">
+   <property name="text">
+    <string>By Album Artist</string>
+   </property>
+  </action>
   <action name="actionSortDate">
    <property name="text">
     <string>By Release Date</string>
@@ -584,6 +591,11 @@
   <action name="actionSortSelectedAlbum">
    <property name="text">
     <string>By Album</string>
+   </property>
+  </action>
+  <action name="actionSortSelectedAlbumArtist">
+   <property name="text">
+    <string>By Album Artist</string>
    </property>
   </action>
   <action name="actionSortSelectedDate">

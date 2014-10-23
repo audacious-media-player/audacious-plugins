@@ -120,3 +120,14 @@ void TimeSlider::released ()
     if (! aud_drct_get_paused ())
         m_timer.start (250);
 }
+
+void TimeSlider::mousePressEvent (QMouseEvent * event)
+{
+    if (event->button () == Qt::LeftButton)
+    {
+        setValue (QStyle::sliderValueFromPosition (minimum (), maximum (), event->x (), width ()));
+        event->accept ();
+    }
+
+    QSlider::mousePressEvent (event);
+}

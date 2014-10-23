@@ -19,12 +19,7 @@
  */
 
 #include <stdlib.h>
-
 #include <time.h>
-#if TM_IN_SYS_TIME
-# include <sys/time.h>
-#endif
-
 #include <string.h>
 
 #include <gdk/gdk.h>
@@ -48,7 +43,30 @@
 #include "interface.h"
 #include "callbacks.h"
 
-static const char * const alarm_defaults[] = {
+class AlarmPlugin : public GeneralPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Alarm"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr AlarmPlugin () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT AlarmPlugin aud_plugin_instance;
+
+const char * const AlarmPlugin::defaults[] = {
  /* general */
  "alarm_h", "6",
  "alarm_m", "30",
@@ -252,8 +270,6 @@ static void alarm_read_config(void)
 {
     int daynum = 0;   // used for day number
 
-    aud_config_set_defaults ("alarm", alarm_defaults);
-
     alarm_h = aud_get_int ("alarm", "alarm_h");
     alarm_m = aud_get_int ("alarm", "alarm_m");
 
@@ -289,7 +305,7 @@ static void alarm_read_config(void)
 /*
  * displays the configuration window and opens the config file.
  */
-void *alarm_make_config_widget(void)
+static void *alarm_make_config_widget(void)
 {
     int daynum = 0;  // used to loop days
     GtkWidget *w;
@@ -419,7 +435,7 @@ void *alarm_make_config_widget(void)
 }
 
 /* functions for greying out the time for days */
-void on_day_def_toggled(GtkToggleButton *togglebutton, void * user_data, int daynum)
+static void on_day_def_toggled(GtkToggleButton *togglebutton, void * user_data, int daynum)
 {
     GtkWidget *w;
 
@@ -743,16 +759,21 @@ static gboolean alarm_timeout (void * unused)
     return TRUE;
 }
 
-static void alarm_configure (void);
+static void alarm_configure ()
+{
+    audgui_show_plugin_prefs (aud_plugin_by_header (& aud_plugin_instance));
+}
 
 /*
  * initialization
  * opens the config file and reads the value, creates a new
  * config in memory if the file doesnt exist and sets default vals
  */
-static bool alarm_init (void)
+bool AlarmPlugin::init ()
 {
     AUDDBG("alarm_init\n");
+
+    aud_config_set_defaults ("alarm", defaults);
 
     alarm_read_config();
 
@@ -760,13 +781,13 @@ static bool alarm_init (void)
 
     aud_plugin_menu_add (AUD_MENU_MAIN, alarm_configure, _("Set Alarm ..."), "appointment-new");
 
-    return TRUE;
+    return true;
 }
 
 /*
  * kill the main thread
  */
-static void alarm_cleanup(void)
+void AlarmPlugin::cleanup ()
 {
     AUDDBG("alarm_cleanup\n");
 
@@ -785,31 +806,17 @@ static void alarm_cleanup(void)
     }
 }
 
-static const char alarm_about[] =
+const char AlarmPlugin::about[] =
  N_("A plugin that can be used to start playing at a certain time.\n\n"
     "Originally written by Adam Feakin and Daniel Stodden.");
 
-static const PreferencesWidget alarm_widgets[] = {
+const PreferencesWidget AlarmPlugin::widgets[] = {
     WidgetCustomGTK (alarm_make_config_widget)
 };
 
-static const PluginPreferences alarm_prefs = {
-    {alarm_widgets},
+const PluginPreferences AlarmPlugin::prefs = {
+    {widgets},
     nullptr,  // init
     alarm_save,
     nullptr  // cleanup
 };
-
-#define AUD_PLUGIN_NAME        N_("Alarm")
-#define AUD_PLUGIN_ABOUT       alarm_about
-#define AUD_PLUGIN_INIT        alarm_init
-#define AUD_PLUGIN_PREFS       & alarm_prefs
-#define AUD_PLUGIN_CLEANUP     alarm_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
-
-static void alarm_configure (void)
-{
-    audgui_show_plugin_prefs (aud_plugin_by_header (& aud_plugin_instance));
-}

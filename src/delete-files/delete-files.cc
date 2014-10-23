@@ -35,6 +35,28 @@
 #include <libaudcore/runtime.h>
 #include <libaudgui/libaudgui-gtk.h>
 
+class DeleteFiles : public GeneralPlugin
+{
+public:
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Delete Files"),
+        PACKAGE,
+        nullptr,
+        & prefs
+    };
+
+    constexpr DeleteFiles () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT DeleteFiles aud_plugin_instance;
+
 static const int menus[] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST, AUD_MENU_PLAYLIST_REMOVE};
 
 static GtkWidget * dialog = nullptr;
@@ -124,17 +146,17 @@ static void start_delete (void)
     gtk_widget_show_all (dialog);
 }
 
-static const char * const delete_files_defaults[] = {
+const char * const DeleteFiles::defaults[] = {
  "use_trash", "TRUE",
  nullptr};
 
-static bool delete_files_init (void)
+bool DeleteFiles::init (void)
 {
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
 #endif
 
-    aud_config_set_defaults ("delete_files", delete_files_defaults);
+    aud_config_set_defaults ("delete_files", defaults);
 
     for (int menu : menus)
         aud_plugin_menu_add (menu, start_delete, _("Delete Selected Files"), "edit-delete");
@@ -142,7 +164,7 @@ static bool delete_files_init (void)
     return TRUE;
 }
 
-static void delete_files_cleanup (void)
+void DeleteFiles::cleanup (void)
 {
     if (dialog)
         gtk_widget_destroy (dialog);
@@ -151,18 +173,10 @@ static void delete_files_cleanup (void)
         aud_plugin_menu_remove (menu, start_delete);
 }
 
-static const PreferencesWidget delete_files_widgets[] = {
+const PreferencesWidget DeleteFiles::widgets[] = {
     WidgetLabel (N_("<b>Delete Method</b>")),
     WidgetCheck (N_("Move to trash instead of deleting immediately"),
         WidgetBool ("delete_files", "use_trash"))
 };
 
-static const PluginPreferences delete_files_prefs = {{delete_files_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Delete Files")
-#define AUD_PLUGIN_INIT        delete_files_init
-#define AUD_PLUGIN_CLEANUP     delete_files_cleanup
-#define AUD_PLUGIN_PREFS       & delete_files_prefs
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences DeleteFiles::prefs = {{widgets}};

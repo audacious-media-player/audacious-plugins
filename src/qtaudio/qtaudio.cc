@@ -21,23 +21,17 @@
  * the use of this software.
  */
 
-#include <assert.h>
 #include <math.h>
 #include <pthread.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
 #include <sys/time.h>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/mainloop.h>
 
-#include "qtaudio.h"
-
-namespace qtaudio {
+#include <QAudioOutput>
 
 #define VOLUME_RANGE 40 /* decibels */
 
@@ -45,25 +39,60 @@ namespace qtaudio {
     aud_ui_show_error (str_printf ("QtAudio error: " __VA_ARGS__)); \
 } while (0)
 
-static const char * const sdl_defaults[] = {
+class QtAudio : public OutputPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+
+    static constexpr PluginInfo info = {
+        N_("QtMultimedia Output"),
+        PACKAGE,
+        about
+    };
+
+    constexpr QtAudio () : OutputPlugin (info, 1) {}
+
+    bool init ();
+
+    StereoVolume get_volume ();
+    void set_volume (StereoVolume v);
+
+    bool open_audio (int aud_format, int rate, int chan);
+    void close_audio ();
+
+    void period_wait ();
+    int write_audio (const void * data, int size);
+    void drain ();
+
+    int get_delay ();
+
+    void pause (bool pause);
+    void flush ();
+};
+
+EXPORT QtAudio aud_plugin_instance;
+
+const char QtAudio::about[] =
+ N_("QtMultimedia Audio Output Plugin for Audacious\n"
+    "Copyright 2014 William Pitcock\n\n"
+    "Based on SDL Output Plugin for Audacious\n"
+    "Copyright 2010 John Lindgren");
+
+const char * const QtAudio::defaults[] = {
  "vol_left", "100",
  "vol_right", "100",
  nullptr};
 
+static const timespec fifty_ms = {0, 50000000};
+
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 
-static volatile int vol_left, vol_right;
-
-static int chan, rate;
-
-static int buffer_size, buffer_bytes_per_channel;
-
-static int64_t frames_written;
-static char prebuffer_flag, paused_flag;
-
-static int block_delay;
-static struct timeval block_time;
+static int bytes_per_sec;
+static bool paused;
+static int last_buffered, delay_estimate;
+static timeval last_system_time;
 
 static QAudioOutput * output_instance = nullptr;
 static QIODevice * buffer_instance = nullptr;
@@ -80,12 +109,6 @@ static struct FormatDescriptionMap FormatMap[] = {
     {FMT_S16_BE, 16, QAudioFormat::SignedInt, QAudioFormat::BigEndian},
     {FMT_U16_LE, 16, QAudioFormat::UnSignedInt, QAudioFormat::LittleEndian},
     {FMT_U16_BE, 16, QAudioFormat::UnSignedInt, QAudioFormat::BigEndian},
-#ifdef XXX_NOTYET
-    {FMT_S24_LE, 24, QAudioFormat::SignedInt, QAudioFormat::LittleEndian},
-    {FMT_S24_BE, 24, QAudioFormat::SignedInt, QAudioFormat::BigEndian},
-    {FMT_U24_LE, 24, QAudioFormat::UnSignedInt, QAudioFormat::LittleEndian},
-    {FMT_U24_BE, 24, QAudioFormat::UnSignedInt, QAudioFormat::BigEndian},
-#endif
     {FMT_S32_LE, 32, QAudioFormat::SignedInt, QAudioFormat::LittleEndian},
     {FMT_S32_BE, 32, QAudioFormat::SignedInt, QAudioFormat::BigEndian},
     {FMT_U32_LE, 32, QAudioFormat::UnSignedInt, QAudioFormat::LittleEndian},
@@ -93,37 +116,23 @@ static struct FormatDescriptionMap FormatMap[] = {
     {FMT_FLOAT, 32, QAudioFormat::Float, QAudioFormat::LittleEndian},
 };
 
-bool init (void)
+bool QtAudio::init ()
 {
-    aud_config_set_defaults ("coreaudio", sdl_defaults);
-
-    vol_left = aud_get_int ("coreaudio", "vol_left");
-    vol_right = aud_get_int ("coreaudio", "vol_right");
-
-    return 1;
+    aud_config_set_defaults ("qtaudio", defaults);
+    return true;
 }
 
-void cleanup (void)
+StereoVolume QtAudio::get_volume ()
 {
+    return {aud_get_int ("qtaudio", "vol_left"), aud_get_int ("qtaudio", "vol_right")};
 }
 
-void get_volume (int * left, int * right)
+void QtAudio::set_volume (StereoVolume v)
 {
-    * left = vol_left;
-    * right = vol_right;
-}
+    int vol_max = aud::max (v.left, v.right);
 
-void set_volume (int left, int right)
-{
-    int vol_max;
-
-    vol_left = left;
-    vol_right = right;
-
-    vol_max = aud::max (vol_left, vol_right);
-
-    aud_set_int ("coreaudio", "vol_left", left);
-    aud_set_int ("coreaudio", "vol_right", right);
+    aud_set_int ("qtaudio", "vol_left", v.left);
+    aud_set_int ("qtaudio", "vol_right", v.right);
 
     if (output_instance)
     {
@@ -133,7 +142,7 @@ void set_volume (int left, int right)
     }
 }
 
-bool open_audio (int format, int rate_, int chan_)
+bool QtAudio::open_audio (int format, int rate, int chan)
 {
     struct FormatDescriptionMap * m = nullptr;
 
@@ -149,20 +158,21 @@ bool open_audio (int format, int rate_, int chan_)
     if (! m)
     {
         error ("The requested audio format %d is unsupported.\n", format);
-        return 0;
+        return false;
     }
 
-    AUDDBG ("Opening audio for %d channels, %d Hz.\n", chan_, rate_);
+    AUDDBG ("Opening audio for %d channels, %d Hz.\n", chan, rate);
 
-    chan = chan_;
-    rate = rate_;
+    bytes_per_sec = FMT_SIZEOF (format) * chan * rate;
 
-    buffer_bytes_per_channel = (m->sample_size / 8) + ((m->sample_size % 16) / 8);
-    buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
+    int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
+    int buffer_size = FMT_SIZEOF (format) * chan * aud::rescale (buffer_ms, 1000, rate);
 
-    frames_written = 0;
-    prebuffer_flag = 1;
-    paused_flag = 0;
+    paused = false;
+    last_buffered = 0;
+    delay_estimate = 0;
+
+    gettimeofday (& last_system_time, nullptr);
 
     QAudioFormat fmt;
     fmt.setSampleRate (rate);
@@ -176,19 +186,19 @@ bool open_audio (int format, int rate_, int chan_)
     if (! info.isFormatSupported (fmt))
     {
         error ("Format not supported by backend.\n");
-        return 0;
+        return false;
     }
 
     output_instance = new QAudioOutput (fmt, nullptr);
     output_instance->setBufferSize (buffer_size);
     buffer_instance = output_instance->start ();
 
-    set_volume (vol_left, vol_right);
+    set_volume (get_volume ());
 
-    return 1;
+    return true;
 }
 
-void close_audio (void)
+void QtAudio::close_audio ()
 {
     AUDDBG ("Closing audio.\n");
 
@@ -198,94 +208,94 @@ void close_audio (void)
     output_instance = nullptr;
 }
 
-int buffer_free (void)
+void QtAudio::period_wait ()
 {
     pthread_mutex_lock (& mutex);
 
-    int space = output_instance->bytesFree ();
+    while (output_instance->bytesFree () < output_instance->periodSize ())
+        pthread_cond_timedwait (& cond, & mutex, & fifty_ms);
 
     pthread_mutex_unlock (& mutex);
-    return space;
 }
 
-void write_audio (const void * data, int len)
+int QtAudio::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
+    len = aud::min (len, output_instance->bytesFree ());
     buffer_instance->write ((const char *) data, len);
-
-    frames_written += len / (buffer_bytes_per_channel * chan);
-
-    if (len)
-        pthread_cond_broadcast (& cond);
+    last_buffered += len;
 
     pthread_mutex_unlock (& mutex);
+    return len;
 }
 
-void drain (void)
+void QtAudio::drain ()
 {
     AUDDBG ("Draining.\n");
     pthread_mutex_lock (& mutex);
 
     while (output_instance->bytesFree () < output_instance->bufferSize ())
-        pthread_cond_wait (& cond, & mutex);
+        pthread_cond_timedwait (& cond, & mutex, & fifty_ms);
 
     pthread_mutex_unlock (& mutex);
 }
 
-int output_time (void)
+int QtAudio::get_delay ()
 {
+    auto timediff = [] (const timeval & a, const timeval & b) -> int64_t
+        { return 1000 * (int64_t) (b.tv_sec - a.tv_sec) + (b.tv_usec - a.tv_usec) / 1000; };
+
     pthread_mutex_lock (& mutex);
 
-    int out = (int64_t) (frames_written - (output_instance->bufferSize () - output_instance->bytesFree ()) / (buffer_bytes_per_channel * chan))
-     * 1000 / rate;
+    int buffered = output_instance->bufferSize () - output_instance->bytesFree ();
+    int delay = aud::rescale (buffered, bytes_per_sec, 1000);
 
-    /* Estimate the additional delay of the last block written. */
-    if (! prebuffer_flag && ! paused_flag && block_delay)
+    timeval now;
+    gettimeofday (& now, nullptr);
+
+    if (buffered == last_buffered && ! paused)
+        delay += aud::max (delay_estimate - timediff (last_system_time, now), (int64_t) 0);
+    else
     {
-        struct timeval cur;
-        gettimeofday (& cur, nullptr);
-
-        int elapsed = 1000 * (cur.tv_sec - block_time.tv_sec) + (cur.tv_usec -
-         block_time.tv_usec) / 1000;
-
-        if (elapsed < block_delay)
-            out -= block_delay - elapsed;
+        delay_estimate = aud::rescale (last_buffered - buffered, bytes_per_sec, 1000);
+        delay += delay_estimate;
+        last_buffered = buffered;
+        last_system_time = now;
     }
 
     pthread_mutex_unlock (& mutex);
-    return out;
+    return delay;
 }
 
-void pause (bool pause)
+void QtAudio::pause (bool pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& mutex);
-
-    paused_flag = pause;
 
     if (pause)
         output_instance->suspend ();
     else
         output_instance->resume ();
 
-    pthread_cond_broadcast (& cond); /* wake up period wait */
+    paused = pause;
+
     pthread_mutex_unlock (& mutex);
 }
 
-void flush (int time)
+void QtAudio::flush ()
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& mutex);
 
-    frames_written = (int64_t) time * rate / 1000;
-    prebuffer_flag = 1;
+    last_buffered = 0;
+    delay_estimate = 0;
+
+    gettimeofday (& last_system_time, nullptr);
 
     output_instance->reset ();
     buffer_instance = output_instance->start ();
 
     pthread_cond_broadcast (& cond); /* wake up period wait */
     pthread_mutex_unlock (& mutex);
-}
-
 }

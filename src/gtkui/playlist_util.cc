@@ -70,19 +70,26 @@ void playlist_queue_toggle (void)
     if (focus < 0)
         return;
 
+    /* make sure focused row is selected */
+    if (! aud_playlist_entry_get_selected (list, focus))
+    {
+        aud_playlist_select_all (list, false);
+        aud_playlist_entry_set_selected (list, focus, true);
+    }
+
     int at = aud_playlist_queue_find_entry (list, focus);
 
     if (at < 0)
-        aud_playlist_queue_insert (list, -1, focus);
+        aud_playlist_queue_insert_selected (list, -1);
     else
-        aud_playlist_queue_delete (list, at, 1);
+        aud_playlist_queue_delete_selected (list);
 }
 
 void playlist_delete_selected (void)
 {
     int list = aud_playlist_get_active ();
     aud_playlist_delete_selected (list);
-    aud_playlist_entry_set_selected (list, aud_playlist_get_focus (list), TRUE);
+    aud_playlist_entry_set_selected (list, aud_playlist_get_focus (list), true);
 }
 
 void playlist_copy (void)

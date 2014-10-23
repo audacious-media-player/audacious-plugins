@@ -31,21 +31,60 @@
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
-const char * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
- N_("Artist"), N_("Year"), N_("Album"), N_("Track"), N_("Genre"),
- N_("Queue position"), N_("Length"), N_("File path"), N_("File name"),
- N_("Custom title"), N_("Bitrate")};
+const char * const pw_col_names[PW_COLS] = {
+    N_("Entry number"),
+    N_("Title"),
+    N_("Artist"),
+    N_("Year"),
+    N_("Album"),
+    N_("Album Artist"),
+    N_("Track"),
+    N_("Genre"),
+    N_("Queue position"),
+    N_("Length"),
+    N_("File path"),
+    N_("File name"),
+    N_("Custom title"),
+    N_("Bitrate")
+};
 
 int pw_num_cols;
 int pw_cols[PW_COLS];
 int pw_col_widths[PW_COLS];
 
-static const char * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
- "year", "album", "track", "genre", "queued", "length", "path", "filename",
- "custom", "bitrate"};
+static const char * const pw_col_keys[PW_COLS] = {
+    "number",
+    "title",
+    "artist",
+    "year",
+    "album",
+    "album-artist",
+    "track",
+    "genre",
+    "queued",
+    "length",
+    "path",
+    "filename",
+    "custom",
+    "bitrate"
+};
 
-static const int pw_default_widths[PW_COLS] = {10, 275, 175, 10, 175, 10, 100,
- 10, 10, 275, 275, 275, 10};
+static const int pw_default_widths[PW_COLS] = {
+    10,   // entry number
+    275,  // title
+    175,  // artist
+    10,   // year
+    175,  // album
+    175,  // album artist
+    10,   // track
+    100,  // genre
+    10,   // queue position
+    10,   // length
+    275,  // path
+    275,  // filename
+    275,  // custom title
+    10    // bitrate
+};
 
 void pw_col_init (void)
 {

@@ -170,6 +170,7 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_by_title),
     MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_by_album),
     MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_by_artist),
+    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_by_album_artist),
     MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_by_full_path),
     MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_by_date),
@@ -180,6 +181,7 @@ static const AudguiMenuItem sort_selected_items[] = {
     MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_selected_by_title),
     MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_selected_by_album),
     MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_artist),
+    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_album_artist),
     MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_selected_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_selected_by_full_path),
     MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_selected_by_date),
@@ -269,25 +271,6 @@ GtkAccelGroup * menu_get_accel_group (void)
     return accel;
 }
 
-static void get_monitor_geometry (GdkScreen * screen, int x, int y, GdkRectangle * geom)
-{
-    int monitors = gdk_screen_get_n_monitors (screen);
-
-    for (int i = 0; i < monitors; i ++)
-    {
-        gdk_screen_get_monitor_geometry (screen, i, geom);
-
-        if (x >= geom->x && x < geom->x + geom->width && y >= geom->y && y < geom->y + geom->height)
-            return;
-    }
-
-    /* fall back to entire screen */
-    geom->x = 0;
-    geom->y = 0;
-    geom->width = gdk_screen_get_width (screen);
-    geom->height = gdk_screen_get_height (screen);
-}
-
 typedef struct {
     int x, y;
     gboolean leftward, upward;
@@ -298,7 +281,7 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
     const MenuPosition * pos = (MenuPosition *) data;
 
     GdkRectangle geom;
-    get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), pos->x, pos->y, & geom);
+    audgui_get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), pos->x, pos->y, & geom);
 
     GtkRequisition request;
     gtk_widget_get_preferred_size ((GtkWidget *) menu, NULL, & request);

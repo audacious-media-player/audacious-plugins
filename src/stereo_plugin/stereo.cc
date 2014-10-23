@@ -47,7 +47,7 @@ const PreferencesWidget ExtraStereo::widgets[] = {
         {0, 10, 0.1})
 };
 
-const PluginPreferences ExtraStereo::prefs = {{ExtraStereo::widgets}};
+const PluginPreferences ExtraStereo::prefs = {{widgets}};
 
 bool ExtraStereo::init ()
 {

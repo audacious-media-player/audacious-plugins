@@ -246,4 +246,4 @@ const PreferencesWidget Resampler::widgets[] = {
         WIDGET_CHILD)
 };
 
-const PluginPreferences Resampler::prefs = {{Resampler::widgets}};
+const PluginPreferences Resampler::prefs = {{widgets}};

@@ -34,14 +34,57 @@
 #include "playlist_util.h"
 #include "ui_playlist_widget.h"
 
-static const GType pw_col_types[PW_COLS] = {G_TYPE_INT, G_TYPE_STRING,
- G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
- G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
- G_TYPE_STRING};
-static const gboolean pw_col_min_widths[PW_COLS] = {7, 10, 10, 4, 10, 2, 10, 3, 7,
- 10, 10, 10, 3};
-static const gboolean pw_col_label[PW_COLS] = {FALSE, TRUE, TRUE, TRUE, TRUE,
- FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, TRUE, FALSE};
+static const GType pw_col_types[PW_COLS] =
+{
+    G_TYPE_INT,     // entry number
+    G_TYPE_STRING,  // title
+    G_TYPE_STRING,  // artist
+    G_TYPE_STRING,  // year
+    G_TYPE_STRING,  // album
+    G_TYPE_STRING,  // album artist
+    G_TYPE_STRING,  // track
+    G_TYPE_STRING,  // genre
+    G_TYPE_STRING,  // queue position
+    G_TYPE_STRING,  // length
+    G_TYPE_STRING,  // path
+    G_TYPE_STRING,  // filename
+    G_TYPE_STRING,  // custom title
+    G_TYPE_STRING   // bitrate
+};
+
+static const gboolean pw_col_min_widths[PW_COLS] = {
+    7,   // entry number
+    10,  // title
+    10,  // artist
+    4,   // year
+    10,  // album
+    10,  // album artist
+    2,   // track
+    10,  // genre
+    3,   // queue position
+    7,   // length
+    10,  // path
+    10,  // filename
+    10,  // custom title
+    3    // bitrate
+};
+
+static const gboolean pw_col_label[PW_COLS] = {
+    FALSE,  // entry number
+    TRUE,   // title
+    TRUE,   // artist
+    TRUE,   // year
+    TRUE,   // album
+    TRUE,   // album artist
+    FALSE,  // track
+    TRUE,   // genre
+    FALSE,  // queue position
+    FALSE,  // length
+    TRUE,   // path
+    TRUE,   // filename
+    TRUE,   // custom title
+    FALSE   // bitrate
+};
 
 typedef struct {
     int list;
@@ -104,6 +147,7 @@ static void get_value (void * user, int row, int column, GValue * value)
         break;
 
     case PW_COL_YEAR:
+    case PW_COL_ALBUM_ARTIST:
     case PW_COL_TRACK:
     case PW_COL_GENRE:
     case PW_COL_FILENAME:
@@ -129,6 +173,9 @@ static void get_value (void * user, int row, int column, GValue * value)
         break;
     case PW_COL_ALBUM:
         g_value_set_string (value, album);
+        break;
+    case PW_COL_ALBUM_ARTIST:
+        set_string_from_tuple (value, tuple, FIELD_ALBUM_ARTIST);
         break;
     case PW_COL_TRACK:
         set_int_from_tuple (value, tuple, FIELD_TRACK_NUMBER);

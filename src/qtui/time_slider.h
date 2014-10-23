@@ -23,6 +23,8 @@
 #include <QLabel>
 #include <QSlider>
 #include <QTimer>
+#include <QStyle>
+#include <QMouseEvent>
 
 class TimeSlider : public QSlider
 {
@@ -41,6 +43,8 @@ private:
     void moved (int value);
     void pressed ();
     void released ();
+
+    void mousePressEvent (QMouseEvent * event);
 
     static void start_stop_hook (void *, void * me)
         { ((TimeSlider *) me)->start_stop (); }

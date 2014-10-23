@@ -50,11 +50,6 @@ static GtkWidget * focus_widget;
 
 static void activate_row (void * user, int row);
 
-static void play_cb (void * unused)
-{
-    activate_row (nullptr, aud_playlist_get_active ());
-}
-
 static void rename_cb (void * unused)
 {
     audgui_show_playlist_rename (aud_playlist_get_active ());
@@ -248,11 +243,9 @@ void * PlaylistManager::get_gtk_widget ()
     GtkWidget * new_button = audgui_button_new (_("_New"), "document-new", new_cb, nullptr);
     GtkWidget * delete_button = audgui_button_new (_("_Remove"), "edit-delete", delete_cb, nullptr);
     GtkWidget * rename_button = audgui_button_new (_("Ren_ame"), "insert-text", rename_cb, nullptr);
-    GtkWidget * play_button = audgui_button_new (_("_Play"), "media-playback-start", play_cb, nullptr);
 
     gtk_box_pack_start ((GtkBox *) playman_button_hbox, new_button, false, false, 0);
     gtk_box_pack_start ((GtkBox *) playman_button_hbox, delete_button, false, false, 0);
-    gtk_box_pack_end ((GtkBox *) playman_button_hbox, play_button, false, false, 0);
     gtk_box_pack_end ((GtkBox *) playman_button_hbox, rename_button, false, false, 0);
     gtk_box_pack_start ((GtkBox *) playman_vbox, playman_button_hbox, false, false, 0);
 

@@ -43,9 +43,32 @@
 #include <libaudcore/preferences.h>
 #include <libaudcore/hook.h>
 
+class LIRCPlugin : public GeneralPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("LIRC Plugin"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr LIRCPlugin () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT LIRCPlugin aud_plugin_instance;
+
 static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition, void * data);
 
-static const char * const lirc_defaults[] = {
+const char * const LIRCPlugin::defaults[] = {
  "enable_reconnect", "TRUE",
  "reconnect_timeout", "5",
  nullptr};
@@ -90,9 +113,9 @@ void init_lirc (void)
     }
 }
 
-bool init (void)
+bool LIRCPlugin::init ()
 {
-    aud_config_set_defaults ("lirc", lirc_defaults);
+    aud_config_set_defaults ("lirc", defaults);
     init_lirc ();
     track_no_pos = 0;
     tid = 0;
@@ -102,11 +125,11 @@ bool init (void)
 gboolean reconnect_lirc (void * data)
 {
     AUDERR ("trying to reconnect...\n");
-    init ();
+    aud_plugin_instance.init ();
     return (lirc_fd == -1);
 }
 
-void cleanup ()
+void LIRCPlugin::cleanup ()
 {
     if (config)
     {
@@ -352,7 +375,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
     {
         /* something went badly wrong */
         AUDERR ("disconnected from LIRC\n");
-        cleanup ();
+        aud_plugin_instance.cleanup ();
         if (aud_get_bool ("lirc", "enable_reconnect"))
         {
             int reconnect_timeout = aud_get_int ("lirc", "reconnect_timeout");
@@ -364,7 +387,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
     return true;
 }
 
-static const char about[] =
+const char LIRCPlugin::about[] =
  N_("A simple plugin to control Audacious using the LIRC remote control daemon\n\n"
     "Adapted for Audacious by:\n"
     "Tony Vroon <chainsaw@gentoo.org>\n"
@@ -375,7 +398,7 @@ static const char about[] =
     "Andrew O. Shadoura <bugzilla@tut.by>\n\n"
     "For more information about LIRC, see http://lirc.org.");
 
-static const PreferencesWidget widgets[] = {
+const PreferencesWidget LIRCPlugin::widgets[] = {
     WidgetLabel (N_("<b>Connection</b>")),
     WidgetCheck (N_("Reconnect to LIRC server"),
         WidgetBool ("lirc", "enable_reconnect")),
@@ -385,13 +408,4 @@ static const PreferencesWidget widgets[] = {
         WIDGET_CHILD)
 };
 
-static const PluginPreferences prefs = {{widgets}};
-
-#define AUD_PLUGIN_NAME        N_("LIRC Plugin")
-#define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_PREFS       & prefs
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences LIRCPlugin::prefs = {{widgets}};

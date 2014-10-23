@@ -21,7 +21,6 @@
  * the use of this software.
  */
 
-#include <assert.h>
 #include <math.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -65,15 +64,13 @@ public:
     bool open_audio (int format, int rate_, int chan_);
     void close_audio ();
 
-    int buffer_free ();
     void period_wait ();
-
-    void write_audio (const void * data, int len);
+    int write_audio (const void * data, int len);
     void drain ();
 
-    int output_time ();
+    int get_delay ();
     void pause (bool paused);
-    void flush (int time);
+    void flush ();
 
 protected:
     static OSStatus callback (void *inRefCon, AudioUnitRenderActionFlags *ioActionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
@@ -116,7 +113,6 @@ static int chan = 0;
 static int rate = 0;
 static int buffer_bytes_per_channel = 0;
 
-static int64_t frames_written = 0;
 static bool prebuffer_flag = false;
 static bool paused_flag = false;
 
@@ -278,9 +274,8 @@ bool CoreAudioPlugin::open_audio (int format, int rate_, int chan_)
     int buffer_size = buffer_bytes_per_channel * chan * (aud_get_int (nullptr, "output_buffer_size") * rate / 1000);
     buffer.alloc (buffer_size);
 
-    frames_written = 0;
-    prebuffer_flag = 1;
-    paused_flag = 0;
+    prebuffer_flag = true;
+    paused_flag = false;
 
     if (AudioUnitInitialize (output_instance))
     {
@@ -368,21 +363,13 @@ void CoreAudioPlugin::close_audio ()
     buffer.destroy ();
 }
 
-int CoreAudioPlugin::buffer_free ()
-{
-    pthread_mutex_lock (& mutex);
-    int space = buffer.space ();
-    pthread_mutex_unlock (& mutex);
-    return space;
-}
-
 void CoreAudioPlugin::check_started ()
 {
     if (! prebuffer_flag)
         return;
 
     AUDDBG ("Starting playback.\n");
-    prebuffer_flag = 0;
+    prebuffer_flag = false;
     block_delay = 0;
 }
 
@@ -401,17 +388,15 @@ void CoreAudioPlugin::period_wait ()
     pthread_mutex_unlock (& mutex);
 }
 
-void CoreAudioPlugin::write_audio (const void * data, int len)
+int CoreAudioPlugin::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& mutex);
 
-    assert (len <= buffer.space ());
-
+    len = aud::min (len, buffer.space ());
     buffer.copy_in ((const unsigned char *) data, len);
 
-    frames_written += len / (buffer_bytes_per_channel * chan);
-
     pthread_mutex_unlock (& mutex);
+    return len;
 }
 
 void CoreAudioPlugin::drain ()
@@ -427,12 +412,14 @@ void CoreAudioPlugin::drain ()
     pthread_mutex_unlock (& mutex);
 }
 
-int CoreAudioPlugin::output_time ()
+int CoreAudioPlugin::get_delay ()
 {
+    auto timediff = [] (const timeval & a, const timeval & b) -> int64_t
+        { return 1000 * (int64_t) (b.tv_sec - a.tv_sec) + (b.tv_usec - a.tv_usec) / 1000; };
+
     pthread_mutex_lock (& mutex);
 
-    int out = (int64_t) (frames_written - buffer.len () / (buffer_bytes_per_channel * chan))
-     * 1000 / rate;
+    int delay = aud::rescale (buffer.len (), buffer_bytes_per_channel * chan * rate, 1000);
 
     /* Estimate the additional delay of the last block written. */
     if (! prebuffer_flag && ! paused_flag && block_delay)
@@ -440,15 +427,11 @@ int CoreAudioPlugin::output_time ()
         struct timeval cur;
         gettimeofday (& cur, nullptr);
 
-        int elapsed = 1000 * (cur.tv_sec - block_time.tv_sec) + (cur.tv_usec -
-         block_time.tv_usec) / 1000;
-
-        if (elapsed < block_delay)
-            out -= block_delay - elapsed;
+        delay += aud::max (block_delay - timediff (block_time, cur), (int64_t) 0);
     }
 
     pthread_mutex_unlock (& mutex);
-    return out;
+    return delay;
 }
 
 void CoreAudioPlugin::pause (bool pause)
@@ -473,15 +456,14 @@ void CoreAudioPlugin::pause (bool pause)
     pthread_mutex_unlock (& mutex);
 }
 
-void CoreAudioPlugin::flush (int time)
+void CoreAudioPlugin::flush ()
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& mutex);
 
     buffer.discard ();
 
-    frames_written = aud::rescale<int64_t> (time, 1000, rate);
-    prebuffer_flag = 1;
+    prebuffer_flag = true;
 
     pthread_cond_broadcast (& cond); /* wake up period wait */
     pthread_mutex_unlock (& mutex);

@@ -656,7 +656,7 @@ if test "x$enable_sndio" != "xno"; then
     AC_CHECK_HEADER([sndio.h],
         [AC_CHECK_LIB([sndio], [sio_open],
             [have_sndio=yes
-             OUTPUT_PLUGINS="$OUTPUT_PLUGINS sndio"
+             OUTPUT_PLUGINS="$OUTPUT_PLUGINS sndio-ng"
              SNDIO_LIBS="-lsndio"
              AC_SUBST(SNDIO_LIBS)]
          )]

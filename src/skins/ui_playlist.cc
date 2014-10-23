@@ -848,12 +848,19 @@ void action_queue_toggle (void)
     if (focus == -1)
         return;
 
+    /* make sure focused row is selected */
+    if (! aud_playlist_entry_get_selected (active_playlist, focus))
+    {
+        aud_playlist_select_all (active_playlist, false);
+        aud_playlist_entry_set_selected (active_playlist, focus, true);
+    }
+
     int at = aud_playlist_queue_find_entry (active_playlist, focus);
 
     if (at == -1)
         aud_playlist_queue_insert_selected (active_playlist, -1);
     else
-        aud_playlist_queue_delete (active_playlist, at, 1);
+        aud_playlist_queue_delete_selected (active_playlist);
 }
 
 void action_playlist_sort_by_track_number (void)
@@ -874,6 +881,11 @@ void action_playlist_sort_by_album (void)
 void action_playlist_sort_by_artist (void)
 {
     aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_ARTIST);
+}
+
+void action_playlist_sort_by_album_artist (void)
+{
+    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM_ARTIST);
 }
 
 void action_playlist_sort_by_full_path (void)
@@ -909,6 +921,11 @@ void action_playlist_sort_selected_by_album (void)
 void action_playlist_sort_selected_by_artist (void)
 {
     aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_ARTIST);
+}
+
+void action_playlist_sort_selected_by_album_artist (void)
+{
+    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM_ARTIST);
 }
 
 void action_playlist_sort_selected_by_full_path (void)

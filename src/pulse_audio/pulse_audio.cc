@@ -52,15 +52,14 @@ public:
     bool open_audio (int fmt, int rate, int nch);
     void close_audio ();
 
-    int buffer_free ();
     void period_wait ();
-    void write_audio (const void * ptr, int length);
+    int write_audio (const void * ptr, int length);
     void drain ();
 
-    int output_time ();
+    int get_delay ();
 
     void pause (bool pause);
-    void flush (int time);
+    void flush ();
 };
 
 EXPORT PulseOutput aud_plugin_instance;
@@ -71,9 +70,6 @@ static pa_threaded_mainloop *mainloop = nullptr;
 
 static pa_cvolume volume;
 static bool volume_valid = false;
-
-static int64_t written;
-static int bytes_per_second;
 
 static bool connected = false;
 
@@ -275,45 +271,22 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-int PulseOutput::buffer_free ()
+int PulseOutput::get_delay ()
 {
-    size_t l = 0;
+    int delay = 0;
 
     CHECK_CONNECTED(0);
 
     pa_threaded_mainloop_lock(mainloop);
-    CHECK_DEAD_GOTO(fail, 1);
-
-    if ((l = pa_stream_writable_size(stream)) == (size_t) -1) {
-        AUDDBG("pa_stream_writable_size() failed: %s\n", pa_strerror(pa_context_errno(context)));
-        l = 0;
-        goto fail;
-    }
-
-fail:
-    pa_threaded_mainloop_unlock(mainloop);
-
-    return (int) l;
-}
-
-int PulseOutput::output_time ()
-{
-    int time = 0;
-
-    CHECK_CONNECTED(0);
-
-    pa_threaded_mainloop_lock(mainloop);
-
-    time = aud::rescale<int64_t> (written, bytes_per_second, 1000);
 
     pa_usec_t usec;
     int neg;
     if (pa_stream_get_latency (stream, & usec, & neg) == PA_OK)
-        time -= usec / 1000;
+        delay = usec / 1000;
 
     pa_threaded_mainloop_unlock(mainloop);
 
-    return time;
+    return delay;
 }
 
 void PulseOutput::drain ()
@@ -346,7 +319,7 @@ fail:
     pa_threaded_mainloop_unlock(mainloop);
 }
 
-void PulseOutput::flush (int time)
+void PulseOutput::flush ()
 {
     pa_operation *o = nullptr;
     int success = 0;
@@ -355,8 +328,6 @@ void PulseOutput::flush (int time)
 
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
-
-    written = aud::rescale<int64_t> (time, 1000, bytes_per_second);
 
     if (!(o = pa_stream_flush(stream, stream_success_cb, &success))) {
         AUDDBG("pa_stream_flush() failed: %s\n", pa_strerror(pa_context_errno(context)));
@@ -416,30 +387,27 @@ fail:
     pa_threaded_mainloop_unlock (mainloop);
 }
 
-void PulseOutput::write_audio (const void * ptr, int length)
+int PulseOutput::write_audio (const void * ptr, int length)
 {
-    int writable;
+    CHECK_CONNECTED(0);
 
-    CHECK_CONNECTED();
-
+    int ret = 0;
     pa_threaded_mainloop_lock(mainloop);
     CHECK_DEAD_GOTO(fail, 1);
 
-    writable = aud::min ((size_t) length, pa_stream_writable_size (stream));
+    length = aud::min ((size_t) length, pa_stream_writable_size (stream));
 
-    if (writable < length)
-        AUDWARN ("Buffer overflow, expect skipping.\n");
-
-    if (pa_stream_write (stream, ptr, writable, nullptr, 0, PA_SEEK_RELATIVE) < 0)
+    if (pa_stream_write (stream, ptr, length, nullptr, 0, PA_SEEK_RELATIVE) < 0)
     {
         AUDDBG ("pa_stream_write() failed: %s\n", pa_strerror (pa_context_errno (context)));
         goto fail;
     }
 
-    written += length;
+    ret = length;
 
 fail:
     pa_threaded_mainloop_unlock(mainloop);
+    return ret;
 }
 
 void PulseOutput::close_audio ()
@@ -617,8 +585,6 @@ FAIL1:
     }
     pa_operation_unref(o);
 
-    written = 0;
-    bytes_per_second = FMT_SIZEOF (fmt) * nch * rate;
     connected = true;
 
     pa_threaded_mainloop_unlock(mainloop);

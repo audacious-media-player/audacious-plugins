@@ -22,66 +22,38 @@
 #include <libaudcore/plugin.h>
 
 #include "aosd.h"
-#include "aosd_ui.h"
 #include "aosd_osd.h"
 #include "aosd_cfg.h"
 #include "aosd_trigger.h"
 
-static const char aosd_about[] =
+EXPORT AOSD aud_plugin_instance;
+
+const char AOSD::about[] =
  N_("Audacious OSD\n"
     "http://www.develia.org/projects.php?p=audacious#aosd\n\n"
     "Written by Giacomo Lozito <james@develia.org>\n\n"
     "Based in part on Evan Martin's Ghosd library:\n"
     "http://neugierig.org/software/ghosd/");
 
-#define AUD_PLUGIN_NAME        N_("AOSD (On-Screen Display)")
-#define AUD_PLUGIN_ABOUT       aosd_about
-#define AUD_PLUGIN_INIT        aosd_init
-#define AUD_PLUGIN_PREFS       & aosd_prefs
-#define AUD_PLUGIN_CLEANUP     aosd_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
-
-aosd_cfg_t * global_config = nullptr;
-gboolean plugin_is_active = FALSE;
+aosd_cfg_t global_config = aosd_cfg_t ();
 
 
 /* ***************** */
 /* plug-in functions */
 
-bool aosd_init (void)
+bool AOSD::init ()
 {
-  plugin_is_active = TRUE;
-  g_log_set_handler( nullptr , G_LOG_LEVEL_WARNING , g_log_default_handler , nullptr );
-
-  global_config = aosd_cfg_new();
-  aosd_cfg_load( global_config );
-
-  aosd_osd_init( global_config->osd->misc.transparency_mode );
-
-  aosd_trigger_start( &global_config->osd->trigger );
-
-  return TRUE;
+  aosd_cfg_load (global_config);
+  aosd_osd_init (global_config.misc.transparency_mode);
+  aosd_trigger_start (global_config.trigger);
+  return true;
 }
 
 
-void
-aosd_cleanup ( void )
+void AOSD::cleanup ()
 {
-  if ( plugin_is_active == TRUE )
-  {
-    aosd_trigger_stop( &global_config->osd->trigger );
-
-    aosd_osd_shutdown();
-    aosd_osd_cleanup();
-
-    if ( global_config != nullptr )
-    {
-      aosd_cfg_delete( global_config );
-      global_config = nullptr;
-    }
-
-    plugin_is_active = FALSE;
-  }
+  aosd_trigger_stop (global_config.trigger);
+  aosd_osd_shutdown ();
+  aosd_osd_cleanup ();
+  global_config = aosd_cfg_t ();
 }

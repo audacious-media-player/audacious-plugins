@@ -77,9 +77,8 @@ static int alsa_channels, alsa_rate;
 static RingBuf<char> alsa_buffer;
 static int alsa_period; /* milliseconds */
 
-static int64_t alsa_written; /* frames */
 static bool alsa_prebuffer, alsa_paused;
-static int alsa_paused_delay; /* frames */
+static int alsa_paused_delay; /* milliseconds */
 
 static int poll_pipe[2];
 static int poll_count;
@@ -250,13 +249,13 @@ FAILED:
     pthread_cond_broadcast (& alsa_cond);
 }
 
-static int get_delay ()
+static int get_delay_locked ()
 {
     snd_pcm_sframes_t delay = 0;
     CHECK_RECOVER (snd_pcm_delay, alsa_handle, & delay);
 
 FAILED:
-    return delay;
+    return aud::rescale ((int) delay, alsa_rate, 1000);
 }
 
 bool ALSAPlugin::init ()
@@ -360,7 +359,6 @@ bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
     buffer_frames = aud::rescale<int64_t> (soft_buffer, 1000, rate);
     alsa_buffer.alloc (snd_pcm_frames_to_bytes (alsa_handle, buffer_frames));
 
-    alsa_written = 0;
     alsa_prebuffer = true;
     alsa_paused = false;
     alsa_paused_delay = 0;
@@ -403,28 +401,18 @@ FAILED:
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-int ALSAPlugin::buffer_free ()
-{
-    pthread_mutex_lock (& alsa_mutex);
-    int space = alsa_buffer.space ();
-    pthread_mutex_unlock (& alsa_mutex);
-    return space;
-}
-
-void ALSAPlugin::write_audio (const void * data, int length)
+int ALSAPlugin::write_audio (const void * data, int length)
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    assert (length <= alsa_buffer.space ());
-
+    length = aud::min (length, alsa_buffer.space ());
     alsa_buffer.copy_in ((const char *) data, length);
-
-    alsa_written += snd_pcm_bytes_to_frames (alsa_handle, length);
 
     if (! alsa_paused)
         pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);
+    return length;
 }
 
 void ALSAPlugin::period_wait ()
@@ -462,7 +450,7 @@ void ALSAPlugin::drain ()
 
     pump_stop ();
 
-    int d = get_delay () * 1000 / alsa_rate;
+    int d = get_delay_locked ();
     timespec delay = {d / 1000, d % 1000 * 1000000};
 
     pthread_mutex_unlock (& alsa_mutex);
@@ -474,24 +462,23 @@ void ALSAPlugin::drain ()
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-int ALSAPlugin::output_time ()
+int ALSAPlugin::get_delay ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    int64_t frames = alsa_written - snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ());
+    int buffered = snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ());
+    int delay = aud::rescale (buffered, alsa_rate, 1000);
 
     if (alsa_prebuffer || alsa_paused)
-        frames -= alsa_paused_delay;
+        delay += alsa_paused_delay;
     else
-        frames -= get_delay ();
-
-    int time = aud::rescale<int64_t> (frames, alsa_rate, 1000);
+        delay += get_delay_locked ();
 
     pthread_mutex_unlock (& alsa_mutex);
-    return time;
+    return delay;
 }
 
-void ALSAPlugin::flush (int time)
+void ALSAPlugin::flush ()
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& alsa_mutex);
@@ -502,7 +489,6 @@ void ALSAPlugin::flush (int time)
 FAILED:
     alsa_buffer.discard ();
 
-    alsa_written = aud::rescale<int64_t> (time, 1000, alsa_rate);
     alsa_prebuffer = true;
     alsa_paused_delay = 0;
 
@@ -523,7 +509,7 @@ void ALSAPlugin::pause (bool pause)
     if (! alsa_prebuffer)
     {
         if (pause)
-            alsa_paused_delay = get_delay ();
+            alsa_paused_delay = get_delay_locked ();
 
         CHECK (snd_pcm_pause, alsa_handle, pause);
     }

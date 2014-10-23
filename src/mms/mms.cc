@@ -27,6 +27,20 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
+static const char * const mms_schemes[] = {"mms"};
+
+class MMSTransport : public TransportPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("MMS Plugin"), PACKAGE};
+
+    constexpr MMSTransport () : TransportPlugin (info, mms_schemes) {}
+
+    VFSImpl * fopen (const char * path, const char * mode, String & error);
+};
+
+EXPORT MMSTransport aud_plugin_instance;
+
 class MMSFile : public VFSImpl
 {
 public:
@@ -53,7 +67,7 @@ private:
     mmsh_t * m_mmsh;
 };
 
-static VFSImpl * mms_fopen (const char * path, const char * mode, String & error)
+VFSImpl * MMSTransport::fopen (const char * path, const char * mode, String & error)
 {
     mms_t * mms = nullptr;
     mmsh_t * mmsh = nullptr;
@@ -180,9 +194,3 @@ int MMSFile::fflush ()
 {
     return 0;
 }
-
-static const char * const mms_schemes[] = {"mms"};
-
-constexpr PluginInfo mms_info = {N_("MMS Plugin"), PACKAGE};
-
-EXPORT TransportPlugin aud_plugin_instance (mms_info, mms_schemes, mms_fopen);

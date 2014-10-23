@@ -24,14 +24,14 @@
 
 #include <libaudqt/libaudqt.h>
 
-class AlbumArt : public GeneralPlugin {
+class AlbumArtQt : public GeneralPlugin {
 public:
     static constexpr PluginInfo info = {
-        N_("Album Art"),
+        N_("Album Art (Qt)"),
         PACKAGE
     };
 
-    constexpr AlbumArt () : GeneralPlugin (info, false) {}
+    constexpr AlbumArtQt () : GeneralPlugin (info, false) {}
     void * get_qt_widget ();
 
 private:
@@ -40,7 +40,7 @@ private:
     static void widget_cleanup (QObject * widget);
 };
 
-void AlbumArt::update (void * unused, QLabel * widget)
+void AlbumArtQt::update (void * unused, QLabel * widget)
 {
     if (! aud_drct_get_playing ())
         return;
@@ -54,7 +54,7 @@ void AlbumArt::update (void * unused, QLabel * widget)
     widget->setPixmap (QPixmap::fromImage (img.scaled (size.width (), size.height (), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 }
 
-void AlbumArt::clear (void * unused, QLabel * widget)
+void AlbumArtQt::clear (void * unused, QLabel * widget)
 {
     if (! widget)
         return;
@@ -62,14 +62,14 @@ void AlbumArt::clear (void * unused, QLabel * widget)
     widget->setPixmap (QPixmap ());
 }
 
-void AlbumArt::widget_cleanup (QObject * widget)
+void AlbumArtQt::widget_cleanup (QObject * widget)
 {
     hook_dissociate_full ("playback begin", (HookFunction) update, widget);
     hook_dissociate_full ("current art ready", (HookFunction) update, widget);
     hook_dissociate_full ("playback stop", (HookFunction) clear, widget);
 }
 
-void * AlbumArt::get_qt_widget ()
+void * AlbumArtQt::get_qt_widget ()
 {
     QLabel * widget = new QLabel;
 
@@ -85,4 +85,4 @@ void * AlbumArt::get_qt_widget ()
     return widget;
 }
 
-EXPORT AlbumArt aud_plugin_instance;
+EXPORT AlbumArtQt aud_plugin_instance;

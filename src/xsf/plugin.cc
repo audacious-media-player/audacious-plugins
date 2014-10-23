@@ -227,8 +227,8 @@ bool xsf_is_our_fd(const char *filename, VFSFile &file)
 static const char *xsf_fmts[] = { "2sf", "mini2sf", nullptr };
 
 static const PreferencesWidget xsf_widgets[] = {
-    WidgetLabel(N_("<b>XSF Config</b>")),
-    WidgetCheck(N_("Ignore length from file:"), WidgetBool(xsf_cfg.ignore_length)),
+    WidgetLabel(N_("<b>XSF Configuration</b>")),
+    WidgetCheck(N_("Ignore length from file"), WidgetBool(xsf_cfg.ignore_length)),
 };
 
 static const PluginPreferences xsf_prefs = {

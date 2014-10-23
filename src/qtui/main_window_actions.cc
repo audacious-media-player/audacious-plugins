@@ -75,6 +75,7 @@ void MainWindow::setupActions ()
     connect(actionSortTitle, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); });
     connect(actionSortArtist, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); });
     connect(actionSortAlbum, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); });
+    connect(actionSortAlbumArtist, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM_ARTIST); });
     connect(actionSortDate, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); });
     connect(actionSortLength, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); });
     connect(actionSortPath, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); });
@@ -84,6 +85,7 @@ void MainWindow::setupActions ()
     connect(actionSortSelectedTitle, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); });
     connect(actionSortSelectedArtist, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); });
     connect(actionSortSelectedAlbum, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); });
+    connect(actionSortSelectedAlbumArtist, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM_ARTIST); });
     connect(actionSortSelectedDate, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); });
     connect(actionSortSelectedLength, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); });
     connect(actionSortSelectedPath, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); });

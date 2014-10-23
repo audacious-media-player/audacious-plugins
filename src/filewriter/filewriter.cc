@@ -58,15 +58,15 @@ public:
     bool open_audio (int fmt, int rate, int nch);
     void close_audio ();
 
-    int buffer_free () { return 4 * 44100; }
     void period_wait () {}
-    void write_audio (const void * ptr, int length);
+    int write_audio (const void * ptr, int length);
     void drain () {}
 
-    int output_time ();
+    int get_delay ()
+        { return 0; }
 
     void pause (bool pause) {}
-    void flush (int time);
+    void flush () {}
 };
 
 EXPORT FileWriter aud_plugin_instance;
@@ -123,8 +123,6 @@ static String file_path;
 
 VFSFile output_file;
 Tuple tuple;
-
-static int64_t samples_written;
 
 FileWriterImpl *plugins[FILEEXT_MAX] = {
     &wav_plugin,
@@ -214,7 +212,6 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
     char *filename = nullptr, *temp = nullptr;
     char * directory;
     int pos;
-    int rv;
     int playlist;
 
     input.format = fmt;
@@ -290,20 +287,16 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 
     convert_init (fmt, plugin->format_required (fmt), nch);
 
-    rv = (plugin->open)();
-
-    samples_written = 0;
-
-    return rv;
+    return plugin->open ();
 }
 
-void FileWriter::write_audio (const void * ptr, int length)
+int FileWriter::write_audio (const void * ptr, int length)
 {
     int len = convert_process (ptr, length);
 
     plugin->write(convert_output, len);
 
-    samples_written += length / FMT_SIZEOF (input.format);
+    return length;
 }
 
 void FileWriter::close_audio ()
@@ -313,16 +306,6 @@ void FileWriter::close_audio ()
 
     output_file = VFSFile ();
     tuple = Tuple ();
-}
-
-void FileWriter::flush (int time)
-{
-    samples_written = time * (int64_t) input.channels * input.frequency / 1000;
-}
-
-int FileWriter::output_time ()
-{
-    return samples_written * 1000 / (input.channels * input.frequency);
 }
 
 static void configure_response_cb (void)

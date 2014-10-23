@@ -60,7 +60,7 @@ static const xspf_entry_t xspf_entries[] = {
 
     { FIELD_CODEC,        "codec",        TUPLE_STRING,   true},
 
-    { FIELD_SONG_ARTIST,  "song-artist",  TUPLE_STRING,   true},
+    { FIELD_ALBUM_ARTIST, "album-artist", TUPLE_STRING,   true},
     { FIELD_COMPOSER,     "composer",     TUPLE_STRING,   true},
     { FIELD_PERFORMER,    "performer",    TUPLE_STRING,   true},
     { FIELD_COPYRIGHT,    "copyright",    TUPLE_STRING,   true},

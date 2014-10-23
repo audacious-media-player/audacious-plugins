@@ -61,15 +61,14 @@ public:
     bool open_audio (int aud_format, int rate, int chans);
     void close_audio ();
 
-    int buffer_free ();
     void period_wait ();
-    void write_audio (const void * data, int size);
+    int write_audio (const void * data, int size);
     void drain ();
 
-    int output_time ();
+    int get_delay ();
 
     void pause (bool pause);
-    void flush (int time);
+    void flush ();
 };
 
 EXPORT SDLOutput aud_plugin_instance;
@@ -92,7 +91,6 @@ static int sdlout_chan, sdlout_rate;
 
 static RingBuf<unsigned char> buffer;
 
-static int64_t frames_written;
 static bool prebuffer_flag, paused_flag;
 
 static int block_delay;
@@ -209,7 +207,6 @@ bool SDLOutput::open_audio (int format, int rate, int chan)
     int buffer_ms = aud_get_int (nullptr, "output_buffer_size");
     buffer.alloc (2 * chan * aud::rescale (buffer_ms, 1000, rate));
 
-    frames_written = 0;
     prebuffer_flag = true;
     paused_flag = false;
 
@@ -238,14 +235,6 @@ void SDLOutput::close_audio ()
     buffer.destroy ();
 }
 
-int SDLOutput::buffer_free ()
-{
-    pthread_mutex_lock (& sdlout_mutex);
-    int space = buffer.space ();
-    pthread_mutex_unlock (& sdlout_mutex);
-    return space;
-}
-
 static void check_started ()
 {
     if (! prebuffer_flag)
@@ -272,14 +261,15 @@ void SDLOutput::period_wait ()
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void SDLOutput::write_audio (const void * data, int len)
+int SDLOutput::write_audio (const void * data, int len)
 {
     pthread_mutex_lock (& sdlout_mutex);
 
+    len = aud::min (len, buffer.space ());
     buffer.copy_in ((const unsigned char *) data, len);
-    frames_written += len / (2 * sdlout_chan);
 
     pthread_mutex_unlock (& sdlout_mutex);
+    return len;
 }
 
 void SDLOutput::drain ()
@@ -295,12 +285,14 @@ void SDLOutput::drain ()
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-int SDLOutput::output_time ()
+int SDLOutput::get_delay ()
 {
+    auto timediff = [] (const timeval & a, const timeval & b) -> int64_t
+        { return 1000 * (int64_t) (b.tv_sec - a.tv_sec) + (b.tv_usec - a.tv_usec) / 1000; };
+
     pthread_mutex_lock (& sdlout_mutex);
 
-    int64_t frames_out = frames_written - buffer.len () / (2 * sdlout_chan);
-    int time_out = aud::rescale<int64_t> (frames_out, sdlout_rate, 1000);
+    int delay = aud::rescale (buffer.len (), 2 * sdlout_chan * sdlout_rate, 1000);
 
     /* Estimate the additional delay of the last block written. */
     if (! prebuffer_flag && ! paused_flag && block_delay)
@@ -308,15 +300,11 @@ int SDLOutput::output_time ()
         struct timeval cur;
         gettimeofday (& cur, nullptr);
 
-        int elapsed = 1000 * (cur.tv_sec - block_time.tv_sec) + (cur.tv_usec -
-         block_time.tv_usec) / 1000;
-
-        if (elapsed < block_delay)
-            time_out -= block_delay - elapsed;
+        delay += aud::max (block_delay - timediff (block_time, cur), (int64_t) 0);
     }
 
     pthread_mutex_unlock (& sdlout_mutex);
-    return time_out;
+    return delay;
 }
 
 void SDLOutput::pause (bool pause)
@@ -329,18 +317,16 @@ void SDLOutput::pause (bool pause)
     if (! prebuffer_flag)
         SDL_PauseAudio (pause);
 
-    pthread_cond_broadcast (& sdlout_cond); /* wake up period wait */
     pthread_mutex_unlock (& sdlout_mutex);
 }
 
-void SDLOutput::flush (int time)
+void SDLOutput::flush ()
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& sdlout_mutex);
 
     buffer.discard ();
 
-    frames_written = aud::rescale<int64_t> (time, 1000, sdlout_rate);
     prebuffer_flag = true;
 
     pthread_cond_broadcast (& sdlout_cond); /* wake up period wait */

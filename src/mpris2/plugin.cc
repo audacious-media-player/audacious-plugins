@@ -32,6 +32,22 @@
 #include "object-core.h"
 #include "object-player.h"
 
+class MPRIS2Plugin : public GeneralPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("MPRIS 2 Server"),
+        PACKAGE
+    };
+
+    constexpr MPRIS2Plugin () : GeneralPlugin (info, true) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT MPRIS2Plugin aud_plugin_instance;
+
 static GObject * object_core, * object_player;
 static String last_title, last_artist, last_album, last_file;
 static int last_length;
@@ -266,7 +282,7 @@ static gboolean stop_cb (MprisMediaPlayer2Player * object, GDBusMethodInvocation
     return TRUE;
 }
 
-void mpris2_cleanup (void)
+void MPRIS2Plugin::cleanup ()
 {
     hook_dissociate ("playback begin", (HookFunction) update_playback_status);
     hook_dissociate ("playback pause", (HookFunction) update_playback_status);
@@ -304,7 +320,7 @@ void mpris2_cleanup (void)
     last_length = 0;
 }
 
-bool mpris2_init (void)
+bool MPRIS2Plugin::init ()
 {
 #if ! GLIB_CHECK_VERSION (2, 36, 0)
     g_type_init ();
@@ -382,7 +398,7 @@ bool mpris2_init (void)
      ! g_dbus_interface_skeleton_export ((GDBusInterfaceSkeleton *)
      object_player, bus, "/org/mpris/MediaPlayer2", & error))
     {
-        mpris2_cleanup ();
+        cleanup ();
         AUDERR ("%s\n", error->message);
         g_error_free (error);
         return FALSE;
@@ -390,11 +406,3 @@ bool mpris2_init (void)
 
     return TRUE;
 }
-
-#define AUD_PLUGIN_NAME        N_("MPRIS 2 Server")
-#define AUD_GENERAL_AUTO_ENABLE  TRUE
-#define AUD_PLUGIN_INIT        mpris2_init
-#define AUD_PLUGIN_CLEANUP     mpris2_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
