@@ -172,7 +172,7 @@ static gboolean si_popup_show(void * icon)
     int x, y;
     static int count = 0;
 
-    audgui_get_mouse_coords (nullptr, & x, & y);
+    audgui_get_mouse_coords (gtk_status_icon_get_screen ((GtkStatusIcon *) icon), & x, & y);
     gtk_status_icon_get_geometry ((GtkStatusIcon *) icon, nullptr, & area, nullptr);
 
     if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
