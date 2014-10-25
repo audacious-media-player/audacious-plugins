@@ -23,7 +23,6 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -128,9 +127,9 @@ static void
 aosd_trigger_func_pb_start_onoff ( bool turn_on )
 {
   if (turn_on == TRUE)
-    hook_associate("playback begin", aosd_trigger_func_pb_start_cb, nullptr);
+    hook_associate("playback ready", aosd_trigger_func_pb_start_cb, nullptr);
   else
-    hook_dissociate("playback begin", aosd_trigger_func_pb_start_cb);
+    hook_dissociate("playback ready", aosd_trigger_func_pb_start_cb);
 }
 
 static void
@@ -178,10 +177,8 @@ aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
   if (aud_drct_get_playing ())
   {
     aosd_pb_titlechange_prevs_t *prevs = (aosd_pb_titlechange_prevs_t *) prevs_gp;
-    int playlist = aud_playlist_get_playing();
-    int pl_entry = aud_playlist_get_position(playlist);
-    String pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
-    Tuple pl_entry_tuple = aud_playlist_entry_get_tuple (playlist, pl_entry);
+    String pl_entry_filename = aud_drct_get_filename ();
+    Tuple pl_entry_tuple = aud_drct_get_tuple ();
     String pl_entry_title = pl_entry_tuple.get_str (Tuple::FormattedTitle);
 
     /* same filename but title changed, useful to detect http stream song changes */
@@ -250,9 +247,7 @@ aosd_trigger_func_pb_pauseoff_onoff ( bool turn_on )
 static void
 aosd_trigger_func_pb_pauseoff_cb ( void * unused1 , void * unused2 )
 {
-  int playlist = aud_playlist_get_playing();
-  int pos = aud_playlist_get_position(playlist);
-  Tuple tuple = aud_playlist_entry_get_tuple(playlist, pos);
+  Tuple tuple = aud_drct_get_tuple ();
   int time_cur, time_tot;
   int time_cur_m, time_cur_s, time_tot_m, time_tot_s;
 

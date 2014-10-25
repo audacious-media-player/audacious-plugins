@@ -22,7 +22,6 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -71,13 +70,7 @@ static void show_playing (void)
 
 static void playback_update (void)
 {
-    if (! aud_drct_get_playing () || ! aud_drct_get_ready ())
-        return;
-
-    int list = aud_playlist_get_playing ();
-    int entry = aud_playlist_get_position (list);
-    Tuple tuple = aud_playlist_entry_get_tuple (list, entry, Playlist::Guess);
-
+    Tuple tuple = aud_drct_get_tuple ();
     String title = tuple.get_str (Tuple::Title);
     String artist = tuple.get_str (Tuple::Artist);
     String album = tuple.get_str (Tuple::Album);
@@ -135,14 +128,14 @@ static void force_show (void)
 
 void event_init (void)
 {
-    if (aud_drct_get_playing ())
+    if (aud_drct_get_ready ())
         playback_update ();
     else
         playback_stopped ();
 
     hook_associate ("playback begin", (HookFunction) clear_cache, nullptr);
     hook_associate ("playback ready", (HookFunction) playback_update, nullptr);
-    hook_associate ("playlist update", (HookFunction) playback_update, nullptr);
+    hook_associate ("tuple change", (HookFunction) playback_update, nullptr);
     hook_associate ("current art ready", (HookFunction) art_ready, nullptr);
     hook_associate ("playback pause", (HookFunction) playback_paused, nullptr);
     hook_associate ("playback unpause", (HookFunction) playback_paused, nullptr);
@@ -155,7 +148,7 @@ void event_uninit (void)
 {
     hook_dissociate ("playback begin", (HookFunction) clear_cache);
     hook_dissociate ("playback ready", (HookFunction) playback_update);
-    hook_dissociate ("playlist update", (HookFunction) playback_update);
+    hook_dissociate ("tuple change", (HookFunction) playback_update);
     hook_dissociate ("current art ready", (HookFunction) art_ready);
     hook_dissociate ("playback pause", (HookFunction) playback_paused);
     hook_dissociate ("playback unpause", (HookFunction) playback_paused);

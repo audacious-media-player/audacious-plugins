@@ -17,7 +17,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/tuple.h>
@@ -109,9 +108,6 @@ static void execute_command(char *cmd)
    @cmd: command to run */
 static void do_command (const char * cmd)
 {
-    int playlist = aud_playlist_get_playing ();
-    int pos = aud_playlist_get_position (playlist);
-
     char *shstring = nullptr, *temp;
     gboolean playing;
     Formatter *formatter;
@@ -120,7 +116,11 @@ static void do_command (const char * cmd)
     {
         formatter = formatter_new();
 
-        Tuple tuple = aud_playlist_entry_get_tuple (playlist, pos);
+        playing = aud_drct_get_ready();
+
+        Tuple tuple;
+        if (playing)
+            tuple = aud_drct_get_tuple ();
 
         String ctitle = tuple.get_str (Tuple::FormattedTitle);
         if (ctitle)
@@ -136,7 +136,7 @@ static void do_command (const char * cmd)
             formatter_associate(formatter, 'n', "");
         }
 
-        String filename = aud_playlist_entry_get_filename (playlist, pos);
+        String filename = aud_drct_get_filename ();
         if (filename)
         {
             temp = escape_shell_chars (filename);
@@ -146,7 +146,13 @@ static void do_command (const char * cmd)
         else
             formatter_associate(formatter, 'f', "");
 
-        formatter_associate(formatter, 't', str_printf ("%02d", pos + 1));
+        if (playing)
+        {
+            int pos = aud_drct_get_position ();
+            formatter_associate (formatter, 't', str_printf ("%02d", pos + 1));
+        }
+        else
+            formatter_associate (formatter, 't', "");
 
         int length = tuple.get_int (Tuple::Length);
         if (length > 0)
@@ -154,7 +160,6 @@ static void do_command (const char * cmd)
         else
             formatter_associate(formatter, 'l', "0");
 
-        playing = aud_drct_get_playing();
         formatter_associate(formatter, 'p', int_to_str (playing));
 
         if (playing)
@@ -206,7 +211,7 @@ static void read_config(void)
 
 static void cleanup(void)
 {
-    hook_dissociate("playback begin", songchange_playback_begin);
+    hook_dissociate("playback ready", songchange_playback_begin);
     hook_dissociate("playback end", songchange_playback_end);
     hook_dissociate("playlist end reached", songchange_playlist_eof);
     hook_dissociate("title change", songchange_playback_ttc);
@@ -239,7 +244,7 @@ static bool init (void)
 {
     read_config();
 
-    hook_associate("playback begin", songchange_playback_begin, nullptr);
+    hook_associate("playback ready", songchange_playback_begin, nullptr);
     hook_associate("playback end", songchange_playback_end, nullptr);
     hook_associate("playlist end reached", songchange_playlist_eof, nullptr);
     hook_associate("title change", songchange_playback_ttc, nullptr);

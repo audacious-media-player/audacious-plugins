@@ -27,7 +27,6 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
 #include <libaudcore/audstrings.h>
@@ -307,17 +306,11 @@ static void update_lyrics_window(const char *title, const char *artist, const ch
 
 static void lyricwiki_playback_began(void)
 {
-    if (!aud_drct_get_playing())
-        return;
-
     /* FIXME: cancel previous VFS requests (not possible with current API) */
 
-    int playlist = aud_playlist_get_playing();
-    int pos = aud_playlist_get_position(playlist);
+    state.filename = aud_drct_get_filename();
 
-    state.filename = aud_playlist_entry_get_filename(playlist, pos);
-
-    Tuple tuple = aud_playlist_entry_get_tuple(playlist, pos);
+    Tuple tuple = aud_drct_get_tuple();
     state.title = tuple.get_str(Tuple::Title);
     state.artist = tuple.get_str(Tuple::Artist);
 
@@ -333,7 +326,7 @@ static void lw_cleanup (QObject * object = nullptr)
     state.artist = String ();
     state.uri = String ();
 
-    hook_dissociate ("title change", (HookFunction) lyricwiki_playback_began);
+    hook_dissociate ("tuple change", (HookFunction) lyricwiki_playback_began);
     hook_dissociate ("playback ready", (HookFunction) lyricwiki_playback_began);
 
     textedit = nullptr;
@@ -344,10 +337,11 @@ void * LyricWikiQt::get_qt_widget ()
     textedit = new QTextEdit;
     textedit->setReadOnly (true);
 
-    hook_associate ("title change", (HookFunction) lyricwiki_playback_began, nullptr);
+    hook_associate ("tuple change", (HookFunction) lyricwiki_playback_began, nullptr);
     hook_associate ("playback ready", (HookFunction) lyricwiki_playback_began, nullptr);
 
-    lyricwiki_playback_began ();
+    if (aud_drct_get_ready ())
+        lyricwiki_playback_began ();
 
     QObject::connect (textedit, &QObject::destroyed, lw_cleanup);
 

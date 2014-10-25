@@ -14,7 +14,6 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/interface.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 
 
@@ -142,9 +141,7 @@ static void ended (void *hook_data, void *user_data) {
 static void ready (void *hook_data, void *user_data) {
     cleanup_current_track();
 
-    int playlist = aud_playlist_get_playing ();
-    int position = aud_playlist_get_position (playlist);
-    Tuple current_track = aud_playlist_entry_get_tuple (playlist, position);
+    Tuple current_track = aud_drct_get_tuple();
 
     int duration_seconds = current_track.get_int (Tuple::Length) / 1000;
     if (duration_seconds <= 30)

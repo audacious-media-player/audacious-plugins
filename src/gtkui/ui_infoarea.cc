@@ -25,7 +25,6 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/interface.h>
-#include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui-gtk.h>
 
 #include "ui_infoarea.h"
@@ -359,13 +358,7 @@ static void ui_infoarea_set_title (void)
 {
     g_return_if_fail (area);
 
-    if (! aud_drct_get_playing ())
-        return;
-
-    int playlist = aud_playlist_get_playing ();
-    int entry = aud_playlist_get_position (playlist);
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess);
-
+    Tuple tuple = aud_drct_get_tuple ();
     String title = tuple.get_str (Tuple::Title);
     String artist = tuple.get_str (Tuple::Artist);
     String album = tuple.get_str (Tuple::Album);
@@ -503,8 +496,8 @@ static void destroy_cb (GtkWidget * widget)
 
     ui_infoarea_show_vis (FALSE);
 
-    hook_dissociate ("playlist update", (HookFunction) ui_infoarea_set_title);
-    hook_dissociate ("playback begin", (HookFunction) ui_infoarea_playback_start);
+    hook_dissociate ("tuple change", (HookFunction) ui_infoarea_set_title);
+    hook_dissociate ("playback ready", (HookFunction) ui_infoarea_playback_start);
     hook_dissociate ("playback stop", (HookFunction) ui_infoarea_playback_stop);
     hook_dissociate ("current art ready", (HookFunction) album_art_ready);
 
@@ -536,14 +529,14 @@ GtkWidget * ui_infoarea_new (void)
 
     g_signal_connect (area->main, "expose-event", (GCallback) expose_cb, nullptr);
 
-    hook_associate ("playlist update", (HookFunction) ui_infoarea_set_title, nullptr);
-    hook_associate ("playback begin", (HookFunction) ui_infoarea_playback_start, nullptr);
+    hook_associate ("tuple change", (HookFunction) ui_infoarea_set_title, nullptr);
+    hook_associate ("playback ready", (HookFunction) ui_infoarea_playback_start, nullptr);
     hook_associate ("playback stop", (HookFunction) ui_infoarea_playback_stop, nullptr);
     hook_associate ("current art ready", (HookFunction) album_art_ready, nullptr);
 
     g_signal_connect (area->box, "destroy", (GCallback) destroy_cb, nullptr);
 
-    if (aud_drct_get_playing ())
+    if (aud_drct_get_ready ())
     {
         ui_infoarea_playback_start ();
 

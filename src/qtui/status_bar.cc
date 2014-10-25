@@ -41,6 +41,7 @@ StatusBar::StatusBar (QWidget * parent) :
     hook_associate ("playback ready", update_codec, this);
     hook_associate ("playback stop", update_codec, this);
     hook_associate ("info change", update_codec, this);
+    hook_associate ("tuple change", update_codec, this);
 
     update_codec (nullptr, this);
     update_length (nullptr, this);
@@ -54,21 +55,20 @@ StatusBar::~StatusBar ()
     hook_dissociate_full ("playback ready", update_codec, this);
     hook_dissociate_full ("playback stop", update_codec, this);
     hook_dissociate_full ("info change", update_codec, this);
+    hook_dissociate_full ("tuple change", update_codec, this);
 }
 
 void StatusBar::update_codec (void *, void * data)
 {
     auto sb = (StatusBar *) data;
 
-    if (! aud_drct_get_playing ())
+    if (! aud_drct_get_ready ())
     {
         sb->codec_label->hide ();
         return;
     }
 
-    int playlist = aud_playlist_get_playing ();
-    int position = aud_playlist_get_position (playlist);
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, position);
+    Tuple tuple = aud_drct_get_tuple ();
     String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
