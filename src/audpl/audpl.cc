@@ -85,15 +85,15 @@ void AudPlaylistLoader::handle_entry (const char * key, const char * value, void
 
         if (strcmp (key, "empty"))
         {
-            int field = Tuple::field_by_name (key);
-            if (field < 0)
+            Tuple::Field field = Tuple::field_by_name (key);
+            if (field == Tuple::Invalid)
                 return;
 
-            TupleValueType type = Tuple::field_get_type (field);
+            Tuple::ValueType type = Tuple::field_get_type (field);
 
-            if (type == TUPLE_STRING)
+            if (type == Tuple::String)
                 state->tuple.set_str (field, str_decode_percent (value));
-            else if (type == TUPLE_INT)
+            else if (type == Tuple::Int)
                 state->tuple.set_int (field, atoi (value));
         }
     }
@@ -139,15 +139,16 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
         {
             int keys = 0;
 
-            for (int f = 0; f < TUPLE_FIELDS; f ++)
+            for (auto f : Tuple::all_fields)
             {
-                if (f == FIELD_FILE_PATH || f == FIELD_FILE_NAME || f == FIELD_FILE_EXT)
+                if (f == Tuple::Path || f == Tuple::Basename ||
+                 f == Tuple::Suffix || f == Tuple::FormattedTitle)
                     continue;
 
                 const char * key = Tuple::field_get_name (f);
-                TupleValueType type = tuple.get_value_type (f);
+                Tuple::ValueType type = tuple.get_value_type (f);
 
-                if (type == TUPLE_STRING)
+                if (type == Tuple::String)
                 {
                     String str = tuple.get_str (f);
                     if (! inifile_write_entry (file, key, str_encode_percent (str)))
@@ -155,7 +156,7 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
 
                     keys ++;
                 }
-                else if (type == TUPLE_INT)
+                else if (type == Tuple::Int)
                 {
                     int val = tuple.get_int (f);
                     if (! inifile_write_entry (file, key, int_to_str (val)))

@@ -33,11 +33,18 @@
 #define MAX_RESULTS 20
 #define SEARCH_DELAY 300
 
-enum {GENRE = 0, ARTIST, ALBUM, TITLE, FIELDS};
+enum SearchField {
+    Genre = 0,
+    Artist,
+    Album,
+    Title
+};
+
+static constexpr auto all_fields = aud::range<SearchField, Genre, Title> ();
 
 struct Key
 {
-    int field;
+    SearchField field;
     String name;
 
     bool operator== (const Key & b) const
@@ -48,13 +55,13 @@ struct Key
 
 struct Item
 {
-    int field;
+    SearchField field;
     String name, folded;
     Item * parent;
     SimpleHash<Key, Item> children;
     Index<int> matches;
 
-    Item (int field, const String & name, Item * parent) :
+    Item (SearchField field, const String & name, Item * parent) :
         field (field),
         name (name),
         folded (str_tolower_utf8 (name)),
@@ -160,18 +167,22 @@ static void create_database (int list)
 
     for (int e = 0; e < entries; e ++)
     {
-        String fields[FIELDS];
+        Tuple tuple = aud_playlist_entry_get_tuple (list, e, Playlist::Guess);
 
-        aud_playlist_entry_describe (list, e, fields[TITLE], fields[ARTIST], fields[ALBUM], true);
-        fields[GENRE] = aud_playlist_entry_get_tuple (list, e, true).get_str (FIELD_GENRE);
+        String fields[] = {
+            tuple.get_str (Tuple::Genre),
+            tuple.get_str (Tuple::Artist),
+            tuple.get_str (Tuple::Album),
+            tuple.get_str (Tuple::Title)
+        };
 
-        if (! fields[TITLE])
+        if (! fields[Title])
             continue;
 
         Item * parent = nullptr;
         SimpleHash<Key, Item> * hash = & database;
 
-        for (int f = 0; f < FIELDS; f ++)
+        for (auto f : all_fields)
         {
             if (fields[f])
             {
@@ -184,7 +195,7 @@ static void create_database (int list)
                 item->matches.append (e);
 
                 /* genre is outside the normal hierarchy */
-                if (f != GENRE)
+                if (f != Genre)
                 {
                     parent = item;
                     hash = & item->children;
@@ -427,7 +438,7 @@ static void add_complete_cb (void * unused, void * unused2)
         {
             adding = false;
             added_table.clear ();
-            aud_playlist_sort_by_scheme (list, PLAYLIST_SORT_PATH);
+            aud_playlist_sort_by_scheme (list, Playlist::Path);
         }
     }
 
@@ -509,7 +520,7 @@ static void do_add (gboolean play, String & title)
         {
             add.append (
                 aud_playlist_entry_get_filename (list, entry),
-                aud_playlist_entry_get_tuple (list, entry, true)
+                aud_playlist_entry_get_tuple (list, entry, Playlist::Guess)
             );
         }
 
@@ -566,14 +577,14 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     const Item * item = items[row];
     StringBuf string = str_concat ({item->name, "\n"});
 
-    if (item->field != TITLE)
+    if (item->field != Title)
     {
         str_insert (string, -1, " ");
         string.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
          item->matches.len ()), item->matches.len ()));
     }
 
-    if (item->field == GENRE)
+    if (item->field == Genre)
     {
         str_insert (string, -1, " ");
         str_insert (string, -1, _("of this genre"));
@@ -582,7 +593,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     while ((item = item->parent))
     {
         str_insert (string, -1, " ");
-        str_insert (string, -1, (item->field == ALBUM) ? _("on") : _("by"));
+        str_insert (string, -1, (item->field == Album) ? _("on") : _("by"));
         str_insert (string, -1, " ");
         str_insert (string, -1, item->name);
     }

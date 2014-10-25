@@ -68,8 +68,8 @@ void StatusBar::update_codec (void *, void * data)
 
     int playlist = aud_playlist_get_playing ();
     int position = aud_playlist_get_position (playlist);
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, position, false);
-    String codec = tuple.get_str (FIELD_CODEC);
+    Tuple tuple = aud_playlist_entry_get_tuple (playlist, position);
+    String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
     aud_drct_get_info (& bitrate, & samplerate, & channels);

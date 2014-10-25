@@ -61,25 +61,23 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         case PL_COL_TITLE:
         case PL_COL_ARTIST:
         case PL_COL_ALBUM:
-            aud_playlist_entry_describe (playlist (), index.row (), title, artist, album, true);
-            break;
         case PL_COL_LENGTH:
-            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), false);
+            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), Playlist::Guess);
             break;
         }
 
         switch (index.column ())
         {
         case PL_COL_TITLE:
-            return QString (title);
+            return QString (tuple.get_str (Tuple::Title));
         case PL_COL_ARTIST:
-            return QString (artist);
+            return QString (tuple.get_str (Tuple::Artist));
         case PL_COL_ALBUM:
-            return QString (album);
+            return QString (tuple.get_str (Tuple::Album));
         case PL_COL_QUEUED:
             return getQueued (index.row ());
         case PL_COL_LENGTH:
-            return QString (str_format_time (tuple.get_int (FIELD_LENGTH)));
+            return QString (str_format_time (tuple.get_int (Tuple::Length)));
         }
 
     case Qt::TextAlignmentRole:

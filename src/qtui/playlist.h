@@ -26,13 +26,13 @@
 #include "playlist_model.h"
 #include "filter_input.h"
 
-class Playlist : public QTreeView
+class PlaylistWidget : public QTreeView
 {
     Q_OBJECT
 
 public:
-    Playlist (QTreeView * parent = 0, int uniqueId = -1);
-    ~Playlist ();
+    PlaylistWidget (QTreeView * parent = 0, int uniqueId = -1);
+    ~PlaylistWidget ();
     void scrollToCurrent ();
     void update (void * level, int at, int count);
     void positionUpdate ();

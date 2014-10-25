@@ -223,13 +223,13 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
         return 0;
 
     pos = aud_playlist_get_position(playlist);
-    tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
+    tuple = aud_playlist_entry_get_tuple (playlist, pos);
     if (! tuple)
         return 0;
 
     if (filenamefromtags)
     {
-        String title = aud_playlist_entry_get_title (playlist, pos, FALSE);
+        String title = tuple.get_str (Tuple::FormattedTitle);
         StringBuf buf = str_encode_percent (title);
         str_replace_char (buf, '/', '-');
         filename = g_strdup (buf);
@@ -249,7 +249,7 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 
     if (prependnumber)
     {
-        int number = tuple.get_int (FIELD_TRACK_NUMBER);
+        int number = tuple.get_int (Tuple::Track);
         if (number < 0)
             number = pos + 1;
 

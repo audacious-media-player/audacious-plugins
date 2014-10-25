@@ -153,18 +153,18 @@ static Tuple get_track_ti(const char *path, const track_info_t *info, const int 
     Tuple tuple;
     tuple.set_filename (path);
 
-    tuple.set_str (FIELD_ARTIST, info->author);
-    tuple.set_str (FIELD_ALBUM, info->game);
-    tuple.set_str (FIELD_TITLE, info->song);
-    tuple.set_str (FIELD_COPYRIGHT, info->copyright);
-    tuple.set_str (FIELD_CODEC, info->system);
-    tuple.set_str (FIELD_COMMENT, info->comment);
+    tuple.set_str (Tuple::Artist, info->author);
+    tuple.set_str (Tuple::Album, info->game);
+    tuple.set_str (Tuple::Title, info->song);
+    tuple.set_str (Tuple::Copyright, info->copyright);
+    tuple.set_str (Tuple::Codec, info->system);
+    tuple.set_str (Tuple::Comment, info->comment);
 
     if (track >= 0)
     {
-        tuple.set_int (FIELD_TRACK_NUMBER, track + 1);
-        tuple.set_int (FIELD_SUBSONG_ID, track + 1);
-        tuple.set_int (FIELD_SUBSONG_NUM, info->track_count);
+        tuple.set_int (Tuple::Track, track + 1);
+        tuple.set_int (Tuple::Subtune, track + 1);
+        tuple.set_int (Tuple::NumSubtunes, info->track_count);
     }
     else
         tuple.set_subtunes (info->track_count, nullptr);
@@ -176,7 +176,7 @@ static Tuple get_track_ti(const char *path, const track_info_t *info, const int 
         length = audcfg.loop_length * 1000;
     else if (length >= fade_threshold)
         length += fade_length;
-    tuple.set_int (FIELD_LENGTH, length);
+    tuple.set_int (Tuple::Length, length);
 
     return tuple;
 }
@@ -253,7 +253,7 @@ bool console_play(const char *filename, VFSFile &file)
         Tuple tuple = get_track_ti(fh.m_path, &info, fh.m_track);
         if (tuple)
         {
-            length = tuple.get_int (FIELD_LENGTH);
+            length = tuple.get_int (Tuple::Length);
             aud_input_set_bitrate(fh.m_emu->voice_count() * 1000);
         }
     }

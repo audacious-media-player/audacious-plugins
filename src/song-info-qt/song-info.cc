@@ -62,11 +62,11 @@ void SongInfo::update (void * unused, audqt::InfoWidget * widget)
     if (! filename)
         return;
 
-    PluginHandle * decoder = aud_playlist_entry_get_decoder (playlist, position, false);
+    PluginHandle * decoder = aud_playlist_entry_get_decoder (playlist, position);
     if (! decoder)
         return;
 
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, position, false);
+    Tuple tuple = aud_playlist_entry_get_tuple (playlist, position);
     if (tuple)
         widget->fillInfo (playlist, position, filename, tuple, decoder, false);
 }

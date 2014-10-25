@@ -117,7 +117,7 @@ static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile & file
     midifile_t mf;
 
     if (mf.parse_from_filename (filename_uri))
-        tuple.set_int (FIELD_LENGTH, mf.length / 1000);
+        tuple.set_int (Tuple::Length, mf.length / 1000);
 
     return tuple;
 }

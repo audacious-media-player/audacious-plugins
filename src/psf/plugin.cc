@@ -106,13 +106,13 @@ Tuple psf2_tuple(const char *filename, VFSFile &file)
 
 	t.set_filename (filename);
 
-	t.set_int (FIELD_LENGTH, psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade));
-	t.set_str (FIELD_ARTIST, c->inf_artist);
-	t.set_str (FIELD_ALBUM, c->inf_game);
-	t.set_str (FIELD_TITLE, c->inf_title);
-	t.set_str (FIELD_COPYRIGHT, c->inf_copy);
-	t.set_str (FIELD_QUALITY, _("sequenced"));
-	t.set_str (FIELD_CODEC, "PlayStation 1/2 Audio");
+	t.set_int (Tuple::Length, psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade));
+	t.set_str (Tuple::Artist, c->inf_artist);
+	t.set_str (Tuple::Album, c->inf_game);
+	t.set_str (Tuple::Title, c->inf_title);
+	t.set_str (Tuple::Copyright, c->inf_copy);
+	t.set_str (Tuple::Quality, _("sequenced"));
+	t.set_str (Tuple::Codec, "PlayStation 1/2 Audio");
 
 	free(c);
 

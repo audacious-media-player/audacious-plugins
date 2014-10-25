@@ -120,7 +120,9 @@ static void do_command (const char * cmd)
     {
         formatter = formatter_new();
 
-        String ctitle = aud_playlist_entry_get_title (playlist, pos, FALSE);
+        Tuple tuple = aud_playlist_entry_get_tuple (playlist, pos);
+
+        String ctitle = tuple.get_str (Tuple::FormattedTitle);
         if (ctitle)
         {
             temp = escape_shell_chars (ctitle);
@@ -146,7 +148,7 @@ static void do_command (const char * cmd)
 
         formatter_associate(formatter, 't', str_printf ("%02d", pos + 1));
 
-        int length = aud_playlist_entry_get_length (playlist, pos, FALSE);
+        int length = tuple.get_int (Tuple::Length);
         if (length > 0)
             formatter_associate(formatter, 'l', int_to_str (length));
         else
@@ -164,22 +166,19 @@ static void do_command (const char * cmd)
             formatter_associate (formatter, 'c', int_to_str (chans));
         }
 
-        Tuple tuple = aud_playlist_entry_get_tuple
-            (aud_playlist_get_active (), pos, 0);
-
-        String artist = tuple.get_str (FIELD_ARTIST);
+        String artist = tuple.get_str (Tuple::Artist);
         if (artist)
             formatter_associate(formatter, 'a', artist);
         else
             formatter_associate(formatter, 'a', "");
 
-        String album = tuple.get_str (FIELD_ALBUM);
+        String album = tuple.get_str (Tuple::Album);
         if (album)
             formatter_associate(formatter, 'b', album);
         else
             formatter_associate(formatter, 'b', "");
 
-        String title = tuple.get_str (FIELD_TITLE);
+        String title = tuple.get_str (Tuple::Title);
         if (title)
             formatter_associate(formatter, 'T', title);
         else

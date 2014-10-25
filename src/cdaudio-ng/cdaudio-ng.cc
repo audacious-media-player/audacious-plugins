@@ -418,21 +418,18 @@ static Tuple make_tuple (const char * filename, VFSFile & file)
 
         tuple.set_filename (filename);
         tuple.set_format (_("Audio CD"), 2, 44100, 1411);
-        tuple.set_int (FIELD_TRACK_NUMBER, trackno);
-        tuple.set_int (FIELD_LENGTH, calculate_track_length
+        tuple.set_int (Tuple::Track, trackno);
+        tuple.set_int (Tuple::Length, calculate_track_length
          (trackinfo[trackno].startlsn, trackinfo[trackno].endlsn));
 
         if (trackinfo[trackno].name)
-            tuple.set_str (FIELD_TITLE, trackinfo[trackno].name);
-        else
-            tuple.set_str (FIELD_TITLE, str_printf (_("Track %d"), trackno));
-
+            tuple.set_str (Tuple::Title, trackinfo[trackno].name);
         if (trackinfo[trackno].performer)
-            tuple.set_str (FIELD_ARTIST, trackinfo[trackno].performer);
+            tuple.set_str (Tuple::Artist, trackinfo[trackno].performer);
         if (trackinfo[0].name)
-            tuple.set_str (FIELD_ALBUM, trackinfo[0].name);
+            tuple.set_str (Tuple::Album, trackinfo[0].name);
         if (trackinfo[trackno].genre)
-            tuple.set_str (FIELD_GENRE, trackinfo[trackno].genre);
+            tuple.set_str (Tuple::Genre, trackinfo[trackno].genre);
     }
 
   DONE:

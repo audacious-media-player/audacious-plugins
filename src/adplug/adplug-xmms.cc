@@ -122,16 +122,16 @@ Tuple adplug_get_tuple (const char * filename, VFSFile & fd)
     tuple.set_filename (filename);
 
     if (! p->getauthor().empty())
-      tuple.set_str (FIELD_ARTIST, p->getauthor().c_str());
+      tuple.set_str (Tuple::Artist, p->getauthor().c_str());
 
     if (! p->gettitle().empty())
-      tuple.set_str (FIELD_TITLE, p->gettitle().c_str());
+      tuple.set_str (Tuple::Title, p->gettitle().c_str());
     else if (! p->getdesc().empty())
-      tuple.set_str (FIELD_TITLE, p->getdesc().c_str());
+      tuple.set_str (Tuple::Title, p->getdesc().c_str());
 
-    tuple.set_str (FIELD_CODEC, p->gettype().c_str());
-    tuple.set_str (FIELD_QUALITY, _("sequenced"));
-    tuple.set_int (FIELD_LENGTH, p->songlength (plr.subsong));
+    tuple.set_str (Tuple::Codec, p->gettype().c_str());
+    tuple.set_str (Tuple::Quality, _("sequenced"));
+    tuple.set_int (Tuple::Length, p->songlength (plr.subsong));
     delete p;
   }
 

@@ -76,9 +76,11 @@ static void playback_update (void)
 
     int list = aud_playlist_get_playing ();
     int entry = aud_playlist_get_position (list);
+    Tuple tuple = aud_playlist_entry_get_tuple (list, entry, Playlist::Guess);
 
-    String title, artist, album;
-    aud_playlist_entry_describe (list, entry, title, artist, album, FALSE);
+    String title = tuple.get_str (Tuple::Title);
+    String artist = tuple.get_str (Tuple::Artist);
+    String album = tuple.get_str (Tuple::Album);
 
     String message;
     if (artist)

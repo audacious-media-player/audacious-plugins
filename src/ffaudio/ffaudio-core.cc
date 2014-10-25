@@ -298,20 +298,20 @@ static bool ffaudio_probe (const char * filename, VFSFile & file)
 }
 
 static const struct {
-    TupleValueType ttype;   /* Tuple field value type */
-    int field;             /* Tuple field constant */
-    const char *keys[5];         /* Keys to match (case-insensitive), ended by nullptr */
+    Tuple::ValueType ttype;  /* Tuple field value type */
+    Tuple::Field field;      /* Tuple field constant */
+    const char * keys[5];    /* Keys to match (case-insensitive), ended by nullptr */
 } metaentries[] = {
- {TUPLE_STRING, FIELD_ARTIST,       {"author", "hor", "artist", nullptr}},
- {TUPLE_STRING, FIELD_TITLE,        {"title", "le", nullptr}},
- {TUPLE_STRING, FIELD_ALBUM,        {"album", "WM/AlbumTitle", nullptr}},
- {TUPLE_STRING, FIELD_PERFORMER,    {"performer", nullptr}},
- {TUPLE_STRING, FIELD_COPYRIGHT,    {"copyright", nullptr}},
- {TUPLE_STRING, FIELD_GENRE,        {"genre", "WM/Genre", nullptr}},
- {TUPLE_STRING, FIELD_COMMENT,      {"comment", nullptr}},
- {TUPLE_STRING, FIELD_COMPOSER,     {"composer", nullptr}},
- {TUPLE_INT,    FIELD_YEAR,         {"year", "WM/Year", "date", nullptr}},
- {TUPLE_INT,    FIELD_TRACK_NUMBER, {"track", "WM/TrackNumber", nullptr}},
+    {Tuple::String, Tuple::Artist, {"author", "hor", "artist", nullptr}},
+    {Tuple::String, Tuple::Title, {"title", "le", nullptr}},
+    {Tuple::String, Tuple::Album, {"album", "WM/AlbumTitle", nullptr}},
+    {Tuple::String, Tuple::Performer, {"performer", nullptr}},
+    {Tuple::String, Tuple::Copyright, {"copyright", nullptr}},
+    {Tuple::String, Tuple::Genre, {"genre", "WM/Genre", nullptr}},
+    {Tuple::String, Tuple::Comment, {"comment", nullptr}},
+    {Tuple::String, Tuple::Composer, {"composer", nullptr}},
+    {Tuple::Int, Tuple::Year, {"year", "WM/Year", "date", nullptr}},
+    {Tuple::Int, Tuple::Track, {"track", "WM/TrackNumber", nullptr}},
 };
 
 static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
@@ -325,9 +325,9 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
 
         if (entry && entry->value)
         {
-            if (meta.ttype == TUPLE_STRING)
+            if (meta.ttype == Tuple::String)
                 tuple.set_str (meta.field, entry->value);
-            else if (meta.ttype == TUPLE_INT)
+            else if (meta.ttype == Tuple::Int)
                 tuple.set_int (meta.field, atoi (entry->value));
         }
     }
@@ -346,11 +346,11 @@ static Tuple read_tuple (const char * filename, VFSFile & file)
         {
             tuple.set_filename (filename);
 
-            tuple.set_int (FIELD_LENGTH, ic->duration / 1000);
-            tuple.set_int (FIELD_BITRATE, ic->bit_rate / 1000);
+            tuple.set_int (Tuple::Length, ic->duration / 1000);
+            tuple.set_int (Tuple::Bitrate, ic->bit_rate / 1000);
 
             if (cinfo.codec->long_name)
-                tuple.set_str (FIELD_CODEC, cinfo.codec->long_name);
+                tuple.set_str (Tuple::Codec, cinfo.codec->long_name);
 
             if (ic->metadata)
                 read_metadata_dict (tuple, ic->metadata);

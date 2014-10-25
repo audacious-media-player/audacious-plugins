@@ -34,8 +34,8 @@ class PlaylistTabs : public QTabWidget
 public:
     PlaylistTabs (QWidget * parent = 0);
     ~PlaylistTabs ();
-    Playlist * playlistWidget (int num);
-    Playlist * activePlaylistWidget ();
+    PlaylistWidget * playlistWidget (int num);
+    PlaylistWidget * activePlaylistWidget ();
 
     void editTab (int idx);
 

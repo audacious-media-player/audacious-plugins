@@ -162,7 +162,7 @@ static Tuple tone_probe_for_tuple(const char *filename, VFSFile &fd)
 
     if ((tmp = tone_title(filename)) != nullptr)
     {
-        tuple.set_str (FIELD_TITLE, tmp);
+        tuple.set_str (Tuple::Title, tmp);
         g_free(tmp);
     }
 

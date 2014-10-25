@@ -314,10 +314,13 @@ static void lyricwiki_playback_began(void)
 
     int playlist = aud_playlist_get_playing();
     int pos = aud_playlist_get_position(playlist);
-    String album;
 
     state.filename = aud_playlist_entry_get_filename(playlist, pos);
-    aud_playlist_entry_describe(playlist, pos, state.title, state.artist, album, FALSE);
+
+    Tuple tuple = aud_playlist_entry_get_tuple(playlist, pos);
+    state.title = tuple.get_str(Tuple::Title);
+    state.artist = tuple.get_str(Tuple::Artist);
+
     state.uri = String ();
 
     get_lyrics_step_1();

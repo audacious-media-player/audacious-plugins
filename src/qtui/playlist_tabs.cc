@@ -66,12 +66,12 @@ void PlaylistTabs::maybeCreateTab (int count_, int uniq_id)
 
     for (int i = 0; i < tabs; i++)
     {
-        Playlist * playlistWidget = (Playlist *) widget (i);
+        PlaylistWidget * playlistWidget = (PlaylistWidget *) widget (i);
         if (uniq_id == playlistWidget->uniqueId())
             return;
     }
 
-    auto playlistWidget = new Playlist (0, uniq_id);
+    auto playlistWidget = new PlaylistWidget (0, uniq_id);
     addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count_)));
 }
 
@@ -81,7 +81,7 @@ void PlaylistTabs::cullPlaylists ()
 
     for (int i = 0; i < tabs; i++)
     {
-         Playlist * playlistWidget = (Playlist *) widget (i);
+         PlaylistWidget * playlistWidget = (PlaylistWidget *) widget (i);
 
          if (playlistWidget == nullptr || playlistWidget->playlist() < 0)
          {
@@ -103,15 +103,15 @@ void PlaylistTabs::populatePlaylists ()
     cullPlaylists();
 }
 
-Playlist * PlaylistTabs::playlistWidget (int num)
+PlaylistWidget * PlaylistTabs::playlistWidget (int num)
 {
-    return (Playlist *) widget (num);
+    return (PlaylistWidget *) widget (num);
 }
 
-Playlist * PlaylistTabs::activePlaylistWidget ()
+PlaylistWidget * PlaylistTabs::activePlaylistWidget ()
 {
     int num = aud_playlist_get_active ();
-    return (Playlist *) widget (num);
+    return (PlaylistWidget *) widget (num);
 }
 
 void PlaylistTabs::filterTrigger (const QString &text)
@@ -225,7 +225,7 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent *e)
 void PlaylistTabBar::handleCloseRequest (int idx)
 {
     PlaylistTabs *p = (PlaylistTabs *) parent ();
-    Playlist *pl = (Playlist *) p->widget (idx);
+    PlaylistWidget *pl = (PlaylistWidget *) p->widget (idx);
 
     if (! pl)
         return;

@@ -364,9 +364,11 @@ static void ui_infoarea_set_title (void)
 
     int playlist = aud_playlist_get_playing ();
     int entry = aud_playlist_get_position (playlist);
+    Tuple tuple = aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess);
 
-    String title, artist, album;
-    aud_playlist_entry_describe (playlist, entry, title, artist, album, TRUE);
+    String title = tuple.get_str (Tuple::Title);
+    String artist = tuple.get_str (Tuple::Artist);
+    String album = tuple.get_str (Tuple::Album);
 
     if (! g_strcmp0 (title, area->title) && ! g_strcmp0 (artist, area->artist)
      && ! g_strcmp0 (album, area->album))

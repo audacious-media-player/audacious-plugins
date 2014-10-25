@@ -73,12 +73,12 @@ static gboolean queue_track_to_scrobble (void * data) {
 
     char *queuepath = g_strconcat(aud_get_path(AudPath::UserDir),"/scrobbler.log", nullptr);
 
-    StringBuf artist = clean_string (playing_track.get_str (FIELD_ARTIST));
-    StringBuf title  = clean_string (playing_track.get_str (FIELD_TITLE));
-    StringBuf album  = clean_string (playing_track.get_str (FIELD_ALBUM));
+    StringBuf artist = clean_string (playing_track.get_str (Tuple::Artist));
+    StringBuf title  = clean_string (playing_track.get_str (Tuple::Title));
+    StringBuf album  = clean_string (playing_track.get_str (Tuple::Album));
 
-    int track  = playing_track.get_int (FIELD_TRACK_NUMBER);
-    int length = playing_track.get_int (FIELD_LENGTH);
+    int track  = playing_track.get_int (Tuple::Track);
+    int length = playing_track.get_int (Tuple::Length);
 
     //artist, title and length are required for a successful scrobble
     if (artist[0] && title[0] && length > 0) {
@@ -144,9 +144,9 @@ static void ready (void *hook_data, void *user_data) {
 
     int playlist = aud_playlist_get_playing ();
     int position = aud_playlist_get_position (playlist);
-    Tuple current_track = aud_playlist_entry_get_tuple (playlist, position, FALSE);
+    Tuple current_track = aud_playlist_entry_get_tuple (playlist, position);
 
-    int duration_seconds = current_track.get_int (FIELD_LENGTH) / 1000;
+    int duration_seconds = current_track.get_int (Tuple::Length) / 1000;
     if (duration_seconds <= 30)
         return;
 

@@ -181,7 +181,8 @@ aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
     int playlist = aud_playlist_get_playing();
     int pl_entry = aud_playlist_get_position(playlist);
     String pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
-    String pl_entry_title = aud_playlist_entry_get_title (playlist, pl_entry, FALSE);
+    Tuple pl_entry_tuple = aud_playlist_entry_get_tuple (playlist, pl_entry);
+    String pl_entry_title = pl_entry_tuple.get_str (Tuple::FormattedTitle);
 
     /* same filename but title changed, useful to detect http stream song changes */
 
@@ -249,19 +250,20 @@ aosd_trigger_func_pb_pauseoff_onoff ( bool turn_on )
 static void
 aosd_trigger_func_pb_pauseoff_cb ( void * unused1 , void * unused2 )
 {
-  int active = aud_playlist_get_active();
-  int pos = aud_playlist_get_position(active);
+  int playlist = aud_playlist_get_playing();
+  int pos = aud_playlist_get_position(playlist);
+  Tuple tuple = aud_playlist_entry_get_tuple(playlist, pos);
   int time_cur, time_tot;
   int time_cur_m, time_cur_s, time_tot_m, time_tot_s;
 
-  time_tot = aud_playlist_entry_get_length (active, pos, FALSE) / 1000;
+  time_tot = tuple.get_int (Tuple::Length) / 1000;
   time_cur = aud_drct_get_time() / 1000;
   time_cur_s = time_cur % 60;
   time_cur_m = (time_cur - time_cur_s) / 60;
   time_tot_s = time_tot % 60;
   time_tot_m = (time_tot - time_tot_s) / 60;
 
-  String title = aud_playlist_entry_get_title (active, pos, FALSE);
+  String title = tuple.get_str (Tuple::FormattedTitle);
   char * markup = g_markup_printf_escaped
    ("<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>",
    (const char *) global_config.text.fonts_name[0], (const char *) title,

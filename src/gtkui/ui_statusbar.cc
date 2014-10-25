@@ -53,8 +53,8 @@ static void ui_statusbar_info_change (void * unused, GtkWidget * label)
 
     int playlist = aud_playlist_get_playing ();
     Tuple tuple = aud_playlist_entry_get_tuple (playlist,
-     aud_playlist_get_position (playlist), FALSE);
-    String codec = tuple.get_str (FIELD_CODEC);
+     aud_playlist_get_position (playlist));
+    String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
     aud_drct_get_info (& bitrate, & samplerate, & channels);

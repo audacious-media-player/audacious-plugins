@@ -62,9 +62,9 @@ static FLAC__StreamEncoderTellStatus flac_tell_cb(const FLAC__StreamEncoder *enc
 }
 
 static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
- const char * name, const Tuple & tuple, int field)
+ const char * name, const Tuple & tuple, Tuple::Field field)
 {
-    TupleValueType type = Tuple::field_get_type (field);
+    Tuple::ValueType type = Tuple::field_get_type (field);
     if (tuple.get_value_type (field) != type)
         return;
 
@@ -72,13 +72,13 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
 
     switch (type)
     {
-    case TUPLE_INT:
+    case Tuple::Int:
     {
         int ival = tuple.get_int (field);
         temp = g_strdup_printf ("%s=%d", name, ival);
         break;
     }
-    case TUPLE_STRING:
+    case Tuple::String:
     {
         String sval = tuple.get_str (field);
         temp = g_strdup_printf ("%s=%s", name, (const char *) sval);
@@ -109,14 +109,14 @@ static int flac_open(void)
     {
         flac_metadata = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-        insert_vorbis_comment (flac_metadata, "TITLE", tuple, FIELD_TITLE);
-        insert_vorbis_comment (flac_metadata, "ARTIST", tuple, FIELD_ARTIST);
-        insert_vorbis_comment (flac_metadata, "ALBUM", tuple, FIELD_ALBUM);
-        insert_vorbis_comment (flac_metadata, "GENRE", tuple, FIELD_GENRE);
-        insert_vorbis_comment (flac_metadata, "COMMENT", tuple, FIELD_COMMENT);
-        insert_vorbis_comment (flac_metadata, "DATE", tuple, FIELD_DATE);
-        insert_vorbis_comment (flac_metadata, "YEAR", tuple, FIELD_YEAR);
-        insert_vorbis_comment (flac_metadata, "TRACKNUMBER", tuple, FIELD_TRACK_NUMBER);
+        insert_vorbis_comment (flac_metadata, "TITLE", tuple, Tuple::Title);
+        insert_vorbis_comment (flac_metadata, "ARTIST", tuple, Tuple::Artist);
+        insert_vorbis_comment (flac_metadata, "ALBUM", tuple, Tuple::Album);
+        insert_vorbis_comment (flac_metadata, "GENRE", tuple, Tuple::Genre);
+        insert_vorbis_comment (flac_metadata, "COMMENT", tuple, Tuple::Comment);
+        insert_vorbis_comment (flac_metadata, "DATE", tuple, Tuple::Date);
+        insert_vorbis_comment (flac_metadata, "YEAR", tuple, Tuple::Year);
+        insert_vorbis_comment (flac_metadata, "TRACKNUMBER", tuple, Tuple::Track);
 
         FLAC__stream_encoder_set_metadata(flac_encoder, &flac_metadata, 1);
     }

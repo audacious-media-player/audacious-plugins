@@ -239,14 +239,14 @@ static Tuple aac_get_tuple (const char * filename, VFSFile & handle)
     int length, bitrate, samplerate, channels;
 
     tuple.set_filename (filename);
-    tuple.set_str (FIELD_CODEC, "MPEG-2/4 AAC");
+    tuple.set_str (Tuple::Codec, "MPEG-2/4 AAC");
 
     calc_aac_info (handle, &length, &bitrate, &samplerate, &channels);
 
     if (length > 0)
-        tuple.set_int (FIELD_LENGTH, length);
+        tuple.set_int (Tuple::Length, length);
     if (bitrate > 0)
-        tuple.set_int (FIELD_BITRATE, bitrate);
+        tuple.set_int (Tuple::Bitrate, bitrate);
 
     tuple.fetch_stream_info (handle);
 
@@ -315,7 +315,7 @@ static bool my_decode_aac (const char * filename, VFSFile & file)
 
     if (tuple)
     {
-        bitrate = tuple.get_int (FIELD_BITRATE);
+        bitrate = tuple.get_int (Tuple::Bitrate);
         bitrate = 1000 * aud::max (0, bitrate);
     }
 
@@ -399,7 +399,7 @@ static bool my_decode_aac (const char * filename, VFSFile & file)
 
         if (seek_value >= 0)
         {
-            int length = tuple ? tuple.get_int (FIELD_LENGTH) : 0;
+            int length = tuple ? tuple.get_int (Tuple::Length) : 0;
 
             if (length > 0)
                 aac_seek (file, decoder, seek_value, length, buf, sizeof buf, & buflen);
