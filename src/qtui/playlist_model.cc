@@ -19,6 +19,7 @@
 
 #include <QtGui>
 
+#include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/playlist.h>
@@ -105,25 +106,25 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 
 QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
-     if (role == Qt::DisplayRole)
-     {
+    if (role == Qt::DisplayRole)
+    {
          if (orientation == Qt::Horizontal)
-         {
+        {
             switch (section)
             {
             case PL_COL_TITLE:
-                return QString ("Title");
+                return QString (_("Title"));
             case PL_COL_ARTIST:
-                return QString ("Artist");
+                return QString (_("Artist"));
             case PL_COL_ALBUM:
-                return QString ("Album");
+                return QString (_("Album"));
             case PL_COL_QUEUED:
-                return QString ("Queued");
+                return QString (_("Queued"));
             case PL_COL_LENGTH:
-                return QString ("Time");
+                return QString (_("Length"));
             }
-         }
-     }
+        }
+    }
     return QVariant ();
 }
 
