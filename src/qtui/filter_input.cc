@@ -17,6 +17,8 @@
  * the use of this software.
  */
 
+#include <libaudcore/i18n.h>
+
 #include "filter_input.h"
 #include "filter_input.moc"
 
@@ -38,7 +40,7 @@ FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
 
     setAttribute (Qt::WA_MacShowFocusRect, false);
     setClearButtonEnabled (true);
-    setPlaceholderText ("Search");
+    setPlaceholderText (_("Search"));
 }
 
 void FilterInput::keyPressEvent (QKeyEvent * e)
