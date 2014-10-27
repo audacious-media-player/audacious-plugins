@@ -20,11 +20,12 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
-#include <QtGui>
 #include <QTreeView>
 
 #include "playlist_model.h"
 #include "filter_input.h"
+
+class QSortFilterProxyModel;
 
 class PlaylistWidget : public QTreeView
 {

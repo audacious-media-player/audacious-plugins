@@ -20,6 +20,11 @@
 
 #include <glib.h>
 #include <string.h>
+
+#include <QTextCursor>
+#include <QTextDocument>
+#include <QTextEdit>
+
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <libxml/HTMLparser.h>

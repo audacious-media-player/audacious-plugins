@@ -17,17 +17,18 @@
  * the use of this software.
  */
 
-#include <QtGui>
+#include "playlist.h"
+#include "playlist_tabs.h"
+#include "playlist_tabs.moc"
+
+#include <QKeyEvent>
+#include <QLineEdit>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 
 #include <libaudqt/libaudqt.h>
-
-#include "playlist.h"
-#include "playlist_tabs.h"
-#include "playlist_tabs.moc"
 
 PlaylistTabs::PlaylistTabs (QWidget * parent) :
     QTabWidget (parent),

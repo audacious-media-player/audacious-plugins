@@ -17,7 +17,7 @@
  * the use of this software.
  */
 
-#include <QtGui>
+#include <QIcon>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>

@@ -18,9 +18,10 @@
  */
 
 #include <libaudcore/drct.h>
-#include <libaudcore/i18n.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
 
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/info-widget.h>

@@ -28,8 +28,6 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
-#include <QtGui>
-#include <QtWidgets>
 #include <QGLWidget>
 #include <QGLFunctions>
 
@@ -71,18 +69,6 @@ EXPORT GLSpectrumQt aud_plugin_instance;
 
 static float logscale[NUM_BANDS + 1];
 static float colors[NUM_BANDS][NUM_BANDS][3];
-
-#ifdef GDK_WINDOWING_X11
-static Display * s_display;
-static Window s_xwindow;
-static GLXContext s_context;
-#endif
-
-#ifdef GDK_WINDOWING_WIN32
-static HWND s_hwnd;
-static HDC s_hdc;
-static HGLRC s_glrc;
-#endif
 
 static int s_pos = 0;
 static float s_angle = 25, s_anglespeed = 0.05f;

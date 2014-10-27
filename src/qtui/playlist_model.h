@@ -20,7 +20,7 @@
 #ifndef PLAYLIST_MODEL_H
 #define PLAYLIST_MODEL_H
 
-#include <QAbstractTableModel>
+#include <QAbstractListModel>
 
 enum {
     PL_COL_NOW_PLAYING,

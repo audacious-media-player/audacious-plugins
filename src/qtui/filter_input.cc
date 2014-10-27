@@ -22,6 +22,8 @@
 #include "filter_input.h"
 #include "filter_input.moc"
 
+#include <QKeyEvent>
+
 FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
 {
 #ifdef Q_OS_MAC
@@ -48,7 +50,6 @@ void FilterInput::keyPressEvent (QKeyEvent * e)
     if (e->key () == Qt::Key_Enter or e->key () == Qt::Key_Return)
     {
         e->ignore ();
-        qDebug () << "Enter in filter input";
         focusNextChild ();
     }
     else

@@ -17,15 +17,19 @@
  * the use of this software.
  */
 
+#include "main_window.h"
+#include "ui_main_window.h"
+
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/plugins.h>
 
 #include <libaudqt/libaudqt.h>
+#include <libaudqt/volumebutton.h>
 
-#include "main_window.h"
 #include "filter_input.h"
 #include "playlist.h"
 #include "time_slider.h"
@@ -33,7 +37,10 @@
 #include "playlist_tabs.h"
 #include "tool_bar.h"
 
+#include <QDockWidget>
+
 MainWindow::MainWindow () :
+    ui (new Ui::MainWindow),
     m_dialogs (this),
     filterInput (new FilterInput (this)),
     playlistTabs (new PlaylistTabs (this))
@@ -48,7 +55,7 @@ MainWindow::MainWindow () :
     QApplication::setWindowIcon (QIcon::fromTheme ("audacious"));
 #endif
 
-    setupUi (this);
+    ui->setupUi (this);
 
     auto slider = new TimeSlider (this);
 
@@ -80,7 +87,7 @@ MainWindow::MainWindow () :
 
     setStatusBar (new StatusBar (this));
 
-    mainLayout->addWidget (playlistTabs);
+    ui->mainLayout->addWidget (playlistTabs);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
@@ -157,12 +164,12 @@ void MainWindow::keyPressEvent (QKeyEvent * e)
 
 void MainWindow::updateToggles ()
 {
-    actionRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
-    actionShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
+    ui->actionRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
+    ui->actionShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
     toolButtonRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
     toolButtonShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
-    actionNoPlaylistAdvance->setChecked (aud_get_bool (nullptr, "no_playlist_advance"));
-    actionStopAfterThisSong->setChecked (aud_get_bool (nullptr, "stop_after_current_song"));
+    ui->actionNoPlaylistAdvance->setChecked (aud_get_bool (nullptr, "no_playlist_advance"));
+    ui->actionStopAfterThisSong->setChecked (aud_get_bool (nullptr, "stop_after_current_song"));
 }
 
 void MainWindow::action_play_pause_set_play ()

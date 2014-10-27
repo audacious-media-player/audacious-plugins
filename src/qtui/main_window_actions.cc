@@ -17,6 +17,9 @@
  * the use of this software.
  */
 
+#include "ui_main_window.h"
+#include "main_window.h"
+
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/runtime.h>
@@ -28,79 +31,77 @@
 
 #include <libaudqt/libaudqt.h>
 
-#include "main_window.h"
-
 void MainWindow::setupActions ()
 {
-    connect (actionAbout, &QAction::triggered, aud_ui_show_about_window);
-    connect (actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
-    connect (actionQuit, &QAction::triggered, aud_quit);
+    connect (ui->actionAbout, &QAction::triggered, aud_ui_show_about_window);
+    connect (ui->actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
+    connect (ui->actionQuit, &QAction::triggered, aud_quit);
 
-    connect (actionRepeat, &QAction::toggled, [] (bool checked)
+    connect (ui->actionRepeat, &QAction::toggled, [] (bool checked)
         { aud_set_bool (nullptr, "repeat", checked); });
-    connect (actionShuffle, &QAction::triggered, [] (bool checked)
+    connect (ui->actionShuffle, &QAction::triggered, [] (bool checked)
         { aud_set_bool (nullptr, "shuffle", checked); });
-    connect (actionNoPlaylistAdvance, &QAction::triggered, [] (bool checked)
+    connect (ui->actionNoPlaylistAdvance, &QAction::triggered, [] (bool checked)
         { aud_set_bool (nullptr, "no_playlist_advance", checked); });
-    connect (actionStopAfterThisSong, &QAction::triggered, [] (bool checked)
+    connect (ui->actionStopAfterThisSong, &QAction::triggered, [] (bool checked)
         { aud_set_bool (nullptr, "stop_after_current_song", checked); });
 
-    connect (actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
-    connect (actionAddFiles,  &QAction::triggered, [] ()
+    connect (ui->actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
+    connect (ui->actionAddFiles,  &QAction::triggered, [] ()
         { audqt::fileopener_show (true); });
 
-    connect (actionLogInspector, &QAction::triggered, audqt::log_inspector_show);
+    connect (ui->actionLogInspector, &QAction::triggered, audqt::log_inspector_show);
 
-    connect (actionPlay,      &QAction::triggered, aud_drct_play);
-    connect (actionPause,     &QAction::triggered, aud_drct_pause);
-    connect (actionStop,      &QAction::triggered, aud_drct_stop);
-    connect (actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
-    connect (actionNext,      &QAction::triggered, aud_drct_pl_next);
+    connect (ui->actionPlay,      &QAction::triggered, aud_drct_play);
+    connect (ui->actionPause,     &QAction::triggered, aud_drct_pause);
+    connect (ui->actionStop,      &QAction::triggered, aud_drct_stop);
+    connect (ui->actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
+    connect (ui->actionNext,      &QAction::triggered, aud_drct_pl_next);
 
-    connect (actionEqualizer, &QAction::triggered, audqt::equalizer_show);
+    connect (ui->actionEqualizer, &QAction::triggered, audqt::equalizer_show);
 
-    connect(actionPlaylistNew, &QAction::triggered, [] () {
+    connect(ui->actionPlaylistNew, &QAction::triggered, [] () {
         aud_playlist_insert (-1);
         aud_playlist_set_active (aud_playlist_count () - 1);
     });
 
-    connect(actionPlaylistRemove, &QAction::triggered, [] () {
+    connect(ui->actionPlaylistRemove, &QAction::triggered, [] () {
         audqt::playlist_confirm_delete (aud_playlist_get_active ());
     });
 
-    connect(actionPlaylistReverse, &QAction::triggered, [] () { aud_playlist_reverse (aud_playlist_get_active ()); });
-    connect(actionPlaylistRandomize, &QAction::triggered, [] () { aud_playlist_randomize (aud_playlist_get_active ()); });
+    connect(ui->actionPlaylistReverse, &QAction::triggered, [] () { aud_playlist_reverse (aud_playlist_get_active ()); });
+    connect(ui->actionPlaylistRandomize, &QAction::triggered, [] () { aud_playlist_randomize (aud_playlist_get_active ()); });
 
-    connect(actionSortTrackNumber, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); });
-    connect(actionSortTitle, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); });
-    connect(actionSortArtist, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); });
-    connect(actionSortAlbum, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); });
-    connect(actionSortAlbumArtist, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); });
-    connect(actionSortDate, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); });
-    connect(actionSortLength, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); });
-    connect(actionSortPath, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); });
-    connect(actionSortCustomTitle, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); });
+    connect(ui->actionSortTrackNumber, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); });
+    connect(ui->actionSortTitle, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); });
+    connect(ui->actionSortArtist, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); });
+    connect(ui->actionSortAlbum, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); });
+    connect(ui->actionSortAlbumArtist, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); });
+    connect(ui->actionSortDate, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); });
+    connect(ui->actionSortLength, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); });
+    connect(ui->actionSortPath, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); });
+    connect(ui->actionSortCustomTitle, &QAction::triggered, [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); });
 
-    connect(actionSortSelectedTrackNumber, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Track); });
-    connect(actionSortSelectedTitle, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Title); });
-    connect(actionSortSelectedArtist, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Artist); });
-    connect(actionSortSelectedAlbum, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); });
-    connect(actionSortSelectedAlbumArtist, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); });
-    connect(actionSortSelectedDate, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); });
-    connect(actionSortSelectedLength, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); });
-    connect(actionSortSelectedPath, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); });
-    connect(actionSortSelectedCustomTitle, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); });
+    connect(ui->actionSortSelectedTrackNumber, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Track); });
+    connect(ui->actionSortSelectedTitle, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Title); });
+    connect(ui->actionSortSelectedArtist, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Artist); });
+    connect(ui->actionSortSelectedAlbum, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); });
+    connect(ui->actionSortSelectedAlbumArtist, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); });
+    connect(ui->actionSortSelectedDate, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); });
+    connect(ui->actionSortSelectedLength, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); });
+    connect(ui->actionSortSelectedPath, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); });
+    connect(ui->actionSortSelectedCustomTitle, &QAction::triggered, [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); });
 
-    connect(actionSelectedReverse, &QAction::triggered, [] () { aud_playlist_reverse_selected (aud_playlist_get_active ()); });
-    connect(actionSelectedRandomize, &QAction::triggered, [] () { aud_playlist_randomize_selected (aud_playlist_get_active ()); });
+    connect(ui->actionSelectedReverse, &QAction::triggered, [] () { aud_playlist_reverse_selected (aud_playlist_get_active ()); });
+    connect(ui->actionSelectedRandomize, &QAction::triggered, [] () { aud_playlist_randomize_selected (aud_playlist_get_active ()); });
 
-    connect(actionSongInfo, &QAction::triggered, audqt::infowin_show_current);
+    connect(ui->actionSongInfo, &QAction::triggered, audqt::infowin_show_current);
 
-    connect(actionQueueManager, &QAction::triggered, audqt::queue_manager_show);
+    connect(ui->actionQueueManager, &QAction::triggered, audqt::queue_manager_show);
 
     /* plugin menus */
     QMenuBar * mb = this->menuBar();
     mb->addAction (audqt::menu_get_by_id (AUD_MENU_MAIN)->menuAction ());
 
-    connect(actionEffects, &QAction::triggered, [] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); });
+    connect(ui->actionEffects, &QAction::triggered, [] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); });
 }

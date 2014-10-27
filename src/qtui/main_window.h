@@ -21,24 +21,30 @@
 #define MAIN_WINDOW_H
 
 #include <libaudcore/index.h>
+#include <libaudcore/objects.h>
 
-#include "ui_main_window.h"
 #include "dialog_windows.h"
 
+#include <QMainWindow>
 #include <QTimer>
 
 class FilterInput;
 class PlaylistTabs;
+class PluginHandle;
+
+namespace Ui { class MainWindow; }
 
 struct DockWidget;
 
-class MainWindow : public QMainWindow, private Ui::MainWindow
+class MainWindow : public QMainWindow
 {
 public:
     MainWindow ();
     ~MainWindow ();
 
 private:
+    SmartPtr<Ui::MainWindow> ui;
+
     DialogWindows m_dialogs;
     FilterInput * filterInput;
     PlaylistTabs * playlistTabs;

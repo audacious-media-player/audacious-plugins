@@ -17,6 +17,10 @@
  * the use of this software.
  */
 
+#include <QImage>
+#include <QLabel>
+#include <QPixmap>
+
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>

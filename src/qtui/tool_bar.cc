@@ -17,8 +17,10 @@
  * the use of this software.
  */
 
-#include <QtWidgets>
 #include "tool_bar.h"
+
+#include <QAction>
+#include <QIcon>
 
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>

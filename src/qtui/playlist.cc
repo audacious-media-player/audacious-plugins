@@ -17,7 +17,8 @@
  * the use of this software.
  */
 
-#include <QtGui>
+#include <QKeyEvent>
+#include <QSortFilterProxyModel>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
