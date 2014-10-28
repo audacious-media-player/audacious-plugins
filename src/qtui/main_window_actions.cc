@@ -30,9 +30,31 @@
 #include <libaudcore/playlist.h>
 
 #include <libaudqt/libaudqt.h>
+#include <libaudqt/menu.h>
 
 void MainWindow::setupActions ()
 {
+    const audqt::MenuItem file_items[] = {
+        audqt::MenuCommand (N_("_Open Files ..."), [] () { audqt::fileopener_show (false); }, "Ctrl+O", "document-open"),
+        audqt::MenuCommand (N_("_Add Files ..."), [] () { audqt::fileopener_show (true); }, "Ctrl+Shift+O", "list-add"),
+        audqt::MenuSep (),
+        audqt::MenuCommand (N_("A_bout ..."), aud_ui_show_about_window, nullptr, "help-about"),
+        audqt::MenuCommand (N_("_Settings ..."), aud_ui_show_prefs_window, nullptr, "preferences-system"),
+        audqt::MenuSep (),
+        audqt::MenuCommand (N_("_Log Inspector ..."), audqt::log_inspector_show),
+        audqt::MenuSep (),
+        audqt::MenuCommand (N_("_Quit"), aud_quit, "CTRL+Q", "application-exit")
+    };
+
+    const audqt::MenuItem main_items[] = {
+        audqt::MenuSub (N_("_File"), file_items),
+    };
+
+    QMenuBar * mb = new QMenuBar (this);
+    audqt::menubar_build (main_items, mb);
+
+    setMenuBar (mb);
+
     connect (ui->actionAbout, &QAction::triggered, aud_ui_show_about_window);
     connect (ui->actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
     connect (ui->actionQuit, &QAction::triggered, aud_quit);
@@ -100,7 +122,6 @@ void MainWindow::setupActions ()
     connect(ui->actionQueueManager, &QAction::triggered, audqt::queue_manager_show);
 
     /* plugin menus */
-    QMenuBar * mb = this->menuBar();
     mb->addAction (audqt::menu_get_by_id (AUD_MENU_MAIN)->menuAction ());
 
     connect(ui->actionEffects, &QAction::triggered, [] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); });
