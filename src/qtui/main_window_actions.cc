@@ -32,6 +32,8 @@
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/menu.h>
 
+static QMenu * services_menu () { return audqt::menu_get_by_id (AUD_MENU_MAIN); }
+
 void MainWindow::setupActions ()
 {
     const audqt::MenuItem file_items[] = {
@@ -43,42 +45,34 @@ void MainWindow::setupActions ()
         audqt::MenuSep (),
         audqt::MenuCommand (N_("_Log Inspector ..."), audqt::log_inspector_show),
         audqt::MenuSep (),
-        audqt::MenuCommand (N_("_Quit"), aud_quit, "CTRL+Q", "application-exit")
+        audqt::MenuCommand (N_("_Quit"), aud_quit, "Ctrl+Q", "application-exit")
+    };
+
+    const audqt::MenuItem playback_items[] = {
+        audqt::MenuCommand (N_("_Play"), aud_drct_play, "Ctrl+Enter", "media-playback-start"),
+        audqt::MenuCommand (N_("Paus_e"), aud_drct_pause, "Ctrl+,", "media-playback-pause"),
+        audqt::MenuCommand (N_("_Stop"), aud_drct_stop, "Ctrl+.", "media-playback-stop"),
+        audqt::MenuCommand (N_("Pre_vious"), aud_drct_pl_prev, "Alt+Up", "media-skip-backward"),
+        audqt::MenuCommand (N_("_Next"), aud_drct_pl_next, "Alt+Down", "media-skip-forward"),
+        audqt::MenuSep (),
+        audqt::MenuToggle (N_("_Repeat"), nullptr, "Ctrl+R", nullptr, nullptr, "repeat", nullptr, "set repeat"),
+        audqt::MenuToggle (N_("S_huffle"), nullptr, "Ctrl+S", nullptr, nullptr, "shuffle", nullptr, "set shuffle"),
+        audqt::MenuToggle (N_("N_o Playlist Advance"), nullptr, "Ctrl+N", nullptr, nullptr, "no_playlist_advance", nullptr, "set no_playlist_advance"),
+        audqt::MenuToggle (N_("Stop A_fter This Song"), nullptr, "Ctrl+M", nullptr, nullptr, "stop_after_current_song", nullptr, "set stop_after_current_song"),
+        audqt::MenuSep (),
+        audqt::MenuCommand (N_("Song _Info ..."), audqt::infowin_show_current, "Ctrl+I", "dialog-information"),
     };
 
     const audqt::MenuItem main_items[] = {
         audqt::MenuSub (N_("_File"), file_items),
+        audqt::MenuSub (N_("_Playback"), playback_items),
+        audqt::MenuSub (N_("_Services"), services_menu),
     };
 
     QMenuBar * mb = new QMenuBar (this);
     audqt::menubar_build (main_items, mb);
 
     setMenuBar (mb);
-
-    connect (ui->actionAbout, &QAction::triggered, aud_ui_show_about_window);
-    connect (ui->actionPreferences, &QAction::triggered, aud_ui_show_prefs_window);
-    connect (ui->actionQuit, &QAction::triggered, aud_quit);
-
-    connect (ui->actionRepeat, &QAction::toggled, [] (bool checked)
-        { aud_set_bool (nullptr, "repeat", checked); });
-    connect (ui->actionShuffle, &QAction::triggered, [] (bool checked)
-        { aud_set_bool (nullptr, "shuffle", checked); });
-    connect (ui->actionNoPlaylistAdvance, &QAction::triggered, [] (bool checked)
-        { aud_set_bool (nullptr, "no_playlist_advance", checked); });
-    connect (ui->actionStopAfterThisSong, &QAction::triggered, [] (bool checked)
-        { aud_set_bool (nullptr, "stop_after_current_song", checked); });
-
-    connect (ui->actionOpenFiles, &QAction::triggered, audqt::fileopener_show);
-    connect (ui->actionAddFiles,  &QAction::triggered, [] ()
-        { audqt::fileopener_show (true); });
-
-    connect (ui->actionLogInspector, &QAction::triggered, audqt::log_inspector_show);
-
-    connect (ui->actionPlay,      &QAction::triggered, aud_drct_play);
-    connect (ui->actionPause,     &QAction::triggered, aud_drct_pause);
-    connect (ui->actionStop,      &QAction::triggered, aud_drct_stop);
-    connect (ui->actionPrevious,  &QAction::triggered, aud_drct_pl_prev);
-    connect (ui->actionNext,      &QAction::triggered, aud_drct_pl_next);
 
     connect (ui->actionEqualizer, &QAction::triggered, audqt::equalizer_show);
 
@@ -122,7 +116,5 @@ void MainWindow::setupActions ()
     connect(ui->actionQueueManager, &QAction::triggered, audqt::queue_manager_show);
 
     /* plugin menus */
-    mb->addAction (audqt::menu_get_by_id (AUD_MENU_MAIN)->menuAction ());
-
     connect(ui->actionEffects, &QAction::triggered, [] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); });
 }
