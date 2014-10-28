@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include "ui_main_window.h"
 #include "main_window.h"
 
 #include <libaudcore/drct.h>

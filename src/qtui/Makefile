@@ -14,8 +14,7 @@ SRCS = qtui.cc \
        filter_input.moc \
        status_bar.cc \
        tool_bar.cc \
-       time_slider.cc \
-       ui_main_window.h
+       time_slider.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -76,9 +75,6 @@ LIBS += ${QT_LIBS} -laudqt
 
 %.moc: %.h
 	moc $< -o $@
-
-ui_%.h: %.ui
-	uic $< -o $@
 
 rc_%.cc: %.qrc
 	rcc $< -o $@
