@@ -18,7 +18,6 @@
  */
 
 #include "main_window.h"
-#include "ui_main_window.h"
 
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
@@ -38,9 +37,9 @@
 #include "tool_bar.h"
 
 #include <QDockWidget>
+#include <QAction>
 
 MainWindow::MainWindow () :
-    ui (new Ui::MainWindow),
     m_dialogs (this),
     filterInput (new FilterInput (this)),
     playlistTabs (new PlaylistTabs (this))
@@ -54,8 +53,6 @@ MainWindow::MainWindow () :
 #else
     QApplication::setWindowIcon (QIcon::fromTheme ("audacious"));
 #endif
-
-    ui->setupUi (this);
 
     auto slider = new TimeSlider (this);
 
@@ -86,8 +83,7 @@ MainWindow::MainWindow () :
     updateToggles ();
 
     setStatusBar (new StatusBar (this));
-
-    ui->mainLayout->addWidget (playlistTabs);
+    setCentralWidget (playlistTabs);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
@@ -164,12 +160,8 @@ void MainWindow::keyPressEvent (QKeyEvent * e)
 
 void MainWindow::updateToggles ()
 {
-    ui->actionRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
-    ui->actionShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
     toolButtonRepeat->setChecked (aud_get_bool (nullptr, "repeat"));
     toolButtonShuffle->setChecked (aud_get_bool (nullptr, "shuffle"));
-    ui->actionNoPlaylistAdvance->setChecked (aud_get_bool (nullptr, "no_playlist_advance"));
-    ui->actionStopAfterThisSong->setChecked (aud_get_bool (nullptr, "stop_after_current_song"));
 }
 
 void MainWindow::action_play_pause_set_play ()

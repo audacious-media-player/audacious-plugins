@@ -32,8 +32,6 @@ class FilterInput;
 class PlaylistTabs;
 class PluginHandle;
 
-namespace Ui { class MainWindow; }
-
 struct DockWidget;
 
 class MainWindow : public QMainWindow
@@ -43,8 +41,6 @@ public:
     ~MainWindow ();
 
 private:
-    SmartPtr<Ui::MainWindow> ui;
-
     DialogWindows m_dialogs;
     FilterInput * filterInput;
     PlaylistTabs * playlistTabs;
