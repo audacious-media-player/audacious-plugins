@@ -122,7 +122,7 @@ void MainWindow::setupActions ()
 
     const audqt::MenuItem output_items[] = {
         audqt::MenuCommand (N_("Volume _Up"), [] () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }, "Ctrl++", "audio-volume-high"),
-        audqt::MenuCommand (N_("Volume _Down"), [] () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }, "Ctrl+-", "audio-volume-low"),
+        audqt::MenuCommand (N_("Volume _Down"), [] () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }, "Ctrl+-", "audio-volume-low"),
         audqt::MenuSep (),
         audqt::MenuCommand (N_("_Equalizer"), audqt::equalizer_show, "Ctrl+E", "multimedia-volume-control"),
         audqt::MenuSep (),
