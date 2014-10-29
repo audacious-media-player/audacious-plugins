@@ -52,7 +52,9 @@ public:
         & prefs
     };
 
-    constexpr JACKOutput () : OutputPlugin (info, 0) {}
+    constexpr JACKOutput (RingBuf<float> & buffer) :
+        OutputPlugin (info, 0),
+        m_buffer (buffer) {}
 
     bool init ();
 
@@ -87,7 +89,7 @@ private:
     timeval m_last_write_time = timeval ();
     bool m_rate_mismatch = false;
 
-    RingBuf<float> m_buffer;
+    RingBuf<float> & m_buffer;
 
     jack_client_t * m_client = nullptr;
     jack_port_t * m_ports[AUD_MAX_CHANNELS] = {};
@@ -96,7 +98,10 @@ private:
     pthread_cond_t m_cond = PTHREAD_COND_INITIALIZER;
 };
 
-EXPORT JACKOutput aud_plugin_instance;
+// must be separate in order for JACKOutput() to be constexpr
+static RingBuf<float> s_buffer;
+
+EXPORT JACKOutput aud_plugin_instance (s_buffer);
 
 const char * const JACKOutput::defaults[] = {
     "auto_connect", "TRUE",
