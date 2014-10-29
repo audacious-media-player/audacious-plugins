@@ -36,6 +36,7 @@
 #include "playlist_tabs.h"
 #include "tool_bar.h"
 
+#include <QApplication>
 #include <QDockWidget>
 #include <QAction>
 
