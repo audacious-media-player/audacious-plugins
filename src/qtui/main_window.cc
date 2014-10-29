@@ -39,6 +39,7 @@
 #include <QApplication>
 #include <QDockWidget>
 #include <QAction>
+#include <QSettings>
 
 MainWindow::MainWindow () :
     m_dialogs (this),
@@ -117,6 +118,8 @@ MainWindow::MainWindow () :
         playback_stop_cb (nullptr, this);
 
     title_change_cb (nullptr, this);
+
+    readSettings ();
 }
 
 MainWindow::~MainWindow ()
@@ -138,8 +141,19 @@ MainWindow::~MainWindow ()
 
 void MainWindow::closeEvent (QCloseEvent * e)
 {
+    QSettings settings ("Audacious", "QtUi");
+    settings.setValue ("geometry", saveGeometry());
+    settings.setValue ("windowState", saveState());
+
     aud_quit ();
     e->ignore ();
+}
+
+void MainWindow::readSettings ()
+{
+    QSettings settings ("Audacious", "QtUi");
+    restoreGeometry (settings.value ("geometry").toByteArray());
+    restoreState (settings.value ("windowState").toByteArray());
 }
 
 void MainWindow::keyPressEvent (QKeyEvent * e)
@@ -241,6 +255,7 @@ void MainWindow::add_dock_plugin_cb (PluginHandle * plugin, MainWindow * window)
 
         dw->w = new QDockWidget;
         dw->w->setWindowTitle (aud_plugin_get_name (plugin));
+        dw->w->setObjectName (aud_plugin_get_basename (plugin));
         dw->w->setWidget (widget);
         dw->pl = plugin;
 

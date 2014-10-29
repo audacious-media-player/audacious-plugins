@@ -56,6 +56,7 @@ private:
 
     void updateToggles ();
     void setupActions ();
+    void readSettings ();
 
     void action_play_pause_set_play ();
     void action_play_pause_set_pause ();
