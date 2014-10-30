@@ -20,6 +20,25 @@
 //plugin includes
 #include "scrobbler.h"
 
+class Scrobbler : public GeneralPlugin
+{
+public:
+    static const char about[];
+
+    static constexpr PluginInfo info = {
+        N_("Scrobbler 2.0"),
+        PACKAGE,
+        about,
+        & configuration
+    };
+
+    constexpr Scrobbler () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT Scrobbler aud_plugin_instance;
 
 //shared variables
 gboolean scrobbler_running        = TRUE;
@@ -195,9 +214,8 @@ static void unpaused (void *hook_data, void *user_data) {
     play_started_at = g_get_monotonic_time();
 }
 
-
-
-static bool scrobbler_init (void) {
+bool Scrobbler::init ()
+{
     // Initialize libXML and check potential ABI mismatches between
     // the version it was compiled for and the actual libXML in use
     LIBXML_TEST_VERSION
@@ -243,8 +261,8 @@ static bool scrobbler_init (void) {
     return TRUE;
 }
 
-static void scrobbler_cleanup (void) {
-
+void Scrobbler::cleanup ()
+{
     hook_dissociate("playback stop", (HookFunction) stopped);
     hook_dissociate("playback end", (HookFunction) ended);
     hook_dissociate("playback ready", (HookFunction) ready);
@@ -267,16 +285,7 @@ static void scrobbler_cleanup (void) {
     scrobbler_running = TRUE;
 }
 
-static const char scrobbler_about[] =
+const char Scrobbler::about[] =
  N_("Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n\n"
     "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n\n"
     "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
-
-#define AUD_PLUGIN_NAME        N_("Scrobbler 2.0")
-#define AUD_PLUGIN_ABOUT       scrobbler_about
-#define AUD_PLUGIN_INIT        scrobbler_init
-#define AUD_PLUGIN_CLEANUP     scrobbler_cleanup
-#define AUD_PLUGIN_PREFS       &configuration
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>

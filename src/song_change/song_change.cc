@@ -23,8 +23,27 @@
 
 #include "formatter.h"
 
-static bool init (void);
-static void cleanup(void);
+class SongChange : public GeneralPlugin
+{
+public:
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Song Change"),
+        PACKAGE,
+        nullptr,
+        & prefs
+    };
+
+    constexpr SongChange () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT SongChange aud_plugin_instance;
+
 static void songchange_playback_begin(void *, void *);
 static void songchange_playback_end(void *, void *);
 static void songchange_playlist_eof(void *, void *);
@@ -209,7 +228,7 @@ static void read_config(void)
     cmd_line_ttc = aud_get_str("song_change", "cmd_line_ttc");
 }
 
-static void cleanup(void)
+void SongChange::cleanup ()
 {
     hook_dissociate("playback ready", songchange_playback_begin);
     hook_dissociate("playback end", songchange_playback_end);
@@ -240,7 +259,7 @@ static int check_command(const char *command)
     return 0;
 }
 
-static bool init (void)
+bool SongChange::init ()
 {
     read_config();
 
@@ -335,7 +354,7 @@ static void * custom_warning (void)
     return bbox_hbox;
 }
 
-static const PreferencesWidget settings[] = {
+const PreferencesWidget SongChange::widgets[] = {
     WidgetLabel (N_("<b>Commands</b>")),
 
     WidgetLabel (N_("Command to run when starting a new song:")),
@@ -388,17 +407,9 @@ static void configure_cleanup(void)
     config.cmd_ttc = String ();
 }
 
-static const PluginPreferences preferences = {
-    {settings},
+const PluginPreferences SongChange::prefs = {
+    {widgets},
     configure_init,
     configure_ok_cb,
     configure_cleanup,
 };
-
-#define AUD_PLUGIN_NAME        N_("Song Change")
-#define AUD_PLUGIN_PREFS       & preferences
-#define AUD_PLUGIN_INIT        ::init
-#define AUD_PLUGIN_CLEANUP     ::cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>

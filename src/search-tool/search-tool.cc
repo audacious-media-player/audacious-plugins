@@ -33,6 +33,22 @@
 #define MAX_RESULTS 20
 #define SEARCH_DELAY 300
 
+class SearchTool : public GeneralPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Search Tool"),
+        PACKAGE
+    };
+
+    constexpr SearchTool () : GeneralPlugin (info, false) {}
+
+    void * get_gtk_widget ();
+    int take_message (const char * code, const void * data, int size);
+};
+
+EXPORT SearchTool aud_plugin_instance;
+
 enum SearchField {
     Genre = 0,
     Artist,
@@ -664,7 +680,7 @@ static void refresh_cb (GtkButton * button, GtkWidget * chooser)
     update_database ();
 }
 
-static void * search_get_widget ()
+void * SearchTool::get_gtk_widget ()
 {
     GtkWidget * vbox = gtk_vbox_new (FALSE, 6);
 
@@ -735,7 +751,7 @@ static void * search_get_widget ()
     return vbox;
 }
 
-int search_take_message (const char * code, const void * data, int size)
+int SearchTool::take_message (const char * code, const void * data, int size)
 {
     if (! strcmp (code, "grab focus"))
     {
@@ -746,10 +762,3 @@ int search_take_message (const char * code, const void * data, int size)
 
     return -1;
 }
-
-#define AUD_PLUGIN_NAME        N_("Search Tool")
-#define AUD_GENERAL_GET_WIDGET   search_get_widget
-#define AUD_PLUGIN_TAKE_MESSAGE  search_take_message
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
