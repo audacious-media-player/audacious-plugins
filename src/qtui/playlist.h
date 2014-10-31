@@ -21,6 +21,7 @@
 #define PLAYLIST_H
 
 #include <QTreeView>
+#include <libaudcore/playlist.h>
 
 #include "playlist_model.h"
 #include "filter_input.h"
@@ -35,7 +36,7 @@ public:
     PlaylistWidget (QTreeView * parent = 0, int uniqueId = -1);
     ~PlaylistWidget ();
     void scrollToCurrent ();
-    void update (void * level, int at, int count);
+    void update (Playlist::Update level, int at, int count);
     void positionUpdate ();
     void playCurrentIndex ();
     void deleteCurrentSelection ();

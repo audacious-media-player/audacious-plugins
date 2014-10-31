@@ -478,7 +478,7 @@ static void playlist_update_cb (void * data, void * unused)
         int at, count;
 
         if (list < 0 || aud_playlist_updated_range (list, & at, & count) >=
-         PLAYLIST_UPDATE_METADATA)
+         Playlist::Metadata)
             update_database ();
     }
 }

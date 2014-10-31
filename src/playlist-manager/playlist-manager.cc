@@ -148,12 +148,13 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * key,
 static gboolean position_changed = false;
 static gboolean playlist_activated = false;
 
-static void update_hook (void * level, void * list_)
+static void update_hook (void * data, void * list_)
 {
+    auto level = aud::from_ptr<Playlist::Update> (data);
     GtkWidget * list = (GtkWidget *) list_;
     int rows = aud_playlist_count ();
 
-    if (level == PLAYLIST_UPDATE_STRUCTURE)
+    if (level == Playlist::Structure)
     {
         int old_rows = audgui_list_row_count (list);
 
@@ -166,7 +167,7 @@ static void update_hook (void * level, void * list_)
         playlist_activated = true;
     }
 
-    if (level >= PLAYLIST_UPDATE_METADATA)
+    if (level >= Playlist::Metadata)
         audgui_list_update_rows (list, 0, rows);
 
     if (playlist_activated)

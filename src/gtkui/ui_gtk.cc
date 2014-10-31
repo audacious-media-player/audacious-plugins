@@ -622,7 +622,7 @@ static gboolean playlist_keypress_cb (GtkWidget * widget, GdkEventKey * event, v
         switch (event->keyval)
         {
         case GDK_KEY_Escape:
-            ui_playlist_notebook_position (GINT_TO_POINTER (aud_playlist_get_active ()), nullptr);
+            ui_playlist_notebook_position (aud::to_ptr (aud_playlist_get_active ()), nullptr);
             return TRUE;
         case GDK_KEY_Delete:
             playlist_delete_selected ();

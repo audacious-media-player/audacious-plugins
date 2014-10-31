@@ -195,23 +195,23 @@ void PlaylistTabs::cancelRename ()
     }
 }
 
-void PlaylistTabs::playlist_update_cb (PlaylistUpdateLevel global_level)
+void PlaylistTabs::playlist_update_cb (Playlist::Update global_level)
 {
-    if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+    if (global_level == Playlist::Structure)
         populatePlaylists ();
 
     int lists = aud_playlist_count ();
     for (int list = 0; list < lists; list ++)
     {
         int at, count;
-        PlaylistUpdateLevel level;
+        Playlist::Update level;
 
         if ((level = aud_playlist_updated_range (list, & at, & count)))
             playlistWidget (list)->update (level, at, count);
     }
 }
 
-void PlaylistTabs::playlist_position_cb (intptr_t list)
+void PlaylistTabs::playlist_position_cb (int list)
 {
     auto widget = playlistWidget (list);
     if (widget)

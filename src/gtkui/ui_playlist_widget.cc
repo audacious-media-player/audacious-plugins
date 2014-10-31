@@ -88,7 +88,7 @@ static const gboolean pw_col_label[PW_COLS] = {
 
 typedef struct {
     int list;
-    GList * queue;
+    Index<int> queue;
     int popup_source, popup_pos;
     gboolean popup_shown;
 } PlaylistWidgetData;
@@ -379,15 +379,13 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
 
 static void destroy_cb (PlaylistWidgetData * data)
 {
-    g_list_free (data->queue);
-    g_slice_free (PlaylistWidgetData, data);
+    delete data;
 }
 
 GtkWidget * ui_playlist_widget_new (int playlist)
 {
-    PlaylistWidgetData * data = g_slice_new (PlaylistWidgetData);
+    PlaylistWidgetData * data = new PlaylistWidgetData;
     data->list = playlist;
-    data->queue = nullptr;
     data->popup_source = 0;
     data->popup_pos = -1;
     data->popup_shown = FALSE;
@@ -430,28 +428,17 @@ void ui_playlist_widget_set_playlist (GtkWidget * widget, int list)
     data->list = list;
 }
 
-static void update_queue (GtkWidget * widget, PlaylistWidgetData * data)
-{
-    for (GList * node = data->queue; node; node = node->next)
-        audgui_list_update_rows (widget, GPOINTER_TO_INT (node->data), 1);
-
-    g_list_free (data->queue);
-    data->queue = nullptr;
-
-    for (int i = aud_playlist_queue_count (data->list); i --; )
-        data->queue = g_list_prepend (data->queue, GINT_TO_POINTER
-         (aud_playlist_queue_get_entry (data->list, i)));
-
-    for (GList * node = data->queue; node; node = node->next)
-        audgui_list_update_rows (widget, GPOINTER_TO_INT (node->data), 1);
-}
-
-void ui_playlist_widget_update (GtkWidget * widget, void * level, int at, int count)
+void ui_playlist_widget_update (GtkWidget * widget, Playlist::Update level, int at, int count)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    if (level == PLAYLIST_UPDATE_STRUCTURE)
+    for (int entry : data->queue)
+        audgui_list_update_rows (widget, entry, 1);
+
+    data->queue.remove (0, -1);
+
+    if (level == Playlist::Structure)
     {
         int old_entries = audgui_list_row_count (widget);
         int entries = aud_playlist_entry_count (data->list);
@@ -467,12 +454,18 @@ void ui_playlist_widget_update (GtkWidget * widget, void * level, int at, int co
 
         ui_playlist_widget_scroll (widget);
     }
-    else if (level == PLAYLIST_UPDATE_METADATA)
+    else if (level == Playlist::Metadata)
         audgui_list_update_rows (widget, at, count);
 
     audgui_list_update_selection (widget, at, count);
     audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
-    update_queue (widget, data);
+
+    for (int i = aud_playlist_queue_count (data->list); i --; )
+    {
+        int entry = aud_playlist_queue_get_entry (data->list, i);
+        audgui_list_update_rows (widget, entry, 1);
+        data->queue.append (entry);
+    }
 }
 
 void ui_playlist_widget_scroll (GtkWidget * widget)

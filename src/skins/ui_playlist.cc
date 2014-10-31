@@ -782,7 +782,7 @@ static void update_cb (void * unused, void * another)
 
 static void follow_cb (void * data, void * another)
 {
-    int list = GPOINTER_TO_INT (data);
+    int list = aud::from_ptr<int> (data);
     aud_playlist_select_all (list, FALSE);
 
     int row = aud_playlist_get_position (list);

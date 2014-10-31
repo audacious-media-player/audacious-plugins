@@ -64,11 +64,11 @@ private:
     void cullPlaylists ();
     void cancelRename ();
 
-    void playlist_update_cb (PlaylistUpdateLevel global_level);
-    void playlist_position_cb (intptr_t list);
+    void playlist_update_cb (Playlist::Update global_level);
+    void playlist_position_cb (int list);
 
-    HookReceiver<PlaylistTabs, PlaylistUpdateLevel> update_hook;
-    HookReceiver<PlaylistTabs, intptr_t> position_hook;
+    HookReceiver<PlaylistTabs, Playlist::Update> update_hook;
+    HookReceiver<PlaylistTabs, int> position_hook;
 };
 
 class PlaylistTabBar : public QTabBar
