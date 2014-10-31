@@ -31,15 +31,62 @@
 #include <libaudqt/libaudqt.h>
 #include <libaudqt/menu.h>
 
-#define DUMMY [] () { AUDDBG ("implement me\n"); }
+static void DUMMY () { AUDDBG ("implement me\n"); }
 
 static QMenu * services_menu () { return audqt::menu_get_by_id (AUD_MENU_MAIN); }
 
+static void open_files () { audqt::fileopener_show (false); }
+static void add_files () { audqt::fileopener_show (true); }
+
+static void rm_dupes_title () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void rm_dupes_filename () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
+static void rm_dupes_path () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+
+static void sort_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
+static void sort_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void sort_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
+static void sort_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
+static void sort_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
+static void sort_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void sort_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
+static void sort_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+static void sort_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
+static void sort_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
+static void sort_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
+
+static void sort_sel_track () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
+static void sort_sel_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void sort_sel_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
+static void sort_sel_album () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
+static void sort_sel_album_artist () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
+static void sort_sel_date () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void sort_sel_length () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
+static void sort_sel_path () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+static void sort_sel_custom_title () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
+static void sort_sel_reverse () { aud_playlist_reverse (aud_playlist_get_active ()); }
+static void sort_sel_random () { aud_playlist_randomize (aud_playlist_get_active ()); }
+
+static void pl_new ()
+{
+    aud_playlist_insert (-1);
+    aud_playlist_set_active (aud_playlist_count () - 1);
+}
+
+static void pl_play () { aud_playlist_play (aud_playlist_get_active ()); }
+static void pl_refresh () { aud_playlist_rescan (aud_playlist_get_active ()); }
+static void pl_remove_failed () { aud_playlist_remove_failed (aud_playlist_get_active ()); }
+static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }
+
+static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
+static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
+
+static void configure_effects () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); }
+
 void MainWindow::setupActions ()
 {
-    const audqt::MenuItem file_items[] = {
-        audqt::MenuCommand (N_("_Open Files ..."), [] () { audqt::fileopener_show (false); }, "Ctrl+O", "document-open"),
-        audqt::MenuCommand (N_("_Add Files ..."), [] () { audqt::fileopener_show (true); }, "Ctrl+Shift+O", "list-add"),
+    static constexpr audqt::MenuItem file_items[] = {
+        audqt::MenuCommand (N_("_Open Files ..."), open_files, "Ctrl+O", "document-open"),
+        audqt::MenuCommand (N_("_Add Files ..."), add_files, "Ctrl+Shift+O", "list-add"),
         audqt::MenuSep (),
         audqt::MenuCommand (N_("A_bout ..."), aud_ui_show_about_window, nullptr, "help-about"),
         audqt::MenuCommand (N_("_Settings ..."), aud_ui_show_prefs_window, nullptr, "preferences-system"),
@@ -49,7 +96,7 @@ void MainWindow::setupActions ()
         audqt::MenuCommand (N_("_Quit"), aud_quit, "Ctrl+Q", "application-exit")
     };
 
-    const audqt::MenuItem playback_items[] = {
+    static constexpr audqt::MenuItem playback_items[] = {
         audqt::MenuCommand (N_("_Play"), aud_drct_play, "Ctrl+Enter", "media-playback-start"),
         audqt::MenuCommand (N_("Paus_e"), aud_drct_pause, "Ctrl+,", "media-playback-pause"),
         audqt::MenuCommand (N_("_Stop"), aud_drct_stop, "Ctrl+.", "media-playback-stop"),
@@ -64,54 +111,54 @@ void MainWindow::setupActions ()
         audqt::MenuCommand (N_("Song _Info ..."), audqt::infowin_show_current, "Ctrl+I", "dialog-information"),
     };
 
-    const audqt::MenuItem dupe_items[] = {
-        audqt::MenuCommand (N_("By _Title"), [] () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }),
-        audqt::MenuCommand (N_("By _Filename"), [] () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }),
-        audqt::MenuCommand (N_("By File _Path"), [] () { aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }),
+    static constexpr audqt::MenuItem dupe_items[] = {
+        audqt::MenuCommand (N_("By _Title"), rm_dupes_title),
+        audqt::MenuCommand (N_("By _Filename"), rm_dupes_filename),
+        audqt::MenuCommand (N_("By File _Path"), rm_dupes_path),
     };
 
-    const audqt::MenuItem sort_items[] = {
-        audqt::MenuCommand (N_("By Track _Number"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }),
-        audqt::MenuCommand (N_("By _Title"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }),
-        audqt::MenuCommand (N_("By _Artist"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }),
-        audqt::MenuCommand (N_("By Al_bum"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }),
-        audqt::MenuCommand (N_("By Albu_m Artist"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }),
-        audqt::MenuCommand (N_("By Release _Date"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }),
-        audqt::MenuCommand (N_("By _Length"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }),
-        audqt::MenuCommand (N_("By _File Path"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }),
-        audqt::MenuCommand (N_("By _Custom Title"), [] () { aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }),
+    static constexpr audqt::MenuItem sort_items[] = {
+        audqt::MenuCommand (N_("By Track _Number"), sort_track),
+        audqt::MenuCommand (N_("By _Title"), sort_title),
+        audqt::MenuCommand (N_("By _Artist"), sort_artist),
+        audqt::MenuCommand (N_("By Al_bum"), sort_album),
+        audqt::MenuCommand (N_("By Albu_m Artist"), sort_album_artist),
+        audqt::MenuCommand (N_("By Release _Date"), sort_date),
+        audqt::MenuCommand (N_("By _Length"), sort_length),
+        audqt::MenuCommand (N_("By _File Path"), sort_path),
+        audqt::MenuCommand (N_("By _Custom Title"), sort_custom_title),
         audqt::MenuSep (),
-        audqt::MenuCommand (N_("R_everse Order"), [] () { aud_playlist_reverse (aud_playlist_get_active ()); }, nullptr, "view-sort-descending"),
-        audqt::MenuCommand (N_("_Random Order"), [] () { aud_playlist_randomize (aud_playlist_get_active ()); })
+        audqt::MenuCommand (N_("R_everse Order"), sort_reverse, nullptr, "view-sort-descending"),
+        audqt::MenuCommand (N_("_Random Order"), sort_random)
     };
 
-    const audqt::MenuItem sort_selected_items[] = {
-        audqt::MenuCommand (N_("By Track _Number"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Track); }),
-        audqt::MenuCommand (N_("By _Title"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Title); }),
-        audqt::MenuCommand (N_("By _Artist"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Artist); }),
-        audqt::MenuCommand (N_("By Al_bum"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); }),
-        audqt::MenuCommand (N_("By Albu_m Artist"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }),
-        audqt::MenuCommand (N_("By Release _Date"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); }),
-        audqt::MenuCommand (N_("By _Length"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); }),
-        audqt::MenuCommand (N_("By _File Path"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); }),
-        audqt::MenuCommand (N_("By _Custom Title"), [] () { aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }),
+    static constexpr audqt::MenuItem sort_selected_items[] = {
+        audqt::MenuCommand (N_("By Track _Number"), sort_sel_track),
+        audqt::MenuCommand (N_("By _Title"), sort_sel_title),
+        audqt::MenuCommand (N_("By _Artist"), sort_sel_artist),
+        audqt::MenuCommand (N_("By Al_bum"), sort_sel_album),
+        audqt::MenuCommand (N_("By Albu_m Artist"), sort_sel_album_artist),
+        audqt::MenuCommand (N_("By Release _Date"), sort_sel_date),
+        audqt::MenuCommand (N_("By _Length"), sort_sel_length),
+        audqt::MenuCommand (N_("By _File Path"), sort_sel_path),
+        audqt::MenuCommand (N_("By _Custom Title"), sort_sel_custom_title),
         audqt::MenuSep (),
-        audqt::MenuCommand (N_("R_everse Order"), [] () { aud_playlist_reverse_selected (aud_playlist_get_active ()); }, nullptr, "view-sort-descending"),
-        audqt::MenuCommand (N_("_Random Order"), [] () { aud_playlist_randomize_selected (aud_playlist_get_active ()); })
+        audqt::MenuCommand (N_("R_everse Order"), sort_sel_reverse, nullptr, "view-sort-descending"),
+        audqt::MenuCommand (N_("_Random Order"), sort_sel_random)
     };
 
-    const audqt::MenuItem playlist_items[] = {
-        audqt::MenuCommand (N_("_Play This Playlist"), [] () { aud_playlist_play (aud_playlist_get_active ()); }, "Shift+Enter", "media-playback-start"),
-        audqt::MenuCommand (N_("_Refresh"), [] () { aud_playlist_rescan (aud_playlist_get_active ()); }, "F5", "view-refresh"),
+    static constexpr audqt::MenuItem playlist_items[] = {
+        audqt::MenuCommand (N_("_Play This Playlist"), pl_play, "Shift+Enter", "media-playback-start"),
+        audqt::MenuCommand (N_("_Refresh"), pl_refresh, "F5", "view-refresh"),
         audqt::MenuSep (),
         audqt::MenuSub (N_("_Sort"), sort_items, "view-sort-ascending"),
         audqt::MenuSub (N_("Sort Se_lected"), sort_selected_items, "view-sort-ascending"),
         audqt::MenuSub (N_("Remove _Duplicates"), dupe_items, "edit-copy"),
-        audqt::MenuCommand (N_("Remove _Unavailable Files"), [] () { aud_playlist_remove_failed (aud_playlist_get_active ()); }, nullptr, "dialog-warning"),
+        audqt::MenuCommand (N_("Remove _Unavailable Files"), pl_remove_failed, nullptr, "dialog-warning"),
         audqt::MenuSep (),
-        audqt::MenuCommand (N_("_New"), [] () { aud_playlist_insert (-1); aud_playlist_set_active (aud_playlist_count () - 1); }, "Ctrl+T", "document-new"),
+        audqt::MenuCommand (N_("_New"), pl_new, "Ctrl+T", "document-new"),
         audqt::MenuCommand (N_("Ren_ame ..."), DUMMY, "F2", "insert-text"),
-        audqt::MenuCommand (N_("Remo_ve"), [] () { audqt::playlist_confirm_delete (aud_playlist_get_active ()); }, "Ctrl+W", "edit-delete"),
+        audqt::MenuCommand (N_("Remo_ve"), pl_close, "Ctrl+W", "edit-delete"),
         audqt::MenuSep (),
         audqt::MenuCommand (N_("_Import ..."), DUMMY, nullptr, "document-open"),
         audqt::MenuCommand (N_("_Export ..."), DUMMY, nullptr, "document-save"),
@@ -120,16 +167,16 @@ void MainWindow::setupActions ()
         audqt::MenuCommand (N_("_Queue Manager ..."), audqt::queue_manager_show, "Ctrl+U")
     };
 
-    const audqt::MenuItem output_items[] = {
-        audqt::MenuCommand (N_("Volume _Up"), [] () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }, "Ctrl++", "audio-volume-high"),
-        audqt::MenuCommand (N_("Volume _Down"), [] () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }, "Ctrl+-", "audio-volume-low"),
+    static constexpr audqt::MenuItem output_items[] = {
+        audqt::MenuCommand (N_("Volume _Up"), volume_up, "Ctrl++", "audio-volume-high"),
+        audqt::MenuCommand (N_("Volume _Down"), volume_down, "Ctrl+-", "audio-volume-low"),
         audqt::MenuSep (),
         audqt::MenuCommand (N_("_Equalizer"), audqt::equalizer_show, "Ctrl+E", "multimedia-volume-control"),
         audqt::MenuSep (),
-        audqt::MenuCommand (N_("E_ffects ..."), [] () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); })
+        audqt::MenuCommand (N_("E_ffects ..."), configure_effects)
     };
 
-    const audqt::MenuItem main_items[] = {
+    static constexpr audqt::MenuItem main_items[] = {
         audqt::MenuSub (N_("_File"), file_items),
         audqt::MenuSub (N_("_Playback"), playback_items),
         audqt::MenuSub (N_("P_laylist"), playlist_items),
