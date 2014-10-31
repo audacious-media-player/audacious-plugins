@@ -20,7 +20,6 @@
 #include "main_window.h"
 
 #include <libaudcore/drct.h>
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
@@ -44,7 +43,23 @@
 MainWindow::MainWindow () :
     m_dialogs (this),
     filterInput (new FilterInput (this)),
-    playlistTabs (new PlaylistTabs (this))
+    playlistTabs (new PlaylistTabs (this)),
+    hooks {
+        {"title change", this, & MainWindow::title_change_cb},
+        {"playback begin", this, & MainWindow::playback_begin_cb},
+        {"playback ready", this, & MainWindow::playback_ready_cb},
+        {"playback pause", this, & MainWindow::pause_cb},
+        {"playback unpause", this, & MainWindow::pause_cb},
+        {"playback stop", this, & MainWindow::playback_stop_cb},
+        {"set repeat", this, & MainWindow::update_toggles_cb},
+        {"set shuffle", this, & MainWindow::update_toggles_cb},
+        {"set no_playlist_advance", this, & MainWindow::update_toggles_cb},
+        {"set stop_after_current_song", this, & MainWindow::update_toggles_cb},
+    },
+    plugin_hooks {
+        {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},
+        {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb}
+    }
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
@@ -90,19 +105,6 @@ MainWindow::MainWindow () :
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
     setupActions ();
-
-    hook_associate ("title change",     (HookFunction) title_change_cb, this);
-    hook_associate ("playback begin",   (HookFunction) playback_begin_cb, this);
-    hook_associate ("playback ready",   (HookFunction) playback_ready_cb, this);
-    hook_associate ("playback pause",   (HookFunction) pause_cb, this);
-    hook_associate ("playback unpause", (HookFunction) pause_cb, this);
-    hook_associate ("playback stop",    (HookFunction) playback_stop_cb, this);
-
-    hook_associate ("set repeat",                  (HookFunction) update_toggles_cb, this);
-    hook_associate ("set shuffle",                 (HookFunction) update_toggles_cb, this);
-    hook_associate ("set no_playlist_advance",     (HookFunction) update_toggles_cb, this);
-    hook_associate ("set stop_after_current_song", (HookFunction) update_toggles_cb, this);
-
     add_dock_plugins ();
 
     buffering_timer.setSingleShot (true);
@@ -110,32 +112,20 @@ MainWindow::MainWindow () :
 
     if (aud_drct_get_playing ())
     {
-        playback_begin_cb (nullptr, this);
+        playback_begin_cb ();
         if (aud_drct_get_ready ())
-            playback_ready_cb (nullptr, this);
+            playback_ready_cb ();
     }
     else
-        playback_stop_cb (nullptr, this);
+        playback_stop_cb ();
 
-    title_change_cb (nullptr, this);
+    title_change_cb ();
 
     readSettings ();
 }
 
 MainWindow::~MainWindow ()
 {
-    hook_dissociate ("title change",     (HookFunction) title_change_cb);
-    hook_dissociate ("playback begin",   (HookFunction) playback_begin_cb);
-    hook_dissociate ("playback ready",   (HookFunction) playback_ready_cb);
-    hook_dissociate ("playback pause",   (HookFunction) pause_cb);
-    hook_dissociate ("playback unpause", (HookFunction) pause_cb);
-    hook_dissociate ("playback stop",    (HookFunction) playback_stop_cb);
-
-    hook_dissociate ("set repeat",                  (HookFunction) update_toggles_cb);
-    hook_dissociate ("set shuffle",                 (HookFunction) update_toggles_cb);
-    hook_dissociate ("set no_playlist_advance",     (HookFunction) update_toggles_cb);
-    hook_dissociate ("set stop_after_current_song", (HookFunction) update_toggles_cb);
-
     remove_dock_plugins ();
 }
 
@@ -197,45 +187,45 @@ void MainWindow::show_buffering ()
         setWindowTitle (_("Buffering ..."));
 }
 
-void MainWindow::title_change_cb (void *, MainWindow * window)
+void MainWindow::title_change_cb ()
 {
     auto title = aud_drct_get_title ();
     if (title)
-        window->setWindowTitle (QString (title) + QString (" - Audacious"));
+        setWindowTitle (QString (title) + QString (" - Audacious"));
 }
 
-void MainWindow::playback_begin_cb (void *, MainWindow * window)
+void MainWindow::playback_begin_cb ()
 {
-    pause_cb (nullptr, window);
-    window->buffering_timer.start (250);
+    pause_cb ();
+    buffering_timer.start (250);
 }
 
-void MainWindow::playback_ready_cb (void *, MainWindow * window)
+void MainWindow::playback_ready_cb ()
 {
-    title_change_cb (nullptr, window);
-    pause_cb (nullptr, window);
+    title_change_cb ();
+    pause_cb ();
 }
 
-void MainWindow::pause_cb (void *, MainWindow * window)
+void MainWindow::pause_cb ()
 {
     if (aud_drct_get_paused ())
-        window->action_play_pause_set_play ();
+        action_play_pause_set_play ();
     else
-        window->action_play_pause_set_pause ();
+        action_play_pause_set_pause ();
 
-    window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
 }
 
-void MainWindow::playback_stop_cb (void *, MainWindow * window)
+void MainWindow::playback_stop_cb ()
 {
-    window->setWindowTitle ("Audacious");
-    window->action_play_pause_set_play ();
-    window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
+    setWindowTitle ("Audacious");
+    action_play_pause_set_play ();
+    playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
 }
 
-void MainWindow::update_toggles_cb (void *, MainWindow * window)
+void MainWindow::update_toggles_cb ()
 {
-    window->updateToggles ();
+    updateToggles ();
 }
 
 struct DockWidget {
@@ -243,7 +233,7 @@ struct DockWidget {
     PluginHandle * pl;
 };
 
-void MainWindow::add_dock_plugin_cb (PluginHandle * plugin, MainWindow * window)
+void MainWindow::add_dock_plugin_cb (PluginHandle * plugin)
 {
     QWidget * widget = (QWidget *) aud_plugin_get_qt_widget (plugin);
 
@@ -251,36 +241,30 @@ void MainWindow::add_dock_plugin_cb (PluginHandle * plugin, MainWindow * window)
     {
         widget->resize (320, 240);
 
-        DockWidget * dw = new DockWidget;
+        auto w = new QDockWidget;
+        w->setWindowTitle (aud_plugin_get_name (plugin));
+        w->setObjectName (aud_plugin_get_basename (plugin));
+        w->setWidget (widget);
+        addDockWidget (Qt::LeftDockWidgetArea, w);
 
-        dw->w = new QDockWidget;
-        dw->w->setWindowTitle (aud_plugin_get_name (plugin));
-        dw->w->setObjectName (aud_plugin_get_basename (plugin));
-        dw->w->setWidget (widget);
-        dw->pl = plugin;
-
-        window->addDockWidget (Qt::LeftDockWidgetArea, dw->w);
-
-        window->dock_widgets.append (dw);
+        dock_widgets.append (w, plugin);
     }
 }
 
-void MainWindow::remove_dock_plugin_cb (PluginHandle * plugin, MainWindow * window)
+void MainWindow::remove_dock_plugin_cb (PluginHandle * plugin)
 {
-    for (auto dw : window->dock_widgets)
+    auto remove_cb = [&] (DockWidget & dw)
     {
-        if (dw->pl == plugin)
-        {
-            int pos = window->dock_widgets.find (dw);
+        if (dw.pl != plugin)
+            return false;
 
-            window->dock_widgets.remove (pos, 1);
+        removeDockWidget (dw.w);
 
-            window->removeDockWidget (dw->w);
-            delete dw->w;
+        delete dw.w;
+        return true;
+    };
 
-            delete dw;
-        }
-    }
+    dock_widgets.remove_if (remove_cb);
 }
 
 void MainWindow::add_dock_plugins ()
@@ -288,17 +272,14 @@ void MainWindow::add_dock_plugins ()
     for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
     {
         if (aud_plugin_get_enabled (plugin))
-            add_dock_plugin_cb (plugin, this);
+            add_dock_plugin_cb (plugin);
     }
 
     for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
     {
         if (aud_plugin_get_enabled (plugin))
-            add_dock_plugin_cb (plugin, this);
+            add_dock_plugin_cb (plugin);
     }
-
-    hook_associate ("dock plugin enabled",  (HookFunction) add_dock_plugin_cb, this);
-    hook_associate ("dock plugin disabled", (HookFunction) remove_dock_plugin_cb, this);
 }
 
 void MainWindow::remove_dock_plugins ()
@@ -306,15 +287,12 @@ void MainWindow::remove_dock_plugins ()
     for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
     {
         if (aud_plugin_get_enabled (plugin))
-            remove_dock_plugin_cb (plugin, this);
+            remove_dock_plugin_cb (plugin);
     }
 
     for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
     {
         if (aud_plugin_get_enabled (plugin))
-            remove_dock_plugin_cb (plugin, this);
+            remove_dock_plugin_cb (plugin);
     }
-
-    hook_dissociate ("dock plugin enabled",  (HookFunction) add_dock_plugin_cb);
-    hook_dissociate ("dock plugin disabled", (HookFunction) remove_dock_plugin_cb);
 }

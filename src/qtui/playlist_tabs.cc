@@ -24,7 +24,6 @@
 #include <QKeyEvent>
 #include <QLineEdit>
 
-#include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 
@@ -33,7 +32,9 @@
 PlaylistTabs::PlaylistTabs (QWidget * parent) :
     QTabWidget (parent),
     m_leftbtn (nullptr),
-    m_tabbar (new PlaylistTabBar (this))
+    m_tabbar (new PlaylistTabBar (this)),
+    update_hook ("playlist update", this, & PlaylistTabs::playlist_update_cb),
+    position_hook ("playlist position", this, & PlaylistTabs::playlist_position_cb)
 {
     installEventFilter (this);
 
@@ -43,21 +44,11 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
 
     populatePlaylists ();
 
-    hook_associate ("playlist update",      (HookFunction) playlist_update_cb, this);
-    hook_associate ("playlist activate",    (HookFunction) playlist_activate_cb, this);
-    hook_associate ("playlist set playing", (HookFunction) playlist_set_playing_cb, this);
-    hook_associate ("playlist position",    (HookFunction) playlist_position_cb, this);
-
     connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
 }
 
 PlaylistTabs::~PlaylistTabs ()
 {
-    hook_dissociate ("playlist update",      (HookFunction) playlist_update_cb);
-    hook_dissociate ("playlist activate",    (HookFunction) playlist_activate_cb);
-    hook_dissociate ("playlist set playing", (HookFunction) playlist_set_playing_cb);
-    hook_dissociate ("playlist position",    (HookFunction) playlist_position_cb);
-
     // TODO: cleanup playlists
 }
 
@@ -202,6 +193,29 @@ void PlaylistTabs::cancelRename ()
         setupTab (i, m_leftbtn, (const char *) aud_playlist_get_title (i), nullptr);
         m_leftbtn = nullptr;
     }
+}
+
+void PlaylistTabs::playlist_update_cb (PlaylistUpdateLevel global_level)
+{
+    if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+        populatePlaylists ();
+
+    int lists = aud_playlist_count ();
+    for (int list = 0; list < lists; list ++)
+    {
+        int at, count;
+        PlaylistUpdateLevel level;
+
+        if ((level = aud_playlist_updated_range (list, & at, & count)))
+            playlistWidget (list)->update (level, at, count);
+    }
+}
+
+void PlaylistTabs::playlist_position_cb (intptr_t list)
+{
+    auto widget = playlistWidget (list);
+    if (widget)
+        widget->positionUpdate ();
 }
 
 PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)

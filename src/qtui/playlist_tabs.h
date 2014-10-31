@@ -22,6 +22,7 @@
 
 #include <QTabWidget>
 
+#include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
@@ -63,40 +64,11 @@ private:
     void cullPlaylists ();
     void cancelRename ();
 
-    static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
-    {
-        if (data == PLAYLIST_UPDATE_STRUCTURE)
-            tabWidget->populatePlaylists();
+    void playlist_update_cb (PlaylistUpdateLevel global_level);
+    void playlist_position_cb (intptr_t list);
 
-        int lists = aud_playlist_count ();
-
-        for (int list = 0; list < lists; list ++)
-        {
-            int at, count;
-            PlaylistUpdateLevel level = aud_playlist_updated_range (list, & at, & count);
-
-            if (level)
-                tabWidget->playlistWidget (list)->update (level, at, count);
-        }
-    }
-
-    static void playlist_activate_cb (void * data, PlaylistTabs * tabWidget)
-    {
-
-    }
-
-    static void playlist_set_playing_cb (void * data, PlaylistTabs * tabWidget)
-    {
-
-    }
-
-    static void playlist_position_cb (void * data, PlaylistTabs * tabWidget)
-    {
-        int num = (int) (long) data;
-        auto playlistWidget = tabWidget->playlistWidget (num);
-        if (playlistWidget)
-            playlistWidget->positionUpdate ();
-    }
+    HookReceiver<PlaylistTabs, PlaylistUpdateLevel> update_hook;
+    HookReceiver<PlaylistTabs, intptr_t> position_hook;
 };
 
 class PlaylistTabBar : public QTabBar

@@ -20,26 +20,18 @@
 #include "dialog_windows.h"
 
 #include <QMessageBox>
-
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 
 DialogWindows::DialogWindows (QWidget * parent) :
-    m_parent (parent)
-{
-    hook_associate ("ui show progress", show_progress, this);
-    hook_associate ("ui show progress 2", show_progress_2, this);
-    hook_associate ("ui hide progress", hide_progress, this);
-    hook_associate ("ui show error", show_error, this);
-}
+    m_parent (parent),
+    show_hooks {
+        {"ui show progress", this, & DialogWindows::show_progress},
+        {"ui show progress 2", this, & DialogWindows::show_progress_2},
+        {"ui show error", this, & DialogWindows::show_error}
+    },
+    hide_hook ("ui hide progress", this, & DialogWindows::hide_progress) {}
 
-DialogWindows::~DialogWindows ()
-{
-    hook_dissociate_full ("ui show progress", show_progress, this);
-    hook_dissociate_full ("ui show progress 2", show_progress_2, this);
-    hook_dissociate_full ("ui hide progress", hide_progress, this);
-    hook_dissociate_full ("ui show error", show_error, this);
-}
+DialogWindows::~DialogWindows () {}
 
 void DialogWindows::create_progress ()
 {
@@ -53,7 +45,7 @@ void DialogWindows::create_progress ()
     }
 }
 
-void DialogWindows::create_error (const char * message)
+void DialogWindows::show_error (const char * message)
 {
     if (! m_error)
     {
@@ -66,35 +58,22 @@ void DialogWindows::create_error (const char * message)
     m_error->show ();
 }
 
-void DialogWindows::show_progress (void * message, void * data)
+void DialogWindows::show_progress (const char * message)
 {
-    auto dw = (DialogWindows *) data;
-
-    dw->create_progress ();
-    dw->m_progress->setInformativeText ((const char *) message);
-    dw->m_progress->show ();
+    create_progress ();
+    m_progress->setInformativeText (message);
+    m_progress->show ();
 }
 
-void DialogWindows::show_progress_2 (void * message, void * data)
+void DialogWindows::show_progress_2 (const char * message)
 {
-    auto dw = (DialogWindows *) data;
-
-    dw->create_progress ();
-    dw->m_progress->setText ((const char *) message);
-    dw->m_progress->show ();
+    create_progress ();
+    m_progress->setText (message);
+    m_progress->show ();
 }
 
-void DialogWindows::hide_progress (void *, void * data)
+void DialogWindows::hide_progress ()
 {
-    auto dw = (DialogWindows *) data;
-
-    if (dw->m_progress)
-        dw->m_progress->hide ();
-}
-
-void DialogWindows::show_error (void * message, void * data)
-{
-    auto dw = (DialogWindows *) data;
-
-    dw->create_error ((const char *) message);
+    if (m_progress)
+        m_progress->hide ();
 }

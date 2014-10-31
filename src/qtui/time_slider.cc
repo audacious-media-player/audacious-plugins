@@ -21,11 +21,16 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
-#include <libaudcore/hook.h>
 
 TimeSlider::TimeSlider (QWidget * parent) :
     QSlider (Qt::Horizontal, parent),
-    m_label (new QLabel (parent))
+    m_label (new QLabel (parent)),
+    hooks {
+        {"playback ready", this, & TimeSlider::start_stop},
+        {"playback pause", this, & TimeSlider::start_stop},
+        {"playback unpause", this, & TimeSlider::start_stop},
+        {"playback stop", this, & TimeSlider::start_stop},
+    }
 {
     setFocusPolicy (Qt::NoFocus);
     setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -38,21 +43,10 @@ TimeSlider::TimeSlider (QWidget * parent) :
     connect (this, & QSlider::sliderPressed, this, & TimeSlider::pressed);
     connect (this, & QSlider::sliderReleased, this, & TimeSlider::released);
 
-    hook_associate ("playback ready", start_stop_hook, this);
-    hook_associate ("playback pause", start_stop_hook, this);
-    hook_associate ("playback unpause", start_stop_hook, this);
-    hook_associate ("playback stop", start_stop_hook, this);
-
     start_stop ();
 }
 
-TimeSlider::~TimeSlider ()
-{
-    hook_dissociate_full ("playback ready", start_stop_hook, this);
-    hook_dissociate_full ("playback pause", start_stop_hook, this);
-    hook_dissociate_full ("playback unpause", start_stop_hook, this);
-    hook_dissociate_full ("playback stop", start_stop_hook, this);
-}
+TimeSlider::~TimeSlider () {}
 
 void TimeSlider::set_label (int time, int length)
 {

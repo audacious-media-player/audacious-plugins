@@ -23,6 +23,8 @@
 #include <QLabel>
 #include <QStatusBar>
 
+#include <libaudcore/hook.h>
+
 class StatusBar : public QStatusBar
 {
 public:
@@ -33,8 +35,10 @@ private:
     QLabel * codec_label;
     QLabel * length_label;
 
-    static void update_codec (void *, void * data);
-    static void update_length (void *, void * data);
+    void update_codec ();
+    void update_length ();
+
+    HookReceiver<StatusBar> hooks[6];
 };
 
 #endif // STATUS_BAR_H

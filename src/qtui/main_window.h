@@ -20,6 +20,7 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include <libaudcore/hook.h>
 #include <libaudcore/index.h>
 #include <libaudcore/objects.h>
 
@@ -66,17 +67,20 @@ private:
     void add_dock_plugins ();
     void remove_dock_plugins ();
 
-    static void title_change_cb (void *, MainWindow * window);
-    static void playback_begin_cb (void *, MainWindow * window);
-    static void playback_ready_cb (void *, MainWindow * window);
-    static void pause_cb (void *, MainWindow * window);
-    static void playback_stop_cb (void *, MainWindow * window);
-    static void update_toggles_cb (void *, MainWindow * window);
+    void title_change_cb ();
+    void playback_begin_cb ();
+    void playback_ready_cb ();
+    void pause_cb ();
+    void playback_stop_cb ();
+    void update_toggles_cb ();
 
-    static void add_dock_plugin_cb (PluginHandle * plugin, MainWindow * window);
-    static void remove_dock_plugin_cb (PluginHandle * plugin, MainWindow * window);
+    void add_dock_plugin_cb (PluginHandle * plugin);
+    void remove_dock_plugin_cb (PluginHandle * plugin);
 
-    Index <DockWidget *> dock_widgets;
+    const HookReceiver<MainWindow> hooks[10];
+    const HookReceiver<MainWindow, PluginHandle *> plugin_hooks[2];
+
+    Index<DockWidget> dock_widgets;
 };
 
 #endif
