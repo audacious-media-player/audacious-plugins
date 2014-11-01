@@ -42,7 +42,8 @@ private:
     void show_progress_2 (const char * message);
     void hide_progress ();
 
-    HookReceiver<DialogWindows, const char *> show_hooks[3];
+    // unfortunately GCC cannot handle these as an array
+    HookReceiver<DialogWindows, const char *> show_hook1, show_hook2, show_hook3;
     HookReceiver<DialogWindows> hide_hook;
 };
 

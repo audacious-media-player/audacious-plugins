@@ -28,14 +28,12 @@ StatusBar::StatusBar (QWidget * parent) :
     QStatusBar (parent),
     codec_label (new QLabel (this)),
     length_label (new QLabel (this)),
-    hooks {
-        {"playlist activate", this, & StatusBar::update_length},
-        {"playlist update", this, & StatusBar::update_length},
-        {"playback ready", this, & StatusBar::update_codec},
-        {"playback stop", this, & StatusBar::update_codec},
-        {"info change", this, & StatusBar::update_codec},
-        {"tuple change", this, & StatusBar::update_codec}
-    }
+    hook1 ("playlist activate", this, & StatusBar::update_length),
+    hook2 ("playlist update", this, & StatusBar::update_length),
+    hook3 ("playback ready", this, & StatusBar::update_codec),
+    hook4 ("playback stop", this, & StatusBar::update_codec),
+    hook5 ("info change", this, & StatusBar::update_codec),
+    hook6 ("tuple change", this, & StatusBar::update_codec)
 {
     setStyleSheet ("QStatusBar::item { border: none; }");
 

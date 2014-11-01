@@ -44,22 +44,18 @@ MainWindow::MainWindow () :
     m_dialogs (this),
     filterInput (new FilterInput (this)),
     playlistTabs (new PlaylistTabs (this)),
-    hooks {
-        {"title change", this, & MainWindow::title_change_cb},
-        {"playback begin", this, & MainWindow::playback_begin_cb},
-        {"playback ready", this, & MainWindow::playback_ready_cb},
-        {"playback pause", this, & MainWindow::pause_cb},
-        {"playback unpause", this, & MainWindow::pause_cb},
-        {"playback stop", this, & MainWindow::playback_stop_cb},
-        {"set repeat", this, & MainWindow::update_toggles_cb},
-        {"set shuffle", this, & MainWindow::update_toggles_cb},
-        {"set no_playlist_advance", this, & MainWindow::update_toggles_cb},
-        {"set stop_after_current_song", this, & MainWindow::update_toggles_cb},
-    },
-    plugin_hooks {
-        {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},
-        {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb}
-    }
+    hook1 ("title change", this, & MainWindow::title_change_cb),
+    hook2 ("playback begin", this, & MainWindow::playback_begin_cb),
+    hook3 ("playback ready", this, & MainWindow::playback_ready_cb),
+    hook4 ("playback pause", this, & MainWindow::pause_cb),
+    hook5 ("playback unpause", this, & MainWindow::pause_cb),
+    hook6 ("playback stop", this, & MainWindow::playback_stop_cb),
+    hook7 ("set repeat", this, & MainWindow::update_toggles_cb),
+    hook8 ("set shuffle", this, & MainWindow::update_toggles_cb),
+    hook9 ("set no_playlist_advance", this, & MainWindow::update_toggles_cb),
+    hook10 ("set stop_after_current_song", this, & MainWindow::update_toggles_cb),
+    plugin_hook1 ("dock plugin enabled", this, & MainWindow::add_dock_plugin_cb),
+    plugin_hook2 ("dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb)
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");

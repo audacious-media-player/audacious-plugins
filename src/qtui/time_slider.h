@@ -51,7 +51,8 @@ private:
     QTimer m_timer;
     QLabel * m_label;
 
-    HookReceiver<TimeSlider> hooks[4];
+    // unfortunately GCC cannot handle these as an array
+    HookReceiver<TimeSlider> hook1, hook2, hook3, hook4;
 };
 
 #endif // TIME_SLIDER_H

@@ -25,12 +25,10 @@
 TimeSlider::TimeSlider (QWidget * parent) :
     QSlider (Qt::Horizontal, parent),
     m_label (new QLabel (parent)),
-    hooks {
-        {"playback ready", this, & TimeSlider::start_stop},
-        {"playback pause", this, & TimeSlider::start_stop},
-        {"playback unpause", this, & TimeSlider::start_stop},
-        {"playback stop", this, & TimeSlider::start_stop},
-    }
+    hook1 ("playback ready", this, & TimeSlider::start_stop),
+    hook2 ("playback pause", this, & TimeSlider::start_stop),
+    hook3 ("playback unpause", this, & TimeSlider::start_stop),
+    hook4 ("playback stop", this, & TimeSlider::start_stop)
 {
     setFocusPolicy (Qt::NoFocus);
     setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Fixed);

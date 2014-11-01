@@ -77,8 +77,10 @@ private:
     void add_dock_plugin_cb (PluginHandle * plugin);
     void remove_dock_plugin_cb (PluginHandle * plugin);
 
-    const HookReceiver<MainWindow> hooks[10];
-    const HookReceiver<MainWindow, PluginHandle *> plugin_hooks[2];
+    // unfortunately GCC cannot handle these as an array
+    const HookReceiver<MainWindow> hook1, hook2, hook3, hook4, hook5, hook6,
+     hook7, hook8, hook9, hook10;
+    const HookReceiver<MainWindow, PluginHandle *> plugin_hook1, plugin_hook2;
 
     Index<DockWidget> dock_widgets;
 };

@@ -24,11 +24,9 @@
 
 DialogWindows::DialogWindows (QWidget * parent) :
     m_parent (parent),
-    show_hooks {
-        {"ui show progress", this, & DialogWindows::show_progress},
-        {"ui show progress 2", this, & DialogWindows::show_progress_2},
-        {"ui show error", this, & DialogWindows::show_error}
-    },
+    show_hook1 ("ui show progress", this, & DialogWindows::show_progress),
+    show_hook2 ("ui show progress 2", this, & DialogWindows::show_progress_2),
+    show_hook3 ("ui show error", this, & DialogWindows::show_error),
     hide_hook ("ui hide progress", this, & DialogWindows::hide_progress) {}
 
 DialogWindows::~DialogWindows () {}

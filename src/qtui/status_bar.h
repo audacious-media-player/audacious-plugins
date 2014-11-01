@@ -38,7 +38,8 @@ private:
     void update_codec ();
     void update_length ();
 
-    HookReceiver<StatusBar> hooks[6];
+    // unfortunately GCC cannot handle these as an array
+    HookReceiver<StatusBar> hook1, hook2, hook3, hook4, hook5, hook6;
 };
 
 #endif // STATUS_BAR_H
