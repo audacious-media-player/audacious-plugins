@@ -54,6 +54,8 @@ public:
         delete window;
         window = nullptr;
 
+        audqt::cleanup ();
+
         delete qapp;
         qapp = nullptr;
     }
