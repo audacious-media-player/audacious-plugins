@@ -151,7 +151,7 @@ void MainWindow::setupActions ()
     };
 
     static constexpr audqt::MenuItem playlist_items[] = {
-        audqt::MenuCommand (N_("_Play This Playlist"), pl_play, "Shift+Enter", "media-playback-start"),
+        audqt::MenuCommand (N_("_Play This Playlist"), pl_play, "Shift+Return", "media-playback-start"),
         audqt::MenuCommand (N_("_Refresh"), pl_refresh, "F5", "view-refresh"),
         audqt::MenuSep (),
         audqt::MenuSub (N_("_Sort"), sort_items, "view-sort-ascending"),
