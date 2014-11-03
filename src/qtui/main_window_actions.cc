@@ -100,7 +100,7 @@ void MainWindow::setupActions ()
     };
 
     static constexpr audqt::MenuItem playback_items[] = {
-        audqt::MenuCommand (N_("_Play"), aud_drct_play, "Ctrl+Enter", "media-playback-start"),
+        audqt::MenuCommand (N_("_Play"), aud_drct_play, "Ctrl+Return", "media-playback-start"),
         audqt::MenuCommand (N_("Paus_e"), aud_drct_pause, "Ctrl+,", "media-playback-pause"),
         audqt::MenuCommand (N_("_Stop"), aud_drct_stop, "Ctrl+.", "media-playback-stop"),
         audqt::MenuCommand (N_("Pre_vious"), aud_drct_pl_prev, "Alt+Up", "media-skip-backward"),
