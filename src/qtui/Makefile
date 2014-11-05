@@ -61,6 +61,21 @@ DATA = QtUi/16/audio-volume-high.png \
        QtUi/22/media-playlist-shuffle.png \
        QtUi/22/media-skip-backward.png \
        QtUi/22/media-skip-forward.png \
+       QtUi/32/audio-volume-high.png \
+       QtUi/32/audio-volume-low.png \
+       QtUi/32/audio-volume-medium.png \
+       QtUi/32/audio-volume-muted.png \
+       QtUi/32/audio-volume-off.png \
+       QtUi/32/document-open.png \
+       QtUi/32/edit-find.png \
+       QtUi/32/list-add.png \
+       QtUi/32/media-playback-pause.png \
+       QtUi/32/media-playback-start.png \
+       QtUi/32/media-playback-stop.png \
+       QtUi/32/media-playlist-repeat.png \
+       QtUi/32/media-playlist-shuffle.png \
+       QtUi/32/media-skip-backward.png \
+       QtUi/32/media-skip-forward.png \
        QtUi/44/audio-volume-high.png \
        QtUi/44/audio-volume-low.png \
        QtUi/44/audio-volume-medium.png \

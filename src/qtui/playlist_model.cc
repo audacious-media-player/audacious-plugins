@@ -17,6 +17,7 @@
  * the use of this software.
  */
 
+#include <QApplication>
 #include <QIcon>
 
 #include <libaudcore/i18n.h>
@@ -27,6 +28,14 @@
 
 #include "playlist_model.h"
 #include "playlist_model.moc"
+
+static inline QPixmap get_icon (const char * name)
+{
+    qreal r = qApp->devicePixelRatio ();
+    QPixmap pm = QIcon::fromTheme (name).pixmap (16 * r);
+    pm.setDevicePixelRatio (r);
+    return pm;
+}
 
 PlaylistModel::PlaylistModel (QObject * parent, int id) : QAbstractListModel (parent),
     m_uniqueId (id)
@@ -89,16 +98,15 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         }
 
     case Qt::DecorationRole:
-
         if (index.column () == 0 && index.row () == aud_playlist_get_position (playlist ()))
         {
             if (aud_playlist_get_playing () == playlist ())
                 if (aud_drct_get_paused ())
-                    return QIcon::fromTheme ("media-playback-pause");
+                    return get_icon ("media-playback-pause");
                 else
-                    return QIcon::fromTheme ("media-playback-start");
+                    return get_icon ("media-playback-start");
             else
-                return QIcon::fromTheme ("media-playback-stop");
+                return get_icon ("media-playback-stop");
         }
     }
     return QVariant ();
