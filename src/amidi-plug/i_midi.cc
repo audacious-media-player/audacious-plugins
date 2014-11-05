@@ -28,8 +28,11 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/vfs.h>
 
 #include "i_configure.h"
+
+#define MAKE_ID(c1, c2, c3, c4) ((c1) | ((c2) << 8) | ((c3) << 16) | ((c4) << 24))
 
 #define WARNANDBREAK(...) { AUDERR (__VA_ARGS__); break; }
 
@@ -749,16 +752,9 @@ void midifile_t::get_bpm (int * bpm, int * wavg_bpm)
 
 
 /* helper function that parses a midi file; returns 1 on success, 0 otherwise */
-bool midifile_t::parse_from_filename (const char * filename)
+bool midifile_t::parse_from_file (const char * filename, VFSFile & file)
 {
-    AUDDBG ("PARSE_FROM_FILENAME requested, opening file: %s\n", filename);
-
-    VFSFile file (filename, "rb");
-    if (! file)
-    {
-        AUDERR ("Cannot open %s\n", filename);
-        return false;
-    }
+    bool success = false;
 
     file_name = String (filename);
     file_data = file.read_all ();
@@ -766,7 +762,6 @@ bool midifile_t::parse_from_filename (const char * filename)
     switch (read_id ())
     {
     case MAKE_ID ('R', 'I', 'F', 'F') :
-    {
         AUDDBG ("PARSE_FROM_FILENAME requested, RIFF chunk found, processing...\n");
 
         /* read riff chunk */
@@ -774,10 +769,8 @@ bool midifile_t::parse_from_filename (const char * filename)
             WARNANDBREAK ("%s: invalid file format (riff parser)\n", filename);
 
         /* if that was read correctly, go ahead and read smf data */
-    }
 
     case MAKE_ID ('M', 'T', 'h', 'd') :
-    {
         AUDDBG ("PARSE_FROM_FILENAME requested, MThd chunk found, processing...\n");
 
         /* we don't care about port count here, pass 1 */
@@ -795,16 +788,16 @@ bool midifile_t::parse_from_filename (const char * filename)
         setget_length ();
 
         /* ok, mf has been filled with information; successfully return */
-        return true;
-    }
+        success = true;
+        break;
 
     default:
-    {
         AUDERR ("%s is not a Standard MIDI File\n", filename);
         break;
     }
-    }
 
-    /* something failed */
-    return false;
+    file_name = String ();
+    file_data.clear ();
+
+    return success;
 }

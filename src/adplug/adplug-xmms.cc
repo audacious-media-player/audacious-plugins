@@ -28,17 +28,47 @@
 #include "silentopl.h"
 #include "players.h"
 
-#include <libaudcore/input.h>
-#include <libaudcore/runtime.h>
-#include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/input.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
-#include "adplug-xmms.h"
+static const char * adplug_exts[] = {
+    "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
+    "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
+    "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
+    "sng", "wlf", "xad", "xsm"
+};
+
+class AdPlugXMMS : public InputPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("AdPlug (AdLib Player)"),
+        PACKAGE
+    };
+
+    static constexpr InputPluginInfo input_info = {
+        0,      // priority
+        false,  // subtunes
+        false,  // tag writing
+        {adplug_exts}
+    };
+
+    AdPlugXMMS () : InputPlugin (info, input_info) {}
+
+    bool init ();
+    void cleanup ();
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT AdPlugXMMS aud_plugin_instance;
 
 /***** Defines *****/
-
-// Version string
-#define ADPLUG_NAME	"AdPlug (AdLib Sound Player)"
 
 // Sound buffer size in samples
 #define SNDBUFSIZE	512
@@ -107,7 +137,7 @@ factory (VFSFile & fd, Copl * newopl)
 
 /***** Main player (!! threaded !!) *****/
 
-Tuple adplug_get_tuple (const char * filename, VFSFile & fd)
+Tuple AdPlugXMMS::read_tuple (const char * filename, VFSFile & fd)
 {
   Tuple tuple;
   CSilentopl tmpopl;
@@ -141,10 +171,16 @@ Tuple adplug_get_tuple (const char * filename, VFSFile & fd)
 // Define sampsize macro (only usable inside play_loop()!)
 #define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
 
-static bool play_loop (const char * filename, VFSFile & fd)
 /* Main playback thread. Takes the filename to play as argument. */
+bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 {
-  dbg_printf ("play_loop(\"%s\"): ", filename);
+  dbg_printf ("adplug_play(\"%s\"): ", filename);
+
+  // open output plugin
+  dbg_printf ("open, ");
+  if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
+    return false;
+
   CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
@@ -152,9 +188,6 @@ static bool play_loop (const char * filename, VFSFile & fd)
     bit16 = conf.bit16,          // Duplicate config, so it doesn't affect us if
     stereo = conf.stereo;        // the user changes it while we're playing.
   unsigned long freq = conf.freq;
-
-  if (!fd)
-    return false;
 
   // Try to load module
   dbg_printf ("factory, ");
@@ -248,8 +281,7 @@ static bool play_loop (const char * filename, VFSFile & fd)
 
 /***** Informational *****/
 
-bool
-adplug_is_our_fd (const char * filename, VFSFile & fd)
+bool AdPlugXMMS::is_our_file (const char * filename, VFSFile & fd)
 {
   CSilentopl tmpopl;
 
@@ -268,22 +300,6 @@ adplug_is_our_fd (const char * filename, VFSFile & fd)
   return false;
 }
 
-/***** Player control *****/
-
-bool
-adplug_play (const char * filename, VFSFile & file)
-{
-  dbg_printf ("adplug_play(\"%s\"): ", filename);
-
-  // open output plugin
-  dbg_printf ("open, ");
-  if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
-    return false;
-
-  play_loop (filename, file);
-  return true;
-}
-
 /***** Configuration file handling *****/
 
 #define CFG_VERSION "AdPlug"
@@ -295,7 +311,7 @@ static const char * const adplug_defaults[] = {
  "Endless", "FALSE",
  nullptr};
 
-bool adplug_init (void)
+bool AdPlugXMMS::init ()
 {
   aud_config_set_defaults (CFG_VERSION, adplug_defaults);
 
@@ -344,8 +360,7 @@ bool adplug_init (void)
   return true;
 }
 
-void
-adplug_quit (void)
+void AdPlugXMMS::cleanup ()
 {
   // Close database
   dbg_printf ("db, ");

@@ -52,8 +52,7 @@ SRCS = adplug-xmms.cc		\
        core/msc.cc		\
        core/rix.cc		\
        core/adl.cc		\
-       core/jbm.cc		\
-       plugin.cc
+       core/jbm.cc
 
 include ../../buildsys.mk
 include ../../extra.mk

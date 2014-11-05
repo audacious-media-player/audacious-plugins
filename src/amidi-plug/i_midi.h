@@ -22,13 +22,11 @@
 #define _I_MIDI_H 1
 
 #include <stdint.h>
-
 #include <libaudcore/index.h>
-#include <libaudcore/vfs.h>
 
 #include "i_midievent.h"
 
-#define MAKE_ID(c1, c2, c3, c4) ((c1) | ((c2) << 8) | ((c3) << 16) | ((c4) << 24))
+class VFSFile;
 
 
 /* sequencer event type, got from ALSA header alsa/seq_event.h */
@@ -250,11 +248,6 @@ struct midifile_track_t
 
 struct midifile_t
 {
-    String file_name;
-    Index<char> file_data;
-    int file_offset = 0;
-    bool file_eof = false;
-
     Index<midifile_track_t> tracks;
 
     unsigned short format = 0;
@@ -269,21 +262,26 @@ struct midifile_t
     int avg_microsec_per_tick = 0;
     int64_t length = 0;
 
-    int read_id ();
-    bool parse_riff ();
-    bool parse_smf (int);
-    bool setget_tempo ();
-    void setget_length ();
     void get_bpm (int *, int *);
-    bool parse_from_filename (const char *);
+    bool parse_from_file (const char *, VFSFile & file);
 
 private:
+    String file_name;
+    Index<char> file_data;
+    int file_offset = 0;
+    bool file_eof = false;
+
     void skip_bytes (int);
     int read_byte ();
     int read_32_le ();
+    int read_id ();
     int read_int (int);
     int read_var ();
-    bool read_track(midifile_track_t &, int, int);
+    bool read_track (midifile_track_t &, int, int);
+    bool parse_smf (int);
+    bool parse_riff ();
+    bool setget_tempo ();
+    void setget_length ();
 };
 
 #endif /* !_I_MIDI_H */

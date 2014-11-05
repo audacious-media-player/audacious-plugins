@@ -10,14 +10,38 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
+static const char * const aac_exts[] = {"aac"};
+
+class AACDecoder : public InputPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("AAC (Raw) Decoder"),
+        PACKAGE
+    };
+
+    static constexpr InputPluginInfo input_info = {
+        0,      // priority
+        false,  // subtunes
+        false,  // tag writing
+        {aac_exts}
+    };
+
+    AACDecoder () : InputPlugin (info, input_info) {}
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT AACDecoder aud_plugin_instance;
+
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
  * We use this for sanity checks, among other things, as mp4ff needs
  * a labotomy sometimes.
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
-
-static const char *fmts[] = { "aac", nullptr };
 
 /*
  * These routines are derived from MPlayer.
@@ -78,7 +102,7 @@ static int find_aac_header (unsigned char * data, int length, int * size)
     return -1;
 }
 
-static bool parse_aac_stream (const char * filename, VFSFile & stream)
+bool AACDecoder::is_our_file (const char * filename, VFSFile & stream)
 {
     unsigned char data[8192];
     int offset, found, inner, size;
@@ -233,7 +257,7 @@ static void calc_aac_info (VFSFile & handle, int * length, int * bitrate,
         NeAACDecClose (decoder);
 }
 
-static Tuple aac_get_tuple (const char * filename, VFSFile & handle)
+Tuple AACDecoder::read_tuple (const char * filename, VFSFile & handle)
 {
     Tuple tuple;
     int length, bitrate, samplerate, channels;
@@ -303,7 +327,7 @@ static void aac_seek (VFSFile & file, NeAACDecHandle dec, int time, int len,
     }
 }
 
-static bool my_decode_aac (const char * filename, VFSFile & file)
+bool AACDecoder::play (const char * filename, VFSFile & file)
 {
     NeAACDecHandle decoder = 0;
     NeAACDecConfigurationPtr decoder_config;
@@ -455,12 +479,3 @@ ERR_CLOSE_DECODER:
     NeAACDecClose (decoder);
     return false;
 }
-
-#define AUD_PLUGIN_NAME        N_("AAC (Raw) Decoder")
-#define AUD_INPUT_PLAY         my_decode_aac
-#define AUD_INPUT_IS_OUR_FILE  parse_aac_stream
-#define AUD_INPUT_READ_TUPLE   aac_get_tuple
-#define AUD_INPUT_EXTS         fmts
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
