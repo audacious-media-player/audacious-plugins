@@ -39,13 +39,6 @@
 
 #include "util.h"
 
-typedef struct
-{
-    const char *to_match;
-    char *match;
-    gboolean found;
-} FindFileContext;
-
 #ifndef HAVE_MKDTEMP
 static void make_directory(const char *path, mode_t mode);
 #endif
