@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include <QImage>
 #include <QLabel>
 #include <QPixmap>
 
@@ -52,10 +51,8 @@ void AlbumArtQt::update (void * unused, QLabel * widget)
     if (! widget)
         return;
 
-    QImage img = audqt::art_request_current ();
     QSize size = widget->size ();
-
-    widget->setPixmap (QPixmap::fromImage (img.scaled (size.width (), size.height (), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    widget->setPixmap (audqt::art_request_current (size.width (), size.height ()));
 }
 
 void AlbumArtQt::clear (void * unused, QLabel * widget)
