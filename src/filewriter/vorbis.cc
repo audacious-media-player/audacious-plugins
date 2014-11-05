@@ -125,7 +125,7 @@ static int vorbis_open(void)
 static void vorbis_write_real (void * data, int length)
 {
     int samples = length / sizeof (float);
-    int channel, result;
+    int channel;
     float * end = (float *) data + samples;
     float * * buffer = vorbis_analysis_buffer (& vd, samples / input.channels);
     float * from, * to;
@@ -149,7 +149,7 @@ static void vorbis_write_real (void * data, int length)
         {
             ogg_stream_packetin(&os, &op);
 
-            while ((result = ogg_stream_pageout(&os, &og)))
+            while (ogg_stream_pageout(&os, &og))
             {
                 write_output(og.header, og.header_len);
                 write_output(og.body, og.body_len);
