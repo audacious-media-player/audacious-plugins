@@ -213,11 +213,11 @@ static void mainwin_set_info_text (const char * text)
 
 static int status_message_source = 0;
 
-static gboolean clear_status_message (void * unused)
+static gboolean clear_status_message (void *)
 {
     mainwin_release_info_text ();
     status_message_source = 0;
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 void mainwin_show_status_message (const char * message)
@@ -573,12 +573,12 @@ static gboolean seek_timeout (void * rewind)
     if (! aud_drct_get_playing ())
     {
         seek_source = 0;
-        return FALSE;
+        return G_SOURCE_REMOVE;
     }
 
     int held = time_diff (seek_time, time_now ());
     if (held < SEEK_THRESHOLD)
-        return TRUE;
+        return G_SOURCE_CONTINUE;
 
     int position;
     if (GPOINTER_TO_INT (rewind))
@@ -590,7 +590,7 @@ static gboolean seek_timeout (void * rewind)
     hslider_set_pos (mainwin_position, position);
     mainwin_position_motion_cb ();
 
-    return TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
@@ -601,8 +601,7 @@ static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
 
     seek_start = hslider_get_pos (mainwin_position);
     seek_time = time_now ();
-    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, GINT_TO_POINTER
-     (rewind));
+    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, GINT_TO_POINTER (rewind));
     return FALSE;
 }
 
@@ -779,6 +778,13 @@ static void mainwin_volume_release_cb (void)
     mainwin_adjust_volume_release();
 }
 
+static gboolean mainwin_volume_timeout_cb (void *)
+{
+    mainwin_volume_release_cb ();
+    mainwin_volume_release_timeout = 0;
+    return G_SOURCE_REMOVE;
+}
+
 static void mainwin_balance_set_frame (void)
 {
     int pos = hslider_get_pos (mainwin_balance);
@@ -829,7 +835,7 @@ static void mainwin_set_volume_diff (int diff)
     if (mainwin_volume_release_timeout)
         g_source_remove(mainwin_volume_release_timeout);
     mainwin_volume_release_timeout =
-        g_timeout_add(700, (GSourceFunc)(mainwin_volume_release_cb), nullptr);
+        g_timeout_add(700, mainwin_volume_timeout_cb, nullptr);
 }
 
 void mainwin_mr_change (MenuRowItem i)

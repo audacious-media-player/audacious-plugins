@@ -121,10 +121,10 @@ static void skins_init_paths() {
     g_free(xdg_cache_home);
 }
 
-static gboolean update_cb (void * unused)
+static gboolean update_cb (void *)
 {
     mainwin_update_song_info ();
-    return TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 static void skins_init_main (void)

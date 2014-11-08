@@ -73,7 +73,7 @@ DRAW_FUNC_BEGIN (textbox_draw)
     }
 DRAW_FUNC_END
 
-static gboolean textbox_scroll (GtkWidget * textbox)
+static gboolean textbox_scroll (void * textbox)
 {
     TextboxData * data = (TextboxData *) g_object_get_data ((GObject *) textbox, "textboxdata");
     g_return_val_if_fail (data, FALSE);
@@ -81,7 +81,7 @@ static gboolean textbox_scroll (GtkWidget * textbox)
     if (data->delay < DELAY)
     {
         data->delay ++;
-        return TRUE;
+        return G_SOURCE_CONTINUE;
     }
 
     if (data->two_way && data->backward)
@@ -99,8 +99,8 @@ static gboolean textbox_scroll (GtkWidget * textbox)
     if (! data->two_way && data->offset >= data->buf_width)
         data->offset = 0;
 
-    gtk_widget_queue_draw (textbox);
-    return TRUE;
+    gtk_widget_queue_draw ((GtkWidget *) textbox);
+    return G_SOURCE_CONTINUE;
 }
 
 static void textbox_render_vector (GtkWidget * textbox, TextboxData * data,
@@ -275,8 +275,7 @@ static void textbox_render (GtkWidget * textbox, TextboxData * data)
     if (data->scrolling)
     {
         if (! data->scroll_source)
-            data->scroll_source = g_timeout_add (TIMEOUT, (GSourceFunc)
-             textbox_scroll, textbox);
+            data->scroll_source = g_timeout_add (TIMEOUT, textbox_scroll, textbox);
     }
     else
     {
