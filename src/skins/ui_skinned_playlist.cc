@@ -217,8 +217,9 @@ DRAW_FUNC_BEGIN (playlist_draw)
     for (int i = data->first; i < data->first + data->rows && i <
      active_length; i ++)
     {
-        int len = aud_playlist_entry_get_length (active_playlist, i, TRUE);
-        if (len <= 0)
+        Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
+        int len = tuple.get_int (Tuple::Length);
+        if (len < 0)
             continue;
 
         layout = gtk_widget_create_pango_layout (wid, str_format_time (len));
@@ -277,7 +278,8 @@ DRAW_FUNC_BEGIN (playlist_draw)
     for (int i = data->first; i < data->first + data->rows && i <
      active_length; i ++)
     {
-        String title = aud_playlist_entry_get_title (active_playlist, i, TRUE);
+        Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
+        String title = tuple.get_str (Tuple::FormattedTitle);
 
         layout = gtk_widget_create_pango_layout (wid, title);
         pango_layout_set_font_description (layout, data->font);

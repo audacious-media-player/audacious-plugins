@@ -207,7 +207,7 @@ static Tuple metronom_probe_for_tuple(const char * filename, VFSFile &fd)
 
     tuple.set_filename (filename);
     if (metronom_get_cp(filename, &metronom, desc))
-        tuple.set_str (FIELD_TITLE, desc);
+        tuple.set_str (Tuple::Title, desc);
 
     return tuple;
 }

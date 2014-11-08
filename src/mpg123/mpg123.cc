@@ -214,11 +214,11 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile & file)
     Tuple tuple;
     tuple.set_filename (filename);
     make_format_string (& info, scratch, sizeof scratch);
-    tuple.set_str (FIELD_CODEC, scratch);
+    tuple.set_str (Tuple::Codec, scratch);
     snprintf (scratch, sizeof scratch, "%s, %d Hz", (channels == 2)
      ? _("Stereo") : (channels > 2) ? _("Surround") : _("Mono"), (int) rate);
-    tuple.set_str (FIELD_QUALITY, scratch);
-    tuple.set_int (FIELD_BITRATE, info.bitrate);
+    tuple.set_str (Tuple::Quality, scratch);
+    tuple.set_int (Tuple::Bitrate, info.bitrate);
 
     if (! stream)
     {
@@ -227,9 +227,9 @@ static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile & file)
         int length = (samples > 0 && rate > 0) ? samples * 1000 / rate : 0;
 
         if (length > 0)
-            tuple.set_int (FIELD_LENGTH, length);
+            tuple.set_int (Tuple::Length, length);
         if (size > 0 && length > 0)
-            tuple.set_int (FIELD_BITRATE, 8 * size / length);
+            tuple.set_int (Tuple::Bitrate, 8 * size / length);
     }
 
     mpg123_delete (decoder);

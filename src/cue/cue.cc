@@ -45,15 +45,15 @@ public:
 EXPORT CueLoader aud_plugin_instance;
 
 static const struct {
-    int tuple_type;
+    Tuple::Field field;
     int pti;
 } pti_map[] = {
-    { FIELD_ARTIST, PTI_PERFORMER },
-    { FIELD_TITLE, PTI_TITLE },
+    { Tuple::Artist, PTI_PERFORMER },
+    { Tuple::Title, PTI_TITLE },
 };
 
 static void
-tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
+tuple_attach_cdtext(Tuple &tuple, Track *track, Tuple::Field field, int pti)
 {
     Cdtext *cdtext;
     const char *text;
@@ -66,7 +66,7 @@ tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
     if (text == nullptr)
         return;
 
-    tuple.set_str (tuple_type, text);
+    tuple.set_str (field, text);
 }
 
 bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
@@ -119,25 +119,25 @@ bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
 
         Tuple tuple = base_tuple.ref ();
         tuple.set_filename (filename);
-        tuple.set_int (FIELD_TRACK_NUMBER, track);
+        tuple.set_int (Tuple::Track, track);
 
         int begin = (int64_t) track_get_start (current) * 1000 / 75;
-        tuple.set_int (FIELD_SEGMENT_START, begin);
+        tuple.set_int (Tuple::StartTime, begin);
 
         if (last_track)
         {
-            if (base_tuple.get_value_type (FIELD_LENGTH) == TUPLE_INT)
-                tuple.set_int (FIELD_LENGTH, base_tuple.get_int (FIELD_LENGTH) - begin);
+            if (base_tuple.get_value_type (Tuple::Length) == Tuple::Int)
+                tuple.set_int (Tuple::Length, base_tuple.get_int (Tuple::Length) - begin);
         }
         else
         {
             int length = (int64_t) track_get_length (current) * 1000 / 75;
-            tuple.set_int (FIELD_LENGTH, length);
-            tuple.set_int (FIELD_SEGMENT_END, begin + length);
+            tuple.set_int (Tuple::Length, length);
+            tuple.set_int (Tuple::EndTime, begin + length);
         }
 
         for (auto & pti : pti_map)
-            tuple_attach_cdtext (tuple, current, pti.tuple_type, pti.pti);
+            tuple_attach_cdtext (tuple, current, pti.field, pti.pti);
 
         items.append (filename, std::move (tuple));
 

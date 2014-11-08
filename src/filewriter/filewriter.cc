@@ -23,10 +23,10 @@
 #include <gtk/gtk.h>
 #include <stdlib.h>
 
-#include <libaudcore/runtime.h>
-#include <libaudcore/playlist.h>
-#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
+#include <libaudcore/preferences.h>
+#include <libaudcore/runtime.h>
 
 #include "filewriter.h"
 #include "plugins.h"
@@ -211,32 +211,25 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 {
     char *filename = nullptr, *temp = nullptr;
     char * directory;
-    int pos;
-    int playlist;
 
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
 
-    playlist = aud_playlist_get_playing ();
-    if (playlist < 0)
-        return 0;
-
-    pos = aud_playlist_get_position(playlist);
-    tuple = aud_playlist_entry_get_tuple (playlist, pos, FALSE);
+    tuple = aud_drct_get_tuple ();
     if (! tuple)
         return 0;
 
     if (filenamefromtags)
     {
-        String title = aud_playlist_entry_get_title (playlist, pos, FALSE);
+        String title = tuple.get_str (Tuple::FormattedTitle);
         StringBuf buf = str_encode_percent (title);
         str_replace_char (buf, '/', '-');
         filename = g_strdup (buf);
     }
     else
     {
-        String path = aud_playlist_entry_get_filename (playlist, pos);
+        String path = aud_drct_get_filename ();
 
         const char * original = strrchr (path, '/');
         g_return_val_if_fail (original != nullptr, 0);
@@ -249,9 +242,9 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 
     if (prependnumber)
     {
-        int number = tuple.get_int (FIELD_TRACK_NUMBER);
+        int number = tuple.get_int (Tuple::Track);
         if (number < 0)
-            number = pos + 1;
+            number = aud_drct_get_position () + 1;
 
         temp = g_strdup_printf ("%d%%20%s", number, filename);
         g_free(filename);
@@ -260,7 +253,7 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 
     if (save_original)
     {
-        directory = g_strdup (aud_playlist_entry_get_filename (playlist, pos));
+        directory = g_strdup (aud_drct_get_filename ());
         temp = strrchr (directory, '/');
         g_return_val_if_fail (temp != nullptr, 0);
         temp[1] = 0;

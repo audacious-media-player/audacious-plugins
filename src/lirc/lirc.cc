@@ -158,7 +158,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
 {
     char *code;
     char *c;
-    int playlist_time, playlist_pos, output_time, v;
+    int output_time, v;
     int ret;
     char *ptr;
     int balance;
@@ -222,14 +222,6 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5000;
                 output_time = aud_drct_get_time ();
-
-                int playlist = aud_playlist_get_active ();
-                playlist_pos = aud_playlist_get_position (playlist);
-                playlist_time =
-                    aud_playlist_entry_get_length (playlist, playlist_pos,
-                                                   false);
-                if (playlist_time - output_time < n)
-                    output_time = playlist_time - n;
                 aud_drct_seek (output_time + n);
             }
             else if (g_ascii_strncasecmp ("BWD", c, 3) == 0)
@@ -242,8 +234,6 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5000;
                 output_time = aud_drct_get_time ();
-                if (output_time < n)
-                    output_time = n;
                 aud_drct_seek (output_time - n);
             }
             else if (g_ascii_strncasecmp ("VOL_UP", c, 6) == 0)

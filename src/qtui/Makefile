@@ -14,8 +14,7 @@ SRCS = qtui.cc \
        filter_input.moc \
        status_bar.cc \
        tool_bar.cc \
-       time_slider.cc \
-       ui_main_window.h
+       time_slider.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
@@ -62,6 +61,36 @@ DATA = QtUi/16/audio-volume-high.png \
        QtUi/22/media-playlist-shuffle.png \
        QtUi/22/media-skip-backward.png \
        QtUi/22/media-skip-forward.png \
+       QtUi/32/audio-volume-high.png \
+       QtUi/32/audio-volume-low.png \
+       QtUi/32/audio-volume-medium.png \
+       QtUi/32/audio-volume-muted.png \
+       QtUi/32/audio-volume-off.png \
+       QtUi/32/document-open.png \
+       QtUi/32/edit-find.png \
+       QtUi/32/list-add.png \
+       QtUi/32/media-playback-pause.png \
+       QtUi/32/media-playback-start.png \
+       QtUi/32/media-playback-stop.png \
+       QtUi/32/media-playlist-repeat.png \
+       QtUi/32/media-playlist-shuffle.png \
+       QtUi/32/media-skip-backward.png \
+       QtUi/32/media-skip-forward.png \
+       QtUi/44/audio-volume-high.png \
+       QtUi/44/audio-volume-low.png \
+       QtUi/44/audio-volume-medium.png \
+       QtUi/44/audio-volume-muted.png \
+       QtUi/44/audio-volume-off.png \
+       QtUi/44/document-open.png \
+       QtUi/44/edit-find.png \
+       QtUi/44/list-add.png \
+       QtUi/44/media-playback-pause.png \
+       QtUi/44/media-playback-start.png \
+       QtUi/44/media-playback-stop.png \
+       QtUi/44/media-playlist-repeat.png \
+       QtUi/44/media-playlist-shuffle.png \
+       QtUi/44/media-skip-backward.png \
+       QtUi/44/media-skip-forward.png \
        QtUi/AUTHORS \
        QtUi/index.theme
 endif
@@ -76,9 +105,6 @@ LIBS += ${QT_LIBS} -laudqt
 
 %.moc: %.h
 	moc $< -o $@
-
-ui_%.h: %.ui
-	uic $< -o $@
 
 rc_%.cc: %.qrc
 	rcc $< -o $@

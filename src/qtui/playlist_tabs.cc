@@ -17,22 +17,24 @@
  * the use of this software.
  */
 
-#include <QtGui>
+#include "playlist.h"
+#include "playlist_tabs.h"
+#include "playlist_tabs.moc"
 
-#include <libaudcore/hook.h>
+#include <QKeyEvent>
+#include <QLineEdit>
+
 #include <libaudcore/playlist.h>
 #include <libaudcore/runtime.h>
 
 #include <libaudqt/libaudqt.h>
 
-#include "playlist.h"
-#include "playlist_tabs.h"
-#include "playlist_tabs.moc"
-
 PlaylistTabs::PlaylistTabs (QWidget * parent) :
     QTabWidget (parent),
     m_leftbtn (nullptr),
-    m_tabbar (new PlaylistTabBar (this))
+    m_tabbar (new PlaylistTabBar (this)),
+    update_hook ("playlist update", this, & PlaylistTabs::playlist_update_cb),
+    position_hook ("playlist position", this, & PlaylistTabs::playlist_position_cb)
 {
     installEventFilter (this);
 
@@ -42,21 +44,11 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
 
     populatePlaylists ();
 
-    hook_associate ("playlist update",      (HookFunction) playlist_update_cb, this);
-    hook_associate ("playlist activate",    (HookFunction) playlist_activate_cb, this);
-    hook_associate ("playlist set playing", (HookFunction) playlist_set_playing_cb, this);
-    hook_associate ("playlist position",    (HookFunction) playlist_position_cb, this);
-
     connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
 }
 
 PlaylistTabs::~PlaylistTabs ()
 {
-    hook_dissociate ("playlist update",      (HookFunction) playlist_update_cb);
-    hook_dissociate ("playlist activate",    (HookFunction) playlist_activate_cb);
-    hook_dissociate ("playlist set playing", (HookFunction) playlist_set_playing_cb);
-    hook_dissociate ("playlist position",    (HookFunction) playlist_position_cb);
-
     // TODO: cleanup playlists
 }
 
@@ -66,12 +58,12 @@ void PlaylistTabs::maybeCreateTab (int count_, int uniq_id)
 
     for (int i = 0; i < tabs; i++)
     {
-        Playlist * playlistWidget = (Playlist *) widget (i);
+        PlaylistWidget * playlistWidget = (PlaylistWidget *) widget (i);
         if (uniq_id == playlistWidget->uniqueId())
             return;
     }
 
-    auto playlistWidget = new Playlist (0, uniq_id);
+    auto playlistWidget = new PlaylistWidget (0, uniq_id);
     addTab ((QWidget *) playlistWidget, QString (aud_playlist_get_title (count_)));
 }
 
@@ -81,7 +73,7 @@ void PlaylistTabs::cullPlaylists ()
 
     for (int i = 0; i < tabs; i++)
     {
-         Playlist * playlistWidget = (Playlist *) widget (i);
+         PlaylistWidget * playlistWidget = (PlaylistWidget *) widget (i);
 
          if (playlistWidget == nullptr || playlistWidget->playlist() < 0)
          {
@@ -103,15 +95,15 @@ void PlaylistTabs::populatePlaylists ()
     cullPlaylists();
 }
 
-Playlist * PlaylistTabs::playlistWidget (int num)
+PlaylistWidget * PlaylistTabs::playlistWidget (int num)
 {
-    return (Playlist *) widget (num);
+    return (PlaylistWidget *) widget (num);
 }
 
-Playlist * PlaylistTabs::activePlaylistWidget ()
+PlaylistWidget * PlaylistTabs::activePlaylistWidget ()
 {
     int num = aud_playlist_get_active ();
-    return (Playlist *) widget (num);
+    return (PlaylistWidget *) widget (num);
 }
 
 void PlaylistTabs::filterTrigger (const QString &text)
@@ -203,6 +195,29 @@ void PlaylistTabs::cancelRename ()
     }
 }
 
+void PlaylistTabs::playlist_update_cb (Playlist::Update global_level)
+{
+    if (global_level == Playlist::Structure)
+        populatePlaylists ();
+
+    int lists = aud_playlist_count ();
+    for (int list = 0; list < lists; list ++)
+    {
+        int at, count;
+        Playlist::Update level;
+
+        if ((level = aud_playlist_updated_range (list, & at, & count)))
+            playlistWidget (list)->update (level, at, count);
+    }
+}
+
+void PlaylistTabs::playlist_position_cb (int list)
+{
+    auto widget = playlistWidget (list);
+    if (widget)
+        widget->positionUpdate ();
+}
+
 PlaylistTabBar::PlaylistTabBar (QWidget * parent) : QTabBar (parent)
 {
     setDocumentMode (true);
@@ -225,7 +240,7 @@ void PlaylistTabBar::mouseDoubleClickEvent (QMouseEvent *e)
 void PlaylistTabBar::handleCloseRequest (int idx)
 {
     PlaylistTabs *p = (PlaylistTabs *) parent ();
-    Playlist *pl = (Playlist *) p->widget (idx);
+    PlaylistWidget *pl = (PlaylistWidget *) p->widget (idx);
 
     if (! pl)
         return;

@@ -51,18 +51,18 @@ Tuple vtx_get_song_tuple_from_vtx(const char * filename, ayemu_vtx_t * in)
     Tuple tuple;
     tuple.set_filename (filename);
 
-    tuple.set_str (FIELD_ARTIST, in->hdr.author);
-    tuple.set_str (FIELD_TITLE, in->hdr.title);
+    tuple.set_str (Tuple::Artist, in->hdr.author);
+    tuple.set_str (Tuple::Title, in->hdr.title);
 
-    tuple.set_int (FIELD_LENGTH, in->hdr.regdata_size / 14 * 1000 / 50);
+    tuple.set_int (Tuple::Length, in->hdr.regdata_size / 14 * 1000 / 50);
 
-    tuple.set_str (FIELD_GENRE, (in->hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
-    tuple.set_str (FIELD_ALBUM, in->hdr.from);
+    tuple.set_str (Tuple::Genre, (in->hdr.chiptype == AYEMU_AY) ? "AY chiptunes" : "YM chiptunes");
+    tuple.set_str (Tuple::Album, in->hdr.from);
 
-    tuple.set_str (FIELD_QUALITY, _("sequenced"));
-    tuple.set_str (FIELD_CODEC, in->hdr.tracker);
+    tuple.set_str (Tuple::Quality, _("sequenced"));
+    tuple.set_str (Tuple::Codec, in->hdr.tracker);
 
-    tuple.set_int (FIELD_YEAR, in->hdr.year);
+    tuple.set_int (Tuple::Year, in->hdr.year);
 
     return tuple;
 }

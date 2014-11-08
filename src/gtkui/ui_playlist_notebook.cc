@@ -474,20 +474,21 @@ static void add_remove_pages (void)
 
 void ui_playlist_notebook_update (void * data, void * user)
 {
-    if (data == PLAYLIST_UPDATE_STRUCTURE)
+    auto global_level = aud::from_ptr<Playlist::Update> (data);
+    if (global_level == Playlist::Structure)
         add_remove_pages ();
 
     int lists = aud_playlist_count ();
 
     for (int list = 0; list < lists; list ++)
     {
-        if (data >= PLAYLIST_UPDATE_METADATA)
+        if (global_level >= Playlist::Metadata)
             set_tab_label (list, get_tab_label (list));
 
         GtkWidget * treeview = playlist_get_treeview (list);
 
         int at, count;
-        PlaylistUpdateLevel level = aud_playlist_updated_range (list, & at, & count);
+        Playlist::Update level = aud_playlist_updated_range (list, & at, & count);
 
         if (level)
             ui_playlist_widget_update (treeview, level, at, count);
@@ -500,7 +501,7 @@ void ui_playlist_notebook_update (void * data, void * user)
 
 void ui_playlist_notebook_position (void * data, void * user)
 {
-    int list = GPOINTER_TO_INT (data);
+    int list = aud::from_ptr<int> (data);
     int row = aud_playlist_get_position (list);
 
     if (aud_get_bool ("gtkui", "autoscroll"))

@@ -20,12 +20,17 @@
 #ifndef PLAYLIST_TABS_H
 #define PLAYLIST_TABS_H
 
+#include <QTabWidget>
+
+#include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
 #include "filter_input.h"
 
 class PlaylistTabBar;
+class PlaylistWidget;
+class QLineEdit;
 
 class PlaylistTabs : public QTabWidget
 {
@@ -34,8 +39,8 @@ class PlaylistTabs : public QTabWidget
 public:
     PlaylistTabs (QWidget * parent = 0);
     ~PlaylistTabs ();
-    Playlist * playlistWidget (int num);
-    Playlist * activePlaylistWidget ();
+    PlaylistWidget * playlistWidget (int num);
+    PlaylistWidget * activePlaylistWidget ();
 
     void editTab (int idx);
 
@@ -59,40 +64,11 @@ private:
     void cullPlaylists ();
     void cancelRename ();
 
-    static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
-    {
-        if (data == PLAYLIST_UPDATE_STRUCTURE)
-            tabWidget->populatePlaylists();
+    void playlist_update_cb (Playlist::Update global_level);
+    void playlist_position_cb (int list);
 
-        int lists = aud_playlist_count ();
-
-        for (int list = 0; list < lists; list ++)
-        {
-            int at, count;
-            PlaylistUpdateLevel level = aud_playlist_updated_range (list, & at, & count);
-
-            if (level)
-                tabWidget->playlistWidget (list)->update (level, at, count);
-        }
-    }
-
-    static void playlist_activate_cb (void * data, PlaylistTabs * tabWidget)
-    {
-
-    }
-
-    static void playlist_set_playing_cb (void * data, PlaylistTabs * tabWidget)
-    {
-
-    }
-
-    static void playlist_position_cb (void * data, PlaylistTabs * tabWidget)
-    {
-        int num = (int) (long) data;
-        auto playlistWidget = tabWidget->playlistWidget (num);
-        if (playlistWidget)
-            playlistWidget->positionUpdate ();
-    }
+    HookReceiver<PlaylistTabs, Playlist::Update> update_hook;
+    HookReceiver<PlaylistTabs, int> position_hook;
 };
 
 class PlaylistTabBar : public QTabBar

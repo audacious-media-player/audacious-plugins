@@ -2809,7 +2809,7 @@ CadlPlayer::load (VFSFile & fd, const CFileProvider & fp)
   //    _soundFileLoaded = file;
 
   // find last subsong
-  for(int i = 199; i >= 0; i--)
+  for(int i = 119; i >= 0; i--)
     if(_trackEntries[i] != 0xff) {
       numsubsongs = i + 1;
       break;

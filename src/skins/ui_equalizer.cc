@@ -26,9 +26,8 @@
 #include <string.h>
 #include <gtk/gtk.h>
 
-#include <libaudcore/drct.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
@@ -53,7 +52,7 @@ static float equalizerwin_get_band (int band);
 static void equalizerwin_set_preamp (float preamp);
 static void equalizerwin_set_band (int band, float value);
 
-static void position_cb (void * data, void * user_data);
+static void playback_begin_cb (void *, void *);
 
 GtkWidget *equalizerwin;
 GtkWidget *equalizerwin_graph;
@@ -355,7 +354,7 @@ static void equalizerwin_destroyed (void)
     hook_dissociate ("set equalizer_bands", (HookFunction) update_from_config);
     hook_dissociate ("set equalizer_preamp", (HookFunction) update_from_config);
 
-    hook_dissociate ("playlist position", position_cb);
+    hook_dissociate ("playback begin", playback_begin_cb);
 
     equalizer_presets.clear ();
     equalizer_auto_presets.clear ();
@@ -380,15 +379,13 @@ equalizerwin_create(void)
     hook_associate ("set equalizer_bands", (HookFunction) update_from_config, nullptr);
     hook_associate ("set equalizer_preamp", (HookFunction) update_from_config, nullptr);
 
-    int playlist = aud_playlist_get_playing ();
-
     /* Load preset for the first song. FIXME: Doing this at interface load is
      really too late as the song may already be started. Really, this stuff
      shouldn't be in the interface plugin at all but in core. -jlindgren */
-    if (playlist != -1)
-        position_cb (GINT_TO_POINTER (playlist), nullptr);
+    if (aud_drct_get_playing ())
+        playback_begin_cb (nullptr, nullptr);
 
-    hook_associate ("playlist position", position_cb, nullptr);
+    hook_associate ("playback begin", playback_begin_cb, nullptr);
 }
 
 static int equalizerwin_find_preset (Index<EqualizerPreset> & list, const char * name)
@@ -500,15 +497,8 @@ static void load_auto_preset (const char * filename)
     g_free (base);
 }
 
-static void position_cb (void * data, void * user_data)
+static void playback_begin_cb (void *, void *)
 {
-    int playlist = GPOINTER_TO_INT (data);
-    int position = aud_playlist_get_position (playlist);
-
-    if (! aud_get_bool (nullptr, "equalizer_autoload") || playlist !=
-     aud_playlist_get_playing () || position == -1)
-        return;
-
-    String filename = aud_playlist_entry_get_filename (playlist, position);
-    load_auto_preset (filename);
+    if (aud_get_bool (nullptr, "equalizer_autoload"))
+        load_auto_preset (aud_drct_get_filename ());
 }

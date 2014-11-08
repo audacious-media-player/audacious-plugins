@@ -19,7 +19,6 @@
 
 #include <gtk/gtk.h>
 
-#include <libaudcore/drct.h>
 #include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/list.h>

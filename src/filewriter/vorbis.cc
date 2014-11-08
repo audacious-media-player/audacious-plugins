@@ -58,7 +58,7 @@ static void vorbis_init(write_output_callback write_output_func)
 }
 
 static void add_string_from_tuple (vorbis_comment * vc, const char * name,
- const Tuple & tuple, int field)
+ const Tuple & tuple, Tuple::Field field)
 {
     String val = tuple.get_str (field);
     if (val)
@@ -80,17 +80,17 @@ static int vorbis_open(void)
     {
         int scrint;
 
-        add_string_from_tuple (& vc, "title", tuple, FIELD_TITLE);
-        add_string_from_tuple (& vc, "artist", tuple, FIELD_ARTIST);
-        add_string_from_tuple (& vc, "album", tuple, FIELD_ALBUM);
-        add_string_from_tuple (& vc, "genre", tuple, FIELD_GENRE);
-        add_string_from_tuple (& vc, "date", tuple, FIELD_DATE);
-        add_string_from_tuple (& vc, "comment", tuple, FIELD_COMMENT);
+        add_string_from_tuple (& vc, "title", tuple, Tuple::Title);
+        add_string_from_tuple (& vc, "artist", tuple, Tuple::Artist);
+        add_string_from_tuple (& vc, "album", tuple, Tuple::Album);
+        add_string_from_tuple (& vc, "genre", tuple, Tuple::Genre);
+        add_string_from_tuple (& vc, "date", tuple, Tuple::Date);
+        add_string_from_tuple (& vc, "comment", tuple, Tuple::Comment);
 
-        if ((scrint = tuple.get_int (FIELD_TRACK_NUMBER)) > 0)
+        if ((scrint = tuple.get_int (Tuple::Track)) > 0)
             vorbis_comment_add_tag(&vc, "tracknumber", int_to_str (scrint));
 
-        if ((scrint = tuple.get_int (FIELD_YEAR)) > 0)
+        if ((scrint = tuple.get_int (Tuple::Year)) > 0)
             vorbis_comment_add_tag(&vc, "year", int_to_str (scrint));
     }
 
@@ -125,7 +125,7 @@ static int vorbis_open(void)
 static void vorbis_write_real (void * data, int length)
 {
     int samples = length / sizeof (float);
-    int channel, result;
+    int channel;
     float * end = (float *) data + samples;
     float * * buffer = vorbis_analysis_buffer (& vd, samples / input.channels);
     float * from, * to;
@@ -149,7 +149,7 @@ static void vorbis_write_real (void * data, int length)
         {
             ogg_stream_packetin(&os, &op);
 
-            while ((result = ogg_stream_pageout(&os, &og)))
+            while (ogg_stream_pageout(&os, &og))
             {
                 write_output(og.header, og.header_len);
                 write_output(og.body, og.body_len);

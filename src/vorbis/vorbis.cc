@@ -124,10 +124,10 @@ end:
 }
 
 static void
-set_tuple_str(Tuple &tuple, const int nfield,
+set_tuple_str(Tuple &tuple, Tuple::Field field,
     vorbis_comment *comment, const char *key)
 {
-    tuple.set_str (nfield, vorbis_comment_query (comment, key, 0));
+    tuple.set_str (field, vorbis_comment_query (comment, key, 0));
 }
 
 static Tuple
@@ -143,27 +143,27 @@ get_tuple_for_vorbisfile(OggVorbis_File * vorbisfile, const char *filename, bool
         length = ov_time_total (vorbisfile, -1) * 1000;
 
     /* associate with tuple */
-    tuple.set_int (FIELD_LENGTH, length);
+    tuple.set_int (Tuple::Length, length);
 
     if ((comment = ov_comment(vorbisfile, -1)) != nullptr) {
         char *tmps;
-        set_tuple_str(tuple, FIELD_TITLE, comment, "title");
-        set_tuple_str(tuple, FIELD_ARTIST, comment, "artist");
-        set_tuple_str(tuple, FIELD_ALBUM, comment, "album");
-        set_tuple_str(tuple, FIELD_GENRE, comment, "genre");
-        set_tuple_str(tuple, FIELD_COMMENT, comment, "comment");
+        set_tuple_str(tuple, Tuple::Title, comment, "title");
+        set_tuple_str(tuple, Tuple::Artist, comment, "artist");
+        set_tuple_str(tuple, Tuple::Album, comment, "album");
+        set_tuple_str(tuple, Tuple::Genre, comment, "genre");
+        set_tuple_str(tuple, Tuple::Comment, comment, "comment");
 
         if ((tmps = vorbis_comment_query(comment, "tracknumber", 0)) != nullptr)
-            tuple.set_int (FIELD_TRACK_NUMBER, atoi(tmps));
+            tuple.set_int (Tuple::Track, atoi(tmps));
 
         if ((tmps = vorbis_comment_query (comment, "date", 0)) != nullptr)
-            tuple.set_int (FIELD_YEAR, atoi (tmps));
+            tuple.set_int (Tuple::Year, atoi (tmps));
     }
 
     vorbis_info * info = ov_info (vorbisfile, -1);
     tuple.set_format ("Ogg Vorbis", info->channels, info->rate, info->bitrate_nominal / 1000);
 
-    tuple.set_str (FIELD_MIMETYPE, "application/ogg");
+    tuple.set_str (Tuple::MIMEType, "application/ogg");
 
     return tuple;
 }

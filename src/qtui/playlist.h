@@ -20,21 +20,23 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
 
-#include <QtGui>
 #include <QTreeView>
+#include <libaudcore/playlist.h>
 
 #include "playlist_model.h"
 #include "filter_input.h"
 
-class Playlist : public QTreeView
+class QSortFilterProxyModel;
+
+class PlaylistWidget : public QTreeView
 {
     Q_OBJECT
 
 public:
-    Playlist (QTreeView * parent = 0, int uniqueId = -1);
-    ~Playlist ();
+    PlaylistWidget (QTreeView * parent = 0, int uniqueId = -1);
+    ~PlaylistWidget ();
     void scrollToCurrent ();
-    void update (void * level, int at, int count);
+    void update (Playlist::Update level, int at, int count);
     void positionUpdate ();
     void playCurrentIndex ();
     void deleteCurrentSelection ();

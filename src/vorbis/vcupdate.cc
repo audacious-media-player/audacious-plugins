@@ -79,9 +79,9 @@ static void dictionary_to_vorbis_comment (vorbis_comment * vc, Dictionary & dict
 }
 
 static void insert_str_tuple_field_to_dictionary (const Tuple & tuple,
- int fieldn, Dictionary & dict, const char * key)
+ Tuple::Field field, Dictionary & dict, const char * key)
 {
-    String val = tuple.get_str (fieldn);
+    String val = tuple.get_str (field);
 
     if (val && val[0])
         dict.add (String (key), std::move (val));
@@ -90,9 +90,9 @@ static void insert_str_tuple_field_to_dictionary (const Tuple & tuple,
 }
 
 static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
- int fieldn, Dictionary & dict, const char * key)
+ Tuple::Field field, Dictionary & dict, const char * key)
 {
-    int val = tuple.get_int (fieldn);
+    int val = tuple.get_int (field);
 
     if (val > 0)
         dict.add (String (key), String (int_to_str (val)));
@@ -119,14 +119,14 @@ bool vorbis_update_song_tuple (const char * filename, VFSFile & fd, const Tuple 
     comment = vcedit_comments(state);
     Dictionary dict = dictionary_from_vorbis_comment (comment);
 
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_TITLE, dict, "title");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_ARTIST, dict, "artist");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_ALBUM, dict, "album");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_COMMENT, dict, "comment");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_GENRE, dict, "genre");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Title, dict, "title");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Artist, dict, "artist");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Album, dict, "album");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Comment, dict, "comment");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Genre, dict, "genre");
 
-    insert_int_tuple_field_to_dictionary(tuple, FIELD_YEAR, dict, "date");
-    insert_int_tuple_field_to_dictionary(tuple, FIELD_TRACK_NUMBER, dict, "tracknumber");
+    insert_int_tuple_field_to_dictionary(tuple, Tuple::Year, dict, "date");
+    insert_int_tuple_field_to_dictionary(tuple, Tuple::Track, dict, "tracknumber");
 
     dictionary_to_vorbis_comment(comment, dict);
 

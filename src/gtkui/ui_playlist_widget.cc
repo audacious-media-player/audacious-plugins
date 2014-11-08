@@ -88,12 +88,12 @@ static const gboolean pw_col_label[PW_COLS] = {
 
 typedef struct {
     int list;
-    GList * queue;
+    Index<int> queue;
     int popup_source, popup_pos;
     gboolean popup_shown;
 } PlaylistWidgetData;
 
-static void set_int_from_tuple (GValue * value, const Tuple & tuple, int field)
+static void set_int_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
 {
     int i = tuple ? tuple.get_int (field) : 0;
     if (i > 0)
@@ -102,8 +102,7 @@ static void set_int_from_tuple (GValue * value, const Tuple & tuple, int field)
         g_value_set_string (value, "");
 }
 
-static void set_string_from_tuple (GValue * value, const Tuple & tuple,
- int field)
+static void set_string_from_tuple (GValue * value, const Tuple & tuple, Tuple::Field field)
 {
     String str = tuple ? tuple.get_str (field) : String ();
     g_value_set_string (value, str);
@@ -118,10 +117,10 @@ static void set_queued (GValue * value, int list, int row)
         g_value_take_string (value, g_strdup_printf ("#%d", 1 + q));
 }
 
-static void set_length (GValue * value, int list, int row)
+static void set_length (GValue * value, const Tuple & tuple)
 {
-    int len = aud_playlist_entry_get_length (list, row, TRUE);
-    if (len)
+    int len = tuple.get_int (Tuple::Length);
+    if (len >= 0)
         g_value_set_string (value, str_format_time (len));
     else
         g_value_set_string (value, "");
@@ -135,7 +134,6 @@ static void get_value (void * user, int row, int column, GValue * value)
 
     column = pw_cols[column];
 
-    String title, artist, album;
     Tuple tuple;
 
     switch (column)
@@ -143,17 +141,16 @@ static void get_value (void * user, int row, int column, GValue * value)
     case PW_COL_TITLE:
     case PW_COL_ARTIST:
     case PW_COL_ALBUM:
-        aud_playlist_entry_describe (data->list, row, title, artist, album, TRUE);
-        break;
-
     case PW_COL_YEAR:
     case PW_COL_ALBUM_ARTIST:
     case PW_COL_TRACK:
     case PW_COL_GENRE:
+    case PW_COL_LENGTH:
     case PW_COL_FILENAME:
     case PW_COL_PATH:
+    case PW_COL_CUSTOM:
     case PW_COL_BITRATE:
-        tuple = aud_playlist_entry_get_tuple (data->list, row, TRUE);
+        tuple = aud_playlist_entry_get_tuple (data->list, row, Playlist::Guess);
         break;
     }
 
@@ -163,43 +160,43 @@ static void get_value (void * user, int row, int column, GValue * value)
         g_value_set_int (value, 1 + row);
         break;
     case PW_COL_TITLE:
-        g_value_set_string (value, title);
+        set_string_from_tuple (value, tuple, Tuple::Title);
         break;
     case PW_COL_ARTIST:
-        g_value_set_string (value, artist);
+        set_string_from_tuple (value, tuple, Tuple::Artist);
         break;
     case PW_COL_YEAR:
-        set_int_from_tuple (value, tuple, FIELD_YEAR);
+        set_int_from_tuple (value, tuple, Tuple::Year);
         break;
     case PW_COL_ALBUM:
-        g_value_set_string (value, album);
+        set_string_from_tuple (value, tuple, Tuple::Album);
         break;
     case PW_COL_ALBUM_ARTIST:
-        set_string_from_tuple (value, tuple, FIELD_ALBUM_ARTIST);
+        set_string_from_tuple (value, tuple, Tuple::AlbumArtist);
         break;
     case PW_COL_TRACK:
-        set_int_from_tuple (value, tuple, FIELD_TRACK_NUMBER);
+        set_int_from_tuple (value, tuple, Tuple::Track);
         break;
     case PW_COL_GENRE:
-        set_string_from_tuple (value, tuple, FIELD_GENRE);
+        set_string_from_tuple (value, tuple, Tuple::Genre);
         break;
     case PW_COL_QUEUED:
         set_queued (value, data->list, row);
         break;
     case PW_COL_LENGTH:
-        set_length (value, data->list, row);
+        set_length (value, tuple);
         break;
     case PW_COL_FILENAME:
-        set_string_from_tuple (value, tuple, FIELD_FILE_NAME);
+        set_string_from_tuple (value, tuple, Tuple::Basename);
         break;
     case PW_COL_PATH:
-        set_string_from_tuple (value, tuple, FIELD_FILE_PATH);
+        set_string_from_tuple (value, tuple, Tuple::Path);
         break;
     case PW_COL_CUSTOM:
-        g_value_set_string (value, aud_playlist_entry_get_title (data->list, row, TRUE));
+        set_string_from_tuple (value, tuple, Tuple::FormattedTitle);
         break;
     case PW_COL_BITRATE:
-        set_int_from_tuple (value, tuple, FIELD_BITRATE);
+        set_int_from_tuple (value, tuple, Tuple::Bitrate);
         break;
     }
 }
@@ -354,9 +351,14 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
 
     if (keys.len ())
     {
-        String strings[3];
-        aud_playlist_entry_describe (((PlaylistWidgetData *) user)->list, row,
-         strings[0], strings[1], strings[2], FALSE);
+        int list = ((PlaylistWidgetData *) user)->list;
+        Tuple tuple = aud_playlist_entry_get_tuple (list, row);
+
+        String strings[3] = {
+            tuple.get_str (Tuple::Title),
+            tuple.get_str (Tuple::Artist),
+            tuple.get_str (Tuple::Album)
+        };
 
         for (const String & s : strings)
         {
@@ -377,15 +379,13 @@ static gboolean search_cb (GtkTreeModel * model, int column, const char * search
 
 static void destroy_cb (PlaylistWidgetData * data)
 {
-    g_list_free (data->queue);
-    g_slice_free (PlaylistWidgetData, data);
+    delete data;
 }
 
 GtkWidget * ui_playlist_widget_new (int playlist)
 {
-    PlaylistWidgetData * data = g_slice_new (PlaylistWidgetData);
+    PlaylistWidgetData * data = new PlaylistWidgetData;
     data->list = playlist;
-    data->queue = nullptr;
     data->popup_source = 0;
     data->popup_pos = -1;
     data->popup_shown = FALSE;
@@ -428,28 +428,17 @@ void ui_playlist_widget_set_playlist (GtkWidget * widget, int list)
     data->list = list;
 }
 
-static void update_queue (GtkWidget * widget, PlaylistWidgetData * data)
-{
-    for (GList * node = data->queue; node; node = node->next)
-        audgui_list_update_rows (widget, GPOINTER_TO_INT (node->data), 1);
-
-    g_list_free (data->queue);
-    data->queue = nullptr;
-
-    for (int i = aud_playlist_queue_count (data->list); i --; )
-        data->queue = g_list_prepend (data->queue, GINT_TO_POINTER
-         (aud_playlist_queue_get_entry (data->list, i)));
-
-    for (GList * node = data->queue; node; node = node->next)
-        audgui_list_update_rows (widget, GPOINTER_TO_INT (node->data), 1);
-}
-
-void ui_playlist_widget_update (GtkWidget * widget, void * level, int at, int count)
+void ui_playlist_widget_update (GtkWidget * widget, Playlist::Update level, int at, int count)
 {
     PlaylistWidgetData * data = (PlaylistWidgetData *) audgui_list_get_user (widget);
     g_return_if_fail (data);
 
-    if (level == PLAYLIST_UPDATE_STRUCTURE)
+    for (int entry : data->queue)
+        audgui_list_update_rows (widget, entry, 1);
+
+    data->queue.remove (0, -1);
+
+    if (level == Playlist::Structure)
     {
         int old_entries = audgui_list_row_count (widget);
         int entries = aud_playlist_entry_count (data->list);
@@ -465,12 +454,18 @@ void ui_playlist_widget_update (GtkWidget * widget, void * level, int at, int co
 
         ui_playlist_widget_scroll (widget);
     }
-    else if (level == PLAYLIST_UPDATE_METADATA)
+    else if (level == Playlist::Metadata)
         audgui_list_update_rows (widget, at, count);
 
     audgui_list_update_selection (widget, at, count);
     audgui_list_set_focus (widget, aud_playlist_get_focus (data->list));
-    update_queue (widget, data);
+
+    for (int i = aud_playlist_queue_count (data->list); i --; )
+    {
+        int entry = aud_playlist_queue_get_entry (data->list, i);
+        audgui_list_update_rows (widget, entry, 1);
+        data->queue.append (entry);
+    }
 }
 
 void ui_playlist_widget_scroll (GtkWidget * widget)

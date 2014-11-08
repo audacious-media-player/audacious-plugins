@@ -17,6 +17,9 @@
  * the use of this software.
  */
 
+#include <QLabel>
+#include <QPixmap>
+
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
@@ -48,10 +51,8 @@ void AlbumArtQt::update (void * unused, QLabel * widget)
     if (! widget)
         return;
 
-    QImage img = audqt::art_request_current ();
     QSize size = widget->size ();
-
-    widget->setPixmap (QPixmap::fromImage (img.scaled (size.width (), size.height (), Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+    widget->setPixmap (audqt::art_request_current (size.width (), size.height ()));
 }
 
 void AlbumArtQt::clear (void * unused, QLabel * widget)

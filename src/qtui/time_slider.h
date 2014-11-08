@@ -26,6 +26,8 @@
 #include <QStyle>
 #include <QMouseEvent>
 
+#include <libaudcore/hook.h>
+
 class TimeSlider : public QSlider
 {
 public:
@@ -46,11 +48,11 @@ private:
 
     void mousePressEvent (QMouseEvent * event);
 
-    static void start_stop_hook (void *, void * me)
-        { ((TimeSlider *) me)->start_stop (); }
-
     QTimer m_timer;
     QLabel * m_label;
+
+    // unfortunately GCC cannot handle these as an array
+    HookReceiver<TimeSlider> hook1, hook2, hook3, hook4;
 };
 
 #endif // TIME_SLIDER_H

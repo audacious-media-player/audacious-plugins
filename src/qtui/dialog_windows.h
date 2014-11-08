@@ -20,6 +20,8 @@
 #ifndef DIALOG_WINDOWS_H
 #define DIALOG_WINDOWS_H
 
+#include <libaudcore/hook.h>
+
 class QMessageBox;
 class QWidget;
 
@@ -35,12 +37,14 @@ private:
     QMessageBox * m_error = nullptr;
 
     void create_progress ();
-    void create_error (const char * message);
+    void show_error (const char * message);
+    void show_progress (const char * message);
+    void show_progress_2 (const char * message);
+    void hide_progress ();
 
-    static void show_progress (void * message, void * data);
-    static void show_progress_2 (void * message, void * data);
-    static void hide_progress (void *, void * data);
-    static void show_error (void * message, void * data);
+    // unfortunately GCC cannot handle these as an array
+    HookReceiver<DialogWindows, const char *> show_hook1, show_hook2, show_hook3;
+    HookReceiver<DialogWindows> hide_hook;
 };
 
 #endif // DIALOG_WINDOWS_H

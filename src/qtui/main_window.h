@@ -20,19 +20,22 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
+#include <libaudcore/hook.h>
 #include <libaudcore/index.h>
+#include <libaudcore/objects.h>
 
-#include "ui_main_window.h"
 #include "dialog_windows.h"
 
+#include <QMainWindow>
 #include <QTimer>
 
 class FilterInput;
 class PlaylistTabs;
+class PluginHandle;
 
 struct DockWidget;
 
-class MainWindow : public QMainWindow, private Ui::MainWindow
+class MainWindow : public QMainWindow
 {
 public:
     MainWindow ();
@@ -54,6 +57,7 @@ private:
 
     void updateToggles ();
     void setupActions ();
+    void readSettings ();
 
     void action_play_pause_set_play ();
     void action_play_pause_set_pause ();
@@ -63,17 +67,22 @@ private:
     void add_dock_plugins ();
     void remove_dock_plugins ();
 
-    static void title_change_cb (void *, MainWindow * window);
-    static void playback_begin_cb (void *, MainWindow * window);
-    static void playback_ready_cb (void *, MainWindow * window);
-    static void pause_cb (void *, MainWindow * window);
-    static void playback_stop_cb (void *, MainWindow * window);
-    static void update_toggles_cb (void *, MainWindow * window);
+    void title_change_cb ();
+    void playback_begin_cb ();
+    void playback_ready_cb ();
+    void pause_cb ();
+    void playback_stop_cb ();
+    void update_toggles_cb ();
 
-    static void add_dock_plugin_cb (PluginHandle * plugin, MainWindow * window);
-    static void remove_dock_plugin_cb (PluginHandle * plugin, MainWindow * window);
+    void add_dock_plugin_cb (PluginHandle * plugin);
+    void remove_dock_plugin_cb (PluginHandle * plugin);
 
-    Index <DockWidget *> dock_widgets;
+    // unfortunately GCC cannot handle these as an array
+    const HookReceiver<MainWindow> hook1, hook2, hook3, hook4, hook5, hook6,
+     hook7, hook8, hook9, hook10;
+    const HookReceiver<MainWindow, PluginHandle *> plugin_hook1, plugin_hook2;
+
+    Index<DockWidget> dock_widgets;
 };
 
 #endif

@@ -21,55 +21,41 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
-#include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/playlist.h>
 
 StatusBar::StatusBar (QWidget * parent) :
     QStatusBar (parent),
     codec_label (new QLabel (this)),
-    length_label (new QLabel (this))
+    length_label (new QLabel (this)),
+    hook1 ("playlist activate", this, & StatusBar::update_length),
+    hook2 ("playlist update", this, & StatusBar::update_length),
+    hook3 ("playback ready", this, & StatusBar::update_codec),
+    hook4 ("playback stop", this, & StatusBar::update_codec),
+    hook5 ("info change", this, & StatusBar::update_codec),
+    hook6 ("tuple change", this, & StatusBar::update_codec)
 {
     setStyleSheet ("QStatusBar::item { border: none; }");
 
     addWidget (codec_label);
     addPermanentWidget (length_label);
 
-    hook_associate ("playlist activate", update_length, this);
-    hook_associate ("playlist update", update_length, this);
-
-    hook_associate ("playback ready", update_codec, this);
-    hook_associate ("playback stop", update_codec, this);
-    hook_associate ("info change", update_codec, this);
-
-    update_codec (nullptr, this);
-    update_length (nullptr, this);
+    update_codec ();
+    update_length ();
 }
 
-StatusBar::~StatusBar ()
+StatusBar::~StatusBar () {}
+
+void StatusBar::update_codec ()
 {
-    hook_dissociate_full ("playlist activate", update_length, this);
-    hook_dissociate_full ("playlist update", update_length, this);
-
-    hook_dissociate_full ("playback ready", update_codec, this);
-    hook_dissociate_full ("playback stop", update_codec, this);
-    hook_dissociate_full ("info change", update_codec, this);
-}
-
-void StatusBar::update_codec (void *, void * data)
-{
-    auto sb = (StatusBar *) data;
-
-    if (! aud_drct_get_playing ())
+    if (! aud_drct_get_ready ())
     {
-        sb->codec_label->hide ();
+        codec_label->hide ();
         return;
     }
 
-    int playlist = aud_playlist_get_playing ();
-    int position = aud_playlist_get_position (playlist);
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist, position, false);
-    String codec = tuple.get_str (FIELD_CODEC);
+    Tuple tuple = aud_drct_get_tuple ();
+    String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
     aud_drct_get_info (& bitrate, & samplerate, & channels);
@@ -106,18 +92,16 @@ void StatusBar::update_codec (void *, void * data)
     if (bitrate > 0)
         buf.combine (str_printf (_("%d kbps"), bitrate / 1000));
 
-    sb->codec_label->setText ((const char *) buf);
-    sb->codec_label->show ();
+    codec_label->setText ((const char *) buf);
+    codec_label->show ();
 }
 
-void StatusBar::update_length (void *, void * data)
+void StatusBar::update_length ()
 {
-    auto sb = (StatusBar *) data;
-
     int playlist = aud_playlist_get_active ();
 
     StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
     StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
 
-    sb->length_label->setText ((const char *) str_concat ({s1, " / ", s2}));
+    length_label->setText ((const char *) str_concat ({s1, " / ", s2}));
 }

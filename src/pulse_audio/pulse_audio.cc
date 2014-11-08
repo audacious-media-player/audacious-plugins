@@ -26,8 +26,6 @@
 #include <pulse/pulseaudio.h>
 
 #include <libaudcore/runtime.h>
-#include <libaudcore/drct.h>
-#include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 

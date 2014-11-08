@@ -44,6 +44,7 @@ public:
             return false;
 
         qapp = new QApplication (dummy_argc, 0);
+        qapp->setAttribute(Qt::AA_UseHighDpiPixmaps);
         window = new MainWindow;
 
         return true;
@@ -53,6 +54,8 @@ public:
     {
         delete window;
         window = nullptr;
+
+        audqt::cleanup ();
 
         delete qapp;
         qapp = nullptr;

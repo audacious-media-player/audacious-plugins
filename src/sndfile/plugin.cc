@@ -92,18 +92,18 @@ static SF_VIRTUAL_IO sf_virtual_io =
     sf_tell
 };
 
-static void copy_string (SNDFILE * sf, int sf_id, Tuple & tup, int tup_id)
+static void copy_string (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str)
-        tup.set_str (tup_id, str);
+        tup.set_str (field, str);
 }
 
-static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, int tup_id)
+static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str && atoi (str))
-        tup.set_int (tup_id, atoi (str));
+        tup.set_int (field, atoi (str));
 }
 
 static Tuple get_song_tuple (const char * filename, VFSFile & file)
@@ -120,18 +120,18 @@ static Tuple get_song_tuple (const char * filename, VFSFile & file)
 
     ti.set_filename (filename);
 
-    copy_string (sndfile, SF_STR_TITLE, ti, FIELD_TITLE);
-    copy_string (sndfile, SF_STR_ARTIST, ti, FIELD_ARTIST);
-    copy_string (sndfile, SF_STR_ALBUM, ti, FIELD_ALBUM);
-    copy_string (sndfile, SF_STR_COMMENT, ti, FIELD_COMMENT);
-    copy_string (sndfile, SF_STR_GENRE, ti, FIELD_GENRE);
-    copy_int (sndfile, SF_STR_DATE, ti, FIELD_YEAR);
-    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, FIELD_TRACK_NUMBER);
+    copy_string (sndfile, SF_STR_TITLE, ti, Tuple::Title);
+    copy_string (sndfile, SF_STR_ARTIST, ti, Tuple::Artist);
+    copy_string (sndfile, SF_STR_ALBUM, ti, Tuple::Album);
+    copy_string (sndfile, SF_STR_COMMENT, ti, Tuple::Comment);
+    copy_string (sndfile, SF_STR_GENRE, ti, Tuple::Genre);
+    copy_int (sndfile, SF_STR_DATE, ti, Tuple::Year);
+    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, Tuple::Track);
 
     sf_close (sndfile);
 
     if (sfinfo.samplerate > 0)
-        ti.set_int (FIELD_LENGTH, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
+        ti.set_int (Tuple::Length, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
 
     switch (sfinfo.format & SF_FORMAT_TYPEMASK)
     {

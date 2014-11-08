@@ -343,14 +343,14 @@ Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
     case MOD_TYPE_PSM:  tmps = "Protracker Studio Module"; break;
     default:        tmps = "ModPlug unknown"; break;
     }
-    ti.set_str (FIELD_CODEC, tmps);
-    ti.set_str (FIELD_QUALITY, _("sequenced"));
-    ti.set_int (FIELD_LENGTH, lSoundFile->GetSongTime() * 1000);
+    ti.set_str (Tuple::Codec, tmps);
+    ti.set_str (Tuple::Quality, _("sequenced"));
+    ti.set_int (Tuple::Length, lSoundFile->GetSongTime() * 1000);
 
     const char *tmps2 = lSoundFile->GetTitle();
     // Chop any leading spaces off. They are annoying in the playlist.
     while ( *tmps2 == ' ' ) tmps2++ ;
-    ti.set_str (FIELD_TITLE, tmps2);
+    ti.set_str (Tuple::Title, tmps2);
 
     //unload the file
     lSoundFile->Destroy();

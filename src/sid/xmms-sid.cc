@@ -179,10 +179,10 @@ bool xs_play_file(const char *filename, VFSFile &file)
  */
 static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int subTune)
 {
-    tuple.set_str (FIELD_TITLE, info.sidName);
-    tuple.set_str (FIELD_ARTIST, info.sidComposer);
-    tuple.set_str (FIELD_COPYRIGHT, info.sidCopyright);
-    tuple.set_str (FIELD_CODEC, info.sidFormat);
+    tuple.set_str (Tuple::Title, info.sidName);
+    tuple.set_str (Tuple::Artist, info.sidComposer);
+    tuple.set_str (Tuple::Copyright, info.sidCopyright);
+    tuple.set_str (Tuple::Codec, info.sidFormat);
 
 #if 0
     switch (info.sidModel) {
@@ -200,7 +200,7 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
 
     if (subTune > 0 && subTune <= info.nsubTunes) {
         int tmpInt = info.subTunes[subTune - 1].tuneLength;
-        tuple.set_int (FIELD_LENGTH, (tmpInt < 0) ? -1 : tmpInt * 1000);
+        tuple.set_int (Tuple::Length, (tmpInt < 0) ? -1 : tmpInt * 1000);
 
 #if 0
         tmpInt = info.subTunes[subTune - 1].tuneSpeed;
@@ -224,9 +224,9 @@ static void xs_get_song_tuple_info(Tuple &tuple, const xs_tuneinfo_t &info, int 
     } else
         subTune = 1;
 
-    tuple.set_int (FIELD_SUBSONG_NUM, info.nsubTunes);
-    tuple.set_int (FIELD_SUBSONG_ID, subTune);
-    tuple.set_int (FIELD_TRACK_NUMBER, subTune);
+    tuple.set_int (Tuple::NumSubtunes, info.nsubTunes);
+    tuple.set_int (Tuple::Subtune, subTune);
+    tuple.set_int (Tuple::Track, subTune);
 }
 
 
@@ -256,7 +256,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
 
     /* Get information from URL */
     tuple.set_filename (filename);
-    tune = tuple.get_int (FIELD_SUBSONG_ID);
+    tune = tuple.get_int (Tuple::Subtune);
 
     /* Get tune information from emulation engine */
     if (!xs_sidplayfp_getinfo(info, filename, buf.begin(), buf.len()))

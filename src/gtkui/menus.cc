@@ -52,27 +52,27 @@ static void add_url (void) {audgui_show_add_url_window (FALSE); }
 static void configure_effects (void) {audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_EFFECT); }
 static void configure_visualizations (void) {audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS); }
 
-static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK); }
-static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
-static void pl_sort_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); }
-static void pl_sort_album (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); }
-static void pl_sort_album_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM_ARTIST); }
-static void pl_sort_date (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); }
-static void pl_sort_length (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); }
-static void pl_sort_path (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
-static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FORMATTED_TITLE); }
+static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
+static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void pl_sort_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
+static void pl_sort_album (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Album); }
+static void pl_sort_album_artist (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
+static void pl_sort_date (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void pl_sort_length (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Length); }
+static void pl_sort_path (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+static void pl_sort_custom (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
 static void pl_reverse (void) {aud_playlist_reverse (aud_playlist_get_active ()); }
 static void pl_random (void) {aud_playlist_randomize (aud_playlist_get_active ()); }
 
-static void pl_sort_selected_track (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TRACK); }
-static void pl_sort_selected_title (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
-static void pl_sort_selected_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ARTIST); }
-static void pl_sort_selected_album (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM); }
-static void pl_sort_selected_album_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_ALBUM_ARTIST); }
-static void pl_sort_selected_date (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_DATE); }
-static void pl_sort_selected_length (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_LENGTH); }
-static void pl_sort_selected_path (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
-static void pl_sort_selected_custom (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FORMATTED_TITLE); }
+static void pl_sort_selected_track (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Track); }
+static void pl_sort_selected_title (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void pl_sort_selected_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Artist); }
+static void pl_sort_selected_album (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Album); }
+static void pl_sort_selected_album_artist (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::AlbumArtist); }
+static void pl_sort_selected_date (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Date); }
+static void pl_sort_selected_length (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Length); }
+static void pl_sort_selected_path (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::Path); }
+static void pl_sort_selected_custom (void) {aud_playlist_sort_selected_by_scheme (aud_playlist_get_active (), Playlist::FormattedTitle); }
 static void pl_reverse_selected (void) {aud_playlist_reverse_selected (aud_playlist_get_active ()); }
 static void pl_random_selected (void) {aud_playlist_randomize_selected (aud_playlist_get_active ()); }
 
@@ -85,9 +85,9 @@ static void pl_new (void)
 static void pl_play (void) {aud_playlist_play (aud_playlist_get_active ()); }
 static void pl_refresh (void) {aud_playlist_rescan (aud_playlist_get_active ()); }
 static void pl_remove_failed (void) {aud_playlist_remove_failed (aud_playlist_get_active ()); }
-static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_TITLE); }
-static void pl_remove_dupes_by_filename (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_FILENAME); }
-static void pl_remove_dupes_by_path (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), PLAYLIST_SORT_PATH); }
+static void pl_remove_dupes_by_title (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Title); }
+static void pl_remove_dupes_by_filename (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Filename); }
+static void pl_remove_dupes_by_path (void) {aud_playlist_remove_duplicates_by_scheme (aud_playlist_get_active (), Playlist::Path); }
 static void pl_rename (void) {start_rename_playlist (aud_playlist_get_active ()); }
 static void pl_close (void) {audgui_confirm_playlist_delete (aud_playlist_get_active ()); }
 static void pl_refresh_sel (void) {aud_playlist_rescan_selected (aud_playlist_get_active ()); }

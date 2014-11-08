@@ -1,5 +1,5 @@
 /*
- * tool_bar.h
+ * tool_bar.cc
  * Copyright 2014 William Pitcock
  *
  * Redistribution and use in source and binary forms, with or without
@@ -17,8 +17,10 @@
  * the use of this software.
  */
 
-#include <QtWidgets>
 #include "tool_bar.h"
+
+#include <QAction>
+#include <QIcon>
 
 #include <libaudcore/runtime.h>
 #include <libaudqt/libaudqt.h>
@@ -29,6 +31,7 @@ ToolBar::ToolBar (QWidget * parent, ArrayRef<ToolBarItem> items)
     setContextMenuPolicy (Qt::PreventContextMenu);
     setMovable (false);
     setIconSize (QSize (22, 22));
+    setObjectName ("MainToolBar");
 
     for (const ToolBarItem & item : items)
     {

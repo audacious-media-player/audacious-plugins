@@ -222,11 +222,11 @@ wv_probe_for_tuple(const char * filename, VFSFile & fd)
 
     tuple.set_filename (filename);
 
-    tuple.set_int (FIELD_LENGTH,
+    tuple.set_int (Tuple::Length,
         ((uint64_t) WavpackGetNumSamples(ctx) * 1000) / (uint64_t) WavpackGetSampleRate(ctx));
-    tuple.set_str (FIELD_CODEC, "WavPack");
+    tuple.set_str (Tuple::Codec, "WavPack");
 
-    tuple.set_str (FIELD_QUALITY, wv_get_quality (ctx));
+    tuple.set_str (Tuple::Quality, wv_get_quality (ctx));
 
     WavpackCloseFile(ctx);
 

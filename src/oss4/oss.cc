@@ -64,9 +64,9 @@ bool OSSPlugin::set_format(int format, int rate, int channels)
     /* Enable/disable format conversions made by the OSS software */
     param = aud_get_bool("oss4", "cookedmode");
     CHECK(ioctl, m_fd, SNDCTL_DSP_COOKEDMODE, &param);
-#endif
 
     AUDDBG("%s format conversions made by the OSS software.\n", param ? "Enabled" : "Disabled");
+#endif
 
     param = format;
     CHECK_NOISY(ioctl, m_fd, SNDCTL_DSP_SETFMT, &param);

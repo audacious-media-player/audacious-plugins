@@ -103,10 +103,10 @@ static FLAC__IOCallbacks io_callbacks = {
 };
 
 static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple & tuple, int tuple_name, const char * field_name)
+ const Tuple & tuple, Tuple::Field field, const char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    String val = tuple.get_str (tuple_name);
+    String val = tuple.get_str (field);
 
     if (! val)
         return;
@@ -119,10 +119,10 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
 }
 
 static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple & tuple, int tuple_name, const char * field_name)
+ const Tuple & tuple, Tuple::Field field, const char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    int val = tuple.get_int (tuple_name);
+    int val = tuple.get_int (field);
 
     if (val <= 0)
         return;
@@ -161,14 +161,14 @@ bool flac_update_song_tuple(const char *filename, VFSFile &fd, const Tuple &tupl
 
     vc_block = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_TITLE, "TITLE");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_ARTIST, "ARTIST");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_ALBUM, "ALBUM");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_GENRE, "GENRE");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_COMMENT, "COMMENT");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Title, "TITLE");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Artist, "ARTIST");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Album, "ALBUM");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Genre, "GENRE");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Comment, "COMMENT");
 
-    insert_int_tuple_to_vc(vc_block, tuple, FIELD_YEAR, "DATE");
-    insert_int_tuple_to_vc(vc_block, tuple, FIELD_TRACK_NUMBER, "TRACKNUMBER");
+    insert_int_tuple_to_vc(vc_block, tuple, Tuple::Year, "DATE");
+    insert_int_tuple_to_vc(vc_block, tuple, Tuple::Track, "TRACKNUMBER");
 
     FLAC__metadata_iterator_insert_block_after(iter, vc_block);
 
@@ -272,13 +272,13 @@ static void parse_gain_text(const char *text, int *value, int *unit)
     *value = *value * sign;
 }
 
-static void set_gain_info(Tuple &tuple, int field, int unit_field, const char *text)
+static void set_gain_info(Tuple &tuple, Tuple::Field field, Tuple::Field unit_field, const char *text)
 {
     int value, unit;
 
     parse_gain_text(text, &value, &unit);
 
-    if (tuple.get_value_type (unit_field) == TUPLE_INT)
+    if (tuple.get_value_type (unit_field) == Tuple::Int)
         value = value * (int64_t) tuple.get_int (unit_field) / unit;
     else
         tuple.set_int (unit_field, unit);
@@ -286,7 +286,7 @@ static void set_gain_info(Tuple &tuple, int field, int unit_field, const char *t
     tuple.set_int (field, value);
 }
 
-static void add_text (Tuple & tuple, int field, const char * value)
+static void add_text (Tuple & tuple, Tuple::Field field, const char * value)
 {
     String cur = tuple.get_str (field);
     if (cur)
@@ -301,13 +301,14 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
 
     static const struct {
         const char * key;
-        int field;
+        Tuple::Field field;
     } tfields[] = {
-     {"ARTIST", FIELD_ARTIST},
-     {"ALBUM", FIELD_ALBUM},
-     {"TITLE", FIELD_TITLE},
-     {"COMMENT", FIELD_COMMENT},
-     {"GENRE", FIELD_GENRE}};
+        {"ARTIST", Tuple::Artist},
+        {"ALBUM", Tuple::Album},
+        {"TITLE", Tuple::Title},
+        {"COMMENT", Tuple::Comment},
+        {"GENRE", Tuple::Genre}
+    };
 
     for (auto & tfield : tfields)
     {
@@ -319,17 +320,17 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
     }
 
     if (! g_ascii_strcasecmp (key, "TRACKNUMBER"))
-        tuple.set_int(FIELD_TRACK_NUMBER, atoi(value));
+        tuple.set_int(Tuple::Track, atoi(value));
     else if (! g_ascii_strcasecmp (key, "DATE"))
-        tuple.set_int(FIELD_YEAR, atoi(value));
+        tuple.set_int(Tuple::Year, atoi(value));
     else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
-        set_gain_info(tuple, FIELD_GAIN_TRACK_GAIN, FIELD_GAIN_GAIN_UNIT, value);
+        set_gain_info(tuple, Tuple::TrackGain, Tuple::GainDivisor, value);
     else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
-        set_gain_info(tuple, FIELD_GAIN_TRACK_PEAK, FIELD_GAIN_PEAK_UNIT, value);
+        set_gain_info(tuple, Tuple::TrackPeak, Tuple::PeakDivisor, value);
     else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_GAIN"))
-        set_gain_info(tuple, FIELD_GAIN_ALBUM_GAIN, FIELD_GAIN_GAIN_UNIT, value);
+        set_gain_info(tuple, Tuple::AlbumGain, Tuple::GainDivisor, value);
     else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_PEAK"))
-        set_gain_info(tuple, FIELD_GAIN_ALBUM_PEAK, FIELD_GAIN_PEAK_UNIT, value);
+        set_gain_info(tuple, Tuple::AlbumPeak, Tuple::PeakDivisor, value);
 }
 
 Tuple flac_probe_for_tuple(const char *filename, VFSFile &fd)
@@ -347,8 +348,8 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile &fd)
 
     tuple.set_filename (filename);
 
-    tuple.set_str (FIELD_CODEC, "Free Lossless Audio Codec (FLAC)");
-    tuple.set_str (FIELD_QUALITY, _("lossless"));
+    tuple.set_str (Tuple::Codec, "Free Lossless Audio Codec (FLAC)");
+    tuple.set_str (Tuple::Quality, _("lossless"));
 
     chain = FLAC__metadata_chain_new();
 
@@ -396,25 +397,25 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile &fd)
                 if (metadata->data.stream_info.sample_rate == 0)
                 {
                     AUDERR("Invalid sample rate for stream!\n");
-                    tuple.set_int (FIELD_LENGTH, -1);
+                    tuple.set_int (Tuple::Length, -1);
                 }
                 else
                 {
-                    tuple.set_int (FIELD_LENGTH,
+                    tuple.set_int (Tuple::Length,
                         (metadata->data.stream_info.total_samples / metadata->data.stream_info.sample_rate) * 1000);
-                    AUDDBG("Stream length: %d seconds\n", tuple.get_int (FIELD_LENGTH));
+                    AUDDBG("Stream length: %d seconds\n", tuple.get_int (Tuple::Length));
                 }
 
                 int64_t size = fd.fsize ();
 
                 if (size < 0 || metadata->data.stream_info.total_samples == 0)
-                    tuple.set_int (FIELD_BITRATE, 0);
+                    tuple.set_int (Tuple::Bitrate, 0);
                 else
                 {
                     int bitrate = 8 * size *
                         (int64_t) metadata->data.stream_info.sample_rate / metadata->data.stream_info.total_samples;
 
-                    tuple.set_int (FIELD_BITRATE, (bitrate + 500) / 1000);
+                    tuple.set_int (Tuple::Bitrate, (bitrate + 500) / 1000);
                 }
                 break;
             }

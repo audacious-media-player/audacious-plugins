@@ -101,21 +101,22 @@ static void update_rollup_text (void)
 {
     int playlist = aud_playlist_get_active ();
     int entry = aud_playlist_get_position (playlist);
+    Tuple tuple = aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess);
     char scratch[512];
 
     scratch[0] = 0;
 
     if (entry > -1)
     {
-        int length = aud_playlist_entry_get_length (playlist, entry, TRUE);
+        String title = tuple.get_str (Tuple::FormattedTitle);
+        int length = tuple.get_int (Tuple::Length);
 
         if (aud_get_bool (nullptr, "show_numbers_in_pl"))
             APPEND (scratch, "%d. ", 1 + entry);
 
-        String title = aud_playlist_entry_get_title (playlist, entry, TRUE);
         APPEND (scratch, "%s", (const char *) title);
 
-        if (length > 0)
+        if (length >= 0)
         {
             StringBuf buf = str_format_time (length);
             APPEND (scratch, " (%s)", (const char *) buf);
@@ -190,7 +191,7 @@ static void copy_selected_to_new (int playlist)
         {
             items.append (
                 aud_playlist_entry_get_filename (playlist, entry),
-                aud_playlist_entry_get_tuple (playlist, entry, TRUE)
+                aud_playlist_entry_get_tuple (playlist, entry, Playlist::Guess)
             );
         }
     }
@@ -311,19 +312,19 @@ playlistwin_select_search(void)
 
          searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_title) );
          AUDDBG("title=\"%s\"\n", searchdata);
-         tuple.set_str (FIELD_TITLE, searchdata);
+         tuple.set_str (Tuple::Title, searchdata);
 
          searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_album) );
          AUDDBG("album=\"%s\"\n", searchdata);
-         tuple.set_str (FIELD_ALBUM, searchdata);
+         tuple.set_str (Tuple::Album, searchdata);
 
          searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_performer) );
          AUDDBG("performer=\"%s\"\n", searchdata);
-         tuple.set_str (FIELD_ARTIST, searchdata);
+         tuple.set_str (Tuple::Artist, searchdata);
 
          searchdata = (char*)gtk_entry_get_text( GTK_ENTRY(searchdlg_entry_file_name) );
          AUDDBG("filename=\"%s\"\n", searchdata);
-         tuple.set_str (FIELD_FILE_NAME, searchdata);
+         tuple.set_str (Tuple::Basename, searchdata);
 
          /* check if previous selection should be cleared before searching */
          if ( gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(searchdlg_checkbt_clearprevsel)) == TRUE )
@@ -787,7 +788,7 @@ static void update_cb (void * unused, void * another)
 
 static void follow_cb (void * data, void * another)
 {
-    int list = GPOINTER_TO_INT (data);
+    int list = aud::from_ptr<int> (data);
     aud_playlist_select_all (list, FALSE);
 
     int row = aud_playlist_get_position (list);
@@ -865,82 +866,82 @@ void action_queue_toggle (void)
 
 void action_playlist_sort_by_track_number (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_TRACK);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Track);
 }
 
 void action_playlist_sort_by_title (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_TITLE);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Title);
 }
 
 void action_playlist_sort_by_album (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Album);
 }
 
 void action_playlist_sort_by_artist (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_ARTIST);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Artist);
 }
 
 void action_playlist_sort_by_album_artist (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM_ARTIST);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::AlbumArtist);
 }
 
 void action_playlist_sort_by_full_path (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_PATH);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Path);
 }
 
 void action_playlist_sort_by_date (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_DATE);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Date);
 }
 
 void action_playlist_sort_by_filename (void)
 {
-    aud_playlist_sort_by_scheme (active_playlist, PLAYLIST_SORT_FILENAME);
+    aud_playlist_sort_by_scheme (active_playlist, Playlist::Filename);
 }
 
 void action_playlist_sort_selected_by_track_number (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_TRACK);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Track);
 }
 
 void action_playlist_sort_selected_by_title (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_TITLE);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Title);
 }
 
 void action_playlist_sort_selected_by_album (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Album);
 }
 
 void action_playlist_sort_selected_by_artist (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_ARTIST);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Artist);
 }
 
 void action_playlist_sort_selected_by_album_artist (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_ALBUM_ARTIST);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::AlbumArtist);
 }
 
 void action_playlist_sort_selected_by_full_path (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_PATH);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Path);
 }
 
 void action_playlist_sort_selected_by_date (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_DATE);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Date);
 }
 
 void action_playlist_sort_selected_by_filename (void)
 {
-    aud_playlist_sort_selected_by_scheme (active_playlist, PLAYLIST_SORT_FILENAME);
+    aud_playlist_sort_selected_by_scheme (active_playlist, Playlist::Filename);
 }
 
 void action_playlist_randomize_list (void)
@@ -966,20 +967,17 @@ void action_playlist_remove_unavailable (void)
 
 void action_playlist_remove_dupes_by_title (void)
 {
-    aud_playlist_remove_duplicates_by_scheme (active_playlist,
-     PLAYLIST_SORT_TITLE);
+    aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Title);
 }
 
 void action_playlist_remove_dupes_by_filename (void)
 {
-    aud_playlist_remove_duplicates_by_scheme (active_playlist,
-     PLAYLIST_SORT_FILENAME);
+    aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Filename);
 }
 
 void action_playlist_remove_dupes_by_full_path (void)
 {
-    aud_playlist_remove_duplicates_by_scheme (active_playlist,
-     PLAYLIST_SORT_PATH);
+    aud_playlist_remove_duplicates_by_scheme (active_playlist, Playlist::Path);
 }
 
 void action_playlist_remove_all (void)

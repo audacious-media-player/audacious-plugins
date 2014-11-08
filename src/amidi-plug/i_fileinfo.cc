@@ -104,7 +104,7 @@ void i_fileinfo_text_fill (midifile_t * mf, GtkTextBuffer * text_tb, GtkTextBuff
 }
 
 
-void i_fileinfo_gui (const char * filename_uri)
+void i_fileinfo_gui (const char * filename_uri, VFSFile & file)
 {
     static GtkWidget * fileinfowin = nullptr;
     GtkWidget * fileinfowin_vbox, *fileinfowin_columns_hbox;
@@ -128,7 +128,7 @@ void i_fileinfo_gui (const char * filename_uri)
     midifile_t mf;
 
     /****************** midifile parser ******************/
-    if (! mf.parse_from_filename (filename_uri))
+    if (! mf.parse_from_file (filename_uri, file))
         return;
 
     /* midifile is filled with information at this point,
@@ -247,7 +247,7 @@ void i_fileinfo_gui (const char * filename_uri)
     gtk_widget_set_size_request (text_tv, 300, 113);
     text_tv_sw = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (text_tv_sw),
-                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     gtk_container_add (GTK_CONTAINER (text_frame), text_tv_sw);
     gtk_container_add (GTK_CONTAINER (text_tv_sw), text_tv);
 
@@ -262,7 +262,7 @@ void i_fileinfo_gui (const char * filename_uri)
     gtk_widget_set_size_request (lyrics_tv, 300, 113);
     lyrics_tv_sw = gtk_scrolled_window_new (nullptr, nullptr);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (lyrics_tv_sw),
-                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
     gtk_container_add (GTK_CONTAINER (lyrics_frame), lyrics_tv_sw);
     gtk_container_add (GTK_CONTAINER (lyrics_tv_sw), lyrics_tv);
 

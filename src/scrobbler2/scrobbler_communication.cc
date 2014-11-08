@@ -503,12 +503,12 @@ static void send_now_playing() {
    */
   Tuple curr_track = now_playing_track.ref ();
 
-  StringBuf artist = clean_string (curr_track.get_str (FIELD_ARTIST));
-  StringBuf title = clean_string (curr_track.get_str (FIELD_TITLE));
-  StringBuf album = clean_string (curr_track.get_str (FIELD_ALBUM));
+  StringBuf artist = clean_string (curr_track.get_str (Tuple::Artist));
+  StringBuf title = clean_string (curr_track.get_str (Tuple::Title));
+  StringBuf album = clean_string (curr_track.get_str (Tuple::Album));
 
-  int track  = curr_track.get_int (FIELD_TRACK_NUMBER);
-  int length = curr_track.get_int (FIELD_LENGTH);
+  int track  = curr_track.get_int (Tuple::Track);
+  int length = curr_track.get_int (Tuple::Length);
 
   if (artist[0] && title[0] && length > 0) {
     StringBuf track_str = (track > 0) ? int_to_str (track) : StringBuf (0);
