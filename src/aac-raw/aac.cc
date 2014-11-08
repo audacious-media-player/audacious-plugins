@@ -27,7 +27,7 @@ public:
         {aac_exts}
     };
 
-    AACDecoder () : InputPlugin (info, input_info) {}
+    constexpr AACDecoder () : InputPlugin (info, input_info) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
     Tuple read_tuple (const char * filename, VFSFile & file);

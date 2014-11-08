@@ -56,7 +56,7 @@ public:
         {adplug_exts}
     };
 
-    AdPlugXMMS () : InputPlugin (info, input_info) {}
+    constexpr AdPlugXMMS () : InputPlugin (info, input_info) {}
 
     bool init ();
     void cleanup ();

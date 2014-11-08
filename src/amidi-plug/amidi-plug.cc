@@ -53,7 +53,7 @@ public:
         {amidiplug_exts}
     };
 
-    AMIDIPlug () : InputPlugin (info, input_info) {}
+    constexpr AMIDIPlug () : InputPlugin (info, input_info) {}
 
     bool init ();
     void cleanup ();
