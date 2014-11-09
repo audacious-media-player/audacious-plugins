@@ -156,7 +156,7 @@ static const AudguiMenuItem playback_items[] = {
 
 static const AudguiMenuItem dupe_items[] = {
     MenuCommand (N_("By _Title"), nullptr, NONE, pl_remove_dupes_by_title),
-    MenuCommand (N_("By _Filename"), nullptr, NONE, pl_remove_dupes_by_filename),
+    MenuCommand (N_("By _File Name"), nullptr, NONE, pl_remove_dupes_by_filename),
     MenuCommand (N_("By File _Path"), nullptr, NONE, pl_remove_dupes_by_path)
 };
 

@@ -718,7 +718,7 @@ static void mp3_configure(void)
 
         /* Output Samplerate */
 
-        samplerate_frame = gtk_frame_new(_("Output Samplerate:"));
+        samplerate_frame = gtk_frame_new(_("Output Sample Rate:"));
         gtk_container_set_border_width(GTK_CONTAINER(samplerate_frame), 5);
         gtk_box_pack_start(GTK_BOX(quality_hbox1), samplerate_frame, FALSE,
                            FALSE, 0);
@@ -752,7 +752,7 @@ static void mp3_configure(void)
 
         /* Encoder Quality */
 
-        enc_quality_frame = gtk_frame_new(_("Bitrate / Compression ratio:"));
+        enc_quality_frame = gtk_frame_new(_("Bitrate / Compression Ratio:"));
         gtk_container_set_border_width(GTK_CONTAINER(enc_quality_frame),
                                        5);
         gtk_box_pack_start(GTK_BOX(quality_vbox), enc_quality_frame, FALSE,
@@ -857,7 +857,7 @@ static void mp3_configure(void)
 
         /* Misc */
 
-        misc_frame = gtk_frame_new(_("Misc:"));
+        misc_frame = gtk_frame_new(_("Miscellaneous:"));
         gtk_container_set_border_width(GTK_CONTAINER(misc_frame), 5);
         gtk_box_pack_start(GTK_BOX(quality_vbox), misc_frame, FALSE, FALSE,
                            0);
@@ -868,7 +868,7 @@ static void mp3_configure(void)
 
         enforce_iso_toggle =
             gtk_check_button_new_with_label
-            (_("Enforce strict ISO complience"));
+            (_("Enforce strict ISO compliance"));
         gtk_box_pack_start(GTK_BOX(misc_vbox), enforce_iso_toggle, TRUE,
                            TRUE, 2);
         g_signal_connect (enforce_iso_toggle, "toggled", (GCallback)
@@ -1075,7 +1075,7 @@ static void mp3_configure(void)
         /* Xing Header */
 
         xing_header_toggle =
-            gtk_check_button_new_with_label(_("Don't write Xing VBR header"));
+            gtk_check_button_new_with_label(_("Omit Xing VBR header"));
         gtk_box_pack_start(GTK_BOX(vbr_options_vbox), xing_header_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (xing_header_toggle, "toggled", (GCallback)
@@ -1097,7 +1097,7 @@ static void mp3_configure(void)
 
         /* Frame Params */
 
-        tags_frames_frame = gtk_frame_new(_("Frame parameters:"));
+        tags_frames_frame = gtk_frame_new(_("Frame Parameters:"));
         gtk_container_set_border_width(GTK_CONTAINER(tags_frames_frame),
                                        5);
         gtk_box_pack_start(GTK_BOX(tags_vbox), tags_frames_frame, FALSE,
@@ -1132,7 +1132,7 @@ static void mp3_configure(void)
 
         /* ID3 Params */
 
-        tags_id3_frame = gtk_frame_new(_("ID3 params:"));
+        tags_id3_frame = gtk_frame_new(_("ID3 Parameters:"));
         gtk_container_set_border_width(GTK_CONTAINER(tags_id3_frame), 5);
         gtk_box_pack_start(GTK_BOX(tags_vbox), tags_id3_frame, FALSE,
                            FALSE, 2);

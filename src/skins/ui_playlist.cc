@@ -252,7 +252,7 @@ playlistwin_select_search(void)
       G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
 
     /* file name */
-    searchdlg_label_file_name = gtk_label_new( _("Filename:") );
+    searchdlg_label_file_name = gtk_label_new( _("File Name:") );
     gtk_misc_set_alignment ((GtkMisc *) searchdlg_label_file_name, 1, 0.5);
     searchdlg_entry_file_name = gtk_entry_new();
     g_signal_connect( searchdlg_entry_file_name , "key-press-event" ,

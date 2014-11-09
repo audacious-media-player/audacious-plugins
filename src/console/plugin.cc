@@ -46,7 +46,7 @@ static const PreferencesWidget console_widgets[] = {
     WidgetLabel (N_("<b>Resampling</b>")),
     WidgetCheck (N_("Enable audio resampling"),
         WidgetBool (audcfg.resample)),
-    WidgetSpin (N_("Resampling rate:"),
+    WidgetSpin (N_("Sample rate:"),
         WidgetInt (audcfg.resample_rate),
         {11025, 96000, 100, N_("Hz")},
         WIDGET_CHILD),

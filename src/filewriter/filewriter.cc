@@ -443,22 +443,22 @@ static void * file_configure (void)
         filenamefrom_hbox = gtk_hbox_new (FALSE, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
 
-        filenamefrom_label = gtk_label_new(_("Get filename from:"));
+        filenamefrom_label = gtk_label_new(_("Generate file name from:"));
         gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_label, FALSE, FALSE, 0);
 
         GtkWidget * filenamefrom_toggle1 = gtk_radio_button_new_with_label
-         (nullptr, _("original file tags"));
+         (nullptr, _("Original file tag"));
         gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle1, FALSE, FALSE, 0);
 
         GtkWidget * filenamefrom_toggle2 =
          gtk_radio_button_new_with_label_from_widget
-         ((GtkRadioButton *) filenamefrom_toggle1, _("original filename"));
+         ((GtkRadioButton *) filenamefrom_toggle1, _("Original file name"));
         gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle2, FALSE, FALSE, 0);
 
         if (!filenamefromtags)
             gtk_toggle_button_set_active ((GtkToggleButton *) filenamefrom_toggle2, TRUE);
 
-        use_suffix_toggle = gtk_check_button_new_with_label(_("Don't strip file name extension"));
+        use_suffix_toggle = gtk_check_button_new_with_label(_("Include original file name extension"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
         gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
 
@@ -467,7 +467,7 @@ static void * file_configure (void)
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_hseparator_new(), FALSE, FALSE, 0);
 
-        prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to filename"));
+        prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to file name"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);
         gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, FALSE, FALSE, 0);
 

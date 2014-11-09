@@ -116,7 +116,7 @@ void MainWindow::setupActions ()
 
     static constexpr audqt::MenuItem dupe_items[] = {
         audqt::MenuCommand (N_("By _Title"), rm_dupes_title),
-        audqt::MenuCommand (N_("By _Filename"), rm_dupes_filename),
+        audqt::MenuCommand (N_("By _File Name"), rm_dupes_filename),
         audqt::MenuCommand (N_("By File _Path"), rm_dupes_path),
     };
 
