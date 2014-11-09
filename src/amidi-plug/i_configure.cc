@@ -145,9 +145,9 @@ static const PreferencesWidget amidiplug_widgets[] = {
     WidgetBox ({{polyphony_widgets}, true}),
     WidgetBox ({{reverb_widgets}, true}),
     WidgetBox ({{chorus_widgets}, true}),
-    WidgetSpin (N_("Sampling rate:"),
+    WidgetSpin (N_("Sample rate:"),
         WidgetInt ("amidiplug", "fsyn_synth_samplerate", backend_change),
-        {22050, 96000, 1, "Hz"})
+        {22050, 96000, 1, N_("Hz")})
 };
 
 const PluginPreferences amidiplug_prefs = {

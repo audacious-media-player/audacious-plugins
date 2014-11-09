@@ -63,7 +63,7 @@ static const PreferencesWidget quality_widgets[] = {
     WidgetRadio (N_("Linear (fast)"), WidgetInt (modplug_settings.mResamplingMode), {1}),
     WidgetRadio (N_("Spline (good)"), WidgetInt (modplug_settings.mResamplingMode), {2}),
     WidgetRadio (N_("Polyphase (best)"), WidgetInt (modplug_settings.mResamplingMode), {3}),
-    WidgetLabel (N_("<b>Sampling rate</b>")),
+    WidgetLabel (N_("<b>Sample rate</b>")),
     WidgetRadio (N_("22 kHz"), WidgetInt (modplug_settings.mFrequency), {22050}),
     WidgetRadio (N_("44 kHz"), WidgetInt (modplug_settings.mFrequency), {44100}),
     WidgetRadio (N_("48 kHz"), WidgetInt (modplug_settings.mFrequency), {48000}),
