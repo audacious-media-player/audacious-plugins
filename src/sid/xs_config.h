@@ -58,4 +58,7 @@ extern struct xs_cfg_t {
  */
 void xs_init_configuration(void);
 
+struct PluginPreferences;
+extern const PluginPreferences sid_prefs;
+
 #endif    /* XS_CONFIG_H */

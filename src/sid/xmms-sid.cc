@@ -276,6 +276,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
 static const char *xs_sid_fmts[] = { "sid", "psid", nullptr };
 
 #define AUD_PLUGIN_NAME        "SID Player"
+#define AUD_PLUGIN_PREFS       &sid_prefs
 #define AUD_PLUGIN_INIT        xs_init
 #define AUD_PLUGIN_CLEANUP     xs_close
 #define AUD_INPUT_IS_OUR_FILE  xs_is_our_file
