@@ -37,7 +37,8 @@
 /* Plugin-wide typedefs
  */
 typedef struct {
-    int tuneSpeed, tuneLength;
+    int tuneSpeed = -1;
+    int tuneLength = -1;
 } xs_subtuneinfo_t;
 
 typedef struct {

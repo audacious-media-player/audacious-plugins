@@ -43,6 +43,10 @@ struct SidState {
     sidplayfp *currEng;
     sidbuilder *currBuilder;
     SidTune *currTune;
+
+    SidDatabase database;
+    bool database_loaded = false;
+    pthread_mutex_t database_mutex = PTHREAD_MUTEX_INITIALIZER;
 };
 
 static SidState state;
@@ -134,6 +138,24 @@ bool xs_sidplayfp_init()
         return false;
     }
 
+    /* Load ROMs */
+    VFSFile kernal_file("file://" SIDDATADIR "sidplayfp/kernal", "r");
+    VFSFile basic_file("file://" SIDDATADIR "sidplayfp/basic", "r");
+    VFSFile chargen_file("file://" SIDDATADIR "sidplayfp/chargen", "r");
+
+    if (kernal_file && basic_file && chargen_file)
+    {
+        Index<char> kernal = kernal_file.read_all();
+        Index<char> basic = basic_file.read_all();
+        Index<char> chargen = chargen_file.read_all();
+
+        if (kernal.len() == 8192 && basic.len() == 8192 && chargen.len() == 4096)
+            state.currEng->setRoms((uint8_t*)kernal.begin(), (uint8_t*)basic.begin(), (uint8_t*)chargen.begin());
+    }
+
+    /* Load song length database */
+    state.database_loaded = state.database.open(SIDDATADIR "sidplayfp/Songlengths.txt");
+
     /* Create the sidtune */
     state.currTune = new SidTune(0);
 
@@ -160,6 +182,9 @@ void xs_sidplayfp_close()
         delete state.currTune;
         state.currTune = nullptr;
     }
+
+    if (state.database_loaded)
+        state.database.close();
 }
 
 
@@ -193,28 +218,6 @@ unsigned xs_sidplayfp_fillbuffer(char * audioBuffer, unsigned audioBufSize)
  */
 bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
 {
-    static bool loaded_roms = false;
-
-    /* In xs_sidplayfp_init aud-vfs is not initialized yet, so try to load
-       the optional rom files on the first xs_sidplayfp_load call. */
-    if (!loaded_roms) {
-        VFSFile kernal_file("file://" SIDDATADIR "sidplayfp/kernal", "r");
-        VFSFile basic_file("file://" SIDDATADIR "sidplayfp/basic", "r");
-        VFSFile chargen_file("file://" SIDDATADIR "sidplayfp/chargen", "r");
-
-        if (kernal_file && basic_file && chargen_file)
-        {
-            Index<char> kernal = kernal_file.read_all();
-            Index<char> basic = basic_file.read_all();
-            Index<char> chargen = chargen_file.read_all();
-
-            if (kernal.len() == 8192 && basic.len() == 8192 && chargen.len() == 4096)
-                state.currEng->setRoms((uint8_t*)kernal.begin(), (uint8_t*)basic.begin(), (uint8_t*)chargen.begin());
-        }
-
-        loaded_roms = true;
-    }
-
     /* Try to get the tune */
     state.currTune->read((const uint8_t*)buf, bufSize);
 
@@ -224,10 +227,6 @@ bool xs_sidplayfp_load(const void *buf, int64_t bufSize)
 
 bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *buf, int64_t bufSize)
 {
-    static pthread_mutex_t db_mutex = PTHREAD_MUTEX_INITIALIZER;
-    static int got_db = -1;
-    static SidDatabase database;
-
     /* Check if the tune exists and is readable */
     SidTune myTune((const uint8_t*)buf, bufSize);
 
@@ -255,31 +254,21 @@ bool xs_sidplayfp_getinfo(xs_tuneinfo_t &ti, const char *filename, const void *b
 
     ti.sidModel = myInfo->sidModel1();
 
-    /* Allocate space for subtune information */
+    /* Fill in subtune information */
     ti.subTunes.insert(0, ti.nsubTunes);
 
-    /* Fill in sub-tune information */
-    for (int i = 0; i < ti.nsubTunes; i++)
+    if (state.database_loaded)
     {
-        ti.subTunes[i].tuneLength = -1;
-        ti.subTunes[i].tuneSpeed = -1;
-    }
+        pthread_mutex_lock(&state.database_mutex);
 
-    pthread_mutex_lock(&db_mutex);
-
-    if (got_db == -1)
-        got_db = database.open(SIDDATADIR "sidplayfp/Songlengths.txt");
-
-    if (got_db)
-    {
         for (int i = 0; i < ti.nsubTunes; i++)
         {
             myTune.selectSong(i + 1);
-            ti.subTunes[i].tuneLength = database.length(myTune);
+            ti.subTunes[i].tuneLength = state.database.length(myTune);
         }
-    }
 
-    pthread_mutex_unlock(&db_mutex);
+        pthread_mutex_unlock(&state.database_mutex);
+    }
 
     return true;
 }
