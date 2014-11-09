@@ -66,10 +66,8 @@ private:
 
 EXPORT Resampler aud_plugin_instance;
 
-static const char default_method[] = {'0' + SRC_SINC_FASTEST, 0};
-
 const char * const Resampler::defaults[] = {
- "method", default_method,
+ "method", aud::numeric_string<SRC_SINC_FASTEST>::str,
  "default-rate", "44100",
  "use-mappings", "FALSE",
  "8000", "48000",

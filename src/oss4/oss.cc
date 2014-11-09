@@ -37,7 +37,7 @@ const char * const OSSPlugin::defaults[] = {
  "use_alt_device", "FALSE",
  "alt_device", DEFAULT_DSP,
  "save_volume", "TRUE",
- "volume", "12850", /* 0x3232 */
+ "volume", aud::numeric_string<0x3232>::str,
  "cookedmode", "TRUE",
  "exclusive", "FALSE",
  nullptr};

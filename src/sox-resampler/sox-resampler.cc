@@ -32,8 +32,6 @@
 #define MAX_RATE 192000
 #define RATE_STEP 50
 
-const char default_quality[] = {'0' + SOXR_HQ, 0};
-
 class SoXResampler : public EffectPlugin
 {
 public:
@@ -63,7 +61,7 @@ public:
 EXPORT SoXResampler aud_plugin_instance;
 
 const char * const SoXResampler::defaults[] = {
- "quality", default_quality,
+ "quality", aud::numeric_string<SOXR_HQ>::str,
  "rate", "44100",
  nullptr};
 
