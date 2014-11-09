@@ -128,10 +128,10 @@ static const PreferencesWidget amidiplug_widgets[] = {
     WidgetLabel (N_("<b>Playback</b>")),
     WidgetSpin (N_("Transpose:"),
         WidgetInt ("amidiplug", "ap_opts_transpose_value"),
-        {-20, 20, 1}),
+        {-20, 20, 1, N_("semitones")}),
     WidgetSpin (N_("Drum shift:"),
         WidgetInt ("amidiplug", "ap_opts_drumshift_value"),
-        {0, 127, 1}),
+        {0, 127, 1, N_("note numbers")}),
     WidgetCheck (N_("Skip leading silence"),
         WidgetBool ("amidiplug", "skip_leading")),
     WidgetCheck (N_("Skip trailing silence"),
@@ -147,7 +147,7 @@ static const PreferencesWidget amidiplug_widgets[] = {
     WidgetBox ({{chorus_widgets}, true}),
     WidgetSpin (N_("Sampling rate:"),
         WidgetInt ("amidiplug", "fsyn_synth_samplerate", backend_change),
-        {22050, 96000, 1})
+        {22050, 96000, 1, "Hz"})
 };
 
 const PluginPreferences amidiplug_prefs = {
