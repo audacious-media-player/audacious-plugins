@@ -112,10 +112,10 @@ static bool vtx_play(const char * filename, VFSFile & file)
     ayemu_set_chip_freq(&ay, vtx.hdr.chipFreq);
     ayemu_set_stereo(&ay, (ayemu_stereo_t) vtx.hdr.stereo, nullptr);
 
+    aud_input_set_bitrate(14 * 50 * 8);
+
     if (aud_input_open_audio(FMT_S16_NE, freq, chans) == 0)
         return false;
-
-    aud_input_set_bitrate(14 * 50 * 8);
 
     while (!aud_input_check_stop() && !eof)
     {

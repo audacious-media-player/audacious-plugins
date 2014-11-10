@@ -86,23 +86,19 @@ EXPORT AdPlugXMMS aud_plugin_instance;
 /***** Global variables *****/
 
 // Configuration (and defaults)
-static struct
-{
-  int freq;
-  bool bit16, stereo, endless;
-  CPlayers players;
-} conf =
-{
-44100l, true, false, false, CAdPlug::getPlayers()};
+static struct {
+  int freq = 44100l;
+  bool bit16 = true, stereo = false, endless = false;
+  CPlayers players = CAdPlug::getPlayers();
+} conf;
 
 // Player variables
-static struct
-{
-  CPlayer *p;
-  CAdPlugDatabase *db;
-  unsigned int subsong, songlength;
-  char * filename;
-} plr = {0, 0, 0, 0, nullptr};
+static struct {
+  CPlayer *p = nullptr;
+  CAdPlugDatabase *db = nullptr;
+  unsigned int subsong = 0, songlength = 0;
+  String filename;
+} plr;
 
 /***** Debugging *****/
 
@@ -168,13 +164,15 @@ Tuple AdPlugXMMS::read_tuple (const char * filename, VFSFile & fd)
   return tuple;
 }
 
-// Define sampsize macro (only usable inside play_loop()!)
-#define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
-
 /* Main playback thread. Takes the filename to play as argument. */
 bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
+
+  // Set XMMS main window information
+  dbg_printf ("xmms, ");
+  int sampsize = (conf.bit16 ? 2 : 1) * (conf.stereo ? 2 : 1);
+  aud_input_set_bitrate (conf.freq * sampsize * 8);
 
   // open output plugin
   dbg_printf ("open, ");
@@ -184,10 +182,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
-  bool playing = true,          // Song self-end indicator.
-    bit16 = conf.bit16,          // Duplicate config, so it doesn't affect us if
-    stereo = conf.stereo;        // the user changes it while we're playing.
-  unsigned long freq = conf.freq;
+  bool playing = true;  // Song self-end indicator.
 
   // Try to load module
   dbg_printf ("factory, ");
@@ -202,18 +197,13 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   dbg_printf ("subsong, ");
   if (! plr.filename || strcmp (filename, plr.filename))
   {
-    free (plr.filename);
-    plr.filename = strdup (filename);
+    plr.filename = String (filename);
     plr.subsong = 0;
   }
 
   // Allocate audio buffer
   dbg_printf ("buffer, ");
   sndbuf = (char *) malloc (SNDBUFSIZE * sampsize);
-
-  // Set XMMS main window information
-  dbg_printf ("xmms, ");
-  aud_input_set_bitrate (freq * sampsize * 8);
 
   // Rewind player to right subsong
   dbg_printf ("rewind, ");
@@ -252,7 +242,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
     {
       while (toadd < 0)
       {
-        toadd += freq;
+        toadd += conf.freq;
         playing = plr.p->update ();
         if (playing)
           time += (int) (1000 / plr.p->getrefresh ());
@@ -367,8 +357,7 @@ void AdPlugXMMS::cleanup ()
   if (plr.db)
     delete plr.db;
 
-  free (plr.filename);
-  plr.filename = nullptr;
+  plr.filename = String ();
 
   aud_set_bool (CFG_VERSION, "16bit", conf.bit16);
   aud_set_bool (CFG_VERSION, "Stereo", conf.stereo);

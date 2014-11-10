@@ -133,14 +133,14 @@ static bool flac_play (const char * filename, VFSFile & file)
 
     play_buffer = g_malloc (BUFFER_SIZE_BYTE);
 
+    aud_input_set_bitrate(info->bitrate);
+
     if (! aud_input_open_audio (SAMPLE_FMT (info->bits_per_sample),
         info->sample_rate, info->channels))
     {
         error = true;
         goto ERR_NO_CLOSE;
     }
-
-    aud_input_set_bitrate(info->bitrate);
 
     while (FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_END_OF_STREAM)
     {

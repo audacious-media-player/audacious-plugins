@@ -109,13 +109,13 @@ static bool tone_play(const char *filename, VFSFile &file)
     if (frequencies == nullptr)
         return false;
 
+    aud_input_set_bitrate(16 * OUTPUT_FREQ);
+
     if (aud_input_open_audio(FMT_FLOAT, OUTPUT_FREQ, 1) == 0)
     {
         error = true;
         goto error_exit;
     }
-
-    aud_input_set_bitrate(16 * OUTPUT_FREQ);
 
     tone = g_new(tone_t, frequencies->len);
     for (i = 0; i < frequencies->len; i++)

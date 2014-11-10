@@ -151,13 +151,13 @@ static bool xsf_play(const char * filename, VFSFile & file)
 		goto ERR_NO_CLOSE;
 	}
 
+	aud_input_set_bitrate(44100*2*2*8);
+
 	if (!aud_input_open_audio(FMT_S16_NE, 44100, 2))
 	{
 		error = true;
 		goto ERR_NO_CLOSE;
 	}
-
-	aud_input_set_bitrate(44100*2*2*8);
 
 	while (! aud_input_check_stop ())
 	{

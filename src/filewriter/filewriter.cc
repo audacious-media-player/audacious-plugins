@@ -216,6 +216,11 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
     input.frequency = rate;
     input.channels = nch;
 
+    // As of Audacious 3.6; aud_drct_get_tuple() is not really thread-safe, so
+    // calling it from the output plugin could theoretically cause a crash.
+    // However, since the likelihood of an actual crash is quite small, and
+    // aud_drct_get_tuple() will be made thread-safe in Audacious 3.7, it's
+    // okay to leave this code alone for now.
     tuple = aud_drct_get_tuple ();
     if (! tuple)
         return 0;

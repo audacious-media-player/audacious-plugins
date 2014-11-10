@@ -264,6 +264,8 @@ static bool cdaudio_play (const char * name, VFSFile & file)
         }
     }
 
+    aud_input_set_bitrate (1411200);
+
     bool okay = false;
     int trackno = find_trackno_from_filename (name);
 
@@ -288,8 +290,6 @@ static bool cdaudio_play (const char * name, VFSFile & file)
     int endlsn = trackinfo[trackno].endlsn;
 
     playing = true;
-
-    aud_input_set_bitrate (1411200);
 
     int buffer_size = aud_get_int (nullptr, "output_buffer_size");
     int speed = aud_get_int ("CDDA", "disc_speed");

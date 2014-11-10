@@ -119,6 +119,8 @@ static bool wv_play (const char * filename, VFSFile & file)
     bits_per_sample = WavpackGetBitsPerSample(ctx);
     num_samples = WavpackGetNumSamples(ctx);
 
+    aud_input_set_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
+
     if (!aud_input_open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
         AUDERR ("Error opening audio output.");
@@ -130,8 +132,6 @@ static bool wv_play (const char * filename, VFSFile & file)
     output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
     if (input == nullptr || output == nullptr)
         goto error_exit;
-
-    aud_input_set_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
 
     while (! aud_input_check_stop ())
     {

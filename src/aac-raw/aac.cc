@@ -406,12 +406,12 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
     if (tuple && tuple.fetch_stream_info (file))
         aud_input_set_tuple (tuple.ref ());
 
+    aud_input_set_bitrate (bitrate);
+
     /* == START PLAYBACK == */
 
     if (! aud_input_open_audio (FMT_FLOAT, samplerate, channels))
         goto ERR_CLOSE_DECODER;
-
-    aud_input_set_bitrate (bitrate);
 
     /* == MAIN LOOP == */
 

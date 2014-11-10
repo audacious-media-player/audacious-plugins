@@ -318,6 +318,9 @@ GET_FORMAT:
     bitrate = fi.bitrate * 1000;
     aud_input_set_bitrate (bitrate);
 
+    if (ctx.tu && ctx.tu.fetch_stream_info (file))
+        aud_input_set_tuple (ctx.tu.ref ());
+
     if (! aud_input_open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
     {
         error = true;

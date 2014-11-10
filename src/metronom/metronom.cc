@@ -141,6 +141,8 @@ static bool metronom_play (const char * filename, VFSFile & file)
     int data_form[TACT_FORM_MAX];
     String desc;
 
+    aud_input_set_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
+
     if (aud_input_open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
         return false;
 
@@ -149,8 +151,6 @@ static bool metronom_play (const char * filename, VFSFile & file)
         AUDERR ("Invalid metronom tact parameters in URI %s", filename);
         return false;
     }
-
-    aud_input_set_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
 
     tact = 60 * AUDIO_FREQ / pmetronom.bpm;
 

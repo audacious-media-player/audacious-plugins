@@ -145,9 +145,9 @@ static bool psf2_play(const char * filename, VFSFile & file)
 		goto cleanup;
 	}
 
-	aud_input_open_audio(FMT_S16_NE, 44100, 2);
-
 	aud_input_set_bitrate(44100*2*2*8);
+
+	aud_input_open_audio(FMT_S16_NE, 44100, 2);
 
 	stop_flag = false;
 

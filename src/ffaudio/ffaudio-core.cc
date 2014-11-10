@@ -444,15 +444,13 @@ static bool ffaudio_play (const char * filename, VFSFile & file)
     /* Open audio output */
     AUDDBG("opening audio output\n");
 
+    aud_input_set_bitrate(ic->bit_rate);
+
     if (aud_input_open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels) <= 0)
     {
         error = true;
         goto error_exit;
     }
-
-    AUDDBG("setting parameters\n");
-
-    aud_input_set_bitrate(ic->bit_rate);
 
     errcount = 0;
 

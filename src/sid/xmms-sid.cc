@@ -110,6 +110,14 @@ bool xs_play_file(const char *filename, VFSFile &file)
         return false;
     }
 
+    /* Set song information for current subtune */
+    xs_sidplayfp_updateinfo(info, subTune);
+
+    Tuple tmpTuple;
+    tmpTuple.set_filename(info.sidFilename);
+    xs_get_song_tuple_info(tmpTuple, info, subTune);
+    aud_input_set_tuple (std::move (tmpTuple));
+
     /* Open the audio output */
     if (!aud_input_open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels))
     {
@@ -120,14 +128,6 @@ bool xs_play_file(const char *filename, VFSFile &file)
 
         return false;
     }
-
-    /* Set song information for current subtune */
-    xs_sidplayfp_updateinfo(info, subTune);
-
-    Tuple tmpTuple;
-    tmpTuple.set_filename(info.sidFilename);
-    xs_get_song_tuple_info(tmpTuple, info, subTune);
-    aud_input_set_tuple (std::move (tmpTuple));
 
     /* Allocate audio buffer */
     int audioBufSize = xs_cfg.audioFrequency * xs_cfg.audioChannels * 2;

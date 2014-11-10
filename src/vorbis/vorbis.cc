@@ -200,8 +200,21 @@ static float atof_no_locale (const char * string)
     return negative ? -result : result;
 }
 
-static bool
-vorbis_update_replaygain(OggVorbis_File *vf, ReplayGainInfo *rg_info)
+/* try to detect when metadata has changed */
+static bool vorbis_fetch_tuple (OggVorbis_File * vf, const char * filename, bool stream, Tuple & tuple)
+{
+    String old_title = tuple.get_str (Tuple::Title);
+    vorbis_comment * comment = ov_comment (vf, -1);
+    const char * new_title = comment ? vorbis_comment_query (comment, "title", 0) : nullptr;
+
+    if (! new_title || (old_title && ! strcmp (old_title, new_title)))
+        return false;
+
+    tuple = get_tuple_for_vorbisfile (vf, filename, stream);
+    return true;
+}
+
+static bool vorbis_fetch_replaygain (OggVorbis_File * vf, ReplayGainInfo * rg_info)
 {
     vorbis_comment *comment;
     char *rg_gain, *rg_peak;
@@ -254,10 +267,10 @@ static bool vorbis_play (const char * filename, VFSFile & file)
     vorbis_info *vi;
     OggVorbis_File vf;
     int last_section = -1;
+    Tuple tuple;
     ReplayGainInfo rg_info;
     float pcmout[PCM_BUFSIZE*sizeof(float)], **pcm;
     int bytes, channels, samplerate, br;
-    char * title = nullptr;
 
     memset(&vf, 0, sizeof(vf));
 
@@ -282,13 +295,16 @@ static bool vorbis_play (const char * filename, VFSFile & file)
 
     aud_input_set_bitrate (br);
 
+    if (vorbis_fetch_tuple (& vf, filename, stream, tuple))
+        aud_input_set_tuple (tuple.ref ());
+
+    if (vorbis_fetch_replaygain (& vf, & rg_info))
+        aud_input_set_gain (& rg_info);
+
     if (!aud_input_open_audio(FMT_FLOAT, samplerate, channels)) {
         error = true;
         goto play_cleanup;
     }
-
-    vorbis_update_replaygain(&vf, &rg_info);
-    aud_input_set_gain (& rg_info);
 
     /*
      * Note that chaining changes things here; A vorbis file may
@@ -318,19 +334,8 @@ static bool vorbis_play (const char * filename, VFSFile & file)
 
         bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
 
-        { /* try to detect when metadata has changed */
-            vorbis_comment * comment = ov_comment (& vf, -1);
-            const char * new_title = (comment == nullptr) ? nullptr :
-             vorbis_comment_query (comment, "title", 0);
-
-            if (new_title != nullptr && (title == nullptr || strcmp (title, new_title)))
-            {
-                g_free (title);
-                title = g_strdup (new_title);
-
-                aud_input_set_tuple (get_tuple_for_vorbisfile (& vf, filename, stream));
-            }
-        }
+        if (vorbis_fetch_tuple (& vf, filename, stream, tuple))
+            aud_input_set_tuple (tuple.ref ());
 
         if (current_section != last_section)
         {
@@ -349,13 +354,13 @@ static bool vorbis_play (const char * filename, VFSFile & file)
                 samplerate = vi->rate;
                 channels = vi->channels;
 
+                if (vorbis_fetch_replaygain (& vf, & rg_info))
+                    aud_input_set_gain (& rg_info);
+
                 if (!aud_input_open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
                     error = true;
                     goto stop_processing;
                 }
-
-                vorbis_update_replaygain(&vf, &rg_info);
-                aud_input_set_gain (& rg_info); /* audio reopened */
             }
         }
 
@@ -373,7 +378,6 @@ stop_processing:
 play_cleanup:
 
     ov_clear(&vf);
-    g_free (title);
     return ! error;
 }
 
