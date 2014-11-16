@@ -187,7 +187,7 @@ QSize InfoBar::minimumSizeHint () const
 void InfoBar::resizeEvent (QResizeEvent * event)
 {
     QGraphicsView::resizeEvent (event);
-    setSceneRect (0, 0, width (), height ());
+    setSceneRect (0, 0, width () - 2, height () - 2);
 
     m_art->setPos (m_art->mapFromScene (InfoBar::Spacing, InfoBar::Spacing));
 
