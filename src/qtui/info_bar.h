@@ -21,6 +21,7 @@
 #include <QPainter>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include <QGraphicsTextItem>
 
 #include <libaudcore/hook.h>
 #include <libaudcore/index.h>
@@ -50,9 +51,17 @@ public:
     QSize minimumSizeHint () const;
     void resizeEvent (QResizeEvent *);
 
+    void update_metadata_cb ();
+
 private:
     QGraphicsScene * m_scene;
     AlbumArtItem * m_art;
+
+    QGraphicsTextItem * m_title_text;
+    QGraphicsTextItem * m_album_text;
+    QGraphicsTextItem * m_artist_text;
+
+    const HookReceiver<InfoBar> hook1, hook2;
 };
 
 #endif

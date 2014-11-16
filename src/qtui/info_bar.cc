@@ -23,10 +23,13 @@
 #include <libaudcore/index.h>
 #include <libaudcore/objects.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/tuple.h>
+#include <libaudcore/drct.h>
 #include <libaudqt/libaudqt.h>
 
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
+#include <QFont>
 
 AlbumArtItem::AlbumArtItem (QGraphicsItem * parent) : QGraphicsPixmapItem (parent),
     hook1 ("playback begin", this, & AlbumArtItem::update_cb),
@@ -41,7 +44,12 @@ void AlbumArtItem::update_cb ()
 
 InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     m_scene (new QGraphicsScene (this)),
-    m_art (new AlbumArtItem)
+    m_art (new AlbumArtItem),
+    m_title_text (new QGraphicsTextItem),
+    m_album_text (new QGraphicsTextItem),
+    m_artist_text (new QGraphicsTextItem),
+    hook1 ("tuple change", this, & InfoBar::update_metadata_cb),
+    hook2 ("playback begin", this, & InfoBar::update_metadata_cb)
 {
     QLinearGradient gradient (QPointF (0.0, 0.0), QPointF (0.0, 100.0));
 
@@ -56,6 +64,25 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
 
     m_scene->setBackgroundBrush (gradient);
     m_scene->addItem (m_art);
+    m_scene->addItem (m_title_text);
+    m_scene->addItem (m_album_text);
+    m_scene->addItem (m_artist_text);
+
+    m_title_text->setDefaultTextColor (QColor (255, 255, 255));
+    m_artist_text->setDefaultTextColor (QColor (255, 255, 255));
+    m_album_text->setDefaultTextColor (QColor (128, 128, 128));
+
+    QFont f = m_title_text->font ();
+    f.setPointSize (18);
+    m_title_text->setFont (f);
+
+    f = m_artist_text->font ();
+    f.setPointSize (12);
+    m_artist_text->setFont (f);
+
+    f = m_album_text->font ();
+    f.setPointSize (12);
+    m_album_text->setFont (f);
 }
 
 QSize InfoBar::minimumSizeHint () const
@@ -69,4 +96,22 @@ void InfoBar::resizeEvent (QResizeEvent * event)
     setSceneRect (0, 0, width (), height ());
 
     m_art->setPos (m_art->mapFromScene (InfoBar::Spacing, InfoBar::Spacing));
+
+    qreal x = InfoBar::IconSize + (InfoBar::Spacing * 1.5);
+    qreal y = InfoBar::Spacing / 2;
+    m_title_text->setPos (m_title_text->mapFromScene (x, y));
+    m_artist_text->setPos (m_artist_text->mapFromScene (x, y + (InfoBar::IconSize / 2)));
+    m_album_text->setPos (m_album_text->mapFromScene (x, y + ((InfoBar::IconSize * 3) / 4)));
+}
+
+void InfoBar::update_metadata_cb ()
+{
+    Tuple tuple = aud_drct_get_tuple ();
+    String title = tuple.get_str (Tuple::Title);
+    String artist = tuple.get_str (Tuple::Artist);
+    String album = tuple.get_str (Tuple::Album);
+
+    m_title_text->setPlainText (QString ((const char *) title));
+    m_artist_text->setPlainText (QString ((const char *) artist));
+    m_album_text->setPlainText (QString ((const char *) album));
 }
