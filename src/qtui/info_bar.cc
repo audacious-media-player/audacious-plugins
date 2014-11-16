@@ -151,6 +151,7 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     setAlignment (Qt::AlignLeft | Qt::AlignTop);
     setScene (m_scene);
     setFixedHeight (InfoBar::Height);
+    setCacheMode (QGraphicsView::CacheBackground);
 
     m_scene->setBackgroundBrush (gradient);
     m_scene->addItem (m_art);
