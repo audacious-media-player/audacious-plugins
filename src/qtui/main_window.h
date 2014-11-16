@@ -25,9 +25,11 @@
 #include <libaudcore/objects.h>
 
 #include "dialog_windows.h"
+#include "info_bar.h"
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QVBoxLayout>
 
 class FilterInput;
 class PlaylistTabs;
@@ -45,6 +47,9 @@ private:
     DialogWindows m_dialogs;
     FilterInput * filterInput;
     PlaylistTabs * playlistTabs;
+    InfoBar * infoBar;
+    QWidget * centralWidget;
+    QVBoxLayout * centralLayout;
 
     QAction * toolButtonPlayPause;
     QAction * toolButtonRepeat;

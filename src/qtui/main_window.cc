@@ -44,6 +44,9 @@ MainWindow::MainWindow () :
     m_dialogs (this),
     filterInput (new FilterInput (this)),
     playlistTabs (new PlaylistTabs (this)),
+    infoBar (new InfoBar (this)),
+    centralWidget (new QWidget (this)),
+    centralLayout (new QVBoxLayout (this)),
     hook1 ("title change", this, & MainWindow::title_change_cb),
     hook2 ("playback begin", this, & MainWindow::playback_begin_cb),
     hook3 ("playback ready", this, & MainWindow::playback_ready_cb),
@@ -96,7 +99,15 @@ MainWindow::MainWindow () :
     updateToggles ();
 
     setStatusBar (new StatusBar (this));
-    setCentralWidget (playlistTabs);
+    setCentralWidget (centralWidget);
+
+    centralLayout->addWidget (playlistTabs);
+    centralLayout->addWidget (infoBar);
+
+    centralLayout->setContentsMargins (0, 0, 0, 0);
+    centralLayout->setSpacing (4);
+
+    centralWidget->setLayout (centralLayout);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
