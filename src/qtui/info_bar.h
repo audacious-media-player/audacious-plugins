@@ -20,9 +20,24 @@
 #include <QWidget>
 #include <QPainter>
 #include <QGraphicsView>
+#include <QGraphicsPixmapItem>
+
+#include <libaudcore/hook.h>
+#include <libaudcore/index.h>
+#include <libaudcore/objects.h>
+#include <libaudcore/runtime.h>
 
 #ifndef INFO_BAR_H
 #define INFO_BAR_H
+
+class AlbumArtItem : public QGraphicsPixmapItem {
+public:
+    AlbumArtItem (QGraphicsItem * parent = nullptr);
+
+private:
+    const HookReceiver<AlbumArtItem> hook1, hook2;
+    void update_cb ();
+};
 
 class InfoBar : public QGraphicsView {
 public:
@@ -32,8 +47,12 @@ public:
     static constexpr int IconSize = 64;
     static constexpr int Height = IconSize + (2 * Spacing);
 
+    QSize minimumSizeHint () const;
+    void resizeEvent (QResizeEvent *);
+
 private:
     QGraphicsScene * m_scene;
+    AlbumArtItem * m_art;
 };
 
 #endif

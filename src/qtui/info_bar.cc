@@ -28,29 +28,20 @@
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 
-class AlbumInfoItem : public QGraphicsPixmapItem {
-public:
-    AlbumInfoItem (QGraphicsItem * parent = nullptr);
-
-private:
-    const HookReceiver<AlbumInfoItem> playback_begin;
-    void playback_begin_cb ();
-};
-
-AlbumInfoItem::AlbumInfoItem (QGraphicsItem * parent) : QGraphicsPixmapItem (parent),
-    playback_begin ("playback begin", this, & AlbumInfoItem::playback_begin_cb)
+AlbumArtItem::AlbumArtItem (QGraphicsItem * parent) : QGraphicsPixmapItem (parent),
+    hook1 ("playback begin", this, & AlbumArtItem::update_cb),
+    hook2 ("current art ready", this, & AlbumArtItem::update_cb)
 {
-    setPos (InfoBar::Spacing, InfoBar::Spacing);
 }
 
-void AlbumInfoItem::playback_begin_cb ()
+void AlbumArtItem::update_cb ()
 {
     setPixmap (audqt::art_request_current (InfoBar::IconSize, InfoBar::IconSize));
-    update ();
 }
 
 InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
-    m_scene (new QGraphicsScene (this))
+    m_scene (new QGraphicsScene (this)),
+    m_art (new AlbumArtItem)
 {
     QLinearGradient gradient (QPointF (0.0, 0.0), QPointF (0.0, 100.0));
 
@@ -59,11 +50,23 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     gradient.setColorAt (0.5, QColor (25, 25, 25));
     gradient.setColorAt (1.0, QColor (0, 0, 0));
 
-    m_scene->setBackgroundBrush (gradient);
-
-    auto m_art = new AlbumInfoItem;
-    m_scene->addItem (m_art);
-
+    setAlignment (Qt::AlignLeft | Qt::AlignTop);
     setScene (m_scene);
     setFixedHeight (InfoBar::Height);
+
+    m_scene->setBackgroundBrush (gradient);
+    m_scene->addItem (m_art);
+}
+
+QSize InfoBar::minimumSizeHint () const
+{
+    return QSize (InfoBar::IconSize + (2 * InfoBar::Spacing), InfoBar::Height);
+}
+
+void InfoBar::resizeEvent (QResizeEvent * event)
+{
+    QGraphicsView::resizeEvent (event);
+    setSceneRect (0, 0, width (), height ());
+
+    m_art->setPos (m_art->mapFromScene (InfoBar::Spacing, InfoBar::Spacing));
 }
