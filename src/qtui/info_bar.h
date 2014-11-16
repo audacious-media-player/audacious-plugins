@@ -31,6 +31,21 @@
 #ifndef INFO_BAR_H
 #define INFO_BAR_H
 
+class VisItem : public QGraphicsItem {
+public:
+    VisItem (QGraphicsItem * parent = nullptr);
+
+    QRectF boundingRect () const;
+    void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+
+private:
+    static void vis_render_cb (const float * freq);
+    static void vis_clear_cb ();
+
+    char m_bars[12];
+    char m_delay[12];
+};
+
 class AlbumArtItem : public QGraphicsPixmapItem {
 public:
     AlbumArtItem (QGraphicsItem * parent = nullptr);
@@ -48,6 +63,12 @@ public:
     static constexpr int IconSize = 64;
     static constexpr int Height = IconSize + (2 * Spacing);
 
+    static constexpr int VisBands = 12;
+    static constexpr int VisWidth = (8 * VisBands) + Spacing;
+    static constexpr int VisCenter = (IconSize * 5 / 8 + Spacing);
+    static constexpr int VisDelay = 2;
+    static constexpr int VisFalloff = 2;
+
     QSize minimumSizeHint () const;
     void resizeEvent (QResizeEvent *);
 
@@ -60,6 +81,10 @@ private:
     QGraphicsTextItem * m_title_text;
     QGraphicsTextItem * m_album_text;
     QGraphicsTextItem * m_artist_text;
+
+#ifdef XXX_NOTYET
+    VisItem * m_vis;
+#endif
 
     const HookReceiver<InfoBar> hook1, hook2;
 };
