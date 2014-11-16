@@ -25,14 +25,15 @@
 #define INFO_BAR_H
 
 class InfoBar : public QGraphicsView {
+public:
+    InfoBar (QWidget * parent = nullptr);
+
     static constexpr int Spacing = 8;
     static constexpr int IconSize = 64;
     static constexpr int Height = IconSize + (2 * Spacing);
 
+private:
     QGraphicsScene * m_scene;
-
-public:
-    InfoBar (QWidget * parent = nullptr);
 };
 
 #endif

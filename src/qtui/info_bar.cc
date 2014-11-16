@@ -19,6 +19,36 @@
 
 #include "info_bar.h"
 
+#include <libaudcore/hook.h>
+#include <libaudcore/index.h>
+#include <libaudcore/objects.h>
+#include <libaudcore/runtime.h>
+#include <libaudqt/libaudqt.h>
+
+#include <QGraphicsItem>
+#include <QGraphicsPixmapItem>
+
+class AlbumInfoItem : public QGraphicsPixmapItem {
+public:
+    AlbumInfoItem (QGraphicsItem * parent = nullptr);
+
+private:
+    const HookReceiver<AlbumInfoItem> playback_begin;
+    void playback_begin_cb ();
+};
+
+AlbumInfoItem::AlbumInfoItem (QGraphicsItem * parent) : QGraphicsPixmapItem (parent),
+    playback_begin ("playback begin", this, & AlbumInfoItem::playback_begin_cb)
+{
+    setPos (InfoBar::Spacing, InfoBar::Spacing);
+}
+
+void AlbumInfoItem::playback_begin_cb ()
+{
+    setPixmap (audqt::art_request_current (InfoBar::IconSize, InfoBar::IconSize));
+    update ();
+}
+
 InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     m_scene (new QGraphicsScene (this))
 {
@@ -30,6 +60,9 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     gradient.setColorAt (1.0, QColor (0, 0, 0));
 
     m_scene->setBackgroundBrush (gradient);
+
+    auto m_art = new AlbumInfoItem;
+    m_scene->addItem (m_art);
 
     setScene (m_scene);
     setFixedHeight (InfoBar::Height);
