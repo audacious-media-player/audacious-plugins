@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
@@ -275,7 +276,7 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
  */
 static const char *xs_sid_fmts[] = { "sid", "psid", nullptr };
 
-#define AUD_PLUGIN_NAME        "SID Player"
+#define AUD_PLUGIN_NAME        N_("SID Player")
 #define AUD_PLUGIN_PREFS       &sid_prefs
 #define AUD_PLUGIN_INIT        xs_init
 #define AUD_PLUGIN_CLEANUP     xs_close
