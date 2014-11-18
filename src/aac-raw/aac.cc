@@ -20,14 +20,10 @@ public:
         PACKAGE
     };
 
-    static constexpr InputPluginInfo input_info = {
-        0,      // priority
-        false,  // subtunes
-        false,  // tag writing
-        {aac_exts}
-    };
+    static constexpr auto iinfo = InputInfo ()
+        .with_exts ({aac_exts});
 
-    constexpr AACDecoder () : InputPlugin (info, input_info) {}
+    constexpr AACDecoder () : InputPlugin (info, iinfo) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
     Tuple read_tuple (const char * filename, VFSFile & file);

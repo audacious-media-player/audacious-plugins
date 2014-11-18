@@ -46,14 +46,10 @@ public:
         & amidiplug_prefs
     };
 
-    static constexpr InputPluginInfo input_info = {
-        0,      // priority
-        false,  // subtunes
-        false,  // tag writing
-        {amidiplug_exts}
-    };
+    static constexpr auto iinfo = InputInfo ()
+        .with_exts ({amidiplug_exts});
 
-    constexpr AMIDIPlug () : InputPlugin (info, input_info) {}
+    constexpr AMIDIPlug () : InputPlugin (info, iinfo) {}
 
     bool init ();
     void cleanup ();

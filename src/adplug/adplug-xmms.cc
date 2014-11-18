@@ -49,14 +49,10 @@ public:
         PACKAGE
     };
 
-    static constexpr InputPluginInfo input_info = {
-        0,      // priority
-        false,  // subtunes
-        false,  // tag writing
-        {adplug_exts}
-    };
+    static constexpr auto iinfo = InputInfo ()
+        .with_exts ({adplug_exts});
 
-    constexpr AdPlugXMMS () : InputPlugin (info, input_info) {}
+    constexpr AdPlugXMMS () : InputPlugin (info, iinfo) {}
 
     bool init ();
     void cleanup ();
