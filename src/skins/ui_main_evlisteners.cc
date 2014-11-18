@@ -125,13 +125,25 @@ ui_main_evlistener_playback_unpause(void * hook_data, void * user_data)
     ui_skinned_playstatus_set_status(mainwin_playstatus, STATUS_PLAY);
 }
 
-static void vis_clear_cb (void)
+class VisCallbacks : public Visualizer
+{
+public:
+    constexpr VisCallbacks () :
+        Visualizer (MonoPCM | MultiPCM | Freq) {}
+
+    void clear ();
+    void render_mono_pcm (const float * pcm);
+    void render_multi_pcm (const float * pcm, int channels);
+    void render_freq (const float * freq);
+};
+
+void VisCallbacks::clear ()
 {
     ui_vis_clear_data (mainwin_vis);
     ui_svis_clear_data (mainwin_svis);
 }
 
-static void render_mono_pcm (const float * pcm)
+void VisCallbacks::render_mono_pcm (const float * pcm)
 {
     unsigned char data[512];
 
@@ -166,7 +178,7 @@ static float calc_peak_level (const float * pcm, int step)
     return 20 * log10 (peak);
 }
 
-static void render_multi_pcm (const float * pcm, int channels)
+void VisCallbacks::render_multi_pcm (const float * pcm, int channels)
 {
     /* "VU meter" */
     if (config.vis_type != VIS_VOICEPRINT || ! aud_get_bool ("skins", "player_shaded"))
@@ -239,9 +251,9 @@ static void make_log_graph (const float * freq, int bands, int db_range, int
     }
 }
 
-static void render_freq (const float * freq)
+void VisCallbacks::render_freq (const float * freq)
 {
-    gboolean shaded = aud_get_bool ("skins", "player_shaded");
+    bool shaded = aud_get_bool ("skins", "player_shaded");
 
     unsigned char data[512];
 
@@ -315,28 +327,23 @@ ui_main_evlistener_dissociate(void)
 
 void start_stop_visual (gboolean exiting)
 {
-    static char started = 0;
+    static VisCallbacks callbacks;
+    static bool started = false;
 
     if (config.vis_type != VIS_OFF && ! exiting && gtk_widget_get_visible (mainwin))
     {
         if (! started)
         {
-            aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
-            aud_vis_func_add (AUD_VIS_TYPE_MONO_PCM, (VisFunc) render_mono_pcm);
-            aud_vis_func_add (AUD_VIS_TYPE_MULTI_PCM, (VisFunc) render_multi_pcm);
-            aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) render_freq);
-            started = 1;
+            aud_visualizer_add (& callbacks);
+            started = true;
         }
     }
     else
     {
         if (started)
         {
-            aud_vis_func_remove ((VisFunc) vis_clear_cb);
-            aud_vis_func_remove ((VisFunc) render_mono_pcm);
-            aud_vis_func_remove ((VisFunc) render_multi_pcm);
-            aud_vis_func_remove ((VisFunc) render_freq);
-            started = 0;
+            aud_visualizer_remove (& callbacks);
+            started = false;
         }
     }
 }

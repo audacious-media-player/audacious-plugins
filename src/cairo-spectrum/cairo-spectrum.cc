@@ -42,7 +42,7 @@ public:
         PACKAGE
     };
 
-    constexpr CairoSpectrum () : VisPlugin (info, AUD_VIS_TYPE_FREQ) {}
+    constexpr CairoSpectrum () : VisPlugin (info, Visualizer::Freq) {}
 
     void * get_gtk_widget ();
 

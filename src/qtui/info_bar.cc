@@ -34,15 +34,16 @@
 #include <QGraphicsPixmapItem>
 #include <QFont>
 
-static VisItem * s_vis = nullptr;
-
-VisItem::VisItem (QGraphicsItem * parent) : QGraphicsItem (parent)
+VisItem::VisItem (QGraphicsItem * parent) :
+    QGraphicsItem (parent),
+    Visualizer (Freq)
 {
-    /* XXX - need something like hookreceiver to get rid of this junk */
-    s_vis = this;
+    aud_visualizer_add (this);
+}
 
-    aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) VisItem::vis_clear_cb);
-    aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) VisItem::vis_render_cb);
+VisItem::~VisItem ()
+{
+    aud_visualizer_remove (this);
 }
 
 QRectF VisItem::boundingRect () const
@@ -67,7 +68,7 @@ void VisItem::paint (QPainter * painter, const QStyleOptionGraphicsItem * option
     }
 }
 
-void VisItem::vis_render_cb (const float * freq)
+void VisItem::render_freq (const float * freq)
 {
     /* xscale[i] = pow (256, i / VIS_BANDS) - 0.5; */
     const float xscale[InfoBar::VisBands + 1] = {0.5, 1.09, 2.02, 3.5, 5.85, 9.58,
@@ -95,27 +96,27 @@ void VisItem::vis_render_cb (const float * freq)
         int x = 40 + 20 * log10f (n);
         x = aud::clamp (x, 0, 40);
 
-        s_vis->m_bars[i] -= aud::max (0, InfoBar::VisFalloff - s_vis->m_delay[i]);
+        m_bars[i] -= aud::max (0, InfoBar::VisFalloff - m_delay[i]);
 
-        if (s_vis->m_delay[i])
-            s_vis->m_delay[i] --;
+        if (m_delay[i])
+            m_delay[i] --;
 
-        if (x > s_vis->m_bars[i])
+        if (x > m_bars[i])
         {
-            s_vis->m_bars[i] = x;
-            s_vis->m_delay[i] = InfoBar::VisDelay;
+            m_bars[i] = x;
+            m_delay[i] = InfoBar::VisDelay;
         }
     }
 
-    s_vis->update ();
+    update ();
 }
 
-void VisItem::vis_clear_cb ()
+void VisItem::clear ()
 {
-    memset (s_vis->m_bars, 0, sizeof m_bars);
-    memset (s_vis->m_delay, 0, sizeof m_delay);
+    memset (m_bars, 0, sizeof m_bars);
+    memset (m_delay, 0, sizeof m_delay);
 
-    s_vis->update ();
+    update ();
 }
 
 AlbumArtItem::AlbumArtItem (QGraphicsItem * parent) : QGraphicsPixmapItem (parent),

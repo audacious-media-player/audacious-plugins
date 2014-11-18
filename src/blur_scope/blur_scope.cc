@@ -61,7 +61,7 @@ public:
         & bscope_prefs
     };
 
-    constexpr BlurScope () : VisPlugin (info, AUD_VIS_TYPE_MONO_PCM) {}
+    constexpr BlurScope () : VisPlugin (info, Visualizer::MonoPCM) {}
 
     bool init ();
     void cleanup ();

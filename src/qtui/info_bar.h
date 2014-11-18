@@ -24,23 +24,23 @@
 #include <QGraphicsTextItem>
 
 #include <libaudcore/hook.h>
-#include <libaudcore/index.h>
-#include <libaudcore/objects.h>
 #include <libaudcore/runtime.h>
+#include <libaudcore/visualizer.h>
 
 #ifndef INFO_BAR_H
 #define INFO_BAR_H
 
-class VisItem : public QGraphicsItem {
+class VisItem : public QGraphicsItem, public Visualizer {
 public:
     VisItem (QGraphicsItem * parent = nullptr);
+    ~VisItem ();
 
     QRectF boundingRect () const;
     void paint (QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 
 private:
-    static void vis_render_cb (const float * freq);
-    static void vis_clear_cb ();
+    void render_freq (const float * freq);
+    void clear ();
 
     char m_bars[12];
     char m_delay[12];
