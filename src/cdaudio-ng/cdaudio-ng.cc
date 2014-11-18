@@ -59,6 +59,36 @@
 #define MAX_RETRIES 10
 #define MAX_SKIPS 10
 
+static const char * const cdaudio_schemes[] = {"cdda"};
+
+class CDAudio : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Audio CD Plugin"),
+        PACKAGE
+    };
+
+    static constexpr auto iinfo = InputInfo (FlagSubtunes)
+        .with_schemes (cdaudio_schemes);
+
+    constexpr CDAudio () : InputPlugin (info, iinfo) {}
+
+    bool init ();
+    void cleanup ();
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT CDAudio aud_plugin_instance;
+
 typedef struct
 {
     String performer;
@@ -80,27 +110,20 @@ static cdrom_drive_t *pcdrom_drive = nullptr;
 static Index<trackinfo_t> trackinfo;
 static QueuedFunc monitor_source;
 
-static bool cdaudio_init (void);
-static bool cdaudio_is_our_file (const char * filename, VFSFile & file);
-static bool cdaudio_play (const char * name, VFSFile & file);
-static void cdaudio_cleanup (void);
-static Tuple make_tuple (const char * filename, VFSFile & file);
-static bool scan_cd (void);
+static bool scan_cd ();
 static void refresh_trackinfo (bool warning);
-static void reset_trackinfo (void);
+static void reset_trackinfo ();
 static int calculate_track_length (int startlsn, int endlsn);
 static int find_trackno_from_filename (const char * filename);
 
-static const char cdaudio_about[] =
+const char CDAudio::about[] =
  N_("Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n\n"
     "Many thanks to libcdio developers <http://www.gnu.org/software/libcdio/>\n"
     "and to libcddb developers <http://libcddb.sourceforge.net/>.\n\n"
     "Also thank you to Tony Vroon for mentoring and guiding me.\n\n"
     "This was a Google Summer of Code 2007 project.");
 
-static const char * const schemes[] = {"cdda", nullptr};
-
-static const char * const cdaudio_defaults[] = {
+const char * const CDAudio::defaults[] = {
  "disc_speed", "2",
  "use_cdtext", "TRUE",
  "use_cddb", "TRUE",
@@ -109,7 +132,7 @@ static const char * const cdaudio_defaults[] = {
  "cddbport", "8880",
  nullptr};
 
-static const PreferencesWidget cdaudio_widgets[] = {
+const PreferencesWidget CDAudio::widgets[] = {
     WidgetLabel (N_("<b>Device</b>")),
     WidgetSpin (N_("Read speed:"),
         WidgetInt ("CDDA", "disc_speed"),
@@ -138,21 +161,7 @@ static const PreferencesWidget cdaudio_widgets[] = {
         WIDGET_CHILD)
 };
 
-static const PluginPreferences cdaudio_prefs = {{cdaudio_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Audio CD Plugin")
-#define AUD_PLUGIN_ABOUT       cdaudio_about
-#define AUD_PLUGIN_PREFS       & cdaudio_prefs
-#define AUD_PLUGIN_INIT        cdaudio_init
-#define AUD_PLUGIN_CLEANUP     cdaudio_cleanup
-#define AUD_INPUT_IS_OUR_FILE  cdaudio_is_our_file
-#define AUD_INPUT_PLAY         cdaudio_play
-#define AUD_INPUT_READ_TUPLE   make_tuple
-#define AUD_INPUT_SCHEMES      schemes
-#define AUD_INPUT_SUBTUNES     true
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences CDAudio::prefs = {{widgets}};
 
 static void cdaudio_error (const char * message_format, ...)
 {
@@ -183,7 +192,7 @@ static void purge_playlist (int playlist)
 }
 
 /* main thread only */
-static void purge_all_playlists (void)
+static void purge_all_playlists ()
 {
     int playlists = aud_playlist_count ();
     int count;
@@ -220,16 +229,16 @@ static void monitor (void *)
 }
 
 /* mutex must be locked */
-static void trigger_monitor (void)
+static void trigger_monitor ()
 {
     if (! monitor_source.running ())
         monitor_source.start (1000, monitor, nullptr);
 }
 
 /* main thread only */
-static bool cdaudio_init (void)
+bool CDAudio::init ()
 {
-    aud_config_set_defaults ("CDDA", cdaudio_defaults);
+    aud_config_set_defaults ("CDDA", defaults);
 
     if (!cdio_init ())
     {
@@ -243,13 +252,13 @@ static bool cdaudio_init (void)
 }
 
 /* thread safe (mutex may be locked) */
-static bool cdaudio_is_our_file (const char * filename, VFSFile & file)
+bool CDAudio::is_our_file (const char * filename, VFSFile & file)
 {
     return !strncmp (filename, "cdda://", 7);
 }
 
 /* play thread only */
-static bool cdaudio_play (const char * name, VFSFile & file)
+bool CDAudio::play (const char * name, VFSFile & file)
 {
     pthread_mutex_lock (& mutex);
 
@@ -360,7 +369,7 @@ static bool cdaudio_play (const char * name, VFSFile & file)
 }
 
 /* main thread only */
-static void cdaudio_cleanup (void)
+void CDAudio::cleanup ()
 {
     pthread_mutex_lock (& mutex);
 
@@ -371,7 +380,7 @@ static void cdaudio_cleanup (void)
 }
 
 /* thread safe */
-static Tuple make_tuple (const char * filename, VFSFile & file)
+Tuple CDAudio::read_tuple (const char * filename, VFSFile & file)
 {
     bool whole_disk = ! strcmp (filename, "cdda://");
     Tuple tuple;
@@ -438,7 +447,7 @@ static Tuple make_tuple (const char * filename, VFSFile & file)
 }
 
 /* mutex must be locked */
-static void open_cd (void)
+static void open_cd ()
 {
     AUDDBG ("Opening CD drive.\n");
     assert (pcdrom_drive == nullptr);
@@ -468,7 +477,7 @@ static void open_cd (void)
 }
 
 /* mutex must be locked */
-static bool scan_cd (void)
+static bool scan_cd ()
 {
     AUDDBG ("Scanning CD drive.\n");
     assert (pcdrom_drive);
@@ -774,7 +783,7 @@ static void refresh_trackinfo (bool warning)
 }
 
 /* mutex must be locked */
-static void reset_trackinfo (void)
+static void reset_trackinfo ()
 {
     monitor_source.stop ();
 
