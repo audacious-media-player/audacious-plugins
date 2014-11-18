@@ -857,6 +857,9 @@ void mainwin_mr_change (MenuRowItem i)
         case MENUROW_SCALE:
             mainwin_lock_info_text (_("Double Size"));
             break;
+        case MENUROW_VISUALIZATION:
+            mainwin_lock_info_text (_("Visualizations"));
+            break;
         default:
             break;
     }
@@ -864,7 +867,8 @@ void mainwin_mr_change (MenuRowItem i)
 
 void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
 {
-    switch (i) {
+    switch (i)
+    {
         case MENUROW_OPTIONS:
             menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, FALSE, FALSE, 1, event->time);
             break;
@@ -876,6 +880,9 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
             break;
         case MENUROW_SCALE:
             view_set_double_size (! aud_get_bool ("skins", "double_size"));
+            break;
+        case MENUROW_VISUALIZATION:
+            audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS);
             break;
         default:
             break;
