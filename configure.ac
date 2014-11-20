@@ -47,10 +47,19 @@ dnl Check for libxml2 (required to load XSPF playlists from previous versions)
 dnl ==========================================================================
 
 if test $HAVE_DARWIN = yes ; then
-    XML_LIBS="-lxml2"
-    XML_CFLAGS="-I/usr/include/libxml2"
-    AC_SUBST(XML_LIBS)
-    AC_SUBST(XML_CFLAGS)
+    AC_ARG_WITH([system-libxml2],
+     [AS_HELP_STRING([--with-system-libxml2=yes,no], [Use system version of libxml2 (default=yes)])],
+     [with_system_libxml2=$withval],
+     [with_system_libxml2=yes])
+
+    if test $with_system_libxml2 = yes ; then
+        XML_LIBS="-lxml2"
+        XML_CFLAGS="-I/usr/include/libxml2"
+        AC_SUBST(XML_LIBS)
+        AC_SUBST(XML_CFLAGS)
+    else
+        PKG_CHECK_MODULES([XML], [libxml-2.0])
+    fi
 else
     PKG_CHECK_MODULES([XML], [libxml-2.0])
 fi
