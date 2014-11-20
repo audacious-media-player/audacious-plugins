@@ -184,7 +184,8 @@ static void *config_status_checker () {
     url_button           = gtk_link_button_new("");
     details_label_second = gtk_label_new("");
 
-//    gtk_label_set_use_markup(GTK_LABEL(details_label), TRUE);
+    gtk_widget_hide(url_button);
+    gtk_widget_set_no_show_all(url_button, TRUE);
 
     additional_details_icon  = gtk_image_new();
     additional_details_label = gtk_label_new("");
