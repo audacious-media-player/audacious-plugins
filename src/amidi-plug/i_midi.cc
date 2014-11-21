@@ -353,7 +353,7 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
                     for (int i = 0; i < len; i ++)
                         buf[i] = read_byte ();
 
-                    event->metat = String (str_to_utf8 (buf));
+                    event->metat = String (str_to_utf8 (std::move (buf)));
                 }
                 break;
 
@@ -370,7 +370,7 @@ bool midifile_t::read_track (midifile_track_t & track, int track_end, int port_c
                     for (int i = 0; i < len; i ++)
                         buf[i] = read_byte ();
 
-                    event->metat = String (str_to_utf8 (buf));
+                    event->metat = String (str_to_utf8 (std::move (buf)));
                 }
                 break;
 
