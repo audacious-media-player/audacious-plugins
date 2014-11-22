@@ -38,7 +38,6 @@ class FFaudio : public InputPlugin
 public:
     static const char about[];
     static const char * const exts[], * const mimes[];
-    static const char * const defaults[];
 
     static constexpr PluginInfo info = {
         N_("FFmpeg Plugin"),

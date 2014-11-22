@@ -20,9 +20,8 @@
  */
 
 #include <limits.h>
+#include <stdlib.h>
 #include <string.h>
-
-#include <glib.h>
 
 #define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/runtime.h>
@@ -134,7 +133,7 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
 }
 
-bool flac_update_song_tuple(const char *filename, VFSFile &fd, const Tuple &tuple)
+bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple)
 {
     AUDDBG("Update song tuple.\n");
 
@@ -145,7 +144,7 @@ bool flac_update_song_tuple(const char *filename, VFSFile &fd, const Tuple &tupl
 
     chain = FLAC__metadata_chain_new();
 
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, &fd, io_callbacks))
+    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
@@ -175,7 +174,7 @@ bool flac_update_song_tuple(const char *filename, VFSFile &fd, const Tuple &tupl
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_sort_padding(chain);
 
-    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &fd, io_callbacks))
+    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &file, io_callbacks))
         goto ERR;
 
     FLAC__metadata_chain_delete(chain);
@@ -189,7 +188,7 @@ ERR:
     return false;
 }
 
-Index<char> flac_get_image(const char *filename, VFSFile &fd)
+Index<char> FLACng::read_image(const char *filename, VFSFile &file)
 {
     AUDDBG("Probe for song image.\n");
 
@@ -202,7 +201,7 @@ Index<char> flac_get_image(const char *filename, VFSFile &fd)
 
     chain = FLAC__metadata_chain_new();
 
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, &fd, io_callbacks))
+    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
@@ -312,28 +311,28 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
 
     for (auto & tfield : tfields)
     {
-        if (! g_ascii_strcasecmp (key, tfield.key))
+        if (!strcmp_nocase(key, tfield.key))
         {
             add_text (tuple, tfield.field, value);
             return;
         }
     }
 
-    if (! g_ascii_strcasecmp (key, "TRACKNUMBER"))
+    if (!strcmp_nocase(key, "TRACKNUMBER"))
         tuple.set_int(Tuple::Track, atoi(value));
-    else if (! g_ascii_strcasecmp (key, "DATE"))
+    else if (!strcmp_nocase(key, "DATE"))
         tuple.set_int(Tuple::Year, atoi(value));
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
+    else if (!strcmp_nocase(key, "REPLAYGAIN_TRACK_GAIN"))
         set_gain_info(tuple, Tuple::TrackGain, Tuple::GainDivisor, value);
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
+    else if (!strcmp_nocase(key, "REPLAYGAIN_TRACK_PEAK"))
         set_gain_info(tuple, Tuple::TrackPeak, Tuple::PeakDivisor, value);
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_GAIN"))
+    else if (!strcmp_nocase(key, "REPLAYGAIN_ALBUM_GAIN"))
         set_gain_info(tuple, Tuple::AlbumGain, Tuple::GainDivisor, value);
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_PEAK"))
+    else if (!strcmp_nocase(key, "REPLAYGAIN_ALBUM_PEAK"))
         set_gain_info(tuple, Tuple::AlbumPeak, Tuple::PeakDivisor, value);
 }
 
-Tuple flac_probe_for_tuple(const char *filename, VFSFile &fd)
+Tuple FLACng::read_tuple(const char *filename, VFSFile &file)
 {
     AUDDBG("Probe for tuple.\n");
 
@@ -353,7 +352,7 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile &fd)
 
     chain = FLAC__metadata_chain_new();
 
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, &fd, io_callbacks))
+    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
@@ -382,8 +381,8 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile &fd)
                         else
                         {
                             parse_comment(tuple, key, value);
-                            g_free(key);
-                            g_free(value);
+                            free(key);
+                            free(value);
                         }
                     }
                 }
@@ -406,7 +405,7 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile &fd)
                     AUDDBG("Stream length: %d seconds\n", tuple.get_int (Tuple::Length));
                 }
 
-                int64_t size = fd.fsize ();
+                int64_t size = file.fsize ();
 
                 if (size < 0 || metadata->data.stream_info.total_samples == 0)
                     tuple.set_int (Tuple::Bitrate, 0);
