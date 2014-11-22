@@ -34,23 +34,18 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
-static const char * adplug_exts[] = {
-    "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
-    "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
-    "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
-    "sng", "wlf", "xad", "xsm"
-};
-
 class AdPlugXMMS : public InputPlugin
 {
 public:
+    static const char * const exts[];
+
     static constexpr PluginInfo info = {
         N_("AdPlug (AdLib Player)"),
         PACKAGE
     };
 
     static constexpr auto iinfo = InputInfo ()
-        .with_exts ({adplug_exts});
+        .with_exts (exts);
 
     constexpr AdPlugXMMS () : InputPlugin (info, iinfo) {}
 
@@ -63,6 +58,13 @@ public:
 };
 
 EXPORT AdPlugXMMS aud_plugin_instance;
+
+const char * const AdPlugXMMS::exts[] = {
+    "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
+    "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
+    "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
+    "sng", "wlf", "xad", "xsm", nullptr
+};
 
 /***** Defines *****/
 

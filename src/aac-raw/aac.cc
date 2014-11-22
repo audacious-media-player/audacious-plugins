@@ -10,18 +10,18 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
-static const char * const aac_exts[] = {"aac"};
-
 class AACDecoder : public InputPlugin
 {
 public:
+    static const char * const exts[];
+
     static constexpr PluginInfo info = {
         N_("AAC (Raw) Decoder"),
         PACKAGE
     };
 
     static constexpr auto iinfo = InputInfo ()
-        .with_exts ({aac_exts});
+        .with_exts (exts);
 
     constexpr AACDecoder () : InputPlugin (info, iinfo) {}
 
@@ -31,6 +31,8 @@ public:
 };
 
 EXPORT AACDecoder aud_plugin_instance;
+
+const char * const AACDecoder::exts[] = {"aac", nullptr};
 
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.

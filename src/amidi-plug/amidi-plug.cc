@@ -32,12 +32,11 @@
 #include "i_fileinfo.h"
 #include "i_midi.h"
 
-static const char * const amidiplug_exts[] = {"mid", "midi", "rmi", "rmid"};
-
 class AMIDIPlug : public InputPlugin
 {
 public:
     static const char about[];
+    static const char * const exts[];
 
     static constexpr PluginInfo info = {
         N_("AMIDI-Plug (MIDI Player)"),
@@ -47,7 +46,7 @@ public:
     };
 
     static constexpr auto iinfo = InputInfo ()
-        .with_exts ({amidiplug_exts});
+        .with_exts (exts);
 
     constexpr AMIDIPlug () : InputPlugin (info, iinfo) {}
 
@@ -64,12 +63,7 @@ public:
 
 EXPORT AMIDIPlug aud_plugin_instance;
 
-enum
-{
-    AMIDIPLUG_STOP,
-    AMIDIPLUG_PLAY,
-    AMIDIPLUG_ERR
-};
+const char * const AMIDIPlug::exts[] = {"mid", "midi", "rmi", "rmid", nullptr};
 
 static void amidiplug_play_loop (midifile_t & midifile);
 static int amidiplug_skipto (midifile_t & midifile, int seektime);
