@@ -18,7 +18,6 @@
  * implied. In no event shall the authors be liable for any damages arising from
  */
 
-#include <glib.h>
 #include <pthread.h>
 
 #undef FFAUDIO_DOUBLECHECK  /* Doublecheck probing result for debugging purposes */
@@ -82,7 +81,7 @@ static int lockmgr (void * * mutexp, enum AVLockOp op)
     switch (op)
     {
     case AV_LOCK_CREATE:
-        * mutexp = g_slice_new (pthread_mutex_t);
+        * mutexp = new pthread_mutex_t;
         pthread_mutex_init ((pthread_mutex_t *) * mutexp, nullptr);
         break;
     case AV_LOCK_OBTAIN:
@@ -93,7 +92,7 @@ static int lockmgr (void * * mutexp, enum AVLockOp op)
         break;
     case AV_LOCK_DESTROY:
         pthread_mutex_destroy ((pthread_mutex_t *) * mutexp);
-        g_slice_free (pthread_mutex_t, * mutexp);
+        delete (pthread_mutex_t *) * mutexp;
         break;
     }
 
@@ -165,44 +164,28 @@ static void create_extension_dict ()
         if (! f->extensions)
             continue;
 
-        char * exts = g_ascii_strdown (f->extensions, -1);
+        StringBuf exts = str_tolower (f->extensions);
+        Index<String> extlist = str_list_to_index (exts, ",");
 
-        char * parse, * next;
-        for (parse = exts; parse; parse = next)
-        {
-            next = strchr (parse, ',');
-            if (next)
-            {
-                * next = 0;
-                next ++;
-            }
-
-            extension_dict.add (String (parse), std::move (f));
-        }
-
-        g_free (exts);
+        for (auto & ext : extlist)
+            extension_dict.add (ext, std::move (f));
     }
 }
 
 static AVInputFormat * get_format_by_extension (const char * name)
 {
-    const char * ext0, * sub;
-    uri_parse (name, nullptr, & ext0, & sub, nullptr);
-
-    if (ext0 == sub)
+    StringBuf ext = uri_get_extension (name);
+    if (! ext)
         return nullptr;
 
-    char * ext = g_ascii_strdown (ext0 + 1, sub - ext0 - 1);
-
     AUDDBG ("Get format by extension: %s\n", name);
-    AVInputFormat * * f = extension_dict.lookup (String (ext));
+    AVInputFormat * * f = extension_dict.lookup (String (str_tolower (ext)));
 
     if (f && * f)
         AUDDBG ("Format %s.\n", (* f)->name);
     else
         AUDDBG ("Format unknown.\n");
 
-    g_free (ext);
     return f ? * f : nullptr;
 }
 
@@ -424,8 +407,7 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     bool planar;
     bool error = false;
 
-    void *buf = nullptr;
-    int bufsize = 0;
+    Index<char> buf;
 
     AVFormatContext * ic = open_input_file (filename, file);
     if (! ic)
@@ -557,15 +539,12 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
             if (planar)
             {
-                if (bufsize < size)
-                {
-                    buf = g_realloc (buf, size);
-                    bufsize = size;
-                }
+                if (size > buf.len ())
+                    buf.resize (size);
 
                 audio_interlace ((const void * *) frame->data, out_fmt,
-                 cinfo.context->channels, buf, frame->nb_samples);
-                aud_input_write_audio (buf, size);
+                 cinfo.context->channels, buf.begin (), frame->nb_samples);
+                aud_input_write_audio (buf.begin (), size);
             }
             else
                 aud_input_write_audio (frame->data[0], size);
@@ -590,8 +569,6 @@ error_exit:
         avcodec_close(cinfo.context);
     if (ic != nullptr)
         close_input_file(ic);
-
-    g_free (buf);
 
     return ! error;
 }

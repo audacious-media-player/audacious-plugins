@@ -41,8 +41,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include <glib.h>
-
 #include <sndfile.h>
 
 #define WANT_VFS_STDIO_COMPAT
@@ -295,8 +293,8 @@ static bool play_start (const char * filename, VFSFile & file)
         return false;
     }
 
-    int size = sfinfo.channels * (sfinfo.samplerate / 50);
-    float * buffer = g_new (float, size);
+    Index<float> buffer;
+    buffer.resize (sfinfo.channels * (sfinfo.samplerate / 50));
 
     while (! aud_input_check_stop ())
     {
@@ -304,15 +302,14 @@ static bool play_start (const char * filename, VFSFile & file)
         if (seek_value != -1)
             sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
 
-        int samples = sf_read_float (sndfile, buffer, size);
+        int samples = sf_read_float (sndfile, buffer.begin (), buffer.len ());
         if (! samples)
             break;
 
-        aud_input_write_audio (buffer, sizeof (float) * samples);
+        aud_input_write_audio (buffer.begin (), sizeof (float) * samples);
     }
 
     sf_close (sndfile);
-    g_free (buffer);
 
     return true;
 }

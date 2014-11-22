@@ -16,8 +16,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <glib.h>
-
 static const struct {
     const char * id;
     int skip;

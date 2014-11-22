@@ -46,8 +46,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <glib.h>
 #include <zlib.h>
+#include <libaudcore/audstrings.h>
 
 #include "ao.h"
 #include "eng_protos.h"
@@ -305,7 +305,7 @@ static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, const c
 		printf("[%s vs %s]: ofs %08x uncomp %08x bsize %08x\n", cptr, matchname, offs, uncomp, bsize);
 		#endif
 
-		if (!g_ascii_strcasecmp((char *)cptr, matchname))
+		if (!strcmp_nocase((char *)cptr, matchname))
 		{
 			if ((uncomp == 0) && (bsize == 0))
 			{

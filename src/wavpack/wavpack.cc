@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <wavpack/wavpack.h>
 
 #define WANT_VFS_STDIO_COMPAT
@@ -99,19 +97,15 @@ static void wv_deattach (WavpackContext * ctx)
 
 static bool wv_play (const char * filename, VFSFile & file)
 {
-    int32_t *input = nullptr;
-    void *output = nullptr;
     int sample_rate, num_channels, bits_per_sample;
     unsigned num_samples;
     WavpackContext *ctx = nullptr;
     VFSFile wvc_input;
-    bool error = false;
 
     if (! wv_attach (filename, file, wvc_input, & ctx, nullptr, OPEN_TAGS | OPEN_WVC))
     {
         AUDERR ("Error opening Wavpack file '%s'.", filename);
-        error = true;
-        goto error_exit;
+        return false;
     }
 
     sample_rate = WavpackGetSampleRate(ctx);
@@ -124,14 +118,15 @@ static bool wv_play (const char * filename, VFSFile & file)
     if (!aud_input_open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
     {
         AUDERR ("Error opening audio output.");
-        error = true;
-        goto error_exit;
+        wv_deattach (ctx);
+        return false;
     }
 
-    input = g_new(int32_t, BUFFER_SIZE * num_channels);
-    output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
-    if (input == nullptr || output == nullptr)
-        goto error_exit;
+    Index<int32_t> input;
+    input.resize (BUFFER_SIZE * num_channels);
+
+    Index<char> output;
+    output.resize (BUFFER_SIZE * num_channels * SAMPLE_SIZE (bits_per_sample));
 
     while (! aud_input_check_stop ())
     {
@@ -145,7 +140,7 @@ static bool wv_play (const char * filename, VFSFile & file)
         if (samples_left == 0)
             break;
 
-        int ret = WavpackUnpackSamples(ctx, input, BUFFER_SIZE);
+        int ret = WavpackUnpackSamples (ctx, input.begin (), BUFFER_SIZE);
 
         if (ret < 0)
         {
@@ -155,10 +150,10 @@ static bool wv_play (const char * filename, VFSFile & file)
         else
         {
             /* Perform audio data conversion and output */
-            int32_t *rp = input;
-            int8_t *wp = (int8_t *) output;
-            int16_t *wp2 = (int16_t *) output;
-            int32_t *wp4 = (int32_t *) output;
+            int32_t * rp = input.begin ();
+            int8_t * wp = (int8_t *) output.begin ();
+            int16_t * wp2 = (int16_t *) output.begin ();
+            int32_t * wp4 = (int32_t *) output.begin ();
 
             if (bits_per_sample == 8)
             {
@@ -176,17 +171,13 @@ static bool wv_play (const char * filename, VFSFile & file)
                     *wp4 = *rp;
             }
 
-            aud_input_write_audio(output, ret * num_channels * SAMPLE_SIZE(bits_per_sample));
+            aud_input_write_audio (output.begin (),
+             ret * num_channels * SAMPLE_SIZE (bits_per_sample));
         }
     }
 
-error_exit:
-
-    g_free(input);
-    g_free(output);
     wv_deattach (ctx);
-
-    return ! error;
+    return true;
 }
 
 static StringBuf

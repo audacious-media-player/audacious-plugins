@@ -11,8 +11,6 @@
 #include <sys/types.h>
 #include <math.h>
 
-#include <glib.h>
-
 #include <libmodplug/stdafx.h>
 #include <libmodplug/sndfile.h>
 
@@ -78,7 +76,8 @@ bool ModplugXMMS::is_our_file (const char * filename, VFSFile & file)
         if (magic[0] == '6' || magic[0] == '8')
             return true;
     }
-    if (magic[2] == 'C' && magic[3] == 'H' && g_ascii_isdigit(magic[0]) && g_ascii_isdigit(magic[1])) {
+    if (magic[2] == 'C' && magic[3] == 'H' && magic[0] >= '0' && magic[0] <= '9'
+     && magic[1] >= '0' && magic[1] <= '9') {
         int nch = (magic[0] - '0') * 10 + (magic[1] - '0');
         if ((nch % 2 == 0) && nch >= 10)
             return true;
