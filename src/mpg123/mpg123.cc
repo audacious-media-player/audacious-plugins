@@ -43,18 +43,50 @@
 #include <libaudcore/preferences.h>
 #include <audacious/audtag.h>
 
-static const char * const mpg123_defaults[] = {
+class MPG123Plugin : public InputPlugin
+{
+public:
+    static const char * const exts[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("MPG123 Plugin"),
+        PACKAGE,
+        nullptr,
+        & prefs
+    };
+
+    static constexpr auto iinfo = InputInfo (FlagWritesTag)
+        .with_exts (exts);
+
+    constexpr MPG123Plugin() : InputPlugin (info, iinfo) {}
+
+    bool init ();
+    void cleanup ();
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    Index<char> read_image (const char * filename, VFSFile & file);
+    bool write_tuple (const char * filename, VFSFile & file, const Tuple & tuple);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT MPG123Plugin aud_plugin_instance;
+
+const char * const MPG123Plugin::defaults[] = {
     "full_scan", "FALSE",
     nullptr
 };
 
-static const PreferencesWidget mpg123_widgets[] = {
+const PreferencesWidget MPG123Plugin::widgets[] = {
     WidgetLabel (N_("<b>Advanced</b>")),
     WidgetCheck (N_("Use accurate length calculation (slow)"),
         WidgetBool ("mpg123", "full_scan"))
 };
 
-static const PluginPreferences mpg123_prefs = {{mpg123_widgets}};
+const PluginPreferences MPG123Plugin::prefs = {{widgets}};
 
 #define DECODE_OPTIONS (MPG123_QUIET | MPG123_GAPLESS | MPG123_SEEKBUFFER | MPG123_FUZZY)
 
@@ -76,10 +108,9 @@ static off_t replace_lseek_dummy (void * file, off_t to, int whence)
     return -1;
 }
 
-/** plugin glue **/
-static bool aud_mpg123_init (void)
+bool MPG123Plugin::init ()
 {
-    aud_config_set_defaults ("mpg123", mpg123_defaults);
+    aud_config_set_defaults ("mpg123", defaults);
 
     AUDDBG("initializing mpg123 library\n");
     mpg123_init();
@@ -87,8 +118,7 @@ static bool aud_mpg123_init (void)
     return true;
 }
 
-static void
-aud_mpg123_deinit(void)
+void MPG123Plugin::cleanup ()
 {
     AUDDBG("deinitializing mpg123 library\n");
     mpg123_exit();
@@ -109,7 +139,7 @@ static void make_format_string (const struct mpg123_frameinfo * info, char *
     snprintf (buf, bsize, "MPEG-%s layer %d", vers[info->version], info->layer);
 }
 
-static bool mpg123_probe_for_fd (const char * fname, VFSFile & file)
+bool MPG123Plugin::is_our_file (const char * fname, VFSFile & file)
 {
     /* MPG123 likes to grab WMA streams, so blacklist anything that starts with
      * mms://.  If there are mms:// streams out there carrying MP3, they will
@@ -184,7 +214,7 @@ RETRY:;
     return true;
 }
 
-static Tuple mpg123_probe_for_tuple (const char * filename, VFSFile & file)
+Tuple MPG123Plugin::read_tuple (const char * filename, VFSFile & file)
 {
     bool stream = (file.fsize () < 0);
     mpg123_handle * decoder = mpg123_new (nullptr, nullptr);
@@ -257,7 +287,7 @@ static void print_mpg123_error (const char * filename, mpg123_handle * decoder)
     AUDERR ("mpg123 error in %s: %s\n", filename, mpg123_strerror (decoder));
 }
 
-static bool mpg123_playback_worker (const char * filename, VFSFile & file)
+bool MPG123Plugin::play (const char * filename, VFSFile & file)
 {
     bool error = false;
     MPG123PlaybackContext ctx;
@@ -382,35 +412,20 @@ cleanup:
     return ! error;
 }
 
-static bool mpg123_write_tag (const char * filename, VFSFile & handle, const Tuple & tuple)
+bool MPG123Plugin::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
 {
-    if (handle.fsize () < 0)  // stream?
+    if (file.fsize () < 0)  // stream?
         return false;
 
-    return audtag::tuple_write (tuple, handle, audtag::TagType::ID3v2);
+    return audtag::tuple_write (tuple, file, audtag::TagType::ID3v2);
 }
 
-static Index<char> mpg123_get_image (const char * filename, VFSFile & handle)
+Index<char> MPG123Plugin::read_image (const char * filename, VFSFile & file)
 {
-    if (handle.fsize () < 0)  // stream?
+    if (file.fsize () < 0)  // stream?
         return Index<char> ();
 
-    return audtag::image_read (handle);
+    return audtag::image_read (file);
 }
 
-/** plugin description header **/
-static const char *mpg123_fmts[] = { "mp3", "mp2", "mp1", "bmu", nullptr };
-
-#define AUD_PLUGIN_NAME        N_("MPG123 Plugin")
-#define AUD_PLUGIN_INIT        aud_mpg123_init
-#define AUD_PLUGIN_CLEANUP     aud_mpg123_deinit
-#define AUD_PLUGIN_PREFS       & mpg123_prefs
-#define AUD_INPUT_EXTS         mpg123_fmts
-#define AUD_INPUT_IS_OUR_FILE  mpg123_probe_for_fd
-#define AUD_INPUT_READ_TUPLE   mpg123_probe_for_tuple
-#define AUD_INPUT_PLAY         mpg123_playback_worker
-#define AUD_INPUT_WRITE_TUPLE  mpg123_write_tag
-#define AUD_INPUT_READ_IMAGE   mpg123_get_image
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char * const MPG123Plugin::exts[] = { "mp3", "mp2", "mp1", "bmu", nullptr };
