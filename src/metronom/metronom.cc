@@ -35,6 +35,30 @@
 #define BUF_BYTES       (BUF_SAMPLES * 2)
 #define MAX_AMPL        0x7fff
 
+class Metronome : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char *const schemes[];
+
+    static constexpr PluginInfo info = {
+        N_("Tact Generator"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo()
+        .with_schemes(schemes);
+
+    constexpr Metronome() : InputPlugin(info, iinfo) {}
+
+    bool is_our_file(const char *filename, VFSFile &);
+    Tuple read_tuple(const char *filename, VFSFile &);
+    bool play(const char *filename, VFSFile &);
+};
+
+EXPORT Metronome aud_plugin_instance;
+
 typedef struct
 {
     int bpm;
@@ -73,7 +97,7 @@ double tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
     {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0}
 };
 
-static bool metronom_is_our_fd(const char * filename, VFSFile &fd)
+bool Metronome::is_our_file(const char *filename, VFSFile &)
 {
     if (!strncmp(filename, "tact://", 7))
         return true;
@@ -129,7 +153,7 @@ static bool metronom_get_cp(const char *filename, metronom_t *pmetronom, String 
     return true;
 }
 
-static bool metronom_play (const char * filename, VFSFile & file)
+bool Metronome::play (const char * filename, VFSFile &)
 {
     metronom_t pmetronom;
     int16_t data[BUF_SAMPLES];
@@ -199,7 +223,7 @@ static bool metronom_play (const char * filename, VFSFile & file)
     return true;
 }
 
-static Tuple metronom_probe_for_tuple(const char * filename, VFSFile &fd)
+Tuple Metronome::read_tuple(const char *filename, VFSFile &)
 {
     Tuple tuple;
     metronom_t metronom;
@@ -212,20 +236,10 @@ static Tuple metronom_probe_for_tuple(const char * filename, VFSFile &fd)
     return tuple;
 }
 
-static const char metronom_about[] =
+const char Metronome::about[] =
  N_("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
     "To use it, add a URL: tact://beats*num/den\n"
     "e.g. tact://77 to play 77 beats per minute\n"
     "or tact://60*3/4 to play 60 bpm in 3/4 tacts");
 
-static const char * const schemes[] = {"tact", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Tact Generator")
-#define AUD_PLUGIN_ABOUT       metronom_about
-#define AUD_INPUT_SCHEMES      schemes
-#define AUD_INPUT_IS_OUR_FILE  metronom_is_our_fd
-#define AUD_INPUT_PLAY         metronom_play
-#define AUD_INPUT_READ_TUPLE   metronom_probe_for_tuple
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char *const Metronome::schemes[] = {"tact", nullptr};
