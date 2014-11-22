@@ -33,6 +33,38 @@
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 
+class FFaudio : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char * const exts[], * const mimes[];
+    static const char * const defaults[];
+
+    static constexpr PluginInfo info = {
+        N_("FFmpeg Plugin"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo (FlagWritesTag)
+        .with_priority (10) /* lowest priority fallback */
+        .with_exts (exts)
+        .with_mimes (mimes);
+
+    constexpr FFaudio () : InputPlugin (info, iinfo) {}
+
+    bool init ();
+    void cleanup ();
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    Index<char> read_image (const char * filename, VFSFile & file);
+    bool write_tuple (const char * filename, VFSFile & file, const Tuple & tuple);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT FFaudio aud_plugin_instance;
+
 typedef struct
 {
     int stream_idx;
@@ -101,7 +133,7 @@ static void ffaudio_log_cb (void * avcl, int av_level, const char * fmt, va_list
                  "<%p> %s", avcl, message);
 }
 
-static bool ffaudio_init (void)
+bool FFaudio::init ()
 {
     av_register_all();
     av_lockmgr_register (lockmgr);
@@ -113,8 +145,7 @@ static bool ffaudio_init (void)
     return true;
 }
 
-static void
-ffaudio_cleanup(void)
+void FFaudio::cleanup ()
 {
     extension_dict.clear ();
 
@@ -292,9 +323,9 @@ static bool find_codec (AVFormatContext * c, CodecInfo * cinfo)
     return false;
 }
 
-static bool ffaudio_probe (const char * filename, VFSFile & file)
+bool FFaudio::is_our_file (const char * filename, VFSFile & file)
 {
-    return get_format (filename, file) ? true : false;
+    return (bool) get_format (filename, file);
 }
 
 static const struct {
@@ -333,7 +364,7 @@ static void read_metadata_dict (Tuple & tuple, AVDictionary * dict)
     }
 }
 
-static Tuple read_tuple (const char * filename, VFSFile & file)
+Tuple FFaudio::read_tuple (const char * filename, VFSFile & file)
 {
     Tuple tuple;
     AVFormatContext * ic = open_input_file (filename, file);
@@ -361,21 +392,13 @@ static Tuple read_tuple (const char * filename, VFSFile & file)
         close_input_file (ic);
     }
 
+    if (tuple && ! file.fseek (0, VFS_SEEK_SET))
+        audtag::tuple_read (tuple, file);
+
     return tuple;
 }
 
-static Tuple
-ffaudio_probe_for_tuple(const char *filename, VFSFile &fd)
-{
-    Tuple t = read_tuple (filename, fd);
-
-    if (t && ! fd.fseek (0, VFS_SEEK_SET))
-        audtag::tuple_read (t, fd);
-
-    return t;
-}
-
-static bool ffaudio_write_tag (const char * filename, VFSFile & file, const Tuple & tuple)
+bool FFaudio::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
 {
     if (str_has_suffix_nocase (filename, ".ape"))
         return audtag::tuple_write (tuple, file, audtag::TagType::APE);
@@ -383,7 +406,7 @@ static bool ffaudio_write_tag (const char * filename, VFSFile & file, const Tupl
     return audtag::tuple_write (tuple, file, audtag::TagType::None);
 }
 
-static Index<char> ffaudio_read_image (const char * filename, VFSFile & file)
+Index<char> FFaudio::read_image (const char * filename, VFSFile & file)
 {
     if (str_has_suffix_nocase (filename, ".m4a") || str_has_suffix_nocase (filename, ".mp4"))
         return read_itunes_cover (filename, file);
@@ -391,7 +414,7 @@ static Index<char> ffaudio_read_image (const char * filename, VFSFile & file)
     return Index<char> ();
 }
 
-static bool ffaudio_play (const char * filename, VFSFile & file)
+bool FFaudio::play (const char * filename, VFSFile & file)
 {
     AUDDBG ("Playing %s.\n", filename);
 
@@ -574,7 +597,7 @@ error_exit:
     return ! error;
 }
 
-static const char ffaudio_about[] =
+const char FFaudio::about[] =
  N_("Multi-format audio decoding plugin for Audacious using\n"
     "FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
     "\n"
@@ -582,7 +605,7 @@ static const char ffaudio_about[] =
     "William Pitcock <nenolod@nenolod.net>\n"
     "Matti Hämäläinen <ccr@tnsp.org>");
 
-static const char *ffaudio_fmts[] = {
+const char * const FFaudio::exts[] = {
     /* musepack, SV7/SV8 */
     "mpc", "mp+", "mpp",
 
@@ -626,22 +649,4 @@ static const char *ffaudio_fmts[] = {
     nullptr
 };
 
-static const char * const ffaudio_mimes[] = {"application/ogg", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("FFmpeg Plugin")
-#define AUD_PLUGIN_ABOUT       ffaudio_about
-#define AUD_PLUGIN_INIT        ffaudio_init
-#define AUD_PLUGIN_CLEANUP     ffaudio_cleanup
-#define AUD_INPUT_EXTS         ffaudio_fmts
-#define AUD_INPUT_MIMES        ffaudio_mimes
-#define AUD_INPUT_IS_OUR_FILE  ffaudio_probe
-#define AUD_INPUT_READ_TUPLE   ffaudio_probe_for_tuple
-#define AUD_INPUT_PLAY         ffaudio_play
-#define AUD_INPUT_WRITE_TUPLE  ffaudio_write_tag
-#define AUD_INPUT_READ_IMAGE   ffaudio_read_image
-
-/* lowest priority fallback */
-#define AUD_INPUT_PRIORITY     10
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char * const FFaudio::mimes[] = {"application/ogg", nullptr};
