@@ -26,18 +26,20 @@ using namespace std;
 
 // ModplugXMMS member functions ===============================
 
-ModplugXMMS::ModplugXMMS()
+bool ModplugXMMS::init ()
 {
-    memset (this, 0, sizeof (* this));
     mSoundFile = new CSoundFile;
+    load_settings ();
+    apply_settings ();
+    return true;
 }
 
-ModplugXMMS::~ModplugXMMS()
+void ModplugXMMS::cleanup ()
 {
     delete mSoundFile;
 }
 
-bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile &file)
+bool ModplugXMMS::is_our_file (const char * filename, VFSFile & file)
 {
     string lExt;
     uint32_t lPos;
@@ -111,6 +113,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile &file)
     } /* end of if(mModProps.mGrabAmigaMOD) */
 
     /* We didn't find the magic bytes, fall back to extension check */
+    string aFilename = filename;
     lPos = aFilename.find_last_of('.');
     if((int)lPos == -1)
         return false;
@@ -203,10 +206,10 @@ void ModplugXMMS::PlayLoop()
     }
 }
 
-bool ModplugXMMS::PlayFile(const string& aFilename)
+bool ModplugXMMS::play (const char * filename, VFSFile & file)
 {
     //open and mmap the file
-    mArchive = OpenArchive(aFilename);
+    mArchive = OpenArchive(filename);
     if(mArchive->Size() == 0)
     {
         delete mArchive;
@@ -283,7 +286,7 @@ bool ModplugXMMS::PlayFile(const string& aFilename)
         mArchive->Size()
     );
 
-    Tuple ti = GetSongTuple (aFilename);
+    Tuple ti = read_tuple (filename, file);
     if (ti)
         aud_input_set_tuple (std::move (ti));
 
@@ -298,14 +301,14 @@ bool ModplugXMMS::PlayFile(const string& aFilename)
     return true;
 }
 
-Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
+Tuple ModplugXMMS::read_tuple (const char * filename, VFSFile & file)
 {
     CSoundFile* lSoundFile;
     Archive* lArchive;
     const char *tmps;
 
     //open and mmap the file
-    lArchive = OpenArchive(aFilename);
+    lArchive = OpenArchive(filename);
     if(lArchive->Size() == 0)
     {
         delete lArchive;
@@ -313,7 +316,7 @@ Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
     }
 
     Tuple ti;
-    ti.set_filename (aFilename.c_str ());
+    ti.set_filename (filename);
 
     lSoundFile = new CSoundFile;
     lSoundFile->Create((unsigned char*)lArchive->Map(), lArchive->Size());
@@ -359,10 +362,8 @@ Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
     return ti;
 }
 
-void ModplugXMMS::SetModProps(const ModplugSettings& aModProps)
+void ModplugXMMS::apply_settings ()
 {
-    mModProps = aModProps;
-
     // [Reverb level 0(quiet)-100(loud)], [delay in ms, usually 40-200ms]
     if(mModProps.mReverb)
     {

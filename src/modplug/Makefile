@@ -3,7 +3,6 @@ PLUGIN = modplug${PLUGIN_SUFFIX}
 SRCS = archive/arch_raw.cc \
        archive/archive.cc \
        archive/open.cc \
-       plugin.cc \
        modplugbmp.cc \
        plugin_main.cc
 

@@ -7,8 +7,7 @@
 #ifndef __MODPLUGXMMS_CMODPLUGXMMS_H_INCLUDED__
 #define __MODPLUGXMMS_CMODPLUGXMMS_H_INCLUDED__
 
-#include <string>
-
+#include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
 #include "settings.h"
@@ -40,32 +39,50 @@
 class CSoundFile;
 class Archive;
 
-class ModplugXMMS
+struct PreferencesWidget;
+
+class ModplugXMMS : public InputPlugin
 {
 public:
-    ModplugXMMS();
-    ~ModplugXMMS();
+    static const char * const exts[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
-    bool CanPlayFileFromVFS(const std::string& aFilename, VFSFile &file);
+    static constexpr PluginInfo info = {
+        N_("ModPlug (Module Player)"),
+        PACKAGE,
+        nullptr,
+        & prefs
+    };
 
-    bool PlayFile(const std::string& aFilename);
+    static constexpr auto iinfo = InputInfo (FlagSubtunes)
+        .with_exts (exts);
 
-    Tuple GetSongTuple(const std::string& aFilename);
+    constexpr ModplugXMMS () : InputPlugin (info, iinfo) {}
 
-    void SetModProps(const ModplugSettings& aModProps);
+    bool init ();
+    void cleanup ();
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
 
 private:
-    unsigned char*  mBuffer;
-    uint32_t  mBufSize;
+    unsigned char * mBuffer = nullptr;
+    uint32_t mBufSize = 0;
 
-    ModplugSettings mModProps;
+    ModplugSettings mModProps {};
 
-    uint32_t  mBufTime;     //milliseconds
+    uint32_t mBufTime = 0; // milliseconds
 
-    CSoundFile* mSoundFile;
-    Archive*    mArchive;
+    CSoundFile * mSoundFile = nullptr;
+    Archive * mArchive = nullptr;
 
-    float mPreampFactor;
+    float mPreampFactor = 0;
+
+    void load_settings ();
+    void apply_settings ();
 
     void PlayLoop();
 };
