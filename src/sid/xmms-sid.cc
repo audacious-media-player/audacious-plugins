@@ -34,12 +34,40 @@
 #include "xs_config.h"
 #include "xs_sidplay2.h"
 
+class SIDPlugin : public InputPlugin
+{
+public:
+    static const char *const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("SID Player"),
+        PACKAGE,
+        nullptr,
+        & sid_prefs
+    };
+
+    static constexpr auto iinfo = InputInfo(FlagSubtunes)
+        .with_priority(5) /* medium priority (slow to initialize) */
+        .with_exts(exts);
+
+    constexpr SIDPlugin() : InputPlugin(info, iinfo) {}
+
+    bool init();
+    void cleanup();
+
+    bool is_our_file(const char *filename, VFSFile &file);
+    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool play(const char *filename, VFSFile &file);
+};
+
+EXPORT SIDPlugin aud_plugin_instance;
+
 static void xs_get_song_tuple_info(Tuple &pResult, const xs_tuneinfo_t &info, int subTune);
 
 /*
  * Initialization functions
  */
-bool xs_init(void)
+bool SIDPlugin::init()
 {
     /* Initialize and get configuration */
     xs_init_configuration();
@@ -52,7 +80,7 @@ bool xs_init(void)
 /*
  * Shut down XMMS-SID
  */
-void xs_close(void)
+void SIDPlugin::cleanup()
 {
     xs_sidplayfp_close();
 }
@@ -61,7 +89,7 @@ void xs_close(void)
 /*
  * Check whether this is a SID file
  */
-bool xs_is_our_file(const char *filename, VFSFile &file)
+bool SIDPlugin::is_our_file(const char *filename, VFSFile &file)
 {
     char buf[4];
     if (file.fread (buf, 1, 4) != 4)
@@ -74,7 +102,7 @@ bool xs_is_our_file(const char *filename, VFSFile &file)
 /*
  * Start playing the given file
  */
-bool xs_play_file(const char *filename, VFSFile &file)
+bool SIDPlugin::play(const char *filename, VFSFile &file)
 {
     /* Load file */
     Index<char> buf = file.read_all ();
@@ -245,13 +273,13 @@ static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
     tuple.set_subtunes (subtunes.len (), subtunes.begin ());
 }
 
-Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
+Tuple SIDPlugin::read_tuple(const char *filename, VFSFile &file)
 {
     Tuple tuple;
     xs_tuneinfo_t info;
     int tune = -1;
 
-    Index<char> buf = fd.read_all ();
+    Index<char> buf = file.read_all ();
     if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return tuple;
 
@@ -274,21 +302,4 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
 /*
  * Plugin header
  */
-static const char *xs_sid_fmts[] = { "sid", "psid", nullptr };
-
-#define AUD_PLUGIN_NAME        N_("SID Player")
-#define AUD_PLUGIN_PREFS       &sid_prefs
-#define AUD_PLUGIN_INIT        xs_init
-#define AUD_PLUGIN_CLEANUP     xs_close
-#define AUD_INPUT_IS_OUR_FILE  xs_is_our_file
-#define AUD_INPUT_PLAY         xs_play_file
-#define AUD_INPUT_READ_TUPLE   xs_probe_for_tuple
-
-#define AUD_INPUT_EXTS         xs_sid_fmts
-#define AUD_INPUT_SUBTUNES     true
-
-/* medium priority (slow to initialize) */
-#define AUD_INPUT_PRIORITY     5
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char *const SIDPlugin::exts[] = { "sid", "psid", nullptr };
