@@ -39,38 +39,50 @@
 #include "corlett.h"
 #include "vio2sf.h"
 
+class XSFPlugin : public InputPlugin
+{
+public:
+	static const char *const exts[];
+	static const char *const defaults[];
+	static const PreferencesWidget widgets[];
+	static const PluginPreferences prefs;
+
+	static constexpr PluginInfo info = {
+		N_("2SF Decoder"),
+		PACKAGE,
+		nullptr,
+		& prefs
+	};
+
+	static constexpr auto iinfo = InputInfo()
+		.with_exts(exts);
+
+	constexpr XSFPlugin() : InputPlugin(info, iinfo) {}
+
+	bool init();
+
+	bool is_our_file(const char *filename, VFSFile &file);
+	Tuple read_tuple(const char *filename, VFSFile &file);
+	bool play(const char *filename, VFSFile &file);
+};
+
+EXPORT XSFPlugin aud_plugin_instance;
+
 /* xsf_get_lib: called to load secondary files */
 static String dirpath;
 
-struct Settings
-{
-    bool ignore_length;
-} xsf_cfg;
-
 #define CFG_ID "xsf"
-#define DEFAULT_IGNORE_LENGTH "0"
 
-static const char* const defaults[] =
+const char* const XSFPlugin::defaults[] =
 {
-    "ignore_length", DEFAULT_IGNORE_LENGTH,
-    NULL
+	"ignore_length", "FALSE",
+	NULL
 };
 
-void xsf_cfg_load()
+bool XSFPlugin::init()
 {
-    aud_config_set_defaults(CFG_ID, defaults);
-    xsf_cfg.ignore_length = aud_get_bool(CFG_ID, "ignore_length");
-}
-
-void xsf_cfg_save()
-{
-    aud_set_bool(CFG_ID, "ignore_length", xsf_cfg.ignore_length);
-}
-
-bool xsf_init()
-{
-    xsf_cfg_load();
-    return true;
+	aud_config_set_defaults(CFG_ID, defaults);
+	return true;
 }
 
 Index<char> xsf_get_lib(char *filename)
@@ -79,7 +91,7 @@ Index<char> xsf_get_lib(char *filename)
 	return file ? file.read_all() : Index<char>();
 }
 
-Tuple xsf_tuple(const char *filename, VFSFile &fd)
+Tuple XSFPlugin::read_tuple(const char *filename, VFSFile &fd)
 {
 	Tuple t;
 	corlett_t *c;
@@ -114,14 +126,15 @@ static int xsf_get_length(const Index<char> &buf)
 	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
 		return -1;
 
-	int length = (!xsf_cfg.ignore_length) ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
+	bool ignore_length = aud_get_bool(CFG_ID, "ignore_length");
+	int length = (!ignore_length) ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 
 	free(c);
 
 	return length;
 }
 
-static bool xsf_play(const char * filename, VFSFile & file)
+bool XSFPlugin::play(const char *filename, VFSFile &file)
 {
 	int length = -1;
 	int16_t samples[44100*2];
@@ -199,7 +212,8 @@ static bool xsf_play(const char * filename, VFSFile & file)
 
 		aud_input_write_audio((uint8_t *)samples, seglen * 4);
 
-		if (pos >= length && !xsf_cfg.ignore_length)
+		bool ignore_length = aud_get_bool(CFG_ID, "ignore_length");
+		if (pos >= length && !ignore_length)
 			goto CLEANUP;
 	}
 
@@ -212,7 +226,7 @@ ERR_NO_CLOSE:
 	return !error;
 }
 
-bool xsf_is_our_fd(const char *filename, VFSFile &file)
+bool XSFPlugin::is_our_file(const char *filename, VFSFile &file)
 {
 	char magic[4];
 	if (file.fread (magic, 1, 4) < 4)
@@ -224,27 +238,11 @@ bool xsf_is_our_fd(const char *filename, VFSFile &file)
 	return 0;
 }
 
-static const char *xsf_fmts[] = { "2sf", "mini2sf", nullptr };
+const char *const XSFPlugin::exts[] = { "2sf", "mini2sf", nullptr };
 
-static const PreferencesWidget xsf_widgets[] = {
-    WidgetLabel(N_("<b>XSF Configuration</b>")),
-    WidgetCheck(N_("Ignore length from file"), WidgetBool(xsf_cfg.ignore_length)),
+const PreferencesWidget XSFPlugin::widgets[] = {
+	WidgetLabel(N_("<b>XSF Configuration</b>")),
+	WidgetCheck(N_("Ignore length from file"), WidgetBool(CFG_ID, "ignore_length")),
 };
 
-static const PluginPreferences xsf_prefs = {
-    {xsf_widgets},
-    xsf_cfg_load,
-    xsf_cfg_save
-};
-
-#define AUD_PLUGIN_NAME        N_("2SF Decoder")
-#define AUD_PLUGIN_INIT        xsf_init
-#define AUD_PLUGIN_CLEANUP     xsf_cfg_save
-#define AUD_PLUGIN_PREFS       & xsf_prefs
-#define AUD_INPUT_PLAY         xsf_play
-#define AUD_INPUT_READ_TUPLE   xsf_tuple
-#define AUD_INPUT_IS_OUR_FILE  xsf_is_our_fd
-#define AUD_INPUT_EXTS         xsf_fmts
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences XSFPlugin::prefs = {{widgets}};

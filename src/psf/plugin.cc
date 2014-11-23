@@ -37,26 +37,48 @@
 #include "corlett.h"
 #include "eng_protos.h"
 
+class PSFPlugin : public InputPlugin
+{
+public:
+	static const char *const exts[];
+
+	static constexpr PluginInfo info = {
+		N_("OpenPSF PSF1/PSF2 Decoder"),
+		PACKAGE
+	};
+
+	static constexpr auto iinfo = InputInfo()
+		.with_exts(exts);
+
+	constexpr PSFPlugin() : InputPlugin(info, iinfo) {}
+
+	bool is_our_file(const char *filename, VFSFile &file);
+	Tuple read_tuple(const char *filename, VFSFile &file);
+	bool play(const char *filename, VFSFile &file);
+};
+
+EXPORT PSFPlugin aud_plugin_instance;
+
 typedef enum {
-    ENG_NONE = 0,
-    ENG_PSF1,
-    ENG_PSF2,
-    ENG_SPX,
-    ENG_COUNT
+	ENG_NONE = 0,
+	ENG_PSF1,
+	ENG_PSF2,
+	ENG_SPX,
+	ENG_COUNT
 } PSFEngine;
 
 typedef struct {
-    int32_t (*start)(uint8_t *buffer, uint32_t length);
-    int32_t (*stop)(void);
-    int32_t (*seek)(uint32_t);
-    int32_t (*execute)(void);
+	int32_t (*start)(uint8_t *buffer, uint32_t length);
+	int32_t (*stop)(void);
+	int32_t (*seek)(uint32_t);
+	int32_t (*execute)(void);
 } PSFEngineFunctors;
 
 static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
-    {nullptr, nullptr, nullptr, nullptr},
-    {psf_start, psf_stop, psf_seek, psf_execute},
-    {psf2_start, psf2_stop, psf2_seek, psf2_execute},
-    {spx_start, spx_stop, psf_seek, spx_execute},
+	{nullptr, nullptr, nullptr, nullptr},
+	{psf_start, psf_stop, psf_seek, psf_execute},
+	{psf2_start, psf2_stop, psf2_seek, psf2_execute},
+	{spx_start, spx_stop, psf_seek, spx_execute},
 };
 
 static PSFEngineFunctors *f;
@@ -91,7 +113,7 @@ Index<char> ao_get_lib(char *filename)
 	return file ? file.read_all() : Index<char>();
 }
 
-Tuple psf2_tuple(const char *filename, VFSFile &file)
+Tuple PSFPlugin::read_tuple(const char *filename, VFSFile &file)
 {
 	Tuple t;
 	corlett_t *c;
@@ -119,7 +141,7 @@ Tuple psf2_tuple(const char *filename, VFSFile &file)
 	return t;
 }
 
-static bool psf2_play(const char * filename, VFSFile & file)
+bool PSFPlugin::play(const char *filename, VFSFile &file)
 {
 	bool error = false;
 
@@ -180,7 +202,7 @@ void psf2_update(unsigned char *buffer, long count)
 	aud_input_write_audio (buffer, count);
 }
 
-bool psf2_is_our_fd(const char *filename, VFSFile &file)
+bool PSFPlugin::is_our_file(const char *filename, VFSFile &file)
 {
 	char magic[4];
 	if (file.fread (magic, 1, 4) < 4)
@@ -189,13 +211,4 @@ bool psf2_is_our_fd(const char *filename, VFSFile &file)
 	return (psf_probe(magic, 4) != ENG_NONE);
 }
 
-static const char *psf2_fmts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", nullptr };
-
-#define AUD_PLUGIN_NAME        N_("OpenPSF PSF1/PSF2 Decoder")
-#define AUD_INPUT_PLAY         psf2_play
-#define AUD_INPUT_READ_TUPLE   psf2_tuple
-#define AUD_INPUT_IS_OUR_FILE  psf2_is_our_fd
-#define AUD_INPUT_EXTS         psf2_fmts
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char *const PSFPlugin::exts[] = { "psf", "minipsf", "psf2", "minipsf2", "spu", "spx", nullptr };
