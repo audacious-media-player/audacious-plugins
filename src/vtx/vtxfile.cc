@@ -34,7 +34,7 @@ static int read_byte(VFSFile &fp, int *p)
 static int read_word16(VFSFile &fp, int *p)
 {
   unsigned char c[2];
-  if (fp.fread(&c, 2, 2) != 2) {
+  if (fp.fread(&c, 1, 2) != 2) {
     AUDERR("read_word16() error\n");
     return 1;
   }
@@ -48,7 +48,7 @@ static int read_word16(VFSFile &fp, int *p)
 static int read_word32(VFSFile &fp, int32_t *p)
 {
   unsigned char c[4];
-  if (fp.fread(&c, 4, 4) != 4) {
+  if (fp.fread(&c, 1, 4) != 4) {
     AUDERR("read_word32() error\n");
     return 1;
   }

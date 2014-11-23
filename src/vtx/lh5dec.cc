@@ -51,7 +51,7 @@ static int j;  /* remaining bytes to copy */
 static void error(const char *msg)
 {
   AUDERR("%s\n", msg);
-  exit(EXIT_FAILURE);
+  abort();
 }
 
 static void fillbuf(int n)  /* Shift bitbuf n bits left, read n bits */
