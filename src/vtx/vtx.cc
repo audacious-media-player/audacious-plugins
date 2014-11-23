@@ -18,6 +18,8 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <string.h>
+
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
@@ -27,21 +29,45 @@
 #include "vtx.h"
 #include "ayemu.h"
 
+class VTXPlugin : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char *const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("VTX Decoder"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo()
+        .with_exts(exts);
+
+    constexpr VTXPlugin() : InputPlugin(info, iinfo) {}
+
+    bool is_our_file(const char *filename, VFSFile &file);
+    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool play(const char *filename, VFSFile &file);
+
+    bool file_info_box(const char *filename, VFSFile &file)
+        { vtx_file_info(filename, file); return true; }
+};
+
+EXPORT VTXPlugin aud_plugin_instance;
+
 #define SNDBUFSIZE 1024
 static char sndbuf[SNDBUFSIZE];
 static int freq = 44100;
 static int chans = 2;
 static int bits = 16;
 
-ayemu_ay_t ay;
-ayemu_vtx_t vtx;
+const char *const VTXPlugin::exts[] = { "vtx", nullptr };
 
-static const char *vtx_fmts[] = { "vtx", nullptr };
-
-bool vtx_is_our_fd(const char * filename, VFSFile & fp)
+bool VTXPlugin::is_our_file(const char *filename, VFSFile &file)
 {
     char buf[2];
-    if (fp.fread (buf, 1, 2) < 2)
+    if (file.fread (buf, 1, 2) < 2)
         return false;
     return (!strcmp_nocase(buf, "ay", 2) || !strcmp_nocase(buf, "ym", 2));
 }
@@ -67,22 +93,21 @@ Tuple vtx_get_song_tuple_from_vtx(const char * filename, ayemu_vtx_t * in)
     return tuple;
 }
 
-Tuple vtx_probe_for_tuple(const char *filename, VFSFile &fd)
+Tuple VTXPlugin::read_tuple(const char *filename, VFSFile &file)
 {
     ayemu_vtx_t tmp;
 
-    if (ayemu_vtx_open(&tmp, filename))
-    {
-        Tuple ti = vtx_get_song_tuple_from_vtx(filename, &tmp);
-        ayemu_vtx_free(&tmp);
-        return ti;
-    }
+    if (tmp.read_header(file))
+        return vtx_get_song_tuple_from_vtx(filename, &tmp);
 
     return Tuple ();
 }
 
-static bool vtx_play(const char * filename, VFSFile & file)
+bool VTXPlugin::play(const char *filename, VFSFile &file)
 {
+    ayemu_ay_t ay;
+    ayemu_vtx_t vtx;
+
     bool eof = false;
     void *stream;               /* pointer to current position in sound buffer */
     unsigned char regs[14];
@@ -96,12 +121,12 @@ static bool vtx_play(const char * filename, VFSFile & file)
 
     memset(&ay, 0, sizeof(ay));
 
-    if (!ayemu_vtx_open(&vtx, filename))
+    if (!vtx.read_header(file))
     {
         AUDERR("Error read vtx header from %s\n", filename);
         return false;
     }
-    else if (!ayemu_vtx_load_data(&vtx))
+    else if (!vtx.load_data(file))
     {
         AUDERR("Error read vtx data from %s\n", filename);
         return false;
@@ -137,7 +162,7 @@ static bool vtx_play(const char * filename, VFSFile & file)
             }
             else
             {                   /* get next AY register frame */
-                if (ayemu_vtx_get_next_frame(&vtx, (char *)regs) == 0)
+                if (!vtx.get_next_frame(regs))
                 {
                     donow = need;
                     memset(stream, 0, donow * rate);
@@ -155,23 +180,10 @@ static bool vtx_play(const char * filename, VFSFile & file)
         aud_input_write_audio(sndbuf, SNDBUFSIZE);
     }
 
-    ayemu_vtx_free(&vtx);
-
     return true;
 }
 
-static const char vtx_about[] =
+const char VTXPlugin::about[] =
  N_("Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
     "Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
     "Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>");
-
-#define AUD_PLUGIN_NAME        N_("VTX Decoder")
-#define AUD_PLUGIN_ABOUT       vtx_about
-#define AUD_INPUT_PLAY         vtx_play
-#define AUD_INPUT_INFOWIN      vtx_file_info
-#define AUD_INPUT_READ_TUPLE   vtx_probe_for_tuple
-#define AUD_INPUT_IS_OUR_FILE  vtx_is_our_fd
-#define AUD_INPUT_EXTS         vtx_fmts
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
