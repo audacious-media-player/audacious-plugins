@@ -30,7 +30,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
@@ -170,12 +169,11 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   // Set XMMS main window information
   dbg_printf ("xmms, ");
   int sampsize = (conf.bit16 ? 2 : 1) * (conf.stereo ? 2 : 1);
-  aud_input_set_bitrate (conf.freq * sampsize * 8);
+  set_stream_bitrate (conf.freq * sampsize * 8);
 
   // open output plugin
   dbg_printf ("open, ");
-  if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
-    return false;
+  open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1);
 
   CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
   long toadd = 0, i, towrite;
@@ -213,10 +211,10 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   dbg_printf ("loop.\n");
   while ((playing || conf.endless))
   {
-    if (aud_input_check_stop ())
+    if (check_stop ())
       break;
 
-    int seek = aud_input_check_seek ();
+    int seek = check_seek ();
 
     // seek requested ?
     if (seek != -1)
@@ -252,7 +250,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
       toadd -= (long) (plr.p->getrefresh () * i);
     }
 
-    aud_input_write_audio (sndbuf, SNDBUFSIZE * sampsize);
+    write_audio (sndbuf, SNDBUFSIZE * sampsize);
   }
 
   // free everything and exit

@@ -29,7 +29,6 @@
 #include <string.h>
 
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
@@ -164,17 +163,12 @@ bool XSFPlugin::play(const char *filename, VFSFile &file)
 		goto ERR_NO_CLOSE;
 	}
 
-	aud_input_set_bitrate(44100*2*2*8);
+	set_stream_bitrate(44100*2*2*8);
+	open_audio(FMT_S16_NE, 44100, 2);
 
-	if (!aud_input_open_audio(FMT_S16_NE, 44100, 2))
+	while (! check_stop ())
 	{
-		error = true;
-		goto ERR_NO_CLOSE;
-	}
-
-	while (! aud_input_check_stop ())
-	{
-		int seek_value = aud_input_check_seek ();
+		int seek_value = check_seek ();
 
 		if (seek_value >= 0)
 		{
@@ -210,7 +204,7 @@ bool XSFPlugin::play(const char *filename, VFSFile &file)
 		xsf_gen(samples, seglen);
 		pos += 16.666;
 
-		aud_input_write_audio((uint8_t *)samples, seglen * 4);
+        write_audio(samples, seglen * 4);
 
 		bool ignore_length = aud_get_bool(CFG_ID, "ignore_length");
 		if (pos >= length && !ignore_length)

@@ -37,7 +37,6 @@
 #define WANT_AUD_BSWAP
 #define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
@@ -287,25 +286,19 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
 
     vi = ov_info(&vf, -1);
 
-    if (vi->channels > 2)
-        goto play_cleanup;
-
     br = vi->bitrate_nominal;
     channels = vi->channels;
     samplerate = vi->rate;
 
-    aud_input_set_bitrate (br);
+    set_stream_bitrate (br);
 
     if (vorbis_fetch_tuple (& vf, filename, stream, tuple))
-        aud_input_set_tuple (tuple.ref ());
+        set_playback_tuple (tuple.ref ());
 
     if (vorbis_fetch_replaygain (& vf, & rg_info))
-        aud_input_set_gain (& rg_info);
+        set_replay_gain (rg_info);
 
-    if (!aud_input_open_audio(FMT_FLOAT, samplerate, channels)) {
-        error = true;
-        goto play_cleanup;
-    }
+    open_audio (FMT_FLOAT, samplerate, channels);
 
     /*
      * Note that chaining changes things here; A vorbis file may
@@ -314,9 +307,9 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
      * using the ov_ interface.
      */
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_value = aud_input_check_seek();
+        int seek_value = check_seek ();
 
         if (seek_value >= 0 && ov_time_seek (& vf, (double) seek_value / 1000) < 0)
         {
@@ -336,7 +329,7 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
         bytes = vorbis_interleave_buffer (pcm, bytes, channels, pcmout);
 
         if (vorbis_fetch_tuple (& vf, filename, stream, tuple))
-            aud_input_set_tuple (tuple.ref ());
+            set_playback_tuple (tuple.ref ());
 
         if (current_section != last_section)
         {
@@ -347,31 +340,23 @@ bool VorbisPlugin::play (const char * filename, VFSFile & file)
              */
             vi = ov_info(&vf, -1);
 
-            if (vi->channels > 2)
-                goto stop_processing;
-
             if (vi->rate != samplerate || vi->channels != channels)
             {
                 samplerate = vi->rate;
                 channels = vi->channels;
 
                 if (vorbis_fetch_replaygain (& vf, & rg_info))
-                    aud_input_set_gain (& rg_info);
+                    set_replay_gain (rg_info);
 
-                if (!aud_input_open_audio(FMT_FLOAT, vi->rate, vi->channels)) {
-                    error = true;
-                    goto stop_processing;
-                }
+                open_audio (FMT_FLOAT, vi->rate, vi->channels);
             }
         }
 
-        aud_input_write_audio (pcmout, bytes);
-
-stop_processing:
+        write_audio (pcmout, bytes);
 
         if (current_section != last_section)
         {
-            aud_input_set_bitrate (br);
+            set_stream_bitrate (br);
             last_section = current_section;
         }
     } /* main loop */

@@ -21,7 +21,6 @@
 #include <string.h>
 
 #include <libaudcore/runtime.h>
-#include <libaudcore/input.h>
 
 #include "flacng.h"
 
@@ -128,21 +127,15 @@ bool FLACng::play(const char *filename, VFSFile &file)
 
     play_buffer.resize(BUFFER_SIZE_BYTE);
 
-    aud_input_set_bitrate(cinfo->bitrate);
-
-    if (! aud_input_open_audio (SAMPLE_FMT (cinfo->bits_per_sample),
-        cinfo->sample_rate, cinfo->channels))
-    {
-        error = true;
-        goto ERR_NO_CLOSE;
-    }
+    set_stream_bitrate(cinfo->bitrate);
+    open_audio(SAMPLE_FMT(cinfo->bits_per_sample), cinfo->sample_rate, cinfo->channels);
 
     while (FLAC__stream_decoder_get_state(decoder) != FLAC__STREAM_DECODER_END_OF_STREAM)
     {
-        if (aud_input_check_stop ())
+        if (check_stop ())
             break;
 
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
         if (seek_value >= 0)
             FLAC__stream_decoder_seek_absolute (decoder, (int64_t)
              seek_value * cinfo->sample_rate / 1000);
@@ -157,7 +150,7 @@ bool FLACng::play(const char *filename, VFSFile &file)
 
         squeeze_audio(cinfo->output_buffer.begin(), play_buffer.begin(),
          cinfo->buffer_used, cinfo->bits_per_sample);
-        aud_input_write_audio(play_buffer.begin(), cinfo->buffer_used *
+        write_audio(play_buffer.begin(), cinfo->buffer_used *
          SAMPLE_SIZE(cinfo->bits_per_sample));
 
         cinfo->reset();

@@ -22,7 +22,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
@@ -137,15 +136,13 @@ bool VTXPlugin::play(const char *filename, VFSFile &file)
     ayemu_set_chip_freq(&ay, vtx.hdr.chipFreq);
     ayemu_set_stereo(&ay, (ayemu_stereo_t) vtx.hdr.stereo, nullptr);
 
-    aud_input_set_bitrate(14 * 50 * 8);
+    set_stream_bitrate(14 * 50 * 8);
+    open_audio(FMT_S16_NE, freq, chans);
 
-    if (aud_input_open_audio(FMT_S16_NE, freq, chans) == 0)
-        return false;
-
-    while (!aud_input_check_stop() && !eof)
+    while (!check_stop() && !eof)
     {
         /* (time in sec) * 50 = offset in AY register data frames */
-        int seek_value = aud_input_check_seek();
+        int seek_value = check_seek();
         if (seek_value >= 0)
             vtx.pos = seek_value / 20;
 
@@ -177,7 +174,7 @@ bool VTXPlugin::play(const char *filename, VFSFile &file)
             }
         }
 
-        aud_input_write_audio(sndbuf, SNDBUFSIZE);
+        write_audio(sndbuf, SNDBUFSIZE);
     }
 
     return true;

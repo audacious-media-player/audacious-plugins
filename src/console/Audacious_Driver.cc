@@ -11,7 +11,6 @@
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/input.h>
 #include <libaudcore/runtime.h>
 
 #include "configure.h"
@@ -251,7 +250,7 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
         if (tuple)
         {
             length = tuple.get_int (Tuple::Length);
-            aud_input_set_bitrate(fh.m_emu->voice_count() * 1000);
+            set_stream_bitrate(fh.m_emu->voice_count() * 1000);
         }
     }
 
@@ -261,8 +260,7 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
 
     log_warning(fh.m_emu);
 
-    if (!aud_input_open_audio(FMT_S16_NE, sample_rate, 2))
-        return false;
+    open_audio(FMT_S16_NE, sample_rate, 2);
 
     // set fade time
     if (length <= 0)
@@ -271,10 +269,10 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
         length -= fade_length / 2;
     fh.m_emu->set_fade(length, fade_length);
 
-    while (!aud_input_check_stop())
+    while (!check_stop())
     {
         /* Perform seek, if requested */
-        int seek_value = aud_input_check_seek();
+        int seek_value = check_seek();
         if (seek_value >= 0)
             fh.m_emu->seek(seek_value);
 
@@ -284,7 +282,7 @@ bool ConsolePlugin::play(const char *filename, VFSFile &file)
 
         fh.m_emu->play(buf_size, buf);
 
-        aud_input_write_audio(buf, sizeof(buf));
+        write_audio(buf, sizeof(buf));
 
         if (fh.m_emu->track_ended())
             break;

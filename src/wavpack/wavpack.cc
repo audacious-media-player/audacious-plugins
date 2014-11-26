@@ -7,7 +7,6 @@
 #include <audacious/audtag.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 
@@ -139,14 +138,8 @@ bool WavpackPlugin::play (const char * filename, VFSFile & file)
     bits_per_sample = WavpackGetBitsPerSample(ctx);
     num_samples = WavpackGetNumSamples(ctx);
 
-    aud_input_set_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
-
-    if (!aud_input_open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
-    {
-        AUDERR ("Error opening audio output.");
-        wv_deattach (ctx);
-        return false;
-    }
+    set_stream_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
+    open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
 
     Index<int32_t> input;
     input.resize (BUFFER_SIZE * num_channels);
@@ -154,9 +147,9 @@ bool WavpackPlugin::play (const char * filename, VFSFile & file)
     Index<char> output;
     output.resize (BUFFER_SIZE * num_channels * SAMPLE_SIZE (bits_per_sample));
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
         if (seek_value >= 0)
             WavpackSeekSample (ctx, (int64_t) seek_value * sample_rate / 1000);
 
@@ -197,7 +190,7 @@ bool WavpackPlugin::play (const char * filename, VFSFile & file)
                     *wp4 = *rp;
             }
 
-            aud_input_write_audio (output.begin (),
+            write_audio (output.begin (),
              ret * num_channels * SAMPLE_SIZE (bits_per_sample));
         }
     }

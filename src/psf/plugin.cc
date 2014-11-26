@@ -29,7 +29,6 @@
 #include <string.h>
 
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 
@@ -55,6 +54,9 @@ public:
 	bool is_our_file(const char *filename, VFSFile &file);
 	Tuple read_tuple(const char *filename, VFSFile &file);
 	bool play(const char *filename, VFSFile &file);
+
+protected:
+	static void update(const void *data, int bytes);
 };
 
 EXPORT PSFPlugin aud_plugin_instance;
@@ -71,7 +73,7 @@ typedef struct {
 	int32_t (*start)(uint8_t *buffer, uint32_t length);
 	int32_t (*stop)(void);
 	int32_t (*seek)(uint32_t);
-	int32_t (*execute)(void);
+	int32_t (*execute)(void (*update)(const void *, int));
 } PSFEngineFunctors;
 
 static PSFEngineFunctors psf_functor_map[ENG_COUNT] = {
@@ -167,13 +169,12 @@ bool PSFPlugin::play(const char *filename, VFSFile &file)
 		goto cleanup;
 	}
 
-	aud_input_set_bitrate(44100*2*2*8);
-
-	aud_input_open_audio(FMT_S16_NE, 44100, 2);
+	set_stream_bitrate(44100*2*2*8);
+	open_audio(FMT_S16_NE, 44100, 2);
 
 	stop_flag = false;
 
-	f->execute();
+	f->execute(update);
 	f->stop();
 
 cleanup:
@@ -183,23 +184,23 @@ cleanup:
 	return ! error;
 }
 
-void psf2_update(unsigned char *buffer, long count)
+void PSFPlugin::update(const void *data, int bytes)
 {
-	if (! buffer || aud_input_check_stop ())
+	if (!data || check_stop())
 	{
 		stop_flag = true;
 		return;
 	}
 
-	int seek = aud_input_check_seek ();
+	int seek = check_seek();
 
 	if (seek >= 0)
 	{
-		f->seek (seek);
+		f->seek(seek);
 		return;
 	}
 
-	aud_input_write_audio (buffer, count);
+	write_audio(data, bytes);
 }
 
 bool PSFPlugin::is_our_file(const char *filename, VFSFile &file)

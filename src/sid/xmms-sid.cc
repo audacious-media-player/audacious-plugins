@@ -27,7 +27,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
@@ -145,18 +144,10 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
     Tuple tmpTuple;
     tmpTuple.set_filename(info.sidFilename);
     xs_get_song_tuple_info(tmpTuple, info, subTune);
-    aud_input_set_tuple (std::move (tmpTuple));
+    set_playback_tuple(std::move(tmpTuple));
 
     /* Open the audio output */
-    if (!aud_input_open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels))
-    {
-        AUDERR("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
-            FMT_S16_NE,
-            xs_cfg.audioFrequency,
-            xs_cfg.audioChannels);
-
-        return false;
-    }
+    open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels);
 
     /* Allocate audio buffer */
     int audioBufSize = xs_cfg.audioFrequency * xs_cfg.audioChannels * 2;
@@ -166,14 +157,14 @@ bool SIDPlugin::play(const char *filename, VFSFile &file)
     char *audioBuffer = new char[audioBufSize];
     int64_t bytes_played = 0;
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        if (aud_input_check_seek () >= 0)
+        if (check_seek () >= 0)
             AUDWARN ("Seeking is not implemented, ignoring.\n");
 
         int bufRemaining = xs_sidplayfp_fillbuffer(audioBuffer, audioBufSize);
 
-        aud_input_write_audio (audioBuffer, bufRemaining);
+        write_audio (audioBuffer, bufRemaining);
         bytes_played += bufRemaining;
 
         /* Check if we have played enough */

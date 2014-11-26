@@ -572,7 +572,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 	return AO_SUCCESS;
 }
 
-int32_t psf2_execute(void)
+int32_t psf2_execute(void (*update)(const void *, int))
 {
 	int i;
 
@@ -580,7 +580,7 @@ int32_t psf2_execute(void)
 	{
 		for (i = 0; i < 44100 / 60; i++)
 		{
-			SPU2async(1, nullptr);
+			SPU2async(update);
 			ps2_hw_slice();
 		}
 

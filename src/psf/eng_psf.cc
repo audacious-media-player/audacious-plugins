@@ -347,14 +347,14 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	return AO_SUCCESS;
 }
 
-int32_t psf_execute(void)
+int32_t psf_execute(void (*update)(const void *, int))
 {
 	int i;
 
 	while (!stop_flag) {
 		for (i = 0; i < 44100 / 60; i++) {
 			psx_hw_slice();
-			SPUasync(384);
+			SPUasync(384, update);
 		}
 
 		psx_hw_frame();

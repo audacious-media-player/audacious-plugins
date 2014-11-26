@@ -38,7 +38,6 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <audacious/audtag.h>
@@ -303,7 +302,7 @@ bool MPG123Plugin::play (const char * filename, VFSFile & file)
 
     AUDDBG ("Checking for streaming ...\n");
     ctx.stream = (file.fsize () < 0);
-    ctx.tu = ctx.stream ? aud_input_get_tuple () : Tuple ();
+    ctx.tu = ctx.stream ? get_playback_tuple () : Tuple ();
 
     ctx.decoder = mpg123_new (nullptr, nullptr);
     mpg123_param (ctx.decoder, MPG123_ADD_FLAGS, DECODE_OPTIONS, 0);
@@ -346,20 +345,16 @@ GET_FORMAT:
         goto OPEN_ERROR;
 
     bitrate = fi.bitrate * 1000;
-    aud_input_set_bitrate (bitrate);
+    set_stream_bitrate (bitrate);
 
     if (ctx.tu && ctx.tu.fetch_stream_info (file))
-        aud_input_set_tuple (ctx.tu.ref ());
+        set_playback_tuple (ctx.tu.ref ());
 
-    if (! aud_input_open_audio (FMT_FLOAT, ctx.rate, ctx.channels))
-    {
-        error = true;
-        goto cleanup;
-    }
+    open_audio (FMT_FLOAT, ctx.rate, ctx.channels);
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek = aud_input_check_seek ();
+        int seek = check_seek ();
 
         if (seek >= 0)
         {
@@ -375,14 +370,14 @@ GET_FORMAT:
 
         if (bitrate_sum / bitrate_count != bitrate && bitrate_count >= 16)
         {
-            aud_input_set_bitrate (bitrate_sum / bitrate_count * 1000);
+            set_stream_bitrate (bitrate_sum / bitrate_count * 1000);
             bitrate = bitrate_sum / bitrate_count;
             bitrate_sum = 0;
             bitrate_count = 0;
         }
 
         if (ctx.tu && ctx.tu.fetch_stream_info (file))
-            aud_input_set_tuple (ctx.tu.ref ());
+            set_playback_tuple (ctx.tu.ref ());
 
         if (! outbuf_size && (ret = mpg123_read (ctx.decoder,
          (unsigned char *) outbuf, sizeof outbuf, & outbuf_size)) < 0)
@@ -402,7 +397,7 @@ GET_FORMAT:
         {
             error_count = 0;
 
-            aud_input_write_audio (outbuf, outbuf_size);
+            write_audio (outbuf, outbuf_size);
             outbuf_size = 0;
         }
     }

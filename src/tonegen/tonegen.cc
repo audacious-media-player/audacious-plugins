@@ -18,7 +18,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 
 #include <limits.h>
@@ -113,10 +112,8 @@ bool ToneGen::play(const char *filename, VFSFile &file)
     if (!frequencies.len())
         return false;
 
-    aud_input_set_bitrate(16 * OUTPUT_FREQ);
-
-    if (!aud_input_open_audio(FMT_FLOAT, OUTPUT_FREQ, 1))
-        return false;
+    set_stream_bitrate(16 * OUTPUT_FREQ);
+    open_audio(FMT_FLOAT, OUTPUT_FREQ, 1);
 
     Index<tone_t> tone;
     tone.resize(frequencies.len());
@@ -128,7 +125,7 @@ bool ToneGen::play(const char *filename, VFSFile &file)
         tone[i].t = 0;
     }
 
-    while (!aud_input_check_stop())
+    while (!check_stop())
     {
         for (int i = 0; i < BUF_SAMPLES; i++)
         {
@@ -145,7 +142,7 @@ bool ToneGen::play(const char *filename, VFSFile &file)
             data[i] = (sum_sines * 0.999 / (double)frequencies.len());
         }
 
-        aud_input_write_audio(data, BUF_BYTES);
+        write_audio(data, BUF_BYTES);
     }
 
     return true;

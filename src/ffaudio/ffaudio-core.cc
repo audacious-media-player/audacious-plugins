@@ -28,7 +28,6 @@
 #include <audacious/audtag.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/multihash.h>
 #include <libaudcore/runtime.h>
 
@@ -392,7 +391,7 @@ Index<char> FFaudio::read_image (const char * filename, VFSFile & file)
 {
     if (str_has_suffix_nocase (filename, ".m4a") || str_has_suffix_nocase (filename, ".mp4"))
         return read_itunes_cover (filename, file);
-    
+
     return Index<char> ();
 }
 
@@ -448,19 +447,14 @@ bool FFaudio::play (const char * filename, VFSFile & file)
     /* Open audio output */
     AUDDBG("opening audio output\n");
 
-    aud_input_set_bitrate(ic->bit_rate);
-
-    if (aud_input_open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels) <= 0)
-    {
-        error = true;
-        goto error_exit;
-    }
+    set_stream_bitrate(ic->bit_rate);
+    open_audio(out_fmt, cinfo.context->sample_rate, cinfo.context->channels);
 
     errcount = 0;
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
 
         if (seek_value >= 0)
         {
@@ -506,11 +500,11 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
         /* Decode and play packet/frame */
         memcpy(&tmp, &pkt, sizeof(tmp));
-        while (tmp.size > 0 && ! aud_input_check_stop ())
+        while (tmp.size > 0 && ! check_stop ())
         {
             /* Check for seek request and bail out if we have one */
             if (seek_value < 0)
-                seek_value = aud_input_check_seek ();
+                seek_value = check_seek ();
 
             if (seek_value >= 0)
                 break;
@@ -544,10 +538,10 @@ bool FFaudio::play (const char * filename, VFSFile & file)
 
                 audio_interlace ((const void * *) frame->data, out_fmt,
                  cinfo.context->channels, buf.begin (), frame->nb_samples);
-                aud_input_write_audio (buf.begin (), size);
+                write_audio (buf.begin (), size);
             }
             else
-                aud_input_write_audio (frame->data[0], size);
+                write_audio (frame->data[0], size);
 
 #if CHECK_LIBAVCODEC_VERSION (55, 45, 101, 55, 28, 1)
             av_frame_free (& frame);

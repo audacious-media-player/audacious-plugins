@@ -45,7 +45,6 @@
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/interface.h>
 #include <libaudcore/mainloop.h>
 #include <libaudcore/playlist.h>
@@ -273,8 +272,6 @@ bool CDAudio::play (const char * name, VFSFile & file)
         }
     }
 
-    aud_input_set_bitrate (1411200);
-
     bool okay = false;
     int trackno = find_trackno_from_filename (name);
 
@@ -284,8 +281,6 @@ bool CDAudio::play (const char * name, VFSFile & file)
         cdaudio_error (_("Track %d not found."), trackno);
     else if (! cdda_track_audiop (pcdrom_drive, trackno))
         cdaudio_error (_("Track %d is a data track."), trackno);
-    else if (! aud_input_open_audio (FMT_S16_LE, 44100, 2))
-        cdaudio_error (_("Failed to open audio output."));
     else
         okay = true;
 
@@ -294,6 +289,9 @@ bool CDAudio::play (const char * name, VFSFile & file)
         pthread_mutex_unlock (& mutex);
         return false;
     }
+
+    set_stream_bitrate (1411200);
+    open_audio (FMT_S16_LE, 44100, 2);
 
     int startlsn = trackinfo[trackno].startlsn;
     int endlsn = trackinfo[trackno].endlsn;
@@ -310,9 +308,9 @@ bool CDAudio::play (const char * name, VFSFile & file)
     Index<unsigned char> buffer;
     buffer.insert (0, 2352 * sectors);
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_time = aud_input_check_seek ();
+        int seek_time = check_seek ();
         if (seek_time >= 0)
             currlsn = startlsn + (seek_time * 75 / 1000);
 
@@ -328,7 +326,7 @@ bool CDAudio::play (const char * name, VFSFile & file)
          buffer.begin (), currlsn, sectors);
 
         if (ret == DRIVER_OP_SUCCESS)
-            aud_input_write_audio (buffer.begin (), 2352 * sectors);
+            write_audio (buffer.begin (), 2352 * sectors);
 
         pthread_mutex_lock (& mutex);
 

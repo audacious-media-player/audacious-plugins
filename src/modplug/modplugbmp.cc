@@ -16,7 +16,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 
 #include "archive/open.h"
 
@@ -150,9 +149,9 @@ void ModplugXMMS::PlayLoop()
 {
     uint32_t lLength;
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_time = aud_input_check_seek ();
+        int seek_time = check_seek ();
         if (seek_time != -1)
             mSoundFile->SetCurrentPos (seek_time * (int64_t)
              mSoundFile->GetMaxPosition () / (mSoundFile->GetSongTime () * 1000));
@@ -191,7 +190,7 @@ void ModplugXMMS::PlayLoop()
             }
         }
 
-        aud_input_write_audio (mBuffer, mBufSize);
+        write_audio (mBuffer, mBufSize);
     }
 
     //Unload the file
@@ -287,13 +286,12 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
 
     Tuple ti = read_tuple (filename, file);
     if (ti)
-        aud_input_set_tuple (std::move (ti));
+        set_playback_tuple (std::move (ti));
 
-    aud_input_set_bitrate(mSoundFile->GetNumChannels() * 1000);
+    set_stream_bitrate(mSoundFile->GetNumChannels() * 1000);
 
     int fmt = (mModProps.mBits == 16) ? FMT_S16_NE : FMT_U8;
-    if (! aud_input_open_audio(fmt, mModProps.mFrequency, mModProps.mChannels))
-        return false;
+    open_audio(fmt, mModProps.mFrequency, mModProps.mChannels);
 
     PlayLoop();
 

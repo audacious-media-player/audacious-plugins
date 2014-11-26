@@ -25,7 +25,6 @@
 #include <sndfile.h>
 
 #define WANT_VFS_STDIO_COMPAT
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
@@ -292,19 +291,14 @@ bool SndfilePlugin::play (const char * filename, VFSFile & file)
     if (sndfile == nullptr)
         return false;
 
-    if (! aud_input_open_audio (FMT_FLOAT, sfinfo.samplerate,
-     sfinfo.channels))
-    {
-        sf_close (sndfile);
-        return false;
-    }
+    open_audio (FMT_FLOAT, sfinfo.samplerate, sfinfo.channels);
 
     Index<float> buffer;
     buffer.resize (sfinfo.channels * (sfinfo.samplerate / 50));
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
         if (seek_value != -1)
             sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
 
@@ -312,7 +306,7 @@ bool SndfilePlugin::play (const char * filename, VFSFile & file)
         if (! samples)
             break;
 
-        aud_input_write_audio (buffer.begin (), sizeof (float) * samples);
+        write_audio (buffer.begin (), sizeof (float) * samples);
     }
 
     sf_close (sndfile);

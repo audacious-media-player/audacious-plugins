@@ -21,7 +21,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
@@ -165,10 +164,8 @@ bool Metronome::play (const char * filename, VFSFile &)
     int data_form[TACT_FORM_MAX];
     String desc;
 
-    aud_input_set_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
-
-    if (aud_input_open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
-        return false;
+    set_stream_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
+    open_audio(FMT_S16_NE, AUDIO_FREQ, 1);
 
     if (!metronom_get_cp(filename, &pmetronom, desc))
     {
@@ -185,7 +182,7 @@ bool Metronome::play (const char * filename, VFSFile &)
     }
 
     num = 0;
-    while (!aud_input_check_stop())
+    while (!check_stop())
     {
         int i;
 
@@ -217,7 +214,7 @@ bool Metronome::play (const char * filename, VFSFile &)
             t++;
         }
 
-        aud_input_write_audio(data, BUF_BYTES);
+        write_audio(data, BUF_BYTES);
     }
 
     return true;
