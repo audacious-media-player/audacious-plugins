@@ -36,7 +36,31 @@
 #define PI              3.14159265358979323846
 #endif
 
-static bool tone_is_our_fd(const char *filename, VFSFile &fd)
+class ToneGen : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char *const schemes[];
+
+    static constexpr PluginInfo info = {
+        N_("Tone Generator"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo()
+        .with_schemes(schemes);
+
+    constexpr ToneGen() : InputPlugin(info, iinfo) {}
+
+    bool is_our_file(const char *filename, VFSFile &file);
+    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool play(const char *filename, VFSFile &file);
+};
+
+EXPORT ToneGen aud_plugin_instance;
+
+bool ToneGen::is_our_file(const char *filename, VFSFile &file)
 {
     if (!strncmp(filename, "tone://", 7))
         return true;
@@ -81,7 +105,7 @@ struct tone_t
     unsigned period, t;
 };
 
-static bool tone_play(const char *filename, VFSFile &file)
+bool ToneGen::play(const char *filename, VFSFile &file)
 {
     float data[BUF_SAMPLES];
 
@@ -127,7 +151,7 @@ static bool tone_play(const char *filename, VFSFile &file)
     return true;
 }
 
-static Tuple tone_probe_for_tuple(const char *filename, VFSFile &fd)
+Tuple ToneGen::read_tuple(const char *filename, VFSFile &file)
 {
     Tuple tuple;
     tuple.set_filename(filename);
@@ -135,20 +159,10 @@ static Tuple tone_probe_for_tuple(const char *filename, VFSFile &fd)
     return tuple;
 }
 
-static const char tone_about[] =
+const char ToneGen::about[] =
  N_("Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
     "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n\n"
     "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
     "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone");
 
-static const char * const schemes[] = {"tone", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Tone Generator")
-#define AUD_PLUGIN_ABOUT       tone_about
-#define AUD_INPUT_SCHEMES      schemes
-#define AUD_INPUT_IS_OUR_FILE  tone_is_our_fd
-#define AUD_INPUT_PLAY         tone_play
-#define AUD_INPUT_READ_TUPLE   tone_probe_for_tuple
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char *const ToneGen::schemes[] = {"tone", nullptr};

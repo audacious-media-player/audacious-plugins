@@ -37,12 +37,13 @@
 #define WANT_AUD_BSWAP
 #define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/audstrings.h>
-#include <libaudcore/i18n.h>
 #include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #include "vorbis.h"
+
+EXPORT VorbisPlugin aud_plugin_instance;
 
 static size_t ovcb_read (void * buffer, size_t size, size_t count, void * file)
 {
@@ -78,7 +79,7 @@ ov_callbacks vorbis_callbacks_stream = {
     nullptr
 };
 
-static bool vorbis_check_fd (const char * filename, VFSFile & file)
+bool VorbisPlugin::is_our_file (const char * filename, VFSFile & file)
 {
     ogg_sync_state oy = {0};
     ogg_stream_state os = {0};
@@ -262,7 +263,7 @@ vorbis_interleave_buffer(float **pcm, int samples, int ch, float *pcmout)
 #define PCM_FRAMES 1024
 #define PCM_BUFSIZE (PCM_FRAMES * 2)
 
-static bool vorbis_play (const char * filename, VFSFile & file)
+bool VorbisPlugin::play (const char * filename, VFSFile & file)
 {
     vorbis_info *vi;
     OggVorbis_File vf;
@@ -381,7 +382,7 @@ play_cleanup:
     return ! error;
 }
 
-static Tuple get_song_tuple (const char * filename, VFSFile & file)
+Tuple VorbisPlugin::read_tuple (const char * filename, VFSFile & file)
 {
     OggVorbis_File vfile;          /* avoid thread interaction */
 
@@ -401,7 +402,7 @@ static Tuple get_song_tuple (const char * filename, VFSFile & file)
     return tuple;
 }
 
-static Index<char> get_song_image (const char * filename, VFSFile & file)
+Index<char> VorbisPlugin::read_image (const char * filename, VFSFile & file)
 {
     Index<char> data;
 
@@ -475,7 +476,7 @@ ERR:
     return data;
 }
 
-static const char vorbis_about[] =
+const char VorbisPlugin::about[] =
  N_("Audacious Ogg Vorbis Decoder\n\n"
     "Based on the Xiph.org Foundation's Ogg Vorbis Plugin:\n"
     "http://www.xiph.org/\n\n"
@@ -491,21 +492,5 @@ static const char vorbis_about[] =
     "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
     "Eugene Zagidullin <e.asphyx@gmail.com>");
 
-static const char *vorbis_fmts[] = { "ogg", "ogm", "oga", nullptr };
-static const char * const mimes[] = {"application/ogg", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Ogg Vorbis Decoder")
-#define AUD_PLUGIN_ABOUT       vorbis_about
-#define AUD_INPUT_PLAY         vorbis_play
-#define AUD_INPUT_READ_TUPLE   get_song_tuple
-#define AUD_INPUT_READ_IMAGE   get_song_image
-#define AUD_INPUT_WRITE_TUPLE  vorbis_update_song_tuple
-#define AUD_INPUT_IS_OUR_FILE  vorbis_check_fd
-#define AUD_INPUT_EXTS         vorbis_fmts
-#define AUD_INPUT_MIMES        mimes
-
-/* medium-high priority (a little slow) */
-#define AUD_INPUT_PRIORITY     2
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char * const VorbisPlugin::exts[] = {"ogg", "ogm", "oga", nullptr};
+const char * const VorbisPlugin::mimes[] = {"application/ogg", nullptr};

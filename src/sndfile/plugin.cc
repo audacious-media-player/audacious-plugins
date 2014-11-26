@@ -19,25 +19,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/*
- * Rewritten 17-Feb-2007 (nenolod):
- *   - now uses conditional variables to ensure that sndfile mutex is
- *     entirely protected.
- *   - pausing works now
- *   - fixed some potential race conditions when dealing with NFS.
- *   - TITLE_LEN removed
- *
- * Re-cleaned up 09-Aug-2009 (ccr):
- *   - removed threading madness.
- *   - improved locking.
- *   - misc. cleanups.
- *
- * Play loop rewritten 14-Nov-2009 (jlindgren):
- *   - decode in floating point
- *   - drain audio buffer before closing
- *   - handle seeking/stopping while paused
- */
-
 #include <math.h>
 #include <stdlib.h>
 
@@ -48,6 +29,31 @@
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
+
+class SndfilePlugin : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char * const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("Sndfile Plugin"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo ()
+        .with_priority (9)  /* low priority fallback (but before ffaudio) */
+        .with_exts (exts);
+
+    constexpr SndfilePlugin () : InputPlugin (info, iinfo) {}
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT SndfilePlugin aud_plugin_instance;
 
 /* Virtual file access wrappers for libsndfile
  */
@@ -104,7 +110,7 @@ static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
         tup.set_int (field, atoi (str));
 }
 
-static Tuple get_song_tuple (const char * filename, VFSFile & file)
+Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
 {
     SNDFILE *sndfile;
     SF_INFO sfinfo;
@@ -279,7 +285,7 @@ static Tuple get_song_tuple (const char * filename, VFSFile & file)
     return ti;
 }
 
-static bool play_start (const char * filename, VFSFile & file)
+bool SndfilePlugin::play (const char * filename, VFSFile & file)
 {
     SF_INFO sfinfo;
     SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, & file);
@@ -314,14 +320,13 @@ static bool play_start (const char * filename, VFSFile & file)
     return true;
 }
 
-static bool
-is_our_file_from_vfs(const char *filename, VFSFile &fin)
+bool SndfilePlugin::is_our_file (const char * filename, VFSFile & file)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
 
     /* Have to open the file to see if libsndfile can handle it. */
-    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, &fin);
+    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, &file);
 
     if (!tmp_sndfile)
         return false;
@@ -333,7 +338,7 @@ is_our_file_from_vfs(const char *filename, VFSFile &fin)
     return true;
 }
 
-const char plugin_about[] =
+const char SndfilePlugin::about[] =
  N_("Based on the xmms_sndfile plugin:\n"
     "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
     "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n\n"
@@ -349,17 +354,4 @@ const char plugin_about[] =
     "along with this program; if not, write to the Free Software "
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.");
 
-static const char *sndfile_fmts[] = { "aiff", "au", "raw", "wav", nullptr };
-
-#define AUD_PLUGIN_NAME        N_("Sndfile Plugin")
-#define AUD_PLUGIN_ABOUT       plugin_about
-#define AUD_INPUT_PLAY         play_start
-#define AUD_INPUT_READ_TUPLE   get_song_tuple
-#define AUD_INPUT_IS_OUR_FILE  is_our_file_from_vfs
-#define AUD_INPUT_EXTS         sndfile_fmts
-
-/* low priority fallback (but before ffaudio) */
-#define AUD_INPUT_PRIORITY     9
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char * const SndfilePlugin::exts[] = { "aiff", "au", "raw", "wav", nullptr };
