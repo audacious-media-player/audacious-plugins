@@ -184,7 +184,7 @@ void set_ab_repeat_a (void)
         return;
 
     int a, b;
-    aud_drct_get_ab_repeat (& a, & b);
+    aud_drct_get_ab_repeat (a, b);
     a = aud_drct_get_time ();
     aud_drct_set_ab_repeat (a, b);
 }
@@ -195,7 +195,7 @@ void set_ab_repeat_b (void)
         return;
 
     int a, b;
-    aud_drct_get_ab_repeat (& a, & b);
+    aud_drct_get_ab_repeat (a, b);
     b = aud_drct_get_time ();
     aud_drct_set_ab_repeat (a, b);
 }
@@ -270,7 +270,7 @@ static void set_time_label (int time, int len)
         append_str (s, sizeof s, str_format_time (len));
 
         int a, b;
-        aud_drct_get_ab_repeat (& a, & b);
+        aud_drct_get_ab_repeat (a, b);
 
         if (a >= 0)
         {

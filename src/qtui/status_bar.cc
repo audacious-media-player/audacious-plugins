@@ -58,7 +58,7 @@ void StatusBar::update_codec ()
     String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
-    aud_drct_get_info (& bitrate, & samplerate, & channels);
+    aud_drct_get_info (bitrate, samplerate, channels);
 
     StringBuf buf (0);
 

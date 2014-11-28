@@ -1316,7 +1316,7 @@ void action_ab_set (void)
     if (aud_drct_get_length () > 0)
     {
         int a, b;
-        aud_drct_get_ab_repeat (& a, & b);
+        aud_drct_get_ab_repeat (a, b);
 
         if (a < 0 || b >= 0)
         {

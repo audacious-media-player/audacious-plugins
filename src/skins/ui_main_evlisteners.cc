@@ -45,11 +45,8 @@ static void title_change (void)
 
 static void info_change (void)
 {
-    int bitrate = 0, samplerate = 0, channels = 0;
-
-    if (aud_drct_get_ready ())
-        aud_drct_get_info (& bitrate, & samplerate, & channels);
-
+    int bitrate, samplerate, channels;
+    aud_drct_get_info (bitrate, samplerate, channels);
     mainwin_set_song_info (bitrate, samplerate, channels);
 }
 
