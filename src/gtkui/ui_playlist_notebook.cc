@@ -529,6 +529,10 @@ void ui_playlist_notebook_set_playing (void * data, void * user)
 {
     int id = aud_playlist_get_unique_id (aud_playlist_get_playing ());
 
+    // if the previous playing playlist was deleted, ignore it
+    if (aud_playlist_by_unique_id (highlighted) < 0)
+        highlighted = -1;
+
     if (highlighted == id)
         return;
 
