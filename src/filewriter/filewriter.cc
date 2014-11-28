@@ -20,11 +20,12 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <string.h>
 #include <gtk/gtk.h>
-#include <stdlib.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/drct.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 
@@ -55,6 +56,7 @@ public:
     StereoVolume get_volume () { return {0, 0}; }
     void set_volume (StereoVolume v) {}
 
+    void set_info (const char * filename, const Tuple & tuple);
     bool open_audio (int fmt, int rate, int nch);
     void close_audio ();
 
@@ -67,6 +69,10 @@ public:
 
     void pause (bool pause) {}
     void flush () {}
+
+private:
+    String m_in_filename;
+    Tuple m_in_tuple;
 };
 
 EXPORT FileWriter aud_plugin_instance;
@@ -121,8 +127,7 @@ static gboolean prependnumber;
 
 static String file_path;
 
-VFSFile output_file;
-Tuple tuple;
+static VFSFile output_file;
 
 FileWriterImpl *plugins[FILEEXT_MAX] = {
     &wav_plugin,
@@ -143,11 +148,6 @@ static void set_plugin(void)
         fileext = 0;
 
     plugin = plugins[fileext];
-}
-
-static int file_write_output (void * data, int length)
-{
-    return output_file.fwrite (data, 1, length);
 }
 
 const char * const FileWriter::defaults[] = {
@@ -177,7 +177,7 @@ bool FileWriter::init ()
 
     set_plugin();
     if (plugin->init)
-        plugin->init(&file_write_output);
+        plugin->init();
 
     return true;
 }
@@ -207,103 +207,97 @@ static VFSFile safe_create (const char * filename)
     return VFSFile ();
 }
 
+void FileWriter::set_info (const char * filename, const Tuple & tuple)
+{
+    m_in_filename = String (filename);
+    m_in_tuple = tuple.ref ();
+}
+
 bool FileWriter::open_audio (int fmt, int rate, int nch)
 {
-    char *filename = nullptr, *temp = nullptr;
-    char * directory;
+    String filename, directory;
 
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
 
-    // As of Audacious 3.6; aud_drct_get_tuple() is not really thread-safe, so
-    // calling it from the output plugin could theoretically cause a crash.
-    // However, since the likelihood of an actual crash is quite small, and
-    // aud_drct_get_tuple() will be made thread-safe in Audacious 3.7, it's
-    // okay to leave this code alone for now.
-    tuple = aud_drct_get_tuple ();
-    if (! tuple)
-        return 0;
-
     if (filenamefromtags)
     {
-        String title = tuple.get_str (Tuple::FormattedTitle);
+        String title = m_in_tuple.get_str (Tuple::FormattedTitle);
         StringBuf buf = str_encode_percent (title);
         str_replace_char (buf, '/', '-');
-        filename = g_strdup (buf);
+        filename = String (buf);
     }
     else
     {
-        String path = aud_drct_get_filename ();
-
-        const char * original = strrchr (path, '/');
+        const char * original = strrchr (m_in_filename, '/');
         g_return_val_if_fail (original != nullptr, 0);
-        filename = g_strdup (original + 1);
+        filename = String (original + 1);
 
-        if (!use_suffix)
-            if ((temp = strrchr(filename, '.')) != nullptr)
-                *temp = '\0';
+        if (! use_suffix)
+        {
+            const char * temp;
+            if ((temp = strrchr (filename, '.')))
+                filename = String (str_copy (filename, temp - filename));
+        }
     }
 
     if (prependnumber)
     {
-        int number = tuple.get_int (Tuple::Track);
-        if (number < 0)
-            number = aud_drct_get_position () + 1;
-
-        temp = g_strdup_printf ("%d%%20%s", number, filename);
-        g_free(filename);
-        filename = temp;
+        int number = m_in_tuple.get_int (Tuple::Track);
+        if (number >= 0)
+            filename = String (str_printf ("%d%%20%s", number, (const char *) filename));
     }
 
     if (save_original)
     {
-        directory = g_strdup (aud_drct_get_filename ());
-        temp = strrchr (directory, '/');
+        const char * temp = strrchr (m_in_filename, '/');
         g_return_val_if_fail (temp != nullptr, 0);
-        temp[1] = 0;
+        directory = String (str_copy (m_in_filename, temp + 1 - m_in_filename));
     }
     else
     {
         g_return_val_if_fail (file_path[0], 0);
         if (file_path[strlen (file_path) - 1] == '/')
-            directory = g_strdup (file_path);
+            directory = String (file_path);
         else
-            directory = g_strdup_printf ("%s/", (const char *) file_path);
+            directory = String (str_concat ({file_path, "/"}));
     }
 
-    temp = g_strdup_printf ("%s%s.%s", directory, filename, fileext_str[fileext]);
-    g_free (directory);
-    g_free (filename);
-    filename = temp;
+    filename = String (str_printf ("%s%s.%s", (const char *) directory,
+     (const char *) filename, fileext_str[fileext]));
 
     output_file = safe_create (filename);
-    g_free (filename);
-
     if (! output_file)
-        return 0;
+        goto err;
 
-    convert_init (fmt, plugin->format_required (fmt), nch);
+    convert_init (fmt, plugin->format_required (fmt));
 
-    return plugin->open ();
+    if (plugin->open (output_file, input, m_in_tuple))
+        return true;
+
+err:
+    m_in_filename = String ();
+    m_in_tuple = Tuple ();
+    return false;
 }
 
 int FileWriter::write_audio (const void * ptr, int length)
 {
-    int len = convert_process (ptr, length);
-
-    plugin->write(convert_output, len);
+    auto & buf = convert_process (ptr, length);
+    plugin->write (output_file, buf.begin (), buf.len ());
 
     return length;
 }
 
 void FileWriter::close_audio ()
 {
-    plugin->close();
-    convert_free();
+    plugin->close (output_file);
+    convert_free ();
 
     output_file = VFSFile ();
-    tuple = Tuple ();
+    m_in_filename = String ();
+    m_in_tuple = Tuple ();
 }
 
 static void configure_response_cb (void)
@@ -333,7 +327,7 @@ static void fileext_cb(GtkWidget *combo, void * data)
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
     set_plugin();
     if (plugin->init)
-        plugin->init(&file_write_output);
+        plugin->init();
 
     gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
 }

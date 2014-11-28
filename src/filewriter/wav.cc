@@ -21,9 +21,9 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#define WANT_AUD_BSWAP
 #include "plugins.h"
 
+#include <string.h>
 #include <libaudcore/runtime.h>
 
 #pragma pack(push) /* must be byte-aligned */
@@ -48,46 +48,53 @@ struct wavhead
 
 static struct wavhead header;
 
+static int format;
+static Index<char> packbuf;
+
 static uint64_t written;
 
-static int wav_open(void)
+
+static bool wav_open (VFSFile & file, const format_info & info, const Tuple &)
 {
     memcpy(&header.main_chunk, "RIFF", 4);
     header.length = TO_LE32(0);
     memcpy(&header.chunk_type, "WAVE", 4);
     memcpy(&header.sub_chunk, "fmt ", 4);
     header.sc_len = TO_LE32(16);
-    if (input.format == FMT_FLOAT)
+    if (info.format == FMT_FLOAT)
         header.format = TO_LE16(3);
     else
         header.format = TO_LE16(1);
-    header.modus = TO_LE16(input.channels);
-    header.sample_fq = TO_LE32(input.frequency);
-    if (input.format == FMT_S16_LE)
+    header.modus = TO_LE16(info.channels);
+    header.sample_fq = TO_LE32(info.frequency);
+    if (info.format == FMT_S16_LE)
         header.bit_p_spl = TO_LE16(16);
-    else if (input.format == FMT_S24_LE)
+    else if (info.format == FMT_S24_LE)
         header.bit_p_spl = TO_LE16(24);
     else
         header.bit_p_spl = TO_LE16(32);
-    header.byte_p_sec = TO_LE32(input.frequency * header.modus * (FROM_LE16(header.bit_p_spl) / 8));
-    header.byte_p_spl = TO_LE16((FROM_LE16(header.bit_p_spl) / (8 / input.channels)));
+    header.byte_p_sec = TO_LE32(info.frequency * header.modus * (FROM_LE16(header.bit_p_spl) / 8));
+    header.byte_p_spl = TO_LE16((FROM_LE16(header.bit_p_spl) / (8 / info.channels)));
     memcpy(&header.data_chunk, "data", 4);
     header.data_length = TO_LE32(0);
 
-    if (output_file.fwrite (& header, 1, sizeof header) != sizeof header)
-        return 0;
+    if (file.fwrite (& header, 1, sizeof header) != sizeof header)
+        return false;
 
+    format = info.format;
     written = 0;
 
-    return 1;
+    return true;
 }
 
-static void pack24 (void * * data, int * len)
+static void pack24 (const void * * data, int * len)
 {
     int samples = (* len) / sizeof (int32_t);
-    char * buf = g_new (char, samples * 3);
-    int32_t * data32 = (int32_t *) * data;
-    int32_t * end = data32 + samples;
+    auto data32 = (const int32_t *) * data;
+    auto end = data32 + samples;
+
+    packbuf.resize (samples * 3);
+    char * buf = packbuf.begin ();
 
     * data = buf;
     * len = samples * 3;
@@ -99,30 +106,26 @@ static void pack24 (void * * data, int * len)
     }
 }
 
-static void wav_write (void * data, int len)
+static void wav_write (VFSFile & file, const void * data, int len)
 {
-    if (input.format == FMT_S24_LE)
+    if (format == FMT_S24_LE)
         pack24 (& data, & len);
 
     written += len;
-    if (output_file.fwrite (data, 1, len) != len)
+    if (file.fwrite (data, 1, len) != len)
         AUDERR ("Error while writing to .wav output file.\n");
-
-    if (input.format == FMT_S24_LE)
-        g_free (data);
 }
 
-static void wav_close(void)
+static void wav_close (VFSFile & file)
 {
-    if (output_file)
-    {
-        header.length = TO_LE32(written + sizeof (struct wavhead) - 8);
-        header.data_length = TO_LE32(written);
+    header.length = TO_LE32(written + sizeof (struct wavhead) - 8);
+    header.data_length = TO_LE32(written);
 
-        if (output_file.fseek (0, VFS_SEEK_SET) ||
-         output_file.fwrite (& header, 1, sizeof header) != sizeof header)
-            AUDERR ("Error while writing to .wav output file.\n");
-    }
+    if (file.fseek (0, VFS_SEEK_SET) ||
+     file.fwrite (& header, 1, sizeof header) != sizeof header)
+        AUDERR ("Error while writing to .wav output file.\n");
+
+    packbuf.clear ();
 }
 
 static int wav_format_required (int fmt)
