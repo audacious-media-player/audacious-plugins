@@ -119,12 +119,6 @@ void VisItem::clear ()
     update ();
 }
 
-AlbumArtItem::AlbumArtItem (QGraphicsItem * parent) : QGraphicsPixmapItem (parent),
-    hook1 ("playback begin", this, & AlbumArtItem::update_cb),
-    hook2 ("current art ready", this, & AlbumArtItem::update_cb)
-{
-}
-
 void AlbumArtItem::update_cb ()
 {
     setPixmap (audqt::art_request_current (InfoBar::IconSize, InfoBar::IconSize));
@@ -135,12 +129,10 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     m_art (new AlbumArtItem),
     m_title_text (new QGraphicsTextItem),
     m_album_text (new QGraphicsTextItem),
-    m_artist_text (new QGraphicsTextItem),
+    m_artist_text (new QGraphicsTextItem)
 #ifdef XXX_NOTYET
-    m_vis (new VisItem),
+    m_vis (new VisItem)
 #endif
-    hook1 ("tuple change", this, & InfoBar::update_metadata_cb),
-    hook2 ("playback begin", this, & InfoBar::update_metadata_cb)
 {
     QLinearGradient gradient (QPointF (0.0, 0.0), QPointF (0.0, 100.0));
 

@@ -67,8 +67,10 @@ private:
     void playlist_update_cb (Playlist::Update global_level);
     void playlist_position_cb (int list);
 
-    HookReceiver<PlaylistTabs, Playlist::Update> update_hook;
-    HookReceiver<PlaylistTabs, int> position_hook;
+    const HookReceiver<PlaylistTabs, Playlist::Update>
+     update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
+    const HookReceiver<PlaylistTabs, int>
+     position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
 };
 
 class PlaylistTabBar : public QTabBar

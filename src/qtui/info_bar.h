@@ -47,12 +47,12 @@ private:
 };
 
 class AlbumArtItem : public QGraphicsPixmapItem {
-public:
-    AlbumArtItem (QGraphicsItem * parent = nullptr);
-
 private:
-    const HookReceiver<AlbumArtItem> hook1, hook2;
     void update_cb ();
+
+    const HookReceiver<AlbumArtItem>
+     hook1 {"playback begin", this, & AlbumArtItem::update_cb},
+     hook2 {"current art ready", this, & AlbumArtItem::update_cb};
 };
 
 class InfoBar : public QGraphicsView {
@@ -72,8 +72,6 @@ public:
     QSize minimumSizeHint () const;
     void resizeEvent (QResizeEvent *);
 
-    void update_metadata_cb ();
-
 private:
     QGraphicsScene * m_scene;
     AlbumArtItem * m_art;
@@ -86,7 +84,11 @@ private:
     VisItem * m_vis;
 #endif
 
-    const HookReceiver<InfoBar> hook1, hook2;
+    void update_metadata_cb ();
+
+    const HookReceiver<InfoBar>
+     hook1 {"tuple change", this, & InfoBar::update_metadata_cb},
+     hook2 {"playback begin", this, & InfoBar::update_metadata_cb};
 };
 
 #endif

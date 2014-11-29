@@ -51,8 +51,11 @@ private:
     QTimer m_timer;
     QLabel * m_label;
 
-    // unfortunately GCC cannot handle these as an array
-    HookReceiver<TimeSlider> hook1, hook2, hook3, hook4;
+    const HookReceiver<TimeSlider>
+     hook1 {"playback ready", this, & TimeSlider::start_stop},
+     hook2 {"playback pause", this, & TimeSlider::start_stop},
+     hook3 {"playback unpause", this, & TimeSlider::start_stop},
+     hook4 {"playback stop", this, & TimeSlider::start_stop};
 };
 
 #endif // TIME_SLIDER_H

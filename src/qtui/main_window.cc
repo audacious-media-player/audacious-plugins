@@ -46,19 +46,7 @@ MainWindow::MainWindow () :
     playlistTabs (new PlaylistTabs (this)),
     infoBar (new InfoBar (this)),
     centralWidget (new QWidget (this)),
-    centralLayout (new QVBoxLayout (this)),
-    hook1 ("title change", this, & MainWindow::title_change_cb),
-    hook2 ("playback begin", this, & MainWindow::playback_begin_cb),
-    hook3 ("playback ready", this, & MainWindow::playback_ready_cb),
-    hook4 ("playback pause", this, & MainWindow::pause_cb),
-    hook5 ("playback unpause", this, & MainWindow::pause_cb),
-    hook6 ("playback stop", this, & MainWindow::playback_stop_cb),
-    hook7 ("set repeat", this, & MainWindow::update_toggles_cb),
-    hook8 ("set shuffle", this, & MainWindow::update_toggles_cb),
-    hook9 ("set no_playlist_advance", this, & MainWindow::update_toggles_cb),
-    hook10 ("set stop_after_current_song", this, & MainWindow::update_toggles_cb),
-    plugin_hook1 ("dock plugin enabled", this, & MainWindow::add_dock_plugin_cb),
-    plugin_hook2 ("dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb)
+    centralLayout (new QVBoxLayout (this))
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");

@@ -29,7 +29,6 @@ class StatusBar : public QStatusBar
 {
 public:
     StatusBar (QWidget * parent);
-    ~StatusBar ();
 
 private:
     QLabel * codec_label;
@@ -38,8 +37,13 @@ private:
     void update_codec ();
     void update_length ();
 
-    // unfortunately GCC cannot handle these as an array
-    HookReceiver<StatusBar> hook1, hook2, hook3, hook4, hook5, hook6;
+    const HookReceiver<StatusBar>
+     hook1 {"playlist activate", this, & StatusBar::update_length},
+     hook2 {"playlist update", this, & StatusBar::update_length},
+     hook3 {"playback ready", this, & StatusBar::update_codec},
+     hook4 {"playback stop", this, & StatusBar::update_codec},
+     hook5 {"info change", this, & StatusBar::update_codec},
+     hook6 {"tuple change", this, & StatusBar::update_codec};
 };
 
 #endif // STATUS_BAR_H
