@@ -138,7 +138,7 @@ MainWindow::~MainWindow ()
 
 void MainWindow::closeEvent (QCloseEvent * e)
 {
-    QSettings settings ("Audacious", "QtUi");
+    QSettings settings ("audacious", "QtUi");
     settings.setValue ("geometry", saveGeometry());
     settings.setValue ("windowState", saveState());
 
@@ -148,7 +148,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
 void MainWindow::readSettings ()
 {
-    QSettings settings ("Audacious", "QtUi");
+    QSettings settings ("audacious", "QtUi");
     restoreGeometry (settings.value ("geometry").toByteArray());
     restoreState (settings.value ("windowState").toByteArray());
 }
