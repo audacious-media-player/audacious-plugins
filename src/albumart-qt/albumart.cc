@@ -65,9 +65,9 @@ void AlbumArtQt::clear (void * unused, QLabel * widget)
 
 void AlbumArtQt::widget_cleanup (QObject * widget)
 {
-    hook_dissociate_full ("playback begin", (HookFunction) update, widget);
-    hook_dissociate_full ("current art ready", (HookFunction) update, widget);
-    hook_dissociate_full ("playback stop", (HookFunction) clear, widget);
+    hook_dissociate ("playback begin", (HookFunction) update, widget);
+    hook_dissociate ("current art ready", (HookFunction) update, widget);
+    hook_dissociate ("playback stop", (HookFunction) clear, widget);
 }
 
 void * AlbumArtQt::get_qt_widget ()
