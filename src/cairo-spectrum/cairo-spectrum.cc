@@ -198,7 +198,9 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
         gtk_widget_path_append_type (path, GTK_TYPE_ENTRY);
         gtk_style_context_set_path (style, path);
         gtk_widget_path_free (path);
-        gtk_style_context_get_background_color (style, GTK_STATE_FLAG_SELECTED, & c);
+        gtk_style_context_add_class (style, "entry");
+        gtk_style_context_get_background_color (style,
+         (GtkStateFlags) (GTK_STATE_FLAG_FOCUSED | GTK_STATE_FLAG_SELECTED), & c);
         g_object_unref (style);
         valid = TRUE;
     }
@@ -220,37 +222,12 @@ static void get_color (gint i, gfloat * r, gfloat * g, gfloat * b)
 
 static void draw_background (GtkWidget * area, cairo_t * cr)
 {
-#if 0
-    GdkColor * c = (gtk_widget_get_style (area))->bg;
-#endif
     GtkAllocation alloc;
     gtk_widget_get_allocation (area, & alloc);
 
-#if 0
-    gdk_cairo_set_source_color(cr, c);
-#endif
     cairo_rectangle(cr, 0, 0, alloc.width, alloc.height);
     cairo_fill (cr);
 }
-
-#if 0
-static void draw_grid (GtkWidget * area, cairo_t * cr)
-{
-    GdkColor * c = (gtk_widget_get_style (area))->bg;
-    GtkAllocation alloc;
-    gtk_widget_get_allocation (area, & alloc);
-    int i;
-    float base_s = (height / 40);
-
-    for (i = 1; i < 41; i++)
-    {
-        gdk_cairo_set_source_color(cr, c);
-        cairo_move_to(cr, 0.0, i * base_s);
-        cairo_line_to(cr, alloc.width, i * base_s);
-        cairo_stroke(cr);
-    }
-}
-#endif
 
 static void draw_visualizer (GtkWidget *widget, cairo_t *cr)
 {
@@ -282,12 +259,8 @@ static gboolean configure_event (GtkWidget * widget, GdkEventConfigure * event)
 
 static gboolean draw_event (GtkWidget * widget, cairo_t * cr, GtkWidget * area)
 {
-
     draw_background (widget, cr);
     draw_visualizer (widget, cr);
-#if 0
-    draw_grid (widget, cr);
-#endif
 
     return TRUE;
 }

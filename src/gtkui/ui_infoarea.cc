@@ -236,7 +236,9 @@ static void get_color (int i, float * r, float * g, float * b)
         gtk_widget_path_append_type (path, GTK_TYPE_ENTRY);
         gtk_style_context_set_path (style, path);
         gtk_widget_path_free (path);
-        gtk_style_context_get_background_color (style, GTK_STATE_FLAG_SELECTED, & c);
+        gtk_style_context_add_class (style, "entry");
+        gtk_style_context_get_background_color (style,
+         (GtkStateFlags) (GTK_STATE_FLAG_FOCUSED | GTK_STATE_FLAG_SELECTED), & c);
         g_object_unref (style);
         valid = TRUE;
     }
