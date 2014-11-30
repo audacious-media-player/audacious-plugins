@@ -69,13 +69,12 @@ public:
 
     void pause (bool pause) {}
     void flush () {}
-
-private:
-    String m_in_filename;
-    Tuple m_in_tuple;
 };
 
 EXPORT FileWriter aud_plugin_instance;
+
+static String in_filename;
+static Tuple in_tuple;
 
 struct format_info input;
 
@@ -209,8 +208,8 @@ static VFSFile safe_create (const char * filename)
 
 void FileWriter::set_info (const char * filename, const Tuple & tuple)
 {
-    m_in_filename = String (filename);
-    m_in_tuple = tuple.ref ();
+    in_filename = String (filename);
+    in_tuple = tuple.ref ();
 }
 
 bool FileWriter::open_audio (int fmt, int rate, int nch)
@@ -223,14 +222,14 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 
     if (filenamefromtags)
     {
-        String title = m_in_tuple.get_str (Tuple::FormattedTitle);
+        String title = in_tuple.get_str (Tuple::FormattedTitle);
         StringBuf buf = str_encode_percent (title);
         str_replace_char (buf, '/', '-');
         filename = String (buf);
     }
     else
     {
-        const char * original = strrchr (m_in_filename, '/');
+        const char * original = strrchr (in_filename, '/');
         g_return_val_if_fail (original != nullptr, 0);
         filename = String (original + 1);
 
@@ -244,16 +243,16 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 
     if (prependnumber)
     {
-        int number = m_in_tuple.get_int (Tuple::Track);
+        int number = in_tuple.get_int (Tuple::Track);
         if (number >= 0)
             filename = String (str_printf ("%d%%20%s", number, (const char *) filename));
     }
 
     if (save_original)
     {
-        const char * temp = strrchr (m_in_filename, '/');
+        const char * temp = strrchr (in_filename, '/');
         g_return_val_if_fail (temp != nullptr, 0);
-        directory = String (str_copy (m_in_filename, temp + 1 - m_in_filename));
+        directory = String (str_copy (in_filename, temp + 1 - in_filename));
     }
     else
     {
@@ -273,12 +272,12 @@ bool FileWriter::open_audio (int fmt, int rate, int nch)
 
     convert_init (fmt, plugin->format_required (fmt));
 
-    if (plugin->open (output_file, input, m_in_tuple))
+    if (plugin->open (output_file, input, in_tuple))
         return true;
 
 err:
-    m_in_filename = String ();
-    m_in_tuple = Tuple ();
+    in_filename = String ();
+    in_tuple = Tuple ();
     return false;
 }
 
@@ -296,8 +295,8 @@ void FileWriter::close_audio ()
     convert_free ();
 
     output_file = VFSFile ();
-    m_in_filename = String ();
-    m_in_tuple = Tuple ();
+    in_filename = String ();
+    in_tuple = Tuple ();
 }
 
 static void configure_response_cb (void)
