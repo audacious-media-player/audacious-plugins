@@ -55,10 +55,10 @@ static GtkWidget * get_menu_playback (void) {return menus[UI_MENU_PLAYBACK]; }
 static GtkWidget * get_menu_playlist (void) {return menus[UI_MENU_PLAYLIST]; }
 static GtkWidget * get_menu_view (void) {return menus[UI_MENU_VIEW]; }
 
-static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AUD_MENU_MAIN); }
-static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST); }
-static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_ADD); }
-static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_REMOVE); }
+static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AudMenuID::Main); }
+static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AudMenuID::Playlist); }
+static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistAdd); }
+static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistRemove); }
 
 static const AudguiMenuItem main_items[] = {
     MenuCommand (N_("Open Files ..."), "document-open", 'l', NO_MOD, action_play_file),

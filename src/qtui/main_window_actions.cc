@@ -36,7 +36,7 @@
 
 static void DUMMY () { AUDDBG ("implement me\n"); }
 
-static QMenu * services_menu () { return audqt::menu_get_by_id (AUD_MENU_MAIN); }
+static QMenu * services_menu () { return audqt::menu_get_by_id (AudMenuID::Main); }
 
 static void open_files () { audqt::fileopener_show (false); }
 static void add_files () { audqt::fileopener_show (true); }

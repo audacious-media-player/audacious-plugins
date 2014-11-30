@@ -114,8 +114,8 @@ static void pl_tab_close (void)
         audgui_confirm_playlist_delete (playlist);
 }
 
-static GtkWidget * get_services_main (void) {return audgui_get_plugin_menu (AUD_MENU_MAIN); }
-static GtkWidget * get_services_pl (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST); }
+static GtkWidget * get_services_main (void) {return audgui_get_plugin_menu (AudMenuID::Main); }
+static GtkWidget * get_services_pl (void) {return audgui_get_plugin_menu (AudMenuID::Playlist); }
 
 static void volume_up (void) {aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
 static void volume_down (void) {aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }

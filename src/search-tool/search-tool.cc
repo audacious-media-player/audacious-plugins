@@ -49,14 +49,13 @@ public:
 
 EXPORT SearchTool aud_plugin_instance;
 
-enum SearchField {
-    Genre = 0,
+enum class SearchField {
+    Genre,
     Artist,
     Album,
-    Title
+    Title,
+    count
 };
-
-static constexpr auto all_fields = aud::range<SearchField, Genre, Title> ();
 
 struct Key
 {
@@ -66,7 +65,7 @@ struct Key
     bool operator== (const Key & b) const
         { return field == b.field && name == b.name; }
     unsigned hash () const
-        { return field + name.hash (); }
+        { return (unsigned) field + name.hash (); }
 };
 
 struct Item
@@ -185,20 +184,16 @@ static void create_database (int list)
     {
         Tuple tuple = aud_playlist_entry_get_tuple (list, e, Playlist::Guess);
 
-        String fields[] = {
-            tuple.get_str (Tuple::Genre),
-            tuple.get_str (Tuple::Artist),
-            tuple.get_str (Tuple::Album),
-            tuple.get_str (Tuple::Title)
-        };
-
-        if (! fields[Title])
-            continue;
+        aud::array<SearchField, String> fields;
+        fields[SearchField::Genre] = tuple.get_str (Tuple::Genre);
+        fields[SearchField::Artist] = tuple.get_str (Tuple::Artist);
+        fields[SearchField::Album] = tuple.get_str (Tuple::Album);
+        fields[SearchField::Title] = tuple.get_str (Tuple::Title);
 
         Item * parent = nullptr;
         SimpleHash<Key, Item> * hash = & database;
 
-        for (auto f : all_fields)
+        for (auto f : aud::range<SearchField> ())
         {
             if (fields[f])
             {
@@ -211,7 +206,7 @@ static void create_database (int list)
                 item->matches.append (e);
 
                 /* genre is outside the normal hierarchy */
-                if (f != Genre)
+                if (f != SearchField::Genre)
                 {
                     parent = item;
                     hash = & item->children;
@@ -593,14 +588,14 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     const Item * item = items[row];
     StringBuf string = str_concat ({item->name, "\n"});
 
-    if (item->field != Title)
+    if (item->field != SearchField::Title)
     {
         str_insert (string, -1, " ");
         string.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
          item->matches.len ()), item->matches.len ()));
     }
 
-    if (item->field == Genre)
+    if (item->field == SearchField::Genre)
     {
         str_insert (string, -1, " ");
         str_insert (string, -1, _("of this genre"));
@@ -609,7 +604,7 @@ static void list_get_value (void * user, int row, int column, GValue * value)
     while ((item = item->parent))
     {
         str_insert (string, -1, " ");
-        str_insert (string, -1, (item->field == Album) ? _("on") : _("by"));
+        str_insert (string, -1, (item->field == SearchField::Album) ? _("on") : _("by"));
         str_insert (string, -1, " ");
         str_insert (string, -1, item->name);
     }

@@ -101,9 +101,9 @@ public:
         { audgui_show_prefs_window (); }
     void hide_prefs_window ()
         { audgui_hide_prefs_window (); }
-    void plugin_menu_add (int id, void func (), const char * name, const char * icon)
+    void plugin_menu_add (AudMenuID id, void func (), const char * name, const char * icon)
         { audgui_plugin_menu_add (id, func, name, icon); }
-    void plugin_menu_remove (int id, void func ())
+    void plugin_menu_remove (AudMenuID id, void func ())
         { audgui_plugin_menu_remove (id, func); }
 };
 
