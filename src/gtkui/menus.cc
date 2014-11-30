@@ -49,8 +49,8 @@ static void open_url (void) {audgui_show_add_url_window (TRUE); }
 static void add_files (void) {audgui_run_filebrowser (FALSE); }
 static void add_url (void) {audgui_show_add_url_window (FALSE); }
 
-static void configure_effects (void) {audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_EFFECT); }
-static void configure_visualizations (void) {audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS); }
+static void configure_effects (void) {audgui_show_prefs_for_plugin_type (PluginType::Effect); }
+static void configure_visualizations (void) {audgui_show_prefs_for_plugin_type (PluginType::Vis); }
 
 static void pl_sort_track (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Track); }
 static void pl_sort_title (void) {aud_playlist_sort_by_scheme (aud_playlist_get_active (), Playlist::Title); }

@@ -118,13 +118,13 @@ static void remove_dock_plugin (PluginHandle * plugin, void * unused)
 
 void create_plugin_windows (void)
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin (plugin, nullptr);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin (plugin, nullptr);
@@ -156,13 +156,13 @@ void hide_plugin_windows (void)
 
 void destroy_plugin_windows (void)
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin (plugin, nullptr);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin (plugin, nullptr);

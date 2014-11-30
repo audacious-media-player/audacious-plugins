@@ -882,7 +882,7 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
             view_set_double_size (! aud_get_bool ("skins", "double_size"));
             break;
         case MENUROW_VISUALIZATION:
-            audgui_show_prefs_for_plugin_type (PLUGIN_TYPE_VIS);
+            audgui_show_prefs_for_plugin_type (PluginType::Vis);
             break;
         default:
             break;

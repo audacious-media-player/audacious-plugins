@@ -743,13 +743,13 @@ static void remove_dock_plugin (PluginHandle * plugin, void * unused)
 
 static void add_dock_plugins (void)
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin (plugin, nullptr);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin (plugin, nullptr);
@@ -761,13 +761,13 @@ static void add_dock_plugins (void)
 
 static void remove_dock_plugins (void)
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin (plugin, nullptr);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin (plugin, nullptr);

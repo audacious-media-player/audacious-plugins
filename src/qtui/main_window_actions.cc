@@ -83,7 +83,7 @@ static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_activ
 static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
 static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
 
-static void configure_effects () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); }
+static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 
 void MainWindow::setupActions ()
 {

@@ -264,13 +264,13 @@ void MainWindow::remove_dock_plugin_cb (PluginHandle * plugin)
 
 void MainWindow::add_dock_plugins ()
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin_cb (plugin);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin_cb (plugin);
@@ -279,13 +279,13 @@ void MainWindow::add_dock_plugins ()
 
 void MainWindow::remove_dock_plugins ()
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin_cb (plugin);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin_cb (plugin);
