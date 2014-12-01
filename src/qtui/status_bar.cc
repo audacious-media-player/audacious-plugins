@@ -56,29 +56,29 @@ void StatusBar::update_codec ()
 
     if (codec)
     {
-        str_insert (buf, -1, codec);
+        buf.insert (-1, codec);
         if (channels > 0 || samplerate > 0 || bitrate > 0)
-            str_insert (buf, -1, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (channels > 0)
     {
         if (channels == 1)
-            str_insert (buf, -1, _("mono"));
+            buf.insert (-1, _("mono"));
         else if (channels == 2)
-            str_insert (buf, -1, _("stereo"));
+            buf.insert (-1, _("stereo"));
         else
             buf.combine (str_printf (ngettext ("%d channel", "%d channels", channels), channels));
 
         if (samplerate > 0 || bitrate > 0)
-            str_insert (buf, -1, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (samplerate > 0)
     {
         buf.combine (str_printf ("%d kHz", samplerate / 1000));
         if (bitrate > 0)
-            str_insert (buf, -1, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (bitrate > 0)
