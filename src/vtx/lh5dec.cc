@@ -2,17 +2,19 @@
    (c) Haruhiko Okumura
    (m) Roman Scherbakov
 */
-#include <stdlib.h>
-#include <stdio.h>
 #include <string.h>   /* memmove */
 #include <limits.h>
+
+#include <libaudcore/runtime.h>
+
+#include "vtx.h"
 
 static unsigned short bitbuf;
 
 #define BITBUFSIZ (CHAR_BIT * sizeof bitbuf)
 
 #define DICBIT    13    /* 12(-lh4-) or 13(-lh5-) */
-#define DICSIZ   (1L << DICBIT)
+#define DICSIZ   (1UL << DICBIT)
 #define MATCHBIT   8    /* bits for MAXMATCH - THRESHOLD */
 #define MAXMATCH 256    /* formerly F (not more than unsigned char_MAX + 1) */
 #define THRESHOLD  3    /* choose optimal value */
@@ -30,7 +32,7 @@ static unsigned short bitbuf;
 #endif
 
 static unsigned long origsize, compsize;
-static unsigned char *in_buf;
+static const unsigned char *in_buf;
 static unsigned char *out_buf;
 
 static unsigned short  subbitbuf;
@@ -44,11 +46,12 @@ static unsigned short c_table[4096], pt_table[256];
 
 static int j;  /* remaining bytes to copy */
 
+class DecodeError {}; // exception
 
 static void error(const char *msg)
 {
-  fprintf(stderr, "libayemu: lh5dec.c: %s\n", msg);
-  exit(EXIT_FAILURE);
+  AUDERR("%s\n", msg);
+  throw DecodeError();
 }
 
 static void fillbuf(int n)  /* Shift bitbuf n bits left, read n bits */
@@ -269,32 +272,34 @@ static void decode(unsigned short count, unsigned char buffer[])
   }
 }
 
-void lh5_decode(unsigned char *inp, unsigned char *outp, unsigned long original_size, unsigned long packed_size)
+bool lh5_decode(const Index<char> &in, Index<unsigned char> &out)
 {
   unsigned short n;
-  unsigned char *buffer;
+  Index<unsigned char> buffer;
 
-  compsize = packed_size;
-  origsize = original_size;
-  in_buf = inp;
-  out_buf = outp;
+  compsize = in.len();
+  origsize = out.len();
+  in_buf = (unsigned char *)in.begin();
+  out_buf = out.begin();
 
-  buffer = (unsigned char *) malloc(DICSIZ);
-  if (!buffer) error ("Out of memory");
+  buffer.resize(DICSIZ);
 
   bitbuf = 0;  subbitbuf = 0;  bitcount = 0;
   fillbuf(BITBUFSIZ);
   blocksize = 0;
   j = 0;
 
-  while (origsize != 0) {
-    n = (origsize > DICSIZ) ? DICSIZ : (unsigned short)origsize;
-    decode(n, buffer);
-    memmove(out_buf, buffer, n);
-    out_buf += n;
-    origsize -= n;
+  try {
+    while (origsize != 0) {
+      n = aud::min(DICSIZ, origsize);
+      decode(n, buffer.begin());
+      memmove(out_buf, buffer.begin(), n);
+      out_buf += n;
+      origsize -= n;
+    }
+  } catch (DecodeError &) {
+    return false;
   }
 
-  if (buffer) free (buffer);
-  buffer = nullptr;
+  return true;
 }

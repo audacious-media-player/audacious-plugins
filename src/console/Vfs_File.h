@@ -5,22 +5,24 @@
 
 #include "Data_Reader.h"
 
+class VFSFile;
+
 class Vfs_File_Reader : public File_Reader {
 public:
 	// use already-open file and doesn't close it in close()
-	void reset (/* VFSFile * */ void * file);
+	void reset(VFSFile &file_);
 	error_t open( const char* path );
 	void close();
 
-public:
-	Vfs_File_Reader();
-	~Vfs_File_Reader();
+	~Vfs_File_Reader()
+	    { close(); }
+
 	long size() const;
 	long read_avail( void*, long );
 	long tell() const;
 	error_t seek( long );
 private:
-    struct reader_private * p;
+	VFSFile *file = nullptr, *owned_file = nullptr;
 };
 
 #endif

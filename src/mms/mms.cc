@@ -17,7 +17,6 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -28,50 +27,76 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 
-typedef struct
+static const char * const mms_schemes[] = {"mms"};
+
+class MMSTransport : public TransportPlugin
 {
-    mms_t * mms;
-    mmsh_t * mmsh;
-}
-MMSHandle;
+public:
+    static constexpr PluginInfo info = {N_("MMS Plugin"), PACKAGE};
 
-static void * mms_vfs_fopen_impl (const char * path, const char * mode)
+    constexpr MMSTransport () : TransportPlugin (info, mms_schemes) {}
+
+    VFSImpl * fopen (const char * path, const char * mode, String & error);
+};
+
+EXPORT MMSTransport aud_plugin_instance;
+
+class MMSFile : public VFSImpl
 {
-    AUDDBG ("Opening %s.\n", path);
+public:
+    MMSFile (const char * path, mms_t * mms, mmsh_t * mmsh) :
+        m_mms (mms),
+        m_mmsh (mmsh) {}
 
-    MMSHandle * h = new MMSHandle ();
+    ~MMSFile ();
 
-    if (! (h->mmsh = mmsh_connect (nullptr, nullptr, path, 128 * 1024)))
+    class OpenError {};  // exception
+
+    int64_t fread (void * ptr, int64_t size, int64_t nmemb);
+    int64_t fwrite (const void * ptr, int64_t size, int64_t nmemb);
+
+    int fseek (int64_t offset, VFSSeekType whence);
+    int64_t ftell ();
+    int64_t fsize ();
+    bool feof ();
+    int ftruncate (int64_t size);
+    int fflush ();
+
+private:
+    mms_t * m_mms;
+    mmsh_t * m_mmsh;
+};
+
+VFSImpl * MMSTransport::fopen (const char * path, const char * mode, String & error)
+{
+    mms_t * mms = nullptr;
+    mmsh_t * mmsh = nullptr;
+
+    if (! (mmsh = mmsh_connect (nullptr, nullptr, path, 128 * 1024)))
     {
         AUDDBG ("Failed to connect with MMSH protocol; trying MMS.\n");
 
-        if (! (h->mms = mms_connect (nullptr, nullptr, path, 128 * 1024)))
+        if (! (mms = mms_connect (nullptr, nullptr, path, 128 * 1024)))
         {
-            fprintf (stderr, "mms: Failed to open %s.\n", path);
-            delete h;
+            AUDERR ("Failed to open %s.\n", path);
+            error = String (_("Error connecting to MMS server"));
             return nullptr;
         }
     }
 
-    return h;
+    return new MMSFile (path, mms, mmsh);
 }
 
-static int mms_vfs_fclose_impl (VFSFile * file)
+MMSFile::~MMSFile ()
 {
-    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
-
-    if (h->mms)
-        mms_close (h->mms);
+    if (m_mms)
+        mms_close (m_mms);
     else
-        mmsh_close (h->mmsh);
-
-    delete h;
-    return 0;
+        mmsh_close (m_mmsh);
 }
 
-static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSFile * file)
+int64_t MMSFile::fread (void * buf, int64_t size, int64_t count)
 {
-    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
     int64_t bytes_total = size * count;
     int64_t bytes_read = 0;
 
@@ -79,13 +104,13 @@ static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSF
     {
         int64_t readsize;
 
-        if (h->mms)
-            readsize = mms_read (nullptr, h->mms, (char *) buf + bytes_read, bytes_total - bytes_read);
+        if (m_mms)
+            readsize = mms_read (nullptr, m_mms, (char *) buf + bytes_read, bytes_total - bytes_read);
         else
-            readsize = mmsh_read (nullptr, h->mmsh, (char *) buf + bytes_read, bytes_total - bytes_read);
+            readsize = mmsh_read (nullptr, m_mmsh, (char *) buf + bytes_read, bytes_total - bytes_read);
 
         if (readsize < 0)
-            fprintf (stderr, "mms: Read failed.\n");
+            AUDERR ("Read failed.\n");
 
         if (readsize <= 0)
             break;
@@ -96,100 +121,76 @@ static int64_t mms_vfs_fread_impl (void * buf, int64_t size, int64_t count, VFSF
     return size ? bytes_read / size : 0;
 }
 
-static int64_t mms_vfs_fwrite_impl (const void * data, int64_t size, int64_t count, VFSFile * file)
+int64_t MMSFile::fwrite (const void * data, int64_t size, int64_t count)
 {
-    fprintf (stderr, "mms: Writing is not supported.\n");
+    AUDERR ("Writing is not supported.\n");
     return 0;
 }
 
-static int mms_vfs_fseek_impl (VFSFile * file, int64_t offset, int whence)
+int MMSFile::fseek (int64_t offset, VFSSeekType whence)
 {
-    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
-
-    if (whence == SEEK_CUR)
+    if (whence == VFS_SEEK_CUR)
     {
-        if (h->mms)
-            offset += mms_get_current_pos (h->mms);
+        if (m_mms)
+            offset += mms_get_current_pos (m_mms);
         else
-            offset += mmsh_get_current_pos (h->mmsh);
+            offset += mmsh_get_current_pos (m_mmsh);
     }
-    else if (whence == SEEK_END)
+    else if (whence == VFS_SEEK_END)
     {
-        if (h->mms)
-            offset += mms_get_length (h->mms);
+        if (m_mms)
+            offset += mms_get_length (m_mms);
         else
-            offset += mmsh_get_length (h->mmsh);
+            offset += mmsh_get_length (m_mmsh);
     }
 
     int64_t ret;
 
-    if (h->mms)
-        ret = mms_seek (nullptr, h->mms, offset, SEEK_SET);
+    if (m_mms)
+        ret = mms_seek (nullptr, m_mms, offset, SEEK_SET);
     else
-        ret = mmsh_seek (nullptr, h->mmsh, offset, SEEK_SET);
+        ret = mmsh_seek (nullptr, m_mmsh, offset, SEEK_SET);
 
     if (ret < 0 || ret != offset)
     {
-        fprintf (stderr, "mms: Seek failed.\n");
+        AUDERR ("Seek failed.\n");
         return -1;
     }
 
     return 0;
 }
 
-static int64_t mms_vfs_ftell_impl (VFSFile * file)
+int64_t MMSFile::ftell ()
 {
-    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
-
-    if (h->mms)
-        return mms_get_current_pos (h->mms);
+    if (m_mms)
+        return mms_get_current_pos (m_mms);
     else
-        return mmsh_get_current_pos (h->mmsh);
+        return mmsh_get_current_pos (m_mmsh);
 }
 
-static bool mms_vfs_feof_impl (VFSFile * file)
+bool MMSFile::feof ()
 {
-    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
-
-    if (h->mms)
-        return (mms_get_current_pos (h->mms) < (int64_t) mms_get_length (h->mms));
+    if (m_mms)
+        return (mms_get_current_pos (m_mms) < (int64_t) mms_get_length (m_mms));
     else
-        return (mmsh_get_current_pos (h->mmsh) < (int64_t) mmsh_get_length (h->mmsh));
+        return (mmsh_get_current_pos (m_mmsh) < (int64_t) mmsh_get_length (m_mmsh));
 }
 
-static int mms_vfs_truncate_impl (VFSFile * file, int64_t size)
+int MMSFile::ftruncate (int64_t size)
 {
-    fprintf (stderr, "mms: Truncating is not supported.\n");
+    AUDERR ("Truncating is not supported.\n");
     return -1;
 }
 
-static int64_t mms_vfs_fsize_impl (VFSFile * file)
+int64_t MMSFile::fsize ()
 {
-    MMSHandle * h = (MMSHandle *) vfs_get_handle (file);
-
-    if (h->mms)
-        return mms_get_length (h->mms);
+    if (m_mms)
+        return mms_get_length (m_mms);
     else
-        return mmsh_get_length (h->mmsh);
+        return mmsh_get_length (m_mmsh);
 }
 
-static const char * const mms_schemes[] = {"mms", nullptr};
-
-static const VFSConstructor constructor = {
-    mms_vfs_fopen_impl,
-    mms_vfs_fclose_impl,
-    mms_vfs_fread_impl,
-    mms_vfs_fwrite_impl,
-    mms_vfs_fseek_impl,
-    mms_vfs_ftell_impl,
-    mms_vfs_feof_impl,
-    mms_vfs_truncate_impl,
-    mms_vfs_fsize_impl
-};
-
-#define AUD_PLUGIN_NAME        N_("MMS Plugin")
-#define AUD_TRANSPORT_SCHEMES  mms_schemes
-#define AUD_TRANSPORT_VTABLE   & constructor
-
-#define AUD_DECLARE_TRANSPORT
-#include <libaudcore/plugin-declare.h>
+int MMSFile::fflush ()
+{
+    return 0;
+}

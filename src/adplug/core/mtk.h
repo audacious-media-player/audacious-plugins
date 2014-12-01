@@ -32,7 +32,7 @@ class CmtkLoader: public ChscPlayer
 		mtkmode = 1;
 	};
 
-	bool load(VFSFile *fd, const CFileProvider &fp);
+	bool load(VFSFile &fd, const CFileProvider &fp);
 
 	std::string gettype()
 	{ return std::string("MPU-401 Trakker"); };

@@ -17,11 +17,16 @@
  * the use of this software.
  */
 
+#include <libaudcore/i18n.h>
+
 #include "filter_input.h"
 #include "filter_input.moc"
 
+#include <QKeyEvent>
+
 FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
 {
+#ifdef Q_OS_MAC
     setStyleSheet (
         "QLineEdit {"
         "   padding: 2px 4px;"
@@ -33,9 +38,11 @@ FilterInput::FilterInput (QWidget * parent) : QLineEdit (parent)
         "   border: 1px solid gray;"
         "}"
     );
+#endif
+
     setAttribute (Qt::WA_MacShowFocusRect, false);
     setClearButtonEnabled (true);
-    setPlaceholderText ("Search");
+    setPlaceholderText (_("Search"));
 }
 
 void FilterInput::keyPressEvent (QKeyEvent * e)
@@ -43,7 +50,6 @@ void FilterInput::keyPressEvent (QKeyEvent * e)
     if (e->key () == Qt::Key_Enter or e->key () == Qt::Key_Return)
     {
         e->ignore ();
-        qDebug () << "Enter in filter input";
         focusNextChild ();
     }
     else

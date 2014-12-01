@@ -21,9 +21,9 @@
 #ifndef _I_CONFIGURE_H
 #define _I_CONFIGURE_H 1
 
-#include <libaudcore/preferences.h>
+struct PluginPreferences;
 
-extern int backend_settings_changed;  /* atomic */
+extern bool backend_settings_changed;  /* atomic */
 
 extern const PluginPreferences amidiplug_prefs;
 

@@ -1,14 +1,37 @@
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <neaacdec.h>
 
 #include <audacious/audtag.h>
-#include <libaudcore/input.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
+
+class AACDecoder : public InputPlugin
+{
+public:
+    static const char * const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("AAC (Raw) Decoder"),
+        PACKAGE
+    };
+
+    static constexpr auto iinfo = InputInfo ()
+        .with_exts (exts);
+
+    constexpr AACDecoder () : InputPlugin (info, iinfo) {}
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT AACDecoder aud_plugin_instance;
+
+const char * const AACDecoder::exts[] = {"aac", nullptr};
 
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
@@ -16,8 +39,6 @@
  * a labotomy sometimes.
  */
 #define BUFFER_SIZE (FAAD_MIN_STREAMSIZE * 16)
-
-static const char *fmts[] = { "aac", nullptr };
 
 /*
  * These routines are derived from MPlayer.
@@ -78,14 +99,14 @@ static int find_aac_header (unsigned char * data, int length, int * size)
     return -1;
 }
 
-static bool parse_aac_stream (const char * filename, VFSFile * stream)
+bool AACDecoder::is_our_file (const char * filename, VFSFile & stream)
 {
     unsigned char data[8192];
     int offset, found, inner, size;
 
     size = 0;                   /* avoid bogus uninitialized variable warning */
 
-    if (vfs_fread (data, 1, sizeof data, stream) != sizeof data)
+    if (stream.fread (data, 1, sizeof data) != sizeof data)
     {
         PROBE_DEBUG ("Read failed.\n");
         return false;
@@ -128,13 +149,13 @@ static int aac_probe (unsigned char * buf, int len)
 /* Gets info (some approximated) from an AAC/ADTS file.  <length> is
  * milliseconds, <bitrate> is kilobits per second.  Any parameters that cannot
  * be read are set to -1. */
-static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
+static void calc_aac_info (VFSFile & handle, int * length, int * bitrate,
  int * samplerate, int * channels)
 {
     NeAACDecHandle decoder;
     NeAACDecFrameInfo frame;
     bool initted = false;
-    int size = vfs_fsize (handle);
+    int size = handle.fsize ();
     unsigned char buffer[BUFFER_SIZE];
     int offset = 0, filled = 0;
     int found, bytes_used = 0, time_used = 0;
@@ -147,7 +168,7 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
     *channels = -1;
 
     /* look for a representative bitrate in the middle of the file */
-    if (size > 0 && vfs_fseek (handle, size / 2, SEEK_SET))
+    if (size < 0 || handle.fseek (size / 2, VFS_SEEK_SET) < 0)
         goto DONE;
 
     for (found = 0; found < 32; found++)
@@ -157,7 +178,7 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
             memmove (buffer, buffer + offset, filled);
             offset = 0;
 
-            if (vfs_fread (buffer + filled, 1, BUFFER_SIZE - filled, handle)
+            if (handle.fread (buffer + filled, 1, BUFFER_SIZE - filled)
              != BUFFER_SIZE - filled)
             {
                 PROBE_DEBUG ("Read failed.\n");
@@ -233,48 +254,44 @@ static void calc_aac_info (VFSFile * handle, int * length, int * bitrate,
         NeAACDecClose (decoder);
 }
 
-static Tuple aac_get_tuple (const char * filename, VFSFile * handle)
+Tuple AACDecoder::read_tuple (const char * filename, VFSFile & handle)
 {
     Tuple tuple;
     int length, bitrate, samplerate, channels;
 
     tuple.set_filename (filename);
-    tuple.set_str (FIELD_CODEC, "MPEG-2/4 AAC");
+    tuple.set_str (Tuple::Codec, "MPEG-2/4 AAC");
 
-    if (!vfs_is_remote (filename))
-    {
-        calc_aac_info (handle, &length, &bitrate, &samplerate, &channels);
+    calc_aac_info (handle, &length, &bitrate, &samplerate, &channels);
 
-        if (length > 0)
-            tuple.set_int (FIELD_LENGTH, length);
-
-        if (bitrate > 0)
-            tuple.set_int (FIELD_BITRATE, bitrate);
-    }
+    if (length > 0)
+        tuple.set_int (Tuple::Length, length);
+    if (bitrate > 0)
+        tuple.set_int (Tuple::Bitrate, bitrate);
 
     tuple.fetch_stream_info (handle);
 
     return tuple;
 }
 
-static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
+static void aac_seek (VFSFile & file, NeAACDecHandle dec, int time, int len,
  void * buf, int size, int * buflen)
 {
     /* == ESTIMATE BYTE OFFSET == */
 
-    int64_t total = vfs_fsize (file);
+    int64_t total = file.fsize ();
     if (total < 0)
     {
-        fprintf (stderr, "aac: File is not seekable.\n");
+        AUDERR ("File is not seekable.\n");
         return;
     }
 
     /* == SEEK == */
 
-    if (vfs_fseek (file, total * time / len, SEEK_SET))
+    if (file.fseek (total * time / len, VFS_SEEK_SET))
         return;
 
-    * buflen = vfs_fread (buf, 1, size, file);
+    * buflen = file.fread (buf, 1, size);
 
     /* == FIND FRAME HEADER == */
 
@@ -282,7 +299,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
 
     if (used == * buflen)
     {
-        fprintf (stderr, "aac: No valid frame header found.\n");
+        AUDERR ("No valid frame header found.\n");
         * buflen = 0;
         return;
     }
@@ -291,7 +308,7 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
     {
         * buflen -= used;
         memmove (buf, (char *) buf + used, * buflen);
-        * buflen += vfs_fread ((char *) buf + * buflen, 1, size - * buflen, file);
+        * buflen += file.fread ((char *) buf + * buflen, 1, size - * buflen);
     }
 
     /* == START DECODING == */
@@ -303,11 +320,11 @@ static void aac_seek (VFSFile * file, NeAACDecHandle dec, int time, int len,
     {
         * buflen -= used;
         memmove (buf, (char *) buf + used, * buflen);
-        * buflen += vfs_fread ((char *) buf + * buflen, 1, size - * buflen, file);
+        * buflen += file.fread ((char *) buf + * buflen, 1, size - * buflen);
     }
 }
 
-static bool my_decode_aac (const char * filename, VFSFile * file)
+bool AACDecoder::play (const char * filename, VFSFile & file)
 {
     NeAACDecHandle decoder = 0;
     NeAACDecConfigurationPtr decoder_config;
@@ -315,17 +332,17 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
     unsigned char channels = 0;
     int bitrate = 0;
 
-    Tuple tuple = aud_input_get_tuple ();
+    Tuple tuple = get_playback_tuple ();
 
     if (tuple)
     {
-        bitrate = tuple.get_int (FIELD_BITRATE);
+        bitrate = tuple.get_int (Tuple::Bitrate);
         bitrate = 1000 * aud::max (0, bitrate);
     }
 
     if ((decoder = NeAACDecOpen ()) == nullptr)
     {
-        fprintf (stderr, "AAC: Open Decoder Error\n");
+        AUDERR ("Open Decoder Error\n");
         return false;
     }
 
@@ -337,20 +354,21 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
     unsigned char buf[BUFFER_SIZE];
     int buflen;
-    buflen = vfs_fread (buf, 1, sizeof buf, file);
+    buflen = file.fread (buf, 1, sizeof buf);
 
     /* == SKIP ID3 TAG == */
 
     if (buflen >= 10 && ! strncmp ((char *) buf, "ID3", 3))
     {
-        if (vfs_fseek (file, 10 + (buf[6] << 21) + (buf[7] << 14) + (buf[8] <<
-         7) + buf[9], SEEK_SET))
+        int tagsize = 10 + (buf[6] << 21) + (buf[7] << 14) + (buf[8] << 7) + buf[9];
+
+        if (file.fseek (tagsize, VFS_SEEK_SET))
         {
-            fprintf (stderr, "aac: Failed to seek past ID3v2 tag.\n");
+            AUDERR ("Failed to seek past ID3v2 tag.\n");
             goto ERR_CLOSE_DECODER;
         }
 
-        buflen = vfs_fread (buf, 1, sizeof buf, file);
+        buflen = file.fread (buf, 1, sizeof buf);
     }
 
     /* == FIND FRAME HEADER == */
@@ -360,7 +378,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
     if (used == buflen)
     {
-        fprintf (stderr, "aac: No valid frame header found.\n");
+        AUDERR ("No valid frame header found.\n");
         goto ERR_CLOSE_DECODER;
     }
 
@@ -368,7 +386,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
     {
         buflen -= used;
         memmove (buf, buf + used, buflen);
-        buflen += vfs_fread (buf + buflen, 1, sizeof buf - buflen, file);
+        buflen += file.fread (buf + buflen, 1, sizeof buf - buflen);
     }
 
     /* == START DECODING == */
@@ -377,32 +395,31 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
     {
         buflen -= used;
         memmove (buf, buf + used, buflen);
-        buflen += vfs_fread (buf + buflen, 1, sizeof buf - buflen, file);
+        buflen += file.fread (buf + buflen, 1, sizeof buf - buflen);
     }
 
     /* == CHECK FOR METADATA == */
 
     if (tuple && tuple.fetch_stream_info (file))
-        aud_input_set_tuple (tuple.ref ());
+        set_playback_tuple (tuple.ref ());
+
+    set_stream_bitrate (bitrate);
 
     /* == START PLAYBACK == */
 
-    if (! aud_input_open_audio (FMT_FLOAT, samplerate, channels))
-        goto ERR_CLOSE_DECODER;
-
-    aud_input_set_bitrate (bitrate);
+    open_audio (FMT_FLOAT, samplerate, channels);
 
     /* == MAIN LOOP == */
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
         /* == HANDLE SEEK REQUESTS == */
 
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
 
         if (seek_value >= 0)
         {
-            int length = tuple ? tuple.get_int (FIELD_LENGTH) : 0;
+            int length = tuple ? tuple.get_int (Tuple::Length) : 0;
 
             if (length > 0)
                 aac_seek (file, decoder, seek_value, length, buf, sizeof buf, & buflen);
@@ -416,7 +433,7 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
         /* == CHECK FOR METADATA == */
 
         if (tuple && tuple.fetch_stream_info (file))
-            aud_input_set_tuple (tuple.ref ());
+            set_playback_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */
 
@@ -425,14 +442,14 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
 
         if (info.error)
         {
-            fprintf (stderr, "aac: %s.\n", NeAACDecGetErrorMessage (info.error));
+            AUDERR ("%s.\n", NeAACDecGetErrorMessage (info.error));
 
             if (buflen)
             {
                 used = 1 + aac_probe (buf + 1, buflen - 1);
                 buflen -= used;
                 memmove (buf, buf + used, buflen);
-                buflen += vfs_fread (buf + buflen, 1, sizeof buf - buflen, file);
+                buflen += file.fread (buf + buflen, 1, sizeof buf - buflen);
             }
 
             continue;
@@ -442,13 +459,13 @@ static bool my_decode_aac (const char * filename, VFSFile * file)
         {
             buflen -= used;
             memmove (buf, buf + used, buflen);
-            buflen += vfs_fread (buf + buflen, 1, sizeof buf - buflen, file);
+            buflen += file.fread (buf + buflen, 1, sizeof buf - buflen);
         }
 
         /* == PLAY THE SOUND == */
 
         if (audio && info.samples)
-            aud_input_write_audio (audio, sizeof (float) * info.samples);
+            write_audio (audio, sizeof (float) * info.samples);
     }
 
     NeAACDecClose (decoder);
@@ -458,12 +475,3 @@ ERR_CLOSE_DECODER:
     NeAACDecClose (decoder);
     return false;
 }
-
-#define AUD_PLUGIN_NAME        N_("AAC (Raw) Decoder")
-#define AUD_INPUT_PLAY         my_decode_aac
-#define AUD_INPUT_IS_OUR_FILE  parse_aac_stream
-#define AUD_INPUT_READ_TUPLE   aac_get_tuple
-#define AUD_INPUT_EXTS         fmts
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>

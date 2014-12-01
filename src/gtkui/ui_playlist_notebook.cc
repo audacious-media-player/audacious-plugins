@@ -22,7 +22,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
-#include <libaudcore/drct.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
@@ -187,7 +186,7 @@ static gboolean tab_button_press_cb(GtkWidget *ebox, GdkEventButton *event, void
     int playlist = aud_playlist_by_unique_id (id);
 
     if (event->type == GDK_2BUTTON_PRESS && event->button == 1)
-        aud_drct_play_playlist (playlist);
+        aud_playlist_play (playlist);
 
     if (event->type == GDK_BUTTON_PRESS && event->button == 2)
         audgui_confirm_playlist_delete (playlist);
@@ -215,6 +214,11 @@ static gboolean scroll_cb (GtkWidget * widget, GdkEventScroll * event)
     default:
         return FALSE;
     }
+}
+
+static gboolean scroll_ignore_cb ()
+{
+    return TRUE;
 }
 
 static void tab_changed (GtkNotebook * notebook, GtkWidget * page, int
@@ -285,6 +289,9 @@ void ui_playlist_notebook_create_tab(int playlist)
 
     scrollwin = gtk_scrolled_window_new(nullptr, nullptr);
     vscroll = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(scrollwin));
+
+    /* do not allow scroll events to propagate up to the notebook */
+    g_signal_connect_after (scrollwin, "scroll-event", (GCallback) scroll_ignore_cb, nullptr);
 
     treeview = ui_playlist_widget_new (playlist);
 
@@ -471,22 +478,21 @@ static void add_remove_pages (void)
 
 void ui_playlist_notebook_update (void * data, void * user)
 {
-    int global_level = GPOINTER_TO_INT (data);
-
-    if (global_level == PLAYLIST_UPDATE_STRUCTURE)
+    auto global_level = aud::from_ptr<Playlist::Update> (data);
+    if (global_level == Playlist::Structure)
         add_remove_pages ();
 
     int lists = aud_playlist_count ();
 
     for (int list = 0; list < lists; list ++)
     {
-        if (global_level >= PLAYLIST_UPDATE_METADATA)
+        if (global_level >= Playlist::Metadata)
             set_tab_label (list, get_tab_label (list));
 
         GtkWidget * treeview = playlist_get_treeview (list);
 
         int at, count;
-        int level = aud_playlist_updated_range (list, & at, & count);
+        Playlist::Update level = aud_playlist_updated_range (list, & at, & count);
 
         if (level)
             ui_playlist_widget_update (treeview, level, at, count);
@@ -499,7 +505,7 @@ void ui_playlist_notebook_update (void * data, void * user)
 
 void ui_playlist_notebook_position (void * data, void * user)
 {
-    int list = GPOINTER_TO_INT (data);
+    int list = aud::from_ptr<int> (data);
     int row = aud_playlist_get_position (list);
 
     if (aud_get_bool ("gtkui", "autoscroll"))
@@ -522,6 +528,10 @@ void ui_playlist_notebook_activate (void * data, void * user)
 void ui_playlist_notebook_set_playing (void * data, void * user)
 {
     int id = aud_playlist_get_unique_id (aud_playlist_get_playing ());
+
+    // if the previous playing playlist was deleted, ignore it
+    if (aud_playlist_by_unique_id (highlighted) < 0)
+        highlighted = -1;
 
     if (highlighted == id)
         return;

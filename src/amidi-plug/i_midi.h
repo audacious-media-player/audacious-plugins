@@ -22,11 +22,11 @@
 #define _I_MIDI_H 1
 
 #include <stdint.h>
-#include <libaudcore/vfs.h>
+#include <libaudcore/index.h>
 
 #include "i_midievent.h"
 
-#define MAKE_ID(c1, c2, c3, c4) ((c1) | ((c2) << 8) | ((c3) << 16) | ((c4) << 24))
+class VFSFile;
 
 
 /* sequencer event type, got from ALSA header alsa/seq_event.h */
@@ -227,53 +227,61 @@ enum snd_seq_event_type
 };
 
 
-typedef struct
+struct midifile_track_t
 {
-    midievent_t * first_event;	/* list of all events in this track */
+    List<midievent_t> events;           /* list of all events in this track */
+    int start_tick;                     /* start of this track */
     int end_tick;			/* length of this track */
     midievent_t * current_event;	/* used while loading and playing */
-}
-midifile_track_t;
 
-typedef struct
+    midievent_t * add_event ()
+    {
+        midievent_t * event = new midievent_t ();
+        events.append (event);
+        return event;
+    }
+
+    ~midifile_track_t ()
+        { events.clear (); }
+};
+
+
+struct midifile_t
 {
-    VFSFile * file_pointer;
-    char * file_name;
-    int file_offset;
+    Index<midifile_track_t> tracks;
 
-    int num_tracks;
-    midifile_track_t * tracks;
+    unsigned short format = 0;
+    int start_tick = 0;
+    int max_tick = 0;
+    int smpte_timing = 0;
 
-    unsigned short format;
-    int max_tick;
-    int smpte_timing;
+    int time_division = 0;
+    int ppq = 0;
+    int current_tempo = 0;
 
-    int time_division;
-    int ppq;
-    int current_tempo;
+    int avg_microsec_per_tick = 0;
+    int64_t length = 0;
 
-    int playing_tick;
-    int avg_microsec_per_tick;
-    int64_t length;
-}
-midifile_t;
+    void get_bpm (int *, int *);
+    bool parse_from_file (const char *, VFSFile & file);
 
-midievent_t * i_midi_file_new_event (midifile_track_t *, int);
-void i_midi_file_skip_bytes (midifile_t *, int);
-int i_midi_file_read_byte (midifile_t *);
-int i_midi_file_read_32_le (midifile_t *);
-int i_midi_file_read_id (midifile_t *);
-int i_midi_file_read_int (midifile_t *, int);
-int i_midi_file_read_var (midifile_t *);
-int i_midi_file_read_track (midifile_t *, midifile_track_t *, int, int);
-int i_midi_file_parse_riff (midifile_t *);
-int i_midi_file_parse_smf (midifile_t *, int);
-void i_midi_init (midifile_t *);
-void i_midi_free (midifile_t *);
-int i_midi_setget_tempo (midifile_t *);
-void i_midi_setget_length (midifile_t *);
-void i_midi_get_bpm (midifile_t *, int *, int *);
-/* helper function */
-int i_midi_parse_from_filename (const char *, midifile_t *);
+private:
+    String file_name;
+    Index<char> file_data;
+    int file_offset = 0;
+    bool file_eof = false;
+
+    void skip_bytes (int);
+    int read_byte ();
+    int read_32_le ();
+    int read_id ();
+    int read_int (int);
+    int read_var ();
+    bool read_track (midifile_track_t &, int, int);
+    bool parse_smf (int);
+    bool parse_riff ();
+    bool setget_tempo ();
+    void setget_length ();
+};
 
 #endif /* !_I_MIDI_H */

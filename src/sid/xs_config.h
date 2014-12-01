@@ -1,8 +1,6 @@
 #ifndef XS_CONFIG_H
 #define XS_CONFIG_H
 
-#include <pthread.h>
-
 /* Configuration structure
  */
 enum XS_CHANNELS {
@@ -34,39 +32,33 @@ extern struct xs_cfg_t {
     int     audioFrequency;
 
     /* Emulation settings */
-    bool  mos8580;            /* true = 8580, false = 6581 */
-    bool  forceModel;
+    bool    mos8580;            /* true = 8580, false = 6581 */
+    bool    forceModel;
     int     clockSpeed;         /* PAL (50Hz) or NTSC (60Hz) */
-    bool  forceSpeed;         /* true = force to given clockspeed */
+    bool    forceSpeed;         /* true = force to given clockspeed */
 
-    bool  emulateFilters;
+    bool    emulateFilters;
 
     /* Playing settings */
-    bool  playMaxTimeEnable,
+    bool    playMaxTimeEnable,
             playMaxTimeUnknown; /* Use max-time only when song-length is unknown */
     int     playMaxTime;        /* MAX playtime in seconds */
 
-    bool  playMinTimeEnable;
+    bool    playMinTimeEnable;
     int     playMinTime;        /* MIN playtime in seconds */
 
-    bool  songlenDBEnable;
-    char    *songlenDBPath;     /* Path to Songlengths.txt */
-
     /* Miscellaneous settings */
-    bool  stilDBEnable;
-    char    *stilDBPath;        /* Path to STIL.txt */
-    char    *hvscPath;          /* Path-prefix for HVSC */
-
-    bool  subAutoEnable,
+    bool    subAutoEnable,
             subAutoMinOnly;
     int     subAutoMinTime;
 } xs_cfg;
-
-extern pthread_mutex_t xs_cfg_mutex;
 
 
 /* Functions
  */
 void xs_init_configuration(void);
+
+struct PluginPreferences;
+extern const PluginPreferences sid_prefs;
 
 #endif    /* XS_CONFIG_H */

@@ -32,7 +32,7 @@ CmkjPlayer::factory (Copl * newopl)
 }
 
 bool
-CmkjPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CmkjPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)
@@ -82,7 +82,7 @@ CmkjPlayer::load (VFSFile * fd, const CFileProvider & fp)
 
   AdPlug_LogWrite
     ("CmkjPlayer::load(\"%s\"): loaded file ver %.2f, %d channels,"
-     " %d notes/channel.\n", vfs_get_filename (fd), ver, maxchannel, maxnotes);
+     " %d notes/channel.\n", fd.filename (), ver, maxchannel, maxnotes);
   fp.close (f);
   rewind (0);
   return true;

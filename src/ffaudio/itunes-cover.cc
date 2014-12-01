@@ -9,14 +9,12 @@
  */
 
 #define __STDC_LIMIT_MACROS
+#include "ffaudio-stdinc.h"
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#include <glib.h>
-
-#include "ffaudio-stdinc.h"
 
 static const struct {
     const char * id;
@@ -30,24 +28,23 @@ static const struct {
     {"data", 8}
 };
 
-bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, int64_t * size)
+Index<char> read_itunes_cover(const char * filename, VFSFile & file)
 {
     unsigned char b[8];
     int bsize;
 
-    * data = nullptr;
-    * size = 0;
+    Index<char> data;
 
     /* Check for ftyp frame. */
 
-    if (vfs_fread (b, 1, 8, file) != 8)
-        return false;
+    if (file.fread (b, 1, 8) != 8)
+        return data;
     if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8)
-        return false;
+        return data;
     if (strncmp ((char *) b + 4, "ftyp", 4))
-        return false;
-    if (vfs_fseek (file, bsize - 8, SEEK_CUR))
-        return false;
+        return data;
+    if (file.fseek (bsize - 8, VFS_SEEK_CUR))
+        return data;
 
     int64_t stop = INT64_MAX;
     int64_t at = bsize;
@@ -58,14 +55,14 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, in
     {
         while (1)
         {
-            if (vfs_fread (b, 1, 8, file) != 8)
-                return false;
+            if (file.fread (b, 1, 8) != 8)
+                return data;
             if ((bsize = (b[0] << 24) | (b[1] << 16) | (b[2] << 8) | b[3]) < 8 || at + bsize > stop)
-                return false;
+                return data;
             if (! strncmp ((char *) b + 4, frame.id, 4))
                 break;
-            if (vfs_fseek (file, bsize - 8, SEEK_CUR))
-                return false;
+            if (file.fseek (bsize - 8, VFS_SEEK_CUR))
+                return data;
 
             at += bsize;
         }
@@ -77,24 +74,18 @@ bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, in
 
         if (frame.skip)
         {
-            if (vfs_fseek (file, frame.skip, SEEK_CUR))
-                return false;
+            if (file.fseek (frame.skip, VFS_SEEK_CUR))
+                return data;
             at += frame.skip;
         }
     }
 
     /* We're there. */
 
-    * data = g_malloc (stop - at);
-    * size = stop - at;
+    data.insert (0, stop - at);
 
-    if (vfs_fread (* data, 1, stop - at, file) != stop - at)
-    {
-        g_free (* data);
-        * data = nullptr;
-        * size = 0;
-        return false;
-    }
+    if (file.fread (data.begin (), 1, stop - at) != stop - at)
+        data.clear ();
 
-    return true;
+    return data;
 }

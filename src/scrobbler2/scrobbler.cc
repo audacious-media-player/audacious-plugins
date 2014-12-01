@@ -14,13 +14,31 @@
 #include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/interface.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 
 
 //plugin includes
 #include "scrobbler.h"
 
+class Scrobbler : public GeneralPlugin
+{
+public:
+    static const char about[];
+
+    static constexpr PluginInfo info = {
+        N_("Scrobbler 2.0"),
+        PACKAGE,
+        about,
+        & configuration
+    };
+
+    constexpr Scrobbler () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT Scrobbler aud_plugin_instance;
 
 //shared variables
 gboolean scrobbler_running        = TRUE;
@@ -73,12 +91,12 @@ static gboolean queue_track_to_scrobble (void * data) {
 
     char *queuepath = g_strconcat(aud_get_path(AudPath::UserDir),"/scrobbler.log", nullptr);
 
-    StringBuf artist = clean_string (playing_track.get_str (FIELD_ARTIST));
-    StringBuf title  = clean_string (playing_track.get_str (FIELD_TITLE));
-    StringBuf album  = clean_string (playing_track.get_str (FIELD_ALBUM));
+    StringBuf artist = clean_string (playing_track.get_str (Tuple::Artist));
+    StringBuf title  = clean_string (playing_track.get_str (Tuple::Title));
+    StringBuf album  = clean_string (playing_track.get_str (Tuple::Album));
 
-    int track  = playing_track.get_int (FIELD_TRACK_NUMBER);
-    int length = playing_track.get_int (FIELD_LENGTH);
+    int track  = playing_track.get_int (Tuple::Track);
+    int length = playing_track.get_int (Tuple::Length);
 
     //artist, title and length are required for a successful scrobble
     if (artist[0] && title[0] && length > 0) {
@@ -142,11 +160,9 @@ static void ended (void *hook_data, void *user_data) {
 static void ready (void *hook_data, void *user_data) {
     cleanup_current_track();
 
-    int playlist = aud_playlist_get_playing ();
-    int position = aud_playlist_get_position (playlist);
-    Tuple current_track = aud_playlist_entry_get_tuple (playlist, position, FALSE);
+    Tuple current_track = aud_drct_get_tuple();
 
-    int duration_seconds = current_track.get_int (FIELD_LENGTH) / 1000;
+    int duration_seconds = current_track.get_int (Tuple::Length) / 1000;
     if (duration_seconds <= 30)
         return;
 
@@ -198,9 +214,8 @@ static void unpaused (void *hook_data, void *user_data) {
     play_started_at = g_get_monotonic_time();
 }
 
-
-
-static bool scrobbler_init (void) {
+bool Scrobbler::init ()
+{
     // Initialize libXML and check potential ABI mismatches between
     // the version it was compiled for and the actual libXML in use
     LIBXML_TEST_VERSION
@@ -246,8 +261,8 @@ static bool scrobbler_init (void) {
     return TRUE;
 }
 
-static void scrobbler_cleanup (void) {
-
+void Scrobbler::cleanup ()
+{
     hook_dissociate("playback stop", (HookFunction) stopped);
     hook_dissociate("playback end", (HookFunction) ended);
     hook_dissociate("playback ready", (HookFunction) ready);
@@ -270,16 +285,7 @@ static void scrobbler_cleanup (void) {
     scrobbler_running = TRUE;
 }
 
-static const char scrobbler_about[] =
+const char Scrobbler::about[] =
  N_("Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n\n"
     "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n\n"
     "Thanks to John Lindgren for giving me a hand at the beginning of this project.\n\n");
-
-#define AUD_PLUGIN_NAME        N_("Scrobbler 2.0")
-#define AUD_PLUGIN_ABOUT       scrobbler_about
-#define AUD_PLUGIN_INIT        scrobbler_init
-#define AUD_PLUGIN_CLEANUP     scrobbler_cleanup
-#define AUD_PLUGIN_PREFS       &configuration
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>

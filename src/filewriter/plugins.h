@@ -25,15 +25,15 @@
 
 #include "filewriter.h"
 
-extern FileWriter wav_plugin;
+extern FileWriterImpl wav_plugin;
 #ifdef FILEWRITER_MP3
-extern FileWriter mp3_plugin;
+extern FileWriterImpl mp3_plugin;
 #endif
 #ifdef FILEWRITER_VORBIS
-extern FileWriter vorbis_plugin;
+extern FileWriterImpl vorbis_plugin;
 #endif
 #ifdef FILEWRITER_FLAC
-extern FileWriter flac_plugin;
+extern FileWriterImpl flac_plugin;
 #endif
 
 #endif

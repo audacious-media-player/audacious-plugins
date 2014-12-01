@@ -33,16 +33,16 @@ ChscPlayer::factory (Copl * newopl)
 }
 
 bool
-ChscPlayer::load (VFSFile * fd, const CFileProvider & fp)
+ChscPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   int i;
 
   // file validation section
-  if (!f || !fp.extension (vfs_get_filename (fd), ".hsc") || fp.filesize (f) > 59187)
+  if (!f || !fp.extension (fd.filename (), ".hsc") || fp.filesize (f) > 59187)
   {
     AdPlug_LogWrite ("ChscPlayer::load(\"%s\"): Not a HSC file!\n",
-     vfs_get_filename (fd));
+     fd.filename ());
     fp.close (f);
     return false;
   }

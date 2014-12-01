@@ -1,19 +1,15 @@
-#include <stdlib.h>
-#include <string.h>
-
-#include <glib.h>
-
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
 #define MAX_DELAY 1000
-#define MAX_SRATE 50000
-#define BYTES_PS sizeof(float)
-#define BUFFER_SAMPLES (MAX_SRATE * MAX_DELAY / 1000)
-#define BUFFER_SHORTS (BUFFER_SAMPLES * AUD_MAX_CHANNELS)
-#define BUFFER_BYTES (BUFFER_SHORTS * BYTES_PS)
+
+static const char echo_about[] =
+ N_("Echo Plugin\n"
+    "By Johan Levin, 1999\n"
+    "Surround echo by Carl van Schaik, 1999\n"
+    "Updated for Audacious by William Pitcock and John Lindgren, 2010-2014");
 
 static const char * const echo_defaults[] = {
  "delay", "500",
@@ -36,94 +32,84 @@ static const PreferencesWidget echo_widgets[] = {
 
 static const PluginPreferences echo_prefs = {{echo_widgets}};
 
-static float *buffer = nullptr;
+class EchoPlugin : public EffectPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Echo"),
+        PACKAGE,
+        echo_about,
+        & echo_prefs
+    };
+
+    constexpr EchoPlugin () : EffectPlugin (info, 0, true) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
+};
+
+EXPORT EchoPlugin aud_plugin_instance;
+
+static Index<float> buffer;
 static int w_ofs;
 
-static bool init (void)
+bool EchoPlugin::init ()
 {
     aud_config_set_defaults ("echo_plugin", echo_defaults);
     return true;
 }
 
-static void cleanup(void)
+void EchoPlugin::cleanup ()
 {
-    g_free(buffer);
-    buffer = nullptr;
+    buffer.clear ();
 }
 
 static int echo_channels = 0;
 static int echo_rate = 0;
 
-static void echo_start(int *channels, int *rate)
+void EchoPlugin::start (int & channels, int & rate)
 {
-    static int old_srate, old_nch;
-
-    if (buffer == nullptr)
-        buffer = (float *) g_malloc (BUFFER_BYTES);
-
-    echo_channels = *channels;
-    echo_rate = *rate;
-
-    if (echo_channels != old_nch || echo_rate != old_srate)
+    if (channels != echo_channels || rate != echo_rate)
     {
-        memset(buffer, 0, BUFFER_BYTES);
+        echo_channels = channels;
+        echo_rate = rate;
+
+        buffer.resize (aud::rescale (MAX_DELAY, 1000, rate) * channels);
+        buffer.erase (0, -1);
+
         w_ofs = 0;
-        old_nch = echo_channels;
-        old_srate = echo_rate;
     }
 }
 
-static void echo_process(float **d, int *samples)
+Index<float> & EchoPlugin::process (Index<float> & data)
 {
     int delay = aud_get_int ("echo_plugin", "delay");
-    int feedback = aud_get_int ("echo_plugin", "feedback");
-    int volume = aud_get_int ("echo_plugin", "volume");
+    float feedback = aud_get_int ("echo_plugin", "feedback") / 100.0f;
+    float volume = aud_get_int ("echo_plugin", "volume") / 100.0f;
 
-    float in, out, buf;
-    int r_ofs;
-    float *data = *d;
-    float *end = *d + *samples;
+    int interval = aud::rescale (delay, 1000, echo_rate) * echo_channels;
+    interval = aud::clamp (interval, 0, buffer.len ());  // sanity check
 
-    r_ofs = w_ofs - (echo_rate * delay / 1000) * echo_channels;
+    int r_ofs = w_ofs - interval;
     if (r_ofs < 0)
-        r_ofs += BUFFER_SHORTS;
+        r_ofs += buffer.len ();
 
-    for (; data < end; data++)
+    float * end = data.end ();
+
+    for (float * f = data.begin (); f < end; f++)
     {
-        in = *data;
+        float in = * f;
+        float buf = buffer[r_ofs];
 
-        buf = buffer[r_ofs];
-        out = in + buf * volume / 100;
-        buf = in + buf * feedback / 100;
-        buffer[w_ofs] = buf;
-        *data = out;
+        * f = in + buf * volume;
+        buffer[w_ofs] = in + buf * feedback;
 
-        if (++r_ofs >= BUFFER_SHORTS)
-            r_ofs -= BUFFER_SHORTS;
-        if (++w_ofs >= BUFFER_SHORTS)
-            w_ofs -= BUFFER_SHORTS;
+        r_ofs = (r_ofs + 1) % buffer.len ();
+        w_ofs = (w_ofs + 1) % buffer.len ();
     }
+
+    return data;
 }
-
-static void echo_finish(float **d, int *samples)
-{
-    echo_process(d, samples);
-}
-
-static const char echo_about[] =
- N_("Echo Plugin\n"
-    "By Johan Levin, 1999\n\n"
-    "Surround echo by Carl van Schaik, 1999");
-
-#define AUD_PLUGIN_NAME        N_("Echo")
-#define AUD_PLUGIN_ABOUT       echo_about
-#define AUD_PLUGIN_PREFS       & echo_prefs
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
-#define AUD_EFFECT_START       echo_start
-#define AUD_EFFECT_PROCESS     echo_process
-#define AUD_EFFECT_FINISH      echo_finish
-#define AUD_EFFECT_SAME_FMT    true
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>

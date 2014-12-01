@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009-2012 John Lindgren
+ * Copyright 2009-2014 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,11 +46,11 @@
 #include <unistd.h>
 
 #include <alsa/asoundlib.h>
-
-#include <libaudcore/plugin.h>
-#include <libaudcore/runtime.h>
+#include <libaudcore/ringbuf.h>
 
 #include "alsa.h"
+
+EXPORT ALSAPlugin aud_plugin_instance;
 
 #define CHECK_VAL_RECOVER(value, function, ...) \
 do { \
@@ -74,30 +74,28 @@ static pthread_cond_t alsa_cond = PTHREAD_COND_INITIALIZER;
 static snd_pcm_format_t alsa_format;
 static int alsa_channels, alsa_rate;
 
-static unsigned char * alsa_buffer;
-static int alsa_buffer_length, alsa_buffer_data_start, alsa_buffer_data_length;
+static RingBuf<char> alsa_buffer;
 static int alsa_period; /* milliseconds */
 
-static int64_t alsa_written; /* frames */
-static char alsa_prebuffer, alsa_paused;
-static int alsa_paused_delay; /* frames */
+static bool alsa_prebuffer, alsa_paused;
+static int alsa_paused_delay; /* milliseconds */
 
 static int poll_pipe[2];
 static int poll_count;
 static pollfd * poll_handles;
 
-static char pump_quit;
+static bool pump_quit;
 static pthread_t pump_thread;
 
 static snd_mixer_t * alsa_mixer;
 static snd_mixer_elem_t * alsa_mixer_element;
 
-static char poll_setup (void)
+static bool poll_setup ()
 {
     if (pipe (poll_pipe))
     {
         ERROR ("Failed to create pipe: %s.\n", strerror (errno));
-        return 0;
+        return false;
     }
 
     if (fcntl (poll_pipe[0], F_SETFL, O_NONBLOCK))
@@ -105,7 +103,7 @@ static char poll_setup (void)
         ERROR ("Failed to set O_NONBLOCK on pipe: %s.\n", strerror (errno));
         close (poll_pipe[0]);
         close (poll_pipe[1]);
-        return 0;
+        return false;
     }
 
     poll_count = 1 + snd_pcm_poll_descriptors_count (alsa_handle);
@@ -115,10 +113,10 @@ static char poll_setup (void)
     poll_count = 1 + snd_pcm_poll_descriptors (alsa_handle, poll_handles + 1,
      poll_count - 1);
 
-    return 1;
+    return true;
 }
 
-static void poll_sleep (void)
+static void poll_sleep ()
 {
     if (poll (poll_handles, poll_count, -1) < 0)
     {
@@ -134,100 +132,87 @@ static void poll_sleep (void)
     }
 }
 
-static void poll_wake (void)
+static void poll_wake ()
 {
     const char c = 0;
     if (write (poll_pipe[1], & c, 1) < 0)
         ERROR ("Failed to write to pipe: %s.\n", strerror (errno));
 }
 
-static void poll_cleanup (void)
+static void poll_cleanup ()
 {
     close (poll_pipe[0]);
     close (poll_pipe[1]);
     delete[] poll_handles;
 }
 
-static void * pump (void * unused)
+static void * pump (void *)
 {
     pthread_mutex_lock (& alsa_mutex);
     pthread_cond_broadcast (& alsa_cond); /* signal thread started */
 
-    char failed = 0;
-    char workaround = 0;
-    int slept = 0;
+    bool failed_once = false;
+    bool use_timed_wait = false;
+    int wakeups_since_write = 0;
 
     while (! pump_quit)
     {
-        if (alsa_prebuffer || alsa_paused || ! snd_pcm_bytes_to_frames
-         (alsa_handle, alsa_buffer_data_length))
+        int writable = snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.linear ());
+
+        if (alsa_prebuffer || alsa_paused || ! writable)
         {
             pthread_cond_wait (& alsa_cond, & alsa_mutex);
             continue;
         }
 
-        int length;
-        CHECK_VAL_RECOVER (length, snd_pcm_avail_update, alsa_handle);
+        int avail;
+        CHECK_VAL_RECOVER (avail, snd_pcm_avail_update, alsa_handle);
 
-        if (! length)
-            goto WAIT;
-
-        slept = 0;
-
-        length = snd_pcm_frames_to_bytes (alsa_handle, length);
-        length = aud::min (length, alsa_buffer_data_length);
-        length = aud::min (length, alsa_buffer_length - alsa_buffer_data_start);
-        length = snd_pcm_bytes_to_frames (alsa_handle, length);
-
-        int written;
-        CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle,
-         alsa_buffer + alsa_buffer_data_start, length);
-
-        failed = 0;
-
-        written = snd_pcm_frames_to_bytes (alsa_handle, written);
-        alsa_buffer_data_start += written;
-        alsa_buffer_data_length -= written;
-
-        pthread_cond_broadcast (& alsa_cond); /* signal write complete */
-
-        if (alsa_buffer_data_start == alsa_buffer_length)
+        if (avail)
         {
-            alsa_buffer_data_start = 0;
-            continue;
+            wakeups_since_write = 0;
+
+            int written;
+            CHECK_VAL_RECOVER (written, snd_pcm_writei, alsa_handle,
+             & alsa_buffer[0], aud::min (writable, avail));
+
+            failed_once = false;
+
+            alsa_buffer.discard (snd_pcm_frames_to_bytes (alsa_handle, written));
+
+            pthread_cond_broadcast (& alsa_cond); /* signal write complete */
+
+            if (writable < avail)
+                continue;
         }
 
-        if (! snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer_data_length))
-            continue;
-
-    WAIT:
         pthread_mutex_unlock (& alsa_mutex);
 
-        if (slept > 4)
+        if (wakeups_since_write > 4)
         {
             AUDDBG ("Activating timer workaround.\n");
-            workaround = 1;
+            use_timed_wait = true;
         }
 
-        if (workaround && slept)
+        if (use_timed_wait && wakeups_since_write)
         {
-            const struct timespec delay = {0, 600000 * alsa_period};
+            timespec delay = {0, 600000 * alsa_period};
             nanosleep (& delay, nullptr);
         }
         else
         {
             poll_sleep ();
-            slept ++;
+            wakeups_since_write ++;
         }
 
         pthread_mutex_lock (& alsa_mutex);
         continue;
 
     FAILED:
-        if (failed)
+        if (failed_once)
             break;
 
-        failed = 1;
+        failed_once = true;
         CHECK (snd_pcm_prepare, alsa_handle);
     }
 
@@ -235,58 +220,56 @@ static void * pump (void * unused)
     return nullptr;
 }
 
-static void pump_start (void)
+static void pump_start ()
 {
     AUDDBG ("Starting pump.\n");
     pthread_create (& pump_thread, nullptr, pump, nullptr);
     pthread_cond_wait (& alsa_cond, & alsa_mutex);
 }
 
-static void pump_stop (void)
+static void pump_stop ()
 {
     AUDDBG ("Stopping pump.\n");
-    pump_quit = 1;
+    pump_quit = true;
     pthread_cond_broadcast (& alsa_cond);
     poll_wake ();
     pthread_mutex_unlock (& alsa_mutex);
     pthread_join (pump_thread, nullptr);
     pthread_mutex_lock (& alsa_mutex);
-    pump_quit = 0;
+    pump_quit = false;
 }
 
-static void start_playback (void)
+static void start_playback ()
 {
     AUDDBG ("Starting playback.\n");
     CHECK (snd_pcm_prepare, alsa_handle);
 
 FAILED:
-    alsa_prebuffer = 0;
+    alsa_prebuffer = false;
     pthread_cond_broadcast (& alsa_cond);
 }
 
-static int get_delay (void)
+static int get_delay_locked ()
 {
     snd_pcm_sframes_t delay = 0;
-
     CHECK_RECOVER (snd_pcm_delay, alsa_handle, & delay);
 
 FAILED:
-    return delay;
+    return aud::rescale ((int) delay, alsa_rate, 1000);
 }
 
-bool alsa_init (void)
+bool ALSAPlugin::init ()
 {
     AUDDBG ("Initialize.\n");
-    alsa_config_load ();
-    alsa_open_mixer ();
-    return 1;
+    init_config ();
+    open_mixer ();
+    return true;
 }
 
-void alsa_cleanup (void)
+void ALSAPlugin::cleanup ()
 {
     AUDDBG ("Cleanup.\n");
-    alsa_close_mixer ();
-    alsa_config_save ();
+    close_mixer ();
 }
 
 static snd_pcm_format_t convert_aud_format (int aud_format)
@@ -324,21 +307,21 @@ static snd_pcm_format_t convert_aud_format (int aud_format)
     return SND_PCM_FORMAT_UNKNOWN;
 }
 
-bool alsa_open_audio (int aud_format, int rate, int channels)
+bool ALSAPlugin::open_audio (int aud_format, int rate, int channels)
 {
-    int total_buffer, hard_buffer, soft_buffer;
+    int total_buffer, hard_buffer, soft_buffer, buffer_frames;
     unsigned useconds;
     int direction;
 
     pthread_mutex_lock (& alsa_mutex);
 
-    assert (alsa_handle == nullptr);
+    assert (! alsa_handle);
 
+    String pcm = aud_get_str ("alsa", "pcm");
     snd_pcm_format_t format = convert_aud_format (aud_format);
     AUDDBG ("Opening PCM device %s for %s, %d channels, %d Hz.\n",
-     (const char *) alsa_config_pcm, snd_pcm_format_name (format), channels, rate);
-    CHECK_NOISY (snd_pcm_open, & alsa_handle, alsa_config_pcm,
-     SND_PCM_STREAM_PLAYBACK, 0);
+     (const char *) pcm, snd_pcm_format_name (format), channels, rate);
+    CHECK_NOISY (snd_pcm_open, & alsa_handle, pcm, SND_PCM_STREAM_PLAYBACK, 0);
 
     snd_pcm_hw_params_t * params;
     snd_pcm_hw_params_alloca (& params);
@@ -373,15 +356,11 @@ bool alsa_open_audio (int aud_format, int rate, int channels)
     AUDDBG ("Buffer: hardware %d ms, software %d ms, period %d ms.\n",
      hard_buffer, soft_buffer, alsa_period);
 
-    alsa_buffer_length = snd_pcm_frames_to_bytes (alsa_handle, (int64_t)
-     soft_buffer * rate / 1000);
-    alsa_buffer = new unsigned char[alsa_buffer_length];
-    alsa_buffer_data_start = 0;
-    alsa_buffer_data_length = 0;
+    buffer_frames = aud::rescale<int64_t> (soft_buffer, 1000, rate);
+    alsa_buffer.alloc (snd_pcm_frames_to_bytes (alsa_handle, buffer_frames));
 
-    alsa_written = 0;
-    alsa_prebuffer = 1;
-    alsa_paused = 0;
+    alsa_prebuffer = true;
+    alsa_paused = false;
     alsa_paused_delay = 0;
 
     if (! poll_setup ())
@@ -390,31 +369,31 @@ bool alsa_open_audio (int aud_format, int rate, int channels)
     pump_start ();
 
     pthread_mutex_unlock (& alsa_mutex);
-    return 1;
+    return true;
 
 FAILED:
-    if (alsa_handle != nullptr)
+    if (alsa_handle)
     {
         snd_pcm_close (alsa_handle);
         alsa_handle = nullptr;
     }
 
     pthread_mutex_unlock (& alsa_mutex);
-    return 0;
+    return false;
 }
 
-void alsa_close_audio (void)
+void ALSAPlugin::close_audio ()
 {
     AUDDBG ("Closing audio.\n");
     pthread_mutex_lock (& alsa_mutex);
 
-    assert (alsa_handle != nullptr);
+    assert (alsa_handle);
 
     pump_stop ();
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    delete[] alsa_buffer;
+    alsa_buffer.destroy ();
     poll_cleanup ();
     snd_pcm_close (alsa_handle);
     alsa_handle = nullptr;
@@ -422,47 +401,25 @@ FAILED:
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-int alsa_buffer_free (void)
-{
-    pthread_mutex_lock (& alsa_mutex);
-    int avail = alsa_buffer_length - alsa_buffer_data_length;
-    pthread_mutex_unlock (& alsa_mutex);
-    return avail;
-}
-
-void alsa_write_audio (void * data, int length)
+int ALSAPlugin::write_audio (const void * data, int length)
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    int start = (alsa_buffer_data_start + alsa_buffer_data_length) %
-     alsa_buffer_length;
-
-    assert (length <= alsa_buffer_length - alsa_buffer_data_length);
-
-    if (length > alsa_buffer_length - start)
-    {
-        int part = alsa_buffer_length - start;
-
-        memcpy (alsa_buffer + start, data, part);
-        memcpy (alsa_buffer, (char *) data + part, length - part);
-    }
-    else
-        memcpy (alsa_buffer + start, data, length);
-
-    alsa_buffer_data_length += length;
-    alsa_written += snd_pcm_bytes_to_frames (alsa_handle, length);
+    length = aud::min (length, alsa_buffer.space ());
+    alsa_buffer.copy_in ((const char *) data, length);
 
     if (! alsa_paused)
         pthread_cond_broadcast (& alsa_cond);
 
     pthread_mutex_unlock (& alsa_mutex);
+    return length;
 }
 
-void alsa_period_wait (void)
+void ALSAPlugin::period_wait ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    while (alsa_buffer_data_length == alsa_buffer_length)
+    while (! alsa_buffer.space ())
     {
         if (! alsa_paused)
         {
@@ -478,7 +435,7 @@ void alsa_period_wait (void)
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-void alsa_drain (void)
+void ALSAPlugin::drain ()
 {
     AUDDBG ("Drain.\n");
     pthread_mutex_lock (& alsa_mutex);
@@ -488,63 +445,40 @@ void alsa_drain (void)
     if (alsa_prebuffer)
         start_playback ();
 
-    while (snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer_data_length))
+    while (snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ()))
         pthread_cond_wait (& alsa_cond, & alsa_mutex);
 
     pump_stop ();
 
-    if (alsa_config_drain_workaround)
-    {
-        int d = get_delay () * 1000 / alsa_rate;
-        struct timespec delay = {d / 1000, d % 1000 * 1000000};
+    int d = get_delay_locked ();
+    timespec delay = {d / 1000, d % 1000 * 1000000};
 
-        pthread_mutex_unlock (& alsa_mutex);
-        nanosleep (& delay, nullptr);
-        pthread_mutex_lock (& alsa_mutex);
-    }
-    else
-    {
-        while (1)
-        {
-            int state;
-            CHECK_VAL (state, snd_pcm_state, alsa_handle);
-
-            if (state != SND_PCM_STATE_RUNNING && state !=
-             SND_PCM_STATE_DRAINING)
-                break;
-
-            pthread_mutex_unlock (& alsa_mutex);
-            poll_sleep ();
-            pthread_mutex_lock (& alsa_mutex);
-        }
-    }
+    pthread_mutex_unlock (& alsa_mutex);
+    nanosleep (& delay, nullptr);
+    pthread_mutex_lock (& alsa_mutex);
 
     pump_start ();
 
-FAILED:
     pthread_mutex_unlock (& alsa_mutex);
-    return;
 }
 
-int alsa_output_time (void)
+int ALSAPlugin::get_delay ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    int64_t frames = alsa_written - snd_pcm_bytes_to_frames (alsa_handle,
-     alsa_buffer_data_length);
+    int buffered = snd_pcm_bytes_to_frames (alsa_handle, alsa_buffer.len ());
+    int delay = aud::rescale (buffered, alsa_rate, 1000);
 
     if (alsa_prebuffer || alsa_paused)
-        frames -= alsa_paused_delay;
+        delay += alsa_paused_delay;
     else
-        frames -= get_delay ();
-
-    int time = frames * 1000 / alsa_rate;
+        delay += get_delay_locked ();
 
     pthread_mutex_unlock (& alsa_mutex);
-    return time;
+    return delay;
 }
 
-void alsa_flush (int time)
+void ALSAPlugin::flush ()
 {
     AUDDBG ("Seek requested; discarding buffer.\n");
     pthread_mutex_lock (& alsa_mutex);
@@ -553,11 +487,9 @@ void alsa_flush (int time)
     CHECK (snd_pcm_drop, alsa_handle);
 
 FAILED:
-    alsa_buffer_data_start = 0;
-    alsa_buffer_data_length = 0;
+    alsa_buffer.discard ();
 
-    alsa_written = (int64_t) time * alsa_rate / 1000;
-    alsa_prebuffer = 1;
+    alsa_prebuffer = true;
     alsa_paused_delay = 0;
 
     pthread_cond_broadcast (& alsa_cond); /* interrupt period wait */
@@ -567,7 +499,7 @@ FAILED:
     pthread_mutex_unlock (& alsa_mutex);
 }
 
-void alsa_pause (bool pause)
+void ALSAPlugin::pause (bool pause)
 {
     AUDDBG ("%sause.\n", pause ? "P" : "Unp");
     pthread_mutex_lock (& alsa_mutex);
@@ -577,7 +509,7 @@ void alsa_pause (bool pause)
     if (! alsa_prebuffer)
     {
         if (pause)
-            alsa_paused_delay = get_delay ();
+            alsa_paused_delay = get_delay_locked ();
 
         CHECK (snd_pcm_pause, alsa_handle, pause);
     }
@@ -600,26 +532,28 @@ FAILED:
     goto DONE;
 }
 
-void alsa_open_mixer (void)
+void ALSAPlugin::open_mixer ()
 {
-    snd_mixer_selem_id_t * selem_id;
-
     alsa_mixer = nullptr;
 
-    if (! alsa_config_mixer_element[0])
+    String mixer = aud_get_str ("alsa", "mixer");
+    String mixer_element = aud_get_str ("alsa", "mixer-element");
+
+    if (! mixer_element[0])
         goto FAILED;
 
-    AUDDBG ("Opening mixer card %s.\n", (const char *) alsa_config_mixer);
+    AUDDBG ("Opening mixer card %s.\n", (const char *) mixer);
     CHECK_NOISY (snd_mixer_open, & alsa_mixer, 0);
-    CHECK_NOISY (snd_mixer_attach, alsa_mixer, alsa_config_mixer);
+    CHECK_NOISY (snd_mixer_attach, alsa_mixer, mixer);
     CHECK_NOISY (snd_mixer_selem_register, alsa_mixer, nullptr, nullptr);
     CHECK_NOISY (snd_mixer_load, alsa_mixer);
 
+    snd_mixer_selem_id_t * selem_id;
     snd_mixer_selem_id_alloca (& selem_id);
-    snd_mixer_selem_id_set_name (selem_id, alsa_config_mixer_element);
+    snd_mixer_selem_id_set_name (selem_id, mixer_element);
     alsa_mixer_element = snd_mixer_find_selem (alsa_mixer, selem_id);
 
-    if (alsa_mixer_element == nullptr)
+    if (! alsa_mixer_element)
     {
         ERROR_NOISY ("snd_mixer_find_selem failed.\n");
         goto FAILED;
@@ -629,26 +563,26 @@ void alsa_open_mixer (void)
     return;
 
 FAILED:
-    if (alsa_mixer != nullptr)
+    if (alsa_mixer)
     {
         snd_mixer_close (alsa_mixer);
         alsa_mixer = nullptr;
     }
 }
 
-void alsa_close_mixer (void)
+void ALSAPlugin::close_mixer ()
 {
-    if (alsa_mixer != nullptr)
+    if (alsa_mixer)
         snd_mixer_close (alsa_mixer);
 }
 
-void alsa_get_volume (int * left, int * right)
+StereoVolume ALSAPlugin::get_volume ()
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    long left_l = 0, right_l = 0;
+    long left = 0, right = 0;
 
-    if (alsa_mixer == nullptr)
+    if (! alsa_mixer)
         goto FAILED;
 
     CHECK (snd_mixer_handle_events, alsa_mixer);
@@ -656,8 +590,8 @@ void alsa_get_volume (int * left, int * right)
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
     {
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_MONO, & left_l);
-        right_l = left_l;
+         SND_MIXER_SCHN_MONO, & left);
+        right = left;
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
         {
@@ -666,15 +600,15 @@ void alsa_get_volume (int * left, int * right)
              SND_MIXER_SCHN_MONO, & on);
 
             if (! on)
-                left_l = right_l = 0;
+                left = right = 0;
         }
     }
     else
     {
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_LEFT, & left_l);
+         SND_MIXER_SCHN_FRONT_LEFT, & left);
         CHECK (snd_mixer_selem_get_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_RIGHT, & right_l);
+         SND_MIXER_SCHN_FRONT_RIGHT, & right);
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
         {
@@ -685,53 +619,51 @@ void alsa_get_volume (int * left, int * right)
              SND_MIXER_SCHN_FRONT_RIGHT, & right_on);
 
             if (! left_on)
-                left_l = 0;
+                left = 0;
             if (! right_on)
-                right_l = 0;
+                right = 0;
         }
     }
 
 FAILED:
     pthread_mutex_unlock (& alsa_mutex);
-
-    * left = left_l;
-    * right = right_l;
+    return {(int) left, (int) right};
 }
 
-void alsa_set_volume (int left, int right)
+void ALSAPlugin::set_volume (StereoVolume v)
 {
     pthread_mutex_lock (& alsa_mutex);
 
-    if (alsa_mixer == nullptr)
+    if (! alsa_mixer)
         goto FAILED;
 
     if (snd_mixer_selem_is_playback_mono (alsa_mixer_element))
     {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_MONO, aud::max (left, right));
+         SND_MIXER_SCHN_MONO, aud::max (v.left, v.right));
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
             CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-             SND_MIXER_SCHN_MONO, aud::max (left, right) != 0);
+             SND_MIXER_SCHN_MONO, aud::max (v.left, v.right) != 0);
     }
     else
     {
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_LEFT, left);
+         SND_MIXER_SCHN_FRONT_LEFT, v.left);
         CHECK (snd_mixer_selem_set_playback_volume, alsa_mixer_element,
-         SND_MIXER_SCHN_FRONT_RIGHT, right);
+         SND_MIXER_SCHN_FRONT_RIGHT, v.right);
 
         if (snd_mixer_selem_has_playback_switch (alsa_mixer_element))
         {
             if (snd_mixer_selem_has_playback_switch_joined (alsa_mixer_element))
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-                 SND_MIXER_SCHN_FRONT_LEFT, aud::max (left, right) != 0);
+                 SND_MIXER_SCHN_FRONT_LEFT, aud::max (v.left, v.right) != 0);
             else
             {
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-                 SND_MIXER_SCHN_FRONT_LEFT, left != 0);
+                 SND_MIXER_SCHN_FRONT_LEFT, v.left != 0);
                 CHECK (snd_mixer_selem_set_playback_switch, alsa_mixer_element,
-                 SND_MIXER_SCHN_FRONT_RIGHT, right != 0);
+                 SND_MIXER_SCHN_FRONT_RIGHT, v.right != 0);
             }
         }
     }

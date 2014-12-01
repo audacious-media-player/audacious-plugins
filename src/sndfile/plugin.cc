@@ -19,67 +19,71 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-/*
- * Rewritten 17-Feb-2007 (nenolod):
- *   - now uses conditional variables to ensure that sndfile mutex is
- *     entirely protected.
- *   - pausing works now
- *   - fixed some potential race conditions when dealing with NFS.
- *   - TITLE_LEN removed
- *
- * Re-cleaned up 09-Aug-2009 (ccr):
- *   - removed threading madness.
- *   - improved locking.
- *   - misc. cleanups.
- *
- * Play loop rewritten 14-Nov-2009 (jlindgren):
- *   - decode in floating point
- *   - drain audio buffer before closing
- *   - handle seeking/stopping while paused
- */
-
 #include <math.h>
 #include <stdlib.h>
 
-#include <glib.h>
-
 #include <sndfile.h>
 
-#include <libaudcore/input.h>
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/plugin.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
+
+class SndfilePlugin : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char * const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("Sndfile Plugin"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo ()
+        .with_priority (9)  /* low priority fallback (but before ffaudio) */
+        .with_exts (exts);
+
+    constexpr SndfilePlugin () : InputPlugin (info, iinfo) {}
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT SndfilePlugin aud_plugin_instance;
 
 /* Virtual file access wrappers for libsndfile
  */
 static sf_count_t
 sf_get_filelen (void *user_data)
 {
-    return vfs_fsize ((VFSFile *) user_data);
+    return ((VFSFile *) user_data)->fsize ();
 }
 
 static sf_count_t
 sf_vseek (sf_count_t offset, int whence, void *user_data)
 {
-    return vfs_fseek ((VFSFile *) user_data, offset, whence);
+    return ((VFSFile *) user_data)->fseek (offset, to_vfs_seek_type (whence));
 }
 
 static sf_count_t
 sf_vread (void *ptr, sf_count_t count, void *user_data)
 {
-    return vfs_fread (ptr, 1, count, (VFSFile *) user_data);
+    return ((VFSFile *) user_data)->fread (ptr, 1, count);
 }
 
 static sf_count_t
 sf_vwrite (const void *ptr, sf_count_t count, void *user_data)
 {
-    return vfs_fwrite (ptr, 1, count, (VFSFile *) user_data);
+    return ((VFSFile *) user_data)->fwrite (ptr, 1, count);
 }
 
 static sf_count_t
 sf_tell (void *user_data)
 {
-    return vfs_ftell ((VFSFile *) user_data);
+    return ((VFSFile *) user_data)->ftell ();
 }
 
 static SF_VIRTUAL_IO sf_virtual_io =
@@ -91,46 +95,46 @@ static SF_VIRTUAL_IO sf_virtual_io =
     sf_tell
 };
 
-static void copy_string (SNDFILE * sf, int sf_id, Tuple & tup, int tup_id)
+static void copy_string (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str)
-        tup.set_str (tup_id, str);
+        tup.set_str (field, str);
 }
 
-static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, int tup_id)
+static void copy_int (SNDFILE * sf, int sf_id, Tuple & tup, Tuple::Field field)
 {
     const char * str = sf_get_string (sf, sf_id);
     if (str && atoi (str))
-        tup.set_int (tup_id, atoi (str));
+        tup.set_int (field, atoi (str));
 }
 
-static Tuple get_song_tuple (const char * filename, VFSFile * file)
+Tuple SndfilePlugin::read_tuple (const char * filename, VFSFile & file)
 {
     SNDFILE *sndfile;
     SF_INFO sfinfo;
     const char *format, *subformat;
     Tuple ti;
 
-    sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, file);
+    sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, & file);
 
     if (sndfile == nullptr)
         return ti;
 
     ti.set_filename (filename);
 
-    copy_string (sndfile, SF_STR_TITLE, ti, FIELD_TITLE);
-    copy_string (sndfile, SF_STR_ARTIST, ti, FIELD_ARTIST);
-    copy_string (sndfile, SF_STR_ALBUM, ti, FIELD_ALBUM);
-    copy_string (sndfile, SF_STR_COMMENT, ti, FIELD_COMMENT);
-    copy_string (sndfile, SF_STR_GENRE, ti, FIELD_GENRE);
-    copy_int (sndfile, SF_STR_DATE, ti, FIELD_YEAR);
-    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, FIELD_TRACK_NUMBER);
+    copy_string (sndfile, SF_STR_TITLE, ti, Tuple::Title);
+    copy_string (sndfile, SF_STR_ARTIST, ti, Tuple::Artist);
+    copy_string (sndfile, SF_STR_ALBUM, ti, Tuple::Album);
+    copy_string (sndfile, SF_STR_COMMENT, ti, Tuple::Comment);
+    copy_string (sndfile, SF_STR_GENRE, ti, Tuple::Genre);
+    copy_int (sndfile, SF_STR_DATE, ti, Tuple::Year);
+    copy_int (sndfile, SF_STR_TRACKNUMBER, ti, Tuple::Track);
 
     sf_close (sndfile);
 
     if (sfinfo.samplerate > 0)
-        ti.set_int (FIELD_LENGTH, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
+        ti.set_int (Tuple::Length, ceil (1000.0 * sfinfo.frames / sfinfo.samplerate));
 
     switch (sfinfo.format & SF_FORMAT_TYPEMASK)
     {
@@ -280,54 +284,43 @@ static Tuple get_song_tuple (const char * filename, VFSFile * file)
     return ti;
 }
 
-static bool play_start (const char * filename, VFSFile * file)
+bool SndfilePlugin::play (const char * filename, VFSFile & file)
 {
-    if (file == nullptr)
-        return false;
-
     SF_INFO sfinfo;
-    SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo,
-     file);
+    SNDFILE * sndfile = sf_open_virtual (& sf_virtual_io, SFM_READ, & sfinfo, & file);
     if (sndfile == nullptr)
         return false;
 
-    if (! aud_input_open_audio (FMT_FLOAT, sfinfo.samplerate,
-     sfinfo.channels))
-    {
-        sf_close (sndfile);
-        return false;
-    }
+    open_audio (FMT_FLOAT, sfinfo.samplerate, sfinfo.channels);
 
-    int size = sfinfo.channels * (sfinfo.samplerate / 50);
-    float * buffer = g_new (float, size);
+    Index<float> buffer;
+    buffer.resize (sfinfo.channels * (sfinfo.samplerate / 50));
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
         if (seek_value != -1)
             sf_seek (sndfile, (int64_t) seek_value * sfinfo.samplerate / 1000, SEEK_SET);
 
-        int samples = sf_read_float (sndfile, buffer, size);
+        int samples = sf_read_float (sndfile, buffer.begin (), buffer.len ());
         if (! samples)
             break;
 
-        aud_input_write_audio (buffer, sizeof (float) * samples);
+        write_audio (buffer.begin (), sizeof (float) * samples);
     }
 
     sf_close (sndfile);
-    g_free (buffer);
 
     return true;
 }
 
-static bool
-is_our_file_from_vfs(const char *filename, VFSFile *fin)
+bool SndfilePlugin::is_our_file (const char * filename, VFSFile & file)
 {
     SNDFILE *tmp_sndfile;
     SF_INFO tmp_sfinfo;
 
     /* Have to open the file to see if libsndfile can handle it. */
-    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, fin);
+    tmp_sndfile = sf_open_virtual (&sf_virtual_io, SFM_READ, &tmp_sfinfo, &file);
 
     if (!tmp_sndfile)
         return false;
@@ -339,7 +332,7 @@ is_our_file_from_vfs(const char *filename, VFSFile *fin)
     return true;
 }
 
-const char plugin_about[] =
+const char SndfilePlugin::about[] =
  N_("Based on the xmms_sndfile plugin:\n"
     "Copyright (C) 2000, 2002 Erik de Castro Lopo\n\n"
     "Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n\n"
@@ -355,17 +348,4 @@ const char plugin_about[] =
     "along with this program; if not, write to the Free Software "
     "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.");
 
-static const char *sndfile_fmts[] = { "aiff", "au", "raw", "wav", nullptr };
-
-#define AUD_PLUGIN_NAME        N_("Sndfile Plugin")
-#define AUD_PLUGIN_ABOUT       plugin_about
-#define AUD_INPUT_PLAY         play_start
-#define AUD_INPUT_READ_TUPLE   get_song_tuple
-#define AUD_INPUT_IS_OUR_FILE  is_our_file_from_vfs
-#define AUD_INPUT_EXTS         sndfile_fmts
-
-/* low priority fallback (but before ffaudio) */
-#define AUD_INPUT_PRIORITY     9
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char * const SndfilePlugin::exts[] = { "aiff", "au", "raw", "wav", nullptr };

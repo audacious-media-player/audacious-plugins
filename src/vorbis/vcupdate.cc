@@ -79,9 +79,9 @@ static void dictionary_to_vorbis_comment (vorbis_comment * vc, Dictionary & dict
 }
 
 static void insert_str_tuple_field_to_dictionary (const Tuple & tuple,
- int fieldn, Dictionary & dict, const char * key)
+ Tuple::Field field, Dictionary & dict, const char * key)
 {
-    String val = tuple.get_str (fieldn);
+    String val = tuple.get_str (field);
 
     if (val && val[0])
         dict.add (String (key), std::move (val));
@@ -90,9 +90,9 @@ static void insert_str_tuple_field_to_dictionary (const Tuple & tuple,
 }
 
 static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
- int fieldn, Dictionary & dict, const char * key)
+ Tuple::Field field, Dictionary & dict, const char * key)
 {
-    int val = tuple.get_int (fieldn);
+    int val = tuple.get_int (field);
 
     if (val > 0)
         dict.add (String (key), String (int_to_str (val)));
@@ -100,18 +100,15 @@ static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
         dict.remove (String (key));
 }
 
-bool vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple & tuple)
+bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
 {
-
     vcedit_state *state;
     vorbis_comment *comment;
     bool ret;
 
-    if(!tuple || !fd) return false;
-
     state = vcedit_new_state();
 
-    if(vcedit_open(state, fd) < 0) {
+    if(vcedit_open(state, file) < 0) {
         vcedit_clear(state);
         return false;
     }
@@ -119,14 +116,14 @@ bool vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple 
     comment = vcedit_comments(state);
     Dictionary dict = dictionary_from_vorbis_comment (comment);
 
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_TITLE, dict, "title");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_ARTIST, dict, "artist");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_ALBUM, dict, "album");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_COMMENT, dict, "comment");
-    insert_str_tuple_field_to_dictionary(tuple, FIELD_GENRE, dict, "genre");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Title, dict, "title");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Artist, dict, "artist");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Album, dict, "album");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Comment, dict, "comment");
+    insert_str_tuple_field_to_dictionary(tuple, Tuple::Genre, dict, "genre");
 
-    insert_int_tuple_field_to_dictionary(tuple, FIELD_YEAR, dict, "date");
-    insert_int_tuple_field_to_dictionary(tuple, FIELD_TRACK_NUMBER, dict, "tracknumber");
+    insert_int_tuple_field_to_dictionary(tuple, Tuple::Year, dict, "date");
+    insert_int_tuple_field_to_dictionary(tuple, Tuple::Track, dict, "tracknumber");
 
     dictionary_to_vorbis_comment(comment, dict);
 
@@ -139,23 +136,23 @@ bool vorbis_update_song_tuple (const char * filename, VFSFile * fd, const Tuple 
 
 #define COPY_BUF 65536
 
-bool copy_vfs (VFSFile * in, VFSFile * out)
+bool copy_vfs (VFSFile & in, VFSFile & out)
 {
-    if (vfs_fseek (in, 0, SEEK_SET) < 0 || vfs_fseek (out, 0, SEEK_SET) < 0)
+    if (in.fseek (0, VFS_SEEK_SET) < 0 || out.fseek (0, VFS_SEEK_SET) < 0)
         return false;
 
     char * buffer = g_new (char, COPY_BUF);
     int64_t size = 0, readed;
 
-    while ((readed = vfs_fread (buffer, 1, COPY_BUF, in)) > 0)
+    while ((readed = in.fread (buffer, 1, COPY_BUF)) > 0)
     {
-        if (vfs_fwrite (buffer, 1, readed, out) != readed)
+        if (out.fwrite (buffer, 1, readed) != readed)
             goto FAILED;
 
         size += readed;
     }
 
-    if (vfs_ftruncate (out, size) < 0)
+    if (out.ftruncate (size) < 0)
         goto FAILED;
 
     g_free (buffer);
@@ -176,7 +173,7 @@ bool write_and_pivot_files (vcedit_state * state)
 
     if (handle < 0)
     {
-        fprintf (stderr, "Failed to create temp file: %s.\n", error->message);
+        AUDERR ("Failed to create temp file: %s.\n", error->message);
         g_error_free (error);
         return false;
     }
@@ -185,30 +182,28 @@ bool write_and_pivot_files (vcedit_state * state)
 
     StringBuf temp_uri = filename_to_uri (temp);
     g_return_val_if_fail (temp_uri, false);
-    VFSFile * temp_vfs = vfs_fopen (temp_uri, "r+");
+    VFSFile temp_vfs (temp_uri, "r+");
     g_return_val_if_fail (temp_vfs, false);
 
     if (vcedit_write (state, temp_vfs) < 0)
     {
-        fprintf (stderr, "Tag update failed: %s.\n", state->lasterror);
-        vfs_fclose (temp_vfs);
+        AUDERR ("Tag update failed: %s.\n", state->lasterror);
         g_free (temp);
         return false;
     }
 
-    if (! copy_vfs (temp_vfs, (VFSFile *) state->in))
+    if (! copy_vfs (temp_vfs, * state->in))
     {
-        fprintf (stderr, "Failed to copy temp file.  The temp file has not "
+        AUDERR ("Failed to copy temp file.  The temp file has not "
          "been deleted: %s.\n", temp);
-        vfs_fclose (temp_vfs);
         g_free (temp);
         return false;
     }
 
-    vfs_fclose (temp_vfs);
+    temp_vfs = VFSFile ();
 
     if (g_unlink (temp) < 0)
-        fprintf (stderr, "Failed to delete temp file: %s.\n", temp);
+        AUDERR ("Failed to delete temp file: %s.\n", temp);
 
     g_free (temp);
     return true;

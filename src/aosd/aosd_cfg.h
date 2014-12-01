@@ -21,11 +21,6 @@
 #ifndef _I_AOSD_CFG_H
 #define _I_AOSD_CFG_H 1
 
-#include "aosd_common.h"
-
-#include <stdint.h>
-#include <glib.h>
-
 #include <libaudcore/objects.h>
 
 /* in this release only one user font is supported */
@@ -35,6 +30,16 @@
 #define AOSD_MISC_TRANSPARENCY_FAKE 0
 #define AOSD_MISC_TRANSPARENCY_REAL 1
 
+#define AOSD_DECO_STYLE_MAX_COLORS 2
+
+enum
+{
+  AOSD_DECO_STYLE_RECT,
+  AOSD_DECO_STYLE_ROUNDRECT,
+  AOSD_DECO_STYLE_CONCAVERECT,
+  AOSD_DECO_STYLE_NONE,
+  AOSD_NUM_DECO_STYLES
+};
 
 enum
 {
@@ -49,13 +54,21 @@ enum
   AOSD_POSITION_PLACEMENT_BOTTOMRIGHT
 };
 
+enum
+{
+  AOSD_TRIGGER_PB_START = 0,
+  AOSD_TRIGGER_PB_TITLECHANGE,
+  AOSD_TRIGGER_PB_PAUSEON,
+  AOSD_TRIGGER_PB_PAUSEOFF,
+  AOSD_NUM_TRIGGERS
+};
 
 typedef struct
 {
-  uint16_t red;
-  uint16_t green;
-  uint16_t blue;
-  uint16_t alpha;
+  int red;
+  int green;
+  int blue;
+  int alpha;
 }
 aosd_color_t;
 
@@ -64,7 +77,7 @@ aosd_color_t;
 typedef struct
 {
   int code;
-  GArray *colors;
+  aosd_color_t colors[AOSD_DECO_STYLE_MAX_COLORS];
 }
 aosd_cfg_osd_decoration_t;
 
@@ -74,9 +87,8 @@ typedef struct
 {
   String fonts_name[AOSD_TEXT_FONTS_NUM];
   aosd_color_t fonts_color[AOSD_TEXT_FONTS_NUM];
-  gboolean fonts_draw_shadow[AOSD_TEXT_FONTS_NUM];
+  bool fonts_draw_shadow[AOSD_TEXT_FONTS_NUM];
   aosd_color_t fonts_shadow_color[AOSD_TEXT_FONTS_NUM];
-  gboolean utf8conv_disable;
 }
 aosd_cfg_osd_text_t;
 
@@ -106,7 +118,7 @@ aosd_cfg_osd_position_t;
 /* config portion containing osd trigger information */
 typedef struct
 {
-  GArray *active;
+  int enabled[AOSD_NUM_TRIGGERS];
 }
 aosd_cfg_osd_trigger_t;
 
@@ -129,26 +141,13 @@ typedef struct
   aosd_cfg_osd_trigger_t trigger;
   aosd_cfg_osd_misc_t misc;
 }
-aosd_cfg_osd_t;
-
-
-/* config portion containing all config information */
-typedef struct
-{
-  gboolean set;
-
-  aosd_cfg_osd_t * osd;
-}
 aosd_cfg_t;
 
 
 /* API */
-aosd_cfg_t * aosd_cfg_new ( void );
-void aosd_cfg_delete ( aosd_cfg_t * cfg );
-aosd_cfg_osd_t * aosd_cfg_osd_new( void );
-void aosd_cfg_osd_delete ( aosd_cfg_osd_t * cfg_osd );
-aosd_cfg_osd_t * aosd_cfg_osd_copy ( aosd_cfg_osd_t * cfg_osd );
-int aosd_cfg_load ( aosd_cfg_t * cfg );
-int aosd_cfg_save ( aosd_cfg_t * cfg );
+void aosd_cfg_load (aosd_cfg_t & cfg);
+void aosd_cfg_save (const aosd_cfg_t & cfg);
+
+extern aosd_cfg_t global_config;
 
 #endif /* !_I_AOSD_CFG_H */

@@ -8,7 +8,6 @@
  *
  */
 #include <glib.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ogg/ogg.h>
@@ -154,7 +153,7 @@ _fetch_next_packet(vcedit_state * s, ogg_packet * p, ogg_page * page)
             return 0;
         while (ogg_sync_pageout(s->oy, page) <= 0) {
             buffer = ogg_sync_buffer(s->oy, CHUNKSIZE);
-            bytes = s->read(buffer, 1, CHUNKSIZE, s->in);
+            bytes = s->in->fread(buffer, 1, CHUNKSIZE);
             ogg_sync_wrote(s->oy, bytes);
             if (bytes == 0)
                 return 0;
@@ -174,17 +173,7 @@ _fetch_next_packet(vcedit_state * s, ogg_packet * p, ogg_page * page)
 
 
 int
-vcedit_open(vcedit_state * state, VFSFile * in)
-{
-    return vcedit_open_callbacks(state, (void *) in,
-                                 (vcedit_read_func) vfs_fread,
-                                 (vcedit_write_func) vfs_fwrite);
-}
-
-int
-vcedit_open_callbacks(vcedit_state * state, void *in,
-                      vcedit_read_func read_func,
-                      vcedit_write_func write_func)
+vcedit_open(vcedit_state * state, VFSFile & in)
 {
     char *buffer;
     int64_t bytes, i;
@@ -194,16 +183,14 @@ vcedit_open_callbacks(vcedit_state * state, void *in,
     ogg_packet header_codebooks;
     ogg_page og;
 
-    state->in = in;
-    state->read = read_func;
-    state->write = write_func;
+    state->in = & in;
 
     state->oy = g_new(ogg_sync_state, 1);
     ogg_sync_init(state->oy);
 
     buffer = ogg_sync_buffer(state->oy, CHUNKSIZE);
 
-    bytes = state->read(buffer, 1, CHUNKSIZE, state->in);
+    bytes = state->in->fread(buffer, 1, CHUNKSIZE);
 
     ogg_sync_wrote(state->oy, bytes);
 
@@ -274,7 +261,7 @@ vcedit_open_callbacks(vcedit_state * state, void *in,
         }
 
         buffer = ogg_sync_buffer(state->oy, CHUNKSIZE);
-        bytes = state->read(buffer, 1, CHUNKSIZE, state->in);
+        bytes = state->in->fread(buffer, 1, CHUNKSIZE);
         if (bytes == 0 && i < 2) {
             state->lasterror = "EOF before end of vorbis headers.";
             goto err;
@@ -301,7 +288,7 @@ dump_state(vcedit_state * state)
 #endif
 
 int
-vcedit_write(vcedit_state * state, void *out)
+vcedit_write(vcedit_state * state, VFSFile & out)
 {
 
     ogg_stream_state streamout;
@@ -341,9 +328,9 @@ vcedit_write(vcedit_state * state, void *out)
     ogg_stream_packetin(&streamout, &header_codebooks);
 
     while ((result = ogg_stream_flush(&streamout, &ogout))) {
-        if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
+        if (out.fwrite(ogout.header, 1, ogout.header_len) != ogout.header_len)
             goto cleanup;
-        if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
+        if (out.fwrite(ogout.body, 1, ogout.body_len) != ogout.body_len)
             goto cleanup;
     }
 
@@ -354,17 +341,17 @@ vcedit_write(vcedit_state * state, void *out)
 
         if (needflush) {
             if (ogg_stream_flush(&streamout, &ogout)) {
-                if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
+                if (out.fwrite(ogout.header, 1, ogout.header_len) != ogout.header_len)
                     goto cleanup;
-                if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
+                if (out.fwrite(ogout.body, 1, ogout.body_len) != ogout.body_len)
                     goto cleanup;
             }
         }
         else if (needout) {
             if (ogg_stream_pageout(&streamout, &ogout)) {
-                if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
+                if (out.fwrite(ogout.header, 1, ogout.header_len) != ogout.header_len)
                     goto cleanup;
-                if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
+                if (out.fwrite(ogout.body, 1, ogout.body_len) != ogout.body_len)
                     goto cleanup;
             }
         }
@@ -391,9 +378,9 @@ vcedit_write(vcedit_state * state, void *out)
 
     streamout.e_o_s = 1;
     while (ogg_stream_flush(&streamout, &ogout)) {
-        if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
+        if (out.fwrite(ogout.header, 1, ogout.header_len) != ogout.header_len)
             goto cleanup;
-        if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
+        if (out.fwrite(ogout.body, 1, ogout.body_len) != ogout.body_len)
             goto cleanup;
     }
 
@@ -402,9 +389,9 @@ vcedit_write(vcedit_state * state, void *out)
     vorbis_info_clear(&state->vi);
 
     if (state->extrapage) {
-        if (state->write(ogin.header, 1, ogin.header_len, out) != ogin.header_len)
+        if (out.fwrite(ogin.header, 1, ogin.header_len) != ogin.header_len)
             goto cleanup;
-        if (state->write(ogin.body, 1, ogin.body_len, out) != ogin.body_len)
+        if (out.fwrite(ogin.body, 1, ogin.body_len) != ogin.body_len)
             goto cleanup;
     }
 
@@ -421,14 +408,14 @@ vcedit_write(vcedit_state * state, void *out)
             else {
                 /* Don't bother going through the rest, we can just
                  * write the page out now */
-                if (state->write(ogout.header, 1, ogout.header_len, out) != ogout.header_len)
+                if (out.fwrite(ogout.header, 1, ogout.header_len) != ogout.header_len)
                     goto cleanup;
-                if (state->write(ogout.body, 1, ogout.body_len, out) != ogout.body_len)
+                if (out.fwrite(ogout.body, 1, ogout.body_len) != ogout.body_len)
                     goto cleanup;
             }
         }
         buffer = ogg_sync_buffer(state->oy, CHUNKSIZE);
-        bytes = state->read(buffer, 1, CHUNKSIZE, state->in);
+        bytes = state->in->fread(buffer, 1, CHUNKSIZE);
         ogg_sync_wrote(state->oy, bytes);
         if (bytes == 0) {
             state->eosin = 1;

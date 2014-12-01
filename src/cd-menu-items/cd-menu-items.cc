@@ -28,14 +28,35 @@
 #define N_ITEMS 2
 #define N_MENUS 3
 
-static const char * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
-static const int menus[N_MENUS] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_ADD, AUD_MENU_PLAYLIST};
+class CDMenuItems : public GeneralPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Audio CD Menu Items"),
+        PACKAGE
+    };
 
-static void cd_play (void) {aud_drct_pl_open ("cdda://"); }
-static void cd_add (void) {aud_drct_pl_add ("cdda://", -1); }
-static void (* funcs[N_ITEMS]) (void) = {cd_play, cd_add};
+    constexpr CDMenuItems () : GeneralPlugin (info, true) {}
 
-static bool cd_init (void)
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT CDMenuItems aud_plugin_instance;
+
+static constexpr const char * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
+
+static constexpr AudMenuID menus[N_MENUS] = {
+    AudMenuID::Main,
+    AudMenuID::PlaylistAdd,
+    AudMenuID::Playlist
+};
+
+static void cd_play () {aud_drct_pl_open ("cdda://"); }
+static void cd_add () {aud_drct_pl_add ("cdda://", -1); }
+static void (* funcs[N_ITEMS]) () = {cd_play, cd_add};
+
+bool CDMenuItems::init ()
 {
     for (int m = 0; m < N_MENUS; m ++)
         for (int i = 0; i < N_ITEMS; i ++)
@@ -44,17 +65,9 @@ static bool cd_init (void)
     return TRUE;
 }
 
-void cd_cleanup (void)
+void CDMenuItems::cleanup ()
 {
     for (int m = 0; m < N_MENUS; m ++)
         for (int i = 0; i < N_ITEMS; i ++)
             aud_plugin_menu_remove (menus[m], funcs[i]);
 }
-
-#define AUD_PLUGIN_NAME        N_("Audio CD Menu Items")
-#define AUD_GENERAL_AUTO_ENABLE  TRUE
-#define AUD_PLUGIN_INIT        cd_init
-#define AUD_PLUGIN_CLEANUP     cd_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>

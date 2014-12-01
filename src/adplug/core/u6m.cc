@@ -36,7 +36,7 @@ Cu6mPlayer::factory (Copl * newopl)
 }
 
 bool
-Cu6mPlayer::load (VFSFile * fd, const CFileProvider & fp)
+Cu6mPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   // file validation section
   // this section only checks a few *necessary* conditions

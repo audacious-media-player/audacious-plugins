@@ -266,7 +266,7 @@ skin_pixmap_locate_basenames(const Skin * skin,
     skin_pixmap_free_basenames(basenames);
 
     if (! filename)
-        fprintf (stderr, "Skin does not contain a \"%s\" pixmap.\n",
+        AUDERR ("Skin does not contain a \"%s\" pixmap.\n",
          pixmap_id_mapping->name);
 
     return filename;
@@ -385,15 +385,14 @@ static void skin_load_viscolor (Skin * skin, const char * path)
 {
     memcpy (skin->vis_colors, default_vis_colors, sizeof skin->vis_colors);
 
-    VFSFile * file = open_local_file_nocase (path, "viscolor.txt");
+    VFSFile file = open_local_file_nocase (path, "viscolor.txt");
     if (! file)
         return;
 
-    void * buffer = nullptr;
-    vfs_file_read_all (file, & buffer, nullptr);
-    vfs_fclose (file);
+    Index<char> buffer = file.read_all ();
+    buffer.append (0);  /* null-terminated */
 
-    char * string = (char *) buffer;
+    char * string = buffer.begin ();
 
     for (int line = 0; string && line < 24; line ++)
     {
@@ -407,8 +406,6 @@ static void skin_load_viscolor (Skin * skin, const char * path)
         g_array_free (array, TRUE);
         string = next;
     }
-
-    g_free (buffer);
 }
 
 static void
@@ -546,7 +543,7 @@ void skin_install_skin (const char * path)
 
     if (g_mkdir_with_parents (skins_paths[SKINS_PATH_USER_SKIN_DIR], mode) < 0)
     {
-        fprintf (stderr, "Failed to create %s: %s\n",
+        AUDERR ("Failed to create %s: %s\n",
          skins_paths[SKINS_PATH_USER_SKIN_DIR], strerror (errno));
         return;
     }
@@ -557,7 +554,7 @@ void skin_install_skin (const char * path)
 
     if (! g_file_get_contents (path, & data, & len, & err))
     {
-        fprintf (stderr, "Failed to read %s: %s\n", path, err->message);
+        AUDERR ("Failed to read %s: %s\n", path, err->message);
         g_error_free (err);
         return;
     }
@@ -567,7 +564,7 @@ void skin_install_skin (const char * path)
 
     if (! g_file_set_contents (target, data, len, & err))
     {
-        fprintf (stderr, "Failed to write %s: %s\n", path, err->message);
+        AUDERR ("Failed to write %s: %s\n", path, err->message);
         g_error_free (err);
         g_free (data);
         g_free (base);

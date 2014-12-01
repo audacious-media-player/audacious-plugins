@@ -37,7 +37,7 @@ CxsmPlayer::~CxsmPlayer ()
 }
 
 bool
-CxsmPlayer::load (VFSFile * fd, const CFileProvider & fp)
+CxsmPlayer::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

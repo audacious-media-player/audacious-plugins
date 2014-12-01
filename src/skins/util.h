@@ -36,7 +36,7 @@ typedef gboolean(*DirForeachFunc) (const char *path, const char *basename,
 char * find_file_case (const char * folder, const char * basename);
 char * find_file_case_path (const char * folder, const char * basename);
 
-VFSFile * open_local_file_nocase (const char * folder, const char * basename);
+VFSFile open_local_file_nocase (const char * folder, const char * basename);
 
 char * text_parse_line (char * text);
 

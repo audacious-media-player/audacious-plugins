@@ -32,7 +32,7 @@ CmadLoader::factory (Copl * newopl)
 }
 
 bool
-CmadLoader::load (VFSFile * fd, const CFileProvider & fp)
+CmadLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

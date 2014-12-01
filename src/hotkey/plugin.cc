@@ -33,7 +33,6 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 
 #include <X11/XF86keysym.h>
@@ -53,17 +52,30 @@
 #include "gui.h"
 #include "grab.h"
 
+class GlobalHotkeys : public GeneralPlugin
+{
+public:
+    static const char about[];
 
-/* func defs */
-static bool init (void);
-static void cleanup (void);
+    static constexpr PluginInfo info = {
+        N_("Global Hotkeys"),
+        PACKAGE,
+        about,
+        & hotkey_prefs
+    };
 
+    constexpr GlobalHotkeys () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT GlobalHotkeys aud_plugin_instance;
 
 /* global vars */
 static PluginConfig plugin_cfg;
-static gboolean loaded = FALSE;
 
-static const char about[] =
+const char GlobalHotkeys::about[] =
  N_("Global Hotkey Plugin\n"
     "Control the player with global key combinations or multimedia keys.\n\n"
     "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n\n"
@@ -74,15 +86,6 @@ static const char about[] =
     " Jonathan A. Davis <davis@jdhouse.org>,\n"
     " Jeremy Tan <nsx@nsx.homeip.net>");
 
-#define AUD_PLUGIN_NAME        N_("Global Hotkeys")
-#define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CONFIGWIN   show_configure
-#define AUD_PLUGIN_CLEANUP     cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
-
 PluginConfig* get_config(void)
 {
     return &plugin_cfg;
@@ -92,20 +95,22 @@ PluginConfig* get_config(void)
 /*
  * plugin activated
  */
-static bool init (void)
+bool GlobalHotkeys::init ()
 {
+    if (aud_get_mainloop_type () != MainloopType::GLib)
+        return false;
+
     if (! gtk_init_check (nullptr, nullptr))
     {
-        fprintf (stderr, "hotkey: GTK+ initialization failed.\n");
-        return FALSE;
+        AUDERR ("GTK+ initialization failed.\n");
+        return false;
     }
 
     setup_filter();
     load_config ( );
     grab_keys ( );
 
-    loaded = TRUE;
-    return TRUE;
+    return true;
 }
 
 /* handle keys */
@@ -116,7 +121,7 @@ gboolean handle_keyevent (EVENT event)
     gboolean mute;
 
     /* get current volume */
-    aud_drct_get_volume_main (&current_volume);
+    current_volume = aud_drct_get_volume_main ();
     old_volume = current_volume;
     if (current_volume)
     {
@@ -420,10 +425,9 @@ void save_config (void)
     aud_set_int ("globalHotkey", "NumHotkeys", max);
 }
 
-static void cleanup (void)
+void GlobalHotkeys::cleanup ()
 {
     HotkeyConfiguration* hotkey;
-    if (!loaded) return;
     ungrab_keys ();
     release_filter();
     hotkey = &(plugin_cfg.first);
@@ -439,10 +443,4 @@ static void cleanup (void)
     plugin_cfg.first.key = 0;
     plugin_cfg.first.event = (EVENT) 0;
     plugin_cfg.first.mask = 0;
-    loaded = FALSE;
-}
-
-gboolean is_loaded (void)
-{
-    return loaded;
 }

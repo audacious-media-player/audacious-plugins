@@ -31,10 +31,11 @@
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtk.h>
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
+#include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
-#include <libaudcore/audstrings.h>
 #include <libaudgui/libaudgui.h>
 
 #include "actions-mainwin.h"
@@ -42,6 +43,7 @@
 #include "dnd.h"
 #include "menus.h"
 #include "plugin.h"
+#include "plugin-window.h"
 #include "skins_cfg.h"
 #include "ui_equalizer.h"
 #include "ui_main.h"
@@ -211,11 +213,11 @@ static void mainwin_set_info_text (const char * text)
 
 static int status_message_source = 0;
 
-static gboolean clear_status_message (void * unused)
+static gboolean clear_status_message (void *)
 {
     mainwin_release_info_text ();
     status_message_source = 0;
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 void mainwin_show_status_message (const char * message)
@@ -571,12 +573,12 @@ static gboolean seek_timeout (void * rewind)
     if (! aud_drct_get_playing ())
     {
         seek_source = 0;
-        return FALSE;
+        return G_SOURCE_REMOVE;
     }
 
     int held = time_diff (seek_time, time_now ());
     if (held < SEEK_THRESHOLD)
-        return TRUE;
+        return G_SOURCE_CONTINUE;
 
     int position;
     if (GPOINTER_TO_INT (rewind))
@@ -588,7 +590,7 @@ static gboolean seek_timeout (void * rewind)
     hslider_set_pos (mainwin_position, position);
     mainwin_position_motion_cb ();
 
-    return TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
@@ -599,8 +601,7 @@ static gboolean seek_press (GtkWidget * widget, GdkEventButton * event,
 
     seek_start = hslider_get_pos (mainwin_position);
     seek_time = time_now ();
-    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, GINT_TO_POINTER
-     (rewind));
+    seek_source = g_timeout_add (SEEK_TIMEOUT, seek_timeout, GINT_TO_POINTER (rewind));
     return FALSE;
 }
 
@@ -777,6 +778,13 @@ static void mainwin_volume_release_cb (void)
     mainwin_adjust_volume_release();
 }
 
+static gboolean mainwin_volume_timeout_cb (void *)
+{
+    mainwin_volume_release_cb ();
+    mainwin_volume_release_timeout = 0;
+    return G_SOURCE_REMOVE;
+}
+
 static void mainwin_balance_set_frame (void)
 {
     int pos = hslider_get_pos (mainwin_balance);
@@ -817,9 +825,8 @@ static void mainwin_balance_release_cb (void)
 
 static void mainwin_set_volume_diff (int diff)
 {
-    int vol;
+    int vol = aud_drct_get_volume_main ();
 
-    aud_drct_get_volume_main (& vol);
     vol = aud::clamp (vol + diff, 0, 100);
     mainwin_adjust_volume_motion(vol);
     mainwin_set_volume_slider(vol);
@@ -828,7 +835,7 @@ static void mainwin_set_volume_diff (int diff)
     if (mainwin_volume_release_timeout)
         g_source_remove(mainwin_volume_release_timeout);
     mainwin_volume_release_timeout =
-        g_timeout_add(700, (GSourceFunc)(mainwin_volume_release_cb), nullptr);
+        g_timeout_add(700, mainwin_volume_timeout_cb, nullptr);
 }
 
 void mainwin_mr_change (MenuRowItem i)
@@ -850,6 +857,9 @@ void mainwin_mr_change (MenuRowItem i)
         case MENUROW_SCALE:
             mainwin_lock_info_text (_("Double Size"));
             break;
+        case MENUROW_VISUALIZATION:
+            mainwin_lock_info_text (_("Visualizations"));
+            break;
         default:
             break;
     }
@@ -857,7 +867,8 @@ void mainwin_mr_change (MenuRowItem i)
 
 void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
 {
-    switch (i) {
+    switch (i)
+    {
         case MENUROW_OPTIONS:
             menu_popup (UI_MENU_VIEW, event->x_root, event->y_root, FALSE, FALSE, 1, event->time);
             break;
@@ -869,6 +880,9 @@ void mainwin_mr_release (MenuRowItem i, GdkEventButton * event)
             break;
         case MENUROW_SCALE:
             view_set_double_size (! aud_get_bool ("skins", "double_size"));
+            break;
+        case MENUROW_VISUALIZATION:
+            audgui_show_prefs_for_plugin_type (PluginType::Vis);
             break;
         default:
             break;
@@ -1196,10 +1210,9 @@ mainwin_create(void)
 
 static void mainwin_update_volume (void)
 {
-    int volume, balance;
+    int volume = aud_drct_get_volume_main ();
+    int balance = aud_drct_get_volume_balance ();
 
-    aud_drct_get_volume_main (& volume);
-    aud_drct_get_volume_balance (& balance);
     mainwin_set_volume_slider (volume);
     mainwin_set_balance_slider (balance);
     equalizerwin_set_volume_slider (volume);
@@ -1278,12 +1291,32 @@ void action_play_location (void)
     audgui_show_add_url_window (TRUE);
 }
 
+void action_playlist_manager (void)
+{
+    PluginHandle * manager = aud_plugin_lookup_basename ("playlist-manager");
+    if (manager)
+    {
+        aud_plugin_enable (manager, true);
+        focus_plugin_window (manager);
+    }
+}
+
+void action_search_tool (void)
+{
+    PluginHandle * search = aud_plugin_lookup_basename ("search-tool");
+    if (search)
+    {
+        aud_plugin_enable (search, true);
+        focus_plugin_window (search);
+    }
+}
+
 void action_ab_set (void)
 {
     if (aud_drct_get_length () > 0)
     {
         int a, b;
-        aud_drct_get_ab_repeat (& a, & b);
+        aud_drct_get_ab_repeat (a, b);
 
         if (a < 0 || b >= 0)
         {

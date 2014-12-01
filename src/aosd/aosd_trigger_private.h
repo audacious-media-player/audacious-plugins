@@ -21,10 +21,6 @@
 #ifndef _I_AOSD_TRIGGER_PRIVATE_H
 #define _I_AOSD_TRIGGER_PRIVATE_H 1
 
-#include "aosd_common.h"
-#include <glib.h>
-
-
 /* trigger object
    ----------------------------------------------------------
    name           name
@@ -36,10 +32,9 @@ typedef struct
 {
   const char * name;
   const char * desc;
-  void (*onoff_func)( gboolean );
+  void (*onoff_func)( bool );
   void (*callback_func)( void * , void * );
 }
 aosd_trigger_t;
-
 
 #endif /* !_I_AOSD_TRIGGER_PRIVATE_H */

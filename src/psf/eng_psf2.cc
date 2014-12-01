@@ -46,8 +46,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <glib.h>
 #include <zlib.h>
+#include <libaudcore/audstrings.h>
 
 #include "ao.h"
 #include "eng_protos.h"
@@ -80,7 +80,7 @@ static uint32_t initialPC, initialSP;
 static uint32_t loadAddr, lengthMS, fadeMS;
 
 static uint8_t *filesys[MAX_FS];
-static uint8_t *lib_raw_file;
+static Index<char> lib_raw_file;
 static uint32_t fssize[MAX_FS];
 static int num_fs;
 
@@ -305,7 +305,7 @@ static uint32_t load_file_ex(uint8_t *top, uint8_t *start, uint32_t len, const c
 		printf("[%s vs %s]: ofs %08x uncomp %08x bsize %08x\n", cptr, matchname, offs, uncomp, bsize);
 		#endif
 
-		if (!g_ascii_strcasecmp((char *)cptr, matchname))
+		if (!strcmp_nocase((char *)cptr, matchname))
 		{
 			if ((uncomp == 0) && (bsize == 0))
 			{
@@ -449,7 +449,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 {
 	uint8_t *file, *lib_decoded;
 	uint32_t irx_len;
-	uint64_t file_len, lib_raw_length, lib_len;
+	uint64_t file_len, lib_len;
 	uint8_t *buf;
 	union cpuinfo mipsinfo;
 	corlett_t *lib;
@@ -480,25 +480,18 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 	// Get the library file, if any
 	if (c->lib[0] != 0)
 	{
-		uint64_t tmp_length;
-
 		#if DEBUG_LOADER
 		printf("Loading library: %s\n", c->lib);
 		#endif
-		if (ao_get_lib(c->lib, &lib_raw_file, &tmp_length) != AO_SUCCESS)
-		{
-			return AO_FAIL;
-		}
-		lib_raw_length = tmp_length;
 
-		if (lib_raw_file == nullptr)
+		lib_raw_file = ao_get_lib(c->lib);
+
+		if (!lib_raw_file.len())
 			return AO_FAIL;
 
-		if (corlett_decode(lib_raw_file, lib_raw_length, &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
-		{
-			free(lib_raw_file);
+		if (corlett_decode((uint8_t *)lib_raw_file.begin(), lib_raw_file.len(),
+		 &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
 			return AO_FAIL;
-		}
 
 		#if DEBUG_LOADER
 		printf("Lib FS section: size %x bytes\n", lib->res_size);
@@ -579,7 +572,7 @@ int32_t psf2_start(uint8_t *buffer, uint32_t length)
 	return AO_SUCCESS;
 }
 
-int32_t psf2_execute(void)
+int32_t psf2_execute(void (*update)(const void *, int))
 {
 	int i;
 
@@ -587,7 +580,7 @@ int32_t psf2_execute(void)
 	{
 		for (i = 0; i < 44100 / 60; i++)
 		{
-			SPU2async(1, nullptr);
+			SPU2async(update);
 			ps2_hw_slice();
 		}
 
@@ -600,10 +593,7 @@ int32_t psf2_execute(void)
 int32_t psf2_stop(void)
 {
 	SPU2close();
-	if (c->lib[0] != 0)
-	{
-		free(lib_raw_file);
-	}
+	lib_raw_file.clear();
 	free(c);
 
 	return AO_SUCCESS;

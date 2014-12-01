@@ -20,7 +20,6 @@
 #ifndef FILTER_INPUT_WIDGET_H
 #define FILTER_INPUT_WIDGET_H
 
-#include <QtGui>
 #include <QLineEdit>
 
 class FilterInput : public QLineEdit

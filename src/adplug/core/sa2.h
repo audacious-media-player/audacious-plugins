@@ -31,7 +31,7 @@ public:
 		: CmodPlayer(newopl)
 	{ }
 
-	bool load(VFSFile *fd, const CFileProvider &fp);
+	bool load(VFSFile &fd, const CFileProvider &fp);
 
 	std::string gettype();
 	std::string gettitle();

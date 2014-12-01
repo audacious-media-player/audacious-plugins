@@ -20,24 +20,29 @@
 #ifndef PLAYLIST_TABS_H
 #define PLAYLIST_TABS_H
 
+#include <QTabWidget>
+
+#include <libaudcore/hook.h>
 #include <libaudcore/playlist.h>
 
 #include "playlist.h"
 #include "filter_input.h"
 
 class PlaylistTabBar;
+class PlaylistWidget;
+class QLineEdit;
 
 class PlaylistTabs : public QTabWidget
 {
     Q_OBJECT
 
 public:
-    PlaylistTabs (QTabWidget * parent = 0);
+    PlaylistTabs (QWidget * parent = 0);
     ~PlaylistTabs ();
-    Playlist * playlistWidget (int num);
-    Playlist * activePlaylistWidget ();
+    PlaylistWidget * playlistWidget (int num);
+    PlaylistWidget * activePlaylistWidget ();
 
-    void editTab (int idx) const;
+    void editTab (int idx);
 
 public slots:
     void filterTrigger (const QString &text);
@@ -48,49 +53,24 @@ protected:
     bool eventFilter (QObject * obj, QEvent *e);
 
 private:
-    QLineEdit *m_lineedit;
+    QWidget *m_leftbtn;
     PlaylistTabBar *m_tabbar;
+
+    QLineEdit * getTabEdit (int idx);
+    void setupTab (int idx, QWidget * button, const QString & text, QWidget * * oldp);
 
     void populatePlaylists ();
     void maybeCreateTab (int count_, int uniq_id);
     void cullPlaylists ();
+    void cancelRename ();
 
-    static void playlist_update_cb (void * data, PlaylistTabs * tabWidget)
-    {
-        int global_level = (int) (long) data;
+    void playlist_update_cb (Playlist::Update global_level);
+    void playlist_position_cb (int list);
 
-        if (global_level == PLAYLIST_UPDATE_STRUCTURE)
-            tabWidget->populatePlaylists();
-
-        int lists = aud_playlist_count ();
-
-        for (int list = 0; list < lists; list ++)
-        {
-            int at, count;
-            int level = aud_playlist_updated_range (list, & at, & count);
-
-            if (level)
-                tabWidget->playlistWidget (list)->update (level, at, count);
-        }
-    }
-
-    static void playlist_activate_cb (void * data, PlaylistTabs * tabWidget)
-    {
-
-    }
-
-    static void playlist_set_playing_cb (void * data, PlaylistTabs * tabWidget)
-    {
-
-    }
-
-    static void playlist_position_cb (void * data, PlaylistTabs * tabWidget)
-    {
-        int num = (int) (long) data;
-        auto playlistWidget = tabWidget->playlistWidget (num);
-        if (playlistWidget)
-            playlistWidget->positionUpdate ();
-    }
+    const HookReceiver<PlaylistTabs, Playlist::Update>
+     update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
+    const HookReceiver<PlaylistTabs, int>
+     position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
 };
 
 class PlaylistTabBar : public QTabBar

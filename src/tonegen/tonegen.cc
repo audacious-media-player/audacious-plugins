@@ -16,11 +16,11 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 
-#include <glib.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -35,58 +35,65 @@
 #define PI              3.14159265358979323846
 #endif
 
-static bool tone_is_our_fd(const char *filename, VFSFile *fd)
+class ToneGen : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char *const schemes[];
+
+    static constexpr PluginInfo info = {
+        N_("Tone Generator"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo()
+        .with_schemes(schemes);
+
+    constexpr ToneGen() : InputPlugin(info, iinfo) {}
+
+    bool is_our_file(const char *filename, VFSFile &file);
+    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool play(const char *filename, VFSFile &file);
+};
+
+EXPORT ToneGen aud_plugin_instance;
+
+bool ToneGen::is_our_file(const char *filename, VFSFile &file)
 {
     if (!strncmp(filename, "tone://", 7))
         return true;
     return false;
 }
 
-static GArray *tone_filename_parse(const char * filename)
+static Index<double> tone_filename_parse(const char *filename)
 {
-    GArray *frequencies = g_array_new(false, false, sizeof(double));
-    char **strings, **ptr;
+    Index<double> frequencies;
 
     if (strncmp(filename, "tone://", 7))
-        return nullptr;
+        return frequencies;
 
-    strings = g_strsplit(filename + 7, ";", 100);
+    auto strings = str_list_to_index(filename + 7, ";");
 
-    for (ptr = strings; *ptr != nullptr; ptr++)
+    for (const char *str : strings)
     {
-        double freq = strtod(*ptr, nullptr);
+        double freq = strtod(str, nullptr);
         if (freq >= MIN_FREQ && freq <= MAX_FREQ)
-            g_array_append_val(frequencies, freq);
-    }
-    g_strfreev(strings);
-
-    if (frequencies->len == 0)
-    {
-        g_array_free(frequencies, true);
-        frequencies = nullptr;
+            frequencies.append(freq);
     }
 
     return frequencies;
 }
 
-static char *tone_title(const char * filename)
+static StringBuf tone_title(const char *filename)
 {
-    GArray *freqs;
-    char *title;
-    size_t i;
+    auto freqs = tone_filename_parse(filename);
+    if (!freqs.len())
+        return StringBuf();
 
-    freqs = tone_filename_parse(filename);
-    if (freqs == nullptr)
-        return nullptr;
-
-    title = g_strdup_printf(_("%s %.1f Hz"), _("Tone Generator: "), g_array_index(freqs, double, 0));
-    for (i = 1; i < freqs->len; i++)
-    {
-        char *old_title = title;
-        title = g_strdup_printf("%s;%.1f Hz", old_title, g_array_index(freqs, double, i));
-        g_free(old_title);
-    }
-    g_array_free(freqs, true);
+    auto title = str_printf(_("%s %.1f Hz"), _("Tone Generator: "), freqs[0]);
+    for (int i = 1; i < freqs.len(); i++)
+        title.combine(str_printf(";%.1f Hz", freqs[i]));
 
     return title;
 }
@@ -97,43 +104,34 @@ struct tone_t
     unsigned period, t;
 };
 
-static bool tone_play(const char *filename, VFSFile *file)
+bool ToneGen::play(const char *filename, VFSFile &file)
 {
-    GArray *frequencies;
     float data[BUF_SAMPLES];
-    size_t i;
-    bool error = false;
-    tone_t *tone = nullptr;
 
-    frequencies = tone_filename_parse(filename);
-    if (frequencies == nullptr)
+    auto frequencies = tone_filename_parse(filename);
+    if (!frequencies.len())
         return false;
 
-    if (aud_input_open_audio(FMT_FLOAT, OUTPUT_FREQ, 1) == 0)
-    {
-        error = true;
-        goto error_exit;
-    }
+    set_stream_bitrate(16 * OUTPUT_FREQ);
+    open_audio(FMT_FLOAT, OUTPUT_FREQ, 1);
 
-    aud_input_set_bitrate(16 * OUTPUT_FREQ);
-
-    tone = g_new(tone_t, frequencies->len);
-    for (i = 0; i < frequencies->len; i++)
+    Index<tone_t> tone;
+    tone.resize(frequencies.len());
+    for (int i = 0; i < frequencies.len(); i++)
     {
-        double f = g_array_index(frequencies, double, i);
+        double f = frequencies[i];
         tone[i].wd = 2 * PI * f / OUTPUT_FREQ;
-        tone[i].period = (G_MAXINT * 2U / OUTPUT_FREQ) * (OUTPUT_FREQ / f);
+        tone[i].period = (INT_MAX * 2U / OUTPUT_FREQ) * (OUTPUT_FREQ / f);
         tone[i].t = 0;
     }
 
-    while (!aud_input_check_stop())
+    while (!check_stop())
     {
-        for (i = 0; i < BUF_SAMPLES; i++)
+        for (int i = 0; i < BUF_SAMPLES; i++)
         {
-            size_t j;
-            double sum_sines;
+            double sum_sines = 0;
 
-            for (sum_sines = 0, j = 0; j < frequencies->len; j++)
+            for (int j = 0; j < frequencies.len(); j++)
             {
                 sum_sines += sin(tone[j].wd * tone[j].t);
                 if (tone[j].t > tone[j].period)
@@ -141,48 +139,27 @@ static bool tone_play(const char *filename, VFSFile *file)
                 tone[j].t++;
             }
             /* dithering can cause a little bit of clipping */
-            data[i] = (sum_sines * 0.999 / (double) frequencies->len);
+            data[i] = (sum_sines * 0.999 / (double)frequencies.len());
         }
 
-        aud_input_write_audio(data, BUF_BYTES);
+        write_audio(data, BUF_BYTES);
     }
 
-error_exit:
-    g_array_free(frequencies, true);
-    g_free(tone);
-
-    return !error;
+    return true;
 }
 
-static Tuple tone_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple ToneGen::read_tuple(const char *filename, VFSFile &file)
 {
     Tuple tuple;
-    tuple.set_filename (filename);
-    char *tmp;
-
-    if ((tmp = tone_title(filename)) != nullptr)
-    {
-        tuple.set_str (FIELD_TITLE, tmp);
-        g_free(tmp);
-    }
-
+    tuple.set_filename(filename);
+    tuple.set_str(Tuple::Title, tone_title(filename));
     return tuple;
 }
 
-static const char tone_about[] =
+const char ToneGen::about[] =
  N_("Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
     "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n\n"
     "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
     "e.g. tone://2000;2005 to play a 2000 Hz tone and a 2005 Hz tone");
 
-static const char * const schemes[] = {"tone", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Tone Generator")
-#define AUD_PLUGIN_ABOUT       tone_about
-#define AUD_INPUT_SCHEMES      schemes
-#define AUD_INPUT_IS_OUR_FILE  tone_is_our_fd
-#define AUD_INPUT_PLAY         tone_play
-#define AUD_INPUT_READ_TUPLE   tone_probe_for_tuple
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char *const ToneGen::schemes[] = {"tone", nullptr};

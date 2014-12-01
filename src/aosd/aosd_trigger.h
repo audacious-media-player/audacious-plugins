@@ -21,17 +21,12 @@
 #ifndef _I_AOSD_TRIGGER_H
 #define _I_AOSD_TRIGGER_H 1
 
-#include "aosd_common.h"
 #include "aosd_cfg.h"
-#include <glib.h>
-
 
 /* trigger public API */
-void aosd_trigger_get_codes_array ( int ** , int * );
 const char * aosd_trigger_get_name ( int );
 const char * aosd_trigger_get_desc ( int );
-void aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger );
-void aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger );
-
+void aosd_trigger_start (const aosd_cfg_osd_trigger_t & cfg_trigger);
+void aosd_trigger_stop (const aosd_cfg_osd_trigger_t & cfg_trigger);
 
 #endif /* !_I_AOSD_TRIGGER_H */

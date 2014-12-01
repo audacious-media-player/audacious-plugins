@@ -19,28 +19,51 @@
 
 /* TODO: implement more surround converters */
 
-#include <stdio.h>
 #include <stdlib.h>
-
-#include <glib.h>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 
-typedef void (* Converter) (float * * data, int * samples);
-
-static float * mixer_buf;
-
-static void mono_to_stereo (float * * data, int * samples)
+class ChannelMixer : public EffectPlugin
 {
-    int frames = * samples;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
-    * data = mixer_buf;
-    * samples = 2 * frames;
+    static constexpr PluginInfo info = {
+        N_("Channel Mixer"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    /* order #2: must be before crossfade */
+    constexpr ChannelMixer () : EffectPlugin (info, 2, false) {}
+
+    bool init ();
+    void cleanup ();
+
+    void start (int & channels, int & rate);
+    Index<float> & process (Index<float> & data);
+};
+
+EXPORT ChannelMixer aud_plugin_instance;
+
+typedef Index<float> & (* Converter) (Index<float> & data);
+
+static Index<float> mixer_buf;
+
+static Index<float> & mono_to_stereo (Index<float> & data)
+{
+    int frames = data.len ();
+    mixer_buf.resize (2 * frames);
+
+    float * get = data.begin ();
+    float * set = mixer_buf.begin ();
 
     while (frames --)
     {
@@ -48,16 +71,17 @@ static void mono_to_stereo (float * * data, int * samples)
         * set ++ = val;
         * set ++ = val;
     }
+
+    return mixer_buf;
 }
 
-static void stereo_to_mono (float * * data, int * samples)
+static Index<float> & stereo_to_mono (Index<float> & data)
 {
-    int frames = * samples / 2;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, frames);
+    int frames = data.len () / 2;
+    mixer_buf.resize (frames);
 
-    * data = mixer_buf;
-    * samples = frames;
+    float * get = data.begin ();
+    float * set = mixer_buf.begin ();
 
     while (frames --)
     {
@@ -65,16 +89,17 @@ static void stereo_to_mono (float * * data, int * samples)
         val += * get ++;
         * set ++ = val / 2;
     }
+
+    return mixer_buf;
 }
 
-static void quadro_to_stereo (float * * data, int * samples)
+static Index<float> & quadro_to_stereo (Index<float> & data)
 {
-    int frames = * samples / 4;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
+    int frames = data.len () / 4;
+    mixer_buf.resize (2 * frames);
 
-    * data = mixer_buf;
-    * samples = 2 * frames;
+    float * get = data.begin ();
+    float * set = mixer_buf.begin ();
 
     while (frames --)
     {
@@ -85,16 +110,17 @@ static void quadro_to_stereo (float * * data, int * samples)
         * set ++ = front_left + (back_left * 0.7);
         * set ++ = front_right + (back_right * 0.7);
     }
+
+    return mixer_buf;
 }
 
-static void surround_5p1_to_stereo (float * * data, int * samples)
+static Index<float> & surround_5p1_to_stereo (Index<float> & data)
 {
-    int frames = * samples / 6;
-    float * get = * data;
-    float * set = mixer_buf = g_renew (float, mixer_buf, 2 * frames);
+    int frames = data.len () / 6;
+    mixer_buf.resize (2 * frames);
 
-    * data = mixer_buf;
-    * samples = 2 * frames;
+    float * get = data.begin ();
+    float * set = mixer_buf.begin ();
 
     while (frames --)
     {
@@ -107,6 +133,8 @@ static void surround_5p1_to_stereo (float * * data, int * samples)
         * set ++ = front_left + (center * 0.5) + (lfe * 0.5) + (rear_left * 0.5);
         * set ++ = front_right + (center * 0.5) + (lfe * 0.5) + (rear_right * 0.5);
     }
+
+    return mixer_buf;
 }
 
 static Converter get_converter (int in, int out)
@@ -125,9 +153,9 @@ static Converter get_converter (int in, int out)
 
 static int input_channels, output_channels;
 
-void mixer_start (int * channels, int * rate)
+void ChannelMixer::start (int & channels, int & rate)
 {
-    input_channels = * channels;
+    input_channels = channels;
     output_channels = aud_get_int ("mixer", "channels");
 
     if (input_channels == output_channels)
@@ -135,62 +163,50 @@ void mixer_start (int * channels, int * rate)
 
     if (! get_converter (input_channels, output_channels))
     {
-        fprintf (stderr, "Converting %d to %d channels is not implemented.\n",
+        AUDERR ("Converting %d to %d channels is not implemented.\n",
          input_channels, output_channels);
         return;
     }
 
-    * channels = output_channels;
+    channels = output_channels;
 }
 
-void mixer_process (float * * data, int * samples)
+Index<float> & ChannelMixer::process (Index<float> & data)
 {
     if (input_channels == output_channels)
-        return;
+        return data;
 
     Converter converter = get_converter (input_channels, output_channels);
     if (converter)
-        converter (data, samples);
+        return converter (data);
+
+    return data;
 }
 
-static const char * const mixer_defaults[] = {
+const char * const ChannelMixer::defaults[] = {
  "channels", "2",
   nullptr};
 
-static bool mixer_init (void)
+bool ChannelMixer::init ()
 {
-    aud_config_set_defaults ("mixer", mixer_defaults);
+    aud_config_set_defaults ("mixer", defaults);
     return true;
 }
 
-static void mixer_cleanup (void)
+void ChannelMixer::cleanup ()
 {
-    g_free (mixer_buf);
-    mixer_buf = 0;
+    mixer_buf.clear ();
 }
 
-static const char mixer_about[] =
+const char ChannelMixer::about[] =
  N_("Channel Mixer Plugin for Audacious\n"
     "Copyright 2011-2012 John Lindgren and Michał Lipski");
 
-static const PreferencesWidget mixer_widgets[] = {
+const PreferencesWidget ChannelMixer::widgets[] = {
     WidgetLabel (N_("<b>Channel Mixer</b>")),
     WidgetSpin (N_("Output channels:"),
         WidgetInt ("mixer", "channels"),
         {1, AUD_MAX_CHANNELS, 1})
 };
 
-static const PluginPreferences mixer_prefs = {{mixer_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Channel Mixer")
-#define AUD_PLUGIN_ABOUT       mixer_about
-#define AUD_PLUGIN_PREFS       & mixer_prefs
-#define AUD_PLUGIN_INIT        mixer_init
-#define AUD_PLUGIN_CLEANUP     mixer_cleanup
-#define AUD_EFFECT_START       mixer_start
-#define AUD_EFFECT_PROCESS     mixer_process
-#define AUD_EFFECT_FINISH      mixer_process
-#define AUD_EFFECT_ORDER       2  /* must be before crossfade */
-
-#define AUD_DECLARE_EFFECT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences ChannelMixer::prefs = {{widgets}};

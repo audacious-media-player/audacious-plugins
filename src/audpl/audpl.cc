@@ -18,88 +18,105 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
-typedef struct {
+static const char * const audpl_exts[] = {"audpl"};
+
+class AudPlaylistLoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("Audacious Playlists (audpl)"), PACKAGE};
+
+    constexpr AudPlaylistLoader () : PlaylistPlugin (info, audpl_exts, true) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+    bool save (const char * filename, VFSFile & file, const char * title,
+     const Index<PlaylistAddItem> & items);
+};
+
+EXPORT AudPlaylistLoader aud_plugin_instance;
+
+class AudPlaylistParser : private IniParser
+{
+public:
+    AudPlaylistParser (String & title, Index<PlaylistAddItem> & items) :
+        title (title),
+        items (items) {}
+
+    void parse (VFSFile & file)
+    {
+        IniParser::parse (file);
+
+        /* finish last item */
+        if (uri)
+            finish_item ();
+    }
+
+private:
     String & title;
     Index<PlaylistAddItem> & items;
     String uri;
     Tuple tuple;
-} LoadState;
 
-static void finish_item (LoadState * state)
-{
-    state->items.append ({std::move (state->uri), std::move (state->tuple)});
-}
+    void finish_item ()
+        { items.append (std::move (uri), std::move (tuple)); }
 
-static void handle_heading (const char * heading, void * data)
-{
     /* no headings */
-}
+    void handle_heading (const char * heading) {}
 
-static void handle_entry (const char * key, const char * value, void * data)
-{
-    LoadState * state = (LoadState *) data;
-
-    if (! strcmp (key, "uri"))
+    void handle_entry (const char * key, const char * value)
     {
-        /* finish previous item */
-        if (state->uri)
-            finish_item (state);
-
-        /* start new item */
-        state->uri = String (value);
-    }
-    else if (state->uri)
-    {
-        /* item field */
-        if (! state->tuple)
-            state->tuple.set_filename (state->uri);
-
-        if (strcmp (key, "empty"))
+        if (! strcmp (key, "uri"))
         {
-            int field = Tuple::field_by_name (key);
-            if (field < 0)
-                return;
+            /* finish previous item */
+            if (uri)
+                finish_item ();
 
-            TupleValueType type = Tuple::field_get_type (field);
+            /* start new item */
+            uri = String (value);
+        }
+        else if (uri)
+        {
+            /* item field */
+            if (! tuple)
+                tuple.set_filename (uri);
 
-            if (type == TUPLE_STRING)
-                state->tuple.set_str (field, str_decode_percent (value));
-            else if (type == TUPLE_INT)
-                state->tuple.set_int (field, atoi (value));
+            if (strcmp (key, "empty"))
+            {
+                auto field = Tuple::field_by_name (key);
+                if (field == Tuple::Invalid)
+                    return;
+
+                auto type = Tuple::field_get_type (field);
+                if (type == Tuple::String)
+                    tuple.set_str (field, str_decode_percent (value));
+                else if (type == Tuple::Int)
+                    tuple.set_int (field, atoi (value));
+            }
+        }
+        else
+        {
+            /* top-level field */
+            if (! strcmp (key, "title") && ! title)
+                title = String (str_decode_percent (value));
         }
     }
-    else
-    {
-        /* top-level field */
-        if (! strcmp (key, "title") && ! state->title)
-            state->title = String (str_decode_percent (value));
-    }
-}
+};
 
-static bool audpl_load (const char * path, VFSFile * file, String & title,
+bool AudPlaylistLoader::load (const char * path, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
-    LoadState state = {
-        title,
-        items
-    };
-
-    inifile_parse (file, handle_heading, handle_entry, & state);
-
-    /* finish last item */
-    if (state.uri)
-        finish_item (& state);
-
+    AudPlaylistParser (title, items).parse (file);
     return true;
 }
 
-static bool audpl_save (const char * path, VFSFile * file,
+bool AudPlaylistLoader::save (const char * path, VFSFile & file,
  const char * title, const Index<PlaylistAddItem> & items)
 {
     if (! inifile_write_entry (file, "title", str_encode_percent (title)))
@@ -116,15 +133,16 @@ static bool audpl_save (const char * path, VFSFile * file,
         {
             int keys = 0;
 
-            for (int f = 0; f < TUPLE_FIELDS; f ++)
+            for (auto f : Tuple::all_fields ())
             {
-                if (f == FIELD_FILE_PATH || f == FIELD_FILE_NAME || f == FIELD_FILE_EXT)
+                if (f == Tuple::Path || f == Tuple::Basename ||
+                 f == Tuple::Suffix || f == Tuple::FormattedTitle)
                     continue;
 
                 const char * key = Tuple::field_get_name (f);
-                TupleValueType type = tuple.get_value_type (f);
+                Tuple::ValueType type = tuple.get_value_type (f);
 
-                if (type == TUPLE_STRING)
+                if (type == Tuple::String)
                 {
                     String str = tuple.get_str (f);
                     if (! inifile_write_entry (file, key, str_encode_percent (str)))
@@ -132,7 +150,7 @@ static bool audpl_save (const char * path, VFSFile * file,
 
                     keys ++;
                 }
-                else if (type == TUPLE_INT)
+                else if (type == Tuple::Int)
                 {
                     int val = tuple.get_int (f);
                     if (! inifile_write_entry (file, key, int_to_str (val)))
@@ -150,13 +168,3 @@ static bool audpl_save (const char * path, VFSFile * file,
 
     return true;
 }
-
-static const char * const audpl_exts[] = {"audpl", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Audacious Playlists (audpl)")
-#define AUD_PLAYLIST_EXTS      audpl_exts
-#define AUD_PLAYLIST_LOAD      audpl_load
-#define AUD_PLAYLIST_SAVE      audpl_save
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

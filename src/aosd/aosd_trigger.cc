@@ -23,7 +23,6 @@
 
 #include <libaudcore/drct.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
@@ -33,78 +32,48 @@
 #include "aosd_cfg.h"
 #include "aosd_osd.h"
 
-extern aosd_cfg_t * global_config;
-
-
-/* trigger codes ( the code values do not need to be sequential ) */
-enum
-{
-  AOSD_TRIGGER_PB_START = 0,
-  AOSD_TRIGGER_PB_TITLECHANGE = 1,
-  AOSD_TRIGGER_PB_PAUSEON = 2,
-  AOSD_TRIGGER_PB_PAUSEOFF = 3
-};
-
-/* trigger codes array size */
-#define AOSD_TRIGGER_CODES_ARRAY_SIZE 4
-
-/* trigger codes array */
-int aosd_trigger_codes[] =
-{
-  AOSD_TRIGGER_PB_START,
-  AOSD_TRIGGER_PB_TITLECHANGE,
-  AOSD_TRIGGER_PB_PAUSEON,
-  AOSD_TRIGGER_PB_PAUSEOFF
-};
-
 /* prototypes of trigger functions */
-static void aosd_trigger_func_pb_start_onoff ( gboolean );
+static void aosd_trigger_func_pb_start_onoff ( bool );
 static void aosd_trigger_func_pb_start_cb ( void * , void * );
-static void aosd_trigger_func_pb_titlechange_onoff ( gboolean );
+static void aosd_trigger_func_pb_titlechange_onoff ( bool );
 static void aosd_trigger_func_pb_titlechange_cb ( void * , void * );
-static void aosd_trigger_func_pb_pauseon_onoff ( gboolean );
+static void aosd_trigger_func_pb_pauseon_onoff ( bool );
 static void aosd_trigger_func_pb_pauseon_cb ( void * , void * );
-static void aosd_trigger_func_pb_pauseoff_onoff ( gboolean );
+static void aosd_trigger_func_pb_pauseoff_onoff ( bool );
 static void aosd_trigger_func_pb_pauseoff_cb ( void * , void * );
 static void aosd_trigger_func_hook_cb ( void * markup_text , void * unused );
 
 /* map trigger codes to trigger objects */
 aosd_trigger_t aosd_triggers[] =
 {
-  [AOSD_TRIGGER_PB_START] = { N_("Playback Start") ,
-                              N_("Triggers OSD when a playlist entry is played.") ,
-                              aosd_trigger_func_pb_start_onoff ,
-                              aosd_trigger_func_pb_start_cb },
+  // AOSD_TRIGGER_PB_START
+  { N_("Playback Start") ,
+    N_("Triggers OSD when a playlist entry is played.") ,
+    aosd_trigger_func_pb_start_onoff ,
+    aosd_trigger_func_pb_start_cb },
 
-  [AOSD_TRIGGER_PB_TITLECHANGE] = { N_("Title Change") ,
-                                    N_("Triggers OSD when, during playback, the song title changes "
-                                       "but the filename is the same. This is mostly useful to display "
-                                       "title changes in internet streams.") ,
-                                    aosd_trigger_func_pb_titlechange_onoff ,
-                                    aosd_trigger_func_pb_titlechange_cb },
+  // AOSD_TRIGGER_PB_TITLECHANGE
+  { N_("Title Change") ,
+    N_("Triggers OSD when the song title changes (for internet streams).") ,
+    aosd_trigger_func_pb_titlechange_onoff ,
+    aosd_trigger_func_pb_titlechange_cb },
 
-  [AOSD_TRIGGER_PB_PAUSEON] = { N_("Pause On") ,
-                                N_("Triggers OSD when playback is paused.") ,
-                                aosd_trigger_func_pb_pauseon_onoff ,
-                                aosd_trigger_func_pb_pauseon_cb },
+  // AOSD_TRIGGER_PB_PAUSEON
+  { N_("Pause On") ,
+    N_("Triggers OSD when playback is paused.") ,
+    aosd_trigger_func_pb_pauseon_onoff ,
+    aosd_trigger_func_pb_pauseon_cb },
 
-  [AOSD_TRIGGER_PB_PAUSEOFF] = { N_("Pause Off") ,
-                                 N_("Triggers OSD when playback is unpaused.") ,
-                                 aosd_trigger_func_pb_pauseoff_onoff ,
-                                 aosd_trigger_func_pb_pauseoff_cb }
+  // AOSD_TRIGGER_PB_PAUSEOFF
+  { N_("Pause Off") ,
+    N_("Triggers OSD when playback is unpaused.") ,
+    aosd_trigger_func_pb_pauseoff_onoff ,
+    aosd_trigger_func_pb_pauseoff_cb }
 };
 
-
+static_assert (aud::n_elems (aosd_triggers) == AOSD_NUM_TRIGGERS, "update aosd_triggers");
 
 /* TRIGGER API */
-
-void
-aosd_trigger_get_codes_array ( int ** array , int * array_size )
-{
-  *array = aosd_trigger_codes;
-  *array_size = AOSD_TRIGGER_CODES_ARRAY_SIZE;
-}
-
 
 const char *
 aosd_trigger_get_name ( int trig_code )
@@ -124,32 +93,28 @@ aosd_trigger_get_desc ( int trig_code )
 }
 
 
-void
-aosd_trigger_start ( aosd_cfg_osd_trigger_t * cfg_trigger )
+void aosd_trigger_start (const aosd_cfg_osd_trigger_t & cfg_trigger)
 {
-  int i = 0;
-  for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
+  for (int i = 0; i < AOSD_NUM_TRIGGERS; i ++)
   {
-    int trig_code = g_array_index( cfg_trigger->active , int , i );
-    if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
-      aosd_triggers[trig_code].onoff_func (TRUE);
+    if (cfg_trigger.enabled[i])
+      aosd_triggers[i].onoff_func (true);
   }
+
   /* When called, this hook will display the text of the user pointer
      or the current playing song, if nullptr */
   hook_associate( "aosd toggle" , aosd_trigger_func_hook_cb , nullptr );
 }
 
 
-void
-aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
+void aosd_trigger_stop (const aosd_cfg_osd_trigger_t & cfg_trigger)
 {
-  int i = 0;
   hook_dissociate( "aosd toggle" , aosd_trigger_func_hook_cb );
-  for ( i = 0 ; i < (int) cfg_trigger->active->len ; i++ )
+
+  for (int i = 0; i < AOSD_NUM_TRIGGERS; i ++)
   {
-    int trig_code = g_array_index( cfg_trigger->active , int , i );
-    if (trig_code >= 0 && trig_code < aud::n_elems (aosd_triggers))
-      aosd_triggers[trig_code].onoff_func (FALSE);
+    if (cfg_trigger.enabled[i])
+      aosd_triggers[i].onoff_func (false);
   }
 }
 
@@ -157,12 +122,12 @@ aosd_trigger_stop ( aosd_cfg_osd_trigger_t * cfg_trigger )
 /* TRIGGER FUNCTIONS */
 
 static void
-aosd_trigger_func_pb_start_onoff(gboolean turn_on)
+aosd_trigger_func_pb_start_onoff ( bool turn_on )
 {
   if (turn_on == TRUE)
-    hook_associate("playback begin", aosd_trigger_func_pb_start_cb, nullptr);
+    hook_associate("playback ready", aosd_trigger_func_pb_start_cb, nullptr);
   else
-    hook_dissociate("playback begin", aosd_trigger_func_pb_start_cb);
+    hook_dissociate("playback ready", aosd_trigger_func_pb_start_cb);
 }
 
 static void
@@ -170,29 +135,27 @@ aosd_trigger_func_pb_start_cb(void * hook_data, void * user_data)
 {
   String title = aud_drct_get_title ();
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>%s</span>",
-   (const char *) global_config->osd->text.fonts_name[0], (const char *) title);
+   (const char *) global_config.text.fonts_name[0], (const char *) title);
 
-  aosd_osd_display (markup, global_config->osd, FALSE);
+  aosd_osd_display (markup, & global_config, FALSE);
   g_free (markup);
 }
 
 typedef struct
 {
-  char *title;
-  char *filename;
+  String title;
+  String filename;
 }
 aosd_pb_titlechange_prevs_t;
 
 static void
-aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
+aosd_trigger_func_pb_titlechange_onoff ( bool turn_on )
 {
   static aosd_pb_titlechange_prevs_t *prevs = nullptr;
 
   if ( turn_on == TRUE )
   {
-    prevs = g_new0 (aosd_pb_titlechange_prevs_t, 1);
-    prevs->title = nullptr;
-    prevs->filename = nullptr;
+    prevs = new aosd_pb_titlechange_prevs_t;
     hook_associate( "title change" , aosd_trigger_func_pb_titlechange_cb , prevs );
   }
   else
@@ -200,9 +163,7 @@ aosd_trigger_func_pb_titlechange_onoff ( gboolean turn_on )
     hook_dissociate( "title change" , aosd_trigger_func_pb_titlechange_cb );
     if ( prevs != nullptr )
     {
-      if ( prevs->title != nullptr ) g_free( prevs->title );
-      if ( prevs->filename != nullptr ) g_free( prevs->filename );
-      g_free( prevs );
+      delete prevs;
       prevs = nullptr;
     }
   }
@@ -214,10 +175,9 @@ aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
   if (aud_drct_get_playing ())
   {
     aosd_pb_titlechange_prevs_t *prevs = (aosd_pb_titlechange_prevs_t *) prevs_gp;
-    int playlist = aud_playlist_get_playing();
-    int pl_entry = aud_playlist_get_position(playlist);
-    String pl_entry_filename = aud_playlist_entry_get_filename (playlist, pl_entry);
-    String pl_entry_title = aud_playlist_entry_get_title (playlist, pl_entry, FALSE);
+    String pl_entry_filename = aud_drct_get_filename ();
+    Tuple pl_entry_tuple = aud_drct_get_tuple ();
+    String pl_entry_title = pl_entry_tuple.get_str (Tuple::FormattedTitle);
 
     /* same filename but title changed, useful to detect http stream song changes */
 
@@ -230,40 +190,32 @@ aosd_trigger_func_pb_titlechange_cb ( void * plentry_gp , void * prevs_gp )
           /* string formatting is done here a.t.m. - TODO - improve this area */
           char * markup = g_markup_printf_escaped
            ("<span font_desc='%s'>%s</span>",
-           (const char *) global_config->osd->text.fonts_name[0],
+           (const char *) global_config.text.fonts_name[0],
            (const char *) pl_entry_title);
 
-          aosd_osd_display (markup, global_config->osd, FALSE);
+          aosd_osd_display (markup, & global_config, FALSE);
           g_free (markup);
 
-          g_free( prevs->title );
-          prevs->title = g_strdup(pl_entry_title);
+          prevs->title = pl_entry_title;
         }
       }
       else
       {
-        g_free(prevs->filename);
-        prevs->filename = g_strdup(pl_entry_filename);
+        prevs->filename = pl_entry_filename;
         /* if filename changes, reset title as well */
-        if ( prevs->title != nullptr )
-          g_free(prevs->title);
-        prevs->title = g_strdup(pl_entry_title);
+        prevs->title = pl_entry_title;
       }
     }
     else
     {
-      if ( prevs->title != nullptr )
-        g_free(prevs->title);
-      prevs->title = g_strdup(pl_entry_title);
-      if ( prevs->filename != nullptr )
-        g_free(prevs->filename);
-      prevs->filename = g_strdup(pl_entry_filename);
+      prevs->title = pl_entry_title;
+      prevs->filename = pl_entry_filename;
     }
   }
 }
 
 static void
-aosd_trigger_func_pb_pauseon_onoff ( gboolean turn_on )
+aosd_trigger_func_pb_pauseon_onoff ( bool turn_on )
 {
   if ( turn_on == TRUE )
     hook_associate( "playback pause" , aosd_trigger_func_pb_pauseon_cb , nullptr );
@@ -275,14 +227,14 @@ static void
 aosd_trigger_func_pb_pauseon_cb ( void * unused1 , void * unused2 )
 {
   char * markup = g_markup_printf_escaped ("<span font_desc='%s'>Paused</span>",
-   (const char *) global_config->osd->text.fonts_name[0]);
-  aosd_osd_display (markup, global_config->osd, FALSE);
+   (const char *) global_config.text.fonts_name[0]);
+  aosd_osd_display (markup, & global_config, FALSE);
   g_free (markup);
 }
 
 
 static void
-aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
+aosd_trigger_func_pb_pauseoff_onoff ( bool turn_on )
 {
   if ( turn_on == TRUE )
     hook_associate( "playback unpause" , aosd_trigger_func_pb_pauseoff_cb , nullptr );
@@ -293,25 +245,24 @@ aosd_trigger_func_pb_pauseoff_onoff ( gboolean turn_on )
 static void
 aosd_trigger_func_pb_pauseoff_cb ( void * unused1 , void * unused2 )
 {
-  int active = aud_playlist_get_active();
-  int pos = aud_playlist_get_position(active);
+  Tuple tuple = aud_drct_get_tuple ();
   int time_cur, time_tot;
   int time_cur_m, time_cur_s, time_tot_m, time_tot_s;
 
-  time_tot = aud_playlist_entry_get_length (active, pos, FALSE) / 1000;
+  time_tot = tuple.get_int (Tuple::Length) / 1000;
   time_cur = aud_drct_get_time() / 1000;
   time_cur_s = time_cur % 60;
   time_cur_m = (time_cur - time_cur_s) / 60;
   time_tot_s = time_tot % 60;
   time_tot_m = (time_tot - time_tot_s) / 60;
 
-  String title = aud_playlist_entry_get_title (active, pos, FALSE);
+  String title = tuple.get_str (Tuple::FormattedTitle);
   char * markup = g_markup_printf_escaped
    ("<span font_desc='%s'>%s (%i:%02i/%i:%02i)</span>",
-   (const char *) global_config->osd->text.fonts_name[0], (const char *) title,
+   (const char *) global_config.text.fonts_name[0], (const char *) title,
    time_cur_m, time_cur_s, time_tot_m, time_tot_s);
 
-  aosd_osd_display (markup, global_config->osd, FALSE);
+  aosd_osd_display (markup, & global_config, FALSE);
   g_free (markup);
 }
 
@@ -325,7 +276,7 @@ aosd_trigger_func_hook_cb ( void * markup_text , void * unused )
   if ( markup_text != nullptr )
   {
     /* Display text from caller */
-    aosd_osd_display ((char *) markup_text, global_config->osd, FALSE);
+    aosd_osd_display ((char *) markup_text, & global_config, FALSE);
   } else {
     /* Display currently playing song */
     aosd_trigger_func_pb_start_cb (nullptr, nullptr);

@@ -21,11 +21,29 @@
 #ifndef _I_AOSD_H
 #define _I_AOSD_H 1
 
-#include "aosd_common.h"
-#include <glib.h>
+#include <libaudcore/plugin.h>
 
-bool aosd_init (void);
-void aosd_cleanup ( void );
-void aosd_configure ( void );
+struct PreferencesWidget;
+
+class AOSD : public GeneralPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("AOSD (On-Screen Display)"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr AOSD () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
 
 #endif /* !_I_AOSD_H */

@@ -1,5 +1,5 @@
 dnl Add $1 to CFLAGS and CXXFLAGS if supported
-dnl ------------------------------------------
+dnl ==========================================
 
 AC_DEFUN([AUD_CHECK_CFLAGS],[
     AC_MSG_CHECKING([whether the C/C++ compiler supports $1])
@@ -13,6 +13,24 @@ AC_DEFUN([AUD_CHECK_CFLAGS],[
         AC_MSG_RESULT(no)
         CFLAGS="$OLDCFLAGS"
     ])
+])
+
+dnl Add $1 to CXXFLAGS if supported
+dnl ===============================
+
+AC_DEFUN([AUD_CHECK_CXXFLAGS],[
+    AC_MSG_CHECKING([whether the C++ compiler supports $1])
+    AC_LANG_PUSH([C++])
+    OLDCXXFLAGS="$CXXFLAGS"
+    CXXFLAGS="$CXXFLAGS $1 -Werror"
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[return 0;])],[
+        AC_MSG_RESULT(yes)
+        CXXFLAGS="$OLDCXXFLAGS $1"
+    ],[
+        AC_MSG_RESULT(no)
+        CXXFLAGS="$OLDCXXFLAGS"
+    ])
+    AC_LANG_POP([C++])
 ])
 
 
@@ -71,6 +89,7 @@ if test "x$GCC" = "xyes"; then
         CXXFLAGS="$CXXFLAGS -std=gnu++11 -ffast-math -Wall -pipe"
     fi
     AUD_CHECK_CFLAGS(-Wtype-limits)
+    AUD_CHECK_CXXFLAGS(-Woverloaded-virtual)
 fi
 
 dnl On Mac, check for Objective-C and -C++ compilers
@@ -96,6 +115,26 @@ dnl ===================================
 if test $HAVE_MSWINDOWS = yes ; then
 	CFLAGS="$CFLAGS -march=i686"
 fi
+
+dnl Byte order
+dnl ==========
+AC_C_BIGENDIAN([BIGENDIAN=1], [BIGENDIAN=0],
+ [AC_MSG_ERROR([Unknown machine byte order])],
+ [AC_MSG_ERROR([Universal builds are not supported, sorry])])
+AC_SUBST([BIGENDIAN])
+
+dnl Prevent symbol collisions
+dnl =========================
+if test "x$HAVE_MSWINDOWS" = "xyes" ; then
+    EXPORT="__declspec(dllexport)"
+elif test "x$GCC" = "xyes" ; then
+    CFLAGS="$CFLAGS -fvisibility=hidden"
+    CXXFLAGS="$CXXFLAGS -fvisibility=hidden"
+    EXPORT="__attribute__((visibility(\"default\")))"
+else
+    AC_MSG_ERROR([Unknown syntax for EXPORT keyword])
+fi
+AC_DEFINE_UNQUOTED([EXPORT], [$EXPORT], [Define to compiler syntax for public symbols])
 
 dnl Checks for various programs
 dnl ===========================

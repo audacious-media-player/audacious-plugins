@@ -9,6 +9,7 @@
  */
 
 #include "configure.h"
+#include "plugin.h"
 
 #include <libaudcore/runtime.h>
 
@@ -16,7 +17,7 @@
 
 AudaciousConsoleConfig audcfg;
 
-static const char * const console_defaults[] = {
+const char * const ConsolePlugin::defaults[] = {
  "loop_length", "180",
  "resample", "FALSE",
  "resample_rate", "32000",
@@ -27,9 +28,9 @@ static const char * const console_defaults[] = {
  "inc_spc_reverb", "FALSE",
  nullptr};
 
-bool console_cfg_load (void)
+bool ConsolePlugin::init ()
 {
-    aud_config_set_defaults (CON_CFGID, console_defaults);
+    aud_config_set_defaults (CON_CFGID, defaults);
 
     audcfg.loop_length = aud_get_int (CON_CFGID, "loop_length");
     audcfg.resample = aud_get_bool (CON_CFGID, "resample");
@@ -43,7 +44,7 @@ bool console_cfg_load (void)
     return true;
 }
 
-void console_cfg_save (void)
+void ConsolePlugin::cleanup ()
 {
     aud_set_int (CON_CFGID, "loop_length", audcfg.loop_length);
     aud_set_bool (CON_CFGID, "resample", audcfg.resample);

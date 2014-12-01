@@ -47,10 +47,19 @@ dnl Check for libxml2 (required to load XSPF playlists from previous versions)
 dnl ==========================================================================
 
 if test $HAVE_DARWIN = yes ; then
-    XML_LIBS="-lxml2"
-    XML_CFLAGS="-I/usr/include/libxml2"
-    AC_SUBST(XML_LIBS)
-    AC_SUBST(XML_CFLAGS)
+    AC_ARG_WITH([system-libxml2],
+     [AS_HELP_STRING([--with-system-libxml2=yes,no], [Use system version of libxml2 (default=yes)])],
+     [with_system_libxml2=$withval],
+     [with_system_libxml2=yes])
+
+    if test $with_system_libxml2 = yes ; then
+        XML_LIBS="-lxml2"
+        XML_CFLAGS="-I/usr/include/libxml2"
+        AC_SUBST(XML_LIBS)
+        AC_SUBST(XML_CFLAGS)
+    else
+        PKG_CHECK_MODULES([XML], [libxml-2.0])
+    fi
 else
     PKG_CHECK_MODULES([XML], [libxml-2.0])
 fi
@@ -60,11 +69,21 @@ dnl ======================
 
 INPUT_PLUGINS="tonegen metronom"
 OUTPUT_PLUGINS=""
-EFFECT_PLUGINS="compressor crossfade crystalizer mixer stereo_plugin voice_removal echo_plugin"
+EFFECT_PLUGINS="compressor crossfade crystalizer mixer silence-removal stereo_plugin voice_removal echo_plugin"
 GENERAL_PLUGINS=""
 VISUALIZATION_PLUGINS=""
 CONTAINER_PLUGINS="asx asx3 audpl m3u pls xspf"
 TRANSPORT_PLUGINS="gio"
+
+if test "x$USE_GTK" = "xyes" ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm albumart delete-files playlist-manager search-tool statusicon"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui skins"
+fi
+
+if test "x$USE_QT" = "xyes" ; then
+    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart-qt lyricwiki-qt song-info-qt"
+    GENERAL_PLUGINS="$GENERAL_PLUGINS qtui"
+fi
 
 dnl Console
 dnl =======
@@ -95,6 +114,43 @@ if test "x$enable_xsf" != "xno"; then
     INPUT_PLUGINS="$INPUT_PLUGINS xsf"
 fi
 
+dnl QtAudio
+dnl =======
+
+AC_ARG_ENABLE(qtaudio,
+    [AS_HELP_STRING([--disable-qtaudio], [disable QtMultimedia output plugin (default=enabled)])],
+    [enable_qtaudio=$enableval],
+    [enable_qtaudio=auto])
+
+have_qtaudio=no
+if test "x$enable_qtaudio" = "xyes" -o \( "x$USE_QT" = "xyes" -a "x$enable_qtaudio" = "xauto" \); then
+    PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [have_qtaudio=yes], [have_qtaudio=no])
+    if test "x$have_qtaudio" = "xyes"; then
+        QTMULTIMEDIA_CFLAGS="$QTMULTIMEDIA_CFLAGS -fPIC"
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS qtaudio"
+    elif test "x$enable_qtaudio" = "xyes"; then
+        AC_MSG_ERROR([QtAudio output plugin requested but QtMultimedia not found!])
+    fi
+fi
+
+dnl CoreAudio
+dnl =========
+
+AC_ARG_ENABLE(coreaudio,
+    [AS_HELP_STRING([--disable-coreaudio], [disable CoreAudio output plugin (default=enabled)])],
+    [enable_coreaudio=$enableval],
+    [enable_coreaudio=auto]
+)
+
+have_coreaudio=no
+if test "x$enable_coreaudio" != "xno"; then
+    if test "x$HAVE_DARWIN" != "xno"; then
+        have_coreaudio=yes
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS coreaudio"
+    fi
+else
+    AC_MSG_RESULT([*** CoreAudio output plugin disabled per user request ***])
+fi
 
 dnl PulseAudio
 dnl ==========
@@ -217,17 +273,6 @@ if test "x$enable_songchange" != "xno"; then
             AC_MSG_ERROR([Cannot find sys/wait.h header, but compilation of song change plugin has been explicitly requested])
          fi]
     )
-fi
-
-dnl Status Icon
-dnl ===========
-
-AC_ARG_ENABLE(statusicon,
- [AS_HELP_STRING([--disable-statusicon], [disable X11 Status Icon plugin (default=enabled)])],
- [have_statusicon=$enableval], [have_statusicon="yes"])
-
-if test "x$have_statusicon" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS statusicon"
 fi
 
 dnl *** Audacious OSD plugin (pangocairo-based)
@@ -393,8 +438,12 @@ AC_ARG_ENABLE(aac,
  [enable_aac=$enableval], [enable_aac=yes])
 
 if test $enable_aac = yes ; then
-    AC_CHECK_HEADER([neaacdec.h])
-    AC_CHECK_LIB([faad], [NeAACDecInit2])
+    AC_CHECK_HEADER([neaacdec.h], [have_aac=yes], [have_aac=no])
+    AC_CHECK_LIB([faad], [NeAACDecInit2], [have_aac=$have_aac], [have_aac=no])
+
+    if test $have_aac != yes ; then
+        AC_MSG_ERROR([Please install libfaad, or use --disable-aac to disable AAC support.])
+    fi
 
     FAAD_CFLAGS=
     FAAD_LIBS="-lfaad"
@@ -479,15 +528,9 @@ if test "x$enable_jack" != "xno"; then
     )
 
     if test "x$have_jack" = "xyes"; then
-        PKG_CHECK_MODULES([SAMPLERATE], [samplerate],
-            [], [have_jack=no]
-        )
-    fi
-
-    if test "x$have_jack" = "xyes"; then
-        OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack"
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS jack-ng"
     elif test "x$enable_jack" = "xyes"; then
-        AC_MSG_ERROR([Cannot find JACK (ver >= 0.120.1 but < 1.0 or >= 1.9.7) or libsamplerate development files, but compilation of JACK output plugin has been explicitly requested; please install JACK and libsamplerate dev files and run configure again])
+        AC_MSG_ERROR([Cannot find JACK (ver >= 0.120.1 but < 1.0 or >= 1.9.7) development files, but compilation of JACK output plugin has been explicitly requested; please install JACK dev files and run configure again])
     fi
 fi
 
@@ -513,7 +556,7 @@ dnl OSS output
 dnl ==========
 
 AC_ARG_ENABLE(oss4,
- [AS_HELP_STRING([--disable-oss4],[disable OSS4 output plugin])],
+ [AS_HELP_STRING([--disable-oss4], [disable OSS4 output plugin])],
  [enable_oss4=$enableval], [enable_oss4=auto])
 
 OSS_CFLAGS=
@@ -526,28 +569,17 @@ if test "x$enable_oss4" != "xno" ; then
 
     OLD_CPPFLAGS="$CPPFLAGS"
     CPPFLAGS="$CPPFLAGS $OSS_CFLAGS"
-    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h])
-    AC_MSG_CHECKING(for OSS4)
+    AC_CHECK_HEADERS([sys/soundcard.h soundcard.h], [have_oss4=yes])
+    CPPFLAGS="$OLD_CPPFLAGS"
 
-    AC_EGREP_CPP(yes,
-     [#ifdef HAVE_SYS_SOUNDCARD_H
-      #include <sys/soundcard.h>
-      #elif defined HAVE_SOUNDCARD_H
-      #include <soundcard.h>
-      #endif
-      #if OSS_VERSION >= 0x40000 || SOUND_VERSION >= 0x40000
-          yes
-      #endif],
-     [have_oss4=yes
-      OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
-      AC_SUBST(OSS_CFLAGS)],
-     [if test "x$enable_oss4" = "xyes"; then
-        AC_MSG_ERROR([Cannot find OSS4 development files, but compilation of OSS4 output plugin has been explicitly requested; please install OSS4 dev files and run configure again])
-      fi]
-    )
+    if test "x$have_oss4" = "xyes" ; then
+        OUTPUT_PLUGINS="$OUTPUT_PLUGINS oss4"
+        AC_SUBST(OSS_CFLAGS)
+    elif test "x$enable_oss4" = "xyes" ; then
+        AC_MSG_ERROR([OSS4 output was enabled but soundcard.h was not found])
+    fi
 
     AC_MSG_RESULT([$have_oss4])
-    CPPFLAGS="$OLD_CPPFLAGS"
 fi
 
 dnl *** ALSA output plugin
@@ -633,7 +665,7 @@ if test "x$enable_sndio" != "xno"; then
     AC_CHECK_HEADER([sndio.h],
         [AC_CHECK_LIB([sndio], [sio_open],
             [have_sndio=yes
-             OUTPUT_PLUGINS="$OUTPUT_PLUGINS sndio"
+             OUTPUT_PLUGINS="$OUTPUT_PLUGINS sndio-ng"
              SNDIO_LIBS="-lsndio"
              AC_SUBST(SNDIO_LIBS)]
          )]
@@ -911,39 +943,6 @@ if test "x$enable_soxr" != "xno"; then
     )
 fi
 
-dnl GTK Interface
-dnl =============
-
-AC_ARG_ENABLE(gtkui,
- [AS_HELP_STRING([--disable-gtkui], [disable GTK interface (gtkui)])],
- [enable_gtkui=$enableval], [enable_gtkui="yes"])
-
-if test "x$enable_gtkui" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS gtkui"
-fi
-
-dnl Qt Interface
-dnl ============
-
-AC_ARG_ENABLE(qtui,
- [AS_HELP_STRING([--enable-qtui], [enable Qt interface (qtui)])],
- [enable_qtui=$enableval], [enable_qtui=$USE_QT])
-
-if test "x$enable_qtui" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS qtui"
-fi
-
-dnl Winamp Classic Interface
-dnl =============
-
-AC_ARG_ENABLE(skins,
- [AS_HELP_STRING([--disable-skins], [disable Winamp Classic interface (skins)])],
- [enable_skins=$enableval], [enable_skins="yes"])
-
-if test "x$enable_skins" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS skins"
-fi
-
 dnl LyricWiki
 dnl =========
 
@@ -993,6 +992,28 @@ fi
 
 AC_SUBST(GL_LIBS)
 
+dnl Qt OpenGL Spectrum Analyzer
+dnl ===========================
+
+AC_ARG_ENABLE(qtglspectrum,
+    [AS_HELP_STRING([--disable-qtglspectrum], [disable Qt OpenGL Spectrum Analyzer (default=enabled)])],
+    [enable_qtglspectrum=$enableval],
+    [enable_qtglspectrum=auto])
+
+have_qtglspectrum=no
+if test "x$USE_QT" = "xno" -a "x$enable_qtglspectrum" = "xyes"; then
+    AC_MSG_ERROR([--enable-qtglspectrum cannot be used without --enable-qt])
+fi
+if test "x$USE_QT" = "xyes" -a "x$enable_qtglspectrum" != "xno"; then
+    PKG_CHECK_MODULES(QTOPENGL, [Qt5OpenGL], [have_qtglspectrum=yes], [have_qtglspectrum=no])
+    if test "x$have_qtglspectrum" = "xyes"; then
+        QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
+        VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS gl-spectrum-qt"
+    elif test "x$enable_qtglspectrum" = "xyes"; then
+        AC_MSG_ERROR([Qt OpenGL Spectrum Analyzer plugin requested but QtOpenGL not found!])
+    fi
+fi
+
 dnl VTX Decoder
 dnl =============
 
@@ -1035,50 +1056,6 @@ AC_ARG_ENABLE(cairo_spectrum,
 
 if test "x$enable_cairo_spectrum" != "xno"; then
     VISUALIZATION_PLUGINS="$VISUALIZATION_PLUGINS cairo-spectrum"
-fi
-
-dnl Alarm
-dnl =============
-
-AC_ARG_ENABLE(alarm,
- [AS_HELP_STRING([--disable-alarm], [disable Alarm])],
- [enable_alarm=$enableval], [enable_alarm="yes"])
-
-if test "x$enable_alarm" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS alarm"
-fi
-
-dnl Album Art
-dnl =============
-
-AC_ARG_ENABLE(albumart,
- [AS_HELP_STRING([--disable-albumart], [disable Album Art])],
- [enable_albumart=$enableval], [enable_albumart="yes"])
-
-if test "x$enable_albumart" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS albumart"
-fi
-
-dnl Delete Files
-dnl =============
-
-AC_ARG_ENABLE(delete_files,
- [AS_HELP_STRING([--disable-delete-files], [disable Delete Files])],
- [enable_delete_files=$enableval], [enable_delete_files="yes"])
-
-if test "x$enable_delete_files" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS delete-files"
-fi
-
-dnl Search Tool
-dnl =============
-
-AC_ARG_ENABLE(search_tool,
- [AS_HELP_STRING([--disable-search-tool], [disable Search Tool])],
- [enable_search_tool=$enableval], [enable_search_tool="yes"])
-
-if test "x$enable_search_tool" != "xno"; then
-    GENERAL_PLUGINS="$GENERAL_PLUGINS search-tool"
 fi
 
 dnl Mac Media Keys
@@ -1156,9 +1133,11 @@ echo "  --------------"
 echo "  Open Sound System (oss4):               $have_oss4"
 echo "  Advanced Linux Sound Arch. (alsa):      $have_alsa"
 echo "  Sndio (sndio):                          $have_sndio"
+echo "  CoreAudio (coreaudio):                  $have_coreaudio"
 echo "  PulseAudio (pulse):                     $have_pulse"
 echo "  Jack Audio Connection Kit (jack):       $have_jack"
 echo "  Simple DirectMedia Layer (sdlout):      $have_sdlout"
+echo "  Qt Multimedia (qtaudio):                $have_qtaudio"
 echo "  FileWriter:                             $have_filewriter"
 echo "    -> FileWriter MP3 output part:        $have_lame"
 echo "    -> FileWriter Vorbis output part:     $have_vorbisenc"
@@ -1187,14 +1166,15 @@ echo "  VTX Decoder:                            $enable_vtx"
 echo
 echo "  General"
 echo "  -------"
-echo "  Alarm:                                  $enable_alarm"
-echo "  Album Art:                              $enable_albumart"
-echo "  Delete from Filesystem:                 $enable_delete_files"
+echo "  Alarm:                                  $USE_GTK"
+echo "  Album Art:                              $USE_GTK"
+echo "  Delete from Filesystem:                 $USE_GTK"
 echo "  Linux Infrared Remote Control (LIRC)    $have_lirc"
 echo "  MPRIS 2 Server:                         $have_mpris2"
-echo "  Search Tool:                            $enable_search_tool"
+echo "  Playlist Manager:                       $USE_GTK"
+echo "  Search Tool:                            $USE_GTK"
 echo "  Song Change:                            $have_songchange"
-echo "  Status Icon:                            $have_statusicon"
+echo "  Status Icon:                            $USE_GTK"
 echo "  Audacious OSD:                          $have_aosd"
 echo "    -> X Composite support:               $have_aosd_xcomp"
 echo "  libnotify OSD:                          $have_notify"
@@ -1215,6 +1195,7 @@ echo "  LADSPA Host:                            $enable_ladspa"
 echo "  Voice Removal:                          yes"
 echo "  Bauer stereophonic-to-binaural (bs2b):  $have_bs2b"
 echo "  Sample Rate Converter (resample):       $have_resample"
+echo "  Silence Removal:                        yes"
 echo "  Speed and Pitch:                        $have_speedpitch"
 echo "  SoX Resampler:                          $have_soxr"
 echo
@@ -1222,7 +1203,8 @@ echo "  Visualization"
 echo "  -------------"
 echo "  Blur Scope:                             $enable_blur_scope"
 echo "  Cairo Spectrum Analyzer:                $enable_cairo_spectrum"
-echo "  OpenGL Spectrum Analyzer:               $have_glspectrum"
+echo "  GTK+ OpenGL Spectrum Analyzer:          $have_glspectrum"
+echo "  Qt OpenGL Spectrum Analyzer:            $have_qtglspectrum"
 echo
 echo "  Transport"
 echo "  ---------"
@@ -1242,7 +1224,7 @@ echo "  CUE playlist format (cue):              $have_cue"
 echo
 echo "  Interfaces"
 echo "  ----------"
-echo "  GTK (gtkui):                            $enable_gtkui"
-echo "  Qt (qtui):                              $enable_qtui"
-echo "  Winamp Classic (skins):                 $enable_skins"
+echo "  GTK (gtkui):                            $USE_GTK"
+echo "  Qt (qtui):                              $USE_QT"
+echo "  Winamp Classic (skins):                 $USE_GTK"
 echo

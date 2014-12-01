@@ -35,10 +35,6 @@ typedef struct {
     int * value_ptr;
 } HintPair;
 
-typedef struct {
-    gboolean valid_heading;
-} HintsLoadState;
-
 const SkinProperties skin_default_hints = SkinProperties ();
 
 /* so we can use static addresses in the table below */
@@ -116,40 +112,34 @@ static int hint_pair_compare (const void * key, const void * pair)
     return g_ascii_strcasecmp ((const char *) key, ((const HintPair *) pair)->name);
 }
 
-static void hints_handle_heading (const char * heading, void * data)
+class HintsParser : public IniParser
 {
-    HintsLoadState * state = (HintsLoadState *) data;
+private:
+    bool valid_heading = false;
 
-    state->valid_heading = ! g_ascii_strcasecmp (heading, "skin");
-}
+    void handle_heading (const char * heading)
+        { valid_heading = ! g_ascii_strcasecmp (heading, "skin"); }
 
-static void hints_handle_entry (const char * key, const char * value, void * data)
-{
-    HintsLoadState * state = (HintsLoadState *) data;
+    void handle_entry (const char * key, const char * value)
+    {
+        if (! valid_heading)
+            return;
 
-    if (! state->valid_heading)
-        return;
+        HintPair * pair = (HintPair *) bsearch (key, hint_pairs,
+         aud::n_elems (hint_pairs), sizeof (HintPair), hint_pair_compare);
 
-    HintPair * pair = (HintPair *) bsearch (key, hint_pairs,
-     aud::n_elems (hint_pairs), sizeof (HintPair), hint_pair_compare);
-
-    if (pair)
-        * pair->value_ptr = atoi (value);
-}
+        if (pair)
+            * pair->value_ptr = atoi (value);
+    }
+};
 
 void skin_load_hints (Skin * skin, const char * path)
 {
     static_hints = skin_default_hints;
 
-    HintsLoadState state = {false};
-
-    VFSFile * file = open_local_file_nocase (path, "skin.hints");
-
+    VFSFile file = open_local_file_nocase (path, "skin.hints");
     if (file)
-    {
-        inifile_parse (file, hints_handle_heading, hints_handle_entry, & state);
-        vfs_fclose (file);
-    }
+        HintsParser ().parse (file);
 
     skin->properties = static_hints;
 }
@@ -158,42 +148,40 @@ void skin_load_hints (Skin * skin, const char * path)
  * pledit.txt parsing
  */
 
-typedef struct {
-    gboolean valid_heading;
-    Skin * skin;
-} PLColorsLoadState;
-
-static void pl_colors_handle_heading (const char * heading, void * data)
+class PLColorsParser : public IniParser
 {
-    PLColorsLoadState * state = (PLColorsLoadState *) data;
+public:
+    PLColorsParser (Skin & skin) :
+        skin (skin),
+        valid_heading (false) {}
 
-    state->valid_heading = ! g_ascii_strcasecmp (heading, "text");
-}
+private:
+    Skin & skin;
+    bool valid_heading;
 
-static uint32_t convert_color_string (const char * str)
-{
-    if (* str == '#')
-        str ++;
+    void handle_heading (const char * heading)
+        { valid_heading = ! g_ascii_strcasecmp (heading, "text"); }
 
-    return strtol (str, nullptr, 16);
-}
+    void handle_entry (const char * key, const char * value)
+    {
+        if (! valid_heading)
+            return;
 
-static void pl_colors_handle_entry (const char * key, const char * value, void * data)
-{
-    PLColorsLoadState * state = (PLColorsLoadState *) data;
+        if (value[0] == '#')
+            value ++;
 
-    if (! state->valid_heading)
-        return;
+        uint32_t color = strtol (value, nullptr, 16);
 
-    if (! g_ascii_strcasecmp (key, "normal"))
-        state->skin->colors[SKIN_PLEDIT_NORMAL] = convert_color_string (value);
-    else if (! g_ascii_strcasecmp (key, "current"))
-        state->skin->colors[SKIN_PLEDIT_CURRENT] = convert_color_string (value);
-    else if (! g_ascii_strcasecmp (key, "normalbg"))
-        state->skin->colors[SKIN_PLEDIT_NORMALBG] = convert_color_string (value);
-    else if (! g_ascii_strcasecmp (key, "selectedbg"))
-        state->skin->colors[SKIN_PLEDIT_SELECTEDBG] = convert_color_string (value);
-}
+        if (! g_ascii_strcasecmp (key, "normal"))
+            skin.colors[SKIN_PLEDIT_NORMAL] = color;
+        else if (! g_ascii_strcasecmp (key, "current"))
+            skin.colors[SKIN_PLEDIT_CURRENT] = color;
+        else if (! g_ascii_strcasecmp (key, "normalbg"))
+            skin.colors[SKIN_PLEDIT_NORMALBG] = color;
+        else if (! g_ascii_strcasecmp (key, "selectedbg"))
+            skin.colors[SKIN_PLEDIT_SELECTEDBG] = color;
+    }
+};
 
 void skin_load_pl_colors (Skin * skin, const char * path)
 {
@@ -202,61 +190,63 @@ void skin_load_pl_colors (Skin * skin, const char * path)
     skin->colors[SKIN_PLEDIT_NORMALBG] = 0x0a120a;
     skin->colors[SKIN_PLEDIT_SELECTEDBG] = 0x0a124a;
 
-    VFSFile * file = open_local_file_nocase (path, "pledit.txt");
-
+    VFSFile file = open_local_file_nocase (path, "pledit.txt");
     if (file)
-    {
-        PLColorsLoadState state = {false, skin};
-        inifile_parse (file, pl_colors_handle_heading, pl_colors_handle_entry, & state);
-        vfs_fclose (file);
-    }
+        PLColorsParser (* skin).parse (file);
 }
 
 /*
  * region.txt parsing
  */
 
-typedef struct {
-    SkinMaskId current_id;
-    GArray * numpoints[SKIN_MASK_COUNT];
-    GArray * pointlist[SKIN_MASK_COUNT];
-} MaskLoadState;
-
-static void mask_handle_heading (const char * heading, void * data)
+class MaskParser : public IniParser
 {
-    MaskLoadState * state = (MaskLoadState *) data;
+public:
+    GArray * numpoints[SKIN_MASK_COUNT] {};
+    GArray * pointlist[SKIN_MASK_COUNT] {};
 
-    if (! g_ascii_strcasecmp (heading, "normal"))
-        state->current_id = SKIN_MASK_MAIN;
-    else if (! g_ascii_strcasecmp (heading, "windowshade"))
-        state->current_id = SKIN_MASK_MAIN_SHADE;
-    else if (! g_ascii_strcasecmp (heading, "equalizer"))
-        state->current_id = SKIN_MASK_EQ;
-    else if (! g_ascii_strcasecmp (heading, "equalizerws"))
-        state->current_id = SKIN_MASK_EQ_SHADE;
-    else
-        state->current_id = (SkinMaskId) -1;
-}
-
-static void mask_handle_entry (const char * key, const char * value, void * data)
-{
-    MaskLoadState * state = (MaskLoadState *) data;
-    SkinMaskId id = state->current_id;
-
-    if (id == (SkinMaskId) -1)
-        return;
-
-    if (! g_ascii_strcasecmp (key, "numpoints"))
+    ~MaskParser ()
     {
-        if (! state->numpoints[id])
-            state->numpoints[id] = string_to_garray (value);
+        for (GArray * array : numpoints)
+            if (array) g_array_free (array, true);
+        for (GArray * array : pointlist)
+            if (array) g_array_free (array, true);
     }
-    else if (! g_ascii_strcasecmp (key, "pointlist"))
+
+private:
+    SkinMaskId current_id = SkinMaskId (-1);
+
+    void handle_heading (const char * heading)
     {
-        if (! state->pointlist[id])
-            state->pointlist[id] = string_to_garray (value);
+        if (! g_ascii_strcasecmp (heading, "normal"))
+            current_id = SKIN_MASK_MAIN;
+        else if (! g_ascii_strcasecmp (heading, "windowshade"))
+            current_id = SKIN_MASK_MAIN_SHADE;
+        else if (! g_ascii_strcasecmp (heading, "equalizer"))
+            current_id = SKIN_MASK_EQ;
+        else if (! g_ascii_strcasecmp (heading, "equalizerws"))
+            current_id = SKIN_MASK_EQ_SHADE;
+        else
+            current_id = (SkinMaskId) -1;
     }
-}
+
+    void handle_entry (const char * key, const char * value)
+    {
+        if (current_id == (SkinMaskId) -1)
+            return;
+
+        if (! g_ascii_strcasecmp (key, "numpoints"))
+        {
+            if (! numpoints[current_id])
+                numpoints[current_id] = string_to_garray (value);
+        }
+        else if (! g_ascii_strcasecmp (key, "pointlist"))
+        {
+            if (! pointlist[current_id])
+                pointlist[current_id] = string_to_garray (value);
+        }
+    }
+};
 
 static GdkBitmap * skin_create_mask (const GArray * num,
  const GArray * point, int width, int height)
@@ -324,24 +314,12 @@ void skin_load_masks (Skin * skin, const char * path)
         {275, 16}
     };
 
-    MaskLoadState state = {(SkinMaskId) -1, {0}, {0}};
-
-    VFSFile * file = open_local_file_nocase (path, "region.txt");
-
+    MaskParser parser;
+    VFSFile file = open_local_file_nocase (path, "region.txt");
     if (file)
-    {
-        inifile_parse (file, mask_handle_heading, mask_handle_entry, & state);
-        vfs_fclose (file);
-    }
+        parser.parse (file);
 
     for (int id = 0; id < SKIN_MASK_COUNT; id ++)
-    {
-        skin->masks[id] = skin_create_mask (state.numpoints[id],
-         state.pointlist[id], sizes[id][0], sizes[id][1]);
-
-        if (state.numpoints[id])
-            g_array_free (state.numpoints[id], TRUE);
-        if (state.pointlist[id])
-            g_array_free (state.pointlist[id], TRUE);
-    }
+        skin->masks[id] = skin_create_mask (parser.numpoints[id],
+         parser.pointlist[id], sizes[id][0], sizes[id][1]);
 }

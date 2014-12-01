@@ -55,14 +55,15 @@ static GtkWidget * get_menu_playback (void) {return menus[UI_MENU_PLAYBACK]; }
 static GtkWidget * get_menu_playlist (void) {return menus[UI_MENU_PLAYLIST]; }
 static GtkWidget * get_menu_view (void) {return menus[UI_MENU_VIEW]; }
 
-static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AUD_MENU_MAIN); }
-static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST); }
-static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_ADD); }
-static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_REMOVE); }
+static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AudMenuID::Main); }
+static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AudMenuID::Playlist); }
+static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistAdd); }
+static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistRemove); }
 
 static const AudguiMenuItem main_items[] = {
     MenuCommand (N_("Open Files ..."), "document-open", 'l', NO_MOD, action_play_file),
     MenuCommand (N_("Open URL ..."), "folder-remote", 'l', CTRL, action_play_location),
+    MenuCommand (N_("Search Library"), "edit-find", 'y', NO_MOD, action_search_tool),
     MenuSep (),
     MenuSub (N_("Playback"), nullptr, get_menu_playback),
     MenuSub (N_("Playlist"), nullptr, get_menu_playlist),
@@ -109,7 +110,7 @@ static const AudguiMenuItem playlist_items[] = {
     MenuCommand (N_("Import Playlist ..."), "document-open", 'o', NO_MOD, audgui_import_playlist),
     MenuCommand (N_("Export Playlist ..."), "document-save", 's', SHIFT, audgui_export_playlist),
     MenuSep (),
-    MenuCommand (N_("Playlist Manager ..."), "audio-x-generic", 'p', NO_MOD, audgui_playlist_manager),
+    MenuCommand (N_("Playlist Manager ..."), "audio-x-generic", 'p', NO_MOD, action_playlist_manager),
     MenuCommand (N_("Queue Manager ..."), nullptr, 'u', CTRL, audgui_queue_manager_show),
     MenuSep (),
     MenuCommand (N_("Refresh Playlist"), "view-refresh", GDK_KEY_F5, NO_MOD, action_playlist_refresh_list)
@@ -140,7 +141,7 @@ static const AudguiMenuItem playlist_add_items[] = {
 
 static const AudguiMenuItem dupe_items[] = {
     MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_remove_dupes_by_title),
-    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_remove_dupes_by_filename),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_remove_dupes_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_remove_dupes_by_full_path)
 };
 
@@ -169,7 +170,8 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_by_title),
     MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_by_album),
     MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_by_artist),
-    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_by_filename),
+    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_by_album_artist),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_sort_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_by_full_path),
     MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_by_date),
     MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_by_track_number)
@@ -179,7 +181,8 @@ static const AudguiMenuItem sort_selected_items[] = {
     MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_sort_selected_by_title),
     MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_selected_by_album),
     MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_artist),
-    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_selected_by_filename),
+    MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_album_artist),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_sort_selected_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_selected_by_full_path),
     MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_selected_by_date),
     MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_selected_by_track_number)
@@ -268,25 +271,6 @@ GtkAccelGroup * menu_get_accel_group (void)
     return accel;
 }
 
-static void get_monitor_geometry (GdkScreen * screen, int x, int y, GdkRectangle * geom)
-{
-    int monitors = gdk_screen_get_n_monitors (screen);
-
-    for (int i = 0; i < monitors; i ++)
-    {
-        gdk_screen_get_monitor_geometry (screen, i, geom);
-
-        if (x >= geom->x && x < geom->x + geom->width && y >= geom->y && y < geom->y + geom->height)
-            return;
-    }
-
-    /* fall back to entire screen */
-    geom->x = 0;
-    geom->y = 0;
-    geom->width = gdk_screen_get_width (screen);
-    geom->height = gdk_screen_get_height (screen);
-}
-
 typedef struct {
     int x, y;
     gboolean leftward, upward;
@@ -297,7 +281,7 @@ static void position_menu (GtkMenu * menu, int * x, int * y, gboolean * push_in,
     const MenuPosition * pos = (MenuPosition *) data;
 
     GdkRectangle geom;
-    get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), pos->x, pos->y, & geom);
+    audgui_get_monitor_geometry (gtk_widget_get_screen ((GtkWidget *) menu), pos->x, pos->y, & geom);
 
     GtkRequisition request;
     gtk_widget_size_request ((GtkWidget *) menu, & request);

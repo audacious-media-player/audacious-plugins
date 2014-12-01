@@ -30,22 +30,16 @@ FLAC__StreamDecoderReadStatus read_callback(const FLAC__StreamDecoder *decoder, 
     callback_info* info = (callback_info*) client_data;
     int64_t read;
 
-    if (info->fd == nullptr)
-    {
-        FLACNG_ERROR("Trying to read data from an uninitialized file!\n");
-        return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
-    }
-
     if (*bytes == 0)
         return FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
 
-    read = vfs_fread(buffer, 1, *bytes, info->fd);
+    read = info->fd->fread (buffer, 1, *bytes);
     *bytes = read;
 
     switch (read)
     {
         case -1:
-            FLACNG_ERROR("Error while reading from stream!\n");
+            AUDERR("Error while reading from stream!\n");
             return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
 
         case 0:
@@ -61,9 +55,9 @@ FLAC__StreamDecoderSeekStatus seek_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    if (vfs_fseek(info->fd, offset, SEEK_SET) != 0)
+    if (info->fd->fseek (offset, VFS_SEEK_SET) != 0)
     {
-        FLACNG_ERROR("Could not seek to %ld!\n", (long)offset);
+        AUDERR("Could not seek to %ld!\n", (long)offset);
         return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
     }
 
@@ -74,10 +68,10 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 {
     callback_info *info = (callback_info*) client_data;
 
-    int64_t result = vfs_ftell(info->fd);
+    int64_t result = info->fd->ftell ();
     if (result < 0)
     {
-        FLACNG_ERROR("Could not tell current position!\n");
+        AUDERR("Could not tell current position!\n");
         return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
     }
 
@@ -91,14 +85,14 @@ FLAC__StreamDecoderTellStatus tell_callback(const FLAC__StreamDecoder *decoder, 
 FLAC__bool eof_callback(const FLAC__StreamDecoder *decoder, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
-    return vfs_feof(info->fd);
+    return info->fd->feof ();
 }
 
 FLAC__StreamDecoderLengthStatus length_callback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *length, void *client_data)
 {
     callback_info *info = (callback_info*) client_data;
 
-    int64_t result = vfs_fsize(info->fd);
+    int64_t result = info->fd->fsize ();
     if (result < 0)
     {
         /*
@@ -128,6 +122,9 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
         return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
     }
 
+    if (!info->output_buffer.len())
+        info->alloc();
+
     for (unsigned sample = 0; sample < frame->header.blocksize; sample++)
     {
         for (unsigned channel = 0; channel < frame->header.channels; channel++)
@@ -142,7 +139,7 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
 
 void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
 {
-    FLACNG_ERROR("FLAC decoder error callback was called: %d\n", status);
+    AUDERR("FLAC decoder error callback was called: %d\n", status);
 }
 
 void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
@@ -164,7 +161,7 @@ void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMet
         info->sample_rate = metadata->data.stream_info.sample_rate;
         AUDDBG("sample_rate=%d\n", metadata->data.stream_info.sample_rate);
 
-        size = vfs_fsize(info->fd);
+        size = info->fd->fsize ();
 
         if (size == -1 || info->total_samples == 0)
             info->bitrate = 0;

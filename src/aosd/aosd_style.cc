@@ -21,7 +21,7 @@
 #include "aosd_style.h"
 #include "aosd_style_private.h"
 #include "aosd_cfg.h"
-#include <glib.h>
+
 #include <libaudcore/i18n.h>
 #include <X11/Xlib.h>
 #include <cairo/cairo.h>
@@ -41,28 +41,6 @@
    Have fun! :)
 */
 
-
-/* decoration style codes ( the code values do not need to be sequential ) */
-enum
-{
-  AOSD_DECO_STYLE_RECT = 0,
-  AOSD_DECO_STYLE_ROUNDRECT = 1,
-  AOSD_DECO_STYLE_CONCAVERECT = 2,
-  AOSD_DECO_STYLE_NONE
-};
-
-/* decoration style codes array size */
-#define AOSD_DECO_STYLE_CODES_ARRAY_SIZE 4
-
-/* decoration style codes array */
-int aosd_deco_style_codes[] =
-{
-  AOSD_DECO_STYLE_RECT,
-  AOSD_DECO_STYLE_ROUNDRECT,
-  AOSD_DECO_STYLE_CONCAVERECT,
-  AOSD_DECO_STYLE_NONE
-};
-
 /* prototypes of render functions */
 static void aosd_deco_rfunc_rect ( Ghosd * , cairo_t * , aosd_deco_style_data_t * );
 static void aosd_deco_rfunc_roundrect ( Ghosd * , cairo_t * , aosd_deco_style_data_t * );
@@ -72,36 +50,31 @@ static void aosd_deco_rfunc_none ( Ghosd * , cairo_t * , aosd_deco_style_data_t 
 /* map decoration style codes to decoration objects */
 aosd_deco_style_t aosd_deco_styles[] =
 {
-  [AOSD_DECO_STYLE_RECT] = { N_("Rectangle") ,
-                             aosd_deco_rfunc_rect ,
-                             2 , { 10 , 10 , 10 , 10 } },
+  // AOSD_DECO_STYLE_RECT
+  { N_("Rectangle") ,
+    aosd_deco_rfunc_rect ,
+    2 , { 10 , 10 , 10 , 10 } },
 
-  [AOSD_DECO_STYLE_ROUNDRECT] = { N_("Rounded Rectangle") ,
-                                  aosd_deco_rfunc_roundrect ,
-                                  2 , { 10 , 10 , 10 , 10 } },
+  // AOSD_DECO_STYLE_ROUNDRECT
+  { N_("Rounded Rectangle") ,
+    aosd_deco_rfunc_roundrect ,
+    2 , { 10 , 10 , 10 , 10 } },
 
-  [AOSD_DECO_STYLE_CONCAVERECT] = { N_("Concave Rectangle") ,
-                                    aosd_deco_rfunc_concaverect ,
-                                    2 , { 10 , 10 , 10 , 10 } },
+  // AOSD_DECO_STYLE_CONCAVERECT
+  { N_("Concave Rectangle") ,
+    aosd_deco_rfunc_concaverect ,
+    2 , { 10 , 10 , 10 , 10 } },
 
-  [AOSD_DECO_STYLE_NONE] = { N_("None") ,
-                             aosd_deco_rfunc_none ,
-                             0 , { 2 , 2 , 2 , 2 } }
+  // AOSD_DECO_STYLE_NONE
+  { N_("None") ,
+    aosd_deco_rfunc_none ,
+    0 , { 2 , 2 , 2 , 2 } }
 };
 
+static_assert (aud::n_elems (aosd_deco_styles) == AOSD_NUM_DECO_STYLES, "update aosd_deco_styles");
 
 
 /* DECORATION STYLE API */
-
-
-void
-aosd_deco_style_get_codes_array ( int ** array , int * array_size )
-{
-  *array = aosd_deco_style_codes;
-  *array_size = AOSD_DECO_STYLE_CODES_ARRAY_SIZE;
-  return;
-}
-
 
 void
 aosd_deco_style_get_padding ( int deco_code ,
@@ -138,30 +111,6 @@ aosd_deco_style_render ( int deco_code , void * ghosd , void * cr , void * user_
 }
 
 
-int
-aosd_deco_style_get_first_code ( void )
-{
-  return AOSD_DECO_STYLE_RECT;
-}
-
-
-int
-aosd_deco_style_get_max_numcol ( void )
-{
-  int i = 0;
-  int max_numcol = 0;
-
-  for ( i = 0 ; i < AOSD_DECO_STYLE_CODES_ARRAY_SIZE ; i++ )
-  {
-    int numcol = aosd_deco_style_get_numcol( aosd_deco_style_codes[i] );
-    if ( numcol > max_numcol )
-      max_numcol = numcol;
-  }
-
-  return max_numcol;
-}
-
-
 // sizing helper
 static void
 aosd_layout_size( PangoLayout * layout , int * width , int * height , int * bearing )
@@ -190,8 +139,8 @@ aosd_deco_rfunc_rect( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t * data
      (user color 1 and 2) and 1 font (user font 1), with optional shadow
   */
   PangoLayout *osd_layout = data->layout;
-  aosd_color_t color0 = g_array_index( data->decoration->colors , aosd_color_t , 0 );
-  aosd_color_t color1 = g_array_index( data->decoration->colors , aosd_color_t , 1 );
+  aosd_color_t color0 = data->decoration->colors[0];
+  aosd_color_t color1 = data->decoration->colors[1];
   aosd_color_t textcolor0 = data->text->fonts_color[0];
   aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
   gboolean draw_shadow = data->text->fonts_draw_shadow[0];
@@ -242,8 +191,8 @@ aosd_deco_rfunc_roundrect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_t 
      (user color 1 and 2) and 1 font (user font 1), with optional shadow
   */
   PangoLayout *osd_layout = data->layout;
-  aosd_color_t color0 = g_array_index( data->decoration->colors , aosd_color_t , 0 );
-  aosd_color_t color1 = g_array_index( data->decoration->colors , aosd_color_t , 1 );
+  aosd_color_t color0 = data->decoration->colors[0];
+  aosd_color_t color1 = data->decoration->colors[1];
   aosd_color_t textcolor0 = data->text->fonts_color[0];
   aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
   gboolean draw_shadow = data->text->fonts_draw_shadow[0];
@@ -303,8 +252,8 @@ aosd_deco_rfunc_concaverect ( Ghosd * osd , cairo_t * cr , aosd_deco_style_data_
      (user color 1 and 2) and 1 font (user font 1), with optional shadow
   */
   PangoLayout *osd_layout = data->layout;
-  aosd_color_t color0 = g_array_index( data->decoration->colors , aosd_color_t , 0 );
-  aosd_color_t color1 = g_array_index( data->decoration->colors , aosd_color_t , 1 );
+  aosd_color_t color0 = data->decoration->colors[0];
+  aosd_color_t color1 = data->decoration->colors[1];
   aosd_color_t textcolor0 = data->text->fonts_color[0];
   aosd_color_t shadowcolor0 = data->text->fonts_shadow_color[0];
   gboolean draw_shadow = data->text->fonts_draw_shadow[0];

@@ -34,7 +34,7 @@ class CjbmPlayer: public CPlayer
   ~CjbmPlayer()
     { if(m != nullptr) delete [] m; }
 
-  bool load(VFSFile *fd, const CFileProvider &fp);
+  bool load(VFSFile &fd, const CFileProvider &fp);
   bool update();
   void rewind(int subsong);
 

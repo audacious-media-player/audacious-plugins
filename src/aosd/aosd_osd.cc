@@ -22,7 +22,7 @@
 #include "aosd_style.h"
 #include "aosd_style_private.h"
 #include "aosd_cfg.h"
-#include <glib.h>
+
 #include <X11/Xlib.h>
 #include <cairo/cairo.h>
 #include <pango/pangocairo.h>
@@ -30,6 +30,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/time.h>
+
+#include <libaudcore/runtime.h>
+
 #include "ghosd.h"
 
 
@@ -42,94 +45,57 @@
 #define AOSD_TIMING              50
 
 
-typedef struct
+struct GhosdFadeData
 {
-  cairo_surface_t * surface;
-  float alpha;
-  void * user_data;
-  int width;
-  int height;
-  int deco_code;
-}
-GhosdFadeData;
+  cairo_surface_t * surface = nullptr;
+  float alpha = 0.0;
+  void * user_data = nullptr;
+  int width = 0;
+  int height = 0;
+  int deco_code = 0;
+
+  ~GhosdFadeData ()
+  {
+    if (surface)
+      cairo_surface_destroy (surface);
+  }
+};
 
 
-typedef struct
+struct GhosdData
 {
-  char * markup_message;
-  gboolean cfg_is_copied;
-  float dalpha_in, dalpha_out, ddisplay_stay;
+  String markup_message;
+  bool cfg_is_copied = false;
+  float dalpha_in = 0.0, dalpha_out = 0.0, ddisplay_stay = 0.0;
 
-  PangoContext *pango_context;
-  PangoLayout *pango_layout;
+  PangoContext *pango_context = nullptr;
+  PangoLayout *pango_layout = nullptr;
 
-  aosd_cfg_osd_t * cfg_osd;
+  aosd_cfg_t *cfg_osd = nullptr;
 
   GhosdFadeData fade_data;
-}
-GhosdData;
+
+  GhosdData (const char * markup_string, aosd_cfg_t * cfg_osd, bool copy_cfg) :
+    markup_message (markup_string),
+    cfg_is_copied (copy_cfg),
+    cfg_osd (copy_cfg ? new aosd_cfg_t (* cfg_osd) : cfg_osd) {}
+
+  ~GhosdData ()
+  {
+    if (pango_layout)
+      g_object_unref (pango_layout);
+    if (pango_context)
+      g_object_unref (pango_context);
+    if (cfg_is_copied)
+      delete cfg_osd;
+  }
+};
 
 
 static int osd_source_id = 0;
 static int osd_status = AOSD_STATUS_HIDDEN;
 static Ghosd *osd;
-static GhosdData *osd_data;
-
-
-static void
-aosd_osd_data_alloc ( char * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
-{
-  osd_data = g_new0 (GhosdData, 1);
-  osd_data->markup_message = g_strdup( markup_string );
-  if ( copy_cfg == TRUE )
-  {
-    osd_data->cfg_osd = aosd_cfg_osd_copy( cfg_osd );
-    osd_data->cfg_is_copied = TRUE;
-  }
-  else
-  {
-    osd_data->cfg_osd = cfg_osd;
-    osd_data->cfg_is_copied = FALSE;
-  }
-  return;
-}
-
-
-static void
-aosd_osd_data_free ( void )
-{
-  if ( osd_data->fade_data.surface != nullptr )
-  {
-    cairo_surface_destroy( osd_data->fade_data.surface );
-    osd_data->fade_data.surface = nullptr;
-  }
-
-  if ( osd_data->markup_message != nullptr )
-  {
-    g_free( osd_data->markup_message );
-    osd_data->markup_message = nullptr;
-  }
-
-  if ( osd_data->cfg_is_copied == TRUE )
-  {
-    aosd_cfg_osd_delete( osd_data->cfg_osd );
-    osd_data->cfg_osd = nullptr;
-  }
-
-  if ( osd_data->pango_layout != nullptr )
-  {
-    g_object_unref( osd_data->pango_layout );
-    osd_data->pango_layout = nullptr;
-  }
-
-  if ( osd_data->pango_context != nullptr )
-  {
-    g_object_unref( osd_data->pango_context );
-    osd_data->pango_context = nullptr;
-  }
-
-  g_free( osd_data );
-}
+static SmartPtr<GhosdData> osd_data;
 
 
 static void
@@ -370,7 +336,7 @@ aosd_timer_func ( void * none )
     case AOSD_STATUS_DESTROY:
     {
       aosd_osd_hide();
-      aosd_osd_data_free();
+      osd_data.clear();
 
       osd_status = AOSD_STATUS_HIDDEN; /* reset status */
       osd_source_id = 0;
@@ -383,13 +349,13 @@ aosd_timer_func ( void * none )
 
 
 int
-aosd_osd_display ( char * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean copy_cfg )
+aosd_osd_display ( char * markup_string , aosd_cfg_t * cfg_osd , bool copy_cfg )
 {
   if ( osd != nullptr )
   {
     if ( osd_status == AOSD_STATUS_HIDDEN )
     {
-      aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
+      osd_data.capture( new GhosdData( markup_string , cfg_osd , copy_cfg ) );
       aosd_osd_create();
       osd_status = AOSD_STATUS_FADEIN;
       osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
@@ -400,10 +366,10 @@ aosd_osd_display ( char * markup_string , aosd_cfg_osd_t * cfg_osd , gboolean co
       g_source_remove( osd_source_id ); /* remove timer */
       osd_source_id = 0;
       aosd_osd_hide();
-      aosd_osd_data_free();
+      osd_data.clear();
       osd_status = AOSD_STATUS_HIDDEN;
       /* now display new OSD */
-      aosd_osd_data_alloc( markup_string , cfg_osd , copy_cfg );
+      osd_data.capture( new GhosdData( markup_string , cfg_osd , copy_cfg ) );
       aosd_osd_create();
       osd_status = AOSD_STATUS_FADEIN;
       osd_source_id = g_timeout_add_full( G_PRIORITY_DEFAULT_IDLE , AOSD_TIMING ,
@@ -429,7 +395,7 @@ aosd_osd_shutdown ( void )
       g_source_remove( osd_source_id ); /* remove timer */
       osd_source_id = 0;
       aosd_osd_hide();
-      aosd_osd_data_free();
+      osd_data.clear();
       osd_status = AOSD_STATUS_HIDDEN;
     }
   }
@@ -504,7 +470,7 @@ aosd_osd_check_composite_mgr ( void )
 
   if ( have_comp_mgr != 0 )
   {
-    DEBUGMSG("running composite manager found\n");
+    AUDDBG("running composite manager found\n");
     return have_comp_mgr;
   }
   else
@@ -520,12 +486,12 @@ aosd_osd_check_composite_mgr ( void )
     {
       if (( soutput != nullptr ) && ( strstr( soutput , "\nxcompmgr\n" ) != nullptr ))
       {
-        DEBUGMSG("running xcompmgr found\n");
+        AUDDBG("running xcompmgr found\n");
         have_comp_mgr = 1;
       }
       else
       {
-        DEBUGMSG("running xcompmgr not found\n");
+        AUDDBG("running xcompmgr not found\n");
         have_comp_mgr = 0;
       }
     }

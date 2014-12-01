@@ -26,7 +26,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
-#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
@@ -44,14 +43,35 @@
 #include <libaudcore/preferences.h>
 #include <libaudcore/hook.h>
 
+class LIRCPlugin : public GeneralPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("LIRC Plugin"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr LIRCPlugin () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT LIRCPlugin aud_plugin_instance;
+
 static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition, void * data);
 
-static const char * const lirc_defaults[] = {
+const char * const LIRCPlugin::defaults[] = {
  "enable_reconnect", "TRUE",
  "reconnect_timeout", "5",
  nullptr};
-
-const char *plugin_name = "LIRC Plugin";
 
 int lirc_fd = -1;
 struct lirc_config *config = nullptr;
@@ -71,17 +91,13 @@ void init_lirc (void)
 
     if ((lirc_fd = lirc_init ((char *) "audacious", 1)) == -1)
     {
-        fprintf (stderr, _("%s: could not init LIRC support\n"), plugin_name);
+        AUDERR ("could not init LIRC support\n");
         return;
     }
     if (lirc_readconfig (nullptr, &config, nullptr) == -1)
     {
         lirc_deinit ();
-        fprintf (stderr,
-                 _("%s: could not read LIRC config file\n"
-                   "%s: please read the documentation of LIRC\n"
-                   "%s: how to create a proper config file\n"),
-                 plugin_name, plugin_name, plugin_name);
+        AUDERR ("could not read LIRC config file\n");
         return;
     }
 
@@ -95,12 +111,11 @@ void init_lirc (void)
     {
         fcntl (lirc_fd, F_SETFL, flags | O_NONBLOCK);
     }
-    fflush (stdout);
 }
 
-bool init (void)
+bool LIRCPlugin::init ()
 {
-    aud_config_set_defaults ("lirc", lirc_defaults);
+    aud_config_set_defaults ("lirc", defaults);
     init_lirc ();
     track_no_pos = 0;
     tid = 0;
@@ -109,12 +124,12 @@ bool init (void)
 
 gboolean reconnect_lirc (void * data)
 {
-    fprintf (stderr, _("%s: trying to reconnect...\n"), plugin_name);
-    init ();
+    AUDERR ("trying to reconnect...\n");
+    aud_plugin_instance.init ();
     return (lirc_fd == -1);
 }
 
-void cleanup ()
+void LIRCPlugin::cleanup ()
 {
     if (config)
     {
@@ -143,7 +158,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
 {
     char *code;
     char *c;
-    int playlist_time, playlist_pos, output_time, v;
+    int output_time, v;
     int ret;
     char *ptr;
     int balance;
@@ -207,14 +222,6 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5000;
                 output_time = aud_drct_get_time ();
-
-                int playlist = aud_playlist_get_active ();
-                playlist_pos = aud_playlist_get_position (playlist);
-                playlist_time =
-                    aud_playlist_entry_get_length (playlist, playlist_pos,
-                                                   false);
-                if (playlist_time - output_time < n)
-                    output_time = playlist_time - n;
                 aud_drct_seek (output_time + n);
             }
             else if (g_ascii_strncasecmp ("BWD", c, 3) == 0)
@@ -227,8 +234,6 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5000;
                 output_time = aud_drct_get_time ();
-                if (output_time < n)
-                    output_time = n;
                 aud_drct_seek (output_time - n);
             }
             else if (g_ascii_strncasecmp ("VOL_UP", c, 6) == 0)
@@ -240,7 +245,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_main (&v);
+                v = aud_drct_get_volume_main ();
                 if (v > (100 - n))
                     v = 100 - n;
                 aud_drct_set_volume_main (v + n);
@@ -254,7 +259,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_main (&v);
+                v = aud_drct_get_volume_main ();
                 if (v < n)
                     v = n;
                 aud_drct_set_volume_main (v - n);
@@ -270,7 +275,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                     mute = 1;
                     /* store the master volume so
                        we can restore it on unmute. */
-                    aud_drct_get_volume_main (&mute_vol);
+                    mute_vol = aud_drct_get_volume_main ();
                     aud_drct_set_volume_main (0);
                 }
                 else
@@ -288,7 +293,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_balance (&balance);
+                balance = aud_drct_get_volume_balance ();
                 balance -= n;
                 if (balance < -100)
                     balance = -100;
@@ -303,7 +308,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
                 if (n <= 0)
                     n = 5;
 
-                aud_drct_get_volume_balance (&balance);
+                balance = aud_drct_get_volume_balance ();
                 balance += n;
                 if (balance > 100)
                     balance = 100;
@@ -349,8 +354,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
             }
             else
             {
-                fprintf (stderr, _("%s: unknown command \"%s\"\n"),
-                         plugin_name, c);
+                AUDERR ("unknown command \"%s\"\n", c);
             }
         }
         g_free (code);
@@ -360,14 +364,12 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
     if (ret == -1)
     {
         /* something went badly wrong */
-        fprintf (stderr, _("%s: disconnected from LIRC\n"), plugin_name);
-        cleanup ();
+        AUDERR ("disconnected from LIRC\n");
+        aud_plugin_instance.cleanup ();
         if (aud_get_bool ("lirc", "enable_reconnect"))
         {
             int reconnect_timeout = aud_get_int ("lirc", "reconnect_timeout");
-            fprintf (stderr,
-                     _("%s: will try reconnect every %d seconds...\n"),
-                     plugin_name, reconnect_timeout);
+            AUDERR ("will try reconnect every %d seconds...\n", reconnect_timeout);
             g_timeout_add (1000 * reconnect_timeout, reconnect_lirc, nullptr);
         }
     }
@@ -375,7 +377,7 @@ static gboolean lirc_input_callback (GIOChannel * source, GIOCondition condition
     return true;
 }
 
-static const char about[] =
+const char LIRCPlugin::about[] =
  N_("A simple plugin to control Audacious using the LIRC remote control daemon\n\n"
     "Adapted for Audacious by:\n"
     "Tony Vroon <chainsaw@gentoo.org>\n"
@@ -386,7 +388,7 @@ static const char about[] =
     "Andrew O. Shadoura <bugzilla@tut.by>\n\n"
     "For more information about LIRC, see http://lirc.org.");
 
-static const PreferencesWidget widgets[] = {
+const PreferencesWidget LIRCPlugin::widgets[] = {
     WidgetLabel (N_("<b>Connection</b>")),
     WidgetCheck (N_("Reconnect to LIRC server"),
         WidgetBool ("lirc", "enable_reconnect")),
@@ -396,13 +398,4 @@ static const PreferencesWidget widgets[] = {
         WIDGET_CHILD)
 };
 
-static const PluginPreferences prefs = {{widgets}};
-
-#define AUD_PLUGIN_NAME        N_("LIRC Plugin")
-#define AUD_PLUGIN_ABOUT       about
-#define AUD_PLUGIN_PREFS       & prefs
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences LIRCPlugin::prefs = {{widgets}};

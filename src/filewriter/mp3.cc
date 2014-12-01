@@ -26,19 +26,19 @@
 
 #ifdef FILEWRITER_MP3
 
+#include <string.h>
 #include <lame/lame.h>
+#include <gtk/gtk.h>
 
-#include <libaudcore/runtime.h>
-#include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 
 #define MODES 4
 enum {MODE_AUTO = 4, MODE_JOINT = 1, MODE_STEREO = 0, MODE_MONO = 3};
 static const int modes[MODES] = {MODE_AUTO, MODE_JOINT, MODE_STEREO, MODE_MONO};
 static const char * const mode_names[MODES] = {N_("Auto"), N_("Joint Stereo"),
  N_("Stereo"), N_("Mono")};
-
-static int (*write_output)(void *ptr, int length);
 
 static GtkWidget *configure_win = nullptr;
 static GtkWidget *alg_quality_spin;
@@ -94,12 +94,12 @@ static lame_global_flags *gfp;
 static unsigned char encbuffer[LAME_MAXMP3BUFFER];
 static int id3v2_size;
 
-static unsigned char * write_buffer;
-static int write_buffer_size;
+static int channels;
+static Index<unsigned char> write_buffer;
 
 static void lame_debugf(const char *format, va_list ap)
 {
-    (void) vfprintf(stdout, format, ap);
+    (void) vprintf(format, ap);
 }
 
 static const char * const mp3_defaults[] = {
@@ -133,7 +133,7 @@ static int vbr_on, vbr_type, vbr_min_val, vbr_max_val, enforce_min_val,
 static float compression_val;
 static int enc_toggle_val, audio_mode_val, enforce_iso_val, error_protect_val;
 
-static void mp3_init(write_output_callback write_output_func)
+static void mp3_init ()
 {
     aud_config_set_defaults ("filewriter_mp3", mp3_defaults);
 
@@ -158,57 +158,49 @@ static void mp3_init(write_output_callback write_output_func)
     audio_mode_val = aud_get_int ("filewriter_mp3", "audio_mode_val");
     enforce_iso_val = aud_get_int ("filewriter_mp3", "enforce_iso_val");
     error_protect_val = aud_get_int ("filewriter_mp3", "error_protect_val");
-
-    if (write_output_func)
-        write_output=write_output_func;
 }
 
-static int mp3_open(void)
+static bool mp3_open (VFSFile & file, const format_info & info, const Tuple & tuple)
 {
     int imp3;
 
     gfp = lame_init();
     if (gfp == nullptr)
-        return 0;
+        return false;
 
     /* setup id3 data */
     id3tag_init(gfp);
 
-    if (tuple) {
-        /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
-        lameid3.track_name = tuple.get_str (FIELD_TITLE);
-        id3tag_set_title(gfp, lameid3.track_name);
+    /* XXX write UTF-8 even though libmp3lame does id3v2.3. --yaz */
+    lameid3.track_name = tuple.get_str (Tuple::Title);
+    id3tag_set_title(gfp, lameid3.track_name);
 
-        lameid3.performer = tuple.get_str (FIELD_ARTIST);
-        id3tag_set_artist(gfp, lameid3.performer);
+    lameid3.performer = tuple.get_str (Tuple::Artist);
+    id3tag_set_artist(gfp, lameid3.performer);
 
-        lameid3.album_name = tuple.get_str (FIELD_ALBUM);
-        id3tag_set_album(gfp, lameid3.album_name);
+    lameid3.album_name = tuple.get_str (Tuple::Album);
+    id3tag_set_album(gfp, lameid3.album_name);
 
-        lameid3.genre = tuple.get_str (FIELD_GENRE);
-        id3tag_set_genre(gfp, lameid3.genre);
+    lameid3.genre = tuple.get_str (Tuple::Genre);
+    id3tag_set_genre(gfp, lameid3.genre);
 
-        lameid3.year = String (int_to_str (tuple.get_int (FIELD_YEAR)));
-        id3tag_set_year(gfp, lameid3.year);
+    lameid3.year = String (int_to_str (tuple.get_int (Tuple::Year)));
+    id3tag_set_year(gfp, lameid3.year);
 
-        lameid3.track_number = String (int_to_str (tuple.get_int (FIELD_TRACK_NUMBER)));
-        id3tag_set_track(gfp, lameid3.track_number);
+    lameid3.track_number = String (int_to_str (tuple.get_int (Tuple::Track)));
+    id3tag_set_track(gfp, lameid3.track_number);
 
-        if (force_v2_val) {
-            id3tag_add_v2(gfp);
-        }
-        if (only_v1_val) {
-            id3tag_v1_only(gfp);
-        }
-        if (only_v2_val) {
-            id3tag_v2_only(gfp);
-        }
-    }
+    if (force_v2_val)
+        id3tag_add_v2(gfp);
+    if (only_v1_val)
+        id3tag_v1_only(gfp);
+    if (only_v2_val)
+        id3tag_v2_only(gfp);
 
     /* input stream description */
 
-    lame_set_in_samplerate(gfp, input.frequency);
-    lame_set_num_channels(gfp, input.channels);
+    lame_set_in_samplerate(gfp, info.frequency);
+    lame_set_num_channels(gfp, info.channels);
     /* Maybe implement this? */
     /* lame_set_scale(lame_global_flags *, float); */
     lame_set_out_samplerate(gfp, out_samplerate_val);
@@ -254,97 +246,90 @@ static int mp3_open(void)
     lame_set_write_id3tag_automatic(gfp, 0);
 
     if (lame_init_params(gfp) == -1)
-        return 0;
+        return false;
 
     /* write id3v2 header */
     imp3 = lame_get_id3v2_tag(gfp, encbuffer, sizeof(encbuffer));
 
     if (imp3 > 0) {
-        write_output(encbuffer, imp3);
+        if (file.fwrite (encbuffer, 1, imp3) != imp3)
+            AUDERR ("write error\n");
         id3v2_size = imp3;
     }
     else {
         id3v2_size = 0;
     }
 
-    write_buffer = nullptr;
-    write_buffer_size = 0;
-
-    return 1;
+    channels = info.channels;
+    return true;
 }
 
-static void mp3_write(void *ptr, int length)
+static void mp3_write (VFSFile & file, const void * data, int length)
 {
     int encoded;
 
-    if (write_buffer_size == 0)
+    if (! write_buffer.len ())
+        write_buffer.resize (8192);
+
+    while (1)
     {
-        write_buffer_size = 8192;
-        write_buffer = g_renew (unsigned char, write_buffer, write_buffer_size);
+        if (channels == 1)
+            encoded = lame_encode_buffer (gfp, (int16_t *) data, (int16_t *) data,
+             length / 2, write_buffer.begin (), write_buffer.len ());
+        else
+            encoded = lame_encode_buffer_interleaved (gfp, (int16_t *) data,
+             length / 4, write_buffer.begin (), write_buffer.len ());
+
+        if (encoded != -1)
+            break;
+
+        write_buffer.resize (write_buffer.len () * 2);
     }
 
-RETRY:
-    if (input.channels == 1)
-        encoded = lame_encode_buffer (gfp, (int16_t *) ptr, (int16_t *) ptr,
-         length / 2, write_buffer, write_buffer_size);
-    else
-        encoded = lame_encode_buffer_interleaved (gfp, (int16_t *) ptr,
-         length / 4, write_buffer, write_buffer_size);
+    if (encoded > 0 && file.fwrite (write_buffer.begin (), 1, encoded) != encoded)
+        AUDERR ("write error\n");
 
-    if (encoded == -1)
-    {
-        write_buffer_size *= 2;
-        write_buffer = g_renew (unsigned char, write_buffer, write_buffer_size);
-        goto RETRY;
-    }
-
-    if (encoded > 0)
-        write_output (write_buffer, encoded);
-
-    numsamples += length / (2 * input.channels);
+    numsamples += length / (2 * channels);
 }
 
-static void mp3_close(void)
+static void mp3_close (VFSFile & file)
 {
-    if (output_file) {
-        int imp3, encout;
+    int imp3, encout;
 
-        /* write remaining mp3 data */
-        encout = lame_encode_flush_nogap(gfp, encbuffer, LAME_MAXMP3BUFFER);
-        write_output(encbuffer, encout);
+    /* write remaining mp3 data */
+    encout = lame_encode_flush_nogap(gfp, encbuffer, LAME_MAXMP3BUFFER);
+    if (file.fwrite (encbuffer, 1, encout) != encout)
+        AUDERR ("write error\n");
 
-        /* set gfp->num_samples for valid TLEN tag */
-        lame_set_num_samples(gfp, numsamples);
+    /* set gfp->num_samples for valid TLEN tag */
+    lame_set_num_samples(gfp, numsamples);
 
-        /* append v1 tag */
-        imp3 = lame_get_id3v1_tag(gfp, encbuffer, sizeof(encbuffer));
-        if (imp3 > 0)
-            write_output(encbuffer, imp3);
+    /* append v1 tag */
+    imp3 = lame_get_id3v1_tag(gfp, encbuffer, sizeof(encbuffer));
+    if (imp3 > 0 && file.fwrite (encbuffer, 1, imp3) != imp3)
+        AUDERR ("write error\n");
 
-        /* update v2 tag */
-        imp3 = lame_get_id3v2_tag(gfp, encbuffer, sizeof(encbuffer));
-        if (imp3 > 0) {
-            if (vfs_fseek(output_file, 0, SEEK_SET) != 0) {
-                AUDDBG("can't rewind\n");
-            }
-            else {
-                write_output(encbuffer, imp3);
-            }
-        }
+    /* update v2 tag */
+    imp3 = lame_get_id3v2_tag(gfp, encbuffer, sizeof(encbuffer));
+    if (imp3 > 0) {
+        if (file.fseek (0, VFS_SEEK_SET) != 0)
+            AUDERR ("seek error\n");
+        else if (file.fwrite (encbuffer, 1, imp3) != imp3)
+            AUDERR ("write error\n");
+    }
 
-        /* update lame tag */
-        if (id3v2_size) {
-            if (vfs_fseek(output_file, id3v2_size, SEEK_SET) != 0) {
-                AUDDBG("fatal error: can't update LAME-tag frame!\n");
-            }
-            else {
-                imp3 = lame_get_lametag_frame(gfp, encbuffer, sizeof(encbuffer));
-                write_output(encbuffer, imp3);
-            }
+    /* update lame tag */
+    if (id3v2_size) {
+        if (file.fseek (id3v2_size, VFS_SEEK_SET) != 0)
+            AUDERR ("seek error\n");
+        else {
+            imp3 = lame_get_lametag_frame(gfp, encbuffer, sizeof(encbuffer));
+            if (file.fwrite (encbuffer, 1, imp3) != imp3)
+                AUDERR ("write error\n");
         }
     }
 
-    g_free (write_buffer);
+    write_buffer.clear ();
 
     lame_close(gfp);
     AUDDBG("lame_close() done\n");
@@ -718,7 +703,7 @@ static void mp3_configure(void)
 
         /* Output Samplerate */
 
-        samplerate_frame = gtk_frame_new(_("Output Samplerate:"));
+        samplerate_frame = gtk_frame_new(_("Output Sample Rate:"));
         gtk_container_set_border_width(GTK_CONTAINER(samplerate_frame), 5);
         gtk_box_pack_start(GTK_BOX(quality_hbox1), samplerate_frame, FALSE,
                            FALSE, 0);
@@ -752,7 +737,7 @@ static void mp3_configure(void)
 
         /* Encoder Quality */
 
-        enc_quality_frame = gtk_frame_new(_("Bitrate / Compression ratio:"));
+        enc_quality_frame = gtk_frame_new(_("Bitrate / Compression Ratio:"));
         gtk_container_set_border_width(GTK_CONTAINER(enc_quality_frame),
                                        5);
         gtk_box_pack_start(GTK_BOX(quality_vbox), enc_quality_frame, FALSE,
@@ -857,7 +842,7 @@ static void mp3_configure(void)
 
         /* Misc */
 
-        misc_frame = gtk_frame_new(_("Misc:"));
+        misc_frame = gtk_frame_new(_("Miscellaneous:"));
         gtk_container_set_border_width(GTK_CONTAINER(misc_frame), 5);
         gtk_box_pack_start(GTK_BOX(quality_vbox), misc_frame, FALSE, FALSE,
                            0);
@@ -868,7 +853,7 @@ static void mp3_configure(void)
 
         enforce_iso_toggle =
             gtk_check_button_new_with_label
-            (_("Enforce strict ISO complience"));
+            (_("Enforce strict ISO compliance"));
         gtk_box_pack_start(GTK_BOX(misc_vbox), enforce_iso_toggle, TRUE,
                            TRUE, 2);
         g_signal_connect (enforce_iso_toggle, "toggled", (GCallback)
@@ -1075,7 +1060,7 @@ static void mp3_configure(void)
         /* Xing Header */
 
         xing_header_toggle =
-            gtk_check_button_new_with_label(_("Don't write Xing VBR header"));
+            gtk_check_button_new_with_label(_("Omit Xing VBR header"));
         gtk_box_pack_start(GTK_BOX(vbr_options_vbox), xing_header_toggle,
                            FALSE, FALSE, 2);
         g_signal_connect (xing_header_toggle, "toggled", (GCallback)
@@ -1097,7 +1082,7 @@ static void mp3_configure(void)
 
         /* Frame Params */
 
-        tags_frames_frame = gtk_frame_new(_("Frame parameters:"));
+        tags_frames_frame = gtk_frame_new(_("Frame Parameters:"));
         gtk_container_set_border_width(GTK_CONTAINER(tags_frames_frame),
                                        5);
         gtk_box_pack_start(GTK_BOX(tags_vbox), tags_frames_frame, FALSE,
@@ -1132,7 +1117,7 @@ static void mp3_configure(void)
 
         /* ID3 Params */
 
-        tags_id3_frame = gtk_frame_new(_("ID3 params:"));
+        tags_id3_frame = gtk_frame_new(_("ID3 Parameters:"));
         gtk_container_set_border_width(GTK_CONTAINER(tags_id3_frame), 5);
         gtk_box_pack_start(GTK_BOX(tags_vbox), tags_id3_frame, FALSE,
                            FALSE, 2);
@@ -1203,7 +1188,7 @@ static int mp3_format_required (int fmt)
     return FMT_S16_NE;
 }
 
-FileWriter mp3_plugin = {
+FileWriterImpl mp3_plugin = {
     mp3_init,
     mp3_configure,
     mp3_open,

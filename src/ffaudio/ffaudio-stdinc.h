@@ -19,8 +19,6 @@
 #ifndef __FFAUDIO_STDINC_H__GUARD
 #define __FFAUDIO_STDINC_H__GUARD
 
-#define _ERROR(...) printf ("ffaudio: " __VA_ARGS__)
-
 #define __STDC_CONSTANT_MACROS
 #include <libaudcore/plugin.h>
 
@@ -44,9 +42,9 @@ extern "C" {
 #error Please define either HAVE_FFMPEG or HAVE_LIBAV
 #endif
 
-AVIOContext * io_context_new (VFSFile * file);
+AVIOContext * io_context_new (VFSFile & file);
 void io_context_free (AVIOContext * context);
 
-bool read_itunes_cover (const char * filename, VFSFile * file, void * * data, int64_t * size);
+Index<char> read_itunes_cover (const char * filename, VFSFile & file);
 
 #endif

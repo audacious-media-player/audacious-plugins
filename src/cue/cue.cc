@@ -20,8 +20,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 extern "C" {
 #include <libcue/libcue.h>
 }
@@ -31,16 +29,31 @@ extern "C" {
 #include <libaudcore/plugin.h>
 #include <libaudcore/probe.h>
 
+static const char * const cue_exts[] = {"cue"};
+
+class CueLoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("Cue Sheet Plugin"), PACKAGE};
+
+    constexpr CueLoader () : PlaylistPlugin (info, cue_exts, false) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+};
+
+EXPORT CueLoader aud_plugin_instance;
+
 static const struct {
-    int tuple_type;
+    Tuple::Field field;
     int pti;
 } pti_map[] = {
-    { FIELD_ARTIST, PTI_PERFORMER },
-    { FIELD_TITLE, PTI_TITLE },
+    { Tuple::Artist, PTI_PERFORMER },
+    { Tuple::Title, PTI_TITLE },
 };
 
 static void
-tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
+tuple_attach_cdtext(Tuple &tuple, Track *track, Tuple::Field field, int pti)
 {
     Cdtext *cdtext;
     const char *text;
@@ -53,19 +66,19 @@ tuple_attach_cdtext(Tuple &tuple, Track *track, int tuple_type, int pti)
     if (text == nullptr)
         return;
 
-    tuple.set_str (tuple_type, text);
+    tuple.set_str (field, text);
 }
 
-static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
- String & title, Index<PlaylistAddItem> & items)
+bool CueLoader::load (const char * cue_filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
-    void * buffer = nullptr;
-    vfs_file_read_all (file, & buffer, nullptr);
-    if (! buffer)
+    Index<char> buffer = file.read_all ();
+    if (! buffer.len ())
         return false;
 
-    Cd * cd = cue_parse_string ((char *) buffer);
-    g_free (buffer);
+    buffer.append (0);  /* null-terminated */
+
+    Cd * cd = cue_parse_string (buffer.begin ());
     if (cd == nullptr)
         return false;
 
@@ -106,27 +119,27 @@ static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
 
         Tuple tuple = base_tuple.ref ();
         tuple.set_filename (filename);
-        tuple.set_int (FIELD_TRACK_NUMBER, track);
+        tuple.set_int (Tuple::Track, track);
 
         int begin = (int64_t) track_get_start (current) * 1000 / 75;
-        tuple.set_int (FIELD_SEGMENT_START, begin);
+        tuple.set_int (Tuple::StartTime, begin);
 
         if (last_track)
         {
-            if (base_tuple.get_value_type (FIELD_LENGTH) == TUPLE_INT)
-                tuple.set_int (FIELD_LENGTH, base_tuple.get_int (FIELD_LENGTH) - begin);
+            if (base_tuple.get_value_type (Tuple::Length) == Tuple::Int)
+                tuple.set_int (Tuple::Length, base_tuple.get_int (Tuple::Length) - begin);
         }
         else
         {
             int length = (int64_t) track_get_length (current) * 1000 / 75;
-            tuple.set_int (FIELD_LENGTH, length);
-            tuple.set_int (FIELD_SEGMENT_END, begin + length);
+            tuple.set_int (Tuple::Length, length);
+            tuple.set_int (Tuple::EndTime, begin + length);
         }
 
         for (auto & pti : pti_map)
-            tuple_attach_cdtext (tuple, current, pti.tuple_type, pti.pti);
+            tuple_attach_cdtext (tuple, current, pti.field, pti.pti);
 
-        items.append ({filename, std::move (tuple)});
+        items.append (filename, std::move (tuple));
 
         current = next;
         filename = next_filename;
@@ -140,12 +153,3 @@ static bool playlist_load_cue (const char * cue_filename, VFSFile * file,
 
     return true;
 }
-
-static const char * const cue_exts[] = {"cue", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Cue Sheet Plugin")
-#define AUD_PLAYLIST_EXTS      cue_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_cue
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

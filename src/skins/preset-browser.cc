@@ -70,7 +70,9 @@ static void show_preset_browser (const char * title, gboolean save,
 static void do_load_file (const char * filename)
 {
     EqualizerPreset preset;
-    if (! aud_load_preset_file (preset, filename))
+
+    VFSFile file (filename, "r");
+    if (! file || ! aud_load_preset_file (preset, file))
         return;
 
     equalizerwin_apply_preset (preset);
@@ -83,7 +85,7 @@ void eq_preset_load_file (void)
 
 static void do_load_eqf (const char * filename)
 {
-    VFSFile * file = vfs_fopen (filename, "r");
+    VFSFile file (filename, "r");
     if (! file)
         return;
 
@@ -91,8 +93,6 @@ static void do_load_eqf (const char * filename)
 
     if (presets.len ())
         equalizerwin_apply_preset (presets[0]);
-
-    vfs_fclose (file);
 }
 
 void eq_preset_load_eqf (void)
@@ -104,7 +104,10 @@ static void do_save_file (const char * filename)
 {
     EqualizerPreset preset;
     equalizerwin_update_preset (preset);
-    aud_save_preset_file (preset, filename);
+
+    VFSFile file (filename, "w");
+    if (file)
+        aud_save_preset_file (preset, file);
 }
 
 void eq_preset_save_file (void)
@@ -118,7 +121,7 @@ void eq_preset_save_file (void)
 
 static void do_save_eqf (const char * filename)
 {
-    VFSFile * file = vfs_fopen (filename, "w");
+    VFSFile file (filename, "w");
     if (! file)
         return;
 
@@ -127,8 +130,6 @@ static void do_save_eqf (const char * filename)
 
     equalizerwin_update_preset (preset);
     aud_export_winamp_preset (preset, file);
-
-    vfs_fclose (file);
 }
 
 void eq_preset_save_eqf (void)
@@ -138,13 +139,11 @@ void eq_preset_save_eqf (void)
 
 static void do_import_winamp (const char * filename)
 {
-    VFSFile * file = vfs_fopen (filename, "r");
+    VFSFile file (filename, "r");
     if (! file)
         return;
 
     equalizerwin_import_presets (aud_import_winamp_presets (file));
-
-    vfs_fclose (file);
 }
 
 void eq_preset_import_winamp (void)

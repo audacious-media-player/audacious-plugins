@@ -28,7 +28,7 @@ class CcffLoader: public CmodPlayer
 
 		CcffLoader(Copl *newopl) : CmodPlayer(newopl) { };
 
-		bool	load(VFSFile *fd, const CFileProvider &fp);
+		bool	load(VFSFile &fd, const CFileProvider &fp);
 		void	rewind(int subsong);
 
 		std::string		gettype();

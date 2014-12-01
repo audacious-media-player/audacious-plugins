@@ -17,8 +17,10 @@
  * the use of this software.
  */
 
-#include <QtGui>
+#include <QApplication>
+#include <QIcon>
 
+#include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/drct.h>
 #include <libaudcore/playlist.h>
@@ -26,6 +28,14 @@
 
 #include "playlist_model.h"
 #include "playlist_model.moc"
+
+static inline QPixmap get_icon (const char * name)
+{
+    qreal r = qApp->devicePixelRatio ();
+    QPixmap pm = QIcon::fromTheme (name).pixmap (16 * r);
+    pm.setDevicePixelRatio (r);
+    return pm;
+}
 
 PlaylistModel::PlaylistModel (QObject * parent, int id) : QAbstractListModel (parent),
     m_uniqueId (id)
@@ -61,25 +71,23 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         case PL_COL_TITLE:
         case PL_COL_ARTIST:
         case PL_COL_ALBUM:
-            aud_playlist_entry_describe (playlist (), index.row (), title, artist, album, true);
-            break;
         case PL_COL_LENGTH:
-            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), false);
+            tuple = aud_playlist_entry_get_tuple (playlist (), index.row (), Playlist::Guess);
             break;
         }
 
         switch (index.column ())
         {
         case PL_COL_TITLE:
-            return QString (title);
+            return QString (tuple.get_str (Tuple::Title));
         case PL_COL_ARTIST:
-            return QString (artist);
+            return QString (tuple.get_str (Tuple::Artist));
         case PL_COL_ALBUM:
-            return QString (album);
+            return QString (tuple.get_str (Tuple::Album));
         case PL_COL_QUEUED:
             return getQueued (index.row ());
         case PL_COL_LENGTH:
-            return QString (str_format_time (tuple.get_int (FIELD_LENGTH)));
+            return QString (str_format_time (tuple.get_int (Tuple::Length)));
         }
 
     case Qt::TextAlignmentRole:
@@ -90,16 +98,15 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
         }
 
     case Qt::DecorationRole:
-
         if (index.column () == 0 && index.row () == aud_playlist_get_position (playlist ()))
         {
             if (aud_playlist_get_playing () == playlist ())
                 if (aud_drct_get_paused ())
-                    return QIcon::fromTheme ("media-playback-pause");
+                    return get_icon ("media-playback-pause");
                 else
-                    return QIcon::fromTheme ("media-playback-start");
+                    return get_icon ("media-playback-start");
             else
-                return QIcon::fromTheme ("media-playback-stop");
+                return get_icon ("media-playback-stop");
         }
     }
     return QVariant ();
@@ -107,27 +114,25 @@ QVariant PlaylistModel::data (const QModelIndex &index, int role) const
 
 QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, int role) const
 {
-     if (role == Qt::DisplayRole)
-     {
-         if (orientation == Qt::Horizontal)
-         {
+    if (role == Qt::DisplayRole)
+    {
+        if (orientation == Qt::Horizontal)
+        {
             switch (section)
             {
-            case PL_COL_NOW_PLAYING:
-                return QString ("Playing");
             case PL_COL_TITLE:
-                return QString ("Title");
+                return QString (_("Title"));
             case PL_COL_ARTIST:
-                return QString ("Artist");
+                return QString (_("Artist"));
             case PL_COL_ALBUM:
-                return QString ("Album");
+                return QString (_("Album"));
             case PL_COL_QUEUED:
-                return QString ("Queued");
+                return QString ();
             case PL_COL_LENGTH:
-                return QString ("Time");
+                return QString ();
             }
-         }
-     }
+        }
+    }
     return QVariant ();
 }
 

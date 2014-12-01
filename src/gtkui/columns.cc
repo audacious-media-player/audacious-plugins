@@ -31,21 +31,60 @@
 #include "ui_playlist_notebook.h"
 #include "ui_playlist_widget.h"
 
-const char * const pw_col_names[PW_COLS] = {N_("Entry number"), N_("Title"),
- N_("Artist"), N_("Year"), N_("Album"), N_("Track"), N_("Genre"),
- N_("Queue position"), N_("Length"), N_("File path"), N_("File name"),
- N_("Custom title"), N_("Bitrate")};
+const char * const pw_col_names[PW_COLS] = {
+    N_("Entry number"),
+    N_("Title"),
+    N_("Artist"),
+    N_("Year"),
+    N_("Album"),
+    N_("Album artist"),
+    N_("Track"),
+    N_("Genre"),
+    N_("Queue position"),
+    N_("Length"),
+    N_("File path"),
+    N_("File name"),
+    N_("Custom title"),
+    N_("Bitrate")
+};
 
 int pw_num_cols;
 int pw_cols[PW_COLS];
 int pw_col_widths[PW_COLS];
 
-static const char * const pw_col_keys[PW_COLS] = {"number", "title", "artist",
- "year", "album", "track", "genre", "queued", "length", "path", "filename",
- "custom", "bitrate"};
+static const char * const pw_col_keys[PW_COLS] = {
+    "number",
+    "title",
+    "artist",
+    "year",
+    "album",
+    "album-artist",
+    "track",
+    "genre",
+    "queued",
+    "length",
+    "path",
+    "filename",
+    "custom",
+    "bitrate"
+};
 
-static const int pw_default_widths[PW_COLS] = {10, 275, 175, 10, 175, 10, 100,
- 10, 10, 275, 275, 275, 10};
+static const int pw_default_widths[PW_COLS] = {
+    10,   // entry number
+    275,  // title
+    175,  // artist
+    10,   // year
+    175,  // album
+    175,  // album artist
+    10,   // track
+    100,  // genre
+    10,   // queue position
+    10,   // length
+    275,  // path
+    275,  // filename
+    275,  // custom title
+    10    // bitrate
+};
 
 void pw_col_init (void)
 {
@@ -77,13 +116,13 @@ void pw_col_init (void)
         memcpy (pw_col_widths, pw_default_widths, sizeof pw_col_widths);
 }
 
-typedef struct {
+struct Column {
     int column;
-    gboolean selected;
-} Column;
+    bool selected;
+};
 
 static GtkWidget * chosen_list = nullptr, * avail_list = nullptr;
-static Index<Column *> chosen, avail;
+static Index<Column> chosen, avail;
 
 static void apply_changes (void)
 {
@@ -93,44 +132,42 @@ static void apply_changes (void)
     ui_playlist_notebook_empty ();
 
     for (pw_num_cols = 0; pw_num_cols < cols; pw_num_cols ++)
-        pw_cols[pw_num_cols] = chosen[pw_num_cols]->column;
+        pw_cols[pw_num_cols] = chosen[pw_num_cols].column;
 
     ui_playlist_notebook_populate ();
 }
 
 static void get_value (void * user, int row, int column, GValue * value)
 {
-    auto & index = * (Index<Column *> *) user;
+    auto & index = * (Index<Column> *) user;
     g_return_if_fail (row >= 0 && row < index.len ());
-    Column * c = index[row];
-    g_value_set_string (value, _(pw_col_names[c->column]));
+    g_value_set_string (value, _(pw_col_names[index[row].column]));
 }
 
 static bool get_selected (void * user, int row)
 {
-    auto & index = * (Index<Column *> *) user;
+    auto & index = * (Index<Column> *) user;
     g_return_val_if_fail (row >= 0 && row < index.len (), FALSE);
-    return index[row]->selected;
+    return index[row].selected;
 }
 
 static void set_selected (void * user, int row, bool selected)
 {
-    auto & index = * (Index<Column *> *) user;
+    auto & index = * (Index<Column> *) user;
     g_return_if_fail (row >= 0 && row < index.len ());
-    index[row]->selected = selected;
+    index[row].selected = selected;
 }
 
 static void select_all (void * user, bool selected)
 {
-    auto & index = * (Index<Column *> *) user;
-    int rows = index.len ();
-    for (int row = 0; row < rows; row ++)
-        index[row]->selected = selected;
+    auto & index = * (Index<Column> *) user;
+    for (Column & col : index)
+        col.selected = selected;
 }
 
 static void shift_rows (void * user, int row, int before)
 {
-    auto & index = * (Index<Column *> *) user;
+    auto & index = * (Index<Column> *) user;
     int rows = index.len ();
     g_return_if_fail (row >= 0 && row < rows);
     g_return_if_fail (before >= 0 && before <= rows);
@@ -138,28 +175,28 @@ static void shift_rows (void * user, int row, int before)
     if (before == row)
         return;
 
-    Index<Column *> move;
-    Index<Column *> others;
+    Index<Column> move;
+    Index<Column> others;
 
     int begin, end;
     if (before < row)
     {
         begin = before;
         end = row + 1;
-        while (end < rows && index[end]->selected)
+        while (end < rows && index[end].selected)
             end ++;
     }
     else
     {
         begin = row;
-        while (begin > 0 && index[begin - 1]->selected)
+        while (begin > 0 && index[begin - 1].selected)
             begin --;
         end = before;
     }
 
     for (int i = begin; i < end; i ++)
     {
-        if (index[i]->selected)
+        if (index[i].selected)
             move.append (index[i]);
         else
             others.append (index[i]);
@@ -189,9 +226,9 @@ static const AudguiListCallbacks callbacks = {
     shift_rows
 };
 
-static void transfer (Index<Column *> * source)
+static void transfer (Index<Column> * source)
 {
-    Index<Column *> * dest;
+    Index<Column> * dest;
     GtkWidget * source_list, * dest_list;
     if (source == & chosen)
     {
@@ -211,8 +248,8 @@ static void transfer (Index<Column *> * source)
 
     for (int row = 0; row < source_rows; )
     {
-        Column * c = (* source)[row];
-        if (! c->selected)
+        Column c = (* source)[row];
+        if (! c.selected)
         {
             row ++;
             continue;
@@ -234,39 +271,27 @@ static void destroy_cb (void)
     chosen_list = nullptr;
     avail_list = nullptr;
 
-    for (Column * column : chosen)
-        g_slice_free (Column, column);
-    for (Column * column : avail)
-        g_slice_free (Column, column);
-
     chosen.clear ();
     avail.clear ();
 }
 
 void * pw_col_create_chooser (void)
 {
-    gboolean added[PW_COLS];
-    memset (added, 0, sizeof added);
+    bool added[PW_COLS] = {};
 
     for (int i = 0; i < pw_num_cols; i ++)
     {
-        if (added[pw_cols[i]])
-            continue;
-        added[pw_cols[i]] = TRUE;
-        Column * column = g_slice_new (Column);
-        column->column = pw_cols[i];
-        column->selected = 0;
-        chosen.append (column);
+        if (! added[pw_cols[i]])
+        {
+            added[pw_cols[i]] = true;
+            chosen.append (pw_cols[i], false);
+        }
     }
 
     for (int i = 0; i < PW_COLS; i ++)
     {
-        if (added[i])
-            continue;
-        Column * column = g_slice_new (Column);
-        column->column = i;
-        column->selected = 0;
-        avail.append (column);
+        if (! added[i])
+            avail.append (i, false);
     }
 
     GtkWidget * hbox = gtk_hbox_new (FALSE, 6);

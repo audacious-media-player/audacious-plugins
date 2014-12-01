@@ -20,207 +20,85 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include <QLabel>
-#include <QSlider>
+#include <libaudcore/hook.h>
+#include <libaudcore/index.h>
+#include <libaudcore/objects.h>
+
+#include "dialog_windows.h"
+#include "info_bar.h"
+
+#include <QMainWindow>
 #include <QTimer>
-#include <QMessageBox>
-#include <QtCore>
+#include <QVBoxLayout>
 
-#include <libaudcore/audstrings.h>
-#include <libaudcore/drct.h>
-#include <libaudcore/i18n.h>
+class FilterInput;
+class PlaylistTabs;
+class PluginHandle;
 
-#include "playlist_tabs.h"
-#include "ui_main_window.h"
-#include "filter_input.h"
+struct DockWidget;
 
-#define APPEND(b, ...) snprintf (b + strlen (b), sizeof b - strlen (b), __VA_ARGS__)
-
-class MainWindow : public QMainWindow, private Ui::MainWindow
+class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-
 public:
-    MainWindow (QMainWindow * parent = 0);
+    MainWindow ();
     ~MainWindow ();
 
-protected:
+private:
+    DialogWindows m_dialogs;
+    FilterInput * filterInput;
+    PlaylistTabs * playlistTabs;
+    InfoBar * infoBar;
+    QWidget * centralWidget;
+    QVBoxLayout * centralLayout;
+
+    QAction * toolButtonPlayPause;
+    QAction * toolButtonRepeat;
+    QAction * toolButtonShuffle;
+
+    QTimer buffering_timer;
+
     void closeEvent (QCloseEvent * e);
     void keyPressEvent (QKeyEvent * e);
 
-public slots:
-    void timeCounterSlot ();
-    void sliderValueChanged (int value);
-    void sliderPressed ();
-    void sliderReleased ();
-
-private:
-    QLabel * codecInfoLabel = nullptr;
-    QLabel * playlistLengthLabel = nullptr;
-    QLabel * timeCounterLabel = nullptr;
-    QTimer * timeCounter = nullptr;
-    QSlider * slider = nullptr;
-    FilterInput * filterInput = nullptr;
-    QMessageBox * progressDialog = nullptr;
-    QMessageBox * errorDialog = nullptr;
-    PlaylistTabs * playlistTabs = nullptr;
-    void setTimeCounterLabel (int time, int length);
-    void enableSlider ();
-    void disableSlider ();
-    void enableTimeCounter ();
-    void disableTimeCounter ();
-    void createProgressDialog ();
-    void createErrorDialog (const QString &message);
     void updateToggles ();
     void setupActions ();
-    void createStatusBar ();
+    void readSettings ();
 
-    static void title_change_cb (void * unused, MainWindow * window)
-    {
-        auto title = aud_drct_get_title ();
-        if (title)
-            window->setWindowTitle (QString ("Audacious - ") + QString (title));
-    }
+    void action_play_pause_set_play ();
+    void action_play_pause_set_pause ();
 
-    static void playback_begin_cb (void * unused, MainWindow * window)
-    {
-        window->setWindowTitle ("Audacious - Buffering...");
+    void show_buffering ();
 
-        pause_cb (nullptr, window);
-    }
+    void add_dock_plugins ();
+    void remove_dock_plugins ();
 
-    static void playback_ready_cb (void * unused, MainWindow * window)
-    {
-        title_change_cb (nullptr, window);
-        pause_cb (nullptr, window);
+    void title_change_cb ();
+    void playback_begin_cb ();
+    void playback_ready_cb ();
+    void pause_cb ();
+    void playback_stop_cb ();
+    void update_toggles_cb ();
 
-        window->enableSlider ();
-        window->enableTimeCounter ();
-    }
+    void add_dock_plugin_cb (PluginHandle * plugin);
+    void remove_dock_plugin_cb (PluginHandle * plugin);
 
-    static void action_play_pause_set_play (MainWindow * window)
-    {
-        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-start"));
-        window->actionPlayPause->setText ("Play");
-    }
+    const HookReceiver<MainWindow>
+     hook1 {"title change", this, & MainWindow::title_change_cb},
+     hook2 {"playback begin", this, & MainWindow::playback_begin_cb},
+     hook3 {"playback ready", this, & MainWindow::playback_ready_cb},
+     hook4 {"playback pause", this, & MainWindow::pause_cb},
+     hook5 {"playback unpause", this, & MainWindow::pause_cb},
+     hook6 {"playback stop", this, & MainWindow::playback_stop_cb},
+     hook7 {"set repeat", this, & MainWindow::update_toggles_cb},
+     hook8 {"set shuffle", this, & MainWindow::update_toggles_cb},
+     hook9 {"set no_playlist_advance", this, & MainWindow::update_toggles_cb},
+     hook10 {"set stop_after_current_song", this, & MainWindow::update_toggles_cb};
 
-    static void action_play_pause_set_pause (MainWindow * window)
-    {
-        window->actionPlayPause->setIcon (QIcon::fromTheme ("media-playback-pause"));
-        window->actionPlayPause->setText ("Pause");
-    }
+    const HookReceiver<MainWindow, PluginHandle *>
+     plugin_hook1 {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},
+     plugin_hook2 {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb};
 
-    static void pause_cb (void * unused, MainWindow * window)
-    {
-        if (aud_drct_get_paused ())
-            action_play_pause_set_play (window);
-        else
-            action_play_pause_set_pause (window);
-        window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
-    }
-
-    static void playback_stop_cb (void * unused, MainWindow * window)
-    {
-        window->setWindowTitle ("Audacious");
-        window->disableTimeCounter ();
-        window->disableSlider ();
-
-        action_play_pause_set_play (window);
-        window->playlistTabs->activePlaylistWidget ()->positionUpdate (); /* updates indicator icon */
-
-        window->codecInfoLabel->setText ("");
-    }
-
-    static void update_toggles_cb (void * unused, MainWindow * window)
-    {
-        window->updateToggles ();
-    }
-
-    static void show_progress_cb (void * message, MainWindow * window)
-    {
-        window->createProgressDialog ();
-        window->progressDialog->setInformativeText ((const char *) message);
-        window->progressDialog->show ();
-    }
-
-    static void show_progress_2_cb (void * message, MainWindow * window)
-    {
-        window->createProgressDialog ();
-        window->progressDialog->setText ((const char *) message);
-        window->progressDialog->show ();
-    }
-
-    static void hide_progress_cb (void * unused, MainWindow * window)
-    {
-        if (window->progressDialog)
-            window->progressDialog->hide ();
-    }
-
-    static void show_error_cb (void * message, MainWindow * window)
-    {
-        window->createErrorDialog (QString ((const char *) message));
-    }
-
-    static void update_playlist_length_cb (void * unused, QLabel * label)
-    {
-        int playlist = aud_playlist_get_active ();
-
-        StringBuf s1 = str_format_time (aud_playlist_get_selected_length (playlist));
-        StringBuf s2 = str_format_time (aud_playlist_get_total_length (playlist));
-
-        label->setText (QString (str_concat ({s1, " / ", s2})));
-    }
-
-    static void update_codec_info_cb (void * unused, QLabel * label)
-    {
-        /* may be called asynchronously */
-        if (! aud_drct_get_playing ())
-            return;
-
-        int playlist = aud_playlist_get_playing ();
-        Tuple tuple = aud_playlist_entry_get_tuple (playlist,
-         aud_playlist_get_position (playlist), false);
-        String codec = tuple.get_str (FIELD_CODEC);
-
-        int bitrate, samplerate, channels;
-        aud_drct_get_info (& bitrate, & samplerate, & channels);
-
-        char buf[256];
-        buf[0] = 0;
-
-        if (codec)
-        {
-            APPEND (buf, "%s", (const char *) codec);
-            if (channels > 0 || samplerate > 0 || bitrate > 0)
-                APPEND (buf, ", ");
-        }
-
-        if (channels > 0)
-        {
-            if (channels == 1)
-                APPEND (buf, _("mono"));
-            else if (channels == 2)
-                APPEND (buf, _("stereo"));
-            else
-                APPEND (buf, ngettext ("%d channel", "%d channels", channels),
-                 channels);
-
-            if (samplerate > 0 || bitrate > 0)
-                APPEND (buf, ", ");
-        }
-
-        if (samplerate > 0)
-        {
-            APPEND (buf, "%d kHz", samplerate / 1000);
-            if (bitrate > 0)
-                APPEND (buf, ", ");
-        }
-
-        if (bitrate > 0)
-            APPEND (buf, _("%d kbps"), bitrate / 1000);
-
-        label->setText (buf);
-    }
+    Index<DockWidget> dock_widgets;
 };
 
 #endif

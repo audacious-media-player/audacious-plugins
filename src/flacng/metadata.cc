@@ -20,11 +20,10 @@
  */
 
 #include <limits.h>
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
+#define WANT_VFS_STDIO_COMPAT
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/audstrings.h>
@@ -37,16 +36,16 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
 
     if (handle == nullptr)
     {
-        FLACNG_ERROR("Trying to read data from an uninitialized file!\n");
+        AUDERR("Trying to read data from an uninitialized file!\n");
         return -1;
     }
 
-    read = vfs_fread(ptr, size, nmemb, (VFSFile*) handle);
+    read = ((VFSFile *) handle)->fread (ptr, size, nmemb);
 
     switch (read)
     {
         case -1:
-            FLACNG_ERROR("Error while reading from stream!\n");
+            AUDERR("Error while reading from stream!\n");
             return -1;
 
         case 0:
@@ -60,14 +59,14 @@ static size_t read_cb(void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handl
 
 static size_t write_cb(const void *ptr, size_t size, size_t nmemb, FLAC__IOHandle handle)
 {
-    return vfs_fwrite(ptr, size, nmemb, (VFSFile*) handle);
+    return ((VFSFile *) handle)->fwrite (ptr, size, nmemb);
 }
 
 static int seek_cb(FLAC__IOHandle handle, FLAC__int64 offset, int whence)
 {
-    if (vfs_fseek((VFSFile*) handle, offset, whence) != 0)
+    if (((VFSFile *) handle)->fseek (offset, to_vfs_seek_type (whence)) != 0)
     {
-        FLACNG_ERROR("Could not seek to %ld!\n", (long)offset);
+        AUDERR("Could not seek to %ld!\n", (long)offset);
         return -1;
     }
 
@@ -78,9 +77,9 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 {
     int64_t offset;
 
-    if ((offset = vfs_ftell((VFSFile*) handle)) < 0)
+    if ((offset = ((VFSFile *) handle)->ftell ()) < 0)
     {
-        FLACNG_ERROR("Could not tell current position!\n");
+        AUDERR("Could not tell current position!\n");
         return -1;
     }
 
@@ -90,7 +89,7 @@ static FLAC__int64 tell_cb(FLAC__IOHandle handle)
 
 static int eof_cb(FLAC__IOHandle handle)
 {
-    return vfs_feof((VFSFile*) handle);
+    return ((VFSFile *) handle)->feof ();
 }
 
 static FLAC__IOCallbacks io_callbacks = {
@@ -103,10 +102,10 @@ static FLAC__IOCallbacks io_callbacks = {
 };
 
 static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple & tuple, int tuple_name, const char * field_name)
+ const Tuple & tuple, Tuple::Field field, const char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    String val = tuple.get_str (tuple_name);
+    String val = tuple.get_str (field);
 
     if (! val)
         return;
@@ -119,10 +118,10 @@ static void insert_str_tuple_to_vc (FLAC__StreamMetadata * vc_block,
 }
 
 static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
- const Tuple & tuple, int tuple_name, const char * field_name)
+ const Tuple & tuple, Tuple::Field field, const char * field_name)
 {
     FLAC__StreamMetadata_VorbisComment_Entry entry;
-    int val = tuple.get_int (tuple_name);
+    int val = tuple.get_int (field);
 
     if (val <= 0)
         return;
@@ -134,7 +133,7 @@ static void insert_int_tuple_to_vc (FLAC__StreamMetadata * vc_block,
         vc_block->data.vorbis_comment.num_comments, entry, true);
 }
 
-bool flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple &tuple)
+bool FLACng::write_tuple(const char *filename, VFSFile &file, const Tuple &tuple)
 {
     AUDDBG("Update song tuple.\n");
 
@@ -145,7 +144,7 @@ bool flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple &tupl
 
     chain = FLAC__metadata_chain_new();
 
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
+    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
@@ -161,21 +160,21 @@ bool flac_update_song_tuple(const char *filename, VFSFile *fd, const Tuple &tupl
 
     vc_block = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_TITLE, "TITLE");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_ARTIST, "ARTIST");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_ALBUM, "ALBUM");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_GENRE, "GENRE");
-    insert_str_tuple_to_vc(vc_block, tuple, FIELD_COMMENT, "COMMENT");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Title, "TITLE");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Artist, "ARTIST");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Album, "ALBUM");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Genre, "GENRE");
+    insert_str_tuple_to_vc(vc_block, tuple, Tuple::Comment, "COMMENT");
 
-    insert_int_tuple_to_vc(vc_block, tuple, FIELD_YEAR, "DATE");
-    insert_int_tuple_to_vc(vc_block, tuple, FIELD_TRACK_NUMBER, "TRACKNUMBER");
+    insert_int_tuple_to_vc(vc_block, tuple, Tuple::Year, "DATE");
+    insert_int_tuple_to_vc(vc_block, tuple, Tuple::Track, "TRACKNUMBER");
 
     FLAC__metadata_iterator_insert_block_after(iter, vc_block);
 
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_sort_padding(chain);
 
-    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, fd, io_callbacks))
+    if (!FLAC__metadata_chain_write_with_callbacks(chain, true, &file, io_callbacks))
         goto ERR;
 
     FLAC__metadata_chain_delete(chain);
@@ -185,11 +184,11 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return false;
 }
 
-bool flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *length)
+Index<char> FLACng::read_image(const char *filename, VFSFile &file)
 {
     AUDDBG("Probe for song image.\n");
 
@@ -197,11 +196,12 @@ bool flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *len
     FLAC__Metadata_Chain *chain;
     FLAC__StreamMetadata *metadata = nullptr;
     FLAC__Metadata_ChainStatus status;
-    bool has_image = false;
+
+    Index<char> data;
 
     chain = FLAC__metadata_chain_new();
 
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
+    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
@@ -219,25 +219,22 @@ bool flac_get_image(const char *filename, VFSFile *fd, void **data, int64_t *len
         if (metadata->data.picture.type == FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER)
         {
             AUDDBG("FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER found.");
-
-            * data = g_malloc (metadata->data.picture.data_length);
-            * length = metadata->data.picture.data_length;
-            memcpy (* data, metadata->data.picture.data, * length);
-            has_image = true;
+            data.insert ((const char *) metadata->data.picture.data, 0,
+             metadata->data.picture.data_length);
         }
     }
 
     FLAC__metadata_iterator_delete(iter);
     FLAC__metadata_chain_delete(chain);
 
-    return has_image;
+    return data;
 
 ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
-    return false;
+    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    return data;
 }
 
 static void parse_gain_text(const char *text, int *value, int *unit)
@@ -274,13 +271,13 @@ static void parse_gain_text(const char *text, int *value, int *unit)
     *value = *value * sign;
 }
 
-static void set_gain_info(Tuple &tuple, int field, int unit_field, const char *text)
+static void set_gain_info(Tuple &tuple, Tuple::Field field, Tuple::Field unit_field, const char *text)
 {
     int value, unit;
 
     parse_gain_text(text, &value, &unit);
 
-    if (tuple.get_value_type (unit_field) == TUPLE_INT)
+    if (tuple.get_value_type (unit_field) == Tuple::Int)
         value = value * (int64_t) tuple.get_int (unit_field) / unit;
     else
         tuple.set_int (unit_field, unit);
@@ -288,7 +285,7 @@ static void set_gain_info(Tuple &tuple, int field, int unit_field, const char *t
     tuple.set_int (field, value);
 }
 
-static void add_text (Tuple & tuple, int field, const char * value)
+static void add_text (Tuple & tuple, Tuple::Field field, const char * value)
 {
     String cur = tuple.get_str (field);
     if (cur)
@@ -303,38 +300,39 @@ static void parse_comment (Tuple & tuple, const char * key, const char * value)
 
     static const struct {
         const char * key;
-        int field;
+        Tuple::Field field;
     } tfields[] = {
-     {"ARTIST", FIELD_ARTIST},
-     {"ALBUM", FIELD_ALBUM},
-     {"TITLE", FIELD_TITLE},
-     {"COMMENT", FIELD_COMMENT},
-     {"GENRE", FIELD_GENRE}};
+        {"ARTIST", Tuple::Artist},
+        {"ALBUM", Tuple::Album},
+        {"TITLE", Tuple::Title},
+        {"COMMENT", Tuple::Comment},
+        {"GENRE", Tuple::Genre}
+    };
 
     for (auto & tfield : tfields)
     {
-        if (! g_ascii_strcasecmp (key, tfield.key))
+        if (!strcmp_nocase(key, tfield.key))
         {
             add_text (tuple, tfield.field, value);
             return;
         }
     }
 
-    if (! g_ascii_strcasecmp (key, "TRACKNUMBER"))
-        tuple.set_int(FIELD_TRACK_NUMBER, atoi(value));
-    else if (! g_ascii_strcasecmp (key, "DATE"))
-        tuple.set_int(FIELD_YEAR, atoi(value));
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_GAIN"))
-        set_gain_info(tuple, FIELD_GAIN_TRACK_GAIN, FIELD_GAIN_GAIN_UNIT, value);
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_TRACK_PEAK"))
-        set_gain_info(tuple, FIELD_GAIN_TRACK_PEAK, FIELD_GAIN_PEAK_UNIT, value);
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_GAIN"))
-        set_gain_info(tuple, FIELD_GAIN_ALBUM_GAIN, FIELD_GAIN_GAIN_UNIT, value);
-    else if (! g_ascii_strcasecmp (key, "REPLAYGAIN_ALBUM_PEAK"))
-        set_gain_info(tuple, FIELD_GAIN_ALBUM_PEAK, FIELD_GAIN_PEAK_UNIT, value);
+    if (!strcmp_nocase(key, "TRACKNUMBER"))
+        tuple.set_int(Tuple::Track, atoi(value));
+    else if (!strcmp_nocase(key, "DATE"))
+        tuple.set_int(Tuple::Year, atoi(value));
+    else if (!strcmp_nocase(key, "REPLAYGAIN_TRACK_GAIN"))
+        set_gain_info(tuple, Tuple::TrackGain, Tuple::GainDivisor, value);
+    else if (!strcmp_nocase(key, "REPLAYGAIN_TRACK_PEAK"))
+        set_gain_info(tuple, Tuple::TrackPeak, Tuple::PeakDivisor, value);
+    else if (!strcmp_nocase(key, "REPLAYGAIN_ALBUM_GAIN"))
+        set_gain_info(tuple, Tuple::AlbumGain, Tuple::GainDivisor, value);
+    else if (!strcmp_nocase(key, "REPLAYGAIN_ALBUM_PEAK"))
+        set_gain_info(tuple, Tuple::AlbumPeak, Tuple::PeakDivisor, value);
 }
 
-Tuple flac_probe_for_tuple(const char *filename, VFSFile *fd)
+Tuple FLACng::read_tuple(const char *filename, VFSFile &file)
 {
     AUDDBG("Probe for tuple.\n");
 
@@ -349,12 +347,12 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile *fd)
 
     tuple.set_filename (filename);
 
-    tuple.set_str (FIELD_CODEC, "Free Lossless Audio Codec (FLAC)");
-    tuple.set_str (FIELD_QUALITY, _("lossless"));
+    tuple.set_str (Tuple::Codec, "Free Lossless Audio Codec (FLAC)");
+    tuple.set_str (Tuple::Quality, _("lossless"));
 
     chain = FLAC__metadata_chain_new();
 
-    if (!FLAC__metadata_chain_read_with_callbacks(chain, fd, io_callbacks))
+    if (!FLAC__metadata_chain_read_with_callbacks(chain, &file, io_callbacks))
         goto ERR;
 
     iter = FLAC__metadata_iterator_new();
@@ -383,8 +381,8 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile *fd)
                         else
                         {
                             parse_comment(tuple, key, value);
-                            g_free(key);
-                            g_free(value);
+                            free(key);
+                            free(value);
                         }
                     }
                 }
@@ -397,26 +395,26 @@ Tuple flac_probe_for_tuple(const char *filename, VFSFile *fd)
                 /* Calculate the stream length (milliseconds) */
                 if (metadata->data.stream_info.sample_rate == 0)
                 {
-                    FLACNG_ERROR("Invalid sample rate for stream!\n");
-                    tuple.set_int (FIELD_LENGTH, -1);
+                    AUDERR("Invalid sample rate for stream!\n");
+                    tuple.set_int (Tuple::Length, -1);
                 }
                 else
                 {
-                    tuple.set_int (FIELD_LENGTH,
+                    tuple.set_int (Tuple::Length,
                         (metadata->data.stream_info.total_samples / metadata->data.stream_info.sample_rate) * 1000);
-                    AUDDBG("Stream length: %d seconds\n", tuple.get_int (FIELD_LENGTH));
+                    AUDDBG("Stream length: %d seconds\n", tuple.get_int (Tuple::Length));
                 }
 
-                int64_t size = vfs_fsize(fd);
+                int64_t size = file.fsize ();
 
                 if (size < 0 || metadata->data.stream_info.total_samples == 0)
-                    tuple.set_int (FIELD_BITRATE, 0);
+                    tuple.set_int (Tuple::Bitrate, 0);
                 else
                 {
                     int bitrate = 8 * size *
                         (int64_t) metadata->data.stream_info.sample_rate / metadata->data.stream_info.total_samples;
 
-                    tuple.set_int (FIELD_BITRATE, (bitrate + 500) / 1000);
+                    tuple.set_int (Tuple::Bitrate, (bitrate + 500) / 1000);
                 }
                 break;
             }
@@ -435,6 +433,6 @@ ERR:
     status = FLAC__metadata_chain_status(chain);
     FLAC__metadata_chain_delete(chain);
 
-    FLACNG_ERROR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
+    AUDERR("An error occured: %s\n", FLAC__Metadata_ChainStatusString[status]);
     return tuple;
 }

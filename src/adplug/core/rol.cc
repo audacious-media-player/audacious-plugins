@@ -23,8 +23,6 @@
 #include <algorithm>
 #include <string.h>
 
-#include <glib.h>
-
 #include "rol.h"
 #include "debug.h"
 
@@ -94,10 +92,10 @@ CrolPlayer::~CrolPlayer()
     }
 }
 //---------------------------------------------------------
-bool CrolPlayer::load(VFSFile *fd, const CFileProvider &fp)
+bool CrolPlayer::load(VFSFile &fd, const CFileProvider &fp)
 {
     binistream *f = fp.open(fd); if(!f) return false;
-    std::string filename(vfs_get_filename (fd));
+    std::string filename(fd.filename ());
 
     char *fn = new char[filename.length()+12];
     int i;
@@ -484,7 +482,7 @@ void CrolPlayer::load_tempo_events( binistream *f )
 bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename, const CFileProvider &fp )
 {
     SBnkHeader bnk_header;
-    VFSFile *fd = vfs_fopen(bnk_filename.c_str(), "rb");
+    VFSFile fd(bnk_filename.c_str(), "rb");
     binistream *bnk_file = fp.open(fd);
 
     if( bnk_file )
@@ -507,7 +505,6 @@ bool CrolPlayer::load_voice_data( binistream *f, std::string const &bnk_filename
         }
 
         fp.close(bnk_file);
-        vfs_fclose(fd);
 
         return true;
     }
@@ -703,7 +700,7 @@ int CrolPlayer::get_ins_index( std::string const &name ) const
 {
     for(unsigned int i=0; i<ins_list.size(); ++i)
     {
-        if( g_ascii_strcasecmp(ins_list[i].name.c_str(), name.c_str()) == 0 )
+        if( strcmp_nocase(ins_list[i].name.c_str(), name.c_str()) == 0 )
         {
             return i;
         }

@@ -61,11 +61,11 @@ static char * scrobbler_get_signature (Index<API_Parameter> & params)
 
     for (const API_Parameter & param : params)
     {
-        str_insert (buf, -1, param.paramName);
-        str_insert (buf, -1, param.argument);
+        buf.insert (-1, param.paramName);
+        buf.insert (-1, param.argument);
     }
 
-    str_insert (buf, -1, SCROBBLER_SHARED_SECRET);
+    buf.insert (-1, SCROBBLER_SHARED_SECRET);
 
     return g_compute_checksum_for_string (G_CHECKSUM_MD5, buf, -1);
 }
@@ -84,7 +84,7 @@ static char * scrobbler_get_signature (Index<API_Parameter> & params)
 static String create_message_to_lastfm (const char * method_name, int n_args, ...)
 {
     Index<API_Parameter> params;
-    params.append ({String ("method"), String (method_name)});
+    params.append (String ("method"), String (method_name));
 
     StringBuf buf = str_concat ({"method=", method_name});
 
@@ -96,21 +96,21 @@ static String create_message_to_lastfm (const char * method_name, int n_args, ..
         const char * name = va_arg (vl, const char *);
         const char * arg = va_arg (vl, const char *);
 
-        params.append ({String (name), String (arg)});
+        params.append (String (name), String (arg));
 
         char * esc = curl_easy_escape (curlHandle, arg, 0);
-        str_insert (buf, -1, "&");
-        str_insert (buf, -1, name);
-        str_insert (buf, -1, "=");
-        str_insert (buf, -1, esc);
+        buf.insert (-1, "&");
+        buf.insert (-1, name);
+        buf.insert (-1, "=");
+        buf.insert (-1, esc);
         curl_free (esc);
     }
 
     va_end (vl);
 
     char * api_sig = scrobbler_get_signature (params);
-    str_insert (buf, -1, "&api_sig=");
-    str_insert (buf, -1, api_sig);
+    buf.insert (-1, "&api_sig=");
+    buf.insert (-1, api_sig);
     g_free (api_sig);
 
     AUDDBG ("FINAL message: %s.\n", (const char *) buf);
@@ -503,12 +503,12 @@ static void send_now_playing() {
    */
   Tuple curr_track = now_playing_track.ref ();
 
-  StringBuf artist = clean_string (curr_track.get_str (FIELD_ARTIST));
-  StringBuf title = clean_string (curr_track.get_str (FIELD_TITLE));
-  StringBuf album = clean_string (curr_track.get_str (FIELD_ALBUM));
+  StringBuf artist = clean_string (curr_track.get_str (Tuple::Artist));
+  StringBuf title = clean_string (curr_track.get_str (Tuple::Title));
+  StringBuf album = clean_string (curr_track.get_str (Tuple::Album));
 
-  int track  = curr_track.get_int (FIELD_TRACK_NUMBER);
-  int length = curr_track.get_int (FIELD_LENGTH);
+  int track  = curr_track.get_int (Tuple::Track);
+  int length = curr_track.get_int (Tuple::Length);
 
   if (artist[0] && title[0] && length > 0) {
     StringBuf track_str = (track > 0) ? int_to_str (track) : StringBuf (0);

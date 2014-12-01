@@ -30,7 +30,33 @@
 
 #include "event.h"
 
-static const char plugin_about[] =
+class NotifyPlugin : public GeneralPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Desktop Notifications"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr NotifyPlugin () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+
+private:
+    static void reinit ();
+};
+
+EXPORT NotifyPlugin aud_plugin_instance;
+
+const char NotifyPlugin::about[] =
  N_("Desktop Notifications Plugin for Audacious\n"
     "Copyright (C) 2010 Maximilian Bogner\n"
     "Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n\n"
@@ -45,19 +71,19 @@ static const char plugin_about[] =
     "You should have received a copy of the GNU General Public License "
     "along with this program.  If not, see <http://www.gnu.org/licenses/>.");
 
-static const char * const notify_defaults[] = {
+const char * const NotifyPlugin::defaults[] = {
  "actions", "TRUE",
  "resident", "FALSE",
  "album", "TRUE",
  nullptr
 };
 
-static bool plugin_init (void)
+bool NotifyPlugin::init ()
 {
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
 
-    aud_config_set_defaults ("notify", notify_defaults);
+    aud_config_set_defaults ("notify", defaults);
 
     if (! notify_init ("Audacious"))
         return false;
@@ -67,35 +93,26 @@ static bool plugin_init (void)
     return true;
 }
 
-static void plugin_cleanup (void)
+void NotifyPlugin::cleanup ()
 {
     event_uninit ();
     audgui_cleanup ();
     notify_uninit ();
 }
 
-static void plugin_reinit (void)
+void NotifyPlugin::reinit ()
 {
     event_uninit ();
     event_init ();
 }
 
-static const PreferencesWidget prefs_widgets[] = {
+const PreferencesWidget NotifyPlugin::widgets[] = {
     WidgetCheck (N_("Show playback controls"),
-        WidgetBool ("notify", "actions", plugin_reinit)),
+        WidgetBool ("notify", "actions", reinit)),
     WidgetCheck (N_("Always show notification"),
-        WidgetBool ("notify", "resident", plugin_reinit)),
+        WidgetBool ("notify", "resident", reinit)),
     WidgetCheck (N_("Include album name in notification"),
-        WidgetBool ("notify", "album", plugin_reinit))
+        WidgetBool ("notify", "album", reinit))
 };
 
-static const PluginPreferences plugin_prefs = {{prefs_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Desktop Notifications")
-#define AUD_PLUGIN_ABOUT       plugin_about
-#define AUD_PLUGIN_PREFS       & plugin_prefs
-#define AUD_PLUGIN_INIT        plugin_init
-#define AUD_PLUGIN_CLEANUP     plugin_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences NotifyPlugin::prefs = {{widgets}};

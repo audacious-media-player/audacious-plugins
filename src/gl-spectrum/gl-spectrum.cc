@@ -47,6 +47,35 @@
 #define BAR_SPACING (3.2f / NUM_BANDS)
 #define BAR_WIDTH (0.8f * BAR_SPACING)
 
+static const char gl_about[] =
+ N_("OpenGL Spectrum Analyzer for Audacious\n"
+    "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n\n"
+    "Based on the XMMS plugin:\n"
+    "Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, "
+    "and 4Front Technologies\n\n"
+    "License: GPLv2+");
+
+class GLSpectrum : public VisPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("OpenGL Spectrum Analyzer"),
+        PACKAGE,
+        gl_about
+    };
+
+    constexpr GLSpectrum () : VisPlugin (info, Visualizer::Freq) {}
+
+    bool init ();
+
+    void * get_gtk_widget ();
+
+    void clear ();
+    void render_freq (const float * freq);
+};
+
+EXPORT GLSpectrum aud_plugin_instance;
+
 static float logscale[NUM_BANDS + 1];
 static float colors[NUM_BANDS][NUM_BANDS][3];
 
@@ -68,7 +97,7 @@ static int s_pos = 0;
 static float s_angle = 25, s_anglespeed = 0.05f;
 static float s_bars[NUM_BANDS][NUM_BANDS];
 
-static bool init (void)
+bool GLSpectrum::init ()
 {
     for (int i = 0; i <= NUM_BANDS; i ++)
         logscale[i] = powf (256, (float) i / NUM_BANDS) - 0.5f;
@@ -87,7 +116,7 @@ static bool init (void)
         }
     }
 
-    return TRUE;
+    return true;
 }
 
 /* stolen from the skins plugin */
@@ -128,7 +157,7 @@ static void make_log_graph (const float * freq, float * graph)
     }
 }
 
-static void render_freq (const float * freq)
+void GLSpectrum::render_freq (const float * freq)
 {
     make_log_graph (freq, s_bars[s_pos]);
     s_pos = (s_pos + 1) % NUM_BANDS;
@@ -141,7 +170,7 @@ static void render_freq (const float * freq)
         gtk_widget_queue_draw (s_widget);
 }
 
-static void clear (void)
+void GLSpectrum::clear ()
 {
     memset (s_bars, 0, sizeof s_bars);
 
@@ -193,7 +222,7 @@ static void draw_bar (float x, float z, float h, float r, float g, float b)
      r * (0.2f + 0.8f * h), g * (0.2f + 0.8f * h), b * (0.2f + 0.8f * h));
 }
 
-static void draw_bars (void)
+static void draw_bars ()
 {
     glPushMatrix ();
     glTranslatef (0.0f, -0.5f, -5.0f);
@@ -221,12 +250,12 @@ static gboolean draw_cb (GtkWidget * widget)
 {
 #ifdef GDK_WINDOWING_X11
     if (! s_context)
-        return FALSE;
+        return false;
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
     if (! s_glrc)
-        return FALSE;
+        return false;
 #endif
 
     GtkAllocation alloc;
@@ -267,10 +296,10 @@ static gboolean draw_cb (GtkWidget * widget)
     SwapBuffers (s_hdc);
 #endif
 
-    return TRUE;
+    return true;
 }
 
-static void widget_realized (void)
+static void widget_realized ()
 {
     GdkWindow * window = gtk_widget_get_window (s_widget);
 
@@ -302,7 +331,7 @@ static void widget_realized (void)
 
     gtk_widget_set_visual (s_widget, visual);
 
-    s_context = glXCreateContext (s_display, xvinfo, 0, True);
+    s_context = glXCreateContext (s_display, xvinfo, 0, true);
     g_return_if_fail (s_context);
 
     XFree (xvinfo);
@@ -347,7 +376,7 @@ static void widget_realized (void)
 #endif
 }
 
-static void widget_destroyed (void)
+static void widget_destroyed ()
 {
     s_widget = nullptr;
 
@@ -379,7 +408,7 @@ static void widget_destroyed (void)
 #endif
 }
 
-static /* GtkWidget * */ void * get_widget (void)
+void * GLSpectrum::get_gtk_widget ()
 {
     if (s_widget)
         return s_widget;
@@ -391,25 +420,7 @@ static /* GtkWidget * */ void * get_widget (void)
     g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, nullptr);
 
     /* Disable GTK double buffering */
-    gtk_widget_set_double_buffered (s_widget, FALSE);
+    gtk_widget_set_double_buffered (s_widget, false);
 
     return s_widget;
 }
-
-static const char about_text[] =
- N_("OpenGL Spectrum Analyzer for Audacious\n"
-    "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n\n"
-    "Based on the XMMS plugin:\n"
-    "Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, "
-    "and 4Front Technologies\n\n"
-    "License: GPLv2+");
-
-#define AUD_PLUGIN_NAME        N_("OpenGL Spectrum Analyzer")
-#define AUD_PLUGIN_ABOUT       about_text
-#define AUD_PLUGIN_INIT        init
-#define AUD_VIS_RENDER_FREQ    render_freq
-#define AUD_VIS_CLEAR          clear
-#define AUD_VIS_GET_WIDGET     get_widget
-
-#define AUD_DECLARE_VIS
-#include <libaudcore/plugin-declare.h>

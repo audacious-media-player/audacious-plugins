@@ -1,12 +1,14 @@
 #ifndef VTX_H
 #define VTX_H
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <libaudcore/index.h>
 
-#include <libaudcore/plugin.h>
+class VFSFile;
 
-void vtx_file_info(const char *filename);
+/* info.cc */
+void vtx_file_info (const char *filename, VFSFile &file);
+
+/* lh5dec.cc */
+bool lh5_decode(const Index<char> &in, Index<unsigned char> &out);
 
 #endif

@@ -39,13 +39,6 @@
 
 #include "util.h"
 
-typedef struct
-{
-    const char *to_match;
-    char *match;
-    gboolean found;
-} FindFileContext;
-
 #ifndef HAVE_MKDTEMP
 static void make_directory(const char *path, mode_t mode);
 #endif
@@ -96,20 +89,19 @@ char * find_file_case_path (const char * folder, const char * basename)
     return path;
 }
 
-VFSFile * open_local_file_nocase (const char * folder, const char * basename)
+VFSFile open_local_file_nocase (const char * folder, const char * basename)
 {
     char * path = find_file_case_path (folder, basename);
     if (! path)
-        return nullptr;
+        return VFSFile ();
 
     StringBuf uri = filename_to_uri (path);
     g_free (path);
 
     if (! uri)
-        return nullptr;
+        return VFSFile ();
 
-    VFSFile * file = vfs_fopen (uri, "r");
-    return file;
+    return VFSFile (uri, "r");
 }
 
 char * text_parse_line (char * text)

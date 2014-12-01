@@ -21,6 +21,8 @@
 #ifndef _I_FILEINFO_H
 #define _I_FILEINFO_H 1
 
-void i_fileinfo_gui (const char *);
+class VFSFile;
+
+void i_fileinfo_gui (const char * filename_uri, VFSFile & file);
 
 #endif /* !_I_FILEINFO_H */

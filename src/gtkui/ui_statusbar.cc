@@ -47,17 +47,11 @@ static void ui_statusbar_update_playlist_length (void * unused, GtkWidget * labe
 
 static void ui_statusbar_info_change (void * unused, GtkWidget * label)
 {
-    /* may be called asynchronously */
-    if (! aud_drct_get_playing ())
-        return;
-
-    int playlist = aud_playlist_get_playing ();
-    Tuple tuple = aud_playlist_entry_get_tuple (playlist,
-     aud_playlist_get_position (playlist), FALSE);
-    String codec = tuple.get_str (FIELD_CODEC);
+    Tuple tuple = aud_drct_get_tuple ();
+    String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
-    aud_drct_get_info (& bitrate, & samplerate, & channels);
+    aud_drct_get_info (bitrate, samplerate, channels);
 
     char buf[256];
     buf[0] = 0;
@@ -105,6 +99,7 @@ static void ui_statusbar_destroy_cb (GtkWidget * widget, void * data)
 {
     hook_dissociate ("playback ready", (HookFunction) ui_statusbar_info_change);
     hook_dissociate ("info change", (HookFunction) ui_statusbar_info_change);
+    hook_dissociate ("tuple change", (HookFunction) ui_statusbar_info_change);
     hook_dissociate ("playback stop", (HookFunction) ui_statusbar_playback_stop);
     hook_dissociate ("playlist activate", (HookFunction) ui_statusbar_update_playlist_length);
     hook_dissociate ("playlist update", (HookFunction) ui_statusbar_update_playlist_length);
@@ -124,13 +119,14 @@ GtkWidget * ui_statusbar_new (void)
 
     hook_associate ("playback ready", (HookFunction) ui_statusbar_info_change, status);
     hook_associate ("info change", (HookFunction) ui_statusbar_info_change, status);
+    hook_associate ("tuple change", (HookFunction) ui_statusbar_info_change, status);
     hook_associate ("playback stop", (HookFunction) ui_statusbar_playback_stop, status);
     hook_associate ("playlist activate", (HookFunction) ui_statusbar_update_playlist_length, length);
     hook_associate ("playlist update", (HookFunction) ui_statusbar_update_playlist_length, length);
 
     g_signal_connect (hbox, "destroy", (GCallback) ui_statusbar_destroy_cb, nullptr);
 
-    if (aud_drct_get_playing () && aud_drct_get_ready ())
+    if (aud_drct_get_ready ())
         ui_statusbar_info_change (nullptr, status);
 
     return hbox;

@@ -19,13 +19,13 @@
  */
 
 #include <math.h>
+#include <string.h>
+
 #include <gtk/gtk.h>
 
-#include <libaudcore/drct.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/plugin.h>
 #include <libaudgui/libaudgui.h>
 #include <libaudgui/libaudgui-gtk.h>
@@ -34,22 +34,38 @@
 #define VIS_DELAY 2 /* delay before falloff in frames */
 #define VIS_FALLOFF 2 /* falloff in pixels per frame */
 
+class CairoSpectrum : public VisPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("Spectrum Analyzer"),
+        PACKAGE
+    };
+
+    constexpr CairoSpectrum () : VisPlugin (info, Visualizer::Freq) {}
+
+    void * get_gtk_widget ();
+
+    void clear ();
+    void render_freq (const float * freq);
+};
+
+EXPORT CairoSpectrum aud_plugin_instance;
+
 static GtkWidget * spect_widget = nullptr;
 static float xscale[MAX_BANDS + 1];
 static int width, height, bands;
 static int bars[MAX_BANDS + 1];
 static int delay[MAX_BANDS + 1];
 
-static void calculate_xscale (void)
+static void calculate_xscale ()
 {
     for (int i = 0; i <= bands; i ++)
         xscale[i] = powf (256, (float) i / bands) - 0.5f;
 }
 
-static void render_cb (float * freq)
+void CairoSpectrum::render_freq (const float * freq)
 {
-    g_return_if_fail (spect_widget);
-
     if (! bands)
         return;
 
@@ -91,7 +107,17 @@ static void render_cb (float * freq)
         }
     }
 
-    gtk_widget_queue_draw (spect_widget);
+    if (spect_widget)
+        gtk_widget_queue_draw (spect_widget);
+}
+
+void CairoSpectrum::clear ()
+{
+    memset (bars, 0, sizeof bars);
+    memset (delay, 0, sizeof delay);
+
+    if (spect_widget)
+        gtk_widget_queue_draw (spect_widget);
 }
 
 static void rgb_to_hsv (float r, float g, float b, float * h, float * s, float * v)
@@ -252,33 +278,17 @@ static gboolean draw_event (GtkWidget * widget)
     return TRUE;
 }
 
-static gboolean destroy_event (void)
-{
-    aud_vis_func_remove ((VisFunc) render_cb);
-    spect_widget = nullptr;
-    return TRUE;
-}
-
-static /* GtkWidget * */ void * get_widget(void)
+void * CairoSpectrum::get_gtk_widget ()
 {
     GtkWidget *area = gtk_drawing_area_new();
     spect_widget = area;
 
     g_signal_connect(area, "expose-event", (GCallback) draw_event, nullptr);
     g_signal_connect(area, "configure-event", (GCallback) configure_event, nullptr);
-    g_signal_connect(area, "destroy", (GCallback) destroy_event, nullptr);
-
-    aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) render_cb);
+    g_signal_connect(area, "destroy", (GCallback) gtk_widget_destroyed, & spect_widget);
 
     GtkWidget * frame = gtk_frame_new (nullptr);
     gtk_frame_set_shadow_type ((GtkFrame *) frame, GTK_SHADOW_IN);
     gtk_container_add ((GtkContainer *) frame, area);
     return frame;
 }
-
-#define AUD_PLUGIN_NAME        N_("Spectrum Analyzer")
-#define AUD_VIS_GET_WIDGET     get_widget
-#define AUD_VIS_CLEAR          nullptr
-
-#define AUD_DECLARE_VIS
-#include <libaudcore/plugin-declare.h>

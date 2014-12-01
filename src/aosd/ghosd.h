@@ -16,8 +16,6 @@
 #include <limits.h>  /* INT_MAX */
 #include <sys/time.h>  /* timeval */
 
-#include "aosd_common.h"
-
 typedef struct _Ghosd Ghosd;
 
 /* minimal struct to handle button events */

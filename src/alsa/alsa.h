@@ -1,6 +1,6 @@
 /*
  * ALSA Output Plugin for Audacious
- * Copyright 2009-2012 John Lindgren
+ * Copyright 2009-2014 John Lindgren
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -20,12 +20,13 @@
 #ifndef AUDACIOUS_ALSA_H
 #define AUDACIOUS_ALSA_H
 
-#include <stdio.h>
-
 #include <libaudcore/audstrings.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/interface.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/runtime.h>
 
-#define ERROR(...) fprintf (stderr, "alsa: " __VA_ARGS__)
+#define ERROR AUDERR
 
 #define ERROR_NOISY(...) do { \
     aud_ui_show_error (str_printf ("ALSA error: " __VA_ARGS__)); \
@@ -55,30 +56,51 @@ do { \
     } \
 } while (0)
 
-/* alsa.c */
-bool alsa_init (void);
-void alsa_cleanup (void);
-bool alsa_open_audio (int aud_format, int rate, int channels);
-void alsa_close_audio (void);
-int alsa_buffer_free (void);
-void alsa_write_audio (void * data, int length);
-void alsa_period_wait (void);
-void alsa_drain (void);
-int alsa_output_time (void);
-void alsa_flush (int time);
-void alsa_pause (bool pause);
-void alsa_open_mixer (void);
-void alsa_close_mixer (void);
-void alsa_get_volume (int * left, int * right);
-void alsa_set_volume (int left, int right);
+struct PreferencesWidget;
 
-/* config.c */
-extern String alsa_config_pcm, alsa_config_mixer, alsa_config_mixer_element;
-extern int alsa_config_drop_workaround, alsa_config_drain_workaround,
- alsa_config_delay_workaround;
+class ALSAPlugin : public OutputPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
 
-void alsa_config_load (void);
-void alsa_config_save (void);
-void * alsa_create_config_widget (void);
+    static constexpr PluginInfo info = {
+        N_("ALSA Output"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr ALSAPlugin () : OutputPlugin (info, 5) {}
+
+    bool init ();
+    void cleanup ();
+
+    StereoVolume get_volume ();
+    void set_volume (StereoVolume v);
+
+    bool open_audio (int aud_format, int rate, int chans);
+    void close_audio ();
+
+    void period_wait ();
+    int write_audio (const void * data, int size);
+    void drain ();
+
+    int get_delay ();
+
+    void pause (bool pause);
+    void flush ();
+
+private:
+    static void open_mixer ();
+    static void close_mixer ();
+
+    static void init_config ();
+    static void pcm_changed ();
+    static void mixer_changed ();
+    static void element_changed ();
+};
 
 #endif

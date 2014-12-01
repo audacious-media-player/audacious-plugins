@@ -17,66 +17,64 @@
  * the use of this software.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <glib.h>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
-typedef struct {
+static const char * const asx_exts[] = {"asx"};
+
+class ASXLoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("ASXv1/ASXv2 Playlists"), PACKAGE};
+
+    constexpr ASXLoader () : PlaylistPlugin (info, asx_exts, false) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+};
+
+EXPORT ASXLoader aud_plugin_instance;
+
+class ASXParser : public IniParser
+{
+public:
+    ASXParser (const char * filename, Index<PlaylistAddItem> & items) :
+        filename (filename),
+        items (items),
+        valid_heading (false) {}
+
+private:
     const char * filename;
-    bool valid_heading;
     Index<PlaylistAddItem> & items;
-} ASXLoadState;
+    bool valid_heading;
 
-void asx_handle_heading (const char * heading, void * data)
+    void handle_heading (const char * heading)
+        { valid_heading = ! strcmp_nocase (heading, "reference"); }
+
+    void handle_entry (const char * key, const char * value)
+    {
+        if (! valid_heading || ! str_has_prefix_nocase (key, "ref"))
+            return;
+
+        StringBuf uri = uri_construct (value, filename);
+        if (! uri)
+            return;
+
+        if (! strncmp ("http://", uri, 7))
+            items.append (String (str_printf ("mms://%s", uri + 7)));
+        else
+            items.append (String (uri));
+    }
+};
+
+bool ASXLoader::load (const char * filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
-    ASXLoadState * state = (ASXLoadState *) data;
-
-    state->valid_heading = ! g_ascii_strcasecmp (heading, "reference");
-}
-
-void asx_handle_entry (const char * key, const char * value, void * data)
-{
-    ASXLoadState * state = (ASXLoadState *) data;
-
-    if (! state->valid_heading || g_ascii_strncasecmp (key, "ref", 3))
-        return;
-
-    StringBuf uri = uri_construct (value, state->filename);
-    if (! uri)
-        return;
-
-    if (! strncmp ("http://", uri, 7))
-        state->items.append ({String (str_printf ("mms://%s", uri + 7))});
-    else
-        state->items.append ({String (uri)});
-}
-
-static bool playlist_load_asx (const char * filename, VFSFile * file,
- String & title, Index<PlaylistAddItem> & items)
-{
-    ASXLoadState state = {
-        filename,
-        false,
-        items
-    };
-
-    inifile_parse (file, asx_handle_heading, asx_handle_entry, & state);
-
+    ASXParser (filename, items).parse (file);
     return (items.len () > 0);
 }
-
-static const char * const asx_exts[] = {"asx", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("ASXv1/ASXv2 Playlists")
-#define AUD_PLAYLIST_EXTS      asx_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_asx
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

@@ -38,7 +38,6 @@
 #include "ui_skinned_playlist_slider.h"
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/drct.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/playlist.h>
 #include <libaudgui/libaudgui.h>
@@ -218,8 +217,9 @@ DRAW_FUNC_BEGIN (playlist_draw)
     for (int i = data->first; i < data->first + data->rows && i <
      active_length; i ++)
     {
-        int len = aud_playlist_entry_get_length (active_playlist, i, TRUE);
-        if (len <= 0)
+        Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
+        int len = tuple.get_int (Tuple::Length);
+        if (len < 0)
             continue;
 
         layout = gtk_widget_create_pango_layout (wid, str_format_time (len));
@@ -278,7 +278,8 @@ DRAW_FUNC_BEGIN (playlist_draw)
     for (int i = data->first; i < data->first + data->rows && i <
      active_length; i ++)
     {
-        String title = aud_playlist_entry_get_title (active_playlist, i, TRUE);
+        Tuple tuple = aud_playlist_entry_get_tuple (active_playlist, i, Playlist::Guess);
+        String title = tuple.get_str (Tuple::FormattedTitle);
 
         layout = gtk_widget_create_pango_layout (wid, title);
         pango_layout_set_font_description (layout, data->font);
@@ -550,7 +551,7 @@ gboolean ui_skinned_playlist_key (GtkWidget * list, GdkEventKey * event)
             select_single (data, TRUE, 0);
             aud_playlist_set_position (active_playlist,
              aud_playlist_get_focus (active_playlist));
-            aud_drct_play_playlist (active_playlist);
+            aud_playlist_play (active_playlist);
             break;
           case GDK_KEY_Escape:
             select_single (data, FALSE, aud_playlist_get_position
@@ -793,7 +794,7 @@ static gboolean playlist_button_press (GtkWidget * list, GdkEventButton * event)
         if (position != -1)
             aud_playlist_set_position (active_playlist, position);
 
-        aud_drct_play_playlist (active_playlist);
+        aud_playlist_play (active_playlist);
         break;
       default:
         return TRUE;
@@ -813,12 +814,13 @@ static gboolean playlist_button_release (GtkWidget * list, GdkEventButton *
     return TRUE;
 }
 
-static gboolean scroll_cb (PlaylistData * data)
+static gboolean scroll_cb (void * data_)
 {
+    auto data = (PlaylistData *) data_;
     int position = adjust_position (data, TRUE, data->scroll);
 
     if (position == -1)
-        return TRUE;
+        return G_SOURCE_CONTINUE;
 
     switch (data->drag)
     {
@@ -831,7 +833,7 @@ static gboolean scroll_cb (PlaylistData * data)
     }
 
     playlistwin_update ();
-    return TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
@@ -854,8 +856,7 @@ static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
                     g_source_remove (data->scroll_source);
 
                 data->scroll = new_scroll;
-                data->scroll_source = g_timeout_add (100, (GSourceFunc)
-                 scroll_cb, data);
+                data->scroll_source = g_timeout_add (100, scroll_cb, data);
             }
         }
         else
@@ -904,7 +905,7 @@ static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event)
     return TRUE;
 }
 
-static gboolean popup_show (GtkWidget * list)
+static gboolean popup_show (void * list)
 {
     PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
@@ -914,7 +915,7 @@ static gboolean popup_show (GtkWidget * list)
 
     g_source_remove (data->popup_source);
     data->popup_source = 0;
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos)
@@ -923,7 +924,7 @@ static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos)
 
     data->popup_pos = pos;
     data->popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
-     100, (GSourceFunc) popup_show, list);
+     100, popup_show, list);
 }
 
 static void popup_hide (GtkWidget * list, PlaylistData * data)

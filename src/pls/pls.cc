@@ -19,80 +19,82 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <glib.h>
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/inifile.h>
 
-typedef struct {
+static const char * const pls_exts[] = {"pls"};
+
+class PLSLoader : public PlaylistPlugin
+{
+public:
+    static constexpr PluginInfo info = {N_("PLS Playlists"), PACKAGE};
+
+    constexpr PLSLoader () : PlaylistPlugin (info, pls_exts, true) {}
+
+    bool load (const char * filename, VFSFile & file, String & title,
+     Index<PlaylistAddItem> & items);
+    bool save (const char * filename, VFSFile & file, const char * title,
+     const Index<PlaylistAddItem> & items);
+};
+
+EXPORT PLSLoader aud_plugin_instance;
+
+class PLSParser : public IniParser
+{
+public:
+    PLSParser (const char * filename, Index<PlaylistAddItem> & items) :
+        filename (filename),
+        items (items),
+        valid_heading (false) {}
+
+private:
     const char * filename;
-    bool valid_heading;
     Index<PlaylistAddItem> & items;
-} PLSLoadState;
+    bool valid_heading;
 
-void pls_handle_heading (const char * heading, void * data)
+    void handle_heading (const char * heading)
+        { valid_heading = ! strcmp_nocase (heading, "playlist"); }
+
+    void handle_entry (const char * key, const char * value)
+    {
+        if (! valid_heading || strcmp_nocase (key, "file", 4))
+            return;
+
+        StringBuf uri = uri_construct (value, filename);
+        if (uri)
+            items.append (String (uri));
+    }
+};
+
+bool PLSLoader::load (const char * filename, VFSFile & file, String & title,
+ Index<PlaylistAddItem> & items)
 {
-    PLSLoadState * state = (PLSLoadState *) data;
-
-    state->valid_heading = ! g_ascii_strcasecmp (heading, "playlist");
-}
-
-void pls_handle_entry (const char * key, const char * value, void * data)
-{
-    PLSLoadState * state = (PLSLoadState *) data;
-
-    if (! state->valid_heading || g_ascii_strncasecmp (key, "file", 4))
-        return;
-
-    StringBuf uri = uri_construct (value, state->filename);
-    if (uri)
-        state->items.append ({String (uri)});
-}
-
-static bool playlist_load_pls (const char * filename, VFSFile * file,
- String & title, Index<PlaylistAddItem> & items)
-{
-    PLSLoadState state = {
-        filename,
-        false,
-        items
-    };
-
-    inifile_parse (file, pls_handle_heading, pls_handle_entry, & state);
-
+    PLSParser (filename, items).parse (file);
     return (items.len () > 0);
 }
 
-static bool playlist_save_pls (const char * filename, VFSFile * file,
- const char * title, const Index<PlaylistAddItem> & items)
+bool PLSLoader::save (const char * filename, VFSFile & file, const char * title,
+ const Index<PlaylistAddItem> & items)
 {
     int entries = items.len ();
 
-    vfs_fprintf (file, "[playlist]\n");
-    vfs_fprintf (file, "NumberOfEntries=%d\n", entries);
+    StringBuf header = str_printf ("[playlist]\nNumberOfEntries=%d\n", entries);
+    if (file.fwrite (header, 1, header.len ()) != header.len ())
+        return false;
 
     for (int count = 0; count < entries; count ++)
     {
         const char * uri = items[count].filename;
         StringBuf local = uri_to_filename (uri);
-        vfs_fprintf (file, "File%d=%s\n", 1 + count, local ? local : uri);
+        StringBuf line = str_printf ("File%d=%s\n", 1 + count, local ? local : uri);
+        if (file.fwrite (line, 1, line.len ()) != line.len ())
+            return false;
     }
 
     return true;
 }
-
-static const char * const pls_exts[] = {"pls", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("PLS Playlists")
-#define AUD_PLAYLIST_EXTS      pls_exts
-#define AUD_PLAYLIST_LOAD      playlist_load_pls
-#define AUD_PLAYLIST_SAVE      playlist_save_pls
-
-#define AUD_DECLARE_PLAYLIST
-#include <libaudcore/plugin-declare.h>

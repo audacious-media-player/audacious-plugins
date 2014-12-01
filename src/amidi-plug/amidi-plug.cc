@@ -22,112 +22,132 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 
 #include "i_backend.h"
 #include "i_configure.h"
 #include "i_fileinfo.h"
 #include "i_midi.h"
-#include "i_utils.h"
 
-enum
+class AMIDIPlug : public InputPlugin
 {
-    AMIDIPLUG_STOP,
-    AMIDIPLUG_PLAY,
-    AMIDIPLUG_ERR
+public:
+    static const char about[];
+    static const char * const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("AMIDI-Plug (MIDI Player)"),
+        PACKAGE,
+        about,
+        & amidiplug_prefs
+    };
+
+    static constexpr auto iinfo = InputInfo ()
+        .with_exts (exts);
+
+    constexpr AMIDIPlug () : InputPlugin (info, iinfo) {}
+
+    bool init ();
+    void cleanup ();
+
+    bool is_our_file (const char * filename, VFSFile & file);
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool play (const char * filename, VFSFile & file);
+
+    bool file_info_box (const char * filename, VFSFile & file)
+        { i_fileinfo_gui (filename, file); return true; }
+
+protected:
+    bool m_backend_initialized = false;
+
+    static bool audio_init ();
+    static void audio_generate (double seconds);
+    static void audio_cleanup ();
+
+    static void generate_ticks (midifile_t & midifile, int num_ticks);
+    static void play_loop (midifile_t & midifile);
+    static int skip_to (midifile_t & midifile, int seektime);
 };
 
-static void amidiplug_play_loop (void);
+EXPORT AMIDIPlug aud_plugin_instance;
 
-static bool amidiplug_play (const char * filename_uri, VFSFile * file);
-static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file);
-static void amidiplug_skipto (int playing_tick);
+const char * const AMIDIPlug::exts[] = {"mid", "midi", "rmi", "rmid", nullptr};
 
-static midifile_t midifile;
-
-static const char * const amidiplug_vfs_extensions[] = {"mid", "midi", "rmi", "rmid", nullptr};
-
-static void amidiplug_cleanup (void)
+void AMIDIPlug::cleanup ()
 {
-    backend_cleanup ();
+    if (m_backend_initialized)
+    {
+        backend_cleanup ();
+        m_backend_initialized = false;
+    }
 }
 
-static bool amidiplug_init (void)
+bool AMIDIPlug::init ()
 {
     static const char * const defaults[] =
     {
         "ap_opts_transpose_value", "0",
         "ap_opts_drumshift_value", "0",
-        "ap_opts_lyrics_extract", "0",
-        "ap_opts_comments_extract", "0",
         "fsyn_synth_samplerate", "44100",
         "fsyn_synth_gain", "-1",
         "fsyn_synth_polyphony", "-1",
         "fsyn_synth_reverb", "-1",
         "fsyn_synth_chorus", "-1",
+        "skip_leading", "FALSE",
+        "skip_trailing", "FALSE",
         nullptr
     };
 
     aud_config_set_defaults ("amidiplug", defaults);
 
-    backend_init ();
-
-    return TRUE;
+    return true;
 }
 
-static bool amidiplug_is_our_file_from_vfs (const char * filename_uri, VFSFile * fp)
+bool AMIDIPlug::is_our_file (const char * filename, VFSFile & file)
 {
     char magic_bytes[4];
 
-    if (fp == nullptr)
-        return FALSE;
-
-    if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
-        return FALSE;
+    if (file.fread (magic_bytes, 1, 4) != 4)
+        return false;
 
     if (!strncmp (magic_bytes, "MThd", 4))
     {
-        AUDDBG ("MIDI found, %s is a standard midi file\n", filename_uri);
-        return TRUE;
+        AUDDBG ("MIDI found, %s is a standard midi file\n", filename);
+        return true;
     }
 
     if (!strncmp (magic_bytes, "RIFF", 4))
     {
         /* skip the four bytes after RIFF,
            then read the next four */
-        if (vfs_fseek (fp, 4, SEEK_CUR) != 0)
-            return FALSE;
+        if (file.fseek (4, VFS_SEEK_CUR) != 0)
+            return false;
 
-        if (vfs_fread (magic_bytes, 1, 4, fp) != 4)
-            return FALSE;
+        if (file.fread (magic_bytes, 1, 4) != 4)
+            return false;
 
         if (!strncmp (magic_bytes, "RMID", 4))
         {
-            AUDDBG ("MIDI found, %s is a riff midi file\n", filename_uri);
-            return TRUE;
+            AUDDBG ("MIDI found, %s is a riff midi file\n", filename);
+            return true;
         }
     }
 
-    return FALSE;
+    return false;
 }
 
-static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file)
+Tuple AMIDIPlug::read_tuple (const char * filename, VFSFile & file)
 {
     /* song title, get it from the filename */
     Tuple tuple;
-    tuple.set_filename (filename_uri);
+    tuple.set_filename (filename);
 
     midifile_t mf;
 
-    if (i_midi_parse_from_filename (filename_uri, &mf))
-        tuple.set_int (FIELD_LENGTH, mf.length / 1000);
-
-    i_midi_free (&mf);
+    if (mf.parse_from_file (filename, file))
+        tuple.set_int (Tuple::Length, mf.length / 1000);
 
     return tuple;
 }
@@ -135,24 +155,26 @@ static Tuple amidiplug_get_song_tuple (const char * filename_uri, VFSFile * file
 
 static int s_samplerate, s_channels;
 static int s_bufsize;
-static void * s_buf;
+static int16_t * s_buf;
 
-static gboolean audio_init (void)
+bool AMIDIPlug::audio_init ()
 {
     int bitdepth;
 
     backend_audio_info (& s_channels, & bitdepth, & s_samplerate);
 
-    if (bitdepth != 16 || ! aud_input_open_audio (FMT_S16_NE, s_samplerate, s_channels))
-        return FALSE;
+    if (bitdepth != 16)
+        return false;
+
+    open_audio (FMT_S16_NE, s_samplerate, s_channels);
 
     s_bufsize = 2 * s_channels * (s_samplerate / 4);
-    s_buf = g_malloc (s_bufsize);
+    s_buf = new int16_t[s_bufsize / 2];
 
-    return TRUE;
+    return true;
 }
 
-static void audio_generate (double seconds)
+void AMIDIPlug::audio_generate (double seconds)
 {
     int total = 2 * s_channels * (int) round (seconds * s_samplerate);
 
@@ -161,138 +183,88 @@ static void audio_generate (double seconds)
         int chunk = (total < s_bufsize) ? total : s_bufsize;
 
         backend_generate_audio (s_buf, chunk);
-        aud_input_write_audio (s_buf, chunk);
+        write_audio (s_buf, chunk);
 
         total -= chunk;
     }
 }
 
-static void audio_cleanup (void)
+void AMIDIPlug::audio_cleanup ()
 {
-    g_free (s_buf);
+    delete[] s_buf;
 }
 
-static bool amidiplug_play (const char * filename_uri, VFSFile * file)
+bool AMIDIPlug::play (const char * filename, VFSFile & file)
 {
-    if (g_atomic_int_compare_and_exchange (& backend_settings_changed, TRUE, FALSE))
+    if (__sync_bool_compare_and_swap (& backend_settings_changed, true, false)
+     && m_backend_initialized)
     {
         AUDDBG ("Settings changed, reinitializing backend\n");
         backend_cleanup ();
+        m_backend_initialized = false;
+    }
+
+    if (! m_backend_initialized)
+    {
         backend_init ();
+        m_backend_initialized = true;
     }
 
     if (! audio_init ())
-        return FALSE;
+        return false;
 
     AUDDBG ("PLAY requested, midifile init\n");
     /* midifile init */
-    i_midi_init (&midifile);
+    midifile_t midifile;
 
-    AUDDBG ("PLAY requested, opening file: %s\n", filename_uri);
-    midifile.file_pointer = file;
-    midifile.file_name = g_strdup (filename_uri);
-
-    switch (i_midi_file_read_id (&midifile))
+    if (! midifile.parse_from_file (filename, file))
     {
-    case MAKE_ID ('R', 'I', 'F', 'F') :
-        AUDDBG ("PLAY requested, RIFF chunk found, processing...\n");
-
-        /* read riff chunk */
-        if (!i_midi_file_parse_riff (&midifile))
-        {
-            fprintf (stderr, "%s: invalid file format (riff parser)\n", filename_uri);
-            goto ERR;
-        }
-
-        /* if that was read correctly, go ahead and read smf data */
-
-    case MAKE_ID ('M', 'T', 'h', 'd') :
-        AUDDBG ("PLAY requested, MThd chunk found, processing...\n");
-
-        if (!i_midi_file_parse_smf (&midifile, 1))
-        {
-            fprintf (stderr, "%s: invalid file format (smf parser)\n", filename_uri);
-            goto ERR;
-        }
-
-        if (midifile.time_division < 1)
-        {
-            fprintf (stderr, "%s: invalid time division (%i)\n", filename_uri, midifile.time_division);
-            goto ERR;
-        }
-
-        AUDDBG ("PLAY requested, setting ppq and tempo...\n");
-
-        /* fill midifile.ppq and midifile.tempo using time_division */
-        if (!i_midi_setget_tempo (&midifile))
-        {
-            fprintf (stderr, "%s: invalid values while setting ppq and tempo\n", filename_uri);
-            goto ERR;
-        }
-
-        /* fill midifile.length, keeping in count tempo-changes */
-        i_midi_setget_length (&midifile);
-        AUDDBG ("PLAY requested, song length calculated: %i msec\n", (int) (midifile.length / 1000));
-
-        /* done with file */
-        midifile.file_pointer = nullptr;
-
-        /* play play play! */
-        AUDDBG ("PLAY requested, starting play thread\n");
-        amidiplug_play_loop ();
-        break;
-
-    default:
-        fprintf (stderr, "%s is not a Standard MIDI File\n", filename_uri);
-        goto ERR;
+        audio_cleanup ();
+        return false;
     }
 
-    audio_cleanup ();
-    return TRUE;
+    AUDDBG ("PLAY requested, starting play thread\n");
+    play_loop (midifile);
 
-ERR:
     audio_cleanup ();
-    return FALSE;
+    return true;
 }
 
-static void generate_to_tick (int tick)
+void AMIDIPlug::generate_ticks (midifile_t & midifile, int num_ticks)
 {
     double ticksecs = (double) midifile.current_tempo / midifile.ppq / 1000000;
-    audio_generate (ticksecs * (tick - midifile.playing_tick));
-    midifile.playing_tick = tick;
+    audio_generate (ticksecs * num_ticks);
 }
 
-static void amidiplug_play_loop ()
+void AMIDIPlug::play_loop (midifile_t & midifile)
 {
-    gboolean stopped = FALSE;
-
-    backend_prepare ();
+    int tick = midifile.start_tick;
+    bool stopped = false;
 
     /* initialize current position in each track */
-    for (int j = 0; j < midifile.num_tracks; ++j)
-        midifile.tracks[j].current_event = midifile.tracks[j].first_event;
+    for (midifile_track_t & track : midifile.tracks)
+        track.current_event = track.events.head ();
 
-    while (! (stopped = aud_input_check_stop ()))
+    while (! (stopped = check_stop ()))
     {
-        int seektime = aud_input_check_seek ();
+        int seektime = check_seek ();
         if (seektime >= 0)
-            amidiplug_skipto ((int64_t) seektime * 1000 / midifile.avg_microsec_per_tick);
+            tick = skip_to (midifile, seektime);
 
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int i, min_tick = midifile.max_tick + 1;
+        int min_tick = midifile.max_tick + 1;
 
         /* search next event */
-        for (i = 0; i < midifile.num_tracks; ++i)
+        for (midifile_track_t & track : midifile.tracks)
         {
-            midifile_track_t * track = &midifile.tracks[i];
-            midievent_t * e2 = track->current_event;
+            midievent_t * e2 = track.current_event;
 
             if ((e2) && (e2->tick < min_tick))
             {
                 min_tick = e2->tick;
                 event = e2;
-                event_track = track;
+                event_track = & track;
             }
         }
 
@@ -300,10 +272,13 @@ static void amidiplug_play_loop ()
             break; /* end of song reached */
 
         /* advance pointer to next event */
-        event_track->current_event = event->next;
+        event_track->current_event = event_track->events.next (event);
 
-        if (event->tick > midifile.playing_tick)
-            generate_to_tick (event->tick);
+        if (event->tick > tick)
+        {
+            generate_ticks (midifile, event->tick - tick);
+            tick = event->tick;
+        }
 
         switch (event->type)
         {
@@ -342,8 +317,8 @@ static void amidiplug_play_loop ()
         case SND_SEQ_EVENT_TEMPO:
             seq_event_tempo (event);
             AUDDBG ("PLAY thread, processing tempo event with value %i on tick %i\n",
-                      event->data.tempo, event->tick);
-            midifile.current_tempo = event->data.tempo;
+                      event->tempo, event->tick);
+            midifile.current_tempo = event->tempo;
             break;
 
         case SND_SEQ_EVENT_META_TEXT:
@@ -361,46 +336,43 @@ static void amidiplug_play_loop ()
     }
 
     if (! stopped)
-        generate_to_tick (midifile.max_tick);
+        generate_ticks (midifile, midifile.max_tick - tick);
 
     backend_reset ();
-
-    i_midi_free (& midifile);
 }
 
 
 /* amidigplug_skipto: re-do all events that influence the playing of our
    midi file; re-do them using a time-tick of 0, so they are processed
    istantaneously and proceed this way until the playing_tick is reached */
-static void amidiplug_skipto (int playing_tick)
+int AMIDIPlug::skip_to (midifile_t & midifile, int seektime)
 {
     backend_reset ();
 
-    /* this check is always made, for safety*/
-    if (playing_tick >= midifile.max_tick)
-        playing_tick = midifile.max_tick - 1;
+    int tick = midifile.start_tick;
+    if (midifile.avg_microsec_per_tick > 0)
+        tick += (int64_t) seektime * 1000 / midifile.avg_microsec_per_tick;
 
     /* initialize current position in each track */
-    for (int i = 0; i < midifile.num_tracks; ++i)
-        midifile.tracks[i].current_event = midifile.tracks[i].first_event;
+    for (midifile_track_t & track : midifile.tracks)
+        track.current_event = track.events.head ();
 
     for (;;)
     {
         midievent_t * event = nullptr;
         midifile_track_t * event_track = nullptr;
-        int i, min_tick = midifile.max_tick + 1;
+        int min_tick = midifile.max_tick + 1;
 
         /* search next event */
-        for (i = 0; i < midifile.num_tracks; ++i)
+        for (midifile_track_t & track : midifile.tracks)
         {
-            midifile_track_t * track = &midifile.tracks[i];
-            midievent_t * e2 = track->current_event;
+            midievent_t * e2 = track.current_event;
 
             if ((e2) && (e2->tick < min_tick))
             {
                 min_tick = e2->tick;
                 event = e2;
-                event_track = track;
+                event_track = & track;
             }
         }
 
@@ -412,14 +384,14 @@ static void amidiplug_skipto (int playing_tick)
         }
 
         /* reached the requested tick, job done */
-        if (event->tick >= playing_tick)
+        if (event->tick >= tick)
         {
             AUDDBG ("SKIPTO request, reached the requested tick, exiting from skipto loop\n");
             break;
         }
 
         /* advance pointer to next event */
-        event_track->current_event = event->next;
+        event_track->current_event = event_track->events.next (event);
 
         switch (event->type)
         {
@@ -452,24 +424,26 @@ static void amidiplug_skipto (int playing_tick)
 
         case SND_SEQ_EVENT_TEMPO:
             seq_event_tempo (event);
-            midifile.current_tempo = event->data.tempo;
+            midifile.current_tempo = event->tempo;
             break;
         }
     }
 
-    midifile.playing_tick = playing_tick;
+    return tick;
 }
 
-#define AUD_PLUGIN_NAME        N_("AMIDI-Plug (MIDI Player)")
-#define AUD_PLUGIN_INIT        amidiplug_init
-#define AUD_PLUGIN_ABOUTWIN    i_about_gui
-#define AUD_PLUGIN_PREFS       & amidiplug_prefs
-#define AUD_INPUT_PLAY         amidiplug_play
-#define AUD_PLUGIN_CLEANUP     amidiplug_cleanup
-#define AUD_INPUT_READ_TUPLE   amidiplug_get_song_tuple
-#define AUD_INPUT_INFOWIN      i_fileinfo_gui
-#define AUD_INPUT_IS_OUR_FILE  amidiplug_is_our_file_from_vfs
-#define AUD_INPUT_EXTS         amidiplug_vfs_extensions
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char AMIDIPlug::about[] =
+ N_("AMIDI-Plug\n"
+    "modular MIDI music player\n"
+    "http://www.develia.org/projects.php?p=amidiplug\n\n"
+    "written by Giacomo Lozito\n"
+    "<james@develia.org>\n\n"
+    "special thanks to...\n\n"
+    "Clemens Ladisch and Jaroslav Kysela\n"
+    "for their cool programs aplaymidi and amixer; those\n"
+    "were really useful, along with alsa-lib docs, in order\n"
+    "to learn more about the ALSA API\n\n"
+    "Alfredo Spadafina\n"
+    "for the nice midi keyboard logo\n\n"
+    "Tony Vroon\n"
+    "for the good help with alpha testing");

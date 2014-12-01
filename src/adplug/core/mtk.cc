@@ -32,7 +32,7 @@ CmtkLoader::factory (Copl * newopl)
 }
 
 bool
-CmtkLoader::load (VFSFile * fd, const CFileProvider & fp)
+CmtkLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

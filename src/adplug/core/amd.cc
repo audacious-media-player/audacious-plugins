@@ -31,7 +31,7 @@ CamdLoader::factory (Copl * newopl)
 }
 
 bool
-CamdLoader::load (VFSFile * fd, const CFileProvider & fp)
+CamdLoader::load (VFSFile & fd, const CFileProvider & fp)
 {
   binistream *f = fp.open (fd);
   if (!f)

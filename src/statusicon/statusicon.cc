@@ -38,6 +38,29 @@
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
 
+class StatusIcon : public GeneralPlugin
+{
+public:
+    static const char about[];
+    static const char * const defaults[];
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Status Icon"),
+        PACKAGE,
+        about,
+        & prefs
+    };
+
+    constexpr StatusIcon () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT StatusIcon aud_plugin_instance;
+
 #define POPUP_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "popup_active"))
 #define TIMER_IS_ACTIVE GPOINTER_TO_INT(g_object_get_data(G_OBJECT(icon), "timer_active"))
 
@@ -47,17 +70,15 @@ static void si_smallmenu_show(int x, int y, unsigned button, uint32_t time, void
 static void si_smallmenu_recreate(GtkStatusIcon *);
 static void si_popup_hide(void * icon);
 
-static PluginHandle * get_plugin_self ();
+const char * const StatusIcon::defaults[] = {
+    "scroll_action", "0", /* SI_CFG_SCROLL_ACTION_VOLUME */
+    "volume_delta", "5",
+    "disable_popup", "FALSE",
+    "close_to_tray", "FALSE",
+    "reverse_scroll", "FALSE",
+    nullptr
+};
 
-static const char * const si_defaults[] = {
- "scroll_action", "0", /* SI_CFG_SCROLL_ACTION_VOLUME */
- "volume_delta", "5",
- "disable_popup", "FALSE",
- "close_to_tray", "FALSE",
- "reverse_scroll", "FALSE",
- nullptr};
-
-static gboolean plugin_active = FALSE;
 static gboolean recreate_smallmenu = FALSE;
 
 static GtkStatusIcon *si_create(void)
@@ -172,7 +193,7 @@ static gboolean si_popup_show(void * icon)
     int x, y;
     static int count = 0;
 
-    audgui_get_mouse_coords (nullptr, & x, & y);
+    audgui_get_mouse_coords (gtk_status_icon_get_screen ((GtkStatusIcon *) icon), & x, & y);
     gtk_status_icon_get_geometry ((GtkStatusIcon *) icon, nullptr, & area, nullptr);
 
     if (x < area.x || x > area.x + area.width || y < area.y || y > area.y + area.width)
@@ -337,7 +358,7 @@ static void si_enable(gboolean enable)
     {
         /* Prevent accidentally hiding of the interface
          * by disabling the plugin while Audacious is closed to the tray. */
-        PluginHandle * si = get_plugin_self ();
+        PluginHandle * si = aud_plugin_by_header (& aud_plugin_instance);
         if (! aud_plugin_get_enabled(si) && ! aud_get_headless_mode() && ! aud_ui_is_shown())
             aud_ui_show(TRUE);
 
@@ -352,36 +373,31 @@ static void si_enable(gboolean enable)
     }
 }
 
-static bool si_init (void)
+bool StatusIcon::init ()
 {
     if (aud_get_mainloop_type () != MainloopType::GLib)
         return false;
 
-    aud_config_set_defaults ("statusicon", si_defaults);
+    aud_config_set_defaults ("statusicon", defaults);
     audgui_init ();
-    plugin_active = TRUE;
     si_enable(TRUE);
     return true;
 }
 
-void si_cleanup(void)
+void StatusIcon::cleanup ()
 {
-    if (!plugin_active)
-        return;
-
-    plugin_active = FALSE;
     si_enable(FALSE);
     audgui_cleanup ();
 }
 
-static const char si_about[] =
+const char StatusIcon::about[] =
  N_("Status Icon Plugin\n\n"
     "Copyright 2005-2007 Giacomo Lozito <james@develia.org>\n"
     "Copyright 2010 Michał Lipski <tallica@o2.pl>\n\n"
     "This plugin provides a status icon, placed in\n"
     "the system tray area of the window manager.");
 
-static const PreferencesWidget si_widgets[] = {
+const PreferencesWidget StatusIcon::widgets[] = {
     WidgetLabel (N_("<b>Mouse Scroll Action</b>")),
     WidgetRadio (N_("Change volume"),
         WidgetInt ("statusicon", "scroll_action"),
@@ -398,18 +414,4 @@ static const PreferencesWidget si_widgets[] = {
         WidgetBool ("statusicon", "reverse_scroll"))
 };
 
-static const PluginPreferences si_prefs = {{si_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Status Icon")
-#define AUD_PLUGIN_ABOUT       si_about
-#define AUD_PLUGIN_PREFS       & si_prefs
-#define AUD_PLUGIN_INIT        si_init
-#define AUD_PLUGIN_CLEANUP     si_cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>
-
-static PluginHandle * get_plugin_self ()
-{
-    return aud_plugin_by_header (& _aud_plugin_self);
-}
+const PluginPreferences StatusIcon::prefs = {{widgets}};

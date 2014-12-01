@@ -31,7 +31,7 @@ class ChscPlayer: public CPlayer
 
   ChscPlayer(Copl *newopl): CPlayer(newopl), mtkmode(0) {}
 
-  bool load(VFSFile *fd, const CFileProvider &fp);
+  bool load(VFSFile &fd, const CFileProvider &fp);
   bool update();
   void rewind(int subsong);
   float getrefresh() { return 18.2f; };	// refresh rate is fixed at 18.2Hz

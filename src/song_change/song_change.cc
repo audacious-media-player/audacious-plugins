@@ -9,7 +9,6 @@
 
 #include <signal.h>
 #include <unistd.h>
-#include <stdio.h>
 
 #include <string.h>
 
@@ -18,15 +17,33 @@
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
-#include <libaudcore/playlist.h>
 #include <libaudcore/hook.h>
 #include <libaudcore/audstrings.h>
 #include <libaudcore/tuple.h>
 
 #include "formatter.h"
 
-static bool init (void);
-static void cleanup(void);
+class SongChange : public GeneralPlugin
+{
+public:
+    static const PreferencesWidget widgets[];
+    static const PluginPreferences prefs;
+
+    static constexpr PluginInfo info = {
+        N_("Song Change"),
+        PACKAGE,
+        nullptr,
+        & prefs
+    };
+
+    constexpr SongChange () : GeneralPlugin (info, false) {}
+
+    bool init ();
+    void cleanup ();
+};
+
+EXPORT SongChange aud_plugin_instance;
+
 static void songchange_playback_begin(void *, void *);
 static void songchange_playback_end(void *, void *);
 static void songchange_playlist_eof(void *, void *);
@@ -110,9 +127,6 @@ static void execute_command(char *cmd)
    @cmd: command to run */
 static void do_command (const char * cmd)
 {
-    int playlist = aud_playlist_get_playing ();
-    int pos = aud_playlist_get_position (playlist);
-
     char *shstring = nullptr, *temp;
     gboolean playing;
     Formatter *formatter;
@@ -121,7 +135,13 @@ static void do_command (const char * cmd)
     {
         formatter = formatter_new();
 
-        String ctitle = aud_playlist_entry_get_title (playlist, pos, FALSE);
+        playing = aud_drct_get_ready();
+
+        Tuple tuple;
+        if (playing)
+            tuple = aud_drct_get_tuple ();
+
+        String ctitle = tuple.get_str (Tuple::FormattedTitle);
         if (ctitle)
         {
             temp = escape_shell_chars (ctitle);
@@ -135,7 +155,7 @@ static void do_command (const char * cmd)
             formatter_associate(formatter, 'n', "");
         }
 
-        String filename = aud_playlist_entry_get_filename (playlist, pos);
+        String filename = aud_drct_get_filename ();
         if (filename)
         {
             temp = escape_shell_chars (filename);
@@ -145,42 +165,44 @@ static void do_command (const char * cmd)
         else
             formatter_associate(formatter, 'f', "");
 
-        formatter_associate(formatter, 't', str_printf ("%02d", pos + 1));
+        if (playing)
+        {
+            int pos = aud_drct_get_position ();
+            formatter_associate (formatter, 't', str_printf ("%02d", pos + 1));
+        }
+        else
+            formatter_associate (formatter, 't', "");
 
-        int length = aud_playlist_entry_get_length (playlist, pos, FALSE);
+        int length = tuple.get_int (Tuple::Length);
         if (length > 0)
             formatter_associate(formatter, 'l', int_to_str (length));
         else
             formatter_associate(formatter, 'l', "0");
 
-        playing = aud_drct_get_playing();
         formatter_associate(formatter, 'p', int_to_str (playing));
 
         if (playing)
         {
             int brate, srate, chans;
-            aud_drct_get_info (& brate, & srate, & chans);
+            aud_drct_get_info (brate, srate, chans);
             formatter_associate (formatter, 'r', int_to_str (brate));
             formatter_associate (formatter, 'F', int_to_str (srate));
             formatter_associate (formatter, 'c', int_to_str (chans));
         }
 
-        Tuple tuple = aud_playlist_entry_get_tuple
-            (aud_playlist_get_active (), pos, 0);
-
-        String artist = tuple.get_str (FIELD_ARTIST);
+        String artist = tuple.get_str (Tuple::Artist);
         if (artist)
             formatter_associate(formatter, 'a', artist);
         else
             formatter_associate(formatter, 'a', "");
 
-        String album = tuple.get_str (FIELD_ALBUM);
+        String album = tuple.get_str (Tuple::Album);
         if (album)
             formatter_associate(formatter, 'b', album);
         else
             formatter_associate(formatter, 'b', "");
 
-        String title = tuple.get_str (FIELD_TITLE);
+        String title = tuple.get_str (Tuple::Title);
         if (title)
             formatter_associate(formatter, 'T', title);
         else
@@ -206,9 +228,9 @@ static void read_config(void)
     cmd_line_ttc = aud_get_str("song_change", "cmd_line_ttc");
 }
 
-static void cleanup(void)
+void SongChange::cleanup ()
 {
-    hook_dissociate("playback begin", songchange_playback_begin);
+    hook_dissociate("playback ready", songchange_playback_begin);
     hook_dissociate("playback end", songchange_playback_end);
     hook_dissociate("playlist end reached", songchange_playlist_eof);
     hook_dissociate("title change", songchange_playback_ttc);
@@ -237,11 +259,11 @@ static int check_command(const char *command)
     return 0;
 }
 
-static bool init (void)
+bool SongChange::init ()
 {
     read_config();
 
-    hook_associate("playback begin", songchange_playback_begin, nullptr);
+    hook_associate("playback ready", songchange_playback_begin, nullptr);
     hook_associate("playback end", songchange_playback_end, nullptr);
     hook_associate("playlist end reached", songchange_playlist_eof, nullptr);
     hook_associate("title change", songchange_playback_ttc, nullptr);
@@ -332,7 +354,7 @@ static void * custom_warning (void)
     return bbox_hbox;
 }
 
-static const PreferencesWidget settings[] = {
+const PreferencesWidget SongChange::widgets[] = {
     WidgetLabel (N_("<b>Commands</b>")),
 
     WidgetLabel (N_("Command to run when starting a new song:")),
@@ -366,7 +388,7 @@ static const PreferencesWidget settings[] = {
                     "%b: Album\n"
                     "%T: Track title")),
 
-    WidgetCustom (custom_warning)
+    WidgetCustomGTK (custom_warning)
 };
 
 static void configure_init(void)
@@ -385,17 +407,9 @@ static void configure_cleanup(void)
     config.cmd_ttc = String ();
 }
 
-static const PluginPreferences preferences = {
-    {settings},
+const PluginPreferences SongChange::prefs = {
+    {widgets},
     configure_init,
     configure_ok_cb,
     configure_cleanup,
 };
-
-#define AUD_PLUGIN_NAME        N_("Song Change")
-#define AUD_PLUGIN_PREFS       & preferences
-#define AUD_PLUGIN_INIT        init
-#define AUD_PLUGIN_CLEANUP     cleanup
-
-#define AUD_DECLARE_GENERAL
-#include <libaudcore/plugin-declare.h>

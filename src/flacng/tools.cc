@@ -20,48 +20,21 @@
  */
 
 #include <string.h>
-#include <glib.h>
 
 #include <libaudcore/runtime.h>
 
 #include "flacng.h"
 
-callback_info *init_callback_info(void)
-{
-    callback_info *info;
-
-    info = g_new0 (callback_info, 1);
-    info->output_buffer = (int32_t*) g_malloc (BUFFER_SIZE_BYTE);
-
-    reset_info(info);
-
-    AUDDBG("Playback buffer allocated for %d samples, %d bytes\n", BUFFER_SIZE_SAMP, BUFFER_SIZE_BYTE);
-
-    return info;
-}
-
-void clean_callback_info(callback_info *info)
-{
-    g_free (info->output_buffer);
-    g_free (info);
-}
-
-void reset_info(callback_info *info)
-{
-    info->buffer_used = 0;
-    info->write_pointer = info->output_buffer;
-}
-
 bool read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
 {
     FLAC__StreamDecoderState ret;
 
-    reset_info(info);
+    info->reset();
 
     /* Reset the decoder */
     if (FLAC__stream_decoder_reset(decoder) == false)
     {
-        FLACNG_ERROR("Could not reset the decoder!\n");
+        AUDERR("Could not reset the decoder!\n");
         return false;
     }
 
@@ -71,7 +44,7 @@ bool read_metadata(FLAC__StreamDecoder *decoder, callback_info *info)
         ret = FLAC__stream_decoder_get_state(decoder);
         AUDDBG("Could not read the metadata: %s(%d)!\n",
             FLAC__StreamDecoderStateString[ret], ret);
-        reset_info(info);
+        info->reset();
         return false;
     }
 

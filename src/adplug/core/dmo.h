@@ -28,7 +28,7 @@ class CdmoLoader: public Cs3mPlayer
 
   CdmoLoader(Copl *newopl) : Cs3mPlayer(newopl) { };
 
-  bool	load(VFSFile *fd, const CFileProvider &fp);
+  bool	load(VFSFile &fd, const CFileProvider &fp);
 
   std::string	gettype();
   std::string	getauthor();

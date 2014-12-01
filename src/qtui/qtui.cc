@@ -21,62 +21,60 @@
 
 #include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
-#include <libaudcore/plugins.h>
 #include <libaudcore/runtime.h>
 
 #include <libaudqt/libaudqt.h>
+#include <libaudqt/iface.h>
 
 #include "main_window.h"
 
-static int dummy_argc = 0;
-static QApplication * qapp;
-static MainWindow * window;
-
-static bool init ()
+class QtUI : public audqt::QtIfacePlugin
 {
-    if (aud_get_mainloop_type () != MainloopType::Qt)
-        return false;
+private:
+    int dummy_argc = 0;
+    QApplication * qapp;
+    MainWindow * window;
 
-    qapp = new QApplication (dummy_argc, 0);
-    window = new MainWindow;
+public:
+    QtUI () : audqt::QtIfacePlugin ({N_("Qt Interface"), PACKAGE}) {}
 
-    return true;
-}
+    bool init ()
+    {
+        if (aud_get_mainloop_type () != MainloopType::Qt)
+            return false;
 
-static void cleanup ()
-{
-    delete window;
-    window = nullptr;
+        qapp = new QApplication (dummy_argc, 0);
+        qapp->setAttribute(Qt::AA_UseHighDpiPixmaps);
+        window = new MainWindow;
 
-    delete qapp;
-    qapp = nullptr;
-}
+        return true;
+    }
 
-static void run ()
-{
-    qapp->exec ();
-}
+    void cleanup ()
+    {
+        delete window;
+        window = nullptr;
 
-static void show (bool show)
-{
-    window->setVisible (show);
-}
+        audqt::cleanup ();
 
-static void quit ()
-{
-    qapp->quit();
-}
+        delete qapp;
+        qapp = nullptr;
+    }
 
-#define AUD_PLUGIN_NAME     N_("Qt Interface")
-#define AUD_PLUGIN_INIT     init
-#define AUD_PLUGIN_CLEANUP  cleanup
-#define AUD_IFACE_RUN       run
+    void run ()
+    {
+        qapp->exec ();
+    }
 
-#define AUD_IFACE_SHOW      show
-#define AUD_IFACE_QUIT      quit
+    void show (bool show)
+    {
+        window->setVisible (show);
+    }
 
-#define AUD_IFACE_SHOW_ABOUT         audqt::aboutwindow_show
-#define AUD_IFACE_HIDE_ABOUT         audqt::aboutwindow_hide
+    void quit ()
+    {
+        qapp->quit();
+    }
+};
 
-#define AUD_DECLARE_IFACE
-#include <libaudcore/plugin-declare.h>
+EXPORT QtUI aud_plugin_instance;

@@ -34,6 +34,6 @@ EXPORT_GCC void CALLBACK SPU2playADPCMchannel(xa_decode_t *xap);
 
 EXPORT_GCC long CALLBACK SPU2init(void);
 EXPORT_GCC long CALLBACK SPU2open(void *pDsp);
-EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle, void *data);
+EXPORT_GCC void CALLBACK SPU2async(void (*update)(const void *, int));
 EXPORT_GCC void CALLBACK SPU2close(void);
 EXPORT_GCC int  CALLBACK psf2_seek(u32 t);

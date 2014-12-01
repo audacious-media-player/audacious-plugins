@@ -1,8 +1,9 @@
 PLUGIN = qtui${PLUGIN_SUFFIX}
 
 SRCS = qtui.cc \
+       dialog_windows.cc \
        main_window.cc \
-       main_window.moc \
+       main_window_actions.cc \
        playlist.cc \
        playlist.moc \
        playlist_model.cc \
@@ -11,13 +12,26 @@ SRCS = qtui.cc \
        playlist_tabs.moc \
        filter_input.cc \
        filter_input.moc \
-       ui_main_window.h
+       info_bar.cc \
+       status_bar.cc \
+       tool_bar.cc \
+       time_slider.cc
 
 include ../../buildsys.mk
 include ../../extra.mk
 
 # These overrides variables in buildsys.mk and so must come after it.
 PACKAGE_NAME = audacious
+
+CUSTOM_ICONS=no
+ifeq ($(HAVE_MSWINDOWS),yes)
+CUSTOM_ICONS=yes
+endif
+ifeq ($(HAVE_DARWIN),yes)
+CUSTOM_ICONS=yes
+endif
+
+ifeq ($(CUSTOM_ICONS),yes)
 DATA = QtUi/16/audio-volume-high.png \
        QtUi/16/audio-volume-low.png \
        QtUi/16/audio-volume-medium.png \
@@ -48,8 +62,39 @@ DATA = QtUi/16/audio-volume-high.png \
        QtUi/22/media-playlist-shuffle.png \
        QtUi/22/media-skip-backward.png \
        QtUi/22/media-skip-forward.png \
+       QtUi/32/audio-volume-high.png \
+       QtUi/32/audio-volume-low.png \
+       QtUi/32/audio-volume-medium.png \
+       QtUi/32/audio-volume-muted.png \
+       QtUi/32/audio-volume-off.png \
+       QtUi/32/document-open.png \
+       QtUi/32/edit-find.png \
+       QtUi/32/list-add.png \
+       QtUi/32/media-playback-pause.png \
+       QtUi/32/media-playback-start.png \
+       QtUi/32/media-playback-stop.png \
+       QtUi/32/media-playlist-repeat.png \
+       QtUi/32/media-playlist-shuffle.png \
+       QtUi/32/media-skip-backward.png \
+       QtUi/32/media-skip-forward.png \
+       QtUi/44/audio-volume-high.png \
+       QtUi/44/audio-volume-low.png \
+       QtUi/44/audio-volume-medium.png \
+       QtUi/44/audio-volume-muted.png \
+       QtUi/44/audio-volume-off.png \
+       QtUi/44/document-open.png \
+       QtUi/44/edit-find.png \
+       QtUi/44/list-add.png \
+       QtUi/44/media-playback-pause.png \
+       QtUi/44/media-playback-start.png \
+       QtUi/44/media-playback-stop.png \
+       QtUi/44/media-playlist-repeat.png \
+       QtUi/44/media-playlist-shuffle.png \
+       QtUi/44/media-skip-backward.png \
+       QtUi/44/media-skip-forward.png \
        QtUi/AUTHORS \
        QtUi/index.theme
+endif
 
 plugindir := ${plugindir}/${GENERAL_PLUGIN_DIR}
 
@@ -61,9 +106,6 @@ LIBS += ${QT_LIBS} -laudqt
 
 %.moc: %.h
 	moc $< -o $@
-
-ui_%.h: %.ui
-	uic $< -o $@
 
 rc_%.cc: %.qrc
 	rcc $< -o $@

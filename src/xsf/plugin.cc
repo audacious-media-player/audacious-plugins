@@ -29,95 +29,116 @@
 #include <string.h>
 
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
+#include <libaudcore/preferences.h>
 #include <libaudcore/audstrings.h>
+#include <libaudcore/runtime.h>
 
 #include "ao.h"
 #include "corlett.h"
 #include "vio2sf.h"
 
+class XSFPlugin : public InputPlugin
+{
+public:
+	static const char *const exts[];
+	static const char *const defaults[];
+	static const PreferencesWidget widgets[];
+	static const PluginPreferences prefs;
+
+	static constexpr PluginInfo info = {
+		N_("2SF Decoder"),
+		PACKAGE,
+		nullptr,
+		& prefs
+	};
+
+	static constexpr auto iinfo = InputInfo()
+		.with_exts(exts);
+
+	constexpr XSFPlugin() : InputPlugin(info, iinfo) {}
+
+	bool init();
+
+	bool is_our_file(const char *filename, VFSFile &file);
+	Tuple read_tuple(const char *filename, VFSFile &file);
+	bool play(const char *filename, VFSFile &file);
+};
+
+EXPORT XSFPlugin aud_plugin_instance;
+
 /* xsf_get_lib: called to load secondary files */
 static String dirpath;
 
-int xsf_get_lib(char *filename, void **buffer, unsigned int *length)
+#define CFG_ID "xsf"
+
+const char* const XSFPlugin::defaults[] =
 {
-	void *filebuf;
-	int64_t size;
+	"ignore_length", "FALSE",
+	NULL
+};
 
-	StringBuf path = filename_build ({dirpath, filename});
-	vfs_file_get_contents(path, &filebuf, &size);
-
-	*buffer = filebuf;
-	*length = (uint64_t)size;
-
-	return AO_SUCCESS;
+bool XSFPlugin::init()
+{
+	aud_config_set_defaults(CFG_ID, defaults);
+	return true;
 }
 
-Tuple xsf_tuple(const char *filename, VFSFile *fd)
+Index<char> xsf_get_lib(char *filename)
+{
+	VFSFile file(filename_build({dirpath, filename}), "r");
+	return file ? file.read_all() : Index<char>();
+}
+
+Tuple XSFPlugin::read_tuple(const char *filename, VFSFile &fd)
 {
 	Tuple t;
 	corlett_t *c;
-	void *buf;
-	int64_t sz;
 
-	vfs_file_get_contents (filename, & buf, & sz);
+	Index<char> buf = fd.read_all ();
 
-	if (!buf)
+	if (!buf.len())
 		return t;
 
-	if (corlett_decode((uint8_t *) buf, sz, nullptr, nullptr, &c) != AO_SUCCESS)
+	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
 		return t;
 
 	t.set_filename (filename);
 
-	t.set_int (FIELD_LENGTH, c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1);
-	t.set_str (FIELD_ARTIST, c->inf_artist);
-	t.set_str (FIELD_ALBUM, c->inf_game);
-	t.set_str (FIELD_TITLE, c->inf_title);
-	t.set_str (FIELD_COPYRIGHT, c->inf_copy);
-	t.set_str (FIELD_QUALITY, _("sequenced"));
-	t.set_str (FIELD_CODEC, "GBA/Nintendo DS Audio");
+	t.set_int (Tuple::Length, psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade));
+	t.set_str (Tuple::Artist, c->inf_artist);
+	t.set_str (Tuple::Album, c->inf_game);
+	t.set_str (Tuple::Title, c->inf_title);
+	t.set_str (Tuple::Copyright, c->inf_copy);
+	t.set_str (Tuple::Quality, _("sequenced"));
+	t.set_str (Tuple::Codec, "GBA/Nintendo DS Audio");
 
 	free(c);
-	free(buf);
 
 	return t;
 }
 
-static int xsf_get_length(const char *filename)
+static int xsf_get_length(const Index<char> &buf)
 {
 	corlett_t *c;
-	void *buf;
-	int64_t size;
 
-	vfs_file_get_contents(filename, &buf, &size);
-
-	if (!buf)
+	if (corlett_decode((uint8_t *)buf.begin(), buf.len(), nullptr, nullptr, &c) != AO_SUCCESS)
 		return -1;
 
-	if (corlett_decode((uint8_t *) buf, size, nullptr, nullptr, &c) != AO_SUCCESS)
-	{
-		free(buf);
-		return -1;
-	}
-
-	int length = c->inf_length ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
+	bool ignore_length = aud_get_bool(CFG_ID, "ignore_length");
+	int length = (!ignore_length) ? psfTimeToMS(c->inf_length) + psfTimeToMS(c->inf_fade) : -1;
 
 	free(c);
-	free(buf);
 
 	return length;
 }
 
-static bool xsf_play(const char * filename, VFSFile * file)
+bool XSFPlugin::play(const char *filename, VFSFile &file)
 {
-	void *buffer;
-	int64_t size;
-	int length = xsf_get_length(filename);
+	int length = -1;
 	int16_t samples[44100*2];
 	int seglen = 44100 / 60;
-	float pos;
+	float pos = 0.0;
 	bool error = false;
 
 	const char * slash = strrchr (filename, '/');
@@ -126,45 +147,46 @@ static bool xsf_play(const char * filename, VFSFile * file)
 
 	dirpath = String (str_copy (filename, slash + 1 - filename));
 
-	vfs_file_get_contents (filename, & buffer, & size);
+	Index<char> buf = file.read_all ();
 
-	if (xsf_start(buffer, size) != AO_SUCCESS)
+	if (!buf.len())
 	{
 		error = true;
 		goto ERR_NO_CLOSE;
 	}
 
-	if (!aud_input_open_audio(FMT_S16_NE, 44100, 2))
+	length = xsf_get_length(buf);
+
+	if (xsf_start(buf.begin(), buf.len()) != AO_SUCCESS)
 	{
 		error = true;
 		goto ERR_NO_CLOSE;
 	}
 
-	aud_input_set_bitrate(44100*2*2*8);
+	set_stream_bitrate(44100*2*2*8);
+	open_audio(FMT_S16_NE, 44100, 2);
 
-	while (! aud_input_check_stop ())
+	while (! check_stop ())
 	{
-		int seek_value = aud_input_check_seek ();
+		int seek_value = check_seek ();
 
 		if (seek_value >= 0)
 		{
-			if (seek_value > aud_input_written_time ())
+			if (seek_value > pos)
 			{
-				pos = aud_input_written_time ();
-
 				while (pos < seek_value)
 				{
 					xsf_gen(samples, seglen);
 					pos += 16.666;
 				}
 			}
-			else if (seek_value < aud_input_written_time ())
+			else if (seek_value < pos)
 			{
 				xsf_term();
 
-				if (xsf_start(buffer, size) == AO_SUCCESS)
+				if (xsf_start(buf.begin(), buf.len()) == AO_SUCCESS)
 				{
-					pos = 0;
+					pos = 0.0;
 					while (pos < seek_value)
 					{
 						xsf_gen(samples, seglen);
@@ -180,9 +202,12 @@ static bool xsf_play(const char * filename, VFSFile * file)
 		}
 
 		xsf_gen(samples, seglen);
-		aud_input_write_audio((uint8_t *)samples, seglen * 4);
+		pos += 16.666;
 
-		if (aud_input_written_time() >= length)
+        write_audio(samples, seglen * 4);
+
+		bool ignore_length = aud_get_bool(CFG_ID, "ignore_length");
+		if (pos >= length && !ignore_length)
 			goto CLEANUP;
 	}
 
@@ -191,15 +216,14 @@ CLEANUP:
 
 ERR_NO_CLOSE:
 	dirpath = String ();
-	free(buffer);
 
 	return !error;
 }
 
-bool xsf_is_our_fd(const char *filename, VFSFile *file)
+bool XSFPlugin::is_our_file(const char *filename, VFSFile &file)
 {
 	char magic[4];
-	if (vfs_fread(magic, 1, 4, file) < 4)
+	if (file.fread (magic, 1, 4) < 4)
 		return false;
 
 	if (!memcmp(magic, "PSF$", 4))
@@ -208,13 +232,11 @@ bool xsf_is_our_fd(const char *filename, VFSFile *file)
 	return 0;
 }
 
-static const char *xsf_fmts[] = { "2sf", "mini2sf", nullptr };
+const char *const XSFPlugin::exts[] = { "2sf", "mini2sf", nullptr };
 
-#define AUD_PLUGIN_NAME        N_("2SF Decoder")
-#define AUD_INPUT_PLAY         xsf_play
-#define AUD_INPUT_READ_TUPLE   xsf_tuple
-#define AUD_INPUT_IS_OUR_FILE  xsf_is_our_fd
-#define AUD_INPUT_EXTS         xsf_fmts
+const PreferencesWidget XSFPlugin::widgets[] = {
+	WidgetLabel(N_("<b>XSF Configuration</b>")),
+	WidgetCheck(N_("Ignore length from file"), WidgetBool(CFG_ID, "ignore_length")),
+};
 
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences XSFPlugin::prefs = {{widgets}};

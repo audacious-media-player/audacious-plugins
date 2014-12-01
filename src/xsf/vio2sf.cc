@@ -9,8 +9,10 @@
 #include "desmume/SPU.h"
 #include "desmume/cp15.h"
 
-#include <glib.h>
 #include <zlib.h>
+
+#include <libaudcore/audstrings.h>
+
 #include "tagget.h"
 #include "vio2sf.h"
 
@@ -66,7 +68,7 @@ static int load_map(int issave, unsigned char *udata, unsigned usize)
 	{
 		iptr = (unsigned char *) malloc(xofs + xsize + 10);
 		if (!iptr)
-			return XSF_FALSE;
+			return false;
 		memset(iptr, 0, xofs + xsize + 10);
 		isize = xofs + xsize;
 	}
@@ -87,7 +89,7 @@ static int load_map(int issave, unsigned char *udata, unsigned usize)
 		if (!xptr)
 		{
 			free(iptr);
-			return XSF_FALSE;
+			return false;
 		}
 		iptr = xptr;
 		isize = rsize;
@@ -103,7 +105,7 @@ static int load_map(int issave, unsigned char *udata, unsigned usize)
 		loaderwork.rom = iptr;
 		loaderwork.romsize = isize;
 	}
-	return XSF_TRUE;
+	return true;
 }
 
 static int load_mapz(int issave, unsigned char *zdata, unsigned zsize, unsigned zcrc)
@@ -117,14 +119,14 @@ static int load_mapz(int issave, unsigned char *zdata, unsigned zsize, unsigned 
 
 	udata = (unsigned char *) malloc(usize);
 	if (!udata)
-		return XSF_FALSE;
+		return false;
 
 	while (Z_OK != (zerr = uncompress(udata, &usize, zdata, zsize)))
 	{
 		if (Z_MEM_ERROR != zerr && Z_BUF_ERROR != zerr)
 		{
 			free(udata);
-			return XSF_FALSE;
+			return false;
 		}
 		if (usize >= 8)
 		{
@@ -145,21 +147,21 @@ static int load_mapz(int issave, unsigned char *zdata, unsigned zsize, unsigned 
 		free(udata);
 		udata = (unsigned char *) malloc(usize);
 		if (!udata)
-			return XSF_FALSE;
+			return false;
 	}
 
 	rdata = (unsigned char *) realloc(udata, usize);
 	if (!rdata)
 	{
 		free(udata);
-		return XSF_FALSE;
+		return false;
 	}
 
 	if (0)
 	{
 		unsigned ccrc = crc32(crc32(0L, Z_NULL, 0), rdata, usize);
 		if (ccrc != zcrc)
-			return XSF_FALSE;
+			return false;
 	}
 
 	ret = load_map(issave, rdata, usize);
@@ -174,7 +176,7 @@ static int load_psf_one(unsigned char *pfile, unsigned bytes)
 	unsigned resv_size;
 	unsigned code_crc;
 	if (bytes < 16 || getdwordle(ptr) != 0x24465350)
-		return XSF_FALSE;
+		return false;
 
 	resv_size = getdwordle(ptr + 4);
 	code_size = getdwordle(ptr + 8);
@@ -185,7 +187,7 @@ static int load_psf_one(unsigned char *pfile, unsigned bytes)
 		unsigned resv_pos = 0;
 		ptr = pfile + 16;
 		if (16+ resv_size > bytes)
-			return XSF_FALSE;
+			return false;
 		while (resv_pos + 12 < resv_size)
 		{
 			unsigned save_size = getdwordle(ptr + resv_pos + 4);
@@ -193,9 +195,9 @@ static int load_psf_one(unsigned char *pfile, unsigned bytes)
 			if (getdwordle(ptr + resv_pos + 0) == 0x45564153)
 			{
 				if (resv_pos + 12 + save_size > resv_size)
-					return XSF_FALSE;
+					return false;
 				if (!load_mapz(1, ptr + resv_pos + 12, save_size, save_crc))
-					return XSF_FALSE;
+					return false;
 			}
 			resv_pos += 12 + save_size;
 		}
@@ -205,12 +207,12 @@ static int load_psf_one(unsigned char *pfile, unsigned bytes)
 	{
 		ptr = pfile + 16 + resv_size;
 		if (16 + resv_size + code_size > bytes)
-			return XSF_FALSE;
+			return false;
 		if (!load_mapz(0, ptr, code_size, code_crc))
-			return XSF_FALSE;
+			return false;
 	}
 
-	return XSF_TRUE;
+	return true;
 }
 
 typedef struct
@@ -227,35 +229,20 @@ static int load_psfcb(void *pWork, const char *pNameTop, const char *pNameEnd, c
 {
 	loadlibwork_t *pwork = (loadlibwork_t *)pWork;
 	int ret = xsf_tagenum_callback_returnvaluecontinue;
-	if (pNameEnd - pNameTop == pwork->taglen && !g_ascii_strncasecmp(pNameTop, pwork->tag , pwork->taglen))
+	if (pNameEnd - pNameTop == pwork->taglen && !strcmp_nocase(pNameTop, pwork->tag, pwork->taglen))
 	{
-		unsigned l = pValueEnd - pValueTop;
-		char *lib = (char *) malloc(l + 1);
-		if (!lib)
+		StringBuf lib = str_copy(pValueTop, pValueEnd - pValueTop);
+		Index<char> buf = xsf_get_lib(lib);
+
+		if (buf.len() &&
+			load_libs(pwork->level + 1, buf.begin(), buf.len()) &&
+			load_psf_one((unsigned char *) buf.begin(), buf.len()))
 		{
-			ret = xsf_tagenum_callback_returnvaluebreak;
+			pwork->found++;
 		}
 		else
 		{
-			void *libbuf;
-			unsigned libsize;
-			memcpy(lib, pValueTop, l);
-			lib[l] = '\0';
-			if (!xsf_get_lib(lib, &libbuf, &libsize))
-			{
-				ret = xsf_tagenum_callback_returnvaluebreak;
-			}
-			else
-			{
-				if (!load_libs(pwork->level + 1, libbuf, libsize) || !load_psf_one((unsigned char *) libbuf, libsize))
-					ret = xsf_tagenum_callback_returnvaluebreak;
-				else
-				{
-					pwork->found++;
-					free(libbuf);
-				}
-			}
-			free(lib);
+			ret = xsf_tagenum_callback_returnvaluebreak;
 		}
 	}
 	return ret;
@@ -268,7 +255,7 @@ static int load_libs(int level, void *pfile, unsigned bytes)
 	int n = 1;
 
 	if (level > 10)
-		return XSF_TRUE;
+		return true;
 
 	work.level = level;
 	work.tag = "_lib";
@@ -279,7 +266,7 @@ static int load_libs(int level, void *pfile, unsigned bytes)
 		work.found = 0;
 
 		if (xsf_tagenum(load_psfcb, &work, (unsigned char *) pfile, bytes) < 0)
-			return XSF_FALSE;
+			return false;
 
 #ifdef HAVE_SPRINTF_S
 		sprintf_s(tbuf, sizeof(tbuf), "_lib%10d", ++n);
@@ -290,7 +277,7 @@ static int load_libs(int level, void *pfile, unsigned bytes)
 	}
 	while (work.found);
 
-	return XSF_TRUE;
+	return true;
 }
 
 static int load_psf(void *pfile, unsigned bytes)
@@ -298,9 +285,9 @@ static int load_psf(void *pfile, unsigned bytes)
 	load_term();
 
 	if (!load_libs(1, pfile, bytes) || !load_psf_one((unsigned char *) pfile, bytes))
-		return XSF_FALSE;
+		return false;
 
-	return XSF_TRUE;
+	return true;
 }
 
 static void load_getstateinit(unsigned ptr)
@@ -424,7 +411,7 @@ static void load_setstate(void)
 	if (!loaderwork.statesize)
 		return;
 
-    /* Skip over "Desmume Save File" crap */
+	/* Skip over "Desmume Save File" crap */
 	load_getstateinit(0x17);
 
 	/* Read ARM7 cpu registers */
@@ -639,7 +626,7 @@ int xsf_start(void *pfile, unsigned bytes)
 	sndifwork.xfs_load = 0;
 	printf("load_psf... ");
 	if (!load_psf(pfile, bytes))
-		return XSF_FALSE;
+		return false;
 	printf("ok!\n");
 
 #ifdef GDB_STUB
@@ -647,7 +634,7 @@ int xsf_start(void *pfile, unsigned bytes)
 #else
 	if (NDS_Init())
 #endif
-		return XSF_FALSE;
+		return false;
 
 	SPU_ChangeSoundCore(VIO2SFSNDIFID, 737);
 
@@ -755,7 +742,7 @@ int xsf_start(void *pfile, unsigned bytes)
 	}
 	execute = true;
 	sndifwork.xfs_load = 1;
-	return XSF_TRUE;
+	return true;
 }
 
 int xsf_gen(void *pbuffer, unsigned samples)

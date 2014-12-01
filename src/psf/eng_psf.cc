@@ -28,7 +28,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <glib.h>
+#include <libaudcore/audstrings.h>
 
 #include "ao.h"
 #include "eng_protos.h"
@@ -70,9 +70,9 @@ extern void setlength(int32_t stop, int32_t fade);
 
 int32_t psf_start(uint8_t *buffer, uint32_t length)
 {
-	uint8_t *file, *lib_decoded, *lib_raw_file, *alib_decoded;
+	uint8_t *file, *lib_decoded, *alib_decoded;
 	uint32_t offset, plength, PC, SP, GP, lengthMS, fadeMS;
-	uint64_t file_len, lib_len, lib_raw_length, alib_len;
+	uint64_t file_len, lib_len, alib_len;
 	corlett_t *lib;
 	int i;
 	union cpuinfo mipsinfo;
@@ -125,28 +125,17 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	// Get the library file, if any
 	if (c->lib[0] != 0)
 	{
-		uint64_t tmp_length;
-
 		#if DEBUG_LOADER
 		printf("Loading library: %s\n", c->lib);
 		#endif
-		if (ao_get_lib(c->lib, &lib_raw_file, &tmp_length) != AO_SUCCESS)
-		{
-			return AO_FAIL;
-		}
-		lib_raw_length = tmp_length;
 
-		if (lib_raw_file == nullptr)
+		Index<char> buf = ao_get_lib(c->lib);
+
+		if (!buf.len())
 			return AO_FAIL;
 
-		if (corlett_decode(lib_raw_file, lib_raw_length, &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
-		{
-			free(lib_raw_file);
+		if (corlett_decode((uint8_t *)buf.begin(), buf.len(), &lib_decoded, &lib_len, &lib) != AO_SUCCESS)
 			return AO_FAIL;
-		}
-
-		// Free up raw file
-		free(lib_raw_file);
 
 		if (strncmp((char *)lib_decoded, "PS-X EXE", 8))
 		{
@@ -221,29 +210,17 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	{
 		if (c->libaux[i][0] != 0)
 		{
-			uint64_t tmp_length;
-
 			#if DEBUG_LOADER
 			printf("Loading aux library: %s\n", c->libaux[i]);
 			#endif
 
-			if (ao_get_lib(c->libaux[i], &lib_raw_file, &tmp_length) != AO_SUCCESS)
-			{
-				return AO_FAIL;
-			}
-			lib_raw_length = tmp_length;
+			Index<char> buf = ao_get_lib(c->libaux[i]);
 
-			if (lib_raw_file == nullptr)
+			if (!buf.len())
 				return AO_FAIL;
 
-			if (corlett_decode(lib_raw_file, lib_raw_length, &alib_decoded, &alib_len, &lib) != AO_SUCCESS)
-			{
-				free(lib_raw_file);
+			if (corlett_decode((uint8_t *)buf.begin(), buf.len(), &alib_decoded, &alib_len, &lib) != AO_SUCCESS)
 				return AO_FAIL;
-			}
-
-			// Free up raw file
-			free(lib_raw_file);
 
 			if (strncmp((char *)alib_decoded, "PS-X EXE", 8))
 			{
@@ -286,7 +263,7 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 		int i;
 		for (i = 0; i < MAX_UNKNOWN_TAGS; i++)
 		{
-			if (!g_ascii_strcasecmp(c->tag_name[i], "psfby"))
+			if (!strcmp_nocase(c->tag_name[i], "psfby"))
 				strcpy(psfby, c->tag_data[i]);
 		}
 	}
@@ -346,16 +323,13 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	// patch illegal Chocobo Dungeon 2 code - CaitSith2 put a jump in the delay slot from a BNE
 	// and rely on Highly Experimental's buggy-ass CPU to rescue them.  Verified on real hardware
 	// that the initial code is wrong.
-	if (c->inf_game)
+	if (!strcmp(c->inf_game, "Chocobo Dungeon 2"))
 	{
-		if (!strcmp(c->inf_game, "Chocobo Dungeon 2"))
+		if (psx_ram[0xbc090/4] == LE32(0x0802f040))
 		{
-			if (psx_ram[0xbc090/4] == LE32(0x0802f040))
-			{
-		 		psx_ram[0xbc090/4] = LE32(0);
-				psx_ram[0xbc094/4] = LE32(0x0802f040);
-				psx_ram[0xbc098/4] = LE32(0);
-			}
+			psx_ram[0xbc090/4] = LE32(0);
+			psx_ram[0xbc094/4] = LE32(0x0802f040);
+			psx_ram[0xbc098/4] = LE32(0);
 		}
 	}
 
@@ -373,14 +347,14 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	return AO_SUCCESS;
 }
 
-int32_t psf_execute(void)
+int32_t psf_execute(void (*update)(const void *, int))
 {
 	int i;
 
 	while (!stop_flag) {
 		for (i = 0; i < 44100 / 60; i++) {
 			psx_hw_slice();
-			SPUasync(384);
+			SPUasync(384, update);
 		}
 
 		psx_hw_frame();

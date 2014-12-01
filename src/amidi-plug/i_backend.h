@@ -21,26 +21,25 @@
 #ifndef _I_BACKEND_H
 #define _I_BACKEND_H 1
 
-struct midievent_s;
+struct midievent_t;
 
 void backend_init (void);
 void backend_cleanup (void);
-void backend_prepare (void);
 void backend_reset (void);
 
 void backend_audio_info (int *, int *, int *);
 void backend_generate_audio (void * buf, int bufsize);
 
-void seq_event_noteon (struct midievent_s *);
-void seq_event_noteoff (struct midievent_s *);
+void seq_event_noteon (midievent_t *);
+void seq_event_noteoff (midievent_t *);
 void seq_event_allnoteoff (int);
-void seq_event_keypress (struct midievent_s *);
-void seq_event_controller (struct midievent_s *);
-void seq_event_pgmchange (struct midievent_s *);
-void seq_event_chanpress (struct midievent_s *);
-void seq_event_pitchbend (struct midievent_s *);
-void seq_event_sysex (struct midievent_s *);
-void seq_event_tempo (struct midievent_s *);
-void seq_event_other (struct midievent_s *);
+void seq_event_keypress (midievent_t *);
+void seq_event_controller (midievent_t *);
+void seq_event_pgmchange (midievent_t *);
+void seq_event_chanpress (midievent_t *);
+void seq_event_pitchbend (midievent_t *);
+void seq_event_sysex (midievent_t *);
+void seq_event_tempo (midievent_t *);
+void seq_event_other (midievent_t *);
 
 #endif /* !_I_BACKEND_H */

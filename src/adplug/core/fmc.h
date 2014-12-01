@@ -28,7 +28,7 @@ class CfmcLoader: public CmodPlayer
 
 		CfmcLoader(Copl *newopl) : CmodPlayer(newopl) { };
 
-		bool	load(VFSFile *fd, const CFileProvider &fp);
+		bool	load(VFSFile &fd, const CFileProvider &fp);
 		float	getrefresh();
 
 		std::string	gettype();
