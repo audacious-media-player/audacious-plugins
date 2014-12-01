@@ -181,18 +181,19 @@ void InfoBar::resizeEvent (QResizeEvent * event)
 {
     QGraphicsView::resizeEvent (event);
 
-    setSceneRect (contentsRect ());
+    QRect rect = contentsRect ();
+    setSceneRect (rect);
 
-    m_art->setPos (m_art->mapFromScene (InfoBar::Spacing, InfoBar::Spacing));
+    m_art->setPos (InfoBar::Spacing, InfoBar::Spacing);
 
     qreal x = InfoBar::IconSize + (InfoBar::Spacing * 1.5);
     qreal y = InfoBar::Spacing / 2;
-    m_title_text->setPos (m_title_text->mapFromScene (x, y));
-    m_artist_text->setPos (m_artist_text->mapFromScene (x, y + (InfoBar::IconSize / 2)));
-    m_album_text->setPos (m_album_text->mapFromScene (x, y + ((InfoBar::IconSize * 3) / 4)));
+    m_title_text->setPos (x, y);
+    m_artist_text->setPos (x, y + (InfoBar::IconSize / 2));
+    m_album_text->setPos (x, y + ((InfoBar::IconSize * 3) / 4));
 
 #ifdef XXX_NOTYET
-    m_vis->setPos (m_vis->mapFromScene ((width () - InfoBar::VisWidth) - (InfoBar::Spacing * 2), 0));
+    m_vis->setPos ((rect.width () - InfoBar::VisWidth) - (InfoBar::Spacing * 2), 0);
 #endif
 }
 
