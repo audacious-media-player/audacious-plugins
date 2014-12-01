@@ -1001,7 +1001,10 @@ AC_ARG_ENABLE(qtglspectrum,
     [enable_qtglspectrum=auto])
 
 have_qtglspectrum=no
-if test "x$enable_qtglspectrum" != "xno"; then
+if test "x$USE_QT" = "xno" -a "x$enable_qtglspectrum" = "xyes"; then
+    AC_MSG_ERROR([--enable-qtglspectrum cannot be used without --enable-qt])
+fi
+if test "x$USE_QT" = "xyes" -a "x$enable_qtglspectrum" != "xno"; then
     PKG_CHECK_MODULES(QTOPENGL, [Qt5OpenGL], [have_qtglspectrum=yes], [have_qtglspectrum=no])
     if test "x$have_qtglspectrum" = "xyes"; then
         QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"
