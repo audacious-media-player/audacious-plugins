@@ -41,6 +41,7 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     setTabBar (m_tabbar);
 
     populatePlaylists ();
+    setCurrentIndex (aud_playlist_get_active ());
 
     connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
 }
