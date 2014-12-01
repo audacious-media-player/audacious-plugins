@@ -134,19 +134,11 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     m_vis (new VisItem)
 #endif
 {
-    QLinearGradient gradient (QPointF (0.0, 0.0), QPointF (0.0, 100.0));
-
-    gradient.setColorAt (0, QColor (64, 64, 64));
-    gradient.setColorAt (0.5, QColor (32, 32, 32));
-    gradient.setColorAt (0.5, QColor (25, 25, 25));
-    gradient.setColorAt (1.0, QColor (0, 0, 0));
-
     setAlignment (Qt::AlignLeft | Qt::AlignTop);
     setScene (m_scene);
     setFixedHeight (InfoBar::Height);
     setCacheMode (QGraphicsView::CacheBackground);
 
-    m_scene->setBackgroundBrush (gradient);
     m_scene->addItem (m_art);
     m_scene->addItem (m_title_text);
     m_scene->addItem (m_album_text);
@@ -183,6 +175,15 @@ void InfoBar::resizeEvent (QResizeEvent * event)
 
     QRect rect = contentsRect ();
     setSceneRect (rect);
+
+    QLinearGradient gradient (0, 0, 0, rect.height ());
+    gradient.setStops ({
+        {0, QColor (64, 64, 64)},
+        {0.499, QColor (38, 38, 38)},
+        {0.5, QColor (26, 26, 26)},
+        {1, QColor (0, 0, 0)}
+    });
+    m_scene->setBackgroundBrush (gradient);
 
     m_art->setPos (InfoBar::Spacing, InfoBar::Spacing);
 
