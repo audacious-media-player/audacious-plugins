@@ -51,7 +51,7 @@ private:
     void update_cb ();
 
     const HookReceiver<AlbumArtItem>
-     hook1 {"playback begin", this, & AlbumArtItem::update_cb},
+     hook1 {"playback ready", this, & AlbumArtItem::update_cb},
      hook2 {"playback stop", this, & AlbumArtItem::update_cb},
      hook3 {"current art ready", this, & AlbumArtItem::update_cb};
 };
