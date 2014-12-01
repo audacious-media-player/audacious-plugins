@@ -62,7 +62,6 @@ public:
     constexpr ModplugXMMS () : InputPlugin (info, iinfo) {}
 
     bool init ();
-    void cleanup ();
 
     bool is_our_file (const char * filename, VFSFile & file);
     Tuple read_tuple (const char * filename, VFSFile & file);

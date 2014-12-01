@@ -25,15 +25,9 @@ using namespace std;
 
 bool ModplugXMMS::init ()
 {
-    mSoundFile = new CSoundFile;
     load_settings ();
     apply_settings ();
     return true;
-}
-
-void ModplugXMMS::cleanup ()
-{
-    delete mSoundFile;
 }
 
 bool ModplugXMMS::is_our_file (const char * filename, VFSFile & file)
@@ -192,16 +186,6 @@ void ModplugXMMS::PlayLoop()
 
         write_audio (mBuffer, mBufSize);
     }
-
-    //Unload the file
-    mSoundFile->Destroy();
-    delete mArchive;
-
-    if (mBuffer)
-    {
-        delete [] mBuffer;
-        mBuffer = nullptr;
-    }
 }
 
 bool ModplugXMMS::play (const char * filename, VFSFile & file)
@@ -214,8 +198,7 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
         return false;
     }
 
-    if (mBuffer)
-        delete [] mBuffer;
+    mSoundFile = new CSoundFile;
 
     //find buftime to get approx. 512 samples/block
     mBufTime = 512000 / mModProps.mFrequency + 1;
@@ -227,8 +210,6 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
     mBufSize *= mModProps.mBits / 8;
 
     mBuffer = new unsigned char[mBufSize];
-    if(!mBuffer)
-        return false;        //out of memory!
 
     CSoundFile::SetWaveConfig
     (
@@ -294,6 +275,13 @@ bool ModplugXMMS::play (const char * filename, VFSFile & file)
     open_audio(fmt, mModProps.mFrequency, mModProps.mChannels);
 
     PlayLoop();
+
+    delete[] mBuffer;
+    mBuffer = nullptr;
+    delete mSoundFile;
+    mSoundFile = nullptr;
+    delete mArchive;
+    mArchive = nullptr;
 
     return true;
 }
