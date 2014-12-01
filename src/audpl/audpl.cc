@@ -133,7 +133,7 @@ bool AudPlaylistLoader::save (const char * path, VFSFile & file,
         {
             int keys = 0;
 
-            for (auto f : Tuple::all_fields)
+            for (auto f : Tuple::all_fields ())
             {
                 if (f == Tuple::Path || f == Tuple::Basename ||
                  f == Tuple::Suffix || f == Tuple::FormattedTitle)
