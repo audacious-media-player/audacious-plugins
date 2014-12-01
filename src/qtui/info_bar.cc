@@ -164,11 +164,11 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
     m_title_text->setFont (f);
 
     f = m_artist_text->font ();
-    f.setPointSize (12);
+    f.setPointSize (9);
     m_artist_text->setFont (f);
 
     f = m_album_text->font ();
-    f.setPointSize (12);
+    f.setPointSize (9);
     m_album_text->setFont (f);
 }
 
