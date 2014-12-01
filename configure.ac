@@ -123,7 +123,7 @@ AC_ARG_ENABLE(qtaudio,
     [enable_qtaudio=auto])
 
 have_qtaudio=no
-if test "x$enable_qtaudio" != "xno"; then
+if test "x$enable_qtaudio" = "xyes" -o \( "x$USE_QT" = "xyes" -a "x$enable_qtaudio" = "xauto" \); then
     PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [have_qtaudio=yes], [have_qtaudio=no])
     if test "x$have_qtaudio" = "xyes"; then
         QTMULTIMEDIA_CFLAGS="$QTMULTIMEDIA_CFLAGS -fPIC"
