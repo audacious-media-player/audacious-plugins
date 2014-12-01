@@ -22,6 +22,7 @@
 */
 
 #include <assert.h>
+#include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -51,12 +52,17 @@ public:
 
     constexpr SIDPlugin() : InputPlugin(info, iinfo) {}
 
-    bool init();
+    bool delayed_init();
     void cleanup();
 
     bool is_our_file(const char *filename, VFSFile &file);
     Tuple read_tuple(const char *filename, VFSFile &file);
     bool play(const char *filename, VFSFile &file);
+
+private:
+    pthread_mutex_t m_init_mutex = PTHREAD_MUTEX_INITIALIZER;
+    bool m_initialized = false;
+    bool m_init_failed = false;
 };
 
 EXPORT SIDPlugin aud_plugin_instance;
@@ -66,13 +72,23 @@ static void xs_get_song_tuple_info(Tuple &pResult, const xs_tuneinfo_t &info, in
 /*
  * Initialization functions
  */
-bool SIDPlugin::init()
+bool SIDPlugin::delayed_init()
 {
-    /* Initialize and get configuration */
-    xs_init_configuration();
+    pthread_mutex_lock(&m_init_mutex);
 
-    /* Try to initialize emulator engine */
-    return xs_sidplayfp_init();
+    if (!m_initialized && !m_init_failed)
+    {
+        /* Initialize and get configuration */
+        xs_init_configuration();
+
+        /* Try to initialize emulator engine */
+        m_initialized = xs_sidplayfp_init();
+        if (!m_initialized)
+            m_init_failed = true;
+    }
+
+    pthread_mutex_unlock(&m_init_mutex);
+    return m_initialized;
 }
 
 
@@ -81,7 +97,13 @@ bool SIDPlugin::init()
  */
 void SIDPlugin::cleanup()
 {
-    xs_sidplayfp_close();
+    if (m_initialized)
+    {
+        xs_sidplayfp_close();
+        m_initialized = false;
+    }
+
+    m_init_failed = false;
 }
 
 
@@ -94,6 +116,7 @@ bool SIDPlugin::is_our_file(const char *filename, VFSFile &file)
     if (file.fread (buf, 1, 4) != 4)
         return false;
 
+    // does not require xs_sidplayfp_init()
     return xs_sidplayfp_probe(buf, 4);
 }
 
@@ -103,6 +126,9 @@ bool SIDPlugin::is_our_file(const char *filename, VFSFile &file)
  */
 bool SIDPlugin::play(const char *filename, VFSFile &file)
 {
+    if (!delayed_init())
+        return false;
+
     /* Load file */
     Index<char> buf = file.read_all ();
     if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
@@ -267,6 +293,10 @@ static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
 Tuple SIDPlugin::read_tuple(const char *filename, VFSFile &file)
 {
     Tuple tuple;
+
+    if (!delayed_init())
+        return tuple;
+
     xs_tuneinfo_t info;
     int tune = -1;
 
