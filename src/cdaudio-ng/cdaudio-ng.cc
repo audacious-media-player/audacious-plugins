@@ -58,7 +58,7 @@
 #define MAX_RETRIES 10
 #define MAX_SKIPS 10
 
-static const char * const cdaudio_schemes[] = {"cdda"};
+static const char * const cdaudio_schemes[] = {"cdda", nullptr};
 
 class CDAudio : public InputPlugin
 {
