@@ -46,7 +46,7 @@ MainWindow::MainWindow () :
     playlistTabs (new PlaylistTabs (this)),
     infoBar (new InfoBar (this)),
     centralWidget (new QWidget (this)),
-    centralLayout (new QVBoxLayout (this))
+    centralLayout (new QVBoxLayout (centralWidget))
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
@@ -94,8 +94,6 @@ MainWindow::MainWindow () :
 
     centralLayout->setContentsMargins (0, 0, 0, 0);
     centralLayout->setSpacing (4);
-
-    centralWidget->setLayout (centralLayout);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
