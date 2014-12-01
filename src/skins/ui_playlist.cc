@@ -995,12 +995,12 @@ void action_playlist_remove_unselected (void)
 void action_playlist_copy (void)
 {
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    StringBuf list = audgui_urilist_create_from_selected (active_playlist);
+    Index<char> list = audgui_urilist_create_from_selected (active_playlist);
 
-    if (list == nullptr)
+    if (! list.len ())
         return;
 
-    gtk_clipboard_set_text (clip, list, -1);
+    gtk_clipboard_set_text (clip, list.begin (), list.len ());
 }
 
 void action_playlist_cut (void)
