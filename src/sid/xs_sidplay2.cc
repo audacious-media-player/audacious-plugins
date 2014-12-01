@@ -27,6 +27,7 @@
 #include "xs_config.h"
 #include "xs_sidplay2.h"
 
+#include <pthread.h>
 #include <string.h>
 
 #include <sidplayfp/sidplayfp.h>
