@@ -349,8 +349,10 @@ Tuple ModplugXMMS::read_tuple (const char * filename, VFSFile & file)
 
     const char *tmps2 = lSoundFile->GetTitle();
     // Chop any leading spaces off. They are annoying in the playlist.
-    while ( *tmps2 == ' ' ) tmps2++ ;
-    ti.set_str (Tuple::Title, tmps2);
+    while (tmps2[0] == ' ')
+        tmps2++;
+    if (tmps2[0])
+        ti.set_str(Tuple::Title, tmps2);
 
     //unload the file
     lSoundFile->Destroy();
