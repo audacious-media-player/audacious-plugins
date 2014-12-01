@@ -323,8 +323,6 @@ bool AdPlugXMMS::init ()
 
   // Load database from disk and hand it to AdPlug
   dbg_printf ("database");
-  plr.db = new CAdPlugDatabase;
-
   {
     const char *homedir = getenv ("HOME");
 
@@ -335,12 +333,13 @@ bool AdPlugXMMS::init ()
 
       if (VFSFile::test_file (userdb.c_str (), VFS_EXISTS))
       {
+        plr.db = new CAdPlugDatabase;
         plr.db->load (userdb);    // load user's database
         dbg_printf (" (userdb=\"%s\")", userdb.c_str());
+        CAdPlug::set_database (plr.db);
       }
     }
   }
-  CAdPlug::set_database (plr.db);
   dbg_printf (".\n");
 
   return true;
