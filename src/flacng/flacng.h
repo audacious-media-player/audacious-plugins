@@ -71,13 +71,13 @@ struct callback_info
     VFSFile *fd = nullptr;
     int bitrate = 0;
 
-    callback_info ()
+    void alloc()
     {
         output_buffer.resize(BUFFER_SIZE_SAMP);
         reset();
     }
 
-    void reset ()
+    void reset()
     {
         buffer_used = 0;
         write_pointer = output_buffer.begin();
