@@ -60,6 +60,8 @@ public:
         { i_fileinfo_gui (filename, file); return true; }
 
 protected:
+    bool m_backend_initialized = false;
+
     static bool audio_init ();
     static void audio_generate (double seconds);
     static void audio_cleanup ();
@@ -75,7 +77,11 @@ const char * const AMIDIPlug::exts[] = {"mid", "midi", "rmi", "rmid", nullptr};
 
 void AMIDIPlug::cleanup ()
 {
-    backend_cleanup ();
+    if (m_backend_initialized)
+    {
+        backend_cleanup ();
+        m_backend_initialized = false;
+    }
 }
 
 bool AMIDIPlug::init ()
@@ -95,8 +101,6 @@ bool AMIDIPlug::init ()
     };
 
     aud_config_set_defaults ("amidiplug", defaults);
-
-    backend_init ();
 
     return true;
 }
@@ -192,11 +196,18 @@ void AMIDIPlug::audio_cleanup ()
 
 bool AMIDIPlug::play (const char * filename, VFSFile & file)
 {
-    if (__sync_bool_compare_and_swap (& backend_settings_changed, true, false))
+    if (__sync_bool_compare_and_swap (& backend_settings_changed, true, false)
+     && m_backend_initialized)
     {
         AUDDBG ("Settings changed, reinitializing backend\n");
         backend_cleanup ();
+        m_backend_initialized = false;
+    }
+
+    if (! m_backend_initialized)
+    {
         backend_init ();
+        m_backend_initialized = true;
     }
 
     if (! audio_init ())
@@ -229,8 +240,6 @@ void AMIDIPlug::play_loop (midifile_t & midifile)
 {
     int tick = midifile.start_tick;
     bool stopped = false;
-
-    backend_prepare ();
 
     /* initialize current position in each track */
     for (midifile_track_t & track : midifile.tracks)
