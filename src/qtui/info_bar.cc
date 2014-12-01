@@ -181,8 +181,7 @@ void InfoBar::resizeEvent (QResizeEvent * event)
 {
     QGraphicsView::resizeEvent (event);
 
-    QRect rect = contentsRect ();
-    setSceneRect (rect.x (), rect.y (), rect.width (), rect.height ());
+    setSceneRect (contentsRect ());
 
     m_art->setPos (m_art->mapFromScene (InfoBar::Spacing, InfoBar::Spacing));
 
