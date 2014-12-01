@@ -179,31 +179,31 @@ StringBuf ayemu_vtx_t::sprintname (const char *fmt)
     if (*fmt == '%') {
       switch(*++fmt) {
       case 'a':
-        str_insert(buf, -1, hdr.author);
+        buf.insert(-1, hdr.author);
         break;
       case 't':
-        str_insert(buf, -1, hdr.title);
+        buf.insert(-1, hdr.title);
         break;
       case 'y':
         buf.combine(int_to_str(hdr.year));
         break;
       case 'f':
-        str_insert(buf, -1, hdr.from);
+        buf.insert(-1, hdr.from);
         break;
       case 'T':
-        str_insert(buf, -1, hdr.tracker);
+        buf.insert(-1, hdr.tracker);
         break;
       case 'C':
-        str_insert(buf, -1, hdr.comment);
+        buf.insert(-1, hdr.comment);
         break;
       case 's':
-        str_insert(buf, -1, stereo_types[hdr.stereo]);
+        buf.insert(-1, stereo_types[hdr.stereo]);
         break;
       case 'l':
-        str_insert(buf, -1, (hdr.loop)? "looped" : "non-looped" );
+        buf.insert(-1, (hdr.loop)? "looped" : "non-looped" );
         break;
       case 'c':
-        str_insert(buf, -1, (hdr.chiptype == AYEMU_AY)? "AY" : "YM" );
+        buf.insert(-1, (hdr.chiptype == AYEMU_AY)? "AY" : "YM" );
         break;
       case 'F':
         buf.combine(int_to_str(hdr.chipFreq));
@@ -212,7 +212,7 @@ StringBuf ayemu_vtx_t::sprintname (const char *fmt)
         buf.combine(int_to_str(hdr.playerFreq));
         break;
       default:
-        str_insert(buf, -1, fmt, 1);
+        buf.insert(-1, fmt, 1);
       }
       fmt++;
     } else {
@@ -220,7 +220,7 @@ StringBuf ayemu_vtx_t::sprintname (const char *fmt)
       if (!p)
         p = fmt + strlen(fmt);
 
-      str_insert(buf, -1, fmt, p - fmt);
+      buf.insert(-1, fmt, p - fmt);
       fmt = p;
     }
   }

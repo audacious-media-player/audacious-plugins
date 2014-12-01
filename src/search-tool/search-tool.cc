@@ -326,7 +326,7 @@ static void begin_add (const char * path)
     g_return_if_fail (uri);
 
     if (! g_str_has_suffix (uri, "/"))
-        str_insert (uri, -1, "/");
+        uri.insert (-1, "/");
 
     added_table.clear ();
 
@@ -396,7 +396,7 @@ static int search_timeout (void * unused = nullptr)
 
     if (hidden_items)
     {
-        str_insert (stats, -1, " ");
+        stats.insert (-1, " ");
         stats.combine (str_printf (dngettext (PACKAGE, "(%d hidden)",
          "(%d hidden)", hidden_items), hidden_items));
     }
@@ -590,23 +590,23 @@ static void list_get_value (void * user, int row, int column, GValue * value)
 
     if (item->field != SearchField::Title)
     {
-        str_insert (string, -1, " ");
+        string.insert (-1, " ");
         string.combine (str_printf (dngettext (PACKAGE, "%d song", "%d songs",
          item->matches.len ()), item->matches.len ()));
     }
 
     if (item->field == SearchField::Genre)
     {
-        str_insert (string, -1, " ");
-        str_insert (string, -1, _("of this genre"));
+        string.insert (-1, " ");
+        string.insert (-1, _("of this genre"));
     }
 
     while ((item = item->parent))
     {
-        str_insert (string, -1, " ");
-        str_insert (string, -1, (item->field == SearchField::Album) ? _("on") : _("by"));
-        str_insert (string, -1, " ");
-        str_insert (string, -1, item->name);
+        string.insert (-1, " ");
+        string.insert (-1, (item->field == SearchField::Album) ? _("on") : _("by"));
+        string.insert (-1, " ");
+        string.insert (-1, item->name);
     }
 
     g_value_set_string (value, string);
