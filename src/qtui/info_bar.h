@@ -88,7 +88,7 @@ private:
 
     const HookReceiver<InfoBar>
      hook1 {"tuple change", this, & InfoBar::update_metadata_cb},
-     hook2 {"playback begin", this, & InfoBar::update_metadata_cb};
+     hook2 {"playback ready", this, & InfoBar::update_metadata_cb};
 };
 
 #endif
