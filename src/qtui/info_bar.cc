@@ -157,7 +157,7 @@ InfoBar::InfoBar (QWidget * parent) : QGraphicsView (parent),
 
     m_title_text->setDefaultTextColor (QColor (255, 255, 255));
     m_artist_text->setDefaultTextColor (QColor (255, 255, 255));
-    m_album_text->setDefaultTextColor (QColor (128, 128, 128));
+    m_album_text->setDefaultTextColor (QColor (179, 179, 179));
 
     QFont f = m_title_text->font ();
     f.setPointSize (18);
