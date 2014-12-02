@@ -27,7 +27,7 @@ class FilterInput : public QLineEdit
     Q_OBJECT
 
 public:
-    FilterInput (QWidget * parent = 0);
+    FilterInput (QWidget * parent = nullptr);
 
 protected:
     virtual void keyPressEvent (QKeyEvent * e); /* override default handler */

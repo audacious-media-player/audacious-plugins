@@ -37,7 +37,7 @@ class PlaylistTabs : public QTabWidget
     Q_OBJECT
 
 public:
-    PlaylistTabs (QWidget * parent = 0);
+    PlaylistTabs (QWidget * parent = nullptr);
     ~PlaylistTabs ();
     PlaylistWidget * playlistWidget (int num);
     PlaylistWidget * activePlaylistWidget ();
@@ -78,7 +78,7 @@ class PlaylistTabBar : public QTabBar
     Q_OBJECT
 
 public:
-    PlaylistTabBar (QWidget * parent = 0);
+    PlaylistTabBar (QWidget * parent = nullptr);
 
 public slots:
     void handleCloseRequest (int idx);
