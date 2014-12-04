@@ -34,6 +34,8 @@ LOCALES = be.po \
 	  lt.po \
 	  lv.po \
 	  ml_IN.po \
+	  ms.po \
+	  nl.po \
 	  pl.po \
 	  pt_BR.po \
 	  pt_PT.po \
@@ -42,6 +44,7 @@ LOCALES = be.po \
 	  sk.po \
 	  sr.po \
 	  sr_RS.po \
+	  sv.po \
 	  ta.po \
 	  tr.po \
 	  uk.po \

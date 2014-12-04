@@ -3,60 +3,45 @@
 # This file is distributed under the same license as the Audacious Plugins package.
 #
 # Translators:
+# Ruei-Yuan Lu <rueiyuan.lu@gmail.com>, 2014
 # Ruei-Yuan Lu <RueiYuan.Lu@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Audacious Plugins\n"
 "Report-Msgid-Bugs-To: http://redmine.audacious-media-player.org/\n"
-"POT-Creation-Date: 2014-03-23 21:24+0100\n"
-"PO-Revision-Date: 2014-03-27 10:04+0800\n"
-"Last-Translator: 盧瑞元 (Ruei-Yuan Lu) <RueiYuan.Lu@gmail.com>\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/audacious/language/zh_TW/)\n"
+"POT-Creation-Date: 2014-12-04 18:18+0100\n"
+"PO-Revision-Date: 2014-12-01 19:59+0000\n"
+"Last-Translator: Thomas Lange <thomas-lange2@gmx.de>\n"
+"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/"
+"audacious/language/zh_TW/)\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/aac/libmp4.c:99
-#: src/gtkui/ui_statusbar.c:82
-msgid "mono"
-msgstr "單聲道"
-
-#: src/aac/libmp4.c:99
-#: src/gtkui/ui_statusbar.c:84
-msgid "stereo"
-msgstr "立體聲"
-
-#: src/aac/libmp4.c:99
-msgid "surround"
-msgstr "環繞"
-
-#: src/aac/libmp4.c:314
-msgid "AAC (MP4) Decoder"
-msgstr "AAC (MP4) 解碼器"
-
-#: src/aac-raw/aac.c:476
+#: src/aac-raw/aac.cc:18
 msgid "AAC (Raw) Decoder"
 msgstr "AAC (Raw) 解碼器"
 
-#: src/adplug/adplug-xmms.cc:137
-#: src/modplug/modplugbmp.cxx:348
-#: src/psf/plugin.c:122
-#: src/vtx/vtx.c:62
-#: src/xsf/plugin.c:80
-msgid "sequenced"
-msgstr "編曲機"
-
-#: src/adplug/plugin.c:14
+#: src/adplug/adplug-xmms.cc:42
 msgid "AdPlug (AdLib Player)"
 msgstr "AdPlug (AdLib 播放器)"
 
-#: src/alarm/alarm.c:778
+#: src/adplug/adplug-xmms.cc:156 src/modplug/modplugbmp.cc:335
+#: src/psf/plugin.cc:138 src/vtx/vtx.cc:87 src/xsf/plugin.cc:113
+msgid "sequenced"
+msgstr "編曲機"
+
+#: src/alarm/alarm.cc:55 src/alarm/interface.cc:82
+msgid "Alarm"
+msgstr "鬧鐘"
+
+#: src/alarm/alarm.cc:782
 msgid "Set Alarm ..."
 msgstr "設定鬧鐘 ..."
 
-#: src/alarm/alarm.c:806
+#: src/alarm/alarm.cc:810
 msgid ""
 "A plugin that can be used to start playing at a certain time.\n"
 "\n"
@@ -66,12 +51,7 @@ msgstr ""
 "\n"
 "Originally written by Adam Feakin and Daniel Stodden."
 
-#: src/alarm/alarm.c:811
-#: src/alarm/interface.c:86
-msgid "Alarm"
-msgstr "鬧鐘"
-
-#: src/alarm/interface.c:32
+#: src/alarm/interface.cc:28
 msgid ""
 "Time\n"
 "  Alarm at:\n"
@@ -112,7 +92,7 @@ msgstr ""
 "\n"
 "\n"
 
-#: src/alarm/interface.c:49
+#: src/alarm/interface.cc:45
 msgid ""
 "Volume\n"
 "  Fading:\n"
@@ -152,7 +132,7 @@ msgstr ""
 "    鬧鐘觸發時執行這個指令。\n"
 "\n"
 
-#: src/alarm/interface.c:66
+#: src/alarm/interface.cc:62
 msgid ""
 "  Playlist:\n"
 "    Load this playlist. If no playlist\n"
@@ -176,400 +156,367 @@ msgstr ""
 "    若您希望它被顯示，請勾選並在欄\n"
 "    位中輸入訊息。"
 
-#: src/alarm/interface.c:85
+#: src/alarm/interface.cc:81
 msgid "This is your wakeup call."
 msgstr "這是您的喚醒。"
 
-#: src/alarm/interface.c:103
+#: src/alarm/interface.cc:99
 msgid "Your reminder for today is..."
 msgstr "您今天的提醒"
 
-#: src/alarm/interface.c:105
-#: src/alarm/interface.c:417
+#: src/alarm/interface.cc:101 src/alarm/interface.cc:386
 msgid "Reminder"
 msgstr "提醒"
 
-#: src/alarm/interface.c:144
+#: src/alarm/interface.cc:132
 msgid "Monday"
 msgstr "星期一"
 
-#: src/alarm/interface.c:144
+#: src/alarm/interface.cc:132
 msgid "Tuesday"
 msgstr "星期二"
 
-#: src/alarm/interface.c:144
+#: src/alarm/interface.cc:132
 msgid "Wednesday"
 msgstr "星期三"
 
-#: src/alarm/interface.c:145
+#: src/alarm/interface.cc:133
 msgid "Thursday"
 msgstr "星期四"
 
-#: src/alarm/interface.c:145
+#: src/alarm/interface.cc:133
 msgid "Friday"
 msgstr "星期五"
 
-#: src/alarm/interface.c:145
+#: src/alarm/interface.cc:133
 msgid "Saturday"
 msgstr "星期六"
 
-#: src/alarm/interface.c:145
+#: src/alarm/interface.cc:133
 msgid "Sunday"
 msgstr "星期日"
 
-#: src/alarm/interface.c:179
-msgid "Alarm Settings"
-msgstr "鬧鐘設定"
-
-#: src/alarm/interface.c:180
-#: src/filewriter/mp3.c:690
-msgid "_OK"
-msgstr "確認(_O)"
-
-#: src/alarm/interface.c:180
-#: src/amidi-plug/i_configure-fluidsynth.c:53
-#: src/aosd/aosd_ui.c:930
-#: src/filewriter/mp3.c:690
-#: src/hotkey/gui.c:486
-msgid "_Cancel"
-msgstr "取消(_C)"
-
-#: src/alarm/interface.c:188
-#: src/alarm/interface.c:252
-#: src/alarm/interface.c:267
+#: src/alarm/interface.cc:171 src/alarm/interface.cc:230
+#: src/alarm/interface.cc:245
 msgid "Time"
 msgstr "時間"
 
-#: src/alarm/interface.c:195
+#: src/alarm/interface.cc:178
 msgid "Alarm at (default):"
 msgstr "鈴響於 (預設)"
 
-#: src/alarm/interface.c:218
+#: src/alarm/interface.cc:200
 msgid "h"
 msgstr "h"
 
-#: src/alarm/interface.c:222
+#: src/alarm/interface.cc:203
 msgid "Quiet after:"
 msgstr "多久後靜音："
 
-#: src/alarm/interface.c:236
+#: src/alarm/interface.cc:215
 msgid "hours"
 msgstr "小時"
 
-#: src/alarm/interface.c:248
+#: src/alarm/interface.cc:226
 msgid "minutes"
 msgstr "分鐘"
 
-#: src/alarm/interface.c:257
+#: src/alarm/interface.cc:235
 msgid "Choose the days for the alarm to come on"
 msgstr "選擇想要在哪幾天啟用鬧鐘"
 
-#: src/alarm/interface.c:264
+#: src/alarm/interface.cc:242
 msgid "Day"
 msgstr "哪幾天"
 
-#: src/alarm/interface.c:282
-#: src/bs2b/plugin.c:168
-#: src/skins/preset-list.c:439
-#: src/skins/preset-list.c:445
+#: src/alarm/interface.cc:259 src/bs2b/plugin.cc:130
+#: src/skins/preset-list.cc:433 src/skins/preset-list.cc:439
 msgid "Default"
 msgstr "預設"
 
-#: src/alarm/interface.c:312
+#: src/alarm/interface.cc:288
 msgid "Days"
 msgstr "週排程"
 
-#: src/alarm/interface.c:321
+#: src/alarm/interface.cc:297
 msgid "Fading"
 msgstr "淡出"
 
-#: src/alarm/interface.c:329
-#: src/console/plugin.c:41
-#: src/crossfade/crossfade.c:263
-#: src/gtkui/settings.c:53
-#: src/lirc/lirc.c:395
+#: src/alarm/interface.cc:305 src/console/plugin.cc:41
+#: src/crossfade/crossfade.cc:53 src/crossfade/crossfade.cc:59
+#: src/gtkui/settings.cc:49 src/lirc/lirc.cc:397 src/sid/xs_config.cc:85
+#: src/sid/xs_config.cc:94 src/sid/xs_config.cc:103
 msgid "seconds"
 msgstr "秒"
 
-#: src/alarm/interface.c:336
-#: src/alarm/interface.c:383
+#: src/alarm/interface.cc:312 src/alarm/interface.cc:353
 msgid "Volume"
 msgstr "音量"
 
-#: src/alarm/interface.c:341
+#: src/alarm/interface.cc:317
 msgid "Start at"
 msgstr "初始音量"
 
-#: src/alarm/interface.c:359
+#: src/alarm/interface.cc:333
 msgid "Final"
 msgstr "最終音量"
 
-#: src/alarm/interface.c:374
+#: src/alarm/interface.cc:346
 msgid "Current"
 msgstr "目前音量"
 
-#: src/alarm/interface.c:389
+#: src/alarm/interface.cc:359
 msgid "Additional Command"
 msgstr "額外命令"
 
-#: src/alarm/interface.c:395
-#: src/alarm/interface.c:422
+#: src/alarm/interface.cc:365 src/alarm/interface.cc:391
 msgid "enable"
 msgstr "啟用"
 
-#: src/alarm/interface.c:402
+#: src/alarm/interface.cc:372
 msgid "Playlist (optional)"
 msgstr "播放清單 (選用)"
 
-#: src/alarm/interface.c:409
+#: src/alarm/interface.cc:379
 msgid "Select a playlist"
 msgstr "請選擇播放清單"
 
-#: src/alarm/interface.c:430
+#: src/alarm/interface.cc:399
 msgid "Options"
 msgstr "選項"
 
-#: src/alarm/interface.c:435
+#: src/alarm/interface.cc:404
 msgid "What do these options mean?"
 msgstr "這些選項代表什麼意思？"
 
-#: src/alarm/interface.c:449
+#: src/alarm/interface.cc:420
 msgid "Help"
 msgstr "說明"
 
-#: src/albumart/albumart.c:72
+#: src/albumart/albumart.cc:31
 msgid "Album Art"
 msgstr "專輯封面"
 
-#: src/alsa/config.c:210
-msgid "Default PCM device"
-msgstr "預設 PCM 裝置"
-
-#: src/alsa/config.c:239
-msgid "Default mixer device"
-msgstr "預設混音器裝置"
-
-#: src/alsa/config.c:428
-msgid "PCM device:"
-msgstr "PCM 裝置："
-
-#: src/alsa/config.c:430
-msgid "Mixer device:"
-msgstr "混音器裝置："
-
-#: src/alsa/config.c:432
-msgid "Mixer element:"
-msgstr "混音器元件："
-
-#: src/alsa/config.c:435
-msgid "Work around drain hangup"
-msgstr "處理欠載鎖死"
-
-#: src/alsa/plugin.c:27
-msgid ""
-"ALSA Output Plugin for Audacious\n"
-"Copyright 2009-2012 John Lindgren\n"
-"\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
+#: src/albumart-qt/albumart.cc:33
+msgid "Album Art (Qt)"
 msgstr ""
-"ALSA Output Plugin for Audacious\n"
-"Copyright 2009-2012 John Lindgren\n"
-"\n"
-"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose code served as a reference when the ALSA manual was not enough."
 
-#: src/alsa/plugin.c:41
+#: src/alsa/alsa.h:70
 msgid "ALSA Output"
 msgstr "ALSA 輸出"
 
-#: src/amidi-plug/amidi-plug.c:466
+#: src/alsa/config.cc:28
+msgid ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
+msgstr ""
+"ALSA Output Plugin for Audacious\n"
+"Copyright 2009-2012 John Lindgren\n"
+"\n"
+"My thanks to William Pitcock, author of the ALSA Output Plugin NG, whose "
+"code served as a reference when the ALSA manual was not enough."
+
+#: src/alsa/config.cc:165
+msgid "Default PCM device"
+msgstr "預設 PCM 裝置"
+
+#: src/alsa/config.cc:187
+msgid "Default mixer device"
+msgstr "預設混音器裝置"
+
+#: src/alsa/config.cc:295
+msgid "PCM device:"
+msgstr "PCM 裝置："
+
+#: src/alsa/config.cc:298
+msgid "Mixer device:"
+msgstr "混音器裝置："
+
+#: src/alsa/config.cc:301
+msgid "Mixer element:"
+msgstr "混音器元件："
+
+#: src/amidi-plug/amidi-plug.cc:41
 msgid "AMIDI-Plug (MIDI Player)"
 msgstr "AMIDI-Plug (MIDI 播放器)"
 
-#: src/amidi-plug/i_configure.c:96
+#: src/amidi-plug/amidi-plug.cc:436
+msgid ""
+"AMIDI-Plug\n"
+"modular MIDI music player\n"
+"http://www.develia.org/projects.php?p=amidiplug\n"
+"\n"
+"written by Giacomo Lozito\n"
+"<james@develia.org>\n"
+"\n"
+"special thanks to...\n"
+"\n"
+"Clemens Ladisch and Jaroslav Kysela\n"
+"for their cool programs aplaymidi and amixer; those\n"
+"were really useful, along with alsa-lib docs, in order\n"
+"to learn more about the ALSA API\n"
+"\n"
+"Alfredo Spadafina\n"
+"for the nice midi keyboard logo\n"
+"\n"
+"Tony Vroon\n"
+"for the good help with alpha testing"
+msgstr ""
+
+#: src/amidi-plug/i_configure.cc:94
 msgid "Override default gain:"
 msgstr "覆載預設的增益值："
 
-#: src/amidi-plug/i_configure.c:102
+#: src/amidi-plug/i_configure.cc:102
 msgid "Override default polyphony:"
 msgstr "覆載預設的同時發音數："
 
-#: src/amidi-plug/i_configure.c:108
+#: src/amidi-plug/i_configure.cc:110
 msgid "Override default reverb:"
 msgstr "覆載預設的殘響強度："
 
-#: src/amidi-plug/i_configure.c:110
-#: src/amidi-plug/i_configure.c:116
+#: src/amidi-plug/i_configure.cc:112 src/amidi-plug/i_configure.cc:120
 msgid "On"
 msgstr "啟用"
 
-#: src/amidi-plug/i_configure.c:114
+#: src/amidi-plug/i_configure.cc:118
 msgid "Override default chorus:"
 msgstr "覆載預設和聲強度："
 
-#: src/amidi-plug/i_configure.c:122
-#: src/console/plugin.c:33
+#: src/amidi-plug/i_configure.cc:128 src/console/plugin.cc:29
 msgid "<b>Playback</b>"
 msgstr "<b>播放</b>"
 
-#: src/amidi-plug/i_configure.c:123
+#: src/amidi-plug/i_configure.cc:129
 msgid "Transpose:"
 msgstr "移調："
 
-#: src/amidi-plug/i_configure.c:125
+#: src/amidi-plug/i_configure.cc:131
+msgid "semitones"
+msgstr ""
+
+#: src/amidi-plug/i_configure.cc:132
 msgid "Drum shift:"
 msgstr "鼓移："
 
-#: src/amidi-plug/i_configure.c:127
-msgid "<b>Advanced</b>"
-msgstr "<b>進階</b>"
+#: src/amidi-plug/i_configure.cc:134
+msgid "note numbers"
+msgstr ""
 
-#: src/amidi-plug/i_configure.c:128
-msgid "Extract comments from MIDI file"
-msgstr "抽取 MIDI 檔的備註資料"
+#: src/amidi-plug/i_configure.cc:135
+msgid "Skip leading silence"
+msgstr ""
 
-#: src/amidi-plug/i_configure.c:130
-msgid "Extract lyrics from MIDI file"
-msgstr "抽取 MIDI 檔的歌詞資料"
+#: src/amidi-plug/i_configure.cc:137
+msgid "Skip trailing silence"
+msgstr ""
 
-#: src/amidi-plug/i_configure.c:134
+#: src/amidi-plug/i_configure.cc:141
 msgid "<b>SoundFont</b>"
 msgstr "<b>SoundFont</b>"
 
-#: src/amidi-plug/i_configure.c:136
+#: src/amidi-plug/i_configure.cc:143
 msgid "<b>Synthesizer</b>"
 msgstr "<b>合成器</b>"
 
-#: src/amidi-plug/i_configure.c:141
-msgid "Sampling rate:"
-msgstr "取樣率："
+#: src/amidi-plug/i_configure.cc:148 src/console/plugin.cc:45
+#: src/sid/xs_config.cc:65
+msgid "Sample rate:"
+msgstr ""
 
-#: src/amidi-plug/i_configure-fluidsynth.c:50
+#: src/amidi-plug/i_configure.cc:150 src/bs2b/plugin.cc:141
+#: src/console/plugin.cc:47 src/modplug/plugin_main.cc:78
+#: src/resample/resample.cc:201 src/resample/resample.cc:207
+#: src/resample/resample.cc:211 src/resample/resample.cc:215
+#: src/resample/resample.cc:219 src/resample/resample.cc:223
+#: src/resample/resample.cc:227 src/resample/resample.cc:231
+#: src/resample/resample.cc:235 src/resample/resample.cc:239
+#: src/resample/resample.cc:243 src/sid/xs_config.cc:67
+#: src/sox-resampler/sox-resampler.cc:163
+msgid "Hz"
+msgstr "Hz"
+
+#: src/amidi-plug/i_configure-fluidsynth.cc:52
 msgid "AMIDI-Plug - select SoundFont file"
 msgstr "AMIDI-Plug - 選擇 SoundFont 檔案"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:54
+#: src/amidi-plug/i_configure-fluidsynth.cc:55 src/filewriter/mp3.cc:658
+msgid "_Cancel"
+msgstr "取消(_C)"
+
+#: src/amidi-plug/i_configure-fluidsynth.cc:56
 msgid "_Open"
 msgstr "開啟(_O)"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:225
-msgid "Filename"
+#: src/amidi-plug/i_configure-fluidsynth.cc:225 src/gtkui/columns.cc:46
+msgid "File name"
 msgstr "檔案名稱"
 
-#: src/amidi-plug/i_configure-fluidsynth.c:229
+#: src/amidi-plug/i_configure-fluidsynth.cc:229
 msgid "Size (bytes)"
 msgstr "大小 (位元組)"
 
-#: src/amidi-plug/i_fileinfo.c:176
+#: src/amidi-plug/i_fileinfo.cc:163
 msgid "Name:"
 msgstr "名稱："
 
-#: src/amidi-plug/i_fileinfo.c:203
+#: src/amidi-plug/i_fileinfo.cc:181
 msgid "<span size=\"smaller\"> MIDI Info </span>"
 msgstr "<span size=\"smaller\"> MIDI 資訊 </span>"
 
-#: src/amidi-plug/i_fileinfo.c:217
+#: src/amidi-plug/i_fileinfo.cc:195
 msgid "Format:"
 msgstr "格式："
 
-#: src/amidi-plug/i_fileinfo.c:220
+#: src/amidi-plug/i_fileinfo.cc:198
 msgid "Length (msec):"
 msgstr "長度 (毫秒)："
 
-#: src/amidi-plug/i_fileinfo.c:223
+#: src/amidi-plug/i_fileinfo.cc:201
 msgid "No. of Tracks:"
 msgstr "音軌編號："
 
-#: src/amidi-plug/i_fileinfo.c:229
+#: src/amidi-plug/i_fileinfo.cc:207
 msgid "variable"
 msgstr "變動的"
 
-#: src/amidi-plug/i_fileinfo.c:231
+#: src/amidi-plug/i_fileinfo.cc:209
 msgid "BPM:"
 msgstr "BPM："
 
-#: src/amidi-plug/i_fileinfo.c:239
+#: src/amidi-plug/i_fileinfo.cc:217
 msgid "BPM (wavg):"
 msgstr "BPM (wavg)："
 
-#: src/amidi-plug/i_fileinfo.c:242
+#: src/amidi-plug/i_fileinfo.cc:220
 msgid "Time Div:"
 msgstr "時間分割："
 
-#: src/amidi-plug/i_fileinfo.c:253
+#: src/amidi-plug/i_fileinfo.cc:231
 msgid "<span size=\"smaller\"> MIDI Comments and Lyrics </span>"
 msgstr "<span size=\"smaller\"> MIDI 備註與歌詞 </span>"
 
-#: src/amidi-plug/i_fileinfo.c:302
+#: src/amidi-plug/i_fileinfo.cc:278
 msgid "* no comments available in this MIDI file *"
 msgstr "* 這個 MIDI 檔不包含備註資料 *"
 
-#: src/amidi-plug/i_fileinfo.c:314
+#: src/amidi-plug/i_fileinfo.cc:290
 msgid "* no lyrics available in this MIDI file *"
 msgstr "* 這個 MIDI 檔不包含歌詞資料 *"
 
-#: src/amidi-plug/i_fileinfo.c:341
-#: src/amidi-plug/i_utils.c:40
-#: src/filewriter/vorbis.c:210
-#: src/ladspa/plugin.c:521
-#: src/ladspa/plugin.c:588
+#: src/amidi-plug/i_fileinfo.cc:300 src/filewriter/vorbis.cc:197
+#: src/ladspa/plugin.cc:416
 msgid "_Close"
 msgstr "關閉(_C)"
 
-#: src/amidi-plug/i_fileinfo.c:366
+#: src/amidi-plug/i_fileinfo.cc:325
 msgid "  (invalid UTF-8)"
 msgstr "  (無效的 UTF-8 字串)"
 
-#: src/amidi-plug/i_utils.c:39
-msgid "About AMIDI-Plug"
-msgstr "關於 AMIDI-Plug"
-
-#: src/amidi-plug/i_utils.c:53
-msgid "AMIDI-Plug"
-msgstr "AMIDI-Plug"
-
-#: src/amidi-plug/i_utils.c:54
-msgid ""
-"\n"
-"modular MIDI music player\n"
-"http://www.develia.org/projects.php?p=amidiplug\n"
-"\n"
-"written by Giacomo Lozito\n"
-"<james@develia.org>\n"
-"\n"
-"special thanks to...\n"
-"\n"
-"Clemens Ladisch and Jaroslav Kysela\n"
-"for their cool programs aplaymidi and amixer; those\n"
-"were really useful, along with alsa-lib docs, in order\n"
-"to learn more about the ALSA API\n"
-"\n"
-"Alfredo Spadafina\n"
-"for the nice midi keyboard logo\n"
-"\n"
-"Tony Vroon\n"
-"for the good help with alpha testing"
-msgstr ""
-"\n"
-"modular MIDI music player\n"
-"http://www.develia.org/projects.php?p=amidiplug\n"
-"\n"
-"written by Giacomo Lozito\n"
-"<james@develia.org>\n"
-"\n"
-"special thanks to...\n"
-"\n"
-"Clemens Ladisch and Jaroslav Kysela\n"
-"for their cool programs aplaymidi and amixer; those\n"
-"were really useful, along with alsa-lib docs, in order\n"
-"to learn more about the ALSA API\n"
-"\n"
-"Alfredo Spadafina\n"
-"for the nice midi keyboard logo\n"
-"\n"
-"Tony Vroon\n"
-"for the good help with alpha testing"
-
-#: src/aosd/aosd.c:30
+#: src/aosd/aosd.cc:32
 msgid ""
 "Audacious OSD\n"
 "http://www.develia.org/projects.php?p=audacious#aosd\n"
@@ -587,260 +534,260 @@ msgstr ""
 "Based in part on Evan Martin's Ghosd library:\n"
 "http://neugierig.org/software/ghosd/"
 
-#: src/aosd/aosd.c:38
+#: src/aosd/aosd.h:37
 msgid "AOSD (On-Screen Display)"
 msgstr "AOSD (Audacious OSD)"
 
-#: src/aosd/aosd_style.c:75
+#: src/aosd/aosd_style.cc:54
 msgid "Rectangle"
 msgstr "矩形"
 
-#: src/aosd/aosd_style.c:79
+#: src/aosd/aosd_style.cc:59
 msgid "Rounded Rectangle"
 msgstr "圓角矩形"
 
-#: src/aosd/aosd_style.c:83
+#: src/aosd/aosd_style.cc:64
 msgid "Concave Rectangle"
 msgstr "角落凹陷的矩形"
 
-#: src/aosd/aosd_style.c:87
+#: src/aosd/aosd_style.cc:69
 msgid "None"
 msgstr "無"
 
-#: src/aosd/aosd_trigger.c:74
+#: src/aosd/aosd_trigger.cc:50
 msgid "Playback Start"
 msgstr "開始播放"
 
-#: src/aosd/aosd_trigger.c:75
+#: src/aosd/aosd_trigger.cc:51
 msgid "Triggers OSD when a playlist entry is played."
 msgstr "當播放清單中的項目被播放時觸發 OSD"
 
-#: src/aosd/aosd_trigger.c:79
+#: src/aosd/aosd_trigger.cc:56
 msgid "Title Change"
 msgstr "標題變更"
 
-#: src/aosd/aosd_trigger.c:80
-msgid "Triggers OSD when, during playback, the song title changes but the filename is the same. This is mostly useful to display title changes in internet streams."
-msgstr "當播放中歌曲標題改變但檔名不變時觸發 OSD。這對顯示網路串流的標題很有用。"
+#: src/aosd/aosd_trigger.cc:57
+msgid "Triggers OSD when the song title changes (for internet streams)."
+msgstr ""
 
-#: src/aosd/aosd_trigger.c:86
+#: src/aosd/aosd_trigger.cc:62
 msgid "Pause On"
 msgstr "暫停播放"
 
-#: src/aosd/aosd_trigger.c:87
+#: src/aosd/aosd_trigger.cc:63
 msgid "Triggers OSD when playback is paused."
 msgstr "當播放暫停時觸發 OSD"
 
-#: src/aosd/aosd_trigger.c:91
+#: src/aosd/aosd_trigger.cc:68
 msgid "Pause Off"
 msgstr "解除暫停"
 
-#: src/aosd/aosd_trigger.c:92
+#: src/aosd/aosd_trigger.cc:69
 msgid "Triggers OSD when playback is unpaused."
 msgstr "當解除暫停時觸發 OSD"
 
-#: src/aosd/aosd_ui.c:192
+#: src/aosd/aosd_ui.cc:163
 msgid "Placement"
 msgstr "放置位置"
 
-#: src/aosd/aosd_ui.c:224
+#: src/aosd/aosd_ui.cc:196
 msgid "Relative X offset:"
 msgstr "X 軸相對位移："
 
-#: src/aosd/aosd_ui.c:231
+#: src/aosd/aosd_ui.cc:203
 msgid "Relative Y offset:"
 msgstr "Y 軸相對位移："
 
-#: src/aosd/aosd_ui.c:238
+#: src/aosd/aosd_ui.cc:210
 msgid "Max OSD width:"
 msgstr "最大 OSD 寬度："
 
-#: src/aosd/aosd_ui.c:249
+#: src/aosd/aosd_ui.cc:221
 msgid "Multi-Monitor options"
 msgstr "多螢幕選項"
 
-#: src/aosd/aosd_ui.c:253
+#: src/aosd/aosd_ui.cc:225
 msgid "Display OSD using:"
 msgstr "顯示 OSD："
 
-#: src/aosd/aosd_ui.c:255
+#: src/aosd/aosd_ui.cc:227
 msgid "all monitors"
 msgstr "所有螢幕"
 
-#: src/aosd/aosd_ui.c:258
+#: src/aosd/aosd_ui.cc:230
 #, c-format
 msgid "monitor %i"
 msgstr "螢幕 %i"
 
-#: src/aosd/aosd_ui.c:310
+#: src/aosd/aosd_ui.cc:282
 msgid "Timing (ms)"
 msgstr "計時 (毫秒)"
 
-#: src/aosd/aosd_ui.c:315
+#: src/aosd/aosd_ui.cc:287
 msgid "Display:"
 msgstr "顯示："
 
-#: src/aosd/aosd_ui.c:320
+#: src/aosd/aosd_ui.cc:292
 msgid "Fade in:"
 msgstr "淡入："
 
-#: src/aosd/aosd_ui.c:325
+#: src/aosd/aosd_ui.cc:297
 msgid "Fade out:"
 msgstr "淡出："
 
-#: src/aosd/aosd_ui.c:390
+#: src/aosd/aosd_ui.cc:361
 msgid "Fonts"
 msgstr "字型"
 
-#: src/aosd/aosd_ui.c:397
+#: src/aosd/aosd_ui.cc:368
 #, c-format
 msgid "Font %i:"
 msgstr "字型 %i："
 
-#: src/aosd/aosd_ui.c:412
+#: src/aosd/aosd_ui.cc:382
 msgid "Shadow"
 msgstr "陰影"
 
-#: src/aosd/aosd_ui.c:518
+#: src/aosd/aosd_ui.cc:486
 msgid "Render Style"
 msgstr "呈現樣式"
 
-#: src/aosd/aosd_ui.c:534
+#: src/aosd/aosd_ui.cc:502
 msgid "Colors"
 msgstr "顏色"
 
-#: src/aosd/aosd_ui.c:545
+#: src/aosd/aosd_ui.cc:513
 #, c-format
 msgid "Color %i:"
 msgstr "顏色 %i："
 
-#: src/aosd/aosd_ui.c:648
+#: src/aosd/aosd_ui.cc:600
 msgid "Enable trigger"
 msgstr "啟用觸發器"
 
-#: src/aosd/aosd_ui.c:675
+#: src/aosd/aosd_ui.cc:627
 msgid "Event"
 msgstr "事件"
 
-#: src/aosd/aosd_ui.c:703
+#: src/aosd/aosd_ui.cc:655
 msgid "Composite manager detected"
 msgstr "已偵測到合成特效管理程式"
 
-#: src/aosd/aosd_ui.c:710
+#: src/aosd/aosd_ui.cc:662
 msgid ""
 "Composite manager not detected;\n"
-"unless you know that you have one running, please activate a composite manager otherwise the OSD won't work properly"
+"unless you know that you have one running, please activate a composite "
+"manager otherwise the OSD won't work properly"
 msgstr ""
 "未偵測到合成特效管理程式；\n"
 "除非您確定已經執行，否則 OSD 將無法正確啟用。"
 
-#: src/aosd/aosd_ui.c:718
+#: src/aosd/aosd_ui.cc:670
 msgid "Composite manager not required for fake transparency"
 msgstr "假的透明特效不需要 Composite manager"
 
-#: src/aosd/aosd_ui.c:754
+#: src/aosd/aosd_ui.cc:706
 msgid "Transparency"
 msgstr "透明"
 
-#: src/aosd/aosd_ui.c:760
+#: src/aosd/aosd_ui.cc:712
 msgid "Fake transparency"
 msgstr "假的透明特效"
 
-#: src/aosd/aosd_ui.c:762
+#: src/aosd/aosd_ui.cc:714
 msgid "Real transparency (requires X Composite Ext.)"
 msgstr "真的透明特效 (需要 X Composite 延伸功能)"
 
-#: src/aosd/aosd_ui.c:804
+#: src/aosd/aosd_ui.cc:756
 msgid "Composite extension not loaded"
 msgstr "Composite 延伸功能未載入"
 
-#: src/aosd/aosd_ui.c:812
+#: src/aosd/aosd_ui.cc:764
 msgid "Composite extension not available"
 msgstr "Composite 延伸功能不存在"
 
-#: src/aosd/aosd_ui.c:831
+#: src/aosd/aosd_ui.cc:781
 #, c-format
 msgid "<span font_desc='%s'>Audacious OSD</span>"
 msgstr "<span font_desc='%s'>Audacious OSD</span>"
 
-#: src/aosd/aosd_ui.c:906
-msgid "Audacious OSD - configuration"
-msgstr "Audacious OSD - 設定"
-
-#: src/aosd/aosd_ui.c:927
-msgid "_Test"
-msgstr "測試(_T)"
-
-#: src/aosd/aosd_ui.c:933
-#: src/hotkey/gui.c:491
-msgid "_Set"
-msgstr "套用(_S)"
-
-#: src/aosd/aosd_ui.c:940
+#: src/aosd/aosd_ui.cc:844
 msgid "Position"
 msgstr "位置"
 
-#: src/aosd/aosd_ui.c:945
+#: src/aosd/aosd_ui.cc:849
 msgid "Animation"
 msgstr "動畫"
 
-#: src/aosd/aosd_ui.c:950
+#: src/aosd/aosd_ui.cc:854
 msgid "Text"
 msgstr "文字"
 
-#: src/aosd/aosd_ui.c:955
+#: src/aosd/aosd_ui.cc:859
 msgid "Decoration"
 msgstr "裝飾"
 
-#: src/aosd/aosd_ui.c:960
+#: src/aosd/aosd_ui.cc:864
 msgid "Trigger"
 msgstr "觸發"
 
-#: src/aosd/aosd_ui.c:965
+#: src/aosd/aosd_ui.cc:869
 msgid "Misc"
 msgstr "雜項"
 
-#: src/asx3/asx3.c:179
+#: src/aosd/aosd_ui.cc:878
+msgid "Test"
+msgstr ""
+
+#: src/asx3/asx3.cc:35
 msgid "ASXv3 Playlists"
 msgstr "ASXv3 播放清單"
 
-#: src/asx/asx.c:83
+#: src/asx/asx.cc:33
 msgid "ASXv1/ASXv2 Playlists"
 msgstr "ASXv1／ASXv2 播放清單"
 
-#: src/audpl/audpl.c:186
+#: src/audpl/audpl.cc:33
 msgid "Audacious Playlists (audpl)"
 msgstr "Audacious 播放清單 (audpl)"
 
-#: src/blur_scope/blur_scope.c:47
+#: src/blur_scope/blur_scope.cc:42
 msgid "<b>Color</b>"
 msgstr "<b>色彩</b>"
 
-#: src/blur_scope/blur_scope.c:56
+#: src/blur_scope/blur_scope.cc:58
 msgid "Blur Scope"
 msgstr "模糊波形"
 
-#: src/bs2b/plugin.c:142
-msgid "Feed level:"
-msgstr "饋送等級："
-
-#: src/bs2b/plugin.c:154
-msgid "Cut frequency:"
-msgstr "截斷頻率："
-
-#: src/bs2b/plugin.c:166
-msgid "Presets:"
-msgstr "樣式"
-
-#: src/bs2b/plugin.c:189
+#: src/bs2b/plugin.cc:38
 msgid "Bauer Stereophonic-to-Binaural (BS2B)"
 msgstr "Bauer Stereophonic-to-Binaural (BS2B)"
 
-#: src/cairo-spectrum/cairo-spectrum.c:297
+#: src/bs2b/plugin.cc:129
+msgid "Presets:"
+msgstr "樣式"
+
+#: src/bs2b/plugin.cc:136
+msgid "Feed level:"
+msgstr "饋送等級："
+
+#: src/bs2b/plugin.cc:138
+msgid "x1/10 dB"
+msgstr ""
+
+#: src/bs2b/plugin.cc:139
+msgid "Cut frequency:"
+msgstr "截斷頻率："
+
+#: src/cairo-spectrum/cairo-spectrum.cc:41
 msgid "Spectrum Analyzer"
 msgstr "頻譜分析儀"
 
-#: src/cdaudio-ng/cdaudio-ng.c:101
+#: src/cdaudio-ng/cdaudio-ng.cc:72
+msgid "Audio CD Plugin"
+msgstr "音樂 CD 外掛"
+
+#: src/cdaudio-ng/cdaudio-ng.cc:119
 msgid ""
 "Copyright (C) 2007-2012 Calin Crisan <ccrisan@gmail.com> and others.\n"
 "\n"
@@ -860,172 +807,156 @@ msgstr ""
 "\n"
 "This was a Google Summer of Code 2007 project."
 
-#: src/cdaudio-ng/cdaudio-ng.c:119
+#: src/cdaudio-ng/cdaudio-ng.cc:135
 msgid "<b>Device</b>"
 msgstr "<b>裝置</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:120
+#: src/cdaudio-ng/cdaudio-ng.cc:136
 msgid "Read speed:"
 msgstr "讀取速度："
 
-#: src/cdaudio-ng/cdaudio-ng.c:123
+#: src/cdaudio-ng/cdaudio-ng.cc:139
 msgid "Override device:"
 msgstr "覆載裝置："
 
-#: src/cdaudio-ng/cdaudio-ng.c:125
+#: src/cdaudio-ng/cdaudio-ng.cc:141
 msgid "<b>Metadata</b>"
 msgstr "<b>詮釋資料</b>"
 
-#: src/cdaudio-ng/cdaudio-ng.c:126
+#: src/cdaudio-ng/cdaudio-ng.cc:142
 msgid "Use CD-Text"
 msgstr "使用 CD-Text"
 
-#: src/cdaudio-ng/cdaudio-ng.c:128
+#: src/cdaudio-ng/cdaudio-ng.cc:144
 msgid "Use CDDB"
 msgstr "使用 CDDB"
 
-#: src/cdaudio-ng/cdaudio-ng.c:130
+#: src/cdaudio-ng/cdaudio-ng.cc:146
 msgid "Use HTTP instead of CDDBP"
 msgstr "使用 HTTP 而非 CDDBP"
 
-#: src/cdaudio-ng/cdaudio-ng.c:132
+#: src/cdaudio-ng/cdaudio-ng.cc:149
 msgid "Server:"
 msgstr "伺服器："
 
-#: src/cdaudio-ng/cdaudio-ng.c:134
+#: src/cdaudio-ng/cdaudio-ng.cc:153
 msgid "Path:"
 msgstr "路徑："
 
-#: src/cdaudio-ng/cdaudio-ng.c:136
+#: src/cdaudio-ng/cdaudio-ng.cc:157
 msgid "Port:"
 msgstr "連接埠："
 
-#: src/cdaudio-ng/cdaudio-ng.c:146
-msgid "Audio CD Plugin"
-msgstr "音樂 CD 外掛"
-
-#: src/cdaudio-ng/cdaudio-ng.c:244
+#: src/cdaudio-ng/cdaudio-ng.cc:244
 msgid "Failed to initialize cdio subsystem."
 msgstr "無法初始化 cdio 子系統。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:300
+#: src/cdaudio-ng/cdaudio-ng.cc:279
 #, c-format
 msgid "Invalid URI %s."
 msgstr "無效的 URI %s。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:302
+#: src/cdaudio-ng/cdaudio-ng.cc:281
 #, c-format
 msgid "Track %d not found."
 msgstr "找不到音軌 %d。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:304
+#: src/cdaudio-ng/cdaudio-ng.cc:283
 #, c-format
 msgid "Track %d is a data track."
 msgstr "軌道 %d 是資料軌。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:306
-msgid "Failed to open audio output."
-msgstr "無法開啟音訊輸出。"
-
-#: src/cdaudio-ng/cdaudio-ng.c:378
+#: src/cdaudio-ng/cdaudio-ng.cc:358
 msgid "Error reading audio CD."
 msgstr "讀取音樂 CD 時發生錯誤。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:449
+#: src/cdaudio-ng/cdaudio-ng.cc:427
 msgid "Audio CD"
 msgstr "音樂 CD"
 
-#: src/cdaudio-ng/cdaudio-ng.c:458
-#, c-format
-msgid "Track %d"
-msgstr "音軌 %d"
-
-#: src/cdaudio-ng/cdaudio-ng.c:485
-#: src/cdaudio-ng/cdaudio-ng.c:494
+#: src/cdaudio-ng/cdaudio-ng.cc:458 src/cdaudio-ng/cdaudio-ng.cc:467
 #, c-format
 msgid "Failed to open CD device %s."
 msgstr "無法開啟 CD 裝置 %s。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:497
+#: src/cdaudio-ng/cdaudio-ng.cc:470
 msgid "No audio capable CD drive found."
 msgstr "找不到可以播放音訊的光碟機。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:524
+#: src/cdaudio-ng/cdaudio-ng.cc:495
 msgid "Failed to finish initializing opened CD drive."
 msgstr "開啟的光碟機無法完成初始化。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:537
+#: src/cdaudio-ng/cdaudio-ng.cc:508
 msgid "Failed to retrieve first/last track number."
 msgstr "無法取得第一個或最後的音軌編號。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:562
+#: src/cdaudio-ng/cdaudio-ng.cc:529
 #, c-format
 msgid "Cannot read start/end LSN for track %d."
 msgstr "無法讀取音軌 %d 的起始／結束邏輯磁區編號。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:646
+#: src/cdaudio-ng/cdaudio-ng.cc:611
 msgid "Failed to create the cddb connection."
 msgstr "無法建立 cddb 的連線。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:721
+#: src/cdaudio-ng/cdaudio-ng.cc:677
 msgid "Failed to query the CDDB server"
 msgstr "無法查詢 CDDB 伺服器"
 
-#: src/cdaudio-ng/cdaudio-ng.c:723
+#: src/cdaudio-ng/cdaudio-ng.cc:679
 #, c-format
 msgid "Failed to query the CDDB server: %s"
 msgstr "無法查詢 CDDB 伺服器：%s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:747
+#: src/cdaudio-ng/cdaudio-ng.cc:703
 #, c-format
 msgid "Failed to read the cddb info: %s"
 msgstr "無法讀取 cddb 資訊：%s"
 
-#: src/cdaudio-ng/cdaudio-ng.c:818
+#: src/cdaudio-ng/cdaudio-ng.cc:763
 msgid "Drive is empty."
 msgstr "光碟機是空的。"
 
-#: src/cdaudio-ng/cdaudio-ng.c:820
+#: src/cdaudio-ng/cdaudio-ng.cc:765
 msgid "Unsupported disk type."
 msgstr "未支援的光碟類型"
 
-#: src/cd-menu-items/cd-menu-items.c:31
-msgid "Play CD"
-msgstr "播放 CD"
-
-#: src/cd-menu-items/cd-menu-items.c:31
-msgid "Add CD"
-msgstr "加入 CD"
-
-#: src/cd-menu-items/cd-menu-items.c:56
+#: src/cd-menu-items/cd-menu-items.cc:35
 msgid "Audio CD Menu Items"
 msgstr "音樂 CD 選單項目"
 
-#: src/compressor/plugin.c:35
+#: src/cd-menu-items/cd-menu-items.cc:47
+msgid "Play CD"
+msgstr "播放 CD"
+
+#: src/cd-menu-items/cd-menu-items.cc:47
+msgid "Add CD"
+msgstr "加入 CD"
+
+#: src/compressor/compressor.cc:45
 msgid "<b>Compression</b>"
 msgstr "<b>壓縮</b>"
 
-#: src/compressor/plugin.c:36
+#: src/compressor/compressor.cc:46
 msgid "Center volume:"
 msgstr "中央音量："
 
-#: src/compressor/plugin.c:39
+#: src/compressor/compressor.cc:49
 msgid "Dynamic range:"
 msgstr "動態範圍："
 
-#: src/compressor/plugin.c:53
+#: src/compressor/compressor.cc:57
 msgid ""
 "Dynamic Range Compression Plugin for Audacious\n"
-"Copyright 2010-2012 John Lindgren"
+"Copyright 2010-2014 John Lindgren"
 msgstr ""
-"Dynamic Range Compression Plugin for Audacious\n"
-"Copyright 2010-2012 John Lindgren"
 
-#: src/compressor/plugin.c:58
+#: src/compressor/compressor.cc:64
 msgid "Dynamic Range Compressor"
 msgstr "動態範圍壓縮"
 
-#: src/console/plugin.c:19
+#: src/console/plugin.cc:15
 msgid ""
 "Console music decoder engine based on Game_Music_Emu 0.5.2\n"
 "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n"
@@ -1041,485 +972,494 @@ msgstr ""
 "William Pitcock <nenolod@dereferenced.org>\n"
 "Shay Green <gblargg@gmail.com>"
 
-#: src/console/plugin.c:34
+#: src/console/plugin.cc:30
 msgid "Bass:"
 msgstr "低音"
 
-#: src/console/plugin.c:36
+#: src/console/plugin.cc:33
 msgid "Treble:"
 msgstr "高音"
 
-#: src/console/plugin.c:38
+#: src/console/plugin.cc:36
 msgid "Echo:"
 msgstr "回音："
 
-#: src/console/plugin.c:40
+#: src/console/plugin.cc:39
 msgid "Default song length:"
 msgstr "預設歌曲長度："
 
-#: src/console/plugin.c:43
-#: src/modplug/plugin_main.c:65
+#: src/console/plugin.cc:42 src/modplug/plugin_main.cc:59
 msgid "<b>Resampling</b>"
 msgstr "<b>重取樣</b>"
 
-#: src/console/plugin.c:44
+#: src/console/plugin.cc:43
 msgid "Enable audio resampling"
 msgstr "啟用聲音重取樣"
 
-#: src/console/plugin.c:46
-msgid "Resampling rate:"
-msgstr "重取樣率"
-
-#: src/console/plugin.c:47
-#: src/modplug/plugin_main.c:96
-#: src/resample/resample.c:182
-#: src/resample/resample.c:188
-#: src/resample/resample.c:191
-#: src/resample/resample.c:194
-#: src/resample/resample.c:197
-#: src/resample/resample.c:200
-#: src/resample/resample.c:203
-#: src/resample/resample.c:206
-#: src/sox-resampler/sox-resampler.c:155
-msgid "Hz"
-msgstr "Hz"
-
-#: src/console/plugin.c:49
+#: src/console/plugin.cc:49
 msgid "<b>SPC</b>"
 msgstr "<b>SPC</b>"
 
-#: src/console/plugin.c:50
+#: src/console/plugin.cc:50
 msgid "Ignore length from SPC tags"
 msgstr "忽略 SPC 標籤裡記錄的長度"
 
-#: src/console/plugin.c:52
+#: src/console/plugin.cc:52
 msgid "Increase reverb"
 msgstr "增加殘響強度"
 
-#: src/console/plugin.c:61
+#: src/console/plugin.h:26
 msgid "Game Console Music Decoder"
 msgstr "遊戲主機音樂解碼器"
 
-#: src/crossfade/crossfade.c:83
-msgid "Crossfading failed because the songs had a different number of channels.  You can use the Channel Mixer to convert the songs to the same number of channels."
-msgstr "因為歌曲間的聲道數不同，無法使用 Crossfade。您可以使用聲道混合將歌曲轉換成相同的聲道數量。"
+#: src/coreaudio/coreaudio.cc:50
+msgid "CoreAudio output"
+msgstr ""
 
-#: src/crossfade/crossfade.c:90
-msgid "Crossfading failed because the songs had different sample rates.  You can use the Sample Rate Converter to convert the songs to the same sample rate."
-msgstr "淡入淡出失敗，因為歌曲間的取樣率不同。您可以使用取樣率轉換功能來取得相同的取樣率。"
+#: src/coreaudio/coreaudio.cc:131
+msgid ""
+"CoreAudio Output Plugin for Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Based on SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
 
-#: src/crossfade/crossfade.c:256
+#: src/coreaudio/coreaudio.cc:143
+msgid "Use exclusive mode"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:44
 msgid ""
 "Crossfade Plugin for Audacious\n"
-"Copyright 2010-2012 John Lindgren"
+"Copyright 2010-2014 John Lindgren"
 msgstr ""
-"Crossfade Plugin for Audacious\n"
-"Copyright 2010-2012 John Lindgren"
 
-#: src/crossfade/crossfade.c:260
+#: src/crossfade/crossfade.cc:48
 msgid "<b>Crossfade</b>"
 msgstr "<b>淡入淡出</b>"
 
-#: src/crossfade/crossfade.c:261
+#: src/crossfade/crossfade.cc:49
+msgid "On automatic song change"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:51 src/crossfade/crossfade.cc:57
 msgid "Overlap:"
 msgstr "重疊："
 
-#: src/crossfade/crossfade.c:271
+#: src/crossfade/crossfade.cc:55
+msgid "On seek or manual song change"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:61
+msgid "<b>Tip</b>"
+msgstr ""
+
+#: src/crossfade/crossfade.cc:62
+msgid ""
+"For better crossfading, enable\n"
+"the Silence Removal effect."
+msgstr ""
+
+#: src/crossfade/crossfade.cc:72
 msgid "Crossfade"
 msgstr "淡入淡出"
 
-#: src/crystalizer/crystalizer.c:40
+#: src/crossfade/crossfade.cc:161
+msgid ""
+"Crossfading failed because the songs had a different number of channels.  "
+"You can use the Channel Mixer to convert the songs to the same number of "
+"channels."
+msgstr ""
+"因為歌曲間的聲道數不同，無法使用 Crossfade。您可以使用聲道混合將歌曲轉換成相"
+"同的聲道數量。"
+
+#: src/crossfade/crossfade.cc:168
+msgid ""
+"Crossfading failed because the songs had different sample rates.  You can "
+"use the Sample Rate Converter to convert the songs to the same sample rate."
+msgstr ""
+"淡入淡出失敗，因為歌曲間的取樣率不同。您可以使用取樣率轉換功能來取得相同的取"
+"樣率。"
+
+#: src/crystalizer/crystalizer.cc:31
 msgid "<b>Crystalizer</b>"
 msgstr "<b>Crystalizer</b>"
 
-#: src/crystalizer/crystalizer.c:41
-#: src/stereo_plugin/stereo.c:26
+#: src/crystalizer/crystalizer.cc:32 src/stereo_plugin/stereo.cc:45
 msgid "Intensity:"
 msgstr "效果強度："
 
-#: src/crystalizer/crystalizer.c:51
+#: src/crystalizer/crystalizer.cc:43
 msgid "Crystalizer"
 msgstr "Crystalizer"
 
-#: src/cue/cue.c:155
+#: src/cue/cue.cc:37
 msgid "Cue Sheet Plugin"
 msgstr "Cue Sheet 外掛"
 
-#: src/delete-files/delete-files.c:47
+#: src/delete-files/delete-files.cc:46 src/delete-files/delete-files.cc:146
+msgid "Delete Files"
+msgstr "刪除檔案"
+
+#: src/delete-files/delete-files.cc:75
 #, c-format
 msgid "Error moving %s to trash: %s."
 msgstr "移動「%s」到垃圾桶時發生錯誤：%s。"
 
-#: src/delete-files/delete-files.c:59
+#: src/delete-files/delete-files.cc:86
 #, c-format
 msgid "Error deleting %s: %s."
 msgstr "刪除「%s」時發生錯誤：%s。"
 
-#: src/delete-files/delete-files.c:97
+#: src/delete-files/delete-files.cc:117
 #, c-format
 msgid "Error deleting %s: not a local file."
 msgstr "刪除「%s」時發生錯誤：這不是本機檔案。"
 
-#: src/delete-files/delete-files.c:118
+#: src/delete-files/delete-files.cc:134
 msgid "Do you want to move the selected files to the trash?"
 msgstr "您確定要將選擇的檔案移動到垃圾桶嗎？"
 
-#: src/delete-files/delete-files.c:119
+#: src/delete-files/delete-files.cc:135
 msgid "Move to Trash"
 msgstr "移動到垃圾桶"
 
-#: src/delete-files/delete-files.c:124
+#: src/delete-files/delete-files.cc:140
 msgid "Do you want to permanently delete the selected files?"
 msgstr "您確定要永久地刪除選擇的檔案嗎？"
 
-#: src/delete-files/delete-files.c:125
-#: src/skins/preset-list.c:416
-#: src/skins/preset-list.c:432
+#: src/delete-files/delete-files.cc:141 src/skins/preset-list.cc:410
+#: src/skins/preset-list.cc:426
 msgid "Delete"
 msgstr "刪除"
 
-#: src/delete-files/delete-files.c:129
-#: src/skins/preset-browser.c:56
-#: src/skins/preset-list.c:311
-#: src/skins/ui_playlist.c:224
-#: src/sndio/sndio.c:424
+#: src/delete-files/delete-files.cc:145 src/skins/preset-browser.cc:56
+#: src/skins/preset-list.cc:306 src/skins/ui_playlist.cc:221
 msgid "Cancel"
 msgstr "取消"
 
-#: src/delete-files/delete-files.c:130
-#: src/delete-files/delete-files.c:171
-msgid "Delete Files"
-msgstr "刪除檔案"
-
-#: src/delete-files/delete-files.c:146
+#: src/delete-files/delete-files.cc:166
 msgid "Delete Selected Files"
 msgstr "刪除選擇的檔案"
 
-#: src/delete-files/delete-files.c:161
+#: src/delete-files/delete-files.cc:181
 msgid "<b>Delete Method</b>"
 msgstr "<b>刪除方式</b>"
 
-#: src/delete-files/delete-files.c:162
+#: src/delete-files/delete-files.cc:182
 msgid "Move to trash instead of deleting immediately"
 msgstr "移動到垃圾桶而不是直接刪除"
 
-#: src/echo_plugin/echo.c:26
+#: src/echo_plugin/echo.cc:9
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin, 1999\n"
+"Surround echo by Carl van Schaik, 1999\n"
+"Updated for Audacious by William Pitcock and John Lindgren, 2010-2014"
+msgstr ""
+
+#: src/echo_plugin/echo.cc:21
 msgid "<b>Echo</b>"
 msgstr "<b>回音</b>"
 
-#: src/echo_plugin/echo.c:27
-#: src/modplug/plugin_main.c:88
-#: src/modplug/plugin_main.c:102
+#: src/echo_plugin/echo.cc:22 src/modplug/plugin_main.cc:73
+#: src/modplug/plugin_main.cc:83
 msgid "Delay:"
 msgstr "延遲："
 
-#: src/echo_plugin/echo.c:29
-#: src/modplug/plugin_main.c:89
-#: src/modplug/plugin_main.c:103
+#: src/echo_plugin/echo.cc:24 src/modplug/plugin_main.cc:73
+#: src/modplug/plugin_main.cc:83
 msgid "ms"
 msgstr "毫秒"
 
-#: src/echo_plugin/echo.c:30
+#: src/echo_plugin/echo.cc:25
 msgid "Feedback:"
 msgstr "反饋："
 
-#: src/echo_plugin/echo.c:33
-#: src/modplug/plugin_main.c:107
+#: src/echo_plugin/echo.cc:28 src/modplug/plugin_main.cc:87
 msgid "Volume:"
 msgstr "音量："
 
-#: src/echo_plugin/echo.c:116
-msgid ""
-"Echo Plugin\n"
-"By Johan Levin, 1999\n"
-"\n"
-"Surround echo by Carl van Schaik, 1999"
-msgstr ""
-"Echo Plugin\n"
-"By Johan Levin, 1999\n"
-"\n"
-"Surround echo by Carl van Schaik, 1999"
-
-#: src/echo_plugin/echo.c:122
+#: src/echo_plugin/echo.cc:39
 msgid "Echo"
 msgstr "回音"
 
-#: src/ffaudio/ffaudio-core.c:581
-msgid ""
-"Multi-format audio decoding plugin for Audacious using\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-"\n"
-"Audacious plugin by:\n"
-"William Pitcock <nenolod@nenolod.net>\n"
-"Matti Hämäläinen <ccr@tnsp.org>"
-msgstr ""
-"Multi-format audio decoding plugin for Audacious using\n"
-"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
-"\n"
-"Audacious plugin by:\n"
-"William Pitcock <nenolod@nenolod.net>\n"
-"Matti Hämäläinen <ccr@tnsp.org>"
-
-#: src/ffaudio/ffaudio-core.c:633
+#: src/ffaudio/ffaudio-core.cc:41
 msgid "FFmpeg Plugin"
 msgstr "FFmpeg 外掛"
 
-#: src/filewriter/filewriter.c:404
-msgid "Output file format:"
-msgstr "輸出檔案格式："
-
-#: src/filewriter/filewriter.c:421
-msgid "Configure"
-msgstr "設定"
-
-#: src/filewriter/filewriter.c:431
-msgid "Save into original directory"
-msgstr "儲存到原始資料夾"
-
-#: src/filewriter/filewriter.c:435
-msgid "Save into custom directory"
-msgstr "儲存到自訂資料夾"
-
-#: src/filewriter/filewriter.c:445
-msgid "Output file folder:"
-msgstr "輸出檔案資料夾："
-
-#: src/filewriter/filewriter.c:449
-msgid "Pick a folder"
-msgstr "選擇一個資料夾"
-
-#: src/filewriter/filewriter.c:462
-msgid "Get filename from:"
-msgstr "檔名來源："
-
-#: src/filewriter/filewriter.c:466
-msgid "original file tags"
-msgstr "原始檔案標籤"
-
-#: src/filewriter/filewriter.c:471
-msgid "original filename"
-msgstr "原始檔名"
-
-#: src/filewriter/filewriter.c:477
-msgid "Don't strip file name extension"
-msgstr "不要去掉副檔名"
-
-#: src/filewriter/filewriter.c:486
-msgid "Prepend track number to filename"
-msgstr "在檔名前面加上音軌號碼"
-
-#: src/filewriter/filewriter.c:502
+#: src/ffaudio/ffaudio-core.cc:571
 msgid ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 msgstr ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
+"Multi-format audio decoding plugin for Audacious using\n"
+"FFmpeg multimedia framework (http://www.ffmpeg.org/)\n"
 "\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
+"Audacious plugin by:\n"
+"William Pitcock <nenolod@nenolod.net>\n"
+"Matti Hämäläinen <ccr@tnsp.org>"
 
-#: src/filewriter/filewriter.c:527
+#: src/filewriter/filewriter.cc:45
 msgid "FileWriter Plugin"
 msgstr "檔案輸出外掛"
 
-#: src/filewriter/mp3.c:38
-#: src/filewriter/mp3.c:749
+#: src/filewriter/filewriter.cc:386
+msgid "Output file format:"
+msgstr "輸出檔案格式："
+
+#: src/filewriter/filewriter.cc:403
+msgid "Configure"
+msgstr "設定"
+
+#: src/filewriter/filewriter.cc:413
+msgid "Save into original directory"
+msgstr "儲存到原始資料夾"
+
+#: src/filewriter/filewriter.cc:417
+msgid "Save into custom directory"
+msgstr "儲存到自訂資料夾"
+
+#: src/filewriter/filewriter.cc:427
+msgid "Output file folder:"
+msgstr "輸出檔案資料夾："
+
+#: src/filewriter/filewriter.cc:431
+msgid "Pick a folder"
+msgstr "選擇一個資料夾"
+
+#: src/filewriter/filewriter.cc:444
+msgid "Generate file name from:"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:448
+msgid "Original file tag"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:453
+msgid "Original file name"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:459
+msgid "Include original file name extension"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:468
+msgid "Prepend track number to file name"
+msgstr ""
+
+#: src/filewriter/filewriter.cc:484
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
+#: src/filewriter/mp3.cc:40 src/filewriter/mp3.cc:717
 msgid "Auto"
 msgstr "自動"
 
-#: src/filewriter/mp3.c:38
+#: src/filewriter/mp3.cc:40
 msgid "Joint Stereo"
 msgstr "聯合立體聲"
 
-#: src/filewriter/mp3.c:39
-#: src/modplug/plugin_main.c:63
-#: src/mpg123/mpg123.c:210
+#: src/filewriter/mp3.cc:41 src/modplug/plugin_main.cc:58
+#: src/mpg123/mpg123.cc:248
 msgid "Stereo"
 msgstr "立體聲"
 
-#: src/filewriter/mp3.c:39
-#: src/modplug/plugin_main.c:61
-#: src/mpg123/mpg123.c:210
+#: src/filewriter/mp3.cc:41 src/modplug/plugin_main.cc:57
+#: src/mpg123/mpg123.cc:248
 msgid "Mono"
 msgstr "單聲道"
 
-#: src/filewriter/mp3.c:689
+#: src/filewriter/mp3.cc:657
 msgid "MP3 Configuration"
 msgstr "MP3 設定"
 
-#: src/filewriter/mp3.c:713
+#: src/filewriter/mp3.cc:658
+msgid "_OK"
+msgstr "確認(_O)"
+
+#: src/filewriter/mp3.cc:681
 msgid "Algorithm Quality:"
 msgstr "演算法品質："
 
-#: src/filewriter/mp3.c:738
-msgid "Output Samplerate:"
-msgstr "輸出取樣率："
+#: src/filewriter/mp3.cc:706
+msgid "Output Sample Rate:"
+msgstr ""
 
-#: src/filewriter/mp3.c:766
+#: src/filewriter/mp3.cc:733
 msgid "(Hz)"
 msgstr "(Hz)"
 
-#: src/filewriter/mp3.c:773
-msgid "Bitrate / Compression ratio:"
-msgstr "位元率／壓縮比率："
+#: src/filewriter/mp3.cc:740
+msgid "Bitrate / Compression Ratio:"
+msgstr ""
 
-#: src/filewriter/mp3.c:797
+#: src/filewriter/mp3.cc:764
 msgid "Bitrate (kbps):"
 msgstr "位元率 (kbps)："
 
-#: src/filewriter/mp3.c:830
+#: src/filewriter/mp3.cc:796
 msgid "Compression ratio:"
 msgstr "壓縮比率："
 
-#: src/filewriter/mp3.c:854
+#: src/filewriter/mp3.cc:820
 msgid "Audio Mode:"
 msgstr "音訊模式："
 
-#: src/filewriter/mp3.c:879
-msgid "Misc:"
-msgstr "雜項："
+#: src/filewriter/mp3.cc:845
+msgid "Miscellaneous:"
+msgstr ""
 
-#: src/filewriter/mp3.c:890
-msgid "Enforce strict ISO complience"
-msgstr "強制嚴格相容於 ISO"
+#: src/filewriter/mp3.cc:856
+msgid "Enforce strict ISO compliance"
+msgstr ""
 
-#: src/filewriter/mp3.c:901
+#: src/filewriter/mp3.cc:867
 msgid "Error protection"
 msgstr "錯誤保護"
 
-#: src/filewriter/mp3.c:913
-#: src/filewriter/vorbis.c:220
+#: src/filewriter/mp3.cc:879 src/filewriter/vorbis.cc:206
 msgid "Quality"
 msgstr "品質"
 
-#: src/filewriter/mp3.c:922
+#: src/filewriter/mp3.cc:888
 msgid "Enable VBR/ABR"
 msgstr "啟用 VBR／ABR"
 
-#: src/filewriter/mp3.c:932
+#: src/filewriter/mp3.cc:898
 msgid "Type:"
 msgstr "類型："
 
-#: src/filewriter/mp3.c:965
+#: src/filewriter/mp3.cc:931
 msgid "VBR Options:"
 msgstr "VBR 選項："
 
-#: src/filewriter/mp3.c:981
+#: src/filewriter/mp3.cc:947
 msgid "Minimum bitrate (kbps):"
 msgstr "最小位元率 (kbps)："
 
-#: src/filewriter/mp3.c:1008
+#: src/filewriter/mp3.cc:973
 msgid "Maximum bitrate (kbps):"
 msgstr "最大位元率 (kbps)："
 
-#: src/filewriter/mp3.c:1031
+#: src/filewriter/mp3.cc:995
 msgid "Strictly enforce minimum bitrate"
 msgstr "強制使用最小位元率"
 
-#: src/filewriter/mp3.c:1043
+#: src/filewriter/mp3.cc:1007
 msgid "ABR Options:"
 msgstr "ABR 選項："
 
-#: src/filewriter/mp3.c:1053
+#: src/filewriter/mp3.cc:1017
 msgid "Average bitrate (kbps):"
 msgstr "平均位元率 (kbps)："
 
-#: src/filewriter/mp3.c:1081
+#: src/filewriter/mp3.cc:1044
 msgid "VBR quality level:"
 msgstr "VBR 品質等級："
 
-#: src/filewriter/mp3.c:1100
-msgid "Don't write Xing VBR header"
-msgstr "不要寫入 Xing VBR 檔頭"
+#: src/filewriter/mp3.cc:1063
+msgid "Omit Xing VBR header"
+msgstr ""
 
-#: src/filewriter/mp3.c:1113
+#: src/filewriter/mp3.cc:1076
 msgid "VBR/ABR"
 msgstr "VBR／ABR"
 
-#: src/filewriter/mp3.c:1122
-msgid "Frame parameters:"
-msgstr "音框參數："
+#: src/filewriter/mp3.cc:1085
+msgid "Frame Parameters:"
+msgstr ""
 
-#: src/filewriter/mp3.c:1134
+#: src/filewriter/mp3.cc:1097
 msgid "Mark as copyright"
 msgstr "標示為版權"
 
-#: src/filewriter/mp3.c:1145
+#: src/filewriter/mp3.cc:1108
 msgid "Mark as original"
 msgstr "標示為原創"
 
-#: src/filewriter/mp3.c:1157
-msgid "ID3 params:"
-msgstr "ID3 參數："
+#: src/filewriter/mp3.cc:1120
+msgid "ID3 Parameters:"
+msgstr ""
 
-#: src/filewriter/mp3.c:1168
+#: src/filewriter/mp3.cc:1131
 msgid "Force addition of version 2 tag"
 msgstr "強制加入第二版標籤"
 
-#: src/filewriter/mp3.c:1178
+#: src/filewriter/mp3.cc:1141
 msgid "Only add v1 tag"
 msgstr "只加入第一版標籤"
 
-#: src/filewriter/mp3.c:1185
+#: src/filewriter/mp3.cc:1148
 msgid "Only add v2 tag"
 msgstr "只加入第二版標籤"
 
-#: src/filewriter/mp3.c:1206
+#: src/filewriter/mp3.cc:1169
 msgid "Tags"
 msgstr "標籤"
 
-#: src/filewriter/vorbis.c:210
+#: src/filewriter/vorbis.cc:196
 msgid "Vorbis Encoder Configuration"
 msgstr "Vorbis 編碼器設定"
 
-#: src/filewriter/vorbis.c:233
+#: src/filewriter/vorbis.cc:219
 msgid "Quality level (0 - 10):"
 msgstr "品質等級 (0 - 10)："
 
-#: src/flacng/metadata.c:359
-#: src/wavpack/wavpack.c:212
-msgid "lossless"
-msgstr "無損"
-
-#: src/flacng/plugin.c:187
-msgid ""
-"Original code by\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
-msgstr ""
-"Original code by\n"
-"Ralf Ertzinger <ralf@skytale.net>\n"
-"\n"
-"http://www.skytale.net/projects/bmp-flac2/"
-
-#: src/flacng/plugin.c:195
+#: src/flacng/flacng.h:35
 msgid "FLAC Decoder"
 msgstr "FLAC 解碼器"
 
-#: src/gio/gio.c:295
+#: src/flacng/metadata.cc:351 src/wavpack/wavpack.cc:209
+msgid "lossless"
+msgstr "無損"
+
+#: src/flacng/plugin.cc:169
+msgid ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+msgstr ""
+"Original code by\n"
+"Ralf Ertzinger <ralf@skytale.net>\n"
+"\n"
+"http://www.skytale.net/projects/bmp-flac2/"
+
+#: src/gio/gio.cc:34
 msgid ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
@@ -1527,17 +1467,26 @@ msgstr ""
 "GIO Plugin for Audacious\n"
 "Copyright 2009-2012 John Lindgren"
 
-#: src/gio/gio.c:314
+#: src/gio/gio.cc:42
 msgid "GIO Plugin"
 msgstr "GIO 外掛"
 
-#: src/gl-spectrum/gl-spectrum.c:400
+#: src/gio/gio.cc:153
+msgid "Read-and-append mode not supported"
+msgstr ""
+
+#: src/gio/gio.cc:166
+msgid "Invalid open mode"
+msgstr ""
+
+#: src/gl-spectrum/gl-spectrum.cc:51
 msgid ""
 "OpenGL Spectrum Analyzer for Audacious\n"
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
 "\n"
 "License: GPLv2+"
 msgstr ""
@@ -1545,566 +1494,592 @@ msgstr ""
 "Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
 "\n"
 "Based on the XMMS plugin:\n"
-"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and 4Front Technologies\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
 "\n"
 "License: GPLv2+"
 
-#: src/gl-spectrum/gl-spectrum.c:409
+#: src/gl-spectrum/gl-spectrum.cc:62
 msgid "OpenGL Spectrum Analyzer"
 msgstr "OpenGL 頻譜分析儀"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:41
+#: src/gl-spectrum-qt/gl-spectrum.cc:41
 msgid ""
-"Gnome Shortcut Plugin\n"
-"Lets you control the player with Gnome's shortcuts.\n"
+"OpenGL Spectrum Analyzer for Audacious\n"
+"Copyright 2013 Christophe Budé, John Lindgren, and Carlo Bramini\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Based on the XMMS plugin:\n"
+"Copyright 1998-2000 Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson, and "
+"4Front Technologies\n"
+"\n"
+"License: GPLv2+"
+msgstr ""
+
+#: src/gl-spectrum-qt/gl-spectrum.cc:53
+msgid "OpenGL Spectrum Analyzer (Qt)"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.cc:38
+msgid "GNOME Shortcuts"
+msgstr ""
+
+#: src/gnomeshortcuts/gnomeshortcuts.cc:54
+msgid ""
+"GNOME Shortcut Plugin\n"
+"Lets you control the player with GNOME's shortcuts.\n"
 "\n"
 "Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 msgstr ""
-"Gnome Shortcut Plugin\n"
-"讓您使用 Gnome 的快速鍵控制播放器。\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>"
 
-#: src/gnomeshortcuts/gnomeshortcuts.c:47
-msgid "Gnome Shortcuts"
-msgstr "Gnome 快速鍵"
-
-#: src/gtkui/columns.c:34
+#: src/gtkui/columns.cc:35
 msgid "Entry number"
 msgstr "項目編號"
 
-#: src/gtkui/columns.c:34
+#: src/gtkui/columns.cc:36 src/playlist-manager/playlist-manager.cc:225
+#: src/qtui/playlist_model.cc:124
 msgid "Title"
 msgstr "標題"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.cc:37 src/qtui/playlist_model.cc:126
 msgid "Artist"
 msgstr "藝人"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.cc:38
 msgid "Year"
 msgstr "年份"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.cc:39 src/qtui/playlist_model.cc:128
 msgid "Album"
 msgstr "專輯"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.cc:40
+msgid "Album artist"
+msgstr ""
+
+#: src/gtkui/columns.cc:41
 msgid "Track"
 msgstr "音軌"
 
-#: src/gtkui/columns.c:35
+#: src/gtkui/columns.cc:42
 msgid "Genre"
 msgstr "類型"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.cc:43
 msgid "Queue position"
 msgstr "佇列位置"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.cc:44
 msgid "Length"
 msgstr "長度"
 
-#: src/gtkui/columns.c:36
+#: src/gtkui/columns.cc:45
 msgid "File path"
 msgstr "檔案路徑"
 
-#: src/gtkui/columns.c:36
-msgid "File name"
-msgstr "檔案名稱"
-
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.cc:47
 msgid "Custom title"
 msgstr "自訂標題"
 
-#: src/gtkui/columns.c:37
+#: src/gtkui/columns.cc:48
 msgid "Bitrate"
 msgstr "位元率"
 
-#: src/gtkui/columns.c:286
+#: src/gtkui/columns.cc:308
 msgid "Available columns"
 msgstr "可用的欄位"
 
-#: src/gtkui/columns.c:312
+#: src/gtkui/columns.cc:334
 msgid "Displayed columns"
 msgstr "顯示的欄位"
 
-#: src/gtkui/layout.c:119
+#: src/gtkui/layout.cc:66 src/search-tool/search-tool.cc:40
+msgid "Search Tool"
+msgstr "搜尋工具"
+
+#: src/gtkui/layout.cc:161
 msgid "Dock at Left"
 msgstr "嵌入左方"
 
-#: src/gtkui/layout.c:119
+#: src/gtkui/layout.cc:161
 msgid "Dock at Right"
 msgstr "嵌入右方"
 
-#: src/gtkui/layout.c:120
+#: src/gtkui/layout.cc:162
 msgid "Dock at Top"
 msgstr "嵌入頂端"
 
-#: src/gtkui/layout.c:120
+#: src/gtkui/layout.cc:162
 msgid "Dock at Bottom"
 msgstr "嵌入底端"
 
-#: src/gtkui/layout.c:120
+#: src/gtkui/layout.cc:162
 msgid "Undock"
 msgstr "解除嵌入"
 
-#: src/gtkui/layout.c:120
-#: src/ladspa/plugin.c:649
+#: src/gtkui/layout.cc:162 src/ladspa/plugin.cc:531
 msgid "Disable"
 msgstr "關閉"
 
-#: src/gtkui/menus.c:127
-#: src/statusicon/statusicon.c:262
+#: src/gtkui/menus.cc:124 src/qtui/main_window_actions.cc:91
+#: src/statusicon/statusicon.cc:286
 msgid "_Open Files ..."
 msgstr "開啟檔案(_O) ..."
 
-#: src/gtkui/menus.c:128
+#: src/gtkui/menus.cc:125
 msgid "Open _URL ..."
 msgstr "開啟網址(_U) ..."
 
-#: src/gtkui/menus.c:129
+#: src/gtkui/menus.cc:126 src/qtui/main_window_actions.cc:92
 msgid "_Add Files ..."
 msgstr "加入檔案(_A) ... "
 
-#: src/gtkui/menus.c:130
+#: src/gtkui/menus.cc:127
 msgid "Add U_RL ..."
 msgstr "加入網址(_R) ..."
 
-#: src/gtkui/menus.c:132
+#: src/gtkui/menus.cc:129
 msgid "Search _Library"
 msgstr "搜尋媒體櫃(_L)"
 
-#: src/gtkui/menus.c:134
+#: src/gtkui/menus.cc:131 src/qtui/main_window_actions.cc:94
 msgid "A_bout ..."
 msgstr "關於(_B) ..."
 
-#: src/gtkui/menus.c:135
+#: src/gtkui/menus.cc:132 src/qtui/main_window_actions.cc:95
 msgid "_Settings ..."
 msgstr "設定(_S) ..."
 
-#: src/gtkui/menus.c:136
-#: src/statusicon/statusicon.c:270
+#: src/gtkui/menus.cc:133 src/qtui/main_window_actions.cc:99
+#: src/statusicon/statusicon.cc:294
 msgid "_Quit"
 msgstr "離開(_Q)"
 
-#: src/gtkui/menus.c:139
-#: src/gtkui/menus.c:254
-#: src/search-tool/search-tool.c:674
-#: src/statusicon/statusicon.c:264
+#: src/gtkui/menus.cc:137 src/gtkui/menus.cc:256
+#: src/qtui/main_window_actions.cc:103 src/search-tool/search-tool.cc:641
+#: src/statusicon/statusicon.cc:288
 msgid "_Play"
 msgstr "播放(_P)"
 
-#: src/gtkui/menus.c:140
-#: src/statusicon/statusicon.c:265
+#: src/gtkui/menus.cc:138 src/qtui/main_window_actions.cc:104
+#: src/statusicon/statusicon.cc:289
 msgid "Paus_e"
 msgstr "暫停(_E)"
 
-#: src/gtkui/menus.c:141
-#: src/statusicon/statusicon.c:266
+#: src/gtkui/menus.cc:139 src/qtui/main_window_actions.cc:105
+#: src/statusicon/statusicon.cc:290
 msgid "_Stop"
 msgstr "停止(_S)"
 
-#: src/gtkui/menus.c:142
-#: src/statusicon/statusicon.c:263
+#: src/gtkui/menus.cc:140 src/qtui/main_window_actions.cc:106
+#: src/statusicon/statusicon.cc:287
 msgid "Pre_vious"
 msgstr "上一個(_V)"
 
-#: src/gtkui/menus.c:143
-#: src/statusicon/statusicon.c:267
+#: src/gtkui/menus.cc:141 src/qtui/main_window_actions.cc:107
+#: src/statusicon/statusicon.cc:291
 msgid "_Next"
 msgstr "下一個(_N)"
 
-#: src/gtkui/menus.c:145
+#: src/gtkui/menus.cc:143 src/qtui/main_window_actions.cc:109
 msgid "_Repeat"
 msgstr "重複"
 
-#: src/gtkui/menus.c:146
+#: src/gtkui/menus.cc:144 src/qtui/main_window_actions.cc:110
 msgid "S_huffle"
 msgstr "隨機"
 
-#: src/gtkui/menus.c:147
+#: src/gtkui/menus.cc:145 src/qtui/main_window_actions.cc:111
 msgid "N_o Playlist Advance"
 msgstr "不要切換播放清單"
 
-#: src/gtkui/menus.c:149
+#: src/gtkui/menus.cc:146 src/qtui/main_window_actions.cc:112
 msgid "Stop A_fter This Song"
 msgstr "播放完目前歌曲後停止(_F)"
 
-#: src/gtkui/menus.c:152
-#: src/gtkui/menus.c:242
+#: src/gtkui/menus.cc:148 src/gtkui/menus.cc:243
+#: src/qtui/main_window_actions.cc:114
 msgid "Song _Info ..."
 msgstr "歌曲資訊(_I) ..."
 
-#: src/gtkui/menus.c:153
+#: src/gtkui/menus.cc:149
 msgid "Jump to _Time ..."
 msgstr "跳轉到指定時間(_T) ..."
 
-#: src/gtkui/menus.c:154
+#: src/gtkui/menus.cc:150
 msgid "_Jump to Song ..."
 msgstr "跳轉到指定歌曲(_J) ..."
 
-#: src/gtkui/menus.c:156
+#: src/gtkui/menus.cc:152
 msgid "Set Repeat Point _A"
 msgstr "設定重複點 _A"
 
-#: src/gtkui/menus.c:157
+#: src/gtkui/menus.cc:153
 msgid "Set Repeat Point _B"
 msgstr "設定重複點 _B"
 
-#: src/gtkui/menus.c:158
+#: src/gtkui/menus.cc:154
 msgid "_Clear Repeat Points"
 msgstr "清除重複點(_C)"
 
-#: src/gtkui/menus.c:161
-#: src/gtkui/menus.c:167
-#: src/gtkui/menus.c:180
+#: src/gtkui/menus.cc:158 src/gtkui/menus.cc:165 src/gtkui/menus.cc:180
+#: src/qtui/main_window_actions.cc:118 src/qtui/main_window_actions.cc:125
+#: src/qtui/main_window_actions.cc:140
 msgid "By _Title"
 msgstr "標題(_T)"
 
-#: src/gtkui/menus.c:162
-msgid "By _Filename"
-msgstr "檔案名稱(_F)"
+#: src/gtkui/menus.cc:159 src/qtui/main_window_actions.cc:119
+msgid "By _File Name"
+msgstr ""
 
-#: src/gtkui/menus.c:163
+#: src/gtkui/menus.cc:160 src/qtui/main_window_actions.cc:120
 msgid "By File _Path"
 msgstr "檔案路徑(_P)"
 
-#: src/gtkui/menus.c:166
-#: src/gtkui/menus.c:179
+#: src/gtkui/menus.cc:164 src/gtkui/menus.cc:179
+#: src/qtui/main_window_actions.cc:124 src/qtui/main_window_actions.cc:139
 msgid "By Track _Number"
 msgstr "音軌編號(_N)"
 
-#: src/gtkui/menus.c:168
-#: src/gtkui/menus.c:181
+#: src/gtkui/menus.cc:166 src/gtkui/menus.cc:181
+#: src/qtui/main_window_actions.cc:126 src/qtui/main_window_actions.cc:141
 msgid "By _Artist"
 msgstr "藝人(_A)"
 
-#: src/gtkui/menus.c:169
-#: src/gtkui/menus.c:182
+#: src/gtkui/menus.cc:167 src/gtkui/menus.cc:182
+#: src/qtui/main_window_actions.cc:127 src/qtui/main_window_actions.cc:142
 msgid "By Al_bum"
 msgstr "專輯(_B)"
 
-#: src/gtkui/menus.c:170
-#: src/gtkui/menus.c:183
+#: src/gtkui/menus.cc:168 src/gtkui/menus.cc:183
+#: src/qtui/main_window_actions.cc:128 src/qtui/main_window_actions.cc:143
+msgid "By Albu_m Artist"
+msgstr ""
+
+#: src/gtkui/menus.cc:169 src/gtkui/menus.cc:184
+#: src/qtui/main_window_actions.cc:129 src/qtui/main_window_actions.cc:144
 msgid "By Release _Date"
 msgstr "發行日期(_D)"
 
-#: src/gtkui/menus.c:171
-#: src/gtkui/menus.c:184
+#: src/gtkui/menus.cc:170 src/gtkui/menus.cc:185
+#: src/qtui/main_window_actions.cc:130 src/qtui/main_window_actions.cc:145
 msgid "By _Length"
 msgstr "長度(_L)"
 
-#: src/gtkui/menus.c:172
-#: src/gtkui/menus.c:185
+#: src/gtkui/menus.cc:171 src/gtkui/menus.cc:186
+#: src/qtui/main_window_actions.cc:131 src/qtui/main_window_actions.cc:146
 msgid "By _File Path"
 msgstr "檔案路徑(_F)"
 
-#: src/gtkui/menus.c:173
-#: src/gtkui/menus.c:186
+#: src/gtkui/menus.cc:172 src/gtkui/menus.cc:187
+#: src/qtui/main_window_actions.cc:132 src/qtui/main_window_actions.cc:147
 msgid "By _Custom Title"
 msgstr "自訂標題(_C)"
 
-#: src/gtkui/menus.c:175
-#: src/gtkui/menus.c:188
+#: src/gtkui/menus.cc:174 src/gtkui/menus.cc:189
+#: src/qtui/main_window_actions.cc:134 src/qtui/main_window_actions.cc:149
 msgid "R_everse Order"
 msgstr "反向順序(_E)"
 
-#: src/gtkui/menus.c:176
-#: src/gtkui/menus.c:189
+#: src/gtkui/menus.cc:175 src/gtkui/menus.cc:190
+#: src/qtui/main_window_actions.cc:135 src/qtui/main_window_actions.cc:150
 msgid "_Random Order"
 msgstr "隨機順序(_R)"
 
-#: src/gtkui/menus.c:192
+#: src/gtkui/menus.cc:194 src/qtui/main_window_actions.cc:154
 msgid "_Play This Playlist"
 msgstr "播放此清單(_P)"
 
-#: src/gtkui/menus.c:193
-#: src/gtkui/menus.c:244
+#: src/gtkui/menus.cc:195 src/gtkui/menus.cc:245
+#: src/qtui/main_window_actions.cc:155
 msgid "_Refresh"
 msgstr "重新整理(_R)"
 
-#: src/gtkui/menus.c:195
+#: src/gtkui/menus.cc:197 src/qtui/main_window_actions.cc:157
 msgid "_Sort"
 msgstr "排序(_S)"
 
-#: src/gtkui/menus.c:196
+#: src/gtkui/menus.cc:198 src/qtui/main_window_actions.cc:158
 msgid "Sort Se_lected"
 msgstr "排序選擇的項目(_L)"
 
-#: src/gtkui/menus.c:197
+#: src/gtkui/menus.cc:199 src/qtui/main_window_actions.cc:159
 msgid "Remove _Duplicates"
 msgstr "移除重複的項目(_D)"
 
-#: src/gtkui/menus.c:198
+#: src/gtkui/menus.cc:200 src/qtui/main_window_actions.cc:160
 msgid "Remove _Unavailable Files"
 msgstr "移除不存在的檔案(_U)"
 
-#: src/gtkui/menus.c:200
+#: src/gtkui/menus.cc:202 src/playlist-manager/playlist-manager.cc:244
+#: src/qtui/main_window_actions.cc:162
 msgid "_New"
 msgstr "新增(_N)"
 
-#: src/gtkui/menus.c:201
+#: src/gtkui/menus.cc:203 src/qtui/main_window_actions.cc:163
 msgid "Ren_ame ..."
 msgstr "重新命名(_A) ..."
 
-#: src/gtkui/menus.c:202
-#: src/gtkui/menus.c:256
+#: src/gtkui/menus.cc:204 src/gtkui/menus.cc:258
+#: src/qtui/main_window_actions.cc:164
 msgid "Remo_ve"
 msgstr "移除(_V)"
 
-#: src/gtkui/menus.c:204
+#: src/gtkui/menus.cc:206 src/qtui/main_window_actions.cc:166
 msgid "_Import ..."
 msgstr "匯入(_I) ..."
 
-#: src/gtkui/menus.c:205
+#: src/gtkui/menus.cc:207 src/qtui/main_window_actions.cc:167
 msgid "_Export ..."
 msgstr "匯出(_E) ..."
 
-#: src/gtkui/menus.c:207
+#: src/gtkui/menus.cc:209 src/qtui/main_window_actions.cc:169
 msgid "Playlist _Manager ..."
 msgstr "播放清單管理(_M) ..."
 
-#: src/gtkui/menus.c:208
+#: src/gtkui/menus.cc:210 src/qtui/main_window_actions.cc:170
 msgid "_Queue Manager ..."
 msgstr "佇列管理(_Q) ..."
 
-#: src/gtkui/menus.c:211
+#: src/gtkui/menus.cc:214 src/qtui/main_window_actions.cc:174
 msgid "Volume _Up"
 msgstr "提高音量(_U)"
 
-#: src/gtkui/menus.c:212
+#: src/gtkui/menus.cc:215 src/qtui/main_window_actions.cc:175
 msgid "Volume _Down"
 msgstr "降低音量(_D)"
 
-#: src/gtkui/menus.c:214
+#: src/gtkui/menus.cc:217 src/qtui/main_window_actions.cc:177
 msgid "_Equalizer"
 msgstr "等化器(_E)"
 
-#: src/gtkui/menus.c:216
+#: src/gtkui/menus.cc:219 src/qtui/main_window_actions.cc:179
 msgid "E_ffects ..."
 msgstr "特效(_F) ..."
 
-#: src/gtkui/menus.c:219
+#: src/gtkui/menus.cc:223
 msgid "Show _Menu Bar"
 msgstr "顯示選單列(_M)"
 
-#: src/gtkui/menus.c:221
+#: src/gtkui/menus.cc:224
 msgid "Show I_nfo Bar"
 msgstr "顯示資訊列(_N)"
 
-#: src/gtkui/menus.c:223
+#: src/gtkui/menus.cc:225
 msgid "Show Info Bar Vis_ualization"
 msgstr "顯示資訊列的視覺特效(_U)"
 
-#: src/gtkui/menus.c:225
+#: src/gtkui/menus.cc:226
 msgid "Show _Status Bar"
 msgstr "顯示狀態列(_S)"
 
-#: src/gtkui/menus.c:228
+#: src/gtkui/menus.cc:228
 msgid "Show _Remaining Time"
 msgstr "顯示剩餘時間(_R)"
 
-#: src/gtkui/menus.c:231
+#: src/gtkui/menus.cc:230
 msgid "_Visualizations ..."
 msgstr "視覺特效(_V) ..."
 
-#: src/gtkui/menus.c:234
+#: src/gtkui/menus.cc:234 src/qtui/main_window_actions.cc:183
 msgid "_File"
 msgstr "檔案(_F)"
 
-#: src/gtkui/menus.c:235
+#: src/gtkui/menus.cc:235 src/qtui/main_window_actions.cc:184
 msgid "_Playback"
 msgstr "播放(_P)"
 
-#: src/gtkui/menus.c:236
+#: src/gtkui/menus.cc:236 src/qtui/main_window_actions.cc:185
 msgid "P_laylist"
 msgstr "播放清單(_L)"
 
-#: src/gtkui/menus.c:237
-#: src/gtkui/menus.c:251
+#: src/gtkui/menus.cc:237 src/gtkui/menus.cc:252
+#: src/qtui/main_window_actions.cc:186
 msgid "_Services"
 msgstr "服務(_S)"
 
-#: src/gtkui/menus.c:238
+#: src/gtkui/menus.cc:238 src/qtui/main_window_actions.cc:187
 msgid "_Output"
 msgstr "輸出(_O)"
 
-#: src/gtkui/menus.c:239
+#: src/gtkui/menus.cc:239
 msgid "_View"
 msgstr "檢視(_V)"
 
-#: src/gtkui/menus.c:243
+#: src/gtkui/menus.cc:244
 msgid "_Queue/Unqueue"
 msgstr "排入／移出佇列(_Q)"
 
-#: src/gtkui/menus.c:246
+#: src/gtkui/menus.cc:247
 msgid "Cu_t"
 msgstr "剪下(_T)"
 
-#: src/gtkui/menus.c:247
+#: src/gtkui/menus.cc:248
 msgid "_Copy"
 msgstr "複製(_C)"
 
-#: src/gtkui/menus.c:248
+#: src/gtkui/menus.cc:249
 msgid "_Paste"
 msgstr "貼上(_P)"
 
-#: src/gtkui/menus.c:249
+#: src/gtkui/menus.cc:250
 msgid "Select _All"
 msgstr "選擇全部(_A)"
 
-#: src/gtkui/menus.c:255
+#: src/gtkui/menus.cc:257
 msgid "_Rename ..."
 msgstr "重新命名(_R) ..."
 
-#: src/gtkui/settings.c:35
+#: src/gtkui/settings.cc:35
 msgid "<b>Playlist Tabs</b>"
 msgstr "<b>播放清單分頁</b>"
 
-#: src/gtkui/settings.c:36
+#: src/gtkui/settings.cc:36
 msgid "Always show tabs"
 msgstr "永遠顯示分頁"
 
-#: src/gtkui/settings.c:39
+#: src/gtkui/settings.cc:38
 msgid "Show entry counts"
 msgstr "顯示項目數量"
 
-#: src/gtkui/settings.c:42
+#: src/gtkui/settings.cc:40
 msgid "Show close buttons"
 msgstr "顯示關閉按鈕"
 
-#: src/gtkui/settings.c:45
+#: src/gtkui/settings.cc:42
 msgid "<b>Playlist Columns</b>"
 msgstr "<b>播放清單欄位</b>"
 
-#: src/gtkui/settings.c:47
+#: src/gtkui/settings.cc:44
 msgid "Show column headers"
 msgstr "顯示欄位標頭"
 
-#: src/gtkui/settings.c:50
-#: src/modplug/plugin_main.c:131
-#: src/skins/skins_cfg.c:267
+#: src/gtkui/settings.cc:46 src/modplug/plugin_main.cc:106
+#: src/skins/skins_cfg.cc:263
 msgid "<b>Miscellaneous</b>"
 msgstr "<b>其他選項</b>"
 
-#: src/gtkui/settings.c:51
+#: src/gtkui/settings.cc:47
 msgid "Arrow keys seek by:"
 msgstr "按下方向鍵時跳轉的時間長度："
 
-#: src/gtkui/settings.c:54
+#: src/gtkui/settings.cc:50
 msgid "Scroll on song change"
 msgstr "切換歌曲時捲動清單"
 
-#: src/gtkui/ui_gtk.c:94
+#: src/gtkui/ui_gtk.cc:71
 msgid "GTK Interface"
 msgstr "GTK 介面"
 
-#: src/gtkui/ui_gtk.c:192
-#: src/skins/ui_main.c:233
+#: src/gtkui/ui_gtk.cc:222 src/skins/ui_main.cc:236
 #, c-format
 msgid "%s - Audacious"
 msgstr "%s - Audacious"
 
-#: src/gtkui/ui_gtk.c:197
+#: src/gtkui/ui_gtk.cc:225 src/qtui/main_window.cc:180
 msgid "Buffering ..."
 msgstr "緩衝中 ..."
 
-#: src/gtkui/ui_gtk.c:200
-#: src/skins/ui_main.c:235
-#: src/skins/ui_main.c:1143
+#: src/gtkui/ui_gtk.cc:228 src/skins/ui_main.cc:238 src/skins/ui_main.cc:1168
 msgid "Audacious"
 msgstr "Audacious"
 
-#: src/gtkui/ui_statusbar.c:86
+#: src/gtkui/ui_statusbar.cc:69 src/qtui/status_bar.cc:67
+msgid "mono"
+msgstr "單聲道"
+
+#: src/gtkui/ui_statusbar.cc:71 src/qtui/status_bar.cc:69
+msgid "stereo"
+msgstr "立體聲"
+
+#: src/gtkui/ui_statusbar.cc:73 src/qtui/status_bar.cc:71
 #, c-format
 msgid "%d channel"
 msgid_plural "%d channels"
 msgstr[0] "%d 聲道"
 
-#: src/gtkui/ui_statusbar.c:101
+#: src/gtkui/ui_statusbar.cc:88 src/qtui/status_bar.cc:85
 #, c-format
 msgid "%d kbps"
 msgstr "%d kbps"
 
-#: src/hotkey/gui.c:70
+#: src/hotkey/gui.cc:71
 msgid "Previous track"
 msgstr "上一個音軌"
 
-#: src/hotkey/gui.c:71
-#: src/notify/osd.c:68
-#: src/skins/menus.c:78
+#: src/hotkey/gui.cc:72 src/notify/osd.cc:69 src/qtui/main_window.cc:67
+#: src/skins/menus.cc:87
 msgid "Play"
 msgstr "播放"
 
-#: src/hotkey/gui.c:72
+#: src/hotkey/gui.cc:73
 msgid "Pause/Resume"
 msgstr "暫停／回復"
 
-#: src/hotkey/gui.c:73
-#: src/skins/menus.c:80
+#: src/hotkey/gui.cc:74 src/qtui/main_window.cc:68 src/skins/menus.cc:89
 msgid "Stop"
 msgstr "停止"
 
-#: src/hotkey/gui.c:74
+#: src/hotkey/gui.cc:75
 msgid "Next track"
 msgstr "下一個音軌"
 
-#: src/hotkey/gui.c:75
+#: src/hotkey/gui.cc:76
 msgid "Forward 5 seconds"
 msgstr "快轉五秒"
 
-#: src/hotkey/gui.c:76
+#: src/hotkey/gui.cc:77
 msgid "Rewind 5 seconds"
 msgstr "倒轉五秒"
 
-#: src/hotkey/gui.c:77
+#: src/hotkey/gui.cc:78
 msgid "Mute"
 msgstr "靜音"
 
-#: src/hotkey/gui.c:78
+#: src/hotkey/gui.cc:79
 msgid "Volume up"
 msgstr "提高音量"
 
-#: src/hotkey/gui.c:79
+#: src/hotkey/gui.cc:80
 msgid "Volume down"
 msgstr "降低音量"
 
-#: src/hotkey/gui.c:80
+#: src/hotkey/gui.cc:81
 msgid "Jump to file"
 msgstr "跳轉到指定檔案"
 
-#: src/hotkey/gui.c:81
+#: src/hotkey/gui.cc:82
 msgid "Toggle player window(s)"
 msgstr "切換顯示播放器視窗"
 
-#: src/hotkey/gui.c:82
+#: src/hotkey/gui.cc:83
 msgid "Show On-Screen-Display"
 msgstr "顯示 OSD"
 
-#: src/hotkey/gui.c:83
+#: src/hotkey/gui.cc:84
 msgid "Toggle repeat"
 msgstr "切換重複播放"
 
-#: src/hotkey/gui.c:84
+#: src/hotkey/gui.cc:85
 msgid "Toggle shuffle"
 msgstr "切換隨機播放"
 
-#: src/hotkey/gui.c:85
+#: src/hotkey/gui.cc:86
 msgid "Toggle stop after current"
 msgstr "播放完目前歌曲後停止"
 
-#: src/hotkey/gui.c:86
+#: src/hotkey/gui.cc:87
 msgid "Raise player window(s)"
 msgstr "將播放器視窗放到最上層"
 
-#: src/hotkey/gui.c:96
+#: src/hotkey/gui.cc:97
 msgid "(none)"
 msgstr "(無)"
 
-#: src/hotkey/gui.c:233
+#: src/hotkey/gui.cc:234
 msgid ""
-"It is not recommended to bind the primary mouse buttons without modificators.\n"
+"It is not recommended to bind the primary mouse buttons without "
+"modificators.\n"
 "\n"
 "Do you want to continue?"
 msgstr ""
@@ -2112,15 +2087,11 @@ msgstr ""
 "\n"
 "您想要繼續嗎？"
 
-#: src/hotkey/gui.c:235
+#: src/hotkey/gui.cc:236
 msgid "Binding mouse buttons"
 msgstr "綁定滑鼠按鈕"
 
-#: src/hotkey/gui.c:385
-msgid "Global Hotkey Plugin Configuration"
-msgstr "全域熱鍵外掛設定"
-
-#: src/hotkey/gui.c:400
+#: src/hotkey/gui.cc:391
 msgid ""
 "Press a key combination inside a text field.\n"
 "You can also bind mouse buttons."
@@ -2128,102 +2099,97 @@ msgstr ""
 "請在輸入欄位中按下想要的按鍵組合。\n"
 "您也可以綁定滑鼠按鈕。"
 
-#: src/hotkey/gui.c:405
+#: src/hotkey/gui.cc:396
 msgid "Hotkeys:"
 msgstr "熱鍵："
 
-#: src/hotkey/gui.c:422
+#: src/hotkey/gui.cc:413
 msgid "<b>Action:</b>"
 msgstr "<b>動作：</b>"
 
-#: src/hotkey/gui.c:429
+#: src/hotkey/gui.cc:420
 msgid "<b>Key Binding:</b>"
 msgstr "<b>按鍵綁定：</b>"
 
-#: src/hotkey/gui.c:476
+#: src/hotkey/gui.cc:468
 msgid "_Add"
 msgstr "加入(_A)"
 
-#: src/hotkey/plugin.c:67
-msgid ""
-"Global Hotkey Plugin\n"
-"Control the player with global key combinations or multimedia keys.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Contributers include:\n"
-"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
-" Bryn Davies <curious@ihug.com.au>,\n"
-" Jonathan A. Davis <davis@jdhouse.org>,\n"
-" Jeremy Tan <nsx@nsx.homeip.net>"
-msgstr ""
-"Global Hotkey Plugin\n"
-"Control the player with global key combinations or multimedia keys.\n"
-"\n"
-"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
-"\n"
-"Contributers include:\n"
-"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
-"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
-" Bryn Davies <curious@ihug.com.au>,\n"
-" Jonathan A. Davis <davis@jdhouse.org>,\n"
-" Jeremy Tan <nsx@nsx.homeip.net>"
-
-#: src/hotkey/plugin.c:79
+#: src/hotkey/plugin.cc:61
 msgid "Global Hotkeys"
 msgstr "全域熱鍵"
 
-#: src/jack/jack.c:196
-msgid "Connect to all available jack ports"
-msgstr "連接到所有可用的 jack 連接埠"
-
-#: src/jack/jack.c:197
-msgid "Connect only the output ports"
-msgstr "僅連接到輸出埠"
-
-#: src/jack/jack.c:198
-msgid "Don't connect to any port"
-msgstr "不要連接到任何連接埠"
-
-#: src/jack/jack.c:202
-msgid "Connection mode:"
-msgstr "連線模式："
-
-#: src/jack/jack.c:205
-msgid "Enable debug printing"
-msgstr "啟用除錯輸出"
-
-#: src/jack/jack.c:432
+#: src/hotkey/plugin.cc:79
 msgid ""
-"Based on xmms-jack, by Chris Morgan:\n"
-"http://xmms-jack.sourceforge.net/\n"
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
 "\n"
-"Ported to Audacious by Giacomo Lozito"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 msgstr ""
-"Based on xmms-jack, by Chris Morgan:\n"
-"http://xmms-jack.sourceforge.net/\n"
+"Global Hotkey Plugin\n"
+"Control the player with global key combinations or multimedia keys.\n"
 "\n"
-"Ported to Audacious by Giacomo Lozito"
+"Copyright (C) 2007-2008 Sascha Hlusiak <contact@saschahlusiak.de>\n"
+"\n"
+"Contributers include:\n"
+"Copyright (C) 2006-2007 Vladimir Paskov <vlado.paskov@gmail.com>\n"
+"Copyright (C) 2000-2002 Ville Syrjälä <syrjala@sci.fi>,\n"
+" Bryn Davies <curious@ihug.com.au>,\n"
+" Jonathan A. Davis <davis@jdhouse.org>,\n"
+" Jeremy Tan <nsx@nsx.homeip.net>"
 
-#: src/jack/jack.c:438
+#: src/jack-ng/jack-ng.cc:49
 msgid "JACK Output"
 msgstr "JACK 輸出"
 
-#: src/ladspa/plugin.c:519
+#: src/jack-ng/jack-ng.cc:114
+msgid "Automatically connect to output ports"
+msgstr ""
+
+#: src/jack-ng/jack-ng.cc:155
+#, c-format
+msgid "Only %d JACK output ports were found but %d are required."
+msgstr ""
+
+#: src/jack-ng/jack-ng.cc:164
+#, c-format
+msgid "Failed to connect to JACK port %s."
+msgstr ""
+
+#: src/jack-ng/jack-ng.cc:184
+msgid ""
+"JACK supports only floating-point audio.  You must change the output bit "
+"depth to floating-point in Audacious settings."
+msgstr ""
+
+#: src/jack-ng/jack-ng.cc:197
+msgid "Failed to connect to the JACK server; is it running?"
+msgstr ""
+
+#: src/jack-ng/jack-ng.cc:273
+#, c-format
+msgid ""
+"The JACK server requires a sample rate of %d Hz, but Audacious is playing at "
+"%d Hz.  Please use the Sample Rate Converter effect to correct the mismatch."
+msgstr ""
+
+#: src/ladspa/plugin.cc:414
 #, c-format
 msgid "%s Settings"
 msgstr "%s 設定"
 
-#: src/ladspa/plugin.c:587
-msgid "LADSPA Host Settings"
-msgstr "LADSPA 主控端設定"
-
-#: src/ladspa/plugin.c:596
+#: src/ladspa/plugin.cc:478
 msgid "Module paths:"
 msgstr "模組路徑："
 
-#: src/ladspa/plugin.c:601
+#: src/ladspa/plugin.cc:483
 msgid ""
 "<small>Separate multiple paths with a colon.\n"
 "These paths are searched in addition to LADSPA_PATH.\n"
@@ -2233,27 +2199,25 @@ msgstr ""
 "系統除了 LADSPA_PATH 之外也會搜尋這些路徑。\n"
 "加入新路徑之後請按 Enter 掃描新的外掛。</small>"
 
-#: src/ladspa/plugin.c:617
+#: src/ladspa/plugin.cc:499
 msgid "Available plugins:"
 msgstr "可用的外掛："
 
-#: src/ladspa/plugin.c:630
-#: src/modplug/plugin_main.c:113
-#: src/modplug/plugin_main.c:117
-#: src/modplug/plugin_main.c:121
-#: src/modplug/plugin_main.c:125
+#: src/ladspa/plugin.cc:512 src/modplug/plugin_main.cc:92
+#: src/modplug/plugin_main.cc:95 src/modplug/plugin_main.cc:98
+#: src/modplug/plugin_main.cc:101
 msgid "Enable"
 msgstr "啟用"
 
-#: src/ladspa/plugin.c:636
+#: src/ladspa/plugin.cc:518
 msgid "Enabled plugins:"
 msgstr "啟用外掛："
 
-#: src/ladspa/plugin.c:652
+#: src/ladspa/plugin.cc:534
 msgid "Settings"
 msgstr "設定"
 
-#: src/ladspa/plugin.c:671
+#: src/ladspa/plugin.cc:551
 msgid ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
@@ -2261,145 +2225,117 @@ msgstr ""
 "LADSPA Host for Audacious\n"
 "Copyright 2011 John Lindgren"
 
-#: src/ladspa/plugin.c:676
+#: src/ladspa/plugin.h:78
 msgid "LADSPA Host"
 msgstr "LADSPA 主控端"
 
-#: src/lirc/lirc.c:74
-#, c-format
-msgid "%s: could not init LIRC support\n"
-msgstr "%s：無法初始化 LIRC 支援\n"
-
-#: src/lirc/lirc.c:81
-#, c-format
-msgid ""
-"%s: could not read LIRC config file\n"
-"%s: please read the documentation of LIRC\n"
-"%s: how to create a proper config file\n"
-msgstr ""
-"%s：無法讀取 LIRC 組態檔\n"
-"%s：請閱讀 LIRC 的相關文件\n"
-"%s：如何建立一個適合的組態檔\n"
-
-#: src/lirc/lirc.c:112
-#, c-format
-msgid "%s: trying to reconnect...\n"
-msgstr "%s：嘗試重新連線中...\n"
-
-#: src/lirc/lirc.c:352
-#, c-format
-msgid "%s: unknown command \"%s\"\n"
-msgstr "%s：未知的命令「%s」\n"
-
-#: src/lirc/lirc.c:363
-#, c-format
-msgid "%s: disconnected from LIRC\n"
-msgstr "%s：已從 LIRC 離線\n"
-
-#: src/lirc/lirc.c:369
-#, c-format
-msgid "%s: will try reconnect every %d seconds...\n"
-msgstr "%s：將每 %d 秒嘗試重新連線一次...\n"
-
-#: src/lirc/lirc.c:379
-msgid ""
-"A simple plugin to control Audacious using the LIRC remote control daemon\n"
-"\n"
-"Adapted for Audacious by:\n"
-"Tony Vroon <chainsaw@gentoo.org>\n"
-"Joonas Harjumäki <jharjuma@gmail.com>\n"
-"\n"
-"Based on the XMMS LIRC plugin by:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
-"\n"
-"For more information about LIRC, see http://lirc.org."
-msgstr ""
-"A simple plugin to control Audacious using the LIRC remote control daemon\n"
-"\n"
-"Adapted for Audacious by:\n"
-"Tony Vroon <chainsaw@gentoo.org>\n"
-"Joonas Harjumäki <jharjuma@gmail.com>\n"
-"\n"
-"Based on the XMMS LIRC plugin by:\n"
-"Carl van Schaik <carl@leg.uct.ac.za>\n"
-"Christoph Bartelmus <xmms@bartelmus.de>\n"
-"Andrew O. Shadoura <bugzilla@tut.by>\n"
-"\n"
-"For more information about LIRC, see http://lirc.org."
-
-#: src/lirc/lirc.c:390
-msgid "<b>Connection</b>"
-msgstr "<b>連線</b>"
-
-#: src/lirc/lirc.c:391
-msgid "Reconnect to LIRC server"
-msgstr "重新連線到 LIRC 伺服器"
-
-#: src/lirc/lirc.c:393
-msgid "Wait before reconnecting:"
-msgstr "重新連線前的等待時間："
-
-#: src/lirc/lirc.c:403
+#: src/lirc/lirc.cc:55
 msgid "LIRC Plugin"
 msgstr "Linux 紅外線遙控器外掛"
 
-#: src/lyricwiki/lyricwiki.c:117
+#: src/lirc/lirc.cc:381
+msgid ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+msgstr ""
+"A simple plugin to control Audacious using the LIRC remote control daemon\n"
+"\n"
+"Adapted for Audacious by:\n"
+"Tony Vroon <chainsaw@gentoo.org>\n"
+"Joonas Harjumäki <jharjuma@gmail.com>\n"
+"\n"
+"Based on the XMMS LIRC plugin by:\n"
+"Carl van Schaik <carl@leg.uct.ac.za>\n"
+"Christoph Bartelmus <xmms@bartelmus.de>\n"
+"Andrew O. Shadoura <bugzilla@tut.by>\n"
+"\n"
+"For more information about LIRC, see http://lirc.org."
+
+#: src/lirc/lirc.cc:392
+msgid "<b>Connection</b>"
+msgstr "<b>連線</b>"
+
+#: src/lirc/lirc.cc:393
+msgid "Reconnect to LIRC server"
+msgstr "重新連線到 LIRC 伺服器"
+
+#: src/lirc/lirc.cc:395
+msgid "Wait before reconnecting:"
+msgstr "重新連線前的等待時間："
+
+#: src/lyricwiki/lyricwiki.cc:41
+msgid "LyricWiki Plugin"
+msgstr "LyricWiki 歌詞外掛"
+
+#: src/lyricwiki/lyricwiki.cc:131 src/lyricwiki-qt/lyricwiki.cc:136
 msgid "No lyrics available"
 msgstr "無可用的歌詞"
 
-#: src/lyricwiki/lyricwiki.c:207
-#: src/lyricwiki/lyricwiki.c:241
+#: src/lyricwiki/lyricwiki.cc:217 src/lyricwiki/lyricwiki.cc:226
+#: src/lyricwiki/lyricwiki.cc:243 src/lyricwiki/lyricwiki.cc:252
+#: src/lyricwiki/lyricwiki.cc:267 src/lyricwiki-qt/lyricwiki.cc:222
+#: src/lyricwiki-qt/lyricwiki.cc:231 src/lyricwiki-qt/lyricwiki.cc:248
+#: src/lyricwiki-qt/lyricwiki.cc:257 src/lyricwiki-qt/lyricwiki.cc:272
+msgid "Error"
+msgstr "錯誤"
+
+#: src/lyricwiki/lyricwiki.cc:218 src/lyricwiki/lyricwiki.cc:244
+#: src/lyricwiki-qt/lyricwiki.cc:223 src/lyricwiki-qt/lyricwiki.cc:249
 #, c-format
 msgid "Unable to fetch %s"
 msgstr "無法取得 %s"
 
-#: src/lyricwiki/lyricwiki.c:208
-#: src/lyricwiki/lyricwiki.c:218
-#: src/lyricwiki/lyricwiki.c:242
-#: src/lyricwiki/lyricwiki.c:252
-#: src/lyricwiki/lyricwiki.c:271
-msgid "Error"
-msgstr "錯誤"
-
-#: src/lyricwiki/lyricwiki.c:217
-#: src/lyricwiki/lyricwiki.c:251
+#: src/lyricwiki/lyricwiki.cc:227 src/lyricwiki/lyricwiki.cc:253
+#: src/lyricwiki-qt/lyricwiki.cc:232 src/lyricwiki-qt/lyricwiki.cc:258
 #, c-format
 msgid "Unable to parse %s"
 msgstr "無法分析 %s"
 
-#: src/lyricwiki/lyricwiki.c:260
+#: src/lyricwiki/lyricwiki.cc:259 src/lyricwiki-qt/lyricwiki.cc:264
 msgid "Looking for lyrics ..."
 msgstr "尋找歌詞中 ..."
 
-#: src/lyricwiki/lyricwiki.c:271
+#: src/lyricwiki/lyricwiki.cc:267 src/lyricwiki-qt/lyricwiki.cc:272
 msgid "Missing song metadata"
 msgstr "找不到歌曲詮釋資料"
 
-#: src/lyricwiki/lyricwiki.c:284
+#: src/lyricwiki/lyricwiki.cc:278 src/lyricwiki-qt/lyricwiki.cc:283
 msgid "Connecting to lyrics.wikia.com ..."
 msgstr "連線到 lyrics.wikia.com 中 ..."
 
-#: src/lyricwiki/lyricwiki.c:411
-msgid "LyricWiki Plugin"
-msgstr "LyricWiki 歌詞外掛"
+#: src/lyricwiki-qt/lyricwiki.cc:55
+msgid "LyricWiki Plugin (Qt)"
+msgstr ""
 
-#: src/m3u/m3u.c:116
+#: src/m3u/m3u.cc:32
 msgid "M3U Playlists"
 msgstr "M3U 播放清單"
 
-#: src/metronom/metronom.c:127
+#: src/metronom/metronom.cc:44
+msgid "Tact Generator"
+msgstr "節拍產生器"
+
+#: src/metronom/metronom.cc:147
 #, c-format
 msgid "Tact generator: %d bpm"
 msgstr "節拍產生器：%d bpm"
 
-#: src/metronom/metronom.c:129
+#: src/metronom/metronom.cc:149
 #, c-format
 msgid "Tact generator: %d bpm %d/%d"
 msgstr "節拍產生器：%d bpm %d／%d"
 
-#: src/metronom/metronom.c:218
+#: src/metronom/metronom.cc:237
 msgid ""
 "A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n"
 "\n"
@@ -2413,302 +2349,419 @@ msgstr ""
 "範例：tact://77 播放 77 BPM\n"
 "或 tact://60*3/4 以 3/4 拍播放 60 BPM"
 
-#: src/metronom/metronom.c:227
-msgid "Tact Generator"
-msgstr "節拍產生器"
-
-#: src/mixer/mixer.c:171
-msgid ""
-"Channel Mixer Plugin for Audacious\n"
-"Copyright 2011-2012 John Lindgren and Michał Lipski"
-msgstr ""
-"Channel Mixer Plugin for Audacious\n"
-"Copyright 2011-2012 John Lindgren and Michał Lipski"
-
-#: src/mixer/mixer.c:175
-msgid "<b>Channel Mixer</b>"
-msgstr "<b>聲道混合</b>"
-
-#: src/mixer/mixer.c:176
-msgid "Output channels:"
-msgstr "輸出聲道數目："
-
-#: src/mixer/mixer.c:186
+#: src/mixer/mixer.cc:38
 msgid "Channel Mixer"
 msgstr "聲道混合"
 
-#: src/mms/mms.c:195
+#: src/mixer/mixer.cc:202
+msgid ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+msgstr ""
+"Channel Mixer Plugin for Audacious\n"
+"Copyright 2011-2012 John Lindgren and Michał Lipski"
+
+#: src/mixer/mixer.cc:206
+msgid "<b>Channel Mixer</b>"
+msgstr "<b>聲道混合</b>"
+
+#: src/mixer/mixer.cc:207
+msgid "Output channels:"
+msgstr "輸出聲道數目："
+
+#: src/mms/mms.cc:35
 msgid "MMS Plugin"
 msgstr "MMS 外掛"
 
-#: src/modplug/plugin_main.c:55
-msgid "<b>Resolution</b>"
-msgstr "<b>解析度</b>"
+#: src/mms/mms.cc:82
+msgid "Error connecting to MMS server"
+msgstr ""
 
-#: src/modplug/plugin_main.c:56
-msgid "8-bit"
-msgstr "8-bit"
-
-#: src/modplug/plugin_main.c:58
-msgid "16-bit"
-msgstr "16-bit"
-
-#: src/modplug/plugin_main.c:60
-msgid "<b>Channels</b>"
-msgstr "<b>聲道</b>"
-
-#: src/modplug/plugin_main.c:66
-msgid "Nearest (fastest)"
-msgstr "最近點取樣(最快)"
-
-#: src/modplug/plugin_main.c:68
-msgid "Linear (fast)"
-msgstr "線性取樣(快)"
-
-#: src/modplug/plugin_main.c:70
-msgid "Spline (good)"
-msgstr "曲線函數(佳)"
-
-#: src/modplug/plugin_main.c:72
-msgid "Polyphase (best)"
-msgstr "多相位取樣(最佳)"
-
-#: src/modplug/plugin_main.c:74
-msgid "<b>Sampling rate</b>"
-msgstr "<b>取樣率</b>"
-
-#: src/modplug/plugin_main.c:75
-msgid "22 kHz"
-msgstr "22 kHz"
-
-#: src/modplug/plugin_main.c:77
-msgid "44 kHz"
-msgstr "44 kHz"
-
-#: src/modplug/plugin_main.c:79
-msgid "48 kHz"
-msgstr "48 kHz"
-
-#: src/modplug/plugin_main.c:81
-msgid "96 kHz"
-msgstr "96 kHz"
-
-#: src/modplug/plugin_main.c:86
-#: src/modplug/plugin_main.c:93
-#: src/modplug/plugin_main.c:100
-msgid "Level:"
-msgstr "強度："
-
-#: src/modplug/plugin_main.c:95
-msgid "Cutoff:"
-msgstr "裁切："
-
-#: src/modplug/plugin_main.c:112
-msgid "<b>Reverb</b>"
-msgstr "<b>殘響</b>"
-
-#: src/modplug/plugin_main.c:116
-msgid "<b>Bass Boost</b>"
-msgstr "<b>重低音強化</b>"
-
-#: src/modplug/plugin_main.c:120
-msgid "<b>Surround</b>"
-msgstr "<b>環繞音效</b>"
-
-#: src/modplug/plugin_main.c:124
-msgid "<b>Preamp</b>"
-msgstr "<b>前置放大</b>"
-
-#: src/modplug/plugin_main.c:132
-msgid "Oversample"
-msgstr "超取樣"
-
-#: src/modplug/plugin_main.c:134
-msgid "Noise reduction"
-msgstr "降噪"
-
-#: src/modplug/plugin_main.c:136
-msgid "Play Amiga MODs"
-msgstr "播放 Amiga MOD 檔案"
-
-#: src/modplug/plugin_main.c:138
-msgid "<b>Repeat</b>"
-msgstr "<b>重複</b>"
-
-#: src/modplug/plugin_main.c:139
-msgid "Repeat count:"
-msgstr "重複次數："
-
-#: src/modplug/plugin_main.c:141
-msgid "To repeat forever, set the repeat count to -1."
-msgstr "將重複次數設定為 -1 表示永遠重複播放。"
-
-#: src/modplug/plugin_main.c:236
+#: src/modplug/modplugbmp.h:53
 msgid "ModPlug (Module Player)"
 msgstr "ModPlug (MOD 播放器)"
 
-#: src/mpg123/mpg123.c:210
-msgid "Surround"
-msgstr "環繞"
+#: src/modplug/plugin_main.cc:53
+msgid "<b>Resolution</b>"
+msgstr "<b>解析度</b>"
 
-#: src/mpg123/mpg123.c:412
+#: src/modplug/plugin_main.cc:54
+msgid "8-bit"
+msgstr "8-bit"
+
+#: src/modplug/plugin_main.cc:55
+msgid "16-bit"
+msgstr "16-bit"
+
+#: src/modplug/plugin_main.cc:56
+msgid "<b>Channels</b>"
+msgstr "<b>聲道</b>"
+
+#: src/modplug/plugin_main.cc:60
+msgid "Nearest (fastest)"
+msgstr "最近點取樣(最快)"
+
+#: src/modplug/plugin_main.cc:61
+msgid "Linear (fast)"
+msgstr "線性取樣(快)"
+
+#: src/modplug/plugin_main.cc:62
+msgid "Spline (good)"
+msgstr "曲線函數(佳)"
+
+#: src/modplug/plugin_main.cc:63
+msgid "Polyphase (best)"
+msgstr "多相位取樣(最佳)"
+
+#: src/modplug/plugin_main.cc:64
+msgid "<b>Sample rate</b>"
+msgstr ""
+
+#: src/modplug/plugin_main.cc:65
+msgid "22 kHz"
+msgstr "22 kHz"
+
+#: src/modplug/plugin_main.cc:66
+msgid "44 kHz"
+msgstr "44 kHz"
+
+#: src/modplug/plugin_main.cc:67
+msgid "48 kHz"
+msgstr "48 kHz"
+
+#: src/modplug/plugin_main.cc:68
+msgid "96 kHz"
+msgstr "96 kHz"
+
+#: src/modplug/plugin_main.cc:72 src/modplug/plugin_main.cc:77
+#: src/modplug/plugin_main.cc:82
+msgid "Level:"
+msgstr "強度："
+
+#: src/modplug/plugin_main.cc:78
+msgid "Cutoff:"
+msgstr "裁切："
+
+#: src/modplug/plugin_main.cc:91
+msgid "<b>Reverb</b>"
+msgstr "<b>殘響</b>"
+
+#: src/modplug/plugin_main.cc:94
+msgid "<b>Bass Boost</b>"
+msgstr "<b>重低音強化</b>"
+
+#: src/modplug/plugin_main.cc:97
+msgid "<b>Surround</b>"
+msgstr "<b>環繞音效</b>"
+
+#: src/modplug/plugin_main.cc:100
+msgid "<b>Preamp</b>"
+msgstr "<b>前置放大</b>"
+
+#: src/modplug/plugin_main.cc:107
+msgid "Oversample"
+msgstr "超取樣"
+
+#: src/modplug/plugin_main.cc:108
+msgid "Noise reduction"
+msgstr "降噪"
+
+#: src/modplug/plugin_main.cc:109
+msgid "Play Amiga MODs"
+msgstr "播放 Amiga MOD 檔案"
+
+#: src/modplug/plugin_main.cc:110
+msgid "<b>Repeat</b>"
+msgstr "<b>重複</b>"
+
+#: src/modplug/plugin_main.cc:111
+msgid "Repeat count:"
+msgstr "重複次數："
+
+#: src/modplug/plugin_main.cc:112
+msgid "To repeat forever, set the repeat count to -1."
+msgstr "將重複次數設定為 -1 表示永遠重複播放。"
+
+#: src/modplug/plugin_main.cc:125 src/sid/xs_config.cc:106
+msgid "These settings will take effect when Audacious is restarted."
+msgstr ""
+
+#: src/mpg123/mpg123.cc:54
 msgid "MPG123 Plugin"
 msgstr "MPG123 外掛"
 
-#: src/mpris2/plugin.c:403
+#: src/mpg123/mpg123.cc:83
+msgid "<b>Advanced</b>"
+msgstr "<b>進階</b>"
+
+#: src/mpg123/mpg123.cc:84
+msgid "Use accurate length calculation (slow)"
+msgstr ""
+
+#: src/mpg123/mpg123.cc:248
+msgid "Surround"
+msgstr "環繞"
+
+#: src/mpris2/plugin.cc:39
 msgid "MPRIS 2 Server"
 msgstr "MPRIS 2 伺服器"
 
-#: src/neon/neon.c:1056
+#: src/neon/neon.cc:97
 msgid "Neon HTTP/HTTPS Plugin"
 msgstr "Neon HTTP／HTTPS 外掛"
 
-#: src/notify/event.c:65
+#: src/neon/neon.cc:521
+msgid "Error parsing redirect"
+msgstr ""
+
+#: src/neon/neon.cc:535
+msgid "Unknown HTTP error"
+msgstr ""
+
+#: src/neon/neon.cc:569
+msgid "Error parsing URL"
+msgstr ""
+
+#: src/neon/neon.cc:632
+msgid "Too many redirects"
+msgstr ""
+
+#: src/notify/event.cc:62
 msgid "Stopped"
 msgstr "已停止"
 
-#: src/notify/event.c:65
+#: src/notify/event.cc:62
 msgid "Audacious is not playing."
 msgstr "Audacious 非播放中。"
 
-#: src/notify/notify.c:33
-msgid ""
-"Desktop Notifications Plugin for Audacious\n"
-"Copyright (C) 2010 Maximilian Bogner\n"
-"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
-"\n"
-"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
-"\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"Desktop Notifications Plugin for Audacious\n"
-"Copyright (C) 2010 Maximilian Bogner\n"
-"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
-"\n"
-"This plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.\n"
-"\n"
-"This plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
-
-#: src/notify/notify.c:77
-msgid "Show playback controls"
-msgstr "顯示播放控制元件"
-
-#: src/notify/notify.c:80
-msgid "Always show notification"
-msgstr "永遠顯示通知"
-
-#: src/notify/notify.c:92
+#: src/notify/notify.cc:42
 msgid "Desktop Notifications"
 msgstr "桌面通知"
 
-#: src/notify/osd.c:57
+#: src/notify/notify.cc:60
+msgid ""
+"Desktop Notifications Plugin for Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Desktop Notifications Plugin for Audacious\n"
+"Copyright (C) 2010 Maximilian Bogner\n"
+"Copyright (C) 2011-2013 John Lindgren and Jean-Alexandre Anglès d'Auriac\n"
+"\n"
+"This plugin is free software: you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This plugin is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+
+#: src/notify/notify.cc:110
+msgid "Show playback controls"
+msgstr "顯示播放控制元件"
+
+#: src/notify/notify.cc:112
+msgid "Always show notification"
+msgstr "永遠顯示通知"
+
+#: src/notify/notify.cc:114
+msgid "Include album name in notification"
+msgstr ""
+
+#: src/notify/osd.cc:58
 msgid "Show"
 msgstr "顯示"
 
-#: src/notify/osd.c:65
-#: src/skins/menus.c:79
+#: src/notify/osd.cc:66 src/skins/menus.cc:88
 msgid "Pause"
 msgstr "暫停"
 
-#: src/notify/osd.c:72
-#: src/skins/menus.c:82
+#: src/notify/osd.cc:73 src/qtui/main_window.cc:70 src/skins/menus.cc:91
 msgid "Next"
 msgstr "下一個"
 
-#: src/oss4/plugin.c:38
-msgid "1. Default device"
-msgstr "1. 預設裝置"
-
-#: src/oss4/plugin.c:77
-#: src/sndio/sndio.c:393
-msgid "Audio device:"
-msgstr "音訊裝置："
-
-#: src/oss4/plugin.c:79
-msgid "Use alternate device:"
-msgstr "使用替代裝置："
-
-#: src/oss4/plugin.c:83
-msgid "Save volume between sessions."
-msgstr "儲存不同工作階段的音量。"
-
-#: src/oss4/plugin.c:85
-msgid "Enable format conversions made by the OSS software."
-msgstr "啟用格式轉換 (使用 OSS 軟體)。"
-
-#: src/oss4/plugin.c:87
-msgid "Enable exclusive mode to prevent virtual mixing."
-msgstr "啟用獨占模式以防止虛擬混音。"
-
-#: src/oss4/plugin.c:110
-msgid ""
-"OSS4 Output Plugin for Audacious\n"
-"Copyright 2010-2012 Michał Lipski\n"
-"\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
-msgstr ""
-"OSS4 Output Plugin for Audacious\n"
-"Copyright 2010-2012 Michał Lipski\n"
-"\n"
-"I would like to thank people on #audacious, especially Tony Vroon and John Lindgren and of course the authors of the previous OSS plugin."
-
-#: src/oss4/plugin.c:117
+#: src/oss4/oss.h:93
 msgid "OSS4 Output"
 msgstr "OSS4 輸出"
 
-#: src/pls/pls.c:102
+#: src/oss4/oss.h:95
+msgid "OSS3 Output"
+msgstr ""
+
+#: src/oss4/plugin.cc:35
+msgid "Default device"
+msgstr ""
+
+#: src/oss4/plugin.cc:77
+msgid "Audio device:"
+msgstr "音訊裝置："
+
+#: src/oss4/plugin.cc:80
+msgid "Use alternate device:"
+msgstr "使用替代裝置："
+
+#: src/oss4/plugin.cc:84
+msgid "Save volume between sessions."
+msgstr "儲存不同工作階段的音量。"
+
+#: src/oss4/plugin.cc:86
+msgid "Enable format conversions made by the OSS software."
+msgstr "啟用格式轉換 (使用 OSS 軟體)。"
+
+#: src/oss4/plugin.cc:88
+msgid "Enable exclusive mode to prevent virtual mixing."
+msgstr "啟用獨占模式以防止虛擬混音。"
+
+#: src/oss4/plugin.cc:100
+msgid ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
+msgstr ""
+"OSS4 Output Plugin for Audacious\n"
+"Copyright 2010-2012 Michał Lipski\n"
+"\n"
+"I would like to thank people on #audacious, especially Tony Vroon and John "
+"Lindgren and of course the authors of the previous OSS plugin."
+
+#: src/playlist-manager/playlist-manager.cc:37
+msgid "Playlist Manager"
+msgstr ""
+
+#: src/playlist-manager/playlist-manager.cc:226
+msgid "Entries"
+msgstr ""
+
+#: src/playlist-manager/playlist-manager.cc:245
+msgid "_Remove"
+msgstr ""
+
+#: src/playlist-manager/playlist-manager.cc:246
+msgid "Ren_ame"
+msgstr ""
+
+#: src/pls/pls.cc:35
 msgid "PLS Playlists"
 msgstr "PLS 播放清單"
 
-#: src/psf/plugin.c:209
+#: src/psf/plugin.cc:45
 msgid "OpenPSF PSF1/PSF2 Decoder"
 msgstr "OpenPSF PSF1／PSF2 解碼器"
 
-#: src/pulse_audio/pulse_audio.c:644
-msgid ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-msgstr ""
-"Audacious PulseAudio Output Plugin\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
-"USA."
-
-#: src/pulse_audio/pulse_audio.c:662
+#: src/pulse_audio/pulse_audio.cc:38
 msgid "PulseAudio Output"
 msgstr "PulseAudio 輸出"
 
-#: src/resample/resample.c:165
+#: src/pulse_audio/pulse_audio.cc:611
+msgid ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+msgstr ""
+"Audacious PulseAudio Output Plugin\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,\n"
+"USA."
+
+#: src/qtaudio/qtaudio.cc:49
+msgid "QtMultimedia Output"
+msgstr ""
+
+#: src/qtaudio/qtaudio.cc:77
+msgid ""
+"QtMultimedia Audio Output Plugin for Audacious\n"
+"Copyright 2014 William Pitcock\n"
+"\n"
+"Based on SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+
+#: src/qtui/dialog_windows.cc:31
+msgid "Working ..."
+msgstr ""
+
+#: src/qtui/filter_input.cc:45 src/skins/ui_playlist.cc:221
+msgid "Search"
+msgstr "搜尋"
+
+#: src/qtui/main_window_actions.cc:97
+msgid "_Log Inspector ..."
+msgstr ""
+
+#: src/qtui/main_window.cc:64
+msgid "Open Files"
+msgstr ""
+
+#: src/qtui/main_window.cc:65
+msgid "Add Files"
+msgstr ""
+
+#: src/qtui/main_window.cc:69 src/skins/menus.cc:90
+msgid "Previous"
+msgstr "上一個"
+
+#: src/qtui/main_window.cc:75 src/skins/menus.cc:82
+msgid "Repeat"
+msgstr "重複"
+
+#: src/qtui/main_window.cc:77 src/skins/menus.cc:83
+msgid "Shuffle"
+msgstr "隨機"
+
+#: src/qtui/qtui.cc:39
+msgid "Qt Interface"
+msgstr ""
+
+#: src/resample/resample.cc:43
+msgid "Sample Rate Converter"
+msgstr "取樣率轉換"
+
+#: src/resample/resample.cc:183
 msgid ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
@@ -2716,98 +2769,104 @@ msgstr ""
 "Sample Rate Converter Plugin for Audacious\n"
 "Copyright 2010-2012 John Lindgren"
 
-#: src/resample/resample.c:169
+#: src/resample/resample.cc:187
 msgid "Skip/repeat samples"
 msgstr "跳過／重複取樣"
 
-#: src/resample/resample.c:170
+#: src/resample/resample.cc:188
 msgid "Linear interpolation"
 msgstr "線性內插"
 
-#: src/resample/resample.c:171
+#: src/resample/resample.cc:189
 msgid "Fast sinc interpolation"
 msgstr "快速 sinc 內插"
 
-#: src/resample/resample.c:172
+#: src/resample/resample.cc:190
 msgid "Medium sinc interpolation"
 msgstr "中等 sinc 內插"
 
-#: src/resample/resample.c:173
+#: src/resample/resample.cc:191
 msgid "Best sinc interpolation"
 msgstr "最佳 sinc 內插"
 
-#: src/resample/resample.c:176
+#: src/resample/resample.cc:195
 msgid "<b>Conversion</b>"
 msgstr "<b>轉換</b>"
 
-#: src/resample/resample.c:177
+#: src/resample/resample.cc:196
 msgid "Method:"
 msgstr "演算法："
 
-#: src/resample/resample.c:180
-#: src/sox-resampler/sox-resampler.c:153
+#: src/resample/resample.cc:199 src/sox-resampler/sox-resampler.cc:161
 msgid "Rate:"
 msgstr "取樣率："
 
-#: src/resample/resample.c:183
+#: src/resample/resample.cc:202
 msgid "<b>Rate Mappings</b>"
 msgstr "<b>取樣率映射</b>"
 
-#: src/resample/resample.c:184
+#: src/resample/resample.cc:203
 msgid "Use rate mappings"
 msgstr "使用取樣率映射"
 
-#: src/resample/resample.c:186
+#: src/resample/resample.cc:205
 msgid "8 kHz:"
 msgstr "8 kHz："
 
-#: src/resample/resample.c:189
+#: src/resample/resample.cc:209
 msgid "16 kHz:"
 msgstr "16 kHz："
 
-#: src/resample/resample.c:192
+#: src/resample/resample.cc:213
 msgid "22.05 kHz:"
 msgstr "22.05 kHz："
 
-#: src/resample/resample.c:195
+#: src/resample/resample.cc:217
+msgid "32.0 kHz:"
+msgstr "32.0 kHz："
+
+#: src/resample/resample.cc:221
 msgid "44.1 kHz:"
 msgstr "44.1 kHz："
 
-#: src/resample/resample.c:198
+#: src/resample/resample.cc:225
 msgid "48 kHz:"
 msgstr "48 kHz："
 
-#: src/resample/resample.c:201
+#: src/resample/resample.cc:229
+msgid "88.2 kHz:"
+msgstr "88.2 kHz："
+
+#: src/resample/resample.cc:233
 msgid "96 kHz:"
 msgstr "96 kHz："
 
-#: src/resample/resample.c:204
+#: src/resample/resample.cc:237
+msgid "176.4 kHz:"
+msgstr "176.4 kHz："
+
+#: src/resample/resample.cc:241
 msgid "192 kHz:"
 msgstr "192 kHz："
 
-#: src/resample/resample.c:214
-msgid "Sample Rate Converter"
-msgstr "取樣率轉換"
-
-#: src/scrobbler2/config_window.c:41
+#: src/scrobbler2/config_window.cc:41
 #, c-format
 msgid "OK. Scrobbling for user: %s"
 msgstr "確認。上傳使用者 %s 的播放資訊"
 
-#: src/scrobbler2/config_window.c:53
+#: src/scrobbler2/config_window.cc:54
 msgid "Permission Denied"
 msgstr "存取被拒"
 
-#: src/scrobbler2/config_window.c:55
+#: src/scrobbler2/config_window.cc:56
 msgid "Access the following link to allow Audacious to scrobble your plays:"
 msgstr "點選下列連結允許 Audacious 上傳您的播放資訊："
 
-#: src/scrobbler2/config_window.c:64
+#: src/scrobbler2/config_window.cc:66
 msgid "Keep this window open and click 'Check Permission' again.\n"
 msgstr "請保持這個視窗的開啟並再次點選「檢查權限」。\n"
 
-#: src/scrobbler2/config_window.c:67
-#: src/scrobbler2/config_window.c:78
+#: src/scrobbler2/config_window.cc:69 src/scrobbler2/config_window.cc:80
 msgid ""
 "Don't worry. Your scrobbles are saved on your computer.\n"
 "They will be submitted as soon as Audacious is allowed to do so."
@@ -2815,31 +2874,36 @@ msgstr ""
 "別擔心。您的資訊已經儲存在電腦上。\n"
 "Audacious 會在狀況允許下盡快地將它們上傳。"
 
-#: src/scrobbler2/config_window.c:75
+#: src/scrobbler2/config_window.cc:77
 msgid "Network Problem."
 msgstr "網路發生問題。"
 
-#: src/scrobbler2/config_window.c:76
+#: src/scrobbler2/config_window.cc:78
 msgid "There was a problem contacting Last.fm. Please try again later."
 msgstr "存取 Last.fm 時發生問題。請稍候再試。"
 
-#: src/scrobbler2/config_window.c:108
+#: src/scrobbler2/config_window.cc:110
 msgid "Checking..."
 msgstr "檢查中..."
 
-#: src/scrobbler2/config_window.c:174
+#: src/scrobbler2/config_window.cc:176
 msgid "C_heck Permission"
 msgstr "檢查權限(_H)"
 
-#: src/scrobbler2/config_window.c:175
+#: src/scrobbler2/config_window.cc:177
 msgid "_Revoke Permission"
 msgstr "撤銷授權(_R)"
 
-#: src/scrobbler2/config_window.c:222
-msgid "You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
+#: src/scrobbler2/config_window.cc:220
+msgid ""
+"You need to allow Audacious to scrobble tracks to your Last.fm account.\n"
 msgstr "您需要允許 Audacious 上傳音軌的播放資訊到您的 Last.fm 帳號。\n"
 
-#: src/scrobbler2/scrobbler.c:218
+#: src/scrobbler2/scrobbler.cc:29
+msgid "Scrobbler 2.0"
+msgstr "Scrobbler 2.0"
+
+#: src/scrobbler2/scrobbler.cc:224
 msgid ""
 "The Scrobbler plugin could not be started.\n"
 "There might be a problem with your installation."
@@ -2847,27 +2911,25 @@ msgstr ""
 "無法啟動 Scrobbler 外掛。\n"
 "您的安裝可能有些問題。"
 
-#: src/scrobbler2/scrobbler.c:294
+#: src/scrobbler2/scrobbler.cc:289
 msgid ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
 "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "\n"
-"Thanks to John Lindgren for giving me a hand at the beginning of this project.\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this "
+"project.\n"
 "\n"
 msgstr ""
 "Audacious Scrobbler Plugin 2.0 by Pitxyoki,\n"
 "\n"
 "Copyright © 2012-2013 Luís M. Picciochi Oliveira <Pitxyoki@Gmail.com>\n"
 "\n"
-"Thanks to John Lindgren for giving me a hand at the beginning of this project.\n"
+"Thanks to John Lindgren for giving me a hand at the beginning of this "
+"project.\n"
 "\n"
 
-#: src/scrobbler2/scrobbler.c:300
-msgid "Scrobbler 2.0"
-msgstr "Scrobbler 2.0"
-
-#: src/scrobbler2/scrobbler_communication.c:727
+#: src/scrobbler2/scrobbler_communication.cc:642
 msgid ""
 "Audacious is now using an improved version of the Last.fm Scrobbler.\n"
 "Please check the Preferences for the Scrobbler plugin."
@@ -2875,934 +2937,1002 @@ msgstr ""
 "Audacious 現在使用改良版的 Last.fm 播放資訊上傳功能。\n"
 "請參閱偏好設定中的播放資訊外掛。"
 
-#: src/sdlout/plugin.c:26
-msgid ""
-"SDL Output Plugin for Audacious\n"
-"Copyright 2010 John Lindgren"
-msgstr ""
-"SDL Output Plugin for Audacious\n"
-"Copyright 2010 John Lindgren"
-
-#: src/sdlout/plugin.c:31
+#: src/sdlout/sdlout.cc:48
 msgid "SDL Output"
 msgstr "SDL 輸出"
 
-#: src/search-tool/search-tool.c:104
-#: src/search-tool/search-tool.c:114
+#: src/sdlout/sdlout.cc:77
+msgid ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+msgstr ""
+"SDL Output Plugin for Audacious\n"
+"Copyright 2010 John Lindgren"
+
+#: src/search-tool/search-tool.cc:116 src/search-tool/search-tool.cc:124
 msgid "Library"
 msgstr "媒體櫃"
 
-#: src/search-tool/search-tool.c:211
-msgid "Unknown Artist"
-msgstr "未知的藝人"
-
-#: src/search-tool/search-tool.c:213
-msgid "Unknown Album"
-msgstr "未知的專輯"
-
-#: src/search-tool/search-tool.c:625
+#: src/search-tool/search-tool.cc:394
 #, c-format
-msgid ""
-"%s\n"
-" on %s by %s"
+msgid "%d result"
+msgid_plural "%d results"
+msgstr[0] ""
+
+#: src/search-tool/search-tool.cc:400
+#, c-format
+msgid "(%d hidden)"
+msgid_plural "(%d hidden)"
+msgstr[0] ""
+
+#: src/search-tool/search-tool.cc:594
+#, c-format
+msgid "%d song"
+msgid_plural "%d songs"
+msgstr[0] ""
+
+#: src/search-tool/search-tool.cc:601
+msgid "of this genre"
 msgstr ""
-"%s\n"
-" 於「%s」由「%s」演唱"
 
-#: src/search-tool/search-tool.c:631
-#, c-format
-msgid "%d album"
-msgid_plural "%d albums"
-msgstr[0] "%d 張專輯"
+#: src/search-tool/search-tool.cc:607
+msgid "on"
+msgstr ""
 
-#: src/search-tool/search-tool.c:633
-#, c-format
-msgid ""
-"%s\n"
-" %s, %d song"
-msgid_plural ""
-"%s\n"
-" %s, %d songs"
-msgstr[0] ""
-"%s\n"
-" %s，%d 首歌曲"
+#: src/search-tool/search-tool.cc:607
+msgid "by"
+msgstr ""
 
-#: src/search-tool/search-tool.c:639
-#, c-format
-msgid ""
-"%s\n"
-" %d song by %s"
-msgid_plural ""
-"%s\n"
-" %d songs by %s"
-msgstr[0] ""
-"%s\n"
-" %d 首歌曲由「%s」演唱"
-
-#: src/search-tool/search-tool.c:675
+#: src/search-tool/search-tool.cc:643
 msgid "_Create Playlist"
 msgstr "建立播放清單(_C)"
 
-#: src/search-tool/search-tool.c:676
+#: src/search-tool/search-tool.cc:645
 msgid "_Add to Playlist"
 msgstr "加到播放清單(_A)"
 
-#: src/search-tool/search-tool.c:713
+#: src/search-tool/search-tool.cc:684
 msgid "Search library"
 msgstr "搜尋媒體櫃"
 
-#: src/search-tool/search-tool.c:717
-msgid "To import your music library into Audacious, choose a folder and then click the \"refresh\" icon."
-msgstr "要將您的媒體櫃匯入 Audacious，請選擇目標資料夾並且按下 \"重新整理\" 圖示。"
+#: src/search-tool/search-tool.cc:688
+msgid ""
+"To import your music library into Audacious, choose a folder and then click "
+"the \"refresh\" icon."
+msgstr ""
+"要將您的媒體櫃匯入 Audacious，請選擇目標資料夾並且按下 \"重新整理\" 圖示。"
 
-#: src/search-tool/search-tool.c:725
+#: src/search-tool/search-tool.cc:696
 msgid "Please wait ..."
 msgstr "請稍候 ..."
 
-#: src/search-tool/search-tool.c:747
+#: src/search-tool/search-tool.cc:723
 msgid "Choose Folder"
 msgstr "選擇資料夾"
 
-#: src/search-tool/search-tool.c:786
-msgid "Search Tool"
-msgstr "搜尋工具"
+#: src/sid/xmms-sid.cc:43
+msgid "SID Player"
+msgstr ""
 
-#: src/skins/menus.c:56
+#: src/sid/xs_config.cc:61
+msgid "<b>Output</b>"
+msgstr ""
+
+#: src/sid/xs_config.cc:62
+msgid "Channels:"
+msgstr ""
+
+#: src/sid/xs_config.cc:68
+msgid "<b>Emulation</b>"
+msgstr ""
+
+#: src/sid/xs_config.cc:69
+msgid "Emulate MOS 8580 (default: MOS 6581)"
+msgstr ""
+
+#: src/sid/xs_config.cc:71
+msgid "Do not automatically select chip model"
+msgstr ""
+
+#: src/sid/xs_config.cc:73
+msgid "Emulate filter"
+msgstr ""
+
+#: src/sid/xs_config.cc:75
+msgid "Clock speed:"
+msgstr ""
+
+#: src/sid/xs_config.cc:78
+msgid "Do not automatically select clock speed"
+msgstr ""
+
+#: src/sid/xs_config.cc:80
+msgid "<b>Playback time</b>"
+msgstr ""
+
+#: src/sid/xs_config.cc:81
+msgid "Set maximum playback time:"
+msgstr ""
+
+#: src/sid/xs_config.cc:87
+msgid "Use only when song length is unknown"
+msgstr ""
+
+#: src/sid/xs_config.cc:90
+msgid "Set minimum playback time:"
+msgstr ""
+
+#: src/sid/xs_config.cc:96
+msgid "<b>Subtunes</b>"
+msgstr ""
+
+#: src/sid/xs_config.cc:97
+msgid "Enable subtunes"
+msgstr ""
+
+#: src/sid/xs_config.cc:99
+msgid "Ignore subtunes shorter than:"
+msgstr ""
+
+#: src/sid/xs_config.cc:105
+msgid "<b>Note</b>"
+msgstr ""
+
+#: src/silence-removal/silence-removal.cc:39
+msgid "Silence Removal"
+msgstr ""
+
+#: src/silence-removal/silence-removal.cc:58
+msgid ""
+"Silence Removal Plugin for Audacious\n"
+"Copyright 2014 John Lindgren"
+msgstr ""
+
+#: src/silence-removal/silence-removal.cc:67
+msgid "<b>Silence Removal</b>"
+msgstr ""
+
+#: src/silence-removal/silence-removal.cc:68
+msgid "Threshold:"
+msgstr ""
+
+#: src/silence-removal/silence-removal.cc:70
+msgid "dB"
+msgstr ""
+
+#: src/skins/menus.cc:64
 msgid "Open Files ..."
 msgstr "開啟檔案 ..."
 
-#: src/skins/menus.c:57
+#: src/skins/menus.cc:65
 msgid "Open URL ..."
 msgstr "開啟網址 ..."
 
-#: src/skins/menus.c:59
+#: src/skins/menus.cc:66
+msgid "Search Library"
+msgstr ""
+
+#: src/skins/menus.cc:68
 msgid "Playback"
 msgstr "播放"
 
-#: src/skins/menus.c:60
+#: src/skins/menus.cc:69
 msgid "Playlist"
 msgstr "播放清單"
 
-#: src/skins/menus.c:61
+#: src/skins/menus.cc:70
 msgid "View"
 msgstr "檢視"
 
-#: src/skins/menus.c:63
-#: src/skins/menus.c:133
-#: src/skins/menus.c:146
-#: src/skins/menus.c:203
+#: src/skins/menus.cc:72 src/skins/menus.cc:136 src/skins/menus.cc:149
+#: src/skins/menus.cc:208
 msgid "Services"
 msgstr "服務"
 
-#: src/skins/menus.c:65
+#: src/skins/menus.cc:74
 msgid "About ..."
 msgstr "關於 ..."
 
-#: src/skins/menus.c:66
+#: src/skins/menus.cc:75
 msgid "Settings ..."
 msgstr "設定 ..."
 
-#: src/skins/menus.c:67
+#: src/skins/menus.cc:76
 msgid "Quit"
 msgstr "離開"
 
-#: src/skins/menus.c:71
-#: src/skins/menus.c:195
+#: src/skins/menus.cc:80 src/skins/menus.cc:200
 msgid "Song Info ..."
 msgstr "歌曲資訊 ..."
 
-#: src/skins/menus.c:73
-msgid "Repeat"
-msgstr "重複"
-
-#: src/skins/menus.c:74
-msgid "Shuffle"
-msgstr "隨機"
-
-#: src/skins/menus.c:75
+#: src/skins/menus.cc:84
 msgid "No Playlist Advance"
 msgstr "不要切換播放清單"
 
-#: src/skins/menus.c:76
+#: src/skins/menus.cc:85
 msgid "Stop After This Song"
 msgstr "播放完目前歌曲後停止"
 
-#: src/skins/menus.c:81
-msgid "Previous"
-msgstr "上一個"
-
-#: src/skins/menus.c:84
+#: src/skins/menus.cc:93
 msgid "Set A-B Repeat"
 msgstr "設定 A-B 循環"
 
-#: src/skins/menus.c:85
+#: src/skins/menus.cc:94
 msgid "Clear A-B Repeat"
 msgstr "清除 A-B 循環"
 
-#: src/skins/menus.c:87
+#: src/skins/menus.cc:96
 msgid "Jump to Song ..."
 msgstr "跳轉到指定歌曲 ..."
 
-#: src/skins/menus.c:88
+#: src/skins/menus.cc:97
 msgid "Jump to Time ..."
 msgstr "跳轉到指定時間 ..."
 
-#: src/skins/menus.c:92
+#: src/skins/menus.cc:101
 msgid "Play This Playlist"
 msgstr "播放此清單"
 
-#: src/skins/menus.c:94
+#: src/skins/menus.cc:103
 msgid "New Playlist"
 msgstr "新增播放清單"
 
-#: src/skins/menus.c:95
+#: src/skins/menus.cc:104
 msgid "Rename Playlist ..."
 msgstr "重新命名播放清單 ..."
 
-#: src/skins/menus.c:96
+#: src/skins/menus.cc:105
 msgid "Remove Playlist"
 msgstr "移除播放清單"
 
-#: src/skins/menus.c:98
+#: src/skins/menus.cc:107
 msgid "Previous Playlist"
 msgstr "上一個播放清單"
 
-#: src/skins/menus.c:99
+#: src/skins/menus.cc:108
 msgid "Next Playlist"
 msgstr "下一個播放清單"
 
-#: src/skins/menus.c:101
+#: src/skins/menus.cc:110
 msgid "Import Playlist ..."
 msgstr "匯入播放清單 ..."
 
-#: src/skins/menus.c:102
+#: src/skins/menus.cc:111
 msgid "Export Playlist ..."
 msgstr "匯出播放清單 ..."
 
-#: src/skins/menus.c:104
+#: src/skins/menus.cc:113
 msgid "Playlist Manager ..."
 msgstr "播放清單管理 ..."
 
-#: src/skins/menus.c:105
+#: src/skins/menus.cc:114
 msgid "Queue Manager ..."
 msgstr "佇列管理 ..."
 
-#: src/skins/menus.c:107
+#: src/skins/menus.cc:116
 msgid "Refresh Playlist"
 msgstr "重整播放清單"
 
-#: src/skins/menus.c:111
+#: src/skins/menus.cc:120
 msgid "Show Playlist Editor"
 msgstr "顯示播放清單編輯器"
 
-#: src/skins/menus.c:113
+#: src/skins/menus.cc:121
 msgid "Show Equalizer"
 msgstr "顯示等化器"
 
-#: src/skins/menus.c:116
+#: src/skins/menus.cc:123
 msgid "Show Remaining Time"
 msgstr "顯示剩餘時間"
 
-#: src/skins/menus.c:119
+#: src/skins/menus.cc:125
 msgid "Always on Top"
 msgstr "永遠在最上層"
 
-#: src/skins/menus.c:121
+#: src/skins/menus.cc:126
 msgid "On All Workspaces"
 msgstr "在所有工作區顯示"
 
-#: src/skins/menus.c:124
+#: src/skins/menus.cc:128
 msgid "Roll Up Player"
 msgstr "捲起播放器"
 
-#: src/skins/menus.c:126
+#: src/skins/menus.cc:129
 msgid "Roll Up Playlist Editor"
 msgstr "捲起播放清單編輯器"
 
-#: src/skins/menus.c:128
+#: src/skins/menus.cc:130
 msgid "Roll Up Equalizer"
 msgstr "捲起等化器"
 
-#: src/skins/menus.c:135
+#: src/skins/menus.cc:132 src/skins/ui_main.cc:858
+msgid "Double Size"
+msgstr ""
+
+#: src/skins/menus.cc:138
 msgid "Add URL ..."
 msgstr "加入網址 ..."
 
-#: src/skins/menus.c:136
+#: src/skins/menus.cc:139
 msgid "Add Files ..."
 msgstr "加入檔案 ... "
 
-#: src/skins/menus.c:140
-#: src/skins/menus.c:167
-#: src/skins/menus.c:177
+#: src/skins/menus.cc:143 src/skins/menus.cc:170 src/skins/menus.cc:181
 msgid "By Title"
 msgstr "標題"
 
-#: src/skins/menus.c:141
-#: src/skins/menus.c:170
-#: src/skins/menus.c:180
-msgid "By Filename"
-msgstr "檔案名稱"
+#: src/skins/menus.cc:144 src/skins/menus.cc:174 src/skins/menus.cc:185
+msgid "By File Name"
+msgstr ""
 
-#: src/skins/menus.c:142
-#: src/skins/menus.c:171
-#: src/skins/menus.c:181
+#: src/skins/menus.cc:145 src/skins/menus.cc:175 src/skins/menus.cc:186
 msgid "By File Path"
 msgstr "檔案路徑"
 
-#: src/skins/menus.c:148
+#: src/skins/menus.cc:151
 msgid "Remove All"
 msgstr "全部移除"
 
-#: src/skins/menus.c:149
+#: src/skins/menus.cc:152
 msgid "Clear Queue"
 msgstr "清除佇列"
 
-#: src/skins/menus.c:151
+#: src/skins/menus.cc:154
 msgid "Remove Unavailable Files"
 msgstr "移除無法使用的檔案"
 
-#: src/skins/menus.c:152
+#: src/skins/menus.cc:155
 msgid "Remove Duplicates"
 msgstr "移除重複的項目"
 
-#: src/skins/menus.c:154
+#: src/skins/menus.cc:157
 msgid "Remove Unselected"
 msgstr "移除未選擇的項目"
 
-#: src/skins/menus.c:155
+#: src/skins/menus.cc:158
 msgid "Remove Selected"
 msgstr "移除選擇的項目"
 
-#: src/skins/menus.c:159
+#: src/skins/menus.cc:162
 msgid "Search and Select"
 msgstr "搜尋並選擇"
 
-#: src/skins/menus.c:161
+#: src/skins/menus.cc:164
 msgid "Invert Selection"
 msgstr "反向選擇"
 
-#: src/skins/menus.c:162
+#: src/skins/menus.cc:165
 msgid "Select None"
 msgstr "取消選擇"
 
-#: src/skins/menus.c:163
+#: src/skins/menus.cc:166
 msgid "Select All"
 msgstr "選擇全部"
 
-#: src/skins/menus.c:168
-#: src/skins/menus.c:178
+#: src/skins/menus.cc:171 src/skins/menus.cc:182
 msgid "By Album"
 msgstr "專輯"
 
-#: src/skins/menus.c:169
-#: src/skins/menus.c:179
+#: src/skins/menus.cc:172 src/skins/menus.cc:183
 msgid "By Artist"
 msgstr "藝人"
 
-#: src/skins/menus.c:172
-#: src/skins/menus.c:182
+#: src/skins/menus.cc:173 src/skins/menus.cc:184
+msgid "By Album Artist"
+msgstr ""
+
+#: src/skins/menus.cc:176 src/skins/menus.cc:187
 msgid "By Release Date"
 msgstr "發行日期"
 
-#: src/skins/menus.c:173
-#: src/skins/menus.c:183
+#: src/skins/menus.cc:177 src/skins/menus.cc:188
 msgid "By Track Number"
 msgstr "音軌編號"
 
-#: src/skins/menus.c:187
+#: src/skins/menus.cc:192
 msgid "Randomize List"
 msgstr "清單隨機排序"
 
-#: src/skins/menus.c:188
+#: src/skins/menus.cc:193
 msgid "Reverse List"
 msgstr "清單反向排序"
 
-#: src/skins/menus.c:190
+#: src/skins/menus.cc:195
 msgid "Sort Selected"
 msgstr "排序選擇的項目"
 
-#: src/skins/menus.c:191
+#: src/skins/menus.cc:196
 msgid "Sort List"
 msgstr "排序清單"
 
-#: src/skins/menus.c:197
+#: src/skins/menus.cc:202
 msgid "Cut"
 msgstr "剪下"
 
-#: src/skins/menus.c:198
+#: src/skins/menus.cc:203
 msgid "Copy"
 msgstr "複製"
 
-#: src/skins/menus.c:199
+#: src/skins/menus.cc:204
 msgid "Paste"
 msgstr "貼上"
 
-#: src/skins/menus.c:201
+#: src/skins/menus.cc:206
 msgid "Queue/Unqueue"
 msgstr "排入／移出佇列"
 
-#: src/skins/menus.c:207
+#: src/skins/menus.cc:212
 msgid "Load Preset ..."
 msgstr "載入樣式 ..."
 
-#: src/skins/menus.c:208
+#: src/skins/menus.cc:213
 msgid "Load Auto Preset ..."
 msgstr "讀取自動載入樣式 ..."
 
-#: src/skins/menus.c:209
+#: src/skins/menus.cc:214
 msgid "Load Default"
 msgstr "載入預設值"
 
-#: src/skins/menus.c:210
+#: src/skins/menus.cc:215
 msgid "Load Preset File ..."
 msgstr "從檔案載入樣式 ..."
 
-#: src/skins/menus.c:211
+#: src/skins/menus.cc:216
 msgid "Load EQF File ..."
 msgstr "載入 EQF 檔 ..."
 
-#: src/skins/menus.c:213
+#: src/skins/menus.cc:218
 msgid "Save Preset ..."
 msgstr "儲存樣式 ..."
 
-#: src/skins/menus.c:214
+#: src/skins/menus.cc:219
 msgid "Save Auto Preset ..."
 msgstr "儲存自動載入樣式 ..."
 
-#: src/skins/menus.c:215
+#: src/skins/menus.cc:220
 msgid "Save Default"
 msgstr "儲存預設值"
 
-#: src/skins/menus.c:216
+#: src/skins/menus.cc:221
 msgid "Save Preset File ..."
 msgstr "儲存樣式到檔案 ..."
 
-#: src/skins/menus.c:217
+#: src/skins/menus.cc:222
 msgid "Save EQF File ..."
 msgstr "儲存 EQF 檔 ..."
 
-#: src/skins/menus.c:219
+#: src/skins/menus.cc:224
 msgid "Delete Preset ..."
 msgstr "刪除樣式 ..."
 
-#: src/skins/menus.c:220
+#: src/skins/menus.cc:225
 msgid "Delete Auto Preset ..."
 msgstr "刪除自動載入樣式 ..."
 
-#: src/skins/menus.c:222
+#: src/skins/menus.cc:227
 msgid "Import Winamp Presets ..."
 msgstr "匯入 Winamp 樣式 ..."
 
-#: src/skins/menus.c:224
+#: src/skins/menus.cc:229
 msgid "Reset to Zero"
 msgstr "重置為零"
 
-#: src/skins/plugin.c:49
+#: src/skins/plugin.cc:48
 msgid "Winamp Classic Interface"
 msgstr "Winamp 傳統介面"
 
-#: src/skins/preset-browser.c:57
-#: src/skins/preset-list.c:375
-#: src/skins/preset-list.c:390
+#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:370
+#: src/skins/preset-list.cc:385
 msgid "Save"
 msgstr "儲存"
 
-#: src/skins/preset-browser.c:57
-#: src/skins/preset-list.c:342
-#: src/skins/preset-list.c:358
+#: src/skins/preset-browser.cc:57 src/skins/preset-list.cc:337
+#: src/skins/preset-list.cc:353
 msgid "Load"
 msgstr "載入"
 
-#: src/skins/preset-browser.c:82
+#: src/skins/preset-browser.cc:83
 msgid "Load Preset File"
 msgstr "從檔案載入樣式"
 
-#: src/skins/preset-browser.c:106
+#: src/skins/preset-browser.cc:100
 msgid "Load EQF File"
 msgstr "載入 EQF 檔"
 
-#: src/skins/preset-browser.c:122
+#: src/skins/preset-browser.cc:119
 msgid "Save Preset File"
 msgstr "儲存樣式到檔案"
 
-#: src/skins/preset-browser.c:144
+#: src/skins/preset-browser.cc:137
 msgid "Save EQF File"
 msgstr "儲存 EQF 檔"
 
-#: src/skins/preset-browser.c:162
+#: src/skins/preset-browser.cc:151
 msgid "Import Winamp Presets"
 msgstr "匯入 Winamp 樣式"
 
-#: src/skins/preset-list.c:289
+#: src/skins/preset-list.cc:284
 msgid "Presets"
 msgstr "樣式"
 
-#: src/skins/preset-list.c:339
+#: src/skins/preset-list.cc:334
 msgid "Load preset"
 msgstr "載入樣式"
 
-#: src/skins/preset-list.c:355
+#: src/skins/preset-list.cc:350
 msgid "Load auto-preset"
 msgstr "讀取自動載入樣式"
 
-#: src/skins/preset-list.c:371
+#: src/skins/preset-list.cc:366
 msgid "Save preset"
 msgstr "儲存樣式"
 
-#: src/skins/preset-list.c:386
+#: src/skins/preset-list.cc:381
 msgid "Save auto-preset"
 msgstr "儲存自動載入樣式"
 
-#: src/skins/preset-list.c:413
+#: src/skins/preset-list.cc:407
 msgid "Delete preset"
 msgstr "刪除樣式"
 
-#: src/skins/preset-list.c:429
+#: src/skins/preset-list.cc:423
 msgid "Delete auto-preset"
 msgstr "刪除自動載入樣式"
 
-#: src/skins/skins_cfg.c:181
-msgid "_Player:"
-msgstr "播放器(_P)："
+#: src/skins/skins_cfg.cc:176
+msgid "Player:"
+msgstr ""
 
-#: src/skins/skins_cfg.c:183
+#: src/skins/skins_cfg.cc:178
 msgid "Select main player window font:"
 msgstr "選擇播放器主視窗字型："
 
-#: src/skins/skins_cfg.c:184
-msgid "_Playlist:"
-msgstr "播放清單(_P)："
+#: src/skins/skins_cfg.cc:179
+msgid "Playlist:"
+msgstr ""
 
-#: src/skins/skins_cfg.c:186
+#: src/skins/skins_cfg.cc:181
 msgid "Select playlist font:"
 msgstr "選擇播放清單字型："
 
-#: src/skins/skins_cfg.c:191
+#: src/skins/skins_cfg.cc:187
 msgid "<b>Skin</b>"
 msgstr "<b>面板</b>"
 
-#: src/skins/skins_cfg.c:193
+#: src/skins/skins_cfg.cc:189
 msgid "<b>Fonts</b>"
 msgstr "<b>字型</b>"
 
-#: src/skins/skins_cfg.c:196
+#: src/skins/skins_cfg.cc:192
 msgid "Use bitmap fonts (supports ASCII only)"
 msgstr "使用點陣字型 (只支援 ASCII)"
 
-#: src/skins/skins_cfg.c:198
+#: src/skins/skins_cfg.cc:194
 msgid "Scroll song title"
 msgstr "捲動歌曲標題"
 
-#: src/skins/skins_cfg.c:200
+#: src/skins/skins_cfg.cc:196
 msgid "Scroll song title in both directions"
 msgstr "雙向捲動歌曲標題"
 
-#: src/skins/skins_cfg.c:205
+#: src/skins/skins_cfg.cc:201
 msgid "Analyzer"
 msgstr "分析儀"
 
-#: src/skins/skins_cfg.c:206
+#: src/skins/skins_cfg.cc:202
 msgid "Scope"
 msgstr "示波器"
 
-#: src/skins/skins_cfg.c:207
+#: src/skins/skins_cfg.cc:203
 msgid "Voiceprint / VU meter"
 msgstr "聲紋／VU 計"
 
-#: src/skins/skins_cfg.c:208
+#: src/skins/skins_cfg.cc:204
 msgid "Off"
 msgstr "關閉"
 
-#: src/skins/skins_cfg.c:212
-#: src/skins/skins_cfg.c:237
-#: src/skins/skins_cfg.c:243
+#: src/skins/skins_cfg.cc:208 src/skins/skins_cfg.cc:233
+#: src/skins/skins_cfg.cc:239
 msgid "Normal"
 msgstr "標準"
 
-#: src/skins/skins_cfg.c:213
-#: src/skins/skins_cfg.c:238
+#: src/skins/skins_cfg.cc:209 src/skins/skins_cfg.cc:234
 msgid "Fire"
 msgstr "火焰"
 
-#: src/skins/skins_cfg.c:214
+#: src/skins/skins_cfg.cc:210
 msgid "Vertical lines"
 msgstr "垂直線條"
 
-#: src/skins/skins_cfg.c:218
+#: src/skins/skins_cfg.cc:214
 msgid "Lines"
 msgstr "線條"
 
-#: src/skins/skins_cfg.c:219
+#: src/skins/skins_cfg.cc:215
 msgid "Bars"
 msgstr "棒狀"
 
-#: src/skins/skins_cfg.c:223
+#: src/skins/skins_cfg.cc:219
 msgid "Slowest"
 msgstr "最慢"
 
-#: src/skins/skins_cfg.c:224
+#: src/skins/skins_cfg.cc:220
 msgid "Slow"
 msgstr "慢"
 
-#: src/skins/skins_cfg.c:225
-#: src/sox-resampler/sox-resampler.c:145
+#: src/skins/skins_cfg.cc:221 src/sox-resampler/sox-resampler.cc:152
 msgid "Medium"
 msgstr "中等"
 
-#: src/skins/skins_cfg.c:226
+#: src/skins/skins_cfg.cc:222
 msgid "Fast"
 msgstr "快"
 
-#: src/skins/skins_cfg.c:227
+#: src/skins/skins_cfg.cc:223
 msgid "Fastest"
 msgstr "最快"
 
-#: src/skins/skins_cfg.c:231
+#: src/skins/skins_cfg.cc:227
 msgid "Dots"
 msgstr "點狀"
 
-#: src/skins/skins_cfg.c:232
+#: src/skins/skins_cfg.cc:228
 msgid "Line"
 msgstr "線條"
 
-#: src/skins/skins_cfg.c:233
+#: src/skins/skins_cfg.cc:229
 msgid "Solid"
 msgstr "實心"
 
-#: src/skins/skins_cfg.c:239
+#: src/skins/skins_cfg.cc:235
 msgid "Ice"
 msgstr "冰霜"
 
-#: src/skins/skins_cfg.c:244
+#: src/skins/skins_cfg.cc:240
 msgid "Smooth"
 msgstr "平滑"
 
-#: src/skins/skins_cfg.c:248
+#: src/skins/skins_cfg.cc:244
 msgid "<b>Type</b>"
 msgstr "<b>類型</b>"
 
-#: src/skins/skins_cfg.c:249
+#: src/skins/skins_cfg.cc:245
 msgid "Visualization type:"
 msgstr "視覺特效類型："
 
-#: src/skins/skins_cfg.c:252
+#: src/skins/skins_cfg.cc:248
 msgid "<b>Analyzer</b>"
 msgstr "<b>分析儀</b>"
 
-#: src/skins/skins_cfg.c:253
+#: src/skins/skins_cfg.cc:249
 msgid "Show peaks"
 msgstr "顯示峰值標記"
 
-#: src/skins/skins_cfg.c:255
+#: src/skins/skins_cfg.cc:251
 msgid "Coloring:"
 msgstr "顏色："
 
-#: src/skins/skins_cfg.c:258
+#: src/skins/skins_cfg.cc:254
 msgid "Style:"
 msgstr "樣式："
 
-#: src/skins/skins_cfg.c:261
+#: src/skins/skins_cfg.cc:257
 msgid "Falloff:"
 msgstr "陷落："
 
-#: src/skins/skins_cfg.c:264
+#: src/skins/skins_cfg.cc:260
 msgid "Peak falloff:"
 msgstr "峰值陷落："
 
-#: src/skins/skins_cfg.c:268
+#: src/skins/skins_cfg.cc:264
 msgid "Scope Style:"
 msgstr "示波器樣式："
 
-#: src/skins/skins_cfg.c:271
+#: src/skins/skins_cfg.cc:267
 msgid "Voiceprint Coloring:"
 msgstr "聲紋顏色："
 
-#: src/skins/skins_cfg.c:274
+#: src/skins/skins_cfg.cc:270
 msgid "VU Meter Style:"
 msgstr "VU 計樣式："
 
-#: src/skins/skins_cfg.c:280
+#: src/skins/skins_cfg.cc:276
 msgid "General"
 msgstr "一般"
 
-#: src/skins/skins_cfg.c:281
+#: src/skins/skins_cfg.cc:277
 msgid "Visualization"
 msgstr "視覺特效"
 
-#: src/skins/ui_equalizer.c:289
+#: src/skins/ui_equalizer.cc:288
 msgid "Preamp"
 msgstr "前置放大"
 
-#: src/skins/ui_equalizer.c:293
+#: src/skins/ui_equalizer.cc:292
 msgid "31 Hz"
 msgstr "31 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.cc:293
 msgid "63 Hz"
 msgstr "63 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.cc:293
 msgid "125 Hz"
 msgstr "125 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.cc:293
 msgid "250 Hz"
 msgstr "250 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.cc:293
 msgid "500 Hz"
 msgstr "500 Hz"
 
-#: src/skins/ui_equalizer.c:294
+#: src/skins/ui_equalizer.cc:293
 msgid "1 kHz"
 msgstr "1 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.cc:294
 msgid "2 kHz"
 msgstr "2 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.cc:294
 msgid "4 kHz"
 msgstr "4 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.cc:294
 msgid "8 kHz"
 msgstr "8 kHz"
 
-#: src/skins/ui_equalizer.c:295
+#: src/skins/ui_equalizer.cc:294
 msgid "16 kHz"
 msgstr "16 kHz"
 
-#: src/skins/ui_equalizer.c:337
+#: src/skins/ui_equalizer.cc:336
 msgid "Audacious Equalizer"
 msgstr "Audacious 等化器"
 
-#: src/skins/ui_main.c:686
+#: src/skins/ui_main.cc:692
 #, c-format
 msgid "Seek to %d:%-2.2d / %d:%-2.2d"
 msgstr "移動到 %d:%-2.2d／%d:%-2.2d"
 
-#: src/skins/ui_main.c:707
+#: src/skins/ui_main.cc:713
 #, c-format
 msgid "Volume: %d%%"
 msgstr "音量：%d％"
 
-#: src/skins/ui_main.c:730
+#: src/skins/ui_main.cc:736
 #, c-format
 msgid "Balance: %d%% left"
 msgstr "平衡：%d％ 偏左"
 
-#: src/skins/ui_main.c:732
+#: src/skins/ui_main.cc:738
 msgid "Balance: center"
 msgstr "平衡：中間"
 
-#: src/skins/ui_main.c:734
+#: src/skins/ui_main.cc:740
 #, c-format
 msgid "Balance: %d%% right"
 msgstr "平衡：%d％ 偏右"
 
-#: src/skins/ui_main.c:833
+#: src/skins/ui_main.cc:846
 msgid "Options Menu"
 msgstr "選單選項"
 
-#: src/skins/ui_main.c:837
+#: src/skins/ui_main.cc:850
 msgid "Disable 'Always On Top'"
 msgstr "關閉置頂"
 
-#: src/skins/ui_main.c:839
+#: src/skins/ui_main.cc:852
 msgid "Enable 'Always On Top'"
 msgstr "啟用置頂"
 
-#: src/skins/ui_main.c:842
+#: src/skins/ui_main.cc:855
 msgid "File Info Box"
 msgstr "檔案資訊視窗"
 
-#: src/skins/ui_main.c:1281
+#: src/skins/ui_main.cc:861
+msgid "Visualizations"
+msgstr ""
+
+#: src/skins/ui_main.cc:1325
 msgid "Repeat point A set."
 msgstr "已設定重複點 A。"
 
-#: src/skins/ui_main.c:1286
+#: src/skins/ui_main.cc:1330
 msgid "Repeat point B set."
 msgstr "已設定重複點 B。"
 
-#: src/skins/ui_main.c:1295
+#: src/skins/ui_main.cc:1339
 msgid "Repeat points cleared."
 msgstr "已清除重複點。"
 
-#: src/skins/ui_main_evlisteners.c:109
+#: src/skins/ui_main_evlisteners.cc:103
 msgid "Single mode."
 msgstr "單一模式。"
 
-#: src/skins/ui_main_evlisteners.c:111
+#: src/skins/ui_main_evlisteners.cc:105
 msgid "Playlist mode."
 msgstr "播放清單模式。"
 
-#: src/skins/ui_main_evlisteners.c:117
+#: src/skins/ui_main_evlisteners.cc:111
 msgid "Stopping after song."
 msgstr "播放完成後停止。"
 
-#: src/skins/ui_playlist.c:222
+#: src/skins/ui_playlist.cc:219
 msgid "Search entries in active playlist"
 msgstr "在使用中的播放清單裡搜尋播放項目"
 
-#: src/skins/ui_playlist.c:224
-msgid "Search"
-msgstr "搜尋"
+#: src/skins/ui_playlist.cc:226
+msgid ""
+"Select entries in playlist by filling one or more fields. Fields use regular "
+"expressions syntax, case-insensitive. If you don't know how regular "
+"expressions work, simply insert a literal portion of what you're searching "
+"for."
+msgstr ""
+"填入一個或多個欄位以選擇播放清單中的項目。欄位使用正規表示法，大小寫視為不同"
+"字元。若您不知道如何使用正規表示法，請輸入您想搜尋的部分文字。"
 
-#: src/skins/ui_playlist.c:229
-msgid "Select entries in playlist by filling one or more fields. Fields use regular expressions syntax, case-insensitive. If you don't know how regular expressions work, simply insert a literal portion of what you're searching for."
-msgstr "填入一個或多個欄位以選擇播放清單中的項目。欄位使用正規表示法，大小寫視為不同字元。若您不知道如何使用正規表示法，請輸入您想搜尋的部分文字。"
+#: src/skins/ui_playlist.cc:234
+msgid "Title:"
+msgstr ""
 
-#: src/skins/ui_playlist.c:237
-msgid "Title: "
-msgstr "標題："
+#: src/skins/ui_playlist.cc:241
+msgid "Album:"
+msgstr ""
 
-#: src/skins/ui_playlist.c:245
-msgid "Album: "
-msgstr "專輯："
+#: src/skins/ui_playlist.cc:248
+msgid "Artist:"
+msgstr ""
 
-#: src/skins/ui_playlist.c:253
-msgid "Artist: "
-msgstr "藝人："
+#: src/skins/ui_playlist.cc:255
+msgid "File Name:"
+msgstr ""
 
-#: src/skins/ui_playlist.c:261
-msgid "Filename: "
-msgstr "檔名："
-
-#: src/skins/ui_playlist.c:270
+#: src/skins/ui_playlist.cc:263
 msgid "Clear previous selection before searching"
 msgstr "進行搜尋前清空上次的選擇項目"
 
-#: src/skins/ui_playlist.c:273
+#: src/skins/ui_playlist.cc:266
 msgid "Automatically toggle queue for matching entries"
 msgstr "自動切換到符合項目的佇列"
 
-#: src/skins/ui_playlist.c:276
+#: src/skins/ui_playlist.cc:269
 msgid "Create a new playlist with matching entries"
 msgstr "以符合的項目建立新的播放清單"
 
-#: src/skins/ui_playlist.c:721
+#: src/skins/ui_playlist.cc:717
 msgid "Audacious Playlist Editor"
 msgstr "Audacious 播放清單編輯器"
 
-#: src/skins/ui_playlist.c:755
+#: src/skins/ui_playlist.cc:752
 #, c-format
 msgid "%s (%d of %d)"
 msgstr "%s (%d／%d)"
 
-#: src/skins/ui_skinselector.c:163
+#: src/skins/ui_skinselector.cc:164
 msgid "Archived Winamp 2.x skin"
 msgstr "壓縮的 Winamp 2.x 面板"
 
-#: src/skins/ui_skinselector.c:168
+#: src/skins/ui_skinselector.cc:169
 msgid "Unarchived Winamp 2.x skin"
 msgstr "未壓縮的 Winamp 2.x skin"
 
-#: src/skins/util.c:450
+#: src/skins/util.cc:441
 #, c-format
 msgid "Could not create directory (%s): %s\n"
 msgstr "無法建立資料夾 (%s)：%s\n"
 
-#: src/sndfile/plugin.c:350
-msgid ""
-"Based on the xmms_sndfile plugin:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-msgstr ""
-"Based on the xmms_sndfile plugin:\n"
-"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
-"\n"
-"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
-"\n"
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
-
-#: src/sndfile/plugin.c:369
+#: src/sndfile/plugin.cc:39
 msgid "Sndfile Plugin"
 msgstr "Sndfile 外掛"
 
-#: src/sndio/sndio.c:172
-msgid "About Sndio Output Plugin"
-msgstr "關於 Sndio 輸出外掛"
-
-#: src/sndio/sndio.c:173
+#: src/sndfile/plugin.cc:336
 msgid ""
-"Sndio Output Plugin\n"
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
 "\n"
-"Written by Thomas Pfaff <tpfaff@tp76.info>\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
+"\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Sndio 輸出外掛\n"
+"Based on the xmms_sndfile plugin:\n"
+"Copyright (C) 2000, 2002 Erik de Castro Lopo\n"
 "\n"
-"作者：Thomas Pfaff <tpfaff@tp76.info>\n"
-
-#: src/sndio/sndio.c:248
-msgid "Unsupported format"
-msgstr "未支援的格式"
-
-#: src/sndio/sndio.c:249
-msgid ""
-"A format not supported by the audio device was requested.\n"
+"Adapted for Audacious by Tony Vroon <chainsaw@gentoo.org>\n"
 "\n"
-"Please try again with the sndiod(1) server running."
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: src/sndio-ng/sndio.cc:44
+msgid "Sndio Output"
 msgstr ""
-"要求了未被音訊裝置支援的格式。\n"
-"\n"
-"請確認 sndiod(1) 伺服器已執行後重試。"
 
-#: src/sndio/sndio.c:384
-msgid "sndio device"
-msgstr "sndio 裝置"
+#: src/sndio-ng/sndio.cc:98
+msgid "Device (blank for default):"
+msgstr ""
 
-#: src/sndio/sndio.c:400
-msgid "(empty means default)"
-msgstr "(空白表示使用預設值)"
+#: src/sndio-ng/sndio.cc:100
+msgid "Save and restore volume:"
+msgstr ""
 
-#: src/sndio/sndio.c:416
-msgid "OK"
-msgstr "確認"
+#: src/sndio-ng/sndio.cc:181
+#, c-format
+msgid "Sndio error: Unsupported audio format (%d)"
+msgstr ""
 
-#: src/song_change/song_change.c:54
+#: src/sndio-ng/sndio.cc:192
+msgid "Sndio error: sio_open() failed"
+msgstr ""
+
+#: src/sndio-ng/sndio.cc:222
+msgid "Sndio error: sio_setpar() failed"
+msgstr ""
+
+#: src/sndio-ng/sndio.cc:234
+msgid "Sndio error: sio_start() failed"
+msgstr ""
+
+#: src/song_change/song_change.cc:33
 msgid "Song Change"
 msgstr "歌曲切換"
 
-#: src/song_change/song_change.c:428
-msgid "Command to run when Audacious starts a new song."
-msgstr "當 Audacious 開始播放新的歌曲時執行的指令。"
-
-#: src/song_change/song_change.c:430
-#: src/song_change/song_change.c:436
-#: src/song_change/song_change.c:442
-#: src/song_change/song_change.c:448
-msgid "Command:"
-msgstr "命令："
-
-#: src/song_change/song_change.c:434
-msgid "Command to run toward the end of a song."
-msgstr "每當一首歌曲播放完時執行命令"
-
-#: src/song_change/song_change.c:440
-msgid "Command to run when Audacious reaches the end of the playlist."
-msgstr "每當 Audacious 播放達到清單尾端時執行命令"
-
-#: src/song_change/song_change.c:446
-msgid "Command to run when title changes for a song (i.e. network streams titles)."
-msgstr "當一首歌的標題改變時執行命令。(網路串流的標題)"
-
-#: src/song_change/song_change.c:452
+#: src/song_change/song_change.cc:342
 msgid ""
-"You can use the following format strings which\n"
-"will be substituted before calling the command\n"
-"(not all are useful for the end-of-playlist command):\n"
+"<span size='small'>Parameters passed to the shell should be encapsulated in "
+"quotes. Doing otherwise is a security risk.</span>"
+msgstr ""
+"<span size='small'>傳給 shell 的參數應該用雙引號包起來，否則會有安全風險。</"
+"span>"
+
+#: src/song_change/song_change.cc:358
+msgid "<b>Commands</b>"
+msgstr ""
+
+#: src/song_change/song_change.cc:360
+msgid "Command to run when starting a new song:"
+msgstr ""
+
+#: src/song_change/song_change.cc:364
+msgid "Command to run at the end of a song:"
+msgstr ""
+
+#: src/song_change/song_change.cc:368
+msgid "Command to run at the end of the playlist:"
+msgstr ""
+
+#: src/song_change/song_change.cc:372
+msgid "Command to run when song title changes (for network streams):"
+msgstr ""
+
+#: src/song_change/song_change.cc:376
+msgid ""
+"You can use the following format strings which will be substituted before "
+"calling the command (not all are useful for the end-of-playlist command):\n"
 "\n"
 "%F: Frequency (in hertz)\n"
 "%c: Number of channels\n"
@@ -3816,31 +3946,16 @@ msgid ""
 "%b: Album\n"
 "%T: Track title"
 msgstr ""
-"您可以在命令中使用下列的格式字串。\n"
-"它們會在執行命令前被實際值取代。\n"
-"(不是全部都能在播放清單結束命令中使用)\n"
-"\n"
-"%F：頻率 (赫茲)\n"
-"%c：聲道數目\n"
-"%f：檔名 (完整路徑)\n"
-"%l：長度 (毫秒)\n"
-"%n 或 %s：歌曲名稱\n"
-"%r：位元率 (bps)\n"
-"%t：播放清單位置 (%02d)\n"
-"%p：播放中 (1 或 0)\n"
-"%a：藝人\n"
-"%b：專輯\n"
-"%T：音軌標題"
 
-#: src/song_change/song_change.c:479
-msgid "<span size='small'>Parameters passed to the shell should be encapsulated in quotes. Doing otherwise is a security risk.</span>"
-msgstr "<span size='small'>傳給 shell 的參數應該用雙引號包起來，否則會有安全風險。</span>"
+#: src/song-info-qt/song-info.cc:32
+msgid "Track Information"
+msgstr ""
 
-#: src/song_change/song_change.c:490
-msgid "Commands"
-msgstr "命令"
+#: src/sox-resampler/sox-resampler.cc:44
+msgid "SoX Resampler"
+msgstr "SoX 重取樣"
 
-#: src/sox-resampler/sox-resampler.c:137
+#: src/sox-resampler/sox-resampler.cc:144
 msgid ""
 "SoX Resampler Plugin for Audacious\n"
 "Copyright 2013 Michał Lipski\n"
@@ -3854,51 +3969,51 @@ msgstr ""
 "Based on Sample Rate Converter Plugin:\n"
 "Copyright 2010-2012 John Lindgren"
 
-#: src/sox-resampler/sox-resampler.c:143
+#: src/sox-resampler/sox-resampler.cc:150
 msgid "Quick"
 msgstr "快速"
 
-#: src/sox-resampler/sox-resampler.c:144
+#: src/sox-resampler/sox-resampler.cc:151
 msgid "Low"
 msgstr "低"
 
-#: src/sox-resampler/sox-resampler.c:146
+#: src/sox-resampler/sox-resampler.cc:153
 msgid "High"
 msgstr "高"
 
-#: src/sox-resampler/sox-resampler.c:147
+#: src/sox-resampler/sox-resampler.cc:154
 msgid "Very High"
 msgstr "非常高"
 
-#: src/sox-resampler/sox-resampler.c:150
+#: src/sox-resampler/sox-resampler.cc:158
 msgid "Quality:"
 msgstr "品質："
 
-#: src/sox-resampler/sox-resampler.c:164
-msgid "SoX Resampler"
-msgstr "SoX 重取樣"
-
-#: src/speed-pitch/speed-pitch.c:227
-msgid "<b>Speed and Pitch</b>"
-msgstr "<b>速度與音高</b>"
-
-#: src/speed-pitch/speed-pitch.c:228
-msgid "Speed:"
-msgstr "速度："
-
-#: src/speed-pitch/speed-pitch.c:231
-msgid "Pitch:"
-msgstr "音高："
-
-#: src/speed-pitch/speed-pitch.c:266
+#: src/speed-pitch/speed-pitch.cc:51
 msgid "Speed and Pitch"
 msgstr "速度與音高"
 
-#: src/statusicon/statusicon.c:269
+#: src/speed-pitch/speed-pitch.cc:210
+msgid "<b>Speed and Pitch</b>"
+msgstr "<b>速度與音高</b>"
+
+#: src/speed-pitch/speed-pitch.cc:211
+msgid "Speed:"
+msgstr "速度："
+
+#: src/speed-pitch/speed-pitch.cc:214
+msgid "Pitch:"
+msgstr "音高："
+
+#: src/statusicon/statusicon.cc:50
+msgid "Status Icon"
+msgstr "狀態圖示"
+
+#: src/statusicon/statusicon.cc:293
 msgid "Se_ttings ..."
 msgstr "設定(_T) ..."
 
-#: src/statusicon/statusicon.c:371
+#: src/statusicon/statusicon.cc:394
 msgid ""
 "Status Icon Plugin\n"
 "\n"
@@ -3915,39 +4030,39 @@ msgstr ""
 "\n"
 "這個外掛提供一個狀態圖示並放在系統通知區。"
 
-#: src/statusicon/statusicon.c:378
+#: src/statusicon/statusicon.cc:401
 msgid "<b>Mouse Scroll Action</b>"
 msgstr "<b>滑鼠滾輪動作</b>"
 
-#: src/statusicon/statusicon.c:379
+#: src/statusicon/statusicon.cc:402
 msgid "Change volume"
 msgstr "調整音量"
 
-#: src/statusicon/statusicon.c:382
+#: src/statusicon/statusicon.cc:405
 msgid "Change playing song"
 msgstr "切換播放歌曲"
 
-#: src/statusicon/statusicon.c:385
+#: src/statusicon/statusicon.cc:408
 msgid "<b>Other Settings</b>"
 msgstr "<b>其他設定</b>"
 
-#: src/statusicon/statusicon.c:386
+#: src/statusicon/statusicon.cc:409
 msgid "Disable the popup window"
 msgstr "關閉彈出式視窗"
 
-#: src/statusicon/statusicon.c:388
+#: src/statusicon/statusicon.cc:411
 msgid "Close to the system tray"
 msgstr "縮到系統列"
 
-#: src/statusicon/statusicon.c:390
+#: src/statusicon/statusicon.cc:413
 msgid "Advance in playlist when scrolling upward"
 msgstr "以與滑鼠滾輪的反方向切換歌曲"
 
-#: src/statusicon/statusicon.c:399
-msgid "Status Icon"
-msgstr "狀態圖示"
+#: src/stereo_plugin/stereo.cc:19
+msgid "Extra Stereo"
+msgstr "額外立體聲效果"
 
-#: src/stereo_plugin/stereo.c:17
+#: src/stereo_plugin/stereo.cc:36
 msgid ""
 "Extra Stereo Plugin\n"
 "\n"
@@ -3957,24 +4072,24 @@ msgstr ""
 "\n"
 "By Johan Levin, 1999"
 
-#: src/stereo_plugin/stereo.c:25
+#: src/stereo_plugin/stereo.cc:44
 msgid "<b>Extra Stereo</b>"
 msgstr "<b>額外立體聲效果</b>"
 
-#: src/stereo_plugin/stereo.c:36
-msgid "Extra Stereo"
-msgstr "額外立體聲效果"
+#: src/tonegen/tonegen.cc:45
+msgid "Tone Generator"
+msgstr "音調產生器"
 
-#: src/tonegen/tonegen.c:83
+#: src/tonegen/tonegen.cc:94
 #, c-format
 msgid "%s %.1f Hz"
 msgstr "%s %.1f Hz"
 
-#: src/tonegen/tonegen.c:83
+#: src/tonegen/tonegen.cc:94
 msgid "Tone Generator: "
 msgstr "音調產生器："
 
-#: src/tonegen/tonegen.c:174
+#: src/tonegen/tonegen.cc:160
 msgid ""
 "Sine tone generator by Håvard Kvålen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
@@ -3988,15 +4103,11 @@ msgstr ""
 "用法：加入網址：tone://frequency1;frequency2;frequency3;...\n"
 "範例：tone://2000;2005 會播放 2000 HZ 和 2005HZ 的正弦波"
 
-#: src/tonegen/tonegen.c:183
-msgid "Tone Generator"
-msgstr "音調產生器"
-
-#: src/voice_removal/voice_removal.c:53
+#: src/voice_removal/voice_removal.cc:28
 msgid "Voice Removal"
 msgstr "人聲移除"
 
-#: src/vorbis/vorbis.c:484
+#: src/vorbis/vorbis.cc:465
 msgid ""
 "Audacious Ogg Vorbis Decoder\n"
 "\n"
@@ -4034,33 +4145,57 @@ msgstr ""
 "Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "Eugene Zagidullin <e.asphyx@gmail.com>"
 
-#: src/vorbis/vorbis.c:504
+#: src/vorbis/vorbis.h:18
 msgid "Ogg Vorbis Decoder"
 msgstr "Ogg Vorbis 解碼器"
 
-#: src/vtx/vtx.c:167
-msgid ""
-"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
-"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+#: src/vtx/info.cc:22
+#, c-format
+msgid "Details about %s"
 msgstr ""
-"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
-"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
-"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
 
-#: src/vtx/vtx.c:173
+#: src/vtx/info.cc:24
+msgid ""
+"Title: %t\n"
+"Author: %a\n"
+"From: %f\n"
+"Tracker: %T\n"
+"Comment: %C\n"
+"Chip type: %c\n"
+"Stereo: %s\n"
+"Loop: %l\n"
+"Chip freq: %F\n"
+"Player Freq: %P\n"
+"Year: %y"
+msgstr ""
+
+#: src/vtx/vtx.cc:38
 msgid "VTX Decoder"
 msgstr "VTX 解碼器"
 
-#: src/wavpack/wavpack.c:214
+#: src/vtx/vtx.cc:184
+msgid ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+msgstr ""
+"Vortex file format player by Sashnov Alexander <sashnov@ngs.ru>\n"
+"Based on in_vtx.dll by Roman Sherbakov <v_soft@microfor.ru>\n"
+"Audacious plugin by Pavel Vymetalek <pvymetalek@seznam.cz>"
+
+#: src/wavpack/wavpack.cc:24
+msgid "WavPack Decoder"
+msgstr "WavPack 解碼器"
+
+#: src/wavpack/wavpack.cc:211
 msgid "lossy (hybrid)"
 msgstr "失真 (混合)"
 
-#: src/wavpack/wavpack.c:216
+#: src/wavpack/wavpack.cc:213
 msgid "lossy"
 msgstr "失真"
 
-#: src/wavpack/wavpack.c:265
+#: src/wavpack/wavpack.cc:255
 msgid ""
 "Copyright 2006 William Pitcock <nenolod@nenolod.net>\n"
 "\n"
@@ -4070,14 +4205,18 @@ msgstr ""
 "\n"
 "Some of the plugin code was by Miles Egan."
 
-#: src/wavpack/wavpack.c:272
-msgid "WavPack Decoder"
-msgstr "WavPack 解碼器"
-
-#: src/xsf/plugin.c:217
+#: src/xsf/plugin.cc:50
 msgid "2SF Decoder"
 msgstr "2SF 解碼器"
 
-#: src/xspf/xspf.c:438
+#: src/xsf/plugin.cc:238
+msgid "<b>XSF Configuration</b>"
+msgstr ""
+
+#: src/xsf/plugin.cc:239
+msgid "Ignore length from file"
+msgstr ""
+
+#: src/xspf/xspf.cc:89
 msgid "XML Shareable Playlists (XSPF)"
 msgstr "XML 可分享式播放清單 (XSPF)"
