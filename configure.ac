@@ -47,10 +47,19 @@ dnl Check for libxml2 (required to load XSPF playlists from previous versions)
 dnl ==========================================================================
 
 if test $HAVE_DARWIN = yes ; then
-    XML_LIBS="-lxml2"
-    XML_CFLAGS="-I/usr/include/libxml2"
-    AC_SUBST(XML_LIBS)
-    AC_SUBST(XML_CFLAGS)
+    AC_ARG_WITH([system-libxml2],
+     [AS_HELP_STRING([--with-system-libxml2=yes,no], [Use system version of libxml2 (default=yes)])],
+     [with_system_libxml2=$withval],
+     [with_system_libxml2=yes])
+
+    if test $with_system_libxml2 = yes ; then
+        XML_LIBS="-lxml2"
+        XML_CFLAGS="-I/usr/include/libxml2"
+        AC_SUBST(XML_LIBS)
+        AC_SUBST(XML_CFLAGS)
+    else
+        PKG_CHECK_MODULES([XML], [libxml-2.0])
+    fi
 else
     PKG_CHECK_MODULES([XML], [libxml-2.0])
 fi
@@ -114,7 +123,7 @@ AC_ARG_ENABLE(qtaudio,
     [enable_qtaudio=auto])
 
 have_qtaudio=no
-if test "x$enable_qtaudio" != "xno"; then
+if test "x$enable_qtaudio" = "xyes" -o \( "x$USE_QT" = "xyes" -a "x$enable_qtaudio" = "xauto" \); then
     PKG_CHECK_MODULES(QTMULTIMEDIA, [Qt5Multimedia], [have_qtaudio=yes], [have_qtaudio=no])
     if test "x$have_qtaudio" = "xyes"; then
         QTMULTIMEDIA_CFLAGS="$QTMULTIMEDIA_CFLAGS -fPIC"
@@ -992,7 +1001,10 @@ AC_ARG_ENABLE(qtglspectrum,
     [enable_qtglspectrum=auto])
 
 have_qtglspectrum=no
-if test "x$enable_qtglspectrum" != "xno"; then
+if test "x$USE_QT" = "xno" -a "x$enable_qtglspectrum" = "xyes"; then
+    AC_MSG_ERROR([--enable-qtglspectrum cannot be used without --enable-qt])
+fi
+if test "x$USE_QT" = "xyes" -a "x$enable_qtglspectrum" != "xno"; then
     PKG_CHECK_MODULES(QTOPENGL, [Qt5OpenGL], [have_qtglspectrum=yes], [have_qtglspectrum=no])
     if test "x$have_qtglspectrum" = "xyes"; then
         QTOPENGL_CFLAGS="$QTOPENGL_CFLAGS -fPIC"

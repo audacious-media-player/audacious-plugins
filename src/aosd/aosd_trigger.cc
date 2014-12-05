@@ -54,9 +54,7 @@ aosd_trigger_t aosd_triggers[] =
 
   // AOSD_TRIGGER_PB_TITLECHANGE
   { N_("Title Change") ,
-    N_("Triggers OSD when, during playback, the song title changes "
-       "but the filename is the same. This is mostly useful to display "
-       "title changes in internet streams.") ,
+    N_("Triggers OSD when the song title changes (for internet streams).") ,
     aosd_trigger_func_pb_titlechange_onoff ,
     aosd_trigger_func_pb_titlechange_cb },
 

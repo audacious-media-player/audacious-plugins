@@ -27,13 +27,7 @@
 StatusBar::StatusBar (QWidget * parent) :
     QStatusBar (parent),
     codec_label (new QLabel (this)),
-    length_label (new QLabel (this)),
-    hook1 ("playlist activate", this, & StatusBar::update_length),
-    hook2 ("playlist update", this, & StatusBar::update_length),
-    hook3 ("playback ready", this, & StatusBar::update_codec),
-    hook4 ("playback stop", this, & StatusBar::update_codec),
-    hook5 ("info change", this, & StatusBar::update_codec),
-    hook6 ("tuple change", this, & StatusBar::update_codec)
+    length_label (new QLabel (this))
 {
     setStyleSheet ("QStatusBar::item { border: none; }");
 
@@ -43,8 +37,6 @@ StatusBar::StatusBar (QWidget * parent) :
     update_codec ();
     update_length ();
 }
-
-StatusBar::~StatusBar () {}
 
 void StatusBar::update_codec ()
 {
@@ -58,35 +50,35 @@ void StatusBar::update_codec ()
     String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
-    aud_drct_get_info (& bitrate, & samplerate, & channels);
+    aud_drct_get_info (bitrate, samplerate, channels);
 
     StringBuf buf (0);
 
     if (codec)
     {
-        str_insert (buf, -1, codec);
+        buf.insert (-1, codec);
         if (channels > 0 || samplerate > 0 || bitrate > 0)
-            str_insert (buf, -1, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (channels > 0)
     {
         if (channels == 1)
-            str_insert (buf, -1, _("mono"));
+            buf.insert (-1, _("mono"));
         else if (channels == 2)
-            str_insert (buf, -1, _("stereo"));
+            buf.insert (-1, _("stereo"));
         else
             buf.combine (str_printf (ngettext ("%d channel", "%d channels", channels), channels));
 
         if (samplerate > 0 || bitrate > 0)
-            str_insert (buf, -1, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (samplerate > 0)
     {
         buf.combine (str_printf ("%d kHz", samplerate / 1000));
         if (bitrate > 0)
-            str_insert (buf, -1, ", ");
+            buf.insert (-1, ", ");
     }
 
     if (bitrate > 0)

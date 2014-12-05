@@ -24,8 +24,10 @@
 #ifdef FILEWRITER_FLAC
 
 #include <FLAC/all.h>
-#include <stdlib.h>
 
+#include <libaudcore/audstrings.h>
+
+static int channels;
 static FLAC__StreamEncoder *flac_encoder;
 static FLAC__StreamMetadata *flac_metadata;
 
@@ -68,20 +70,20 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
     if (tuple.get_value_type (field) != type)
         return;
 
-    char * temp;
+    StringBuf temp;
 
     switch (type)
     {
     case Tuple::Int:
     {
         int ival = tuple.get_int (field);
-        temp = g_strdup_printf ("%s=%d", name, ival);
+        temp.steal (str_printf ("%s=%d", name, ival));
         break;
     }
     case Tuple::String:
     {
         String sval = tuple.get_str (field);
-        temp = g_strdup_printf ("%s=%s", name, (const char *) sval);
+        temp.steal (str_printf ("%s=%s", name, (const char *) sval));
         break;
     }
     default:
@@ -89,55 +91,51 @@ static void insert_vorbis_comment (FLAC__StreamMetadata * meta,
     }
 
     FLAC__StreamMetadata_VorbisComment_Entry comment;
-    comment.length = strlen (temp);
-    comment.entry = (unsigned char *) temp;
+    comment.length = temp.len ();
+    comment.entry = (unsigned char *) (char *) temp;
 
     FLAC__metadata_object_vorbiscomment_insert_comment (meta,
-     meta->data.vorbis_comment.num_comments, comment, TRUE);
-
-    g_free (temp);
+     meta->data.vorbis_comment.num_comments, comment, true);
 }
 
-static int flac_open(void)
+static bool flac_open (VFSFile & file, const format_info & info, const Tuple & tuple)
 {
     flac_encoder = FLAC__stream_encoder_new();
 
-    FLAC__stream_encoder_set_channels(flac_encoder, input.channels);
-    FLAC__stream_encoder_set_sample_rate(flac_encoder, input.frequency);
+    FLAC__stream_encoder_set_channels(flac_encoder, info.channels);
+    FLAC__stream_encoder_set_sample_rate(flac_encoder, info.frequency);
 
-    if (tuple)
-    {
-        flac_metadata = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
+    flac_metadata = FLAC__metadata_object_new(FLAC__METADATA_TYPE_VORBIS_COMMENT);
 
-        insert_vorbis_comment (flac_metadata, "TITLE", tuple, Tuple::Title);
-        insert_vorbis_comment (flac_metadata, "ARTIST", tuple, Tuple::Artist);
-        insert_vorbis_comment (flac_metadata, "ALBUM", tuple, Tuple::Album);
-        insert_vorbis_comment (flac_metadata, "GENRE", tuple, Tuple::Genre);
-        insert_vorbis_comment (flac_metadata, "COMMENT", tuple, Tuple::Comment);
-        insert_vorbis_comment (flac_metadata, "DATE", tuple, Tuple::Date);
-        insert_vorbis_comment (flac_metadata, "YEAR", tuple, Tuple::Year);
-        insert_vorbis_comment (flac_metadata, "TRACKNUMBER", tuple, Tuple::Track);
+    insert_vorbis_comment (flac_metadata, "TITLE", tuple, Tuple::Title);
+    insert_vorbis_comment (flac_metadata, "ARTIST", tuple, Tuple::Artist);
+    insert_vorbis_comment (flac_metadata, "ALBUM", tuple, Tuple::Album);
+    insert_vorbis_comment (flac_metadata, "GENRE", tuple, Tuple::Genre);
+    insert_vorbis_comment (flac_metadata, "COMMENT", tuple, Tuple::Comment);
+    insert_vorbis_comment (flac_metadata, "DATE", tuple, Tuple::Date);
+    insert_vorbis_comment (flac_metadata, "YEAR", tuple, Tuple::Year);
+    insert_vorbis_comment (flac_metadata, "TRACKNUMBER", tuple, Tuple::Track);
 
-        FLAC__stream_encoder_set_metadata(flac_encoder, &flac_metadata, 1);
-    }
+    FLAC__stream_encoder_set_metadata(flac_encoder, &flac_metadata, 1);
 
     FLAC__stream_encoder_init_stream(flac_encoder, flac_write_cb, flac_seek_cb,
-     flac_tell_cb, nullptr, &output_file);
+     flac_tell_cb, nullptr, &file);
 
-    return 1;
+    channels = info.channels;
+    return true;
 }
 
-static void flac_write(void * data, int length)
+static void flac_write (VFSFile & file, const void * data, int length)
 {
 #if 1
     FLAC__int32 *encbuffer[2];
     int16_t *tmpdata = (int16_t *) data;
     int i;
 
-    encbuffer[0] = g_new0(FLAC__int32, length / input.channels);
-    encbuffer[1] = g_new0(FLAC__int32, length / input.channels);
+    encbuffer[0] = new FLAC__int32[length / channels];
+    encbuffer[1] = new FLAC__int32[length / channels];
 
-    if (input.channels == 1)
+    if (channels == 1)
     {
         for (i = 0; i < (length / 2); i++)
         {
@@ -154,16 +152,16 @@ static void flac_write(void * data, int length)
         }
     }
 
-    FLAC__stream_encoder_process(flac_encoder, (const FLAC__int32 **)encbuffer, length / (input.channels * 2));
+    FLAC__stream_encoder_process(flac_encoder, (const FLAC__int32 **)encbuffer, length / (channels * 2));
 
-    g_free(encbuffer[0]);
-    g_free(encbuffer[1]);
+    delete[] encbuffer[0];
+    delete[] encbuffer[1];
 #else
     FLAC__int32 *encbuffer;
-    int16_t *tmpdata = data;
+    int16_t *tmpdata = (int16_t *) data;
     int i;
 
-    encbuffer = g_new0(FLAC__int32, length);
+    encbuffer = new FLAC__int32[length];
 
     for (i=0; i < length; i++) {
         encbuffer[i] = tmpdata[i];
@@ -171,11 +169,11 @@ static void flac_write(void * data, int length)
 
     FLAC__stream_encoder_process_interleaved(flac_encoder, encbuffer, length);
 
-    g_free(encbuffer);
+    delete[] encbuffer;
 #endif
 }
 
-static void flac_close(void)
+static void flac_close (VFSFile & file)
 {
     if (flac_encoder)
     {

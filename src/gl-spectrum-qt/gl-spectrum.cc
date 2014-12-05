@@ -55,7 +55,7 @@ public:
         gl_about
     };
 
-    constexpr GLSpectrumQt () : VisPlugin (info, AUD_VIS_TYPE_FREQ) {}
+    constexpr GLSpectrumQt () : VisPlugin (info, Visualizer::Freq) {}
 
     bool init ();
 

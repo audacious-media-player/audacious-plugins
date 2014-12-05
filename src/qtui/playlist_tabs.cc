@@ -32,9 +32,7 @@
 PlaylistTabs::PlaylistTabs (QWidget * parent) :
     QTabWidget (parent),
     m_leftbtn (nullptr),
-    m_tabbar (new PlaylistTabBar (this)),
-    update_hook ("playlist update", this, & PlaylistTabs::playlist_update_cb),
-    position_hook ("playlist position", this, & PlaylistTabs::playlist_position_cb)
+    m_tabbar (new PlaylistTabBar (this))
 {
     installEventFilter (this);
 
@@ -43,6 +41,7 @@ PlaylistTabs::PlaylistTabs (QWidget * parent) :
     setTabBar (m_tabbar);
 
     populatePlaylists ();
+    setCurrentIndex (aud_playlist_get_active ());
 
     connect (this, &QTabWidget::currentChanged, this, &PlaylistTabs::currentChangedTrigger);
 }

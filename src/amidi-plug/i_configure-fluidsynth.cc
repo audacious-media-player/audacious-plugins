@@ -221,7 +221,7 @@ void * create_soundfont_list (void)
         g_object_unref (soundfont_file_store);
         soundfont_file_lv_text_rndr = gtk_cell_renderer_text_new();
         soundfont_file_lv_fname_col = gtk_tree_view_column_new_with_attributes (
-                                          _("Filename"), soundfont_file_lv_text_rndr, "text",
+                                          _("File name"), soundfont_file_lv_text_rndr, "text",
                                           LISTSFONT_FILENAME_COLUMN, nullptr);
         gtk_tree_view_column_set_expand (GTK_TREE_VIEW_COLUMN (soundfont_file_lv_fname_col), TRUE);
         soundfont_file_lv_fsize_col = gtk_tree_view_column_new_with_attributes (

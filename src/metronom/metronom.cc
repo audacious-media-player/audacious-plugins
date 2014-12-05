@@ -21,7 +21,6 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
@@ -34,6 +33,30 @@
 #define BUF_SAMPLES     512
 #define BUF_BYTES       (BUF_SAMPLES * 2)
 #define MAX_AMPL        0x7fff
+
+class Metronome : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char *const schemes[];
+
+    static constexpr PluginInfo info = {
+        N_("Tact Generator"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo()
+        .with_schemes(schemes);
+
+    constexpr Metronome() : InputPlugin(info, iinfo) {}
+
+    bool is_our_file(const char *filename, VFSFile &);
+    Tuple read_tuple(const char *filename, VFSFile &);
+    bool play(const char *filename, VFSFile &);
+};
+
+EXPORT Metronome aud_plugin_instance;
 
 typedef struct
 {
@@ -73,7 +96,7 @@ double tact_form[TACT_ID_MAX][TACT_FORM_MAX] = {
     {1.0, 0.5, 0.5, 0.6, 0.5, 0.5, 0.0, 0.0}
 };
 
-static bool metronom_is_our_fd(const char * filename, VFSFile &fd)
+bool Metronome::is_our_file(const char *filename, VFSFile &)
 {
     if (!strncmp(filename, "tact://", 7))
         return true;
@@ -129,7 +152,7 @@ static bool metronom_get_cp(const char *filename, metronom_t *pmetronom, String 
     return true;
 }
 
-static bool metronom_play (const char * filename, VFSFile & file)
+bool Metronome::play (const char * filename, VFSFile &)
 {
     metronom_t pmetronom;
     int16_t data[BUF_SAMPLES];
@@ -141,16 +164,14 @@ static bool metronom_play (const char * filename, VFSFile & file)
     int data_form[TACT_FORM_MAX];
     String desc;
 
-    if (aud_input_open_audio(FMT_S16_NE, AUDIO_FREQ, 1) == 0)
-        return false;
+    set_stream_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
+    open_audio(FMT_S16_NE, AUDIO_FREQ, 1);
 
     if (!metronom_get_cp(filename, &pmetronom, desc))
     {
         AUDERR ("Invalid metronom tact parameters in URI %s", filename);
         return false;
     }
-
-    aud_input_set_bitrate(sizeof(data[0]) * 8 * AUDIO_FREQ);
 
     tact = 60 * AUDIO_FREQ / pmetronom.bpm;
 
@@ -161,7 +182,7 @@ static bool metronom_play (const char * filename, VFSFile & file)
     }
 
     num = 0;
-    while (!aud_input_check_stop())
+    while (!check_stop())
     {
         int i;
 
@@ -193,13 +214,13 @@ static bool metronom_play (const char * filename, VFSFile & file)
             t++;
         }
 
-        aud_input_write_audio(data, BUF_BYTES);
+        write_audio(data, BUF_BYTES);
     }
 
     return true;
 }
 
-static Tuple metronom_probe_for_tuple(const char * filename, VFSFile &fd)
+Tuple Metronome::read_tuple(const char *filename, VFSFile &)
 {
     Tuple tuple;
     metronom_t metronom;
@@ -212,20 +233,10 @@ static Tuple metronom_probe_for_tuple(const char * filename, VFSFile &fd)
     return tuple;
 }
 
-static const char metronom_about[] =
+const char Metronome::about[] =
  N_("A Tact Generator by Martin Strauss <mys@faveve.uni-stuttgart.de>\n\n"
     "To use it, add a URL: tact://beats*num/den\n"
     "e.g. tact://77 to play 77 beats per minute\n"
     "or tact://60*3/4 to play 60 bpm in 3/4 tacts");
 
-static const char * const schemes[] = {"tact", nullptr};
-
-#define AUD_PLUGIN_NAME        N_("Tact Generator")
-#define AUD_PLUGIN_ABOUT       metronom_about
-#define AUD_INPUT_SCHEMES      schemes
-#define AUD_INPUT_IS_OUR_FILE  metronom_is_our_fd
-#define AUD_INPUT_PLAY         metronom_play
-#define AUD_INPUT_READ_TUPLE   metronom_probe_for_tuple
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char *const Metronome::schemes[] = {"tact", nullptr};

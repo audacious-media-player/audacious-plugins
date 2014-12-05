@@ -256,7 +256,7 @@ playlistwin_select_search(void)
       G_CALLBACK(playlistwin_select_search_kp_cb) , searchdlg_win );
 
     /* file name */
-    searchdlg_label_file_name = gtk_label_new( _("Filename:") );
+    searchdlg_label_file_name = gtk_label_new( _("File Name:") );
     searchdlg_entry_file_name = gtk_entry_new();
     gtk_widget_set_hexpand( searchdlg_entry_file_name , TRUE );
     gtk_widget_set_halign( searchdlg_label_file_name , GTK_ALIGN_START );
@@ -1001,12 +1001,12 @@ void action_playlist_remove_unselected (void)
 void action_playlist_copy (void)
 {
     GtkClipboard * clip = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-    StringBuf list = audgui_urilist_create_from_selected (active_playlist);
+    Index<char> list = audgui_urilist_create_from_selected (active_playlist);
 
-    if (list == nullptr)
+    if (! list.len ())
         return;
 
-    gtk_clipboard_set_text (clip, list, -1);
+    gtk_clipboard_set_text (clip, list.begin (), list.len ());
 }
 
 void action_playlist_cut (void)

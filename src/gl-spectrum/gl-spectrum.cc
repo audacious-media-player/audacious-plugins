@@ -64,7 +64,7 @@ public:
         gl_about
     };
 
-    constexpr GLSpectrum () : VisPlugin (info, AUD_VIS_TYPE_FREQ) {}
+    constexpr GLSpectrum () : VisPlugin (info, Visualizer::Freq) {}
 
     bool init ();
 
@@ -250,12 +250,12 @@ static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
 {
 #ifdef GDK_WINDOWING_X11
     if (! s_context)
-        return FALSE;
+        return false;
 #endif
 
 #ifdef GDK_WINDOWING_WIN32
     if (! s_glrc)
-        return FALSE;
+        return false;
 #endif
 
     GtkAllocation alloc;
@@ -296,7 +296,7 @@ static gboolean draw_cb (GtkWidget * widget, cairo_t * cr)
     SwapBuffers (s_hdc);
 #endif
 
-    return TRUE;
+    return true;
 }
 
 static void widget_realized ()
@@ -331,7 +331,7 @@ static void widget_realized ()
 
     gtk_widget_set_visual (s_widget, visual);
 
-    s_context = glXCreateContext (s_display, xvinfo, 0, True);
+    s_context = glXCreateContext (s_display, xvinfo, 0, true);
     g_return_if_fail (s_context);
 
     XFree (xvinfo);
@@ -420,7 +420,7 @@ void * GLSpectrum::get_gtk_widget ()
     g_signal_connect (s_widget, "destroy", (GCallback) widget_destroyed, nullptr);
 
     /* Disable GTK double buffering */
-    gtk_widget_set_double_buffered (s_widget, FALSE);
+    gtk_widget_set_double_buffered (s_widget, false);
 
     return s_widget;
 }

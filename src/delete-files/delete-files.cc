@@ -57,7 +57,11 @@ public:
 
 EXPORT DeleteFiles aud_plugin_instance;
 
-static const int menus[] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST, AUD_MENU_PLAYLIST_REMOVE};
+static constexpr AudMenuID menus[] = {
+    AudMenuID::Main,
+    AudMenuID::Playlist,
+    AudMenuID::PlaylistRemove
+};
 
 static GtkWidget * dialog = nullptr;
 
@@ -158,7 +162,7 @@ bool DeleteFiles::init (void)
 
     aud_config_set_defaults ("delete_files", defaults);
 
-    for (int menu : menus)
+    for (AudMenuID menu : menus)
         aud_plugin_menu_add (menu, start_delete, _("Delete Selected Files"), "edit-delete");
 
     return TRUE;
@@ -169,7 +173,7 @@ void DeleteFiles::cleanup (void)
     if (dialog)
         gtk_widget_destroy (dialog);
 
-    for (int menu : menus)
+    for (AudMenuID menu : menus)
         aud_plugin_menu_remove (menu, start_delete);
 }
 

@@ -814,12 +814,13 @@ static gboolean playlist_button_release (GtkWidget * list, GdkEventButton *
     return TRUE;
 }
 
-static gboolean scroll_cb (PlaylistData * data)
+static gboolean scroll_cb (void * data_)
 {
+    auto data = (PlaylistData *) data_;
     int position = adjust_position (data, TRUE, data->scroll);
 
     if (position == -1)
-        return TRUE;
+        return G_SOURCE_CONTINUE;
 
     switch (data->drag)
     {
@@ -832,7 +833,7 @@ static gboolean scroll_cb (PlaylistData * data)
     }
 
     playlistwin_update ();
-    return TRUE;
+    return G_SOURCE_CONTINUE;
 }
 
 static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
@@ -855,8 +856,7 @@ static gboolean playlist_motion (GtkWidget * list, GdkEventMotion * event)
                     g_source_remove (data->scroll_source);
 
                 data->scroll = new_scroll;
-                data->scroll_source = g_timeout_add (100, (GSourceFunc)
-                 scroll_cb, data);
+                data->scroll_source = g_timeout_add (100, scroll_cb, data);
             }
         }
         else
@@ -905,7 +905,7 @@ static gboolean playlist_leave (GtkWidget * list, GdkEventCrossing * event)
     return TRUE;
 }
 
-static gboolean popup_show (GtkWidget * list)
+static gboolean popup_show (void * list)
 {
     PlaylistData * data = (PlaylistData *) g_object_get_data ((GObject *) list, "playlistdata");
     g_return_val_if_fail (data, FALSE);
@@ -915,7 +915,7 @@ static gboolean popup_show (GtkWidget * list)
 
     g_source_remove (data->popup_source);
     data->popup_source = 0;
-    return FALSE;
+    return G_SOURCE_REMOVE;
 }
 
 static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos)
@@ -924,7 +924,7 @@ static void popup_trigger (GtkWidget * list, PlaylistData * data, int pos)
 
     data->popup_pos = pos;
     data->popup_source = g_timeout_add (aud_get_int (nullptr, "filepopup_delay") *
-     100, (GSourceFunc) popup_show, list);
+     100, popup_show, list);
 }
 
 static void popup_hide (GtkWidget * list, PlaylistData * data)

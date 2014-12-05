@@ -11,14 +11,11 @@
 #include <sys/types.h>
 #include <math.h>
 
-#include <glib.h>
-
 #include <libmodplug/stdafx.h>
 #include <libmodplug/sndfile.h>
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 
 #include "archive/open.h"
 
@@ -26,18 +23,14 @@ using namespace std;
 
 // ModplugXMMS member functions ===============================
 
-ModplugXMMS::ModplugXMMS()
+bool ModplugXMMS::init ()
 {
-    memset (this, 0, sizeof (* this));
-    mSoundFile = new CSoundFile;
+    load_settings ();
+    apply_settings ();
+    return true;
 }
 
-ModplugXMMS::~ModplugXMMS()
-{
-    delete mSoundFile;
-}
-
-bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile &file)
+bool ModplugXMMS::is_our_file (const char * filename, VFSFile & file)
 {
     string lExt;
     uint32_t lPos;
@@ -76,7 +69,8 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile &file)
         if (magic[0] == '6' || magic[0] == '8')
             return true;
     }
-    if (magic[2] == 'C' && magic[3] == 'H' && g_ascii_isdigit(magic[0]) && g_ascii_isdigit(magic[1])) {
+    if (magic[2] == 'C' && magic[3] == 'H' && magic[0] >= '0' && magic[0] <= '9'
+     && magic[1] >= '0' && magic[1] <= '9') {
         int nch = (magic[0] - '0') * 10 + (magic[1] - '0');
         if ((nch % 2 == 0) && nch >= 10)
             return true;
@@ -111,6 +105,7 @@ bool ModplugXMMS::CanPlayFileFromVFS(const string& aFilename, VFSFile &file)
     } /* end of if(mModProps.mGrabAmigaMOD) */
 
     /* We didn't find the magic bytes, fall back to extension check */
+    string aFilename = filename;
     lPos = aFilename.find_last_of('.');
     if((int)lPos == -1)
         return false;
@@ -148,9 +143,9 @@ void ModplugXMMS::PlayLoop()
 {
     uint32_t lLength;
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        int seek_time = aud_input_check_seek ();
+        int seek_time = check_seek ();
         if (seek_time != -1)
             mSoundFile->SetCurrentPos (seek_time * (int64_t)
              mSoundFile->GetMaxPosition () / (mSoundFile->GetSongTime () * 1000));
@@ -189,32 +184,21 @@ void ModplugXMMS::PlayLoop()
             }
         }
 
-        aud_input_write_audio (mBuffer, mBufSize);
-    }
-
-    //Unload the file
-    mSoundFile->Destroy();
-    delete mArchive;
-
-    if (mBuffer)
-    {
-        delete [] mBuffer;
-        mBuffer = nullptr;
+        write_audio (mBuffer, mBufSize);
     }
 }
 
-bool ModplugXMMS::PlayFile(const string& aFilename)
+bool ModplugXMMS::play (const char * filename, VFSFile & file)
 {
     //open and mmap the file
-    mArchive = OpenArchive(aFilename);
+    mArchive = OpenArchive(filename);
     if(mArchive->Size() == 0)
     {
         delete mArchive;
         return false;
     }
 
-    if (mBuffer)
-        delete [] mBuffer;
+    mSoundFile = new CSoundFile;
 
     //find buftime to get approx. 512 samples/block
     mBufTime = 512000 / mModProps.mFrequency + 1;
@@ -226,8 +210,6 @@ bool ModplugXMMS::PlayFile(const string& aFilename)
     mBufSize *= mModProps.mBits / 8;
 
     mBuffer = new unsigned char[mBufSize];
-    if(!mBuffer)
-        return false;        //out of memory!
 
     CSoundFile::SetWaveConfig
     (
@@ -283,29 +265,35 @@ bool ModplugXMMS::PlayFile(const string& aFilename)
         mArchive->Size()
     );
 
-    Tuple ti = GetSongTuple (aFilename);
+    Tuple ti = read_tuple (filename, file);
     if (ti)
-        aud_input_set_tuple (std::move (ti));
+        set_playback_tuple (std::move (ti));
 
-    aud_input_set_bitrate(mSoundFile->GetNumChannels() * 1000);
+    set_stream_bitrate(mSoundFile->GetNumChannels() * 1000);
 
     int fmt = (mModProps.mBits == 16) ? FMT_S16_NE : FMT_U8;
-    if (! aud_input_open_audio(fmt, mModProps.mFrequency, mModProps.mChannels))
-        return false;
+    open_audio(fmt, mModProps.mFrequency, mModProps.mChannels);
 
     PlayLoop();
+
+    delete[] mBuffer;
+    mBuffer = nullptr;
+    delete mSoundFile;
+    mSoundFile = nullptr;
+    delete mArchive;
+    mArchive = nullptr;
 
     return true;
 }
 
-Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
+Tuple ModplugXMMS::read_tuple (const char * filename, VFSFile & file)
 {
     CSoundFile* lSoundFile;
     Archive* lArchive;
     const char *tmps;
 
     //open and mmap the file
-    lArchive = OpenArchive(aFilename);
+    lArchive = OpenArchive(filename);
     if(lArchive->Size() == 0)
     {
         delete lArchive;
@@ -313,7 +301,7 @@ Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
     }
 
     Tuple ti;
-    ti.set_filename (aFilename.c_str ());
+    ti.set_filename (filename);
 
     lSoundFile = new CSoundFile;
     lSoundFile->Create((unsigned char*)lArchive->Map(), lArchive->Size());
@@ -349,8 +337,10 @@ Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
 
     const char *tmps2 = lSoundFile->GetTitle();
     // Chop any leading spaces off. They are annoying in the playlist.
-    while ( *tmps2 == ' ' ) tmps2++ ;
-    ti.set_str (Tuple::Title, tmps2);
+    while (tmps2[0] == ' ')
+        tmps2++;
+    if (tmps2[0])
+        ti.set_str(Tuple::Title, tmps2);
 
     //unload the file
     lSoundFile->Destroy();
@@ -359,10 +349,8 @@ Tuple ModplugXMMS::GetSongTuple(const string& aFilename)
     return ti;
 }
 
-void ModplugXMMS::SetModProps(const ModplugSettings& aModProps)
+void ModplugXMMS::apply_settings ()
 {
-    mModProps = aModProps;
-
     // [Reverb level 0(quiet)-100(loud)], [delay in ms, usually 40-200ms]
     if(mModProps.mReverb)
     {

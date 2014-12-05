@@ -47,41 +47,32 @@ struct VTXFileHeader
  * It stores VTX file header and current state
  * (open file pointer, extracted register data, etc).
  */
-typedef struct
+struct ayemu_vtx_t
 {
-  VFSFile fp;			/**< opening .vtx file pointer */
-  struct VTXFileHeader hdr;  	/**< VTX header data */
-  char *regdata;		/**< unpacked song data */
-  int pos;			/**< current data frame offset */
-} ayemu_vtx_t;
+  VTXFileHeader hdr;             /**< VTX header data */
+  Index<unsigned char> regdata;  /**< unpacked song data */
+  int pos;                       /**< current data frame offset */
 
+  /** Read vtx file header
+      \return Return true if success, else false
+  */
+  bool read_header(VFSFile &file);
 
-/** Open vtx file and read vtx file header
-    \arg \c vtx - pointer to ayemu_vtx_t structure
-    \arg \c filename - filename for open vtx file
-    \return Return true if success, else false
-*/
-EXTERN int ayemu_vtx_open (ayemu_vtx_t *vtx, const char *filename);
+  /** Read and encode lha data from .vtx file.
+      \return Return true if success, else false
+   */
+  bool load_data(VFSFile &file);
 
-/** Read and encode lha data from .vtx file.
- * \return Return pointer to unpacked data or nullptr.
- */
-EXTERN char *ayemu_vtx_load_data (ayemu_vtx_t *vtx);
+  /** Get next 14-bytes frame of AY register data.
+   * \return Return value: true if success, false if not enough data.
+   */
+  bool get_next_frame(unsigned char *regs);
 
-/** Get next 14-bytes frame of AY register data.
- * \return Return value: true if sucess, false if not enought data.
- */
-EXTERN int ayemu_vtx_get_next_frame (ayemu_vtx_t *vtx, char *regs);
-
-/** Print formated file name. If fmt is nullptr the default format %a - %t will used
- * \return none.
- */
-EXTERN void ayemu_vtx_sprintname (const ayemu_vtx_t *vtx, char *buf, const int sz, const char *fmt);
-
-/** Free all of allocaded resource for this file.
- * You must call this function on end work with vtx file
- */
-EXTERN void ayemu_vtx_free (ayemu_vtx_t *vtx);
+  /** Print formatted file name. If fmt is nullptr the default format %a - %t will be used
+   * \return none.
+   */
+  StringBuf sprintname(const char *fmt);
+};
 
 /*@}*/
 

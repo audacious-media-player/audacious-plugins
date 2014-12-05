@@ -20,11 +20,12 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <string.h>
 #include <gtk/gtk.h>
-#include <stdlib.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/drct.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
 #include <libaudcore/preferences.h>
 #include <libaudcore/runtime.h>
 
@@ -55,6 +56,7 @@ public:
     StereoVolume get_volume () { return {0, 0}; }
     void set_volume (StereoVolume v) {}
 
+    void set_info (const char * filename, const Tuple & tuple);
     bool open_audio (int fmt, int rate, int nch);
     void close_audio ();
 
@@ -70,6 +72,9 @@ public:
 };
 
 EXPORT FileWriter aud_plugin_instance;
+
+static String in_filename;
+static Tuple in_tuple;
 
 struct format_info input;
 
@@ -121,8 +126,7 @@ static gboolean prependnumber;
 
 static String file_path;
 
-VFSFile output_file;
-Tuple tuple;
+static VFSFile output_file;
 
 FileWriterImpl *plugins[FILEEXT_MAX] = {
     &wav_plugin,
@@ -143,11 +147,6 @@ static void set_plugin(void)
         fileext = 0;
 
     plugin = plugins[fileext];
-}
-
-static int file_write_output (void * data, int length)
-{
-    return output_file.fwrite (data, 1, length);
 }
 
 const char * const FileWriter::defaults[] = {
@@ -177,7 +176,7 @@ bool FileWriter::init ()
 
     set_plugin();
     if (plugin->init)
-        plugin->init(&file_write_output);
+        plugin->init();
 
     return true;
 }
@@ -207,98 +206,97 @@ static VFSFile safe_create (const char * filename)
     return VFSFile ();
 }
 
+void FileWriter::set_info (const char * filename, const Tuple & tuple)
+{
+    in_filename = String (filename);
+    in_tuple = tuple.ref ();
+}
+
 bool FileWriter::open_audio (int fmt, int rate, int nch)
 {
-    char *filename = nullptr, *temp = nullptr;
-    char * directory;
+    String filename, directory;
 
     input.format = fmt;
     input.frequency = rate;
     input.channels = nch;
 
-    tuple = aud_drct_get_tuple ();
-    if (! tuple)
-        return 0;
-
     if (filenamefromtags)
     {
-        String title = tuple.get_str (Tuple::FormattedTitle);
+        String title = in_tuple.get_str (Tuple::FormattedTitle);
         StringBuf buf = str_encode_percent (title);
         str_replace_char (buf, '/', '-');
-        filename = g_strdup (buf);
+        filename = String (buf);
     }
     else
     {
-        String path = aud_drct_get_filename ();
-
-        const char * original = strrchr (path, '/');
+        const char * original = strrchr (in_filename, '/');
         g_return_val_if_fail (original != nullptr, 0);
-        filename = g_strdup (original + 1);
+        filename = String (original + 1);
 
-        if (!use_suffix)
-            if ((temp = strrchr(filename, '.')) != nullptr)
-                *temp = '\0';
+        if (! use_suffix)
+        {
+            const char * temp;
+            if ((temp = strrchr (filename, '.')))
+                filename = String (str_copy (filename, temp - filename));
+        }
     }
 
     if (prependnumber)
     {
-        int number = tuple.get_int (Tuple::Track);
-        if (number < 0)
-            number = aud_drct_get_position () + 1;
-
-        temp = g_strdup_printf ("%d%%20%s", number, filename);
-        g_free(filename);
-        filename = temp;
+        int number = in_tuple.get_int (Tuple::Track);
+        if (number >= 0)
+            filename = String (str_printf ("%d%%20%s", number, (const char *) filename));
     }
 
     if (save_original)
     {
-        directory = g_strdup (aud_drct_get_filename ());
-        temp = strrchr (directory, '/');
+        const char * temp = strrchr (in_filename, '/');
         g_return_val_if_fail (temp != nullptr, 0);
-        temp[1] = 0;
+        directory = String (str_copy (in_filename, temp + 1 - in_filename));
     }
     else
     {
         g_return_val_if_fail (file_path[0], 0);
         if (file_path[strlen (file_path) - 1] == '/')
-            directory = g_strdup (file_path);
+            directory = String (file_path);
         else
-            directory = g_strdup_printf ("%s/", (const char *) file_path);
+            directory = String (str_concat ({file_path, "/"}));
     }
 
-    temp = g_strdup_printf ("%s%s.%s", directory, filename, fileext_str[fileext]);
-    g_free (directory);
-    g_free (filename);
-    filename = temp;
+    filename = String (str_printf ("%s%s.%s", (const char *) directory,
+     (const char *) filename, fileext_str[fileext]));
 
     output_file = safe_create (filename);
-    g_free (filename);
-
     if (! output_file)
-        return 0;
+        goto err;
 
-    convert_init (fmt, plugin->format_required (fmt), nch);
+    convert_init (fmt, plugin->format_required (fmt));
 
-    return plugin->open ();
+    if (plugin->open (output_file, input, in_tuple))
+        return true;
+
+err:
+    in_filename = String ();
+    in_tuple = Tuple ();
+    return false;
 }
 
 int FileWriter::write_audio (const void * ptr, int length)
 {
-    int len = convert_process (ptr, length);
-
-    plugin->write(convert_output, len);
+    auto & buf = convert_process (ptr, length);
+    plugin->write (output_file, buf.begin (), buf.len ());
 
     return length;
 }
 
 void FileWriter::close_audio ()
 {
-    plugin->close();
-    convert_free();
+    plugin->close (output_file);
+    convert_free ();
 
     output_file = VFSFile ();
-    tuple = Tuple ();
+    in_filename = String ();
+    in_tuple = Tuple ();
 }
 
 static void configure_response_cb (void)
@@ -328,7 +326,7 @@ static void fileext_cb(GtkWidget *combo, void * data)
     fileext = gtk_combo_box_get_active(GTK_COMBO_BOX(fileext_combo));
     set_plugin();
     if (plugin->init)
-        plugin->init(&file_write_output);
+        plugin->init();
 
     gtk_widget_set_sensitive(plugin_button, plugin->configure != nullptr);
 }
@@ -443,22 +441,22 @@ static void * file_configure (void)
         filenamefrom_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
         gtk_container_add(GTK_CONTAINER(configure_vbox), filenamefrom_hbox);
 
-        filenamefrom_label = gtk_label_new(_("Get filename from:"));
+        filenamefrom_label = gtk_label_new(_("Generate file name from:"));
         gtk_box_pack_start(GTK_BOX(filenamefrom_hbox), filenamefrom_label, FALSE, FALSE, 0);
 
         GtkWidget * filenamefrom_toggle1 = gtk_radio_button_new_with_label
-         (nullptr, _("original file tags"));
+         (nullptr, _("Original file tag"));
         gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle1, FALSE, FALSE, 0);
 
         GtkWidget * filenamefrom_toggle2 =
          gtk_radio_button_new_with_label_from_widget
-         ((GtkRadioButton *) filenamefrom_toggle1, _("original filename"));
+         ((GtkRadioButton *) filenamefrom_toggle1, _("Original file name"));
         gtk_box_pack_start ((GtkBox *) filenamefrom_hbox, filenamefrom_toggle2, FALSE, FALSE, 0);
 
         if (!filenamefromtags)
             gtk_toggle_button_set_active ((GtkToggleButton *) filenamefrom_toggle2, TRUE);
 
-        use_suffix_toggle = gtk_check_button_new_with_label(_("Don't strip file name extension"));
+        use_suffix_toggle = gtk_check_button_new_with_label(_("Include original file name extension"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
         gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
 
@@ -467,7 +465,7 @@ static void * file_configure (void)
 
         gtk_box_pack_start(GTK_BOX(configure_vbox), gtk_separator_new(GTK_ORIENTATION_HORIZONTAL), FALSE, FALSE, 0);
 
-        prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to filename"));
+        prependnumber_toggle = gtk_check_button_new_with_label(_("Prepend track number to file name"));
         gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prependnumber_toggle), prependnumber);
         gtk_box_pack_start(GTK_BOX(configure_vbox), prependnumber_toggle, FALSE, FALSE, 0);
 

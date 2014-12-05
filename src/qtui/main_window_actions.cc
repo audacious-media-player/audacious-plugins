@@ -36,7 +36,7 @@
 
 static void DUMMY () { AUDDBG ("implement me\n"); }
 
-static QMenu * services_menu () { return audqt::menu_get_by_id (AUD_MENU_MAIN); }
+static QMenu * services_menu () { return audqt::menu_get_by_id (AudMenuID::Main); }
 
 static void open_files () { audqt::fileopener_show (false); }
 static void add_files () { audqt::fileopener_show (true); }
@@ -83,7 +83,7 @@ static void pl_close () { audqt::playlist_confirm_delete (aud_playlist_get_activ
 static void volume_up () { aud_drct_set_volume_main (aud_drct_get_volume_main () + 5); }
 static void volume_down () { aud_drct_set_volume_main (aud_drct_get_volume_main () - 5); }
 
-static void configure_effects () { audqt::prefswin_show_plugin_page (PLUGIN_TYPE_EFFECT); }
+static void configure_effects () { audqt::prefswin_show_plugin_page (PluginType::Effect); }
 
 void MainWindow::setupActions ()
 {
@@ -106,17 +106,17 @@ void MainWindow::setupActions ()
         audqt::MenuCommand (N_("Pre_vious"), aud_drct_pl_prev, "Alt+Up", "media-skip-backward"),
         audqt::MenuCommand (N_("_Next"), aud_drct_pl_next, "Alt+Down", "media-skip-forward"),
         audqt::MenuSep (),
-        audqt::MenuToggle (N_("_Repeat"), nullptr, "Ctrl+R", nullptr, nullptr, "repeat", nullptr, "set repeat"),
-        audqt::MenuToggle (N_("S_huffle"), nullptr, "Ctrl+S", nullptr, nullptr, "shuffle", nullptr, "set shuffle"),
-        audqt::MenuToggle (N_("N_o Playlist Advance"), nullptr, "Ctrl+N", nullptr, nullptr, "no_playlist_advance", nullptr, "set no_playlist_advance"),
-        audqt::MenuToggle (N_("Stop A_fter This Song"), nullptr, "Ctrl+M", nullptr, nullptr, "stop_after_current_song", nullptr, "set stop_after_current_song"),
+        audqt::MenuToggle (N_("_Repeat"), nullptr, "Ctrl+R", nullptr, nullptr, nullptr, "repeat", "set repeat"),
+        audqt::MenuToggle (N_("S_huffle"), nullptr, "Ctrl+S", nullptr, nullptr, nullptr, "shuffle", "set shuffle"),
+        audqt::MenuToggle (N_("N_o Playlist Advance"), nullptr, "Ctrl+N", nullptr, nullptr, nullptr, "no_playlist_advance", "set no_playlist_advance"),
+        audqt::MenuToggle (N_("Stop A_fter This Song"), nullptr, "Ctrl+M", nullptr, nullptr, nullptr, "stop_after_current_song", "set stop_after_current_song"),
         audqt::MenuSep (),
         audqt::MenuCommand (N_("Song _Info ..."), audqt::infowin_show_current, "Ctrl+I", "dialog-information"),
     };
 
     static constexpr audqt::MenuItem dupe_items[] = {
         audqt::MenuCommand (N_("By _Title"), rm_dupes_title),
-        audqt::MenuCommand (N_("By _Filename"), rm_dupes_filename),
+        audqt::MenuCommand (N_("By _File Name"), rm_dupes_filename),
         audqt::MenuCommand (N_("By File _Path"), rm_dupes_path),
     };
 

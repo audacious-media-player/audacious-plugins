@@ -307,11 +307,7 @@ static void mouse_leave (void * user, GdkEventMotion * event, int row)
 static Index<char> get_data (void * user)
 {
     int playlist = ((PlaylistWidgetData *) user)->list;
-    StringBuf text = audgui_urilist_create_from_selected (playlist);
-
-    Index<char> data;
-    data.insert (text, 0, text.len ());
-    return data;
+    return audgui_urilist_create_from_selected (playlist);
 }
 
 static void receive_data (void * user, int row, const char * data, int length)

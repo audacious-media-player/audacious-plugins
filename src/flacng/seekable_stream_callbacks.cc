@@ -122,6 +122,9 @@ FLAC__StreamDecoderWriteStatus write_callback(const FLAC__StreamDecoder *decoder
         return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
     }
 
+    if (!info->output_buffer.len())
+        info->alloc();
+
     for (unsigned sample = 0; sample < frame->header.blocksize; sample++)
     {
         for (unsigned channel = 0; channel < frame->header.channels; channel++)

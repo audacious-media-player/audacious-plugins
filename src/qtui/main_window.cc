@@ -44,18 +44,9 @@ MainWindow::MainWindow () :
     m_dialogs (this),
     filterInput (new FilterInput (this)),
     playlistTabs (new PlaylistTabs (this)),
-    hook1 ("title change", this, & MainWindow::title_change_cb),
-    hook2 ("playback begin", this, & MainWindow::playback_begin_cb),
-    hook3 ("playback ready", this, & MainWindow::playback_ready_cb),
-    hook4 ("playback pause", this, & MainWindow::pause_cb),
-    hook5 ("playback unpause", this, & MainWindow::pause_cb),
-    hook6 ("playback stop", this, & MainWindow::playback_stop_cb),
-    hook7 ("set repeat", this, & MainWindow::update_toggles_cb),
-    hook8 ("set shuffle", this, & MainWindow::update_toggles_cb),
-    hook9 ("set no_playlist_advance", this, & MainWindow::update_toggles_cb),
-    hook10 ("set stop_after_current_song", this, & MainWindow::update_toggles_cb),
-    plugin_hook1 ("dock plugin enabled", this, & MainWindow::add_dock_plugin_cb),
-    plugin_hook2 ("dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb)
+    infoBar (new InfoBar (this)),
+    centralWidget (new QWidget (this)),
+    centralLayout (new QVBoxLayout (centralWidget))
 {
 #if defined(Q_OS_WIN32) || defined(Q_OS_MAC)
     QIcon::setThemeName ("QtUi");
@@ -96,7 +87,13 @@ MainWindow::MainWindow () :
     updateToggles ();
 
     setStatusBar (new StatusBar (this));
-    setCentralWidget (playlistTabs);
+    setCentralWidget (centralWidget);
+
+    centralLayout->addWidget (playlistTabs);
+    centralLayout->addWidget (infoBar);
+
+    centralLayout->setContentsMargins (0, 0, 0, 0);
+    centralLayout->setSpacing (4);
 
     connect (filterInput, &QLineEdit::textChanged, playlistTabs, &PlaylistTabs::filterTrigger);
 
@@ -127,7 +124,7 @@ MainWindow::~MainWindow ()
 
 void MainWindow::closeEvent (QCloseEvent * e)
 {
-    QSettings settings ("Audacious", "QtUi");
+    QSettings settings ("audacious", "QtUi");
     settings.setValue ("geometry", saveGeometry());
     settings.setValue ("windowState", saveState());
 
@@ -137,7 +134,7 @@ void MainWindow::closeEvent (QCloseEvent * e)
 
 void MainWindow::readSettings ()
 {
-    QSettings settings ("Audacious", "QtUi");
+    QSettings settings ("audacious", "QtUi");
     restoreGeometry (settings.value ("geometry").toByteArray());
     restoreState (settings.value ("windowState").toByteArray());
 }
@@ -265,13 +262,13 @@ void MainWindow::remove_dock_plugin_cb (PluginHandle * plugin)
 
 void MainWindow::add_dock_plugins ()
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin_cb (plugin);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin_cb (plugin);
@@ -280,13 +277,13 @@ void MainWindow::add_dock_plugins ()
 
 void MainWindow::remove_dock_plugins ()
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin_cb (plugin);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin_cb (plugin);

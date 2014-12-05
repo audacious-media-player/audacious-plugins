@@ -22,8 +22,4 @@ typedef struct {
 
 extern AudaciousConsoleConfig audcfg;
 
-bool console_cfg_load(void);
-void console_cfg_save(void);
-void console_cfg_ui(void);
-
 #endif /* AUD_CONSOLE_CONFIGURE_H */

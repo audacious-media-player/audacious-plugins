@@ -80,8 +80,8 @@ void SongInfo::clear (void * unused, audqt::InfoWidget * widget)
 
 void SongInfo::widget_cleanup (QObject * widget)
 {
-    hook_dissociate_full ("playback begin", (HookFunction) update, widget);
-    hook_dissociate_full ("playback stop", (HookFunction) clear, widget);
+    hook_dissociate ("playback begin", (HookFunction) update, widget);
+    hook_dissociate ("playback stop", (HookFunction) clear, widget);
 }
 
 void * SongInfo::get_qt_widget ()

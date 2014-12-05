@@ -36,54 +36,45 @@ public:
 
     bool load (const char * filename, VFSFile & file, String & title,
      Index<PlaylistAddItem> & items);
-
-private:
-    struct State {
-        const char * filename;
-        bool valid_heading;
-        Index<PlaylistAddItem> & items;
-    };
-
-    static void handle_heading (const char * heading, void * data);
-    static void handle_entry (const char * key, const char * value, void * data);
 };
 
 EXPORT ASXLoader aud_plugin_instance;
 
-void ASXLoader::handle_heading (const char * heading, void * data)
+class ASXParser : public IniParser
 {
-    auto state = (State *) data;
+public:
+    ASXParser (const char * filename, Index<PlaylistAddItem> & items) :
+        filename (filename),
+        items (items),
+        valid_heading (false) {}
 
-    state->valid_heading = ! strcmp_nocase (heading, "reference");
-}
+private:
+    const char * filename;
+    Index<PlaylistAddItem> & items;
+    bool valid_heading;
 
-void ASXLoader::handle_entry (const char * key, const char * value, void * data)
-{
-    auto state = (State *) data;
+    void handle_heading (const char * heading)
+        { valid_heading = ! strcmp_nocase (heading, "reference"); }
 
-    if (! state->valid_heading || ! str_has_prefix_nocase (key, "ref"))
-        return;
+    void handle_entry (const char * key, const char * value)
+    {
+        if (! valid_heading || ! str_has_prefix_nocase (key, "ref"))
+            return;
 
-    StringBuf uri = uri_construct (value, state->filename);
-    if (! uri)
-        return;
+        StringBuf uri = uri_construct (value, filename);
+        if (! uri)
+            return;
 
-    if (! strncmp ("http://", uri, 7))
-        state->items.append (String (str_printf ("mms://%s", uri + 7)));
-    else
-        state->items.append (String (uri));
-}
+        if (! strncmp ("http://", uri, 7))
+            items.append (String (str_printf ("mms://%s", uri + 7)));
+        else
+            items.append (String (uri));
+    }
+};
 
 bool ASXLoader::load (const char * filename, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
-    State state = {
-        filename,
-        false,
-        items
-    };
-
-    inifile_parse (file, handle_heading, handle_entry, & state);
-
+    ASXParser (filename, items).parse (file);
     return (items.len () > 0);
 }

@@ -40,50 +40,41 @@ public:
      Index<PlaylistAddItem> & items);
     bool save (const char * filename, VFSFile & file, const char * title,
      const Index<PlaylistAddItem> & items);
-
-private:
-    struct LoadState {
-        const char * filename;
-        bool valid_heading;
-        Index<PlaylistAddItem> & items;
-    };
-
-    static void handle_heading (const char * heading, void * data);
-    static void handle_entry (const char * key, const char * value, void * data);
 };
 
 EXPORT PLSLoader aud_plugin_instance;
 
-void PLSLoader::handle_heading (const char * heading, void * data)
+class PLSParser : public IniParser
 {
-    LoadState * state = (LoadState *) data;
+public:
+    PLSParser (const char * filename, Index<PlaylistAddItem> & items) :
+        filename (filename),
+        items (items),
+        valid_heading (false) {}
 
-    state->valid_heading = ! strcmp_nocase (heading, "playlist");
-}
+private:
+    const char * filename;
+    Index<PlaylistAddItem> & items;
+    bool valid_heading;
 
-void PLSLoader::handle_entry (const char * key, const char * value, void * data)
-{
-    LoadState * state = (LoadState *) data;
+    void handle_heading (const char * heading)
+        { valid_heading = ! strcmp_nocase (heading, "playlist"); }
 
-    if (! state->valid_heading || strcmp_nocase (key, "file", 4))
-        return;
+    void handle_entry (const char * key, const char * value)
+    {
+        if (! valid_heading || strcmp_nocase (key, "file", 4))
+            return;
 
-    StringBuf uri = uri_construct (value, state->filename);
-    if (uri)
-        state->items.append (String (uri));
-}
+        StringBuf uri = uri_construct (value, filename);
+        if (uri)
+            items.append (String (uri));
+    }
+};
 
 bool PLSLoader::load (const char * filename, VFSFile & file, String & title,
  Index<PlaylistAddItem> & items)
 {
-    LoadState state = {
-        filename,
-        false,
-        items
-    };
-
-    inifile_parse (file, handle_heading, handle_entry, & state);
-
+    PLSParser (filename, items).parse (file);
     return (items.len () > 0);
 }
 

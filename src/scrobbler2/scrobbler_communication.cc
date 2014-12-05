@@ -61,11 +61,11 @@ static char * scrobbler_get_signature (Index<API_Parameter> & params)
 
     for (const API_Parameter & param : params)
     {
-        str_insert (buf, -1, param.paramName);
-        str_insert (buf, -1, param.argument);
+        buf.insert (-1, param.paramName);
+        buf.insert (-1, param.argument);
     }
 
-    str_insert (buf, -1, SCROBBLER_SHARED_SECRET);
+    buf.insert (-1, SCROBBLER_SHARED_SECRET);
 
     return g_compute_checksum_for_string (G_CHECKSUM_MD5, buf, -1);
 }
@@ -99,18 +99,18 @@ static String create_message_to_lastfm (const char * method_name, int n_args, ..
         params.append (String (name), String (arg));
 
         char * esc = curl_easy_escape (curlHandle, arg, 0);
-        str_insert (buf, -1, "&");
-        str_insert (buf, -1, name);
-        str_insert (buf, -1, "=");
-        str_insert (buf, -1, esc);
+        buf.insert (-1, "&");
+        buf.insert (-1, name);
+        buf.insert (-1, "=");
+        buf.insert (-1, esc);
         curl_free (esc);
     }
 
     va_end (vl);
 
     char * api_sig = scrobbler_get_signature (params);
-    str_insert (buf, -1, "&api_sig=");
-    str_insert (buf, -1, api_sig);
+    buf.insert (-1, "&api_sig=");
+    buf.insert (-1, api_sig);
     g_free (api_sig);
 
     AUDDBG ("FINAL message: %s.\n", (const char *) buf);

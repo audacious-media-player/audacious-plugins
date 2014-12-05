@@ -44,8 +44,13 @@ public:
 
 EXPORT CDMenuItems aud_plugin_instance;
 
-static const char * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
-static const int menus[N_MENUS] = {AUD_MENU_MAIN, AUD_MENU_PLAYLIST_ADD, AUD_MENU_PLAYLIST};
+static constexpr const char * titles[N_ITEMS] = {N_("Play CD"), N_("Add CD")};
+
+static constexpr AudMenuID menus[N_MENUS] = {
+    AudMenuID::Main,
+    AudMenuID::PlaylistAdd,
+    AudMenuID::Playlist
+};
 
 static void cd_play () {aud_drct_pl_open ("cdda://"); }
 static void cd_add () {aud_drct_pl_add ("cdda://", -1); }

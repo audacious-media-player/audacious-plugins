@@ -100,18 +100,15 @@ static void insert_int_tuple_field_to_dictionary (const Tuple & tuple,
         dict.remove (String (key));
 }
 
-bool vorbis_update_song_tuple (const char * filename, VFSFile & fd, const Tuple & tuple)
+bool VorbisPlugin::write_tuple (const char * filename, VFSFile & file, const Tuple & tuple)
 {
-
     vcedit_state *state;
     vorbis_comment *comment;
     bool ret;
 
-    if(!tuple || !fd) return false;
-
     state = vcedit_new_state();
 
-    if(vcedit_open(state, fd) < 0) {
+    if(vcedit_open(state, file) < 0) {
         vcedit_clear(state);
         return false;
     }

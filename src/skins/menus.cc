@@ -55,10 +55,10 @@ static GtkWidget * get_menu_playback (void) {return menus[UI_MENU_PLAYBACK]; }
 static GtkWidget * get_menu_playlist (void) {return menus[UI_MENU_PLAYLIST]; }
 static GtkWidget * get_menu_view (void) {return menus[UI_MENU_VIEW]; }
 
-static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AUD_MENU_MAIN); }
-static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST); }
-static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_ADD); }
-static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AUD_MENU_PLAYLIST_REMOVE); }
+static GtkWidget * get_plugin_menu_main (void) {return audgui_get_plugin_menu (AudMenuID::Main); }
+static GtkWidget * get_plugin_menu_playlist (void) {return audgui_get_plugin_menu (AudMenuID::Playlist); }
+static GtkWidget * get_plugin_menu_playlist_add (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistAdd); }
+static GtkWidget * get_plugin_menu_playlist_remove (void) {return audgui_get_plugin_menu (AudMenuID::PlaylistRemove); }
 
 static const AudguiMenuItem main_items[] = {
     MenuCommand (N_("Open Files ..."), "document-open", 'l', NO_MOD, action_play_file),
@@ -141,7 +141,7 @@ static const AudguiMenuItem playlist_add_items[] = {
 
 static const AudguiMenuItem dupe_items[] = {
     MenuCommand (N_("By Title"), nullptr, NO_KEY, action_playlist_remove_dupes_by_title),
-    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_remove_dupes_by_filename),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_remove_dupes_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_remove_dupes_by_full_path)
 };
 
@@ -171,7 +171,7 @@ static const AudguiMenuItem sort_items[] = {
     MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_by_album),
     MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_by_artist),
     MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_by_album_artist),
-    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_by_filename),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_sort_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_by_full_path),
     MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_by_date),
     MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_by_track_number)
@@ -182,7 +182,7 @@ static const AudguiMenuItem sort_selected_items[] = {
     MenuCommand (N_("By Album"), nullptr, NO_KEY, action_playlist_sort_selected_by_album),
     MenuCommand (N_("By Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_artist),
     MenuCommand (N_("By Album Artist"), nullptr, NO_KEY, action_playlist_sort_selected_by_album_artist),
-    MenuCommand (N_("By Filename"), nullptr, NO_KEY, action_playlist_sort_selected_by_filename),
+    MenuCommand (N_("By File Name"), nullptr, NO_KEY, action_playlist_sort_selected_by_filename),
     MenuCommand (N_("By File Path"), nullptr, NO_KEY, action_playlist_sort_selected_by_full_path),
     MenuCommand (N_("By Release Date"), nullptr, NO_KEY, action_playlist_sort_selected_by_date),
     MenuCommand (N_("By Track Number"), nullptr, NO_KEY, action_playlist_sort_selected_by_track_number)

@@ -76,6 +76,9 @@ void backend_init (void)
         fluid_settings_setstr (sc.settings, "synth.chorus.active", "no");
 
     sc.synth = new_fluid_synth (sc.settings);
+
+    /* load soundfonts */
+    i_soundfont_load();
 }
 
 
@@ -90,13 +93,6 @@ void backend_cleanup (void)
     delete_fluid_settings (sc.settings);
 }
 
-
-void backend_prepare (void)
-{
-    /* soundfont loader, check if we should load soundfont on first midifile play */
-    if (! sc.soundfont_ids.len ())
-        i_soundfont_load();
-}
 
 void backend_reset (void)
 {

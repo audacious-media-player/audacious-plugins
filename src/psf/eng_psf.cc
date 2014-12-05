@@ -28,7 +28,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include <glib.h>
+#include <libaudcore/audstrings.h>
 
 #include "ao.h"
 #include "eng_protos.h"
@@ -263,7 +263,7 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 		int i;
 		for (i = 0; i < MAX_UNKNOWN_TAGS; i++)
 		{
-			if (!g_ascii_strcasecmp(c->tag_name[i], "psfby"))
+			if (!strcmp_nocase(c->tag_name[i], "psfby"))
 				strcpy(psfby, c->tag_data[i]);
 		}
 	}
@@ -347,14 +347,14 @@ int32_t psf_start(uint8_t *buffer, uint32_t length)
 	return AO_SUCCESS;
 }
 
-int32_t psf_execute(void)
+int32_t psf_execute(void (*update)(const void *, int))
 {
 	int i;
 
 	while (!stop_flag) {
 		for (i = 0; i < 44100 / 60; i++) {
 			psx_hw_slice();
-			SPUasync(384);
+			SPUasync(384, update);
 		}
 
 		psx_hw_frame();

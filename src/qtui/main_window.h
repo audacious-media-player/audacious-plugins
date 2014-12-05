@@ -25,9 +25,11 @@
 #include <libaudcore/objects.h>
 
 #include "dialog_windows.h"
+#include "info_bar.h"
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QVBoxLayout>
 
 class FilterInput;
 class PlaylistTabs;
@@ -45,6 +47,9 @@ private:
     DialogWindows m_dialogs;
     FilterInput * filterInput;
     PlaylistTabs * playlistTabs;
+    InfoBar * infoBar;
+    QWidget * centralWidget;
+    QVBoxLayout * centralLayout;
 
     QAction * toolButtonPlayPause;
     QAction * toolButtonRepeat;
@@ -77,10 +82,21 @@ private:
     void add_dock_plugin_cb (PluginHandle * plugin);
     void remove_dock_plugin_cb (PluginHandle * plugin);
 
-    // unfortunately GCC cannot handle these as an array
-    const HookReceiver<MainWindow> hook1, hook2, hook3, hook4, hook5, hook6,
-     hook7, hook8, hook9, hook10;
-    const HookReceiver<MainWindow, PluginHandle *> plugin_hook1, plugin_hook2;
+    const HookReceiver<MainWindow>
+     hook1 {"title change", this, & MainWindow::title_change_cb},
+     hook2 {"playback begin", this, & MainWindow::playback_begin_cb},
+     hook3 {"playback ready", this, & MainWindow::playback_ready_cb},
+     hook4 {"playback pause", this, & MainWindow::pause_cb},
+     hook5 {"playback unpause", this, & MainWindow::pause_cb},
+     hook6 {"playback stop", this, & MainWindow::playback_stop_cb},
+     hook7 {"set repeat", this, & MainWindow::update_toggles_cb},
+     hook8 {"set shuffle", this, & MainWindow::update_toggles_cb},
+     hook9 {"set no_playlist_advance", this, & MainWindow::update_toggles_cb},
+     hook10 {"set stop_after_current_song", this, & MainWindow::update_toggles_cb};
+
+    const HookReceiver<MainWindow, PluginHandle *>
+     plugin_hook1 {"dock plugin enabled", this, & MainWindow::add_dock_plugin_cb},
+     plugin_hook2 {"dock plugin disabled", this, & MainWindow::remove_dock_plugin_cb};
 
     Index<DockWidget> dock_widgets;
 };

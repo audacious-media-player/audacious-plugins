@@ -51,7 +51,7 @@ static void ui_statusbar_info_change (void * unused, GtkWidget * label)
     String codec = tuple.get_str (Tuple::Codec);
 
     int bitrate, samplerate, channels;
-    aud_drct_get_info (& bitrate, & samplerate, & channels);
+    aud_drct_get_info (bitrate, samplerate, channels);
 
     char buf[256];
     buf[0] = 0;

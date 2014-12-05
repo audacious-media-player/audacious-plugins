@@ -22,50 +22,101 @@
 */
 
 #include <assert.h>
+#include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/input.h>
+#include <libaudcore/i18n.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #include "xs_config.h"
 #include "xs_sidplay2.h"
 
+class SIDPlugin : public InputPlugin
+{
+public:
+    static const char *const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("SID Player"),
+        PACKAGE,
+        nullptr,
+        & sid_prefs
+    };
+
+    static constexpr auto iinfo = InputInfo(FlagSubtunes)
+        .with_priority(5) /* medium priority (slow to initialize) */
+        .with_exts(exts);
+
+    constexpr SIDPlugin() : InputPlugin(info, iinfo) {}
+
+    bool delayed_init();
+    void cleanup();
+
+    bool is_our_file(const char *filename, VFSFile &file);
+    Tuple read_tuple(const char *filename, VFSFile &file);
+    bool play(const char *filename, VFSFile &file);
+
+private:
+    pthread_mutex_t m_init_mutex = PTHREAD_MUTEX_INITIALIZER;
+    bool m_initialized = false;
+    bool m_init_failed = false;
+};
+
+EXPORT SIDPlugin aud_plugin_instance;
+
 static void xs_get_song_tuple_info(Tuple &pResult, const xs_tuneinfo_t &info, int subTune);
 
 /*
  * Initialization functions
  */
-bool xs_init(void)
+bool SIDPlugin::delayed_init()
 {
-    /* Initialize and get configuration */
-    xs_init_configuration();
+    pthread_mutex_lock(&m_init_mutex);
 
-    /* Try to initialize emulator engine */
-    return xs_sidplayfp_init();
+    if (!m_initialized && !m_init_failed)
+    {
+        /* Initialize and get configuration */
+        xs_init_configuration();
+
+        /* Try to initialize emulator engine */
+        m_initialized = xs_sidplayfp_init();
+        if (!m_initialized)
+            m_init_failed = true;
+    }
+
+    pthread_mutex_unlock(&m_init_mutex);
+    return m_initialized;
 }
 
 
 /*
  * Shut down XMMS-SID
  */
-void xs_close(void)
+void SIDPlugin::cleanup()
 {
-    xs_sidplayfp_close();
+    if (m_initialized)
+    {
+        xs_sidplayfp_close();
+        m_initialized = false;
+    }
+
+    m_init_failed = false;
 }
 
 
 /*
  * Check whether this is a SID file
  */
-bool xs_is_our_file(const char *filename, VFSFile &file)
+bool SIDPlugin::is_our_file(const char *filename, VFSFile &file)
 {
     char buf[4];
     if (file.fread (buf, 1, 4) != 4)
         return false;
 
+    // does not require xs_sidplayfp_init()
     return xs_sidplayfp_probe(buf, 4);
 }
 
@@ -73,8 +124,11 @@ bool xs_is_our_file(const char *filename, VFSFile &file)
 /*
  * Start playing the given file
  */
-bool xs_play_file(const char *filename, VFSFile &file)
+bool SIDPlugin::play(const char *filename, VFSFile &file)
 {
+    if (!delayed_init())
+        return false;
+
     /* Load file */
     Index<char> buf = file.read_all ();
     if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
@@ -110,24 +164,16 @@ bool xs_play_file(const char *filename, VFSFile &file)
         return false;
     }
 
-    /* Open the audio output */
-    if (!aud_input_open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels))
-    {
-        AUDERR("Couldn't open audio output (fmt=%x, freq=%i, nchan=%i)!\n",
-            FMT_S16_NE,
-            xs_cfg.audioFrequency,
-            xs_cfg.audioChannels);
-
-        return false;
-    }
-
     /* Set song information for current subtune */
     xs_sidplayfp_updateinfo(info, subTune);
 
     Tuple tmpTuple;
     tmpTuple.set_filename(info.sidFilename);
     xs_get_song_tuple_info(tmpTuple, info, subTune);
-    aud_input_set_tuple (std::move (tmpTuple));
+    set_playback_tuple(std::move(tmpTuple));
+
+    /* Open the audio output */
+    open_audio(FMT_S16_NE, xs_cfg.audioFrequency, xs_cfg.audioChannels);
 
     /* Allocate audio buffer */
     int audioBufSize = xs_cfg.audioFrequency * xs_cfg.audioChannels * 2;
@@ -137,14 +183,14 @@ bool xs_play_file(const char *filename, VFSFile &file)
     char *audioBuffer = new char[audioBufSize];
     int64_t bytes_played = 0;
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
-        if (aud_input_check_seek () >= 0)
+        if (check_seek () >= 0)
             AUDWARN ("Seeking is not implemented, ignoring.\n");
 
         int bufRemaining = xs_sidplayfp_fillbuffer(audioBuffer, audioBufSize);
 
-        aud_input_write_audio (audioBuffer, bufRemaining);
+        write_audio (audioBuffer, bufRemaining);
         bytes_played += bufRemaining;
 
         /* Check if we have played enough */
@@ -244,13 +290,17 @@ static void xs_fill_subtunes(Tuple &tuple, const xs_tuneinfo_t &info)
     tuple.set_subtunes (subtunes.len (), subtunes.begin ());
 }
 
-Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
+Tuple SIDPlugin::read_tuple(const char *filename, VFSFile &file)
 {
     Tuple tuple;
+
+    if (!delayed_init())
+        return tuple;
+
     xs_tuneinfo_t info;
     int tune = -1;
 
-    Index<char> buf = fd.read_all ();
+    Index<char> buf = file.read_all ();
     if (!xs_sidplayfp_probe(buf.begin(), buf.len()))
         return tuple;
 
@@ -273,20 +323,4 @@ Tuple xs_probe_for_tuple(const char *filename, VFSFile &fd)
 /*
  * Plugin header
  */
-static const char *xs_sid_fmts[] = { "sid", "psid", nullptr };
-
-#define AUD_PLUGIN_NAME        "SID Player"
-#define AUD_PLUGIN_INIT        xs_init
-#define AUD_PLUGIN_CLEANUP     xs_close
-#define AUD_INPUT_IS_OUR_FILE  xs_is_our_file
-#define AUD_INPUT_PLAY         xs_play_file
-#define AUD_INPUT_READ_TUPLE   xs_probe_for_tuple
-
-#define AUD_INPUT_EXTS         xs_sid_fmts
-#define AUD_INPUT_SUBTUNES     true
-
-/* medium priority (slow to initialize) */
-#define AUD_INPUT_PRIORITY     5
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char *const SIDPlugin::exts[] = { "sid", "psid", nullptr };

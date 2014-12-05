@@ -166,8 +166,6 @@ short * pS;
 static int lastch=-1;      // last channel processed on spu irq in timer mode
 static int iSecureStart=0; // secure start counter
 
-extern void psf2_update(unsigned char *samples, long lBytes);
-
 ////////////////////////////////////////////////////////////////////////
 // CODE AREA
 ////////////////////////////////////////////////////////////////////////
@@ -366,7 +364,7 @@ void setlength2(s32 stop, s32 fade)
 
 int iSpuAsyncWait=0;
 
-static void *MAINThread(int samp2run, void *data)
+static void *MAINThread(void (*update)(const void *, int))
 {
  int s_1,s_2,fa;
  unsigned char * start;unsigned int nSample;
@@ -390,11 +388,11 @@ static void *MAINThread(int samp2run, void *data)
     }
    else iSecureStart=0;                                // 0: no new channel should start
 
-/*	if (!iSecureStart)
-	{
-	     iSecureStart=0;                                   // reset secure
-	     return;
-	}*/
+/* if (!iSecureStart)
+    {
+     iSecureStart=0;                                   // reset secure
+     return;
+    }*/
 
 #if 0
    while(!iSecureStart && !bEndThread) // &&               // no new start? no thread end?
@@ -545,7 +543,7 @@ static void *MAINThread(int samp2run, void *data)
                bIRQReturn=0;
                 {
                  lastch=ch;
-//                 lastns=ns;	// changemeback
+//                 lastns=ns;   // changemeback
 
                  return nullptr;
                 }
@@ -675,7 +673,7 @@ GOON: ;
            if(NP>0x3fff) NP=0x3fff;
            if(NP<0x1)    NP=0x1;
 
-	   intr = (double)48000.0f / (double)44100.0f * (double)NP;
+           intr = (double)48000.0f / (double)44100.0f * (double)NP;
            NP = (uint32_t)intr;
 
            NP=(44100L*NP)/(4096L);                     // calc frequency
@@ -741,22 +739,22 @@ ENDX:   ;
     if(d2<-32767) d2=-32767;if(d2>32767) d2=32767;
 
     if(sampcount>=decaybegin)
-    {
-	s32 dmul;
-	if(decaybegin!=~0) // Is anyone REALLY going to be playing a song
-		      // for 13 hours?
-    	{
-		if(sampcount>=decayend)
-		{
-			psf2_update(nullptr, 0);
-		        return(0);
-		}
+     {
+      s32 dmul;
+      if(decaybegin!=~0) // Is anyone REALLY going to be playing a song
+                         // for 13 hours?
+       {
+        if(sampcount>=decayend)
+         {
+          update(nullptr, 0);
+          return(0);
+         }
 
-		dmul=256-(256*(sampcount-decaybegin)/(decayend-decaybegin));
-		d=(d*dmul)>>8;
-		d2=(d2*dmul)>>8;
-	}
-    }
+        dmul=256-(256*(sampcount-decaybegin)/(decayend-decaybegin));
+        d=(d*dmul)>>8;
+        d2=(d2*dmul)>>8;
+       }
+     }
     sampcount++;
 
     *pS++=d;
@@ -767,29 +765,29 @@ ENDX:   ;
   //////////////////////////////////////////////////////
   // feed the sound
   // wanna have around 1/60 sec (16.666 ms) updates
-	if (seektime != 0 && sampcount < seektime)
-	{
-		pS=(short *)pSpuBuffer;
-	}
-	else if ((((unsigned char *)pS)-((unsigned char *)pSpuBuffer)) == (735*4))
-	{
-		short *pSilenceIter = (short *)pSpuBuffer;
-		int iSilenceCount = 0;
+  if(seektime != 0 && sampcount < seektime)
+   {
+    pS=(short *)pSpuBuffer;
+   }
+  else if((((u8*)pS)-((u8*)pSpuBuffer)) == (735*4))
+   {
+    short *pSilenceIter = (short *)pSpuBuffer;
+    int iSilenceCount = 0;
 
-		for (; pSilenceIter < pS; pSilenceIter++)
-		{
-			if (*pSilenceIter == 0)
-				iSilenceCount++;
+    for(; pSilenceIter < pS; pSilenceIter++)
+     {
+      if(*pSilenceIter == 0)
+       iSilenceCount++;
 
-			if (iSilenceCount > 20)
-				break;
-		}
+      if(iSilenceCount > 20)
+       break;
+     }
 
-		if (iSilenceCount < 20)
-		    	psf2_update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
+    if(iSilenceCount < 20)
+     update((u8*)pSpuBuffer,(u8*)pS-(u8*)pSpuBuffer);
 
-	        pS=(short *)pSpuBuffer;
-	}
+    pS=(short *)pSpuBuffer;
+   }
  }
 
  // end of big main loop...
@@ -808,7 +806,7 @@ ENDX:   ;
 //  1 time every 'cycle' cycles... harhar
 ////////////////////////////////////////////////////////////////////////
 
-EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle, void *data)
+EXPORT_GCC void CALLBACK SPU2async(void (*update)(const void *, int))
 {
  if(iSpuAsyncWait)
   {
@@ -816,7 +814,7 @@ EXPORT_GCC void CALLBACK SPU2async(unsigned long cycle, void *data)
    if(iSpuAsyncWait<=64) return;
    iSpuAsyncWait=0;
   }
- MAINThread(0, data);                                      // -> linux high-compat mode
+ MAINThread(update);                                      // -> linux high-compat mode
 }
 
 ////////////////////////////////////////////////////////////////////////

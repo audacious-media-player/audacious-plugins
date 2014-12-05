@@ -22,9 +22,36 @@
 
 #include <FLAC/all.h>
 
-#include <libaudcore/audio.h>
-#include <libaudcore/tuple.h>
-#include <libaudcore/vfs.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/plugin.h>
+
+class FLACng : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char *const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("FLAC Decoder"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo(FlagWritesTag)
+        .with_priority(1)
+        .with_exts(exts);
+
+    constexpr FLACng() : InputPlugin(info, iinfo) {}
+
+    bool init();
+    void cleanup();
+
+    bool is_our_file(const char *filename, VFSFile &file);
+    Tuple read_tuple(const char *filename, VFSFile &file);
+    Index<char> read_image(const char *filename, VFSFile &file);
+    bool write_tuple(const char *filename, VFSFile &file, const Tuple &tuple);
+    bool play(const char *filename, VFSFile &file);
+};
 
 #define BUFFER_SIZE_SAMP (FLAC__MAX_BLOCK_SIZE * FLAC__MAX_CHANNELS)
 #define BUFFER_SIZE_BYTE (BUFFER_SIZE_SAMP * (FLAC__MAX_BITS_PER_SAMPLE/8))
@@ -32,17 +59,30 @@
 #define SAMPLE_SIZE(a) (a == 8 ? 1 : (a == 16 ? 2 : 4))
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
-typedef struct callback_info {
-    unsigned bits_per_sample;
-    unsigned sample_rate;
-    unsigned channels;
-    unsigned long total_samples;
-    int32_t* output_buffer;
-    int32_t* write_pointer;
-    unsigned buffer_used;
-    VFSFile* fd;
-    int bitrate;
-} callback_info;
+struct callback_info
+{
+    unsigned bits_per_sample = 0;
+    unsigned sample_rate = 0;
+    unsigned channels = 0;
+    unsigned long total_samples = 0;
+    Index<int32_t> output_buffer;
+    int32_t *write_pointer = nullptr;
+    unsigned buffer_used = 0;
+    VFSFile *fd = nullptr;
+    int bitrate = 0;
+
+    void alloc()
+    {
+        output_buffer.resize(BUFFER_SIZE_SAMP);
+        reset();
+    }
+
+    void reset()
+    {
+        buffer_used = 0;
+        write_pointer = output_buffer.begin();
+    }
+};
 
 /* metadata.c */
 bool flac_update_song_tuple(const char *filename, VFSFile &fd, const Tuple &tuple);
@@ -60,9 +100,6 @@ void error_callback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderError
 void metadata_callback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
 
 /* tools.c */
-callback_info* init_callback_info(void);
-void clean_callback_info(callback_info* info);
-void reset_info(callback_info* info);
 bool read_metadata(FLAC__StreamDecoder* decoder, callback_info* info);
 
 #endif

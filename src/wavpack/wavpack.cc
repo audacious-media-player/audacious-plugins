@@ -1,15 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-
 #include <wavpack/wavpack.h>
 
 #define WANT_VFS_STDIO_COMPAT
 #include <audacious/audtag.h>
 #include <libaudcore/runtime.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/audstrings.h>
 
@@ -17,6 +14,32 @@
 #define SAMPLE_SIZE(a) (a == 8 ? sizeof(uint8_t) : (a == 16 ? sizeof(uint16_t) : sizeof(uint32_t)))
 #define SAMPLE_FMT(a) (a == 8 ? FMT_S8 : (a == 16 ? FMT_S16_NE : (a == 24 ? FMT_S24_NE : FMT_S32_NE)))
 
+class WavpackPlugin : public InputPlugin
+{
+public:
+    static const char about[];
+    static const char * const exts[];
+
+    static constexpr PluginInfo info = {
+        N_("WavPack Decoder"),
+        PACKAGE,
+        about
+    };
+
+    static constexpr auto iinfo = InputInfo (FlagWritesTag)
+        .with_exts (exts);
+
+    constexpr WavpackPlugin() : InputPlugin (info, iinfo) {}
+
+    bool is_our_file (const char * filename, VFSFile & file)
+        { return false; }
+
+    Tuple read_tuple (const char * filename, VFSFile & file);
+    bool write_tuple (const char * filename, VFSFile & file, const Tuple & tuple);
+    bool play (const char * filename, VFSFile & file);
+};
+
+EXPORT WavpackPlugin aud_plugin_instance;
 
 /* Audacious VFS wrappers for Wavpack stream reading
  */
@@ -97,21 +120,17 @@ static void wv_deattach (WavpackContext * ctx)
     WavpackCloseFile(ctx);
 }
 
-static bool wv_play (const char * filename, VFSFile & file)
+bool WavpackPlugin::play (const char * filename, VFSFile & file)
 {
-    int32_t *input = nullptr;
-    void *output = nullptr;
     int sample_rate, num_channels, bits_per_sample;
     unsigned num_samples;
     WavpackContext *ctx = nullptr;
     VFSFile wvc_input;
-    bool error = false;
 
     if (! wv_attach (filename, file, wvc_input, & ctx, nullptr, OPEN_TAGS | OPEN_WVC))
     {
         AUDERR ("Error opening Wavpack file '%s'.", filename);
-        error = true;
-        goto error_exit;
+        return false;
     }
 
     sample_rate = WavpackGetSampleRate(ctx);
@@ -119,23 +138,18 @@ static bool wv_play (const char * filename, VFSFile & file)
     bits_per_sample = WavpackGetBitsPerSample(ctx);
     num_samples = WavpackGetNumSamples(ctx);
 
-    if (!aud_input_open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels))
+    set_stream_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
+    open_audio(SAMPLE_FMT(bits_per_sample), sample_rate, num_channels);
+
+    Index<int32_t> input;
+    input.resize (BUFFER_SIZE * num_channels);
+
+    Index<char> output;
+    output.resize (BUFFER_SIZE * num_channels * SAMPLE_SIZE (bits_per_sample));
+
+    while (! check_stop ())
     {
-        AUDERR ("Error opening audio output.");
-        error = true;
-        goto error_exit;
-    }
-
-    input = g_new(int32_t, BUFFER_SIZE * num_channels);
-    output = g_malloc(BUFFER_SIZE * num_channels * SAMPLE_SIZE(bits_per_sample));
-    if (input == nullptr || output == nullptr)
-        goto error_exit;
-
-    aud_input_set_bitrate(WavpackGetAverageBitrate(ctx, num_channels));
-
-    while (! aud_input_check_stop ())
-    {
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
         if (seek_value >= 0)
             WavpackSeekSample (ctx, (int64_t) seek_value * sample_rate / 1000);
 
@@ -145,7 +159,7 @@ static bool wv_play (const char * filename, VFSFile & file)
         if (samples_left == 0)
             break;
 
-        int ret = WavpackUnpackSamples(ctx, input, BUFFER_SIZE);
+        int ret = WavpackUnpackSamples (ctx, input.begin (), BUFFER_SIZE);
 
         if (ret < 0)
         {
@@ -155,10 +169,10 @@ static bool wv_play (const char * filename, VFSFile & file)
         else
         {
             /* Perform audio data conversion and output */
-            int32_t *rp = input;
-            int8_t *wp = (int8_t *) output;
-            int16_t *wp2 = (int16_t *) output;
-            int32_t *wp4 = (int32_t *) output;
+            int32_t * rp = input.begin ();
+            int8_t * wp = (int8_t *) output.begin ();
+            int16_t * wp2 = (int16_t *) output.begin ();
+            int32_t * wp4 = (int32_t *) output.begin ();
 
             if (bits_per_sample == 8)
             {
@@ -176,17 +190,13 @@ static bool wv_play (const char * filename, VFSFile & file)
                     *wp4 = *rp;
             }
 
-            aud_input_write_audio(output, ret * num_channels * SAMPLE_SIZE(bits_per_sample));
+            write_audio (output.begin (),
+             ret * num_channels * SAMPLE_SIZE (bits_per_sample));
         }
     }
 
-error_exit:
-
-    g_free(input);
-    g_free(output);
     wv_deattach (ctx);
-
-    return ! error;
+    return true;
 }
 
 static StringBuf
@@ -206,19 +216,18 @@ wv_get_quality(WavpackContext *ctx)
      (mode & MODE_DNS) ? " (dynamic noise shaped)" : ""});
 }
 
-static Tuple
-wv_probe_for_tuple(const char * filename, VFSFile & fd)
+Tuple WavpackPlugin::read_tuple (const char * filename, VFSFile & file)
 {
     WavpackContext *ctx;
     Tuple tuple;
     char error[1024];
 
-    ctx = WavpackOpenFileInputEx(&wv_readers, &fd, nullptr, error, OPEN_TAGS, 0);
+    ctx = WavpackOpenFileInputEx(&wv_readers, &file, nullptr, error, OPEN_TAGS, 0);
 
     if (ctx == nullptr)
         return tuple;
 
-    AUDDBG("starting probe of %s\n", fd.filename ());
+    AUDDBG("starting probe of %s\n", file.filename ());
 
     tuple.set_filename (filename);
 
@@ -230,31 +239,20 @@ wv_probe_for_tuple(const char * filename, VFSFile & fd)
 
     WavpackCloseFile(ctx);
 
-    if (! fd.fseek (0, VFS_SEEK_SET))
-        audtag::tuple_read (tuple, fd);
+    if (! file.fseek (0, VFS_SEEK_SET))
+        audtag::tuple_read (tuple, file);
 
-    AUDDBG("returning tuple for file %s\n", fd.filename ());
+    AUDDBG("returning tuple for file %s\n", file.filename ());
     return tuple;
 }
 
-static bool wv_write_tag (const char * filename, VFSFile & handle, const Tuple & tuple)
+bool WavpackPlugin::write_tuple (const char * filename, VFSFile & handle, const Tuple & tuple)
 {
     return audtag::tuple_write(tuple, handle, audtag::TagType::APE);
 }
 
-static const char wv_about[] =
+const char WavpackPlugin::about[] =
  N_("Copyright 2006 William Pitcock <nenolod@nenolod.net>\n\n"
     "Some of the plugin code was by Miles Egan.");
 
-static const char *wv_fmts[] = { "wv", nullptr };
-
-#define AUD_PLUGIN_NAME        N_("WavPack Decoder")
-#define AUD_PLUGIN_ABOUT       wv_about
-#define AUD_INPUT_IS_OUR_FILE  nullptr
-#define AUD_INPUT_PLAY         wv_play
-#define AUD_INPUT_EXTS         wv_fmts
-#define AUD_INPUT_READ_TUPLE   wv_probe_for_tuple
-#define AUD_INPUT_WRITE_TUPLE  wv_write_tag
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const char * const WavpackPlugin::exts[] = { "wv", nullptr };

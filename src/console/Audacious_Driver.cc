@@ -11,11 +11,10 @@
 #include <string.h>
 
 #include <libaudcore/audstrings.h>
-#include <libaudcore/input.h>
-#include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
 
 #include "configure.h"
+#include "plugin.h"
 #include "Music_Emu.h"
 #include "Gzip_Reader.h"
 
@@ -48,7 +47,7 @@ public:
     gme_type_t m_type;
 
     // Parses path and identifies file type
-    ConsoleFileHandler(const char* path, VFSFile *fd = nullptr);
+    ConsoleFileHandler(const char* path, VFSFile &fd);
 
     // Creates emulator and returns 0. If this wasn't a music file or
     // emulator couldn't be created, returns 1.
@@ -63,7 +62,7 @@ private:
     Gzip_Reader gzip_in;
 };
 
-ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
+ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile &fd)
 {
     m_emu   = nullptr;
     m_type  = 0;
@@ -76,10 +75,7 @@ ConsoleFileHandler::ConsoleFileHandler(const char *path, VFSFile *fd)
     m_track -= 1;
 
     // open vfs
-    if (fd != nullptr)
-        vfs_in.reset(fd);
-    else if (log_err(vfs_in.open(m_path)))
-        return;
+    vfs_in.reset(fd);
 
     // now open gzip_reader on top of vfs
     if (log_err(gzip_in.open(&vfs_in)))
@@ -181,9 +177,9 @@ static Tuple get_track_ti(const char *path, const track_info_t *info, const int 
     return tuple;
 }
 
-Tuple console_probe_for_tuple(const char *filename, VFSFile &fd)
+Tuple ConsolePlugin::read_tuple(const char *filename, VFSFile &file)
 {
-    ConsoleFileHandler fh(filename, &fd);
+    ConsoleFileHandler fh(filename, file);
 
     if (!fh.m_type)
         return Tuple ();
@@ -198,13 +194,13 @@ Tuple console_probe_for_tuple(const char *filename, VFSFile &fd)
     return Tuple ();
 }
 
-bool console_play(const char *filename, VFSFile &file)
+bool ConsolePlugin::play(const char *filename, VFSFile &file)
 {
     int length, sample_rate;
     track_info_t info;
 
     // identify file
-    ConsoleFileHandler fh(filename);
+    ConsoleFileHandler fh(filename, file);
     if (!fh.m_type)
         return false;
 
@@ -254,7 +250,7 @@ bool console_play(const char *filename, VFSFile &file)
         if (tuple)
         {
             length = tuple.get_int (Tuple::Length);
-            aud_input_set_bitrate(fh.m_emu->voice_count() * 1000);
+            set_stream_bitrate(fh.m_emu->voice_count() * 1000);
         }
     }
 
@@ -264,8 +260,7 @@ bool console_play(const char *filename, VFSFile &file)
 
     log_warning(fh.m_emu);
 
-    if (!aud_input_open_audio(FMT_S16_NE, sample_rate, 2))
-        return false;
+    open_audio(FMT_S16_NE, sample_rate, 2);
 
     // set fade time
     if (length <= 0)
@@ -274,10 +269,10 @@ bool console_play(const char *filename, VFSFile &file)
         length -= fade_length / 2;
     fh.m_emu->set_fade(length, fade_length);
 
-    while (!aud_input_check_stop())
+    while (!check_stop())
     {
         /* Perform seek, if requested */
-        int seek_value = aud_input_check_seek();
+        int seek_value = check_seek();
         if (seek_value >= 0)
             fh.m_emu->seek(seek_value);
 
@@ -287,7 +282,7 @@ bool console_play(const char *filename, VFSFile &file)
 
         fh.m_emu->play(buf_size, buf);
 
-        aud_input_write_audio(buf, sizeof(buf));
+        write_audio(buf, sizeof(buf));
 
         if (fh.m_emu->track_ended())
             break;

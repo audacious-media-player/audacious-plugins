@@ -52,17 +52,27 @@ typedef struct {
     GdkPixbuf * pb, * last_pb;
 } UIInfoArea;
 
-static struct {
-    GtkWidget * widget;
-    char bars[VIS_BANDS];
-    char delay[VIS_BANDS];
-} vis;
+class InfoAreaVis : public Visualizer
+{
+public:
+    constexpr InfoAreaVis () :
+        Visualizer (Freq) {}
+
+    GtkWidget * widget = nullptr;
+    char bars[VIS_BANDS] {};
+    char delay[VIS_BANDS] {};
+
+    void clear ();
+    void render_freq (const float * freq);
+};
+
+static InfoAreaVis vis;
 
 /****************************************************************************/
 
 static UIInfoArea * area = nullptr;
 
-static void vis_render_cb (const float * freq)
+void InfoAreaVis::render_freq (const float * freq)
 {
     /* xscale[i] = pow (256, i / VIS_BANDS) - 0.5; */
     const float xscale[VIS_BANDS + 1] = {0.5, 1.09, 2.02, 3.5, 5.85, 9.58,
@@ -90,29 +100,29 @@ static void vis_render_cb (const float * freq)
         int x = 40 + 20 * log10f (n);
         x = aud::clamp (x, 0, 40);
 
-        vis.bars[i] -= aud::max (0, VIS_FALLOFF - vis.delay[i]);
+        bars[i] -= aud::max (0, VIS_FALLOFF - delay[i]);
 
-        if (vis.delay[i])
-            vis.delay[i] --;
+        if (delay[i])
+            delay[i] --;
 
-        if (x > vis.bars[i])
+        if (x > bars[i])
         {
-            vis.bars[i] = x;
-            vis.delay[i] = VIS_DELAY;
+            bars[i] = x;
+            delay[i] = VIS_DELAY;
         }
     }
 
-    if (vis.widget)
-        gtk_widget_queue_draw (vis.widget);
+    if (widget)
+        gtk_widget_queue_draw (widget);
 }
 
-static void vis_clear_cb (void)
+void InfoAreaVis::clear (void)
 {
-    memset (vis.bars, 0, sizeof vis.bars);
-    memset (vis.delay, 0, sizeof vis.delay);
+    memset (bars, 0, sizeof bars);
+    memset (delay, 0, sizeof delay);
 
-    if (vis.widget)
-        gtk_widget_queue_draw (vis.widget);
+    if (widget)
+        gtk_widget_queue_draw (widget);
 }
 
 /****************************************************************************/
@@ -486,20 +496,19 @@ void ui_infoarea_show_vis (gboolean show)
         g_signal_connect (vis.widget, "draw", (GCallback) draw_vis_cb, nullptr);
         gtk_widget_show (vis.widget);
 
-        aud_vis_func_add (AUD_VIS_TYPE_CLEAR, (VisFunc) vis_clear_cb);
-        aud_vis_func_add (AUD_VIS_TYPE_FREQ, (VisFunc) vis_render_cb);
+        aud_visualizer_add (& vis);
     }
     else
     {
         if (! vis.widget)
             return;
 
-        aud_vis_func_remove ((VisFunc) vis_clear_cb);
-        aud_vis_func_remove ((VisFunc) vis_render_cb);
+        aud_visualizer_remove (& vis);
 
         gtk_widget_destroy (vis.widget);
+        vis.widget = nullptr;
 
-        memset (& vis, 0, sizeof vis);
+        vis.clear ();
     }
 }
 

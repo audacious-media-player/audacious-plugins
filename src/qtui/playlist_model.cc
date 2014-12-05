@@ -116,7 +116,7 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
 {
     if (role == Qt::DisplayRole)
     {
-         if (orientation == Qt::Horizontal)
+        if (orientation == Qt::Horizontal)
         {
             switch (section)
             {
@@ -127,9 +127,9 @@ QVariant PlaylistModel::headerData (int section, Qt::Orientation orientation, in
             case PL_COL_ALBUM:
                 return QString (_("Album"));
             case PL_COL_QUEUED:
-                return QString (_("Queued"));
+                return QString ();
             case PL_COL_LENGTH:
-                return QString (_("Length"));
+                return QString ();
             }
         }
     }

@@ -779,7 +779,7 @@ bool AlarmPlugin::init ()
 
     timeout_source = g_timeout_add_seconds (10, alarm_timeout, nullptr);
 
-    aud_plugin_menu_add (AUD_MENU_MAIN, alarm_configure, _("Set Alarm ..."), "appointment-new");
+    aud_plugin_menu_add (AudMenuID::Main, alarm_configure, _("Set Alarm ..."), "appointment-new");
 
     return true;
 }
@@ -791,7 +791,7 @@ void AlarmPlugin::cleanup ()
 {
     AUDDBG("alarm_cleanup\n");
 
-    aud_plugin_menu_remove (AUD_MENU_MAIN, alarm_configure);
+    aud_plugin_menu_remove (AudMenuID::Main, alarm_configure);
 
     if (timeout_source)
     {

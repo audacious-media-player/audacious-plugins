@@ -215,13 +215,13 @@ static void add_icy (struct icy_metadata * m, const char * name, const char * va
     if (neon_strcmp (name, "StreamTitle"))
     {
         AUDDBG ("Found StreamTitle: %s\n", value);
-        m->stream_title = String (value);
+        m->stream_title = String (str_to_utf8 (value, -1));
     }
 
     if (neon_strcmp (name, "StreamUrl"))
     {
         AUDDBG ("Found StreamUrl: %s\n", value);
-        m->stream_url = String (value);
+        m->stream_url = String (str_to_utf8 (value, -1));
     }
 }
 
@@ -393,7 +393,7 @@ void NeonFile::handle_headers ()
         {
             /* The server sent us a content type. Save it for later */
             AUDDBG ("Content-Type: %s\n", value);
-            m_icy_metadata.stream_contenttype = String (value);
+            m_icy_metadata.stream_contenttype = String (str_to_utf8 (value, -1));
         }
         else if (neon_strcmp (name, "icy-metaint"))
         {
@@ -1076,13 +1076,13 @@ String NeonFile::get_metadata (const char * field)
     AUDDBG ("<%p> Field name: %s\n", this, field);
 
     if (! strcmp (field, "track-name") && m_icy_metadata.stream_title)
-        return String (str_to_utf8 (m_icy_metadata.stream_title));
+        return m_icy_metadata.stream_title;
 
     if (! strcmp (field, "stream-name") && m_icy_metadata.stream_name)
-        return String (str_to_utf8 (m_icy_metadata.stream_name));
+        return m_icy_metadata.stream_name;
 
     if (! strcmp (field, "content-type") && m_icy_metadata.stream_contenttype)
-        return String (str_to_utf8 (m_icy_metadata.stream_contenttype));
+        return m_icy_metadata.stream_contenttype;
 
     if (! strcmp (field, "content-bitrate"))
         return String (int_to_str (m_icy_metadata.stream_bitrate * 1000));

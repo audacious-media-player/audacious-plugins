@@ -62,9 +62,9 @@ static void album_clear (void * unused, GtkWidget * widget)
 
 static void album_cleanup (GtkWidget * widget)
 {
-    hook_dissociate_full ("playback begin", (HookFunction) album_update, widget);
-    hook_dissociate_full ("current art ready", (HookFunction) album_update, widget);
-    hook_dissociate_full ("playback stop", (HookFunction) album_clear, widget);
+    hook_dissociate ("playback begin", (HookFunction) album_update, widget);
+    hook_dissociate ("current art ready", (HookFunction) album_update, widget);
+    hook_dissociate ("playback stop", (HookFunction) album_clear, widget);
 
     audgui_cleanup ();
 }

@@ -33,7 +33,7 @@ class PlaylistWidget : public QTreeView
     Q_OBJECT
 
 public:
-    PlaylistWidget (QTreeView * parent = 0, int uniqueId = -1);
+    PlaylistWidget (QTreeView * parent = nullptr, int uniqueId = -1);
     ~PlaylistWidget ();
     void scrollToCurrent ();
     void update (Playlist::Update level, int at, int count);

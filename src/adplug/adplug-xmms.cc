@@ -30,33 +30,23 @@
 
 #include <libaudcore/audstrings.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
-
-static const char * adplug_exts[] = {
-    "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
-    "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
-    "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
-    "sng", "wlf", "xad", "xsm"
-};
 
 class AdPlugXMMS : public InputPlugin
 {
 public:
+    static const char * const exts[];
+
     static constexpr PluginInfo info = {
         N_("AdPlug (AdLib Player)"),
         PACKAGE
     };
 
-    static constexpr InputPluginInfo input_info = {
-        0,      // priority
-        false,  // subtunes
-        false,  // tag writing
-        {adplug_exts}
-    };
+    static constexpr auto iinfo = InputInfo ()
+        .with_exts (exts);
 
-    constexpr AdPlugXMMS () : InputPlugin (info, input_info) {}
+    constexpr AdPlugXMMS () : InputPlugin (info, iinfo) {}
 
     bool init ();
     void cleanup ();
@@ -67,6 +57,13 @@ public:
 };
 
 EXPORT AdPlugXMMS aud_plugin_instance;
+
+const char * const AdPlugXMMS::exts[] = {
+    "a2m", "adl", "amd", "bam", "cff", "cmf", "d00", "dfm", "dmo", "dro",
+    "dtm", "hsc", "hsp", "ins", "jbm", "ksm", "laa", "lds", "m", "mad",
+    "mkj", "msc", "rad", "raw", "rix", "rol", "s3m", "sa2", "sat", "sci",
+    "sng", "wlf", "xad", "xsm", nullptr
+};
 
 /***** Defines *****/
 
@@ -86,23 +83,19 @@ EXPORT AdPlugXMMS aud_plugin_instance;
 /***** Global variables *****/
 
 // Configuration (and defaults)
-static struct
-{
-  int freq;
-  bool bit16, stereo, endless;
-  CPlayers players;
-} conf =
-{
-44100l, true, false, false, CAdPlug::getPlayers()};
+static struct {
+  int freq = 44100l;
+  bool bit16 = true, stereo = false, endless = false;
+  CPlayers players = CAdPlug::getPlayers();
+} conf;
 
 // Player variables
-static struct
-{
-  CPlayer *p;
-  CAdPlugDatabase *db;
-  unsigned int subsong, songlength;
-  char * filename;
-} plr = {0, 0, 0, 0, nullptr};
+static struct {
+  CPlayer *p = nullptr;
+  CAdPlugDatabase *db = nullptr;
+  unsigned int subsong = 0, songlength = 0;
+  String filename;
+} plr;
 
 /***** Debugging *****/
 
@@ -168,26 +161,24 @@ Tuple AdPlugXMMS::read_tuple (const char * filename, VFSFile & fd)
   return tuple;
 }
 
-// Define sampsize macro (only usable inside play_loop()!)
-#define sampsize ((bit16 ? 2 : 1) * (stereo ? 2 : 1))
-
 /* Main playback thread. Takes the filename to play as argument. */
 bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
 {
   dbg_printf ("adplug_play(\"%s\"): ", filename);
 
+  // Set XMMS main window information
+  dbg_printf ("xmms, ");
+  int sampsize = (conf.bit16 ? 2 : 1) * (conf.stereo ? 2 : 1);
+  set_stream_bitrate (conf.freq * sampsize * 8);
+
   // open output plugin
   dbg_printf ("open, ");
-  if (!aud_input_open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1))
-    return false;
+  open_audio (conf.bit16 ? FORMAT_16 : FORMAT_8, conf.freq, conf.stereo ? 2 : 1);
 
   CEmuopl opl (conf.freq, conf.bit16, conf.stereo);
   long toadd = 0, i, towrite;
   char *sndbuf, *sndbufpos;
-  bool playing = true,          // Song self-end indicator.
-    bit16 = conf.bit16,          // Duplicate config, so it doesn't affect us if
-    stereo = conf.stereo;        // the user changes it while we're playing.
-  unsigned long freq = conf.freq;
+  bool playing = true;  // Song self-end indicator.
 
   // Try to load module
   dbg_printf ("factory, ");
@@ -202,18 +193,13 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   dbg_printf ("subsong, ");
   if (! plr.filename || strcmp (filename, plr.filename))
   {
-    free (plr.filename);
-    plr.filename = strdup (filename);
+    plr.filename = String (filename);
     plr.subsong = 0;
   }
 
   // Allocate audio buffer
   dbg_printf ("buffer, ");
   sndbuf = (char *) malloc (SNDBUFSIZE * sampsize);
-
-  // Set XMMS main window information
-  dbg_printf ("xmms, ");
-  aud_input_set_bitrate (freq * sampsize * 8);
 
   // Rewind player to right subsong
   dbg_printf ("rewind, ");
@@ -225,10 +211,10 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
   dbg_printf ("loop.\n");
   while ((playing || conf.endless))
   {
-    if (aud_input_check_stop ())
+    if (check_stop ())
       break;
 
-    int seek = aud_input_check_seek ();
+    int seek = check_seek ();
 
     // seek requested ?
     if (seek != -1)
@@ -252,7 +238,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
     {
       while (toadd < 0)
       {
-        toadd += freq;
+        toadd += conf.freq;
         playing = plr.p->update ();
         if (playing)
           time += (int) (1000 / plr.p->getrefresh ());
@@ -264,7 +250,7 @@ bool AdPlugXMMS::play (const char * filename, VFSFile & fd)
       toadd -= (long) (plr.p->getrefresh () * i);
     }
 
-    aud_input_write_audio (sndbuf, SNDBUFSIZE * sampsize);
+    write_audio (sndbuf, SNDBUFSIZE * sampsize);
   }
 
   // free everything and exit
@@ -337,8 +323,6 @@ bool AdPlugXMMS::init ()
 
   // Load database from disk and hand it to AdPlug
   dbg_printf ("database");
-  plr.db = new CAdPlugDatabase;
-
   {
     const char *homedir = getenv ("HOME");
 
@@ -349,12 +333,13 @@ bool AdPlugXMMS::init ()
 
       if (VFSFile::test_file (userdb.c_str (), VFS_EXISTS))
       {
+        plr.db = new CAdPlugDatabase;
         plr.db->load (userdb);    // load user's database
         dbg_printf (" (userdb=\"%s\")", userdb.c_str());
+        CAdPlug::set_database (plr.db);
       }
     }
   }
-  CAdPlug::set_database (plr.db);
   dbg_printf (".\n");
 
   return true;
@@ -367,8 +352,7 @@ void AdPlugXMMS::cleanup ()
   if (plr.db)
     delete plr.db;
 
-  free (plr.filename);
-  plr.filename = nullptr;
+  plr.filename = String ();
 
   aud_set_bool (CFG_VERSION, "16bit", conf.bit16);
   aud_set_bool (CFG_VERSION, "Stereo", conf.stereo);

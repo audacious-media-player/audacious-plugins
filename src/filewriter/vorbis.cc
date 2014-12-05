@@ -23,14 +23,13 @@
 
 #ifdef FILEWRITER_VORBIS
 
-#include <vorbis/vorbisenc.h>
 #include <stdlib.h>
-#include <stdint.h>
+#include <vorbis/vorbisenc.h>
+#include <gtk/gtk.h>
 
-#include <libaudcore/runtime.h>
 #include <libaudcore/audstrings.h>
-
-static int (*write_output)(void *ptr, int length);
+#include <libaudcore/i18n.h>
+#include <libaudcore/runtime.h>
 
 static ogg_stream_state os;
 static ogg_page og;
@@ -46,15 +45,13 @@ static const char * const vorbis_defaults[] = {
  nullptr};
 
 static double v_base_quality;
+static int channels;
 
-static void vorbis_init(write_output_callback write_output_func)
+static void vorbis_init ()
 {
     aud_config_set_defaults ("filewriter_vorbis", vorbis_defaults);
 
     v_base_quality = aud_get_double ("filewriter_vorbis", "base_quality");
-
-    if (write_output_func)
-        write_output=write_output_func;
 }
 
 static void add_string_from_tuple (vorbis_comment * vc, const char * name,
@@ -65,46 +62,41 @@ static void add_string_from_tuple (vorbis_comment * vc, const char * name,
         vorbis_comment_add_tag (vc, name, val);
 }
 
-static int vorbis_open(void)
+static bool vorbis_open (VFSFile & file, const format_info & info, const Tuple & tuple)
 {
     ogg_packet header;
     ogg_packet header_comm;
     ogg_packet header_code;
 
-    vorbis_init(nullptr);
+    vorbis_init();
 
     vorbis_info_init(&vi);
     vorbis_comment_init(&vc);
 
-    if (tuple)
-    {
-        int scrint;
+    int scrint;
 
-        add_string_from_tuple (& vc, "title", tuple, Tuple::Title);
-        add_string_from_tuple (& vc, "artist", tuple, Tuple::Artist);
-        add_string_from_tuple (& vc, "album", tuple, Tuple::Album);
-        add_string_from_tuple (& vc, "genre", tuple, Tuple::Genre);
-        add_string_from_tuple (& vc, "date", tuple, Tuple::Date);
-        add_string_from_tuple (& vc, "comment", tuple, Tuple::Comment);
+    add_string_from_tuple (& vc, "title", tuple, Tuple::Title);
+    add_string_from_tuple (& vc, "artist", tuple, Tuple::Artist);
+    add_string_from_tuple (& vc, "album", tuple, Tuple::Album);
+    add_string_from_tuple (& vc, "genre", tuple, Tuple::Genre);
+    add_string_from_tuple (& vc, "date", tuple, Tuple::Date);
+    add_string_from_tuple (& vc, "comment", tuple, Tuple::Comment);
 
-        if ((scrint = tuple.get_int (Tuple::Track)) > 0)
-            vorbis_comment_add_tag(&vc, "tracknumber", int_to_str (scrint));
+    if ((scrint = tuple.get_int (Tuple::Track)) > 0)
+        vorbis_comment_add_tag(&vc, "tracknumber", int_to_str (scrint));
 
-        if ((scrint = tuple.get_int (Tuple::Year)) > 0)
-            vorbis_comment_add_tag(&vc, "year", int_to_str (scrint));
-    }
+    if ((scrint = tuple.get_int (Tuple::Year)) > 0)
+        vorbis_comment_add_tag(&vc, "year", int_to_str (scrint));
 
-    if (vorbis_encode_init_vbr (& vi, input.channels, input.frequency,
-     v_base_quality))
+    if (vorbis_encode_init_vbr (& vi, info.channels, info.frequency, v_base_quality))
     {
         vorbis_info_clear(&vi);
-        return 0;
+        return false;
     }
 
     vorbis_analysis_init(&vd, &vi);
     vorbis_block_init(&vd, &vb);
 
-    srand(time(nullptr));
     ogg_stream_init(&os, rand());
 
     vorbis_analysis_headerout(&vd, &vc, &header, &header_comm, &header_code);
@@ -115,30 +107,32 @@ static int vorbis_open(void)
 
     while (ogg_stream_flush (& os, & og))
     {
-        write_output(og.header, og.header_len);
-        write_output(og.body, og.body_len);
+        if (file.fwrite (og.header, 1, og.header_len) != og.header_len ||
+         file.fwrite (og.body, 1, og.body_len) != og.body_len)
+            AUDERR ("write error\n");
     }
 
-    return 1;
+    channels = info.channels;
+    return true;
 }
 
-static void vorbis_write_real (void * data, int length)
+static void vorbis_write_real (VFSFile & file, const void * data, int length)
 {
     int samples = length / sizeof (float);
     int channel;
     float * end = (float *) data + samples;
-    float * * buffer = vorbis_analysis_buffer (& vd, samples / input.channels);
+    float * * buffer = vorbis_analysis_buffer (& vd, samples / channels);
     float * from, * to;
 
-    for (channel = 0; channel < input.channels; channel ++)
+    for (channel = 0; channel < channels; channel ++)
     {
         to = buffer[channel];
 
-        for (from = (float *) data + channel; from < end; from += input.channels)
+        for (from = (float *) data + channel; from < end; from += channels)
             * to ++ = * from;
     }
 
-    vorbis_analysis_wrote (& vd, samples / input.channels);
+    vorbis_analysis_wrote (& vd, samples / channels);
 
     while(vorbis_analysis_blockout(&vd, &vb) == 1)
     {
@@ -151,27 +145,29 @@ static void vorbis_write_real (void * data, int length)
 
             while (ogg_stream_pageout(&os, &og))
             {
-                write_output(og.header, og.header_len);
-                write_output(og.body, og.body_len);
+                if (file.fwrite (og.header, 1, og.header_len) != og.header_len ||
+                 file.fwrite (og.body, 1, og.body_len) != og.body_len)
+                    AUDERR ("write error\n");
             }
         }
     }
 }
 
-static void vorbis_write (void * data, int length)
+static void vorbis_write (VFSFile & file, const void * data, int length)
 {
     if (length > 0) /* don't signal end of file yet */
-        vorbis_write_real (data, length);
+        vorbis_write_real (file, data, length);
 }
 
-static void vorbis_close(void)
+static void vorbis_close (VFSFile & file)
 {
-    vorbis_write_real (nullptr, 0); /* signal end of file */
+    vorbis_write_real (file, nullptr, 0); /* signal end of file */
 
     while (ogg_stream_flush (& os, & og))
     {
-        write_output (og.header, og.header_len);
-        write_output (og.body, og.body_len);
+        if (file.fwrite (og.header, 1, og.header_len) != og.header_len ||
+         file.fwrite (og.body, 1, og.body_len) != og.body_len)
+            AUDERR ("write error\n");
     }
 
     ogg_stream_clear(&os);

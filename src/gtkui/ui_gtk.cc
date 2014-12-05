@@ -101,9 +101,9 @@ public:
         { audgui_show_prefs_window (); }
     void hide_prefs_window ()
         { audgui_hide_prefs_window (); }
-    void plugin_menu_add (int id, void func (), const char * name, const char * icon)
+    void plugin_menu_add (AudMenuID id, void func (), const char * name, const char * icon)
         { audgui_plugin_menu_add (id, func, name, icon); }
-    void plugin_menu_remove (int id, void func ())
+    void plugin_menu_remove (AudMenuID id, void func ())
         { audgui_plugin_menu_remove (id, func); }
 };
 
@@ -184,7 +184,7 @@ void set_ab_repeat_a (void)
         return;
 
     int a, b;
-    aud_drct_get_ab_repeat (& a, & b);
+    aud_drct_get_ab_repeat (a, b);
     a = aud_drct_get_time ();
     aud_drct_set_ab_repeat (a, b);
 }
@@ -195,7 +195,7 @@ void set_ab_repeat_b (void)
         return;
 
     int a, b;
-    aud_drct_get_ab_repeat (& a, & b);
+    aud_drct_get_ab_repeat (a, b);
     b = aud_drct_get_time ();
     aud_drct_set_ab_repeat (a, b);
 }
@@ -270,7 +270,7 @@ static void set_time_label (int time, int len)
         append_str (s, sizeof s, str_format_time (len));
 
         int a, b;
-        aud_drct_get_ab_repeat (& a, & b);
+        aud_drct_get_ab_repeat (a, b);
 
         if (a >= 0)
         {
@@ -743,13 +743,13 @@ static void remove_dock_plugin (PluginHandle * plugin, void * unused)
 
 static void add_dock_plugins (void)
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin (plugin, nullptr);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             add_dock_plugin (plugin, nullptr);
@@ -761,13 +761,13 @@ static void add_dock_plugins (void)
 
 static void remove_dock_plugins (void)
 {
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_GENERAL))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::General))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin (plugin, nullptr);
     }
 
-    for (PluginHandle * plugin : aud_plugin_list (PLUGIN_TYPE_VIS))
+    for (PluginHandle * plugin : aud_plugin_list (PluginType::Vis))
     {
         if (aud_plugin_get_enabled (plugin))
             remove_dock_plugin (plugin, nullptr);

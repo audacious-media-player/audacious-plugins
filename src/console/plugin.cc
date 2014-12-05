@@ -6,30 +6,26 @@
  * http://www.slack.net/~ant/libs/
  */
 
-#include <libaudcore/i18n.h>
-#include <libaudcore/plugin.h>
-#include <libaudcore/preferences.h>
-
 #include "configure.h"
+#include "plugin.h"
 
-Tuple console_probe_for_tuple(const char *filename, VFSFile &fd);
-bool console_play(const char *filename, VFSFile &file);
+EXPORT ConsolePlugin aud_plugin_instance;
 
-static const char console_about[] =
+const char ConsolePlugin::about[] =
  N_("Console music decoder engine based on Game_Music_Emu 0.5.2\n"
     "Supported formats: AY, GBS, GYM, HES, KSS, NSF, NSFE, SAP, SPC, VGM, VGZ\n\n"
     "Audacious plugin by:\n"
     "William Pitcock <nenolod@dereferenced.org>\n"
     "Shay Green <gblargg@gmail.com>");
 
-static const char *gme_fmts[] = {
+const char * const ConsolePlugin::exts[] = {
     "ay", "gbs", "gym",
     "hes", "kss", "nsf",
     "nsfe", "sap", "spc",
     "vgm", "vgz", nullptr
 };
 
-static const PreferencesWidget console_widgets[] = {
+const PreferencesWidget ConsolePlugin::widgets[] = {
     WidgetLabel (N_("<b>Playback</b>")),
     WidgetSpin (N_("Bass:"),
         WidgetInt (audcfg.bass),
@@ -46,7 +42,7 @@ static const PreferencesWidget console_widgets[] = {
     WidgetLabel (N_("<b>Resampling</b>")),
     WidgetCheck (N_("Enable audio resampling"),
         WidgetBool (audcfg.resample)),
-    WidgetSpin (N_("Resampling rate:"),
+    WidgetSpin (N_("Sample rate:"),
         WidgetInt (audcfg.resample_rate),
         {11025, 96000, 100, N_("Hz")},
         WIDGET_CHILD),
@@ -57,18 +53,4 @@ static const PreferencesWidget console_widgets[] = {
         WidgetBool (audcfg.inc_spc_reverb))
 };
 
-static const PluginPreferences console_prefs = {{console_widgets}};
-
-#define AUD_PLUGIN_NAME        N_("Game Console Music Decoder")
-#define AUD_PLUGIN_ABOUT       console_about
-#define AUD_PLUGIN_INIT        console_cfg_load
-#define AUD_PLUGIN_CLEANUP     console_cfg_save
-#define AUD_PLUGIN_PREFS       & console_prefs
-#define AUD_INPUT_IS_OUR_FILE  nullptr
-#define AUD_INPUT_PLAY         console_play
-#define AUD_INPUT_EXTS         gme_fmts
-#define AUD_INPUT_READ_TUPLE   console_probe_for_tuple
-#define AUD_INPUT_SUBTUNES     true
-
-#define AUD_DECLARE_INPUT
-#include <libaudcore/plugin-declare.h>
+const PluginPreferences ConsolePlugin::prefs = {{widgets}};

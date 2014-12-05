@@ -37,7 +37,7 @@ class PlaylistModel : public QAbstractListModel
     Q_OBJECT
 
 public:
-    PlaylistModel (QObject * parent = 0, int id = -1);
+    PlaylistModel (QObject * parent = nullptr, int id = -1);
     ~PlaylistModel ();
     int rowCount (const QModelIndex & parent = QModelIndex ()) const;
     int columnCount (const QModelIndex & parent = QModelIndex ()) const;

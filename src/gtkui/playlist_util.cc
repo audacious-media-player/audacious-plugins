@@ -93,11 +93,11 @@ void playlist_delete_selected (void)
 
 void playlist_copy (void)
 {
-    StringBuf text = audgui_urilist_create_from_selected (aud_playlist_get_active ());
-    if (! text)
+    Index<char> text = audgui_urilist_create_from_selected (aud_playlist_get_active ());
+    if (! text.len ())
         return;
 
-    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), text, -1);
+    gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), text.begin (), text.len ());
 }
 
 void playlist_cut (void)

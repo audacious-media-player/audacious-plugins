@@ -184,7 +184,7 @@ static void do_command (const char * cmd)
         if (playing)
         {
             int brate, srate, chans;
-            aud_drct_get_info (& brate, & srate, & chans);
+            aud_drct_get_info (brate, srate, chans);
             formatter_associate (formatter, 'r', int_to_str (brate));
             formatter_associate (formatter, 'F', int_to_str (srate));
             formatter_associate (formatter, 'c', int_to_str (chans));

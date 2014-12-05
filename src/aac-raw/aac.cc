@@ -6,28 +6,23 @@
 
 #include <audacious/audtag.h>
 #include <libaudcore/i18n.h>
-#include <libaudcore/input.h>
 #include <libaudcore/plugin.h>
 #include <libaudcore/runtime.h>
-
-static const char * const aac_exts[] = {"aac"};
 
 class AACDecoder : public InputPlugin
 {
 public:
+    static const char * const exts[];
+
     static constexpr PluginInfo info = {
         N_("AAC (Raw) Decoder"),
         PACKAGE
     };
 
-    static constexpr InputPluginInfo input_info = {
-        0,      // priority
-        false,  // subtunes
-        false,  // tag writing
-        {aac_exts}
-    };
+    static constexpr auto iinfo = InputInfo ()
+        .with_exts (exts);
 
-    constexpr AACDecoder () : InputPlugin (info, input_info) {}
+    constexpr AACDecoder () : InputPlugin (info, iinfo) {}
 
     bool is_our_file (const char * filename, VFSFile & file);
     Tuple read_tuple (const char * filename, VFSFile & file);
@@ -35,6 +30,8 @@ public:
 };
 
 EXPORT AACDecoder aud_plugin_instance;
+
+const char * const AACDecoder::exts[] = {"aac", nullptr};
 
 /*
  * BUFFER_SIZE is the highest amount of memory that can be pulled.
@@ -335,7 +332,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
     unsigned char channels = 0;
     int bitrate = 0;
 
-    Tuple tuple = aud_input_get_tuple ();
+    Tuple tuple = get_playback_tuple ();
 
     if (tuple)
     {
@@ -404,22 +401,21 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
     /* == CHECK FOR METADATA == */
 
     if (tuple && tuple.fetch_stream_info (file))
-        aud_input_set_tuple (tuple.ref ());
+        set_playback_tuple (tuple.ref ());
+
+    set_stream_bitrate (bitrate);
 
     /* == START PLAYBACK == */
 
-    if (! aud_input_open_audio (FMT_FLOAT, samplerate, channels))
-        goto ERR_CLOSE_DECODER;
-
-    aud_input_set_bitrate (bitrate);
+    open_audio (FMT_FLOAT, samplerate, channels);
 
     /* == MAIN LOOP == */
 
-    while (! aud_input_check_stop ())
+    while (! check_stop ())
     {
         /* == HANDLE SEEK REQUESTS == */
 
-        int seek_value = aud_input_check_seek ();
+        int seek_value = check_seek ();
 
         if (seek_value >= 0)
         {
@@ -437,7 +433,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
         /* == CHECK FOR METADATA == */
 
         if (tuple && tuple.fetch_stream_info (file))
-            aud_input_set_tuple (tuple.ref ());
+            set_playback_tuple (tuple.ref ());
 
         /* == DECODE A FRAME == */
 
@@ -469,7 +465,7 @@ bool AACDecoder::play (const char * filename, VFSFile & file)
         /* == PLAY THE SOUND == */
 
         if (audio && info.samples)
-            aud_input_write_audio (audio, sizeof (float) * info.samples);
+            write_audio (audio, sizeof (float) * info.samples);
     }
 
     NeAACDecClose (decoder);

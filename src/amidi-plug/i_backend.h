@@ -25,7 +25,6 @@ struct midievent_t;
 
 void backend_init (void);
 void backend_cleanup (void);
-void backend_prepare (void);
 void backend_reset (void);
 
 void backend_audio_info (int *, int *, int *);

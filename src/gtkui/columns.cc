@@ -37,7 +37,7 @@ const char * const pw_col_names[PW_COLS] = {
     N_("Artist"),
     N_("Year"),
     N_("Album"),
-    N_("Album Artist"),
+    N_("Album artist"),
     N_("Track"),
     N_("Genre"),
     N_("Queue position"),

@@ -37,7 +37,7 @@ class PlaylistTabs : public QTabWidget
     Q_OBJECT
 
 public:
-    PlaylistTabs (QWidget * parent = 0);
+    PlaylistTabs (QWidget * parent = nullptr);
     ~PlaylistTabs ();
     PlaylistWidget * playlistWidget (int num);
     PlaylistWidget * activePlaylistWidget ();
@@ -67,8 +67,10 @@ private:
     void playlist_update_cb (Playlist::Update global_level);
     void playlist_position_cb (int list);
 
-    HookReceiver<PlaylistTabs, Playlist::Update> update_hook;
-    HookReceiver<PlaylistTabs, int> position_hook;
+    const HookReceiver<PlaylistTabs, Playlist::Update>
+     update_hook {"playlist update", this, & PlaylistTabs::playlist_update_cb};
+    const HookReceiver<PlaylistTabs, int>
+     position_hook {"playlist position", this, & PlaylistTabs::playlist_position_cb};
 };
 
 class PlaylistTabBar : public QTabBar
@@ -76,7 +78,7 @@ class PlaylistTabBar : public QTabBar
     Q_OBJECT
 
 public:
-    PlaylistTabBar (QWidget * parent = 0);
+    PlaylistTabBar (QWidget * parent = nullptr);
 
 public slots:
     void handleCloseRequest (int idx);
