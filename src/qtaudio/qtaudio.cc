@@ -280,6 +280,7 @@ void QtAudio::pause (bool pause)
 
     paused = pause;
 
+    pthread_cond_broadcast (& cond); /* wake up period wait */
     pthread_mutex_unlock (& mutex);
 }
 

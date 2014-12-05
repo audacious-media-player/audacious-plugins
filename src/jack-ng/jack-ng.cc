@@ -382,6 +382,7 @@ void JACKOutput::pause (bool pause)
 {
     pthread_mutex_lock (& m_mutex);
     m_paused = pause;
+    pthread_cond_broadcast (& m_cond);
     pthread_mutex_unlock (& m_mutex);
 }
 
